@@ -1,18 +1,18 @@
 @interface NMSMediaItemGroupIterator
 - (BOOL)isCurrentIdentifierEstimate;
-- (NMSMediaItemGroupIterator)initWithItemGroups:(id)a3 estimatedItemSize:(unint64_t)a4;
+- (NMSMediaItemGroupIterator)initWithItemGroups:(id)groups estimatedItemSize:(unint64_t)size;
 - (NMSQuotaEvaluationState)evaluationState;
 - (NSMutableArray)indexesToBeRemoved;
 - (NSMutableArray)remainingContainers;
 - (NSMutableOrderedSet)mutableItemListWithinQuota;
 - (id)currentItem;
 - (id)downloadInfoWithinQuota;
-- (id)identifiersForContainersOfType:(unint64_t)a3;
+- (id)identifiersForContainersOfType:(unint64_t)type;
 - (id)mediaContainersAboveQuota;
 - (unint64_t)sizeForCurrentIdentifier;
 - (void)_generateItemListAndSizesDictIfNecessary;
 - (void)_markToBeRemoved;
-- (void)addCurrentIdentifierToWithinQuotaListAndCountSizeTowardsQuota:(BOOL)a3;
+- (void)addCurrentIdentifierToWithinQuotaListAndCountSizeTowardsQuota:(BOOL)quota;
 - (void)removeCurrentIdentifier;
 - (void)resetToIterateOverQuotaIdentifiers;
 - (void)skipCurrentIdentifier;
@@ -23,13 +23,13 @@
 - (NMSQuotaEvaluationState)evaluationState
 {
   v3 = objc_alloc_init(NMSQuotaEvaluationState_Legacy);
-  v4 = [(NMSMediaItemGroupIterator *)self currentItem];
-  v5 = [v4 mediaLibraryIdentifier];
-  [(NMSQuotaEvaluationState_Legacy *)v3 setMediaLibraryIdentifier:v5];
+  currentItem = [(NMSMediaItemGroupIterator *)self currentItem];
+  mediaLibraryIdentifier = [currentItem mediaLibraryIdentifier];
+  [(NMSQuotaEvaluationState_Legacy *)v3 setMediaLibraryIdentifier:mediaLibraryIdentifier];
 
-  v6 = [(NMSMediaItemGroupIterator *)self currentItem];
-  v7 = [v6 externalLibraryIdentifier];
-  [(NMSQuotaEvaluationState_Legacy *)v3 setExternalLibraryIdentifier:v7];
+  currentItem2 = [(NMSMediaItemGroupIterator *)self currentItem];
+  externalLibraryIdentifier = [currentItem2 externalLibraryIdentifier];
+  [(NMSQuotaEvaluationState_Legacy *)v3 setExternalLibraryIdentifier:externalLibraryIdentifier];
 
   [(NMSQuotaEvaluationState_Legacy *)v3 setContainerIndex:[(NMSMediaItemGroupIterator *)self currentContainerIndex]];
   [(NMSQuotaEvaluationState_Legacy *)v3 setItemIndex:[(NMSMediaItemGroupIterator *)self currentItemIndex]];
@@ -39,19 +39,19 @@
   return v3;
 }
 
-- (NMSMediaItemGroupIterator)initWithItemGroups:(id)a3 estimatedItemSize:(unint64_t)a4
+- (NMSMediaItemGroupIterator)initWithItemGroups:(id)groups estimatedItemSize:(unint64_t)size
 {
-  v6 = a3;
+  groupsCopy = groups;
   v11.receiver = self;
   v11.super_class = NMSMediaItemGroupIterator;
   v7 = [(NMSMediaItemGroupIterator *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [groupsCopy copy];
     itemGroups = v7->_itemGroups;
     v7->_itemGroups = v8;
 
-    v7->_estimatedItemSize = a4;
+    v7->_estimatedItemSize = size;
   }
 
   return v7;
@@ -90,8 +90,8 @@
 - (id)downloadInfoWithinQuota
 {
   v3 = [NMSMediaDownloadInfo alloc];
-  v4 = [(NMSMediaItemGroupIterator *)self mutableItemListWithinQuota];
-  v5 = [(NMSMediaDownloadInfo *)v3 initWithItems:v4];
+  mutableItemListWithinQuota = [(NMSMediaItemGroupIterator *)self mutableItemListWithinQuota];
+  v5 = [(NMSMediaDownloadInfo *)v3 initWithItems:mutableItemListWithinQuota];
 
   return v5;
 }
@@ -99,9 +99,9 @@
 - (void)_generateItemListAndSizesDictIfNecessary
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+  remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
 
-  if (!v3)
+  if (!remainingItemLists)
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](self->_itemGroups, "count")}];
     [(NMSMediaItemGroupIterator *)self setRemainingItemLists:v4];
@@ -135,18 +135,18 @@
           }
 
           v12 = *(*(&v35 + 1) + 8 * i);
-          v13 = [v12 itemList];
-          if ([v13 count])
+          itemList = [v12 itemList];
+          if ([itemList count])
           {
-            v14 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-            v15 = [MEMORY[0x277CBEB18] arrayWithArray:v13];
-            [v14 addObject:v15];
+            remainingItemLists2 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+            v15 = [MEMORY[0x277CBEB18] arrayWithArray:itemList];
+            [remainingItemLists2 addObject:v15];
 
             v33 = 0u;
             v34 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v16 = v13;
+            v16 = itemList;
             v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
             if (v17)
             {
@@ -175,8 +175,8 @@
             }
 
             v22 = MEMORY[0x277CCACA8];
-            v23 = [v12 itemList];
-            v24 = [v22 stringWithFormat:@"CTNR:%3d %@ generated item list which has %lu items.", v10, v12, objc_msgSend(v23, "count")];
+            itemList2 = [v12 itemList];
+            v24 = [v22 stringWithFormat:@"CTNR:%3d %@ generated item list which has %lu items.", v10, v12, objc_msgSend(itemList2, "count")];
 
             v10 = (v10 + 1);
           }
@@ -205,23 +205,23 @@
 - (id)currentItem
 {
   [(NMSMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
-  v3 = [(NMSMediaItemGroupIterator *)self currentContainerIndex];
-  v4 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-  if (v3 >= [v4 count])
+  currentContainerIndex = [(NMSMediaItemGroupIterator *)self currentContainerIndex];
+  remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+  if (currentContainerIndex >= [remainingItemLists count])
   {
     v10 = 0;
     goto LABEL_5;
   }
 
-  v5 = [(NMSMediaItemGroupIterator *)self currentItemIndex];
-  v6 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-  v7 = [v6 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
+  currentItemIndex = [(NMSMediaItemGroupIterator *)self currentItemIndex];
+  remainingItemLists2 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+  v7 = [remainingItemLists2 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
   v8 = [v7 count];
 
-  if (v5 < v8)
+  if (currentItemIndex < v8)
   {
-    v4 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-    v9 = [v4 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
+    remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+    v9 = [remainingItemLists objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
     v10 = [v9 objectAtIndex:{-[NMSMediaItemGroupIterator currentItemIndex](self, "currentItemIndex")}];
 
 LABEL_5:
@@ -237,14 +237,14 @@ LABEL_7:
 - (void)skipCurrentIdentifier
 {
   [(NMSMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
-  v3 = [(NMSMediaItemGroupIterator *)self currentItem];
+  currentItem = [(NMSMediaItemGroupIterator *)self currentItem];
 
-  if (v3)
+  if (currentItem)
   {
-    v4 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-    v5 = [v4 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
-    v6 = [v5 quotaData];
-    [v6 setHasSkippedItems:1];
+    remainingContainers = [(NMSMediaItemGroupIterator *)self remainingContainers];
+    v5 = [remainingContainers objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
+    quotaData = [v5 quotaData];
+    [quotaData setHasSkippedItems:1];
 
     [(NMSMediaItemGroupIterator *)self _continueToNextIdentifier];
   }
@@ -253,95 +253,95 @@ LABEL_7:
 - (void)removeCurrentIdentifier
 {
   [(NMSMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
-  v3 = [(NMSMediaItemGroupIterator *)self currentItem];
+  currentItem = [(NMSMediaItemGroupIterator *)self currentItem];
 
-  if (v3)
+  if (currentItem)
   {
     [(NMSMediaItemGroupIterator *)self _markToBeRemoved];
-    v4 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-    v5 = [v4 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
-    v6 = [v5 quotaData];
-    [v6 setHasRemovedItems:1];
+    remainingContainers = [(NMSMediaItemGroupIterator *)self remainingContainers];
+    v5 = [remainingContainers objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
+    quotaData = [v5 quotaData];
+    [quotaData setHasRemovedItems:1];
 
     [(NMSMediaItemGroupIterator *)self _continueToNextIdentifier];
   }
 }
 
-- (void)addCurrentIdentifierToWithinQuotaListAndCountSizeTowardsQuota:(BOOL)a3
+- (void)addCurrentIdentifierToWithinQuotaListAndCountSizeTowardsQuota:(BOOL)quota
 {
-  v3 = a3;
+  quotaCopy = quota;
   [(NMSMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
-  v5 = [(NMSMediaItemGroupIterator *)self currentItem];
-  if (v5)
+  currentItem = [(NMSMediaItemGroupIterator *)self currentItem];
+  if (currentItem)
   {
-    v12 = v5;
-    v6 = [(NMSMediaItemGroupIterator *)self mutableItemListWithinQuota];
-    v7 = [v6 containsObject:v12];
+    v12 = currentItem;
+    mutableItemListWithinQuota = [(NMSMediaItemGroupIterator *)self mutableItemListWithinQuota];
+    v7 = [mutableItemListWithinQuota containsObject:v12];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(NMSMediaItemGroupIterator *)self mutableItemListWithinQuota];
-      [v8 addObject:v12];
+      mutableItemListWithinQuota2 = [(NMSMediaItemGroupIterator *)self mutableItemListWithinQuota];
+      [mutableItemListWithinQuota2 addObject:v12];
 
-      if (v3)
+      if (quotaCopy)
       {
         self->_sizeForItemListWithinQuota += [v12 size];
       }
     }
 
-    v9 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-    v10 = [v9 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
-    v11 = [v10 quotaData];
-    [v11 setNumItemsAdded:{objc_msgSend(v11, "numItemsAdded") + 1}];
+    remainingContainers = [(NMSMediaItemGroupIterator *)self remainingContainers];
+    v10 = [remainingContainers objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
+    quotaData = [v10 quotaData];
+    [quotaData setNumItemsAdded:{objc_msgSend(quotaData, "numItemsAdded") + 1}];
 
     [(NMSMediaItemGroupIterator *)self _markToBeRemoved];
     [(NMSMediaItemGroupIterator *)self _continueToNextIdentifier];
-    v5 = v12;
+    currentItem = v12;
   }
 }
 
 - (void)resetToIterateOverQuotaIdentifiers
 {
   [(NMSMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
-  v3 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-  v4 = [v3 count];
+  remainingItemLists = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+  v4 = [remainingItemLists count];
 
   if (v4)
   {
     v5 = 0;
     do
     {
-      v6 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-      v7 = [v6 objectAtIndex:v5];
+      remainingItemLists2 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+      v7 = [remainingItemLists2 objectAtIndex:v5];
 
-      v8 = [(NMSMediaItemGroupIterator *)self indexesToBeRemoved];
-      v9 = [v8 objectAtIndex:v5];
+      indexesToBeRemoved = [(NMSMediaItemGroupIterator *)self indexesToBeRemoved];
+      v9 = [indexesToBeRemoved objectAtIndex:v5];
       [v7 removeObjectsAtIndexes:v9];
 
       if ([v7 count])
       {
-        v10 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-        v11 = [v10 objectAtIndex:v5];
-        v12 = [v11 quotaData];
-        [v12 setHasSkippedItems:0];
+        remainingContainers = [(NMSMediaItemGroupIterator *)self remainingContainers];
+        v11 = [remainingContainers objectAtIndex:v5];
+        quotaData = [v11 quotaData];
+        [quotaData setHasSkippedItems:0];
 
         ++v5;
       }
 
       else
       {
-        v13 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-        [v13 removeObjectAtIndex:v5];
+        remainingItemLists3 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+        [remainingItemLists3 removeObjectAtIndex:v5];
 
-        v14 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-        [v14 removeObjectAtIndex:v5];
+        remainingContainers2 = [(NMSMediaItemGroupIterator *)self remainingContainers];
+        [remainingContainers2 removeObjectAtIndex:v5];
 
-        v15 = [(NMSMediaItemGroupIterator *)self indexesToBeRemoved];
-        [v15 removeObjectAtIndex:v5];
+        indexesToBeRemoved2 = [(NMSMediaItemGroupIterator *)self indexesToBeRemoved];
+        [indexesToBeRemoved2 removeObjectAtIndex:v5];
       }
 
-      v16 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
-      v17 = [v16 count];
+      remainingItemLists4 = [(NMSMediaItemGroupIterator *)self remainingItemLists];
+      v17 = [remainingItemLists4 count];
     }
 
     while (v5 < v17);
@@ -356,19 +356,19 @@ LABEL_7:
 - (unint64_t)sizeForCurrentIdentifier
 {
   [(NMSMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
-  v3 = [(NMSMediaItemGroupIterator *)self currentItem];
+  currentItem = [(NMSMediaItemGroupIterator *)self currentItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 minimumSize];
+    minimumSize = [currentItem minimumSize];
   }
 
   else
   {
-    v4 = [v3 size];
+    minimumSize = [currentItem size];
   }
 
-  v5 = v4;
+  v5 = minimumSize;
 
   return v5;
 }
@@ -376,23 +376,23 @@ LABEL_7:
 - (BOOL)isCurrentIdentifierEstimate
 {
   [(NMSMediaItemGroupIterator *)self _generateItemListAndSizesDictIfNecessary];
-  v3 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-  v4 = [v3 objectAtIndex:self->_currentContainerIndex];
-  v5 = [v4 isEstimate];
+  remainingContainers = [(NMSMediaItemGroupIterator *)self remainingContainers];
+  v4 = [remainingContainers objectAtIndex:self->_currentContainerIndex];
+  isEstimate = [v4 isEstimate];
 
-  return v5;
+  return isEstimate;
 }
 
-- (id)identifiersForContainersOfType:(unint64_t)a3
+- (id)identifiersForContainersOfType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NMSMediaItemGroupIterator *)self itemGroups];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  itemGroups = [(NMSMediaItemGroupIterator *)self itemGroups];
+  v7 = [itemGroups countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -403,20 +403,20 @@ LABEL_7:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemGroups);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) identifiersForContainerType:a3];
-        [v5 addObjectsFromArray:v11];
+        v11 = [*(*(&v15 + 1) + 8 * i) identifiersForContainerType:type];
+        [array addObjectsFromArray:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [itemGroups countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [v5 copy];
+  v12 = [array copy];
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
@@ -424,9 +424,9 @@ LABEL_7:
 
 - (id)mediaContainersAboveQuota
 {
-  v2 = [(NMSMediaItemGroupIterator *)self itemGroups];
+  itemGroups = [(NMSMediaItemGroupIterator *)self itemGroups];
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_3];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [itemGroups filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -444,13 +444,13 @@ uint64_t __54__NMSMediaItemGroupIterator_mediaContainersAboveQuota__block_invoke
   if (!self->_indexesToBeRemoved)
   {
     v3 = MEMORY[0x277CBEB18];
-    v4 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-    v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    remainingContainers = [(NMSMediaItemGroupIterator *)self remainingContainers];
+    v5 = [v3 arrayWithCapacity:{objc_msgSend(remainingContainers, "count")}];
     indexesToBeRemoved = self->_indexesToBeRemoved;
     self->_indexesToBeRemoved = v5;
 
-    v7 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-    v8 = [v7 count];
+    remainingContainers2 = [(NMSMediaItemGroupIterator *)self remainingContainers];
+    v8 = [remainingContainers2 count];
 
     if (v8)
     {
@@ -458,12 +458,12 @@ uint64_t __54__NMSMediaItemGroupIterator_mediaContainersAboveQuota__block_invoke
       do
       {
         v10 = self->_indexesToBeRemoved;
-        v11 = [MEMORY[0x277CCAB58] indexSet];
-        [(NSMutableArray *)v10 addObject:v11];
+        indexSet = [MEMORY[0x277CCAB58] indexSet];
+        [(NSMutableArray *)v10 addObject:indexSet];
 
         ++v9;
-        v12 = [(NMSMediaItemGroupIterator *)self remainingContainers];
-        v13 = [v12 count];
+        remainingContainers3 = [(NMSMediaItemGroupIterator *)self remainingContainers];
+        v13 = [remainingContainers3 count];
       }
 
       while (v9 < v13);
@@ -477,8 +477,8 @@ uint64_t __54__NMSMediaItemGroupIterator_mediaContainersAboveQuota__block_invoke
 
 - (void)_markToBeRemoved
 {
-  v4 = [(NMSMediaItemGroupIterator *)self indexesToBeRemoved];
-  v3 = [v4 objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
+  indexesToBeRemoved = [(NMSMediaItemGroupIterator *)self indexesToBeRemoved];
+  v3 = [indexesToBeRemoved objectAtIndex:{-[NMSMediaItemGroupIterator currentContainerIndex](self, "currentContainerIndex")}];
   [v3 addIndex:{-[NMSMediaItemGroupIterator currentItemIndex](self, "currentItemIndex")}];
 }
 

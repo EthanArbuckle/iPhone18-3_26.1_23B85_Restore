@@ -1,24 +1,24 @@
 @interface IMPlayedReceiptProcessingPipelineComponent
-- (IMPlayedReceiptProcessingPipelineComponent)initWithPipelineResources:(id)a3;
+- (IMPlayedReceiptProcessingPipelineComponent)initWithPipelineResources:(id)resources;
 - (id)_account;
 - (id)_idsAccount;
 - (id)_messageStore;
-- (id)runIndividuallyWithInput:(id)a3;
-- (void)_markMessageAsPlayedAndNotify:(id)a3 session:(id)a4 chat:(id)a5 date:(id)a6;
+- (id)runIndividuallyWithInput:(id)input;
+- (void)_markMessageAsPlayedAndNotify:(id)notify session:(id)session chat:(id)chat date:(id)date;
 @end
 
 @implementation IMPlayedReceiptProcessingPipelineComponent
 
-- (IMPlayedReceiptProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMPlayedReceiptProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = IMPlayedReceiptProcessingPipelineComponent;
   v6 = [(IMPlayedReceiptProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineResources, a3);
+    objc_storeStrong(&v6->_pipelineResources, resources);
   }
 
   return v7;
@@ -26,51 +26,51 @@
 
 - (id)_idsAccount
 {
-  v2 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 imdAccount];
+  pipelineResources = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
+  imdAccount = [pipelineResources imdAccount];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 idsAccount];
+    idsAccount = [imdAccount idsAccount];
   }
 
   else
   {
-    v4 = 0;
+    idsAccount = 0;
   }
 
-  return v4;
+  return idsAccount;
 }
 
 - (id)_account
 {
-  v2 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 imdAccount];
+  pipelineResources = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
+  imdAccount = [pipelineResources imdAccount];
 
-  return v3;
+  return imdAccount;
 }
 
 - (id)_messageStore
 {
-  v2 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 messageStore];
+  pipelineResources = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
 
-  return v3;
+  return messageStore;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v71 = *MEMORY[0x277D85DE8];
-  v61 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [v61 GUID];
+      gUID = [inputCopy GUID];
       *buf = 138412290;
-      v68 = v5;
+      v68 = gUID;
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "<IMPlayedReceiptProcessingPipelineComponent> Started processing for Message GUID: %@", buf, 0xCu);
     }
   }
@@ -82,20 +82,20 @@
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v61 GUID];
+        gUID2 = [inputCopy GUID];
         *buf = 138412290;
-        v68 = v7;
+        v68 = gUID2;
         _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "    Ignoring played receipt for message: %@", buf, 0xCu);
       }
     }
 
-    v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v61];
+    v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
   else
   {
-    v9 = [v61 GUID];
-    v10 = v9 == 0;
+    gUID3 = [inputCopy GUID];
+    v10 = gUID3 == 0;
 
     if (v10)
     {
@@ -106,11 +106,11 @@
 
     else
     {
-      v60 = [v61 GUID];
+      gUID4 = [inputCopy GUID];
       v58 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v11 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
-      v12 = [v11 messageStore];
-      v13 = [v12 chatsForMessageGUID:v60];
+      pipelineResources = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
+      messageStore = [pipelineResources messageStore];
+      v13 = [messageStore chatsForMessageGUID:gUID4];
 
       if (IMOSLoggingEnabled())
       {
@@ -118,7 +118,7 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v68 = v60;
+          v68 = gUID4;
           v69 = 2112;
           v70 = v13;
           _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_INFO, "Found chats for messageID: %@   chats: %@", buf, 0x16u);
@@ -145,66 +145,66 @@
 
             v17 = *(*(&v62 + 1) + 8 * i);
             v18 = MEMORY[0x277CBEAA8];
-            v19 = [v61 timestamp];
-            v20 = [v18 __im_iMessageDateFromTimeStamp:v19];
+            timestamp = [inputCopy timestamp];
+            v20 = [v18 __im_iMessageDateFromTimeStamp:timestamp];
 
-            v21 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
-            v22 = [v21 messageStore];
-            v23 = [v22 messageWithGUID:v60];
+            pipelineResources2 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
+            messageStore2 = [pipelineResources2 messageStore];
+            v23 = [messageStore2 messageWithGUID:gUID4];
 
             if (v23)
             {
-              v24 = [v23 isFromMe];
-              v25 = [v61 idsTrustedData];
-              v26 = [v25 isFromMe];
+              isFromMe = [v23 isFromMe];
+              idsTrustedData = [inputCopy idsTrustedData];
+              isFromMe2 = [idsTrustedData isFromMe];
 
-              if (((v24 | v26) & 1) == 0)
+              if (((isFromMe | isFromMe2) & 1) == 0)
               {
                 if (IMOSLoggingEnabled())
                 {
                   v47 = OSLogHandleForIMFoundationCategory();
                   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
                   {
-                    v48 = [v23 sender];
-                    v49 = [v61 idsTrustedData];
-                    v50 = [v49 fromIdentifier];
+                    sender = [v23 sender];
+                    idsTrustedData2 = [inputCopy idsTrustedData];
+                    fromIdentifier = [idsTrustedData2 fromIdentifier];
                     *buf = 138412546;
-                    v68 = v48;
+                    v68 = sender;
                     v69 = 2112;
-                    v70 = v50;
+                    v70 = fromIdentifier;
                     _os_log_impl(&dword_22B4CC000, v47, OS_LOG_TYPE_INFO, "Invalid receipt sender: played receipts must be sent by self (%@) for messages not from self. However, receipt was sent from (%@). Ignoring played receipt.", buf, 0x16u);
                   }
                 }
 
-                v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v61];
+                v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 
                 goto LABEL_47;
               }
 
               [v58 addObject:v23];
-              v27 = [(IMPlayedReceiptProcessingPipelineComponent *)self _account];
-              v28 = [v27 session];
-              [(IMPlayedReceiptProcessingPipelineComponent *)self _markMessageAsPlayedAndNotify:v23 session:v28 chat:v17 date:v20];
+              _account = [(IMPlayedReceiptProcessingPipelineComponent *)self _account];
+              session = [_account session];
+              [(IMPlayedReceiptProcessingPipelineComponent *)self _markMessageAsPlayedAndNotify:v23 session:session chat:v17 date:v20];
 
-              if ((v26 & 1) == 0)
+              if ((isFromMe2 & 1) == 0)
               {
-                v29 = [v61 idsTrustedData];
-                v30 = [v29 fromPushID];
+                idsTrustedData3 = [inputCopy idsTrustedData];
+                fromPushID = [idsTrustedData3 fromPushID];
 
-                v31 = [v61 idsTrustedData];
-                v32 = [v31 fromIdentifier];
+                idsTrustedData4 = [inputCopy idsTrustedData];
+                fromIdentifier2 = [idsTrustedData4 fromIdentifier];
 
-                if (v30 && v32)
+                if (fromPushID && fromIdentifier2)
                 {
-                  v33 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
-                  v34 = [v33 recentsController];
-                  v35 = [v32 _stripFZIDPrefix];
-                  [v34 updateLatestActiveDestination:v30 ForHandle:v35 incomingType:1];
+                  pipelineResources3 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
+                  recentsController = [pipelineResources3 recentsController];
+                  _stripFZIDPrefix = [fromIdentifier2 _stripFZIDPrefix];
+                  [recentsController updateLatestActiveDestination:fromPushID ForHandle:_stripFZIDPrefix incomingType:1];
 
-                  v36 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
-                  v37 = [v36 recentsController];
+                  pipelineResources4 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
+                  recentsController2 = [pipelineResources4 recentsController];
                   v38 = IMSingleObjectArray();
-                  [v37 noteRecentMessageForPeople:v38];
+                  [recentsController2 noteRecentMessageForPeople:v38];
                 }
               }
             }
@@ -229,9 +229,9 @@
           v51 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
           {
-            v52 = [v61 GUID];
+            gUID5 = [inputCopy GUID];
             *buf = 138412290;
-            v68 = v52;
+            v68 = gUID5;
             _os_log_impl(&dword_22B4CC000, v51, OS_LOG_TYPE_INFO, "Unable to mark message with GUID=%@: message not found", buf, 0xCu);
           }
         }
@@ -248,20 +248,20 @@
           v41 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
           {
-            v42 = [v61 GUID];
+            gUID6 = [inputCopy GUID];
             *buf = 138412290;
-            v68 = v42;
+            v68 = gUID6;
             _os_log_impl(&dword_22B4CC000, v41, OS_LOG_TYPE_INFO, "Marked message with GUID=%@ as played", buf, 0xCu);
           }
         }
 
-        v43 = [obj firstObject];
-        [v61 setChat:v43];
+        firstObject = [obj firstObject];
+        [inputCopy setChat:firstObject];
 
         v44 = [v58 copy];
-        [v61 setMessageItems:v44];
+        [inputCopy setMessageItems:v44];
 
-        v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v61];
+        v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
       }
 
 LABEL_47:
@@ -273,30 +273,30 @@ LABEL_47:
   return v8;
 }
 
-- (void)_markMessageAsPlayedAndNotify:(id)a3 session:(id)a4 chat:(id)a5 date:(id)a6
+- (void)_markMessageAsPlayedAndNotify:(id)notify session:(id)session chat:(id)chat date:(id)date
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v49 = a4;
-  v11 = a5;
-  v12 = a6;
+  notifyCopy = notify;
+  sessionCopy = session;
+  chatCopy = chat;
+  dateCopy = date;
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v51 = v10;
+      v51 = notifyCopy;
       _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "Mark message as played: %@", buf, 0xCu);
     }
   }
 
-  [v10 setFlags:{objc_msgSend(v10, "flags") | 0x400000}];
-  v14 = v12;
+  [notifyCopy setFlags:{objc_msgSend(notifyCopy, "flags") | 0x400000}];
+  v14 = dateCopy;
   if (v14)
   {
-    v15 = [v10 time];
-    v16 = [v15 laterDate:v14];
+    time = [notifyCopy time];
+    v16 = [time laterDate:v14];
   }
 
   else
@@ -304,60 +304,60 @@ LABEL_47:
     v16 = 0;
   }
 
-  v17 = [v10 timeDelivered];
-  v18 = v17 == 0;
+  timeDelivered = [notifyCopy timeDelivered];
+  v18 = timeDelivered == 0;
 
   if (v18)
   {
     if (v16)
     {
-      [v10 setTimeDelivered:v16];
+      [notifyCopy setTimeDelivered:v16];
     }
 
     else
     {
-      v19 = [MEMORY[0x277CBEAA8] date];
-      [v10 setTimeDelivered:v19];
+      date = [MEMORY[0x277CBEAA8] date];
+      [notifyCopy setTimeDelivered:date];
     }
   }
 
-  v20 = [v10 timeRead];
-  v21 = v20 == 0;
+  timeRead = [notifyCopy timeRead];
+  v21 = timeRead == 0;
 
   if (v21)
   {
     if (v16)
     {
-      [v10 setTimeRead:v16];
+      [notifyCopy setTimeRead:v16];
     }
 
     else
     {
-      v22 = [MEMORY[0x277CBEAA8] __im_dateWithCurrentServerTime];
-      [v10 setTimeRead:v22];
+      __im_dateWithCurrentServerTime = [MEMORY[0x277CBEAA8] __im_dateWithCurrentServerTime];
+      [notifyCopy setTimeRead:__im_dateWithCurrentServerTime];
     }
   }
 
-  v23 = [v10 timePlayed];
-  v24 = v23 == 0;
+  timePlayed = [notifyCopy timePlayed];
+  v24 = timePlayed == 0;
 
   if (v24)
   {
     if (v16)
     {
-      [v10 setTimePlayed:v16];
+      [notifyCopy setTimePlayed:v16];
     }
 
     else
     {
-      v25 = [MEMORY[0x277CBEAA8] date];
-      [v10 setTimePlayed:v25];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [notifyCopy setTimePlayed:date2];
     }
   }
 
-  if ([v10 errorCode])
+  if ([notifyCopy errorCode])
   {
-    [v10 setErrorCode:0];
+    [notifyCopy setErrorCode:0];
   }
 
   if (IMOSLoggingEnabled())
@@ -365,8 +365,8 @@ LABEL_47:
     v26 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [v10 guid];
-      if ([v10 isExpirable])
+      guid = [notifyCopy guid];
+      if ([notifyCopy isExpirable])
       {
         v28 = @"YES";
       }
@@ -376,9 +376,9 @@ LABEL_47:
         v28 = @"NO";
       }
 
-      v29 = [v10 isFromMe];
-      v30 = [v10 expireState];
-      if (v29)
+      isFromMe = [notifyCopy isFromMe];
+      expireState = [notifyCopy expireState];
+      if (isFromMe)
       {
         v31 = @"YES";
       }
@@ -389,18 +389,18 @@ LABEL_47:
       }
 
       *buf = 138413058;
-      v51 = v27;
+      v51 = guid;
       v52 = 2112;
       v53 = v28;
       v54 = 2112;
       v55 = v31;
       v56 = 2048;
-      v57 = v30;
+      v57 = expireState;
       _os_log_impl(&dword_22B4CC000, v26, OS_LOG_TYPE_INFO, "message.GUID = %@; isExpirable = %@; isFromMe = %@; expireState = %lld", buf, 0x2Au);
     }
   }
 
-  if ([v10 isExpirable] && (objc_msgSend(v10, "isFromMe") & 1) == 0 && objc_msgSend(v10, "expireState") <= 0)
+  if ([notifyCopy isExpirable] && (objc_msgSend(notifyCopy, "isFromMe") & 1) == 0 && objc_msgSend(notifyCopy, "expireState") <= 0)
   {
     ShouldAutomaticallySave = IMMessageItemShouldAutomaticallySave();
     v43 = IMOSLoggingEnabled();
@@ -411,9 +411,9 @@ LABEL_47:
         v44 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
         {
-          v45 = [v10 guid];
+          guid2 = [notifyCopy guid];
           *buf = 138412290;
-          v51 = v45;
+          v51 = guid2;
           _os_log_impl(&dword_22B4CC000, v44, OS_LOG_TYPE_INFO, "Automatically saving received message played on linked device: %@", buf, 0xCu);
         }
       }
@@ -428,9 +428,9 @@ LABEL_47:
         v47 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
         {
-          v48 = [v10 guid];
+          guid3 = [notifyCopy guid];
           *buf = 138412290;
-          v51 = v48;
+          v51 = guid3;
           _os_log_impl(&dword_22B4CC000, v47, OS_LOG_TYPE_INFO, "Expire received message played on linked device: %@", buf, 0xCu);
         }
       }
@@ -438,7 +438,7 @@ LABEL_47:
       v46 = 1;
     }
 
-    [v10 setExpireState:v46];
+    [notifyCopy setExpireState:v46];
     v32 = ShouldAutomaticallySave ^ 1;
   }
 
@@ -448,24 +448,24 @@ LABEL_47:
     ShouldAutomaticallySave = 0;
   }
 
-  v34 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
-  v35 = [v34 messageStore];
-  v36 = [v35 storeMessage:v10 forceReplace:0 modifyError:1 modifyFlags:1 flagMask:0x400000];
+  pipelineResources = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
+  v36 = [messageStore storeMessage:notifyCopy forceReplace:0 modifyError:1 modifyFlags:1 flagMask:0x400000];
 
-  v37 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
-  v38 = [v37 chatRegistry];
-  [v38 updateStateForChat:v11 hintMessage:0 shouldRebuildFailedMessageDate:0];
+  pipelineResources2 = [(IMPlayedReceiptProcessingPipelineComponent *)self pipelineResources];
+  chatRegistry = [pipelineResources2 chatRegistry];
+  [chatRegistry updateStateForChat:chatCopy hintMessage:0 shouldRebuildFailedMessageDate:0];
 
   if (v32)
   {
-    v39 = [v10 guid];
-    [v49 _updateExpireStateForMessageGUID:v39];
+    guid4 = [notifyCopy guid];
+    [sessionCopy _updateExpireStateForMessageGUID:guid4];
   }
 
   if (ShouldAutomaticallySave)
   {
-    v40 = [v11 roomName];
-    if ([v11 style] == 45)
+    roomName = [chatCopy roomName];
+    if ([chatCopy style] == 45)
     {
       v41 = 45;
     }
@@ -475,7 +475,7 @@ LABEL_47:
       v41 = 43;
     }
 
-    [v49 sendSavedReceiptForMessage:v10 toChatID:0 identifier:v40 style:v41];
+    [sessionCopy sendSavedReceiptForMessage:notifyCopy toChatID:0 identifier:roomName style:v41];
   }
 
   v42 = *MEMORY[0x277D85DE8];

@@ -1,32 +1,32 @@
 @interface _UISharedTextureViewport
 - (_TtC5UIKit24_UISharedTextureViewport)init;
-- (_TtC5UIKit24_UISharedTextureViewport)initWithCoder:(id)a3;
-- (_TtC5UIKit24_UISharedTextureViewport)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit24_UISharedTextureViewport)initWithCoder:(id)coder;
+- (_TtC5UIKit24_UISharedTextureViewport)initWithFrame:(CGRect)frame;
 - (void)_connectPortal;
 - (void)_disconnectPortal;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UISharedTextureViewport
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  windowCopy = window;
   v5 = v7.receiver;
-  [(UIView *)&v7 willMoveToWindow:v4];
-  v6 = [objc_opt_self() defaultCenter];
-  [v6 removeObserver_];
+  [(UIView *)&v7 willMoveToWindow:windowCopy];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter removeObserver_];
 
   sub_188DCF74C();
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_188DCF800();
 }
 
@@ -49,7 +49,7 @@
   return result;
 }
 
-- (_TtC5UIKit24_UISharedTextureViewport)initWithFrame:(CGRect)a3
+- (_TtC5UIKit24_UISharedTextureViewport)initWithFrame:(CGRect)frame
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5UIKit24_UISharedTextureViewport__connection) = 0;
   result = sub_18A4A8398();
@@ -57,7 +57,7 @@
   return result;
 }
 
-- (_TtC5UIKit24_UISharedTextureViewport)initWithCoder:(id)a3
+- (_TtC5UIKit24_UISharedTextureViewport)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5UIKit24_UISharedTextureViewport__connection) = 0;
   result = sub_18A4A8398();
@@ -67,13 +67,13 @@
 
 - (void)_disconnectPortal
 {
-  v2 = self;
+  selfCopy = self;
   sub_188DCF74C();
 }
 
 - (void)_connectPortal
 {
-  v2 = self;
+  selfCopy = self;
   sub_188DD0118();
 }
 

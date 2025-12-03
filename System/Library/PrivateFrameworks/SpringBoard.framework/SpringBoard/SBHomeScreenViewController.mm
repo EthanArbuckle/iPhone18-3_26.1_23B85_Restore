@@ -3,13 +3,13 @@
 - (BOOL)usesGlassGroup;
 - (CGRect)_homeAffordanceFrameForHomeAffordanceInteraction;
 - (CGRect)_homeAffordanceFrameForLayout;
-- (SBHomeScreenViewController)initWithWindowScene:(id)a3 contextProvider:(id)a4 iconManager:(id)a5 appearanceController:(id)a6;
+- (SBHomeScreenViewController)initWithWindowScene:(id)scene contextProvider:(id)provider iconManager:(id)manager appearanceController:(id)controller;
 - (UIView)iconContentView;
 - (_UILegibilitySettings)legibilitySettings;
 - (id)_autorotationPreventionReasons;
 - (id)appearanceController;
-- (id)containerViewControllerForPresentingFromTodayViewControllerAllowingCoverSheet:(BOOL)a3;
-- (id)containerViewForPresentingContextMenuForIconView:(id)a3;
+- (id)containerViewControllerForPresentingFromTodayViewControllerAllowingCoverSheet:(BOOL)sheet;
+- (id)containerViewForPresentingContextMenuForIconView:(id)view;
 - (id)contextProvider;
 - (id)iconManager;
 - (id)windowScene;
@@ -27,54 +27,54 @@
 - (uint64_t)zStackParticipant;
 - (unint64_t)possibleInterfaceOrientations;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_acquireFloatingDockBehaviorAssertionIfNecessaryForFloatingDockController:(id)a3;
-- (void)_acquireForceTouchOrientationUpdateDeferralAssertionForIconView:(id)a3;
-- (void)_acquireForceTouchWindowLevelAssertionForIconView:(id)a3;
-- (void)_animateTransitionToSize:(CGSize)a3 andInterfaceOrientation:(int64_t)a4 withTransitionContext:(id)a5;
-- (void)_appIconForceTouchControllerDidDismissNotification:(id)a3;
-- (void)_appIconForceTouchControllerWillPresentNotification:(id)a3;
+- (void)_acquireFloatingDockBehaviorAssertionIfNecessaryForFloatingDockController:(id)controller;
+- (void)_acquireForceTouchOrientationUpdateDeferralAssertionForIconView:(id)view;
+- (void)_acquireForceTouchWindowLevelAssertionForIconView:(id)view;
+- (void)_animateTransitionToSize:(CGSize)size andInterfaceOrientation:(int64_t)orientation withTransitionContext:(id)context;
+- (void)_appIconForceTouchControllerDidDismissNotification:(id)notification;
+- (void)_appIconForceTouchControllerWillPresentNotification:(id)notification;
 - (void)_autorotationPreventionReasons;
-- (void)_beginAppearanceTransitionForChildViewControllersToVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)_cleanupAfterTransitionToSize:(CGSize)a3 fromInterfaceOrientation:(int64_t)a4 withTransitionContext:(id)a5;
-- (void)_dismissAllIconForceTouchControllersDidFire:(id)a3;
-- (void)_endAppearanceTransitionForChildViewControllersToVisible:(BOOL)a3;
-- (void)_floatingDockFrameDidChange:(id)a3;
-- (void)_iconEditingDidChange:(id)a3;
-- (void)_performInitialLayoutWithOrientation:(int64_t)a3;
-- (void)_prepareForTransitionToSize:(CGSize)a3 andInterfaceOrientation:(int64_t)a4 withTransitionCoordinator:(id)a5;
-- (void)_relinquishForceTouchOrientationUpdateDeferralAssertionForIconView:(id)a3;
-- (void)_relinquishForceTouchWindowLevelAssertionForIconView:(id)a3;
+- (void)_beginAppearanceTransitionForChildViewControllersToVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)_cleanupAfterTransitionToSize:(CGSize)size fromInterfaceOrientation:(int64_t)orientation withTransitionContext:(id)context;
+- (void)_dismissAllIconForceTouchControllersDidFire:(id)fire;
+- (void)_endAppearanceTransitionForChildViewControllersToVisible:(BOOL)visible;
+- (void)_floatingDockFrameDidChange:(id)change;
+- (void)_iconEditingDidChange:(id)change;
+- (void)_performInitialLayoutWithOrientation:(int64_t)orientation;
+- (void)_prepareForTransitionToSize:(CGSize)size andInterfaceOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator;
+- (void)_relinquishForceTouchOrientationUpdateDeferralAssertionForIconView:(id)view;
+- (void)_relinquishForceTouchWindowLevelAssertionForIconView:(id)view;
 - (void)_updateHomeAffordanceInteraction;
 - (void)_updateHomeAffordanceView;
 - (void)_updateIconContentViewOrientationAndLayoutIfNeeded;
 - (void)_widgetEditViewDidDisappearImplementation;
-- (void)_widgetEditViewWillAppear:(id)a3;
+- (void)_widgetEditViewWillAppear:(id)appear;
 - (void)dealloc;
-- (void)homeAffordanceInteractionDidRecognizeSingleTap:(id)a3;
+- (void)homeAffordanceInteractionDidRecognizeSingleTap:(id)tap;
 - (void)loadView;
-- (void)nudgeIconInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)setAllowIconRotation:(BOOL)a3 forReason:(id)a4;
-- (void)setHomeAffordanceInteraction:(uint64_t)a1;
-- (void)setHomeAffordanceInteractionAllowed:(BOOL)a3;
-- (void)setHomeAffordanceView:(uint64_t)a1;
-- (void)setHomeScreenFloatingDockAssertion:(uint64_t)a1;
-- (void)setIconContentHidden:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
+- (void)nudgeIconInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)setAllowIconRotation:(BOOL)rotation forReason:(id)reason;
+- (void)setHomeAffordanceInteraction:(uint64_t)interaction;
+- (void)setHomeAffordanceInteractionAllowed:(BOOL)allowed;
+- (void)setHomeAffordanceView:(uint64_t)view;
+- (void)setHomeScreenFloatingDockAssertion:(uint64_t)assertion;
+- (void)setIconContentHidden:(BOOL)hidden;
+- (void)setLegibilitySettings:(id)settings;
 - (void)setNeedsStatusBarAppearanceUpdate;
-- (void)setUsesGlassGroup:(BOOL)a3;
-- (void)setWidgetEditFloatingDockAssertion:(uint64_t)a1;
-- (void)setWidgetEditViewControllerOrientationUpdateDeferralAssertion:(uint64_t)a1;
-- (void)setZStackParticipant:(uint64_t)a1;
+- (void)setUsesGlassGroup:(BOOL)group;
+- (void)setWidgetEditFloatingDockAssertion:(uint64_t)assertion;
+- (void)setWidgetEditViewControllerOrientationUpdateDeferralAssertion:(uint64_t)assertion;
+- (void)setZStackParticipant:(uint64_t)participant;
 - (void)shouldAutorotate;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBHomeScreenViewController
@@ -122,31 +122,31 @@
     return 1;
   }
 
-  v3 = [(SBHomeScreenViewController *)self view];
-  v4 = [v3 window];
+  view = [(SBHomeScreenViewController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(SBHomeScreenViewController *)self view];
-    v6 = [v5 window];
-    v7 = [v6 _windowInterfaceOrientation];
+    view2 = [(SBHomeScreenViewController *)self view];
+    window2 = [view2 window];
+    _windowInterfaceOrientation = [window2 _windowInterfaceOrientation];
   }
 
   else
   {
-    v5 = [(SBHomeScreenViewController *)self _iconContentView];
-    v7 = [v5 orientation];
+    view2 = [(SBHomeScreenViewController *)self _iconContentView];
+    _windowInterfaceOrientation = [view2 orientation];
   }
 
   [(SBHomeScreenViewController *)self allowedInterfaceOrientations];
-  if (!v7)
+  if (!_windowInterfaceOrientation)
   {
     return 1;
   }
 
   if (SBFInterfaceOrientationMaskContainsInterfaceOrientation())
   {
-    return v7;
+    return _windowInterfaceOrientation;
   }
 
   else
@@ -169,8 +169,8 @@
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v2 = [v4 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v2 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   if (v2)
@@ -187,25 +187,25 @@
 - (void)viewWillLayoutSubviews
 {
   [(SBHomeScreenViewController *)self _updateIconContentViewOrientationAndLayoutIfNeeded];
-  v3 = [(SBHomeScreenViewController *)self view];
-  v4 = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
-  v5 = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
-  v6 = [v5 libraryViewControllerForWindowScene:v4];
-  v7 = [v6 viewIfLoaded];
-  v8 = [v7 superview];
+  view = [(SBHomeScreenViewController *)self view];
+  windowScene = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
+  contextProvider = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
+  v6 = [contextProvider libraryViewControllerForWindowScene:windowScene];
+  viewIfLoaded = [v6 viewIfLoaded];
+  superview = [viewIfLoaded superview];
 
-  if (v8 == v3)
+  if (superview == view)
   {
-    v9 = v7;
-    [v3 bringSubviewToFront:v9];
-    v10 = [v6 externalBackgroundView];
-    v11 = [v10 superview];
+    v9 = viewIfLoaded;
+    [view bringSubviewToFront:v9];
+    externalBackgroundView = [v6 externalBackgroundView];
+    superview2 = [externalBackgroundView superview];
 
-    if (v11 == v3)
+    if (superview2 == view)
     {
-      v12 = v10;
+      v12 = externalBackgroundView;
 
-      [v3 insertSubview:v12 belowSubview:v9];
+      [view insertSubview:v12 belowSubview:v9];
       v9 = v12;
     }
   }
@@ -215,39 +215,39 @@
     v9 = 0;
   }
 
-  v13 = [v5 homeScreenOverlayController];
-  v14 = [v13 viewController];
-  v15 = [v14 view];
+  homeScreenOverlayController = [contextProvider homeScreenOverlayController];
+  viewController = [homeScreenOverlayController viewController];
+  view2 = [viewController view];
 
-  v16 = [v15 superview];
+  superview3 = [view2 superview];
 
-  if (v16 == v3)
+  if (superview3 == view)
   {
     if (v9)
     {
-      [v3 insertSubview:v15 belowSubview:v9];
+      [view insertSubview:view2 belowSubview:v9];
     }
 
     else
     {
-      [v3 bringSubviewToFront:v15];
+      [view bringSubviewToFront:view2];
     }
   }
 
-  v17 = [(SBHomeScreenViewController *)self iconEffectView];
-  v18 = v17;
-  if (v17)
+  iconEffectView = [(SBHomeScreenViewController *)self iconEffectView];
+  v18 = iconEffectView;
+  if (iconEffectView)
   {
-    v19 = [v17 superview];
+    superview4 = [iconEffectView superview];
 
-    if (v19)
+    if (superview4)
     {
-      [v3 sendSubviewToBack:v18];
+      [view sendSubviewToBack:v18];
     }
 
     else
     {
-      [v3 insertSubview:v18 atIndex:0];
+      [view insertSubview:v18 atIndex:0];
     }
   }
 
@@ -309,16 +309,16 @@
   v16.receiver = self;
   v16.super_class = SBHomeScreenViewController;
   [(SBHomeScreenViewController *)&v16 viewDidLayoutSubviews];
-  v3 = [(SBHomeScreenViewController *)self view];
-  [v3 bounds];
+  view = [(SBHomeScreenViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SBHomeScreenViewController *)self iconContentView];
-  [v12 setBounds:{v5, v7, v9, v11}];
+  iconContentView = [(SBHomeScreenViewController *)self iconContentView];
+  [iconContentView setBounds:{v5, v7, v9, v11}];
   UIRectGetCenter();
-  [v12 setCenter:?];
+  [iconContentView setCenter:?];
   if (self)
   {
     v13 = self->_homeAffordanceView;
@@ -338,11 +338,11 @@
     v13 = 0;
   }
 
-  v14 = [(SBHomeScreenViewController *)self iconEffectView];
-  v15 = v14;
-  if (v14)
+  iconEffectView = [(SBHomeScreenViewController *)self iconEffectView];
+  v15 = iconEffectView;
+  if (iconEffectView)
   {
-    [v14 setBounds:{v5, v7, v9, v11}];
+    [iconEffectView setBounds:{v5, v7, v9, v11}];
     UIRectGetCenter();
     [v15 setCenter:?];
   }
@@ -350,20 +350,20 @@
 
 - (CGRect)_homeAffordanceFrameForLayout
 {
-  v3 = [(SBHomeScreenViewController *)self view];
-  [v3 bounds];
+  view = [(SBHomeScreenViewController *)self view];
+  [view bounds];
   CGRectGetMidX(v40);
-  v4 = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
-  v5 = [v4 rootFolderController];
-  if ([v5 isDockExternal])
+  iconManager = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  if ([rootFolderController isDockExternal])
   {
-    v6 = [v4 floatingDockViewController];
-    v7 = [v6 view];
-    v8 = [v7 _screen];
-    v9 = [v8 fixedCoordinateSpace];
+    floatingDockViewController = [iconManager floatingDockViewController];
+    view2 = [floatingDockViewController view];
+    _screen = [view2 _screen];
+    fixedCoordinateSpace = [_screen fixedCoordinateSpace];
 
-    [v6 floatingDockScreenFrame];
-    [v3 convertRect:v9 fromCoordinateSpace:?];
+    [floatingDockViewController floatingDockScreenFrame];
+    [view convertRect:fixedCoordinateSpace fromCoordinateSpace:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -379,11 +379,11 @@
 
   else
   {
-    v6 = [v5 folderView];
-    v9 = [v6 dockView];
-    v17 = [v9 dockListView];
-    [v17 bounds];
-    [v3 convertRect:v17 fromView:?];
+    floatingDockViewController = [rootFolderController folderView];
+    fixedCoordinateSpace = [floatingDockViewController dockView];
+    dockListView = [fixedCoordinateSpace dockListView];
+    [dockListView bounds];
+    [view convertRect:dockListView fromView:?];
     rectb = v18;
     v20 = v19;
     v22 = v21;
@@ -398,8 +398,8 @@
   }
 
   [(SBHomeScreenViewController *)self _homeAffordanceFrameForHomeAffordanceInteraction];
-  v25 = [(SBHomeScreenViewController *)self traitCollection];
-  [v25 displayScale];
+  traitCollection = [(SBHomeScreenViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredAboutPointScale();
   v27 = v26;
   v29 = v28;
@@ -419,14 +419,14 @@
 
 - (CGRect)_homeAffordanceFrameForHomeAffordanceInteraction
 {
-  v2 = [(SBHomeScreenViewController *)self view];
-  [v2 bounds];
+  view = [(SBHomeScreenViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
 
-  v11 = [MEMORY[0x277D26708] sharedInstance];
+  mEMORY[0x277D26708] = [MEMORY[0x277D26708] sharedInstance];
   v12 = *(MEMORY[0x277CBF3A0] + 8);
   rect = *MEMORY[0x277CBF3A0];
   v13 = objc_opt_class();
@@ -434,7 +434,7 @@
   v33.origin.y = v6;
   v33.size.width = v8;
   v33.size.height = v10;
-  [v13 suggestedSizeForContentWidth:v11 withSettings:CGRectGetWidth(v33)];
+  [v13 suggestedSizeForContentWidth:mEMORY[0x277D26708] withSettings:CGRectGetWidth(v33)];
   v15 = v14;
   v17 = v16;
   v34.origin.x = v4;
@@ -457,7 +457,7 @@
   v37.size.width = v15;
   v37.size.height = v17;
   CGRectGetHeight(v37);
-  [v11 edgeSpacing];
+  [mEMORY[0x277D26708] edgeSpacing];
   SBScreenScale();
   BSRectRoundForScale();
   v21 = v20;
@@ -478,46 +478,46 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(SBHomeScreenViewController *)self allowedInterfaceOrientations];
+  allowedInterfaceOrientations = [(SBHomeScreenViewController *)self allowedInterfaceOrientations];
   if (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleHomeScreen"))
   {
-    v5 = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
-    if (([v5 hasAnimatingFolder] & 1) != 0 || objc_msgSend(v5, "isIconDragging") && !-[SBHomeScreenViewController homeScreenAutorotatesEvenWhenIconIsDragging](self, "homeScreenAutorotatesEvenWhenIconIsDragging") || objc_msgSend(v5, "isTransitioningHomeScreenState"))
+    iconManager = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
+    if (([iconManager hasAnimatingFolder] & 1) != 0 || objc_msgSend(iconManager, "isIconDragging") && !-[SBHomeScreenViewController homeScreenAutorotatesEvenWhenIconIsDragging](self, "homeScreenAutorotatesEvenWhenIconIsDragging") || objc_msgSend(iconManager, "isTransitioningHomeScreenState"))
     {
-      v6 = [(SBHomeScreenViewController *)self view];
-      v7 = [v6 window];
+      view = [(SBHomeScreenViewController *)self view];
+      window = [view window];
 
-      [v7 interfaceOrientation];
-      v3 = XBInterfaceOrientationMaskForInterfaceOrientation();
+      [window interfaceOrientation];
+      allowedInterfaceOrientations = XBInterfaceOrientationMaskForInterfaceOrientation();
     }
   }
 
-  return v3;
+  return allowedInterfaceOrientations;
 }
 
 - (void)setNeedsStatusBarAppearanceUpdate
 {
-  v6 = [(SBHomeScreenViewController *)a1 windowScene];
-  v7 = [v6 statusBarManager];
-  v8 = [v7 assertionManager];
-  *a3 = v8;
+  windowScene = [(SBHomeScreenViewController *)self windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  assertionManager = [statusBarManager assertionManager];
+  *a3 = assertionManager;
 
-  v9 = [v8 newSettingsAssertionWithSettings:a2 atLevel:0 reason:@"Homescreen Child/Presented VC"];
-  v10 = *(a1 + 1008);
-  *(a1 + 1008) = v9;
+  v9 = [assertionManager newSettingsAssertionWithSettings:a2 atLevel:0 reason:@"Homescreen Child/Presented VC"];
+  v10 = *(self + 1008);
+  *(self + 1008) = v9;
 
-  v11 = *(a1 + 1008);
-  v12 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-  [v11 acquireWithAnimationParameters:v12];
+  v11 = *(self + 1008);
+  initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+  [v11 acquireWithAnimationParameters:initWithDefaultParameters];
 }
 
-- (SBHomeScreenViewController)initWithWindowScene:(id)a3 contextProvider:(id)a4 iconManager:(id)a5 appearanceController:(id)a6
+- (SBHomeScreenViewController)initWithWindowScene:(id)scene contextProvider:(id)provider iconManager:(id)manager appearanceController:(id)controller
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  sceneCopy = scene;
+  providerCopy = provider;
+  managerCopy = manager;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     [SBHomeScreenViewController initWithWindowScene:contextProvider:iconManager:appearanceController:];
   }
@@ -528,17 +528,17 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_windowScene, v10);
-    objc_storeWeak(&v15->_appearanceController, v13);
-    objc_storeWeak(&v15->_contextProvider, v11);
-    objc_storeWeak(&v15->_iconManager, v12);
-    [v11 addFloatingDockControllerObserver:v15];
+    objc_storeWeak(&v14->_windowScene, sceneCopy);
+    objc_storeWeak(&v15->_appearanceController, controllerCopy);
+    objc_storeWeak(&v15->_contextProvider, providerCopy);
+    objc_storeWeak(&v15->_iconManager, managerCopy);
+    [providerCopy addFloatingDockControllerObserver:v15];
     v16 = -[SBIconContentView initWithOrientation:]([SBIconContentView alloc], "initWithOrientation:", [SBApp activeInterfaceOrientation]);
     [(SBIconContentView *)v16 setAccessibilityIdentifier:@"Home screen icons"];
     [(SBIconContentView *)v16 _setIgnoreBackdropViewsWhenHiding:1];
     objc_storeWeak(&v15->_iconContentView, v16);
     [(SBHomeScreenViewController *)v15 setIconContentHidden:1];
-    if (SBHFeatureEnabled() && [v10 isMainDisplayWindowScene])
+    if (SBHFeatureEnabled() && [sceneCopy isMainDisplayWindowScene])
     {
       v17 = objc_alloc(MEMORY[0x277D662B0]);
       [(SBIconContentView *)v16 bounds];
@@ -547,17 +547,17 @@
       v15->_iconEffectView = v18;
       v20 = v18;
 
-      v21 = [(SBHVisibleContentPresenter *)v20 globalSheenEffect];
-      v22 = [(SBHomeScreenViewController *)v15 traitOverrides];
+      globalSheenEffect = [(SBHVisibleContentPresenter *)v20 globalSheenEffect];
+      traitOverrides = [(SBHomeScreenViewController *)v15 traitOverrides];
       v23 = objc_opt_self();
 
-      [v22 setObject:v21 forTrait:v23];
+      [traitOverrides setObject:globalSheenEffect forTrait:v23];
     }
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v15 selector:sel__dismissAllIconForceTouchControllersDidFire_ name:*MEMORY[0x277D66598] object:0];
-    [v24 addObserver:v15 selector:sel__floatingDockFrameDidChange_ name:@"SBFloatingDockControllerFrameDidChangeNotification" object:0];
-    [v24 addObserver:v15 selector:sel__iconEditingDidChange_ name:*MEMORY[0x277D66560] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__dismissAllIconForceTouchControllersDidFire_ name:*MEMORY[0x277D66598] object:0];
+    [defaultCenter addObserver:v15 selector:sel__floatingDockFrameDidChange_ name:@"SBFloatingDockControllerFrameDidChangeNotification" object:0];
+    [defaultCenter addObserver:v15 selector:sel__iconEditingDidChange_ name:*MEMORY[0x277D66560] object:0];
     v25 = +[SBHomeScreenReturnToSpotlightPolicy areSpotlightBreadcrumbsEnabled];
     if (v25)
     {
@@ -574,8 +574,8 @@
     {
     }
 
-    v27 = [v10 assistantController];
-    [v27 addObserver:v15];
+    assistantController = [sceneCopy assistantController];
+    [assistantController addObserver:v15];
 
     v15->_homeAffordanceInteractionAllowed = 1;
   }
@@ -594,114 +594,114 @@
 {
   if (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleHomeScreen"))
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(homeScreenRotationStyleWantsUIKitRotation) = 1;
   }
 
   else
   {
-    v3 = [SBApp homeScreenRotationStyleWantsUIKitRotation];
-    if (v3)
+    homeScreenRotationStyleWantsUIKitRotation = [SBApp homeScreenRotationStyleWantsUIKitRotation];
+    if (homeScreenRotationStyleWantsUIKitRotation)
     {
       [(SBHomeScreenViewController *)&self->super.super.super.isa shouldAutorotate];
-      LOBYTE(v3) = v5;
+      LOBYTE(homeScreenRotationStyleWantsUIKitRotation) = v5;
     }
   }
 
-  return v3;
+  return homeScreenRotationStyleWantsUIKitRotation;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SBHomeScreenViewController;
   [(SBHomeScreenViewController *)&v6 viewWillAppear:?];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__appIconForceTouchControllerWillPresentNotification_ name:*MEMORY[0x277D66720] object:0];
-  [v5 addObserver:self selector:sel__appIconForceTouchControllerDidDismissNotification_ name:*MEMORY[0x277D66718] object:0];
-  [(SBHomeScreenViewController *)self _beginAppearanceTransitionForChildViewControllersToVisible:1 animated:v3];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__appIconForceTouchControllerWillPresentNotification_ name:*MEMORY[0x277D66720] object:0];
+  [defaultCenter addObserver:self selector:sel__appIconForceTouchControllerDidDismissNotification_ name:*MEMORY[0x277D66718] object:0];
+  [(SBHomeScreenViewController *)self _beginAppearanceTransitionForChildViewControllersToVisible:1 animated:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = SBHomeScreenViewController;
   [(SBHomeScreenViewController *)&v5 viewWillDisappear:?];
-  [(SBHomeScreenViewController *)self _beginAppearanceTransitionForChildViewControllersToVisible:0 animated:v3];
+  [(SBHomeScreenViewController *)self _beginAppearanceTransitionForChildViewControllersToVisible:0 animated:disappearCopy];
   [(SBHomeScreenViewController *)self resignFirstResponder];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenViewController;
-  [(SBHomeScreenViewController *)&v4 viewDidDisappear:a3];
+  [(SBHomeScreenViewController *)&v4 viewDidDisappear:disappear];
   [(SBHomeScreenViewController *)self _widgetEditViewDidDisappearImplementation];
   [(SBHomeScreenViewController *)self _endAppearanceTransitionForChildViewControllersToVisible:0];
 }
 
 - (_UILegibilitySettings)legibilitySettings
 {
-  v2 = [(SBHomeScreenViewController *)self _homeScreenView];
-  v3 = [v2 statusBarLegibilityView];
-  v4 = [v3 legibilitySettings];
+  _homeScreenView = [(SBHomeScreenViewController *)self _homeScreenView];
+  statusBarLegibilityView = [_homeScreenView statusBarLegibilityView];
+  legibilitySettings = [statusBarLegibilityView legibilitySettings];
 
-  return v4;
+  return legibilitySettings;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v4 = a3;
-  v6 = [(SBHomeScreenViewController *)self _homeScreenView];
-  v5 = [v6 statusBarLegibilityView];
-  [v5 setLegibilitySettings:v4];
+  settingsCopy = settings;
+  _homeScreenView = [(SBHomeScreenViewController *)self _homeScreenView];
+  statusBarLegibilityView = [_homeScreenView statusBarLegibilityView];
+  [statusBarLegibilityView setLegibilitySettings:settingsCopy];
 }
 
-- (void)setIconContentHidden:(BOOL)a3
+- (void)setIconContentHidden:(BOOL)hidden
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_iconContentHidden != a3)
+  if (self->_iconContentHidden != hidden)
   {
-    v3 = a3;
-    self->_iconContentHidden = a3;
-    v5 = [(SBHomeScreenViewController *)self _homeScreenView];
-    v6 = [(SBHomeScreenViewController *)self iconContentView];
-    if (([v6 isDescendantOfView:v5] & 1) == 0)
+    hiddenCopy = hidden;
+    self->_iconContentHidden = hidden;
+    _homeScreenView = [(SBHomeScreenViewController *)self _homeScreenView];
+    iconContentView = [(SBHomeScreenViewController *)self iconContentView];
+    if (([iconContentView isDescendantOfView:_homeScreenView] & 1) == 0)
     {
-      [v5 setIconContentView:v6];
+      [_homeScreenView setIconContentView:iconContentView];
     }
 
-    v7 = !v3;
+    v7 = !hiddenCopy;
     [(SBHomeScreenViewController *)self _beginAppearanceTransitionForChildViewControllersToVisible:v7 animated:0];
     if (v7)
     {
-      v9 = [v5 statusBarLegibilityView];
-      [v5 insertSubview:v6 aboveSubview:v9];
+      statusBarLegibilityView = [_homeScreenView statusBarLegibilityView];
+      [_homeScreenView insertSubview:iconContentView aboveSubview:statusBarLegibilityView];
 
-      [v6 setHidden:0];
+      [iconContentView setHidden:0];
       [(SBHomeScreenViewController *)self _updateIconContentViewOrientationAndLayoutIfNeeded];
-      [v6 layoutIfNeeded];
+      [iconContentView layoutIfNeeded];
       [(SBHomeScreenViewController *)self _endAppearanceTransitionForChildViewControllersToVisible:v7];
-      v10 = [v6 window];
-      v11 = [v10 interfaceOrientation];
-      v12 = [(SBHomeScreenViewController *)self interfaceOrientation];
-      if (v11)
+      window = [iconContentView window];
+      interfaceOrientation = [window interfaceOrientation];
+      interfaceOrientation2 = [(SBHomeScreenViewController *)self interfaceOrientation];
+      if (interfaceOrientation)
       {
-        v13 = v12;
-        if (v12 != v11)
+        v13 = interfaceOrientation2;
+        if (interfaceOrientation2 != interfaceOrientation)
         {
           v14 = BKLogOrientationGlobal();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             v15 = 134218240;
-            v16 = v11;
+            v16 = interfaceOrientation;
             v17 = 2048;
             v18 = v13;
             _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Home screen orientation did not match between window and view controller (%li vs %li)", &v15, 0x16u);
           }
 
-          [(SBHomeScreenViewController *)self setInterfaceOrientation:v11];
+          [(SBHomeScreenViewController *)self setInterfaceOrientation:interfaceOrientation];
           [(SBHomeScreenViewController *)self _updateIconContentViewOrientationAndLayoutIfNeeded];
         }
       }
@@ -709,43 +709,43 @@
 
     else
     {
-      [v6 setHidden:1];
-      v8 = [v6 firstResponder];
-      [v8 resignFirstResponder];
+      [iconContentView setHidden:1];
+      firstResponder = [iconContentView firstResponder];
+      [firstResponder resignFirstResponder];
 
       [(SBHomeScreenViewController *)self _endAppearanceTransitionForChildViewControllersToVisible:v7];
     }
 
-    [v5 setNeedsLayout];
-    [v5 layoutIfNeeded];
+    [_homeScreenView setNeedsLayout];
+    [_homeScreenView layoutIfNeeded];
   }
 }
 
 - (BOOL)usesGlassGroup
 {
-  v2 = [(SBHomeScreenViewController *)self _homeScreenView];
-  v3 = [v2 usesGlassGroup];
+  _homeScreenView = [(SBHomeScreenViewController *)self _homeScreenView];
+  usesGlassGroup = [_homeScreenView usesGlassGroup];
 
-  return v3;
+  return usesGlassGroup;
 }
 
-- (void)setUsesGlassGroup:(BOOL)a3
+- (void)setUsesGlassGroup:(BOOL)group
 {
-  v3 = a3;
-  v4 = [(SBHomeScreenViewController *)self _homeScreenView];
-  [v4 setUsesGlassGroup:v3];
+  groupCopy = group;
+  _homeScreenView = [(SBHomeScreenViewController *)self _homeScreenView];
+  [_homeScreenView setUsesGlassGroup:groupCopy];
 }
 
 - (id)_autorotationPreventionReasons
 {
   if (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleHomeScreen"))
   {
-    v3 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([SBApp homeScreenRotationStyleWantsUIKitRotation])
     {
       [SBHomeScreenViewController _autorotationPreventionReasons];
@@ -753,30 +753,30 @@
 
     else
     {
-      [v3 addObject:@"homeScreenRotationStyle"];
+      [array addObject:@"homeScreenRotationStyle"];
     }
 
-    v4 = [v3 count];
+    v4 = [array count];
     if ([(SBHomeScreenViewController *)self shouldAutorotate]!= (v4 == 0))
     {
       [SBHomeScreenViewController _autorotationPreventionReasons];
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (void)_beginAppearanceTransitionForChildViewControllersToVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_beginAppearanceTransitionForChildViewControllersToVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v17 = a3;
-  v18 = a4;
+  visibleCopy = visible;
+  animatedCopy = animated;
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(SBHomeScreenViewController *)self childViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  childViewControllers = [(SBHomeScreenViewController *)self childViewControllers];
+  v6 = [childViewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -788,54 +788,54 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v10 = *(*(&v19 + 1) + 8 * v9);
-        v11 = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
-        v12 = [(UIViewController *)self _sbWindowScene];
-        v13 = [v11 libraryViewControllerForWindowScene:v12];
+        contextProvider = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
+        _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+        v13 = [contextProvider libraryViewControllerForWindowScene:_sbWindowScene];
 
-        v14 = [v11 homeScreenOverlayController];
-        v15 = [v14 viewController];
+        homeScreenOverlayController = [contextProvider homeScreenOverlayController];
+        viewController = [homeScreenOverlayController viewController];
 
-        if (v10 != v15 && v10 != v13)
+        if (v10 != viewController && v10 != v13)
         {
-          [(SBHomeScreenViewController *)self bs_beginAppearanceTransitionForChildViewController:v10 toVisible:v17 animated:v18];
+          [(SBHomeScreenViewController *)self bs_beginAppearanceTransitionForChildViewController:v10 toVisible:visibleCopy animated:animatedCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [childViewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setHomeAffordanceInteractionAllowed:(BOOL)a3
+- (void)setHomeAffordanceInteractionAllowed:(BOOL)allowed
 {
-  if (self->_homeAffordanceInteractionAllowed != a3)
+  if (self->_homeAffordanceInteractionAllowed != allowed)
   {
-    self->_homeAffordanceInteractionAllowed = a3;
+    self->_homeAffordanceInteractionAllowed = allowed;
     [(SBHomeScreenViewController *)self _updateHomeAffordanceInteraction];
   }
 }
 
-- (void)_animateTransitionToSize:(CGSize)a3 andInterfaceOrientation:(int64_t)a4 withTransitionContext:(id)a5
+- (void)_animateTransitionToSize:(CGSize)size andInterfaceOrientation:(int64_t)orientation withTransitionContext:(id)context
 {
-  [a5 transitionDuration];
+  [context transitionDuration];
   v7 = v6;
   v8 = +[SBWallpaperController sharedInstance];
-  [v8 orientationSource:2 willAnimateRotationToInterfaceOrientation:a4 duration:v7];
+  [v8 orientationSource:2 willAnimateRotationToInterfaceOrientation:orientation duration:v7];
 }
 
-- (void)_cleanupAfterTransitionToSize:(CGSize)a3 fromInterfaceOrientation:(int64_t)a4 withTransitionContext:(id)a5
+- (void)_cleanupAfterTransitionToSize:(CGSize)size fromInterfaceOrientation:(int64_t)orientation withTransitionContext:(id)context
 {
-  v6 = [SBWallpaperController sharedInstance:a4];
-  [v6 orientationSource:2 didRotateFromInterfaceOrientation:a4];
+  v6 = [SBWallpaperController sharedInstance:orientation];
+  [v6 orientationSource:2 didRotateFromInterfaceOrientation:orientation];
 
   [SBApp resetIdleTimerAndUndim];
   v7 = +[SBReachabilityManager sharedInstance];
@@ -846,25 +846,25 @@
   [v8 noteHomeScreenLayoutDidChange];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = SBFWindowForViewControllerTransition();
-  v9 = [v8 _toWindowOrientation];
-  v10 = [v8 _fromWindowOrientation];
-  if (([(SBHomeScreenViewController *)self supportedInterfaceOrientations]& (1 << v9)) != 0)
+  _toWindowOrientation = [v8 _toWindowOrientation];
+  _fromWindowOrientation = [v8 _fromWindowOrientation];
+  if (([(SBHomeScreenViewController *)self supportedInterfaceOrientations]& (1 << _toWindowOrientation)) != 0)
   {
     self->_rotating = 1;
-    v11 = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
-    [v11 dismissAppIconForceTouchControllers:0];
-    v12 = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
-    v13 = [v12 iconShareSheetManager];
-    [v13 hideIconShareSheetsIfAnyForRotationAnimation];
-    [v11 dismissHomeScreenOverlayUsingTransitionCoordinator:v7];
-    [v12 dismissModalInteractions];
-    [(SBHomeScreenViewController *)self _prepareForTransitionToSize:v9 andInterfaceOrientation:v7 withTransitionCoordinator:width, height];
+    contextProvider = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
+    [contextProvider dismissAppIconForceTouchControllers:0];
+    iconManager = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
+    iconShareSheetManager = [iconManager iconShareSheetManager];
+    [iconShareSheetManager hideIconShareSheetsIfAnyForRotationAnimation];
+    [contextProvider dismissHomeScreenOverlayUsingTransitionCoordinator:coordinatorCopy];
+    [iconManager dismissModalInteractions];
+    [(SBHomeScreenViewController *)self _prepareForTransitionToSize:_toWindowOrientation andInterfaceOrientation:coordinatorCopy withTransitionCoordinator:width, height];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __81__SBHomeScreenViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
@@ -872,7 +872,7 @@
     v16[4] = self;
     *&v16[5] = width;
     *&v16[6] = height;
-    v16[7] = v9;
+    v16[7] = _toWindowOrientation;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __81__SBHomeScreenViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
@@ -880,11 +880,11 @@
     v15[4] = self;
     *&v15[5] = width;
     *&v15[6] = height;
-    v15[7] = v10;
-    [v7 animateAlongsideTransition:v16 completion:v15];
+    v15[7] = _fromWindowOrientation;
+    [coordinatorCopy animateAlongsideTransition:v16 completion:v15];
     v14.receiver = self;
     v14.super_class = SBHomeScreenViewController;
-    [(SBHomeScreenViewController *)&v14 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(SBHomeScreenViewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   }
 }
 
@@ -902,30 +902,30 @@ uint64_t __81__SBHomeScreenViewController_viewWillTransitionToSize_withTransitio
   return result;
 }
 
-- (void)nudgeIconInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)nudgeIconInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleHomeScreen") & 1) == 0)
   {
-    v7 = [(SBHomeScreenViewController *)self view];
-    v9 = [v7 window];
+    view = [(SBHomeScreenViewController *)self view];
+    window = [view window];
 
     if ([SBApp homeScreenRotationStyleWantsUIKitRotation])
     {
-      v8 = [(SBHomeScreenViewController *)self isViewLoaded];
-      if ((a3 - 1) <= 3 && v8 && [v9 _windowInterfaceOrientation] != a3)
+      isViewLoaded = [(SBHomeScreenViewController *)self isViewLoaded];
+      if ((orientation - 1) <= 3 && isViewLoaded && [window _windowInterfaceOrientation] != orientation)
       {
-        [v9 _legacySetRotatableViewOrientation:a3 updateStatusBar:1 duration:0 force:a4];
+        [window _legacySetRotatableViewOrientation:orientation updateStatusBar:1 duration:0 force:duration];
       }
     }
   }
 }
 
-- (void)setAllowIconRotation:(BOOL)a3 forReason:(id)a4
+- (void)setAllowIconRotation:(BOOL)rotation forReason:(id)reason
 {
-  v4 = a3;
+  rotationCopy = rotation;
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBHomeScreenViewController setAllowIconRotation:forReason:];
   }
@@ -934,14 +934,14 @@ uint64_t __81__SBHomeScreenViewController_viewWillTransitionToSize_withTransitio
   {
     v7 = [(NSMutableSet *)self->_iconRotationPreventionReasons count];
     iconRotationPreventionReasons = self->_iconRotationPreventionReasons;
-    if (v4)
+    if (rotationCopy)
     {
-      if (![(NSMutableSet *)iconRotationPreventionReasons containsObject:v6])
+      if (![(NSMutableSet *)iconRotationPreventionReasons containsObject:reasonCopy])
       {
         goto LABEL_15;
       }
 
-      [(NSMutableSet *)self->_iconRotationPreventionReasons removeObject:v6];
+      [(NSMutableSet *)self->_iconRotationPreventionReasons removeObject:reasonCopy];
       v9 = BKLogOrientationGlobal();
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -974,13 +974,13 @@ LABEL_15:
 
           if (SBWorkspaceSpringBoardIsActive())
           {
-            v17 = [(SBHomeScreenViewController *)self view];
-            v18 = [v17 window];
+            view = [(SBHomeScreenViewController *)self view];
+            window = [view window];
 
             v19 = [SBApp interfaceOrientationForCurrentDeviceOrientation:0];
-            v20 = [v18 _windowInterfaceOrientation];
-            v21 = [SBApp activeInterfaceOrientation];
-            v23 = v19 == v20 && v20 == v21;
+            _windowInterfaceOrientation = [window _windowInterfaceOrientation];
+            activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
+            v23 = v19 == _windowInterfaceOrientation && _windowInterfaceOrientation == activeInterfaceOrientation;
             if (!v19 || v23)
             {
               v29 = BKLogOrientationGlobal();
@@ -990,18 +990,18 @@ LABEL_15:
                 _os_log_impl(&dword_21ED4E000, v29, OS_LOG_TYPE_DEFAULT, "Nudging home screen window orientation because icon rotation changed.", v32, 2u);
               }
 
-              [v18 sb_updateInterfaceOrientationFromActiveInterfaceOrientation:v15];
+              [window sb_updateInterfaceOrientationFromActiveInterfaceOrientation:v15];
             }
 
             else
             {
-              [v18 _windowInterfaceOrientation];
+              [window _windowInterfaceOrientation];
               v24 = BSInterfaceOrientationDescription();
               v25 = BSInterfaceOrientationDescription();
-              v26 = [(SBHomeScreenViewController *)self shouldAutorotate];
+              shouldAutorotate = [(SBHomeScreenViewController *)self shouldAutorotate];
               v27 = BKLogOrientationGlobal();
               v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
-              if (v26)
+              if (shouldAutorotate)
               {
                 if (v28)
                 {
@@ -1019,8 +1019,8 @@ LABEL_15:
               {
                 if (v28)
                 {
-                  v30 = [(SBHomeScreenViewController *)self _autorotationPreventionReasons];
-                  v31 = [v30 componentsJoinedByString:{@", "}];
+                  _autorotationPreventionReasons = [(SBHomeScreenViewController *)self _autorotationPreventionReasons];
+                  v31 = [_autorotationPreventionReasons componentsJoinedByString:{@", "}];
                   *v32 = 138543874;
                   *&v32[4] = v24;
                   *&v32[12] = 2114;
@@ -1040,7 +1040,7 @@ LABEL_15:
       }
 
       *v32 = 138543362;
-      *&v32[4] = v6;
+      *&v32[4] = reasonCopy;
       v10 = "Enabling home screen icon rotation for reason: %{public}@";
     }
 
@@ -1055,12 +1055,12 @@ LABEL_15:
         iconRotationPreventionReasons = self->_iconRotationPreventionReasons;
       }
 
-      if (([(NSMutableSet *)iconRotationPreventionReasons containsObject:v6]& 1) != 0)
+      if (([(NSMutableSet *)iconRotationPreventionReasons containsObject:reasonCopy]& 1) != 0)
       {
         goto LABEL_15;
       }
 
-      [(NSMutableSet *)self->_iconRotationPreventionReasons addObject:v6];
+      [(NSMutableSet *)self->_iconRotationPreventionReasons addObject:reasonCopy];
       v9 = BKLogOrientationGlobal();
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -1068,7 +1068,7 @@ LABEL_15:
       }
 
       *v32 = 138543362;
-      *&v32[4] = v6;
+      *&v32[4] = reasonCopy;
       v10 = "Disabling home screen icon rotation for reason: %{public}@";
     }
 
@@ -1079,42 +1079,42 @@ LABEL_15:
 LABEL_45:
 }
 
-- (void)_appIconForceTouchControllerWillPresentNotification:(id)a3
+- (void)_appIconForceTouchControllerWillPresentNotification:(id)notification
 {
-  v4 = [a3 object];
-  [(SBHomeScreenViewController *)self _acquireForceTouchOrientationUpdateDeferralAssertionForIconView:v4];
-  [(SBHomeScreenViewController *)self _acquireForceTouchWindowLevelAssertionForIconView:v4];
+  object = [notification object];
+  [(SBHomeScreenViewController *)self _acquireForceTouchOrientationUpdateDeferralAssertionForIconView:object];
+  [(SBHomeScreenViewController *)self _acquireForceTouchWindowLevelAssertionForIconView:object];
 }
 
-- (void)_appIconForceTouchControllerDidDismissNotification:(id)a3
+- (void)_appIconForceTouchControllerDidDismissNotification:(id)notification
 {
-  v4 = [a3 object];
-  [(SBHomeScreenViewController *)self _relinquishForceTouchOrientationUpdateDeferralAssertionForIconView:v4];
-  [(SBHomeScreenViewController *)self _relinquishForceTouchWindowLevelAssertionForIconView:v4];
+  object = [notification object];
+  [(SBHomeScreenViewController *)self _relinquishForceTouchOrientationUpdateDeferralAssertionForIconView:object];
+  [(SBHomeScreenViewController *)self _relinquishForceTouchWindowLevelAssertionForIconView:object];
 }
 
-- (void)_acquireForceTouchOrientationUpdateDeferralAssertionForIconView:(id)a3
+- (void)_acquireForceTouchOrientationUpdateDeferralAssertionForIconView:(id)view
 {
-  v4 = a3;
-  v11 = v4;
-  if (!v4)
+  viewCopy = view;
+  v11 = viewCopy;
+  if (!viewCopy)
   {
     [SBHomeScreenViewController _acquireForceTouchOrientationUpdateDeferralAssertionForIconView:];
-    v4 = 0;
+    viewCopy = 0;
   }
 
   appIconForceTouchControllerOrientationUpdateDeferralAssertions = self->_appIconForceTouchControllerOrientationUpdateDeferralAssertions;
   if (!appIconForceTouchControllerOrientationUpdateDeferralAssertions)
   {
-    v6 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v7 = self->_appIconForceTouchControllerOrientationUpdateDeferralAssertions;
-    self->_appIconForceTouchControllerOrientationUpdateDeferralAssertions = v6;
+    self->_appIconForceTouchControllerOrientationUpdateDeferralAssertions = weakToStrongObjectsMapTable;
 
-    v4 = v11;
+    viewCopy = v11;
     appIconForceTouchControllerOrientationUpdateDeferralAssertions = self->_appIconForceTouchControllerOrientationUpdateDeferralAssertions;
   }
 
-  v8 = [(NSMapTable *)appIconForceTouchControllerOrientationUpdateDeferralAssertions objectForKey:v4];
+  v8 = [(NSMapTable *)appIconForceTouchControllerOrientationUpdateDeferralAssertions objectForKey:viewCopy];
   if (!v8)
   {
     v9 = SBApp;
@@ -1125,35 +1125,35 @@ LABEL_45:
   }
 }
 
-- (void)_relinquishForceTouchOrientationUpdateDeferralAssertionForIconView:(id)a3
+- (void)_relinquishForceTouchOrientationUpdateDeferralAssertionForIconView:(id)view
 {
-  v4 = a3;
-  v6 = v4;
-  if (!v4)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (!viewCopy)
   {
     [SBHomeScreenViewController _relinquishForceTouchOrientationUpdateDeferralAssertionForIconView:];
-    v4 = 0;
+    viewCopy = 0;
   }
 
-  v5 = [(NSMapTable *)self->_appIconForceTouchControllerOrientationUpdateDeferralAssertions objectForKey:v4];
+  v5 = [(NSMapTable *)self->_appIconForceTouchControllerOrientationUpdateDeferralAssertions objectForKey:viewCopy];
   [v5 invalidate];
   [(NSMapTable *)self->_appIconForceTouchControllerOrientationUpdateDeferralAssertions removeObjectForKey:v6];
 }
 
-- (void)_acquireForceTouchWindowLevelAssertionForIconView:(id)a3
+- (void)_acquireForceTouchWindowLevelAssertionForIconView:(id)view
 {
-  v17 = a3;
-  if (!v17)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [SBHomeScreenViewController _acquireForceTouchWindowLevelAssertionForIconView:];
   }
 
   if (+[SBFloatingDockController isFloatingDockSupported])
   {
-    v5 = [(NSMapTable *)self->_appIconForceTouchControllerWindowLevelAssertions objectForKey:v17];
+    v5 = [(NSMapTable *)self->_appIconForceTouchControllerWindowLevelAssertions objectForKey:viewCopy];
     if (!v5)
     {
-      v6 = [v17 window];
+      window = [viewCopy window];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1162,60 +1162,60 @@ LABEL_45:
         {
           if (!self->_appIconForceTouchControllerWindowLevelAssertions)
           {
-            v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+            weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
             appIconForceTouchControllerWindowLevelAssertions = self->_appIconForceTouchControllerWindowLevelAssertions;
-            self->_appIconForceTouchControllerWindowLevelAssertions = v7;
+            self->_appIconForceTouchControllerWindowLevelAssertions = weakToStrongObjectsMapTable;
           }
 
-          v9 = [v17 window];
-          [v9 windowLevel];
+          window2 = [viewCopy window];
+          [window2 windowLevel];
           v11 = v10 + -1.0;
 
-          v12 = [v17 _sbWindowScene];
-          v13 = [v12 floatingDockController];
+          _sbWindowScene = [viewCopy _sbWindowScene];
+          floatingDockController = [_sbWindowScene floatingDockController];
           v14 = [SBFloatingDockWindowLevelAssertion alloc];
           v15 = NSStringFromSelector(a2);
-          v16 = [(SBFloatingDockWindowLevelAssertion *)v14 initWithFloatingDockController:v13 priority:2 level:v15 reason:v11];
+          v16 = [(SBFloatingDockWindowLevelAssertion *)v14 initWithFloatingDockController:floatingDockController priority:2 level:v15 reason:v11];
 
-          [(NSMapTable *)self->_appIconForceTouchControllerWindowLevelAssertions setObject:v16 forKey:v17];
+          [(NSMapTable *)self->_appIconForceTouchControllerWindowLevelAssertions setObject:v16 forKey:viewCopy];
         }
       }
     }
   }
 }
 
-- (void)_relinquishForceTouchWindowLevelAssertionForIconView:(id)a3
+- (void)_relinquishForceTouchWindowLevelAssertionForIconView:(id)view
 {
-  v5 = a3;
-  if (!v5)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [SBHomeScreenViewController _relinquishForceTouchWindowLevelAssertionForIconView:];
   }
 
   if (+[SBFloatingDockController isFloatingDockSupported])
   {
-    v4 = [(NSMapTable *)self->_appIconForceTouchControllerWindowLevelAssertions objectForKey:v5];
+    v4 = [(NSMapTable *)self->_appIconForceTouchControllerWindowLevelAssertions objectForKey:viewCopy];
     [v4 invalidate];
-    [(NSMapTable *)self->_appIconForceTouchControllerWindowLevelAssertions removeObjectForKey:v5];
+    [(NSMapTable *)self->_appIconForceTouchControllerWindowLevelAssertions removeObjectForKey:viewCopy];
   }
 }
 
-- (void)_dismissAllIconForceTouchControllersDidFire:(id)a3
+- (void)_dismissAllIconForceTouchControllersDidFire:(id)fire
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = [(NSMapTable *)self->_appIconForceTouchControllerOrientationUpdateDeferralAssertions copy];
   v5 = [(NSMapTable *)self->_appIconForceTouchControllerWindowLevelAssertions copy];
   v6 = [MEMORY[0x277CBEB58] set];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [v4 keyEnumerator];
-  v9 = [v8 allObjects];
-  v10 = [v7 setWithArray:v9];
+  keyEnumerator = [v4 keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v10 = [v7 setWithArray:allObjects];
   [v6 unionSet:v10];
 
   v11 = MEMORY[0x277CBEB98];
-  v12 = [v5 keyEnumerator];
-  v13 = [v12 allObjects];
-  v14 = [v11 setWithArray:v13];
+  keyEnumerator2 = [v5 keyEnumerator];
+  allObjects2 = [keyEnumerator2 allObjects];
+  v14 = [v11 setWithArray:allObjects2];
   [v6 unionSet:v14];
 
   if ([v6 count])
@@ -1261,21 +1261,21 @@ LABEL_45:
   }
 }
 
-- (void)_floatingDockFrameDidChange:(id)a3
+- (void)_floatingDockFrameDidChange:(id)change
 {
-  v3 = [(SBHomeScreenViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(SBHomeScreenViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[(SBWorkspace *)SBMainWorkspace];
-  v6 = [v5 currentTransaction];
+  currentTransaction = [v5 currentTransaction];
 
-  v7 = [v6 transitionRequest];
+  transitionRequest = [currentTransaction transitionRequest];
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = transitionRequest;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -1296,8 +1296,8 @@ LABEL_45:
 
   v11 = v10;
 
-  v12 = [v11 source];
-  v13 = [(SBHomeScreenReturnToSpotlightPolicy *)self->_returnToSpotlightPolicy homeScreenZStackParticipantDidChange:v4 launchingForSpotlight:v12 == 2];
+  source = [v11 source];
+  v13 = [(SBHomeScreenReturnToSpotlightPolicy *)self->_returnToSpotlightPolicy homeScreenZStackParticipantDidChange:changeCopy launchingForSpotlight:source == 2];
 
   if (v13 == 1)
   {
@@ -1318,12 +1318,12 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
 
 - (void)dealloc
 {
-  v3 = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
-  v4 = [v3 assistantController];
-  [v4 removeObserver:self];
+  windowScene = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
+  assistantController = [windowScene assistantController];
+  [assistantController removeObserver:self];
 
-  v5 = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
-  [v5 removeFloatingDockControllerObserver:self];
+  contextProvider = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
+  [contextProvider removeFloatingDockControllerObserver:self];
   if (self)
   {
     homeScreenFloatingDockAssertion = self->_homeScreenFloatingDockAssertion;
@@ -1337,8 +1337,8 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
   v7 = homeScreenFloatingDockAssertion;
   [(SBFloatingDockBehaviorAssertion *)v7 invalidate];
   [(SBHomeScreenViewController *)self setHomeScreenFloatingDockAssertion:?];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v9.receiver = self;
   v9.super_class = SBHomeScreenViewController;
@@ -1355,11 +1355,11 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
   return result;
 }
 
-- (void)setHomeScreenFloatingDockAssertion:(uint64_t)a1
+- (void)setHomeScreenFloatingDockAssertion:(uint64_t)assertion
 {
-  if (a1)
+  if (assertion)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 1120);
+    OUTLINED_FUNCTION_0_18(assertion, a2, 1120);
   }
 }
 
@@ -1374,24 +1374,24 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
   return WeakRetained;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = SBHomeScreenViewController;
-  [(SBHomeScreenViewController *)&v11 viewDidAppear:a3];
-  v4 = [(SBHomeScreenViewController *)self view];
-  v5 = [v4 window];
-  [v5 _sb_recursiveUpdateContentOverlayInsetsFromParentIfNecessary];
+  [(SBHomeScreenViewController *)&v11 viewDidAppear:appear];
+  view = [(SBHomeScreenViewController *)self view];
+  window = [view window];
+  [window _sb_recursiveUpdateContentOverlayInsetsFromParentIfNecessary];
 
-  v6 = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
-  v7 = [v6 statusBarManager];
-  v8 = [v7 layoutManager];
-  [v8 addActiveLayoutLayer:0];
+  windowScene = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  layoutManager = [statusBarManager layoutManager];
+  [layoutManager addActiveLayoutLayer:0];
 
   if (!self || (v9 = self->_zStackParticipant) == 0)
   {
-    v10 = [v6 zStackResolver];
-    v9 = [v10 acquireParticipantWithIdentifier:0 delegate:self];
+    zStackResolver = [windowScene zStackResolver];
+    v9 = [zStackResolver acquireParticipantWithIdentifier:0 delegate:self];
     [(SBHomeScreenViewController *)self setZStackParticipant:v9];
   }
 
@@ -1410,11 +1410,11 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
   return result;
 }
 
-- (void)setZStackParticipant:(uint64_t)a1
+- (void)setZStackParticipant:(uint64_t)participant
 {
-  if (a1)
+  if (participant)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 1144);
+    OUTLINED_FUNCTION_0_18(participant, a2, 1144);
   }
 }
 
@@ -1438,32 +1438,32 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
   return result;
 }
 
-- (void)_acquireFloatingDockBehaviorAssertionIfNecessaryForFloatingDockController:(id)a3
+- (void)_acquireFloatingDockBehaviorAssertionIfNecessaryForFloatingDockController:(id)controller
 {
-  v7 = a3;
-  v4 = [v7 windowScene];
-  v5 = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
+  controllerCopy = controller;
+  windowScene = [controllerCopy windowScene];
+  windowScene2 = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
 
-  if (v5 == v4)
+  if (windowScene2 == windowScene)
   {
     if (!self || (v6 = self->_homeScreenFloatingDockAssertion) == 0)
     {
-      v6 = [[SBFloatingDockBehaviorAssertion alloc] initWithFloatingDockController:v7 visibleProgress:1 animated:0 gesturePossible:0 atLevel:@"homescreen" reason:0 withCompletion:1.0];
+      v6 = [[SBFloatingDockBehaviorAssertion alloc] initWithFloatingDockController:controllerCopy visibleProgress:1 animated:0 gesturePossible:0 atLevel:@"homescreen" reason:0 withCompletion:1.0];
       [(SBHomeScreenViewController *)self setHomeScreenFloatingDockAssertion:v6];
     }
   }
 }
 
-- (void)_endAppearanceTransitionForChildViewControllersToVisible:(BOOL)a3
+- (void)_endAppearanceTransitionForChildViewControllersToVisible:(BOOL)visible
 {
-  v17 = a3;
+  visibleCopy = visible;
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(SBHomeScreenViewController *)self childViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  childViewControllers = [(SBHomeScreenViewController *)self childViewControllers];
+  v5 = [childViewControllers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1475,37 +1475,37 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
-        v10 = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
-        v11 = [(UIViewController *)self _sbWindowScene];
-        v12 = [v10 libraryViewControllerForWindowScene:v11];
+        contextProvider = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
+        _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+        v12 = [contextProvider libraryViewControllerForWindowScene:_sbWindowScene];
 
-        v13 = [v10 homeScreenOverlayController];
-        v14 = [v13 viewController];
+        homeScreenOverlayController = [contextProvider homeScreenOverlayController];
+        viewController = [homeScreenOverlayController viewController];
 
-        if (v9 != v14 && v9 != v12)
+        if (v9 != viewController && v9 != v12)
         {
-          [(SBHomeScreenViewController *)self bs_endAppearanceTransitionForChildViewController:v9 toVisible:v17];
+          [(SBHomeScreenViewController *)self bs_endAppearanceTransitionForChildViewController:v9 toVisible:visibleCopy];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [childViewControllers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
   }
 
-  v16 = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
-  [v16 cancelAllFolderScrolling];
+  iconManager = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
+  [iconManager cancelAllFolderScrolling];
 }
 
-- (void)_performInitialLayoutWithOrientation:(int64_t)a3
+- (void)_performInitialLayoutWithOrientation:(int64_t)orientation
 {
   v12 = *MEMORY[0x277D85DE8];
   performedInitialLayout = self->_performedInitialLayout;
@@ -1514,32 +1514,32 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v10 = 134217984;
-    v11 = a3;
+    orientationCopy = orientation;
     _os_log_debug_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEBUG, "Peforming initial layout with orientation (%lu)", &v10, 0xCu);
   }
 
-  v7 = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
-  if (a3)
+  iconManager = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
+  if (orientation)
   {
-    v8 = [(SBHomeScreenViewController *)self _iconContentView];
-    [v8 setOrientation:a3];
-    [v7 noteInterfaceOrientationChanged];
+    _iconContentView = [(SBHomeScreenViewController *)self _iconContentView];
+    [_iconContentView setOrientation:orientation];
+    [iconManager noteInterfaceOrientationChanged];
   }
 
-  [v7 resetRootIconLists];
+  [iconManager resetRootIconLists];
   if (!performedInitialLayout)
   {
-    v9 = [v7 rootFolderController];
-    [v9 setCurrentPageIndex:objc_msgSend(v9 animated:{"defaultPageIndex"), 0}];
+    rootFolderController = [iconManager rootFolderController];
+    [rootFolderController setCurrentPageIndex:objc_msgSend(rootFolderController animated:{"defaultPageIndex"), 0}];
   }
 }
 
 - (void)_updateHomeAffordanceView
 {
-  v15 = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
-  v3 = [(SBHomeScreenViewController *)self view];
-  v4 = [v15 assistantController];
-  v5 = [v4 isHomeAffordanceDoubleTapGestureEnabled];
+  windowScene = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
+  view = [(SBHomeScreenViewController *)self view];
+  assistantController = [windowScene assistantController];
+  isHomeAffordanceDoubleTapGestureEnabled = [assistantController isHomeAffordanceDoubleTapGestureEnabled];
   if (self)
   {
     homeAffordanceView = self->_homeAffordanceView;
@@ -1557,7 +1557,7 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
 
   else
   {
-    v7 = v5;
+    v7 = isHomeAffordanceDoubleTapGestureEnabled;
   }
 
   if (v7 == 1)
@@ -1565,15 +1565,15 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
     v9 = objc_alloc(MEMORY[0x277D65E78]);
     v10 = [v9 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v10 setHintStyle:2];
-    [v3 addSubview:v10];
+    [view addSubview:v10];
     [(SBHomeScreenViewController *)self setHomeAffordanceView:v10];
-    v11 = [v15 homeAffordanceInteractionManager];
-    v12 = [v11 newHomeAffordanceInteraction];
-    v13 = v12;
-    if (v12)
+    homeAffordanceInteractionManager = [windowScene homeAffordanceInteractionManager];
+    newHomeAffordanceInteraction = [homeAffordanceInteractionManager newHomeAffordanceInteraction];
+    v13 = newHomeAffordanceInteraction;
+    if (newHomeAffordanceInteraction)
     {
-      [v12 setDelegate:self];
-      [v3 addInteraction:v13];
+      [newHomeAffordanceInteraction setDelegate:self];
+      [view addInteraction:v13];
       [(SBHomeScreenViewController *)self setHomeAffordanceInteraction:v13];
       [(SBHomeScreenViewController *)self _updateHomeAffordanceInteraction];
     }
@@ -1583,7 +1583,7 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
   {
     if (homeAffordanceView)
     {
-      v8 = v5;
+      v8 = isHomeAffordanceDoubleTapGestureEnabled;
     }
 
     else
@@ -1607,146 +1607,146 @@ uint64_t __57__SBHomeScreenViewController_zStackParticipantDidChange___block_inv
         homeAffordanceInteraction = 0;
       }
 
-      [v3 removeInteraction:homeAffordanceInteraction];
+      [view removeInteraction:homeAffordanceInteraction];
       [(SBHomeScreenViewController *)self setHomeAffordanceInteraction:?];
     }
   }
 }
 
-- (void)setHomeAffordanceView:(uint64_t)a1
+- (void)setHomeAffordanceView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 1168);
+    OUTLINED_FUNCTION_0_18(view, a2, 1168);
   }
 }
 
-- (void)setHomeAffordanceInteraction:(uint64_t)a1
+- (void)setHomeAffordanceInteraction:(uint64_t)interaction
 {
-  if (a1)
+  if (interaction)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 1160);
+    OUTLINED_FUNCTION_0_18(interaction, a2, 1160);
   }
 }
 
-- (void)_prepareForTransitionToSize:(CGSize)a3 andInterfaceOrientation:(int64_t)a4 withTransitionCoordinator:(id)a5
+- (void)_prepareForTransitionToSize:(CGSize)size andInterfaceOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator
 {
-  [a5 transitionDuration];
+  [coordinator transitionDuration];
   v8 = v7;
   v9 = +[SBWallpaperController sharedInstance];
-  [v9 orientationSource:2 willRotateToInterfaceOrientation:a4 duration:v8];
+  [v9 orientationSource:2 willRotateToInterfaceOrientation:orientation duration:v8];
 
   v10 = +[SBReachabilityManager sharedInstance];
   [v10 setReachabilityTemporarilyDisabled:1 forReason:@"MainWindowRotation"];
 
-  v11 = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
-  LODWORD(v10) = SBWorkspaceLauncherIsActive(v11, 1);
+  windowScene = [(SBHomeScreenViewController *)&self->super.super.super.isa windowScene];
+  LODWORD(v10) = SBWorkspaceLauncherIsActive(windowScene, 1);
 
   if (v10)
   {
     v12 = SBApp;
 
-    [v12 noteInterfaceOrientationChanged:a4 duration:@"Home Screen is transitioning" logMessage:v8];
+    [v12 noteInterfaceOrientationChanged:orientation duration:@"Home Screen is transitioning" logMessage:v8];
   }
 }
 
-- (id)containerViewControllerForPresentingFromTodayViewControllerAllowingCoverSheet:(BOOL)a3
+- (id)containerViewControllerForPresentingFromTodayViewControllerAllowingCoverSheet:(BOOL)sheet
 {
-  v3 = a3;
-  v5 = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
-  if (v3 && (+[SBCoverSheetPresentationManager sharedInstance](SBCoverSheetPresentationManager, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isVisibleAndNotDisappearing], v6, v7))
+  sheetCopy = sheet;
+  contextProvider = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
+  if (sheetCopy && (+[SBCoverSheetPresentationManager sharedInstance](SBCoverSheetPresentationManager, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isVisibleAndNotDisappearing], v6, v7))
   {
-    v8 = [v5 coverSheetTodayViewController];
+    coverSheetTodayViewController = [contextProvider coverSheetTodayViewController];
   }
 
   else
   {
-    v8 = [v5 todayViewController];
+    coverSheetTodayViewController = [contextProvider todayViewController];
   }
 
-  v9 = v8;
-  if ([v8 _appearState] == 2 || objc_msgSend(v9, "_appearState") == 1)
+  v9 = coverSheetTodayViewController;
+  if ([coverSheetTodayViewController _appearState] == 2 || objc_msgSend(v9, "_appearState") == 1)
   {
-    v10 = [v9 containerViewController];
-    v11 = v10;
-    if (v10)
+    containerViewController = [v9 containerViewController];
+    v11 = containerViewController;
+    if (containerViewController)
     {
-      v12 = v10;
+      selfCopy = containerViewController;
     }
 
     else
     {
-      v12 = self;
+      selfCopy = self;
     }
 
-    v13 = v12;
+    selfCopy2 = selfCopy;
   }
 
   else
   {
-    v13 = self;
+    selfCopy2 = self;
   }
 
-  return v13;
+  return selfCopy2;
 }
 
-- (id)containerViewForPresentingContextMenuForIconView:(id)a3
+- (id)containerViewForPresentingContextMenuForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 _sbWindowScene];
-  v6 = [v5 floatingDockController];
-  v7 = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
-  v8 = [v7 _openFolderController];
-  v9 = [v6 floatingDockViewController];
-  v10 = [v9 presentedFolderController];
+  viewCopy = view;
+  _sbWindowScene = [viewCopy _sbWindowScene];
+  floatingDockController = [_sbWindowScene floatingDockController];
+  contextProvider = [(SBHomeScreenViewController *)&self->super.super.super.isa contextProvider];
+  _openFolderController = [contextProvider _openFolderController];
+  floatingDockViewController = [floatingDockController floatingDockViewController];
+  presentedFolderController = [floatingDockViewController presentedFolderController];
 
-  v11 = [v4 location];
+  location = [viewCopy location];
 
-  if (!v6 || !SBIconLocationGroupContainsLocation())
+  if (!floatingDockController || !SBIconLocationGroupContainsLocation())
   {
-    if (v10)
+    if (presentedFolderController)
     {
-      v13 = v10;
+      selfCopy = presentedFolderController;
     }
 
     else
     {
-      if (v8)
+      if (_openFolderController)
       {
-        v12 = [v7 _openFolderController];
+        _openFolderController2 = [contextProvider _openFolderController];
         goto LABEL_13;
       }
 
       if (SBIconLocationGroupContainsLocation())
       {
-        v12 = [(SBHomeScreenViewController *)self containerViewControllerForPresentingFromTodayViewControllerAllowingCoverSheet:0];
+        _openFolderController2 = [(SBHomeScreenViewController *)self containerViewControllerForPresentingFromTodayViewControllerAllowingCoverSheet:0];
         goto LABEL_13;
       }
 
       if (SBIconLocationGroupContainsLocation())
       {
-        v12 = [v7 libraryViewControllerForWindowScene:v5];
+        _openFolderController2 = [contextProvider libraryViewControllerForWindowScene:_sbWindowScene];
         goto LABEL_13;
       }
 
-      v13 = self;
+      selfCopy = self;
     }
 
-    v14 = [(SBHomeScreenViewController *)v13 view];
+    view = [(SBHomeScreenViewController *)selfCopy view];
     goto LABEL_14;
   }
 
-  v12 = [v6 viewController];
+  _openFolderController2 = [floatingDockController viewController];
 LABEL_13:
-  v15 = v12;
-  v14 = [v12 view];
+  v15 = _openFolderController2;
+  view = [_openFolderController2 view];
 
 LABEL_14:
 
-  return v14;
+  return view;
 }
 
-- (void)_widgetEditViewWillAppear:(id)a3
+- (void)_widgetEditViewWillAppear:(id)appear
 {
   if ((!self || !self->_widgetEditFloatingDockAssertion) && (-[SBHomeScreenViewController windowScene](&self->super.super.super.isa), v4 = objc_claimAutoreleasedReturnValue(), [v4 floatingDockController], v5 = objc_claimAutoreleasedReturnValue(), v6 = -[SBFloatingDockBehaviorAssertion initWithFloatingDockController:visibleProgress:animated:gesturePossible:atLevel:reason:withCompletion:]([SBFloatingDockBehaviorAssertion alloc], "initWithFloatingDockController:visibleProgress:animated:gesturePossible:atLevel:reason:withCompletion:", v5, 1, 0, 4, @"edit widgets", 0, 0.0), -[SBHomeScreenViewController setWidgetEditFloatingDockAssertion:](self, v6), v6, v5, v4, !self) || !self->_widgetEditViewControllerOrientationUpdateDeferralAssertion)
   {
@@ -1765,11 +1765,11 @@ LABEL_14:
   return result;
 }
 
-- (void)setWidgetEditFloatingDockAssertion:(uint64_t)a1
+- (void)setWidgetEditFloatingDockAssertion:(uint64_t)assertion
 {
-  if (a1)
+  if (assertion)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 1128);
+    OUTLINED_FUNCTION_0_18(assertion, a2, 1128);
   }
 }
 
@@ -1783,11 +1783,11 @@ LABEL_14:
   return result;
 }
 
-- (void)setWidgetEditViewControllerOrientationUpdateDeferralAssertion:(uint64_t)a1
+- (void)setWidgetEditViewControllerOrientationUpdateDeferralAssertion:(uint64_t)assertion
 {
-  if (a1)
+  if (assertion)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 1136);
+    OUTLINED_FUNCTION_0_18(assertion, a2, 1136);
   }
 }
 
@@ -1812,7 +1812,7 @@ LABEL_14:
   [(SBHomeScreenViewController *)self setWidgetEditViewControllerOrientationUpdateDeferralAssertion:?];
 }
 
-- (void)_iconEditingDidChange:(id)a3
+- (void)_iconEditingDidChange:(id)change
 {
   if (self)
   {
@@ -1822,7 +1822,7 @@ LABEL_14:
   [(SBHomeScreenViewController *)self setNeedsUpdatePreferencesWithReason:@"Home Screen editing changed"];
 }
 
-- (void)homeAffordanceInteractionDidRecognizeSingleTap:(id)a3
+- (void)homeAffordanceInteractionDidRecognizeSingleTap:(id)tap
 {
   if (self)
   {
@@ -1832,19 +1832,19 @@ LABEL_14:
   [(SBHomeScreenViewController *)self performHintAnimation];
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v5 = a4;
-  v6 = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
-  [v5 setSuppressSystemApertureForSystemChromeSuppression:{objc_msgSend(v6, "isEditing")}];
-  [v5 setAllowsDimmingWhenForegroundInactive:1];
+  preferencesCopy = preferences;
+  iconManager = [(SBHomeScreenViewController *)&self->super.super.super.isa iconManager];
+  [preferencesCopy setSuppressSystemApertureForSystemChromeSuppression:{objc_msgSend(iconManager, "isEditing")}];
+  [preferencesCopy setAllowsDimmingWhenForegroundInactive:1];
 }
 
 - (uint64_t)isRotating
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 1035);
+    v1 = *(self + 1035);
   }
 
   else
@@ -1867,9 +1867,9 @@ LABEL_14:
 
 - (uint64_t)hasPerformedInitialLayout
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 1036);
+    v1 = *(self + 1036);
   }
 
   else
@@ -1910,16 +1910,16 @@ LABEL_14:
 
 - (void)shouldAutorotate
 {
-  v6 = [(SBHomeScreenViewController *)a1 iconManager];
-  v4 = [(SBHomeScreenViewController *)a1 appearanceController];
-  if ([v6 hasAnimatingFolder] || objc_msgSend(v6, "isIconDragging") && !objc_msgSend(a1, "homeScreenAutorotatesEvenWhenIconIsDragging") || objc_msgSend(a1[124], "count") || (objc_msgSend(v4, "isIconListViewTornDown") & 1) != 0)
+  iconManager = [(SBHomeScreenViewController *)self iconManager];
+  appearanceController = [(SBHomeScreenViewController *)self appearanceController];
+  if ([iconManager hasAnimatingFolder] || objc_msgSend(iconManager, "isIconDragging") && !objc_msgSend(self, "homeScreenAutorotatesEvenWhenIconIsDragging") || objc_msgSend(self[124], "count") || (objc_msgSend(appearanceController, "isIconListViewTornDown") & 1) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v6 isTransitioningHomeScreenState] ^ 1;
+    v5 = [iconManager isTransitioningHomeScreenState] ^ 1;
   }
 
   *a2 = v5;
@@ -1928,7 +1928,7 @@ LABEL_14:
 - (void)_autorotationPreventionReasons
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

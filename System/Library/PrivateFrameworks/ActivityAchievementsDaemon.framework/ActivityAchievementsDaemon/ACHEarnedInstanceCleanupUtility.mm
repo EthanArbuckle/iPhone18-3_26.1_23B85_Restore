@@ -1,29 +1,29 @@
 @interface ACHEarnedInstanceCleanupUtility
-- (ACHEarnedInstanceCleanupUtility)initWithHealthStore:(id)a3 keyValueClient:(id)a4 earnedInstanceStore:(id)a5;
-- (id)_fastestRunAchievementsToRemoveFromEarnedInstances:(id)a3;
-- (id)_firstWorkoutAchievementsToRemoveFromEarnedInstances:(id)a3;
-- (id)_largestValueActivityAndWorkoutAchievementsToRemoveFromEarnedInstances:(id)a3;
-- (id)_lifetimeMoveGoalAchievementsToRemoveFromEarnedInstances:(id)a3;
+- (ACHEarnedInstanceCleanupUtility)initWithHealthStore:(id)store keyValueClient:(id)client earnedInstanceStore:(id)instanceStore;
+- (id)_fastestRunAchievementsToRemoveFromEarnedInstances:(id)instances;
+- (id)_firstWorkoutAchievementsToRemoveFromEarnedInstances:(id)instances;
+- (id)_largestValueActivityAndWorkoutAchievementsToRemoveFromEarnedInstances:(id)instances;
+- (id)_lifetimeMoveGoalAchievementsToRemoveFromEarnedInstances:(id)instances;
 - (int64_t)_historicalEvaluationAdjustment;
 - (void)performCleanup;
 @end
 
 @implementation ACHEarnedInstanceCleanupUtility
 
-- (ACHEarnedInstanceCleanupUtility)initWithHealthStore:(id)a3 keyValueClient:(id)a4 earnedInstanceStore:(id)a5
+- (ACHEarnedInstanceCleanupUtility)initWithHealthStore:(id)store keyValueClient:(id)client earnedInstanceStore:(id)instanceStore
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  clientCopy = client;
+  instanceStoreCopy = instanceStore;
   v15.receiver = self;
   v15.super_class = ACHEarnedInstanceCleanupUtility;
   v12 = [(ACHEarnedInstanceCleanupUtility *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_healthStore, a3);
-    objc_storeStrong(&v13->_keyValueClient, a4);
-    objc_storeStrong(&v13->_earnedInstanceStore, a5);
+    objc_storeStrong(&v12->_healthStore, store);
+    objc_storeStrong(&v13->_keyValueClient, client);
+    objc_storeStrong(&v13->_earnedInstanceStore, instanceStore);
   }
 
   return v13;
@@ -33,17 +33,17 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_221DDC000, a2, OS_LOG_TYPE_ERROR, "Error cleaning up achievements: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_firstWorkoutAchievementsToRemoveFromEarnedInstances:(id)a3
+- (id)_firstWorkoutAchievementsToRemoveFromEarnedInstances:(id)instances
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  instancesCopy = instances;
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_7];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [instancesCopy filteredArrayUsingPredicate:v4];
 
   v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_303];
 
@@ -69,8 +69,8 @@
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 templateUniqueName];
-        v16 = [v7 objectForKeyedSubscript:v15];
+        templateUniqueName = [v14 templateUniqueName];
+        v16 = [v7 objectForKeyedSubscript:templateUniqueName];
 
         if (v16)
         {
@@ -79,8 +79,8 @@
 
         else
         {
-          v17 = [v14 templateUniqueName];
-          [v7 setObject:v14 forKeyedSubscript:v17];
+          templateUniqueName2 = [v14 templateUniqueName];
+          [v7 setObject:v14 forKeyedSubscript:templateUniqueName2];
         }
       }
 
@@ -113,17 +113,17 @@ uint64_t __88__ACHEarnedInstanceCleanupUtility__firstWorkoutAchievementsToRemove
   return v7;
 }
 
-- (id)_largestValueActivityAndWorkoutAchievementsToRemoveFromEarnedInstances:(id)a3
+- (id)_largestValueActivityAndWorkoutAchievementsToRemoveFromEarnedInstances:(id)instances
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  instancesCopy = instances;
   v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_283555C68];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v3;
+  obj = instancesCopy;
   v6 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v6)
   {
@@ -139,14 +139,14 @@ uint64_t __88__ACHEarnedInstanceCleanupUtility__firstWorkoutAchievementsToRemove
         }
 
         v10 = *(*(&v44 + 1) + 8 * i);
-        v11 = [v10 templateUniqueName];
-        if (([v4 containsObject:v11] & 1) != 0 || objc_msgSend(v11, "containsString:", @"BestWorkout"))
+        templateUniqueName = [v10 templateUniqueName];
+        if (([v4 containsObject:templateUniqueName] & 1) != 0 || objc_msgSend(templateUniqueName, "containsString:", @"BestWorkout"))
         {
-          v12 = [v5 objectForKeyedSubscript:v11];
+          v12 = [v5 objectForKeyedSubscript:templateUniqueName];
           if (!v12)
           {
             v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            [v5 setObject:v12 forKeyedSubscript:v11];
+            [v5 setObject:v12 forKeyedSubscript:templateUniqueName];
           }
 
           [v12 addObject:v10];
@@ -167,8 +167,8 @@ uint64_t __88__ACHEarnedInstanceCleanupUtility__firstWorkoutAchievementsToRemove
   v42 = 0u;
   v43 = 0u;
   v29 = v5;
-  v31 = [v5 allValues];
-  v34 = [v31 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  allValues = [v5 allValues];
+  v34 = [allValues countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v34)
   {
     v33 = *v41;
@@ -179,7 +179,7 @@ uint64_t __88__ACHEarnedInstanceCleanupUtility__firstWorkoutAchievementsToRemove
       {
         if (*v41 != v33)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(allValues);
         }
 
         v35 = v14;
@@ -234,7 +234,7 @@ uint64_t __88__ACHEarnedInstanceCleanupUtility__firstWorkoutAchievementsToRemove
       }
 
       while (v35 + 1 != v34);
-      v34 = [v31 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v34 = [allValues countByEnumeratingWithState:&v40 objects:v49 count:16];
     }
 
     while (v34);
@@ -263,17 +263,17 @@ uint64_t __106__ACHEarnedInstanceCleanupUtility__largestValueActivityAndWorkoutA
   return v8;
 }
 
-- (id)_fastestRunAchievementsToRemoveFromEarnedInstances:(id)a3
+- (id)_fastestRunAchievementsToRemoveFromEarnedInstances:(id)instances
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  instancesCopy = instances;
   v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_283555C80];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v6 = v3;
+  v6 = instancesCopy;
   v7 = [v6 countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v7)
   {
@@ -289,14 +289,14 @@ uint64_t __106__ACHEarnedInstanceCleanupUtility__largestValueActivityAndWorkoutA
         }
 
         v11 = *(*(&v45 + 1) + 8 * i);
-        v12 = [v11 templateUniqueName];
-        if ([v4 containsObject:v12])
+        templateUniqueName = [v11 templateUniqueName];
+        if ([v4 containsObject:templateUniqueName])
         {
-          v13 = [v5 objectForKeyedSubscript:v12];
+          v13 = [v5 objectForKeyedSubscript:templateUniqueName];
           if (!v13)
           {
             v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            [v5 setObject:v13 forKeyedSubscript:v12];
+            [v5 setObject:v13 forKeyedSubscript:templateUniqueName];
           }
 
           [v13 addObject:v11];
@@ -414,23 +414,23 @@ uint64_t __86__ACHEarnedInstanceCleanupUtility__fastestRunAchievementsToRemoveFr
   return v8;
 }
 
-- (id)_lifetimeMoveGoalAchievementsToRemoveFromEarnedInstances:(id)a3
+- (id)_lifetimeMoveGoalAchievementsToRemoveFromEarnedInstances:(id)instances
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  instancesCopy = instances;
   v5 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_359];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [instancesCopy filteredArrayUsingPredicate:v5];
 
   if (![v6 count])
   {
-    v12 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
     goto LABEL_35;
   }
 
   v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_364];
-  v8 = [(ACHEarnedInstanceCleanupUtility *)self keyValueClient];
+  keyValueClient = [(ACHEarnedInstanceCleanupUtility *)self keyValueClient];
   v49 = 0;
-  v9 = [v8 valueForKey:@"totalMoveGoalsMade" domain:@"ActivityAwardingSource" error:&v49];
+  v9 = [keyValueClient valueForKey:@"totalMoveGoalsMade" domain:@"ActivityAwardingSource" error:&v49];
   v10 = v49;
 
   if (v9)
@@ -438,23 +438,23 @@ uint64_t __86__ACHEarnedInstanceCleanupUtility__fastestRunAchievementsToRemoveFr
     if (!v10)
     {
       v41 = v9;
-      v13 = [v9 unsignedIntegerValue];
-      v14 = [(ACHEarnedInstanceCleanupUtility *)self _historicalEvaluationAdjustment];
-      v44 = v14 + v13;
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
+      _historicalEvaluationAdjustment = [(ACHEarnedInstanceCleanupUtility *)self _historicalEvaluationAdjustment];
+      v44 = _historicalEvaluationAdjustment + unsignedIntegerValue;
       v15 = ACHLogCleanup();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218496;
-        v54 = v13;
+        v54 = unsignedIntegerValue;
         v55 = 2048;
-        v56 = v14;
+        v56 = _historicalEvaluationAdjustment;
         v57 = 2048;
-        v58 = v14 + v13;
+        v58 = _historicalEvaluationAdjustment + unsignedIntegerValue;
         _os_log_debug_impl(&dword_221DDC000, v15, OS_LOG_TYPE_DEBUG, "Total move goals completed so far: %ld, adjustment: %ld, adjustedTotal, %ld", buf, 0x20u);
       }
 
       v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v16 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+      hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
@@ -466,7 +466,7 @@ uint64_t __86__ACHEarnedInstanceCleanupUtility__fastestRunAchievementsToRemoveFr
         v18 = v17;
         v38 = v7;
         v39 = v6;
-        v40 = v4;
+        v40 = instancesCopy;
         v19 = 0;
         v20 = *v46;
         v42 = v11;
@@ -481,17 +481,17 @@ uint64_t __86__ACHEarnedInstanceCleanupUtility__fastestRunAchievementsToRemoveFr
             }
 
             v23 = *(*(&v45 + 1) + 8 * i);
-            v24 = [v23 templateUniqueName];
-            v25 = [v24 stringByReplacingOccurrencesOfString:@"MoveGoals" withString:&stru_283541ED8];
-            v26 = [v25 integerValue];
+            templateUniqueName = [v23 templateUniqueName];
+            v25 = [templateUniqueName stringByReplacingOccurrencesOfString:@"MoveGoals" withString:&stru_283541ED8];
+            integerValue = [v25 integerValue];
 
             v27 = ACHLogCleanup();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
-              v31 = [v23 templateUniqueName];
-              v32 = [MEMORY[0x277CCABB0] numberWithInteger:v26];
+              templateUniqueName2 = [v23 templateUniqueName];
+              v32 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
               *buf = 138412546;
-              v54 = v31;
+              v54 = templateUniqueName2;
               v55 = 2112;
               v56 = v32;
               _os_log_debug_impl(&dword_221DDC000, v27, OS_LOG_TYPE_DEBUG, "%@ count: %@", buf, 0x16u);
@@ -499,15 +499,15 @@ uint64_t __86__ACHEarnedInstanceCleanupUtility__fastestRunAchievementsToRemoveFr
               v11 = v42;
             }
 
-            if (v26 > v44)
+            if (integerValue > v44)
             {
               v28 = ACHLogCleanup();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
               {
-                v33 = [v23 templateUniqueName];
-                v34 = [MEMORY[0x277CCABB0] numberWithInteger:v26];
+                templateUniqueName3 = [v23 templateUniqueName];
+                v34 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
                 *buf = 138412546;
-                v54 = v33;
+                v54 = templateUniqueName3;
                 v55 = 2112;
                 v56 = v34;
                 _os_log_debug_impl(&dword_221DDC000, v28, OS_LOG_TYPE_DEBUG, "Found a candidate! %@ count: %@", buf, 0x16u);
@@ -516,8 +516,8 @@ uint64_t __86__ACHEarnedInstanceCleanupUtility__fastestRunAchievementsToRemoveFr
               [v11 addObject:v23];
             }
 
-            v29 = [v23 earnedDateComponents];
-            v19 = [v16 dateFromComponents:v29];
+            earnedDateComponents = [v23 earnedDateComponents];
+            v19 = [hk_gregorianCalendar dateFromComponents:earnedDateComponents];
 
             if (v22 && [v19 compare:v22] == -1)
             {
@@ -537,7 +537,7 @@ uint64_t __86__ACHEarnedInstanceCleanupUtility__fastestRunAchievementsToRemoveFr
         while (v18);
 
         v6 = v39;
-        v4 = v40;
+        instancesCopy = v40;
         v7 = v38;
       }
 
@@ -547,7 +547,7 @@ uint64_t __86__ACHEarnedInstanceCleanupUtility__fastestRunAchievementsToRemoveFr
         [(ACHEarnedInstanceCleanupUtility *)v11 _lifetimeMoveGoalAchievementsToRemoveFromEarnedInstances:v35];
       }
 
-      v12 = [v11 allObjects];
+      allObjects = [v11 allObjects];
 
       v10 = 0;
       v9 = v41;
@@ -570,13 +570,13 @@ uint64_t __86__ACHEarnedInstanceCleanupUtility__fastestRunAchievementsToRemoveFr
     }
   }
 
-  v12 = MEMORY[0x277CBEBF8];
+  allObjects = MEMORY[0x277CBEBF8];
 LABEL_34:
 
 LABEL_35:
   v36 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return allObjects;
 }
 
 uint64_t __92__ACHEarnedInstanceCleanupUtility__lifetimeMoveGoalAchievementsToRemoveFromEarnedInstances___block_invoke(uint64_t a1, void *a2)
@@ -647,13 +647,13 @@ uint64_t __92__ACHEarnedInstanceCleanupUtility__lifetimeMoveGoalAchievementsToRe
   v21 = v5;
   v23 = &v24;
   v6 = [v4 initWithUpdateHandler:v20];
-  v7 = [(ACHEarnedInstanceCleanupUtility *)self healthStore];
-  [v7 executeQuery:v6];
+  healthStore = [(ACHEarnedInstanceCleanupUtility *)self healthStore];
+  [healthStore executeQuery:v6];
 
   v8 = dispatch_time(0, 10000000000);
   v9 = dispatch_group_wait(v5, v8);
-  v10 = [(ACHEarnedInstanceCleanupUtility *)self healthStore];
-  [v10 stopQuery:v6];
+  healthStore2 = [(ACHEarnedInstanceCleanupUtility *)self healthStore];
+  [healthStore2 stopQuery:v6];
 
   if (v9)
   {

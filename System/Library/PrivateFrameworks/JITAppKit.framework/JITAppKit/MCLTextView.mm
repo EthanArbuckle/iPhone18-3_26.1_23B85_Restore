@@ -1,21 +1,21 @@
 @interface MCLTextView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (MCLTextView)initWithFrame:(CGRect)a3;
-- (void)onLongPress:(id)a3;
-- (void)onTap:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (MCLTextView)initWithFrame:(CGRect)frame;
+- (void)onLongPress:(id)press;
+- (void)onTap:(id)tap;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation MCLTextView
 
-- (MCLTextView)initWithFrame:(CGRect)a3
+- (MCLTextView)initWithFrame:(CGRect)frame
 {
-  v14 = a3;
+  frameCopy = frame;
   v12 = a2;
   v13 = 0;
   v11.receiver = self;
   v11.super_class = MCLTextView;
-  v13 = [(MCLTextView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v13 = [(MCLTextView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v13, v13);
   if (v13)
   {
@@ -39,22 +39,22 @@
   return v10;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  actionCopy = action;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v8.receiver = v13;
+  objc_storeStrong(&location, sender);
+  v8.receiver = selfCopy;
   v8.super_class = MCLTextView;
-  v9 = [(MCLTextView *)&v8 canPerformAction:v11 withSender:location];
-  v7 = [(MCLTextView *)v13 delegate];
-  if ([v7 conformsToProtocol:&unk_2867B5CC0] & 1) != 0 && (objc_opt_respondsToSelector())
+  v9 = [(MCLTextView *)&v8 canPerformAction:actionCopy withSender:location];
+  delegate = [(MCLTextView *)selfCopy delegate];
+  if ([delegate conformsToProtocol:&unk_2867B5CC0] & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v5 = v13;
-    v6 = NSStringFromSelector(v11);
-    v14 = [v7 textView:v5 canPerformAction:? withSender:? defaultValue:?] & 1;
+    v5 = selfCopy;
+    v6 = NSStringFromSelector(actionCopy);
+    v14 = [delegate textView:v5 canPerformAction:? withSender:? defaultValue:?] & 1;
     MEMORY[0x277D82BD8](v6);
   }
 
@@ -63,58 +63,58 @@
     v14 = v9 & 1;
   }
 
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&delegate, 0);
   objc_storeStrong(&location, 0);
   return v14 & 1;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, key);
   if ([v12 isEqualToString:@"enablesReturnKeyAutomatically"])
   {
-    v4 = [location[0] BOOLValue];
-    [(MCLTextView *)v14 setEnablesReturnKeyAutomatically:v4];
+    bOOLValue = [location[0] BOOLValue];
+    [(MCLTextView *)selfCopy setEnablesReturnKeyAutomatically:bOOLValue];
   }
 
   else if ([v12 isEqualToString:@"returnKeyType"])
   {
-    v5 = [location[0] integerValue];
-    [(MCLTextView *)v14 setReturnKeyType:v5];
+    integerValue = [location[0] integerValue];
+    [(MCLTextView *)selfCopy setReturnKeyType:integerValue];
   }
 
   else if ([v12 isEqualToString:@"keyboardType"])
   {
-    v6 = [location[0] integerValue];
-    [(MCLTextView *)v14 setKeyboardType:v6];
+    integerValue2 = [location[0] integerValue];
+    [(MCLTextView *)selfCopy setKeyboardType:integerValue2];
   }
 
   else if ([v12 isEqualToString:@"autocorrectionType"])
   {
-    v7 = [location[0] integerValue];
-    [(MCLTextView *)v14 setAutocorrectionType:v7];
+    integerValue3 = [location[0] integerValue];
+    [(MCLTextView *)selfCopy setAutocorrectionType:integerValue3];
   }
 
   else if ([v12 isEqualToString:@"autocapitalizationType"])
   {
-    v8 = [location[0] integerValue];
-    [(MCLTextView *)v14 setAutocapitalizationType:v8];
+    integerValue4 = [location[0] integerValue];
+    [(MCLTextView *)selfCopy setAutocapitalizationType:integerValue4];
   }
 
   else if ([v12 isEqualToString:@"spellCheckingType"])
   {
-    v9 = [location[0] integerValue];
-    [(MCLTextView *)v14 setSpellCheckingType:v9];
+    integerValue5 = [location[0] integerValue];
+    [(MCLTextView *)selfCopy setSpellCheckingType:integerValue5];
   }
 
   else
   {
-    v11.receiver = v14;
+    v11.receiver = selfCopy;
     v11.super_class = MCLTextView;
     [(MCLTextView *)&v11 setValue:location[0] forUndefinedKey:v12];
   }
@@ -123,32 +123,32 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)onTap:(id)a3
+- (void)onTap:(id)tap
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(MCLTextView *)v8 delegate];
+  objc_storeStrong(location, tap);
+  delegate = [(MCLTextView *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [location[0] locationInView:v8];
+    [location[0] locationInView:selfCopy];
     v5[1] = v3;
     v5[2] = v4;
     v5[0] = 0;
     objc_storeStrong(v5, 0);
   }
 
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(&delegate, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)onLongPress:(id)a3
+- (void)onLongPress:(id)press
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, press);
   objc_storeStrong(location, 0);
 }
 

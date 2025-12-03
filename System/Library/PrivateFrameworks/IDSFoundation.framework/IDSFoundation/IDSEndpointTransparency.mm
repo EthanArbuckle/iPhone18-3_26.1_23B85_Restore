@@ -1,27 +1,27 @@
 @interface IDSEndpointTransparency
-- (IDSEndpointTransparency)initWithCoder:(id)a3;
+- (IDSEndpointTransparency)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSEndpointTransparency
 
 - (id)description
 {
-  v3 = [(IDSEndpointTransparency *)self ktValidation];
-  if (v3 > 5)
+  ktValidation = [(IDSEndpointTransparency *)self ktValidation];
+  if (ktValidation > 5)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = off_1E77E1930[v3];
+    v4 = off_1E77E1930[ktValidation];
   }
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(IDSEndpointTransparency *)self ktError];
-  v7 = [v6 description];
+  ktError = [(IDSEndpointTransparency *)self ktError];
+  v7 = [ktError description];
   v8 = v7;
   v9 = @"-";
   if (v7)
@@ -34,39 +34,39 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[IDSEndpointTransparency ktValidation](self forKey:{"ktValidation"), @"ktValidation"}];
-  v5 = [(IDSEndpointTransparency *)self ktError];
-  [v4 encodeObject:v5 forKey:@"ktError"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[IDSEndpointTransparency ktValidation](self forKey:{"ktValidation"), @"ktValidation"}];
+  ktError = [(IDSEndpointTransparency *)self ktError];
+  [coderCopy encodeObject:ktError forKey:@"ktError"];
 }
 
-- (IDSEndpointTransparency)initWithCoder:(id)a3
+- (IDSEndpointTransparency)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"ktValidation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"ktValidation"];
   if (v5 < 6)
   {
     [(IDSEndpointTransparency *)self setKtValidation:v5];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ktError"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ktError"];
     [(IDSEndpointTransparency *)self setKtError:v8];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69A6138] warning];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    warning = [MEMORY[0x1E69A6138] warning];
+    if (os_log_type_enabled(warning, OS_LOG_TYPE_ERROR))
     {
-      sub_1A7E1BD3C(v5, v6);
+      sub_1A7E1BD3C(v5, warning);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

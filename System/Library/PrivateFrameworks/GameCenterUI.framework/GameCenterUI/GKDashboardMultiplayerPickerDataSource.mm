@@ -1,116 +1,116 @@
 @interface GKDashboardMultiplayerPickerDataSource
 - (BOOL)_canShowMoreFriends;
-- (BOOL)canSelectPlayerGroup:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)canSelectPlayerGroup:(id)group atIndexPath:(id)path inCollectionView:(id)view;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)hasFriends;
-- (BOOL)isPlayerAtIndexPathCoreRecent:(id)a3;
-- (BOOL)playerIsSelectable:(id)a3;
-- (BOOL)playerIsSelected:(id)a3;
-- (BOOL)shouldSelectPlayerGroup:(id)a3;
-- (CGSize)boundingSizeForItemsInCollectionView:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (GKDashboardMultiplayerPickerDataSource)initWithMaxSelectable:(int64_t)a3 previouslyInvitedPlayers:(id)a4 nearbyOnly:(BOOL)a5 pickerOrigin:(int64_t)a6;
+- (BOOL)isPlayerAtIndexPathCoreRecent:(id)recent;
+- (BOOL)playerIsSelectable:(id)selectable;
+- (BOOL)playerIsSelected:(id)selected;
+- (BOOL)shouldSelectPlayerGroup:(id)group;
+- (CGSize)boundingSizeForItemsInCollectionView:(id)view;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (GKDashboardMultiplayerPickerDataSource)initWithMaxSelectable:(int64_t)selectable previouslyInvitedPlayers:(id)players nearbyOnly:(BOOL)only pickerOrigin:(int64_t)origin;
 - (GKDashboardMultiplayerPickerDatasourceDelegate)delegate;
 - (NSArray)selectedPlayers;
 - (_TtC12GameCenterUI26GKSuggestionsContainerCell)suggestionContainerCell;
-- (double)playerCellHeightInCollectionView:(id)a3;
-- (id)alternateSearchKeyForSection:(int64_t)a3;
+- (double)playerCellHeightInCollectionView:(id)view;
+- (id)alternateSearchKeyForSection:(int64_t)section;
 - (id)attributedFriendFilterTitle;
 - (id)candidateIndexPaths;
 - (id)collectionView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)firstIndexPathForPlayer:(id)a3;
-- (id)fullContactWithIdentifier:(id)a3;
-- (id)headerTextForSection:(int64_t)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)firstIndexPathForPlayer:(id)player;
+- (id)fullContactWithIdentifier:(id)identifier;
+- (id)headerTextForSection:(int64_t)section;
 - (id)indexPathForFirstPlayer;
-- (id)indexPathForPlayer:(id)a3 inSection:(unint64_t)a4;
-- (id)indexPathsForPlayer:(id)a3;
-- (id)playerCellForItemAtIndexPath:(id)a3 inCollectionView:(id)a4;
-- (id)playerForIndexPath:(id)a3;
-- (id)playerForPlayerID:(id)a3;
-- (id)playerGroupCellForItemAtIndexPath:(id)a3 inCollectionView:(id)a4;
-- (id)playersForSection:(int64_t)a3 ignoreSearch:(BOOL)a4;
-- (id)searchKeyForSection:(int64_t)a3;
-- (id)suggestionsCellForItemAtIndexPath:(id)a3 inCollectionView:(id)a4;
-- (int64_t)defaultFilterScopeFromPickerOrigin:(int64_t)a3;
+- (id)indexPathForPlayer:(id)player inSection:(unint64_t)section;
+- (id)indexPathsForPlayer:(id)player;
+- (id)playerCellForItemAtIndexPath:(id)path inCollectionView:(id)view;
+- (id)playerForIndexPath:(id)path;
+- (id)playerForPlayerID:(id)d;
+- (id)playerGroupCellForItemAtIndexPath:(id)path inCollectionView:(id)view;
+- (id)playersForSection:(int64_t)section ignoreSearch:(BOOL)search;
+- (id)searchKeyForSection:(int64_t)section;
+- (id)suggestionsCellForItemAtIndexPath:(id)path inCollectionView:(id)view;
+- (int64_t)defaultFilterScopeFromPickerOrigin:(int64_t)origin;
 - (int64_t)getSelectedPlayerCount;
 - (int64_t)itemCount;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (int64_t)unmodifiedItemCount;
-- (unint64_t)cornerMaskForItemAtIndexPath:(id)a3;
+- (unint64_t)cornerMaskForItemAtIndexPath:(id)path;
 - (void)clearSelection;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)deselectItemAtIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)didAddRecipientPlayers:(id)a3;
-- (void)didAttemptSelectingAlreadySelectedPlayers:(id)a3 inGroup:(id)a4;
-- (void)didDeselectPlayerGroup:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6;
-- (void)didDeselectPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6;
-- (void)didPickContact:(id)a3;
-- (void)didRemoveRecipientPlayers:(id)a3;
-- (void)didSelectPlayerGroup:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6;
-- (void)didSelectPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6;
-- (void)donateGroupToPeopleSuggester:(id)a3;
-- (void)expandPlayerGroup:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5;
-- (void)handleLongPressGesture:(id)a3;
-- (void)loadDataWithCompletionHandler:(id)a3;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)deselectItemAtIndexPath:(id)path animated:(BOOL)animated;
+- (void)didAddRecipientPlayers:(id)players;
+- (void)didAttemptSelectingAlreadySelectedPlayers:(id)players inGroup:(id)group;
+- (void)didDeselectPlayerGroup:(id)group indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion;
+- (void)didDeselectPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion;
+- (void)didPickContact:(id)contact;
+- (void)didRemoveRecipientPlayers:(id)players;
+- (void)didSelectPlayerGroup:(id)group indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion;
+- (void)didSelectPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion;
+- (void)donateGroupToPeopleSuggester:(id)suggester;
+- (void)expandPlayerGroup:(id)group atIndexPath:(id)path inCollectionView:(id)view;
+- (void)handleLongPressGesture:(id)gesture;
+- (void)loadDataWithCompletionHandler:(id)handler;
 - (void)pickerWillSendInvites;
 - (void)searchTextHasChanged;
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5;
-- (void)setBrowsingForNearbyPlayers:(BOOL)a3;
-- (void)setFriendSortFilterScope:(int64_t)a3;
-- (void)setNearbyPlayer:(id)a3 reachable:(BOOL)a4;
-- (void)setNearbyPlayerID:(id)a3 reachable:(BOOL)a4;
-- (void)setSupportsNearby:(BOOL)a3;
-- (void)setupCollectionView:(id)a3;
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position;
+- (void)setBrowsingForNearbyPlayers:(BOOL)players;
+- (void)setFriendSortFilterScope:(int64_t)scope;
+- (void)setNearbyPlayer:(id)player reachable:(BOOL)reachable;
+- (void)setNearbyPlayerID:(id)d reachable:(BOOL)reachable;
+- (void)setSupportsNearby:(BOOL)nearby;
+- (void)setupCollectionView:(id)view;
 - (void)showSelectionLimitAlert;
 - (void)updateMessageGroupsPlayerSelection;
-- (void)updatePlayerGroups:(id)a3 forPlayers:(id)a4 excludedIndexPath:(id)a5;
-- (void)updateSelectionStateForCollectionView:(id)a3 indexPaths:(id)a4;
-- (void)updateStateForUnreachableNearbyPlayer:(id)a3;
-- (void)updateVisibleItemsWithPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6;
+- (void)updatePlayerGroups:(id)groups forPlayers:(id)players excludedIndexPath:(id)path;
+- (void)updateSelectionStateForCollectionView:(id)view indexPaths:(id)paths;
+- (void)updateStateForUnreachableNearbyPlayer:(id)player;
+- (void)updateVisibleItemsWithPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation GKDashboardMultiplayerPickerDataSource
 
-- (GKDashboardMultiplayerPickerDataSource)initWithMaxSelectable:(int64_t)a3 previouslyInvitedPlayers:(id)a4 nearbyOnly:(BOOL)a5 pickerOrigin:(int64_t)a6
+- (GKDashboardMultiplayerPickerDataSource)initWithMaxSelectable:(int64_t)selectable previouslyInvitedPlayers:(id)players nearbyOnly:(BOOL)only pickerOrigin:(int64_t)origin
 {
-  v7 = a5;
-  v10 = a4;
+  onlyCopy = only;
+  playersCopy = players;
   v23.receiver = self;
   v23.super_class = GKDashboardMultiplayerPickerDataSource;
   v11 = [(GKCollectionDataSource *)&v23 init];
   v12 = v11;
   if (v11)
   {
-    [(GKDashboardMultiplayerPickerDataSource *)v11 setMaxSelectable:a3];
-    v13 = [MEMORY[0x277CBEB58] setWithArray:v10];
+    [(GKDashboardMultiplayerPickerDataSource *)v11 setMaxSelectable:selectable];
+    v13 = [MEMORY[0x277CBEB58] setWithArray:playersCopy];
     [(GKDashboardMultiplayerPickerDataSource *)v12 setPreviouslyInvitedPlayers:v13];
 
-    v14 = [MEMORY[0x277CBEB18] array];
-    [(GKDashboardMultiplayerPickerDataSource *)v12 setNearbyPlayers:v14];
+    array = [MEMORY[0x277CBEB18] array];
+    [(GKDashboardMultiplayerPickerDataSource *)v12 setNearbyPlayers:array];
 
-    v15 = [MEMORY[0x277CBEB18] array];
-    [(GKDashboardMultiplayerPickerDataSource *)v12 setFriendPlayers:v15];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [(GKDashboardMultiplayerPickerDataSource *)v12 setFriendPlayers:array2];
 
-    v16 = [MEMORY[0x277CBEB18] array];
-    [(GKDashboardMultiplayerPickerDataSource *)v12 setSuggestedPlayers:v16];
+    array3 = [MEMORY[0x277CBEB18] array];
+    [(GKDashboardMultiplayerPickerDataSource *)v12 setSuggestedPlayers:array3];
 
-    v17 = [MEMORY[0x277CBEB18] array];
-    [(GKDashboardMultiplayerPickerDataSource *)v12 setSuggestedPlayerGroups:v17];
+    array4 = [MEMORY[0x277CBEB18] array];
+    [(GKDashboardMultiplayerPickerDataSource *)v12 setSuggestedPlayerGroups:array4];
 
-    v12->_friendSortFilterScope = [(GKDashboardMultiplayerPickerDataSource *)v12 defaultFilterScopeFromPickerOrigin:a6];
-    [(GKDashboardMultiplayerPickerDataSource *)v12 setNearbyOnly:v7];
+    v12->_friendSortFilterScope = [(GKDashboardMultiplayerPickerDataSource *)v12 defaultFilterScopeFromPickerOrigin:origin];
+    [(GKDashboardMultiplayerPickerDataSource *)v12 setNearbyOnly:onlyCopy];
     [(GKDashboardMultiplayerPickerDataSource *)v12 setIsShowingNearbyExpanded:0];
-    [(GKDashboardMultiplayerPickerDataSource *)v12 setShowsAllFriends:a6 != 1];
-    v18 = [MEMORY[0x277D75418] currentDevice];
-    v19 = [v18 userInterfaceIdiom];
+    [(GKDashboardMultiplayerPickerDataSource *)v12 setShowsAllFriends:origin != 1];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v19 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v20 = 3;
     }
@@ -121,12 +121,12 @@
     }
 
     [(GKDashboardMultiplayerPickerDataSource *)v12 setNumberOfFriendsToShowInitially:v20];
-    [(GKDashboardMultiplayerPickerDataSource *)v12 setPickerOrigin:a6];
-    [(GKDashboardMultiplayerPickerDataSource *)v12 setExcludesContacts:a6 != 1];
+    [(GKDashboardMultiplayerPickerDataSource *)v12 setPickerOrigin:origin];
+    [(GKDashboardMultiplayerPickerDataSource *)v12 setExcludesContacts:origin != 1];
     if (![(GKDashboardMultiplayerPickerDataSource *)v12 excludesContacts])
     {
-      v21 = [MEMORY[0x277CBEB18] array];
-      [(GKDashboardMultiplayerPickerDataSource *)v12 setContactPlayers:v21];
+      array5 = [MEMORY[0x277CBEB18] array];
+      [(GKDashboardMultiplayerPickerDataSource *)v12 setContactPlayers:array5];
     }
   }
 
@@ -135,59 +135,59 @@
 
 - (id)collectionView
 {
-  v2 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-  v3 = [v2 pickerCollectionView];
+  delegate = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+  pickerCollectionView = [delegate pickerCollectionView];
 
-  return v3;
+  return pickerCollectionView;
 }
 
-- (void)setupCollectionView:(id)a3
+- (void)setupCollectionView:(id)view
 {
   v17.receiver = self;
   v17.super_class = GKDashboardMultiplayerPickerDataSource;
-  v3 = a3;
-  [(GKCollectionDataSource *)&v17 setupCollectionView:v3];
+  viewCopy = view;
+  [(GKCollectionDataSource *)&v17 setupCollectionView:viewCopy];
   v4 = [GKDashboardPickerPlayerCell _gkNibWithBaseName:@"GKDashboardPickerPlayerCell", v17.receiver, v17.super_class];
-  [v3 registerNib:v4 forCellWithReuseIdentifier:@"playerCell"];
+  [viewCopy registerNib:v4 forCellWithReuseIdentifier:@"playerCell"];
 
-  [v3 setAllowsMultipleSelection:1];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"playerPickerNearbyInstructionCell"];
+  [viewCopy setAllowsMultipleSelection:1];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"playerPickerNearbyInstructionCell"];
   v5 = objc_opt_class();
   v6 = *MEMORY[0x277D767D0];
-  [v3 registerClass:v5 forSupplementaryViewOfKind:*MEMORY[0x277D767D0] withReuseIdentifier:@"friendsSectionFooterShowMoreFriendsReuseIdentifier"];
+  [viewCopy registerClass:v5 forSupplementaryViewOfKind:*MEMORY[0x277D767D0] withReuseIdentifier:@"friendsSectionFooterShowMoreFriendsReuseIdentifier"];
   v7 = [_TtC12GameCenterUI26GKSuggestionsContainerCell _gkNibWithBaseName:@"GKSuggestionsContainerCell"];
   v8 = +[_TtC12GameCenterUI26GKSuggestionsContainerCell reuseIdentifier];
-  [v3 registerNib:v7 forCellWithReuseIdentifier:v8];
+  [viewCopy registerNib:v7 forCellWithReuseIdentifier:v8];
 
   v9 = [GKDashboardPickerPlayerGroupCell _gkNibWithBaseName:@"GKDashboardPickerPlayerGroupCell"];
   v10 = +[GKDashboardPickerPlayerGroupCell reuseIdentifier];
-  [v3 registerNib:v9 forCellWithReuseIdentifier:v10];
+  [viewCopy registerNib:v9 forCellWithReuseIdentifier:v10];
 
-  [v3 registerClass:objc_opt_class() forSupplementaryViewOfKind:v6 withReuseIdentifier:@"friendsSectionFooterPlayWithFriendsReuseIdentifier"];
+  [viewCopy registerClass:objc_opt_class() forSupplementaryViewOfKind:v6 withReuseIdentifier:@"friendsSectionFooterPlayWithFriendsReuseIdentifier"];
   v11 = objc_opt_class();
   v12 = +[_TtC12GameCenterUI32GKMultiplayerPickerNoFriendsCell reuseIdentifier];
-  [v3 registerClass:v11 forCellWithReuseIdentifier:v12];
+  [viewCopy registerClass:v11 forCellWithReuseIdentifier:v12];
 
   v13 = [GKDashboardPickerPlayerCell _gkNibWithBaseName:@"GKDashboardPickerPlayerCellAX"];
-  [v3 registerNib:v13 forCellWithReuseIdentifier:@"playerCellAX"];
+  [viewCopy registerNib:v13 forCellWithReuseIdentifier:@"playerCellAX"];
 
   v14 = [GKDashboardPickerPlayerGroupCell _gkNibWithBaseName:@"GKDashboardPickerPlayerGroupCellAX"];
   v15 = +[GKDashboardPickerPlayerGroupCell reuseIdentifierAX];
-  [v3 registerNib:v14 forCellWithReuseIdentifier:v15];
+  [viewCopy registerNib:v14 forCellWithReuseIdentifier:v15];
 
   v16 = +[GKDashboardButtonSectionHeaderView];
-  [v3 registerNib:v16 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"friendsSectionHeaderReuseIdentifier"];
+  [viewCopy registerNib:v16 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"friendsSectionHeaderReuseIdentifier"];
 }
 
-- (int64_t)defaultFilterScopeFromPickerOrigin:(int64_t)a3
+- (int64_t)defaultFilterScopeFromPickerOrigin:(int64_t)origin
 {
-  v4 = [MEMORY[0x277D0C048] currentGame];
-  v5 = [v4 bundleIdentifier];
+  currentGame = [MEMORY[0x277D0C048] currentGame];
+  bundleIdentifier = [currentGame bundleIdentifier];
 
-  if (v5)
+  if (bundleIdentifier)
   {
-    v6 = [MEMORY[0x277D0C1D8] shared];
-    v7 = [v6 recentPlayerPickerSortPreferenceForBundleID:v5];
+    mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+    v7 = [mEMORY[0x277D0C1D8] recentPlayerPickerSortPreferenceForBundleID:bundleIdentifier];
 
     if (!*MEMORY[0x277D0C2A0])
     {
@@ -197,12 +197,12 @@
     v9 = *MEMORY[0x277D0C2B0];
     if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_DEBUG))
     {
-      [(GKDashboardMultiplayerPickerDataSource *)v5 defaultFilterScopeFromPickerOrigin:v9, v7];
+      [(GKDashboardMultiplayerPickerDataSource *)bundleIdentifier defaultFilterScopeFromPickerOrigin:v9, v7];
     }
 
     if (v7 >= 2)
     {
-      v10 = a3 == 0;
+      v10 = origin == 0;
     }
 
     else
@@ -213,24 +213,24 @@
 
   else
   {
-    v10 = a3 == 0;
+    v10 = origin == 0;
   }
 
   return v10;
 }
 
-- (void)setFriendSortFilterScope:(int64_t)a3
+- (void)setFriendSortFilterScope:(int64_t)scope
 {
-  if (self->_friendSortFilterScope != a3)
+  if (self->_friendSortFilterScope != scope)
   {
-    self->_friendSortFilterScope = a3;
-    v5 = [MEMORY[0x277D0C048] currentGame];
-    v6 = [v5 bundleIdentifier];
+    self->_friendSortFilterScope = scope;
+    currentGame = [MEMORY[0x277D0C048] currentGame];
+    bundleIdentifier = [currentGame bundleIdentifier];
 
-    if (v6)
+    if (bundleIdentifier)
     {
-      v7 = [MEMORY[0x277D0C1D8] shared];
-      [v7 setRecentPlayerPickerSortPreference:a3 forBundleID:v6];
+      mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+      [mEMORY[0x277D0C1D8] setRecentPlayerPickerSortPreference:scope forBundleID:bundleIdentifier];
 
       if (!*MEMORY[0x277D0C2A0])
       {
@@ -240,14 +240,14 @@
       v9 = *MEMORY[0x277D0C2B0];
       if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_DEBUG))
       {
-        [(GKDashboardMultiplayerPickerDataSource *)v6 setFriendSortFilterScope:v9, a3];
+        [(GKDashboardMultiplayerPickerDataSource *)bundleIdentifier setFriendSortFilterScope:v9, scope];
       }
     }
 
-    v10 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-    v11 = [v10 mutableCopy];
+    friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+    v11 = [friendPlayers mutableCopy];
 
-    if (a3)
+    if (scope)
     {
       [(GKDashboardMultiplayerPickerDataSource *)self sortPlayersByNickname:v11];
     }
@@ -363,9 +363,9 @@ LABEL_9:
   return v19;
 }
 
-- (void)loadDataWithCompletionHandler:(id)a3
+- (void)loadDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277D0C020];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKDashboardMultiplayerPickerDataSource.m", 330, "-[GKDashboardMultiplayerPickerDataSource loadDataWithCompletionHandler:]"];
   v7 = [v5 dispatchGroupWithName:v6];
@@ -379,22 +379,22 @@ LABEL_9:
   v49[2] = 0x3032000000;
   v49[3] = __Block_byref_object_copy__12;
   v49[4] = __Block_byref_object_dispose__12;
-  v50 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x3032000000;
   v47[3] = __Block_byref_object_copy__12;
   v47[4] = __Block_byref_object_dispose__12;
   v48 = MEMORY[0x277CBEBF8];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v10 = [MEMORY[0x277CBEB58] set];
-  v11 = [MEMORY[0x277D0C1D8] shared];
-  if ([v11 multiplayerAllowedPlayerType] == 2)
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  if ([mEMORY[0x277D0C1D8] multiplayerAllowedPlayerType] == 2)
   {
-    v12 = [(GKDashboardMultiplayerPickerDataSource *)self excludesContacts];
+    excludesContacts = [(GKDashboardMultiplayerPickerDataSource *)self excludesContacts];
 
-    if (!v12)
+    if (!excludesContacts)
     {
       v45[0] = MEMORY[0x277D85DD0];
       v45[1] = 3221225472;
@@ -408,7 +408,7 @@ LABEL_9:
       v41[1] = 3221225472;
       v41[2] = __72__GKDashboardMultiplayerPickerDataSource_loadDataWithCompletionHandler___block_invoke_3;
       v41[3] = &unk_27966D1C0;
-      v42 = v9;
+      v42 = array3;
       v43 = v47;
       v44 = &v51;
       [v13 perform:v41];
@@ -432,21 +432,21 @@ LABEL_9:
     v36[3] = &unk_27966D230;
     v14 = v7;
     v37 = v14;
-    v38 = self;
+    selfCopy = self;
     v39 = v49;
     v40 = &v51;
     [v14 perform:v36];
-    v15 = [MEMORY[0x277D0C1D8] shared];
-    v16 = [v15 multiplayerAllowedPlayerType];
+    mEMORY[0x277D0C1D8]2 = [MEMORY[0x277D0C1D8] shared];
+    multiplayerAllowedPlayerType = [mEMORY[0x277D0C1D8]2 multiplayerAllowedPlayerType];
 
-    if (v16 == 2)
+    if (multiplayerAllowedPlayerType == 2)
     {
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __72__GKDashboardMultiplayerPickerDataSource_loadDataWithCompletionHandler___block_invoke_181;
       v32[3] = &unk_27966D2C8;
       v33 = v10;
-      v34 = v8;
+      v34 = array2;
       v35 = &v51;
       [v14 perform:v32];
     }
@@ -459,14 +459,14 @@ LABEL_9:
   v23[3] = &unk_27966D360;
   v23[4] = self;
   v29 = v49;
-  v18 = v8;
+  v18 = array2;
   v24 = v18;
-  v19 = v9;
+  v19 = array3;
   v25 = v19;
   v20 = v10;
   v26 = v20;
   v30 = v47;
-  v21 = v4;
+  v21 = handlerCopy;
   v28 = v21;
   v31 = &v51;
   v22 = v7;
@@ -1679,8 +1679,8 @@ void __72__GKDashboardMultiplayerPickerDataSource_loadDataWithCompletionHandler_
 {
   if ([(GKCollectionDataSource *)self isSearching])
   {
-    v3 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-    v4 = [v3 count];
+    searchPlayersAndGroups = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+    v4 = [searchPlayersAndGroups count];
 
     return v4;
   }
@@ -1696,11 +1696,11 @@ void __72__GKDashboardMultiplayerPickerDataSource_loadDataWithCompletionHandler_
 {
   if ([(GKDashboardMultiplayerPickerDataSource *)self supportsNearby])
   {
-    v3 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
-    if ([v3 count])
+    nearbyPlayers = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
+    if ([nearbyPlayers count])
     {
-      v4 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
-      v5 = [v4 count];
+      nearbyPlayers2 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
+      v5 = [nearbyPlayers2 count];
     }
 
     else
@@ -1716,87 +1716,87 @@ void __72__GKDashboardMultiplayerPickerDataSource_loadDataWithCompletionHandler_
 
   if (![(GKDashboardMultiplayerPickerDataSource *)self nearbyOnly])
   {
-    v6 = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
-    v7 = [v6 count];
-    v8 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-    v5 += v7 + [v8 count];
+    suggestedPlayers = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
+    v7 = [suggestedPlayers count];
+    friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+    v5 += v7 + [friendPlayers count];
   }
 
   return v5;
 }
 
-- (id)playersForSection:(int64_t)a3 ignoreSearch:(BOOL)a4
+- (id)playersForSection:(int64_t)section ignoreSearch:(BOOL)search
 {
-  if (!a4 && [(GKCollectionDataSource *)self isSearching])
+  if (!search && [(GKCollectionDataSource *)self isSearching])
   {
 LABEL_6:
-    v6 = 0;
+    friendPlayers = 0;
     goto LABEL_8;
   }
 
-  if (a3)
+  if (section)
   {
-    if (a3 == 1)
+    if (section == 1)
     {
-      v6 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+      friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
       goto LABEL_8;
     }
 
     goto LABEL_6;
   }
 
-  v6 = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
+  friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
 LABEL_8:
 
-  return v6;
+  return friendPlayers;
 }
 
-- (id)playerForIndexPath:(id)a3
+- (id)playerForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[GKDashboardMultiplayerPickerDataSource playersForSection:ignoreSearch:](self, "playersForSection:ignoreSearch:", [v4 section], 0);
-  v6 = [v4 item];
+  pathCopy = path;
+  v5 = -[GKDashboardMultiplayerPickerDataSource playersForSection:ignoreSearch:](self, "playersForSection:ignoreSearch:", [pathCopy section], 0);
+  item = [pathCopy item];
 
-  if ([v5 count] <= v6)
+  if ([v5 count] <= item)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 objectAtIndexedSubscript:v6];
+    v7 = [v5 objectAtIndexedSubscript:item];
   }
 
   return v7;
 }
 
-- (BOOL)isPlayerAtIndexPathCoreRecent:(id)a3
+- (BOOL)isPlayerAtIndexPathCoreRecent:(id)recent
 {
-  v4 = a3;
-  if ([v4 section])
+  recentCopy = recent;
+  if ([recentCopy section])
   {
-    v5 = 0;
+    isInContacts = 0;
   }
 
   else
   {
-    v6 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:v4];
-    v5 = [v6 isInContacts];
+    v6 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:recentCopy];
+    isInContacts = [v6 isInContacts];
   }
 
-  return v5;
+  return isInContacts;
 }
 
-- (id)playerForPlayerID:(id)a3
+- (id)playerForPlayerID:(id)d
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
-  v6 = [v5 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  nearbyPlayers = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
+  v6 = [nearbyPlayers countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1807,13 +1807,13 @@ LABEL_3:
     {
       if (*v37 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(nearbyPlayers);
       }
 
       v10 = *(*(&v36 + 1) + 8 * v9);
-      v11 = [v10 internal];
-      v12 = [v11 playerID];
-      v13 = [v12 isEqualToString:v4];
+      internal = [v10 internal];
+      playerID = [internal playerID];
+      v13 = [playerID isEqualToString:dCopy];
 
       if (v13)
       {
@@ -1822,7 +1822,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v36 objects:v42 count:16];
+        v7 = [nearbyPlayers countByEnumeratingWithState:&v36 objects:v42 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1841,8 +1841,8 @@ LABEL_9:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v5 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-    v14 = [v5 countByEnumeratingWithState:&v32 objects:v41 count:16];
+    nearbyPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+    v14 = [nearbyPlayers countByEnumeratingWithState:&v32 objects:v41 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1853,13 +1853,13 @@ LABEL_11:
       {
         if (*v33 != v16)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(nearbyPlayers);
         }
 
         v10 = *(*(&v32 + 1) + 8 * v17);
-        v18 = [v10 internal];
-        v19 = [v18 playerID];
-        v20 = [v19 isEqualToString:v4];
+        internal2 = [v10 internal];
+        playerID2 = [internal2 playerID];
+        v20 = [playerID2 isEqualToString:dCopy];
 
         if (v20)
         {
@@ -1868,7 +1868,7 @@ LABEL_11:
 
         if (v15 == ++v17)
         {
-          v15 = [v5 countByEnumeratingWithState:&v32 objects:v41 count:16];
+          v15 = [nearbyPlayers countByEnumeratingWithState:&v32 objects:v41 count:16];
           if (v15)
           {
             goto LABEL_11;
@@ -1887,8 +1887,8 @@ LABEL_17:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v5 = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
-      v21 = [v5 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      nearbyPlayers = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
+      v21 = [nearbyPlayers countByEnumeratingWithState:&v28 objects:v40 count:16];
       if (!v21)
       {
         goto LABEL_27;
@@ -1901,13 +1901,13 @@ LABEL_19:
       {
         if (*v29 != v22)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(nearbyPlayers);
         }
 
         v10 = *(*(&v28 + 1) + 8 * v23);
-        v24 = [v10 internal];
-        v25 = [v24 playerID];
-        v26 = [v25 isEqualToString:v4];
+        internal3 = [v10 internal];
+        playerID3 = [internal3 playerID];
+        v26 = [playerID3 isEqualToString:dCopy];
 
         if (v26)
         {
@@ -1916,7 +1916,7 @@ LABEL_19:
 
         if (v21 == ++v23)
         {
-          v21 = [v5 countByEnumeratingWithState:&v28 objects:v40 count:16];
+          v21 = [nearbyPlayers countByEnumeratingWithState:&v28 objects:v40 count:16];
           if (v21)
           {
             goto LABEL_19;
@@ -1941,28 +1941,28 @@ LABEL_27:
   v13 = 3221225472;
   v14 = __57__GKDashboardMultiplayerPickerDataSource_selectedPlayers__block_invoke;
   v15 = &unk_27966D338;
-  v16 = self;
+  selfCopy = self;
   v17 = v3;
   v4 = v3;
   v5 = _Block_copy(&v12);
   v6 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers:v12];
   v5[2](v5, v6);
 
-  v7 = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
-  v5[2](v5, v7);
+  suggestedPlayers = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
+  v5[2](v5, suggestedPlayers);
 
-  v8 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-  v5[2](v5, v8);
+  friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+  v5[2](v5, friendPlayers);
 
   if (![(GKDashboardMultiplayerPickerDataSource *)self excludesContacts])
   {
-    v9 = [(GKDashboardMultiplayerPickerDataSource *)self contactPlayers];
-    v5[2](v5, v9);
+    contactPlayers = [(GKDashboardMultiplayerPickerDataSource *)self contactPlayers];
+    v5[2](v5, contactPlayers);
   }
 
-  v10 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
 void __57__GKDashboardMultiplayerPickerDataSource_selectedPlayers__block_invoke(uint64_t a1, void *a2)
@@ -2017,8 +2017,8 @@ void __57__GKDashboardMultiplayerPickerDataSource_selectedPlayers__block_invoke(
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_playerStates allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_playerStates allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2029,20 +2029,20 @@ void __57__GKDashboardMultiplayerPickerDataSource_selectedPlayers__block_invoke(
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_playerStates objectForKey:v8];
-        v10 = [v9 integerValue];
+        integerValue = [v9 integerValue];
 
-        if (v10 == 1)
+        if (integerValue == 1)
         {
           [(NSMutableDictionary *)self->_playerStates setObject:&unk_286189348 forKeyedSubscript:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -2056,8 +2056,8 @@ void __57__GKDashboardMultiplayerPickerDataSource_selectedPlayers__block_invoke(
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayerGroups];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  suggestedPlayerGroups = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayerGroups];
+  v4 = [suggestedPlayerGroups countByEnumeratingWithState:&v15 objects:v19 count:16];
   v5 = MEMORY[0x277D0BE78];
   if (v4)
   {
@@ -2069,26 +2069,26 @@ void __57__GKDashboardMultiplayerPickerDataSource_selectedPlayers__block_invoke(
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(suggestedPlayerGroups);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([v9 source] != 1 && objc_msgSend(v9, "source") != 2)
         {
-          v10 = [v9 players];
-          v11 = [v10 count];
+          players = [v9 players];
+          v11 = [players count];
 
           if (v11 >= 2 && [(GKDashboardMultiplayerPickerDataSource *)self shouldSelectPlayerGroup:v9])
           {
 
-            v3 = [MEMORY[0x277D0C1F8] reporter];
-            [v3 reportEvent:*v5 type:*MEMORY[0x277D0BCA0]];
+            suggestedPlayerGroups = [MEMORY[0x277D0C1F8] reporter];
+            [suggestedPlayerGroups reportEvent:*v5 type:*MEMORY[0x277D0BCA0]];
             goto LABEL_14;
           }
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [suggestedPlayerGroups countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -2100,26 +2100,26 @@ void __57__GKDashboardMultiplayerPickerDataSource_selectedPlayers__block_invoke(
 
 LABEL_14:
 
-  v12 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
-  v13 = [v12 count];
+  selectedMessageGroups = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
+  v13 = [selectedMessageGroups count];
 
   if (v13)
   {
-    v14 = [MEMORY[0x277D0C1F8] reporter];
-    [v14 reportEvent:*v5 type:*MEMORY[0x277D0BCA8]];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    [reporter reportEvent:*v5 type:*MEMORY[0x277D0BCA8]];
   }
 }
 
-- (unint64_t)cornerMaskForItemAtIndexPath:(id)a3
+- (unint64_t)cornerMaskForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[GKDashboardMultiplayerPickerDataSource numberOfItemsInSection:](self, "numberOfItemsInSection:", [v4 section]);
-  v6 = [v4 section];
-  if (v6)
+  pathCopy = path;
+  v5 = -[GKDashboardMultiplayerPickerDataSource numberOfItemsInSection:](self, "numberOfItemsInSection:", [pathCopy section]);
+  section = [pathCopy section];
+  if (section)
   {
-    if (v6 == 1)
+    if (section == 1)
     {
-      if ([v4 item] == v5 - 1 && !-[GKDashboardMultiplayerPickerDataSource isShowingAddFriendsFooter](self, "isShowingAddFriendsFooter"))
+      if ([pathCopy item] == v5 - 1 && !-[GKDashboardMultiplayerPickerDataSource isShowingAddFriendsFooter](self, "isShowingAddFriendsFooter"))
       {
         if ([(GKDashboardMultiplayerPickerDataSource *)self _canShowMoreFriends])
         {
@@ -2160,7 +2160,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ([v4 item])
+  if ([pathCopy item])
   {
     v8 = 0;
   }
@@ -2170,7 +2170,7 @@ LABEL_13:
     v8 = 3;
   }
 
-  if ([v4 item] == v5 - 1)
+  if ([pathCopy item] == v5 - 1)
   {
     v8 |= 0xCuLL;
   }
@@ -2180,48 +2180,48 @@ LABEL_20:
   return v8;
 }
 
-- (id)fullContactWithIdentifier:(id)a3
+- (id)fullContactWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GKDashboardMultiplayerPickerDataSource *)self contactSource];
-  v6 = [v5 fullContactWithIdentifier:v4];
+  identifierCopy = identifier;
+  contactSource = [(GKDashboardMultiplayerPickerDataSource *)self contactSource];
+  v6 = [contactSource fullContactWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)firstIndexPathForPlayer:(id)a3
+- (id)firstIndexPathForPlayer:(id)player
 {
-  v3 = [(GKDashboardMultiplayerPickerDataSource *)self indexPathsForPlayer:a3];
-  v4 = [v3 firstObject];
+  v3 = [(GKDashboardMultiplayerPickerDataSource *)self indexPathsForPlayer:player];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)indexPathsForPlayer:(id)a3
+- (id)indexPathsForPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
+  playerCopy = player;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   for (i = 0; i != 3; ++i)
   {
     v7 = [(GKDashboardMultiplayerPickerDataSource *)self playersForSection:i ignoreSearch:0];
-    v8 = [v7 indexOfObject:v4];
+    v8 = [v7 indexOfObject:playerCopy];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = [MEMORY[0x277CCAA70] indexPathForItem:v8 inSection:i];
-      [v5 addObject:v9];
+      [orderedSet addObject:v9];
     }
   }
 
-  v10 = [v5 copy];
+  v10 = [orderedSet copy];
 
   return v10;
 }
 
-- (id)indexPathForPlayer:(id)a3 inSection:(unint64_t)a4
+- (id)indexPathForPlayer:(id)player inSection:(unint64_t)section
 {
-  v6 = a3;
-  v7 = [(GKDashboardMultiplayerPickerDataSource *)self playersForSection:a4 ignoreSearch:0];
-  v8 = [v7 indexOfObject:v6];
+  playerCopy = player;
+  v7 = [(GKDashboardMultiplayerPickerDataSource *)self playersForSection:section ignoreSearch:0];
+  v8 = [v7 indexOfObject:playerCopy];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -2230,7 +2230,7 @@ LABEL_20:
 
   else
   {
-    v9 = [MEMORY[0x277CCAA70] indexPathForItem:v8 inSection:a4];
+    v9 = [MEMORY[0x277CCAA70] indexPathForItem:v8 inSection:section];
   }
 
   return v9;
@@ -2242,8 +2242,8 @@ LABEL_20:
   while (1)
   {
     v4 = [(GKDashboardMultiplayerPickerDataSource *)self playersForSection:v3 ignoreSearch:0];
-    v5 = [v4 firstObject];
-    if (v5)
+    firstObject = [v4 firstObject];
+    if (firstObject)
     {
       break;
     }
@@ -2255,7 +2255,7 @@ LABEL_20:
     }
   }
 
-  v7 = v5;
+  v7 = firstObject;
   v6 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v3];
 
 LABEL_6:
@@ -2263,9 +2263,9 @@ LABEL_6:
   return v6;
 }
 
-- (id)searchKeyForSection:(int64_t)a3
+- (id)searchKeyForSection:(int64_t)section
 {
-  if (a3 == 1)
+  if (section == 1)
   {
     return @"groupName";
   }
@@ -2276,9 +2276,9 @@ LABEL_6:
   }
 }
 
-- (id)alternateSearchKeyForSection:(int64_t)a3
+- (id)alternateSearchKeyForSection:(int64_t)section
 {
-  if (a3 == 1)
+  if (section == 1)
   {
     return @"groupName";
   }
@@ -2295,17 +2295,17 @@ LABEL_6:
   if ([(GKCollectionDataSource *)self isSearching])
   {
     v3 = objc_alloc(MEMORY[0x277CBEB18]);
-    v4 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
-    v5 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-    v6 = [v3 initWithObjects:{v4, v5, 0}];
+    nearbyPlayers = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
+    friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+    v6 = [v3 initWithObjects:{nearbyPlayers, friendPlayers, 0}];
 
     if (![(GKDashboardMultiplayerPickerDataSource *)self excludesContacts])
     {
-      v7 = [(GKDashboardMultiplayerPickerDataSource *)self contactPlayers];
-      [v6 addObject:v7];
+      contactPlayers = [(GKDashboardMultiplayerPickerDataSource *)self contactPlayers];
+      [v6 addObject:contactPlayers];
     }
 
-    v38 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v39 = [MEMORY[0x277CBEB58] set];
     v52 = 0u;
     v53 = 0u;
@@ -2358,7 +2358,7 @@ LABEL_6:
                   v18 = [v15 displayNameWithOptions:0];
                   [v16 setGroupName:v18];
 
-                  [v38 addObject:v16];
+                  [orderedSet addObject:v16];
                   [v39 addObject:v15];
                 }
               }
@@ -2383,8 +2383,8 @@ LABEL_6:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v35 = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayerGroups];
-    v19 = [v35 countByEnumeratingWithState:&v44 objects:v57 count:16];
+    suggestedPlayerGroups = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayerGroups];
+    v19 = [suggestedPlayerGroups countByEnumeratingWithState:&v44 objects:v57 count:16];
     if (v19)
     {
       v20 = v19;
@@ -2395,7 +2395,7 @@ LABEL_6:
         {
           if (*v45 != v37)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(suggestedPlayerGroups);
           }
 
           v22 = *(*(&v44 + 1) + 8 * j);
@@ -2403,8 +2403,8 @@ LABEL_6:
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v23 = [v22 players];
-          v24 = [v23 countByEnumeratingWithState:&v40 objects:v56 count:16];
+          players = [v22 players];
+          v24 = [players countByEnumeratingWithState:&v40 objects:v56 count:16];
           if (v24)
           {
             v25 = v24;
@@ -2415,18 +2415,18 @@ LABEL_6:
               {
                 if (*v41 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(players);
                 }
 
                 v28 = *(*(&v40 + 1) + 8 * k);
                 if ([(GKCollectionDataSource *)self searchMatchesItem:v28 inSection:0])
                 {
-                  v29 = [v22 players];
-                  if ([v29 count] > 1)
+                  players2 = [v22 players];
+                  if ([players2 count] > 1)
                   {
 
 LABEL_39:
-                    [v38 addObject:v22];
+                    [orderedSet addObject:v22];
 
                     goto LABEL_40;
                   }
@@ -2440,7 +2440,7 @@ LABEL_39:
                 }
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v40 objects:v56 count:16];
+              v25 = [players countByEnumeratingWithState:&v40 objects:v56 count:16];
               if (v25)
               {
                 continue;
@@ -2452,21 +2452,21 @@ LABEL_39:
 
           if ([(GKCollectionDataSource *)self searchMatchesItem:v22 inSection:1])
           {
-            [v38 addObject:v22];
+            [orderedSet addObject:v22];
           }
 
 LABEL_40:
           ;
         }
 
-        v20 = [v35 countByEnumeratingWithState:&v44 objects:v57 count:16];
+        v20 = [suggestedPlayerGroups countByEnumeratingWithState:&v44 objects:v57 count:16];
       }
 
       while (v20);
     }
 
-    v31 = [v38 array];
-    [(GKDashboardMultiplayerPickerDataSource *)self setSearchPlayersAndGroups:v31];
+    array = [orderedSet array];
+    [(GKDashboardMultiplayerPickerDataSource *)self setSearchPlayersAndGroups:array];
   }
 
   else
@@ -2476,40 +2476,40 @@ LABEL_40:
   }
 }
 
-- (void)setSupportsNearby:(BOOL)a3
+- (void)setSupportsNearby:(BOOL)nearby
 {
-  if (self->_supportsNearby != a3)
+  if (self->_supportsNearby != nearby)
   {
-    v3 = a3;
-    self->_supportsNearby = a3;
+    nearbyCopy = nearby;
+    self->_supportsNearby = nearby;
     if ([(GKDashboardMultiplayerPickerDataSource *)self didLoad])
     {
 
-      [(GKDashboardMultiplayerPickerDataSource *)self setBrowsingForNearbyPlayers:v3];
+      [(GKDashboardMultiplayerPickerDataSource *)self setBrowsingForNearbyPlayers:nearbyCopy];
     }
   }
 }
 
-- (void)setBrowsingForNearbyPlayers:(BOOL)a3
+- (void)setBrowsingForNearbyPlayers:(BOOL)players
 {
-  v3 = a3;
-  v5 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyDelegate];
+  playersCopy = players;
+  nearbyDelegate = [(GKDashboardMultiplayerPickerDataSource *)self nearbyDelegate];
 
-  if (v5)
+  if (nearbyDelegate)
   {
-    if (self->_browsingForNearbyPlayers != v3)
+    if (self->_browsingForNearbyPlayers != playersCopy)
     {
-      self->_browsingForNearbyPlayers = v3;
-      if (v3)
+      self->_browsingForNearbyPlayers = playersCopy;
+      if (playersCopy)
       {
         objc_initWeak(&location, self);
-        v6 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyDelegate];
+        nearbyDelegate2 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyDelegate];
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
         v10[2] = __70__GKDashboardMultiplayerPickerDataSource_setBrowsingForNearbyPlayers___block_invoke;
         v10[3] = &unk_27966D388;
         objc_copyWeak(&v11, &location);
-        [v6 startBrowsingForNearbyPlayersWithReachableHandler:v10];
+        [nearbyDelegate2 startBrowsingForNearbyPlayersWithReachableHandler:v10];
 
         objc_destroyWeak(&v11);
         objc_destroyWeak(&location);
@@ -2517,8 +2517,8 @@ LABEL_40:
 
       else
       {
-        v9 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyDelegate];
-        [v9 stopBrowsingForNearbyPlayers];
+        nearbyDelegate3 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyDelegate];
+        [nearbyDelegate3 stopBrowsingForNearbyPlayers];
       }
     }
   }
@@ -2548,30 +2548,30 @@ void __70__GKDashboardMultiplayerPickerDataSource_setBrowsingForNearbyPlayers___
   objc_destroyWeak(&to);
 }
 
-- (void)setNearbyPlayerID:(id)a3 reachable:(BOOL)a4
+- (void)setNearbyPlayerID:(id)d reachable:(BOOL)reachable
 {
-  v4 = a4;
+  reachableCopy = reachable;
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(GKDashboardMultiplayerPickerDataSource *)self playerForPlayerID:v6];
+  dCopy = d;
+  v7 = [(GKDashboardMultiplayerPickerDataSource *)self playerForPlayerID:dCopy];
   if (v7)
   {
-    [(GKDashboardMultiplayerPickerDataSource *)self setNearbyPlayer:v7 reachable:v4];
+    [(GKDashboardMultiplayerPickerDataSource *)self setNearbyPlayer:v7 reachable:reachableCopy];
   }
 
   else
   {
     objc_initWeak(&location, self);
     v8 = MEMORY[0x277D0C170];
-    v15[0] = v6;
+    v15[0] = dCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __70__GKDashboardMultiplayerPickerDataSource_setNearbyPlayerID_reachable___block_invoke;
     v10[3] = &unk_27966D3B0;
     objc_copyWeak(&v12, &location);
-    v11 = v6;
-    v13 = v4;
+    v11 = dCopy;
+    v13 = reachableCopy;
     [v8 loadPlayersForIdentifiersPrivate:v9 withCompletionHandler:v10];
 
     objc_destroyWeak(&v12);
@@ -2617,10 +2617,10 @@ LABEL_7:
   objc_destroyWeak(&to);
 }
 
-- (void)setNearbyPlayer:(id)a3 reachable:(BOOL)a4
+- (void)setNearbyPlayer:(id)player reachable:(BOOL)reachable
 {
-  v6 = a3;
-  if (v6)
+  playerCopy = player;
+  if (playerCopy)
   {
     v7 = [MEMORY[0x277D0C020] dispatchGroupWithName:@"pickerDataSourceSetNearbyPlayer"];
     v13[0] = 0;
@@ -2628,15 +2628,15 @@ LABEL_7:
     v13[2] = 0x3032000000;
     v13[3] = __Block_byref_object_copy__12;
     v13[4] = __Block_byref_object_dispose__12;
-    v14 = v6;
+    v14 = playerCopy;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __68__GKDashboardMultiplayerPickerDataSource_setNearbyPlayer_reachable___block_invoke;
     v8[3] = &unk_27966D3D8;
     v11 = v13;
-    v12 = a4;
+    reachableCopy = reachable;
     v9 = v14;
-    v10 = self;
+    selfCopy = self;
     [v7 notifyOnMainQueueWithBlock:v8];
 
     _Block_object_dispose(v13, 8);
@@ -2766,35 +2766,35 @@ LABEL_16:
   }
 }
 
-- (void)updateStateForUnreachableNearbyPlayer:(id)a3
+- (void)updateStateForUnreachableNearbyPlayer:(id)player
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-  if ([v5 containsObject:v4])
+  playerCopy = player;
+  friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+  if ([friendPlayers containsObject:playerCopy])
   {
     goto LABEL_4;
   }
 
-  v6 = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
-  v7 = [v6 containsObject:v4];
+  suggestedPlayers = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayers];
+  v7 = [suggestedPlayers containsObject:playerCopy];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-    v9 = [v4 referenceKey];
-    [v8 removeObjectForKey:v9];
+    playerStates = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+    referenceKey = [playerCopy referenceKey];
+    [playerStates removeObjectForKey:referenceKey];
 
-    v5 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-    v11[0] = v4;
+    friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+    v11[0] = playerCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    [v5 pickerDatasource:self didDeselectPlayers:v10 inGroup:0];
+    [friendPlayers pickerDatasource:self didDeselectPlayers:v10 inGroup:0];
 
 LABEL_4:
   }
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   if ([(GKCollectionDataSource *)self isSearching])
   {
@@ -2807,27 +2807,27 @@ LABEL_4:
   }
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
   if ([(GKCollectionDataSource *)self isSearching])
   {
-    v5 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-    v6 = [v5 count];
+    searchPlayersAndGroups = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+    v6 = [searchPlayersAndGroups count];
 
     return v6;
   }
 
-  v7 = [(GKDashboardMultiplayerPickerDataSource *)self playersForSection:a3 ignoreSearch:1];
+  v7 = [(GKDashboardMultiplayerPickerDataSource *)self playersForSection:section ignoreSearch:1];
   v6 = [v7 count];
 
-  if (!a3)
+  if (!section)
   {
     return [(GKDashboardMultiplayerPickerDataSource *)self pickerOrigin]== 1;
   }
 
-  if (a3 != 1)
+  if (section != 1)
   {
-    if (a3 != 2)
+    if (section != 2)
     {
       return v6;
     }
@@ -2864,21 +2864,21 @@ LABEL_4:
 
 - (BOOL)hasFriends
 {
-  v2 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-  v3 = [v2 count] != 0;
+  friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+  v3 = [friendPlayers count] != 0;
 
   return v3;
 }
 
-- (id)playerCellForItemAtIndexPath:(id)a3 inCollectionView:(id)a4
+- (id)playerCellForItemAtIndexPath:(id)path inCollectionView:(id)view
 {
   v6 = MEMORY[0x277D75C80];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentTraitCollection];
-  v10 = [v9 preferredContentSizeCategory];
+  viewCopy = view;
+  pathCopy = path;
+  currentTraitCollection = [v6 currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v10))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v11 = @"playerCellAX";
   }
@@ -2888,28 +2888,28 @@ LABEL_4:
     v11 = @"playerCell";
   }
 
-  v12 = [v7 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v8];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  v13 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:v8];
+  v13 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:pathCopy];
   playerStates = self->_playerStates;
-  v15 = [v13 referenceKey];
-  v16 = [(NSMutableDictionary *)playerStates objectForKey:v15];
-  v17 = [v16 integerValue];
+  referenceKey = [v13 referenceKey];
+  v16 = [(NSMutableDictionary *)playerStates objectForKey:referenceKey];
+  integerValue = [v16 integerValue];
 
-  [v12 setSelectable:v17 != 2];
-  v18 = -[GKDashboardMultiplayerPickerDataSource numberOfItemsInSection:](self, "numberOfItemsInSection:", [v8 section]);
-  v19 = [v8 section];
-  v20 = [v8 item];
+  [v12 setSelectable:integerValue != 2];
+  v18 = -[GKDashboardMultiplayerPickerDataSource numberOfItemsInSection:](self, "numberOfItemsInSection:", [pathCopy section]);
+  section = [pathCopy section];
+  item = [pathCopy item];
 
   v21 = v18 - 1;
-  if (v19 == 1)
+  if (section == 1)
   {
-    v22 = v20 != v21 || [(GKDashboardMultiplayerPickerDataSource *)self isShowingAddFriendsFooter]|| [(GKDashboardMultiplayerPickerDataSource *)self _canShowMoreFriends];
+    v22 = item != v21 || [(GKDashboardMultiplayerPickerDataSource *)self isShowingAddFriendsFooter]|| [(GKDashboardMultiplayerPickerDataSource *)self _canShowMoreFriends];
   }
 
   else
   {
-    v22 = v20 < v21;
+    v22 = item < v21;
   }
 
   [v12 setLineVisible:v22];
@@ -2917,15 +2917,15 @@ LABEL_4:
   return v12;
 }
 
-- (id)playerGroupCellForItemAtIndexPath:(id)a3 inCollectionView:(id)a4
+- (id)playerGroupCellForItemAtIndexPath:(id)path inCollectionView:(id)view
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = MEMORY[0x277D75C80];
-  v8 = a4;
-  v9 = [v7 currentTraitCollection];
-  v10 = [v9 preferredContentSizeCategory];
+  viewCopy = view;
+  currentTraitCollection = [v7 currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v10))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     +[GKDashboardPickerPlayerGroupCell reuseIdentifierAX];
   }
@@ -2935,37 +2935,37 @@ LABEL_4:
     +[GKDashboardPickerPlayerGroupCell reuseIdentifier];
   }
   v77 = ;
-  v11 = [v8 dequeueReusableCellWithReuseIdentifier:v77 forIndexPath:v6];
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:v77 forIndexPath:pathCopy];
 
   [v11 setGroupCellDelegate:self];
-  v12 = [(GKCollectionDataSource *)self searchText];
+  searchText = [(GKCollectionDataSource *)self searchText];
   v76 = v11;
-  [v11 setSearchText:v12];
+  [v11 setSearchText:searchText];
 
-  v13 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-  v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+  searchPlayersAndGroups = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+  v14 = [searchPlayersAndGroups objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v15 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-  v75 = [v15 count];
+  searchPlayersAndGroups2 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+  v75 = [searchPlayersAndGroups2 count];
 
-  v16 = [v14 groupName];
-  if (![(__CFString *)v16 length])
+  groupName = [v14 groupName];
+  if (![(__CFString *)groupName length])
   {
-    v17 = [v14 players];
-    if ([v17 count] < 4)
+    players = [v14 players];
+    if ([players count] < 4)
     {
-      if ([v17 count] < 3)
+      if ([players count] < 3)
       {
-        if ([v17 count] < 2)
+        if ([players count] < 2)
         {
-          if (![v17 count])
+          if (![players count])
           {
 LABEL_14:
 
             goto LABEL_15;
           }
 
-          v24 = [v17 objectAtIndexedSubscript:0];
+          v24 = [players objectAtIndexedSubscript:0];
           v23 = [v24 displayNameWithOptions:0];
         }
 
@@ -2974,19 +2974,19 @@ LABEL_14:
           v74 = MEMORY[0x277CCACA8];
           v24 = GKGameCenterUIFrameworkBundle();
           v65 = GKGetLocalizedStringFromTableInBundle();
-          v68 = [v17 objectAtIndexedSubscript:0];
+          v68 = [players objectAtIndexedSubscript:0];
           [v68 displayNameWithOptions:0];
-          v31 = v71 = v10;
-          v32 = [v17 objectAtIndexedSubscript:1];
+          v31 = v71 = preferredContentSizeCategory;
+          v32 = [players objectAtIndexedSubscript:1];
           v33 = [v32 displayNameWithOptions:0];
           [v74 stringWithFormat:v65, v31, v33];
-          v35 = v34 = v17;
+          v35 = v34 = players;
 
           v23 = v35;
-          v17 = v34;
+          players = v34;
 
-          v10 = v71;
-          v16 = v65;
+          preferredContentSizeCategory = v71;
+          groupName = v65;
         }
       }
 
@@ -2995,23 +2995,23 @@ LABEL_14:
         v64 = MEMORY[0x277CCACA8];
         v73 = GKGameCenterUIFrameworkBundle();
         v70 = GKGetLocalizedStringFromTableInBundle();
-        v67 = [v17 objectAtIndexedSubscript:0];
+        v67 = [players objectAtIndexedSubscript:0];
         v60 = [v67 displayNameWithOptions:0];
-        v62 = [v17 objectAtIndexedSubscript:1];
+        v62 = [players objectAtIndexedSubscript:1];
         v25 = [v62 displayNameWithOptions:0];
-        v26 = [v17 objectAtIndexedSubscript:2];
+        v26 = [players objectAtIndexedSubscript:2];
         [v26 displayNameWithOptions:0];
-        v28 = v27 = v10;
+        v28 = v27 = preferredContentSizeCategory;
         [v64 stringWithFormat:v70, v60, v25, v28];
-        v30 = v29 = v17;
+        v30 = v29 = players;
 
-        v10 = v27;
+        preferredContentSizeCategory = v27;
         v24 = v73;
 
         v23 = v30;
-        v17 = v29;
+        players = v29;
 
-        v16 = v70;
+        groupName = v70;
       }
     }
 
@@ -3020,45 +3020,45 @@ LABEL_14:
       v63 = MEMORY[0x277CCACA8];
       v72 = GKGameCenterUIFrameworkBundle();
       v57 = GKGetLocalizedStringFromTableInBundle();
-      v66 = [v17 objectAtIndexedSubscript:0];
+      v66 = [players objectAtIndexedSubscript:0];
       v58 = [v66 displayNameWithOptions:0];
-      v61 = [v17 objectAtIndexedSubscript:1];
+      v61 = [players objectAtIndexedSubscript:1];
       v56 = [v61 displayNameWithOptions:0];
-      v59 = [v17 objectAtIndexedSubscript:2];
+      v59 = [players objectAtIndexedSubscript:2];
       v18 = [v59 displayNameWithOptions:0];
-      [v17 objectAtIndexedSubscript:3];
-      v19 = v69 = v10;
+      [players objectAtIndexedSubscript:3];
+      v19 = v69 = preferredContentSizeCategory;
       v20 = [v19 displayNameWithOptions:0];
       [v63 stringWithFormat:v57, v58, v56, v18, v20];
-      v22 = v21 = v17;
+      v22 = v21 = players;
 
       v23 = v22;
-      v17 = v21;
+      players = v21;
 
-      v10 = v69;
+      preferredContentSizeCategory = v69;
       v24 = v72;
 
-      v16 = v57;
+      groupName = v57;
     }
 
-    v16 = v23;
+    groupName = v23;
     goto LABEL_14;
   }
 
 LABEL_15:
-  v36 = [v14 isNearby];
-  v37 = [v14 players];
-  v38 = [v37 count];
+  isNearby = [v14 isNearby];
+  players2 = [v14 players];
+  v38 = [players2 count];
 
-  if (v36)
+  if (isNearby)
   {
     if (v38)
     {
-      v39 = [v14 players];
-      v40 = [v39 objectAtIndexedSubscript:0];
+      players3 = [v14 players];
+      v40 = [players3 objectAtIndexedSubscript:0];
       v41 = [v40 displayNameWithOptions:0];
 
-      v16 = v41;
+      groupName = v41;
     }
 
     else
@@ -3074,7 +3074,7 @@ LABEL_15:
         [GKDashboardMultiplayerPickerDataSource playerGroupCellForItemAtIndexPath:inCollectionView:];
       }
 
-      v16 = 0;
+      groupName = 0;
     }
 
     v50 = GKGameCenterUIFrameworkBundle();
@@ -3092,18 +3092,18 @@ LABEL_15:
     v43 = GKGameCenterUIFrameworkBundle();
     v44 = GKGetLocalizedStringFromTableInBundle();
     [v14 players];
-    v45 = v6;
-    v47 = v46 = v10;
+    v45 = pathCopy;
+    v47 = v46 = preferredContentSizeCategory;
     v48 = [v42 localizedStringWithFormat:v44, objc_msgSend(v47, "count")];
 
-    v10 = v46;
-    v6 = v45;
+    preferredContentSizeCategory = v46;
+    pathCopy = v45;
   }
 
-  v51 = [v14 players];
-  if (v16)
+  players4 = [v14 players];
+  if (groupName)
   {
-    v52 = v16;
+    v52 = groupName;
   }
 
   else
@@ -3111,46 +3111,46 @@ LABEL_15:
     v52 = &stru_28612D290;
   }
 
-  v53 = [v14 messagesGroupIdentifier];
-  [v76 configureWithPlayers:v51 title:v52 subtitle:v48 messagesGroupIdentifier:v53 source:objc_msgSend(v14 playerSelectionProxy:{"source"), self}];
+  messagesGroupIdentifier = [v14 messagesGroupIdentifier];
+  [v76 configureWithPlayers:players4 title:v52 subtitle:v48 messagesGroupIdentifier:messagesGroupIdentifier source:objc_msgSend(v14 playerSelectionProxy:{"source"), self}];
 
   v54 = [(GKDashboardMultiplayerPickerDataSource *)self shouldSelectPlayerGroup:v14];
   [v76 setSelected:v54];
   if (v54)
   {
-    [(GKDashboardMultiplayerPickerDataSource *)self selectItemAtIndexPath:v6 animated:0 scrollPosition:0];
+    [(GKDashboardMultiplayerPickerDataSource *)self selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
   }
 
   else
   {
-    [(GKDashboardMultiplayerPickerDataSource *)self deselectItemAtIndexPath:v6 animated:0];
+    [(GKDashboardMultiplayerPickerDataSource *)self deselectItemAtIndexPath:pathCopy animated:0];
   }
 
-  [v76 setLineVisible:{objc_msgSend(v6, "item") < v75 - 1}];
+  [v76 setLineVisible:{objc_msgSend(pathCopy, "item") < v75 - 1}];
 
   return v76;
 }
 
-- (id)suggestionsCellForItemAtIndexPath:(id)a3 inCollectionView:(id)a4
+- (id)suggestionsCellForItemAtIndexPath:(id)path inCollectionView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  viewCopy = view;
   if ([(GKCollectionDataSource *)self isSearching])
   {
-    v8 = [(GKDashboardMultiplayerPickerDataSource *)self playerGroupCellForItemAtIndexPath:v6 inCollectionView:v7];
+    v8 = [(GKDashboardMultiplayerPickerDataSource *)self playerGroupCellForItemAtIndexPath:pathCopy inCollectionView:viewCopy];
   }
 
   else
   {
     v9 = +[_TtC12GameCenterUI26GKSuggestionsContainerCell reuseIdentifier];
-    v8 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+    v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
-    v10 = [(GKCollectionDataSource *)self presentationViewController];
-    [v8 setPresentationViewController:v10];
+    presentationViewController = [(GKCollectionDataSource *)self presentationViewController];
+    [v8 setPresentationViewController:presentationViewController];
 
     [v8 setMultiplayerPickerDataSource:self];
-    v11 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
-    [v8 configureWithDelegate:self nearbyPlayers:v11];
+    nearbyPlayers = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
+    [v8 configureWithDelegate:self nearbyPlayers:nearbyPlayers];
 
     [(GKDashboardMultiplayerPickerDataSource *)self setSuggestionContainerCell:v8];
   }
@@ -3158,32 +3158,32 @@ LABEL_15:
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    v8 = [(GKDashboardMultiplayerPickerDataSource *)self suggestionsCellForItemAtIndexPath:v7 inCollectionView:v6];
+    v8 = [(GKDashboardMultiplayerPickerDataSource *)self suggestionsCellForItemAtIndexPath:pathCopy inCollectionView:viewCopy];
     goto LABEL_8;
   }
 
-  if ([v7 section] == 2)
+  if ([pathCopy section] == 2)
   {
-    v8 = [v6 dequeueReusableCellWithReuseIdentifier:@"playerPickerNearbyInstructionCell" forIndexPath:v7];
+    v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"playerPickerNearbyInstructionCell" forIndexPath:pathCopy];
 LABEL_8:
     v9 = v8;
     goto LABEL_9;
   }
 
-  if ([v7 section] != 1 || -[GKDashboardMultiplayerPickerDataSource hasFriends](self, "hasFriends"))
+  if ([pathCopy section] != 1 || -[GKDashboardMultiplayerPickerDataSource hasFriends](self, "hasFriends"))
   {
-    v8 = [(GKDashboardMultiplayerPickerDataSource *)self playerCellForItemAtIndexPath:v7 inCollectionView:v6];
+    v8 = [(GKDashboardMultiplayerPickerDataSource *)self playerCellForItemAtIndexPath:pathCopy inCollectionView:viewCopy];
     goto LABEL_8;
   }
 
   v11 = +[_TtC12GameCenterUI32GKMultiplayerPickerNoFriendsCell reuseIdentifier];
-  v9 = [v6 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v7];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
@@ -3207,9 +3207,9 @@ void __80__GKDashboardMultiplayerPickerDataSource_collectionView_cellForItemAtIn
   [v2 pickerDatasourceDidSelectAddFriend:v3];
 }
 
-- (id)headerTextForSection:(int64_t)a3
+- (id)headerTextForSection:(int64_t)section
 {
-  if ([(GKCollectionDataSource *)self isSearching]|| a3 > 1)
+  if ([(GKCollectionDataSource *)self isSearching]|| section > 1)
   {
     v5 = 0;
   }
@@ -3223,27 +3223,27 @@ void __80__GKDashboardMultiplayerPickerDataSource_collectionView_cellForItemAtIn
   return v5;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   if ([(GKCollectionDataSource *)self isSearching])
   {
     goto LABEL_2;
   }
 
-  v10 = [v8 section];
-  if (!v10)
+  section = [pathCopy section];
+  if (!section)
   {
-    v14 = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayerGroups];
-    if ([v14 count])
+    suggestedPlayerGroups = [(GKDashboardMultiplayerPickerDataSource *)self suggestedPlayerGroups];
+    if ([suggestedPlayerGroups count])
     {
     }
 
     else
     {
-      v15 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
-      v16 = [v15 count];
+      nearbyPlayers = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
+      v16 = [nearbyPlayers count];
 
       if (!v16)
       {
@@ -3255,14 +3255,14 @@ void __80__GKDashboardMultiplayerPickerDataSource_collectionView_cellForItemAtIn
     goto LABEL_14;
   }
 
-  if (v10 != 1)
+  if (section != 1)
   {
-    if (v10 == 2)
+    if (section == 2)
     {
       v11 = _TtC12GameCenterUI40GKMultiplayerPickerNearbyInstructionCell;
 LABEL_9:
-      [v7 bounds];
-      [(__objc2_class *)v11 itemHeightFitting:v7 inTraitEnvironment:v12, v13];
+      [viewCopy bounds];
+      [(__objc2_class *)v11 itemHeightFitting:viewCopy inTraitEnvironment:v12, v13];
       goto LABEL_14;
     }
 
@@ -3279,7 +3279,7 @@ LABEL_16:
   }
 
 LABEL_2:
-  [(GKDashboardMultiplayerPickerDataSource *)self playerCellHeightInCollectionView:v7];
+  [(GKDashboardMultiplayerPickerDataSource *)self playerCellHeightInCollectionView:viewCopy];
 LABEL_14:
   v17 = v9;
   v18 = 0.0;
@@ -3292,18 +3292,18 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)canSelectPlayerGroup:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5
+- (BOOL)canSelectPlayerGroup:(id)group atIndexPath:(id)path inCollectionView:(id)view
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 players];
+  groupCopy = group;
+  pathCopy = path;
+  viewCopy = view;
+  players = [groupCopy players];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v12 = [players countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
@@ -3315,13 +3315,13 @@ LABEL_15:
       {
         if (*v23 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(players);
         }
 
         v14 += [(GKDashboardMultiplayerPickerDataSource *)self playerIsSelectable:*(*(&v22 + 1) + 8 * i)];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v13 = [players countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v13);
@@ -3332,16 +3332,16 @@ LABEL_15:
     v14 = 0;
   }
 
-  v17 = [(GKDashboardMultiplayerPickerDataSource *)self maxSelectable];
-  v18 = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
-  v19 = [v18 count];
+  maxSelectable = [(GKDashboardMultiplayerPickerDataSource *)self maxSelectable];
+  selectedPlayers = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
+  v19 = [selectedPlayers count];
 
   if (!v14)
   {
     goto LABEL_17;
   }
 
-  if (v14 == 1 && v17 == v19)
+  if (v14 == 1 && maxSelectable == v19)
   {
     [(GKDashboardMultiplayerPickerDataSource *)self showSelectionLimitAlert];
 LABEL_17:
@@ -3350,9 +3350,9 @@ LABEL_17:
   }
 
   v20 = 1;
-  if (v14 >= 2 && v14 > v17 - v19)
+  if (v14 >= 2 && v14 > maxSelectable - v19)
   {
-    [(GKDashboardMultiplayerPickerDataSource *)self expandPlayerGroup:v8 atIndexPath:v9 inCollectionView:v10];
+    [(GKDashboardMultiplayerPickerDataSource *)self expandPlayerGroup:groupCopy atIndexPath:pathCopy inCollectionView:viewCopy];
     goto LABEL_17;
   }
 
@@ -3361,35 +3361,35 @@ LABEL_18:
   return v20;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (![(GKDashboardMultiplayerPickerDataSource *)self selectionShouldSkipDelegateResponse])
   {
-    if (![v7 section])
+    if (![pathCopy section])
     {
-      if (!-[GKCollectionDataSource isSearching](self, "isSearching") || (v15 = [v7 item], -[GKDashboardMultiplayerPickerDataSource searchPlayersAndGroups](self, "searchPlayersAndGroups"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v15 >= v17))
+      if (!-[GKCollectionDataSource isSearching](self, "isSearching") || (v15 = [pathCopy item], -[GKDashboardMultiplayerPickerDataSource searchPlayersAndGroups](self, "searchPlayersAndGroups"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v15 >= v17))
       {
         v8 = 0;
         goto LABEL_19;
       }
 
-      v18 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-      v10 = [v18 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+      searchPlayersAndGroups = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+      v10 = [searchPlayersAndGroups objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
       if ([v10 fromPeopleSuggester])
       {
         [(GKDashboardMultiplayerPickerDataSource *)self donateGroupToPeopleSuggester:v10];
       }
 
-      v8 = [(GKDashboardMultiplayerPickerDataSource *)self canSelectPlayerGroup:v10 atIndexPath:v7 inCollectionView:v6];
+      v8 = [(GKDashboardMultiplayerPickerDataSource *)self canSelectPlayerGroup:v10 atIndexPath:pathCopy inCollectionView:viewCopy];
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v9 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:v7];
+    v9 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:pathCopy];
     v10 = v9;
     if (!v9 || (playerStates = self->_playerStates, [v9 referenceKey], v12 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](playerStates, "objectForKey:", v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "integerValue"), v13, v12, v14 == 2))
     {
@@ -3400,11 +3400,11 @@ LABEL_6:
 
     if (self->_maxSelectable >= 1)
     {
-      v19 = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
-      if ([v19 count] >= self->_maxSelectable)
+      selectedPlayers = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
+      if ([selectedPlayers count] >= self->_maxSelectable)
       {
-        v20 = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
-        v21 = [v20 containsObject:v10];
+        selectedPlayers2 = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
+        v21 = [selectedPlayers2 containsObject:v10];
 
         if ((v21 & 1) == 0)
         {
@@ -3418,7 +3418,7 @@ LABEL_6:
       }
     }
 
-    v8 = [v7 section] != 2;
+    v8 = [pathCopy section] != 2;
     goto LABEL_18;
   }
 
@@ -3428,17 +3428,17 @@ LABEL_19:
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (![(GKDashboardMultiplayerPickerDataSource *)self selectionShouldSkipDelegateResponse])
   {
-    if ([v7 section])
+    if ([pathCopy section])
     {
-      v8 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:v7];
-      v9 = v8;
+      v8 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:pathCopy];
+      searchPlayersAndGroups2 = v8;
       if (v8)
       {
         v19[0] = v8;
@@ -3448,14 +3448,14 @@ LABEL_19:
         v16[2] = __82__GKDashboardMultiplayerPickerDataSource_collectionView_didSelectItemAtIndexPath___block_invoke;
         v16[3] = &unk_27966A9A8;
         v16[4] = self;
-        v17 = v6;
-        v18 = v9;
-        [(GKDashboardMultiplayerPickerDataSource *)self didSelectPlayers:v10 indexPath:v7 dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:v16];
+        v17 = viewCopy;
+        v18 = searchPlayersAndGroups2;
+        [(GKDashboardMultiplayerPickerDataSource *)self didSelectPlayers:v10 indexPath:pathCopy dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:v16];
       }
 
       else
       {
-        [(GKDashboardMultiplayerPickerDataSource *)self deselectItemAtIndexPath:v7 animated:0];
+        [(GKDashboardMultiplayerPickerDataSource *)self deselectItemAtIndexPath:pathCopy animated:0];
       }
 
       goto LABEL_10;
@@ -3463,25 +3463,25 @@ LABEL_19:
 
     if ([(GKCollectionDataSource *)self isSearching])
     {
-      v11 = [v7 item];
-      v12 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-      v13 = [v12 count];
+      item = [pathCopy item];
+      searchPlayersAndGroups = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+      v13 = [searchPlayersAndGroups count];
 
-      if (v11 < v13)
+      if (item < v13)
       {
-        v14 = [MEMORY[0x277D0C1F8] reporter];
-        [v14 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BCC8]];
+        reporter = [MEMORY[0x277D0C1F8] reporter];
+        [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BCC8]];
 
-        v9 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-        v15 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
-        [(GKDashboardMultiplayerPickerDataSource *)self didSelectPlayerGroup:v15 indexPath:v7 dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:0];
+        searchPlayersAndGroups2 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+        v15 = [searchPlayersAndGroups2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+        [(GKDashboardMultiplayerPickerDataSource *)self didSelectPlayerGroup:v15 indexPath:pathCopy dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:0];
 
 LABEL_10:
         goto LABEL_11;
       }
     }
 
-    [(GKDashboardMultiplayerPickerDataSource *)self deselectItemAtIndexPath:v7 animated:0];
+    [(GKDashboardMultiplayerPickerDataSource *)self deselectItemAtIndexPath:pathCopy animated:0];
   }
 
 LABEL_11:
@@ -3504,16 +3504,16 @@ void __82__GKDashboardMultiplayerPickerDataSource_collectionView_didSelectItemAt
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (![(GKDashboardMultiplayerPickerDataSource *)self selectionShouldSkipDelegateResponse])
   {
-    if ([v7 section])
+    if ([pathCopy section])
     {
-      v8 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:v7];
+      v8 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:pathCopy];
       v18[0] = v8;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
       v15[0] = MEMORY[0x277D85DD0];
@@ -3521,10 +3521,10 @@ void __82__GKDashboardMultiplayerPickerDataSource_collectionView_didSelectItemAt
       v15[2] = __84__GKDashboardMultiplayerPickerDataSource_collectionView_didDeselectItemAtIndexPath___block_invoke;
       v15[3] = &unk_27966A9A8;
       v15[4] = self;
-      v16 = v6;
+      v16 = viewCopy;
       v17 = v8;
-      v10 = v8;
-      [(GKDashboardMultiplayerPickerDataSource *)self didDeselectPlayers:v9 indexPath:v7 dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:v15];
+      searchPlayersAndGroups2 = v8;
+      [(GKDashboardMultiplayerPickerDataSource *)self didDeselectPlayers:v9 indexPath:pathCopy dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:v15];
 
 LABEL_4:
       goto LABEL_8;
@@ -3532,15 +3532,15 @@ LABEL_4:
 
     if ([(GKCollectionDataSource *)self isSearching])
     {
-      v11 = [v7 item];
-      v12 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-      v13 = [v12 count];
+      item = [pathCopy item];
+      searchPlayersAndGroups = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+      v13 = [searchPlayersAndGroups count];
 
-      if (v11 < v13)
+      if (item < v13)
       {
-        v10 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-        v14 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
-        [(GKDashboardMultiplayerPickerDataSource *)self didDeselectPlayerGroup:v14 indexPath:v7 dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:0];
+        searchPlayersAndGroups2 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+        v14 = [searchPlayersAndGroups2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+        [(GKDashboardMultiplayerPickerDataSource *)self didDeselectPlayerGroup:v14 indexPath:pathCopy dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:0];
 
         goto LABEL_4;
       }
@@ -3569,29 +3569,29 @@ void __84__GKDashboardMultiplayerPickerDataSource_collectionView_didDeselectItem
 
 - (BOOL)_canShowMoreFriends
 {
-  v3 = [(GKDashboardMultiplayerPickerDataSource *)self pickerOrigin];
-  v4 = [(GKDashboardMultiplayerPickerDataSource *)self showsAllFriends];
-  if (v3 != 1)
+  pickerOrigin = [(GKDashboardMultiplayerPickerDataSource *)self pickerOrigin];
+  showsAllFriends = [(GKDashboardMultiplayerPickerDataSource *)self showsAllFriends];
+  if (pickerOrigin != 1)
   {
-    return !v4;
+    return !showsAllFriends;
   }
 
-  if (v4)
+  if (showsAllFriends)
   {
     return 0;
   }
 
-  v6 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-  v7 = [v6 count];
+  friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+  v7 = [friendPlayers count];
   v5 = v7 > [(GKDashboardMultiplayerPickerDataSource *)self numberOfFriendsToShowInitially]+ 1;
 
   return v5;
 }
 
-- (BOOL)shouldSelectPlayerGroup:(id)a3
+- (BOOL)shouldSelectPlayerGroup:(id)group
 {
   v17 = *MEMORY[0x277D85DE8];
-  [a3 players];
+  [group players];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -3638,24 +3638,24 @@ LABEL_12:
   return v7 & 1;
 }
 
-- (void)expandPlayerGroup:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5
+- (void)expandPlayerGroup:(id)group atIndexPath:(id)path inCollectionView:(id)view
 {
-  v28 = a3;
-  v6 = [MEMORY[0x277D0C1F8] reporter];
-  [v6 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BC98]];
+  groupCopy = group;
+  reporter = [MEMORY[0x277D0C1F8] reporter];
+  [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BC98]];
 
-  v7 = [v28 groupName];
-  if (![v7 length])
+  groupName = [groupCopy groupName];
+  if (![groupName length])
   {
-    v8 = [v28 players];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    players = [groupCopy players];
+    v9 = [players objectAtIndexedSubscript:0];
     v10 = [v9 displayNameWithOptions:0];
 
-    v7 = v10;
+    groupName = v10;
   }
 
-  v11 = [v28 players];
-  v12 = [v11 count];
+  players2 = [groupCopy players];
+  v12 = [players2 count];
 
   if (v12 < 2)
   {
@@ -3667,8 +3667,8 @@ LABEL_12:
     v13 = MEMORY[0x277CCACA8];
     v14 = GKGameCenterUIFrameworkBundle();
     v15 = GKGetLocalizedStringFromTableInBundle();
-    v16 = [v28 players];
-    v17 = [v13 localizedStringWithFormat:v15, objc_msgSend(v16, "count")];
+    players3 = [groupCopy players];
+    v17 = [v13 localizedStringWithFormat:v15, objc_msgSend(players3, "count")];
   }
 
   v18 = [_TtC12GameCenterUI29GKExpandedGroupViewController alloc];
@@ -3680,35 +3680,35 @@ LABEL_12:
   v22 = *(MEMORY[0x277CBF3A0] + 8);
   v23 = *(MEMORY[0x277CBF3A0] + 16);
   v24 = *(MEMORY[0x277CBF3A0] + 24);
-  v25 = [(GKExpandedGroupViewController *)v20 view];
-  [v25 setFrame:{v21, v22, v23, v24}];
+  view = [(GKExpandedGroupViewController *)v20 view];
+  [view setFrame:{v21, v22, v23, v24}];
 
-  v26 = [v28 players];
-  [(GKExpandedGroupViewController *)v20 configureWithPlayers:v26 groupName:v7 caption:v17 playerSelectionProxy:self];
+  players4 = [groupCopy players];
+  [(GKExpandedGroupViewController *)v20 configureWithPlayers:players4 groupName:groupName caption:v17 playerSelectionProxy:self];
 
-  v27 = [(GKCollectionDataSource *)self presentationViewController];
-  [v27 presentViewController:v20 animated:1 completion:0];
+  presentationViewController = [(GKCollectionDataSource *)self presentationViewController];
+  [presentationViewController presentViewController:v20 animated:1 completion:0];
 }
 
-- (void)updatePlayerGroups:(id)a3 forPlayers:(id)a4 excludedIndexPath:(id)a5
+- (void)updatePlayerGroups:(id)groups forPlayers:(id)players excludedIndexPath:(id)path
 {
-  v32 = self;
+  selfCopy = self;
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v36 = a4;
-  v8 = a5;
-  v9 = [v7 count];
+  groupsCopy = groups;
+  playersCopy = players;
+  pathCopy = path;
+  v9 = [groupsCopy count];
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:v9];
   if (v9 >= 1)
   {
     for (i = 0; i != v9; ++i)
     {
-      v12 = [MEMORY[0x277CCAA70] indexPathForItem:i inSection:{0, v32}];
+      v12 = [MEMORY[0x277CCAA70] indexPathForItem:i inSection:{0, selfCopy}];
       [v10 addObject:v12];
     }
   }
 
-  v34 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -3729,16 +3729,16 @@ LABEL_12:
         }
 
         v17 = *(*(&v41 + 1) + 8 * j);
-        if ([v17 compare:v8])
+        if ([v17 compare:pathCopy])
         {
-          v18 = [v7 objectAtIndexedSubscript:{objc_msgSend(v17, "item")}];
-          v19 = [v18 players];
+          v18 = [groupsCopy objectAtIndexedSubscript:{objc_msgSend(v17, "item")}];
+          players = [v18 players];
 
-          v20 = [MEMORY[0x277CBEB98] setWithArray:v19];
-          v21 = [MEMORY[0x277CBEB98] setWithArray:v36];
+          v20 = [MEMORY[0x277CBEB98] setWithArray:players];
+          v21 = [MEMORY[0x277CBEB98] setWithArray:playersCopy];
           if ([v20 intersectsSet:v21])
           {
-            [v34 addObject:v17];
+            [array addObject:v17];
           }
         }
       }
@@ -3749,14 +3749,14 @@ LABEL_12:
     while (v14);
   }
 
-  v22 = v34;
-  if ([v34 count])
+  v22 = array;
+  if ([array count])
   {
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v23 = v34;
+    v23 = array;
     v24 = [v23 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v24)
     {
@@ -3772,10 +3772,10 @@ LABEL_12:
           }
 
           v28 = *(*(&v37 + 1) + 8 * k);
-          v29 = [v28 item];
-          if (v29 < [v7 count])
+          item = [v28 item];
+          if (item < [groupsCopy count])
           {
-            v30 = [v7 objectAtIndexedSubscript:{objc_msgSend(v28, "item")}];
+            v30 = [groupsCopy objectAtIndexedSubscript:{objc_msgSend(v28, "item")}];
             v31 = [v33 shouldSelectPlayerGroup:v30];
 
             if (v31)
@@ -3796,23 +3796,23 @@ LABEL_12:
       while (v25);
     }
 
-    v22 = v34;
+    v22 = array;
   }
 }
 
-- (void)updateVisibleItemsWithPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6
+- (void)updateVisibleItemsWithPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion
 {
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  playersCopy = players;
+  pathCopy = path;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(GKCollectionDataSource *)self isSearching])
   {
-    v14 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-    [(GKDashboardMultiplayerPickerDataSource *)self updatePlayerGroups:v14 forPlayers:v10 excludedIndexPath:v11];
+    searchPlayersAndGroups = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+    [(GKDashboardMultiplayerPickerDataSource *)self updatePlayerGroups:searchPlayersAndGroups forPlayers:playersCopy excludedIndexPath:pathCopy];
 
-    if (v13)
+    if (completionCopy)
     {
       goto LABEL_43;
     }
@@ -3820,14 +3820,14 @@ LABEL_12:
     goto LABEL_44;
   }
 
-  v44 = v13;
-  v15 = [(GKDashboardMultiplayerPickerDataSource *)self candidateIndexPaths];
-  v45 = [MEMORY[0x277CBEB18] array];
+  v44 = completionCopy;
+  candidateIndexPaths = [(GKDashboardMultiplayerPickerDataSource *)self candidateIndexPaths];
+  array = [MEMORY[0x277CBEB18] array];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v15;
+  obj = candidateIndexPaths;
   v16 = [obj countByEnumeratingWithState:&v60 objects:v66 count:16];
   if (!v16)
   {
@@ -3836,9 +3836,9 @@ LABEL_12:
 
   v17 = v16;
   v18 = *v61;
-  v46 = v11;
-  v47 = v10;
-  v48 = v12;
+  v46 = pathCopy;
+  v47 = playersCopy;
+  v48 = identifierCopy;
   v49 = *v61;
   do
   {
@@ -3852,21 +3852,21 @@ LABEL_12:
       }
 
       v20 = *(*(&v60 + 1) + 8 * v19);
-      if (![v20 isEqual:v11] || (objc_msgSend(v12, "isEqualToString:", @"GKPickerMainDataSourceIdentifier") & 1) == 0)
+      if (![v20 isEqual:pathCopy] || (objc_msgSend(identifierCopy, "isEqualToString:", @"GKPickerMainDataSourceIdentifier") & 1) == 0)
       {
         if ([(GKCollectionDataSource *)self isSearching])
         {
-          [v11 section];
+          [pathCopy section];
           goto LABEL_38;
         }
 
         if ([v20 section] == 1)
         {
-          v21 = [v20 item];
-          v22 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-          v23 = [v22 count];
+          item = [v20 item];
+          friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+          v23 = [friendPlayers count];
 
-          v24 = v21 >= v23;
+          v24 = item >= v23;
           v18 = v49;
           v17 = v50;
           if (!v24)
@@ -3875,7 +3875,7 @@ LABEL_12:
             v59 = 0u;
             v56 = 0u;
             v57 = 0u;
-            v25 = v10;
+            v25 = playersCopy;
             v26 = [v25 countByEnumeratingWithState:&v56 objects:v65 count:16];
             if (v26)
             {
@@ -3891,8 +3891,8 @@ LABEL_17:
                 }
 
                 v30 = *(*(&v56 + 1) + 8 * v29);
-                v31 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-                v32 = [v31 objectAtIndexedSubscript:{objc_msgSend(v20, "item")}];
+                friendPlayers2 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+                v32 = [friendPlayers2 objectAtIndexedSubscript:{objc_msgSend(v20, "item")}];
                 LODWORD(v30) = [v30 isEqual:v32];
 
                 if (v30)
@@ -3919,11 +3919,11 @@ LABEL_17:
 
         if ([v20 section] == 2)
         {
-          v33 = [v20 item];
-          v34 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
-          v35 = [v34 count];
+          item2 = [v20 item];
+          nearbyPlayers = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
+          v35 = [nearbyPlayers count];
 
-          v24 = v33 >= v35;
+          v24 = item2 >= v35;
           v17 = v50;
           if (!v24)
           {
@@ -3931,7 +3931,7 @@ LABEL_17:
             v55 = 0u;
             v52 = 0u;
             v53 = 0u;
-            v25 = v10;
+            v25 = playersCopy;
             v36 = [v25 countByEnumeratingWithState:&v52 objects:v64 count:16];
             if (v36)
             {
@@ -3947,8 +3947,8 @@ LABEL_28:
                 }
 
                 v40 = *(*(&v52 + 1) + 8 * v39);
-                v41 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
-                v42 = [v41 objectAtIndexedSubscript:{objc_msgSend(v20, "item")}];
+                nearbyPlayers2 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyPlayers];
+                v42 = [nearbyPlayers2 objectAtIndexedSubscript:{objc_msgSend(v20, "item")}];
                 LODWORD(v40) = [v40 isEqual:v42];
 
                 if (v40)
@@ -3959,7 +3959,7 @@ LABEL_28:
                 if (v37 == ++v39)
                 {
                   v37 = [v25 countByEnumeratingWithState:&v52 objects:v64 count:16];
-                  v12 = v48;
+                  identifierCopy = v48;
                   if (v37)
                   {
                     goto LABEL_28;
@@ -3970,20 +3970,20 @@ LABEL_28:
               }
 
 LABEL_35:
-              [v45 addObject:v20];
+              [array addObject:v20];
 LABEL_36:
 
-              v11 = v46;
-              v10 = v47;
-              v12 = v48;
+              pathCopy = v46;
+              playersCopy = v47;
+              identifierCopy = v48;
             }
 
             else
             {
 LABEL_34:
 
-              v11 = v46;
-              v10 = v47;
+              pathCopy = v46;
+              playersCopy = v47;
             }
 
             v18 = v49;
@@ -4003,53 +4003,53 @@ LABEL_38:
   while (v17);
 LABEL_40:
 
-  if ([v45 count])
+  if ([array count])
   {
-    v43 = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
-    [(GKDashboardMultiplayerPickerDataSource *)self updateSelectionStateForCollectionView:v43 indexPaths:v45];
+    collectionView = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
+    [(GKDashboardMultiplayerPickerDataSource *)self updateSelectionStateForCollectionView:collectionView indexPaths:array];
   }
 
-  v13 = v44;
+  completionCopy = v44;
   if (v44)
   {
 LABEL_43:
-    v13[2](v13);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_44:
 }
 
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position
 {
-  v6 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  pathCopy = path;
   [(GKDashboardMultiplayerPickerDataSource *)self setSelectionShouldSkipDelegateResponse:1];
-  v9 = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
-  [v9 selectItemAtIndexPath:v8 animated:v6 scrollPosition:a5];
+  collectionView = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
+  [collectionView selectItemAtIndexPath:pathCopy animated:animatedCopy scrollPosition:position];
 
   [(GKDashboardMultiplayerPickerDataSource *)self setSelectionShouldSkipDelegateResponse:0];
 }
 
-- (void)deselectItemAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)deselectItemAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  pathCopy = path;
   [(GKDashboardMultiplayerPickerDataSource *)self setSelectionShouldSkipDelegateResponse:1];
-  v7 = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
-  [v7 deselectItemAtIndexPath:v6 animated:v4];
+  collectionView = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
+  [collectionView deselectItemAtIndexPath:pathCopy animated:animatedCopy];
 
   [(GKDashboardMultiplayerPickerDataSource *)self setSelectionShouldSkipDelegateResponse:0];
 }
 
-- (void)updateSelectionStateForCollectionView:(id)a3 indexPaths:(id)a4
+- (void)updateSelectionStateForCollectionView:(id)view indexPaths:(id)paths
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewCopy = view;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a4;
+  obj = paths;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -4069,33 +4069,33 @@ LABEL_44:
 
         v11 = *(*(&v24 + 1) + 8 * v10);
         v12 = [(GKDashboardMultiplayerPickerDataSource *)self playerForIndexPath:v11];
-        v13 = [v6 cellForItemAtIndexPath:v11];
+        v13 = [viewCopy cellForItemAtIndexPath:v11];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = v6;
+          v14 = viewCopy;
           v15 = v13;
-          v16 = self;
+          selfCopy = self;
           playerStates = self->_playerStates;
-          v18 = [v12 referenceKey];
-          v19 = [(NSMutableDictionary *)playerStates objectForKey:v18];
-          v20 = [v19 integerValue];
+          referenceKey = [v12 referenceKey];
+          v19 = [(NSMutableDictionary *)playerStates objectForKey:referenceKey];
+          integerValue = [v19 integerValue];
 
-          [v15 setSelectable:v20 != 2];
-          [v15 setSelected:v20 == 1];
+          [v15 setSelectable:integerValue != 2];
+          [v15 setSelected:integerValue == 1];
           if ([v15 isSelected])
           {
-            [(GKDashboardMultiplayerPickerDataSource *)v16 selectItemAtIndexPath:v11 animated:0 scrollPosition:0];
+            [(GKDashboardMultiplayerPickerDataSource *)selfCopy selectItemAtIndexPath:v11 animated:0 scrollPosition:0];
           }
 
           else
           {
-            [(GKDashboardMultiplayerPickerDataSource *)v16 deselectItemAtIndexPath:v11 animated:0];
+            [(GKDashboardMultiplayerPickerDataSource *)selfCopy deselectItemAtIndexPath:v11 animated:0];
           }
 
-          self = v16;
+          self = selfCopy;
 
-          v6 = v14;
+          viewCopy = v14;
           v9 = v21;
           v8 = v22;
         }
@@ -4111,45 +4111,45 @@ LABEL_44:
   }
 }
 
-- (double)playerCellHeightInCollectionView:(id)a3
+- (double)playerCellHeightInCollectionView:(id)view
 {
-  v3 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    if ([v4 isEqualToString:*MEMORY[0x277D767E8]])
+    if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767E8]])
     {
       v5 = 362.0;
       goto LABEL_12;
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x277D767F0]])
+    if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F0]])
     {
       v5 = 332.0;
       goto LABEL_12;
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x277D767F8]])
+    if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F8]])
     {
       v5 = 282.0;
       goto LABEL_12;
     }
 
-    v6 = [v4 isEqualToString:*MEMORY[0x277D76800]] == 0;
+    v6 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76800]] == 0;
     v7 = 202.0;
     v8 = 252.0;
   }
 
   else
   {
-    if ([v4 isEqualToString:*MEMORY[0x277D76818]])
+    if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76818]])
     {
       v5 = 78.0;
       goto LABEL_12;
     }
 
-    v6 = [v4 isEqualToString:*MEMORY[0x277D76820]] == 0;
+    v6 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76820]] == 0;
     v7 = 60.0;
     v8 = 78.0;
   }
@@ -4186,79 +4186,79 @@ LABEL_12:
   return v5;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:*MEMORY[0x277D767D8]])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:*MEMORY[0x277D767D8]])
   {
-    v47 = v8;
-    v11 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"friendsSectionHeaderReuseIdentifier" forIndexPath:v10];
-    v12 = -[GKDashboardMultiplayerPickerDataSource headerTextForSection:](self, "headerTextForSection:", [v10 section]);
+    v47 = viewCopy;
+    v11 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:@"friendsSectionHeaderReuseIdentifier" forIndexPath:pathCopy];
+    v12 = -[GKDashboardMultiplayerPickerDataSource headerTextForSection:](self, "headerTextForSection:", [pathCopy section]);
     [v11 setTitle:v12];
 
-    v13 = [(GKDashboardMultiplayerPickerDataSource *)self cornerMaskForSectionHeader];
+    cornerMaskForSectionHeader = [(GKDashboardMultiplayerPickerDataSource *)self cornerMaskForSectionHeader];
     v14 = *MEMORY[0x277CDA138];
-    v15 = [MEMORY[0x277D75348] whiteColor];
-    v16 = [v15 colorWithAlphaComponent:0.08];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v16 = [whiteColor colorWithAlphaComponent:0.08];
 
-    v17 = [v11 layer];
-    [v17 setMaskedCorners:v13];
+    layer = [v11 layer];
+    [layer setMaskedCorners:cornerMaskForSectionHeader];
 
-    v18 = [v11 layer];
-    [v18 setCornerRadius:14.0];
+    layer2 = [v11 layer];
+    [layer2 setCornerRadius:14.0];
 
-    v19 = [v11 layer];
-    [v19 setCornerCurve:v14];
+    layer3 = [v11 layer];
+    [layer3 setCornerCurve:v14];
 
     [v11 setBackgroundColor:v16];
     v20 = *MEMORY[0x277CDA5E8];
-    v21 = [v11 layer];
-    [v21 setCompositingFilter:v20];
+    layer4 = [v11 layer];
+    [layer4 setCompositingFilter:v20];
 
-    v22 = [v11 backgroundPlatterView];
-    v23 = [v22 layer];
-    [v23 setMaskedCorners:v13];
+    backgroundPlatterView = [v11 backgroundPlatterView];
+    layer5 = [backgroundPlatterView layer];
+    [layer5 setMaskedCorners:cornerMaskForSectionHeader];
 
-    v24 = [v11 backgroundPlatterView];
-    v25 = [v24 layer];
-    [v25 setCornerRadius:14.0];
+    backgroundPlatterView2 = [v11 backgroundPlatterView];
+    layer6 = [backgroundPlatterView2 layer];
+    [layer6 setCornerRadius:14.0];
 
-    v26 = [v11 backgroundPlatterView];
-    v27 = [v26 layer];
-    [v27 setCornerCurve:v14];
+    backgroundPlatterView3 = [v11 backgroundPlatterView];
+    layer7 = [backgroundPlatterView3 layer];
+    [layer7 setCornerCurve:v14];
 
-    v28 = [v11 backgroundPlatterView];
-    [v28 setBackgroundColor:v16];
+    backgroundPlatterView4 = [v11 backgroundPlatterView];
+    [backgroundPlatterView4 setBackgroundColor:v16];
 
-    v29 = [v11 backgroundPlatterView];
-    v30 = [v29 layer];
-    [v30 setCompositingFilter:v20];
+    backgroundPlatterView5 = [v11 backgroundPlatterView];
+    layer8 = [backgroundPlatterView5 layer];
+    [layer8 setCompositingFilter:v20];
 
-    v31 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v32 = [v11 titleLabel];
-    [v32 setTextColor:v31];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    titleLabel = [v11 titleLabel];
+    [titleLabel setTextColor:secondaryLabelColor];
 
-    v33 = [v11 titleLabel];
-    v34 = [v33 layer];
-    [v34 setCompositingFilter:v20];
+    titleLabel2 = [v11 titleLabel];
+    layer9 = [titleLabel2 layer];
+    [layer9 setCompositingFilter:v20];
 
     v35 = [MEMORY[0x277D74300] _gkPreferredFontForTextStyle:*MEMORY[0x277D76968] symbolicTraits:2];
     [v11 setFont:v35];
-    if ([v10 section] == 1)
+    if ([pathCopy section] == 1)
     {
       [v11 setButtonTarget:self];
-      v36 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-      v37 = [v36 createSortPickerMenu];
-      [v11 setButtonMenu:v37];
+      delegate = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+      createSortPickerMenu = [delegate createSortPickerMenu];
+      [v11 setButtonMenu:createSortPickerMenu];
 
-      v38 = [(GKDashboardMultiplayerPickerDataSource *)self attributedFriendFilterTitle];
-      [v11 setAttributedButtonTitle:v38];
+      attributedFriendFilterTitle = [(GKDashboardMultiplayerPickerDataSource *)self attributedFriendFilterTitle];
+      [v11 setAttributedButtonTitle:attributedFriendFilterTitle];
 
       [v11 setButtonHidden:0];
-      v39 = [MEMORY[0x277D75348] whiteColor];
-      [v11 setTintColor:v39];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      [v11 setTintColor:whiteColor2];
     }
 
     else
@@ -4267,18 +4267,18 @@ LABEL_12:
     }
 
     [v11 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.SectionHeader"];
-    v45 = [v11 titleLabel];
-    [v45 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.SectionHeaderTitle"];
+    titleLabel3 = [v11 titleLabel];
+    [titleLabel3 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.SectionHeaderTitle"];
 
-    v8 = v47;
+    viewCopy = v47;
     goto LABEL_14;
   }
 
-  if ([v9 isEqualToString:*MEMORY[0x277D767D0]] && -[GKDashboardMultiplayerPickerDataSource _canShowMoreFriends](self, "_canShowMoreFriends") && objc_msgSend(v10, "section") == 1)
+  if ([kindCopy isEqualToString:*MEMORY[0x277D767D0]] && -[GKDashboardMultiplayerPickerDataSource _canShowMoreFriends](self, "_canShowMoreFriends") && objc_msgSend(pathCopy, "section") == 1)
   {
-    v11 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"friendsSectionFooterShowMoreFriendsReuseIdentifier" forIndexPath:v10];
+    v11 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:@"friendsSectionFooterShowMoreFriendsReuseIdentifier" forIndexPath:pathCopy];
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v8);
+    objc_initWeak(&from, viewCopy);
     v40 = GKGameCenterUIFrameworkBundle();
     v41 = GKGetLocalizedStringFromTableInBundle();
     [v11 setShowMoreText:v41];
@@ -4301,10 +4301,10 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v43 = [(GKDashboardMultiplayerPickerDataSource *)self isShowingAddFriendsFooter];
-  v44 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"friendsSectionFooterPlayWithFriendsReuseIdentifier" forIndexPath:v10];
+  isShowingAddFriendsFooter = [(GKDashboardMultiplayerPickerDataSource *)self isShowingAddFriendsFooter];
+  v44 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:@"friendsSectionFooterPlayWithFriendsReuseIdentifier" forIndexPath:pathCopy];
   v11 = v44;
-  if (v43)
+  if (isShowingAddFriendsFooter)
   {
     v11 = v44;
     objc_initWeak(&location, self);
@@ -4314,7 +4314,7 @@ LABEL_10:
     v48[3] = &unk_279669FE0;
     objc_copyWeak(&v49, &location);
     [v11 setAddFriendsHandler:v48];
-    [v11 setHidden:{objc_msgSend(v10, "section") != 1}];
+    [v11 setHidden:{objc_msgSend(pathCopy, "section") != 1}];
     p_from = &v49;
     goto LABEL_10;
   }
@@ -4353,11 +4353,11 @@ void __103__GKDashboardMultiplayerPickerDataSource_collectionView_viewForSupplem
   [v2 pickerDatasourceDidSelectAddFriend:v3];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5 || (+[GKDashboardButtonSectionHeaderView defaultHeight], v11 = v10, [(GKCollectionDataSource *)self isSearching]) || (v15 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyOnly], a5 == 2) || v15 || (v12 = 0.0, a5 == 1) && ![(GKDashboardMultiplayerPickerDataSource *)self hasFriends])
+  viewCopy = view;
+  layoutCopy = layout;
+  if (!section || (+[GKDashboardButtonSectionHeaderView defaultHeight], v11 = v10, [(GKCollectionDataSource *)self isSearching]) || (v15 = [(GKDashboardMultiplayerPickerDataSource *)self nearbyOnly], section == 2) || v15 || (v12 = 0.0, section == 1) && ![(GKDashboardMultiplayerPickerDataSource *)self hasFriends])
   {
     v12 = *MEMORY[0x277CBF3A8];
     v11 = *(MEMORY[0x277CBF3A8] + 8);
@@ -4370,20 +4370,20 @@ void __103__GKDashboardMultiplayerPickerDataSource_collectionView_viewForSupplem
   return result;
 }
 
-- (CGSize)boundingSizeForItemsInCollectionView:(id)a3
+- (CGSize)boundingSizeForItemsInCollectionView:(id)view
 {
-  v3 = a3;
-  [v3 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v5 = v4;
-  v6 = [v3 collectionViewLayout];
+  collectionViewLayout = [viewCopy collectionViewLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 sectionInset];
+    [collectionViewLayout sectionInset];
     v5 = v5 - v7 - v8;
   }
 
-  [v3 bounds];
+  [viewCopy bounds];
   v10 = v9;
 
   v11 = v5;
@@ -4393,12 +4393,12 @@ void __103__GKDashboardMultiplayerPickerDataSource_collectionView_viewForSupplem
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v7 = a3;
-  [(GKDashboardMultiplayerPickerDataSource *)self boundingSizeForItemsInCollectionView:v7];
+  viewCopy = view;
+  [(GKDashboardMultiplayerPickerDataSource *)self boundingSizeForItemsInCollectionView:viewCopy];
   v10 = 0.0;
-  if (a5 == 1)
+  if (section == 1)
   {
     v11 = v8;
     v12 = v9;
@@ -4406,12 +4406,12 @@ void __103__GKDashboardMultiplayerPickerDataSource_collectionView_viewForSupplem
     {
       if ([(GKDashboardMultiplayerPickerDataSource *)self _canShowMoreFriends])
       {
-        v13 = [MEMORY[0x277D75C80] currentTraitCollection];
-        v14 = [v13 preferredContentSizeCategory];
+        currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+        preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
 
-        if (UIContentSizeCategoryIsAccessibilityCategory(v14))
+        if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
         {
-          if ([v14 isEqualToString:*MEMORY[0x277D767E8]])
+          if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767E8]])
           {
             v10 = 100.0;
           }
@@ -4421,22 +4421,22 @@ void __103__GKDashboardMultiplayerPickerDataSource_collectionView_viewForSupplem
             v10 = 50.0;
           }
 
-          if ([v14 isEqualToString:*MEMORY[0x277D767F0]])
+          if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F0]])
           {
             v10 = v10 + 40.0;
           }
 
-          if ([v14 isEqualToString:*MEMORY[0x277D767F8]])
+          if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F8]])
           {
             v10 = v10 + 30.0;
           }
 
-          if ([v14 isEqualToString:*MEMORY[0x277D76800]])
+          if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76800]])
           {
             v10 = v10 + 20.0;
           }
 
-          if ([v14 isEqualToString:*MEMORY[0x277D76808]])
+          if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76808]])
           {
             v10 = v10 + 10.0;
           }
@@ -4450,7 +4450,7 @@ void __103__GKDashboardMultiplayerPickerDataSource_collectionView_viewForSupplem
 
       else if ([(GKDashboardMultiplayerPickerDataSource *)self hasFriends]&& [(GKDashboardMultiplayerPickerDataSource *)self isShowingAddFriendsFooter])
       {
-        [_TtC12GameCenterUI42GKMultiplayerPickerAddFriendsSupplementary preferredHeightFitting:v7 inTraitEnvironment:v11, v12];
+        [_TtC12GameCenterUI42GKMultiplayerPickerAddFriendsSupplementary preferredHeightFitting:viewCopy inTraitEnvironment:v11, v12];
         v10 = v15;
       }
     }
@@ -4484,22 +4484,22 @@ void __103__GKDashboardMultiplayerPickerDataSource_collectionView_viewForSupplem
     v12 = [v9 actionWithTitle:v11 style:0 handler:0];
     [v14 addAction:v12];
 
-    v13 = [(GKCollectionDataSource *)self presentationViewController];
-    [v13 presentViewController:v14 animated:1 completion:0];
+    presentationViewController = [(GKCollectionDataSource *)self presentationViewController];
+    [presentationViewController presentViewController:v14 animated:1 completion:0];
   }
 }
 
-- (void)didRemoveRecipientPlayers:(id)a3
+- (void)didRemoveRecipientPlayers:(id)players
 {
-  v4 = a3;
+  playersCopy = players;
   v5 = [MEMORY[0x277CCAA70] indexPathForItem:-1 inSection:-1];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__GKDashboardMultiplayerPickerDataSource_didRemoveRecipientPlayers___block_invoke;
   v7[3] = &unk_279669E48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = playersCopy;
+  v6 = playersCopy;
   [(GKDashboardMultiplayerPickerDataSource *)self didDeselectPlayers:v6 indexPath:v5 dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:v7];
 }
 
@@ -4519,17 +4519,17 @@ void __68__GKDashboardMultiplayerPickerDataSource_didRemoveRecipientPlayers___bl
   }
 }
 
-- (void)didAddRecipientPlayers:(id)a3
+- (void)didAddRecipientPlayers:(id)players
 {
-  v4 = a3;
+  playersCopy = players;
   v5 = [MEMORY[0x277CCAA70] indexPathForItem:-1 inSection:-1];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__GKDashboardMultiplayerPickerDataSource_didAddRecipientPlayers___block_invoke;
   v7[3] = &unk_279669E48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = playersCopy;
+  v6 = playersCopy;
   [(GKDashboardMultiplayerPickerDataSource *)self didSelectPlayers:v6 indexPath:v5 dataSourceIdentifier:@"GKPickerMainDataSourceIdentifier" completion:v7];
 }
 
@@ -4549,49 +4549,49 @@ void __65__GKDashboardMultiplayerPickerDataSource_didAddRecipientPlayers___block
   }
 }
 
-- (void)didPickContact:(id)a3
+- (void)didPickContact:(id)contact
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D0C170];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithContact:v5];
+  contactCopy = contact;
+  v6 = [[v4 alloc] initWithContact:contactCopy];
 
-  v7 = [(GKDashboardMultiplayerPickerDataSource *)self contactPlayers];
-  v8 = [v7 containsObject:v6];
+  contactPlayers = [(GKDashboardMultiplayerPickerDataSource *)self contactPlayers];
+  v8 = [contactPlayers containsObject:v6];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(GKDashboardMultiplayerPickerDataSource *)self contactPlayers];
-    [v9 addObject:v6];
+    contactPlayers2 = [(GKDashboardMultiplayerPickerDataSource *)self contactPlayers];
+    [contactPlayers2 addObject:v6];
   }
 
-  v10 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-  v11 = [v6 referenceKey];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  playerStates = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+  referenceKey = [v6 referenceKey];
+  v12 = [playerStates objectForKeyedSubscript:referenceKey];
 
   if (!v12)
   {
-    v13 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-    v14 = [v6 referenceKey];
+    playerStates2 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+    referenceKey2 = [v6 referenceKey];
     v12 = &unk_286189348;
-    [v13 setObject:&unk_286189348 forKeyedSubscript:v14];
+    [playerStates2 setObject:&unk_286189348 forKeyedSubscript:referenceKey2];
   }
 
   if ([v12 integerValue] == 1)
   {
-    v15 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+    delegate = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
     v25[0] = v6;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-    [v15 highlightAlreadySelectedPlayers:v16 inGroup:0];
+    [delegate highlightAlreadySelectedPlayers:v16 inGroup:0];
   }
 
   else if (![v12 integerValue])
   {
-    v17 = [(GKDashboardMultiplayerPickerDataSource *)self maxSelectable];
-    v18 = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
-    v19 = [v18 count];
+    maxSelectable = [(GKDashboardMultiplayerPickerDataSource *)self maxSelectable];
+    selectedPlayers = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
+    v19 = [selectedPlayers count];
 
-    if (v17 == v19)
+    if (maxSelectable == v19)
     {
       [(GKDashboardMultiplayerPickerDataSource *)self showSelectionLimitAlert];
     }
@@ -4633,27 +4633,27 @@ void __57__GKDashboardMultiplayerPickerDataSource_didPickContact___block_invoke(
 
 - (int64_t)getSelectedPlayerCount
 {
-  v2 = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
-  v3 = [v2 count];
+  selectedPlayers = [(GKDashboardMultiplayerPickerDataSource *)self selectedPlayers];
+  v3 = [selectedPlayers count];
 
   return v3;
 }
 
-- (void)didSelectPlayerGroup:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6
+- (void)didSelectPlayerGroup:(id)group indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v32 = a4;
-  v31 = a5;
-  v30 = a6;
+  groupCopy = group;
+  pathCopy = path;
+  identifierCopy = identifier;
+  completionCopy = completion;
   [MEMORY[0x277CBEB18] array];
-  v34 = v33 = v10;
+  v34 = v33 = groupCopy;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v11 = [v10 players];
-  v12 = [v11 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  players = [groupCopy players];
+  v12 = [players countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v12)
   {
     v13 = v12;
@@ -4664,25 +4664,25 @@ void __57__GKDashboardMultiplayerPickerDataSource_didPickContact___block_invoke(
       {
         if (*v36 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(players);
         }
 
         v16 = *(*(&v35 + 1) + 8 * i);
-        v17 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-        v18 = [v16 referenceKey];
-        v19 = [v17 objectForKeyedSubscript:v18];
-        v20 = [v19 integerValue];
+        playerStates = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+        referenceKey = [v16 referenceKey];
+        v19 = [playerStates objectForKeyedSubscript:referenceKey];
+        integerValue = [v19 integerValue];
 
-        if (!v20)
+        if (!integerValue)
         {
           [v34 addObject:v16];
-          v21 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-          v22 = [v16 referenceKey];
-          [v21 setObject:&unk_286189360 forKeyedSubscript:v22];
+          playerStates2 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+          referenceKey2 = [v16 referenceKey];
+          [playerStates2 setObject:&unk_286189360 forKeyedSubscript:referenceKey2];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v13 = [players countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v13);
@@ -4690,44 +4690,44 @@ void __57__GKDashboardMultiplayerPickerDataSource_didPickContact___block_invoke(
 
   if ([v33 fromPeopleSuggester])
   {
-    v23 = [v33 players];
-    v24 = [v23 count];
+    players2 = [v33 players];
+    v24 = [players2 count];
 
     if (v24 >= 2)
     {
-      v25 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
+      selectedMessageGroups = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
 
-      if (!v25)
+      if (!selectedMessageGroups)
       {
         v26 = objc_opt_new();
         [(GKDashboardMultiplayerPickerDataSource *)self setSelectedMessageGroups:v26];
       }
 
-      v27 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
-      [v27 addObject:v33];
+      selectedMessageGroups2 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
+      [selectedMessageGroups2 addObject:v33];
     }
   }
 
-  v28 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-  [v28 pickerDatasource:self didSelectPlayers:v34 inGroup:v33];
+  delegate = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+  [delegate pickerDatasource:self didSelectPlayers:v34 inGroup:v33];
 
-  v29 = [v33 players];
-  [(GKDashboardMultiplayerPickerDataSource *)self updateVisibleItemsWithPlayers:v29 indexPath:v32 dataSourceIdentifier:v31 completion:v30];
+  players3 = [v33 players];
+  [(GKDashboardMultiplayerPickerDataSource *)self updateVisibleItemsWithPlayers:players3 indexPath:pathCopy dataSourceIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)didSelectPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6
+- (void)didSelectPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v27 = [MEMORY[0x277CBEB18] array];
+  playersCopy = players;
+  pathCopy = path;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = v10;
+  v11 = playersCopy;
   v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
@@ -4744,17 +4744,17 @@ void __57__GKDashboardMultiplayerPickerDataSource_didPickContact___block_invoke(
         }
 
         v16 = *(*(&v28 + 1) + 8 * v15);
-        v17 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-        v18 = [v16 referenceKey];
-        v19 = [v17 objectForKeyedSubscript:v18];
-        v20 = [v19 integerValue];
+        playerStates = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+        referenceKey = [v16 referenceKey];
+        v19 = [playerStates objectForKeyedSubscript:referenceKey];
+        integerValue = [v19 integerValue];
 
-        if (!v20)
+        if (!integerValue)
         {
-          [v27 addObject:v16];
-          v21 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-          v22 = [v16 referenceKey];
-          [v21 setObject:&unk_286189360 forKeyedSubscript:v22];
+          [array addObject:v16];
+          playerStates2 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+          referenceKey2 = [v16 referenceKey];
+          [playerStates2 setObject:&unk_286189360 forKeyedSubscript:referenceKey2];
         }
 
         ++v15;
@@ -4767,30 +4767,30 @@ void __57__GKDashboardMultiplayerPickerDataSource_didPickContact___block_invoke(
     while (v13);
   }
 
-  v23 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-  [v23 pickerDatasource:self didSelectPlayers:v27 inGroup:0];
+  delegate = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+  [delegate pickerDatasource:self didSelectPlayers:array inGroup:0];
 
-  [(GKDashboardMultiplayerPickerDataSource *)self updateVisibleItemsWithPlayers:v11 indexPath:v26 dataSourceIdentifier:v25 completion:v24];
+  [(GKDashboardMultiplayerPickerDataSource *)self updateVisibleItemsWithPlayers:v11 indexPath:pathCopy dataSourceIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)didDeselectPlayerGroup:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6
+- (void)didDeselectPlayerGroup:(id)group indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v11 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
-  [v11 removeObject:v10];
+  groupCopy = group;
+  pathCopy = path;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  selectedMessageGroups = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
+  [selectedMessageGroups removeObject:groupCopy];
 
   [MEMORY[0x277CBEB18] array];
-  v31 = v30 = v10;
+  v31 = v30 = groupCopy;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = [v10 players];
-  v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  players = [groupCopy players];
+  v13 = [players countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v13)
   {
     v14 = v13;
@@ -4801,55 +4801,55 @@ void __57__GKDashboardMultiplayerPickerDataSource_didPickContact___block_invoke(
       {
         if (*v33 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(players);
         }
 
         v17 = *(*(&v32 + 1) + 8 * i);
-        v18 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-        v19 = [v17 referenceKey];
-        v20 = [v18 objectForKeyedSubscript:v19];
-        v21 = [v20 integerValue];
+        playerStates = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+        referenceKey = [v17 referenceKey];
+        v20 = [playerStates objectForKeyedSubscript:referenceKey];
+        integerValue = [v20 integerValue];
 
-        if (v21 == 1)
+        if (integerValue == 1)
         {
           [v31 addObject:v17];
-          v22 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-          v23 = [v17 referenceKey];
-          [v22 setObject:&unk_286189348 forKeyedSubscript:v23];
+          playerStates2 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+          referenceKey2 = [v17 referenceKey];
+          [playerStates2 setObject:&unk_286189348 forKeyedSubscript:referenceKey2];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v14 = [players countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v14);
   }
 
-  v24 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-  [v24 pickerDatasource:self didDeselectPlayers:v31 inGroup:v30];
+  delegate = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+  [delegate pickerDatasource:self didDeselectPlayers:v31 inGroup:v30];
 
   [(GKDashboardMultiplayerPickerDataSource *)self updateMessageGroupsPlayerSelection];
-  v25 = [v30 players];
-  [(GKDashboardMultiplayerPickerDataSource *)self updateVisibleItemsWithPlayers:v25 indexPath:v29 dataSourceIdentifier:v28 completion:v27];
+  players2 = [v30 players];
+  [(GKDashboardMultiplayerPickerDataSource *)self updateVisibleItemsWithPlayers:players2 indexPath:pathCopy dataSourceIdentifier:identifierCopy completion:completionCopy];
 
   if ([v30 isNearby])
   {
-    v26 = [MEMORY[0x277D0C1F8] reporter];
-    [v26 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BCB0]];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BCB0]];
   }
 }
 
-- (void)didDeselectPlayers:(id)a3 indexPath:(id)a4 dataSourceIdentifier:(id)a5 completion:(id)a6
+- (void)didDeselectPlayers:(id)players indexPath:(id)path dataSourceIdentifier:(id)identifier completion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v40 = a4;
-  v39 = a5;
-  v38 = a6;
-  if ([v10 count] >= 2)
+  playersCopy = players;
+  pathCopy = path;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([playersCopy count] >= 2)
   {
-    v11 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
-    v12 = [v11 count];
+    selectedMessageGroups = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
+    v12 = [selectedMessageGroups count];
 
     if (v12)
     {
@@ -4857,8 +4857,8 @@ void __57__GKDashboardMultiplayerPickerDataSource_didPickContact___block_invoke(
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v13 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
-      v14 = [v13 countByEnumeratingWithState:&v46 objects:v51 count:16];
+      selectedMessageGroups2 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
+      v14 = [selectedMessageGroups2 countByEnumeratingWithState:&v46 objects:v51 count:16];
       if (v14)
       {
         v15 = v14;
@@ -4869,15 +4869,15 @@ LABEL_5:
         {
           if (*v47 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(selectedMessageGroups2);
           }
 
           v18 = *(*(&v46 + 1) + 8 * v17);
           v19 = MEMORY[0x277CBEB98];
-          v20 = [v18 players];
-          v21 = [v19 setWithArray:v20];
+          players = [v18 players];
+          v21 = [v19 setWithArray:players];
 
-          v22 = [MEMORY[0x277CBEB98] setWithArray:v10];
+          v22 = [MEMORY[0x277CBEB98] setWithArray:playersCopy];
           if ([v21 isEqualToSet:v22])
           {
             break;
@@ -4885,7 +4885,7 @@ LABEL_5:
 
           if (v15 == ++v17)
           {
-            v15 = [v13 countByEnumeratingWithState:&v46 objects:v51 count:16];
+            v15 = [selectedMessageGroups2 countByEnumeratingWithState:&v46 objects:v51 count:16];
             if (v15)
             {
               goto LABEL_5;
@@ -4902,10 +4902,10 @@ LABEL_5:
           goto LABEL_15;
         }
 
-        v24 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
-        [v24 removeObject:v23];
+        selectedMessageGroups3 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
+        [selectedMessageGroups3 removeObject:v23];
 
-        v13 = v23;
+        selectedMessageGroups2 = v23;
       }
 
 LABEL_14:
@@ -4913,12 +4913,12 @@ LABEL_14:
   }
 
 LABEL_15:
-  v41 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v25 = v10;
+  v25 = playersCopy;
   v26 = [v25 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v26)
   {
@@ -4934,17 +4934,17 @@ LABEL_15:
         }
 
         v30 = *(*(&v42 + 1) + 8 * i);
-        v31 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-        v32 = [v30 referenceKey];
-        v33 = [v31 objectForKeyedSubscript:v32];
-        v34 = [v33 integerValue];
+        playerStates = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+        referenceKey = [v30 referenceKey];
+        v33 = [playerStates objectForKeyedSubscript:referenceKey];
+        integerValue = [v33 integerValue];
 
-        if (v34 == 1)
+        if (integerValue == 1)
         {
-          [v41 addObject:v30];
-          v35 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-          v36 = [v30 referenceKey];
-          [v35 setObject:&unk_286189348 forKeyedSubscript:v36];
+          [array addObject:v30];
+          playerStates2 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+          referenceKey2 = [v30 referenceKey];
+          [playerStates2 setObject:&unk_286189348 forKeyedSubscript:referenceKey2];
         }
       }
 
@@ -4954,11 +4954,11 @@ LABEL_15:
     while (v27);
   }
 
-  v37 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-  [v37 pickerDatasource:self didDeselectPlayers:v41 inGroup:0];
+  delegate = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+  [delegate pickerDatasource:self didDeselectPlayers:array inGroup:0];
 
   [(GKDashboardMultiplayerPickerDataSource *)self updateMessageGroupsPlayerSelection];
-  [(GKDashboardMultiplayerPickerDataSource *)self updateVisibleItemsWithPlayers:v25 indexPath:v40 dataSourceIdentifier:v39 completion:v38];
+  [(GKDashboardMultiplayerPickerDataSource *)self updateVisibleItemsWithPlayers:v25 indexPath:pathCopy dataSourceIdentifier:identifierCopy completion:completionCopy];
 }
 
 - (void)updateMessageGroupsPlayerSelection
@@ -4989,8 +4989,8 @@ LABEL_15:
         v39 = 0u;
         v40 = 0u;
         v30 = v4;
-        v5 = [v4 players];
-        v6 = [v5 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        players = [v4 players];
+        v6 = [players countByEnumeratingWithState:&v37 objects:v46 count:16];
         if (v6)
         {
           v7 = v6;
@@ -5001,23 +5001,23 @@ LABEL_15:
             {
               if (*v38 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(players);
               }
 
               v10 = *(*(&v37 + 1) + 8 * j);
-              v11 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-              v12 = [v10 referenceKey];
-              v13 = [v11 objectForKeyedSubscript:v12];
-              v14 = [v13 integerValue];
+              playerStates = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+              referenceKey = [v10 referenceKey];
+              v13 = [playerStates objectForKeyedSubscript:referenceKey];
+              integerValue = [v13 integerValue];
 
-              if (!v14)
+              if (!integerValue)
               {
                 [v27 addObject:v30];
                 goto LABEL_16;
               }
             }
 
-            v7 = [v5 countByEnumeratingWithState:&v37 objects:v46 count:16];
+            v7 = [players countByEnumeratingWithState:&v37 objects:v46 count:16];
             if (v7)
             {
               continue;
@@ -5056,23 +5056,23 @@ LABEL_16:
         }
 
         v19 = *(*(&v33 + 1) + 8 * k);
-        v20 = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
-        [v20 removeObject:v19];
+        selectedMessageGroups = [(GKDashboardMultiplayerPickerDataSource *)self selectedMessageGroups];
+        [selectedMessageGroups removeObject:v19];
 
-        v21 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-        v22 = [v19 players];
-        [v21 pickerDatasource:self didDeselectPlayers:v22 inGroup:v19];
+        delegate = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+        players2 = [v19 players];
+        [delegate pickerDatasource:self didDeselectPlayers:players2 inGroup:v19];
 
-        v23 = [v19 players];
+        players3 = [v19 players];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __76__GKDashboardMultiplayerPickerDataSource_updateMessageGroupsPlayerSelection__block_invoke;
         v32[3] = &unk_27966D428;
         v32[4] = self;
-        v24 = [v23 _gkFilterWithBlock:v32];
+        v24 = [players3 _gkFilterWithBlock:v32];
 
-        v25 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-        [v25 pickerDatasource:self didSelectPlayers:v24 inGroup:0];
+        delegate2 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+        [delegate2 pickerDatasource:self didSelectPlayers:v24 inGroup:0];
       }
 
       v16 = [v31 countByEnumeratingWithState:&v33 objects:v45 count:16];
@@ -5111,8 +5111,8 @@ void *__76__GKDashboardMultiplayerPickerDataSource_updateMessageGroupsPlayerSele
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:20];
   if (![(GKCollectionDataSource *)self isSearching])
   {
-    v4 = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
-    v5 = [v4 count];
+    friendPlayers = [(GKDashboardMultiplayerPickerDataSource *)self friendPlayers];
+    v5 = [friendPlayers count];
 
     if (v5 >= 1)
     {
@@ -5127,49 +5127,49 @@ void *__76__GKDashboardMultiplayerPickerDataSource_updateMessageGroupsPlayerSele
   return v3;
 }
 
-- (BOOL)playerIsSelectable:(id)a3
+- (BOOL)playerIsSelectable:(id)selectable
 {
-  v4 = a3;
-  v5 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-  v6 = [v4 referenceKey];
+  selectableCopy = selectable;
+  playerStates = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+  referenceKey = [selectableCopy referenceKey];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  v7 = [playerStates objectForKeyedSubscript:referenceKey];
+  integerValue = [v7 integerValue];
 
-  return v8 != 2;
+  return integerValue != 2;
 }
 
-- (BOOL)playerIsSelected:(id)a3
+- (BOOL)playerIsSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
-  v6 = [v4 referenceKey];
+  selectedCopy = selected;
+  playerStates = [(GKDashboardMultiplayerPickerDataSource *)self playerStates];
+  referenceKey = [selectedCopy referenceKey];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  v7 = [playerStates objectForKeyedSubscript:referenceKey];
+  integerValue = [v7 integerValue];
 
-  return v8 == 1;
+  return integerValue == 1;
 }
 
-- (void)donateGroupToPeopleSuggester:(id)a3
+- (void)donateGroupToPeopleSuggester:(id)suggester
 {
-  v14 = a3;
+  suggesterCopy = suggester;
   v3 = objc_alloc_init(MEMORY[0x277D3A090]);
-  v4 = [v14 players];
-  if ([v4 count] == 1)
+  players = [suggesterCopy players];
+  if ([players count] == 1)
   {
-    v5 = [v14 players];
-    v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [v6 contact];
-    v8 = [v7 suggestedHandle];
+    players2 = [suggesterCopy players];
+    v6 = [players2 objectAtIndexedSubscript:0];
+    contact = [v6 contact];
+    suggestedHandle = [contact suggestedHandle];
 
-    if (v8)
+    if (suggestedHandle)
     {
-      v9 = [v14 players];
-      v10 = [v9 objectAtIndexedSubscript:0];
-      v11 = [v10 contact];
-      v12 = [v11 suggestedHandle];
-      [v3 gameCenterSuggestionConsumedWithContactHandle:v12];
+      players3 = [suggesterCopy players];
+      v10 = [players3 objectAtIndexedSubscript:0];
+      contact2 = [v10 contact];
+      suggestedHandle2 = [contact2 suggestedHandle];
+      [v3 gameCenterSuggestionConsumedWithContactHandle:suggestedHandle2];
 
       goto LABEL_7;
     }
@@ -5179,43 +5179,43 @@ void *__76__GKDashboardMultiplayerPickerDataSource_updateMessageGroupsPlayerSele
   {
   }
 
-  v13 = [v14 conversationIdentifier];
+  conversationIdentifier = [suggesterCopy conversationIdentifier];
 
-  if (!v13)
+  if (!conversationIdentifier)
   {
     goto LABEL_8;
   }
 
-  v9 = [v14 conversationIdentifier];
-  [v3 gameCenterSuggestionConsumedWithGroupIdentifier:v9];
+  players3 = [suggesterCopy conversationIdentifier];
+  [v3 gameCenterSuggestionConsumedWithGroupIdentifier:players3];
 LABEL_7:
 
 LABEL_8:
 }
 
-- (void)didAttemptSelectingAlreadySelectedPlayers:(id)a3 inGroup:(id)a4
+- (void)didAttemptSelectingAlreadySelectedPlayers:(id)players inGroup:(id)group
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+  playersCopy = players;
+  groupCopy = group;
+  delegate = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
-    [v8 highlightAlreadySelectedPlayers:v9 inGroup:v6];
+    delegate2 = [(GKDashboardMultiplayerPickerDataSource *)self delegate];
+    [delegate2 highlightAlreadySelectedPlayers:playersCopy inGroup:groupCopy];
   }
 }
 
-- (void)handleLongPressGesture:(id)a3
+- (void)handleLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  collectionView = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
+  [gestureCopy locationInView:collectionView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
-  v19 = [v10 indexPathForItemAtPoint:{v7, v9}];
+  collectionView2 = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
+  v19 = [collectionView2 indexPathForItemAtPoint:{v7, v9}];
 
   if (![v19 section])
   {
@@ -5223,22 +5223,22 @@ LABEL_8:
     {
       if (([v19 item] & 0x8000000000000000) == 0)
       {
-        v11 = [v19 item];
-        v12 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-        v13 = [v12 count];
+        item = [v19 item];
+        searchPlayersAndGroups = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+        v13 = [searchPlayersAndGroups count];
 
-        if (v11 < v13)
+        if (item < v13)
         {
-          v14 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
-          v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v19, "item")}];
+          searchPlayersAndGroups2 = [(GKDashboardMultiplayerPickerDataSource *)self searchPlayersAndGroups];
+          v15 = [searchPlayersAndGroups2 objectAtIndexedSubscript:{objc_msgSend(v19, "item")}];
 
-          v16 = [v15 players];
-          v17 = [v16 count];
+          players = [v15 players];
+          v17 = [players count];
 
           if (v17 >= 2)
           {
-            v18 = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
-            [(GKDashboardMultiplayerPickerDataSource *)self expandPlayerGroup:v15 atIndexPath:v19 inCollectionView:v18];
+            collectionView3 = [(GKDashboardMultiplayerPickerDataSource *)self collectionView];
+            [(GKDashboardMultiplayerPickerDataSource *)self expandPlayerGroup:v15 atIndexPath:v19 inCollectionView:collectionView3];
           }
         }
       }

@@ -1,85 +1,85 @@
 @interface COMeshTimerAddOn
-- (BOOL)_isTimer:(id)a3 targetingAccessory:(id)a4;
-- (BOOL)_isTimer:(id)a3 targetingAccessoryIdentifiers:(id)a4;
+- (BOOL)_isTimer:(id)timer targetingAccessory:(id)accessory;
+- (BOOL)_isTimer:(id)timer targetingAccessoryIdentifiers:(id)identifiers;
 - (BOOL)performsLocalActions;
 - (COMTActionDirector)actionDirector;
 - (COMeshTimerAddOn)init;
-- (COMeshTimerAddOn)initWithTimerManager:(id)a3;
-- (COMeshTimerAddOn)initWithTimerManager:(id)a3 homekitAdapter:(id)a4 hubAdapter:(id)a5;
+- (COMeshTimerAddOn)initWithTimerManager:(id)manager;
+- (COMeshTimerAddOn)initWithTimerManager:(id)manager homekitAdapter:(id)adapter hubAdapter:(id)hubAdapter;
 - (COMeshTimerAddOnDelegate)delegate;
-- (id)_commandsForReconciling:(id)a3 toTruth:(id)a4 forNode:(id)a5;
-- (id)_currentAccessoryForClient:(id)a3;
-- (id)_filteredTimersList:(id)a3 forAccessory:(id)a4;
-- (id)_sendRequest:(id)a3 client:(id)a4;
-- (id)_timersForAccessories:(id)a3 fromClient:(id)a4 results:(id)a5;
-- (id)_timersForAccessory:(id)a3 member:(id)a4;
-- (id)_timersForAccessoryIdentifier:(id)a3 allowLocalStorage:(BOOL)a4;
-- (id)addTimer:(id)a3 client:(id)a4 member:(id)a5;
-- (id)dismissTimerWithIdentifier:(id)a3 client:(id)a4;
-- (id)removeTimer:(id)a3 client:(id)a4 member:(id)a5;
-- (id)secondaryClusterMemberForAccessory:(id)a3;
-- (id)secondaryClusterMemberIfRequiredForAccessory:(id)a3;
+- (id)_commandsForReconciling:(id)reconciling toTruth:(id)truth forNode:(id)node;
+- (id)_currentAccessoryForClient:(id)client;
+- (id)_filteredTimersList:(id)list forAccessory:(id)accessory;
+- (id)_sendRequest:(id)request client:(id)client;
+- (id)_timersForAccessories:(id)accessories fromClient:(id)client results:(id)results;
+- (id)_timersForAccessory:(id)accessory member:(id)member;
+- (id)_timersForAccessoryIdentifier:(id)identifier allowLocalStorage:(BOOL)storage;
+- (id)addTimer:(id)timer client:(id)client member:(id)member;
+- (id)dismissTimerWithIdentifier:(id)identifier client:(id)client;
+- (id)removeTimer:(id)timer client:(id)client member:(id)member;
+- (id)secondaryClusterMemberForAccessory:(id)accessory;
+- (id)secondaryClusterMemberIfRequiredForAccessory:(id)accessory;
 - (id)timers;
-- (id)updateTimer:(id)a3 client:(id)a4 member:(id)a5;
+- (id)updateTimer:(id)timer client:(id)client member:(id)member;
 - (void)_abandonMerge;
-- (void)_addCompletionsToFuture:(id)a3 withXPCCallback:(id)a4 transactionDescription:(const char *)a5;
-- (void)_addTimerDeleteEvent:(id)a3;
-- (void)_broadcastMerge:(id)a3 withTruth:(id)a4;
-- (void)_continueMerge:(id)a3 withResponse:(id)a4 fromNode:(id)a5;
-- (void)_finishMerge:(id)a3;
-- (void)_primeMerge:(id)a3 withNodes:(id)a4;
+- (void)_addCompletionsToFuture:(id)future withXPCCallback:(id)callback transactionDescription:(const char *)description;
+- (void)_addTimerDeleteEvent:(id)event;
+- (void)_broadcastMerge:(id)merge withTruth:(id)truth;
+- (void)_continueMerge:(id)merge withResponse:(id)response fromNode:(id)node;
+- (void)_finishMerge:(id)merge;
+- (void)_primeMerge:(id)merge withNodes:(id)nodes;
 - (void)_processQueuedCommands;
-- (void)_reloadIndexWithCompletion:(id)a3;
-- (void)_sendNotification:(id)a3;
+- (void)_reloadIndexWithCompletion:(id)completion;
+- (void)_sendNotification:(id)notification;
 - (void)_startMerge;
-- (void)_timerManagerStateReset:(id)a3;
-- (void)_timerManagerTimerFired:(id)a3;
-- (void)_timerManagerTimersAdded:(id)a3;
-- (void)_timerManagerTimersChanged:(id)a3;
-- (void)_timerManagerTimersRemoved:(id)a3;
-- (void)_timerManagerTimersUpdated:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)addTimer:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6;
-- (void)canDispatchAsAccessory:(id)a3 asInstance:(id)a4 reply:(id)a5;
-- (void)didAddToMeshController:(id)a3;
-- (void)didChangeNodesForMeshController:(id)a3;
-- (void)didStopMeshController:(id)a3;
-- (void)director:(id)a3 membersChanged:(id)a4;
-- (void)director:(id)a3 performAction:(id)a4 from:(id)a5 callback:(id)a6;
-- (void)dismissTimerWithIdentifier:(id)a3 fromClient:(id)a4 withCallback:(id)a5;
-- (void)establishSecondaryClusterForAccessory:(id)a3;
-- (void)handleTimerCreateRequest:(id)a3 callback:(id)a4;
-- (void)handleTimerDeleteRequest:(id)a3 callback:(id)a4;
-- (void)handleTimerDismissRequest:(id)a3 callback:(id)a4;
-- (void)handleTimerFiredNotification:(id)a3;
-- (void)handleTimerFiringTimerDismissedNotification:(id)a3;
-- (void)handleTimerManagerStateResetNotification:(id)a3;
-- (void)handleTimerReadRequest:(id)a3 callback:(id)a4;
-- (void)handleTimerUpdateRequest:(id)a3 callback:(id)a4;
-- (void)handleTimersAddedNotification:(id)a3;
-- (void)handleTimersRemovedNotification:(id)a3;
-- (void)handleTimersUpdatedNotification:(id)a3;
-- (void)interestTracker:(id)a3 setInterests:(id)a4 forMember:(id)a5 callback:(id)a6;
-- (void)interestTrackerTriggerReset:(id)a3;
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)removeTimer:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6;
-- (void)setDelegate:(id)a3;
-- (void)setInterests:(id)a3 asAccessory:(id)a4 withCallback:(id)a5;
-- (void)timersAsAccessory:(id)a3 fromClient:(id)a4 withCallback:(id)a5;
-- (void)timersForAccessories:(id)a3 fromClient:(id)a4 callback:(id)a5;
-- (void)updateTimer:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6;
-- (void)willRemoveFromMeshController:(id)a3;
-- (void)willStartMeshController:(id)a3;
+- (void)_timerManagerStateReset:(id)reset;
+- (void)_timerManagerTimerFired:(id)fired;
+- (void)_timerManagerTimersAdded:(id)added;
+- (void)_timerManagerTimersChanged:(id)changed;
+- (void)_timerManagerTimersRemoved:(id)removed;
+- (void)_timerManagerTimersUpdated:(id)updated;
+- (void)_withLock:(id)lock;
+- (void)addTimer:(id)timer asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback;
+- (void)canDispatchAsAccessory:(id)accessory asInstance:(id)instance reply:(id)reply;
+- (void)didAddToMeshController:(id)controller;
+- (void)didChangeNodesForMeshController:(id)controller;
+- (void)didStopMeshController:(id)controller;
+- (void)director:(id)director membersChanged:(id)changed;
+- (void)director:(id)director performAction:(id)action from:(id)from callback:(id)callback;
+- (void)dismissTimerWithIdentifier:(id)identifier fromClient:(id)client withCallback:(id)callback;
+- (void)establishSecondaryClusterForAccessory:(id)accessory;
+- (void)handleTimerCreateRequest:(id)request callback:(id)callback;
+- (void)handleTimerDeleteRequest:(id)request callback:(id)callback;
+- (void)handleTimerDismissRequest:(id)request callback:(id)callback;
+- (void)handleTimerFiredNotification:(id)notification;
+- (void)handleTimerFiringTimerDismissedNotification:(id)notification;
+- (void)handleTimerManagerStateResetNotification:(id)notification;
+- (void)handleTimerReadRequest:(id)request callback:(id)callback;
+- (void)handleTimerUpdateRequest:(id)request callback:(id)callback;
+- (void)handleTimersAddedNotification:(id)notification;
+- (void)handleTimersRemovedNotification:(id)notification;
+- (void)handleTimersUpdatedNotification:(id)notification;
+- (void)interestTracker:(id)tracker setInterests:(id)interests forMember:(id)member callback:(id)callback;
+- (void)interestTrackerTriggerReset:(id)reset;
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state;
+- (void)removeTimer:(id)timer asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback;
+- (void)setDelegate:(id)delegate;
+- (void)setInterests:(id)interests asAccessory:(id)accessory withCallback:(id)callback;
+- (void)timersAsAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback;
+- (void)timersForAccessories:(id)accessories fromClient:(id)client callback:(id)callback;
+- (void)updateTimer:(id)timer asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback;
+- (void)willRemoveFromMeshController:(id)controller;
+- (void)willStartMeshController:(id)controller;
 @end
 
 @implementation COMeshTimerAddOn
 
-- (COMeshTimerAddOn)initWithTimerManager:(id)a3 homekitAdapter:(id)a4 hubAdapter:(id)a5
+- (COMeshTimerAddOn)initWithTimerManager:(id)manager homekitAdapter:(id)adapter hubAdapter:(id)hubAdapter
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  adapterCopy = adapter;
+  hubAdapterCopy = hubAdapter;
   v34.receiver = self;
   v34.super_class = COMeshTimerAddOn;
   v12 = [(COMeshAddOn *)&v34 init];
@@ -92,8 +92,8 @@
     v13->_observedTimerManager = v14;
 
     [(MTTimerManager *)v13->_observedTimerManager checkIn];
-    objc_storeStrong(&v13->_homekit, a4);
-    objc_storeStrong(&v13->_homehub, a5);
+    objc_storeStrong(&v13->_homekit, adapter);
+    objc_storeStrong(&v13->_homehub, hubAdapter);
     v16 = objc_alloc_init(MEMORY[0x277CBEA60]);
     deletes = v13->_deletes;
     v13->_deletes = v16;
@@ -110,7 +110,7 @@
     queuedCommands = v13->_queuedCommands;
     v13->_queuedCommands = v22;
 
-    objc_storeStrong(&v13->_timerManager, a3);
+    objc_storeStrong(&v13->_timerManager, manager);
     recorder = v13->_recorder;
     v13->_recorder = &__block_literal_global_3;
 
@@ -139,12 +139,12 @@
   return v13;
 }
 
-- (COMeshTimerAddOn)initWithTimerManager:(id)a3
+- (COMeshTimerAddOn)initWithTimerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[COHomeKitAdapter sharedInstance];
   v6 = +[COHomeHubAdapter sharedInstance];
-  v7 = [(COMeshTimerAddOn *)self initWithTimerManager:v4 homekitAdapter:v5 hubAdapter:v6];
+  v7 = [(COMeshTimerAddOn *)self initWithTimerManager:managerCopy homekitAdapter:v5 hubAdapter:v6];
 
   return v7;
 }
@@ -157,12 +157,12 @@
   return v4;
 }
 
-- (void)didAddToMeshController:(id)a3
+- (void)didAddToMeshController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v51.receiver = self;
   v51.super_class = COMeshTimerAddOn;
-  [(COMeshAddOn *)&v51 didAddToMeshController:v4];
+  [(COMeshAddOn *)&v51 didAddToMeshController:controllerCopy];
   objc_initWeak(&location, self);
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
@@ -182,7 +182,7 @@
   v44[3] = &unk_278E15FA8;
   objc_copyWeak(&v45, &location);
   v7 = (v5)[2](v5, v44);
-  [v4 registerHandler:v7 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v7 forRequestClass:objc_opt_class()];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -190,7 +190,7 @@
   v42[3] = &unk_278E15FA8;
   objc_copyWeak(&v43, &location);
   v8 = (v5)[2](v5, v42);
-  [v4 registerHandler:v8 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v8 forRequestClass:objc_opt_class()];
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -198,7 +198,7 @@
   v40[3] = &unk_278E15FA8;
   objc_copyWeak(&v41, &location);
   v9 = (v5)[2](v5, v40);
-  [v4 registerHandler:v9 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v9 forRequestClass:objc_opt_class()];
 
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
@@ -206,7 +206,7 @@
   v38[3] = &unk_278E15FA8;
   objc_copyWeak(&v39, &location);
   v10 = (v5)[2](v5, v38);
-  [v4 registerHandler:v10 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v10 forRequestClass:objc_opt_class()];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -214,7 +214,7 @@
   v36[3] = &unk_278E15FA8;
   objc_copyWeak(&v37, &location);
   v11 = (v5)[2](v5, v36);
-  [v4 registerHandler:v11 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v11 forRequestClass:objc_opt_class()];
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -222,7 +222,7 @@
   v34[3] = &unk_278E15FF8;
   objc_copyWeak(&v35, &location);
   v12 = (v6)[2](v6, v34);
-  [v4 registerHandler:v12 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v12 forNotificationClass:objc_opt_class()];
 
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -230,7 +230,7 @@
   v32[3] = &unk_278E15FF8;
   objc_copyWeak(&v33, &location);
   v13 = (v6)[2](v6, v32);
-  [v4 registerHandler:v13 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v13 forNotificationClass:objc_opt_class()];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -238,7 +238,7 @@
   v30[3] = &unk_278E15FF8;
   objc_copyWeak(&v31, &location);
   v14 = (v6)[2](v6, v30);
-  [v4 registerHandler:v14 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v14 forNotificationClass:objc_opt_class()];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -246,7 +246,7 @@
   v28[3] = &unk_278E15FF8;
   objc_copyWeak(&v29, &location);
   v15 = (v6)[2](v6, v28);
-  [v4 registerHandler:v15 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v15 forNotificationClass:objc_opt_class()];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -254,7 +254,7 @@
   v26[3] = &unk_278E15FF8;
   objc_copyWeak(&v27, &location);
   v16 = (v6)[2](v6, v26);
-  [v4 registerHandler:v16 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v16 forNotificationClass:objc_opt_class()];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -262,7 +262,7 @@
   v24[3] = &unk_278E15FF8;
   objc_copyWeak(&v25, &location);
   v17 = (v6)[2](v6, v24);
-  [v4 registerHandler:v17 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v17 forNotificationClass:objc_opt_class()];
 
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
@@ -270,7 +270,7 @@
   v22 = &unk_278E15FF8;
   objc_copyWeak(&v23, &location);
   v18 = (v6)[2](v6, &v19);
-  [v4 registerHandler:v18 forNotificationClass:{objc_opt_class(), v19, v20, v21, v22}];
+  [controllerCopy registerHandler:v18 forNotificationClass:{objc_opt_class(), v19, v20, v21, v22}];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&v25);
@@ -525,10 +525,10 @@ void __43__COMeshTimerAddOn_didAddToMeshController___block_invoke_18(uint64_t a1
   }
 }
 
-- (void)willRemoveFromMeshController:(id)a3
+- (void)willRemoveFromMeshController:(id)controller
 {
   v12[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
   v12[2] = objc_opt_class();
@@ -539,7 +539,7 @@ void __43__COMeshTimerAddOn_didAddToMeshController___block_invoke_18(uint64_t a1
   v12[6] = objc_opt_class();
   do
   {
-    [v4 deregisterHandlerForNotificationClass:v12[v5++]];
+    [controllerCopy deregisterHandlerForNotificationClass:v12[v5++]];
   }
 
   while (v5 != 7);
@@ -551,12 +551,12 @@ void __43__COMeshTimerAddOn_didAddToMeshController___block_invoke_18(uint64_t a1
   v11[4] = objc_opt_class();
   do
   {
-    [v4 deregisterHandlerForRequestClass:v11[v6++]];
+    [controllerCopy deregisterHandlerForRequestClass:v11[v6++]];
   }
 
   while (v6 != 5);
-  v7 = [(COMeshTimerAddOn *)self actionDirector];
-  [v7 removeHandler:self];
+  actionDirector = [(COMeshTimerAddOn *)self actionDirector];
+  [actionDirector removeHandler:self];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -566,81 +566,81 @@ void __43__COMeshTimerAddOn_didAddToMeshController___block_invoke_18(uint64_t a1
   [(COMeshTimerAddOn *)self _withLock:v10];
   v9.receiver = self;
   v9.super_class = COMeshTimerAddOn;
-  [(COMeshAddOn *)&v9 willRemoveFromMeshController:v4];
+  [(COMeshAddOn *)&v9 willRemoveFromMeshController:controllerCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willStartMeshController:(id)a3
+- (void)willStartMeshController:(id)controller
 {
-  v4 = a3;
-  v5 = [(COMeshTimerAddOn *)self observedTimerManager];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__timerManagerTimersAdded_ name:*MEMORY[0x277D296A0] object:v5];
-  [v6 addObserver:self selector:sel__timerManagerTimersRemoved_ name:*MEMORY[0x277D296B8] object:v5];
-  [v6 addObserver:self selector:sel__timerManagerTimersUpdated_ name:*MEMORY[0x277D296C0] object:v5];
-  [v6 addObserver:self selector:sel__timerManagerTimerFired_ name:*MEMORY[0x277D29698] object:v5];
-  [v6 addObserver:self selector:sel__timerManagerStateReset_ name:*MEMORY[0x277D29690] object:v5];
-  [v6 addObserver:self selector:sel__timerManagerTimersChanged_ name:*MEMORY[0x277D296A8] object:v5];
+  controllerCopy = controller;
+  observedTimerManager = [(COMeshTimerAddOn *)self observedTimerManager];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__timerManagerTimersAdded_ name:*MEMORY[0x277D296A0] object:observedTimerManager];
+  [defaultCenter addObserver:self selector:sel__timerManagerTimersRemoved_ name:*MEMORY[0x277D296B8] object:observedTimerManager];
+  [defaultCenter addObserver:self selector:sel__timerManagerTimersUpdated_ name:*MEMORY[0x277D296C0] object:observedTimerManager];
+  [defaultCenter addObserver:self selector:sel__timerManagerTimerFired_ name:*MEMORY[0x277D29698] object:observedTimerManager];
+  [defaultCenter addObserver:self selector:sel__timerManagerStateReset_ name:*MEMORY[0x277D29690] object:observedTimerManager];
+  [defaultCenter addObserver:self selector:sel__timerManagerTimersChanged_ name:*MEMORY[0x277D296A8] object:observedTimerManager];
   [(COMeshTimerAddOn *)self _reloadIndexWithCompletion:0];
   v7.receiver = self;
   v7.super_class = COMeshTimerAddOn;
-  [(COMeshAddOn *)&v7 willStartMeshController:v4];
+  [(COMeshAddOn *)&v7 willStartMeshController:controllerCopy];
 }
 
-- (void)didStopMeshController:(id)a3
+- (void)didStopMeshController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = COMeshTimerAddOn;
-  [(COMeshAddOn *)&v6 didStopMeshController:a3];
-  v4 = [(COMeshTimerAddOn *)self observedTimerManager];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D296A8] object:v4];
-  [v5 removeObserver:self name:*MEMORY[0x277D29690] object:v4];
-  [v5 removeObserver:self name:*MEMORY[0x277D29698] object:v4];
-  [v5 removeObserver:self name:*MEMORY[0x277D296C0] object:v4];
-  [v5 removeObserver:self name:*MEMORY[0x277D296B8] object:v4];
-  [v5 removeObserver:self name:*MEMORY[0x277D296A0] object:v4];
+  [(COMeshAddOn *)&v6 didStopMeshController:controller];
+  observedTimerManager = [(COMeshTimerAddOn *)self observedTimerManager];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D296A8] object:observedTimerManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D29690] object:observedTimerManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D29698] object:observedTimerManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D296C0] object:observedTimerManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D296B8] object:observedTimerManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D296A0] object:observedTimerManager];
 }
 
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(COMeshTimerAddOn *)self delegate];
+  controllerCopy = controller;
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 didChangeCompositionForTimerAddOn:self];
+    [delegate didChangeCompositionForTimerAddOn:self];
   }
 
   v16.receiver = self;
   v16.super_class = COMeshTimerAddOn;
-  [(COMeshAddOn *)&v16 meshController:v6 didTransitionToState:a4];
-  v8 = [v6 nodes];
-  if (a4 == 2)
+  [(COMeshAddOn *)&v16 meshController:controllerCopy didTransitionToState:state];
+  nodes = [controllerCopy nodes];
+  if (state == 2)
   {
     [(COMeshTimerAddOn *)self _abandonMerge];
   }
 
-  else if (a4 == 3)
+  else if (state == 3)
   {
-    v9 = [(COMeshTimerAddOn *)self ourInterests];
+    ourInterests = [(COMeshTimerAddOn *)self ourInterests];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __56__COMeshTimerAddOn_meshController_didTransitionToState___block_invoke;
     v14[3] = &unk_278E16BC0;
-    v15 = v8;
-    [v9 enumerateKeysAndObjectsUsingBlock:v14];
+    v15 = nodes;
+    [ourInterests enumerateKeysAndObjectsUsingBlock:v14];
 
-    v10 = [v6 me];
-    v11 = [v6 leader];
-    if ([v10 isEqual:v11])
+    v10 = [controllerCopy me];
+    leader = [controllerCopy leader];
+    if ([v10 isEqual:leader])
     {
-      v12 = [(COMeshTimerAddOn *)self homekit];
-      if ([v12 hasOptedToHH2])
+      homekit = [(COMeshTimerAddOn *)self homekit];
+      if ([homekit hasOptedToHH2])
       {
-        v13 = [MEMORY[0x277CFD0B8] isDistributedTimersEnabled];
+        isDistributedTimersEnabled = [MEMORY[0x277CFD0B8] isDistributedTimersEnabled];
 
-        if (v13)
+        if (isDistributedTimersEnabled)
         {
           goto LABEL_13;
         }
@@ -669,44 +669,44 @@ void __56__COMeshTimerAddOn_meshController_didTransitionToState___block_invoke(u
   [v5 setPrimaryAvailable:v6 != 0];
 }
 
-- (void)didChangeNodesForMeshController:(id)a3
+- (void)didChangeNodesForMeshController:(id)controller
 {
-  v4 = a3;
-  v5 = [(COMeshTimerAddOn *)self delegate];
+  controllerCopy = controller;
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 didChangeCompositionForTimerAddOn:self];
+    [delegate didChangeCompositionForTimerAddOn:self];
   }
 
   v26.receiver = self;
   v26.super_class = COMeshTimerAddOn;
-  [(COMeshAddOn *)&v26 didChangeNodesForMeshController:v4];
-  v6 = [v4 nodes];
-  v7 = [(COMeshAddOn *)self meshController];
-  v8 = [v7 state] == 3;
+  [(COMeshAddOn *)&v26 didChangeNodesForMeshController:controllerCopy];
+  nodes = [controllerCopy nodes];
+  meshController = [(COMeshAddOn *)self meshController];
+  v8 = [meshController state] == 3;
 
-  v9 = [(COMeshTimerAddOn *)self ourInterests];
+  ourInterests = [(COMeshTimerAddOn *)self ourInterests];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __52__COMeshTimerAddOn_didChangeNodesForMeshController___block_invoke;
   v23 = &unk_278E16BE8;
-  v10 = v6;
+  v10 = nodes;
   v24 = v10;
   v25 = v8;
-  [v9 enumerateKeysAndObjectsUsingBlock:&v20];
+  [ourInterests enumerateKeysAndObjectsUsingBlock:&v20];
 
   v11 = [(COMeshTimerAddOn *)self mergingNodes:v20];
   v12 = [MEMORY[0x277CBEB58] setWithArray:v11];
   v13 = MEMORY[0x277CBEB98];
-  v14 = [v4 nodes];
-  v15 = [v13 setWithArray:v14];
+  nodes2 = [controllerCopy nodes];
+  v15 = [v13 setWithArray:nodes2];
 
   [v12 minusSet:v15];
   if ([v12 count])
   {
     v16 = [v11 mutableCopy];
-    v17 = [v12 allObjects];
-    [v16 removeObjectsInArray:v17];
+    allObjects = [v12 allObjects];
+    [v16 removeObjectsInArray:allObjects];
 
     [(COMeshTimerAddOn *)self setMergingNodes:v16];
     if (![v16 count])
@@ -714,11 +714,11 @@ void __56__COMeshTimerAddOn_meshController_didTransitionToState___block_invoke(u
       v18 = COCoreLogForCategory(3);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        [(COMeshTimerAddOn *)v4 didChangeNodesForMeshController:?];
+        [(COMeshTimerAddOn *)controllerCopy didChangeNodesForMeshController:?];
       }
 
-      v19 = [(COMeshTimerAddOn *)self mergeRequest];
-      [(COMeshTimerAddOn *)self _finishMerge:v19];
+      mergeRequest = [(COMeshTimerAddOn *)self mergeRequest];
+      [(COMeshTimerAddOn *)self _finishMerge:mergeRequest];
     }
   }
 }
@@ -765,16 +765,16 @@ uint64_t __28__COMeshTimerAddOn_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__COMeshTimerAddOn_setDelegate___block_invoke;
   v6[3] = &unk_278E156B0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   [(COMeshTimerAddOn *)self _withLock:v6];
 }
 
@@ -815,42 +815,42 @@ void __32__COMeshTimerAddOn_setDelegate___block_invoke(uint64_t a1)
 
 - (BOOL)performsLocalActions
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processName];
-  v4 = [v3 isEqualToString:@"xctest"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  v4 = [processName isEqualToString:@"xctest"];
 
   return v4;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_sendRequest:(id)a3 client:(id)a4
+- (id)_sendRequest:(id)request client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshController];
+  requestCopy = request;
+  clientCopy = client;
+  meshController = [(COMeshAddOn *)self meshController];
   v9 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v10 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __40__COMeshTimerAddOn__sendRequest_client___block_invoke;
   v18[3] = &unk_278E15C88;
-  v19 = v7;
-  v20 = v6;
-  v21 = v8;
+  v19 = clientCopy;
+  v20 = requestCopy;
+  v21 = meshController;
   v11 = v9;
   v22 = v11;
-  v12 = v8;
-  v13 = v6;
-  v14 = v7;
-  dispatch_async(v10, v18);
+  v12 = meshController;
+  v13 = requestCopy;
+  v14 = clientCopy;
+  dispatch_async(meshControllerQueue, v18);
 
   v15 = v22;
   v16 = v11;
@@ -961,10 +961,10 @@ void __40__COMeshTimerAddOn__sendRequest_client___block_invoke_2(uint64_t a1, vo
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addCompletionsToFuture:(id)a3 withXPCCallback:(id)a4 transactionDescription:(const char *)a5
+- (void)_addCompletionsToFuture:(id)future withXPCCallback:(id)callback transactionDescription:(const char *)description
 {
-  v6 = a3;
-  v7 = a4;
+  futureCopy = future;
+  callbackCopy = callback;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -975,10 +975,10 @@ void __40__COMeshTimerAddOn__sendRequest_client___block_invoke_2(uint64_t a1, vo
   v15[1] = 3221225472;
   v15[2] = __83__COMeshTimerAddOn__addCompletionsToFuture_withXPCCallback_transactionDescription___block_invoke;
   v15[3] = &unk_278E16C38;
-  v8 = v7;
+  v8 = callbackCopy;
   v16 = v8;
   v17 = v18;
-  v9 = [v6 addFailureBlock:v15];
+  v9 = [futureCopy addFailureBlock:v15];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__COMeshTimerAddOn__addCompletionsToFuture_withXPCCallback_transactionDescription___block_invoke_2;
@@ -986,7 +986,7 @@ void __40__COMeshTimerAddOn__sendRequest_client___block_invoke_2(uint64_t a1, vo
   v10 = v8;
   v13 = v10;
   v14 = v18;
-  v11 = [v6 addSuccessBlock:v12];
+  v11 = [futureCopy addSuccessBlock:v12];
 
   _Block_object_dispose(v18, 8);
 }
@@ -1007,10 +1007,10 @@ void __83__COMeshTimerAddOn__addCompletionsToFuture_withXPCCallback_transactionD
   *(v2 + 40) = 0;
 }
 
-- (id)_filteredTimersList:(id)a3 forAccessory:(id)a4
+- (id)_filteredTimersList:(id)list forAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  accessoryCopy = accessory;
   v8 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1021,21 +1021,21 @@ void __83__COMeshTimerAddOn__addCompletionsToFuture_withXPCCallback_transactionD
   v15 = 3221225472;
   v16 = __53__COMeshTimerAddOn__filteredTimersList_forAccessory___block_invoke;
   v17 = &unk_278E16C88;
-  v9 = v7;
+  v9 = accessoryCopy;
   v18 = v9;
-  v19 = self;
-  v10 = [v6 indexesOfObjectsPassingTest:&v14];
+  selfCopy = self;
+  v10 = [listCopy indexesOfObjectsPassingTest:&v14];
   if ([v10 count])
   {
-    v11 = [v6 mutableCopy];
+    v11 = [listCopy mutableCopy];
     [v11 removeObjectsAtIndexes:v10];
 
-    v6 = v11;
+    listCopy = v11;
   }
 
-  v12 = v6;
+  v12 = listCopy;
 
-  return v6;
+  return listCopy;
 }
 
 uint64_t __53__COMeshTimerAddOn__filteredTimersList_forAccessory___block_invoke(uint64_t a1, void *a2)
@@ -1055,41 +1055,41 @@ uint64_t __53__COMeshTimerAddOn__filteredTimersList_forAccessory___block_invoke(
   return v2 ^ 1u;
 }
 
-- (id)_timersForAccessoryIdentifier:(id)a3 allowLocalStorage:(BOOL)a4
+- (id)_timersForAccessoryIdentifier:(id)identifier allowLocalStorage:(BOOL)storage
 {
-  v6 = a3;
-  v7 = [(COMeshAddOn *)self meshController];
+  identifierCopy = identifier;
+  meshController = [(COMeshAddOn *)self meshController];
   v8 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v9 = [(COMeshTimerAddOn *)self timerManager];
-  v10 = [MEMORY[0x277CCAE80] currentConnection];
-  v11 = [v10 co_ClientBundleIdentifier];
+  timerManager = [(COMeshTimerAddOn *)self timerManager];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  co_ClientBundleIdentifier = [currentConnection co_ClientBundleIdentifier];
 
-  if (![v11 length])
+  if (![co_ClientBundleIdentifier length])
   {
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v11 = v13;
+    co_ClientBundleIdentifier = bundleIdentifier;
   }
 
-  v14 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__COMeshTimerAddOn__timersForAccessoryIdentifier_allowLocalStorage___block_invoke;
   block[3] = &unk_278E16D70;
-  v29 = a4;
+  storageCopy = storage;
   block[4] = self;
-  v24 = v7;
-  v25 = v6;
-  v26 = v9;
+  v24 = meshController;
+  v25 = identifierCopy;
+  v26 = timerManager;
   v15 = v8;
   v27 = v15;
-  v28 = v11;
-  v16 = v11;
-  v17 = v9;
-  v18 = v6;
-  v19 = v7;
-  dispatch_async(v14, block);
+  v28 = co_ClientBundleIdentifier;
+  v16 = co_ClientBundleIdentifier;
+  v17 = timerManager;
+  v18 = identifierCopy;
+  v19 = meshController;
+  dispatch_async(meshControllerQueue, block);
 
   v20 = v28;
   v21 = v15;
@@ -1465,27 +1465,27 @@ uint64_t __68__COMeshTimerAddOn__timersForAccessoryIdentifier_allowLocalStorage_
   return v4;
 }
 
-- (id)_timersForAccessory:(id)a3 member:(id)a4
+- (id)_timersForAccessory:(id)accessory member:(id)member
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshController];
+  accessoryCopy = accessory;
+  memberCopy = member;
+  meshController = [(COMeshAddOn *)self meshController];
   v9 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v10 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__COMeshTimerAddOn__timersForAccessory_member___block_invoke;
   block[3] = &unk_278E15868;
-  v19 = v8;
-  v20 = v6;
-  v21 = self;
+  v19 = meshController;
+  v20 = accessoryCopy;
+  selfCopy = self;
   v11 = v9;
   v22 = v11;
-  v23 = v7;
-  v12 = v7;
-  v13 = v6;
-  v14 = v8;
-  dispatch_async(v10, block);
+  v23 = memberCopy;
+  v12 = memberCopy;
+  v13 = accessoryCopy;
+  v14 = meshController;
+  dispatch_async(meshControllerQueue, block);
 
   v15 = v23;
   v16 = v11;
@@ -1602,17 +1602,17 @@ void __47__COMeshTimerAddOn__timersForAccessory_member___block_invoke_2(uint64_t
   }
 }
 
-- (id)_timersForAccessories:(id)a3 fromClient:(id)a4 results:(id)a5
+- (id)_timersForAccessories:(id)accessories fromClient:(id)client results:(id)results
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshController];
+  accessoriesCopy = accessories;
+  clientCopy = client;
+  resultsCopy = results;
+  meshController = [(COMeshAddOn *)self meshController];
   v12 = &off_244448000;
-  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([v11 leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
-    v41 = [(COMeshTimerAddOn *)self timerManager];
-    v24 = [v41 timers];
+    timerManager = [(COMeshTimerAddOn *)self timerManager];
+    timers = [timerManager timers];
   }
 
   else
@@ -1626,23 +1626,23 @@ void __47__COMeshTimerAddOn__timersForAccessory_member___block_invoke_2(uint64_t
       nw_activity_activate();
     }
 
-    v17 = [v9 clientBundleIdentifier];
-    if (![v17 length])
+    clientBundleIdentifier = [clientCopy clientBundleIdentifier];
+    if (![clientBundleIdentifier length])
     {
       [MEMORY[0x277CCA8D8] mainBundle];
       v42 = v14;
-      v18 = v10;
-      v19 = v8;
-      v20 = v11;
-      v22 = v21 = v9;
-      v23 = [v22 bundleIdentifier];
+      v18 = resultsCopy;
+      v19 = accessoriesCopy;
+      v20 = meshController;
+      v22 = v21 = clientCopy;
+      bundleIdentifier = [v22 bundleIdentifier];
 
-      v9 = v21;
-      v11 = v20;
-      v8 = v19;
-      v10 = v18;
+      clientCopy = v21;
+      meshController = v20;
+      accessoriesCopy = v19;
+      resultsCopy = v18;
       v14 = v42;
-      v17 = v23;
+      clientBundleIdentifier = bundleIdentifier;
       v12 = &off_244448000;
     }
 
@@ -1652,15 +1652,15 @@ void __47__COMeshTimerAddOn__timersForAccessory_member___block_invoke_2(uint64_t
     v53[3] = &unk_278E16DE8;
     v54 = v16;
     v55 = v15;
-    v56 = v17;
-    v24 = v14;
-    v57 = v24;
-    v25 = v17;
+    v56 = clientBundleIdentifier;
+    timers = v14;
+    v57 = timers;
+    v25 = clientBundleIdentifier;
     v26 = v12;
     v27 = v25;
     v28 = v15;
     v29 = v16;
-    [v11 sendRequest:v28 withCompletionHandler:v53];
+    [meshController sendRequest:v28 withCompletionHandler:v53];
 
     v12 = v26;
   }
@@ -1671,21 +1671,21 @@ void __47__COMeshTimerAddOn__timersForAccessory_member___block_invoke_2(uint64_t
   v31 = v46;
   v47 = __61__COMeshTimerAddOn__timersForAccessories_fromClient_results___block_invoke_2;
   v48 = &unk_278E16E60;
-  v49 = v8;
-  v50 = self;
-  v51 = v10;
+  v49 = accessoriesCopy;
+  selfCopy = self;
+  v51 = resultsCopy;
   v32 = v30;
   v52 = v32;
-  v33 = v10;
-  v34 = v8;
-  v35 = [v24 addSuccessBlock:&v45];
+  v33 = resultsCopy;
+  v34 = accessoriesCopy;
+  v35 = [timers addSuccessBlock:&v45];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = v31;
   v43[2] = __61__COMeshTimerAddOn__timersForAccessories_fromClient_results___block_invoke_5;
   v43[3] = &unk_278E15B38;
   v36 = v32;
   v44 = v36;
-  v37 = [v24 addFailureBlock:v43];
+  v37 = [timers addFailureBlock:v43];
   v38 = v44;
   v39 = v36;
 
@@ -1792,37 +1792,37 @@ uint64_t __61__COMeshTimerAddOn__timersForAccessories_fromClient_results___block
   return v6;
 }
 
-- (BOOL)_isTimer:(id)a3 targetingAccessoryIdentifiers:(id)a4
+- (BOOL)_isTimer:(id)timer targetingAccessoryIdentifiers:(id)identifiers
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 siriContext];
-  v8 = [v7 objectForKey:*MEMORY[0x277CFD068]];
+  timerCopy = timer;
+  identifiersCopy = identifiers;
+  siriContext = [timerCopy siriContext];
+  v8 = [siriContext objectForKey:*MEMORY[0x277CFD068]];
   v9 = v8;
   v10 = v8 == 0;
-  if (v6 && v8)
+  if (identifiersCopy && v8)
   {
     v11 = [MEMORY[0x277CCACE0] componentsWithString:v8];
-    v12 = [v11 scheme];
-    if ([v12 isEqualToString:@"siri-hk-target"])
+    scheme = [v11 scheme];
+    if ([scheme isEqualToString:@"siri-hk-target"])
     {
-      v13 = [v11 path];
-      v14 = [v13 isEqualToString:@"accessory"];
+      path = [v11 path];
+      v14 = [path isEqualToString:@"accessory"];
 
       if (v14)
       {
         v15 = COCoreLogForCategory(3);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          v28 = [v5 timerID];
-          v29 = [v11 query];
+          timerID = [timerCopy timerID];
+          query = [v11 query];
           *buf = 138412802;
-          v40 = v28;
+          v40 = timerID;
           v41 = 2112;
-          v42 = v29;
+          v42 = query;
           v43 = 2112;
-          v44 = v6;
+          v44 = identifiersCopy;
           _os_log_debug_impl(&dword_244378000, v15, OS_LOG_TYPE_DEBUG, "checking if timer (%@) target (%@) contains %@", buf, 0x20u);
         }
 
@@ -1830,15 +1830,15 @@ uint64_t __61__COMeshTimerAddOn__timersForAccessories_fromClient_results___block
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v16 = [v11 queryItems];
-        v17 = [v16 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        queryItems = [v11 queryItems];
+        v17 = [queryItems countByEnumeratingWithState:&v34 objects:v38 count:16];
         if (v17)
         {
           v18 = v17;
           v30 = v11;
           v31 = v9;
-          v32 = v7;
-          v33 = v5;
+          v32 = siriContext;
+          v33 = timerCopy;
           v19 = *v35;
           while (2)
           {
@@ -1846,20 +1846,20 @@ uint64_t __61__COMeshTimerAddOn__timersForAccessories_fromClient_results___block
             {
               if (*v35 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(queryItems);
               }
 
               v21 = *(*(&v34 + 1) + 8 * i);
-              v22 = [v21 name];
-              v23 = [@"identifier" isEqualToString:v22];
+              name = [v21 name];
+              v23 = [@"identifier" isEqualToString:name];
 
               if (v23)
               {
-                v24 = [v21 value];
-                if (v24)
+                value = [v21 value];
+                if (value)
                 {
-                  v25 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v24];
-                  if (v25 && ([v6 containsObject:v25] & 1) != 0)
+                  v25 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:value];
+                  if (v25 && ([identifiersCopy containsObject:v25] & 1) != 0)
                   {
 
                     v10 = 1;
@@ -1869,7 +1869,7 @@ uint64_t __61__COMeshTimerAddOn__timersForAccessories_fromClient_results___block
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v34 objects:v38 count:16];
+            v18 = [queryItems countByEnumeratingWithState:&v34 objects:v38 count:16];
             if (v18)
             {
               continue;
@@ -1880,8 +1880,8 @@ uint64_t __61__COMeshTimerAddOn__timersForAccessories_fromClient_results___block
 
           v10 = 0;
 LABEL_30:
-          v7 = v32;
-          v5 = v33;
+          siriContext = v32;
+          timerCopy = v33;
           v11 = v30;
           v9 = v31;
           goto LABEL_27;
@@ -1899,8 +1899,8 @@ LABEL_27:
     {
     }
 
-    v16 = COCoreLogForCategory(3);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    queryItems = COCoreLogForCategory(3);
+    if (os_log_type_enabled(queryItems, OS_LOG_TYPE_DEBUG))
     {
       [COMeshTimerAddOn _isTimer:targetingAccessoryIdentifiers:];
     }
@@ -1911,7 +1911,7 @@ LABEL_27:
   v11 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [COMeshTimerAddOn _isTimer:v5 targetingAccessoryIdentifiers:?];
+    [COMeshTimerAddOn _isTimer:timerCopy targetingAccessoryIdentifiers:?];
   }
 
 LABEL_28:
@@ -1920,52 +1920,52 @@ LABEL_28:
   return v10;
 }
 
-- (id)_currentAccessoryForClient:(id)a3
+- (id)_currentAccessoryForClient:(id)client
 {
-  v4 = [a3 connection];
-  v5 = [v4 co_PeerInstance];
+  connection = [client connection];
+  co_PeerInstance = [connection co_PeerInstance];
 
-  if (v5)
+  if (co_PeerInstance)
   {
-    v6 = [(COMeshTimerAddOn *)self homehub];
-    v7 = [(COMeshTimerAddOn *)self homekit];
-    v8 = [v6 accessoryForPeerInstance:v5 usingHomeKitAdapter:v7];
+    homehub = [(COMeshTimerAddOn *)self homehub];
+    homekit = [(COMeshTimerAddOn *)self homekit];
+    currentAccessory = [homehub accessoryForPeerInstance:co_PeerInstance usingHomeKitAdapter:homekit];
   }
 
   else
   {
-    v6 = [(COMeshTimerAddOn *)self homekit];
-    v8 = [v6 currentAccessory];
+    homehub = [(COMeshTimerAddOn *)self homekit];
+    currentAccessory = [homehub currentAccessory];
   }
 
-  return v8;
+  return currentAccessory;
 }
 
-- (void)_sendNotification:(id)a3
+- (void)_sendNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x277D296B0]];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x277D296B0]];
 
-  v8 = [v4 name];
+  name = [notificationCopy name];
 
-  v9 = [(COMeshAddOn *)self meshController];
-  v10 = [(COMeshTimerAddOn *)self interests];
+  meshController = [(COMeshAddOn *)self meshController];
+  interests = [(COMeshTimerAddOn *)self interests];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __38__COMeshTimerAddOn__sendNotification___block_invoke;
   v14[3] = &unk_278E16EB0;
   v15 = v7;
-  v16 = self;
-  v17 = v8;
-  v18 = v9;
-  v11 = v9;
-  v12 = v8;
+  selfCopy = self;
+  v17 = name;
+  v18 = meshController;
+  v11 = meshController;
+  v12 = name;
   v13 = v7;
-  [v10 enumerateKeysAndObjectsUsingBlock:v14];
+  [interests enumerateKeysAndObjectsUsingBlock:v14];
 }
 
 void __38__COMeshTimerAddOn__sendNotification___block_invoke(id *a1, void *a2, void *a3)
@@ -2013,28 +2013,28 @@ void __38__COMeshTimerAddOn__sendNotification___block_invoke_3(void *a1, uint64_
   }
 }
 
-- (void)_timerManagerTimersAdded:(id)a3
+- (void)_timerManagerTimersAdded:(id)added
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D296B0]];
+  addedCopy = added;
+  userInfo = [addedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D296B0]];
 
-  v7 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__COMeshTimerAddOn__timerManagerTimersAdded___block_invoke;
   block[3] = &unk_278E15728;
   v8 = v6;
   v12 = v8;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = addedCopy;
   v14 = v9;
-  dispatch_async(v7, block);
+  dispatch_async(meshControllerQueue, block);
 
-  v10 = [(COMeshTimerAddOn *)self delegate];
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 timerAddOn:self didAddTimers:v8];
+    [delegate timerAddOn:self didAddTimers:v8];
   }
 }
 
@@ -2086,28 +2086,28 @@ uint64_t __45__COMeshTimerAddOn__timerManagerTimersAdded___block_invoke(uint64_t
   return result;
 }
 
-- (void)_timerManagerTimersRemoved:(id)a3
+- (void)_timerManagerTimersRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D296B0]];
+  removedCopy = removed;
+  userInfo = [removedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D296B0]];
 
-  v7 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__COMeshTimerAddOn__timerManagerTimersRemoved___block_invoke;
   block[3] = &unk_278E15728;
   v8 = v6;
   v12 = v8;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = removedCopy;
   v14 = v9;
-  dispatch_async(v7, block);
+  dispatch_async(meshControllerQueue, block);
 
-  v10 = [(COMeshTimerAddOn *)self delegate];
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 timerAddOn:self didRemoveTimers:v8];
+    [delegate timerAddOn:self didRemoveTimers:v8];
   }
 }
 
@@ -2153,28 +2153,28 @@ uint64_t __47__COMeshTimerAddOn__timerManagerTimersRemoved___block_invoke(uint64
   return result;
 }
 
-- (void)_timerManagerTimersUpdated:(id)a3
+- (void)_timerManagerTimersUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D296B0]];
+  updatedCopy = updated;
+  userInfo = [updatedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D296B0]];
 
-  v7 = [(COMeshAddOn *)self meshControllerQueue];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__COMeshTimerAddOn__timerManagerTimersUpdated___block_invoke;
   block[3] = &unk_278E15728;
   v8 = v6;
   v12 = v8;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = updatedCopy;
   v14 = v9;
-  dispatch_async(v7, block);
+  dispatch_async(meshControllerQueue, block);
 
-  v10 = [(COMeshTimerAddOn *)self delegate];
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 timerAddOn:self didUpdateTimers:v8];
+    [delegate timerAddOn:self didUpdateTimers:v8];
   }
 }
 
@@ -2226,20 +2226,20 @@ uint64_t __47__COMeshTimerAddOn__timerManagerTimersUpdated___block_invoke(uint64
   return result;
 }
 
-- (void)_timerManagerTimerFired:(id)a3
+- (void)_timerManagerTimerFired:(id)fired
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D296B0]];
+  userInfo = [fired userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D296B0]];
 
-  v6 = [(COMeshTimerAddOn *)self delegate];
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 timerAddOn:self didFireTimers:v5];
+    [delegate timerAddOn:self didFireTimers:v5];
   }
 
   if ([(COMeshTimerAddOn *)self performsLocalActions])
   {
-    v7 = [(COMeshAddOn *)self meshController];
+    meshController = [(COMeshAddOn *)self meshController];
     v8 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -2247,13 +2247,13 @@ uint64_t __47__COMeshTimerAddOn__timerManagerTimersUpdated___block_invoke(uint64
     }
 
     v9 = [(COTimerNotification *)[COTimerFiredNotification alloc] initWithTimers:v5];
-    [v7 sendNotification:v9];
+    [meshController sendNotification:v9];
   }
 }
 
-- (void)_timerManagerStateReset:(id)a3
+- (void)_timerManagerStateReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -2305,45 +2305,45 @@ void __44__COMeshTimerAddOn__timerManagerStateReset___block_invoke(uint64_t a1, 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_timerManagerTimersChanged:(id)a3
+- (void)_timerManagerTimersChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:*MEMORY[0x277D296B0]];
+  userInfo = [changed userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D296B0]];
 
-  v5 = [(COMeshTimerAddOn *)self delegate];
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 timerAddOn:self didChangeTimers:v6];
+    [delegate timerAddOn:self didChangeTimers:v6];
   }
 }
 
 - (void)_startMerge
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(COMeshAddOn *)self meshController];
-  v4 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v4);
-  v5 = [[COTimerReadRequest alloc] initForMerge];
-  [(COMeshTimerAddOn *)self setMergeRequest:v5];
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  initForMerge = [[COTimerReadRequest alloc] initForMerge];
+  [(COMeshTimerAddOn *)self setMergeRequest:initForMerge];
   v6 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v18 = v3;
+    v18 = meshController;
     v19 = 2048;
-    v20 = v5;
+    v20 = initForMerge;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p starting merge for %p...", buf, 0x16u);
   }
 
   if ([(COMeshTimerAddOn *)self performsLocalActions])
   {
-    v7 = [(COMeshTimerAddOn *)self timerManager];
-    v8 = [v7 timers];
+    timerManager = [(COMeshTimerAddOn *)self timerManager];
+    timers = [timerManager timers];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
+    timers = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
   }
 
   objc_initWeak(buf, self);
@@ -2351,12 +2351,12 @@ void __44__COMeshTimerAddOn__timerManagerStateReset___block_invoke(uint64_t a1, 
   v13[1] = 3221225472;
   v13[2] = __31__COMeshTimerAddOn__startMerge__block_invoke;
   v13[3] = &unk_278E16F00;
-  v9 = v4;
+  v9 = meshControllerQueue;
   v14 = v9;
   objc_copyWeak(&v16, buf);
-  v10 = v5;
+  v10 = initForMerge;
   v15 = v10;
-  v11 = [v8 addCompletionBlock:v13];
+  v11 = [timers addCompletionBlock:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -2398,28 +2398,28 @@ void __31__COMeshTimerAddOn__startMerge__block_invoke_2(uint64_t a1)
   [WeakRetained _broadcastMerge:*(a1 + 32) withTruth:v3];
 }
 
-- (void)_broadcastMerge:(id)a3 withTruth:(id)a4
+- (void)_broadcastMerge:(id)merge withTruth:(id)truth
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v9);
+  mergeCopy = merge;
+  truthCopy = truth;
+  meshController = [(COMeshAddOn *)self meshController];
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v10 = [(COMeshTimerAddOn *)self mergeRequest];
+  mergeRequest = [(COMeshTimerAddOn *)self mergeRequest];
 
-  if (v10 == v6)
+  if (mergeRequest == mergeCopy)
   {
-    v11 = eTagForTimers(v7);
-    [v6 setETag:v11];
+    v11 = eTagForTimers(truthCopy);
+    [mergeCopy setETag:v11];
     v12 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v32 = v8;
+      v32 = meshController;
       v33 = 2048;
-      v34 = v6;
+      v34 = mergeCopy;
       v35 = 2114;
       v36 = v11;
       _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "%p broadcasting merge %p with eTag %{public}@", buf, 0x20u);
@@ -2431,14 +2431,14 @@ void __31__COMeshTimerAddOn__startMerge__block_invoke_2(uint64_t a1)
     v14 = objc_alloc_init(MEMORY[0x277CBEAC0]);
     [(COMeshTimerAddOn *)self setMergeResponses:v14];
 
-    [(COMeshTimerAddOn *)self setMergeTimers:v7];
+    [(COMeshTimerAddOn *)self setMergeTimers:truthCopy];
     objc_initWeak(buf, self);
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke;
     v28[3] = &unk_278E16F28;
     objc_copyWeak(&v30, buf);
-    v15 = v6;
+    v15 = mergeCopy;
     v29 = v15;
     v16 = MEMORY[0x245D5FF10](v28);
     v22 = MEMORY[0x277D85DD0];
@@ -2455,7 +2455,7 @@ void __31__COMeshTimerAddOn__startMerge__block_invoke_2(uint64_t a1)
     v20 = objc_alloc_init(MEMORY[0x277CBEAC0]);
     [(COMeshTimerAddOn *)self setMergeResponses:v20];
 
-    [v8 broadcastRequest:v17 includingSelf:0 recipientsCallback:v16 completionHandler:v18];
+    [meshController broadcastRequest:v17 includingSelf:0 recipientsCallback:v16 completionHandler:v18];
     objc_destroyWeak(&v27);
 
     objc_destroyWeak(&v30);
@@ -2468,9 +2468,9 @@ void __31__COMeshTimerAddOn__startMerge__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v32 = v8;
+      v32 = meshController;
       v33 = 2048;
-      v34 = v6;
+      v34 = mergeCopy;
       _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p ignoring broadcast for merge %p", buf, 0x16u);
     }
   }
@@ -2524,21 +2524,21 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
   }
 }
 
-- (void)_primeMerge:(id)a3 withNodes:(id)a4
+- (void)_primeMerge:(id)merge withNodes:(id)nodes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [v8 dispatchQueue];
-  dispatch_assert_queue_V2(v9);
+  mergeCopy = merge;
+  nodesCopy = nodes;
+  meshController = [(COMeshAddOn *)self meshController];
+  dispatchQueue = [meshController dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v10 = [(COMeshTimerAddOn *)self mergeRequest];
+  mergeRequest = [(COMeshTimerAddOn *)self mergeRequest];
 
-  if (v10 == v6)
+  if (mergeRequest == mergeCopy)
   {
-    [(COMeshTimerAddOn *)self setMergingNodes:v7];
-    v12 = [v7 count];
+    [(COMeshTimerAddOn *)self setMergingNodes:nodesCopy];
+    v12 = [nodesCopy count];
     v13 = COCoreLogForCategory(3);
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
     if (v12)
@@ -2546,9 +2546,9 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
       if (v14)
       {
         v16 = 134218496;
-        v17 = v8;
+        v17 = meshController;
         v18 = 2048;
-        v19 = v6;
+        v19 = mergeCopy;
         v20 = 2048;
         v21 = v12;
         _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%p merge %p with %ld others.", &v16, 0x20u);
@@ -2560,13 +2560,13 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
       if (v14)
       {
         v16 = 134218240;
-        v17 = v8;
+        v17 = meshController;
         v18 = 2048;
-        v19 = v6;
+        v19 = mergeCopy;
         _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%p is solo, so %p is finished.", &v16, 0x16u);
       }
 
-      [(COMeshTimerAddOn *)self _finishMerge:v6];
+      [(COMeshTimerAddOn *)self _finishMerge:mergeCopy];
     }
   }
 
@@ -2576,9 +2576,9 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134218240;
-      v17 = v8;
+      v17 = meshController;
       v18 = 2048;
-      v19 = v6;
+      v19 = mergeCopy;
       _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p ignoring prime of merge %p", &v16, 0x16u);
     }
   }
@@ -2586,46 +2586,46 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_continueMerge:(id)a3 withResponse:(id)a4 fromNode:(id)a5
+- (void)_continueMerge:(id)merge withResponse:(id)response fromNode:(id)node
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshController];
-  v12 = [v11 dispatchQueue];
-  dispatch_assert_queue_V2(v12);
+  mergeCopy = merge;
+  responseCopy = response;
+  nodeCopy = node;
+  meshController = [(COMeshAddOn *)self meshController];
+  dispatchQueue = [meshController dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v13 = [(COMeshTimerAddOn *)self mergeRequest];
+  mergeRequest = [(COMeshTimerAddOn *)self mergeRequest];
 
-  if (v13 == v8)
+  if (mergeRequest == mergeCopy)
   {
-    v15 = [(COMeshTimerAddOn *)self mergingNodes];
-    v14 = [v15 mutableCopy];
+    mergingNodes = [(COMeshTimerAddOn *)self mergingNodes];
+    v14 = [mergingNodes mutableCopy];
 
-    [v14 removeObject:v10];
+    [v14 removeObject:nodeCopy];
     [(COMeshTimerAddOn *)self setMergingNodes:v14];
-    if ([v9 skipInMerge])
+    if ([responseCopy skipInMerge])
     {
       v16 = COCoreLogForCategory(3);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         v23 = 134218496;
-        v24 = v11;
+        v24 = meshController;
         v25 = 2048;
-        v26 = v10;
+        v26 = nodeCopy;
         v27 = 2048;
-        v28 = v8;
+        v28 = mergeCopy;
         _os_log_debug_impl(&dword_244378000, v16, OS_LOG_TYPE_DEBUG, "%p skipping node %p in merge %p", &v23, 0x20u);
       }
     }
 
     else
     {
-      v17 = [(COMeshTimerAddOn *)self mergeResponses];
-      v18 = [v17 mutableCopy];
+      mergeResponses = [(COMeshTimerAddOn *)self mergeResponses];
+      v18 = [mergeResponses mutableCopy];
 
-      [v18 setObject:v9 forKey:v10];
+      [v18 setObject:responseCopy forKey:nodeCopy];
       [(COMeshTimerAddOn *)self setMergeResponses:v18];
     }
 
@@ -2637,9 +2637,9 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
       if (v21)
       {
         v23 = 134218496;
-        v24 = v11;
+        v24 = meshController;
         v25 = 2048;
-        v26 = v8;
+        v26 = mergeCopy;
         v27 = 2048;
         v28 = v19;
         _os_log_debug_impl(&dword_244378000, v20, OS_LOG_TYPE_DEBUG, "%p merge %p still waiting on %ld others.", &v23, 0x20u);
@@ -2653,7 +2653,7 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
         [COMeshTimerAddOn _continueMerge:withResponse:fromNode:];
       }
 
-      [(COMeshTimerAddOn *)self _finishMerge:v8];
+      [(COMeshTimerAddOn *)self _finishMerge:mergeCopy];
     }
   }
 
@@ -2663,9 +2663,9 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 134218240;
-      v24 = v11;
+      v24 = meshController;
       v25 = 2048;
-      v26 = v8;
+      v26 = mergeCopy;
       _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p ignoring continuation of merge %p", &v23, 0x16u);
     }
   }
@@ -2676,18 +2676,18 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
 - (void)_abandonMerge
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(COMeshAddOn *)self meshController];
-  v4 = [v3 dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  meshController = [(COMeshAddOn *)self meshController];
+  dispatchQueue = [meshController dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v5 = [(COMeshTimerAddOn *)self mergeRequest];
+  mergeRequest = [(COMeshTimerAddOn *)self mergeRequest];
   v6 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218240;
-    v11 = v3;
+    v11 = meshController;
     v12 = 2048;
-    v13 = v5;
+    v13 = mergeRequest;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p abandoning merge %p", &v10, 0x16u);
   }
 
@@ -2702,21 +2702,21 @@ void __46__COMeshTimerAddOn__broadcastMerge_withTruth___block_invoke_2(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_commandsForReconciling:(id)a3 toTruth:(id)a4 forNode:(id)a5
+- (id)_commandsForReconciling:(id)reconciling toTruth:(id)truth forNode:(id)node
 {
   v62 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEA60] array];
-  v50 = [v8 mutableCopy];
+  reconcilingCopy = reconciling;
+  truthCopy = truth;
+  nodeCopy = node;
+  array = [MEMORY[0x277CBEA60] array];
+  v50 = [truthCopy mutableCopy];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v11 = v7;
+  v11 = reconcilingCopy;
   v12 = [(COTimersRemovedNotification *)v11 countByEnumeratingWithState:&v51 objects:v61 count:16];
-  v48 = v8;
+  v48 = truthCopy;
   if (!v12)
   {
     v14 = 0;
@@ -2729,8 +2729,8 @@ LABEL_30:
   }
 
   v13 = v12;
-  v46 = v10;
-  v47 = v9;
+  v46 = array;
+  v47 = nodeCopy;
   v14 = 0;
   v49 = 0;
   v15 = *v52;
@@ -2746,8 +2746,8 @@ LABEL_30:
       v17 = *(*(&v51 + 1) + 8 * i);
       if (([v17 isCurrentTimer] & 1) == 0)
       {
-        v18 = [v17 timerID];
-        v19 = [v8 objectForKey:v18];
+        timerID = [v17 timerID];
+        v19 = [truthCopy objectForKey:timerID];
         if (v19)
         {
           v20 = [v17 co_preferredTimer:v19];
@@ -2758,7 +2758,7 @@ LABEL_30:
               v21 = [v49 arrayByAddingObject:v20];
 
               v49 = v21;
-              v8 = v48;
+              truthCopy = v48;
             }
 
             else
@@ -2780,8 +2780,8 @@ LABEL_30:
           v14 = [MEMORY[0x277CBEA60] arrayWithObject:v17];
         }
 
-        v23 = [v17 timerID];
-        [v50 removeObjectForKey:v23];
+        timerID2 = [v17 timerID];
+        [v50 removeObjectForKey:timerID2];
       }
     }
 
@@ -2792,8 +2792,8 @@ LABEL_30:
 
   if (!v49)
   {
-    v10 = v46;
-    v9 = v47;
+    array = v46;
+    nodeCopy = v47;
     v26 = v50;
     if (!v14)
     {
@@ -2805,26 +2805,26 @@ LABEL_30:
 
   v24 = [(COTimerNotification *)[COTimersUpdatedNotification alloc] initWithTimers:v49];
   v25 = COCoreLogForCategory(3);
-  v9 = v47;
+  nodeCopy = v47;
   v26 = v50;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
-    v41 = [(COMeshAddOn *)self meshController];
-    v42 = [(COTimerNotification *)v24 timers];
+    meshController = [(COMeshAddOn *)self meshController];
+    timers = [(COTimerNotification *)v24 timers];
     *buf = 134218498;
-    v56 = v41;
+    v56 = meshController;
     v57 = 2112;
     v58 = v47;
     v59 = 2112;
-    v60 = v42;
+    v60 = timers;
     _os_log_debug_impl(&dword_244378000, v25, OS_LOG_TYPE_DEBUG, "%p %@ updating %@", buf, 0x20u);
 
-    v8 = v48;
+    truthCopy = v48;
   }
 
   v27 = [v46 arrayByAddingObject:v24];
 
-  v10 = v27;
+  array = v27;
   if (v14)
   {
 LABEL_27:
@@ -2832,22 +2832,22 @@ LABEL_27:
     v29 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      v43 = [(COMeshAddOn *)self meshController];
-      v44 = [(COTimerNotification *)v28 timers];
+      meshController2 = [(COMeshAddOn *)self meshController];
+      timers2 = [(COTimerNotification *)v28 timers];
       *buf = 134218498;
-      v56 = v43;
+      v56 = meshController2;
       v57 = 2112;
-      v58 = v9;
+      v58 = nodeCopy;
       v59 = 2112;
-      v60 = v44;
+      v60 = timers2;
       _os_log_debug_impl(&dword_244378000, v29, OS_LOG_TYPE_DEBUG, "%p %@ removing %@", buf, 0x20u);
 
-      v8 = v48;
+      truthCopy = v48;
     }
 
-    v30 = [v10 arrayByAddingObject:v28];
+    v30 = [array arrayByAddingObject:v28];
 
-    v10 = v30;
+    array = v30;
     goto LABEL_30;
   }
 
@@ -2855,82 +2855,82 @@ LABEL_31:
   if ([v26 count])
   {
     v31 = [COTimersAddedNotification alloc];
-    v32 = [v26 allValues];
-    v33 = [(COTimerNotification *)v31 initWithTimers:v32];
+    allValues = [v26 allValues];
+    v33 = [(COTimerNotification *)v31 initWithTimers:allValues];
 
     v34 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
     {
-      v39 = [(COMeshAddOn *)self meshController];
-      v40 = [(COTimerNotification *)v33 timers];
+      meshController3 = [(COMeshAddOn *)self meshController];
+      timers3 = [(COTimerNotification *)v33 timers];
       *buf = 134218498;
-      v56 = v39;
+      v56 = meshController3;
       v57 = 2112;
-      v58 = v9;
+      v58 = nodeCopy;
       v59 = 2112;
-      v60 = v40;
+      v60 = timers3;
       _os_log_debug_impl(&dword_244378000, v34, OS_LOG_TYPE_DEBUG, "%p %@ requires %@", buf, 0x20u);
 
-      v8 = v48;
+      truthCopy = v48;
     }
 
-    v35 = [v10 arrayByAddingObject:v33];
+    v35 = [array arrayByAddingObject:v33];
 
-    v10 = v35;
+    array = v35;
   }
 
-  v36 = v10;
+  v36 = array;
 
   v37 = *MEMORY[0x277D85DE8];
-  return v10;
+  return array;
 }
 
-- (void)_finishMerge:(id)a3
+- (void)_finishMerge:(id)merge
 {
   v147 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v79 = [(COMeshAddOn *)self meshController];
-  v5 = [v79 dispatchQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [(COMeshTimerAddOn *)self mergeRequest];
+  mergeCopy = merge;
+  meshController = [(COMeshAddOn *)self meshController];
+  dispatchQueue = [meshController dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
+  mergeRequest = [(COMeshTimerAddOn *)self mergeRequest];
 
   log = COCoreLogForCategory(3);
   v7 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
-  if (v6 != v4)
+  if (mergeRequest != mergeCopy)
   {
     if (v7)
     {
       *buf = 134218240;
-      v144 = v79;
+      v144 = meshController;
       v145 = 2048;
-      v146 = v4;
+      v146 = mergeCopy;
       _os_log_impl(&dword_244378000, log, OS_LOG_TYPE_DEFAULT, "%p ignoring conclusion of merge %p", buf, 0x16u);
     }
 
     goto LABEL_92;
   }
 
-  v77 = v5;
+  v77 = dispatchQueue;
   if (v7)
   {
     *buf = 134218240;
-    v144 = v79;
+    v144 = meshController;
     v145 = 2048;
-    v146 = v4;
+    v146 = mergeCopy;
     _os_log_impl(&dword_244378000, log, OS_LOG_TYPE_DEFAULT, "%p completing merge %p...", buf, 0x16u);
   }
 
-  v78 = v4;
+  v78 = mergeCopy;
 
-  v8 = [(COMeshTimerAddOn *)self mergeTimers];
-  v93 = self;
-  v9 = [(COMeshTimerAddOn *)self mergeResponses];
+  mergeTimers = [(COMeshTimerAddOn *)self mergeTimers];
+  selfCopy = self;
+  mergeResponses = [(COMeshTimerAddOn *)self mergeResponses];
   v95 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
   v134 = 0u;
-  log = v8;
+  log = mergeTimers;
   v10 = [log countByEnumeratingWithState:&v131 objects:v142 count:16];
   if (v10)
   {
@@ -2948,8 +2948,8 @@ LABEL_31:
         v14 = *(*(&v131 + 1) + 8 * i);
         if (([v14 isCurrentTimer] & 1) == 0)
         {
-          v15 = [v14 timerID];
-          [v95 setObject:v14 forKey:v15];
+          timerID = [v14 timerID];
+          [v95 setObject:v14 forKey:timerID];
         }
       }
 
@@ -2964,8 +2964,8 @@ LABEL_31:
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
-  v17 = [(COMeshTimerAddOn *)self deletes];
-  v18 = [v17 countByEnumeratingWithState:&v127 objects:v141 count:16];
+  deletes = [(COMeshTimerAddOn *)self deletes];
+  v18 = [deletes countByEnumeratingWithState:&v127 objects:v141 count:16];
   if (v18)
   {
     v19 = v18;
@@ -2976,15 +2976,15 @@ LABEL_31:
       {
         if (*v128 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(deletes);
         }
 
         v22 = *(*(&v127 + 1) + 8 * j);
-        v23 = [v22 identifier];
-        [v16 setObject:v22 forKey:v23];
+        identifier = [v22 identifier];
+        [v16 setObject:v22 forKey:identifier];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v127 objects:v141 count:16];
+      v19 = [deletes countByEnumeratingWithState:&v127 objects:v141 count:16];
     }
 
     while (v19);
@@ -2994,7 +2994,7 @@ LABEL_31:
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  obj = v9;
+  obj = mergeResponses;
   v94 = v16;
   v85 = [obj countByEnumeratingWithState:&v123 objects:v140 count:16];
   if (v85)
@@ -3017,8 +3017,8 @@ LABEL_31:
         v121 = 0u;
         v122 = 0u;
         v91 = v25;
-        v26 = [v25 timers];
-        v27 = [v26 countByEnumeratingWithState:&v119 objects:v139 count:16];
+        timers = [v25 timers];
+        v27 = [timers countByEnumeratingWithState:&v119 objects:v139 count:16];
         if (v27)
         {
           v28 = v27;
@@ -3029,24 +3029,24 @@ LABEL_31:
             {
               if (*v120 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(timers);
               }
 
               v31 = *(*(&v119 + 1) + 8 * k);
               if (([v31 isCurrentTimer] & 1) == 0)
               {
-                v32 = [v31 timerID];
-                v33 = [v95 objectForKey:v32];
+                timerID2 = [v31 timerID];
+                v33 = [v95 objectForKey:timerID2];
                 v34 = [v31 co_preferredTimer:v33];
 
                 if (v31 == v34)
                 {
-                  [v95 setObject:v31 forKey:v32];
+                  [v95 setObject:v31 forKey:timerID2];
                 }
               }
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v119 objects:v139 count:16];
+            v28 = [timers countByEnumeratingWithState:&v119 objects:v139 count:16];
           }
 
           while (v28);
@@ -3056,8 +3056,8 @@ LABEL_31:
         v118 = 0u;
         v115 = 0u;
         v116 = 0u;
-        v35 = [v91 deletes];
-        v36 = [v35 countByEnumeratingWithState:&v115 objects:v138 count:16];
+        deletes2 = [v91 deletes];
+        v36 = [deletes2 countByEnumeratingWithState:&v115 objects:v138 count:16];
         if (v36)
         {
           v37 = v36;
@@ -3068,30 +3068,30 @@ LABEL_31:
             {
               if (*v116 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(deletes2);
               }
 
               v40 = *(*(&v115 + 1) + 8 * m);
-              v41 = [v40 identifier];
-              v42 = [v16 objectForKey:v41];
+              identifier2 = [v40 identifier];
+              v42 = [v16 objectForKey:identifier2];
               if (!v42)
               {
                 goto LABEL_45;
               }
 
-              v43 = [v40 date];
-              v44 = [v42 date];
-              v45 = [v43 compare:v44];
+              date = [v40 date];
+              date2 = [v42 date];
+              v45 = [date compare:date2];
 
               v16 = v94;
               if (v45 == -1)
               {
 LABEL_45:
-                [v16 setObject:v40 forKey:v41];
+                [v16 setObject:v40 forKey:identifier2];
               }
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v115 objects:v138 count:16];
+            v37 = [deletes2 countByEnumeratingWithState:&v115 objects:v138 count:16];
           }
 
           while (v37);
@@ -3126,13 +3126,13 @@ LABEL_45:
     [COMeshTimerAddOn _finishMerge:];
   }
 
-  v96 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
   v81 = v47;
-  v49 = [(COMeshTimerAddOn *)v93 _commandsForReconciling:log toTruth:v47 forNode:0];
+  v49 = [(COMeshTimerAddOn *)selfCopy _commandsForReconciling:log toTruth:v47 forNode:0];
   v50 = [v49 countByEnumeratingWithState:&v109 objects:v137 count:16];
   if (v50)
   {
@@ -3185,10 +3185,10 @@ LABEL_45:
 
         v55[2] = v56;
         v55[3] = &unk_278E156B0;
-        v55[4] = v93;
+        v55[4] = selfCopy;
         v55[5] = v54;
         v57 = MEMORY[0x245D5FF10]();
-        [v96 addObject:v57];
+        [array addObject:v57];
       }
 
       v51 = [v49 countByEnumeratingWithState:&v109 objects:v137 count:16];
@@ -3202,7 +3202,7 @@ LABEL_45:
   v103 = 0u;
   v102 = 0u;
   v86 = obj;
-  v59 = v93;
+  v59 = selfCopy;
   v58 = v94;
   v83 = [v86 countByEnumeratingWithState:&v102 objects:v136 count:16];
   if (v83)
@@ -3224,12 +3224,12 @@ LABEL_45:
         v92 = v60;
         if ([v62 notModified])
         {
-          v63 = log;
+          timers2 = log;
           v64 = COCoreLogForCategory(3);
           if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
           {
             *buf = 134218242;
-            v144 = v79;
+            v144 = meshController;
             v145 = 2112;
             v146 = v61;
             _os_log_debug_impl(&dword_244378000, v64, OS_LOG_TYPE_DEBUG, "%p response is not-modified for %@", buf, 0x16u);
@@ -3238,15 +3238,15 @@ LABEL_45:
 
         else
         {
-          v63 = [v62 timers];
+          timers2 = [v62 timers];
         }
 
         v100 = 0u;
         v101 = 0u;
         v98 = 0u;
         v99 = 0u;
-        obja = v63;
-        v65 = [(COMeshTimerAddOn *)v59 _commandsForReconciling:v63 toTruth:v81 forNode:v61];
+        obja = timers2;
+        v65 = [(COMeshTimerAddOn *)v59 _commandsForReconciling:timers2 toTruth:v81 forNode:v61];
         v66 = [v65 countByEnumeratingWithState:&v98 objects:v135 count:16];
         if (v66)
         {
@@ -3273,9 +3273,9 @@ LABEL_45:
                 v97[5] = v70;
                 v97[6] = v61;
                 v71 = MEMORY[0x245D5FF10](v97);
-                [v96 addObject:v71];
+                [array addObject:v71];
 
-                v59 = v93;
+                v59 = selfCopy;
               }
             }
 
@@ -3304,23 +3304,23 @@ LABEL_45:
   v73 = objc_alloc_init(MEMORY[0x277CBEA60]);
   [(COMeshTimerAddOn *)v59 setMergingNodes:v73];
 
-  v74 = [(COMeshTimerAddOn *)v59 queuedCommands];
-  [v96 addObjectsFromArray:v74];
+  queuedCommands = [(COMeshTimerAddOn *)v59 queuedCommands];
+  [array addObjectsFromArray:queuedCommands];
 
-  [(COMeshTimerAddOn *)v59 setQueuedCommands:v96];
+  [(COMeshTimerAddOn *)v59 setQueuedCommands:array];
   v75 = COCoreLogForCategory(3);
-  v4 = v78;
+  mergeCopy = v78;
   if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v144 = v79;
+    v144 = meshController;
     v145 = 2048;
     v146 = v78;
     _os_log_impl(&dword_244378000, v75, OS_LOG_TYPE_DEFAULT, "%p concluded merge %p", buf, 0x16u);
   }
 
   [(COMeshTimerAddOn *)v59 _processQueuedCommands];
-  v5 = v77;
+  dispatchQueue = v77;
 LABEL_92:
 
   v76 = *MEMORY[0x277D85DE8];
@@ -3342,20 +3342,20 @@ void __33__COMeshTimerAddOn__finishMerge___block_invoke_145(uint64_t a1)
   [v2 sendCommand:*(a1 + 40) toPeer:*(a1 + 48)];
 }
 
-- (void)_reloadIndexWithCompletion:(id)a3
+- (void)_reloadIndexWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(COMeshTimerAddOn *)self observedTimerManager];
-  v6 = [v5 timers];
+  completionCopy = completion;
+  observedTimerManager = [(COMeshTimerAddOn *)self observedTimerManager];
+  timers = [observedTimerManager timers];
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__COMeshTimerAddOn__reloadIndexWithCompletion___block_invoke;
   v14[3] = &unk_278E15C10;
   objc_copyWeak(&v16, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v15 = v7;
-  v8 = [v6 addFailureBlock:v14];
+  v8 = [timers addFailureBlock:v14];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__COMeshTimerAddOn__reloadIndexWithCompletion___block_invoke_2;
@@ -3363,7 +3363,7 @@ void __33__COMeshTimerAddOn__finishMerge___block_invoke_145(uint64_t a1)
   objc_copyWeak(&v13, &location);
   v9 = v7;
   v12 = v9;
-  v10 = [v6 addSuccessBlock:v11];
+  v10 = [timers addSuccessBlock:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v16);
@@ -3510,13 +3510,13 @@ uint64_t __47__COMeshTimerAddOn__reloadIndexWithCompletion___block_invoke_3(uint
 - (void)_processQueuedCommands
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(COMeshTimerAddOn *)self queuedCommands];
+  queuedCommands = [(COMeshTimerAddOn *)self queuedCommands];
   [(COMeshTimerAddOn *)self setQueuedCommands:MEMORY[0x277CBEBF8]];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v3;
+  v4 = queuedCommands;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -3546,15 +3546,15 @@ uint64_t __47__COMeshTimerAddOn__reloadIndexWithCompletion___block_invoke_3(uint
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addTimerDeleteEvent:(id)a3
+- (void)_addTimerDeleteEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(COMeshTimerAddOn *)self deletes];
-  v6 = [v5 arrayByAddingObject:v4];
+  eventCopy = event;
+  deletes = [(COMeshTimerAddOn *)self deletes];
+  v6 = [deletes arrayByAddingObject:eventCopy];
 
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v8 = [MEMORY[0x277CBEAA8] now];
-  v9 = [v7 dateByAddingUnit:16 value:-2 toDate:v8 options:1];
+  v9 = [currentCalendar dateByAddingUnit:16 value:-2 toDate:v8 options:1];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -3585,37 +3585,37 @@ BOOL __41__COMeshTimerAddOn__addTimerDeleteEvent___block_invoke(uint64_t a1, voi
 
 - (id)timers
 {
-  v3 = [(COMeshTimerAddOn *)self performsLocalActions];
+  performsLocalActions = [(COMeshTimerAddOn *)self performsLocalActions];
 
-  return [(COMeshTimerAddOn *)self _timersForAccessoryIdentifier:0 allowLocalStorage:v3];
+  return [(COMeshTimerAddOn *)self _timersForAccessoryIdentifier:0 allowLocalStorage:performsLocalActions];
 }
 
-- (id)addTimer:(id)a3 client:(id)a4 member:(id)a5
+- (id)addTimer:(id)timer client:(id)client member:(id)member
 {
   v62 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COTimerRequest *)[COTimerCreateRequest alloc] initWithTimer:v8];
-  v12 = [(COMeshAddOn *)self meshController];
-  v45 = v8;
-  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([v12 leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  timerCopy = timer;
+  clientCopy = client;
+  memberCopy = member;
+  v11 = [(COTimerRequest *)[COTimerCreateRequest alloc] initWithTimer:timerCopy];
+  meshController = [(COMeshAddOn *)self meshController];
+  v45 = timerCopy;
+  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
-    v26 = v10;
+    v26 = memberCopy;
     v35 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [(COMeshAddOn *)self meshController];
-      v37 = [v45 timerID];
+      meshController2 = [(COMeshAddOn *)self meshController];
+      timerID = [v45 timerID];
       *buf = 134218242;
-      v59 = v36;
+      v59 = meshController2;
       v60 = 2112;
-      v61 = v37;
+      v61 = timerID;
       _os_log_impl(&dword_244378000, v35, OS_LOG_TYPE_DEFAULT, "%p directly add a timer %@", buf, 0x16u);
     }
 
     v38 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v39 = [v12 dispatchQueue];
+    dispatchQueue = [meshController dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     v27 = &off_244448000;
     block[1] = 3221225472;
@@ -3625,8 +3625,8 @@ BOOL __41__COMeshTimerAddOn__addTimerDeleteEvent___block_invoke(uint64_t a1, voi
     v55 = v11;
     v28 = v38;
     v56 = v28;
-    v57 = v12;
-    dispatch_async(v39, block);
+    v57 = meshController;
+    dispatch_async(dispatchQueue, block);
 
     v32 = 1;
   }
@@ -3635,61 +3635,61 @@ BOOL __41__COMeshTimerAddOn__addTimerDeleteEvent___block_invoke(uint64_t a1, voi
   {
     v14 = COCoreLogForCategory(3);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (memberCopy)
     {
       v43 = v11;
       if (v15)
       {
-        v16 = [v8 timerID];
+        timerID2 = [timerCopy timerID];
         *buf = 134218242;
-        v59 = v12;
+        v59 = meshController;
         v60 = 2112;
-        v61 = v16;
+        v61 = timerID2;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p using secondary cluster to add %@", buf, 0x16u);
       }
 
       v17 = objc_alloc_init(MEMORY[0x277D2C900]);
-      v18 = [[COMTTimerCreateAction alloc] initWithTimer:v8];
-      v19 = [v9 clientLifetimeActivity];
-      v20 = [CONetworkActivityFactory activityWithLabel:4 parentActivity:v19];
+      v18 = [[COMTTimerCreateAction alloc] initWithTimer:timerCopy];
+      clientLifetimeActivity = [clientCopy clientLifetimeActivity];
+      v20 = [CONetworkActivityFactory activityWithLabel:4 parentActivity:clientLifetimeActivity];
 
       if (v20)
       {
         nw_activity_activate();
       }
 
-      v44 = v9;
-      v21 = [v9 clientBundleIdentifier];
-      if (![v21 length])
+      v44 = clientCopy;
+      clientBundleIdentifier = [clientCopy clientBundleIdentifier];
+      if (![clientBundleIdentifier length])
       {
-        v22 = [MEMORY[0x277CCA8D8] mainBundle];
-        v23 = [v22 bundleIdentifier];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
 
-        v21 = v23;
+        clientBundleIdentifier = bundleIdentifier;
       }
 
-      v24 = [(COMeshTimerAddOn *)self actionDirector];
-      v25 = [MEMORY[0x277CBEB98] setWithObject:v10];
+      actionDirector = [(COMeshTimerAddOn *)self actionDirector];
+      v25 = [MEMORY[0x277CBEB98] setWithObject:memberCopy];
       v48[0] = MEMORY[0x277D85DD0];
-      v26 = v10;
+      v26 = memberCopy;
       v27 = &off_244448000;
       v48[1] = 3221225472;
       v48[2] = __43__COMeshTimerAddOn_addTimer_client_member___block_invoke_155;
       v48[3] = &unk_278E15778;
       v49 = v20;
       v50 = v18;
-      v51 = v21;
+      v51 = clientBundleIdentifier;
       v28 = v17;
       v52 = v28;
-      v53 = v12;
-      v29 = v21;
+      v53 = meshController;
+      v29 = clientBundleIdentifier;
       v30 = v18;
       v31 = v20;
-      [v24 requestAction:v30 members:v25 activity:v31 withCompletion:v48];
+      [actionDirector requestAction:v30 members:v25 activity:v31 withCompletion:v48];
 
       v32 = 0;
       v11 = v43;
-      v9 = v44;
+      clientCopy = v44;
     }
 
     else
@@ -3697,28 +3697,28 @@ BOOL __41__COMeshTimerAddOn__addTimerDeleteEvent___block_invoke(uint64_t a1, voi
       v26 = 0;
       if (v15)
       {
-        v33 = [(COMeshAddOn *)self meshController];
-        v34 = [v45 timerID];
+        meshController3 = [(COMeshAddOn *)self meshController];
+        timerID3 = [v45 timerID];
         *buf = 134218242;
-        v59 = v33;
+        v59 = meshController3;
         v60 = 2112;
-        v61 = v34;
+        v61 = timerID3;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p requesting leader to add a timer %@", buf, 0x16u);
       }
 
-      v28 = [(COMeshTimerAddOn *)self _sendRequest:v11 client:v9];
+      v28 = [(COMeshTimerAddOn *)self _sendRequest:v11 client:clientCopy];
       v32 = 0;
       v27 = &off_244448000;
     }
   }
 
-  v40 = [(COMeshTimerAddOn *)self recorder];
+  recorder = [(COMeshTimerAddOn *)self recorder];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = *(v27 + 186);
   v46[2] = __43__COMeshTimerAddOn_addTimer_client_member___block_invoke_156;
   v46[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
   v47 = v32;
-  (v40)[2](v40, 0x2857B5848, v46);
+  (recorder)[2](recorder, 0x2857B5848, v46);
 
   v41 = *MEMORY[0x277D85DE8];
 
@@ -3800,32 +3800,32 @@ void __43__COMeshTimerAddOn_addTimer_client_member___block_invoke_155(uint64_t a
   }
 }
 
-- (id)updateTimer:(id)a3 client:(id)a4 member:(id)a5
+- (id)updateTimer:(id)timer client:(id)client member:(id)member
 {
   v62 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COTimerRequest *)[COTimerUpdateRequest alloc] initWithTimer:v8];
-  v12 = [(COMeshAddOn *)self meshController];
-  v45 = v8;
-  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([v12 leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  timerCopy = timer;
+  clientCopy = client;
+  memberCopy = member;
+  v11 = [(COTimerRequest *)[COTimerUpdateRequest alloc] initWithTimer:timerCopy];
+  meshController = [(COMeshAddOn *)self meshController];
+  v45 = timerCopy;
+  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
-    v26 = v10;
+    v26 = memberCopy;
     v35 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [(COMeshAddOn *)self meshController];
-      v37 = [v45 timerID];
+      meshController2 = [(COMeshAddOn *)self meshController];
+      timerID = [v45 timerID];
       *buf = 134218242;
-      v59 = v36;
+      v59 = meshController2;
       v60 = 2112;
-      v61 = v37;
+      v61 = timerID;
       _os_log_impl(&dword_244378000, v35, OS_LOG_TYPE_DEFAULT, "%p directly update a timer %@", buf, 0x16u);
     }
 
     v38 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v39 = [v12 dispatchQueue];
+    dispatchQueue = [meshController dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     v27 = &off_244448000;
     block[1] = 3221225472;
@@ -3835,8 +3835,8 @@ void __43__COMeshTimerAddOn_addTimer_client_member___block_invoke_155(uint64_t a
     v55 = v11;
     v28 = v38;
     v56 = v28;
-    v57 = v12;
-    dispatch_async(v39, block);
+    v57 = meshController;
+    dispatch_async(dispatchQueue, block);
 
     v32 = 1;
   }
@@ -3845,61 +3845,61 @@ void __43__COMeshTimerAddOn_addTimer_client_member___block_invoke_155(uint64_t a
   {
     v14 = COCoreLogForCategory(3);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (memberCopy)
     {
       v43 = v11;
       if (v15)
       {
-        v16 = [v8 timerID];
+        timerID2 = [timerCopy timerID];
         *buf = 134218242;
-        v59 = v12;
+        v59 = meshController;
         v60 = 2112;
-        v61 = v16;
+        v61 = timerID2;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p using secondary cluster to update %@", buf, 0x16u);
       }
 
       v17 = objc_alloc_init(MEMORY[0x277D2C900]);
-      v18 = [[COMTTimerUpdateAction alloc] initWithTimer:v8];
-      v19 = [v9 clientLifetimeActivity];
-      v20 = [CONetworkActivityFactory activityWithLabel:4 parentActivity:v19];
+      v18 = [[COMTTimerUpdateAction alloc] initWithTimer:timerCopy];
+      clientLifetimeActivity = [clientCopy clientLifetimeActivity];
+      v20 = [CONetworkActivityFactory activityWithLabel:4 parentActivity:clientLifetimeActivity];
 
       if (v20)
       {
         nw_activity_activate();
       }
 
-      v44 = v9;
-      v21 = [v9 clientBundleIdentifier];
-      if (![v21 length])
+      v44 = clientCopy;
+      clientBundleIdentifier = [clientCopy clientBundleIdentifier];
+      if (![clientBundleIdentifier length])
       {
-        v22 = [MEMORY[0x277CCA8D8] mainBundle];
-        v23 = [v22 bundleIdentifier];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
 
-        v21 = v23;
+        clientBundleIdentifier = bundleIdentifier;
       }
 
-      v24 = [(COMeshTimerAddOn *)self actionDirector];
-      v25 = [MEMORY[0x277CBEB98] setWithObject:v10];
+      actionDirector = [(COMeshTimerAddOn *)self actionDirector];
+      v25 = [MEMORY[0x277CBEB98] setWithObject:memberCopy];
       v48[0] = MEMORY[0x277D85DD0];
-      v26 = v10;
+      v26 = memberCopy;
       v27 = &off_244448000;
       v48[1] = 3221225472;
       v48[2] = __46__COMeshTimerAddOn_updateTimer_client_member___block_invoke_158;
       v48[3] = &unk_278E15778;
       v49 = v20;
       v50 = v18;
-      v51 = v21;
+      v51 = clientBundleIdentifier;
       v28 = v17;
       v52 = v28;
-      v53 = v12;
-      v29 = v21;
+      v53 = meshController;
+      v29 = clientBundleIdentifier;
       v30 = v18;
       v31 = v20;
-      [v24 requestAction:v30 members:v25 activity:v31 withCompletion:v48];
+      [actionDirector requestAction:v30 members:v25 activity:v31 withCompletion:v48];
 
       v32 = 0;
       v11 = v43;
-      v9 = v44;
+      clientCopy = v44;
     }
 
     else
@@ -3907,28 +3907,28 @@ void __43__COMeshTimerAddOn_addTimer_client_member___block_invoke_155(uint64_t a
       v26 = 0;
       if (v15)
       {
-        v33 = [(COMeshAddOn *)self meshController];
-        v34 = [v45 timerID];
+        meshController3 = [(COMeshAddOn *)self meshController];
+        timerID3 = [v45 timerID];
         *buf = 134218242;
-        v59 = v33;
+        v59 = meshController3;
         v60 = 2112;
-        v61 = v34;
+        v61 = timerID3;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p requesting leader to update a timer %@", buf, 0x16u);
       }
 
-      v28 = [(COMeshTimerAddOn *)self _sendRequest:v11 client:v9];
+      v28 = [(COMeshTimerAddOn *)self _sendRequest:v11 client:clientCopy];
       v32 = 0;
       v27 = &off_244448000;
     }
   }
 
-  v40 = [(COMeshTimerAddOn *)self recorder];
+  recorder = [(COMeshTimerAddOn *)self recorder];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = *(v27 + 186);
   v46[2] = __46__COMeshTimerAddOn_updateTimer_client_member___block_invoke_159;
   v46[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
   v47 = v32;
-  (v40)[2](v40, 0x2857B5848, v46);
+  (recorder)[2](recorder, 0x2857B5848, v46);
 
   v41 = *MEMORY[0x277D85DE8];
 
@@ -4010,33 +4010,33 @@ void __46__COMeshTimerAddOn_updateTimer_client_member___block_invoke_158(uint64_
   }
 }
 
-- (id)removeTimer:(id)a3 client:(id)a4 member:(id)a5
+- (id)removeTimer:(id)timer client:(id)client member:(id)member
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COTimerRequest *)[COTimerDeleteRequest alloc] initWithTimer:v8];
-  v12 = [(COMeshAddOn *)self meshController];
-  v48 = v8;
-  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([v12 leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  timerCopy = timer;
+  clientCopy = client;
+  memberCopy = member;
+  v11 = [(COTimerRequest *)[COTimerDeleteRequest alloc] initWithTimer:timerCopy];
+  meshController = [(COMeshAddOn *)self meshController];
+  v48 = timerCopy;
+  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
     v38 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [(COMeshAddOn *)self meshController];
-      v40 = [v8 timerID];
+      meshController2 = [(COMeshAddOn *)self meshController];
+      timerID = [timerCopy timerID];
       *buf = 134218242;
-      v62 = v39;
+      v62 = meshController2;
       v63 = 2112;
-      v64 = v40;
+      v64 = timerID;
       _os_log_impl(&dword_244378000, v38, OS_LOG_TYPE_DEFAULT, "%p directly remove a timer %@", buf, 0x16u);
     }
 
     v41 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v42 = [v12 dispatchQueue];
+    dispatchQueue = [meshController dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
-    v25 = v12;
+    v25 = meshController;
     v30 = &off_244448000;
     block[1] = 3221225472;
     block[2] = __46__COMeshTimerAddOn_removeTimer_client_member___block_invoke;
@@ -4046,7 +4046,7 @@ void __46__COMeshTimerAddOn_updateTimer_client_member___block_invoke_158(uint64_
     v31 = v41;
     v59 = v31;
     v60 = v25;
-    dispatch_async(v42, block);
+    dispatch_async(dispatchQueue, block);
 
     v35 = 1;
   }
@@ -4055,46 +4055,46 @@ void __46__COMeshTimerAddOn_updateTimer_client_member___block_invoke_158(uint64_
   {
     v14 = COCoreLogForCategory(3);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (memberCopy)
     {
       v46 = v11;
       if (v15)
       {
-        v16 = [v8 timerID];
+        timerID2 = [timerCopy timerID];
         *buf = 134218242;
-        v62 = v12;
+        v62 = meshController;
         v63 = 2112;
-        v64 = v16;
+        v64 = timerID2;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p using secondary cluster to remove %@", buf, 0x16u);
       }
 
       v17 = objc_alloc_init(MEMORY[0x277D2C900]);
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      v20 = [v8 timerID];
-      v21 = [COMTDeleteAction actionWithTargetType:v19 targetIdentifier:v20];
+      timerID3 = [timerCopy timerID];
+      v21 = [COMTDeleteAction actionWithTargetType:v19 targetIdentifier:timerID3];
 
-      v22 = [v9 clientLifetimeActivity];
-      v23 = [CONetworkActivityFactory activityWithLabel:4 parentActivity:v22];
+      clientLifetimeActivity = [clientCopy clientLifetimeActivity];
+      v23 = [CONetworkActivityFactory activityWithLabel:4 parentActivity:clientLifetimeActivity];
 
       if (v23)
       {
         nw_activity_activate();
       }
 
-      v47 = v9;
-      v24 = [v9 clientBundleIdentifier];
-      v25 = v12;
-      if (![v24 length])
+      v47 = clientCopy;
+      clientBundleIdentifier = [clientCopy clientBundleIdentifier];
+      v25 = meshController;
+      if (![clientBundleIdentifier length])
       {
-        v26 = [MEMORY[0x277CCA8D8] mainBundle];
-        v27 = [v26 bundleIdentifier];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
 
-        v24 = v27;
+        clientBundleIdentifier = bundleIdentifier;
       }
 
-      v28 = [(COMeshTimerAddOn *)self actionDirector];
-      v29 = [MEMORY[0x277CBEB98] setWithObject:v10];
+      actionDirector = [(COMeshTimerAddOn *)self actionDirector];
+      v29 = [MEMORY[0x277CBEB98] setWithObject:memberCopy];
       v51[0] = MEMORY[0x277D85DD0];
       v30 = &off_244448000;
       v51[1] = 3221225472;
@@ -4102,47 +4102,47 @@ void __46__COMeshTimerAddOn_updateTimer_client_member___block_invoke_158(uint64_
       v51[3] = &unk_278E15778;
       v52 = v23;
       v53 = v21;
-      v54 = v24;
+      v54 = clientBundleIdentifier;
       v31 = v17;
       v55 = v31;
       v56 = v25;
-      v32 = v24;
+      v32 = clientBundleIdentifier;
       v33 = v21;
       v34 = v23;
-      [v28 requestAction:v33 members:v29 activity:v34 withCompletion:v51];
+      [actionDirector requestAction:v33 members:v29 activity:v34 withCompletion:v51];
 
       v35 = 0;
       v11 = v46;
-      v9 = v47;
+      clientCopy = v47;
     }
 
     else
     {
-      v25 = v12;
+      v25 = meshController;
       if (v15)
       {
-        v36 = [(COMeshAddOn *)self meshController];
-        v37 = [v48 timerID];
+        meshController3 = [(COMeshAddOn *)self meshController];
+        timerID4 = [v48 timerID];
         *buf = 134218242;
-        v62 = v36;
+        v62 = meshController3;
         v63 = 2112;
-        v64 = v37;
+        v64 = timerID4;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p requesting leader to remove a timer %@", buf, 0x16u);
       }
 
-      v31 = [(COMeshTimerAddOn *)self _sendRequest:v11 client:v9];
+      v31 = [(COMeshTimerAddOn *)self _sendRequest:v11 client:clientCopy];
       v35 = 0;
       v30 = &off_244448000;
     }
   }
 
-  v43 = [(COMeshTimerAddOn *)self recorder];
+  recorder = [(COMeshTimerAddOn *)self recorder];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = *(v30 + 186);
   v49[2] = __46__COMeshTimerAddOn_removeTimer_client_member___block_invoke_162;
   v49[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
   v50 = v35;
-  (v43)[2](v43, 0x2857B5848, v49);
+  (recorder)[2](recorder, 0x2857B5848, v49);
 
   v44 = *MEMORY[0x277D85DE8];
 
@@ -4224,28 +4224,28 @@ void __46__COMeshTimerAddOn_removeTimer_client_member___block_invoke_161(uint64_
   }
 }
 
-- (id)dismissTimerWithIdentifier:(id)a3 client:(id)a4
+- (id)dismissTimerWithIdentifier:(id)identifier client:(id)client
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[COTimerDismissRequest alloc] initWithTimerIdentifier:v6];
-  v9 = [(COMeshAddOn *)self meshController];
-  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([v9 leader], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  identifierCopy = identifier;
+  clientCopy = client;
+  v8 = [[COTimerDismissRequest alloc] initWithTimerIdentifier:identifierCopy];
+  meshController = [(COMeshAddOn *)self meshController];
+  if (-[COMeshTimerAddOn performsLocalActions](self, "performsLocalActions") && ([meshController leader], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v23 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(COMeshAddOn *)self meshController];
+      meshController2 = [(COMeshAddOn *)self meshController];
       *buf = 134218242;
-      v36 = v24;
+      v36 = meshController2;
       v37 = 2112;
-      v38 = v6;
+      v38 = identifierCopy;
       _os_log_impl(&dword_244378000, v23, OS_LOG_TYPE_DEFAULT, "%p directly dismiss a timer %@", buf, 0x16u);
     }
 
     v25 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v26 = [v9 dispatchQueue];
+    dispatchQueue = [meshController dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__COMeshTimerAddOn_dismissTimerWithIdentifier_client___block_invoke;
@@ -4255,48 +4255,48 @@ void __46__COMeshTimerAddOn_removeTimer_client_member___block_invoke_161(uint64_
     v32 = v8;
     v18 = v25;
     v33 = v18;
-    v34 = v9;
-    dispatch_async(v26, block);
+    v34 = meshController;
+    dispatch_async(dispatchQueue, block);
 
     v19 = 1;
   }
 
   else
   {
-    v11 = [(COMeshTimerAddOn *)self timerManager];
-    v12 = [v11 dismissTimerWithIdentifier:v6];
+    timerManager = [(COMeshTimerAddOn *)self timerManager];
+    v12 = [timerManager dismissTimerWithIdentifier:identifierCopy];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __54__COMeshTimerAddOn_dismissTimerWithIdentifier_client___block_invoke_163;
     v29[3] = &unk_278E17010;
     v29[4] = self;
     v13 = &v30;
-    v14 = v6;
+    v14 = identifierCopy;
     v30 = v14;
     v15 = [v12 addCompletionBlock:v29];
 
     v16 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(COMeshAddOn *)self meshController];
+      meshController3 = [(COMeshAddOn *)self meshController];
       *buf = 134218242;
-      v36 = v17;
+      v36 = meshController3;
       v37 = 2112;
       v38 = v14;
       _os_log_impl(&dword_244378000, v16, OS_LOG_TYPE_DEFAULT, "%p requesting leader to dismiss a timer %@", buf, 0x16u);
     }
 
-    v18 = [(COMeshTimerAddOn *)self _sendRequest:v8 client:v7];
+    v18 = [(COMeshTimerAddOn *)self _sendRequest:v8 client:clientCopy];
     v19 = 0;
   }
 
-  v20 = [(COMeshTimerAddOn *)self recorder];
+  recorder = [(COMeshTimerAddOn *)self recorder];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __54__COMeshTimerAddOn_dismissTimerWithIdentifier_client___block_invoke_165;
   v27[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
   v28 = v19;
-  (v20)[2](v20, 0x2857B5848, v27);
+  (recorder)[2](recorder, 0x2857B5848, v27);
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -4366,72 +4366,72 @@ void __54__COMeshTimerAddOn_dismissTimerWithIdentifier_client___block_invoke_163
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isTimer:(id)a3 targetingAccessory:(id)a4
+- (BOOL)_isTimer:(id)timer targetingAccessory:(id)accessory
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  if (v6)
+  accessoryCopy = accessory;
+  timerCopy = timer;
+  if (accessoryCopy)
   {
-    v8 = [(COMeshTimerAddOn *)self homekit];
-    v9 = [v8 homeForAccessory:v6];
+    homekit = [(COMeshTimerAddOn *)self homekit];
+    v9 = [homekit homeForAccessory:accessoryCopy];
     if (v9)
     {
-      v10 = [v8 identifiersForAccessoriesAssociatedWithAccessory:v6 inHome:v9];
+      v10 = [homekit identifiersForAccessoriesAssociatedWithAccessory:accessoryCopy inHome:v9];
     }
 
     else
     {
-      v12 = [v6 uniqueIdentifier];
-      v15[0] = v12;
+      uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+      v15[0] = uniqueIdentifier;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     }
 
-    v11 = [(COMeshTimerAddOn *)self _isTimer:v7 targetingAccessoryIdentifiers:v10];
+    v11 = [(COMeshTimerAddOn *)self _isTimer:timerCopy targetingAccessoryIdentifiers:v10];
   }
 
   else
   {
-    v11 = [(COMeshTimerAddOn *)self _isTimer:v7 targetingAccessoryIdentifiers:0];
-    v8 = v7;
+    v11 = [(COMeshTimerAddOn *)self _isTimer:timerCopy targetingAccessoryIdentifiers:0];
+    homekit = timerCopy;
   }
 
   v13 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (void)handleTimerReadRequest:(id)a3 callback:(id)a4
+- (void)handleTimerReadRequest:(id)request callback:(id)callback
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  callbackCopy = callback;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v9 = [v6 accessoryUniqueIdentifier];
+  accessoryUniqueIdentifier = [requestCopy accessoryUniqueIdentifier];
   v10 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(COMeshAddOn *)self meshController];
+    meshController = [(COMeshAddOn *)self meshController];
     *buf = 134218242;
-    v33 = v11;
+    v33 = meshController;
     v34 = 2112;
-    v35 = v9;
+    v35 = accessoryUniqueIdentifier;
     _os_log_impl(&dword_244378000, v10, OS_LOG_TYPE_DEFAULT, "%p retrieving timers for %@...", buf, 0x16u);
   }
 
-  v12 = [v6 requiresFilter];
-  v13 = v12;
+  requiresFilter = [requestCopy requiresFilter];
+  v13 = requiresFilter;
   v14 = 0;
-  if (v12 && v9)
+  if (requiresFilter && accessoryUniqueIdentifier)
   {
-    v15 = [(COMeshTimerAddOn *)self homekit];
-    v16 = [v15 accessoryWithUniqueIdentifier:v9];
+    homekit = [(COMeshTimerAddOn *)self homekit];
+    v16 = [homekit accessoryWithUniqueIdentifier:accessoryUniqueIdentifier];
     if (!v16)
     {
-      v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
-      v22 = [[COMeshResponse alloc] initWithError:v18];
-      v7[2](v7, v22, 0);
+      timers = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
+      v22 = [[COMeshResponse alloc] initWithError:timers];
+      callbackCopy[2](callbackCopy, v22, 0);
       goto LABEL_11;
     }
 
@@ -4440,33 +4440,33 @@ void __54__COMeshTimerAddOn_dismissTimerWithIdentifier_client___block_invoke_163
 
   if ([(COMeshTimerAddOn *)self performsLocalActions])
   {
-    v17 = [(COMeshTimerAddOn *)self timerManager];
-    v18 = [v17 timers];
+    timerManager = [(COMeshTimerAddOn *)self timerManager];
+    timers = [timerManager timers];
   }
 
   else
   {
-    v18 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
+    timers = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
   }
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __52__COMeshTimerAddOn_handleTimerReadRequest_callback___block_invoke;
   v30[3] = &unk_278E17038;
-  v19 = v7;
+  v19 = callbackCopy;
   v31 = v19;
-  v20 = [v18 addFailureBlock:v30];
+  v20 = [timers addFailureBlock:v30];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __52__COMeshTimerAddOn_handleTimerReadRequest_callback___block_invoke_167;
   v24[3] = &unk_278E17060;
   v29 = v13;
   v25 = v14;
-  v26 = self;
-  v27 = v6;
+  selfCopy = self;
+  v27 = requestCopy;
   v28 = v19;
-  v15 = v14;
-  v21 = [v18 addSuccessBlock:v24];
+  homekit = v14;
+  v21 = [timers addSuccessBlock:v24];
 
   v22 = v31;
 LABEL_11:
@@ -4618,39 +4618,39 @@ uint64_t __52__COMeshTimerAddOn_handleTimerReadRequest_callback___block_invoke_2
   return v2 ^ 1u;
 }
 
-- (void)handleTimerCreateRequest:(id)a3 callback:(id)a4
+- (void)handleTimerCreateRequest:(id)request callback:(id)callback
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [v8 dispatchQueue];
-  dispatch_assert_queue_V2(v9);
+  callbackCopy = callback;
+  requestCopy = request;
+  meshController = [(COMeshAddOn *)self meshController];
+  dispatchQueue = [meshController dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v10 = [v7 timer];
+  timer = [requestCopy timer];
 
   v11 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 timerID];
+    timerID = [timer timerID];
     *buf = 134218242;
-    v32 = v8;
+    v32 = meshController;
     v33 = 2112;
-    v34 = v12;
+    v34 = timerID;
     _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p adding timer %@...", buf, 0x16u);
   }
 
   if ([(COMeshTimerAddOn *)self performsLocalActions])
   {
-    v13 = [(COMeshTimerAddOn *)self timerManager];
-    [v13 addTimer:v10];
+    timerManager = [(COMeshTimerAddOn *)self timerManager];
+    [timerManager addTimer:timer];
   }
 
   else
   {
     v14 = MEMORY[0x277D2C900];
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
-    [v14 futureWithError:v13];
+    timerManager = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
+    [v14 futureWithError:timerManager];
   }
   v15 = ;
 
@@ -4658,19 +4658,19 @@ uint64_t __52__COMeshTimerAddOn_handleTimerReadRequest_callback___block_invoke_2
   v28[1] = 3221225472;
   v28[2] = __54__COMeshTimerAddOn_handleTimerCreateRequest_callback___block_invoke;
   v28[3] = &unk_278E17088;
-  v16 = v10;
+  v16 = timer;
   v29 = v16;
-  v17 = v6;
+  v17 = callbackCopy;
   v30 = v17;
   v18 = [v15 addFailureBlock:v28];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __54__COMeshTimerAddOn_handleTimerCreateRequest_callback___block_invoke_168;
   v24[3] = &unk_278E170B0;
-  v26 = v8;
+  v26 = meshController;
   v27 = v17;
   v25 = v16;
-  v19 = v8;
+  v19 = meshController;
   v20 = v17;
   v21 = v16;
   v22 = [v15 addSuccessBlock:v24];
@@ -4723,39 +4723,39 @@ void __54__COMeshTimerAddOn_handleTimerCreateRequest_callback___block_invoke_168
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTimerUpdateRequest:(id)a3 callback:(id)a4
+- (void)handleTimerUpdateRequest:(id)request callback:(id)callback
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [v8 dispatchQueue];
-  dispatch_assert_queue_V2(v9);
+  callbackCopy = callback;
+  requestCopy = request;
+  meshController = [(COMeshAddOn *)self meshController];
+  dispatchQueue = [meshController dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v10 = [v7 timer];
+  timer = [requestCopy timer];
 
   v11 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 timerID];
+    timerID = [timer timerID];
     *buf = 134218242;
-    v32 = v8;
+    v32 = meshController;
     v33 = 2112;
-    v34 = v12;
+    v34 = timerID;
     _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p updating timer %@...", buf, 0x16u);
   }
 
   if ([(COMeshTimerAddOn *)self performsLocalActions])
   {
-    v13 = [(COMeshTimerAddOn *)self timerManager];
-    [v13 updateTimer:v10];
+    timerManager = [(COMeshTimerAddOn *)self timerManager];
+    [timerManager updateTimer:timer];
   }
 
   else
   {
     v14 = MEMORY[0x277D2C900];
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
-    [v14 futureWithError:v13];
+    timerManager = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
+    [v14 futureWithError:timerManager];
   }
   v15 = ;
 
@@ -4763,19 +4763,19 @@ void __54__COMeshTimerAddOn_handleTimerCreateRequest_callback___block_invoke_168
   v28[1] = 3221225472;
   v28[2] = __54__COMeshTimerAddOn_handleTimerUpdateRequest_callback___block_invoke;
   v28[3] = &unk_278E17088;
-  v16 = v10;
+  v16 = timer;
   v29 = v16;
-  v17 = v6;
+  v17 = callbackCopy;
   v30 = v17;
   v18 = [v15 addFailureBlock:v28];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __54__COMeshTimerAddOn_handleTimerUpdateRequest_callback___block_invoke_169;
   v24[3] = &unk_278E170B0;
-  v26 = v8;
+  v26 = meshController;
   v27 = v17;
   v25 = v16;
-  v19 = v8;
+  v19 = meshController;
   v20 = v17;
   v21 = v16;
   v22 = [v15 addSuccessBlock:v24];
@@ -4828,39 +4828,39 @@ void __54__COMeshTimerAddOn_handleTimerUpdateRequest_callback___block_invoke_169
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTimerDeleteRequest:(id)a3 callback:(id)a4
+- (void)handleTimerDeleteRequest:(id)request callback:(id)callback
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [v8 dispatchQueue];
-  dispatch_assert_queue_V2(v9);
+  callbackCopy = callback;
+  requestCopy = request;
+  meshController = [(COMeshAddOn *)self meshController];
+  dispatchQueue = [meshController dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v10 = [v7 timer];
+  timer = [requestCopy timer];
 
   v11 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 timerID];
+    timerID = [timer timerID];
     *buf = 134218242;
-    v33 = v8;
+    v33 = meshController;
     v34 = 2112;
-    v35 = v12;
+    v35 = timerID;
     _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p delete timer %@...", buf, 0x16u);
   }
 
   if ([(COMeshTimerAddOn *)self performsLocalActions])
   {
-    v13 = [(COMeshTimerAddOn *)self timerManager];
-    [v13 removeTimer:v10];
+    timerManager = [(COMeshTimerAddOn *)self timerManager];
+    [timerManager removeTimer:timer];
   }
 
   else
   {
     v14 = MEMORY[0x277D2C900];
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
-    [v14 futureWithError:v13];
+    timerManager = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
+    [v14 futureWithError:timerManager];
   }
   v15 = ;
 
@@ -4868,9 +4868,9 @@ void __54__COMeshTimerAddOn_handleTimerUpdateRequest_callback___block_invoke_169
   v29[1] = 3221225472;
   v29[2] = __54__COMeshTimerAddOn_handleTimerDeleteRequest_callback___block_invoke;
   v29[3] = &unk_278E17088;
-  v16 = v10;
+  v16 = timer;
   v30 = v16;
-  v17 = v6;
+  v17 = callbackCopy;
   v31 = v17;
   v18 = [v15 addFailureBlock:v29];
   v24[0] = MEMORY[0x277D85DD0];
@@ -4878,10 +4878,10 @@ void __54__COMeshTimerAddOn_handleTimerUpdateRequest_callback___block_invoke_169
   v24[2] = __54__COMeshTimerAddOn_handleTimerDeleteRequest_callback___block_invoke_170;
   v24[3] = &unk_278E170D8;
   v25 = v16;
-  v26 = self;
-  v27 = v8;
+  selfCopy = self;
+  v27 = meshController;
   v28 = v17;
-  v19 = v8;
+  v19 = meshController;
   v20 = v17;
   v21 = v16;
   v22 = [v15 addSuccessBlock:v24];
@@ -4941,23 +4941,23 @@ void __54__COMeshTimerAddOn_handleTimerDeleteRequest_callback___block_invoke_170
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTimerDismissRequest:(id)a3 callback:(id)a4
+- (void)handleTimerDismissRequest:(id)request callback:(id)callback
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshController];
-  v9 = [v8 dispatchQueue];
-  dispatch_assert_queue_V2(v9);
+  requestCopy = request;
+  callbackCopy = callback;
+  meshController = [(COMeshAddOn *)self meshController];
+  dispatchQueue = [meshController dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v10 = [v6 identifier];
+  identifier = [requestCopy identifier];
   v11 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    *&buf[4] = v8;
+    *&buf[4] = meshController;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = identifier;
     _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p dismiss timer %@...", buf, 0x16u);
   }
 
@@ -4971,26 +4971,26 @@ void __54__COMeshTimerAddOn_handleTimerDeleteRequest_callback___block_invoke_170
   v48 = __Block_byref_object_copy__11;
   v49 = __Block_byref_object_dispose__11;
   v50 = 0;
-  v12 = [(COMeshTimerAddOn *)self timerManager];
-  v13 = [v12 dismissTimerWithIdentifier:v10];
-  v14 = [v12 timers];
+  timerManager = [(COMeshTimerAddOn *)self timerManager];
+  v13 = [timerManager dismissTimerWithIdentifier:identifier];
+  timers = [timerManager timers];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __55__COMeshTimerAddOn_handleTimerDismissRequest_callback___block_invoke;
   v40[3] = &unk_278E17100;
   v43 = v45;
   v44 = buf;
-  v15 = v8;
+  v15 = meshController;
   v41 = v15;
-  v42 = self;
+  selfCopy = self;
   v16 = MEMORY[0x245D5FF10](v40);
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __55__COMeshTimerAddOn_handleTimerDismissRequest_callback___block_invoke_174;
   v37[3] = &unk_278E17088;
-  v17 = v10;
+  v17 = identifier;
   v38 = v17;
-  v18 = v7;
+  v18 = callbackCopy;
   v39 = v18;
   v19 = [v13 addFailureBlock:v37];
   v32[0] = MEMORY[0x277D85DD0];
@@ -5014,7 +5014,7 @@ void __54__COMeshTimerAddOn_handleTimerDeleteRequest_callback___block_invoke_170
   v31 = buf;
   v25 = v22;
   v30 = v25;
-  v26 = [v14 addSuccessBlock:v28];
+  v26 = [timers addSuccessBlock:v28];
 
   _Block_object_dispose(buf, 8);
   _Block_object_dispose(v45, 8);
@@ -5119,36 +5119,36 @@ void __55__COMeshTimerAddOn_handleTimerDismissRequest_callback___block_invoke_2(
   }
 }
 
-- (void)handleTimersAddedNotification:(id)a3
+- (void)handleTimersAddedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 timers];
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  timers = [notificationCopy timers];
 
-  if ([v6 count])
+  if ([timers count])
   {
     if ([(COMeshTimerAddOn *)self performsLocalActions])
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:v5];
-      v9 = [(COMeshTimerAddOn *)self timerManager];
+      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:meshControllerQueue];
+      timerManager = [(COMeshTimerAddOn *)self timerManager];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __50__COMeshTimerAddOn_handleTimersAddedNotification___block_invoke;
       v16[3] = &unk_278E171A0;
       v16[4] = self;
       v17 = v7;
-      v18 = v9;
-      v10 = v9;
+      v18 = timerManager;
+      v10 = timerManager;
       v11 = v7;
-      [v6 enumerateObjectsUsingBlock:v16];
-      v12 = [MEMORY[0x277D2C900] combineAllFutures:v11 ignoringErrors:1 scheduler:v8];
+      [timers enumerateObjectsUsingBlock:v16];
+      futureWithNoResult = [MEMORY[0x277D2C900] combineAllFutures:v11 ignoringErrors:1 scheduler:v8];
     }
 
     else
     {
-      v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
     v14[0] = MEMORY[0x277D85DD0];
@@ -5156,14 +5156,14 @@ void __55__COMeshTimerAddOn_handleTimerDismissRequest_callback___block_invoke_2(
     v14[2] = __50__COMeshTimerAddOn_handleTimersAddedNotification___block_invoke_179;
     v14[3] = &unk_278E171C8;
     v14[4] = self;
-    v15 = v6;
-    v13 = [v12 addSuccessBlock:v14];
+    v15 = timers;
+    v13 = [futureWithNoResult addSuccessBlock:v14];
   }
 
   else
   {
-    v12 = COCoreLogForCategory(3);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    futureWithNoResult = COCoreLogForCategory(3);
+    if (os_log_type_enabled(futureWithNoResult, OS_LOG_TYPE_DEBUG))
     {
       [COMeshTimerAddOn handleTimersAddedNotification:];
     }
@@ -5214,21 +5214,21 @@ void __50__COMeshTimerAddOn_handleTimersAddedNotification___block_invoke_179(uin
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTimersRemovedNotification:(id)a3
+- (void)handleTimersRemovedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 timers];
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  timers = [notificationCopy timers];
 
-  if ([v6 count])
+  if ([timers count])
   {
     if ([(COMeshTimerAddOn *)self performsLocalActions])
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:v5];
+      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:meshControllerQueue];
       v9 = [MEMORY[0x277CBEAA8] now];
-      v10 = [(COMeshTimerAddOn *)self timerManager];
+      timerManager = [(COMeshTimerAddOn *)self timerManager];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __52__COMeshTimerAddOn_handleTimersRemovedNotification___block_invoke;
@@ -5236,17 +5236,17 @@ void __50__COMeshTimerAddOn_handleTimersAddedNotification___block_invoke_179(uin
       v18[4] = self;
       v19 = v9;
       v20 = v7;
-      v21 = v10;
-      v11 = v10;
+      v21 = timerManager;
+      v11 = timerManager;
       v12 = v7;
       v13 = v9;
-      [v6 enumerateObjectsUsingBlock:v18];
-      v14 = [MEMORY[0x277D2C900] combineAllFutures:v12 ignoringErrors:1 scheduler:v8];
+      [timers enumerateObjectsUsingBlock:v18];
+      futureWithNoResult = [MEMORY[0x277D2C900] combineAllFutures:v12 ignoringErrors:1 scheduler:v8];
     }
 
     else
     {
-      v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
     v16[0] = MEMORY[0x277D85DD0];
@@ -5254,14 +5254,14 @@ void __50__COMeshTimerAddOn_handleTimersAddedNotification___block_invoke_179(uin
     v16[2] = __52__COMeshTimerAddOn_handleTimersRemovedNotification___block_invoke_181;
     v16[3] = &unk_278E171C8;
     v16[4] = self;
-    v17 = v6;
-    v15 = [v14 addSuccessBlock:v16];
+    v17 = timers;
+    v15 = [futureWithNoResult addSuccessBlock:v16];
   }
 
   else
   {
-    v14 = COCoreLogForCategory(3);
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    futureWithNoResult = COCoreLogForCategory(3);
+    if (os_log_type_enabled(futureWithNoResult, OS_LOG_TYPE_DEBUG))
     {
       [COMeshTimerAddOn handleTimersRemovedNotification:];
     }
@@ -5316,36 +5316,36 @@ void __52__COMeshTimerAddOn_handleTimersRemovedNotification___block_invoke_181(u
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTimersUpdatedNotification:(id)a3
+- (void)handleTimersUpdatedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 timers];
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  timers = [notificationCopy timers];
 
-  if ([v6 count])
+  if ([timers count])
   {
     if ([(COMeshTimerAddOn *)self performsLocalActions])
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:v5];
-      v9 = [(COMeshTimerAddOn *)self timerManager];
+      v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:meshControllerQueue];
+      timerManager = [(COMeshTimerAddOn *)self timerManager];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __52__COMeshTimerAddOn_handleTimersUpdatedNotification___block_invoke;
       v16[3] = &unk_278E171A0;
       v16[4] = self;
       v17 = v7;
-      v18 = v9;
-      v10 = v9;
+      v18 = timerManager;
+      v10 = timerManager;
       v11 = v7;
-      [v6 enumerateObjectsUsingBlock:v16];
-      v12 = [MEMORY[0x277D2C900] combineAllFutures:v11 ignoringErrors:1 scheduler:v8];
+      [timers enumerateObjectsUsingBlock:v16];
+      futureWithNoResult = [MEMORY[0x277D2C900] combineAllFutures:v11 ignoringErrors:1 scheduler:v8];
     }
 
     else
     {
-      v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
     v14[0] = MEMORY[0x277D85DD0];
@@ -5353,14 +5353,14 @@ void __52__COMeshTimerAddOn_handleTimersRemovedNotification___block_invoke_181(u
     v14[2] = __52__COMeshTimerAddOn_handleTimersUpdatedNotification___block_invoke_182;
     v14[3] = &unk_278E171C8;
     v14[4] = self;
-    v15 = v6;
-    v13 = [v12 addSuccessBlock:v14];
+    v15 = timers;
+    v13 = [futureWithNoResult addSuccessBlock:v14];
   }
 
   else
   {
-    v12 = COCoreLogForCategory(3);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    futureWithNoResult = COCoreLogForCategory(3);
+    if (os_log_type_enabled(futureWithNoResult, OS_LOG_TYPE_DEBUG))
     {
       [COMeshTimerAddOn handleTimersUpdatedNotification:];
     }
@@ -5411,49 +5411,49 @@ void __52__COMeshTimerAddOn_handleTimersUpdatedNotification___block_invoke_182(u
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTimerFiredNotification:(id)a3
+- (void)handleTimerFiredNotification:(id)notification
 {
-  v6 = a3;
+  notificationCopy = notification;
   if (![(COMeshTimerAddOn *)self performsLocalActions])
   {
-    v4 = [(COMeshTimerAddOn *)self delegate];
+    delegate = [(COMeshTimerAddOn *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 timers];
-      [v4 timerAddOn:self didUpdateTimers:v5];
+      timers = [notificationCopy timers];
+      [delegate timerAddOn:self didUpdateTimers:timers];
     }
   }
 }
 
-- (void)handleTimerFiringTimerDismissedNotification:(id)a3
+- (void)handleTimerFiringTimerDismissedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 timers];
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
+  timers = [notificationCopy timers];
 
-  if ([v6 count])
+  if ([timers count])
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:v5];
-    v9 = [(COMeshTimerAddOn *)self timerManager];
+    v8 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:meshControllerQueue];
+    timerManager = [(COMeshTimerAddOn *)self timerManager];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __64__COMeshTimerAddOn_handleTimerFiringTimerDismissedNotification___block_invoke;
     v16[3] = &unk_278E171A0;
     v16[4] = self;
     v17 = v7;
-    v18 = v9;
-    v10 = v9;
+    v18 = timerManager;
+    v10 = timerManager;
     v11 = v7;
-    [v6 enumerateObjectsUsingBlock:v16];
+    [timers enumerateObjectsUsingBlock:v16];
     v12 = [MEMORY[0x277D2C900] combineAllFutures:v11 ignoringErrors:1 scheduler:v8];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __64__COMeshTimerAddOn_handleTimerFiringTimerDismissedNotification___block_invoke_183;
     v14[3] = &unk_278E171C8;
     v14[4] = self;
-    v15 = v6;
+    v15 = timers;
     v13 = [v12 addSuccessBlock:v14];
   }
 
@@ -5512,7 +5512,7 @@ void __64__COMeshTimerAddOn_handleTimerFiringTimerDismissedNotification___block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTimerManagerStateResetNotification:(id)a3
+- (void)handleTimerManagerStateResetNotification:(id)notification
 {
   v4 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -5520,39 +5520,39 @@ void __64__COMeshTimerAddOn_handleTimerFiringTimerDismissedNotification___block_
     [COMeshTimerAddOn handleTimerManagerStateResetNotification:?];
   }
 
-  v5 = [(COMeshTimerAddOn *)self delegate];
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 didResetTimerAddOn:self];
+    [delegate didResetTimerAddOn:self];
   }
 }
 
-- (void)timersAsAccessory:(id)a3 fromClient:(id)a4 withCallback:(id)a5
+- (void)timersAsAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  clientCopy = client;
+  callbackCopy = callback;
   v11 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [COMeshTimerAddOn timersAsAccessory:? fromClient:? withCallback:?];
   }
 
-  if (v8)
+  if (accessoryCopy)
   {
-    v12 = 0;
+    performsLocalActions = 0;
 LABEL_5:
-    v13 = [(COMeshTimerAddOn *)self secondaryClusterMemberIfRequiredForAccessory:v8];
+    v13 = [(COMeshTimerAddOn *)self secondaryClusterMemberIfRequiredForAccessory:accessoryCopy];
     goto LABEL_6;
   }
 
-  v12 = [(COMeshTimerAddOn *)self performsLocalActions];
-  v13 = [(COMeshTimerAddOn *)self _currentAccessoryForClient:v9];
+  performsLocalActions = [(COMeshTimerAddOn *)self performsLocalActions];
+  v13 = [(COMeshTimerAddOn *)self _currentAccessoryForClient:clientCopy];
   if (v13)
   {
-    v8 = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:v13];
+    accessoryCopy = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:v13];
 
-    if (v8)
+    if (accessoryCopy)
     {
       goto LABEL_5;
     }
@@ -5562,7 +5562,7 @@ LABEL_5:
 
   else
   {
-    v8 = 0;
+    accessoryCopy = 0;
   }
 
 LABEL_6:
@@ -5574,20 +5574,20 @@ LABEL_6:
   v27 = os_transaction_create();
   if (v13)
   {
-    v14 = [(COMeshTimerAddOn *)self _timersForAccessory:v8 member:v13];
+    v14 = [(COMeshTimerAddOn *)self _timersForAccessory:accessoryCopy member:v13];
   }
 
   else
   {
-    v15 = [v8 uniqueIdentifier];
-    v14 = [(COMeshTimerAddOn *)self _timersForAccessoryIdentifier:v15 allowLocalStorage:v12];
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+    v14 = [(COMeshTimerAddOn *)self _timersForAccessoryIdentifier:uniqueIdentifier allowLocalStorage:performsLocalActions];
   }
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __62__COMeshTimerAddOn_timersAsAccessory_fromClient_withCallback___block_invoke;
   v23[3] = &unk_278E16C38;
-  v16 = v10;
+  v16 = callbackCopy;
   v24 = v16;
   v25 = v26;
   v17 = [v14 addFailureBlock:v23];
@@ -5626,23 +5626,23 @@ void __62__COMeshTimerAddOn_timersAsAccessory_fromClient_withCallback___block_in
   *(v5 + 40) = 0;
 }
 
-- (void)timersForAccessories:(id)a3 fromClient:(id)a4 callback:(id)a5
+- (void)timersForAccessories:(id)accessories fromClient:(id)client callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshController];
+  accessoriesCopy = accessories;
+  clientCopy = client;
+  callbackCopy = callback;
+  meshController = [(COMeshAddOn *)self meshController];
   v12 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [COMeshTimerAddOn timersForAccessories:fromClient:callback:];
   }
 
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [MEMORY[0x277CBEB18] array];
-  v15 = [(COMeshAddOn *)self meshController];
-  v16 = [v15 nodeManager];
-  v17 = [v16 activeNodesWithSelfNode:1];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  meshController2 = [(COMeshAddOn *)self meshController];
+  nodeManager = [meshController2 nodeManager];
+  v17 = [nodeManager activeNodesWithSelfNode:1];
 
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
@@ -5650,38 +5650,38 @@ void __62__COMeshTimerAddOn_timersAsAccessory_fromClient_withCallback___block_in
   v38[3] = &unk_278E17240;
   v18 = v17;
   v39 = v18;
-  v19 = v13;
+  v19 = array;
   v40 = v19;
-  v41 = self;
-  v20 = v14;
+  selfCopy = self;
+  v20 = array2;
   v42 = v20;
-  v21 = v11;
+  v21 = meshController;
   v43 = v21;
-  [v8 enumerateObjectsUsingBlock:v38];
+  [accessoriesCopy enumerateObjectsUsingBlock:v38];
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x3032000000;
   v36[3] = __Block_byref_object_copy__11;
   v36[4] = __Block_byref_object_dispose__11;
   v37 = os_transaction_create();
-  v22 = [v21 dispatchQueue];
+  dispatchQueue = [v21 dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__COMeshTimerAddOn_timersForAccessories_fromClient_callback___block_invoke_187;
   block[3] = &unk_278E172B8;
   v29 = v19;
-  v30 = self;
-  v31 = v9;
+  selfCopy2 = self;
+  v31 = clientCopy;
   v32 = v20;
   v33 = v21;
-  v34 = v10;
+  v34 = callbackCopy;
   v35 = v36;
-  v23 = v10;
+  v23 = callbackCopy;
   v24 = v21;
   v25 = v20;
-  v26 = v9;
+  v26 = clientCopy;
   v27 = v19;
-  dispatch_async(v22, block);
+  dispatch_async(dispatchQueue, block);
 
   _Block_object_dispose(v36, 8);
 }
@@ -5840,23 +5840,23 @@ void __61__COMeshTimerAddOn_timersForAccessories_fromClient_callback___block_inv
   *(v2 + 40) = 0;
 }
 
-- (void)addTimer:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6
+- (void)addTimer:(id)timer asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  timerCopy = timer;
+  accessoryCopy = accessory;
+  clientCopy = client;
+  callbackCopy = callback;
   v14 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [COMeshTimerAddOn addTimer:asAccessory:fromClient:withCallback:];
   }
 
-  v15 = [v10 siriContext];
-  v16 = [v15 objectForKey:*MEMORY[0x277CFD068]];
-  if (v11)
+  siriContext = [timerCopy siriContext];
+  v16 = [siriContext objectForKey:*MEMORY[0x277CFD068]];
+  if (accessoryCopy)
   {
-    v17 = [(COMeshTimerAddOn *)self secondaryClusterMemberIfRequiredForAccessory:v11];
+    v17 = [(COMeshTimerAddOn *)self secondaryClusterMemberIfRequiredForAccessory:accessoryCopy];
   }
 
   else
@@ -5864,25 +5864,25 @@ void __61__COMeshTimerAddOn_timersForAccessories_fromClient_callback___block_inv
     v17 = 0;
   }
 
-  v18 = [(COMeshTimerAddOn *)self addTimer:v10 client:v12 member:v17];
-  [(COMeshTimerAddOn *)self _addCompletionsToFuture:v18 withXPCCallback:v13 transactionDescription:"com.apple.CoordinationCore.timers.create"];
+  v18 = [(COMeshTimerAddOn *)self addTimer:timerCopy client:clientCopy member:v17];
+  [(COMeshTimerAddOn *)self _addCompletionsToFuture:v18 withXPCCallback:callbackCopy transactionDescription:"com.apple.CoordinationCore.timers.create"];
 }
 
-- (void)updateTimer:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6
+- (void)updateTimer:(id)timer asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  timerCopy = timer;
+  accessoryCopy = accessory;
+  clientCopy = client;
+  callbackCopy = callback;
   v14 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [COMeshTimerAddOn updateTimer:asAccessory:fromClient:withCallback:];
   }
 
-  if (v11)
+  if (accessoryCopy)
   {
-    v15 = [(COMeshTimerAddOn *)self secondaryClusterMemberIfRequiredForAccessory:v11];
+    v15 = [(COMeshTimerAddOn *)self secondaryClusterMemberIfRequiredForAccessory:accessoryCopy];
   }
 
   else
@@ -5890,25 +5890,25 @@ void __61__COMeshTimerAddOn_timersForAccessories_fromClient_callback___block_inv
     v15 = 0;
   }
 
-  v16 = [(COMeshTimerAddOn *)self updateTimer:v10 client:v12 member:v15];
-  [(COMeshTimerAddOn *)self _addCompletionsToFuture:v16 withXPCCallback:v13 transactionDescription:"com.apple.CoordinationCore.timers.update"];
+  v16 = [(COMeshTimerAddOn *)self updateTimer:timerCopy client:clientCopy member:v15];
+  [(COMeshTimerAddOn *)self _addCompletionsToFuture:v16 withXPCCallback:callbackCopy transactionDescription:"com.apple.CoordinationCore.timers.update"];
 }
 
-- (void)removeTimer:(id)a3 asAccessory:(id)a4 fromClient:(id)a5 withCallback:(id)a6
+- (void)removeTimer:(id)timer asAccessory:(id)accessory fromClient:(id)client withCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  timerCopy = timer;
+  accessoryCopy = accessory;
+  clientCopy = client;
+  callbackCopy = callback;
   v14 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [COMeshTimerAddOn removeTimer:asAccessory:fromClient:withCallback:];
   }
 
-  if (v11)
+  if (accessoryCopy)
   {
-    v15 = [(COMeshTimerAddOn *)self secondaryClusterMemberIfRequiredForAccessory:v11];
+    v15 = [(COMeshTimerAddOn *)self secondaryClusterMemberIfRequiredForAccessory:accessoryCopy];
   }
 
   else
@@ -5916,42 +5916,42 @@ void __61__COMeshTimerAddOn_timersForAccessories_fromClient_callback___block_inv
     v15 = 0;
   }
 
-  v16 = [(COMeshTimerAddOn *)self removeTimer:v10 client:v12 member:v15];
-  [(COMeshTimerAddOn *)self _addCompletionsToFuture:v16 withXPCCallback:v13 transactionDescription:"com.apple.CoordinationCore.timers.delete"];
+  v16 = [(COMeshTimerAddOn *)self removeTimer:timerCopy client:clientCopy member:v15];
+  [(COMeshTimerAddOn *)self _addCompletionsToFuture:v16 withXPCCallback:callbackCopy transactionDescription:"com.apple.CoordinationCore.timers.delete"];
 }
 
-- (void)dismissTimerWithIdentifier:(id)a3 fromClient:(id)a4 withCallback:(id)a5
+- (void)dismissTimerWithIdentifier:(id)identifier fromClient:(id)client withCallback:(id)callback
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v9 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [COMeshTimerAddOn dismissTimerWithIdentifier:fromClient:withCallback:];
   }
 
-  v10 = [(COMeshTimerAddOn *)self dismissTimerWithIdentifier:v7];
-  [(COMeshTimerAddOn *)self _addCompletionsToFuture:v10 withXPCCallback:v8 transactionDescription:"com.apple.CoordinationCore.timers.dismiss"];
+  v10 = [(COMeshTimerAddOn *)self dismissTimerWithIdentifier:identifierCopy];
+  [(COMeshTimerAddOn *)self _addCompletionsToFuture:v10 withXPCCallback:callbackCopy transactionDescription:"com.apple.CoordinationCore.timers.dismiss"];
 }
 
-- (void)canDispatchAsAccessory:(id)a3 asInstance:(id)a4 reply:(id)a5
+- (void)canDispatchAsAccessory:(id)accessory asInstance:(id)instance reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshControllerQueue];
+  accessoryCopy = accessory;
+  instanceCopy = instance;
+  replyCopy = reply;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__COMeshTimerAddOn_canDispatchAsAccessory_asInstance_reply___block_invoke;
   v15[3] = &unk_278E15D00;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = accessoryCopy;
+  selfCopy = self;
+  v18 = instanceCopy;
+  v19 = replyCopy;
+  v12 = replyCopy;
+  v13 = instanceCopy;
+  v14 = accessoryCopy;
+  dispatch_async(meshControllerQueue, v15);
 }
 
 void __60__COMeshTimerAddOn_canDispatchAsAccessory_asInstance_reply___block_invoke(uint64_t a1)
@@ -6154,17 +6154,17 @@ LABEL_37:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)establishSecondaryClusterForAccessory:(id)a3
+- (void)establishSecondaryClusterForAccessory:(id)accessory
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   if ([MEMORY[0x277CFD0B8] isHomeKitUsingAlarmsAndTimersIDSService])
   {
     v5 = COCoreLogForCategory(3);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = @"com.apple.private.alloy.alarms-timers";
       _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%p HomeKit is making use of IDS Service %@ for timers", buf, 0x16u);
@@ -6178,7 +6178,7 @@ LABEL_37:
     v7[2] = __58__COMeshTimerAddOn_establishSecondaryClusterForAccessory___block_invoke;
     v7[3] = &unk_278E156B0;
     v7[4] = self;
-    v8 = v4;
+    v8 = accessoryCopy;
     [(COMeshTimerAddOn *)self _withLock:v7];
   }
 
@@ -6227,11 +6227,11 @@ void __58__COMeshTimerAddOn_establishSecondaryClusterForAccessory___block_invoke
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)secondaryClusterMemberForAccessory:(id)a3
+- (id)secondaryClusterMemberForAccessory:(id)accessory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [a3 IDSIdentifier];
-  if ([v4 length] && objc_msgSend(MEMORY[0x277CFD0B8], "isGlobalMessagingEnabled"))
+  iDSIdentifier = [accessory IDSIdentifier];
+  if ([iDSIdentifier length] && objc_msgSend(MEMORY[0x277CFD0B8], "isGlobalMessagingEnabled"))
   {
     v20 = 0u;
     v21 = 0u;
@@ -6253,14 +6253,14 @@ void __58__COMeshTimerAddOn_establishSecondaryClusterForAccessory___block_invoke
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
-          v10 = [v9 member];
-          v11 = [v10 deviceMetadata];
-          v12 = [v11 objectForKey:@"IDS"];
-          v13 = [v12 isEqual:v4];
+          member = [v9 member];
+          deviceMetadata = [member deviceMetadata];
+          v12 = [deviceMetadata objectForKey:@"IDS"];
+          v13 = [v12 isEqual:iDSIdentifier];
 
           if (v13)
           {
-            v14 = [v9 member];
+            member2 = [v9 member];
             goto LABEL_14;
           }
         }
@@ -6275,36 +6275,36 @@ void __58__COMeshTimerAddOn_establishSecondaryClusterForAccessory___block_invoke
       }
     }
 
-    v14 = 0;
+    member2 = 0;
 LABEL_14:
   }
 
   else
   {
-    v14 = 0;
+    member2 = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return member2;
 }
 
-- (id)secondaryClusterMemberIfRequiredForAccessory:(id)a3
+- (id)secondaryClusterMemberIfRequiredForAccessory:(id)accessory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 categoryType];
-  if ([v5 isEqualToString:*MEMORY[0x277CCE8B0]])
+  accessoryCopy = accessory;
+  categoryType = [accessoryCopy categoryType];
+  if ([categoryType isEqualToString:*MEMORY[0x277CCE8B0]])
   {
-    v6 = [v4 IDSIdentifier];
+    iDSIdentifier = [accessoryCopy IDSIdentifier];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(COMeshAddOn *)self meshController];
-    v8 = [v7 nodes];
+    meshController = [(COMeshAddOn *)self meshController];
+    nodes = [meshController nodes];
 
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v9 = [nodes countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -6315,11 +6315,11 @@ LABEL_14:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(nodes);
           }
 
-          v13 = [*(*(&v18 + 1) + 8 * i) IDSIdentifier];
-          v14 = [v13 isEqual:v6];
+          iDSIdentifier2 = [*(*(&v18 + 1) + 8 * i) IDSIdentifier];
+          v14 = [iDSIdentifier2 isEqual:iDSIdentifier];
 
           if (v14)
           {
@@ -6329,7 +6329,7 @@ LABEL_14:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [nodes countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v10)
         {
           continue;
@@ -6339,7 +6339,7 @@ LABEL_14:
       }
     }
 
-    v15 = [(COMeshTimerAddOn *)self secondaryClusterMemberForAccessory:v4];
+    v15 = [(COMeshTimerAddOn *)self secondaryClusterMemberForAccessory:accessoryCopy];
 LABEL_13:
   }
 
@@ -6353,24 +6353,24 @@ LABEL_13:
   return v15;
 }
 
-- (void)setInterests:(id)a3 asAccessory:(id)a4 withCallback:(id)a5
+- (void)setInterests:(id)interests asAccessory:(id)accessory withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMeshAddOn *)self meshControllerQueue];
+  interestsCopy = interests;
+  accessoryCopy = accessory;
+  callbackCopy = callback;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__COMeshTimerAddOn_setInterests_asAccessory_withCallback___block_invoke;
   v15[3] = &unk_278E172E0;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = accessoryCopy;
+  selfCopy = self;
+  v18 = interestsCopy;
+  v19 = callbackCopy;
+  v12 = interestsCopy;
+  v13 = callbackCopy;
+  v14 = accessoryCopy;
+  dispatch_async(meshControllerQueue, v15);
 }
 
 void __58__COMeshTimerAddOn_setInterests_asAccessory_withCallback___block_invoke(uint64_t a1)
@@ -6451,32 +6451,32 @@ void __58__COMeshTimerAddOn_setInterests_asAccessory_withCallback___block_invoke
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)interestTracker:(id)a3 setInterests:(id)a4 forMember:(id)a5 callback:(id)a6
+- (void)interestTracker:(id)tracker setInterests:(id)interests forMember:(id)member callback:(id)callback
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v14);
+  trackerCopy = tracker;
+  interestsCopy = interests;
+  memberCopy = member;
+  callbackCopy = callback;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  v17 = [v11 allObjects];
-  v18 = [COMTUpdateInterestAction actionWithTargetType:v16 targetIdentifiers:v17];
+  allObjects = [interestsCopy allObjects];
+  v18 = [COMTUpdateInterestAction actionWithTargetType:v16 targetIdentifiers:allObjects];
 
   v19 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v39 = self;
+    selfCopy = self;
     v40 = 2048;
-    v41 = v10;
+    v41 = trackerCopy;
     v42 = 2114;
     v43 = v18;
     v44 = 2114;
-    v45 = v11;
+    v45 = interestsCopy;
     _os_log_impl(&dword_244378000, v19, OS_LOG_TYPE_DEFAULT, "%p setting interests for tracker %p via %{public}@ to %{public}@", buf, 0x2Au);
   }
 
@@ -6486,25 +6486,25 @@ void __58__COMeshTimerAddOn_setInterests_asAccessory_withCallback___block_invoke
   v33[2] = __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___block_invoke;
   v33[3] = &unk_278E17308;
   objc_copyWeak(&v37, buf);
-  v20 = v10;
+  v20 = trackerCopy;
   v34 = v20;
   v21 = v18;
   v35 = v21;
-  v22 = v13;
+  v22 = callbackCopy;
   v36 = v22;
   v23 = MEMORY[0x245D5FF10](v33);
-  v24 = [(COMeshAddOn *)self meshControllerQueue];
-  v25 = [(COMeshTimerAddOn *)self actionDirector];
-  v26 = [MEMORY[0x277CBEB98] setWithObject:v12];
+  meshControllerQueue2 = [(COMeshAddOn *)self meshControllerQueue];
+  actionDirector = [(COMeshTimerAddOn *)self actionDirector];
+  v26 = [MEMORY[0x277CBEB98] setWithObject:memberCopy];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___block_invoke_205;
   v30[3] = &unk_278E17330;
-  v27 = v24;
+  v27 = meshControllerQueue2;
   v31 = v27;
   v28 = v23;
   v32 = v28;
-  [v25 requestAction:v21 members:v26 activity:0 withCompletion:v30];
+  [actionDirector requestAction:v21 members:v26 activity:0 withCompletion:v30];
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(buf);
@@ -6578,11 +6578,11 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
   dispatch_async(v5, v8);
 }
 
-- (void)interestTrackerTriggerReset:(id)a3
+- (void)interestTrackerTriggerReset:(id)reset
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
+  resetCopy = reset;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
   v6 = COCoreLogForCategory(3);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -6590,34 +6590,34 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
     [COMeshTimerAddOn handleTimerManagerStateResetNotification:?];
   }
 
-  v7 = [(COMeshTimerAddOn *)self delegate];
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v4 accessory];
-    v9 = [v8 uniqueIdentifier];
+    accessory = [resetCopy accessory];
+    uniqueIdentifier = [accessory uniqueIdentifier];
 
-    [v7 timerAddOn:self resetAccesory:v9];
+    [delegate timerAddOn:self resetAccesory:uniqueIdentifier];
   }
 }
 
-- (void)director:(id)a3 membersChanged:(id)a4
+- (void)director:(id)director membersChanged:(id)changed
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(COMeshTimerAddOn *)self members];
-  v7 = [v6 mutableCopy];
+  changedCopy = changed;
+  members = [(COMeshTimerAddOn *)self members];
+  v7 = [members mutableCopy];
 
-  [v7 minusSet:v5];
-  [(COMeshTimerAddOn *)self setMembers:v5];
-  v8 = [(COMeshTimerAddOn *)self interests];
-  v9 = [v8 allKeys];
-  v10 = [v9 mutableCopy];
+  [v7 minusSet:changedCopy];
+  [(COMeshTimerAddOn *)self setMembers:changedCopy];
+  interests = [(COMeshTimerAddOn *)self interests];
+  allKeys = [interests allKeys];
+  v10 = [allKeys mutableCopy];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v11 = v5;
+  v11 = changedCopy;
   v12 = [v11 countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v12)
   {
@@ -6633,8 +6633,8 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v49 + 1) + 8 * v15) member];
-        [v10 removeObject:v16];
+        member = [*(*(&v49 + 1) + 8 * v15) member];
+        [v10 removeObject:member];
 
         ++v15;
       }
@@ -6648,8 +6648,8 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
 
   if ([v10 count])
   {
-    v17 = [(COMeshTimerAddOn *)self interests];
-    v18 = [v17 mutableCopy];
+    interests2 = [(COMeshTimerAddOn *)self interests];
+    v18 = [interests2 mutableCopy];
 
     [v18 removeObjectsForKeys:v10];
     [(COMeshTimerAddOn *)self setInterests:v18];
@@ -6657,7 +6657,7 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v56 = self;
+      selfCopy = self;
       v57 = 2112;
       v58 = v10;
       _os_log_impl(&dword_244378000, v19, OS_LOG_TYPE_DEFAULT, "%p removing interests for %@", buf, 0x16u);
@@ -6684,11 +6684,11 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v45 + 1) + 8 * v24) member];
-        v26 = [v25 IDSIdentifier];
+        member2 = [*(*(&v45 + 1) + 8 * v24) member];
+        iDSIdentifier = [member2 IDSIdentifier];
 
-        v27 = [(COMeshTimerAddOn *)self ourInterests];
-        v28 = [v27 objectForKey:v26];
+        ourInterests = [(COMeshTimerAddOn *)self ourInterests];
+        v28 = [ourInterests objectForKey:iDSIdentifier];
 
         if (v28)
         {
@@ -6727,14 +6727,14 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v41 + 1) + 8 * v33) member];
-        v35 = [v34 IDSIdentifier];
-        v36 = [(COMeshTimerAddOn *)self ourInterests];
-        v37 = [v36 objectForKey:v35];
+        member3 = [*(*(&v41 + 1) + 8 * v33) member];
+        iDSIdentifier2 = [member3 IDSIdentifier];
+        ourInterests2 = [(COMeshTimerAddOn *)self ourInterests];
+        v37 = [ourInterests2 objectForKey:iDSIdentifier2];
 
         if (v37)
         {
-          [v37 setSecondary:v34];
+          [v37 setSecondary:member3];
         }
 
         ++v33;
@@ -6747,49 +6747,49 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
     while (v31);
   }
 
-  v38 = [(COMeshTimerAddOn *)self delegate];
+  delegate = [(COMeshTimerAddOn *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v38 didChangeCompositionForTimerAddOn:self];
+    [delegate didChangeCompositionForTimerAddOn:self];
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)director:(id)a3 performAction:(id)a4 from:(id)a5 callback:(id)a6
+- (void)director:(id)director performAction:(id)action from:(id)from callback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 actionIdentifier];
+  directorCopy = director;
+  actionCopy = action;
+  fromCopy = from;
+  callbackCopy = callback;
+  actionIdentifier = [actionCopy actionIdentifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v11;
-      v20 = [(COTimerUpdateRequest *)v18 memento];
-      v21 = [v20 uniqueIdentifier];
+      targetIdentifier = actionCopy;
+      memento = [(COTimerUpdateRequest *)targetIdentifier memento];
+      uniqueIdentifier = [memento uniqueIdentifier];
 
-      if (!v21)
+      if (!uniqueIdentifier)
       {
-        v22 = [(COMeshTimerAddOn *)self homekit];
-        v23 = [v22 currentAccessory];
-        v21 = [v23 uniqueIdentifier];
+        homekit = [(COMeshTimerAddOn *)self homekit];
+        currentAccessory = [homekit currentAccessory];
+        uniqueIdentifier = [currentAccessory uniqueIdentifier];
       }
 
-      v24 = [[COTimerReadRequest alloc] initWithAccessoryUniqueIdentifier:v21];
+      reason = [[COTimerReadRequest alloc] initWithAccessoryUniqueIdentifier:uniqueIdentifier];
       objc_initWeak(&location, self);
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __57__COMeshTimerAddOn_director_performAction_from_callback___block_invoke_2;
       v38[3] = &unk_278E17380;
-      v40 = v13;
+      v40 = callbackCopy;
       objc_copyWeak(&v41, &location);
-      v39 = v14;
-      [(COMeshTimerAddOn *)self handleTimerReadRequest:v24 callback:v38];
+      v39 = actionIdentifier;
+      [(COMeshTimerAddOn *)self handleTimerReadRequest:reason callback:v38];
 
       objc_destroyWeak(&v41);
       objc_destroyWeak(&location);
@@ -6800,18 +6800,18 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = v11;
+        v25 = actionCopy;
         v26 = [COTimerUpdateRequest alloc];
-        v27 = [v25 timer];
+        timer = [v25 timer];
 
-        v18 = [(COTimerRequest *)v26 initWithTimer:v27];
+        targetIdentifier = [(COTimerRequest *)v26 initWithTimer:timer];
         v35[0] = MEMORY[0x277D85DD0];
         v35[1] = 3221225472;
         v35[2] = __57__COMeshTimerAddOn_director_performAction_from_callback___block_invoke_3;
         v35[3] = &unk_278E17358;
-        v36 = v14;
-        v37 = v13;
-        [(COMeshTimerAddOn *)self handleTimerUpdateRequest:v18 callback:v35];
+        v36 = actionIdentifier;
+        v37 = callbackCopy;
+        [(COMeshTimerAddOn *)self handleTimerUpdateRequest:targetIdentifier callback:v35];
 
         v19 = v36;
         goto LABEL_3;
@@ -6820,16 +6820,16 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = [v11 targetIdentifier];
-        v21 = [objc_alloc(MEMORY[0x277D29730]) initWithIdentifier:v18];
-        v24 = [(COTimerRequest *)[COTimerDeleteRequest alloc] initWithTimer:v21];
+        targetIdentifier = [actionCopy targetIdentifier];
+        uniqueIdentifier = [objc_alloc(MEMORY[0x277D29730]) initWithIdentifier:targetIdentifier];
+        reason = [(COTimerRequest *)[COTimerDeleteRequest alloc] initWithTimer:uniqueIdentifier];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __57__COMeshTimerAddOn_director_performAction_from_callback___block_invoke_4;
         v32[3] = &unk_278E17358;
-        v33 = v14;
-        v34 = v13;
-        [(COMeshTimerAddOn *)self handleTimerDeleteRequest:v24 callback:v32];
+        v33 = actionIdentifier;
+        v34 = callbackCopy;
+        [(COMeshTimerAddOn *)self handleTimerDeleteRequest:reason callback:v32];
       }
 
       else
@@ -6837,23 +6837,23 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v11 targetIdentifiers];
-          v28 = [(COMeshTimerAddOn *)self interests];
-          v21 = [v28 mutableCopy];
+          targetIdentifier = [actionCopy targetIdentifiers];
+          interests = [(COMeshTimerAddOn *)self interests];
+          uniqueIdentifier = [interests mutableCopy];
 
-          if ([(COTimerUpdateRequest *)v18 count])
+          if ([(COTimerUpdateRequest *)targetIdentifier count])
           {
-            [v21 setObject:v18 forKey:v12];
+            [uniqueIdentifier setObject:targetIdentifier forKey:fromCopy];
           }
 
           else
           {
-            [v21 removeObjectForKey:v12];
+            [uniqueIdentifier removeObjectForKey:fromCopy];
           }
 
-          [(COMeshTimerAddOn *)self setInterests:v21];
-          v30 = [[COMTResult alloc] initWithActionIdentifier:v14];
-          (*(v13 + 2))(v13, v30, 0);
+          [(COMeshTimerAddOn *)self setInterests:uniqueIdentifier];
+          v30 = [[COMTResult alloc] initWithActionIdentifier:actionIdentifier];
+          (*(callbackCopy + 2))(callbackCopy, v30, 0);
 
           goto LABEL_13;
         }
@@ -6864,27 +6864,27 @@ void __68__COMeshTimerAddOn_interestTracker_setInterests_forMember_callback___bl
           goto LABEL_15;
         }
 
-        v18 = v11;
-        v21 = [(COMeshTimerAddOn *)self delegate];
-        v24 = [(COTimerUpdateRequest *)v18 reason];
-        v29 = [(COTimerUpdateRequest *)v18 timers];
-        if ([(COTimerReadRequest *)v24 isEqual:*MEMORY[0x277D296A0]]&& (objc_opt_respondsToSelector() & 1) != 0)
+        targetIdentifier = actionCopy;
+        uniqueIdentifier = [(COMeshTimerAddOn *)self delegate];
+        reason = [(COTimerUpdateRequest *)targetIdentifier reason];
+        timers = [(COTimerUpdateRequest *)targetIdentifier timers];
+        if ([(COTimerReadRequest *)reason isEqual:*MEMORY[0x277D296A0]]&& (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v21 timerAddOn:self didAddTimers:v29];
+          [uniqueIdentifier timerAddOn:self didAddTimers:timers];
         }
 
-        else if ([(COTimerReadRequest *)v24 isEqual:*MEMORY[0x277D296B8]]&& (objc_opt_respondsToSelector() & 1) != 0)
+        else if ([(COTimerReadRequest *)reason isEqual:*MEMORY[0x277D296B8]]&& (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v21 timerAddOn:self didRemoveTimers:v29];
+          [uniqueIdentifier timerAddOn:self didRemoveTimers:timers];
         }
 
-        else if ([(COTimerReadRequest *)v24 isEqual:*MEMORY[0x277D296C0]]&& (objc_opt_respondsToSelector() & 1) != 0)
+        else if ([(COTimerReadRequest *)reason isEqual:*MEMORY[0x277D296C0]]&& (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v21 timerAddOn:self didUpdateTimers:v29];
+          [uniqueIdentifier timerAddOn:self didUpdateTimers:timers];
         }
 
-        v31 = [[COMTResult alloc] initWithActionIdentifier:v14];
-        (*(v13 + 2))(v13, v31, 0);
+        v31 = [[COMTResult alloc] initWithActionIdentifier:actionIdentifier];
+        (*(callbackCopy + 2))(callbackCopy, v31, 0);
       }
     }
 
@@ -6892,18 +6892,18 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v15 = v11;
+  v15 = actionCopy;
   v16 = [COTimerCreateRequest alloc];
-  v17 = [v15 timer];
+  timer2 = [v15 timer];
 
-  v18 = [(COTimerRequest *)v16 initWithTimer:v17];
+  targetIdentifier = [(COTimerRequest *)v16 initWithTimer:timer2];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __57__COMeshTimerAddOn_director_performAction_from_callback___block_invoke;
   v43[3] = &unk_278E17358;
-  v44 = v14;
-  v45 = v13;
-  [(COMeshTimerAddOn *)self handleTimerCreateRequest:v18 callback:v43];
+  v44 = actionIdentifier;
+  v45 = callbackCopy;
+  [(COMeshTimerAddOn *)self handleTimerCreateRequest:targetIdentifier callback:v43];
 
   v19 = v44;
 LABEL_3:

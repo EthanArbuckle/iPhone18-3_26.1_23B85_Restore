@@ -1,28 +1,28 @@
 @interface FCAssetKeyService
-- (void)executeRequest:(void *)a3 callbackQueue:(void *)a4 completion:;
-- (void)fetchWrappingKeysWithIDs:(id)a3 completionHandler:(id)a4;
-- (void)initWithConfigurationManager:(void *)a1;
+- (void)executeRequest:(void *)request callbackQueue:(void *)queue completion:;
+- (void)fetchWrappingKeysWithIDs:(id)ds completionHandler:(id)handler;
+- (void)initWithConfigurationManager:(void *)manager;
 @end
 
 @implementation FCAssetKeyService
 
-- (void)initWithConfigurationManager:(void *)a1
+- (void)initWithConfigurationManager:(void *)manager
 {
   v3 = a2;
-  if (a1)
+  if (manager)
   {
-    v14.receiver = a1;
+    v14.receiver = manager;
     v14.super_class = FCAssetKeyService;
-    a1 = objc_msgSendSuper2(&v14, sel_init);
-    if (a1)
+    manager = objc_msgSendSuper2(&v14, sel_init);
+    if (manager)
     {
       v4 = [objc_alloc(MEMORY[0x1E69B68D8]) initWithConstructor:&__block_literal_global_53];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = manager[1];
+      manager[1] = v4;
 
       v6 = [objc_alloc(MEMORY[0x1E69B68D8]) initWithConstructor:&__block_literal_global_6_0];
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = manager[2];
+      manager[2] = v6;
 
       v8 = objc_alloc(MEMORY[0x1E69B68F8]);
       v12[0] = MEMORY[0x1E69E9820];
@@ -31,12 +31,12 @@
       v12[3] = &unk_1E7C39ED0;
       v13 = v3;
       v9 = [v8 initWithResolver:v12];
-      v10 = a1[3];
-      a1[3] = v9;
+      v10 = manager[3];
+      manager[3] = v9;
     }
   }
 
-  return a1;
+  return manager;
 }
 
 id __50__FCAssetKeyService_initWithConfigurationManager___block_invoke()
@@ -106,13 +106,13 @@ void __50__FCAssetKeyService_initWithConfigurationManager___block_invoke_4(uint6
   v7();
 }
 
-- (void)fetchWrappingKeysWithIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchWrappingKeysWithIDs:(id)ds completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x1E69B7070]);
-  v9 = [v6 mutableCopy];
+  v9 = [dsCopy mutableCopy];
   [v8 setWrappingKeyIds:v9];
 
   v10 = FCDefaultLog;
@@ -120,20 +120,20 @@ void __50__FCAssetKeyService_initWithConfigurationManager___block_invoke_4(uint6
   {
     v11 = v10;
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v6 count];
+    *(&buf + 4) = [dsCopy count];
     _os_log_impl(&dword_1B63EF000, v11, OS_LOG_TYPE_DEFAULT, "Asset key service will request %lu keys", &buf, 0xCu);
   }
 
-  v12 = [v8 data];
+  data = [v8 data];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __64__FCAssetKeyService_fetchWrappingKeysWithIDs_completionHandler___block_invoke;
   v27[3] = &unk_1E7C3EDE0;
-  v28 = v6;
-  v29 = v7;
-  v26 = v7;
-  v13 = v6;
-  v14 = v12;
+  v28 = dsCopy;
+  v29 = handlerCopy;
+  v26 = handlerCopy;
+  v13 = dsCopy;
+  v14 = data;
   v15 = v27;
   if (self)
   {
@@ -149,7 +149,7 @@ void __50__FCAssetKeyService_initWithConfigurationManager___block_invoke_4(uint6
     v39 = v19;
     v20 = v16;
     v37 = v20;
-    v38 = self;
+    selfCopy = self;
     v21 = [(NFPromise *)v17 thenOn:v18 then:&buf];
     v22 = zalgo();
     v30[0] = MEMORY[0x1E69E9820];
@@ -452,24 +452,24 @@ void __60__FCAssetKeyService__performHTTPRequestWithData_completion___block_invo
   }
 }
 
-- (void)executeRequest:(void *)a3 callbackQueue:(void *)a4 completion:
+- (void)executeRequest:(void *)request callbackQueue:(void *)queue completion:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  requestCopy = request;
+  queueCopy = queue;
+  if (self)
   {
-    v9 = *(a1 + 16);
+    v9 = *(self + 16);
     v10 = a2;
-    v11 = [v9 value];
-    v12 = [v11 requestByEncodingRequest:v10 parameters:0];
+    value = [v9 value];
+    v12 = [value requestByEncodingRequest:v10 parameters:0];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __61__FCAssetKeyService_executeRequest_callbackQueue_completion___block_invoke;
     v13[3] = &unk_1E7C3EE58;
-    v16 = v8;
-    v14 = v7;
-    v15 = a1;
+    v16 = queueCopy;
+    v14 = requestCopy;
+    selfCopy = self;
     [v12 addFinishBlock:v13];
   }
 }

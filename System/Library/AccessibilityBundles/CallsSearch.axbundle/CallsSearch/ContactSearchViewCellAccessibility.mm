@@ -1,5 +1,5 @@
 @interface ContactSearchViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityElements;
 - (id)automationElements;
@@ -7,15 +7,15 @@
 
 @implementation ContactSearchViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CallsSearch.ContactSearchViewCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CallsSearch.ContactSearchViewCell" hasSwiftField:@"detailLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CallsSearch.ContactSearchViewCell" hasSwiftField:@"callButton" withSwiftType:"TPAccessoryButton"];
-  [v3 validateClass:@"CallsSearch.ContactSearchViewCell" hasSwiftField:@"videoButton" withSwiftType:"TPAccessoryButton"];
-  [v3 validateClass:@"CallsSearch.ContactSearchViewCell" hasInstanceMethod:@"callButtonTapped" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CallsSearch.ContactSearchViewCell" hasInstanceMethod:@"videoButtonTapped" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CallsSearch.ContactSearchViewCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CallsSearch.ContactSearchViewCell" hasSwiftField:@"detailLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CallsSearch.ContactSearchViewCell" hasSwiftField:@"callButton" withSwiftType:"TPAccessoryButton"];
+  [validationsCopy validateClass:@"CallsSearch.ContactSearchViewCell" hasSwiftField:@"videoButton" withSwiftType:"TPAccessoryButton"];
+  [validationsCopy validateClass:@"CallsSearch.ContactSearchViewCell" hasInstanceMethod:@"callButtonTapped" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CallsSearch.ContactSearchViewCell" hasInstanceMethod:@"videoButtonTapped" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityElements
@@ -32,9 +32,9 @@
 {
   v4.receiver = self;
   v4.super_class = ContactSearchViewCellAccessibility;
-  v2 = [(ContactSearchViewCellAccessibility *)&v4 accessibilityElements];
+  accessibilityElements = [(ContactSearchViewCellAccessibility *)&v4 accessibilityElements];
 
-  return v2;
+  return accessibilityElements;
 }
 
 - (id)accessibilityCustomActions

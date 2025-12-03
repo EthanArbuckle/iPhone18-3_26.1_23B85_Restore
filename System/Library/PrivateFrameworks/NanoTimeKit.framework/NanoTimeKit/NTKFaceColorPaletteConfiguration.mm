@@ -1,48 +1,48 @@
 @interface NTKFaceColorPaletteConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)formattedCollectionName;
-- (NTKFaceColorPaletteConfiguration)initWithColorOption:(id)a3 collectionName:(id)a4 colorFraction:(double)a5;
-- (NTKFaceColorPaletteConfiguration)initWithPigmentEditOption:(id)a3;
+- (NTKFaceColorPaletteConfiguration)initWithColorOption:(id)option collectionName:(id)name colorFraction:(double)fraction;
+- (NTKFaceColorPaletteConfiguration)initWithPigmentEditOption:(id)option;
 - (NTKFaceColorPaletteConfigurationDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)uniqueId;
 - (void)handleContentChanged;
-- (void)setCollectionName:(id)a3;
-- (void)setColorFraction:(double)a3;
-- (void)setColorName:(id)a3 collectionName:(id)a4 colorFraction:(double)a5;
-- (void)setColorOption:(id)a3;
-- (void)setPigmentEditOption:(id)a3;
+- (void)setCollectionName:(id)name;
+- (void)setColorFraction:(double)fraction;
+- (void)setColorName:(id)name collectionName:(id)collectionName colorFraction:(double)fraction;
+- (void)setColorOption:(id)option;
+- (void)setPigmentEditOption:(id)option;
 @end
 
 @implementation NTKFaceColorPaletteConfiguration
 
-- (NTKFaceColorPaletteConfiguration)initWithPigmentEditOption:(id)a3
+- (NTKFaceColorPaletteConfiguration)initWithPigmentEditOption:(id)option
 {
-  v5 = a3;
-  v6 = [v5 optionName];
-  v7 = [v5 collectionName];
-  [v5 colorFraction];
-  v8 = [(NTKFaceColorPaletteConfiguration *)self initWithColorOption:v6 collectionName:v7 colorFraction:?];
+  optionCopy = option;
+  optionName = [optionCopy optionName];
+  collectionName = [optionCopy collectionName];
+  [optionCopy colorFraction];
+  v8 = [(NTKFaceColorPaletteConfiguration *)self initWithColorOption:optionName collectionName:collectionName colorFraction:?];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_pigmentEditOption, a3);
+    objc_storeStrong(&v8->_pigmentEditOption, option);
   }
 
   return v8;
 }
 
-- (NTKFaceColorPaletteConfiguration)initWithColorOption:(id)a3 collectionName:(id)a4 colorFraction:(double)a5
+- (NTKFaceColorPaletteConfiguration)initWithColorOption:(id)option collectionName:(id)name colorFraction:(double)fraction
 {
-  v8 = a3;
-  v9 = a4;
+  optionCopy = option;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = NTKFaceColorPaletteConfiguration;
   v10 = [(NTKFaceColorPaletteConfiguration *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(NTKFaceColorPaletteConfiguration *)v10 setColorName:v8 collectionName:v9 colorFraction:a5];
+    [(NTKFaceColorPaletteConfiguration *)v10 setColorName:optionCopy collectionName:nameCopy colorFraction:fraction];
   }
 
   return v11;
@@ -52,14 +52,14 @@
 {
   if (!self->_formattedCollectionName)
   {
-    v3 = [(NTKFaceColorPaletteConfiguration *)self collectionName];
-    v4 = [v3 containsString:@"."];
+    collectionName = [(NTKFaceColorPaletteConfiguration *)self collectionName];
+    v4 = [collectionName containsString:@"."];
 
-    v5 = [(NTKFaceColorPaletteConfiguration *)self collectionName];
-    v6 = v5;
+    collectionName2 = [(NTKFaceColorPaletteConfiguration *)self collectionName];
+    v6 = collectionName2;
     if (v4)
     {
-      v7 = [(NSString *)v5 stringByReplacingOccurrencesOfString:@"." withString:@"/"];
+      v7 = [(NSString *)collectionName2 stringByReplacingOccurrencesOfString:@"." withString:@"/"];
       formattedCollectionName = self->_formattedCollectionName;
       self->_formattedCollectionName = v7;
     }
@@ -67,7 +67,7 @@
     else
     {
       v9 = self->_formattedCollectionName;
-      self->_formattedCollectionName = v5;
+      self->_formattedCollectionName = collectionName2;
       v6 = v9;
     }
   }
@@ -77,28 +77,28 @@
   return v10;
 }
 
-- (void)setPigmentEditOption:(id)a3
+- (void)setPigmentEditOption:(id)option
 {
-  objc_storeStrong(&self->_pigmentEditOption, a3);
-  v5 = a3;
-  v9 = [v5 optionName];
-  v6 = [v5 collectionName];
-  [v5 colorFraction];
+  objc_storeStrong(&self->_pigmentEditOption, option);
+  optionCopy = option;
+  optionName = [optionCopy optionName];
+  collectionName = [optionCopy collectionName];
+  [optionCopy colorFraction];
   v8 = v7;
 
-  [(NTKFaceColorPaletteConfiguration *)self setColorName:v9 collectionName:v6 colorFraction:v8];
+  [(NTKFaceColorPaletteConfiguration *)self setColorName:optionName collectionName:collectionName colorFraction:v8];
 }
 
-- (void)setColorName:(id)a3 collectionName:(id)a4 colorFraction:(double)a5
+- (void)setColorName:(id)name collectionName:(id)collectionName colorFraction:(double)fraction
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  collectionNameCopy = collectionName;
   v20 = 0;
   v21 = 0;
-  [NTKPigmentEditOption effectiveNamesFromName:v8 effectiveCollectionName:&v21 effectiveOptionName:&v20];
+  [NTKPigmentEditOption effectiveNamesFromName:nameCopy effectiveCollectionName:&v21 effectiveOptionName:&v20];
   v10 = v21;
   v11 = v20;
-  v12 = v8;
+  v12 = nameCopy;
   v13 = v12;
   if (v11)
   {
@@ -111,7 +111,7 @@
     objc_storeStrong(&self->_colorOption, v13);
   }
 
-  v15 = v9;
+  v15 = collectionNameCopy;
   v16 = v15;
   if (v10)
   {
@@ -121,7 +121,7 @@
   if (v16 == self->_collectionName)
   {
     p_colorFraction = &self->_colorFraction;
-    if (self->_colorFraction == a5)
+    if (self->_colorFraction == fraction)
     {
       formattedCollectionName = self->_formattedCollectionName;
       self->_formattedCollectionName = 0;
@@ -139,13 +139,13 @@
   {
     objc_storeStrong(&self->_collectionName, v16);
     p_colorFraction = &self->_colorFraction;
-    if (self->_colorFraction == a5)
+    if (self->_colorFraction == fraction)
     {
       goto LABEL_12;
     }
   }
 
-  *p_colorFraction = a5;
+  *p_colorFraction = fraction;
 LABEL_12:
   v18 = self->_formattedCollectionName;
   self->_formattedCollectionName = 0;
@@ -155,22 +155,22 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)setColorOption:(id)a3
+- (void)setColorOption:(id)option
 {
-  v5 = a3;
+  optionCopy = option;
   if (![(NSString *)self->_colorOption isEqualToString:?])
   {
-    objc_storeStrong(&self->_colorOption, a3);
+    objc_storeStrong(&self->_colorOption, option);
     [(NTKFaceColorPaletteConfiguration *)self handleContentChanged];
   }
 }
 
-- (void)setCollectionName:(id)a3
+- (void)setCollectionName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_collectionName isEqualToString:?])
   {
-    objc_storeStrong(&self->_collectionName, a3);
+    objc_storeStrong(&self->_collectionName, name);
     formattedCollectionName = self->_formattedCollectionName;
     self->_formattedCollectionName = 0;
 
@@ -178,11 +178,11 @@ LABEL_14:
   }
 }
 
-- (void)setColorFraction:(double)a3
+- (void)setColorFraction:(double)fraction
 {
-  if (self->_colorFraction != a3)
+  if (self->_colorFraction != fraction)
   {
-    self->_colorFraction = a3;
+    self->_colorFraction = fraction;
     [(NTKFaceColorPaletteConfiguration *)self handleContentChanged];
   }
 }
@@ -192,8 +192,8 @@ LABEL_14:
   uniqueId = self->_uniqueId;
   self->_uniqueId = 0;
 
-  v4 = [(NTKFaceColorPaletteConfiguration *)self delegate];
-  [v4 configurationDidChange:self];
+  delegate = [(NTKFaceColorPaletteConfiguration *)self delegate];
+  [delegate configurationDidChange:self];
 }
 
 - (id)uniqueId
@@ -202,10 +202,10 @@ LABEL_14:
   if (!uniqueId)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(NTKFaceColorPaletteConfiguration *)self collectionName];
-    v6 = [(NTKFaceColorPaletteConfiguration *)self colorOption];
+    collectionName = [(NTKFaceColorPaletteConfiguration *)self collectionName];
+    colorOption = [(NTKFaceColorPaletteConfiguration *)self colorOption];
     [(NTKFaceColorPaletteConfiguration *)self colorFraction];
-    v8 = [v4 stringWithFormat:@"%@.%@:%0.2f", v5, v6, v7];
+    v8 = [v4 stringWithFormat:@"%@.%@:%0.2f", collectionName, colorOption, v7];
     v9 = self->_uniqueId;
     self->_uniqueId = v8;
 
@@ -215,38 +215,38 @@ LABEL_14:
   return uniqueId;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(NTKFaceColorPaletteConfiguration *)self colorOption];
-  [v4 setColorOption:v5];
+  colorOption = [(NTKFaceColorPaletteConfiguration *)self colorOption];
+  [v4 setColorOption:colorOption];
 
-  v6 = [(NTKFaceColorPaletteConfiguration *)self collectionName];
-  [v4 setCollectionName:v6];
+  collectionName = [(NTKFaceColorPaletteConfiguration *)self collectionName];
+  [v4 setCollectionName:collectionName];
 
   [(NTKFaceColorPaletteConfiguration *)self colorFraction];
   [v4 setColorFraction:?];
-  v7 = [(NTKFaceColorPaletteConfiguration *)self pigmentEditOption];
-  v8 = [v7 copy];
+  pigmentEditOption = [(NTKFaceColorPaletteConfiguration *)self pigmentEditOption];
+  v8 = [pigmentEditOption copy];
   [v4 setPigmentEditOption:v8];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(NTKFaceColorPaletteConfiguration *)self colorOption];
-  v6 = [v4 colorOption];
-  if ([v5 isEqual:v6])
+  equalCopy = equal;
+  colorOption = [(NTKFaceColorPaletteConfiguration *)self colorOption];
+  colorOption2 = [equalCopy colorOption];
+  if ([colorOption isEqual:colorOption2])
   {
-    v7 = [(NTKFaceColorPaletteConfiguration *)self collectionName];
-    v8 = [v4 collectionName];
-    if ([v7 isEqual:v8])
+    collectionName = [(NTKFaceColorPaletteConfiguration *)self collectionName];
+    collectionName2 = [equalCopy collectionName];
+    if ([collectionName isEqual:collectionName2])
     {
       [(NTKFaceColorPaletteConfiguration *)self colorFraction];
       v10 = v9;
-      [v4 colorFraction];
+      [equalCopy colorFraction];
       v12 = v10 == v11;
     }
 

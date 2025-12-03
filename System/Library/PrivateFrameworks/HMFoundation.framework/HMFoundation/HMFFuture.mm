@@ -1,35 +1,35 @@
 @interface HMFFuture
-+ (HMFAsyncFuture)_inContext:(void *)a3 transform:(void *)a4 with:;
++ (HMFAsyncFuture)_inContext:(void *)context transform:(void *)transform with:;
 + (id)_futureWithNilValue;
-+ (id)_futureWithOutcome:(void *)a3;
-+ (id)all:(id)a3;
-+ (id)allSettled:(id)a3;
-+ (id)any:(id)a3;
-+ (id)anySettled:(id)a3;
-+ (id)futureForOperation:(id)a3;
-+ (id)futureWithDelay:(double)a3;
-+ (id)futureWithDelay:(uint64_t)a3 outcome:(void *)a4;
-+ (id)futureWithError:(id)a3;
-+ (id)futureWithPromise:(id *)a3;
-+ (id)futureWithValue:(id)a3;
-+ (id)inContext:(id)a3 perform:(id)a4;
++ (id)_futureWithOutcome:(void *)outcome;
++ (id)all:(id)all;
++ (id)allSettled:(id)settled;
++ (id)any:(id)any;
++ (id)anySettled:(id)settled;
++ (id)futureForOperation:(id)operation;
++ (id)futureWithDelay:(double)delay;
++ (id)futureWithDelay:(uint64_t)delay outcome:(void *)outcome;
++ (id)futureWithError:(id)error;
++ (id)futureWithPromise:(id *)promise;
++ (id)futureWithValue:(id)value;
++ (id)inContext:(id)context perform:(id)perform;
 - (BOOL)isPending;
-- (BOOL)waitForResult:(id *)a3 orError:(id *)a4 withTimeout:(double)a5;
+- (BOOL)waitForResult:(id *)result orError:(id *)error withTimeout:(double)timeout;
 - (_HMFFutureBlockOutcome)outcomeIfSettled;
 - (id)description;
-- (id)finally:(id)a3;
+- (id)finally:(id)finally;
 - (id)ignoreErrors;
 - (id)ignoreOutcome;
 - (id)ignoreResult;
-- (id)inContext:(id)a3 finally:(id)a4;
-- (id)inContext:(id)a3 recover:(id)a4;
-- (id)inContext:(id)a3 then:(id)a4;
-- (id)inContext:(id)a3 then:(id)a4 orRecover:(id)a5;
-- (id)recover:(id)a3;
-- (id)then:(id)a3;
-- (id)then:(id)a3 orRecover:(id)a4;
-- (id)timeout:(double)a3;
-- (void)getResultWithCompletion:(id)a3;
+- (id)inContext:(id)context finally:(id)finally;
+- (id)inContext:(id)context recover:(id)recover;
+- (id)inContext:(id)context then:(id)then;
+- (id)inContext:(id)context then:(id)then orRecover:(id)recover;
+- (id)recover:(id)recover;
+- (id)then:(id)then;
+- (id)then:(id)then orRecover:(id)recover;
+- (id)timeout:(double)timeout;
+- (void)getResultWithCompletion:(id)completion;
 @end
 
 @implementation HMFFuture
@@ -47,13 +47,13 @@
   return v0;
 }
 
-+ (id)futureWithValue:(id)a3
++ (id)futureWithValue:(id)value
 {
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     v4 = [HMFFulfilledFuture alloc];
-    [(HMFFulfilledFuture *)&v4->super.super.isa initWithValue:v3];
+    [(HMFFulfilledFuture *)&v4->super.super.isa initWithValue:valueCopy];
   }
 
   else
@@ -64,13 +64,13 @@
   return v4;
 }
 
-+ (id)futureWithError:(id)a3
++ (id)futureWithError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
     v4 = [HMFRejectedFuture alloc];
-    [(HMFRejectedFuture *)&v4->super.super.isa initWithError:v3];
+    [(HMFRejectedFuture *)&v4->super.super.isa initWithError:errorCopy];
   }
 
   else
@@ -103,21 +103,21 @@ void __40__HMFFuture__futureWithUnspecifiedError__block_invoke()
   qword_280AFC588 = v0;
 }
 
-+ (id)_futureWithOutcome:(void *)a3
++ (id)_futureWithOutcome:(void *)outcome
 {
   objc_opt_self();
   switch(a2)
   {
     case 1:
-      v5 = [HMFFuture futureWithValue:a3];
+      outcomeCopy = [HMFFuture futureWithValue:outcome];
       goto LABEL_7;
     case 2:
-      v5 = [HMFFuture futureWithError:a3];
+      outcomeCopy = [HMFFuture futureWithError:outcome];
       goto LABEL_7;
     case 3:
-      v5 = a3;
+      outcomeCopy = outcome;
 LABEL_7:
-      v6 = v5;
+      v6 = outcomeCopy;
       goto LABEL_9;
   }
 
@@ -127,18 +127,18 @@ LABEL_9:
   return v6;
 }
 
-+ (id)futureWithPromise:(id *)a3
++ (id)futureWithPromise:(id *)promise
 {
-  v3 = [[HMFAsyncFuture alloc] initWithPromise:a3];
+  v3 = [[HMFAsyncFuture alloc] initWithPromise:promise];
 
   return v3;
 }
 
-+ (id)inContext:(id)a3 perform:(id)a4
++ (id)inContext:(id)context perform:(id)perform
 {
-  v5 = a4;
+  performCopy = perform;
   v15 = 0;
-  v6 = a3;
+  contextCopy = context;
   v7 = [HMFAsyncFuture alloc];
   [(HMFAsyncFuture *)v7 initWithPromise:?];
   v12[0] = MEMORY[0x277D85DD0];
@@ -147,10 +147,10 @@ LABEL_9:
   v12[3] = &unk_2786E6D68;
   v8 = v15;
   v13 = v15;
-  v14 = v5;
-  v9 = v5;
+  v14 = performCopy;
+  v9 = performCopy;
   v10 = v8;
-  [v6 performBlock:v12];
+  [contextCopy performBlock:v12];
 
   return v7;
 }
@@ -170,10 +170,10 @@ void __31__HMFFuture_inContext_perform___block_invoke(uint64_t a1)
   }
 }
 
-+ (HMFAsyncFuture)_inContext:(void *)a3 transform:(void *)a4 with:
++ (HMFAsyncFuture)_inContext:(void *)context transform:(void *)transform with:
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  transformCopy = transform;
   v8 = a2;
   objc_opt_self();
   v19 = 0;
@@ -184,11 +184,11 @@ void __31__HMFFuture_inContext_perform___block_invoke(uint64_t a1)
   v15[2] = __39__HMFFuture__inContext_transform_with___block_invoke;
   v15[3] = &unk_2786E6D90;
   v10 = v19;
-  v17 = v6;
-  v18 = v7;
+  v17 = contextCopy;
+  v18 = transformCopy;
   v16 = v19;
-  v11 = v6;
-  v12 = v7;
+  v11 = contextCopy;
+  v12 = transformCopy;
   v13 = v10;
   [v8 performBlock:v15];
 
@@ -213,9 +213,9 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMFFuture *)self isPending];
+  isPending = [(HMFFuture *)self isPending];
   v5 = @"settled";
-  if (v4)
+  if (isPending)
   {
     v5 = @"pending";
   }
@@ -249,9 +249,9 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
   objc_exception_throw(v7);
 }
 
-- (void)getResultWithCompletion:(id)a3
+- (void)getResultWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -263,9 +263,9 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
   objc_exception_throw(v10);
 }
 
-- (id)then:(id)a3
+- (id)then:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -277,9 +277,9 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
   objc_exception_throw(v10);
 }
 
-- (id)recover:(id)a3
+- (id)recover:(id)recover
 {
-  v4 = a3;
+  recoverCopy = recover;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -291,10 +291,10 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
   objc_exception_throw(v10);
 }
 
-- (id)then:(id)a3 orRecover:(id)a4
+- (id)then:(id)then orRecover:(id)recover
 {
-  v6 = a3;
-  v7 = a4;
+  thenCopy = then;
+  recoverCopy = recover;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -306,10 +306,10 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
   objc_exception_throw(v13);
 }
 
-- (id)inContext:(id)a3 then:(id)a4
+- (id)inContext:(id)context then:(id)then
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  thenCopy = then;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -321,10 +321,10 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
   objc_exception_throw(v13);
 }
 
-- (id)inContext:(id)a3 recover:(id)a4
+- (id)inContext:(id)context recover:(id)recover
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  recoverCopy = recover;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -336,11 +336,11 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
   objc_exception_throw(v13);
 }
 
-- (id)inContext:(id)a3 then:(id)a4 orRecover:(id)a5
+- (id)inContext:(id)context then:(id)then orRecover:(id)recover
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  thenCopy = then;
+  recoverCopy = recover;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -352,39 +352,39 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
   objc_exception_throw(v16);
 }
 
-+ (id)futureWithDelay:(double)a3
++ (id)futureWithDelay:(double)delay
 {
   v4 = HMFFuture;
   if (HMFFuture)
   {
-    v4 = [(HMFFuture *)a3 futureWithDelay:1 outcome:0];
+    v4 = [(HMFFuture *)delay futureWithDelay:1 outcome:0];
     v3 = vars8;
   }
 
   return v4;
 }
 
-+ (id)futureWithDelay:(uint64_t)a3 outcome:(void *)a4
++ (id)futureWithDelay:(uint64_t)delay outcome:(void *)outcome
 {
   objc_opt_self();
   v16 = 0;
   v7 = [HMFFuture futureWithPromise:&v16];
-  v8 = dispatch_time(0, (a1 * 1000000000.0));
+  v8 = dispatch_time(0, (self * 1000000000.0));
   v9 = dispatch_get_global_queue(21, 0);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3254779904;
   v12[2] = __46__HMFFuture_Timeout__futureWithDelay_outcome___block_invoke;
   v12[3] = &unk_283EBCAE0;
   v13 = v16;
-  v14 = a3;
-  v15 = a4;
-  v10 = a4;
+  delayCopy = delay;
+  outcomeCopy = outcome;
+  outcomeCopy2 = outcome;
   dispatch_after(v8, v9, v12);
 
   return v7;
 }
 
-- (id)timeout:(double)a3
+- (id)timeout:(double)timeout
 {
   v14[2] = *MEMORY[0x277D85DE8];
   if (_MergedGlobals_58 != -1)
@@ -397,19 +397,19 @@ void __39__HMFFuture__inContext_transform_with___block_invoke(void *a1)
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    hmfUnspecifiedError = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
+    hmfUnspecifiedError = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
   }
 
-  v8 = v7;
+  v8 = hmfUnspecifiedError;
 
   if (HMFFuture)
   {
-    v9 = [(HMFFuture *)a3 futureWithDelay:2 outcome:v8];
+    v9 = [(HMFFuture *)timeout futureWithDelay:2 outcome:v8];
   }
 
   else
@@ -450,22 +450,22 @@ void __46__HMFFuture_Timeout__futureWithDelay_outcome___block_invoke(uint64_t a1
   }
 }
 
-- (id)finally:(id)a3
+- (id)finally:(id)finally
 {
-  v4 = a3;
+  finallyCopy = finally;
   aBlock = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __thenBlockForFinallyBlock_block_invoke;
   v13 = &unk_2786E7350;
-  v14 = v4;
+  v14 = finallyCopy;
   v5 = _Block_copy(&aBlock);
 
   aBlock = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __recoverBlockForFinallyBlock_block_invoke;
   v13 = &unk_2786E7378;
-  v14 = v4;
-  v6 = v4;
+  v14 = finallyCopy;
+  v6 = finallyCopy;
   v7 = _Block_copy(&aBlock);
 
   v8 = [(HMFFuture *)self then:v5 orRecover:v7];
@@ -473,18 +473,18 @@ void __46__HMFFuture_Timeout__futureWithDelay_outcome___block_invoke(uint64_t a1
   return v8;
 }
 
-- (id)inContext:(id)a3 finally:(id)a4
+- (id)inContext:(id)context finally:(id)finally
 {
-  v6 = a4;
+  finallyCopy = finally;
   aBlock = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __thenBlockForFinallyBlock_block_invoke;
   v16 = &unk_2786E7350;
-  v17 = v6;
-  v7 = a3;
+  v17 = finallyCopy;
+  contextCopy = context;
   v8 = _Block_copy(&aBlock);
 
-  v9 = v6;
+  v9 = finallyCopy;
   aBlock = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __recoverBlockForFinallyBlock_block_invoke;
@@ -492,7 +492,7 @@ void __46__HMFFuture_Timeout__futureWithDelay_outcome___block_invoke(uint64_t a1
   v17 = v9;
   v10 = _Block_copy(&aBlock);
 
-  v11 = [(HMFFuture *)self inContext:v7 then:v8 orRecover:v10];
+  v11 = [(HMFFuture *)self inContext:contextCopy then:v8 orRecover:v10];
 
   return v11;
 }
@@ -521,24 +521,24 @@ void __46__HMFFuture_Timeout__futureWithDelay_outcome___block_invoke(uint64_t a1
   return v4;
 }
 
-- (BOOL)waitForResult:(id *)a3 orError:(id *)a4 withTimeout:(double)a5
+- (BOOL)waitForResult:(id *)result orError:(id *)error withTimeout:(double)timeout
 {
-  v9 = [(HMFFuture *)self outcomeIfSettled];
+  outcomeIfSettled = [(HMFFuture *)self outcomeIfSettled];
   v11 = v10;
-  if (v9 == 2)
+  if (outcomeIfSettled == 2)
   {
-    v13 = *a3;
-    *a3 = 0;
+    v13 = *result;
+    *result = 0;
 
-    objc_storeStrong(a4, v11);
+    objc_storeStrong(error, v11);
     goto LABEL_5;
   }
 
-  if (v9 == 1)
+  if (outcomeIfSettled == 1)
   {
-    objc_storeStrong(a3, v10);
-    v12 = *a4;
-    *a4 = 0;
+    objc_storeStrong(result, v10);
+    v12 = *error;
+    *error = 0;
 
 LABEL_5:
     v14 = 1;
@@ -550,19 +550,19 @@ LABEL_5:
   v19[1] = 3221225472;
   v19[2] = __56__HMFFuture_Waiting__waitForResult_orError_withTimeout___block_invoke;
   v19[3] = &unk_2786E73C8;
-  v21 = a3;
-  v22 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v16 = v15;
   v20 = v16;
   [(HMFFuture *)self getResultWithCompletion:v19];
-  if (a5 == 1.79769313e308)
+  if (timeout == 1.79769313e308)
   {
     v17 = -1;
   }
 
   else
   {
-    v17 = dispatch_time(0, (a5 * 1000000000.0));
+    v17 = dispatch_time(0, (timeout * 1000000000.0));
   }
 
   v14 = dispatch_semaphore_wait(v16, v17) == 0;
@@ -588,10 +588,10 @@ void __56__HMFFuture_Waiting__waitForResult_orError_withTimeout___block_invoke(u
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)all:(id)a3
++ (id)all:(id)all
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [a3 copy];
+  v3 = [all copy];
   v4 = [v3 count];
   if (v4)
   {
@@ -712,10 +712,10 @@ void __30__HMFFuture_Combinators__all___block_invoke(uint64_t a1, void *a2, void
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)allSettled:(id)a3
++ (id)allSettled:(id)settled
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [a3 copy];
+  v3 = [settled copy];
   v4 = [v3 count];
   if (v4)
   {
@@ -831,10 +831,10 @@ void __37__HMFFuture_Combinators__allSettled___block_invoke(uint64_t a1, void *a
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)any:(id)a3
++ (id)any:(id)any
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [a3 copy];
+  v3 = [any copy];
   v4 = [v3 count];
   if (!v4)
   {
@@ -949,23 +949,23 @@ void __30__HMFFuture_Combinators__any___block_invoke(uint64_t a1, void *a2, void
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)anySettled:(id)a3
++ (id)anySettled:(id)settled
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 count])
+  settledCopy = settled;
+  if (![settledCopy count])
   {
     _HMFPreconditionFailure(@"futures.count >= 1");
   }
 
   v17 = 0;
   v4 = [HMFFuture futureWithPromise:&v17];
-  v5 = [v17 resolverBlock];
+  resolverBlock = [v17 resolverBlock];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v3;
+  v6 = settledCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
@@ -980,7 +980,7 @@ void __30__HMFFuture_Combinators__any___block_invoke(uint64_t a1, void *a2, void
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v13 + 1) + 8 * i) getResultWithCompletion:{v5, v13}];
+        [*(*(&v13 + 1) + 8 * i) getResultWithCompletion:{resolverBlock, v13}];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
@@ -994,11 +994,11 @@ void __30__HMFFuture_Combinators__any___block_invoke(uint64_t a1, void *a2, void
   return v4;
 }
 
-+ (id)futureForOperation:(id)a3
++ (id)futureForOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock_with_options();
-  v4 = objc_getAssociatedObject(v3, &futureForOperation__lock);
+  v4 = objc_getAssociatedObject(operationCopy, &futureForOperation__lock);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1020,7 +1020,7 @@ void __30__HMFFuture_Combinators__any___block_invoke(uint64_t a1, void *a2, void
   else
   {
     v4 = [HMFOperationFutureAdapter alloc];
-    v7 = v3;
+    v7 = operationCopy;
     if (v4)
     {
       v13.receiver = v4;

@@ -1,18 +1,18 @@
 @interface MBSiriPlugin
 - (BOOL)_deviceIsNonAopDevice;
-- (id)startingBackupWithEngine:(id)a3;
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4;
+- (id)startingBackupWithEngine:(id)engine;
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine;
 @end
 
 @implementation MBSiriPlugin
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v4 = a3;
-  if ([v4 isDeviceTransferEngine] && -[MBSiriPlugin _deviceIsNonAopDevice](self, "_deviceIsNonAopDevice"))
+  engineCopy = engine;
+  if ([engineCopy isDeviceTransferEngine] && -[MBSiriPlugin _deviceIsNonAopDevice](self, "_deviceIsNonAopDevice"))
   {
-    v5 = [v4 domainManager];
-    v6 = [v5 domainForName:@"HomeDomain"];
+    domainManager = [engineCopy domainManager];
+    v6 = [domainManager domainForName:@"HomeDomain"];
 
     if (!v6)
     {
@@ -20,13 +20,13 @@
     }
 
     v7 = [v6 standardizedRelativePathFor:@"Library/VoiceTrigger/SAT"];
-    v8 = [v6 relativePathsToOnlyBackupEncrypted];
-    v9 = [v8 containsObject:v7];
+    relativePathsToOnlyBackupEncrypted = [v6 relativePathsToOnlyBackupEncrypted];
+    v9 = [relativePathsToOnlyBackupEncrypted containsObject:v7];
 
     if (v9)
     {
-      v10 = [v6 relativePathsToOnlyBackupEncrypted];
-      v11 = [v10 mutableCopy];
+      relativePathsToOnlyBackupEncrypted2 = [v6 relativePathsToOnlyBackupEncrypted];
+      v11 = [relativePathsToOnlyBackupEncrypted2 mutableCopy];
 
       v12 = MBGetDefaultLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -45,13 +45,13 @@
       [v6 setRelativePathsToOnlyBackupEncrypted:v11];
     }
 
-    v13 = [v6 relativePathsToRestoreOnly];
-    v14 = [v13 containsObject:v7];
+    relativePathsToRestoreOnly = [v6 relativePathsToRestoreOnly];
+    v14 = [relativePathsToRestoreOnly containsObject:v7];
 
     if (v14)
     {
-      v15 = [v6 relativePathsToRestoreOnly];
-      v16 = [v15 mutableCopy];
+      relativePathsToRestoreOnly2 = [v6 relativePathsToRestoreOnly];
+      v16 = [relativePathsToRestoreOnly2 mutableCopy];
 
       v17 = MBGetDefaultLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -70,12 +70,12 @@
       [v6 setRelativePathsToRestoreOnly:v16];
     }
 
-    v18 = [v6 relativePathsNotToRestore];
+    relativePathsNotToRestore = [v6 relativePathsNotToRestore];
 
-    if (v18)
+    if (relativePathsNotToRestore)
     {
-      v19 = [v6 relativePathsNotToRestore];
-      v20 = [v19 mutableCopy];
+      relativePathsNotToRestore2 = [v6 relativePathsNotToRestore];
+      v20 = [relativePathsNotToRestore2 mutableCopy];
     }
 
     else
@@ -101,26 +101,26 @@
   return 0;
 }
 
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isDeviceTransferEngine])
+  policyCopy = policy;
+  engineCopy = engine;
+  if ([engineCopy isDeviceTransferEngine])
   {
-    v7 = [v6 domainManager];
-    v8 = [v7 domainForName:@"HomeDomain"];
+    domainManager = [engineCopy domainManager];
+    v8 = [domainManager domainForName:@"HomeDomain"];
 
     if (!v8)
     {
       __assert_rtn("[MBSiriPlugin startingRestoreWithPolicy:engine:]", "MBSiriPlugin.m", 56, "homeDomain");
     }
 
-    v9 = [v8 relativePathsNotToRemoveIfNotRestored];
+    relativePathsNotToRemoveIfNotRestored = [v8 relativePathsNotToRemoveIfNotRestored];
 
-    if (v9)
+    if (relativePathsNotToRemoveIfNotRestored)
     {
-      v10 = [v8 relativePathsNotToRemoveIfNotRestored];
-      v11 = [v10 mutableCopy];
+      relativePathsNotToRemoveIfNotRestored2 = [v8 relativePathsNotToRemoveIfNotRestored];
+      v11 = [relativePathsNotToRemoveIfNotRestored2 mutableCopy];
     }
 
     else

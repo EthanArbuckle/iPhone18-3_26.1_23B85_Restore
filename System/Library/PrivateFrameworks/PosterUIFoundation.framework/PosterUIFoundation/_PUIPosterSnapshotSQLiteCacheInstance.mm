@@ -1,23 +1,23 @@
 @interface _PUIPosterSnapshotSQLiteCacheInstance
-- (_PUIPosterSnapshotSQLiteCacheInstance)initWithCacheImplementation:(id)a3 assertion:(id)a4;
+- (_PUIPosterSnapshotSQLiteCacheInstance)initWithCacheImplementation:(id)implementation assertion:(id)assertion;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation _PUIPosterSnapshotSQLiteCacheInstance
 
-- (_PUIPosterSnapshotSQLiteCacheInstance)initWithCacheImplementation:(id)a3 assertion:(id)a4
+- (_PUIPosterSnapshotSQLiteCacheInstance)initWithCacheImplementation:(id)implementation assertion:(id)assertion
 {
-  v7 = a3;
-  v8 = a4;
+  implementationCopy = implementation;
+  assertionCopy = assertion;
   v12.receiver = self;
   v12.super_class = _PUIPosterSnapshotSQLiteCacheInstance;
   v9 = [(_PUIPosterSnapshotSQLiteCacheInstance *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_impl, a3);
-    objc_storeStrong(&v10->_assertion, a4);
+    objc_storeStrong(&v9->_impl, implementation);
+    objc_storeStrong(&v10->_assertion, assertion);
   }
 
   return v10;

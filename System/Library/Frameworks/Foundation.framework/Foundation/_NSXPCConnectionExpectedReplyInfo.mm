@@ -8,14 +8,14 @@
 
 - (void)cleanup
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 24);
+    v2 = *(self + 24);
     if (v2)
     {
       dispatch_semaphore_signal(v2);
-      dispatch_release(*(a1 + 24));
-      *(a1 + 24) = 0;
+      dispatch_release(*(self + 24));
+      *(self + 24) = 0;
     }
   }
 }

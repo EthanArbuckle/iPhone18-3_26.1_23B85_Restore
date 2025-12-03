@@ -4,9 +4,9 @@
 - (BOOL)_isAppleManufacturer;
 - (BOOL)_isAppleModel;
 - (BOOL)_isConnectedGymDevice;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDevice)init;
-- (HKDevice)initWithCoder:(id)a3;
+- (HKDevice)initWithCoder:(id)coder;
 - (HKDevice)initWithName:(NSString *)name manufacturer:(NSString *)manufacturer model:(NSString *)model hardwareVersion:(NSString *)hardwareVersion firmwareVersion:(NSString *)firmwareVersion softwareVersion:(NSString *)softwareVersion localIdentifier:(NSString *)localIdentifier UDIDeviceIdentifier:(NSString *)UDIDeviceIdentifier;
 - (NSString)_connectedGymDeviceFullName;
 - (NSString)_connectedGymDeviceTypeName;
@@ -15,18 +15,18 @@
 - (id)description;
 - (unint64_t)_fitnessMachineType;
 - (unint64_t)hash;
-- (void)_setBluetoothIdentifier:(id)a3;
-- (void)_setCreationDate:(id)a3;
-- (void)_setFirmwareVersion:(id)a3;
-- (void)_setFitnessMachineType:(unint64_t)a3;
-- (void)_setHardwareVersion:(id)a3;
-- (void)_setLocalIdentifier:(id)a3;
-- (void)_setManufacturer:(id)a3;
-- (void)_setModel:(id)a3;
-- (void)_setName:(id)a3;
-- (void)_setSoftwareVersion:(id)a3;
-- (void)_setUDIDeviceIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setBluetoothIdentifier:(id)identifier;
+- (void)_setCreationDate:(id)date;
+- (void)_setFirmwareVersion:(id)version;
+- (void)_setFitnessMachineType:(unint64_t)type;
+- (void)_setHardwareVersion:(id)version;
+- (void)_setLocalIdentifier:(id)identifier;
+- (void)_setManufacturer:(id)manufacturer;
+- (void)_setModel:(id)model;
+- (void)_setName:(id)name;
+- (void)_setSoftwareVersion:(id)version;
+- (void)_setUDIDeviceIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDevice
@@ -155,9 +155,9 @@ void __128__HKDevice_initWithName_manufacturer_model_hardwareVersion_firmwareVer
   *(*(*(a1 + 32) + 8) + 24) |= *a2 != 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -165,63 +165,63 @@ void __128__HKDevice_initWithName_manufacturer_model_hardwareVersion_firmwareVer
   }
 
   name = self->_name;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (name != v6 && (!v6 || ![(NSString *)name isEqualToString:?]))
   {
     goto LABEL_29;
   }
 
   bluetoothIdentifier = self->_bluetoothIdentifier;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (bluetoothIdentifier != v8 && (!v8 || ![(NSString *)bluetoothIdentifier isEqualToString:?]))
   {
     goto LABEL_29;
   }
 
   manufacturer = self->_manufacturer;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (manufacturer != v10 && (!v10 || ![(NSString *)manufacturer isEqualToString:?]))
   {
     goto LABEL_29;
   }
 
   model = self->_model;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (model != v12 && (!v12 || ![(NSString *)model isEqualToString:?]))
   {
     goto LABEL_29;
   }
 
   hardwareVersion = self->_hardwareVersion;
-  v14 = v4[5];
+  v14 = equalCopy[5];
   if (hardwareVersion != v14 && (!v14 || ![(NSString *)hardwareVersion isEqualToString:?]))
   {
     goto LABEL_29;
   }
 
   firmwareVersion = self->_firmwareVersion;
-  v16 = v4[6];
+  v16 = equalCopy[6];
   if (firmwareVersion != v16 && (!v16 || ![(NSString *)firmwareVersion isEqualToString:?]))
   {
     goto LABEL_29;
   }
 
   softwareVersion = self->_softwareVersion;
-  v18 = v4[7];
+  v18 = equalCopy[7];
   if (softwareVersion != v18 && (!v18 || ![(NSString *)softwareVersion isEqualToString:?]))
   {
     goto LABEL_29;
   }
 
   localIdentifier = self->_localIdentifier;
-  v20 = v4[8];
+  v20 = equalCopy[8];
   if (localIdentifier != v20 && (!v20 || ![(NSString *)localIdentifier isEqualToString:?]))
   {
     goto LABEL_29;
   }
 
   UDIDeviceIdentifier = self->_UDIDeviceIdentifier;
-  v22 = v4[9];
+  v22 = equalCopy[9];
   if (UDIDeviceIdentifier == v22)
   {
     v23 = 1;
@@ -309,41 +309,41 @@ LABEL_30:
 
 - (BOOL)_isAppleManufacturer
 {
-  v2 = [(HKDevice *)self manufacturer];
+  manufacturer = [(HKDevice *)self manufacturer];
   v3 = +[_HKBehavior currentDeviceManufacturer];
-  v4 = [v2 isEqualToString:v3];
+  v4 = [manufacturer isEqualToString:v3];
 
   return v4;
 }
 
 - (BOOL)_isAppleModel
 {
-  v3 = [(HKDevice *)self model];
-  if ([v3 hasPrefix:@"iPhone"])
+  model = [(HKDevice *)self model];
+  if ([model hasPrefix:@"iPhone"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HKDevice *)self model];
-    if ([v5 hasPrefix:@"iPad"])
+    model2 = [(HKDevice *)self model];
+    if ([model2 hasPrefix:@"iPad"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(HKDevice *)self model];
-      if ([v6 hasPrefix:@"Watch"])
+      model3 = [(HKDevice *)self model];
+      if ([model3 hasPrefix:@"Watch"])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(HKDevice *)self model];
-        v4 = [v7 hasPrefix:@"RealityDevice"];
+        model4 = [(HKDevice *)self model];
+        v4 = [model4 hasPrefix:@"RealityDevice"];
       }
     }
   }
@@ -353,32 +353,32 @@ LABEL_30:
 
 - (BOOL)_isAppleHardwareVersion
 {
-  v3 = [(HKDevice *)self hardwareVersion];
-  if ([v3 hasPrefix:@"iPhone"])
+  hardwareVersion = [(HKDevice *)self hardwareVersion];
+  if ([hardwareVersion hasPrefix:@"iPhone"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HKDevice *)self hardwareVersion];
-    if ([v5 hasPrefix:@"iPad"])
+    hardwareVersion2 = [(HKDevice *)self hardwareVersion];
+    if ([hardwareVersion2 hasPrefix:@"iPad"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(HKDevice *)self hardwareVersion];
-      if ([v6 hasPrefix:@"Watch"])
+      hardwareVersion3 = [(HKDevice *)self hardwareVersion];
+      if ([hardwareVersion3 hasPrefix:@"Watch"])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(HKDevice *)self hardwareVersion];
-        v4 = [v7 hasPrefix:@"RealityDevice"];
+        hardwareVersion4 = [(HKDevice *)self hardwareVersion];
+        v4 = [hardwareVersion4 hasPrefix:@"RealityDevice"];
       }
     }
   }
@@ -386,16 +386,16 @@ LABEL_30:
   return v4;
 }
 
-- (void)_setFitnessMachineType:(unint64_t)a3
+- (void)_setFitnessMachineType:(unint64_t)type
 {
-  if (a3 - 1 > 5)
+  if (type - 1 > 5)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_1E737A748[a3 - 1];
+    v3 = off_1E737A748[type - 1];
   }
 
   [(HKDevice *)self _setModel:v3];
@@ -403,33 +403,33 @@ LABEL_30:
 
 - (unint64_t)_fitnessMachineType
 {
-  v2 = [(HKDevice *)self model];
-  if ([v2 isEqualToString:@"com.apple.health.fitnessmachinemodel.treadmill"])
+  model = [(HKDevice *)self model];
+  if ([model isEqualToString:@"com.apple.health.fitnessmachinemodel.treadmill"])
   {
     v3 = 1;
   }
 
-  else if ([v2 isEqualToString:@"com.apple.health.fitnessmachinemodel.crosstrainer"])
+  else if ([model isEqualToString:@"com.apple.health.fitnessmachinemodel.crosstrainer"])
   {
     v3 = 2;
   }
 
-  else if ([v2 isEqualToString:@"com.apple.health.fitnessmachinemodel.stepclimber"])
+  else if ([model isEqualToString:@"com.apple.health.fitnessmachinemodel.stepclimber"])
   {
     v3 = 3;
   }
 
-  else if ([v2 isEqualToString:@"com.apple.health.fitnessmachinemodel.stairclimber"])
+  else if ([model isEqualToString:@"com.apple.health.fitnessmachinemodel.stairclimber"])
   {
     v3 = 4;
   }
 
-  else if ([v2 isEqualToString:@"com.apple.health.fitnessmachinemodel.indoorbike"])
+  else if ([model isEqualToString:@"com.apple.health.fitnessmachinemodel.indoorbike"])
   {
     v3 = 6;
   }
 
-  else if ([v2 isEqualToString:@"com.apple.health.fitnessmachinemodel.rower"])
+  else if ([model isEqualToString:@"com.apple.health.fitnessmachinemodel.rower"])
   {
     v3 = 5;
   }
@@ -444,8 +444,8 @@ LABEL_30:
 
 - (BOOL)_isConnectedGymDevice
 {
-  v2 = [(HKDevice *)self localIdentifier];
-  v3 = [v2 isEqualToString:@"com.healthd.fitnessmachine"];
+  localIdentifier = [(HKDevice *)self localIdentifier];
+  v3 = [localIdentifier isEqualToString:@"com.healthd.fitnessmachine"];
 
   return v3;
 }
@@ -471,234 +471,234 @@ LABEL_30:
 {
   if ([(HKDevice *)self _isConnectedGymDevice]&& ([(HKDevice *)self manufacturer], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(HKDevice *)self _connectedGymDeviceTypeName];
-    if (v4)
+    _connectedGymDeviceTypeName = [(HKDevice *)self _connectedGymDeviceTypeName];
+    if (_connectedGymDeviceTypeName)
     {
       v5 = MEMORY[0x1E696AEC0];
       v6 = HKHealthKitFrameworkBundle();
       v7 = [v6 localizedStringForKey:@"CONNECTED_GYM_DEVICE_FORMAT" value:&stru_1F05FF230 table:@"Localizable"];
-      v8 = [(HKDevice *)self manufacturer];
-      v9 = [v5 stringWithFormat:v7, v8, v4];
+      manufacturer = [(HKDevice *)self manufacturer];
+      manufacturer2 = [v5 stringWithFormat:v7, manufacturer, _connectedGymDeviceTypeName];
     }
 
     else
     {
-      v9 = [(HKDevice *)self manufacturer];
+      manufacturer2 = [(HKDevice *)self manufacturer];
     }
   }
 
   else
   {
-    v9 = 0;
+    manufacturer2 = 0;
   }
 
-  return v9;
+  return manufacturer2;
 }
 
 - (NSString)_displayName
 {
   if ([(HKDevice *)self _isConnectedGymDevice]&& ([(HKDevice *)self manufacturer], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(HKDevice *)self _connectedGymDeviceFullName];
-    v5 = [v4 length];
+    _connectedGymDeviceFullName = [(HKDevice *)self _connectedGymDeviceFullName];
+    v5 = [_connectedGymDeviceFullName length];
 
     if (v5)
     {
-      v6 = [(HKDevice *)self _connectedGymDeviceFullName];
+      _connectedGymDeviceFullName2 = [(HKDevice *)self _connectedGymDeviceFullName];
       goto LABEL_10;
     }
   }
 
   else
   {
-    v7 = [(HKDevice *)self name];
-    v8 = [v7 length];
+    name = [(HKDevice *)self name];
+    v8 = [name length];
 
     if (v8)
     {
-      v6 = [(HKDevice *)self name];
+      _connectedGymDeviceFullName2 = [(HKDevice *)self name];
       goto LABEL_10;
     }
 
-    v9 = [(HKDevice *)self model];
-    v10 = [v9 length];
+    model = [(HKDevice *)self model];
+    v10 = [model length];
 
     if (v10)
     {
-      v6 = [(HKDevice *)self model];
+      _connectedGymDeviceFullName2 = [(HKDevice *)self model];
       goto LABEL_10;
     }
   }
 
-  v6 = [(HKDevice *)self manufacturer];
+  _connectedGymDeviceFullName2 = [(HKDevice *)self manufacturer];
 LABEL_10:
 
-  return v6;
+  return _connectedGymDeviceFullName2;
 }
 
-- (void)_setName:(id)a3
+- (void)_setName:(id)name
 {
-  v4 = [a3 hk_copyNonEmptyString];
+  hk_copyNonEmptyString = [name hk_copyNonEmptyString];
   name = self->_name;
-  self->_name = v4;
+  self->_name = hk_copyNonEmptyString;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setBluetoothIdentifier:(id)a3
+- (void)_setBluetoothIdentifier:(id)identifier
 {
-  v4 = [a3 hk_copyNonEmptyString];
+  hk_copyNonEmptyString = [identifier hk_copyNonEmptyString];
   bluetoothIdentifier = self->_bluetoothIdentifier;
-  self->_bluetoothIdentifier = v4;
+  self->_bluetoothIdentifier = hk_copyNonEmptyString;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setManufacturer:(id)a3
+- (void)_setManufacturer:(id)manufacturer
 {
-  v4 = [a3 hk_copyNonEmptyString];
+  hk_copyNonEmptyString = [manufacturer hk_copyNonEmptyString];
   manufacturer = self->_manufacturer;
-  self->_manufacturer = v4;
+  self->_manufacturer = hk_copyNonEmptyString;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setModel:(id)a3
+- (void)_setModel:(id)model
 {
-  v4 = [a3 hk_copyNonEmptyString];
+  hk_copyNonEmptyString = [model hk_copyNonEmptyString];
   model = self->_model;
-  self->_model = v4;
+  self->_model = hk_copyNonEmptyString;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setHardwareVersion:(id)a3
+- (void)_setHardwareVersion:(id)version
 {
-  v4 = [a3 hk_copyNonEmptyString];
+  hk_copyNonEmptyString = [version hk_copyNonEmptyString];
   hardwareVersion = self->_hardwareVersion;
-  self->_hardwareVersion = v4;
+  self->_hardwareVersion = hk_copyNonEmptyString;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setFirmwareVersion:(id)a3
+- (void)_setFirmwareVersion:(id)version
 {
-  v4 = [a3 hk_copyNonEmptyString];
+  hk_copyNonEmptyString = [version hk_copyNonEmptyString];
   firmwareVersion = self->_firmwareVersion;
-  self->_firmwareVersion = v4;
+  self->_firmwareVersion = hk_copyNonEmptyString;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setSoftwareVersion:(id)a3
+- (void)_setSoftwareVersion:(id)version
 {
-  v4 = [a3 hk_copyNonEmptyString];
+  hk_copyNonEmptyString = [version hk_copyNonEmptyString];
   softwareVersion = self->_softwareVersion;
-  self->_softwareVersion = v4;
+  self->_softwareVersion = hk_copyNonEmptyString;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setLocalIdentifier:(id)a3
+- (void)_setLocalIdentifier:(id)identifier
 {
-  v4 = [a3 hk_copyNonEmptyString];
+  hk_copyNonEmptyString = [identifier hk_copyNonEmptyString];
   localIdentifier = self->_localIdentifier;
-  self->_localIdentifier = v4;
+  self->_localIdentifier = hk_copyNonEmptyString;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setUDIDeviceIdentifier:(id)a3
+- (void)_setUDIDeviceIdentifier:(id)identifier
 {
-  v4 = [a3 hk_copyNonEmptyString];
+  hk_copyNonEmptyString = [identifier hk_copyNonEmptyString];
   UDIDeviceIdentifier = self->_UDIDeviceIdentifier;
-  self->_UDIDeviceIdentifier = v4;
+  self->_UDIDeviceIdentifier = hk_copyNonEmptyString;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setCreationDate:(id)a3
+- (void)_setCreationDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   creationDate = self->_creationDate;
   self->_creationDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_bluetoothIdentifier forKey:@"bluetoothIdentifier"];
-  [v5 encodeObject:self->_manufacturer forKey:@"manufacturer"];
-  [v5 encodeObject:self->_model forKey:@"model"];
-  [v5 encodeObject:self->_hardwareVersion forKey:@"hardVers"];
-  [v5 encodeObject:self->_firmwareVersion forKey:@"firmVers"];
-  [v5 encodeObject:self->_softwareVersion forKey:@"softVers"];
-  [v5 encodeObject:self->_localIdentifier forKey:@"localID"];
-  [v5 encodeObject:self->_UDIDeviceIdentifier forKey:@"FDAUDI"];
-  [v5 encodeObject:self->_creationDate forKey:@"date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_bluetoothIdentifier forKey:@"bluetoothIdentifier"];
+  [coderCopy encodeObject:self->_manufacturer forKey:@"manufacturer"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeObject:self->_hardwareVersion forKey:@"hardVers"];
+  [coderCopy encodeObject:self->_firmwareVersion forKey:@"firmVers"];
+  [coderCopy encodeObject:self->_softwareVersion forKey:@"softVers"];
+  [coderCopy encodeObject:self->_localIdentifier forKey:@"localID"];
+  [coderCopy encodeObject:self->_UDIDeviceIdentifier forKey:@"FDAUDI"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"date"];
 }
 
-- (HKDevice)initWithCoder:(id)a3
+- (HKDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKDevice *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(HKDevice *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    v7 = [v6 hk_copyNonEmptyString];
-    name = v5->_name;
-    v5->_name = v7;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    hk_copyNonEmptyString = [v6 hk_copyNonEmptyString];
+    name = _init->_name;
+    _init->_name = hk_copyNonEmptyString;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothIdentifier"];
-    v10 = [v9 hk_copyNonEmptyString];
-    bluetoothIdentifier = v5->_bluetoothIdentifier;
-    v5->_bluetoothIdentifier = v10;
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothIdentifier"];
+    hk_copyNonEmptyString2 = [v9 hk_copyNonEmptyString];
+    bluetoothIdentifier = _init->_bluetoothIdentifier;
+    _init->_bluetoothIdentifier = hk_copyNonEmptyString2;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manufacturer"];
-    v13 = [v12 hk_copyNonEmptyString];
-    manufacturer = v5->_manufacturer;
-    v5->_manufacturer = v13;
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manufacturer"];
+    hk_copyNonEmptyString3 = [v12 hk_copyNonEmptyString];
+    manufacturer = _init->_manufacturer;
+    _init->_manufacturer = hk_copyNonEmptyString3;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
-    v16 = [v15 hk_copyNonEmptyString];
-    model = v5->_model;
-    v5->_model = v16;
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    hk_copyNonEmptyString4 = [v15 hk_copyNonEmptyString];
+    model = _init->_model;
+    _init->_model = hk_copyNonEmptyString4;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hardVers"];
-    v19 = [v18 hk_copyNonEmptyString];
-    hardwareVersion = v5->_hardwareVersion;
-    v5->_hardwareVersion = v19;
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hardVers"];
+    hk_copyNonEmptyString5 = [v18 hk_copyNonEmptyString];
+    hardwareVersion = _init->_hardwareVersion;
+    _init->_hardwareVersion = hk_copyNonEmptyString5;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firmVers"];
-    v22 = [v21 hk_copyNonEmptyString];
-    firmwareVersion = v5->_firmwareVersion;
-    v5->_firmwareVersion = v22;
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firmVers"];
+    hk_copyNonEmptyString6 = [v21 hk_copyNonEmptyString];
+    firmwareVersion = _init->_firmwareVersion;
+    _init->_firmwareVersion = hk_copyNonEmptyString6;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"softVers"];
-    v25 = [v24 hk_copyNonEmptyString];
-    softwareVersion = v5->_softwareVersion;
-    v5->_softwareVersion = v25;
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"softVers"];
+    hk_copyNonEmptyString7 = [v24 hk_copyNonEmptyString];
+    softwareVersion = _init->_softwareVersion;
+    _init->_softwareVersion = hk_copyNonEmptyString7;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localID"];
-    v28 = [v27 hk_copyNonEmptyString];
-    localIdentifier = v5->_localIdentifier;
-    v5->_localIdentifier = v28;
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localID"];
+    hk_copyNonEmptyString8 = [v27 hk_copyNonEmptyString];
+    localIdentifier = _init->_localIdentifier;
+    _init->_localIdentifier = hk_copyNonEmptyString8;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FDAUDI"];
-    v31 = [v30 hk_copyNonEmptyString];
-    UDIDeviceIdentifier = v5->_UDIDeviceIdentifier;
-    v5->_UDIDeviceIdentifier = v31;
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FDAUDI"];
+    hk_copyNonEmptyString9 = [v30 hk_copyNonEmptyString];
+    UDIDeviceIdentifier = _init->_UDIDeviceIdentifier;
+    _init->_UDIDeviceIdentifier = hk_copyNonEmptyString9;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-    creationDate = v5->_creationDate;
-    v5->_creationDate = v33;
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    creationDate = _init->_creationDate;
+    _init->_creationDate = v33;
   }
 
-  return v5;
+  return _init;
 }
 
 @end

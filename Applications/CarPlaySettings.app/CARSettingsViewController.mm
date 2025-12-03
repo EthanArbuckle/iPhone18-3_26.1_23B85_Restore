@@ -1,45 +1,45 @@
 @interface CARSettingsViewController
 - (CARSession)carSession;
-- (CARSettingsViewController)initWithSessionStatus:(id)a3 windowScene:(id)a4;
+- (CARSettingsViewController)initWithSessionStatus:(id)status windowScene:(id)scene;
 - (CRVehicle)vehicle;
 - (CRVehicleVideoSettings)vehicleVideoSettings;
 - (UITraitOverrides)panelTraitOverrides;
 - (id)loadWallpaperPreferences;
-- (void)_pairedVehiclesDidChange:(id)a3;
+- (void)_pairedVehiclesDidChange:(id)change;
 - (void)_reloadVehicle;
-- (void)_updateTraitOverridesForTraitOverrides:(id)a3;
-- (void)addNotificationSettingsObserver:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addSiriPreferencesObserver:(id)a3;
-- (void)carManagerRequestedDevicePicker:(id)a3;
-- (void)deregisterPanel:(id)a3;
-- (void)dismissPanel:(id)a3 completion:(id)a4;
+- (void)_updateTraitOverridesForTraitOverrides:(id)overrides;
+- (void)addNotificationSettingsObserver:(id)observer;
+- (void)addObserver:(id)observer;
+- (void)addSiriPreferencesObserver:(id)observer;
+- (void)carManagerRequestedDevicePicker:(id)picker;
+- (void)deregisterPanel:(id)panel;
+- (void)dismissPanel:(id)panel completion:(id)completion;
 - (void)invalidate;
-- (void)popIfPanel:(id)a3;
-- (void)popToRootPanelIfHierarchyContainsPanel:(id)a3;
-- (void)pushPanels:(id)a3;
-- (void)registerPanel:(id)a3;
-- (void)removeNotificationSettingsObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeSiriPreferencesObserver:(id)a3;
-- (void)saveVehicle:(id)a3;
-- (void)sessionDidConnect:(id)a3;
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSystemSettings:(id)a4;
+- (void)popIfPanel:(id)panel;
+- (void)popToRootPanelIfHierarchyContainsPanel:(id)panel;
+- (void)pushPanels:(id)panels;
+- (void)registerPanel:(id)panel;
+- (void)removeNotificationSettingsObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)removeSiriPreferencesObserver:(id)observer;
+- (void)saveVehicle:(id)vehicle;
+- (void)sessionDidConnect:(id)connect;
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSystemSettings:(id)settings;
 @end
 
 @implementation CARSettingsViewController
 
-- (CARSettingsViewController)initWithSessionStatus:(id)a3 windowScene:(id)a4
+- (CARSettingsViewController)initWithSessionStatus:(id)status windowScene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  sceneCopy = scene;
   v37.receiver = self;
   v37.super_class = CARSettingsViewController;
   v9 = [(CARSettingsViewController *)&v37 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_windowScene, a4);
+    objc_storeStrong(&v9->_windowScene, scene);
     v11 = [[CARObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___CARSessionObserving];
     observers = v10->_observers;
     v10->_observers = v11;
@@ -57,24 +57,24 @@
     v10->_siriPreferences = v17;
 
     v19 = +[UNNotificationSettingsCenter currentNotificationSettingsCenter];
-    v20 = [v19 notificationSystemSettings];
+    notificationSystemSettings = [v19 notificationSystemSettings];
     currentNotificationSystemSettings = v10->_currentNotificationSystemSettings;
-    v10->_currentNotificationSystemSettings = v20;
+    v10->_currentNotificationSystemSettings = notificationSystemSettings;
 
     v22 = +[UNNotificationSettingsCenter currentNotificationSettingsCenter];
     [v22 setDelegate:v10];
 
-    objc_storeStrong(&v10->_sessionStatus, a3);
+    objc_storeStrong(&v10->_sessionStatus, status);
     [(CARSessionStatus *)v10->_sessionStatus addSessionObserver:v10];
     v23 = objc_alloc_init(CRPairedVehicleManager);
     pairedManager = v10->_pairedManager;
     v10->_pairedManager = v23;
 
-    v25 = [v7 currentSession];
-    v26 = [v25 configuration];
-    v27 = [v26 supportsVehicleData];
+    currentSession = [statusCopy currentSession];
+    configuration = [currentSession configuration];
+    supportsVehicleData = [configuration supportsVehicleData];
 
-    if (v27)
+    if (supportsVehicleData)
     {
       v28 = +[_TtC15CarPlaySettings16CARAssetsManager sharedInstance];
       [v28 setup];
@@ -86,14 +86,14 @@
 
     [(CARSettingsViewController *)v10 pushViewController:v10->_rootPanel animated:0];
     v31 = +[CARSettingsAppDelegate sharedDelegate];
-    v32 = [v31 carManager];
-    [v32 addObserver:v10];
+    carManager = [v31 carManager];
+    [carManager addObserver:v10];
 
     v33 = +[NSDistributedNotificationCenter defaultCenter];
     [v33 addObserver:v10 selector:"_pairedVehiclesDidChange:" name:CRPairedVehiclesDidChangeNotification object:0];
 
-    v34 = [(CARSettingsViewController *)v10 panelTraitOverrides];
-    [(CARSettingsViewController *)v10 _updateTraitOverridesForTraitOverrides:v34];
+    panelTraitOverrides = [(CARSettingsViewController *)v10 panelTraitOverrides];
+    [(CARSettingsViewController *)v10 _updateTraitOverridesForTraitOverrides:panelTraitOverrides];
 
     v35 = +[NSNotificationCenter defaultCenter];
     [v35 addObserver:v10 selector:"_didUpdateTintTrait" name:@"didSelectHomeScreenStyle" object:0];
@@ -108,54 +108,54 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[Settings] #DEBUG [LIFECYCLE] CARSettingsViewController Invalidate - Object %p being invalidated", &v8, 0xCu);
   }
 
   v4 = +[UNNotificationSettingsCenter currentNotificationSettingsCenter];
   [v4 setDelegate:0];
 
-  v5 = [(CARSettingsViewController *)self panels];
-  [v5 invalidate];
+  panels = [(CARSettingsViewController *)self panels];
+  [panels invalidate];
 
-  v6 = [(CARSettingsViewController *)self clusterThemeManager];
-  [v6 invalidate];
+  clusterThemeManager = [(CARSettingsViewController *)self clusterThemeManager];
+  [clusterThemeManager invalidate];
 
   rootPanel = self->_rootPanel;
   self->_rootPanel = 0;
 }
 
-- (void)pushPanels:(id)a3
+- (void)pushPanels:(id)panels
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self viewControllers];
-  v6 = [v5 mutableCopy];
+  panelsCopy = panels;
+  viewControllers = [(CARSettingsViewController *)self viewControllers];
+  v6 = [viewControllers mutableCopy];
 
-  [v6 addObjectsFromArray:v4];
+  [v6 addObjectsFromArray:panelsCopy];
   [(CARSettingsViewController *)self setViewControllers:v6];
 }
 
-- (void)popIfPanel:(id)a3
+- (void)popIfPanel:(id)panel
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self topViewController];
+  panelCopy = panel;
+  topViewController = [(CARSettingsViewController *)self topViewController];
 
-  if (v5 == v4)
+  if (topViewController == panelCopy)
   {
 
     [(CARSettingsViewController *)self popPanel];
   }
 }
 
-- (void)popToRootPanelIfHierarchyContainsPanel:(id)a3
+- (void)popToRootPanelIfHierarchyContainsPanel:(id)panel
 {
-  v4 = a3;
+  panelCopy = panel;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CARSettingsViewController *)self viewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  viewControllers = [(CARSettingsViewController *)self viewControllers];
+  v6 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -167,10 +167,10 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
-        if (*(*(&v10 + 1) + 8 * v9) == v4)
+        if (*(*(&v10 + 1) + 8 * v9) == panelCopy)
         {
 
           [(CARSettingsViewController *)self popToRootPanel];
@@ -181,7 +181,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v7)
       {
         continue;
@@ -194,44 +194,44 @@
 LABEL_11:
 }
 
-- (void)dismissPanel:(id)a3 completion:(id)a4
+- (void)dismissPanel:(id)panel completion:(id)completion
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(CARSettingsViewController *)self presentedViewController];
+  completionCopy = completion;
+  panelCopy = panel;
+  presentedViewController = [(CARSettingsViewController *)self presentedViewController];
 
-  if (v7 == v6)
+  if (presentedViewController == panelCopy)
   {
-    [(CARSettingsViewController *)self dismissViewControllerAnimated:1 completion:v8];
+    [(CARSettingsViewController *)self dismissViewControllerAnimated:1 completion:completionCopy];
   }
 }
 
-- (void)registerPanel:(id)a3
+- (void)registerPanel:(id)panel
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self panels];
-  [v5 addObserver:v4];
+  panelCopy = panel;
+  panels = [(CARSettingsViewController *)self panels];
+  [panels addObserver:panelCopy];
 }
 
-- (void)deregisterPanel:(id)a3
+- (void)deregisterPanel:(id)panel
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self panels];
-  [v5 removeObserver:v4];
+  panelCopy = panel;
+  panels = [(CARSettingsViewController *)self panels];
+  [panels removeObserver:panelCopy];
 }
 
 - (id)loadWallpaperPreferences
 {
-  v3 = [(CARSettingsViewController *)self vehicle];
-  v4 = [v3 clusterAssetIdentifier];
-  if (v4)
+  vehicle = [(CARSettingsViewController *)self vehicle];
+  clusterAssetIdentifier = [vehicle clusterAssetIdentifier];
+  if (clusterAssetIdentifier)
   {
-    v5 = v4;
-    v6 = [(CARSettingsViewController *)self carSession];
-    v7 = [v6 configuration];
-    v8 = [v7 supportsVehicleData];
+    v5 = clusterAssetIdentifier;
+    carSession = [(CARSettingsViewController *)self carSession];
+    configuration = [carSession configuration];
+    supportsVehicleData = [configuration supportsVehicleData];
 
-    if (v8)
+    if (supportsVehicleData)
     {
       v9 = objc_alloc_init(CRSUIClusterThemeManager);
       clusterThemeManager = self->_clusterThemeManager;
@@ -251,18 +251,18 @@ LABEL_11:
   v11 = [v12 initWithDataProvider:v13];
 
 LABEL_6:
-  v14 = [(CARSettingsViewController *)self vehicle];
-  [v11 setVehicle:v14];
+  vehicle2 = [(CARSettingsViewController *)self vehicle];
+  [v11 setVehicle:vehicle2];
 
   return v11;
 }
 
 - (CARSession)carSession
 {
-  v2 = [(CARSettingsViewController *)self sessionStatus];
-  v3 = [v2 currentSession];
+  sessionStatus = [(CARSettingsViewController *)self sessionStatus];
+  currentSession = [sessionStatus currentSession];
 
-  return v3;
+  return currentSession;
 }
 
 - (CRVehicle)vehicle
@@ -277,107 +277,107 @@ LABEL_6:
   return vehicle;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(CARSettingsViewController *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(CARSettingsViewController *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
-- (void)addSiriPreferencesObserver:(id)a3
+- (void)addSiriPreferencesObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self siriPreferences];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  siriPreferences = [(CARSettingsViewController *)self siriPreferences];
+  [siriPreferences addObserver:observerCopy];
 }
 
-- (void)removeSiriPreferencesObserver:(id)a3
+- (void)removeSiriPreferencesObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self siriPreferences];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  siriPreferences = [(CARSettingsViewController *)self siriPreferences];
+  [siriPreferences removeObserver:observerCopy];
 }
 
-- (void)addNotificationSettingsObserver:(id)a3
+- (void)addNotificationSettingsObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self notificationSettingsObservers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  notificationSettingsObservers = [(CARSettingsViewController *)self notificationSettingsObservers];
+  [notificationSettingsObservers addObserver:observerCopy];
 }
 
-- (void)removeNotificationSettingsObserver:(id)a3
+- (void)removeNotificationSettingsObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self notificationSettingsObservers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  notificationSettingsObservers = [(CARSettingsViewController *)self notificationSettingsObservers];
+  [notificationSettingsObservers removeObserver:observerCopy];
 }
 
-- (void)carManagerRequestedDevicePicker:(id)a3
+- (void)carManagerRequestedDevicePicker:(id)picker
 {
-  v4 = [(CARSettingsViewController *)self rootPanel];
-  v5 = [v4 devicePickerSpecifier];
+  rootPanel = [(CARSettingsViewController *)self rootPanel];
+  devicePickerSpecifier = [rootPanel devicePickerSpecifier];
 
-  if (v5)
+  if (devicePickerSpecifier)
   {
-    v6 = [(CARSettingsViewController *)self rootPanel];
-    v7 = [v6 navigationController];
-    v8 = [v7 popToRootViewControllerAnimated:0];
+    rootPanel2 = [(CARSettingsViewController *)self rootPanel];
+    navigationController = [rootPanel2 navigationController];
+    v8 = [navigationController popToRootViewControllerAnimated:0];
 
-    v11 = [(CARSettingsViewController *)self rootPanel];
-    v9 = [v11 devicePickerSpecifier];
-    v10 = [v9 actionBlock];
-    (v10)[2](v10, self);
+    rootPanel3 = [(CARSettingsViewController *)self rootPanel];
+    devicePickerSpecifier2 = [rootPanel3 devicePickerSpecifier];
+    actionBlock = [devicePickerSpecifier2 actionBlock];
+    (actionBlock)[2](actionBlock, self);
   }
 }
 
-- (void)saveVehicle:(id)a3
+- (void)saveVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self pairedManager];
-  [v5 saveVehicle:v4 completion:&stru_1000DB0C8];
+  vehicleCopy = vehicle;
+  pairedManager = [(CARSettingsViewController *)self pairedManager];
+  [pairedManager saveVehicle:vehicleCopy completion:&stru_1000DB0C8];
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = [(CARSettingsViewController *)self observers];
-  [v5 sessionDidConnect:v4];
+  connectCopy = connect;
+  observers = [(CARSettingsViewController *)self observers];
+  [observers sessionDidConnect:connectCopy];
 }
 
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSystemSettings:(id)a4
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSystemSettings:(id)settings
 {
-  v5 = a4;
-  v6 = [(CARSettingsViewController *)self currentNotificationSystemSettings];
-  v17 = [v6 copy];
+  settingsCopy = settings;
+  currentNotificationSystemSettings = [(CARSettingsViewController *)self currentNotificationSystemSettings];
+  v17 = [currentNotificationSystemSettings copy];
 
-  [(CARSettingsViewController *)self setCurrentNotificationSystemSettings:v5];
-  v7 = [v17 announcementSetting];
-  v8 = [(CARSettingsViewController *)self currentNotificationSystemSettings];
-  v9 = [v8 announcementSetting];
+  [(CARSettingsViewController *)self setCurrentNotificationSystemSettings:settingsCopy];
+  announcementSetting = [v17 announcementSetting];
+  currentNotificationSystemSettings2 = [(CARSettingsViewController *)self currentNotificationSystemSettings];
+  announcementSetting2 = [currentNotificationSystemSettings2 announcementSetting];
 
-  if (v7 != v9)
+  if (announcementSetting != announcementSetting2)
   {
-    v10 = [(CARSettingsViewController *)self notificationSettingsObservers];
-    v11 = [(CARSettingsViewController *)self currentNotificationSystemSettings];
-    [v10 announceEnabledStateUpdated:{objc_msgSend(v11, "announcementSetting")}];
+    notificationSettingsObservers = [(CARSettingsViewController *)self notificationSettingsObservers];
+    currentNotificationSystemSettings3 = [(CARSettingsViewController *)self currentNotificationSystemSettings];
+    [notificationSettingsObservers announceEnabledStateUpdated:{objc_msgSend(currentNotificationSystemSettings3, "announcementSetting")}];
   }
 
-  v12 = [v17 announcementCarPlaySetting];
-  v13 = [(CARSettingsViewController *)self currentNotificationSystemSettings];
-  v14 = [v13 announcementCarPlaySetting];
+  announcementCarPlaySetting = [v17 announcementCarPlaySetting];
+  currentNotificationSystemSettings4 = [(CARSettingsViewController *)self currentNotificationSystemSettings];
+  announcementCarPlaySetting2 = [currentNotificationSystemSettings4 announcementCarPlaySetting];
 
-  if (v12 != v14)
+  if (announcementCarPlaySetting != announcementCarPlaySetting2)
   {
-    v15 = [(CARSettingsViewController *)self notificationSettingsObservers];
-    v16 = [(CARSettingsViewController *)self currentNotificationSystemSettings];
-    [v15 announceCarPlaySettingUpdated:{objc_msgSend(v16, "announcementCarPlaySetting")}];
+    notificationSettingsObservers2 = [(CARSettingsViewController *)self notificationSettingsObservers];
+    currentNotificationSystemSettings5 = [(CARSettingsViewController *)self currentNotificationSystemSettings];
+    [notificationSettingsObservers2 announceCarPlaySettingUpdated:{objc_msgSend(currentNotificationSystemSettings5, "announcementCarPlaySetting")}];
   }
 }
 
@@ -386,12 +386,12 @@ LABEL_6:
   vehicleVideoSettings = self->_vehicleVideoSettings;
   if (!vehicleVideoSettings)
   {
-    v4 = [(CARSettingsViewController *)self vehicle];
-    v5 = [v4 identifier];
+    vehicle = [(CARSettingsViewController *)self vehicle];
+    identifier = [vehicle identifier];
 
-    if (v5)
+    if (identifier)
     {
-      v6 = [[CRVehicleVideoSettings alloc] initWithVehicleIdentifier:v5];
+      v6 = [[CRVehicleVideoSettings alloc] initWithVehicleIdentifier:identifier];
       v7 = self->_vehicleVideoSettings;
       self->_vehicleVideoSettings = v6;
     }
@@ -404,13 +404,13 @@ LABEL_6:
 
 - (UITraitOverrides)panelTraitOverrides
 {
-  v2 = [(CARSettingsViewController *)self windowScene];
-  v3 = [v2 traitOverrides];
+  windowScene = [(CARSettingsViewController *)self windowScene];
+  traitOverrides = [windowScene traitOverrides];
 
-  return v3;
+  return traitOverrides;
 }
 
-- (void)_pairedVehiclesDidChange:(id)a3
+- (void)_pairedVehiclesDidChange:(id)change
 {
   [(CARSettingsViewController *)self _reloadVehicle];
   v3 = +[NSNotificationCenter defaultCenter];
@@ -419,11 +419,11 @@ LABEL_6:
 
 - (void)_reloadVehicle
 {
-  v3 = [(CARSettingsViewController *)self carSession];
-  v4 = [v3 MFiCertificateSerialNumber];
+  carSession = [(CARSettingsViewController *)self carSession];
+  mFiCertificateSerialNumber = [carSession MFiCertificateSerialNumber];
 
-  v5 = [(CARSettingsViewController *)self pairedManager];
-  v6 = [v5 vehicleForCertificateSerial:v4];
+  pairedManager = [(CARSettingsViewController *)self pairedManager];
+  v6 = [pairedManager vehicleForCertificateSerial:mFiCertificateSerialNumber];
   vehicle = self->_vehicle;
   self->_vehicle = v6;
 
@@ -432,16 +432,16 @@ LABEL_6:
     v8 = sub_10001C784();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1000915D4(self, v4, v8);
+      sub_1000915D4(self, mFiCertificateSerialNumber, v8);
     }
   }
 }
 
-- (void)_updateTraitOverridesForTraitOverrides:(id)a3
+- (void)_updateTraitOverridesForTraitOverrides:(id)overrides
 {
-  v11 = a3;
-  v4 = [(CARSettingsViewController *)self vehicle];
-  v5 = [v4 homeScreenStyleDataForDisplayWithID:0];
+  overridesCopy = overrides;
+  vehicle = [(CARSettingsViewController *)self vehicle];
+  v5 = [vehicle homeScreenStyleDataForDisplayWithID:0];
   v6 = v5;
   if (v5)
   {
@@ -459,12 +459,12 @@ LABEL_6:
   v10 = objc_opt_self();
   if (v9)
   {
-    [v11 setObject:v9 forTrait:v10];
+    [overridesCopy setObject:v9 forTrait:v10];
   }
 
   else
   {
-    [v11 removeTrait:v10];
+    [overridesCopy removeTrait:v10];
   }
 }
 

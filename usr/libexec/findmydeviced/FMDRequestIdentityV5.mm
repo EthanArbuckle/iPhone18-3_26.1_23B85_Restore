@@ -1,32 +1,32 @@
 @interface FMDRequestIdentityV5
-- (BOOL)canReplace:(id)a3;
+- (BOOL)canReplace:(id)replace;
 - (BOOL)canRequestBeRetriedNow;
-- (FMDRequestIdentityV5)initWithProvider:(id)a3 identityInfo:(id)a4;
+- (FMDRequestIdentityV5)initWithProvider:(id)provider identityInfo:(id)info;
 - (FMDServiceProvider)provider;
 - (id)requestBody;
 - (id)requestHeaders;
 - (id)requestUrl;
-- (void)_calculateSignatureForBody:(id)a3;
+- (void)_calculateSignatureForBody:(id)body;
 @end
 
 @implementation FMDRequestIdentityV5
 
-- (FMDRequestIdentityV5)initWithProvider:(id)a3 identityInfo:(id)a4
+- (FMDRequestIdentityV5)initWithProvider:(id)provider identityInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 account];
+  providerCopy = provider;
+  infoCopy = info;
+  account = [providerCopy account];
   v14.receiver = self;
   v14.super_class = FMDRequestIdentityV5;
-  v9 = [(FMDRequest *)&v14 initWithAccount:v8];
+  v9 = [(FMDRequest *)&v14 initWithAccount:account];
 
   if (v9)
   {
-    [(FMDRequestIdentityV5 *)v9 setProvider:v6];
-    v10 = [v7 timeoutIntervalInSec];
-    if (v10 >= 0)
+    [(FMDRequestIdentityV5 *)v9 setProvider:providerCopy];
+    timeoutIntervalInSec = [infoCopy timeoutIntervalInSec];
+    if (timeoutIntervalInSec >= 0)
     {
-      v11 = v10;
+      v11 = timeoutIntervalInSec;
     }
 
     else
@@ -35,8 +35,8 @@
     }
 
     [(FMDRequestIdentityV5 *)v9 setBaaIdentityTimeoutIntervalInSec:v11];
-    v12 = [v7 commandID];
-    [(FMDRequestIdentityV5 *)v9 setCommandID:v12];
+    commandID = [infoCopy commandID];
+    [(FMDRequestIdentityV5 *)v9 setCommandID:commandID];
   }
 
   return v9;
@@ -45,12 +45,12 @@
 - (id)requestUrl
 {
   v3 = +[FMDSystemConfig sharedInstance];
-  v4 = [v3 deviceUDID];
+  deviceUDID = [v3 deviceUDID];
 
   v5 = objc_alloc_init(RequestTemplateURL);
-  v6 = [(FMDRequestIdentityV5 *)self provider];
-  v7 = [v6 account];
-  v8 = [(RequestTemplateURL *)v5 urlFromTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/identityV5" account:v7 udid:v4];
+  provider = [(FMDRequestIdentityV5 *)self provider];
+  account = [provider account];
+  v8 = [(RequestTemplateURL *)v5 urlFromTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/identityV5" account:account udid:deviceUDID];
 
   return v8;
 }
@@ -59,107 +59,107 @@
 {
   v14.receiver = self;
   v14.super_class = FMDRequestIdentityV5;
-  v3 = [(FMDRequest *)&v14 requestHeaders];
-  v4 = [(FMDRequestIdentityV5 *)self signatureHeader];
-  [v3 fm_safelyMapKey:@"X-Mme-Sign1" toObject:v4];
+  requestHeaders = [(FMDRequest *)&v14 requestHeaders];
+  signatureHeader = [(FMDRequestIdentityV5 *)self signatureHeader];
+  [requestHeaders fm_safelyMapKey:@"X-Mme-Sign1" toObject:signatureHeader];
 
-  v5 = [(FMDRequestIdentityV5 *)self skAuthHeader];
-  [v3 fm_safelyMapKey:@"X-Mme-Sign2" toObject:v5];
+  skAuthHeader = [(FMDRequestIdentityV5 *)self skAuthHeader];
+  [requestHeaders fm_safelyMapKey:@"X-Mme-Sign2" toObject:skAuthHeader];
 
-  v6 = [(FMDRequestIdentityV5 *)self baaAttestationHeader];
-  [v3 fm_safelyMapKey:@"X-Mme-Sign5" toObject:v6];
+  baaAttestationHeader = [(FMDRequestIdentityV5 *)self baaAttestationHeader];
+  [requestHeaders fm_safelyMapKey:@"X-Mme-Sign5" toObject:baaAttestationHeader];
 
-  v7 = [(FMDRequestIdentityV5 *)self baaSignatureHeader];
-  [v3 fm_safelyMapKey:@"X-Mme-Sign6" toObject:v7];
+  baaSignatureHeader = [(FMDRequestIdentityV5 *)self baaSignatureHeader];
+  [requestHeaders fm_safelyMapKey:@"X-Mme-Sign6" toObject:baaSignatureHeader];
 
-  v8 = [(FMDRequestIdentityV5 *)self activationLockRequestUUID];
-  v9 = [v8 UUIDString];
-  [v3 fm_safelyMapKey:@"X-Apple-AL-ID" toObject:v9];
+  activationLockRequestUUID = [(FMDRequestIdentityV5 *)self activationLockRequestUUID];
+  uUIDString = [activationLockRequestUUID UUIDString];
+  [requestHeaders fm_safelyMapKey:@"X-Apple-AL-ID" toObject:uUIDString];
 
-  v10 = [(FMDRequestIdentityV5 *)self signatureError];
-  [v3 fm_safelyMapKey:@"X-Apple-Sign1-Error" toObject:v10];
+  signatureError = [(FMDRequestIdentityV5 *)self signatureError];
+  [requestHeaders fm_safelyMapKey:@"X-Apple-Sign1-Error" toObject:signatureError];
 
-  v11 = [(FMDRequestIdentityV5 *)self baaError];
-  [v3 fm_safelyMapKey:@"X-Apple-Sign5-Error" toObject:v11];
+  baaError = [(FMDRequestIdentityV5 *)self baaError];
+  [requestHeaders fm_safelyMapKey:@"X-Apple-Sign5-Error" toObject:baaError];
 
-  v12 = [(FMDRequestIdentityV5 *)self baaErrorDescription];
-  [v3 fm_safelyMapKey:@"X-Apple-Sign5-Error-Desc" toObject:v12];
+  baaErrorDescription = [(FMDRequestIdentityV5 *)self baaErrorDescription];
+  [requestHeaders fm_safelyMapKey:@"X-Apple-Sign5-Error-Desc" toObject:baaErrorDescription];
 
-  return v3;
+  return requestHeaders;
 }
 
 - (id)requestBody
 {
   v43.receiver = self;
   v43.super_class = FMDRequestIdentityV5;
-  v3 = [(FMDRequest *)&v43 requestBody];
-  v4 = [(FMDRequestIdentityV5 *)self provider];
-  if (v4)
+  requestBody = [(FMDRequest *)&v43 requestBody];
+  provider = [(FMDRequestIdentityV5 *)self provider];
+  if (provider)
   {
     v5 = objc_alloc_init(FMDActingRequestDecorator);
-    v6 = [(FMDActingRequestDecorator *)v5 standardDeviceContext];
+    standardDeviceContext = [(FMDActingRequestDecorator *)v5 standardDeviceContext];
 
-    v7 = [v4 account];
-    v8 = [v7 authId];
-    [v3 fm_safelyMapKey:@"dsid" toObject:v8];
+    account = [provider account];
+    authId = [account authId];
+    [requestBody fm_safelyMapKey:@"dsid" toObject:authId];
 
-    [v3 fm_safelyMapKey:@"deviceContext" toObject:v6];
+    [requestBody fm_safelyMapKey:@"deviceContext" toObject:standardDeviceContext];
     v9 = +[ServerDeviceInfo sharedInstance];
-    v10 = [v4 account];
-    v11 = [v9 identityDeviceInfoForAccount:v10];
-    [v3 fm_safelyMapKey:@"deviceInfo" toObject:v11];
+    account2 = [provider account];
+    v11 = [v9 identityDeviceInfoForAccount:account2];
+    [requestBody fm_safelyMapKey:@"deviceInfo" toObject:v11];
   }
 
-  v12 = [(FMDRequestIdentityV5 *)self commandID];
-  [v3 fm_safelyMapKey:@"cmdId" toObject:v12];
+  commandID = [(FMDRequestIdentityV5 *)self commandID];
+  [requestBody fm_safelyMapKey:@"cmdId" toObject:commandID];
 
   v13 = +[FMDSystemConfig sharedInstance];
-  v14 = [v13 internationalMobileEquipmentIdentity];
-  [v3 fm_safelyMapKey:@"imei" toObject:v14];
+  internationalMobileEquipmentIdentity = [v13 internationalMobileEquipmentIdentity];
+  [requestBody fm_safelyMapKey:@"imei" toObject:internationalMobileEquipmentIdentity];
 
   v15 = +[FMDSystemConfig sharedInstance];
-  v16 = [v15 internationalMobileEquipmentIdentityTwo];
-  [v3 fm_safelyMapKey:@"imei2" toObject:v16];
+  internationalMobileEquipmentIdentityTwo = [v15 internationalMobileEquipmentIdentityTwo];
+  [requestBody fm_safelyMapKey:@"imei2" toObject:internationalMobileEquipmentIdentityTwo];
 
   v17 = +[FMDSystemConfig sharedInstance];
-  v18 = [v17 mobileEquipmentIdentifier];
-  [v3 fm_safelyMapKey:@"meid" toObject:v18];
+  mobileEquipmentIdentifier = [v17 mobileEquipmentIdentifier];
+  [requestBody fm_safelyMapKey:@"meid" toObject:mobileEquipmentIdentifier];
 
   v19 = +[FMDSystemConfig sharedInstance];
-  v20 = [v19 serialNumber];
+  serialNumber = [v19 serialNumber];
 
-  [v3 fm_safelyMapKey:@"serialNumber" toObject:v20];
+  [requestBody fm_safelyMapKey:@"serialNumber" toObject:serialNumber];
   v21 = +[FMDSystemConfig sharedInstance];
-  v22 = [v21 escrowHash];
-  v23 = [v22 hexString];
-  [v3 fm_safelyMapKey:@"escrowHash" toObject:v23];
+  escrowHash = [v21 escrowHash];
+  hexString = [escrowHash hexString];
+  [requestBody fm_safelyMapKey:@"escrowHash" toObject:hexString];
 
   v24 = +[FMDSystemConfig sharedInstance];
-  v25 = [v24 ecid];
-  v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [v25 longLongValue]);
-  [v3 fm_safelyMapKey:@"ecid" toObject:v26];
+  ecid = [v24 ecid];
+  v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [ecid longLongValue]);
+  [requestBody fm_safelyMapKey:@"ecid" toObject:v26];
 
   v27 = +[FMDSystemConfig sharedInstance];
-  v28 = [v27 chipId];
-  v29 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [v28 longLongValue]);
-  [v3 fm_safelyMapKey:@"chipId" toObject:v29];
+  chipId = [v27 chipId];
+  v29 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [chipId longLongValue]);
+  [requestBody fm_safelyMapKey:@"chipId" toObject:v29];
 
   v30 = +[FMDSystemConfig sharedInstance];
-  v31 = [v30 wifiMacAddress];
-  [v3 fm_safelyMapKey:@"wifiMac" toObject:v31];
+  wifiMacAddress = [v30 wifiMacAddress];
+  [requestBody fm_safelyMapKey:@"wifiMac" toObject:wifiMacAddress];
 
   v32 = +[FMDSystemConfig sharedInstance];
-  v33 = [v32 btMacAddress];
-  [v3 fm_safelyMapKey:@"btMac" toObject:v33];
+  btMacAddress = [v32 btMacAddress];
+  [requestBody fm_safelyMapKey:@"btMac" toObject:btMacAddress];
 
   v34 = +[FMDAbsintheV3SigningInterface sharedInterface];
   v42 = 0;
   v35 = [v34 inFieldCollectionReceipt:&v42];
   v36 = v42;
-  [v3 fm_safelyMapKey:@"ifcReceipt" toObject:v35];
+  [requestBody fm_safelyMapKey:@"ifcReceipt" toObject:v35];
 
-  v37 = [v36 fm_commaSeparatedString];
-  [v3 fm_safelyMapKey:@"collectionError" toObject:v37];
+  fm_commaSeparatedString = [v36 fm_commaSeparatedString];
+  [requestBody fm_safelyMapKey:@"collectionError" toObject:fm_commaSeparatedString];
 
   v38 = +[FMSystemInfo sharedInstance];
   LODWORD(v35) = [v38 isInternalBuild];
@@ -167,14 +167,14 @@
   if (v35)
   {
     v39 = [v36 description];
-    [v3 fm_safelyMapKey:@"collectionErrorDetail" toObject:v39];
+    [requestBody fm_safelyMapKey:@"collectionErrorDetail" toObject:v39];
   }
 
   v40 = +[NSUUID UUID];
   [(FMDRequestIdentityV5 *)self setActivationLockRequestUUID:v40];
-  [(FMDRequestIdentityV5 *)self _calculateSignatureForBody:v3];
+  [(FMDRequestIdentityV5 *)self _calculateSignatureForBody:requestBody];
 
-  return v3;
+  return requestBody;
 }
 
 - (BOOL)canRequestBeRetriedNow
@@ -189,9 +189,9 @@
   return [(FMDRequest *)&v4 canRequestBeRetriedNow];
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v3 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -207,24 +207,24 @@
   return isKindOfClass & 1;
 }
 
-- (void)_calculateSignatureForBody:(id)a3
+- (void)_calculateSignatureForBody:(id)body
 {
-  v4 = a3;
-  v45 = [(FMDRequestIdentityV5 *)self activationLockRequestUUID];
+  bodyCopy = body;
+  activationLockRequestUUID = [(FMDRequestIdentityV5 *)self activationLockRequestUUID];
   [(FMDRequestIdentityV5 *)self setSignatureHeader:0];
   [(FMDRequestIdentityV5 *)self setSkAuthHeader:0];
   [(FMDRequestIdentityV5 *)self setRequestBodyDataForSignature:0];
   [(FMDRequestIdentityV5 *)self setBaaSignatureHeader:0];
   [(FMDRequestIdentityV5 *)self setBaaAttestationHeader:0];
-  if (v4)
+  if (bodyCopy)
   {
     v64 = 0;
-    v5 = [NSJSONSerialization dataWithJSONObject:v4 options:0 error:&v64];
+    v5 = [NSJSONSerialization dataWithJSONObject:bodyCopy options:0 error:&v64];
     v6 = v64;
     [(FMDRequestIdentityV5 *)self setRequestBodyDataForSignature:v5];
 
-    v7 = [(FMDRequestIdentityV5 *)self requestBodyDataForSignature];
-    LODWORD(v5) = v7 == 0;
+    requestBodyDataForSignature = [(FMDRequestIdentityV5 *)self requestBodyDataForSignature];
+    LODWORD(v5) = requestBodyDataForSignature == 0;
 
     if (v5)
     {
@@ -251,36 +251,36 @@
     }
   }
 
-  v11 = [(FMDRequestIdentityV5 *)self requestBodyDataForSignature];
-  v12 = v11 == 0;
+  requestBodyDataForSignature2 = [(FMDRequestIdentityV5 *)self requestBodyDataForSignature];
+  v12 = requestBodyDataForSignature2 == 0;
 
   if (!v12)
   {
     v13 = +[NSMutableData data];
-    v44 = [(FMDRequest *)self authHeaderValue];
-    if ([v44 length])
+    authHeaderValue = [(FMDRequest *)self authHeaderValue];
+    if ([authHeaderValue length])
     {
-      v14 = [v44 dataUsingEncoding:4];
+      v14 = [authHeaderValue dataUsingEncoding:4];
       [v13 appendData:v14];
     }
 
-    v15 = [(FMDRequestIdentityV5 *)self requestBodyDataForSignature];
-    [v13 appendData:v15];
+    requestBodyDataForSignature3 = [(FMDRequestIdentityV5 *)self requestBodyDataForSignature];
+    [v13 appendData:requestBodyDataForSignature3];
 
     v16 = v13;
     CC_SHA256([v13 bytes], objc_msgSend(v13, "length"), md);
     v17 = [NSData dataWithBytes:md length:32];
     v18 = +[FMDAbsintheV3SigningInterface sharedInterface];
     v63 = 0;
-    v43 = [v18 signatureForData:v17 requestUUID:v45 mode:0 error:&v63];
+    v43 = [v18 signatureForData:v17 requestUUID:activationLockRequestUUID mode:0 error:&v63];
     v19 = v63;
 
     if (v19)
     {
-      v20 = [v19 code];
-      v21 = [v19 userInfo];
-      v22 = [v21 objectForKeyedSubscript:@"kFMDUnderlyingErrorCodeKey"];
-      v23 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld,%ld", v20, [v22 integerValue]);
+      code = [v19 code];
+      userInfo = [v19 userInfo];
+      base64EncodedString = [userInfo objectForKeyedSubscript:@"kFMDUnderlyingErrorCodeKey"];
+      v23 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld,%ld", code, [base64EncodedString integerValue]);
       [(FMDRequestIdentityV5 *)self setSignatureError:v23];
     }
 
@@ -292,26 +292,26 @@
       }
 
       v40 = [v43 objectAtIndexedSubscript:0];
-      v21 = [v40 base64EncodedString];
+      userInfo = [v40 base64EncodedString];
 
       v41 = [v43 objectAtIndexedSubscript:1];
-      v22 = [v41 base64EncodedString];
+      base64EncodedString = [v41 base64EncodedString];
 
-      [(FMDRequestIdentityV5 *)self setSignatureHeader:v21];
+      [(FMDRequestIdentityV5 *)self setSignatureHeader:userInfo];
       v42 = sub_100002880();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(v67) = 138412290;
-        *(&v67 + 4) = v21;
+        *(&v67 + 4) = userInfo;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Signature header: %@", &v67, 0xCu);
       }
 
-      [(FMDRequestIdentityV5 *)self setSkAuthHeader:v22];
+      [(FMDRequestIdentityV5 *)self setSkAuthHeader:base64EncodedString];
       v23 = sub_100002880();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(v67) = 138412290;
-        *(&v67 + 4) = v22;
+        *(&v67 + 4) = base64EncodedString;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "SkAuth header: %@", &v67, 0xCu);
       }
     }
@@ -340,9 +340,9 @@ LABEL_19:
     v26 = sub_100002880();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(FMDRequestIdentityV5 *)self baaIdentityTimeoutIntervalInSec];
+      baaIdentityTimeoutIntervalInSec = [(FMDRequestIdentityV5 *)self baaIdentityTimeoutIntervalInSec];
       *buf = 134217984;
-      v66 = v27;
+      v66 = baaIdentityTimeoutIntervalInSec;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Sign Using BAA with timeout: %lu seconds", buf, 0xCu);
     }
 
@@ -364,17 +364,17 @@ LABEL_19:
       v52[5] = v29;
     }
 
-    v31 = [*(*(&v67 + 1) + 40) base64EncodedString];
-    [(FMDRequestIdentityV5 *)self setBaaSignatureHeader:v31];
+    base64EncodedString2 = [*(*(&v67 + 1) + 40) base64EncodedString];
+    [(FMDRequestIdentityV5 *)self setBaaSignatureHeader:base64EncodedString2];
 
-    v32 = [v58[5] base64EncodedString];
-    [(FMDRequestIdentityV5 *)self setBaaAttestationHeader:v32];
+    base64EncodedString3 = [v58[5] base64EncodedString];
+    [(FMDRequestIdentityV5 *)self setBaaAttestationHeader:base64EncodedString3];
 
     v33 = v52[5];
     if (v33)
     {
-      v34 = [v33 domain];
-      v35 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@|%ld", v34, [v52[5] code]);
+      domain = [v33 domain];
+      v35 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@|%ld", domain, [v52[5] code]);
       [(FMDRequestIdentityV5 *)self setBaaError:v35];
 
       v36 = [v52[5] description];

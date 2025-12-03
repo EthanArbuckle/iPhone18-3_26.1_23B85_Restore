@@ -1,13 +1,13 @@
 @interface EMGeneratedSummary
 + (int64_t)consideredUrgentHourLimit;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isUrgentForDate:(id)a3;
-- (EMGeneratedSummary)initWithCoder:(id)a3;
-- (EMGeneratedSummary)initWithTopLine:(id)a3 synopsis:(id)a4 urgent:(BOOL)a5 messageItemID:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isUrgentForDate:(id)date;
+- (EMGeneratedSummary)initWithCoder:(id)coder;
+- (EMGeneratedSummary)initWithTopLine:(id)line synopsis:(id)synopsis urgent:(BOOL)urgent messageItemID:(id)d;
 - (NSString)debugDescription;
 - (NSString)ef_publicDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMGeneratedSummary
@@ -40,21 +40,21 @@ void __47__EMGeneratedSummary_consideredUrgentHourLimit__block_invoke()
   consideredUrgentHourLimit_urgentHourLimit = v2;
 }
 
-- (EMGeneratedSummary)initWithTopLine:(id)a3 synopsis:(id)a4 urgent:(BOOL)a5 messageItemID:(id)a6
+- (EMGeneratedSummary)initWithTopLine:(id)line synopsis:(id)synopsis urgent:(BOOL)urgent messageItemID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  lineCopy = line;
+  synopsisCopy = synopsis;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = EMGeneratedSummary;
   v14 = [(EMGeneratedSummary *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_topLine, a3);
-    objc_storeStrong(&v15->_synopsis, a4);
-    v15->_urgent = a5;
-    objc_storeStrong(&v15->_messageItemID, a6);
+    objc_storeStrong(&v14->_topLine, line);
+    objc_storeStrong(&v15->_synopsis, synopsis);
+    v15->_urgent = urgent;
+    objc_storeStrong(&v15->_messageItemID, d);
   }
 
   return v15;
@@ -65,19 +65,19 @@ void __47__EMGeneratedSummary_consideredUrgentHourLimit__block_invoke()
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(EMGeneratedSummary *)self topLine];
-  v7 = [(EMGeneratedSummary *)self synopsis];
-  v8 = [(EMGeneratedSummary *)self urgent];
-  v9 = [(EMGeneratedSummary *)self messageItemID];
-  v10 = [v3 stringWithFormat:@"<%@: %p>\n\ttopLine:%@\n\tsynopsis:%@\n\turgent: %d\n\tmessageItemID: %@", v5, self, v6, v7, v8, v9];
+  topLine = [(EMGeneratedSummary *)self topLine];
+  synopsis = [(EMGeneratedSummary *)self synopsis];
+  urgent = [(EMGeneratedSummary *)self urgent];
+  messageItemID = [(EMGeneratedSummary *)self messageItemID];
+  v10 = [v3 stringWithFormat:@"<%@: %p>\n\ttopLine:%@\n\tsynopsis:%@\n\turgent: %d\n\tmessageItemID: %@", v5, self, topLine, synopsis, urgent, messageItemID];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -87,17 +87,17 @@ void __47__EMGeneratedSummary_consideredUrgentHourLimit__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(EMGeneratedSummary *)self topLine];
-      v7 = [(EMGeneratedSummary *)v5 topLine];
+      v5 = equalCopy;
+      topLine = [(EMGeneratedSummary *)self topLine];
+      topLine2 = [(EMGeneratedSummary *)v5 topLine];
       if (EFObjectsAreEqual())
       {
-        v8 = [(EMGeneratedSummary *)self synopsis];
-        v9 = [(EMGeneratedSummary *)v5 synopsis];
+        synopsis = [(EMGeneratedSummary *)self synopsis];
+        synopsis2 = [(EMGeneratedSummary *)v5 synopsis];
         if (EFObjectsAreEqual() && (v10 = [(EMGeneratedSummary *)self urgent], v10 == [(EMGeneratedSummary *)v5 urgent]))
         {
-          v12 = [(EMGeneratedSummary *)self messageItemID];
-          v13 = [(EMGeneratedSummary *)v5 messageItemID];
+          messageItemID = [(EMGeneratedSummary *)self messageItemID];
+          messageItemID2 = [(EMGeneratedSummary *)v5 messageItemID];
           v11 = EFObjectsAreEqual();
         }
 
@@ -122,13 +122,13 @@ void __47__EMGeneratedSummary_consideredUrgentHourLimit__block_invoke()
   return v11;
 }
 
-- (BOOL)isUrgentForDate:(id)a3
+- (BOOL)isUrgentForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [MEMORY[0x1E695DF00] ef_dateHoursAgo:{+[EMGeneratedSummary consideredUrgentHourLimit](EMGeneratedSummary, "consideredUrgentHourLimit")}];
   if ([(EMGeneratedSummary *)self urgent])
   {
-    v6 = [v4 ef_isLaterThanDate:v5];
+    v6 = [dateCopy ef_isLaterThanDate:v5];
   }
 
   else
@@ -141,12 +141,12 @@ void __47__EMGeneratedSummary_consideredUrgentHourLimit__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(EMGeneratedSummary *)self topLine];
+  topLine = [(EMGeneratedSummary *)self topLine];
 
-  if (v3)
+  if (topLine)
   {
-    v4 = [(EMGeneratedSummary *)self topLine];
-    v5 = [v4 hash] + 177573;
+    topLine2 = [(EMGeneratedSummary *)self topLine];
+    v5 = [topLine2 hash] + 177573;
   }
 
   else
@@ -154,21 +154,21 @@ void __47__EMGeneratedSummary_consideredUrgentHourLimit__block_invoke()
     v5 = 5381;
   }
 
-  v6 = [(EMGeneratedSummary *)self synopsis];
+  synopsis = [(EMGeneratedSummary *)self synopsis];
 
-  if (v6)
+  if (synopsis)
   {
-    v7 = [(EMGeneratedSummary *)self synopsis];
-    v5 = [v7 hash] + 33 * v5;
+    synopsis2 = [(EMGeneratedSummary *)self synopsis];
+    v5 = [synopsis2 hash] + 33 * v5;
   }
 
   v8 = 33 * v5 + [(EMGeneratedSummary *)self urgent];
-  v9 = [(EMGeneratedSummary *)self messageItemID];
+  messageItemID = [(EMGeneratedSummary *)self messageItemID];
 
-  if (v9)
+  if (messageItemID)
   {
-    v10 = [(EMGeneratedSummary *)self messageItemID];
-    v8 = [v10 hash] + 33 * v8;
+    messageItemID2 = [(EMGeneratedSummary *)self messageItemID];
+    v8 = [messageItemID2 hash] + 33 * v8;
   }
 
   return v8;
@@ -177,42 +177,42 @@ void __47__EMGeneratedSummary_consideredUrgentHourLimit__block_invoke()
 - (NSString)ef_publicDescription
 {
   v3 = MEMORY[0x1E699B858];
-  v4 = [(EMGeneratedSummary *)self topLine];
-  v5 = [v4 string];
-  v6 = [v3 ec_partiallyRedactedStringForSubjectOrSummary:v5];
+  topLine = [(EMGeneratedSummary *)self topLine];
+  string = [topLine string];
+  v6 = [v3 ec_partiallyRedactedStringForSubjectOrSummary:string];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(EMGeneratedSummary *)self urgent];
-  v9 = [(EMGeneratedSummary *)self messageItemID];
-  v10 = [v7 stringWithFormat:@"t:%@, u:%d, m:%@", v6, v8, v9];
+  urgent = [(EMGeneratedSummary *)self urgent];
+  messageItemID = [(EMGeneratedSummary *)self messageItemID];
+  v10 = [v7 stringWithFormat:@"t:%@, u:%d, m:%@", v6, urgent, messageItemID];
 
   return v10;
 }
 
-- (EMGeneratedSummary)initWithCoder:(id)a3
+- (EMGeneratedSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_topLine"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_synopsis"];
-  v7 = [v4 decodeBoolForKey:@"EFPropertyKey_urgent"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_messageItemID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_topLine"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_synopsis"];
+  v7 = [coderCopy decodeBoolForKey:@"EFPropertyKey_urgent"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_messageItemID"];
   v9 = [(EMGeneratedSummary *)self initWithTopLine:v5 synopsis:v6 urgent:v7 messageItemID:v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(EMGeneratedSummary *)self topLine];
-  [v7 encodeObject:v4 forKey:@"EFPropertyKey_topLine"];
+  coderCopy = coder;
+  topLine = [(EMGeneratedSummary *)self topLine];
+  [coderCopy encodeObject:topLine forKey:@"EFPropertyKey_topLine"];
 
-  v5 = [(EMGeneratedSummary *)self synopsis];
-  [v7 encodeObject:v5 forKey:@"EFPropertyKey_synopsis"];
+  synopsis = [(EMGeneratedSummary *)self synopsis];
+  [coderCopy encodeObject:synopsis forKey:@"EFPropertyKey_synopsis"];
 
-  [v7 encodeBool:-[EMGeneratedSummary urgent](self forKey:{"urgent"), @"EFPropertyKey_urgent"}];
-  v6 = [(EMGeneratedSummary *)self messageItemID];
-  [v7 encodeObject:v6 forKey:@"EFPropertyKey_messageItemID"];
+  [coderCopy encodeBool:-[EMGeneratedSummary urgent](self forKey:{"urgent"), @"EFPropertyKey_urgent"}];
+  messageItemID = [(EMGeneratedSummary *)self messageItemID];
+  [coderCopy encodeObject:messageItemID forKey:@"EFPropertyKey_messageItemID"];
 }
 
 @end

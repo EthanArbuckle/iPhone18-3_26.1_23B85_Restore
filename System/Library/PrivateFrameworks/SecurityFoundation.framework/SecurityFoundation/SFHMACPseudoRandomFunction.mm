@@ -1,9 +1,9 @@
 @interface SFHMACPseudoRandomFunction
 - (SFDigestOperation)digestOperation;
 - (SFHMACPseudoRandomFunction)init;
-- (SFHMACPseudoRandomFunction)initWithCoder:(id)a3;
-- (SFHMACPseudoRandomFunction)initWithDigestOperation:(id)a3;
-- (void)setDigestOperation:(id)a3;
+- (SFHMACPseudoRandomFunction)initWithCoder:(id)coder;
+- (SFHMACPseudoRandomFunction)initWithDigestOperation:(id)operation;
+- (void)setDigestOperation:(id)operation;
 @end
 
 @implementation SFHMACPseudoRandomFunction
@@ -16,22 +16,22 @@
   return v4;
 }
 
-- (SFHMACPseudoRandomFunction)initWithDigestOperation:(id)a3
+- (SFHMACPseudoRandomFunction)initWithDigestOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v9.receiver = self;
   v9.super_class = SFHMACPseudoRandomFunction;
   v6 = [(SFHMACPseudoRandomFunction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6->_hmacPseudoRandomFunctionInternal + 1, a3);
+    objc_storeStrong(v6->_hmacPseudoRandomFunctionInternal + 1, operation);
   }
 
   return v7;
 }
 
-- (SFHMACPseudoRandomFunction)initWithCoder:(id)a3
+- (SFHMACPseudoRandomFunction)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFHMACPseudoRandomFunction;
@@ -45,9 +45,9 @@
   return v2;
 }
 
-- (void)setDigestOperation:(id)a3
+- (void)setDigestOperation:(id)operation
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [operation copyWithZone:0];
   hmacPseudoRandomFunctionInternal = self->_hmacPseudoRandomFunctionInternal;
   v6 = hmacPseudoRandomFunctionInternal[1];
   hmacPseudoRandomFunctionInternal[1] = v4;

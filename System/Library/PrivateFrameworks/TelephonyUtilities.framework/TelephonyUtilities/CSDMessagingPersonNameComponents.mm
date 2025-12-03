@@ -1,14 +1,14 @@
 @interface CSDMessagingPersonNameComponents
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingPersonNameComponents)initWithPersonNameComponents:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingPersonNameComponents)initWithPersonNameComponents:(id)components;
 - (NSPersonNameComponents)personNameComponents;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingPersonNameComponents
@@ -56,55 +56,55 @@
   phoneticRepresentation = self->_phoneticRepresentation;
   if (phoneticRepresentation)
   {
-    v12 = [(CSDMessagingPersonNameComponents *)phoneticRepresentation dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"phoneticRepresentation"];
+    dictionaryRepresentation = [(CSDMessagingPersonNameComponents *)phoneticRepresentation dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"phoneticRepresentation"];
   }
 
   return v4;
 }
 
-- (CSDMessagingPersonNameComponents)initWithPersonNameComponents:(id)a3
+- (CSDMessagingPersonNameComponents)initWithPersonNameComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v21.receiver = self;
   v21.super_class = CSDMessagingPersonNameComponents;
   v5 = [(CSDMessagingPersonNameComponents *)&v21 init];
   if (v5)
   {
-    v6 = [v4 givenName];
-    [(CSDMessagingPersonNameComponents *)v5 setGivenName:v6];
+    givenName = [componentsCopy givenName];
+    [(CSDMessagingPersonNameComponents *)v5 setGivenName:givenName];
 
-    v7 = [v4 middleName];
-    [(CSDMessagingPersonNameComponents *)v5 setMiddleName:v7];
+    middleName = [componentsCopy middleName];
+    [(CSDMessagingPersonNameComponents *)v5 setMiddleName:middleName];
 
-    v8 = [v4 familyName];
-    [(CSDMessagingPersonNameComponents *)v5 setFamilyName:v8];
+    familyName = [componentsCopy familyName];
+    [(CSDMessagingPersonNameComponents *)v5 setFamilyName:familyName];
 
-    v9 = [v4 namePrefix];
-    [(CSDMessagingPersonNameComponents *)v5 setNamePrefix:v9];
+    namePrefix = [componentsCopy namePrefix];
+    [(CSDMessagingPersonNameComponents *)v5 setNamePrefix:namePrefix];
 
-    v10 = [v4 nameSuffix];
-    [(CSDMessagingPersonNameComponents *)v5 setNameSuffix:v10];
+    nameSuffix = [componentsCopy nameSuffix];
+    [(CSDMessagingPersonNameComponents *)v5 setNameSuffix:nameSuffix];
 
-    v11 = [v4 nickname];
-    [(CSDMessagingPersonNameComponents *)v5 setNickname:v11];
+    nickname = [componentsCopy nickname];
+    [(CSDMessagingPersonNameComponents *)v5 setNickname:nickname];
 
-    v12 = [v4 phoneticRepresentation];
+    phoneticRepresentation = [componentsCopy phoneticRepresentation];
 
-    if (v12)
+    if (phoneticRepresentation)
     {
       v13 = objc_alloc_init(CSDMessagingPersonNameComponents);
-      v14 = [v4 phoneticRepresentation];
-      v15 = [v14 givenName];
-      [(CSDMessagingPersonNameComponents *)v13 setGivenName:v15];
+      phoneticRepresentation2 = [componentsCopy phoneticRepresentation];
+      givenName2 = [phoneticRepresentation2 givenName];
+      [(CSDMessagingPersonNameComponents *)v13 setGivenName:givenName2];
 
-      v16 = [v4 phoneticRepresentation];
-      v17 = [v16 middleName];
-      [(CSDMessagingPersonNameComponents *)v13 setMiddleName:v17];
+      phoneticRepresentation3 = [componentsCopy phoneticRepresentation];
+      middleName2 = [phoneticRepresentation3 middleName];
+      [(CSDMessagingPersonNameComponents *)v13 setMiddleName:middleName2];
 
-      v18 = [v4 phoneticRepresentation];
-      v19 = [v18 familyName];
-      [(CSDMessagingPersonNameComponents *)v13 setFamilyName:v19];
+      phoneticRepresentation4 = [componentsCopy phoneticRepresentation];
+      familyName2 = [phoneticRepresentation4 familyName];
+      [(CSDMessagingPersonNameComponents *)v13 setFamilyName:familyName2];
 
       [(CSDMessagingPersonNameComponents *)v5 setPhoneticRepresentation:v13];
     }
@@ -116,40 +116,40 @@
 - (NSPersonNameComponents)personNameComponents
 {
   v3 = objc_alloc_init(NSPersonNameComponents);
-  v4 = [(CSDMessagingPersonNameComponents *)self givenName];
-  [v3 setGivenName:v4];
+  givenName = [(CSDMessagingPersonNameComponents *)self givenName];
+  [v3 setGivenName:givenName];
 
-  v5 = [(CSDMessagingPersonNameComponents *)self middleName];
-  [v3 setMiddleName:v5];
+  middleName = [(CSDMessagingPersonNameComponents *)self middleName];
+  [v3 setMiddleName:middleName];
 
-  v6 = [(CSDMessagingPersonNameComponents *)self familyName];
-  [v3 setFamilyName:v6];
+  familyName = [(CSDMessagingPersonNameComponents *)self familyName];
+  [v3 setFamilyName:familyName];
 
-  v7 = [(CSDMessagingPersonNameComponents *)self namePrefix];
-  [v3 setNamePrefix:v7];
+  namePrefix = [(CSDMessagingPersonNameComponents *)self namePrefix];
+  [v3 setNamePrefix:namePrefix];
 
-  v8 = [(CSDMessagingPersonNameComponents *)self nameSuffix];
-  [v3 setNameSuffix:v8];
+  nameSuffix = [(CSDMessagingPersonNameComponents *)self nameSuffix];
+  [v3 setNameSuffix:nameSuffix];
 
-  v9 = [(CSDMessagingPersonNameComponents *)self nickname];
-  [v3 setNickname:v9];
+  nickname = [(CSDMessagingPersonNameComponents *)self nickname];
+  [v3 setNickname:nickname];
 
-  v10 = [(CSDMessagingPersonNameComponents *)self phoneticRepresentation];
+  phoneticRepresentation = [(CSDMessagingPersonNameComponents *)self phoneticRepresentation];
 
-  if (v10)
+  if (phoneticRepresentation)
   {
     v11 = objc_alloc_init(NSPersonNameComponents);
-    v12 = [(CSDMessagingPersonNameComponents *)self phoneticRepresentation];
-    v13 = [v12 givenName];
-    [v11 setGivenName:v13];
+    phoneticRepresentation2 = [(CSDMessagingPersonNameComponents *)self phoneticRepresentation];
+    givenName2 = [phoneticRepresentation2 givenName];
+    [v11 setGivenName:givenName2];
 
-    v14 = [(CSDMessagingPersonNameComponents *)self phoneticRepresentation];
-    v15 = [v14 middleName];
-    [v11 setMiddleName:v15];
+    phoneticRepresentation3 = [(CSDMessagingPersonNameComponents *)self phoneticRepresentation];
+    middleName2 = [phoneticRepresentation3 middleName];
+    [v11 setMiddleName:middleName2];
 
-    v16 = [(CSDMessagingPersonNameComponents *)self phoneticRepresentation];
-    v17 = [v16 familyName];
-    [v11 setFamilyName:v17];
+    phoneticRepresentation4 = [(CSDMessagingPersonNameComponents *)self phoneticRepresentation];
+    familyName2 = [phoneticRepresentation4 familyName];
+    [v11 setFamilyName:familyName2];
 
     [v3 setPhoneticRepresentation:v11];
   }
@@ -162,147 +162,147 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingPersonNameComponents;
   v3 = [(CSDMessagingPersonNameComponents *)&v7 description];
-  v4 = [(CSDMessagingPersonNameComponents *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingPersonNameComponents *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_namePrefix)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_givenName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_middleName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_familyName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nameSuffix)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nickname)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneticRepresentation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_namePrefix)
   {
-    [v4 setNamePrefix:?];
-    v4 = v5;
+    [toCopy setNamePrefix:?];
+    toCopy = v5;
   }
 
   if (self->_givenName)
   {
     [v5 setGivenName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_middleName)
   {
     [v5 setMiddleName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_familyName)
   {
     [v5 setFamilyName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nameSuffix)
   {
     [v5 setNameSuffix:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nickname)
   {
     [v5 setNickname:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneticRepresentation)
   {
     [v5 setPhoneticRepresentation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_namePrefix copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_namePrefix copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_givenName copyWithZone:a3];
+  v8 = [(NSString *)self->_givenName copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_middleName copyWithZone:a3];
+  v10 = [(NSString *)self->_middleName copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_familyName copyWithZone:a3];
+  v12 = [(NSString *)self->_familyName copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
-  v14 = [(NSString *)self->_nameSuffix copyWithZone:a3];
+  v14 = [(NSString *)self->_nameSuffix copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(NSString *)self->_nickname copyWithZone:a3];
+  v16 = [(NSString *)self->_nickname copyWithZone:zone];
   v17 = v5[6];
   v5[6] = v16;
 
-  v18 = [(CSDMessagingPersonNameComponents *)self->_phoneticRepresentation copyWithZone:a3];
+  v18 = [(CSDMessagingPersonNameComponents *)self->_phoneticRepresentation copyWithZone:zone];
   v19 = v5[7];
   v5[7] = v18;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((namePrefix = self->_namePrefix, !(namePrefix | v4[4])) || -[NSString isEqual:](namePrefix, "isEqual:")) && ((givenName = self->_givenName, !(givenName | v4[2])) || -[NSString isEqual:](givenName, "isEqual:")) && ((middleName = self->_middleName, !(middleName | v4[3])) || -[NSString isEqual:](middleName, "isEqual:")) && ((familyName = self->_familyName, !(familyName | v4[1])) || -[NSString isEqual:](familyName, "isEqual:")) && ((nameSuffix = self->_nameSuffix, !(nameSuffix | v4[5])) || -[NSString isEqual:](nameSuffix, "isEqual:")) && ((nickname = self->_nickname, !(nickname | v4[6])) || -[NSString isEqual:](nickname, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((namePrefix = self->_namePrefix, !(namePrefix | equalCopy[4])) || -[NSString isEqual:](namePrefix, "isEqual:")) && ((givenName = self->_givenName, !(givenName | equalCopy[2])) || -[NSString isEqual:](givenName, "isEqual:")) && ((middleName = self->_middleName, !(middleName | equalCopy[3])) || -[NSString isEqual:](middleName, "isEqual:")) && ((familyName = self->_familyName, !(familyName | equalCopy[1])) || -[NSString isEqual:](familyName, "isEqual:")) && ((nameSuffix = self->_nameSuffix, !(nameSuffix | equalCopy[5])) || -[NSString isEqual:](nameSuffix, "isEqual:")) && ((nickname = self->_nickname, !(nickname | equalCopy[6])) || -[NSString isEqual:](nickname, "isEqual:")))
   {
     phoneticRepresentation = self->_phoneticRepresentation;
-    if (phoneticRepresentation | v4[7])
+    if (phoneticRepresentation | equalCopy[7])
     {
       v12 = [(CSDMessagingPersonNameComponents *)phoneticRepresentation isEqual:?];
     }
@@ -332,41 +332,41 @@
   return v6 ^ v8 ^ [(CSDMessagingPersonNameComponents *)self->_phoneticRepresentation hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v6 = a3;
-  if (v6[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(CSDMessagingPersonNameComponents *)self setNamePrefix:?];
   }
 
-  if (v6[2])
+  if (fromCopy[2])
   {
     [(CSDMessagingPersonNameComponents *)self setGivenName:?];
   }
 
-  if (v6[3])
+  if (fromCopy[3])
   {
     [(CSDMessagingPersonNameComponents *)self setMiddleName:?];
   }
 
-  if (v6[1])
+  if (fromCopy[1])
   {
     [(CSDMessagingPersonNameComponents *)self setFamilyName:?];
   }
 
-  if (v6[5])
+  if (fromCopy[5])
   {
     [(CSDMessagingPersonNameComponents *)self setNameSuffix:?];
   }
 
-  if (v6[6])
+  if (fromCopy[6])
   {
     [(CSDMessagingPersonNameComponents *)self setNickname:?];
   }
 
   phoneticRepresentation = self->_phoneticRepresentation;
-  v5 = v6[7];
+  v5 = fromCopy[7];
   if (phoneticRepresentation)
   {
     if (v5)

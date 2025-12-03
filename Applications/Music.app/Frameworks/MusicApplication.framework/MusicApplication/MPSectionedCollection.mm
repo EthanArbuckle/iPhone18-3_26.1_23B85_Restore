@@ -1,13 +1,13 @@
 @interface MPSectionedCollection
-+ (id)withModelObject:(id)a3;
++ (id)withModelObject:(id)object;
 @end
 
 @implementation MPSectionedCollection
 
-+ (id)withModelObject:(id)a3
++ (id)withModelObject:(id)object
 {
-  v3 = a3;
-  v4 = static MPSectionedCollection.withModelObject(_:)(v3);
+  objectCopy = object;
+  v4 = static MPSectionedCollection.withModelObject(_:)(objectCopy);
 
   return v4;
 }

@@ -1,15 +1,15 @@
 @interface PushTransition
 - (_TtC16AssistiveTouchUIP33_68923AC70CF2E840903A54A21D42AC2C14PushTransition)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation PushTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_2414DB05C(a3);
+  selfCopy = self;
+  sub_2414DB05C(transition);
   swift_unknownObjectRelease();
 }
 

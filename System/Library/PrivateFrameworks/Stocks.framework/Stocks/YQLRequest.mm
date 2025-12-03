@@ -3,30 +3,30 @@
 - (YQLRequest)init;
 - (id)YQLCountryCode;
 - (id)YQLLanguageCode;
-- (id)_yahooDoppelganger_taskForRequest:(id)a3 delegate:(id)a4;
-- (id)taskForRequest:(id)a3 delegate:(id)a4;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (id)_yahooDoppelganger_taskForRequest:(id)request delegate:(id)delegate;
+- (id)taskForRequest:(id)request delegate:(id)delegate;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)_createDefaultSession;
 - (void)_loadDefaultSessionIfNeeded;
 - (void)cancel;
 - (void)cancelAndInvalidate;
 - (void)dealloc;
 - (void)didParseData;
-- (void)failToParseWithData:(id)a3;
-- (void)failToParseWithDataSeriesDictionary:(id)a3;
-- (void)failWithError:(id)a3;
-- (void)loadRequest:(id)a3;
-- (void)parseData:(id)a3;
+- (void)failToParseWithData:(id)data;
+- (void)failToParseWithDataSeriesDictionary:(id)dictionary;
+- (void)failWithError:(id)error;
+- (void)loadRequest:(id)request;
+- (void)parseData:(id)data;
 @end
 
 @implementation YQLRequest
 
-- (id)_yahooDoppelganger_taskForRequest:(id)a3 delegate:(id)a4
+- (id)_yahooDoppelganger_taskForRequest:(id)request delegate:(id)delegate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  delegateCopy = delegate;
   if (!activeDoppelgangers)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -58,18 +58,18 @@
 
         v12 = *(*(&v21 + 1) + 8 * v14);
 
-        if ([v12 matchesRequest:v5])
+        if ([v12 matchesRequest:requestCopy])
         {
           [activeDoppelgangers addObject:v12];
           [preppedDoppelgangers removeObject:v12];
-          if (v6)
+          if (delegateCopy)
           {
-            [v12 setDelegate:v6];
+            [v12 setDelegate:delegateCopy];
           }
 
           [v12 start];
-          v18 = v12;
-          v19 = v18;
+          hTTPBodyString = v12;
+          v19 = hTTPBodyString;
           goto LABEL_16;
         }
 
@@ -90,8 +90,8 @@
 
   v16 = testHarness;
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v5 HTTPBodyString];
-  v9 = [v17 stringWithFormat:@"YahooDoppelganger had no prepared response for the request %@", v18];
+  hTTPBodyString = [requestCopy HTTPBodyString];
+  v9 = [v17 stringWithFormat:@"YahooDoppelganger had no prepared response for the request %@", hTTPBodyString];
   [v16 assertTrue:0 withMessage:v9];
   v19 = 0;
 LABEL_16:
@@ -126,11 +126,11 @@ LABEL_16:
 
 - (void)_createDefaultSession
 {
-  v7 = [MEMORY[0x277CBABC8] defaultSessionConfiguration];
-  [v7 setSharedContainerIdentifier:@"group.com.apple.stocks"];
+  defaultSessionConfiguration = [MEMORY[0x277CBABC8] defaultSessionConfiguration];
+  [defaultSessionConfiguration setSharedContainerIdentifier:@"group.com.apple.stocks"];
   v3 = MEMORY[0x277CBABB8];
-  v4 = [MEMORY[0x277CCABD8] mainQueue];
-  v5 = [v3 sessionWithConfiguration:v7 delegate:self delegateQueue:v4];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  v5 = [v3 sessionWithConfiguration:defaultSessionConfiguration delegate:self delegateQueue:mainQueue];
   defaultSession = self->_defaultSession;
   self->_defaultSession = v5;
 }
@@ -143,28 +143,28 @@ LABEL_16:
   }
 }
 
-- (id)taskForRequest:(id)a3 delegate:(id)a4
+- (id)taskForRequest:(id)request delegate:(id)delegate
 {
-  v5 = a3;
+  requestCopy = request;
   [(YQLRequest *)self _loadDefaultSessionIfNeeded];
-  v6 = [(NSURLSession *)self->_defaultSession dataTaskWithRequest:v5];
+  v6 = [(NSURLSession *)self->_defaultSession dataTaskWithRequest:requestCopy];
 
   return v6;
 }
 
-- (void)loadRequest:(id)a3
+- (void)loadRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_request, a3);
+  requestCopy = request;
+  objc_storeStrong(&self->_request, request);
   v6 = [(YQLRequest *)self taskForRequest:self->_request delegate:self];
   dataTask = self->_dataTask;
   self->_dataTask = v6;
 
   [(NSURLSessionTask *)self->_dataTask resume];
   v8 = objc_alloc(MEMORY[0x277CCACA8]);
-  v9 = [(NSURLRequest *)self->_request HTTPBody];
-  v10 = [v8 initWithData:v9 encoding:4];
+  hTTPBody = [(NSURLRequest *)self->_request HTTPBody];
+  v10 = [v8 initWithData:hTTPBody encoding:4];
 
   v11 = StocksLogForCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -190,7 +190,7 @@ LABEL_16:
   }
 }
 
-- (void)parseData:(id)a3
+- (void)parseData:(id)data
 {
   v6 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -212,44 +212,44 @@ LABEL_16:
   }
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = StocksLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(YQLRequest *)self failWithError:v4, v5];
+    [(YQLRequest *)self failWithError:errorCopy, v5];
   }
 
   [(YQLRequest *)self cancel];
 }
 
-- (void)failToParseWithData:(id)a3
+- (void)failToParseWithData:(id)data
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.stocks" code:4 userInfo:0];
   [(YQLRequest *)self failWithError:v5];
 
   v6 = StocksLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
     v8 = 138412290;
     v9 = v7;
     _os_log_impl(&dword_26BAAD000, v6, OS_LOG_TYPE_DEFAULT, "#YQLRequest Attempted to parse %@", &v8, 0xCu);
   }
 }
 
-- (void)failToParseWithDataSeriesDictionary:(id)a3
+- (void)failToParseWithDataSeriesDictionary:(id)dictionary
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"error"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"error"];
   if (v5)
   {
     v12 = @"error";
-    v6 = [v4 objectForKeyedSubscript:@"error"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"error"];
     v13[0] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   }
@@ -266,7 +266,7 @@ LABEL_16:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = dictionaryCopy;
     _os_log_impl(&dword_26BAAD000, v9, OS_LOG_TYPE_DEFAULT, "#YQLRequest Attempted to parse %@", &v10, 0xCu);
   }
 }
@@ -306,71 +306,71 @@ LABEL_16:
 + (void)saveDebugString
 {
   v2 = +[NetPreferences sharedPreferences];
-  v4 = [v2 serviceDebuggingPath];
+  serviceDebuggingPath = [v2 serviceDebuggingPath];
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  [v3 _web_removeFileOnlyAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager _web_removeFileOnlyAtPath:serviceDebuggingPath];
 }
 
 - (id)YQLCountryCode
 {
   v2 = +[NetPreferences sharedPreferences];
-  v3 = [v2 stocksCountryCode];
+  stocksCountryCode = [v2 stocksCountryCode];
 
-  return v3;
+  return stocksCountryCode;
 }
 
 - (id)YQLLanguageCode
 {
   v2 = +[NetPreferences sharedPreferences];
-  v3 = [v2 stocksLanguageCode];
+  stocksLanguageCode = [v2 stocksLanguageCode];
 
-  return v3;
+  return stocksLanguageCode;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   rawData = self->_rawData;
   if (rawData)
   {
-    v11 = a5;
-    [(NSMutableData *)rawData appendData:v11];
-    v6 = v11;
+    dataCopy = data;
+    [(NSMutableData *)rawData appendData:dataCopy];
+    v6 = dataCopy;
   }
 
   else
   {
     v8 = MEMORY[0x277CBEB28];
-    v9 = a5;
-    v10 = [[v8 alloc] initWithData:v9];
+    dataCopy2 = data;
+    v10 = [[v8 alloc] initWithData:dataCopy2];
 
     v6 = self->_rawData;
     self->_rawData = v10;
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   v9 = StocksLogForCategory(0);
   v10 = v9;
-  if (v8)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [YQLRequest URLSession:v8 task:v7 didCompleteWithError:v10];
+      [YQLRequest URLSession:errorCopy task:taskCopy didCompleteWithError:v10];
     }
 
-    [(YQLRequest *)self failWithError:v8];
+    [(YQLRequest *)self failWithError:errorCopy];
   }
 
   else
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 description];
+      v11 = [taskCopy description];
       v17 = 136315394;
       v18 = "[YQLRequest URLSession:task:didCompleteWithError:]";
       v19 = 2114;

@@ -1,17 +1,17 @@
 @interface _UISceneHostingContentSizePreferenceHostComponent
 - (CGSize)preferredContentSize;
 - (_UISceneHostingContentSizePreferenceHostReceiving)contentSizePreferenceReceiver;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setContentSizePreferenceReceiver:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)setContentSizePreferenceReceiver:(id)receiver;
 @end
 
 @implementation _UISceneHostingContentSizePreferenceHostComponent
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 clientSettings];
-  [v3 preferredContentSize];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  clientSettings = [hostScene clientSettings];
+  [clientSettings preferredContentSize];
   v5 = v4;
   v7 = v6;
 
@@ -22,30 +22,30 @@
   return result;
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v5 = a4;
-  v6 = [v5 settingsDiff];
-  v7 = [v5 transitionContext];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
 
-  if ([v6 containsProperty:sel_preferredContentSize])
+  if ([settingsDiff containsProperty:sel_preferredContentSize])
   {
-    v8 = [(FBSSceneComponent *)self hostScene];
+    hostScene = [(FBSSceneComponent *)self hostScene];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __83___UISceneHostingContentSizePreferenceHostComponent_scene_didUpdateClientSettings___block_invoke;
     v9[3] = &unk_1E70F3590;
     v9[4] = self;
-    [v8 ui_performBlock:v9 withTransitionContext:v7];
+    [hostScene ui_performBlock:v9 withTransitionContext:transitionContext];
   }
 }
 
-- (void)setContentSizePreferenceReceiver:(id)a3
+- (void)setContentSizePreferenceReceiver:(id)receiver
 {
-  v4 = a3;
-  objc_storeWeak(&self->_contentSizePreferenceReceiver, v4);
+  receiverCopy = receiver;
+  objc_storeWeak(&self->_contentSizePreferenceReceiver, receiverCopy);
   [(_UISceneHostingContentSizePreferenceHostComponent *)self preferredContentSize];
-  [v4 setPreferredContentSize:?];
+  [receiverCopy setPreferredContentSize:?];
 }
 
 - (_UISceneHostingContentSizePreferenceHostReceiving)contentSizePreferenceReceiver

@@ -1,28 +1,28 @@
 @interface CCToolKitToolSampleInvocationDefinition
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolSampleInvocationDefinition)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolSampleInvocationDefinition)initWithPhrases:(id)a3 expectedResult:(id)a4 negativePhrases:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolSampleInvocationDefinition)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolSampleInvocationDefinition)initWithPhrases:(id)phrases expectedResult:(id)result negativePhrases:(id)negativePhrases error:(id *)error;
 - (NSArray)negativePhrases;
 - (NSArray)phrases;
 - (NSString)expectedResult;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolSampleInvocationDefinition
 
-- (CCToolKitToolSampleInvocationDefinition)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolSampleInvocationDefinition)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"phrases"];
-    v10 = [v6 objectForKeyedSubscript:@"expectedResult"];
-    v11 = [v6 objectForKeyedSubscript:@"negativePhrases"];
-    v12 = [[CCToolKitToolSampleInvocationDefinition alloc] initWithPhrases:v9 expectedResult:v10 negativePhrases:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"phrases"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"expectedResult"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"negativePhrases"];
+    v12 = [[CCToolKitToolSampleInvocationDefinition alloc] initWithPhrases:v9 expectedResult:v10 negativePhrases:v11 error:error];
   }
 
   else
@@ -39,20 +39,20 @@
   v3 = objc_opt_new();
   if (self->_phrases)
   {
-    v4 = [(CCToolKitToolSampleInvocationDefinition *)self phrases];
-    [v3 setObject:v4 forKeyedSubscript:@"phrases"];
+    phrases = [(CCToolKitToolSampleInvocationDefinition *)self phrases];
+    [v3 setObject:phrases forKeyedSubscript:@"phrases"];
   }
 
   if (self->_expectedResult)
   {
-    v5 = [(CCToolKitToolSampleInvocationDefinition *)self expectedResult];
-    [v3 setObject:v5 forKeyedSubscript:@"expectedResult"];
+    expectedResult = [(CCToolKitToolSampleInvocationDefinition *)self expectedResult];
+    [v3 setObject:expectedResult forKeyedSubscript:@"expectedResult"];
   }
 
   if (self->_negativePhrases)
   {
-    v6 = [(CCToolKitToolSampleInvocationDefinition *)self negativePhrases];
-    [v3 setObject:v6 forKeyedSubscript:@"negativePhrases"];
+    negativePhrases = [(CCToolKitToolSampleInvocationDefinition *)self negativePhrases];
+    [v3 setObject:negativePhrases forKeyedSubscript:@"negativePhrases"];
   }
 
   v7 = [v3 copy];
@@ -60,11 +60,11 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_phrases)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] repeatedStringValue:self->_phrases];
@@ -108,10 +108,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v43 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v43];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -299,13 +299,13 @@ LABEL_45:
   {
     CCSetError();
     v35 = 0;
-    v36 = v43;
+    v36 = dataCopy;
   }
 
   else
   {
     v37 = MEMORY[0x1E6993AA8];
-    v36 = v43;
+    v36 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v38 = objc_opt_class();
@@ -326,14 +326,14 @@ LABEL_45:
   return v35;
 }
 
-- (CCToolKitToolSampleInvocationDefinition)initWithPhrases:(id)a3 expectedResult:(id)a4 negativePhrases:(id)a5 error:(id *)a6
+- (CCToolKitToolSampleInvocationDefinition)initWithPhrases:(id)phrases expectedResult:(id)result negativePhrases:(id)negativePhrases error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  phrasesCopy = phrases;
+  resultCopy = result;
+  negativePhrasesCopy = negativePhrases;
   v13 = objc_opt_new();
-  if (v10)
+  if (phrasesCopy)
   {
     objc_opt_class();
     v47 = 0;
@@ -344,12 +344,12 @@ LABEL_45:
       goto LABEL_21;
     }
 
-    v35 = a6;
+    errorCopy = error;
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v16 = v10;
+    v16 = phrasesCopy;
     v17 = [v16 countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v17)
     {
@@ -377,12 +377,12 @@ LABEL_45:
       while (v18);
     }
 
-    a6 = v35;
-    if (!v11)
+    error = errorCopy;
+    if (!resultCopy)
     {
 LABEL_11:
       v22 = v15;
-      if (v12)
+      if (negativePhrasesCopy)
       {
         goto LABEL_12;
       }
@@ -390,10 +390,10 @@ LABEL_11:
 LABEL_25:
       v15 = v22;
 LABEL_26:
-      v32 = [v13 immutableData];
-      self = [(CCItemMessage *)self initWithData:v32 error:a6];
+      immutableData = [v13 immutableData];
+      self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-      v30 = self;
+      selfCopy = self;
       goto LABEL_28;
     }
   }
@@ -401,7 +401,7 @@ LABEL_26:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!resultCopy)
     {
       goto LABEL_11;
     }
@@ -415,13 +415,13 @@ LABEL_26:
   if (!IsInstanceOfExpectedClass)
   {
     CCSetError();
-    v30 = 0;
+    selfCopy = 0;
     v15 = v22;
     goto LABEL_28;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!negativePhrasesCopy)
   {
     goto LABEL_25;
   }
@@ -434,12 +434,12 @@ LABEL_12:
 
   if (v23)
   {
-    v36 = a6;
+    errorCopy2 = error;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v24 = v12;
+    v24 = negativePhrasesCopy;
     v25 = [v24 countByEnumeratingWithState:&v37 objects:v48 count:16];
     if (v25)
     {
@@ -467,17 +467,17 @@ LABEL_12:
       while (v26);
     }
 
-    a6 = v36;
+    error = errorCopy2;
     goto LABEL_26;
   }
 
 LABEL_21:
   CCSetError();
-  v30 = 0;
+  selfCopy = 0;
 LABEL_28:
 
   v33 = *MEMORY[0x1E69E9840];
-  return v30;
+  return selfCopy;
 }
 
 @end

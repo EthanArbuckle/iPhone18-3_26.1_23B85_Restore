@@ -1,23 +1,23 @@
 @interface WDMath
-- (WDMath)initWithParagraph:(id)a3 xmlBlob:(id)a4;
+- (WDMath)initWithParagraph:(id)paragraph xmlBlob:(id)blob;
 - (id)description;
 - (void)clearProperties;
 @end
 
 @implementation WDMath
 
-- (WDMath)initWithParagraph:(id)a3 xmlBlob:(id)a4
+- (WDMath)initWithParagraph:(id)paragraph xmlBlob:(id)blob
 {
-  v6 = a3;
-  v7 = a4;
+  paragraphCopy = paragraph;
+  blobCopy = blob;
   v13.receiver = self;
   v13.super_class = WDMath;
-  v8 = [(WDRun *)&v13 initWithParagraph:v6];
+  v8 = [(WDRun *)&v13 initWithParagraph:paragraphCopy];
   v9 = v8;
   if (v8)
   {
     v8->_justification = 0;
-    v10 = [v7 copy];
+    v10 = [blobCopy copy];
     xmlBlob = v9->_xmlBlob;
     v9->_xmlBlob = v10;
   }

@@ -1,14 +1,14 @@
 @interface TetraDBManager
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)cache:(id)cache willEvictObject:(id)object;
 @end
 
 @implementation TetraDBManager
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v5 = a3;
+  cacheCopy = cache;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   specialized TetraDBManager.cache(_:willEvictObject:)(v7);

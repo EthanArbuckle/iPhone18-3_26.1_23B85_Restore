@@ -10,33 +10,33 @@
   v19.receiver = self;
   v19.super_class = SBEntityRemovalMedusaSlideOutAnimationSettings;
   [(PTSettings *)&v19 setDefaultValues];
-  v3 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
-  v4 = [v3 toBeRemovedScaleAnimationSettings];
-  [v4 setDampingRatio:0.879999995];
+  defaultAnimationSettings = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
+  toBeRemovedScaleAnimationSettings = [defaultAnimationSettings toBeRemovedScaleAnimationSettings];
+  [toBeRemovedScaleAnimationSettings setDampingRatio:0.879999995];
 
-  v5 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
-  v6 = [v5 toBeRemovedScaleAnimationSettings];
-  [v6 setResponse:0.699999988];
+  defaultAnimationSettings2 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
+  toBeRemovedScaleAnimationSettings2 = [defaultAnimationSettings2 toBeRemovedScaleAnimationSettings];
+  [toBeRemovedScaleAnimationSettings2 setResponse:0.699999988];
 
-  v7 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
-  v8 = [v7 toBeRemovedAlphaAnimationSettings];
-  [v8 setDampingRatio:0.879999995];
+  defaultAnimationSettings3 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
+  toBeRemovedAlphaAnimationSettings = [defaultAnimationSettings3 toBeRemovedAlphaAnimationSettings];
+  [toBeRemovedAlphaAnimationSettings setDampingRatio:0.879999995];
 
-  v9 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
-  v10 = [v9 toBeRemovedAlphaAnimationSettings];
-  [v10 setResponse:0.699999988];
+  defaultAnimationSettings4 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
+  toBeRemovedAlphaAnimationSettings2 = [defaultAnimationSettings4 toBeRemovedAlphaAnimationSettings];
+  [toBeRemovedAlphaAnimationSettings2 setResponse:0.699999988];
 
-  v11 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v11 setToBeRemovedFinalScale:0.910000026];
+  defaultAnimationSettings5 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings5 setToBeRemovedFinalScale:0.910000026];
 
-  v12 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v12 setToBeRemovedFinalAlpha:1.0];
+  defaultAnimationSettings6 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings6 setToBeRemovedFinalAlpha:1.0];
 
-  v13 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v13 setToBeRemovedFinalBlurRadius:0.0];
+  defaultAnimationSettings7 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings7 setToBeRemovedFinalBlurRadius:0.0];
 
-  v14 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v14 setToBeMadeFullscreenFrameAnimationDelay:0.400000006];
+  defaultAnimationSettings8 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings8 setToBeMadeFullscreenFrameAnimationDelay:0.400000006];
 
   [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self setToBeMadeFullScreenPushInScale:0.980000019];
   [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self setToBeMadeFullScreenScaleResetAnimationDelay:0.0];
@@ -49,8 +49,8 @@
   v17 = SBEntityRemovalDefaultFluidAnimationSettings();
   [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self setToBeRemovedSlideOutAnimationSettings:v17];
 
-  v18 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self toBeRemovedSlideOutAnimationSettings];
-  [v18 setResponse:0.600000024];
+  toBeRemovedSlideOutAnimationSettings = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self toBeRemovedSlideOutAnimationSettings];
+  [toBeRemovedSlideOutAnimationSettings setResponse:0.600000024];
 
   [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self setToBeRemovedSlideOutAnimationDelay:0.275000006];
   [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self setToBeRemovedSlideOutHeightOffsetMultiplier:1.20000005];
@@ -93,8 +93,8 @@
 
   v23 = MEMORY[0x277D43210];
   v24 = MEMORY[0x277D431B0];
-  v25 = [MEMORY[0x277D43240] action];
-  v26 = [v24 rowWithTitle:@"Restore Medusa SlideOut Animation Settings" action:v25];
+  action = [MEMORY[0x277D43240] action];
+  v26 = [v24 rowWithTitle:@"Restore Medusa SlideOut Animation Settings" action:action];
   v36 = v26;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
   v28 = [v23 sectionWithRows:v27];

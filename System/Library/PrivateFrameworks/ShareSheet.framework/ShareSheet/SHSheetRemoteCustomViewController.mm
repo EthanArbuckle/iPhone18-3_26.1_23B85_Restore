@@ -1,19 +1,19 @@
 @interface SHSheetRemoteCustomViewController
-- (SHSheetRemoteCustomViewController)initWithSessionIdentifier:(id)a3;
+- (SHSheetRemoteCustomViewController)initWithSessionIdentifier:(id)identifier;
 - (void)installSceneHostingView;
 @end
 
 @implementation SHSheetRemoteCustomViewController
 
-- (SHSheetRemoteCustomViewController)initWithSessionIdentifier:(id)a3
+- (SHSheetRemoteCustomViewController)initWithSessionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SHSheetRemoteCustomViewController;
   v5 = [(SHSheetRemoteCustomViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
@@ -79,39 +79,39 @@
       v12 = v11;
       _Block_object_dispose(&v34, 8);
       v13 = self->_hostingController;
-      v14 = [(SHSheetRemoteCustomViewController *)self sessionIdentifier];
-      [v11 updateHostingController:v13 sessionIdentifier:v14];
+      sessionIdentifier = [(SHSheetRemoteCustomViewController *)self sessionIdentifier];
+      [v11 updateHostingController:v13 sessionIdentifier:sessionIdentifier];
 
-      v15 = [(SHSheetRemoteCustomViewController *)self hostingController];
-      v33 = [v15 sceneViewController];
+      hostingController = [(SHSheetRemoteCustomViewController *)self hostingController];
+      sceneViewController = [hostingController sceneViewController];
 
-      [(SHSheetRemoteCustomViewController *)self addChildViewController:v33];
-      v16 = [v33 view];
-      v17 = [(SHSheetRemoteCustomViewController *)self view];
-      [v17 setAccessibilityIdentifier:@"ShareSheet.RemoteContainerView"];
-      [v17 addSubview:v16];
-      [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(SHSheetRemoteCustomViewController *)self addChildViewController:sceneViewController];
+      view = [sceneViewController view];
+      view2 = [(SHSheetRemoteCustomViewController *)self view];
+      [view2 setAccessibilityIdentifier:@"ShareSheet.RemoteContainerView"];
+      [view2 addSubview:view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
       v25 = MEMORY[0x1E696ACD8];
-      v31 = [v16 leadingAnchor];
-      v30 = [v17 leadingAnchor];
-      v29 = [v31 constraintEqualToAnchor:v30];
+      leadingAnchor = [view leadingAnchor];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v38[0] = v29;
-      v28 = [v16 trailingAnchor];
-      v27 = [v17 trailingAnchor];
-      v26 = [v28 constraintEqualToAnchor:v27];
+      trailingAnchor = [view trailingAnchor];
+      trailingAnchor2 = [view2 trailingAnchor];
+      v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v38[1] = v26;
-      v18 = [v16 topAnchor];
-      v19 = [v17 topAnchor];
-      v20 = [v18 constraintEqualToAnchor:v19];
+      topAnchor = [view topAnchor];
+      topAnchor2 = [view2 topAnchor];
+      v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v38[2] = v20;
-      v21 = [v16 bottomAnchor];
-      v22 = [v17 bottomAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22];
+      bottomAnchor = [view bottomAnchor];
+      bottomAnchor2 = [view2 bottomAnchor];
+      v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v38[3] = v23;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
       [v25 activateConstraints:v24];
 
-      [v33 didMoveToParentViewController:self];
+      [sceneViewController didMoveToParentViewController:self];
     }
   }
 }

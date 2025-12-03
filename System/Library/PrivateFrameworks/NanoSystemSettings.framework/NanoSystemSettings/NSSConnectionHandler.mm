@@ -1,26 +1,26 @@
 @interface NSSConnectionHandler
-- (BOOL)hasNanoSystemSettingsEntitlementKey:(id)a3;
-- (NSSConnectionHandler)initWithConnection:(id)a3 delegate:(id)a4;
+- (BOOL)hasNanoSystemSettingsEntitlementKey:(id)key;
+- (NSSConnectionHandler)initWithConnection:(id)connection delegate:(id)delegate;
 - (NSSConnectionHandlerDelegate)delegate;
-- (void)askRemoteDeviceToPasscodeLockWithCompletionHandler:(id)a3;
-- (void)getUsageData:(id)a3;
-- (void)notifyRemoteDeviceOfUsageAfterSetup:(id)a3;
+- (void)askRemoteDeviceToPasscodeLockWithCompletionHandler:(id)handler;
+- (void)getUsageData:(id)data;
+- (void)notifyRemoteDeviceOfUsageAfterSetup:(id)setup;
 @end
 
 @implementation NSSConnectionHandler
 
-- (NSSConnectionHandler)initWithConnection:(id)a3 delegate:(id)a4
+- (NSSConnectionHandler)initWithConnection:(id)connection delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = NSSConnectionHandler;
   v9 = [(NSSConnectionHandler *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100014CF4;
@@ -50,13 +50,13 @@
   return v10;
 }
 
-- (BOOL)hasNanoSystemSettingsEntitlementKey:(id)a3
+- (BOOL)hasNanoSystemSettingsEntitlementKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSSConnectionHandler *)self connection];
-  v6 = [v5 valueForEntitlement:off_10003D9D8];
+  keyCopy = key;
+  connection = [(NSSConnectionHandler *)self connection];
+  v6 = [connection valueForEntitlement:off_10003D9D8];
 
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v6 containsObject:v4] & 1) != 0)
+  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v6 containsObject:keyCopy] & 1) != 0)
   {
     v7 = 1;
   }
@@ -72,7 +72,7 @@
       v13 = 2112;
       v14 = off_10003D9D8;
       v15 = 2112;
-      v16 = v4;
+      v16 = keyCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Entitlement check for connection (%@) failed; Expecting: (%@/%@)", &v11, 0x20u);
     }
 
@@ -82,35 +82,35 @@
   return v7;
 }
 
-- (void)getUsageData:(id)a3
+- (void)getUsageData:(id)data
 {
   v4 = off_10003D9E0;
-  v5 = a3;
+  dataCopy = data;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:v4])
   {
-    v6 = [(NSSConnectionHandler *)self delegate];
-    [v6 getUsageData:v5];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getUsageData:dataCopy];
   }
 
   else
   {
-    v6 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v5[2](v5, 0);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    dataCopy[2](dataCopy, 0);
   }
 }
 
-- (void)askRemoteDeviceToPasscodeLockWithCompletionHandler:(id)a3
+- (void)askRemoteDeviceToPasscodeLockWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NSSConnectionHandler *)self delegate];
-  [v5 askRemoteDeviceToPasscodeLockWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(NSSConnectionHandler *)self delegate];
+  [delegate askRemoteDeviceToPasscodeLockWithCompletionHandler:handlerCopy];
 }
 
-- (void)notifyRemoteDeviceOfUsageAfterSetup:(id)a3
+- (void)notifyRemoteDeviceOfUsageAfterSetup:(id)setup
 {
-  v4 = a3;
-  v5 = [(NSSConnectionHandler *)self delegate];
-  [v5 notifyRemoteDeviceOfUsageAfterSetup:v4];
+  setupCopy = setup;
+  delegate = [(NSSConnectionHandler *)self delegate];
+  [delegate notifyRemoteDeviceOfUsageAfterSetup:setupCopy];
 }
 
 - (NSSConnectionHandlerDelegate)delegate

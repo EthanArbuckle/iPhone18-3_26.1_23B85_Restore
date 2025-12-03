@@ -1,19 +1,19 @@
 @interface WFVisibleAppManager
 - (WFVisibleAppManager)init;
-- (void)_getLayoutsWithCompletionHandler:(id)a3;
-- (void)getCurrentAppWithCompletionHandler:(id)a3;
-- (void)getVisibleAppsWithCompletionHandler:(id)a3;
+- (void)_getLayoutsWithCompletionHandler:(id)handler;
+- (void)getCurrentAppWithCompletionHandler:(id)handler;
+- (void)getVisibleAppsWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFVisibleAppManager
 
-- (void)_getLayoutsWithCompletionHandler:(id)a3
+- (void)_getLayoutsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MEMORY[0x1E69AA870]);
   [v5 resume];
-  v6 = [(WFVisibleAppManager *)self monitorPool];
-  [v6 addObject:v5];
+  monitorPool = [(WFVisibleAppManager *)self monitorPool];
+  [monitorPool addObject:v5];
 
   v7 = dispatch_time(0, 50000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -21,9 +21,9 @@
   block[2] = __56__WFVisibleAppManager__getLayoutsWithCompletionHandler___block_invoke;
   block[3] = &unk_1E837ECE0;
   v11 = v5;
-  v12 = self;
-  v13 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
   v9 = v5;
   dispatch_after(v7, MEMORY[0x1E69E96A0], block);
 }
@@ -51,15 +51,15 @@ void __56__WFVisibleAppManager__getLayoutsWithCompletionHandler___block_invoke(u
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getVisibleAppsWithCompletionHandler:(id)a3
+- (void)getVisibleAppsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__WFVisibleAppManager_getVisibleAppsWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E8378B28;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WFVisibleAppManager *)self _getLayoutsWithCompletionHandler:v6];
 }
 
@@ -128,15 +128,15 @@ id __59__WFVisibleAppManager_getVisibleAppsWithCompletionHandler___block_invoke_
   return v5;
 }
 
-- (void)getCurrentAppWithCompletionHandler:(id)a3
+- (void)getCurrentAppWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__WFVisibleAppManager_getCurrentAppWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E8378B28;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WFVisibleAppManager *)self _getLayoutsWithCompletionHandler:v6];
 }
 

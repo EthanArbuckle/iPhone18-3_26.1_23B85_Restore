@@ -1,24 +1,24 @@
 @interface FigCaptureFlatPlistSet
-- (FigCaptureFlatPlistSet)initWithFlatPlist:(id)a3 offset:(unint64_t)a4;
-- (id)member:(id)a3;
+- (FigCaptureFlatPlistSet)initWithFlatPlist:(id)plist offset:(unint64_t)offset;
+- (id)member:(id)member;
 - (id)objectEnumerator;
 - (void)dealloc;
 @end
 
 @implementation FigCaptureFlatPlistSet
 
-- (FigCaptureFlatPlistSet)initWithFlatPlist:(id)a3 offset:(unint64_t)a4
+- (FigCaptureFlatPlistSet)initWithFlatPlist:(id)plist offset:(unint64_t)offset
 {
   v10.receiver = self;
   v10.super_class = FigCaptureFlatPlistSet;
   v6 = [(FigCaptureFlatPlistSet *)&v10 init];
   if (v6)
   {
-    v6->_flatPlist = a3;
-    v7 = [a3 bplist];
-    v6->_bplist = v7;
-    v6->_offset = a4;
-    FigCaptureBinaryPlistGetDataAndCountForObjectAtOffset(v7, a4);
+    v6->_flatPlist = plist;
+    bplist = [plist bplist];
+    v6->_bplist = bplist;
+    v6->_offset = offset;
+    FigCaptureBinaryPlistGetDataAndCountForObjectAtOffset(bplist, offset);
     v6->_count = v8;
   }
 
@@ -32,12 +32,12 @@
   [(FigCaptureFlatPlistSet *)&v3 dealloc];
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    IndexForStringInObject = FigCaptureBinaryPlistFindIndexForStringInObject(self->_bplist, self->_offset, [a3 UTF8String], objc_msgSend(a3, "length"));
+    IndexForStringInObject = FigCaptureBinaryPlistFindIndexForStringInObject(self->_bplist, self->_offset, [member UTF8String], objc_msgSend(member, "length"));
     if ((IndexForStringInObject & 0x8000000000000000) != 0)
     {
       return 0;
@@ -52,7 +52,7 @@
       return 0;
     }
 
-    IndexForStringInObject = FigCaptureBinaryPlistFindIndexForIntInObject(self->_bplist, self->_offset, [a3 longLongValue]);
+    IndexForStringInObject = FigCaptureBinaryPlistFindIndexForIntInObject(self->_bplist, self->_offset, [member longLongValue]);
     if ((IndexForStringInObject & 0x8000000000000000) != 0)
     {
       return 0;

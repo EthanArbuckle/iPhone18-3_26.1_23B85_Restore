@@ -9,42 +9,42 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = objc_alloc_init(MEMORY[0x1E698DE80]);
-    v3 = [a1 reason];
-    [v2 setReason:v3];
+    selfCopy = objc_alloc_init(MEMORY[0x1E698DE80]);
+    reason = [self reason];
+    [selfCopy setReason:reason];
 
-    v4 = [a1 DSID];
-    [v2 setDSID:v4];
+    dSID = [self DSID];
+    [selfCopy setDSID:dSID];
 
-    v5 = [a1 altDSID];
-    [v2 setAltDSID:v5];
+    altDSID = [self altDSID];
+    [selfCopy setAltDSID:altDSID];
 
-    v6 = [a1 defaultButtonString];
-    [v2 setDefaultButtonString:v6];
+    defaultButtonString = [self defaultButtonString];
+    [selfCopy setDefaultButtonString:defaultButtonString];
 
-    v7 = [a1 title];
-    [v2 setTitle:v7];
+    title = [self title];
+    [selfCopy setTitle:title];
 
-    v8 = [a1 username];
-    [v2 setUsername:v8];
+    username = [self username];
+    [selfCopy setUsername:username];
 
-    [v2 setMaximumLoginAttempts:{objc_msgSend(a1, "maximumLoginAttempts")}];
-    [v2 setIsEphemeral:{objc_msgSend(a1, "isEphemeral")}];
-    [v2 setShouldOfferSecurityUpgrade:{objc_msgSend(a1, "shouldOfferSecurityUpgrade")}];
-    v9 = [a1 appProvidedData];
-    [v2 setAppProvidedData:v9];
+    [selfCopy setMaximumLoginAttempts:{objc_msgSend(self, "maximumLoginAttempts")}];
+    [selfCopy setIsEphemeral:{objc_msgSend(self, "isEphemeral")}];
+    [selfCopy setShouldOfferSecurityUpgrade:{objc_msgSend(self, "shouldOfferSecurityUpgrade")}];
+    appProvidedData = [self appProvidedData];
+    [selfCopy setAppProvidedData:appProvidedData];
 
-    [v2 setServiceType:{objc_msgSend(a1, "serviceType")}];
-    [v2 setIsUsernameEditable:{objc_msgSend(a1, "isUsernameEditable")}];
-    [v2 setAuthenticationType:{objc_msgSend(a1, "authenticationType")}];
+    [selfCopy setServiceType:{objc_msgSend(self, "serviceType")}];
+    [selfCopy setIsUsernameEditable:{objc_msgSend(self, "isUsernameEditable")}];
+    [selfCopy setAuthenticationType:{objc_msgSend(self, "authenticationType")}];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

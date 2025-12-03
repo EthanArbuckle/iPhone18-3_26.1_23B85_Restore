@@ -1,43 +1,43 @@
 @interface FCJSONRecordSourceSchema
-- (FCJSONRecordSourceSchema)initWithRecordType:(id)a3 recordIDPrefix:(id)a4 keys:(id)a5 localizableKeys:(id)a6 alwaysLocalizedKeys:(id)a7;
+- (FCJSONRecordSourceSchema)initWithRecordType:(id)type recordIDPrefix:(id)prefix keys:(id)keys localizableKeys:(id)localizableKeys alwaysLocalizedKeys:(id)localizedKeys;
 @end
 
 @implementation FCJSONRecordSourceSchema
 
-- (FCJSONRecordSourceSchema)initWithRecordType:(id)a3 recordIDPrefix:(id)a4 keys:(id)a5 localizableKeys:(id)a6 alwaysLocalizedKeys:(id)a7
+- (FCJSONRecordSourceSchema)initWithRecordType:(id)type recordIDPrefix:(id)prefix keys:(id)keys localizableKeys:(id)localizableKeys alwaysLocalizedKeys:(id)localizedKeys
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  prefixCopy = prefix;
+  keysCopy = keys;
+  localizableKeysCopy = localizableKeys;
+  localizedKeysCopy = localizedKeys;
   v32.receiver = self;
   v32.super_class = FCJSONRecordSourceSchema;
   v17 = [(FCJSONRecordSourceSchema *)&v32 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [typeCopy copy];
     recordType = v17->_recordType;
     v17->_recordType = v18;
 
-    v20 = [v13 copy];
+    v20 = [prefixCopy copy];
     recordIDPrefix = v17->_recordIDPrefix;
     v17->_recordIDPrefix = v20;
 
-    v22 = [v14 copy];
+    v22 = [keysCopy copy];
     keys = v17->_keys;
     v17->_keys = v22;
 
-    v24 = [v15 copy];
+    v24 = [localizableKeysCopy copy];
     localizableKeys = v17->_localizableKeys;
     v17->_localizableKeys = v24;
 
-    v26 = [v16 copy];
+    v26 = [localizedKeysCopy copy];
     alwaysLocalizedKeys = v17->_alwaysLocalizedKeys;
     v17->_alwaysLocalizedKeys = v26;
 
-    v28 = [v14 arrayByAddingObjectsFromArray:v15];
-    v29 = [v28 arrayByAddingObjectsFromArray:v16];
+    v28 = [keysCopy arrayByAddingObjectsFromArray:localizableKeysCopy];
+    v29 = [v28 arrayByAddingObjectsFromArray:localizedKeysCopy];
     allKeys = v17->_allKeys;
     v17->_allKeys = v29;
   }

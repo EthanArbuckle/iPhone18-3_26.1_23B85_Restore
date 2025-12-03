@@ -1,10 +1,10 @@
 @interface CCNEPolicyResult
 + (id)drop;
-+ (id)netAgentUUID:(id)a3;
-+ (id)removeNetworkAgentUUID:(id)a3;
-+ (id)scopeSocketToInterfaceName:(id)a3;
-+ (id)scopedNetworkAgent:(id)a3;
-+ (id)skipWithOrder:(unsigned int)a3;
++ (id)netAgentUUID:(id)d;
++ (id)removeNetworkAgentUUID:(id)d;
++ (id)scopeSocketToInterfaceName:(id)name;
++ (id)scopedNetworkAgent:(id)agent;
++ (id)skipWithOrder:(unsigned int)order;
 - (CCNEPolicyResult)init;
 @end
 
@@ -17,9 +17,9 @@
   return [(CCNEPolicyResult *)&v3 init];
 }
 
-+ (id)skipWithOrder:(unsigned int)a3
++ (id)skipWithOrder:(unsigned int)order
 {
-  v3 = *&a3;
+  v3 = *&order;
   v4 = objc_alloc_init(CCNEPolicyResult);
   v5 = [NEPolicyResult skipWithOrder:v3];
   v6 = v4->result;
@@ -38,44 +38,44 @@
   return v2;
 }
 
-+ (id)netAgentUUID:(id)a3
++ (id)netAgentUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(CCNEPolicyResult);
-  v5 = [NEPolicyResult netAgentUUID:v3];
+  v5 = [NEPolicyResult netAgentUUID:dCopy];
   v6 = v4->result;
   v4->result = v5;
 
   return v4;
 }
 
-+ (id)removeNetworkAgentUUID:(id)a3
++ (id)removeNetworkAgentUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(CCNEPolicyResult);
-  v5 = [NEPolicyResult removeNetworkAgentUUID:v3];
+  v5 = [NEPolicyResult removeNetworkAgentUUID:dCopy];
   v6 = v4->result;
   v4->result = v5;
 
   return v4;
 }
 
-+ (id)scopedNetworkAgent:(id)a3
++ (id)scopedNetworkAgent:(id)agent
 {
-  v3 = a3;
+  agentCopy = agent;
   v4 = objc_alloc_init(CCNEPolicyResult);
-  v5 = [NEPolicyResult scopedNetworkAgent:v3];
+  v5 = [NEPolicyResult scopedNetworkAgent:agentCopy];
   v6 = v4->result;
   v4->result = v5;
 
   return v4;
 }
 
-+ (id)scopeSocketToInterfaceName:(id)a3
++ (id)scopeSocketToInterfaceName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(CCNEPolicyResult);
-  v5 = [NEPolicyResult scopeSocketToInterfaceName:v3];
+  v5 = [NEPolicyResult scopeSocketToInterfaceName:nameCopy];
   v6 = v4->result;
   v4->result = v5;
 

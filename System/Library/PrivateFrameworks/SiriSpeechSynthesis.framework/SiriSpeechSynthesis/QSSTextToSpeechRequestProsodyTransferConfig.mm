@@ -1,7 +1,7 @@
 @interface QSSTextToSpeechRequestProsodyTransferConfig
 - (NSString)user_voice_profile_url;
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyTransferConfig>)addObjectToBuffer:(void *)a3;
-- (QSSTextToSpeechRequestProsodyTransferConfig)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestProsodyTransferConfig *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyTransferConfig>)addObjectToBuffer:(void *)buffer;
+- (QSSTextToSpeechRequestProsodyTransferConfig)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestProsodyTransferConfig *)root verify:(BOOL)verify;
 - (QSSTextToSpeechSpeechFeatureInputWave)wave_data;
 - (QSSTextToSpeechUserVoiceProfile)user_voice_profile;
 - (id)flatbuffData;
@@ -38,40 +38,40 @@ flatbuffers::DetachedBuffer *__59__QSSTextToSpeechRequestProsodyTransferConfig_f
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyTransferConfig>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestProsodyTransferConfig>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSTextToSpeechRequestProsodyTransferConfig *)self wave_data];
-  v6 = [v5 addObjectToBuffer:a3];
+  wave_data = [(QSSTextToSpeechRequestProsodyTransferConfig *)self wave_data];
+  v6 = [wave_data addObjectToBuffer:buffer];
 
-  v7 = [(QSSTextToSpeechRequestProsodyTransferConfig *)self user_voice_profile];
-  v8 = [v7 addObjectToBuffer:a3];
+  user_voice_profile = [(QSSTextToSpeechRequestProsodyTransferConfig *)self user_voice_profile];
+  v8 = [user_voice_profile addObjectToBuffer:buffer];
 
-  v9 = [(QSSTextToSpeechRequestProsodyTransferConfig *)self user_voice_profile_url];
-  v10 = v9;
-  if (!v9)
+  user_voice_profile_url = [(QSSTextToSpeechRequestProsodyTransferConfig *)self user_voice_profile_url];
+  v10 = user_voice_profile_url;
+  if (!user_voice_profile_url)
   {
-    v9 = &stru_2879AE8E0;
+    user_voice_profile_url = &stru_2879AE8E0;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String = [(__CFString *)user_voice_profile_url UTF8String];
+  v12 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v12);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 5);
-  v15 = *(a3 + 6);
-  v16 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v6);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 5);
+  v15 = *(buffer + 6);
+  v16 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, v6);
   if (v8)
   {
-    v17 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v8);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v17);
+    v17 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v8);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v17);
   }
 
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, String);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v16 - v15 + v14);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v16 - v15 + v14);
 }
 
 - (NSString)user_voice_profile_url
@@ -147,42 +147,42 @@ flatbuffers::DetachedBuffer *__59__QSSTextToSpeechRequestProsodyTransferConfig_f
   return v3;
 }
 
-- (QSSTextToSpeechRequestProsodyTransferConfig)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestProsodyTransferConfig *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechRequestProsodyTransferConfig)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestProsodyTransferConfig *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechRequestProsodyTransferConfig;
   v10 = [(QSSTextToSpeechRequestProsodyTransferConfig *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -204,9 +204,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

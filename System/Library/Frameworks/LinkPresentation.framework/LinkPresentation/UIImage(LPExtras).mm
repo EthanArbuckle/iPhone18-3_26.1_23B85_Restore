@@ -10,9 +10,9 @@
 
 - (uint64_t)_lp_CGImage
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 CGImage];
+  return [selfCopy CGImage];
 }
 
 + (id)_lp_createImageWithCGImage:()LPExtras
@@ -31,18 +31,18 @@
 
 - (id)_lp_imageByApplyingSymbolConfiguration:()LPExtras
 {
-  v1 = [a1 imageByApplyingSymbolConfiguration:?];
+  v1 = [self imageByApplyingSymbolConfiguration:?];
 
   return v1;
 }
 
 - (id)_lp_imageForcingUserInterfaceStyle:()LPExtras
 {
-  v5 = [a1 imageAsset];
+  imageAsset = [self imageAsset];
 
-  if (v5)
+  if (imageAsset)
   {
-    v6 = [a1 imageAsset];
+    imageAsset2 = [self imageAsset];
     if (a3 == 1)
     {
       v7 = 2;
@@ -54,18 +54,18 @@
     }
 
     v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:v7];
-    v9 = [v6 imageWithTraitCollection:v8];
+    v9 = [imageAsset2 imageWithTraitCollection:v8];
 
-    v10 = [v9 _lp_CGImage];
-    v11 = [MEMORY[0x1E69DCAB8] _lp_createImageWithCGImage:v10];
+    _lp_CGImage = [v9 _lp_CGImage];
+    selfCopy = [MEMORY[0x1E69DCAB8] _lp_createImageWithCGImage:_lp_CGImage];
   }
 
   else
   {
-    v11 = a1;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

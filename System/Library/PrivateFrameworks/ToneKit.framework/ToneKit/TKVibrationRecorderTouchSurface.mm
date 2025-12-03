@@ -1,25 +1,25 @@
 @interface TKVibrationRecorderTouchSurface
-- (TKVibrationRecorderTouchSurface)initWithVibrationPatternMaximumDuration:(double)a3 styleProvider:(id)a4;
+- (TKVibrationRecorderTouchSurface)initWithVibrationPatternMaximumDuration:(double)duration styleProvider:(id)provider;
 - (TKVibrationRecorderTouchSurfaceDelegate)delegate;
-- (void)_updateTouchLocationForReplayMode:(id)a3;
+- (void)_updateTouchLocationForReplayMode:(id)mode;
 - (void)currentVibrationComponentShouldEnd;
 - (void)dealloc;
 - (void)enterRecordingMode;
-- (void)enterReplayModeWithVibrationPattern:(id)a3;
+- (void)enterReplayModeWithVibrationPattern:(id)pattern;
 - (void)exitRecordingMode;
 - (void)exitReplayMode;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation TKVibrationRecorderTouchSurface
 
-- (TKVibrationRecorderTouchSurface)initWithVibrationPatternMaximumDuration:(double)a3 styleProvider:(id)a4
+- (TKVibrationRecorderTouchSurface)initWithVibrationPatternMaximumDuration:(double)duration styleProvider:(id)provider
 {
   v9.receiver = self;
   v9.super_class = TKVibrationRecorderTouchSurface;
-  v5 = [(TKVibrationRecorderRippleView *)&v9 initWithStyleProvider:a4];
+  v5 = [(TKVibrationRecorderRippleView *)&v9 initWithStyleProvider:provider];
   v6 = v5;
   if (v5)
   {
@@ -30,7 +30,7 @@
     [(TKVibrationRecorderTouchSurface *)v6 setAccessibilityLabel:v7];
 
     [(TKVibrationRecorderTouchSurface *)v6 setAccessibilityHint:0];
-    v6->_vibrationPatternMaximumDuration = a3;
+    v6->_vibrationPatternMaximumDuration = duration;
   }
 
   return v6;
@@ -45,18 +45,18 @@
   [(TKVibrationRecorderRippleView *)&v3 dealloc];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v14 = a3;
-  v6 = [(TKVibrationRecorderTouchSurface *)self delegate];
-  v7 = v6;
-  if ((self->_isRecordingModeEnabled || self->_isReplayModeEnabled || [v6 vibrationRecorderTouchSurfaceDidEnterRecordingMode:self] && self->_isRecordingModeEnabled) && (!a4 || !v14 || !self->_isReplayModeEnabled))
+  beganCopy = began;
+  delegate = [(TKVibrationRecorderTouchSurface *)self delegate];
+  v7 = delegate;
+  if ((self->_isRecordingModeEnabled || self->_isReplayModeEnabled || [delegate vibrationRecorderTouchSurfaceDidEnterRecordingMode:self] && self->_isRecordingModeEnabled) && (!event || !beganCopy || !self->_isReplayModeEnabled))
   {
-    v8 = [v14 anyObject];
-    v9 = v8;
-    if (v8)
+    anyObject = [beganCopy anyObject];
+    v9 = anyObject;
+    if (anyObject)
     {
-      [v8 locationInView:self];
+      [anyObject locationInView:self];
       v11 = v10;
       v13 = v12;
     }
@@ -82,23 +82,23 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v23 = a3;
-  v6 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   isRecordingModeEnabled = self->_isRecordingModeEnabled;
-  if ((isRecordingModeEnabled || self->_isReplayModeEnabled) && (!self->_isRecordingModeEnabled || !self->_shouldIgnoreCurrentTouch) && (!v23 || !v6 || !self->_isReplayModeEnabled))
+  if ((isRecordingModeEnabled || self->_isReplayModeEnabled) && (!self->_isRecordingModeEnabled || !self->_shouldIgnoreCurrentTouch) && (!movedCopy || !eventCopy || !self->_isReplayModeEnabled))
   {
     [(TKVibrationRecorderTouchSurface *)self bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v23 anyObject];
-    v17 = v16;
-    if (v16)
+    anyObject = [movedCopy anyObject];
+    v17 = anyObject;
+    if (anyObject)
     {
-      [v16 locationInView:self];
+      [anyObject locationInView:self];
       v19 = v18;
       v21 = v20;
     }
@@ -136,10 +136,10 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v16 = a3;
-  v6 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   isRecordingModeEnabled = self->_isRecordingModeEnabled;
   if (!self->_isReplayModeEnabled)
   {
@@ -149,11 +149,11 @@
     }
 
 LABEL_6:
-    v9 = [v16 anyObject];
-    v10 = v9;
-    if (v9)
+    anyObject = [endedCopy anyObject];
+    v10 = anyObject;
+    if (anyObject)
     {
-      [v9 locationInView:self];
+      [anyObject locationInView:self];
       v12 = v11;
       v14 = v13;
       if (isRecordingModeEnabled)
@@ -173,8 +173,8 @@ LABEL_8:
         if (!self->_shouldIgnoreCurrentTouch)
         {
           [(TKVibrationRecorderRippleView *)self _touchEndedAtLocation:v12, v14];
-          v15 = [(TKVibrationRecorderTouchSurface *)self delegate];
-          [v15 vibrationComponentDidEndForVibrationRecorderTouchSurface:self];
+          delegate = [(TKVibrationRecorderTouchSurface *)self delegate];
+          [delegate vibrationComponentDidEndForVibrationRecorderTouchSurface:self];
         }
 
         goto LABEL_12;
@@ -187,8 +187,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [v16 count];
-  if (!v6 || !v8)
+  v8 = [endedCopy count];
+  if (!eventCopy || !v8)
   {
     goto LABEL_6;
   }
@@ -217,8 +217,8 @@ LABEL_13:
     [(TKVibrationRecorderTouchSurface *)self touchesEnded:v5 withEvent:0];
     self->_isRecordingModeEnabled = 0;
     [(TKVibrationRecorderTouchSurfaceRecordedDataWrapper *)self->_recordedDataWrapper didStopRecording];
-    v3 = [(TKVibrationRecorderTouchSurface *)self delegate];
-    [v3 vibrationRecorderTouchSurface:self didExitRecordingModeWithContextObject:self->_recordedDataWrapper];
+    delegate = [(TKVibrationRecorderTouchSurface *)self delegate];
+    [delegate vibrationRecorderTouchSurface:self didExitRecordingModeWithContextObject:self->_recordedDataWrapper];
 
     recordedDataWrapper = self->_recordedDataWrapper;
     self->_recordedDataWrapper = 0;
@@ -235,13 +235,13 @@ LABEL_13:
   }
 }
 
-- (void)enterReplayModeWithVibrationPattern:(id)a3
+- (void)enterReplayModeWithVibrationPattern:(id)pattern
 {
-  v5 = a3;
+  patternCopy = pattern;
   if (!self->_isReplayModeEnabled)
   {
     self->_isReplayModeEnabled = 1;
-    objc_storeStrong(&self->_vibrationPatternToReplay, a3);
+    objc_storeStrong(&self->_vibrationPatternToReplay, pattern);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     self->_replayModeWasEnteredStartTime = v6;
     v7 = +[TKDisplayLinkManager currentDisplayLinkManager];
@@ -274,14 +274,14 @@ LABEL_13:
   }
 }
 
-- (void)_updateTouchLocationForReplayMode:(id)a3
+- (void)_updateTouchLocationForReplayMode:(id)mode
 {
   v19 = *MEMORY[0x277CBF348];
   v18 = 0;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v5 = v4 - self->_replayModeWasEnteredStartTime;
-  v6 = [(TLVibrationPattern *)self->_vibrationPatternToReplay contextObject];
-  v7 = [v6 getNormalizedTouchLocation:&v19 touchPhase:&v18 forTimeInterval:v5];
+  contextObject = [(TLVibrationPattern *)self->_vibrationPatternToReplay contextObject];
+  v7 = [contextObject getNormalizedTouchLocation:&v19 touchPhase:&v18 forTimeInterval:v5];
 
   if (v7)
   {
@@ -300,8 +300,8 @@ LABEL_13:
       v21.size.width = width;
       v21.size.height = height;
       v15 = v14 * CGRectGetHeight(v21);
-      v16 = [(TKVibrationRecorderRippleView *)self _isTouchDown];
-      if (v18 == 2 && !v16)
+      _isTouchDown = [(TKVibrationRecorderRippleView *)self _isTouchDown];
+      if (v18 == 2 && !_isTouchDown)
       {
         v18 = 1;
 LABEL_6:
@@ -309,7 +309,7 @@ LABEL_6:
         return;
       }
 
-      if (v18 == 1 && v16)
+      if (v18 == 1 && _isTouchDown)
       {
         v18 = 2;
 LABEL_11:
@@ -333,8 +333,8 @@ LABEL_11:
   else
   {
     [(TKVibrationRecorderTouchSurface *)self exitReplayMode];
-    v17 = [(TKVibrationRecorderTouchSurface *)self delegate];
-    [v17 vibrationRecorderTouchSurfaceDidFinishReplayingVibration:self];
+    delegate = [(TKVibrationRecorderTouchSurface *)self delegate];
+    [delegate vibrationRecorderTouchSurfaceDidFinishReplayingVibration:self];
   }
 }
 

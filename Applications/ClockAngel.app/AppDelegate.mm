@@ -1,12 +1,12 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC10ClockAngel11AppDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v4 = objc_opt_self();
   v5 = String._bridgeToObjectiveC()();
@@ -15,13 +15,13 @@
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 role];
+  sessionCopy = session;
+  role = [sessionCopy role];
   v7 = objc_allocWithZone(UISceneConfiguration);
   v8 = String._bridgeToObjectiveC()();
-  v9 = [v7 initWithName:v8 sessionRole:v6];
+  v9 = [v7 initWithName:v8 sessionRole:role];
 
   return v9;
 }

@@ -1,7 +1,7 @@
 @interface ManageStorageApp
 - (NSArray)bundleIds;
 - (_TtC14iCloudSettings16ManageStorageApp)init;
-- (void)setBundleIds:(id)a3;
+- (void)setBundleIds:(id)ids;
 @end
 
 @implementation ManageStorageApp
@@ -15,7 +15,7 @@
   return v3;
 }
 
-- (void)setBundleIds:(id)a3
+- (void)setBundleIds:(id)ids
 {
   v4 = sub_2759BA3E8();
   v5 = *(self + OBJC_IVAR____TtC14iCloudSettings16ManageStorageApp_bundleIds);

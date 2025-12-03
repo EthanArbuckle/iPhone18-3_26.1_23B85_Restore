@@ -1,19 +1,19 @@
 @interface SFSiteCardRedesignCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SFSiteCardRedesignCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFSiteCardRedesignCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SFSiteCardRedesignCell" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SFSiteCardRedesignCell" hasInstanceVariable:@"_captionLabel" withType:"SFSiteCardSourceView"];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFSiteCardSourceView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFSiteCardRedesignCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFSiteCardRedesignCell" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFSiteCardRedesignCell" hasInstanceVariable:@"_captionLabel" withType:"SFSiteCardSourceView"];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFSiteCardSourceView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

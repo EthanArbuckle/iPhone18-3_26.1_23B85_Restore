@@ -1,15 +1,15 @@
 @interface TSCH3DPerspectiveLens
 - (TSCH3DPerspectiveLens)init;
 - (id)asFrustumLens;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)frustumRect;
-- (id)frustumRectAtDistance:(float)a3;
+- (id)frustumRectAtDistance:(float)distance;
 - (id)matrixDescription;
-- (id)narrowedByNormalizedBounds:(void *)a3;
-- (id)shiftedByPercentage:(void *)a3;
+- (id)narrowedByNormalizedBounds:(void *)bounds;
+- (id)shiftedByPercentage:(void *)percentage;
 - (tmat4x4<float>)matrix;
-- (void)calculateCullingPlanes:(void *)a3;
+- (void)calculateCullingPlanes:(void *)planes;
 @end
 
 @implementation TSCH3DPerspectiveLens
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22.receiver = self;
   v22.super_class = TSCH3DPerspectiveLens;
-  v5 = [(TSCH3DLens *)&v22 copyWithZone:a3];
+  v5 = [(TSCH3DLens *)&v22 copyWithZone:zone];
   if (v5)
   {
     objc_msgSend_fov(self, v4, v6, v7, v8);
@@ -80,12 +80,12 @@
   return MEMORY[0x2821F9670](TSCH3DFrustumRect, sel_rectWithLeft_right_bottom_top_, v2, v3, v4);
 }
 
-- (id)frustumRectAtDistance:(float)a3
+- (id)frustumRectAtDistance:(float)distance
 {
   v10 = 0;
   v11 = 0;
   sub_2761B502C(self, &v11 + 1, &v11, &v10 + 1, &v10);
-  v5 = a3 / self->super._near;
+  v5 = distance / self->super._near;
   *&v6 = v5 * *(&v11 + 1);
   *&v7 = v5 * *&v11;
   *&v8 = v5 * *(&v10 + 1);
@@ -140,23 +140,23 @@
   return v6;
 }
 
-- (id)narrowedByNormalizedBounds:(void *)a3
+- (id)narrowedByNormalizedBounds:(void *)bounds
 {
   v7 = objc_msgSend_asFrustumLens(self, a2, v3, v4, v5);
-  v12 = objc_msgSend_narrowByNormalizedBounds_(v7, v8, v9, v10, v11, a3);
+  v12 = objc_msgSend_narrowByNormalizedBounds_(v7, v8, v9, v10, v11, bounds);
 
   return v12;
 }
 
-- (id)shiftedByPercentage:(void *)a3
+- (id)shiftedByPercentage:(void *)percentage
 {
   v7 = objc_msgSend_asFrustumLens(self, a2, v3, v4, v5);
-  v12 = objc_msgSend_shiftedByPercentage_(v7, v8, v9, v10, v11, a3);
+  v12 = objc_msgSend_shiftedByPercentage_(v7, v8, v9, v10, v11, percentage);
 
   return v12;
 }
 
-- (void)calculateCullingPlanes:(void *)a3
+- (void)calculateCullingPlanes:(void *)planes
 {
   v39.receiver = self;
   v39.super_class = TSCH3DPerspectiveLens;
@@ -191,13 +191,13 @@
   v30 = 0;
   v31 = 0;
   sub_2761B4B70(&v30, v34, v33, v29);
-  sub_2761B3F30(a3, v29);
+  sub_2761B3F30(planes, v29);
   sub_2761B4B70(&v30, v33, v32, v29);
-  sub_2761B3F30(a3, v29);
+  sub_2761B3F30(planes, v29);
   sub_2761B4B70(&v30, v32, v35, v29);
-  sub_2761B3F30(a3, v29);
+  sub_2761B3F30(planes, v29);
   sub_2761B4B70(&v30, v35, v34, v29);
-  sub_2761B3F30(a3, v29);
+  sub_2761B3F30(planes, v29);
 }
 
 @end

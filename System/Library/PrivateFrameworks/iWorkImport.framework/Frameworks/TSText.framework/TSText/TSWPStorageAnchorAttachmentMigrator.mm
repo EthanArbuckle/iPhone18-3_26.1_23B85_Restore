@@ -1,22 +1,22 @@
 @interface TSWPStorageAnchorAttachmentMigrator
-- (id)commandsForDidInsertIntoDestinationWPStorage:(id)a3 insertionLocation:(unint64_t)a4 dolcContext:(id)a5;
-- (id)didCopyFromSourceWPStorage:(id)a3 toTemporaryStorage:(id)a4 copiedRange:(_NSRange)a5;
+- (id)commandsForDidInsertIntoDestinationWPStorage:(id)storage insertionLocation:(unint64_t)location dolcContext:(id)context;
+- (id)didCopyFromSourceWPStorage:(id)storage toTemporaryStorage:(id)temporaryStorage copiedRange:(_NSRange)range;
 @end
 
 @implementation TSWPStorageAnchorAttachmentMigrator
 
-- (id)didCopyFromSourceWPStorage:(id)a3 toTemporaryStorage:(id)a4 copiedRange:(_NSRange)a5
+- (id)didCopyFromSourceWPStorage:(id)storage toTemporaryStorage:(id)temporaryStorage copiedRange:(_NSRange)range
 {
-  location = a5.location;
-  v6 = a3;
-  v7 = a4;
-  v59 = v6;
-  v61 = objc_msgSend_documentRoot(v6, v8, v9, v7);
-  v63 = v7;
+  location = range.location;
+  storageCopy = storage;
+  temporaryStorageCopy = temporaryStorage;
+  v59 = storageCopy;
+  v61 = objc_msgSend_documentRoot(storageCopy, v8, v9, temporaryStorageCopy);
+  v63 = temporaryStorageCopy;
   v65 = v63;
   if (objc_opt_respondsToSelector())
   {
-    v64 = objc_msgSend_attributeArrayForKind_withCreate_(v6, v10, 4, 0);
+    v64 = objc_msgSend_attributeArrayForKind_withCreate_(storageCopy, v10, 4, 0);
     v12 = objc_msgSend_attributeArrayForKind_withCreate_(v63, v11, 4, 0);
     v65 = v63;
     if (v64)
@@ -109,7 +109,7 @@
   return v65;
 }
 
-- (id)commandsForDidInsertIntoDestinationWPStorage:(id)a3 insertionLocation:(unint64_t)a4 dolcContext:(id)a5
+- (id)commandsForDidInsertIntoDestinationWPStorage:(id)storage insertionLocation:(unint64_t)location dolcContext:(id)context
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
 

@@ -11,8 +11,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v1 = a1;
-  v2 = [v1 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v2 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v2)
   {
     v3 = v2;
@@ -26,7 +26,7 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -58,7 +58,7 @@
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v3 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v3);

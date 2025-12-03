@@ -6,8 +6,8 @@
 
 - (NSNumber)smsVerificationCodeLength
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"smsChallengeLength"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"smsChallengeLength"];
 
   return v3;
 }

@@ -1,15 +1,15 @@
 @interface PKToolPickerItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)_dictionaryRepresentation;
-- (PKToolPickerItem)initWithTool:(id)a3 identifier:(id)a4;
+- (PKToolPickerItem)initWithTool:(id)tool identifier:(id)identifier;
 - (UIColor)color;
 - (double)width;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_reloadImage;
-- (void)_setColor:(id)a3 shouldCallObserver:(BOOL)a4;
-- (void)_setWidth:(double)a3 shouldCallObserver:(BOOL)a4;
-- (void)_updateTool:(id)a3 shouldCallObserver:(BOOL)a4;
+- (void)_setColor:(id)color shouldCallObserver:(BOOL)observer;
+- (void)_setWidth:(double)width shouldCallObserver:(BOOL)observer;
+- (void)_updateTool:(id)tool shouldCallObserver:(BOOL)observer;
 @end
 
 @implementation PKToolPickerItem
@@ -18,33 +18,33 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"identifier";
-  v2 = [(PKToolPickerItem *)self _tool];
-  v3 = [v2 ink];
-  v4 = [v3 identifier];
-  v8[0] = v4;
+  _tool = [(PKToolPickerItem *)self _tool];
+  v3 = [_tool ink];
+  identifier = [v3 identifier];
+  v8[0] = identifier;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-- (PKToolPickerItem)initWithTool:(id)a3 identifier:(id)a4
+- (PKToolPickerItem)initWithTool:(id)tool identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  toolCopy = tool;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PKToolPickerItem;
   v9 = [(PKToolPickerItem *)&v13 init];
   if (v9)
   {
-    if (v8)
+    if (identifierCopy)
     {
-      [v7 _setToolPickerItemIdentifier:v8];
+      [toolCopy _setToolPickerItemIdentifier:identifierCopy];
     }
 
-    objc_storeStrong(&v9->__tool, a3);
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v9->__tool, tool);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v9->_observers;
-    v9->_observers = v10;
+    v9->_observers = weakObjectsHashTable;
   }
 
   return v9;
@@ -52,50 +52,50 @@
 
 - (UIColor)color
 {
-  v3 = [(PKTool *)self->__tool _configuration];
-  v4 = [v3 supportsColor];
+  _configuration = [(PKTool *)self->__tool _configuration];
+  supportsColor = [_configuration supportsColor];
 
-  if (v4)
+  if (supportsColor)
   {
-    v5 = [(PKTool *)self->__tool _color];
-    v6 = v5;
-    if (v5)
+    _color = [(PKTool *)self->__tool _color];
+    v6 = _color;
+    if (_color)
     {
-      v7 = v5;
+      blackColor = _color;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC888] blackColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
     }
 
-    v8 = v7;
+    blackColor2 = blackColor;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  return v8;
+  return blackColor2;
 }
 
-- (void)_setColor:(id)a3 shouldCallObserver:(BOOL)a4
+- (void)_setColor:(id)color shouldCallObserver:(BOOL)observer
 {
-  v4 = a4;
-  v16 = a3;
-  v6 = [(PKTool *)self->__tool _configuration];
-  v7 = [v6 supportsColor];
+  observerCopy = observer;
+  colorCopy = color;
+  _configuration = [(PKTool *)self->__tool _configuration];
+  supportsColor = [_configuration supportsColor];
 
-  if (v7)
+  if (supportsColor)
   {
-    v8 = [(PKToolPickerItem *)self color];
-    v9 = v8;
-    v10 = v16;
-    ConvertedToSRGB = DKUCGColorCreateConvertedToSRGB([v8 CGColor]);
-    v12 = [v10 CGColor];
+    color = [(PKToolPickerItem *)self color];
+    v9 = color;
+    v10 = colorCopy;
+    ConvertedToSRGB = DKUCGColorCreateConvertedToSRGB([color CGColor]);
+    cGColor = [v10 CGColor];
 
-    v13 = DKUCGColorCreateConvertedToSRGB(v12);
+    v13 = DKUCGColorCreateConvertedToSRGB(cGColor);
     IsEqualToColorIgnoringOpacityWithTolerance = DKUColorIsEqualToColorIgnoringOpacityWithTolerance(ConvertedToSRGB, v13, 0, 0.000000999999997);
     CGColorRelease(ConvertedToSRGB);
     CGColorRelease(v13);
@@ -103,17 +103,17 @@
     if (!IsEqualToColorIgnoringOpacityWithTolerance)
     {
       v15 = [(PKToolPickerItem *)self _toolCopyWithColor:v10];
-      [(PKToolPickerItem *)self _updateTool:v15 shouldCallObserver:v4];
+      [(PKToolPickerItem *)self _updateTool:v15 shouldCallObserver:observerCopy];
     }
   }
 }
 
 - (double)width
 {
-  v3 = [(PKTool *)self->__tool _configuration];
-  v4 = [v3 supportsStrokeWeight];
+  _configuration = [(PKTool *)self->__tool _configuration];
+  supportsStrokeWeight = [_configuration supportsStrokeWeight];
 
-  if (!v4)
+  if (!supportsStrokeWeight)
   {
     return 0.0;
   }
@@ -124,19 +124,19 @@
   return result;
 }
 
-- (void)_setWidth:(double)a3 shouldCallObserver:(BOOL)a4
+- (void)_setWidth:(double)width shouldCallObserver:(BOOL)observer
 {
-  v4 = a4;
-  v7 = [(PKTool *)self->__tool _configuration];
-  v8 = [v7 supportsStrokeWeight];
+  observerCopy = observer;
+  _configuration = [(PKTool *)self->__tool _configuration];
+  supportsStrokeWeight = [_configuration supportsStrokeWeight];
 
-  if (v8)
+  if (supportsStrokeWeight)
   {
     [(PKToolPickerItem *)self width];
-    if (vabdd_f64(v9, a3) >= 0.01)
+    if (vabdd_f64(v9, width) >= 0.01)
     {
-      v10 = [(PKToolPickerItem *)self _toolCopyWithWidth:a3];
-      [(PKToolPickerItem *)self _updateTool:v10 shouldCallObserver:v4];
+      v10 = [(PKToolPickerItem *)self _toolCopyWithWidth:width];
+      [(PKToolPickerItem *)self _updateTool:v10 shouldCallObserver:observerCopy];
     }
   }
 }
@@ -175,15 +175,15 @@
   }
 }
 
-- (void)_updateTool:(id)a3 shouldCallObserver:(BOOL)a4
+- (void)_updateTool:(id)tool shouldCallObserver:(BOOL)observer
 {
-  v4 = a4;
+  observerCopy = observer;
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  toolCopy = tool;
+  if (toolCopy)
   {
-    objc_storeStrong(&self->__tool, a3);
-    if (v4)
+    objc_storeStrong(&self->__tool, tool);
+    if (observerCopy)
     {
       v15 = 0u;
       v16 = 0u;
@@ -218,9 +218,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   tool = self->__tool;
 
   return [v4 initWithTool:tool];
@@ -228,21 +228,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PKToolPickerItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PKToolPickerItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PKToolPickerItem *)self _tool];
-    v6 = [v4 _tool];
-    v7 = [v5 isEqual:v6];
+    _tool = [(PKToolPickerItem *)self _tool];
+    _tool2 = [equalCopy _tool];
+    v7 = [_tool isEqual:_tool2];
   }
 
   else

@@ -1,28 +1,28 @@
 @interface _HKXPCConnection
-- (_HKXPCConnection)initWithListenerEndpoint:(id)a3;
-- (_HKXPCConnection)initWithMachServiceName:(id)a3 options:(unint64_t)a4;
-- (_HKXPCConnection)initWithServiceName:(id)a3;
-- (_HKXPCConnection)initWithUnderlyingConnection:(id)a3;
+- (_HKXPCConnection)initWithListenerEndpoint:(id)endpoint;
+- (_HKXPCConnection)initWithMachServiceName:(id)name options:(unint64_t)options;
+- (_HKXPCConnection)initWithServiceName:(id)name;
+- (_HKXPCConnection)initWithUnderlyingConnection:(id)connection;
 - (_HKXPCExportable)exportedObject;
 - (id)_loggingPrefix;
 - (void)dealloc;
 - (void)resume;
-- (void)resumeWithExportedInterface:(id)a3 remoteInterface:(id)a4;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)resumeWithExportedInterface:(id)interface remoteInterface:(id)remoteInterface;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 - (void)unitTest_interrupt;
 @end
 
 @implementation _HKXPCConnection
 
-- (_HKXPCConnection)initWithServiceName:(id)a3
+- (_HKXPCConnection)initWithServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:v4];
+  nameCopy = name;
+  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:nameCopy];
   if (v5)
   {
     self = [(_HKXPCConnection *)self initWithUnderlyingConnection:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -31,23 +31,23 @@
     v7 = HKLogDefault;
     if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_ERROR))
     {
-      [(_HKXPCConnection *)v4 initWithServiceName:v7];
+      [(_HKXPCConnection *)nameCopy initWithServiceName:v7];
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (_HKXPCConnection)initWithMachServiceName:(id)a3 options:(unint64_t)a4
+- (_HKXPCConnection)initWithMachServiceName:(id)name options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v6 options:a4];
+  nameCopy = name;
+  v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:options];
   if (v7)
   {
     self = [(_HKXPCConnection *)self initWithUnderlyingConnection:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -56,33 +56,33 @@
     v9 = HKLogDefault;
     if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_ERROR))
     {
-      [(_HKXPCConnection *)v6 initWithServiceName:v9];
+      [(_HKXPCConnection *)nameCopy initWithServiceName:v9];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (_HKXPCConnection)initWithListenerEndpoint:(id)a3
+- (_HKXPCConnection)initWithListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (!v5)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
     [(_HKXPCConnection *)a2 initWithListenerEndpoint:?];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v5];
+  v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
   v7 = [(_HKXPCConnection *)self initWithUnderlyingConnection:v6];
 
   return v7;
 }
 
-- (_HKXPCConnection)initWithUnderlyingConnection:(id)a3
+- (_HKXPCConnection)initWithUnderlyingConnection:(id)connection
 {
-  v6 = a3;
-  if (!v6)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     [(_HKXPCConnection *)a2 initWithUnderlyingConnection:?];
   }
@@ -93,7 +93,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_underlyingConnection, a3);
+    objc_storeStrong(&v7->_underlyingConnection, connection);
     [(_HKXPCConnection *)v8 setInterruptionHandler:0];
     [(_HKXPCConnection *)v8 setInvalidationHandler:0];
   }
@@ -113,16 +113,16 @@
 - (void)resume
 {
   WeakRetained = objc_loadWeakRetained(&self->_exportedObject);
-  v3 = [WeakRetained exportedInterface];
+  exportedInterface = [WeakRetained exportedInterface];
   v4 = objc_loadWeakRetained(&self->_exportedObject);
-  v5 = [v4 remoteInterface];
-  [(_HKXPCConnection *)self resumeWithExportedInterface:v3 remoteInterface:v5];
+  remoteInterface = [v4 remoteInterface];
+  [(_HKXPCConnection *)self resumeWithExportedInterface:exportedInterface remoteInterface:remoteInterface];
 }
 
-- (void)resumeWithExportedInterface:(id)a3 remoteInterface:(id)a4
+- (void)resumeWithExportedInterface:(id)interface remoteInterface:(id)remoteInterface
 {
-  v7 = a3;
-  v8 = a4;
+  interfaceCopy = interface;
+  remoteInterfaceCopy = remoteInterface;
   WeakRetained = objc_loadWeakRetained(&self->_exportedObject);
 
   if (!WeakRetained)
@@ -133,13 +133,13 @@
   v10 = objc_loadWeakRetained(&self->_exportedObject);
   if (v10)
   {
-    v11 = [(_HKXPCConnection *)self _loggingPrefix];
-    v12 = [(NSXPCConnection *)self->_underlyingConnection serviceName];
-    v13 = v12;
+    _loggingPrefix = [(_HKXPCConnection *)self _loggingPrefix];
+    serviceName = [(NSXPCConnection *)self->_underlyingConnection serviceName];
+    v13 = serviceName;
     v14 = @"<anonymous>";
-    if (v12)
+    if (serviceName)
     {
-      v14 = v12;
+      v14 = serviceName;
     }
 
     v15 = v14;
@@ -150,7 +150,7 @@
     v27[1] = 3221225472;
     v27[2] = __64___HKXPCConnection_resumeWithExportedInterface_remoteInterface___block_invoke;
     v27[3] = &unk_1E7384340;
-    v17 = v11;
+    v17 = _loggingPrefix;
     v28 = v17;
     v18 = v15;
     v29 = v18;
@@ -167,8 +167,8 @@
     v25 = v21;
     objc_copyWeak(&v26, &location);
     [(NSXPCConnection *)v19 setInvalidationHandler:v23];
-    [(NSXPCConnection *)self->_underlyingConnection setExportedInterface:v7];
-    [(NSXPCConnection *)self->_underlyingConnection setRemoteObjectInterface:v8];
+    [(NSXPCConnection *)self->_underlyingConnection setExportedInterface:interfaceCopy];
+    [(NSXPCConnection *)self->_underlyingConnection setRemoteObjectInterface:remoteInterfaceCopy];
     v22 = objc_alloc_init(_HKXPCExportedObjectProxy);
     [(_HKXPCExportedObjectProxy *)v22 setWeakExportedObject:v10];
     [(NSXPCConnection *)self->_underlyingConnection setExportedObject:v22];
@@ -197,10 +197,10 @@
   }
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
@@ -208,20 +208,20 @@
     v7[2] = __43___HKXPCConnection_setInterruptionHandler___block_invoke;
     v7[3] = &unk_1E73782E8;
     objc_copyWeak(&v8, &location);
-    v4 = _Block_copy(v7);
+    handlerCopy = _Block_copy(v7);
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(handlerCopy);
   interruptionHandler = self->_interruptionHandler;
   self->_interruptionHandler = v5;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
@@ -229,12 +229,12 @@
     v7[2] = __43___HKXPCConnection_setInvalidationHandler___block_invoke;
     v7[3] = &unk_1E73782E8;
     objc_copyWeak(&v8, &location);
-    v4 = _Block_copy(v7);
+    handlerCopy = _Block_copy(v7);
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(handlerCopy);
   invalidationHandler = self->_invalidationHandler;
   self->_invalidationHandler = v5;
 }

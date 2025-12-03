@@ -1,28 +1,28 @@
 @interface BLSHSystemWakeWaiter
-+ (id)waiterWithIdentifier:(id)a3 osInterfaceProvider:(id)a4;
-- (BLSHSystemWakeWaiter)initWithIdentifier:(id)a3 osInterfaceProvider:(id)a4;
++ (id)waiterWithIdentifier:(id)identifier osInterfaceProvider:(id)provider;
+- (BLSHSystemWakeWaiter)initWithIdentifier:(id)identifier osInterfaceProvider:(id)provider;
 - (void)_lock_invalidate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)runWhenAwakeWithCompletion:(id)a3;
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3;
+- (void)runWhenAwakeWithCompletion:(id)completion;
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep;
 @end
 
 @implementation BLSHSystemWakeWaiter
 
-+ (id)waiterWithIdentifier:(id)a3 osInterfaceProvider:(id)a4
++ (id)waiterWithIdentifier:(id)identifier osInterfaceProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdentifier:v7 osInterfaceProvider:v6];
+  providerCopy = provider;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithIdentifier:identifierCopy osInterfaceProvider:providerCopy];
 
   return v8;
 }
 
-- (BLSHSystemWakeWaiter)initWithIdentifier:(id)a3 osInterfaceProvider:(id)a4
+- (BLSHSystemWakeWaiter)initWithIdentifier:(id)identifier osInterfaceProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = BLSHSystemWakeWaiter;
   v9 = [(BLSHSystemWakeWaiter *)&v12 init];
@@ -30,8 +30,8 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_osInterfaceProvider, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_osInterfaceProvider, provider);
   }
 
   return v10;
@@ -39,7 +39,7 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"must invalidate %@ before dealloc", a1];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"must invalidate %@ before dealloc", self];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v4 = NSStringFromSelector(a2);
@@ -59,10 +59,10 @@
   __break(0);
 }
 
-- (void)runWhenAwakeWithCompletion:(id)a3
+- (void)runWhenAwakeWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   v6 = self->_osInterfaceProvider;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_waiting)
@@ -70,22 +70,22 @@
     [(BLSHSystemWakeWaiter *)self runWhenAwakeWithCompletion:a2];
   }
 
-  v7 = [(BLSHOSInterfaceProviding *)v6 systemSleepMonitor];
-  if ([v7 isAwakeOrAbortingSleep] && (objc_msgSend(v7, "hasSleepBeenRequested") & 1) == 0)
+  systemSleepMonitor = [(BLSHOSInterfaceProviding *)v6 systemSleepMonitor];
+  if ([systemSleepMonitor isAwakeOrAbortingSleep] && (objc_msgSend(systemSleepMonitor, "hasSleepBeenRequested") & 1) == 0)
   {
     v12 = bls_backlight_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       identifier = self->_identifier;
       v15 = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = identifier;
       _os_log_impl(&dword_21FD11000, v12, OS_LOG_TYPE_DEBUG, "%@:%@ asked to run block while system is awake, running now.", &v15, 0x16u);
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -95,16 +95,16 @@
     {
       v9 = self->_identifier;
       v15 = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v9;
       _os_log_impl(&dword_21FD11000, v8, OS_LOG_TYPE_DEFAULT, "%@:%@ asked to run block while system is asleep, waiting.", &v15, 0x16u);
     }
 
     self->_lock_waitStartTimestamp = mach_continuous_time();
-    [v7 addObserver:self];
+    [systemSleepMonitor addObserver:self];
     self->_lock_waiting = 1;
-    v10 = MEMORY[0x223D70730](v5);
+    v10 = MEMORY[0x223D70730](completionCopy);
     lock_completion = self->_lock_completion;
     self->_lock_completion = v10;
 
@@ -114,7 +114,7 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep
 {
   v23 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -136,7 +136,7 @@
 
       v13 = MEMORY[0x223D70730](self->_lock_completion);
       v15 = 138413058;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = identifier;
       v19 = 2112;
@@ -160,7 +160,7 @@
       lock_didWakeTimestamp = self->_lock_didWakeTimestamp;
       BSTimeDifferenceFromMachTimeToMachTime();
       v15 = 138412802;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v5;
       v19 = 2048;
@@ -189,8 +189,8 @@
 
 - (void)_lock_invalidate
 {
-  v4 = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
-  [v4 removeObserver:self];
+  systemSleepMonitor = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
+  [systemSleepMonitor removeObserver:self];
   self->_lock_invalidated = 1;
   lock_completion = self->_lock_completion;
   self->_lock_completion = 0;

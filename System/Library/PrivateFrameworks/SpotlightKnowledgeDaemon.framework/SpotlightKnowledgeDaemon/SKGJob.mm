@@ -1,55 +1,55 @@
 @interface SKGJob
-- (BOOL)_archiveCoreSpotlightItems:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 batchArchivedBlock:(id)a6 cancelBlock:(id)a7 errorBlock:(id)a8;
-- (BOOL)_buildCSCountingReportWithQueryString:(id)a3 queryContext:(id)a4 flags:(unsigned int)a5 reporter:(id)a6 cancelBlock:(id)a7;
-- (BOOL)_recordIsOld:(id)a3 dateKeys:(id)a4;
-- (BOOL)_reindexCoreSpotlightIdentifiers:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 batchProcessedBlock:(id)a6 cancelBlock:(id)a7;
-- (BOOL)_runCSCleanupForQueryString:(id)a3 trackingAttributes:(id)a4 queryContext:(id)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7;
-- (BOOL)_runCSExtractForQueryString:(id)a3 queryContext:(id)a4 flags:(unsigned int)a5 processedItemBlock:(id)a6 batchArchivedBlock:(id)a7 batchUpdatedBlock:(id)a8 cancelBlock:(id)a9 errorBlock:(id)a10;
-- (BOOL)_runCSPollingQuery:(id)a3 foundItemBlock:(id)a4;
-- (BOOL)_runCSPollingQueryString:(id)a3 queryContext:(id)a4 foundItemBlock:(id)a5;
-- (BOOL)_runCSProcessingForTask:(id)a3 queryString:(id)a4 queryContext:(id)a5 batchProcessedBlock:(id)a6 batchUpdatedBlock:(id)a7 cancelBlock:(id)a8;
-- (BOOL)_runCSReindexForQueryString:(id)a3 queryContext:(id)a4 processorFlags:(unint64_t)a5 batchProcessedBlock:(id)a6 batchUpdatedBlock:(id)a7 cancelBlock:(id)a8;
-- (BOOL)_updateCoreSpotlightItems:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 cancelBlock:(id)a6;
-- (BOOL)_updateCoreSpotlightItems:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7;
-- (BOOL)performCSIndexProcessingJob:(id)a3 cancelBlock:(id)a4;
-- (BOOL)requestCSCleanupForUpdater:(id)a3 protectionClasses:(id)a4 flags:(unsigned int)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7;
-- (BOOL)requestCSCleanupWithProtectionClasses:(id)a3 batchUpdatedBlock:(id)a4 cancelBlock:(id)a5;
-- (BOOL)requestCSDocumentUnderstandingProgressReport:(id)a3 cancelBlock:(id)a4;
-- (BOOL)requestCSEmbeddingsProgressReport:(id)a3 cancelBlock:(id)a4;
-- (BOOL)requestCSProcessingWithProcessedItemBlock:(id)a3 batchArchivedBlock:(id)a4 batchUpdatedBlock:(id)a5 cancelBlock:(id)a6 errorBlock:(id)a7;
-- (BOOL)requestCSProcessingWithProtectionClasses:(id)a3 task:(id)a4 batchProcessedBlock:(id)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7;
-- (BOOL)requestCSReindexForClientWithBundleIdentifier:(id)a3 batchProcessedBlock:(id)a4 batchUpdatedBlock:(id)a5 cancelBlock:(id)a6;
-- (BOOL)requestCSReindexWithProtectionClasses:(id)a3 batchProcessedBlock:(id)a4 batchUpdatedBlock:(id)a5 cancelBlock:(id)a6;
-- (BOOL)requestCSReindexWithProtectionClasses:(id)a3 flags:(unsigned int)a4 batchProcessedBlock:(id)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7;
-- (BOOL)requestCSSuggestedEventsProgressReport:(id)a3 cancelBlock:(id)a4;
-- (SKGJob)initWithJobContext:(id)a3;
-- (id)_allFieldsPresentPredicateWithFieldNames:(id)a3;
-- (id)_anyFieldPresentPredicateWithFieldNames:(id)a3;
-- (id)_coreSpotlightIndexWithBundleIdentifier:(id)a3 protectionClass:(id)a4;
-- (id)_fieldPresencePredicateWithFieldName:(id)a3;
-- (id)_newCounterDictionaryForBundleIdentifier:(id)a3 additionalAttributes:(id)a4;
-- (id)_removingRequiredAttributes:(id)a3;
-- (id)counterQueryWithQueryString:(id)a3 queryContext:(id)a4 onlyFiles:(BOOL)a5;
-- (id)generateCSDocumentUnderstandingReportForProtectionClasses:(id)a3 withCancelBlock:(id)a4;
-- (id)generateCSEmbeddingsReportForProtectionClasses:(id)a3 withCancelBlock:(id)a4;
-- (id)generateCSKeyphraseReportForProtectionClasses:(id)a3 withCancelBlock:(id)a4;
-- (id)generateCSReportForQueryFlags:(unsigned int)a3 protectionClasses:(id)a4 additionalQueryString:(id)a5 additionalFetchAttributes:(id)a6 processedPredicate:(id)a7 succesfullyProcessedPredicate:(id)a8 eligiblePredicate:(id)a9 additionalPredicates:(id)a10 dayCompletionStr:(id)a11 genStartTime:(id)a12 bundleIDs:(id)a13 daysToCompleteApproach:(int64_t)a14 onlyFiles:(BOOL)a15 mergeBundleStatistics:(id)a16 withCancelBlock:(id)a17;
-- (id)generateCSSuggestedEventsReportForProtectionClasses:(id)a3 withCancelBlock:(id)a4;
-- (void)_markReindexRequestsAsSeen:(id)a3 bundleID:(id)a4 count:(unint64_t)a5;
+- (BOOL)_archiveCoreSpotlightItems:(id)items bundleIdentifier:(id)identifier protectionClass:(id)class batchArchivedBlock:(id)block cancelBlock:(id)cancelBlock errorBlock:(id)errorBlock;
+- (BOOL)_buildCSCountingReportWithQueryString:(id)string queryContext:(id)context flags:(unsigned int)flags reporter:(id)reporter cancelBlock:(id)block;
+- (BOOL)_recordIsOld:(id)old dateKeys:(id)keys;
+- (BOOL)_reindexCoreSpotlightIdentifiers:(id)identifiers bundleIdentifier:(id)identifier protectionClass:(id)class batchProcessedBlock:(id)block cancelBlock:(id)cancelBlock;
+- (BOOL)_runCSCleanupForQueryString:(id)string trackingAttributes:(id)attributes queryContext:(id)context batchUpdatedBlock:(id)block cancelBlock:(id)cancelBlock;
+- (BOOL)_runCSExtractForQueryString:(id)string queryContext:(id)context flags:(unsigned int)flags processedItemBlock:(id)block batchArchivedBlock:(id)archivedBlock batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock errorBlock:(id)self0;
+- (BOOL)_runCSPollingQuery:(id)query foundItemBlock:(id)block;
+- (BOOL)_runCSPollingQueryString:(id)string queryContext:(id)context foundItemBlock:(id)block;
+- (BOOL)_runCSProcessingForTask:(id)task queryString:(id)string queryContext:(id)context batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock;
+- (BOOL)_runCSReindexForQueryString:(id)string queryContext:(id)context processorFlags:(unint64_t)flags batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock;
+- (BOOL)_updateCoreSpotlightItems:(id)items bundleID:(id)d protectionClass:(id)class cancelBlock:(id)block;
+- (BOOL)_updateCoreSpotlightItems:(id)items bundleIdentifier:(id)identifier protectionClass:(id)class batchUpdatedBlock:(id)block cancelBlock:(id)cancelBlock;
+- (BOOL)performCSIndexProcessingJob:(id)job cancelBlock:(id)block;
+- (BOOL)requestCSCleanupForUpdater:(id)updater protectionClasses:(id)classes flags:(unsigned int)flags batchUpdatedBlock:(id)block cancelBlock:(id)cancelBlock;
+- (BOOL)requestCSCleanupWithProtectionClasses:(id)classes batchUpdatedBlock:(id)block cancelBlock:(id)cancelBlock;
+- (BOOL)requestCSDocumentUnderstandingProgressReport:(id)report cancelBlock:(id)block;
+- (BOOL)requestCSEmbeddingsProgressReport:(id)report cancelBlock:(id)block;
+- (BOOL)requestCSProcessingWithProcessedItemBlock:(id)block batchArchivedBlock:(id)archivedBlock batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock errorBlock:(id)errorBlock;
+- (BOOL)requestCSProcessingWithProtectionClasses:(id)classes task:(id)task batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock;
+- (BOOL)requestCSReindexForClientWithBundleIdentifier:(id)identifier batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock;
+- (BOOL)requestCSReindexWithProtectionClasses:(id)classes batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock;
+- (BOOL)requestCSReindexWithProtectionClasses:(id)classes flags:(unsigned int)flags batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock;
+- (BOOL)requestCSSuggestedEventsProgressReport:(id)report cancelBlock:(id)block;
+- (SKGJob)initWithJobContext:(id)context;
+- (id)_allFieldsPresentPredicateWithFieldNames:(id)names;
+- (id)_anyFieldPresentPredicateWithFieldNames:(id)names;
+- (id)_coreSpotlightIndexWithBundleIdentifier:(id)identifier protectionClass:(id)class;
+- (id)_fieldPresencePredicateWithFieldName:(id)name;
+- (id)_newCounterDictionaryForBundleIdentifier:(id)identifier additionalAttributes:(id)attributes;
+- (id)_removingRequiredAttributes:(id)attributes;
+- (id)counterQueryWithQueryString:(id)string queryContext:(id)context onlyFiles:(BOOL)files;
+- (id)generateCSDocumentUnderstandingReportForProtectionClasses:(id)classes withCancelBlock:(id)block;
+- (id)generateCSEmbeddingsReportForProtectionClasses:(id)classes withCancelBlock:(id)block;
+- (id)generateCSKeyphraseReportForProtectionClasses:(id)classes withCancelBlock:(id)block;
+- (id)generateCSReportForQueryFlags:(unsigned int)flags protectionClasses:(id)classes additionalQueryString:(id)string additionalFetchAttributes:(id)attributes processedPredicate:(id)predicate succesfullyProcessedPredicate:(id)processedPredicate eligiblePredicate:(id)eligiblePredicate additionalPredicates:(id)self0 dayCompletionStr:(id)self1 genStartTime:(id)self2 bundleIDs:(id)self3 daysToCompleteApproach:(int64_t)self4 onlyFiles:(BOOL)self5 mergeBundleStatistics:(id)self6 withCancelBlock:(id)self7;
+- (id)generateCSSuggestedEventsReportForProtectionClasses:(id)classes withCancelBlock:(id)block;
+- (void)_markReindexRequestsAsSeen:(id)seen bundleID:(id)d count:(unint64_t)count;
 @end
 
 @implementation SKGJob
 
-- (SKGJob)initWithJobContext:(id)a3
+- (SKGJob)initWithJobContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SKGJob;
   v6 = [(SKGJob *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = dispatch_queue_create("com.apple.SpotlightKnowledge.updater", 0);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -58,37 +58,37 @@
   return v7;
 }
 
-- (BOOL)_archiveCoreSpotlightItems:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 batchArchivedBlock:(id)a6 cancelBlock:(id)a7 errorBlock:(id)a8
+- (BOOL)_archiveCoreSpotlightItems:(id)items bundleIdentifier:(id)identifier protectionClass:(id)class batchArchivedBlock:(id)block cancelBlock:(id)cancelBlock errorBlock:(id)errorBlock
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = [v13 count];
+  itemsCopy = items;
+  identifierCopy = identifier;
+  classCopy = class;
+  blockCopy = block;
+  errorBlockCopy = errorBlock;
+  v18 = [itemsCopy count];
   if (v18)
   {
     v19 = v18;
     v20 = MEMORY[0x277CCACA8];
-    v21 = [MEMORY[0x277CCAD78] UUID];
-    v22 = [v21 description];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v22 = [uUID description];
     v23 = [v20 stringWithFormat:@"archive-%@", v22];
 
     if (v23)
     {
       v36 = 0;
-      v24 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v36];
+      v24 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:itemsCopy requiringSecureCoding:1 error:&v36];
       v25 = v36;
       if (v25)
       {
         v26 = v25;
-        v27 = v17[2](v17, 10, @"could not archive");
+        v27 = errorBlockCopy[2](errorBlockCopy, 10, @"could not archive");
       }
 
       else
       {
-        v28 = [(SKGJob *)self context];
-        v29 = [v28 peopleArchivePathWithProtectionClass:v15];
+        context = [(SKGJob *)self context];
+        v29 = [context peopleArchivePathWithProtectionClass:classCopy];
 
         if (v29)
         {
@@ -100,14 +100,14 @@
           if (v30)
           {
             v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
-            v16[2](v16, v14, v31);
+            blockCopy[2](blockCopy, identifierCopy, v31);
 
             v27 = 1;
           }
 
           else
           {
-            v27 = v17[2](v17, 10, @"could not write archive");
+            v27 = errorBlockCopy[2](errorBlockCopy, 10, @"could not write archive");
           }
 
           v29 = v34;
@@ -155,36 +155,36 @@ void __107__SKGJob_People___updateCoreSpotlightItems_bundleIdentifier_protection
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)_runCSExtractForQueryString:(id)a3 queryContext:(id)a4 flags:(unsigned int)a5 processedItemBlock:(id)a6 batchArchivedBlock:(id)a7 batchUpdatedBlock:(id)a8 cancelBlock:(id)a9 errorBlock:(id)a10
+- (BOOL)_runCSExtractForQueryString:(id)string queryContext:(id)context flags:(unsigned int)flags processedItemBlock:(id)block batchArchivedBlock:(id)archivedBlock batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock errorBlock:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (v16)
+  stringCopy = string;
+  contextCopy = context;
+  blockCopy = block;
+  archivedBlockCopy = archivedBlock;
+  updatedBlockCopy = updatedBlock;
+  cancelBlockCopy = cancelBlock;
+  errorBlockCopy = errorBlock;
+  if (stringCopy)
   {
-    v41 = v22;
-    v42 = v20;
-    v43 = v19;
-    v44 = v18;
-    [v17 setDisableResultStreaming:1];
-    [v17 setMaximumBatchSize:100];
-    v23 = [(SKGJob *)self context];
-    v24 = [v23 maxItemCountPerBatch];
+    v41 = errorBlockCopy;
+    v42 = updatedBlockCopy;
+    v43 = archivedBlockCopy;
+    v44 = blockCopy;
+    [contextCopy setDisableResultStreaming:1];
+    [contextCopy setMaximumBatchSize:100];
+    context = [(SKGJob *)self context];
+    maxItemCountPerBatch = [context maxItemCountPerBatch];
 
-    if (v24 >= 1)
+    if (maxItemCountPerBatch >= 1)
     {
-      v25 = [(SKGJob *)self context];
-      [v17 setMaximumBatchSize:{objc_msgSend(v25, "maxItemCountPerBatch")}];
+      context2 = [(SKGJob *)self context];
+      [contextCopy setMaximumBatchSize:{objc_msgSend(context2, "maxItemCountPerBatch")}];
     }
 
-    v26 = [(SKGJob *)self context];
-    v27 = [v26 graphVersion];
+    context3 = [(SKGJob *)self context];
+    graphVersion = [context3 graphVersion];
 
-    v28 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v16 queryContext:v17];
+    v28 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:stringCopy queryContext:contextCopy];
     v29 = dispatch_group_create();
     objc_initWeak(location, v28);
     v82 = 0;
@@ -219,17 +219,17 @@ void __107__SKGJob_People___updateCoreSpotlightItems_bundleIdentifier_protection
     v56[1] = 3221225472;
     v56[2] = __144__SKGJob_People___runCSExtractForQueryString_queryContext_flags_processedItemBlock_batchArchivedBlock_batchUpdatedBlock_cancelBlock_errorBlock___block_invoke;
     v56[3] = &unk_27893E900;
-    v72 = a5;
-    v57 = v17;
+    flagsCopy = flags;
+    v57 = contextCopy;
     v65 = v75;
-    v71[1] = v27;
-    v60 = v18;
+    v71[1] = graphVersion;
+    v60 = blockCopy;
     v66 = v73;
-    v40 = v21;
-    v30 = v21;
+    v40 = cancelBlockCopy;
+    v30 = cancelBlockCopy;
     v67 = v80;
     v61 = v30;
-    v58 = self;
+    selfCopy = self;
     v31 = v43;
     v62 = v31;
     v32 = v41;
@@ -261,13 +261,13 @@ void __107__SKGJob_People___updateCoreSpotlightItems_bundleIdentifier_protection
     v46 = v35;
     [v28 setCompletionHandler:v45];
     dispatch_group_enter(v35);
-    v36 = [(SKGJob *)self context];
-    [v36 logSignpost:13 message:@"starting people updates"];
+    context4 = [(SKGJob *)self context];
+    [context4 logSignpost:13 message:@"starting people updates"];
 
     [v28 start];
     [v28 poll];
-    v37 = [(SKGJob *)self context];
-    [v37 logSignpost:14 message:@"end people updates"];
+    context5 = [(SKGJob *)self context];
+    [context5 logSignpost:14 message:@"end people updates"];
 
     dispatch_group_wait(v35, 0xFFFFFFFFFFFFFFFFLL);
     v38 = *(v83 + 24);
@@ -282,11 +282,11 @@ void __107__SKGJob_People___updateCoreSpotlightItems_bundleIdentifier_protection
     _Block_object_dispose(&v82, 8);
     objc_destroyWeak(location);
 
-    v21 = v40;
-    v18 = v44;
-    v20 = v42;
-    v19 = v43;
-    v22 = v41;
+    cancelBlockCopy = v40;
+    blockCopy = v44;
+    updatedBlockCopy = v42;
+    archivedBlockCopy = v43;
+    errorBlockCopy = v41;
   }
 
   else
@@ -973,27 +973,27 @@ void __144__SKGJob_People___runCSExtractForQueryString_queryContext_flags_proces
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)requestCSProcessingWithProcessedItemBlock:(id)a3 batchArchivedBlock:(id)a4 batchUpdatedBlock:(id)a5 cancelBlock:(id)a6 errorBlock:(id)a7
+- (BOOL)requestCSProcessingWithProcessedItemBlock:(id)block batchArchivedBlock:(id)archivedBlock batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock errorBlock:(id)errorBlock
 {
   v74 = *MEMORY[0x277D85DE8];
-  v66 = a3;
-  v65 = a4;
-  v64 = a5;
-  v67 = a6;
-  v63 = a7;
+  blockCopy = block;
+  archivedBlockCopy = archivedBlock;
+  updatedBlockCopy = updatedBlock;
+  cancelBlockCopy = cancelBlock;
+  errorBlockCopy = errorBlock;
   v12 = objc_autoreleasePoolPush();
-  v13 = [MEMORY[0x277D657A0] sharedContext];
-  v14 = [v13 enablePeople];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enablePeople = [mEMORY[0x277D657A0] enablePeople];
 
-  v15 = [(SKGJob *)self context];
-  v16 = [v15 doArchiving];
+  context = [(SKGJob *)self context];
+  doArchiving = [context doArchiving];
 
-  if (v16 & 1) != 0 || ([MEMORY[0x277D65798] sharedProcessor], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "loadPeopleExtractor"), v17, (v18))
+  if (doArchiving & 1) != 0 || ([MEMORY[0x277D65798] sharedProcessor], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "loadPeopleExtractor"), v17, (v18))
   {
-    if (v14)
+    if (enablePeople)
     {
       v59 = v12;
-      if (v16)
+      if (doArchiving)
       {
         v19 = 72;
       }
@@ -1004,40 +1004,40 @@ void __144__SKGJob_People___runCSExtractForQueryString_queryContext_flags_proces
       }
 
       v60 = v19;
-      v20 = [MEMORY[0x277D657A0] sharedContext];
-      v58 = [v20 excludeBundles];
+      mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+      excludeBundles = [mEMORY[0x277D657A0]2 excludeBundles];
 
       v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v22 = [MEMORY[0x277D657A0] sharedContext];
-      v23 = [v22 fetchAttributes];
-      [v21 addObjectsFromArray:v23];
+      mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+      fetchAttributes = [mEMORY[0x277D657A0]3 fetchAttributes];
+      [v21 addObjectsFromArray:fetchAttributes];
 
-      v24 = [MEMORY[0x277D657A0] sharedContext];
-      v25 = [v24 peopleFetchAttributes];
+      mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+      peopleFetchAttributes = [mEMORY[0x277D657A0]4 peopleFetchAttributes];
       v62 = v21;
-      [v21 addObjectsFromArray:v25];
+      [v21 addObjectsFromArray:peopleFetchAttributes];
 
       v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v27 = [(SKGJob *)self context];
-      v28 = [v27 filterQuery];
+      context2 = [(SKGJob *)self context];
+      filterQuery = [context2 filterQuery];
 
-      if (v28)
+      if (filterQuery)
       {
-        v29 = [(SKGJob *)self context];
-        v30 = [v29 filterQuery];
-        [v26 addObject:v30];
+        context3 = [(SKGJob *)self context];
+        filterQuery2 = [context3 filterQuery];
+        [v26 addObject:filterQuery2];
       }
 
-      v61 = self;
-      v31 = [(SKGJob *)self context];
+      selfCopy = self;
+      context4 = [(SKGJob *)self context];
       v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
       [v32 addObject:@"_kMDItemKnowledgeUpdaterVersion!=*"];
-      v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"(_kMDItemKnowledgeUpdaterVersion=*&&_kMDItemKnowledgeUpdaterVersion!=%ld)", objc_msgSend(v31, "graphVersion")];
+      v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"(_kMDItemKnowledgeUpdaterVersion=*&&_kMDItemKnowledgeUpdaterVersion!=%ld)", objc_msgSend(context4, "graphVersion")];
       [v32 addObject:v33];
 
       v34 = MEMORY[0x277CCACA8];
-      v35 = [MEMORY[0x277D657A0] sharedContext];
-      v36 = [v34 stringWithFormat:@"(_kMDItemKnowledgeIndexVersion!=* || (_kMDItemKnowledgeIndexVersion=*&&_kMDItemKnowledgeIndexVersion!=%ld))", objc_msgSend(v35, "knowledgeVersion")];
+      mEMORY[0x277D657A0]5 = [MEMORY[0x277D657A0] sharedContext];
+      v36 = [v34 stringWithFormat:@"(_kMDItemKnowledgeIndexVersion!=* || (_kMDItemKnowledgeIndexVersion=*&&_kMDItemKnowledgeIndexVersion!=%ld))", objc_msgSend(mEMORY[0x277D657A0]5, "knowledgeVersion")];
       [v32 addObject:v36];
 
       v37 = MEMORY[0x277CCACA8];
@@ -1051,10 +1051,10 @@ void __144__SKGJob_People___runCSExtractForQueryString_queryContext_flags_proces
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v41 = [MEMORY[0x277D657A0] sharedContext];
-      v42 = [v41 peoplePreferredBundles];
+      mEMORY[0x277D657A0]6 = [MEMORY[0x277D657A0] sharedContext];
+      peoplePreferredBundles = [mEMORY[0x277D657A0]6 peoplePreferredBundles];
 
-      v43 = [v42 countByEnumeratingWithState:&v68 objects:v73 count:16];
+      v43 = [peoplePreferredBundles countByEnumeratingWithState:&v68 objects:v73 count:16];
       if (v43)
       {
         v44 = v43;
@@ -1065,7 +1065,7 @@ void __144__SKGJob_People___runCSExtractForQueryString_queryContext_flags_proces
           {
             if (*v69 != v45)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(peoplePreferredBundles);
             }
 
             v72 = *(*(&v68 + 1) + 8 * i);
@@ -1074,19 +1074,19 @@ void __144__SKGJob_People___runCSExtractForQueryString_queryContext_flags_proces
             [v48 setFetchAttributes:v62];
             [v48 setBundleIDs:v47];
             v49 = queryStringForPeopleUpdates(v47, 0, v40);
-            v50 = [(SKGJob *)v61 _runCSExtractForQueryString:v49 queryContext:v48 flags:v60 processedItemBlock:v66 batchArchivedBlock:v65 batchUpdatedBlock:v64 cancelBlock:v67 errorBlock:v63];
+            v50 = [(SKGJob *)selfCopy _runCSExtractForQueryString:v49 queryContext:v48 flags:v60 processedItemBlock:blockCopy batchArchivedBlock:archivedBlockCopy batchUpdatedBlock:updatedBlockCopy cancelBlock:cancelBlockCopy errorBlock:errorBlockCopy];
 
             if (!v50)
             {
               LOBYTE(v54) = 0;
-              v51 = v58;
+              v51 = excludeBundles;
               v12 = v59;
               v52 = v62;
               goto LABEL_21;
             }
           }
 
-          v44 = [v42 countByEnumeratingWithState:&v68 objects:v73 count:16];
+          v44 = [peoplePreferredBundles countByEnumeratingWithState:&v68 objects:v73 count:16];
           if (v44)
           {
             continue;
@@ -1096,13 +1096,13 @@ void __144__SKGJob_People___runCSExtractForQueryString_queryContext_flags_proces
         }
       }
 
-      v42 = objc_alloc_init(MEMORY[0x277CC34A0]);
-      v51 = v58;
-      [v42 setDisableBundles:v58];
+      peoplePreferredBundles = objc_alloc_init(MEMORY[0x277CC34A0]);
+      v51 = excludeBundles;
+      [peoplePreferredBundles setDisableBundles:excludeBundles];
       v52 = v62;
-      [v42 setFetchAttributes:v62];
-      v53 = queryStringForPeopleUpdates(0, v58, v40);
-      LOBYTE(v54) = [(SKGJob *)v61 _runCSExtractForQueryString:v53 queryContext:v42 flags:v60 processedItemBlock:v66 batchArchivedBlock:v65 batchUpdatedBlock:v64 cancelBlock:v67 errorBlock:v63];
+      [peoplePreferredBundles setFetchAttributes:v62];
+      v53 = queryStringForPeopleUpdates(0, excludeBundles, v40);
+      LOBYTE(v54) = [(SKGJob *)selfCopy _runCSExtractForQueryString:v53 queryContext:peoplePreferredBundles flags:v60 processedItemBlock:blockCopy batchArchivedBlock:archivedBlockCopy batchUpdatedBlock:updatedBlockCopy cancelBlock:cancelBlockCopy errorBlock:errorBlockCopy];
 
       v12 = v59;
 LABEL_21:
@@ -1116,7 +1116,7 @@ LABEL_21:
 
   else
   {
-    v54 = v67[2](v67, @"tried loading people model", 0) ^ 1;
+    v54 = cancelBlockCopy[2](cancelBlockCopy, @"tried loading people model", 0) ^ 1;
   }
 
   objc_autoreleasePoolPop(v12);
@@ -1125,14 +1125,14 @@ LABEL_21:
   return v54;
 }
 
-- (BOOL)_updateCoreSpotlightItems:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 cancelBlock:(id)a6
+- (BOOL)_updateCoreSpotlightItems:(id)items bundleID:(id)d protectionClass:(id)class cancelBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  dCopy = d;
+  classCopy = class;
+  blockCopy = block;
   v14 = 1;
-  if ([v10 count])
+  if ([itemsCopy count])
   {
     v15 = dispatch_group_create();
     v28 = 0;
@@ -1140,9 +1140,9 @@ LABEL_21:
     v30 = 0x2020000000;
     v31 = 1;
     v16 = objc_autoreleasePoolPush();
-    if ([v10 count])
+    if ([itemsCopy count])
     {
-      v17 = [(SKGJob *)self _coreSpotlightIndexWithBundleIdentifier:v11 protectionClass:v12];
+      v17 = [(SKGJob *)self _coreSpotlightIndexWithBundleIdentifier:dCopy protectionClass:classCopy];
       dispatch_group_enter(v15);
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
@@ -1151,7 +1151,7 @@ LABEL_21:
       v27 = &v28;
       v18 = v15;
       v26 = v18;
-      [v17 indexSearchableItems:v10 completionHandler:v25];
+      [v17 indexSearchableItems:itemsCopy completionHandler:v25];
       v19 = dispatch_time(0, 300000000000);
       if (dispatch_group_wait(v18, v19))
       {
@@ -1176,7 +1176,7 @@ LABEL_21:
       v22 = atomic_load(v21 + 24);
       if (v22)
       {
-        v23 = v13[2](v13, 0, @"SKGJob+Text:updateItems:") ^ 1;
+        v23 = blockCopy[2](blockCopy, 0, @"SKGJob+Text:updateItems:") ^ 1;
       }
 
       else
@@ -1215,29 +1215,29 @@ void __83__SKGJob_Pipeline___updateCoreSpotlightItems_bundleID_protectionClass_c
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)_runCSPollingQuery:(id)a3 foundItemBlock:(id)a4
+- (BOOL)_runCSPollingQuery:(id)query foundItemBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 queryContext];
-  [v8 setDisableResultStreaming:1];
+  queryCopy = query;
+  blockCopy = block;
+  queryContext = [queryCopy queryContext];
+  [queryContext setDisableResultStreaming:1];
 
-  v9 = [v6 queryContext];
-  [v9 setMaximumBatchSize:100];
+  queryContext2 = [queryCopy queryContext];
+  [queryContext2 setMaximumBatchSize:100];
 
-  v10 = [(SKGJob *)self context];
-  v11 = [v10 maxItemCountPerBatch];
+  context = [(SKGJob *)self context];
+  maxItemCountPerBatch = [context maxItemCountPerBatch];
 
-  if (v11 >= 1)
+  if (maxItemCountPerBatch >= 1)
   {
-    v12 = [(SKGJob *)self context];
-    v13 = [v12 maxItemCountPerBatch];
-    v14 = [v6 queryContext];
-    [v14 setMaximumBatchSize:v13];
+    context2 = [(SKGJob *)self context];
+    maxItemCountPerBatch2 = [context2 maxItemCountPerBatch];
+    queryContext3 = [queryCopy queryContext];
+    [queryContext3 setMaximumBatchSize:maxItemCountPerBatch2];
   }
 
   v15 = dispatch_group_create();
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, queryCopy);
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -1255,14 +1255,14 @@ void __83__SKGJob_Pipeline___updateCoreSpotlightItems_bundleID_protectionClass_c
   v27[2] = __54__SKGJob_Pipeline___runCSPollingQuery_foundItemBlock___block_invoke;
   v27[3] = &unk_27893E950;
   v30 = v36;
-  v16 = v7;
+  v16 = blockCopy;
   v29 = v16;
   v31 = &v38;
   objc_copyWeak(&v33, &location);
   v32 = v34;
   v17 = v15;
   v28 = v17;
-  [v6 setFoundItemsHandler:v27];
+  [queryCopy setFoundItemsHandler:v27];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __54__SKGJob_Pipeline___runCSPollingQuery_foundItemBlock___block_invoke_10;
@@ -1272,18 +1272,18 @@ void __83__SKGJob_Pipeline___updateCoreSpotlightItems_bundleID_protectionClass_c
   v26 = v34;
   v18 = v17;
   v23 = v18;
-  [v6 setCompletionHandler:v22];
+  [queryCopy setCompletionHandler:v22];
   dispatch_group_enter(v18);
-  v19 = [(SKGJob *)self context];
-  [v19 logSignpost:7 message:@"starting batch querying"];
+  context3 = [(SKGJob *)self context];
+  [context3 logSignpost:7 message:@"starting batch querying"];
 
-  [v6 start];
-  [v6 poll];
-  v20 = [(SKGJob *)self context];
-  [v20 logSignpost:8 message:@"end batch querying"];
+  [queryCopy start];
+  [queryCopy poll];
+  context4 = [(SKGJob *)self context];
+  [context4 logSignpost:8 message:@"end batch querying"];
 
   dispatch_group_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v20) = *(v39 + 24);
+  LOBYTE(context4) = *(v39 + 24);
 
   objc_destroyWeak(&v33);
   _Block_object_dispose(v34, 8);
@@ -1291,7 +1291,7 @@ void __83__SKGJob_Pipeline___updateCoreSpotlightItems_bundleID_protectionClass_c
   _Block_object_dispose(&v38, 8);
   objc_destroyWeak(&location);
 
-  return v20;
+  return context4;
 }
 
 void __54__SKGJob_Pipeline___runCSPollingQuery_foundItemBlock___block_invoke(uint64_t a1, void *a2)
@@ -1392,23 +1392,23 @@ void __54__SKGJob_Pipeline___runCSPollingQuery_foundItemBlock___block_invoke_10(
   }
 }
 
-- (BOOL)performCSIndexProcessingJob:(id)a3 cancelBlock:(id)a4
+- (BOOL)performCSIndexProcessingJob:(id)job cancelBlock:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  jobCopy = job;
+  blockCopy = block;
   v8 = objc_autoreleasePoolPush();
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v9 = SKGLogPipelineInit();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 name];
-      v11 = [v6 version];
+      name = [jobCopy name];
+      version = [jobCopy version];
       *buf = 138412546;
-      *&buf[4] = v10;
+      *&buf[4] = name;
       *&buf[12] = 2112;
-      *&buf[14] = v11;
+      *&buf[14] = version;
       _os_log_impl(&dword_231B25000, v9, OS_LOG_TYPE_DEFAULT, "=== Requesting scheduled processing of %@ <%@>", buf, 0x16u);
     }
   }
@@ -1425,24 +1425,24 @@ void __54__SKGJob_Pipeline___runCSPollingQuery_foundItemBlock___block_invoke_10(
   aBlock[3] = &unk_27893E9A0;
   v32 = buf;
   aBlock[4] = self;
-  v12 = v7;
+  v12 = blockCopy;
   v31 = v12;
   v13 = _Block_copy(aBlock);
-  [v6 startBatch];
-  v14 = [v6 query];
+  [jobCopy startBatch];
+  query = [jobCopy query];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __60__SKGJob_Pipeline__performCSIndexProcessingJob_cancelBlock___block_invoke_2;
   v24 = &unk_27893E9F0;
-  v15 = v6;
+  v15 = jobCopy;
   v29 = buf;
   v25 = v15;
-  v26 = self;
+  selfCopy = self;
   v16 = v13;
   v27 = v16;
   v17 = v12;
   v28 = v17;
-  v18 = [(SKGJob *)self _runCSPollingQuery:v14 foundItemBlock:&v21];
+  v18 = [(SKGJob *)self _runCSPollingQuery:query foundItemBlock:&v21];
 
   [v15 endBatch];
   if (v18)
@@ -1640,11 +1640,11 @@ void *__60__SKGJob_Pipeline__performCSIndexProcessingJob_cancelBlock___block_inv
   return v8;
 }
 
-- (id)_removingRequiredAttributes:(id)a3
+- (id)_removingRequiredAttributes:(id)attributes
 {
   v15[8] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = [v3 alloc];
   v6 = *MEMORY[0x277CC3208];
   v15[0] = *MEMORY[0x277CC2500];
@@ -1661,7 +1661,7 @@ void *__60__SKGJob_Pipeline__performCSIndexProcessingJob_cancelBlock___block_inv
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:8];
   v11 = [v5 initWithArray:v10];
 
-  v12 = [v4 mutableCopy];
+  v12 = [attributesCopy mutableCopy];
   [v12 minusSet:v11];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1669,16 +1669,16 @@ void *__60__SKGJob_Pipeline__performCSIndexProcessingJob_cancelBlock___block_inv
   return v12;
 }
 
-- (BOOL)_recordIsOld:(id)a3 dateKeys:(id)a4
+- (BOOL)_recordIsOld:(id)old dateKeys:(id)keys
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  oldCopy = old;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  keysCopy = keys;
+  v8 = [keysCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1689,29 +1689,29 @@ void *__60__SKGJob_Pipeline__performCSIndexProcessingJob_cancelBlock___block_inv
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keysCopy);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [MEMORY[0x277D65798] sharedProcessor];
-        v14 = [v13 dateFromRecord:v6 key:v12];
+        mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+        v14 = [mEMORY[0x277D65798] dateFromRecord:oldCopy key:v12];
 
         if (v14)
         {
 
-          v16 = [MEMORY[0x277CBEA80] currentCalendar];
+          currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
           v17 = [MEMORY[0x277CBEAA8] now];
-          v18 = [v16 components:0x2000 fromDate:v14 toDate:v17 options:0];
+          v18 = [currentCalendar components:0x2000 fromDate:v14 toDate:v17 options:0];
 
-          v19 = [v18 weekOfYear];
-          v20 = [(SKGJob *)self context];
-          v15 = v19 >= [v20 upgradePathIsOldThresInWeeks];
+          weekOfYear = [v18 weekOfYear];
+          context = [(SKGJob *)self context];
+          v15 = weekOfYear >= [context upgradePathIsOldThresInWeeks];
 
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v9 = [keysCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v9)
       {
         continue;
@@ -1722,18 +1722,18 @@ void *__60__SKGJob_Pipeline__performCSIndexProcessingJob_cancelBlock___block_inv
   }
 
   v15 = 1;
-  v14 = v7;
+  v14 = keysCopy;
 LABEL_11:
 
   v21 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (void)_markReindexRequestsAsSeen:(id)a3 bundleID:(id)a4 count:(unint64_t)a5
+- (void)_markReindexRequestsAsSeen:(id)seen bundleID:(id)d count:(unint64_t)count
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:v7];
+  dCopy = d;
+  seenCopy = seen;
+  v9 = [seenCopy objectForKeyedSubscript:dCopy];
   v10 = v9;
   v11 = &unk_2846E7CE0;
   if (v9)
@@ -1743,15 +1743,15 @@ LABEL_11:
 
   v12 = v11;
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{a5 + objc_msgSend(v12, "intValue")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{count + objc_msgSend(v12, "intValue")}];
 
-  [v8 setObject:v13 forKey:v7];
+  [seenCopy setObject:v13 forKey:dCopy];
 }
 
-- (id)_coreSpotlightIndexWithBundleIdentifier:(id)a3 protectionClass:(id)a4
+- (id)_coreSpotlightIndexWithBundleIdentifier:(id)identifier protectionClass:(id)class
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  classCopy = class;
   v7 = objc_autoreleasePoolPush();
   os_unfair_lock_lock(&_coreSpotlightIndexWithBundleIdentifier_protectionClass__s_lock_0);
   v8 = _coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1;
@@ -1764,28 +1764,28 @@ LABEL_11:
     v8 = _coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1;
   }
 
-  v11 = [v8 objectForKeyedSubscript:v5];
+  v11 = [v8 objectForKeyedSubscript:identifierCopy];
 
   if (!v11)
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1 setObject:v12 forKeyedSubscript:v5];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1 setObject:dictionary forKeyedSubscript:identifierCopy];
   }
 
-  v13 = [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1 objectForKeyedSubscript:v5];
-  v14 = [v13 objectForKeyedSubscript:v6];
+  v13 = [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1 objectForKeyedSubscript:identifierCopy];
+  v14 = [v13 objectForKeyedSubscript:classCopy];
 
   if (v14)
   {
-    v15 = [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1 objectForKeyedSubscript:v5];
-    v16 = [v15 objectForKeyedSubscript:v6];
+    v15 = [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1 objectForKeyedSubscript:identifierCopy];
+    v16 = [v15 objectForKeyedSubscript:classCopy];
   }
 
   else
   {
-    v16 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"KnowledgeIndex" protectionClass:v6 bundleIdentifier:v5];
-    v15 = [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1 objectForKeyedSubscript:v5];
-    [v15 setObject:v16 forKey:v6];
+    v16 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"KnowledgeIndex" protectionClass:classCopy bundleIdentifier:identifierCopy];
+    v15 = [_coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes_1 objectForKeyedSubscript:identifierCopy];
+    [v15 setObject:v16 forKey:classCopy];
   }
 
   os_unfair_lock_unlock(&_coreSpotlightIndexWithBundleIdentifier_protectionClass__s_lock_0);
@@ -1794,15 +1794,15 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)_updateCoreSpotlightItems:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7
+- (BOOL)_updateCoreSpotlightItems:(id)items bundleIdentifier:(id)identifier protectionClass:(id)class batchUpdatedBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  itemsCopy = items;
+  identifierCopy = identifier;
+  classCopy = class;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   v17 = 1;
-  if ([v12 count])
+  if ([itemsCopy count])
   {
     v18 = dispatch_group_create();
     v35 = 0;
@@ -1810,10 +1810,10 @@ LABEL_11:
     v37 = 0x2020000000;
     v38 = 1;
     v19 = objc_autoreleasePoolPush();
-    v20 = [v12 count];
+    v20 = [itemsCopy count];
     if (v20)
     {
-      v21 = [(SKGJob *)self _coreSpotlightIndexWithBundleIdentifier:v13 protectionClass:v14];
+      v21 = [(SKGJob *)self _coreSpotlightIndexWithBundleIdentifier:identifierCopy protectionClass:classCopy];
       dispatch_group_enter(v18);
       v29 = MEMORY[0x277D85DD0];
       v30 = 3221225472;
@@ -1822,7 +1822,7 @@ LABEL_11:
       v34 = &v35;
       v22 = v18;
       v33 = v22;
-      [v21 indexSearchableItems:v12 completionHandler:&v29];
+      [v21 indexSearchableItems:itemsCopy completionHandler:&v29];
       v23 = dispatch_time(0, 300000000000);
       if (dispatch_group_wait(v22, v23))
       {
@@ -1839,12 +1839,12 @@ LABEL_11:
       }
 
       v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v20, v29, v30, v31, v32}];
-      v15[2](v15, v13, v25);
+      blockCopy[2](blockCopy, identifierCopy, v25);
 
       v26 = atomic_load(v36 + 24);
       if (v26)
       {
-        v27 = v16[2](v16, 0, @"SKGJob+Text:updateItems:") ^ 1;
+        v27 = cancelBlockCopy[2](cancelBlockCopy, 0, @"SKGJob+Text:updateItems:") ^ 1;
       }
 
       else
@@ -1883,15 +1883,15 @@ void __108__SKGJob_Updates___updateCoreSpotlightItems_bundleIdentifier_protectio
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)_reindexCoreSpotlightIdentifiers:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 batchProcessedBlock:(id)a6 cancelBlock:(id)a7
+- (BOOL)_reindexCoreSpotlightIdentifiers:(id)identifiers bundleIdentifier:(id)identifier protectionClass:(id)class batchProcessedBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  classCopy = class;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   v16 = 1;
-  if ([v11 count])
+  if ([identifiersCopy count])
   {
     v17 = dispatch_group_create();
     v43 = 0;
@@ -1899,14 +1899,14 @@ void __108__SKGJob_Updates___updateCoreSpotlightItems_bundleIdentifier_protectio
     v45 = 0x2020000000;
     v46 = 1;
     v18 = objc_autoreleasePoolPush();
-    v19 = [v11 count];
+    v19 = [identifiersCopy count];
     if (v19)
     {
       v38 = v18;
-      v20 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"KnowledgeIndex" protectionClass:v13];
+      v20 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"KnowledgeIndex" protectionClass:classCopy];
       v21 = MEMORY[0x277CCACA8];
-      v22 = [v11 componentsJoinedByString:@"=;"];;
-      v23 = [v21 stringWithFormat:@"reindexJob:%@:%@:%ld:%@", v12, v13, 4, v22];
+      v22 = [identifiersCopy componentsJoinedByString:@"=;"];;
+      v23 = [v21 stringWithFormat:@"reindexJob:%@:%@:%ld:%@", identifierCopy, classCopy, 4, v22];
 
       dispatch_group_enter(v17);
       v39[0] = MEMORY[0x277D85DD0];
@@ -1927,7 +1927,7 @@ void __108__SKGJob_Updates___updateCoreSpotlightItems_bundleIdentifier_protectio
           v27 = SKGLogInit();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
-            [(SKGJob(Updates) *)v12 _reindexCoreSpotlightIdentifiers:v27 bundleIdentifier:v28 protectionClass:v29 batchProcessedBlock:v30 cancelBlock:v31, v32, v33];
+            [(SKGJob(Updates) *)identifierCopy _reindexCoreSpotlightIdentifiers:v27 bundleIdentifier:v28 protectionClass:v29 batchProcessedBlock:v30 cancelBlock:v31, v32, v33];
           }
         }
 
@@ -1935,12 +1935,12 @@ void __108__SKGJob_Updates___updateCoreSpotlightItems_bundleIdentifier_protectio
       }
 
       v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
-      v14[2](v14, v12, v34);
+      blockCopy[2](blockCopy, identifierCopy, v34);
 
       v35 = atomic_load(v44 + 24);
       if (v35)
       {
-        v36 = v15[2](v15, 0, @"SKGJob+Text:updateItems") ^ 1;
+        v36 = cancelBlockCopy[2](cancelBlockCopy, 0, @"SKGJob+Text:updateItems") ^ 1;
       }
 
       else
@@ -1980,34 +1980,34 @@ void __117__SKGJob_Updates___reindexCoreSpotlightIdentifiers_bundleIdentifier_pr
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (BOOL)_runCSReindexForQueryString:(id)a3 queryContext:(id)a4 processorFlags:(unint64_t)a5 batchProcessedBlock:(id)a6 batchUpdatedBlock:(id)a7 cancelBlock:(id)a8
+- (BOOL)_runCSReindexForQueryString:(id)string queryContext:(id)context processorFlags:(unint64_t)flags batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock
 {
   v156 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v54 = a6;
-  v55 = a7;
-  v16 = a8;
-  v56 = v14;
-  if (!v14)
+  stringCopy = string;
+  contextCopy = context;
+  blockCopy = block;
+  updatedBlockCopy = updatedBlock;
+  cancelBlockCopy = cancelBlock;
+  v56 = stringCopy;
+  if (!stringCopy)
   {
     v48 = 1;
     goto LABEL_31;
   }
 
-  v52 = v16;
-  [v15 setDisableResultStreaming:1];
-  [v15 setMaximumBatchSize:100];
-  v17 = [(SKGJob *)self context];
-  v18 = [v17 maxItemCountPerBatch];
+  v52 = cancelBlockCopy;
+  [contextCopy setDisableResultStreaming:1];
+  [contextCopy setMaximumBatchSize:100];
+  context = [(SKGJob *)self context];
+  maxItemCountPerBatch = [context maxItemCountPerBatch];
 
-  if (v18 >= 1)
+  if (maxItemCountPerBatch >= 1)
   {
-    v19 = [(SKGJob *)self context];
-    [v15 setMaximumBatchSize:{objc_msgSend(v19, "maxItemCountPerBatch")}];
+    context2 = [(SKGJob *)self context];
+    [contextCopy setMaximumBatchSize:{objc_msgSend(context2, "maxItemCountPerBatch")}];
   }
 
-  v20 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v14 queryContext:v15];
+  v20 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:stringCopy queryContext:contextCopy];
   v21 = dispatch_group_create();
   v57 = v20;
   objc_initWeak(&location, v20);
@@ -2077,12 +2077,12 @@ void __117__SKGJob_Updates___reindexCoreSpotlightIdentifiers_bundleIdentifier_pr
   aBlock[4] = self;
   v96 = v100;
   v97 = &v104;
-  v22 = v54;
+  v22 = blockCopy;
   v90 = v22;
   v23 = v52;
   v91 = v23;
   v98 = &v128;
-  v24 = v55;
+  v24 = updatedBlockCopy;
   v92 = v24;
   v99 = &v124;
   v25 = _Block_copy(aBlock);
@@ -2091,13 +2091,13 @@ void __117__SKGJob_Updates___reindexCoreSpotlightIdentifiers_bundleIdentifier_pr
   v68[2] = __125__SKGJob_Updates___runCSReindexForQueryString_queryContext_processorFlags_batchProcessedBlock_batchUpdatedBlock_cancelBlock___block_invoke_2;
   v68[3] = &unk_27893EA68;
   v76 = &v116;
-  v69 = v15;
-  v70 = self;
+  v69 = contextCopy;
+  selfCopy = self;
   v77 = &v110;
   v78 = &v120;
   v79 = v102;
   v80 = v100;
-  v88[1] = a5;
+  v88[1] = flags;
   v81 = &v104;
   v72 = v22;
   v73 = v23;
@@ -2127,13 +2127,13 @@ void __117__SKGJob_Updates___reindexCoreSpotlightIdentifiers_bundleIdentifier_pr
   v63 = group;
   [v57 setCompletionHandler:v62];
   dispatch_group_enter(group);
-  v28 = [(SKGJob *)self context];
-  [v28 logSignpost:5 message:@"starting batch updates"];
+  context3 = [(SKGJob *)self context];
+  [context3 logSignpost:5 message:@"starting batch updates"];
 
   [v57 start];
   [v57 poll];
-  v29 = [(SKGJob *)self context];
-  [v29 logSignpost:6 message:@"end batch updates"];
+  context4 = [(SKGJob *)self context];
+  [context4 logSignpost:6 message:@"end batch updates"];
 
   dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
   if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -2164,8 +2164,8 @@ void __117__SKGJob_Updates___reindexCoreSpotlightIdentifiers_bundleIdentifier_pr
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v36 = v105[5];
-  v37 = [v36 countByEnumeratingWithState:&v58 objects:v145 count:16];
+  mEMORY[0x277CC3468]2 = v105[5];
+  v37 = [mEMORY[0x277CC3468]2 countByEnumeratingWithState:&v58 objects:v145 count:16];
   if (v37)
   {
     v38 = 0;
@@ -2176,7 +2176,7 @@ void __117__SKGJob_Updates___reindexCoreSpotlightIdentifiers_bundleIdentifier_pr
       {
         if (*v59 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(mEMORY[0x277CC3468]2);
         }
 
         v41 = *(*(&v58 + 1) + 8 * i);
@@ -2207,22 +2207,22 @@ void __117__SKGJob_Updates___reindexCoreSpotlightIdentifiers_bundleIdentifier_pr
 
           if (isAppleInternalInstall())
           {
-            v46 = [v42 intValue];
+            intValue = [v42 intValue];
           }
 
           else
           {
-            v46 = 1;
+            intValue = 1;
           }
 
-          v47 = [MEMORY[0x277CC3468] sharedInstance];
-          [v47 logWithBundleID:v41 indexOperation:8 itemCount:v46 code:2];
+          mEMORY[0x277CC3468] = [MEMORY[0x277CC3468] sharedInstance];
+          [mEMORY[0x277CC3468] logWithBundleID:v41 indexOperation:8 itemCount:intValue code:2];
 
           v38 = 1;
         }
       }
 
-      v37 = [v36 countByEnumeratingWithState:&v58 objects:v145 count:16];
+      v37 = [mEMORY[0x277CC3468]2 countByEnumeratingWithState:&v58 objects:v145 count:16];
     }
 
     while (v37);
@@ -2232,8 +2232,8 @@ void __117__SKGJob_Updates___reindexCoreSpotlightIdentifiers_bundleIdentifier_pr
       goto LABEL_29;
     }
 
-    v36 = [MEMORY[0x277CC3468] sharedInstance];
-    [v36 flush];
+    mEMORY[0x277CC3468]2 = [MEMORY[0x277CC3468] sharedInstance];
+    [mEMORY[0x277CC3468]2 flush];
   }
 
 LABEL_29:
@@ -2256,7 +2256,7 @@ LABEL_29:
   _Block_object_dispose(&v140, 8);
   objc_destroyWeak(&location);
 
-  v16 = v52;
+  cancelBlockCopy = v52;
 LABEL_31:
 
   v49 = *MEMORY[0x277D85DE8];
@@ -3093,45 +3093,45 @@ void __125__SKGJob_Updates___runCSReindexForQueryString_queryContext_processorFl
   }
 }
 
-- (BOOL)requestCSReindexForClientWithBundleIdentifier:(id)a3 batchProcessedBlock:(id)a4 batchUpdatedBlock:(id)a5 cancelBlock:(id)a6
+- (BOOL)requestCSReindexForClientWithBundleIdentifier:(id)identifier batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock
 {
   v79[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v74 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  blockCopy = block;
+  updatedBlockCopy = updatedBlock;
+  cancelBlockCopy = cancelBlock;
   context = objc_autoreleasePoolPush();
-  v13 = [MEMORY[0x277D657A0] sharedContext];
-  v14 = [v13 reindexExcludeBundles];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  reindexExcludeBundles = [mEMORY[0x277D657A0] reindexExcludeBundles];
 
-  if ([v14 containsObject:v10])
+  if ([reindexExcludeBundles containsObject:identifierCopy])
   {
     goto LABEL_4;
   }
 
-  v15 = [(SKGJob *)self context];
-  v16 = [v15 doNotUpdateList];
-  v71 = self;
-  if (![v16 count])
+  context = [(SKGJob *)self context];
+  doNotUpdateList = [context doNotUpdateList];
+  selfCopy = self;
+  if (![doNotUpdateList count])
   {
 
 LABEL_6:
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v23 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v24 = [MEMORY[0x277D657A0] sharedContext];
-    v25 = [v24 fetchAttributes];
-    [v23 addObjectsFromArray:v25];
+    mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+    fetchAttributes = [mEMORY[0x277D657A0]2 fetchAttributes];
+    [v23 addObjectsFromArray:fetchAttributes];
 
-    v26 = [MEMORY[0x277D657A0] sharedContext];
-    LODWORD(v25) = [v26 enableEmbeddings];
+    mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+    LODWORD(fetchAttributes) = [mEMORY[0x277D657A0]3 enableEmbeddings];
 
     v72 = v22;
-    v70 = v11;
-    if (v25)
+    v70 = blockCopy;
+    if (fetchAttributes)
     {
-      v27 = [MEMORY[0x277D657A0] sharedContext];
-      v28 = [v27 embeddingExcludeBundles];
-      v29 = [v28 containsObject:v10];
+      mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+      embeddingExcludeBundles = [mEMORY[0x277D657A0]4 embeddingExcludeBundles];
+      v29 = [embeddingExcludeBundles containsObject:identifierCopy];
 
       if (v29)
       {
@@ -3141,11 +3141,11 @@ LABEL_6:
 
       else
       {
-        v31 = [MEMORY[0x277D657A0] sharedContext];
-        v32 = [v31 embeddingFetchAttributes];
-        [v23 addObjectsFromArray:v32];
+        mEMORY[0x277D657A0]5 = [MEMORY[0x277D657A0] sharedContext];
+        embeddingFetchAttributes = [mEMORY[0x277D657A0]5 embeddingFetchAttributes];
+        [v23 addObjectsFromArray:embeddingFetchAttributes];
 
-        v79[0] = v10;
+        v79[0] = identifierCopy;
         v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:1];
         v34 = [SKGTextQueryManager queryForEmbeddingsUpdatesIncludeBundles:v33];
         v22 = v72;
@@ -3160,62 +3160,62 @@ LABEL_6:
       v30 = 0;
     }
 
-    v35 = [MEMORY[0x277D657A0] sharedContext];
-    v36 = [v35 enableKeyphrases];
+    mEMORY[0x277D657A0]6 = [MEMORY[0x277D657A0] sharedContext];
+    enableKeyphrases = [mEMORY[0x277D657A0]6 enableKeyphrases];
 
-    if (v36)
+    if (enableKeyphrases)
     {
-      v37 = [MEMORY[0x277D657A0] sharedContext];
-      v38 = [v37 keyphrasesSupportsBundle:v10 domainID:0];
+      mEMORY[0x277D657A0]7 = [MEMORY[0x277D657A0] sharedContext];
+      v38 = [mEMORY[0x277D657A0]7 keyphrasesSupportsBundle:identifierCopy domainID:0];
 
       if (v38)
       {
         v30 |= 4uLL;
-        v39 = [MEMORY[0x277D657A0] sharedContext];
-        v40 = [v39 keyphraseFetchAttributes];
-        [v23 addObjectsFromArray:v40];
+        mEMORY[0x277D657A0]8 = [MEMORY[0x277D657A0] sharedContext];
+        keyphraseFetchAttributes = [mEMORY[0x277D657A0]8 keyphraseFetchAttributes];
+        [v23 addObjectsFromArray:keyphraseFetchAttributes];
 
-        v78 = v10;
+        v78 = identifierCopy;
         v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v78 count:1];
         v42 = [SKGTextQueryManager queryForKeyphrasesUpdatesIncludeBundles:v41];
         [v22 addObject:v42];
       }
     }
 
-    v43 = [MEMORY[0x277D657A0] sharedContext];
-    v44 = [v43 enableSuggestedEvents];
+    mEMORY[0x277D657A0]9 = [MEMORY[0x277D657A0] sharedContext];
+    enableSuggestedEvents = [mEMORY[0x277D657A0]9 enableSuggestedEvents];
 
-    if (v44)
+    if (enableSuggestedEvents)
     {
-      v45 = [MEMORY[0x277D657A0] sharedContext];
-      v46 = [v45 suggestedEventsIncludeBundles];
-      v47 = [v46 containsObject:v10];
+      mEMORY[0x277D657A0]10 = [MEMORY[0x277D657A0] sharedContext];
+      suggestedEventsIncludeBundles = [mEMORY[0x277D657A0]10 suggestedEventsIncludeBundles];
+      v47 = [suggestedEventsIncludeBundles containsObject:identifierCopy];
 
       if (v47)
       {
         v30 |= 0x10uLL;
-        v48 = [MEMORY[0x277D657A0] sharedContext];
-        v49 = [v48 suggestedEventsFetchAttributes];
-        [v23 addObjectsFromArray:v49];
+        mEMORY[0x277D657A0]11 = [MEMORY[0x277D657A0] sharedContext];
+        suggestedEventsFetchAttributes = [mEMORY[0x277D657A0]11 suggestedEventsFetchAttributes];
+        [v23 addObjectsFromArray:suggestedEventsFetchAttributes];
 
-        v77 = v10;
+        v77 = identifierCopy;
         v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v77 count:1];
         v51 = [SKGTextQueryManager queryForSuggestedEventsUpdatesIncludeBundles:v50];
         [v72 addObject:v51];
       }
     }
 
-    v52 = [MEMORY[0x277D657A0] sharedContext];
-    v53 = [v52 enableDocumentUnderstanding];
+    mEMORY[0x277D657A0]12 = [MEMORY[0x277D657A0] sharedContext];
+    enableDocumentUnderstanding = [mEMORY[0x277D657A0]12 enableDocumentUnderstanding];
 
-    if (v53 && ([MEMORY[0x277D657A0] sharedContext], v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v54, "docUnderstandingIncludeBundles"), v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v55, "containsObject:", v10), v55, v54, v56))
+    if (enableDocumentUnderstanding && ([MEMORY[0x277D657A0] sharedContext], v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v54, "docUnderstandingIncludeBundles"), v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v55, "containsObject:", identifierCopy), v55, v54, v56))
     {
       v30 |= 0x20uLL;
-      v57 = [MEMORY[0x277D657A0] sharedContext];
-      v58 = [v57 docUnderstandingFetchAttributes];
-      [v23 addObjectsFromArray:v58];
+      mEMORY[0x277D657A0]13 = [MEMORY[0x277D657A0] sharedContext];
+      docUnderstandingFetchAttributes = [mEMORY[0x277D657A0]13 docUnderstandingFetchAttributes];
+      [v23 addObjectsFromArray:docUnderstandingFetchAttributes];
 
-      v76 = v10;
+      v76 = identifierCopy;
       v59 = [MEMORY[0x277CBEA60] arrayWithObjects:&v76 count:1];
       v60 = [SKGTextQueryManager queryForDocUnderstandingUpdatesIncludeBundles:v59];
       [v72 addObject:v60];
@@ -3224,36 +3224,36 @@ LABEL_6:
     else if (!v30)
     {
       v21 = 1;
-      v11 = v70;
+      blockCopy = v70;
       v65 = v72;
       goto LABEL_23;
     }
 
-    v75 = v10;
+    v75 = identifierCopy;
     v61 = [MEMORY[0x277CBEA60] arrayWithObjects:&v75 count:1];
     v62 = objc_alloc_init(MEMORY[0x277CC34A0]);
-    v63 = [v23 allObjects];
-    [v62 setFetchAttributes:v63];
+    allObjects = [v23 allObjects];
+    [v62 setFetchAttributes:allObjects];
 
     [v62 setBundleIDs:v61];
-    v64 = [MEMORY[0x277D657A0] sharedContext];
+    mEMORY[0x277D657A0]14 = [MEMORY[0x277D657A0] sharedContext];
     v65 = v72;
-    v66 = +[SKGTextQueryManager queryForPipelineUpdatesWithTaskQueries:excludeBundles:throttleHorizonDate:](SKGTextQueryManager, "queryForPipelineUpdatesWithTaskQueries:excludeBundles:throttleHorizonDate:", v72, 0, [v64 redonationThrottleHorizonDate]);
+    v66 = +[SKGTextQueryManager queryForPipelineUpdatesWithTaskQueries:excludeBundles:throttleHorizonDate:](SKGTextQueryManager, "queryForPipelineUpdatesWithTaskQueries:excludeBundles:throttleHorizonDate:", v72, 0, [mEMORY[0x277D657A0]14 redonationThrottleHorizonDate]);
 
     v67 = v30;
-    v11 = v70;
-    v21 = [(SKGJob *)v71 _runCSReindexForQueryString:v66 queryContext:v62 processorFlags:v67 batchProcessedBlock:v70 batchUpdatedBlock:v74 cancelBlock:v12];
+    blockCopy = v70;
+    v21 = [(SKGJob *)selfCopy _runCSReindexForQueryString:v66 queryContext:v62 processorFlags:v67 batchProcessedBlock:v70 batchUpdatedBlock:updatedBlockCopy cancelBlock:cancelBlockCopy];
 
 LABEL_23:
     goto LABEL_24;
   }
 
   [(SKGJob *)self context];
-  v18 = v17 = v11;
-  v19 = [v18 doNotUpdateList];
-  v20 = [v19 containsObject:v10];
+  v18 = v17 = blockCopy;
+  doNotUpdateList2 = [v18 doNotUpdateList];
+  v20 = [doNotUpdateList2 containsObject:identifierCopy];
 
-  v11 = v17;
+  blockCopy = v17;
   if ((v20 & 1) == 0)
   {
     goto LABEL_6;
@@ -3268,27 +3268,27 @@ LABEL_24:
   return v21;
 }
 
-- (BOOL)requestCSReindexWithProtectionClasses:(id)a3 batchProcessedBlock:(id)a4 batchUpdatedBlock:(id)a5 cancelBlock:(id)a6
+- (BOOL)requestCSReindexWithProtectionClasses:(id)classes batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277D657A0] sharedContext];
-  v15 = [v14 enableKeyphrases];
+  classesCopy = classes;
+  blockCopy = block;
+  updatedBlockCopy = updatedBlock;
+  cancelBlockCopy = cancelBlock;
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableKeyphrases = [mEMORY[0x277D657A0] enableKeyphrases];
 
-  v16 = [MEMORY[0x277D657A0] sharedContext];
-  v17 = [v16 enableEmbeddings];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  enableEmbeddings = [mEMORY[0x277D657A0]2 enableEmbeddings];
 
-  v18 = [MEMORY[0x277D657A0] sharedContext];
-  v19 = [v18 enableSuggestedEvents];
+  mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+  enableSuggestedEvents = [mEMORY[0x277D657A0]3 enableSuggestedEvents];
 
-  v20 = [MEMORY[0x277D657A0] sharedContext];
-  v21 = [v20 enableDocumentUnderstanding];
+  mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+  enableDocumentUnderstanding = [mEMORY[0x277D657A0]4 enableDocumentUnderstanding];
 
-  if ((v17 & 1) != 0 || (v15 & 1) != 0 || (v19 & 1) != 0 || v21)
+  if ((enableEmbeddings & 1) != 0 || (enableKeyphrases & 1) != 0 || (enableSuggestedEvents & 1) != 0 || enableDocumentUnderstanding)
   {
-    if (v17)
+    if (enableEmbeddings)
     {
       v23 = 16;
     }
@@ -3298,17 +3298,17 @@ LABEL_24:
       v23 = 0;
     }
 
-    if (v15)
+    if (enableKeyphrases)
     {
       v23 |= 0x20u;
     }
 
-    if (v19)
+    if (enableSuggestedEvents)
     {
       v23 |= 0x80u;
     }
 
-    if (v21)
+    if (enableDocumentUnderstanding)
     {
       v24 = v23 | 0x100;
     }
@@ -3318,7 +3318,7 @@ LABEL_24:
       v24 = v23;
     }
 
-    v22 = [(SKGJob *)self requestCSReindexWithProtectionClasses:v10 flags:v24 batchProcessedBlock:v11 batchUpdatedBlock:v12 cancelBlock:v13];
+    v22 = [(SKGJob *)self requestCSReindexWithProtectionClasses:classesCopy flags:v24 batchProcessedBlock:blockCopy batchUpdatedBlock:updatedBlockCopy cancelBlock:cancelBlockCopy];
   }
 
   else
@@ -3329,42 +3329,42 @@ LABEL_24:
   return v22;
 }
 
-- (BOOL)requestCSReindexWithProtectionClasses:(id)a3 flags:(unsigned int)a4 batchProcessedBlock:(id)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7
+- (BOOL)requestCSReindexWithProtectionClasses:(id)classes flags:(unsigned int)flags batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock
 {
-  v10 = a4;
+  flagsCopy = flags;
   v79 = *MEMORY[0x277D85DE8];
-  v73 = a3;
-  v12 = a5;
-  v71 = a6;
-  v70 = a7;
+  classesCopy = classes;
+  blockCopy = block;
+  updatedBlockCopy = updatedBlock;
+  cancelBlockCopy = cancelBlock;
   v13 = objc_autoreleasePoolPush();
-  v14 = [(SKGJob *)self context];
-  v15 = [v14 excludeBundles];
+  context = [(SKGJob *)self context];
+  excludeBundles = [context excludeBundles];
 
-  v72 = self;
-  v16 = [(SKGJob *)self context];
-  v17 = [v16 includeBundles];
+  selfCopy = self;
+  context2 = [(SKGJob *)self context];
+  includeBundles = [context2 includeBundles];
 
   v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v20 = [MEMORY[0x277D657A0] sharedContext];
-  v21 = [v20 fetchAttributes];
-  [v19 addObjectsFromArray:v21];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  fetchAttributes = [mEMORY[0x277D657A0] fetchAttributes];
+  [v19 addObjectsFromArray:fetchAttributes];
 
   context = v13;
-  if ((v10 & 0x10) != 0)
+  if ((flagsCopy & 0x10) != 0)
   {
-    v23 = [MEMORY[0x277D657A0] sharedContext];
-    v24 = [v23 embeddingFetchAttributes];
-    [v19 addObjectsFromArray:v24];
+    mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+    embeddingFetchAttributes = [mEMORY[0x277D657A0]2 embeddingFetchAttributes];
+    [v19 addObjectsFromArray:embeddingFetchAttributes];
 
-    v25 = [MEMORY[0x277D657A0] sharedContext];
-    v26 = [v25 embeddingExcludeBundles];
-    v27 = [SKGTextQueryManager queryForEmbeddingsUpdatesExcludeBundles:v26];
+    mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+    embeddingExcludeBundles = [mEMORY[0x277D657A0]3 embeddingExcludeBundles];
+    v27 = [SKGTextQueryManager queryForEmbeddingsUpdatesExcludeBundles:embeddingExcludeBundles];
     [v18 addObject:v27];
 
     v22 = 2;
-    if ((v10 & 0x20) == 0)
+    if ((flagsCopy & 0x20) == 0)
     {
       goto LABEL_6;
     }
@@ -3373,57 +3373,57 @@ LABEL_24:
   }
 
   v22 = 0;
-  if ((v10 & 0x20) != 0)
+  if ((flagsCopy & 0x20) != 0)
   {
 LABEL_5:
     v22 |= 4uLL;
-    v28 = [MEMORY[0x277D657A0] sharedContext];
-    v29 = [v28 keyphraseFetchAttributes];
-    [v19 addObjectsFromArray:v29];
+    mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+    keyphraseFetchAttributes = [mEMORY[0x277D657A0]4 keyphraseFetchAttributes];
+    [v19 addObjectsFromArray:keyphraseFetchAttributes];
 
-    v30 = [MEMORY[0x277D657A0] sharedContext];
-    v31 = [v30 keyphraseExcludeBundles];
-    v32 = [SKGTextQueryManager queryForKeyphrasesUpdatesExcludeBundles:v31];
+    mEMORY[0x277D657A0]5 = [MEMORY[0x277D657A0] sharedContext];
+    keyphraseExcludeBundles = [mEMORY[0x277D657A0]5 keyphraseExcludeBundles];
+    v32 = [SKGTextQueryManager queryForKeyphrasesUpdatesExcludeBundles:keyphraseExcludeBundles];
     [v18 addObject:v32];
   }
 
 LABEL_6:
-  if ((v10 & 0x80) != 0)
+  if ((flagsCopy & 0x80) != 0)
   {
     v22 |= 0x10uLL;
-    v33 = [MEMORY[0x277D657A0] sharedContext];
-    v34 = [v33 suggestedEventsFetchAttributes];
-    [v19 addObjectsFromArray:v34];
+    mEMORY[0x277D657A0]6 = [MEMORY[0x277D657A0] sharedContext];
+    suggestedEventsFetchAttributes = [mEMORY[0x277D657A0]6 suggestedEventsFetchAttributes];
+    [v19 addObjectsFromArray:suggestedEventsFetchAttributes];
 
-    v35 = [MEMORY[0x277D657A0] sharedContext];
-    v36 = [v35 suggestedEventsIncludeBundles];
-    v37 = [SKGTextQueryManager queryForSuggestedEventsUpdatesIncludeBundles:v36];
+    mEMORY[0x277D657A0]7 = [MEMORY[0x277D657A0] sharedContext];
+    suggestedEventsIncludeBundles = [mEMORY[0x277D657A0]7 suggestedEventsIncludeBundles];
+    v37 = [SKGTextQueryManager queryForSuggestedEventsUpdatesIncludeBundles:suggestedEventsIncludeBundles];
     [v18 addObject:v37];
   }
 
-  if ((v10 & 0x100) != 0)
+  if ((flagsCopy & 0x100) != 0)
   {
     v22 |= 0x20uLL;
-    v42 = [MEMORY[0x277D657A0] sharedContext];
-    v43 = [v42 docUnderstandingFetchAttributes];
-    [v19 addObjectsFromArray:v43];
+    mEMORY[0x277D657A0]8 = [MEMORY[0x277D657A0] sharedContext];
+    docUnderstandingFetchAttributes = [mEMORY[0x277D657A0]8 docUnderstandingFetchAttributes];
+    [v19 addObjectsFromArray:docUnderstandingFetchAttributes];
 
-    v44 = [MEMORY[0x277D657A0] sharedContext];
-    v45 = [v44 docUnderstandingIncludeBundles];
-    v46 = [SKGTextQueryManager queryForDocUnderstandingUpdatesIncludeBundles:v45];
+    mEMORY[0x277D657A0]9 = [MEMORY[0x277D657A0] sharedContext];
+    docUnderstandingIncludeBundles = [mEMORY[0x277D657A0]9 docUnderstandingIncludeBundles];
+    v46 = [SKGTextQueryManager queryForDocUnderstandingUpdatesIncludeBundles:docUnderstandingIncludeBundles];
     [v18 addObject:v46];
 
-    v38 = v73;
+    v38 = classesCopy;
   }
 
   else
   {
-    v38 = v73;
+    v38 = classesCopy;
     if (!v22)
     {
       v39 = 1;
-      v41 = v70;
-      v40 = v71;
+      v41 = cancelBlockCopy;
+      v40 = updatedBlockCopy;
       goto LABEL_27;
     }
   }
@@ -3431,28 +3431,28 @@ LABEL_6:
   v68 = v18;
   v47 = objc_alloc_init(MEMORY[0x277CC34A0]);
   [v47 setProtectionClasses:v38];
-  [v47 setDisableBundles:v15];
+  [v47 setDisableBundles:excludeBundles];
   v67 = v19;
-  v48 = [(SKGJob *)v72 _removingRequiredAttributes:v19];
-  v49 = [v48 allObjects];
-  [v47 setFetchAttributes:v49];
+  v48 = [(SKGJob *)selfCopy _removingRequiredAttributes:v19];
+  allObjects = [v48 allObjects];
+  [v47 setFetchAttributes:allObjects];
 
-  v50 = [(SKGJob *)v72 context];
-  v51 = [v50 doNotUpdateList];
-  v52 = [v51 count];
+  context3 = [(SKGJob *)selfCopy context];
+  doNotUpdateList = [context3 doNotUpdateList];
+  v52 = [doNotUpdateList count];
 
   if (v52)
   {
-    v66 = v12;
+    v66 = blockCopy;
     v53 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v54 = [(SKGJob *)v72 context];
-    v55 = [v54 doNotUpdateList];
+    context4 = [(SKGJob *)selfCopy context];
+    doNotUpdateList2 = [context4 doNotUpdateList];
 
-    v56 = [v55 countByEnumeratingWithState:&v74 objects:v78 count:16];
+    v56 = [doNotUpdateList2 countByEnumeratingWithState:&v74 objects:v78 count:16];
     if (v56)
     {
       v57 = v56;
@@ -3463,23 +3463,23 @@ LABEL_6:
         {
           if (*v75 != v58)
           {
-            objc_enumerationMutation(v55);
+            objc_enumerationMutation(doNotUpdateList2);
           }
 
           v60 = *(*(&v74 + 1) + 8 * i);
-          if (([v15 containsObject:{v60, v66}] & 1) == 0 && (!objc_msgSend(v17, "count") || objc_msgSend(v17, "containsObject:", v60)))
+          if (([excludeBundles containsObject:{v60, v66}] & 1) == 0 && (!objc_msgSend(includeBundles, "count") || objc_msgSend(includeBundles, "containsObject:", v60)))
           {
             [v53 addObject:v60];
           }
         }
 
-        v57 = [v55 countByEnumeratingWithState:&v74 objects:v78 count:16];
+        v57 = [doNotUpdateList2 countByEnumeratingWithState:&v74 objects:v78 count:16];
       }
 
       while (v57);
     }
 
-    v12 = v66;
+    blockCopy = v66;
   }
 
   else
@@ -3487,17 +3487,17 @@ LABEL_6:
     v53 = 0;
   }
 
-  v61 = [MEMORY[0x277D657A0] sharedContext];
-  v62 = +[SKGTextQueryManager queryForPipelineUpdatesWithTaskQueries:excludeBundles:throttleHorizonDate:](SKGTextQueryManager, "queryForPipelineUpdatesWithTaskQueries:excludeBundles:throttleHorizonDate:", v68, v53, [v61 redonationThrottleHorizonDate]);
+  mEMORY[0x277D657A0]10 = [MEMORY[0x277D657A0] sharedContext];
+  v62 = +[SKGTextQueryManager queryForPipelineUpdatesWithTaskQueries:excludeBundles:throttleHorizonDate:](SKGTextQueryManager, "queryForPipelineUpdatesWithTaskQueries:excludeBundles:throttleHorizonDate:", v68, v53, [mEMORY[0x277D657A0]10 redonationThrottleHorizonDate]);
 
-  v40 = v71;
+  v40 = updatedBlockCopy;
   v63 = v22;
-  v41 = v70;
-  v39 = [(SKGJob *)v72 _runCSReindexForQueryString:v62 queryContext:v47 processorFlags:v63 batchProcessedBlock:v12 batchUpdatedBlock:v71 cancelBlock:v70];
+  v41 = cancelBlockCopy;
+  v39 = [(SKGJob *)selfCopy _runCSReindexForQueryString:v62 queryContext:v47 processorFlags:v63 batchProcessedBlock:blockCopy batchUpdatedBlock:updatedBlockCopy cancelBlock:cancelBlockCopy];
 
   v18 = v68;
   v19 = v67;
-  v38 = v73;
+  v38 = classesCopy;
 LABEL_27:
 
   objc_autoreleasePoolPop(context);
@@ -3505,37 +3505,37 @@ LABEL_27:
   return v39;
 }
 
-- (BOOL)_runCSCleanupForQueryString:(id)a3 trackingAttributes:(id)a4 queryContext:(id)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7
+- (BOOL)_runCSCleanupForQueryString:(id)string trackingAttributes:(id)attributes queryContext:(id)context batchUpdatedBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v94 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v39 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  stringCopy = string;
+  attributesCopy = attributes;
+  contextCopy = context;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  if (stringCopy)
   {
-    [v13 setDisableResultStreaming:1];
-    [v13 setMaximumBatchSize:100];
-    v16 = [(SKGJob *)self context];
-    v17 = [v16 maxItemCountPerBatch];
+    [contextCopy setDisableResultStreaming:1];
+    [contextCopy setMaximumBatchSize:100];
+    context = [(SKGJob *)self context];
+    maxItemCountPerBatch = [context maxItemCountPerBatch];
 
-    if (v17 >= 1)
+    if (maxItemCountPerBatch >= 1)
     {
-      v18 = [(SKGJob *)self context];
-      [v13 setMaximumBatchSize:{objc_msgSend(v18, "maxItemCountPerBatch")}];
+      context2 = [(SKGJob *)self context];
+      [contextCopy setMaximumBatchSize:{objc_msgSend(context2, "maxItemCountPerBatch")}];
     }
 
-    v19 = [(SKGJob *)self context];
-    v20 = [v19 maxItemCountPerJob];
+    context3 = [(SKGJob *)self context];
+    maxItemCountPerJob = [context3 maxItemCountPerJob];
 
-    if (v20 >= 1)
+    if (maxItemCountPerJob >= 1)
     {
-      v21 = [(SKGJob *)self context];
-      [v13 setMaxCount:{objc_msgSend(v21, "maxItemCountPerJob")}];
+      context4 = [(SKGJob *)self context];
+      [contextCopy setMaxCount:{objc_msgSend(context4, "maxItemCountPerJob")}];
     }
 
-    v22 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v12 queryContext:v13];
+    v22 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:stringCopy queryContext:contextCopy];
     v23 = dispatch_group_create();
     objc_initWeak(&location, v22);
     v83 = 0;
@@ -3579,8 +3579,8 @@ LABEL_27:
     v64 = v81;
     v65 = v66;
     aBlock[4] = self;
-    v62 = v14;
-    v24 = v15;
+    v62 = blockCopy;
+    v24 = cancelBlockCopy;
     v63 = v24;
     v25 = _Block_copy(aBlock);
     v46[0] = MEMORY[0x277D85DD0];
@@ -3589,8 +3589,8 @@ LABEL_27:
     v46[3] = &unk_27893EAE0;
     v52 = &v77;
     v53 = &v73;
-    v47 = v39;
-    v48 = self;
+    v47 = attributesCopy;
+    selfCopy = self;
     v54 = &v69;
     v55 = v66;
     v26 = v25;
@@ -3617,13 +3617,13 @@ LABEL_27:
     v41 = v29;
     [v22 setCompletionHandler:v40];
     dispatch_group_enter(v29);
-    v30 = [(SKGJob *)self context];
-    [v30 logSignpost:9 message:@"starting batch cleanup"];
+    context5 = [(SKGJob *)self context];
+    [context5 logSignpost:9 message:@"starting batch cleanup"];
 
     [v22 start];
     [v22 poll];
-    v31 = [(SKGJob *)self context];
-    [v31 logSignpost:10 message:@"end batch cleanup"];
+    context6 = [(SKGJob *)self context];
+    [context6 logSignpost:10 message:@"end batch cleanup"];
 
     dispatch_group_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
     if (SKGLogGetCurrentLoggingLevel() >= 7)
@@ -3631,7 +3631,7 @@ LABEL_27:
       v32 = SKGLogInit();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        [SKGJob(Updates) _runCSCleanupForQueryString:v78 trackingAttributes:v12 queryContext:v32 batchUpdatedBlock:? cancelBlock:?];
+        [SKGJob(Updates) _runCSCleanupForQueryString:v78 trackingAttributes:stringCopy queryContext:v32 batchUpdatedBlock:? cancelBlock:?];
       }
     }
 
@@ -3647,7 +3647,7 @@ LABEL_27:
         v90 = 2048;
         v91 = v35;
         v92 = 2112;
-        v93 = v12;
+        v93 = stringCopy;
         _os_log_impl(&dword_231B25000, v33, OS_LOG_TYPE_DEFAULT, "=== Cleaned up %llu items [of %llu items seen] for query %@", buf, 0x20u);
       }
     }
@@ -4184,17 +4184,17 @@ void __109__SKGJob_Updates___runCSCleanupForQueryString_trackingAttributes_query
   }
 }
 
-- (BOOL)requestCSCleanupWithProtectionClasses:(id)a3 batchUpdatedBlock:(id)a4 cancelBlock:(id)a5
+- (BOOL)requestCSCleanupWithProtectionClasses:(id)classes batchUpdatedBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v60 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v34 = a4;
-  v36 = a5;
+  classesCopy = classes;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   context = objc_autoreleasePoolPush();
-  v37 = self;
-  v8 = [(SKGJob *)self monitor];
+  selfCopy = self;
+  monitor = [(SKGJob *)self monitor];
 
-  if (v8)
+  if (monitor)
   {
     v49 = 0;
     v50 = &v49;
@@ -4212,15 +4212,15 @@ void __109__SKGJob_Updates___runCSCleanupForQueryString_trackingAttributes_query
     aBlock[6] = &v45;
     aBlock[4] = self;
     v9 = _Block_copy(aBlock);
-    v10 = [(SKGJob *)self context];
-    v11 = [v10 protectionClasses];
+    context = [(SKGJob *)self context];
+    protectionClasses = [context protectionClasses];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __87__SKGJob_Updates__requestCSCleanupWithProtectionClasses_batchUpdatedBlock_cancelBlock___block_invoke_3;
     v42[3] = &unk_27893EB50;
     v42[4] = self;
-    v43 = v36;
-    v12 = [CSEventJournalStats enumerateEventsWithProtectionClasses:v11 itemAdds:v9 itemUpdates:v9 itemDeletes:&__block_literal_global_34 cancelBlock:v42];
+    v43 = cancelBlockCopy;
+    v12 = [CSEventJournalStats enumerateEventsWithProtectionClasses:protectionClasses itemAdds:v9 itemUpdates:v9 itemDeletes:&__block_literal_global_34 cancelBlock:v42];
 
     if (!v12)
     {
@@ -4243,7 +4243,7 @@ void __109__SKGJob_Updates___runCSCleanupForQueryString_trackingAttributes_query
         v56 = 2048;
         v57 = v15;
         v58 = 2112;
-        v59 = v35;
+        v59 = classesCopy;
         _os_log_impl(&dword_231B25000, v13, OS_LOG_TYPE_DEFAULT, "=== Monitor for requestCSCleanupWithProtectionClasses has %llu items added, out of %llu items seen. (%@)", buf, 0x20u);
       }
     }
@@ -4253,12 +4253,12 @@ void __109__SKGJob_Updates___runCSCleanupForQueryString_trackingAttributes_query
   }
 
   v16 = objc_alloc_init(MEMORY[0x277CC34A0]);
-  [v16 setProtectionClasses:v35];
+  [v16 setProtectionClasses:classesCopy];
   v17 = [MEMORY[0x277CBEB58] setWithArray:&unk_2846E8268];
   v18 = MEMORY[0x277CBEB58];
-  v19 = [MEMORY[0x277D657A0] sharedContext];
-  v20 = [v19 cleanupAttributes];
-  v21 = [v18 setWithArray:v20];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  cleanupAttributes = [mEMORY[0x277D657A0] cleanupAttributes];
+  v21 = [v18 setWithArray:cleanupAttributes];
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v40 = 0u;
@@ -4291,10 +4291,10 @@ void __109__SKGJob_Updates___runCSCleanupForQueryString_trackingAttributes_query
 
   v28 = [v22 componentsJoinedByString:@"||"];
   [v17 unionSet:v23];
-  v29 = [v17 allObjects];
-  [v16 setFetchAttributes:v29];
+  allObjects = [v17 allObjects];
+  [v16 setFetchAttributes:allObjects];
 
-  v30 = [(SKGJob *)v37 _runCSCleanupForQueryString:v28 trackingAttributes:v23 queryContext:v16 batchUpdatedBlock:v34 cancelBlock:v36];
+  v30 = [(SKGJob *)selfCopy _runCSCleanupForQueryString:v28 trackingAttributes:v23 queryContext:v16 batchUpdatedBlock:blockCopy cancelBlock:cancelBlockCopy];
 LABEL_17:
   objc_autoreleasePoolPop(context);
 
@@ -4405,18 +4405,18 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)requestCSCleanupForUpdater:(id)a3 protectionClasses:(id)a4 flags:(unsigned int)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7
+- (BOOL)requestCSCleanupForUpdater:(id)updater protectionClasses:(id)classes flags:(unsigned int)flags batchUpdatedBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v9 = a5;
+  flagsCopy = flags;
   v66 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v40 = a4;
-  v38 = a6;
-  v41 = a7;
+  updaterCopy = updater;
+  classesCopy = classes;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   context = objc_autoreleasePoolPush();
-  v12 = [(SKGJob *)self monitor];
+  monitor = [(SKGJob *)self monitor];
 
-  if (v12)
+  if (monitor)
   {
     v53 = 0;
     v54 = &v53;
@@ -4434,15 +4434,15 @@ LABEL_6:
     aBlock[6] = &v49;
     aBlock[4] = self;
     v13 = _Block_copy(aBlock);
-    v14 = [(SKGJob *)self context];
-    v15 = [v14 protectionClasses];
+    context = [(SKGJob *)self context];
+    protectionClasses = [context protectionClasses];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __100__SKGJob_Updates__requestCSCleanupForUpdater_protectionClasses_flags_batchUpdatedBlock_cancelBlock___block_invoke_3;
     v46[3] = &unk_27893EB50;
     v46[4] = self;
-    v47 = v41;
-    v16 = [CSEventJournalStats enumerateEventsWithProtectionClasses:v15 updaters:v39 itemAdds:v13 itemUpdates:v13 itemDeletes:&__block_literal_global_198 cancelBlock:v46];
+    v47 = cancelBlockCopy;
+    v16 = [CSEventJournalStats enumerateEventsWithProtectionClasses:protectionClasses updaters:updaterCopy itemAdds:v13 itemUpdates:v13 itemDeletes:&__block_literal_global_198 cancelBlock:v46];
 
     if (!v16)
     {
@@ -4465,9 +4465,9 @@ LABEL_6:
         v60 = 2048;
         v61 = v19;
         v62 = 2112;
-        v63 = v39;
+        v63 = updaterCopy;
         v64 = 2112;
-        v65 = v40;
+        v65 = classesCopy;
         _os_log_impl(&dword_231B25000, v17, OS_LOG_TYPE_DEFAULT, "=== Monitor for requestCSCleanupForUpdater has %llu items added, out of %llu items seen. %@ %@", buf, 0x2Au);
       }
     }
@@ -4477,37 +4477,37 @@ LABEL_6:
   }
 
   v20 = objc_alloc_init(MEMORY[0x277CC34A0]);
-  [v20 setProtectionClasses:v40];
+  [v20 setProtectionClasses:classesCopy];
   v21 = [MEMORY[0x277CBEB58] setWithArray:&unk_2846E8280];
   v22 = objc_opt_new();
-  if ((v9 & 0x10) != 0)
+  if ((flagsCopy & 0x10) != 0)
   {
-    v23 = [MEMORY[0x277D657A0] sharedContext];
-    v24 = [v23 embeddingTrackingAttributes];
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    embeddingTrackingAttributes = [mEMORY[0x277D657A0] embeddingTrackingAttributes];
     goto LABEL_17;
   }
 
-  if ((v9 & 0x20) != 0)
+  if ((flagsCopy & 0x20) != 0)
   {
-    v23 = [MEMORY[0x277D657A0] sharedContext];
-    v24 = [v23 keyphraseTrackingAttributes];
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    embeddingTrackingAttributes = [mEMORY[0x277D657A0] keyphraseTrackingAttributes];
     goto LABEL_17;
   }
 
-  if ((v9 & 0x80) != 0)
+  if ((flagsCopy & 0x80) != 0)
   {
-    v23 = [MEMORY[0x277D657A0] sharedContext];
-    v24 = [v23 suggestedEventsTrackingAttributes];
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    embeddingTrackingAttributes = [mEMORY[0x277D657A0] suggestedEventsTrackingAttributes];
     goto LABEL_17;
   }
 
-  if ((v9 & 0x100) != 0)
+  if ((flagsCopy & 0x100) != 0)
   {
-    v23 = [MEMORY[0x277D657A0] sharedContext];
-    v24 = [v23 docUnderstandingTrackingAttributes];
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    embeddingTrackingAttributes = [mEMORY[0x277D657A0] docUnderstandingTrackingAttributes];
 LABEL_17:
-    v26 = v24;
-    [v22 addObjectsFromArray:v24];
+    v26 = embeddingTrackingAttributes;
+    [v22 addObjectsFromArray:embeddingTrackingAttributes];
   }
 
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -4541,10 +4541,10 @@ LABEL_17:
 
   v33 = [v27 componentsJoinedByString:@"||"];
   [v21 unionSet:v28];
-  v34 = [v21 allObjects];
-  [v20 setFetchAttributes:v34];
+  allObjects = [v21 allObjects];
+  [v20 setFetchAttributes:allObjects];
 
-  v25 = [(SKGJob *)self _runCSCleanupForQueryString:v33 trackingAttributes:v28 queryContext:v20 batchUpdatedBlock:v38 cancelBlock:v41];
+  v25 = [(SKGJob *)self _runCSCleanupForQueryString:v33 trackingAttributes:v28 queryContext:v20 batchUpdatedBlock:blockCopy cancelBlock:cancelBlockCopy];
 LABEL_26:
   objc_autoreleasePoolPop(context);
 
@@ -4655,46 +4655,46 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_runCSProcessingForTask:(id)a3 queryString:(id)a4 queryContext:(id)a5 batchProcessedBlock:(id)a6 batchUpdatedBlock:(id)a7 cancelBlock:(id)a8
+- (BOOL)_runCSProcessingForTask:(id)task queryString:(id)string queryContext:(id)context batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock
 {
   v94 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v43 = a6;
-  v44 = a7;
-  v17 = a8;
-  if (v15)
+  taskCopy = task;
+  stringCopy = string;
+  contextCopy = context;
+  blockCopy = block;
+  updatedBlockCopy = updatedBlock;
+  cancelBlockCopy = cancelBlock;
+  if (stringCopy)
   {
-    v42 = v17;
-    [v16 setDisableResultStreaming:1];
-    [v16 setMaximumBatchSize:100];
-    v18 = [(SKGJob *)self context];
-    v19 = [v18 maxItemCountPerBatch];
+    v42 = cancelBlockCopy;
+    [contextCopy setDisableResultStreaming:1];
+    [contextCopy setMaximumBatchSize:100];
+    context = [(SKGJob *)self context];
+    maxItemCountPerBatch = [context maxItemCountPerBatch];
 
-    if (v19 >= 1)
+    if (maxItemCountPerBatch >= 1)
     {
-      v20 = [(SKGJob *)self context];
-      [v16 setMaximumBatchSize:{objc_msgSend(v20, "maxItemCountPerBatch")}];
+      context2 = [(SKGJob *)self context];
+      [contextCopy setMaximumBatchSize:{objc_msgSend(context2, "maxItemCountPerBatch")}];
     }
 
-    v21 = [(SKGJob *)self context];
-    v22 = [v21 maxItemCountPerJob];
+    context3 = [(SKGJob *)self context];
+    maxItemCountPerJob = [context3 maxItemCountPerJob];
 
-    if (v22 >= 1)
+    if (maxItemCountPerJob >= 1)
     {
-      v23 = [(SKGJob *)self context];
-      [v16 setMaxCount:{objc_msgSend(v23, "maxItemCountPerJob")}];
+      context4 = [(SKGJob *)self context];
+      [contextCopy setMaxCount:{objc_msgSend(context4, "maxItemCountPerJob")}];
     }
 
-    v24 = [v14 flags];
-    if ((v24 & 4) != 0)
+    flags = [taskCopy flags];
+    if ((flags & 4) != 0)
     {
-      v25 = [MEMORY[0x277D65798] sharedProcessor];
-      [v25 loadKeyphraser];
+      mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+      [mEMORY[0x277D65798] loadKeyphraser];
     }
 
-    v26 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v15 queryContext:v16];
+    v26 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:stringCopy queryContext:contextCopy];
     v27 = dispatch_group_create();
     objc_initWeak(&location, v26);
     v83 = 0;
@@ -4730,7 +4730,7 @@ LABEL_6:
     v67 = v81;
     v68 = v69;
     aBlock[4] = self;
-    v65 = v44;
+    v65 = updatedBlockCopy;
     v28 = v42;
     v66 = v28;
     v29 = _Block_copy(aBlock);
@@ -4738,15 +4738,15 @@ LABEL_6:
     v51[1] = 3221225472;
     v51[2] = __118__SKGJob_Updates___runCSProcessingForTask_queryString_queryContext_batchProcessedBlock_batchUpdatedBlock_cancelBlock___block_invoke_2;
     v51[3] = &unk_27893EBA0;
-    v52 = v14;
+    v52 = taskCopy;
     v57 = v81;
-    v63[1] = v24;
+    v63[1] = flags;
     v58 = v69;
     v59 = &v75;
     v55 = v28;
     v30 = v29;
     v56 = v30;
-    v53 = self;
+    selfCopy = self;
     v60 = &v71;
     v61 = &v83;
     objc_copyWeak(v63, &location);
@@ -4767,13 +4767,13 @@ LABEL_6:
     v46 = v33;
     [v26 setCompletionHandler:v45];
     dispatch_group_enter(v33);
-    v34 = [(SKGJob *)self context];
-    [v34 logSignpost:3 message:@"starting batch processing"];
+    context5 = [(SKGJob *)self context];
+    [context5 logSignpost:3 message:@"starting batch processing"];
 
     [v26 start];
     [v26 poll];
-    v35 = [(SKGJob *)self context];
-    [v35 logSignpost:3 message:@"end batch processing"];
+    context6 = [(SKGJob *)self context];
+    [context6 logSignpost:3 message:@"end batch processing"];
 
     dispatch_group_wait(v33, 0xFFFFFFFFFFFFFFFFLL);
     if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -4788,7 +4788,7 @@ LABEL_6:
         v90 = 2048;
         v91 = v38;
         v92 = 2112;
-        v93 = v15;
+        v93 = stringCopy;
         _os_log_impl(&dword_231B25000, v36, OS_LOG_TYPE_DEFAULT, "=== Processed %llu items [of %llu items seen] for query %@", buf, 0x20u);
       }
     }
@@ -4805,7 +4805,7 @@ LABEL_6:
     _Block_object_dispose(&v83, 8);
     objc_destroyWeak(&location);
 
-    v17 = v42;
+    cancelBlockCopy = v42;
   }
 
   else
@@ -5163,58 +5163,58 @@ void __118__SKGJob_Updates___runCSProcessingForTask_queryString_queryContext_bat
   }
 }
 
-- (BOOL)requestCSProcessingWithProtectionClasses:(id)a3 task:(id)a4 batchProcessedBlock:(id)a5 batchUpdatedBlock:(id)a6 cancelBlock:(id)a7
+- (BOOL)requestCSProcessingWithProtectionClasses:(id)classes task:(id)task batchProcessedBlock:(id)block batchUpdatedBlock:(id)updatedBlock cancelBlock:(id)cancelBlock
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  classesCopy = classes;
+  taskCopy = task;
+  blockCopy = block;
+  updatedBlockCopy = updatedBlock;
+  cancelBlockCopy = cancelBlock;
   context = objc_autoreleasePoolPush();
   v17 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v18 = [MEMORY[0x277D657A0] sharedContext];
-  v19 = [v18 fetchAttributes];
-  [v17 addObjectsFromArray:v19];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  fetchAttributes = [mEMORY[0x277D657A0] fetchAttributes];
+  [v17 addObjectsFromArray:fetchAttributes];
 
   v20 = objc_alloc_init(MEMORY[0x277CC34A0]);
-  [v20 setProtectionClasses:v12];
-  v21 = [(SKGJob *)self context];
-  v22 = [v21 excludeBundles];
-  [v20 setDisableBundles:v22];
+  [v20 setProtectionClasses:classesCopy];
+  context = [(SKGJob *)self context];
+  excludeBundles = [context excludeBundles];
+  [v20 setDisableBundles:excludeBundles];
 
-  v23 = [v13 fetchAttributes];
-  [v20 setFetchAttributes:v23];
+  fetchAttributes2 = [taskCopy fetchAttributes];
+  [v20 setFetchAttributes:fetchAttributes2];
 
-  v24 = [SKGTextQueryManager queryForTask:v13 event:4];
+  v24 = [SKGTextQueryManager queryForTask:taskCopy event:4];
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v25 = SKGLogInit();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      [v13 name];
-      v26 = v30 = v14;
+      [taskCopy name];
+      v26 = v30 = blockCopy;
       *buf = 138412290;
       v33 = v26;
       _os_log_impl(&dword_231B25000, v25, OS_LOG_TYPE_DEFAULT, "=== Requesting scheduled processing of %@", buf, 0xCu);
 
-      v14 = v30;
+      blockCopy = v30;
     }
   }
 
-  v27 = [(SKGJob *)self _runCSProcessingForTask:v13 queryString:v24 queryContext:v20 batchProcessedBlock:v15 batchUpdatedBlock:v15 cancelBlock:v16, v30];
+  v27 = [(SKGJob *)self _runCSProcessingForTask:taskCopy queryString:v24 queryContext:v20 batchProcessedBlock:updatedBlockCopy batchUpdatedBlock:updatedBlockCopy cancelBlock:cancelBlockCopy, v30];
 
   objc_autoreleasePoolPop(context);
   v28 = *MEMORY[0x277D85DE8];
   return v27;
 }
 
-- (id)counterQueryWithQueryString:(id)a3 queryContext:(id)a4 onlyFiles:(BOOL)a5
+- (id)counterQueryWithQueryString:(id)string queryContext:(id)context onlyFiles:(BOOL)files
 {
   v6 = MEMORY[0x277CC3498];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithQueryString:v8 queryContext:v7];
+  contextCopy = context;
+  stringCopy = string;
+  v9 = [[v6 alloc] initWithQueryString:stringCopy queryContext:contextCopy];
 
   return v9;
 }
@@ -5333,15 +5333,15 @@ void __100__SKGJob_Updates___runCSCounterForQueryString_queryContext_filesQuery_
   }
 }
 
-- (id)_fieldPresencePredicateWithFieldName:(id)a3
+- (id)_fieldPresencePredicateWithFieldName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__SKGJob_Updates___fieldPresencePredicateWithFieldName___block_invoke;
   aBlock[3] = &unk_27893EC18;
-  v8 = v3;
-  v4 = v3;
+  v8 = nameCopy;
+  v4 = nameCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -5365,15 +5365,15 @@ uint64_t __56__SKGJob_Updates___fieldPresencePredicateWithFieldName___block_invo
   return v5;
 }
 
-- (id)_anyFieldPresentPredicateWithFieldNames:(id)a3
+- (id)_anyFieldPresentPredicateWithFieldNames:(id)names
 {
-  v3 = a3;
+  namesCopy = names;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__SKGJob_Updates___anyFieldPresentPredicateWithFieldNames___block_invoke;
   aBlock[3] = &unk_27893EC18;
-  v8 = v3;
-  v4 = v3;
+  v8 = namesCopy;
+  v4 = namesCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -5437,15 +5437,15 @@ LABEL_13:
   return v6;
 }
 
-- (id)_allFieldsPresentPredicateWithFieldNames:(id)a3
+- (id)_allFieldsPresentPredicateWithFieldNames:(id)names
 {
-  v3 = a3;
+  namesCopy = names;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__SKGJob_Updates___allFieldsPresentPredicateWithFieldNames___block_invoke;
   aBlock[3] = &unk_27893EC18;
-  v8 = v3;
-  v4 = v3;
+  v8 = namesCopy;
+  v4 = namesCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -5515,14 +5515,14 @@ LABEL_14:
   return v13;
 }
 
-- (id)_newCounterDictionaryForBundleIdentifier:(id)a3 additionalAttributes:(id)a4
+- (id)_newCounterDictionaryForBundleIdentifier:(id)identifier additionalAttributes:(id)attributes
 {
   v22[10] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  attributesCopy = attributes;
   v21[0] = @"bundleID";
   v21[1] = @"days";
-  v22[0] = v5;
+  v22[0] = identifierCopy;
   v22[1] = &unk_2846E7CE0;
   v21[2] = @"daysToComplete";
   v21[3] = @"totalItems";
@@ -5547,7 +5547,7 @@ LABEL_14:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v6;
+  v9 = attributesCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -5577,38 +5577,38 @@ LABEL_14:
   return v8;
 }
 
-- (id)generateCSReportForQueryFlags:(unsigned int)a3 protectionClasses:(id)a4 additionalQueryString:(id)a5 additionalFetchAttributes:(id)a6 processedPredicate:(id)a7 succesfullyProcessedPredicate:(id)a8 eligiblePredicate:(id)a9 additionalPredicates:(id)a10 dayCompletionStr:(id)a11 genStartTime:(id)a12 bundleIDs:(id)a13 daysToCompleteApproach:(int64_t)a14 onlyFiles:(BOOL)a15 mergeBundleStatistics:(id)a16 withCancelBlock:(id)a17
+- (id)generateCSReportForQueryFlags:(unsigned int)flags protectionClasses:(id)classes additionalQueryString:(id)string additionalFetchAttributes:(id)attributes processedPredicate:(id)predicate succesfullyProcessedPredicate:(id)processedPredicate eligiblePredicate:(id)eligiblePredicate additionalPredicates:(id)self0 dayCompletionStr:(id)self1 genStartTime:(id)self2 bundleIDs:(id)self3 daysToCompleteApproach:(int64_t)self4 onlyFiles:(BOOL)self5 mergeBundleStatistics:(id)self6 withCancelBlock:(id)self7
 {
-  v21 = a3;
+  flagsCopy = flags;
   v174 = *MEMORY[0x277D85DE8];
-  v116 = a4;
-  v110 = a5;
-  v113 = a6;
-  v106 = a7;
-  v107 = a8;
-  v108 = a9;
-  v22 = a10;
-  v127 = a11;
-  v111 = a12;
-  v117 = a13;
-  v123 = a16;
-  v109 = a17;
+  classesCopy = classes;
+  stringCopy = string;
+  attributesCopy = attributes;
+  predicateCopy = predicate;
+  processedPredicateCopy = processedPredicate;
+  eligiblePredicateCopy = eligiblePredicate;
+  predicatesCopy = predicates;
+  strCopy = str;
+  timeCopy = time;
+  dsCopy = ds;
+  statisticsCopy = statistics;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
-  v23 = [MEMORY[0x277D657A0] sharedContext];
-  v119 = [v23 excludeBundles];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  excludeBundles = [mEMORY[0x277D657A0] excludeBundles];
 
   v118 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v24 = [(SKGJob *)self context];
-  v25 = [v24 filterQuery];
+  context = [(SKGJob *)self context];
+  filterQuery = [context filterQuery];
 
-  if (v25)
+  if (filterQuery)
   {
-    v26 = [(SKGJob *)self context];
-    v27 = [v26 filterQuery];
-    [v118 addObject:v27];
+    context2 = [(SKGJob *)self context];
+    filterQuery2 = [context2 filterQuery];
+    [v118 addObject:filterQuery2];
   }
 
-  v114 = [v113 copy];
+  v114 = [attributesCopy copy];
   v164 = 0;
   v165 = &v164;
   v166 = 0x3032000000;
@@ -5623,41 +5623,41 @@ LABEL_14:
   v163 = objc_opt_new();
   v121 = objc_alloc_init(MEMORY[0x277CC34A0]);
   [v121 setFetchAttributes:v114];
-  [v121 setDisableBundles:v119];
-  if ([v116 count])
+  [v121 setDisableBundles:excludeBundles];
+  if ([classesCopy count])
   {
-    [v121 setProtectionClasses:v116];
+    [v121 setProtectionClasses:classesCopy];
   }
 
-  if (v117)
+  if (dsCopy)
   {
-    [v121 setBundleIDs:v117];
+    [v121 setBundleIDs:dsCopy];
   }
 
-  v28 = [(SKGJob *)self context];
-  v29 = [v28 doNotUpdateList];
-  v30 = [v119 arrayByAddingObjectsFromArray:v29];
-  v112 = queryStringForUpdateFilter(v30, v21);
+  context3 = [(SKGJob *)self context];
+  doNotUpdateList = [context3 doNotUpdateList];
+  v30 = [excludeBundles arrayByAddingObjectsFromArray:doNotUpdateList];
+  v112 = queryStringForUpdateFilter(v30, flagsCopy);
 
   [v118 addObject:v112];
-  if (a15)
+  if (files)
   {
     v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v32 = [(SKGJob *)self context];
-    v33 = [v32 filterQuery];
+    context4 = [(SKGJob *)self context];
+    filterQuery3 = [context4 filterQuery];
 
-    if (v33)
+    if (filterQuery3)
     {
-      v34 = [(SKGJob *)self context];
-      v35 = [v34 filterQuery];
-      [v31 addObject:v35];
+      context5 = [(SKGJob *)self context];
+      filterQuery4 = [context5 filterQuery];
+      [v31 addObject:filterQuery4];
     }
 
-    v36 = queryStringForUpdateFilter(0, v21);
+    v36 = queryStringForUpdateFilter(0, flagsCopy);
     [v31 addObject:v36];
-    v37 = [(SKGJob *)self context];
-    v38 = [v37 currentPreferredLanguages];
-    v105 = queryStringForTextContentUpdates(v38, 0, v31, 52);
+    context6 = [(SKGJob *)self context];
+    currentPreferredLanguages = [context6 currentPreferredLanguages];
+    v105 = queryStringForTextContentUpdates(currentPreferredLanguages, 0, v31, 52);
   }
 
   else
@@ -5665,10 +5665,10 @@ LABEL_14:
     v105 = 0;
   }
 
-  v39 = [(SKGJob *)self context];
-  v40 = [v39 currentPreferredLanguages];
-  v41 = v40;
-  if (a15)
+  context7 = [(SKGJob *)self context];
+  currentPreferredLanguages2 = [context7 currentPreferredLanguages];
+  v41 = currentPreferredLanguages2;
+  if (files)
   {
     v42 = 4;
   }
@@ -5678,24 +5678,24 @@ LABEL_14:
     v42 = 0;
   }
 
-  v43 = queryStringForTextContentUpdates(v40, v119, v118, v42 | v21);
+  v43 = queryStringForTextContentUpdates(currentPreferredLanguages2, excludeBundles, v118, v42 | flagsCopy);
 
   if (v43)
   {
-    v115 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ || %@", v43, v110];
+    stringCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ || %@", v43, stringCopy];
   }
 
   else
   {
-    v115 = 0;
+    stringCopy = 0;
   }
 
-  v124 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v156 = 0u;
   v157 = 0u;
   v154 = 0u;
   v155 = 0u;
-  obj = v22;
+  obj = predicatesCopy;
   v44 = [obj countByEnumeratingWithState:&v154 objects:v173 count:16];
   if (v44)
   {
@@ -5713,7 +5713,7 @@ LABEL_14:
         if ([v47 count])
         {
           v48 = [v47 objectAtIndexedSubscript:0];
-          [v124 addObject:v48];
+          [array addObject:v48];
         }
       }
 
@@ -5724,13 +5724,13 @@ LABEL_14:
   }
 
   v120 = objc_opt_new();
-  v49 = [(SKGJob *)self _newCounterDictionaryForBundleIdentifier:@"Total" additionalAttributes:v124];
+  v49 = [(SKGJob *)self _newCounterDictionaryForBundleIdentifier:@"Total" additionalAttributes:array];
   [v120 setObject:v49 forKey:@"Total"];
 
-  if (v123)
+  if (statisticsCopy)
   {
-    v50 = [v123 mutableCopy];
-    v51 = [v123 objectForKeyedSubscript:@"bundleID"];
+    v50 = [statisticsCopy mutableCopy];
+    v51 = [statisticsCopy objectForKeyedSubscript:@"bundleID"];
     [v120 setObject:v50 forKeyedSubscript:v51];
 
     v52 = [&unk_2846E8298 mutableCopy];
@@ -5782,7 +5782,7 @@ LABEL_14:
           }
 
           v63 = *(*(&v146 + 1) + 8 * k);
-          v64 = [v123 objectForKeyedSubscript:v63];
+          v64 = [statisticsCopy objectForKeyedSubscript:v63];
           if (v64)
           {
             v65 = MEMORY[0x277CCABB0];
@@ -5799,7 +5799,7 @@ LABEL_14:
     }
   }
 
-  if (!v115)
+  if (!stringCopy)
   {
     goto LABEL_47;
   }
@@ -5809,24 +5809,24 @@ LABEL_14:
   v134[2] = __314__SKGJob_Updates__generateCSReportForQueryFlags_protectionClasses_additionalQueryString_additionalFetchAttributes_processedPredicate_succesfullyProcessedPredicate_eligiblePredicate_additionalPredicates_dayCompletionStr_genStartTime_bundleIDs_daysToCompleteApproach_onlyFiles_mergeBundleStatistics_withCancelBlock___block_invoke;
   v134[3] = &unk_27893EC40;
   v135 = v120;
-  v136 = self;
-  v137 = v124;
+  selfCopy = self;
+  v137 = array;
   v144 = &v164;
-  v138 = v115;
+  v138 = stringCopy;
   v139 = v105;
   v145 = &v158;
-  v141 = v106;
-  v142 = v107;
-  v143 = v108;
+  v141 = predicateCopy;
+  v142 = processedPredicateCopy;
+  v143 = eligiblePredicateCopy;
   v140 = obj;
-  v68 = [(SKGJob *)self _runCSCounterForQueryString:v138 queryContext:v121 filesQuery:a15 counterItemBlock:v134 cancelBlock:v109];
+  v68 = [(SKGJob *)self _runCSCounterForQueryString:v138 queryContext:v121 filesQuery:files counterItemBlock:v134 cancelBlock:blockCopy];
 
   if (v68)
   {
 LABEL_47:
-    v69 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v70 = [MEMORY[0x277CBEAA8] now];
-    v71 = [v69 components:16 fromDate:v111 toDate:v70 options:6];
+    v71 = [currentCalendar components:16 fromDate:timeCopy toDate:v70 options:6];
     v72 = [v71 day];
 
     v132 = 0u;
@@ -5854,20 +5854,20 @@ LABEL_47:
         v75 = *(*(&v130 + 1) + 8 * m);
         v76 = [v129 objectForKeyedSubscript:v75];
         v77 = [v76 objectForKeyedSubscript:@"totalItems"];
-        v78 = [v77 unsignedIntegerValue];
+        unsignedIntegerValue = [v77 unsignedIntegerValue];
 
         v79 = [v76 objectForKeyedSubscript:@"itemsProcessed"];
-        v80 = [v79 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v79 unsignedIntegerValue];
 
         v81 = [v76 objectForKeyedSubscript:@"itemsSuccessfullyProcessed"];
-        v82 = [v81 unsignedIntegerValue];
+        unsignedIntegerValue3 = [v81 unsignedIntegerValue];
 
         v83 = [v76 objectForKeyedSubscript:@"eligibleItems"];
-        v84 = [v83 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v83 unsignedIntegerValue];
 
-        if (v78)
+        if (unsignedIntegerValue)
         {
-          v85 = v80 / v78;
+          v85 = unsignedIntegerValue2 / unsignedIntegerValue;
         }
 
         else
@@ -5875,9 +5875,9 @@ LABEL_47:
           v85 = 0.0;
         }
 
-        if (v84 + v78 - v80)
+        if (unsignedIntegerValue4 + unsignedIntegerValue - unsignedIntegerValue2)
         {
-          v86 = v82 / (v84 + v78 - v80);
+          v86 = unsignedIntegerValue3 / (unsignedIntegerValue4 + unsignedIntegerValue - unsignedIntegerValue2);
         }
 
         else
@@ -5896,13 +5896,13 @@ LABEL_47:
         }
 
         v88 = v87;
-        v89 = [(SKGJob *)self context];
-        v90 = [v89 getGenCompleteDayString:v127 forBundle:v88];
+        context8 = [(SKGJob *)self context];
+        v90 = [context8 getGenCompleteDayString:strCopy forBundle:v88];
 
         v91 = v86;
-        if (a14)
+        if (approach)
         {
-          if (a14 != 1)
+          if (approach != 1)
           {
             goto LABEL_67;
           }
@@ -5912,8 +5912,8 @@ LABEL_47:
 
         if (v90 < 0 && v91 >= 0.99)
         {
-          v92 = [(SKGJob *)self context];
-          [v92 setGenCompleteDayString:v127 forBundle:v88 day:v72];
+          context9 = [(SKGJob *)self context];
+          [context9 setGenCompleteDayString:strCopy forBundle:v88 day:v72];
 
           v90 = v72;
         }
@@ -6112,82 +6112,82 @@ void __314__SKGJob_Updates__generateCSReportForQueryFlags_protectionClasses_addi
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateCSEmbeddingsReportForProtectionClasses:(id)a3 withCancelBlock:(id)a4
+- (id)generateCSEmbeddingsReportForProtectionClasses:(id)classes withCancelBlock:(id)block
 {
   v71[6] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D657A0];
-  v52 = a4;
-  v53 = a3;
-  v6 = [v5 sharedContext];
-  v7 = [v6 redonationRepeatCap];
+  blockCopy = block;
+  classesCopy = classes;
+  sharedContext = [v5 sharedContext];
+  redonationRepeatCap = [sharedContext redonationRepeatCap];
 
-  v8 = [MEMORY[0x277D657A0] sharedContext];
-  v9 = [v8 redonationThrottleHorizonDate];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  redonationThrottleHorizonDate = [mEMORY[0x277D657A0] redonationThrottleHorizonDate];
 
-  v10 = [MEMORY[0x277D657A0] sharedContext];
-  v11 = [v10 embeddingVersion];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  embeddingVersion = [mEMORY[0x277D657A0]2 embeddingVersion];
 
-  v12 = [MEMORY[0x277D657A0] sharedContext];
-  v13 = [v12 embeddingModelVersion];
+  mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+  embeddingModelVersion = [mEMORY[0x277D657A0]3 embeddingModelVersion];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_withCancelBlock___block_invoke;
   aBlock[3] = &__block_descriptor_48_e35_B24__0__NSString_8__NSDictionary_16l;
-  aBlock[4] = v11;
-  aBlock[5] = v13;
+  aBlock[4] = embeddingVersion;
+  aBlock[5] = embeddingModelVersion;
   v51 = _Block_copy(aBlock);
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_withCancelBlock___block_invoke_2;
   v62[3] = &__block_descriptor_48_e35_B24__0__NSString_8__NSDictionary_16l;
-  v62[4] = v11;
-  v62[5] = v13;
+  v62[4] = embeddingVersion;
+  v62[5] = embeddingModelVersion;
   v46 = _Block_copy(v62);
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_withCancelBlock___block_invoke_3;
   v61[3] = &__block_descriptor_48_e35_B24__0__NSString_8__NSDictionary_16l;
-  v61[4] = v11;
-  v61[5] = v13;
+  v61[4] = embeddingVersion;
+  v61[5] = embeddingModelVersion;
   v50 = _Block_copy(v61);
   v60[0] = MEMORY[0x277D85DD0];
   v60[1] = 3221225472;
   v60[2] = __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_withCancelBlock___block_invoke_4;
   v60[3] = &__block_descriptor_48_e35_B24__0__NSString_8__NSDictionary_16l;
-  v60[4] = v11;
-  v60[5] = v13;
+  v60[4] = embeddingVersion;
+  v60[5] = embeddingModelVersion;
   v49 = _Block_copy(v60);
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_withCancelBlock___block_invoke_5;
   v59[3] = &__block_descriptor_48_e35_B24__0__NSString_8__NSDictionary_16l;
-  v59[4] = v11;
-  v59[5] = v13;
+  v59[4] = embeddingVersion;
+  v59[5] = embeddingModelVersion;
   v48 = _Block_copy(v59);
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_withCancelBlock___block_invoke_6;
   v58[3] = &__block_descriptor_64_e35_B24__0__NSString_8__NSDictionary_16l;
-  v58[4] = v11;
-  v58[5] = v13;
-  v58[6] = v9;
-  v58[7] = v7;
+  v58[4] = embeddingVersion;
+  v58[5] = embeddingModelVersion;
+  v58[6] = redonationThrottleHorizonDate;
+  v58[7] = redonationRepeatCap;
   v45 = _Block_copy(v58);
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_withCancelBlock___block_invoke_7;
   v57[3] = &__block_descriptor_56_e35_B24__0__NSString_8__NSDictionary_16l;
-  v57[4] = v11;
-  v57[5] = v13;
-  v57[6] = v9;
+  v57[4] = embeddingVersion;
+  v57[5] = embeddingModelVersion;
+  v57[6] = redonationThrottleHorizonDate;
   v47 = _Block_copy(v57);
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_withCancelBlock___block_invoke_8;
   v56[3] = &__block_descriptor_48_e35_B24__0__NSString_8__NSDictionary_16l;
-  v56[4] = v11;
-  v56[5] = v13;
+  v56[4] = embeddingVersion;
+  v56[5] = embeddingModelVersion;
   v44 = _Block_copy(v56);
   v70[0] = @"itemsWithEmbedding";
   v43 = _Block_copy(v46);
@@ -6234,19 +6234,19 @@ void __314__SKGJob_Updates__generateCSReportForQueryFlags_protectionClasses_addi
   v64[7] = @"_kMDItemUpdaterRequestedCount";
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:8];
   v27 = MEMORY[0x277CCACA8];
-  v28 = [MEMORY[0x277D657A0] sharedContext];
-  v29 = [v28 embeddingModelVersion];
-  v30 = [MEMORY[0x277D657A0] sharedContext];
-  v41 = [v27 stringWithFormat:@"_kMDItemNeedsEmbeddings=1 || (%@=*&&%@=%ld) || (%@=*&&%@=%ld)", v23, v23, v29, v25, v25, objc_msgSend(v30, "embeddingVersion")];
+  mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+  embeddingModelVersion2 = [mEMORY[0x277D657A0]4 embeddingModelVersion];
+  mEMORY[0x277D657A0]5 = [MEMORY[0x277D657A0] sharedContext];
+  v41 = [v27 stringWithFormat:@"_kMDItemNeedsEmbeddings=1 || (%@=*&&%@=%ld) || (%@=*&&%@=%ld)", v23, v23, embeddingModelVersion2, v25, v25, objc_msgSend(mEMORY[0x277D657A0]5, "embeddingVersion")];
 
-  v31 = [(SKGJob *)self context];
-  v32 = [v31 embeddingGenStartTime];
+  context = [(SKGJob *)self context];
+  embeddingGenStartTime = [context embeddingGenStartTime];
 
   LOBYTE(v37) = 1;
-  v33 = [(SKGJob *)self generateCSReportForQueryFlags:16 protectionClasses:v53 additionalQueryString:v41 additionalFetchAttributes:v26 processedPredicate:v51 succesfullyProcessedPredicate:v46 eligiblePredicate:v50 additionalPredicates:v42 dayCompletionStr:@"embeddingGenCompleteDay" genStartTime:v32 bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v37 mergeBundleStatistics:0 withCancelBlock:v52];
+  v33 = [(SKGJob *)self generateCSReportForQueryFlags:16 protectionClasses:classesCopy additionalQueryString:v41 additionalFetchAttributes:v26 processedPredicate:v51 succesfullyProcessedPredicate:v46 eligiblePredicate:v50 additionalPredicates:v42 dayCompletionStr:@"embeddingGenCompleteDay" genStartTime:embeddingGenStartTime bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v37 mergeBundleStatistics:0 withCancelBlock:blockCopy];
   v34 = [v33 objectForKeyedSubscript:@"com.apple.metadata"];
   LOBYTE(v38) = 0;
-  v55 = [(SKGJob *)self generateCSReportForQueryFlags:16 protectionClasses:v53 additionalQueryString:v41 additionalFetchAttributes:v26 processedPredicate:v51 succesfullyProcessedPredicate:v46 eligiblePredicate:v50 additionalPredicates:v42 dayCompletionStr:@"embeddingGenCompleteDay" genStartTime:v32 bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v38 mergeBundleStatistics:v34 withCancelBlock:v52];
+  v55 = [(SKGJob *)self generateCSReportForQueryFlags:16 protectionClasses:classesCopy additionalQueryString:v41 additionalFetchAttributes:v26 processedPredicate:v51 succesfullyProcessedPredicate:v46 eligiblePredicate:v50 additionalPredicates:v42 dayCompletionStr:@"embeddingGenCompleteDay" genStartTime:embeddingGenStartTime bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v38 mergeBundleStatistics:v34 withCancelBlock:blockCopy];
 
   v35 = *MEMORY[0x277D85DE8];
 
@@ -6684,7 +6684,7 @@ uint64_t __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_wi
   return v14 & v12;
 }
 
-- (id)generateCSSuggestedEventsReportForProtectionClasses:(id)a3 withCancelBlock:(id)a4
+- (id)generateCSSuggestedEventsReportForProtectionClasses:(id)classes withCancelBlock:(id)block
 {
   v46[4] = *MEMORY[0x277D85DE8];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -6692,8 +6692,8 @@ uint64_t __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_wi
   aBlock[2] = __87__SKGJob_Updates__generateCSSuggestedEventsReportForProtectionClasses_withCancelBlock___block_invoke_2;
   aBlock[3] = &unk_27893ECE8;
   v39 = &__block_literal_global_299;
-  v34 = a4;
-  v35 = a3;
+  blockCopy = block;
+  classesCopy = classes;
   v33 = _Block_copy(aBlock);
   v45[0] = @"itemsWithSuggestedEvents";
   v6 = *MEMORY[0x277CC2A58];
@@ -6724,12 +6724,12 @@ uint64_t __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_wi
   v41[4] = @"_kMDItemUpdaterRequestedCount";
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:5];
   v14 = MEMORY[0x277CCACA8];
-  v15 = [MEMORY[0x277D657A0] sharedContext];
-  v16 = [v14 stringWithFormat:@"_kMDItemNeedsSuggestedEvents=1 || kMDItemEventType=* || (kMDItemSuggestedEventsVersion=*&&kMDItemSuggestedEventsVersion=%ld)", objc_msgSend(v15, "suggestedEventsVersion")];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  v16 = [v14 stringWithFormat:@"_kMDItemNeedsSuggestedEvents=1 || kMDItemEventType=* || (kMDItemSuggestedEventsVersion=*&&kMDItemSuggestedEventsVersion=%ld)", objc_msgSend(mEMORY[0x277D657A0], "suggestedEventsVersion")];
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [MEMORY[0x277D657A0] sharedContext];
-  v19 = [v17 numberWithInteger:{objc_msgSend(v18, "suggestedEventsVersion")}];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  v19 = [v17 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]2, "suggestedEventsVersion")}];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -6741,13 +6741,13 @@ uint64_t __82__SKGJob_Updates__generateCSEmbeddingsReportForProtectionClasses_wi
   v40[0] = v6;
   v40[1] = @"_kMDItemNeedsSuggestedEvents";
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
-  v22 = [(SKGJob *)self context];
-  v23 = [v22 suggestedEventsGenStartTime];
+  context = [(SKGJob *)self context];
+  suggestedEventsGenStartTime = [context suggestedEventsGenStartTime];
 
   v24 = [(SKGJob *)self _fieldPresencePredicateWithFieldName:@"kMDItemSuggestedEventsVersion"];
   v25 = [(SKGJob *)self _anyFieldPresentPredicateWithFieldNames:v21];
   LOBYTE(v28) = 1;
-  v29 = [(SKGJob *)self generateCSReportForQueryFlags:128 protectionClasses:v35 additionalQueryString:v16 additionalFetchAttributes:v31 processedPredicate:v20 succesfullyProcessedPredicate:v24 eligiblePredicate:v25 additionalPredicates:v32 dayCompletionStr:@"suggestedEventsGenCompleteDay" genStartTime:v23 bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v28 mergeBundleStatistics:0 withCancelBlock:v34];
+  v29 = [(SKGJob *)self generateCSReportForQueryFlags:128 protectionClasses:classesCopy additionalQueryString:v16 additionalFetchAttributes:v31 processedPredicate:v20 succesfullyProcessedPredicate:v24 eligiblePredicate:v25 additionalPredicates:v32 dayCompletionStr:@"suggestedEventsGenCompleteDay" genStartTime:suggestedEventsGenStartTime bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v28 mergeBundleStatistics:0 withCancelBlock:blockCopy];
 
   v26 = *MEMORY[0x277D85DE8];
 
@@ -6846,7 +6846,7 @@ uint64_t __87__SKGJob_Updates__generateCSSuggestedEventsReportForProtectionClass
   return v10;
 }
 
-- (id)generateCSDocumentUnderstandingReportForProtectionClasses:(id)a3 withCancelBlock:(id)a4
+- (id)generateCSDocumentUnderstandingReportForProtectionClasses:(id)classes withCancelBlock:(id)block
 {
   v46[4] = *MEMORY[0x277D85DE8];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -6854,8 +6854,8 @@ uint64_t __87__SKGJob_Updates__generateCSSuggestedEventsReportForProtectionClass
   aBlock[2] = __93__SKGJob_Updates__generateCSDocumentUnderstandingReportForProtectionClasses_withCancelBlock___block_invoke_2;
   aBlock[3] = &unk_27893ECE8;
   v39 = &__block_literal_global_316;
-  v34 = a4;
-  v35 = a3;
+  blockCopy = block;
+  classesCopy = classes;
   v33 = _Block_copy(aBlock);
   v45[0] = @"itemsWithDocumentUnderstanding";
   v6 = *MEMORY[0x277CC25B0];
@@ -6886,12 +6886,12 @@ uint64_t __87__SKGJob_Updates__generateCSSuggestedEventsReportForProtectionClass
   v41[4] = @"_kMDItemUpdaterRequestedCount";
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:5];
   v14 = MEMORY[0x277CCACA8];
-  v15 = [MEMORY[0x277D657A0] sharedContext];
-  v16 = [v14 stringWithFormat:@"_kMDItemNeedsDocumentUnderstanding=1 || kMDItemCardType=* || (kMDItemDocumentUnderstandingVersion=*&&kMDItemDocumentUnderstandingVersion=%ld)", objc_msgSend(v15, "documentUnderstandingVersion")];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  v16 = [v14 stringWithFormat:@"_kMDItemNeedsDocumentUnderstanding=1 || kMDItemCardType=* || (kMDItemDocumentUnderstandingVersion=*&&kMDItemDocumentUnderstandingVersion=%ld)", objc_msgSend(mEMORY[0x277D657A0], "documentUnderstandingVersion")];
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [MEMORY[0x277D657A0] sharedContext];
-  v19 = [v17 numberWithInteger:{objc_msgSend(v18, "documentUnderstandingVersion")}];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  v19 = [v17 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]2, "documentUnderstandingVersion")}];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -6903,13 +6903,13 @@ uint64_t __87__SKGJob_Updates__generateCSSuggestedEventsReportForProtectionClass
   v40[0] = v6;
   v40[1] = @"_kMDItemNeedsDocumentUnderstanding";
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
-  v22 = [(SKGJob *)self context];
-  v23 = [v22 documentUnderstandingGenStartTime];
+  context = [(SKGJob *)self context];
+  documentUnderstandingGenStartTime = [context documentUnderstandingGenStartTime];
 
   v24 = [(SKGJob *)self _fieldPresencePredicateWithFieldName:@"kMDItemDocumentUnderstandingVersion"];
   v25 = [(SKGJob *)self _anyFieldPresentPredicateWithFieldNames:v21];
   LOBYTE(v28) = 1;
-  v29 = [(SKGJob *)self generateCSReportForQueryFlags:256 protectionClasses:v35 additionalQueryString:v16 additionalFetchAttributes:v31 processedPredicate:v20 succesfullyProcessedPredicate:v24 eligiblePredicate:v25 additionalPredicates:v32 dayCompletionStr:@"documentUnderstandingGenCompleteDay" genStartTime:v23 bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v28 mergeBundleStatistics:0 withCancelBlock:v34];
+  v29 = [(SKGJob *)self generateCSReportForQueryFlags:256 protectionClasses:classesCopy additionalQueryString:v16 additionalFetchAttributes:v31 processedPredicate:v20 succesfullyProcessedPredicate:v24 eligiblePredicate:v25 additionalPredicates:v32 dayCompletionStr:@"documentUnderstandingGenCompleteDay" genStartTime:documentUnderstandingGenStartTime bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v28 mergeBundleStatistics:0 withCancelBlock:blockCopy];
 
   v26 = *MEMORY[0x277D85DE8];
 
@@ -7008,7 +7008,7 @@ uint64_t __93__SKGJob_Updates__generateCSDocumentUnderstandingReportForProtectio
   return v10;
 }
 
-- (id)generateCSKeyphraseReportForProtectionClasses:(id)a3 withCancelBlock:(id)a4
+- (id)generateCSKeyphraseReportForProtectionClasses:(id)classes withCancelBlock:(id)block
 {
   v56[6] = *MEMORY[0x277D85DE8];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -7016,8 +7016,8 @@ uint64_t __93__SKGJob_Updates__generateCSDocumentUnderstandingReportForProtectio
   aBlock[2] = __81__SKGJob_Updates__generateCSKeyphraseReportForProtectionClasses_withCancelBlock___block_invoke_2;
   aBlock[3] = &unk_27893ECE8;
   v48 = &__block_literal_global_330;
-  v42 = a4;
-  v43 = a3;
+  blockCopy = block;
+  classesCopy = classes;
   v41 = _Block_copy(aBlock);
   v55[0] = @"itemsWithKeyphrases";
   v38 = [(SKGJob *)self _fieldPresencePredicateWithFieldName:@"kMDItemKeyphraseLabels"];
@@ -7051,18 +7051,18 @@ uint64_t __93__SKGJob_Updates__generateCSDocumentUnderstandingReportForProtectio
   v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:6];
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [MEMORY[0x277D657A0] sharedContext];
-  v16 = [v15 keyphraseVersion];
-  v17 = [MEMORY[0x277D657A0] sharedContext];
-  v39 = [v14 stringWithFormat:@"_kMDItemNeedsKeyphrases=1 || kMDItemKeyphraseLabels=* || (kMDItemKeyphraseVersion=*&&kMDItemKeyphraseVersion=%ld) || (kMDItemKeyphraseVersion=*&&kMDItemKeyphraseVersion=%ld)", v16, objc_msgSend(v17, "breadcrumbsVersion")];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  keyphraseVersion = [mEMORY[0x277D657A0] keyphraseVersion];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  v39 = [v14 stringWithFormat:@"_kMDItemNeedsKeyphrases=1 || kMDItemKeyphraseLabels=* || (kMDItemKeyphraseVersion=*&&kMDItemKeyphraseVersion=%ld) || (kMDItemKeyphraseVersion=*&&kMDItemKeyphraseVersion=%ld)", keyphraseVersion, objc_msgSend(mEMORY[0x277D657A0]2, "breadcrumbsVersion")];
 
   v18 = MEMORY[0x277CCABB0];
-  v19 = [MEMORY[0x277D657A0] sharedContext];
-  v20 = [v18 numberWithInteger:{objc_msgSend(v19, "keyphraseVersion")}];
+  mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+  v20 = [v18 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]3, "keyphraseVersion")}];
 
   v21 = MEMORY[0x277CCABB0];
-  v22 = [MEMORY[0x277D657A0] sharedContext];
-  v23 = [v21 numberWithInteger:{objc_msgSend(v22, "breadcrumbsVersion")}];
+  mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+  v23 = [v21 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]4, "breadcrumbsVersion")}];
 
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
@@ -7076,13 +7076,13 @@ uint64_t __93__SKGJob_Updates__generateCSDocumentUnderstandingReportForProtectio
   v49[0] = *MEMORY[0x277CC25B0];
   v49[1] = @"_kMDItemNeedsKeyphrases";
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
-  v26 = [(SKGJob *)self context];
-  v27 = [v26 keyphraseGenStartTime];
+  context = [(SKGJob *)self context];
+  keyphraseGenStartTime = [context keyphraseGenStartTime];
 
   v28 = [(SKGJob *)self _fieldPresencePredicateWithFieldName:@"kMDItemKeyphraseVersion"];
   v29 = [(SKGJob *)self _anyFieldPresentPredicateWithFieldNames:v25];
   LOBYTE(v33) = 1;
-  v30 = [(SKGJob *)self generateCSReportForQueryFlags:32 protectionClasses:v43 additionalQueryString:v39 additionalFetchAttributes:&unk_2846E82B0 processedPredicate:v24 succesfullyProcessedPredicate:v28 eligiblePredicate:v29 additionalPredicates:v40 dayCompletionStr:@"keyphraseGenCompleteDay" genStartTime:v27 bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v33 mergeBundleStatistics:0 withCancelBlock:v42];
+  v30 = [(SKGJob *)self generateCSReportForQueryFlags:32 protectionClasses:classesCopy additionalQueryString:v39 additionalFetchAttributes:&unk_2846E82B0 processedPredicate:v24 succesfullyProcessedPredicate:v28 eligiblePredicate:v29 additionalPredicates:v40 dayCompletionStr:@"keyphraseGenCompleteDay" genStartTime:keyphraseGenStartTime bundleIDs:0 daysToCompleteApproach:0 onlyFiles:v33 mergeBundleStatistics:0 withCancelBlock:blockCopy];
 
   v31 = *MEMORY[0x277D85DE8];
 
@@ -7196,61 +7196,61 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)requestCSEmbeddingsProgressReport:(id)a3 cancelBlock:(id)a4
+- (BOOL)requestCSEmbeddingsProgressReport:(id)report cancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = [(SKGJob *)self generateCSEmbeddingsReportWithCancelBlock:a4];
+  reportCopy = report;
+  v7 = [(SKGJob *)self generateCSEmbeddingsReportWithCancelBlock:block];
   if (v7)
   {
-    v6[2](v6, v7);
+    reportCopy[2](reportCopy, v7);
   }
 
   return v7 != 0;
 }
 
-- (BOOL)requestCSSuggestedEventsProgressReport:(id)a3 cancelBlock:(id)a4
+- (BOOL)requestCSSuggestedEventsProgressReport:(id)report cancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = [(SKGJob *)self generateCSSuggestedEventsReportWithCancelBlock:a4];
+  reportCopy = report;
+  v7 = [(SKGJob *)self generateCSSuggestedEventsReportWithCancelBlock:block];
   if (v7)
   {
-    v6[2](v6, v7);
+    reportCopy[2](reportCopy, v7);
   }
 
   return v7 != 0;
 }
 
-- (BOOL)requestCSDocumentUnderstandingProgressReport:(id)a3 cancelBlock:(id)a4
+- (BOOL)requestCSDocumentUnderstandingProgressReport:(id)report cancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = [(SKGJob *)self generateCSDocumentUnderstandingReportWithCancelBlock:a4];
+  reportCopy = report;
+  v7 = [(SKGJob *)self generateCSDocumentUnderstandingReportWithCancelBlock:block];
   if (v7)
   {
-    v6[2](v6, v7);
+    reportCopy[2](reportCopy, v7);
   }
 
   return v7 != 0;
 }
 
-- (BOOL)_runCSPollingQueryString:(id)a3 queryContext:(id)a4 foundItemBlock:(id)a5
+- (BOOL)_runCSPollingQueryString:(id)string queryContext:(id)context foundItemBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  stringCopy = string;
+  contextCopy = context;
+  blockCopy = block;
+  if (stringCopy)
   {
-    [v9 setDisableResultStreaming:1];
-    [v9 setMaximumBatchSize:100];
-    v11 = [(SKGJob *)self context];
-    v12 = [v11 maxItemCountPerBatch];
+    [contextCopy setDisableResultStreaming:1];
+    [contextCopy setMaximumBatchSize:100];
+    context = [(SKGJob *)self context];
+    maxItemCountPerBatch = [context maxItemCountPerBatch];
 
-    if (v12 >= 1)
+    if (maxItemCountPerBatch >= 1)
     {
-      v13 = [(SKGJob *)self context];
-      [v9 setMaximumBatchSize:{objc_msgSend(v13, "maxItemCountPerBatch")}];
+      context2 = [(SKGJob *)self context];
+      [contextCopy setMaximumBatchSize:{objc_msgSend(context2, "maxItemCountPerBatch")}];
     }
 
-    v14 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v8 queryContext:v9];
+    v14 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:stringCopy queryContext:contextCopy];
     v15 = dispatch_group_create();
     objc_initWeak(location, v14);
     v39 = 0;
@@ -7269,9 +7269,9 @@ LABEL_9:
     v27[1] = 3221225472;
     v27[2] = __72__SKGJob_Updates___runCSPollingQueryString_queryContext_foundItemBlock___block_invoke;
     v27[3] = &unk_27893ED38;
-    v28 = v9;
+    v28 = contextCopy;
     v31 = v37;
-    v30 = v10;
+    v30 = blockCopy;
     v32 = &v39;
     objc_copyWeak(&v34, location);
     v33 = v35;
@@ -7289,13 +7289,13 @@ LABEL_9:
     v23 = v17;
     [v14 setCompletionHandler:v22];
     dispatch_group_enter(v17);
-    v18 = [(SKGJob *)self context];
-    [v18 logSignpost:7 message:@"starting batch querying"];
+    context3 = [(SKGJob *)self context];
+    [context3 logSignpost:7 message:@"starting batch querying"];
 
     [v14 start];
     [v14 poll];
-    v19 = [(SKGJob *)self context];
-    [v19 logSignpost:8 message:@"end batch querying"];
+    context4 = [(SKGJob *)self context];
+    [context4 logSignpost:8 message:@"end batch querying"];
 
     dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
     v20 = *(v40 + 24);
@@ -7446,19 +7446,19 @@ void __72__SKGJob_Updates___runCSPollingQueryString_queryContext_foundItemBlock_
   }
 }
 
-- (BOOL)_buildCSCountingReportWithQueryString:(id)a3 queryContext:(id)a4 flags:(unsigned int)a5 reporter:(id)a6 cancelBlock:(id)a7
+- (BOOL)_buildCSCountingReportWithQueryString:(id)string queryContext:(id)context flags:(unsigned int)flags reporter:(id)reporter cancelBlock:(id)block
 {
-  v11 = a6;
+  reporterCopy = reporter;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __97__SKGJob_Updates___buildCSCountingReportWithQueryString_queryContext_flags_reporter_cancelBlock___block_invoke;
   v14[3] = &unk_27893ED60;
-  v15 = v11;
-  v16 = a5;
-  v12 = v11;
-  LOBYTE(a4) = [(SKGJob *)self _runCSPollingQueryString:a3 queryContext:a4 foundItemBlock:v14];
+  v15 = reporterCopy;
+  flagsCopy = flags;
+  v12 = reporterCopy;
+  LOBYTE(context) = [(SKGJob *)self _runCSPollingQueryString:string queryContext:context foundItemBlock:v14];
 
-  return a4;
+  return context;
 }
 
 uint64_t __97__SKGJob_Updates___buildCSCountingReportWithQueryString_queryContext_flags_reporter_cancelBlock___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,13 +1,13 @@
 @interface CWFSensingParameters
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSensingParameters:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSensingParameters:(id)parameters;
 - (CWFSensingParameters)init;
-- (CWFSensingParameters)initWithCoder:(id)a3;
+- (CWFSensingParameters)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)JSONCompatibleKeyValueMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFSensingParameters
@@ -21,8 +21,8 @@
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[CWFSensingParameters matchFrameType](self, "matchFrameType")}];
   [v3 setObject:v5 forKeyedSubscript:@"matchFrameType"];
 
-  v6 = [(CWFSensingParameters *)self matchMACAddresses];
-  [v3 setObject:v6 forKeyedSubscript:@"matchMACAddresses"];
+  matchMACAddresses = [(CWFSensingParameters *)self matchMACAddresses];
+  [v3 setObject:matchMACAddresses forKeyedSubscript:@"matchMACAddresses"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CWFSensingParameters timeout](self, "timeout")}];
   [v3 setObject:v7 forKeyedSubscript:@"timeout"];
@@ -36,14 +36,14 @@
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CWFSensingParameters scheduleDailyAt](self, "scheduleDailyAt")}];
   [v3 setObject:v10 forKeyedSubscript:@"scheduleDailyAt"];
 
-  v11 = [(CWFSensingParameters *)self activityLabels];
-  [v3 setObject:v11 forKeyedSubscript:@"activityLabels"];
+  activityLabels = [(CWFSensingParameters *)self activityLabels];
+  [v3 setObject:activityLabels forKeyedSubscript:@"activityLabels"];
 
-  v12 = [(CWFSensingParameters *)self placeLabels];
-  [v3 setObject:v12 forKeyedSubscript:@"placeLabels"];
+  placeLabels = [(CWFSensingParameters *)self placeLabels];
+  [v3 setObject:placeLabels forKeyedSubscript:@"placeLabels"];
 
-  v13 = [(CWFSensingParameters *)self comment];
-  [v3 setObject:v13 forKeyedSubscript:@"comment"];
+  comment = [(CWFSensingParameters *)self comment];
+  [v3 setObject:comment forKeyedSubscript:@"comment"];
 
   v14 = sub_1E0BCEC64(v3, 0, 1u);
   if (v14)
@@ -78,10 +78,10 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"numberOfReports=%ld, ", self->_numberOfReports];
-  [v3 appendFormat:@"matchFrameType=%d, ", self->_matchFrameType];
-  [v3 appendFormat:@"matchMACAddresses="];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"numberOfReports=%ld, ", self->_numberOfReports];
+  [string appendFormat:@"matchFrameType=%d, ", self->_matchFrameType];
+  [string appendFormat:@"matchMACAddresses="];
   if ([(NSArray *)self->_matchMACAddresses count])
   {
     v4 = 0;
@@ -89,7 +89,7 @@
     {
       v5 = [(NSArray *)self->_matchMACAddresses objectAtIndexedSubscript:v4];
       v6 = CWFCorrectEthernetAddressString(v5);
-      [v3 appendFormat:@"%@;", v6];
+      [string appendFormat:@"%@;", v6];
 
       ++v4;
     }
@@ -97,32 +97,32 @@
     while (v4 < [(NSArray *)self->_matchMACAddresses count]);
   }
 
-  [v3 appendFormat:@", "];
-  [v3 appendFormat:@"timeout=%ld, ", self->_timeout];
-  [v3 appendFormat:@"submitMetric=%d, ", self->_submitMetric];
-  [v3 appendFormat:@"scheduleOnceAfter=%ld, ", self->_scheduleOnceAfter];
-  [v3 appendFormat:@"scheduleDailyAt=%ld, ", self->_scheduleDailyAt];
-  [v3 appendFormat:@"activityLabels=%@, ", self->_activityLabels];
-  [v3 appendFormat:@"placeLabels=%@, ", self->_placeLabels];
-  [v3 appendFormat:@"comment=%@", self->_comment];
+  [string appendFormat:@", "];
+  [string appendFormat:@"timeout=%ld, ", self->_timeout];
+  [string appendFormat:@"submitMetric=%d, ", self->_submitMetric];
+  [string appendFormat:@"scheduleOnceAfter=%ld, ", self->_scheduleOnceAfter];
+  [string appendFormat:@"scheduleDailyAt=%ld, ", self->_scheduleDailyAt];
+  [string appendFormat:@"activityLabels=%@, ", self->_activityLabels];
+  [string appendFormat:@"placeLabels=%@, ", self->_placeLabels];
+  [string appendFormat:@"comment=%@", self->_comment];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqualToSensingParameters:(id)a3
+- (BOOL)isEqualToSensingParameters:(id)parameters
 {
-  v7 = a3;
+  parametersCopy = parameters;
   numberOfReports = self->_numberOfReports;
-  if (numberOfReports == [v7 numberOfReports])
+  if (numberOfReports == [parametersCopy numberOfReports])
   {
     matchFrameType = self->_matchFrameType;
-    if (matchFrameType == [v7 matchFrameType])
+    if (matchFrameType == [parametersCopy matchFrameType])
     {
       matchMACAddresses = self->_matchMACAddresses;
-      v11 = [v7 matchMACAddresses];
-      if (matchMACAddresses != v11)
+      matchMACAddresses = [parametersCopy matchMACAddresses];
+      if (matchMACAddresses != matchMACAddresses)
       {
-        if (!self->_matchMACAddresses || ([v7 matchMACAddresses], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (!self->_matchMACAddresses || ([parametersCopy matchMACAddresses], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v14 = 0;
           goto LABEL_37;
@@ -130,8 +130,8 @@
 
         v3 = v12;
         v13 = self->_matchMACAddresses;
-        v4 = [v7 matchMACAddresses];
-        if (![(NSArray *)v13 isEqual:v4])
+        matchMACAddresses2 = [parametersCopy matchMACAddresses];
+        if (![(NSArray *)v13 isEqual:matchMACAddresses2])
         {
           v14 = 0;
 LABEL_36:
@@ -141,33 +141,33 @@ LABEL_36:
       }
 
       timeout = self->_timeout;
-      if (timeout == [v7 timeout])
+      if (timeout == [parametersCopy timeout])
       {
         submitMetric = self->_submitMetric;
-        if (submitMetric == [v7 submitMetric])
+        if (submitMetric == [parametersCopy submitMetric])
         {
           scheduleOnceAfter = self->_scheduleOnceAfter;
-          if (scheduleOnceAfter == [v7 scheduleOnceAfter])
+          if (scheduleOnceAfter == [parametersCopy scheduleOnceAfter])
           {
             scheduleDailyAt = self->_scheduleDailyAt;
-            if (scheduleDailyAt == [v7 scheduleDailyAt])
+            if (scheduleDailyAt == [parametersCopy scheduleDailyAt])
             {
               activityLabels = self->_activityLabels;
-              v20 = [v7 activityLabels];
-              v21 = v20;
-              if (activityLabels == v20)
+              activityLabels = [parametersCopy activityLabels];
+              v21 = activityLabels;
+              if (activityLabels == activityLabels)
               {
-                v46 = v20;
+                v46 = activityLabels;
                 v24 = activityLabels;
 LABEL_21:
                 placeLabels = self->_placeLabels;
-                v26 = [v7 placeLabels];
-                v27 = v26;
+                placeLabels = [parametersCopy placeLabels];
+                v27 = placeLabels;
                 v44 = placeLabels;
-                v45 = v5;
-                if (placeLabels == v26)
+                v45 = activityLabels2;
+                if (placeLabels == placeLabels)
                 {
-                  v42 = v26;
+                  v42 = placeLabels;
                   v28 = v24;
                   v21 = v46;
                 }
@@ -182,20 +182,20 @@ LABEL_21:
                     goto LABEL_43;
                   }
 
-                  v29 = [v7 placeLabels];
+                  placeLabels2 = [parametersCopy placeLabels];
                   v21 = v46;
-                  if (!v29)
+                  if (!placeLabels2)
                   {
                     goto LABEL_42;
                   }
 
-                  v41 = v29;
+                  v41 = placeLabels2;
                   v42 = v27;
                   v30 = self->_placeLabels;
-                  v31 = [v7 placeLabels];
+                  placeLabels3 = [parametersCopy placeLabels];
                   v32 = v30;
-                  v33 = v31;
-                  if (([(NSArray *)v32 isEqual:v31]& 1) == 0)
+                  v33 = placeLabels3;
+                  if (([(NSArray *)v32 isEqual:placeLabels3]& 1) == 0)
                   {
 
                     v14 = 0;
@@ -206,8 +206,8 @@ LABEL_21:
                 }
 
                 comment = self->_comment;
-                v35 = [v7 comment];
-                v14 = comment == v35;
+                comment = [parametersCopy comment];
+                v14 = comment == comment;
                 if (v14 || !self->_comment)
                 {
 LABEL_31:
@@ -230,13 +230,13 @@ LABEL_32:
                   goto LABEL_43;
                 }
 
-                v36 = [v7 comment];
-                if (v36)
+                comment2 = [parametersCopy comment];
+                if (comment2)
                 {
                   v37 = self->_comment;
-                  v47 = v36;
-                  v38 = [v7 comment];
-                  v14 = [(NSString *)v37 isEqual:v38];
+                  v47 = comment2;
+                  comment3 = [parametersCopy comment];
+                  v14 = [(NSString *)v37 isEqual:comment3];
 
                   goto LABEL_31;
                 }
@@ -252,13 +252,13 @@ LABEL_42:
                 goto LABEL_43;
               }
 
-              if (!self->_activityLabels || ([v7 activityLabels], (v22 = objc_claimAutoreleasedReturnValue()) == 0))
+              if (!self->_activityLabels || ([parametersCopy activityLabels], (v22 = objc_claimAutoreleasedReturnValue()) == 0))
               {
                 v14 = 0;
 LABEL_46:
 
 LABEL_35:
-                if (matchMACAddresses != v11)
+                if (matchMACAddresses != matchMACAddresses)
                 {
                   goto LABEL_36;
                 }
@@ -270,8 +270,8 @@ LABEL_37:
 
               v43 = v22;
               v23 = self->_activityLabels;
-              v5 = [v7 activityLabels];
-              if (([(NSArray *)v23 isEqual:v5]& 1) != 0)
+              activityLabels2 = [parametersCopy activityLabels];
+              if (([(NSArray *)v23 isEqual:activityLabels2]& 1) != 0)
               {
                 v46 = v21;
                 v24 = activityLabels;
@@ -293,18 +293,18 @@ LABEL_38:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFSensingParameters *)self isEqualToSensingParameters:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFSensingParameters *)self isEqualToSensingParameters:v5];
   }
 
   return v6;
@@ -331,7 +331,7 @@ LABEL_38:
   return v14 ^ v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFSensingParameters allocWithZone:?]];
   [(CWFSensingParameters *)v4 setNumberOfReports:self->_numberOfReports];
@@ -347,58 +347,58 @@ LABEL_38:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   numberOfReports = self->_numberOfReports;
-  v5 = a3;
-  [v5 encodeInteger:numberOfReports forKey:@"_numberOfReports"];
-  [v5 encodeInteger:self->_matchFrameType forKey:@"_matchFrameType"];
-  [v5 encodeObject:self->_matchMACAddresses forKey:@"_matchMACAddresses"];
-  [v5 encodeInteger:self->_timeout forKey:@"_timeout"];
-  [v5 encodeBool:self->_submitMetric forKey:@"_submitMetric"];
-  [v5 encodeInteger:self->_scheduleOnceAfter forKey:@"_scheduleOnceAfter"];
-  [v5 encodeInteger:self->_scheduleDailyAt forKey:@"_scheduleDailyAt"];
-  [v5 encodeObject:self->_activityLabels forKey:@"_activityLabels"];
-  [v5 encodeObject:self->_placeLabels forKey:@"_placeLabels"];
-  [v5 encodeObject:self->_comment forKey:@"_comment"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:numberOfReports forKey:@"_numberOfReports"];
+  [coderCopy encodeInteger:self->_matchFrameType forKey:@"_matchFrameType"];
+  [coderCopy encodeObject:self->_matchMACAddresses forKey:@"_matchMACAddresses"];
+  [coderCopy encodeInteger:self->_timeout forKey:@"_timeout"];
+  [coderCopy encodeBool:self->_submitMetric forKey:@"_submitMetric"];
+  [coderCopy encodeInteger:self->_scheduleOnceAfter forKey:@"_scheduleOnceAfter"];
+  [coderCopy encodeInteger:self->_scheduleDailyAt forKey:@"_scheduleDailyAt"];
+  [coderCopy encodeObject:self->_activityLabels forKey:@"_activityLabels"];
+  [coderCopy encodeObject:self->_placeLabels forKey:@"_placeLabels"];
+  [coderCopy encodeObject:self->_comment forKey:@"_comment"];
 }
 
-- (CWFSensingParameters)initWithCoder:(id)a3
+- (CWFSensingParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = CWFSensingParameters;
   v5 = [(CWFSensingParameters *)&v24 init];
   if (v5)
   {
-    v5->_numberOfReports = [v4 decodeIntegerForKey:@"_numberOfReports"];
-    v5->_matchFrameType = [v4 decodeIntegerForKey:@"_matchFrameType"];
+    v5->_numberOfReports = [coderCopy decodeIntegerForKey:@"_numberOfReports"];
+    v5->_matchFrameType = [coderCopy decodeIntegerForKey:@"_matchFrameType"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_matchMACAddresses"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_matchMACAddresses"];
     matchMACAddresses = v5->_matchMACAddresses;
     v5->_matchMACAddresses = v9;
 
-    v5->_timeout = [v4 decodeIntegerForKey:@"_timeout"];
-    v5->_submitMetric = [v4 decodeBoolForKey:@"_submitMetric"];
-    v5->_scheduleOnceAfter = [v4 decodeIntegerForKey:@"_scheduleOnceAfter"];
-    v5->_scheduleDailyAt = [v4 decodeIntegerForKey:@"_scheduleDailyAt"];
+    v5->_timeout = [coderCopy decodeIntegerForKey:@"_timeout"];
+    v5->_submitMetric = [coderCopy decodeBoolForKey:@"_submitMetric"];
+    v5->_scheduleOnceAfter = [coderCopy decodeIntegerForKey:@"_scheduleOnceAfter"];
+    v5->_scheduleDailyAt = [coderCopy decodeIntegerForKey:@"_scheduleDailyAt"];
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_activityLabels"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_activityLabels"];
     activityLabels = v5->_activityLabels;
     v5->_activityLabels = v14;
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"_placeLabels"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"_placeLabels"];
     placeLabels = v5->_placeLabels;
     v5->_placeLabels = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_comment"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_comment"];
     comment = v5->_comment;
     v5->_comment = v21;
   }

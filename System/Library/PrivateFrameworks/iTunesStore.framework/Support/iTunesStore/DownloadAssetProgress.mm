@@ -1,7 +1,7 @@
 @interface DownloadAssetProgress
 - (DownloadAssetProgress)init;
-- (id)_newProgressForMediaSelection:(id)a3;
-- (void)setProgress:(double)a3 forMediaSelection:(id)a4;
+- (id)_newProgressForMediaSelection:(id)selection;
+- (void)setProgress:(double)progress forMediaSelection:(id)selection;
 @end
 
 @implementation DownloadAssetProgress
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)setProgress:(double)a3 forMediaSelection:(id)a4
+- (void)setProgress:(double)progress forMediaSelection:(id)selection
 {
-  v13 = a4;
+  selectionCopy = selection;
   if (!self->_overallProgress)
   {
     v6 = [NSProgress progressWithTotalUnitCount:100000];
@@ -37,43 +37,43 @@
 
   if (!v10)
   {
-    v10 = [(DownloadAssetProgress *)self _newProgressForMediaSelection:v13];
+    v10 = [(DownloadAssetProgress *)self _newProgressForMediaSelection:selectionCopy];
     -[NSProgress addChild:withPendingUnitCount:](self->_overallProgress, "addChild:withPendingUnitCount:", v10, [v10 totalUnitCount]);
     v11 = self->_mediaSelectionToProgressMap;
     v12 = [NSNumber numberWithUnsignedInteger:self->_numMediaSelectionsCompleted];
     [(NSMapTable *)v11 setObject:v10 forKey:v12];
   }
 
-  if (a3 > 1.0)
+  if (progress > 1.0)
   {
-    a3 = 1.0;
+    progress = 1.0;
   }
 
-  [v10 setCompletedUnitCount:{(a3 * objc_msgSend(v10, "totalUnitCount"))}];
+  [v10 setCompletedUnitCount:{(progress * objc_msgSend(v10, "totalUnitCount"))}];
 }
 
-- (id)_newProgressForMediaSelection:(id)a3
+- (id)_newProgressForMediaSelection:(id)selection
 {
   if (self->_numMediaSelectionsCompleted)
   {
-    v4 = a3;
-    v5 = [v4 asset];
-    v6 = [v5 mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    selectionCopy = selection;
+    asset = [selectionCopy asset];
+    v6 = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
 
-    v7 = [v4 selectedMediaOptionInMediaSelectionGroup:v6];
+    v7 = [selectionCopy selectedMediaOptionInMediaSelectionGroup:v6];
 
     if (v7)
     {
-      v8 = [(DownloadAssetProgress *)self numSubtitleSelectionsToBeDownloaded];
-      v9 = v8 < 1;
-      v10 = 0x7D0 / v8;
+      numSubtitleSelectionsToBeDownloaded = [(DownloadAssetProgress *)self numSubtitleSelectionsToBeDownloaded];
+      v9 = numSubtitleSelectionsToBeDownloaded < 1;
+      v10 = 0x7D0 / numSubtitleSelectionsToBeDownloaded;
     }
 
     else
     {
-      v12 = [(DownloadAssetProgress *)self numAudioSelectionsToBeDownloaded];
-      v9 = (v12 - 1) < 1;
-      v10 = 0xBB8 / (v12 - 1);
+      numAudioSelectionsToBeDownloaded = [(DownloadAssetProgress *)self numAudioSelectionsToBeDownloaded];
+      v9 = (numAudioSelectionsToBeDownloaded - 1) < 1;
+      v10 = 0xBB8 / (numAudioSelectionsToBeDownloaded - 1);
     }
 
     if (v9)

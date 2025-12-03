@@ -1,14 +1,14 @@
 @interface PKPeerPaymentWebServiceTargetDevice
-- (PKPeerPaymentWebServiceTargetDevice)initWithTargetDeviceDelegate:(id)a3;
+- (PKPeerPaymentWebServiceTargetDevice)initWithTargetDeviceDelegate:(id)delegate;
 - (id)appleAccountInformation;
-- (void)_handleAccountChangedNotification:(id)a3;
-- (void)_handlePreferencesChangedNotification:(id)a3;
+- (void)_handleAccountChangedNotification:(id)notification;
+- (void)_handlePreferencesChangedNotification:(id)notification;
 - (void)dealloc;
-- (void)peerPaymentReRegisterWithURL:(id)a3 pushToken:(id)a4 peerPaymentWebService:(id)a5 completion:(id)a6;
-- (void)provisionPeerPaymentPassWithProvisioningController:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)provisionPeerPaymentPassWithProvisioningController:(id)a3 peerPaymentWebService:(id)a4 credential:(id)a5 completion:(id)a6;
-- (void)renewAppleAccountWithCompletionHandler:(id)a3;
-- (void)updateAccountWithCompletion:(id)a3;
+- (void)peerPaymentReRegisterWithURL:(id)l pushToken:(id)token peerPaymentWebService:(id)service completion:(id)completion;
+- (void)provisionPeerPaymentPassWithProvisioningController:(id)controller credential:(id)credential completion:(id)completion;
+- (void)provisionPeerPaymentPassWithProvisioningController:(id)controller peerPaymentWebService:(id)service credential:(id)credential completion:(id)completion;
+- (void)renewAppleAccountWithCompletionHandler:(id)handler;
+- (void)updateAccountWithCompletion:(id)completion;
 @end
 
 @implementation PKPeerPaymentWebServiceTargetDevice
@@ -16,32 +16,32 @@
 - (id)appleAccountInformation
 {
   v2 = +[PKAppleAccountManager sharedInstance];
-  v3 = [v2 appleAccountInformation];
+  appleAccountInformation = [v2 appleAccountInformation];
 
-  return v3;
+  return appleAccountInformation;
 }
 
-- (PKPeerPaymentWebServiceTargetDevice)initWithTargetDeviceDelegate:(id)a3
+- (PKPeerPaymentWebServiceTargetDevice)initWithTargetDeviceDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = PKPeerPaymentWebServiceTargetDevice;
   v6 = [(PKPeerPaymentWebServiceTargetDevice *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_targetDeviceDelegate, a3);
+    objc_storeStrong(&v6->_targetDeviceDelegate, delegate);
     if ((PKRunningInPassd() & 1) == 0)
     {
       v8 = +[PKPeerPaymentService sharedInstance];
       peerPaymentService = v7->_peerPaymentService;
       v7->_peerPaymentService = v8;
 
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 addObserver:v7 selector:sel__handleAccountChangedNotification_ name:@"PKPeerPaymentServiceAccountChangedNotification" object:v7->_peerPaymentService];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v7 selector:sel__handleAccountChangedNotification_ name:@"PKPeerPaymentServiceAccountChangedNotification" object:v7->_peerPaymentService];
 
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v11 addObserver:v7 selector:sel__handlePreferencesChangedNotification_ name:@"PKPeerPaymentServicePreferencesChangedNotification" object:v7->_peerPaymentService];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v7 selector:sel__handlePreferencesChangedNotification_ name:@"PKPeerPaymentServicePreferencesChangedNotification" object:v7->_peerPaymentService];
     }
   }
 
@@ -50,21 +50,21 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPeerPaymentWebServiceTargetDevice;
   [(PKPeerPaymentWebServiceTargetDevice *)&v4 dealloc];
 }
 
-- (void)peerPaymentReRegisterWithURL:(id)a3 pushToken:(id)a4 peerPaymentWebService:(id)a5 completion:(id)a6
+- (void)peerPaymentReRegisterWithURL:(id)l pushToken:(id)token peerPaymentWebService:(id)service completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   targetDeviceDelegate = self->_targetDeviceDelegate;
   if (targetDeviceDelegate)
   {
-    [(PKPeerPaymentTargetDeviceDelegate *)targetDeviceDelegate registerDeviceWithRegistrationURL:a3 pushToken:a4 forceReregister:1 completion:v10];
+    [(PKPeerPaymentTargetDeviceDelegate *)targetDeviceDelegate registerDeviceWithRegistrationURL:l pushToken:token forceReregister:1 completion:completionCopy];
   }
 
   else
@@ -73,8 +73,8 @@
     v12[1] = 3221225472;
     v12[2] = __111__PKPeerPaymentWebServiceTargetDevice_peerPaymentReRegisterWithURL_pushToken_peerPaymentWebService_completion___block_invoke;
     v12[3] = &unk_1E79CB6C0;
-    v13 = v10;
-    [a5 peerPaymentRegisterWithURL:a3 pushToken:a4 completion:v12];
+    v13 = completionCopy;
+    [service peerPaymentRegisterWithURL:l pushToken:token completion:v12];
   }
 }
 
@@ -100,7 +100,7 @@ uint64_t __111__PKPeerPaymentWebServiceTargetDevice_peerPaymentReRegisterWithURL
   return result;
 }
 
-- (void)updateAccountWithCompletion:(id)a3
+- (void)updateAccountWithCompletion:(id)completion
 {
   targetDeviceDelegate = self->_targetDeviceDelegate;
   if (!targetDeviceDelegate)
@@ -108,29 +108,29 @@ uint64_t __111__PKPeerPaymentWebServiceTargetDevice_peerPaymentReRegisterWithURL
     targetDeviceDelegate = self->_peerPaymentService;
   }
 
-  [targetDeviceDelegate updateAccountWithCompletion:a3];
+  [targetDeviceDelegate updateAccountWithCompletion:completion];
 }
 
-- (void)provisionPeerPaymentPassWithProvisioningController:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)provisionPeerPaymentPassWithProvisioningController:(id)controller credential:(id)credential completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  credentialCopy = credential;
+  controllerCopy = controller;
   v11 = +[PKPeerPaymentWebService sharedService];
-  [(PKPeerPaymentWebServiceTargetDevice *)self provisionPeerPaymentPassWithProvisioningController:v10 peerPaymentWebService:v11 credential:v9 completion:v8];
+  [(PKPeerPaymentWebServiceTargetDevice *)self provisionPeerPaymentPassWithProvisioningController:controllerCopy peerPaymentWebService:v11 credential:credentialCopy completion:completionCopy];
 }
 
-- (void)provisionPeerPaymentPassWithProvisioningController:(id)a3 peerPaymentWebService:(id)a4 credential:(id)a5 completion:(id)a6
+- (void)provisionPeerPaymentPassWithProvisioningController:(id)controller peerPaymentWebService:(id)service credential:(id)credential completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 webService];
-  v14 = v13;
-  if (v13)
+  controllerCopy = controller;
+  serviceCopy = service;
+  credentialCopy = credential;
+  completionCopy = completion;
+  webService = [controllerCopy webService];
+  v14 = webService;
+  if (webService)
   {
-    v15 = v13;
+    v15 = webService;
   }
 
   else
@@ -140,27 +140,27 @@ uint64_t __111__PKPeerPaymentWebServiceTargetDevice_peerPaymentReRegisterWithURL
 
   v16 = v15;
 
-  if (!v10)
+  if (!serviceCopy)
   {
-    v10 = +[PKPeerPaymentWebService sharedService];
+    serviceCopy = +[PKPeerPaymentWebService sharedService];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __134__PKPeerPaymentWebServiceTargetDevice_provisionPeerPaymentPassWithProvisioningController_peerPaymentWebService_credential_completion___block_invoke;
   aBlock[3] = &unk_1E79C4E50;
-  v17 = v12;
+  v17 = completionCopy;
   v32 = v17;
   v18 = _Block_copy(aBlock);
   v19 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDow.isa, 0);
   v20 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDow_0.isa, 0);
   v21 = PKDisplayableErrorCustomWithType(-1, v19, v20, 0, 0);
 
-  if (v16 && v10 && ([v16 needsRegistration] & 1) == 0 && !objc_msgSend(v10, "needsRegistration"))
+  if (v16 && serviceCopy && ([v16 needsRegistration] & 1) == 0 && !objc_msgSend(serviceCopy, "needsRegistration"))
   {
-    v23 = [[PKProvisioningContext alloc] initWithEnvironment:0 provisioningController:v9 groupsController:0];
-    [(PKProvisioningContext *)v23 setPeerPaymentWebService:v10];
-    v24 = [[PKProvisioningBackgroundCoordinator alloc] initWithSetupContext:v23 credential:v11 previouslyAcceptedTerms:1];
+    v23 = [[PKProvisioningContext alloc] initWithEnvironment:0 provisioningController:controllerCopy groupsController:0];
+    [(PKProvisioningContext *)v23 setPeerPaymentWebService:serviceCopy];
+    v24 = [[PKProvisioningBackgroundCoordinator alloc] initWithSetupContext:v23 credential:credentialCopy previouslyAcceptedTerms:1];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __134__PKPeerPaymentWebServiceTargetDevice_provisionPeerPaymentPassWithProvisioningController_peerPaymentWebService_credential_completion___block_invoke_52;
@@ -272,23 +272,23 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_handleAccountChangedNotification:(id)a3
+- (void)_handleAccountChangedNotification:(id)notification
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PKPeerPaymentTargetDeviceAccountDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PKPeerPaymentTargetDeviceAccountDidChangeNotification" object:self];
 }
 
-- (void)_handlePreferencesChangedNotification:(id)a3
+- (void)_handlePreferencesChangedNotification:(id)notification
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PKPeerPaymentTargetDevicePreferencesDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PKPeerPaymentTargetDevicePreferencesDidChangeNotification" object:self];
 }
 
-- (void)renewAppleAccountWithCompletionHandler:(id)a3
+- (void)renewAppleAccountWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[PKAppleAccountManager sharedInstance];
-  [v4 renewAppleAccountWithCompletionHandler:v3];
+  [v4 renewAppleAccountWithCompletionHandler:handlerCopy];
 }
 
 @end

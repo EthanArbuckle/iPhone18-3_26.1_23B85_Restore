@@ -1,6 +1,6 @@
 @interface LegacyAudioModel
 - (_TtC17NanoControlCenter16LegacyAudioModel)init;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
 @end
 
 @implementation LegacyAudioModel
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FA24790);
   MEMORY[0x28223BE20](v5 - 8);
@@ -28,13 +28,13 @@
   v8 = sub_25B005B64();
   (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
   sub_25B005B34();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_25B005B24();
   v11 = swift_allocObject();
   v12 = MEMORY[0x277D85700];
   v11[2] = v10;
   v11[3] = v12;
-  v11[4] = v9;
+  v11[4] = selfCopy;
   sub_25AF6C7F8(0, 0, v7, &unk_25B00E7E8, v11);
 }
 

@@ -1,11 +1,11 @@
 @interface CKSettingsAppNameImage
-+ (id)_cachedDisplayNameForBundleID:(id)a3;
-+ (id)_cachedImageForBundleID:(id)a3;
++ (id)_cachedDisplayNameForBundleID:(id)d;
++ (id)_cachedImageForBundleID:(id)d;
 + (id)_displayNameCache;
 + (id)_imageCache;
-+ (void)_setCachedDisplayName:(id)a3 forBundleID:(id)a4;
-+ (void)_setCachedImage:(id)a3 forBundleID:(id)a4;
-+ (void)lookUpAppNameImagesForApplicationBundleIDs:(id)a3 completionHandler:(id)a4;
++ (void)_setCachedDisplayName:(id)name forBundleID:(id)d;
++ (void)_setCachedImage:(id)image forBundleID:(id)d;
++ (void)lookUpAppNameImagesForApplicationBundleIDs:(id)ds completionHandler:(id)handler;
 @end
 
 @implementation CKSettingsAppNameImage
@@ -22,29 +22,29 @@
   return v3;
 }
 
-+ (id)_cachedImageForBundleID:(id)a3
++ (id)_cachedImageForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 _imageCache];
-  objc_sync_enter(v5);
-  v6 = [v5 objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  _imageCache = [self _imageCache];
+  objc_sync_enter(_imageCache);
+  v6 = [_imageCache objectForKeyedSubscript:dCopy];
+  objc_sync_exit(_imageCache);
 
   return v6;
 }
 
-+ (void)_setCachedImage:(id)a3 forBundleID:(id)a4
++ (void)_setCachedImage:(id)image forBundleID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [a1 _imageCache];
-  objc_sync_enter(v7);
-  if (v8)
+  imageCopy = image;
+  dCopy = d;
+  _imageCache = [self _imageCache];
+  objc_sync_enter(_imageCache);
+  if (imageCopy)
   {
-    [v7 setObject:v8 forKeyedSubscript:v6];
+    [_imageCache setObject:imageCopy forKeyedSubscript:dCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(_imageCache);
 }
 
 + (id)_displayNameCache
@@ -59,41 +59,41 @@
   return v3;
 }
 
-+ (id)_cachedDisplayNameForBundleID:(id)a3
++ (id)_cachedDisplayNameForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 _displayNameCache];
-  objc_sync_enter(v5);
-  v6 = [v5 objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  _displayNameCache = [self _displayNameCache];
+  objc_sync_enter(_displayNameCache);
+  v6 = [_displayNameCache objectForKeyedSubscript:dCopy];
+  objc_sync_exit(_displayNameCache);
 
   return v6;
 }
 
-+ (void)_setCachedDisplayName:(id)a3 forBundleID:(id)a4
++ (void)_setCachedDisplayName:(id)name forBundleID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [a1 _displayNameCache];
-  objc_sync_enter(v7);
-  if (v8)
+  nameCopy = name;
+  dCopy = d;
+  _displayNameCache = [self _displayNameCache];
+  objc_sync_enter(_displayNameCache);
+  if (nameCopy)
   {
-    [v7 setObject:v8 forKeyedSubscript:v6];
+    [_displayNameCache setObject:nameCopy forKeyedSubscript:dCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(_displayNameCache);
 }
 
-+ (void)lookUpAppNameImagesForApplicationBundleIDs:(id)a3 completionHandler:(id)a4
++ (void)lookUpAppNameImagesForApplicationBundleIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v35 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v36 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v6;
+  obj = dsCopy;
   v7 = [obj countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v7)
   {
@@ -111,7 +111,7 @@
         }
 
         v11 = *(*(&v48 + 1) + 8 * v10);
-        v12 = [a1 _cachedDisplayNameForBundleID:v11];
+        v12 = [self _cachedDisplayNameForBundleID:v11];
         if (!v12)
         {
           v13 = [LSApplicationRecord alloc];
@@ -143,26 +143,26 @@ LABEL_15:
 
           else
           {
-            v17 = [v14 applicationState];
-            v18 = [v17 isInstalled];
+            applicationState = [v14 applicationState];
+            isInstalled = [applicationState isInstalled];
 
-            if (!v18)
+            if (!isInstalled)
             {
               goto LABEL_15;
             }
 
-            v19 = [v14 localizedName];
-            if (!v19)
+            localizedName = [v14 localizedName];
+            if (!localizedName)
             {
               goto LABEL_15;
             }
 
-            v12 = v19;
-            [a1 _setCachedDisplayName:v19 forBundleID:v11];
+            v12 = localizedName;
+            [self _setCachedDisplayName:localizedName forBundleID:v11];
           }
         }
 
-        v20 = [a1 _cachedImageForBundleID:v11];
+        v20 = [self _cachedImageForBundleID:v11];
         if (!v20)
         {
           v21 = [[ISIcon alloc] initWithBundleIdentifier:v11];
@@ -170,12 +170,12 @@ LABEL_15:
           v23 = [v21 prepareImageForDescriptor:v22];
 
           v24 = [UIImage alloc];
-          v25 = [v23 CGImage];
+          cGImage = [v23 CGImage];
           [v23 scale];
-          v20 = [v24 initWithCGImage:v25 scale:0 orientation:?];
+          v20 = [v24 initWithCGImage:cGImage scale:0 orientation:?];
           if (v20)
           {
-            [a1 _setCachedImage:v20 forBundleID:v11];
+            [self _setCachedImage:v20 forBundleID:v11];
           }
         }
 
@@ -195,8 +195,8 @@ LABEL_15:
   v43[3] = &unk_147C0;
   v26 = obj;
   v44 = v26;
-  v46 = a1;
-  v27 = v35;
+  selfCopy = self;
+  v27 = handlerCopy;
   v45 = v27;
   v28 = objc_retainBlock(v43);
   if ([v36 count])
@@ -217,14 +217,14 @@ LABEL_15:
     v30 = +[AMSLookup createBagForSubProfile];
     v31 = [AMSLookup alloc];
     v32 = [v31 initWithBag:v30 caller:@"com.apple.Cloudkit" keyProfile:AMSLookupKeyProfileLockup];
-    v33 = [v36 allObjects];
-    v34 = [v32 performLookupWithBundleIdentifiers:v33 itemIdentifiers:0];
+    allObjects = [v36 allObjects];
+    v34 = [v32 performLookupWithBundleIdentifiers:allObjects itemIdentifiers:0];
 
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_8810;
     v39[3] = &unk_147E8;
-    v42 = a1;
+    selfCopy2 = self;
     v40 = v36;
     v41 = v28;
     [v34 addFinishBlock:v39];

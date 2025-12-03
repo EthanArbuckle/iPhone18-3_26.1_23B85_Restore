@@ -1,17 +1,17 @@
 @interface PTCinematographyFrame
-+ (id)_frameFromInnerAtomStream:(id)a3;
-+ (id)_frameHeaderFromAtomStream:(id)a3;
-+ (id)_framesWithCinematographyDictionaries:(id)a3;
-+ (id)objectFromAtomStream:(id)a3;
-+ (void)_debugLogFrame:(id)a3 label:(id)a4;
-+ (void)_debugLogFrames:(id)a3 label:(id)a4;
++ (id)_frameFromInnerAtomStream:(id)stream;
++ (id)_frameHeaderFromAtomStream:(id)stream;
++ (id)_framesWithCinematographyDictionaries:(id)dictionaries;
++ (id)objectFromAtomStream:(id)stream;
++ (void)_debugLogFrame:(id)frame label:(id)label;
++ (void)_debugLogFrames:(id)frames label:(id)label;
 + (void)initialize;
 + (void)registerForSerialization;
-- (BOOL)_copyToFrameHeaderData_0:(FrameHeaderData_0 *)a3;
-- (BOOL)_writeHeaderToAtomWriter:(id)a3 options:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_copyToFrameHeaderData_0:(FrameHeaderData_0 *)data_0;
+- (BOOL)_writeHeaderToAtomWriter:(id)writer options:(id)options;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFocusStrong;
-- (BOOL)writeToAtomWriter:(id)a3 options:(id)a4;
+- (BOOL)writeToAtomWriter:(id)writer options:(id)options;
 - (NSSet)_detectionTrackNumberSet;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -19,43 +19,43 @@
 - (id)_asCinematographyDictionary;
 - (id)_detectionsByFocusIdentifier;
 - (id)_detectionsByTrackIdentifier;
-- (id)_focusDetectionFromCoefficientsDictionary:(id)a3 coefficient:(float *)a4;
-- (id)_initWithCinematographyDictionary:(id)a3;
-- (id)_initWithCinematographyDictionary:(id)a3 time:(id *)a4;
-- (id)_initWithFrameHeaderData_0:(FrameHeaderData_0 *)a3;
-- (id)bestDetectionForGroupIdentifier:(int64_t)a3;
-- (id)detectionAtPoint:(CGPoint)a3;
-- (id)detectionForFocusIdentifier:(id)a3;
-- (id)detectionForTrack:(id)a3;
-- (id)detectionForTrackIdentifier:(int64_t)a3;
-- (id)detectionForTrackNumber:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_focusDetectionFromCoefficientsDictionary:(id)dictionary coefficient:(float *)coefficient;
+- (id)_initWithCinematographyDictionary:(id)dictionary;
+- (id)_initWithCinematographyDictionary:(id)dictionary time:(id *)time;
+- (id)_initWithFrameHeaderData_0:(FrameHeaderData_0 *)data_0;
+- (id)bestDetectionForGroupIdentifier:(int64_t)identifier;
+- (id)detectionAtPoint:(CGPoint)point;
+- (id)detectionForFocusIdentifier:(id)identifier;
+- (id)detectionForTrack:(id)track;
+- (id)detectionForTrackIdentifier:(int64_t)identifier;
+- (id)detectionForTrackNumber:(id)number;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)focusGroupIdentifier;
 - (int64_t)focusTrackIdentifier;
 - (unint64_t)hash;
-- (unint64_t)sizeOfSerializedObjectWithOptions:(id)a3;
-- (void)_addDetection:(id)a3;
+- (unint64_t)sizeOfSerializedObjectWithOptions:(id)options;
+- (void)_addDetection:(id)detection;
 - (void)_flushCachedDetectionsDictionaries;
-- (void)_focusFromDetection:(id)a3 toDetection:(id)a4 rawFocusDistance:(float)a5 focusDistance:(float)a6 transitionCoefficient:(float)a7 elapsedTime:(float)a8 duration:(float)a9;
-- (void)_removeDetection:(id)a3;
-- (void)_removeDetectionWithTrackIdentifier:(int64_t)a3;
+- (void)_focusFromDetection:(id)detection toDetection:(id)toDetection rawFocusDistance:(float)distance focusDistance:(float)focusDistance transitionCoefficient:(float)coefficient elapsedTime:(float)time duration:(float)duration;
+- (void)_removeDetection:(id)detection;
+- (void)_removeDetectionWithTrackIdentifier:(int64_t)identifier;
 - (void)_restoreOriginal;
 - (void)_updateDetectionTimes;
-- (void)focusOnDetection:(id)a3;
-- (void)focusOnDetection:(id)a3 focusPuller:(id)a4;
+- (void)focusOnDetection:(id)detection;
+- (void)focusOnDetection:(id)detection focusPuller:(id)puller;
 - (void)focusOnNothing;
-- (void)setAllDetections:(id)a3;
-- (void)setDetections:(id)a3;
-- (void)setTime:(id *)a3;
+- (void)setAllDetections:(id)detections;
+- (void)setDetections:(id)detections;
+- (void)setTime:(id *)time;
 @end
 
 @implementation PTCinematographyFrame
 
 - (BOOL)isFocusStrong
 {
-  v3 = [(PTCinematographyFrame *)self userFocusTrackNumber];
+  userFocusTrackNumber = [(PTCinematographyFrame *)self userFocusTrackNumber];
 
-  if (!v3)
+  if (!userFocusTrackNumber)
   {
     return 0;
   }
@@ -65,24 +65,24 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [PTSerialization registerSerializationClass:a1];
+    [PTSerialization registerSerializationClass:self];
   }
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
   [(PTCinematographyFrame *)self _updateDetectionTimes];
 }
 
-- (void)setAllDetections:(id)a3
+- (void)setAllDetections:(id)detections
 {
-  v4 = [a3 copy];
+  v4 = [detections copy];
   allDetections = self->_allDetections;
   self->_allDetections = v4;
 
@@ -97,8 +97,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PTCinematographyFrame *)self allDetections];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v5 = [allDetections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -109,14 +109,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allDetections);
         }
 
         v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(*(*(&v12 + 1) + 8 * i), "trackIdentifier")}];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allDetections countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -134,8 +134,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(PTCinematographyFrame *)self allDetections];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v4 = [allDetections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -147,7 +147,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allDetections);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
@@ -159,7 +159,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allDetections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -168,15 +168,15 @@
 
 - (int64_t)focusTrackIdentifier
 {
-  v3 = [(PTCinematographyFrame *)self focusTrackNumber];
-  v4 = PTTrackIDFromNumber(v3);
+  focusTrackNumber = [(PTCinematographyFrame *)self focusTrackNumber];
+  v4 = PTTrackIDFromNumber(focusTrackNumber);
 
-  v5 = [(PTCinematographyFrame *)self focusDetection];
+  focusDetection = [(PTCinematographyFrame *)self focusDetection];
 
-  if (v5)
+  if (focusDetection)
   {
-    v6 = [(PTCinematographyFrame *)self focusDetection];
-    if ([v6 trackIdentifier] != v4)
+    focusDetection2 = [(PTCinematographyFrame *)self focusDetection];
+    if ([focusDetection2 trackIdentifier] != v4)
     {
       [PTCinematographyFrame focusTrackIdentifier];
     }
@@ -187,39 +187,39 @@
 
 - (int64_t)focusGroupIdentifier
 {
-  v3 = [(PTCinematographyFrame *)self focusDetection];
-  if (v3)
+  focusDetection = [(PTCinematographyFrame *)self focusDetection];
+  if (focusDetection)
   {
-    v4 = [(PTCinematographyFrame *)self focusDetection];
-    v5 = [v4 groupIdentifier];
+    focusDetection2 = [(PTCinematographyFrame *)self focusDetection];
+    groupIdentifier = [focusDetection2 groupIdentifier];
   }
 
   else
   {
-    v5 = -1;
+    groupIdentifier = -1;
   }
 
-  return v5;
+  return groupIdentifier;
 }
 
-- (id)detectionForTrackIdentifier:(int64_t)a3
+- (id)detectionForTrackIdentifier:(int64_t)identifier
 {
-  v4 = [(PTCinematographyFrame *)self _detectionsByTrackIdentifier];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  _detectionsByTrackIdentifier = [(PTCinematographyFrame *)self _detectionsByTrackIdentifier];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
+  v6 = [_detectionsByTrackIdentifier objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (id)bestDetectionForGroupIdentifier:(int64_t)a3
+- (id)bestDetectionForGroupIdentifier:(int64_t)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PTCinematographyFrame *)self allDetections];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v5 = [allDetections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -231,11 +231,11 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allDetections);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 groupIdentifier] == a3 && (!v7 || PTDetectionTypeIsBetter(objc_msgSend(v10, "detectionType"), objc_msgSend(v7, "detectionType"))))
+        if ([v10 groupIdentifier] == identifier && (!v7 || PTDetectionTypeIsBetter(objc_msgSend(v10, "detectionType"), objc_msgSend(v7, "detectionType"))))
         {
           v11 = v10;
 
@@ -243,7 +243,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allDetections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -257,18 +257,18 @@
   return v7;
 }
 
-- (void)setDetections:(id)a3
+- (void)setDetections:(id)detections
 {
-  v5 = [a3 allValues];
-  v4 = [v5 copy];
+  allValues = [detections allValues];
+  v4 = [allValues copy];
   [(PTCinematographyFrame *)self setAllDetections:v4];
 }
 
-- (id)detectionForFocusIdentifier:(id)a3
+- (id)detectionForFocusIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PTCinematographyFrame *)self _detectionsByFocusIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _detectionsByFocusIdentifier = [(PTCinematographyFrame *)self _detectionsByFocusIdentifier];
+  v6 = [_detectionsByFocusIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
@@ -276,17 +276,17 @@
 - (PTCinematographyFocusBlend)focusBlend
 {
   v3 = [PTCinematographyFocusBlend alloc];
-  v4 = [(PTCinematographyFrame *)self focusDetection];
-  v5 = [(PTCinematographyFocusBlend *)v3 initFocusedOnDetection:v4];
+  focusDetection = [(PTCinematographyFrame *)self focusDetection];
+  v5 = [(PTCinematographyFocusBlend *)v3 initFocusedOnDetection:focusDetection];
 
   return v5;
 }
 
-- (id)detectionForTrack:(id)a3
+- (id)detectionForTrack:(id)track
 {
-  v4 = [a3 trackIdentifier];
+  trackIdentifier = [track trackIdentifier];
 
-  return [(PTCinematographyFrame *)self detectionForTrackIdentifier:v4];
+  return [(PTCinematographyFrame *)self detectionForTrackIdentifier:trackIdentifier];
 }
 
 - (NSString)description
@@ -294,15 +294,15 @@
   v3 = MEMORY[0x277CCACA8];
   [(PTCinematographyFrame *)self time];
   v4 = NSStringFromCMTime(&v13);
-  v5 = [(PTCinematographyFrame *)self focusDetection];
-  v6 = [v5 focusIdentifier];
+  focusDetection = [(PTCinematographyFrame *)self focusDetection];
+  focusIdentifier = [focusDetection focusIdentifier];
   v7 = MEMORY[0x277CCABB0];
   [(PTCinematographyFrame *)self focusDistance];
   v8 = [v7 numberWithFloat:?];
   v9 = MEMORY[0x277CCABB0];
   [(PTCinematographyFrame *)self aperture];
   v10 = [v9 numberWithFloat:?];
-  v11 = [v3 stringWithFormat:@"Frame: %@ [%@] (%@, %@)", v4, v6, v8, v10];
+  v11 = [v3 stringWithFormat:@"Frame: %@ [%@] (%@, %@)", v4, focusIdentifier, v8, v10];
 
   return v11;
 }
@@ -315,8 +315,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PTCinematographyFrame *)self allDetections];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v5 = [allDetections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -327,14 +327,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allDetections);
         }
 
         v9 = [*(*(&v12 + 1) + 8 * i) debugDescription];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allDetections countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -345,10 +345,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -358,7 +358,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(PTCinematographyFrame *)self time];
       if (v5)
       {
@@ -372,13 +372,13 @@
 
       if (!CMTimeCompare(&time1, &v22) && ([(PTCinematographyFrame *)self aperture], v9 = v8, [(PTCinematographyFrame *)v5 aperture], v9 == v10) && ([(PTCinematographyFrame *)self focusDistance], v12 = v11, [(PTCinematographyFrame *)v5 focusDistance], v12 == v13) && (v14 = [(PTCinematographyFrame *)self focusTrackIdentifier], v14 == [(PTCinematographyFrame *)v5 focusTrackIdentifier]))
       {
-        v15 = [(PTCinematographyFrame *)self allDetections];
-        v16 = [(PTCinematographyFrame *)v5 allDetections];
-        if ([v15 isEqual:v16] && (-[PTCinematographyFrame transitionCoefficient](self, "transitionCoefficient"), v18 = v17, -[PTCinematographyFrame transitionCoefficient](v5, "transitionCoefficient"), v18 == v19))
+        allDetections = [(PTCinematographyFrame *)self allDetections];
+        allDetections2 = [(PTCinematographyFrame *)v5 allDetections];
+        if ([allDetections isEqual:allDetections2] && (-[PTCinematographyFrame transitionCoefficient](self, "transitionCoefficient"), v18 = v17, -[PTCinematographyFrame transitionCoefficient](v5, "transitionCoefficient"), v18 == v19))
         {
-          v20 = [(PTCinematographyFrame *)self focusDetection];
-          v21 = [(PTCinematographyFrame *)v5 focusDetection];
-          v6 = [v20 isEqual:v21];
+          focusDetection = [(PTCinematographyFrame *)self focusDetection];
+          focusDetection2 = [(PTCinematographyFrame *)v5 focusDetection];
+          v6 = [focusDetection isEqual:focusDetection2];
         }
 
         else
@@ -412,7 +412,7 @@
   return (v5 + v6);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PTCinematographyFrame);
   if (v4)
@@ -425,23 +425,23 @@
     [(PTCinematographyFrame *)v4 setAperture:?];
     [(PTCinematographyFrame *)self focusDistance];
     [(PTCinematographyFrame *)v4 setFocusDistance:?];
-    v5 = [(PTCinematographyFrame *)self allDetections];
-    v6 = [v5 copy];
+    allDetections = [(PTCinematographyFrame *)self allDetections];
+    v6 = [allDetections copy];
     [(PTCinematographyFrame *)v4 setAllDetections:v6];
 
-    v7 = [(PTCinematographyFrame *)self focusTrackNumber];
-    [(PTCinematographyFrame *)v4 setFocusTrackNumber:v7];
+    focusTrackNumber = [(PTCinematographyFrame *)self focusTrackNumber];
+    [(PTCinematographyFrame *)v4 setFocusTrackNumber:focusTrackNumber];
 
-    v8 = [(PTCinematographyFrame *)self baseFocusTrackNumber];
-    [(PTCinematographyFrame *)v4 setBaseFocusTrackNumber:v8];
+    baseFocusTrackNumber = [(PTCinematographyFrame *)self baseFocusTrackNumber];
+    [(PTCinematographyFrame *)v4 setBaseFocusTrackNumber:baseFocusTrackNumber];
 
-    v9 = [(PTCinematographyFrame *)self userFocusTrackNumber];
-    [(PTCinematographyFrame *)v4 setUserFocusTrackNumber:v9];
+    userFocusTrackNumber = [(PTCinematographyFrame *)self userFocusTrackNumber];
+    [(PTCinematographyFrame *)v4 setUserFocusTrackNumber:userFocusTrackNumber];
 
     [(PTCinematographyFrame *)v4 setUserFocusStrong:[(PTCinematographyFrame *)self isUserFocusStrong]];
     [(PTCinematographyFrame *)v4 setUserFocusGroup:[(PTCinematographyFrame *)self isUserFocusGroup]];
-    v10 = [(PTCinematographyFrame *)self focusDetection];
-    [(PTCinematographyFrame *)v4 setFocusDetection:v10];
+    focusDetection = [(PTCinematographyFrame *)self focusDetection];
+    [(PTCinematographyFrame *)v4 setFocusDetection:focusDetection];
 
     [(PTCinematographyFrame *)self transitionCoefficient];
     [(PTCinematographyFrame *)v4 setTransitionCoefficient:?];
@@ -449,29 +449,29 @@
     [(PTCinematographyFrame *)v4 setTransitionElapsedTime:?];
     [(PTCinematographyFrame *)self transitionDuration];
     [(PTCinematographyFrame *)v4 setTransitionDuration:?];
-    v11 = [(PTCinematographyFrame *)self _frameNumber];
-    [(PTCinematographyFrame *)v4 _setFrameNumber:v11];
+    _frameNumber = [(PTCinematographyFrame *)self _frameNumber];
+    [(PTCinematographyFrame *)v4 _setFrameNumber:_frameNumber];
 
     [(PTCinematographyFrame *)v4 _setSnapshotPolicy:[(PTCinematographyFrame *)self _snapshotPolicy]];
-    v12 = [(PTCinematographyFrame *)self _snapshot];
-    v13 = [v12 copy];
+    _snapshot = [(PTCinematographyFrame *)self _snapshot];
+    v13 = [_snapshot copy];
     [(PTCinematographyFrame *)v4 _setSnapshot:v13];
   }
 
   return v4;
 }
 
-- (id)detectionAtPoint:(CGPoint)a3
+- (id)detectionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v28 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(PTCinematographyFrame *)self allDetections];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v6 = [allDetections countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -484,7 +484,7 @@
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allDetections);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
@@ -497,9 +497,9 @@
         v30.y = y;
         if (CGRectContainsPoint(v31, v30))
         {
-          v17 = [v12 detectionType];
-          v18 = v17 > 0xB || ((1 << v17) & 0x83E) == 0;
-          if (!v18 || v17 == 102)
+          detectionType = [v12 detectionType];
+          v18 = detectionType > 0xB || ((1 << detectionType) & 0x83E) == 0;
+          if (!v18 || detectionType == 102)
           {
             Area = CGRectGetArea(v13, v14, width, height);
             if (Area < v10)
@@ -514,7 +514,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [allDetections countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v7);
@@ -533,8 +533,8 @@
   cachedDetectionsByTrackIdentifier = self->_cachedDetectionsByTrackIdentifier;
   if (!cachedDetectionsByTrackIdentifier)
   {
-    v4 = [(PTCinematographyFrame *)self allDetections];
-    v5 = [PTCinematographyDetection _detectionsByTrackIdentifierFromArray:v4];
+    allDetections = [(PTCinematographyFrame *)self allDetections];
+    v5 = [PTCinematographyDetection _detectionsByTrackIdentifierFromArray:allDetections];
     v6 = self->_cachedDetectionsByTrackIdentifier;
     self->_cachedDetectionsByTrackIdentifier = v5;
 
@@ -549,8 +549,8 @@
   cachedDetectionsByFocusIdentifier = self->_cachedDetectionsByFocusIdentifier;
   if (!cachedDetectionsByFocusIdentifier)
   {
-    v4 = [(PTCinematographyFrame *)self allDetections];
-    v5 = [PTCinematographyDetection _detectionsByFocusIdentifierFromArray:v4];
+    allDetections = [(PTCinematographyFrame *)self allDetections];
+    v5 = [PTCinematographyDetection _detectionsByFocusIdentifierFromArray:allDetections];
     v6 = self->_cachedDetectionsByFocusIdentifier;
     self->_cachedDetectionsByFocusIdentifier = v5;
 
@@ -560,11 +560,11 @@
   return cachedDetectionsByFocusIdentifier;
 }
 
-- (id)detectionForTrackNumber:(id)a3
+- (id)detectionForTrackNumber:(id)number
 {
-  if (a3)
+  if (number)
   {
-    v4 = -[PTCinematographyFrame detectionForTrackIdentifier:](self, "detectionForTrackIdentifier:", [a3 integerValue]);
+    v4 = -[PTCinematographyFrame detectionForTrackIdentifier:](self, "detectionForTrackIdentifier:", [number integerValue]);
   }
 
   else
@@ -575,35 +575,35 @@
   return v4;
 }
 
-- (void)_addDetection:(id)a3
+- (void)_addDetection:(id)detection
 {
-  v4 = a3;
-  v5 = [(PTCinematographyFrame *)self allDetections];
-  v7 = [v5 mutableCopy];
+  detectionCopy = detection;
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v7 = [allDetections mutableCopy];
 
-  [v7 addObject:v4];
+  [v7 addObject:detectionCopy];
   v6 = [v7 copy];
   [(PTCinematographyFrame *)self setAllDetections:v6];
 
   [(PTCinematographyFrame *)self _flushCachedDetectionsDictionaries];
 }
 
-- (void)_removeDetection:(id)a3
+- (void)_removeDetection:(id)detection
 {
-  v4 = a3;
-  v5 = [(PTCinematographyFrame *)self allDetections];
-  v7 = [v5 mutableCopy];
+  detectionCopy = detection;
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v7 = [allDetections mutableCopy];
 
-  [v7 removeObject:v4];
+  [v7 removeObject:detectionCopy];
   v6 = [v7 copy];
   [(PTCinematographyFrame *)self setAllDetections:v6];
 
   [(PTCinematographyFrame *)self _flushCachedDetectionsDictionaries];
 }
 
-- (void)_removeDetectionWithTrackIdentifier:(int64_t)a3
+- (void)_removeDetectionWithTrackIdentifier:(int64_t)identifier
 {
-  v4 = [(PTCinematographyFrame *)self detectionForTrackIdentifier:a3];
+  v4 = [(PTCinematographyFrame *)self detectionForTrackIdentifier:identifier];
   if (v4)
   {
     [(PTCinematographyFrame *)self _removeDetection:v4];
@@ -621,16 +621,16 @@
   self->_cachedDetectionsByTrackIdentifier = 0;
 }
 
-+ (id)_framesWithCinematographyDictionaries:(id)a3
++ (id)_framesWithCinematographyDictionaries:(id)dictionaries
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -662,16 +662,16 @@
   return v13;
 }
 
-- (id)_focusDetectionFromCoefficientsDictionary:(id)a3 coefficient:(float *)a4
+- (id)_focusDetectionFromCoefficientsDictionary:(id)dictionary coefficient:(float *)coefficient
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(PTCinematographyFrame *)self allDetections];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v8 = [allDetections countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -684,12 +684,12 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allDetections);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 focusIdentifier];
-        v16 = [v6 objectForKeyedSubscript:v15];
+        focusIdentifier = [v14 focusIdentifier];
+        v16 = [dictionaryCopy objectForKeyedSubscript:focusIdentifier];
         [v16 floatValue];
         v18 = v17;
 
@@ -702,7 +702,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [allDetections countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -714,33 +714,33 @@
     v12 = 0.0;
   }
 
-  if (a4)
+  if (coefficient)
   {
-    *a4 = v12;
+    *coefficient = v12;
   }
 
   return v10;
 }
 
-- (id)_initWithCinematographyDictionary:(id)a3
+- (id)_initWithCinematographyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v49.receiver = self;
   v49.super_class = PTCinematographyFrame;
   v5 = [(PTCinematographyFrame *)&v49 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"trackers"];
-    v7 = [v6 allValues];
-    v8 = [PTCinematographyDetection _detectionsFromCinematographyArray:v7];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"trackers"];
+    allValues = [v6 allValues];
+    v8 = [PTCinematographyDetection _detectionsFromCinematographyArray:allValues];
     v9 = *(v5 + 10);
     *(v5 + 10) = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"focus_track_id"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"focus_track_id"];
 
     if (v10)
     {
-      v11 = [v4 objectForKeyedSubscript:@"focus_track_id"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"focus_track_id"];
       v12 = *(v5 + 11);
       *(v5 + 11) = v11;
 
@@ -748,7 +748,7 @@
       v14 = *(v5 + 9);
       *(v5 + 9) = v13;
 
-      v15 = [v4 objectForKeyedSubscript:@"transition_coefficient"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"transition_coefficient"];
       [v15 floatValue];
       *(v5 + 6) = v16;
     }
@@ -756,14 +756,14 @@
     else
     {
       LODWORD(v48.value) = 0;
-      v15 = [v4 objectForKeyedSubscript:@"coefficients"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"coefficients"];
       v17 = [v5 _focusDetectionFromCoefficientsDictionary:v15 coefficient:&v48];
       v18 = *(v5 + 9);
       *(v5 + 9) = v17;
 
-      v19 = [*(v5 + 9) trackNumber];
+      trackNumber = [*(v5 + 9) trackNumber];
       v20 = *(v5 + 11);
-      *(v5 + 11) = v19;
+      *(v5 + 11) = trackNumber;
 
       *(v5 + 6) = 1.0 - *&v48.value;
       if (!*(v5 + 9))
@@ -776,15 +776,15 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"transition_elapsed_time"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"transition_elapsed_time"];
     [v22 floatValue];
     *(v5 + 7) = v23;
 
-    v24 = [v4 objectForKeyedSubscript:@"transition_duration"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"transition_duration"];
     [v24 floatValue];
     *(v5 + 8) = v25;
 
-    v26 = [v4 objectForKeyedSubscript:@"base_track_id"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"base_track_id"];
     v27 = v26;
     if (!v26)
     {
@@ -793,33 +793,33 @@
 
     objc_storeStrong(v5 + 12, v27);
 
-    v28 = [v4 objectForKeyedSubscript:@"user_track_id"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"user_track_id"];
     v29 = *(v5 + 13);
     *(v5 + 13) = v28;
 
-    v30 = [v4 objectForKeyedSubscript:@"user_focus_strong"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"user_focus_strong"];
     v5[8] = [v30 BOOLValue];
 
-    v31 = [v4 objectForKeyedSubscript:@"user_focus_group"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"user_focus_group"];
     v5[9] = [v31 BOOLValue];
 
-    v32 = [v4 objectForKeyedSubscript:@"frame"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"frame"];
     v33 = *(v5 + 5);
     *(v5 + 5) = v32;
 
-    v34 = [v4 objectForKeyedSubscript:@"ptime"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"ptime"];
     CMTimeFromPTCinematographyDictionary(&v48, v34);
     *(v5 + 136) = v48;
 
-    v35 = [v4 objectForKeyedSubscript:@"aperture"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"aperture"];
     [v35 floatValue];
     *(v5 + 3) = v36;
 
-    v37 = [v4 objectForKeyedSubscript:@"disparity"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"disparity"];
     [v37 floatValue];
     *(v5 + 4) = v38;
 
-    v39 = [v4 objectForKeyedSubscript:@"_raw_disparity"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"_raw_disparity"];
     if (objc_opt_respondsToSelector())
     {
       [v39 floatValue];
@@ -840,14 +840,14 @@
     }
 
     *(v5 + 5) = v40;
-    v42 = [v4 objectForKeyedSubscript:@"_snapshot"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"_snapshot"];
     v43 = *(v5 + 6);
     *(v5 + 6) = v42;
 
-    v44 = [v4 objectForKeyedSubscript:@"_snapshot_policy"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"_snapshot_policy"];
     *(v5 + 7) = [v44 unsignedIntegerValue];
 
-    v45 = [v4 objectForKeyedSubscript:@"detector_did_run"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"detector_did_run"];
     v46 = *(v5 + 8);
     *(v5 + 8) = v45;
   }
@@ -855,14 +855,14 @@
   return v5;
 }
 
-- (id)_initWithCinematographyDictionary:(id)a3 time:(id *)a4
+- (id)_initWithCinematographyDictionary:(id)dictionary time:(id *)time
 {
-  v5 = [(PTCinematographyFrame *)self _initWithCinematographyDictionary:a3];
+  v5 = [(PTCinematographyFrame *)self _initWithCinematographyDictionary:dictionary];
   v6 = v5;
   if (v5)
   {
-    v8 = *&a4->var0;
-    var3 = a4->var3;
+    v8 = *&time->var0;
+    var3 = time->var3;
     [v5 setTime:&v8];
   }
 
@@ -877,8 +877,8 @@
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v4 = [(PTCinematographyFrame *)self allDetections];
-  v5 = [v4 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v5 = [allDetections countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v5)
   {
     v6 = v5;
@@ -889,27 +889,27 @@
       {
         if (*v39 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allDetections);
         }
 
         v9 = *(*(&v38 + 1) + 8 * i);
-        v10 = [v9 focusIdentifier];
-        v11 = [v9 _asCinematographyDictionary];
-        [v3 setObject:v11 forKeyedSubscript:v10];
+        focusIdentifier = [v9 focusIdentifier];
+        _asCinematographyDictionary = [v9 _asCinematographyDictionary];
+        [v3 setObject:_asCinematographyDictionary forKeyedSubscript:focusIdentifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v6 = [allDetections countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v6);
   }
 
   v12 = objc_opt_new();
-  v13 = [(PTCinematographyFrame *)self baseFocusTrackNumber];
-  [v12 setObject:v13 forKeyedSubscript:@"base_track_id"];
+  baseFocusTrackNumber = [(PTCinematographyFrame *)self baseFocusTrackNumber];
+  [v12 setObject:baseFocusTrackNumber forKeyedSubscript:@"base_track_id"];
 
-  v14 = [(PTCinematographyFrame *)self userFocusTrackNumber];
-  [v12 setObject:v14 forKeyedSubscript:@"user_track_id"];
+  userFocusTrackNumber = [(PTCinematographyFrame *)self userFocusTrackNumber];
+  [v12 setObject:userFocusTrackNumber forKeyedSubscript:@"user_track_id"];
 
   if ([(PTCinematographyFrame *)self isUserFocusStrong])
   {
@@ -933,8 +933,8 @@
     [v12 setObject:0 forKeyedSubscript:@"user_focus_group"];
   }
 
-  v17 = [(PTCinematographyFrame *)self _frameNumber];
-  [v12 setObject:v17 forKeyedSubscript:@"frame"];
+  _frameNumber = [(PTCinematographyFrame *)self _frameNumber];
+  [v12 setObject:_frameNumber forKeyedSubscript:@"frame"];
 
   [(PTCinematographyFrame *)self time];
   v18 = PTCinematographyDictionaryFromCMTime(v37);
@@ -958,17 +958,17 @@
   v25 = [v3 copy];
   [v12 setObject:v25 forKeyedSubscript:@"trackers"];
 
-  v26 = [(PTCinematographyFrame *)self _snapshot];
-  [v12 setObject:v26 forKeyedSubscript:@"_snapshot"];
+  _snapshot = [(PTCinematographyFrame *)self _snapshot];
+  [v12 setObject:_snapshot forKeyedSubscript:@"_snapshot"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PTCinematographyFrame _snapshotPolicy](self, "_snapshotPolicy")}];
   [v12 setObject:v27 forKeyedSubscript:@"_snapshot_policy"];
 
-  v28 = [(PTCinematographyFrame *)self _detectorDidRun];
-  [v12 setObject:v28 forKeyedSubscript:@"detector_did_run"];
+  _detectorDidRun = [(PTCinematographyFrame *)self _detectorDidRun];
+  [v12 setObject:_detectorDidRun forKeyedSubscript:@"detector_did_run"];
 
-  v29 = [(PTCinematographyFrame *)self focusTrackNumber];
-  [v12 setObject:v29 forKeyedSubscript:@"focus_track_id"];
+  focusTrackNumber = [(PTCinematographyFrame *)self focusTrackNumber];
+  [v12 setObject:focusTrackNumber forKeyedSubscript:@"focus_track_id"];
 
   v30 = MEMORY[0x277CCABB0];
   [(PTCinematographyFrame *)self transitionCoefficient];
@@ -1002,8 +1002,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(PTCinematographyFrame *)self allDetections];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allDetections = [(PTCinematographyFrame *)self allDetections];
+  v5 = [allDetections countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1015,30 +1015,30 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allDetections);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) _restoreOriginal];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allDetections countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (void)_debugLogFrames:(id)a3 label:(id)a4
++ (void)_debugLogFrames:(id)frames label:(id)label
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  framesCopy = frames;
+  labelCopy = label;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [framesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1050,31 +1050,31 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(framesCopy);
         }
 
-        [a1 _debugLogFrame:*(*(&v12 + 1) + 8 * v11++) label:v7];
+        [self _debugLogFrame:*(*(&v12 + 1) + 8 * v11++) label:labelCopy];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [framesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-+ (void)_debugLogFrame:(id)a3 label:(id)a4
++ (void)_debugLogFrame:(id)frame label:(id)label
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 focusDetection];
-  v8 = [v7 focusIdentifier];
+  frameCopy = frame;
+  labelCopy = label;
+  focusDetection = [frameCopy focusDetection];
+  focusIdentifier = [focusDetection focusIdentifier];
 
-  v9 = [v5 focusTrackNumber];
-  v10 = [v5 focusDetection];
-  [v10 rect];
+  focusTrackNumber = [frameCopy focusTrackNumber];
+  focusDetection2 = [frameCopy focusDetection];
+  [focusDetection2 rect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -1083,22 +1083,22 @@
   v19 = _PTLogSystem();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v36 = [v5 _frameNumber];
+    _frameNumber = [frameCopy _frameNumber];
     v20 = MEMORY[0x277CCABB0];
-    [v5 focusDistance];
+    [frameCopy focusDistance];
     v21 = [v20 numberWithFloat:?];
     v22 = MEMORY[0x277CCABB0];
-    [v5 aperture];
+    [frameCopy aperture];
     v23 = [v22 numberWithFloat:?];
-    v24 = [v5 userFocusTrackNumber];
+    userFocusTrackNumber = [frameCopy userFocusTrackNumber];
     v25 = &stru_2837D16E8;
-    if (v24)
+    if (userFocusTrackNumber)
     {
       v33 = MEMORY[0x277CCACA8];
-      [v5 userFocusTrackNumber];
+      [frameCopy userFocusTrackNumber];
       v26 = v34 = v23;
       v27 = v21;
-      if ([v5 isUserFocusGroup])
+      if ([frameCopy isUserFocusGroup])
       {
         v28 = @"g";
       }
@@ -1108,9 +1108,9 @@
         v28 = &stru_2837D16E8;
       }
 
-      v29 = [v5 isUserFocusStrong];
+      isUserFocusStrong = [frameCopy isUserFocusStrong];
       v30 = @"+";
-      if (!v29)
+      if (!isUserFocusStrong)
       {
         v30 = &stru_2837D16E8;
       }
@@ -1124,13 +1124,13 @@
     }
 
     *buf = 138414850;
-    v38 = v6;
+    v38 = labelCopy;
     v39 = 2112;
-    v40 = v36;
+    v40 = _frameNumber;
     v41 = 2112;
-    v42 = v8;
+    v42 = focusIdentifier;
     v43 = 2112;
-    v44 = v9;
+    v44 = focusTrackNumber;
     v45 = 2112;
     v46 = v21;
     v47 = 2112;
@@ -1146,7 +1146,7 @@
     v57 = 2048;
     v58 = v18;
     _os_log_debug_impl(&dword_2243FB000, v19, OS_LOG_TYPE_DEBUG, "%@ Frame %@: focus %@ (%@), disparity %@, aperture %@%@ rect { %.3f, %.3f, %.3f, %.3f }", buf, 0x70u);
-    if (v24)
+    if (userFocusTrackNumber)
     {
     }
   }
@@ -1181,11 +1181,11 @@
   [(PTCinematographyFrame *)self setTransitionDuration:0.0];
 }
 
-- (void)focusOnDetection:(id)a3
+- (void)focusOnDetection:(id)detection
 {
-  if (a3)
+  if (detection)
   {
-    [(PTCinematographyFrame *)self focusOnDetection:a3 focusPuller:0];
+    [(PTCinematographyFrame *)self focusOnDetection:detection focusPuller:0];
   }
 
   else
@@ -1194,18 +1194,18 @@
   }
 }
 
-- (void)focusOnDetection:(id)a3 focusPuller:(id)a4
+- (void)focusOnDetection:(id)detection focusPuller:(id)puller
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 focusDistance];
+  pullerCopy = puller;
+  detectionCopy = detection;
+  [detectionCopy focusDistance];
   v9 = LODWORD(v8);
   v10 = LODWORD(v8);
-  if (v6)
+  if (pullerCopy)
   {
     [(PTCinematographyFrame *)self time];
     LODWORD(v11) = v9;
-    [v6 pullTowardFocusDistance:v14 time:v11];
+    [pullerCopy pullTowardFocusDistance:v14 time:v11];
     v10 = LODWORD(v8);
   }
 
@@ -1213,31 +1213,31 @@
   [(PTCinematographyFrame *)self setRawFocusDistance:v8];
   LODWORD(v12) = v10;
   [(PTCinematographyFrame *)self setFocusDistance:v12];
-  [(PTCinematographyFrame *)self setFocusDetection:v7];
-  v13 = [v7 trackNumber];
+  [(PTCinematographyFrame *)self setFocusDetection:detectionCopy];
+  trackNumber = [detectionCopy trackNumber];
 
-  [(PTCinematographyFrame *)self setFocusTrackNumber:v13];
+  [(PTCinematographyFrame *)self setFocusTrackNumber:trackNumber];
   [(PTCinematographyFrame *)self setTransitionCoefficient:0.0];
   [(PTCinematographyFrame *)self setTransitionElapsedTime:0.0];
   [(PTCinematographyFrame *)self setTransitionDuration:0.0];
 }
 
-- (void)_focusFromDetection:(id)a3 toDetection:(id)a4 rawFocusDistance:(float)a5 focusDistance:(float)a6 transitionCoefficient:(float)a7 elapsedTime:(float)a8 duration:(float)a9
+- (void)_focusFromDetection:(id)detection toDetection:(id)toDetection rawFocusDistance:(float)distance focusDistance:(float)focusDistance transitionCoefficient:(float)coefficient elapsedTime:(float)time duration:(float)duration
 {
-  v15 = a3;
-  *&v16 = a5;
+  detectionCopy = detection;
+  *&v16 = distance;
   [(PTCinematographyFrame *)self setRawFocusDistance:v16];
-  *&v17 = a6;
+  *&v17 = focusDistance;
   [(PTCinematographyFrame *)self setFocusDistance:v17];
-  [(PTCinematographyFrame *)self setFocusDetection:v15];
-  v18 = [v15 trackNumber];
+  [(PTCinematographyFrame *)self setFocusDetection:detectionCopy];
+  trackNumber = [detectionCopy trackNumber];
 
-  [(PTCinematographyFrame *)self setFocusTrackNumber:v18];
-  *&v19 = a7;
+  [(PTCinematographyFrame *)self setFocusTrackNumber:trackNumber];
+  *&v19 = coefficient;
   [(PTCinematographyFrame *)self setTransitionCoefficient:v19];
-  *&v20 = a8;
+  *&v20 = time;
   [(PTCinematographyFrame *)self setTransitionElapsedTime:v20];
-  *&v21 = a9;
+  *&v21 = duration;
 
   [(PTCinematographyFrame *)self setTransitionDuration:v21];
 }
@@ -1248,7 +1248,7 @@
   block[1] = 3221225472;
   block[2] = __64__PTCinematographyFrame_Serialization__registerForSerialization__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (registerForSerialization_onceToken_0 != -1)
   {
     dispatch_once(&registerForSerialization_onceToken_0, block);
@@ -1263,35 +1263,35 @@ BOOL __64__PTCinematographyFrame_Serialization__registerForSerialization__block_
   return [PTSerialization registerSerializationClass:v1];
 }
 
-- (id)_initWithFrameHeaderData_0:(FrameHeaderData_0 *)a3
+- (id)_initWithFrameHeaderData_0:(FrameHeaderData_0 *)data_0
 {
   v17.receiver = self;
   v17.super_class = PTCinematographyFrame;
   v4 = [(PTCinematographyFrame *)&v17 init];
   if (v4)
   {
-    v5 = NSNumberFromPTTrackID(bswap64(a3->var0));
+    v5 = NSNumberFromPTTrackID(bswap64(data_0->var0));
     [(PTCinematographyFrame *)v4 setFocusTrackNumber:v5];
 
-    v6 = NSNumberFromPTTrackID(bswap64(a3->var1));
+    v6 = NSNumberFromPTTrackID(bswap64(data_0->var1));
     [(PTCinematographyFrame *)v4 setBaseFocusTrackNumber:v6];
 
-    v7 = NSNumberFromPTTrackID(bswap64(a3->var2));
+    v7 = NSNumberFromPTTrackID(bswap64(data_0->var2));
     [(PTCinematographyFrame *)v4 setUserFocusTrackNumber:v7];
 
-    *&v8 = _PTSwapBigGetFloat(&a3->var3);
+    *&v8 = _PTSwapBigGetFloat(&data_0->var3);
     [(PTCinematographyFrame *)v4 setAperture:v8];
-    *&v9 = _PTSwapBigGetFloat(&a3->var4);
+    *&v9 = _PTSwapBigGetFloat(&data_0->var4);
     [(PTCinematographyFrame *)v4 setFocusDistance:v9];
-    *&v10 = _PTSwapBigGetFloat(&a3->var5);
+    *&v10 = _PTSwapBigGetFloat(&data_0->var5);
     [(PTCinematographyFrame *)v4 setRawFocusDistance:v10];
-    *&v11 = _PTSwapBigGetFloat(&a3->var6);
+    *&v11 = _PTSwapBigGetFloat(&data_0->var6);
     [(PTCinematographyFrame *)v4 setTransitionCoefficient:v11];
-    *&v12 = _PTSwapBigGetFloat(&a3->var7);
+    *&v12 = _PTSwapBigGetFloat(&data_0->var7);
     [(PTCinematographyFrame *)v4 setTransitionElapsedTime:v12];
-    *&v13 = _PTSwapBigGetFloat(&a3->var8);
+    *&v13 = _PTSwapBigGetFloat(&data_0->var8);
     [(PTCinematographyFrame *)v4 setTransitionDuration:v13];
-    v14 = bswap32(a3->var9);
+    v14 = bswap32(data_0->var9);
     if ((v14 & 2) != 0)
     {
       [(PTCinematographyFrame *)v4 _setDetectorDidRun:0];
@@ -1311,32 +1311,32 @@ BOOL __64__PTCinematographyFrame_Serialization__registerForSerialization__block_
   return v4;
 }
 
-- (BOOL)_copyToFrameHeaderData_0:(FrameHeaderData_0 *)a3
+- (BOOL)_copyToFrameHeaderData_0:(FrameHeaderData_0 *)data_0
 {
-  a3->var0 = bswap64([(PTCinematographyFrame *)self focusTrackIdentifier]);
-  v5 = [(PTCinematographyFrame *)self baseFocusTrackNumber];
-  a3->var1 = bswap64(PTTrackIDFromNumber(v5));
+  data_0->var0 = bswap64([(PTCinematographyFrame *)self focusTrackIdentifier]);
+  baseFocusTrackNumber = [(PTCinematographyFrame *)self baseFocusTrackNumber];
+  data_0->var1 = bswap64(PTTrackIDFromNumber(baseFocusTrackNumber));
 
-  v6 = [(PTCinematographyFrame *)self userFocusTrackNumber];
-  a3->var2 = bswap64(PTTrackIDFromNumber(v6));
+  userFocusTrackNumber = [(PTCinematographyFrame *)self userFocusTrackNumber];
+  data_0->var2 = bswap64(PTTrackIDFromNumber(userFocusTrackNumber));
 
   [(PTCinematographyFrame *)self aperture];
-  _PTSwapBigAssignFloat(&a3->var3, v7);
+  _PTSwapBigAssignFloat(&data_0->var3, v7);
   [(PTCinematographyFrame *)self focusDistance];
-  _PTSwapBigAssignFloat(&a3->var4, v8);
+  _PTSwapBigAssignFloat(&data_0->var4, v8);
   [(PTCinematographyFrame *)self rawFocusDistance];
-  _PTSwapBigAssignFloat(&a3->var5, v9);
+  _PTSwapBigAssignFloat(&data_0->var5, v9);
   [(PTCinematographyFrame *)self transitionCoefficient];
-  _PTSwapBigAssignFloat(&a3->var6, v10);
+  _PTSwapBigAssignFloat(&data_0->var6, v10);
   [(PTCinematographyFrame *)self transitionElapsedTime];
-  _PTSwapBigAssignFloat(&a3->var7, v11);
+  _PTSwapBigAssignFloat(&data_0->var7, v11);
   [(PTCinematographyFrame *)self transitionDuration];
-  _PTSwapBigAssignFloat(&a3->var8, v12);
-  v13 = [(PTCinematographyFrame *)self _detectorDidRun];
-  v14 = v13 == 0;
+  _PTSwapBigAssignFloat(&data_0->var8, v12);
+  _detectorDidRun = [(PTCinematographyFrame *)self _detectorDidRun];
+  v14 = _detectorDidRun == 0;
 
-  v15 = [(PTCinematographyFrame *)self _detectorDidRun];
-  v16 = [v15 BOOLValue];
+  _detectorDidRun2 = [(PTCinematographyFrame *)self _detectorDidRun];
+  bOOLValue = [_detectorDidRun2 BOOLValue];
 
   if ([(PTCinematographyFrame *)self isUserFocusStrong])
   {
@@ -1368,19 +1368,19 @@ BOOL __64__PTCinematographyFrame_Serialization__registerForSerialization__block_
     v19 = 0;
   }
 
-  a3->var9 = (v16 | (2 * v14) | v17 | v18 | v19) << 24;
+  data_0->var9 = (bOOLValue | (2 * v14) | v17 | v18 | v19) << 24;
   return 1;
 }
 
-- (unint64_t)sizeOfSerializedObjectWithOptions:(id)a3
+- (unint64_t)sizeOfSerializedObjectWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PTCinematographyFrame *)self allDetections];
+  optionsCopy = options;
+  allDetections = [(PTCinematographyFrame *)self allDetections];
 
-  if (v5)
+  if (allDetections)
   {
-    v6 = [(PTCinematographyFrame *)self allDetections];
-    v7 = [PTCinematographyDetection sizeOfSerializedArray:v6 options:v4]+ 76;
+    allDetections2 = [(PTCinematographyFrame *)self allDetections];
+    v7 = [PTCinematographyDetection sizeOfSerializedArray:allDetections2 options:optionsCopy]+ 76;
   }
 
   else
@@ -1391,54 +1391,54 @@ BOOL __64__PTCinematographyFrame_Serialization__registerForSerialization__block_
   return v7;
 }
 
-- (BOOL)_writeHeaderToAtomWriter:(id)a3 options:(id)a4
+- (BOOL)_writeHeaderToAtomWriter:(id)writer options:(id)options
 {
-  v5 = a3;
+  writerCopy = writer;
   v11 = 0;
   memset(v10, 0, sizeof(v10));
   v6 = [(PTCinematographyFrame *)self _copyToFrameHeaderData_0:v10];
   v7 = 0;
   if (v6)
   {
-    [v5 beginAtomOfType:1718775144];
-    [v5 appendVersion:0 flags:0];
-    [v5 appendBytes:v10 size:52];
-    [v5 endAtom];
-    v8 = [v5 error];
-    v7 = v8 == 0;
+    [writerCopy beginAtomOfType:1718775144];
+    [writerCopy appendVersion:0 flags:0];
+    [writerCopy appendBytes:v10 size:52];
+    [writerCopy endAtom];
+    error = [writerCopy error];
+    v7 = error == 0;
   }
 
   return v7;
 }
 
-+ (id)_frameFromInnerAtomStream:(id)a3
++ (id)_frameFromInnerAtomStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = 0;
   v6 = 0;
-  while ([v4 hasAtom])
+  while ([streamCopy hasAtom])
   {
-    if ([v4 atomType] == 1718775144)
+    if ([streamCopy atomType] == 1718775144)
     {
-      v7 = [a1 _frameHeaderFromAtomStream:v4];
+      v7 = [self _frameHeaderFromAtomStream:streamCopy];
       v8 = v5;
       v5 = v7;
     }
 
     else
     {
-      if ([v4 atomType] != 1685349235)
+      if ([streamCopy atomType] != 1685349235)
       {
         goto LABEL_8;
       }
 
-      v9 = [PTCinematographyDetection objectsFromAtomStream:v4];
+      v9 = [PTCinematographyDetection objectsFromAtomStream:streamCopy];
       v8 = v6;
       v6 = v9;
     }
 
 LABEL_8:
-    [v4 advanceToNextAtom];
+    [streamCopy advanceToNextAtom];
     if (v5 && v6)
     {
       break;
@@ -1450,42 +1450,42 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)writeToAtomWriter:(id)a3 options:(id)a4
+- (BOOL)writeToAtomWriter:(id)writer options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 beginAtomOfType:1718775141];
-  [v6 appendVersion:0 flags:0];
-  v8 = [v6 error];
+  writerCopy = writer;
+  optionsCopy = options;
+  [writerCopy beginAtomOfType:1718775141];
+  [writerCopy appendVersion:0 flags:0];
+  error = [writerCopy error];
 
-  if (v8)
+  if (error)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [[PTAtomWriter alloc] initWithParent:v6];
-    if (![(PTCinematographyFrame *)self _writeHeaderToAtomWriter:v9 options:v7]|| ([(PTCinematographyFrame *)self allDetections], v10 = objc_claimAutoreleasedReturnValue(), v10, v10) && ([(PTCinematographyFrame *)self allDetections], v11 = objc_claimAutoreleasedReturnValue(), v12 = [PTCinematographyDetection writeArray:v11 toAtomWriter:v9 options:v7], v11, !v12))
+    v9 = [[PTAtomWriter alloc] initWithParent:writerCopy];
+    if (![(PTCinematographyFrame *)self _writeHeaderToAtomWriter:v9 options:optionsCopy]|| ([(PTCinematographyFrame *)self allDetections], v10 = objc_claimAutoreleasedReturnValue(), v10, v10) && ([(PTCinematographyFrame *)self allDetections], v11 = objc_claimAutoreleasedReturnValue(), v12 = [PTCinematographyDetection writeArray:v11 toAtomWriter:v9 options:optionsCopy], v11, !v12))
     {
       v14 = 0;
       goto LABEL_7;
     }
 
-    [v6 endAtom];
+    [writerCopy endAtom];
   }
 
-  v13 = [v6 error];
-  v14 = v13 == 0;
+  error2 = [writerCopy error];
+  v14 = error2 == 0;
 
 LABEL_7:
   return v14;
 }
 
-+ (id)objectFromAtomStream:(id)a3
++ (id)objectFromAtomStream:(id)stream
 {
-  v4 = a3;
-  if ([v4 atomType] != 1718775141 || (objc_msgSend(v4, "readCurrentAtomVersionAndFlags"), objc_msgSend(v4, "atomVersion")))
+  streamCopy = stream;
+  if ([streamCopy atomType] != 1718775141 || (objc_msgSend(streamCopy, "readCurrentAtomVersionAndFlags"), objc_msgSend(streamCopy, "atomVersion")))
   {
     v6 = 0;
     v5 = 0;
@@ -1493,8 +1493,8 @@ LABEL_7:
 
   else
   {
-    v5 = [[PTAtomStream alloc] initWithParent:v4];
-    v6 = [a1 _frameFromInnerAtomStream:v5];
+    v5 = [[PTAtomStream alloc] initWithParent:streamCopy];
+    v6 = [self _frameFromInnerAtomStream:v5];
     v7 = [v6 detectionForTrackIdentifier:{objc_msgSend(v6, "focusTrackIdentifier")}];
     [v6 setFocusDetection:v7];
   }
@@ -1502,17 +1502,17 @@ LABEL_7:
   return v6;
 }
 
-+ (id)_frameHeaderFromAtomStream:(id)a3
++ (id)_frameHeaderFromAtomStream:(id)stream
 {
-  v4 = a3;
-  if ([v4 atomType] != 1718775144 || (objc_msgSend(v4, "readCurrentAtomVersionAndFlags"), objc_msgSend(v4, "atomVersion")) || (v9 = 0, memset(v8, 0, sizeof(v8)), objc_msgSend(v4, "readCurrentAtomDataBytes:size:offset:", v8, 52, 0), objc_msgSend(v4, "error"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  streamCopy = stream;
+  if ([streamCopy atomType] != 1718775144 || (objc_msgSend(streamCopy, "readCurrentAtomVersionAndFlags"), objc_msgSend(streamCopy, "atomVersion")) || (v9 = 0, memset(v8, 0, sizeof(v8)), objc_msgSend(streamCopy, "readCurrentAtomDataBytes:size:offset:", v8, 52, 0), objc_msgSend(streamCopy, "error"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [[a1 alloc] _initWithFrameHeaderData_0:v8];
+    v6 = [[self alloc] _initWithFrameHeaderData_0:v8];
   }
 
   return v6;

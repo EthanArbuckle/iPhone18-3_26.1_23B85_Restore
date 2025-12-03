@@ -1,25 +1,25 @@
 @interface _UIRemoteViewService
-+ (_UIRemoteViewService)allocWithZone:(_NSZone *)a3;
++ (_UIRemoteViewService)allocWithZone:(_NSZone *)zone;
 - (_UIRemoteViewService)init;
-- (_UIRemoteViewService)initWithExtension:(id)a3 andContextToken:(id)a4;
-- (_UIRemoteViewService)initWithPlugIn:(id)a3 andContextToken:(id)a4;
+- (_UIRemoteViewService)initWithExtension:(id)extension andContextToken:(id)token;
+- (_UIRemoteViewService)initWithPlugIn:(id)in andContextToken:(id)token;
 - (id)_init;
-- (void)beginUsing:(id)a3;
-- (void)endUsing:(id)a3;
+- (void)beginUsing:(id)using;
+- (void)endUsing:(id)using;
 @end
 
 @implementation _UIRemoteViewService
 
-+ (_UIRemoteViewService)allocWithZone:(_NSZone *)a3
++ (_UIRemoteViewService)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38___UIRemoteViewService_allocWithZone___block_invoke;
     block[3] = &__block_descriptor_48_e5_v8__0l;
-    block[4] = a3;
-    block[5] = a1;
+    block[4] = zone;
+    block[5] = self;
     if (qword_1ED4994E0 != -1)
     {
       dispatch_once(&qword_1ED4994E0, block);
@@ -32,9 +32,9 @@
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS____UIRemoteViewService;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
@@ -45,32 +45,32 @@
   return [(_UIRemoteViewService *)&v3 init];
 }
 
-- (_UIRemoteViewService)initWithPlugIn:(id)a3 andContextToken:(id)a4
+- (_UIRemoteViewService)initWithPlugIn:(id)in andContextToken:(id)token
 {
-  v7 = a4;
+  tokenCopy = token;
   v8 = MEMORY[0x1E696ABD0];
-  v9 = [a3 identifier];
+  identifier = [in identifier];
   v16 = 0;
-  v10 = [v8 extensionWithIdentifier:v9 error:&v16];
+  v10 = [v8 extensionWithIdentifier:identifier error:&v16];
   v11 = v16;
 
   if (!v10)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    v15 = [v11 localizedDescription];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIRemoteViewService.m" lineNumber:48 description:{@"extension was nil - error %@", v15}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    localizedDescription = [v11 localizedDescription];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIRemoteViewService.m" lineNumber:48 description:{@"extension was nil - error %@", localizedDescription}];
   }
 
-  v12 = [(_UIRemoteViewService *)self initWithExtension:v10 andContextToken:v7];
+  v12 = [(_UIRemoteViewService *)self initWithExtension:v10 andContextToken:tokenCopy];
 
   return v12;
 }
 
-- (_UIRemoteViewService)initWithExtension:(id)a3 andContextToken:(id)a4
+- (_UIRemoteViewService)initWithExtension:(id)extension andContextToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_UIConcreteRemoteViewService alloc] initWithExtension:v7 andContextToken:v6];
+  tokenCopy = token;
+  extensionCopy = extension;
+  v8 = [[_UIConcreteRemoteViewService alloc] initWithExtension:extensionCopy andContextToken:tokenCopy];
 
   return &v8->super;
 }
@@ -82,16 +82,16 @@
   return &v3->super;
 }
 
-- (void)beginUsing:(id)a3
+- (void)beginUsing:(id)using
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIRemoteViewService.m" lineNumber:83 description:{@"Abstract method called %s", "-[_UIRemoteViewService beginUsing:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIRemoteViewService.m" lineNumber:83 description:{@"Abstract method called %s", "-[_UIRemoteViewService beginUsing:]"}];
 }
 
-- (void)endUsing:(id)a3
+- (void)endUsing:(id)using
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIRemoteViewService.m" lineNumber:87 description:{@"Abstract method called %s", "-[_UIRemoteViewService endUsing:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIRemoteViewService.m" lineNumber:87 description:{@"Abstract method called %s", "-[_UIRemoteViewService endUsing:]"}];
 }
 
 @end

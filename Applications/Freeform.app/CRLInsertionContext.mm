@@ -1,5 +1,5 @@
 @interface CRLInsertionContext
-+ (id)dragInsertionContextWithPreferredCenter:(CGPoint)a3 required:(BOOL)a4 shouldEndEditing:(BOOL)a5 fromDragToInsertController:(BOOL)a6 insertFloating:(BOOL)a7 targetZOrder:(unint64_t)a8;
++ (id)dragInsertionContextWithPreferredCenter:(CGPoint)center required:(BOOL)required shouldEndEditing:(BOOL)editing fromDragToInsertController:(BOOL)controller insertFloating:(BOOL)floating targetZOrder:(unint64_t)order;
 + (id)iosDragFloatingInsertionContext;
 + (id)nonInteractiveFloatingInsertionContext;
 + (id)nonInteractiveInlineInsertionContext;
@@ -78,9 +78,9 @@
   return v3;
 }
 
-+ (id)dragInsertionContextWithPreferredCenter:(CGPoint)a3 required:(BOOL)a4 shouldEndEditing:(BOOL)a5 fromDragToInsertController:(BOOL)a6 insertFloating:(BOOL)a7 targetZOrder:(unint64_t)a8
++ (id)dragInsertionContextWithPreferredCenter:(CGPoint)center required:(BOOL)required shouldEndEditing:(BOOL)editing fromDragToInsertController:(BOOL)controller insertFloating:(BOOL)floating targetZOrder:(unint64_t)order
 {
-  v8 = [[CRLDragInsertionContext alloc] initWithPreferredCenter:a4 required:a5 shouldEndEditing:a6 fromDragToInsertController:a7 insertFloating:a8 targetZOrder:a3.x, a3.y];
+  v8 = [[CRLDragInsertionContext alloc] initWithPreferredCenter:required required:editing shouldEndEditing:controller fromDragToInsertController:floating insertFloating:order targetZOrder:center.x, center.y];
 
   return v8;
 }

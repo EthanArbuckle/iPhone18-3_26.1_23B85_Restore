@@ -1,79 +1,79 @@
 @interface JSAProfileBagKeyEntry
-- (JSAProfileBagKeyEntry)initWithKey:(id)a3 valueType:(unint64_t)a4;
-- (JSAProfileBagKeyEntry)initWithKeyValue:(id)a3 valueTypeValue:(id)a4;
+- (JSAProfileBagKeyEntry)initWithKey:(id)key valueType:(unint64_t)type;
+- (JSAProfileBagKeyEntry)initWithKeyValue:(id)value valueTypeValue:(id)typeValue;
 - (id)description;
 @end
 
 @implementation JSAProfileBagKeyEntry
 
-- (JSAProfileBagKeyEntry)initWithKey:(id)a3 valueType:(unint64_t)a4
+- (JSAProfileBagKeyEntry)initWithKey:(id)key valueType:(unint64_t)type
 {
-  v6 = a3;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = JSAProfileBagKeyEntry;
   v7 = [(JSAProfileBagKeyEntry *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [keyCopy copy];
     key = v7->_key;
     v7->_key = v8;
 
-    v7->_valueType = a4;
+    v7->_valueType = type;
   }
 
   return v7;
 }
 
-- (JSAProfileBagKeyEntry)initWithKeyValue:(id)a3 valueTypeValue:(id)a4
+- (JSAProfileBagKeyEntry)initWithKeyValue:(id)value valueTypeValue:(id)typeValue
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isString])
+  valueCopy = value;
+  typeValueCopy = typeValue;
+  if ([valueCopy isString])
   {
-    v8 = [v6 toString];
+    toString = [valueCopy toString];
   }
 
   else
   {
-    v8 = 0;
+    toString = 0;
   }
 
-  if ([v7 isString])
+  if ([typeValueCopy isString])
   {
-    v9 = [v7 toString];
+    toString2 = [typeValueCopy toString];
   }
 
   else
   {
-    v9 = 0;
+    toString2 = 0;
   }
 
-  if ([v9 isEqualToString:@"Array"])
+  if ([toString2 isEqualToString:@"Array"])
   {
     v10 = 0;
   }
 
-  else if ([v9 isEqualToString:@"Bool"])
+  else if ([toString2 isEqualToString:@"Bool"])
   {
     v10 = 1;
   }
 
-  else if ([v9 isEqualToString:@"Dictionary"])
+  else if ([toString2 isEqualToString:@"Dictionary"])
   {
     v10 = 6;
   }
 
-  else if ([v9 isEqualToString:@"Double"])
+  else if ([toString2 isEqualToString:@"Double"])
   {
     v10 = 2;
   }
 
-  else if ([v9 isEqualToString:@"Integer"])
+  else if ([toString2 isEqualToString:@"Integer"])
   {
     v10 = 3;
   }
 
-  else if ([v9 isEqualToString:@"URL"])
+  else if ([toString2 isEqualToString:@"URL"])
   {
     v10 = 5;
   }
@@ -83,7 +83,7 @@
     v10 = 4;
   }
 
-  v11 = [(JSAProfileBagKeyEntry *)self initWithKey:v8 valueType:v10];
+  v11 = [(JSAProfileBagKeyEntry *)self initWithKey:toString valueType:v10];
 
   return v11;
 }

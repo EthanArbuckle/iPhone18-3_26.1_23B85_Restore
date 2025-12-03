@@ -1,12 +1,12 @@
 @interface IAPCarPlayConnectionObserver
-- (IAPCarPlayConnectionObserver)initWithPort:(CIapPortIOKit *)a3;
+- (IAPCarPlayConnectionObserver)initWithPort:(CIapPortIOKit *)port;
 - (void)dealloc;
 - (void)handleCarPlayAllowedDidChange;
 @end
 
 @implementation IAPCarPlayConnectionObserver
 
-- (IAPCarPlayConnectionObserver)initWithPort:(CIapPortIOKit *)a3
+- (IAPCarPlayConnectionObserver)initWithPort:(CIapPortIOKit *)port
 {
   v13.receiver = self;
   v13.super_class = IAPCarPlayConnectionObserver;
@@ -14,15 +14,15 @@
   v5 = v4;
   if (v4)
   {
-    v4->_parentUSBPort = a3;
+    v4->_parentUSBPort = port;
     v6 = sub_1000016A4(@"CRCarPlayPreferences", 4);
     if (v6)
     {
       v7 = objc_alloc_init(v6);
       v5->_carPreferences = v7;
       [(CRCarPlayPreferences *)v7 setPreferencesDelegate:v5];
-      v8 = [(CRCarPlayPreferences *)v5->_carPreferences isCarPlayAllowed];
-      v5->_isStarkPossibleByCarPlaySettings = v8;
+      isCarPlayAllowed = [(CRCarPlayPreferences *)v5->_carPreferences isCarPlayAllowed];
+      v5->_isStarkPossibleByCarPlaySettings = isCarPlayAllowed;
       parentUSBPort = v5->_parentUSBPort;
       if (!parentUSBPort)
       {
@@ -30,7 +30,7 @@
         return v5;
       }
 
-      NSLog(@"_isStarkPossibleByCarPlaySettings = %d, _parentUSBPort = %hhx", v8, parentUSBPort);
+      NSLog(@"_isStarkPossibleByCarPlaySettings = %d, _parentUSBPort = %hhx", isCarPlayAllowed, parentUSBPort);
       v10 = v5->_parentUSBPort;
       isStarkPossibleByCarPlaySettings = v5->_isStarkPossibleByCarPlaySettings;
       goto LABEL_7;
@@ -66,12 +66,12 @@ LABEL_7:
 {
   if (self->_isStarkPossibleByCarPlaySettings != [(CRCarPlayPreferences *)self->_carPreferences isCarPlayAllowed])
   {
-    v3 = [(CRCarPlayPreferences *)self->_carPreferences isCarPlayAllowed];
-    self->_isStarkPossibleByCarPlaySettings = v3;
+    isCarPlayAllowed = [(CRCarPlayPreferences *)self->_carPreferences isCarPlayAllowed];
+    self->_isStarkPossibleByCarPlaySettings = isCarPlayAllowed;
     parentUSBPort = self->_parentUSBPort;
     if (parentUSBPort)
     {
-      NSLog(@"_isStarkPossibleByCarPlaySettings = %d, _parentUSBPort = %hhx", v3, parentUSBPort);
+      NSLog(@"_isStarkPossibleByCarPlaySettings = %d, _parentUSBPort = %hhx", isCarPlayAllowed, parentUSBPort);
       v5 = self->_parentUSBPort;
       isStarkPossibleByCarPlaySettings = self->_isStarkPossibleByCarPlaySettings;
 

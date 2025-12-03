@@ -1,20 +1,20 @@
 @interface ImpressionIntakeServiceXPCBridge
 - (_TtC20AttributionKitDaemon32ImpressionIntakeServiceXPCBridge)init;
-- (void)processReengagementWithAdvertisedItemID:(unint64_t)a3 intakeRequestData:(id)a4 reengagementURL:(id)a5 reply:(id)a6;
-- (void)recordImpressionWithAdvertisedItemID:(unint64_t)a3 intakeRequestData:(id)a4 reply:(id)a5;
+- (void)processReengagementWithAdvertisedItemID:(unint64_t)d intakeRequestData:(id)data reengagementURL:(id)l reply:(id)reply;
+- (void)recordImpressionWithAdvertisedItemID:(unint64_t)d intakeRequestData:(id)data reply:(id)reply;
 @end
 
 @implementation ImpressionIntakeServiceXPCBridge
 
-- (void)recordImpressionWithAdvertisedItemID:(unint64_t)a3 intakeRequestData:(id)a4 reply:(id)a5
+- (void)recordImpressionWithAdvertisedItemID:(unint64_t)d intakeRequestData:(id)data reply:(id)reply
 {
   v9 = sub_10000CDE0(&qword_100239EE0, &qword_1001B3640);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v24 - v11;
-  v13 = _Block_copy(a5);
-  v14 = a4;
-  v15 = self;
+  v13 = _Block_copy(reply);
+  dataCopy = data;
+  selfCopy = self;
   v16 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
 
@@ -24,7 +24,7 @@
   v21 = type metadata accessor for TaskPriority();
   (*(*(v21 - 8) + 56))(v12, 1, 1, v21);
   v22 = swift_allocObject();
-  v22[2] = a3;
+  v22[2] = d;
   v22[3] = v16;
   v22[4] = v18;
   v23 = swift_allocObject();
@@ -32,15 +32,15 @@
   *(v23 + 24) = v22;
   sub_1000438D8(v16, v18);
 
-  sub_10016FE7C("Record Impression", 17, 2, sub_1000849C4, v19, v15 + v20, v12, &unk_1001BA4C0, v23);
+  sub_10016FE7C("Record Impression", 17, 2, sub_1000849C4, v19, selfCopy + v20, v12, &unk_1001BA4C0, v23);
 
   sub_10001BABC(v16, v18);
   sub_10000DAF8(v12, &qword_100239EE0, &qword_1001B3640);
 }
 
-- (void)processReengagementWithAdvertisedItemID:(unint64_t)a3 intakeRequestData:(id)a4 reengagementURL:(id)a5 reply:(id)a6
+- (void)processReengagementWithAdvertisedItemID:(unint64_t)d intakeRequestData:(id)data reengagementURL:(id)l reply:(id)reply
 {
-  v36 = a3;
+  dCopy = d;
   v10 = sub_10000CDE0(&qword_100239EE0, &qword_1001B3640);
   v11 = *(*(v10 - 8) + 64);
   __chkstk_darwin(v10 - 8);
@@ -52,14 +52,14 @@
   v17 = &v33 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v16);
   v19 = &v33 - v18;
-  v20 = _Block_copy(a6);
-  v21 = a4;
-  v22 = self;
-  v23 = a5;
+  v20 = _Block_copy(reply);
+  dataCopy = data;
+  selfCopy = self;
+  lCopy = l;
   v24 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v26 = v25;
 
-  if (v23)
+  if (lCopy)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -80,13 +80,13 @@
   v30 = v13;
   v31 = (*(v35 + 80) + 40) & ~*(v35 + 80);
   v32 = swift_allocObject();
-  v32[2] = v36;
+  v32[2] = dCopy;
   v32[3] = v24;
   v32[4] = v26;
   sub_100054734(v17, v32 + v31);
   _Block_copy(v20);
   sub_1000438D8(v24, v26);
-  sub_1000F2F0C("Process Reengagement", 20, 2, v22 + v34, v30, &unk_1001BA4A0, v32, v22, v20);
+  sub_1000F2F0C("Process Reengagement", 20, 2, selfCopy + v34, v30, &unk_1001BA4A0, v32, selfCopy, v20);
   _Block_release(v20);
 
   _Block_release(v20);

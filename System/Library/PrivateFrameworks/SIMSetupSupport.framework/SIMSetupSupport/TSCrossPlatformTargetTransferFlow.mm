@@ -2,13 +2,13 @@
 - (TSCrossPlatformTargetTransferFlow)init;
 - (id)_firstViewController;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)_showCancelAlert:(id)a3 withMessage:(id)a4;
+- (id)nextViewControllerFrom:(id)from;
+- (void)_showCancelAlert:(id)alert withMessage:(id)message;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
-- (void)handleCrossplatformSessionResponse:(id)a3 completion:(id)a4;
-- (void)setCancelNavigationBarItems:(id)a3;
-- (void)transferEventUpdate:(id)a3;
+- (void)firstViewController:(id)controller;
+- (void)handleCrossplatformSessionResponse:(id)response completion:(id)completion;
+- (void)setCancelNavigationBarItems:(id)items;
+- (void)transferEventUpdate:(id)update;
 @end
 
 @implementation TSCrossPlatformTargetTransferFlow
@@ -56,16 +56,16 @@
   return v3;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   client = self->_client;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__TSCrossPlatformTargetTransferFlow_firstViewController___block_invoke;
   v7[3] = &unk_279B44DE0;
-  v6 = v4;
+  v6 = controllerCopy;
   v8 = v6;
   objc_copyWeak(&v9, &location);
   [(CoreTelephonyClient *)client getCrossPlatformTransportSession:2 completion:v7];
@@ -166,10 +166,10 @@ void __57__TSCrossPlatformTargetTransferFlow_firstViewController___block_invoke_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v16[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -177,7 +177,7 @@ void __57__TSCrossPlatformTargetTransferFlow_firstViewController___block_invoke_
   {
     if (self->_noSIMOrNoEligibleSIMOnSource)
     {
-      v6 = [[TSNoPlanForTransferViewController alloc] initShowNoSIMForCrossPlatformTransfer];
+      initShowNoSIMForCrossPlatformTransfer = [[TSNoPlanForTransferViewController alloc] initShowNoSIMForCrossPlatformTransfer];
     }
 
     else
@@ -189,52 +189,52 @@ void __57__TSCrossPlatformTargetTransferFlow_firstViewController___block_invoke_
       v16[0] = &unk_287583B98;
       v16[1] = MEMORY[0x277CBEC38];
       v15[2] = @"Plans";
-      v9 = [(TSCrossPlatformTargetTransferFlow *)self selectedPlans];
-      v16[2] = v9;
+      selectedPlans = [(TSCrossPlatformTargetTransferFlow *)self selectedPlans];
+      v16[2] = selectedPlans;
       v16[3] = v8;
       v15[3] = @"CrossPlatformTransferKey";
       v15[4] = @"MessageSessionKey";
-      v10 = [(TSCrossPlatformTargetTransferFlow *)self session];
-      v16[4] = v10;
+      session = [(TSCrossPlatformTargetTransferFlow *)self session];
+      v16[4] = session;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:5];
-      v12 = [(TSSIMSetupFlow *)self navigationController];
-      v6 = [(TSSubFlowViewController *)v7 initWithOptions:v11 navigationController:v12 delegate:self];
+      navigationController = [(TSSIMSetupFlow *)self navigationController];
+      initShowNoSIMForCrossPlatformTransfer = [(TSSubFlowViewController *)v7 initWithOptions:v11 navigationController:navigationController delegate:self];
     }
   }
 
   else
   {
-    v6 = 0;
+    initShowNoSIMForCrossPlatformTransfer = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return initShowNoSIMForCrossPlatformTransfer;
 }
 
-- (void)handleCrossplatformSessionResponse:(id)a3 completion:(id)a4
+- (void)handleCrossplatformSessionResponse:(id)response completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  responseCopy = response;
+  completionCopy = completion;
+  if ([responseCopy count])
   {
-    v8 = [v6 firstObject];
-    v9 = [v8 remoteDisplayPlans];
-    if ([v9 count])
+    firstObject = [responseCopy firstObject];
+    remoteDisplayPlans = [firstObject remoteDisplayPlans];
+    if ([remoteDisplayPlans count])
     {
-      objc_storeStrong(&self->_selectedPlans, v9);
-      v10 = [(TSSIMSetupFlow *)self topViewController];
-      [(TSSIMSetupFlow *)self viewControllerDidComplete:v10];
+      objc_storeStrong(&self->_selectedPlans, remoteDisplayPlans);
+      topViewController = [(TSSIMSetupFlow *)self topViewController];
+      [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController];
 
       v11 = objc_opt_new();
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v23 = v8;
-      v12 = [v8 remoteDisplayPlans];
-      v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v23 = firstObject;
+      remoteDisplayPlans2 = [firstObject remoteDisplayPlans];
+      v13 = [remoteDisplayPlans2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v13)
       {
         v14 = v13;
@@ -246,17 +246,17 @@ void __57__TSCrossPlatformTargetTransferFlow_firstViewController___block_invoke_
           {
             if (*v27 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(remoteDisplayPlans2);
             }
 
-            v17 = [*(*(&v26 + 1) + 8 * v16) plan];
-            [v11 addObject:v17];
+            plan = [*(*(&v26 + 1) + 8 * v16) plan];
+            [v11 addObject:plan];
 
             ++v16;
           }
 
           while (v14 != v16);
-          v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v14 = [remoteDisplayPlans2 countByEnumeratingWithState:&v26 objects:v30 count:16];
         }
 
         while (v14);
@@ -268,10 +268,10 @@ void __57__TSCrossPlatformTargetTransferFlow_firstViewController___block_invoke_
       v24[1] = 3221225472;
       v24[2] = __83__TSCrossPlatformTargetTransferFlow_handleCrossplatformSessionResponse_completion___block_invoke;
       v24[3] = &unk_279B44DB8;
-      v25 = v7;
+      v25 = completionCopy;
       [(CoreTelephonyClient *)client installMultiplePlans:v18 completionHandler:v24];
 
-      v8 = v23;
+      firstObject = v23;
     }
 
     else
@@ -284,7 +284,7 @@ void __57__TSCrossPlatformTargetTransferFlow_firstViewController___block_invoke_
         _os_log_impl(&dword_262AA8000, v21, OS_LOG_TYPE_DEFAULT, "No remote plans in selection @%s", buf, 0xCu);
       }
 
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -298,7 +298,7 @@ void __57__TSCrossPlatformTargetTransferFlow_firstViewController___block_invoke_
       _os_log_impl(&dword_262AA8000, v20, OS_LOG_TYPE_DEFAULT, "No SIM selected @%s", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -340,9 +340,9 @@ uint64_t __83__TSCrossPlatformTargetTransferFlow_handleCrossplatformSessionRespo
   }
 }
 
-- (void)_showCancelAlert:(id)a3 withMessage:(id)a4
+- (void)_showCancelAlert:(id)alert withMessage:(id)message
 {
-  v5 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v5 = [MEMORY[0x277D75110] alertControllerWithTitle:alert message:message preferredStyle:1];
   v6 = MEMORY[0x277D750F8];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"OK" value:&stru_28753DF48 table:@"Localizable"];
@@ -376,43 +376,43 @@ void __66__TSCrossPlatformTargetTransferFlow__showCancelAlert_withMessage___bloc
   [v2 presentViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)setCancelNavigationBarItems:(id)a3
+- (void)setCancelNavigationBarItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[TSUtilities isPad];
-  v6 = [v4 navigationItem];
-  v7 = v6;
+  navigationItem = [itemsCopy navigationItem];
+  v7 = navigationItem;
   cancelButton = self->_cancelButton;
   if (v5)
   {
-    [v6 setRightBarButtonItem:cancelButton];
+    [navigationItem setRightBarButtonItem:cancelButton];
   }
 
   else
   {
-    [v6 setLeftBarButtonItem:cancelButton];
+    [navigationItem setLeftBarButtonItem:cancelButton];
   }
 
-  v9 = [v4 navigationItem];
+  navigationItem2 = [itemsCopy navigationItem];
 
-  [v9 setHidesBackButton:1 animated:0];
+  [navigationItem2 setHidesBackButton:1 animated:0];
 }
 
-- (void)transferEventUpdate:(id)a3
+- (void)transferEventUpdate:(id)update
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412546;
-    v19 = v4;
+    v19 = updateCopy;
     v20 = 2080;
     v21 = "[TSCrossPlatformTargetTransferFlow transferEventUpdate:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "transfer event : %@ @%s", &v18, 0x16u);
   }
 
-  v6 = [v4 objectForKey:@"kCrossTransferEndpoint"];
+  v6 = [updateCopy objectForKey:@"kCrossTransferEndpoint"];
   if (v6)
   {
     objc_opt_class();
@@ -420,20 +420,20 @@ void __66__TSCrossPlatformTargetTransferFlow__showCancelAlert_withMessage___bloc
     {
       if ([v6 isEqualToString:@"kTarget"])
       {
-        v7 = [v4 objectForKey:@"kCrossTransferConnectFailReason"];
+        v7 = [updateCopy objectForKey:@"kCrossTransferConnectFailReason"];
 
         if (v7)
         {
           v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v9 = [v8 localizedStringForKey:@"CROSSTRANSFER_CONN_FAIL_GENERAL" value:&stru_28753DF48 table:@"Localizable"];
+          topViewController = [v8 localizedStringForKey:@"CROSSTRANSFER_CONN_FAIL_GENERAL" value:&stru_28753DF48 table:@"Localizable"];
           v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v11 = [v10 localizedStringForKey:@"CROSSTRANSFER_CONN_FAIL_GENERAL_MSG" value:&stru_28753DF48 table:@"Localizable"];
-          [(TSCrossPlatformTargetTransferFlow *)self _showCancelAlert:v9 withMessage:v11];
+          [(TSCrossPlatformTargetTransferFlow *)self _showCancelAlert:topViewController withMessage:v11];
         }
 
         else
         {
-          v8 = [v4 objectForKey:@"kCrossTransferSessionError"];
+          v8 = [updateCopy objectForKey:@"kCrossTransferSessionError"];
           if (!v8)
           {
             goto LABEL_10;
@@ -445,42 +445,42 @@ void __66__TSCrossPlatformTargetTransferFlow__showCancelAlert_withMessage___bloc
             goto LABEL_10;
           }
 
-          v13 = [v8 integerValue];
-          switch(v13)
+          integerValue = [v8 integerValue];
+          switch(integerValue)
           {
             case 1:
-              v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-              v10 = [v9 localizedStringForKey:@"CROSSTRANSFER_USERCANCEL_TITLE" value:&stru_28753DF48 table:@"Localizable"];
+              topViewController = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+              v10 = [topViewController localizedStringForKey:@"CROSSTRANSFER_USERCANCEL_TITLE" value:&stru_28753DF48 table:@"Localizable"];
               v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v15 = v14;
               v16 = @"CROSSTRANSFER_USERCANCEL_DETAIL";
               break;
             case 10:
-              v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-              v10 = [v9 localizedStringForKey:@"CROSSTRANSFER_SESSION_ERROR_CARRIER_LOCK" value:&stru_28753DF48 table:@"Localizable"];
+              topViewController = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+              v10 = [topViewController localizedStringForKey:@"CROSSTRANSFER_SESSION_ERROR_CARRIER_LOCK" value:&stru_28753DF48 table:@"Localizable"];
               v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v15 = v14;
               v16 = @"CROSSTRANSFER_SESSION_ERROR_CARRIER_LOCK_MSG";
               break;
             case 13:
-              v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-              v10 = [v9 localizedStringForKey:@"CROSSTRANSFER_SESSION_ERROR_CARRIER_NOT_SUPPORT" value:&stru_28753DF48 table:@"Localizable"];
+              topViewController = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+              v10 = [topViewController localizedStringForKey:@"CROSSTRANSFER_SESSION_ERROR_CARRIER_NOT_SUPPORT" value:&stru_28753DF48 table:@"Localizable"];
               v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v15 = v14;
               v16 = @"CROSSTRANSFER_SESSION_ERROR_CARRIER_NOT_SUPPORT_MSG";
               break;
             default:
-              if ((v13 & 0xFFFFFFFFFFFFFFFELL) == 2)
+              if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
               {
                 self->_noSIMOrNoEligibleSIMOnSource = 1;
-                v9 = [(TSSIMSetupFlow *)self topViewController];
-                [(TSSIMSetupFlow *)self viewControllerDidComplete:v9];
+                topViewController = [(TSSIMSetupFlow *)self topViewController];
+                [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController];
               }
 
               else
               {
-                v9 = [(TSSIMSetupFlow *)self delegate];
-                [v9 simSetupFlowCompleted:3];
+                topViewController = [(TSSIMSetupFlow *)self delegate];
+                [topViewController simSetupFlowCompleted:3];
               }
 
               goto LABEL_9;
@@ -502,7 +502,7 @@ LABEL_10:
 - (void)firstViewController
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]unimpletemented firstViewController @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]unimpletemented firstViewController @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

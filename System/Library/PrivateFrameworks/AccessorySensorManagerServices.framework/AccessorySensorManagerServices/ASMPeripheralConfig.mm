@@ -1,11 +1,11 @@
 @interface ASMPeripheralConfig
-- (ASMPeripheralConfig)initWithCoder:(id)a3;
+- (ASMPeripheralConfig)initWithCoder:(id)coder;
 - (id)description;
 @end
 
 @implementation ASMPeripheralConfig
 
-- (ASMPeripheralConfig)initWithCoder:(id)a3
+- (ASMPeripheralConfig)initWithCoder:(id)coder
 {
   v3 = [(ASMPeripheralConfig *)self init];
   v4 = v3;

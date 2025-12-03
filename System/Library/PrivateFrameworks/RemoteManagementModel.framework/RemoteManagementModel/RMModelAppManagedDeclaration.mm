@@ -1,12 +1,12 @@
 @interface RMModelAppManagedDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 appStoreID:(id)a4 bundleID:(id)a5 manifestURL:(id)a6 appComposedIdentifier:(id)a7 iosApp:(id)a8 installBehavior:(id)a9 updateBehavior:(id)a10 includeInBackup:(id)a11 attributes:(id)a12 appConfig:(id)a13 extensionConfigs:(id)a14 legacyAppConfigAssetReference:(id)a15;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier appStoreID:(id)d bundleID:(id)iD manifestURL:(id)l appComposedIdentifier:(id)composedIdentifier iosApp:(id)app installBehavior:(id)behavior updateBehavior:(id)self0 includeInBackup:(id)self1 attributes:(id)self2 appConfig:(id)self3 extensionConfigs:(id)self4 legacyAppConfigAssetReference:(id)self5;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAppManagedDeclaration
@@ -74,54 +74,54 @@ void __47__RMModelAppManagedDeclaration_assetReferences__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 appStoreID:(id)a4 bundleID:(id)a5 manifestURL:(id)a6 appComposedIdentifier:(id)a7 iosApp:(id)a8 installBehavior:(id)a9 updateBehavior:(id)a10 includeInBackup:(id)a11 attributes:(id)a12 appConfig:(id)a13 extensionConfigs:(id)a14 legacyAppConfigAssetReference:(id)a15
++ (id)buildWithIdentifier:(id)identifier appStoreID:(id)d bundleID:(id)iD manifestURL:(id)l appComposedIdentifier:(id)composedIdentifier iosApp:(id)app installBehavior:(id)behavior updateBehavior:(id)self0 includeInBackup:(id)self1 attributes:(id)self2 appConfig:(id)self3 extensionConfigs:(id)self4 legacyAppConfigAssetReference:(id)self5
 {
-  v42 = a3;
-  v41 = a15;
-  v40 = a14;
-  v39 = a13;
-  v38 = a12;
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = v42;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  configsCopy = configs;
+  configCopy = config;
+  attributesCopy = attributes;
+  backupCopy = backup;
+  updateBehaviorCopy = updateBehavior;
+  behaviorCopy = behavior;
+  appCopy = app;
+  composedIdentifierCopy = composedIdentifier;
+  lCopy = l;
+  iDCopy = iD;
+  dCopy = d;
+  v25 = identifierCopy;
   v26 = objc_opt_new();
   [v26 setDeclarationType:@"com.apple.configuration.app.managed"];
-  if (v42)
+  if (identifierCopy)
   {
-    [v26 setDeclarationIdentifier:v42];
+    [v26 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v27 = [MEMORY[0x277CCAD78] UUID];
-    [v27 UUIDString];
-    v37 = v17;
-    v28 = v19;
-    v30 = v29 = v18;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [uUID UUIDString];
+    v37 = backupCopy;
+    v28 = behaviorCopy;
+    v30 = v29 = updateBehaviorCopy;
     [v26 setDeclarationIdentifier:v30];
 
-    v18 = v29;
-    v19 = v28;
-    v17 = v37;
+    updateBehaviorCopy = v29;
+    behaviorCopy = v28;
+    backupCopy = v37;
 
     v25 = 0;
   }
 
-  [v26 setPayloadAppStoreID:{v24, a6}];
+  [v26 setPayloadAppStoreID:{dCopy, l}];
 
-  [v26 setPayloadBundleID:v23];
-  [v26 setPayloadManifestURL:v22];
+  [v26 setPayloadBundleID:iDCopy];
+  [v26 setPayloadManifestURL:lCopy];
 
-  [v26 setPayloadAppComposedIdentifier:v21];
-  if (v20)
+  [v26 setPayloadAppComposedIdentifier:composedIdentifierCopy];
+  if (appCopy)
   {
-    v31 = v20;
+    v31 = appCopy;
   }
 
   else
@@ -131,12 +131,12 @@ void __47__RMModelAppManagedDeclaration_assetReferences__block_invoke()
 
   [v26 setPayloadIOSApp:v31];
 
-  [v26 setPayloadInstallBehavior:v19];
-  [v26 setPayloadUpdateBehavior:v18];
+  [v26 setPayloadInstallBehavior:behaviorCopy];
+  [v26 setPayloadUpdateBehavior:updateBehaviorCopy];
 
-  if (v17)
+  if (backupCopy)
   {
-    v32 = v17;
+    v32 = backupCopy;
   }
 
   else
@@ -146,32 +146,32 @@ void __47__RMModelAppManagedDeclaration_assetReferences__block_invoke()
 
   [v26 setPayloadIncludeInBackup:v32];
 
-  [v26 setPayloadAttributes:v38];
-  [v26 setPayloadAppConfig:v39];
+  [v26 setPayloadAttributes:attributesCopy];
+  [v26 setPayloadAppConfig:configCopy];
 
-  [v26 setPayloadExtensionConfigs:v40];
-  [v26 setPayloadLegacyAppConfigAssetReference:v41];
+  [v26 setPayloadExtensionConfigs:configsCopy];
+  [v26 setPayloadLegacyAppConfigAssetReference:referenceCopy];
 
   [v26 updateServerToken];
 
   return v26;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setDeclarationType:@"com.apple.configuration.app.managed"];
-  if (v3)
+  if (identifierCopy)
   {
-    [v4 setDeclarationIdentifier:v3];
+    [v4 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setDeclarationIdentifier:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setDeclarationIdentifier:uUIDString];
   }
 
   [v4 updateServerToken];
@@ -217,12 +217,12 @@ void __47__RMModelAppManagedDeclaration_assetReferences__block_invoke()
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelAppManagedDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -230,84 +230,84 @@ void __47__RMModelAppManagedDeclaration_assetReferences__block_invoke()
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  v14 = [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"AppStoreID" forKeyPath:@"payloadAppStoreID" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"BundleID" forKeyPath:@"payloadBundleID" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"ManifestURL" forKeyPath:@"payloadManifestURL" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"AppComposedIdentifier" forKeyPath:@"payloadAppComposedIdentifier" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"iOSApp" forKeyPath:@"payloadIOSApp" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"InstallBehavior" forKeyPath:@"payloadInstallBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5]) && (LOWORD(v17) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"UpdateBehavior" forKeyPath:@"payloadUpdateBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:a5]) && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"IncludeInBackup" forKeyPath:@"payloadIncludeInBackup" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]&& (LOWORD(v18) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"Attributes" forKeyPath:@"payloadAttributes" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:a5]) && (LOWORD(v19) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"AppConfig" forKeyPath:@"payloadAppConfig" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v19 error:a5]) && (LOWORD(v20) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"ExtensionConfigs" forKeyPath:@"payloadExtensionConfigs" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v20 error:a5]) && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"LegacyAppConfigAssetReference" forKeyPath:@"payloadLegacyAppConfigAssetReference" isRequired:0 defaultValue:0 error:a5];
+  v14 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AppStoreID" forKeyPath:@"payloadAppStoreID" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"BundleID" forKeyPath:@"payloadBundleID" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ManifestURL" forKeyPath:@"payloadManifestURL" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AppComposedIdentifier" forKeyPath:@"payloadAppComposedIdentifier" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"iOSApp" forKeyPath:@"payloadIOSApp" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"InstallBehavior" forKeyPath:@"payloadInstallBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error]) && (LOWORD(v17) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"UpdateBehavior" forKeyPath:@"payloadUpdateBehavior" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:error]) && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"IncludeInBackup" forKeyPath:@"payloadIncludeInBackup" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]&& (LOWORD(v18) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Attributes" forKeyPath:@"payloadAttributes" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:error]) && (LOWORD(v19) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"AppConfig" forKeyPath:@"payloadAppConfig" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v19 error:error]) && (LOWORD(v20) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"ExtensionConfigs" forKeyPath:@"payloadExtensionConfigs" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v20 error:error]) && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"LegacyAppConfigAssetReference" forKeyPath:@"payloadLegacyAppConfigAssetReference" isRequired:0 defaultValue:0 error:error];
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelAppManagedDeclaration *)self payloadAppStoreID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AppStoreID" value:v6 isRequired:0 defaultValue:0];
+  payloadAppStoreID = [(RMModelAppManagedDeclaration *)self payloadAppStoreID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AppStoreID" value:payloadAppStoreID isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAppManagedDeclaration *)self payloadBundleID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"BundleID" value:v7 isRequired:0 defaultValue:0];
+  payloadBundleID = [(RMModelAppManagedDeclaration *)self payloadBundleID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"BundleID" value:payloadBundleID isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelAppManagedDeclaration *)self payloadManifestURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ManifestURL" value:v8 isRequired:0 defaultValue:0];
+  payloadManifestURL = [(RMModelAppManagedDeclaration *)self payloadManifestURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ManifestURL" value:payloadManifestURL isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelAppManagedDeclaration *)self payloadAppComposedIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AppComposedIdentifier" value:v9 isRequired:0 defaultValue:0];
+  payloadAppComposedIdentifier = [(RMModelAppManagedDeclaration *)self payloadAppComposedIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AppComposedIdentifier" value:payloadAppComposedIdentifier isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelAppManagedDeclaration *)self payloadIOSApp];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"iOSApp" value:v10 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  payloadIOSApp = [(RMModelAppManagedDeclaration *)self payloadIOSApp];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"iOSApp" value:payloadIOSApp isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v11 = [(RMModelAppManagedDeclaration *)self payloadInstallBehavior];
+  payloadInstallBehavior = [(RMModelAppManagedDeclaration *)self payloadInstallBehavior];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __57__RMModelAppManagedDeclaration_serializePayloadWithType___block_invoke;
   v28[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v29 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"InstallBehavior" value:v11 dictSerializer:v28 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"InstallBehavior" value:payloadInstallBehavior dictSerializer:v28 isRequired:0 defaultValue:0];
 
-  v12 = [(RMModelAppManagedDeclaration *)self payloadUpdateBehavior];
+  payloadUpdateBehavior = [(RMModelAppManagedDeclaration *)self payloadUpdateBehavior];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __57__RMModelAppManagedDeclaration_serializePayloadWithType___block_invoke_2;
   v26[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v27 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"UpdateBehavior" value:v12 dictSerializer:v26 isRequired:0 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"UpdateBehavior" value:payloadUpdateBehavior dictSerializer:v26 isRequired:0 defaultValue:0];
 
-  v13 = [(RMModelAppManagedDeclaration *)self payloadIncludeInBackup];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"IncludeInBackup" value:v13 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  payloadIncludeInBackup = [(RMModelAppManagedDeclaration *)self payloadIncludeInBackup];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"IncludeInBackup" value:payloadIncludeInBackup isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
-  v14 = [(RMModelAppManagedDeclaration *)self payloadAttributes];
+  payloadAttributes = [(RMModelAppManagedDeclaration *)self payloadAttributes];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __57__RMModelAppManagedDeclaration_serializePayloadWithType___block_invoke_3;
   v24[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v25 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Attributes" value:v14 dictSerializer:v24 isRequired:0 defaultValue:0];
+  typeCopy3 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Attributes" value:payloadAttributes dictSerializer:v24 isRequired:0 defaultValue:0];
 
-  v15 = [(RMModelAppManagedDeclaration *)self payloadAppConfig];
+  payloadAppConfig = [(RMModelAppManagedDeclaration *)self payloadAppConfig];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __57__RMModelAppManagedDeclaration_serializePayloadWithType___block_invoke_4;
   v22[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v23 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"AppConfig" value:v15 dictSerializer:v22 isRequired:0 defaultValue:0];
+  typeCopy4 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"AppConfig" value:payloadAppConfig dictSerializer:v22 isRequired:0 defaultValue:0];
 
-  v16 = [(RMModelAppManagedDeclaration *)self payloadExtensionConfigs];
+  payloadExtensionConfigs = [(RMModelAppManagedDeclaration *)self payloadExtensionConfigs];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __57__RMModelAppManagedDeclaration_serializePayloadWithType___block_invoke_5;
   v20[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v21 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"ExtensionConfigs" value:v16 dictSerializer:v20 isRequired:0 defaultValue:0];
+  typeCopy5 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"ExtensionConfigs" value:payloadExtensionConfigs dictSerializer:v20 isRequired:0 defaultValue:0];
 
-  v17 = [(RMModelAppManagedDeclaration *)self payloadLegacyAppConfigAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"LegacyAppConfigAssetReference" value:v17 isRequired:0 defaultValue:0];
+  payloadLegacyAppConfigAssetReference = [(RMModelAppManagedDeclaration *)self payloadLegacyAppConfigAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"LegacyAppConfigAssetReference" value:payloadLegacyAppConfigAssetReference isRequired:0 defaultValue:0];
 
   v18 = [v5 copy];
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30.receiver = self;
   v30.super_class = RMModelAppManagedDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v30 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v30 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadAppStoreID copy];
   v6 = v4[6];
   v4[6] = v5;

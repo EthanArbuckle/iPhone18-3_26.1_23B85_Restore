@@ -1,54 +1,54 @@
 @interface TSTConcurrentCellList
-+ (id)cellListWithContext:(id)a3 cellUIDRange:(TSKUIDStructTract *)a4 repeatCellVectorPattern:(const void *)a5 patternDirection:(int64_t)a6;
++ (id)cellListWithContext:(id)context cellUIDRange:(TSKUIDStructTract *)range repeatCellVectorPattern:(const void *)pattern patternDirection:(int64_t)direction;
 - (TSKUIDStructTract)cellUIDRange;
-- (TSTConcurrentCellList)initWithContext:(id)a3 cellUIDRange:(TSKUIDStructTract *)a4;
-- (TSTConcurrentCellList)initWithContext:(id)a3 viewCellRect:(TSUViewCellRect)a4;
-- (TSTConcurrentCellList)initWithContext:(id)a3 viewCellRect:(TSUViewCellRect)a4 cellUIDRange:(TSKUIDStructTract *)a5;
+- (TSTConcurrentCellList)initWithContext:(id)context cellUIDRange:(TSKUIDStructTract *)range;
+- (TSTConcurrentCellList)initWithContext:(id)context viewCellRect:(TSUViewCellRect)rect;
+- (TSTConcurrentCellList)initWithContext:(id)context viewCellRect:(TSUViewCellRect)rect cellUIDRange:(TSKUIDStructTract *)range;
 - (TSUViewCellRect)viewCellRect;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)getCellAtIndex:(unint64_t)a3;
-- (id)getCellAtViewCellCoord:(TSUViewCellCoord)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)getCellAtIndex:(unint64_t)index;
+- (id)getCellAtViewCellCoord:(TSUViewCellCoord)coord;
 - (id)p_baseColumnIndexes;
 - (id)p_baseRowIndexes;
 - (unsigned)rowCount;
-- (void)addCell:(id)a3 atIndex:(unint64_t)a4;
-- (void)addCell:(id)a3 atViewCellCoord:(TSUViewCellCoord)a4;
-- (void)enumerateSeriallyByIndexUsingBlock:(id)a3;
-- (void)enumerateSeriallyByViewCellCoordUsingBlock:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_accumulateBordersConcurrentlyUsingBlock:(id)a3 accumulateCellsConcurrentlyUsingBlock:(id)a4;
+- (void)addCell:(id)cell atIndex:(unint64_t)index;
+- (void)addCell:(id)cell atViewCellCoord:(TSUViewCellCoord)coord;
+- (void)enumerateSeriallyByIndexUsingBlock:(id)block;
+- (void)enumerateSeriallyByViewCellCoordUsingBlock:(id)block;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_accumulateBordersConcurrentlyUsingBlock:(id)block accumulateCellsConcurrentlyUsingBlock:(id)usingBlock;
 - (void)p_clearDataListIDs;
 - (void)p_convertToInverseCellMap;
-- (void)p_convertToUuidBasedCellListUsingTableInfo:(id)a3 pruneCategorizedCells:(BOOL)a4;
-- (void)p_enumerateCellsAddedAndRemovedForFormatsUsingBlock:(id)a3;
-- (void)p_enumerateCellsAddedAndRemovedOfType:(unint64_t)a3 usingBlock:(id)a4;
-- (void)p_enumerateCellsAddedOfType:(unint64_t)a3 usingBlock:(id)a4;
-- (void)p_enumerateColumnCellCountDiffUsingBlock:(id)a3;
-- (void)p_enumerateCustomFormatsBeingAddedUsingReplacementBlock:(id)a3;
-- (void)p_enumerateNewAndOldCellsSeriallyUsingBlock:(id)a3;
-- (void)p_enumerateRowCellCountDiffUsingBlock:(id)a3;
-- (void)p_enumerateRowsOfCellsConcurrentlyUsingBlock:(id)a3;
-- (void)p_gatherRowState:(id)a3;
-- (void)p_invokeBlock:(id)a3;
-- (void)p_pruneCellsAtColumn:(unint64_t)a3 rowsSize:(unint64_t)a4 columnsSize:(unint64_t)a5;
-- (void)p_pruneToBaseWithBaseMap:(id)a3 viewMap:(id)a4;
-- (void)p_setObjectLocale:(id)a3;
-- (void)p_setupInterestingCells:(void *)a3 interestingCellIndexes:(id)a4 forAdding:(BOOL)a5;
-- (void)p_simpleInvokeBlock:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setCellUIDRange:(TSKUIDStructTract *)a3;
+- (void)p_convertToUuidBasedCellListUsingTableInfo:(id)info pruneCategorizedCells:(BOOL)cells;
+- (void)p_enumerateCellsAddedAndRemovedForFormatsUsingBlock:(id)block;
+- (void)p_enumerateCellsAddedAndRemovedOfType:(unint64_t)type usingBlock:(id)block;
+- (void)p_enumerateCellsAddedOfType:(unint64_t)type usingBlock:(id)block;
+- (void)p_enumerateColumnCellCountDiffUsingBlock:(id)block;
+- (void)p_enumerateCustomFormatsBeingAddedUsingReplacementBlock:(id)block;
+- (void)p_enumerateNewAndOldCellsSeriallyUsingBlock:(id)block;
+- (void)p_enumerateRowCellCountDiffUsingBlock:(id)block;
+- (void)p_enumerateRowsOfCellsConcurrentlyUsingBlock:(id)block;
+- (void)p_gatherRowState:(id)state;
+- (void)p_invokeBlock:(id)block;
+- (void)p_pruneCellsAtColumn:(unint64_t)column rowsSize:(unint64_t)size columnsSize:(unint64_t)columnsSize;
+- (void)p_pruneToBaseWithBaseMap:(id)map viewMap:(id)viewMap;
+- (void)p_setObjectLocale:(id)locale;
+- (void)p_setupInterestingCells:(void *)cells interestingCellIndexes:(id)indexes forAdding:(BOOL)adding;
+- (void)p_simpleInvokeBlock:(id)block;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCellUIDRange:(TSKUIDStructTract *)range;
 @end
 
 @implementation TSTConcurrentCellList
 
-- (TSTConcurrentCellList)initWithContext:(id)a3 viewCellRect:(TSUViewCellRect)a4 cellUIDRange:(TSKUIDStructTract *)a5
+- (TSTConcurrentCellList)initWithContext:(id)context viewCellRect:(TSUViewCellRect)rect cellUIDRange:(TSKUIDStructTract *)range
 {
-  rect = a4._rect;
-  v7 = a3;
+  rect = rect._rect;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = TSTConcurrentCellList;
-  v8 = [(TSTConcurrentCellList *)&v15 initWithContext:v7];
+  v8 = [(TSTConcurrentCellList *)&v15 initWithContext:contextCopy];
   if (v8)
   {
     if (TSUCellRect::isValid(&rect))
@@ -90,13 +90,13 @@
     {
       v8->_uidBased = 1;
       v8->_viewCellRect = xmmword_2217E0544;
-      if (&v8->_cellUIDRange != a5)
+      if (&v8->_cellUIDRange != range)
       {
-        sub_2210BD068(&v8->_cellUIDRange._colIdList.__begin_, a5->_colIdList.__begin_, a5->_colIdList.__end_, a5->_colIdList.__end_ - a5->_colIdList.__begin_);
-        sub_2210BD068(&v8->_cellUIDRange._rowIdList.__begin_, a5->_rowIdList.__begin_, a5->_rowIdList.__end_, a5->_rowIdList.__end_ - a5->_rowIdList.__begin_);
+        sub_2210BD068(&v8->_cellUIDRange._colIdList.__begin_, range->_colIdList.__begin_, range->_colIdList.__end_, range->_colIdList.__end_ - range->_colIdList.__begin_);
+        sub_2210BD068(&v8->_cellUIDRange._rowIdList.__begin_, range->_rowIdList.__begin_, range->_rowIdList.__end_, range->_rowIdList.__end_ - range->_rowIdList.__begin_);
       }
 
-      v13 = (a5->_rowIdList.__end_ - a5->_rowIdList.__begin_) * (a5->_colIdList.__end_ - a5->_colIdList.__begin_);
+      v13 = (range->_rowIdList.__end_ - range->_rowIdList.__begin_) * (range->_colIdList.__end_ - range->_colIdList.__begin_);
     }
 
     sub_2211389A0(&v8->_cells.__begin_, v13);
@@ -105,12 +105,12 @@
   return v8;
 }
 
-- (TSTConcurrentCellList)initWithContext:(id)a3 viewCellRect:(TSUViewCellRect)a4
+- (TSTConcurrentCellList)initWithContext:(id)context viewCellRect:(TSUViewCellRect)rect
 {
   *__p = 0u;
   v8 = 0u;
   *v6 = 0u;
-  v4 = objc_msgSend_initWithContext_viewCellRect_cellUIDRange_(self, a2, a3, *&a4._rect.origin, *&a4._rect.size, v6);
+  v4 = objc_msgSend_initWithContext_viewCellRect_cellUIDRange_(self, a2, context, *&rect._rect.origin, *&rect._rect.size, v6);
   if (__p[1])
   {
     *&v8 = __p[1];
@@ -126,18 +126,18 @@
   return v4;
 }
 
-- (TSTConcurrentCellList)initWithContext:(id)a3 cellUIDRange:(TSKUIDStructTract *)a4
+- (TSTConcurrentCellList)initWithContext:(id)context cellUIDRange:(TSKUIDStructTract *)range
 {
-  v6 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = 0;
   v10 = 0;
-  sub_221086EBC(&v10, a4->_colIdList.__begin_, a4->_colIdList.__end_, a4->_colIdList.__end_ - a4->_colIdList.__begin_);
+  sub_221086EBC(&v10, range->_colIdList.__begin_, range->_colIdList.__end_, range->_colIdList.__end_ - range->_colIdList.__begin_);
   __p = 0;
   v14 = 0;
   v15 = 0;
-  sub_221086EBC(&__p, a4->_rowIdList.__begin_, a4->_rowIdList.__end_, a4->_rowIdList.__end_ - a4->_rowIdList.__begin_);
-  v8 = objc_msgSend_initWithContext_viewCellRect_cellUIDRange_(self, v7, v6, 0x7FFF7FFFFFFFLL, 0, &v10);
+  sub_221086EBC(&__p, range->_rowIdList.__begin_, range->_rowIdList.__end_, range->_rowIdList.__end_ - range->_rowIdList.__begin_);
+  v8 = objc_msgSend_initWithContext_viewCellRect_cellUIDRange_(self, v7, contextCopy, 0x7FFF7FFFFFFFLL, 0, &v10);
   if (__p)
   {
     v14 = __p;
@@ -153,19 +153,19 @@
   return v8;
 }
 
-+ (id)cellListWithContext:(id)a3 cellUIDRange:(TSKUIDStructTract *)a4 repeatCellVectorPattern:(const void *)a5 patternDirection:(int64_t)a6
++ (id)cellListWithContext:(id)context cellUIDRange:(TSKUIDStructTract *)range repeatCellVectorPattern:(const void *)pattern patternDirection:(int64_t)direction
 {
-  v83 = a3;
+  contextCopy = context;
   v9 = [TSTConcurrentCellList alloc];
   v90 = 0;
   v91 = 0;
   v92 = 0;
-  sub_221086EBC(&v90, a4->_colIdList.__begin_, a4->_colIdList.__end_, a4->_colIdList.__end_ - a4->_colIdList.__begin_);
+  sub_221086EBC(&v90, range->_colIdList.__begin_, range->_colIdList.__end_, range->_colIdList.__end_ - range->_colIdList.__begin_);
   __p = 0;
   v94 = 0;
   v95 = 0;
-  sub_221086EBC(&__p, a4->_rowIdList.__begin_, a4->_rowIdList.__end_, a4->_rowIdList.__end_ - a4->_rowIdList.__begin_);
-  v15 = objc_msgSend_initWithContext_viewCellRect_cellUIDRange_(v9, v10, v83, 0x7FFF7FFFFFFFLL, 0, &v90);
+  sub_221086EBC(&__p, range->_rowIdList.__begin_, range->_rowIdList.__end_, range->_rowIdList.__end_ - range->_rowIdList.__begin_);
+  v15 = objc_msgSend_initWithContext_viewCellRect_cellUIDRange_(v9, v10, contextCopy, 0x7FFF7FFFFFFFLL, 0, &v90);
   if (__p)
   {
     v94 = __p;
@@ -178,10 +178,10 @@
     operator delete(v90);
   }
 
-  v16 = *a5;
-  v17 = *(a5 + 1);
-  v18 = (v17 - *a5) >> 3;
-  if (a6)
+  v16 = *pattern;
+  v17 = *(pattern + 1);
+  v18 = (v17 - *pattern) >> 3;
+  if (direction)
   {
     if (v18 != (v15[14] - v15[13]) >> 4)
     {
@@ -191,8 +191,8 @@
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v25, v20, v24, 995, 0, "expected a pattern for a column of cells");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
-      v16 = *a5;
-      v17 = *(a5 + 1);
+      v16 = *pattern;
+      v17 = *(pattern + 1);
     }
 
     if (v17 != v16)
@@ -224,7 +224,7 @@
         {
           do
           {
-            if ((objc_msgSend_hasCellSpec(v40, v36, v37, v38, v39, v83) & 1) != 0 || objc_msgSend_hasConditionalStyle(v40, v43, v44, v45, v46))
+            if ((objc_msgSend_hasCellSpec(v40, v36, v37, v38, v39, contextCopy) & 1) != 0 || objc_msgSend_hasConditionalStyle(v40, v43, v44, v45, v46))
             {
               v47 = objc_msgSend_copy(v40, v43, v44, v45, v46);
               v48 = v15[18];
@@ -248,11 +248,11 @@
         }
 
         ++v31;
-        v16 = *a5;
+        v16 = *pattern;
         v30 += v35;
       }
 
-      while (v31 < (*(a5 + 1) - *a5) >> 3);
+      while (v31 < (*(pattern + 1) - *pattern) >> 3);
     }
   }
 
@@ -271,7 +271,7 @@
     v64 = 0;
     for (i = 0; ; ++i)
     {
-      objc_msgSend_cellUIDRange(v15, v11, v12, v13, v14, v83);
+      objc_msgSend_cellUIDRange(v15, v11, v12, v13, v14, contextCopy);
       v66 = v89;
       if (v88)
       {
@@ -289,8 +289,8 @@
         break;
       }
 
-      v67 = *a5;
-      if (*(a5 + 1) != *a5)
+      v67 = *pattern;
+      if (*(pattern + 1) != *pattern)
       {
         v68 = 0;
         do
@@ -299,24 +299,24 @@
           if ((objc_msgSend_hasCellSpec(v69, v70, v71, v72, v73) & 1) != 0 || objc_msgSend_hasConditionalStyle(v69, v74, v75, v76, v77))
           {
             v78 = objc_msgSend_copy(v69, v74, v75, v76, v77);
-            v79 = v15[18] + v64 * ((*(a5 + 1) - *a5) >> 3);
+            v79 = v15[18] + v64 * ((*(pattern + 1) - *pattern) >> 3);
             v80 = *(v79 + 8 * v68);
             *(v79 + 8 * v68) = v78;
           }
 
           else
           {
-            v81 = v15[18] + v64 * ((*(a5 + 1) - *a5) >> 3);
+            v81 = v15[18] + v64 * ((*(pattern + 1) - *pattern) >> 3);
             v82 = v69;
             v80 = *(v81 + 8 * v68);
             *(v81 + 8 * v68) = v82;
           }
 
           ++v68;
-          v67 = *a5;
+          v67 = *pattern;
         }
 
-        while (v68 < (*(a5 + 1) - *a5) >> 3);
+        while (v68 < (*(pattern + 1) - *pattern) >> 3);
       }
 
       v64 += 8;
@@ -326,9 +326,9 @@
   return v15;
 }
 
-- (void)addCell:(id)a3 atViewCellCoord:(TSUViewCellCoord)a4
+- (void)addCell:(id)cell atViewCellCoord:(TSUViewCellCoord)coord
 {
-  v9 = a3;
+  cellCopy = cell;
   if (self->_uidBased)
   {
     v10 = MEMORY[0x277D81150];
@@ -341,7 +341,7 @@
 
   viewCellRect = self->_viewCellRect;
   origin = viewCellRect.origin;
-  v24 = (a4._coord.row - origin.row) * TSUCellRect::numColumns(&viewCellRect) + (((*&a4 & 0xFFFF00000000) - (*&origin & 0xFFFF00000000)) >> 32);
+  v24 = (coord._coord.row - origin.row) * TSUCellRect::numColumns(&viewCellRect) + (((*&coord & 0xFFFF00000000) - (*&origin & 0xFFFF00000000)) >> 32);
   if (v24 >= (self->_cellUIDRange._rowIdList.__end_ - self->_cellUIDRange._rowIdList.__begin_) * (self->_cellUIDRange._colIdList.__end_ - self->_cellUIDRange._colIdList.__begin_) && v24 >= self->_viewCellRect._rect.size.numberOfColumns * self->_viewCellRect._rect.size.numberOfRows)
   {
     v25 = MEMORY[0x277D81150];
@@ -354,12 +354,12 @@
 
   begin = self->_cells.__begin_;
   v37 = begin[v24];
-  begin[v24] = v9;
+  begin[v24] = cellCopy;
 }
 
-- (void)addCell:(id)a3 atIndex:(unint64_t)a4
+- (void)addCell:(id)cell atIndex:(unint64_t)index
 {
-  v9 = a3;
+  cellCopy = cell;
   if (!self->_uidBased)
   {
     v10 = MEMORY[0x277D81150];
@@ -370,7 +370,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  if ((self->_cellUIDRange._rowIdList.__end_ - self->_cellUIDRange._rowIdList.__begin_) * (self->_cellUIDRange._colIdList.__end_ - self->_cellUIDRange._colIdList.__begin_) <= a4 && self->_viewCellRect._rect.size.numberOfColumns * self->_viewCellRect._rect.size.numberOfRows <= a4)
+  if ((self->_cellUIDRange._rowIdList.__end_ - self->_cellUIDRange._rowIdList.__begin_) * (self->_cellUIDRange._colIdList.__end_ - self->_cellUIDRange._colIdList.__begin_) <= index && self->_viewCellRect._rect.size.numberOfColumns * self->_viewCellRect._rect.size.numberOfRows <= index)
   {
     v21 = MEMORY[0x277D81150];
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTConcurrentCellList addCell:atIndex:]", v7, v8);
@@ -381,11 +381,11 @@
   }
 
   begin = self->_cells.__begin_;
-  v33 = begin[a4];
-  begin[a4] = v9;
+  v33 = begin[index];
+  begin[index] = cellCopy;
 }
 
-- (id)getCellAtViewCellCoord:(TSUViewCellCoord)a3
+- (id)getCellAtViewCellCoord:(TSUViewCellCoord)coord
 {
   if (self->_uidBased)
   {
@@ -399,8 +399,8 @@
 
   viewCellRect = self->_viewCellRect;
   v18 = *&viewCellRect._rect.origin & 0xFFFF00000000;
-  v19 = a3._coord.row - viewCellRect._rect.origin.row;
-  v23 = v19 * TSUCellRect::numColumns(&viewCellRect._rect) + (((*&a3 & 0xFFFF00000000) - v18) >> 32);
+  v19 = coord._coord.row - viewCellRect._rect.origin.row;
+  v23 = v19 * TSUCellRect::numColumns(&viewCellRect._rect) + (((*&coord & 0xFFFF00000000) - v18) >> 32);
   if (v23 >= (self->_cellUIDRange._rowIdList.__end_ - self->_cellUIDRange._rowIdList.__begin_) * (self->_cellUIDRange._colIdList.__end_ - self->_cellUIDRange._colIdList.__begin_) && v23 >= self->_viewCellRect._rect.size.numberOfColumns * self->_viewCellRect._rect.size.numberOfRows)
   {
     v24 = MEMORY[0x277D81150];
@@ -416,7 +416,7 @@
   return v35;
 }
 
-- (id)getCellAtIndex:(unint64_t)a3
+- (id)getCellAtIndex:(unint64_t)index
 {
   if (!self->_uidBased)
   {
@@ -428,7 +428,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  if ((self->_cellUIDRange._rowIdList.__end_ - self->_cellUIDRange._rowIdList.__begin_) * (self->_cellUIDRange._colIdList.__end_ - self->_cellUIDRange._colIdList.__begin_) <= a3 && self->_viewCellRect._rect.size.numberOfColumns * self->_viewCellRect._rect.size.numberOfRows <= a3)
+  if ((self->_cellUIDRange._rowIdList.__end_ - self->_cellUIDRange._rowIdList.__begin_) * (self->_cellUIDRange._colIdList.__end_ - self->_cellUIDRange._colIdList.__begin_) <= index && self->_viewCellRect._rect.size.numberOfColumns * self->_viewCellRect._rect.size.numberOfRows <= index)
   {
     v18 = MEMORY[0x277D81150];
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTConcurrentCellList getCellAtIndex:]", v3, v4);
@@ -438,14 +438,14 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = self->_cells.__begin_[a3];
+  v29 = self->_cells.__begin_[index];
 
   return v29;
 }
 
-- (void)enumerateSeriallyByViewCellCoordUsingBlock:(id)a3
+- (void)enumerateSeriallyByViewCellCoordUsingBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_uidBased)
   {
     v8 = MEMORY[0x277D81150];
@@ -476,7 +476,7 @@
       viewCellRect = self->_viewCellRect;
       origin = viewCellRect.origin;
       v23 = TSUCellRect::numColumns(&viewCellRect);
-      v7[2](v7, (*&origin + ((v20 % v23) << 32)) & 0xFFFF00000000 | ((v20 / v23) + origin.row), self->_cells.__begin_[v20]);
+      blockCopy[2](blockCopy, (*&origin + ((v20 % v23) << 32)) & 0xFFFF00000000 | ((v20 / v23) + origin.row), self->_cells.__begin_[v20]);
       ++v20;
     }
 
@@ -484,9 +484,9 @@
   }
 }
 
-- (void)enumerateSeriallyByIndexUsingBlock:(id)a3
+- (void)enumerateSeriallyByIndexUsingBlock:(id)block
 {
-  v23 = a3;
+  blockCopy = block;
   if (!self->_uidBased)
   {
     v7 = MEMORY[0x277D81150];
@@ -515,7 +515,7 @@
 
     do
     {
-      v23[2](v23, v20, p_cells->__begin_[v20]);
+      blockCopy[2](blockCopy, v20, p_cells->__begin_[v20]);
       ++v20;
     }
 
@@ -538,15 +538,15 @@
   return self;
 }
 
-- (void)p_convertToUuidBasedCellListUsingTableInfo:(id)a3 pruneCategorizedCells:(BOOL)a4
+- (void)p_convertToUuidBasedCellListUsingTableInfo:(id)info pruneCategorizedCells:(BOOL)cells
 {
-  v4 = a4;
-  v6 = a3;
-  v11 = v6;
+  cellsCopy = cells;
+  infoCopy = info;
+  v11 = infoCopy;
   p_viewCellRect = &self->_viewCellRect;
-  if (v6)
+  if (infoCopy)
   {
-    objc_msgSend_cellUIDRangeForCellRange_(v6, v7, *p_viewCellRect, *&self->_viewCellRect._rect.size, v10);
+    objc_msgSend_cellUIDRangeForCellRange_(infoCopy, v7, *p_viewCellRect, *&self->_viewCellRect._rect.size, v10);
   }
 
   else
@@ -589,7 +589,7 @@
     operator delete(v15);
   }
 
-  if (v4 && objc_msgSend_isCategorized(v11, v7, v8, v9, v10))
+  if (cellsCopy && objc_msgSend_isCategorized(v11, v7, v8, v9, v10))
   {
     Column = TSUCellRect::firstColumn(&self->_viewCellRect._rect);
     Row = TSUCellRect::firstRow(&self->_viewCellRect._rect);
@@ -707,10 +707,10 @@
   *p_viewCellRect = xmmword_2217E0544;
 }
 
-- (void)p_setObjectLocale:(id)a3
+- (void)p_setObjectLocale:(id)locale
 {
-  v25 = a3;
-  if (!v25)
+  localeCopy = locale;
+  if (!localeCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSTConcurrentCellList p_setObjectLocale:]", v5, v6);
@@ -726,7 +726,7 @@
   while (begin != var0)
   {
     v21 = *begin;
-    objc_msgSend_setLocale_(v21, v22, v25, v23, v24);
+    objc_msgSend_setLocale_(v21, v22, localeCopy, v23, v24);
 
     ++begin;
   }
@@ -749,20 +749,20 @@
   }
 }
 
-- (void)p_pruneCellsAtColumn:(unint64_t)a3 rowsSize:(unint64_t)a4 columnsSize:(unint64_t)a5
+- (void)p_pruneCellsAtColumn:(unint64_t)column rowsSize:(unint64_t)size columnsSize:(unint64_t)columnsSize
 {
-  if (a4)
+  if (size)
   {
     v8 = 0;
     p_cells = &self->_cells;
     var0 = self->_cells.var0;
     do
     {
-      v11 = &p_cells->__begin_[(~v8 + a4) * a5 + 1] + a3;
+      v11 = &p_cells->__begin_[(~v8 + size) * columnsSize + 1] + column;
       if (v11 == var0)
       {
         v13 = var0;
-        var0 = &p_cells->__begin_[a3] + (~v8 + a4) * a5;
+        var0 = &p_cells->__begin_[column] + (~v8 + size) * columnsSize;
       }
 
       else
@@ -790,11 +790,11 @@
       ++v8;
     }
 
-    while (v8 != a4);
+    while (v8 != size);
   }
 }
 
-- (void)p_pruneToBaseWithBaseMap:(id)a3 viewMap:(id)a4
+- (void)p_pruneToBaseWithBaseMap:(id)map viewMap:(id)viewMap
 {
   v91 = *MEMORY[0x277D85DE8];
   p_cellUIDRange = &self->_cellUIDRange;
@@ -839,7 +839,7 @@
       v20 = *(v85 + v17);
       v21 = *(v85 + v17 + 8);
       LODWORD(__p[0]) = 0;
-      LODWORD(__p[0]) = objc_msgSend_rowIndexForRowUID_(a3, v13, v20, v21, v14);
+      LODWORD(__p[0]) = objc_msgSend_rowIndexForRowUID_(map, v13, v20, v21, v14);
       if (LODWORD(__p[0]) == 0x7FFFFFFF)
       {
         v22 = v85 + v17;
@@ -857,10 +857,10 @@
       else
       {
         sub_221166464(&self->_baseRows.__begin_, self->_baseRows.__begin_, __p);
-        if (a4)
+        if (viewMap)
         {
           v81 = 0;
-          v81 = objc_msgSend_rowIndexForRowUID_(a4, v13, v20, v21, v14);
+          v81 = objc_msgSend_rowIndexForRowUID_(viewMap, v13, v20, v21, v14);
           sub_221166638(&self->_viewRows.__begin_, self->_viewRows.__begin_, &v81);
         }
       }
@@ -898,7 +898,7 @@
       v33 = *(v82 + v30);
       v34 = *(v82 + v30 + 8);
       LOWORD(__p[0]) = 0;
-      v35 = objc_msgSend_columnIndexForColumnUID_(a3, v27, v33, v34, v28);
+      v35 = objc_msgSend_columnIndexForColumnUID_(map, v27, v33, v34, v28);
       LOWORD(__p[0]) = v35;
       if (v35 == 0x7FFF)
       {
@@ -917,10 +917,10 @@
       else
       {
         sub_2211668A8(&self->_baseColumns.__begin_, self->_baseColumns.__begin_, __p);
-        if (a4)
+        if (viewMap)
         {
           LOWORD(v81) = 0;
-          LOWORD(v81) = objc_msgSend_columnIndexForColumnUID_(a4, v27, v33, v34, v28);
+          LOWORD(v81) = objc_msgSend_columnIndexForColumnUID_(viewMap, v27, v33, v34, v28);
           sub_221166A78(&self->_viewColumns.__begin_, self->_viewColumns.__begin_, &v81);
         }
       }
@@ -1026,21 +1026,21 @@
   }
 }
 
-- (void)p_setupInterestingCells:(void *)a3 interestingCellIndexes:(id)a4 forAdding:(BOOL)a5
+- (void)p_setupInterestingCells:(void *)cells interestingCellIndexes:(id)indexes forAdding:(BOOL)adding
 {
-  v200 = a5;
+  addingCopy = adding;
   v210 = *MEMORY[0x277D85DE8];
-  if (*(a3 + 1) - *a3 != self->_cells.var0 - self->_cells.__begin_)
+  if (*(cells + 1) - *cells != self->_cells.var0 - self->_cells.__begin_)
   {
     v6 = MEMORY[0x277D81150];
-    v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTConcurrentCellList p_setupInterestingCells:interestingCellIndexes:forAdding:]", a4, a5);
+    v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTConcurrentCellList p_setupInterestingCells:interestingCellIndexes:forAdding:]", indexes, adding);
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTConcurrentCellMap.mm", v9, v10);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v12, v7, v11, 1215, 0, "cell lists size mismatch");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14, v15, v16);
   }
 
-  if (v200)
+  if (addingCopy)
   {
     v17 = &OBJC_IVAR___TSTConcurrentCellList__formatsAdded;
   }
@@ -1051,12 +1051,12 @@
   }
 
   v18 = 0x277D812B8;
-  if (!v200)
+  if (!addingCopy)
   {
     v18 = 0x277CBEB38;
   }
 
-  v19 = objc_msgSend_dictionary(*v18, a2, a3, a4, a5);
+  v19 = objc_msgSend_dictionary(*v18, a2, cells, indexes, adding);
   v20 = *v17;
   v21 = *(&self->super.super.isa + v20);
   *(&self->super.super.isa + v20) = v19;
@@ -1074,15 +1074,15 @@
   v191 = objc_msgSend_objectAtIndexedSubscript_(self->_interestingCells, v52, 10, v53, v54);
   v202 = objc_msgSend_objectAtIndexedSubscript_(self->_interestingCells, v55, 11, v56, v57);
   v203 = objc_msgSend_objectAtIndexedSubscript_(self->_interestingCells, v58, 12, v59, v60);
-  v61 = *a3;
-  if (*(a3 + 1) != *a3)
+  v61 = *cells;
+  if (*(cells + 1) != *cells)
   {
-    for (i = 0; i < (*(a3 + 1) - *a3) >> 3; ++i)
+    for (i = 0; i < (*(cells + 1) - *cells) >> 3; ++i)
     {
       v67 = *(v61 + 8 * i);
-      if (a4)
+      if (indexes)
       {
-        v68 = objc_msgSend_containsIndex_(a4, v63, i, v65, v66);
+        v68 = objc_msgSend_containsIndex_(indexes, v63, i, v65, v66);
         if (v67)
         {
           v69 = v68;
@@ -1115,7 +1115,7 @@ LABEL_17:
             sub_22116CEC0(&__p, v209, &v210, 6uLL);
             v103 = __p;
             v102 = v207;
-            if (v200)
+            if (addingCopy)
             {
               while (v103 != v102)
               {
@@ -1242,15 +1242,15 @@ LABEL_17:
         goto LABEL_17;
       }
 
-      v61 = *a3;
+      v61 = *cells;
     }
   }
 }
 
-- (void)p_invokeBlock:(id)a3
+- (void)p_invokeBlock:(id)block
 {
-  v83 = a3;
-  v79 = self;
+  blockCopy = block;
+  selfCopy = self;
   p_baseRows = &self->_baseRows;
   v7 = 0x277D81000uLL;
   v8 = 0x277CCA000uLL;
@@ -1299,9 +1299,9 @@ LABEL_17:
     {
       row = begin[v46]._row;
       var0 = row;
-      if (v79->_viewRows.__end_ != v79->_viewRows.__begin_)
+      if (selfCopy->_viewRows.__end_ != selfCopy->_viewRows.__begin_)
       {
-        var0 = v79->_viewRows.__begin_[v46].var0;
+        var0 = selfCopy->_viewRows.__begin_[v46].var0;
       }
 
       if (var0 == 0x7FFFFFFF)
@@ -1340,14 +1340,14 @@ LABEL_17:
         {
           column = v74[v76]._column;
           v78 = column;
-          if (v79->_viewColumns.__end_ != v79->_viewColumns.__begin_)
+          if (selfCopy->_viewColumns.__end_ != selfCopy->_viewColumns.__begin_)
           {
-            v78 = v79->_viewColumns.__begin_[v76].var0;
+            v78 = selfCopy->_viewColumns.__begin_[v76].var0;
           }
 
           memset(v84, 0, sizeof(v84));
           TSTMakeCellUID(v84);
-          v83[2](v83, v84, var0 | (v78 << 32), row | (column << 32), v79->_cells.__begin_[v45++]);
+          blockCopy[2](blockCopy, v84, var0 | (v78 << 32), row | (column << 32), selfCopy->_cells.__begin_[v45++]);
           ++v76;
           v74 = p_baseColumns->__begin_;
           v75 += 16;
@@ -1366,9 +1366,9 @@ LABEL_17:
   }
 }
 
-- (void)p_simpleInvokeBlock:(id)a3
+- (void)p_simpleInvokeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   p_baseRows = &self->_baseRows;
   p_viewRows = &self->_viewRows;
   numberOfRows = self->_viewCellRect._rect.size.numberOfRows;
@@ -1390,7 +1390,7 @@ LABEL_17:
   }
 
   v12 = self->_baseRows.__end_ - self->_baseRows.__begin_;
-  v41 = self;
+  selfCopy = self;
   p_baseColumns = &self->_baseColumns;
   v14 = self->_baseColumns.__begin_;
   v13 = self->_baseColumns.__end_;
@@ -1485,7 +1485,7 @@ LABEL_17:
 
           memset(v45, 0, sizeof(v45));
           TSTMakeCellUID(v45);
-          v4[2](v4, v45, v28 | (v31 << 32), v23 | (v30 << 32), v41->_cells.__begin_[v20++]);
+          blockCopy[2](blockCopy, v45, v28 | (v31 << 32), v23 | (v30 << 32), selfCopy->_cells.__begin_[v20++]);
           ++v27;
           ++v26;
         }
@@ -1539,9 +1539,9 @@ LABEL_17:
   self->_rowInfosPerRow = 0;
 }
 
-- (void)p_gatherRowState:(id)a3
+- (void)p_gatherRowState:(id)state
 {
-  v48 = a3;
+  stateCopy = state;
   if (self->_baseRows.__end_ - self->_baseRows.__begin_ != self->_cellUIDRange._rowIdList.__end_ - self->_cellUIDRange._rowIdList.__begin_)
   {
     v8 = MEMORY[0x277D81150];
@@ -1563,7 +1563,7 @@ LABEL_17:
   begin = self->_baseRows.__begin_;
   for (i = self->_baseRows.__end_; begin != i; ++begin)
   {
-    v29 = v48[2](v48, begin->_row);
+    v29 = stateCopy[2](stateCopy, begin->_row);
     v30 = self->_tilesPerRow;
     v35 = objc_msgSend_first(v29, v31, v32, v33, v34);
     objc_msgSend_addObject_(v30, v36, v35, v37, v38);
@@ -1574,10 +1574,10 @@ LABEL_17:
   }
 }
 
-- (void)p_accumulateBordersConcurrentlyUsingBlock:(id)a3 accumulateCellsConcurrentlyUsingBlock:(id)a4
+- (void)p_accumulateBordersConcurrentlyUsingBlock:(id)block accumulateCellsConcurrentlyUsingBlock:(id)usingBlock
 {
-  v73 = a3;
-  v72 = a4;
+  blockCopy = block;
+  usingBlockCopy = usingBlock;
   if (!self->_tilesPerRow)
   {
     v10 = MEMORY[0x277D81150];
@@ -1631,8 +1631,8 @@ LABEL_17:
     {
       v66 = objc_msgSend_objectAtIndexedSubscript_(self->_tilesPerRow, v49, v65, v50, v51);
       v70 = objc_msgSend_objectAtIndexedSubscript_(self->_rowInfosPerRow, v67, v65, v68, v69);
-      v73[2](v76);
-      (v72)[2](&v74);
+      blockCopy[2](v76);
+      (usingBlockCopy)[2](&v74);
       sub_22116D0D8(&self->_oldCells, self->_oldCells.var0, v74, v75, v75 - v74);
       v77 = &v74;
       sub_22107C2C0(&v77);
@@ -1649,9 +1649,9 @@ LABEL_17:
   objc_msgSend_p_setupInterestingCells_interestingCellIndexes_forAdding_(self, v71, &self->_oldCells, 0, 0);
 }
 
-- (void)p_enumerateRowsOfCellsConcurrentlyUsingBlock:(id)a3
+- (void)p_enumerateRowsOfCellsConcurrentlyUsingBlock:(id)block
 {
-  v8 = a3;
+  blockCopy = block;
   rowInfosPerRow = self->_rowInfosPerRow;
   if (!rowInfosPerRow)
   {
@@ -1699,7 +1699,7 @@ LABEL_17:
       v54 = self->_baseColumns.__end_ - self->_baseColumns.__begin_;
       v55 = v52 + 1;
       sub_22116D07C(&__p, &self->_cells.__begin_[v52 * v54], &self->_cells.__begin_[(v52 + 1) * v54], location[0]);
-      v8[2](&__p, v8, v53, location, &self->_baseColumns);
+      blockCopy[2](&__p, blockCopy, v53, location, &self->_baseColumns);
       v56 = __p;
       if (__p == v67)
       {
@@ -1753,9 +1753,9 @@ LABEL_17:
   sub_22107C2C0(&__p);
 }
 
-- (void)p_enumerateNewAndOldCellsSeriallyUsingBlock:(id)a3
+- (void)p_enumerateNewAndOldCellsSeriallyUsingBlock:(id)block
 {
-  v27 = a3;
+  blockCopy = block;
   p_oldCells = &self->_oldCells;
   begin = self->_oldCells.__begin_;
   var0 = self->_oldCells.var0;
@@ -1790,7 +1790,7 @@ LABEL_17:
       v26 = v25;
       if (v24 | v26)
       {
-        v27[2](v27, v24, v26);
+        blockCopy[2](blockCopy, v24, v26);
       }
 
       ++v23;
@@ -1801,9 +1801,9 @@ LABEL_17:
   }
 }
 
-- (void)p_enumerateCellsAddedAndRemovedOfType:(unint64_t)a3 usingBlock:(id)a4
+- (void)p_enumerateCellsAddedAndRemovedOfType:(unint64_t)type usingBlock:(id)block
 {
-  v9 = a4;
+  blockCopy = block;
   begin = self->_oldCells.__begin_;
   var0 = self->_oldCells.var0;
   if (begin != var0 && var0 - begin != self->_cells.var0 - self->_cells.__begin_)
@@ -1828,20 +1828,20 @@ LABEL_17:
     interestingCells = self->_interestingCells;
   }
 
-  v35 = objc_msgSend_objectAtIndexedSubscript_(interestingCells, v6, a3, v7, v8);
+  v35 = objc_msgSend_objectAtIndexedSubscript_(interestingCells, v6, type, v7, v8);
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = sub_221168C88;
   v40[3] = &unk_27845FE28;
   v40[4] = self;
-  v36 = v9;
+  v36 = blockCopy;
   v41 = v36;
   objc_msgSend_enumerateIndexesUsingBlock_(v35, v37, v40, v38, v39);
 }
 
-- (void)p_enumerateCellsAddedOfType:(unint64_t)a3 usingBlock:(id)a4
+- (void)p_enumerateCellsAddedOfType:(unint64_t)type usingBlock:(id)block
 {
-  v9 = a4;
+  blockCopy = block;
   interestingCells = self->_interestingCells;
   if (!interestingCells)
   {
@@ -1854,26 +1854,26 @@ LABEL_17:
     interestingCells = self->_interestingCells;
   }
 
-  v22 = objc_msgSend_objectAtIndexedSubscript_(interestingCells, v6, a3, v7, v8);
+  v22 = objc_msgSend_objectAtIndexedSubscript_(interestingCells, v6, type, v7, v8);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = sub_221168F38;
   v27[3] = &unk_27845FE28;
   v27[4] = self;
-  v23 = v9;
+  v23 = blockCopy;
   v28 = v23;
   objc_msgSend_enumerateIndexesUsingBlock_(v22, v24, v27, v25, v26);
 }
 
-- (void)p_enumerateCellsAddedAndRemovedForFormatsUsingBlock:(id)a3
+- (void)p_enumerateCellsAddedAndRemovedForFormatsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   formatsAdded = self->_formatsAdded;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_221169168;
   v17[3] = &unk_27845FE50;
-  v6 = v4;
+  v6 = blockCopy;
   v17[4] = self;
   v18 = v6;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(formatsAdded, v7, v17, v8, v9);
@@ -1888,9 +1888,9 @@ LABEL_17:
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(formatsRemoved, v12, v15, v13, v14);
 }
 
-- (void)p_enumerateColumnCellCountDiffUsingBlock:(id)a3
+- (void)p_enumerateColumnCellCountDiffUsingBlock:(id)block
 {
-  v23 = a3;
+  blockCopy = block;
   p_baseColumns = &self->_baseColumns;
   begin = self->_baseColumns.__begin_;
   end = self->_baseColumns.__end_;
@@ -1912,7 +1912,7 @@ LABEL_17:
     v22 = 0;
     do
     {
-      v23[2](v23, begin[v22]._column, p_cellCountDiffsPerColumn->__begin_[v22]);
+      blockCopy[2](blockCopy, begin[v22]._column, p_cellCountDiffsPerColumn->__begin_[v22]);
       ++v22;
       begin = p_baseColumns->__begin_;
     }
@@ -1921,13 +1921,13 @@ LABEL_17:
   }
 }
 
-- (void)p_enumerateRowCellCountDiffUsingBlock:(id)a3
+- (void)p_enumerateRowCellCountDiffUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   p_baseRows = &self->_baseRows;
   begin = self->_baseRows.__begin_;
   end = self->_baseRows.__end_;
-  v64 = v4;
+  v64 = blockCopy;
   if (end - begin != self->_cellCountDiffsPerRow.__end_ - self->_cellCountDiffsPerRow.__begin_)
   {
     v12 = MEMORY[0x277D81150];
@@ -1982,10 +1982,10 @@ LABEL_17:
   }
 }
 
-- (void)p_enumerateCustomFormatsBeingAddedUsingReplacementBlock:(id)a3
+- (void)p_enumerateCustomFormatsBeingAddedUsingReplacementBlock:(id)block
 {
   v82 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v75 = 0;
   v76 = &v75;
   v77 = 0x3032000000;
@@ -1997,7 +1997,7 @@ LABEL_17:
   v72[1] = 3221225472;
   v72[2] = sub_221169B64;
   v72[3] = &unk_27845FEA0;
-  v64 = v4;
+  v64 = blockCopy;
   v73 = v64;
   v74 = &v75;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(formatsAdded, v6, v72, v7, v8);
@@ -2106,11 +2106,11 @@ LABEL_17:
   return v9;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[114], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[114], v6, v7);
 
   v13 = objc_msgSend_currentLocale(MEMORY[0x277D81228], v9, v10, v11, v12);
   sub_22116A0A0(&self->_cells.__begin_, *(v8 + 32));
@@ -2150,7 +2150,7 @@ LABEL_17:
           v24 = &TST::_Cell_default_instance_;
         }
 
-        sub_221123AF0(v24, v34, v4);
+        sub_221123AF0(v24, v34, unarchiverCopy);
       }
 
       sub_22116A130(&self->_cells.__begin_, &v34);
@@ -2213,9 +2213,9 @@ LABEL_17:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v5 = objc_opt_class();
   if ((objc_msgSend_isMemberOfClass_(self, v6, v5, v7, v8) & 1) == 0)
   {
@@ -2227,7 +2227,7 @@ LABEL_17:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  v45 = v4;
+  v45 = archiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v25 = objc_msgSend_messageWithNewFunction_descriptor_(v45, v23, sub_22116D328, off_2812E4498[114], v24);
 
@@ -2339,10 +2339,10 @@ LABEL_18:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v14 = objc_msgSend_context(self, v10, v11, v12, v13);
   origin = self->_viewCellRect._rect.origin;
   size = self->_viewCellRect._rect.size;
@@ -2413,14 +2413,14 @@ LABEL_18:
   return sub_221086EBC(&retstr->_rowIdList, p_cellUIDRange->_rowIdList.__begin_, p_cellUIDRange->_rowIdList.__end_, p_cellUIDRange->_rowIdList.__end_ - p_cellUIDRange->_rowIdList.__begin_);
 }
 
-- (void)setCellUIDRange:(TSKUIDStructTract *)a3
+- (void)setCellUIDRange:(TSKUIDStructTract *)range
 {
   p_cellUIDRange = &self->_cellUIDRange;
-  if (&self->_cellUIDRange != a3)
+  if (&self->_cellUIDRange != range)
   {
-    sub_2210BD068(&self->_cellUIDRange._colIdList.__begin_, a3->_colIdList.__begin_, a3->_colIdList.__end_, a3->_colIdList.__end_ - a3->_colIdList.__begin_);
-    begin = a3->_rowIdList.__begin_;
-    end = a3->_rowIdList.__end_;
+    sub_2210BD068(&self->_cellUIDRange._colIdList.__begin_, range->_colIdList.__begin_, range->_colIdList.__end_, range->_colIdList.__end_ - range->_colIdList.__begin_);
+    begin = range->_rowIdList.__begin_;
+    end = range->_rowIdList.__end_;
 
     sub_2210BD068(&p_cellUIDRange->_rowIdList.__begin_, begin, end, (end - begin) >> 4);
   }

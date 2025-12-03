@@ -1,46 +1,46 @@
 @interface COMessageSessionProducer
 - (COMessageChannel)messageChannel;
-- (COMessageSessionProducer)initWithChannel:(id)a3 subTopic:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6;
+- (COMessageSessionProducer)initWithChannel:(id)channel subTopic:(id)topic delegate:(id)delegate dispatchQueue:(id)queue;
 - (COMessageSessionProducerDelegate)delegate;
 - (id)description;
-- (void)startSessionWithMembers:(id)a3;
+- (void)startSessionWithMembers:(id)members;
 @end
 
 @implementation COMessageSessionProducer
 
-- (COMessageSessionProducer)initWithChannel:(id)a3 subTopic:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6
+- (COMessageSessionProducer)initWithChannel:(id)channel subTopic:(id)topic delegate:(id)delegate dispatchQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  channelCopy = channel;
+  topicCopy = topic;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = COMessageSessionProducer;
   v14 = [(COMessageSessionProducer *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_messageChannel, v10);
-    objc_storeStrong(&v15->_subTopic, a4);
-    objc_storeWeak(&v15->_delegate, v12);
-    objc_storeStrong(&v15->_delegateQueue, a6);
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeWeak(&v14->_messageChannel, channelCopy);
+    objc_storeStrong(&v15->_subTopic, topic);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_delegateQueue, queue);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sessions = v15->_sessions;
-    v15->_sessions = v16;
+    v15->_sessions = dictionary;
   }
 
   return v15;
 }
 
-- (void)startSessionWithMembers:(id)a3
+- (void)startSessionWithMembers:(id)members
 {
-  v6 = a3;
+  membersCopy = members;
   WeakRetained = objc_loadWeakRetained(&self->_messageChannel);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_messageChannel);
-    [v5 startSessionWithProducer:self members:v6];
+    [v5 startSessionWithProducer:self members:membersCopy];
   }
 }
 

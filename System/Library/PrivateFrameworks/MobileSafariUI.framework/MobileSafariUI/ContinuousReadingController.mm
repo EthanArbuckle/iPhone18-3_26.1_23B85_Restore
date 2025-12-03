@@ -1,6 +1,6 @@
 @interface ContinuousReadingController
-- (ContinuousReadingController)initWithTabController:(id)a3;
-- (id)_itemAtIndex:(unsigned int)a3 inReadingList:(id)a4;
+- (ContinuousReadingController)initWithTabController:(id)controller;
+- (id)_itemAtIndex:(unsigned int)index inReadingList:(id)list;
 - (id)currentReadingListItem;
 - (id)nextReadingListItem;
 - (id)previousReadingListItem;
@@ -21,25 +21,25 @@
 
 - (void)_updateCachedItemsIfNeeded
 {
-  v3 = [(ContinuousReadingController *)self _tabDocument];
-  v4 = [v3 readingListBookmarkID];
+  _tabDocument = [(ContinuousReadingController *)self _tabDocument];
+  readingListBookmarkID = [_tabDocument readingListBookmarkID];
 
-  if (v4)
+  if (readingListBookmarkID)
   {
-    if (self->_activeDocumentBookmarkID != v4)
+    if (self->_activeDocumentBookmarkID != readingListBookmarkID)
     {
       [(ContinuousReadingController *)self _clearCachedItems];
-      self->_activeDocumentBookmarkID = v4;
-      v23 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-      v5 = [v23 bookmarkWithID:v4];
+      self->_activeDocumentBookmarkID = readingListBookmarkID;
+      mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+      v5 = [mainBookmarkCollection bookmarkWithID:readingListBookmarkID];
       v6 = [ContinuousReadingItem itemWithReadingListItem:v5];
       currentContinuousItem = self->_currentContinuousItem;
       self->_currentContinuousItem = v6;
 
-      v8 = [v23 indexOfReadingListBookmark:v5 countingOnlyUnread:self->_unreadReadingListItemsOnly];
+      v8 = [mainBookmarkCollection indexOfReadingListBookmark:v5 countingOnlyUnread:self->_unreadReadingListItemsOnly];
       v9 = v8;
-      v10 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-      v11 = [v10 readingListWithUnreadOnly:self->_unreadReadingListItemsOnly];
+      mainBookmarkCollection2 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+      v11 = [mainBookmarkCollection2 readingListWithUnreadOnly:self->_unreadReadingListItemsOnly];
 
       v12 = 0;
       v13 = (v8 + 1);
@@ -53,10 +53,10 @@
           break;
         }
 
-        v15 = [(WebBookmark *)v12 safari_bestCurrentURL];
+        safari_bestCurrentURL = [(WebBookmark *)v12 safari_bestCurrentURL];
 
         v13 = (v13 + 1);
-        if (v15)
+        if (safari_bestCurrentURL)
         {
           v16 = [ContinuousReadingItem itemWithReadingListItem:v12];
           nextContinuousItem = self->_nextContinuousItem;
@@ -76,11 +76,11 @@
           goto LABEL_18;
         }
 
-        v20 = [(WebBookmark *)v19 safari_bestCurrentURL];
+        safari_bestCurrentURL2 = [(WebBookmark *)v19 safari_bestCurrentURL];
 
         v18 = v19;
         --v9;
-        if (v20)
+        if (safari_bestCurrentURL2)
         {
           goto LABEL_17;
         }
@@ -121,16 +121,16 @@ LABEL_18:
   self->_previousContinuousItem = 0;
 }
 
-- (ContinuousReadingController)initWithTabController:(id)a3
+- (ContinuousReadingController)initWithTabController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = ContinuousReadingController;
   v6 = [(ContinuousReadingController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tabController, a3);
+    objc_storeStrong(&v6->_tabController, controller);
     v8 = v7;
   }
 
@@ -161,18 +161,18 @@ LABEL_18:
   return previousContinuousItem;
 }
 
-- (id)_itemAtIndex:(unsigned int)a3 inReadingList:(id)a4
+- (id)_itemAtIndex:(unsigned int)index inReadingList:(id)list
 {
-  v4 = *&a3;
-  v5 = a4;
-  if ([v5 bookmarkCount] <= v4)
+  v4 = *&index;
+  listCopy = list;
+  if ([listCopy bookmarkCount] <= v4)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 bookmarkAtIndex:v4];
+    v6 = [listCopy bookmarkAtIndex:v4];
   }
 
   return v6;

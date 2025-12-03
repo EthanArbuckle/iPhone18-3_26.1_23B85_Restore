@@ -1,15 +1,15 @@
 @interface REComparisonCondition
-+ (id)conditionForLeftFeature:(id)a3 relation:(int64_t)a4 rightFeature:(id)a5;
++ (id)conditionForLeftFeature:(id)feature relation:(int64_t)relation rightFeature:(id)rightFeature;
 @end
 
 @implementation REComparisonCondition
 
-+ (id)conditionForLeftFeature:(id)a3 relation:(int64_t)a4 rightFeature:(id)a5
++ (id)conditionForLeftFeature:(id)feature relation:(int64_t)relation rightFeature:(id)rightFeature
 {
-  v7 = a5;
-  v8 = a3;
-  REEnsureMatchingFeatureTypes(v8, v7);
-  v9 = [[_REFeatureComparisonCondition alloc] initWithLeftFeature:v8 relation:a4 rightFeature:v7];
+  rightFeatureCopy = rightFeature;
+  featureCopy = feature;
+  REEnsureMatchingFeatureTypes(featureCopy, rightFeatureCopy);
+  v9 = [[_REFeatureComparisonCondition alloc] initWithLeftFeature:featureCopy relation:relation rightFeature:rightFeatureCopy];
 
   return v9;
 }

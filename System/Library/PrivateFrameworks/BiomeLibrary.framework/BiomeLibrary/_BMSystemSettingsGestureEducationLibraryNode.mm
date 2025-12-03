@@ -5,26 +5,26 @@
 + (id)configurationForPillOutcome;
 + (id)storeConfigurationForMultitasking;
 + (id)storeConfigurationForPillOutcome;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMSystemSettingsGestureEducationLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Multitasking"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Multitasking"])
   {
-    v5 = [a1 Multitasking];
+    multitasking = [self Multitasking];
 LABEL_5:
-    v6 = v5;
+    v6 = multitasking;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"PillOutcome"])
+  if ([nameCopy isEqualToString:@"PillOutcome"])
   {
-    v5 = [a1 PillOutcome];
+    multitasking = [self PillOutcome];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForPillOutcome
 {
-  v3 = [a1 storeConfigurationForPillOutcome];
-  v4 = [a1 syncPolicyForPillOutcome];
+  storeConfigurationForPillOutcome = [self storeConfigurationForPillOutcome];
+  syncPolicyForPillOutcome = [self syncPolicyForPillOutcome];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"359EE8C7-72A9-4FBA-B2E7-51AC9111861B"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.GestureEducation.PillOutcome" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.GestureEducation.PillOutcome" eventClass:objc_opt_class() storeConfig:storeConfigurationForPillOutcome syncPolicy:syncPolicyForPillOutcome legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,13 +71,13 @@ LABEL_7:
 
 + (id)configurationForMultitasking
 {
-  v3 = [a1 storeConfigurationForMultitasking];
-  v4 = [a1 syncPolicyForMultitasking];
+  storeConfigurationForMultitasking = [self storeConfigurationForMultitasking];
+  syncPolicyForMultitasking = [self syncPolicyForMultitasking];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"5F28104B-D659-40FD-A419-C8917E89AAEB"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.GestureEducation.Multitasking" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.GestureEducation.Multitasking" eventClass:objc_opt_class() storeConfig:storeConfigurationForMultitasking syncPolicy:syncPolicyForMultitasking legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -93,7 +93,7 @@ LABEL_7:
 + (id)PillOutcome
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPillOutcome];
+  configurationForPillOutcome = [self configurationForPillOutcome];
   v3 = +[BMSystemSettingsPillOutcome columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -105,7 +105,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SystemSettings.GestureEducation.PillOutcome" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.GestureEducation.PillOutcome" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.GestureEducation.PillOutcome" schema:v9 configuration:configurationForPillOutcome];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -115,7 +115,7 @@ LABEL_7:
 + (id)Multitasking
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMultitasking];
+  configurationForMultitasking = [self configurationForMultitasking];
   v3 = +[BMSystemSettingsMultitasking columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -127,7 +127,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SystemSettings.GestureEducation.Multitasking" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.GestureEducation.Multitasking" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.GestureEducation.Multitasking" schema:v9 configuration:configurationForMultitasking];
 
   v11 = *MEMORY[0x1E69E9840];
 

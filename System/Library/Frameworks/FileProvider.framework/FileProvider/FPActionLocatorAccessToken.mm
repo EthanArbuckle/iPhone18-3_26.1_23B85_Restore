@@ -1,16 +1,16 @@
 @interface FPActionLocatorAccessToken
-+ (id)tokenWithBlock:(id)a3;
++ (id)tokenWithBlock:(id)block;
 - (void)dealloc;
 - (void)stopAccessing;
 @end
 
 @implementation FPActionLocatorAccessToken
 
-+ (id)tokenWithBlock:(id)a3
++ (id)tokenWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
-  v5 = _Block_copy(v3);
+  v5 = _Block_copy(blockCopy);
 
   v6 = v4[1];
   v4[1] = v5;
@@ -20,9 +20,9 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_stopBlock)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_stopBlock)
   {
     v3 = fp_current_or_default_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -30,14 +30,14 @@
       [(FPActionLocatorAccessToken *)v3 dealloc];
     }
 
-    (*(v2->_stopBlock + 2))();
-    stopBlock = v2->_stopBlock;
-    v2->_stopBlock = 0;
+    (*(selfCopy->_stopBlock + 2))();
+    stopBlock = selfCopy->_stopBlock;
+    selfCopy->_stopBlock = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = FPActionLocatorAccessToken;
   [(FPActionLocatorAccessToken *)&v5 dealloc];
 }

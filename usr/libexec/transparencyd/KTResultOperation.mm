@@ -1,19 +1,19 @@
 @interface KTResultOperation
-+ (id)named:(id)a3 withBlock:(id)a4;
-+ (id)named:(id)a3 withBlockTakingSelf:(id)a4;
-+ (id)operationWithBlock:(id)a3;
++ (id)named:(id)named withBlock:(id)block;
++ (id)named:(id)named withBlockTakingSelf:(id)self;
++ (id)operationWithBlock:(id)block;
 - (BOOL)allDependentsSuccessful;
-- (BOOL)allSuccessful:(id)a3;
+- (BOOL)allSuccessful:(id)successful;
 - (KTResultOperation)init;
 - (id)_onqueueTimeoutError;
 - (id)dependenciesDescriptionError;
 - (id)description;
 - (id)descriptionError;
 - (id)operationStateString;
-- (id)timeout:(unint64_t)a3;
-- (void)addNullableSuccessDependency:(id)a3;
+- (id)timeout:(unint64_t)timeout;
+- (void)addNullableSuccessDependency:(id)dependency;
 - (void)invalidateTimeout;
-- (void)setCompletionBlock:(id)a3;
+- (void)setCompletionBlock:(id)block;
 - (void)start;
 @end
 
@@ -30,9 +30,9 @@
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = [(KTResultOperation *)self error];
+      error = [(KTResultOperation *)self error];
       *buf = 138412290;
-      v6 = v3;
+      v6 = error;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Not running due to some failed dependent: %@", buf, 0xCu);
     }
 
@@ -46,22 +46,22 @@
 
 - (BOOL)allDependentsSuccessful
 {
-  v2 = self;
-  v3 = [(KTResultOperation *)self successDependencies];
-  LOBYTE(v2) = [(KTResultOperation *)v2 allSuccessful:v3];
+  selfCopy = self;
+  successDependencies = [(KTResultOperation *)self successDependencies];
+  LOBYTE(selfCopy) = [(KTResultOperation *)selfCopy allSuccessful:successDependencies];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)invalidateTimeout
 {
-  v3 = [(KTResultOperation *)self timeoutQueue];
+  timeoutQueue = [(KTResultOperation *)self timeoutQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000025EC;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(timeoutQueue, block);
 }
 
 - (KTResultOperation)init
@@ -110,8 +110,8 @@
 {
   if (([(KTResultOperation *)self isFinished]& 1) != 0)
   {
-    v3 = [(KTResultOperation *)self finishDate];
-    v4 = [NSString stringWithFormat:@"finished %@", v3];
+    finishDate = [(KTResultOperation *)self finishDate];
+    v4 = [NSString stringWithFormat:@"finished %@", finishDate];
   }
 
   else
@@ -128,9 +128,9 @@
 
     else
     {
-      v6 = [(KTResultOperation *)self isReady];
+      isReady = [(KTResultOperation *)self isReady];
       v5 = @"pending";
-      if (v6)
+      if (isReady)
       {
         v5 = @"ready";
       }
@@ -144,34 +144,34 @@
 
 - (id)description
 {
-  v3 = [(KTResultOperation *)self operationStateString];
+  operationStateString = [(KTResultOperation *)self operationStateString];
   off_10038BB38();
   v5 = v4;
   v6 = *v4 + 1;
   *v4 = v6;
   if (v6 < 0xB)
   {
-    v9 = [(KTResultOperation *)self error];
+    error = [(KTResultOperation *)self error];
 
-    v7 = [(KTResultOperation *)self selfname];
-    if (v9)
+    selfname = [(KTResultOperation *)self selfname];
+    if (error)
     {
-      v10 = [(KTResultOperation *)self error];
-      [NSString stringWithFormat:@"<%@: %@ error:%@>", v7, v3, v10];
+      error2 = [(KTResultOperation *)self error];
+      [NSString stringWithFormat:@"<%@: %@ error:%@>", selfname, operationStateString, error2];
     }
 
     else
     {
-      v10 = [(KTResultOperation *)self pendingDependenciesString:@" dep:"];
-      [NSString stringWithFormat:@"<%@: %@%@>", v7, v3, v10];
+      error2 = [(KTResultOperation *)self pendingDependenciesString:@" dep:"];
+      [NSString stringWithFormat:@"<%@: %@%@>", selfname, operationStateString, error2];
     }
     v8 = ;
   }
 
   else
   {
-    v7 = [(KTResultOperation *)self selfname];
-    v8 = [NSString stringWithFormat:@"<%@: %@ recursion>", v7, v3];
+    selfname = [(KTResultOperation *)self selfname];
+    v8 = [NSString stringWithFormat:@"<%@: %@ recursion>", selfname, operationStateString];
   }
 
   --*v5;
@@ -179,16 +179,16 @@
   return v8;
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10023643C;
   v7[3] = &unk_10031BD50;
   objc_copyWeak(&v9, &location);
-  v5 = v4;
+  v5 = blockCopy;
   v8 = v5;
   v6.receiver = self;
   v6.super_class = KTResultOperation;
@@ -200,8 +200,8 @@
 
 - (id)dependenciesDescriptionError
 {
-  v2 = [(KTResultOperation *)self dependencies];
-  v3 = [v2 copy];
+  dependencies = [(KTResultOperation *)self dependencies];
+  v3 = [dependencies copy];
 
   v4 = [v3 indexesOfObjectsPassingTest:&stru_10032C528];
   v5 = [v3 objectsAtIndexes:v4];
@@ -231,11 +231,11 @@
         if (objc_opt_isKindOfClass())
         {
           v13 = v12;
-          v14 = [v13 descriptionError];
-          v15 = v14;
-          if (v14)
+          descriptionError = [v13 descriptionError];
+          v15 = descriptionError;
+          if (descriptionError)
           {
-            v16 = v14;
+            v16 = descriptionError;
           }
 
           else
@@ -294,61 +294,61 @@
 
 - (id)_onqueueTimeoutError
 {
-  v3 = [(KTResultOperation *)self timeoutQueue];
-  dispatch_assert_queue_V2(v3);
+  timeoutQueue = [(KTResultOperation *)self timeoutQueue];
+  dispatch_assert_queue_V2(timeoutQueue);
 
-  v4 = [(KTResultOperation *)self descriptionError];
-  v5 = [(KTResultOperation *)self selfname];
+  descriptionError = [(KTResultOperation *)self descriptionError];
+  selfname = [(KTResultOperation *)self selfname];
   v6 = [(KTResultOperation *)self pendingDependenciesString:&stru_10032E8E8];
-  v7 = [NSString stringWithFormat:@"Operation(%@) timed out waiting to start for [%@]", v5, v6];
-  v8 = [NSError errorWithDomain:@"KTResultOperationError" code:3 description:v7 underlying:v4];
+  v7 = [NSString stringWithFormat:@"Operation(%@) timed out waiting to start for [%@]", selfname, v6];
+  v8 = [NSError errorWithDomain:@"KTResultOperationError" code:3 description:v7 underlying:descriptionError];
 
   return v8;
 }
 
-- (id)timeout:(unint64_t)a3
+- (id)timeout:(unint64_t)timeout
 {
   objc_initWeak(&location, self);
-  v5 = dispatch_time(0, a3);
-  v6 = [(KTResultOperation *)self timeoutQueue];
+  v5 = dispatch_time(0, timeout);
+  timeoutQueue = [(KTResultOperation *)self timeoutQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100236A7C;
   v8[3] = &unk_1003175E0;
   objc_copyWeak(&v9, &location);
-  dispatch_after(v5, v6, v8);
+  dispatch_after(v5, timeoutQueue, v8);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
   return self;
 }
 
-- (void)addNullableSuccessDependency:(id)a3
+- (void)addNullableSuccessDependency:(id)dependency
 {
-  v6 = a3;
-  if (v6)
+  dependencyCopy = dependency;
+  if (dependencyCopy)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(KTResultOperation *)v4 successDependencies];
-    [v5 addObject:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    successDependencies = [(KTResultOperation *)selfCopy successDependencies];
+    [successDependencies addObject:dependencyCopy];
 
-    [(KTResultOperation *)v4 addDependency:v6];
-    objc_sync_exit(v4);
+    [(KTResultOperation *)selfCopy addDependency:dependencyCopy];
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (BOOL)allSuccessful:(id)a3
+- (BOOL)allSuccessful:(id)successful
 {
-  v4 = a3;
-  v32 = self;
-  objc_sync_enter(v32);
+  successfulCopy = successful;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v30 = +[NSMutableArray array];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = v4;
+  v5 = successfulCopy;
   v6 = [v5 countByEnumeratingWithState:&v37 objects:v43 count:16];
   v29 = v6 == 0;
   obj = v5;
@@ -372,32 +372,32 @@
       }
 
       v11 = *(*(&v37 + 1) + 8 * i);
-      v36 = [v11 isFinished];
-      v35 = [v11 isCancelled];
-      v12 = [v11 error];
-      v13 = v12 != 0;
+      isFinished = [v11 isFinished];
+      isCancelled = [v11 isCancelled];
+      error = [v11 error];
+      v13 = error != 0;
 
       if ([v11 isCancelled])
       {
         [v30 addObject:v11];
       }
 
-      v14 = [v11 error];
-      v15 = v14 == 0;
+      error2 = [v11 error];
+      v15 = error2 == 0;
 
       if (!v15)
       {
-        v16 = [v11 error];
-        v17 = [v16 domain];
-        if ([v17 isEqual:@"KTResultOperationError"])
+        error3 = [v11 error];
+        domain = [error3 domain];
+        if ([domain isEqual:@"KTResultOperationError"])
         {
-          v18 = [v11 error];
-          v19 = [v18 code] == 1;
+          error4 = [v11 error];
+          v19 = [error4 code] == 1;
 
           if (v19)
           {
-            v20 = [v11 error];
-            [(KTResultOperation *)v32 setError:v20];
+            error5 = [v11 error];
+            [(KTResultOperation *)selfCopy setError:error5];
 LABEL_14:
 
             goto LABEL_15;
@@ -408,20 +408,20 @@ LABEL_14:
         {
         }
 
-        v20 = +[NSMutableDictionary dictionary];
-        v21 = [v11 name];
-        [v20 setObject:v21 forKeyedSubscript:@"op"];
+        error5 = +[NSMutableDictionary dictionary];
+        name = [v11 name];
+        [error5 setObject:name forKeyedSubscript:@"op"];
 
-        v22 = [v11 error];
-        v23 = [NSError errorWithDomain:@"KTResultOperationError" code:1 userInfo:v20 description:@"Success-dependent operation failed" underlying:v22];
-        [(KTResultOperation *)v32 setError:v23];
+        error6 = [v11 error];
+        v23 = [NSError errorWithDomain:@"KTResultOperationError" code:1 userInfo:error5 description:@"Success-dependent operation failed" underlying:error6];
+        [(KTResultOperation *)selfCopy setError:v23];
 
         goto LABEL_14;
       }
 
 LABEL_15:
-      v9 &= v36;
-      v7 |= v35;
+      v9 &= isFinished;
+      v7 |= isCancelled;
       v8 |= v13;
     }
 
@@ -436,8 +436,8 @@ LABEL_15:
     goto LABEL_23;
   }
 
-  v24 = [(KTResultOperation *)v32 error];
-  v25 = v24 == 0;
+  error7 = [(KTResultOperation *)selfCopy error];
+  v25 = error7 == 0;
 
   if (v25)
   {
@@ -446,7 +446,7 @@ LABEL_15:
     v42 = v5;
     v26 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v27 = [NSError errorWithDomain:@"KTResultOperationError" code:2 userInfo:v26];
-    [(KTResultOperation *)v32 setError:v27];
+    [(KTResultOperation *)selfCopy setError:v27];
 
 LABEL_22:
     goto LABEL_23;
@@ -455,43 +455,43 @@ LABEL_22:
   v29 = 0;
 LABEL_23:
 
-  objc_sync_exit(v32);
+  objc_sync_exit(selfCopy);
   return v29;
 }
 
-+ (id)operationWithBlock:(id)a3
++ (id)operationWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 addExecutionBlock:v4];
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  [v5 addExecutionBlock:blockCopy];
 
   return v5;
 }
 
-+ (id)named:(id)a3 withBlock:(id)a4
++ (id)named:(id)named withBlock:(id)block
 {
-  v6 = a3;
-  v7 = [a1 operationWithBlock:a4];
-  [v7 setName:v6];
+  namedCopy = named;
+  v7 = [self operationWithBlock:block];
+  [v7 setName:namedCopy];
 
   return v7;
 }
 
-+ (id)named:(id)a3 withBlockTakingSelf:(id)a4
++ (id)named:(id)named withBlockTakingSelf:(id)self
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  namedCopy = named;
+  selfCopy = self;
+  v8 = objc_alloc_init(self);
   objc_initWeak(&location, v8);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10023717C;
   v11[3] = &unk_10031BD50;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = selfCopy;
   v12 = v9;
   [v8 addExecutionBlock:v11];
-  [v8 setName:v6];
+  [v8 setName:namedCopy];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);

@@ -1,37 +1,37 @@
 @interface FKFoundInMailItemRowOrderDetailsViewModel
-- (FKFoundInMailItemRowOrderDetailsViewModel)initWithEmailType:(unint64_t)a3 merchantDisplayName:(id)a4 orderNumber:(id)a5 shippingStatus:(unint64_t)a6 shippingDetailsTrackingNumber:(id)a7 shippingDetailsCarrierName:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FKFoundInMailItemRowOrderDetailsViewModel)initWithEmailType:(unint64_t)type merchantDisplayName:(id)name orderNumber:(id)number shippingStatus:(unint64_t)status shippingDetailsTrackingNumber:(id)trackingNumber shippingDetailsCarrierName:(id)carrierName;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FKFoundInMailItemRowOrderDetailsViewModel
 
-- (FKFoundInMailItemRowOrderDetailsViewModel)initWithEmailType:(unint64_t)a3 merchantDisplayName:(id)a4 orderNumber:(id)a5 shippingStatus:(unint64_t)a6 shippingDetailsTrackingNumber:(id)a7 shippingDetailsCarrierName:(id)a8
+- (FKFoundInMailItemRowOrderDetailsViewModel)initWithEmailType:(unint64_t)type merchantDisplayName:(id)name orderNumber:(id)number shippingStatus:(unint64_t)status shippingDetailsTrackingNumber:(id)trackingNumber shippingDetailsCarrierName:(id)carrierName
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  numberCopy = number;
+  trackingNumberCopy = trackingNumber;
+  carrierNameCopy = carrierName;
   v29.receiver = self;
   v29.super_class = FKFoundInMailItemRowOrderDetailsViewModel;
   v18 = [(FKFoundInMailItemRowOrderDetailsViewModel *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    v18->_emailType = a3;
-    v20 = [v14 copy];
+    v18->_emailType = type;
+    v20 = [nameCopy copy];
     merchantDisplayName = v19->_merchantDisplayName;
     v19->_merchantDisplayName = v20;
 
-    v22 = [v15 copy];
+    v22 = [numberCopy copy];
     orderNumber = v19->_orderNumber;
     v19->_orderNumber = v22;
 
-    v19->_shippingStatus = a6;
-    v24 = [v16 copy];
+    v19->_shippingStatus = status;
+    v24 = [trackingNumberCopy copy];
     shippingDetailsTrackingNumber = v19->_shippingDetailsTrackingNumber;
     v19->_shippingDetailsTrackingNumber = v24;
 
-    v26 = [v17 copy];
+    v26 = [carrierNameCopy copy];
     shippingDetailsCarrierName = v19->_shippingDetailsCarrierName;
     v19->_shippingDetailsCarrierName = v26;
   }
@@ -39,9 +39,9 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v4[4] = self->_emailType;
   v5 = [(NSString *)self->_merchantDisplayName copy];
   v6 = v4[5];

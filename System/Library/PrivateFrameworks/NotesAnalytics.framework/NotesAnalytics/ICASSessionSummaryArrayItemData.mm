@@ -1,24 +1,24 @@
 @interface ICASSessionSummaryArrayItemData
-- (ICASSessionSummaryArrayItemData)initWithSessionType:(id)a3 sessionDuration:(id)a4 sessionCount:(id)a5;
+- (ICASSessionSummaryArrayItemData)initWithSessionType:(id)type sessionDuration:(id)duration sessionCount:(id)count;
 - (id)toDict;
 @end
 
 @implementation ICASSessionSummaryArrayItemData
 
-- (ICASSessionSummaryArrayItemData)initWithSessionType:(id)a3 sessionDuration:(id)a4 sessionCount:(id)a5
+- (ICASSessionSummaryArrayItemData)initWithSessionType:(id)type sessionDuration:(id)duration sessionCount:(id)count
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  durationCopy = duration;
+  countCopy = count;
   v15.receiver = self;
   v15.super_class = ICASSessionSummaryArrayItemData;
   v12 = [(ICASSessionSummaryArrayItemData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionType, a3);
-    objc_storeStrong(&v13->_sessionDuration, a4);
-    objc_storeStrong(&v13->_sessionCount, a5);
+    objc_storeStrong(&v12->_sessionType, type);
+    objc_storeStrong(&v13->_sessionDuration, duration);
+    objc_storeStrong(&v13->_sessionCount, count);
   }
 
   return v13;
@@ -28,47 +28,47 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"sessionType";
-  v3 = [(ICASSessionSummaryArrayItemData *)self sessionType];
-  if (v3)
+  sessionType = [(ICASSessionSummaryArrayItemData *)self sessionType];
+  if (sessionType)
   {
-    v4 = [(ICASSessionSummaryArrayItemData *)self sessionType];
+    sessionType2 = [(ICASSessionSummaryArrayItemData *)self sessionType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    sessionType2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v16[0] = v4;
+  v5 = sessionType2;
+  v16[0] = sessionType2;
   v15[1] = @"sessionDuration";
-  v6 = [(ICASSessionSummaryArrayItemData *)self sessionDuration];
-  if (v6)
+  sessionDuration = [(ICASSessionSummaryArrayItemData *)self sessionDuration];
+  if (sessionDuration)
   {
-    v7 = [(ICASSessionSummaryArrayItemData *)self sessionDuration];
+    sessionDuration2 = [(ICASSessionSummaryArrayItemData *)self sessionDuration];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    sessionDuration2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v16[1] = v7;
+  v8 = sessionDuration2;
+  v16[1] = sessionDuration2;
   v15[2] = @"sessionCount";
-  v9 = [(ICASSessionSummaryArrayItemData *)self sessionCount];
-  if (v9)
+  sessionCount = [(ICASSessionSummaryArrayItemData *)self sessionCount];
+  if (sessionCount)
   {
-    v10 = [(ICASSessionSummaryArrayItemData *)self sessionCount];
+    sessionCount2 = [(ICASSessionSummaryArrayItemData *)self sessionCount];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    sessionCount2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v16[2] = v10;
+  v11 = sessionCount2;
+  v16[2] = sessionCount2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v13 = *MEMORY[0x277D85DE8];

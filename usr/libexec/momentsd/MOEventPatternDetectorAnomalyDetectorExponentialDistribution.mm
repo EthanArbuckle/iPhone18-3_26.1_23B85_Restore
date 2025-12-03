@@ -1,7 +1,7 @@
 @interface MOEventPatternDetectorAnomalyDetectorExponentialDistribution
-- (BOOL)configure:(id)a3;
+- (BOOL)configure:(id)configure;
 - (MOEventPatternDetectorAnomalyDetectorExponentialDistribution)init;
-- (id)extractAnomalyEventsFrom:(id)a3 withFeatures:(id)a4;
+- (id)extractAnomalyEventsFrom:(id)from withFeatures:(id)features;
 @end
 
 @implementation MOEventPatternDetectorAnomalyDetectorExponentialDistribution
@@ -25,10 +25,10 @@
   return v3;
 }
 
-- (id)extractAnomalyEventsFrom:(id)a3 withFeatures:(id)a4
+- (id)extractAnomalyEventsFrom:(id)from withFeatures:(id)features
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  featuresCopy = features;
   if (self->_tukeyFactorForExponentialDistributionOutlier == -1.0 || self->_minimumFeatureSizeForPersonalizedThreshold == -1.0 || self->_minimumFeatureNumberForPersonalizedThreshold == -1 || self->_maximumThreshold == -1.0 || self->_minimumThreshold == -1.0)
   {
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
@@ -52,17 +52,17 @@
     v79 = v12;
     v91 = [v12 dateFromComponents:v13];
     v94 = [v91 dateByAddingTimeInterval:-86400.0];
-    if ([v6 count])
+    if ([fromCopy count])
     {
       v14 = 0;
-      v82 = v6;
-      v81 = v7;
-      v84 = self;
+      v82 = fromCopy;
+      v81 = featuresCopy;
+      selfCopy = self;
       while (1)
       {
-        v15 = [v6 objectAtIndex:v14];
+        v15 = [fromCopy objectAtIndex:v14];
         v83 = v14;
-        v16 = [v7 objectAtIndex:v14];
+        v16 = [featuresCopy objectAtIndex:v14];
         if ([v16 count])
         {
           v17 = 0;
@@ -75,8 +75,8 @@
           {
             v21 = [v15 objectAtIndex:v17];
             v22 = [v16 objectAtIndex:v17];
-            v23 = [v21 startDate];
-            v24 = [v23 compare:v94];
+            startDate = [v21 startDate];
+            v24 = [startDate compare:v94];
 
             if (v24 == -1)
             {
@@ -86,17 +86,17 @@
               {
                 if (!v18)
                 {
-                  v26 = [v21 startDate];
+                  startDate2 = [v21 startDate];
 
-                  v89 = v26;
+                  v89 = startDate2;
                 }
 
                 [v22 doubleValue];
                 v20 = v20 + v27;
                 ++v18;
-                v28 = [v21 startDate];
+                startDate3 = [v21 startDate];
 
-                v92 = v28;
+                v92 = startDate3;
               }
             }
 
@@ -149,8 +149,8 @@
 LABEL_73:
 
         v14 = v83 + 1;
-        v6 = v82;
-        v7 = v81;
+        fromCopy = v82;
+        featuresCopy = v81;
         if ([v82 count] <= v83 + 1)
         {
           goto LABEL_74;
@@ -164,14 +164,14 @@ LABEL_73:
       {
         v34 = [v15 objectAtIndex:v32];
         v35 = [v16 objectAtIndex:v32];
-        v36 = [v34 startDate];
-        if ([(MOEvent *)v36 compare:v94]!= 1)
+        startDate4 = [v34 startDate];
+        if ([(MOEvent *)startDate4 compare:v94]!= 1)
         {
           goto LABEL_68;
         }
 
-        v37 = [v34 startDate];
-        v38 = [v37 compare:v91];
+        startDate5 = [v34 startDate];
+        v38 = [startDate5 compare:v91];
 
         if (v38 == -1)
         {
@@ -196,29 +196,29 @@ LABEL_45:
             v88 = v33 + 1;
             v42 = [MOEvent alloc];
             v43 = +[NSUUID UUID];
-            v44 = [v34 startDate];
-            v45 = [v34 endDate];
+            startDate6 = [v34 startDate];
+            endDate = [v34 endDate];
             v46 = +[NSDate date];
-            v36 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v42, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v43, v44, v45, v46, 5, [v34 category]);
+            startDate4 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v42, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v43, startDate6, endDate, v46, 5, [v34 category]);
 
-            v47 = [v34 endDate];
-            v48 = [v47 dateByAddingTimeInterval:2419200.0];
-            [(MOEvent *)v36 setExpirationDate:v48];
+            endDate2 = [v34 endDate];
+            v48 = [endDate2 dateByAddingTimeInterval:2419200.0];
+            [(MOEvent *)startDate4 setExpirationDate:v48];
 
             if ([v34 timeAtHomeSubType])
             {
-              -[MOEvent setTimeAtHomeSubType:](v36, "setTimeAtHomeSubType:", [v34 timeAtHomeSubType]);
+              -[MOEvent setTimeAtHomeSubType:](startDate4, "setTimeAtHomeSubType:", [v34 timeAtHomeSubType]);
             }
 
             v49 = objc_opt_new();
             [v49 setObject:&off_100368B30 forKeyedSubscript:@"kEventPatternType"];
-            self = v84;
-            v50 = [NSNumber numberWithUnsignedInteger:v84->_anomalyFeatureType];
+            self = selfCopy;
+            v50 = [NSNumber numberWithUnsignedInteger:selfCopy->_anomalyFeatureType];
             [v49 setObject:v50 forKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
 
-            v51 = [v34 eventIdentifier];
-            v52 = [v51 UUIDString];
-            [v49 setObject:v52 forKeyedSubscript:@"kEventPatternAnomalousEventIdentifier"];
+            eventIdentifier = [v34 eventIdentifier];
+            uUIDString = [eventIdentifier UUIDString];
+            [v49 setObject:uUIDString forKeyedSubscript:@"kEventPatternAnomalousEventIdentifier"];
 
             [v35 doubleValue];
             v53 = [NSNumber numberWithDouble:?];
@@ -240,8 +240,8 @@ LABEL_45:
 
             if ([v34 category] == 2)
             {
-              v58 = [v34 workoutType];
-              if (v58)
+              workoutType = [v34 workoutType];
+              if (workoutType)
               {
                 [v34 workoutType];
               }
@@ -256,8 +256,8 @@ LABEL_45:
 
             if ([v34 category] == 16)
             {
-              v60 = [v34 workoutType];
-              if (v60)
+              workoutType2 = [v34 workoutType];
+              if (workoutType2)
               {
                 [v34 workoutType];
               }
@@ -273,52 +273,52 @@ LABEL_45:
               [v49 setObject:v62 forKeyedSubscript:@"kEventPatternAnomalyMotionType"];
             }
 
-            v63 = [v34 pCount];
-            if (v63)
+            pCount = [v34 pCount];
+            if (pCount)
             {
-              v64 = v63;
-              v65 = [v34 pCount];
-              v66 = [v65 intValue];
+              v64 = pCount;
+              pCount2 = [v34 pCount];
+              intValue = [pCount2 intValue];
 
-              if ((v66 & 0x80000000) == 0)
+              if ((intValue & 0x80000000) == 0)
               {
-                v67 = [v34 pCount];
-                [v49 setObject:v67 forKeyedSubscript:@"kEventPatternAnomalyPcount"];
+                pCount3 = [v34 pCount];
+                [v49 setObject:pCount3 forKeyedSubscript:@"kEventPatternAnomalyPcount"];
               }
             }
 
-            v68 = [v34 densityScore];
-            if (v68)
+            densityScore = [v34 densityScore];
+            if (densityScore)
             {
-              v69 = v68;
-              v70 = [v34 densityScore];
-              v71 = [v70 intValue];
+              v69 = densityScore;
+              densityScore2 = [v34 densityScore];
+              intValue2 = [densityScore2 intValue];
 
-              if ((v71 & 0x80000000) == 0)
+              if ((intValue2 & 0x80000000) == 0)
               {
-                v72 = [v34 densityScore];
-                [v49 setObject:v72 forKeyedSubscript:@"kEventPatternAnomalyDensityScore"];
+                densityScore3 = [v34 densityScore];
+                [v49 setObject:densityScore3 forKeyedSubscript:@"kEventPatternAnomalyDensityScore"];
               }
             }
 
             if ([v34 category] == 10)
             {
-              v73 = [v34 interactionScoredContact];
-              v74 = [v73 contact];
-              v75 = [v74 identifier];
-              [v49 setObject:v75 forKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
+              interactionScoredContact = [v34 interactionScoredContact];
+              contact = [interactionScoredContact contact];
+              identifier = [contact identifier];
+              [v49 setObject:identifier forKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
             }
 
             if ([v34 category] == 24)
             {
-              v76 = [v34 stateOfMindEvent];
-              [v76 valenceClassification];
+              stateOfMindEvent = [v34 stateOfMindEvent];
+              [stateOfMindEvent valenceClassification];
               v77 = [NSNumber numberWithDouble:?];
               [v49 setObject:v77 forKeyedSubscript:@"kEventPatternAnomalyStateOfMind"];
             }
 
-            [(MOEvent *)v36 setPatterns:v49];
-            [v86 addObject:v36];
+            [(MOEvent *)startDate4 setPatterns:v49];
+            [v86 addObject:startDate4];
 
             v33 = v88;
 LABEL_68:
@@ -358,17 +358,17 @@ LABEL_74:
   return v9;
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
-  v4 = a3;
-  v5 = [v4 count];
+  configureCopy = configure;
+  v5 = [configureCopy count];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"TukeyFactorForExponentialDistributionOutlier"];
+    v6 = [configureCopy objectForKey:@"TukeyFactorForExponentialDistributionOutlier"];
 
     if (v6)
     {
-      v7 = [v4 objectForKeyedSubscript:@"TukeyFactorForExponentialDistributionOutlier"];
+      v7 = [configureCopy objectForKeyedSubscript:@"TukeyFactorForExponentialDistributionOutlier"];
       [v7 doubleValue];
       self->_tukeyFactorForExponentialDistributionOutlier = v8;
     }
@@ -382,11 +382,11 @@ LABEL_74:
       }
     }
 
-    v10 = [v4 objectForKey:@"MaximumThreshold"];
+    v10 = [configureCopy objectForKey:@"MaximumThreshold"];
 
     if (v10)
     {
-      v11 = [v4 objectForKeyedSubscript:@"MaximumThreshold"];
+      v11 = [configureCopy objectForKeyedSubscript:@"MaximumThreshold"];
       [v11 doubleValue];
       self->_maximumThreshold = v12;
     }
@@ -400,11 +400,11 @@ LABEL_74:
       }
     }
 
-    v13 = [v4 objectForKey:@"MinimumThreshold"];
+    v13 = [configureCopy objectForKey:@"MinimumThreshold"];
 
     if (v13)
     {
-      v14 = [v4 objectForKeyedSubscript:@"MinimumThreshold"];
+      v14 = [configureCopy objectForKeyedSubscript:@"MinimumThreshold"];
       [v14 doubleValue];
       self->_minimumThreshold = v15;
     }
@@ -418,11 +418,11 @@ LABEL_74:
       }
     }
 
-    v16 = [v4 objectForKey:@"MinimumFeatureNumberForPersonalizedThreshold"];
+    v16 = [configureCopy objectForKey:@"MinimumFeatureNumberForPersonalizedThreshold"];
 
     if (v16)
     {
-      v17 = [v4 objectForKeyedSubscript:@"MinimumFeatureNumberForPersonalizedThreshold"];
+      v17 = [configureCopy objectForKeyedSubscript:@"MinimumFeatureNumberForPersonalizedThreshold"];
       self->_minimumFeatureNumberForPersonalizedThreshold = [v17 intValue];
     }
 
@@ -435,11 +435,11 @@ LABEL_74:
       }
     }
 
-    v18 = [v4 objectForKey:@"MinimumFeatureSizeForPersonalizedThreshold"];
+    v18 = [configureCopy objectForKey:@"MinimumFeatureSizeForPersonalizedThreshold"];
 
     if (v18)
     {
-      v19 = [v4 objectForKeyedSubscript:@"MinimumFeatureSizeForPersonalizedThreshold"];
+      v19 = [configureCopy objectForKeyedSubscript:@"MinimumFeatureSizeForPersonalizedThreshold"];
       [v19 doubleValue];
       self->_minimumFeatureSizeForPersonalizedThreshold = v20;
     }
@@ -453,11 +453,11 @@ LABEL_74:
       }
     }
 
-    v21 = [v4 objectForKey:@"AnomalyFeatureType"];
+    v21 = [configureCopy objectForKey:@"AnomalyFeatureType"];
 
     if (v21)
     {
-      v22 = [v4 objectForKeyedSubscript:@"AnomalyFeatureType"];
+      v22 = [configureCopy objectForKeyedSubscript:@"AnomalyFeatureType"];
       self->_anomalyFeatureType = [v22 intValue];
     }
 

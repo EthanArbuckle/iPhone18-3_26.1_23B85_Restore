@@ -1,6 +1,6 @@
 @interface _UISearchBarScopeContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UISearchBarScopeContainerView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UISearchBarScopeContainerView)initWithFrame:(CGRect)frame;
 - (id)description;
 - (void)layoutSubviews;
 - (void)setNeedsLayout;
@@ -8,11 +8,11 @@
 
 @implementation _UISearchBarScopeContainerView
 
-- (_UISearchBarScopeContainerView)initWithFrame:(CGRect)a3
+- (_UISearchBarScopeContainerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UISearchBarScopeContainerView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_UISearchBarScopeContainerLayout);
@@ -20,14 +20,14 @@
     v3->_layout = v4;
 
     [(UIView *)v3 setClipsToBounds:1];
-    v6 = [(UIView *)v3 layer];
-    [v6 setAllowsGroupOpacity:0];
+    layer = [(UIView *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   layout = self->_layout;
@@ -99,12 +99,12 @@
   [(_UISearchBarLayoutBase *)self->_layout setContainerSafeAreaInsets:?];
   [(_UISearchBarScopeContainerLayout *)self->_layout applyLayout];
   v7 = os_variant_has_internal_diagnostics();
-  v8 = [(_UISearchBarScopeContainerLayout *)self->_layout delegate];
-  v9 = [v8 isProspective];
+  delegate = [(_UISearchBarScopeContainerLayout *)self->_layout delegate];
+  isProspective = [delegate isProspective];
 
   if (v7)
   {
-    if (v9)
+    if (isProspective)
     {
       v11 = __UIFaultDebugAssertLog();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -114,9 +114,9 @@ LABEL_18:
         return;
       }
 
-      v12 = [(UIView *)self recursiveDescription];
+      recursiveDescription = [(UIView *)self recursiveDescription];
       v15 = 138412290;
-      v16 = v12;
+      v16 = recursiveDescription;
       _os_log_fault_impl(&dword_188A29000, v11, OS_LOG_TYPE_FAULT, "Live layout with a prospective search layout. Scope Bar container layout (e.g., search scope bar size and positioning) may be incorrect. Please send to UIKit for investigation, and include the following recursive description.\n%@", &v15, 0xCu);
 LABEL_17:
 
@@ -124,15 +124,15 @@ LABEL_17:
     }
   }
 
-  else if (v9)
+  else if (isProspective)
   {
     v14 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49CA30) + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v11 = v14;
-      v12 = [(UIView *)self recursiveDescription];
+      recursiveDescription = [(UIView *)self recursiveDescription];
       v15 = 138412290;
-      v16 = v12;
+      v16 = recursiveDescription;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Live layout with a prospective search layout. Scope Bar container layout (e.g., search scope bar size and positioning) may be incorrect. Please send to UIKit for investigation, and include the following recursive description.\n%@", &v15, 0xCu);
       goto LABEL_17;
     }

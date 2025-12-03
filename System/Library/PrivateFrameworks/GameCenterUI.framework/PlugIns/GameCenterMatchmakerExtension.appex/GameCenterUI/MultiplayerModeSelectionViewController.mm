@@ -1,62 +1,62 @@
 @interface MultiplayerModeSelectionViewController
-+ (id)viewControllerWithRequest:(id)a3 game:(id)a4 multiplayerViewController:(id)a5 dismissHandler:(id)a6;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
++ (id)viewControllerWithRequest:(id)request game:(id)game multiplayerViewController:(id)controller dismissHandler:(id)handler;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (NSArray)preferredFocusEnvironments;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)contentScrollView;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)didEnterBackgroundWithNotif:(id)a3;
-- (void)donePressed:(id)a3;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)didEnterBackgroundWithNotif:(id)notif;
+- (void)donePressed:(id)pressed;
 - (void)launchSharePlayChiclet;
-- (void)setCollectionView:(id)a3;
-- (void)setIsEligibleForGroupSession:(BOOL)a3;
-- (void)setIsEntitledToUseGroupActivities:(BOOL)a3;
-- (void)setOriginalMatchmakingMode:(int64_t)a3;
+- (void)setCollectionView:(id)view;
+- (void)setIsEligibleForGroupSession:(BOOL)session;
+- (void)setIsEntitledToUseGroupActivities:(BOOL)activities;
+- (void)setOriginalMatchmakingMode:(int64_t)mode;
 - (void)showLobbyWithOriginalRequest;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willEnterForegroundWithNotif:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willEnterForegroundWithNotif:(id)notif;
 @end
 
 @implementation MultiplayerModeSelectionViewController
 
-- (void)setOriginalMatchmakingMode:(int64_t)a3
+- (void)setOriginalMatchmakingMode:(int64_t)mode
 {
-  v4 = self;
-  MultiplayerModeSelectionViewController.originalMatchmakingMode.setter(a3);
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.originalMatchmakingMode.setter(mode);
 }
 
-- (void)setIsEligibleForGroupSession:(BOOL)a3
+- (void)setIsEligibleForGroupSession:(BOOL)session
 {
-  v4 = self;
-  MultiplayerModeSelectionViewController.isEligibleForGroupSession.setter(a3);
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.isEligibleForGroupSession.setter(session);
 }
 
-- (void)setIsEntitledToUseGroupActivities:(BOOL)a3
+- (void)setIsEntitledToUseGroupActivities:(BOOL)activities
 {
-  v4 = self;
-  MultiplayerModeSelectionViewController.isEntitledToUseGroupActivities.setter(a3);
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.isEntitledToUseGroupActivities.setter(activities);
 }
 
 - (void)launchSharePlayChiclet
 {
-  v2 = self;
+  selfCopy = self;
   MultiplayerModeSelectionViewController.launchSharePlayChiclet()();
 }
 
 - (void)showLobbyWithOriginalRequest
 {
-  v2 = self;
+  selfCopy = self;
   MultiplayerModeSelectionViewController.showLobbyWithOriginalRequest()();
 }
 
@@ -67,46 +67,46 @@
   return v0;
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_10000E52C(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10000E52C(view);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MultiplayerModeSelectionViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  MultiplayerModeSelectionViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  MultiplayerModeSelectionViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  MultiplayerModeSelectionViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  MultiplayerModeSelectionViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.viewDidDisappear(_:)(disappear);
 }
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   MultiplayerModeSelectionViewController.preferredFocusEnvironments.getter();
 
   sub_100005BC4(&qword_100028BB8);
@@ -117,41 +117,41 @@
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   MultiplayerModeSelectionViewController.viewSafeAreaInsetsDidChange()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   MultiplayerModeSelectionViewController.traitCollectionDidChange(_:)(v9);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MultiplayerModeSelectionViewController.viewWillLayoutSubviews()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  MultiplayerModeSelectionViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
-  if (a3)
+  if (pressed)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100014438();
     swift_unknownObjectRelease();
@@ -160,7 +160,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10000FE2C();
@@ -168,9 +168,9 @@
   sub_100013B48(v6, &qword_100028D28);
 }
 
-+ (id)viewControllerWithRequest:(id)a3 game:(id)a4 multiplayerViewController:(id)a5 dismissHandler:(id)a6
++ (id)viewControllerWithRequest:(id)request game:(id)game multiplayerViewController:(id)controller dismissHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   if (v9)
   {
     v10 = swift_allocObject();
@@ -184,36 +184,36 @@
   }
 
   swift_getObjCClassMetadata();
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = static MultiplayerModeSelectionViewController.viewController(request:game:multiplayerViewController:dismissHandler:)(v11, v12, v13, v9, v10);
+  requestCopy = request;
+  gameCopy = game;
+  controllerCopy = controller;
+  v14 = static MultiplayerModeSelectionViewController.viewController(request:game:multiplayerViewController:dismissHandler:)(requestCopy, gameCopy, controllerCopy, v9, v10);
   sub_10000D204(v9);
 
   return v14;
 }
 
-- (void)didEnterBackgroundWithNotif:(id)a3
+- (void)didEnterBackgroundWithNotif:(id)notif
 {
-  v4 = a3;
-  v5 = self;
+  notifCopy = notif;
+  selfCopy = self;
   sub_100010FE0();
 }
 
-- (void)willEnterForegroundWithNotif:(id)a3
+- (void)willEnterForegroundWithNotif:(id)notif
 {
-  v4 = a3;
-  v5 = self;
+  notifCopy = notif;
+  selfCopy = self;
   sub_100011064();
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
   v5 = sub_100005BC4(&qword_100028D20);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   MultiplayerModeSelectionViewController.indexPathForPreferredFocusedView(in:)(v7);
 
   v10 = sub_1000141B8();
@@ -227,47 +227,47 @@
   return isa;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_1000141B8();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100014188();
-  v10 = a3;
-  v11 = self;
-  v12 = MultiplayerModeSelectionViewController.collectionView(_:cellForItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = MultiplayerModeSelectionViewController.collectionView(_:cellForItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_1000141B8();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100014188();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   MultiplayerModeSelectionViewController.collectionView(_:didSelectItemAt:)();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = sub_1000141B8();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v21 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100014188();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  MultiplayerModeSelectionViewController.collectionView(_:layout:sizeForItemAt:)(v12);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.collectionView(_:layout:sizeForItemAt:)(viewCopy);
   v16 = v15;
   v18 = v17;
 
@@ -279,22 +279,22 @@
   return result;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
   v10 = MultiplayerModeSelectionViewController.collectionView(_:layout:minimumLineSpacingForSectionAt:)();
 
   return v10;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  MultiplayerModeSelectionViewController.collectionView(_:layout:insetForSectionAt:)(v8, v9, a5);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  MultiplayerModeSelectionViewController.collectionView(_:layout:insetForSectionAt:)(viewCopy, layoutCopy, index);
   v12 = v11;
   v14 = v13;
   v16 = v15;

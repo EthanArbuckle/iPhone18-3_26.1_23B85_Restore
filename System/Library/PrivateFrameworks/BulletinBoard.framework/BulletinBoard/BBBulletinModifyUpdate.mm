@@ -1,13 +1,13 @@
 @interface BBBulletinModifyUpdate
-+ (id)updateWithBulletin:(id)a3 feeds:(unint64_t)a4;
++ (id)updateWithBulletin:(id)bulletin feeds:(unint64_t)feeds;
 @end
 
 @implementation BBBulletinModifyUpdate
 
-+ (id)updateWithBulletin:(id)a3 feeds:(unint64_t)a4
++ (id)updateWithBulletin:(id)bulletin feeds:(unint64_t)feeds
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithBulletin:v6 feeds:a4];
+  bulletinCopy = bulletin;
+  v7 = [[self alloc] initWithBulletin:bulletinCopy feeds:feeds];
 
   return v7;
 }

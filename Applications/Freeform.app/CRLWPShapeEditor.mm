@@ -4,49 +4,49 @@
 - (BOOL)shouldAddAutosizeTextMenuItem;
 - (CRLPlatformControlState)shrinkToFitControlState;
 - (NSArray)wpEditors;
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (void)addContextualMenuElementsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)saveDefaultInsertionPreset:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleShrinkToFit:(id)a3;
-- (void)updateStateForCommand:(id)a3;
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (void)addContextualMenuElementsToArray:(id)array atPoint:(CGPoint)point;
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point;
+- (void)saveDefaultInsertionPreset:(id)preset;
+- (void)toggleItalics:(id)italics;
+- (void)toggleShrinkToFit:(id)fit;
+- (void)updateStateForCommand:(id)command;
 @end
 
 @implementation CRLWPShapeEditor
 
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  selectionCopy = selection;
+  stackCopy = stack;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v24 = [v11 selectionModelTranslator];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
 
-    v12 = [v24 infosForSelectionPath:v10];
+    v12 = [selectionModelTranslator infosForSelectionPath:pathCopy];
     v13 = objc_opt_class();
-    v14 = [v12 crl_onlyObject];
-    v15 = sub_100013F00(v13, v14);
+    crl_onlyObject = [v12 crl_onlyObject];
+    v15 = sub_100013F00(v13, crl_onlyObject);
 
     v16 = objc_opt_class();
-    v17 = [v15 parentInfo];
-    v18 = sub_100013F00(v16, v17);
+    parentInfo = [v15 parentInfo];
+    v18 = sub_100013F00(v16, parentInfo);
 
     v19 = [_TtC8Freeform11CRLWPEditor alloc];
-    v20 = [(CRLBoardItemEditor *)self editingCoordinator];
-    v21 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v22 = [(CRLWPEditor *)v19 initWithEditingCoordinator:v20 enclosingShape:v18 icc:v21];
+    editingCoordinator = [(CRLBoardItemEditor *)self editingCoordinator];
+    interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    v22 = [(CRLWPEditor *)v19 initWithEditingCoordinator:editingCoordinator enclosingShape:v18 icc:interactiveCanvasController2];
   }
 
   else
   {
     v25.receiver = self;
     v25.super_class = CRLWPShapeEditor;
-    v22 = [(CRLShapeEditor *)&v25 nextEditorForSelection:v8 withNewEditorStack:v9 selectionPath:v10];
+    v22 = [(CRLShapeEditor *)&v25 nextEditorForSelection:selectionCopy withNewEditorStack:stackCopy selectionPath:pathCopy];
   }
 
   return v22;
@@ -82,16 +82,16 @@
         if (v11)
         {
           v12 = [_TtC8Freeform11CRLWPEditor alloc];
-          v13 = [(CRLBoardItemEditor *)self editingCoordinator];
-          v14 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-          v15 = [(CRLWPEditor *)v12 initWithEditingCoordinator:v13 enclosingShape:v11 icc:v14];
+          editingCoordinator = [(CRLBoardItemEditor *)self editingCoordinator];
+          interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+          v15 = [(CRLWPEditor *)v12 initWithEditingCoordinator:editingCoordinator enclosingShape:v11 icc:interactiveCanvasController];
 
           if (v15)
           {
-            v16 = [(CRLWPEditor *)v15 storage];
-            v17 = [_TtC8Freeform12CRLTextRange textRangeForAllOf:v16];
-            v18 = [(CRLWPEditor *)v15 textSelectionDelegate];
-            [v18 setSelectedTextRange:v17];
+            storage = [(CRLWPEditor *)v15 storage];
+            v17 = [_TtC8Freeform12CRLTextRange textRangeForAllOf:storage];
+            textSelectionDelegate = [(CRLWPEditor *)v15 textSelectionDelegate];
+            [textSelectionDelegate setSelectedTextRange:v17];
 
             [v20 addObject:v15];
           }
@@ -107,26 +107,26 @@
   return v20;
 }
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("saveDefaultInsertionPreset:" == a3)
+  senderCopy = sender;
+  if ("saveDefaultInsertionPreset:" == action)
   {
-    v10 = [(CRLWPShapeEditor *)self p_canSaveDefaultInsertionPreset];
+    p_canSaveDefaultInsertionPreset = [(CRLWPShapeEditor *)self p_canSaveDefaultInsertionPreset];
     goto LABEL_32;
   }
 
-  if ("alignTop:" == a3 || "alignBottom:" == a3 || "alignMiddle:" == a3 || "alignJustify:" == a3)
+  if ("alignTop:" == action || "alignBottom:" == action || "alignMiddle:" == action || "alignJustify:" == action)
   {
-    v10 = [(CRLShapeEditor *)self anyInfoSupportsVerticalAlignment];
+    p_canSaveDefaultInsertionPreset = [(CRLShapeEditor *)self anyInfoSupportsVerticalAlignment];
     goto LABEL_32;
   }
 
-  if ("toggleBoldface:" == a3 || "toggleUnderline:" == a3 || "toggleItalics:" == a3 || "toggleStrikethrough:" == a3 || "alignLeft:" == a3 || "alignRight:" == a3 || "alignCenter:" == a3 || "alignJustified:" == a3 || "decreaseFontSizeByOne:" == a3 || "increaseFontSizeByOne:" == a3 || "decreaseSize:" == a3 || "increaseSize:" == a3)
+  if ("toggleBoldface:" == action || "toggleUnderline:" == action || "toggleItalics:" == action || "toggleStrikethrough:" == action || "alignLeft:" == action || "alignRight:" == action || "alignCenter:" == action || "alignJustified:" == action || "decreaseFontSizeByOne:" == action || "increaseFontSizeByOne:" == action || "decreaseSize:" == action || "increaseSize:" == action)
   {
-    v10 = [(CRLShapeEditor *)self anyInfoSupportsTextInspection];
+    p_canSaveDefaultInsertionPreset = [(CRLShapeEditor *)self anyInfoSupportsTextInspection];
 LABEL_32:
-    if (v10)
+    if (p_canSaveDefaultInsertionPreset)
     {
       v11 = 1;
     }
@@ -139,7 +139,7 @@ LABEL_32:
     goto LABEL_35;
   }
 
-  if ("toggleShrinkToFit:" == a3 && [(CRLShapeEditor *)self anyInfoSupportsTextInspection]&& [(CRLWPShapeEditor *)self shouldAddAutosizeTextMenuItem])
+  if ("toggleShrinkToFit:" == action && [(CRLShapeEditor *)self anyInfoSupportsTextInspection]&& [(CRLWPShapeEditor *)self shouldAddAutosizeTextMenuItem])
   {
     v11 = 1;
   }
@@ -148,7 +148,7 @@ LABEL_32:
   {
     v13.receiver = self;
     v13.super_class = CRLWPShapeEditor;
-    v11 = [(CRLShapeEditor *)&v13 canPerformEditorAction:a3 withSender:v6];
+    v11 = [(CRLShapeEditor *)&v13 canPerformEditorAction:action withSender:senderCopy];
   }
 
 LABEL_35:
@@ -239,9 +239,9 @@ LABEL_35:
         v21 = [NSSet setWithObject:v15];
         v8 = [CRLShapeEditor infosAreLines:v21];
         v7 = [CRLShapeEditor infosAreStickyNotes:v21];
-        v22 = [v15 isAutogrowingTextBox];
-        v6 = v22;
-        if (v5 & 1) != 0 && (((v12 ^ v8) & 1) != 0 || ((v11 ^ v7) & 1) != 0 || ((v10 ^ v22)))
+        isAutogrowingTextBox = [v15 isAutogrowingTextBox];
+        v6 = isAutogrowingTextBox;
+        if (v5 & 1) != 0 && (((v12 ^ v8) & 1) != 0 || ((v11 ^ v7) & 1) != 0 || ((v10 ^ isAutogrowingTextBox)))
         {
 
           v25 = 1;
@@ -272,20 +272,20 @@ LABEL_24:
   return v25;
 }
 
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  arrayCopy = array;
   v38.receiver = self;
   v38.super_class = CRLWPShapeEditor;
-  [(CRLShapeEditor *)&v38 addMiniFormatterElementsToArray:v7 atPoint:x, y];
-  v8 = [(CRLBoardItemEditor *)self boardItems];
-  if ([v8 count] >= 2)
+  [(CRLShapeEditor *)&v38 addMiniFormatterElementsToArray:arrayCopy atPoint:x, y];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  if ([boardItems count] >= 2)
   {
-    v9 = [(CRLWPShapeEditor *)self p_shapesAreDifferent];
+    p_shapesAreDifferent = [(CRLWPShapeEditor *)self p_shapesAreDifferent];
 
-    if (v9)
+    if (p_shapesAreDifferent)
     {
       goto LABEL_14;
     }
@@ -295,27 +295,27 @@ LABEL_24:
   {
   }
 
-  v10 = [(CRLBoardItemEditor *)self boardItems];
-  if ([CRLShapeEditor infosAreStickyNotes:v10])
+  boardItems2 = [(CRLBoardItemEditor *)self boardItems];
+  if ([CRLShapeEditor infosAreStickyNotes:boardItems2])
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v11 = [(CRLBoardItemEditor *)self boardItems];
-  v12 = [CRLShapeEditor infosAreLines:v11];
+  boardItems3 = [(CRLBoardItemEditor *)self boardItems];
+  v12 = [CRLShapeEditor infosAreLines:boardItems3];
 
   if ((v12 & 1) == 0)
   {
     v13 = objc_opt_class();
-    v14 = [(CRLBoardItemEditor *)self boardItems];
-    v15 = [v14 anyObject];
-    v10 = sub_100013F00(v13, v15);
+    boardItems4 = [(CRLBoardItemEditor *)self boardItems];
+    anyObject = [boardItems4 anyObject];
+    boardItems2 = sub_100013F00(v13, anyObject);
 
-    v16 = [v10 isAutogrowingTextBox];
-    v17 = v16;
-    if (v16)
+    isAutogrowingTextBox = [boardItems2 isAutogrowingTextBox];
+    v17 = isAutogrowingTextBox;
+    if (isAutogrowingTextBox)
     {
       v18 = +[NSBundle mainBundle];
       v19 = [v18 localizedStringForKey:@"Set Text Color" value:0 table:0];
@@ -327,7 +327,7 @@ LABEL_13:
       v23 = [v22 localizedStringForKey:@"Choose a text color" value:0 table:0];
       [v21 setToolTip:v23];
 
-      [v7 addObject:v21];
+      [arrayCopy addObject:v21];
       v24 = 0x20000;
     }
 
@@ -349,7 +349,7 @@ LABEL_13:
       v31 = [v29 localizedStringForKey:@"Format text value:change alignment table:{or choose a list style", 0, 0}];
       [v28 setToolTip:v31];
 
-      [v7 addObject:v28];
+      [arrayCopy addObject:v28];
       v32 = +[NSBundle mainBundle];
       v33 = [v32 localizedStringForKey:@"Set Font Size" value:0 table:0];
       v34 = [CRLQuickInspectorElement elementWithName:v33 image:0 type:2 options:0x100000];
@@ -359,7 +359,7 @@ LABEL_13:
       v36 = [v35 localizedStringForKey:@"Choose a font size" value:0 table:0];
       [v34 setToolTip:v36];
 
-      [v7 addObject:v34];
+      [arrayCopy addObject:v34];
     }
 
     else
@@ -367,7 +367,7 @@ LABEL_13:
       v37 = [v29 localizedStringForKey:@"Format text" value:0 table:0];
       [v28 setToolTip:v37];
 
-      [v7 addObject:v28];
+      [arrayCopy addObject:v28];
     }
 
     goto LABEL_13;
@@ -378,16 +378,16 @@ LABEL_14:
 
 - (BOOL)p_canSaveDefaultInsertionPreset
 {
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 count] == 1;
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems count] == 1;
 
   return v3;
 }
 
-- (void)saveDefaultInsertionPreset:(id)a3
+- (void)saveDefaultInsertionPreset:(id)preset
 {
-  v4 = [(CRLBoardItemEditor *)self boardItems];
-  v5 = [v4 count];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v5 = [boardItems count];
 
   if (v5 != 1)
   {
@@ -420,9 +420,9 @@ LABEL_14:
   }
 
   v11 = objc_opt_class();
-  v12 = [(CRLBoardItemEditor *)self boardItems];
-  v13 = [v12 anyObject];
-  v14 = sub_100013F00(v11, v13);
+  boardItems2 = [(CRLBoardItemEditor *)self boardItems];
+  anyObject = [boardItems2 anyObject];
+  v14 = sub_100013F00(v11, anyObject);
 
   if (v14)
   {
@@ -442,16 +442,16 @@ LABEL_14:
     }
 
     v16 = [[_TtC8Freeform40CRLCommandSetDefaultShapeInsertionPreset alloc] initWithShapeItem:v14 shapeType:v15];
-    v17 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v18 = [v17 commandController];
-    [v18 enqueueCommand:v16];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
+    [commandController enqueueCommand:v16];
   }
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   v5 = swift_unknownObjectRelease();
   CRLWPShapeEditor.toggleItalics(_:)(v5);
@@ -459,33 +459,33 @@ LABEL_14:
   sub_100005070(&v6);
 }
 
-- (void)addContextualMenuElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addContextualMenuElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  v5 = a3;
-  v6 = self;
-  CRLWPShapeEditor.addContextualMenuElements(to:at:)(v5);
+  arrayCopy = array;
+  selfCopy = self;
+  CRLWPShapeEditor.addContextualMenuElements(to:at:)(arrayCopy);
 }
 
-- (void)updateStateForCommand:(id)a3
+- (void)updateStateForCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  CRLWPShapeEditor.updateStateForCommand(_:)(v4);
+  commandCopy = command;
+  selfCopy = self;
+  CRLWPShapeEditor.updateStateForCommand(_:)(commandCopy);
 }
 
 - (BOOL)shouldAddAutosizeTextMenuItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1012EC910();
 
   return v3 & 1;
 }
 
-- (void)toggleShrinkToFit:(id)a3
+- (void)toggleShrinkToFit:(id)fit
 {
-  if (a3)
+  if (fit)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -494,7 +494,7 @@ LABEL_14:
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   swift_getKeyPath();
@@ -517,7 +517,7 @@ LABEL_14:
 
 - (CRLPlatformControlState)shrinkToFitControlState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1012ECEC4();
 
   return v3;

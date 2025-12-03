@@ -8,17 +8,17 @@
 {
   v6 = a3;
   v7 = a4;
-  if ([a1 ed_hasOnlySpotlightKeypaths])
+  if ([self ed_hasOnlySpotlightKeypaths])
   {
-    v8 = [EDSearchableIndexQueryTransformer transformSearchableIndexPredicate:a1 suggestion:v6 searchableIndexManager:v7];
+    selfCopy = [EDSearchableIndexQueryTransformer transformSearchableIndexPredicate:self suggestion:v6 searchableIndexManager:v7];
   }
 
   else
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   return v9;
 }

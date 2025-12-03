@@ -24,19 +24,19 @@
 
 - (id)fp_collidingURL
 {
-  v2 = [a1 domain];
-  if (![v2 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [self domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A250]])
   {
     v4 = 0;
     goto LABEL_5;
   }
 
-  v3 = [a1 code];
+  code = [self code];
 
-  if (v3 == 516)
+  if (code == 516)
   {
-    v2 = [a1 userInfo];
-    v4 = [v2 objectForKeyedSubscript:@"FPErrorCollidingURLKey"];
+    domain = [self userInfo];
+    v4 = [domain objectForKeyedSubscript:@"FPErrorCollidingURLKey"];
 LABEL_5:
 
     goto LABEL_7;

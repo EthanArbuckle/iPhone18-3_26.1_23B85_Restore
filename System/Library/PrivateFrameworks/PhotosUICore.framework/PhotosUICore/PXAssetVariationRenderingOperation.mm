@@ -1,8 +1,8 @@
 @interface PXAssetVariationRenderingOperation
 - (CGSize)targetSize;
 - (PXAssetVariationRenderingOperation)init;
-- (PXAssetVariationRenderingOperation)initWithEditSource:(id)a3 variationType:(int64_t)a4 analysisResult:(id)a5 baseCompositionController:(id)a6 outputImageURL:(id)a7 outputVideoURL:(id)a8 targetSize:(CGSize)a9 renderAllResources:(BOOL)a10;
-- (void)_incrementProgressWithStartDate:(id)a3;
+- (PXAssetVariationRenderingOperation)initWithEditSource:(id)source variationType:(int64_t)type analysisResult:(id)result baseCompositionController:(id)controller outputImageURL:(id)l outputVideoURL:(id)rL targetSize:(CGSize)size renderAllResources:(BOOL)self0;
+- (void)_incrementProgressWithStartDate:(id)date;
 - (void)_timeout;
 - (void)cancel;
 - (void)main;
@@ -19,9 +19,9 @@
   return result;
 }
 
-- (void)_incrementProgressWithStartDate:(id)a3
+- (void)_incrementProgressWithStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   objc_initWeak(&location, self);
   v5 = dispatch_time(0, 100000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -29,8 +29,8 @@
   block[2] = __70__PXAssetVariationRenderingOperation__incrementProgressWithStartDate___block_invoke;
   block[3] = &unk_1E774B248;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_after(v5, MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v9);
@@ -77,26 +77,26 @@ void __70__PXAssetVariationRenderingOperation__incrementProgressWithStartDate___
   block[3] = &unk_1E774C318;
   objc_copyWeak(&v150, &location);
   dispatch_after(v3, MEMORY[0x1E69E96A0], block);
-  v4 = [(PXAssetVariationRenderingOperation *)self variationType];
-  v81 = [(PXAssetVariationRenderingOperation *)self baseCompositionController];
-  v5 = [(PXAssetVariationRenderingOperation *)self editSource];
-  v77 = [(PXAssetVariationRenderingOperation *)self outputImageURL];
-  v79 = [(PXAssetVariationRenderingOperation *)self outputVideoURL];
-  v6 = [(PXAssetVariationRenderingOperation *)self analysisResult];
+  variationType = [(PXAssetVariationRenderingOperation *)self variationType];
+  baseCompositionController = [(PXAssetVariationRenderingOperation *)self baseCompositionController];
+  editSource = [(PXAssetVariationRenderingOperation *)self editSource];
+  outputImageURL = [(PXAssetVariationRenderingOperation *)self outputImageURL];
+  outputVideoURL = [(PXAssetVariationRenderingOperation *)self outputVideoURL];
+  analysisResult = [(PXAssetVariationRenderingOperation *)self analysisResult];
   [(PXAssetVariationRenderingOperation *)self targetSize];
   v8 = v7;
   v10 = v9;
-  v82 = [MEMORY[0x1E695DF00] date];
-  v78 = [MEMORY[0x1E69BE360] adjustmentConstants];
-  v11 = [(PXAssetVariationRenderingOperation *)self startHandler];
+  date = [MEMORY[0x1E695DF00] date];
+  adjustmentConstants = [MEMORY[0x1E69BE360] adjustmentConstants];
+  startHandler = [(PXAssetVariationRenderingOperation *)self startHandler];
 
-  if (v11)
+  if (startHandler)
   {
-    v12 = [(PXAssetVariationRenderingOperation *)self startHandler];
-    v12[2]();
+    startHandler2 = [(PXAssetVariationRenderingOperation *)self startHandler];
+    startHandler2[2]();
   }
 
-  [(PXAssetVariationRenderingOperation *)self _incrementProgressWithStartDate:v82];
+  [(PXAssetVariationRenderingOperation *)self _incrementProgressWithStartDate:date];
   v145 = 0;
   v146 = &v145;
   v147 = 0x2020000000;
@@ -107,16 +107,16 @@ void __70__PXAssetVariationRenderingOperation__incrementProgressWithStartDate___
   v142 = __Block_byref_object_copy__57391;
   v143 = __Block_byref_object_dispose__57392;
   v144 = 0;
-  v13 = [objc_alloc(MEMORY[0x1E69BE658]) initWithEditSource:v5 renderPriority:2];
-  v14 = [v81 copy];
+  v13 = [objc_alloc(MEMORY[0x1E69BE658]) initWithEditSource:editSource renderPriority:2];
+  v14 = [baseCompositionController copy];
   v136[0] = MEMORY[0x1E69E9820];
   v136[1] = 3221225472;
   v136[2] = __42__PXAssetVariationRenderingOperation_main__block_invoke_28;
   v136[3] = &unk_1E7733300;
-  v138 = v4;
-  v76 = v6;
+  v138 = variationType;
+  v76 = analysisResult;
   v137 = v76;
-  [v13 applySourceChangesToCompositionSynchronously:v14 source:v5 withBlock:v136];
+  [v13 applySourceChangesToCompositionSynchronously:v14 source:editSource withBlock:v136];
   objc_storeStrong(&self->_adjustedCompositionController, v14);
   [v13 setCompositionController:self->_adjustedCompositionController];
   v130 = 0;
@@ -131,11 +131,11 @@ void __70__PXAssetVariationRenderingOperation__incrementProgressWithStartDate___
   v127 = __Block_byref_object_copy__57391;
   v128 = __Block_byref_object_dispose__57392;
   v129 = 0;
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v80 = [v15 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v16 = dispatch_group_create();
-  if ((v4 - 1) >= 2 && ![(PXAssetVariationRenderingOperation *)self renderAllResources])
+  if ((variationType - 1) >= 2 && ![(PXAssetVariationRenderingOperation *)self renderAllResources])
   {
     goto LABEL_19;
   }
@@ -143,9 +143,9 @@ void __70__PXAssetVariationRenderingOperation__incrementProgressWithStartDate___
   v17 = +[PXAssetVariationsSettings sharedInstance];
   if ([v17 useLiveRenderedPreviews])
   {
-    v18 = [(PXAssetVariationRenderingOperation *)self renderAllResources];
+    renderAllResources = [(PXAssetVariationRenderingOperation *)self renderAllResources];
 
-    if (!v18)
+    if (!renderAllResources)
     {
       dispatch_group_enter(v16);
       v122[0] = MEMORY[0x1E69E9820];
@@ -195,7 +195,7 @@ void __70__PXAssetVariationRenderingOperation__incrementProgressWithStartDate___
   v121[2] = &v139;
   v29 = v16;
   v121[0] = v29;
-  v30 = [v13 exportVideoToURL:v79 preset:v28 livePhotoPairingIdentifier:v80 completion:v120];
+  v30 = [v13 exportVideoToURL:outputVideoURL preset:v28 livePhotoPairingIdentifier:uUIDString completion:v120];
   v25 = v121;
   v31 = dispatch_time(0, 20000000000);
   if (dispatch_group_wait(v29, v31))
@@ -214,13 +214,13 @@ LABEL_13:
 
   if (*(v146 + 24) == 1 && ![(PXAssetVariationRenderingOperation *)self isCancelled])
   {
-    if ((v4 - 3) >= 0xFFFFFFFFFFFFFFFELL && ![(PXAssetVariationRenderingOperation *)self renderAllResources])
+    if ((variationType - 3) >= 0xFFFFFFFFFFFFFFFELL && ![(PXAssetVariationRenderingOperation *)self renderAllResources])
     {
 LABEL_45:
       self->_succeeded = *(v146 + 24);
       objc_storeStrong(&self->_error, v140[5]);
-      v70 = [MEMORY[0x1E695DF00] date];
-      [v70 timeIntervalSinceDate:v82];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [date2 timeIntervalSinceDate:date];
       v72 = v71;
 
       v73 = [MEMORY[0x1E696AD98] numberWithDouble:v72];
@@ -228,7 +228,7 @@ LABEL_45:
       self->_duration = v73;
 
       [(NSProgress *)self->_progress setCompletedUnitCount:[(NSProgress *)self->_progress totalUnitCount]];
-      v75 = self;
+      selfCopy = self;
       kdebug_trace();
 
       goto LABEL_46;
@@ -281,13 +281,13 @@ LABEL_19:
       {
         if ([v115[5] count])
         {
-          v41 = [v78 PIHighResFusionAdjustmentKey];
+          pIHighResFusionAdjustmentKey = [adjustmentConstants PIHighResFusionAdjustmentKey];
           v98[0] = MEMORY[0x1E69E9820];
           v98[1] = 3221225472;
           v98[2] = __42__PXAssetVariationRenderingOperation_main__block_invoke_5;
           v98[3] = &unk_1E7733378;
           v98[4] = &v114;
-          [v81 modifyAdjustmentWithKey:v41 modificationBlock:v98];
+          [baseCompositionController modifyAdjustmentWithKey:pIHighResFusionAdjustmentKey modificationBlock:v98];
         }
 
         dispatch_group_enter(v35);
@@ -300,10 +300,10 @@ LABEL_19:
         v90[2] = __42__PXAssetVariationRenderingOperation_main__block_invoke_6;
         v90[3] = &unk_1E77333A0;
         v93 = &v94;
-        v91 = v77;
+        v91 = outputImageURL;
         v42 = v35;
         v92 = v42;
-        [v13 generateJPEGImageDataWithCompressionQuality:v80 livePhotoPairingIdentifier:v90 completionHandler:0.899999976];
+        [v13 generateJPEGImageDataWithCompressionQuality:uUIDString livePhotoPairingIdentifier:v90 completionHandler:0.899999976];
         v43 = dispatch_time(0, 20000000000);
         if (dispatch_group_wait(v42, v43))
         {
@@ -355,31 +355,31 @@ LABEL_19:
 
     else
     {
-      v52 = [v78 PIHighResFusionAdjustmentKey];
-      [v81 removeAdjustmentWithKey:v52];
+      pIHighResFusionAdjustmentKey2 = [adjustmentConstants PIHighResFusionAdjustmentKey];
+      [baseCompositionController removeAdjustmentWithKey:pIHighResFusionAdjustmentKey2];
 
-      if (!v4)
+      if (!variationType)
       {
-        v53 = [v78 PIAutoLoopAdjustmentKey];
-        [v81 removeAdjustmentWithKey:v53];
+        pIAutoLoopAdjustmentKey = [adjustmentConstants PIAutoLoopAdjustmentKey];
+        [baseCompositionController removeAdjustmentWithKey:pIAutoLoopAdjustmentKey];
       }
 
       v114 = 0;
       v115 = &v114;
       v116 = 0x2020000000;
       LOBYTE(v117) = 0;
-      v54 = [(PXAssetVariationRenderingOperation *)self renderAllResources];
+      renderAllResources2 = [(PXAssetVariationRenderingOperation *)self renderAllResources];
       dispatch_group_enter(v16);
-      if (v54)
+      if (renderAllResources2)
       {
         v86[0] = MEMORY[0x1E69E9820];
         v86[1] = 3221225472;
         v86[2] = __42__PXAssetVariationRenderingOperation_main__block_invoke_7;
         v86[3] = &unk_1E77333A0;
         v89 = &v114;
-        v87 = v77;
+        v87 = outputImageURL;
         v88 = v16;
-        [v13 generateJPEGImageDataWithCompressionQuality:v80 livePhotoPairingIdentifier:v86 completionHandler:0.899999976];
+        [v13 generateJPEGImageDataWithCompressionQuality:uUIDString livePhotoPairingIdentifier:v86 completionHandler:0.899999976];
       }
 
       else
@@ -594,19 +594,19 @@ void __42__PXAssetVariationRenderingOperation_main__block_invoke_8(void *a1, uin
   }
 }
 
-- (PXAssetVariationRenderingOperation)initWithEditSource:(id)a3 variationType:(int64_t)a4 analysisResult:(id)a5 baseCompositionController:(id)a6 outputImageURL:(id)a7 outputVideoURL:(id)a8 targetSize:(CGSize)a9 renderAllResources:(BOOL)a10
+- (PXAssetVariationRenderingOperation)initWithEditSource:(id)source variationType:(int64_t)type analysisResult:(id)result baseCompositionController:(id)controller outputImageURL:(id)l outputVideoURL:(id)rL targetSize:(CGSize)size renderAllResources:(BOOL)self0
 {
-  height = a9.height;
-  width = a9.width;
-  v34 = a3;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
+  height = size.height;
+  width = size.width;
+  sourceCopy = source;
+  resultCopy = result;
+  controllerCopy = controller;
+  lCopy = l;
+  rLCopy = rL;
   if (width <= 0.0 || height <= 0.0)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderingOperation.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"targetSize.width > 0 && targetSize.height > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderingOperation.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"targetSize.width > 0 && targetSize.height > 0"}];
   }
 
   v38.receiver = self;
@@ -615,21 +615,21 @@ void __42__PXAssetVariationRenderingOperation_main__block_invoke_8(void *a1, uin
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_editSource, a3);
-    v25->_variationType = a4;
-    v26 = [v20 copy];
+    objc_storeStrong(&v24->_editSource, source);
+    v25->_variationType = type;
+    v26 = [resultCopy copy];
     analysisResult = v25->_analysisResult;
     v25->_analysisResult = v26;
 
-    v28 = [v21 copy];
+    v28 = [controllerCopy copy];
     baseCompositionController = v25->_baseCompositionController;
     v25->_baseCompositionController = v28;
 
-    objc_storeStrong(&v25->_outputImageURL, a7);
+    objc_storeStrong(&v25->_outputImageURL, l);
     v25->_targetSize.width = width;
     v25->_targetSize.height = height;
-    objc_storeStrong(&v25->_outputVideoURL, a8);
-    v25->_renderAllResources = a10;
+    objc_storeStrong(&v25->_outputVideoURL, rL);
+    v25->_renderAllResources = resources;
     v30 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:50];
     progress = v25->_progress;
     v25->_progress = v30;
@@ -656,8 +656,8 @@ void __172__PXAssetVariationRenderingOperation_initWithEditSource_variationType_
 
 - (PXAssetVariationRenderingOperation)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderingOperation.m" lineNumber:66 description:{@"%s is not available as initializer", "-[PXAssetVariationRenderingOperation init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetVariationRenderingOperation.m" lineNumber:66 description:{@"%s is not available as initializer", "-[PXAssetVariationRenderingOperation init]"}];
 
   abort();
 }

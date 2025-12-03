@@ -1,70 +1,70 @@
 @interface FxColor
-+ (id)colorWithCGColor:(CGColor *)a3;
-+ (id)colorWithCIColor:(id)a3;
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-+ (id)colorWithString:(id)a3;
-- (FxColor)initWithCGColor:(CGColor *)a3;
-- (FxColor)initWithCoder:(id)a3;
-- (FxColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (FxColor)initWithString:(id)a3;
++ (id)colorWithCGColor:(CGColor *)color;
++ (id)colorWithCIColor:(id)color;
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
++ (id)colorWithString:(id)string;
+- (FxColor)initWithCGColor:(CGColor *)color;
+- (FxColor)initWithCoder:(id)coder;
+- (FxColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (FxColor)initWithString:(id)string;
 - (double)blue;
 - (double)green;
 - (double)red;
 - (id)description;
 - (id)stringRepresentation;
-- (void)convertToRGBA:(double *)a3;
+- (void)convertToRGBA:(double *)a;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FxColor
 
-+ (id)colorWithCGColor:(CGColor *)a3
++ (id)colorWithCGColor:(CGColor *)color
 {
-  v3 = [[a1 alloc] initWithCGColor:a3];
+  v3 = [[self alloc] initWithCGColor:color];
 
   return v3;
 }
 
-+ (id)colorWithCIColor:(id)a3
++ (id)colorWithCIColor:(id)color
 {
-  [a3 red];
+  [color red];
   v5 = v4;
-  [a3 green];
+  [color green];
   v7 = v6;
-  [a3 blue];
+  [color blue];
   v9 = v8;
-  [a3 alpha];
+  [color alpha];
 
   return [FxColor colorWithRed:v5 green:v7 blue:v9 alpha:v10];
 }
 
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = [[a1 alloc] initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v6 = [[self alloc] initWithRed:red green:green blue:blue alpha:alpha];
 
   return v6;
 }
 
-+ (id)colorWithString:(id)a3
++ (id)colorWithString:(id)string
 {
-  v3 = [[a1 alloc] initWithString:a3];
+  v3 = [[self alloc] initWithString:string];
 
   return v3;
 }
 
-- (FxColor)initWithString:(id)a3
+- (FxColor)initWithString:(id)string
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 UTF8String];
-  if (v4)
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v5 = v4;
+    v5 = uTF8String;
     v10 = 0;
-    v6 = *v4;
+    v6 = *uTF8String;
     if (v6 == 91 || v6 == 40)
     {
-      v5 = v4 + 1;
+      v5 = uTF8String + 1;
     }
 
     v7 = 0;
@@ -112,16 +112,16 @@
   return [(FxColor *)self initWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
 }
 
-- (FxColor)initWithCGColor:(CGColor *)a3
+- (FxColor)initWithCGColor:(CGColor *)color
 {
-  if (a3)
+  if (color)
   {
     v6.receiver = self;
     v6.super_class = FxColor;
     v4 = [(FxColor *)&v6 init];
     if (v4)
     {
-      v4->_priv = CGColorRetain(a3);
+      v4->_priv = CGColorRetain(color);
     }
   }
 
@@ -134,7 +134,7 @@
   return v4;
 }
 
-- (FxColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (FxColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   components[4] = *MEMORY[0x277D85DE8];
   DeviceRGB = initWithRed_green_blue_alpha__cs;
@@ -144,10 +144,10 @@
     initWithRed_green_blue_alpha__cs = DeviceRGB;
   }
 
-  components[0] = a3;
-  components[1] = a4;
-  components[2] = a5;
-  components[3] = a6;
+  components[0] = red;
+  components[1] = green;
+  components[2] = blue;
+  components[3] = alpha;
   v12 = CGColorCreate(DeviceRGB, components);
   v13 = [(FxColor *)self initWithCGColor:v12];
   CGColorRelease(v12);
@@ -164,12 +164,12 @@
 
 - (double)red
 {
-  v3 = [(FxColor *)self numberOfComponents];
-  v4 = [(FxColor *)self components];
+  numberOfComponents = [(FxColor *)self numberOfComponents];
+  components = [(FxColor *)self components];
   result = 0.0;
-  if (v3 >= 2)
+  if (numberOfComponents >= 2)
   {
-    return *v4;
+    return *components;
   }
 
   return result;
@@ -177,12 +177,12 @@
 
 - (double)green
 {
-  v3 = [(FxColor *)self numberOfComponents];
-  v4 = [(FxColor *)self components];
+  numberOfComponents = [(FxColor *)self numberOfComponents];
+  components = [(FxColor *)self components];
   result = 0.0;
-  if (v3 >= 3)
+  if (numberOfComponents >= 3)
   {
-    return v4[1];
+    return components[1];
   }
 
   return result;
@@ -190,12 +190,12 @@
 
 - (double)blue
 {
-  v3 = [(FxColor *)self numberOfComponents];
-  v4 = [(FxColor *)self components];
+  numberOfComponents = [(FxColor *)self numberOfComponents];
+  components = [(FxColor *)self components];
   result = 0.0;
-  if (v3 >= 4)
+  if (numberOfComponents >= 4)
   {
-    return v4[2];
+    return components[2];
   }
 
   return result;
@@ -214,32 +214,32 @@
   return [v3 stringWithFormat:@"%g %g %g %g", v5, v7, v9, v10];
 }
 
-- (void)convertToRGBA:(double *)a3
+- (void)convertToRGBA:(double *)a
 {
-  v5 = [(FxColor *)self numberOfComponents];
-  v6 = [(FxColor *)self components];
-  if (v5)
+  numberOfComponents = [(FxColor *)self numberOfComponents];
+  components = [(FxColor *)self components];
+  if (numberOfComponents)
   {
     v7 = 1.0;
-    if (v5 != 1)
+    if (numberOfComponents != 1)
     {
-      v7 = *v6;
+      v7 = *components;
     }
 
-    *a3 = v7;
-    v8 = v6[v5 > 2];
-    a3[1] = v8;
-    v9 = v6[2 * (v5 > 3)];
-    a3[2] = v9;
-    v10 = v6[v5 - 1];
-    *a3 = v7 * v10;
-    a3[1] = v8 * v10;
-    a3[2] = v9 * v10;
-    a3[3] = v10;
+    *a = v7;
+    v8 = components[numberOfComponents > 2];
+    a[1] = v8;
+    v9 = components[2 * (numberOfComponents > 3)];
+    a[2] = v9;
+    v10 = components[numberOfComponents - 1];
+    *a = v7 * v10;
+    a[1] = v8 * v10;
+    a[2] = v9 * v10;
+    a[3] = v10;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10 = *MEMORY[0x277D85DE8];
   v8 = 0u;
@@ -247,27 +247,27 @@
   [(FxColor *)self convertToRGBA:&v8];
   v4 = *&v8 / *(&v9 + 1);
   *&v4 = *&v8 / *(&v9 + 1);
-  [a3 encodeFloat:@"red" forKey:v4];
+  [coder encodeFloat:@"red" forKey:v4];
   v5 = *(&v8 + 1) / *(&v9 + 1);
   *&v5 = *(&v8 + 1) / *(&v9 + 1);
-  [a3 encodeFloat:@"green" forKey:v5];
+  [coder encodeFloat:@"green" forKey:v5];
   v6 = *&v9 / *(&v9 + 1);
   *&v6 = *&v9 / *(&v9 + 1);
-  [a3 encodeFloat:@"blue" forKey:v6];
+  [coder encodeFloat:@"blue" forKey:v6];
   HIDWORD(v7) = HIDWORD(v9);
   *&v7 = *(&v9 + 1);
-  [a3 encodeFloat:@"alpha" forKey:v7];
+  [coder encodeFloat:@"alpha" forKey:v7];
 }
 
-- (FxColor)initWithCoder:(id)a3
+- (FxColor)initWithCoder:(id)coder
 {
-  [a3 decodeFloatForKey:@"red"];
+  [coder decodeFloatForKey:@"red"];
   v6 = v5;
-  [a3 decodeFloatForKey:@"green"];
+  [coder decodeFloatForKey:@"green"];
   v8 = v7;
-  [a3 decodeFloatForKey:@"blue"];
+  [coder decodeFloatForKey:@"blue"];
   v10 = v9;
-  [a3 decodeFloatForKey:@"alpha"];
+  [coder decodeFloatForKey:@"alpha"];
 
   return [(FxColor *)self initWithRed:v6 green:v8 blue:v10 alpha:v11];
 }

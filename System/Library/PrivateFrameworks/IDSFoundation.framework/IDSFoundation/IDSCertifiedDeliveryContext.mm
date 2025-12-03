@@ -1,34 +1,34 @@
 @interface IDSCertifiedDeliveryContext
-- (IDSCertifiedDeliveryContext)initWithCertifiedDeliveryContext:(id)a3 queryHash:(id)a4;
-- (IDSCertifiedDeliveryContext)initWithCoder:(id)a3;
-- (IDSCertifiedDeliveryContext)initWithDataRepresentation:(id)a3;
-- (IDSCertifiedDeliveryContext)initWithDictionaryRepresentation:(id)a3;
-- (IDSCertifiedDeliveryContext)initWithGUID:(id)a3 service:(id)a4 encryptionType:(int64_t)a5 certifiedDeliveryVersion:(int64_t)a6 certifiedDeliveryRTS:(id)a7 senderToken:(id)a8 failureReason:(id)a9 failureReasonMessage:(id)a10 replayKey:(id)a11 generateDeliveryReceipt:(BOOL)a12 deliveryStatusContext:(id)a13 localURI:(id)a14 remoteURI:(id)a15 queryHash:(id)a16;
+- (IDSCertifiedDeliveryContext)initWithCertifiedDeliveryContext:(id)context queryHash:(id)hash;
+- (IDSCertifiedDeliveryContext)initWithCoder:(id)coder;
+- (IDSCertifiedDeliveryContext)initWithDataRepresentation:(id)representation;
+- (IDSCertifiedDeliveryContext)initWithDictionaryRepresentation:(id)representation;
+- (IDSCertifiedDeliveryContext)initWithGUID:(id)d service:(id)service encryptionType:(int64_t)type certifiedDeliveryVersion:(int64_t)version certifiedDeliveryRTS:(id)s senderToken:(id)token failureReason:(id)reason failureReasonMessage:(id)self0 replayKey:(id)self1 generateDeliveryReceipt:(BOOL)self2 deliveryStatusContext:(id)self3 localURI:(id)self4 remoteURI:(id)self5 queryHash:(id)self6;
 - (NSDictionary)dictionaryRepresentation;
 - (id)dataRepresentation;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSCertifiedDeliveryContext
 
-- (IDSCertifiedDeliveryContext)initWithDictionaryRepresentation:(id)a3
+- (IDSCertifiedDeliveryContext)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v33.receiver = self;
   v33.super_class = IDSCertifiedDeliveryContext;
   v5 = [(IDSCertifiedDeliveryContext *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextGUIDKey"];
+    v6 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextGUIDKey"];
     originalGUID = v5->_originalGUID;
     v5->_originalGUID = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextServiceKey"];
+    v8 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextServiceKey"];
     service = v5->_service;
     v5->_service = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextReplayKeyKey"];
+    v10 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextReplayKeyKey"];
     if (v10)
     {
       v11 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:0];
@@ -36,44 +36,44 @@
       v5->_replayKey = v11;
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextOriginalEncryptionTypeKey"];
+    v13 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextOriginalEncryptionTypeKey"];
     v5->_originalEncryptionType = [v13 integerValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextVersionKey"];
+    v14 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextVersionKey"];
     v5->_certifiedDeliveryVersion = [v14 integerValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextRTSKey"];
+    v15 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextRTSKey"];
     certifiedDeliveryRTS = v5->_certifiedDeliveryRTS;
     v5->_certifiedDeliveryRTS = v15;
 
-    v17 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextSenderTokenKey"];
+    v17 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextSenderTokenKey"];
     senderToken = v5->_senderToken;
     v5->_senderToken = v17;
 
-    v19 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextGenerateDeliveryReceiptKey"];
+    v19 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextGenerateDeliveryReceiptKey"];
     v5->_generateDeliveryReceipt = [v19 BOOLValue];
 
-    v20 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextDeliveryStatusContextKey"];
+    v20 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextDeliveryStatusContextKey"];
     deliveryStatusContext = v5->_deliveryStatusContext;
     v5->_deliveryStatusContext = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextLocalURIKey"];
+    v22 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextLocalURIKey"];
     localURI = v5->_localURI;
     v5->_localURI = v22;
 
-    v24 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextRemoteURIKey"];
+    v24 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextRemoteURIKey"];
     remoteURI = v5->_remoteURI;
     v5->_remoteURI = v24;
 
-    v26 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextQueryHashKey"];
+    v26 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextQueryHashKey"];
     queryHash = v5->_queryHash;
     v5->_queryHash = v26;
 
-    v28 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextFailureReasonKey"];
+    v28 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextFailureReasonKey"];
     failureReason = v5->_failureReason;
     v5->_failureReason = v28;
 
-    v30 = [v4 objectForKeyedSubscript:@"IDSCertifiedDeliveryContextFailureReasonMessageKey"];
+    v30 = [representationCopy objectForKeyedSubscript:@"IDSCertifiedDeliveryContextFailureReasonMessageKey"];
     failureReasonMessage = v5->_failureReasonMessage;
     v5->_failureReasonMessage = v30;
   }
@@ -81,66 +81,66 @@
   return v5;
 }
 
-- (IDSCertifiedDeliveryContext)initWithCertifiedDeliveryContext:(id)a3 queryHash:(id)a4
+- (IDSCertifiedDeliveryContext)initWithCertifiedDeliveryContext:(id)context queryHash:(id)hash
 {
-  v6 = a4;
-  v7 = a3;
-  v23 = [v7 originalGUID];
-  v22 = [v7 service];
-  v20 = [v7 originalEncryptionType];
-  v19 = [v7 certifiedDeliveryVersion];
-  v18 = [v7 certifiedDeliveryRTS];
-  v17 = [v7 senderToken];
-  v16 = [v7 failureReason];
-  v8 = [v7 failureReasonMessage];
-  v9 = [v7 replayKey];
-  v10 = [v7 generateDeliveryReceipt];
-  v11 = [v7 deliveryStatusContext];
-  v12 = [v7 localURI];
-  v13 = [v7 remoteURI];
+  hashCopy = hash;
+  contextCopy = context;
+  originalGUID = [contextCopy originalGUID];
+  service = [contextCopy service];
+  originalEncryptionType = [contextCopy originalEncryptionType];
+  certifiedDeliveryVersion = [contextCopy certifiedDeliveryVersion];
+  certifiedDeliveryRTS = [contextCopy certifiedDeliveryRTS];
+  senderToken = [contextCopy senderToken];
+  failureReason = [contextCopy failureReason];
+  failureReasonMessage = [contextCopy failureReasonMessage];
+  replayKey = [contextCopy replayKey];
+  generateDeliveryReceipt = [contextCopy generateDeliveryReceipt];
+  deliveryStatusContext = [contextCopy deliveryStatusContext];
+  localURI = [contextCopy localURI];
+  remoteURI = [contextCopy remoteURI];
 
-  LOBYTE(v15) = v10;
-  v21 = [(IDSCertifiedDeliveryContext *)self initWithGUID:v23 service:v22 encryptionType:v20 certifiedDeliveryVersion:v19 certifiedDeliveryRTS:v18 senderToken:v17 failureReason:v16 failureReasonMessage:v8 replayKey:v9 generateDeliveryReceipt:v15 deliveryStatusContext:v11 localURI:v12 remoteURI:v13 queryHash:v6];
+  LOBYTE(v15) = generateDeliveryReceipt;
+  v21 = [(IDSCertifiedDeliveryContext *)self initWithGUID:originalGUID service:service encryptionType:originalEncryptionType certifiedDeliveryVersion:certifiedDeliveryVersion certifiedDeliveryRTS:certifiedDeliveryRTS senderToken:senderToken failureReason:failureReason failureReasonMessage:failureReasonMessage replayKey:replayKey generateDeliveryReceipt:v15 deliveryStatusContext:deliveryStatusContext localURI:localURI remoteURI:remoteURI queryHash:hashCopy];
 
   return v21;
 }
 
-- (IDSCertifiedDeliveryContext)initWithGUID:(id)a3 service:(id)a4 encryptionType:(int64_t)a5 certifiedDeliveryVersion:(int64_t)a6 certifiedDeliveryRTS:(id)a7 senderToken:(id)a8 failureReason:(id)a9 failureReasonMessage:(id)a10 replayKey:(id)a11 generateDeliveryReceipt:(BOOL)a12 deliveryStatusContext:(id)a13 localURI:(id)a14 remoteURI:(id)a15 queryHash:(id)a16
+- (IDSCertifiedDeliveryContext)initWithGUID:(id)d service:(id)service encryptionType:(int64_t)type certifiedDeliveryVersion:(int64_t)version certifiedDeliveryRTS:(id)s senderToken:(id)token failureReason:(id)reason failureReasonMessage:(id)self0 replayKey:(id)self1 generateDeliveryReceipt:(BOOL)self2 deliveryStatusContext:(id)self3 localURI:(id)self4 remoteURI:(id)self5 queryHash:(id)self6
 {
-  v37 = a3;
-  v31 = a4;
-  v19 = a4;
-  v34 = a7;
-  v20 = a7;
-  v35 = a8;
-  v21 = a8;
-  v39 = a9;
-  v38 = a10;
-  v22 = a11;
-  v23 = a13;
-  v24 = a14;
-  v25 = a15;
-  v26 = a16;
+  dCopy = d;
+  serviceCopy = service;
+  serviceCopy2 = service;
+  sCopy = s;
+  sCopy2 = s;
+  tokenCopy = token;
+  tokenCopy2 = token;
+  reasonCopy = reason;
+  messageCopy = message;
+  keyCopy = key;
+  contextCopy = context;
+  iCopy = i;
+  rICopy = rI;
+  hashCopy = hash;
   v40.receiver = self;
   v40.super_class = IDSCertifiedDeliveryContext;
   v27 = [(IDSCertifiedDeliveryContext *)&v40 init];
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_originalGUID, a3);
-    objc_storeStrong(&v28->_service, v31);
-    v28->_originalEncryptionType = a5;
-    v28->_certifiedDeliveryVersion = a6;
-    objc_storeStrong(&v28->_certifiedDeliveryRTS, v34);
-    objc_storeStrong(&v28->_senderToken, v35);
-    objc_storeStrong(&v28->_failureReason, a9);
-    objc_storeStrong(&v28->_failureReasonMessage, a10);
-    objc_storeStrong(&v28->_replayKey, a11);
-    v28->_generateDeliveryReceipt = a12;
-    objc_storeStrong(&v28->_deliveryStatusContext, a13);
-    objc_storeStrong(&v28->_localURI, a14);
-    objc_storeStrong(&v28->_remoteURI, a15);
-    objc_storeStrong(&v28->_queryHash, a16);
+    objc_storeStrong(&v27->_originalGUID, d);
+    objc_storeStrong(&v28->_service, serviceCopy);
+    v28->_originalEncryptionType = type;
+    v28->_certifiedDeliveryVersion = version;
+    objc_storeStrong(&v28->_certifiedDeliveryRTS, sCopy);
+    objc_storeStrong(&v28->_senderToken, tokenCopy);
+    objc_storeStrong(&v28->_failureReason, reason);
+    objc_storeStrong(&v28->_failureReasonMessage, message);
+    objc_storeStrong(&v28->_replayKey, key);
+    v28->_generateDeliveryReceipt = receipt;
+    objc_storeStrong(&v28->_deliveryStatusContext, context);
+    objc_storeStrong(&v28->_localURI, i);
+    objc_storeStrong(&v28->_remoteURI, rI);
+    objc_storeStrong(&v28->_queryHash, hash);
   }
 
   return v28;
@@ -281,18 +281,18 @@
   return v3;
 }
 
-- (IDSCertifiedDeliveryContext)initWithDataRepresentation:(id)a3
+- (IDSCertifiedDeliveryContext)initWithDataRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9 = 0;
-  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v9];
+  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:&v9];
   v6 = v9;
   if (!v5)
   {
     v7 = +[IDSFoundationLog delivery];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_1A7E1DEFC(v4, v6, v7);
+      sub_1A7E1DEFC(representationCopy, v6, v7);
     }
   }
 
@@ -316,23 +316,23 @@
   return v2;
 }
 
-- (IDSCertifiedDeliveryContext)initWithCoder:(id)a3
+- (IDSCertifiedDeliveryContext)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextGUIDKey"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextServiceKey"];
-  v4 = [v3 decodeIntegerForKey:@"IDSCertifiedDeliveryContextOriginalEncryptionTypeKey"];
-  v19 = [v3 decodeIntegerForKey:@"IDSCertifiedDeliveryContextVersionKey"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextRTSKey"];
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextSenderTokenKey"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextFailureReasonKey"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextFailureReasonMessageKey"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextReplayKeyKey"];
-  v8 = [v3 decodeBoolForKey:@"IDSCertifiedDeliveryContextGenerateDeliveryReceiptKey"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextDeliveryStatusContextKey"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextLocalURIKey"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextRemoteURIKey"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextQueryHashKey"];
+  coderCopy = coder;
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextGUIDKey"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextServiceKey"];
+  v4 = [coderCopy decodeIntegerForKey:@"IDSCertifiedDeliveryContextOriginalEncryptionTypeKey"];
+  v19 = [coderCopy decodeIntegerForKey:@"IDSCertifiedDeliveryContextVersionKey"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextRTSKey"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextSenderTokenKey"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextFailureReasonKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextFailureReasonMessageKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextReplayKeyKey"];
+  v8 = [coderCopy decodeBoolForKey:@"IDSCertifiedDeliveryContextGenerateDeliveryReceiptKey"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextDeliveryStatusContextKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextLocalURIKey"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextRemoteURIKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSCertifiedDeliveryContextQueryHashKey"];
 
   LOBYTE(v13) = v8;
   v20 = [(IDSCertifiedDeliveryContext *)self initWithGUID:v15 service:v21 encryptionType:v4 certifiedDeliveryVersion:v19 certifiedDeliveryRTS:v18 senderToken:v17 failureReason:v5 failureReasonMessage:v6 replayKey:v7 generateDeliveryReceipt:v13 deliveryStatusContext:v14 localURI:v9 remoteURI:v10 queryHash:v11];
@@ -340,24 +340,24 @@
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originalGUID = self->_originalGUID;
-  v5 = a3;
-  [v5 encodeObject:originalGUID forKey:@"IDSCertifiedDeliveryContextGUIDKey"];
-  [v5 encodeObject:self->_service forKey:@"IDSCertifiedDeliveryContextServiceKey"];
-  [v5 encodeInteger:self->_originalEncryptionType forKey:@"IDSCertifiedDeliveryContextOriginalEncryptionTypeKey"];
-  [v5 encodeInteger:self->_certifiedDeliveryVersion forKey:@"IDSCertifiedDeliveryContextVersionKey"];
-  [v5 encodeObject:self->_certifiedDeliveryRTS forKey:@"IDSCertifiedDeliveryContextRTSKey"];
-  [v5 encodeObject:self->_senderToken forKey:@"IDSCertifiedDeliveryContextSenderTokenKey"];
-  [v5 encodeObject:self->_failureReason forKey:@"IDSCertifiedDeliveryContextFailureReasonKey"];
-  [v5 encodeObject:self->_failureReasonMessage forKey:@"IDSCertifiedDeliveryContextFailureReasonMessageKey"];
-  [v5 encodeObject:self->_replayKey forKey:@"IDSCertifiedDeliveryContextReplayKeyKey"];
-  [v5 encodeBool:self->_generateDeliveryReceipt forKey:@"IDSCertifiedDeliveryContextGenerateDeliveryReceiptKey"];
-  [v5 encodeObject:self->_deliveryStatusContext forKey:@"IDSCertifiedDeliveryContextDeliveryStatusContextKey"];
-  [v5 encodeObject:self->_localURI forKey:@"IDSCertifiedDeliveryContextLocalURIKey"];
-  [v5 encodeObject:self->_remoteURI forKey:@"IDSCertifiedDeliveryContextRemoteURIKey"];
-  [v5 encodeObject:self->_queryHash forKey:@"IDSCertifiedDeliveryContextQueryHashKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originalGUID forKey:@"IDSCertifiedDeliveryContextGUIDKey"];
+  [coderCopy encodeObject:self->_service forKey:@"IDSCertifiedDeliveryContextServiceKey"];
+  [coderCopy encodeInteger:self->_originalEncryptionType forKey:@"IDSCertifiedDeliveryContextOriginalEncryptionTypeKey"];
+  [coderCopy encodeInteger:self->_certifiedDeliveryVersion forKey:@"IDSCertifiedDeliveryContextVersionKey"];
+  [coderCopy encodeObject:self->_certifiedDeliveryRTS forKey:@"IDSCertifiedDeliveryContextRTSKey"];
+  [coderCopy encodeObject:self->_senderToken forKey:@"IDSCertifiedDeliveryContextSenderTokenKey"];
+  [coderCopy encodeObject:self->_failureReason forKey:@"IDSCertifiedDeliveryContextFailureReasonKey"];
+  [coderCopy encodeObject:self->_failureReasonMessage forKey:@"IDSCertifiedDeliveryContextFailureReasonMessageKey"];
+  [coderCopy encodeObject:self->_replayKey forKey:@"IDSCertifiedDeliveryContextReplayKeyKey"];
+  [coderCopy encodeBool:self->_generateDeliveryReceipt forKey:@"IDSCertifiedDeliveryContextGenerateDeliveryReceiptKey"];
+  [coderCopy encodeObject:self->_deliveryStatusContext forKey:@"IDSCertifiedDeliveryContextDeliveryStatusContextKey"];
+  [coderCopy encodeObject:self->_localURI forKey:@"IDSCertifiedDeliveryContextLocalURIKey"];
+  [coderCopy encodeObject:self->_remoteURI forKey:@"IDSCertifiedDeliveryContextRemoteURIKey"];
+  [coderCopy encodeObject:self->_queryHash forKey:@"IDSCertifiedDeliveryContextQueryHashKey"];
 }
 
 - (id)description

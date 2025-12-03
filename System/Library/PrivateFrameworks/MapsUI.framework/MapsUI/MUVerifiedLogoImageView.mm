@@ -1,28 +1,28 @@
 @interface MUVerifiedLogoImageView
-- (MUVerifiedLogoImageView)initWithFrame:(CGRect)a3;
+- (MUVerifiedLogoImageView)initWithFrame:(CGRect)frame;
 - (UIColor)innerRingColor;
 - (void)_setupCustomBorder;
 - (void)_updateInnerRingFrame;
 - (void)_updateRingColors;
 - (void)layoutSubviews;
-- (void)setCardExpansionProgress:(double)a3;
+- (void)setCardExpansionProgress:(double)progress;
 @end
 
 @implementation MUVerifiedLogoImageView
 
 - (UIColor)innerRingColor
 {
-  v2 = [MEMORY[0x1E69DC888] whiteColor];
-  v3 = [v2 colorWithAlphaComponent:0.200000003];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v3 = [whiteColor colorWithAlphaComponent:0.200000003];
 
   return v3;
 }
 
 - (void)_updateRingColors
 {
-  v4 = [(MUVerifiedLogoImageView *)self innerRingColor];
-  v3 = v4;
-  -[CAShapeLayer setStrokeColor:](self->_innerRingLayer, "setStrokeColor:", [v4 CGColor]);
+  innerRingColor = [(MUVerifiedLogoImageView *)self innerRingColor];
+  v3 = innerRingColor;
+  -[CAShapeLayer setStrokeColor:](self->_innerRingLayer, "setStrokeColor:", [innerRingColor CGColor]);
 }
 
 - (void)_updateInnerRingFrame
@@ -48,9 +48,9 @@
   [(MUVerifiedLogoImageView *)self _updateInnerRingFrame];
 }
 
-- (void)setCardExpansionProgress:(double)a3
+- (void)setCardExpansionProgress:(double)progress
 {
-  CGAffineTransformMakeScale(&v5, a3, a3);
+  CGAffineTransformMakeScale(&v5, progress, progress);
   v4 = v5;
   [(MUVerifiedLogoImageView *)self setTransform:&v4];
 }
@@ -58,36 +58,36 @@
 - (void)_setupCustomBorder
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MUVerifiedLogoImageView *)self layer];
-  [v3 setMasksToBounds:0];
+  layer = [(MUVerifiedLogoImageView *)self layer];
+  [layer setMasksToBounds:0];
 
-  v4 = [(MUVerifiedLogoImageView *)self layer];
-  [v4 setShadowPathIsBounds:1];
+  layer2 = [(MUVerifiedLogoImageView *)self layer];
+  [layer2 setShadowPathIsBounds:1];
 
   [(MUImageView *)self->_imageView _setContinuousCornerRadius:16.0];
-  v5 = [(MUImageView *)self->_imageView layer];
-  [v5 setMasksToBounds:1];
+  layer3 = [(MUImageView *)self->_imageView layer];
+  [layer3 setMasksToBounds:1];
 
-  v6 = [(MUVerifiedLogoImageView *)self layer];
-  [v6 setShadowOffset:{0.0, 12.0}];
+  layer4 = [(MUVerifiedLogoImageView *)self layer];
+  [layer4 setShadowOffset:{0.0, 12.0}];
 
-  v7 = [(MUVerifiedLogoImageView *)self layer];
+  layer5 = [(MUVerifiedLogoImageView *)self layer];
   LODWORD(v8) = 1049582633;
-  [v7 setShadowOpacity:v8];
+  [layer5 setShadowOpacity:v8];
 
-  v9 = [(MUVerifiedLogoImageView *)self layer];
-  [v9 setShadowRadius:24.0];
+  layer6 = [(MUVerifiedLogoImageView *)self layer];
+  [layer6 setShadowRadius:24.0];
 
-  v10 = [MEMORY[0x1E69794A0] layer];
+  layer7 = [MEMORY[0x1E69794A0] layer];
   innerRingLayer = self->_innerRingLayer;
-  self->_innerRingLayer = v10;
+  self->_innerRingLayer = layer7;
 
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  -[CAShapeLayer setFillColor:](self->_innerRingLayer, "setFillColor:", [v12 CGColor]);
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  -[CAShapeLayer setFillColor:](self->_innerRingLayer, "setFillColor:", [clearColor CGColor]);
 
   [(CAShapeLayer *)self->_innerRingLayer setLineWidth:0.5];
-  v13 = [(MUImageView *)self->_imageView layer];
-  [v13 addSublayer:self->_innerRingLayer];
+  layer8 = [(MUImageView *)self->_imageView layer];
+  [layer8 addSublayer:self->_innerRingLayer];
 
   [(MUImageView *)self->_imageView setAccessibilityIdentifier:@"PlaceHeaderLogoImage"];
   [(MUVerifiedLogoImageView *)self _updateInnerRingFrame];
@@ -99,40 +99,40 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (MUVerifiedLogoImageView)initWithFrame:(CGRect)a3
+- (MUVerifiedLogoImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v27[4] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = MUVerifiedLogoImageView;
   v7 = [(MUVerifiedLogoImageView *)&v26 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v7)
   {
-    v8 = [[MUImageView alloc] initWithFrame:x, y, width, height];
+    height = [[MUImageView alloc] initWithFrame:x, y, width, height];
     imageView = v7->_imageView;
-    v7->_imageView = v8;
+    v7->_imageView = height;
 
     [(MUImageView *)v7->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MUVerifiedLogoImageView *)v7 addSubview:v7->_imageView];
     v21 = MEMORY[0x1E696ACD8];
-    v25 = [(MUImageView *)v7->_imageView leadingAnchor];
-    v24 = [(MUVerifiedLogoImageView *)v7 leadingAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    leadingAnchor = [(MUImageView *)v7->_imageView leadingAnchor];
+    leadingAnchor2 = [(MUVerifiedLogoImageView *)v7 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v27[0] = v23;
-    v22 = [(MUImageView *)v7->_imageView trailingAnchor];
-    v10 = [(MUVerifiedLogoImageView *)v7 trailingAnchor];
-    v11 = [v22 constraintEqualToAnchor:v10];
+    trailingAnchor = [(MUImageView *)v7->_imageView trailingAnchor];
+    trailingAnchor2 = [(MUVerifiedLogoImageView *)v7 trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v27[1] = v11;
-    v12 = [(MUImageView *)v7->_imageView topAnchor];
-    v13 = [(MUVerifiedLogoImageView *)v7 topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    topAnchor = [(MUImageView *)v7->_imageView topAnchor];
+    topAnchor2 = [(MUVerifiedLogoImageView *)v7 topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v27[2] = v14;
-    v15 = [(MUImageView *)v7->_imageView bottomAnchor];
-    v16 = [(MUVerifiedLogoImageView *)v7 bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    bottomAnchor = [(MUImageView *)v7->_imageView bottomAnchor];
+    bottomAnchor2 = [(MUVerifiedLogoImageView *)v7 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v27[3] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
     [v21 activateConstraints:v18];

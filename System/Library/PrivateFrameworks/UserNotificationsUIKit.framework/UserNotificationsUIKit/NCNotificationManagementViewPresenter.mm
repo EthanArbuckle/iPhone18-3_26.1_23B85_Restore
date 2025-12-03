@@ -1,39 +1,39 @@
 @interface NCNotificationManagementViewPresenter
-- (BOOL)dismissManagementViewIfPresentedAnimated:(BOOL)a3;
+- (BOOL)dismissManagementViewIfPresentedAnimated:(BOOL)animated;
 - (NCNotificationManagementViewPresenterDelegate)delegate;
-- (id)notificationManagementController:(id)a3 sectionSettingsForSectionIdentifier:(id)a4;
-- (id)notificationManagementControllerRequestsSystemSettings:(id)a3;
-- (void)notificationManagementController:(id)a3 setAllowsCriticalAlerts:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6;
-- (void)notificationManagementController:(id)a3 setAllowsNotifications:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6;
-- (void)notificationManagementController:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6;
-- (void)notificationManagementController:(id)a3 setDeliverQuietly:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6;
-- (void)notificationManagementController:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forNotificationRequest:(id)a6 withSectionIdentifier:(id)a7 threadIdentifier:(id)a8;
-- (void)notificationManagementController:(id)a3 setScheduledDelivery:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6;
-- (void)notificationManagementControllerDidDismissManagementView:(id)a3;
-- (void)presentNotificationManagementViewType:(unint64_t)a3 forNotificationRequest:(id)a4 withPresentingViewController:(id)a5 withPresentingView:(id)a6;
+- (id)notificationManagementController:(id)controller sectionSettingsForSectionIdentifier:(id)identifier;
+- (id)notificationManagementControllerRequestsSystemSettings:(id)settings;
+- (void)notificationManagementController:(id)controller setAllowsCriticalAlerts:(BOOL)alerts forNotificationRequest:(id)request withSectionIdentifier:(id)identifier;
+- (void)notificationManagementController:(id)controller setAllowsNotifications:(BOOL)notifications forNotificationRequest:(id)request withSectionIdentifier:(id)identifier;
+- (void)notificationManagementController:(id)controller setAllowsTimeSensitive:(BOOL)sensitive forNotificationRequest:(id)request withSectionIdentifier:(id)identifier;
+- (void)notificationManagementController:(id)controller setDeliverQuietly:(BOOL)quietly forNotificationRequest:(id)request withSectionIdentifier:(id)identifier;
+- (void)notificationManagementController:(id)controller setMuted:(BOOL)muted untilDate:(id)date forNotificationRequest:(id)request withSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier;
+- (void)notificationManagementController:(id)controller setScheduledDelivery:(BOOL)delivery forNotificationRequest:(id)request withSectionIdentifier:(id)identifier;
+- (void)notificationManagementControllerDidDismissManagementView:(id)view;
+- (void)presentNotificationManagementViewType:(unint64_t)type forNotificationRequest:(id)request withPresentingViewController:(id)controller withPresentingView:(id)view;
 @end
 
 @implementation NCNotificationManagementViewPresenter
 
-- (void)presentNotificationManagementViewType:(unint64_t)a3 forNotificationRequest:(id)a4 withPresentingViewController:(id)a5 withPresentingView:(id)a6
+- (void)presentNotificationManagementViewType:(unint64_t)type forNotificationRequest:(id)request withPresentingViewController:(id)controller withPresentingView:(id)view
 {
-  v21 = a4;
-  v10 = a5;
-  v11 = a6;
+  requestCopy = request;
+  controllerCopy = controller;
+  viewCopy = view;
   v12 = 0;
   v13 = 1;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 == 6)
+      if (type == 6)
       {
         v14 = NCNotificationManagementMuteAppAlertController;
       }
 
       else
       {
-        if (a3 != 7)
+        if (type != 7)
         {
           goto LABEL_20;
         }
@@ -42,7 +42,7 @@
       }
     }
 
-    else if (a3 == 4)
+    else if (type == 4)
     {
       v14 = NCNotificationManagementTimeSensitiveKeepAlertController;
     }
@@ -55,11 +55,11 @@
     goto LABEL_18;
   }
 
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      v12 = [[NCNotificationManagementDemotionAlertController alloc] initWithRequest:v21 withPresentingView:v11 settingsDelegate:self includeExplanation:1];
+      v12 = [[NCNotificationManagementDemotionAlertController alloc] initWithRequest:requestCopy withPresentingView:viewCopy settingsDelegate:self includeExplanation:1];
       v13 = 0;
       goto LABEL_20;
     }
@@ -68,27 +68,27 @@
     goto LABEL_18;
   }
 
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_20;
     }
 
     v14 = NCNotificationManagementPromotionAlertController;
 LABEL_18:
-    v15 = [[v14 alloc] initWithRequest:v21 withPresentingView:v11 settingsDelegate:self];
+    v15 = [[v14 alloc] initWithRequest:requestCopy withPresentingView:viewCopy settingsDelegate:self];
     goto LABEL_19;
   }
 
-  v15 = [NCNotificationManagementViewController notificationManagementAlertControllerForNotificationRequest:v21 withPresentingView:v11 settingsDelegate:self];
+  v15 = [NCNotificationManagementViewController notificationManagementAlertControllerForNotificationRequest:requestCopy withPresentingView:viewCopy settingsDelegate:self];
 LABEL_19:
   v12 = v15;
 LABEL_20:
-  v16 = [(NCNotificationManagementViewPresenter *)self delegate];
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v16 notificationManagementViewPresenterWillPresentManagementView:self];
+    [delegate notificationManagementViewPresenterWillPresentManagementView:self];
   }
 
   if (v12)
@@ -96,18 +96,18 @@ LABEL_20:
     if (v13)
     {
       [(NCNotificationManagementDemotionAlertController *)v12 setModalPresentationStyle:7];
-      v17 = [(NCNotificationManagementDemotionAlertController *)v12 popoverPresentationController];
-      [v17 setSourceView:v11];
+      popoverPresentationController = [(NCNotificationManagementDemotionAlertController *)v12 popoverPresentationController];
+      [popoverPresentationController setSourceView:viewCopy];
 
-      v18 = [(NCNotificationManagementDemotionAlertController *)v12 popoverPresentationController];
-      [v11 bounds];
-      [v18 setSourceRect:?];
+      popoverPresentationController2 = [(NCNotificationManagementDemotionAlertController *)v12 popoverPresentationController];
+      [viewCopy bounds];
+      [popoverPresentationController2 setSourceRect:?];
 
-      v19 = [(NCNotificationManagementDemotionAlertController *)v12 popoverPresentationController];
-      [v19 setPermittedArrowDirections:3];
+      popoverPresentationController3 = [(NCNotificationManagementDemotionAlertController *)v12 popoverPresentationController];
+      [popoverPresentationController3 setPermittedArrowDirections:3];
 
-      v20 = [(NCNotificationManagementDemotionAlertController *)v12 popoverPresentationController];
-      [v20 setCanOverlapSourceViewRect:1];
+      popoverPresentationController4 = [(NCNotificationManagementDemotionAlertController *)v12 popoverPresentationController];
+      [popoverPresentationController4 setCanOverlapSourceViewRect:1];
     }
 
     else
@@ -116,18 +116,18 @@ LABEL_20:
     }
 
     [(NCNotificationManagementViewPresenter *)self setNotificationManagementAlertViewController:v12];
-    [v10 presentViewController:v12 animated:1 completion:0];
+    [controllerCopy presentViewController:v12 animated:1 completion:0];
   }
 }
 
-- (BOOL)dismissManagementViewIfPresentedAnimated:(BOOL)a3
+- (BOOL)dismissManagementViewIfPresentedAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UIAlertController *)self->_notificationManagementAlertViewController presentingViewController];
-  v6 = v5;
-  if (v5)
+  animatedCopy = animated;
+  presentingViewController = [(UIAlertController *)self->_notificationManagementAlertViewController presentingViewController];
+  v6 = presentingViewController;
+  if (presentingViewController)
   {
-    [v5 dismissViewControllerAnimated:v3 completion:0];
+    [presentingViewController dismissViewControllerAnimated:animatedCopy completion:0];
     notificationManagementAlertViewController = [(NCNotificationManagementViewPresenter *)self delegate];
     if (objc_opt_respondsToSelector())
     {
@@ -144,21 +144,21 @@ LABEL_20:
   return v6 != 0;
 }
 
-- (id)notificationManagementController:(id)a3 sectionSettingsForSectionIdentifier:(id)a4
+- (id)notificationManagementController:(id)controller sectionSettingsForSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(NCNotificationManagementViewPresenter *)self delegate];
-  v7 = [v6 notificationManagementViewPresenter:self sectionSettingsForSectionIdentifier:v5];
+  identifierCopy = identifier;
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
+  v7 = [delegate notificationManagementViewPresenter:self sectionSettingsForSectionIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (id)notificationManagementControllerRequestsSystemSettings:(id)a3
+- (id)notificationManagementControllerRequestsSystemSettings:(id)settings
 {
-  v4 = [(NCNotificationManagementViewPresenter *)self delegate];
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 notificationManagementViewPresenterRequestsSystemSettings:self];
+    v5 = [delegate notificationManagementViewPresenterRequestsSystemSettings:self];
   }
 
   else
@@ -169,74 +169,74 @@ LABEL_20:
   return v5;
 }
 
-- (void)notificationManagementController:(id)a3 setAllowsNotifications:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6
+- (void)notificationManagementController:(id)controller setAllowsNotifications:(BOOL)notifications forNotificationRequest:(id)request withSectionIdentifier:(id)identifier
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = a5;
-  v11 = [(NCNotificationManagementViewPresenter *)self delegate];
-  [v11 notificationManagementViewPresenter:self setAllowsNotifications:v7 forNotificationRequest:v10 withSectionIdentifier:v9];
+  notificationsCopy = notifications;
+  identifierCopy = identifier;
+  requestCopy = request;
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
+  [delegate notificationManagementViewPresenter:self setAllowsNotifications:notificationsCopy forNotificationRequest:requestCopy withSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementController:(id)a3 setDeliverQuietly:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6
+- (void)notificationManagementController:(id)controller setDeliverQuietly:(BOOL)quietly forNotificationRequest:(id)request withSectionIdentifier:(id)identifier
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = a5;
-  v11 = [(NCNotificationManagementViewPresenter *)self delegate];
-  [v11 notificationManagementViewPresenter:self setDeliverQuietly:v7 forNotificationRequest:v10 withSectionIdentifier:v9];
+  quietlyCopy = quietly;
+  identifierCopy = identifier;
+  requestCopy = request;
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
+  [delegate notificationManagementViewPresenter:self setDeliverQuietly:quietlyCopy forNotificationRequest:requestCopy withSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementController:(id)a3 setAllowsCriticalAlerts:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6
+- (void)notificationManagementController:(id)controller setAllowsCriticalAlerts:(BOOL)alerts forNotificationRequest:(id)request withSectionIdentifier:(id)identifier
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = a5;
-  v11 = [(NCNotificationManagementViewPresenter *)self delegate];
-  [v11 notificationManagementViewPresenter:self setAllowsCriticalAlerts:v7 forNotificationRequest:v10 withSectionIdentifier:v9];
+  alertsCopy = alerts;
+  identifierCopy = identifier;
+  requestCopy = request;
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
+  [delegate notificationManagementViewPresenter:self setAllowsCriticalAlerts:alertsCopy forNotificationRequest:requestCopy withSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementControllerDidDismissManagementView:(id)a3
+- (void)notificationManagementControllerDidDismissManagementView:(id)view
 {
-  v4 = [(NCNotificationManagementViewPresenter *)self delegate];
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationManagementViewPresenterDidDismissManagementView:self];
+    [delegate notificationManagementViewPresenterDidDismissManagementView:self];
   }
 }
 
-- (void)notificationManagementController:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6
+- (void)notificationManagementController:(id)controller setAllowsTimeSensitive:(BOOL)sensitive forNotificationRequest:(id)request withSectionIdentifier:(id)identifier
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = a5;
-  v11 = [(NCNotificationManagementViewPresenter *)self delegate];
-  [v11 notificationManagementViewPresenter:self setAllowsTimeSensitive:v7 forNotificationRequest:v10 withSectionIdentifier:v9];
+  sensitiveCopy = sensitive;
+  identifierCopy = identifier;
+  requestCopy = request;
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
+  [delegate notificationManagementViewPresenter:self setAllowsTimeSensitive:sensitiveCopy forNotificationRequest:requestCopy withSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementController:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forNotificationRequest:(id)a6 withSectionIdentifier:(id)a7 threadIdentifier:(id)a8
+- (void)notificationManagementController:(id)controller setMuted:(BOOL)muted untilDate:(id)date forNotificationRequest:(id)request withSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier
 {
-  v11 = a4;
-  v17 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
-  v16 = [(NCNotificationManagementViewPresenter *)self delegate];
+  mutedCopy = muted;
+  dateCopy = date;
+  requestCopy = request;
+  identifierCopy = identifier;
+  threadIdentifierCopy = threadIdentifier;
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v16 notificationManagementViewPresenter:self setMuted:v11 untilDate:v17 forNotificationRequest:v13 withSectionIdentifier:v14 threadIdentifier:v15];
+    [delegate notificationManagementViewPresenter:self setMuted:mutedCopy untilDate:dateCopy forNotificationRequest:requestCopy withSectionIdentifier:identifierCopy threadIdentifier:threadIdentifierCopy];
   }
 }
 
-- (void)notificationManagementController:(id)a3 setScheduledDelivery:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6
+- (void)notificationManagementController:(id)controller setScheduledDelivery:(BOOL)delivery forNotificationRequest:(id)request withSectionIdentifier:(id)identifier
 {
-  v7 = a4;
-  v11 = a5;
-  v9 = a6;
-  v10 = [(NCNotificationManagementViewPresenter *)self delegate];
+  deliveryCopy = delivery;
+  requestCopy = request;
+  identifierCopy = identifier;
+  delegate = [(NCNotificationManagementViewPresenter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 notificationManagementViewPresenter:self setScheduledDelivery:v7 forNotificationRequest:v11 withSectionIdentifier:v9];
+    [delegate notificationManagementViewPresenter:self setScheduledDelivery:deliveryCopy forNotificationRequest:requestCopy withSectionIdentifier:identifierCopy];
   }
 }
 

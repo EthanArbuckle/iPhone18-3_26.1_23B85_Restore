@@ -1,25 +1,25 @@
 @interface VUIDocumentContextDataLivePostPlay
-- (BOOL)isEqual:(id)a3;
-- (VUIDocumentContextDataLivePostPlay)initWithCanonicalId:(id)a3 playablePassthrough:(id)a4 broadcastLocale:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (VUIDocumentContextDataLivePostPlay)initWithCanonicalId:(id)id playablePassthrough:(id)passthrough broadcastLocale:(id)locale;
 - (id)jsonData;
 @end
 
 @implementation VUIDocumentContextDataLivePostPlay
 
-- (VUIDocumentContextDataLivePostPlay)initWithCanonicalId:(id)a3 playablePassthrough:(id)a4 broadcastLocale:(id)a5
+- (VUIDocumentContextDataLivePostPlay)initWithCanonicalId:(id)id playablePassthrough:(id)passthrough broadcastLocale:(id)locale
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  passthroughCopy = passthrough;
+  localeCopy = locale;
   v15.receiver = self;
   v15.super_class = VUIDocumentContextDataLivePostPlay;
   v12 = [(VUIDocumentContextDataLivePostPlay *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_canonicalId, a3);
-    objc_storeStrong(&v13->_playablePassthrough, a4);
-    objc_storeStrong(&v13->_broadcastLocale, a5);
+    objc_storeStrong(&v12->_canonicalId, id);
+    objc_storeStrong(&v13->_playablePassthrough, passthrough);
+    objc_storeStrong(&v13->_broadcastLocale, locale);
   }
 
   return v13;
@@ -57,24 +57,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(VUIDocumentContextDataLivePostPlay *)self canonicalId];
-    v7 = [v5 canonicalId];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    canonicalId = [(VUIDocumentContextDataLivePostPlay *)self canonicalId];
+    canonicalId2 = [v5 canonicalId];
+    if ([canonicalId isEqual:canonicalId2])
     {
-      v8 = [(VUIDocumentContextDataLivePostPlay *)self playablePassthrough];
-      v9 = [v5 playablePassthrough];
-      if ([v8 isEqual:v9])
+      playablePassthrough = [(VUIDocumentContextDataLivePostPlay *)self playablePassthrough];
+      playablePassthrough2 = [v5 playablePassthrough];
+      if ([playablePassthrough isEqual:playablePassthrough2])
       {
-        v10 = [(VUIDocumentContextDataLivePostPlay *)self broadcastLocale];
-        v11 = [v5 broadcastLocale];
-        v12 = [v10 isEqual:v11];
+        broadcastLocale = [(VUIDocumentContextDataLivePostPlay *)self broadcastLocale];
+        broadcastLocale2 = [v5 broadcastLocale];
+        v12 = [broadcastLocale isEqual:broadcastLocale2];
       }
 
       else

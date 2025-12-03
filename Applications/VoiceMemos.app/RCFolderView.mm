@@ -1,27 +1,27 @@
 @interface RCFolderView
 - (RCFolderViewDelegate)delegate;
 - (UICollectionView)recordingsCollectionView;
-- (_TtC10VoiceMemos12RCFolderView)initWithFrame:(CGRect)a3;
-- (_TtC10VoiceMemos12RCFolderView)initWithRecordButtonFactory:(id)a3 recordingsCollectionViewControllerWrapperView:(id)a4 recordingsCollectionView:(id)a5 allowsNewRecordings:(BOOL)a6;
+- (_TtC10VoiceMemos12RCFolderView)initWithFrame:(CGRect)frame;
+- (_TtC10VoiceMemos12RCFolderView)initWithRecordButtonFactory:(id)factory recordingsCollectionViewControllerWrapperView:(id)view recordingsCollectionView:(id)collectionView allowsNewRecordings:(BOOL)recordings;
 - (void)layoutSubviews;
-- (void)setRecordingsCollectionViewControllerWrapperView:(id)a3;
-- (void)setZoomTransitionSourceView:(id)a3;
-- (void)updateBottomLayoutForEditing:(BOOL)a3 isSearching:(BOOL)a4 delegate:(id)a5;
+- (void)setRecordingsCollectionViewControllerWrapperView:(id)view;
+- (void)setZoomTransitionSourceView:(id)view;
+- (void)updateBottomLayoutForEditing:(BOOL)editing isSearching:(BOOL)searching delegate:(id)delegate;
 @end
 
 @implementation RCFolderView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001EA94();
 }
 
-- (void)setRecordingsCollectionViewControllerWrapperView:(id)a3
+- (void)setRecordingsCollectionViewControllerWrapperView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC10VoiceMemos12RCFolderView_recordingsCollectionViewControllerWrapperView);
-  *(self + OBJC_IVAR____TtC10VoiceMemos12RCFolderView_recordingsCollectionViewControllerWrapperView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC10VoiceMemos12RCFolderView_recordingsCollectionViewControllerWrapperView) = view;
+  viewCopy = view;
 }
 
 - (UICollectionView)recordingsCollectionView
@@ -31,11 +31,11 @@
   return Strong;
 }
 
-- (void)setZoomTransitionSourceView:(id)a3
+- (void)setZoomTransitionSourceView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC10VoiceMemos12RCFolderView_zoomTransitionSourceView);
-  *(self + OBJC_IVAR____TtC10VoiceMemos12RCFolderView_zoomTransitionSourceView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC10VoiceMemos12RCFolderView_zoomTransitionSourceView) = view;
+  viewCopy = view;
 }
 
 - (RCFolderViewDelegate)delegate
@@ -45,25 +45,25 @@
   return Strong;
 }
 
-- (_TtC10VoiceMemos12RCFolderView)initWithRecordButtonFactory:(id)a3 recordingsCollectionViewControllerWrapperView:(id)a4 recordingsCollectionView:(id)a5 allowsNewRecordings:(BOOL)a6
+- (_TtC10VoiceMemos12RCFolderView)initWithRecordButtonFactory:(id)factory recordingsCollectionViewControllerWrapperView:(id)view recordingsCollectionView:(id)collectionView allowsNewRecordings:(BOOL)recordings
 {
   swift_unknownObjectRetain();
-  v10 = a4;
-  v11 = a5;
-  return sub_1001905D4(a3, v10, a5, a6);
+  viewCopy = view;
+  collectionViewCopy = collectionView;
+  return sub_1001905D4(factory, viewCopy, collectionView, recordings);
 }
 
-- (void)updateBottomLayoutForEditing:(BOOL)a3 isSearching:(BOOL)a4 delegate:(id)a5
+- (void)updateBottomLayoutForEditing:(BOOL)editing isSearching:(BOOL)searching delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  searchingCopy = searching;
+  editingCopy = editing;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_1001908B0(v7, v6, a5);
+  selfCopy = self;
+  sub_1001908B0(editingCopy, searchingCopy, delegate);
   swift_unknownObjectRelease();
 }
 
-- (_TtC10VoiceMemos12RCFolderView)initWithFrame:(CGRect)a3
+- (_TtC10VoiceMemos12RCFolderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

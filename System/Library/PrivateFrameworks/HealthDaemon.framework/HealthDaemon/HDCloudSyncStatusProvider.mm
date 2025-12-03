@@ -1,27 +1,27 @@
 @interface HDCloudSyncStatusProvider
 - (BOOL)_shouldPerformLastSyncDateCheckInternalSetting;
 - (HDCloudSyncStatus)syncStatus;
-- (HDCloudSyncStatusProvider)initWithCoordinator:(id)a3 behavior:(id)a4;
-- (id)_lastLongTimeWithoutSuccessfulCloudSyncReportDateKeyWithError:(id *)a3;
+- (HDCloudSyncStatusProvider)initWithCoordinator:(id)coordinator behavior:(id)behavior;
+- (id)_lastLongTimeWithoutSuccessfulCloudSyncReportDateKeyWithError:(id *)error;
 - (id)currentSyncProgress;
 - (id)lastSuccessfulLitePushDate;
 - (id)lastSuccessfulPullDate;
 - (id)lastSuccessfulPushDate;
 - (void)checkLastSyncDate;
-- (void)fetchSyncStatusWithCompletion:(id)a3;
-- (void)setDataUploadRequestStatus:(int64_t)a3 profileType:(int64_t)a4;
-- (void)unitTest_setLastSuccessfulLitePushDate:(id)a3;
-- (void)unitTest_setLastSuccessfulPullDate:(id)a3;
-- (void)unitTest_setLastSuccessfulPushDate:(id)a3;
-- (void)updateCachedLastSyncDatesWithCompletion:(id)a3;
+- (void)fetchSyncStatusWithCompletion:(id)completion;
+- (void)setDataUploadRequestStatus:(int64_t)status profileType:(int64_t)type;
+- (void)unitTest_setLastSuccessfulLitePushDate:(id)date;
+- (void)unitTest_setLastSuccessfulPullDate:(id)date;
+- (void)unitTest_setLastSuccessfulPushDate:(id)date;
+- (void)updateCachedLastSyncDatesWithCompletion:(id)completion;
 @end
 
 @implementation HDCloudSyncStatusProvider
 
-- (HDCloudSyncStatusProvider)initWithCoordinator:(id)a3 behavior:(id)a4
+- (HDCloudSyncStatusProvider)initWithCoordinator:(id)coordinator behavior:(id)behavior
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  behaviorCopy = behavior;
   v14.receiver = self;
   v14.super_class = HDCloudSyncStatusProvider;
   v8 = [(HDCloudSyncStatusProvider *)&v14 init];
@@ -31,8 +31,8 @@
     queue = v8->_queue;
     v8->_queue = v9;
 
-    objc_storeWeak(&v8->_coordinator, v6);
-    objc_storeStrong(&v8->_behavior, a4);
+    objc_storeWeak(&v8->_coordinator, coordinatorCopy);
+    objc_storeStrong(&v8->_behavior, behavior);
     v11 = objc_alloc_init(HDCloudSyncStatus);
     lock_cloudSyncStatus = v8->_lock_cloudSyncStatus;
     v8->_lock_cloudSyncStatus = v11;
@@ -43,17 +43,17 @@
   return v8;
 }
 
-- (void)fetchSyncStatusWithCompletion:(id)a3
+- (void)fetchSyncStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HDCloudSyncStatusProvider_fetchSyncStatusWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -288,14 +288,14 @@ LABEL_20:
 - (id)currentSyncProgress
 {
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  v4 = [WeakRetained hasActiveSyncTask];
+  hasActiveSyncTask = [WeakRetained hasActiveSyncTask];
 
   v5 = MEMORY[0x277CCAC48];
-  if (v4)
+  if (hasActiveSyncTask)
   {
     v6 = objc_loadWeakRetained(&self->_coordinator);
-    v7 = [v6 progressOfActiveSyncTask];
-    v8 = [v5 hd_progressMirroringProgress:v7];
+    progressOfActiveSyncTask = [v6 progressOfActiveSyncTask];
+    v8 = [v5 hd_progressMirroringProgress:progressOfActiveSyncTask];
   }
 
   else
@@ -779,43 +779,43 @@ void __46__HDCloudSyncStatusProvider_checkLastSyncDate__block_invoke_3(uint64_t 
 - (id)lastSuccessfulPullDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulPullDate];
+  lastSuccessfulPullDate = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulPullDate];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return lastSuccessfulPullDate;
 }
 
 - (id)lastSuccessfulPushDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulPushDate];
+  lastSuccessfulPushDate = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulPushDate];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return lastSuccessfulPushDate;
 }
 
 - (id)lastSuccessfulLitePushDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulLitePushDate];
+  lastSuccessfulLitePushDate = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulLitePushDate];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return lastSuccessfulLitePushDate;
 }
 
-- (void)setDataUploadRequestStatus:(int64_t)a3 profileType:(int64_t)a4
+- (void)setDataUploadRequestStatus:(int64_t)status profileType:(int64_t)type
 {
   v28 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  v7 = [WeakRetained daemon];
-  v8 = [v7 profileManager];
-  v9 = [v8 allProfileIdentifiers];
+  daemon = [WeakRetained daemon];
+  profileManager = [daemon profileManager];
+  allProfileIdentifiers = [profileManager allProfileIdentifiers];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v9;
+  v10 = allProfileIdentifiers;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -831,15 +831,15 @@ void __46__HDCloudSyncStatusProvider_checkLastSyncDate__block_invoke_3(uint64_t 
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        if ([v15 type] == a4)
+        if ([v15 type] == type)
         {
           v16 = objc_loadWeakRetained(&self->_coordinator);
-          v17 = [v16 daemon];
-          v18 = [v17 profileManager];
-          v19 = [v18 profileForIdentifier:v15];
+          daemon2 = [v16 daemon];
+          profileManager2 = [daemon2 profileManager];
+          v19 = [profileManager2 profileForIdentifier:v15];
 
-          v20 = [v19 cloudSyncManager];
-          [v20 updateDataUploadRequestStatus:a3];
+          cloudSyncManager = [v19 cloudSyncManager];
+          [cloudSyncManager updateDataUploadRequestStatus:status];
         }
       }
 
@@ -852,13 +852,13 @@ void __46__HDCloudSyncStatusProvider_checkLastSyncDate__block_invoke_3(uint64_t 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lastLongTimeWithoutSuccessfulCloudSyncReportDateKeyWithError:(id *)a3
+- (id)_lastLongTimeWithoutSuccessfulCloudSyncReportDateKeyWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 primaryProfile];
+  daemon = [WeakRetained daemon];
+  primaryProfile = [daemon primaryProfile];
   v16 = 0;
-  v7 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity retrieveDatabaseIdentifierFromProfile:v6 error:&v16];
+  v7 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity retrieveDatabaseIdentifierFromProfile:primaryProfile error:&v16];
   v8 = v16;
 
   v9 = [MEMORY[0x277CCAD78] hk_UUIDWithData:v7];
@@ -866,8 +866,8 @@ void __46__HDCloudSyncStatusProvider_checkLastSyncDate__block_invoke_3(uint64_t 
   if (v9)
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v9 UUIDString];
-    v13 = [v11 stringWithFormat:@"%@-%@", @"HDLastLongTimeWithoutSuccessfulCloudSyncReportDate", v12];
+    uUIDString = [v9 UUIDString];
+    v13 = [v11 stringWithFormat:@"%@-%@", @"HDLastLongTimeWithoutSuccessfulCloudSyncReportDate", uUIDString];
 LABEL_10:
 
     goto LABEL_11;
@@ -875,13 +875,13 @@ LABEL_10:
 
   if (v8)
   {
-    v12 = v8;
+    uUIDString = v8;
 LABEL_6:
-    if (a3)
+    if (error)
     {
-      v14 = v12;
+      v14 = uUIDString;
       v13 = 0;
-      *a3 = v12;
+      *error = uUIDString;
     }
 
     else
@@ -890,12 +890,12 @@ LABEL_6:
       v13 = 0;
     }
 
-    v8 = v12;
+    v8 = uUIDString;
     goto LABEL_10;
   }
 
-  v12 = [MEMORY[0x277CCA9B8] hk_error:124 description:@"Unable to get the database UUID"];
-  if (v12)
+  uUIDString = [MEMORY[0x277CCA9B8] hk_error:124 description:@"Unable to get the database UUID"];
+  if (uUIDString)
   {
     goto LABEL_6;
   }
@@ -909,32 +909,32 @@ LABEL_11:
 
 - (BOOL)_shouldPerformLastSyncDateCheckInternalSetting
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:*MEMORY[0x277CCE470]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:*MEMORY[0x277CCE470]];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)updateCachedLastSyncDatesWithCompletion:(id)a3
+- (void)updateCachedLastSyncDatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__HDCloudSyncStatusProvider_updateCachedLastSyncDatesWithCompletion___block_invoke;
   v6[3] = &unk_278623D78;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(HDCloudSyncStatusProvider *)self fetchSyncStatusWithCompletion:v6];
 }
 
@@ -979,16 +979,16 @@ void __69__HDCloudSyncStatusProvider_updateCachedLastSyncDatesWithCompletion___b
 {
   os_unfair_lock_lock(&self->_lock);
   v3 = objc_alloc_init(HDCloudSyncStatus);
-  v4 = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulPullDate];
-  v5 = [v4 copy];
+  lastSuccessfulPullDate = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulPullDate];
+  v5 = [lastSuccessfulPullDate copy];
   [(HDCloudSyncStatus *)v3 setLastSuccessfulPullDate:v5];
 
-  v6 = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulPushDate];
-  v7 = [v6 copy];
+  lastSuccessfulPushDate = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulPushDate];
+  v7 = [lastSuccessfulPushDate copy];
   [(HDCloudSyncStatus *)v3 setLastSuccessfulPushDate:v7];
 
-  v8 = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulLitePushDate];
-  v9 = [v8 copy];
+  lastSuccessfulLitePushDate = [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus lastSuccessfulLitePushDate];
+  v9 = [lastSuccessfulLitePushDate copy];
   [(HDCloudSyncStatus *)v3 setLastSuccessfulLitePushDate:v9];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -996,29 +996,29 @@ void __69__HDCloudSyncStatusProvider_updateCachedLastSyncDatesWithCompletion___b
   return v3;
 }
 
-- (void)unitTest_setLastSuccessfulPullDate:(id)a3
+- (void)unitTest_setLastSuccessfulPullDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus setLastSuccessfulPullDate:v4];
+  [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus setLastSuccessfulPullDate:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unitTest_setLastSuccessfulPushDate:(id)a3
+- (void)unitTest_setLastSuccessfulPushDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus setLastSuccessfulPushDate:v4];
+  [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus setLastSuccessfulPushDate:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unitTest_setLastSuccessfulLitePushDate:(id)a3
+- (void)unitTest_setLastSuccessfulLitePushDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus setLastSuccessfulLitePushDate:v4];
+  [(HDCloudSyncStatus *)self->_lock_cloudSyncStatus setLastSuccessfulLitePushDate:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

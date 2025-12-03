@@ -2,7 +2,7 @@
 - (PXCloudQuotaController)init;
 - (PXCloudQuotaControllerDelegate)delegate;
 - (id)presentingViewControllerForInformationView;
-- (void)setInformationView:(id)a3;
+- (void)setInformationView:(id)view;
 @end
 
 @implementation PXCloudQuotaController
@@ -17,8 +17,8 @@
 - (id)presentingViewControllerForInformationView
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCloudQuotaController *)self delegate];
-  v4 = [v3 presentingViewControllerForCloudQuotaController:self];
+  delegate = [(PXCloudQuotaController *)self delegate];
+  v4 = [delegate presentingViewControllerForCloudQuotaController:self];
   v5 = PLUserStatusGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -29,11 +29,11 @@
     v12 = 138544642;
     v13 = v6;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = v8;
     v18 = 2048;
-    v19 = v3;
+    v19 = delegate;
     v20 = 2114;
     v21 = objc_opt_class();
     v22 = 2048;
@@ -45,14 +45,14 @@
   return v4;
 }
 
-- (void)setInformationView:(id)a3
+- (void)setInformationView:(id)view
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_informationView != v5)
+  viewCopy = view;
+  if (self->_informationView != viewCopy)
   {
-    objc_storeStrong(&self->_informationView, a3);
-    v6 = [(PXCloudQuotaController *)self delegate];
+    objc_storeStrong(&self->_informationView, view);
+    delegate = [(PXCloudQuotaController *)self delegate];
     v7 = PLUserStatusGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -65,11 +65,11 @@
       v15 = 138544642;
       v16 = v8;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = v10;
       v21 = 2048;
-      v22 = v6;
+      v22 = delegate;
       v23 = 2114;
       v24 = v12;
       v25 = 2048;
@@ -78,7 +78,7 @@
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> delegate:<%{public}@:%p>, informationViewDidChange:<%{public}@:%p>", &v15, 0x3Eu);
     }
 
-    [v6 cloudQuotaController:self informationViewDidChange:self->_informationView];
+    [delegate cloudQuotaController:self informationViewDidChange:self->_informationView];
   }
 }
 
@@ -100,7 +100,7 @@
     *buf = 138543618;
     v12 = v4;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> init", buf, 0x16u);
   }
 

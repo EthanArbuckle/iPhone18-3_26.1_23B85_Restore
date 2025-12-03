@@ -1,5 +1,5 @@
 @interface MTASingleTimerCollectionViewCell
-- (MTASingleTimerCollectionViewCell)initWithFrame:(CGRect)a3;
+- (MTASingleTimerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
 - (void)setupControlsView;
 - (void)setupLayoutConstraints;
@@ -7,11 +7,11 @@
 
 @implementation MTASingleTimerCollectionViewCell
 
-- (MTASingleTimerCollectionViewCell)initWithFrame:(CGRect)a3
+- (MTASingleTimerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MTASingleTimerCollectionViewCell;
-  v3 = [(MTASingleTimerCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTASingleTimerCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,47 +28,47 @@
   v3 = [[MTATimerControlsView alloc] initWithDelegate:0 style:4 timerControlState:0];
   [(MTASingleTimerCollectionViewCell *)self setControlsView:v3];
 
-  v4 = [(MTASingleTimerCollectionViewCell *)self controlsView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  controlsView = [(MTASingleTimerCollectionViewCell *)self controlsView];
+  [controlsView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(MTASingleTimerCollectionViewCell *)self contentView];
-  v5 = [(MTASingleTimerCollectionViewCell *)self controlsView];
-  [v6 addSubview:v5];
+  contentView = [(MTASingleTimerCollectionViewCell *)self contentView];
+  controlsView2 = [(MTASingleTimerCollectionViewCell *)self controlsView];
+  [contentView addSubview:controlsView2];
 }
 
 - (void)setupLayoutConstraints
 {
   v27 = objc_opt_new();
-  v3 = [(MTASingleTimerCollectionViewCell *)self controlsView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(MTASingleTimerCollectionViewCell *)self contentView];
-  v6 = [v5 safeAreaLayoutGuide];
-  v7 = [v6 leadingAnchor];
-  v8 = [v4 constraintEqualToAnchor:v7];
+  controlsView = [(MTASingleTimerCollectionViewCell *)self controlsView];
+  leadingAnchor = [controlsView leadingAnchor];
+  contentView = [(MTASingleTimerCollectionViewCell *)self contentView];
+  safeAreaLayoutGuide = [contentView safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v27 addObject:v8];
 
-  v9 = [(MTASingleTimerCollectionViewCell *)self controlsView];
-  v10 = [v9 trailingAnchor];
-  v11 = [(MTASingleTimerCollectionViewCell *)self contentView];
-  v12 = [v11 safeAreaLayoutGuide];
-  v13 = [v12 trailingAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
+  controlsView2 = [(MTASingleTimerCollectionViewCell *)self controlsView];
+  trailingAnchor = [controlsView2 trailingAnchor];
+  contentView2 = [(MTASingleTimerCollectionViewCell *)self contentView];
+  safeAreaLayoutGuide2 = [contentView2 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v27 addObject:v14];
 
-  v15 = [(MTASingleTimerCollectionViewCell *)self controlsView];
-  v16 = [v15 topAnchor];
-  v17 = [(MTASingleTimerCollectionViewCell *)self contentView];
-  v18 = [v17 safeAreaLayoutGuide];
-  v19 = [v18 topAnchor];
-  v20 = [v16 constraintEqualToAnchor:v19];
+  controlsView3 = [(MTASingleTimerCollectionViewCell *)self controlsView];
+  topAnchor = [controlsView3 topAnchor];
+  contentView3 = [(MTASingleTimerCollectionViewCell *)self contentView];
+  safeAreaLayoutGuide3 = [contentView3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v27 addObject:v20];
 
-  v21 = [(MTASingleTimerCollectionViewCell *)self controlsView];
-  v22 = [v21 bottomAnchor];
-  v23 = [(MTASingleTimerCollectionViewCell *)self contentView];
-  v24 = [v23 safeAreaLayoutGuide];
-  v25 = [v24 bottomAnchor];
-  v26 = [v22 constraintEqualToAnchor:v25];
+  controlsView4 = [(MTASingleTimerCollectionViewCell *)self controlsView];
+  bottomAnchor = [controlsView4 bottomAnchor];
+  contentView4 = [(MTASingleTimerCollectionViewCell *)self contentView];
+  safeAreaLayoutGuide4 = [contentView4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v27 addObject:v26];
 
   [NSLayoutConstraint activateConstraints:v27];
@@ -79,11 +79,11 @@
   v5.receiver = self;
   v5.super_class = MTASingleTimerCollectionViewCell;
   [(MTASingleTimerCollectionViewCell *)&v5 prepareForReuse];
-  v3 = [(MTASingleTimerCollectionViewCell *)self controlsView];
-  [v3 setStateNeedsReset:1];
+  controlsView = [(MTASingleTimerCollectionViewCell *)self controlsView];
+  [controlsView setStateNeedsReset:1];
 
-  v4 = [(MTASingleTimerCollectionViewCell *)self controlsView];
-  [v4 resetLayout];
+  controlsView2 = [(MTASingleTimerCollectionViewCell *)self controlsView];
+  [controlsView2 resetLayout];
 }
 
 @end

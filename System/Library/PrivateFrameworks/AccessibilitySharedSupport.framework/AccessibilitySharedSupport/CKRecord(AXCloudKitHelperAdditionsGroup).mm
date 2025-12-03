@@ -7,8 +7,8 @@
 
 - (id)name
 {
-  v1 = [a1 encryptedValues];
-  v2 = [v1 objectForKey:@"name"];
+  encryptedValues = [self encryptedValues];
+  v2 = [encryptedValues objectForKey:@"name"];
 
   return v2;
 }
@@ -16,8 +16,8 @@
 - (void)setName:()AXCloudKitHelperAdditionsGroup
 {
   v4 = a3;
-  v5 = [a1 encryptedValues];
-  [v5 setObject:v4 forKey:@"name"];
+  encryptedValues = [self encryptedValues];
+  [encryptedValues setObject:v4 forKey:@"name"];
 }
 
 @end

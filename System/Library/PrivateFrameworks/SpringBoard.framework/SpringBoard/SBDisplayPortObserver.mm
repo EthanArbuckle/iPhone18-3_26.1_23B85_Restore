@@ -3,11 +3,11 @@
 - (BOOL)startMatchingNotifications;
 - (SBDisplayPortObserver)init;
 - (SBDisplayPortObserverDelegate)delegate;
-- (void)_addTransportNotificationForService:(unsigned int)a3 andRegistryEntryID:(unint64_t)a4;
-- (void)_handleNotificationForService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5;
-- (void)_handleServiceAdded:(unsigned int)a3;
+- (void)_addTransportNotificationForService:(unsigned int)service andRegistryEntryID:(unint64_t)d;
+- (void)_handleNotificationForService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument;
+- (void)_handleServiceAdded:(unsigned int)added;
 - (void)_notifyDelegate;
-- (void)_removeTransportNotificationForRegistryEntryID:(unint64_t)a3;
+- (void)_removeTransportNotificationForRegistryEntryID:(unint64_t)d;
 - (void)dealloc;
 - (void)stopMatchingNotifications;
 @end
@@ -28,9 +28,9 @@
     v2->_ioNotificationPort = 0;
     v2->_ioServiceAddedIterator = 0;
     v2->_matchingNotificationsStarted = 0;
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     transportNotifiers = v2->_transportNotifiers;
-    v2->_transportNotifiers = v5;
+    v2->_transportNotifiers = dictionary;
   }
 
   return v2;
@@ -68,14 +68,14 @@
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "[SBDisplayPortObserver] Adding transport matching notifications...", buf, 2u);
   }
 
-  v4 = [(SBDisplayPortObserver *)self queue];
+  queue = [(SBDisplayPortObserver *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__SBDisplayPortObserver_startMatchingNotifications__block_invoke;
   v7[3] = &unk_2783A9300;
   v7[4] = self;
   v7[5] = &v9;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue, v7);
 
   v5 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -130,13 +130,13 @@ void __51__SBDisplayPortObserver_startMatchingNotifications__block_invoke(uint64
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "[SBDisplayPortObserver] Removing transport matching notifications...", buf, 2u);
   }
 
-  v4 = [(SBDisplayPortObserver *)self queue];
+  queue = [(SBDisplayPortObserver *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SBDisplayPortObserver_stopMatchingNotifications__block_invoke;
   block[3] = &unk_2783A8C18;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 }
 
 uint64_t __50__SBDisplayPortObserver_stopMatchingNotifications__block_invoke(uint64_t a1)
@@ -184,19 +184,19 @@ void __50__SBDisplayPortObserver_stopMatchingNotifications__block_invoke_2(uint6
 
 - (BOOL)isDisplayPortConnected
 {
-  v2 = [(SBDisplayPortObserver *)self transportNotifiers];
-  v3 = [v2 allKeys];
-  v4 = [v3 count] != 0;
+  transportNotifiers = [(SBDisplayPortObserver *)self transportNotifiers];
+  allKeys = [transportNotifiers allKeys];
+  v4 = [allKeys count] != 0;
 
   return v4;
 }
 
-- (void)_handleServiceAdded:(unsigned int)a3
+- (void)_handleServiceAdded:(unsigned int)added
 {
-  v3 = *&a3;
+  v3 = *&added;
   v22 = *MEMORY[0x277D85DE8];
   entryID = 0;
-  RegistryEntryID = IORegistryEntryGetRegistryEntryID(a3, &entryID);
+  RegistryEntryID = IORegistryEntryGetRegistryEntryID(added, &entryID);
   if (RegistryEntryID)
   {
     v6 = RegistryEntryID;
@@ -209,9 +209,9 @@ void __50__SBDisplayPortObserver_stopMatchingNotifications__block_invoke_2(uint6
 
   else
   {
-    v14 = [(SBDisplayPortObserver *)self transportNotifiers];
+    transportNotifiers = [(SBDisplayPortObserver *)self transportNotifiers];
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:entryID];
-    v16 = [v14 objectForKeyedSubscript:v15];
+    v16 = [transportNotifiers objectForKeyedSubscript:v15];
 
     if (v16)
     {
@@ -244,11 +244,11 @@ void __50__SBDisplayPortObserver_stopMatchingNotifications__block_invoke_2(uint6
   }
 }
 
-- (void)_handleNotificationForService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5
+- (void)_handleNotificationForService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument
 {
   v27 = *MEMORY[0x277D85DE8];
   entryID = 0;
-  RegistryEntryID = IORegistryEntryGetRegistryEntryID(a3, &entryID);
+  RegistryEntryID = IORegistryEntryGetRegistryEntryID(service, &entryID);
   if (RegistryEntryID)
   {
     v9 = RegistryEntryID;
@@ -261,12 +261,12 @@ void __50__SBDisplayPortObserver_stopMatchingNotifications__block_invoke_2(uint6
     goto LABEL_15;
   }
 
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"TransportDescription", *MEMORY[0x277CBECE8], 0);
+  CFProperty = IORegistryEntryCreateCFProperty(service, @"TransportDescription", *MEMORY[0x277CBECE8], 0);
   v17 = SBLogVideoOut();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-  if (a4 != -536870896)
+  if (type != -536870896)
   {
-    if (a4 == -536870608)
+    if (type == -536870608)
     {
       if (v18)
       {
@@ -285,7 +285,7 @@ LABEL_13:
     else if (v18)
     {
       *buf = 67109120;
-      LODWORD(v24) = a4;
+      LODWORD(v24) = type;
       v19 = "[SBDisplayPortObserver] messageType: %u";
       v20 = v17;
       v21 = 8;
@@ -308,45 +308,45 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)_addTransportNotificationForService:(unsigned int)a3 andRegistryEntryID:(unint64_t)a4
+- (void)_addTransportNotificationForService:(unsigned int)service andRegistryEntryID:(unint64_t)d
 {
-  v7 = [(SBDisplayPortObserver *)self isDisplayPortConnected];
+  isDisplayPortConnected = [(SBDisplayPortObserver *)self isDisplayPortConnected];
   notification = 0;
-  IOServiceAddInterestNotification([(SBDisplayPortObserver *)self ioNotificationPort], a3, "IOGeneralInterest", _serviceNotification, self, &notification);
+  IOServiceAddInterestNotification([(SBDisplayPortObserver *)self ioNotificationPort], service, "IOGeneralInterest", _serviceNotification, self, &notification);
   if (notification)
   {
-    v8 = [(SBDisplayPortObserver *)self transportNotifiers];
+    transportNotifiers = [(SBDisplayPortObserver *)self transportNotifiers];
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:notification];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
-    [v8 setObject:v9 forKey:v10];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
+    [transportNotifiers setObject:v9 forKey:v10];
 
-    if (v7 != [(SBDisplayPortObserver *)self isDisplayPortConnected])
+    if (isDisplayPortConnected != [(SBDisplayPortObserver *)self isDisplayPortConnected])
     {
       [(SBDisplayPortObserver *)self _notifyDelegate];
     }
   }
 }
 
-- (void)_removeTransportNotificationForRegistryEntryID:(unint64_t)a3
+- (void)_removeTransportNotificationForRegistryEntryID:(unint64_t)d
 {
-  v5 = [(SBDisplayPortObserver *)self isDisplayPortConnected];
-  v11 = [(SBDisplayPortObserver *)self transportNotifiers];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v7 = [v11 objectForKeyedSubscript:v6];
+  isDisplayPortConnected = [(SBDisplayPortObserver *)self isDisplayPortConnected];
+  transportNotifiers = [(SBDisplayPortObserver *)self transportNotifiers];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
+  v7 = [transportNotifiers objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    v8 = [(SBDisplayPortObserver *)self transportNotifiers];
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-    [v8 removeObjectForKey:v9];
+    transportNotifiers2 = [(SBDisplayPortObserver *)self transportNotifiers];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
+    [transportNotifiers2 removeObjectForKey:v9];
 
-    v10 = [v7 unsignedIntValue];
-    if (v10)
+    unsignedIntValue = [v7 unsignedIntValue];
+    if (unsignedIntValue)
     {
-      IOObjectRelease(v10);
+      IOObjectRelease(unsignedIntValue);
     }
 
-    if (v5 != [(SBDisplayPortObserver *)self isDisplayPortConnected])
+    if (isDisplayPortConnected != [(SBDisplayPortObserver *)self isDisplayPortConnected])
     {
       [(SBDisplayPortObserver *)self _notifyDelegate];
     }

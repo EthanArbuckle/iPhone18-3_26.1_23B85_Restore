@@ -7,11 +7,11 @@
 + (id)entryEventNoneDefinitionAppSwitchTrigger;
 + (id)entryEventNoneDefinitions;
 + (void)load;
-+ (void)logAggregatedDataFromSignpostWithStartDate:(id)a3 withEndDate:(id)a4;
++ (void)logAggregatedDataFromSignpostWithStartDate:(id)date withEndDate:(id)endDate;
 - (PLEnhancedTaskingAgent)init;
-- (id)aggregatedSignpostDataWithEntryKey:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5 withSignpostName:(id)a6 withProcess:(id)a7 withDataDict:(id)a8;
-- (int)getSignpostNameValueGroupTypeFor:(id)a3;
-- (void)logAggregatedDataFromSignpostWithPayload:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5;
+- (id)aggregatedSignpostDataWithEntryKey:(id)key withStartDate:(id)date withEndDate:(id)endDate withSignpostName:(id)name withProcess:(id)process withDataDict:(id)dict;
+- (int)getSignpostNameValueGroupTypeFor:(id)for;
+- (void)logAggregatedDataFromSignpostWithPayload:(id)payload withStartDate:(id)date withEndDate:(id)endDate;
 @end
 
 @implementation PLEnhancedTaskingAgent
@@ -20,7 +20,7 @@
 {
   if (!+[PLUtilities isPowerexceptionsd](PLUtilities, "isPowerexceptionsd") && !+[PLUtilities isPerfPowerMetricd])
   {
-    v3.receiver = a1;
+    v3.receiver = self;
     v3.super_class = &OBJC_METACLASS___PLEnhancedTaskingAgent;
     objc_msgSendSuper2(&v3, sel_load);
   }
@@ -30,8 +30,8 @@
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"AppSwitchTrigger";
-  v2 = [a1 entryEventNoneDefinitionAppSwitchTrigger];
-  v7[0] = v2;
+  entryEventNoneDefinitionAppSwitchTrigger = [self entryEventNoneDefinitionAppSwitchTrigger];
+  v7[0] = entryEventNoneDefinitionAppSwitchTrigger;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -54,8 +54,8 @@
   v13[1] = @"Keys";
   v9 = @"Enabled";
   v3 = +[PLEntryDefinition sharedInstance];
-  v4 = [v3 commonTypeDict_BoolFormat];
-  v10 = v4;
+  commonTypeDict_BoolFormat = [v3 commonTypeDict_BoolFormat];
+  v10 = commonTypeDict_BoolFormat;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -69,14 +69,14 @@
 {
   v10[3] = *MEMORY[0x1E69E9840];
   v9[0] = @"UINavigationController";
-  v3 = [a1 entryEventIntervalDefinitionUINavigationController];
-  v10[0] = v3;
+  entryEventIntervalDefinitionUINavigationController = [self entryEventIntervalDefinitionUINavigationController];
+  v10[0] = entryEventIntervalDefinitionUINavigationController;
   v9[1] = @"ScrollView";
-  v4 = [a1 entryEventIntervalDefinitionScrollView];
-  v10[1] = v4;
+  entryEventIntervalDefinitionScrollView = [self entryEventIntervalDefinitionScrollView];
+  v10[1] = entryEventIntervalDefinitionScrollView;
   v9[2] = @"InProcessAnimation";
-  v5 = [a1 entryEventIntervalDefinitionInProcessAnimation];
-  v10[2] = v5;
+  entryEventIntervalDefinitionInProcessAnimation = [self entryEventIntervalDefinitionInProcessAnimation];
+  v10[2] = entryEventIntervalDefinitionInProcessAnimation;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -101,24 +101,24 @@
   v21[1] = @"Keys";
   v17[0] = @"timestampEnd";
   v15 = +[PLEntryDefinition sharedInstance];
-  v14 = [v15 commonTypeDict_DateFormat];
-  v18[0] = v14;
+  commonTypeDict_DateFormat = [v15 commonTypeDict_DateFormat];
+  v18[0] = commonTypeDict_DateFormat;
   v17[1] = @"SignpostName";
   v2 = +[PLEntryDefinition sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v18[1] = v3;
+  commonTypeDict_IntegerFormat = [v2 commonTypeDict_IntegerFormat];
+  v18[1] = commonTypeDict_IntegerFormat;
   v17[2] = @"ProcessName";
   v4 = +[PLEntryDefinition sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withProcessName];
-  v18[2] = v5;
+  commonTypeDict_StringFormat_withProcessName = [v4 commonTypeDict_StringFormat_withProcessName];
+  v18[2] = commonTypeDict_StringFormat_withProcessName;
   v17[3] = @"Duration";
   v6 = +[PLEntryDefinition sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat_withUnit_ms];
-  v18[3] = v7;
+  commonTypeDict_IntegerFormat_withUnit_ms = [v6 commonTypeDict_IntegerFormat_withUnit_ms];
+  v18[3] = commonTypeDict_IntegerFormat_withUnit_ms;
   v17[4] = @"Count";
   v8 = +[PLEntryDefinition sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v18[4] = v9;
+  commonTypeDict_IntegerFormat2 = [v8 commonTypeDict_IntegerFormat];
+  v18[4] = commonTypeDict_IntegerFormat2;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
   v22[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -145,24 +145,24 @@
   v21[1] = @"Keys";
   v17[0] = @"timestampEnd";
   v15 = +[PLEntryDefinition sharedInstance];
-  v14 = [v15 commonTypeDict_DateFormat];
-  v18[0] = v14;
+  commonTypeDict_DateFormat = [v15 commonTypeDict_DateFormat];
+  v18[0] = commonTypeDict_DateFormat;
   v17[1] = @"SignpostName";
   v2 = +[PLEntryDefinition sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v18[1] = v3;
+  commonTypeDict_IntegerFormat = [v2 commonTypeDict_IntegerFormat];
+  v18[1] = commonTypeDict_IntegerFormat;
   v17[2] = @"ProcessName";
   v4 = +[PLEntryDefinition sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withProcessName];
-  v18[2] = v5;
+  commonTypeDict_StringFormat_withProcessName = [v4 commonTypeDict_StringFormat_withProcessName];
+  v18[2] = commonTypeDict_StringFormat_withProcessName;
   v17[3] = @"Duration";
   v6 = +[PLEntryDefinition sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat_withUnit_ms];
-  v18[3] = v7;
+  commonTypeDict_IntegerFormat_withUnit_ms = [v6 commonTypeDict_IntegerFormat_withUnit_ms];
+  v18[3] = commonTypeDict_IntegerFormat_withUnit_ms;
   v17[4] = @"Count";
   v8 = +[PLEntryDefinition sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v18[4] = v9;
+  commonTypeDict_IntegerFormat2 = [v8 commonTypeDict_IntegerFormat];
+  v18[4] = commonTypeDict_IntegerFormat2;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
   v22[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -189,28 +189,28 @@
   v23[1] = @"Keys";
   v19[0] = @"timestampEnd";
   v17 = +[PLEntryDefinition sharedInstance];
-  v16 = [v17 commonTypeDict_DateFormat];
-  v20[0] = v16;
+  commonTypeDict_DateFormat = [v17 commonTypeDict_DateFormat];
+  v20[0] = commonTypeDict_DateFormat;
   v19[1] = @"SignpostName";
   v15 = +[PLEntryDefinition sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v20[1] = v14;
+  commonTypeDict_IntegerFormat = [v15 commonTypeDict_IntegerFormat];
+  v20[1] = commonTypeDict_IntegerFormat;
   v19[2] = @"ValueGroup";
   v2 = +[PLEntryDefinition sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v20[2] = v3;
+  commonTypeDict_IntegerFormat2 = [v2 commonTypeDict_IntegerFormat];
+  v20[2] = commonTypeDict_IntegerFormat2;
   v19[3] = @"ProcessName";
   v4 = +[PLEntryDefinition sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withProcessName];
-  v20[3] = v5;
+  commonTypeDict_StringFormat_withProcessName = [v4 commonTypeDict_StringFormat_withProcessName];
+  v20[3] = commonTypeDict_StringFormat_withProcessName;
   v19[4] = @"highRateDuration";
   v6 = +[PLEntryDefinition sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat_withUnit_ms];
-  v20[4] = v7;
+  commonTypeDict_IntegerFormat_withUnit_ms = [v6 commonTypeDict_IntegerFormat_withUnit_ms];
+  v20[4] = commonTypeDict_IntegerFormat_withUnit_ms;
   v19[5] = @"Count";
   v8 = +[PLEntryDefinition sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v20[5] = v9;
+  commonTypeDict_IntegerFormat3 = [v8 commonTypeDict_IntegerFormat];
+  v20[5] = commonTypeDict_IntegerFormat3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:6];
   v24[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -244,9 +244,9 @@
       {
         v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLEnhancedTaskingAgent enabled"];
         v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Agents/PLEnhancedTaskingAgent.m"];
-        v6 = [v5 lastPathComponent];
+        lastPathComponent = [v5 lastPathComponent];
         v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEnhancedTaskingAgent init]"];
-        [PLCoreStorage logMessage:v4 fromFile:v6 fromFunction:v7 fromLineNumber:163];
+        [PLCoreStorage logMessage:v4 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:163];
 
         v8 = PLLogCommon();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -269,14 +269,14 @@ BOOL __30__PLEnhancedTaskingAgent_init__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (void)logAggregatedDataFromSignpostWithStartDate:(id)a3 withEndDate:(id)a4
++ (void)logAggregatedDataFromSignpostWithStartDate:(id)date withEndDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 | v6)
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (dateCopy | endDateCopy)
   {
-    v7 = v6;
-    if (!v5)
+    monotonicDate = endDateCopy;
+    if (!dateCopy)
     {
       goto LABEL_19;
     }
@@ -284,16 +284,16 @@ BOOL __30__PLEnhancedTaskingAgent_init__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [MEMORY[0x1E695DF00] monotonicDate];
-    v5 = logAggregatedDataFromSignpostWithStartDate_withEndDate__previousEndDate;
-    objc_storeStrong(&logAggregatedDataFromSignpostWithStartDate_withEndDate__previousEndDate, v7);
-    if (!v5)
+    monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
+    dateCopy = logAggregatedDataFromSignpostWithStartDate_withEndDate__previousEndDate;
+    objc_storeStrong(&logAggregatedDataFromSignpostWithStartDate_withEndDate__previousEndDate, monotonicDate);
+    if (!dateCopy)
     {
       goto LABEL_19;
     }
   }
 
-  if (v7)
+  if (monotonicDate)
   {
     v8 = +[PLEnhancedTaskingAgent allowlistForSignpostAggregatedData];
     if ([v8 count])
@@ -323,11 +323,11 @@ BOOL __30__PLEnhancedTaskingAgent_init__block_invoke(uint64_t a1)
 
         if (logAggregatedDataFromSignpostWithStartDate_withEndDate__classDebugEnabled == 1)
         {
-          v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"getSignpostSummary with allowlist = %@, startDate = %@, endDate = %@", v8, v5, v7, block, v21, v22, v23, v24];
+          v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"getSignpostSummary with allowlist = %@, startDate = %@, endDate = %@", v8, dateCopy, monotonicDate, block, v21, v22, v23, v24];
           v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Agents/PLEnhancedTaskingAgent.m"];
-          v13 = [v12 lastPathComponent];
+          lastPathComponent = [v12 lastPathComponent];
           v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLEnhancedTaskingAgent logAggregatedDataFromSignpostWithStartDate:withEndDate:]"];
-          [PLCoreStorage logMessage:v11 fromFile:v13 fromFunction:v14 fromLineNumber:189];
+          [PLCoreStorage logMessage:v11 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:189];
 
           v15 = PLLogCommon();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -338,10 +338,10 @@ BOOL __30__PLEnhancedTaskingAgent_init__block_invoke(uint64_t a1)
       }
 
       v16 = objc_alloc_init(SignpostReaderHelper);
-      v17 = [v5 convertFromMonotonicToSystem];
-      v18 = [v7 convertFromMonotonicToSystem];
-      v19 = [(SignpostReaderHelper *)v16 getSignpostSummaryWithAllowlist:v8 withStartDate:v17 withEndDate:v18];
-      [_enhancedTaskingAgent logAggregatedDataFromSignpostWithPayload:v19 withStartDate:v5 withEndDate:v7];
+      convertFromMonotonicToSystem = [dateCopy convertFromMonotonicToSystem];
+      convertFromMonotonicToSystem2 = [monotonicDate convertFromMonotonicToSystem];
+      v19 = [(SignpostReaderHelper *)v16 getSignpostSummaryWithAllowlist:v8 withStartDate:convertFromMonotonicToSystem withEndDate:convertFromMonotonicToSystem2];
+      [_enhancedTaskingAgent logAggregatedDataFromSignpostWithPayload:v19 withStartDate:dateCopy withEndDate:monotonicDate];
     }
   }
 
@@ -418,9 +418,9 @@ BOOL __81__PLEnhancedTaskingAgent_logAggregatedDataFromSignpostWithStartDate_wit
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"allowlistForSignpostAggregatedData=%@\n", v9, block, v18, v19, v20, v21];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Agents/PLEnhancedTaskingAgent.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLEnhancedTaskingAgent allowlistForSignpostAggregatedData]"];
-      [PLCoreStorage logMessage:v11 fromFile:v13 fromFunction:v14 fromLineNumber:223];
+      [PLCoreStorage logMessage:v11 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:223];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -440,43 +440,43 @@ BOOL __60__PLEnhancedTaskingAgent_allowlistForSignpostAggregatedData__block_invo
   return result;
 }
 
-- (id)aggregatedSignpostDataWithEntryKey:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5 withSignpostName:(id)a6 withProcess:(id)a7 withDataDict:(id)a8
+- (id)aggregatedSignpostDataWithEntryKey:(id)key withStartDate:(id)date withEndDate:(id)endDate withSignpostName:(id)name withProcess:(id)process withDataDict:(id)dict
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[PLEntry alloc] initWithEntryKey:v19 withDate:v18];
+  dictCopy = dict;
+  processCopy = process;
+  nameCopy = name;
+  endDateCopy = endDate;
+  dateCopy = date;
+  keyCopy = key;
+  v20 = [[PLEntry alloc] initWithEntryKey:keyCopy withDate:dateCopy];
 
-  [(PLEntry *)v20 setObject:v17 forKeyedSubscript:@"timestampEnd"];
-  v21 = [v14 objectForKeyedSubscript:@"Duration"];
+  [(PLEntry *)v20 setObject:endDateCopy forKeyedSubscript:@"timestampEnd"];
+  v21 = [dictCopy objectForKeyedSubscript:@"Duration"];
   [v21 doubleValue];
   v23 = v22;
 
   v24 = MEMORY[0x1E696AD98];
-  v25 = [(PLEnhancedTaskingAgent *)self getSignpostNameValueGroupTypeFor:v16];
+  v25 = [(PLEnhancedTaskingAgent *)self getSignpostNameValueGroupTypeFor:nameCopy];
 
   v26 = [v24 numberWithUnsignedInt:v25];
   [(PLEntry *)v20 setObject:v26 forKeyedSubscript:@"SignpostName"];
 
-  [(PLEntry *)v20 setObject:v15 forKeyedSubscript:@"ProcessName"];
+  [(PLEntry *)v20 setObject:processCopy forKeyedSubscript:@"ProcessName"];
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:(v23 * 1000.0)];
   [(PLEntry *)v20 setObject:v27 forKeyedSubscript:@"Duration"];
 
-  v28 = [v14 objectForKeyedSubscript:@"Count"];
+  v28 = [dictCopy objectForKeyedSubscript:@"Count"];
 
   [(PLEntry *)v20 setObject:v28 forKeyedSubscript:@"Count"];
 
   return v20;
 }
 
-- (void)logAggregatedDataFromSignpostWithPayload:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5
+- (void)logAggregatedDataFromSignpostWithPayload:(id)payload withStartDate:(id)date withEndDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadCopy = payload;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (+[PLDefaults debugEnabled])
   {
     v11 = objc_opt_class();
@@ -492,11 +492,11 @@ BOOL __60__PLEnhancedTaskingAgent_allowlistForSignpostAggregatedData__block_invo
 
     if (logAggregatedDataFromSignpostWithPayload_withStartDate_withEndDate__classDebugEnabled == 1)
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"logAggregatedDataFromSignpostWithPayload:%@\n", v8];
+      payloadCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"logAggregatedDataFromSignpostWithPayload:%@\n", payloadCopy];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Agents/PLEnhancedTaskingAgent.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLEnhancedTaskingAgent logAggregatedDataFromSignpostWithPayload:withStartDate:withEndDate:]"];
-      [PLCoreStorage logMessage:v12 fromFile:v14 fromFunction:v15 fromLineNumber:252];
+      [PLCoreStorage logMessage:payloadCopy fromFile:lastPathComponent fromFunction:v15 fromLineNumber:252];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -511,11 +511,11 @@ BOOL __60__PLEnhancedTaskingAgent_allowlistForSignpostAggregatedData__block_invo
   v19[2] = __93__PLEnhancedTaskingAgent_logAggregatedDataFromSignpostWithPayload_withStartDate_withEndDate___block_invoke_120;
   v19[3] = &unk_1E8519318;
   v19[4] = self;
-  v20 = v9;
-  v21 = v10;
-  v17 = v10;
-  v18 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v19];
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  [payloadCopy enumerateKeysAndObjectsUsingBlock:v19];
 }
 
 BOOL __93__PLEnhancedTaskingAgent_logAggregatedDataFromSignpostWithPayload_withStartDate_withEndDate___block_invoke(uint64_t a1)
@@ -646,60 +646,60 @@ void __93__PLEnhancedTaskingAgent_logAggregatedDataFromSignpostWithPayload_withS
   }
 }
 
-- (int)getSignpostNameValueGroupTypeFor:(id)a3
+- (int)getSignpostNameValueGroupTypeFor:(id)for
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NavigationTransition"])
+  forCopy = for;
+  if ([forCopy isEqualToString:@"NavigationTransition"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CustomNavigationTransition"])
+  else if ([forCopy isEqualToString:@"CustomNavigationTransition"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SwitchTabs"])
+  else if ([forCopy isEqualToString:@"SwitchTabs"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Scroll_Dragging"])
+  else if ([forCopy isEqualToString:@"Scroll_Dragging"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Scroll_Deceleration"])
+  else if ([forCopy isEqualToString:@"Scroll_Deceleration"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Scroll_Animating"])
+  else if ([forCopy isEqualToString:@"Scroll_Animating"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Vertical"])
+  else if ([forCopy isEqualToString:@"Vertical"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Horizontal"])
+  else if ([forCopy isEqualToString:@"Horizontal"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Diagonal"])
+  else if ([forCopy isEqualToString:@"Diagonal"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"AnimatorRunning"])
+  else if ([forCopy isEqualToString:@"AnimatorRunning"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Scroll_Zooming"])
+  else if ([forCopy isEqualToString:@"Scroll_Zooming"])
   {
     v4 = 11;
   }

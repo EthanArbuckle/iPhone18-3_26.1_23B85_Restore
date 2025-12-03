@@ -1,6 +1,6 @@
 @interface CKSQLiteTOCImageInfoEntry
-- (BOOL)isEqual:(id)a3;
-- (CKSQLiteTOCImageInfoEntry)initWithImageName:(const char *)a3 uuid:(unsigned __int8)a4[16];
+- (BOOL)isEqual:(id)equal;
+- (CKSQLiteTOCImageInfoEntry)initWithImageName:(const char *)name uuid:(unsigned __int8)uuid[16];
 - (CKSQLiteTOCImageInfoEntry)initWithSharedCache;
 @end
 
@@ -41,7 +41,7 @@
   return v2;
 }
 
-- (CKSQLiteTOCImageInfoEntry)initWithImageName:(const char *)a3 uuid:(unsigned __int8)a4[16]
+- (CKSQLiteTOCImageInfoEntry)initWithImageName:(const char *)name uuid:(unsigned __int8)uuid[16]
 {
   v16.receiver = self;
   v16.super_class = CKSQLiteTOCImageInfoEntry;
@@ -49,12 +49,12 @@
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = objc_msgSend_initWithUTF8String_(v7, v8, a3);
+    v9 = objc_msgSend_initWithUTF8String_(v7, v8, name);
     name = v6->_name;
     v6->_name = v9;
 
     v11 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v13 = objc_msgSend_initWithUUIDBytes_(v11, v12, a4);
+    v13 = objc_msgSend_initWithUUIDBytes_(v11, v12, uuid);
     uuid = v6->_uuid;
     v6->_uuid = v13;
   }
@@ -62,12 +62,12 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (objc_msgSend_isEqual_(self->_uuid, v5, v4[3]))
+  equalCopy = equal;
+  if (objc_msgSend_isEqual_(self->_uuid, v5, equalCopy[3]))
   {
-    isEqual = objc_msgSend_isEqual_(self->_name, v6, v4[2]);
+    isEqual = objc_msgSend_isEqual_(self->_name, v6, equalCopy[2]);
   }
 
   else

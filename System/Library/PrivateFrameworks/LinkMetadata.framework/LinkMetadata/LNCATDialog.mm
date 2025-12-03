@@ -1,43 +1,43 @@
 @interface LNCATDialog
-- (BOOL)isEqual:(id)a3;
-- (LNCATDialog)initWithCoder:(id)a3;
-- (LNCATDialog)initWithIdentifier:(id)a3 templateDirectoryURL:(id)a4 parameters:(id)a5 localeIdentifier:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (LNCATDialog)initWithCoder:(id)coder;
+- (LNCATDialog)initWithIdentifier:(id)identifier templateDirectoryURL:(id)l parameters:(id)parameters localeIdentifier:(id)localeIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNCATDialog
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = LNCATDialog;
-  v4 = a3;
-  [(LNDialog *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(LNDialog *)&v10 encodeWithCoder:coderCopy];
   v5 = [(LNCATDialog *)self identifier:v10.receiver];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  [coderCopy encodeObject:v5 forKey:@"identifier"];
 
-  v6 = [(LNCATDialog *)self templateDirectoryURL];
-  [v4 encodeObject:v6 forKey:@"templateDirectoryURL"];
+  templateDirectoryURL = [(LNCATDialog *)self templateDirectoryURL];
+  [coderCopy encodeObject:templateDirectoryURL forKey:@"templateDirectoryURL"];
 
-  v7 = [(LNCATDialog *)self templateDirectoryURL];
+  templateDirectoryURL2 = [(LNCATDialog *)self templateDirectoryURL];
   v8 = MEMORY[0x193AD9180]();
-  [v4 encodeObject:v8 forKey:@"securityScopeData"];
+  [coderCopy encodeObject:v8 forKey:@"securityScopeData"];
 
-  v9 = [(LNCATDialog *)self parameters];
-  [v4 encodeObject:v9 forKey:@"parameters"];
+  parameters = [(LNCATDialog *)self parameters];
+  [coderCopy encodeObject:parameters forKey:@"parameters"];
 }
 
-- (LNCATDialog)initWithCoder:(id)a3
+- (LNCATDialog)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templateDirectoryURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templateDirectoryURL"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityScopeData"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityScopeData"];
       if (v7)
       {
         MEMORY[0x193AD9170](v6, v7);
@@ -47,47 +47,47 @@
       v9 = objc_opt_class();
       v10 = objc_opt_class();
       v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-      v12 = [v4 decodeObjectOfClasses:v11 forKey:@"parameters"];
+      v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"parameters"];
 
       if (v12)
       {
-        v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
+        v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
         if (v13)
         {
           self = [(LNCATDialog *)self initWithIdentifier:v5 templateDirectoryURL:v6 parameters:v12 localeIdentifier:v13];
-          v14 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v14 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v14 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
@@ -96,9 +96,9 @@
   {
     v24.receiver = self;
     v24.super_class = LNCATDialog;
-    if ([(LNDialog *)&v24 isEqual:v4])
+    if ([(LNDialog *)&v24 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         LOBYTE(v11) = 0;
@@ -107,10 +107,10 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v6 = [(LNCATDialog *)self identifier];
-      v7 = [(LNCATDialog *)v5 identifier];
-      v8 = v6;
-      v9 = v7;
+      identifier = [(LNCATDialog *)self identifier];
+      identifier2 = [(LNCATDialog *)v5 identifier];
+      v8 = identifier;
+      v9 = identifier2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -137,10 +137,10 @@ LABEL_28:
         }
       }
 
-      v15 = [(LNCATDialog *)self templateDirectoryURL];
-      v16 = [(LNCATDialog *)v5 templateDirectoryURL];
-      v13 = v15;
-      v17 = v16;
+      templateDirectoryURL = [(LNCATDialog *)self templateDirectoryURL];
+      templateDirectoryURL2 = [(LNCATDialog *)v5 templateDirectoryURL];
+      v13 = templateDirectoryURL;
+      v17 = templateDirectoryURL2;
       v12 = v17;
       if (v13 == v17)
       {
@@ -167,10 +167,10 @@ LABEL_27:
         }
       }
 
-      v20 = [(LNCATDialog *)self parameters];
-      v21 = [(LNCATDialog *)v5 parameters];
-      v19 = v20;
-      v22 = v21;
+      parameters = [(LNCATDialog *)self parameters];
+      parameters2 = [(LNCATDialog *)v5 parameters];
+      v19 = parameters;
+      v22 = parameters2;
       v18 = v22;
       if (v19 == v22)
       {
@@ -205,24 +205,24 @@ LABEL_30:
   return [(NSString *)self->_identifier hash]^ v3;
 }
 
-- (LNCATDialog)initWithIdentifier:(id)a3 templateDirectoryURL:(id)a4 parameters:(id)a5 localeIdentifier:(id)a6
+- (LNCATDialog)initWithIdentifier:(id)identifier templateDirectoryURL:(id)l parameters:(id)parameters localeIdentifier:(id)localeIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  identifierCopy = identifier;
+  lCopy = l;
+  parametersCopy = parameters;
+  localeIdentifierCopy = localeIdentifier;
+  if (identifierCopy)
   {
-    if (v12)
+    if (lCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"LNCATDialog.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"templateDirectoryURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNCATDialog.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"templateDirectoryURL"}];
 
-    if (v13)
+    if (parametersCopy)
     {
       goto LABEL_4;
     }
@@ -230,39 +230,39 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"LNCATDialog.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNCATDialog.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-  if (!v12)
+  if (!lCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v13)
+  if (parametersCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"LNCATDialog.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"parameters"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNCATDialog.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"parameters"}];
 
 LABEL_4:
   v27.receiver = self;
   v27.super_class = LNCATDialog;
-  v15 = [(LNDialog *)&v27 initWithLocaleIdentifier:v14];
+  v15 = [(LNDialog *)&v27 initWithLocaleIdentifier:localeIdentifierCopy];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 
-    v18 = [v12 copy];
+    v18 = [lCopy copy];
     templateDirectoryURL = v15->_templateDirectoryURL;
     v15->_templateDirectoryURL = v18;
 
-    v20 = [v13 copy];
+    v20 = [parametersCopy copy];
     parameters = v15->_parameters;
     v15->_parameters = v20;
 

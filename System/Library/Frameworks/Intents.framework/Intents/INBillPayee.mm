@@ -1,45 +1,45 @@
 @interface INBillPayee
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INBillPayee)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INBillPayee)initWithCoder:(id)coder;
 - (INBillPayee)initWithNickname:(INSpeakableString *)nickname number:(NSString *)number organizationName:(INSpeakableString *)organizationName;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INBillPayee
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [(INBillPayee *)self nickname];
+  localizerCopy = localizer;
+  nickname = [(INBillPayee *)self nickname];
 
-  if (v6)
+  if (nickname)
   {
-    v7 = [(INBillPayee *)self nickname];
+    nickname2 = [(INBillPayee *)self nickname];
 LABEL_3:
-    v8 = v7;
-    v9 = [v7 _intents_readableTitleWithLocalizer:v5];
+    v8 = nickname2;
+    accountNumber2 = [nickname2 _intents_readableTitleWithLocalizer:localizerCopy];
 
     goto LABEL_6;
   }
 
-  v10 = [(INBillPayee *)self accountNumber];
+  accountNumber = [(INBillPayee *)self accountNumber];
 
-  if (!v10)
+  if (!accountNumber)
   {
-    v7 = [(INBillPayee *)self organizationName];
+    nickname2 = [(INBillPayee *)self organizationName];
     goto LABEL_3;
   }
 
-  v9 = [(INBillPayee *)self accountNumber];
+  accountNumber2 = [(INBillPayee *)self accountNumber];
 LABEL_6:
 
-  return v9;
+  return accountNumber2;
 }
 
 - (id)_dictionaryRepresentation
@@ -47,31 +47,31 @@ LABEL_6:
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"nickname";
   nickname = self->_nickname;
-  v4 = nickname;
+  null = nickname;
   if (!nickname)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"accountNumber";
   accountNumber = self->_accountNumber;
-  v6 = accountNumber;
+  null2 = accountNumber;
   if (!accountNumber)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"organizationName";
   organizationName = self->_organizationName;
-  v8 = organizationName;
+  null3 = organizationName;
   if (!organizationName)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (organizationName)
   {
@@ -109,65 +109,65 @@ LABEL_10:
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INBillPayee;
   v6 = [(INBillPayee *)&v11 description];
-  v7 = [(INBillPayee *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INBillPayee *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_nickname];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"nickname"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_nickname];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"nickname"];
 
-  v9 = [v6 encodeObject:self->_accountNumber];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"accountNumber"];
+  v9 = [encoderCopy encodeObject:self->_accountNumber];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"accountNumber"];
 
-  v10 = [v6 encodeObject:self->_organizationName];
+  v10 = [encoderCopy encodeObject:self->_organizationName];
 
-  [v7 if_setObjectIfNonNil:v10 forKey:@"organizationName"];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"organizationName"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nickname = self->_nickname;
-  v5 = a3;
-  [v5 encodeObject:nickname forKey:@"nickname"];
-  [v5 encodeObject:self->_accountNumber forKey:@"accountNumber"];
-  [v5 encodeObject:self->_organizationName forKey:@"organizationName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:nickname forKey:@"nickname"];
+  [coderCopy encodeObject:self->_accountNumber forKey:@"accountNumber"];
+  [coderCopy encodeObject:self->_organizationName forKey:@"organizationName"];
 }
 
-- (INBillPayee)initWithCoder:(id)a3
+- (INBillPayee)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nickname"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nickname"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"accountNumber"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"accountNumber"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
 
   v11 = [(INBillPayee *)self initWithNickname:v5 number:v9 organizationName:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -177,7 +177,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       nickname = self->_nickname;
       v9 = 0;
       if (nickname == v5->_nickname || [(INSpeakableString *)nickname isEqual:?])
@@ -236,23 +236,23 @@ LABEL_10:
   return v11;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"nickname"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"nickname"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v12 = [v8 objectForKeyedSubscript:@"accountNumber"];
+    v12 = [fromCopy objectForKeyedSubscript:@"accountNumber"];
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"organizationName"];
-    v15 = [v7 decodeObjectOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"organizationName"];
+    v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
-    v16 = [[a1 alloc] initWithNickname:v11 number:v12 organizationName:v15];
+    v16 = [[self alloc] initWithNickname:v11 number:v12 organizationName:v15];
   }
 
   else

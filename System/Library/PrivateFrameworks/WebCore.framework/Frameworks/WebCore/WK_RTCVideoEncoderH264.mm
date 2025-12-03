@@ -1,39 +1,39 @@
 @interface WK_RTCVideoEncoderH264
-- (BOOL)resetCompressionSessionIfNeededWithFrame:(id)a3;
-- (WK_RTCVideoEncoderH264)initWithCodecInfo:(id)a3;
+- (BOOL)resetCompressionSessionIfNeededWithFrame:(id)frame;
+- (WK_RTCVideoEncoderH264)initWithCodecInfo:(id)info;
 - (id).cxx_construct;
 - (id)scalingSettings;
-- (int)resetCompressionSessionWithPixelFormat:(unsigned int)a3;
-- (int)setBitrate:(unsigned int)a3 framerate:(unsigned int)a4;
-- (int64_t)encode:(id)a3 codecSpecificInfo:(id)a4 frameTypes:(id)a5;
+- (int)resetCompressionSessionWithPixelFormat:(unsigned int)format;
+- (int)setBitrate:(unsigned int)bitrate framerate:(unsigned int)framerate;
+- (int64_t)encode:(id)encode codecSpecificInfo:(id)info frameTypes:(id)types;
 - (int64_t)releaseEncoder;
-- (int64_t)startEncodeWithSettings:(id)a3 numberOfCores:(int)a4;
-- (unsigned)pixelFormatOfFrame:(id)a3;
+- (int64_t)startEncodeWithSettings:(id)settings numberOfCores:(int)cores;
+- (unsigned)pixelFormatOfFrame:(id)frame;
 - (void)configureCompressionSession;
 - (void)dealloc;
 - (void)destroyCompressionSession;
 - (void)flush;
-- (void)frameWasEncoded:(int)a3 flags:(unsigned int)a4 sampleBuffer:(opaqueCMSampleBuffer *)a5 codecSpecificInfo:(id)a6 width:(int)a7 height:(int)a8 renderTimeMs:(int64_t)a9 timestamp:(int64_t)a10 duration:(unint64_t)a11 rotation:(int64_t)a12 isKeyFrameRequired:(BOOL)a13;
-- (void)setBitrateBps:(unsigned int)a3 frameRate:(unsigned int)a4;
-- (void)setCallback:(id)a3;
-- (void)setDescriptionCallback:(id)a3;
-- (void)setEncoderBitrateBps:(unsigned int)a3 frameRate:(unsigned int)a4;
-- (void)setErrorCallback:(id)a3;
+- (void)frameWasEncoded:(int)encoded flags:(unsigned int)flags sampleBuffer:(opaqueCMSampleBuffer *)buffer codecSpecificInfo:(id)info width:(int)width height:(int)height renderTimeMs:(int64_t)ms timestamp:(int64_t)self0 duration:(unint64_t)self1 rotation:(int64_t)self2 isKeyFrameRequired:(BOOL)self3;
+- (void)setBitrateBps:(unsigned int)bps frameRate:(unsigned int)rate;
+- (void)setCallback:(id)callback;
+- (void)setDescriptionCallback:(id)callback;
+- (void)setEncoderBitrateBps:(unsigned int)bps frameRate:(unsigned int)rate;
+- (void)setErrorCallback:(id)callback;
 - (void)updateBitRateAccordingActualFrameRate;
 @end
 
 @implementation WK_RTCVideoEncoderH264
 
-- (WK_RTCVideoEncoderH264)initWithCodecInfo:(id)a3
+- (WK_RTCVideoEncoderH264)initWithCodecInfo:(id)info
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = WK_RTCVideoEncoderH264;
   v6 = [(WK_RTCVideoEncoderH264 *)&v9 init];
   if (v6)
   {
-    objc_storeStrong(&v6->_codecInfo, a3);
+    objc_storeStrong(&v6->_codecInfo, info);
     operator new();
   }
 
@@ -55,12 +55,12 @@
   [(WK_RTCVideoEncoderH264 *)&v3 dealloc];
 }
 
-- (int64_t)startEncodeWithSettings:(id)a3 numberOfCores:(int)a4
+- (int64_t)startEncodeWithSettings:(id)settings numberOfCores:(int)cores
 {
-  v5 = a3;
-  self->_width = [v5 width];
-  self->_height = [v5 height];
-  result = [v5 mode];
+  settingsCopy = settings;
+  self->_width = [settingsCopy width];
+  self->_height = [settingsCopy height];
+  result = [settingsCopy mode];
   self->_mode = result;
   if (!self->_profile_level_id.__engaged_)
   {
@@ -148,7 +148,7 @@
   }
 
   self->_maxAllowedFrameRate = v8 / (((self->_height + 15) & 0xFFFFFFF0) * ((self->_width + 15) & 0xFFFFFFF0));
-  result = [v5 startBitrate];
+  result = [settingsCopy startBitrate];
   if (self->_profile_level_id.__engaged_)
   {
     self->_targetBitrateBps = v14;
@@ -163,11 +163,11 @@
 
     *(ptr + 20) = v14;
     pthread_mutex_unlock((ptr + 8));
-    v18 = [v5 maxFramerate];
+    maxFramerate = [settingsCopy maxFramerate];
     maxAllowedFrameRate = self->_maxAllowedFrameRate;
-    if (v18)
+    if (maxFramerate)
     {
-      v20 = v18;
+      v20 = maxFramerate;
     }
 
     else
@@ -181,11 +181,11 @@
     }
 
     self->_encoderFrameRate = maxAllowedFrameRate;
-    v21 = [v5 maxFramerate];
+    maxFramerate2 = [settingsCopy maxFramerate];
     v22 = self->_maxAllowedFrameRate;
-    if (v21 > v22 && v22 && (webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)2>() & 1) == 0)
+    if (maxFramerate2 > v22 && v22 && (webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)2>() & 1) == 0)
     {
-      [v5 maxFramerate];
+      [settingsCopy maxFramerate];
       webrtc::webrtc_logging_impl::Log(webrtc::webrtc_logging_impl::LogStreamer<>::Call<webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)13,webrtc::webrtc_logging_impl::LogMetadata>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)4,unsigned int>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)4,unsigned int>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>>(webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)13,webrtc::webrtc_logging_impl::LogMetadata>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)4,unsigned int>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)4,unsigned int>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*> const&)::t, v23, v24, v25, v26, v27, v28, v29, "/Library/Caches/com.apple.xbs/Sources/libwebrtc/Source/ThirdParty/libwebrtc/Source/webrtc/webkit_sdk/objc/components/video_codec/RTCVideoEncoderH264.mm");
     }
 
@@ -203,31 +203,31 @@ LABEL_46:
   return result;
 }
 
-- (void)setDescriptionCallback:(id)a3
+- (void)setDescriptionCallback:(id)callback
 {
-  self->_descriptionCallback = MEMORY[0x2743DACF0](a3, a2);
+  self->_descriptionCallback = MEMORY[0x2743DACF0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setErrorCallback:(id)a3
+- (void)setErrorCallback:(id)callback
 {
-  self->_errorCallback = MEMORY[0x2743DACF0](a3, a2);
+  self->_errorCallback = MEMORY[0x2743DACF0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)encode:(id)a3 codecSpecificInfo:(id)a4 frameTypes:(id)a5
+- (int64_t)encode:(id)encode codecSpecificInfo:(id)info frameTypes:(id)types
 {
   v101 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  encodeCopy = encode;
+  infoCopy = info;
+  typesCopy = types;
   if (self->_callback && [(WK_RTCVideoEncoderH264 *)self hasCompressionSession])
   {
     isKeyFrameRequired = self->_isKeyFrameRequired;
     self->_isKeyFrameRequired = 0;
-    v12 = [(WK_RTCVideoEncoderH264 *)self resetCompressionSessionIfNeededWithFrame:v8];
+    v12 = [(WK_RTCVideoEncoderH264 *)self resetCompressionSessionIfNeededWithFrame:encodeCopy];
     if (self->_disableEncoding)
     {
       errorCallback = self->_errorCallback;
@@ -245,14 +245,14 @@ LABEL_46:
       [(WK_RTCVideoEncoderH264 *)self updateBitRateAccordingActualFrameRate];
     }
 
-    v17 = [v8 buffer];
+    buffer = [encodeCopy buffer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v20 = [v8 buffer];
-      if ([v20 requiresCropping])
+      buffer2 = [encodeCopy buffer];
+      if ([buffer2 requiresCropping])
       {
         v23 = v22;
         if (!v22)
@@ -268,9 +268,9 @@ LABEL_46:
 
         Width = CVPixelBufferGetWidth(v22);
         Height = CVPixelBufferGetHeight(v23);
-        if ([v20 requiresScalingToWidth:Width height:Height])
+        if ([buffer2 requiresScalingToWidth:Width height:Height])
         {
-          std::vector<unsigned char>::resize(&self->_frameScaleBuffer.__begin_, [v20 bufferSizeForCroppingAndScalingToWidth:Width height:Height]);
+          std::vector<unsigned char>::resize(&self->_frameScaleBuffer.__begin_, [buffer2 bufferSizeForCroppingAndScalingToWidth:Width height:Height]);
           begin = self->_frameScaleBuffer.__begin_;
           end = self->_frameScaleBuffer.__end_;
         }
@@ -322,7 +322,7 @@ LABEL_46:
           }
         }
 
-        if (([v20 cropAndScaleTo:v23 withTempBuffer:v54] & 1) == 0)
+        if (([buffer2 cropAndScaleTo:v23 withTempBuffer:v54] & 1) == 0)
         {
           CVBufferRelease(v23);
           v52 = self->_errorCallback;
@@ -340,14 +340,14 @@ LABEL_60:
         goto LABEL_67;
       }
 
-      v28 = [v20 pixelBuffer];
-      CVBufferRetain(v28);
+      pixelBuffer = [buffer2 pixelBuffer];
+      CVBufferRetain(pixelBuffer);
 
-      if (v28)
+      if (pixelBuffer)
       {
 LABEL_68:
         LOBYTE(v62) = v16 || isKeyFrameRequired;
-        if ((v10 == 0) | v62 & 1)
+        if ((typesCopy == 0) | v62 & 1)
         {
           goto LABEL_82;
         }
@@ -356,7 +356,7 @@ LABEL_68:
         v97 = 0u;
         v94 = 0u;
         v95 = 0u;
-        v63 = v10;
+        v63 = typesCopy;
         v62 = [v63 countByEnumeratingWithState:&v94 objects:v100 count:16];
         if (!v62)
         {
@@ -385,7 +385,7 @@ LABEL_81:
 
 LABEL_82:
               memset(&v93, 0, sizeof(v93));
-              CMTimeMake(&v93, [v8 timeStampNs] / 1000000, 1000);
+              CMTimeMake(&v93, [encodeCopy timeStampNs] / 1000000, 1000);
               if (v62)
               {
                 keys[0] = *MEMORY[0x277CE27C0];
@@ -421,8 +421,8 @@ LABEL_92:
       goto LABEL_93;
     }
 
-    v20 = [v8 buffer];
-    v30 = [v20 toI420];
+    buffer2 = [encodeCopy buffer];
+    toI420 = [buffer2 toI420];
     if (CVPixelBufferLockBaseAddress(v29, 0))
     {
       if (webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>())
@@ -447,18 +447,18 @@ LABEL_87:
       v86 = BaseAddressOfPlane;
       pixelBuffer = v29;
       v82 = CVPixelBufferGetBytesPerRowOfPlane(v29, 1uLL);
-      v39 = [v30 dataY];
-      v83 = [v30 strideY];
-      v90 = [v30 dataU];
-      v85 = [v30 strideU];
-      frameProperties = [v30 dataV];
-      v84 = [v30 strideV];
-      v40 = [v30 width];
-      v41 = [v30 height];
-      v42 = v39;
+      dataY = [toI420 dataY];
+      strideY = [toI420 strideY];
+      dataU = [toI420 dataU];
+      strideU = [toI420 strideU];
+      frameProperties = [toI420 dataV];
+      strideV = [toI420 strideV];
+      width = [toI420 width];
+      height = [toI420 height];
+      v42 = dataY;
       if (v86)
       {
-        v43 = v39 == 0;
+        v43 = dataY == 0;
       }
 
       else
@@ -466,28 +466,28 @@ LABEL_87:
         v43 = 0;
       }
 
-      v48 = v43 || v90 == 0 || frameProperties == 0 || v88 == 0 || v40 <= 0 || v41 == 0;
+      v48 = v43 || dataU == 0 || frameProperties == 0 || v88 == 0 || width <= 0 || height == 0;
       v49 = !v48;
       if (!v48)
       {
-        v50 = (v40 + 1) / 2;
-        if (v41 < 0)
+        v50 = (width + 1) / 2;
+        if (height < 0)
         {
-          v58 = 1 - v41;
-          v59 = ~v41;
-          v41 = -v41;
+          v58 = 1 - height;
+          v59 = ~height;
+          height = -height;
           v51 = v58 >> 1;
-          v42 += v83 * v59;
-          v90 += ((v58 >> 1) - 1) * v85;
-          frameProperties = (frameProperties + ((v58 >> 1) - 1) * v84);
-          v85 = -v85;
-          v83 = -v83;
-          v84 = -v84;
+          v42 += strideY * v59;
+          dataU += ((v58 >> 1) - 1) * strideU;
+          frameProperties = (frameProperties + ((v58 >> 1) - 1) * strideV);
+          strideU = -strideU;
+          strideY = -strideY;
+          strideV = -strideV;
         }
 
         else
         {
-          v51 = (v41 + 1) / 2;
+          v51 = (height + 1) / 2;
         }
 
         v60 = v86;
@@ -495,13 +495,13 @@ LABEL_87:
         {
           v87 = v49;
           v61 = v51;
-          CopyPlane(v42, v83, v60, BytesPerRowOfPlane, v40, v41);
+          CopyPlane(v42, strideY, v60, BytesPerRowOfPlane, width, height);
           v51 = v61;
           v49 = v87;
-          v50 = (v40 + 1) / 2;
+          v50 = (width + 1) / 2;
         }
 
-        MergeUVPlane(v90, v85, frameProperties, v84, v88, v82, v50, v51);
+        MergeUVPlane(dataU, strideU, frameProperties, strideV, v88, v82, v50, v51);
       }
 
       CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
@@ -535,20 +535,20 @@ LABEL_93:
   return v15;
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
-  self->_callback = MEMORY[0x2743DACF0](a3, a2);
+  self->_callback = MEMORY[0x2743DACF0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (int)setBitrate:(unsigned int)a3 framerate:(unsigned int)a4
+- (int)setBitrate:(unsigned int)bitrate framerate:(unsigned int)framerate
 {
   if (self->_profile_level_id.__engaged_)
   {
-    v5 = self;
-    v5->_targetBitrateBps = v6;
-    ptr = v5->_bitrateAdjuster.__ptr_;
+    selfCopy = self;
+    selfCopy->_targetBitrateBps = v6;
+    ptr = selfCopy->_bitrateAdjuster.__ptr_;
     pthread_mutex_lock((ptr + 8));
     v8 = *(ptr + 20);
     if (!v8 || (vabds_f32(v6, v8) / v8) >= 0.1 || (v9 = *(ptr + 22)) == 0 || (vabds_f32(v6, v9) / v9) >= 0.1)
@@ -559,42 +559,42 @@ LABEL_93:
 
     *(ptr + 20) = v6;
     pthread_mutex_unlock((ptr + 8));
-    maxAllowedFrameRate = v5->_maxAllowedFrameRate;
-    if (maxAllowedFrameRate < a4 && maxAllowedFrameRate)
+    maxAllowedFrameRate = selfCopy->_maxAllowedFrameRate;
+    if (maxAllowedFrameRate < framerate && maxAllowedFrameRate)
     {
       if ((webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)2>() & 1) == 0)
       {
         webrtc::webrtc_logging_impl::Log(webrtc::webrtc_logging_impl::LogStreamer<>::Call<webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)13,webrtc::webrtc_logging_impl::LogMetadata>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)4,unsigned int>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)4,unsigned int>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>>(webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)13,webrtc::webrtc_logging_impl::LogMetadata>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)4,unsigned int>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)4,unsigned int>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*> const&)::t, v11, v12, v13, v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/libwebrtc/Source/ThirdParty/libwebrtc/Source/webrtc/webkit_sdk/objc/components/video_codec/RTCVideoEncoderH264.mm");
       }
 
-      maxAllowedFrameRate = v5->_maxAllowedFrameRate;
+      maxAllowedFrameRate = selfCopy->_maxAllowedFrameRate;
     }
 
-    if (a4)
+    if (framerate)
     {
-      v18 = a4;
+      framerateCopy = framerate;
     }
 
     else
     {
-      v18 = 30;
+      framerateCopy = 30;
     }
 
-    if (v18 >= maxAllowedFrameRate)
+    if (framerateCopy >= maxAllowedFrameRate)
     {
       v19 = maxAllowedFrameRate;
     }
 
     else
     {
-      v19 = v18;
+      v19 = framerateCopy;
     }
 
-    v20 = v5->_bitrateAdjuster.__ptr_;
+    v20 = selfCopy->_bitrateAdjuster.__ptr_;
     pthread_mutex_lock((v20 + 8));
     v21 = *(v20 + 21);
     pthread_mutex_unlock((v20 + 8));
-    [(WK_RTCVideoEncoderH264 *)v5 setBitrateBps:v21 frameRate:v19];
+    [(WK_RTCVideoEncoderH264 *)selfCopy setBitrateBps:v21 frameRate:v19];
     LODWORD(self) = 0;
   }
 
@@ -615,17 +615,17 @@ LABEL_93:
   return 0;
 }
 
-- (unsigned)pixelFormatOfFrame:(id)a3
+- (unsigned)pixelFormatOfFrame:(id)frame
 {
-  v3 = a3;
-  v4 = [v3 buffer];
+  frameCopy = frame;
+  buffer = [frameCopy buffer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 buffer];
-    PixelFormatType = CVPixelBufferGetPixelFormatType([v6 pixelBuffer]);
+    buffer2 = [frameCopy buffer];
+    PixelFormatType = CVPixelBufferGetPixelFormatType([buffer2 pixelBuffer]);
 
     return PixelFormatType;
   }
@@ -637,11 +637,11 @@ LABEL_93:
   }
 }
 
-- (BOOL)resetCompressionSessionIfNeededWithFrame:(id)a3
+- (BOOL)resetCompressionSessionIfNeededWithFrame:(id)frame
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WK_RTCVideoEncoderH264 *)self pixelFormatOfFrame:v4];
+  frameCopy = frame;
+  v5 = [(WK_RTCVideoEncoderH264 *)self pixelFormatOfFrame:frameCopy];
   if (![(WK_RTCVideoEncoderH264 *)self hasCompressionSession])
   {
     goto LABEL_15;
@@ -700,7 +700,7 @@ LABEL_16:
   return v13;
 }
 
-- (int)resetCompressionSessionWithPixelFormat:(unsigned int)a3
+- (int)resetCompressionSessionWithPixelFormat:(unsigned int)format
 {
   keys[3] = *MEMORY[0x277D85DE8];
   [(WK_RTCVideoEncoderH264 *)self destroyCompressionSession];
@@ -713,7 +713,7 @@ LABEL_16:
   v7 = MEMORY[0x277CBF138];
   v8 = MEMORY[0x277CBF150];
   v9 = CFDictionaryCreate(*MEMORY[0x277CBECE8], 0, 0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  valuePtr = a3;
+  valuePtr = format;
   v10 = CFNumberCreate(0, kCFNumberLongType, &valuePtr);
   v11 = *MEMORY[0x277CBED28];
   values[0] = *MEMORY[0x277CBED28];
@@ -824,40 +824,40 @@ LABEL_14:
   }
 }
 
-- (void)setBitrateBps:(unsigned int)a3 frameRate:(unsigned int)a4
+- (void)setBitrateBps:(unsigned int)bps frameRate:(unsigned int)rate
 {
-  if (self->_encoderBitrateBps != a3 || self->_encoderFrameRate != a4)
+  if (self->_encoderBitrateBps != bps || self->_encoderFrameRate != rate)
   {
     [WK_RTCVideoEncoderH264 setEncoderBitrateBps:"setEncoderBitrateBps:frameRate:" frameRate:?];
   }
 }
 
-- (void)setEncoderBitrateBps:(unsigned int)a3 frameRate:(unsigned int)a4
+- (void)setEncoderBitrateBps:(unsigned int)bps frameRate:(unsigned int)rate
 {
   if ([(WK_RTCVideoEncoderH264 *)self hasCompressionSession])
   {
     if (self->_isBelowExpectedFrameRate)
     {
-      v7 = a3 / 3;
+      bpsCopy = bps / 3;
     }
 
     else
     {
-      v7 = a3;
+      bpsCopy = bps;
     }
 
-    if (v7)
+    if (bpsCopy)
     {
-      SetVTSessionProperty(self->_vtCompressionSession, *MEMORY[0x277CE2518], v7);
+      SetVTSessionProperty(self->_vtCompressionSession, *MEMORY[0x277CE2518], bpsCopy);
     }
 
     if (self->_maxAllowedFrameRate)
     {
-      SetVTSessionProperty(self->_vtCompressionSession, *MEMORY[0x277CE2548], a4);
+      SetVTSessionProperty(self->_vtCompressionSession, *MEMORY[0x277CE2548], rate);
     }
 
-    self->_encoderBitrateBps = a3;
-    self->_encoderFrameRate = a4;
+    self->_encoderBitrateBps = bps;
+    self->_encoderFrameRate = rate;
   }
 }
 
@@ -906,11 +906,11 @@ LABEL_14:
   }
 }
 
-- (void)frameWasEncoded:(int)a3 flags:(unsigned int)a4 sampleBuffer:(opaqueCMSampleBuffer *)a5 codecSpecificInfo:(id)a6 width:(int)a7 height:(int)a8 renderTimeMs:(int64_t)a9 timestamp:(int64_t)a10 duration:(unint64_t)a11 rotation:(int64_t)a12 isKeyFrameRequired:(BOOL)a13
+- (void)frameWasEncoded:(int)encoded flags:(unsigned int)flags sampleBuffer:(opaqueCMSampleBuffer *)buffer codecSpecificInfo:(id)info width:(int)width height:(int)height renderTimeMs:(int64_t)ms timestamp:(int64_t)self0 duration:(unint64_t)self1 rotation:(int64_t)self2 isKeyFrameRequired:(BOOL)self3
 {
-  v14 = a4;
-  v15 = *&a3;
-  v17 = a6;
+  flagsCopy = flags;
+  v15 = *&encoded;
+  infoCopy = info;
   if (v15)
   {
     if ((webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>() & 1) == 0)
@@ -918,7 +918,7 @@ LABEL_14:
       webrtc::webrtc_logging_impl::Log(webrtc::webrtc_logging_impl::LogStreamer<>::Call<webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)13,webrtc::webrtc_logging_impl::LogMetadata>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)1,int>>(webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)13,webrtc::webrtc_logging_impl::LogMetadata>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)1,int> const&)::t, v18, v19, v20, v21, v22, v23, v24, "/Library/Caches/com.apple.xbs/Sources/libwebrtc/Source/ThirdParty/libwebrtc/Source/webrtc/webkit_sdk/objc/components/video_codec/RTCVideoEncoderH264.mm");
     }
 
-    if (a13)
+    if (required)
     {
       self->_isKeyFrameRequired = 1;
     }
@@ -932,10 +932,10 @@ LABEL_14:
     goto LABEL_27;
   }
 
-  if ((v14 & 2) == 0)
+  if ((flagsCopy & 2) == 0)
   {
     self->_isKeyFrameRequired = 0;
-    SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(a5, 0);
+    SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(buffer, 0);
     v27 = SampleAttachmentsArray;
     if (SampleAttachmentsArray && CFArrayGetCount(SampleAttachmentsArray))
     {
@@ -971,7 +971,7 @@ LABEL_26:
     operator new();
   }
 
-  if (a13)
+  if (required)
   {
     self->_isKeyFrameRequired = 1;
   }

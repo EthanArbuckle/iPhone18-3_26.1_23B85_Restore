@@ -1,39 +1,39 @@
 @interface NPTOCompanionSyncDeviceContentController
-- (NPTOCompanionSyncDeviceContentController)initWithDevice:(id)a3;
+- (NPTOCompanionSyncDeviceContentController)initWithDevice:(id)device;
 - (NPTOCompanionSyncDeviceContentControllerDelegate)delegate;
-- (id)_assetForLocalIdentifier:(id)a3;
+- (id)_assetForLocalIdentifier:(id)identifier;
 - (id)_collectionGroups;
-- (id)_collectionTargetListWithLibrary:(id)a3;
+- (id)_collectionTargetListWithLibrary:(id)library;
 - (id)_composeSyncRequest;
 - (id)_contentProviderClasses;
 - (id)_contentProviders;
-- (id)_indexesOfAssetsRequiringExternalPowerSourceConnectedWithLibrary:(id)a3;
+- (id)_indexesOfAssetsRequiringExternalPowerSourceConnectedWithLibrary:(id)library;
 - (id)_libraryRepresentation;
-- (id)assetForLocalIdentifier:(id)a3;
+- (id)assetForLocalIdentifier:(id)identifier;
 - (id)composeSyncRequest;
-- (int)_assetCollectionSubtype:(int64_t)a3;
-- (int)_assetCollectionType:(int64_t)a3;
-- (void)_enumerateCollectionsUsingBlock:(id)a3;
-- (void)_handleContentProviderDidInvalidateContent:(id)a3;
-- (void)_handlePhotoLibraryDidChange:(id)a3;
-- (void)composeSyncRequestWithCompletion:(id)a3;
-- (void)contentProviderDidInvalidateContent:(id)a3;
+- (int)_assetCollectionSubtype:(int64_t)subtype;
+- (int)_assetCollectionType:(int64_t)type;
+- (void)_enumerateCollectionsUsingBlock:(id)block;
+- (void)_handleContentProviderDidInvalidateContent:(id)content;
+- (void)_handlePhotoLibraryDidChange:(id)change;
+- (void)composeSyncRequestWithCompletion:(id)completion;
+- (void)contentProviderDidInvalidateContent:(id)content;
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
 @end
 
 @implementation NPTOCompanionSyncDeviceContentController
 
-- (NPTOCompanionSyncDeviceContentController)initWithDevice:(id)a3
+- (NPTOCompanionSyncDeviceContentController)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NPTOCompanionSyncDeviceContentController;
   v6 = [(NPTOCompanionSyncDeviceContentController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.nptocompaniond.NPTOCompanionSyncDeviceContentController", v8);
     queue = v7->_queue;
@@ -78,23 +78,23 @@
   return v3;
 }
 
-- (void)composeSyncRequestWithCompletion:(id)a3
+- (void)composeSyncRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000502A8;
   v7[3] = &unk_10008B4B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)assetForLocalIdentifier:(id)a3
+- (id)assetForLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -106,10 +106,10 @@
   block[1] = 3221225472;
   block[2] = sub_100050424;
   block[3] = &unk_10008B4D8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -139,13 +139,13 @@
   contentProviders = self->_contentProviders;
   if (!contentProviders)
   {
-    v4 = [(NPTOCompanionSyncDeviceContentController *)self _contentProviderClasses];
-    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    _contentProviderClasses = [(NPTOCompanionSyncDeviceContentController *)self _contentProviderClasses];
+    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [_contentProviderClasses count]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = v4;
+    v6 = _contentProviderClasses;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v7)
     {
@@ -169,11 +169,11 @@
             v13 = sub_10000268C();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
             {
-              v14 = [(IDSDevice *)self->_device name];
+              name = [(IDSDevice *)self->_device name];
               *buf = 138412546;
               v23 = v12;
               v24 = 2112;
-              v25 = v14;
+              v25 = name;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[Content] Registered new content provider: %@ for device: %@", buf, 0x16u);
             }
           }
@@ -202,7 +202,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v36 = self;
+  selfCopy = self;
   obj = [(NPTOCompanionSyncDeviceContentController *)self _contentProviders];
   v34 = [obj countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (v34)
@@ -220,33 +220,33 @@
 
         v35 = v3;
         v4 = *(*(&v41 + 1) + 8 * v3);
-        v5 = [(NSMapTable *)v36->_collectionGroups objectForKey:v4];
+        v5 = [(NSMapTable *)selfCopy->_collectionGroups objectForKey:v4];
         if (!v5)
         {
           v5 = objc_alloc_init(NPTOSyncCollectionGroup);
           [(NPTOSyncCollectionGroup *)v5 setContentProvider:v4];
-          v6 = [v4 assetCollections];
-          [(NPTOSyncCollectionGroup *)v5 setAssetCollections:v6];
+          assetCollections = [v4 assetCollections];
+          [(NPTOSyncCollectionGroup *)v5 setAssetCollections:assetCollections];
 
-          collectionGroups = v36->_collectionGroups;
+          collectionGroups = selfCopy->_collectionGroups;
           if (!collectionGroups)
           {
             v8 = +[NSMapTable weakToStrongObjectsMapTable];
-            v9 = v36->_collectionGroups;
-            v36->_collectionGroups = v8;
+            v9 = selfCopy->_collectionGroups;
+            selfCopy->_collectionGroups = v8;
 
-            collectionGroups = v36->_collectionGroups;
+            collectionGroups = selfCopy->_collectionGroups;
           }
 
           [(NSMapTable *)collectionGroups setObject:v5 forKey:v4];
           v10 = sub_10000268C();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = [(IDSDevice *)v36->_device name];
+            name = [(IDSDevice *)selfCopy->_device name];
             *buf = 138412546;
             v47 = v5;
             v48 = 2112;
-            v49 = v11;
+            v49 = name;
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[Content] Registered new collection group: %@ for device: %@", buf, 0x16u);
           }
         }
@@ -255,8 +255,8 @@
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v12 = [(NPTOSyncCollectionGroup *)v5 assetCollections];
-        v13 = [v12 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        assetCollections2 = [(NPTOSyncCollectionGroup *)v5 assetCollections];
+        v13 = [assetCollections2 countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v13)
         {
           v14 = v13;
@@ -267,13 +267,13 @@
             {
               if (*v38 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(assetCollections2);
               }
 
               v17 = *(*(&v37 + 1) + 8 * i);
               v18 = objc_autoreleasePoolPush();
-              v19 = [(NPTOSyncCollectionGroup *)v5 collections];
-              v20 = [v19 objectForKey:v17];
+              collections = [(NPTOSyncCollectionGroup *)v5 collections];
+              v20 = [collections objectForKey:v17];
 
               if (!v20)
               {
@@ -308,25 +308,25 @@
                 }
 
                 [(NPTOSyncCollection *)v20 setPlaceholder:v24];
-                v25 = [(NPTOSyncCollectionGroup *)v5 collections];
+                collections2 = [(NPTOSyncCollectionGroup *)v5 collections];
 
-                if (!v25)
+                if (!collections2)
                 {
                   v26 = +[NSMapTable weakToStrongObjectsMapTable];
                   [(NPTOSyncCollectionGroup *)v5 setCollections:v26];
                 }
 
-                v27 = [(NPTOSyncCollectionGroup *)v5 collections];
-                [v27 setObject:v20 forKey:v17];
+                collections3 = [(NPTOSyncCollectionGroup *)v5 collections];
+                [collections3 setObject:v20 forKey:v17];
 
                 v28 = sub_10000268C();
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
                 {
-                  v29 = [(IDSDevice *)v36->_device name];
+                  name2 = [(IDSDevice *)selfCopy->_device name];
                   *buf = 138412546;
                   v47 = v20;
                   v48 = 2112;
-                  v49 = v29;
+                  v49 = name2;
                   _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[Content] Registered new collection: %@ for device: %@", buf, 0x16u);
                 }
               }
@@ -334,7 +334,7 @@
               objc_autoreleasePoolPop(v18);
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            v14 = [assetCollections2 countByEnumeratingWithState:&v37 objects:v45 count:16];
           }
 
           while (v14);
@@ -350,27 +350,27 @@
     while (v34);
   }
 
-  v30 = v36->_collectionGroups;
+  v30 = selfCopy->_collectionGroups;
 
   return v30;
 }
 
-- (void)_enumerateCollectionsUsingBlock:(id)a3
+- (void)_enumerateCollectionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_queue);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(NPTOCompanionSyncDeviceContentController *)self _contentProviders];
-  v22 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  _contentProviders = [(NPTOCompanionSyncDeviceContentController *)self _contentProviders];
+  v22 = [_contentProviders countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v22)
   {
     v6 = *v31;
     v20 = *v31;
-    v21 = self;
-    v24 = v5;
+    selfCopy = self;
+    v24 = _contentProviders;
     do
     {
       v7 = 0;
@@ -378,7 +378,7 @@
       {
         if (*v31 != v6)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_contentProviders);
         }
 
         v23 = v7;
@@ -390,8 +390,8 @@
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v11 = [v10 assetCollections];
-        v12 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        assetCollections = [v10 assetCollections];
+        v12 = [assetCollections countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v12)
         {
           v13 = v12;
@@ -402,23 +402,23 @@
             {
               if (*v27 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(assetCollections);
               }
 
               v16 = *(*(&v26 + 1) + 8 * i);
               v17 = objc_autoreleasePoolPush();
-              v18 = [v10 collections];
-              v19 = [v18 objectForKey:v16];
+              collections = [v10 collections];
+              v19 = [collections objectForKey:v16];
 
-              if (v4)
+              if (blockCopy)
               {
                 v25 = 0;
-                v4[2](v4, v19, &v25);
+                blockCopy[2](blockCopy, v19, &v25);
                 if (v25)
                 {
 
                   objc_autoreleasePoolPop(v17);
-                  v5 = v24;
+                  _contentProviders = v24;
                   goto LABEL_19;
                 }
               }
@@ -426,7 +426,7 @@
               objc_autoreleasePoolPop(v17);
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v13 = [assetCollections countByEnumeratingWithState:&v26 objects:v34 count:16];
             if (v13)
             {
               continue;
@@ -438,8 +438,8 @@
 
         v7 = v23 + 1;
         v6 = v20;
-        self = v21;
-        v5 = v24;
+        self = selfCopy;
+        _contentProviders = v24;
       }
 
       while ((v23 + 1) != v22);
@@ -456,15 +456,15 @@ LABEL_19:
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = objc_alloc_init(NPTOSyncRequest);
-  v4 = [(NPTOCompanionSyncDeviceContentController *)self _libraryRepresentation];
-  [(NPTOSyncRequest *)v3 setLibrary:v4];
+  _libraryRepresentation = [(NPTOCompanionSyncDeviceContentController *)self _libraryRepresentation];
+  [(NPTOSyncRequest *)v3 setLibrary:_libraryRepresentation];
 
-  v5 = [(NPTOSyncRequest *)v3 library];
-  v6 = [(NPTOCompanionSyncDeviceContentController *)self _collectionTargetListWithLibrary:v5];
+  library = [(NPTOSyncRequest *)v3 library];
+  v6 = [(NPTOCompanionSyncDeviceContentController *)self _collectionTargetListWithLibrary:library];
   [(NPTOSyncRequest *)v3 setCollectionTargetList:v6];
 
-  v7 = [(NPTOSyncRequest *)v3 library];
-  v8 = [(NPTOCompanionSyncDeviceContentController *)self _indexesOfAssetsRequiringExternalPowerSourceConnectedWithLibrary:v7];
+  library2 = [(NPTOSyncRequest *)v3 library];
+  v8 = [(NPTOCompanionSyncDeviceContentController *)self _indexesOfAssetsRequiringExternalPowerSourceConnectedWithLibrary:library2];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100050FDC;
@@ -476,9 +476,9 @@ LABEL_19:
   return v9;
 }
 
-- (id)_assetForLocalIdentifier:(id)a3
+- (id)_assetForLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   v11 = 0;
   v12 = &v11;
@@ -491,7 +491,7 @@ LABEL_19:
   v8[2] = sub_100051118;
   v8[3] = &unk_10008B528;
   v10 = &v11;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   [(NPTOCompanionSyncDeviceContentController *)self _enumerateCollectionsUsingBlock:v8];
   v6 = v12[5];
@@ -531,19 +531,19 @@ LABEL_19:
   return v8;
 }
 
-- (id)_collectionTargetListWithLibrary:(id)a3
+- (id)_collectionTargetListWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_queue);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10005156C;
   v10[3] = &unk_10008B5A0;
-  v11 = v4;
-  v12 = self;
+  v11 = libraryCopy;
+  selfCopy = self;
   v5 = objc_alloc_init(NPTOCollectionTargetList);
   v13 = v5;
-  v6 = v4;
+  v6 = libraryCopy;
   [(NPTOCompanionSyncDeviceContentController *)self _enumerateCollectionsUsingBlock:v10];
   v7 = v13;
   v8 = v5;
@@ -551,11 +551,11 @@ LABEL_19:
   return v5;
 }
 
-- (int)_assetCollectionType:(int64_t)a3
+- (int)_assetCollectionType:(int64_t)type
 {
-  if ((a3 - 1) < 3)
+  if ((type - 1) < 3)
   {
-    return a3;
+    return type;
   }
 
   else
@@ -564,13 +564,13 @@ LABEL_19:
   }
 }
 
-- (int)_assetCollectionSubtype:(int64_t)a3
+- (int)_assetCollectionSubtype:(int64_t)subtype
 {
-  if (a3 > 100)
+  if (subtype > 100)
   {
-    if (a3 != 101)
+    if (subtype != 101)
     {
-      if (a3 == 203)
+      if (subtype == 203)
       {
         return 203;
       }
@@ -583,9 +583,9 @@ LABEL_19:
 
   else
   {
-    if (a3 != 2)
+    if (subtype != 2)
     {
-      if (a3 == 100)
+      if (subtype == 100)
       {
         return 100;
       }
@@ -597,9 +597,9 @@ LABEL_19:
   }
 }
 
-- (id)_indexesOfAssetsRequiringExternalPowerSourceConnectedWithLibrary:(id)a3
+- (id)_indexesOfAssetsRequiringExternalPowerSourceConnectedWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_queue);
   +[NSMutableIndexSet indexSet];
   v17[0] = _NSConcreteStackBlock;
@@ -607,7 +607,7 @@ LABEL_19:
   v17[2] = sub_100051B08;
   v5 = v17[3] = &unk_10008B5F0;
   v18 = v5;
-  v6 = v4;
+  v6 = libraryCopy;
   v19 = v6;
   [(NPTOCompanionSyncDeviceContentController *)self _enumerateCollectionsUsingBlock:v17];
   v11 = _NSConcreteStackBlock;
@@ -624,38 +624,38 @@ LABEL_19:
   return v9;
 }
 
-- (void)_handleContentProviderDidInvalidateContent:(id)a3
+- (void)_handleContentProviderDidInvalidateContent:(id)content
 {
   queue = self->_queue;
-  v5 = a3;
+  contentCopy = content;
   dispatch_assert_queue_V2(queue);
-  [(NSMapTable *)self->_collectionGroups removeObjectForKey:v5];
+  [(NSMapTable *)self->_collectionGroups removeObjectForKey:contentCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  LOBYTE(contentCopy) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (contentCopy)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
     [v7 controllerDidInvalidateContent:self];
   }
 }
 
-- (void)_handlePhotoLibraryDidChange:(id)a3
+- (void)_handlePhotoLibraryDidChange:(id)change
 {
-  v42 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_queue);
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v40 = self;
-  v4 = [(NPTOCompanionSyncDeviceContentController *)self _contentProviders];
-  v37 = [v4 countByEnumeratingWithState:&v47 objects:v56 count:16];
+  selfCopy = self;
+  _contentProviders = [(NPTOCompanionSyncDeviceContentController *)self _contentProviders];
+  v37 = [_contentProviders countByEnumeratingWithState:&v47 objects:v56 count:16];
   if (v37)
   {
     v5 = 0;
-    obj = v4;
+    obj = _contentProviders;
     v36 = *v48;
     do
     {
@@ -667,24 +667,24 @@ LABEL_19:
           objc_enumerationMutation(obj);
         }
 
-        v7 = [(NSMapTable *)v40->_collectionGroups objectForKey:*(*(&v47 + 1) + 8 * v6)];
-        v8 = [v7 assetCollections];
-        v9 = [v42 changeDetailsForFetchResult:v8];
+        v7 = [(NSMapTable *)selfCopy->_collectionGroups objectForKey:*(*(&v47 + 1) + 8 * v6)];
+        assetCollections = [v7 assetCollections];
+        v9 = [changeCopy changeDetailsForFetchResult:assetCollections];
 
         if (v9)
         {
-          v10 = [v9 fetchResultAfterChanges];
-          [v7 setAssetCollections:v10];
+          fetchResultAfterChanges = [v9 fetchResultAfterChanges];
+          [v7 setAssetCollections:fetchResultAfterChanges];
 
           [v7 setCollections:0];
           v11 = sub_10000268C();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = [(IDSDevice *)v40->_device name];
+            name = [(IDSDevice *)selfCopy->_device name];
             *buf = 138412546;
             v53 = v7;
             v54 = 2112;
-            v55 = v12;
+            v55 = name;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Content] Updated collection group: %@ for device: %@", buf, 0x16u);
           }
 
@@ -697,8 +697,8 @@ LABEL_19:
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v41 = [v7 assetCollections];
-        v13 = [v41 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        assetCollections2 = [v7 assetCollections];
+        v13 = [assetCollections2 countByEnumeratingWithState:&v43 objects:v51 count:16];
         if (v13)
         {
           v14 = v13;
@@ -709,34 +709,34 @@ LABEL_19:
             {
               if (*v44 != v15)
               {
-                objc_enumerationMutation(v41);
+                objc_enumerationMutation(assetCollections2);
               }
 
               v17 = *(*(&v43 + 1) + 8 * i);
               v18 = objc_autoreleasePoolPush();
-              v19 = [v7 collections];
-              v20 = [v19 objectForKey:v17];
+              collections = [v7 collections];
+              v20 = [collections objectForKey:v17];
 
-              v21 = [v20 assets];
+              assets = [v20 assets];
 
-              if (v21)
+              if (assets)
               {
-                v22 = [v20 assets];
-                v23 = [v42 npto_relevantChangeDetailsForFetchResult:v22];
+                assets2 = [v20 assets];
+                v23 = [changeCopy npto_relevantChangeDetailsForFetchResult:assets2];
 
                 if (v23)
                 {
-                  v24 = [v23 fetchResultAfterChanges];
-                  [v20 setAssets:v24];
+                  fetchResultAfterChanges2 = [v23 fetchResultAfterChanges];
+                  [v20 setAssets:fetchResultAfterChanges2];
 
                   v25 = sub_10000268C();
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                   {
-                    v26 = [(IDSDevice *)v40->_device name];
+                    name2 = [(IDSDevice *)selfCopy->_device name];
                     *buf = 138412546;
                     v53 = v20;
                     v54 = 2112;
-                    v55 = v26;
+                    v55 = name2;
                     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[Content] Updated collection assets: %@ for device: %@", buf, 0x16u);
                   }
 
@@ -744,26 +744,26 @@ LABEL_19:
                 }
               }
 
-              v27 = [v20 keyAssets];
+              keyAssets = [v20 keyAssets];
 
-              if (v27)
+              if (keyAssets)
               {
-                v28 = [v20 keyAssets];
-                v29 = [v42 npto_relevantChangeDetailsForFetchResult:v28];
+                keyAssets2 = [v20 keyAssets];
+                v29 = [changeCopy npto_relevantChangeDetailsForFetchResult:keyAssets2];
 
                 if (v29)
                 {
-                  v30 = [v29 fetchResultAfterChanges];
-                  [v20 setKeyAssets:v30];
+                  fetchResultAfterChanges3 = [v29 fetchResultAfterChanges];
+                  [v20 setKeyAssets:fetchResultAfterChanges3];
 
                   v31 = sub_10000268C();
                   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
                   {
-                    v32 = [(IDSDevice *)v40->_device name];
+                    name3 = [(IDSDevice *)selfCopy->_device name];
                     *buf = 138412546;
                     v53 = v20;
                     v54 = 2112;
-                    v55 = v32;
+                    v55 = name3;
                     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "[Content] Updated collection key assets: %@ for device: %@", buf, 0x16u);
                   }
 
@@ -774,7 +774,7 @@ LABEL_19:
               objc_autoreleasePoolPop(v18);
             }
 
-            v14 = [v41 countByEnumeratingWithState:&v43 objects:v51 count:16];
+            v14 = [assetCollections2 countByEnumeratingWithState:&v43 objects:v51 count:16];
           }
 
           while (v14);
@@ -798,8 +798,8 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Photo library did change, content providers have relevant changes.", buf, 2u);
       }
 
-      WeakRetained = objc_loadWeakRetained(&v40->_delegate);
-      [WeakRetained controllerDidInvalidateContent:v40];
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+      [WeakRetained controllerDidInvalidateContent:selfCopy];
       goto LABEL_38;
     }
   }
@@ -818,14 +818,14 @@ LABEL_19:
 LABEL_38:
 }
 
-- (void)contentProviderDidInvalidateContent:(id)a3
+- (void)contentProviderDidInvalidateContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = sub_10000268C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = contentCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "contentProviderDidInvalidateContent: %@", buf, 0xCu);
   }
 
@@ -836,17 +836,17 @@ LABEL_38:
   v8[2] = sub_10005246C;
   v8[3] = &unk_10008B618;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = contentCopy;
+  v7 = contentCopy;
   dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_10000268C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -866,8 +866,8 @@ LABEL_38:
   v8[2] = sub_100052630;
   v8[3] = &unk_10008B618;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = changeCopy;
+  v7 = changeCopy;
   dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);

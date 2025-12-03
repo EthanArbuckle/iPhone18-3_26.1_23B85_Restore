@@ -2,8 +2,8 @@
 - (NSString)labelString;
 - (NSString)text;
 - (_TtC15UIUnderstanding11UIDetection)init;
-- (_TtC15UIUnderstanding11UIDetection)initWithLabel:(int64_t)a3 confidence:(double)a4 text:(id)a5;
-- (void)setText:(id)a3;
+- (_TtC15UIUnderstanding11UIDetection)initWithLabel:(int64_t)label confidence:(double)confidence text:(id)text;
+- (void)setText:(id)text;
 @end
 
 @implementation UIDetection
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_2702B402C();
     v6 = v5;
@@ -54,9 +54,9 @@
   v7[1] = v6;
 }
 
-- (_TtC15UIUnderstanding11UIDetection)initWithLabel:(int64_t)a3 confidence:(double)a4 text:(id)a5
+- (_TtC15UIUnderstanding11UIDetection)initWithLabel:(int64_t)label confidence:(double)confidence text:(id)text
 {
-  if (a5)
+  if (text)
   {
     v8 = sub_2702B402C();
     v10 = v9;
@@ -72,8 +72,8 @@
   *v11 = 0;
   v11[1] = 0;
   *(self + OBJC_IVAR____TtC15UIUnderstanding11UIDetection_vfeature) = 0;
-  *(self + OBJC_IVAR____TtC15UIUnderstanding11UIDetection_label) = a3;
-  *(self + OBJC_IVAR____TtC15UIUnderstanding11UIDetection_confidence) = a4;
+  *(self + OBJC_IVAR____TtC15UIUnderstanding11UIDetection_label) = label;
+  *(self + OBJC_IVAR____TtC15UIUnderstanding11UIDetection_confidence) = confidence;
   swift_beginAccess();
   *v11 = v8;
   v11[1] = v10;

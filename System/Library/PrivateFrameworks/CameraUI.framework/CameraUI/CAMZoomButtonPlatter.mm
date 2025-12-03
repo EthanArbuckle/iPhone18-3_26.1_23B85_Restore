@@ -1,51 +1,51 @@
 @interface CAMZoomButtonPlatter
 - (CAMZoomButton)zoomFactorButton;
-- (CAMZoomButtonPlatter)initWithFrame:(CGRect)a3;
-- (CGSize)_intrinsicContentSizeForButtonCount:(unint64_t)a3;
+- (CAMZoomButtonPlatter)initWithFrame:(CGRect)frame;
+- (CGSize)_intrinsicContentSizeForButtonCount:(unint64_t)count;
 - (CGSize)intrinsicContentSize;
-- (double)_zoomFactorForButton:(id)a3 zoomPoint:(id)a4 isZoomFactorButton:(BOOL)a5;
-- (double)defaultZoomFactorForButton:(id)a3;
-- (id)_createPlatterImageForContentSize:(id)a3;
+- (double)_zoomFactorForButton:(id)button zoomPoint:(id)point isZoomFactorButton:(BOOL)factorButton;
+- (double)defaultZoomFactorForButton:(id)button;
+- (id)_createPlatterImageForContentSize:(id)size;
 - (id)_createZoomButton;
-- (id)_indexesForChanges:(id)a3;
-- (id)baseZoomPointForButton:(id)a3;
-- (id)nearestZoomButtonForPoint:(CGPoint)a3;
-- (id)nearestZoomButtonForTouch:(id)a3;
+- (id)_indexesForChanges:(id)changes;
+- (id)baseZoomPointForButton:(id)button;
+- (id)nearestZoomButtonForPoint:(CGPoint)point;
+- (id)nearestZoomButtonForTouch:(id)touch;
 - (unint64_t)buttonCount;
 - (void)_cancelFocalLengthFlash;
 - (void)_flashFocalLengthIfNeeded;
-- (void)_updateButtonAccessoryAnimated:(BOOL)a3;
+- (void)_updateButtonAccessoryAnimated:(BOOL)animated;
 - (void)_updateButtonAlphas;
-- (void)_updateButtonAlphasAnimationDuration:(double)a3;
-- (void)_updateButtonsAnimated:(BOOL)a3;
+- (void)_updateButtonAlphasAnimationDuration:(double)duration;
+- (void)_updateButtonsAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setButtonAccessoryPosition:(int64_t)a3 animated:(BOOL)a4;
-- (void)setButtonAccessoryState:(int64_t)a3 animated:(BOOL)a4;
-- (void)setCenterSelectedZoomEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setCollapsed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setContentType:(int64_t)a3 animated:(BOOL)a4;
-- (void)setHasLayoutConflictLeft:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHasLayoutConflictRight:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setPreferredCustomLens:(int64_t)a3;
-- (void)setZoomFactor:(double)a3 allowFlashingSubstate:(BOOL)a4 animated:(BOOL)a5;
-- (void)setZoomPoints:(id)a3 animated:(BOOL)a4;
-- (void)setZoomSymbols:(id)a3 animated:(BOOL)a4;
+- (void)setButtonAccessoryPosition:(int64_t)position animated:(BOOL)animated;
+- (void)setButtonAccessoryState:(int64_t)state animated:(BOOL)animated;
+- (void)setCenterSelectedZoomEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setCollapsed:(BOOL)collapsed animated:(BOOL)animated;
+- (void)setContentType:(int64_t)type animated:(BOOL)animated;
+- (void)setHasLayoutConflictLeft:(BOOL)left animated:(BOOL)animated;
+- (void)setHasLayoutConflictRight:(BOOL)right animated:(BOOL)animated;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setPreferredCustomLens:(int64_t)lens;
+- (void)setZoomFactor:(double)factor allowFlashingSubstate:(BOOL)substate animated:(BOOL)animated;
+- (void)setZoomPoints:(id)points animated:(BOOL)animated;
+- (void)setZoomSymbols:(id)symbols animated:(BOOL)animated;
 @end
 
 @implementation CAMZoomButtonPlatter
 
-- (CAMZoomButtonPlatter)initWithFrame:(CGRect)a3
+- (CAMZoomButtonPlatter)initWithFrame:(CGRect)frame
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = CAMZoomButtonPlatter;
-  v3 = [(CAMZoomButtonPlatter *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMZoomButtonPlatter *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     allButtons = v3->__allButtons;
-    v3->__allButtons = v4;
+    v3->__allButtons = array;
 
     zoomPoints = v3->_zoomPoints;
     v3->_zoomPoints = MEMORY[0x1E695E0F0];
@@ -76,10 +76,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMZoomButtonPlatter *)self buttonCount];
-  v12 = [(CAMZoomButtonPlatter *)self traitCollection];
-  v13 = [v12 preferredContentSizeCategory];
-  [CAMZoomButton circleDiameterForContentSize:v13];
+  buttonCount = [(CAMZoomButtonPlatter *)self buttonCount];
+  traitCollection = [(CAMZoomButtonPlatter *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [CAMZoomButton circleDiameterForContentSize:preferredContentSizeCategory];
   v15 = v14 * 0.5;
 
   UIRectGetCenter();
@@ -96,29 +96,29 @@
   v30.size.height = v10;
   MaxX = CGRectGetMaxX(v30);
   v22 = 0.0;
-  if (v11 >= 2)
+  if (buttonCount >= 2)
   {
-    v22 = (MaxX - v15 - *&CAMZoomButtonPlatterMargin - v20) / (v11 - 1);
+    v22 = (MaxX - v15 - *&CAMZoomButtonPlatterMargin - v20) / (buttonCount - 1);
   }
 
-  v23 = [(CAMZoomButtonPlatter *)self _allButtons];
-  v24 = [(CAMZoomButtonPlatter *)self zoomFactorButton];
-  v25 = [v23 indexOfObject:v24];
+  _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
+  zoomFactorButton = [(CAMZoomButtonPlatter *)self zoomFactorButton];
+  v25 = [_allButtons indexOfObject:zoomFactorButton];
 
-  LOBYTE(v23) = [(CAMZoomButtonPlatter *)self isCenterSelectedZoomEnabled];
-  v26 = [(CAMZoomButtonPlatter *)self _allButtons];
+  LOBYTE(_allButtons) = [(CAMZoomButtonPlatter *)self isCenterSelectedZoomEnabled];
+  _allButtons2 = [(CAMZoomButtonPlatter *)self _allButtons];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __38__CAMZoomButtonPlatter_layoutSubviews__block_invoke;
   v27[3] = &__block_descriptor_81_e30_v32__0__CAMZoomButton_8Q16_B24l;
   v27[4] = v17;
   v27[5] = v19;
-  v28 = v23;
+  v28 = _allButtons;
   v27[6] = v25;
   *&v27[7] = v15;
   *&v27[8] = v20;
   *&v27[9] = v22;
-  [v26 enumerateObjectsUsingBlock:v27];
+  [_allButtons2 enumerateObjectsUsingBlock:v27];
 }
 
 void __38__CAMZoomButtonPlatter_layoutSubviews__block_invoke(uint64_t a1, void *a2)
@@ -132,20 +132,20 @@ void __38__CAMZoomButtonPlatter_layoutSubviews__block_invoke(uint64_t a1, void *
 
 - (void)_updateButtonAlphas
 {
-  v3 = [(CAMZoomButtonPlatter *)self _allButtons];
-  v4 = [(CAMZoomButtonPlatter *)self zoomFactorButton];
-  v5 = [v3 indexOfObject:v4];
+  _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
+  zoomFactorButton = [(CAMZoomButtonPlatter *)self zoomFactorButton];
+  v5 = [_allButtons indexOfObject:zoomFactorButton];
 
-  LOBYTE(v3) = [(CAMZoomButtonPlatter *)self isCenterSelectedZoomEnabled];
-  v6 = [(CAMZoomButtonPlatter *)self _allButtons];
+  LOBYTE(_allButtons) = [(CAMZoomButtonPlatter *)self isCenterSelectedZoomEnabled];
+  _allButtons2 = [(CAMZoomButtonPlatter *)self _allButtons];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CAMZoomButtonPlatter__updateButtonAlphas__block_invoke;
   v7[3] = &unk_1E76FB920;
-  v8 = v3;
+  v8 = _allButtons;
   v7[4] = self;
   v7[5] = v5;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [_allButtons2 enumerateObjectsUsingBlock:v7];
 }
 
 void __43__CAMZoomButtonPlatter__updateButtonAlphas__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -213,52 +213,52 @@ void __43__CAMZoomButtonPlatter__updateButtonAlphas__block_invoke(uint64_t a1, v
   [v18 setAlpha:v13];
 }
 
-- (void)_updateButtonAlphasAnimationDuration:(double)a3
+- (void)_updateButtonAlphasAnimationDuration:(double)duration
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __61__CAMZoomButtonPlatter__updateButtonAlphasAnimationDuration___block_invoke;
   v3[3] = &unk_1E76F77B0;
   v3[4] = self;
-  [CAMView animateIfNeededWithDuration:v3 animations:a3];
+  [CAMView animateIfNeededWithDuration:v3 animations:duration];
 }
 
 - (CGSize)intrinsicContentSize
 {
   if ([(CAMZoomButtonPlatter *)self isCollapsed])
   {
-    v3 = 1;
+    buttonCount = 1;
   }
 
   else
   {
-    v3 = [(CAMZoomButtonPlatter *)self buttonCount];
+    buttonCount = [(CAMZoomButtonPlatter *)self buttonCount];
   }
 
-  [(CAMZoomButtonPlatter *)self _intrinsicContentSizeForButtonCount:v3];
+  [(CAMZoomButtonPlatter *)self _intrinsicContentSizeForButtonCount:buttonCount];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_intrinsicContentSizeForButtonCount:(unint64_t)a3
+- (CGSize)_intrinsicContentSizeForButtonCount:(unint64_t)count
 {
-  v5 = [(CAMZoomButtonPlatter *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  [CAMZoomButton circleDiameterForContentSize:v6];
+  traitCollection = [(CAMZoomButtonPlatter *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [CAMZoomButton circleDiameterForContentSize:preferredContentSizeCategory];
   v8 = v7;
 
   v9 = *&CAMZoomButtonPlatterMargin;
-  v10 = a3;
+  countCopy = count;
   if ([(CAMZoomButtonPlatter *)self isCenterSelectedZoomEnabled])
   {
-    v11 = v8 * 0.5 + (a3 - 1) * v8 + *&CAMZoomButtonPlatterMargin * v10;
+    v11 = v8 * 0.5 + (count - 1) * v8 + *&CAMZoomButtonPlatterMargin * countCopy;
     v12 = v11 + v11;
   }
 
   else
   {
-    v12 = v9 * (a3 + 1) + v8 * v10;
+    v12 = v9 * (count + 1) + v8 * countCopy;
   }
 
   v13 = v8 + v9 * 2.0;
@@ -269,36 +269,36 @@ void __43__CAMZoomButtonPlatter__updateButtonAlphas__block_invoke(uint64_t a1, v
 
 - (unint64_t)buttonCount
 {
-  v2 = [(CAMZoomButtonPlatter *)self zoomPoints];
-  v3 = [v2 count];
+  zoomPoints = [(CAMZoomButtonPlatter *)self zoomPoints];
+  v3 = [zoomPoints count];
 
   return v3;
 }
 
-- (void)setZoomFactor:(double)a3 allowFlashingSubstate:(BOOL)a4 animated:(BOOL)a5
+- (void)setZoomFactor:(double)factor allowFlashingSubstate:(BOOL)substate animated:(BOOL)animated
 {
-  if (self->_zoomFactor != a3)
+  if (self->_zoomFactor != factor)
   {
-    v6 = a5;
-    v7 = a4;
-    if ([(CAMZoomButtonPlatter *)self isCenterSelectedZoomEnabled]&& v6)
+    animatedCopy = animated;
+    substateCopy = substate;
+    if ([(CAMZoomButtonPlatter *)self isCenterSelectedZoomEnabled]&& animatedCopy)
     {
       [(CAMZoomButtonPlatter *)self layoutIfNeeded];
     }
 
-    self->_zoomFactor = a3;
-    if (v7 && v6)
+    self->_zoomFactor = factor;
+    if (substateCopy && animatedCopy)
     {
       [(CAMZoomButtonPlatter *)self _flashFocalLengthIfNeeded];
     }
 
-    [(CAMZoomButtonPlatter *)self _updateButtonsAnimated:v6];
+    [(CAMZoomButtonPlatter *)self _updateButtonsAnimated:animatedCopy];
     [(CAMZoomButtonPlatter *)self _updateButtonAccessoryAnimated:0];
     if ([(CAMZoomButtonPlatter *)self isCenterSelectedZoomEnabled])
     {
       [(CAMZoomButtonPlatter *)self setNeedsLayout];
       v9 = 0.3;
-      if (!v6)
+      if (!animatedCopy)
       {
         v9 = 0.0;
       }
@@ -315,7 +315,7 @@ void __43__CAMZoomButtonPlatter__updateButtonAlphas__block_invoke(uint64_t a1, v
 
 - (CAMZoomButton)zoomFactorButton
 {
-  v3 = [(CAMZoomButtonPlatter *)self zoomPoints];
+  zoomPoints = [(CAMZoomButtonPlatter *)self zoomPoints];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -324,16 +324,16 @@ void __43__CAMZoomButtonPlatter__updateButtonAlphas__block_invoke(uint64_t a1, v
   v19 = 0;
   [(CAMZoomButtonPlatter *)self zoomFactor];
   v5 = v4;
-  v6 = [(CAMZoomButtonPlatter *)self _allButtons];
+  _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__CAMZoomButtonPlatter_zoomFactorButton__block_invoke;
   v10[3] = &unk_1E76FB948;
-  v7 = v3;
+  v7 = zoomPoints;
   v13 = v5;
   v11 = v7;
   v12 = &v14;
-  [v6 enumerateObjectsWithOptions:2 usingBlock:v10];
+  [_allButtons enumerateObjectsWithOptions:2 usingBlock:v10];
 
   v8 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -356,20 +356,20 @@ void __40__CAMZoomButtonPlatter_zoomFactorButton__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)setZoomPoints:(id)a3 animated:(BOOL)a4
+- (void)setZoomPoints:(id)points animated:(BOOL)animated
 {
-  v50 = a4;
+  animatedCopy = animated;
   v77 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v47 = [v5 count];
-  if (([v5 isEqualToArray:self->_zoomPoints] & 1) == 0)
+  pointsCopy = points;
+  v47 = [pointsCopy count];
+  if (([pointsCopy isEqualToArray:self->_zoomPoints] & 1) == 0)
   {
-    v44 = v5;
-    v6 = [(CAMZoomButtonPlatter *)self _allButtons];
-    v45 = [v6 copy];
-    v42 = [(CAMZoomButtonPlatter *)self zoomPoints];
-    v46 = [v42 count];
-    if (v50)
+    v44 = pointsCopy;
+    _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
+    v45 = [_allButtons copy];
+    zoomPoints = [(CAMZoomButtonPlatter *)self zoomPoints];
+    v46 = [zoomPoints count];
+    if (animatedCopy)
     {
       v7 = 0.3;
     }
@@ -379,13 +379,13 @@ void __40__CAMZoomButtonPlatter_zoomFactorButton__block_invoke(uint64_t a1, void
       v7 = 0.0;
     }
 
-    v43 = [v5 differenceFromArray:v42 withOptions:0 usingEquivalenceTest:&__block_literal_global_34];
+    v43 = [pointsCopy differenceFromArray:zoomPoints withOptions:0 usingEquivalenceTest:&__block_literal_global_34];
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v8 = [v43 removals];
-    obj = [v8 reverseObjectEnumerator];
+    removals = [v43 removals];
+    obj = [removals reverseObjectEnumerator];
 
     v9 = [obj countByEnumeratingWithState:&v71 objects:v76 count:16];
     if (v9)
@@ -400,25 +400,25 @@ void __40__CAMZoomButtonPlatter_zoomFactorButton__block_invoke(uint64_t a1, void
             objc_enumerationMutation(obj);
           }
 
-          v12 = [*(*(&v71 + 1) + 8 * i) index];
-          v13 = [v6 objectAtIndexedSubscript:v12];
-          [v6 removeObjectAtIndex:v12];
-          if (v50)
+          index = [*(*(&v71 + 1) + 8 * i) index];
+          v13 = [_allButtons objectAtIndexedSubscript:index];
+          [_allButtons removeObjectAtIndex:index];
+          if (animatedCopy)
           {
-            v14 = [v13 layer];
-            v15 = [v14 presentationLayer];
-            v16 = v15;
-            if (v15)
+            layer = [v13 layer];
+            presentationLayer = [layer presentationLayer];
+            v16 = presentationLayer;
+            if (presentationLayer)
             {
-              v17 = v15;
+              layer2 = presentationLayer;
             }
 
             else
             {
-              v17 = [v13 layer];
+              layer2 = [v13 layer];
             }
 
-            v18 = v17;
+            v18 = layer2;
 
             [v18 position];
             [v13 setCenter:?];
@@ -430,7 +430,7 @@ void __40__CAMZoomButtonPlatter_zoomFactorButton__block_invoke(uint64_t a1, void
             v66[2] = __47__CAMZoomButtonPlatter_setZoomPoints_animated___block_invoke_2;
             v66[3] = &unk_1E76F9928;
             v69 = v46;
-            v70 = v12;
+            v70 = index;
             v68 = v47;
             v66[4] = self;
             v67 = v13;
@@ -454,8 +454,8 @@ void __40__CAMZoomButtonPlatter_zoomFactorButton__block_invoke(uint64_t a1, void
       while (v9);
     }
 
-    v21 = [v43 insertions];
-    v41 = [(CAMZoomButtonPlatter *)self _indexesForChanges:v21];
+    insertions = [v43 insertions];
+    v41 = [(CAMZoomButtonPlatter *)self _indexesForChanges:insertions];
     v58 = 0;
     v59 = &v58;
     v60 = 0x3010000000;
@@ -472,7 +472,7 @@ void __40__CAMZoomButtonPlatter_zoomFactorButton__block_invoke(uint64_t a1, void
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v22 = v21;
+    v22 = insertions;
     v23 = [v22 countByEnumeratingWithState:&v53 objects:v75 count:16];
     if (v23)
     {
@@ -488,39 +488,39 @@ void __40__CAMZoomButtonPlatter_zoomFactorButton__block_invoke(uint64_t a1, void
             objc_enumerationMutation(v22);
           }
 
-          v26 = [*(*(&v53 + 1) + 8 * v25) index];
-          v27 = [(CAMZoomButtonPlatter *)self _createZoomButton];
-          [v6 insertObject:v27 atIndex:v26];
-          [(CAMZoomButtonPlatter *)self addSubview:v27];
-          if (v50)
+          index2 = [*(*(&v53 + 1) + 8 * v25) index];
+          _createZoomButton = [(CAMZoomButtonPlatter *)self _createZoomButton];
+          [_allButtons insertObject:_createZoomButton atIndex:index2];
+          [(CAMZoomButtonPlatter *)self addSubview:_createZoomButton];
+          if (animatedCopy)
           {
             if (v59[4])
             {
-              if (v26 < obja)
+              if (index2 < obja)
               {
                 goto LABEL_36;
               }
 
 LABEL_33:
-              v30 = [v45 lastObject];
+              lastObject = [v45 lastObject];
               goto LABEL_34;
             }
 
             v28 = v59[5];
-            if (v26 < v28 || v26 >= obja)
+            if (index2 < v28 || index2 >= obja)
             {
-              if (v26 >= v28)
+              if (index2 >= v28)
               {
                 goto LABEL_33;
               }
 
-              v30 = [v45 firstObject];
+              lastObject = [v45 firstObject];
 LABEL_34:
-              v31 = v30;
-              [v30 center];
-              [v27 setCenter:?];
+              v31 = lastObject;
+              [lastObject center];
+              [_createZoomButton setCenter:?];
               [v31 bounds];
-              [v27 setBounds:?];
+              [_createZoomButton setBounds:?];
               if (v31)
               {
                 [v31 transform];
@@ -532,28 +532,28 @@ LABEL_34:
               }
 
               v52[0] = v52[1];
-              [v27 setTransform:v52];
+              [_createZoomButton setTransform:v52];
             }
 
             else
             {
 LABEL_36:
-              v32 = [(CAMZoomButtonPlatter *)self traitCollection];
-              v33 = [v32 preferredContentSizeCategory];
-              [CAMZoomButton circleDiameterForContentSize:v33];
+              traitCollection = [(CAMZoomButtonPlatter *)self traitCollection];
+              preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+              [CAMZoomButton circleDiameterForContentSize:preferredContentSizeCategory];
               v35 = v34;
 
-              [v27 setBounds:{0.0, 0.0, v35, v35}];
+              [_createZoomButton setBounds:{0.0, 0.0, v35, v35}];
               [(CAMZoomButtonPlatter *)self bounds];
               UIRectGetCenter();
-              [v27 setCenter:?];
+              [_createZoomButton setCenter:?];
               CGAffineTransformMakeScale(&v51, 0.65, 0.65);
               v52[0] = v51;
-              [v27 setTransform:v52];
+              [_createZoomButton setTransform:v52];
             }
 
-            [v27 setAlpha:0.0];
-            [v27 layoutIfNeeded];
+            [_createZoomButton setAlpha:0.0];
+            [_createZoomButton layoutIfNeeded];
           }
 
           ++v25;
@@ -586,7 +586,7 @@ LABEL_36:
 
     _Block_object_dispose(&v58, 8);
 
-    v5 = v44;
+    pointsCopy = v44;
   }
 }
 
@@ -631,17 +631,17 @@ uint64_t __47__CAMZoomButtonPlatter_setZoomPoints_animated___block_invoke_4(uint
   return result;
 }
 
-- (id)nearestZoomButtonForTouch:(id)a3
+- (id)nearestZoomButtonForTouch:(id)touch
 {
-  [a3 locationInView:self];
+  [touch locationInView:self];
 
   return [(CAMZoomButtonPlatter *)self nearestZoomButtonForPoint:?];
 }
 
-- (id)nearestZoomButtonForPoint:(CGPoint)a3
+- (id)nearestZoomButtonForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -654,22 +654,22 @@ uint64_t __47__CAMZoomButtonPlatter_setZoomPoints_animated___block_invoke_4(uint
   v15[3] = 0x7FEFFFFFFFFFFFFFLL;
   if ([(CAMZoomButtonPlatter *)self isCollapsed])
   {
-    v6 = [(CAMZoomButtonPlatter *)self zoomFactorButton];
-    [v6 center];
+    zoomFactorButton = [(CAMZoomButtonPlatter *)self zoomFactorButton];
+    [zoomFactorButton center];
     UIDistanceBetweenPoints();
     v8 = v7;
-    [v6 bounds];
+    [zoomFactorButton bounds];
     v10 = v9;
-    [v6 alpha];
+    [zoomFactorButton alpha];
     if (v11 > 0.0 && v8 <= v10 * 0.5 + 12.0)
     {
-      objc_storeStrong(v17 + 5, v6);
+      objc_storeStrong(v17 + 5, zoomFactorButton);
     }
   }
 
   else
   {
-    v6 = [(CAMZoomButtonPlatter *)self _allButtons];
+    zoomFactorButton = [(CAMZoomButtonPlatter *)self _allButtons];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke;
@@ -679,7 +679,7 @@ uint64_t __47__CAMZoomButtonPlatter_setZoomPoints_animated___block_invoke_4(uint
     v14[8] = 0x4028000000000000;
     v14[4] = v15;
     v14[5] = &v16;
-    [v6 enumerateObjectsUsingBlock:v14];
+    [zoomFactorButton enumerateObjectsUsingBlock:v14];
   }
 
   v12 = v17[5];
@@ -710,11 +710,11 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
   }
 }
 
-- (id)baseZoomPointForButton:(id)a3
+- (id)baseZoomPointForButton:(id)button
 {
-  v4 = a3;
-  v5 = [(CAMZoomButtonPlatter *)self _allButtons];
-  v6 = [v5 indexOfObject:v4];
+  buttonCopy = button;
+  _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
+  v6 = [_allButtons indexOfObject:buttonCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL || (-[CAMZoomButtonPlatter zoomPoints](self, "zoomPoints"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6 >= v8))
   {
@@ -723,31 +723,31 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
 
   else
   {
-    v9 = [(CAMZoomButtonPlatter *)self zoomPoints];
-    v10 = [v9 objectAtIndexedSubscript:v6];
+    zoomPoints = [(CAMZoomButtonPlatter *)self zoomPoints];
+    v10 = [zoomPoints objectAtIndexedSubscript:v6];
   }
 
   return v10;
 }
 
-- (double)defaultZoomFactorForButton:(id)a3
+- (double)defaultZoomFactorForButton:(id)button
 {
-  v4 = a3;
-  v5 = [(CAMZoomButtonPlatter *)self baseZoomPointForButton:v4];
-  [(CAMZoomButtonPlatter *)self _zoomFactorForButton:v4 zoomPoint:v5 isZoomFactorButton:0];
+  buttonCopy = button;
+  v5 = [(CAMZoomButtonPlatter *)self baseZoomPointForButton:buttonCopy];
+  [(CAMZoomButtonPlatter *)self _zoomFactorForButton:buttonCopy zoomPoint:v5 isZoomFactorButton:0];
   v7 = v6;
 
   return v7;
 }
 
-- (void)setCollapsed:(BOOL)a3 animated:(BOOL)a4
+- (void)setCollapsed:(BOOL)collapsed animated:(BOOL)animated
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    if (a4)
+    if (animated)
     {
       [(CAMZoomButtonPlatter *)self layoutIfNeeded];
-      self->_collapsed = a3;
+      self->_collapsed = collapsed;
       [(CAMZoomButtonPlatter *)self _updateButtonsAnimated:1];
       [(CAMZoomButtonPlatter *)self _updateButtonAccessoryAnimated:1];
       [(CAMZoomButtonPlatter *)self setNeedsLayout];
@@ -761,7 +761,7 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
 
     else
     {
-      self->_collapsed = a3;
+      self->_collapsed = collapsed;
       [(CAMZoomButtonPlatter *)self _updateButtonsAnimated:0];
       [(CAMZoomButtonPlatter *)self _updateButtonAccessoryAnimated:0];
 
@@ -770,37 +770,37 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
   }
 }
 
-- (void)setButtonAccessoryState:(int64_t)a3 animated:(BOOL)a4
+- (void)setButtonAccessoryState:(int64_t)state animated:(BOOL)animated
 {
-  if (self->_buttonAccessoryState != a3)
+  if (self->_buttonAccessoryState != state)
   {
-    self->_buttonAccessoryState = a3;
-    [(CAMZoomButtonPlatter *)self _updateButtonAccessoryAnimated:a4];
+    self->_buttonAccessoryState = state;
+    [(CAMZoomButtonPlatter *)self _updateButtonAccessoryAnimated:animated];
   }
 }
 
-- (void)setButtonAccessoryPosition:(int64_t)a3 animated:(BOOL)a4
+- (void)setButtonAccessoryPosition:(int64_t)position animated:(BOOL)animated
 {
-  if (self->_buttonAccessoryPosition != a3)
+  if (self->_buttonAccessoryPosition != position)
   {
-    self->_buttonAccessoryPosition = a3;
-    [(CAMZoomButtonPlatter *)self _updateButtonAccessoryAnimated:a4];
+    self->_buttonAccessoryPosition = position;
+    [(CAMZoomButtonPlatter *)self _updateButtonAccessoryAnimated:animated];
   }
 }
 
-- (void)_updateButtonAccessoryAnimated:(BOOL)a3
+- (void)_updateButtonAccessoryAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(CAMZoomButtonPlatter *)self buttonAccessoryState];
-  v6 = [(CAMZoomButtonPlatter *)self zoomFactorButton];
-  v7 = [(CAMZoomButtonPlatter *)self isCollapsed];
+  buttonAccessoryState = [(CAMZoomButtonPlatter *)self buttonAccessoryState];
+  zoomFactorButton = [(CAMZoomButtonPlatter *)self zoomFactorButton];
+  isCollapsed = [(CAMZoomButtonPlatter *)self isCollapsed];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(CAMZoomButtonPlatter *)self _allButtons];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
+  v9 = [_allButtons countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -812,13 +812,13 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_allButtons);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
-        if (v7 && v13 == v6)
+        if (isCollapsed && v13 == zoomFactorButton)
         {
-          v14 = v5;
+          v14 = buttonAccessoryState;
         }
 
         else
@@ -826,36 +826,36 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
           v14 = 0;
         }
 
-        [*(*(&v15 + 1) + 8 * v12) setAccessoryState:v14 animated:v3];
-        [v13 setAccessoryPosition:-[CAMZoomButtonPlatter buttonAccessoryPosition](self animated:{"buttonAccessoryPosition"), v3}];
+        [*(*(&v15 + 1) + 8 * v12) setAccessoryState:v14 animated:animatedCopy];
+        [v13 setAccessoryPosition:-[CAMZoomButtonPlatter buttonAccessoryPosition](self animated:{"buttonAccessoryPosition"), animatedCopy}];
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [_allButtons countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)setPreferredCustomLens:(int64_t)a3
+- (void)setPreferredCustomLens:(int64_t)lens
 {
-  if (self->_preferredCustomLens != a3)
+  if (self->_preferredCustomLens != lens)
   {
-    self->_preferredCustomLens = a3;
+    self->_preferredCustomLens = lens;
     [(CAMZoomButtonPlatter *)self _updateButtonsAnimated:0];
   }
 }
 
-- (void)setCenterSelectedZoomEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setCenterSelectedZoomEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_centerSelectedZoomEnabled != a3)
+  if (self->_centerSelectedZoomEnabled != enabled)
   {
-    if (a4)
+    if (animated)
     {
       [(CAMZoomButtonPlatter *)self layoutIfNeeded];
-      self->_centerSelectedZoomEnabled = a3;
+      self->_centerSelectedZoomEnabled = enabled;
       [(CAMZoomButtonPlatter *)self setNeedsLayout];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -868,7 +868,7 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
 
     else
     {
-      self->_centerSelectedZoomEnabled = a3;
+      self->_centerSelectedZoomEnabled = enabled;
       [(CAMZoomButtonPlatter *)self setNeedsLayout];
       v6 = 0.0;
     }
@@ -877,13 +877,13 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
   }
 }
 
-- (void)setHasLayoutConflictLeft:(BOOL)a3 animated:(BOOL)a4
+- (void)setHasLayoutConflictLeft:(BOOL)left animated:(BOOL)animated
 {
-  if (self->_hasLayoutConflictLeft != a3)
+  if (self->_hasLayoutConflictLeft != left)
   {
-    self->_hasLayoutConflictLeft = a3;
+    self->_hasLayoutConflictLeft = left;
     v4 = 0.65;
-    if (!a4)
+    if (!animated)
     {
       v4 = 0.0;
     }
@@ -892,13 +892,13 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
   }
 }
 
-- (void)setHasLayoutConflictRight:(BOOL)a3 animated:(BOOL)a4
+- (void)setHasLayoutConflictRight:(BOOL)right animated:(BOOL)animated
 {
-  if (self->_hasLayoutConflictRight != a3)
+  if (self->_hasLayoutConflictRight != right)
   {
-    self->_hasLayoutConflictRight = a3;
+    self->_hasLayoutConflictRight = right;
     v4 = 0.65;
-    if (!a4)
+    if (!animated)
     {
       v4 = 0.0;
     }
@@ -907,32 +907,32 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
   }
 }
 
-- (void)_updateButtonsAnimated:(BOOL)a3
+- (void)_updateButtonsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMZoomButtonPlatter *)self zoomPoints];
-  v6 = [(CAMZoomButtonPlatter *)self _allButtons];
-  v7 = [(CAMZoomButtonPlatter *)self zoomFactorButton];
-  v8 = [(CAMZoomButtonPlatter *)self isCollapsed];
-  v9 = [v5 firstObject];
-  [v9 displayZoomFactor];
+  animatedCopy = animated;
+  zoomPoints = [(CAMZoomButtonPlatter *)self zoomPoints];
+  _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
+  zoomFactorButton = [(CAMZoomButtonPlatter *)self zoomFactorButton];
+  isCollapsed = [(CAMZoomButtonPlatter *)self isCollapsed];
+  firstObject = [zoomPoints firstObject];
+  [firstObject displayZoomFactor];
   v11 = v10;
 
-  v12 = [v5 lastObject];
-  [v12 displayZoomFactor];
+  lastObject = [zoomPoints lastObject];
+  [lastObject displayZoomFactor];
   v14 = v13;
 
   v15 = v11;
   v16 = floorf(v15);
   v17 = +[CAMZoomButton zoomFactorFormatter];
-  v18 = [v17 decimalSeparator];
-  v19 = [v18 isEqualToString:{@", "}];
+  decimalSeparator = [v17 decimalSeparator];
+  v19 = [decimalSeparator isEqualToString:{@", "}];
 
   v20 = v14;
   v21 = floorf(v20);
   if (v11 == v16 || v14 == v21)
   {
-    v28 = ([v6 count] == 2) | v19;
+    v28 = ([_allButtons count] == 2) | v19;
   }
 
   else
@@ -945,7 +945,7 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
   v29[1] = 3221225472;
   v29[2] = __47__CAMZoomButtonPlatter__updateButtonsAnimated___block_invoke;
   v29[3] = &unk_1E76FBA08;
-  if (v3)
+  if (animatedCopy)
   {
     v24 = 0.3;
   }
@@ -955,17 +955,17 @@ void __50__CAMZoomButtonPlatter_nearestZoomButtonForPoint___block_invoke(uint64_
     v24 = 0.0;
   }
 
-  v30 = v6;
-  v31 = v5;
-  v35 = v3;
-  v36 = v8;
-  v32 = v7;
-  v33 = self;
+  v30 = _allButtons;
+  v31 = zoomPoints;
+  v35 = animatedCopy;
+  v36 = isCollapsed;
+  v32 = zoomFactorButton;
+  selfCopy = self;
   v37 = v23;
   v34 = v24;
-  v25 = v7;
-  v26 = v5;
-  v27 = v6;
+  v25 = zoomFactorButton;
+  v26 = zoomPoints;
+  v27 = _allButtons;
   [CAMView animateIfNeededWithDuration:v29 animations:v24];
 }
 
@@ -1067,13 +1067,13 @@ void __47__CAMZoomButtonPlatter__updateButtonsAnimated___block_invoke_3(uint64_t
   [*(a1 + 32) setTintColor:v2];
 }
 
-- (double)_zoomFactorForButton:(id)a3 zoomPoint:(id)a4 isZoomFactorButton:(BOOL)a5
+- (double)_zoomFactorForButton:(id)button zoomPoint:(id)point isZoomFactorButton:(BOOL)factorButton
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v5)
+  factorButtonCopy = factorButton;
+  buttonCopy = button;
+  pointCopy = point;
+  v10 = pointCopy;
+  if (factorButtonCopy)
   {
     [(CAMZoomButtonPlatter *)self zoomFactor];
 LABEL_8:
@@ -1081,7 +1081,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (![v9 isCustomLens])
+  if (![pointCopy isCustomLens])
   {
     if (!v10)
     {
@@ -1095,7 +1095,7 @@ LABEL_8:
 
   v12 = +[CAMCaptureCapabilities capabilities];
   v13 = [v12 effectiveFocalLengthForCustomLens:{-[CAMZoomButtonPlatter preferredCustomLens](self, "preferredCustomLens")}];
-  v14 = [v10 allZoomPoints];
+  allZoomPoints = [v10 allZoomPoints];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __74__CAMZoomButtonPlatter__zoomFactorForButton_zoomPoint_isZoomFactorButton___block_invoke;
@@ -1103,7 +1103,7 @@ LABEL_8:
   v25 = v12;
   v26 = v13;
   v15 = v12;
-  v16 = [v14 indexOfObjectPassingTest:&v21];
+  v16 = [allZoomPoints indexOfObjectPassingTest:&v21];
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v10 fundamentalZoomPoint];
@@ -1111,7 +1111,7 @@ LABEL_8:
 
   else
   {
-    [v14 objectAtIndexedSubscript:{v16, v21, v22, v23, v24, v25, v26}];
+    [allZoomPoints objectAtIndexedSubscript:{v16, v21, v22, v23, v24, v25, v26}];
   }
   v18 = ;
   [v18 displayZoomFactor];
@@ -1121,7 +1121,7 @@ LABEL_12:
   return v17;
 }
 
-- (id)_createPlatterImageForContentSize:(id)a3
+- (id)_createPlatterImageForContentSize:(id)size
 {
   [(CAMZoomButtonPlatter *)self intrinsicContentSize];
   height = v10.height;
@@ -1148,16 +1148,16 @@ LABEL_12:
   return v3;
 }
 
-- (id)_indexesForChanges:(id)a3
+- (id)_indexesForChanges:(id)changes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD50] indexSet];
+  changesCopy = changes;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = changesCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -1172,7 +1172,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        [v4 addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "index", v11)}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "index", v11)}];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1181,7 +1181,7 @@ LABEL_12:
     while (v7);
   }
 
-  return v4;
+  return indexSet;
 }
 
 - (void)_flashFocalLengthIfNeeded
@@ -1189,16 +1189,16 @@ LABEL_12:
   v25 = *MEMORY[0x1E69E9840];
   [(CAMZoomButtonPlatter *)self zoomFactor];
   v4 = v3;
-  v5 = [(CAMZoomButtonPlatter *)self zoomFactorButton];
-  v6 = [(CAMZoomButtonPlatter *)self baseZoomPointForButton:v5];
+  zoomFactorButton = [(CAMZoomButtonPlatter *)self zoomFactorButton];
+  v6 = [(CAMZoomButtonPlatter *)self baseZoomPointForButton:zoomFactorButton];
   if ([v6 isCustomLens])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [v6 allZoomPoints];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allZoomPoints = [v6 allZoomPoints];
+    v8 = [allZoomPoints countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1209,18 +1209,18 @@ LABEL_12:
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allZoomPoints);
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
           [v12 displayZoomFactor];
           if (vabdd_f64(v13, v4) < 0.001)
           {
-            v14 = [v12 customLens];
+            customLens = [v12 customLens];
 
-            v7 = +[CAMCaptureCapabilities capabilities];
-            [v5 setFocalLength:{objc_msgSend(v7, "effectiveFocalLengthForCustomLens:", v14)}];
-            [v5 setContentType:2 animated:1];
+            allZoomPoints = +[CAMCaptureCapabilities capabilities];
+            [zoomFactorButton setFocalLength:{objc_msgSend(allZoomPoints, "effectiveFocalLengthForCustomLens:", customLens)}];
+            [zoomFactorButton setContentType:2 animated:1];
             v15 = [(CAMZoomButtonPlatter *)self _focalLengthFlashID]+ 1;
             [(CAMZoomButtonPlatter *)self _setFocalLengthFlashID:v15];
             v16 = dispatch_time(0, 1000000000);
@@ -1230,14 +1230,14 @@ LABEL_12:
             block[3] = &unk_1E76F97F0;
             block[4] = self;
             v19 = v15;
-            v18 = v5;
+            v18 = zoomFactorButton;
             dispatch_after(v16, MEMORY[0x1E69E96A0], block);
 
             goto LABEL_12;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v9 = [allZoomPoints countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v9)
         {
           continue;
@@ -1272,8 +1272,8 @@ uint64_t __49__CAMZoomButtonPlatter__flashFocalLengthIfNeeded__block_invoke(uint
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CAMZoomButtonPlatter *)self _allButtons];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
+  v4 = [_allButtons countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1285,14 +1285,14 @@ uint64_t __49__CAMZoomButtonPlatter__flashFocalLengthIfNeeded__block_invoke(uint
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allButtons);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setContentType:-[CAMZoomButtonPlatter contentType](self animated:{"contentType"), 0}];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_allButtons countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -1301,18 +1301,18 @@ uint64_t __49__CAMZoomButtonPlatter__flashFocalLengthIfNeeded__block_invoke(uint
   [(CAMZoomButtonPlatter *)self _setFocalLengthFlashID:[(CAMZoomButtonPlatter *)self _focalLengthFlashID]+ 1];
 }
 
-- (void)setContentType:(int64_t)a3 animated:(BOOL)a4
+- (void)setContentType:(int64_t)type animated:(BOOL)animated
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_contentType != a3)
+  if (self->_contentType != type)
   {
-    self->_contentType = a3;
+    self->_contentType = type;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CAMZoomButtonPlatter *)self _allButtons];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
+    v6 = [_allButtons countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1323,13 +1323,13 @@ uint64_t __49__CAMZoomButtonPlatter__flashFocalLengthIfNeeded__block_invoke(uint
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_allButtons);
           }
 
-          [*(*(&v10 + 1) + 8 * i) setContentType:a3 animated:0];
+          [*(*(&v10 + 1) + 8 * i) setContentType:type animated:0];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [_allButtons countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -1337,30 +1337,30 @@ uint64_t __49__CAMZoomButtonPlatter__flashFocalLengthIfNeeded__block_invoke(uint
   }
 }
 
-- (void)setZoomSymbols:(id)a3 animated:(BOOL)a4
+- (void)setZoomSymbols:(id)symbols animated:(BOOL)animated
 {
-  if (self->_zoomSymbols != a3)
+  if (self->_zoomSymbols != symbols)
   {
-    self->_zoomSymbols = a3;
-    [(CAMZoomButtonPlatter *)self _updateButtonsAnimated:a4];
+    self->_zoomSymbols = symbols;
+    [(CAMZoomButtonPlatter *)self _updateButtonsAnimated:animated];
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
     v11 = v4;
     v12 = v5;
-    self->_orientation = a3;
-    v8 = [(CAMZoomButtonPlatter *)self _allButtons];
+    self->_orientation = orientation;
+    _allButtons = [(CAMZoomButtonPlatter *)self _allButtons];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__CAMZoomButtonPlatter_setOrientation_animated___block_invoke;
     v9[3] = &__block_descriptor_41_e30_v32__0__CAMZoomButton_8Q16_B24l;
-    v9[4] = a3;
-    v10 = a4;
-    [v8 enumerateObjectsUsingBlock:v9];
+    v9[4] = orientation;
+    animatedCopy = animated;
+    [_allButtons enumerateObjectsUsingBlock:v9];
   }
 }
 

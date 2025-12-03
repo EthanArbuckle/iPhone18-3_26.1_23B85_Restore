@@ -1,17 +1,17 @@
 @interface SBSwitcherWindowingSettings
 + (id)settingsControllerModule;
-- (BOOL)_shouldPreferDockHiddenForWindowScene:(id)a3;
-- (BOOL)_shouldPreferStripHiddenForWindowScene:(id)a3 interfaceOrientation:(int64_t)a4;
-- (CGSize)_nearestGridSizeForSize:(CGSize)a3 gridWidths:(id)a4 gridHeights:(id)a5 bounds:(CGRect)a6;
+- (BOOL)_shouldPreferDockHiddenForWindowScene:(id)scene;
+- (BOOL)_shouldPreferStripHiddenForWindowScene:(id)scene interfaceOrientation:(int64_t)orientation;
+- (CGSize)_nearestGridSizeForSize:(CGSize)size gridWidths:(id)widths gridHeights:(id)heights bounds:(CGRect)bounds;
 - (CGSize)diffuseShadowOffset;
 - (SBSwitcherWindowingSettings)initWithDefaultValues;
 - (double)_statusBarHeight;
-- (double)_stripWidthForContainerBounds:(CGRect)a3 screenEdgePadding:(double)a4 stripStackDistance:(double)a5 stripCardScale:(double)a6 stripTiltAngle:(double)a7 containerPerspective:(double)a8;
-- (id)_gridHeightsForSafeHeight:(double)a3 minimumHeight:(double)a4 stageInterItemSpacing:(double)a5;
-- (id)_gridWidthsForSafeWidth:(double)a3 minimumWidth:(double)a4 stageInterItemSpacing:(double)a5;
-- (id)windowingConfigurationForContainerBounds:(CGRect)a3 interfaceOrientation:(int64_t)a4 floatingDockHeight:(double)a5 requiresFullScreen:(BOOL)a6 prefersStripHidden:(BOOL)a7 prefersDockHidden:(BOOL)a8 isEmbeddedDisplay:(BOOL)a9 isFlexibleWindowingEnabled:(BOOL)a10;
-- (id)windowingConfigurationForContainerBounds:(CGRect)a3 nativeContainerReferencePixelBounds:(CGRect)a4 interfaceOrientation:(int64_t)a5 floatingDockHeight:(double)a6 statusBarHeight:(double)a7 prototypingMinimumWindowWidth:(double)a8 prototypingMinimumWindowHeight:(double)a9 prototypingSlideOverEnterCenterRegionThreshold:(double)a10 prototypingSlideOverExitCenterRegionThreshold:(double)a11 requiresFullScreen:(BOOL)a12 prefersStripHidden:(BOOL)a13 prefersDockHidden:(BOOL)a14 isEmbeddedDisplay:(BOOL)a15 isFlexibleWindowingEnabled:(BOOL)a16;
-- (id)windowingConfigurationForWindowScene:(id)a3 interfaceOrientation:(int64_t)a4 requiresFullScreen:(BOOL)a5 floatingDockHeight:(double)a6;
+- (double)_stripWidthForContainerBounds:(CGRect)bounds screenEdgePadding:(double)padding stripStackDistance:(double)distance stripCardScale:(double)scale stripTiltAngle:(double)angle containerPerspective:(double)perspective;
+- (id)_gridHeightsForSafeHeight:(double)height minimumHeight:(double)minimumHeight stageInterItemSpacing:(double)spacing;
+- (id)_gridWidthsForSafeWidth:(double)width minimumWidth:(double)minimumWidth stageInterItemSpacing:(double)spacing;
+- (id)windowingConfigurationForContainerBounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation floatingDockHeight:(double)height requiresFullScreen:(BOOL)screen prefersStripHidden:(BOOL)hidden prefersDockHidden:(BOOL)dockHidden isEmbeddedDisplay:(BOOL)display isFlexibleWindowingEnabled:(BOOL)self0;
+- (id)windowingConfigurationForContainerBounds:(CGRect)bounds nativeContainerReferencePixelBounds:(CGRect)pixelBounds interfaceOrientation:(int64_t)orientation floatingDockHeight:(double)height statusBarHeight:(double)barHeight prototypingMinimumWindowWidth:(double)width prototypingMinimumWindowHeight:(double)windowHeight prototypingSlideOverEnterCenterRegionThreshold:(double)self0 prototypingSlideOverExitCenterRegionThreshold:(double)self1 requiresFullScreen:(BOOL)self2 prefersStripHidden:(BOOL)self3 prefersDockHidden:(BOOL)self4 isEmbeddedDisplay:(BOOL)self5 isFlexibleWindowingEnabled:(BOOL)self6;
+- (id)windowingConfigurationForWindowScene:(id)scene interfaceOrientation:(int64_t)orientation requiresFullScreen:(BOOL)screen floatingDockHeight:(double)height;
 - (void)_observeAppSwitcherDefaults;
 - (void)_updateCachedAppSwitcherDefaults;
 - (void)dealloc;
@@ -34,11 +34,11 @@
 {
   v5.receiver = self;
   v5.super_class = SBSwitcherWindowingSettings;
-  v2 = [(PTSettings *)&v5 initWithDefaultValues];
-  v3 = v2;
-  if (v2)
+  initWithDefaultValues = [(PTSettings *)&v5 initWithDefaultValues];
+  v3 = initWithDefaultValues;
+  if (initWithDefaultValues)
   {
-    [(SBSwitcherWindowingSettings *)v2 _observeAppSwitcherDefaults];
+    [(SBSwitcherWindowingSettings *)initWithDefaultValues _observeAppSwitcherDefaults];
   }
 
   return v3;
@@ -52,18 +52,18 @@
   [(PTSettings *)&v3 dealloc];
 }
 
-- (id)windowingConfigurationForWindowScene:(id)a3 interfaceOrientation:(int64_t)a4 requiresFullScreen:(BOOL)a5 floatingDockHeight:(double)a6
+- (id)windowingConfigurationForWindowScene:(id)scene interfaceOrientation:(int64_t)orientation requiresFullScreen:(BOOL)screen floatingDockHeight:(double)height
 {
-  v58 = a5;
-  v8 = a3;
-  v9 = [v8 switcherController];
-  v10 = [v9 windowManagementContext];
-  v11 = [v10 isChamoisOrFlexibleWindowing];
+  screenCopy = screen;
+  sceneCopy = scene;
+  switcherController = [sceneCopy switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  if (v11)
+  if (isChamoisOrFlexibleWindowing)
   {
-    v56 = [(SBSwitcherWindowingSettings *)self _shouldPreferStripHiddenForWindowScene:v8 interfaceOrientation:a4];
-    v12 = [(SBSwitcherWindowingSettings *)self _shouldPreferDockHiddenForWindowScene:v8];
+    v56 = [(SBSwitcherWindowingSettings *)self _shouldPreferStripHiddenForWindowScene:sceneCopy interfaceOrientation:orientation];
+    v12 = [(SBSwitcherWindowingSettings *)self _shouldPreferDockHiddenForWindowScene:sceneCopy];
   }
 
   else
@@ -72,16 +72,16 @@
     v12 = 0;
   }
 
-  v13 = [v8 screen];
-  v14 = [v13 displayConfiguration];
-  [v14 bounds];
+  screen = [sceneCopy screen];
+  displayConfiguration = [screen displayConfiguration];
+  [displayConfiguration bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v53 = *(MEMORY[0x277CBF348] + 8);
   v54 = *MEMORY[0x277CBF348];
-  if (v11 && ![v8 isMainDisplayWindowScene])
+  if (isChamoisOrFlexibleWindowing && ![sceneCopy isMainDisplayWindowScene])
   {
     v62.origin.x = v16;
     v62.origin.y = v18;
@@ -126,7 +126,7 @@
 
   else
   {
-    if ((a4 - 1) >= 2)
+    if ((orientation - 1) >= 2)
     {
       v60.origin.x = v16;
       v60.origin.y = v18;
@@ -144,20 +144,20 @@
     [(SBSwitcherWindowingSettings *)self _statusBarHeight];
     v52 = v24;
     v55 = v22;
-    if (!v11)
+    if (!isChamoisOrFlexibleWindowing)
     {
       v25 = 1;
       goto LABEL_17;
     }
   }
 
-  v25 = [v8 isExternalDisplayWindowScene] ^ 1;
+  v25 = [sceneCopy isExternalDisplayWindowScene] ^ 1;
 LABEL_17:
-  v32 = [v8 switcherController];
-  v33 = [v32 windowManagementContext];
-  v34 = [v33 isFlexibleWindowingEnabled];
+  switcherController2 = [sceneCopy switcherController];
+  windowManagementContext2 = [switcherController2 windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext2 isFlexibleWindowingEnabled];
 
-  [v13 nativeBounds];
+  [screen nativeBounds];
   v36 = v35;
   v38 = v37;
   v40 = v39;
@@ -169,22 +169,22 @@ LABEL_17:
   [(SBSwitcherWindowingSettings *)self slideOverEnterCenterRegionThreshold];
   v48 = v47;
   [(SBSwitcherWindowingSettings *)self slideOverExitCenterRegionThreshold];
-  v50 = [(SBSwitcherWindowingSettings *)self windowingConfigurationForContainerBounds:a4 nativeContainerReferencePixelBounds:v58 interfaceOrientation:v56 floatingDockHeight:v12 statusBarHeight:v25 prototypingMinimumWindowWidth:v34 prototypingMinimumWindowHeight:v54 prototypingSlideOverEnterCenterRegionThreshold:v53 prototypingSlideOverExitCenterRegionThreshold:v20 requiresFullScreen:v55 prefersStripHidden:v36 prefersDockHidden:v38 isEmbeddedDisplay:v40 isFlexibleWindowingEnabled:v42, *&a6, v52, v44, v46, v48, v49];
+  v50 = [(SBSwitcherWindowingSettings *)self windowingConfigurationForContainerBounds:orientation nativeContainerReferencePixelBounds:screenCopy interfaceOrientation:v56 floatingDockHeight:v12 statusBarHeight:v25 prototypingMinimumWindowWidth:isFlexibleWindowingEnabled prototypingMinimumWindowHeight:v54 prototypingSlideOverEnterCenterRegionThreshold:v53 prototypingSlideOverExitCenterRegionThreshold:v20 requiresFullScreen:v55 prefersStripHidden:v36 prefersDockHidden:v38 isEmbeddedDisplay:v40 isFlexibleWindowingEnabled:v42, *&height, v52, v44, v46, v48, v49];
 
   return v50;
 }
 
-- (id)windowingConfigurationForContainerBounds:(CGRect)a3 interfaceOrientation:(int64_t)a4 floatingDockHeight:(double)a5 requiresFullScreen:(BOOL)a6 prefersStripHidden:(BOOL)a7 prefersDockHidden:(BOOL)a8 isEmbeddedDisplay:(BOOL)a9 isFlexibleWindowingEnabled:(BOOL)a10
+- (id)windowingConfigurationForContainerBounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation floatingDockHeight:(double)height requiresFullScreen:(BOOL)screen prefersStripHidden:(BOOL)hidden prefersDockHidden:(BOOL)dockHidden isEmbeddedDisplay:(BOOL)display isFlexibleWindowingEnabled:(BOOL)self0
 {
-  v10 = a10;
-  v11 = a9;
-  v12 = a8;
-  v13 = a7;
-  v14 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  enabledCopy = enabled;
+  displayCopy = display;
+  dockHiddenCopy = dockHidden;
+  hiddenCopy = hidden;
+  screenCopy = screen;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SBSwitcherWindowingSettings *)self _statusBarHeight];
   v22 = v21;
   [(SBSwitcherWindowingSettings *)self minimumWindowWidth];
@@ -194,25 +194,25 @@ LABEL_17:
   [(SBSwitcherWindowingSettings *)self slideOverEnterCenterRegionThreshold];
   v28 = v27;
   [(SBSwitcherWindowingSettings *)self slideOverExitCenterRegionThreshold];
-  return [(SBSwitcherWindowingSettings *)self windowingConfigurationForContainerBounds:a4 nativeContainerReferencePixelBounds:v14 interfaceOrientation:v13 floatingDockHeight:v12 statusBarHeight:v11 prototypingMinimumWindowWidth:v10 prototypingMinimumWindowHeight:x prototypingSlideOverEnterCenterRegionThreshold:y prototypingSlideOverExitCenterRegionThreshold:width requiresFullScreen:height prefersStripHidden:*MEMORY[0x277CBF3A0] prefersDockHidden:*(MEMORY[0x277CBF3A0] + 8) isEmbeddedDisplay:*(MEMORY[0x277CBF3A0] + 16) isFlexibleWindowingEnabled:*(MEMORY[0x277CBF3A0] + 24), *&a5, v22, v24, v26, v28, v29];
+  return [(SBSwitcherWindowingSettings *)self windowingConfigurationForContainerBounds:orientation nativeContainerReferencePixelBounds:screenCopy interfaceOrientation:hiddenCopy floatingDockHeight:dockHiddenCopy statusBarHeight:displayCopy prototypingMinimumWindowWidth:enabledCopy prototypingMinimumWindowHeight:x prototypingSlideOverEnterCenterRegionThreshold:y prototypingSlideOverExitCenterRegionThreshold:width requiresFullScreen:height prefersStripHidden:*MEMORY[0x277CBF3A0] prefersDockHidden:*(MEMORY[0x277CBF3A0] + 8) isEmbeddedDisplay:*(MEMORY[0x277CBF3A0] + 16) isFlexibleWindowingEnabled:*(MEMORY[0x277CBF3A0] + 24), *&height, v22, v24, v26, v28, v29];
 }
 
-- (id)windowingConfigurationForContainerBounds:(CGRect)a3 nativeContainerReferencePixelBounds:(CGRect)a4 interfaceOrientation:(int64_t)a5 floatingDockHeight:(double)a6 statusBarHeight:(double)a7 prototypingMinimumWindowWidth:(double)a8 prototypingMinimumWindowHeight:(double)a9 prototypingSlideOverEnterCenterRegionThreshold:(double)a10 prototypingSlideOverExitCenterRegionThreshold:(double)a11 requiresFullScreen:(BOOL)a12 prefersStripHidden:(BOOL)a13 prefersDockHidden:(BOOL)a14 isEmbeddedDisplay:(BOOL)a15 isFlexibleWindowingEnabled:(BOOL)a16
+- (id)windowingConfigurationForContainerBounds:(CGRect)bounds nativeContainerReferencePixelBounds:(CGRect)pixelBounds interfaceOrientation:(int64_t)orientation floatingDockHeight:(double)height statusBarHeight:(double)barHeight prototypingMinimumWindowWidth:(double)width prototypingMinimumWindowHeight:(double)windowHeight prototypingSlideOverEnterCenterRegionThreshold:(double)self0 prototypingSlideOverExitCenterRegionThreshold:(double)self1 requiresFullScreen:(BOOL)self2 prefersStripHidden:(BOOL)self3 prefersDockHidden:(BOOL)self4 isEmbeddedDisplay:(BOOL)self5 isFlexibleWindowingEnabled:(BOOL)self6
 {
-  v16 = a16;
-  v17 = a15;
-  v138 = a14;
-  v139 = a13;
-  v140 = a12;
-  width = a4.size.width;
-  height = a4.size.height;
-  rect2 = a4.origin.y;
-  x = a4.origin.x;
-  v20 = a3.size.height;
-  v21 = a3.size.width;
-  y = a3.origin.y;
-  v23 = a3.origin.x;
-  v25 = (a5 - 1) < 2;
+  enabledCopy = enabled;
+  displayCopy = display;
+  dockHiddenCopy = dockHidden;
+  hiddenCopy = hidden;
+  screenCopy = screen;
+  width = pixelBounds.size.width;
+  height = pixelBounds.size.height;
+  rect2 = pixelBounds.origin.y;
+  x = pixelBounds.origin.x;
+  v20 = bounds.size.height;
+  v21 = bounds.size.width;
+  y = bounds.origin.y;
+  v23 = bounds.origin.x;
+  v25 = (orientation - 1) < 2;
   v26 = (self->_cachedWindowingConfiguration_interfaceOrientation - 3) < 0xFFFFFFFFFFFFFFFELL;
   v27 = SBFIsChamoisStripDisabledWhenHiddenAvailable();
   v28 = &OBJC_IVAR___SBApplicationSceneViewController__applicationSceneStatusBarDelegate;
@@ -291,7 +291,7 @@ LABEL_21:
   v29 = &OBJC_IVAR___SBApplicationSceneViewController__applicationSceneStatusBarDelegate;
   v30 = &OBJC_IVAR___SBApplicationSceneViewController__applicationSceneStatusBarDelegate;
   v28 = &OBJC_IVAR___SBApplicationSceneViewController__applicationSceneStatusBarDelegate;
-  if (self->_cachedWindowingConfiguration_requiresFullScreen == v140)
+  if (self->_cachedWindowingConfiguration_requiresFullScreen == screenCopy)
   {
     v35 = &OBJC_IVAR___SBApplicationSceneViewController__applicationSceneStatusBarDelegate;
     v39 = &OBJC_IVAR___SBApplicationSceneViewController__applicationSceneStatusBarDelegate;
@@ -301,7 +301,7 @@ LABEL_21:
     v33 = &OBJC_IVAR___SBApplicationSceneViewController__applicationSceneStatusBarDelegate;
     v32 = &OBJC_IVAR___SBApplicationSceneViewController__applicationSceneStatusBarDelegate;
     v31 = &OBJC_IVAR___SBApplicationSceneViewController__applicationSceneStatusBarDelegate;
-    if (self->_cachedWindowingConfiguration_prefersStripHidden == v139 && self->_cachedWindowingConfiguration_prefersDockHidden == v138 && self->_cachedWindowingConfiguration_isEmbeddedDisplay == v17 && self->_cachedWindowingConfiguration_stripDisabledWhenHidden == v27 && self->_cachedWindowingConfiguration_isFlexibleWindowingEnabled == v16)
+    if (self->_cachedWindowingConfiguration_prefersStripHidden == hiddenCopy && self->_cachedWindowingConfiguration_prefersDockHidden == dockHiddenCopy && self->_cachedWindowingConfiguration_isEmbeddedDisplay == displayCopy && self->_cachedWindowingConfiguration_stripDisabledWhenHidden == v27 && self->_cachedWindowingConfiguration_isFlexibleWindowingEnabled == enabledCopy)
     {
       goto LABEL_124;
     }
@@ -328,29 +328,29 @@ LABEL_22:
   self->_cachedWindowingConfiguration_nativeContainerReferencePixelBounds.origin.y = rect2;
   self->_cachedWindowingConfiguration_nativeContainerReferencePixelBounds.size.width = width;
   self->_cachedWindowingConfiguration_nativeContainerReferencePixelBounds.size.height = height;
-  self->_cachedWindowingConfiguration_interfaceOrientation = a5;
-  *(&self->super.super.isa + v28[347]) = a6;
-  *(&self->super.super.isa + v29[348]) = a7;
-  *(&self->super.super.isa + v30[349]) = a8;
-  *(&self->super.super.isa + v31[350]) = a9;
-  *(&self->super.super.isa + v32[351]) = a10;
-  *(&self->super.super.isa + v33[352]) = a11;
-  *(&self->super.super.isa + v34[353]) = v140;
-  *(&self->super.super.isa + v35[354]) = v139;
-  *(&self->super.super.isa + v36[355]) = v138;
-  *(&self->super.super.isa + v37[356]) = v17;
+  self->_cachedWindowingConfiguration_interfaceOrientation = orientation;
+  *(&self->super.super.isa + v28[347]) = height;
+  *(&self->super.super.isa + v29[348]) = barHeight;
+  *(&self->super.super.isa + v30[349]) = width;
+  *(&self->super.super.isa + v31[350]) = windowHeight;
+  *(&self->super.super.isa + v32[351]) = threshold;
+  *(&self->super.super.isa + v33[352]) = regionThreshold;
+  *(&self->super.super.isa + v34[353]) = screenCopy;
+  *(&self->super.super.isa + v35[354]) = hiddenCopy;
+  *(&self->super.super.isa + v36[355]) = dockHiddenCopy;
+  *(&self->super.super.isa + v37[356]) = displayCopy;
   *(&self->super.super.isa + v38[357]) = v27;
-  *(&self->super.super.isa + v39[358]) = v16;
+  *(&self->super.super.isa + v39[358]) = enabledCopy;
   v136 = dbl_21F8A85F0[v21 > 1681.0];
-  v45 = fmax(a7, 24.0);
+  v45 = fmax(barHeight, 24.0);
   v46 = 0.0;
-  if (!v16)
+  if (!enabledCopy)
   {
     v46 = v45;
   }
 
   v146 = v46;
-  if (v16)
+  if (enabledCopy)
   {
     v47 = 18.0;
   }
@@ -360,7 +360,7 @@ LABEL_22:
     v47 = v45;
   }
 
-  if (v16)
+  if (enabledCopy)
   {
     v48 = 24.0;
   }
@@ -370,42 +370,42 @@ LABEL_22:
     v48 = v45;
   }
 
-  if (!v16)
+  if (!enabledCopy)
   {
-    if (v17)
+    if (displayCopy)
     {
-      v49 = [(SBSwitcherWindowingSettings *)self embeddedDisplayChamoisSnapPaddingSettings];
+      embeddedDisplayChamoisSnapPaddingSettings = [(SBSwitcherWindowingSettings *)self embeddedDisplayChamoisSnapPaddingSettings];
       goto LABEL_35;
     }
 
-    v52 = [(SBSwitcherWindowingSettings *)self externalDisplayChamoisSnapPaddingSettings];
+    externalDisplayChamoisSnapPaddingSettings = [(SBSwitcherWindowingSettings *)self externalDisplayChamoisSnapPaddingSettings];
 LABEL_38:
-    v50 = v52;
+    v50 = externalDisplayChamoisSnapPaddingSettings;
     if (v20 >= [(SBSwitcherWindowingSettings *)self externalDisplayHighResVerticalResolution])
     {
-      v51 = [(SBSwitcherWindowingSettings *)self numberOfRowsWhileInAppOnExternalDisplayHighRes];
+      numberOfRowsWhileInAppOnExternalDisplayHighRes = [(SBSwitcherWindowingSettings *)self numberOfRowsWhileInAppOnExternalDisplayHighRes];
     }
 
     else
     {
-      v51 = [(SBSwitcherWindowingSettings *)self numberOfRowsWhileInAppOnExternalDisplay];
+      numberOfRowsWhileInAppOnExternalDisplayHighRes = [(SBSwitcherWindowingSettings *)self numberOfRowsWhileInAppOnExternalDisplay];
     }
 
     goto LABEL_41;
   }
 
-  if (!v17)
+  if (!displayCopy)
   {
-    v52 = [(SBSwitcherWindowingSettings *)self externalDisplayFlexibleWindowingSnapPaddingSettings];
+    externalDisplayChamoisSnapPaddingSettings = [(SBSwitcherWindowingSettings *)self externalDisplayFlexibleWindowingSnapPaddingSettings];
     goto LABEL_38;
   }
 
-  v49 = [(SBSwitcherWindowingSettings *)self embeddedDisplayFlexibleWindowingSnapPaddingSettings];
+  embeddedDisplayChamoisSnapPaddingSettings = [(SBSwitcherWindowingSettings *)self embeddedDisplayFlexibleWindowingSnapPaddingSettings];
 LABEL_35:
-  v50 = v49;
-  v51 = [(SBSwitcherWindowingSettings *)self numberOfRowsWhileInAppOnEmbeddedDisplay];
+  v50 = embeddedDisplayChamoisSnapPaddingSettings;
+  numberOfRowsWhileInAppOnExternalDisplayHighRes = [(SBSwitcherWindowingSettings *)self numberOfRowsWhileInAppOnEmbeddedDisplay];
 LABEL_41:
-  if (v51 <= 4)
+  if (numberOfRowsWhileInAppOnExternalDisplayHighRes <= 4)
   {
     v53 = 32.0;
   }
@@ -415,7 +415,7 @@ LABEL_41:
     v53 = 64.0;
   }
 
-  if (v51 <= 4)
+  if (numberOfRowsWhileInAppOnExternalDisplayHighRes <= 4)
   {
     v54 = 44.0;
   }
@@ -427,9 +427,9 @@ LABEL_41:
 
   v126 = v53;
   v127 = v54;
-  v129 = v51;
-  [(SBSwitcherWindowingSettings *)self _stripCardScaleForContainerBounds:v51 screenEdgePadding:v44 stripVerticalEdgeSpacing:v41 stripInterItemSpacing:v21 floatingDockHeight:v20 numberOfRows:v47];
-  if ((v139 & v27) != 0)
+  v129 = numberOfRowsWhileInAppOnExternalDisplayHighRes;
+  [(SBSwitcherWindowingSettings *)self _stripCardScaleForContainerBounds:numberOfRowsWhileInAppOnExternalDisplayHighRes screenEdgePadding:v44 stripVerticalEdgeSpacing:v41 stripInterItemSpacing:v21 floatingDockHeight:v20 numberOfRows:v47];
+  if ((hiddenCopy & v27) != 0)
   {
     v56 = 0.0;
   }
@@ -443,11 +443,11 @@ LABEL_41:
   v125 = v56;
   [(SBSwitcherWindowingSettings *)self _stripWidthForContainerBounds:v44 screenEdgePadding:v41 stripStackDistance:v21 stripCardScale:v20 stripTiltAngle:v48 containerPerspective:60.0, *&v136];
   v144 = v57;
-  if (v17)
+  if (displayCopy)
   {
     v135 = v21 - v57;
     v119 = -v146;
-    v58 = v20 - a6 + v146 * -2.0;
+    v58 = v20 - height + v146 * -2.0;
     v124 = v58;
   }
 
@@ -456,11 +456,11 @@ LABEL_41:
     v135 = *MEMORY[0x277CBF3A8];
     v124 = *(MEMORY[0x277CBF3A8] + 8);
     v119 = -v146;
-    v58 = v20 - a6 + v146 * -2.0;
+    v58 = v20 - height + v146 * -2.0;
   }
 
   v59 = 320.0;
-  if (v16)
+  if (enabledCopy)
   {
     v59 = 375.0;
   }
@@ -475,33 +475,33 @@ LABEL_41:
     v60 = 414.0;
   }
 
-  v61 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v132 = v50;
   v130 = v48;
   v131 = v47;
   v122 = v60;
-  if (v139 && v138)
+  if (hiddenCopy && dockHiddenCopy)
   {
     v62 = [(SBSwitcherWindowingSettings *)self _gridWidthsForSafeWidth:v21 minimumWidth:v60 stageInterItemSpacing:10.0];
-    [v61 addObjectsFromArray:v62];
+    [array addObjectsFromArray:v62];
     v63 = v135;
   }
 
   else
   {
     v63 = v135;
-    if (v139)
+    if (hiddenCopy)
     {
       v62 = [(SBSwitcherWindowingSettings *)self _gridWidthsForSafeWidth:v21 + v119 * 2.0 minimumWidth:v60 stageInterItemSpacing:10.0];
-      [v61 addObjectsFromArray:v62];
+      [array addObjectsFromArray:v62];
     }
 
     else
     {
-      if (v17)
+      if (displayCopy)
       {
         v64 = [(SBSwitcherWindowingSettings *)self _gridWidthsForSafeWidth:v21 + v119 * 2.0 minimumWidth:v60 stageInterItemSpacing:10.0];
-        [v61 addObjectsFromArray:v64];
+        [array addObjectsFromArray:v64];
       }
 
       else
@@ -513,10 +513,10 @@ LABEL_41:
         }
 
         v66 = [(SBSwitcherWindowingSettings *)self _gridWidthsForSafeWidth:v21 - v65 - v146 minimumWidth:v60 stageInterItemSpacing:10.0];
-        [v61 addObjectsFromArray:v66];
+        [array addObjectsFromArray:v66];
 
         v64 = [MEMORY[0x277CCABB0] numberWithDouble:v21 + v119 * 2.0];
-        [v61 addObject:v64];
+        [array addObject:v64];
       }
 
       if (v135 == 0.0)
@@ -524,7 +524,7 @@ LABEL_41:
         goto LABEL_81;
       }
 
-      v67 = [v61 count];
+      v67 = [array count];
       if (v67)
       {
         v68 = v67;
@@ -533,7 +533,7 @@ LABEL_41:
         v71 = 1.79769313e308;
         do
         {
-          v72 = [v61 objectAtIndex:v69];
+          v72 = [array objectAtIndex:v69];
           [v72 doubleValue];
           v74 = v73;
 
@@ -552,49 +552,49 @@ LABEL_41:
         v63 = v135;
         if (v76)
         {
-          [v61 removeObjectAtIndex:v70];
+          [array removeObjectAtIndex:v70];
         }
       }
 
       v62 = [MEMORY[0x277CCABB0] numberWithDouble:v63];
-      [v61 addObject:v62];
+      [array addObject:v62];
     }
   }
 
 LABEL_81:
-  v134 = a7 + a7;
+  v134 = barHeight + barHeight;
   v77 = round(v58);
-  [v61 sortUsingSelector:sel_compare_];
-  v78 = [MEMORY[0x277CBEB18] array];
+  [array sortUsingSelector:sel_compare_];
+  array2 = [MEMORY[0x277CBEB18] array];
   v121 = v77;
-  if (v139 && v138)
+  if (hiddenCopy && dockHiddenCopy)
   {
     v79 = [(SBSwitcherWindowingSettings *)self _gridHeightsForSafeHeight:v20 minimumHeight:480.0 stageInterItemSpacing:10.0];
-    [v78 addObjectsFromArray:v79];
-    v80 = v138;
+    [array2 addObjectsFromArray:v79];
+    v80 = dockHiddenCopy;
   }
 
   else
   {
-    v80 = v138;
-    if (v138)
+    v80 = dockHiddenCopy;
+    if (dockHiddenCopy)
     {
       v79 = [(SBSwitcherWindowingSettings *)self _gridHeightsForSafeHeight:v20 + v119 * 2.0 minimumHeight:480.0 stageInterItemSpacing:10.0];
-      [v78 addObjectsFromArray:v79];
+      [array2 addObjectsFromArray:v79];
     }
 
     else
     {
       v81 = [(SBSwitcherWindowingSettings *)self _gridHeightsForSafeHeight:v77 minimumHeight:480.0 stageInterItemSpacing:10.0];
-      [v78 addObjectsFromArray:v81];
+      [array2 addObjectsFromArray:v81];
 
       v79 = [MEMORY[0x277CCABB0] numberWithDouble:v20 + v119 * 2.0];
-      [v78 addObject:v79];
+      [array2 addObject:v79];
     }
   }
 
-  [v78 sortUsingSelector:sel_compare_];
-  v82 = [v78 count];
+  [array2 sortUsingSelector:sel_compare_];
+  v82 = [array2 count];
   if (v80)
   {
     v83 = -1;
@@ -602,7 +602,7 @@ LABEL_81:
 
   else
   {
-    v84 = [v78 count];
+    v84 = [array2 count];
     v83 = -2;
     if (v84 == 1)
     {
@@ -611,7 +611,7 @@ LABEL_81:
   }
 
   v85 = v132;
-  v86 = [v78 objectAtIndex:v83 + v82];
+  v86 = [array2 objectAtIndex:v83 + v82];
   [v86 doubleValue];
   v88 = v87;
 
@@ -635,7 +635,7 @@ LABEL_81:
   }
 
   v93 = v21 - v92;
-  if (v139 && v17)
+  if (hiddenCopy && displayCopy)
   {
     v94 = v93;
   }
@@ -650,9 +650,9 @@ LABEL_81:
     v90 = v94;
   }
 
-  [(SBSwitcherWindowingSettings *)self _nearestGridSizeForSize:v61 gridWidths:v78 gridHeights:v90 bounds:v88, v44, v41, v21, v20];
+  [(SBSwitcherWindowingSettings *)self _nearestGridSizeForSize:array gridWidths:array2 gridHeights:v90 bounds:v88, v44, v41, v21, v20];
   v97 = 44.0;
-  if (v16)
+  if (enabledCopy)
   {
     v97 = 0.0;
     v98 = v21;
@@ -663,7 +663,7 @@ LABEL_81:
     v98 = v95;
   }
 
-  if (v16)
+  if (enabledCopy)
   {
     v99 = v20;
   }
@@ -673,10 +673,10 @@ LABEL_81:
     v99 = v96;
   }
 
-  if (v16 && !v17)
+  if (enabledCopy && !displayCopy)
   {
-    v100 = [MEMORY[0x277D759A0] mainScreen];
-    [v100 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v98 = v101;
     v99 = v102;
 
@@ -684,58 +684,58 @@ LABEL_81:
   }
 
   v133 = v97;
-  [(SBSwitcherWindowingSettings *)self _nearestGridSizeForSize:v61 gridWidths:v78 gridHeights:v90 bounds:v20, v44, v41, v21, v20];
+  [(SBSwitcherWindowingSettings *)self _nearestGridSizeForSize:array gridWidths:array2 gridHeights:v90 bounds:v20, v44, v41, v21, v20];
   v120 = v103;
   v104 = BSFloatGreaterThanFloat();
-  v105 = v122;
+  widthCopy = v122;
   if (v104)
   {
-    v105 = a8;
+    widthCopy = width;
   }
 
-  v123 = v105;
+  v123 = widthCopy;
   if (BSFloatGreaterThanFloat())
   {
-    v106 = a9;
+    windowHeightCopy = windowHeight;
   }
 
   else
   {
-    v106 = 486.0;
+    windowHeightCopy = 486.0;
   }
 
   v107 = BSFloatGreaterThanFloat();
-  v108 = 96.0;
+  thresholdCopy = 96.0;
   if (v107)
   {
-    v108 = a10;
+    thresholdCopy = threshold;
   }
 
-  v142 = v108;
+  v142 = thresholdCopy;
   v109 = BSFloatGreaterThanFloat();
-  v110 = 192.0;
+  regionThresholdCopy = 192.0;
   if (v109)
   {
-    v110 = a11;
+    regionThresholdCopy = regionThreshold;
   }
 
-  v141 = v110;
+  v141 = regionThresholdCopy;
   v111 = objc_opt_new();
   [(SBSwitcherWindowingConfiguration *)v111 setSettings:self];
   [(SBSwitcherWindowingConfiguration *)v111 setContainerBounds:v44, v41, v21, v20];
-  [(SBSwitcherWindowingConfiguration *)v111 setRequiresFullScreen:v140];
+  [(SBSwitcherWindowingConfiguration *)v111 setRequiresFullScreen:screenCopy];
   [(SBSwitcherWindowingConfiguration *)v111 setDefaultWindowSize:v98, v99];
   [(SBSwitcherWindowingConfiguration *)v111 setMinimumDefaultWindowSize:v135, v124];
   [(SBSwitcherWindowingConfiguration *)v111 setMaximumWindowHeightWithDock:v121];
   [(SBSwitcherWindowingConfiguration *)v111 setMaximumWindowWidthForOverlapping:v120];
   [(SBSwitcherWindowingConfiguration *)v111 setMinimumWindowWidth:v123];
-  [(SBSwitcherWindowingConfiguration *)v111 setMinimumWindowHeight:v106];
+  [(SBSwitcherWindowingConfiguration *)v111 setMinimumWindowHeight:windowHeightCopy];
   [(SBSwitcherWindowingConfiguration *)v111 setMinimumOnscreenWindowMargin:v134];
   [(SBSwitcherWindowingConfiguration *)v111 setSplitViewHandleNubWidth:10.0];
   [(SBSwitcherWindowingConfiguration *)v111 setSplitViewHandleDimmingWidth:144.0];
   [(SBSwitcherWindowingConfiguration *)v111 setDockTopMargin:8.0];
-  [(SBSwitcherWindowingConfiguration *)v111 setFloatingDockHeightWithTopAndBottomPadding:a6 + 8.0];
-  [(SBSwitcherWindowingConfiguration *)v111 setStatusBarHeight:a7];
+  [(SBSwitcherWindowingConfiguration *)v111 setFloatingDockHeightWithTopAndBottomPadding:height + 8.0];
+  [(SBSwitcherWindowingConfiguration *)v111 setStatusBarHeight:barHeight];
   [(SBSwitcherWindowingConfiguration *)v111 setContainerPerspective:v136];
   [(SBSwitcherWindowingConfiguration *)v111 setScreenEdgePadding:v146];
   [(SBSwitcherWindowingConfiguration *)v111 setSnapPaddingSettings:v85];
@@ -764,16 +764,16 @@ LABEL_81:
   [(SBSwitcherWindowingConfiguration *)v111 setStageOcclusionDodgingPeekScale:0.9];
   [(SBSwitcherWindowingConfiguration *)v111 setNumberOfRowsWhileInApp:v129];
   [(SBSwitcherWindowingConfiguration *)v111 setMaximumNumberOfVisibleIconsInStrip:4];
-  [(SBSwitcherWindowingConfiguration *)v111 setIsFlexibleWindowingEnabled:v16];
-  [(SBSwitcherWindowingConfiguration *)v111 setPrefersStripHidden:v139];
+  [(SBSwitcherWindowingConfiguration *)v111 setIsFlexibleWindowingEnabled:enabledCopy];
+  [(SBSwitcherWindowingConfiguration *)v111 setPrefersStripHidden:hiddenCopy];
   [(SBSwitcherWindowingConfiguration *)v111 setPrefersDockHidden:v80];
-  [(SBSwitcherWindowingConfiguration *)v111 setUsesStripAreaForOverlapping:v17];
+  [(SBSwitcherWindowingConfiguration *)v111 setUsesStripAreaForOverlapping:displayCopy];
   [(SBSwitcherWindowingConfiguration *)v111 setSlideOverBorderWidth:12.0];
   [(SBSwitcherWindowingConfiguration *)v111 setSlideOverEnterCenterRegionThreshold:v142];
   [(SBSwitcherWindowingConfiguration *)v111 setSlideOverExitCenterRegionThreshold:v141];
   [(SBSwitcherWindowingConfiguration *)v111 setSlideOverThresholdToForegroundUnstashingApp:100.0];
-  [(SBSwitcherWindowingConfiguration *)v111 setGridWidths:v61];
-  [(SBSwitcherWindowingConfiguration *)v111 setGridHeights:v78];
+  [(SBSwitcherWindowingConfiguration *)v111 setGridWidths:array];
+  [(SBSwitcherWindowingConfiguration *)v111 setGridHeights:array2];
   v113 = round(v20 * 0.0625);
   [(SBSwitcherWindowingConfiguration *)v111 setSwitcherHorizontalEdgeSpacing:v113];
   [(SBSwitcherWindowingConfiguration *)v111 setSwitcherVerticalEdgeSpacing:round(v20 * 0.10546875)];
@@ -802,19 +802,19 @@ LABEL_124:
   return v117;
 }
 
-- (id)_gridWidthsForSafeWidth:(double)a3 minimumWidth:(double)a4 stageInterItemSpacing:(double)a5
+- (id)_gridWidthsForSafeWidth:(double)width minimumWidth:(double)minimumWidth stageInterItemSpacing:(double)spacing
 {
   v8 = objc_opt_new();
-  v9 = vcvtmd_s64_f64((a3 + a5) / (a4 + a5));
-  v10 = a3 - a5;
+  v9 = vcvtmd_s64_f64((width + spacing) / (minimumWidth + spacing));
+  v10 = width - spacing;
   if (v9 < 1)
   {
 LABEL_11:
-    v25 = floor((a4 + a4) * 0.5);
+    v25 = floor((minimumWidth + minimumWidth) * 0.5);
     v26 = [MEMORY[0x277CCABB0] numberWithDouble:(v25 + v25) * 0.5];
     [v8 addObject:v26];
 
-    v27 = floor((v10 - a4 + v10 - a4) * 0.5);
+    v27 = floor((v10 - minimumWidth + v10 - minimumWidth) * 0.5);
     v28 = [MEMORY[0x277CCABB0] numberWithDouble:(v27 + v27) * 0.5];
     [v8 addObject:v28];
 
@@ -839,7 +839,7 @@ LABEL_11:
       break;
     }
 
-    v15 = floor((a3 - (v9 + v11 - 1) * a5) / v14);
+    v15 = floor((width - (v9 + v11 - 1) * spacing) / v14);
     v16 = floor((v15 + v15) * 0.5);
     v17 = [MEMORY[0x277CCABB0] numberWithDouble:(v16 + v16) * 0.5];
     [v8 addObject:v17];
@@ -854,7 +854,7 @@ LABEL_11:
     }
 
     v20 = MEMORY[0x277CCABB0];
-    v21 = floor((a3 - v15 * 0.5 + a3 - v15 * 0.5) * 0.5);
+    v21 = floor((width - v15 * 0.5 + width - v15 * 0.5) * 0.5);
     v22 = (v21 + v21) * 0.5;
 LABEL_8:
     v23 = [v20 numberWithDouble:v22];
@@ -864,7 +864,7 @@ LABEL_9:
     --v11;
   }
 
-  v24 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v24 = [MEMORY[0x277CCABB0] numberWithDouble:width];
   [v8 addObject:v24];
 
   if (v9 < 3)
@@ -878,7 +878,7 @@ LABEL_12:
   if ([v8 count] >= 3)
   {
     v30 = 0;
-    v31 = a4 * 0.75;
+    v31 = minimumWidth * 0.75;
     do
     {
       v32 = [v8 objectAtIndexedSubscript:v30];
@@ -907,44 +907,44 @@ LABEL_12:
   return v8;
 }
 
-- (id)_gridHeightsForSafeHeight:(double)a3 minimumHeight:(double)a4 stageInterItemSpacing:(double)a5
+- (id)_gridHeightsForSafeHeight:(double)height minimumHeight:(double)minimumHeight stageInterItemSpacing:(double)spacing
 {
-  v8 = [MEMORY[0x277CBEB18] array];
-  if (a3 >= a4)
+  array = [MEMORY[0x277CBEB18] array];
+  if (height >= minimumHeight)
   {
-    v9 = (a3 + (a3 - a5) * -0.5) * 0.25;
+    v9 = (height + (height - spacing) * -0.5) * 0.25;
     do
     {
-      v10 = floor((a3 + a3) * 0.5);
+      v10 = floor((height + height) * 0.5);
       v11 = [MEMORY[0x277CCABB0] numberWithDouble:(v10 + v10) * 0.5];
-      [v8 addObject:v11];
+      [array addObject:v11];
 
-      a3 = a3 - v9;
+      height = height - v9;
     }
 
-    while (a3 >= a4);
+    while (height >= minimumHeight);
   }
 
-  return v8;
+  return array;
 }
 
-- (CGSize)_nearestGridSizeForSize:(CGSize)a3 gridWidths:(id)a4 gridHeights:(id)a5 bounds:(CGRect)a6
+- (CGSize)_nearestGridSizeForSize:(CGSize)size gridWidths:(id)widths gridHeights:(id)heights bounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  v9 = a3.height;
-  v10 = a3.width;
-  v11 = a4;
-  v12 = a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v9 = size.height;
+  v10 = size.width;
+  widthsCopy = widths;
+  heightsCopy = heights;
   v13 = MEMORY[0x277CBF3A8];
   v14 = *MEMORY[0x277CBF3A8];
-  if ([v11 count])
+  if ([widthsCopy count])
   {
     v15 = 0;
     v16 = 1.79769313e308;
     do
     {
-      v17 = [v11 objectAtIndex:v15];
+      v17 = [widthsCopy objectAtIndex:v15];
       [v17 doubleValue];
       v19 = v18;
 
@@ -958,17 +958,17 @@ LABEL_12:
       ++v15;
     }
 
-    while (v15 < [v11 count]);
+    while (v15 < [widthsCopy count]);
   }
 
   v21 = *(v13 + 8);
-  if ([v12 count])
+  if ([heightsCopy count])
   {
     v22 = 0;
     v23 = 1.79769313e308;
     do
     {
-      v24 = [v12 objectAtIndex:v22];
+      v24 = [heightsCopy objectAtIndex:v22];
       [v24 doubleValue];
       v26 = v25;
 
@@ -982,15 +982,15 @@ LABEL_12:
       ++v22;
     }
 
-    while (v22 < [v12 count]);
+    while (v22 < [heightsCopy count]);
   }
 
-  v28 = [v11 lastObject];
-  [v28 doubleValue];
+  lastObject = [widthsCopy lastObject];
+  [lastObject doubleValue];
   if (BSFloatEqualToFloat())
   {
-    v29 = [v12 lastObject];
-    [v29 doubleValue];
+    lastObject2 = [heightsCopy lastObject];
+    [lastObject2 doubleValue];
     v30 = BSFloatEqualToFloat();
 
     if (v30)
@@ -1011,19 +1011,19 @@ LABEL_12:
   return result;
 }
 
-- (double)_stripWidthForContainerBounds:(CGRect)a3 screenEdgePadding:(double)a4 stripStackDistance:(double)a5 stripCardScale:(double)a6 stripTiltAngle:(double)a7 containerPerspective:(double)a8
+- (double)_stripWidthForContainerBounds:(CGRect)bounds screenEdgePadding:(double)padding stripStackDistance:(double)distance stripCardScale:(double)scale stripTiltAngle:(double)angle containerPerspective:(double)perspective
 {
   v10 = 0;
-  v11 = a3.size.width * 0.5;
+  v11 = bounds.size.width * 0.5;
   v13 = MEMORY[0x277CD9DE8];
   v14 = 0.0;
   while (v14 == 0.0 || BSFloatGreaterThanFloat() && v10 <= 9)
   {
     [(SBSwitcherWindowingSettings *)self numberOfVisibleItemsPerGroup];
     memset(&v29, 0, sizeof(v29));
-    CATransform3DMakeScale(&v29, a6, a6, 1.0);
+    CATransform3DMakeScale(&v29, scale, scale, 1.0);
     memset(&v28, 0, sizeof(v28));
-    CATransform3DMakeRotation(&v28, a7, 0.0, 1.0, 0.0);
+    CATransform3DMakeRotation(&v28, angle, 0.0, 1.0, 0.0);
     memset(&v27, 0, sizeof(v27));
     a = v29;
     b = v28;
@@ -1041,9 +1041,9 @@ LABEL_12:
     v18 = *(v13 + 112);
     *&a.m41 = *(v13 + 96);
     *&a.m43 = v18;
-    a.m34 = -1.0 / a8;
+    a.m34 = -1.0 / perspective;
     CAPointApplyTransform();
-    v21 = round(v11 + v19 / v20 + a4);
+    v21 = round(v11 + v19 / v20 + padding);
     v22 = floor((v21 + v21) * 0.5);
     v14 = (v22 + v22) * 0.5;
     ++v10;
@@ -1059,18 +1059,18 @@ uint64_t __47__SBSwitcherWindowingSettings__statusBarHeight__block_invoke()
   return result;
 }
 
-- (BOOL)_shouldPreferStripHiddenForWindowScene:(id)a3 interfaceOrientation:(int64_t)a4
+- (BOOL)_shouldPreferStripHiddenForWindowScene:(id)scene interfaceOrientation:(int64_t)orientation
 {
-  v5 = a3;
-  v6 = [v5 switcherController];
-  v7 = [v6 windowManagementContext];
-  v8 = [v7 isAutomaticStageCreationEnabled];
+  sceneCopy = scene;
+  switcherController = [sceneCopy switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isAutomaticStageCreationEnabled = [windowManagementContext isAutomaticStageCreationEnabled];
 
-  if (v8)
+  if (isAutomaticStageCreationEnabled)
   {
-    v9 = [v5 isMainDisplayWindowScene];
+    isMainDisplayWindowScene = [sceneCopy isMainDisplayWindowScene];
     v10 = &OBJC_IVAR___SBSwitcherWindowingSettings__cachedChamoisHideStripsExternal;
-    if (v9)
+    if (isMainDisplayWindowScene)
     {
       v10 = &OBJC_IVAR___SBSwitcherWindowingSettings__cachedChamoisHideStrips;
     }
@@ -1086,11 +1086,11 @@ uint64_t __47__SBSwitcherWindowingSettings__statusBarHeight__block_invoke()
   return v11;
 }
 
-- (BOOL)_shouldPreferDockHiddenForWindowScene:(id)a3
+- (BOOL)_shouldPreferDockHiddenForWindowScene:(id)scene
 {
-  v4 = [a3 isMainDisplayWindowScene];
+  isMainDisplayWindowScene = [scene isMainDisplayWindowScene];
   v5 = &OBJC_IVAR___SBSwitcherWindowingSettings__cachedChamoisHideDockExternal;
-  if (v4)
+  if (isMainDisplayWindowScene)
   {
     v5 = &OBJC_IVAR___SBSwitcherWindowingSettings__cachedChamoisHideDock;
   }
@@ -1102,7 +1102,7 @@ uint64_t __47__SBSwitcherWindowingSettings__statusBarHeight__block_invoke()
 {
   v16[4] = *MEMORY[0x277D85DE8];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 appSwitcherDefaults];
+  appSwitcherDefaults = [v3 appSwitcherDefaults];
 
   objc_initWeak(&location, self);
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"chamoisHideStrips"];
@@ -1120,7 +1120,7 @@ uint64_t __47__SBSwitcherWindowingSettings__statusBarHeight__block_invoke()
   v13[2] = __58__SBSwitcherWindowingSettings__observeAppSwitcherDefaults__block_invoke;
   v13[3] = &unk_2783A8C68;
   objc_copyWeak(&v14, &location);
-  v11 = [v4 observeDefaults:v9 onQueue:MEMORY[0x277D85CD0] withBlock:v13];
+  v11 = [appSwitcherDefaults observeDefaults:v9 onQueue:MEMORY[0x277D85CD0] withBlock:v13];
   appSwitcherDefaultsObserver = self->_appSwitcherDefaultsObserver;
   self->_appSwitcherDefaultsObserver = v11;
 
@@ -1138,12 +1138,12 @@ void __58__SBSwitcherWindowingSettings__observeAppSwitcherDefaults__block_invoke
 - (void)_updateCachedAppSwitcherDefaults
 {
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 appSwitcherDefaults];
+  appSwitcherDefaults = [v3 appSwitcherDefaults];
 
-  self->_cachedChamoisHideStrips = [v4 chamoisHideStrips];
-  self->_cachedChamoisHideStripsExternal = [v4 chamoisHideStripsExternal];
-  self->_cachedChamoisHideDock = [v4 chamoisHideDock];
-  self->_cachedChamoisHideDockExternal = [v4 chamoisHideDockExternal];
+  self->_cachedChamoisHideStrips = [appSwitcherDefaults chamoisHideStrips];
+  self->_cachedChamoisHideStripsExternal = [appSwitcherDefaults chamoisHideStripsExternal];
+  self->_cachedChamoisHideDock = [appSwitcherDefaults chamoisHideDock];
+  self->_cachedChamoisHideDockExternal = [appSwitcherDefaults chamoisHideDockExternal];
 }
 
 - (void)setDefaultValues
@@ -1172,17 +1172,17 @@ void __58__SBSwitcherWindowingSettings__observeAppSwitcherDefaults__block_invoke
   [(SBSwitcherWindowingSettings *)self setStageOccludedAppScaleFactor:1.0];
   [(SBSwitcherWindowingSettings *)self setFlexibleStageOccludedAppMaxHeightReduction:4.0];
   [(SBSwitcherWindowingSettings *)self setPartiallyOffscreenWindowMargin:44.0];
-  v3 = [[SBSwitcherChamoisSnapPaddingSettings alloc] initWithDefaultValues];
-  [(SBSwitcherWindowingSettings *)self setEmbeddedDisplayChamoisSnapPaddingSettings:v3];
+  initWithDefaultValues = [[SBSwitcherChamoisSnapPaddingSettings alloc] initWithDefaultValues];
+  [(SBSwitcherWindowingSettings *)self setEmbeddedDisplayChamoisSnapPaddingSettings:initWithDefaultValues];
 
-  v4 = [[SBSwitcherChamoisSnapPaddingSettings alloc] initWithDefaultValues];
-  [(SBSwitcherWindowingSettings *)self setExternalDisplayChamoisSnapPaddingSettings:v4];
+  initWithDefaultValues2 = [[SBSwitcherChamoisSnapPaddingSettings alloc] initWithDefaultValues];
+  [(SBSwitcherWindowingSettings *)self setExternalDisplayChamoisSnapPaddingSettings:initWithDefaultValues2];
 
-  v5 = [[SBSwitcherFlexibleWindowingSnapPaddingSettings alloc] initWithDefaultValues];
-  [(SBSwitcherWindowingSettings *)self setEmbeddedDisplayFlexibleWindowingSnapPaddingSettings:v5];
+  initWithDefaultValues3 = [[SBSwitcherFlexibleWindowingSnapPaddingSettings alloc] initWithDefaultValues];
+  [(SBSwitcherWindowingSettings *)self setEmbeddedDisplayFlexibleWindowingSnapPaddingSettings:initWithDefaultValues3];
 
-  v6 = [[SBSwitcherFlexibleWindowingSnapPaddingSettings alloc] initWithDefaultValues];
-  [(SBSwitcherWindowingSettings *)self setExternalDisplayFlexibleWindowingSnapPaddingSettings:v6];
+  initWithDefaultValues4 = [[SBSwitcherFlexibleWindowingSnapPaddingSettings alloc] initWithDefaultValues];
+  [(SBSwitcherWindowingSettings *)self setExternalDisplayFlexibleWindowingSnapPaddingSettings:initWithDefaultValues4];
 
   [(SBSwitcherWindowingSettings *)self setMinimumWindowWidth:0.0];
   [(SBSwitcherWindowingSettings *)self setMinimumWindowHeight:0.0];
@@ -1195,17 +1195,17 @@ void __58__SBSwitcherWindowingSettings__observeAppSwitcherDefaults__block_invoke
   [(SBSwitcherWindowingSettings *)self setMaxHomeScreenDimmingAlphaForNonFullscreen:0.5];
   [(SBSwitcherWindowingSettings *)self setMinHomeScreenDimmingAlphaResponse:0.15];
   [(SBSwitcherWindowingSettings *)self setMaxHomeScreenDimmingAlphaResponse:0.8];
-  v7 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v7 setDampingRatio:1.0];
-  [v7 setResponse:0.5];
+  initWithDefaultValues5 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues5 setDampingRatio:1.0];
+  [initWithDefaultValues5 setResponse:0.5];
   v31 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v7 setFrameRateRange:1114113 highFrameRateReason:{*&v31.minimum, *&v31.maximum, *&v31.preferred}];
-  [(SBSwitcherWindowingSettings *)self setStageCornerRadiusSettings:v7];
+  [initWithDefaultValues5 setFrameRateRange:1114113 highFrameRateReason:{*&v31.minimum, *&v31.maximum, *&v31.preferred}];
+  [(SBSwitcherWindowingSettings *)self setStageCornerRadiusSettings:initWithDefaultValues5];
   v8 = +[SBDefaults localDefaults];
-  v9 = [v8 appSwitcherDefaults];
+  appSwitcherDefaults = [v8 appSwitcherDefaults];
 
-  -[SBSwitcherWindowingSettings setFakeStorageForBackgroundNethermostWindows:](self, "setFakeStorageForBackgroundNethermostWindows:", [v9 backgroundNethermostWindows]);
-  -[SBSwitcherWindowingSettings setFakeStorageForWantsManyForegroundWindows:](self, "setFakeStorageForWantsManyForegroundWindows:", [v9 wantsManyForegroundWindows]);
+  -[SBSwitcherWindowingSettings setFakeStorageForBackgroundNethermostWindows:](self, "setFakeStorageForBackgroundNethermostWindows:", [appSwitcherDefaults backgroundNethermostWindows]);
+  -[SBSwitcherWindowingSettings setFakeStorageForWantsManyForegroundWindows:](self, "setFakeStorageForWantsManyForegroundWindows:", [appSwitcherDefaults wantsManyForegroundWindows]);
   [(SBSwitcherWindowingSettings *)self setSwitcherHeightForIconAndLabelsUnderEachPile:60.0];
   [(SBSwitcherWindowingSettings *)self setSwitcherPileCardMinimumPeekAmount:25.0];
   [(SBSwitcherWindowingSettings *)self setSwitcherPileCompactingFactor:0.6];
@@ -1215,84 +1215,84 @@ void __58__SBSwitcherWindowingSettings__observeAppSwitcherDefaults__block_invoke
   [(SBSwitcherWindowingSettings *)self setDiffuseShadowOpacity:0.35];
   [(SBSwitcherWindowingSettings *)self setDiffuseShadowRadius:70.0];
   [(SBSwitcherWindowingSettings *)self setDiffuseShadowOffset:0.0, 35.0];
-  v10 = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
-  [v10 setDefaultValues];
+  splitResizeAnimationSettings = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
+  [splitResizeAnimationSettings setDefaultValues];
 
-  v11 = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
-  [v11 setTrackingDampingRatio:1.0];
+  splitResizeAnimationSettings2 = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
+  [splitResizeAnimationSettings2 setTrackingDampingRatio:1.0];
 
-  v12 = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
-  [v12 setTrackingResponse:0.024];
+  splitResizeAnimationSettings3 = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
+  [splitResizeAnimationSettings3 setTrackingResponse:0.024];
 
-  v13 = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
-  [v13 setResponse:0.457];
+  splitResizeAnimationSettings4 = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
+  [splitResizeAnimationSettings4 setResponse:0.457];
 
-  v14 = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
+  splitResizeAnimationSettings5 = [(SBSwitcherWindowingSettings *)self splitResizeAnimationSettings];
   v32 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v14 setFrameRateRange:1114144 highFrameRateReason:{*&v32.minimum, *&v32.maximum, *&v32.preferred}];
+  [splitResizeAnimationSettings5 setFrameRateRange:1114144 highFrameRateReason:{*&v32.minimum, *&v32.maximum, *&v32.preferred}];
 
-  v15 = [(SBSwitcherWindowingSettings *)self liveResizeDuringDragLayoutAnimationSettings];
-  [v15 setTrackingDampingRatio:1.0];
+  liveResizeDuringDragLayoutAnimationSettings = [(SBSwitcherWindowingSettings *)self liveResizeDuringDragLayoutAnimationSettings];
+  [liveResizeDuringDragLayoutAnimationSettings setTrackingDampingRatio:1.0];
 
-  v16 = [(SBSwitcherWindowingSettings *)self liveResizeDuringDragLayoutAnimationSettings];
-  [v16 setTrackingResponse:0.325];
+  liveResizeDuringDragLayoutAnimationSettings2 = [(SBSwitcherWindowingSettings *)self liveResizeDuringDragLayoutAnimationSettings];
+  [liveResizeDuringDragLayoutAnimationSettings2 setTrackingResponse:0.325];
 
-  v17 = [(SBSwitcherWindowingSettings *)self liveResizeDuringDragLayoutAnimationSettings];
+  liveResizeDuringDragLayoutAnimationSettings3 = [(SBSwitcherWindowingSettings *)self liveResizeDuringDragLayoutAnimationSettings];
   v33 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v17 setFrameRateRange:1114144 highFrameRateReason:{*&v33.minimum, *&v33.maximum, *&v33.preferred}];
+  [liveResizeDuringDragLayoutAnimationSettings3 setFrameRateRange:1114144 highFrameRateReason:{*&v33.minimum, *&v33.maximum, *&v33.preferred}];
 
-  v18 = [(SBSwitcherWindowingSettings *)self liveResizeAfterReleaseLayoutAnimationSettings];
-  [v18 setTrackingDampingRatio:0.92];
+  liveResizeAfterReleaseLayoutAnimationSettings = [(SBSwitcherWindowingSettings *)self liveResizeAfterReleaseLayoutAnimationSettings];
+  [liveResizeAfterReleaseLayoutAnimationSettings setTrackingDampingRatio:0.92];
 
-  v19 = [(SBSwitcherWindowingSettings *)self liveResizeAfterReleaseLayoutAnimationSettings];
-  [v19 setTrackingResponse:0.6];
+  liveResizeAfterReleaseLayoutAnimationSettings2 = [(SBSwitcherWindowingSettings *)self liveResizeAfterReleaseLayoutAnimationSettings];
+  [liveResizeAfterReleaseLayoutAnimationSettings2 setTrackingResponse:0.6];
 
-  v20 = [(SBSwitcherWindowingSettings *)self liveResizeAfterReleaseLayoutAnimationSettings];
+  liveResizeAfterReleaseLayoutAnimationSettings3 = [(SBSwitcherWindowingSettings *)self liveResizeAfterReleaseLayoutAnimationSettings];
   v34 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v20 setFrameRateRange:1114144 highFrameRateReason:{*&v34.minimum, *&v34.maximum, *&v34.preferred}];
+  [liveResizeAfterReleaseLayoutAnimationSettings3 setFrameRateRange:1114144 highFrameRateReason:{*&v34.minimum, *&v34.maximum, *&v34.preferred}];
 
   [(SBSwitcherWindowingSettings *)self setLiveResizeSceneUpdateDistanceThreshold:0.0];
   [(SBSwitcherWindowingSettings *)self setLiveResizeSceneUpdateTimeThreshold:0.1];
   [(SBSwitcherWindowingSettings *)self setWindowDragRubberBandedTranslationRange:88.0];
   [(SBSwitcherWindowingSettings *)self setWindowDragRubberBandedTranslationDetachmentThreshold:44.0];
-  v21 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
-  [v21 setDefaultValues];
+  windowDragAnimationSettings = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
+  [windowDragAnimationSettings setDefaultValues];
 
-  v22 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
-  [v22 setDampingRatio:0.92];
+  windowDragAnimationSettings2 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
+  [windowDragAnimationSettings2 setDampingRatio:0.92];
 
-  v23 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
-  [v23 setResponse:0.457];
+  windowDragAnimationSettings3 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
+  [windowDragAnimationSettings3 setResponse:0.457];
 
-  v24 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
-  [v24 setTrackingDampingRatio:0.92];
+  windowDragAnimationSettings4 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
+  [windowDragAnimationSettings4 setTrackingDampingRatio:0.92];
 
-  v25 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
-  [v25 setTrackingResponse:0.1];
+  windowDragAnimationSettings5 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
+  [windowDragAnimationSettings5 setTrackingResponse:0.1];
 
-  v26 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
+  windowDragAnimationSettings6 = [(SBSwitcherWindowingSettings *)self windowDragAnimationSettings];
   v35 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v26 setFrameRateRange:1114144 highFrameRateReason:{*&v35.minimum, *&v35.maximum, *&v35.preferred}];
+  [windowDragAnimationSettings6 setFrameRateRange:1114144 highFrameRateReason:{*&v35.minimum, *&v35.maximum, *&v35.preferred}];
 
-  v27 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v27 setResponse:0.5];
-  [v27 setDampingRatio:1.0];
+  initWithDefaultValues6 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues6 setResponse:0.5];
+  [initWithDefaultValues6 setDampingRatio:1.0];
   v36 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v27 setFrameRateRange:1114144 highFrameRateReason:{*&v36.minimum, *&v36.maximum, *&v36.preferred}];
-  [(SBSwitcherWindowingSettings *)self setAppToAppLayoutSettings:v27];
-  v28 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v27 setResponse:0.5];
-  [v27 setDampingRatio:0.86];
+  [initWithDefaultValues6 setFrameRateRange:1114144 highFrameRateReason:{*&v36.minimum, *&v36.maximum, *&v36.preferred}];
+  [(SBSwitcherWindowingSettings *)self setAppToAppLayoutSettings:initWithDefaultValues6];
+  initWithDefaultValues7 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues6 setResponse:0.5];
+  [initWithDefaultValues6 setDampingRatio:0.86];
   v37 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v27 setFrameRateRange:1114144 highFrameRateReason:{*&v37.minimum, *&v37.maximum, *&v37.preferred}];
-  [(SBSwitcherWindowingSettings *)self setAppToPeekLayoutSettings:v28];
-  v29 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v29 setResponse:0.4];
-  [v29 setDampingRatio:1.0];
-  [v29 setRetargetImpulse:0.016];
+  [initWithDefaultValues6 setFrameRateRange:1114144 highFrameRateReason:{*&v37.minimum, *&v37.maximum, *&v37.preferred}];
+  [(SBSwitcherWindowingSettings *)self setAppToPeekLayoutSettings:initWithDefaultValues7];
+  initWithDefaultValues8 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues8 setResponse:0.4];
+  [initWithDefaultValues8 setDampingRatio:1.0];
+  [initWithDefaultValues8 setRetargetImpulse:0.016];
   v38 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v29 setFrameRateRange:1114144 highFrameRateReason:{*&v38.minimum, *&v38.maximum, *&v38.preferred}];
-  [(SBSwitcherWindowingSettings *)self setStageFocusChangeSettings:v29];
+  [initWithDefaultValues8 setFrameRateRange:1114144 highFrameRateReason:{*&v38.minimum, *&v38.maximum, *&v38.preferred}];
+  [(SBSwitcherWindowingSettings *)self setStageFocusChangeSettings:initWithDefaultValues8];
   [(SBSwitcherWindowingSettings *)self setHomeGestureMinimumYDistanceForHomeOrAppSwitcher:20.0];
   [(SBSwitcherWindowingSettings *)self setThreeDotsTopAffordanceLeadingEdgeOffset:10.0];
   [(SBSwitcherWindowingSettings *)self setThreeDotsTopAffordanceTopEdgeOffset:10.0];
@@ -1532,7 +1532,7 @@ void __58__SBSwitcherWindowingSettings__observeAppSwitcherDefaults__block_invoke
   v245 = [v244 sectionWithRows:v90 title:@"Flexible Windowing"];
 
   v91 = +[SBDefaults localDefaults];
-  v92 = [v91 appSwitcherDefaults];
+  appSwitcherDefaults = [v91 appSwitcherDefaults];
 
   v93 = MEMORY[0x277D432A8];
   v94 = NSStringFromSelector(sel_fakeStorageForBackgroundNethermostWindows);
@@ -1542,7 +1542,7 @@ void __58__SBSwitcherWindowingSettings__observeAppSwitcherDefaults__block_invoke
   v266[1] = 3221225472;
   v266[2] = __55__SBSwitcherWindowingSettings_settingsControllerModule__block_invoke_2;
   v266[3] = &unk_2783ADCB8;
-  v96 = v92;
+  v96 = appSwitcherDefaults;
   v267 = v96;
   [v95 setValueValidatator:v266];
   v264[0] = MEMORY[0x277D85DD0];

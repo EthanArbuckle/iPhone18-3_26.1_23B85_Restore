@@ -1,36 +1,36 @@
 @interface CRKAnnotatedCredentialStore
-+ (id)certificateStoreWithKeychain:(id)a3 accessGroup:(id)a4 manifestStorageKey:(id)a5;
-+ (id)identityStoreWithKeychain:(id)a3 accessGroup:(id)a4 manifestStorageKey:(id)a5;
++ (id)certificateStoreWithKeychain:(id)keychain accessGroup:(id)group manifestStorageKey:(id)key;
++ (id)identityStoreWithKeychain:(id)keychain accessGroup:(id)group manifestStorageKey:(id)key;
 - (CRKAnnotatedCredentialManifest)manifest;
-- (CRKAnnotatedCredentialStore)initWithKeychain:(id)a3 accessGroup:(id)a4 manifestStorageKey:(id)a5 addBlock:(id)a6 fetchBlock:(id)a7;
+- (CRKAnnotatedCredentialStore)initWithKeychain:(id)keychain accessGroup:(id)group manifestStorageKey:(id)key addBlock:(id)block fetchBlock:(id)fetchBlock;
 - (NSDictionary)debugInfo;
-- (id)addCredential:(id)a3 manifest:(id)a4;
-- (id)addCredentials:(id)a3;
-- (id)credentialWithPersistentID:(id)a3;
-- (id)dataForStorageKey:(id)a3;
+- (id)addCredential:(id)credential manifest:(id)manifest;
+- (id)addCredentials:(id)credentials;
+- (id)credentialWithPersistentID:(id)d;
+- (id)dataForStorageKey:(id)key;
 - (id)storedManifest;
 - (id)storedManifestData;
-- (void)forgetCredentialsWithPersistentIDs:(id)a3;
-- (void)removeCredentialsWithPersistentIDs:(id)a3;
-- (void)removePersistentIDsFromKeychain:(id)a3;
-- (void)setData:(id)a3 forStorageKey:(id)a4;
-- (void)setStoredManifest:(id)a3;
-- (void)setStoredManifestData:(id)a3;
+- (void)forgetCredentialsWithPersistentIDs:(id)ds;
+- (void)removeCredentialsWithPersistentIDs:(id)ds;
+- (void)removePersistentIDsFromKeychain:(id)keychain;
+- (void)setData:(id)data forStorageKey:(id)key;
+- (void)setStoredManifest:(id)manifest;
+- (void)setStoredManifestData:(id)data;
 @end
 
 @implementation CRKAnnotatedCredentialStore
 
-+ (id)certificateStoreWithKeychain:(id)a3 accessGroup:(id)a4 manifestStorageKey:(id)a5
++ (id)certificateStoreWithKeychain:(id)keychain accessGroup:(id)group manifestStorageKey:(id)key
 {
-  v7 = a3;
+  keychainCopy = keychain;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __91__CRKAnnotatedCredentialStore_certificateStoreWithKeychain_accessGroup_manifestStorageKey___block_invoke;
   v22[3] = &unk_278DC0E08;
-  v8 = v7;
+  v8 = keychainCopy;
   v23 = v8;
-  v9 = a5;
-  v10 = a4;
+  keyCopy = key;
+  groupCopy = group;
   v11 = MEMORY[0x245D3AAD0](v22);
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
@@ -40,22 +40,22 @@
   v12 = v8;
   v13 = MEMORY[0x245D3AAD0](&v17);
   v14 = [CRKAnnotatedCredentialStore alloc];
-  v15 = [(CRKAnnotatedCredentialStore *)v14 initWithKeychain:v12 accessGroup:v10 manifestStorageKey:v9 addBlock:v11 fetchBlock:v13, v17, v18, v19, v20];
+  v15 = [(CRKAnnotatedCredentialStore *)v14 initWithKeychain:v12 accessGroup:groupCopy manifestStorageKey:keyCopy addBlock:v11 fetchBlock:v13, v17, v18, v19, v20];
 
   return v15;
 }
 
-+ (id)identityStoreWithKeychain:(id)a3 accessGroup:(id)a4 manifestStorageKey:(id)a5
++ (id)identityStoreWithKeychain:(id)keychain accessGroup:(id)group manifestStorageKey:(id)key
 {
-  v7 = a3;
+  keychainCopy = keychain;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __88__CRKAnnotatedCredentialStore_identityStoreWithKeychain_accessGroup_manifestStorageKey___block_invoke;
   v22[3] = &unk_278DC0E58;
-  v8 = v7;
+  v8 = keychainCopy;
   v23 = v8;
-  v9 = a5;
-  v10 = a4;
+  keyCopy = key;
+  groupCopy = group;
   v11 = MEMORY[0x245D3AAD0](v22);
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
@@ -65,38 +65,38 @@
   v12 = v8;
   v13 = MEMORY[0x245D3AAD0](&v17);
   v14 = [CRKAnnotatedCredentialStore alloc];
-  v15 = [(CRKAnnotatedCredentialStore *)v14 initWithKeychain:v12 accessGroup:v10 manifestStorageKey:v9 addBlock:v11 fetchBlock:v13, v17, v18, v19, v20];
+  v15 = [(CRKAnnotatedCredentialStore *)v14 initWithKeychain:v12 accessGroup:groupCopy manifestStorageKey:keyCopy addBlock:v11 fetchBlock:v13, v17, v18, v19, v20];
 
   return v15;
 }
 
-- (CRKAnnotatedCredentialStore)initWithKeychain:(id)a3 accessGroup:(id)a4 manifestStorageKey:(id)a5 addBlock:(id)a6 fetchBlock:(id)a7
+- (CRKAnnotatedCredentialStore)initWithKeychain:(id)keychain accessGroup:(id)group manifestStorageKey:(id)key addBlock:(id)block fetchBlock:(id)fetchBlock
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  keychainCopy = keychain;
+  groupCopy = group;
+  keyCopy = key;
+  blockCopy = block;
+  fetchBlockCopy = fetchBlock;
   v29.receiver = self;
   v29.super_class = CRKAnnotatedCredentialStore;
   v18 = [(CRKAnnotatedCredentialStore *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_keychain, a3);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_keychain, keychain);
+    v20 = [groupCopy copy];
     accessGroup = v19->_accessGroup;
     v19->_accessGroup = v20;
 
-    v22 = [v15 copy];
+    v22 = [keyCopy copy];
     manifestStorageKey = v19->_manifestStorageKey;
     v19->_manifestStorageKey = v22;
 
-    v24 = MEMORY[0x245D3AAD0](v16);
+    v24 = MEMORY[0x245D3AAD0](blockCopy);
     addBlock = v19->_addBlock;
     v19->_addBlock = v24;
 
-    v26 = MEMORY[0x245D3AAD0](v17);
+    v26 = MEMORY[0x245D3AAD0](fetchBlockCopy);
     fetchBlock = v19->_fetchBlock;
     v19->_fetchBlock = v26;
   }
@@ -108,9 +108,9 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"Manifest";
-  v2 = [(CRKAnnotatedCredentialStore *)self manifest];
-  v3 = [v2 debugInfo];
-  v7[0] = v3;
+  manifest = [(CRKAnnotatedCredentialStore *)self manifest];
+  debugInfo = [manifest debugInfo];
+  v7[0] = debugInfo;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   return v4;
@@ -118,11 +118,11 @@
 
 - (CRKAnnotatedCredentialManifest)manifest
 {
-  v2 = [(CRKAnnotatedCredentialStore *)self storedManifest];
-  v3 = v2;
-  if (v2)
+  storedManifest = [(CRKAnnotatedCredentialStore *)self storedManifest];
+  v3 = storedManifest;
+  if (storedManifest)
   {
-    v4 = v2;
+    v4 = storedManifest;
   }
 
   else
@@ -135,19 +135,19 @@
   return v5;
 }
 
-- (id)addCredentials:(id)a3
+- (id)addCredentials:(id)credentials
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  if ([v4 count])
+  credentialsCopy = credentials;
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  if ([credentialsCopy count])
   {
-    v6 = [(CRKAnnotatedCredentialStore *)self manifest];
+    manifest = [(CRKAnnotatedCredentialStore *)self manifest];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v4;
+    v7 = credentialsCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -163,11 +163,11 @@
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [(CRKAnnotatedCredentialStore *)self addCredential:v12 manifest:v6, v16];
+          v13 = [(CRKAnnotatedCredentialStore *)self addCredential:v12 manifest:manifest, v16];
           if (v13)
           {
-            v14 = [v12 credential];
-            [v5 setObject:v13 forKey:v14];
+            credential = [v12 credential];
+            [strongToStrongObjectsMapTable setObject:v13 forKey:credential];
           }
         }
 
@@ -177,43 +177,43 @@
       while (v9);
     }
 
-    if ([v6 modified])
+    if ([manifest modified])
     {
-      [(CRKAnnotatedCredentialStore *)self setStoredManifest:v6];
+      [(CRKAnnotatedCredentialStore *)self setStoredManifest:manifest];
     }
   }
 
-  return v5;
+  return strongToStrongObjectsMapTable;
 }
 
-- (id)credentialWithPersistentID:(id)a3
+- (id)credentialWithPersistentID:(id)d
 {
-  v4 = a3;
-  v5 = [(CRKAnnotatedCredentialStore *)self fetchBlock];
-  v6 = (v5)[2](v5, v4);
+  dCopy = d;
+  fetchBlock = [(CRKAnnotatedCredentialStore *)self fetchBlock];
+  v6 = (fetchBlock)[2](fetchBlock, dCopy);
 
   return v6;
 }
 
-- (void)removeCredentialsWithPersistentIDs:(id)a3
+- (void)removeCredentialsWithPersistentIDs:(id)ds
 {
-  v4 = a3;
-  [(CRKAnnotatedCredentialStore *)self removePersistentIDsFromKeychain:v4];
-  [(CRKAnnotatedCredentialStore *)self forgetCredentialsWithPersistentIDs:v4];
+  dsCopy = ds;
+  [(CRKAnnotatedCredentialStore *)self removePersistentIDsFromKeychain:dsCopy];
+  [(CRKAnnotatedCredentialStore *)self forgetCredentialsWithPersistentIDs:dsCopy];
 }
 
-- (void)forgetCredentialsWithPersistentIDs:(id)a3
+- (void)forgetCredentialsWithPersistentIDs:(id)ds
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v5 = [(CRKAnnotatedCredentialStore *)self storedManifest];
+    storedManifest = [(CRKAnnotatedCredentialStore *)self storedManifest];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = dsCopy;
     v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
@@ -229,7 +229,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [v5 removePersistentID:{*(*(&v11 + 1) + 8 * v10++), v11}];
+          [storedManifest removePersistentID:{*(*(&v11 + 1) + 8 * v10++), v11}];
         }
 
         while (v8 != v10);
@@ -239,26 +239,26 @@
       while (v8);
     }
 
-    if ([v5 modified])
+    if ([storedManifest modified])
     {
-      [(CRKAnnotatedCredentialStore *)self setStoredManifest:v5];
+      [(CRKAnnotatedCredentialStore *)self setStoredManifest:storedManifest];
     }
   }
 }
 
-- (id)addCredential:(id)a3 manifest:(id)a4
+- (id)addCredential:(id)credential manifest:(id)manifest
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRKAnnotatedCredentialStore *)self addBlock];
-  v9 = [v6 credential];
-  v10 = [(CRKAnnotatedCredentialStore *)self accessGroup];
-  v11 = (v8)[2](v8, v9, v10);
+  credentialCopy = credential;
+  manifestCopy = manifest;
+  addBlock = [(CRKAnnotatedCredentialStore *)self addBlock];
+  credential = [credentialCopy credential];
+  accessGroup = [(CRKAnnotatedCredentialStore *)self accessGroup];
+  v11 = (addBlock)[2](addBlock, credential, accessGroup);
 
   if (v11)
   {
-    v12 = [v6 annotation];
-    [v7 addPersistentID:v11 withAnnotation:v12];
+    annotation = [credentialCopy annotation];
+    [manifestCopy addPersistentID:v11 withAnnotation:annotation];
 
     v13 = v11;
   }
@@ -266,15 +266,15 @@
   return v11;
 }
 
-- (void)removePersistentIDsFromKeychain:(id)a3
+- (void)removePersistentIDsFromKeychain:(id)keychain
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keychainCopy = keychain;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [keychainCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -286,18 +286,18 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keychainCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(CRKAnnotatedCredentialStore *)self keychain];
-        [v10 removeItemWithPersistentID:v9];
+        keychain = [(CRKAnnotatedCredentialStore *)self keychain];
+        [keychain removeItemWithPersistentID:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [keychainCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -306,10 +306,10 @@
 
 - (id)storedManifest
 {
-  v3 = [(CRKAnnotatedCredentialStore *)self storedManifestData];
-  if (v3)
+  storedManifestData = [(CRKAnnotatedCredentialStore *)self storedManifestData];
+  if (storedManifestData)
   {
-    v4 = [CRKAnnotatedCredentialManifest manifestWithData:v3];
+    v4 = [CRKAnnotatedCredentialManifest manifestWithData:storedManifestData];
     if (!v4)
     {
       if (_CRKLogASM_onceToken != -1)
@@ -335,41 +335,41 @@
   return v4;
 }
 
-- (void)setStoredManifest:(id)a3
+- (void)setStoredManifest:(id)manifest
 {
-  v4 = [a3 dataRepresentation];
-  [(CRKAnnotatedCredentialStore *)self setStoredManifestData:v4];
+  dataRepresentation = [manifest dataRepresentation];
+  [(CRKAnnotatedCredentialStore *)self setStoredManifestData:dataRepresentation];
 }
 
 - (id)storedManifestData
 {
-  v3 = [(CRKAnnotatedCredentialStore *)self manifestStorageKey];
-  v4 = [(CRKAnnotatedCredentialStore *)self dataForStorageKey:v3];
+  manifestStorageKey = [(CRKAnnotatedCredentialStore *)self manifestStorageKey];
+  v4 = [(CRKAnnotatedCredentialStore *)self dataForStorageKey:manifestStorageKey];
 
   return v4;
 }
 
-- (void)setStoredManifestData:(id)a3
+- (void)setStoredManifestData:(id)data
 {
-  v4 = a3;
-  v5 = [(CRKAnnotatedCredentialStore *)self manifestStorageKey];
-  [(CRKAnnotatedCredentialStore *)self setData:v4 forStorageKey:v5];
+  dataCopy = data;
+  manifestStorageKey = [(CRKAnnotatedCredentialStore *)self manifestStorageKey];
+  [(CRKAnnotatedCredentialStore *)self setData:dataCopy forStorageKey:manifestStorageKey];
 }
 
-- (void)setData:(id)a3 forStorageKey:(id)a4
+- (void)setData:(id)data forStorageKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(CRKAnnotatedCredentialStore *)self keychain];
-  v8 = [(CRKAnnotatedCredentialStore *)self accessGroup];
-  [v9 setPassword:v7 forService:v6 accessGroup:v8];
+  keyCopy = key;
+  dataCopy = data;
+  keychain = [(CRKAnnotatedCredentialStore *)self keychain];
+  accessGroup = [(CRKAnnotatedCredentialStore *)self accessGroup];
+  [keychain setPassword:dataCopy forService:keyCopy accessGroup:accessGroup];
 }
 
-- (id)dataForStorageKey:(id)a3
+- (id)dataForStorageKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CRKAnnotatedCredentialStore *)self keychain];
-  v6 = [v5 passwordForService:v4];
+  keyCopy = key;
+  keychain = [(CRKAnnotatedCredentialStore *)self keychain];
+  v6 = [keychain passwordForService:keyCopy];
 
   return v6;
 }

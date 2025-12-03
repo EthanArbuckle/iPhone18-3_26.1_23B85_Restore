@@ -1,14 +1,14 @@
 @interface _CNReputationEmailAddressHandle
-- (void)configureBuilder:(id)a3;
+- (void)configureBuilder:(id)builder;
 @end
 
 @implementation _CNReputationEmailAddressHandle
 
-- (void)configureBuilder:(id)a3
+- (void)configureBuilder:(id)builder
 {
-  v3 = a3;
-  [v3 addCoreRecentsTrust];
-  [v3 addContactsTrustForEmailAddress];
+  builderCopy = builder;
+  [builderCopy addCoreRecentsTrust];
+  [builderCopy addContactsTrustForEmailAddress];
 }
 
 @end

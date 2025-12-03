@@ -1,22 +1,22 @@
 @interface SocialOnboardingNetworkFriendsMatchingRequestOperation
 - (_TtC16MusicApplication54SocialOnboardingNetworkFriendsMatchingRequestOperation)init;
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation SocialOnboardingNetworkFriendsMatchingRequestOperation
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy = self;
   sub_F2DB8();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_F38B4(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_F38B4(error);
 }
 
 - (_TtC16MusicApplication54SocialOnboardingNetworkFriendsMatchingRequestOperation)init

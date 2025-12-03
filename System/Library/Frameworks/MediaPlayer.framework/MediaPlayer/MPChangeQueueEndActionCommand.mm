@@ -1,7 +1,7 @@
 @interface MPChangeQueueEndActionCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (void)setCurrentQueueEndAction:(int64_t)a3;
-- (void)setSupportedQueueEndActions:(id)a3;
+- (void)setCurrentQueueEndAction:(int64_t)action;
+- (void)setSupportedQueueEndActions:(id)actions;
 @end
 
 @implementation MPChangeQueueEndActionCommand
@@ -24,12 +24,12 @@
   return v6;
 }
 
-- (void)setSupportedQueueEndActions:(id)a3
+- (void)setSupportedQueueEndActions:(id)actions
 {
-  v6 = a3;
+  actionsCopy = actions;
   if (![(NSArray *)self->_supportedQueueEndActions isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [actionsCopy copy];
     supportedQueueEndActions = self->_supportedQueueEndActions;
     self->_supportedQueueEndActions = v4;
 
@@ -37,11 +37,11 @@
   }
 }
 
-- (void)setCurrentQueueEndAction:(int64_t)a3
+- (void)setCurrentQueueEndAction:(int64_t)action
 {
-  if (self->_currentQueueEndAction != a3)
+  if (self->_currentQueueEndAction != action)
   {
-    self->_currentQueueEndAction = a3;
+    self->_currentQueueEndAction = action;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }

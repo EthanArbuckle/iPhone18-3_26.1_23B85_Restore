@@ -1,11 +1,11 @@
 @interface CNAutocompleteQueryResponseUniqueResultFinder
-+ (id)findUniqueResults:(id)a3 duplicateResultHandler:(id)a4;
-- (CNAutocompleteQueryResponseUniqueResultFinder)initWithResults:(id)a3 duplicateResultHandler:(id)a4;
++ (id)findUniqueResults:(id)results duplicateResultHandler:(id)handler;
+- (CNAutocompleteQueryResponseUniqueResultFinder)initWithResults:(id)results duplicateResultHandler:(id)handler;
 - (id)findUniqueResults;
 - (void)generateHashes;
 - (void)indexHashes;
 - (void)removeDuplicateResults;
-- (void)resolveDuplicatesWithinIndexes:(id)a3;
+- (void)resolveDuplicatesWithinIndexes:(id)indexes;
 @end
 
 @implementation CNAutocompleteQueryResponseUniqueResultFinder
@@ -31,16 +31,16 @@
 
 - (void)indexHashes
 {
-  v3 = [MEMORY[0x277CCAB58] indexSet];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   hashes = self->_hashes;
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __60__CNAutocompleteQueryResponseUniqueResultFinder_indexHashes__block_invoke;
   v17 = &unk_2781C4E80;
-  v6 = v4;
+  v6 = dictionary;
   v18 = v6;
-  v7 = v3;
+  v7 = indexSet;
   v19 = v7;
   [(NSMutableArray *)hashes enumerateObjectsUsingBlock:&v14];
   hashIndex = self->_hashIndex;
@@ -66,36 +66,36 @@
   v7[2] = __71__CNAutocompleteQueryResponseUniqueResultFinder_removeDuplicateResults__block_invoke;
   v7[3] = &unk_2781C4E80;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
   [(NSMutableArray *)hashes enumerateObjectsAtIndexes:firstIndexes options:0 usingBlock:v7];
 }
 
-+ (id)findUniqueResults:(id)a3 duplicateResultHandler:(id)a4
++ (id)findUniqueResults:(id)results duplicateResultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithResults:v7 duplicateResultHandler:v6];
+  handlerCopy = handler;
+  resultsCopy = results;
+  v8 = [[self alloc] initWithResults:resultsCopy duplicateResultHandler:handlerCopy];
 
-  v9 = [v8 findUniqueResults];
+  findUniqueResults = [v8 findUniqueResults];
 
-  return v9;
+  return findUniqueResults;
 }
 
-- (CNAutocompleteQueryResponseUniqueResultFinder)initWithResults:(id)a3 duplicateResultHandler:(id)a4
+- (CNAutocompleteQueryResponseUniqueResultFinder)initWithResults:(id)results duplicateResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = CNAutocompleteQueryResponseUniqueResultFinder;
   v8 = [(CNAutocompleteQueryResponseUniqueResultFinder *)&v15 init];
   if (v8)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [resultsCopy mutableCopy];
     uniqueResults = v8->_uniqueResults;
     v8->_uniqueResults = v9;
 
-    v11 = [v7 copy];
+    v11 = [handlerCopy copy];
     duplicateResultHandler = v8->_duplicateResultHandler;
     v8->_duplicateResultHandler = v11;
 
@@ -125,19 +125,19 @@ void __71__CNAutocompleteQueryResponseUniqueResultFinder_removeDuplicateResults_
   [*(a1 + 40) resolveDuplicatesWithinIndexes:v3];
 }
 
-- (void)resolveDuplicatesWithinIndexes:(id)a3
+- (void)resolveDuplicatesWithinIndexes:(id)indexes
 {
-  v11 = a3;
-  v4 = [v11 count] >= 2;
-  v5 = v11;
+  indexesCopy = indexes;
+  v4 = [indexesCopy count] >= 2;
+  v5 = indexesCopy;
   if (v4)
   {
-    v6 = [v11 firstIndex];
-    v7 = [(NSMutableArray *)self->_uniqueResults objectAtIndex:v6];
-    v8 = [v11 indexGreaterThanIndex:v6];
+    firstIndex = [indexesCopy firstIndex];
+    v7 = [(NSMutableArray *)self->_uniqueResults objectAtIndex:firstIndex];
+    v8 = [indexesCopy indexGreaterThanIndex:firstIndex];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v8; i != 0x7FFFFFFFFFFFFFFFLL; i = [v11 indexGreaterThanIndex:i])
+      for (i = v8; i != 0x7FFFFFFFFFFFFFFFLL; i = [indexesCopy indexGreaterThanIndex:i])
       {
         v10 = [(NSMutableArray *)self->_uniqueResults objectAtIndexedSubscript:i];
         if ([v7 isEqual:v10])
@@ -152,7 +152,7 @@ void __71__CNAutocompleteQueryResponseUniqueResultFinder_removeDuplicateResults_
       }
     }
 
-    v5 = v11;
+    v5 = indexesCopy;
   }
 }
 

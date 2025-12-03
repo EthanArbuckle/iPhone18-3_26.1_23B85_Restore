@@ -1,18 +1,18 @@
 @interface ARDepthSensorSettings
-- (ARDepthSensorSettings)initWithVideoFormat:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ARDepthSensorSettings)initWithVideoFormat:(id)format;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation ARDepthSensorSettings
 
-- (ARDepthSensorSettings)initWithVideoFormat:(id)a3
+- (ARDepthSensorSettings)initWithVideoFormat:(id)format
 {
   v28 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = ARDepthSensorSettings;
-  v3 = [(ARImageSensorSettings *)&v21 initWithVideoFormat:a3];
+  v3 = [(ARImageSensorSettings *)&v21 initWithVideoFormat:format];
   if (v3)
   {
     v4 = [ARKitUserDefaults integerForKey:@"com.apple.arkit.jasper.timeOfFlightProjectorMode"];
@@ -104,15 +104,15 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = ARDepthSensorSettings;
-  if ([(ARImageSensorSettings *)&v8 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(ARImageSensorSettings *)&v8 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 timeOfFlightProjectorMode];
-    v6 = [v5 isEqualToString:self->_timeOfFlightProjectorMode];
+    timeOfFlightProjectorMode = [equalCopy timeOfFlightProjectorMode];
+    v6 = [timeOfFlightProjectorMode isEqualToString:self->_timeOfFlightProjectorMode];
   }
 
   else
@@ -123,12 +123,12 @@ LABEL_14:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = ARDepthSensorSettings;
   v5 = [(ARImageSensorSettings *)&v9 copyWithZone:?];
-  v6 = [(NSString *)self->_timeOfFlightProjectorMode copyWithZone:a3];
+  v6 = [(NSString *)self->_timeOfFlightProjectorMode copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 

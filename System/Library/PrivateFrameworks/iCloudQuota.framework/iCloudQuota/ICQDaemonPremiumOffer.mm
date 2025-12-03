@@ -1,13 +1,13 @@
 @interface ICQDaemonPremiumOffer
 + (id)_mutablePlaceholderPersistanceDictionary;
-- (id)_initWithAccount:(id)a3 error:(id)a4;
+- (id)_initWithAccount:(id)account error:(id)error;
 @end
 
 @implementation ICQDaemonPremiumOffer
 
 + (id)_mutablePlaceholderPersistanceDictionary
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___ICQDaemonPremiumOffer;
   v2 = objc_msgSendSuper2(&v4, sel__mutablePlaceholderPersistanceDictionary);
   [v2 setObject:&unk_2884436E8 forKey:@"isPremiumOffer"];
@@ -15,11 +15,11 @@
   return v2;
 }
 
-- (id)_initWithAccount:(id)a3 error:(id)a4
+- (id)_initWithAccount:(id)account error:(id)error
 {
   v11.receiver = self;
   v11.super_class = ICQDaemonPremiumOffer;
-  v4 = [(ICQDaemonOffer *)&v11 _initWithAccount:a3 error:a4];
+  v4 = [(ICQDaemonOffer *)&v11 _initWithAccount:account error:error];
   if (v4)
   {
     v5 = _ICQGetLogSystem();
@@ -29,8 +29,8 @@
       _os_log_impl(&dword_275572000, v5, OS_LOG_TYPE_DEFAULT, "Creating premium offer placeholder", v10, 2u);
     }
 
-    v6 = [v4 serverDictionary];
-    v7 = [v6 mutableCopy];
+    serverDictionary = [v4 serverDictionary];
+    v7 = [serverDictionary mutableCopy];
 
     [v7 setObject:MEMORY[0x277CBEC38] forKey:@"isPremiumOffer"];
     [v7 setObject:@"PremiumJourneys" forKey:@"offerType"];

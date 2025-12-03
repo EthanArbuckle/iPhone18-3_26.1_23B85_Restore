@@ -1,31 +1,31 @@
 @interface _PGInterruption
-- (BOOL)isEqual:(id)a3;
-- (_PGInterruption)initWithReason:(int64_t)a3 attribution:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_PGInterruption)initWithReason:(int64_t)reason attribution:(id)attribution;
 - (id)description;
 @end
 
 @implementation _PGInterruption
 
-- (_PGInterruption)initWithReason:(int64_t)a3 attribution:(id)a4
+- (_PGInterruption)initWithReason:(int64_t)reason attribution:(id)attribution
 {
-  v6 = a4;
+  attributionCopy = attribution;
   v17.receiver = self;
   v17.super_class = _PGInterruption;
   v7 = [(_PGInterruption *)&v17 init];
   v8 = v7;
   if (v7)
   {
-    v7->_reason = a3;
-    v9 = [(__CFString *)v6 copy];
+    v7->_reason = reason;
+    v9 = [(__CFString *)attributionCopy copy];
     attribution = v8->_attribution;
     v8->_attribution = v9;
 
-    v11 = [MEMORY[0x1E698E6B8] builder];
-    v12 = [v11 appendInteger:a3];
+    builder = [MEMORY[0x1E698E6B8] builder];
+    v12 = [builder appendInteger:reason];
     v13 = v12;
-    if (v6)
+    if (attributionCopy)
     {
-      v14 = v6;
+      v14 = attributionCopy;
     }
 
     else
@@ -40,11 +40,11 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -67,16 +67,16 @@
 
   if (v8 && [v8 reason] == self->_reason)
   {
-    v9 = [v8 attribution];
-    if ([v9 isEqualToString:self->_attribution])
+    attribution = [v8 attribution];
+    if ([attribution isEqualToString:self->_attribution])
     {
       v10 = 1;
     }
 
     else
     {
-      v11 = [v8 attribution];
-      v10 = v11 == self->_attribution;
+      attribution2 = [v8 attribution];
+      v10 = attribution2 == self->_attribution;
     }
   }
 
@@ -111,9 +111,9 @@
     attribution = @"<nil>";
   }
 
-  v10 = [v3 stringWithFormat:@"%@: %@ - %@", v5, v8, attribution];
+  attribution = [v3 stringWithFormat:@"%@: %@ - %@", v5, v8, attribution];
 
-  return v10;
+  return attribution;
 }
 
 @end

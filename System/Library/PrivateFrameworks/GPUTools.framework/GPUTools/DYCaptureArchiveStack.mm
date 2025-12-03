@@ -1,51 +1,51 @@
 @interface DYCaptureArchiveStack
-- (BOOL)_stackIsEmpty:(id *)a3;
-- (BOOL)adjunctFileExistsForFilename:(id)a3 error:(id *)a4;
-- (BOOL)fileExistsForFilename:(id)a3 error:(id *)a4;
-- (BOOL)fileExistsForFilenameBuffer:(const char *)a3 error:(id *)a4;
-- (BOOL)getInfo:(id *)a3 forFilePosition:(unint64_t)a4 error:(id *)a5;
-- (BOOL)getInfo:(id *)a3 forFilename:(id)a4 error:(id *)a5;
-- (BOOL)getInfo:(id *)a3 forFilenameBuffer:(const char *)a4 error:(id *)a5;
-- (BOOL)requestDataForFilePosition:(unint64_t)a3 buffer:(void *)a4 size:(unint64_t *)a5 error:(id *)a6;
+- (BOOL)_stackIsEmpty:(id *)empty;
+- (BOOL)adjunctFileExistsForFilename:(id)filename error:(id *)error;
+- (BOOL)fileExistsForFilename:(id)filename error:(id *)error;
+- (BOOL)fileExistsForFilenameBuffer:(const char *)buffer error:(id *)error;
+- (BOOL)getInfo:(id *)info forFilePosition:(unint64_t)position error:(id *)error;
+- (BOOL)getInfo:(id *)info forFilename:(id)filename error:(id *)error;
+- (BOOL)getInfo:(id *)info forFilenameBuffer:(const char *)buffer error:(id *)error;
+- (BOOL)requestDataForFilePosition:(unint64_t)position buffer:(void *)buffer size:(unint64_t *)size error:(id *)error;
 - (id).cxx_construct;
 - (id)allObjects;
-- (id)copyAdjunctDataForFilename:(id)a3 error:(id *)a4;
-- (id)copyDataForFilePosition:(unint64_t)a3 error:(id *)a4;
-- (id)copyDataForFilename:(id)a3 error:(id *)a4;
-- (id)copyDataForFilenameBuffer:(const char *)a3 error:(id *)a4;
-- (id)filenamesWithPredicate:(id)a3 error:(id *)a4;
-- (id)filenamesWithPrefix:(id)a3 error:(id *)a4;
-- (id)getFilenameForFilePosition:(unint64_t)a3 error:(id *)a4;
-- (id)metadataValueForKey:(id)a3;
-- (id)openFileWithFilename:(id)a3 error:(id *)a4;
-- (id)resolveFilename:(id)a3 error:(id *)a4;
+- (id)copyAdjunctDataForFilename:(id)filename error:(id *)error;
+- (id)copyDataForFilePosition:(unint64_t)position error:(id *)error;
+- (id)copyDataForFilename:(id)filename error:(id *)error;
+- (id)copyDataForFilenameBuffer:(const char *)buffer error:(id *)error;
+- (id)filenamesWithPredicate:(id)predicate error:(id *)error;
+- (id)filenamesWithPrefix:(id)prefix error:(id *)error;
+- (id)getFilenameForFilePosition:(unint64_t)position error:(id *)error;
+- (id)metadataValueForKey:(id)key;
+- (id)openFileWithFilename:(id)filename error:(id *)error;
+- (id)resolveFilename:(id)filename error:(id *)error;
 - (id)top;
-- (int64_t)readDataForFilePosition:(unint64_t)a3 buffer:(void *)a4 size:(unint64_t)a5 error:(id *)a6;
-- (int64_t)readDataForFilename:(id)a3 buffer:(void *)a4 size:(unint64_t)a5 error:(id *)a6;
-- (int64_t)readDataForFilenameBuffer:(const char *)a3 buffer:(void *)a4 size:(unint64_t)a5 error:(id *)a6;
+- (int64_t)readDataForFilePosition:(unint64_t)position buffer:(void *)buffer size:(unint64_t)size error:(id *)error;
+- (int64_t)readDataForFilename:(id)filename buffer:(void *)buffer size:(unint64_t)size error:(id *)error;
+- (int64_t)readDataForFilenameBuffer:(const char *)buffer buffer:(void *)a4 size:(unint64_t)size error:(id *)error;
 - (vector<unsigned)getSortedFilePositionsForDataCaching;
-- (void)allocateAndReadDataForFilenameBuffer:(const char *)a3 outSize:(unint64_t *)a4 error:(id *)a5;
+- (void)allocateAndReadDataForFilenameBuffer:(const char *)buffer outSize:(unint64_t *)size error:(id *)error;
 - (void)cacheAllResources;
 - (void)close;
-- (void)push:(id)a3;
-- (void)releaseBytesForFilePosition:(unint64_t)a3;
+- (void)push:(id)push;
+- (void)releaseBytesForFilePosition:(unint64_t)position;
 @end
 
 @implementation DYCaptureArchiveStack
 
-- (void)push:(id)a3
+- (void)push:(id)push
 {
-  v8 = a3;
-  v5 = a3;
+  pushCopy = push;
+  pushCopy2 = push;
   end = self->_archives.__end_;
   if (end >= self->_archives.__cap_)
   {
-    v7 = std::vector<GPUTools::objc_ref<DYCaptureArchive *>>::__emplace_back_slow_path<DYCaptureArchive *&>(&self->_archives.__begin_, &v8);
+    v7 = std::vector<GPUTools::objc_ref<DYCaptureArchive *>>::__emplace_back_slow_path<DYCaptureArchive *&>(&self->_archives.__begin_, &pushCopy);
   }
 
   else
   {
-    *end = a3;
+    *end = push;
     v7 = end + 1;
   }
 
@@ -80,13 +80,13 @@
   return v3;
 }
 
-- (BOOL)_stackIsEmpty:(id *)a3
+- (BOOL)_stackIsEmpty:(id *)empty
 {
   begin = self->_archives.__begin_;
   end = self->_archives.__end_;
-  if (a3 && begin == end)
+  if (empty && begin == end)
   {
-    *a3 = [MEMORY[0x277D0AFC0] errorWithDomain:*MEMORY[0x277D0AFB8] code:13 userInfo:0];
+    *empty = [MEMORY[0x277D0AFC0] errorWithDomain:*MEMORY[0x277D0AFB8] code:13 userInfo:0];
   }
 
   return begin == end;
@@ -104,16 +104,16 @@
   [(DYCaptureArchiveStack *)self clear];
 }
 
-- (id)resolveFilename:(id)a3 error:(id *)a4
+- (id)resolveFilename:(id)filename error:(id *)error
 {
-  if (![(DYCaptureArchiveStack *)self _stackIsEmpty:a4])
+  if (![(DYCaptureArchiveStack *)self _stackIsEmpty:error])
   {
     p_archives = &self->_archives;
     begin = self->_archives.__begin_;
     for (i = p_archives->__end_; i != begin; i -= 8)
     {
       v11 = *(i - 1);
-      result = [v11 resolveFilename:a3 error:a4];
+      result = [v11 resolveFilename:filename error:error];
       if (result)
       {
         return result;
@@ -131,7 +131,7 @@
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
   end = self->__end_;
-  v58 = self;
+  selfCopy = self;
   v5 = self->__cap_ - end;
   if (v5)
   {
@@ -170,13 +170,13 @@
       v66 = 0;
       v67 = 0;
       std::vector<dy_capture_index_file_entry_t *>::reserve(&__p, v5);
-      v7 = v58->__end_;
-      cap = v58->__cap_;
+      v7 = selfCopy->__end_;
+      cap = selfCopy->__cap_;
       if (v7 != cap)
       {
         do
         {
-          v8 = [*v7 _fileTable];
+          _fileTable = [*v7 _fileTable];
           v9 = v66;
           if (v66 >= v67)
           {
@@ -208,7 +208,7 @@
             }
 
             v14 = (8 * v11);
-            *v14 = v8;
+            *v14 = _fileTable;
             v10 = 8 * v11 + 8;
             v15 = v14 - (v66 - __p);
             memcpy(v15, __p, v66 - __p);
@@ -224,7 +224,7 @@
 
           else
           {
-            *v66 = v8;
+            *v66 = _fileTable;
             v10 = (v9 + 8);
           }
 
@@ -233,8 +233,8 @@
         }
 
         while (v7 != cap);
-        v7 = v58->__end_;
-        cap = v58->__cap_;
+        v7 = selfCopy->__end_;
+        cap = selfCopy->__cap_;
       }
 
       v62 = 0u;
@@ -251,25 +251,25 @@
         do
         {
           v17 = cap;
-          v18 = [*v7 _header];
-          v19 = [*v7 _hashTable];
-          v20 = [*v7 _fileTable];
-          v21 = [*v7 _stringTableStorage];
-          v22 = [*v7 _stringTableOffsets];
-          v23 = *(v18 + 8);
+          _header = [*v7 _header];
+          _hashTable = [*v7 _hashTable];
+          _fileTable2 = [*v7 _fileTable];
+          _stringTableStorage = [*v7 _stringTableStorage];
+          _stringTableOffsets = [*v7 _stringTableOffsets];
+          v23 = *(_header + 8);
           if (v23)
           {
-            v24 = v22;
-            v25 = (v7 - v58->__end_) >> 3;
-            v26 = (v19 + 8);
+            v24 = _stringTableOffsets;
+            v25 = (v7 - selfCopy->__end_) >> 3;
+            v26 = (_hashTable + 8);
             v27 = 12 * v23;
             do
             {
               v28 = *(v26 - 2);
               if (v28 != -1 && *v26 == -1)
               {
-                v68 = (*(v24 + 8 * *(v26 - 1)) + v21);
-                v29 = (v20 + 24 * v28);
+                v68 = (*(v24 + 8 * *(v26 - 1)) + _stringTableStorage);
+                v29 = (_fileTable2 + 24 * v28);
                 v59 = v29;
                 v60 = v25;
                 v30 = std::__hash_table<std::__hash_value_type<char const*,std::pair<dy_capture_index_file_entry_t *,unsigned long>>,std::__unordered_map_hasher<char const*,std::__hash_value_type<char const*,std::pair<dy_capture_index_file_entry_t *,unsigned long>>,GPUTools::CStringHash::hash,GPUTools::CStringHash::equal,true>,std::__unordered_map_equal<char const*,std::__hash_value_type<char const*,std::pair<dy_capture_index_file_entry_t *,unsigned long>>,GPUTools::CStringHash::equal,GPUTools::CStringHash::hash,true>,std::allocator<std::__hash_value_type<char const*,std::pair<dy_capture_index_file_entry_t *,unsigned long>>>>::__emplace_unique_key_args<char const*,char const*&,std::pair<dy_capture_index_file_entry_t *,unsigned long>>(&v62, &v68);
@@ -481,16 +481,16 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
   return v5;
 }
 
-- (id)openFileWithFilename:(id)a3 error:(id *)a4
+- (id)openFileWithFilename:(id)filename error:(id *)error
 {
-  if (![(DYCaptureArchiveStack *)self _stackIsEmpty:a4])
+  if (![(DYCaptureArchiveStack *)self _stackIsEmpty:error])
   {
     p_archives = &self->_archives;
     begin = self->_archives.__begin_;
     for (i = p_archives->__end_; i != begin; i -= 8)
     {
       v11 = *(i - 1);
-      result = [v11 openFileWithFilename:a3 error:a4];
+      result = [v11 openFileWithFilename:filename error:error];
       if (result)
       {
         return result;
@@ -501,9 +501,9 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
   return 0;
 }
 
-- (int64_t)readDataForFilenameBuffer:(const char *)a3 buffer:(void *)a4 size:(unint64_t)a5 error:(id *)a6
+- (int64_t)readDataForFilenameBuffer:(const char *)buffer buffer:(void *)a4 size:(unint64_t)size error:(id *)error
 {
-  if (![(DYCaptureArchiveStack *)self _stackIsEmpty:a6])
+  if (![(DYCaptureArchiveStack *)self _stackIsEmpty:error])
   {
     v17 = 0;
     begin = self->_archives.__begin_;
@@ -513,7 +513,7 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
     {
       v14 = *(end - 1);
       end -= 8;
-      result = [v14 readDataForFilenameBuffer:a3 buffer:a4 size:a5 error:&v17];
+      result = [v14 readDataForFilenameBuffer:buffer buffer:a4 size:size error:&v17];
       if (result != -1)
       {
         return result;
@@ -527,9 +527,9 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
       v16 = v17;
       if (!v17 || [v17 code] != 13 || (objc_msgSend(objc_msgSend(v16, "domain"), "isEqualToString:", v13) & 1) == 0)
       {
-        if (a6)
+        if (error)
         {
-          *a6 = v17;
+          *error = v17;
         }
 
         return -1;
@@ -540,16 +540,16 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
   return -1;
 }
 
-- (int64_t)readDataForFilename:(id)a3 buffer:(void *)a4 size:(unint64_t)a5 error:(id *)a6
+- (int64_t)readDataForFilename:(id)filename buffer:(void *)buffer size:(unint64_t)size error:(id *)error
 {
-  v10 = [a3 cStringUsingEncoding:1];
+  v10 = [filename cStringUsingEncoding:1];
 
-  return [(DYCaptureArchiveStack *)self readDataForFilenameBuffer:v10 buffer:a4 size:a5 error:a6];
+  return [(DYCaptureArchiveStack *)self readDataForFilenameBuffer:v10 buffer:buffer size:size error:error];
 }
 
-- (id)copyDataForFilenameBuffer:(const char *)a3 error:(id *)a4
+- (id)copyDataForFilenameBuffer:(const char *)buffer error:(id *)error
 {
-  if ([(DYCaptureArchiveStack *)self _stackIsEmpty:a4])
+  if ([(DYCaptureArchiveStack *)self _stackIsEmpty:error])
   {
     return 0;
   }
@@ -567,7 +567,7 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
     v14 = 0;
     v10 = *(end - 1);
     end -= 8;
-    v11 = [v10 copyDataForFilenameBuffer:a3 error:&v14];
+    v11 = [v10 copyDataForFilenameBuffer:buffer error:&v14];
     if (v11)
     {
       break;
@@ -581,9 +581,9 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
     v12 = v14;
     if (!v14 || [v14 code] != 13 || (objc_msgSend(objc_msgSend(v12, "domain"), "isEqualToString:", v9) & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v14;
+        *error = v14;
       }
 
       return v11;
@@ -598,16 +598,16 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
   return v11;
 }
 
-- (id)copyDataForFilename:(id)a3 error:(id *)a4
+- (id)copyDataForFilename:(id)filename error:(id *)error
 {
-  v6 = [a3 cStringUsingEncoding:1];
+  v6 = [filename cStringUsingEncoding:1];
 
-  return [(DYCaptureArchiveStack *)self copyDataForFilenameBuffer:v6 error:a4];
+  return [(DYCaptureArchiveStack *)self copyDataForFilenameBuffer:v6 error:error];
 }
 
-- (void)allocateAndReadDataForFilenameBuffer:(const char *)a3 outSize:(unint64_t *)a4 error:(id *)a5
+- (void)allocateAndReadDataForFilenameBuffer:(const char *)buffer outSize:(unint64_t *)size error:(id *)error
 {
-  if (![(DYCaptureArchiveStack *)self _stackIsEmpty:a5])
+  if (![(DYCaptureArchiveStack *)self _stackIsEmpty:error])
   {
     v15 = 0;
     begin = self->_archives.__begin_;
@@ -617,7 +617,7 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
     {
       v13 = *(end - 1);
       end -= 8;
-      result = [v13 allocateAndReadDataForFilenameBuffer:a3 outSize:a4 error:&v15];
+      result = [v13 allocateAndReadDataForFilenameBuffer:buffer outSize:size error:&v15];
       if (result)
       {
         return result;
@@ -631,13 +631,13 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
       v14 = v15;
       if (!v15 || [v15 code] != 13 || (objc_msgSend(objc_msgSend(v14, "domain"), "isEqualToString:", v12) & 1) == 0)
       {
-        if (!a5)
+        if (!error)
         {
           return 0;
         }
 
         result = 0;
-        *a5 = v15;
+        *error = v15;
         return result;
       }
     }
@@ -646,9 +646,9 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
   return 0;
 }
 
-- (BOOL)getInfo:(id *)a3 forFilenameBuffer:(const char *)a4 error:(id *)a5
+- (BOOL)getInfo:(id *)info forFilenameBuffer:(const char *)buffer error:(id *)error
 {
-  if ([(DYCaptureArchiveStack *)self _stackIsEmpty:a5])
+  if ([(DYCaptureArchiveStack *)self _stackIsEmpty:error])
   {
     return 0;
   }
@@ -664,7 +664,7 @@ BOOL __61__DYCaptureArchiveStack_getSortedFilePositionsForDataCaching__block_inv
     {
 LABEL_10:
       result = 0;
-      if (!a5)
+      if (!error)
       {
         return result;
       }
@@ -674,7 +674,7 @@ LABEL_10:
 
     v14 = *(end - 1);
     end = end - 8;
-    if ([v14 getInfo:a3 forFilenameBuffer:a4 error:&v16])
+    if ([v14 getInfo:info forFilenameBuffer:buffer error:&v16])
     {
       break;
     }
@@ -700,27 +700,27 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  a3->var0 |= -(v13 + (self->_archives.__begin_ << 29)) | 0x8000000000000000;
+  info->var0 |= -(v13 + (self->_archives.__begin_ << 29)) | 0x8000000000000000;
   result = 1;
-  if (a5)
+  if (error)
   {
 LABEL_11:
-    *a5 = v16;
+    *error = v16;
   }
 
   return result;
 }
 
-- (BOOL)getInfo:(id *)a3 forFilename:(id)a4 error:(id *)a5
+- (BOOL)getInfo:(id *)info forFilename:(id)filename error:(id *)error
 {
-  v8 = [a4 cStringUsingEncoding:1];
+  v8 = [filename cStringUsingEncoding:1];
 
-  return [(DYCaptureArchiveStack *)self getInfo:a3 forFilenameBuffer:v8 error:a5];
+  return [(DYCaptureArchiveStack *)self getInfo:info forFilenameBuffer:v8 error:error];
 }
 
-- (BOOL)fileExistsForFilenameBuffer:(const char *)a3 error:(id *)a4
+- (BOOL)fileExistsForFilenameBuffer:(const char *)buffer error:(id *)error
 {
-  if ([(DYCaptureArchiveStack *)self _stackIsEmpty:a4])
+  if ([(DYCaptureArchiveStack *)self _stackIsEmpty:error])
   {
     return 0;
   }
@@ -739,7 +739,7 @@ LABEL_11:
   do
   {
     v11 = *v10--;
-    result = [v11 fileExistsForFilenameBuffer:a3 error:&v14];
+    result = [v11 fileExistsForFilenameBuffer:buffer error:&v14];
     if (result)
     {
       break;
@@ -753,11 +753,11 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)fileExistsForFilename:(id)a3 error:(id *)a4
+- (BOOL)fileExistsForFilename:(id)filename error:(id *)error
 {
-  v6 = [a3 cStringUsingEncoding:1];
+  v6 = [filename cStringUsingEncoding:1];
 
-  return [(DYCaptureArchiveStack *)self fileExistsForFilenameBuffer:v6 error:a4];
+  return [(DYCaptureArchiveStack *)self fileExistsForFilenameBuffer:v6 error:error];
 }
 
 - (void)cacheAllResources
@@ -780,14 +780,14 @@ LABEL_11:
   }
 }
 
-- (void)releaseBytesForFilePosition:(unint64_t)a3
+- (void)releaseBytesForFilePosition:(unint64_t)position
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((position & 0x8000000000000000) == 0)
   {
     [DYCaptureArchiveStack releaseBytesForFilePosition:];
   }
 
-  v3 = HIDWORD(a3) & 0x7FFFFFFF;
+  v3 = HIDWORD(position) & 0x7FFFFFFF;
   begin = self->_archives.__begin_;
   if (v3 >= (self->_archives.__end_ - begin) >> 3)
   {
@@ -799,14 +799,14 @@ LABEL_11:
   [v5 releaseBytesForFilePosition:?];
 }
 
-- (BOOL)requestDataForFilePosition:(unint64_t)a3 buffer:(void *)a4 size:(unint64_t *)a5 error:(id *)a6
+- (BOOL)requestDataForFilePosition:(unint64_t)position buffer:(void *)buffer size:(unint64_t *)size error:(id *)error
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((position & 0x8000000000000000) == 0)
   {
     [DYCaptureArchiveStack requestDataForFilePosition:buffer:size:error:];
   }
 
-  v6 = HIDWORD(a3) & 0x7FFFFFFF;
+  v6 = HIDWORD(position) & 0x7FFFFFFF;
   begin = self->_archives.__begin_;
   if (v6 >= (self->_archives.__end_ - begin) >> 3)
   {
@@ -818,14 +818,14 @@ LABEL_11:
   return [v8 requestDataForFilePosition:? buffer:? size:? error:?];
 }
 
-- (int64_t)readDataForFilePosition:(unint64_t)a3 buffer:(void *)a4 size:(unint64_t)a5 error:(id *)a6
+- (int64_t)readDataForFilePosition:(unint64_t)position buffer:(void *)buffer size:(unint64_t)size error:(id *)error
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((position & 0x8000000000000000) == 0)
   {
     [DYCaptureArchiveStack readDataForFilePosition:buffer:size:error:];
   }
 
-  v6 = HIDWORD(a3) & 0x7FFFFFFF;
+  v6 = HIDWORD(position) & 0x7FFFFFFF;
   begin = self->_archives.__begin_;
   if (v6 >= (self->_archives.__end_ - begin) >> 3)
   {
@@ -837,14 +837,14 @@ LABEL_11:
   return [v8 readDataForFilePosition:? buffer:? size:? error:?];
 }
 
-- (id)copyDataForFilePosition:(unint64_t)a3 error:(id *)a4
+- (id)copyDataForFilePosition:(unint64_t)position error:(id *)error
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((position & 0x8000000000000000) == 0)
   {
     [DYCaptureArchiveStack copyDataForFilePosition:error:];
   }
 
-  v4 = HIDWORD(a3) & 0x7FFFFFFF;
+  v4 = HIDWORD(position) & 0x7FFFFFFF;
   begin = self->_archives.__begin_;
   if (v4 >= (self->_archives.__end_ - begin) >> 3)
   {
@@ -856,14 +856,14 @@ LABEL_11:
   return [v6 copyDataForFilePosition:? error:?];
 }
 
-- (BOOL)getInfo:(id *)a3 forFilePosition:(unint64_t)a4 error:(id *)a5
+- (BOOL)getInfo:(id *)info forFilePosition:(unint64_t)position error:(id *)error
 {
-  if ((a4 & 0x8000000000000000) == 0)
+  if ((position & 0x8000000000000000) == 0)
   {
     [DYCaptureArchiveStack getInfo:forFilePosition:error:];
   }
 
-  v5 = HIDWORD(a4) & 0x7FFFFFFF;
+  v5 = HIDWORD(position) & 0x7FFFFFFF;
   begin = self->_archives.__begin_;
   if (v5 >= (self->_archives.__end_ - begin) >> 3)
   {
@@ -872,17 +872,17 @@ LABEL_11:
 
   v7 = begin[v5];
 
-  return [v7 getInfo:a3 forFilePosition:? error:?];
+  return [v7 getInfo:info forFilePosition:? error:?];
 }
 
-- (id)getFilenameForFilePosition:(unint64_t)a3 error:(id *)a4
+- (id)getFilenameForFilePosition:(unint64_t)position error:(id *)error
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((position & 0x8000000000000000) == 0)
   {
     [DYCaptureArchiveStack getFilenameForFilePosition:error:];
   }
 
-  v4 = HIDWORD(a3) & 0x7FFFFFFF;
+  v4 = HIDWORD(position) & 0x7FFFFFFF;
   begin = self->_archives.__begin_;
   if (v4 >= (self->_archives.__end_ - begin) >> 3)
   {
@@ -894,7 +894,7 @@ LABEL_11:
   return [v6 getFilenameForFilePosition:? error:?];
 }
 
-- (id)metadataValueForKey:(id)a3
+- (id)metadataValueForKey:(id)key
 {
   if (![(DYCaptureArchiveStack *)self _stackIsEmpty:0])
   {
@@ -903,7 +903,7 @@ LABEL_11:
     for (i = p_archives->__end_; i != begin; i -= 8)
     {
       v9 = *(i - 1);
-      result = [v9 metadataValueForKey:a3];
+      result = [v9 metadataValueForKey:key];
       if (result)
       {
         return result;
@@ -914,7 +914,7 @@ LABEL_11:
   return 0;
 }
 
-- (id)copyAdjunctDataForFilename:(id)a3 error:(id *)a4
+- (id)copyAdjunctDataForFilename:(id)filename error:(id *)error
 {
   if (![(DYCaptureArchiveStack *)self _stackIsEmpty:0])
   {
@@ -923,7 +923,7 @@ LABEL_11:
     for (i = p_archives->__end_; i != begin; i -= 8)
     {
       v11 = *(i - 1);
-      result = [v11 copyAdjunctDataForFilename:a3 error:a4];
+      result = [v11 copyAdjunctDataForFilename:filename error:error];
       if (result)
       {
         return result;
@@ -934,9 +934,9 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)adjunctFileExistsForFilename:(id)a3 error:(id *)a4
+- (BOOL)adjunctFileExistsForFilename:(id)filename error:(id *)error
 {
-  if ([(DYCaptureArchiveStack *)self _stackIsEmpty:a4])
+  if ([(DYCaptureArchiveStack *)self _stackIsEmpty:error])
   {
     return 0;
   }
@@ -955,7 +955,7 @@ LABEL_11:
   do
   {
     v11 = *v10--;
-    result = [v11 adjunctFileExistsForFilename:a3 error:&v14];
+    result = [v11 adjunctFileExistsForFilename:filename error:&v14];
     if (result)
     {
       break;
@@ -977,7 +977,7 @@ LABEL_11:
   return self;
 }
 
-- (id)filenamesWithPrefix:(id)a3 error:(id *)a4
+- (id)filenamesWithPrefix:(id)prefix error:(id *)error
 {
   v7 = objc_opt_new();
   begin = self->_archives.__begin_;
@@ -986,11 +986,11 @@ LABEL_11:
   {
     if (begin == end)
     {
-      v11 = [v7 allObjects];
+      allObjects = [v7 allObjects];
       goto LABEL_6;
     }
 
-    v10 = [*begin filenamesWithPrefix:a3 error:a4];
+    v10 = [*begin filenamesWithPrefix:prefix error:error];
     if (!v10)
     {
       break;
@@ -1000,13 +1000,13 @@ LABEL_11:
     ++begin;
   }
 
-  v11 = 0;
+  allObjects = 0;
 LABEL_6:
 
-  return v11;
+  return allObjects;
 }
 
-- (id)filenamesWithPredicate:(id)a3 error:(id *)a4
+- (id)filenamesWithPredicate:(id)predicate error:(id *)error
 {
   v7 = objc_opt_new();
   begin = self->_archives.__begin_;
@@ -1015,11 +1015,11 @@ LABEL_6:
   {
     if (begin == end)
     {
-      v11 = [v7 allObjects];
+      allObjects = [v7 allObjects];
       goto LABEL_6;
     }
 
-    v10 = [*begin filenamesWithPredicate:a3 error:a4];
+    v10 = [*begin filenamesWithPredicate:predicate error:error];
     if (!v10)
     {
       break;
@@ -1029,10 +1029,10 @@ LABEL_6:
     ++begin;
   }
 
-  v11 = 0;
+  allObjects = 0;
 LABEL_6:
 
-  return v11;
+  return allObjects;
 }
 
 @end

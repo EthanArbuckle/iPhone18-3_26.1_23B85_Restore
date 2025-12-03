@@ -1,5 +1,5 @@
 @interface BRCRetryCounter
-- (BRCRetryCounter)initWithThrottleHash:(int64_t)a3;
+- (BRCRetryCounter)initWithThrottleHash:(int64_t)hash;
 - (void)incrementRetry;
 @end
 
@@ -12,7 +12,7 @@
   self->_scheduled = 0;
 }
 
-- (BRCRetryCounter)initWithThrottleHash:(int64_t)a3
+- (BRCRetryCounter)initWithThrottleHash:(int64_t)hash
 {
   v7.receiver = self;
   v7.super_class = BRCRetryCounter;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_throttleHash = a3;
+    v4->_throttleHash = hash;
     [(BRCRetryCounter *)v4 incrementRetry];
   }
 

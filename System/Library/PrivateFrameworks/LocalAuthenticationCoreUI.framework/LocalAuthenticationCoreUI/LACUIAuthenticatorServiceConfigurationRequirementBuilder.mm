@@ -1,15 +1,15 @@
 @interface LACUIAuthenticatorServiceConfigurationRequirementBuilder
 + (id)_biometryEvents;
-+ (id)extractAvailableMechanisms:(unint64_t)a3;
-+ (unint64_t)buildWithAvailableMechanisms:(id)a3;
++ (id)extractAvailableMechanisms:(unint64_t)mechanisms;
++ (unint64_t)buildWithAvailableMechanisms:(id)mechanisms;
 @end
 
 @implementation LACUIAuthenticatorServiceConfigurationRequirementBuilder
 
-+ (unint64_t)buildWithAvailableMechanisms:(id)a3
++ (unint64_t)buildWithAvailableMechanisms:(id)mechanisms
 {
-  v3 = a3;
-  v4 = [[LACUIAvailableMechanismsWrapper alloc] initWithMechanismEvents:v3];
+  mechanismsCopy = mechanisms;
+  v4 = [[LACUIAvailableMechanismsWrapper alloc] initWithMechanismEvents:mechanismsCopy];
 
   if ([(LACUIAvailableMechanismsWrapper *)v4 isEmpty])
   {
@@ -63,13 +63,13 @@ LABEL_3:
   return v5;
 }
 
-+ (id)extractAvailableMechanisms:(unint64_t)a3
++ (id)extractAvailableMechanisms:(unint64_t)mechanisms
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEBF8];
-  if (a3 > 3)
+  if (mechanisms > 3)
   {
-    if (a3 == 4)
+    if (mechanisms == 4)
     {
       v4 = +[LACUIAuthenticatorServiceConfigurationRequirementBuilder _biometryEvents];
       v5 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23F00]];
@@ -80,7 +80,7 @@ LABEL_3:
 
     else
     {
-      if (a3 != 6)
+      if (mechanisms != 6)
       {
         goto LABEL_12;
       }
@@ -98,13 +98,13 @@ LABEL_3:
 
   else
   {
-    if (a3 == 1)
+    if (mechanisms == 1)
     {
       v3 = +[LACUIAuthenticatorServiceConfigurationRequirementBuilder _biometryEvents];
       goto LABEL_12;
     }
 
-    if (a3 != 2)
+    if (mechanisms != 2)
     {
       goto LABEL_12;
     }

@@ -1,11 +1,11 @@
 @interface FMCongestionCell
 - (BOOL)canReceiveCongestionMetric;
 - (BOOL)isCongested;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isMatchForMetric:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isMatchForMetric:(id)metric;
 - (id)description;
 - (id)dlBottleneckScoreAsString;
-- (id)init:(id)a3 subscriptionID:(id)a4 mcc:(id)a5 mnc:(id)a6 gci:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9;
+- (id)init:(id)init subscriptionID:(id)d mcc:(id)mcc mnc:(id)mnc gci:(id)gci rat:(id)rat arfcnOrUarfcn:(id)uarfcn;
 - (id)ulBottleneckScoreAsString;
 - (unint64_t)hash;
 @end
@@ -14,49 +14,49 @@
 
 - (id)dlBottleneckScoreAsString
 {
-  v3 = [(FMCongestionCell *)self congestionMetric];
+  congestionMetric = [(FMCongestionCell *)self congestionMetric];
 
-  if (!v3)
+  if (!congestionMetric)
   {
     return @"unknown";
   }
 
-  v4 = [(FMCongestionCell *)self congestionMetric];
-  v5 = [v4 dlBottleneckScoreHigh];
+  congestionMetric2 = [(FMCongestionCell *)self congestionMetric];
+  dlBottleneckScoreHigh = [congestionMetric2 dlBottleneckScoreHigh];
 
-  if (v5)
+  if (dlBottleneckScoreHigh)
   {
     return @"high";
   }
 
-  v7 = [(FMCongestionCell *)self congestionMetric];
-  v8 = [v7 dlBottleneckScoreMedium];
+  congestionMetric3 = [(FMCongestionCell *)self congestionMetric];
+  dlBottleneckScoreMedium = [congestionMetric3 dlBottleneckScoreMedium];
 
-  if (v8)
+  if (dlBottleneckScoreMedium)
   {
     return @"medium";
   }
 
-  v9 = [(FMCongestionCell *)self congestionMetric];
-  v10 = [v9 dlBottleneckScoreLow];
+  congestionMetric4 = [(FMCongestionCell *)self congestionMetric];
+  dlBottleneckScoreLow = [congestionMetric4 dlBottleneckScoreLow];
 
-  if (v10)
+  if (dlBottleneckScoreLow)
   {
     return @"low";
   }
 
-  v11 = [(FMCongestionCell *)self congestionMetric];
-  v12 = [v11 dlBottleneckScoreNo];
+  congestionMetric5 = [(FMCongestionCell *)self congestionMetric];
+  dlBottleneckScoreNo = [congestionMetric5 dlBottleneckScoreNo];
 
-  if (v12)
+  if (dlBottleneckScoreNo)
   {
     return @"no";
   }
 
-  v13 = [(FMCongestionCell *)self congestionMetric];
-  v14 = [v13 dlBottleneckScoreInvalid];
+  congestionMetric6 = [(FMCongestionCell *)self congestionMetric];
+  dlBottleneckScoreInvalid = [congestionMetric6 dlBottleneckScoreInvalid];
 
-  if (v14)
+  if (dlBottleneckScoreInvalid)
   {
     return @"invalid";
   }
@@ -69,49 +69,49 @@
 
 - (id)ulBottleneckScoreAsString
 {
-  v3 = [(FMCongestionCell *)self congestionMetric];
+  congestionMetric = [(FMCongestionCell *)self congestionMetric];
 
-  if (!v3)
+  if (!congestionMetric)
   {
     return @"unknown";
   }
 
-  v4 = [(FMCongestionCell *)self congestionMetric];
-  v5 = [v4 ulBottleneckScoreHigh];
+  congestionMetric2 = [(FMCongestionCell *)self congestionMetric];
+  ulBottleneckScoreHigh = [congestionMetric2 ulBottleneckScoreHigh];
 
-  if (v5)
+  if (ulBottleneckScoreHigh)
   {
     return @"high";
   }
 
-  v7 = [(FMCongestionCell *)self congestionMetric];
-  v8 = [v7 ulBottleneckScoreMedium];
+  congestionMetric3 = [(FMCongestionCell *)self congestionMetric];
+  ulBottleneckScoreMedium = [congestionMetric3 ulBottleneckScoreMedium];
 
-  if (v8)
+  if (ulBottleneckScoreMedium)
   {
     return @"medium";
   }
 
-  v9 = [(FMCongestionCell *)self congestionMetric];
-  v10 = [v9 ulBottleneckScoreLow];
+  congestionMetric4 = [(FMCongestionCell *)self congestionMetric];
+  ulBottleneckScoreLow = [congestionMetric4 ulBottleneckScoreLow];
 
-  if (v10)
+  if (ulBottleneckScoreLow)
   {
     return @"low";
   }
 
-  v11 = [(FMCongestionCell *)self congestionMetric];
-  v12 = [v11 ulBottleneckScoreNo];
+  congestionMetric5 = [(FMCongestionCell *)self congestionMetric];
+  ulBottleneckScoreNo = [congestionMetric5 ulBottleneckScoreNo];
 
-  if (v12)
+  if (ulBottleneckScoreNo)
   {
     return @"no";
   }
 
-  v13 = [(FMCongestionCell *)self congestionMetric];
-  v14 = [v13 ulBottleneckScoreInvalid];
+  congestionMetric6 = [(FMCongestionCell *)self congestionMetric];
+  ulBottleneckScoreInvalid = [congestionMetric6 ulBottleneckScoreInvalid];
 
-  if (v14)
+  if (ulBottleneckScoreInvalid)
   {
     return @"invalid";
   }
@@ -122,29 +122,29 @@
   }
 }
 
-- (id)init:(id)a3 subscriptionID:(id)a4 mcc:(id)a5 mnc:(id)a6 gci:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9
+- (id)init:(id)init subscriptionID:(id)d mcc:(id)mcc mnc:(id)mnc gci:(id)gci rat:(id)rat arfcnOrUarfcn:(id)uarfcn
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v16 = a8;
-  v17 = a9;
+  initCopy = init;
+  dCopy = d;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  gciCopy = gci;
+  ratCopy = rat;
+  uarfcnCopy = uarfcn;
   v28.receiver = self;
   v28.super_class = FMCongestionCell;
   v18 = [(FMCongestionCell *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_timestamp, a3);
-    objc_storeStrong(&v19->_lastUpdatedTimestamp, a3);
-    objc_storeStrong(&v19->_subscriptionID, a4);
-    objc_storeStrong(&v19->_mcc, a5);
-    objc_storeStrong(&v19->_mnc, a6);
-    objc_storeStrong(&v19->_gci, a7);
-    objc_storeStrong(&v19->_rat, a8);
-    objc_storeStrong(&v19->_arfcnOrUarfcn, a9);
+    objc_storeStrong(&v18->_timestamp, init);
+    objc_storeStrong(&v19->_lastUpdatedTimestamp, init);
+    objc_storeStrong(&v19->_subscriptionID, d);
+    objc_storeStrong(&v19->_mcc, mcc);
+    objc_storeStrong(&v19->_mnc, mnc);
+    objc_storeStrong(&v19->_gci, gci);
+    objc_storeStrong(&v19->_rat, rat);
+    objc_storeStrong(&v19->_arfcnOrUarfcn, uarfcn);
     congestionMetric = v19->_congestionMetric;
     v19->_congestionMetric = 0;
 
@@ -156,32 +156,32 @@
 
 - (id)description
 {
-  v3 = [(FMCongestionCell *)self timestamp];
-  v4 = [(FMCongestionCell *)self lastUpdatedTimestamp];
-  v5 = [(FMCongestionCell *)self subscriptionID];
+  timestamp = [(FMCongestionCell *)self timestamp];
+  lastUpdatedTimestamp = [(FMCongestionCell *)self lastUpdatedTimestamp];
+  subscriptionID = [(FMCongestionCell *)self subscriptionID];
   v6 = [(FMCongestionCell *)self mcc];
   v7 = [(FMCongestionCell *)self mnc];
   v8 = [(FMCongestionCell *)self gci];
   v9 = [(FMCongestionCell *)self rat];
-  v10 = [(FMCongestionCell *)self arfcnOrUarfcn];
-  v11 = [(FMCongestionCell *)self congestionMetric];
-  v12 = [NSString stringWithFormat:@"timestamp %@, lastUpdatedTimestamp %@, subscriptionID %@, mcc %@, mnc %@, gci %@, rat %@, arfcnOrUarfcn %@, congestionMetric %@", v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  arfcnOrUarfcn = [(FMCongestionCell *)self arfcnOrUarfcn];
+  congestionMetric = [(FMCongestionCell *)self congestionMetric];
+  v12 = [NSString stringWithFormat:@"timestamp %@, lastUpdatedTimestamp %@, subscriptionID %@, mcc %@, mnc %@, gci %@, rat %@, arfcnOrUarfcn %@, congestionMetric %@", timestamp, lastUpdatedTimestamp, subscriptionID, v6, v7, v8, v9, arfcnOrUarfcn, congestionMetric];
 
   return v12;
 }
 
-- (BOOL)isMatchForMetric:(id)a3
+- (BOOL)isMatchForMetric:(id)metric
 {
-  v4 = a3;
-  if (v4)
+  metricCopy = metric;
+  if (metricCopy)
   {
     v5 = [(FMCongestionCell *)self gci];
-    v6 = [v4 gci];
+    v6 = [metricCopy gci];
     if ([v5 isEqualToString:v6])
     {
-      v7 = [(FMCongestionCell *)self subscriptionID];
-      v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 subsId]);
-      v9 = [v7 isEqualToNumber:v8];
+      subscriptionID = [(FMCongestionCell *)self subscriptionID];
+      v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [metricCopy subsId]);
+      v9 = [subscriptionID isEqualToNumber:v8];
     }
 
     else
@@ -200,15 +200,15 @@
 
 - (BOOL)isCongested
 {
-  v3 = [(FMCongestionCell *)self congestionMetric];
+  congestionMetric = [(FMCongestionCell *)self congestionMetric];
 
-  if (v3)
+  if (congestionMetric)
   {
-    v4 = [(FMCongestionCell *)self congestionMetric];
-    LOBYTE(v3) = [v4 isCongested];
+    congestionMetric2 = [(FMCongestionCell *)self congestionMetric];
+    LOBYTE(congestionMetric) = [congestionMetric2 isCongested];
   }
 
-  return v3;
+  return congestionMetric;
 }
 
 - (BOOL)canReceiveCongestionMetric
@@ -230,18 +230,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(FMCongestionCell *)self subscriptionID];
-      v7 = [v5 subscriptionID];
-      if (![v6 isEqualToNumber:v7])
+      v5 = equalCopy;
+      subscriptionID = [(FMCongestionCell *)self subscriptionID];
+      subscriptionID2 = [v5 subscriptionID];
+      if (![subscriptionID isEqualToNumber:subscriptionID2])
       {
         v12 = 0;
 LABEL_25:
@@ -289,15 +289,15 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v19 = [(FMCongestionCell *)self arfcnOrUarfcn];
-      if (v19 || ([v5 arfcnOrUarfcn], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+      arfcnOrUarfcn = [(FMCongestionCell *)self arfcnOrUarfcn];
+      if (arfcnOrUarfcn || ([v5 arfcnOrUarfcn], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v18 = [(FMCongestionCell *)self arfcnOrUarfcn];
-        v17 = [v5 arfcnOrUarfcn];
-        v12 = [v18 isEqualToNumber:v17];
+        arfcnOrUarfcn2 = [(FMCongestionCell *)self arfcnOrUarfcn];
+        arfcnOrUarfcn3 = [v5 arfcnOrUarfcn];
+        v12 = [arfcnOrUarfcn2 isEqualToNumber:arfcnOrUarfcn3];
 
-        v13 = v19;
-        if (v19)
+        v13 = arfcnOrUarfcn;
+        if (arfcnOrUarfcn)
         {
 LABEL_20:
 
@@ -324,8 +324,8 @@ LABEL_26:
 
 - (unint64_t)hash
 {
-  v3 = [(FMCongestionCell *)self subscriptionID];
-  v4 = [v3 hash];
+  subscriptionID = [(FMCongestionCell *)self subscriptionID];
+  v4 = [subscriptionID hash];
 
   v5 = [(FMCongestionCell *)self mcc];
   v6 = [v5 hash];
@@ -339,8 +339,8 @@ LABEL_26:
   v11 = [(FMCongestionCell *)self rat];
   v12 = [v11 hash];
 
-  v13 = [(FMCongestionCell *)self arfcnOrUarfcn];
-  v14 = [v13 hash];
+  arfcnOrUarfcn = [(FMCongestionCell *)self arfcnOrUarfcn];
+  v14 = [arfcnOrUarfcn hash];
   v15 = v8 + 1024 * v4 + 32 * (v6 - v4) - (v6 - v4) + -32 * v4;
   v16 = v12 - &v10[32 * v15 - v15] + 32 * &v10[32 * v15 - v15];
   v17 = v14 + 32 * v16 - v16;

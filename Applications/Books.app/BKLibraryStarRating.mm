@@ -1,24 +1,24 @@
 @interface BKLibraryStarRating
-- (BKLibraryStarRating)initWithFrame:(CGRect)a3;
+- (BKLibraryStarRating)initWithFrame:(CGRect)frame;
 - (BKLibraryStarRatingDelegate)delegate;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (double)roundRatingForStars:(double)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (double)roundRatingForStars:(double)stars;
 - (id)accessibilityLabel;
-- (id)starForIndex:(int64_t)a3;
-- (id)templateStar:(unint64_t)a3;
+- (id)starForIndex:(int64_t)index;
+- (id)templateStar:(unint64_t)star;
 - (unint64_t)accessibilityTraits;
-- (unint64_t)starKindForIndex:(int64_t)a3;
+- (unint64_t)starKindForIndex:(int64_t)index;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 - (void)clearStars;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)setEmptyColor:(id)a3;
-- (void)setFillColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setFrameColor:(id)a3;
-- (void)setIsRTL:(BOOL)a3;
-- (void)setRating:(double)a3;
-- (void)setRatingWithTouch:(id)a3;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)setEmptyColor:(id)color;
+- (void)setFillColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setFrameColor:(id)color;
+- (void)setIsRTL:(BOOL)l;
+- (void)setRating:(double)rating;
+- (void)setRatingWithTouch:(id)touch;
 - (void)setupStarShapes;
 - (void)tintStarViews;
 - (void)updateStars;
@@ -26,11 +26,11 @@
 
 @implementation BKLibraryStarRating
 
-- (BKLibraryStarRating)initWithFrame:(CGRect)a3
+- (BKLibraryStarRating)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = BKLibraryStarRating;
-  v3 = [(BKLibraryStarRating *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKLibraryStarRating *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor blackColor];
@@ -53,26 +53,26 @@
   return v3;
 }
 
-- (id)templateStar:(unint64_t)a3
+- (id)templateStar:(unint64_t)star
 {
-  v5 = [(BKLibraryStarRating *)self starSize];
+  starSize = [(BKLibraryStarRating *)self starSize];
   v6 = +[BSUITemplate manager];
-  v7 = [v6 imageResourceCache];
-  v8 = [(BKLibraryStarRating *)self _screen];
-  [v8 scale];
-  v9 = [TUIRatingsBox starRatingImage:a3 size:v5 fromCache:v7 withScale:?];
+  imageResourceCache = [v6 imageResourceCache];
+  _screen = [(BKLibraryStarRating *)self _screen];
+  [_screen scale];
+  v9 = [TUIRatingsBox starRatingImage:star size:starSize fromCache:imageResourceCache withScale:?];
 
   v10 = [v9 imageWithRenderingMode:2];
 
   return v10;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(BKLibraryStarRating *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -97,10 +97,10 @@
       v14 = v13 | 0x7FC0000000000000;
     }
 
-    v15 = [TUIRatingsBox sizeFromWidth:v14, 0x1700007FC00000];
-    if (v15 != [(BKLibraryStarRating *)self starSize]|| ([(BKLibraryStarRating *)self fullStar], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
+    0x1700007FC00000 = [TUIRatingsBox sizeFromWidth:v14, 0x1700007FC00000];
+    if (0x1700007FC00000 != [(BKLibraryStarRating *)self starSize]|| ([(BKLibraryStarRating *)self fullStar], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
     {
-      [(BKLibraryStarRating *)self setStarSize:v15];
+      [(BKLibraryStarRating *)self setStarSize:0x1700007FC00000];
       v17 = [(BKLibraryStarRating *)self templateStar:0];
       [(BKLibraryStarRating *)self setOutlineStar:v17];
 
@@ -109,8 +109,8 @@
 
       if ([(BKLibraryStarRating *)self isRTL])
       {
-        v19 = [(BKLibraryStarRating *)self halfStar];
-        v20 = +[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", [v19 CGImage], 4, 1.0);
+        halfStar = [(BKLibraryStarRating *)self halfStar];
+        v20 = +[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", [halfStar CGImage], 4, 1.0);
 
         v21 = [v20 imageWithRenderingMode:2];
 
@@ -135,16 +135,16 @@
   }
 }
 
-- (void)setIsRTL:(BOOL)a3
+- (void)setIsRTL:(BOOL)l
 {
-  if (self->_isRTL != a3)
+  if (self->_isRTL != l)
   {
-    self->_isRTL = a3;
+    self->_isRTL = l;
     [(BKLibraryStarRating *)self setupStarShapes];
   }
 }
 
-- (unint64_t)starKindForIndex:(int64_t)a3
+- (unint64_t)starKindForIndex:(int64_t)index
 {
   [(BKLibraryStarRating *)self rating];
   if (v5 <= 0.0)
@@ -153,9 +153,9 @@
   }
 
   v6 = v5;
-  v7 = [(BKLibraryStarRating *)self isRTL];
+  isRTL = [(BKLibraryStarRating *)self isRTL];
   v8 = 1.0 - v6;
-  if (!v7)
+  if (!isRTL)
   {
     v8 = v6;
   }
@@ -168,12 +168,12 @@
   v14 = floor(v12);
   if ([(BKLibraryStarRating *)self isRTL])
   {
-    if (v13 <= a3)
+    if (v13 <= index)
     {
       return 2;
     }
 
-    if (v14 > a3)
+    if (v14 > index)
     {
       return 0;
     }
@@ -181,7 +181,7 @@
 
   else
   {
-    v15 = (a3 + 1);
+    v15 = (index + 1);
     if (v14 >= v15)
     {
       return 2;
@@ -217,74 +217,74 @@
   return 0;
 }
 
-- (id)starForIndex:(int64_t)a3
+- (id)starForIndex:(int64_t)index
 {
-  v4 = [(BKLibraryStarRating *)self starKindForIndex:a3];
+  v4 = [(BKLibraryStarRating *)self starKindForIndex:index];
   if (v4 == 2)
   {
-    v5 = [(BKLibraryStarRating *)self fullStar];
+    fullStar = [(BKLibraryStarRating *)self fullStar];
   }
 
   else if (v4 == 1)
   {
-    v5 = [(BKLibraryStarRating *)self halfStar];
+    fullStar = [(BKLibraryStarRating *)self halfStar];
   }
 
   else if (v4)
   {
-    v5 = 0;
+    fullStar = 0;
   }
 
   else
   {
-    v5 = [(BKLibraryStarRating *)self outlineStar];
+    fullStar = [(BKLibraryStarRating *)self outlineStar];
   }
 
-  return v5;
+  return fullStar;
 }
 
-- (void)setFrameColor:(id)a3
+- (void)setFrameColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_frameColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_frameColor, a3);
+    objc_storeStrong(&self->_frameColor, color);
     [(BKLibraryStarRating *)self tintStarViews];
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_fillColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_fillColor, a3);
+    objc_storeStrong(&self->_fillColor, color);
     [(BKLibraryStarRating *)self tintStarViews];
   }
 }
 
-- (void)setEmptyColor:(id)a3
+- (void)setEmptyColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_emptyColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_emptyColor, a3);
+    objc_storeStrong(&self->_emptyColor, color);
     [(BKLibraryStarRating *)self tintStarViews];
   }
 }
 
 - (void)clearStars
 {
-  v3 = [(BKLibraryStarRating *)self stars];
-  [v3 enumerateObjectsUsingBlock:&stru_100A04D30];
+  stars = [(BKLibraryStarRating *)self stars];
+  [stars enumerateObjectsUsingBlock:&stru_100A04D30];
 
   [(BKLibraryStarRating *)self setStars:0];
 }
 
 - (void)updateStars
 {
-  v3 = [(BKLibraryStarRating *)self stars];
-  v4 = [v3 count];
+  stars = [(BKLibraryStarRating *)self stars];
+  v4 = [stars count];
   [(BKLibraryStarRating *)self numberOfStars];
   v6 = v5;
 
@@ -307,14 +307,14 @@
       v5 = [(BKLibraryStarRating *)self starForIndex:v4 - 1];
       if (v5)
       {
-        v6 = [(BKLibraryStarRating *)self stars];
-        v7 = [v6 objectAtIndexedSubscript:v4 - 1];
+        stars = [(BKLibraryStarRating *)self stars];
+        v7 = [stars objectAtIndexedSubscript:v4 - 1];
 
         [v7 setImage:v5];
         [(BKLibraryStarRating *)self rating];
         if (v8 == 0.0)
         {
-          v9 = [(BKLibraryStarRating *)self emptyColor];
+          emptyColor = [(BKLibraryStarRating *)self emptyColor];
         }
 
         else
@@ -328,11 +328,11 @@
           {
             [(BKLibraryStarRating *)self frameColor];
           }
-          v9 = ;
+          emptyColor = ;
         }
 
-        v10 = v9;
-        [v7 setTintColor:v9];
+        v10 = emptyColor;
+        [v7 setTintColor:emptyColor];
 
         [v7 setNeedsLayout];
       }
@@ -348,8 +348,8 @@
 
 - (void)setupStarShapes
 {
-  v3 = [(BKLibraryStarRating *)self stars];
-  v4 = [v3 count];
+  stars = [(BKLibraryStarRating *)self stars];
+  v4 = [stars count];
   [(BKLibraryStarRating *)self numberOfStars];
   v6 = v5;
 
@@ -375,8 +375,8 @@
           v15 = v11 + v14 + 20.0;
           [v13 setFrame:{v11, 0.0, 20.0, 20.0}];
           [v13 setContentMode:1];
-          v16 = [(BKLibraryStarRating *)self stars];
-          [v16 addObject:v13];
+          stars2 = [(BKLibraryStarRating *)self stars];
+          [stars2 addObject:v13];
 
           [(BKLibraryStarRating *)self addSubview:v13];
           v11 = v15;
@@ -389,8 +389,8 @@
       while (v17 > v10);
     }
 
-    v18 = [(BKLibraryStarRating *)self stars];
-    v19 = [v18 count];
+    stars3 = [(BKLibraryStarRating *)self stars];
+    v19 = [stars3 count];
 
     if (!v19)
     {
@@ -403,17 +403,17 @@
   if (Width > 0.0)
   {
     v21 = Width;
-    v22 = [(BKLibraryStarRating *)self stars];
-    v23 = [v22 count];
+    stars4 = [(BKLibraryStarRating *)self stars];
+    v23 = [stars4 count];
     [(BKLibraryStarRating *)self numberOfStars];
     v25 = v24;
 
     if (v25 == v23)
     {
-      v26 = [(BKLibraryStarRating *)self stars];
-      v45 = [v26 firstObject];
+      stars5 = [(BKLibraryStarRating *)self stars];
+      firstObject = [stars5 firstObject];
 
-      [v45 frame];
+      [firstObject frame];
       v27 = CGRectGetWidth(v48);
       [(BKLibraryStarRating *)self frame];
       Height = CGRectGetHeight(v49);
@@ -453,8 +453,8 @@
         v41 = 0.0;
         do
         {
-          v42 = [(BKLibraryStarRating *)self stars];
-          v43 = [v42 objectAtIndexedSubscript:v38];
+          stars6 = [(BKLibraryStarRating *)self stars];
+          v43 = [stars6 objectAtIndexedSubscript:v38];
 
           [v43 setFrame:{v41, 0.0, v27, v29}];
           ++v38;
@@ -468,7 +468,7 @@
   }
 }
 
-- (double)roundRatingForStars:(double)a3
+- (double)roundRatingForStars:(double)stars
 {
   if ([(BKLibraryStarRating *)self allowHalfStars])
   {
@@ -481,7 +481,7 @@
   }
 
   [(BKLibraryStarRating *)self numberOfStars];
-  v7 = [NSNumber numberWithInteger:llround(v5 * (v6 * a3))];
+  v7 = [NSNumber numberWithInteger:llround(v5 * (v6 * stars))];
   [v7 doubleValue];
   v9 = v8 / v5;
 
@@ -489,9 +489,9 @@
   return v9 / v10;
 }
 
-- (void)setRating:(double)a3
+- (void)setRating:(double)rating
 {
-  [(BKLibraryStarRating *)self roundRatingForStars:a3];
+  [(BKLibraryStarRating *)self roundRatingForStars:rating];
   v5 = v4;
   if (self->_rating != v4)
   {
@@ -522,9 +522,9 @@
   [(BKLibraryStarRating *)self setAccessibilityValue:v14];
 }
 
-- (void)setRatingWithTouch:(id)a3
+- (void)setRatingWithTouch:(id)touch
 {
-  [a3 locationInView:self];
+  [touch locationInView:self];
   v5 = v4;
   v7 = v6;
   [(BKLibraryStarRating *)self bounds];
@@ -537,9 +537,9 @@
     [(BKLibraryStarRating *)self numberOfStars];
     v10 = 1.0 / v9;
     v11 = v5 / Width;
-    v12 = [(BKLibraryStarRating *)self isRTL];
+    isRTL = [(BKLibraryStarRating *)self isRTL];
     v13 = 1.0 - v11;
-    if (!v12)
+    if (!isRTL)
     {
       v13 = v11;
     }
@@ -565,9 +565,9 @@
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   [(BKLibraryStarRating *)self bounds];
   if (CGRectGetWidth(v9) <= 0.0 || ([(BKLibraryStarRating *)self numberOfStars], v6 <= 0.0))
   {
@@ -576,19 +576,19 @@
 
   else
   {
-    [(BKLibraryStarRating *)self setRatingWithTouch:v5];
+    [(BKLibraryStarRating *)self setRatingWithTouch:touchCopy];
     v7 = 1;
   }
 
   return v7;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(BKLibraryStarRating *)self setRatingWithTouch:a3, a4];
-  v5 = [(BKLibraryStarRating *)self delegate];
+  [(BKLibraryStarRating *)self setRatingWithTouch:touch, event];
+  delegate = [(BKLibraryStarRating *)self delegate];
   [(BKLibraryStarRating *)self rating];
-  [v5 starRatingDidChange:self rating:?];
+  [delegate starRatingDidChange:self rating:?];
 }
 
 - (id)accessibilityLabel
@@ -610,9 +610,9 @@
 - (unint64_t)accessibilityTraits
 {
   v2 = UIAccessibilityTraitNone;
-  v3 = [(BKLibraryStarRating *)self isEnabled];
+  isEnabled = [(BKLibraryStarRating *)self isEnabled];
   v4 = UIAccessibilityTraitAdjustable;
-  if (!v3)
+  if (!isEnabled)
   {
     v4 = 0;
   }
@@ -636,9 +636,9 @@
     }
 
     [(BKLibraryStarRating *)self setRating:v7];
-    v8 = [(BKLibraryStarRating *)self delegate];
+    delegate = [(BKLibraryStarRating *)self delegate];
     [(BKLibraryStarRating *)self rating];
-    [v8 starRatingDidChange:self rating:?];
+    [delegate starRatingDidChange:self rating:?];
   }
 }
 
@@ -658,9 +658,9 @@
     }
 
     [(BKLibraryStarRating *)self setRating:v7];
-    v8 = [(BKLibraryStarRating *)self delegate];
+    delegate = [(BKLibraryStarRating *)self delegate];
     [(BKLibraryStarRating *)self rating];
-    [v8 starRatingDidChange:self rating:?];
+    [delegate starRatingDidChange:self rating:?];
   }
 }
 

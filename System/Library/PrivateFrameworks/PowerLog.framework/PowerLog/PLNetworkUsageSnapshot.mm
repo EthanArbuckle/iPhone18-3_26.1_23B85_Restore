@@ -1,31 +1,31 @@
 @interface PLNetworkUsageSnapshot
-- (PLNetworkUsageSnapshot)initWithInfo:(id)a3;
-- (double)computeEnergyDiff:(id)a3;
-- (double)computeEnergyDiffUntilNow:(BOOL)a3;
+- (PLNetworkUsageSnapshot)initWithInfo:(id)info;
+- (double)computeEnergyDiff:(id)diff;
+- (double)computeEnergyDiffUntilNow:(BOOL)now;
 - (id)description;
 - (void)snapshotNetworkState;
 @end
 
 @implementation PLNetworkUsageSnapshot
 
-- (PLNetworkUsageSnapshot)initWithInfo:(id)a3
+- (PLNetworkUsageSnapshot)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = PLNetworkUsageSnapshot;
   v5 = [(PLNetworkUsageSnapshot *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    [(PLNetworkUsageSnapshot *)v5 setTimestamp:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PLNetworkUsageSnapshot *)v5 setTimestamp:date];
 
-    v7 = [v4 objectForKeyedSubscript:@"cell"];
+    v7 = [infoCopy objectForKeyedSubscript:@"cell"];
     [(PLNetworkUsageSnapshot *)v5 setCellType:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"quality"];
+    v8 = [infoCopy objectForKeyedSubscript:@"quality"];
     [(PLNetworkUsageSnapshot *)v5 setQuality:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"wifi"];
+    v9 = [infoCopy objectForKeyedSubscript:@"wifi"];
     [(PLNetworkUsageSnapshot *)v5 setWifi:v9];
   }
 
@@ -34,29 +34,29 @@
 
 - (void)snapshotNetworkState
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(PLNetworkUsageSnapshot *)self setTimestamp:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PLNetworkUsageSnapshot *)self setTimestamp:date];
 }
 
-- (double)computeEnergyDiffUntilNow:(BOOL)a3
+- (double)computeEnergyDiffUntilNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   v5 = objc_alloc_init(PLNetworkUsageSnapshot);
-  v6 = [MEMORY[0x1E695DF00] date];
-  [(PLNetworkUsageSnapshot *)v5 setTimestamp:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PLNetworkUsageSnapshot *)v5 setTimestamp:date];
 
-  v7 = [(PLNetworkUsageSnapshot *)self cellType];
-  [(PLNetworkUsageSnapshot *)v5 setCellType:v7];
+  cellType = [(PLNetworkUsageSnapshot *)self cellType];
+  [(PLNetworkUsageSnapshot *)v5 setCellType:cellType];
 
-  v8 = [(PLNetworkUsageSnapshot *)self quality];
-  [(PLNetworkUsageSnapshot *)v5 setQuality:v8];
+  quality = [(PLNetworkUsageSnapshot *)self quality];
+  [(PLNetworkUsageSnapshot *)v5 setQuality:quality];
 
-  v9 = [(PLNetworkUsageSnapshot *)self wifi];
-  [(PLNetworkUsageSnapshot *)v5 setWifi:v9];
+  wifi = [(PLNetworkUsageSnapshot *)self wifi];
+  [(PLNetworkUsageSnapshot *)v5 setWifi:wifi];
 
   [(PLNetworkUsageSnapshot *)v5 computeEnergyDiff:self];
   v11 = v10;
-  if (v3)
+  if (nowCopy)
   {
     v12 = PLLogDiscretionaryEnergyMonitor();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -75,31 +75,31 @@
   return v11;
 }
 
-- (double)computeEnergyDiff:(id)a3
+- (double)computeEnergyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   v5 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [PLNetworkUsageSnapshot computeEnergyDiff:];
   }
 
-  v6 = [(PLNetworkUsageSnapshot *)self timestamp];
-  v7 = [v4 timestamp];
-  [v6 timeIntervalSinceDate:v7];
+  timestamp = [(PLNetworkUsageSnapshot *)self timestamp];
+  timestamp2 = [diffCopy timestamp];
+  [timestamp timeIntervalSinceDate:timestamp2];
   v9 = v8;
 
-  v10 = [(PLNetworkUsageSnapshot *)self wifi];
+  wifi = [(PLNetworkUsageSnapshot *)self wifi];
 
-  if (v10)
+  if (wifi)
   {
     v11 = 15.3333333;
   }
 
   else
   {
-    v12 = [(PLNetworkUsageSnapshot *)self cellType];
-    v13 = [v12 isEqualToString:@"5G"];
+    cellType = [(PLNetworkUsageSnapshot *)self cellType];
+    v13 = [cellType isEqualToString:@"5G"];
 
     if (v13)
     {
@@ -108,8 +108,8 @@
 
     else
     {
-      v14 = [(PLNetworkUsageSnapshot *)self cellType];
-      v15 = [v14 isEqualToString:@"LTE"];
+      cellType2 = [(PLNetworkUsageSnapshot *)self cellType];
+      v15 = [cellType2 isEqualToString:@"LTE"];
 
       if (v15)
       {
@@ -118,8 +118,8 @@
 
       else
       {
-        v16 = [(PLNetworkUsageSnapshot *)self cellType];
-        v17 = [v16 isEqualToString:@"PreLTE"];
+        cellType3 = [(PLNetworkUsageSnapshot *)self cellType];
+        v17 = [cellType3 isEqualToString:@"PreLTE"];
 
         v11 = 0.0;
         if (v17)
@@ -138,11 +138,11 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLNetworkUsageSnapshot *)self timestamp];
-  v5 = [(PLNetworkUsageSnapshot *)self cellType];
-  v6 = [(PLNetworkUsageSnapshot *)self quality];
-  v7 = [(PLNetworkUsageSnapshot *)self wifi];
-  v8 = [v3 stringWithFormat:@"timestamp=%@, cellType=%@, quality=%@, WiFi=%@", v4, v5, v6, v7];
+  timestamp = [(PLNetworkUsageSnapshot *)self timestamp];
+  cellType = [(PLNetworkUsageSnapshot *)self cellType];
+  quality = [(PLNetworkUsageSnapshot *)self quality];
+  wifi = [(PLNetworkUsageSnapshot *)self wifi];
+  v8 = [v3 stringWithFormat:@"timestamp=%@, cellType=%@, quality=%@, WiFi=%@", timestamp, cellType, quality, wifi];
 
   return v8;
 }

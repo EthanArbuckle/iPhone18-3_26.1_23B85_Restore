@@ -1,32 +1,32 @@
 @interface SGMSuggestedContactDetailUsed
 - (SGMSuggestedContactDetailUsed)init;
-- (void)trackEventWithScalar:(unint64_t)a3 app:(SGMContactDetailUsedApp_)a4;
+- (void)trackEventWithScalar:(unint64_t)scalar app:(SGMContactDetailUsedApp_)app;
 @end
 
 @implementation SGMSuggestedContactDetailUsed
 
-- (void)trackEventWithScalar:(unint64_t)a3 app:(SGMContactDetailUsedApp_)a4
+- (void)trackEventWithScalar:(unint64_t)scalar app:(SGMContactDetailUsedApp_)app
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  if (a4.var0 >= 0xC)
+  if (app.var0 >= 0xC)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMContactDetailUsedApp_toString(SGMContactDetailUsedApp)"];
-    [v8 handleFailureInFunction:v9 file:@"SGMetricsDefines.h" lineNumber:94 description:{@"unrecognized tag %lu on SGMContactDetailUsedApp", a4.var0}];
+    [currentHandler handleFailureInFunction:v9 file:@"SGMetricsDefines.h" lineNumber:94 description:{@"unrecognized tag %lu on SGMContactDetailUsedApp", app.var0}];
 
     v7 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v7 = off_1E7EFBE68[a4.var0];
+    v7 = off_1E7EFBE68[app.var0];
   }
 
   v10 = v7;
   tracker = self->_tracker;
   v14[0] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v12 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v12 value:scalar];
 
   v13 = *MEMORY[0x1E69E9840];
 }

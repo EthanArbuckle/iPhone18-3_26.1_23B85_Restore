@@ -1,13 +1,13 @@
 @interface WebBookmarkList
-- (WebBookmarkList)initWithQuery:(id)a3 skipOffset:(unsigned int)a4 collection:(id)a5 queue:(id)a6;
+- (WebBookmarkList)initWithQuery:(id)query skipOffset:(unsigned int)offset collection:(id)collection queue:(id)queue;
 - (id)_arrayForDifferenceCalculation;
 - (id)_sortedBookmarksByDateAdded;
 - (id)bookmarkArray;
 - (id)bookmarkArraySkippingDecodeSyncData;
-- (id)bookmarksSortedByDateWithLimit:(unsigned int)a3;
-- (id)differenceFromList:(id)a3 withOptions:(unint64_t)a4;
-- (void)_loadBookmarksForDifferenceFromList:(id)a3;
-- (void)loadBookmarksArraySortedByDateAsynchronously:(id)a3;
+- (id)bookmarksSortedByDateWithLimit:(unsigned int)limit;
+- (id)differenceFromList:(id)list withOptions:(unint64_t)options;
+- (void)_loadBookmarksForDifferenceFromList:(id)list;
+- (void)loadBookmarksArraySortedByDateAsynchronously:(id)asynchronously;
 @end
 
 @implementation WebBookmarkList
@@ -17,12 +17,12 @@
   bookmarkCount = self->_bookmarkCount;
   if (!bookmarkCount)
   {
-    v9 = [(WebBookmarkList *)self->_shadowBookmarkList bookmarkArray];
-    v7 = v9;
+    bookmarkArray = [(WebBookmarkList *)self->_shadowBookmarkList bookmarkArray];
+    bookmarkArray2 = bookmarkArray;
     v10 = MEMORY[0x277CBEBF8];
-    if (v9)
+    if (bookmarkArray)
     {
-      v10 = v9;
+      v10 = bookmarkArray;
     }
 
     v8 = v10;
@@ -34,8 +34,8 @@
   bookmarks = self->_bookmarks;
   if (shadowBookmarkList)
   {
-    v7 = [(WebBookmarkList *)shadowBookmarkList bookmarkArray];
-    v8 = [(NSMutableArray *)bookmarks arrayByAddingObjectsFromArray:v7];
+    bookmarkArray2 = [(WebBookmarkList *)shadowBookmarkList bookmarkArray];
+    v8 = [(NSMutableArray *)bookmarks arrayByAddingObjectsFromArray:bookmarkArray2];
 LABEL_7:
     v11 = v8;
 
@@ -63,12 +63,12 @@ uint64_t __66__WebBookmarkList__bookmarkAtIndex_paginate_skipDecodingSyncData___
   bookmarkCount = self->_bookmarkCount;
   if (!bookmarkCount)
   {
-    v9 = [(WebBookmarkList *)self->_shadowBookmarkList bookmarkArraySkippingDecodeSyncData];
-    v7 = v9;
+    bookmarkArraySkippingDecodeSyncData = [(WebBookmarkList *)self->_shadowBookmarkList bookmarkArraySkippingDecodeSyncData];
+    bookmarkArraySkippingDecodeSyncData2 = bookmarkArraySkippingDecodeSyncData;
     v10 = MEMORY[0x277CBEBF8];
-    if (v9)
+    if (bookmarkArraySkippingDecodeSyncData)
     {
-      v10 = v9;
+      v10 = bookmarkArraySkippingDecodeSyncData;
     }
 
     v8 = v10;
@@ -80,8 +80,8 @@ uint64_t __66__WebBookmarkList__bookmarkAtIndex_paginate_skipDecodingSyncData___
   bookmarks = self->_bookmarks;
   if (shadowBookmarkList)
   {
-    v7 = [(WebBookmarkList *)shadowBookmarkList bookmarkArraySkippingDecodeSyncData];
-    v8 = [(NSMutableArray *)bookmarks arrayByAddingObjectsFromArray:v7];
+    bookmarkArraySkippingDecodeSyncData2 = [(WebBookmarkList *)shadowBookmarkList bookmarkArraySkippingDecodeSyncData];
+    v8 = [(NSMutableArray *)bookmarks arrayByAddingObjectsFromArray:bookmarkArraySkippingDecodeSyncData2];
 LABEL_7:
     v11 = v8;
 
@@ -94,15 +94,15 @@ LABEL_9:
   return v11;
 }
 
-- (id)bookmarksSortedByDateWithLimit:(unsigned int)a3
+- (id)bookmarksSortedByDateWithLimit:(unsigned int)limit
 {
   bookmarkCount = self->_bookmarkCount;
   if (bookmarkCount)
   {
     v6 = bookmarkCount - 1;
-    if (v6 >= a3 - 1)
+    if (v6 >= limit - 1)
     {
-      v7 = a3 - 1;
+      v7 = limit - 1;
     }
 
     else
@@ -111,21 +111,21 @@ LABEL_9:
     }
 
     v8 = [(WebBookmarkList *)self _bookmarkAtIndex:v7 paginate:0 skipDecodingSyncData:0];
-    v9 = [(WebBookmarkList *)self _sortedBookmarksByDateAdded];
+    _sortedBookmarksByDateAdded = [(WebBookmarkList *)self _sortedBookmarksByDateAdded];
   }
 
   else
   {
-    v9 = MEMORY[0x277CBEBF8];
+    _sortedBookmarksByDateAdded = MEMORY[0x277CBEBF8];
   }
 
-  return v9;
+  return _sortedBookmarksByDateAdded;
 }
 
-- (void)loadBookmarksArraySortedByDateAsynchronously:(id)a3
+- (void)loadBookmarksArraySortedByDateAsynchronously:(id)asynchronously
 {
-  v4 = a3;
-  v5 = v4;
+  asynchronouslyCopy = asynchronously;
+  v5 = asynchronouslyCopy;
   if (self->_bookmarkCount)
   {
     v6 = [(NSMutableArray *)self->_bookmarks count];
@@ -142,8 +142,8 @@ LABEL_9:
     v8 = [(WebBookmarkList *)self _bookmarkAtIndex:v7 paginate:0 skipDecodingSyncData:0];
     if ([(NSMutableArray *)self->_bookmarks count]>= self->_bookmarkCount)
     {
-      v9 = [(WebBookmarkList *)self _sortedBookmarksByDateAdded];
-      (v5)[2](v5, v9);
+      _sortedBookmarksByDateAdded = [(WebBookmarkList *)self _sortedBookmarksByDateAdded];
+      (v5)[2](v5, _sortedBookmarksByDateAdded);
     }
 
     else
@@ -160,7 +160,7 @@ LABEL_9:
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x277CBEBF8]);
+    (*(asynchronouslyCopy + 2))(asynchronouslyCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
@@ -204,8 +204,8 @@ uint64_t __46__WebBookmarkList__sortedBookmarksByDateAdded__block_invoke_2(uint6
 - (id)_arrayForDifferenceCalculation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(WebBookmarkList *)self _primaryBookmarkCount];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:v3];
+  _primaryBookmarkCount = [(WebBookmarkList *)self _primaryBookmarkCount];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:_primaryBookmarkCount];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -225,8 +225,8 @@ uint64_t __46__WebBookmarkList__sortedBookmarksByDateAdded__block_invoke_2(uint6
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v17 + 1) + 8 * i) UUID];
-        [v4 addObject:v10];
+        uUID = [*(*(&v17 + 1) + 8 * i) UUID];
+        [v4 addObject:uUID];
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -235,7 +235,7 @@ uint64_t __46__WebBookmarkList__sortedBookmarksByDateAdded__block_invoke_2(uint6
     while (v7);
   }
 
-  if ([v4 count] < v3)
+  if ([v4 count] < _primaryBookmarkCount)
   {
     v11 = 0;
     do
@@ -248,7 +248,7 @@ uint64_t __46__WebBookmarkList__sortedBookmarksByDateAdded__block_invoke_2(uint6
       v11 = v12;
     }
 
-    while (v14 < v3);
+    while (v14 < _primaryBookmarkCount);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -256,18 +256,18 @@ uint64_t __46__WebBookmarkList__sortedBookmarksByDateAdded__block_invoke_2(uint6
   return v4;
 }
 
-- (void)_loadBookmarksForDifferenceFromList:(id)a3
+- (void)_loadBookmarksForDifferenceFromList:(id)list
 {
-  v9 = a3;
-  if (v9)
+  listCopy = list;
+  if (listCopy)
   {
-    v4 = [(WebBookmarkList *)self _primaryBookmarkCount];
-    v5 = v4 - [v9 _primaryBookmarkCount];
-    v6 = [v9[1] count];
+    _primaryBookmarkCount = [(WebBookmarkList *)self _primaryBookmarkCount];
+    v5 = _primaryBookmarkCount - [listCopy _primaryBookmarkCount];
+    v6 = [listCopy[1] count];
     v7 = (v5 + v6) & ~((v5 + v6) >> 63);
-    if (v7 >= v4)
+    if (v7 >= _primaryBookmarkCount)
     {
-      v7 = v4;
+      v7 = _primaryBookmarkCount;
     }
 
     if (v7)
@@ -277,35 +277,35 @@ uint64_t __46__WebBookmarkList__sortedBookmarksByDateAdded__block_invoke_2(uint6
   }
 }
 
-- (id)differenceFromList:(id)a3 withOptions:(unint64_t)a4
+- (id)differenceFromList:(id)list withOptions:(unint64_t)options
 {
-  v6 = a3;
-  if (a4)
+  listCopy = list;
+  if (options)
   {
-    [(WebBookmarkList *)self _loadBookmarksForDifferenceFromList:v6];
+    [(WebBookmarkList *)self _loadBookmarksForDifferenceFromList:listCopy];
   }
 
-  v7 = [(WebBookmarkList *)self _arrayForDifferenceCalculation];
-  if (v6)
+  _arrayForDifferenceCalculation = [(WebBookmarkList *)self _arrayForDifferenceCalculation];
+  if (listCopy)
   {
-    v8 = [v6 _arrayForDifferenceCalculation];
+    _arrayForDifferenceCalculation2 = [listCopy _arrayForDifferenceCalculation];
   }
 
   else
   {
-    v8 = MEMORY[0x277CBEBF8];
+    _arrayForDifferenceCalculation2 = MEMORY[0x277CBEBF8];
   }
 
-  v9 = [v7 differenceFromArray:v8 withOptions:(2 * a4) & 4];
+  v9 = [_arrayForDifferenceCalculation differenceFromArray:_arrayForDifferenceCalculation2 withOptions:(2 * options) & 4];
 
   return v9;
 }
 
-- (WebBookmarkList)initWithQuery:(id)a3 skipOffset:(unsigned int)a4 collection:(id)a5 queue:(id)a6
+- (WebBookmarkList)initWithQuery:(id)query skipOffset:(unsigned int)offset collection:(id)collection queue:(id)queue
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  queryCopy = query;
+  collectionCopy = collection;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = WebBookmarkList;
   v14 = [(WebBookmarkList *)&v20 init];
@@ -318,10 +318,10 @@ uint64_t __46__WebBookmarkList__sortedBookmarksByDateAdded__block_invoke_2(uint6
   bookmarks = v14->_bookmarks;
   v14->_bookmarks = v15;
 
-  objc_storeStrong(&v14->_query, a3);
-  v14->_skipOffset = a4;
-  objc_storeStrong(&v14->_collection, a5);
-  objc_storeStrong(&v14->_queue, a6);
+  objc_storeStrong(&v14->_query, query);
+  v14->_skipOffset = offset;
+  objc_storeStrong(&v14->_collection, collection);
+  objc_storeStrong(&v14->_queue, queue);
   v17 = [(WebBookmarkListQuery *)v14->_query countInCollection:v14->_collection];
   if (v17 == -1)
   {

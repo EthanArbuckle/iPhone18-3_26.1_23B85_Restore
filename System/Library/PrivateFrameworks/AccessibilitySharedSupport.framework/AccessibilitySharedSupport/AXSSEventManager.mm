@@ -1,29 +1,29 @@
 @interface AXSSEventManager
-- (AXSSEventManager)initWithActionManager:(id)a3;
-- (AXSSEventManager)initWithActionManager:(id)a3 commandMap:(id)a4;
+- (AXSSEventManager)initWithActionManager:(id)manager;
+- (AXSSEventManager)initWithActionManager:(id)manager commandMap:(id)map;
 - (AXSSKeyFilterDelegate)filterDelegate;
-- (BOOL)_handleCommand:(id)a3 event:(id)a4;
-- (BOOL)_handleEvent:(id)a3 forCaptureOnly:(BOOL)a4;
-- (BOOL)_performDownActionForCommand:(id)a3 info:(id)a4;
-- (BOOL)processKeyboardEvent:(id)a3;
-- (id)_tabbedKeyChordForKeyChord:(id)a3;
-- (void)_handleTabComboEvent:(id)a3;
-- (void)_handleTabEvent:(id)a3;
-- (void)_handleTabRepeatOrUpWithCommand:(id)a3;
+- (BOOL)_handleCommand:(id)command event:(id)event;
+- (BOOL)_handleEvent:(id)event forCaptureOnly:(BOOL)only;
+- (BOOL)_performDownActionForCommand:(id)command info:(id)info;
+- (BOOL)processKeyboardEvent:(id)event;
+- (id)_tabbedKeyChordForKeyChord:(id)chord;
+- (void)_handleTabComboEvent:(id)event;
+- (void)_handleTabEvent:(id)event;
+- (void)_handleTabRepeatOrUpWithCommand:(id)command;
 @end
 
 @implementation AXSSEventManager
 
-- (AXSSEventManager)initWithActionManager:(id)a3
+- (AXSSEventManager)initWithActionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_opt_new();
-  v6 = [(AXSSEventManager *)self initWithActionManager:v4 commandMap:v5];
+  v6 = [(AXSSEventManager *)self initWithActionManager:managerCopy commandMap:v5];
 
   return v6;
 }
 
-- (AXSSEventManager)initWithActionManager:(id)a3 commandMap:(id)a4
+- (AXSSEventManager)initWithActionManager:(id)manager commandMap:(id)map
 {
   v4 = MEMORY[0x1EEE9AC00](self);
   v6 = v5;
@@ -1721,94 +1721,94 @@ uint64_t __53__AXSSEventManager_initWithActionManager_commandMap___block_invoke_
   return v3;
 }
 
-- (BOOL)processKeyboardEvent:(id)a3
+- (BOOL)processKeyboardEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(AXSSEventManager *)self shouldCaptureEvent:v4];
+  eventCopy = event;
+  v5 = [(AXSSEventManager *)self shouldCaptureEvent:eventCopy];
   if (v5)
   {
-    [(AXSSEventManager *)self handleFKAEvent:v4];
+    [(AXSSEventManager *)self handleFKAEvent:eventCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_performDownActionForCommand:(id)a3 info:(id)a4
+- (BOOL)_performDownActionForCommand:(id)command info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  infoCopy = info;
   if ([(AXSSEventManager *)self shouldSuppressCommands])
   {
-    v8 = [(AXSSEventManager *)self actionManager];
-    [v8 didSuppressCommand:v6];
+    actionManager = [(AXSSEventManager *)self actionManager];
+    [actionManager didSuppressCommand:commandCopy];
 
     v9 = 0;
   }
 
-  else if ([v7 handlesBothDownAndUp])
+  else if ([infoCopy handlesBothDownAndUp])
   {
-    v10 = [v7 downHandler];
-    v10[2]();
+    downHandler = [infoCopy downHandler];
+    downHandler[2]();
 
-    [(AXSSEventManager *)self set_lastDownAndUpCommandInfo:v7];
+    [(AXSSEventManager *)self set_lastDownAndUpCommandInfo:infoCopy];
     v9 = 1;
   }
 
   else
   {
-    v11 = [v7 handler];
-    v9 = v11[2]();
+    handler = [infoCopy handler];
+    v9 = handler[2]();
   }
 
   return v9;
 }
 
-- (BOOL)_handleEvent:(id)a3 forCaptureOnly:(BOOL)a4
+- (BOOL)_handleEvent:(id)event forCaptureOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v4)
+  onlyCopy = only;
+  eventCopy = event;
+  if (!onlyCopy)
   {
-    v7 = [(AXSSEventManager *)self _lastDownAndUpCommandInfo];
-    if (v7)
+    _lastDownAndUpCommandInfo = [(AXSSEventManager *)self _lastDownAndUpCommandInfo];
+    if (_lastDownAndUpCommandInfo)
     {
-      v8 = v7;
-      v9 = [v6 isDownEvent];
+      v8 = _lastDownAndUpCommandInfo;
+      isDownEvent = [eventCopy isDownEvent];
 
-      if ((v9 & 1) == 0)
+      if ((isDownEvent & 1) == 0)
       {
-        v10 = [(AXSSEventManager *)self _lastDownAndUpCommandInfo];
-        v11 = [v10 upHandler];
-        v11[2]();
+        _lastDownAndUpCommandInfo2 = [(AXSSEventManager *)self _lastDownAndUpCommandInfo];
+        upHandler = [_lastDownAndUpCommandInfo2 upHandler];
+        upHandler[2]();
 
         [(AXSSEventManager *)self set_lastDownAndUpCommandInfo:0];
       }
     }
   }
 
-  v12 = [v6 keyCode];
-  v13 = [v6 modifierMask];
-  if (v12 != 43 || (v14 = v13, [(AXSSEventManager *)self isPassthroughModeEnabled]))
+  keyCode = [eventCopy keyCode];
+  modifierMask = [eventCopy modifierMask];
+  if (keyCode != 43 || (v14 = modifierMask, [(AXSSEventManager *)self isPassthroughModeEnabled]))
   {
     if ([(AXSSEventManager *)self _tabKeyPressed])
     {
-      if (!v4 && [v6 isDownEvent])
+      if (!onlyCopy && [eventCopy isDownEvent])
       {
-        [(AXSSEventManager *)self _handleTabComboEvent:v6];
+        [(AXSSEventManager *)self _handleTabComboEvent:eventCopy];
       }
 
       goto LABEL_19;
     }
 
-    v15 = [v6 keyChord];
-    if (v15)
+    keyChord = [eventCopy keyChord];
+    if (keyChord)
     {
-      v16 = [(AXSSEventManager *)self commandMap];
-      v17 = [v16 commandForKeyChord:v15];
+      commandMap = [(AXSSEventManager *)self commandMap];
+      v17 = [commandMap commandForKeyChord:keyChord];
 
       if (v17)
       {
-        if (v4)
+        if (onlyCopy)
         {
           goto LABEL_14;
         }
@@ -1816,17 +1816,17 @@ uint64_t __53__AXSSEventManager_initWithActionManager_commandMap___block_invoke_
 
       else
       {
-        v22 = [(AXSSEventManager *)self commandMap];
-        v23 = [v6 backupKeyChord];
-        v17 = [v22 commandForKeyChord:v23];
+        commandMap2 = [(AXSSEventManager *)self commandMap];
+        backupKeyChord = [eventCopy backupKeyChord];
+        v17 = [commandMap2 commandForKeyChord:backupKeyChord];
 
-        if (v4)
+        if (onlyCopy)
         {
 LABEL_14:
           if ([(AXSSEventManager *)self isPassthroughModeEnabled])
           {
-            v18 = [v17 standardCommandIdentifier];
-            v19 = [v18 isEqualToString:@"TogglePassthroughMode"];
+            standardCommandIdentifier = [v17 standardCommandIdentifier];
+            v19 = [standardCommandIdentifier isEqualToString:@"TogglePassthroughMode"];
           }
 
           else
@@ -1840,9 +1840,9 @@ LABEL_27:
         }
       }
 
-      if ([v6 isDownEvent])
+      if ([eventCopy isDownEvent])
       {
-        [(AXSSEventManager *)self _handleCommand:v17 event:v6];
+        [(AXSSEventManager *)self _handleCommand:v17 event:eventCopy];
       }
 
       v19 = 0;
@@ -1855,20 +1855,20 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!v4)
+  if (!onlyCopy)
   {
-    [(AXSSEventManager *)self _handleTabEvent:v6];
+    [(AXSSEventManager *)self _handleTabEvent:eventCopy];
     v19 = 0;
     goto LABEL_29;
   }
 
   if (v14)
   {
-    v20 = [(AXSSEventManager *)self commandMap];
-    v21 = [v6 keyChord];
-    v15 = [v20 commandForKeyChord:v21];
+    commandMap3 = [(AXSSEventManager *)self commandMap];
+    keyChord2 = [eventCopy keyChord];
+    keyChord = [commandMap3 commandForKeyChord:keyChord2];
 
-    v19 = v15 != 0;
+    v19 = keyChord != 0;
     goto LABEL_28;
   }
 
@@ -1879,68 +1879,68 @@ LABEL_29:
   return v19;
 }
 
-- (void)_handleTabRepeatOrUpWithCommand:(id)a3
+- (void)_handleTabRepeatOrUpWithCommand:(id)command
 {
-  v4 = a3;
-  if (v4)
+  commandCopy = command;
+  if (commandCopy)
   {
-    v11 = v4;
+    v11 = commandCopy;
     if ([(AXSSEventManager *)self shouldSuppressCommands])
     {
-      v5 = [(AXSSEventManager *)self actionManager];
-      [v5 didSuppressCommand:v11];
+      actionManager = [(AXSSEventManager *)self actionManager];
+      [actionManager didSuppressCommand:v11];
     }
 
     else
     {
-      v6 = [v11 type];
-      v7 = [v6 isEqualToString:@"Standard"];
+      type = [v11 type];
+      v7 = [type isEqualToString:@"Standard"];
 
       if (v7)
       {
-        v8 = [(AXSSEventManager *)self _commandInfos];
-        v9 = [v11 standardCommandIdentifier];
-        v5 = [v8 objectForKeyedSubscript:v9];
+        _commandInfos = [(AXSSEventManager *)self _commandInfos];
+        standardCommandIdentifier = [v11 standardCommandIdentifier];
+        actionManager = [_commandInfos objectForKeyedSubscript:standardCommandIdentifier];
 
-        if (v5 && ([v5 handlesBothDownAndUp] & 1) == 0)
+        if (actionManager && ([actionManager handlesBothDownAndUp] & 1) == 0)
         {
-          v10 = [v5 handler];
-          v10[2]();
+          handler = [actionManager handler];
+          handler[2]();
         }
       }
 
       else
       {
-        v5 = [(AXSSEventManager *)self actionManager];
-        [v5 handleCommand:v11];
+        actionManager = [(AXSSEventManager *)self actionManager];
+        [actionManager handleCommand:v11];
       }
     }
 
-    v4 = v11;
+    commandCopy = v11;
   }
 }
 
-- (void)_handleTabEvent:(id)a3
+- (void)_handleTabEvent:(id)event
 {
-  v18 = a3;
-  v4 = [v18 keyChord];
-  v5 = [(AXSSEventManager *)self commandMap];
-  v6 = [v5 commandForKeyChord:v4];
+  eventCopy = event;
+  keyChord = [eventCopy keyChord];
+  commandMap = [(AXSSEventManager *)self commandMap];
+  v6 = [commandMap commandForKeyChord:keyChord];
 
-  v7 = [v18 isDownEvent];
-  v8 = [v18 isRepeatEvent];
-  v9 = v8;
-  if (v7 && (v8 & 1) == 0)
+  isDownEvent = [eventCopy isDownEvent];
+  isRepeatEvent = [eventCopy isRepeatEvent];
+  v9 = isRepeatEvent;
+  if (isDownEvent && (isRepeatEvent & 1) == 0)
   {
     [(AXSSEventManager *)self set_lastTabPressTime:CFAbsoluteTimeGetCurrent()];
     [(AXSSEventManager *)self set_tabKeyPressed:1];
   }
 
-  if ([v18 modifierMask])
+  if ([eventCopy modifierMask])
   {
-    if (v7)
+    if (isDownEvent)
     {
-      if (![(AXSSEventManager *)self _handleCommand:v6 event:v18])
+      if (![(AXSSEventManager *)self _handleCommand:v6 event:eventCopy])
       {
         goto LABEL_19;
       }
@@ -1960,7 +1960,7 @@ LABEL_18:
   if ([(AXSSEventManager *)self _performedActionWhileTabComboPressed]|| !v6)
   {
 LABEL_16:
-    if (v7)
+    if (isDownEvent)
     {
       goto LABEL_19;
     }
@@ -1980,24 +1980,24 @@ LABEL_16:
     }
   }
 
-  else if (v7)
+  else if (isDownEvent)
   {
     goto LABEL_19;
   }
 
-  v15 = [(AXSSEventManager *)self filterDelegate];
-  v16 = [v15 eventManager:self shouldRepostEvent:v18];
+  filterDelegate = [(AXSSEventManager *)self filterDelegate];
+  v16 = [filterDelegate eventManager:self shouldRepostEvent:eventCopy];
 
   if (v16)
   {
-    v17 = [(AXSSEventManager *)self filterDelegate];
-    [v17 eventManager:self repostEvent:v18];
+    filterDelegate2 = [(AXSSEventManager *)self filterDelegate];
+    [filterDelegate2 eventManager:self repostEvent:eventCopy];
 
     goto LABEL_16;
   }
 
   [(AXSSEventManager *)self _handleTabRepeatOrUpWithCommand:v6];
-  if ((v7 & 1) == 0)
+  if ((isDownEvent & 1) == 0)
   {
     goto LABEL_17;
   }
@@ -2005,13 +2005,13 @@ LABEL_16:
 LABEL_19:
 }
 
-- (id)_tabbedKeyChordForKeyChord:(id)a3
+- (id)_tabbedKeyChordForKeyChord:(id)chord
 {
-  if (a3)
+  if (chord)
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = [a3 keys];
-    v5 = [v3 arrayWithArray:v4];
+    keys = [chord keys];
+    v5 = [v3 arrayWithArray:keys];
 
     [v5 addObject:@"⇥"];
     v6 = [AXSSKeyChord keyChordWithKeys:v5];
@@ -2025,33 +2025,33 @@ LABEL_19:
   return v6;
 }
 
-- (void)_handleTabComboEvent:(id)a3
+- (void)_handleTabComboEvent:(id)event
 {
-  v12 = a3;
-  v4 = [v12 keyChord];
-  if (!v4)
+  eventCopy = event;
+  keyChord = [eventCopy keyChord];
+  if (!keyChord)
   {
     goto LABEL_3;
   }
 
-  v5 = [(AXSSEventManager *)self _tabbedKeyChordForKeyChord:v4];
-  v6 = [(AXSSEventManager *)self commandMap];
-  v7 = [v6 commandForKeyChord:v5];
+  v5 = [(AXSSEventManager *)self _tabbedKeyChordForKeyChord:keyChord];
+  commandMap = [(AXSSEventManager *)self commandMap];
+  v7 = [commandMap commandForKeyChord:v5];
 
   if (!v7)
   {
 LABEL_3:
-    v8 = [v12 backupKeyChord];
-    if (!v8)
+    backupKeyChord = [eventCopy backupKeyChord];
+    if (!backupKeyChord)
     {
       v7 = 0;
       goto LABEL_8;
     }
 
-    v9 = v8;
-    v10 = [(AXSSEventManager *)self _tabbedKeyChordForKeyChord:v8];
-    v11 = [(AXSSEventManager *)self commandMap];
-    v7 = [v11 commandForKeyChord:v10];
+    v9 = backupKeyChord;
+    v10 = [(AXSSEventManager *)self _tabbedKeyChordForKeyChord:backupKeyChord];
+    commandMap2 = [(AXSSEventManager *)self commandMap];
+    v7 = [commandMap2 commandForKeyChord:v10];
 
     if (!v7)
     {
@@ -2067,29 +2067,29 @@ LABEL_3:
 LABEL_8:
 }
 
-- (BOOL)_handleCommand:(id)a3 event:(id)a4
+- (BOOL)_handleCommand:(id)command event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  commandCopy = command;
+  eventCopy = event;
+  if (!commandCopy)
   {
     goto LABEL_6;
   }
 
-  v8 = [v6 type];
-  v9 = [v8 isEqualToString:@"Standard"];
+  type = [commandCopy type];
+  v9 = [type isEqualToString:@"Standard"];
 
   if (v9)
   {
-    if (v7)
+    if (eventCopy)
     {
-      v10 = [(AXSSEventManager *)self filterDelegate];
-      v11 = [v10 eventManager:self shouldRepostEvent:v7];
+      filterDelegate = [(AXSSEventManager *)self filterDelegate];
+      v11 = [filterDelegate eventManager:self shouldRepostEvent:eventCopy];
 
       if (v11)
       {
-        v12 = [(AXSSEventManager *)self filterDelegate];
-        [v12 eventManager:self repostEvent:v7];
+        filterDelegate2 = [(AXSSEventManager *)self filterDelegate];
+        [filterDelegate2 eventManager:self repostEvent:eventCopy];
 
 LABEL_6:
         v13 = 0;
@@ -2097,13 +2097,13 @@ LABEL_6:
       }
     }
 
-    v17 = [(AXSSEventManager *)self _commandInfos];
-    v18 = [v6 standardCommandIdentifier];
-    v19 = [v17 objectForKeyedSubscript:v18];
+    _commandInfos = [(AXSSEventManager *)self _commandInfos];
+    standardCommandIdentifier = [commandCopy standardCommandIdentifier];
+    v19 = [_commandInfos objectForKeyedSubscript:standardCommandIdentifier];
 
     if (v19)
     {
-      if ([(AXSSEventManager *)self _performDownActionForCommand:v6 info:v19])
+      if ([(AXSSEventManager *)self _performDownActionForCommand:commandCopy info:v19])
       {
         v13 = 1;
 LABEL_20:
@@ -2111,13 +2111,13 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v21 = [v6 standardCommandIdentifier];
-      v22 = [v21 isEqualToString:@"Escape"];
+      standardCommandIdentifier2 = [commandCopy standardCommandIdentifier];
+      v22 = [standardCommandIdentifier2 isEqualToString:@"Escape"];
 
       if (v22)
       {
-        v23 = [(AXSSEventManager *)self filterDelegate];
-        [v23 eventManager:self repostEvent:v7];
+        filterDelegate3 = [(AXSSEventManager *)self filterDelegate];
+        [filterDelegate3 eventManager:self repostEvent:eventCopy];
       }
     }
 
@@ -2126,7 +2126,7 @@ LABEL_20:
       v20 = FKALogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        [AXSSEventManager _handleCommand:v6 event:v20];
+        [AXSSEventManager _handleCommand:commandCopy event:v20];
       }
     }
 
@@ -2134,17 +2134,17 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v14 = [(AXSSEventManager *)self shouldSuppressCommands];
-  v15 = [(AXSSEventManager *)self actionManager];
-  v16 = v15;
-  if (v14)
+  shouldSuppressCommands = [(AXSSEventManager *)self shouldSuppressCommands];
+  actionManager = [(AXSSEventManager *)self actionManager];
+  v16 = actionManager;
+  if (shouldSuppressCommands)
   {
-    [v15 didSuppressCommand:v6];
+    [actionManager didSuppressCommand:commandCopy];
   }
 
   else
   {
-    [v15 handleCommand:v6];
+    [actionManager handleCommand:commandCopy];
   }
 
   v13 = 1;

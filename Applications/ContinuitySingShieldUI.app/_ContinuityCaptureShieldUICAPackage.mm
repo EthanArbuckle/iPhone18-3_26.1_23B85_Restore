@@ -8,8 +8,8 @@
 {
   v5.receiver = self;
   v5.super_class = _ContinuityCaptureShieldUICAPackage;
-  v2 = [(_ContinuityCaptureShieldUICAPackage *)&v5 substitutedClasses];
-  v3 = [NSMutableDictionary dictionaryWithDictionary:v2];
+  substitutedClasses = [(_ContinuityCaptureShieldUICAPackage *)&v5 substitutedClasses];
+  v3 = [NSMutableDictionary dictionaryWithDictionary:substitutedClasses];
 
   [v3 setObject:objc_opt_class() forKeyedSubscript:@"LKEventHandler"];
 

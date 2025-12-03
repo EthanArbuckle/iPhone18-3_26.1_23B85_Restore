@@ -6,7 +6,7 @@
 
 - (id)msp_shortDescription
 {
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &off_1F45E2E10;
   v2 = objc_msgSendSuper2(&v14, sel_msp_shortDescription);
   v3 = [v2 mutableCopy];
@@ -17,7 +17,7 @@
   v10 = __72__MPModelPlaylist_BehaviorMusicSharePlayAdditions__msp_shortDescription__block_invoke;
   v11 = &unk_1E82392C0;
   v12 = v3;
-  v13 = a1;
+  selfCopy = self;
   v5 = v3;
   [v4 performWithoutEnforcement:&v8];
   v6 = [v5 copy];

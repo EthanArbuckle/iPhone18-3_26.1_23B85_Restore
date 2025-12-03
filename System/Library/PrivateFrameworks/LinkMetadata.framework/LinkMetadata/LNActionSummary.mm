@@ -1,34 +1,34 @@
 @interface LNActionSummary
-- (BOOL)isEqual:(id)a3;
-- (LNActionSummary)initWithCoder:(id)a3;
-- (LNActionSummary)initWithSummaryString:(id)a3 bundleURL:(id)a4 table:(id)a5 otherParameterIdentifiers:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (LNActionSummary)initWithCoder:(id)coder;
+- (LNActionSummary)initWithSummaryString:(id)string bundleURL:(id)l table:(id)table otherParameterIdentifiers:(id)identifiers;
 - (id)description;
-- (id)localizedFormatStringForLocaleIdentifier:(id)a3;
+- (id)localizedFormatStringForLocaleIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionSummary
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(otherParameterIdentifiers3) = 0;
 LABEL_35:
 
       goto LABEL_36;
     }
 
-    v7 = [(LNActionSummary *)self summaryString];
-    v8 = [(LNActionSummary *)v6 summaryString];
-    v9 = v7;
-    v10 = v8;
+    summaryString = [(LNActionSummary *)self summaryString];
+    summaryString2 = [(LNActionSummary *)v6 summaryString];
+    v9 = summaryString;
+    v10 = summaryString2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -36,7 +36,7 @@ LABEL_35:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(otherParameterIdentifiers3) = 0;
       v13 = v10;
       v14 = v9;
       if (!v9 || !v10)
@@ -48,17 +48,17 @@ LABEL_35:
 
       if (!v15)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(otherParameterIdentifiers3) = 0;
 LABEL_34:
 
         goto LABEL_35;
       }
     }
 
-    v16 = [(LNActionSummary *)self bundleURL];
-    v17 = [(LNActionSummary *)v6 bundleURL];
-    v14 = v16;
-    v18 = v17;
+    bundleURL = [(LNActionSummary *)self bundleURL];
+    bundleURL2 = [(LNActionSummary *)v6 bundleURL];
+    v14 = bundleURL;
+    v18 = bundleURL2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -66,7 +66,7 @@ LABEL_34:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(otherParameterIdentifiers3) = 0;
       v19 = v18;
       v20 = v14;
       if (!v14 || !v18)
@@ -78,17 +78,17 @@ LABEL_34:
 
       if (!v21)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(otherParameterIdentifiers3) = 0;
 LABEL_33:
 
         goto LABEL_34;
       }
     }
 
-    v22 = [(LNActionSummary *)self table];
-    v23 = [(LNActionSummary *)v6 table];
-    v20 = v22;
-    v24 = v23;
+    table = [(LNActionSummary *)self table];
+    table2 = [(LNActionSummary *)v6 table];
+    v20 = table;
+    v24 = table2;
     v19 = v24;
     if (v20 == v24)
     {
@@ -96,7 +96,7 @@ LABEL_33:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(otherParameterIdentifiers3) = 0;
       v25 = v24;
       v26 = v20;
       if (!v20 || !v24)
@@ -104,42 +104,42 @@ LABEL_33:
         goto LABEL_28;
       }
 
-      LODWORD(v12) = [v20 isEqual:v24];
+      LODWORD(otherParameterIdentifiers3) = [v20 isEqual:v24];
 
-      if (!v12)
+      if (!otherParameterIdentifiers3)
       {
         goto LABEL_32;
       }
     }
 
     v38 = v20;
-    v27 = [(LNActionSummary *)self otherParameterIdentifiers];
-    v28 = [(LNActionSummary *)v6 otherParameterIdentifiers];
+    otherParameterIdentifiers = [(LNActionSummary *)self otherParameterIdentifiers];
+    otherParameterIdentifiers2 = [(LNActionSummary *)v6 otherParameterIdentifiers];
 
-    if (v27 == v28)
+    if (otherParameterIdentifiers == otherParameterIdentifiers2)
     {
-      LOBYTE(v12) = 1;
+      LOBYTE(otherParameterIdentifiers3) = 1;
     }
 
     else
     {
-      v12 = [(LNActionSummary *)self otherParameterIdentifiers];
-      if (v12)
+      otherParameterIdentifiers3 = [(LNActionSummary *)self otherParameterIdentifiers];
+      if (otherParameterIdentifiers3)
       {
-        v29 = [(LNActionSummary *)v6 otherParameterIdentifiers];
+        otherParameterIdentifiers4 = [(LNActionSummary *)v6 otherParameterIdentifiers];
 
-        if (v29)
+        if (otherParameterIdentifiers4)
         {
           v30 = MEMORY[0x1E695DFD8];
-          v37 = [(LNActionSummary *)self otherParameterIdentifiers];
-          v36 = [v30 setWithArray:v37];
+          otherParameterIdentifiers5 = [(LNActionSummary *)self otherParameterIdentifiers];
+          v36 = [v30 setWithArray:otherParameterIdentifiers5];
           v31 = MEMORY[0x1E695DFD8];
-          v32 = [(LNActionSummary *)v6 otherParameterIdentifiers];
-          v33 = [v31 setWithArray:v32];
-          LOBYTE(v12) = [v36 isEqualToSet:v33];
+          otherParameterIdentifiers6 = [(LNActionSummary *)v6 otherParameterIdentifiers];
+          v33 = [v31 setWithArray:otherParameterIdentifiers6];
+          LOBYTE(otherParameterIdentifiers3) = [v36 isEqualToSet:v33];
 
           v25 = v36;
-          v26 = v37;
+          v26 = otherParameterIdentifiers5;
           v20 = v38;
 LABEL_28:
           v34 = v26;
@@ -148,7 +148,7 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        LOBYTE(v12) = 0;
+        LOBYTE(otherParameterIdentifiers3) = 0;
       }
     }
 
@@ -156,45 +156,45 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  LOBYTE(v12) = 1;
+  LOBYTE(otherParameterIdentifiers3) = 1;
 LABEL_36:
 
-  return v12;
+  return otherParameterIdentifiers3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNActionSummary *)self summaryString];
-  v4 = [v3 hash];
-  v5 = [(LNActionSummary *)self bundleURL];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNActionSummary *)self table];
-  v8 = [v7 hash];
-  v9 = [(LNActionSummary *)self otherParameterIdentifiers];
-  v10 = v8 ^ [v9 hash];
+  summaryString = [(LNActionSummary *)self summaryString];
+  v4 = [summaryString hash];
+  bundleURL = [(LNActionSummary *)self bundleURL];
+  v6 = [bundleURL hash] ^ v4;
+  table = [(LNActionSummary *)self table];
+  v8 = [table hash];
+  otherParameterIdentifiers = [(LNActionSummary *)self otherParameterIdentifiers];
+  v10 = v8 ^ [otherParameterIdentifiers hash];
 
   return v6 ^ v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LNActionSummary *)self summaryString];
-  [v4 encodeObject:v5 forKey:@"summaryString"];
+  coderCopy = coder;
+  summaryString = [(LNActionSummary *)self summaryString];
+  [coderCopy encodeObject:summaryString forKey:@"summaryString"];
 
-  v6 = [(LNActionSummary *)self bundleURL];
-  [v4 encodeObject:v6 forKey:@"bundleURL"];
+  bundleURL = [(LNActionSummary *)self bundleURL];
+  [coderCopy encodeObject:bundleURL forKey:@"bundleURL"];
 
-  v7 = [(LNActionSummary *)self table];
-  [v4 encodeObject:v7 forKey:@"table"];
+  table = [(LNActionSummary *)self table];
+  [coderCopy encodeObject:table forKey:@"table"];
 
-  v8 = [(LNActionSummary *)self otherParameterIdentifiers];
-  [v4 encodeObject:v8 forKey:@"otherParameterIdentifiers"];
+  otherParameterIdentifiers = [(LNActionSummary *)self otherParameterIdentifiers];
+  [coderCopy encodeObject:otherParameterIdentifiers forKey:@"otherParameterIdentifiers"];
 
-  v9 = [MEMORY[0x1E696AF00] currentThread];
-  v10 = [v9 threadDictionary];
-  v11 = [v10 objectForKeyedSubscript:@"LNStaticDeferredLocalizedStringLocaleIdentifier"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v11 = [threadDictionary objectForKeyedSubscript:@"LNStaticDeferredLocalizedStringLocaleIdentifier"];
 
   if (v11)
   {
@@ -205,43 +205,43 @@ LABEL_36:
       v16 = v11;
       v17[0] = v12;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-      [v4 encodeObject:v14 forKey:@"prelocalizedStrings"];
+      [coderCopy encodeObject:v14 forKey:@"prelocalizedStrings"];
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (LNActionSummary)initWithCoder:(id)a3
+- (LNActionSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"otherParameterIdentifiers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"otherParameterIdentifiers"];
 
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"summaryString"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"table"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"summaryString"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"table"];
     self = [(LNActionSummary *)self initWithSummaryString:v9 bundleURL:v10 table:v11 otherParameterIdentifiers:v8];
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"prelocalizedStrings"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"prelocalizedStrings"];
     prelocalizedStrings = self->_prelocalizedStrings;
     self->_prelocalizedStrings = v15;
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)description
@@ -249,23 +249,23 @@ LABEL_36:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionSummary *)self summaryString];
-  v7 = [(LNActionSummary *)self bundleURL];
-  v8 = [(LNActionSummary *)self table];
-  v9 = [(LNActionSummary *)self otherParameterIdentifiers];
-  v10 = [v9 valueForKeyPath:@"description"];
+  summaryString = [(LNActionSummary *)self summaryString];
+  bundleURL = [(LNActionSummary *)self bundleURL];
+  table = [(LNActionSummary *)self table];
+  otherParameterIdentifiers = [(LNActionSummary *)self otherParameterIdentifiers];
+  v10 = [otherParameterIdentifiers valueForKeyPath:@"description"];
   v11 = [v10 componentsJoinedByString:{@", "}];
-  v12 = [v3 stringWithFormat:@"<%@: %p, summaryString: %@, bundleURL: %@, table: %@, otherParameterIdentifiers: [%@]>", v5, self, v6, v7, v8, v11];
+  v12 = [v3 stringWithFormat:@"<%@: %p, summaryString: %@, bundleURL: %@, table: %@, otherParameterIdentifiers: [%@]>", v5, self, summaryString, bundleURL, table, v11];
 
   return v12;
 }
 
-- (id)localizedFormatStringForLocaleIdentifier:(id)a3
+- (id)localizedFormatStringForLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v4];
+    [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:identifierCopy];
   }
 
   else
@@ -273,59 +273,59 @@ LABEL_36:
     [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
   }
   v5 = ;
-  v6 = [v5 localeIdentifier];
-  if (!v6)
+  localeIdentifier = [v5 localeIdentifier];
+  if (!localeIdentifier)
   {
     goto LABEL_7;
   }
 
-  v7 = v6;
-  v8 = [(LNActionSummary *)self prelocalizedStrings];
-  v9 = [v5 localeIdentifier];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v7 = localeIdentifier;
+  prelocalizedStrings = [(LNActionSummary *)self prelocalizedStrings];
+  localeIdentifier2 = [v5 localeIdentifier];
+  v10 = [prelocalizedStrings objectForKeyedSubscript:localeIdentifier2];
 
   if (v10)
   {
-    v11 = [(LNActionSummary *)self prelocalizedStrings];
-    v12 = [v5 localeIdentifier];
-    v13 = [(LNStaticDeferredLocalizedString *)v11 objectForKeyedSubscript:v12];
+    prelocalizedStrings2 = [(LNActionSummary *)self prelocalizedStrings];
+    localeIdentifier3 = [v5 localeIdentifier];
+    summaryString = [(LNStaticDeferredLocalizedString *)prelocalizedStrings2 objectForKeyedSubscript:localeIdentifier3];
   }
 
   else
   {
 LABEL_7:
-    v13 = [(LNActionSummary *)self summaryString];
+    summaryString = [(LNActionSummary *)self summaryString];
 
-    if (!v13)
+    if (!summaryString)
     {
       goto LABEL_10;
     }
 
     v14 = [LNStaticDeferredLocalizedString alloc];
-    v15 = [(LNActionSummary *)self summaryString];
-    v16 = [v15 formatString];
-    v17 = [(LNActionSummary *)self table];
-    v18 = [(LNActionSummary *)self bundleURL];
-    v11 = [(LNStaticDeferredLocalizedString *)v14 initWithKey:v16 table:v17 bundleURL:v18];
+    summaryString2 = [(LNActionSummary *)self summaryString];
+    formatString = [summaryString2 formatString];
+    table = [(LNActionSummary *)self table];
+    bundleURL = [(LNActionSummary *)self bundleURL];
+    prelocalizedStrings2 = [(LNStaticDeferredLocalizedString *)v14 initWithKey:formatString table:table bundleURL:bundleURL];
 
-    v13 = [(LNStaticDeferredLocalizedString *)v11 localizedStringForLocaleIdentifier:v4];
+    summaryString = [(LNStaticDeferredLocalizedString *)prelocalizedStrings2 localizedStringForLocaleIdentifier:identifierCopy];
   }
 
 LABEL_10:
 
-  return v13;
+  return summaryString;
 }
 
-- (LNActionSummary)initWithSummaryString:(id)a3 bundleURL:(id)a4 table:(id)a5 otherParameterIdentifiers:(id)a6
+- (LNActionSummary)initWithSummaryString:(id)string bundleURL:(id)l table:(id)table otherParameterIdentifiers:(id)identifiers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  stringCopy = string;
+  lCopy = l;
+  tableCopy = table;
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"LNActionSummary.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"otherParameterIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionSummary.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"otherParameterIdentifiers"}];
   }
 
   v27.receiver = self;
@@ -333,19 +333,19 @@ LABEL_10:
   v15 = [(LNActionSummary *)&v27 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [stringCopy copy];
     summaryString = v15->_summaryString;
     v15->_summaryString = v16;
 
-    v18 = [v12 copy];
+    v18 = [lCopy copy];
     bundleURL = v15->_bundleURL;
     v15->_bundleURL = v18;
 
-    v20 = [v13 copy];
+    v20 = [tableCopy copy];
     table = v15->_table;
     v15->_table = v20;
 
-    v22 = [v14 copy];
+    v22 = [identifiersCopy copy];
     otherParameterIdentifiers = v15->_otherParameterIdentifiers;
     v15->_otherParameterIdentifiers = v22;
 

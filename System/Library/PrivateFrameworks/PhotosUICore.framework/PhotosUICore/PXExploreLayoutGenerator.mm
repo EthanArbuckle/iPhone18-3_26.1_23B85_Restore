@@ -1,36 +1,36 @@
 @interface PXExploreLayoutGenerator
-- ($340E233F617FB3D5D9EFCE5A6F22D754)presentedItemLocationForItemAtIndex:(SEL)a3;
+- ($340E233F617FB3D5D9EFCE5A6F22D754)presentedItemLocationForItemAtIndex:(SEL)index;
 - (BOOL)_isShortRowNextFollowedByLargeHero;
-- (BOOL)_parseFourColumnLayoutWithOptions:(unint64_t)a3;
-- (BOOL)_parseSevenColumnLayoutWithOptions:(unint64_t)a3;
-- (BOOL)_parseSixColumnLayoutWithOptions:(unint64_t)a3;
-- (BOOL)_parseThreeColumnLayoutWithOptions:(unint64_t)a3;
+- (BOOL)_parseFourColumnLayoutWithOptions:(unint64_t)options;
+- (BOOL)_parseSevenColumnLayoutWithOptions:(unint64_t)options;
+- (BOOL)_parseSixColumnLayoutWithOptions:(unint64_t)options;
+- (BOOL)_parseThreeColumnLayoutWithOptions:(unint64_t)options;
 - (BOOL)canReorderItemsAcrossRows;
-- (BOOL)isAcceptableLargeHeroNextItemAtIndex:(int64_t)a3;
-- (BOOL)nextInputItems:(unint64_t)a3;
-- (BOOL)nextItems:(int64_t)a3 areAll:(unint64_t)a4;
-- (BOOL)nextItems:(int64_t)a3 isAny:(unint64_t)a4;
+- (BOOL)isAcceptableLargeHeroNextItemAtIndex:(int64_t)index;
+- (BOOL)nextInputItems:(unint64_t)items;
+- (BOOL)nextItems:(int64_t)items areAll:(unint64_t)all;
+- (BOOL)nextItems:(int64_t)items isAny:(unint64_t)any;
 - (BOOL)parseFourColumnGroupWithShortRowFollowedByLargeHero;
-- (BOOL)parseFourColumnRowWithType:(int64_t)a3 numberOfItems:(int64_t)a4;
+- (BOOL)parseFourColumnRowWithType:(int64_t)type numberOfItems:(int64_t)items;
 - (BOOL)parseMacLayout;
 - (BOOL)parsePadLandscapeLayout;
 - (BOOL)parsePhoneLandscapeLayout;
-- (BOOL)parseSevenColumnRowWithType:(int64_t)a3 numberOfItems:(int64_t)a4 subsequentShortRowItems:(int64_t)a5 options:(unint64_t)a6;
-- (BOOL)parseSixColumnRowWithType:(int64_t)a3 numberOfItems:(int64_t)a4 subsequentShortRowItems:(int64_t)a5 options:(unint64_t)a6;
+- (BOOL)parseSevenColumnRowWithType:(int64_t)type numberOfItems:(int64_t)items subsequentShortRowItems:(int64_t)rowItems options:(unint64_t)options;
+- (BOOL)parseSixColumnRowWithType:(int64_t)type numberOfItems:(int64_t)items subsequentShortRowItems:(int64_t)rowItems options:(unint64_t)options;
 - (BOOL)parseThreeColumnGroupWithFiveItems;
 - (BOOL)parseThreeColumnGroupWithShortRowFollowedByLargeHero;
-- (BOOL)parseThreeColumnGroupWithThreeItemsFollowedByOneItemAllowingLargeHeroAtEnd:(BOOL)a3;
+- (BOOL)parseThreeColumnGroupWithThreeItemsFollowedByOneItemAllowingLargeHeroAtEnd:(BOOL)end;
 - (BOOL)parseThreeColumnMediumHeroRowWithPano;
-- (BOOL)parseThreeColumnRowWithType:(int64_t)a3 numberOfItems:(int64_t)a4;
+- (BOOL)parseThreeColumnRowWithType:(int64_t)type numberOfItems:(int64_t)items;
 - (BOOL)parseThreeColumnShortRowWithPano;
-- (BOOL)prepareNextItems:(int64_t)a3 withLargeHeroIndex:(int64_t)a4;
-- (CGRect)presentedRectForItemAtIndex:(int64_t)a3;
-- (CGSize)_cellSizeForNumberOfColumns:(int64_t)a3;
-- (CGSize)_estimatedSizeForColumns:(int64_t)a3 headerRows:(int64_t)a4 averageItemsPerBlock:(double)a5 averageRowsPerBlock:(double)a6 withOptions:(unint64_t)a7;
-- (CGSize)_estimatedSizeForFourColumnLayoutWithOptions:(unint64_t)a3;
-- (CGSize)_estimatedSizeForSevenColumnLayoutWithOptions:(unint64_t)a3;
-- (CGSize)_estimatedSizeForSixColumnLayoutWithOptions:(unint64_t)a3;
-- (CGSize)_estimatedSizeForThreeColumnLayoutWithOptions:(unint64_t)a3;
+- (BOOL)prepareNextItems:(int64_t)items withLargeHeroIndex:(int64_t)index;
+- (CGRect)presentedRectForItemAtIndex:(int64_t)index;
+- (CGSize)_cellSizeForNumberOfColumns:(int64_t)columns;
+- (CGSize)_estimatedSizeForColumns:(int64_t)columns headerRows:(int64_t)rows averageItemsPerBlock:(double)block averageRowsPerBlock:(double)perBlock withOptions:(unint64_t)options;
+- (CGSize)_estimatedSizeForFourColumnLayoutWithOptions:(unint64_t)options;
+- (CGSize)_estimatedSizeForSevenColumnLayoutWithOptions:(unint64_t)options;
+- (CGSize)_estimatedSizeForSixColumnLayoutWithOptions:(unint64_t)options;
+- (CGSize)_estimatedSizeForThreeColumnLayoutWithOptions:(unint64_t)options;
 - (CGSize)buildingBlockSize;
 - (CGSize)estimatedSize;
 - (CGSize)estimatedSizeForPadLandscape;
@@ -42,94 +42,94 @@
 - (CGSize)minimumItemSize;
 - (CGSize)size;
 - (NSString)diagnosticDescription;
-- (PXExploreLayoutGenerator)initWithMetrics:(id)a3;
+- (PXExploreLayoutGenerator)initWithMetrics:(id)metrics;
 - (_PXCornerSpriteIndexes)cornerSpriteIndexes;
-- (double)_buildingBlockAspectRatioForNumberOfColumns:(int64_t)a3 options:(unint64_t)a4;
-- (double)score:(int64_t)a3 forNextItemAtIndex:(int64_t)a4;
-- (id)presentedItemsBetweenItem:(int64_t)a3 andItem:(int64_t)a4;
-- (id)presentedItemsInRect:(CGRect)a3;
-- (int64_t)indexWithinNextItems:(int64_t)a3 having:(int64_t)a4 keyIndex:(int64_t)a5;
-- (int64_t)itemIndexForItem:(int64_t)a3 inDirection:(unint64_t)a4;
-- (int64_t)itemIndexForPresentedItemIndex:(int64_t)a3;
-- (int64_t)numberOf:(unint64_t)a3 withinNextItems:(int64_t)a4;
-- (int64_t)numberOfItemsInFourColumnMediumHeroRowForNumberOfRemainingItems:(int64_t)a3;
-- (int64_t)numberOfItemsInSevenColumnHeroRowForNumberOfRemainingItems:(int64_t)a3;
-- (int64_t)numberOfItemsInSevenColumnShortRowForNumberOfRemainingItems:(int64_t)a3;
-- (int64_t)numberOfItemsInSixColumnHeroRowForNumberOfRemainingItems:(int64_t)a3 rowOptions:(unint64_t *)a4;
-- (int64_t)numberOfItemsInSixColumnShortRowForNumberOfRemainingItems:(int64_t)a3;
+- (double)_buildingBlockAspectRatioForNumberOfColumns:(int64_t)columns options:(unint64_t)options;
+- (double)score:(int64_t)score forNextItemAtIndex:(int64_t)index;
+- (id)presentedItemsBetweenItem:(int64_t)item andItem:(int64_t)andItem;
+- (id)presentedItemsInRect:(CGRect)rect;
+- (int64_t)indexWithinNextItems:(int64_t)items having:(int64_t)having keyIndex:(int64_t)index;
+- (int64_t)itemIndexForItem:(int64_t)item inDirection:(unint64_t)direction;
+- (int64_t)itemIndexForPresentedItemIndex:(int64_t)index;
+- (int64_t)numberOf:(unint64_t)of withinNextItems:(int64_t)items;
+- (int64_t)numberOfItemsInFourColumnMediumHeroRowForNumberOfRemainingItems:(int64_t)items;
+- (int64_t)numberOfItemsInSevenColumnHeroRowForNumberOfRemainingItems:(int64_t)items;
+- (int64_t)numberOfItemsInSevenColumnShortRowForNumberOfRemainingItems:(int64_t)items;
+- (int64_t)numberOfItemsInSixColumnHeroRowForNumberOfRemainingItems:(int64_t)items rowOptions:(unint64_t *)options;
+- (int64_t)numberOfItemsInSixColumnShortRowForNumberOfRemainingItems:(int64_t)items;
 - (int64_t)numberOfRemainingItems;
-- (int64_t)preferredRowTypeAfterRowWithType:(int64_t)a3;
-- (int64_t)presentedNumberOfColumnsAtRow:(int64_t)a3;
+- (int64_t)preferredRowTypeAfterRowWithType:(int64_t)type;
+- (int64_t)presentedNumberOfColumnsAtRow:(int64_t)row;
 - (int64_t)presentedNumberOfRows;
-- (unint64_t)attributesForNextItemAtIndex:(int64_t)a3;
-- (void)_addThreeItemsToSixColumnRowWithHeroItemType:(int64_t)a3 options:(unint64_t)a4 rowType:(int64_t *)a5;
-- (void)_addTwoItemsForThreeColumnRowPreferringTallVariant:(BOOL)a3;
-- (void)_parseFourColumnHeroRowWithType:(int64_t)a3 heroItemType:(int64_t)a4 numberOfItems:(int64_t)a5;
-- (void)_parseFourColumnShortRowWithNumberOfItems:(int64_t)a3;
-- (void)_parseSevenColumnHeroRowWithNumberOfItems:(int64_t)a3 heroItemType:(int64_t)a4 subsequentShortRowItems:(int64_t)a5 options:(unint64_t)a6;
-- (void)_parseSevenColumnShortRowWithNumberOfItems:(int64_t)a3;
-- (void)_parseSixColumnHeroRowWithNumberOfItems:(int64_t)a3 heroItemType:(int64_t)a4 subsequentShortRowItems:(int64_t)a5 options:(unint64_t)a6;
-- (void)_parseSixColumnShortRowWithNumberOfItems:(int64_t)a3;
-- (void)_parseThreeColumnHeaderRowWithNumberOfItems:(int64_t)a3;
-- (void)_parseThreeColumnMediumHeroRowWithNumberOfItems:(int64_t)a3;
-- (void)_parseThreeColumnShortRowWithNumberOfItems:(int64_t)a3;
+- (unint64_t)attributesForNextItemAtIndex:(int64_t)index;
+- (void)_addThreeItemsToSixColumnRowWithHeroItemType:(int64_t)type options:(unint64_t)options rowType:(int64_t *)rowType;
+- (void)_addTwoItemsForThreeColumnRowPreferringTallVariant:(BOOL)variant;
+- (void)_parseFourColumnHeroRowWithType:(int64_t)type heroItemType:(int64_t)itemType numberOfItems:(int64_t)items;
+- (void)_parseFourColumnShortRowWithNumberOfItems:(int64_t)items;
+- (void)_parseSevenColumnHeroRowWithNumberOfItems:(int64_t)items heroItemType:(int64_t)type subsequentShortRowItems:(int64_t)rowItems options:(unint64_t)options;
+- (void)_parseSevenColumnShortRowWithNumberOfItems:(int64_t)items;
+- (void)_parseSixColumnHeroRowWithNumberOfItems:(int64_t)items heroItemType:(int64_t)type subsequentShortRowItems:(int64_t)rowItems options:(unint64_t)options;
+- (void)_parseSixColumnShortRowWithNumberOfItems:(int64_t)items;
+- (void)_parseThreeColumnHeaderRowWithNumberOfItems:(int64_t)items;
+- (void)_parseThreeColumnMediumHeroRowWithNumberOfItems:(int64_t)items;
+- (void)_parseThreeColumnShortRowWithNumberOfItems:(int64_t)items;
 - (void)_prepareIfNeeded;
-- (void)addFullWidthItemWithType:(int64_t)a3 atRow:(int64_t)a4 aspectRatio:(double)a5;
-- (void)addLocalItemWithType:(int64_t)a3 atColumn:(int64_t)a4 row:(int64_t)a5 columnSpan:(int64_t)a6 rowSpan:(int64_t)a7;
-- (void)beginRowWithNumberOfColumns:(int64_t)a3;
+- (void)addFullWidthItemWithType:(int64_t)type atRow:(int64_t)row aspectRatio:(double)ratio;
+- (void)addLocalItemWithType:(int64_t)type atColumn:(int64_t)column row:(int64_t)row columnSpan:(int64_t)span rowSpan:(int64_t)rowSpan;
+- (void)beginRowWithNumberOfColumns:(int64_t)columns;
 - (void)dealloc;
-- (void)endFullWidthRowWithType:(int64_t)a3 aspectRatio:(double)a4;
-- (void)endRowWithType:(int64_t)a3;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
-- (void)getLowestAspectRatio:(double *)a3 highestAspectRatio:(double *)a4 forNextItems:(int64_t)a5;
+- (void)endFullWidthRowWithType:(int64_t)type aspectRatio:(double)ratio;
+- (void)endRowWithType:(int64_t)type;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
+- (void)getLowestAspectRatio:(double *)ratio highestAspectRatio:(double *)aspectRatio forNextItems:(int64_t)items;
 - (void)invalidate;
-- (void)moveNextItemAtIndex:(int64_t)a3 toIndex:(int64_t)a4;
-- (void)reorderNextItems:(int64_t)a3 usingMapping:(id)a4;
-- (void)setBuildingBlockColumnSpan:(int64_t)a3 rowSpan:(int64_t)a4 withNumberOfColumns:(int64_t)a5;
-- (void)sortNextItems:(int64_t)a3 withItemAtIndex:(int64_t)a4 having:(int64_t)a5;
+- (void)moveNextItemAtIndex:(int64_t)index toIndex:(int64_t)toIndex;
+- (void)reorderNextItems:(int64_t)items usingMapping:(id)mapping;
+- (void)setBuildingBlockColumnSpan:(int64_t)span rowSpan:(int64_t)rowSpan withNumberOfColumns:(int64_t)columns;
+- (void)sortNextItems:(int64_t)items withItemAtIndex:(int64_t)index having:(int64_t)having;
 @end
 
 @implementation PXExploreLayoutGenerator
 
-- (double)_buildingBlockAspectRatioForNumberOfColumns:(int64_t)a3 options:(unint64_t)a4
+- (double)_buildingBlockAspectRatioForNumberOfColumns:(int64_t)columns options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = [(PXExploreLayoutGenerator *)self metrics];
-  [v6 buildingBlockAspectRatio];
+  optionsCopy = options;
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  [metrics buildingBlockAspectRatio];
   if (v7 > 0.0)
   {
-    [v6 buildingBlockAspectRatio];
+    [metrics buildingBlockAspectRatio];
 LABEL_3:
     v9 = v8;
     goto LABEL_10;
   }
 
   v9 = 1.0;
-  if (v4)
+  if (optionsCopy)
   {
     goto LABEL_10;
   }
 
-  if ((v4 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
-    v8 = PXExploreLayoutCellPreferredAspectRatio([v6 layoutType], objc_msgSend(v6, "layoutSubtype"));
+    v8 = PXExploreLayoutCellPreferredAspectRatio([metrics layoutType], objc_msgSend(metrics, "layoutSubtype"));
     goto LABEL_3;
   }
 
-  [v6 referenceSize];
+  [metrics referenceSize];
   v11 = v10;
   v13 = v12;
-  if ((v4 & 2) == 0)
+  if ((optionsCopy & 2) == 0)
   {
-    [v6 safeAreaInsets];
+    [metrics safeAreaInsets];
     v15 = v14;
-    [v6 safeAreaInsets];
+    [metrics safeAreaInsets];
     v13 = v13 - (v15 + v16);
   }
 
-  v17 = round(v13 / (v11 / a3 / PXExploreLayoutCellPreferredAspectRatio([v6 layoutType], objc_msgSend(v6, "layoutSubtype"))));
-  [v6 interitemSpacing];
-  v9 = v11 / -(v18 - (v13 + v18) / v17 * a3);
+  v17 = round(v13 / (v11 / columns / PXExploreLayoutCellPreferredAspectRatio([metrics layoutType], objc_msgSend(metrics, "layoutSubtype"))));
+  [metrics interitemSpacing];
+  v9 = v11 / -(v18 - (v13 + v18) / v17 * columns);
   if ((*&v9 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
     v9 = 1.0;
@@ -140,42 +140,42 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)_parseSevenColumnLayoutWithOptions:(unint64_t)a3
+- (BOOL)_parseSevenColumnLayoutWithOptions:(unint64_t)options
 {
-  v5 = [(PXExploreLayoutGenerator *)self localState];
-  [(PXExploreLayoutGenerator *)self _buildingBlockAspectRatioForNumberOfColumns:7 options:a3];
-  [v5 setBuildingBlockAspectRatio:?];
-  [v5 setEffectiveLargeHeroDensity:0];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  [(PXExploreLayoutGenerator *)self _buildingBlockAspectRatioForNumberOfColumns:7 options:options];
+  [localState setBuildingBlockAspectRatio:?];
+  [localState setEffectiveLargeHeroDensity:0];
   [(PXExploreLayoutGenerator *)self setBuildingBlockColumnSpan:1 rowSpan:1 withNumberOfColumns:7];
-  v6 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  if (v6 >= 1)
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  if (numberOfRemainingItems >= 1)
   {
-    v7 = v6;
+    numberOfRemainingItems2 = numberOfRemainingItems;
     v8 = 0;
     while (1)
     {
-      v9 = [v5 nextRowType];
-      if ([(PXExploreLayoutGenerator *)self canUseSingleSevenColumnHeroRowForNumberOfRemainingItems:v7]&& v9 == 1)
+      nextRowType = [localState nextRowType];
+      if ([(PXExploreLayoutGenerator *)self canUseSingleSevenColumnHeroRowForNumberOfRemainingItems:numberOfRemainingItems2]&& nextRowType == 1)
       {
-        v9 = 2;
+        nextRowType = 2;
       }
 
-      if ((v9 - 2) >= 2)
+      if ((nextRowType - 2) >= 2)
       {
-        if (v9 != 1 || ![(PXExploreLayoutGenerator *)self parseSevenColumnRowWithType:1 numberOfItems:[(PXExploreLayoutGenerator *)self numberOfItemsInSevenColumnShortRowForNumberOfRemainingItems:v7] options:0])
+        if (nextRowType != 1 || ![(PXExploreLayoutGenerator *)self parseSevenColumnRowWithType:1 numberOfItems:[(PXExploreLayoutGenerator *)self numberOfItemsInSevenColumnShortRowForNumberOfRemainingItems:numberOfRemainingItems2] options:0])
         {
           goto LABEL_13;
         }
       }
 
-      else if (![(PXExploreLayoutGenerator *)self parseSevenColumnRowWithType:v9 numberOfItems:[(PXExploreLayoutGenerator *)self numberOfItemsInSevenColumnHeroRowForNumberOfRemainingItems:v7] options:0])
+      else if (![(PXExploreLayoutGenerator *)self parseSevenColumnRowWithType:nextRowType numberOfItems:[(PXExploreLayoutGenerator *)self numberOfItemsInSevenColumnHeroRowForNumberOfRemainingItems:numberOfRemainingItems2] options:0])
       {
         goto LABEL_13;
       }
 
-      v7 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+      numberOfRemainingItems2 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
       v8 = 1;
-      if (v7 <= 0)
+      if (numberOfRemainingItems2 <= 0)
       {
         goto LABEL_13;
       }
@@ -188,26 +188,26 @@ LABEL_13:
   return v8 & 1;
 }
 
-- (BOOL)_parseSixColumnLayoutWithOptions:(unint64_t)a3
+- (BOOL)_parseSixColumnLayoutWithOptions:(unint64_t)options
 {
-  v5 = [(PXExploreLayoutGenerator *)self localState];
-  [(PXExploreLayoutGenerator *)self _buildingBlockAspectRatioForNumberOfColumns:6 options:a3];
-  [v5 setBuildingBlockAspectRatio:?];
-  [v5 setEffectiveLargeHeroDensity:0];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  [(PXExploreLayoutGenerator *)self _buildingBlockAspectRatioForNumberOfColumns:6 options:options];
+  [localState setBuildingBlockAspectRatio:?];
+  [localState setEffectiveLargeHeroDensity:0];
   [(PXExploreLayoutGenerator *)self setBuildingBlockColumnSpan:1 rowSpan:1 withNumberOfColumns:6];
-  v6 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  if (v6 >= 1)
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  if (numberOfRemainingItems >= 1)
   {
-    v7 = v6;
+    numberOfRemainingItems2 = numberOfRemainingItems;
     v8 = 0;
     while (1)
     {
-      v9 = [v5 nextRowType];
-      v10 = v9;
-      if ((v9 - 2) < 2)
+      nextRowType = [localState nextRowType];
+      v10 = nextRowType;
+      if ((nextRowType - 2) < 2)
       {
         v17 = 0;
-        v13 = [(PXExploreLayoutGenerator *)self numberOfItemsInSixColumnHeroRowForNumberOfRemainingItems:v7 rowOptions:&v17];
+        v13 = [(PXExploreLayoutGenerator *)self numberOfItemsInSixColumnHeroRowForNumberOfRemainingItems:numberOfRemainingItems2 rowOptions:&v17];
         if (![(PXExploreLayoutGenerator *)self parseSixColumnRowWithType:v10 numberOfItems:v13 options:v17])
         {
           goto LABEL_25;
@@ -216,22 +216,22 @@ LABEL_13:
 
       else
       {
-        if (v9 == 1)
+        if (nextRowType == 1)
         {
-          v14 = [(PXExploreLayoutGenerator *)self numberOfItemsInSixColumnShortRowForNumberOfRemainingItems:v7];
-          v15 = self;
+          v14 = [(PXExploreLayoutGenerator *)self numberOfItemsInSixColumnShortRowForNumberOfRemainingItems:numberOfRemainingItems2];
+          selfCopy2 = self;
         }
 
         else
         {
-          if (v9)
+          if (nextRowType)
           {
             goto LABEL_25;
           }
 
           v11 = 0;
           v12 = 3;
-          switch(v7)
+          switch(numberOfRemainingItems2)
           {
             case 1:
             case 2:
@@ -253,7 +253,7 @@ LABEL_13:
             case 28:
               v11 = 4;
 LABEL_16:
-              v7 = 4;
+              numberOfRemainingItems2 = 4;
               goto LABEL_17;
             case 14:
               goto LABEL_22;
@@ -265,15 +265,15 @@ LABEL_22:
                 goto LABEL_25;
               }
 
-              v15 = self;
+              selfCopy2 = self;
               v14 = v12;
               break;
             default:
               v11 = 0;
 LABEL_8:
-              v7 = 3;
+              numberOfRemainingItems2 = 3;
 LABEL_17:
-              if ([(PXExploreLayoutGenerator *)self parseSixColumnRowWithType:0 numberOfItems:v7 subsequentShortRowItems:0 options:v11])
+              if ([(PXExploreLayoutGenerator *)self parseSixColumnRowWithType:0 numberOfItems:numberOfRemainingItems2 subsequentShortRowItems:0 options:v11])
               {
                 goto LABEL_18;
               }
@@ -282,16 +282,16 @@ LABEL_17:
           }
         }
 
-        if (![(PXExploreLayoutGenerator *)v15 parseSixColumnRowWithType:1 numberOfItems:v14 options:0])
+        if (![(PXExploreLayoutGenerator *)selfCopy2 parseSixColumnRowWithType:1 numberOfItems:v14 options:0])
         {
           goto LABEL_25;
         }
       }
 
 LABEL_18:
-      v7 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+      numberOfRemainingItems2 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
       v8 = 1;
-      if (v7 <= 0)
+      if (numberOfRemainingItems2 <= 0)
       {
         goto LABEL_25;
       }
@@ -304,24 +304,24 @@ LABEL_25:
   return v8 & 1;
 }
 
-- (BOOL)_parseFourColumnLayoutWithOptions:(unint64_t)a3
+- (BOOL)_parseFourColumnLayoutWithOptions:(unint64_t)options
 {
-  v5 = [(PXExploreLayoutGenerator *)self localState];
-  [(PXExploreLayoutGenerator *)self _buildingBlockAspectRatioForNumberOfColumns:4 options:a3];
-  [v5 setBuildingBlockAspectRatio:?];
-  v6 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  v7 = [(PXExploreLayoutGenerator *)self metrics];
-  v8 = [v7 allowHeaders];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  [(PXExploreLayoutGenerator *)self _buildingBlockAspectRatioForNumberOfColumns:4 options:options];
+  [localState setBuildingBlockAspectRatio:?];
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  allowHeaders = [metrics allowHeaders];
 
-  v9 = v6 + (v8 ^ 1u);
+  v9 = numberOfRemainingItems + (allowHeaders ^ 1u);
   if (v9 <= 24)
   {
-    [v5 setEffectiveLargeHeroDensity:0];
+    [localState setEffectiveLargeHeroDensity:0];
   }
 
   if (v9 > 0xE || ((1 << v9) & 0x449C) == 0)
   {
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1;
     v13 = 1;
     v14 = 4;
@@ -329,43 +329,43 @@ LABEL_25:
 
   else
   {
-    [v5 setNumberOfColumnsOverride:3];
-    v11 = self;
+    [localState setNumberOfColumnsOverride:3];
+    selfCopy2 = self;
     v12 = 4;
     v13 = 3;
     v14 = 12;
   }
 
-  [(PXExploreLayoutGenerator *)v11 setBuildingBlockColumnSpan:v12 rowSpan:v13 withNumberOfColumns:v14];
-  v15 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  if (v15 >= 1)
+  [(PXExploreLayoutGenerator *)selfCopy2 setBuildingBlockColumnSpan:v12 rowSpan:v13 withNumberOfColumns:v14];
+  numberOfRemainingItems2 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  if (numberOfRemainingItems2 >= 1)
   {
-    v16 = v15;
+    numberOfRemainingItems3 = numberOfRemainingItems2;
     v17 = 0;
     while (1)
     {
-      v18 = [v5 nextRowType];
-      if (v18 > 1)
+      nextRowType = [localState nextRowType];
+      if (nextRowType > 1)
       {
-        if (v18 == 2)
+        if (nextRowType == 2)
         {
-          v21 = [(PXExploreLayoutGenerator *)self numberOfItemsInFourColumnMediumHeroRowForNumberOfRemainingItems:v16];
-          v19 = self;
+          v21 = [(PXExploreLayoutGenerator *)self numberOfItemsInFourColumnMediumHeroRowForNumberOfRemainingItems:numberOfRemainingItems3];
+          selfCopy9 = self;
           v20 = 2;
           goto LABEL_37;
         }
 
-        if (v18 != 3)
+        if (nextRowType != 3)
         {
           goto LABEL_43;
         }
 
-        if (v16 > 5)
+        if (numberOfRemainingItems3 > 5)
         {
-          if ((v16 - 6) < 2)
+          if ((numberOfRemainingItems3 - 6) < 2)
           {
 LABEL_30:
-            v19 = self;
+            selfCopy9 = self;
             v20 = 2;
 LABEL_31:
             v21 = 3;
@@ -375,17 +375,17 @@ LABEL_31:
 
         else
         {
-          switch(v16)
+          switch(numberOfRemainingItems3)
           {
             case 2:
-              v19 = self;
+              selfCopy9 = self;
               v20 = 2;
               v21 = 2;
               goto LABEL_37;
             case 3:
               goto LABEL_30;
             case 4:
-              v19 = self;
+              selfCopy9 = self;
               v20 = 2;
               v21 = 4;
               goto LABEL_37;
@@ -400,60 +400,60 @@ LABEL_31:
 
       else
       {
-        if (!v18)
+        if (!nextRowType)
         {
-          v19 = self;
+          selfCopy9 = self;
           v20 = 0;
-          if (v16 > 3)
+          if (numberOfRemainingItems3 > 3)
           {
             v21 = 1;
           }
 
           else
           {
-            v21 = v16;
+            v21 = numberOfRemainingItems3;
           }
 
           goto LABEL_37;
         }
 
-        if (v18 != 1)
+        if (nextRowType != 1)
         {
           goto LABEL_43;
         }
 
         if (![(PXExploreLayoutGenerator *)self parseFourColumnGroupWithShortRowFollowedByLargeHero])
         {
-          if ((v16 == 6 || (v16 & 0x7FFFFFFFFFFFFFFBLL) == 9) && [v5 numberOfColumnsOverride] == 3)
+          if ((numberOfRemainingItems3 == 6 || (numberOfRemainingItems3 & 0x7FFFFFFFFFFFFFFBLL) == 9) && [localState numberOfColumnsOverride] == 3)
           {
-            v19 = self;
+            selfCopy9 = self;
             v20 = 1;
             goto LABEL_31;
           }
 
-          if (v16 >= 4)
+          if (numberOfRemainingItems3 >= 4)
           {
             v21 = 4;
           }
 
           else
           {
-            v21 = v16;
+            v21 = numberOfRemainingItems3;
           }
 
-          v19 = self;
+          selfCopy9 = self;
           v20 = 1;
 LABEL_37:
-          if (![(PXExploreLayoutGenerator *)v19 parseFourColumnRowWithType:v20 numberOfItems:v21])
+          if (![(PXExploreLayoutGenerator *)selfCopy9 parseFourColumnRowWithType:v20 numberOfItems:v21])
           {
             goto LABEL_43;
           }
         }
       }
 
-      v16 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+      numberOfRemainingItems3 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
       v17 = 1;
-      if (v16 < 1)
+      if (numberOfRemainingItems3 < 1)
       {
         goto LABEL_43;
       }
@@ -466,29 +466,29 @@ LABEL_43:
   return v17 & 1;
 }
 
-- (BOOL)_parseThreeColumnLayoutWithOptions:(unint64_t)a3
+- (BOOL)_parseThreeColumnLayoutWithOptions:(unint64_t)options
 {
-  v5 = [(PXExploreLayoutGenerator *)self localState];
-  [(PXExploreLayoutGenerator *)self _buildingBlockAspectRatioForNumberOfColumns:3 options:a3];
-  [v5 setBuildingBlockAspectRatio:?];
-  v6 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  if (v6 <= 19)
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  [(PXExploreLayoutGenerator *)self _buildingBlockAspectRatioForNumberOfColumns:3 options:options];
+  [localState setBuildingBlockAspectRatio:?];
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  if (numberOfRemainingItems <= 19)
   {
-    [v5 setEffectiveLargeHeroDensity:0];
+    [localState setEffectiveLargeHeroDensity:0];
   }
 
   [(PXExploreLayoutGenerator *)self setBuildingBlockColumnSpan:1 rowSpan:1 withNumberOfColumns:3];
-  v7 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  if (v7 >= 1)
+  numberOfRemainingItems2 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  if (numberOfRemainingItems2 >= 1)
   {
-    v8 = v7;
+    numberOfRemainingItems3 = numberOfRemainingItems2;
     v9 = 0;
     while (1)
     {
-      v10 = [v5 nextRowType];
-      if (v10 > 1)
+      nextRowType = [localState nextRowType];
+      if (nextRowType > 1)
       {
-        if (v10 == 2)
+        if (nextRowType == 2)
         {
           if ([(PXExploreLayoutGenerator *)self nextItems:3 isAny:2])
           {
@@ -496,7 +496,7 @@ LABEL_43:
             goto LABEL_46;
           }
 
-          if (v8 == 4)
+          if (numberOfRemainingItems3 == 4)
           {
             if (![(PXExploreLayoutGenerator *)self nextItems:4 isAny:2])
             {
@@ -509,23 +509,23 @@ LABEL_43:
 
           else
           {
-            if (v8 >= 3)
+            if (numberOfRemainingItems3 >= 3)
             {
               v16 = 3;
             }
 
             else
             {
-              v16 = v8;
+              v16 = numberOfRemainingItems3;
             }
 
-            if ((v8 - 5) <= 1)
+            if ((numberOfRemainingItems3 - 5) <= 1)
             {
               if ([(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows])
               {
-                if (([v5 didMoveBestItemOutOfPreviousShortRowIntoHeroRow] & 1) == 0 && !-[PXExploreLayoutGenerator nextItems:isAny:](self, "nextItems:isAny:", v8, 2))
+                if (([localState didMoveBestItemOutOfPreviousShortRowIntoHeroRow] & 1) == 0 && !-[PXExploreLayoutGenerator nextItems:isAny:](self, "nextItems:isAny:", numberOfRemainingItems3, 2))
                 {
-                  v17 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v8 having:0 keyIndex:0];
+                  v17 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:numberOfRemainingItems3 having:0 keyIndex:0];
                   if (v17 >= 3)
                   {
                     [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v17 toIndex:2];
@@ -535,24 +535,24 @@ LABEL_43:
             }
           }
 
-          v13 = self;
+          selfCopy4 = self;
           v14 = 2;
           v15 = v16;
           goto LABEL_45;
         }
 
-        if (v10 != 3)
+        if (nextRowType != 3)
         {
           goto LABEL_69;
         }
 
-        if (v8 == 2 && ![(PXExploreLayoutGenerator *)self nextInputItems:1, 2, 0])
+        if (numberOfRemainingItems3 == 2 && ![(PXExploreLayoutGenerator *)self nextInputItems:1, 2, 0])
         {
-          v13 = self;
+          selfCopy4 = self;
           v14 = 2;
           v15 = 2;
 LABEL_45:
-          LOBYTE(v11) = [(PXExploreLayoutGenerator *)v13 parseThreeColumnRowWithType:v14 numberOfItems:v15];
+          LOBYTE(v11) = [(PXExploreLayoutGenerator *)selfCopy4 parseThreeColumnRowWithType:v14 numberOfItems:v15];
 LABEL_46:
           if (!v11)
           {
@@ -570,9 +570,9 @@ LABEL_46:
 
       else
       {
-        if (!v10)
+        if (!nextRowType)
         {
-          if (v8 == 2)
+          if (numberOfRemainingItems3 == 2)
           {
             v12 = [(PXExploreLayoutGenerator *)self nextInputItems:1, 2, 0];
             v11 = [(PXExploreLayoutGenerator *)self parseThreeColumnRowWithType:0 numberOfItems:1];
@@ -586,13 +586,13 @@ LABEL_46:
               goto LABEL_69;
             }
 
-            v13 = self;
+            selfCopy4 = self;
             v14 = 3;
           }
 
           else
           {
-            v13 = self;
+            selfCopy4 = self;
             v14 = 0;
           }
 
@@ -600,7 +600,7 @@ LABEL_46:
           goto LABEL_45;
         }
 
-        if (v10 != 1)
+        if (nextRowType != 1)
         {
           goto LABEL_69;
         }
@@ -613,40 +613,40 @@ LABEL_46:
             goto LABEL_46;
           }
 
-          v18 = [v5 parseLocation];
-          if (v8 <= 3)
+          parseLocation = [localState parseLocation];
+          if (numberOfRemainingItems3 <= 3)
           {
-            if (v8 != 2)
+            if (numberOfRemainingItems3 != 2)
             {
               goto LABEL_61;
             }
 
-            if (v6 != 3)
+            if (numberOfRemainingItems != 3)
             {
-              v8 = 2;
+              numberOfRemainingItems3 = 2;
               goto LABEL_61;
             }
 
-            v20 = self;
+            selfCopy6 = self;
             v21 = 2;
             v22 = 2;
 LABEL_62:
-            [(PXExploreLayoutGenerator *)v20 parseThreeColumnRowWithType:v21 numberOfItems:v22];
+            [(PXExploreLayoutGenerator *)selfCopy6 parseThreeColumnRowWithType:v21 numberOfItems:v22];
           }
 
           else
           {
-            if (v8 > 6)
+            if (numberOfRemainingItems3 > 6)
             {
-              if (v8 != 7 && v8 != 10)
+              if (numberOfRemainingItems3 != 7 && numberOfRemainingItems3 != 10)
               {
                 goto LABEL_56;
               }
             }
 
-            else if (v8 != 4)
+            else if (numberOfRemainingItems3 != 4)
             {
-              if (v8 == 5)
+              if (numberOfRemainingItems3 == 5)
               {
                 if (![(PXExploreLayoutGenerator *)self nextItems:5 isAny:2])
                 {
@@ -655,11 +655,11 @@ LABEL_62:
                 }
 
 LABEL_60:
-                v8 = 3;
+                numberOfRemainingItems3 = 3;
 LABEL_61:
-                v20 = self;
+                selfCopy6 = self;
                 v21 = 1;
-                v22 = v8;
+                v22 = numberOfRemainingItems3;
                 goto LABEL_62;
               }
 
@@ -672,7 +672,7 @@ LABEL_56:
                   if (v19 <= 2)
                   {
                     [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v19 toIndex:3];
-                    [v5 setDidMoveBestItemOutOfPreviousShortRowIntoHeroRow:1];
+                    [localState setDidMoveBestItemOutOfPreviousShortRowIntoHeroRow:1];
                   }
                 }
               }
@@ -685,11 +685,11 @@ LABEL_56:
               goto LABEL_60;
             }
 
-            [(PXExploreLayoutGenerator *)self parseThreeColumnGroupWithThreeItemsFollowedByOneItemAllowingLargeHeroAtEnd:(v6 & 0xFFFFFFFFFFFFFFFELL) == 4];
+            [(PXExploreLayoutGenerator *)self parseThreeColumnGroupWithThreeItemsFollowedByOneItemAllowingLargeHeroAtEnd:(numberOfRemainingItems & 0xFFFFFFFFFFFFFFFELL) == 4];
           }
 
 LABEL_63:
-          if ([v5 parseLocation] <= v18)
+          if ([localState parseLocation] <= parseLocation)
           {
             goto LABEL_69;
           }
@@ -697,9 +697,9 @@ LABEL_63:
       }
 
 LABEL_47:
-      v8 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+      numberOfRemainingItems3 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
       v9 = 1;
-      if (v8 < 1)
+      if (numberOfRemainingItems3 < 1)
       {
         goto LABEL_69;
       }
@@ -714,10 +714,10 @@ LABEL_69:
 
 - (BOOL)parseMacLayout
 {
-  v3 = [(PXExploreLayoutGenerator *)self metrics];
-  v4 = [v3 layoutSubtype];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  layoutSubtype = [metrics layoutSubtype];
 
-  if (v4 == 3)
+  if (layoutSubtype == 3)
   {
 
     return [(PXExploreLayoutGenerator *)self _parseSevenColumnLayoutWithOptions:4];
@@ -732,10 +732,10 @@ LABEL_69:
 
 - (BOOL)parsePadLandscapeLayout
 {
-  v3 = [(PXExploreLayoutGenerator *)self metrics];
-  v4 = [v3 layoutSubtype];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  layoutSubtype = [metrics layoutSubtype];
 
-  if (v4 == 3)
+  if (layoutSubtype == 3)
   {
 
     return [(PXExploreLayoutGenerator *)self _parseSevenColumnLayoutWithOptions:2];
@@ -750,10 +750,10 @@ LABEL_69:
 
 - (BOOL)parsePhoneLandscapeLayout
 {
-  v3 = [(PXExploreLayoutGenerator *)self metrics];
-  v4 = [v3 layoutSubtype];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  layoutSubtype = [metrics layoutSubtype];
 
-  if (v4 == 3)
+  if (layoutSubtype == 3)
   {
 
     return [(PXExploreLayoutGenerator *)self _parseSevenColumnLayoutWithOptions:2];
@@ -766,68 +766,68 @@ LABEL_69:
   }
 }
 
-- (CGSize)_estimatedSizeForColumns:(int64_t)a3 headerRows:(int64_t)a4 averageItemsPerBlock:(double)a5 averageRowsPerBlock:(double)a6 withOptions:(unint64_t)a7
+- (CGSize)_estimatedSizeForColumns:(int64_t)columns headerRows:(int64_t)rows averageItemsPerBlock:(double)block averageRowsPerBlock:(double)perBlock withOptions:(unint64_t)options
 {
-  v7 = a7;
-  v13 = [(PXExploreLayoutGenerator *)self metrics];
-  [v13 referenceSize];
+  optionsCopy = options;
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  [metrics referenceSize];
   v15 = v14;
 
-  v16 = [(PXExploreLayoutGenerator *)self itemCount];
-  v17 = [(PXExploreLayoutGenerator *)self metrics];
-  [v17 buildingBlockAspectRatio];
+  itemCount = [(PXExploreLayoutGenerator *)self itemCount];
+  metrics2 = [(PXExploreLayoutGenerator *)self metrics];
+  [metrics2 buildingBlockAspectRatio];
   if (v18 <= 0.0)
   {
     v20 = 1.0;
-    if ((v7 & 1) == 0)
+    if ((optionsCopy & 1) == 0)
     {
-      v21 = [(PXExploreLayoutGenerator *)self metrics];
-      v22 = [v21 layoutType];
-      v23 = [(PXExploreLayoutGenerator *)self metrics];
-      v20 = PXExploreLayoutCellPreferredAspectRatio(v22, [v23 layoutSubtype]);
+      metrics3 = [(PXExploreLayoutGenerator *)self metrics];
+      layoutType = [metrics3 layoutType];
+      metrics4 = [(PXExploreLayoutGenerator *)self metrics];
+      v20 = PXExploreLayoutCellPreferredAspectRatio(layoutType, [metrics4 layoutSubtype]);
     }
   }
 
   else
   {
-    [v17 buildingBlockAspectRatio];
+    [metrics2 buildingBlockAspectRatio];
     v20 = v19;
   }
 
   v24 = v15;
-  v25 = v15 / a3 / v20 * (a4 + ((a3 + v16 - 2) / a3) / a5 * a6);
+  v25 = v15 / columns / v20 * (rows + ((columns + itemCount - 2) / columns) / block * perBlock);
   result.height = v25;
   result.width = v24;
   return result;
 }
 
-- (CGSize)_estimatedSizeForSevenColumnLayoutWithOptions:(unint64_t)a3
+- (CGSize)_estimatedSizeForSevenColumnLayoutWithOptions:(unint64_t)options
 {
-  [(PXExploreLayoutGenerator *)self _estimatedSizeForColumns:7 headerRows:3 averageItemsPerBlock:a3 averageRowsPerBlock:12.0 withOptions:4.0];
+  [(PXExploreLayoutGenerator *)self _estimatedSizeForColumns:7 headerRows:3 averageItemsPerBlock:options averageRowsPerBlock:12.0 withOptions:4.0];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_estimatedSizeForSixColumnLayoutWithOptions:(unint64_t)a3
+- (CGSize)_estimatedSizeForSixColumnLayoutWithOptions:(unint64_t)options
 {
-  [(PXExploreLayoutGenerator *)self _estimatedSizeForColumns:6 headerRows:3 averageItemsPerBlock:a3 averageRowsPerBlock:9.0 withOptions:4.0];
+  [(PXExploreLayoutGenerator *)self _estimatedSizeForColumns:6 headerRows:3 averageItemsPerBlock:options averageRowsPerBlock:9.0 withOptions:4.0];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_estimatedSizeForFourColumnLayoutWithOptions:(unint64_t)a3
+- (CGSize)_estimatedSizeForFourColumnLayoutWithOptions:(unint64_t)options
 {
-  [(PXExploreLayoutGenerator *)self _estimatedSizeForColumns:4 headerRows:3 averageItemsPerBlock:a3 averageRowsPerBlock:4.0 withOptions:2.0];
+  [(PXExploreLayoutGenerator *)self _estimatedSizeForColumns:4 headerRows:3 averageItemsPerBlock:options averageRowsPerBlock:4.0 withOptions:2.0];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_estimatedSizeForThreeColumnLayoutWithOptions:(unint64_t)a3
+- (CGSize)_estimatedSizeForThreeColumnLayoutWithOptions:(unint64_t)options
 {
-  [(PXExploreLayoutGenerator *)self _estimatedSizeForColumns:3 headerRows:3 averageItemsPerBlock:a3 averageRowsPerBlock:3.0 withOptions:1.5];
+  [(PXExploreLayoutGenerator *)self _estimatedSizeForColumns:3 headerRows:3 averageItemsPerBlock:options averageRowsPerBlock:3.0 withOptions:1.5];
   result.height = v4;
   result.width = v3;
   return result;
@@ -865,16 +865,16 @@ LABEL_69:
   return result;
 }
 
-- (id)presentedItemsBetweenItem:(int64_t)a3 andItem:(int64_t)a4
+- (id)presentedItemsBetweenItem:(int64_t)item andItem:(int64_t)andItem
 {
   v7 = objc_alloc_init(MEMORY[0x1E696AD50]);
   if (self->_isPrepared)
   {
-    v8 = a3 & ~(a3 >> 63);
-    v9 = [(PXExploreLayoutGenerator *)self itemCount];
-    if (v9 - 1 < a4)
+    v8 = item & ~(item >> 63);
+    itemCount = [(PXExploreLayoutGenerator *)self itemCount];
+    if (itemCount - 1 < andItem)
     {
-      a4 = v9 - 1;
+      andItem = itemCount - 1;
     }
 
     [(PXExploreLayoutGenerator *)self presentedRectForItemAtIndex:v8];
@@ -882,7 +882,7 @@ LABEL_69:
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [(PXExploreLayoutGenerator *)self presentedRectForItemAtIndex:a4];
+    [(PXExploreLayoutGenerator *)self presentedRectForItemAtIndex:andItem];
     x = v37.origin.x;
     y = v37.origin.y;
     width = v37.size.width;
@@ -908,7 +908,7 @@ LABEL_69:
     {
       inputItemInfos = self->_inputItemInfos;
       var1 = inputItemInfos[v8].var1;
-      v28 = inputItemInfos[a4].var1;
+      v28 = inputItemInfos[andItem].var1;
       v29 = var1 - v28;
       if (var1 >= v28)
       {
@@ -943,7 +943,7 @@ LABEL_69:
   return v7;
 }
 
-- (id)presentedItemsInRect:(CGRect)a3
+- (id)presentedItemsInRect:(CGRect)rect
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AD50]);
   if (self->_isPrepared)
@@ -954,25 +954,25 @@ LABEL_69:
   return v4;
 }
 
-- ($340E233F617FB3D5D9EFCE5A6F22D754)presentedItemLocationForItemAtIndex:(SEL)a3
+- ($340E233F617FB3D5D9EFCE5A6F22D754)presentedItemLocationForItemAtIndex:(SEL)index
 {
   *retstr = *PXLayoutItemLocationNull;
   if (LOBYTE(self[3].var2) == 1)
   {
-    v7 = self;
+    selfCopy = self;
     if (a4 < 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a3 object:v7 file:@"PXExploreLayoutGenerator.m" lineNumber:962 description:{@"Invalid parameter not satisfying: %@", @"index >= 0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:index object:selfCopy file:@"PXExploreLayoutGenerator.m" lineNumber:962 description:{@"Invalid parameter not satisfying: %@", @"index >= 0"}];
     }
 
-    if (v7[1].var2 <= a4)
+    if (selfCopy[1].var2 <= a4)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a3 object:v7 file:@"PXExploreLayoutGenerator.m" lineNumber:963 description:{@"Invalid parameter not satisfying: %@", @"index < _capacity"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:index object:selfCopy file:@"PXExploreLayoutGenerator.m" lineNumber:963 description:{@"Invalid parameter not satisfying: %@", @"index < _capacity"}];
     }
 
-    v8 = (v7[2].var2 + 32 * a4);
+    v8 = (selfCopy[2].var2 + 32 * a4);
     v9 = v8[1];
     *&retstr->var0 = *v8;
     *&retstr->var2 = v9;
@@ -981,19 +981,19 @@ LABEL_69:
   return self;
 }
 
-- (CGRect)presentedRectForItemAtIndex:(int64_t)a3
+- (CGRect)presentedRectForItemAtIndex:(int64_t)index
 {
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);
   v7 = *(MEMORY[0x1E695F050] + 16);
   v8 = *(MEMORY[0x1E695F050] + 24);
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && self->_isPrepared)
+  if (index != 0x7FFFFFFFFFFFFFFFLL && self->_isPrepared)
   {
     v11 = v3;
     v12 = v4;
     v10 = 0;
     memset(v9, 0, sizeof(v9));
-    [(PXExploreLayoutGenerator *)self getGeometries:v9 inRange:a3 withKind:1, 0];
+    [(PXExploreLayoutGenerator *)self getGeometries:v9 inRange:index withKind:1, 0];
     PXRectWithCenterAndSize();
   }
 
@@ -1004,26 +1004,26 @@ LABEL_69:
   return result;
 }
 
-- (int64_t)presentedNumberOfColumnsAtRow:(int64_t)a3
+- (int64_t)presentedNumberOfColumnsAtRow:(int64_t)row
 {
   if (!self->_isPrepared)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3 < 0)
+  if (row < 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:942 description:{@"Invalid parameter not satisfying: %@", @"row >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:942 description:{@"Invalid parameter not satisfying: %@", @"row >= 0"}];
   }
 
-  if (self->_rowCount <= a3)
+  if (self->_rowCount <= row)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:943 description:{@"Invalid parameter not satisfying: %@", @"row < _rowCount"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:943 description:{@"Invalid parameter not satisfying: %@", @"row < _rowCount"}];
   }
 
-  return self->_outputNumberOfColumnsAtRow[a3];
+  return self->_outputNumberOfColumnsAtRow[row];
 }
 
 - (int64_t)presentedNumberOfRows
@@ -1039,24 +1039,24 @@ LABEL_69:
   }
 }
 
-- (int64_t)itemIndexForItem:(int64_t)a3 inDirection:(unint64_t)a4
+- (int64_t)itemIndexForItem:(int64_t)item inDirection:(unint64_t)direction
 {
-  if (a4 - 7 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (direction - 7 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:917 description:@"Only next/previous directions are supported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:917 description:@"Only next/previous directions are supported"];
   }
 
   if (self->_isPrepared)
   {
-    v7 = self->_outputItemIndexToParseLocation[a3];
-    if (a4 == 6 && v7 > 0)
+    v7 = self->_outputItemIndexToParseLocation[item];
+    if (direction == 6 && v7 > 0)
     {
       v8 = -40;
       return *(&self->_inputItemInfos[v7].var0 + v8);
     }
 
-    if (a4 == 5 && v7 < self->_capacity - 1)
+    if (direction == 5 && v7 < self->_capacity - 1)
     {
       v8 = 40;
       return *(&self->_inputItemInfos[v7].var0 + v8);
@@ -1066,26 +1066,26 @@ LABEL_69:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (int64_t)itemIndexForPresentedItemIndex:(int64_t)a3
+- (int64_t)itemIndexForPresentedItemIndex:(int64_t)index
 {
   if (!self->_isPrepared)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3 < 0)
+  if (index < 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:909 description:{@"Invalid parameter not satisfying: %@", @"presentedItem >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:909 description:{@"Invalid parameter not satisfying: %@", @"presentedItem >= 0"}];
   }
 
-  if (self->_capacity <= a3)
+  if (self->_capacity <= index)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:910 description:{@"Invalid parameter not satisfying: %@", @"presentedItem < _capacity"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:910 description:{@"Invalid parameter not satisfying: %@", @"presentedItem < _capacity"}];
   }
 
-  return self->_inputItemInfos[a3].var0;
+  return self->_inputItemInfos[index].var0;
 }
 
 - (NSString)diagnosticDescription
@@ -1093,9 +1093,9 @@ LABEL_69:
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v10.receiver = self;
   v10.super_class = PXExploreLayoutGenerator;
-  v4 = [(PXExploreLayoutGenerator *)&v10 diagnosticDescription];
-  v5 = [(PXExploreLayoutGenerator *)self localState];
-  v6 = [v3 initWithFormat:@"<%@\n\tparsed=%li\n", v4, objc_msgSend(v5, "parseLocation")];
+  diagnosticDescription = [(PXExploreLayoutGenerator *)&v10 diagnosticDescription];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  v6 = [v3 initWithFormat:@"<%@\n\tparsed=%li\n", diagnosticDescription, objc_msgSend(localState, "parseLocation")];
 
   if (self->_count >= 1)
   {
@@ -1128,34 +1128,34 @@ LABEL_69:
   return result;
 }
 
-- (unint64_t)attributesForNextItemAtIndex:(int64_t)a3
+- (unint64_t)attributesForNextItemAtIndex:(int64_t)index
 {
   inputItemInfos = self->_inputItemInfos;
-  v5 = [(PXExploreLayoutGenerator *)self localState];
-  var2 = inputItemInfos[[v5 parseLocation] + a3].var2;
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  var2 = inputItemInfos[[localState parseLocation] + index].var2;
 
   return var2;
 }
 
-- (void)getLowestAspectRatio:(double *)a3 highestAspectRatio:(double *)a4 forNextItems:(int64_t)a5
+- (void)getLowestAspectRatio:(double *)ratio highestAspectRatio:(double *)aspectRatio forNextItems:(int64_t)items
 {
-  v9 = [(PXExploreLayoutGenerator *)self localState];
-  v10 = [v9 parseLocation];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
 
-  if (a5 < 1)
+  if (items < 1)
   {
     v13 = 1.79769313e308;
     v12 = -1.79769313e308;
-    if (a3)
+    if (ratio)
     {
 LABEL_9:
-      *a3 = v13;
+      *ratio = v13;
     }
   }
 
   else
   {
-    p_var4 = &self->_inputItemInfos[v10].var4;
+    p_var4 = &self->_inputItemInfos[parseLocation].var4;
     v12 = -1.79769313e308;
     v13 = 1.79769313e308;
     do
@@ -1173,31 +1173,31 @@ LABEL_9:
         v12 = v15;
       }
 
-      --a5;
+      --items;
     }
 
-    while (a5);
-    if (a3)
+    while (items);
+    if (ratio)
     {
       goto LABEL_9;
     }
   }
 
-  if (a4)
+  if (aspectRatio)
   {
-    *a4 = v12;
+    *aspectRatio = v12;
   }
 }
 
-- (double)score:(int64_t)a3 forNextItemAtIndex:(int64_t)a4
+- (double)score:(int64_t)score forNextItemAtIndex:(int64_t)index
 {
-  v8 = [(PXExploreLayoutGenerator *)self localState];
-  v9 = [v8 parseLocation] + a4;
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  v9 = [localState parseLocation] + index;
 
   if (v9 >= self->_count)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:837 description:{@"score index out of bounds %li, count: %li", v9, self->_count}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:837 description:{@"score index out of bounds %li, count: %li", v9, self->_count}];
   }
 
   v10 = &self->_inputItemInfos[v9];
@@ -1222,11 +1222,11 @@ LABEL_9:
   v25 = var4;
   v13 = _Block_copy(v22);
   v14 = v13;
-  if (a3 <= 1)
+  if (score <= 1)
   {
-    if (a3)
+    if (score)
     {
-      if (a3 != 1)
+      if (score != 1)
       {
         goto LABEL_16;
       }
@@ -1243,24 +1243,24 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  if (a3 == 2)
+  if (score == 2)
   {
     v16 = -(*(v13 + 2))(v13);
     goto LABEL_15;
   }
 
-  if (a3 == 3)
+  if (score == 3)
   {
     v18 = (*(v13 + 2))(v13);
     v16 = v18 + v12[2](v12);
     goto LABEL_15;
   }
 
-  if (a3 != 4)
+  if (score != 4)
   {
 LABEL_16:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:861 description:@"Code which should be unreachable has been reached"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:861 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -1272,21 +1272,21 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)isAcceptableLargeHeroNextItemAtIndex:(int64_t)a3
+- (BOOL)isAcceptableLargeHeroNextItemAtIndex:(int64_t)index
 {
-  v5 = [(PXExploreLayoutGenerator *)self metrics];
-  v6 = [v5 acceptableLargeHeroPredicate];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  acceptableLargeHeroPredicate = [metrics acceptableLargeHeroPredicate];
 
-  if (v6)
+  if (acceptableLargeHeroPredicate)
   {
     inputItemInfos = self->_inputItemInfos;
-    v8 = [(PXExploreLayoutGenerator *)self localState];
-    var0 = inputItemInfos[[v8 parseLocation] + a3].var0;
+    localState = [(PXExploreLayoutGenerator *)self localState];
+    var0 = inputItemInfos[[localState parseLocation] + index].var0;
 
-    v10 = [(PXExploreLayoutGenerator *)self itemLayoutInfoBlock];
-    v11 = v10[2](v10, var0);
+    itemLayoutInfoBlock = [(PXExploreLayoutGenerator *)self itemLayoutInfoBlock];
+    v11 = itemLayoutInfoBlock[2](itemLayoutInfoBlock, var0);
 
-    v12 = (v6)[2](v6, v11);
+    v12 = (acceptableLargeHeroPredicate)[2](acceptableLargeHeroPredicate, v11);
   }
 
   else
@@ -1297,13 +1297,13 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)prepareNextItems:(int64_t)a3 withLargeHeroIndex:(int64_t)a4
+- (BOOL)prepareNextItems:(int64_t)items withLargeHeroIndex:(int64_t)index
 {
-  v4 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  if (a3 >= 1 && a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (items >= 1 && index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [PXExploreLayoutGenerator indexWithinNextItems:v4 having:"indexWithinNextItems:having:keyIndex:" keyIndex:?];
+    v6 = [PXExploreLayoutGenerator indexWithinNextItems:selfCopy having:"indexWithinNextItems:having:keyIndex:" keyIndex:?];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       LOBYTE(self) = 0;
@@ -1312,12 +1312,12 @@ LABEL_15:
     else
     {
       v7 = v6;
-      LODWORD(self) = [(PXExploreLayoutGenerator *)v4 isAcceptableLargeHeroNextItemAtIndex:v6];
+      LODWORD(self) = [(PXExploreLayoutGenerator *)selfCopy isAcceptableLargeHeroNextItemAtIndex:v6];
       if (self)
       {
-        if ([(PXExploreLayoutGenerator *)v4 canReorderItemsAcrossRows])
+        if ([(PXExploreLayoutGenerator *)selfCopy canReorderItemsAcrossRows])
         {
-          [(PXExploreLayoutGenerator *)v4 moveNextItemAtIndex:v7 toIndex:a4];
+          [(PXExploreLayoutGenerator *)selfCopy moveNextItemAtIndex:v7 toIndex:index];
         }
 
         LOBYTE(self) = 1;
@@ -1328,21 +1328,21 @@ LABEL_15:
   return self;
 }
 
-- (int64_t)indexWithinNextItems:(int64_t)a3 having:(int64_t)a4 keyIndex:(int64_t)a5
+- (int64_t)indexWithinNextItems:(int64_t)items having:(int64_t)having keyIndex:(int64_t)index
 {
-  if (a3 < 1)
+  if (items < 1)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v8 = 0;
-  v9 = -a5;
+  v9 = -index;
   v10 = 0x7FFFFFFFFFFFFFFFLL;
   v11 = -1.79769313e308;
   v12 = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
-    [(PXExploreLayoutGenerator *)self score:a4 forNextItemAtIndex:v8];
+    [(PXExploreLayoutGenerator *)self score:having forNextItemAtIndex:v8];
     v14 = v9 + v8;
     if (v9 + v8 < 0)
     {
@@ -1359,27 +1359,27 @@ LABEL_15:
     ++v8;
   }
 
-  while (a3 != v8);
+  while (items != v8);
   return v12;
 }
 
-- (void)reorderNextItems:(int64_t)a3 usingMapping:(id)a4
+- (void)reorderNextItems:(int64_t)items usingMapping:(id)mapping
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v15[0] = a4;
-  v6 = [(PXExploreLayoutGenerator *)self localState];
-  v7 = [v6 parseLocation];
+  v15[0] = mapping;
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
 
-  if (a3 >= 1)
+  if (items >= 1)
   {
-    v8 = v7;
-    memcpy(v15 - ((40 * a3 + 15) & 0xFFFFFFFFFFFFFFF0), &self->_inputItemInfos[v7], 40 * a3);
+    v8 = parseLocation;
+    memcpy(v15 - ((40 * items + 15) & 0xFFFFFFFFFFFFFFF0), &self->_inputItemInfos[parseLocation], 40 * items);
     v9 = 0;
     do
     {
       v10 = (*(v15[0] + 16))(v15[0], v9);
       v11 = &self->_inputItemInfos[v8];
-      v12 = (&v15[5 * v10] - ((40 * a3 + 15) & 0xFFFFFFFFFFFFFFF0));
+      v12 = (&v15[5 * v10] - ((40 * items + 15) & 0xFFFFFFFFFFFFFFF0));
       v11->var4 = v12[4];
       v13 = *(v12 + 1);
       *&v11->var0 = *v12;
@@ -1388,43 +1388,43 @@ LABEL_15:
       ++v8;
     }
 
-    while (a3 != v9);
+    while (items != v9);
   }
 
   v14 = v15[0];
 }
 
-- (void)moveNextItemAtIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)moveNextItemAtIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
-  if (a3 != a4)
+  if (index != toIndex)
   {
-    v8 = [(PXExploreLayoutGenerator *)self localState];
-    v9 = [v8 parseLocation];
+    localState = [(PXExploreLayoutGenerator *)self localState];
+    parseLocation = [localState parseLocation];
 
-    v10 = v9 + a3;
-    v11 = v9 + a4;
+    v10 = parseLocation + index;
+    v11 = parseLocation + toIndex;
     count = self->_count;
-    if (v9 + a3 >= count)
+    if (parseLocation + index >= count)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:765 description:{@"out of bounds info fromIndex: %li, count: %li", v9 + a3, self->_count}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:765 description:{@"out of bounds info fromIndex: %li, count: %li", parseLocation + index, self->_count}];
 
       count = self->_count;
     }
 
     if (v11 >= count)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:766 description:{@"out of bounds info toIndex: %li, count: %li", v9 + a4, self->_count}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:766 description:{@"out of bounds info toIndex: %li, count: %li", parseLocation + toIndex, self->_count}];
     }
 
     v13 = &self->_inputItemInfos[v10];
     v27 = *&v13->var0;
     v28 = *&v13->var2;
     var4 = v13->var4;
-    if (a4 <= a3)
+    if (toIndex <= index)
     {
-      if (a3 > a4)
+      if (index > toIndex)
       {
         v21 = v10;
         do
@@ -1444,7 +1444,7 @@ LABEL_15:
 
     else
     {
-      v14 = 40 * (v9 + a3) + 40;
+      v14 = 40 * (parseLocation + index) + 40;
       v15 = v10;
       do
       {
@@ -1471,128 +1471,128 @@ LABEL_15:
   }
 }
 
-- (void)sortNextItems:(int64_t)a3 withItemAtIndex:(int64_t)a4 having:(int64_t)a5
+- (void)sortNextItems:(int64_t)items withItemAtIndex:(int64_t)index having:(int64_t)having
 {
-  if (a3 <= 0)
+  if (items <= 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:751 description:{@"Invalid parameter not satisfying: %@", @"count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:751 description:{@"Invalid parameter not satisfying: %@", @"count > 0"}];
   }
 
-  v9 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:a3 having:a5 keyIndex:a4];
-  if (v9 != a4 && v9 != 0x7FFFFFFFFFFFFFFFLL)
+  v9 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:items having:having keyIndex:index];
+  if (v9 != index && v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v9 toIndex:a4];
+    [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v9 toIndex:index];
   }
 }
 
-- (int64_t)numberOf:(unint64_t)a3 withinNextItems:(int64_t)a4
+- (int64_t)numberOf:(unint64_t)of withinNextItems:(int64_t)items
 {
-  v7 = [(PXExploreLayoutGenerator *)self localState];
-  v8 = [v7 parseLocation];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
 
-  v9 = self->_count - v8;
-  if (v9 >= a4)
+  itemsCopy = self->_count - parseLocation;
+  if (itemsCopy >= items)
   {
-    v9 = a4;
+    itemsCopy = items;
   }
 
-  if (v9 < 1)
+  if (itemsCopy < 1)
   {
     return 0;
   }
 
   result = 0;
-  p_var2 = &self->_inputItemInfos[v8].var2;
+  p_var2 = &self->_inputItemInfos[parseLocation].var2;
   do
   {
     v12 = *p_var2;
     p_var2 += 5;
-    if ((a3 & ~v12) == 0)
+    if ((of & ~v12) == 0)
     {
       ++result;
     }
 
-    --v9;
+    --itemsCopy;
   }
 
-  while (v9);
+  while (itemsCopy);
   return result;
 }
 
-- (BOOL)nextItems:(int64_t)a3 isAny:(unint64_t)a4
+- (BOOL)nextItems:(int64_t)items isAny:(unint64_t)any
 {
-  v7 = [(PXExploreLayoutGenerator *)self localState];
-  v8 = [v7 parseLocation];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
 
-  v9 = self->_count - v8;
-  if (v9 >= a3)
+  itemsCopy = self->_count - parseLocation;
+  if (itemsCopy >= items)
   {
-    v9 = a3;
+    itemsCopy = items;
   }
 
-  if (v9 < 1)
+  if (itemsCopy < 1)
   {
     return 0;
   }
 
   inputItemInfos = self->_inputItemInfos;
-  if ((a4 & ~inputItemInfos[v8].var2) == 0)
+  if ((any & ~inputItemInfos[parseLocation].var2) == 0)
   {
     return 1;
   }
 
   v12 = 0;
-  p_var2 = &inputItemInfos[v8 + 1].var2;
-  while (v9 - 1 != v12)
+  p_var2 = &inputItemInfos[parseLocation + 1].var2;
+  while (itemsCopy - 1 != v12)
   {
     v14 = *p_var2;
     p_var2 += 5;
     ++v12;
-    if ((a4 & ~v14) == 0)
+    if ((any & ~v14) == 0)
     {
-      return v12 < v9;
+      return v12 < itemsCopy;
     }
   }
 
-  v12 = v9;
-  return v12 < v9;
+  v12 = itemsCopy;
+  return v12 < itemsCopy;
 }
 
-- (BOOL)nextItems:(int64_t)a3 areAll:(unint64_t)a4
+- (BOOL)nextItems:(int64_t)items areAll:(unint64_t)all
 {
-  if (!a3)
+  if (!items)
   {
     return 0;
   }
 
-  v5 = a3;
-  v7 = [(PXExploreLayoutGenerator *)self localState];
-  v8 = [v7 parseLocation];
+  itemsCopy = items;
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
 
-  if (v8 + v5 > self->_count)
+  if (parseLocation + itemsCopy > self->_count)
   {
     return 0;
   }
 
-  if (v5 < 1)
+  if (itemsCopy < 1)
   {
     return 1;
   }
 
-  p_var2 = &self->_inputItemInfos[v8].var2;
+  p_var2 = &self->_inputItemInfos[parseLocation].var2;
   while (1)
   {
     v11 = *p_var2;
     p_var2 += 5;
-    result = (v11 & a4) == a4;
-    if ((v11 & a4) != a4)
+    result = (v11 & all) == all;
+    if ((v11 & all) != all)
     {
       break;
     }
 
-    if (!--v5)
+    if (!--itemsCopy)
     {
       return 1;
     }
@@ -1601,13 +1601,13 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)nextInputItems:(unint64_t)a3
+- (BOOL)nextInputItems:(unint64_t)items
 {
-  v5 = [(PXExploreLayoutGenerator *)self localState];
+  localState = [(PXExploreLayoutGenerator *)self localState];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
-  v21 = [v5 parseLocation];
+  parseLocation = [localState parseLocation];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1621,7 +1621,7 @@ LABEL_15:
   aBlock[6] = &v14;
   v6 = _Block_copy(aBlock);
   v7 = v6;
-  if (a3 && (v6[2])(v6, a3))
+  if (items && (v6[2])(v6, items))
   {
     v12 = &v22;
     do
@@ -1633,7 +1633,7 @@ LABEL_15:
   }
 
   v9 = v19[3];
-  if (v9 <= [v5 parseLocation])
+  if (v9 <= [localState parseLocation])
   {
     v10 = 0;
   }
@@ -1678,30 +1678,30 @@ LABEL_4:
   return v6;
 }
 
-- (void)setBuildingBlockColumnSpan:(int64_t)a3 rowSpan:(int64_t)a4 withNumberOfColumns:(int64_t)a5
+- (void)setBuildingBlockColumnSpan:(int64_t)span rowSpan:(int64_t)rowSpan withNumberOfColumns:(int64_t)columns
 {
-  [(PXExploreLayoutGenerator *)self _cellSizeForNumberOfColumns:a5];
-  v10 = -(self->_intercellSpacing.height - a4 * (v9 + self->_intercellSpacing.height));
-  self->_buildingBlockSize.width = -(self->_intercellSpacing.width - a3 * (v8 + self->_intercellSpacing.width));
+  [(PXExploreLayoutGenerator *)self _cellSizeForNumberOfColumns:columns];
+  v10 = -(self->_intercellSpacing.height - rowSpan * (v9 + self->_intercellSpacing.height));
+  self->_buildingBlockSize.width = -(self->_intercellSpacing.width - span * (v8 + self->_intercellSpacing.width));
   self->_buildingBlockSize.height = v10;
 }
 
-- (int64_t)preferredRowTypeAfterRowWithType:(int64_t)a3
+- (int64_t)preferredRowTypeAfterRowWithType:(int64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    return a3 == 2 || a3 == 3;
+    return type == 2 || type == 3;
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v3 = [(PXExploreLayoutGenerator *)self localState];
-      v4 = [v3 effectiveLargeHeroDensity];
-      if (v4 == 1)
+      localState = [(PXExploreLayoutGenerator *)self localState];
+      effectiveLargeHeroDensity = [localState effectiveLargeHeroDensity];
+      if (effectiveLargeHeroDensity == 1)
       {
-        if ([v3 numberOfConsecutiveMediumHeroRows] >= 3)
+        if ([localState numberOfConsecutiveMediumHeroRows] >= 3)
         {
           goto LABEL_15;
         }
@@ -1709,9 +1709,9 @@ LABEL_4:
 
       else
       {
-        if (v4 != 3)
+        if (effectiveLargeHeroDensity != 3)
         {
-          if (v4 != 2 || [v3 numberOfConsecutiveMediumHeroRows] <= 1)
+          if (effectiveLargeHeroDensity != 2 || [localState numberOfConsecutiveMediumHeroRows] <= 1)
           {
             goto LABEL_17;
           }
@@ -1723,7 +1723,7 @@ LABEL_18:
           return v5;
         }
 
-        if ([v3 numberOfConsecutiveMediumHeroRows] > 0)
+        if ([localState numberOfConsecutiveMediumHeroRows] > 0)
         {
           goto LABEL_15;
         }
@@ -1743,81 +1743,81 @@ LABEL_17:
   }
 }
 
-- (void)endFullWidthRowWithType:(int64_t)a3 aspectRatio:(double)a4
+- (void)endFullWidthRowWithType:(int64_t)type aspectRatio:(double)ratio
 {
   if (self->_localNumberOfColumns == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:591 description:@"current row doesn't exists"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:591 description:@"current row doesn't exists"];
   }
 
   self->_rowCount = self->_localNumberOfRows + self->_row;
   _PXGArrayCapacityResizeToCount();
 }
 
-- (void)addFullWidthItemWithType:(int64_t)a3 atRow:(int64_t)a4 aspectRatio:(double)a5
+- (void)addFullWidthItemWithType:(int64_t)type atRow:(int64_t)row aspectRatio:(double)ratio
 {
-  v7 = [(PXExploreLayoutGenerator *)self localState];
+  localState = [(PXExploreLayoutGenerator *)self localState];
   if (self->_localNumberOfColumns == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:532 description:@"current row doesn't exists"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:532 description:@"current row doesn't exists"];
   }
 
-  v8 = [v7 parseLocation];
-  if (v8 >= self->_count)
+  parseLocation = [localState parseLocation];
+  if (parseLocation >= self->_count)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:542 description:{@"out of bounds %li", self->_count}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:542 description:{@"out of bounds %li", self->_count}];
   }
 
-  self->_inputItemInfos[v8].var1 = v8;
+  self->_inputItemInfos[parseLocation].var1 = parseLocation;
   PXRectGetCenter();
 }
 
-- (void)endRowWithType:(int64_t)a3
+- (void)endRowWithType:(int64_t)type
 {
   if (self->_localNumberOfColumns == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:493 description:@"current row doesn't exists"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:493 description:@"current row doesn't exists"];
   }
 
   self->_rowCount = self->_localNumberOfRows + self->_row;
   _PXGArrayCapacityResizeToCount();
 }
 
-- (void)addLocalItemWithType:(int64_t)a3 atColumn:(int64_t)a4 row:(int64_t)a5 columnSpan:(int64_t)a6 rowSpan:(int64_t)a7
+- (void)addLocalItemWithType:(int64_t)type atColumn:(int64_t)column row:(int64_t)row columnSpan:(int64_t)span rowSpan:(int64_t)rowSpan
 {
-  v9 = [(PXExploreLayoutGenerator *)self localState];
+  localState = [(PXExploreLayoutGenerator *)self localState];
   if (self->_localNumberOfColumns == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:434 description:@"current row doesn't exists"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:434 description:@"current row doesn't exists"];
   }
 
-  v10 = [v9 parseLocation];
-  if (v10 >= self->_count)
+  parseLocation = [localState parseLocation];
+  if (parseLocation >= self->_count)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:445 description:{@"out of bounds %li", self->_count}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:445 description:{@"out of bounds %li", self->_count}];
   }
 
-  self->_inputItemInfos[v10].var1 = v10;
+  self->_inputItemInfos[parseLocation].var1 = parseLocation;
   PXRectGetCenter();
 }
 
-- (CGSize)_cellSizeForNumberOfColumns:(int64_t)a3
+- (CGSize)_cellSizeForNumberOfColumns:(int64_t)columns
 {
-  v5 = [(PXExploreLayoutGenerator *)self metrics];
-  [v5 referenceSize];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  [metrics referenceSize];
   v7 = v6;
 
-  v8 = a3;
-  v9 = (v7 + self->_intercellSpacing.width) / a3 - self->_intercellSpacing.width;
-  v10 = [(PXExploreLayoutGenerator *)self localState];
-  [v10 buildingBlockAspectRatio];
-  v12 = (v7 / v11 + self->_intercellSpacing.height) / v8 - self->_intercellSpacing.height;
+  columnsCopy = columns;
+  v9 = (v7 + self->_intercellSpacing.width) / columns - self->_intercellSpacing.width;
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  [localState buildingBlockAspectRatio];
+  v12 = (v7 / v11 + self->_intercellSpacing.height) / columnsCopy - self->_intercellSpacing.height;
 
   v13 = v9;
   v14 = v12;
@@ -1826,34 +1826,34 @@ LABEL_17:
   return result;
 }
 
-- (void)beginRowWithNumberOfColumns:(int64_t)a3
+- (void)beginRowWithNumberOfColumns:(int64_t)columns
 {
   if (self->_localNumberOfColumns != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:416 description:@"current row already exists"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:416 description:@"current row already exists"];
   }
 
-  self->_localNumberOfColumns = a3;
+  self->_localNumberOfColumns = columns;
   self->_localNumberOfRows = 0;
-  [(PXExploreLayoutGenerator *)self _cellSizeForNumberOfColumns:a3];
+  [(PXExploreLayoutGenerator *)self _cellSizeForNumberOfColumns:columns];
   self->_cellSize.width = v5;
   self->_cellSize.height = v6;
 }
 
 - (BOOL)canReorderItemsAcrossRows
 {
-  v2 = [(PXExploreLayoutGenerator *)self metrics];
-  v3 = [v2 reorderingTolerance];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  reorderingTolerance = [metrics reorderingTolerance];
 
-  return v3 == 0;
+  return reorderingTolerance == 0;
 }
 
 - (int64_t)numberOfRemainingItems
 {
   count = self->_count;
-  v3 = [(PXExploreLayoutGenerator *)self localState];
-  v4 = count - [v3 parseLocation];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  v4 = count - [localState parseLocation];
 
   return v4;
 }
@@ -1864,13 +1864,13 @@ LABEL_17:
   if (!self->_isPrepared)
   {
     self->_isPrepared = 1;
-    v4 = [(PXExploreLayoutGenerator *)self itemCount];
-    self->_count = v4;
-    if (v4)
+    itemCount = [(PXExploreLayoutGenerator *)self itemCount];
+    self->_count = itemCount;
+    if (itemCount)
     {
       v43 = a2;
       capacity = self->_capacity;
-      if (v4 > capacity)
+      if (itemCount > capacity)
       {
         if (capacity)
         {
@@ -1885,26 +1885,26 @@ LABEL_17:
 
         else
         {
-          self->_capacity = v4;
+          self->_capacity = itemCount;
         }
 
         _PXGArrayResize();
       }
 
-      v6 = [(PXExploreLayoutGenerator *)self metrics];
-      [v6 buildingBlockAspectRatio];
+      metrics = [(PXExploreLayoutGenerator *)self metrics];
+      [metrics buildingBlockAspectRatio];
       v8 = v7;
-      v9 = [(PXExploreLayoutGenerator *)self itemLayoutInfoBlock];
+      itemLayoutInfoBlock = [(PXExploreLayoutGenerator *)self itemLayoutInfoBlock];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __44__PXExploreLayoutGenerator__prepareIfNeeded__block_invoke;
       aBlock[3] = &unk_1E7736878;
-      v45 = v9;
+      v45 = itemLayoutInfoBlock;
       v47 = v45;
       v48 = v8;
       v10 = _Block_copy(aBlock);
-      v11 = [(PXExploreLayoutGenerator *)self keyItemIndex];
-      if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+      keyItemIndex = [(PXExploreLayoutGenerator *)self keyItemIndex];
+      if (keyItemIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         if (self->_count >= 1)
         {
@@ -1929,9 +1929,9 @@ LABEL_17:
 
       else
       {
-        v17 = v11;
+        v17 = keyItemIndex;
         inputItemInfos = self->_inputItemInfos;
-        v10[2](buf, v10, v11);
+        v10[2](buf, v10, keyItemIndex);
         v19 = *buf;
         v20 = v50;
         inputItemInfos->var4 = v51;
@@ -1979,20 +1979,20 @@ LABEL_17:
         }
       }
 
-      v32 = [(PXExploreLayoutGenerator *)self metrics];
-      [v32 padding];
+      metrics2 = [(PXExploreLayoutGenerator *)self metrics];
+      [metrics2 padding];
       v34 = v33;
-      v35 = [(PXExploreLayoutGenerator *)self metrics];
-      [v35 padding];
+      metrics3 = [(PXExploreLayoutGenerator *)self metrics];
+      [metrics3 padding];
       self->_origin.x = v34;
       self->_origin.y = v36;
 
       self->_row = 0;
       self->_localNumberOfColumns = 0x7FFFFFFFFFFFFFFFLL;
-      [v6 interitemSpacing];
+      [metrics interitemSpacing];
       self->_intercellSpacing.width = v37;
       self->_intercellSpacing.height = v37;
-      [v6 referenceSize];
+      [metrics referenceSize];
       self->_contentSize.width = v38;
       self->_contentSize.height = 0.0;
       self->_cornerSpriteIndexes = *off_1E7721FF8;
@@ -2001,13 +2001,13 @@ LABEL_17:
       self->_minHeroItemsSize = v39;
       self->_minimumItemSize = v39;
       self->_buildingBlockSize = v39;
-      v40 = [(PXExploreLayoutGenerator *)self localState];
-      [v40 prepareWithMetrics:v6];
+      localState = [(PXExploreLayoutGenerator *)self localState];
+      [localState prepareWithMetrics:metrics];
 
-      v41 = [v6 layoutType];
-      if (v41 <= 2)
+      layoutType = [metrics layoutType];
+      if (layoutType <= 2)
       {
-        switch(v41)
+        switch(layoutType)
         {
           case 1:
             [(PXExploreLayoutGenerator *)self parsePhonePortraitLayout];
@@ -2016,8 +2016,8 @@ LABEL_17:
             [(PXExploreLayoutGenerator *)self parsePhoneLandscapeLayout];
             break;
           case 0:
-            v42 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v42 handleFailureInMethod:v44 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:392 description:@"Code which should be unreachable has been reached"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:v44 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:392 description:@"Code which should be unreachable has been reached"];
 
             abort();
         }
@@ -2025,7 +2025,7 @@ LABEL_17:
 
       else
       {
-        switch(v41)
+        switch(layoutType)
         {
           case 3:
             [(PXExploreLayoutGenerator *)self parsePadPortraitLayout];
@@ -2094,22 +2094,22 @@ uint64_t __44__PXExploreLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_
   return result;
 }
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  if (!a5)
+  if (!kind)
   {
-    length = a4.length;
-    location = a4.location;
-    v10 = [(PXExploreLayoutGenerator *)self itemCount];
-    v11 = v10;
-    v12 = location < v10 || length == 0;
-    if (!v12 || location + length > v10)
+    length = range.length;
+    location = range.location;
+    itemCount = [(PXExploreLayoutGenerator *)self itemCount];
+    v11 = itemCount;
+    v12 = location < itemCount || length == 0;
+    if (!v12 || location + length > itemCount)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24.location = location;
       v24.length = length;
       v23 = NSStringFromRange(v24);
-      [v22 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:272 description:{@"range %@ out of bounds (0..<%li)", v23, v11}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:272 description:{@"range %@ out of bounds (0..<%li)", v23, v11}];
     }
 
     [(PXExploreLayoutGenerator *)self _prepareIfNeeded];
@@ -2122,23 +2122,23 @@ uint64_t __44__PXExploreLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_
         v16 = *&v14->var6.origin.y;
         v15 = *&v14->var6.size.height;
         height = v14->var7.height;
-        *&a3->var5 = *&v14->var5;
+        *&geometries->var5 = *&v14->var5;
         v18 = *&v14->var1.y;
-        *&a3->var0 = *&v14->var0;
-        *&a3->var1.y = v18;
+        *&geometries->var0 = *&v14->var0;
+        *&geometries->var1.y = v18;
         v19 = *&v14->var2.height;
         v20 = *&v14->var3.b;
         v21 = *&v14->var3.ty;
-        *&a3->var3.d = *&v14->var3.d;
-        *&a3->var3.ty = v21;
-        *&a3->var2.height = v19;
-        *&a3->var3.b = v20;
-        a3->var7.height = height;
-        *&a3->var6.origin.y = v16;
-        *&a3->var6.size.height = v15;
-        a3->var5 = 0;
+        *&geometries->var3.d = *&v14->var3.d;
+        *&geometries->var3.ty = v21;
+        *&geometries->var2.height = v19;
+        *&geometries->var3.b = v20;
+        geometries->var7.height = height;
+        *&geometries->var6.origin.y = v16;
+        *&geometries->var6.size.height = v15;
+        geometries->var5 = 0;
         ++v13;
-        ++a3;
+        ++geometries;
         --length;
       }
 
@@ -2201,12 +2201,12 @@ uint64_t __44__PXExploreLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
-  v6 = [(PXExploreLayoutGenerator *)self metrics];
-  v7 = [v6 layoutType];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  layoutType = [metrics layoutType];
 
-  if (v7 <= 2)
+  if (layoutType <= 2)
   {
-    switch(v7)
+    switch(layoutType)
     {
       case 1:
         [(PXExploreLayoutGenerator *)self estimatedSizeForPhonePortrait];
@@ -2215,8 +2215,8 @@ uint64_t __44__PXExploreLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_
         [(PXExploreLayoutGenerator *)self estimatedSizeForPhoneLandscape];
         goto LABEL_10;
       case 0:
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:233 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXExploreLayoutGenerator.m" lineNumber:233 description:@"Code which should be unreachable has been reached"];
 
         abort();
     }
@@ -2224,7 +2224,7 @@ uint64_t __44__PXExploreLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_
 
   else
   {
-    if ((v7 - 4) < 2)
+    if ((layoutType - 4) < 2)
     {
       [(PXExploreLayoutGenerator *)self estimatedSizeForPadLandscape];
 LABEL_10:
@@ -2233,7 +2233,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if (v7 == 3)
+    if (layoutType == 3)
     {
       [(PXExploreLayoutGenerator *)self estimatedSizeForPadPortrait];
       goto LABEL_10;
@@ -2268,11 +2268,11 @@ LABEL_11:
   [(PXExploreLayoutGenerator *)&v3 dealloc];
 }
 
-- (PXExploreLayoutGenerator)initWithMetrics:(id)a3
+- (PXExploreLayoutGenerator)initWithMetrics:(id)metrics
 {
   v7.receiver = self;
   v7.super_class = PXExploreLayoutGenerator;
-  v3 = [(PXExploreLayoutGenerator *)&v7 initWithMetrics:a3];
+  v3 = [(PXExploreLayoutGenerator *)&v7 initWithMetrics:metrics];
   if (v3)
   {
     v4 = objc_alloc_init(PXExploreParsingState);
@@ -2283,54 +2283,54 @@ LABEL_11:
   return v3;
 }
 
-- (void)_parseSevenColumnShortRowWithNumberOfItems:(int64_t)a3
+- (void)_parseSevenColumnShortRowWithNumberOfItems:(int64_t)items
 {
-  v5 = [(PXExploreLayoutGenerator *)self numberOfItemsInSevenColumnHeroRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- a3];
-  if (v5 >= 1)
+  items = [(PXExploreLayoutGenerator *)self numberOfItemsInSevenColumnHeroRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- items];
+  if (items >= 1)
   {
-    v6 = v5;
-    v7 = [(PXExploreLayoutGenerator *)self localState];
-    if ([v7 didMoveBestItemOutOfNextShortRow])
+    v6 = items;
+    localState = [(PXExploreLayoutGenerator *)self localState];
+    if ([localState didMoveBestItemOutOfNextShortRow])
     {
     }
 
     else
     {
-      v8 = [(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows];
+      canReorderItemsAcrossRows = [(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows];
 
-      if (v8)
+      if (canReorderItemsAcrossRows)
       {
-        v9 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v6 + a3 having:0 keyIndex:v6 + a3 - 1];
-        if (v9 < a3)
+        v9 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v6 + items having:0 keyIndex:v6 + items - 1];
+        if (v9 < items)
         {
-          [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v9 toIndex:a3];
+          [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v9 toIndex:items];
         }
       }
     }
   }
 
   [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:7];
-  if (a3 == 7)
+  if (items == 7)
   {
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:1 rowSpan:1];
-    v10 = self;
+    selfCopy2 = self;
     v11 = 1;
     v12 = 1;
   }
 
   else
   {
-    if (a3 != 6)
+    if (items != 6)
     {
       PXAssertGetLog();
     }
 
-    v10 = self;
+    selfCopy2 = self;
     v11 = 0;
     v12 = 2;
   }
 
-  [(PXExploreLayoutGenerator *)v10 addLocalItemWithType:0 atColumn:v11 row:0 columnSpan:v12 rowSpan:1];
+  [(PXExploreLayoutGenerator *)selfCopy2 addLocalItemWithType:0 atColumn:v11 row:0 columnSpan:v12 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:0 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:0 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:1 rowSpan:1];
@@ -2339,39 +2339,39 @@ LABEL_11:
   [(PXExploreLayoutGenerator *)self endRowWithType:1];
 }
 
-- (void)_parseSevenColumnHeroRowWithNumberOfItems:(int64_t)a3 heroItemType:(int64_t)a4 subsequentShortRowItems:(int64_t)a5 options:(unint64_t)a6
+- (void)_parseSevenColumnHeroRowWithNumberOfItems:(int64_t)items heroItemType:(int64_t)type subsequentShortRowItems:(int64_t)rowItems options:(unint64_t)options
 {
-  v6 = a5;
+  rowItemsCopy = rowItems;
   v24 = *MEMORY[0x1E69E9840];
-  v10 = [(PXExploreLayoutGenerator *)self localState:a3];
-  if (!v6)
+  v10 = [(PXExploreLayoutGenerator *)self localState:items];
+  if (!rowItemsCopy)
   {
-    v6 = [(PXExploreLayoutGenerator *)self numberOfItemsInSevenColumnShortRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- a3];
+    rowItemsCopy = [(PXExploreLayoutGenerator *)self numberOfItemsInSevenColumnShortRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- items];
   }
 
-  if (v6 >= 1)
+  if (rowItemsCopy >= 1)
   {
     if ([(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows])
     {
-      v11 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v6 + a3 having:0 keyIndex:0];
-      if (v11 >= a3)
+      v11 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:rowItemsCopy + items having:0 keyIndex:0];
+      if (v11 >= items)
       {
-        [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v11 toIndex:a3 - 1];
+        [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v11 toIndex:items - 1];
         [v10 setDidMoveBestItemOutOfNextShortRow:1];
       }
     }
   }
 
-  if (a3 <= 10)
+  if (items <= 10)
   {
-    if ((a3 - 1) < 8)
+    if ((items - 1) < 8)
     {
       goto LABEL_9;
     }
 
-    if (a3 != 9)
+    if (items != 9)
     {
-      if (a3 == 10)
+      if (items == 10)
       {
 LABEL_9:
         [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:7];
@@ -2382,7 +2382,7 @@ LABEL_9:
           ++v12;
         }
 
-        while (a3 != v12);
+        while (items != v12);
         goto LABEL_47;
       }
 
@@ -2391,7 +2391,7 @@ LABEL_43:
     }
 
     [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:7];
-    [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:3 rowSpan:2];
+    [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:3 rowSpan:2];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:0 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:5 row:0 columnSpan:1 rowSpan:1];
@@ -2399,26 +2399,26 @@ LABEL_43:
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:1 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:1 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:5 row:1 columnSpan:1 rowSpan:1];
-    v14 = self;
-    v15 = 0;
+    selfCopy5 = self;
+    typeCopy2 = 0;
     v16 = 6;
     v17 = 1;
     goto LABEL_45;
   }
 
-  if (a3 <= 13)
+  if (items <= 13)
   {
-    if ((a3 - 12) >= 2)
+    if ((items - 12) >= 2)
     {
-      if (a3 != 11)
+      if (items != 11)
       {
         goto LABEL_43;
       }
 
       [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:7];
-      if (!v6)
+      if (!rowItemsCopy)
       {
-        [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:2 rowSpan:2];
+        [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:2 rowSpan:2];
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __121__PXExploreLayoutGenerator_Rows___parseSevenColumnHeroRowWithNumberOfItems_heroItemType_subsequentShortRowItems_options___block_invoke;
@@ -2431,7 +2431,7 @@ LABEL_43:
         goto LABEL_47;
       }
 
-      [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:3 rowSpan:2];
+      [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:3 rowSpan:2];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:0 columnSpan:1 rowSpan:1];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:1 rowSpan:1];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:5 row:0 columnSpan:1 rowSpan:1];
@@ -2451,7 +2451,7 @@ LABEL_43:
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:6 row:0 columnSpan:1 rowSpan:1];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:1 columnSpan:1 rowSpan:1];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:1 columnSpan:1 rowSpan:1];
-      if (a3 == 12)
+      if (items == 12)
       {
         v18 = 2;
       }
@@ -2462,7 +2462,7 @@ LABEL_43:
       }
 
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:2 columnSpan:v18 rowSpan:1];
-      if (a3 != 13)
+      if (items != 13)
       {
         goto LABEL_39;
       }
@@ -2472,22 +2472,22 @@ LABEL_43:
 LABEL_39:
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:2 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:2 columnSpan:1 rowSpan:1];
-    v14 = self;
-    v15 = a4;
+    selfCopy5 = self;
+    typeCopy2 = type;
     v16 = 4;
     v17 = 1;
     v20 = 3;
 LABEL_40:
     v21 = 2;
 LABEL_46:
-    [(PXExploreLayoutGenerator *)v14 addLocalItemWithType:v15 atColumn:v16 row:v17 columnSpan:v20 rowSpan:v21];
+    [(PXExploreLayoutGenerator *)selfCopy5 addLocalItemWithType:typeCopy2 atColumn:v16 row:v17 columnSpan:v20 rowSpan:v21];
     goto LABEL_47;
   }
 
-  if ((a3 - 14) < 2)
+  if ((items - 14) < 2)
   {
     [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:7];
-    [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:2 rowSpan:2];
+    [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:2 rowSpan:2];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:0 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:0 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:1 rowSpan:1];
@@ -2496,7 +2496,7 @@ LABEL_46:
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:1 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:1 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:1 columnSpan:1 rowSpan:1];
-    if (a3 == 14)
+    if (items == 14)
     {
       v19 = 2;
     }
@@ -2507,7 +2507,7 @@ LABEL_46:
     }
 
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:2 columnSpan:v19 rowSpan:1];
-    if (a3 == 15)
+    if (items == 15)
     {
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:1 row:2 columnSpan:1 rowSpan:1];
     }
@@ -2515,23 +2515,23 @@ LABEL_46:
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:2 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:2 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:2 columnSpan:1 rowSpan:1];
-    v14 = self;
-    v15 = a4;
+    selfCopy5 = self;
+    typeCopy2 = type;
     v16 = 5;
     v17 = 1;
     v20 = 2;
     goto LABEL_40;
   }
 
-  if ((a3 - 18) >= 2)
+  if ((items - 18) >= 2)
   {
-    if (a3 != 23)
+    if (items != 23)
     {
       goto LABEL_43;
     }
 
     [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:7];
-    [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:2 rowSpan:2];
+    [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:2 rowSpan:2];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:0 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:0 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:1 rowSpan:1];
@@ -2540,28 +2540,28 @@ LABEL_46:
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:1 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:1 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:1 columnSpan:1 rowSpan:1];
-    [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:5 row:1 columnSpan:2 rowSpan:2];
+    [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:5 row:1 columnSpan:2 rowSpan:2];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:2 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:1 row:2 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:2 columnSpan:1 rowSpan:1];
-    [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:3 row:2 columnSpan:2 rowSpan:2];
+    [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:3 row:2 columnSpan:2 rowSpan:2];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:5 row:3 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:6 row:3 columnSpan:1 rowSpan:1];
-    [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:3 columnSpan:2 rowSpan:2];
+    [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:3 columnSpan:2 rowSpan:2];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:3 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:4 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:4 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:4 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:5 row:4 columnSpan:1 rowSpan:1];
-    v14 = self;
-    v15 = 0;
+    selfCopy5 = self;
+    typeCopy2 = 0;
     v16 = 6;
     v17 = 4;
     goto LABEL_45;
   }
 
   [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:7];
-  [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:2 rowSpan:2];
+  [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:2 rowSpan:2];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:0 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:0 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:1 rowSpan:1];
@@ -2570,15 +2570,15 @@ LABEL_46:
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:1 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:3 row:1 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:1 columnSpan:1 rowSpan:1];
-  [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:5 row:1 columnSpan:2 rowSpan:2];
+  [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:5 row:1 columnSpan:2 rowSpan:2];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:2 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:1 row:2 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:3 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:1 row:3 columnSpan:1 rowSpan:1];
-  [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:2 row:2 columnSpan:2 rowSpan:2];
+  [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:2 row:2 columnSpan:2 rowSpan:2];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:2 columnSpan:1 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:3 columnSpan:1 rowSpan:1];
-  if (a3 == 18)
+  if (items == 18)
   {
     v13 = 2;
   }
@@ -2589,10 +2589,10 @@ LABEL_46:
   }
 
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:5 row:3 columnSpan:v13 rowSpan:1];
-  if (a3 == 19)
+  if (items == 19)
   {
-    v14 = self;
-    v15 = 0;
+    selfCopy5 = self;
+    typeCopy2 = 0;
     v16 = 6;
     v17 = 3;
 LABEL_45:
@@ -2617,70 +2617,70 @@ uint64_t __121__PXExploreLayoutGenerator_Rows___parseSevenColumnHeroRowWithNumbe
   return [v4 addLocalItemWithType:0 atColumn:6 row:a2 columnSpan:1 rowSpan:1];
 }
 
-- (BOOL)parseSevenColumnRowWithType:(int64_t)a3 numberOfItems:(int64_t)a4 subsequentShortRowItems:(int64_t)a5 options:(unint64_t)a6
+- (BOOL)parseSevenColumnRowWithType:(int64_t)type numberOfItems:(int64_t)items subsequentShortRowItems:(int64_t)rowItems options:(unint64_t)options
 {
-  v11 = [(PXExploreLayoutGenerator *)self localState];
-  v12 = [v11 parseLocation];
-  if ((a3 - 2) < 2)
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
+  if ((type - 2) < 2)
   {
-    v14 = self;
-    v15 = a4;
+    selfCopy2 = self;
+    itemsCopy2 = items;
     v16 = 1;
-    v17 = a5;
-    v13 = a6;
+    rowItemsCopy2 = rowItems;
+    optionsCopy = options;
     goto LABEL_6;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    [(PXExploreLayoutGenerator *)self _parseSevenColumnShortRowWithNumberOfItems:a4];
+    [(PXExploreLayoutGenerator *)self _parseSevenColumnShortRowWithNumberOfItems:items];
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!type)
   {
-    v13 = a6 | 1;
-    v14 = self;
-    v15 = a4;
+    optionsCopy = options | 1;
+    selfCopy2 = self;
+    itemsCopy2 = items;
     v16 = 2;
-    v17 = a5;
+    rowItemsCopy2 = rowItems;
 LABEL_6:
-    [(PXExploreLayoutGenerator *)v14 _parseSevenColumnHeroRowWithNumberOfItems:v15 heroItemType:v16 subsequentShortRowItems:v17 options:v13];
+    [(PXExploreLayoutGenerator *)selfCopy2 _parseSevenColumnHeroRowWithNumberOfItems:itemsCopy2 heroItemType:v16 subsequentShortRowItems:rowItemsCopy2 options:optionsCopy];
   }
 
 LABEL_8:
-  v18 = [v11 parseLocation] > v12;
+  v18 = [localState parseLocation] > parseLocation;
 
   return v18;
 }
 
-- (int64_t)numberOfItemsInSevenColumnHeroRowForNumberOfRemainingItems:(int64_t)a3
+- (int64_t)numberOfItemsInSevenColumnHeroRowForNumberOfRemainingItems:(int64_t)items
 {
-  if (a3 > 0x26)
+  if (items > 0x26)
   {
     return 23;
   }
 
   else
   {
-    return qword_1A5383640[a3];
+    return qword_1A5383640[items];
   }
 }
 
-- (int64_t)numberOfItemsInSevenColumnShortRowForNumberOfRemainingItems:(int64_t)a3
+- (int64_t)numberOfItemsInSevenColumnShortRowForNumberOfRemainingItems:(int64_t)items
 {
-  if (a3 > 0x19)
+  if (items > 0x19)
   {
     return 7;
   }
 
-  result = a3;
-  if (((1 << a3) & 0x3224000) != 0)
+  result = items;
+  if (((1 << items) & 0x3224000) != 0)
   {
     return 6;
   }
 
-  if (((1 << a3) & 0x41) == 0)
+  if (((1 << items) & 0x41) == 0)
   {
     return 7;
   }
@@ -2688,75 +2688,75 @@ LABEL_8:
   return result;
 }
 
-- (void)_parseSixColumnShortRowWithNumberOfItems:(int64_t)a3
+- (void)_parseSixColumnShortRowWithNumberOfItems:(int64_t)items
 {
-  v5 = [(PXExploreLayoutGenerator *)self numberOfItemsInSixColumnHeroRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- a3 rowOptions:0];
+  v5 = [(PXExploreLayoutGenerator *)self numberOfItemsInSixColumnHeroRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- items rowOptions:0];
   if (v5 >= 1)
   {
     v6 = v5;
-    v7 = [(PXExploreLayoutGenerator *)self localState];
-    if ([v7 didMoveBestItemOutOfNextShortRow])
+    localState = [(PXExploreLayoutGenerator *)self localState];
+    if ([localState didMoveBestItemOutOfNextShortRow])
     {
     }
 
     else
     {
-      v8 = [(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows];
+      canReorderItemsAcrossRows = [(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows];
 
-      if (v8)
+      if (canReorderItemsAcrossRows)
       {
-        v9 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v6 + a3 having:0 keyIndex:v6 + a3 - 1];
-        if (v9 < a3)
+        v9 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v6 + items having:0 keyIndex:v6 + items - 1];
+        if (v9 < items)
         {
-          [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v9 toIndex:a3];
+          [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v9 toIndex:items];
         }
       }
     }
   }
 
   [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:6];
-  if (a3 == 6)
+  if (items == 6)
   {
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:1 row:0 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:0 columnSpan:1 rowSpan:1];
-    v13 = self;
+    selfCopy2 = self;
     v14 = 3;
     v15 = 1;
     goto LABEL_13;
   }
 
-  if (a3 == 4)
+  if (items == 4)
   {
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:2 rowSpan:1];
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2;
     v15 = 2;
 LABEL_13:
-    [(PXExploreLayoutGenerator *)v13 addLocalItemWithType:0 atColumn:v14 row:0 columnSpan:v15 rowSpan:1];
+    [(PXExploreLayoutGenerator *)selfCopy2 addLocalItemWithType:0 atColumn:v14 row:0 columnSpan:v15 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:1 rowSpan:1];
-    v10 = self;
+    selfCopy4 = self;
     v11 = 5;
     v12 = 1;
     goto LABEL_14;
   }
 
-  if (a3 != 3)
+  if (items != 3)
   {
     PXAssertGetLog();
   }
 
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:2 rowSpan:1];
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:0 columnSpan:2 rowSpan:1];
-  v10 = self;
+  selfCopy4 = self;
   v11 = 4;
   v12 = 2;
 LABEL_14:
-  [(PXExploreLayoutGenerator *)v10 addLocalItemWithType:0 atColumn:v11 row:0 columnSpan:v12 rowSpan:1];
+  [(PXExploreLayoutGenerator *)selfCopy4 addLocalItemWithType:0 atColumn:v11 row:0 columnSpan:v12 rowSpan:1];
   [(PXExploreLayoutGenerator *)self endRowWithType:1];
 }
 
-- (void)_addThreeItemsToSixColumnRowWithHeroItemType:(int64_t)a3 options:(unint64_t)a4 rowType:(int64_t *)a5
+- (void)_addThreeItemsToSixColumnRowWithHeroItemType:(int64_t)type options:(unint64_t)options rowType:(int64_t *)rowType
 {
   v10 = 0;
   v69[3] = *MEMORY[0x1E69E9840];
@@ -2813,33 +2813,33 @@ LABEL_14:
   v55 = v69;
   v56 = v12;
   v57 = v11;
-  v59 = a4 & 1;
-  v58 = a4;
+  v59 = options & 1;
+  optionsCopy = options;
   v51 = v18;
   v52 = v60;
   v53 = &v61;
   v54 = v68;
   v19 = _Block_copy(v50);
-  v20 = [(PXExploreLayoutGenerator *)self localState];
-  v21 = [v20 canIgnoreNextHeroSide];
-  if (a3 == 2)
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  canIgnoreNextHeroSide = [localState canIgnoreNextHeroSide];
+  if (type == 2)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = v21;
+    v22 = canIgnoreNextHeroSide;
   }
 
-  v23 = [(PXExploreLayoutGenerator *)self metrics];
-  v24 = [v23 layoutSubtype] != 1;
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  v24 = [metrics layoutSubtype] != 1;
 
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v44 = __95__PXExploreLayoutGenerator_Rows___addThreeItemsToSixColumnRowWithHeroItemType_options_rowType___block_invoke_4;
   v45 = &unk_1E7748960;
-  v25 = v20;
+  v25 = localState;
   v46 = v25;
   v48 = v22;
   v49 = v24;
@@ -2888,12 +2888,12 @@ LABEL_14:
           goto LABEL_32;
         }
 
-        [(PXExploreLayoutGenerator *)self addLocalItemWithType:a3 atColumn:0 row:0 columnSpan:8 rowSpan:6];
+        [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:8 rowSpan:6];
         v32 = 4;
         v33 = 3;
         v34 = 8;
         [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:8 row:0 columnSpan:4 rowSpan:3];
-        a3 = 0;
+        type = 0;
         v35 = 3;
       }
 
@@ -2910,12 +2910,12 @@ LABEL_14:
         goto LABEL_32;
       }
 
-      [(PXExploreLayoutGenerator *)self addLocalItemWithType:a3 atColumn:0 row:0 columnSpan:4 rowSpan:3];
+      [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:4 rowSpan:3];
       v32 = 2;
       v33 = 1;
       v34 = 4;
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:2 rowSpan:1];
-      a3 = 0;
+      type = 0;
       v35 = 2;
       goto LABEL_31;
     }
@@ -2938,7 +2938,7 @@ LABEL_14:
     v35 = 3;
     v32 = 2;
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:0 columnSpan:2 rowSpan:3];
-    a3 = 0;
+    type = 0;
     v33 = 0;
     v34 = 4;
     goto LABEL_31;
@@ -2966,21 +2966,21 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  [(PXExploreLayoutGenerator *)self addLocalItemWithType:a3 atColumn:0 row:0 columnSpan:4 rowSpan:3];
+  [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:4 rowSpan:3];
   v33 = 2;
   v34 = 4;
   [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:2 rowSpan:2];
-  a3 = 0;
+  type = 0;
   v35 = 1;
   v32 = 2;
 LABEL_31:
-  [(PXExploreLayoutGenerator *)self addLocalItemWithType:a3 atColumn:v34 row:v33 columnSpan:v32 rowSpan:v35];
+  [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:v34 row:v33 columnSpan:v32 rowSpan:v35];
   v29 = v62;
 LABEL_32:
   [v25 setNextHeroSide:v29[4]];
-  if (a5)
+  if (rowType)
   {
-    *a5 = v62[5];
+    *rowType = v62[5];
   }
 
   _Block_object_dispose(v60, 8);
@@ -3231,37 +3231,37 @@ LABEL_20:
   return result;
 }
 
-- (void)_parseSixColumnHeroRowWithNumberOfItems:(int64_t)a3 heroItemType:(int64_t)a4 subsequentShortRowItems:(int64_t)a5 options:(unint64_t)a6
+- (void)_parseSixColumnHeroRowWithNumberOfItems:(int64_t)items heroItemType:(int64_t)type subsequentShortRowItems:(int64_t)rowItems options:(unint64_t)options
 {
   v29 = *MEMORY[0x1E69E9840];
-  v11 = [(PXExploreLayoutGenerator *)self localState];
+  localState = [(PXExploreLayoutGenerator *)self localState];
   v28 = 0;
-  v12 = [v11 nextHeroSide];
-  if (!a5)
+  nextHeroSide = [localState nextHeroSide];
+  if (!rowItems)
   {
-    a5 = [(PXExploreLayoutGenerator *)self numberOfItemsInSixColumnShortRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- a3];
+    rowItems = [(PXExploreLayoutGenerator *)self numberOfItemsInSixColumnShortRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- items];
   }
 
-  if (a5 >= 1)
+  if (rowItems >= 1)
   {
     if ([(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows])
     {
-      v13 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:a5 + a3 having:0 keyIndex:0];
-      if (v13 >= a3)
+      v13 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:rowItems + items having:0 keyIndex:0];
+      if (v13 >= items)
       {
-        [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v13 toIndex:a3 - 1];
-        [v11 setDidMoveBestItemOutOfNextShortRow:1];
+        [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v13 toIndex:items - 1];
+        [localState setDidMoveBestItemOutOfNextShortRow:1];
       }
     }
   }
 
-  if (a3 <= 2)
+  if (items <= 2)
   {
-    if (a3 == 1)
+    if (items == 1)
     {
       [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:6];
-      v16 = self;
-      v17 = a4;
+      selfCopy8 = self;
+      typeCopy2 = type;
       v18 = 0;
       v19 = 0;
       v20 = 6;
@@ -3270,18 +3270,18 @@ LABEL_50:
       goto LABEL_51;
     }
 
-    if (a3 != 2)
+    if (items != 2)
     {
 LABEL_27:
       PXAssertGetLog();
     }
 
-    if (a4 == 2)
+    if (type == 2)
     {
       [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:2];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:2 atColumn:0 row:0 columnSpan:1 rowSpan:1];
-      v16 = self;
-      v17 = 1;
+      selfCopy8 = self;
+      typeCopy2 = 1;
       v18 = 1;
       v19 = 0;
 LABEL_25:
@@ -3291,86 +3291,86 @@ LABEL_25:
     }
 
     [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:6];
-    if (v12 != 1)
+    if (nextHeroSide != 1)
     {
-      if (v12)
+      if (nextHeroSide)
       {
         goto LABEL_52;
       }
 
-      if ((a6 & 1) == 0)
+      if ((options & 1) == 0)
       {
         [(PXExploreLayoutGenerator *)self sortNextItems:2 withItemAtIndex:0 having:0];
       }
 
-      [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:4 rowSpan:3];
-      v16 = self;
-      v17 = 0;
+      [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:4 rowSpan:3];
+      selfCopy8 = self;
+      typeCopy2 = 0;
       v18 = 4;
       v19 = 0;
       v20 = 2;
       goto LABEL_50;
     }
 
-    if ((a6 & 1) == 0)
+    if ((options & 1) == 0)
     {
       [(PXExploreLayoutGenerator *)self sortNextItems:2 withItemAtIndex:1 having:0];
     }
 
-    v22 = self;
+    selfCopy9 = self;
     v23 = 0;
     v24 = 0;
     v25 = 2;
     v26 = 3;
 LABEL_49:
-    [(PXExploreLayoutGenerator *)v22 addLocalItemWithType:0 atColumn:v23 row:v24 columnSpan:v25 rowSpan:v26];
-    v16 = self;
-    v17 = a4;
+    [(PXExploreLayoutGenerator *)selfCopy9 addLocalItemWithType:0 atColumn:v23 row:v24 columnSpan:v25 rowSpan:v26];
+    selfCopy8 = self;
+    typeCopy2 = type;
     v18 = 2;
     v19 = 0;
     v20 = 4;
     goto LABEL_50;
   }
 
-  if (a3 == 3)
+  if (items == 3)
   {
-    [(PXExploreLayoutGenerator *)self _addThreeItemsToSixColumnRowWithHeroItemType:a4 options:a6 rowType:&v28];
+    [(PXExploreLayoutGenerator *)self _addThreeItemsToSixColumnRowWithHeroItemType:type options:options rowType:&v28];
     goto LABEL_52;
   }
 
-  if (a3 == 4)
+  if (items == 4)
   {
     [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:6];
-    if ((a6 & 4) != 0)
+    if ((options & 4) != 0)
     {
-      if (v12 != 1)
+      if (nextHeroSide != 1)
       {
-        if (v12)
+        if (nextHeroSide)
         {
           goto LABEL_52;
         }
 
-        if ((a6 & 1) == 0)
+        if ((options & 1) == 0)
         {
           [(PXExploreLayoutGenerator *)self sortNextItems:4 withItemAtIndex:0 having:0];
         }
 
-        [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:4 rowSpan:3];
+        [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:4 rowSpan:3];
         [(PXExploreLayoutGenerator *)self sortNextItems:3 withItemAtIndex:2 having:0];
         [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:1 rowSpan:1];
         [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:5 row:0 columnSpan:1 rowSpan:1];
-        v16 = self;
-        v17 = 0;
+        selfCopy8 = self;
+        typeCopy2 = 0;
         v18 = 4;
         v19 = 1;
         v20 = 2;
         v21 = 2;
 LABEL_51:
-        [(PXExploreLayoutGenerator *)v16 addLocalItemWithType:v17 atColumn:v18 row:v19 columnSpan:v20 rowSpan:v21];
+        [(PXExploreLayoutGenerator *)selfCopy8 addLocalItemWithType:typeCopy2 atColumn:v18 row:v19 columnSpan:v20 rowSpan:v21];
         goto LABEL_52;
       }
 
-      if ((a6 & 1) == 0)
+      if ((options & 1) == 0)
       {
         [(PXExploreLayoutGenerator *)self sortNextItems:4 withItemAtIndex:3 having:0];
       }
@@ -3378,7 +3378,7 @@ LABEL_51:
       [(PXExploreLayoutGenerator *)self sortNextItems:3 withItemAtIndex:2 having:0];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:1 rowSpan:1];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:1 row:0 columnSpan:1 rowSpan:1];
-      v22 = self;
+      selfCopy9 = self;
       v23 = 0;
       v24 = 1;
       v25 = 2;
@@ -3387,30 +3387,30 @@ LABEL_51:
 
     else
     {
-      if (v12 != 1)
+      if (nextHeroSide != 1)
       {
-        if (v12)
+        if (nextHeroSide)
         {
           goto LABEL_52;
         }
 
-        if ((a6 & 1) == 0)
+        if ((options & 1) == 0)
         {
           [(PXExploreLayoutGenerator *)self sortNextItems:4 withItemAtIndex:0 having:0];
         }
 
-        [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:4 rowSpan:3];
+        [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:4 rowSpan:3];
         [(PXExploreLayoutGenerator *)self sortNextItems:3 withItemAtIndex:0 having:0];
         [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:2 rowSpan:2];
         [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:2 columnSpan:1 rowSpan:1];
-        v16 = self;
-        v17 = 0;
+        selfCopy8 = self;
+        typeCopy2 = 0;
         v18 = 5;
         v19 = 2;
         goto LABEL_25;
       }
 
-      if ((a6 & 1) == 0)
+      if ((options & 1) == 0)
       {
         [(PXExploreLayoutGenerator *)self sortNextItems:4 withItemAtIndex:3 having:0];
       }
@@ -3418,7 +3418,7 @@ LABEL_51:
       [(PXExploreLayoutGenerator *)self sortNextItems:3 withItemAtIndex:0 having:0];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:2 rowSpan:2];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:2 columnSpan:1 rowSpan:1];
-      v22 = self;
+      selfCopy9 = self;
       v23 = 1;
       v24 = 2;
       v25 = 1;
@@ -3428,7 +3428,7 @@ LABEL_51:
     goto LABEL_49;
   }
 
-  if (a3 != 5)
+  if (items != 5)
   {
     goto LABEL_27;
   }
@@ -3441,21 +3441,21 @@ LABEL_51:
   v27[4] = self;
   v14 = _Block_copy(v27);
   v15 = v14;
-  if (v12 == 1)
+  if (nextHeroSide == 1)
   {
     (*(v14 + 2))(v14, 0);
-    [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:4 row:0 columnSpan:8 rowSpan:6];
+    [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:4 row:0 columnSpan:8 rowSpan:6];
   }
 
-  else if (!v12)
+  else if (!nextHeroSide)
   {
-    [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:8 rowSpan:6];
+    [(PXExploreLayoutGenerator *)self addLocalItemWithType:type atColumn:0 row:0 columnSpan:8 rowSpan:6];
     v15[2](v15, 8);
   }
 
 LABEL_52:
   [(PXExploreLayoutGenerator *)self endRowWithType:2];
-  [v11 setLastHeroRowTag:v28];
+  [localState setLastHeroRowTag:v28];
 }
 
 uint64_t __119__PXExploreLayoutGenerator_Rows___parseSixColumnHeroRowWithNumberOfItems_heroItemType_subsequentShortRowItems_options___block_invoke(uint64_t a1, uint64_t a2)
@@ -3515,60 +3515,60 @@ LABEL_10:
   return [v4 addLocalItemWithType:0 atColumn:v5 row:v6 columnSpan:2 rowSpan:v7];
 }
 
-- (BOOL)parseSixColumnRowWithType:(int64_t)a3 numberOfItems:(int64_t)a4 subsequentShortRowItems:(int64_t)a5 options:(unint64_t)a6
+- (BOOL)parseSixColumnRowWithType:(int64_t)type numberOfItems:(int64_t)items subsequentShortRowItems:(int64_t)rowItems options:(unint64_t)options
 {
-  v11 = [(PXExploreLayoutGenerator *)self localState];
-  v12 = [v11 parseLocation];
-  if ((a3 - 2) < 2)
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
+  if ((type - 2) < 2)
   {
-    v14 = self;
-    v15 = a4;
+    selfCopy2 = self;
+    itemsCopy2 = items;
     v16 = 1;
-    v17 = a5;
-    v13 = a6;
+    rowItemsCopy2 = rowItems;
+    optionsCopy = options;
     goto LABEL_6;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    [(PXExploreLayoutGenerator *)self _parseSixColumnShortRowWithNumberOfItems:a4];
+    [(PXExploreLayoutGenerator *)self _parseSixColumnShortRowWithNumberOfItems:items];
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!type)
   {
-    v13 = a6 | 1;
-    v14 = self;
-    v15 = a4;
+    optionsCopy = options | 1;
+    selfCopy2 = self;
+    itemsCopy2 = items;
     v16 = 2;
-    v17 = a5;
+    rowItemsCopy2 = rowItems;
 LABEL_6:
-    [(PXExploreLayoutGenerator *)v14 _parseSixColumnHeroRowWithNumberOfItems:v15 heroItemType:v16 subsequentShortRowItems:v17 options:v13];
+    [(PXExploreLayoutGenerator *)selfCopy2 _parseSixColumnHeroRowWithNumberOfItems:itemsCopy2 heroItemType:v16 subsequentShortRowItems:rowItemsCopy2 options:optionsCopy];
   }
 
 LABEL_8:
-  v18 = [v11 parseLocation] > v12;
+  v18 = [localState parseLocation] > parseLocation;
 
   return v18;
 }
 
-- (int64_t)numberOfItemsInSixColumnHeroRowForNumberOfRemainingItems:(int64_t)a3 rowOptions:(unint64_t *)a4
+- (int64_t)numberOfItemsInSixColumnHeroRowForNumberOfRemainingItems:(int64_t)items rowOptions:(unint64_t *)options
 {
-  v4 = a3;
-  switch(a3)
+  itemsCopy = items;
+  switch(items)
   {
     case 0:
       goto LABEL_9;
     case 1:
     case 5:
-      v4 = 0;
+      itemsCopy = 0;
 LABEL_9:
-      if (a4)
+      if (options)
       {
         goto LABEL_10;
       }
 
-      return a3;
+      return items;
     case 2:
       PXAssertGetLog();
     case 4:
@@ -3577,11 +3577,11 @@ LABEL_9:
     case 11:
     case 14:
     case 17:
-      v4 = 2;
-      a3 = 4;
-      if (!a4)
+      itemsCopy = 2;
+      items = 4;
+      if (!options)
       {
-        return a3;
+        return items;
       }
 
       goto LABEL_10;
@@ -3589,43 +3589,43 @@ LABEL_9:
     case 23:
     case 26:
     case 28:
-      a3 = 4;
-      v4 = 4;
-      if (!a4)
+      items = 4;
+      itemsCopy = 4;
+      if (!options)
       {
-        return a3;
+        return items;
       }
 
       goto LABEL_10;
     default:
-      v4 = 0;
-      a3 = 3;
-      if (!a4)
+      itemsCopy = 0;
+      items = 3;
+      if (!options)
       {
-        return a3;
+        return items;
       }
 
 LABEL_10:
-      *a4 = v4;
-      return a3;
+      *options = itemsCopy;
+      return items;
   }
 }
 
-- (int64_t)numberOfItemsInSixColumnShortRowForNumberOfRemainingItems:(int64_t)a3
+- (int64_t)numberOfItemsInSixColumnShortRowForNumberOfRemainingItems:(int64_t)items
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  switch(a3)
+  itemsCopy = items;
+  switch(items)
   {
     case 0:
     case 4:
-      return v3;
+      return itemsCopy;
     case 1:
     case 2:
       PXAssertGetLog();
     case 3:
     case 7:
-      v3 = 3;
+      itemsCopy = 3;
       break;
     case 5:
       PXAssertGetLog();
@@ -3640,17 +3640,17 @@ LABEL_10:
     case 25:
       PXAssertGetLog();
     default:
-      v3 = 6;
+      itemsCopy = 6;
       break;
   }
 
-  return v3;
+  return itemsCopy;
 }
 
 - (BOOL)_isShortRowNextFollowedByLargeHero
 {
-  v3 = [(PXExploreLayoutGenerator *)self localState];
-  v4 = [v3 nextRowType] == 1 && -[PXExploreLayoutGenerator preferredRowTypeAfterRowWithType:](self, "preferredRowTypeAfterRowWithType:", objc_msgSend(v3, "nextRowType")) == 3;
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  v4 = [localState nextRowType] == 1 && -[PXExploreLayoutGenerator preferredRowTypeAfterRowWithType:](self, "preferredRowTypeAfterRowWithType:", objc_msgSend(localState, "nextRowType")) == 3;
 
   return v4;
 }
@@ -3662,9 +3662,9 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  v4 = v3 <= 8 ? 0 : 9;
-  v5 = v3 + ~v4;
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  v4 = numberOfRemainingItems <= 8 ? 0 : 9;
+  v5 = numberOfRemainingItems + ~v4;
   if (v5 < 9 && ((0x113u >> v5) & 1) != 0)
   {
     return 0;
@@ -3688,27 +3688,27 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
   v4 = 7;
-  if (v3 <= 6)
+  if (numberOfRemainingItems <= 6)
   {
     v4 = 0;
   }
 
   v5 = 3;
-  if (v3 <= 6)
+  if (numberOfRemainingItems <= 6)
   {
     v5 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v3 == 8)
+  if (numberOfRemainingItems == 8)
   {
     v4 = 6;
     v5 = 3;
   }
 
-  v6 = v3 == 6 ? 6 : v4;
-  v7 = v3 == 6 ? 3 : v5;
+  v6 = numberOfRemainingItems == 6 ? 6 : v4;
+  v7 = numberOfRemainingItems == 6 ? 3 : v5;
   if ([(PXExploreLayoutGenerator *)self nextItems:v6 isAny:2]|| ![(PXExploreLayoutGenerator *)self prepareNextItems:v6 withLargeHeroIndex:v7])
   {
     return 0;
@@ -3722,10 +3722,10 @@ LABEL_10:
 
 - (BOOL)parseThreeColumnGroupWithFiveItems
 {
-  v3 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  if (v3 < 5)
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  if (numberOfRemainingItems < 5)
   {
-    return v3 > 4;
+    return numberOfRemainingItems > 4;
   }
 
   v4 = 0;
@@ -3839,8 +3839,8 @@ LABEL_10:
   }
 
   while (v5 != -1);
-  v17 = [(PXExploreLayoutGenerator *)self localState];
-  v18 = [v17 parseLocation];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
   if (v6 == v7 || ![(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows])
   {
     goto LABEL_50;
@@ -3865,10 +3865,10 @@ LABEL_50:
     [v19 removeIndex:v9];
     if ([v19 count])
     {
-      v20 = [v19 lastIndex];
-      if (v9 <= v20)
+      lastIndex = [v19 lastIndex];
+      if (v9 <= lastIndex)
       {
-        v21 = v20;
+        v21 = lastIndex;
       }
 
       else
@@ -3876,9 +3876,9 @@ LABEL_50:
         v21 = v9;
       }
 
-      if (v9 >= v20)
+      if (v9 >= lastIndex)
       {
-        v22 = v20;
+        v22 = lastIndex;
       }
 
       else
@@ -3889,7 +3889,7 @@ LABEL_50:
       [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v21 toIndex:4];
       [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v22 toIndex:3];
       [(PXExploreLayoutGenerator *)self parseThreeColumnRowWithType:1 numberOfItems:3];
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2;
     }
 
@@ -3934,16 +3934,16 @@ LABEL_50:
 
       [(PXExploreLayoutGenerator *)self parseThreeColumnRowWithType:1 numberOfItems:2];
       [(PXExploreLayoutGenerator *)self parseThreeColumnRowWithType:3 numberOfItems:1];
-      v23 = self;
+      selfCopy2 = self;
       v24 = 1;
     }
 
-    [(PXExploreLayoutGenerator *)v23 parseThreeColumnRowWithType:v24 numberOfItems:2];
+    [(PXExploreLayoutGenerator *)selfCopy2 parseThreeColumnRowWithType:v24 numberOfItems:2];
 LABEL_74:
   }
 
 LABEL_51:
-  if ([v17 parseLocation] == v18)
+  if ([localState parseLocation] == parseLocation)
   {
     if ([(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows]&& v9 <= 2)
     {
@@ -3954,20 +3954,20 @@ LABEL_51:
     [(PXExploreLayoutGenerator *)self parseThreeColumnRowWithType:2 numberOfItems:2];
   }
 
-  return v3 > 4;
+  return numberOfRemainingItems > 4;
 }
 
-- (BOOL)parseThreeColumnGroupWithThreeItemsFollowedByOneItemAllowingLargeHeroAtEnd:(BOOL)a3
+- (BOOL)parseThreeColumnGroupWithThreeItemsFollowedByOneItemAllowingLargeHeroAtEnd:(BOOL)end
 {
-  v5 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  if (v5 >= 4)
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  if (numberOfRemainingItems >= 4)
   {
-    v6 = [(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows];
-    if (v5 != 4 || a3)
+    canReorderItemsAcrossRows = [(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows];
+    if (numberOfRemainingItems != 4 || end)
     {
-      if (v6)
+      if (canReorderItemsAcrossRows)
       {
-        if (v5 < 7 || (v10 = 7, [(PXExploreLayoutGenerator *)self nextItems:7 isAny:2]))
+        if (numberOfRemainingItems < 7 || (v10 = 7, [(PXExploreLayoutGenerator *)self nextItems:7 isAny:2]))
         {
           v10 = 4;
         }
@@ -3976,47 +3976,47 @@ LABEL_51:
       }
 
       [(PXExploreLayoutGenerator *)self parseThreeColumnRowWithType:1 numberOfItems:3];
-      v7 = self;
+      selfCopy2 = self;
       v8 = 3;
       v9 = 1;
     }
 
     else
     {
-      if (v6)
+      if (canReorderItemsAcrossRows)
       {
         [(PXExploreLayoutGenerator *)self sortNextItems:4 withItemAtIndex:0 having:0];
       }
 
       [(PXExploreLayoutGenerator *)self parseThreeColumnRowWithType:3 numberOfItems:1];
-      v7 = self;
+      selfCopy2 = self;
       v8 = 1;
       v9 = 3;
     }
 
-    [(PXExploreLayoutGenerator *)v7 parseThreeColumnRowWithType:v8 numberOfItems:v9];
+    [(PXExploreLayoutGenerator *)selfCopy2 parseThreeColumnRowWithType:v8 numberOfItems:v9];
   }
 
-  return v5 > 3;
+  return numberOfRemainingItems > 3;
 }
 
-- (void)_parseFourColumnHeroRowWithType:(int64_t)a3 heroItemType:(int64_t)a4 numberOfItems:(int64_t)a5
+- (void)_parseFourColumnHeroRowWithType:(int64_t)type heroItemType:(int64_t)itemType numberOfItems:(int64_t)items
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = [(PXExploreLayoutGenerator *)self localState];
-  v10 = [v9 nextHeroSide];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  nextHeroSide = [localState nextHeroSide];
 
   v11 = 3;
   v12 = 16;
-  if (v10)
+  if (nextHeroSide)
   {
     v12 = 0;
     v11 = 0;
   }
 
-  if (v10 == 1)
+  if (nextHeroSide == 1)
   {
-    v13 = a5 - 1;
+    v13 = items - 1;
   }
 
   else
@@ -4024,7 +4024,7 @@ LABEL_51:
     v13 = 0;
   }
 
-  if (v10 == 1)
+  if (nextHeroSide == 1)
   {
     v14 = 0;
   }
@@ -4034,7 +4034,7 @@ LABEL_51:
     v14 = v12;
   }
 
-  if (v10 == 1)
+  if (nextHeroSide == 1)
   {
     v15 = 0;
   }
@@ -4044,45 +4044,45 @@ LABEL_51:
     v15 = v11;
   }
 
-  v16 = v10 == 1;
-  if (a5 <= 3)
+  v16 = nextHeroSide == 1;
+  if (items <= 3)
   {
-    switch(a5)
+    switch(items)
     {
       case 1:
         [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:4];
-        v20 = self;
-        v21 = a4;
+        selfCopy9 = self;
+        itemTypeCopy = itemType;
         v22 = 0;
         v23 = 0;
         v24 = 4;
         v25 = 3;
         break;
       case 2:
-        if (!a3)
+        if (!type)
         {
           [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:4];
-          [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:0 row:0 columnSpan:4 rowSpan:3];
+          [(PXExploreLayoutGenerator *)self addLocalItemWithType:itemType atColumn:0 row:0 columnSpan:4 rowSpan:3];
           [(PXExploreLayoutGenerator *)self addLocalItemWithType:1 atColumn:0 row:3 columnSpan:4 rowSpan:3];
-          v32 = self;
-          v33 = 0;
+          selfCopy7 = self;
+          typeCopy = 0;
 LABEL_49:
 
-          [(PXExploreLayoutGenerator *)v32 endRowWithType:v33];
+          [(PXExploreLayoutGenerator *)selfCopy7 endRowWithType:typeCopy];
           return;
         }
 
-        v29 = [(PXExploreLayoutGenerator *)self localState];
-        v30 = [v29 numberOfColumnsOverride];
+        localState2 = [(PXExploreLayoutGenerator *)self localState];
+        numberOfColumnsOverride = [localState2 numberOfColumnsOverride];
 
-        if (v30 == 3)
+        if (numberOfColumnsOverride == 3)
         {
           [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:24];
           [(PXExploreLayoutGenerator *)self sortNextItems:2 withItemAtIndex:v13 having:0];
           [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v13 toIndex:0];
-          [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:8 * v16 row:0 columnSpan:16 rowSpan:12];
-          v20 = self;
-          v21 = 0;
+          [(PXExploreLayoutGenerator *)self addLocalItemWithType:itemType atColumn:8 * v16 row:0 columnSpan:16 rowSpan:12];
+          selfCopy9 = self;
+          itemTypeCopy = 0;
           v22 = v14;
           v23 = 0;
           v24 = 8;
@@ -4094,10 +4094,10 @@ LABEL_49:
           [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:8];
           [(PXExploreLayoutGenerator *)self sortNextItems:2 withItemAtIndex:v13 having:0];
           [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v13 toIndex:0];
-          [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:2 * v16 row:0 columnSpan:6 rowSpan:4];
+          [(PXExploreLayoutGenerator *)self addLocalItemWithType:itemType atColumn:2 * v16 row:0 columnSpan:6 rowSpan:4];
           v22 = 2 * v15;
-          v20 = self;
-          v21 = 0;
+          selfCopy9 = self;
+          itemTypeCopy = 0;
           v23 = 0;
           v24 = 2;
           v25 = 4;
@@ -4105,13 +4105,13 @@ LABEL_49:
 
         break;
       case 3:
-        v17 = [(PXExploreLayoutGenerator *)self localState];
-        v18 = [v17 numberOfColumnsOverride];
+        localState3 = [(PXExploreLayoutGenerator *)self localState];
+        numberOfColumnsOverride2 = [localState3 numberOfColumnsOverride];
 
-        if (v18 == 3)
+        if (numberOfColumnsOverride2 == 3)
         {
           [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:24];
-          if (a3)
+          if (type)
           {
             [(PXExploreLayoutGenerator *)self sortNextItems:3 withItemAtIndex:v13 having:0];
             v19 = 6;
@@ -4123,10 +4123,10 @@ LABEL_49:
           }
 
           [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v13 toIndex:0];
-          [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:8 * v16 row:0 columnSpan:16 rowSpan:2 * v19];
+          [(PXExploreLayoutGenerator *)self addLocalItemWithType:itemType atColumn:8 * v16 row:0 columnSpan:16 rowSpan:2 * v19];
           [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:v14 row:0 columnSpan:8 rowSpan:v19];
-          v20 = self;
-          v21 = 0;
+          selfCopy9 = self;
+          itemTypeCopy = 0;
           v22 = v14;
           v23 = v19;
           v24 = 8;
@@ -4136,7 +4136,7 @@ LABEL_49:
         else
         {
           [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:8];
-          if (a3)
+          if (type)
           {
             [(PXExploreLayoutGenerator *)self sortNextItems:3 withItemAtIndex:v13 having:0];
             v31 = 2;
@@ -4148,10 +4148,10 @@ LABEL_49:
           }
 
           [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v13 toIndex:0];
-          [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:2 * v16 row:0 columnSpan:6 rowSpan:2 * v31];
+          [(PXExploreLayoutGenerator *)self addLocalItemWithType:itemType atColumn:2 * v16 row:0 columnSpan:6 rowSpan:2 * v31];
           [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 * v15 row:0 columnSpan:2 rowSpan:v31];
-          v20 = self;
-          v21 = 0;
+          selfCopy9 = self;
+          itemTypeCopy = 0;
           v22 = 2 * v15;
           v23 = v31;
           v24 = 2;
@@ -4164,31 +4164,31 @@ LABEL_49:
     }
 
 LABEL_48:
-    [(PXExploreLayoutGenerator *)v20 addLocalItemWithType:v21 atColumn:v22 row:v23 columnSpan:v24 rowSpan:v25];
-    v32 = self;
-    v33 = a3;
+    [(PXExploreLayoutGenerator *)selfCopy9 addLocalItemWithType:itemTypeCopy atColumn:v22 row:v23 columnSpan:v24 rowSpan:v25];
+    selfCopy7 = self;
+    typeCopy = type;
     goto LABEL_49;
   }
 
-  if (a5 == 4)
+  if (items == 4)
   {
-    v26 = [(PXExploreLayoutGenerator *)self localState];
-    v27 = [v26 numberOfColumnsOverride];
+    localState4 = [(PXExploreLayoutGenerator *)self localState];
+    numberOfColumnsOverride3 = [localState4 numberOfColumnsOverride];
 
-    if (v27 == 3)
+    if (numberOfColumnsOverride3 == 3)
     {
       [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:24];
-      if (a3)
+      if (type)
       {
         [(PXExploreLayoutGenerator *)self sortNextItems:4 withItemAtIndex:v13 having:0];
       }
 
       [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v13 toIndex:0];
-      [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:8 * v16 row:0 columnSpan:16 rowSpan:18];
+      [(PXExploreLayoutGenerator *)self addLocalItemWithType:itemType atColumn:8 * v16 row:0 columnSpan:16 rowSpan:18];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:v14 row:0 columnSpan:8 rowSpan:6];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:v14 row:6 columnSpan:8 rowSpan:6];
-      v20 = self;
-      v21 = 0;
+      selfCopy9 = self;
+      itemTypeCopy = 0;
       v22 = v14;
       v23 = 12;
       v24 = 8;
@@ -4198,17 +4198,17 @@ LABEL_48:
     else
     {
       [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:4];
-      if (a3)
+      if (type)
       {
         [(PXExploreLayoutGenerator *)self sortNextItems:4 withItemAtIndex:v13 having:0];
       }
 
       [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v13 toIndex:0];
-      [(PXExploreLayoutGenerator *)self addLocalItemWithType:a4 atColumn:v16 row:0 columnSpan:3 rowSpan:3];
+      [(PXExploreLayoutGenerator *)self addLocalItemWithType:itemType atColumn:v16 row:0 columnSpan:3 rowSpan:3];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:v15 row:0 columnSpan:1 rowSpan:1];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:v15 row:1 columnSpan:1 rowSpan:1];
-      v20 = self;
-      v21 = 0;
+      selfCopy9 = self;
+      itemTypeCopy = 0;
       v22 = v15;
       v23 = 2;
       v24 = 1;
@@ -4218,111 +4218,111 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (a5 == 5)
+  if (items == 5)
   {
     PXAssertGetLog();
   }
 
-  if (a5 != 6)
+  if (items != 6)
   {
 LABEL_30:
     v28 = PLCuratedLibraryGetLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       v34 = 134217984;
-      v35 = a5;
+      itemsCopy = items;
       _os_log_impl(&dword_1A3C1C000, v28, OS_LOG_TYPE_ERROR, "four-column layout shouldn't have to parse a hero row with %li items", &v34, 0xCu);
     }
 
-    [(PXExploreLayoutGenerator *)self _parseFourColumnHeroRowWithType:a3 heroItemType:a4 numberOfItems:3];
+    [(PXExploreLayoutGenerator *)self _parseFourColumnHeroRowWithType:type heroItemType:itemType numberOfItems:3];
     return;
   }
 
-  [(PXExploreLayoutGenerator *)self _parseFourColumnHeroRowWithType:a3 heroItemType:a4 numberOfItems:3];
+  [(PXExploreLayoutGenerator *)self _parseFourColumnHeroRowWithType:type heroItemType:itemType numberOfItems:3];
 
-  [(PXExploreLayoutGenerator *)self _parseFourColumnHeroRowWithType:a3 heroItemType:a4 numberOfItems:3];
+  [(PXExploreLayoutGenerator *)self _parseFourColumnHeroRowWithType:type heroItemType:itemType numberOfItems:3];
 }
 
-- (int64_t)numberOfItemsInFourColumnMediumHeroRowForNumberOfRemainingItems:(int64_t)a3
+- (int64_t)numberOfItemsInFourColumnMediumHeroRowForNumberOfRemainingItems:(int64_t)items
 {
-  if (a3 < 1)
+  if (items < 1)
   {
     return 0;
   }
 
-  switch(a3)
+  switch(items)
   {
     case 1:
     case 2:
-      return a3;
+      return items;
     case 4:
     case 8:
     case 12:
     case 16:
-      a3 = 4;
+      items = 4;
       break;
     case 5:
     case 9:
-      a3 = 5;
+      items = 5;
       break;
     case 10:
-      v3 = [(PXExploreLayoutGenerator *)self localState];
-      v4 = [v3 numberOfColumnsOverride];
+      localState = [(PXExploreLayoutGenerator *)self localState];
+      numberOfColumnsOverride = [localState numberOfColumnsOverride];
 
-      if (v4 == 3)
+      if (numberOfColumnsOverride == 3)
       {
-        a3 = 4;
+        items = 4;
       }
 
       else
       {
-        a3 = 3;
+        items = 3;
       }
 
       break;
     default:
-      a3 = 3;
+      items = 3;
       break;
   }
 
-  return a3;
+  return items;
 }
 
-- (void)_parseFourColumnShortRowWithNumberOfItems:(int64_t)a3
+- (void)_parseFourColumnShortRowWithNumberOfItems:(int64_t)items
 {
-  v5 = [(PXExploreLayoutGenerator *)self numberOfItemsInFourColumnMediumHeroRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- a3];
-  if (v5 >= 1)
+  items = [(PXExploreLayoutGenerator *)self numberOfItemsInFourColumnMediumHeroRowForNumberOfRemainingItems:[(PXExploreLayoutGenerator *)self numberOfRemainingItems]- items];
+  if (items >= 1)
   {
-    v6 = v5;
+    v6 = items;
     if ([(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows])
     {
-      v7 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v6 + a3 having:0 keyIndex:v6 + a3 - 1];
-      if (v7 < a3)
+      v7 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v6 + items having:0 keyIndex:v6 + items - 1];
+      if (v7 < items)
       {
-        [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v7 toIndex:a3];
-        v8 = [(PXExploreLayoutGenerator *)self localState];
-        [v8 setDidMoveBestItemOutOfPreviousShortRowIntoHeroRow:1];
+        [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v7 toIndex:items];
+        localState = [(PXExploreLayoutGenerator *)self localState];
+        [localState setDidMoveBestItemOutOfPreviousShortRowIntoHeroRow:1];
       }
     }
   }
 
-  switch(a3)
+  switch(items)
   {
     case 3:
-      v11 = [(PXExploreLayoutGenerator *)self localState];
-      v12 = [v11 numberOfColumnsOverride];
+      localState2 = [(PXExploreLayoutGenerator *)self localState];
+      numberOfColumnsOverride = [localState2 numberOfColumnsOverride];
 
-      if (v12 == 3)
+      if (numberOfColumnsOverride == 3)
       {
         [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:12];
         [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:4 rowSpan:3];
         [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:4 row:0 columnSpan:4 rowSpan:3];
-        v13 = self;
+        selfCopy2 = self;
         v14 = 8;
         v15 = 4;
         v16 = 3;
 LABEL_18:
-        [(PXExploreLayoutGenerator *)v13 addLocalItemWithType:0 atColumn:v14 row:0 columnSpan:v15 rowSpan:v16];
+        [(PXExploreLayoutGenerator *)selfCopy2 addLocalItemWithType:0 atColumn:v14 row:0 columnSpan:v15 rowSpan:v16];
 
         [(PXExploreLayoutGenerator *)self endRowWithType:1];
         return;
@@ -4358,7 +4358,7 @@ LABEL_18:
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:1 rowSpan:1];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:1 row:0 columnSpan:1 rowSpan:1];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:0 columnSpan:1 rowSpan:1];
-      v13 = self;
+      selfCopy2 = self;
       v14 = 3;
       v15 = 1;
       v16 = 1;
@@ -4366,91 +4366,91 @@ LABEL_18:
   }
 }
 
-- (BOOL)parseFourColumnRowWithType:(int64_t)a3 numberOfItems:(int64_t)a4
+- (BOOL)parseFourColumnRowWithType:(int64_t)type numberOfItems:(int64_t)items
 {
-  v7 = [(PXExploreLayoutGenerator *)self localState];
-  v8 = [v7 parseLocation];
-  if ((a3 - 2) < 2)
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
+  if ((type - 2) < 2)
   {
-    v12 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-    if ((v12 - a4 - 3) >= 2)
+    numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+    if ((numberOfRemainingItems - items - 3) >= 2)
     {
       v13 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v13 = v12 - a4;
+      v13 = numberOfRemainingItems - items;
     }
 
-    if (v12 - a4 >= 1 && v13 != 0x7FFFFFFFFFFFFFFFLL)
+    if (numberOfRemainingItems - items >= 1 && v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       if ([(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows])
       {
-        if (([v7 didMoveBestItemOutOfPreviousShortRowIntoHeroRow] & 1) == 0)
+        if (([localState didMoveBestItemOutOfPreviousShortRowIntoHeroRow] & 1) == 0)
         {
-          v14 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v13 + a4 having:0 keyIndex:0];
-          if (v14 >= a4)
+          v14 = [(PXExploreLayoutGenerator *)self indexWithinNextItems:v13 + items having:0 keyIndex:0];
+          if (v14 >= items)
           {
-            [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v14 toIndex:a4 - 1];
+            [(PXExploreLayoutGenerator *)self moveNextItemAtIndex:v14 toIndex:items - 1];
           }
         }
       }
     }
 
-    v9 = self;
-    v10 = a3;
+    selfCopy2 = self;
+    typeCopy = type;
     v11 = 1;
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    [(PXExploreLayoutGenerator *)self _parseFourColumnShortRowWithNumberOfItems:a4];
+    [(PXExploreLayoutGenerator *)self _parseFourColumnShortRowWithNumberOfItems:items];
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!type)
   {
-    v9 = self;
-    v10 = 0;
+    selfCopy2 = self;
+    typeCopy = 0;
     v11 = 2;
 LABEL_15:
-    [(PXExploreLayoutGenerator *)v9 _parseFourColumnHeroRowWithType:v10 heroItemType:v11 numberOfItems:a4];
+    [(PXExploreLayoutGenerator *)selfCopy2 _parseFourColumnHeroRowWithType:typeCopy heroItemType:v11 numberOfItems:items];
   }
 
 LABEL_17:
-  v15 = [v7 parseLocation] > v8;
+  v15 = [localState parseLocation] > parseLocation;
 
   return v15;
 }
 
 - (BOOL)parseThreeColumnMediumHeroRowWithPano
 {
-  v3 = [(PXExploreLayoutGenerator *)self localState];
-  v4 = [v3 parseLocation];
-  v5 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  v6 = v5;
-  if ((v5 - 1) >= 2)
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  v6 = numberOfRemainingItems;
+  if ((numberOfRemainingItems - 1) >= 2)
   {
-    if (v5 == 4)
+    if (numberOfRemainingItems == 4)
     {
       if ([(PXExploreLayoutGenerator *)self nextInputItems:0x20000, 2, 0x20000, 0x20000, 0])
       {
 LABEL_11:
         v6 = 1;
-        v8 = self;
+        selfCopy3 = self;
         v9 = 1;
         v10 = 0;
 LABEL_12:
-        [(PXExploreLayoutGenerator *)v8 moveNextItemAtIndex:v9 toIndex:v10];
+        [(PXExploreLayoutGenerator *)selfCopy3 moveNextItemAtIndex:v9 toIndex:v10];
         goto LABEL_28;
       }
 
       if ([(PXExploreLayoutGenerator *)self nextInputItems:2, 2, 0x20000, 0x20000, 0])
       {
         v6 = 2;
-        v8 = self;
+        selfCopy3 = self;
         v9 = 1;
         v10 = 2;
         goto LABEL_12;
@@ -4459,7 +4459,7 @@ LABEL_12:
       if ([(PXExploreLayoutGenerator *)self nextInputItems:0x20000, 0x20000, 2, 2, 0])
       {
         v6 = 2;
-        v8 = self;
+        selfCopy3 = self;
         v9 = 2;
         v10 = 1;
         goto LABEL_12;
@@ -4483,7 +4483,7 @@ LABEL_12:
 
     else
     {
-      if (v5 == 3)
+      if (numberOfRemainingItems == 3)
       {
         if (![(PXExploreLayoutGenerator *)self nextInputItems:0x20000, 2, 0x20000, 0])
         {
@@ -4536,20 +4536,20 @@ LABEL_7:
 
 LABEL_28:
   [(PXExploreLayoutGenerator *)self _parseThreeColumnShortRowWithNumberOfItems:v6];
-  v11 = [v3 parseLocation] > v4;
+  v11 = [localState parseLocation] > parseLocation;
 
   return v11;
 }
 
 - (BOOL)parseThreeColumnShortRowWithPano
 {
-  v3 = [(PXExploreLayoutGenerator *)self localState];
-  v4 = [v3 parseLocation];
-  v5 = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
-  v6 = v5;
-  if (v5 > 2)
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
+  numberOfRemainingItems = [(PXExploreLayoutGenerator *)self numberOfRemainingItems];
+  v6 = numberOfRemainingItems;
+  if (numberOfRemainingItems > 2)
   {
-    if (v5 == 3)
+    if (numberOfRemainingItems == 3)
     {
       if (![(PXExploreLayoutGenerator *)self nextInputItems:0x20000, 2, 0x20000, 0])
       {
@@ -4567,7 +4567,7 @@ LABEL_22:
 
     else
     {
-      if (v5 != 4)
+      if (numberOfRemainingItems != 4)
       {
         goto LABEL_13;
       }
@@ -4575,7 +4575,7 @@ LABEL_22:
       if ([(PXExploreLayoutGenerator *)self nextInputItems:0x20000, 2, 0x20000, 0x20000, 0]&& [(PXExploreLayoutGenerator *)self canReorderItemsAcrossRows])
       {
         v6 = 3;
-        v8 = self;
+        selfCopy4 = self;
         v9 = 1;
 LABEL_27:
         v11 = 3;
@@ -4596,28 +4596,28 @@ LABEL_27:
         }
 
         v6 = 2;
-        v8 = self;
+        selfCopy4 = self;
         v9 = 2;
         v11 = 1;
 LABEL_28:
-        [(PXExploreLayoutGenerator *)v8 moveNextItemAtIndex:v9 toIndex:v11];
+        [(PXExploreLayoutGenerator *)selfCopy4 moveNextItemAtIndex:v9 toIndex:v11];
         goto LABEL_29;
       }
     }
 
     v6 = 2;
-    v8 = self;
+    selfCopy4 = self;
     v9 = 1;
     v11 = 2;
     goto LABEL_28;
   }
 
-  if (v5 == 1)
+  if (numberOfRemainingItems == 1)
   {
     goto LABEL_29;
   }
 
-  if (v5 == 2)
+  if (numberOfRemainingItems == 2)
   {
     v7 = [(PXExploreLayoutGenerator *)self nextInputItems:2, 2, 0, v14, v16];
     goto LABEL_5;
@@ -4628,7 +4628,7 @@ LABEL_13:
   {
 LABEL_26:
     v6 = 3;
-    v8 = self;
+    selfCopy4 = self;
     v9 = 2;
     goto LABEL_27;
   }
@@ -4657,12 +4657,12 @@ LABEL_5:
 
 LABEL_29:
   [(PXExploreLayoutGenerator *)self _parseThreeColumnShortRowWithNumberOfItems:v6];
-  v12 = [v3 parseLocation] > v4;
+  v12 = [localState parseLocation] > parseLocation;
 
   return v12;
 }
 
-- (void)_addTwoItemsForThreeColumnRowPreferringTallVariant:(BOOL)a3
+- (void)_addTwoItemsForThreeColumnRowPreferringTallVariant:(BOOL)variant
 {
   v4 = 0;
   v5 = &v44;
@@ -4713,7 +4713,7 @@ LABEL_29:
   aBlock[1] = 3221225472;
   aBlock[2] = __85__PXExploreLayoutGenerator_Rows___addTwoItemsForThreeColumnRowPreferringTallVariant___block_invoke;
   aBlock[3] = &unk_1E7748870;
-  v36 = a3;
+  variantCopy = variant;
   aBlock[6] = &v44;
   aBlock[7] = &v46;
   aBlock[8] = &v48;
@@ -4721,15 +4721,15 @@ LABEL_29:
   aBlock[4] = v37;
   aBlock[5] = &v38;
   v15 = _Block_copy(aBlock);
-  v16 = [(PXExploreLayoutGenerator *)self localState];
-  v17 = [(PXExploreLayoutGenerator *)self metrics];
-  v18 = [v17 layoutSubtype] != 1;
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  v18 = [metrics layoutSubtype] != 1;
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v30 = __85__PXExploreLayoutGenerator_Rows___addTwoItemsForThreeColumnRowPreferringTallVariant___block_invoke_3;
   v31 = &unk_1E77488C0;
-  v19 = v16;
+  v19 = localState;
   v32 = v19;
   v34 = v18;
   v20 = v15;
@@ -4934,25 +4934,25 @@ uint64_t __85__PXExploreLayoutGenerator_Rows___addTwoItemsForThreeColumnRowPrefe
   return result;
 }
 
-- (void)_parseThreeColumnMediumHeroRowWithNumberOfItems:(int64_t)a3
+- (void)_parseThreeColumnMediumHeroRowWithNumberOfItems:(int64_t)items
 {
-  if (a3 <= 1)
+  if (items <= 1)
   {
 
     [(PXExploreLayoutGenerator *)self _parseThreeColumnShortRowWithNumberOfItems:?];
     return;
   }
 
-  v12 = [(PXExploreLayoutGenerator *)self localState];
-  v5 = [v12 nextHeroSide];
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  nextHeroSide = [localState nextHeroSide];
   [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:3];
-  if (a3 == 2)
+  if (items == 2)
   {
     if ([(PXExploreLayoutGenerator *)self nextItems:2 areAll:2])
     {
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:3 rowSpan:1];
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:1 columnSpan:3 rowSpan:1];
-      [v12 setNextHeroSide:PXFlippedExploreHeroSide(v5)];
+      [localState setNextHeroSide:PXFlippedExploreHeroSide(nextHeroSide)];
     }
 
     else
@@ -4963,12 +4963,12 @@ uint64_t __85__PXExploreLayoutGenerator_Rows___addTwoItemsForThreeColumnRowPrefe
     goto LABEL_14;
   }
 
-  if (v5 == 1)
+  if (nextHeroSide == 1)
   {
     [(PXExploreLayoutGenerator *)self sortNextItems:3 withItemAtIndex:2 having:0];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:1 rowSpan:1];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:1 columnSpan:1 rowSpan:1];
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
     v8 = 1;
     v9 = 0;
@@ -4977,53 +4977,53 @@ uint64_t __85__PXExploreLayoutGenerator_Rows___addTwoItemsForThreeColumnRowPrefe
     goto LABEL_13;
   }
 
-  if (!v5)
+  if (!nextHeroSide)
   {
     [(PXExploreLayoutGenerator *)self sortNextItems:3 withItemAtIndex:0 having:0];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:1 atColumn:0 row:0 columnSpan:2 rowSpan:2];
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:2 row:0 columnSpan:1 rowSpan:1];
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
     v8 = 2;
     v9 = 1;
     v10 = 1;
     v11 = 1;
 LABEL_13:
-    [(PXExploreLayoutGenerator *)v6 addLocalItemWithType:v7 atColumn:v8 row:v9 columnSpan:v10 rowSpan:v11];
+    [(PXExploreLayoutGenerator *)selfCopy2 addLocalItemWithType:v7 atColumn:v8 row:v9 columnSpan:v10 rowSpan:v11];
   }
 
 LABEL_14:
   [(PXExploreLayoutGenerator *)self endRowWithType:2];
 }
 
-- (void)_parseThreeColumnShortRowWithNumberOfItems:(int64_t)a3
+- (void)_parseThreeColumnShortRowWithNumberOfItems:(int64_t)items
 {
   [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:3];
-  if (a3 == 2)
+  if (items == 2)
   {
     if ([(PXExploreLayoutGenerator *)self nextInputItems:2, 2, 0])
     {
       [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:3 rowSpan:1];
-      v5 = self;
+      selfCopy2 = self;
       v6 = 1;
       goto LABEL_7;
     }
 
     [(PXExploreLayoutGenerator *)self _addTwoItemsForThreeColumnRowPreferringTallVariant:0];
-    v9 = [(PXExploreLayoutGenerator *)self localState];
-    [v9 setNextHeroSide:{PXFlippedExploreHeroSide(objc_msgSend(v9, "nextHeroSide"))}];
+    localState = [(PXExploreLayoutGenerator *)self localState];
+    [localState setNextHeroSide:{PXFlippedExploreHeroSide(objc_msgSend(localState, "nextHeroSide"))}];
   }
 
   else
   {
-    if (a3 == 1)
+    if (items == 1)
     {
       if ([(PXExploreLayoutGenerator *)self nextInputItems:2, 0])
       {
-        v5 = self;
+        selfCopy2 = self;
         v6 = 0;
 LABEL_7:
-        [(PXExploreLayoutGenerator *)v5 addLocalItemWithType:0 atColumn:0 row:v6 columnSpan:3 rowSpan:1];
+        [(PXExploreLayoutGenerator *)selfCopy2 addLocalItemWithType:0 atColumn:0 row:v6 columnSpan:3 rowSpan:1];
         goto LABEL_15;
       }
 
@@ -5032,7 +5032,7 @@ LABEL_7:
 
     else
     {
-      if (a3 < 1)
+      if (items < 1)
       {
         goto LABEL_15;
       }
@@ -5051,14 +5051,14 @@ LABEL_15:
   [(PXExploreLayoutGenerator *)self endRowWithType:1];
 }
 
-- (void)_parseThreeColumnHeaderRowWithNumberOfItems:(int64_t)a3
+- (void)_parseThreeColumnHeaderRowWithNumberOfItems:(int64_t)items
 {
   [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:3];
-  v5 = [(PXExploreLayoutGenerator *)self metrics];
-  [v5 preferredFullWidthHeaderAspectRatio];
+  metrics = [(PXExploreLayoutGenerator *)self metrics];
+  [metrics preferredFullWidthHeaderAspectRatio];
 
-  v6 = [(PXExploreLayoutGenerator *)self metrics];
-  if (![v6 allowSpecialPanoHeaders])
+  metrics2 = [(PXExploreLayoutGenerator *)self metrics];
+  if (![metrics2 allowSpecialPanoHeaders])
   {
 
 LABEL_6:
@@ -5072,11 +5072,11 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v8 = self;
-  if (a3 == 2)
+  selfCopy2 = self;
+  if (items == 2)
   {
     [(PXExploreLayoutGenerator *)self addLocalItemWithType:0 atColumn:0 row:0 columnSpan:2 rowSpan:1];
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
     v10 = 2;
     v11 = 1;
@@ -5091,23 +5091,23 @@ LABEL_6:
     v12 = 2;
   }
 
-  [(PXExploreLayoutGenerator *)v8 addLocalItemWithType:v9 atColumn:v10 row:0 columnSpan:v11 rowSpan:v12];
+  [(PXExploreLayoutGenerator *)selfCopy2 addLocalItemWithType:v9 atColumn:v10 row:0 columnSpan:v11 rowSpan:v12];
 
   [(PXExploreLayoutGenerator *)self endRowWithType:0];
 }
 
-- (BOOL)parseThreeColumnRowWithType:(int64_t)a3 numberOfItems:(int64_t)a4
+- (BOOL)parseThreeColumnRowWithType:(int64_t)type numberOfItems:(int64_t)items
 {
-  v7 = [(PXExploreLayoutGenerator *)self localState];
-  v8 = [v7 parseLocation];
-  if (a3 > 1)
+  localState = [(PXExploreLayoutGenerator *)self localState];
+  parseLocation = [localState parseLocation];
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      [(PXExploreLayoutGenerator *)self _parseThreeColumnMediumHeroRowWithNumberOfItems:a4];
+      [(PXExploreLayoutGenerator *)self _parseThreeColumnMediumHeroRowWithNumberOfItems:items];
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
       [(PXExploreLayoutGenerator *)self beginRowWithNumberOfColumns:3];
       if ([(PXExploreLayoutGenerator *)self nextInputItems:2, 0])
@@ -5125,20 +5125,20 @@ LABEL_6:
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      [(PXExploreLayoutGenerator *)self _parseThreeColumnShortRowWithNumberOfItems:a4];
+      [(PXExploreLayoutGenerator *)self _parseThreeColumnShortRowWithNumberOfItems:items];
     }
   }
 
   else
   {
-    [(PXExploreLayoutGenerator *)self _parseThreeColumnHeaderRowWithNumberOfItems:a4];
+    [(PXExploreLayoutGenerator *)self _parseThreeColumnHeaderRowWithNumberOfItems:items];
   }
 
-  v10 = [v7 parseLocation] > v8;
+  v10 = [localState parseLocation] > parseLocation;
 
   return v10;
 }

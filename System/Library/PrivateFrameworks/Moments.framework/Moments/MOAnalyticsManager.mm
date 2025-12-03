@@ -2,8 +2,8 @@
 + (id)defaultManager;
 - (MOAnalyticsManager)init;
 - (id)context;
-- (id)makeNewConnectionWithInterfaceFor:(id)a3;
-- (void)fetchPhotoAnalyticsMetricsWithHandler:(id)a3;
+- (id)makeNewConnectionWithInterfaceFor:(id)for;
+- (void)fetchPhotoAnalyticsMetricsWithHandler:(id)handler;
 @end
 
 @implementation MOAnalyticsManager
@@ -49,9 +49,9 @@ uint64_t __36__MOAnalyticsManager_defaultManager__block_invoke()
   return v2;
 }
 
-- (void)fetchPhotoAnalyticsMetricsWithHandler:(id)a3
+- (void)fetchPhotoAnalyticsMetricsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   NSLog(&cfstr_CallingFunctio.isa);
   connectionManager = self->connectionManager;
   v9[0] = MEMORY[0x277D85DD0];
@@ -59,7 +59,7 @@ uint64_t __36__MOAnalyticsManager_defaultManager__block_invoke()
   v9[2] = __60__MOAnalyticsManager_fetchPhotoAnalyticsMetricsWithHandler___block_invoke;
   v9[3] = &unk_278773620;
   v9[4] = self;
-  v10 = v4;
+  v10 = handlerCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__MOAnalyticsManager_fetchPhotoAnalyticsMetricsWithHandler___block_invoke_3;
@@ -110,7 +110,7 @@ uint64_t __60__MOAnalyticsManager_fetchPhotoAnalyticsMetricsWithHandler___block_
   return result;
 }
 
-- (id)makeNewConnectionWithInterfaceFor:(id)a3
+- (id)makeNewConnectionWithInterfaceFor:(id)for
 {
   v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.momentsd" options:0];
   v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284110420];

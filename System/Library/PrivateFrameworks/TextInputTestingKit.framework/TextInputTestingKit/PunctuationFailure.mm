@@ -1,18 +1,18 @@
 @interface PunctuationFailure
-- (BOOL)doesMatchResult:(id)a3;
+- (BOOL)doesMatchResult:(id)result;
 - (PunctuationFailure)init;
 @end
 
 @implementation PunctuationFailure
 
-- (BOOL)doesMatchResult:(id)a3
+- (BOOL)doesMatchResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 corrected];
-  v6 = [v5 componentsJoinedByString:&stru_287EC4808];
+  resultCopy = result;
+  corrected = [resultCopy corrected];
+  v6 = [corrected componentsJoinedByString:&stru_287EC4808];
 
-  v7 = [v4 intended];
-  v8 = [v7 componentsJoinedByString:&stru_287EC4808];
+  intended = [resultCopy intended];
+  v8 = [intended componentsJoinedByString:&stru_287EC4808];
 
   if (([v6 isEqualToString:v8] & 1) == 0 && objc_msgSend(v6, "length"))
   {
@@ -47,9 +47,9 @@ LABEL_8:
   v2 = [(PunctuationFailure *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA900] punctuationCharacterSet];
+    punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
     punctuation = v2->_punctuation;
-    v2->_punctuation = v3;
+    v2->_punctuation = punctuationCharacterSet;
   }
 
   return v2;

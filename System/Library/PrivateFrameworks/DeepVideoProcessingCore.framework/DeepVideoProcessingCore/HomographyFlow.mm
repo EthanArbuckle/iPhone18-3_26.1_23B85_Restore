@@ -1,19 +1,19 @@
 @interface HomographyFlow
 - (BOOL)createModules;
 - (BOOL)setupMetal;
-- (HomographyFlow)initWithDevice:(id)a3 commmandQueue:(id)a4;
-- (double)convertHomographyWithFactor:(simd_float3x3)a1 input:(float32x4_t)a2;
-- (float)sumUpStat:(id)a3 bufferLength:(unint64_t)a4;
-- (id)createOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5;
-- (int)analyzeRegionalFlowInformation:(id)a3 depth:(id)a4 quart1_angle:(_regional_flow_directions *)a5 quart2_angle:(_regional_flow_directions *)a6 quart3_angle:(_regional_flow_directions *)a7 quart4_angle:(_regional_flow_directions *)a8 depth_angle:(_regional_flow_directions *)a9;
-- (int64_t)bindInternalTextureFromFirst:(__CVBuffer *)a3 warpedFirst:(__CVBuffer *)a4;
-- (int64_t)encodeAnalyzeOcclusionRegionToCommandBuffer:(id)a3 flow:(id)a4 depth:(id)a5 countBuffer:(id)a6 vxBuffer:(id)a7 vyBuffer:(id)a8 threadsPerGroup:(id *)a9 numThreadgroups:(id *)a10;
-- (int64_t)encodeAnalyzeRegionalFlowInfoToCommandBuffer:(id)a3 flow:(id)a4 range:(_regional_range)a5 countBuffer:(id)a6 vxBuffer:(id)a7 vyBuffer:(id)a8 threadsPerGroup:(id *)a9 numThreadgroups:(id *)a10;
-- (uint64_t)encodeBackWarpToCommandBuffer:(uint64_t)a1 reference:(uint64_t)a2 ToOutput:(uint64_t)a3 withHomography:(void *)a4;
-- (uint64_t)encodeCombineFlowToCommandBuffer:(__n128)a3 input:(__n128)a4 homography:(uint64_t)a5 baseWarp:(void *)a6 destination:(void *)a7;
-- (uint64_t)encodeCorrectFlowToCommandBuffer:(uint64_t)a1 input:(uint64_t)a2 refFlow:(uint64_t)a3 homography:(void *)a4;
-- (uint64_t)postprocessFlowWithhomographyMatrix21:(double)a3 matrix12:(double)a4 inputForwardFlow:(double)a5 inputBackwardFlow:(double)a6 outputForwardFlow:(double)a7 outputBackwardFlow:(float)a8 downscaleFacttor:(uint64_t)a9;
-- (uint64_t)proprocessFirst:(double)a3 warpedFirst:(double)a4 withHomography:(uint64_t)a5;
+- (HomographyFlow)initWithDevice:(id)device commmandQueue:(id)queue;
+- (double)convertHomographyWithFactor:(simd_float3x3)factor input:(float32x4_t)input;
+- (float)sumUpStat:(id)stat bufferLength:(unint64_t)length;
+- (id)createOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels;
+- (int)analyzeRegionalFlowInformation:(id)information depth:(id)depth quart1_angle:(_regional_flow_directions *)quart1_angle quart2_angle:(_regional_flow_directions *)quart2_angle quart3_angle:(_regional_flow_directions *)quart3_angle quart4_angle:(_regional_flow_directions *)quart4_angle depth_angle:(_regional_flow_directions *)depth_angle;
+- (int64_t)bindInternalTextureFromFirst:(__CVBuffer *)first warpedFirst:(__CVBuffer *)warpedFirst;
+- (int64_t)encodeAnalyzeOcclusionRegionToCommandBuffer:(id)buffer flow:(id)flow depth:(id)depth countBuffer:(id)countBuffer vxBuffer:(id)vxBuffer vyBuffer:(id)vyBuffer threadsPerGroup:(id *)group numThreadgroups:(id *)self0;
+- (int64_t)encodeAnalyzeRegionalFlowInfoToCommandBuffer:(id)buffer flow:(id)flow range:(_regional_range)range countBuffer:(id)countBuffer vxBuffer:(id)vxBuffer vyBuffer:(id)vyBuffer threadsPerGroup:(id *)group numThreadgroups:(id *)self0;
+- (uint64_t)encodeBackWarpToCommandBuffer:(uint64_t)buffer reference:(uint64_t)reference ToOutput:(uint64_t)output withHomography:(void *)homography;
+- (uint64_t)encodeCombineFlowToCommandBuffer:(__n128)buffer input:(__n128)input homography:(uint64_t)homography baseWarp:(void *)warp destination:(void *)destination;
+- (uint64_t)encodeCorrectFlowToCommandBuffer:(uint64_t)buffer input:(uint64_t)input refFlow:(uint64_t)flow homography:(void *)homography;
+- (uint64_t)postprocessFlowWithhomographyMatrix21:(double)matrix21 matrix12:(double)matrix12 inputForwardFlow:(double)flow inputBackwardFlow:(double)backwardFlow outputForwardFlow:(double)forwardFlow outputBackwardFlow:(float)outputBackwardFlow downscaleFacttor:(uint64_t)facttor;
+- (uint64_t)proprocessFirst:(double)first warpedFirst:(double)warpedFirst withHomography:(uint64_t)homography;
 - (void)dealloc;
 @end
 
@@ -43,9 +43,9 @@
       return 1;
     }
 
-    v6 = [(MTLDevice *)device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)device newCommandQueue];
     commandQueue = self->super._commandQueue;
-    self->super._commandQueue = v6;
+    self->super._commandQueue = newCommandQueue;
 
     if (self->super._commandQueue)
     {
@@ -56,23 +56,23 @@
   return result;
 }
 
-- (double)convertHomographyWithFactor:(simd_float3x3)a1 input:(float32x4_t)a2
+- (double)convertHomographyWithFactor:(simd_float3x3)factor input:(float32x4_t)input
 {
-  v11 = a1.columns[2];
-  v9 = a1.columns[1];
+  v11 = factor.columns[2];
+  v9 = factor.columns[1];
   v2 = *(MEMORY[0x277D860B0] + 16);
-  v2.i32[1] = a1.columns[0].i32[0];
-  a1.columns[0].i32[1] = HIDWORD(*MEMORY[0x277D860B0]);
-  a1.columns[0].i32[2] = *(MEMORY[0x277D860B0] + 8);
-  v14 = a1.columns[0];
-  a1.columns[0].i32[3] = HIDWORD(*MEMORY[0x277D860B0]);
-  a1.columns[2] = *(MEMORY[0x277D860B0] + 32);
+  v2.i32[1] = factor.columns[0].i32[0];
+  factor.columns[0].i32[1] = HIDWORD(*MEMORY[0x277D860B0]);
+  factor.columns[0].i32[2] = *(MEMORY[0x277D860B0] + 8);
+  v14 = factor.columns[0];
+  factor.columns[0].i32[3] = HIDWORD(*MEMORY[0x277D860B0]);
+  factor.columns[2] = *(MEMORY[0x277D860B0] + 32);
   v2.i32[2] = *(MEMORY[0x277D860B0] + 24);
-  v12 = a1.columns[2];
+  v12 = factor.columns[2];
   v13 = v2;
-  a1.columns[1] = v2;
-  a1.columns[1].i32[3] = HIDWORD(*(MEMORY[0x277D860B0] + 16));
-  v19 = __invert_f3(a1);
+  factor.columns[1] = v2;
+  factor.columns[1].i32[3] = HIDWORD(*(MEMORY[0x277D860B0] + 16));
+  v19 = __invert_f3(factor);
   v3 = 0;
   v19.columns[0].i32[3] = 0;
   v19.columns[1].i32[3] = 0;
@@ -83,7 +83,7 @@
   v18 = 0u;
   do
   {
-    *(&v16 + v3 * 16) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v9, COERCE_FLOAT(*&v15.columns[v3])), v11, *v15.columns[v3].f32, 1), a2, v15.columns[v3], 2);
+    *(&v16 + v3 * 16) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v9, COERCE_FLOAT(*&v15.columns[v3])), v11, *v15.columns[v3].f32, 1), input, v15.columns[v3], 2);
     ++v3;
   }
 
@@ -112,49 +112,49 @@
   return result;
 }
 
-- (id)createOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5
+- (id)createOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels
 {
-  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) + a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) * a5) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
+  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) + width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) * channels) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
 
   return v5;
 }
 
-- (float)sumUpStat:(id)a3 bufferLength:(unint64_t)a4
+- (float)sumUpStat:(id)stat bufferLength:(unint64_t)length
 {
-  v5 = [a3 contents];
+  contents = [stat contents];
   result = 0.0;
-  if (a4)
+  if (length)
   {
     v7 = 1;
     do
     {
-      v8 = *v5++;
+      v8 = *contents++;
       result = result + v8;
       v9 = v7++;
     }
 
-    while (v9 < a4);
+    while (v9 < length);
   }
 
   return result;
 }
 
-- (int)analyzeRegionalFlowInformation:(id)a3 depth:(id)a4 quart1_angle:(_regional_flow_directions *)a5 quart2_angle:(_regional_flow_directions *)a6 quart3_angle:(_regional_flow_directions *)a7 quart4_angle:(_regional_flow_directions *)a8 depth_angle:(_regional_flow_directions *)a9
+- (int)analyzeRegionalFlowInformation:(id)information depth:(id)depth quart1_angle:(_regional_flow_directions *)quart1_angle quart2_angle:(_regional_flow_directions *)quart2_angle quart3_angle:(_regional_flow_directions *)quart3_angle quart4_angle:(_regional_flow_directions *)quart4_angle depth_angle:(_regional_flow_directions *)depth_angle
 {
   v88 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (!v11)
+  informationCopy = information;
+  depthCopy = depth;
+  v13 = depthCopy;
+  if (!informationCopy)
   {
     v28 = -1;
     goto LABEL_44;
   }
 
-  v56 = v12;
-  v14 = [v11 width];
-  v15 = [v11 height];
-  v75 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v56 = depthCopy;
+  width = [informationCopy width];
+  height = [informationCopy height];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
   v16 = 0;
   v87 = 0;
   memset(v86, 0, sizeof(v86));
@@ -162,20 +162,20 @@
   memset(v84, 0, sizeof(v84));
   v83 = 0;
   memset(v82, 0, sizeof(v82));
-  v70 = (v15 + 7) >> 3;
-  v71 = (v14 + 7) >> 3;
+  v70 = (height + 7) >> 3;
+  v71 = (width + 7) >> 3;
   v74 = v70 * v71;
   v72 = 4 * v70 * v71;
-  v64 = (v14 * 0.1);
-  v61 = (v14 * 0.899999999);
-  v62 = v15;
-  v63 = v14;
-  v60 = v61 & 0xFFFFFFFF0000FFFFLL | (v14 << 16);
-  v58 = (v15 * 0.899999999) << 32;
-  v59 = (v14 * 0.1) << 16;
-  v57 = v58 | (v15 << 48);
+  v64 = (width * 0.1);
+  v61 = (width * 0.899999999);
+  v62 = height;
+  v63 = width;
+  v60 = v61 & 0xFFFFFFFF0000FFFFLL | (width << 16);
+  v58 = (height * 0.899999999) << 32;
+  v59 = (width * 0.1) << 16;
+  v57 = v58 | (height << 48);
   v69 = vdupq_n_s64(8uLL);
-  v73 = v11;
+  v73 = informationCopy;
   do
   {
     if (v16 == 2)
@@ -184,8 +184,8 @@
       v18 = 0;
       v20 = 0;
       v19 = 0;
-      *&a7->range.min_x = v64 << 48;
-      a7->range.horizontal = 0;
+      *&quart3_angle->range.min_x = v64 << 48;
+      quart3_angle->range.horizontal = 0;
       v17 = v64;
     }
 
@@ -194,8 +194,8 @@
       v17 = 0;
       v18 = 0;
       v19 = v61;
-      *&a6->range.min_x = v60;
-      a6->range.horizontal = 1;
+      *&quart2_angle->range.min_x = v60;
+      quart2_angle->range.horizontal = 1;
       v76 = 1;
       v20 = v63;
     }
@@ -206,8 +206,8 @@
       v20 = 0;
       v19 = 0;
       v18 = v58;
-      *&a8->range.min_x = v57;
-      a8->range.horizontal = 0;
+      *&quart4_angle->range.min_x = v57;
+      quart4_angle->range.horizontal = 0;
       v17 = v62;
     }
 
@@ -217,8 +217,8 @@
       v18 = 0;
       v19 = 0;
       v20 = v64;
-      *&a5->range.min_x = v59;
-      a5->range.horizontal = 1;
+      *&quart1_angle->range.min_x = v59;
+      quart1_angle->range.horizontal = 1;
       v76 = 1;
     }
 
@@ -244,15 +244,15 @@
         v77 = v71;
         v78 = v70;
         v79 = 1;
-        v11 = v73;
-        if ([(HomographyFlow *)self encodeAnalyzeOcclusionRegionToCommandBuffer:v75 flow:v73 depth:v56 countBuffer:v21 vxBuffer:v23 vyBuffer:v25 threadsPerGroup:&v80 numThreadgroups:&v77])
+        informationCopy = v73;
+        if ([(HomographyFlow *)self encodeAnalyzeOcclusionRegionToCommandBuffer:commandBuffer flow:v73 depth:v56 countBuffer:v21 vxBuffer:v23 vyBuffer:v25 threadsPerGroup:&v80 numThreadgroups:&v77])
         {
           v28 = -1;
           goto LABEL_37;
         }
 
-        [v75 commit];
-        [v75 waitUntilCompleted];
+        [commandBuffer commit];
+        [commandBuffer waitUntilCompleted];
         [(HomographyFlow *)self sumUpStat:v87 bufferLength:v74];
         v30 = v29 + 0.1;
         [(HomographyFlow *)self sumUpStat:v85 bufferLength:v74];
@@ -267,11 +267,11 @@
 
       else
       {
-        [v75 commit];
-        [v75 waitUntilCompleted];
+        [commandBuffer commit];
+        [commandBuffer waitUntilCompleted];
         v28 = 0;
         v36 = 0.0;
-        v11 = v73;
+        informationCopy = v73;
       }
 
       v38 = 0;
@@ -291,20 +291,20 @@
         {
           if (v38 != 2)
           {
-            v49 = a8;
-            p_variance = &a8->variance;
+            quart1_angleCopy = quart4_angle;
+            p_variance = &quart4_angle->variance;
             if (v48 <= 0.7)
             {
               goto LABEL_31;
             }
 
 LABEL_30:
-            v49->angle = v47;
+            quart1_angleCopy->angle = v47;
             goto LABEL_31;
           }
 
-          v49 = a7;
-          p_variance = &a7->variance;
+          quart1_angleCopy = quart3_angle;
+          p_variance = &quart3_angle->variance;
           if (v48 > 0.7)
           {
             goto LABEL_30;
@@ -313,8 +313,8 @@ LABEL_30:
 
         else if (v38)
         {
-          v49 = a6;
-          p_variance = &a6->variance;
+          quart1_angleCopy = quart2_angle;
+          p_variance = &quart2_angle->variance;
           if (v48 > 0.7)
           {
             goto LABEL_30;
@@ -323,8 +323,8 @@ LABEL_30:
 
         else
         {
-          v49 = a5;
-          p_variance = &a5->variance;
+          quart1_angleCopy = quart1_angle;
+          p_variance = &quart1_angle->variance;
           if (v48 > 0.7)
           {
             goto LABEL_30;
@@ -340,8 +340,8 @@ LABEL_31:
             v51 = cosf(v47 - v36);
             if (v51 > v39)
             {
-              a9->angle = v47;
-              a9->variance = v48;
+              depth_angle->angle = v47;
+              depth_angle->variance = v48;
               v39 = v51;
             }
           }
@@ -360,11 +360,11 @@ LABEL_31:
     v78 = v70;
     v79 = 1;
     v27 = v18 | (v17 << 48) | (v20 << 16) | v19;
-    v11 = v73;
+    informationCopy = v73;
     ++v16;
   }
 
-  while (![(HomographyFlow *)self encodeAnalyzeRegionalFlowInfoToCommandBuffer:v75 flow:v73 range:v27 countBuffer:v76 vxBuffer:v21 vyBuffer:v23 threadsPerGroup:v25 numThreadgroups:&v80, &v77]);
+  while (![(HomographyFlow *)self encodeAnalyzeRegionalFlowInfoToCommandBuffer:commandBuffer flow:v73 range:v27 countBuffer:v76 vxBuffer:v21 vyBuffer:v23 threadsPerGroup:v25 numThreadgroups:&v80, &v77]);
   v28 = -1;
 LABEL_36:
   v13 = v56;
@@ -385,11 +385,11 @@ LABEL_44:
   return v28;
 }
 
-- (HomographyFlow)initWithDevice:(id)a3 commmandQueue:(id)a4
+- (HomographyFlow)initWithDevice:(id)device commmandQueue:(id)queue
 {
   v13.receiver = self;
   v13.super_class = HomographyFlow;
-  v4 = [(VEMetalBase *)&v13 initWithDevice:a3 commmandQueue:a4];
+  v4 = [(VEMetalBase *)&v13 initWithDevice:device commmandQueue:queue];
   if (!v4)
   {
     goto LABEL_6;
@@ -408,9 +408,9 @@ LABEL_44:
     goto LABEL_6;
   }
 
-  v10 = [(HomographyFlow *)v4 setupMetal];
+  setupMetal = [(HomographyFlow *)v4 setupMetal];
 
-  if (!v10)
+  if (!setupMetal)
   {
 LABEL_6:
     v11 = 0;
@@ -456,11 +456,11 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)bindInternalTextureFromFirst:(__CVBuffer *)a3 warpedFirst:(__CVBuffer *)a4
+- (int64_t)bindInternalTextureFromFirst:(__CVBuffer *)first warpedFirst:(__CVBuffer *)warpedFirst
 {
   if (self->_textureBinded)
   {
-    v7 = checkTextureBoundBuffer(self->_firstTexture, a3);
+    v7 = checkTextureBoundBuffer(self->_firstTexture, first);
     self->_textureBinded = v7;
     if (v7)
     {
@@ -473,7 +473,7 @@ LABEL_7:
     self->_textureBinded = 0;
   }
 
-  v9 = createRGBATextureFromCVPixelBuffer(a3, self->super._device);
+  v9 = createRGBATextureFromCVPixelBuffer(first, self->super._device);
   firstTexture = self->_firstTexture;
   self->_firstTexture = v9;
 
@@ -482,7 +482,7 @@ LABEL_7:
     return 9;
   }
 
-  v11 = createRGBATextureFromCVPixelBuffer(a4, self->super._device);
+  v11 = createRGBATextureFromCVPixelBuffer(warpedFirst, self->super._device);
   warpedFirstTexture = self->_warpedFirstTexture;
   self->_warpedFirstTexture = v11;
 
@@ -496,12 +496,12 @@ LABEL_7:
   return result;
 }
 
-- (uint64_t)postprocessFlowWithhomographyMatrix21:(double)a3 matrix12:(double)a4 inputForwardFlow:(double)a5 inputBackwardFlow:(double)a6 outputForwardFlow:(double)a7 outputBackwardFlow:(float)a8 downscaleFacttor:(uint64_t)a9
+- (uint64_t)postprocessFlowWithhomographyMatrix21:(double)matrix21 matrix12:(double)matrix12 inputForwardFlow:(double)flow inputBackwardFlow:(double)backwardFlow outputForwardFlow:(double)forwardFlow outputBackwardFlow:(float)outputBackwardFlow downscaleFacttor:(uint64_t)facttor
 {
   v13 = 12;
   if (a10 && a11 && a12 && a13)
   {
-    v16 = [a1[3] commandBuffer];
+    commandBuffer = [self[3] commandBuffer];
     OUTLINED_FUNCTION_7();
     v21 = createTexturesFromCVPixelBuffer(v17, v18, v19, v20);
     if (v21)
@@ -518,13 +518,13 @@ LABEL_7:
           v36 = createTexturesFromCVPixelBuffer(v32, v33, v34, v35);
           if (v36)
           {
-            *&v37 = a8;
-            [a1 convertHomographyWithFactor:v37 input:{a2, a3, a4}];
+            *&v37 = outputBackwardFlow;
+            [self convertHomographyWithFactor:v37 input:{a2, matrix21, matrix12}];
             v50 = v39;
             v52 = v38;
             v48 = v40;
-            *&v38 = a8;
-            [a1 convertHomographyWithFactor:v38 input:{a5, a6, a7}];
+            *&v38 = outputBackwardFlow;
+            [self convertHomographyWithFactor:v38 input:{flow, backwardFlow, forwardFlow}];
             v41 = [OUTLINED_FUNCTION_1_6() encodeCombineFlowToCommandBuffer:v52 input:v50 homography:v48 baseWarp:? destination:?];
             if (v41 || (v42 = OUTLINED_FUNCTION_1_6(), v56 = v44, v58 = v43, v54 = v45, (v41 = [v42 encodeCombineFlowToCommandBuffer:? input:? homography:? baseWarp:? destination:?]) != 0) || (v41 = objc_msgSend(OUTLINED_FUNCTION_1_6(), "encodeCorrectFlowToCommandBuffer:input:refFlow:homography:", v52, v50, v48)) != 0)
             {
@@ -536,7 +536,7 @@ LABEL_7:
               v13 = [OUTLINED_FUNCTION_1_6() encodeCorrectFlowToCommandBuffer:v58 input:v56 refFlow:v54 homography:?];
               if (!v13)
               {
-                [v16 commit];
+                [commandBuffer commit];
                 [OUTLINED_FUNCTION_1_6() commandBufferWait:? flag:?];
               }
             }
@@ -569,10 +569,10 @@ LABEL_7:
   return v13;
 }
 
-- (uint64_t)proprocessFirst:(double)a3 warpedFirst:(double)a4 withHomography:(uint64_t)a5
+- (uint64_t)proprocessFirst:(double)first warpedFirst:(double)warpedFirst withHomography:(uint64_t)homography
 {
-  v10 = [*(a1 + 24) commandBuffer];
-  v11 = [a1 bindInternalTextureFromFirst:a6 warpedFirst:a7];
+  commandBuffer = [*(self + 24) commandBuffer];
+  v11 = [self bindInternalTextureFromFirst:a6 warpedFirst:a7];
   if (v11)
   {
     v12 = v11;
@@ -580,38 +580,38 @@ LABEL_7:
 
   else
   {
-    v12 = [a1 encodeBackWarpToCommandBuffer:v10 reference:*(a1 + 88) ToOutput:*(a1 + 80) withHomography:{a2, a3, a4}];
+    v12 = [self encodeBackWarpToCommandBuffer:commandBuffer reference:*(self + 88) ToOutput:*(self + 80) withHomography:{a2, first, warpedFirst}];
     if (!v12)
     {
-      [v10 commit];
-      [a1 commandBufferWait:v10 flag:{objc_msgSend(a1, "EnableGpuWaitForComplete")}];
+      [commandBuffer commit];
+      [self commandBufferWait:commandBuffer flag:{objc_msgSend(self, "EnableGpuWaitForComplete")}];
 
-      v10 = 0;
+      commandBuffer = 0;
     }
   }
 
   return v12;
 }
 
-- (uint64_t)encodeBackWarpToCommandBuffer:(uint64_t)a1 reference:(uint64_t)a2 ToOutput:(uint64_t)a3 withHomography:(void *)a4
+- (uint64_t)encodeBackWarpToCommandBuffer:(uint64_t)buffer reference:(uint64_t)reference ToOutput:(uint64_t)output withHomography:(void *)homography
 {
-  v7 = OUTLINED_FUNCTION_2_2(a1, a2, a3, a4);
+  v7 = OUTLINED_FUNCTION_2_2(buffer, reference, output, homography);
   v8 = v4;
   v9 = v8;
   v10 = 12;
   if (v7 && v8)
   {
-    v11 = [v5 computeCommandEncoder];
-    v19 = v11;
-    if (v11)
+    computeCommandEncoder = [v5 computeCommandEncoder];
+    v19 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v11 setComputePipelineState:{*(v6 + 48), OUTLINED_FUNCTION_8(v11, v12, v13, v14, v15, v16, v17, v18, v32, v34, v36, v38, v40).n128_f64[0]}];
+      [computeCommandEncoder setComputePipelineState:{*(v6 + 48), OUTLINED_FUNCTION_8(computeCommandEncoder, v12, v13, v14, v15, v16, v17, v18, v32, v34, v36, v38, v40).n128_f64[0]}];
       OUTLINED_FUNCTION_3_2();
       v20 = OUTLINED_FUNCTION_5();
       OUTLINED_FUNCTION_4_0(v20, v21, v47);
       [v9 width];
-      v22 = [v9 height];
-      OUTLINED_FUNCTION_0_5(v22, v23, v24, v25, v26, v27, v28, v29, v33, v35, v37, v39, v41, v42, v30, v43, v44, v45, v46);
+      height = [v9 height];
+      OUTLINED_FUNCTION_0_5(height, v23, v24, v25, v26, v27, v28, v29, v33, v35, v37, v39, v41, v42, v30, v43, v44, v45, v46);
       [v19 endEncoding];
       v10 = 0;
     }
@@ -625,24 +625,24 @@ LABEL_7:
   return v10;
 }
 
-- (uint64_t)encodeCombineFlowToCommandBuffer:(__n128)a3 input:(__n128)a4 homography:(uint64_t)a5 baseWarp:(void *)a6 destination:(void *)a7
+- (uint64_t)encodeCombineFlowToCommandBuffer:(__n128)buffer input:(__n128)input homography:(uint64_t)homography baseWarp:(void *)warp destination:(void *)destination
 {
-  v13 = a7;
+  destinationCopy = destination;
   v14 = a9;
   v15 = v14;
   v16 = 12;
-  if (v13 && v14)
+  if (destinationCopy && v14)
   {
-    v17 = [a6 computeCommandEncoder];
-    v18 = v17;
-    if (v17)
+    computeCommandEncoder = [warp computeCommandEncoder];
+    v18 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v17 setComputePipelineState:*(a1 + 56)];
+      [computeCommandEncoder setComputePipelineState:*(self + 56)];
       OUTLINED_FUNCTION_3_2();
       v19 = OUTLINED_FUNCTION_5();
       v29[0] = a2;
-      v29[1] = a3;
-      v29[2] = a4;
+      v29[1] = buffer;
+      v29[2] = input;
       OUTLINED_FUNCTION_4_0(v19, v20, v29);
       v28 = a8;
       [v18 setBytes:&v28 length:4 atIndex:1];
@@ -665,26 +665,26 @@ LABEL_7:
   return v16;
 }
 
-- (uint64_t)encodeCorrectFlowToCommandBuffer:(uint64_t)a1 input:(uint64_t)a2 refFlow:(uint64_t)a3 homography:(void *)a4
+- (uint64_t)encodeCorrectFlowToCommandBuffer:(uint64_t)buffer input:(uint64_t)input refFlow:(uint64_t)flow homography:(void *)homography
 {
-  v7 = OUTLINED_FUNCTION_2_2(a1, a2, a3, a4);
+  v7 = OUTLINED_FUNCTION_2_2(buffer, input, flow, homography);
   v8 = v4;
   v9 = v8;
   v10 = 12;
   if (v7 && v8)
   {
-    v11 = [v5 computeCommandEncoder];
-    v12 = v11;
-    if (v11)
+    computeCommandEncoder = [v5 computeCommandEncoder];
+    v12 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v11 setComputePipelineState:*(v6 + 64)];
+      [computeCommandEncoder setComputePipelineState:*(v6 + 64)];
       OUTLINED_FUNCTION_3_2();
       v13 = OUTLINED_FUNCTION_5();
       OUTLINED_FUNCTION_8(v13, v14, v15, v16, v17, v18, v19, v20, v33, v35, v37, v39, v41);
       OUTLINED_FUNCTION_4_0(v21, v22, v48);
       [v7 width];
-      v23 = [v7 height];
-      OUTLINED_FUNCTION_0_5(v23, v24, v25, v26, v27, v28, v29, v30, v34, v36, v38, v40, v42, v43, v31, v44, v45, v46, v47);
+      height = [v7 height];
+      OUTLINED_FUNCTION_0_5(height, v24, v25, v26, v27, v28, v29, v30, v34, v36, v38, v40, v42, v43, v31, v44, v45, v46, v47);
       [v12 endEncoding];
       v10 = 0;
     }
@@ -698,29 +698,29 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)encodeAnalyzeRegionalFlowInfoToCommandBuffer:(id)a3 flow:(id)a4 range:(_regional_range)a5 countBuffer:(id)a6 vxBuffer:(id)a7 vyBuffer:(id)a8 threadsPerGroup:(id *)a9 numThreadgroups:(id *)a10
+- (int64_t)encodeAnalyzeRegionalFlowInfoToCommandBuffer:(id)buffer flow:(id)flow range:(_regional_range)range countBuffer:(id)countBuffer vxBuffer:(id)vxBuffer vyBuffer:(id)vyBuffer threadsPerGroup:(id *)group numThreadgroups:(id *)self0
 {
-  v25 = a5;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = v17;
+  rangeCopy = range;
+  flowCopy = flow;
+  countBufferCopy = countBuffer;
+  vxBufferCopy = vxBuffer;
+  vyBufferCopy = vyBuffer;
+  v18 = vyBufferCopy;
   v19 = 12;
-  if (v14 && v15 && v16 && v17)
+  if (flowCopy && countBufferCopy && vxBufferCopy && vyBufferCopy)
   {
-    v20 = [a3 computeCommandEncoder];
-    v21 = v20;
-    if (v20)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    v21 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v20 setComputePipelineState:self->_collectRegionalFlowInfoKernel];
-      [v21 setTexture:v14 atIndex:0];
-      [v21 setBuffer:v15 offset:0 atIndex:0];
-      [v21 setBuffer:v16 offset:0 atIndex:1];
+      [computeCommandEncoder setComputePipelineState:self->_collectRegionalFlowInfoKernel];
+      [v21 setTexture:flowCopy atIndex:0];
+      [v21 setBuffer:countBufferCopy offset:0 atIndex:0];
+      [v21 setBuffer:vxBufferCopy offset:0 atIndex:1];
       [v21 setBuffer:v18 offset:0 atIndex:2];
-      [v21 setBytes:&v25 length:10 atIndex:3];
-      v24 = *a10;
-      v23 = *a9;
+      [v21 setBytes:&rangeCopy length:10 atIndex:3];
+      v24 = *threadgroups;
+      v23 = *group;
       [v21 dispatchThreadgroups:&v24 threadsPerThreadgroup:&v23];
       [v21 endEncoding];
       v19 = 0;
@@ -735,32 +735,32 @@ LABEL_7:
   return v19;
 }
 
-- (int64_t)encodeAnalyzeOcclusionRegionToCommandBuffer:(id)a3 flow:(id)a4 depth:(id)a5 countBuffer:(id)a6 vxBuffer:(id)a7 vyBuffer:(id)a8 threadsPerGroup:(id *)a9 numThreadgroups:(id *)a10
+- (int64_t)encodeAnalyzeOcclusionRegionToCommandBuffer:(id)buffer flow:(id)flow depth:(id)depth countBuffer:(id)countBuffer vxBuffer:(id)vxBuffer vyBuffer:(id)vyBuffer threadsPerGroup:(id *)group numThreadgroups:(id *)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = v20;
+  flowCopy = flow;
+  depthCopy = depth;
+  countBufferCopy = countBuffer;
+  vxBufferCopy = vxBuffer;
+  vyBufferCopy = vyBuffer;
+  v21 = vyBufferCopy;
   v22 = 12;
-  if (v16 && v17 && v18 && v19 && v20)
+  if (flowCopy && depthCopy && countBufferCopy && vxBufferCopy && vyBufferCopy)
   {
-    v23 = [a3 computeCommandEncoder];
-    v24 = v23;
-    if (v23)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    v24 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v23 setComputePipelineState:self->_collectOcclusionRegionFlowInfoKernel];
-      v25 = [v17 width];
-      v29 = v25 / [v16 width];
-      [v24 setTexture:v16 atIndex:0];
-      [v24 setTexture:v17 atIndex:1];
-      [v24 setBuffer:v18 offset:0 atIndex:0];
-      [v24 setBuffer:v19 offset:0 atIndex:1];
+      [computeCommandEncoder setComputePipelineState:self->_collectOcclusionRegionFlowInfoKernel];
+      width = [depthCopy width];
+      v29 = width / [flowCopy width];
+      [v24 setTexture:flowCopy atIndex:0];
+      [v24 setTexture:depthCopy atIndex:1];
+      [v24 setBuffer:countBufferCopy offset:0 atIndex:0];
+      [v24 setBuffer:vxBufferCopy offset:0 atIndex:1];
       [v24 setBuffer:v21 offset:0 atIndex:2];
       [v24 setBytes:&v29 length:4 atIndex:3];
-      v28 = *a10;
-      v27 = *a9;
+      v28 = *threadgroups;
+      v27 = *group;
       [v24 dispatchThreadgroups:&v28 threadsPerThreadgroup:&v27];
       [v24 endEncoding];
       v22 = 0;

@@ -1,44 +1,44 @@
 @interface PKPaymentWebServiceContext
-+ (PKPaymentWebServiceContext)contextWithArchive:(id)a3;
-+ (void)_migrateContext:(id)a3;
-+ (void)_migrateFrom0To1:(id)a3;
-- (BOOL)contextMeetsDeviceUpgradeTasksEnablementThresholdForRegion:(id)a3;
-- (BOOL)contextMeetsMarketGeoNotificationThresholdForRegion:(id)a3 paymentNetwork:(int64_t)a4;
-- (BOOL)contextMeetsProvisioningEnablementPercentageThresholdForRegion:(id)a3;
++ (PKPaymentWebServiceContext)contextWithArchive:(id)archive;
++ (void)_migrateContext:(id)context;
++ (void)_migrateFrom0To1:(id)to1;
+- (BOOL)contextMeetsDeviceUpgradeTasksEnablementThresholdForRegion:(id)region;
+- (BOOL)contextMeetsMarketGeoNotificationThresholdForRegion:(id)region paymentNetwork:(int64_t)network;
+- (BOOL)contextMeetsProvisioningEnablementPercentageThresholdForRegion:(id)region;
 - (BOOL)hasPeerPaymentAccount;
-- (BOOL)isRegisteredForBrokerURL:(id)a3;
+- (BOOL)isRegisteredForBrokerURL:(id)l;
 - (NSDictionary)regions;
 - (NSURL)peerPaymentServiceURL;
 - (PKPaymentWebServiceConfiguration)configuration;
 - (PKPaymentWebServiceContext)init;
-- (PKPaymentWebServiceContext)initWithCoder:(id)a3;
+- (PKPaymentWebServiceContext)initWithCoder:(id)coder;
 - (PKPaymentWebServiceRegion)primaryRegion;
 - (double)_contextProvisioningEnablementValue;
 - (id)TSMPushTopics;
 - (id)TSMURLStringByPushTopic;
 - (id)_regionWithPeerPaymentServiceURL;
 - (id)accountServicePushTopics;
-- (id)applyServiceFeaturesForRegionMeetingEnablementThreshold:(id)a3;
-- (id)applyServiceLocalizationBundleForFeatureIdentifier:(unint64_t)a3 mainLanguageBundle:(id)a4;
-- (id)applyServicePreferredLanguageForFeatureIdentifier:(unint64_t)a3 mainLanguageBundle:(id)a4;
+- (id)applyServiceFeaturesForRegionMeetingEnablementThreshold:(id)threshold;
+- (id)applyServiceLocalizationBundleForFeatureIdentifier:(unint64_t)identifier mainLanguageBundle:(id)bundle;
+- (id)applyServicePreferredLanguageForFeatureIdentifier:(unint64_t)identifier mainLanguageBundle:(id)bundle;
 - (id)applyServicePushTopics;
-- (id)betaPaymentNetworksForRegion:(id)a3;
+- (id)betaPaymentNetworksForRegion:(id)region;
 - (id)debugDescription;
 - (id)notificationPushTopics;
 - (id)paymentOffersServicePushTopics;
-- (id)regionForIdentifier:(id)a3;
-- (id)verificationRequestRecordForUniqueID:(id)a3;
+- (id)regionForIdentifier:(id)identifier;
+- (id)verificationRequestRecordForUniqueID:(id)d;
 - (void)_localizationUpdated;
-- (void)addVerificationRequestRecord:(id)a3 forUniqueID:(id)a4;
-- (void)archiveAtPath:(id)a3;
-- (void)atomicallyUpdateEveryRegion:(id)a3;
-- (void)atomicallyUpdatePrimaryRegion:(id)a3;
-- (void)atomicallyUpdateRegionWithIdentifier:(id)a3 updateBlock:(id)a4;
+- (void)addVerificationRequestRecord:(id)record forUniqueID:(id)d;
+- (void)archiveAtPath:(id)path;
+- (void)atomicallyUpdateEveryRegion:(id)region;
+- (void)atomicallyUpdatePrimaryRegion:(id)region;
+- (void)atomicallyUpdateRegionWithIdentifier:(id)identifier updateBlock:(id)block;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeVerificationRequestRecordForUniqueID:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setRegions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeVerificationRequestRecordForUniqueID:(id)d;
+- (void)setConfiguration:(id)configuration;
+- (void)setRegions:(id)regions;
 @end
 
 @implementation PKPaymentWebServiceContext
@@ -68,76 +68,76 @@
     featureSupportedLanguageCache = v3->_featureSupportedLanguageCache;
     v3->_featureSupportedLanguageCache = v4;
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel__localizationUpdated name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__localizationUpdated name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   return v3;
 }
 
-- (PKPaymentWebServiceContext)initWithCoder:(id)a3
+- (PKPaymentWebServiceContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKPaymentWebServiceContext *)self init];
   if (v5)
   {
-    -[PKPaymentWebServiceContext setVersion:](v5, "setVersion:", [v4 decodeIntegerForKey:@"version"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+    -[PKPaymentWebServiceContext setVersion:](v5, "setVersion:", [coderCopy decodeIntegerForKey:@"version"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
     [(PKPaymentWebServiceContext *)v5 setDeviceID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureElementID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureElementID"];
     [(PKPaymentWebServiceContext *)v5 setSecureElementID:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"registrationDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"registrationDate"];
     [(PKPaymentWebServiceContext *)v5 setRegistrationDate:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archivedDate"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedDate"];
     [(PKPaymentWebServiceContext *)v5 setArchivedDate:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
     [(PKPaymentWebServiceContext *)v5 setPushToken:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionSerialNumber"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionSerialNumber"];
     [(PKPaymentWebServiceContext *)v5 setCompanionSerialNumber:v11];
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"verificationRequestsByPassUniqueID"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"verificationRequestsByPassUniqueID"];
     v17 = [v16 mutableCopy];
     verificationRequestsByPassUniqueID = v5->_verificationRequestsByPassUniqueID;
     v5->_verificationRequestsByPassUniqueID = v17;
 
-    -[PKPaymentWebServiceContext setDevSigned:](v5, "setDevSigned:", [v4 decodeBoolForKey:@"devSigned"]);
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configurationDate"];
+    -[PKPaymentWebServiceContext setDevSigned:](v5, "setDevSigned:", [coderCopy decodeBoolForKey:@"devSigned"]);
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configurationDate"];
     [(PKPaymentWebServiceContext *)v5 setConfigurationDate:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
     [(PKPaymentWebServiceContext *)v5 setConfiguration:v20];
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v21 setWithObjects:{v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"regions"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"regions"];
     regions = v5->_regions;
     v5->_regions = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryRegionIdentifier"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryRegionIdentifier"];
     [(PKPaymentWebServiceContext *)v5 setPrimaryRegionIdentifier:v27];
 
-    -[PKPaymentWebServiceContext setTransactionServiceDisabled:](v5, "setTransactionServiceDisabled:", [v4 decodeBoolForKey:@"transactionServiceDisabled"]);
-    -[PKPaymentWebServiceContext setMessageServiceDisabled:](v5, "setMessageServiceDisabled:", [v4 decodeBoolForKey:@"messageServiceDisabled"]);
-    -[PKPaymentWebServiceContext setIgnoreProvisioningEnablementPercentage:](v5, "setIgnoreProvisioningEnablementPercentage:", [v4 decodeBoolForKey:@"ignoreProvisioningEnablementPercentage"]);
-    v28 = [v4 decodePropertyListForKey:@"certificates"];
+    -[PKPaymentWebServiceContext setTransactionServiceDisabled:](v5, "setTransactionServiceDisabled:", [coderCopy decodeBoolForKey:@"transactionServiceDisabled"]);
+    -[PKPaymentWebServiceContext setMessageServiceDisabled:](v5, "setMessageServiceDisabled:", [coderCopy decodeBoolForKey:@"messageServiceDisabled"]);
+    -[PKPaymentWebServiceContext setIgnoreProvisioningEnablementPercentage:](v5, "setIgnoreProvisioningEnablementPercentage:", [coderCopy decodeBoolForKey:@"ignoreProvisioningEnablementPercentage"]);
+    v28 = [coderCopy decodePropertyListForKey:@"certificates"];
     [(PKPaymentWebServiceContext *)v5 setCertificates:v28];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedTag"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedTag"];
     [(PKPaymentWebServiceContext *)v5 setLastUpdatedTag:v29];
 
-    -[PKPaymentWebServiceContext setConsistencyCheckBackoffLevel:](v5, "setConsistencyCheckBackoffLevel:", [v4 decodeIntegerForKey:@"consistencyCheckBackoff"]);
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"registrationType"];
+    -[PKPaymentWebServiceContext setConsistencyCheckBackoffLevel:](v5, "setConsistencyCheckBackoffLevel:", [coderCopy decodeIntegerForKey:@"consistencyCheckBackoff"]);
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"registrationType"];
     v31 = v30;
     if (v30)
     {
@@ -167,56 +167,56 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
 
   v4.receiver = self;
   v4.super_class = PKPaymentWebServiceContext;
   [(PKPaymentWebServiceContext *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock_context);
-  [v4 encodeInteger:-[PKPaymentWebServiceContext version](self forKey:{"version"), @"version"}];
-  v5 = [(PKPaymentWebServiceContext *)self deviceID];
-  [v4 encodeObject:v5 forKey:@"deviceID"];
+  [coderCopy encodeInteger:-[PKPaymentWebServiceContext version](self forKey:{"version"), @"version"}];
+  deviceID = [(PKPaymentWebServiceContext *)self deviceID];
+  [coderCopy encodeObject:deviceID forKey:@"deviceID"];
 
-  v6 = [(PKPaymentWebServiceContext *)self secureElementID];
-  [v4 encodeObject:v6 forKey:@"secureElementID"];
+  secureElementID = [(PKPaymentWebServiceContext *)self secureElementID];
+  [coderCopy encodeObject:secureElementID forKey:@"secureElementID"];
 
-  v7 = [(PKPaymentWebServiceContext *)self registrationDate];
-  [v4 encodeObject:v7 forKey:@"registrationDate"];
+  registrationDate = [(PKPaymentWebServiceContext *)self registrationDate];
+  [coderCopy encodeObject:registrationDate forKey:@"registrationDate"];
 
-  v8 = [(PKPaymentWebServiceContext *)self archivedDate];
-  [v4 encodeObject:v8 forKey:@"archivedDate"];
+  archivedDate = [(PKPaymentWebServiceContext *)self archivedDate];
+  [coderCopy encodeObject:archivedDate forKey:@"archivedDate"];
 
-  v9 = [(PKPaymentWebServiceContext *)self pushToken];
-  [v4 encodeObject:v9 forKey:@"pushToken"];
+  pushToken = [(PKPaymentWebServiceContext *)self pushToken];
+  [coderCopy encodeObject:pushToken forKey:@"pushToken"];
 
-  v10 = [(PKPaymentWebServiceContext *)self companionSerialNumber];
-  [v4 encodeObject:v10 forKey:@"companionSerialNumber"];
+  companionSerialNumber = [(PKPaymentWebServiceContext *)self companionSerialNumber];
+  [coderCopy encodeObject:companionSerialNumber forKey:@"companionSerialNumber"];
 
-  [v4 encodeObject:self->_verificationRequestsByPassUniqueID forKey:@"verificationRequestsByPassUniqueID"];
-  [v4 encodeBool:-[PKPaymentWebServiceContext devSigned](self forKey:{"devSigned"), @"devSigned"}];
-  v11 = [(PKPaymentWebServiceContext *)self configurationDate];
-  [v4 encodeObject:v11 forKey:@"configurationDate"];
+  [coderCopy encodeObject:self->_verificationRequestsByPassUniqueID forKey:@"verificationRequestsByPassUniqueID"];
+  [coderCopy encodeBool:-[PKPaymentWebServiceContext devSigned](self forKey:{"devSigned"), @"devSigned"}];
+  configurationDate = [(PKPaymentWebServiceContext *)self configurationDate];
+  [coderCopy encodeObject:configurationDate forKey:@"configurationDate"];
 
-  [v4 encodeObject:self->_configuration forKey:@"configuration"];
-  v12 = [(PKPaymentWebServiceContext *)self primaryRegionIdentifier];
-  [v4 encodeObject:v12 forKey:@"primaryRegionIdentifier"];
+  [coderCopy encodeObject:self->_configuration forKey:@"configuration"];
+  primaryRegionIdentifier = [(PKPaymentWebServiceContext *)self primaryRegionIdentifier];
+  [coderCopy encodeObject:primaryRegionIdentifier forKey:@"primaryRegionIdentifier"];
 
-  [v4 encodeObject:self->_regions forKey:@"regions"];
-  [v4 encodeBool:-[PKPaymentWebServiceContext transactionServiceDisabled](self forKey:{"transactionServiceDisabled"), @"transactionServiceDisabled"}];
-  [v4 encodeBool:-[PKPaymentWebServiceContext messageServiceDisabled](self forKey:{"messageServiceDisabled"), @"messageServiceDisabled"}];
-  [v4 encodeBool:-[PKPaymentWebServiceContext ignoreProvisioningEnablementPercentage](self forKey:{"ignoreProvisioningEnablementPercentage"), @"ignoreProvisioningEnablementPercentage"}];
-  [v4 encodeInteger:-[PKPaymentWebServiceContext consistencyCheckBackoffLevel](self forKey:{"consistencyCheckBackoffLevel"), @"consistencyCheckBackoff"}];
-  v13 = [(PKPaymentWebServiceContext *)self lastUpdatedTag];
-  [v4 encodeObject:v13 forKey:@"lastUpdatedTag"];
+  [coderCopy encodeObject:self->_regions forKey:@"regions"];
+  [coderCopy encodeBool:-[PKPaymentWebServiceContext transactionServiceDisabled](self forKey:{"transactionServiceDisabled"), @"transactionServiceDisabled"}];
+  [coderCopy encodeBool:-[PKPaymentWebServiceContext messageServiceDisabled](self forKey:{"messageServiceDisabled"), @"messageServiceDisabled"}];
+  [coderCopy encodeBool:-[PKPaymentWebServiceContext ignoreProvisioningEnablementPercentage](self forKey:{"ignoreProvisioningEnablementPercentage"), @"ignoreProvisioningEnablementPercentage"}];
+  [coderCopy encodeInteger:-[PKPaymentWebServiceContext consistencyCheckBackoffLevel](self forKey:{"consistencyCheckBackoffLevel"), @"consistencyCheckBackoff"}];
+  lastUpdatedTag = [(PKPaymentWebServiceContext *)self lastUpdatedTag];
+  [coderCopy encodeObject:lastUpdatedTag forKey:@"lastUpdatedTag"];
 
-  v14 = [(PKPaymentWebServiceContext *)self certificates];
-  [v4 encodeObject:v14 forKey:@"certificates"];
+  certificates = [(PKPaymentWebServiceContext *)self certificates];
+  [coderCopy encodeObject:certificates forKey:@"certificates"];
 
   registrationType = self->_registrationType;
   if (registrationType > 2)
@@ -229,17 +229,17 @@
     v16 = off_1E79D89B8[registrationType];
   }
 
-  [v4 encodeObject:v16 forKey:@"registrationType"];
+  [coderCopy encodeObject:v16 forKey:@"registrationType"];
 
   os_unfair_lock_unlock(&self->_lock_context);
 }
 
-+ (PKPaymentWebServiceContext)contextWithArchive:(id)a3
++ (PKPaymentWebServiceContext)contextWithArchive:(id)archive
 {
-  v4 = a3;
-  v8.receiver = a1;
+  archiveCopy = archive;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___PKPaymentWebServiceContext;
-  v5 = objc_msgSendSuper2(&v8, sel_contextWithArchive_, v4);
+  v5 = objc_msgSendSuper2(&v8, sel_contextWithArchive_, archiveCopy);
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
@@ -257,7 +257,7 @@
   if ([(PKPaymentWebServiceContext *)v6 version]<= 0)
   {
     [objc_opt_class() _migrateContext:v6];
-    [v5 archiveAtPath:v4];
+    [v5 archiveAtPath:archiveCopy];
   }
 
 LABEL_7:
@@ -265,25 +265,25 @@ LABEL_7:
   return v6;
 }
 
-- (void)archiveAtPath:(id)a3
+- (void)archiveAtPath:(id)path
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  [(PKPaymentWebServiceContext *)self setArchivedDate:v6];
+  pathCopy = path;
+  date = [v4 date];
+  [(PKPaymentWebServiceContext *)self setArchivedDate:date];
 
   v7.receiver = self;
   v7.super_class = PKPaymentWebServiceContext;
-  [(PKWebServiceContext *)&v7 archiveAtPath:v5];
+  [(PKWebServiceContext *)&v7 archiveAtPath:pathCopy];
 }
 
-- (BOOL)isRegisteredForBrokerURL:(id)a3
+- (BOOL)isRegisteredForBrokerURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   if ([(PKPaymentWebServiceContext *)self isRegistered])
   {
-    if (v4)
+    if (lCopy)
     {
       os_unfair_lock_lock(&self->_lock_context);
       v16 = 0u;
@@ -305,11 +305,11 @@ LABEL_7:
             }
 
             v9 = [(NSDictionary *)self->_regions objectForKeyedSubscript:*(*(&v14 + 1) + 8 * i)];
-            v10 = [v9 brokerURL];
-            if (v10)
+            brokerURL = [v9 brokerURL];
+            if (brokerURL)
             {
-              v11 = v10;
-              v12 = [v4 isEqual:v10];
+              v11 = brokerURL;
+              v12 = [lCopy isEqual:brokerURL];
 
               if (v12)
               {
@@ -357,9 +357,9 @@ LABEL_17:
   return v3;
 }
 
-- (void)setRegions:(id)a3
+- (void)setRegions:(id)regions
 {
-  v4 = [a3 copy];
+  v4 = [regions copy];
   os_unfair_lock_lock(&self->_lock_context);
   regions = self->_regions;
   self->_regions = v4;
@@ -367,12 +367,12 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_lock_context);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_lock_context);
   configuration = self->_configuration;
-  self->_configuration = v4;
+  self->_configuration = configurationCopy;
 
   os_unfair_lock_unlock(&self->_lock_context);
 }
@@ -401,8 +401,8 @@ LABEL_17:
 
   [v3 appendFormat:@"devSigned: '%@';\n", v4];
   [v3 appendFormat:@"configurationDate: '%@';\n", self->_configurationDate];
-  v5 = [(PKPaymentWebServiceContext *)self configuration];
-  v6 = [v5 description];
+  configuration = [(PKPaymentWebServiceContext *)self configuration];
+  v6 = [configuration description];
   [v3 appendFormat:@"configuration: '%@';\n", v6];
 
   [v3 appendFormat:@"primaryRegionIdentifier: '%@';\n", self->_primaryRegionIdentifier];
@@ -457,16 +457,16 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (void)addVerificationRequestRecord:(id)a3 forUniqueID:(id)a4
+- (void)addVerificationRequestRecord:(id)record forUniqueID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  dCopy = d;
   v8 = PKLogFacilityTypeGetObject(0x26uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v7;
+    v13 = dCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Adding verification request record for %@", &v12, 0xCu);
   }
 
@@ -481,35 +481,35 @@ LABEL_17:
     verificationRequestsByPassUniqueID = self->_verificationRequestsByPassUniqueID;
   }
 
-  [(NSMutableDictionary *)verificationRequestsByPassUniqueID setObject:v6 forKey:v7];
+  [(NSMutableDictionary *)verificationRequestsByPassUniqueID setObject:recordCopy forKey:dCopy];
   os_unfair_lock_unlock(&self->_lock_context);
 }
 
-- (id)verificationRequestRecordForUniqueID:(id)a3
+- (id)verificationRequestRecordForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock_context);
-  v5 = [(NSMutableDictionary *)self->_verificationRequestsByPassUniqueID objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_verificationRequestsByPassUniqueID objectForKey:dCopy];
 
   os_unfair_lock_unlock(&self->_lock_context);
 
   return v5;
 }
 
-- (void)removeVerificationRequestRecordForUniqueID:(id)a3
+- (void)removeVerificationRequestRecordForUniqueID:(id)d
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = PKLogFacilityTypeGetObject(0x26uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = dCopy;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Removing verification request record for %@", &v7, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock_context);
-  [(NSMutableDictionary *)self->_verificationRequestsByPassUniqueID removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_verificationRequestsByPassUniqueID removeObjectForKey:dCopy];
   if (![(NSMutableDictionary *)self->_verificationRequestsByPassUniqueID count])
   {
     verificationRequestsByPassUniqueID = self->_verificationRequestsByPassUniqueID;
@@ -519,11 +519,11 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_lock_context);
 }
 
-- (id)regionForIdentifier:(id)a3
+- (id)regionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock_context);
-  v5 = [(NSDictionary *)self->_regions objectForKey:v4];
+  v5 = [(NSDictionary *)self->_regions objectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock_context);
 
@@ -539,12 +539,12 @@ LABEL_17:
   return v3;
 }
 
-- (void)atomicallyUpdatePrimaryRegion:(id)a3
+- (void)atomicallyUpdatePrimaryRegion:(id)region
 {
-  v4 = a3;
-  if (v4)
+  regionCopy = region;
+  if (regionCopy)
   {
-    v10 = v4;
+    v10 = regionCopy;
     os_unfair_lock_lock(&self->_lock_context);
     if (self->_primaryRegionIdentifier)
     {
@@ -559,22 +559,22 @@ LABEL_17:
     }
 
     os_unfair_lock_unlock(&self->_lock_context);
-    v4 = v10;
+    regionCopy = v10;
   }
 }
 
-- (void)atomicallyUpdateRegionWithIdentifier:(id)a3 updateBlock:(id)a4
+- (void)atomicallyUpdateRegionWithIdentifier:(id)identifier updateBlock:(id)block
 {
-  if (a3 && a4)
+  if (identifier && block)
   {
-    v6 = a4;
-    v7 = a3;
+    blockCopy = block;
+    identifierCopy = identifier;
     os_unfair_lock_lock(&self->_lock_context);
     v12 = [(NSDictionary *)self->_regions mutableCopy];
-    v8 = [(NSDictionary *)self->_regions objectForKeyedSubscript:v7];
-    v9 = v6[2](v6, v8);
+    v8 = [(NSDictionary *)self->_regions objectForKeyedSubscript:identifierCopy];
+    v9 = blockCopy[2](blockCopy, v8);
 
-    [v12 setObject:v9 forKeyedSubscript:v7];
+    [v12 setObject:v9 forKeyedSubscript:identifierCopy];
     v10 = [v12 copy];
     regions = self->_regions;
     self->_regions = v10;
@@ -583,11 +583,11 @@ LABEL_17:
   }
 }
 
-- (void)atomicallyUpdateEveryRegion:(id)a3
+- (void)atomicallyUpdateEveryRegion:(id)region
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  regionCopy = region;
+  if (regionCopy)
   {
     os_unfair_lock_lock(&self->_lock_context);
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -612,7 +612,7 @@ LABEL_17:
 
           v9 = *(*(&v16 + 1) + 8 * i);
           v10 = [(NSDictionary *)self->_regions objectForKeyedSubscript:v9];
-          v11 = v4[2](v4, v10);
+          v11 = regionCopy[2](regionCopy, v10);
           [v15 setObject:v11 forKeyedSubscript:v9];
         }
 
@@ -822,28 +822,28 @@ void __60__PKPaymentWebServiceContext_paymentOffersServicePushTopics__block_invo
 
 - (NSURL)peerPaymentServiceURL
 {
-  v2 = [(PKPaymentWebServiceContext *)self _regionWithPeerPaymentServiceURL];
-  v3 = [v2 peerPaymentServiceURL];
+  _regionWithPeerPaymentServiceURL = [(PKPaymentWebServiceContext *)self _regionWithPeerPaymentServiceURL];
+  peerPaymentServiceURL = [_regionWithPeerPaymentServiceURL peerPaymentServiceURL];
 
-  return v3;
+  return peerPaymentServiceURL;
 }
 
 - (BOOL)hasPeerPaymentAccount
 {
-  v2 = [(PKPaymentWebServiceContext *)self _regionWithPeerPaymentServiceURL];
-  v3 = [v2 hasPeerPaymentAccount];
+  _regionWithPeerPaymentServiceURL = [(PKPaymentWebServiceContext *)self _regionWithPeerPaymentServiceURL];
+  hasPeerPaymentAccount = [_regionWithPeerPaymentServiceURL hasPeerPaymentAccount];
 
-  return v3;
+  return hasPeerPaymentAccount;
 }
 
 - (id)_regionWithPeerPaymentServiceURL
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentWebServiceContext *)self primaryRegion];
-  v4 = [v3 peerPaymentServiceURL];
-  if (v4)
+  primaryRegion = [(PKPaymentWebServiceContext *)self primaryRegion];
+  peerPaymentServiceURL = [primaryRegion peerPaymentServiceURL];
+  if (peerPaymentServiceURL)
   {
-    v5 = v4;
+    v5 = peerPaymentServiceURL;
   }
 
   else
@@ -852,8 +852,8 @@ void __60__PKPaymentWebServiceContext_paymentOffersServicePushTopics__block_invo
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(PKPaymentWebServiceContext *)self regions];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    regions = [(PKPaymentWebServiceContext *)self regions];
+    v7 = [regions countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -861,29 +861,29 @@ void __60__PKPaymentWebServiceContext_paymentOffersServicePushTopics__block_invo
       while (2)
       {
         v10 = 0;
-        v11 = v3;
+        v11 = primaryRegion;
         do
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(regions);
           }
 
-          v3 = [(PKPaymentWebServiceContext *)self regionForIdentifier:*(*(&v14 + 1) + 8 * v10)];
+          primaryRegion = [(PKPaymentWebServiceContext *)self regionForIdentifier:*(*(&v14 + 1) + 8 * v10)];
 
-          v12 = [v3 peerPaymentServiceURL];
-          if (v12)
+          peerPaymentServiceURL2 = [primaryRegion peerPaymentServiceURL];
+          if (peerPaymentServiceURL2)
           {
-            v5 = v12;
+            v5 = peerPaymentServiceURL2;
             goto LABEL_13;
           }
 
           ++v10;
-          v11 = v3;
+          v11 = primaryRegion;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [regions countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -894,19 +894,19 @@ void __60__PKPaymentWebServiceContext_paymentOffersServicePushTopics__block_invo
     }
 
     v5 = 0;
-    v6 = v3;
-    v3 = 0;
+    regions = primaryRegion;
+    primaryRegion = 0;
 LABEL_13:
   }
 
-  return v3;
+  return primaryRegion;
 }
 
-- (BOOL)contextMeetsProvisioningEnablementPercentageThresholdForRegion:(id)a3
+- (BOOL)contextMeetsProvisioningEnablementPercentageThresholdForRegion:(id)region
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (-[PKPaymentWebServiceContext ignoreProvisioningEnablementPercentage](self, "ignoreProvisioningEnablementPercentage") || (-[PKPaymentWebServiceContext configuration](self, "configuration"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 regionHasProvisioningEnablementPercentage:v4], v5, !v6))
+  regionCopy = region;
+  if (-[PKPaymentWebServiceContext ignoreProvisioningEnablementPercentage](self, "ignoreProvisioningEnablementPercentage") || (-[PKPaymentWebServiceContext configuration](self, "configuration"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 regionHasProvisioningEnablementPercentage:regionCopy], v5, !v6))
   {
     v12 = 1;
   }
@@ -915,8 +915,8 @@ LABEL_13:
   {
     [(PKPaymentWebServiceContext *)self _contextProvisioningEnablementValue];
     v8 = v7;
-    v9 = [(PKPaymentWebServiceContext *)self configuration];
-    [v9 provisioningEnablementPercentageForRegion:v4];
+    configuration = [(PKPaymentWebServiceContext *)self configuration];
+    [configuration provisioningEnablementPercentageForRegion:regionCopy];
     v11 = v10;
 
     v12 = v8 < v11;
@@ -925,7 +925,7 @@ LABEL_13:
     {
       v14 = @"does not meet";
       v16 = 138413058;
-      v17 = v4;
+      v17 = regionCopy;
       if (v8 < v11)
       {
         v14 = @"meets";
@@ -944,15 +944,15 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)contextMeetsMarketGeoNotificationThresholdForRegion:(id)a3 paymentNetwork:(int64_t)a4
+- (BOOL)contextMeetsMarketGeoNotificationThresholdForRegion:(id)region paymentNetwork:(int64_t)network
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKPaymentWebServiceContext *)self configuration];
-  v8 = [v7 marketGeoRegionNotificationNetworkThresholdsForRegion:v6];
+  regionCopy = region;
+  configuration = [(PKPaymentWebServiceContext *)self configuration];
+  v8 = [configuration marketGeoRegionNotificationNetworkThresholdsForRegion:regionCopy];
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a4];
-  v10 = [v8 objectForKey:v9];
+  network = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", network];
+  v10 = [v8 objectForKey:network];
 
   if (v10)
   {
@@ -966,7 +966,7 @@ LABEL_13:
     {
       v17 = @"does not meet";
       *buf = 138413314;
-      v20 = v6;
+      v20 = regionCopy;
       if (v14 < v12)
       {
         v17 = @"meets";
@@ -975,7 +975,7 @@ LABEL_13:
       v21 = 2048;
       v22 = v12;
       v23 = 2048;
-      v24 = a4;
+      networkCopy = network;
       v25 = 2048;
       v26 = v14;
       v27 = 2112;
@@ -992,14 +992,14 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)contextMeetsDeviceUpgradeTasksEnablementThresholdForRegion:(id)a3
+- (BOOL)contextMeetsDeviceUpgradeTasksEnablementThresholdForRegion:(id)region
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  regionCopy = region;
   [(PKPaymentWebServiceContext *)self _contextProvisioningEnablementValue];
   v6 = v5;
-  v7 = [(PKPaymentWebServiceContext *)self configuration];
-  [v7 deviceUpgradeTaskEnablementPercentageForRegion:v4];
+  configuration = [(PKPaymentWebServiceContext *)self configuration];
+  [configuration deviceUpgradeTaskEnablementPercentageForRegion:regionCopy];
   v9 = v8;
 
   if (v9 < 1.0)
@@ -1009,7 +1009,7 @@ LABEL_13:
     {
       v11 = @"does not meet";
       v13 = 138413058;
-      v14 = v4;
+      v14 = regionCopy;
       if (v6 < v9)
       {
         v11 = @"meets";
@@ -1028,18 +1028,18 @@ LABEL_13:
   return v6 < v9;
 }
 
-- (id)betaPaymentNetworksForRegion:(id)a3
+- (id)betaPaymentNetworksForRegion:(id)region
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentWebServiceContext *)self configuration];
+  regionCopy = region;
+  configuration = [(PKPaymentWebServiceContext *)self configuration];
   v6 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v7 = [v5 betaPaymentNetworksForRegion:v4];
+  v7 = [configuration betaPaymentNetworksForRegion:regionCopy];
   v25 = [v6 initWithArray:v7];
 
-  v20 = v5;
-  v21 = v4;
-  v8 = [v5 betaPaymentNetworkVersionsForRegion:v4];
+  v20 = configuration;
+  v21 = regionCopy;
+  v8 = [configuration betaPaymentNetworkVersionsForRegion:regionCopy];
   v24 = +[PKOSVersionRequirement fromDeviceVersion];
   v23 = PKDeviceClass();
   v26 = 0u;
@@ -1094,21 +1094,21 @@ LABEL_13:
 
 - (double)_contextProvisioningEnablementValue
 {
-  v2 = [(PKPaymentWebServiceContext *)self secureElementID];
-  v3 = [v2 UTF8String];
+  secureElementID = [(PKPaymentWebServiceContext *)self secureElementID];
+  uTF8String = [secureElementID UTF8String];
 
-  if (!v3)
+  if (!uTF8String)
   {
     return 0.0;
   }
 
-  v4 = strlen(v3);
+  v4 = strlen(uTF8String);
   if (v4)
   {
     v5 = 0;
     do
     {
-      v6 = *v3++;
+      v6 = *uTF8String++;
       v5 = 33 * v5 + v6;
       --v4;
     }
@@ -1125,15 +1125,15 @@ LABEL_13:
   return v7 / 100.0;
 }
 
-- (id)applyServiceFeaturesForRegionMeetingEnablementThreshold:(id)a3
+- (id)applyServiceFeaturesForRegionMeetingEnablementThreshold:(id)threshold
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  thresholdCopy = threshold;
   v6 = objc_alloc_init(v4);
-  v7 = [(PKPaymentWebServiceContext *)self configuration];
+  configuration = [(PKPaymentWebServiceContext *)self configuration];
   [(PKPaymentWebServiceContext *)self _contextProvisioningEnablementValue];
   v9 = v8;
-  v10 = [v7 applyServiceFeaturesForRegion:v5];
+  v10 = [configuration applyServiceFeaturesForRegion:thresholdCopy];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1177,18 +1177,18 @@ void __86__PKPaymentWebServiceContext_applyServiceFeaturesForRegionMeetingEnable
   }
 }
 
-- (id)applyServiceLocalizationBundleForFeatureIdentifier:(unint64_t)a3 mainLanguageBundle:(id)a4
+- (id)applyServiceLocalizationBundleForFeatureIdentifier:(unint64_t)identifier mainLanguageBundle:(id)bundle
 {
-  v6 = a4;
-  if (!v6)
+  bundleCopy = bundle;
+  if (!bundleCopy)
   {
-    v6 = PKPassKitBundle();
+    bundleCopy = PKPassKitBundle();
   }
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v9 = [v6 bundleIdentifier];
-  v10 = [v7 stringWithFormat:@"%@-%@", v8, v9];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identifier];
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  v10 = [v7 stringWithFormat:@"%@-%@", v8, bundleIdentifier];
 
   os_unfair_lock_lock(&self->_cacheLock);
   v11 = [(NSMutableDictionary *)self->_featureSupportedLanguageCache objectForKey:v10];
@@ -1200,7 +1200,7 @@ void __86__PKPaymentWebServiceContext_applyServiceFeaturesForRegionMeetingEnable
 
   else
   {
-    v12 = v6;
+    v12 = bundleCopy;
     os_unfair_lock_lock(&self->_cacheLock);
     [(NSMutableDictionary *)self->_featureSupportedLanguageCache setObject:v12 forKey:v10];
     os_unfair_lock_unlock(&self->_cacheLock);
@@ -1209,20 +1209,20 @@ void __86__PKPaymentWebServiceContext_applyServiceFeaturesForRegionMeetingEnable
   return v12;
 }
 
-- (id)applyServicePreferredLanguageForFeatureIdentifier:(unint64_t)a3 mainLanguageBundle:(id)a4
+- (id)applyServicePreferredLanguageForFeatureIdentifier:(unint64_t)identifier mainLanguageBundle:(id)bundle
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!v6)
+  bundleCopy = bundle;
+  if (!bundleCopy)
   {
-    v6 = PKPassKitBundle();
+    bundleCopy = PKPassKitBundle();
   }
 
-  v7 = [(PKPaymentWebServiceContext *)self configuration];
-  v8 = [(PKPaymentWebServiceContext *)self primaryRegionIdentifier];
-  v9 = [v7 applyServiceFeaturesForRegion:v8];
+  configuration = [(PKPaymentWebServiceContext *)self configuration];
+  primaryRegionIdentifier = [(PKPaymentWebServiceContext *)self primaryRegionIdentifier];
+  v9 = [configuration applyServiceFeaturesForRegion:primaryRegionIdentifier];
 
-  v10 = PKFeatureIdentifierToString(a3);
+  v10 = PKFeatureIdentifierToString(identifier);
   v11 = [v9 objectForKey:v10];
 
   v12 = [v11 PKArrayForKey:@"applySupportedLanguages"];
@@ -1232,21 +1232,21 @@ void __86__PKPaymentWebServiceContext_applyServiceFeaturesForRegionMeetingEnable
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v13 = [v6 preferredLocalizations];
-    v27 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    preferredLocalizations = [bundleCopy preferredLocalizations];
+    v27 = [preferredLocalizations countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v27)
     {
       v14 = *v34;
       v25 = *v34;
       v26 = v9;
-      v28 = v13;
+      v28 = preferredLocalizations;
       do
       {
         for (i = 0; i != v27; ++i)
         {
           if (*v34 != v14)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(preferredLocalizations);
           }
 
           v16 = *(*(&v33 + 1) + 8 * i);
@@ -1288,7 +1288,7 @@ void __86__PKPaymentWebServiceContext_applyServiceFeaturesForRegionMeetingEnable
             }
           }
 
-          v13 = v28;
+          preferredLocalizations = v28;
           v14 = v25;
         }
 
@@ -1300,7 +1300,7 @@ void __86__PKPaymentWebServiceContext_applyServiceFeaturesForRegionMeetingEnable
     }
   }
 
-  if (a3 == 2 || a3 == 5)
+  if (identifier == 2 || identifier == 5)
   {
     v23 = @"en";
   }
@@ -1315,19 +1315,19 @@ LABEL_27:
   return v23;
 }
 
-+ (void)_migrateContext:(id)a3
++ (void)_migrateContext:(id)context
 {
-  v4 = a3;
-  if (![v4 version])
+  contextCopy = context;
+  if (![contextCopy version])
   {
-    [a1 _migrateFrom0To1:v4];
+    [self _migrateFrom0To1:contextCopy];
   }
 }
 
-+ (void)_migrateFrom0To1:(id)a3
++ (void)_migrateFrom0To1:(id)to1
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  to1Copy = to1;
   v4 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1337,18 +1337,18 @@ LABEL_27:
 
   v5 = +[PKSecureElement sharedSecureElement];
   v6 = [PKPaymentWebServiceRegion alloc];
-  v7 = [v3 certificates];
-  v8 = PKLocalBrokerURL([v3 devSigned]);
+  certificates = [to1Copy certificates];
+  v8 = PKLocalBrokerURL([to1Copy devSigned]);
   v9 = PKTrustedServiceManagerURL();
   v10 = PKPaymentServicesURL();
   v11 = PKPaymentServicesURL();
-  v12 = [v3 consistencyCheckBackoffLevel];
-  v13 = [v3 lastUpdatedTag];
-  v14 = [(PKPaymentWebServiceRegion *)v6 initWithCeritficates:v7 brokerURL:v8 trustedServiceManagerURL:v9 trustedServiceManagerPushTopic:@"com.apple.seld" paymentServicesURL:v10 inAppPaymentServicesURL:v11 consistencyCheckBackoffLevel:v12 lastUpdatedTag:v13];
+  consistencyCheckBackoffLevel = [to1Copy consistencyCheckBackoffLevel];
+  lastUpdatedTag = [to1Copy lastUpdatedTag];
+  v14 = [(PKPaymentWebServiceRegion *)v6 initWithCeritficates:certificates brokerURL:v8 trustedServiceManagerURL:v9 trustedServiceManagerPushTopic:@"com.apple.seld" paymentServicesURL:v10 inAppPaymentServicesURL:v11 consistencyCheckBackoffLevel:consistencyCheckBackoffLevel lastUpdatedTag:lastUpdatedTag];
 
-  v15 = [v5 isProductionSigned];
+  isProductionSigned = [v5 isProductionSigned];
   v16 = @"paymentpass.com.apple.dev1";
-  if (v15)
+  if (isProductionSigned)
   {
     v16 = @"paymentpass.com.apple";
   }
@@ -1358,13 +1358,13 @@ LABEL_27:
   v17 = MEMORY[0x1E695DF20];
   v18 = v16;
   v19 = [v17 dictionaryWithObjects:v22 forKeys:&v21 count:1];
-  [v3 setRegions:v19];
-  [v3 setPrimaryRegionIdentifier:v18];
+  [to1Copy setRegions:v19];
+  [to1Copy setPrimaryRegionIdentifier:v18];
 
-  [v3 setCertificates:0];
-  [v3 setLastUpdatedTag:0];
-  [v3 setConsistencyCheckBackoffLevel:0];
-  [v3 setVersion:1];
+  [to1Copy setCertificates:0];
+  [to1Copy setLastUpdatedTag:0];
+  [to1Copy setConsistencyCheckBackoffLevel:0];
+  [to1Copy setVersion:1];
 }
 
 @end

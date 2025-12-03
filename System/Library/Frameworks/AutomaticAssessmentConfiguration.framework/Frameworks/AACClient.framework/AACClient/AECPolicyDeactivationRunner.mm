@@ -1,12 +1,12 @@
 @interface AECPolicyDeactivationRunner
-- (void)deactivateWithCompletion:(id)a3;
+- (void)deactivateWithCompletion:(id)completion;
 @end
 
 @implementation AECPolicyDeactivationRunner
 
-- (void)deactivateWithCompletion:(id)a3
+- (void)deactivateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *&self->deactivation[24];

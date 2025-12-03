@@ -1,27 +1,27 @@
 @interface SHDataStreamInput
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)loadDataFromURL:(id)a3 error:(id *)a4;
-- (BOOL)processData:(id)a3 error:(id *)a4;
-- (BOOL)readFromURL:(id)a3 error:(id *)a4;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)loadDataFromURL:(id)l error:(id *)error;
+- (BOOL)processData:(id)data error:(id *)error;
+- (BOOL)readFromURL:(id)l error:(id *)error;
 @end
 
 @implementation SHDataStreamInput
 
-- (BOOL)loadDataFromURL:(id)a3 error:(id *)a4
+- (BOOL)loadDataFromURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v14 = 0;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:&v14];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v9 = [defaultManager fileExistsAtPath:path isDirectory:&v14];
   v10 = v14;
 
   if (!v9 || (v10 & 1) != 0)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:260 userInfo:0];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -32,22 +32,22 @@
 
   else
   {
-    v11 = [(SHDataStreamInput *)self readFromURL:v6 error:a4];
-    v12 = [(SHDataStreamInput *)self next];
-    [v12 closeWithError:0];
+    v11 = [(SHDataStreamInput *)self readFromURL:lCopy error:error];
+    next = [(SHDataStreamInput *)self next];
+    [next closeWithError:0];
   }
 
   return v11;
 }
 
-- (BOOL)readFromURL:(id)a3 error:(id *)a4
+- (BOOL)readFromURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEAE0] inputStreamWithURL:v6];
+  lCopy = l;
+  v7 = [MEMORY[0x277CBEAE0] inputStreamWithURL:lCopy];
   [v7 open];
   if ([v7 hasBytesAvailable])
   {
-    v17 = a4;
+    errorCopy = error;
     v8 = 0;
     while (1)
     {
@@ -84,10 +84,10 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v9);
 LABEL_10:
-    if (v17 && v14)
+    if (errorCopy && v14)
     {
       v15 = v14;
-      *v17 = v14;
+      *errorCopy = v14;
     }
   }
 
@@ -102,13 +102,13 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
-  v5 = [(SHDataStreamInput *)self next];
-  if (v5)
+  next = [(SHDataStreamInput *)self next];
+  if (next)
   {
-    v6 = [(SHDataStreamInput *)self next];
-    v7 = [v6 closeWithError:a3];
+    next2 = [(SHDataStreamInput *)self next];
+    v7 = [next2 closeWithError:error];
   }
 
   else
@@ -119,13 +119,13 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)processData:(id)a3 error:(id *)a4
+- (BOOL)processData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SHDataStreamInput *)self next];
-  LOBYTE(a4) = [v7 processData:v6 error:a4];
+  dataCopy = data;
+  next = [(SHDataStreamInput *)self next];
+  LOBYTE(error) = [next processData:dataCopy error:error];
 
-  return a4;
+  return error;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface TUCallCapabilitiesState
 - (NSString)description;
 - (TUCallCapabilitiesState)init;
-- (TUCallCapabilitiesState)initWithCoder:(id)a3;
+- (TUCallCapabilitiesState)initWithCoder:(id)coder;
 - (TUCloudCallingDevice)defaultPairedDevice;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)publiclyAccessibleCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)publiclyAccessibleCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUCallCapabilitiesState
@@ -196,8 +196,8 @@
 
   [v3 appendFormat:@"    isRelayCallingEnabled: %@\n", v17];
   [v3 appendFormat:@"    relayCallingAvailability: %d\n", -[TUCallCapabilitiesState relayCallingAvailability](self, "relayCallingAvailability")];
-  v18 = [(TUCallCapabilitiesState *)self relayCallingDisabledForDeviceID];
-  [v3 appendFormat:@"    relayCallingDisabledForDeviceID: %@\n", v18];
+  relayCallingDisabledForDeviceID = [(TUCallCapabilitiesState *)self relayCallingDisabledForDeviceID];
+  [v3 appendFormat:@"    relayCallingDisabledForDeviceID: %@\n", relayCallingDisabledForDeviceID];
 
   [v3 appendString:@"Outgoing relay calling:\n"];
   if ([(TUCallCapabilitiesState *)self supportsTelephonyRelayCalling])
@@ -233,12 +233,12 @@
   }
 
   [v3 appendFormat:@"    supportsFaceTimeVideoRelayCalling: %@\n", v21];
-  v22 = [(TUCallCapabilitiesState *)self outgoingRelayCallerID];
-  [v3 appendFormat:@"    outgoingRelayCallerID: %@\n", v22];
+  outgoingRelayCallerID = [(TUCallCapabilitiesState *)self outgoingRelayCallerID];
+  [v3 appendFormat:@"    outgoingRelayCallerID: %@\n", outgoingRelayCallerID];
 
   [v3 appendString:@"Devices:\n"];
-  v23 = [(TUCallCapabilitiesState *)self cloudCallingDevices];
-  [v3 appendFormat:@"    cloudCallingDevices: %@\n", v23];
+  cloudCallingDevices = [(TUCallCapabilitiesState *)self cloudCallingDevices];
+  [v3 appendFormat:@"    cloudCallingDevices: %@\n", cloudCallingDevices];
 
   [v3 appendString:@"Emergency callback:\n"];
   if ([(TUCallCapabilitiesState *)self isEmergencyCallbackModeEnabled])
@@ -264,8 +264,8 @@
 
   [v3 appendFormat:@"    emergencyCallbackPossible: %@\n", v25];
   [v3 appendString:@"Sender Identity capabilities:\n"];
-  v26 = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
-  [v3 appendFormat:@"    senderIdentityCapabilitiesStateByUUID: %@\n", v26];
+  senderIdentityCapabilitiesStateByUUID = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
+  [v3 appendFormat:@"    senderIdentityCapabilitiesStateByUUID: %@\n", senderIdentityCapabilitiesStateByUUID];
 
   return v3;
 }
@@ -277,8 +277,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TUCallCapabilitiesState *)self cloudCallingDevices];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  cloudCallingDevices = [(TUCallCapabilitiesState *)self cloudCallingDevices];
+  v3 = [cloudCallingDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -288,7 +288,7 @@
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(cloudCallingDevices);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -299,7 +299,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [cloudCallingDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -316,41 +316,41 @@ LABEL_11:
   return v3;
 }
 
-- (TUCallCapabilitiesState)initWithCoder:(id)a3
+- (TUCallCapabilitiesState)initWithCoder:(id)coder
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TUCallCapabilitiesState *)self init];
   if (v5)
   {
-    -[TUCallCapabilitiesState setSupportsPrimaryCalling:](v5, "setSupportsPrimaryCalling:", [v4 decodeBoolForKey:@"supportsPrimaryCalling"]);
-    -[TUCallCapabilitiesState setSupportsBasebandCalling:](v5, "setSupportsBasebandCalling:", [v4 decodeBoolForKey:@"supportsBasebandCalling"]);
-    -[TUCallCapabilitiesState setSupportsCellularData:](v5, "setSupportsCellularData:", [v4 decodeBoolForKey:@"supportsCellularData"]);
-    -[TUCallCapabilitiesState setSupportsDisplayingTelephonyCalls:](v5, "setSupportsDisplayingTelephonyCalls:", [v4 decodeBoolForKey:@"supportsDisplayingTelephonyCalls"]);
-    -[TUCallCapabilitiesState setSupportsDisplayingFaceTimeAudioCalls:](v5, "setSupportsDisplayingFaceTimeAudioCalls:", [v4 decodeBoolForKey:@"supportsDisplayingFaceTimeAudioCalls"]);
-    -[TUCallCapabilitiesState setSupportsDisplayingFaceTimeVideoCalls:](v5, "setSupportsDisplayingFaceTimeVideoCalls:", [v4 decodeBoolForKey:@"supportsDisplayingFaceTimeVideoCalls"]);
-    -[TUCallCapabilitiesState setFaceTimeAudioAvailable:](v5, "setFaceTimeAudioAvailable:", [v4 decodeBoolForKey:@"faceTimeAudioAvailable"]);
-    -[TUCallCapabilitiesState setFaceTimeVideoAvailable:](v5, "setFaceTimeVideoAvailable:", [v4 decodeBoolForKey:@"faceTimeVideoAvailable"]);
-    -[TUCallCapabilitiesState setCtCapabilitiesValid:](v5, "setCtCapabilitiesValid:", [v4 decodeBoolForKey:@"ctCapabilitiesValid"]);
-    -[TUCallCapabilitiesState setSupportsRelayCalling:](v5, "setSupportsRelayCalling:", [v4 decodeBoolForKey:@"supportsRelayCalling"]);
-    -[TUCallCapabilitiesState setAccountsMatchForSecondaryCalling:](v5, "setAccountsMatchForSecondaryCalling:", [v4 decodeBoolForKey:@"accountsMatchForSecondaryCalling"]);
-    -[TUCallCapabilitiesState setAccountsSupportSecondaryCalling:](v5, "setAccountsSupportSecondaryCalling:", [v4 decodeBoolForKey:@"accountsSupportSecondaryCalling"]);
-    -[TUCallCapabilitiesState setRelayCallingFeaturesEnabled:](v5, "setRelayCallingFeaturesEnabled:", [v4 decodeBoolForKey:@"relayCallingFeaturesEnabled"]);
-    -[TUCallCapabilitiesState setRelayCallingEnabled:](v5, "setRelayCallingEnabled:", [v4 decodeBoolForKey:@"relayCallingEnabled"]);
-    -[TUCallCapabilitiesState setRelayCallingAvailability:](v5, "setRelayCallingAvailability:", [v4 decodeIntForKey:@"relayCallingAvailability"]);
+    -[TUCallCapabilitiesState setSupportsPrimaryCalling:](v5, "setSupportsPrimaryCalling:", [coderCopy decodeBoolForKey:@"supportsPrimaryCalling"]);
+    -[TUCallCapabilitiesState setSupportsBasebandCalling:](v5, "setSupportsBasebandCalling:", [coderCopy decodeBoolForKey:@"supportsBasebandCalling"]);
+    -[TUCallCapabilitiesState setSupportsCellularData:](v5, "setSupportsCellularData:", [coderCopy decodeBoolForKey:@"supportsCellularData"]);
+    -[TUCallCapabilitiesState setSupportsDisplayingTelephonyCalls:](v5, "setSupportsDisplayingTelephonyCalls:", [coderCopy decodeBoolForKey:@"supportsDisplayingTelephonyCalls"]);
+    -[TUCallCapabilitiesState setSupportsDisplayingFaceTimeAudioCalls:](v5, "setSupportsDisplayingFaceTimeAudioCalls:", [coderCopy decodeBoolForKey:@"supportsDisplayingFaceTimeAudioCalls"]);
+    -[TUCallCapabilitiesState setSupportsDisplayingFaceTimeVideoCalls:](v5, "setSupportsDisplayingFaceTimeVideoCalls:", [coderCopy decodeBoolForKey:@"supportsDisplayingFaceTimeVideoCalls"]);
+    -[TUCallCapabilitiesState setFaceTimeAudioAvailable:](v5, "setFaceTimeAudioAvailable:", [coderCopy decodeBoolForKey:@"faceTimeAudioAvailable"]);
+    -[TUCallCapabilitiesState setFaceTimeVideoAvailable:](v5, "setFaceTimeVideoAvailable:", [coderCopy decodeBoolForKey:@"faceTimeVideoAvailable"]);
+    -[TUCallCapabilitiesState setCtCapabilitiesValid:](v5, "setCtCapabilitiesValid:", [coderCopy decodeBoolForKey:@"ctCapabilitiesValid"]);
+    -[TUCallCapabilitiesState setSupportsRelayCalling:](v5, "setSupportsRelayCalling:", [coderCopy decodeBoolForKey:@"supportsRelayCalling"]);
+    -[TUCallCapabilitiesState setAccountsMatchForSecondaryCalling:](v5, "setAccountsMatchForSecondaryCalling:", [coderCopy decodeBoolForKey:@"accountsMatchForSecondaryCalling"]);
+    -[TUCallCapabilitiesState setAccountsSupportSecondaryCalling:](v5, "setAccountsSupportSecondaryCalling:", [coderCopy decodeBoolForKey:@"accountsSupportSecondaryCalling"]);
+    -[TUCallCapabilitiesState setRelayCallingFeaturesEnabled:](v5, "setRelayCallingFeaturesEnabled:", [coderCopy decodeBoolForKey:@"relayCallingFeaturesEnabled"]);
+    -[TUCallCapabilitiesState setRelayCallingEnabled:](v5, "setRelayCallingEnabled:", [coderCopy decodeBoolForKey:@"relayCallingEnabled"]);
+    -[TUCallCapabilitiesState setRelayCallingAvailability:](v5, "setRelayCallingAvailability:", [coderCopy decodeIntForKey:@"relayCallingAvailability"]);
     v6 = MEMORY[0x1E695DFD8];
     v24[0] = objc_opt_class();
     v24[1] = objc_opt_class();
     v24[2] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:3];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"relayCallingDisabledForDeviceID"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"relayCallingDisabledForDeviceID"];
     [(TUCallCapabilitiesState *)v5 setRelayCallingDisabledForDeviceID:v9];
 
-    -[TUCallCapabilitiesState setSupportsTelephonyRelayCalling:](v5, "setSupportsTelephonyRelayCalling:", [v4 decodeBoolForKey:@"supportsTelephonyRelayCalling"]);
-    -[TUCallCapabilitiesState setSupportsFaceTimeAudioRelayCalling:](v5, "setSupportsFaceTimeAudioRelayCalling:", [v4 decodeBoolForKey:@"supportsFaceTimeAudioRelayCalling"]);
-    -[TUCallCapabilitiesState setSupportsFaceTimeVideoRelayCalling:](v5, "setSupportsFaceTimeVideoRelayCalling:", [v4 decodeBoolForKey:@"supportsFaceTimeVideoRelayCalling"]);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outgoingRelayCallerID"];
+    -[TUCallCapabilitiesState setSupportsTelephonyRelayCalling:](v5, "setSupportsTelephonyRelayCalling:", [coderCopy decodeBoolForKey:@"supportsTelephonyRelayCalling"]);
+    -[TUCallCapabilitiesState setSupportsFaceTimeAudioRelayCalling:](v5, "setSupportsFaceTimeAudioRelayCalling:", [coderCopy decodeBoolForKey:@"supportsFaceTimeAudioRelayCalling"]);
+    -[TUCallCapabilitiesState setSupportsFaceTimeVideoRelayCalling:](v5, "setSupportsFaceTimeVideoRelayCalling:", [coderCopy decodeBoolForKey:@"supportsFaceTimeVideoRelayCalling"]);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outgoingRelayCallerID"];
     [(TUCallCapabilitiesState *)v5 setOutgoingRelayCallerID:v10];
 
     v11 = MEMORY[0x1E695DFD8];
@@ -358,11 +358,11 @@ LABEL_11:
     v23[1] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"cloudCallingDevices"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"cloudCallingDevices"];
     [(TUCallCapabilitiesState *)v5 setCloudCallingDevices:v14];
 
-    -[TUCallCapabilitiesState setEmergencyCallbackModeEnabled:](v5, "setEmergencyCallbackModeEnabled:", [v4 decodeBoolForKey:@"emergencyCallbackModeEnabled"]);
-    -[TUCallCapabilitiesState setEmergencyCallbackPossible:](v5, "setEmergencyCallbackPossible:", [v4 decodeBoolForKey:@"emergencyCallbackPossible"]);
+    -[TUCallCapabilitiesState setEmergencyCallbackModeEnabled:](v5, "setEmergencyCallbackModeEnabled:", [coderCopy decodeBoolForKey:@"emergencyCallbackModeEnabled"]);
+    -[TUCallCapabilitiesState setEmergencyCallbackPossible:](v5, "setEmergencyCallbackPossible:", [coderCopy decodeBoolForKey:@"emergencyCallbackPossible"]);
     v15 = MEMORY[0x1E695DFD8];
     v22[0] = objc_opt_class();
     v22[1] = objc_opt_class();
@@ -370,7 +370,7 @@ LABEL_11:
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
     v17 = [v15 setWithArray:v16];
     v18 = NSStringFromSelector(sel_senderIdentityCapabilitiesStateByUUID);
-    v19 = [v4 decodeObjectOfClasses:v17 forKey:v18];
+    v19 = [coderCopy decodeObjectOfClasses:v17 forKey:v18];
     [(TUCallCapabilitiesState *)v5 setSenderIdentityCapabilitiesStateByUUID:v19];
   }
 
@@ -378,69 +378,69 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsPrimaryCalling](self forKey:{"supportsPrimaryCalling"), @"supportsPrimaryCalling"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsBasebandCalling](self forKey:{"supportsBasebandCalling"), @"supportsBasebandCalling"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsCellularData](self forKey:{"supportsCellularData"), @"supportsCellularData"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsDisplayingTelephonyCalls](self forKey:{"supportsDisplayingTelephonyCalls"), @"supportsDisplayingTelephonyCalls"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsDisplayingFaceTimeAudioCalls](self forKey:{"supportsDisplayingFaceTimeAudioCalls"), @"supportsDisplayingFaceTimeAudioCalls"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsDisplayingFaceTimeVideoCalls](self forKey:{"supportsDisplayingFaceTimeVideoCalls"), @"supportsDisplayingFaceTimeVideoCalls"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState isFaceTimeAudioAvailable](self forKey:{"isFaceTimeAudioAvailable"), @"faceTimeAudioAvailable"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState isFaceTimeVideoAvailable](self forKey:{"isFaceTimeVideoAvailable"), @"faceTimeVideoAvailable"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState areCTCapabilitiesValid](self forKey:{"areCTCapabilitiesValid"), @"ctCapabilitiesValid"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsRelayCalling](self forKey:{"supportsRelayCalling"), @"supportsRelayCalling"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState accountsMatchForSecondaryCalling](self forKey:{"accountsMatchForSecondaryCalling"), @"accountsMatchForSecondaryCalling"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState accountsSupportSecondaryCalling](self forKey:{"accountsSupportSecondaryCalling"), @"accountsSupportSecondaryCalling"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState areRelayCallingFeaturesEnabled](self forKey:{"areRelayCallingFeaturesEnabled"), @"relayCallingFeaturesEnabled"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState isRelayCallingEnabled](self forKey:{"isRelayCallingEnabled"), @"relayCallingEnabled"}];
-  [v4 encodeInt:-[TUCallCapabilitiesState relayCallingAvailability](self forKey:{"relayCallingAvailability"), @"relayCallingAvailability"}];
-  v5 = [(TUCallCapabilitiesState *)self relayCallingDisabledForDeviceID];
-  [v4 encodeObject:v5 forKey:@"relayCallingDisabledForDeviceID"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsPrimaryCalling](self forKey:{"supportsPrimaryCalling"), @"supportsPrimaryCalling"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsBasebandCalling](self forKey:{"supportsBasebandCalling"), @"supportsBasebandCalling"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsCellularData](self forKey:{"supportsCellularData"), @"supportsCellularData"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsDisplayingTelephonyCalls](self forKey:{"supportsDisplayingTelephonyCalls"), @"supportsDisplayingTelephonyCalls"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsDisplayingFaceTimeAudioCalls](self forKey:{"supportsDisplayingFaceTimeAudioCalls"), @"supportsDisplayingFaceTimeAudioCalls"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsDisplayingFaceTimeVideoCalls](self forKey:{"supportsDisplayingFaceTimeVideoCalls"), @"supportsDisplayingFaceTimeVideoCalls"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState isFaceTimeAudioAvailable](self forKey:{"isFaceTimeAudioAvailable"), @"faceTimeAudioAvailable"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState isFaceTimeVideoAvailable](self forKey:{"isFaceTimeVideoAvailable"), @"faceTimeVideoAvailable"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState areCTCapabilitiesValid](self forKey:{"areCTCapabilitiesValid"), @"ctCapabilitiesValid"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsRelayCalling](self forKey:{"supportsRelayCalling"), @"supportsRelayCalling"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState accountsMatchForSecondaryCalling](self forKey:{"accountsMatchForSecondaryCalling"), @"accountsMatchForSecondaryCalling"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState accountsSupportSecondaryCalling](self forKey:{"accountsSupportSecondaryCalling"), @"accountsSupportSecondaryCalling"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState areRelayCallingFeaturesEnabled](self forKey:{"areRelayCallingFeaturesEnabled"), @"relayCallingFeaturesEnabled"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState isRelayCallingEnabled](self forKey:{"isRelayCallingEnabled"), @"relayCallingEnabled"}];
+  [coderCopy encodeInt:-[TUCallCapabilitiesState relayCallingAvailability](self forKey:{"relayCallingAvailability"), @"relayCallingAvailability"}];
+  relayCallingDisabledForDeviceID = [(TUCallCapabilitiesState *)self relayCallingDisabledForDeviceID];
+  [coderCopy encodeObject:relayCallingDisabledForDeviceID forKey:@"relayCallingDisabledForDeviceID"];
 
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsTelephonyRelayCalling](self forKey:{"supportsTelephonyRelayCalling"), @"supportsTelephonyRelayCalling"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsFaceTimeAudioRelayCalling](self forKey:{"supportsFaceTimeAudioRelayCalling"), @"supportsFaceTimeAudioRelayCalling"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState supportsFaceTimeVideoRelayCalling](self forKey:{"supportsFaceTimeVideoRelayCalling"), @"supportsFaceTimeVideoRelayCalling"}];
-  v6 = [(TUCallCapabilitiesState *)self outgoingRelayCallerID];
-  [v4 encodeObject:v6 forKey:@"outgoingRelayCallerID"];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsTelephonyRelayCalling](self forKey:{"supportsTelephonyRelayCalling"), @"supportsTelephonyRelayCalling"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsFaceTimeAudioRelayCalling](self forKey:{"supportsFaceTimeAudioRelayCalling"), @"supportsFaceTimeAudioRelayCalling"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState supportsFaceTimeVideoRelayCalling](self forKey:{"supportsFaceTimeVideoRelayCalling"), @"supportsFaceTimeVideoRelayCalling"}];
+  outgoingRelayCallerID = [(TUCallCapabilitiesState *)self outgoingRelayCallerID];
+  [coderCopy encodeObject:outgoingRelayCallerID forKey:@"outgoingRelayCallerID"];
 
-  v7 = [(TUCallCapabilitiesState *)self cloudCallingDevices];
-  [v4 encodeObject:v7 forKey:@"cloudCallingDevices"];
+  cloudCallingDevices = [(TUCallCapabilitiesState *)self cloudCallingDevices];
+  [coderCopy encodeObject:cloudCallingDevices forKey:@"cloudCallingDevices"];
 
-  [v4 encodeBool:-[TUCallCapabilitiesState isEmergencyCallbackModeEnabled](self forKey:{"isEmergencyCallbackModeEnabled"), @"emergencyCallbackModeEnabled"}];
-  [v4 encodeBool:-[TUCallCapabilitiesState isEmergencyCallbackPossible](self forKey:{"isEmergencyCallbackPossible"), @"emergencyCallbackPossible"}];
-  v9 = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState isEmergencyCallbackModeEnabled](self forKey:{"isEmergencyCallbackModeEnabled"), @"emergencyCallbackModeEnabled"}];
+  [coderCopy encodeBool:-[TUCallCapabilitiesState isEmergencyCallbackPossible](self forKey:{"isEmergencyCallbackPossible"), @"emergencyCallbackPossible"}];
+  senderIdentityCapabilitiesStateByUUID = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
   v8 = NSStringFromSelector(sel_senderIdentityCapabilitiesStateByUUID);
-  [v4 encodeObject:v9 forKey:v8];
+  [coderCopy encodeObject:senderIdentityCapabilitiesStateByUUID forKey:v8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(TUCallCapabilitiesState *)self publiclyAccessibleCopyWithZone:a3];
-  v5 = [(TUCallCapabilitiesState *)self relayCallingDisabledForDeviceID];
-  [v4 setRelayCallingDisabledForDeviceID:v5];
+  v4 = [(TUCallCapabilitiesState *)self publiclyAccessibleCopyWithZone:zone];
+  relayCallingDisabledForDeviceID = [(TUCallCapabilitiesState *)self relayCallingDisabledForDeviceID];
+  [v4 setRelayCallingDisabledForDeviceID:relayCallingDisabledForDeviceID];
 
-  v6 = [(TUCallCapabilitiesState *)self outgoingRelayCallerID];
-  [v4 setOutgoingRelayCallerID:v6];
+  outgoingRelayCallerID = [(TUCallCapabilitiesState *)self outgoingRelayCallerID];
+  [v4 setOutgoingRelayCallerID:outgoingRelayCallerID];
 
   v7 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v8 = [(TUCallCapabilitiesState *)self cloudCallingDevices];
-  v9 = [v7 initWithArray:v8 copyItems:1];
+  cloudCallingDevices = [(TUCallCapabilitiesState *)self cloudCallingDevices];
+  v9 = [v7 initWithArray:cloudCallingDevices copyItems:1];
   [v4 setCloudCallingDevices:v9];
 
   [v4 setEmergencyCallbackModeEnabled:{-[TUCallCapabilitiesState isEmergencyCallbackModeEnabled](self, "isEmergencyCallbackModeEnabled")}];
   [v4 setEmergencyCallbackPossible:{-[TUCallCapabilitiesState isEmergencyCallbackPossible](self, "isEmergencyCallbackPossible")}];
-  v10 = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
-  [v4 setSenderIdentityCapabilitiesStateByUUID:v10];
+  senderIdentityCapabilitiesStateByUUID = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
+  [v4 setSenderIdentityCapabilitiesStateByUUID:senderIdentityCapabilitiesStateByUUID];
 
   return v4;
 }
 
-- (id)publiclyAccessibleCopyWithZone:(_NSZone *)a3
+- (id)publiclyAccessibleCopyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSupportsPrimaryCalling:{-[TUCallCapabilitiesState supportsPrimaryCalling](self, "supportsPrimaryCalling")}];
   [v4 setSupportsBasebandCalling:{-[TUCallCapabilitiesState supportsBasebandCalling](self, "supportsBasebandCalling")}];
   [v4 setSupportsCellularData:{-[TUCallCapabilitiesState supportsCellularData](self, "supportsCellularData")}];
@@ -461,15 +461,15 @@ LABEL_11:
   v19 = v4;
   [v4 setSupportsFaceTimeVideoRelayCalling:{-[TUCallCapabilitiesState supportsFaceTimeVideoRelayCalling](self, "supportsFaceTimeVideoRelayCalling")}];
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
-  v6 = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
-  v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  senderIdentityCapabilitiesStateByUUID = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
+  v7 = [v5 initWithCapacity:{objc_msgSend(senderIdentityCapabilitiesStateByUUID, "count")}];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  senderIdentityCapabilitiesStateByUUID2 = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
+  v9 = [senderIdentityCapabilitiesStateByUUID2 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -480,17 +480,17 @@ LABEL_11:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(senderIdentityCapabilitiesStateByUUID2);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
-        v15 = [v14 objectForKeyedSubscript:v13];
-        v16 = [v15 publiclyAccessibleCopy];
-        [v7 setObject:v16 forKeyedSubscript:v13];
+        senderIdentityCapabilitiesStateByUUID3 = [(TUCallCapabilitiesState *)self senderIdentityCapabilitiesStateByUUID];
+        v15 = [senderIdentityCapabilitiesStateByUUID3 objectForKeyedSubscript:v13];
+        publiclyAccessibleCopy = [v15 publiclyAccessibleCopy];
+        [v7 setObject:publiclyAccessibleCopy forKeyedSubscript:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [senderIdentityCapabilitiesStateByUUID2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);

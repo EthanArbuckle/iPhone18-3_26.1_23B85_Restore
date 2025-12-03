@@ -1,14 +1,14 @@
 @interface AudiogramNumericAxis.AudiogramAxisScalingRules
 - (_TtCC8HealthUI20AudiogramNumericAxis25AudiogramAxisScalingRules)init;
-- (id)yValueRangeForRange:(id)a3 zoomLevel:(int64_t)a4;
+- (id)yValueRangeForRange:(id)range zoomLevel:(int64_t)level;
 @end
 
 @implementation AudiogramNumericAxis.AudiogramAxisScalingRules
 
-- (id)yValueRangeForRange:(id)a3 zoomLevel:(int64_t)a4
+- (id)yValueRangeForRange:(id)range zoomLevel:(int64_t)level
 {
-  v5 = a3;
-  v6 = self;
+  rangeCopy = range;
+  selfCopy = self;
   v7 = sub_1C3CD7E94();
 
   return v7;

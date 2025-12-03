@@ -1,35 +1,35 @@
 @interface TPSCellularNetworksResponse
 + (id)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResponse:(id)a3;
-- (TPSCellularNetworksResponse)initWithCoder:(id)a3;
-- (TPSCellularNetworksResponse)initWithSubscriptionContext:(id)a3 error:(id)a4;
-- (TPSCellularNetworksResponse)initWithSubscriptionContext:(id)a3 error:(id)a4 cellularNetworks:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResponse:(id)response;
+- (TPSCellularNetworksResponse)initWithCoder:(id)coder;
+- (TPSCellularNetworksResponse)initWithSubscriptionContext:(id)context error:(id)error;
+- (TPSCellularNetworksResponse)initWithSubscriptionContext:(id)context error:(id)error cellularNetworks:(id)networks;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSCellularNetworksResponse
 
-- (TPSCellularNetworksResponse)initWithSubscriptionContext:(id)a3 error:(id)a4
+- (TPSCellularNetworksResponse)initWithSubscriptionContext:(id)context error:(id)error
 {
-  [(TPSCellularNetworksResponse *)self doesNotRecognizeSelector:a2, a4];
+  [(TPSCellularNetworksResponse *)self doesNotRecognizeSelector:a2, error];
 
   return 0;
 }
 
-- (TPSCellularNetworksResponse)initWithSubscriptionContext:(id)a3 error:(id)a4 cellularNetworks:(id)a5
+- (TPSCellularNetworksResponse)initWithSubscriptionContext:(id)context error:(id)error cellularNetworks:(id)networks
 {
-  v8 = a5;
+  networksCopy = networks;
   v13.receiver = self;
   v13.super_class = TPSCellularNetworksResponse;
-  v9 = [(TPSResponse *)&v13 initWithSubscriptionContext:a3 error:a4];
+  v9 = [(TPSResponse *)&v13 initWithSubscriptionContext:context error:error];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [networksCopy copy];
     cellularNetworks = v9->_cellularNetworks;
     v9->_cellularNetworks = v10;
   }
@@ -37,42 +37,42 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = TPSCellularNetworksResponse;
   v5 = [(TPSResponse *)&v9 copyWithZone:?];
-  v6 = [(NSArray *)self->_cellularNetworks copyWithZone:a3];
+  v6 = [(NSArray *)self->_cellularNetworks copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TPSCellularNetworksResponse;
-  v4 = a3;
-  [(TPSResponse *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSResponse *)&v7 encodeWithCoder:coderCopy];
   cellularNetworks = self->_cellularNetworks;
   v6 = NSStringFromSelector(sel_cellularNetworks);
-  [v4 encodeObject:cellularNetworks forKey:{v6, v7.receiver, v7.super_class}];
+  [coderCopy encodeObject:cellularNetworks forKey:{v6, v7.receiver, v7.super_class}];
 }
 
-- (TPSCellularNetworksResponse)initWithCoder:(id)a3
+- (TPSCellularNetworksResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TPSCellularNetworksResponse;
-  v5 = [(TPSResponse *)&v13 initWithCoder:v4];
+  v5 = [(TPSResponse *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
     v9 = NSStringFromSelector(sel_cellularNetworks);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     cellularNetworks = v5->_cellularNetworks;
     v5->_cellularNetworks = v10;
   }
@@ -85,13 +85,13 @@
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v3 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v4 = NSStringFromSelector(sel_subscriptionContext);
-  v5 = [(TPSResponse *)self subscriptionContext];
-  [v3 appendFormat:@"%@=%@", v4, v5];
+  subscriptionContext = [(TPSResponse *)self subscriptionContext];
+  [v3 appendFormat:@"%@=%@", v4, subscriptionContext];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector(sel_error);
-  v7 = [(TPSResponse *)self error];
-  [v3 appendFormat:@"%@=%@", v6, v7];
+  error = [(TPSResponse *)self error];
+  [v3 appendFormat:@"%@=%@", v6, error];
 
   [v3 appendFormat:@", "];
   v8 = NSStringFromSelector(sel_cellularNetworks);
@@ -108,16 +108,16 @@
   v7.receiver = self;
   v7.super_class = TPSCellularNetworksResponse;
   v3 = [(TPSResponse *)&v7 hash];
-  v4 = [(TPSCellularNetworksResponse *)self cellularNetworks];
-  v5 = [v4 hash];
+  cellularNetworks = [(TPSCellularNetworksResponse *)self cellularNetworks];
+  v5 = [cellularNetworks hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -125,25 +125,25 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSCellularNetworksResponse *)self isEqualToResponse:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSCellularNetworksResponse *)self isEqualToResponse:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToResponse:(id)a3
+- (BOOL)isEqualToResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v9.receiver = self;
   v9.super_class = TPSCellularNetworksResponse;
-  if ([(TPSResponse *)&v9 isEqualToResponse:v4])
+  if ([(TPSResponse *)&v9 isEqualToResponse:responseCopy])
   {
-    v5 = [(TPSCellularNetworksResponse *)self cellularNetworks];
-    v6 = [v4 cellularNetworks];
-    v7 = (v5 | v6) == 0;
-    if (v6)
+    cellularNetworks = [(TPSCellularNetworksResponse *)self cellularNetworks];
+    cellularNetworks2 = [responseCopy cellularNetworks];
+    v7 = (cellularNetworks | cellularNetworks2) == 0;
+    if (cellularNetworks2)
     {
-      v7 = [v5 isEqual:v6];
+      v7 = [cellularNetworks isEqual:cellularNetworks2];
     }
   }
 
@@ -159,7 +159,7 @@
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___TPSCellularNetworksResponse;
   v4 = objc_msgSendSuper2(&v10, sel_unarchivedObjectClasses);
   v5 = [v3 initWithSet:v4];
@@ -176,12 +176,12 @@
   return v7;
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x277CCAAC8];
-  v7 = a3;
-  v8 = [a1 unarchivedObjectClasses];
-  v9 = [v6 unarchivedObjectOfClasses:v8 fromData:v7 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v9 = [v6 unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v9;
 }

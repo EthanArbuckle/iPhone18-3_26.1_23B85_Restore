@@ -1,28 +1,28 @@
 @interface _SFPBRFHighlightedSubstring
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFHighlightedSubstring)initWithDictionary:(id)a3;
-- (_SFPBRFHighlightedSubstring)initWithFacade:(id)a3;
-- (_SFPBRFHighlightedSubstring)initWithJSON:(id)a3;
+- (_SFPBRFHighlightedSubstring)initWithDictionary:(id)dictionary;
+- (_SFPBRFHighlightedSubstring)initWithFacade:(id)facade;
+- (_SFPBRFHighlightedSubstring)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setSubstring:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setSubstring:(id)substring;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFHighlightedSubstring
 
-- (_SFPBRFHighlightedSubstring)initWithFacade:(id)a3
+- (_SFPBRFHighlightedSubstring)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFHighlightedSubstring *)self init];
   if (v5)
   {
-    v6 = [v4 substring];
+    substring = [facadeCopy substring];
 
-    if (v6)
+    if (substring)
     {
-      v7 = [v4 substring];
-      [(_SFPBRFHighlightedSubstring *)v5 setSubstring:v7];
+      substring2 = [facadeCopy substring];
+      [(_SFPBRFHighlightedSubstring *)v5 setSubstring:substring2];
     }
 
     v8 = v5;
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (_SFPBRFHighlightedSubstring)initWithDictionary:(id)a3
+- (_SFPBRFHighlightedSubstring)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBRFHighlightedSubstring;
   v5 = [(_SFPBRFHighlightedSubstring *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"substring"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"substring"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (_SFPBRFHighlightedSubstring)initWithJSON:(id)a3
+- (_SFPBRFHighlightedSubstring)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFHighlightedSubstring *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFHighlightedSubstring *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFHighlightedSubstring *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,29 +89,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_substring)
   {
-    v4 = [(_SFPBRFHighlightedSubstring *)self substring];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"substring"];
+    substring = [(_SFPBRFHighlightedSubstring *)self substring];
+    v5 = [substring copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"substring"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBRFHighlightedSubstring *)self substring];
-    v6 = [v4 substring];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    substring = [(_SFPBRFHighlightedSubstring *)self substring];
+    substring2 = [equalCopy substring];
+    v7 = substring2;
+    if ((substring != 0) != (substring2 == 0))
     {
-      v8 = [(_SFPBRFHighlightedSubstring *)self substring];
-      if (!v8)
+      substring3 = [(_SFPBRFHighlightedSubstring *)self substring];
+      if (!substring3)
       {
 
 LABEL_10:
@@ -119,10 +119,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBRFHighlightedSubstring *)self substring];
-      v11 = [v4 substring];
-      v12 = [v10 isEqual:v11];
+      v9 = substring3;
+      substring4 = [(_SFPBRFHighlightedSubstring *)self substring];
+      substring5 = [equalCopy substring];
+      v12 = [substring4 isEqual:substring5];
 
       if (v12)
       {
@@ -141,19 +141,19 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBRFHighlightedSubstring *)self substring];
-  if (v4)
+  toCopy = to;
+  substring = [(_SFPBRFHighlightedSubstring *)self substring];
+  if (substring)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setSubstring:(id)a3
+- (void)setSubstring:(id)substring
 {
-  v4 = [a3 copy];
+  v4 = [substring copy];
   substring = self->_substring;
   self->_substring = v4;
 

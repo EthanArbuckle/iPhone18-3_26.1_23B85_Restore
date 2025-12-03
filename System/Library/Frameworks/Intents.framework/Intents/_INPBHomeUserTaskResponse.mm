@@ -1,41 +1,41 @@
 @interface _INPBHomeUserTaskResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBHomeUserTaskResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBHomeUserTaskResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsTaskOutcome:(id)a3;
+- (int)StringAsTaskOutcome:(id)outcome;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTaskOutcome:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTaskOutcome:(int)outcome;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBHomeUserTaskResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBHomeUserTaskResponse *)self hasTaskOutcome])
   {
-    v4 = [(_INPBHomeUserTaskResponse *)self taskOutcome];
-    if ((v4 - 1) >= 0x17)
+    taskOutcome = [(_INPBHomeUserTaskResponse *)self taskOutcome];
+    if ((taskOutcome - 1) >= 0x17)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", taskOutcome];
     }
 
     else
     {
-      v5 = off_1E72869F0[(v4 - 1)];
+      v5 = off_1E72869F0[(taskOutcome - 1)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"taskOutcome"];
+    [dictionary setObject:v5 forKeyedSubscript:@"taskOutcome"];
   }
 
-  v6 = [(_INPBHomeUserTaskResponse *)self userTask];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"userTask"];
+  userTask = [(_INPBHomeUserTaskResponse *)self userTask];
+  dictionaryRepresentation = [userTask dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"userTask"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -53,23 +53,23 @@
   return [(_INPBHomeUserTask *)self->_userTask hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBHomeUserTaskResponse *)self hasTaskOutcome];
-    if (v5 == [v4 hasTaskOutcome])
+    hasTaskOutcome = [(_INPBHomeUserTaskResponse *)self hasTaskOutcome];
+    if (hasTaskOutcome == [equalCopy hasTaskOutcome])
     {
-      if (!-[_INPBHomeUserTaskResponse hasTaskOutcome](self, "hasTaskOutcome") || ![v4 hasTaskOutcome] || (taskOutcome = self->_taskOutcome, taskOutcome == objc_msgSend(v4, "taskOutcome")))
+      if (!-[_INPBHomeUserTaskResponse hasTaskOutcome](self, "hasTaskOutcome") || ![equalCopy hasTaskOutcome] || (taskOutcome = self->_taskOutcome, taskOutcome == objc_msgSend(equalCopy, "taskOutcome")))
       {
-        v7 = [(_INPBHomeUserTaskResponse *)self userTask];
-        v8 = [v4 userTask];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        userTask = [(_INPBHomeUserTaskResponse *)self userTask];
+        userTask2 = [equalCopy userTask];
+        v9 = userTask2;
+        if ((userTask != 0) != (userTask2 == 0))
         {
-          v10 = [(_INPBHomeUserTaskResponse *)self userTask];
-          if (!v10)
+          userTask3 = [(_INPBHomeUserTaskResponse *)self userTask];
+          if (!userTask3)
           {
 
 LABEL_14:
@@ -77,10 +77,10 @@ LABEL_14:
             goto LABEL_12;
           }
 
-          v11 = v10;
-          v12 = [(_INPBHomeUserTaskResponse *)self userTask];
-          v13 = [v4 userTask];
-          v14 = [v12 isEqual:v13];
+          v11 = userTask3;
+          userTask4 = [(_INPBHomeUserTaskResponse *)self userTask];
+          userTask5 = [equalCopy userTask];
+          v14 = [userTask4 isEqual:userTask5];
 
           if (v14)
           {
@@ -101,7 +101,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBHomeUserTaskResponse allocWithZone:](_INPBHomeUserTaskResponse init];
   if ([(_INPBHomeUserTaskResponse *)self hasTaskOutcome])
@@ -109,171 +109,171 @@ LABEL_12:
     [(_INPBHomeUserTaskResponse *)v5 setTaskOutcome:[(_INPBHomeUserTaskResponse *)self taskOutcome]];
   }
 
-  v6 = [(_INPBHomeUserTask *)self->_userTask copyWithZone:a3];
+  v6 = [(_INPBHomeUserTask *)self->_userTask copyWithZone:zone];
   [(_INPBHomeUserTaskResponse *)v5 setUserTask:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBHomeUserTaskResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBHomeUserTaskResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBHomeUserTaskResponse)initWithCoder:(id)a3
+- (_INPBHomeUserTaskResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBHomeUserTaskResponse *)self initWithData:v6];
+    self = [(_INPBHomeUserTaskResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_INPBHomeUserTaskResponse *)self hasTaskOutcome])
   {
     taskOutcome = self->_taskOutcome;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBHomeUserTaskResponse *)self userTask];
+  userTask = [(_INPBHomeUserTaskResponse *)self userTask];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (userTask)
   {
-    v7 = [(_INPBHomeUserTaskResponse *)self userTask];
+    userTask2 = [(_INPBHomeUserTaskResponse *)self userTask];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (int)StringAsTaskOutcome:(id)a3
+- (int)StringAsTaskOutcome:(id)outcome
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUCCESS"])
+  outcomeCopy = outcome;
+  if ([outcomeCopy isEqualToString:@"SUCCESS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UNSUPPORTED_ATTRIBUTE"])
+  else if ([outcomeCopy isEqualToString:@"UNSUPPORTED_ATTRIBUTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"READ_ONLY"])
+  else if ([outcomeCopy isEqualToString:@"READ_ONLY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ALREADY_AT_MAX_VALUE"])
+  else if ([outcomeCopy isEqualToString:@"ALREADY_AT_MAX_VALUE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ALREADY_AT_MIN_VALUE"])
+  else if ([outcomeCopy isEqualToString:@"ALREADY_AT_MIN_VALUE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"UNREACHABLE"])
+  else if ([outcomeCopy isEqualToString:@"UNREACHABLE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"FAILURE"])
+  else if ([outcomeCopy isEqualToString:@"FAILURE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SET_TO_MAX_VALUE"])
+  else if ([outcomeCopy isEqualToString:@"SET_TO_MAX_VALUE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SET_TO_MIN_VALUE"])
+  else if ([outcomeCopy isEqualToString:@"SET_TO_MIN_VALUE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"LARGER_THAN_MAX_VALUE"])
+  else if ([outcomeCopy isEqualToString:@"LARGER_THAN_MAX_VALUE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SMALLER_THAN_MIN_VALUE"])
+  else if ([outcomeCopy isEqualToString:@"SMALLER_THAN_MIN_VALUE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"NO_REMOTE_ACCESS"])
+  else if ([outcomeCopy isEqualToString:@"NO_REMOTE_ACCESS"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"NO_MATCHING_ATTRIBUTE"])
+  else if ([outcomeCopy isEqualToString:@"NO_MATCHING_ATTRIBUTE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"BLUETOOTH_IS_OFF"])
+  else if ([outcomeCopy isEqualToString:@"BLUETOOTH_IS_OFF"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"WIFI_IS_OFF"])
+  else if ([outcomeCopy isEqualToString:@"WIFI_IS_OFF"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"BRIDGED_ACCESSORY_UNREACHABLE"])
+  else if ([outcomeCopy isEqualToString:@"BRIDGED_ACCESSORY_UNREACHABLE"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"IN_PROGRESS"])
+  else if ([outcomeCopy isEqualToString:@"IN_PROGRESS"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"SCENE_NOT_SET_UP"])
+  else if ([outcomeCopy isEqualToString:@"SCENE_NOT_SET_UP"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SECURING_FAILURE"])
+  else if ([outcomeCopy isEqualToString:@"SECURING_FAILURE"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"BLUETOOTH_WAKEUP"])
+  else if ([outcomeCopy isEqualToString:@"BLUETOOTH_WAKEUP"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"UNLOCK_REQUIRED"])
+  else if ([outcomeCopy isEqualToString:@"UNLOCK_REQUIRED"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"SECURED_ACCESS_DENIED"])
+  else if ([outcomeCopy isEqualToString:@"SECURED_ACCESS_DENIED"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"CALIBRATION_IN_PROGRESS"])
+  else if ([outcomeCopy isEqualToString:@"CALIBRATION_IN_PROGRESS"])
   {
     v4 = 23;
   }
@@ -286,10 +286,10 @@ LABEL_12:
   return v4;
 }
 
-- (void)setTaskOutcome:(int)a3
+- (void)setTaskOutcome:(int)outcome
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (outcome == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -297,7 +297,7 @@ LABEL_12:
   else
   {
     *&self->_has = has | 1;
-    self->_taskOutcome = a3;
+    self->_taskOutcome = outcome;
   }
 }
 

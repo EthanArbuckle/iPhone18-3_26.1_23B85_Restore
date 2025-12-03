@@ -1,15 +1,15 @@
 @interface IMDMessageServicesAgentController
 + (id)sharedInstance;
-- (_IMDChatRecordStruct)copyBestChatWithGuid:(id)a3 message:(_IMDMessageRecordStruct *)a4;
-- (void)_chooseRouteForMessage:(id)a3 downgradableServices:(id)a4 error:(unsigned int)a5 handler:(id)a6;
-- (void)checkExpireStateForMessage:(id)a3 handler:(id)a4;
-- (void)checkExpireStateWithHandler:(id)a3;
-- (void)checkForPendingRoutingWithHandler:(id)a3;
-- (void)checkScheduledMessageForGUID:(id)a3 handler:(id)a4;
-- (void)checkScheduledMessageWithHandler:(id)a3;
-- (void)checkWatchdogForMessage:(id)a3 handler:(id)a4;
-- (void)checkWatchdogWithHandler:(id)a3;
-- (void)chooseRouteForMessage:(id)a3 downgradableServices:(id)a4 withError:(unsigned int)a5 inChat:(id)a6 handler:(id)a7;
+- (_IMDChatRecordStruct)copyBestChatWithGuid:(id)guid message:(_IMDMessageRecordStruct *)message;
+- (void)_chooseRouteForMessage:(id)message downgradableServices:(id)services error:(unsigned int)error handler:(id)handler;
+- (void)checkExpireStateForMessage:(id)message handler:(id)handler;
+- (void)checkExpireStateWithHandler:(id)handler;
+- (void)checkForPendingRoutingWithHandler:(id)handler;
+- (void)checkScheduledMessageForGUID:(id)d handler:(id)handler;
+- (void)checkScheduledMessageWithHandler:(id)handler;
+- (void)checkWatchdogForMessage:(id)message handler:(id)handler;
+- (void)checkWatchdogWithHandler:(id)handler;
+- (void)chooseRouteForMessage:(id)message downgradableServices:(id)services withError:(unsigned int)error inChat:(id)chat handler:(id)handler;
 @end
 
 @implementation IMDMessageServicesAgentController
@@ -24,12 +24,12 @@
   return qword_100014CA8;
 }
 
-- (_IMDChatRecordStruct)copyBestChatWithGuid:(id)a3 message:(_IMDMessageRecordStruct *)a4
+- (_IMDChatRecordStruct)copyBestChatWithGuid:(id)guid message:(_IMDMessageRecordStruct *)message
 {
-  if ([a3 length])
+  if ([guid length])
   {
     v6 = IMDChatRecordCopyChatForGUID();
-    if (!a4)
+    if (!message)
     {
       return v6;
     }
@@ -38,7 +38,7 @@
   else
   {
     v6 = 0;
-    if (!a4)
+    if (!message)
     {
       return v6;
     }
@@ -52,7 +52,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v12 = 138412290;
-        v13 = a3;
+        guidCopy = guid;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Could not find message with chatGUID:%@", &v12, 0xCu);
       }
     }
@@ -88,21 +88,21 @@
   return v6;
 }
 
-- (void)_chooseRouteForMessage:(id)a3 downgradableServices:(id)a4 error:(unsigned int)a5 handler:(id)a6
+- (void)_chooseRouteForMessage:(id)message downgradableServices:(id)services error:(unsigned int)error handler:(id)handler
 {
-  v7 = a3;
-  if (a3)
+  messageCopy = message;
+  if (message)
   {
-    if ([a3 service] && objc_msgSend(a4, "containsObject:", objc_msgSend(v7, "service")))
+    if ([message service] && objc_msgSend(services, "containsObject:", objc_msgSend(messageCopy, "service")))
     {
       if (IMSMSFallbackEnabled())
       {
         if ([+[IMDRoutingAgent shouldSendMessage:"shouldSendMessage:"]
         {
-          v11 = [v7 GUID];
-          v7 = IMServiceNameSMS;
-          v12 = (a5 != 22) << 19;
-          v13 = a5 - 12 < 0xFFFFFFFA;
+          gUID = [messageCopy GUID];
+          messageCopy = IMServiceNameSMS;
+          v12 = (error != 22) << 19;
+          v13 = error - 12 < 0xFFFFFFFA;
           goto LABEL_13;
         }
       }
@@ -113,7 +113,7 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v17 = 138412290;
-          v18 = [v7 GUID];
+          gUID2 = [messageCopy GUID];
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Message (%@) cannot be sent via SMS because sms fallback is not enabled", &v17, 0xCu);
         }
       }
@@ -121,7 +121,7 @@
 
     v13 = 0;
     v12 = 0;
-    v7 = 0;
+    messageCopy = 0;
   }
 
   else
@@ -130,19 +130,19 @@
     v12 = 0;
   }
 
-  v11 = 0;
+  gUID = 0;
 LABEL_13:
-  v15 = [(IMDMessageServicesAgentController *)self _routingDictionaryForService:v7 extraFlags:v12 updateProperties:v13];
+  v15 = [(IMDMessageServicesAgentController *)self _routingDictionaryForService:messageCopy extraFlags:v12 updateProperties:v13];
   if (!v15)
   {
     goto LABEL_16;
   }
 
-  if ([v11 length])
+  if ([gUID length])
   {
-    v15 = [NSDictionary dictionaryWithObject:v15 forKey:v11];
+    v15 = [NSDictionary dictionaryWithObject:v15 forKey:gUID];
 LABEL_16:
-    if (!a6)
+    if (!handler)
     {
       return;
     }
@@ -151,7 +151,7 @@ LABEL_16:
   }
 
   v15 = 0;
-  if (!a6)
+  if (!handler)
   {
     return;
   }
@@ -163,20 +163,20 @@ LABEL_17:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = 138412546;
-      v18 = v7;
+      gUID2 = messageCopy;
       v19 = 2112;
-      v20 = v11;
+      v20 = gUID;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Chose route:%@ for message:%@", &v17, 0x16u);
     }
   }
 
-  (*(a6 + 2))(a6, v15, 0.0);
+  (*(handler + 2))(handler, v15, 0.0);
 }
 
-- (void)chooseRouteForMessage:(id)a3 downgradableServices:(id)a4 withError:(unsigned int)a5 inChat:(id)a6 handler:(id)a7
+- (void)chooseRouteForMessage:(id)message downgradableServices:(id)services withError:(unsigned int)error inChat:(id)chat handler:(id)handler
 {
   v13 = IMDMessageRecordCopyMessageForGUID();
-  v14 = [(IMDMessageServicesAgentController *)self copyBestChatWithGuid:a6 message:v13];
+  v14 = [(IMDMessageServicesAgentController *)self copyBestChatWithGuid:chat message:v13];
   if (!v14)
   {
     if (IMOSLoggingEnabled())
@@ -185,9 +185,9 @@ LABEL_17:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v20 = a3;
+        messageCopy = message;
         v21 = 2112;
-        v22 = a6;
+        chatCopy = chat;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Could not find a chat for message with GUID:%@   chatGUID:%@", buf, 0x16u);
       }
     }
@@ -198,13 +198,13 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = sub_1000026B0;
   block[3] = &unk_100010620;
-  block[4] = a3;
-  block[5] = a6;
+  block[4] = message;
+  block[5] = chat;
   block[6] = v16;
   block[7] = self;
-  v18 = a5;
-  block[8] = a4;
-  block[9] = a7;
+  errorCopy = error;
+  block[8] = services;
+  block[9] = handler;
   dispatch_async(&_dispatch_main_q, block);
 
   if (v14)
@@ -218,12 +218,12 @@ LABEL_17:
   }
 }
 
-- (void)checkForPendingRoutingWithHandler:(id)a3
+- (void)checkForPendingRoutingWithHandler:(id)handler
 {
   v5 = +[IMCTSMSUtilities isMessagesTheDefaultTextApp];
   v6 = IMSMSEnabled();
   v7 = IMSMSFallbackEnabled();
-  v8 = [+[IMSharedMessageSendingUtilities sharedInstance](IMSharedMessageSendingUtilities isRCSEnabled];
+  isRCSEnabled = [+[IMSharedMessageSendingUtilities sharedInstance](IMSharedMessageSendingUtilities isRCSEnabled];
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
@@ -266,7 +266,7 @@ LABEL_17:
       *&buf[14] = v12;
       *&buf[22] = 2112;
       v32 = v13;
-      if (v8)
+      if (isRCSEnabled)
       {
         v10 = @"YES";
       }
@@ -288,7 +288,7 @@ LABEL_17:
   v24[3] = 0;
   v15 = dispatch_group_create();
   dispatch_group_enter(v15);
-  if ((v5 & (v6 & v7 | v8)) == 1)
+  if ((v5 & (v6 & v7 | isRCSEnabled)) == 1)
   {
     if (IMOSLoggingEnabled())
     {
@@ -359,7 +359,7 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = sub_100002E34;
   block[3] = &unk_100010670;
-  block[6] = a3;
+  block[6] = handler;
   block[7] = v24;
   block[4] = v14;
   block[5] = v15;
@@ -369,21 +369,21 @@ LABEL_17:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)checkExpireStateForMessage:(id)a3 handler:(id)a4
+- (void)checkExpireStateForMessage:(id)message handler:(id)handler
 {
-  v5 = [a4 copy];
+  v5 = [handler copy];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = a3;
+      *&buf[4] = message;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Check expire state for message: %@", buf, 0xCu);
     }
   }
 
-  if (a3)
+  if (message)
   {
     v7 = IMDMessageRecordCopyMessageForGUID();
     v8 = v7;
@@ -396,7 +396,7 @@ LABEL_17:
       v10 = [NSNumber numberWithLongLong:*buf];
       v11 = [NSNumber numberWithBool:v16];
       v12 = [v9 initWithObjectsAndKeys:{v10, IMDMessageServicesExpireStateKey, v11, IMDMessageServicesExpireStateShouldDeleteKey, 0}];
-      v13 = [NSDictionary dictionaryWithObject:v12 forKey:a3];
+      v13 = [NSDictionary dictionaryWithObject:v12 forKey:message];
     }
 
     else
@@ -429,7 +429,7 @@ LABEL_17:
   }
 }
 
-- (void)checkExpireStateWithHandler:(id)a3
+- (void)checkExpireStateWithHandler:(id)handler
 {
   if (IMOSLoggingEnabled())
   {
@@ -549,33 +549,33 @@ LABEL_17:
   block[2] = sub_1000035BC;
   block[3] = &unk_1000106C0;
   block[4] = v22;
-  block[5] = a3;
+  block[5] = handler;
   *&block[6] = v10;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)checkScheduledMessageForGUID:(id)a3 handler:(id)a4
+- (void)checkScheduledMessageForGUID:(id)d handler:(id)handler
 {
-  v5 = [a4 copy];
+  v5 = [handler copy];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v17 = a3;
+      dCopy = d;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Check scheduled message for guid: %@", buf, 0xCu);
     }
   }
 
-  if (a3)
+  if (d)
   {
     v7 = IMDMessageRecordCopyMessageForGUID();
     Date = IMDMessageRecordGetDate();
     v9 = [NSDictionary alloc];
     v10 = [NSNumber numberWithLongLong:Date];
     v11 = [v9 initWithObjectsAndKeys:{v10, IMDMessageServicesScheduledDateKey, 0}];
-    v12 = [NSDictionary dictionaryWithObject:v11 forKey:a3];
+    v12 = [NSDictionary dictionaryWithObject:v11 forKey:d];
 
     [+[NSDate __im_dateWithNanosecondTimeIntervalSinceReferenceDate:](NSDate __im_dateWithNanosecondTimeIntervalSinceReferenceDate:{Date), "timeIntervalSinceNow"}];
     block[0] = _NSConcreteStackBlock;
@@ -603,31 +603,31 @@ LABEL_17:
   }
 }
 
-- (void)checkScheduledMessageWithHandler:(id)a3
+- (void)checkScheduledMessageWithHandler:(id)handler
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100003B24;
   v3[3] = &unk_1000106E8;
-  v3[4] = a3;
+  v3[4] = handler;
   [+[IMDDatabase synchronousDatabase](IMDDatabase "synchronousDatabase")];
 }
 
-- (void)checkWatchdogForMessage:(id)a3 handler:(id)a4
+- (void)checkWatchdogForMessage:(id)message handler:(id)handler
 {
-  v5 = [a4 copy];
+  v5 = [handler copy];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = a3;
+      *&buf[4] = message;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Check watchdog for message: %@", buf, 0xCu);
     }
   }
 
-  if (a3)
+  if (message)
   {
     v7 = IMDMessageRecordCopyMessageForGUID();
     v8 = v7;
@@ -638,7 +638,7 @@ LABEL_17:
       v9 = [NSDictionary alloc];
       v10 = [NSNumber numberWithBool:v14];
       v11 = [v9 initWithObjectsAndKeys:{v10, IMDMessageServicesWatchdogShouldFailSendKey, 0}];
-      v12 = [NSDictionary dictionaryWithObject:v11 forKey:a3];
+      v12 = [NSDictionary dictionaryWithObject:v11 forKey:message];
     }
 
     else
@@ -671,7 +671,7 @@ LABEL_17:
   }
 }
 
-- (void)checkWatchdogWithHandler:(id)a3
+- (void)checkWatchdogWithHandler:(id)handler
 {
   if (IMOSLoggingEnabled())
   {
@@ -788,7 +788,7 @@ LABEL_17:
   block[2] = sub_100004508;
   block[3] = &unk_1000106C0;
   block[4] = v5;
-  block[5] = a3;
+  block[5] = handler;
   *&block[6] = v10;
   dispatch_async(&_dispatch_main_q, block);
 }

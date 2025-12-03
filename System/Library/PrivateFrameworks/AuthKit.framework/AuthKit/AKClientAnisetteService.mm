@@ -1,51 +1,51 @@
 @interface AKClientAnisetteService
-- (AKClientAnisetteService)initWithClient:(id)a3 context:(id)a4;
-- (void)eraseAnisetteWithCompletion:(id)a3;
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)fetchPeerAttestationDataForRequest:(id)a3 completion:(id)a4;
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4;
-- (void)provisionAnisetteWithCompletion:(id)a3;
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4;
+- (AKClientAnisetteService)initWithClient:(id)client context:(id)context;
+- (void)eraseAnisetteWithCompletion:(id)completion;
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)fetchPeerAttestationDataForRequest:(id)request completion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion;
+- (void)provisionAnisetteWithCompletion:(id)completion;
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion;
 @end
 
 @implementation AKClientAnisetteService
 
-- (AKClientAnisetteService)initWithClient:(id)a3 context:(id)a4
+- (AKClientAnisetteService)initWithClient:(id)client context:(id)context
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&v11, context);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10 = [(AKClientAnisetteService *)v4 init];
-  v13 = v10;
-  objc_storeStrong(&v13, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     v5 = [location[0] proxyWithErrorHandler:&stru_100324EB8];
-    clientProxy = v13->_clientProxy;
-    v13->_clientProxy = v5;
+    clientProxy = selfCopy->_clientProxy;
+    selfCopy->_clientProxy = v5;
     _objc_release(clientProxy);
-    objc_storeStrong(&v13->_context, v11);
+    objc_storeStrong(&selfCopy->_context, v11);
   }
 
-  v8 = _objc_retain(v13);
+  v8 = _objc_retain(selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  necessaryCopy = necessary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -54,9 +54,9 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v10->_clientProxy)
+  if (selfCopy->_clientProxy)
   {
-    [(AKAnisetteProvisioningClientProtocol *)v10->_clientProxy fetchAnisetteDataForContext:v10->_context provisionIfNecessary:v8 withCompletion:location];
+    [(AKAnisetteProvisioningClientProtocol *)selfCopy->_clientProxy fetchAnisetteDataForContext:selfCopy->_context provisionIfNecessary:necessaryCopy withCompletion:location];
   }
 
   else
@@ -70,14 +70,14 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, completion);
   v7 = _AKLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -86,9 +86,9 @@
   }
 
   objc_storeStrong(&v7, 0);
-  if (v10->_clientProxy)
+  if (selfCopy->_clientProxy)
   {
-    [(AKAnisetteProvisioningClientProtocol *)v10->_clientProxy syncAnisetteForContext:v10->_context withSIMData:location[0] completion:v8];
+    [(AKAnisetteProvisioningClientProtocol *)selfCopy->_clientProxy syncAnisetteForContext:selfCopy->_context withSIMData:location[0] completion:v8];
   }
 
   else
@@ -103,12 +103,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)eraseAnisetteWithCompletion:(id)a3
+- (void)eraseAnisetteWithCompletion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v5 = _AKLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -117,9 +117,9 @@
   }
 
   objc_storeStrong(&v5, 0);
-  if (v7->_clientProxy)
+  if (selfCopy->_clientProxy)
   {
-    [(AKAnisetteProvisioningClientProtocol *)v7->_clientProxy eraseAnisetteForContext:v7->_context withCompletion:location[0]];
+    [(AKAnisetteProvisioningClientProtocol *)selfCopy->_clientProxy eraseAnisetteForContext:selfCopy->_context withCompletion:location[0]];
   }
 
   else
@@ -133,12 +133,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)provisionAnisetteWithCompletion:(id)a3
+- (void)provisionAnisetteWithCompletion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v5 = _AKLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -147,9 +147,9 @@
   }
 
   objc_storeStrong(&v5, 0);
-  if (v7->_clientProxy)
+  if (selfCopy->_clientProxy)
   {
-    [(AKAnisetteProvisioningClientProtocol *)v7->_clientProxy provisionAnisetteForContext:v7->_context withCompletion:location[0]];
+    [(AKAnisetteProvisioningClientProtocol *)selfCopy->_clientProxy provisionAnisetteForContext:selfCopy->_context withCompletion:location[0]];
   }
 
   else
@@ -163,14 +163,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, completion);
   v7 = _AKLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -179,9 +179,9 @@
   }
 
   objc_storeStrong(&v7, 0);
-  if (v10->_clientProxy)
+  if (selfCopy->_clientProxy)
   {
-    [(AKAnisetteProvisioningClientProtocol *)v10->_clientProxy legacyAnisetteDataForContext:v10->_context DSID:location[0] withCompletion:v8];
+    [(AKAnisetteProvisioningClientProtocol *)selfCopy->_clientProxy legacyAnisetteDataForContext:selfCopy->_context DSID:location[0] withCompletion:v8];
   }
 
   else
@@ -196,14 +196,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchPeerAttestationDataForRequest:(id)a3 completion:(id)a4
+- (void)fetchPeerAttestationDataForRequest:(id)request completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, completion);
   v10 = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -213,17 +213,17 @@
   }
 
   objc_storeStrong(&v10, 0);
-  if (v13->_clientProxy)
+  if (selfCopy->_clientProxy)
   {
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_10004DCC8(v14, v13, v13->_context, location[0]);
+      sub_10004DCC8(v14, selfCopy, selfCopy->_context, location[0]);
       _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%@: Calling client proxy to fetch peer attestation data for context (%@) with request (%@)", v14, 0x20u);
     }
 
     objc_storeStrong(&oslog, 0);
-    [(AKAnisetteProvisioningClientProtocol *)v13->_clientProxy fetchPeerAttestationDataForContext:v13->_context withRequest:location[0] completion:v11];
+    [(AKAnisetteProvisioningClientProtocol *)selfCopy->_clientProxy fetchPeerAttestationDataForContext:selfCopy->_context withRequest:location[0] completion:v11];
     v8 = 0;
   }
 

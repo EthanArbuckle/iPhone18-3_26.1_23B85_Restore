@@ -1,21 +1,21 @@
 @interface PuzzleViewController
-- (_TtC7NewsUI220PuzzleViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsUI220PuzzleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)modalHostViewDidAppear;
 - (void)modalHostViewDidDisappear;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PuzzleViewController
 
-- (_TtC7NewsUI220PuzzleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI220PuzzleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -24,37 +24,37 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2199A1FFC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2199A2E5C(a3);
+  selfCopy = self;
+  sub_2199A2E5C(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2199A3DD4(a3);
+  selfCopy = self;
+  sub_2199A3DD4(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_2199A4584(a3);
+  selfCopy = self;
+  sub_2199A4584(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_2199A4CC4(a3);
+  selfCopy = self;
+  sub_2199A4CC4(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2199A571C();
 }
 
@@ -64,11 +64,11 @@
   v5.super_class = swift_getObjectType();
   v2 = v5.receiver;
   [(PuzzleViewController *)&v5 viewSafeAreaInsetsDidChange];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setNeedsLayout];
+    v4 = view;
+    [view setNeedsLayout];
   }
 
   else
@@ -77,24 +77,24 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2199A5960(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2199A5960(change);
 }
 
 - (void)modalHostViewDidAppear
 {
-  v2 = self;
+  selfCopy = self;
   sub_2199A8218(0, 2);
 }
 
 - (void)modalHostViewDidDisappear
 {
-  v3 = self;
-  v2 = [(PuzzleViewController *)v3 presentedViewController];
-  if (v2)
+  selfCopy = self;
+  presentedViewController = [(PuzzleViewController *)selfCopy presentedViewController];
+  if (presentedViewController)
   {
   }
 
@@ -105,10 +105,10 @@
   }
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_2199AE9F4();
 }
 

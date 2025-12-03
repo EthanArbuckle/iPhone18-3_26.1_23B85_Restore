@@ -1,17 +1,17 @@
 @interface NIDLTDOACoordinatesUpdate
-- (BOOL)isEqual:(id)a3;
-- (NIDLTDOACoordinatesUpdate)initWithCoder:(id)a3;
-- (NIDLTDOACoordinatesUpdate)initWithDLTDOACoordinatesType:(int64_t)a3 coordinates:;
+- (BOOL)isEqual:(id)equal;
+- (NIDLTDOACoordinatesUpdate)initWithCoder:(id)coder;
+- (NIDLTDOACoordinatesUpdate)initWithDLTDOACoordinatesType:(int64_t)type coordinates:;
 - (__n128)coordinates;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIDLTDOACoordinatesUpdate
 
-- (NIDLTDOACoordinatesUpdate)initWithDLTDOACoordinatesType:(int64_t)a3 coordinates:
+- (NIDLTDOACoordinatesUpdate)initWithDLTDOACoordinatesType:(int64_t)type coordinates:
 {
   v6 = *v3;
   v7 = v3[1];
@@ -20,7 +20,7 @@
   result = [(NIDLTDOACoordinatesUpdate *)&v8 init];
   if (result)
   {
-    result->_coordinatesType = a3;
+    result->_coordinatesType = type;
     *result->_coordinates = v6;
     *&result->_coordinates[16] = v7;
   }
@@ -60,9 +60,9 @@ LABEL_6:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   coordinatesType = self->_coordinatesType;
   v6 = *&self->_coordinates[16];
   v8[0] = *self->_coordinates;
@@ -70,23 +70,23 @@ LABEL_6:
   return [v4 initWithDLTDOACoordinatesType:coordinatesType coordinates:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:LODWORD(self->_coordinatesType) forKey:@"CoordinatesType"];
+  coderCopy = coder;
+  [coderCopy encodeInt:LODWORD(self->_coordinatesType) forKey:@"CoordinatesType"];
   v5 = *&self->_coordinates[16];
   v6[0] = *self->_coordinates;
   v6[1] = v5;
-  [v4 encodeDoubleVector3:v6 forKey:@"Coordinates"];
+  [coderCopy encodeDoubleVector3:v6 forKey:@"Coordinates"];
 }
 
-- (NIDLTDOACoordinatesUpdate)initWithCoder:(id)a3
+- (NIDLTDOACoordinatesUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self)
   {
-    self->_coordinatesType = [v4 decodeIntForKey:@"CoordinatesType"];
+    self->_coordinatesType = [coderCopy decodeIntForKey:@"CoordinatesType"];
     if (v5)
     {
       [v5 decodeDoubleVector3ForKey:@"Coordinates"];
@@ -110,10 +110,10 @@ LABEL_6:
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -123,9 +123,9 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       coordinatesType = self->_coordinatesType;
-      v8 = [(NIDLTDOACoordinatesUpdate *)v5 coordinatesType];
+      coordinatesType = [(NIDLTDOACoordinatesUpdate *)v5 coordinatesType];
       v16 = *&self->_coordinates[16];
       v17 = *self->_coordinates;
       if (v5)
@@ -146,7 +146,7 @@ LABEL_6:
       *&v9.f64[1] = v10;
       v11.f64[1] = v9.f64[0];
       v13 = vceqq_f64(v17, v9);
-      v12 = ((v13.i64[0] & v13.i64[1] & vceqq_f64(v16, v11).u64[0] & 0x8000000000000000) != 0) != v7 && coordinatesType == v8;
+      v12 = ((v13.i64[0] & v13.i64[1] & vceqq_f64(v16, v11).u64[0] & 0x8000000000000000) != 0) != v7 && coordinatesType == coordinatesType;
     }
 
     else
@@ -175,8 +175,8 @@ LABEL_6:
 
 - (__n128)coordinates
 {
-  result = a1[1];
-  a2[1].n128_u64[0] = a1[2].n128_u64[0];
+  result = self[1];
+  a2[1].n128_u64[0] = self[2].n128_u64[0];
   *a2 = result;
   return result;
 }

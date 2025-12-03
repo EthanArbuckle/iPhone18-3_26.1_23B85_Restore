@@ -1,22 +1,22 @@
 @interface PKWebServiceCarAccessFeature
-- (PKWebServiceCarAccessFeature)initWithDictionary:(id)a3 region:(id)a4;
-- (id)localizedNameForIssuerWithIdentifier:(id)a3;
-- (id)supportedTerminalForIdentifier:(id)a3;
+- (PKWebServiceCarAccessFeature)initWithDictionary:(id)dictionary region:(id)region;
+- (id)localizedNameForIssuerWithIdentifier:(id)identifier;
+- (id)supportedTerminalForIdentifier:(id)identifier;
 @end
 
 @implementation PKWebServiceCarAccessFeature
 
-- (PKWebServiceCarAccessFeature)initWithDictionary:(id)a3 region:(id)a4
+- (PKWebServiceCarAccessFeature)initWithDictionary:(id)dictionary region:(id)region
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKWebServiceRegionFeature *)self initWithFeatureType:2 dictionary:v6 region:a4];
+  dictionaryCopy = dictionary;
+  v7 = [(PKWebServiceRegionFeature *)self initWithFeatureType:2 dictionary:dictionaryCopy region:region];
   if (!v7)
   {
     goto LABEL_28;
   }
 
-  v8 = [v6 objectForKey:@"ownerSharingVersionRequirement"];
+  v8 = [dictionaryCopy objectForKey:@"ownerSharingVersionRequirement"];
   v9 = [PKOSVersionRequirementRange alloc];
   if (!v8)
   {
@@ -34,7 +34,7 @@
   if (v7->_ownerSharingOSVersionRequirement)
   {
 LABEL_8:
-    v15 = [v6 objectForKey:@"friendSharingVersionRequirement"];
+    v15 = [dictionaryCopy objectForKey:@"friendSharingVersionRequirement"];
     v16 = [PKOSVersionRequirementRange alloc];
     if (v15)
     {
@@ -65,7 +65,7 @@ LABEL_8:
 
     v42 = v15;
     v43 = v8;
-    v23 = [v6 objectForKey:@"brandIdentifiers"];
+    v23 = [dictionaryCopy objectForKey:@"brandIdentifiers"];
     v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
@@ -80,8 +80,8 @@ LABEL_8:
     v44 = v7;
     v7->_brandIdentifierForBrandCode = v26;
 
-    v45 = v6;
-    v28 = [v6 PKArrayContaining:objc_opt_class() forKey:@"supportedTerminals"];
+    v45 = dictionaryCopy;
+    v28 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"supportedTerminals"];
     v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v28, "count")}];
     v46 = 0u;
     v47 = 0u;
@@ -132,7 +132,7 @@ LABEL_8:
     supportedTerminals = v44->_supportedTerminals;
     v44->_supportedTerminals = v38;
 
-    v6 = v45;
+    dictionaryCopy = v45;
 LABEL_28:
     v20 = v7;
     goto LABEL_29;
@@ -162,18 +162,18 @@ void __58__PKWebServiceCarAccessFeature_initWithDictionary_region___block_invoke
   [v4 setObject:v6 forKey:v7];
 }
 
-- (id)localizedNameForIssuerWithIdentifier:(id)a3
+- (id)localizedNameForIssuerWithIdentifier:(id)identifier
 {
-  v3 = [(PKWebServiceCarAccessFeature *)self supportedTerminalForIdentifier:a3];
-  v4 = [v3 partnerName];
+  v3 = [(PKWebServiceCarAccessFeature *)self supportedTerminalForIdentifier:identifier];
+  partnerName = [v3 partnerName];
 
-  return v4;
+  return partnerName;
 }
 
-- (id)supportedTerminalForIdentifier:(id)a3
+- (id)supportedTerminalForIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -193,10 +193,10 @@ void __58__PKWebServiceCarAccessFeature_initWithDictionary_region___block_invoke
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 partnerIdentifier];
-        v11 = v4;
+        partnerIdentifier = [v9 partnerIdentifier];
+        v11 = identifierCopy;
         v12 = v11;
-        if (v10 == v11)
+        if (partnerIdentifier == v11)
         {
 
 LABEL_16:
@@ -204,9 +204,9 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v4 && v10)
+        if (identifierCopy && partnerIdentifier)
         {
-          v13 = [v10 isEqualToString:v11];
+          v13 = [partnerIdentifier isEqualToString:v11];
 
           if (v13)
           {

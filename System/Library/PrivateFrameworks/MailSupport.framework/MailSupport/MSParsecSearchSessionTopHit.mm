@@ -1,38 +1,38 @@
 @interface MSParsecSearchSessionTopHit
-+ (id)topHitWithIdentifier:(id)a3 date:(id)a4 mailRankingSignals:(id)a5;
-- (MSParsecSearchSessionTopHit)initWithIdentifier:(id)a3 date:(id)a4 mailRankingSignals:(id)a5;
++ (id)topHitWithIdentifier:(id)identifier date:(id)date mailRankingSignals:(id)signals;
+- (MSParsecSearchSessionTopHit)initWithIdentifier:(id)identifier date:(id)date mailRankingSignals:(id)signals;
 - (id)feedbackResult;
 @end
 
 @implementation MSParsecSearchSessionTopHit
 
-+ (id)topHitWithIdentifier:(id)a3 date:(id)a4 mailRankingSignals:(id)a5
++ (id)topHitWithIdentifier:(id)identifier date:(id)date mailRankingSignals:(id)signals
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithIdentifier:v8 date:v9 mailRankingSignals:v10];
+  identifierCopy = identifier;
+  dateCopy = date;
+  signalsCopy = signals;
+  v11 = [[self alloc] initWithIdentifier:identifierCopy date:dateCopy mailRankingSignals:signalsCopy];
 
   return v11;
 }
 
-- (MSParsecSearchSessionTopHit)initWithIdentifier:(id)a3 date:(id)a4 mailRankingSignals:(id)a5
+- (MSParsecSearchSessionTopHit)initWithIdentifier:(id)identifier date:(id)date mailRankingSignals:(id)signals
 {
   v6.receiver = self;
   v6.super_class = MSParsecSearchSessionTopHit;
-  return [(MSParsecSearchSessionMessageResult *)&v6 initResultWithIdentifier:a3 date:a4 mailRankingSignals:a5];
+  return [(MSParsecSearchSessionMessageResult *)&v6 initResultWithIdentifier:identifier date:date mailRankingSignals:signals];
 }
 
 - (id)feedbackResult
 {
   v4.receiver = self;
   v4.super_class = MSParsecSearchSessionTopHit;
-  v2 = [(MSParsecSearchSessionMessageResult *)&v4 feedbackResult];
-  [v2 setTopHit:2];
-  [v2 setResultBundleId:@"com.apple.mail.search.tophit"];
-  [v2 setSectionBundleIdentifier:@"tophit"];
+  feedbackResult = [(MSParsecSearchSessionMessageResult *)&v4 feedbackResult];
+  [feedbackResult setTopHit:2];
+  [feedbackResult setResultBundleId:@"com.apple.mail.search.tophit"];
+  [feedbackResult setSectionBundleIdentifier:@"tophit"];
 
-  return v2;
+  return feedbackResult;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface CKMultilineStampLabelChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 @end
 
 @implementation CKMultilineStampLabelChatItem
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 transcriptBoldTextAlignmentInsets];
-    a4->top = v9;
-    a4->left = v10;
-    a4->bottom = v11;
-    a4->right = v12;
+    insets->top = v9;
+    insets->left = v10;
+    insets->bottom = v11;
+    insets->right = v12;
   }
 
   v13 = +[CKChatItemSizeCache sharedInstance];
@@ -31,8 +31,8 @@
     [(CKStampChatItem *)self contentInsets];
     v18 = width - (v16 + v17);
     v21 = height - (v19 + v20);
-    v22 = [(CKChatItem *)self transcriptText];
-    [v22 boundingRectWithSize:1 options:0 context:{v18, v21}];
+    transcriptText = [(CKChatItem *)self transcriptText];
+    [transcriptText boundingRectWithSize:1 options:0 context:{v18, v21}];
     v24 = v23;
     v26 = v25;
     if (CKMainScreenScale_once_87 != -1)

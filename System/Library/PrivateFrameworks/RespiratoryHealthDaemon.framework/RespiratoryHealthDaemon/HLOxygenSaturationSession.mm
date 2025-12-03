@@ -1,26 +1,26 @@
 @interface HLOxygenSaturationSession
-- (HLOxygenSaturationSession)initWithDelegate:(id)a3 onQueue:(id)a4;
+- (HLOxygenSaturationSession)initWithDelegate:(id)delegate onQueue:(id)queue;
 - (HLOxygenSaturationSessionDelegate)delegate;
 - (void)abort;
 - (void)begin;
-- (void)unitTesting_deliverFeedback:(unint64_t)a3;
-- (void)unitTesting_endSessionWithReason:(unint64_t)a3 saturation:(id)a4 barometricPressure:(id)a5 averageHeartRate:(id)a6 averageHeartRateUUID:(id)a7;
+- (void)unitTesting_deliverFeedback:(unint64_t)feedback;
+- (void)unitTesting_endSessionWithReason:(unint64_t)reason saturation:(id)saturation barometricPressure:(id)pressure averageHeartRate:(id)rate averageHeartRateUUID:(id)d;
 @end
 
 @implementation HLOxygenSaturationSession
 
-- (HLOxygenSaturationSession)initWithDelegate:(id)a3 onQueue:(id)a4
+- (HLOxygenSaturationSession)initWithDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = HLOxygenSaturationSession;
   v8 = [(HLOxygenSaturationSession *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_queue, queue);
   }
 
   return v9;
@@ -60,7 +60,7 @@ void __34__HLOxygenSaturationSession_abort__block_invoke(uint64_t a1)
   [WeakRetained oxygenSaturationSession:*(a1 + 32) didEndForReason:2 measurement:0];
 }
 
-- (void)unitTesting_deliverFeedback:(unint64_t)a3
+- (void)unitTesting_deliverFeedback:(unint64_t)feedback
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -68,7 +68,7 @@ void __34__HLOxygenSaturationSession_abort__block_invoke(uint64_t a1)
   v4[2] = __57__HLOxygenSaturationSession_unitTesting_deliverFeedback___block_invoke;
   v4[3] = &unk_279B0E2A8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = feedback;
   dispatch_async(queue, v4);
 }
 
@@ -78,24 +78,24 @@ void __57__HLOxygenSaturationSession_unitTesting_deliverFeedback___block_invoke(
   [WeakRetained oxygenSaturationSession:*(a1 + 32) feedbackDidChange:*(a1 + 40)];
 }
 
-- (void)unitTesting_endSessionWithReason:(unint64_t)a3 saturation:(id)a4 barometricPressure:(id)a5 averageHeartRate:(id)a6 averageHeartRateUUID:(id)a7
+- (void)unitTesting_endSessionWithReason:(unint64_t)reason saturation:(id)saturation barometricPressure:(id)pressure averageHeartRate:(id)rate averageHeartRateUUID:(id)d
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  dCopy = d;
+  rateCopy = rate;
+  pressureCopy = pressure;
+  saturationCopy = saturation;
   v16 = objc_alloc_init(HLHeartRateData);
-  [v13 doubleValue];
+  [rateCopy doubleValue];
   v18 = v17;
 
   [(HLHeartRateData *)v16 setHeartRate:v18];
-  [(HLHeartRateData *)v16 setUuid:v12];
+  [(HLHeartRateData *)v16 setUuid:dCopy];
 
   v19 = objc_alloc_init(HLOxygenSaturationMeasurement);
-  [(HLOxygenSaturationMeasurement *)v19 setOxygenSaturationPercentage:v15];
+  [(HLOxygenSaturationMeasurement *)v19 setOxygenSaturationPercentage:saturationCopy];
 
   [(HLOxygenSaturationMeasurement *)v19 setAverageHeartRateData:v16];
-  [(HLOxygenSaturationMeasurement *)v19 setPressureInKilopascals:v14];
+  [(HLOxygenSaturationMeasurement *)v19 setPressureInKilopascals:pressureCopy];
 
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -103,7 +103,7 @@ void __57__HLOxygenSaturationSession_unitTesting_deliverFeedback___block_invoke(
   block[2] = __130__HLOxygenSaturationSession_unitTesting_endSessionWithReason_saturation_barometricPressure_averageHeartRate_averageHeartRateUUID___block_invoke;
   block[3] = &unk_279B0E2D0;
   v23 = v19;
-  v24 = a3;
+  reasonCopy = reason;
   block[4] = self;
   v21 = v19;
   dispatch_async(queue, block);

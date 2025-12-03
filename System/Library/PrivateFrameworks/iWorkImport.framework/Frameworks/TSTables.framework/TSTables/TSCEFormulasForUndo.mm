@@ -1,42 +1,42 @@
 @interface TSCEFormulasForUndo
 - (BOOL)isEmpty;
-- (TSCEFormulasForUndo)initWithArchive:(const void *)a3;
+- (TSCEFormulasForUndo)initWithArchive:(const void *)archive;
 - (id).cxx_construct;
 - (id)description;
-- (id)formulaStringAtCellRef:(const TSCECellRef *)a3;
+- (id)formulaStringAtCellRef:(const TSCECellRef *)ref;
 - (id)splitIntoChunksForExcessiveSize;
-- (id)subsetForOwnerKind:(unsigned __int16)a3;
+- (id)subsetForOwnerKind:(unsigned __int16)kind;
 - (unint64_t)count;
-- (unint64_t)countForOwnerKind:(unsigned __int16)a3;
+- (unint64_t)countForOwnerKind:(unsigned __int16)kind;
 - (unordered_set<TSKUIDStruct,)ownerUIDsForOwnerKind:()std:(std:(TSCEFormulasForUndo *)self :(SEL)a3 allocator<TSKUIDStruct>> *__return_ptr)retstr :(unsigned __int16)a4 equal_to<TSKUIDStruct>;
 - (vector<TSCESubFormulaOwnerIndex,)allOwnerKinds;
-- (void)addFormulaObject:(id)a3 atCellRef:(const TSCECellRef *)a4 forOwnerKind:(unsigned __int16)a5;
-- (void)addFormulaString:(id)a3 atCellRef:(const TSCECellRef *)a4;
-- (void)foreachFormulaInOwnerKind:(unsigned __int16)a3 performBlock:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)addFormulaObject:(id)object atCellRef:(const TSCECellRef *)ref forOwnerKind:(unsigned __int16)kind;
+- (void)addFormulaString:(id)string atCellRef:(const TSCECellRef *)ref;
+- (void)foreachFormulaInOwnerKind:(unsigned __int16)kind performBlock:(id)block;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCEFormulasForUndo
 
-- (void)addFormulaObject:(id)a3 atCellRef:(const TSCECellRef *)a4 forOwnerKind:(unsigned __int16)a5
+- (void)addFormulaObject:(id)object atCellRef:(const TSCECellRef *)ref forOwnerKind:(unsigned __int16)kind
 {
-  v8 = a3;
-  v17 = a5;
-  v9 = sub_2210C3024(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &v17);
+  objectCopy = object;
+  kindCopy = kind;
+  v9 = sub_2210C3024(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &kindCopy);
   if (v9)
   {
     v10 = v9[3];
-    objc_msgSend_addFormula_atCellRef_(v10, v11, v8, a4, v12);
+    objc_msgSend_addFormula_atCellRef_(v10, v11, objectCopy, ref, v12);
   }
 
   else
   {
     v13 = objc_opt_new();
-    v18 = &v17;
-    v14 = sub_221485E1C(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &v17);
+    v18 = &kindCopy;
+    v14 = sub_221485E1C(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &kindCopy);
     objc_storeStrong(v14 + 3, v13);
     v10 = v13;
-    objc_msgSend_addFormula_atCellRef_(v13, v15, v8, a4, v16);
+    objc_msgSend_addFormula_atCellRef_(v13, v15, objectCopy, ref, v16);
   }
 }
 
@@ -174,16 +174,16 @@
   return self;
 }
 
-- (id)subsetForOwnerKind:(unsigned __int16)a3
+- (id)subsetForOwnerKind:(unsigned __int16)kind
 {
-  v14 = a3;
+  kindCopy = kind;
   v4 = objc_opt_new();
-  v5 = sub_2210C3024(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &v14);
+  v5 = sub_2210C3024(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &kindCopy);
   if (v5)
   {
     v10 = objc_msgSend_copy(v5[3], v6, v7, v8, v9);
-    v15 = &v14;
-    v11 = sub_221485E1C(v4 + 1, &v14);
+    v15 = &kindCopy;
+    v11 = sub_221485E1C(v4 + 1, &kindCopy);
     v12 = v11[3];
     v11[3] = v10;
   }
@@ -191,10 +191,10 @@
   return v4;
 }
 
-- (unint64_t)countForOwnerKind:(unsigned __int16)a3
+- (unint64_t)countForOwnerKind:(unsigned __int16)kind
 {
-  v8 = a3;
-  result = sub_2210C3024(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &v8);
+  kindCopy = kind;
+  result = sub_2210C3024(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &kindCopy);
   if (result)
   {
     return objc_msgSend_count(*(result + 24), v4, v5, v6, v7);
@@ -277,14 +277,14 @@
   return v7;
 }
 
-- (void)foreachFormulaInOwnerKind:(unsigned __int16)a3 performBlock:(id)a4
+- (void)foreachFormulaInOwnerKind:(unsigned __int16)kind performBlock:(id)block
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = sub_2210C3024(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &v10);
+  kindCopy = kind;
+  blockCopy = block;
+  v6 = sub_2210C3024(&self->_formulasForOwnerKind.__table_.__bucket_list_.__ptr_, &kindCopy);
   if (v6)
   {
-    objc_msgSend_foreachFormula_(v6[3], v7, v5, v8, v9);
+    objc_msgSend_foreachFormula_(v6[3], v7, blockCopy, v8, v9);
   }
 }
 
@@ -303,19 +303,19 @@
   return v12;
 }
 
-- (TSCEFormulasForUndo)initWithArchive:(const void *)a3
+- (TSCEFormulasForUndo)initWithArchive:(const void *)archive
 {
   v34.receiver = self;
   v34.super_class = TSCEFormulasForUndo;
   v4 = [(TSCEFormulasForUndo *)&v34 init];
   if (v4)
   {
-    v23 = *(a3 + 6);
+    v23 = *(archive + 6);
     if (v23 >= 1)
     {
       for (i = 0; i != v23; ++i)
       {
-        v6 = *(*(a3 + 4) + 8 * i + 8);
+        v6 = *(*(archive + 4) + 8 * i + 8);
         v7 = *(v6 + 56);
         if (*(v6 + 48))
         {
@@ -385,9 +385,9 @@
   return v4;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v13 = a4;
+  archiverCopy = archiver;
   next = self->_formulasForOwnerKind.__table_.__first_node_.__next_;
   if (next)
   {
@@ -424,8 +424,8 @@
         v18 = v24;
         v21 = v6;
         v19 = v22;
-        v20 = a3;
-        v16 = v13;
+        archiveCopy = archive;
+        v16 = archiverCopy;
         objc_msgSend_foreachFormula_(v7, v8, v14, v9, v10, v11);
       }
 
@@ -441,24 +441,24 @@
   }
 }
 
-- (void)addFormulaString:(id)a3 atCellRef:(const TSCECellRef *)a4
+- (void)addFormulaString:(id)string atCellRef:(const TSCECellRef *)ref
 {
-  v7 = a3;
-  if (v7)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v8 = sub_221486084(&self->_formulaStringsForCellRefs.__table_.__bucket_list_.__ptr_, a4);
-    objc_storeStrong(v8 + 5, a3);
+    v8 = sub_221486084(&self->_formulaStringsForCellRefs.__table_.__bucket_list_.__ptr_, ref);
+    objc_storeStrong(v8 + 5, string);
   }
 
   else
   {
-    sub_22148632C(&self->_formulaStringsForCellRefs.__table_.__bucket_list_.__ptr_, a4);
+    sub_22148632C(&self->_formulaStringsForCellRefs.__table_.__bucket_list_.__ptr_, ref);
   }
 }
 
-- (id)formulaStringAtCellRef:(const TSCECellRef *)a3
+- (id)formulaStringAtCellRef:(const TSCECellRef *)ref
 {
-  v3 = sub_221244B44(&self->_formulaStringsForCellRefs.__table_.__bucket_list_.__ptr_, a3);
+  v3 = sub_221244B44(&self->_formulaStringsForCellRefs.__table_.__bucket_list_.__ptr_, ref);
   if (v3)
   {
     v3 = v3[5];

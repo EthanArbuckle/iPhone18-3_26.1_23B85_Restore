@@ -1,16 +1,16 @@
 @interface LACUserDefaultsPersistentStore
 - (_TtC23LocalAuthenticationCore30LACUserDefaultsPersistentStore)init;
-- (_TtC23LocalAuthenticationCore30LACUserDefaultsPersistentStore)initWithSuiteName:(id)a3;
-- (void)dataForKey:(NSString *)a3 completion:(id)a4;
-- (void)removeObjectForKey:(NSString *)a3 completion:(id)a4;
-- (void)setData:(NSData *)a3 forKey:(NSString *)a4 completion:(id)a5;
+- (_TtC23LocalAuthenticationCore30LACUserDefaultsPersistentStore)initWithSuiteName:(id)name;
+- (void)dataForKey:(NSString *)key completion:(id)completion;
+- (void)removeObjectForKey:(NSString *)key completion:(id)completion;
+- (void)setData:(NSData *)data forKey:(NSString *)key completion:(id)completion;
 @end
 
 @implementation LACUserDefaultsPersistentStore
 
-- (_TtC23LocalAuthenticationCore30LACUserDefaultsPersistentStore)initWithSuiteName:(id)a3
+- (_TtC23LocalAuthenticationCore30LACUserDefaultsPersistentStore)initWithSuiteName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -24,15 +24,15 @@
   return LACUserDefaultsPersistentStore.init(suiteName:)(v3, v4);
 }
 
-- (void)dataForKey:(NSString *)a3 completion:(id)a4
+- (void)dataForKey:(NSString *)key completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = key;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -47,21 +47,21 @@
   v15[3] = 0;
   v15[4] = &_sIeghH_IeAgH_TRTA_36Tu;
   v15[5] = v14;
-  v16 = a3;
+  keyCopy = key;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v10, &_sIeAgH_ytIeAgHr_TRTA_41Tu, v15);
 }
 
-- (void)setData:(NSData *)a3 forKey:(NSString *)a4 completion:(id)a5
+- (void)setData:(NSData *)data forKey:(NSString *)key completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = data;
+  v14[3] = key;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -76,21 +76,21 @@
   v17[3] = 0;
   v17[4] = &_sIeghH_IeAgH_TRTA_22Tu;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  dataCopy = data;
+  keyCopy = key;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v12, &_sIeAgH_ytIeAgHr_TRTA_27Tu, v17);
 }
 
-- (void)removeObjectForKey:(NSString *)a3 completion:(id)a4
+- (void)removeObjectForKey:(NSString *)key completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = key;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -105,7 +105,7 @@
   v15[3] = 0;
   v15[4] = &_sIeghH_IeAgH_TRTATu;
   v15[5] = v14;
-  v16 = a3;
+  keyCopy = key;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v10, &_sIeAgH_ytIeAgHr_TRTATu, v15);
 }

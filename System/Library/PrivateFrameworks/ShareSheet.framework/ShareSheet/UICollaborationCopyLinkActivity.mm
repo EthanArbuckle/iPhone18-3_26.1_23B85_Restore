@@ -1,9 +1,9 @@
 @interface UICollaborationCopyLinkActivity
 + (unint64_t)_xpcAttributes;
-- (BOOL)canPerformWithCollaborationItem:(id)a3 activityItems:(id)a4;
+- (BOOL)canPerformWithCollaborationItem:(id)item activityItems:(id)items;
 - (SFCollaborationService)collaborationService;
 - (id)activityTitle;
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4;
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion;
 @end
 
 @implementation UICollaborationCopyLinkActivity
@@ -30,29 +30,29 @@
   return v3;
 }
 
-- (BOOL)canPerformWithCollaborationItem:(id)a3 activityItems:(id)a4
+- (BOOL)canPerformWithCollaborationItem:(id)item activityItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 type];
-  if (v6)
+  itemCopy = item;
+  type = [itemCopy type];
+  if (type)
   {
-    if (v6 == 1)
+    if (type == 1)
     {
       v7 = MEMORY[0x1E69CDE78];
-      v8 = [v5 itemProvider];
-      v9 = [v7 isPostCKShareItemProvider:v8];
+      itemProvider = [itemCopy itemProvider];
+      isShared = [v7 isPostCKShareItemProvider:itemProvider];
     }
 
     else
     {
-      v9 = 0;
+      isShared = 0;
     }
   }
 
   else
   {
-    v9 = [v5 isShared];
+    isShared = [itemCopy isShared];
   }
 
   v10 = share_sheet_log();
@@ -60,8 +60,8 @@
   {
     v11 = "no";
     v13 = 138412802;
-    v14 = self;
-    if (v9)
+    selfCopy = self;
+    if (isShared)
     {
       v11 = "yes";
     }
@@ -69,27 +69,27 @@
     v15 = 2080;
     v16 = v11;
     v17 = 2112;
-    v18 = v5;
+    v18 = itemCopy;
     _os_log_impl(&dword_18B359000, v10, OS_LOG_TYPE_DEFAULT, "%@: canPerform:%s collaborationItem:%@", &v13, 0x20u);
   }
 
-  return v9;
+  return isShared;
 }
 
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E69CDE78];
-  v7 = [(UICollaborationCopyLinkActivity *)self collaborationItem];
-  v8 = [(UICollaborationCopyLinkActivity *)self collaborationService];
+  collaborationItem = [(UICollaborationCopyLinkActivity *)self collaborationItem];
+  collaborationService = [(UICollaborationCopyLinkActivity *)self collaborationService];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__UICollaborationCopyLinkActivity__prepareWithActivityItems_completion___block_invoke;
   v10[3] = &unk_1E71F9D20;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
-  [v6 requestSharedURLForCollaborationItem:v7 collaborationService:v8 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v6 requestSharedURLForCollaborationItem:collaborationItem collaborationService:collaborationService completionHandler:v10];
 }
 
 void __72__UICollaborationCopyLinkActivity__prepareWithActivityItems_completion___block_invoke(uint64_t a1, void *a2, void *a3)

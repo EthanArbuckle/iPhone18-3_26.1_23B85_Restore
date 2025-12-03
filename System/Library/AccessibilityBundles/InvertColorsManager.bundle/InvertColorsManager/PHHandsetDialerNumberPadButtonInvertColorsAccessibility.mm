@@ -17,8 +17,8 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 layer];
-  [AXInvertColorsAppHelper toggleInvertColors:v3];
+  layer = [v2 layer];
+  [AXInvertColorsAppHelper toggleInvertColors:layer];
 }
 
 @end

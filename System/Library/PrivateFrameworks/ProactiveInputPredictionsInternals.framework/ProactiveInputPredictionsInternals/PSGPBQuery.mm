@@ -1,32 +1,32 @@
 @interface PSGPBQuery
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHasContextBeforeInput:(BOOL)a3;
-- (void)setHasHasRecipientNames:(BOOL)a3;
-- (void)setHasHasResponseContext:(BOOL)a3;
-- (void)setHasIsDocumentEmpty:(BOOL)a3;
-- (void)setHasIsResponseContextBlacklisted:(BOOL)a3;
-- (void)setHasMaxStructuredInfoItems:(BOOL)a3;
-- (void)setHasMaxTextualResponseItems:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHasContextBeforeInput:(BOOL)input;
+- (void)setHasHasRecipientNames:(BOOL)names;
+- (void)setHasHasResponseContext:(BOOL)context;
+- (void)setHasIsDocumentEmpty:(BOOL)empty;
+- (void)setHasIsResponseContextBlacklisted:(BOOL)blacklisted;
+- (void)setHasMaxStructuredInfoItems:(BOOL)items;
+- (void)setHasMaxTextualResponseItems:(BOOL)items;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSGPBQuery
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 88);
+  fromCopy = from;
+  v5 = *(fromCopy + 88);
   if ((v5 & 0x20) != 0)
   {
-    self->_hasResponseContext = *(v4 + 82);
+    self->_hasResponseContext = *(fromCopy + 82);
     *&self->_has |= 0x20u;
-    v5 = *(v4 + 88);
+    v5 = *(fromCopy + 88);
     if ((v5 & 0x80) == 0)
     {
 LABEL_3:
@@ -39,84 +39,84 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 88) & 0x80) == 0)
+  else if ((*(fromCopy + 88) & 0x80) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_isResponseContextBlacklisted = *(v4 + 84);
+  self->_isResponseContextBlacklisted = *(fromCopy + 84);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 88) & 0x40) != 0)
+  if ((*(fromCopy + 88) & 0x40) != 0)
   {
 LABEL_4:
-    self->_isDocumentEmpty = *(v4 + 83);
+    self->_isDocumentEmpty = *(fromCopy + 83);
     *&self->_has |= 0x40u;
   }
 
 LABEL_5:
-  v8 = v4;
-  if (*(v4 + 7))
+  v8 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(PSGPBQuery *)self setTextContentType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PSGPBQuery *)self setLocaleIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PSGPBQuery *)self setBundleIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v6 = *(v4 + 88);
+  v6 = *(fromCopy + 88);
   if ((v6 & 4) != 0)
   {
-    self->_maxTextualResponseItems = *(v4 + 12);
+    self->_maxTextualResponseItems = *(fromCopy + 12);
     *&self->_has |= 4u;
-    v6 = *(v4 + 88);
+    v6 = *(fromCopy + 88);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_maxStructuredInfoItems = *(v4 + 11);
+    self->_maxStructuredInfoItems = *(fromCopy + 11);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PSGPBQuery *)self setInitiatingProcess:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PSGPBQuery *)self setExperimentId:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PSGPBQuery *)self setTreatmentId:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PSGPBQuery *)self setTreatmentName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 88);
+  v7 = *(fromCopy + 88);
   if ((v7 & 8) != 0)
   {
-    self->_hasContextBeforeInput = *(v4 + 80);
+    self->_hasContextBeforeInput = *(fromCopy + 80);
     *&self->_has |= 8u;
-    v7 = *(v4 + 88);
+    v7 = *(fromCopy + 88);
     if ((v7 & 1) == 0)
     {
 LABEL_25:
@@ -129,17 +129,17 @@ LABEL_25:
     }
   }
 
-  else if ((*(v4 + 88) & 1) == 0)
+  else if ((*(fromCopy + 88) & 1) == 0)
   {
     goto LABEL_25;
   }
 
-  self->_maxPredictionItems = *(v4 + 10);
+  self->_maxPredictionItems = *(fromCopy + 10);
   *&self->_has |= 1u;
-  if ((*(v4 + 88) & 0x10) != 0)
+  if ((*(fromCopy + 88) & 0x10) != 0)
   {
 LABEL_26:
-    self->_hasRecipientNames = *(v4 + 81);
+    self->_hasRecipientNames = *(fromCopy + 81);
     *&self->_has |= 0x10u;
   }
 
@@ -251,104 +251,104 @@ LABEL_16:
   return v17 ^ v18 ^ v16 ^ v15 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_66;
   }
 
-  v5 = *(v4 + 88);
+  v5 = *(equalCopy + 88);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 88) & 0x20) == 0)
+    if ((*(equalCopy + 88) & 0x20) == 0)
     {
       goto LABEL_66;
     }
 
-    v10 = *(v4 + 82);
+    v10 = *(equalCopy + 82);
     if (self->_hasResponseContext)
     {
-      if ((*(v4 + 82) & 1) == 0)
+      if ((*(equalCopy + 82) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 82))
+    else if (*(equalCopy + 82))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 88) & 0x20) != 0)
+  else if ((*(equalCopy + 88) & 0x20) != 0)
   {
     goto LABEL_66;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((*(v4 + 88) & 0x80) == 0)
+    if ((*(equalCopy + 88) & 0x80) == 0)
     {
       goto LABEL_66;
     }
 
-    v11 = *(v4 + 84);
+    v11 = *(equalCopy + 84);
     if (self->_isResponseContextBlacklisted)
     {
-      if ((*(v4 + 84) & 1) == 0)
+      if ((*(equalCopy + 84) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 84))
+    else if (*(equalCopy + 84))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 88) & 0x80) != 0)
+  else if ((*(equalCopy + 88) & 0x80) != 0)
   {
     goto LABEL_66;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 88) & 0x40) == 0)
+    if ((*(equalCopy + 88) & 0x40) == 0)
     {
       goto LABEL_66;
     }
 
-    v12 = *(v4 + 83);
+    v12 = *(equalCopy + 83);
     if (self->_isDocumentEmpty)
     {
-      if ((*(v4 + 83) & 1) == 0)
+      if ((*(equalCopy + 83) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 83))
+    else if (*(equalCopy + 83))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 88) & 0x40) != 0)
+  else if ((*(equalCopy + 88) & 0x40) != 0)
   {
     goto LABEL_66;
   }
 
   textContentType = self->_textContentType;
-  if (textContentType | *(v4 + 7) && ![(NSString *)textContentType isEqual:?])
+  if (textContentType | *(equalCopy + 7) && ![(NSString *)textContentType isEqual:?])
   {
     goto LABEL_66;
   }
 
   localeIdentifier = self->_localeIdentifier;
-  if (localeIdentifier | *(v4 + 4))
+  if (localeIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)localeIdentifier isEqual:?])
     {
@@ -357,7 +357,7 @@ LABEL_16:
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 1))
+  if (bundleIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)bundleIdentifier isEqual:?])
     {
@@ -365,41 +365,41 @@ LABEL_16:
     }
   }
 
-  v9 = *(v4 + 88);
+  v9 = *(equalCopy + 88);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 88) & 4) == 0 || self->_maxTextualResponseItems != *(v4 + 12))
+    if ((*(equalCopy + 88) & 4) == 0 || self->_maxTextualResponseItems != *(equalCopy + 12))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 88) & 4) != 0)
+  else if ((*(equalCopy + 88) & 4) != 0)
   {
     goto LABEL_66;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_maxStructuredInfoItems != *(v4 + 11))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_maxStructuredInfoItems != *(equalCopy + 11))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
     goto LABEL_66;
   }
 
   initiatingProcess = self->_initiatingProcess;
-  if (initiatingProcess | *(v4 + 3) && ![(NSString *)initiatingProcess isEqual:?])
+  if (initiatingProcess | *(equalCopy + 3) && ![(NSString *)initiatingProcess isEqual:?])
   {
     goto LABEL_66;
   }
 
   experimentId = self->_experimentId;
-  if (experimentId | *(v4 + 2))
+  if (experimentId | *(equalCopy + 2))
   {
     if (![(NSString *)experimentId isEqual:?])
     {
@@ -408,7 +408,7 @@ LABEL_16:
   }
 
   treatmentId = self->_treatmentId;
-  if (treatmentId | *(v4 + 8))
+  if (treatmentId | *(equalCopy + 8))
   {
     if (![(NSString *)treatmentId isEqual:?])
     {
@@ -417,7 +417,7 @@ LABEL_16:
   }
 
   treatmentName = self->_treatmentName;
-  if (treatmentName | *(v4 + 9))
+  if (treatmentName | *(equalCopy + 9))
   {
     if (![(NSString *)treatmentName isEqual:?])
     {
@@ -427,57 +427,57 @@ LABEL_16:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 88) & 8) == 0)
+    if ((*(equalCopy + 88) & 8) == 0)
     {
       goto LABEL_66;
     }
 
-    v17 = *(v4 + 80);
+    v17 = *(equalCopy + 80);
     if (self->_hasContextBeforeInput)
     {
-      if ((*(v4 + 80) & 1) == 0)
+      if ((*(equalCopy + 80) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 80))
+    else if (*(equalCopy + 80))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 88) & 8) != 0)
+  else if ((*(equalCopy + 88) & 8) != 0)
   {
     goto LABEL_66;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_maxPredictionItems != *(v4 + 10))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_maxPredictionItems != *(equalCopy + 10))
     {
       goto LABEL_66;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_66;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 88) & 0x10) != 0)
+    if ((*(equalCopy + 88) & 0x10) != 0)
     {
       if (self->_hasRecipientNames)
       {
-        if ((*(v4 + 81) & 1) == 0)
+        if ((*(equalCopy + 81) & 1) == 0)
         {
           goto LABEL_66;
         }
       }
 
-      else if (*(v4 + 81))
+      else if (*(equalCopy + 81))
       {
         goto LABEL_66;
       }
@@ -491,15 +491,15 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  v18 = (*(v4 + 88) & 0x10) == 0;
+  v18 = (*(equalCopy + 88) & 0x10) == 0;
 LABEL_67:
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x20) != 0)
@@ -534,15 +534,15 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_textContentType copyWithZone:a3];
+  v8 = [(NSString *)self->_textContentType copyWithZone:zone];
   v9 = *(v6 + 7);
   *(v6 + 7) = v8;
 
-  v10 = [(NSString *)self->_localeIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_localeIdentifier copyWithZone:zone];
   v11 = *(v6 + 4);
   *(v6 + 4) = v10;
 
-  v12 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v13 = *(v6 + 1);
   *(v6 + 1) = v12;
 
@@ -560,19 +560,19 @@ LABEL_5:
     v6[88] |= 2u;
   }
 
-  v15 = [(NSString *)self->_initiatingProcess copyWithZone:a3];
+  v15 = [(NSString *)self->_initiatingProcess copyWithZone:zone];
   v16 = *(v6 + 3);
   *(v6 + 3) = v15;
 
-  v17 = [(NSString *)self->_experimentId copyWithZone:a3];
+  v17 = [(NSString *)self->_experimentId copyWithZone:zone];
   v18 = *(v6 + 2);
   *(v6 + 2) = v17;
 
-  v19 = [(NSString *)self->_treatmentId copyWithZone:a3];
+  v19 = [(NSString *)self->_treatmentId copyWithZone:zone];
   v20 = *(v6 + 8);
   *(v6 + 8) = v19;
 
-  v21 = [(NSString *)self->_treatmentName copyWithZone:a3];
+  v21 = [(NSString *)self->_treatmentName copyWithZone:zone];
   v22 = *(v6 + 9);
   *(v6 + 9) = v21;
 
@@ -614,14 +614,14 @@ LABEL_12:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v4[82] = self->_hasResponseContext;
-    v4[88] |= 0x20u;
+    toCopy[82] = self->_hasResponseContext;
+    toCopy[88] |= 0x20u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -640,78 +640,78 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[84] = self->_isResponseContextBlacklisted;
-  v4[88] |= 0x80u;
+  toCopy[84] = self->_isResponseContextBlacklisted;
+  toCopy[88] |= 0x80u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_4:
-    v4[83] = self->_isDocumentEmpty;
-    v4[88] |= 0x40u;
+    toCopy[83] = self->_isDocumentEmpty;
+    toCopy[88] |= 0x40u;
   }
 
 LABEL_5:
-  v8 = v4;
+  v8 = toCopy;
   if (self->_textContentType)
   {
-    [v4 setTextContentType:?];
-    v4 = v8;
+    [toCopy setTextContentType:?];
+    toCopy = v8;
   }
 
   if (self->_localeIdentifier)
   {
     [v8 setLocaleIdentifier:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_bundleIdentifier)
   {
     [v8 setBundleIdentifier:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    *(v4 + 12) = self->_maxTextualResponseItems;
-    v4[88] |= 4u;
+    *(toCopy + 12) = self->_maxTextualResponseItems;
+    toCopy[88] |= 4u;
     v6 = self->_has;
   }
 
   if ((v6 & 2) != 0)
   {
-    *(v4 + 11) = self->_maxStructuredInfoItems;
-    v4[88] |= 2u;
+    *(toCopy + 11) = self->_maxStructuredInfoItems;
+    toCopy[88] |= 2u;
   }
 
   if (self->_initiatingProcess)
   {
     [v8 setInitiatingProcess:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_experimentId)
   {
     [v8 setExperimentId:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_treatmentId)
   {
     [v8 setTreatmentId:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_treatmentName)
   {
     [v8 setTreatmentName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((v7 & 8) != 0)
   {
-    v4[80] = self->_hasContextBeforeInput;
-    v4[88] |= 8u;
+    toCopy[80] = self->_hasContextBeforeInput;
+    toCopy[88] |= 8u;
     v7 = self->_has;
     if ((v7 & 1) == 0)
     {
@@ -730,21 +730,21 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  *(v4 + 10) = self->_maxPredictionItems;
-  v4[88] |= 1u;
+  *(toCopy + 10) = self->_maxPredictionItems;
+  toCopy[88] |= 1u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_26:
-    v4[81] = self->_hasRecipientNames;
-    v4[88] |= 0x10u;
+    toCopy[81] = self->_hasRecipientNames;
+    toCopy[88] |= 0x10u;
   }
 
 LABEL_27:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -864,12 +864,12 @@ LABEL_27:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   experimentId = self->_experimentId;
   if (experimentId)
   {
-    [v3 setObject:experimentId forKey:@"experiment_id"];
+    [dictionary setObject:experimentId forKey:@"experiment_id"];
   }
 
   treatmentId = self->_treatmentId;
@@ -1002,15 +1002,15 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = PSGPBQuery;
   v4 = [(PSGPBQuery *)&v8 description];
-  v5 = [(PSGPBQuery *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PSGPBQuery *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasMaxStructuredInfoItems:(BOOL)a3
+- (void)setHasMaxStructuredInfoItems:(BOOL)items
 {
-  if (a3)
+  if (items)
   {
     v3 = 2;
   }
@@ -1023,9 +1023,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMaxTextualResponseItems:(BOOL)a3
+- (void)setHasMaxTextualResponseItems:(BOOL)items
 {
-  if (a3)
+  if (items)
   {
     v3 = 4;
   }
@@ -1038,9 +1038,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHasRecipientNames:(BOOL)a3
+- (void)setHasHasRecipientNames:(BOOL)names
 {
-  if (a3)
+  if (names)
   {
     v3 = 16;
   }
@@ -1053,9 +1053,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasHasContextBeforeInput:(BOOL)a3
+- (void)setHasHasContextBeforeInput:(BOOL)input
 {
-  if (a3)
+  if (input)
   {
     v3 = 8;
   }
@@ -1068,9 +1068,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsDocumentEmpty:(BOOL)a3
+- (void)setHasIsDocumentEmpty:(BOOL)empty
 {
-  if (a3)
+  if (empty)
   {
     v3 = 64;
   }
@@ -1083,9 +1083,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsResponseContextBlacklisted:(BOOL)a3
+- (void)setHasIsResponseContextBlacklisted:(BOOL)blacklisted
 {
-  if (a3)
+  if (blacklisted)
   {
     v3 = 0x80;
   }
@@ -1098,9 +1098,9 @@ LABEL_25:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasHasResponseContext:(BOOL)a3
+- (void)setHasHasResponseContext:(BOOL)context
 {
-  if (a3)
+  if (context)
   {
     v3 = 32;
   }

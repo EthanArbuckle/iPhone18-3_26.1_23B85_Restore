@@ -1,31 +1,31 @@
 @interface TSPKnownFieldRepeatedObjectReference
 - (id)debugDescription;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPKnownFieldRepeatedObjectReference
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v7.receiver = self;
   v7.super_class = TSPKnownFieldRepeatedObjectReference;
-  [(TSPKnownField *)&v7 loadFromUnarchiver:v4];
+  [(TSPKnownField *)&v7 loadFromUnarchiver:unarchiverCopy];
   if (self->super._values.current_size_ >= 1)
   {
-    objc_msgSend_strongReferences(v4, v5, v6);
+    objc_msgSend_strongReferences(unarchiverCopy, v5, v6);
     operator new();
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiverCopy = archiver;
   v35.receiver = self;
   v35.super_class = TSPKnownFieldRepeatedObjectReference;
-  [(TSPKnownField *)&v35 saveToArchiver:v4];
+  [(TSPKnownField *)&v35 saveToArchiver:archiverCopy];
   if (objc_msgSend_count(self->_strongObjects, v5, v6))
   {
     TSP::Reference::Reference(v34, 0);
@@ -48,7 +48,7 @@
             objc_enumerationMutation(v11);
           }
 
-          objc_msgSend_setStrongLazyReference_message_(v4, v13, *(*(&v30 + 1) + 8 * v16++), v34);
+          objc_msgSend_setStrongLazyReference_message_(archiverCopy, v13, *(*(&v30 + 1) + 8 * v16++), v34);
         }
 
         while (v14 != v16);
@@ -83,7 +83,7 @@
             objc_enumerationMutation(v19);
           }
 
-          objc_msgSend_setWeakLazyReference_message_(v4, v21, *(*(&v26 + 1) + 8 * v24++), v34);
+          objc_msgSend_setWeakLazyReference_message_(archiverCopy, v21, *(*(&v26 + 1) + 8 * v24++), v34);
         }
 
         while (v22 != v24);

@@ -1,7 +1,7 @@
 @interface PLEmailAddressManager
-- (PLEmailAddressManager)initWithPathManager:(id)a3 lazyAssetsdClient:(id)a4;
-- (id)emailAddressForKey:(id)a3;
-- (id)keyForEmailAddress:(id)a3;
+- (PLEmailAddressManager)initWithPathManager:(id)manager lazyAssetsdClient:(id)client;
+- (id)emailAddressForKey:(id)key;
+- (id)keyForEmailAddress:(id)address;
 - (void)_loadDictionariesIfNeeded;
 @end
 
@@ -16,8 +16,8 @@
     if ([MEMORY[0x1E69BF2F0] isEntitledForPhotoKit])
     {
       v5 = MEMORY[0x1E695DF20];
-      v6 = [(PLEmailAddressManager *)self plistPath];
-      v7 = [v5 dictionaryWithContentsOfFile:v6];
+      plistPath = [(PLEmailAddressManager *)self plistPath];
+      v7 = [v5 dictionaryWithContentsOfFile:plistPath];
       v8 = [v7 mutableCopy];
       keysForEmails = self->_keysForEmails;
       self->_keysForEmails = v8;
@@ -71,48 +71,48 @@ void __50__PLEmailAddressManager__loadDictionariesIfNeeded__block_invoke(uint64_
   [v8 setObject:v5 forKey:v9];
 }
 
-- (id)emailAddressForKey:(id)a3
+- (id)emailAddressForKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 intValue] == -1)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (!keyCopy || [keyCopy intValue] == -1)
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(PLEmailAddressManager *)v6 _loadDictionariesIfNeeded];
-  v7 = [(NSMutableDictionary *)v6->_emailsForKey objectForKey:v5];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PLEmailAddressManager *)selfCopy _loadDictionariesIfNeeded];
+  v7 = [(NSMutableDictionary *)selfCopy->_emailsForKey objectForKey:v5];
+  objc_sync_exit(selfCopy);
 
   if (!v7)
   {
     if (PLIsAssetsd())
     {
-      v8 = v6;
+      v8 = selfCopy;
       objc_sync_enter(v8);
-      v7 = [(NSMutableDictionary *)v6->_emailsForKey objectForKey:v5];
+      v7 = [(NSMutableDictionary *)selfCopy->_emailsForKey objectForKey:v5];
       objc_sync_exit(v8);
     }
 
     else
     {
-      v9 = [(PLEmailAddressManager *)v6 assetsdClient];
-      v10 = [v9 cloudInternalClient];
+      assetsdClient = [(PLEmailAddressManager *)selfCopy assetsdClient];
+      cloudInternalClient = [assetsdClient cloudInternalClient];
       v15 = 0;
-      v7 = [v10 emailAddressForKey:objc_msgSend(v5 error:{"intValue"), &v15}];
+      v7 = [cloudInternalClient emailAddressForKey:objc_msgSend(v5 error:{"intValue"), &v15}];
       v11 = v15;
 
       if (v7)
       {
-        v12 = v6;
+        v12 = selfCopy;
         objc_sync_enter(v12);
         [(objc_class *)v12[1].isa setObject:v5 forKey:v7];
-        [(NSMutableDictionary *)v6->_emailsForKey setObject:v7 forKey:v5];
+        [(NSMutableDictionary *)selfCopy->_emailsForKey setObject:v7 forKey:v5];
         objc_sync_exit(v12);
       }
 
@@ -149,53 +149,53 @@ LABEL_16:
   return v7;
 }
 
-- (id)keyForEmailAddress:(id)a3
+- (id)keyForEmailAddress:(id)address
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  addressCopy = address;
+  if (!addressCopy)
   {
     v6 = 0;
     goto LABEL_27;
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  [(PLEmailAddressManager *)v5 _loadDictionariesIfNeeded];
-  v6 = [(NSMutableDictionary *)v5->_keysForEmails objectForKey:v4];
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PLEmailAddressManager *)selfCopy _loadDictionariesIfNeeded];
+  v6 = [(NSMutableDictionary *)selfCopy->_keysForEmails objectForKey:addressCopy];
+  objc_sync_exit(selfCopy);
 
   if (!v6)
   {
     if (PLIsAssetsd())
     {
-      v7 = v5;
+      v7 = selfCopy;
       objc_sync_enter(v7);
-      v6 = [(NSMutableDictionary *)v5->_keysForEmails objectForKey:v4];
+      v6 = [(NSMutableDictionary *)selfCopy->_keysForEmails objectForKey:addressCopy];
       if (!v6)
       {
         v8 = MEMORY[0x1E696AD98];
         ++v7->_maxKey;
         v6 = [v8 numberWithInt:?];
-        [(NSMutableDictionary *)v5->_keysForEmails setObject:v6 forKey:v4];
-        [(NSMutableDictionary *)v7->_emailsForKey setObject:v4 forKey:v6];
-        v9 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5->_keysForEmails format:100 options:0 error:0];
-        v10 = [(PLEmailAddressManager *)v7 plistPath];
-        if (([v9 writeToFile:v10 options:1073741825 error:0] & 1) == 0)
+        [(NSMutableDictionary *)selfCopy->_keysForEmails setObject:v6 forKey:addressCopy];
+        [(NSMutableDictionary *)v7->_emailsForKey setObject:addressCopy forKey:v6];
+        v9 = [MEMORY[0x1E696AE40] dataWithPropertyList:selfCopy->_keysForEmails format:100 options:0 error:0];
+        plistPath = [(PLEmailAddressManager *)v7 plistPath];
+        if (([v9 writeToFile:plistPath options:1073741825 error:0] & 1) == 0)
         {
           v11 = objc_opt_new();
-          v12 = [(PLEmailAddressManager *)v10 stringByDeletingLastPathComponent];
+          stringByDeletingLastPathComponent = [(PLEmailAddressManager *)plistPath stringByDeletingLastPathComponent];
           v25 = 0;
-          v13 = [v11 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v25];
+          v13 = [v11 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
           v14 = v25;
 
-          if (!v13 || (v24 = v14, v15 = [v9 writeToFile:v10 options:1073741825 error:&v24], v16 = v24, v14, v14 = v16, (v15 & 1) == 0))
+          if (!v13 || (v24 = v14, v15 = [v9 writeToFile:plistPath options:1073741825 error:&v24], v16 = v24, v14, v14 = v16, (v15 & 1) == 0))
           {
             v17 = PLPhotoSharingGetLog();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              v28 = v10;
+              v28 = plistPath;
               v29 = 2112;
               v30 = v14;
               _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "##### Failed to write %@ at %@", buf, 0x16u);
@@ -208,10 +208,10 @@ LABEL_16:
       goto LABEL_22;
     }
 
-    v18 = [(PLEmailAddressManager *)v5 assetsdClient];
-    v19 = [v18 cloudInternalClient];
+    assetsdClient = [(PLEmailAddressManager *)selfCopy assetsdClient];
+    cloudInternalClient = [assetsdClient cloudInternalClient];
     v26 = 0;
-    v20 = [v19 keyForEmailAddress:v4 error:&v26];
+    v20 = [cloudInternalClient keyForEmailAddress:addressCopy error:&v26];
     v7 = v26;
 
     if (v7)
@@ -236,10 +236,10 @@ LABEL_16:
       }
 
       v6 = [MEMORY[0x1E696AD98] numberWithInt:v20];
-      v21 = v5;
+      v21 = selfCopy;
       objc_sync_enter(v21);
-      [(NSMutableDictionary *)v5->_keysForEmails setObject:v6 forKey:v4];
-      [(objc_class *)v21[2].isa setObject:v4 forKey:v6];
+      [(NSMutableDictionary *)selfCopy->_keysForEmails setObject:v6 forKey:addressCopy];
+      [(objc_class *)v21[2].isa setObject:addressCopy forKey:v6];
       objc_sync_exit(v21);
     }
 
@@ -261,14 +261,14 @@ LABEL_27:
   return v6;
 }
 
-- (PLEmailAddressManager)initWithPathManager:(id)a3 lazyAssetsdClient:(id)a4
+- (PLEmailAddressManager)initWithPathManager:(id)manager lazyAssetsdClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  managerCopy = manager;
+  clientCopy = client;
+  v10 = clientCopy;
+  if (managerCopy)
   {
-    if (v9)
+    if (clientCopy)
     {
       goto LABEL_3;
     }
@@ -276,8 +276,8 @@ LABEL_27:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLEmailAddressManager.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLEmailAddressManager.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
     if (v10)
     {
@@ -285,8 +285,8 @@ LABEL_27:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PLEmailAddressManager.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"lazyAssetsdClient"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLEmailAddressManager.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"lazyAssetsdClient"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -295,8 +295,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_pathManager, a3);
-    objc_storeStrong(&v12->_lazyAssetsdClient, a4);
+    objc_storeStrong(&v11->_pathManager, manager);
+    objc_storeStrong(&v12->_lazyAssetsdClient, client);
   }
 
   return v12;

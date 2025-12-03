@@ -1,12 +1,12 @@
 @interface PKCompactNavigationContainerControllerPresentationAnimator
-- (PKCompactNavigationContainerControllerPresentationAnimator)initWithPresenting:(BOOL)a3;
-- (void)_updateWithTransitionContext:(id)a3;
-- (void)animateTransition:(id)a3;
+- (PKCompactNavigationContainerControllerPresentationAnimator)initWithPresenting:(BOOL)presenting;
+- (void)_updateWithTransitionContext:(id)context;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation PKCompactNavigationContainerControllerPresentationAnimator
 
-- (PKCompactNavigationContainerControllerPresentationAnimator)initWithPresenting:(BOOL)a3
+- (PKCompactNavigationContainerControllerPresentationAnimator)initWithPresenting:(BOOL)presenting
 {
   v8.receiver = self;
   v8.super_class = PKCompactNavigationContainerControllerPresentationAnimator;
@@ -14,17 +14,17 @@
   v5 = v4;
   if (v4)
   {
-    v4->_presenting = a3;
+    v4->_presenting = presenting;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (void)_updateWithTransitionContext:(id)a3
+- (void)_updateWithTransitionContext:(id)context
 {
-  v5 = a3;
-  objc_storeStrong(&self->_transitionContext, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_transitionContext, context);
   v6 = *MEMORY[0x1E69DE768];
   v7 = *MEMORY[0x1E69DE778];
   if (self->_presenting)
@@ -37,7 +37,7 @@
     v8 = *MEMORY[0x1E69DE778];
   }
 
-  v9 = [v5 viewControllerForKey:v8];
+  v9 = [contextCopy viewControllerForKey:v8];
   v10 = *MEMORY[0x1E69DE770];
   v11 = *MEMORY[0x1E69DE780];
   if (self->_presenting)
@@ -50,7 +50,7 @@
     v12 = *MEMORY[0x1E69DE780];
   }
 
-  v13 = [v5 viewForKey:v12];
+  v13 = [contextCopy viewForKey:v12];
   objc_storeWeak(&self->_presentingVC, v9);
   objc_storeWeak(&self->_presentingView, v13);
   if (self->_presenting)
@@ -63,7 +63,7 @@
     v14 = v6;
   }
 
-  v15 = [v5 viewControllerForKey:v14];
+  v15 = [contextCopy viewControllerForKey:v14];
   if (self->_presenting)
   {
     v16 = v11;
@@ -74,16 +74,16 @@
     v16 = v10;
   }
 
-  v17 = [v5 viewForKey:v16];
+  v17 = [contextCopy viewForKey:v16];
   objc_storeWeak(&self->_presentedVC, v15);
   objc_storeWeak(&self->_presentedView, v17);
-  v18 = [(UIViewControllerContextTransitioning *)self->_transitionContext containerView];
+  containerView = [(UIViewControllerContextTransitioning *)self->_transitionContext containerView];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91__PKCompactNavigationContainerControllerPresentationAnimator__updateWithTransitionContext___block_invoke;
   aBlock[3] = &unk_1E801FC60;
-  v35 = v5;
-  v19 = v5;
+  v35 = contextCopy;
+  v19 = contextCopy;
   v20 = _Block_copy(aBlock);
   v21 = MEMORY[0x1E69DD250];
   v27[0] = MEMORY[0x1E69E9820];
@@ -94,7 +94,7 @@
   v29 = v9;
   v30 = v17;
   v31 = v15;
-  v32 = self;
+  selfCopy = self;
   v33 = v20;
   v22 = v15;
   v23 = v17;
@@ -102,8 +102,8 @@
   v25 = v20;
   v26 = v13;
   [v21 performWithoutAnimation:v27];
-  [v18 addSubview:v26];
-  [v18 addSubview:v23];
+  [containerView addSubview:v26];
+  [containerView addSubview:v23];
 }
 
 double __91__PKCompactNavigationContainerControllerPresentationAnimator__updateWithTransitionContext___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -153,26 +153,26 @@ uint64_t __91__PKCompactNavigationContainerControllerPresentationAnimator__updat
   return [v4 layoutIfNeeded];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  [(PKCompactNavigationContainerControllerPresentationAnimator *)self _updateWithTransitionContext:v4];
+  transitionCopy = transition;
+  [(PKCompactNavigationContainerControllerPresentationAnimator *)self _updateWithTransitionContext:transitionCopy];
   WeakRetained = objc_loadWeakRetained(&self->_presentedVC);
   v6 = objc_loadWeakRetained(&self->_presentedView);
   v7 = MEMORY[0x1E69DD250];
-  v12 = v4;
+  v12 = transitionCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__PKCompactNavigationContainerControllerPresentationAnimator_animateTransition___block_invoke;
   v13[3] = &unk_1E8010A88;
   v14 = WeakRetained;
-  v15 = self;
+  selfCopy = self;
   v16 = v6;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__PKCompactNavigationContainerControllerPresentationAnimator_animateTransition___block_invoke_2;
   v11[3] = &unk_1E8011D28;
-  v8 = v4;
+  v8 = transitionCopy;
   v9 = v6;
   v10 = WeakRetained;
   [v7 _animateUsingDefaultTimingWithOptions:134 animations:v13 completion:v11];

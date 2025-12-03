@@ -3,58 +3,58 @@
 - (BOOL)_isAlarmTypeMedia;
 - (BOOL)_isMusicAlarmSupportedInAccessory;
 - (BOOL)_isNewAlarm;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)isEdited;
-- (HUAlarmEditViewController)initWithMediaProfileContainer:(id)a3 alarm:(id)a4;
+- (HUAlarmEditViewController)initWithMediaProfileContainer:(id)container alarm:(id)alarm;
 - (HUAlarmEditViewControllerDelegate)delegate;
 - (double)_volumeSettingForCurrentEditingAlarm;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_configureSoundForMediaTypeAlarm:(id)a3;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_configureSoundForMediaTypeAlarm:(id)alarm;
 - (id)_dateComponents;
-- (id)_datePickerCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_deleteAlarmButtonCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_mediaPropertiesTypeCellForTableView:(id)a3 atIndexpath:(id)a4;
-- (id)_setupCell:(id)a3 forTableView:(id)a4 indexPath:(id)a5;
+- (id)_datePickerCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_deleteAlarmButtonCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_mediaPropertiesTypeCellForTableView:(id)view atIndexpath:(id)indexpath;
+- (id)_setupCell:(id)cell forTableView:(id)view indexPath:(id)path;
 - (id)_volumeIconMaximum;
 - (id)_volumeIconMinimum;
-- (id)_volumeSliderCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_volumeTypeCellForTableView:(id)a3 atIndexpath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_volumeSliderCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_volumeTypeCellForTableView:(id)view atIndexpath:(id)indexpath;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_cancelButtonClicked:(id)a3;
+- (void)_cancelButtonClicked:(id)clicked;
 - (void)_checkAndPrepareEditingAlarmForMediaTypeAlarm;
 - (void)_chooseMediaTapped;
-- (void)_configureMediaIconView:(id)a3 withImage:(id)a4;
-- (void)_didTap:(id)a3;
-- (void)_doneButtonClicked:(id)a3;
+- (void)_configureMediaIconView:(id)view withImage:(id)image;
+- (void)_didTap:(id)tap;
+- (void)_doneButtonClicked:(id)clicked;
 - (void)_handlePickerChanged;
 - (void)_loadArtworkForMediaAlarm;
-- (void)_presentMediaPickerUnavailablePromptWithReason:(int64_t)a3 storeKitErrorObject:(id)a4;
-- (void)_presentMediaPickerWithOptionsShowsLibraryContent:(BOOL)a3;
+- (void)_presentMediaPickerUnavailablePromptWithReason:(int64_t)reason storeKitErrorObject:(id)object;
+- (void)_presentMediaPickerWithOptionsShowsLibraryContent:(BOOL)content;
 - (void)_updateAppleMusicSubscriptionStatus;
-- (void)_updateCellForTableView:(id)a3 indexPath:(id)a4;
-- (void)_updateEnableStateForDoneButton:(BOOL)a3;
-- (void)alarmEditSettingController:(id)a3 didEditAlarm:(id)a4;
-- (void)datePickerCell:(id)a3 didSelectDate:(id)a4;
+- (void)_updateCellForTableView:(id)view indexPath:(id)path;
+- (void)_updateEnableStateForDoneButton:(BOOL)button;
+- (void)alarmEditSettingController:(id)controller didEditAlarm:(id)alarm;
+- (void)datePickerCell:(id)cell didSelectDate:(id)date;
 - (void)dealloc;
 - (void)loadView;
-- (void)mediaPicker:(id)a3 didPickPlaybackArchive:(id)a4;
-- (void)mediaPickerDidPickPlaybackArchive:(id)a3;
-- (void)saveAlarmOnlyIfEdited:(BOOL)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)sliderValueTableViewCell:(id)a3 didChangeValue:(double)a4;
-- (void)startEditingSetting:(int64_t)a3;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)mediaPicker:(id)picker didPickPlaybackArchive:(id)archive;
+- (void)mediaPickerDidPickPlaybackArchive:(id)archive;
+- (void)saveAlarmOnlyIfEdited:(BOOL)edited;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)sliderValueTableViewCell:(id)cell didChangeValue:(double)value;
+- (void)startEditingSetting:(int64_t)setting;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HUAlarmEditViewController
@@ -68,26 +68,26 @@
   return result;
 }
 
-- (HUAlarmEditViewController)initWithMediaProfileContainer:(id)a3 alarm:(id)a4
+- (HUAlarmEditViewController)initWithMediaProfileContainer:(id)container alarm:(id)alarm
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  alarmCopy = alarm;
   v43.receiver = self;
   v43.super_class = HUAlarmEditViewController;
   v9 = [(HUAlarmEditViewController *)&v43 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaProfileContainer, a3);
+    objc_storeStrong(&v9->_mediaProfileContainer, container);
     v10->_accessorySupportsMusicAlarm = [(HUAlarmEditViewController *)v10 _isMusicAlarmSupportedInAccessory];
     v10->_isCustomVolumeSelected = 0;
     v10->_isDatePickerWheelScrolled = 0;
-    objc_storeStrong(&v10->_originalAlarm, a4);
-    v11 = [v7 hf_parentRoom];
-    objc_storeStrong(&v10->_selectedRoom, v11);
-    if (v8)
+    objc_storeStrong(&v10->_originalAlarm, alarm);
+    hf_parentRoom = [containerCopy hf_parentRoom];
+    objc_storeStrong(&v10->_selectedRoom, hf_parentRoom);
+    if (alarmCopy)
     {
-      v12 = [v8 mutableCopy];
+      v12 = [alarmCopy mutableCopy];
       editedAlarm = v10->_editedAlarm;
       v10->_editedAlarm = v12;
 
@@ -100,29 +100,29 @@
 
     else
     {
-      v15 = [MEMORY[0x277D296F0] alarm];
+      alarm = [MEMORY[0x277D296F0] alarm];
       v16 = v10->_editedAlarm;
-      v10->_editedAlarm = v15;
+      v10->_editedAlarm = alarm;
 
       v14 = _HULocalizedStringWithDefaultValue(@"HUCreateNewAlarm", @"HUCreateNewAlarm", 1);
-      v17 = [(HUAlarmEditViewController *)v10 mediaProfileContainer];
-      v18 = [v17 mediaProfiles];
-      v19 = [HUMediaAccountUtilities defaultCurrentVolumeForMediaProfiles:v18];
+      mediaProfileContainer = [(HUAlarmEditViewController *)v10 mediaProfileContainer];
+      mediaProfiles = [mediaProfileContainer mediaProfiles];
+      v19 = [HUMediaAccountUtilities defaultCurrentVolumeForMediaProfiles:mediaProfiles];
       [v19 floatValue];
       [(HUAlarmEditViewController *)v10 setSelectedCustomVolumeLevel:v20];
     }
 
     if (_os_feature_enabled_impl())
     {
-      v21 = [(MTMutableAlarm *)v10->_editedAlarm siriContext];
+      siriContext = [(MTMutableAlarm *)v10->_editedAlarm siriContext];
       v22 = *MEMORY[0x277CFCED0];
-      v23 = [v21 objectForKey:*MEMORY[0x277CFCED0]];
+      v23 = [siriContext objectForKey:*MEMORY[0x277CFCED0]];
 
       if (!v23)
       {
-        if (v21)
+        if (siriContext)
         {
-          v24 = [v21 mutableCopy];
+          v24 = [siriContext mutableCopy];
         }
 
         else
@@ -131,14 +131,14 @@
         }
 
         v25 = v24;
-        v26 = [v7 accessories];
-        v27 = [v26 anyObject];
+        accessories = [containerCopy accessories];
+        anyObject = [accessories anyObject];
         v28 = COAlarmSiriContextTargetReferenceForAccessory();
         [v25 setObject:v28 forKey:v22];
 
         [(MTMutableAlarm *)v10->_editedAlarm setSiriContext:v25];
         v14 = v41;
-        v11 = v42;
+        hf_parentRoom = v42;
       }
     }
 
@@ -146,35 +146,35 @@
     [(HUAlarmEditViewController *)v10 setTitle:v14];
     [(HUAlarmEditViewController *)v10 setEdgesForExtendedLayout:0];
     v29 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v10 action:sel__cancelButtonClicked_];
-    v30 = [(HUAlarmEditViewController *)v10 navigationItem];
-    [v30 setLeftBarButtonItem:v29];
+    navigationItem = [(HUAlarmEditViewController *)v10 navigationItem];
+    [navigationItem setLeftBarButtonItem:v29];
 
     LODWORD(v29) = [(HUAlarmEditViewController *)v10 accessorySupportsMusicAlarm];
     v31 = objc_alloc(MEMORY[0x277D751E0]);
     if (v29)
     {
       v32 = [v31 initWithBarButtonSystemItem:0 target:v10 action:sel__doneButtonClicked_];
-      v33 = [(HUAlarmEditViewController *)v10 navigationItem];
-      [v33 setRightBarButtonItem:v32];
+      navigationItem2 = [(HUAlarmEditViewController *)v10 navigationItem];
+      [navigationItem2 setRightBarButtonItem:v32];
 
       if ([(HUAlarmEditViewController *)v10 _isNewAlarm]|| ![(HUAlarmEditViewController *)v10 _isAlarmTypeMedia])
       {
-        v34 = [(HUAlarmEditViewController *)v10 _hasUserSelectedToneAlarm];
+        _hasUserSelectedToneAlarm = [(HUAlarmEditViewController *)v10 _hasUserSelectedToneAlarm];
       }
 
       else
       {
-        v34 = [(HUAlarmEditViewController *)v10 _isAlarmTypeMedia];
+        _hasUserSelectedToneAlarm = [(HUAlarmEditViewController *)v10 _isAlarmTypeMedia];
       }
 
-      [(HUAlarmEditViewController *)v10 _updateEnableStateForDoneButton:v34];
+      [(HUAlarmEditViewController *)v10 _updateEnableStateForDoneButton:_hasUserSelectedToneAlarm];
     }
 
     else
     {
       v35 = [v31 initWithBarButtonSystemItem:3 target:v10 action:sel__doneButtonClicked_];
-      v36 = [(HUAlarmEditViewController *)v10 navigationItem];
-      [v36 setRightBarButtonItem:v35];
+      navigationItem3 = [(HUAlarmEditViewController *)v10 navigationItem];
+      [navigationItem3 setRightBarButtonItem:v35];
     }
 
     if ((HUIsPhoneIdiom() & 1) == 0)
@@ -187,8 +187,8 @@
     tapGestureRecognizer = v10->_tapGestureRecognizer;
     v10->_tapGestureRecognizer = v37;
 
-    v39 = [(HUAlarmEditViewController *)v10 view];
-    [v39 addGestureRecognizer:v10->_tapGestureRecognizer];
+    view = [(HUAlarmEditViewController *)v10 view];
+    [view addGestureRecognizer:v10->_tapGestureRecognizer];
 
     [(UITapGestureRecognizer *)v10->_tapGestureRecognizer setDelegate:v10];
   }
@@ -199,26 +199,26 @@
 - (void)dealloc
 {
   [(NSURLSessionDataTask *)self->_artworkFetchTask cancel];
-  v3 = [(HUAlarmEditView *)self->_editAlarmView timePicker];
-  [v3 removeTarget:self action:sel__handlePickerChanged forControlEvents:4096];
+  timePicker = [(HUAlarmEditView *)self->_editAlarmView timePicker];
+  [timePicker removeTarget:self action:sel__handlePickerChanged forControlEvents:4096];
 
   v4.receiver = self;
   v4.super_class = HUAlarmEditViewController;
   [(HUAlarmEditViewController *)&v4 dealloc];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = HUAlarmEditViewController;
-  [(HUAlarmEditViewController *)&v9 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
-  v7 = [(HUAlarmEditViewController *)self traitCollection];
-  if ([v7 horizontalSizeClass] == 1 && objc_msgSend(v6, "horizontalSizeClass") == 2 && objc_msgSend(v6, "verticalSizeClass") == 2)
+  [(HUAlarmEditViewController *)&v9 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
+  traitCollection = [(HUAlarmEditViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1 && objc_msgSend(collectionCopy, "horizontalSizeClass") == 2 && objc_msgSend(collectionCopy, "verticalSizeClass") == 2)
   {
-    v8 = [MEMORY[0x277D14CE8] isAMac];
+    isAMac = [MEMORY[0x277D14CE8] isAMac];
 
-    if ((v8 & 1) == 0)
+    if ((isAMac & 1) == 0)
     {
       [(HUAlarmEditViewController *)self saveAlarmOnlyIfEdited:1];
     }
@@ -229,17 +229,17 @@
   }
 }
 
-- (void)_didTap:(id)a3
+- (void)_didTap:(id)tap
 {
-  v3 = [(HUAlarmEditViewController *)self view];
-  [v3 endEditing:1];
+  view = [(HUAlarmEditViewController *)self view];
+  [view endEditing:1];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 view];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  view = [touchCopy view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -247,8 +247,8 @@
 
   else
   {
-    v9 = [v7 view];
-    v10 = [v9 superview];
+    view2 = [touchCopy view];
+    superview = [view2 superview];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -259,23 +259,23 @@
     }
   }
 
-  v12 = [(HUAlarmEditViewController *)self tapGestureRecognizer];
-  v13 = v12 != v6;
+  tapGestureRecognizer = [(HUAlarmEditViewController *)self tapGestureRecognizer];
+  v13 = tapGestureRecognizer != recognizerCopy;
 
 LABEL_6:
   return v13;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(HUAlarmEditViewController *)self view];
-  [v3 endEditing:1];
+  view = [(HUAlarmEditViewController *)self view];
+  [view endEditing:1];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v3 = [(HUAlarmEditViewController *)self view];
-  [v3 endEditing:1];
+  view = [(HUAlarmEditViewController *)self view];
+  [view endEditing:1];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -296,67 +296,67 @@ LABEL_6:
 - (void)loadView
 {
   v3 = [HUAlarmEditView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = [(HUAlarmEditView *)v3 initWithFrame:[(HUAlarmEditViewController *)self accessorySupportsMusicAlarm] supportsMusicAlarm:v5, v6, v7, v8];
   editAlarmView = self->_editAlarmView;
   self->_editAlarmView = v9;
 
   [(HUAlarmEditView *)self->_editAlarmView setAutoresizingMask:16];
-  v11 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-  [v11 setDataSource:self];
+  settingsTable = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  [settingsTable setDataSource:self];
 
-  v12 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-  [v12 setDelegate:self];
+  settingsTable2 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  [settingsTable2 setDelegate:self];
 
   v13 = *MEMORY[0x277D76F30];
-  v14 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-  [v14 setRowHeight:v13];
+  settingsTable3 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  [settingsTable3 setRowHeight:v13];
 
-  v15 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-  [v15 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUAlarmEditViewControllerTableViewCellIdentifier"];
+  settingsTable4 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  [settingsTable4 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUAlarmEditViewControllerTableViewCellIdentifier"];
 
-  v16 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-  [v16 _setDisplaysCellContentStringsOnTapAndHold:1];
+  settingsTable5 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  [settingsTable5 _setDisplaysCellContentStringsOnTapAndHold:1];
 
   if (HUIsPadIdiom())
   {
     [(HUAlarmEditView *)self->_editAlarmView setAutoresizingMask:18];
   }
 
-  v17 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  settingsTable6 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
   v18 = objc_alloc(MEMORY[0x277D75D18]);
   v19 = [v18 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  [v17 setTableFooterView:v19];
+  [settingsTable6 setTableFooterView:v19];
 
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    v20 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-    [v20 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUSnoozeSwitchCellReuseIdentifier"];
+    settingsTable7 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+    [settingsTable7 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUSnoozeSwitchCellReuseIdentifier"];
 
-    v21 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-    [v21 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUVolumeSliderCellReuseIdentifier"];
+    settingsTable8 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+    [settingsTable8 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUVolumeSliderCellReuseIdentifier"];
 
-    v22 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-    [v22 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUChooseMediahCellReuseIdentifier"];
+    settingsTable9 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+    [settingsTable9 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUChooseMediahCellReuseIdentifier"];
 
-    v23 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-    [v23 registerClass:objc_opt_class() forCellReuseIdentifier:@"HURepeatMusicSwitchCellReuseIdentifier"];
+    settingsTable10 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+    [settingsTable10 registerClass:objc_opt_class() forCellReuseIdentifier:@"HURepeatMusicSwitchCellReuseIdentifier"];
 
-    v24 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-    [v24 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUShuffleMusicSwitchCellReuseIdentifier"];
+    settingsTable11 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+    [settingsTable11 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUShuffleMusicSwitchCellReuseIdentifier"];
 
-    v25 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+    settingsTable12 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
     v26 = objc_opt_class();
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
-    [v25 registerClass:v26 forCellReuseIdentifier:v28];
+    [settingsTable12 registerClass:v26 forCellReuseIdentifier:v28];
 
-    v29 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-    [v29 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUPlayToneCellIdentifier"];
+    settingsTable13 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+    [settingsTable13 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUPlayToneCellIdentifier"];
 
-    v30 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-    [v30 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUPlayMediaCellIdentifier"];
+    settingsTable14 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+    [settingsTable14 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUPlayMediaCellIdentifier"];
 
     [(HUAlarmEditViewController *)self _updateAppleMusicSubscriptionStatus];
   }
@@ -364,20 +364,20 @@ LABEL_6:
   else
   {
     v31 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    v32 = [(HUAlarmEditViewController *)self editedAlarm];
-    [v31 setHour:{objc_msgSend(v32, "hour")}];
+    editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+    [v31 setHour:{objc_msgSend(editedAlarm, "hour")}];
 
-    v33 = [(HUAlarmEditViewController *)self editedAlarm];
-    [v31 setMinute:{objc_msgSend(v33, "minute")}];
+    editedAlarm2 = [(HUAlarmEditViewController *)self editedAlarm];
+    [v31 setMinute:{objc_msgSend(editedAlarm2, "minute")}];
 
-    v34 = [(HUAlarmEditView *)self->_editAlarmView timePicker];
-    v35 = [(HUAlarmEditView *)self->_editAlarmView timePicker];
-    v36 = [v35 calendar];
-    v37 = [v36 dateFromComponents:v31];
-    [v34 setDate:v37];
+    timePicker = [(HUAlarmEditView *)self->_editAlarmView timePicker];
+    timePicker2 = [(HUAlarmEditView *)self->_editAlarmView timePicker];
+    calendar = [timePicker2 calendar];
+    v37 = [calendar dateFromComponents:v31];
+    [timePicker setDate:v37];
 
-    v38 = [(HUAlarmEditView *)self->_editAlarmView timePicker];
-    [v38 addTarget:self action:sel__handlePickerChanged forControlEvents:4096];
+    timePicker3 = [(HUAlarmEditView *)self->_editAlarmView timePicker];
+    [timePicker3 addTarget:self action:sel__handlePickerChanged forControlEvents:4096];
   }
 
   v39 = self->_editAlarmView;
@@ -385,30 +385,30 @@ LABEL_6:
   [(HUAlarmEditViewController *)self setView:v39];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = HUAlarmEditViewController;
-  [(HUAlarmEditViewController *)&v8 viewWillAppear:a3];
+  [(HUAlarmEditViewController *)&v8 viewWillAppear:appear];
   self->_editingAlarmSetting = -1;
-  v4 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-  [v4 reloadData];
+  settingsTable = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  [settingsTable reloadData];
 
-  v5 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-  v6 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-  v7 = [v6 indexPathForSelectedRow];
-  [v5 deselectRowAtIndexPath:v7 animated:1];
+  settingsTable2 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  settingsTable3 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  indexPathForSelectedRow = [settingsTable3 indexPathForSelectedRow];
+  [settingsTable2 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(HUAlarmEditViewController *)self delegate];
-  [v5 alarmEditControllerGettingDismissed:self];
+  disappearCopy = disappear;
+  delegate = [(HUAlarmEditViewController *)self delegate];
+  [delegate alarmEditControllerGettingDismissed:self];
 
   v6.receiver = self;
   v6.super_class = HUAlarmEditViewController;
-  [(HUAlarmEditViewController *)&v6 viewWillDisappear:v3];
+  [(HUAlarmEditViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewDidUnload
@@ -421,18 +421,18 @@ LABEL_6:
   [(HUAlarmEditViewController *)&v4 viewDidUnload];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    v4 = [(HUAlarmEditViewController *)self _isNewAlarm];
-    v5 = [(HUAlarmEditViewController *)self _isAlarmTypeMedia];
-    if (v4)
+    _isNewAlarm = [(HUAlarmEditViewController *)self _isNewAlarm];
+    _isAlarmTypeMedia = [(HUAlarmEditViewController *)self _isAlarmTypeMedia];
+    if (_isNewAlarm)
     {
-      v6 = [(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm];
-      if (v5)
+      _hasUserSelectedToneAlarm = [(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm];
+      if (_isAlarmTypeMedia)
       {
-        if (v6)
+        if (_hasUserSelectedToneAlarm)
         {
           return 6;
         }
@@ -450,14 +450,14 @@ LABEL_6:
         return 3;
       }
 
-      if (!v6)
+      if (!_hasUserSelectedToneAlarm)
       {
         if (![(HUAlarmEditViewController *)self _isAlarmTypeMedia])
         {
 LABEL_27:
-          v9 = [(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume];
+          _hasUserSelectedCustomVolume = [(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume];
 LABEL_28:
-          v10 = v9 == 0;
+          v10 = _hasUserSelectedCustomVolume == 0;
           v11 = 4;
           goto LABEL_30;
         }
@@ -468,10 +468,10 @@ LABEL_28:
 
     else
     {
-      v8 = [MEMORY[0x277D14CE8] isAMac];
-      if (v5)
+      isAMac = [MEMORY[0x277D14CE8] isAMac];
+      if (_isAlarmTypeMedia)
       {
-        if ((v8 & 1) == 0)
+        if ((isAMac & 1) == 0)
         {
           if ((HUIsPadIdiom() & 1) == 0)
           {
@@ -495,7 +495,7 @@ LABEL_30:
         return 3;
       }
 
-      if ((v8 & 1) == 0 && (!HUIsPadIdiom() || ![(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm]))
+      if ((isAMac & 1) == 0 && (!HUIsPadIdiom() || ![(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm]))
       {
         if ([(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm]|| [(HUAlarmEditViewController *)self _isNewAlarm])
         {
@@ -504,14 +504,14 @@ LABEL_30:
 
         if (![(HUAlarmEditViewController *)self _isAlarmTypeMedia])
         {
-          v12 = [(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume];
-          v9 = HUIsPhoneIdiom();
-          if (!v12)
+          _hasUserSelectedCustomVolume2 = [(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume];
+          _hasUserSelectedCustomVolume = HUIsPhoneIdiom();
+          if (!_hasUserSelectedCustomVolume2)
           {
             goto LABEL_28;
           }
 
-          if (!v9 || [(HUAlarmEditViewController *)self _isNewAlarm])
+          if (!_hasUserSelectedCustomVolume || [(HUAlarmEditViewController *)self _isNewAlarm])
           {
             return 5;
           }
@@ -539,15 +539,15 @@ LABEL_30:
   return 2;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    if (a4 > 2)
+    if (section > 2)
     {
-      if (a4 <= 4)
+      if (section <= 4)
       {
-        if (a4 == 3)
+        if (section == 3)
         {
           if ([(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm]|| ![(HUAlarmEditViewController *)self _isNewAlarm]&& (![(HUAlarmEditViewController *)self _isAlarmTypeMedia]|| [(HUAlarmEditViewController *)self _isNewAlarm]) && ([(HUAlarmEditViewController *)self _isAlarmTypeMedia]|| [(HUAlarmEditViewController *)self _isNewAlarm]))
           {
@@ -563,12 +563,12 @@ LABEL_30:
         return 2;
       }
 
-      if (a4 == 5)
+      if (section == 5)
       {
         return ![(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm]&& [(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume]|| ![(HUAlarmEditViewController *)self _isNewAlarm]&& (HUIsPhoneIdiom() & 1) != 0;
       }
 
-      if (a4 != 6)
+      if (section != 6)
       {
         return 0;
       }
@@ -576,17 +576,17 @@ LABEL_30:
       return HUIsPhoneIdiom();
     }
 
-    if (!a4)
+    if (!section)
     {
       return 3;
     }
 
-    if (a4 == 1)
+    if (section == 1)
     {
       return 2;
     }
 
-    if (a4 != 2)
+    if (section != 2)
     {
       return 0;
     }
@@ -638,7 +638,7 @@ LABEL_30:
     }
   }
 
-  else if (a4)
+  else if (section)
   {
     return 1;
   }
@@ -649,27 +649,27 @@ LABEL_30:
   }
 }
 
-- (id)_setupCell:(id)a3 forTableView:(id)a4 indexPath:(id)a5
+- (id)_setupCell:(id)cell forTableView:(id)view indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 row];
-  v12 = [v10 section];
-  if (v12 > 2)
+  cellCopy = cell;
+  viewCopy = view;
+  pathCopy = path;
+  v11 = [pathCopy row];
+  section = [pathCopy section];
+  if (section > 2)
   {
-    if (v12 <= 4)
+    if (section <= 4)
     {
-      if (v12 == 3)
+      if (section == 3)
       {
         if ([(HUAlarmEditViewController *)self _isAlarmTypeMedia]&& ![(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm])
         {
-          v41 = [(HUAlarmEditViewController *)self _mediaPropertiesTypeCellForTableView:v9 atIndexpath:v10];
+          v41 = [(HUAlarmEditViewController *)self _mediaPropertiesTypeCellForTableView:viewCopy atIndexpath:pathCopy];
           goto LABEL_61;
         }
 
 LABEL_26:
-        v41 = [(HUAlarmEditViewController *)self _volumeTypeCellForTableView:v9 atIndexpath:v10];
+        v41 = [(HUAlarmEditViewController *)self _volumeTypeCellForTableView:viewCopy atIndexpath:pathCopy];
 LABEL_61:
         v13 = v41;
         goto LABEL_62;
@@ -688,16 +688,16 @@ LABEL_61:
       if ([(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume])
       {
 LABEL_46:
-        v41 = [(HUAlarmEditViewController *)self _volumeSliderCellForTableView:v9 atIndexPath:v10];
+        v41 = [(HUAlarmEditViewController *)self _volumeSliderCellForTableView:viewCopy atIndexPath:pathCopy];
         goto LABEL_61;
       }
 
 LABEL_47:
-      v41 = [(HUAlarmEditViewController *)self _deleteAlarmButtonCellForTableView:v9 atIndexPath:v10];
+      v41 = [(HUAlarmEditViewController *)self _deleteAlarmButtonCellForTableView:viewCopy atIndexPath:pathCopy];
       goto LABEL_61;
     }
 
-    if (v12 == 5)
+    if (section == 5)
     {
       if ([(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume]&& [(HUAlarmEditViewController *)self _isAlarmTypeMedia])
       {
@@ -712,37 +712,37 @@ LABEL_47:
       goto LABEL_47;
     }
 
-    if (v12 == 6)
+    if (section == 6)
     {
       goto LABEL_47;
     }
 
 LABEL_51:
-    v41 = v8;
+    v41 = cellCopy;
 LABEL_60:
-    v8 = v41;
+    cellCopy = v41;
     goto LABEL_61;
   }
 
-  if (!v12)
+  if (!section)
   {
-    v32 = [v8 detailTextLabel];
-    [v32 setAdjustsFontSizeToFitWidth:0];
+    detailTextLabel = [cellCopy detailTextLabel];
+    [detailTextLabel setAdjustsFontSizeToFitWidth:0];
 
-    v33 = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
-    v34 = [v8 textLabel];
-    [v34 setTextColor:v33];
+    hu_alarmsPrimaryTextColor = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
+    textLabel = [cellCopy textLabel];
+    [textLabel setTextColor:hu_alarmsPrimaryTextColor];
 
     if (v11 > 1)
     {
       if (v11 == 2)
       {
         v56 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditLabel", @"HUAlarmEditLabel", 1);
-        v57 = [v8 textLabel];
-        [v57 setText:v56];
+        textLabel2 = [cellCopy textLabel];
+        [textLabel2 setText:v56];
 
-        v39 = [(HUAlarmEditViewController *)self editedAlarm];
-        v40 = [v39 displayTitle];
+        editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+        displayTitle = [editedAlarm displayTitle];
       }
 
       else
@@ -753,11 +753,11 @@ LABEL_60:
         }
 
         v50 = _HULocalizedStringWithDefaultValue(@"HUAlarmPlayInLabel", @"HUAlarmPlayInLabel", 1);
-        v51 = [v8 textLabel];
-        [v51 setText:v50];
+        textLabel3 = [cellCopy textLabel];
+        [textLabel3 setText:v50];
 
-        v39 = [(HUAlarmEditViewController *)self selectedRoom];
-        v40 = [v39 name];
+        editedAlarm = [(HUAlarmEditViewController *)self selectedRoom];
+        displayTitle = [editedAlarm name];
       }
     }
 
@@ -765,7 +765,7 @@ LABEL_60:
     {
       if (!v11)
       {
-        v41 = [(HUAlarmEditViewController *)self _datePickerCellForTableView:v9 atIndexPath:v10];
+        v41 = [(HUAlarmEditViewController *)self _datePickerCellForTableView:viewCopy atIndexPath:pathCopy];
         goto LABEL_61;
       }
 
@@ -775,50 +775,50 @@ LABEL_60:
       }
 
       v35 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditRepeat", @"HUAlarmEditRepeat", 1);
-      v36 = [v8 textLabel];
-      [v36 setText:v35];
+      textLabel4 = [cellCopy textLabel];
+      [textLabel4 setText:v35];
 
-      v37 = [v8 detailTextLabel];
-      [v37 setAdjustsFontSizeToFitWidth:1];
+      detailTextLabel2 = [cellCopy detailTextLabel];
+      [detailTextLabel2 setAdjustsFontSizeToFitWidth:1];
 
-      v38 = [v8 detailTextLabel];
-      [v38 setMinimumScaleFactor:0.705882353];
+      detailTextLabel3 = [cellCopy detailTextLabel];
+      [detailTextLabel3 setMinimumScaleFactor:0.705882353];
 
-      v39 = [(HUAlarmEditViewController *)self editedAlarm];
-      [v39 repeatSchedule];
-      v40 = DateMaskToString();
+      editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+      [editedAlarm repeatSchedule];
+      displayTitle = DateMaskToString();
     }
 
-    v58 = v40;
-    v59 = [v8 detailTextLabel];
-    [v59 setText:v58];
+    v58 = displayTitle;
+    detailTextLabel4 = [cellCopy detailTextLabel];
+    [detailTextLabel4 setText:v58];
 
-    [v8 setAccessoryType:1];
+    [cellCopy setAccessoryType:1];
     goto LABEL_51;
   }
 
-  if (v12 == 1)
+  if (section == 1)
   {
-    v42 = [v8 detailTextLabel];
-    [v42 setAdjustsFontSizeToFitWidth:0];
+    detailTextLabel5 = [cellCopy detailTextLabel];
+    [detailTextLabel5 setAdjustsFontSizeToFitWidth:0];
 
-    v43 = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
-    v44 = [v8 textLabel];
-    [v44 setTextColor:v43];
+    hu_alarmsPrimaryTextColor2 = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
+    textLabel5 = [cellCopy textLabel];
+    [textLabel5 setTextColor:hu_alarmsPrimaryTextColor2];
 
     if (v11 == 1)
     {
-      v45 = [v9 dequeueReusableCellWithIdentifier:@"HUPlayMediaCellIdentifier" forIndexPath:v10];
+      v45 = [viewCopy dequeueReusableCellWithIdentifier:@"HUPlayMediaCellIdentifier" forIndexPath:pathCopy];
 
       v52 = _HULocalizedStringWithDefaultValue(@"HUAlarmPlayMedia", @"HUAlarmPlayMedia", 1);
-      v53 = [v45 textLabel];
-      [v53 setText:v52];
+      textLabel6 = [v45 textLabel];
+      [textLabel6 setText:v52];
 
       if ([(HUAlarmEditViewController *)self _shouldDisablePlayMedia])
       {
-        v54 = [MEMORY[0x277D75348] systemGrayColor];
-        v55 = [v45 textLabel];
-        [v55 setTextColor:v54];
+        systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+        textLabel7 = [v45 textLabel];
+        [textLabel7 setTextColor:systemGrayColor];
 
         if ([(HUAlarmEditViewController *)self _isNewAlarm])
         {
@@ -827,8 +827,8 @@ LABEL_60:
 
         else
         {
-          v70 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-          [v45 setUserInteractionEnabled:v70 != 0];
+          hfPlaybackArchive = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+          [v45 setUserInteractionEnabled:hfPlaybackArchive != 0];
         }
       }
 
@@ -847,17 +847,17 @@ LABEL_58:
     {
       if (v11)
       {
-        v45 = v8;
+        v45 = cellCopy;
 LABEL_59:
         v41 = v45;
         goto LABEL_60;
       }
 
-      v45 = [v9 dequeueReusableCellWithIdentifier:@"HUPlayToneCellIdentifier" forIndexPath:v10];
+      v45 = [viewCopy dequeueReusableCellWithIdentifier:@"HUPlayToneCellIdentifier" forIndexPath:pathCopy];
 
       v46 = _HULocalizedStringWithDefaultValue(@"HUAlarmPlayTone", @"HUAlarmPlayTone", 1);
-      v47 = [v45 textLabel];
-      [v47 setText:v46];
+      textLabel8 = [v45 textLabel];
+      [textLabel8 setText:v46];
 
       if ([(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm])
       {
@@ -870,7 +870,7 @@ LABEL_59:
     goto LABEL_58;
   }
 
-  if (v12 != 2)
+  if (section != 2)
   {
     goto LABEL_51;
   }
@@ -881,73 +881,73 @@ LABEL_59:
   }
 
   v13 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"HUChooseMediahCellReuseIdentifier"];
-  v14 = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
-  v15 = [v13 textLabel];
-  [v15 setTextColor:v14];
+  hu_alarmsPrimaryTextColor3 = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
+  textLabel9 = [v13 textLabel];
+  [textLabel9 setTextColor:hu_alarmsPrimaryTextColor3];
 
   if (v11 == 1)
   {
     v60 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditAlarmChooseMedia", @"HUAlarmEditAlarmChooseMedia", 1);
-    v61 = [v13 textLabel];
-    [v61 setText:v60];
+    textLabel10 = [v13 textLabel];
+    [textLabel10 setText:v60];
 
-    v62 = [MEMORY[0x277D75348] hf_keyColor];
-    v63 = [v13 textLabel];
-    [v63 setTextColor:v62];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    textLabel11 = [v13 textLabel];
+    [textLabel11 setTextColor:hf_keyColor];
 
-    v64 = [v13 imageView];
-    [v64 setImage:0];
+    imageView = [v13 imageView];
+    [imageView setImage:0];
   }
 
   else if (!v11)
   {
     if ([(HUAlarmEditViewController *)self _isAlarmTypeMedia])
     {
-      v16 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-      v17 = [v16 mediaPlayerPlaybackArchive];
-      v18 = [v17 displayProperties];
-      v19 = [v18 title];
-      v20 = [v13 textLabel];
-      [v20 setText:v19];
+      hfPlaybackArchive2 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+      mediaPlayerPlaybackArchive = [hfPlaybackArchive2 mediaPlayerPlaybackArchive];
+      displayProperties = [mediaPlayerPlaybackArchive displayProperties];
+      title = [displayProperties title];
+      textLabel12 = [v13 textLabel];
+      [textLabel12 setText:title];
 
-      v21 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-      v22 = [v21 mediaPlayerPlaybackArchive];
-      v23 = [v22 displayProperties];
-      v24 = [v23 subtitle];
-      v25 = [v13 detailTextLabel];
-      [v25 setText:v24];
+      hfPlaybackArchive3 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+      mediaPlayerPlaybackArchive2 = [hfPlaybackArchive3 mediaPlayerPlaybackArchive];
+      displayProperties2 = [mediaPlayerPlaybackArchive2 displayProperties];
+      subtitle = [displayProperties2 subtitle];
+      detailTextLabel6 = [v13 detailTextLabel];
+      [detailTextLabel6 setText:subtitle];
 
-      v26 = [v13 detailTextLabel];
-      [v26 setAdjustsFontSizeToFitWidth:1];
+      detailTextLabel7 = [v13 detailTextLabel];
+      [detailTextLabel7 setAdjustsFontSizeToFitWidth:1];
 
-      v27 = [v13 detailTextLabel];
-      [v27 setMinimumScaleFactor:0.705882353];
+      detailTextLabel8 = [v13 detailTextLabel];
+      [detailTextLabel8 setMinimumScaleFactor:0.705882353];
 
       v28 = MEMORY[0x277D755B8];
-      v29 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-      v30 = [v29 artworkImageData];
-      v31 = [v28 imageWithData:v30];
+      hfPlaybackArchive4 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+      artworkImageData = [hfPlaybackArchive4 artworkImageData];
+      detailTextLabel9 = [v28 imageWithData:artworkImageData];
 
-      [(HUAlarmEditViewController *)self _configureMediaIconView:v13 withImage:v31];
+      [(HUAlarmEditViewController *)self _configureMediaIconView:v13 withImage:detailTextLabel9];
       [v13 setUserInteractionEnabled:0];
     }
 
     else
     {
       [v13 setUserInteractionEnabled:1];
-      v65 = [MEMORY[0x277D75348] hf_keyColor];
-      v66 = [v13 textLabel];
-      [v66 setTextColor:v65];
+      hf_keyColor2 = [MEMORY[0x277D75348] hf_keyColor];
+      textLabel13 = [v13 textLabel];
+      [textLabel13 setTextColor:hf_keyColor2];
 
-      v67 = [v13 imageView];
-      [v67 setImage:0];
+      imageView2 = [v13 imageView];
+      [imageView2 setImage:0];
 
       v68 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditAlarmChooseMedia", @"HUAlarmEditAlarmChooseMedia", 1);
-      v69 = [v13 textLabel];
-      [v69 setText:v68];
+      textLabel14 = [v13 textLabel];
+      [textLabel14 setText:v68];
 
-      v31 = [v13 detailTextLabel];
-      [v31 setText:0];
+      detailTextLabel9 = [v13 detailTextLabel];
+      [detailTextLabel9 setText:0];
     }
 
     [v13 setAccessoryView:0];
@@ -958,13 +958,13 @@ LABEL_62:
   return v13;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
-  v9 = [v7 section];
-  v10 = [v6 dequeueReusableCellWithIdentifier:@"HUAlarmEditViewControllerTableViewCellIdentifier"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
+  section = [pathCopy section];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"HUAlarmEditViewControllerTableViewCellIdentifier"];
   if (!v10)
   {
     v10 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"HUAlarmEditViewControllerTableViewCellIdentifier"];
@@ -972,20 +972,20 @@ LABEL_62:
 
   if (![(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    if (v9 == 1)
+    if (section == 1)
     {
       v21 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"HUAlarmEditTableViewCellIdentifier"];
 
       v22 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditDelete", @"HUAlarmEditDelete", 1);
-      v23 = [v21 textLabel];
-      [v23 setText:v22];
+      textLabel = [v21 textLabel];
+      [textLabel setText:v22];
 
-      v24 = [v21 textLabel];
-      [v24 setTextAlignment:1];
+      textLabel2 = [v21 textLabel];
+      [textLabel2 setTextAlignment:1];
 
-      v25 = [MEMORY[0x277D75348] systemRedColor];
-      v26 = [v21 textLabel];
-      [v26 setTextColor:v25];
+      systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+      textLabel3 = [v21 textLabel];
+      [textLabel3 setTextColor:systemRedColor];
 
       v27 = v21;
 LABEL_23:
@@ -994,30 +994,30 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    if (v9)
+    if (section)
     {
       v11 = 0;
       goto LABEL_24;
     }
 
-    v12 = [v10 detailTextLabel];
-    [v12 setAdjustsFontSizeToFitWidth:0];
+    detailTextLabel = [v10 detailTextLabel];
+    [detailTextLabel setAdjustsFontSizeToFitWidth:0];
 
     [v10 setAccessoryType:1];
-    v13 = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
-    v14 = [v10 textLabel];
-    [v14 setTextColor:v13];
+    hu_alarmsPrimaryTextColor = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
+    textLabel4 = [v10 textLabel];
+    [textLabel4 setTextColor:hu_alarmsPrimaryTextColor];
 
     if (v8 == 2)
     {
       v32 = _HULocalizedStringWithDefaultValue(@"HUAlarmPlayInLabel", @"HUAlarmPlayInLabel", 1);
-      v33 = [v10 textLabel];
-      [v33 setText:v32];
+      textLabel5 = [v10 textLabel];
+      [textLabel5 setText:v32];
 
-      v34 = [(HUAlarmEditViewController *)self selectedRoom];
-      v35 = [v34 name];
-      v36 = [v10 detailTextLabel];
-      [v36 setText:v35];
+      selectedRoom = [(HUAlarmEditViewController *)self selectedRoom];
+      name = [selectedRoom name];
+      detailTextLabel2 = [v10 detailTextLabel];
+      [detailTextLabel2 setText:name];
 
       [v10 setAccessoryType:1];
       goto LABEL_22;
@@ -1026,11 +1026,11 @@ LABEL_23:
     if (v8 == 1)
     {
       v28 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditLabel", @"HUAlarmEditLabel", 1);
-      v29 = [v10 textLabel];
-      [v29 setText:v28];
+      textLabel6 = [v10 textLabel];
+      [textLabel6 setText:v28];
 
-      v19 = [(HUAlarmEditViewController *)self editedAlarm];
-      v20 = [v19 displayTitle];
+      editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+      displayTitle = [editedAlarm displayTitle];
     }
 
     else
@@ -1043,38 +1043,38 @@ LABEL_22:
       }
 
       v15 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditRepeat", @"HUAlarmEditRepeat", 1);
-      v16 = [v10 textLabel];
-      [v16 setText:v15];
+      textLabel7 = [v10 textLabel];
+      [textLabel7 setText:v15];
 
-      v17 = [v10 detailTextLabel];
-      [v17 setAdjustsFontSizeToFitWidth:1];
+      detailTextLabel3 = [v10 detailTextLabel];
+      [detailTextLabel3 setAdjustsFontSizeToFitWidth:1];
 
-      v18 = [v10 detailTextLabel];
-      [v18 setMinimumScaleFactor:0.705882353];
+      detailTextLabel4 = [v10 detailTextLabel];
+      [detailTextLabel4 setMinimumScaleFactor:0.705882353];
 
-      v19 = [(HUAlarmEditViewController *)self editedAlarm];
-      [v19 repeatSchedule];
-      v20 = DateMaskToString();
+      editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+      [editedAlarm repeatSchedule];
+      displayTitle = DateMaskToString();
     }
 
-    v30 = v20;
-    v31 = [v10 detailTextLabel];
-    [v31 setText:v30];
+    v30 = displayTitle;
+    detailTextLabel5 = [v10 detailTextLabel];
+    [detailTextLabel5 setText:v30];
 
     goto LABEL_22;
   }
 
   v11 = 0;
-  if (v9 <= 2)
+  if (section <= 2)
   {
-    if (v9 <= 2)
+    if (section <= 2)
     {
 LABEL_18:
-      v11 = [(HUAlarmEditViewController *)self _setupCell:v10 forTableView:v6 indexPath:v7];
+      v11 = [(HUAlarmEditViewController *)self _setupCell:v10 forTableView:viewCopy indexPath:pathCopy];
     }
   }
 
-  else if (v9 <= 5 || v9 == 6)
+  else if (section <= 5 || section == 6)
   {
     goto LABEL_18;
   }
@@ -1084,13 +1084,13 @@ LABEL_24:
   return v11;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   if ([MEMORY[0x277D14CE8] isAMac])
   {
     if ([(HUAlarmEditViewController *)self _isNewAlarm]|| [(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm])
     {
-      if (a4 == 1)
+      if (section == 1)
       {
 LABEL_5:
         v6 = _HULocalizedStringWithDefaultValue(@"HUAlarmMediaActionPlayUnavailableMessage", @"HUAlarmMediaActionPlayUnavailableMessage", 1);
@@ -1098,7 +1098,7 @@ LABEL_5:
       }
     }
 
-    else if (a4 == 2)
+    else if (section == 2)
     {
       goto LABEL_5;
     }
@@ -1110,19 +1110,19 @@ LABEL_8:
   return v6;
 }
 
-- (void)_updateCellForTableView:(id)a3 indexPath:(id)a4
+- (void)_updateCellForTableView:(id)view indexPath:(id)path
 {
-  v16 = a4;
-  v5 = [(HUAlarmEditViewController *)self accessorySupportsMusicAlarm];
-  v6 = v16;
-  if (v5)
+  pathCopy = path;
+  accessorySupportsMusicAlarm = [(HUAlarmEditViewController *)self accessorySupportsMusicAlarm];
+  v6 = pathCopy;
+  if (accessorySupportsMusicAlarm)
   {
-    v7 = [v16 section];
-    v8 = [v16 row];
+    section = [pathCopy section];
+    v8 = [pathCopy row];
     v9 = v8;
-    if (v7 != 4)
+    if (section != 4)
     {
-      if (v7 == 1)
+      if (section == 1)
       {
         if (v8 == 1)
         {
@@ -1135,9 +1135,9 @@ LABEL_18:
             goto LABEL_19;
           }
 
-          v10 = [(HUAlarmEditViewController *)self _isAlarmTypeMedia];
+          _isAlarmTypeMedia = [(HUAlarmEditViewController *)self _isAlarmTypeMedia];
 LABEL_17:
-          v13 = v10;
+          v13 = _isAlarmTypeMedia;
           goto LABEL_18;
         }
 
@@ -1145,16 +1145,16 @@ LABEL_17:
         {
           [(HUAlarmEditViewController *)self setIsPlayMediaSelected:0];
           [(HUAlarmEditViewController *)self setIsCustomVolumeSelected:0];
-          v10 = [(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm];
+          _isAlarmTypeMedia = [(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm];
           goto LABEL_17;
         }
 
 LABEL_19:
-        v14 = [(HUAlarmEditViewController *)self editAlarmView];
-        v15 = [v14 settingsTable];
-        [v15 reloadData];
+        editAlarmView = [(HUAlarmEditViewController *)self editAlarmView];
+        settingsTable = [editAlarmView settingsTable];
+        [settingsTable reloadData];
 
-        v6 = v16;
+        v6 = pathCopy;
         goto LABEL_20;
       }
 
@@ -1166,7 +1166,7 @@ LABEL_19:
 
     if (v9 == 1)
     {
-      v11 = self;
+      selfCopy2 = self;
       v12 = 1;
     }
 
@@ -1177,55 +1177,55 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v11 = self;
+      selfCopy2 = self;
       v12 = 0;
     }
 
-    [(HUAlarmEditViewController *)v11 setIsCustomVolumeSelected:v12];
+    [(HUAlarmEditViewController *)selfCopy2 setIsCustomVolumeSelected:v12];
     goto LABEL_19;
   }
 
 LABEL_20:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 row];
-  v8 = [v6 section];
-  [v13 deselectRowAtIndexPath:v6 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [pathCopy row];
+  section = [pathCopy section];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   if (![(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    if (v8 == 1)
+    if (section == 1)
     {
 LABEL_31:
-      v11 = [(HUAlarmEditViewController *)self delegate];
-      v12 = [(HUAlarmEditViewController *)self originalAlarm];
-      [v11 alarmEditController:self didDeleteAlarm:v12];
+      delegate = [(HUAlarmEditViewController *)self delegate];
+      originalAlarm = [(HUAlarmEditViewController *)self originalAlarm];
+      [delegate alarmEditController:self didDeleteAlarm:originalAlarm];
 
       goto LABEL_32;
     }
 
-    if (v8 || v7 == 0x7FFFFFFFFFFFFFFFLL)
+    if (section || v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_32;
     }
 
     v9 = v7 + 1;
-    v10 = self;
+    selfCopy2 = self;
 LABEL_27:
-    [(HUAlarmEditViewController *)v10 startEditingSetting:v9];
+    [(HUAlarmEditViewController *)selfCopy2 startEditingSetting:v9];
     goto LABEL_32;
   }
 
-  if (v8 <= 2)
+  if (section <= 2)
   {
-    if (v8)
+    if (section)
     {
-      if (v8 != 1)
+      if (section != 1)
       {
-        if (v8 != 2)
+        if (section != 2)
         {
           goto LABEL_32;
         }
@@ -1247,24 +1247,24 @@ LABEL_27:
       goto LABEL_32;
     }
 
-    v10 = self;
+    selfCopy2 = self;
     v9 = v7;
     goto LABEL_27;
   }
 
-  if (v8 <= 4)
+  if (section <= 4)
   {
-    if (v8 != 3 && HUIsPhoneIdiom() && ![(HUAlarmEditViewController *)self _isNewAlarm]&& ![(HUAlarmEditViewController *)self _isAlarmTypeMedia])
+    if (section != 3 && HUIsPhoneIdiom() && ![(HUAlarmEditViewController *)self _isNewAlarm]&& ![(HUAlarmEditViewController *)self _isAlarmTypeMedia])
     {
       goto LABEL_31;
     }
 
 LABEL_20:
-    [(HUAlarmEditViewController *)self _updateCellForTableView:v13 indexPath:v6];
+    [(HUAlarmEditViewController *)self _updateCellForTableView:viewCopy indexPath:pathCopy];
     goto LABEL_32;
   }
 
-  if (v8 == 5)
+  if (section == 5)
   {
     if (![(HUAlarmEditViewController *)self _isNewAlarm]&& (![(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume]|| ![(HUAlarmEditViewController *)self _isAlarmTypeMedia]))
     {
@@ -1272,7 +1272,7 @@ LABEL_20:
     }
   }
 
-  else if (v8 == 6 && ![(HUAlarmEditViewController *)self _isNewAlarm])
+  else if (section == 6 && ![(HUAlarmEditViewController *)self _isNewAlarm])
   {
     goto LABEL_31;
   }
@@ -1280,21 +1280,21 @@ LABEL_20:
 LABEL_32:
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if (![(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
     goto LABEL_11;
   }
 
-  if (a4 == 1)
+  if (section == 1)
   {
     v6 = @"HUAlarmEditAlarmSound";
   }
 
   else
   {
-    if (a4 == 4)
+    if (section == 4)
     {
       if ([(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm]|| ![(HUAlarmEditViewController *)self _isAlarmTypeMedia])
       {
@@ -1302,7 +1302,7 @@ LABEL_32:
       }
     }
 
-    else if (a4 != 3 || [(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm]|| [(HUAlarmEditViewController *)self _isAlarmTypeMedia])
+    else if (section != 3 || [(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm]|| [(HUAlarmEditViewController *)self _isAlarmTypeMedia])
     {
 LABEL_11:
       v7 = 0;
@@ -1318,10 +1318,10 @@ LABEL_12:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] == 2 && -[HUAlarmEditViewController _isAlarmTypeMedia](self, "_isAlarmTypeMedia") && !objc_msgSend(v5, "row"))
+  pathCopy = path;
+  if ([pathCopy section] == 2 && -[HUAlarmEditViewController _isAlarmTypeMedia](self, "_isAlarmTypeMedia") && !objc_msgSend(pathCopy, "row"))
   {
     v6 = 100.0;
   }
@@ -1334,17 +1334,17 @@ LABEL_12:
   return v6;
 }
 
-- (void)_configureMediaIconView:(id)a3 withImage:(id)a4
+- (void)_configureMediaIconView:(id)view withImage:(id)image
 {
-  v19 = a3;
-  v6 = a4;
+  viewCopy = view;
+  imageCopy = image;
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    if (v6)
+    if (imageCopy)
     {
-      v7 = [v6 hu_imageScaledToSize:2 contentMode:{72.0, 72.0}];
-      v8 = [v19 imageView];
-      [v8 setImage:v7];
+      v7 = [imageCopy hu_imageScaledToSize:2 contentMode:{72.0, 72.0}];
+      imageView = [viewCopy imageView];
+      [imageView setImage:v7];
     }
 
     else
@@ -1352,29 +1352,29 @@ LABEL_12:
       v7 = [MEMORY[0x277D755D0] configurationWithPointSize:24.0];
       v9 = [MEMORY[0x277D755B8] _systemImageNamed:@"music"];
       v10 = [v9 imageWithSymbolConfiguration:v7];
-      v11 = [v19 imageView];
-      [v11 setImage:v10];
+      imageView2 = [viewCopy imageView];
+      [imageView2 setImage:v10];
 
-      v12 = [v19 imageView];
-      [v12 setContentMode:4];
+      imageView3 = [viewCopy imageView];
+      [imageView3 setContentMode:4];
 
-      v8 = [MEMORY[0x277D75348] systemGrayColor];
-      v13 = [v19 imageView];
-      [v13 setTintColor:v8];
+      imageView = [MEMORY[0x277D75348] systemGrayColor];
+      imageView4 = [viewCopy imageView];
+      [imageView4 setTintColor:imageView];
     }
 
-    v14 = [v19 imageView];
-    v15 = [v14 layer];
-    [v15 setCornerRadius:4.0];
+    imageView5 = [viewCopy imageView];
+    layer = [imageView5 layer];
+    [layer setCornerRadius:4.0];
 
-    v16 = [v19 imageView];
-    [v16 setClipsToBounds:1];
+    imageView6 = [viewCopy imageView];
+    [imageView6 setClipsToBounds:1];
 
-    v17 = [v19 imageView];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:1];
+    imageView7 = [viewCopy imageView];
+    [imageView7 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-    v18 = [v19 imageView];
-    [v18 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
+    imageView8 = [viewCopy imageView];
+    [imageView8 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
   }
 }
 
@@ -1388,11 +1388,11 @@ LABEL_12:
     }
 
     v3 = qword_27C837EE0;
-    v4 = [(HUAlarmEditViewController *)self editedAlarm];
-    [v3 setHour:{objc_msgSend(v4, "hour")}];
+    editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+    [v3 setHour:{objc_msgSend(editedAlarm, "hour")}];
 
-    v5 = [(HUAlarmEditViewController *)self editedAlarm];
-    [v3 setMinute:{objc_msgSend(v5, "minute")}];
+    editedAlarm2 = [(HUAlarmEditViewController *)self editedAlarm];
+    [v3 setMinute:{objc_msgSend(editedAlarm2, "minute")}];
   }
 
   else
@@ -1421,12 +1421,12 @@ void __44__HUAlarmEditViewController__dateComponents__block_invoke_2()
   {
     v3 = [HUMediaSourceListViewController alloc];
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(HUAlarmEditViewController *)self mediaProfileContainer];
-    v6 = [v4 setWithObject:v5];
-    v14 = [(HUMediaSourceListViewController *)v3 initForMediaProfileContainers:v6 forTarget:1];
+    mediaProfileContainer = [(HUAlarmEditViewController *)self mediaProfileContainer];
+    v6 = [v4 setWithObject:mediaProfileContainer];
+    appleMusicSubcriptionResult2 = [(HUMediaSourceListViewController *)v3 initForMediaProfileContainers:v6 forTarget:1];
 
-    [v14 setDelegate:self];
-    v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v14];
+    [appleMusicSubcriptionResult2 setDelegate:self];
+    v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:appleMusicSubcriptionResult2];
     [(HUAlarmEditViewController *)self presentViewController:v7 animated:1 completion:0];
 LABEL_9:
 
@@ -1434,25 +1434,25 @@ LABEL_9:
   }
 
   v8 = +[HUMediaAccountUtilities isMusicAppInstalled];
-  v9 = [(HUAlarmEditViewController *)self appleMusicSubcriptionResult];
-  v14 = v9;
+  appleMusicSubcriptionResult = [(HUAlarmEditViewController *)self appleMusicSubcriptionResult];
+  appleMusicSubcriptionResult2 = appleMusicSubcriptionResult;
   if (!v8)
   {
-    v7 = [v9 objectForKeyedSubscript:@"HUMediaPickerUnavailableReasonStoreKitErrorObjectKey"];
+    v7 = [appleMusicSubcriptionResult objectForKeyedSubscript:@"HUMediaPickerUnavailableReasonStoreKitErrorObjectKey"];
     [(HUAlarmEditViewController *)self _presentMediaPickerUnavailablePromptWithReason:0 storeKitErrorObject:v7];
     goto LABEL_9;
   }
 
-  v10 = [v9 objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
+  v10 = [appleMusicSubcriptionResult objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
 
   if (v10)
   {
-    v14 = [(HUAlarmEditViewController *)self appleMusicSubcriptionResult];
-    v7 = [v14 objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
-    v11 = [v7 integerValue];
-    v12 = [(HUAlarmEditViewController *)self appleMusicSubcriptionResult];
-    v13 = [v12 objectForKeyedSubscript:@"HUMediaPickerUnavailableReasonStoreKitErrorObjectKey"];
-    [(HUAlarmEditViewController *)self _presentMediaPickerUnavailablePromptWithReason:v11 storeKitErrorObject:v13];
+    appleMusicSubcriptionResult2 = [(HUAlarmEditViewController *)self appleMusicSubcriptionResult];
+    v7 = [appleMusicSubcriptionResult2 objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
+    integerValue = [v7 integerValue];
+    appleMusicSubcriptionResult3 = [(HUAlarmEditViewController *)self appleMusicSubcriptionResult];
+    v13 = [appleMusicSubcriptionResult3 objectForKeyedSubscript:@"HUMediaPickerUnavailableReasonStoreKitErrorObjectKey"];
+    [(HUAlarmEditViewController *)self _presentMediaPickerUnavailablePromptWithReason:integerValue storeKitErrorObject:v13];
 
     goto LABEL_9;
   }
@@ -1460,31 +1460,31 @@ LABEL_9:
   [(HUAlarmEditViewController *)self _presentMediaPickerWithOptionsShowsLibraryContent:1];
 }
 
-- (id)_deleteAlarmButtonCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_deleteAlarmButtonCellForTableView:(id)view atIndexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:{@"HUAlarmEditTableViewCellIdentifier", a4}];
+  v4 = [view dequeueReusableCellWithIdentifier:{@"HUAlarmEditTableViewCellIdentifier", path}];
   if (!v4)
   {
     v4 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"HUAlarmEditTableViewCellIdentifier"];
   }
 
   v5 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditDelete", @"HUAlarmEditDelete", 1);
-  v6 = [v4 textLabel];
-  [v6 setText:v5];
+  textLabel = [v4 textLabel];
+  [textLabel setText:v5];
 
-  v7 = [v4 textLabel];
-  [v7 setTextAlignment:1];
+  textLabel2 = [v4 textLabel];
+  [textLabel2 setTextAlignment:1];
 
-  v8 = [MEMORY[0x277D75348] systemRedColor];
-  v9 = [v4 textLabel];
-  [v9 setTextColor:v8];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  textLabel3 = [v4 textLabel];
+  [textLabel3 setTextColor:systemRedColor];
 
   return v4;
 }
 
-- (id)_volumeSliderCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_volumeSliderCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"HUVolumeSliderCellReuseIdentifier" forIndexPath:a4];
+  v5 = [view dequeueReusableCellWithIdentifier:@"HUVolumeSliderCellReuseIdentifier" forIndexPath:path];
   objc_opt_class();
   v6 = v5;
   if (objc_opt_isKindOfClass())
@@ -1502,14 +1502,14 @@ LABEL_9:
   [v8 setDelegate:self];
   [v8 setMinimumValue:0.0];
   [v8 setMaximumValue:100.0];
-  v9 = [(HUAlarmEditViewController *)self _volumeIconMinimum];
-  [v8 setMinimumValueImage:v9];
+  _volumeIconMinimum = [(HUAlarmEditViewController *)self _volumeIconMinimum];
+  [v8 setMinimumValueImage:_volumeIconMinimum];
 
-  v10 = [(HUAlarmEditViewController *)self _volumeIconMaximum];
-  [v8 setMaximumValueImage:v10];
+  _volumeIconMaximum = [(HUAlarmEditViewController *)self _volumeIconMaximum];
+  [v8 setMaximumValueImage:_volumeIconMaximum];
 
-  v11 = [MEMORY[0x277D75348] systemGrayColor];
-  [v8 setTintColor:v11];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [v8 setTintColor:systemGrayColor];
 
   [v8 setShowValue:0];
   [v8 setHidden:{-[HUAlarmEditViewController _hasUserSelectedCustomVolume](self, "_hasUserSelectedCustomVolume") ^ 1}];
@@ -1563,21 +1563,21 @@ void __47__HUAlarmEditViewController__volumeIconMaximum__block_invoke()
   qword_27C837EF8 = v1;
 }
 
-- (id)_datePickerCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_datePickerCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   if (![(HUAlarmEditViewController *)self isDatePickerWheelScrolled])
   {
-    v11 = [(HUAlarmEditViewController *)self _dateComponents];
-    [v10 setTimeComponents:v11];
+    _dateComponents = [(HUAlarmEditViewController *)self _dateComponents];
+    [v10 setTimeComponents:_dateComponents];
 
-    v12 = [v10 timeComponents];
-    [(HUAlarmEditViewController *)self setCurrentDatePickerTimeComponents:v12];
+    timeComponents = [v10 timeComponents];
+    [(HUAlarmEditViewController *)self setCurrentDatePickerTimeComponents:timeComponents];
   }
 
   [v10 setDelegate:self];
@@ -1588,14 +1588,14 @@ void __47__HUAlarmEditViewController__volumeIconMaximum__block_invoke()
   return v10;
 }
 
-- (id)_mediaPropertiesTypeCellForTableView:(id)a3 atIndexpath:(id)a4
+- (id)_mediaPropertiesTypeCellForTableView:(id)view atIndexpath:(id)indexpath
 {
   v39[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 row])
+  viewCopy = view;
+  indexpathCopy = indexpath;
+  if (![indexpathCopy row])
   {
-    v24 = [v6 dequeueReusableCellWithIdentifier:@"HURepeatMusicSwitchCellReuseIdentifier" forIndexPath:v7];
+    v24 = [viewCopy dequeueReusableCellWithIdentifier:@"HURepeatMusicSwitchCellReuseIdentifier" forIndexPath:indexpathCopy];
     objc_opt_class();
     v9 = v24;
     if (objc_opt_isKindOfClass())
@@ -1610,15 +1610,15 @@ void __47__HUAlarmEditViewController__volumeIconMaximum__block_invoke()
 
     v11 = v25;
 
-    v26 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    v27 = [v26 isRepeatEnabled];
+    hfPlaybackArchive = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    isRepeatEnabled = [hfPlaybackArchive isRepeatEnabled];
 
     v28 = objc_alloc(MEMORY[0x277D14B38]);
     v38[0] = *MEMORY[0x277D13F60];
     v29 = _HULocalizedStringWithDefaultValue(@"HUMediaSelectionQueueModifierRepeat", @"HUMediaSelectionQueueModifierRepeat", 1);
     v39[0] = v29;
     v38[1] = *MEMORY[0x277D14068];
-    if (v27)
+    if (isRepeatEnabled)
     {
       v30 = 2;
     }
@@ -1637,17 +1637,17 @@ void __47__HUAlarmEditViewController__volumeIconMaximum__block_invoke()
 
     v33 = [v19 updateWithOptions:MEMORY[0x277CBEC10]];
     [v11 setItem:v19];
-    v34 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    [v11 setOn:{objc_msgSend(v34, "isRepeatEnabled")}];
+    hfPlaybackArchive2 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    [v11 setOn:{objc_msgSend(hfPlaybackArchive2, "isRepeatEnabled")}];
 
-    v22 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    v23 = [v22 isRepeatSupported];
+    hfPlaybackArchive3 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    isRepeatSupported = [hfPlaybackArchive3 isRepeatSupported];
     goto LABEL_17;
   }
 
-  if ([v7 row] == 1)
+  if ([indexpathCopy row] == 1)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"HUShuffleMusicSwitchCellReuseIdentifier" forIndexPath:v7];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"HUShuffleMusicSwitchCellReuseIdentifier" forIndexPath:indexpathCopy];
     objc_opt_class();
     v9 = v8;
     if (objc_opt_isKindOfClass())
@@ -1662,15 +1662,15 @@ void __47__HUAlarmEditViewController__volumeIconMaximum__block_invoke()
 
     v11 = v10;
 
-    v12 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    v13 = [v12 isRepeatEnabled];
+    hfPlaybackArchive4 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    isRepeatEnabled2 = [hfPlaybackArchive4 isRepeatEnabled];
 
     v14 = objc_alloc(MEMORY[0x277D14B38]);
     v36[0] = *MEMORY[0x277D13F60];
     v15 = _HULocalizedStringWithDefaultValue(@"HUMediaSelectionQueueModifierShuffle", @"HUMediaSelectionQueueModifierShuffle", 1);
     v37[0] = v15;
     v36[1] = *MEMORY[0x277D14068];
-    if (v13)
+    if (isRepeatEnabled2)
     {
       v16 = 2;
     }
@@ -1689,13 +1689,13 @@ void __47__HUAlarmEditViewController__volumeIconMaximum__block_invoke()
 
     v20 = [v19 updateWithOptions:MEMORY[0x277CBEC10]];
     [v11 setItem:v19];
-    v21 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    [v11 setOn:{objc_msgSend(v21, "isShuffleEnabled")}];
+    hfPlaybackArchive5 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    [v11 setOn:{objc_msgSend(hfPlaybackArchive5, "isShuffleEnabled")}];
 
-    v22 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    v23 = [v22 isShuffleSupported];
+    hfPlaybackArchive3 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    isRepeatSupported = [hfPlaybackArchive3 isShuffleSupported];
 LABEL_17:
-    [v11 setDisabled:v23 ^ 1u];
+    [v11 setDisabled:isRepeatSupported ^ 1u];
 
     [v11 updateUIWithAnimation:0];
     [v11 setDelegate:self];
@@ -1709,21 +1709,21 @@ LABEL_19:
   return v11;
 }
 
-- (id)_volumeTypeCellForTableView:(id)a3 atIndexpath:(id)a4
+- (id)_volumeTypeCellForTableView:(id)view atIndexpath:(id)indexpath
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"HUVolumeTypeReuseIdentifier"];
+  indexpathCopy = indexpath;
+  v7 = [view dequeueReusableCellWithIdentifier:@"HUVolumeTypeReuseIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"HUVolumeTypeReuseIdentifier"];
   }
 
-  v8 = [v6 row];
+  v8 = [indexpathCopy row];
   if (v8 == 1)
   {
     v13 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditAlarmUseCustomVolume", @"HUAlarmEditAlarmUseCustomVolume", 1);
-    v14 = [v7 textLabel];
-    [v14 setText:v13];
+    textLabel = [v7 textLabel];
+    [textLabel setText:v13];
 
     if ([(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume])
     {
@@ -1744,11 +1744,11 @@ LABEL_19:
     }
 
     v9 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditAlarmUseCurrentVolume", @"HUAlarmEditAlarmUseCurrentVolume", 1);
-    v10 = [v7 textLabel];
-    [v10 setText:v9];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setText:v9];
 
-    v11 = [v7 detailTextLabel];
-    [v11 setAdjustsFontSizeToFitWidth:1];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setAdjustsFontSizeToFitWidth:1];
 
     if ([(HUAlarmEditViewController *)self _hasUserSelectedCustomVolume])
     {
@@ -1771,8 +1771,8 @@ LABEL_12:
 {
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    v3 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    if (v3)
+    hfPlaybackArchive = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    if (hfPlaybackArchive)
     {
       v4 = ![(HUAlarmEditViewController *)self _hasUserSelectedToneAlarm];
     }
@@ -1793,8 +1793,8 @@ LABEL_12:
 
 - (BOOL)_isNewAlarm
 {
-  v2 = [(HUAlarmEditViewController *)self originalAlarm];
-  v3 = v2 == 0;
+  originalAlarm = [(HUAlarmEditViewController *)self originalAlarm];
+  v3 = originalAlarm == 0;
 
   return v3;
 }
@@ -1808,39 +1808,39 @@ LABEL_12:
 
   else
   {
-    v4 = [(HUAlarmEditViewController *)self originalAlarm];
-    v5 = [(HUAlarmEditViewController *)self editedAlarm];
-    v3 = [v4 isEqual:v5] ^ 1;
+    originalAlarm = [(HUAlarmEditViewController *)self originalAlarm];
+    editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+    v3 = [originalAlarm isEqual:editedAlarm] ^ 1;
   }
 
   return v3;
 }
 
-- (void)saveAlarmOnlyIfEdited:(BOOL)a3
+- (void)saveAlarmOnlyIfEdited:(BOOL)edited
 {
-  v3 = a3;
+  editedCopy = edited;
   v33 = *MEMORY[0x277D85DE8];
-  if (![(HUAlarmEditViewController *)self isEdited]&& v3)
+  if (![(HUAlarmEditViewController *)self isEdited]&& editedCopy)
   {
     return;
   }
 
   if (![(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    v12 = [(HUAlarmEditView *)self->_editAlarmView timePicker];
-    v13 = [v12 calendar];
-    v14 = [(HUAlarmEditView *)self->_editAlarmView timePicker];
-    v15 = [v14 date];
-    v5 = [v13 components:96 fromDate:v15];
+    timePicker = [(HUAlarmEditView *)self->_editAlarmView timePicker];
+    calendar = [timePicker calendar];
+    timePicker2 = [(HUAlarmEditView *)self->_editAlarmView timePicker];
+    date = [timePicker2 date];
+    currentDatePickerTimeComponents = [calendar components:96 fromDate:date];
 
     goto LABEL_12;
   }
 
-  v5 = [(HUAlarmEditViewController *)self currentDatePickerTimeComponents];
-  v6 = [(HUAlarmEditViewController *)self _isAlarmTypeMedia];
+  currentDatePickerTimeComponents = [(HUAlarmEditViewController *)self currentDatePickerTimeComponents];
+  _isAlarmTypeMedia = [(HUAlarmEditViewController *)self _isAlarmTypeMedia];
   v7 = HFLogForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!_isAlarmTypeMedia)
   {
     if (v8)
     {
@@ -1848,8 +1848,8 @@ LABEL_12:
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Saving Regular Alarm", &v31, 2u);
     }
 
-    v12 = [(HUAlarmEditViewController *)self editedAlarm];
-    [v12 setSound:0];
+    timePicker = [(HUAlarmEditViewController *)self editedAlarm];
+    [timePicker setSound:0];
     goto LABEL_16;
   }
 
@@ -1861,75 +1861,75 @@ LABEL_12:
 
   if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0)
   {
-    v9 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    v10 = [(HUAlarmEditViewController *)self _configureSoundForMediaTypeAlarm:v9];
-    v11 = [(HUAlarmEditViewController *)self editedAlarm];
-    [v11 setSound:v10];
+    hfPlaybackArchive = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    v10 = [(HUAlarmEditViewController *)self _configureSoundForMediaTypeAlarm:hfPlaybackArchive];
+    editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+    [editedAlarm setSound:v10];
   }
 
-  v12 = HFLogForCategory();
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  timePicker = HFLogForCategory();
+  if (os_log_type_enabled(timePicker, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(HUAlarmEditViewController *)self editedAlarm];
-    v14 = [v13 sound];
+    calendar = [(HUAlarmEditViewController *)self editedAlarm];
+    timePicker2 = [calendar sound];
     v31 = 138412290;
-    v32 = v14;
-    _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "Alarm Sound ..%@", &v31, 0xCu);
+    v32 = timePicker2;
+    _os_log_impl(&dword_20CEB6000, timePicker, OS_LOG_TYPE_DEFAULT, "Alarm Sound ..%@", &v31, 0xCu);
 LABEL_12:
   }
 
 LABEL_16:
 
-  v16 = [v5 hour];
-  v17 = [(HUAlarmEditViewController *)self editedAlarm];
-  [v17 setHour:v16];
+  hour = [currentDatePickerTimeComponents hour];
+  editedAlarm2 = [(HUAlarmEditViewController *)self editedAlarm];
+  [editedAlarm2 setHour:hour];
 
-  v18 = [v5 minute];
-  v19 = [(HUAlarmEditViewController *)self editedAlarm];
-  [v19 setMinute:v18];
+  minute = [currentDatePickerTimeComponents minute];
+  editedAlarm3 = [(HUAlarmEditViewController *)self editedAlarm];
+  [editedAlarm3 setMinute:minute];
 
-  v20 = [(HUAlarmEditViewController *)self editedAlarm];
-  v21 = [(HUAlarmEditViewController *)self selectedRoom];
-  v22 = [(HUAlarmEditViewController *)self mediaProfileContainer];
-  [v20 hf_moveToRoom:v21 withMediaProfileContainer:v22];
+  editedAlarm4 = [(HUAlarmEditViewController *)self editedAlarm];
+  selectedRoom = [(HUAlarmEditViewController *)self selectedRoom];
+  mediaProfileContainer = [(HUAlarmEditViewController *)self mediaProfileContainer];
+  [editedAlarm4 hf_moveToRoom:selectedRoom withMediaProfileContainer:mediaProfileContainer];
 
-  LODWORD(v21) = [(HUAlarmEditViewController *)self _isNewAlarm];
+  LODWORD(selectedRoom) = [(HUAlarmEditViewController *)self _isNewAlarm];
   v23 = HFLogForCategory();
   v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-  if (v21)
+  if (selectedRoom)
   {
     if (v24)
     {
-      v25 = [(HUAlarmEditViewController *)self editedAlarm];
-      v26 = [v25 description];
+      editedAlarm5 = [(HUAlarmEditViewController *)self editedAlarm];
+      v26 = [editedAlarm5 description];
       v31 = 138412290;
       v32 = v26;
       _os_log_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_DEFAULT, "New Alarm - Alarm Desc %@", &v31, 0xCu);
     }
 
-    v27 = [(HUAlarmEditViewController *)self delegate];
-    v28 = [(HUAlarmEditViewController *)self editedAlarm];
-    [v27 alarmEditController:self didAddAlarm:v28];
+    delegate = [(HUAlarmEditViewController *)self delegate];
+    editedAlarm6 = [(HUAlarmEditViewController *)self editedAlarm];
+    [delegate alarmEditController:self didAddAlarm:editedAlarm6];
   }
 
   else
   {
     if (v24)
     {
-      v29 = [(HUAlarmEditViewController *)self editedAlarm];
-      v30 = [v29 description];
+      editedAlarm7 = [(HUAlarmEditViewController *)self editedAlarm];
+      v30 = [editedAlarm7 description];
       v31 = 138412290;
       v32 = v30;
       _os_log_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_DEFAULT, "Edit Alarm - Alarm Desc %@", &v31, 0xCu);
     }
 
-    v27 = [(HUAlarmEditViewController *)self delegate];
-    v28 = [(HUAlarmEditViewController *)self editedAlarm];
-    [v27 alarmEditController:self didEditAlarm:v28];
+    delegate = [(HUAlarmEditViewController *)self delegate];
+    editedAlarm6 = [(HUAlarmEditViewController *)self editedAlarm];
+    [delegate alarmEditController:self didEditAlarm:editedAlarm6];
   }
 }
 
-- (void)_cancelButtonClicked:(id)a3
+- (void)_cancelButtonClicked:(id)clicked
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -1938,15 +1938,15 @@ LABEL_16:
     v6 = 136315394;
     v7 = "[HUAlarmEditViewController _cancelButtonClicked:]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%s(%@) canceling", &v6, 0x16u);
   }
 
-  v5 = [(HUAlarmEditViewController *)self delegate];
-  [v5 alarmEditControllerDidCancel:self];
+  delegate = [(HUAlarmEditViewController *)self delegate];
+  [delegate alarmEditControllerDidCancel:self];
 }
 
-- (void)_doneButtonClicked:(id)a3
+- (void)_doneButtonClicked:(id)clicked
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -1955,28 +1955,28 @@ LABEL_16:
     v5 = 136315394;
     v6 = "[HUAlarmEditViewController _doneButtonClicked:]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%s(%@) done", &v5, 0x16u);
   }
 
   [(HUAlarmEditViewController *)self saveAlarmOnlyIfEdited:0];
 }
 
-- (void)startEditingSetting:(int64_t)a3
+- (void)startEditingSetting:(int64_t)setting
 {
-  self->_editingAlarmSetting = a3;
+  self->_editingAlarmSetting = setting;
   v5 = [HUAlarmEditSettingViewController alloc];
-  v6 = [(HUAlarmEditViewController *)self editedAlarm];
-  v7 = [(HUAlarmEditViewController *)self mediaProfileContainer];
-  v8 = [(HUAlarmEditViewController *)self selectedRoom];
-  v9 = [(HUAlarmEditViewController *)self loggedInAppleMusicAccountDSID];
-  v11 = [(HUAlarmEditSettingViewController *)v5 initWithAlarm:v6 setting:a3 mediaProfileContainer:v7 selectedRoom:v8 loggedInAppleMusicAccountDSID:v9];
+  editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+  mediaProfileContainer = [(HUAlarmEditViewController *)self mediaProfileContainer];
+  selectedRoom = [(HUAlarmEditViewController *)self selectedRoom];
+  loggedInAppleMusicAccountDSID = [(HUAlarmEditViewController *)self loggedInAppleMusicAccountDSID];
+  v11 = [(HUAlarmEditSettingViewController *)v5 initWithAlarm:editedAlarm setting:setting mediaProfileContainer:mediaProfileContainer selectedRoom:selectedRoom loggedInAppleMusicAccountDSID:loggedInAppleMusicAccountDSID];
 
   [(HUAlarmEditSettingViewController *)v11 setDelegate:self];
   [(HUAlarmEditViewController *)self preferredContentSize];
   [(HUAlarmEditSettingViewController *)v11 setPreferredContentSize:?];
-  v10 = [(HUAlarmEditViewController *)self navigationController];
-  [v10 pushViewController:v11 animated:1];
+  navigationController = [(HUAlarmEditViewController *)self navigationController];
+  [navigationController pushViewController:v11 animated:1];
 }
 
 - (void)_handlePickerChanged
@@ -1988,14 +1988,14 @@ LABEL_16:
   }
 }
 
-- (void)_updateEnableStateForDoneButton:(BOOL)a3
+- (void)_updateEnableStateForDoneButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    v6 = [(HUAlarmEditViewController *)self navigationItem];
-    v5 = [v6 rightBarButtonItem];
-    [v5 setEnabled:v3];
+    navigationItem = [(HUAlarmEditViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:buttonCopy];
   }
 }
 
@@ -2007,12 +2007,12 @@ LABEL_16:
     appleMusicSubcriptionResult = self->_appleMusicSubcriptionResult;
     self->_appleMusicSubcriptionResult = v3;
 
-    v5 = [(HUAlarmEditViewController *)self mediaProfileContainer];
-    v6 = [v5 mediaProfiles];
-    v7 = [v6 hf_homePodMediaProfiles];
-    v8 = [(HUAlarmEditViewController *)self mediaProfileContainer];
-    v9 = [v8 hf_home];
-    v10 = [HUMediaAccountUtilities determineMediaPickerAvailabilityForHomePodProfiles:v7 inHome:v9];
+    mediaProfileContainer = [(HUAlarmEditViewController *)self mediaProfileContainer];
+    mediaProfiles = [mediaProfileContainer mediaProfiles];
+    hf_homePodMediaProfiles = [mediaProfiles hf_homePodMediaProfiles];
+    mediaProfileContainer2 = [(HUAlarmEditViewController *)self mediaProfileContainer];
+    hf_home = [mediaProfileContainer2 hf_home];
+    v10 = [HUMediaAccountUtilities determineMediaPickerAvailabilityForHomePodProfiles:hf_homePodMediaProfiles inHome:hf_home];
 
     objc_initWeak(&location, self);
     v15[0] = MEMORY[0x277D85DD0];
@@ -2058,19 +2058,19 @@ void __64__HUAlarmEditViewController__updateAppleMusicSubscriptionStatus__block_
 - (void)_loadArtworkForMediaAlarm
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAD30] sharedSession];
-  v4 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-  v5 = [v4 mediaPlayerPlaybackArchive];
+  mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
+  hfPlaybackArchive = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+  mediaPlayerPlaybackArchive = [hfPlaybackArchive mediaPlayerPlaybackArchive];
 
-  v6 = [v5 displayProperties];
-  v7 = [v6 artworkImageURL];
-  if (v7)
+  displayProperties = [mediaPlayerPlaybackArchive displayProperties];
+  artworkImageURL = [displayProperties artworkImageURL];
+  if (artworkImageURL)
   {
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v7;
+      v14 = artworkImageURL;
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "Loading artwork for Media Alarm [%@]", buf, 0xCu);
     }
 
@@ -2080,11 +2080,11 @@ void __64__HUAlarmEditViewController__updateAppleMusicSubscriptionStatus__block_
     v11[2] = __54__HUAlarmEditViewController__loadArtworkForMediaAlarm__block_invoke;
     v11[3] = &unk_277DBD2B8;
     objc_copyWeak(&v12, buf);
-    v9 = [v3 dataTaskWithURL:v7 completionHandler:v11];
+    v9 = [mEMORY[0x277CCAD30] dataTaskWithURL:artworkImageURL completionHandler:v11];
     [(HUAlarmEditViewController *)self setArtworkFetchTask:v9];
 
-    v10 = [(HUAlarmEditViewController *)self artworkFetchTask];
-    [v10 resume];
+    artworkFetchTask = [(HUAlarmEditViewController *)self artworkFetchTask];
+    [artworkFetchTask resume];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
@@ -2166,41 +2166,41 @@ void __54__HUAlarmEditViewController__loadArtworkForMediaAlarm__block_invoke_2(u
 - (void)_checkAndPrepareEditingAlarmForMediaTypeAlarm
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(MTMutableAlarm *)self->_editedAlarm sound];
-  v4 = [v3 toneIdentifier];
-  if (v4)
+  sound = [(MTMutableAlarm *)self->_editedAlarm sound];
+  toneIdentifier = [sound toneIdentifier];
+  if (toneIdentifier)
   {
-    v5 = v4;
-    v6 = [(MTMutableAlarm *)self->_editedAlarm sound];
-    v7 = [v6 toneIdentifier];
-    v8 = [v7 length];
+    v5 = toneIdentifier;
+    sound2 = [(MTMutableAlarm *)self->_editedAlarm sound];
+    toneIdentifier2 = [sound2 toneIdentifier];
+    v8 = [toneIdentifier2 length];
 
     if (v8)
     {
-      v9 = [getTLToneManagerClass() sharedToneManager];
-      v10 = [(MTMutableAlarm *)self->_editedAlarm sound];
-      v11 = [v10 toneIdentifier];
-      v12 = [v9 _underlyingPlaybackArchiveForToneIdentifier:v11];
+      sharedToneManager = [getTLToneManagerClass() sharedToneManager];
+      sound3 = [(MTMutableAlarm *)self->_editedAlarm sound];
+      toneIdentifier3 = [sound3 toneIdentifier];
+      v12 = [sharedToneManager _underlyingPlaybackArchiveForToneIdentifier:toneIdentifier3];
 
       if (v12)
       {
-        v13 = [(HUAlarmEditViewController *)self editedAlarm];
-        v14 = [v13 sound];
-        v15 = [v14 soundVolume];
+        editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+        sound4 = [editedAlarm sound];
+        soundVolume = [sound4 soundVolume];
 
-        if (v15)
+        if (soundVolume)
         {
           [(HUAlarmEditViewController *)self setIsCustomVolumeSelected:1];
-          v16 = [(HUAlarmEditViewController *)self editedAlarm];
-          v17 = [v16 sound];
-          [v17 soundVolume];
+          editedAlarm2 = [(HUAlarmEditViewController *)self editedAlarm];
+          sound5 = [editedAlarm2 sound];
+          [sound5 soundVolume];
         }
 
         else
         {
-          v16 = [(HUAlarmEditViewController *)self mediaProfileContainer];
-          v17 = [v16 mediaProfiles];
-          [HUMediaAccountUtilities defaultCurrentVolumeForMediaProfiles:v17];
+          editedAlarm2 = [(HUAlarmEditViewController *)self mediaProfileContainer];
+          sound5 = [editedAlarm2 mediaProfiles];
+          [HUMediaAccountUtilities defaultCurrentVolumeForMediaProfiles:sound5];
         }
         v20 = ;
         [v20 floatValue];
@@ -2212,18 +2212,18 @@ void __54__HUAlarmEditViewController__loadArtworkForMediaAlarm__block_invoke_2(u
 
         if (self->_hfPlaybackArchive)
         {
-          v24 = [v12 displayProperties];
-          v25 = [v24 artworkImageData];
-          if (v25)
+          displayProperties = [v12 displayProperties];
+          artworkImageData = [displayProperties artworkImageData];
+          if (artworkImageData)
           {
           }
 
           else
           {
-            v26 = [v12 displayProperties];
-            v27 = [v26 artworkImageURL];
+            displayProperties2 = [v12 displayProperties];
+            artworkImageURL = [displayProperties2 artworkImageURL];
 
-            if (v27)
+            if (artworkImageURL)
             {
               [(HUAlarmEditViewController *)self _loadArtworkForMediaAlarm];
             }
@@ -2233,14 +2233,14 @@ void __54__HUAlarmEditViewController__loadArtworkForMediaAlarm__block_invoke_2(u
           v18 = HFLogForCategory();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-            v29 = [v28 description];
-            v30 = [(MTMutableAlarm *)self->_editedAlarm sound];
-            v31 = [v30 toneIdentifier];
+            hfPlaybackArchive = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+            v29 = [hfPlaybackArchive description];
+            sound6 = [(MTMutableAlarm *)self->_editedAlarm sound];
+            toneIdentifier4 = [sound6 toneIdentifier];
             v32 = 138412802;
             v33 = v29;
             v34 = 2112;
-            v35 = v31;
+            v35 = toneIdentifier4;
             v36 = 2112;
             v37 = v12;
             _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "Editing Alarm is Media Alarm. Description %@, ToneIdentifier %@, playbackArchiveObj from TL %@", &v32, 0x20u);
@@ -2290,20 +2290,20 @@ LABEL_22:
 LABEL_23:
 }
 
-- (id)_configureSoundForMediaTypeAlarm:(id)a3
+- (id)_configureSoundForMediaTypeAlarm:(id)alarm
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mediaPlayerPlaybackArchive];
-  v6 = [v5 displayProperties];
-  v7 = [v6 artworkImageData];
-  if (v7)
+  alarmCopy = alarm;
+  mediaPlayerPlaybackArchive = [alarmCopy mediaPlayerPlaybackArchive];
+  displayProperties = [mediaPlayerPlaybackArchive displayProperties];
+  artworkImageData = [displayProperties artworkImageData];
+  if (artworkImageData)
   {
-    v8 = v7;
-    v9 = [v5 displayProperties];
-    v10 = [v9 artworkImageURL];
+    v8 = artworkImageData;
+    displayProperties2 = [mediaPlayerPlaybackArchive displayProperties];
+    artworkImageURL = [displayProperties2 artworkImageURL];
 
-    if (v10)
+    if (artworkImageURL)
     {
       v11 = HFLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2312,8 +2312,8 @@ LABEL_23:
         _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "Stripping artwork from Media Alarm", &v21, 2u);
       }
 
-      v12 = [v5 copyWithOptions:8];
-      v5 = v12;
+      v12 = [mediaPlayerPlaybackArchive copyWithOptions:8];
+      mediaPlayerPlaybackArchive = v12;
     }
   }
 
@@ -2321,8 +2321,8 @@ LABEL_23:
   {
   }
 
-  v13 = [getTLToneManagerClass() sharedToneManager];
-  v14 = [v13 _toneIdentifierWithUnderlyingPlaybackArchive:v5];
+  sharedToneManager = [getTLToneManagerClass() sharedToneManager];
+  v14 = [sharedToneManager _toneIdentifierWithUnderlyingPlaybackArchive:mediaPlayerPlaybackArchive];
 
   if (v14)
   {
@@ -2342,11 +2342,11 @@ LABEL_23:
     v18 = HFLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v4 mediaPlayerPlaybackArchive];
+      mediaPlayerPlaybackArchive2 = [alarmCopy mediaPlayerPlaybackArchive];
       v21 = 138413058;
       v22 = v16;
       v23 = 2112;
-      v24 = v19;
+      v24 = mediaPlayerPlaybackArchive2;
       v25 = 2112;
       v26 = v14;
       v27 = 2112;
@@ -2361,7 +2361,7 @@ LABEL_23:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v21 = 138412290;
-      v22 = v5;
+      v22 = mediaPlayerPlaybackArchive;
       _os_log_error_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_ERROR, "Failed to convert playback archive %@ into a tone identifier.", &v21, 0xCu);
     }
 
@@ -2373,69 +2373,69 @@ LABEL_23:
 
 - (BOOL)_isMusicAlarmSupportedInAccessory
 {
-  v2 = [(HUAlarmEditViewController *)self mediaProfileContainer];
-  v3 = [v2 hf_supportsMusicAlarm];
+  mediaProfileContainer = [(HUAlarmEditViewController *)self mediaProfileContainer];
+  hf_supportsMusicAlarm = [mediaProfileContainer hf_supportsMusicAlarm];
 
-  return v3;
+  return hf_supportsMusicAlarm;
 }
 
-- (void)alarmEditSettingController:(id)a3 didEditAlarm:(id)a4
+- (void)alarmEditSettingController:(id)controller didEditAlarm:(id)alarm
 {
-  v6 = a4;
-  v7 = [a3 selectedRoom];
-  [(HUAlarmEditViewController *)self setSelectedRoom:v7];
+  alarmCopy = alarm;
+  selectedRoom = [controller selectedRoom];
+  [(HUAlarmEditViewController *)self setSelectedRoom:selectedRoom];
 
-  v8 = [v6 mutableCopy];
+  v8 = [alarmCopy mutableCopy];
   [(HUAlarmEditViewController *)self setEditedAlarm:v8];
 
-  v9 = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
-  [v9 reloadData];
+  settingsTable = [(HUAlarmEditView *)self->_editAlarmView settingsTable];
+  [settingsTable reloadData];
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v19 = a3;
+  onCopy = on;
+  cellCopy = cell;
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    v6 = [v19 textLabel];
-    v7 = [v6 text];
+    textLabel = [cellCopy textLabel];
+    text = [textLabel text];
     v8 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditAlarmSnooze", @"HUAlarmEditAlarmSnooze", 1);
-    v9 = [v7 isEqualToString:v8];
+    v9 = [text isEqualToString:v8];
 
     if (v9)
     {
-      v10 = [(HUAlarmEditViewController *)self editedAlarm];
-      [v10 setAllowsSnooze:v4];
+      editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+      [editedAlarm setAllowsSnooze:onCopy];
     }
 
     else
     {
-      v11 = [v19 textLabel];
-      v12 = [v11 text];
+      textLabel2 = [cellCopy textLabel];
+      text2 = [textLabel2 text];
       v13 = _HULocalizedStringWithDefaultValue(@"HUMediaSelectionQueueModifierRepeat", @"HUMediaSelectionQueueModifierRepeat", 1);
-      v14 = [v12 isEqualToString:v13];
+      v14 = [text2 isEqualToString:v13];
 
       if (v14)
       {
-        v10 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-        [v10 setRepeatEnabled:v4];
+        editedAlarm = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+        [editedAlarm setRepeatEnabled:onCopy];
       }
 
       else
       {
-        v15 = [v19 textLabel];
-        v16 = [v15 text];
+        textLabel3 = [cellCopy textLabel];
+        text3 = [textLabel3 text];
         v17 = _HULocalizedStringWithDefaultValue(@"HUMediaSelectionQueueModifierShuffle", @"HUMediaSelectionQueueModifierShuffle", 1);
-        v18 = [v16 isEqualToString:v17];
+        v18 = [text3 isEqualToString:v17];
 
         if (!v18)
         {
           goto LABEL_9;
         }
 
-        v10 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-        [v10 setShuffleEnabled:v4];
+        editedAlarm = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+        [editedAlarm setShuffleEnabled:onCopy];
       }
     }
   }
@@ -2443,55 +2443,55 @@ LABEL_23:
 LABEL_9:
 }
 
-- (void)sliderValueTableViewCell:(id)a3 didChangeValue:(double)a4
+- (void)sliderValueTableViewCell:(id)cell didChangeValue:(double)value
 {
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
 
-    [(HUAlarmEditViewController *)self setSelectedCustomVolumeLevel:a4];
+    [(HUAlarmEditViewController *)self setSelectedCustomVolumeLevel:value];
   }
 }
 
-- (void)datePickerCell:(id)a3 didSelectDate:(id)a4
+- (void)datePickerCell:(id)cell didSelectDate:(id)date
 {
-  v6 = a3;
+  cellCopy = cell;
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
     [(HUAlarmEditViewController *)self setIsDatePickerWheelScrolled:1];
-    v5 = [v6 timeComponents];
-    [(HUAlarmEditViewController *)self setCurrentDatePickerTimeComponents:v5];
+    timeComponents = [cellCopy timeComponents];
+    [(HUAlarmEditViewController *)self setCurrentDatePickerTimeComponents:timeComponents];
   }
 }
 
-- (void)mediaPicker:(id)a3 didPickPlaybackArchive:(id)a4
+- (void)mediaPicker:(id)picker didPickPlaybackArchive:(id)archive
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  archiveCopy = archive;
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    v6 = [(HUAlarmEditViewController *)self artworkFetchTask];
-    [v6 cancel];
+    artworkFetchTask = [(HUAlarmEditViewController *)self artworkFetchTask];
+    [artworkFetchTask cancel];
 
     [(HUAlarmEditViewController *)self setHfPlaybackArchive:0];
-    v7 = [objc_alloc(MEMORY[0x277D14948]) initWithMediaPlayerPlaybackArchive:v5];
+    v7 = [objc_alloc(MEMORY[0x277D14948]) initWithMediaPlayerPlaybackArchive:archiveCopy];
     [(HUAlarmEditViewController *)self setHfPlaybackArchive:v7];
 
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-      v10 = [v9 description];
+      hfPlaybackArchive = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+      v10 = [hfPlaybackArchive description];
       *buf = 138412290;
       v16 = v10;
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "didPickPlaybackArchive Media Alarm. Description %@", buf, 0xCu);
     }
 
-    v11 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    [v11 setAutoPlayEnabled:0];
+    hfPlaybackArchive2 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    [hfPlaybackArchive2 setAutoPlayEnabled:0];
 
-    v12 = [(HUAlarmEditViewController *)self editAlarmView];
-    v13 = [v12 settingsTable];
-    [v13 reloadData];
+    editAlarmView = [(HUAlarmEditViewController *)self editAlarmView];
+    settingsTable = [editAlarmView settingsTable];
+    [settingsTable reloadData];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -2510,9 +2510,9 @@ uint64_t __64__HUAlarmEditViewController_mediaPicker_didPickPlaybackArchive___bl
   return [v1 _updateEnableStateForDoneButton:v2];
 }
 
-- (void)_presentMediaPickerWithOptionsShowsLibraryContent:(BOOL)a3
+- (void)_presentMediaPickerWithOptionsShowsLibraryContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
     v23 = 0;
@@ -2537,9 +2537,9 @@ uint64_t __64__HUAlarmEditViewController_mediaPicker_didPickPlaybackArchive___bl
     [v7 setShowsCloudItems:1];
     [v7 setShowsItemsWithProtectedAssets:1];
     [v7 setShowsCatalogContent:1];
-    [v7 setShowsLibraryContent:v3];
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
+    [v7 setShowsLibraryContent:contentCopy];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = v9;
 
     v23 = 0;
@@ -2566,43 +2566,43 @@ uint64_t __64__HUAlarmEditViewController_mediaPicker_didPickPlaybackArchive___bl
 
     [v7 setDelegate:self];
     [v7 setModalPresentationStyle:2];
-    v15 = [(HUAlarmEditViewController *)self view];
-    [v15 frame];
+    view = [(HUAlarmEditViewController *)self view];
+    [view frame];
     [v7 setPreferredContentSize:{v16, v17}];
 
     [(HUAlarmEditViewController *)self presentViewController:v7 animated:1 completion:0];
   }
 }
 
-- (void)mediaPickerDidPickPlaybackArchive:(id)a3
+- (void)mediaPickerDidPickPlaybackArchive:(id)archive
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiveCopy = archive;
   if ([(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
-    v5 = [(HUAlarmEditViewController *)self artworkFetchTask];
-    [v5 cancel];
+    artworkFetchTask = [(HUAlarmEditViewController *)self artworkFetchTask];
+    [artworkFetchTask cancel];
 
     [(HUAlarmEditViewController *)self setHfPlaybackArchive:0];
-    v6 = [objc_alloc(MEMORY[0x277D14948]) initWithMediaPlayerPlaybackArchive:v4];
+    v6 = [objc_alloc(MEMORY[0x277D14948]) initWithMediaPlayerPlaybackArchive:archiveCopy];
     [(HUAlarmEditViewController *)self setHfPlaybackArchive:v6];
 
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-      v9 = [v8 description];
+      hfPlaybackArchive = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+      v9 = [hfPlaybackArchive description];
       v13 = 138412290;
       v14 = v9;
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "didPickPlaybackArchive Media Alarm. Description %@", &v13, 0xCu);
     }
 
-    v10 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
-    [v10 setAutoPlayEnabled:0];
+    hfPlaybackArchive2 = [(HUAlarmEditViewController *)self hfPlaybackArchive];
+    [hfPlaybackArchive2 setAutoPlayEnabled:0];
 
-    v11 = [(HUAlarmEditViewController *)self editAlarmView];
-    v12 = [v11 settingsTable];
-    [v12 reloadData];
+    editAlarmView = [(HUAlarmEditViewController *)self editAlarmView];
+    settingsTable = [editAlarmView settingsTable];
+    [settingsTable reloadData];
 
     [(HUAlarmEditViewController *)self dismissViewControllerAnimated:1 completion:0];
     [(HUAlarmEditViewController *)self _updateEnableStateForDoneButton:[(HUAlarmEditViewController *)self _isAlarmTypeMedia]];
@@ -2618,9 +2618,9 @@ uint64_t __64__HUAlarmEditViewController_mediaPicker_didPickPlaybackArchive___bl
     return v3;
   }
 
-  v4 = [(HUAlarmEditViewController *)self mediaProfileContainer];
-  v5 = [v4 mediaProfiles];
-  v6 = [HUMediaAccountUtilities defaultCurrentVolumeForMediaProfiles:v5];
+  mediaProfileContainer = [(HUAlarmEditViewController *)self mediaProfileContainer];
+  mediaProfiles = [mediaProfileContainer mediaProfiles];
+  v6 = [HUMediaAccountUtilities defaultCurrentVolumeForMediaProfiles:mediaProfiles];
   [v6 floatValue];
   v8 = v7;
 
@@ -2638,24 +2638,24 @@ LABEL_4:
 
   else
   {
-    v11 = [(HUAlarmEditViewController *)self editedAlarm];
-    v12 = [v11 sound];
-    v13 = [v12 soundVolume];
+    editedAlarm = [(HUAlarmEditViewController *)self editedAlarm];
+    sound = [editedAlarm sound];
+    soundVolume = [sound soundVolume];
 
-    if (v13)
+    if (soundVolume)
     {
-      v14 = [(HUAlarmEditViewController *)self editedAlarm];
-      v15 = [v14 sound];
-      v16 = [v15 soundVolume];
-      [v16 floatValue];
+      editedAlarm2 = [(HUAlarmEditViewController *)self editedAlarm];
+      sound2 = [editedAlarm2 sound];
+      soundVolume2 = [sound2 soundVolume];
+      [soundVolume2 floatValue];
       v18 = v17;
       [(HUAlarmEditViewController *)self selectedCustomVolumeLevel];
       if (v19 == v18)
       {
-        v20 = [(HUAlarmEditViewController *)self editedAlarm];
-        v21 = [v20 sound];
-        v22 = [v21 soundVolume];
-        [v22 floatValue];
+        editedAlarm3 = [(HUAlarmEditViewController *)self editedAlarm];
+        sound3 = [editedAlarm3 sound];
+        soundVolume3 = [sound3 soundVolume];
+        [soundVolume3 floatValue];
         v3 = v23;
       }
 
@@ -2722,15 +2722,15 @@ LABEL_13:
   return v3;
 }
 
-- (void)_presentMediaPickerUnavailablePromptWithReason:(int64_t)a3 storeKitErrorObject:(id)a4
+- (void)_presentMediaPickerUnavailablePromptWithReason:(int64_t)reason storeKitErrorObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   if (![(HUAlarmEditViewController *)self accessorySupportsMusicAlarm])
   {
     goto LABEL_16;
   }
 
-  switch(a3)
+  switch(reason)
   {
     case 2:
       v8 = [HUMediaAccountUtilities reasonForMediaPickerNotAvailable:2];
@@ -2763,7 +2763,7 @@ LABEL_13:
       }
 
 LABEL_9:
-      v11 = _HULocalizedStringWithDefaultValue(v8, v8, 1);
+      localizedDescription = _HULocalizedStringWithDefaultValue(v8, v8, 1);
       goto LABEL_12;
     default:
       v9 = 0;
@@ -2773,12 +2773,12 @@ LABEL_9:
       break;
   }
 
-  v11 = [v6 localizedDescription];
+  localizedDescription = [objectCopy localizedDescription];
   v8 = 0;
 LABEL_12:
   v12 = MEMORY[0x277D75110];
   v13 = _HULocalizedStringWithDefaultValue(v9, v9, 1);
-  v14 = [v12 alertControllerWithTitle:v13 message:v11 preferredStyle:1];
+  v14 = [v12 alertControllerWithTitle:v13 message:localizedDescription preferredStyle:1];
 
   v15 = MEMORY[0x277D750F8];
   v16 = _HULocalizedStringWithDefaultValue(@"HUOkTitle", @"HUOkTitle", 1);

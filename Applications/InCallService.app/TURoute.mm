@@ -1,12 +1,12 @@
 @interface TURoute
 + (id)speakerAudioRouteGlyph;
 - (BOOL)isHeadphonesConnected;
-- (id)_glyphForDisplayStyle:(int64_t)a3 withColor:(id)a4;
-- (id)audioRouteGlyphForDisplayStyle:(int64_t)a3;
-- (id)audioRouteGlyphForRoutePickerWithColor:(id)a3;
+- (id)_glyphForDisplayStyle:(int64_t)style withColor:(id)color;
+- (id)audioRouteGlyphForDisplayStyle:(int64_t)style;
+- (id)audioRouteGlyphForRoutePickerWithColor:(id)color;
 - (id)avSystemControllerQueryQueue;
-- (void)fetchAudioControlsGlyphWithCompletion:(id)a3;
-- (void)fetchFallbackAudioControlsGlyphWithCompletion:(id)a3;
+- (void)fetchAudioControlsGlyphWithCompletion:(id)completion;
+- (void)fetchFallbackAudioControlsGlyphWithCompletion:(id)completion;
 @end
 
 @implementation TURoute
@@ -14,17 +14,17 @@
 + (id)speakerAudioRouteGlyph
 {
   v2 = [UIImage speakerRouteGlyphForDisplayStyle:1];
-  v3 = [v2 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v2 imageFlippedForRightToLeftLayoutDirection];
 
-  return v3;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
-- (id)audioRouteGlyphForDisplayStyle:(int64_t)a3
+- (id)audioRouteGlyphForDisplayStyle:(int64_t)style
 {
-  if ((a3 - 2) < 3)
+  if ((style - 2) < 3)
   {
     v5 = +[UIColor labelColor];
-    v6 = [(TURoute *)self _glyphForDisplayStyle:a3 withColor:v5];
+    v6 = [(TURoute *)self _glyphForDisplayStyle:style withColor:v5];
 
     if (v6)
     {
@@ -35,7 +35,7 @@
     {
       if (([(TURoute *)self isSpeaker]& 1) == 0 && ([(TURoute *)self isReceiver]& 1) == 0 && ([(TURoute *)self isDefaultRoute]& 1) == 0)
       {
-        v8 = [UIImage bluetoothAudioRouteGlyphForDisplayStyle:a3];
+        v8 = [UIImage bluetoothAudioRouteGlyphForDisplayStyle:style];
         goto LABEL_11;
       }
 
@@ -46,13 +46,13 @@
       }
     }
 
-    v8 = [UIImage speakerRouteGlyphForDisplayStyle:a3];
+    v8 = [UIImage speakerRouteGlyphForDisplayStyle:style];
 LABEL_11:
     v6 = v8;
     goto LABEL_17;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v16 = 0;
     v17 = &v16;
@@ -75,7 +75,7 @@ LABEL_11:
     _Block_object_dispose(&v16, 8);
   }
 
-  else if (a3)
+  else if (style)
   {
     v6 = 0;
   }
@@ -91,37 +91,37 @@ LABEL_17:
   return v6;
 }
 
-- (id)audioRouteGlyphForRoutePickerWithColor:(id)a3
+- (id)audioRouteGlyphForRoutePickerWithColor:(id)color
 {
-  v3 = [(TURoute *)self _glyphForDisplayStyle:0 withColor:a3];
+  v3 = [(TURoute *)self _glyphForDisplayStyle:0 withColor:color];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v3 _imageThatSuppressesAccessibilityHairlineThickening];
   }
 
   else
   {
-    v5 = 0;
+    _imageThatSuppressesAccessibilityHairlineThickening = 0;
   }
 
-  return v5;
+  return _imageThatSuppressesAccessibilityHairlineThickening;
 }
 
-- (id)_glyphForDisplayStyle:(int64_t)a3 withColor:(id)a4
+- (id)_glyphForDisplayStyle:(int64_t)style withColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   if ([(TURoute *)self isReceiver])
   {
-    if (a3 != 4)
+    if (style != 4)
     {
-      v8 = [UIImage currentDeviceRouteGlyphForDisplayStyle:a3];
+      v8 = [UIImage currentDeviceRouteGlyphForDisplayStyle:style];
       goto LABEL_10;
     }
 
-    v7 = 4;
+    styleCopy = 4;
 LABEL_6:
-    v8 = [UIImage speakerRouteGlyphForDisplayStyle:v7];
+    v8 = [UIImage speakerRouteGlyphForDisplayStyle:styleCopy];
 LABEL_10:
     v9 = v8;
     goto LABEL_11;
@@ -129,33 +129,33 @@ LABEL_10:
 
   if ([(TURoute *)self isSpeaker])
   {
-    v7 = a3;
+    styleCopy = style;
     goto LABEL_6;
   }
 
   if ([(TURoute *)self deviceType])
   {
-    v8 = [UIImage routeGlyphForDeviceType:[(TURoute *)self deviceType] displayStyle:a3 color:v6];
+    v8 = [UIImage routeGlyphForDeviceType:[(TURoute *)self deviceType] displayStyle:style color:colorCopy];
     goto LABEL_10;
   }
 
   v11 = sub_100004F84();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(TURoute *)self modelIdentifier];
+    modelIdentifier = [(TURoute *)self modelIdentifier];
     v18 = 138412290;
-    v19 = v12;
+    v19 = modelIdentifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Unknown device type, model id: %@", &v18, 0xCu);
   }
 
-  v13 = [(TURoute *)self modelIdentifier];
-  v14 = [UIImage systemImageNameForModelIdSync:v13];
+  modelIdentifier2 = [(TURoute *)self modelIdentifier];
+  v14 = [UIImage systemImageNameForModelIdSync:modelIdentifier2];
 
   if (v14)
   {
-    if (!a3)
+    if (!style)
     {
-      v16 = [UIImageSymbolConfiguration configurationWithHierarchicalColor:v6];
+      v16 = [UIImageSymbolConfiguration configurationWithHierarchicalColor:colorCopy];
       v17 = [UIImage _systemImageNamed:v14 withConfiguration:v16];
       v9 = [v17 imageWithRenderingMode:2];
 
@@ -167,7 +167,7 @@ LABEL_10:
 
   else
   {
-    v15 = [UIImage bluetoothAudioRouteGlyphForDisplayStyle:a3];
+    v15 = [UIImage bluetoothAudioRouteGlyphForDisplayStyle:style];
   }
 
   v9 = v15;
@@ -184,15 +184,15 @@ LABEL_11:
   v4 = [v3 attributeForKey:AVSystemController_HeadphoneJackIsConnectedAttribute];
   if ([v4 BOOLValue])
   {
-    v5 = 1;
+    isBluetoothLE = 1;
   }
 
   else
   {
-    v5 = [(TURoute *)self isBluetoothLE];
+    isBluetoothLE = [(TURoute *)self isBluetoothLE];
   }
 
-  return v5;
+  return isBluetoothLE;
 }
 
 - (id)avSystemControllerQueryQueue
@@ -207,22 +207,22 @@ LABEL_11:
   return v3;
 }
 
-- (void)fetchAudioControlsGlyphWithCompletion:(id)a3
+- (void)fetchAudioControlsGlyphWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(TURoute *)self deviceType])
     {
       v5 = [UIImage routeGlyphForDeviceType:[(TURoute *)self deviceType] displayStyle:1];
       if (v5)
       {
-        v4[2](v4, v5);
+        completionCopy[2](completionCopy, v5);
       }
 
       else
       {
-        [(TURoute *)self fetchFallbackAudioControlsGlyphWithCompletion:v4];
+        [(TURoute *)self fetchFallbackAudioControlsGlyphWithCompletion:completionCopy];
       }
     }
 
@@ -231,20 +231,20 @@ LABEL_11:
       v7 = sub_100004F84();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(TURoute *)self modelIdentifier];
+        modelIdentifier = [(TURoute *)self modelIdentifier];
         *buf = 138412290;
-        v13 = v8;
+        v13 = modelIdentifier;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Unknown device type, model id: %@", buf, 0xCu);
       }
 
-      v9 = [(TURoute *)self modelIdentifier];
+      modelIdentifier2 = [(TURoute *)self modelIdentifier];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1000448DC;
       v10[3] = &unk_100356A20;
       v10[4] = self;
-      v11 = v4;
-      [UIImage routeGlyphForModelId:v9 displayStyle:1 completion:v10];
+      v11 = completionCopy;
+      [UIImage routeGlyphForModelId:modelIdentifier2 displayStyle:1 completion:v10];
     }
   }
 
@@ -258,20 +258,20 @@ LABEL_11:
   }
 }
 
-- (void)fetchFallbackAudioControlsGlyphWithCompletion:(id)a3
+- (void)fetchFallbackAudioControlsGlyphWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  if (v4)
+  if (completionCopy)
   {
-    v5 = [(TURoute *)self avSystemControllerQueryQueue];
+    avSystemControllerQueryQueue = [(TURoute *)self avSystemControllerQueryQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100044A1C;
     block[3] = &unk_100356A48;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
-    dispatch_async(v5, block);
+    v8 = completionCopy;
+    dispatch_async(avSystemControllerQueryQueue, block);
 
     objc_destroyWeak(&v9);
   }

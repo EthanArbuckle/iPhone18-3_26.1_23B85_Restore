@@ -1,13 +1,13 @@
 @interface SUSegmentedControlBar
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUSegmentedControlBar)initWithSegmentedControl:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUSegmentedControlBar)initWithSegmentedControl:(id)control;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation SUSegmentedControlBar
 
-- (SUSegmentedControlBar)initWithSegmentedControl:(id)a3
+- (SUSegmentedControlBar)initWithSegmentedControl:(id)control
 {
   v11.receiver = self;
   v11.super_class = SUSegmentedControlBar;
@@ -17,7 +17,7 @@
     if ((_UIApplicationUsesLegacyUI() & 1) == 0)
     {
       v5 = [MEMORY[0x1E69DC888] colorWithWhite:0.70588237 alpha:1.0];
-      if ([a3 tintStyle] == 1)
+      if ([control tintStyle] == 1)
       {
         v5 = [MEMORY[0x1E69DC888] colorWithWhite:0.254901975 alpha:1.0];
         v6 = 11050;
@@ -37,9 +37,9 @@
       [(SUSegmentedControlBar *)v4 addSubview:v4->_separatorView];
     }
 
-    v9 = a3;
-    v4->_control = v9;
-    [(SUSegmentedControlBar *)v4 addSubview:v9];
+    controlCopy = control;
+    v4->_control = controlCopy;
+    [(SUSegmentedControlBar *)v4 addSubview:controlCopy];
     -[SUSegmentedControlBar setBackgroundColor:](v4, "setBackgroundColor:", [MEMORY[0x1E69DC888] clearColor]);
   }
 
@@ -119,10 +119,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = _UIApplicationUsesLegacyUI();
   v7 = -10.0;
   if (v6)

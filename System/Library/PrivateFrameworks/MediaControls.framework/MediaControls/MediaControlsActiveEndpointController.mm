@@ -1,37 +1,37 @@
 @interface MediaControlsActiveEndpointController
 + (double)mediaRecentlyPlayedTimeout;
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4;
-- (MediaControlsActiveEndpointController)initWithActiveEndpointType:(int64_t)a3;
-- (id)_routeForEndpoint:(__MRAVEndpointRef *)a3;
-- (void)_activeSystemRouteDidChangeWithChangeType:(int64_t)a3;
-- (void)_fetchActiveSystemRoute:(id)a3;
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error;
+- (MediaControlsActiveEndpointController)initWithActiveEndpointType:(int64_t)type;
+- (id)_routeForEndpoint:(__MRAVEndpointRef *)endpoint;
+- (void)_activeSystemRouteDidChangeWithChangeType:(int64_t)type;
+- (void)_fetchActiveSystemRoute:(id)route;
 - (void)_maybeRestoreDeferredPlayerPath;
 - (void)_maybeUpdateActiveSystemRoute;
 - (void)_resetDeferredPlayerPath;
 - (void)_restoreDeferredPlayerPath;
 - (void)_updateActiveSystemRoute;
-- (void)activeSystemRouteDidChangeNotification:(id)a3;
-- (void)endpointController:(id)a3 willAttemptToConnectToRoute:(id)a4;
-- (void)setActiveEndpointUID:(id)a3;
-- (void)setDeviceUnlocked:(BOOL)a3;
-- (void)setOnScreen:(BOOL)a3;
+- (void)activeSystemRouteDidChangeNotification:(id)notification;
+- (void)endpointController:(id)controller willAttemptToConnectToRoute:(id)route;
+- (void)setActiveEndpointUID:(id)d;
+- (void)setDeviceUnlocked:(BOOL)unlocked;
+- (void)setOnScreen:(BOOL)screen;
 @end
 
 @implementation MediaControlsActiveEndpointController
 
-- (MediaControlsActiveEndpointController)initWithActiveEndpointType:(int64_t)a3
+- (MediaControlsActiveEndpointController)initWithActiveEndpointType:(int64_t)type
 {
-  v5 = [MEMORY[0x1E6970490] systemRoute];
+  systemRoute = [MEMORY[0x1E6970490] systemRoute];
   v9.receiver = self;
   v9.super_class = MediaControlsActiveEndpointController;
-  v6 = [(MediaControlsEndpointController *)&v9 initWithEndpoint:v5];
+  v6 = [(MediaControlsEndpointController *)&v9 initWithEndpoint:systemRoute];
 
   if (v6)
   {
-    v6->_endpointType = a3;
+    v6->_endpointType = type;
     [(MediaControlsEndpointController *)v6 setConnectionDelegate:v6];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel_activeSystemRouteDidChangeNotification_ name:*MEMORY[0x1E69B0C30] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_activeSystemRouteDidChangeNotification_ name:*MEMORY[0x1E69B0C30] object:0];
 
     [(MediaControlsActiveEndpointController *)v6 _updateActiveSystemRoute];
   }
@@ -39,121 +39,121 @@
   return v6;
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if ([(MediaControlsEndpointController *)self onScreen]!= v3)
+  if ([(MediaControlsEndpointController *)self onScreen]!= screenCopy)
   {
     v5.receiver = self;
     v5.super_class = MediaControlsActiveEndpointController;
-    [(MediaControlsEndpointController *)&v5 setOnScreen:v3];
+    [(MediaControlsEndpointController *)&v5 setOnScreen:screenCopy];
     if ([(MediaControlsActiveEndpointController *)self isDeferred])
     {
       [(MediaControlsActiveEndpointController *)self _maybeRestoreDeferredPlayerPath];
     }
 
-    else if (v3)
+    else if (screenCopy)
     {
       [(MediaControlsActiveEndpointController *)self _maybeUpdateActiveSystemRoute];
     }
   }
 }
 
-- (void)setDeviceUnlocked:(BOOL)a3
+- (void)setDeviceUnlocked:(BOOL)unlocked
 {
-  v3 = a3;
+  unlockedCopy = unlocked;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if ([(MediaControlsEndpointController *)self deviceUnlocked]!= v3)
+  if ([(MediaControlsEndpointController *)self deviceUnlocked]!= unlockedCopy)
   {
     v5.receiver = self;
     v5.super_class = MediaControlsActiveEndpointController;
-    [(MediaControlsEndpointController *)&v5 setDeviceUnlocked:v3];
+    [(MediaControlsEndpointController *)&v5 setDeviceUnlocked:unlockedCopy];
     [(MediaControlsActiveEndpointController *)self _maybeRestoreDeferredPlayerPath];
   }
 }
 
-- (void)setActiveEndpointUID:(id)a3
+- (void)setActiveEndpointUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   MRAVEndpointGetLocalEndpoint();
   v6 = MRAVEndpointCopyUniqueIdentifier();
-  if ([v4 isEqualToString:?])
+  if ([dCopy isEqualToString:?])
   {
 
-    v4 = 0;
+    dCopy = 0;
   }
 
   activeEndpointUID = self->_activeEndpointUID;
-  self->_activeEndpointUID = v4;
+  self->_activeEndpointUID = dCopy;
 }
 
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error
 {
-  v4 = a4;
-  v5 = [v4 domain];
-  v6 = v5 != *MEMORY[0x1E696F850];
-  if (v5 == *MEMORY[0x1E696F850])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = domain != *MEMORY[0x1E696F850];
+  if (domain == *MEMORY[0x1E696F850])
   {
-    v7 = [v4 code];
+    code = [errorCopy code];
 
-    if (v7 != 2)
+    if (code != 2)
     {
       v6 = 1;
       goto LABEL_5;
     }
 
     v8 = MEMORY[0x1E6970490];
-    v5 = [MEMORY[0x1E6970490] systemRoute];
-    [v8 setActiveRoute:v5 reason:@"invalid route error" completion:0];
+    domain = [MEMORY[0x1E6970490] systemRoute];
+    [v8 setActiveRoute:domain reason:@"invalid route error" completion:0];
   }
 
 LABEL_5:
   return v6;
 }
 
-- (void)endpointController:(id)a3 willAttemptToConnectToRoute:(id)a4
+- (void)endpointController:(id)controller willAttemptToConnectToRoute:(id)route
 {
-  v6 = a4;
+  routeCopy = route;
   if ([(MediaControlsActiveEndpointController *)self endpointType]== 1)
   {
-    v5 = [v6 connection];
-    [v5 reset];
+    connection = [routeCopy connection];
+    [connection reset];
   }
 }
 
-- (void)activeSystemRouteDidChangeNotification:(id)a3
+- (void)activeSystemRouteDidChangeNotification:(id)notification
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69B0C20]];
-  v7 = [v6 intValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B0C20]];
+  intValue = [v6 intValue];
 
   v8 = MCLogCategoryRouting();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     active = MRMediaRemoteActiveEndpointTypeCopyDescription();
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@ activeSystemRouteDidChangeNotification] with type %{public}@", &v12, 0x16u);
   }
 
-  if ([(MediaControlsActiveEndpointController *)self endpointType]== v7)
+  if ([(MediaControlsActiveEndpointController *)self endpointType]== intValue)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69B0C18]];
-    v11 = [v10 intValue];
+    userInfo2 = [notificationCopy userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69B0C18]];
+    intValue2 = [v10 intValue];
 
-    [(MediaControlsActiveEndpointController *)self _activeSystemRouteDidChangeWithChangeType:v11];
+    [(MediaControlsActiveEndpointController *)self _activeSystemRouteDidChangeWithChangeType:intValue2];
   }
 }
 
-- (id)_routeForEndpoint:(__MRAVEndpointRef *)a3
+- (id)_routeForEndpoint:(__MRAVEndpointRef *)endpoint
 {
   ExternalDevice = MRAVEndpointGetExternalDevice();
-  v5 = [objc_alloc(MEMORY[0x1E6970450]) initWithEndpoint:a3];
+  v5 = [objc_alloc(MEMORY[0x1E6970450]) initWithEndpoint:endpoint];
   if (ExternalDevice)
   {
     v6 = [objc_alloc(MEMORY[0x1E6970488]) initWithExternalDevice:ExternalDevice];
@@ -185,10 +185,10 @@ LABEL_5:
   v42 = *MEMORY[0x1E69E9840];
   if ([(MediaControlsActiveEndpointController *)self isDeferred])
   {
-    v3 = [(MediaControlsActiveEndpointController *)self deferredPlayerPathFuture];
+    deferredPlayerPathFuture = [(MediaControlsActiveEndpointController *)self deferredPlayerPathFuture];
 
-    v4 = [(MediaControlsActiveEndpointController *)self activeEndpointUID];
-    if (v4 && [(MediaControlsEndpointController *)self deviceUnlocked])
+    activeEndpointUID = [(MediaControlsActiveEndpointController *)self activeEndpointUID];
+    if (activeEndpointUID && [(MediaControlsEndpointController *)self deviceUnlocked])
     {
       v5 = ![(MediaControlsEndpointController *)self onScreen];
     }
@@ -198,10 +198,10 @@ LABEL_5:
       v5 = 0;
     }
 
-    v6 = v3 ? v5 : 1;
+    v6 = deferredPlayerPathFuture ? v5 : 1;
 
-    v7 = [(MediaControlsActiveEndpointController *)self deferredPlayerPathTimer];
-    v8 = !v7 && ![(MediaControlsEndpointController *)self onScreen];
+    deferredPlayerPathTimer = [(MediaControlsActiveEndpointController *)self deferredPlayerPathTimer];
+    v8 = !deferredPlayerPathTimer && ![(MediaControlsEndpointController *)self onScreen];
     v9 = v6 | v8;
 
     if (v9)
@@ -210,12 +210,12 @@ LABEL_5:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v21 = NSStringFromSelector(sel_activeEndpointUID);
-        v11 = [(MediaControlsActiveEndpointController *)self activeEndpointUID];
+        activeEndpointUID2 = [(MediaControlsActiveEndpointController *)self activeEndpointUID];
         v12 = NSStringFromSelector(sel_deferredPlayerPathFuture);
-        v20 = [(MediaControlsActiveEndpointController *)self deferredPlayerPathFuture];
-        v19 = [v20 result];
+        deferredPlayerPathFuture2 = [(MediaControlsActiveEndpointController *)self deferredPlayerPathFuture];
+        result = [deferredPlayerPathFuture2 result];
         v13 = NSStringFromSelector(sel_deferredPlayerPathTimer);
-        v18 = [(MediaControlsActiveEndpointController *)self deferredPlayerPathTimer];
+        deferredPlayerPathTimer2 = [(MediaControlsActiveEndpointController *)self deferredPlayerPathTimer];
         v14 = NSStringFromSelector(sel_onScreen);
         if ([(MediaControlsEndpointController *)self onScreen])
         {
@@ -241,15 +241,15 @@ LABEL_5:
 
         v23 = v21;
         v24 = 2112;
-        v25 = v11;
+        v25 = activeEndpointUID2;
         v26 = 2112;
         v27 = v12;
         v28 = 2112;
-        v29 = v19;
+        v29 = result;
         v30 = 2112;
         v31 = v13;
         v32 = 2112;
-        v33 = v18;
+        v33 = deferredPlayerPathTimer2;
         v34 = 2112;
         v35 = v14;
         v36 = 2112;
@@ -273,7 +273,7 @@ LABEL_5:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A20FC000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@ _updateActiveSystemRoute]", buf, 0xCu);
   }
 
@@ -347,9 +347,9 @@ void __65__MediaControlsActiveEndpointController__updateActiveSystemRoute__block
 
 - (void)_maybeUpdateActiveSystemRoute
 {
-  v3 = [(MediaControlsEndpointController *)self route];
+  route = [(MediaControlsEndpointController *)self route];
   [(MediaControlsActiveEndpointController *)self endpointType];
-  v4 = v3;
+  v4 = route;
   MRAVEndpointGetActiveSystemEndpointUID();
 }
 
@@ -431,15 +431,15 @@ LABEL_13:
 LABEL_17:
 }
 
-- (void)_fetchActiveSystemRoute:(id)a3
+- (void)_fetchActiveSystemRoute:(id)route
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routeCopy = route;
   v5 = MCLogCategoryRouting();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@ _fetchActiveSystemRoute]", buf, 0xCu);
   }
 
@@ -447,7 +447,7 @@ LABEL_17:
   [(MediaControlsActiveEndpointController *)self endpointType];
   v6 = MEMORY[0x1E69E96A0];
   objc_copyWeak(&v8, buf);
-  v7 = v4;
+  v7 = routeCopy;
   MRAVEndpointResolveActiveSystemEndpointWithType();
 
   objc_destroyWeak(&v8);
@@ -491,26 +491,26 @@ void __65__MediaControlsActiveEndpointController__fetchActiveSystemRoute___block
   }
 }
 
-- (void)_activeSystemRouteDidChangeWithChangeType:(int64_t)a3
+- (void)_activeSystemRouteDidChangeWithChangeType:(int64_t)type
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = MCLogCategoryRouting();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy3 = self;
     v11 = 2114;
     v12 = MRMediaRemoteActiveEndpointChangeTypeCopyDescription();
     _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@ _activeSystemRouteDidChangeWithChangeType] with type %{public}@", buf, 0x16u);
   }
 
-  if (a3 == 1 && [(MediaControlsEndpointController *)self onScreen])
+  if (type == 1 && [(MediaControlsEndpointController *)self onScreen])
   {
     v6 = MCLogCategoryRouting();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@ _activeSystemRouteDidChangeWithChangeType] deferring update", buf, 0xCu);
     }
 
@@ -528,7 +528,7 @@ void __65__MediaControlsActiveEndpointController__fetchActiveSystemRoute___block
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@ _activeSystemRouteDidChangeWithChangeType] updating route immediately", buf, 0xCu);
     }
 

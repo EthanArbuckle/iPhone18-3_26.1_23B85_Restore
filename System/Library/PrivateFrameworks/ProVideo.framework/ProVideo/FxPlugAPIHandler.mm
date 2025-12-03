@@ -1,97 +1,97 @@
 @interface FxPlugAPIHandler
-- (BOOL)conformsToProtocol:(id)a3 version:(unsigned int)a4;
-- (FxPlugAPIHandler)initWithDelegate:(id)a3;
-- (id)errorWithString:(id)a3 andCode:(int64_t)a4;
+- (BOOL)conformsToProtocol:(id)protocol version:(unsigned int)version;
+- (FxPlugAPIHandler)initWithDelegate:(id)delegate;
+- (id)errorWithString:(id)string andCode:(int64_t)code;
 - (unint64_t)numberOfCores;
-- (void)allocateMemory:(unint64_t)a3 clear:(BOOL)a4 clearWith:(unsigned __int8)a5 error:(id *)a6;
-- (void)createPBuffer:(unsigned int *)a3 withTarget:(unsigned int)a4 error:(id *)a5;
-- (void)createTexture:(id *)a3 withDOD:(FxRect)a4 GLTarget:(unsigned int)a5 level:(int)a6 internalFormat:(unsigned int)a7 width:(int)width height:(int)a9 border:(int)a10 format:(unsigned int)a11 type:(unsigned int)a12 pixels:(const void *)pixels origin:(unint64_t)a14 pixelAspectRatio:(double)a15 andError:(id *)a16;
-- (void)deletePBuffer:(unsigned int)a3 error:(id *)a4;
-- (void)deleteTexture:(id)a3 error:(id *)a4;
-- (void)freeMemory:(void *)a3 error:(id *)a4;
-- (void)performSelector:(SEL)a3 onTarget:(id)a4 withObject:(id)a5 onThreads:(int64_t)a6 waitUntilDone:(BOOL)a7 error:(id *)a8;
-- (void)runFxPlugThread:(id)a3;
+- (void)allocateMemory:(unint64_t)memory clear:(BOOL)clear clearWith:(unsigned __int8)with error:(id *)error;
+- (void)createPBuffer:(unsigned int *)buffer withTarget:(unsigned int)target error:(id *)error;
+- (void)createTexture:(id *)texture withDOD:(FxRect)d GLTarget:(unsigned int)target level:(int)level internalFormat:(unsigned int)format width:(int)width height:(int)height border:(int)self0 format:(unsigned int)self1 type:(unsigned int)self2 pixels:(const void *)pixels origin:(unint64_t)self4 pixelAspectRatio:(double)self5 andError:(id *)self6;
+- (void)deletePBuffer:(unsigned int)buffer error:(id *)error;
+- (void)deleteTexture:(id)texture error:(id *)error;
+- (void)freeMemory:(void *)memory error:(id *)error;
+- (void)performSelector:(SEL)selector onTarget:(id)target withObject:(id)object onThreads:(int64_t)threads waitUntilDone:(BOOL)done error:(id *)error;
+- (void)runFxPlugThread:(id)thread;
 @end
 
 @implementation FxPlugAPIHandler
 
-- (FxPlugAPIHandler)initWithDelegate:(id)a3
+- (FxPlugAPIHandler)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = FxPlugAPIHandler;
   result = [(FxPlugAPIHandler *)&v5 init];
   if (result)
   {
-    result->_delegate = a3;
+    result->_delegate = delegate;
   }
 
   return result;
 }
 
-- (BOOL)conformsToProtocol:(id)a3 version:(unsigned int)a4
+- (BOOL)conformsToProtocol:(id)protocol version:(unsigned int)version
 {
-  if (a4 > 1)
+  if (version > 1)
   {
     return 0;
   }
 
-  return &unk_287366FF0 == a3 || &unk_28736D710 == a3 || &unk_287366AA0 == a3 || &unk_28736D590 == a3 || &unk_287357C70 == a3;
+  return &unk_287366FF0 == protocol || &unk_28736D710 == protocol || &unk_287366AA0 == protocol || &unk_28736D590 == protocol || &unk_287357C70 == protocol;
 }
 
-- (id)errorWithString:(id)a3 andCode:(int64_t)a4
+- (id)errorWithString:(id)string andCode:(int64_t)code
 {
-  v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a3 forKey:*MEMORY[0x277CCA450]];
+  v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:string forKey:*MEMORY[0x277CCA450]];
   v6 = MEMORY[0x277CCA9B8];
   v7 = FxPlugErrorDomain;
 
-  return [v6 errorWithDomain:v7 code:a4 userInfo:v5];
+  return [v6 errorWithDomain:v7 code:code userInfo:v5];
 }
 
-- (void)allocateMemory:(unint64_t)a3 clear:(BOOL)a4 clearWith:(unsigned __int8)a5 error:(id *)a6
+- (void)allocateMemory:(unint64_t)memory clear:(BOOL)clear clearWith:(unsigned __int8)with error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = malloc_type_malloc(a3, 0xA91F8EACuLL);
+  withCopy = with;
+  clearCopy = clear;
+  v11 = malloc_type_malloc(memory, 0xA91F8EACuLL);
   v12 = v11;
   if (!v11)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to allocate memory in %s", "-[FxPlugAPIHandler(HostResourcesAPIHandler) allocateMemory:clear:clearWith:error:]"], 6);
+      *error = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to allocate memory in %s", "-[FxPlugAPIHandler(HostResourcesAPIHandler) allocateMemory:clear:clearWith:error:]"], 6);
     }
 
     return v12;
   }
 
-  if (!v8)
+  if (!clearCopy)
   {
     return v12;
   }
 
-  return memset(v11, v7, a3);
+  return memset(v11, withCopy, memory);
 }
 
-- (void)freeMemory:(void *)a3 error:(id *)a4
+- (void)freeMemory:(void *)memory error:(id *)error
 {
-  if (malloc_size(a3))
+  if (malloc_size(memory))
   {
 
-    free(a3);
+    free(memory);
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"Attempt to free a memory block (%p) not allocated in  %s", a3, "-[FxPlugAPIHandler(HostResourcesAPIHandler) freeMemory:error:]"], 7);
+    *error = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"Attempt to free a memory block (%p) not allocated in  %s", memory, "-[FxPlugAPIHandler(HostResourcesAPIHandler) freeMemory:error:]"], 7);
   }
 }
 
-- (void)createTexture:(id *)a3 withDOD:(FxRect)a4 GLTarget:(unsigned int)a5 level:(int)a6 internalFormat:(unsigned int)a7 width:(int)width height:(int)a9 border:(int)a10 format:(unsigned int)a11 type:(unsigned int)a12 pixels:(const void *)pixels origin:(unint64_t)a14 pixelAspectRatio:(double)a15 andError:(id *)a16
+- (void)createTexture:(id *)texture withDOD:(FxRect)d GLTarget:(unsigned int)target level:(int)level internalFormat:(unsigned int)format width:(int)width height:(int)height border:(int)self0 format:(unsigned int)self1 type:(unsigned int)self2 pixels:(const void *)pixels origin:(unint64_t)self4 pixelAspectRatio:(double)self5 andError:(id *)self6
 {
-  v19 = *&a4.var2;
-  v20 = *&a4.var0;
-  var1 = a4.var1;
-  var3 = a4.var3;
-  if (a3)
+  v19 = *&d.var2;
+  v20 = *&d.var0;
+  var1 = d.var1;
+  var3 = d.var3;
+  if (texture)
   {
     v25 = 0;
   }
@@ -111,19 +111,19 @@
   {
     glGenTextures(1, textures);
     Error = glGetError();
-    if (Error && (LOBYTE(v33[0]) = 0, (v27 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"OpenGL returned an error (%d) to %s while generating a texture: %s", Error, "-[FxPlugAPIHandler(HostResourcesAPIHandler) createTexture:withDOD:GLTarget:level:internalFormat:width:height:border:format:type:pixels:origin:pixelAspectRatio:andError:]", v33], 8)) != 0) || (glTexImage2D(a5, a6, a7, width, a9, a10, a11, a12, pixels), v28 = glGetError(), v28) && (LOBYTE(v33[0]) = 0, (v27 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"OpenGL returned an error (%d) to %s while uploading a texture: %s", v28, "-[FxPlugAPIHandler(HostResourcesAPIHandler) createTexture:withDOD:GLTarget:level:internalFormat:width:height:border:format:type:pixels:origin:pixelAspectRatio:andError:]", v33), 8)) != 0))
+    if (Error && (LOBYTE(v33[0]) = 0, (v27 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"OpenGL returned an error (%d) to %s while generating a texture: %s", Error, "-[FxPlugAPIHandler(HostResourcesAPIHandler) createTexture:withDOD:GLTarget:level:internalFormat:width:height:border:format:type:pixels:origin:pixelAspectRatio:andError:]", v33], 8)) != 0) || (glTexImage2D(target, level, format, width, height, border, a11, type, pixels), v28 = glGetError(), v28) && (LOBYTE(v33[0]) = 0, (v27 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"OpenGL returned an error (%d) to %s while uploading a texture: %s", v28, "-[FxPlugAPIHandler(HostResourcesAPIHandler) createTexture:withDOD:GLTarget:level:internalFormat:width:height:border:format:type:pixels:origin:pixelAspectRatio:andError:]", v33), 8)) != 0))
     {
       v25 = v27;
       goto LABEL_13;
     }
 
-    glBindTexture(a5, textures[0]);
+    glBindTexture(target, textures[0]);
     v29 = glGetError();
     if (v29)
     {
       LOBYTE(v33[0]) = 0;
       v25 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"OpenGL returned an error (%d) to %s while binding a texture: %s", v29, "-[FxPlugAPIHandler(HostResourcesAPIHandler) createTexture:withDOD:GLTarget:level:internalFormat:width:height:border:format:type:pixels:origin:pixelAspectRatio:andError:]", v33], 8);
-      if (!a3)
+      if (!texture)
       {
         goto LABEL_13;
       }
@@ -132,7 +132,7 @@
     else
     {
       v25 = 0;
-      if (!a3)
+      if (!texture)
       {
         goto LABEL_13;
       }
@@ -142,64 +142,64 @@
     {
       v30 = [FxTexture alloc];
       v33[0] = width;
-      v33[1] = a9;
+      v33[1] = height;
       v34 = xmmword_26084A650;
       v35 = 2;
-      v36 = a14;
+      originCopy = origin;
       v37 = 0;
       v38 = 1;
       memset(v39, 0, sizeof(v39));
-      v40 = a15;
-      v31 = [(FxTexture *)v30 initWithInfo:v33 textureId:textures[0] andTarget:a5];
-      *a3 = v31;
+      ratioCopy = ratio;
+      v31 = [(FxTexture *)v30 initWithInfo:v33 textureId:textures[0] andTarget:target];
+      *texture = v31;
       if (v31)
       {
         [(FxImage *)v31 setDod:v20, v19];
-        [*a3 setBounds:{v20 * a15, var1, (v19 - v20) * a15, (var3 - var1)}];
+        [*texture setBounds:{v20 * ratio, var1, (v19 - v20) * ratio, (var3 - var1)}];
         v25 = 0;
       }
 
       else
       {
         v25 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to allocate an FxTexture in %s", "-[FxPlugAPIHandler(HostResourcesAPIHandler) createTexture:withDOD:GLTarget:level:internalFormat:width:height:border:format:type:pixels:origin:pixelAspectRatio:andError:]"], 6);
-        glBindTexture(a5, 0);
+        glBindTexture(target, 0);
         glDeleteTextures(1, textures);
       }
     }
   }
 
 LABEL_13:
-  if (a16)
+  if (error)
   {
-    *a16 = v25;
+    *error = v25;
   }
 }
 
-- (void)deleteTexture:(id)a3 error:(id *)a4
+- (void)deleteTexture:(id)texture error:(id *)error
 {
-  if (a3 && [a3 textureId] || (v7 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Invalid FxTexture pointer (%p) in %s", a3, "-[FxPlugAPIHandler(HostResourcesAPIHandler) deleteTexture:error:]"), 5)) == 0)
+  if (texture && [texture textureId] || (v7 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Invalid FxTexture pointer (%p) in %s", texture, "-[FxPlugAPIHandler(HostResourcesAPIHandler) deleteTexture:error:]"), 5)) == 0)
   {
-    textures = [a3 textureId];
+    textures = [texture textureId];
     glDeleteTextures(1, &textures);
 
     v7 = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v7;
+    *error = v7;
   }
 }
 
-- (void)createPBuffer:(unsigned int *)a3 withTarget:(unsigned int)a4 error:(id *)a5
+- (void)createPBuffer:(unsigned int *)buffer withTarget:(unsigned int)target error:(id *)error
 {
-  if (!a3)
+  if (!buffer)
   {
     v10 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid pBuffer pointer (%p) in %s", 0, "-[FxPlugAPIHandler(HostResourcesAPIHandler) createPBuffer:withTarget:error:]"], 5);
     if (v10)
     {
 LABEL_11:
-      if (!a5)
+      if (!error)
       {
         return;
       }
@@ -208,13 +208,13 @@ LABEL_11:
     }
   }
 
-  glGenBuffers(1, a3);
+  glGenBuffers(1, buffer);
   Error = glGetError();
   if (Error)
   {
     v13 = 0;
     v10 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"OpenGL Error (%d): %s in %s", Error, &v13, "-[FxPlugAPIHandler(HostResourcesAPIHandler) createPBuffer:withTarget:error:]"], 8);
-    if (!a3)
+    if (!buffer)
     {
       goto LABEL_11;
     }
@@ -223,7 +223,7 @@ LABEL_11:
   else
   {
     v10 = 0;
-    if (!a3)
+    if (!buffer)
     {
       goto LABEL_11;
     }
@@ -234,7 +234,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  glBindBuffer(a4, *a3);
+  glBindBuffer(target, *buffer);
   v11 = glGetError();
   if (v11)
   {
@@ -244,25 +244,25 @@ LABEL_11:
   }
 
   v10 = 0;
-  if (!a5)
+  if (!error)
   {
     return;
   }
 
 LABEL_12:
-  *a5 = v10;
+  *error = v10;
 }
 
-- (void)deletePBuffer:(unsigned int)a3 error:(id *)a4
+- (void)deletePBuffer:(unsigned int)buffer error:(id *)error
 {
-  buffers = a3;
+  buffers = buffer;
   glDeleteBuffers(1, &buffers);
   Error = glGetError();
   if (Error)
   {
     v8 = 0;
     v7 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"OpenGL Error (%d): %s in %s", Error, &v8, "-[FxPlugAPIHandler(HostResourcesAPIHandler) deletePBuffer:error:]"], 8);
-    if (!a4)
+    if (!error)
     {
       return;
     }
@@ -271,30 +271,30 @@ LABEL_12:
   else
   {
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       return;
     }
   }
 
-  *a4 = v7;
+  *error = v7;
 }
 
 - (unint64_t)numberOfCores
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
 
-  return [v2 activeProcessorCount];
+  return [processInfo activeProcessorCount];
 }
 
-- (void)performSelector:(SEL)a3 onTarget:(id)a4 withObject:(id)a5 onThreads:(int64_t)a6 waitUntilDone:(BOOL)a7 error:(id *)a8
+- (void)performSelector:(SEL)selector onTarget:(id)target withObject:(id)object onThreads:(int64_t)threads waitUntilDone:(BOOL)done error:(id *)error
 {
-  v8 = a7;
+  doneCopy = done;
   v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   if (v22)
   {
     v12 = 0;
-    if (v8)
+    if (doneCopy)
     {
       goto LABEL_3;
     }
@@ -305,7 +305,7 @@ LABEL_6:
   }
 
   v12 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to allocate thread array in %s", "-[FxPlugAPIHandler(HostResourcesAPIHandler) performSelector:onTarget:withObject:onThreads:waitUntilDone:error:]"], 7);
-  if (!v8)
+  if (!doneCopy)
   {
     goto LABEL_6;
   }
@@ -324,14 +324,14 @@ LABEL_3:
   }
 
 LABEL_8:
-  v20 = v8;
-  if (a6 >= 1 && !v12)
+  v20 = doneCopy;
+  if (threads >= 1 && !v12)
   {
     v15 = 1;
     do
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:sel_getName(a3)];
-      v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{a4, @"FxThreadTarget", a5, @"FxThreadObject", v16, @"FxThreadSelector", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", v15 - 1), @"FxThreadNumber", v14, @"FxThreadLock", 0}];
+      v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:sel_getName(selector)];
+      v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{target, @"FxThreadTarget", object, @"FxThreadObject", v16, @"FxThreadSelector", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", v15 - 1), @"FxThreadNumber", v14, @"FxThreadLock", 0}];
       v18 = [objc_alloc(MEMORY[0x277CCACC8]) initWithTarget:self selector:sel_runFxPlugThread_ object:v17];
       if (v16 && v17 && (v19 = v18) != 0)
       {
@@ -345,7 +345,7 @@ LABEL_8:
         v12 = -[FxPlugAPIHandler errorWithString:andCode:](self, "errorWithString:andCode:", [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to allocate thread in %s", "-[FxPlugAPIHandler(HostResourcesAPIHandler) performSelector:onTarget:withObject:onThreads:waitUntilDone:error:]"], 7);
       }
 
-      if (v15 >= a6)
+      if (v15 >= threads)
       {
         break;
       }
@@ -358,29 +358,29 @@ LABEL_8:
 
   if (v20)
   {
-    [v14 unlockWithCondition:a6];
+    [v14 unlockWithCondition:threads];
     [v14 lockWhenCondition:0];
     [v14 unlock];
   }
 
-  if (a8)
+  if (error)
   {
-    *a8 = v12;
+    *error = v12;
   }
 }
 
-- (void)runFxPlugThread:(id)a3
+- (void)runFxPlugThread:(id)thread
 {
   PCAutoreleasePool::PCAutoreleasePool(&v11);
-  v5 = sel_registerName([objc_msgSend(a3 objectForKey:{@"FxThreadSelector", "UTF8String"}]);
-  v6 = [a3 objectForKey:@"FxThreadTarget"];
-  v7 = [a3 objectForKey:@"FxThreadObject"];
-  v8 = [a3 objectForKey:@"FxThreadNumber"];
+  v5 = sel_registerName([objc_msgSend(thread objectForKey:{@"FxThreadSelector", "UTF8String"}]);
+  v6 = [thread objectForKey:@"FxThreadTarget"];
+  v7 = [thread objectForKey:@"FxThreadObject"];
+  v8 = [thread objectForKey:@"FxThreadNumber"];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ worker thread #%d", -[FxPlugAPIDelegate displayName](self->_delegate, "displayName"), objc_msgSend(v8, "intValue")];
   [objc_msgSend(MEMORY[0x277CCACC8] "currentThread")];
   pthread_setname_np([v9 UTF8String]);
   [v6 performSelector:v5 withObject:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", v7, @"FxThreadObject", v8, @"FxThreadNumber", 0)}];
-  v10 = [a3 objectForKey:@"FxThreadLock"];
+  v10 = [thread objectForKey:@"FxThreadLock"];
   [v10 lock];
   [v10 unlockWithCondition:{objc_msgSend(v10, "condition") - 1}];
   PCAutoreleasePool::~PCAutoreleasePool(&v11);

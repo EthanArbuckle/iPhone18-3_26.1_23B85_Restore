@@ -1,22 +1,22 @@
 @interface FPUIAuthenticationViewController
 - (FPUIAuthenticationDelegate)authenticationDelegate;
 - (FPUIAuthenticationLandingViewController)landingViewController;
-- (FPUIAuthenticationViewController)initWithServerURL:(id)a3;
-- (void)setInitialConnectionURL:(id)a3;
+- (FPUIAuthenticationViewController)initWithServerURL:(id)l;
+- (void)setInitialConnectionURL:(id)l;
 - (void)viewDidLoad;
 @end
 
 @implementation FPUIAuthenticationViewController
 
-- (FPUIAuthenticationViewController)initWithServerURL:(id)a3
+- (FPUIAuthenticationViewController)initWithServerURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = FPUIAuthenticationViewController;
   v5 = [(FPUIAuthenticationViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     initialConnectionURL = v5->_initialConnectionURL;
     v5->_initialConnectionURL = v6;
   }
@@ -31,41 +31,41 @@
   v32.super_class = FPUIAuthenticationViewController;
   [(FPUIAuthenticationViewController *)&v32 viewDidLoad];
   v3 = [[FPUIAuthenticationLandingViewController alloc] initWithURL:self->_initialConnectionURL];
-  v4 = [(FPUIAuthenticationViewController *)self authenticationDelegate];
-  [(FPUIAuthenticationTableViewController *)v3 setAuthenticationDelegate:v4];
+  authenticationDelegate = [(FPUIAuthenticationViewController *)self authenticationDelegate];
+  [(FPUIAuthenticationTableViewController *)v3 setAuthenticationDelegate:authenticationDelegate];
 
   v31 = v3;
   objc_storeWeak(&self->_landingViewController, v3);
   v5 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v3];
   [(FPUIAuthenticationViewController *)self addChildViewController:v5];
-  v6 = [(FPUIAuthenticationViewController *)self view];
-  v7 = [v5 view];
-  [v6 addSubview:v7];
+  view = [(FPUIAuthenticationViewController *)self view];
+  view2 = [v5 view];
+  [view addSubview:view2];
 
   v21 = MEMORY[0x277CCAAD0];
-  v30 = [(FPUIAuthenticationViewController *)self view];
-  v28 = [v30 centerXAnchor];
-  v29 = [v5 view];
-  v27 = [v29 centerXAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  view3 = [(FPUIAuthenticationViewController *)self view];
+  centerXAnchor = [view3 centerXAnchor];
+  view4 = [v5 view];
+  centerXAnchor2 = [view4 centerXAnchor];
+  v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v33[0] = v26;
-  v25 = [(FPUIAuthenticationViewController *)self view];
-  v23 = [v25 centerYAnchor];
-  v24 = [v5 view];
-  v22 = [v24 centerYAnchor];
-  v20 = [v23 constraintEqualToAnchor:v22];
+  view5 = [(FPUIAuthenticationViewController *)self view];
+  centerYAnchor = [view5 centerYAnchor];
+  view6 = [v5 view];
+  centerYAnchor2 = [view6 centerYAnchor];
+  v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v33[1] = v20;
-  v19 = [(FPUIAuthenticationViewController *)self view];
-  v17 = [v19 widthAnchor];
-  v18 = [v5 view];
-  v8 = [v18 widthAnchor];
-  v9 = [v17 constraintEqualToAnchor:v8];
+  view7 = [(FPUIAuthenticationViewController *)self view];
+  widthAnchor = [view7 widthAnchor];
+  view8 = [v5 view];
+  widthAnchor2 = [view8 widthAnchor];
+  v9 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v33[2] = v9;
-  v10 = [(FPUIAuthenticationViewController *)self view];
-  v11 = [v10 heightAnchor];
-  v12 = [v5 view];
-  v13 = [v12 heightAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  view9 = [(FPUIAuthenticationViewController *)self view];
+  heightAnchor = [view9 heightAnchor];
+  view10 = [v5 view];
+  heightAnchor2 = [view10 heightAnchor];
+  v14 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v33[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:4];
   [v21 activateConstraints:v15];
@@ -74,17 +74,17 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInitialConnectionURL:(id)a3
+- (void)setInitialConnectionURL:(id)l
 {
-  v5 = a3;
-  if (self->_initialConnectionURL != v5)
+  lCopy = l;
+  if (self->_initialConnectionURL != lCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_initialConnectionURL, a3);
+    v7 = lCopy;
+    objc_storeStrong(&self->_initialConnectionURL, l);
     WeakRetained = objc_loadWeakRetained(&self->_landingViewController);
     [WeakRetained setInitialConnectionURL:v7];
 
-    v5 = v7;
+    lCopy = v7;
   }
 }
 

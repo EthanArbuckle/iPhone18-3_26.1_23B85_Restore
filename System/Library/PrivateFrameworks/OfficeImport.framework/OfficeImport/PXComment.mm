@@ -1,37 +1,37 @@
 @interface PXComment
-+ (void)readComments:(id)a3 slide:(id)a4 state:(id)a5;
++ (void)readComments:(id)comments slide:(id)slide state:(id)state;
 @end
 
 @implementation PXComment
 
-+ (void)readComments:(id)a3 slide:(id)a4 state:(id)a5
++ (void)readComments:(id)comments slide:(id)slide state:(id)state
 {
-  v39 = a3;
-  v44 = a4;
-  v7 = a5;
-  v8 = [v7 PXPresentationMLNamespace];
-  v9 = [v39 xmlDocument];
-  if (!v9)
+  commentsCopy = comments;
+  slideCopy = slide;
+  stateCopy = state;
+  pXPresentationMLNamespace = [stateCopy PXPresentationMLNamespace];
+  xmlDocument = [commentsCopy xmlDocument];
+  if (!xmlDocument)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v10 = OCXGetRootElement(v9);
+  v10 = OCXGetRootElement(xmlDocument);
   v11 = v10;
   if (!v10 || !xmlStrEqual(v10->name, "cmLst"))
   {
-    [TCMessageException raise:TCInvalidFileFormatMessage, v39];
+    [TCMessageException raise:TCInvalidFileFormatMessage, commentsCopy];
   }
 
-  Child = OCXFindChild(v11, v8, "cm");
-  v43 = v7;
+  Child = OCXFindChild(v11, pXPresentationMLNamespace, "cm");
+  v43 = stateCopy;
   while (Child)
   {
     v13 = objc_alloc_init(PDComment);
     v14 = CXRequiredUnsignedLongAttribute(Child, CXNoNamespace, "authorId");
-    v15 = [v7 commentAuthorIdToIndexMap];
+    commentAuthorIdToIndexMap = [stateCopy commentAuthorIdToIndexMap];
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v14];
-    v17 = [v15 objectForKey:v16];
+    v17 = [commentAuthorIdToIndexMap objectForKey:v16];
 
     -[PDComment setAuthorId:](v13, "setAuthorId:", [v17 unsignedIntValue]);
     [(PDComment *)v13 setIndex:CXRequiredUnsignedLongAttribute(Child, CXNoNamespace, "idx") - 1];
@@ -43,7 +43,7 @@
       [(PDComment *)v13 setDate:v20];
     }
 
-    v21 = OCXFindChild(Child, v8, "text");
+    v21 = OCXFindChild(Child, pXPresentationMLNamespace, "text");
     if (v21)
     {
       v22 = *(v21 + 24);
@@ -64,8 +64,8 @@
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
-    [(PDComment *)v13 setText:v23, v39];
-    v24 = OCXFindChild(Child, v8, "pos");
+    [(PDComment *)v13 setText:v23, commentsCopy];
+    v24 = OCXFindChild(Child, pXPresentationMLNamespace, "pos");
     if (!v24)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
@@ -73,10 +73,10 @@
 
     v25 = CXDefaultLongAttribute(v24, CXNoNamespace, "x", 0, 12);
     [(PDComment *)v13 setPosition:vcvtd_n_f64_s32(v25, 3uLL), vcvtd_n_f64_s32(CXDefaultLongAttribute(v24, CXNoNamespace, "y", 0, 12), 3uLL)];
-    v26 = OCXFindChild(Child, v8, "extLst");
+    v26 = OCXFindChild(Child, pXPresentationMLNamespace, "extLst");
     if (v26)
     {
-      v27 = OCXFindChild(v26, v8, "ext");
+      v27 = OCXFindChild(v26, pXPresentationMLNamespace, "ext");
       v28 = v27;
       if (v27)
       {
@@ -92,14 +92,14 @@
             {
               v33 = CXRequiredUnsignedLongAttribute(v31, CXNoNamespace, "authorId");
               v34 = objc_opt_class();
-              v42 = [v43 commentAuthorIdToIndexMap];
+              commentAuthorIdToIndexMap2 = [v43 commentAuthorIdToIndexMap];
               v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v33];
-              v35 = [v42 objectForKey:v41];
+              v35 = [commentAuthorIdToIndexMap2 objectForKey:v41];
               v36 = TSUDynamicCast(v34, v35);
-              v40 = [v36 unsignedIntegerValue];
+              unsignedIntegerValue = [v36 unsignedIntegerValue];
 
               v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{CXRequiredUnsignedLongAttribute(v32, CXNoNamespace, "idx") - 1}];
-              v38 = [v44 commentForAuthorId:v40 authorIdx:{objc_msgSend(v37, "unsignedIntegerValue")}];
+              v38 = [slideCopy commentForAuthorId:unsignedIntegerValue authorIdx:{objc_msgSend(v37, "unsignedIntegerValue")}];
 
               if (v38)
               {
@@ -109,13 +109,13 @@
           }
         }
 
-        v7 = v43;
+        stateCopy = v43;
       }
     }
 
-    [v44 addComment:v13];
+    [slideCopy addComment:v13];
 
-    Child = OCXFindNextChild(Child, v8, "cm");
+    Child = OCXFindNextChild(Child, pXPresentationMLNamespace, "cm");
   }
 }
 

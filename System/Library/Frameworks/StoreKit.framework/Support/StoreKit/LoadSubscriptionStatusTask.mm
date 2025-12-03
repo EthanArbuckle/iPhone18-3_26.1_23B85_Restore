@@ -1,31 +1,31 @@
 @interface LoadSubscriptionStatusTask
-- (LoadSubscriptionStatusTask)initWithSubscriptionGroupID:(id)a3 reason:(int64_t)a4 client:(id)a5;
-- (void)_parseResponse:(id)a3;
-- (void)_replaceDate:(id *)a3 ifBeforeDate:(id)a4;
-- (void)_runRequestWithAccount:(id)a3;
+- (LoadSubscriptionStatusTask)initWithSubscriptionGroupID:(id)d reason:(int64_t)reason client:(id)client;
+- (void)_parseResponse:(id)response;
+- (void)_replaceDate:(id *)date ifBeforeDate:(id)beforeDate;
+- (void)_runRequestWithAccount:(id)account;
 - (void)main;
-- (void)processResult:(id)a3 error:(id)a4;
+- (void)processResult:(id)result error:(id)error;
 @end
 
 @implementation LoadSubscriptionStatusTask
 
-- (LoadSubscriptionStatusTask)initWithSubscriptionGroupID:(id)a3 reason:(int64_t)a4 client:(id)a5
+- (LoadSubscriptionStatusTask)initWithSubscriptionGroupID:(id)d reason:(int64_t)reason client:(id)client
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  clientCopy = client;
   v16.receiver = self;
   v16.super_class = LoadSubscriptionStatusTask;
   v11 = [(Task *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong((v11 + 42), a5);
+    objc_storeStrong((v11 + 42), client);
     v13 = +[NSUUID lib_shortLogKey];
     v14 = *(v12 + 50);
     *(v12 + 50) = v13;
 
-    *(v12 + 58) = a4;
-    objc_storeStrong((v12 + 66), a3);
+    *(v12 + 58) = reason;
+    objc_storeStrong((v12 + 66), d);
   }
 
   return v12;
@@ -33,10 +33,10 @@
 
 - (void)main
 {
-  v3 = [(LoadSubscriptionStatusTask *)self client];
-  v4 = [v3 objc_clientType];
+  client = [(LoadSubscriptionStatusTask *)self client];
+  objc_clientType = [client objc_clientType];
 
-  if (v4 == 3)
+  if (objc_clientType == 3)
   {
 
     [(LoadSubscriptionStatusTask *)self _runRequestWithAccount:0];
@@ -44,63 +44,63 @@
 
   else
   {
-    v5 = [(LoadSubscriptionStatusTask *)self client];
+    client2 = [(LoadSubscriptionStatusTask *)self client];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100057AC0;
     v6[3] = &unk_10037F890;
     v6[4] = self;
-    [_TtC9storekitd19objc_AccountManager accountWithClient:v5 completionHandler:v6];
+    [_TtC9storekitd19objc_AccountManager accountWithClient:client2 completionHandler:v6];
   }
 }
 
-- (void)_runRequestWithAccount:(id)a3
+- (void)_runRequestWithAccount:(id)account
 {
-  v4 = [(LoadSubscriptionStatusTask *)self client];
-  v5 = [v4 bag];
+  client = [(LoadSubscriptionStatusTask *)self client];
+  v5 = [client bag];
 
-  v6 = [(LoadSubscriptionStatusTask *)self client];
-  v46 = [v6 urlSession];
+  client2 = [(LoadSubscriptionStatusTask *)self client];
+  urlSession = [client2 urlSession];
 
-  v7 = [(LoadSubscriptionStatusTask *)self client];
-  v8 = [v7 urlRequestEncoder];
+  client3 = [(LoadSubscriptionStatusTask *)self client];
+  urlRequestEncoder = [client3 urlRequestEncoder];
 
-  [v8 setRequestEncoding:3];
+  [urlRequestEncoder setRequestEncoding:3];
   v9 = objc_alloc_init(NSMutableDictionary);
-  v10 = [(LoadSubscriptionStatusTask *)self client];
-  if ([v10 storeItemID])
+  client4 = [(LoadSubscriptionStatusTask *)self client];
+  if ([client4 storeItemID])
   {
 
 LABEL_4:
-    v14 = [(LoadSubscriptionStatusTask *)self client];
-    v15 = [v14 storeItemID];
+    client5 = [(LoadSubscriptionStatusTask *)self client];
+    storeItemID = [client5 storeItemID];
 
     goto LABEL_5;
   }
 
-  v11 = [(LoadSubscriptionStatusTask *)self client];
-  v12 = [v11 requestBundleID];
-  v13 = [v12 caseInsensitiveCompare:@"com.apple.freeform"];
+  client6 = [(LoadSubscriptionStatusTask *)self client];
+  requestBundleID = [client6 requestBundleID];
+  v13 = [requestBundleID caseInsensitiveCompare:@"com.apple.freeform"];
 
   if (v13)
   {
     goto LABEL_4;
   }
 
-  v15 = 0x18013B54BLL;
+  storeItemID = 0x18013B54BLL;
 LABEL_5:
-  v16 = [NSString stringWithFormat:@"%lld", v15];
+  v16 = [NSString stringWithFormat:@"%lld", storeItemID];
   [v9 setObject:v16 forKeyedSubscript:@"appAdamId"];
 
-  v17 = [(LoadSubscriptionStatusTask *)self client];
-  v18 = [v17 requestBundleID];
-  [v9 setObject:v18 forKeyedSubscript:@"bundleId"];
+  client7 = [(LoadSubscriptionStatusTask *)self client];
+  requestBundleID2 = [client7 requestBundleID];
+  [v9 setObject:requestBundleID2 forKeyedSubscript:@"bundleId"];
 
-  v19 = [(LoadSubscriptionStatusTask *)self client];
-  v20 = [v19 deviceVendorID];
-  v21 = [v20 UUIDString];
-  v22 = [v21 lowercaseString];
-  [v9 setObject:v22 forKeyedSubscript:@"deviceVerification"];
+  client8 = [(LoadSubscriptionStatusTask *)self client];
+  deviceVendorID = [client8 deviceVendorID];
+  uUIDString = [deviceVendorID UUIDString];
+  lowercaseString = [uUIDString lowercaseString];
+  [v9 setObject:lowercaseString forKeyedSubscript:@"deviceVerification"];
 
   v23 = +[AMSDevice deviceGUID];
   [v9 setObject:v23 forKeyedSubscript:@"guid"];
@@ -113,14 +113,14 @@ LABEL_5:
     sub_1002CF710();
   }
 
-  v45 = v8;
+  v45 = urlRequestEncoder;
   v25 = qword_1003D44C0;
   if (os_log_type_enabled(qword_1003D44C0, OS_LOG_TYPE_DEFAULT))
   {
     v26 = v25;
-    v27 = [(LoadSubscriptionStatusTask *)self logKey];
+    logKey = [(LoadSubscriptionStatusTask *)self logKey];
     *buf = 138543618;
-    v51 = v27;
+    v51 = logKey;
     v52 = 2114;
     v53 = objc_opt_class();
     v28 = v53;
@@ -134,13 +134,13 @@ LABEL_5:
   v49 = 0;
   v32 = [v31 valueWithError:&v49];
   v33 = v49;
-  v34 = [(LoadSubscriptionStatusTask *)self subscriptionGroupID];
-  v35 = [v34 length];
+  subscriptionGroupID = [(LoadSubscriptionStatusTask *)self subscriptionGroupID];
+  v35 = [subscriptionGroupID length];
 
   if (v35)
   {
-    v36 = [(LoadSubscriptionStatusTask *)self subscriptionGroupID];
-    v37 = [v32 URLByAppendingPathComponent:v36];
+    subscriptionGroupID2 = [(LoadSubscriptionStatusTask *)self subscriptionGroupID];
+    v37 = [v32 URLByAppendingPathComponent:subscriptionGroupID2];
 
     v32 = v37;
   }
@@ -149,7 +149,7 @@ LABEL_5:
   {
     v41 = 0;
     v42 = v45;
-    v44 = v46;
+    v44 = urlSession;
 LABEL_16:
     [(LoadSubscriptionStatusTask *)self processResult:0 error:v33];
     goto LABEL_17;
@@ -169,7 +169,7 @@ LABEL_16:
 
   if (!v43)
   {
-    v44 = v46;
+    v44 = urlSession;
     goto LABEL_16;
   }
 
@@ -178,18 +178,18 @@ LABEL_16:
   v47[2] = sub_100058148;
   v47[3] = &unk_100382458;
   v47[4] = self;
-  v44 = v46;
-  v48 = v46;
+  v44 = urlSession;
+  v48 = urlSession;
   [v43 resultWithCompletion:v47];
 
 LABEL_17:
 }
 
-- (void)processResult:(id)a3 error:(id)a4
+- (void)processResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  resultCopy = result;
+  errorCopy = error;
+  if (!errorCopy)
   {
     if (qword_1003D44E0 != -1)
     {
@@ -200,16 +200,16 @@ LABEL_17:
     if (os_log_type_enabled(qword_1003D44C0, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(LoadSubscriptionStatusTask *)self logKey];
+      logKey = [(LoadSubscriptionStatusTask *)self logKey];
       *buf = 138543618;
-      v21 = v12;
+      v21 = logKey;
       v22 = 2114;
       v23 = objc_opt_class();
       v13 = v23;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@]: Finished subscription status request", buf, 0x16u);
     }
 
-    v14 = [v6 object];
+    object = [resultCopy object];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -228,7 +228,7 @@ LABEL_17:
       goto LABEL_28;
     }
 
-    v15 = [v14 objectForKeyedSubscript:@"data"];
+    v15 = [object objectForKeyedSubscript:@"data"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -277,7 +277,7 @@ LABEL_28:
     goto LABEL_32;
   }
 
-  v8 = v7;
+  v8 = errorCopy;
   if (qword_1003D44E0 != -1)
   {
     sub_1002CF710();
@@ -293,16 +293,16 @@ LABEL_28:
 LABEL_32:
 }
 
-- (void)_parseResponse:(id)a3
+- (void)_parseResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = &_s10Foundation3URLVSEAAMc_ptr;
   v71 = objc_opt_new();
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v5 = v3;
+  v5 = responseCopy;
   v6 = [v5 countByEnumeratingWithState:&v92 objects:v110 count:16];
   if (v6)
   {
@@ -329,7 +329,7 @@ LABEL_32:
         v77 = v12;
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v4[160] array];
+          array = [v4[160] array];
           v14 = [v11 objectForKeyedSubscript:v9];
           objc_opt_class();
           v73 = v14;
@@ -339,7 +339,7 @@ LABEL_32:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v80 = v13;
+              v80 = array;
               v91 = 0u;
               v89 = 0u;
               v90 = 0u;
@@ -413,15 +413,15 @@ LABEL_61:
               sub_1002CF8A8();
             }
 
-            v55 = v13;
+            v55 = array;
             v56 = qword_1003D44C0;
             if (os_log_type_enabled(qword_1003D44C0, OS_LOG_TYPE_ERROR))
             {
               v57 = v56;
-              v58 = [(LoadSubscriptionStatusTask *)self logKey];
+              logKey = [(LoadSubscriptionStatusTask *)self logKey];
               v59 = objc_opt_class();
               *buf = 138544130;
-              v103 = v58;
+              v103 = logKey;
               v104 = 2114;
               v105 = v59;
               v106 = 2114;
@@ -447,15 +447,15 @@ LABEL_61:
               sub_1002CF8A8();
             }
 
-            v55 = v13;
+            v55 = array;
             v64 = qword_1003D44C0;
             if (os_log_type_enabled(qword_1003D44C0, OS_LOG_TYPE_ERROR))
             {
               v57 = v64;
-              v58 = [(LoadSubscriptionStatusTask *)self logKey];
+              logKey = [(LoadSubscriptionStatusTask *)self logKey];
               v66 = objc_opt_class();
               *buf = 138543874;
-              v103 = v58;
+              v103 = logKey;
               v104 = 2114;
               v105 = v66;
               v106 = 2114;
@@ -476,7 +476,7 @@ LABEL_57:
             goto LABEL_61;
           }
 
-          v80 = v13;
+          v80 = array;
           v85 = 0u;
           v86 = 0u;
           v83 = 0u;
@@ -540,10 +540,10 @@ LABEL_25:
                 if (os_log_type_enabled(qword_1003D44C0, OS_LOG_TYPE_ERROR))
                 {
                   log = v51;
-                  v52 = [(LoadSubscriptionStatusTask *)self logKey];
+                  logKey2 = [(LoadSubscriptionStatusTask *)self logKey];
                   v53 = objc_opt_class();
                   *buf = 138543874;
-                  v103 = v52;
+                  v103 = logKey2;
                   v104 = 2114;
                   v105 = v53;
                   v106 = 2114;
@@ -572,10 +572,10 @@ LABEL_31:
                 if (os_log_type_enabled(qword_1003D44C0, OS_LOG_TYPE_ERROR))
                 {
                   v47 = v46;
-                  v48 = [(LoadSubscriptionStatusTask *)self logKey];
+                  logKey3 = [(LoadSubscriptionStatusTask *)self logKey];
                   v49 = objc_opt_class();
                   *buf = 138543874;
-                  v103 = v48;
+                  v103 = logKey3;
                   v104 = 2114;
                   v105 = v49;
                   v106 = 2114;
@@ -600,10 +600,10 @@ LABEL_31:
               if (os_log_type_enabled(qword_1003D44C0, OS_LOG_TYPE_ERROR))
               {
                 v42 = v41;
-                v43 = [(LoadSubscriptionStatusTask *)self logKey];
+                logKey4 = [(LoadSubscriptionStatusTask *)self logKey];
                 v44 = objc_opt_class();
                 *buf = 138544130;
-                v103 = v43;
+                v103 = logKey4;
                 v104 = 2114;
                 v105 = v44;
                 v106 = 2114;
@@ -644,10 +644,10 @@ LABEL_31:
         if (os_log_type_enabled(qword_1003D44C0, OS_LOG_TYPE_ERROR))
         {
           v27 = v26;
-          v28 = [(LoadSubscriptionStatusTask *)self logKey];
+          logKey5 = [(LoadSubscriptionStatusTask *)self logKey];
           v29 = objc_opt_class();
           *buf = 138543874;
-          v103 = v28;
+          v103 = logKey5;
           v104 = 2114;
           v105 = v29;
           v106 = 2114;
@@ -675,16 +675,16 @@ LABEL_62:
   *(&self->_subscriptionGroupID + 2) = v71;
 }
 
-- (void)_replaceDate:(id *)a3 ifBeforeDate:(id)a4
+- (void)_replaceDate:(id *)date ifBeforeDate:(id)beforeDate
 {
-  v5 = a4;
-  if (v5)
+  beforeDateCopy = beforeDate;
+  if (beforeDateCopy)
   {
-    v8 = v5;
-    if (!*a3 || (v6 = [*a3 compare:v5], v5 = v8, v6 == -1))
+    v8 = beforeDateCopy;
+    if (!*date || (v6 = [*date compare:beforeDateCopy], beforeDateCopy = v8, v6 == -1))
     {
-      v7 = v5;
-      *a3 = v8;
+      v7 = beforeDateCopy;
+      *date = v8;
     }
   }
 

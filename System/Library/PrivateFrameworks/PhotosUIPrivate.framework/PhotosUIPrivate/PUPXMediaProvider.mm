@@ -1,103 +1,103 @@
 @interface PUPXMediaProvider
 - (PUPXMediaProvider)init;
-- (PUPXMediaProvider)initWithUnderlyingMediaProvider:(id)a3;
-- (int)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)cancelImageRequest:(int)a3;
+- (PUPXMediaProvider)initWithUnderlyingMediaProvider:(id)provider;
+- (int)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)cancelImageRequest:(int)request;
 @end
 
 @implementation PUPXMediaProvider
 
-- (void)cancelImageRequest:(int)a3
+- (void)cancelImageRequest:(int)request
 {
-  v4 = [(PUPXMediaProvider *)self underlyingMediaProvider];
-  [v4 cancelImageRequest:a3];
+  underlyingMediaProvider = [(PUPXMediaProvider *)self underlyingMediaProvider];
+  [underlyingMediaProvider cancelImageRequest:request];
 }
 
-- (int)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PUPXMediaProvider *)self underlyingMediaProvider];
-  v12 = [v11 requestAnimatedImageForAsset:v10 options:v9 resultHandler:v8];
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  underlyingMediaProvider = [(PUPXMediaProvider *)self underlyingMediaProvider];
+  v12 = [underlyingMediaProvider requestAnimatedImageForAsset:assetCopy options:optionsCopy resultHandler:handlerCopy];
 
   return v12;
 }
 
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  v16 = [(PUPXMediaProvider *)self underlyingMediaProvider];
-  LODWORD(a5) = [v16 requestLivePhotoForAsset:v15 targetSize:a5 contentMode:v14 options:v13 resultHandler:{width, height}];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  underlyingMediaProvider = [(PUPXMediaProvider *)self underlyingMediaProvider];
+  LODWORD(mode) = [underlyingMediaProvider requestLivePhotoForAsset:assetCopy targetSize:mode contentMode:optionsCopy options:handlerCopy resultHandler:{width, height}];
 
-  return a5;
+  return mode;
 }
 
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PUPXMediaProvider *)self underlyingMediaProvider];
-  v12 = [v11 requestPlayerItemForVideo:v10 options:v9 resultHandler:v8];
+  handlerCopy = handler;
+  optionsCopy = options;
+  videoCopy = video;
+  underlyingMediaProvider = [(PUPXMediaProvider *)self underlyingMediaProvider];
+  v12 = [underlyingMediaProvider requestPlayerItemForVideo:videoCopy options:optionsCopy resultHandler:handlerCopy];
 
   return v12;
 }
 
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PUPXMediaProvider *)self underlyingMediaProvider];
-  v12 = [v11 requestImageURLForAsset:v10 options:v9 resultHandler:v8];
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  underlyingMediaProvider = [(PUPXMediaProvider *)self underlyingMediaProvider];
+  v12 = [underlyingMediaProvider requestImageURLForAsset:assetCopy options:optionsCopy resultHandler:handlerCopy];
 
   return v12;
 }
 
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PUPXMediaProvider *)self underlyingMediaProvider];
-  v12 = [v11 requestImageDataForAsset:v10 options:v9 resultHandler:v8];
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  underlyingMediaProvider = [(PUPXMediaProvider *)self underlyingMediaProvider];
+  v12 = [underlyingMediaProvider requestImageDataForAsset:assetCopy options:optionsCopy resultHandler:handlerCopy];
 
   return v12;
 }
 
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  v16 = [(PUPXMediaProvider *)self underlyingMediaProvider];
-  LODWORD(a5) = [v16 requestImageForAsset:v15 targetSize:a5 contentMode:v14 options:v13 resultHandler:{width, height}];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  underlyingMediaProvider = [(PUPXMediaProvider *)self underlyingMediaProvider];
+  LODWORD(mode) = [underlyingMediaProvider requestImageForAsset:assetCopy targetSize:mode contentMode:optionsCopy options:handlerCopy resultHandler:{width, height}];
 
-  return a5;
+  return mode;
 }
 
-- (PUPXMediaProvider)initWithUnderlyingMediaProvider:(id)a3
+- (PUPXMediaProvider)initWithUnderlyingMediaProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = PUPXMediaProvider;
   v6 = [(PUPXMediaProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingMediaProvider, a3);
+    objc_storeStrong(&v6->_underlyingMediaProvider, provider);
   }
 
   return v7;
@@ -105,8 +105,8 @@
 
 - (PUPXMediaProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPXMediaProvider.m" lineNumber:22 description:{@"%s is not available as initializer", "-[PUPXMediaProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXMediaProvider.m" lineNumber:22 description:{@"%s is not available as initializer", "-[PUPXMediaProvider init]"}];
 
   abort();
 }

@@ -1,6 +1,6 @@
 @interface BSUIMapService
 + (id)sharedService;
-- (_BSUIMapServiceTicket)ticketForBrandLookupWithIMessageUid:(uint64_t)a1;
+- (_BSUIMapServiceTicket)ticketForBrandLookupWithIMessageUid:(uint64_t)uid;
 @end
 
 @implementation BSUIMapService
@@ -39,11 +39,11 @@ void __31__BSUIMapService_sharedService__block_invoke()
   _MergedGlobals = v0;
 }
 
-- (_BSUIMapServiceTicket)ticketForBrandLookupWithIMessageUid:(uint64_t)a1
+- (_BSUIMapServiceTicket)ticketForBrandLookupWithIMessageUid:(uint64_t)uid
 {
-  if (a1)
+  if (uid)
   {
-    v2 = [*(a1 + 8) ticketForBrandLookupWithIMessageUid:a2 traits:0];
+    v2 = [*(uid + 8) ticketForBrandLookupWithIMessageUid:a2 traits:0];
     v3 = [_BSUIMapServiceTicket alloc];
     v4 = v2;
     if (v3)

@@ -1,16 +1,16 @@
 @interface PLCleanupAbandonedAppLibrariesMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLCleanupAbandonedAppLibrariesMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v3 = [(PLMaintenanceTask *)self photoLibrary];
-  v4 = [v3 libraryServicesManager];
-  v5 = [v4 isSystemPhotoLibrary];
+  photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  isSystemPhotoLibrary = [libraryServicesManager isSystemPhotoLibrary];
 
-  if (v5)
+  if (isSystemPhotoLibrary)
   {
     v6 = [PLAppLibraryUninstallSupport alloc];
     v7 = +[PLPhotoLibraryBundleController sharedBundleController];

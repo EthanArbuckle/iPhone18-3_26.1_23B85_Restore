@@ -1,30 +1,30 @@
 @interface BKAnalyticsSessionHost
-- (BKAnalyticsSessionHost)initWithAnalyticsManager:(id)a3;
-- (id)contentPrivateIDForContentID:(id)a3;
-- (id)contentUserIDForContentID:(id)a3;
+- (BKAnalyticsSessionHost)initWithAnalyticsManager:(id)manager;
+- (id)contentPrivateIDForContentID:(id)d;
+- (id)contentUserIDForContentID:(id)d;
 - (id)keyWindowAnalyticsTracker;
 - (id)primaryAnalyticsController;
 - (void)listeningSessionWillEnd;
-- (void)playSessionDidEnd:(id)a3 playTime:(double)a4;
-- (void)readSessionDidEnd:(id)a3 readTime:(double)a4;
+- (void)playSessionDidEnd:(id)end playTime:(double)time;
+- (void)readSessionDidEnd:(id)end readTime:(double)time;
 @end
 
 @implementation BKAnalyticsSessionHost
 
-- (BKAnalyticsSessionHost)initWithAnalyticsManager:(id)a3
+- (BKAnalyticsSessionHost)initWithAnalyticsManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v7.receiver = self;
   v7.super_class = BKAnalyticsSessionHost;
   v5 = [(BKAnalyticsSessionHost *)&v7 init];
   if (v5)
   {
-    if (!v4)
+    if (!managerCopy)
     {
       sub_100791DB8();
     }
 
-    [(BKAnalyticsSessionHost *)v5 setAnalyticsManager:v4];
+    [(BKAnalyticsSessionHost *)v5 setAnalyticsManager:managerCopy];
   }
 
   return v5;
@@ -33,80 +33,80 @@
 - (id)primaryAnalyticsController
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 primaryAnalyticsController];
+  primaryAnalyticsController = [v2 primaryAnalyticsController];
 
-  return v3;
+  return primaryAnalyticsController;
 }
 
 - (id)keyWindowAnalyticsTracker
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 keyWindowAnalyticsTracker];
+  keyWindowAnalyticsTracker = [v2 keyWindowAnalyticsTracker];
 
-  return v3;
+  return keyWindowAnalyticsTracker;
 }
 
 - (void)listeningSessionWillEnd
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 applicationState];
+  applicationState = [v3 applicationState];
 
-  if (v4 == 2)
+  if (applicationState == 2)
   {
-    v5 = [(BKAnalyticsSessionHost *)self analyticsManager];
-    v7 = [v5 analyticsController];
+    analyticsManager = [(BKAnalyticsSessionHost *)self analyticsManager];
+    analyticsController = [analyticsManager analyticsController];
 
-    v6 = [v7 applicationTracker];
-    [v6 pushSessionEndReasonDataWithReason:2 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/BKAnalyticsSessionHost.m" line:56];
+    applicationTracker = [analyticsController applicationTracker];
+    [applicationTracker pushSessionEndReasonDataWithReason:2 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/BKAnalyticsSessionHost.m" line:56];
   }
 }
 
-- (void)playSessionDidEnd:(id)a3 playTime:(double)a4
+- (void)playSessionDidEnd:(id)end playTime:(double)time
 {
-  v10 = a3;
-  if ([v10 length])
+  endCopy = end;
+  if ([endCopy length])
   {
-    v6 = [(BKAnalyticsSessionHost *)self analyticsManager];
-    [v6 analyticsAccumulatedListenTime];
-    [v6 setAnalyticsAccumulatedListenTime:v7 + a4];
+    analyticsManager = [(BKAnalyticsSessionHost *)self analyticsManager];
+    [analyticsManager analyticsAccumulatedListenTime];
+    [analyticsManager setAnalyticsAccumulatedListenTime:v7 + time];
 
-    v8 = [(BKAnalyticsSessionHost *)self analyticsManager];
-    v9 = [v8 analyticsAccumulatedListenIDs];
-    [v9 addObject:v10];
+    analyticsManager2 = [(BKAnalyticsSessionHost *)self analyticsManager];
+    analyticsAccumulatedListenIDs = [analyticsManager2 analyticsAccumulatedListenIDs];
+    [analyticsAccumulatedListenIDs addObject:endCopy];
   }
 }
 
-- (void)readSessionDidEnd:(id)a3 readTime:(double)a4
+- (void)readSessionDidEnd:(id)end readTime:(double)time
 {
-  v10 = a3;
-  if ([v10 length])
+  endCopy = end;
+  if ([endCopy length])
   {
-    v6 = [(BKAnalyticsSessionHost *)self analyticsManager];
-    [v6 analyticsAccumulatedReadTime];
-    [v6 setAnalyticsAccumulatedReadTime:v7 + a4];
+    analyticsManager = [(BKAnalyticsSessionHost *)self analyticsManager];
+    [analyticsManager analyticsAccumulatedReadTime];
+    [analyticsManager setAnalyticsAccumulatedReadTime:v7 + time];
 
-    v8 = [(BKAnalyticsSessionHost *)self analyticsManager];
-    v9 = [v8 analyticsAccumulatedReadIDs];
-    [v9 addObject:v10];
+    analyticsManager2 = [(BKAnalyticsSessionHost *)self analyticsManager];
+    analyticsAccumulatedReadIDs = [analyticsManager2 analyticsAccumulatedReadIDs];
+    [analyticsAccumulatedReadIDs addObject:endCopy];
   }
 }
 
-- (id)contentPrivateIDForContentID:(id)a3
+- (id)contentPrivateIDForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKAnalyticsSessionHost *)self analyticsManager];
-  v6 = [v5 analyticsController];
-  v7 = [v6 contentPrivateIDForContentID:v4];
+  dCopy = d;
+  analyticsManager = [(BKAnalyticsSessionHost *)self analyticsManager];
+  analyticsController = [analyticsManager analyticsController];
+  v7 = [analyticsController contentPrivateIDForContentID:dCopy];
 
   return v7;
 }
 
-- (id)contentUserIDForContentID:(id)a3
+- (id)contentUserIDForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKAnalyticsSessionHost *)self analyticsManager];
-  v6 = [v5 analyticsController];
-  v7 = [v6 contentUserIDForContentID:v4];
+  dCopy = d;
+  analyticsManager = [(BKAnalyticsSessionHost *)self analyticsManager];
+  analyticsController = [analyticsManager analyticsController];
+  v7 = [analyticsController contentUserIDForContentID:dCopy];
 
   return v7;
 }

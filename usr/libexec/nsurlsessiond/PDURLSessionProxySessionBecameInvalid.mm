@@ -1,22 +1,22 @@
 @interface PDURLSessionProxySessionBecameInvalid
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxySessionBecameInvalid
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   session = self->_session;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (session)
   {
     if (!v6)
@@ -37,10 +37,10 @@
     [(PDURLSessionProxySessionBecameInvalid *)self setSession:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   error = self->_error;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (error)
   {
     if (!v8)
@@ -61,17 +61,17 @@ LABEL_7:
     [(PDURLSessionProxySessionBecameInvalid *)self setError:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((session = self->_session, !(session | v4[2])) || -[PDURLSessionProxySessionMessage isEqual:](session, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((session = self->_session, !(session | equalCopy[2])) || -[PDURLSessionProxySessionMessage isEqual:](session, "isEqual:")))
   {
     error = self->_error;
-    if (error | v4[1])
+    if (error | equalCopy[1])
     {
       v7 = [(PDURLSessionProxyError *)error isEqual:?];
     }
@@ -90,64 +90,64 @@ LABEL_13:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxySessionMessage *)self->_session copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxySessionMessage *)self->_session copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(PDURLSessionProxyError *)self->_error copyWithZone:a3];
+  v8 = [(PDURLSessionProxyError *)self->_error copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_session)
   {
-    [v4 setSession:?];
-    v4 = v5;
+    [toCopy setSession:?];
+    toCopy = v5;
   }
 
   if (self->_error)
   {
     [v5 setError:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_session)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_error)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -156,18 +156,18 @@ LABEL_13:
       while (1)
       {
         LOBYTE(v17) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v17 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v17 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v17 & 0x7F) << v6;
@@ -184,11 +184,11 @@ LABEL_13:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       if ((v13 >> 3) == 2)
@@ -202,7 +202,7 @@ LABEL_15:
         objc_storeStrong(&self->_session, v14);
         v17 = 0;
         v18 = 0;
-        if (!PBReaderPlaceMark() || !sub_100077B9C(v14, a3))
+        if (!PBReaderPlaceMark() || !sub_100077B9C(v14, from))
         {
           goto LABEL_28;
         }
@@ -219,10 +219,10 @@ LABEL_24:
       }
 
 LABEL_26:
-      v15 = [a3 position];
-      if (v15 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -230,7 +230,7 @@ LABEL_26:
     objc_storeStrong(&self->_error, v14);
     v17 = 0;
     v18 = 0;
-    if (!PBReaderPlaceMark() || !sub_10006F354(v14, a3))
+    if (!PBReaderPlaceMark() || !sub_10006F354(v14, from))
     {
 LABEL_28:
 
@@ -240,7 +240,7 @@ LABEL_28:
     goto LABEL_24;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -249,15 +249,15 @@ LABEL_28:
   session = self->_session;
   if (session)
   {
-    v5 = [(PDURLSessionProxySessionMessage *)session dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"session"];
+    dictionaryRepresentation = [(PDURLSessionProxySessionMessage *)session dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"session"];
   }
 
   error = self->_error;
   if (error)
   {
-    v7 = [(PDURLSessionProxyError *)error dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"error"];
+    dictionaryRepresentation2 = [(PDURLSessionProxyError *)error dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"error"];
   }
 
   return v3;
@@ -268,8 +268,8 @@ LABEL_28:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxySessionBecameInvalid;
   v3 = [(PDURLSessionProxySessionBecameInvalid *)&v7 description];
-  v4 = [(PDURLSessionProxySessionBecameInvalid *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxySessionBecameInvalid *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

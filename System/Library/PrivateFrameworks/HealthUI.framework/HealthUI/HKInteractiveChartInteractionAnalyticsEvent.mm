@@ -1,35 +1,35 @@
 @interface HKInteractiveChartInteractionAnalyticsEvent
 - (NSString)eventName;
 - (_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent)init;
-- (_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent)initWithShowMoreDataForDataType:(id)a3;
-- (_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent)initWithShowMoreDataForDisplayType:(id)a3;
-- (id)initFor:(id)a3 timeScopeSelected:(int64_t)a4;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent)initWithShowMoreDataForDataType:(id)type;
+- (_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent)initWithShowMoreDataForDisplayType:(id)type;
+- (id)initFor:(id)for timeScopeSelected:(int64_t)selected;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HKInteractiveChartInteractionAnalyticsEvent
 
-- (id)initFor:(id)a3 timeScopeSelected:(int64_t)a4
+- (id)initFor:(id)for timeScopeSelected:(int64_t)selected
 {
-  v5 = a3;
-  v6 = sub_1C3CC3D50(v5, a4);
+  forCopy = for;
+  v6 = sub_1C3CC3D50(forCopy, selected);
 
   return v6;
 }
 
-- (_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent)initWithShowMoreDataForDisplayType:(id)a3
+- (_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent)initWithShowMoreDataForDisplayType:(id)type
 {
-  v3 = a3;
-  v4 = sub_1C3CC3C70(v3);
+  typeCopy = type;
+  v4 = sub_1C3CC3C70(typeCopy);
 
   return v4;
 }
 
-- (_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent)initWithShowMoreDataForDataType:(id)a3
+- (_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent)initWithShowMoreDataForDataType:(id)type
 {
-  v3 = a3;
-  v4 = sub_1C3CC3EF0(v3);
+  typeCopy = type;
+  v4 = sub_1C3CC3EF0(typeCopy);
 
   return v4;
 }
@@ -41,7 +41,7 @@
   return v2;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   sub_1C3C75090(MEMORY[0x1E69E7CC0]);
   v4 = sub_1C3D1FEE4();
@@ -49,10 +49,10 @@
   return v4;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  sourceCopy = source;
+  selfCopy = self;
   sub_1C3CC40C8();
 
   v7 = sub_1C3D1FEE4();

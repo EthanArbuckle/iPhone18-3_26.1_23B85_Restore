@@ -1,20 +1,20 @@
 @interface AVPlayerItemSampleBufferOutput
-- (AVPlayerItemSampleBufferOutput)initWithConfiguration:(id)a3;
-- (opaqueCMSampleBuffer)copyNextSampleBufferForTrackID:(int)a3 flags:(unsigned int *)a4;
+- (AVPlayerItemSampleBufferOutput)initWithConfiguration:(id)configuration;
+- (opaqueCMSampleBuffer)copyNextSampleBufferForTrackID:(int)d flags:(unsigned int *)flags;
 - (void)_addFigPlaybackItemListeners;
-- (void)_attachToPlayerItemTrack:(id)a3 figPlaybackItem:(OpaqueFigPlaybackItem *)a4;
+- (void)_attachToPlayerItemTrack:(id)track figPlaybackItem:(OpaqueFigPlaybackItem *)item;
 - (void)_detachFromPlayerItemTrack;
-- (void)_figPlaybackItemTrackOutputSequenceWasFlushedForTrackID:(int)a3 extractionID:(int)a4;
-- (void)_figPlaybackItemTrackSampleBufferDidBecomeAvailableForTrackID:(int)a3 extractionID:(int)a4;
+- (void)_figPlaybackItemTrackOutputSequenceWasFlushedForTrackID:(int)d extractionID:(int)iD;
+- (void)_figPlaybackItemTrackSampleBufferDidBecomeAvailableForTrackID:(int)d extractionID:(int)iD;
 - (void)_removeFigPlaybackItemListeners;
-- (void)_setFigPlaybackItem:(OpaqueFigPlaybackItem *)a3;
+- (void)_setFigPlaybackItem:(OpaqueFigPlaybackItem *)item;
 - (void)dealloc;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation AVPlayerItemSampleBufferOutput
 
-- (AVPlayerItemSampleBufferOutput)initWithConfiguration:(id)a3
+- (AVPlayerItemSampleBufferOutput)initWithConfiguration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = AVPlayerItemSampleBufferOutput;
@@ -24,7 +24,7 @@
     v4->_stateQueue = dispatch_queue_create("AVPlayerItemSampleBufferOutput state", 0);
     v4->_weakReference = [[AVWeakReference alloc] initWithReferencedObject:v4];
     v4->_delegateStorage = objc_alloc_init(AVWeakReferencingDelegateStorage);
-    [a3 advanceIntervalForDataAvailability];
+    [configuration advanceIntervalForDataAvailability];
     v4->_advanceInterval = v5;
   }
 
@@ -55,13 +55,13 @@
   if (self->_figPlaybackItem)
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVPlayerItemSampleBufferOutput *)self _weakReference];
-    CFRetain(v4);
-    [v3 addListenerWithWeakReference:v4 callback:figPlaybackItemTrackSampleBufferDidBecomeAvailable name:*MEMORY[0x1E69725A0] object:self->_figPlaybackItem flags:0];
+    _weakReference = [(AVPlayerItemSampleBufferOutput *)self _weakReference];
+    CFRetain(_weakReference);
+    [v3 addListenerWithWeakReference:_weakReference callback:figPlaybackItemTrackSampleBufferDidBecomeAvailable name:*MEMORY[0x1E69725A0] object:self->_figPlaybackItem flags:0];
     v5 = *MEMORY[0x1E6972598];
     figPlaybackItem = self->_figPlaybackItem;
 
-    [v3 addListenerWithWeakReference:v4 callback:figPlaybackItemTrackResetSampleBufferExtraction name:v5 object:figPlaybackItem flags:0];
+    [v3 addListenerWithWeakReference:_weakReference callback:figPlaybackItemTrackResetSampleBufferExtraction name:v5 object:figPlaybackItem flags:0];
   }
 }
 
@@ -70,19 +70,19 @@
   if (self->_figPlaybackItem)
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVPlayerItemSampleBufferOutput *)self _weakReference];
-    [v3 removeListenerWithWeakReference:v4 callback:figPlaybackItemTrackSampleBufferDidBecomeAvailable name:*MEMORY[0x1E69725A0] object:self->_figPlaybackItem];
-    [v3 removeListenerWithWeakReference:v4 callback:figPlaybackItemTrackResetSampleBufferExtraction name:*MEMORY[0x1E6972598] object:self->_figPlaybackItem];
+    _weakReference = [(AVPlayerItemSampleBufferOutput *)self _weakReference];
+    [v3 removeListenerWithWeakReference:_weakReference callback:figPlaybackItemTrackSampleBufferDidBecomeAvailable name:*MEMORY[0x1E69725A0] object:self->_figPlaybackItem];
+    [v3 removeListenerWithWeakReference:_weakReference callback:figPlaybackItemTrackResetSampleBufferExtraction name:*MEMORY[0x1E6972598] object:self->_figPlaybackItem];
     weakReference = self->_weakReference;
 
     CFRelease(weakReference);
   }
 }
 
-- (void)_setFigPlaybackItem:(OpaqueFigPlaybackItem *)a3
+- (void)_setFigPlaybackItem:(OpaqueFigPlaybackItem *)item
 {
   figPlaybackItem = self->_figPlaybackItem;
-  if (figPlaybackItem != a3)
+  if (figPlaybackItem != item)
   {
     if (figPlaybackItem)
     {
@@ -90,9 +90,9 @@
       CFRelease(self->_figPlaybackItem);
     }
 
-    if (a3)
+    if (item)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(item);
     }
 
     else
@@ -106,9 +106,9 @@
   }
 }
 
-- (opaqueCMSampleBuffer)copyNextSampleBufferForTrackID:(int)a3 flags:(unsigned int *)a4
+- (opaqueCMSampleBuffer)copyNextSampleBufferForTrackID:(int)d flags:(unsigned int *)flags
 {
-  if (self->_trackID != a3)
+  if (self->_trackID != d)
   {
     return 0;
   }
@@ -116,27 +116,27 @@
   v13[5] = v4;
   v13[6] = v5;
   v13[0] = 0;
-  v8 = [(AVPlayerItemSampleBufferOutput *)self _figPlaybackItem];
-  v9 = [(AVPlayerItemSampleBufferOutput *)self _trackID];
-  v10 = [(AVPlayerItemSampleBufferOutput *)self _extractionID];
+  _figPlaybackItem = [(AVPlayerItemSampleBufferOutput *)self _figPlaybackItem];
+  _trackID = [(AVPlayerItemSampleBufferOutput *)self _trackID];
+  _extractionID = [(AVPlayerItemSampleBufferOutput *)self _extractionID];
   v11 = *(*(CMBaseObjectGetVTable() + 16) + 168);
   if (v11)
   {
-    v11(v8, v9, v10, v13);
+    v11(_figPlaybackItem, _trackID, _extractionID, v13);
   }
 
-  if (a4)
+  if (flags)
   {
-    *a4 = 0;
+    *flags = 0;
   }
 
   return v13[0];
 }
 
-- (void)_figPlaybackItemTrackSampleBufferDidBecomeAvailableForTrackID:(int)a3 extractionID:(int)a4
+- (void)_figPlaybackItemTrackSampleBufferDidBecomeAvailableForTrackID:(int)d extractionID:(int)iD
 {
   v7 = objc_autoreleasePoolPush();
-  if (*&self->_trackID == __PAIR64__(a4, a3))
+  if (*&self->_trackID == __PAIR64__(iD, d))
   {
     stateQueue = self->_stateQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -177,9 +177,9 @@ uint64_t __109__AVPlayerItemSampleBufferOutput__figPlaybackItemTrackSampleBuffer
   return result;
 }
 
-- (void)_figPlaybackItemTrackOutputSequenceWasFlushedForTrackID:(int)a3 extractionID:(int)a4
+- (void)_figPlaybackItemTrackOutputSequenceWasFlushedForTrackID:(int)d extractionID:(int)iD
 {
-  if (self->_trackID == a3 && self->_extractionID == a4)
+  if (self->_trackID == d && self->_extractionID == iD)
   {
     block[5] = v4;
     block[6] = v5;
@@ -220,26 +220,26 @@ uint64_t __103__AVPlayerItemSampleBufferOutput__figPlaybackItemTrackOutputSequen
   return result;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  if (a4)
+  if (queue)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = a3 == 0;
+    v8 = delegate == 0;
   }
 
   if (!v8)
   {
-    a4 = MEMORY[0x1E69E96A0];
+    queue = MEMORY[0x1E69E96A0];
   }
 
-  if (a3)
+  if (delegate)
   {
-    if (!a4)
+    if (!queue)
     {
       v9 = MEMORY[0x1E695DF30];
       v10 = *MEMORY[0x1E695D940];
@@ -248,13 +248,13 @@ uint64_t __103__AVPlayerItemSampleBufferOutput__figPlaybackItemTrackOutputSequen
     }
   }
 
-  else if (a4)
+  else if (queue)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
     v11 = "newDelegateQueue == NULL";
 LABEL_14:
-    v13 = [v9 exceptionWithName:v10 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, v4, v5, v6, v7, v11), 0}];
+    v13 = [v9 exceptionWithName:v10 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", queue, v4, v5, v6, v7, v11), 0}];
     objc_exception_throw(v13);
   }
 
@@ -263,7 +263,7 @@ LABEL_14:
   [AVWeakReferencingDelegateStorage setDelegate:"setDelegate:queue:" queue:?];
 }
 
-- (void)_attachToPlayerItemTrack:(id)a3 figPlaybackItem:(OpaqueFigPlaybackItem *)a4
+- (void)_attachToPlayerItemTrack:(id)track figPlaybackItem:(OpaqueFigPlaybackItem *)item
 {
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -271,8 +271,8 @@ LABEL_14:
   block[2] = __116__AVPlayerItemSampleBufferOutput_AVPlayerItemSampleBufferOutput_Internal___attachToPlayerItemTrack_figPlaybackItem___block_invoke;
   block[3] = &unk_1E7460FF0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = track;
+  block[6] = item;
   dispatch_sync(stateQueue, block);
 }
 

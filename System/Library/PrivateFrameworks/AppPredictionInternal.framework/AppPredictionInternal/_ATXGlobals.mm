@@ -1,7 +1,7 @@
 @interface _ATXGlobals
 + (_ATXGlobals)sharedInstance;
-+ (id)abHelperWithMobileAssetsGivenAssetClass:(Class)a3;
-+ (id)abHelperWithTrialAssetsGivenAssetClass:(Class)a3;
++ (id)abHelperWithMobileAssetsGivenAssetClass:(Class)class;
++ (id)abHelperWithTrialAssetsGivenAssetClass:(Class)class;
 - (BOOL)allowBehavioralPredictionsOnLockscreen;
 - (BOOL)cdnDownloaderIsEnabled;
 - (BOOL)disableLocationQualityChecksForHeroApp;
@@ -12,7 +12,7 @@
 - (BOOL)sessionLoggingHomeDistanceEnable;
 - (BOOL)sessionLoggingSchoolDistanceEnable;
 - (BOOL)sessionLoggingWorkDistanceEnable;
-- (_ATXGlobals)initWithAssetClass:(Class)a3;
+- (_ATXGlobals)initWithAssetClass:(Class)class;
 - (_ATXGlobals)initWithEmptyAssetClass;
 - (double)actionCoarseGeoHashDecayHalflife;
 - (double)actionExperienceHighConfidenceThreshold;
@@ -158,7 +158,7 @@
 - (id)actionPredictionBlendingModelVersion;
 - (id)appPredictionBlendingModelVersion;
 - (id)approvedSiriKitIntents;
-- (id)blacklistedAppActionsHelper:(id)a3;
+- (id)blacklistedAppActionsHelper:(id)helper;
 - (id)blacklistedAppsForAppPredictions;
 - (id)blacklistedAppsForLockscreenPredictions;
 - (id)enabledFallbackActions;
@@ -252,15 +252,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)defaultPredictionRefreshRate
@@ -340,7 +340,7 @@
   return v7;
 }
 
-- (_ATXGlobals)initWithAssetClass:(Class)a3
+- (_ATXGlobals)initWithAssetClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = _ATXGlobals;
@@ -348,12 +348,12 @@
   if (v4)
   {
     v5 = MEMORY[0x277CEB3C0];
-    if (!a3)
+    if (!class)
     {
-      a3 = objc_opt_class();
+      class = objc_opt_class();
     }
 
-    v6 = [v5 dictionaryFromLazyPlistWithLegacyPathForClass:a3];
+    v6 = [v5 dictionaryFromLazyPlistWithLegacyPathForClass:class];
     parameters = v4->_parameters;
     v4->_parameters = v6;
   }
@@ -376,15 +376,15 @@
   return v3;
 }
 
-+ (id)abHelperWithTrialAssetsGivenAssetClass:(Class)a3
++ (id)abHelperWithTrialAssetsGivenAssetClass:(Class)class
 {
   v3 = MEMORY[0x277CEB3C0];
-  if (a3)
+  if (class)
   {
-    a1 = a3;
+    self = class;
   }
 
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 rawDictionaryUsingTrialForResource:v4 ofType:@"plplist"];
 
   if (v5)
@@ -400,15 +400,15 @@
   return v6;
 }
 
-+ (id)abHelperWithMobileAssetsGivenAssetClass:(Class)a3
++ (id)abHelperWithMobileAssetsGivenAssetClass:(Class)class
 {
   v3 = MEMORY[0x277CEB3C0];
-  if (a3)
+  if (class)
   {
-    a1 = a3;
+    self = class;
   }
 
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 rawDictionaryUsingMobileAssetsForResource:v4 ofType:@"plplist"];
 
   if (v5)
@@ -462,9 +462,9 @@
   v5 = [v2 rawDictionaryUsingMobileAssetsForResource:v4 ofType:@"plplist"];
 
   v6 = [objc_alloc(MEMORY[0x277CEB3C8]) initWithAssetContents:v5];
-  v7 = [v6 groupIdentifier];
+  groupIdentifier = [v6 groupIdentifier];
 
-  return v7;
+  return groupIdentifier;
 }
 
 - (double)appLaunchDecayHalflife
@@ -2237,15 +2237,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 10;
+    intValue = 10;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)actionPredictionFirstStageBeamWidthMacOS
@@ -2254,15 +2254,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 30;
+    intValue = 30;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)minimumTimespanForOnceOffActions
@@ -2271,15 +2271,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 1800;
+    intValue = 1800;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)extraAppsToLog
@@ -2288,15 +2288,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)numberOfTopSASAppsToLog
@@ -2305,15 +2305,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)extraSASAppsToLog
@@ -2322,15 +2322,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)extraIntentsToLog
@@ -2339,15 +2339,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)appConnectionMinTotalLaunches
@@ -2356,15 +2356,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)appConnectionMinAverageLaunches
@@ -2373,15 +2373,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)heuristicActionExperienceHighConfidenceThreshold
@@ -2426,15 +2426,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)heuristicActionExperienceMediumConfidenceThreshold
@@ -2479,15 +2479,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)behavioralHomeScreenActionMinimumConfidenceThreshold
@@ -2514,15 +2514,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)smoothedCountForTimeOfDayStd
@@ -2621,15 +2621,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 400;
+    intValue = 400;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (id)whitelistedBundlesForAnchorModelLogging
@@ -2763,10 +2763,10 @@
   return v4;
 }
 
-- (id)blacklistedAppActionsHelper:(id)a3
+- (id)blacklistedAppActionsHelper:(id)helper
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:helper];
   v5 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
@@ -2794,9 +2794,9 @@
         }
 
         v12 = objc_alloc(MEMORY[0x277D42648]);
-        v13 = [v11 firstObject];
-        v14 = [v11 lastObject];
-        v15 = [v12 initWithFirst:v13 second:v14];
+        firstObject = [v11 firstObject];
+        lastObject = [v11 lastObject];
+        v15 = [v12 initWithFirst:firstObject second:lastObject];
         [v5 addObject:v15];
       }
 
@@ -2818,15 +2818,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)maxSettingsZKWSuggestionsToBlend
@@ -2835,15 +2835,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 10;
+    intValue = 10;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (id)magicalMomentsEnabledPredictionExperts
@@ -2871,15 +2871,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 3600.0;
+    intValue = 3600.0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)cacheRefreshIntervalForDisabledActionConsumerSubType
@@ -2888,15 +2888,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 3600.0;
+    intValue = 3600.0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)defaultPeriodicLoggerUploadIntervalSeconds
@@ -2959,15 +2959,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)sessionLoggingWorkDistanceEnable
@@ -2976,15 +2976,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)sessionLoggingSchoolDistanceEnable
@@ -2993,15 +2993,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)sessionLoggingGymDistanceEnable
@@ -3010,15 +3010,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)sessionLoggingDistanceAccuracy
@@ -3045,15 +3045,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int)sessionLoggingAppSequenceLength
@@ -3062,15 +3062,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)sessionLoggingUniqueAppActionSequenceLength
@@ -3079,15 +3079,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)nsuaDonationWeight
@@ -3132,15 +3132,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 5;
+    unsignedIntegerValue = 5;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)menuItemPredictionsPerAppLimitMacOS
@@ -3149,15 +3149,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 5;
+    unsignedIntegerValue = 5;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (double)predictionsForMultiStageLoggingLimit
@@ -3240,15 +3240,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 5400;
+    intValue = 5400;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)onlyUseEligibleForPrediction
@@ -3257,15 +3257,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)onlyAcceptBecomeCurrentNSUAs
@@ -3274,15 +3274,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int)previousAppActionCompareCount
@@ -3291,15 +3291,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 3;
+    intValue = 3;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)maxHeuristicAppActionCount
@@ -3308,15 +3308,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 2;
+    intValue = 2;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)maxValidATXActionResponseCacheAgeSec
@@ -3325,15 +3325,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 3600;
+    intValue = 3600;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)actionSpotlightCaptureRateSecondsAfterSessionEnd
@@ -3342,15 +3342,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 15;
+    intValue = 15;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)actionSpotlightCaptureRateForwardQueryThresholdSeconds
@@ -3359,15 +3359,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 180;
+    intValue = 180;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)actionSpotlightCaptureRateActionAppLaunchThresholdSeconds
@@ -3376,15 +3376,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 2;
+    intValue = 2;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)actionPredictionSessionLoggingBottomBlockMaxItemsToLog
@@ -3393,15 +3393,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)actionPredictionSessionLoggingDurationResolutionSec
@@ -3410,15 +3410,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 10.0;
+    intValue = 10.0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)appPredictionGlobalScoreMultiplierPerApp
@@ -3463,15 +3463,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 10;
+    intValue = 10;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)numberOfRandomSlotsToKeepForLogging
@@ -3480,15 +3480,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 10;
+    intValue = 10;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)numberOfActionsToKeepForLogging
@@ -3497,15 +3497,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 120;
+    intValue = 120;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)maximumSpotlightPredictions
@@ -3514,15 +3514,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 3;
+    intValue = 3;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)maximumParameterCombinations
@@ -3531,15 +3531,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 100;
+    intValue = 100;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)maxNumberOfActionTypesPerApp
@@ -3548,15 +3548,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 100;
+    intValue = 100;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)heuristicsBaseScore
@@ -3583,15 +3583,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 30;
+    intValue = 30;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)heuristicsEngagementPriorBeta
@@ -3600,15 +3600,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 70;
+    intValue = 70;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)fallbackActionsEngagementPriorAlpha
@@ -3617,15 +3617,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 10;
+    intValue = 10;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)fallbackActionsEngagementPriorBeta
@@ -3634,15 +3634,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 40;
+    intValue = 40;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)donationWeighingScheme
@@ -3651,15 +3651,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)donationWeighingStrength
@@ -3686,15 +3686,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 86400;
+    intValue = 86400;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)lockscreenMaxValidCacheAge
@@ -3703,15 +3703,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 86400;
+    intValue = 86400;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)homeScreenMaxValidCacheAge
@@ -3720,15 +3720,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 86400;
+    intValue = 86400;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)minDistanceToDropOffLocationInMetersForRequestRideIntent
@@ -3737,15 +3737,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 4000;
+    intValue = 4000;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)maxDistanceToDropOffLocationInMetersForRequestRideIntent
@@ -3754,15 +3754,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 121000;
+    intValue = 121000;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)predictedRouteAcceptThreshold
@@ -3789,15 +3789,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1.0;
+    bOOLValue = 1.0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)personalizationBlacklistedBundleIds
@@ -3825,15 +3825,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 1209600;
+    unsignedIntegerValue = 1209600;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)personalizationRequiredCountForRelevance
@@ -3842,15 +3842,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 3;
+    unsignedIntegerValue = 3;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)triggerPresetMinutes
@@ -3878,15 +3878,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 43200;
+    unsignedIntegerValue = 43200;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)transitionLookaheadMinSeconds
@@ -3895,15 +3895,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)appPredictionBlendingModelVersion
@@ -4089,15 +4089,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 10;
+    intValue = 10;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)launchAndLocationHarvesterSamplingRate
@@ -4162,15 +4162,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 4;
+    unsignedIntegerValue = 4;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (double)recentAppsHeuristicLookBackSeconds
@@ -4197,15 +4197,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)whitelistedAnchorsForMagicalMomentsOnHomeScreen
@@ -4233,15 +4233,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (double)scoreThresholdForSavingAppsToModeFiles

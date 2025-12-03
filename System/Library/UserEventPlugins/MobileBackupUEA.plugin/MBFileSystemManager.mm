@@ -1,37 +1,37 @@
 @interface MBFileSystemManager
-+ (BOOL)_createSnapshotForVolumeFd:(int)a3 volumeMountPoint:(id)a4 name:(id)a5 error:(id *)a6 cancelationHandler:(id)a7;
-+ (BOOL)_deleteSnapshotForVolume:(id)a3 name:(id)a4 error:(id *)a5;
-+ (BOOL)_mountSnapshotForVolumeFd:(int)a3 volumeMountPoint:(id)a4 name:(id)a5 mountPoint:(id)a6 error:(id *)a7;
-+ (BOOL)_unmountWithRetry:(id)a3 startTime:(double)a4 timeout:(double)a5 error:(id *)a6 cancelationHandler:(id)a7;
-+ (BOOL)createSnapshotForVolume:(id)a3 name:(id)a4 error:(id *)a5 cancelationHandler:(id)a6;
-+ (BOOL)deleteAllSnapshotsAcrossVolumes:(id)a3 withPrefix:(id)a4 error:(id *)a5;
-+ (BOOL)deleteAllSnapshotsForVolume:(id)a3 withPrefix:(id)a4 error:(id *)a5;
-+ (BOOL)deleteAllSnapshotsForVolume:(id)a3 withPrefix:(id)a4 latestCreationDate:(id)a5 error:(id *)a6;
-+ (BOOL)renameSnapshotForVolume:(id)a3 name:(id)a4 newName:(id)a5 error:(id *)a6;
-+ (BOOL)startFilesystemKeyRollingWithPath:(id)a3 error:(id *)a4;
-+ (BOOL)stopFilesystemKeyRollingWithPath:(id)a3 error:(id *)a4;
-+ (BOOL)unmount:(id)a3 error:(id *)a4;
-+ (BOOL)unmount:(id)a3 timeout:(double)a4 error:(id *)a5 cancelationHandler:(id)a6;
-+ (BOOL)unmountAndDeleteSnapshotForVolume:(id)a3 name:(id)a4 mountPoint:(id)a5 error:(id *)a6;
-+ (BOOL)unmountAndRenameSnapshotForVolume:(id)a3 name:(id)a4 mountPoint:(id)a5 newName:(id)a6 error:(id *)a7;
-+ (BOOL)volumeSupportsLocalSnapshots:(id)a3;
-+ (id)_deleteFileSystemSnapshots:(id)a3 block:(id)a4;
-+ (id)createAndMountSnapshotForVolume:(id)a3 name:(id)a4 atFirstAvailableMountPoint:(id)a5 error:(id *)a6 cancelationHandler:(id)a7;
++ (BOOL)_createSnapshotForVolumeFd:(int)fd volumeMountPoint:(id)point name:(id)name error:(id *)error cancelationHandler:(id)handler;
++ (BOOL)_deleteSnapshotForVolume:(id)volume name:(id)name error:(id *)error;
++ (BOOL)_mountSnapshotForVolumeFd:(int)fd volumeMountPoint:(id)point name:(id)name mountPoint:(id)mountPoint error:(id *)error;
++ (BOOL)_unmountWithRetry:(id)retry startTime:(double)time timeout:(double)timeout error:(id *)error cancelationHandler:(id)handler;
++ (BOOL)createSnapshotForVolume:(id)volume name:(id)name error:(id *)error cancelationHandler:(id)handler;
++ (BOOL)deleteAllSnapshotsAcrossVolumes:(id)volumes withPrefix:(id)prefix error:(id *)error;
++ (BOOL)deleteAllSnapshotsForVolume:(id)volume withPrefix:(id)prefix error:(id *)error;
++ (BOOL)deleteAllSnapshotsForVolume:(id)volume withPrefix:(id)prefix latestCreationDate:(id)date error:(id *)error;
++ (BOOL)renameSnapshotForVolume:(id)volume name:(id)name newName:(id)newName error:(id *)error;
++ (BOOL)startFilesystemKeyRollingWithPath:(id)path error:(id *)error;
++ (BOOL)stopFilesystemKeyRollingWithPath:(id)path error:(id *)error;
++ (BOOL)unmount:(id)unmount error:(id *)error;
++ (BOOL)unmount:(id)unmount timeout:(double)timeout error:(id *)error cancelationHandler:(id)handler;
++ (BOOL)unmountAndDeleteSnapshotForVolume:(id)volume name:(id)name mountPoint:(id)point error:(id *)error;
++ (BOOL)unmountAndRenameSnapshotForVolume:(id)volume name:(id)name mountPoint:(id)point newName:(id)newName error:(id *)error;
++ (BOOL)volumeSupportsLocalSnapshots:(id)snapshots;
++ (id)_deleteFileSystemSnapshots:(id)snapshots block:(id)block;
++ (id)createAndMountSnapshotForVolume:(id)volume name:(id)name atFirstAvailableMountPoint:(id)point error:(id *)error cancelationHandler:(id)handler;
 + (id)fetchAllAPFSVolumeMountPoints;
-+ (id)listSnapshotsForVolume:(id)a3 error:(id *)a4;
-+ (id)volumeMountPointForFile:(id)a3 error:(id *)a4;
-+ (id)volumeUUIDWithVolumeMountPoint:(id)a3 error:(id *)a4;
++ (id)listSnapshotsForVolume:(id)volume error:(id *)error;
++ (id)volumeMountPointForFile:(id)file error:(id *)error;
++ (id)volumeUUIDWithVolumeMountPoint:(id)point error:(id *)error;
 + (unint64_t)fileSystemCapacity;
-+ (void)removeAbandonedDriveBackupDirectoriesWithLatestCreationDate:(id)a3 persona:(id)a4;
-+ (void)removeDeviceTransferDirectoryWithEarliestCreationDate:(id)a3;
++ (void)removeAbandonedDriveBackupDirectoriesWithLatestCreationDate:(id)date persona:(id)persona;
++ (void)removeDeviceTransferDirectoryWithEarliestCreationDate:(id)date;
 @end
 
 @implementation MBFileSystemManager
 
-+ (BOOL)volumeSupportsLocalSnapshots:(id)a3
++ (BOOL)volumeSupportsLocalSnapshots:(id)snapshots
 {
-  v3 = a3;
-  v4 = open([v3 fileSystemRepresentation], 0);
+  snapshotsCopy = snapshots;
+  v4 = open([snapshotsCopy fileSystemRepresentation], 0);
   if (v4 < 0)
   {
     v7 = MBGetDefaultLog();
@@ -39,7 +39,7 @@
     {
       v8 = *__error();
       *v17 = 138412546;
-      *&v17[4] = v3;
+      *&v17[4] = snapshotsCopy;
       *&v17[12] = 1024;
       *&v17[14] = v8;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "Unable to open %@: %{errno}d while checking if FS supports snapshot", v17, 0x12u);
@@ -67,7 +67,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v3;
+      v16 = snapshotsCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "Couldn't get attr list for filesystem path %@", buf, 0xCu);
       _MBLog();
     }
@@ -83,8 +83,8 @@ LABEL_11:
 
 + (unint64_t)fileSystemCapacity
 {
-  v2 = atomic_load(&qword_16320);
-  if (!v2)
+  unsignedLongLongValue = atomic_load(&qword_16320);
+  if (!unsignedLongLongValue)
   {
     v3 = +[NSFileManager defaultManager];
     v9 = 0;
@@ -94,9 +94,9 @@ LABEL_11:
     if (v4)
     {
       v6 = [v4 objectForKeyedSubscript:NSFileSystemSize];
-      v2 = [v6 unsignedLongLongValue];
+      unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-      atomic_store(v2, &qword_16320);
+      atomic_store(unsignedLongLongValue, &qword_16320);
     }
 
     else
@@ -112,24 +112,24 @@ LABEL_11:
         _MBLog();
       }
 
-      v2 = -1;
+      unsignedLongLongValue = -1;
     }
   }
 
-  return v2;
+  return unsignedLongLongValue;
 }
 
-+ (BOOL)createSnapshotForVolume:(id)a3 name:(id)a4 error:(id *)a5 cancelationHandler:(id)a6
++ (BOOL)createSnapshotForVolume:(id)volume name:(id)name error:(id *)error cancelationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v10;
+  volumeCopy = volume;
+  nameCopy = name;
+  handlerCopy = handler;
+  v13 = volumeCopy;
   v14 = MBGetDefaultLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v28 = v11;
+    v28 = nameCopy;
     v29 = 2114;
     v30 = v13;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Creating filesystem snapshot %{public}@ at %{public}@", buf, 0x16u);
@@ -153,10 +153,10 @@ LABEL_11:
       _MBLog();
     }
 
-    if (a5)
+    if (error)
     {
       [MBError errorWithErrno:v24 path:v13 format:@"Failed to open snapshot path"];
-      *a5 = v23 = 0;
+      *error = v23 = 0;
       goto LABEL_13;
     }
 
@@ -166,7 +166,7 @@ LABEL_12:
   }
 
   v18 = v17;
-  v19 = [a1 _createSnapshotForVolumeFd:v17 volumeMountPoint:v13 name:v11 error:a5 cancelationHandler:v12];
+  v19 = [self _createSnapshotForVolumeFd:v17 volumeMountPoint:v13 name:nameCopy error:error cancelationHandler:handlerCopy];
   close(v18);
   if (!v19)
   {
@@ -179,7 +179,7 @@ LABEL_12:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v28 = v11;
+    v28 = nameCopy;
     v29 = 2114;
     v30 = v13;
     v31 = 2048;
@@ -194,25 +194,25 @@ LABEL_13:
   return v23;
 }
 
-+ (BOOL)_createSnapshotForVolumeFd:(int)a3 volumeMountPoint:(id)a4 name:(id)a5 error:(id *)a6 cancelationHandler:(id)a7
++ (BOOL)_createSnapshotForVolumeFd:(int)fd volumeMountPoint:(id)point name:(id)name error:(id *)error cancelationHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a7;
+  pointCopy = point;
+  nameCopy = name;
+  handlerCopy = handler;
   v12 = 0;
   v13 = 0;
   while (1)
   {
     v14 = objc_autoreleasePoolPush();
-    if (v11)
+    if (handlerCopy)
     {
-      if (v11[2](v11))
+      if (handlerCopy[2](handlerCopy))
       {
         break;
       }
     }
 
-    v15 = fs_snapshot_create(a3, [v10 fileSystemRepresentation], 0);
+    v15 = fs_snapshot_create(fd, [nameCopy fileSystemRepresentation], 0);
     v16 = v15 == 0;
     if (!v15)
     {
@@ -220,15 +220,15 @@ LABEL_13:
     }
 
     v17 = *__error();
-    v18 = [MBError errorWithErrno:v17 path:v9 format:@"Failed to create snapshot: %d", v17];
+    v18 = [MBError errorWithErrno:v17 path:pointCopy format:@"Failed to create snapshot: %d", v17];
 
     v19 = MBGetDefaultLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
-      v28 = v10;
+      v28 = nameCopy;
       v29 = 2114;
-      v30 = v9;
+      v30 = pointCopy;
       v31 = 1024;
       v32 = v13;
       v33 = 1024;
@@ -241,7 +241,7 @@ LABEL_13:
     {
       v12 = v18;
 LABEL_12:
-      v20 = a6;
+      errorCopy3 = error;
       goto LABEL_16;
     }
 
@@ -252,8 +252,8 @@ LABEL_12:
     if (v13 == 30)
     {
       v16 = 0;
-      v20 = a6;
-      if (!a6)
+      errorCopy3 = error;
+      if (!error)
       {
         goto LABEL_18;
       }
@@ -263,13 +263,13 @@ LABEL_12:
   }
 
   v21 = MBGetDefaultLog();
-  v20 = a6;
+  errorCopy3 = error;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v28 = v10;
+    v28 = nameCopy;
     v29 = 2114;
-    v30 = v9;
+    v30 = pointCopy;
     _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "Failed to create filesystem snapshot %{public}@ at %{public}@ (canceled)", buf, 0x16u);
     _MBLog();
   }
@@ -281,31 +281,31 @@ LABEL_12:
 LABEL_16:
   objc_autoreleasePoolPop(v14);
   v18 = v12;
-  if (!v20)
+  if (!errorCopy3)
   {
     goto LABEL_18;
   }
 
 LABEL_17:
   v23 = v18;
-  *v20 = v18;
+  *errorCopy3 = v18;
 LABEL_18:
 
   return v16;
 }
 
-+ (id)createAndMountSnapshotForVolume:(id)a3 name:(id)a4 atFirstAvailableMountPoint:(id)a5 error:(id *)a6 cancelationHandler:(id)a7
++ (id)createAndMountSnapshotForVolume:(id)volume name:(id)name atFirstAvailableMountPoint:(id)point error:(id *)error cancelationHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (![v13 count])
+  volumeCopy = volume;
+  nameCopy = name;
+  pointCopy = point;
+  handlerCopy = handler;
+  if (![pointCopy count])
   {
     sub_AC8C();
   }
 
-  v15 = open([v11 fileSystemRepresentation], 0x100000);
+  v15 = open([volumeCopy fileSystemRepresentation], 0x100000);
   if ((v15 & 0x80000000) != 0)
   {
     v27 = *__error();
@@ -313,17 +313,17 @@ LABEL_18:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v42 = v11;
+      v42 = volumeCopy;
       v43 = 1024;
       LODWORD(v44) = v27;
       _os_log_impl(&dword_0, v28, OS_LOG_TYPE_ERROR, "Unable to open %@: %{errno}d", buf, 0x12u);
       _MBLog();
     }
 
-    if (a6)
+    if (error)
     {
-      [MBError errorWithErrno:v27 path:v11 format:@"Unable to open snapshot path"];
-      *a6 = v26 = 0;
+      [MBError errorWithErrno:v27 path:volumeCopy format:@"Unable to open snapshot path"];
+      *error = v26 = 0;
     }
 
     else
@@ -335,19 +335,19 @@ LABEL_18:
   }
 
   v16 = v15;
-  if (![objc_opt_class() _createSnapshotForVolumeFd:v15 volumeMountPoint:v11 name:v12 error:a6 cancelationHandler:v14])
+  if (![objc_opt_class() _createSnapshotForVolumeFd:v15 volumeMountPoint:volumeCopy name:nameCopy error:error cancelationHandler:handlerCopy])
   {
     v26 = 0;
     goto LABEL_34;
   }
 
-  v35 = v14;
-  v32 = [v12 fileSystemRepresentation];
+  v35 = handlerCopy;
+  fileSystemRepresentation = [nameCopy fileSystemRepresentation];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v13;
+  obj = pointCopy;
   v17 = [obj countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (!v17)
   {
@@ -356,8 +356,8 @@ LABEL_18:
 
   v18 = v17;
   v19 = *v38;
-  v33 = v13;
-  v34 = v12;
+  v33 = pointCopy;
+  v34 = nameCopy;
   while (2)
   {
     for (i = 0; i != v18; i = i + 1)
@@ -368,10 +368,10 @@ LABEL_18:
       }
 
       v21 = *(*(&v37 + 1) + 8 * i);
-      v22 = [v21 fileSystemRepresentation];
-      v23 = [objc_opt_class() volumeMountPointForFile:v21 error:a6];
+      fileSystemRepresentation2 = [v21 fileSystemRepresentation];
+      v23 = [objc_opt_class() volumeMountPointForFile:v21 error:error];
       v24 = v23;
-      if (!v11)
+      if (!volumeCopy)
       {
         v26 = 0;
         goto LABEL_32;
@@ -379,27 +379,27 @@ LABEL_18:
 
       if (![v23 isEqualToString:v21])
       {
-        if (fs_snapshot_mount(v16, v22, v32, 0))
+        if (fs_snapshot_mount(v16, fileSystemRepresentation2, fileSystemRepresentation, 0))
         {
           v29 = *__error();
           v30 = MBGetDefaultLog();
-          v12 = v34;
+          nameCopy = v34;
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412802;
             v42 = v34;
             v43 = 2080;
-            v44 = v22;
+            v44 = fileSystemRepresentation2;
             v45 = 1024;
             v46 = v29;
             _os_log_impl(&dword_0, v30, OS_LOG_TYPE_ERROR, "Unable to mount snapshot %@ at mount point %s: %{errno}d", buf, 0x1Cu);
             _MBLog();
           }
 
-          if (a6)
+          if (error)
           {
             [MBError errorWithErrno:v29 path:v21 format:@"Unable to mount snapshot"];
-            *a6 = v26 = 0;
+            *error = v26 = 0;
           }
 
           else
@@ -412,11 +412,11 @@ LABEL_18:
 
         v26 = v21;
 LABEL_32:
-        v12 = v34;
+        nameCopy = v34;
 LABEL_33:
-        v14 = v35;
+        handlerCopy = v35;
 
-        v13 = v33;
+        pointCopy = v33;
         goto LABEL_34;
       }
 
@@ -431,8 +431,8 @@ LABEL_33:
     }
 
     v18 = [obj countByEnumeratingWithState:&v37 objects:v47 count:16];
-    v13 = v33;
-    v12 = v34;
+    pointCopy = v33;
+    nameCopy = v34;
     if (v18)
     {
       continue;
@@ -443,11 +443,11 @@ LABEL_33:
 
 LABEL_15:
 
-  [objc_opt_class() _deleteSnapshotForVolume:v11 name:v12 error:0];
-  if (a6)
+  [objc_opt_class() _deleteSnapshotForVolume:volumeCopy name:nameCopy error:0];
+  if (error)
   {
     [MBError errorWithCode:14 format:@"No free mount points for APFS snapshot"];
-    *a6 = v26 = 0;
+    *error = v26 = 0;
   }
 
   else
@@ -455,7 +455,7 @@ LABEL_15:
     v26 = 0;
   }
 
-  v14 = v35;
+  handlerCopy = v35;
 LABEL_34:
   if (v16)
   {
@@ -467,12 +467,12 @@ LABEL_36:
   return v26;
 }
 
-+ (BOOL)_mountSnapshotForVolumeFd:(int)a3 volumeMountPoint:(id)a4 name:(id)a5 mountPoint:(id)a6 error:(id *)a7
++ (BOOL)_mountSnapshotForVolumeFd:(int)fd volumeMountPoint:(id)point name:(id)name mountPoint:(id)mountPoint error:(id *)error
 {
-  v10 = a5;
-  v11 = a6;
-  realpath_DARWIN_EXTSN([v11 fileSystemRepresentation], v22);
-  v12 = fs_snapshot_mount(a3, v22, [v10 fileSystemRepresentation], 0);
+  nameCopy = name;
+  mountPointCopy = mountPoint;
+  realpath_DARWIN_EXTSN([mountPointCopy fileSystemRepresentation], v22);
+  v12 = fs_snapshot_mount(fd, v22, [nameCopy fileSystemRepresentation], 0);
   if (v12)
   {
     v13 = *__error();
@@ -480,7 +480,7 @@ LABEL_36:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v17 = v10;
+      v17 = nameCopy;
       v18 = 2080;
       v19 = v22;
       v20 = 1024;
@@ -489,24 +489,24 @@ LABEL_36:
       _MBLog();
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = [MBError errorWithErrno:v13 path:v11 format:@"Unable to mount snapshot"];
+      *error = [MBError errorWithErrno:v13 path:mountPointCopy format:@"Unable to mount snapshot"];
     }
   }
 
   return v12 == 0;
 }
 
-+ (BOOL)_unmountWithRetry:(id)a3 startTime:(double)a4 timeout:(double)a5 error:(id *)a6 cancelationHandler:(id)a7
++ (BOOL)_unmountWithRetry:(id)retry startTime:(double)time timeout:(double)timeout error:(id *)error cancelationHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a7;
+  retryCopy = retry;
+  handlerCopy = handler;
   v13 = 31;
-  while (!v12 || !v12[2](v12))
+  while (!handlerCopy || !handlerCopy[2](handlerCopy))
   {
     v24 = 0;
-    v14 = [a1 unmount:v11 error:{&v24, v22}];
+    v14 = [self unmount:retryCopy error:{&v24, v22}];
     v15 = v24;
     if ((v14 & 1) != 0 || ([MBError isError:v15 withCode:4]& 1) != 0)
     {
@@ -517,13 +517,13 @@ LABEL_17:
     }
 
     Current = CFAbsoluteTimeGetCurrent();
-    if (![MBError isError:v15 withCode:14]|| vabdd_f64(Current, a4) > a5)
+    if (![MBError isError:v15 withCode:14]|| vabdd_f64(Current, time) > timeout)
     {
-      if (a6)
+      if (error)
       {
         v20 = v15;
         v19 = 0;
-        *a6 = v15;
+        *error = v15;
       }
 
       else
@@ -538,19 +538,19 @@ LABEL_17:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v11;
+      v26 = retryCopy;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Retrying unmount for %@ after EBUSY", buf, 0xCu);
-      v22 = v11;
+      v22 = retryCopy;
       _MBLog();
     }
 
     sleep(0xAu);
     if (!--v13)
     {
-      v18 = a6;
-      if (a6)
+      errorCopy2 = error;
+      if (error)
       {
-        [MBError errorWithCode:15 format:@"Timed out trying to unmount %@", v11];
+        [MBError errorWithCode:15 format:@"Timed out trying to unmount %@", retryCopy];
         goto LABEL_21;
       }
 
@@ -560,31 +560,31 @@ LABEL_22:
     }
   }
 
-  v18 = a6;
-  if (!a6)
+  errorCopy2 = error;
+  if (!error)
   {
     goto LABEL_22;
   }
 
-  [MBError errorWithCode:202 format:@"Cancelled while trying to unmount %@", v11];
+  [MBError errorWithCode:202 format:@"Cancelled while trying to unmount %@", retryCopy];
 LABEL_21:
-  *v18 = v19 = 0;
+  *errorCopy2 = v19 = 0;
 LABEL_18:
 
   return v19;
 }
 
-+ (BOOL)unmount:(id)a3 timeout:(double)a4 error:(id *)a5 cancelationHandler:(id)a6
++ (BOOL)unmount:(id)unmount timeout:(double)timeout error:(id *)error cancelationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  unmountCopy = unmount;
+  handlerCopy = handler;
   v12 = objc_opt_new();
   Current = CFAbsoluteTimeGetCurrent();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v14 = v10;
+  v14 = unmountCopy;
   v15 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v15)
   {
@@ -601,7 +601,7 @@ LABEL_18:
 
         v19 = *(*(&v29 + 1) + 8 * i);
         v28 = 0;
-        v20 = [a1 _unmountWithRetry:v19 startTime:&v28 timeout:v11 error:Current cancelationHandler:a4];
+        v20 = [self _unmountWithRetry:v19 startTime:&v28 timeout:handlerCopy error:Current cancelationHandler:timeout];
         v21 = v28;
         if ((v20 & 1) == 0)
         {
@@ -618,9 +618,9 @@ LABEL_18:
   v22 = [v12 count];
   if (v22)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MBError errorWithErrors:v12];
+      *error = [MBError errorWithErrors:v12];
     }
 
     v23 = MBGetDefaultLog();
@@ -657,13 +657,13 @@ LABEL_17:
   return v22 == 0;
 }
 
-+ (BOOL)unmount:(id)a3 error:(id *)a4
++ (BOOL)unmount:(id)unmount error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  unmountCopy = unmount;
+  v6 = unmountCopy;
+  if (!unmountCopy)
   {
-    if (a4)
+    if (error)
     {
       v10 = [MBError errorWithCode:5 description:@"No mountpoint specified from which to unmount the current snapshot"];
       goto LABEL_17;
@@ -674,7 +674,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (unmount([v5 fileSystemRepresentation], 0))
+  if (unmount([unmountCopy fileSystemRepresentation], 0))
   {
     v7 = *__error();
     v8 = MBGetDefaultLog();
@@ -689,12 +689,12 @@ LABEL_18:
         _MBLog();
       }
 
-      if (a4)
+      if (error)
       {
         v10 = [MBError errorWithCode:4 path:v6 format:@"Nothing to unmount"];
 LABEL_17:
         v12 = 0;
-        *a4 = v10;
+        *error = v10;
         goto LABEL_19;
       }
     }
@@ -711,7 +711,7 @@ LABEL_17:
         _MBLog();
       }
 
-      if (a4)
+      if (error)
       {
         v10 = [MBError errorWithErrno:v7 path:v6 format:@"Unable to unmount snapshot"];
         goto LABEL_17;
@@ -736,11 +736,11 @@ LABEL_19:
   return v12;
 }
 
-+ (BOOL)_deleteSnapshotForVolume:(id)a3 name:(id)a4 error:(id *)a5
++ (BOOL)_deleteSnapshotForVolume:(id)volume name:(id)name error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = open([v7 fileSystemRepresentation], 0);
+  volumeCopy = volume;
+  nameCopy = name;
+  v9 = open([volumeCopy fileSystemRepresentation], 0);
   if (v9 < 0)
   {
     v15 = *__error();
@@ -748,15 +748,15 @@ LABEL_19:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v22 = v7;
+      v22 = volumeCopy;
       v23 = 1024;
       LODWORD(v24) = v15;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "Failed to open %{public}@: %{errno}d", buf, 0x12u);
       _MBLog();
     }
 
-    v17 = [MBError errorWithErrno:v15 path:v7 format:@"Unable to open snapshot path"];
-    if (a5)
+    v17 = [MBError errorWithErrno:v15 path:volumeCopy format:@"Unable to open snapshot path"];
+    if (error)
     {
       goto LABEL_19;
     }
@@ -765,7 +765,7 @@ LABEL_19:
   else
   {
     v10 = v9;
-    if (fs_snapshot_delete(v9, [v8 fileSystemRepresentation], 0))
+    if (fs_snapshot_delete(v9, [nameCopy fileSystemRepresentation], 0))
     {
       v11 = *__error();
       v12 = MBGetDefaultLog();
@@ -775,14 +775,14 @@ LABEL_19:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v22 = v8;
+          v22 = nameCopy;
           v23 = 2114;
-          v24 = v7;
+          v24 = volumeCopy;
           _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Snapshot %{public}@ not found at %{public}@", buf, 0x16u);
           _MBLog();
         }
 
-        v14 = [MBError errorWithCode:4 path:v7 format:@"Snapshot not found"];
+        v14 = [MBError errorWithCode:4 path:volumeCopy format:@"Snapshot not found"];
       }
 
       else
@@ -790,16 +790,16 @@ LABEL_19:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v22 = v8;
+          v22 = nameCopy;
           v23 = 2114;
-          v24 = v7;
+          v24 = volumeCopy;
           v25 = 1024;
           v26 = v11;
           _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "Failed to delete snapshot %{public}@ at %{public}@: %{errno}d", buf, 0x1Cu);
           _MBLog();
         }
 
-        v14 = [MBError errorWithErrno:v11 path:v7 format:@"Unable to delete snapshot"];
+        v14 = [MBError errorWithErrno:v11 path:volumeCopy format:@"Unable to delete snapshot"];
       }
 
       v17 = v14;
@@ -811,9 +811,9 @@ LABEL_19:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v22 = v8;
+        v22 = nameCopy;
         v23 = 2114;
-        v24 = v7;
+        v24 = volumeCopy;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Deleted snapshot %{public}@ at %{public}@", buf, 0x16u);
         _MBLog();
       }
@@ -822,13 +822,13 @@ LABEL_19:
     }
 
     close(v10);
-    if (a5)
+    if (error)
     {
 LABEL_19:
       if (v17)
       {
         v19 = v17;
-        *a5 = v17;
+        *error = v17;
       }
     }
   }
@@ -836,12 +836,12 @@ LABEL_19:
   return v17 == 0;
 }
 
-+ (BOOL)renameSnapshotForVolume:(id)a3 name:(id)a4 newName:(id)a5 error:(id *)a6
++ (BOOL)renameSnapshotForVolume:(id)volume name:(id)name newName:(id)newName error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = open([v9 fileSystemRepresentation], 0x100000);
+  volumeCopy = volume;
+  nameCopy = name;
+  newNameCopy = newName;
+  v12 = open([volumeCopy fileSystemRepresentation], 0x100000);
   if (v12 < 0)
   {
     v17 = *__error();
@@ -849,17 +849,17 @@ LABEL_19:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v23 = v9;
+      v23 = volumeCopy;
       v24 = 1024;
       LODWORD(v25) = v17;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "Unable to open %@: %{errno}d", buf, 0x12u);
       _MBLog();
     }
 
-    if (a6)
+    if (error)
     {
-      [MBError errorWithErrno:v17 path:v9 format:@"Unable to open snapshot path"];
-      *a6 = v19 = 0;
+      [MBError errorWithErrno:v17 path:volumeCopy format:@"Unable to open snapshot path"];
+      *error = v19 = 0;
     }
 
     else
@@ -871,23 +871,23 @@ LABEL_19:
   else
   {
     v13 = v12;
-    if (fs_snapshot_rename(v12, [v10 fileSystemRepresentation], objc_msgSend(v11, "fileSystemRepresentation"), 0))
+    if (fs_snapshot_rename(v12, [nameCopy fileSystemRepresentation], objc_msgSend(newNameCopy, "fileSystemRepresentation"), 0))
     {
       v14 = *__error();
       v15 = MBGetDefaultLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v23 = v10;
+        v23 = nameCopy;
         v24 = 2112;
-        v25 = v11;
+        v25 = newNameCopy;
         v26 = 1024;
         v27 = v14;
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "Unable to rename snapshot: %@ -> %@: %{errno}d", buf, 0x1Cu);
         _MBLog();
       }
 
-      v16 = [MBError errorWithErrno:v14 path:v9 format:@"Unable to rename snapshot"];
+      v16 = [MBError errorWithErrno:v14 path:volumeCopy format:@"Unable to rename snapshot"];
     }
 
     else
@@ -897,23 +897,23 @@ LABEL_19:
 
     close(v13);
     v19 = v16 == 0;
-    if (a6 && v16)
+    if (error && v16)
     {
       v20 = v16;
-      *a6 = v16;
+      *error = v16;
     }
   }
 
   return v19;
 }
 
-+ (BOOL)unmountAndDeleteSnapshotForVolume:(id)a3 name:(id)a4 mountPoint:(id)a5 error:(id *)a6
++ (BOOL)unmountAndDeleteSnapshotForVolume:(id)volume name:(id)name mountPoint:(id)point error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  volumeCopy = volume;
+  nameCopy = name;
+  pointCopy = point;
   v17 = 0;
-  v12 = [objc_opt_class() unmount:v11 error:&v17];
+  v12 = [objc_opt_class() unmount:pointCopy error:&v17];
 
   v13 = v17;
   if (v12)
@@ -926,15 +926,15 @@ LABEL_19:
 
     v13 = 0;
 LABEL_4:
-    v14 = [objc_opt_class() _deleteSnapshotForVolume:v9 name:v10 error:a6];
+    v14 = [objc_opt_class() _deleteSnapshotForVolume:volumeCopy name:nameCopy error:error];
     goto LABEL_5;
   }
 
-  if (a6)
+  if (error)
   {
     v16 = v13;
     v14 = 0;
-    *a6 = v13;
+    *error = v13;
   }
 
   else
@@ -947,17 +947,17 @@ LABEL_5:
   return v14;
 }
 
-+ (BOOL)unmountAndRenameSnapshotForVolume:(id)a3 name:(id)a4 mountPoint:(id)a5 newName:(id)a6 error:(id *)a7
++ (BOOL)unmountAndRenameSnapshotForVolume:(id)volume name:(id)name mountPoint:(id)point newName:(id)newName error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a5;
-  v15 = [objc_opt_class() unmount:v14 error:a7];
+  volumeCopy = volume;
+  nameCopy = name;
+  newNameCopy = newName;
+  pointCopy = point;
+  v15 = [objc_opt_class() unmount:pointCopy error:error];
 
   if (v15)
   {
-    v16 = [objc_opt_class() renameSnapshotForVolume:v11 name:v12 newName:v13 error:a7];
+    v16 = [objc_opt_class() renameSnapshotForVolume:volumeCopy name:nameCopy newName:newNameCopy error:error];
   }
 
   else
@@ -968,14 +968,14 @@ LABEL_5:
   return v16;
 }
 
-+ (id)_deleteFileSystemSnapshots:(id)a3 block:(id)a4
++ (id)_deleteFileSystemSnapshots:(id)snapshots block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v27 = a1;
+  snapshotsCopy = snapshots;
+  blockCopy = block;
+  selfCopy = self;
   v36 = 0;
-  v28 = v6;
-  v8 = [objc_opt_class() listSnapshotsForVolume:v6 error:&v36];
+  v28 = snapshotsCopy;
+  v8 = [objc_opt_class() listSnapshotsForVolume:snapshotsCopy error:&v36];
   v9 = v36;
   v10 = v9;
   if (v8)
@@ -997,7 +997,7 @@ LABEL_5:
 
       v12 = v11;
       v13 = *v33;
-      v26 = v7;
+      v26 = blockCopy;
       while (1)
       {
         for (i = 0; i != v12; i = i + 1)
@@ -1009,7 +1009,7 @@ LABEL_5:
 
           v15 = *(*(&v32 + 1) + 8 * i);
           v16 = objc_autoreleasePoolPush();
-          if ((v7[2](v7, v15) & 1) == 0)
+          if ((blockCopy[2](blockCopy, v15) & 1) == 0)
           {
             v21 = MBGetDefaultLog();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1024,9 +1024,9 @@ LABEL_5:
           }
 
           v17 = v13;
-          v18 = [v15 name];
+          name = [v15 name];
           v31 = v30;
-          v19 = [v27 _deleteSnapshotForVolume:v28 name:v18 error:&v31];
+          v19 = [selfCopy _deleteSnapshotForVolume:v28 name:name error:&v31];
           v20 = v31;
 
           if (v19)
@@ -1042,7 +1042,7 @@ LABEL_5:
 
             v30 = v20;
             v13 = v17;
-            v7 = v26;
+            blockCopy = v26;
 LABEL_15:
 
             goto LABEL_17;
@@ -1050,7 +1050,7 @@ LABEL_15:
 
           v30 = v20;
           v13 = v17;
-          v7 = v26;
+          blockCopy = v26;
 LABEL_17:
           objc_autoreleasePoolPop(v16);
         }
@@ -1072,7 +1072,7 @@ LABEL_19:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v39 = v6;
+      v39 = snapshotsCopy;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "No snapshots to delete for %{public}@", buf, 0xCu);
       _MBLog();
     }
@@ -1091,16 +1091,16 @@ LABEL_24:
   return v22;
 }
 
-+ (BOOL)deleteAllSnapshotsAcrossVolumes:(id)a3 withPrefix:(id)a4 error:(id *)a5
++ (BOOL)deleteAllSnapshotsAcrossVolumes:(id)volumes withPrefix:(id)prefix error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  volumesCopy = volumes;
+  prefixCopy = prefix;
   v9 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v7;
+  v10 = volumesCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -1118,7 +1118,7 @@ LABEL_24:
 
         v15 = *(*(&v22 + 1) + 8 * v14);
         v21 = 0;
-        v16 = [MBFileSystemManager deleteAllSnapshotsForVolume:v15 withPrefix:v8 error:&v21];
+        v16 = [MBFileSystemManager deleteAllSnapshotsForVolume:v15 withPrefix:prefixCopy error:&v21];
         v17 = v21;
         if ((v16 & 1) == 0)
         {
@@ -1137,61 +1137,61 @@ LABEL_24:
 
   v18 = [v9 count];
   v19 = v18;
-  if (a5 && v18)
+  if (error && v18)
   {
-    *a5 = [MBError errorWithErrors:v9];
+    *error = [MBError errorWithErrors:v9];
   }
 
   return v19 == 0;
 }
 
-+ (BOOL)deleteAllSnapshotsForVolume:(id)a3 withPrefix:(id)a4 error:(id *)a5
++ (BOOL)deleteAllSnapshotsForVolume:(id)volume withPrefix:(id)prefix error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  prefixCopy = prefix;
+  volumeCopy = volume;
   v9 = objc_opt_class();
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_8A84;
   v14[3] = &unk_14760;
-  v15 = v7;
-  v10 = v7;
-  v11 = [v9 _deleteFileSystemSnapshots:v8 block:v14];
+  v15 = prefixCopy;
+  v10 = prefixCopy;
+  v11 = [v9 _deleteFileSystemSnapshots:volumeCopy block:v14];
 
-  if (a5 && v11)
+  if (error && v11)
   {
     v12 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v11 == 0;
 }
 
-+ (BOOL)deleteAllSnapshotsForVolume:(id)a3 withPrefix:(id)a4 latestCreationDate:(id)a5 error:(id *)a6
++ (BOOL)deleteAllSnapshotsForVolume:(id)volume withPrefix:(id)prefix latestCreationDate:(id)date error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  volumeCopy = volume;
+  prefixCopy = prefix;
+  dateCopy = date;
+  if (!dateCopy)
   {
     sub_ACB8();
   }
 
-  v12 = v11;
+  v12 = dateCopy;
   v13 = objc_opt_class();
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_8BE0;
   v19[3] = &unk_14788;
   v20 = v12;
-  v21 = v10;
-  v14 = v10;
+  v21 = prefixCopy;
+  v14 = prefixCopy;
   v15 = v12;
-  v16 = [v13 _deleteFileSystemSnapshots:v9 block:v19];
-  if (a6 && v16)
+  v16 = [v13 _deleteFileSystemSnapshots:volumeCopy block:v19];
+  if (error && v16)
   {
     v16 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
   v17 = v16 == 0;
@@ -1199,12 +1199,12 @@ LABEL_24:
   return v17;
 }
 
-+ (void)removeAbandonedDriveBackupDirectoriesWithLatestCreationDate:(id)a3 persona:(id)a4
++ (void)removeAbandonedDriveBackupDirectoriesWithLatestCreationDate:(id)date persona:(id)persona
 {
-  v54 = a3;
-  v5 = a4;
-  v6 = [v5 cacheDirectory];
-  v7 = [NSURL fileURLWithPath:v6 isDirectory:1];
+  dateCopy = date;
+  personaCopy = persona;
+  cacheDirectory = [personaCopy cacheDirectory];
+  v7 = [NSURL fileURLWithPath:cacheDirectory isDirectory:1];
 
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1222,17 +1222,17 @@ LABEL_24:
   v84[1] = NSURLCreationDateKey;
   v11 = [NSArray arrayWithObjects:v84 count:2];
   v12 = objc_opt_new();
-  v13 = [v5 snapshotDatabaseDirectory];
-  [v12 addObject:v13];
+  snapshotDatabaseDirectory = [personaCopy snapshotDatabaseDirectory];
+  [v12 addObject:snapshotDatabaseDirectory];
 
-  v14 = [v5 restoreSnapshotsDatabaseDirectory];
-  [v12 addObject:v14];
+  restoreSnapshotsDatabaseDirectory = [personaCopy restoreSnapshotsDatabaseDirectory];
+  [v12 addObject:restoreSnapshotsDatabaseDirectory];
 
-  v53 = v5;
-  v15 = [v5 restoreDepotRootsByVolume];
-  v16 = [v15 allValues];
+  v53 = personaCopy;
+  restoreDepotRootsByVolume = [personaCopy restoreDepotRootsByVolume];
+  allValues = [restoreDepotRootsByVolume allValues];
   v58 = v12;
-  [v12 addObjectsFromArray:v16];
+  [v12 addObjectsFromArray:allValues];
 
   v55 = v9;
   v51 = v11;
@@ -1264,8 +1264,8 @@ LABEL_24:
         v23 = *(*(&v74 + 1) + 8 * v22);
         context = objc_autoreleasePoolPush();
         v24 = objc_alloc(v21[129]);
-        v25 = [v23 lastPathComponent];
-        v26 = [v24 initWithUUIDString:v25];
+        lastPathComponent = [v23 lastPathComponent];
+        v26 = [v24 initWithUUIDString:lastPathComponent];
 
         if (v26)
         {
@@ -1301,9 +1301,9 @@ LABEL_24:
                     }
 
                     v34 = *(*(&v68 + 1) + 8 * i);
-                    v35 = [v23 path];
-                    v36 = [v34 mb_stringByAppendingSlash];
-                    if ([v35 hasPrefix:v36])
+                    path = [v23 path];
+                    mb_stringByAppendingSlash = [v34 mb_stringByAppendingSlash];
+                    if ([path hasPrefix:mb_stringByAppendingSlash])
                     {
                       v37 = MBGetDefaultLog();
                       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -1332,7 +1332,7 @@ LABEL_24:
               if (v38)
               {
                 v20 = v56;
-                if (v39 && [v54 compare:v39] == -1)
+                if (v39 && [dateCopy compare:v39] == -1)
                 {
                   v44 = MBGetDefaultLog();
                   v17 = v57;
@@ -1475,20 +1475,20 @@ LABEL_43:
   }
 }
 
-+ (id)listSnapshotsForVolume:(id)a3 error:(id *)a4
++ (id)listSnapshotsForVolume:(id)volume error:(id *)error
 {
-  v4 = a3;
+  volumeCopy = volume;
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v50 = v4;
+    v50 = volumeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEBUG, "Listing all snapshots at %{public}@", buf, 0xCu);
     _MBLog();
   }
 
-  v44 = v4;
-  v43 = open([v4 fileSystemRepresentation], 0);
+  v44 = volumeCopy;
+  v43 = open([volumeCopy fileSystemRepresentation], 0);
   if (v43 != -1)
   {
     v6 = objc_opt_new();
@@ -1513,7 +1513,7 @@ LABEL_43:
 
         v31 = [MBError errorWithErrno:v37 path:v44 format:@"fs_snapshot_list failed"];
         close(v43);
-        v32 = a4;
+        errorCopy3 = error;
         if (!v31)
         {
           goto LABEL_45;
@@ -1528,15 +1528,15 @@ LABEL_40:
           v51 = 2114;
           v52 = v31;
           _os_log_impl(&dword_0, v39, OS_LOG_TYPE_ERROR, "Failed to list file system snapshots at %{public}@: %{public}@", buf, 0x16u);
-          v32 = a4;
+          errorCopy3 = error;
           _MBLog();
         }
 
-        if (v32)
+        if (errorCopy3)
         {
           v40 = v31;
           v36 = 0;
-          *v32 = v31;
+          *errorCopy3 = v31;
         }
 
         else
@@ -1587,7 +1587,7 @@ LABEL_45:
             v16 = [MBError errorWithErrno:v14 path:v44 format:@"Failed to read snapshot attributes"];
 
             v17 = 0;
-            v18 = 0;
+            uUIDString = 0;
             v19 = 0;
             v20 = 0;
             v45 = v16;
@@ -1639,7 +1639,7 @@ LABEL_19:
           *v48 = *&buf[v11];
           v11 += 16;
           v26 = [[NSUUID alloc] initWithUUIDBytes:v48];
-          v18 = [v26 UUIDString];
+          uUIDString = [v26 UUIDString];
 
           if (v19)
           {
@@ -1650,11 +1650,11 @@ LABEL_19:
         }
 
 LABEL_23:
-        v18 = 0;
+        uUIDString = 0;
         if (v19)
         {
 LABEL_24:
-          v27 = [[MBFileSystemSnapshot alloc] initWithName:v19 uuid:v18 creationDate:v17];
+          v27 = [[MBFileSystemSnapshot alloc] initWithName:v19 uuid:uUIDString creationDate:v17];
           v28 = v6;
           [v6 addObject:v27];
           v29 = MBGetDefaultLog();
@@ -1691,7 +1691,7 @@ LABEL_29:
       if (v45)
       {
         close(v43);
-        v32 = a4;
+        errorCopy3 = error;
         goto LABEL_40;
       }
     }
@@ -1709,7 +1709,7 @@ LABEL_29:
     _MBLog();
   }
 
-  if (!a4)
+  if (!error)
   {
     v36 = 0;
     goto LABEL_49;
@@ -1717,23 +1717,23 @@ LABEL_29:
 
   v35 = v44;
   [MBError errorWithErrno:v33 path:v44 format:@"Unable to open snapshot path"];
-  *a4 = v36 = 0;
+  *error = v36 = 0;
 LABEL_50:
 
   return v36;
 }
 
-+ (id)volumeMountPointForFile:(id)a3 error:(id *)a4
++ (id)volumeMountPointForFile:(id)file error:(id *)error
 {
-  v5 = a3;
+  fileCopy = file;
   memset(&v9, 0, 512);
-  if (statfs([v5 fileSystemRepresentation], &v9))
+  if (statfs([fileCopy fileSystemRepresentation], &v9))
   {
     v6 = __error();
-    if (a4)
+    if (error)
     {
-      [MBError errorWithErrno:*v6 path:v5 format:@"statfs failed"];
-      *a4 = v7 = 0;
+      [MBError errorWithErrno:*v6 path:fileCopy format:@"statfs failed"];
+      *error = v7 = 0;
     }
 
     else
@@ -1776,17 +1776,17 @@ LABEL_50:
   return v3;
 }
 
-+ (BOOL)startFilesystemKeyRollingWithPath:(id)a3 error:(id *)a4
++ (BOOL)startFilesystemKeyRollingWithPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     sub_AD3C();
   }
 
-  v6 = v5;
+  v6 = pathCopy;
   v12 = xmmword_D1D0;
-  v7 = fsctl([v5 fileSystemRepresentation], 0xC0104A3DuLL, &v12, 0);
+  v7 = fsctl([pathCopy fileSystemRepresentation], 0xC0104A3DuLL, &v12, 0);
   if (v7 == -1)
   {
     v9 = *__error();
@@ -1799,9 +1799,9 @@ LABEL_50:
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MBError errorWithErrno:v9 format:@"Failed to start APFS key rolling"];
+      *error = [MBError errorWithErrno:v9 format:@"Failed to start APFS key rolling"];
     }
   }
 
@@ -1820,17 +1820,17 @@ LABEL_50:
   return v7 != -1;
 }
 
-+ (BOOL)stopFilesystemKeyRollingWithPath:(id)a3 error:(id *)a4
++ (BOOL)stopFilesystemKeyRollingWithPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     sub_AD68();
   }
 
-  v6 = v5;
+  v6 = pathCopy;
   v12 = xmmword_D1E0;
-  v7 = fsctl([v5 fileSystemRepresentation], 0xC0104A3DuLL, &v12, 0);
+  v7 = fsctl([pathCopy fileSystemRepresentation], 0xC0104A3DuLL, &v12, 0);
   if (v7 == -1)
   {
     v9 = *__error();
@@ -1843,9 +1843,9 @@ LABEL_50:
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MBError errorWithErrno:v9 format:@"Failed to stop APFS key rolling"];
+      *error = [MBError errorWithErrno:v9 format:@"Failed to stop APFS key rolling"];
     }
   }
 
@@ -1864,9 +1864,9 @@ LABEL_50:
   return v7 != -1;
 }
 
-+ (void)removeDeviceTransferDirectoryWithEarliestCreationDate:(id)a3
++ (void)removeDeviceTransferDirectoryWithEarliestCreationDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSFileManager defaultManager];
   if ([v4 fileExistsAtPath:@"/var/mobile/Library/Caches/Backup/DT"])
   {
@@ -1897,7 +1897,7 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    if (v3 && [v3 compare:v7] == -1)
+    if (dateCopy && [dateCopy compare:v7] == -1)
     {
       v16 = MBGetDefaultLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -1974,21 +1974,21 @@ LABEL_17:
 LABEL_19:
 }
 
-+ (id)volumeUUIDWithVolumeMountPoint:(id)a3 error:(id *)a4
++ (id)volumeUUIDWithVolumeMountPoint:(id)point error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  pointCopy = point;
+  if (!pointCopy)
   {
     sub_ADEC();
   }
 
-  if (!a4)
+  if (!error)
   {
     sub_ADC0();
   }
 
-  v6 = v5;
-  v7 = open([v5 fileSystemRepresentation], 0);
+  v6 = pointCopy;
+  v7 = open([pointCopy fileSystemRepresentation], 0);
   if (v7 < 0)
   {
     v10 = *__error();
@@ -2006,7 +2006,7 @@ LABEL_19:
 LABEL_10:
 
     [MBError errorWithErrno:v10 path:v6 format:@"open error"];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_12;
   }
 

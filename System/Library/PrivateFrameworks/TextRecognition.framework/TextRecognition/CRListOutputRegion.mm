@@ -1,22 +1,22 @@
 @interface CRListOutputRegion
-+ (id)listsWithParagraphs:(id)a3;
-- (CRListOutputRegion)initWithListItems:(id)a3;
++ (id)listsWithParagraphs:(id)paragraphs;
+- (CRListOutputRegion)initWithListItems:(id)items;
 @end
 
 @implementation CRListOutputRegion
 
-- (CRListOutputRegion)initWithListItems:(id)a3
+- (CRListOutputRegion)initWithListItems:(id)items
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [(CROutputRegion *)self init];
-  if (v5 && [v4 count])
+  if (v5 && [itemsCopy count])
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v6 = v4;
+    v6 = itemsCopy;
     v7 = [v6 countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (v7)
     {
@@ -80,7 +80,7 @@
       v11 = 0.0;
     }
 
-    v32 = v4;
+    v32 = itemsCopy;
 
     -[CROutputRegion setConfidence:](v5, "setConfidence:", (v11 / [v6 count]));
     [(CRCompositeOutputRegion *)v5 setShouldComputeBoundsFromChildren:1];
@@ -111,8 +111,8 @@
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v26 = [v25 paragraphRegions];
-          v27 = [v26 countByEnumeratingWithState:&v33 objects:v45 count:16];
+          paragraphRegions = [v25 paragraphRegions];
+          v27 = [paragraphRegions countByEnumeratingWithState:&v33 objects:v45 count:16];
           if (v27)
           {
             v28 = v27;
@@ -123,13 +123,13 @@
               {
                 if (*v34 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(paragraphRegions);
                 }
 
                 [v19 addObject:*(*(&v33 + 1) + 8 * k)];
               }
 
-              v28 = [v26 countByEnumeratingWithState:&v33 objects:v45 count:16];
+              v28 = [paragraphRegions countByEnumeratingWithState:&v33 objects:v45 count:16];
             }
 
             while (v28);
@@ -143,16 +143,16 @@
     }
 
     [(CROutputRegion *)v5 setParagraphRegions:v19];
-    v4 = v32;
+    itemsCopy = v32;
   }
 
   return v5;
 }
 
-+ (id)listsWithParagraphs:(id)a3
++ (id)listsWithParagraphs:(id)paragraphs
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [CRLayoutList listsWithRegionGroups:a3];
+  v3 = [CRLayoutList listsWithRegionGroups:paragraphs];
   v19 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
@@ -179,8 +179,8 @@
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v9 = [v7 items];
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        items = [v7 items];
+        v10 = [items countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v10)
         {
           v11 = v10;
@@ -191,14 +191,14 @@
             {
               if (*v21 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(items);
               }
 
               v14 = [[CRListItemOutputRegion alloc] initWithLayoutListItem:*(*(&v20 + 1) + 8 * j)];
               [v8 addObject:v14];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v11 = [items countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v11);

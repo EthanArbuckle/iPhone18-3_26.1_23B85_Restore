@@ -1,40 +1,40 @@
 @interface MRDCreateEndpointFromCurrentTopologyRequest
-+ (void)createEndpointWithCurrentTopologyWithTimeout:(double)a3 details:(id)a4 previewCallback:(id)a5 completion:(id)a6;
-- (void)_createEndpointWithCurrentTopologyWithTimeout:(double)a3 details:(id)a4 previewCallback:(id)a5 completion:(id)a6;
-- (void)searchEndpointsForMyGroupLeaderWithTimeout:(double)a3 details:(id)a4 completion:(id)a5;
++ (void)createEndpointWithCurrentTopologyWithTimeout:(double)timeout details:(id)details previewCallback:(id)callback completion:(id)completion;
+- (void)_createEndpointWithCurrentTopologyWithTimeout:(double)timeout details:(id)details previewCallback:(id)callback completion:(id)completion;
+- (void)searchEndpointsForMyGroupLeaderWithTimeout:(double)timeout details:(id)details completion:(id)completion;
 @end
 
 @implementation MRDCreateEndpointFromCurrentTopologyRequest
 
-+ (void)createEndpointWithCurrentTopologyWithTimeout:(double)a3 details:(id)a4 previewCallback:(id)a5 completion:(id)a6
++ (void)createEndpointWithCurrentTopologyWithTimeout:(double)timeout details:(id)details previewCallback:(id)callback completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  completionCopy = completion;
+  callbackCopy = callback;
+  detailsCopy = details;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100065838;
   v14[3] = &unk_1004B7F08;
   v15 = objc_alloc_init(MRDCreateEndpointFromCurrentTopologyRequest);
-  v16 = v9;
-  v12 = v9;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = v15;
-  [(MRDCreateEndpointFromCurrentTopologyRequest *)v13 _createEndpointWithCurrentTopologyWithTimeout:v11 details:v10 previewCallback:v14 completion:a3];
+  [(MRDCreateEndpointFromCurrentTopologyRequest *)v13 _createEndpointWithCurrentTopologyWithTimeout:detailsCopy details:callbackCopy previewCallback:v14 completion:timeout];
 }
 
-- (void)_createEndpointWithCurrentTopologyWithTimeout:(double)a3 details:(id)a4 previewCallback:(id)a5 completion:(id)a6
+- (void)_createEndpointWithCurrentTopologyWithTimeout:(double)timeout details:(id)details previewCallback:(id)callback completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  detailsCopy = details;
+  callbackCopy = callback;
+  completionCopy = completion;
   v12 = [MRDCreateEndpointWithCurrentTopologyAnalytics alloc];
-  v13 = [v9 requestID];
-  v14 = [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v12 initWithRequestID:v13];
+  requestID = [detailsCopy requestID];
+  v14 = [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v12 initWithRequestID:requestID];
 
   v15 = +[NSDate now];
   v16 = [NSMutableString alloc];
-  v17 = [v9 requestID];
-  v18 = [v16 initWithFormat:@"%@<%@>", @"createEndpointWithCurrentTopology", v17];
+  requestID2 = [detailsCopy requestID];
+  v18 = [v16 initWithFormat:@"%@<%@>", @"createEndpointWithCurrentTopology", requestID2];
 
   v19 = _MRLogForCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -49,11 +49,11 @@
   v94[2] = sub_100066094;
   v94[3] = &unk_1004B7F30;
   v95 = @"createEndpointWithCurrentTopology";
-  v20 = v9;
+  v20 = detailsCopy;
   v96 = v20;
   v64 = v15;
   v97 = v64;
-  v65 = v11;
+  v65 = completionCopy;
   v99 = v65;
   v21 = v14;
   v98 = v21;
@@ -65,18 +65,18 @@
   v91 = @"createEndpointWithCurrentTopology";
   v23 = v20;
   v92 = v23;
-  v63 = v10;
+  v63 = callbackCopy;
   v93 = v63;
   v24 = objc_retainBlock(v90);
   v25 = [MRBlockGuard alloc];
-  v26 = [v23 requestReasonID];
+  requestReasonID = [v23 requestReasonID];
   v88[0] = _NSConcreteStackBlock;
   v88[1] = 3221225472;
   v88[2] = sub_10006642C;
   v88[3] = &unk_1004B6FE8;
   v27 = v22;
   v89 = v27;
-  v28 = [v25 initWithTimeout:v26 reason:v88 handler:a3];
+  v28 = [v25 initWithTimeout:requestReasonID reason:v88 handler:timeout];
 
   v85[0] = _NSConcreteStackBlock;
   v85[1] = 3221225472;
@@ -88,14 +88,14 @@
   v87 = v30;
   v31 = objc_retainBlock(v85);
   v32 = [MRBlockGuard alloc];
-  v33 = [v23 requestReasonID];
+  requestReasonID2 = [v23 requestReasonID];
   v83[0] = _NSConcreteStackBlock;
   v83[1] = 3221225472;
   v83[2] = sub_1000664BC;
   v83[3] = &unk_1004B6FE8;
   v34 = v24;
   v84 = v34;
-  v35 = [v32 initWithTimeout:v33 reason:v83 handler:0.0];
+  v35 = [v32 initWithTimeout:requestReasonID2 reason:v83 handler:0.0];
 
   v80[0] = _NSConcreteStackBlock;
   v80[1] = 3221225472;
@@ -107,33 +107,33 @@
   v82 = v36;
   v37 = objc_retainBlock(v80);
   v38 = +[MRDMediaRemoteServer server];
-  v39 = [v38 deviceInfo];
+  deviceInfo = [v38 deviceInfo];
 
-  -[MRDCreateEndpointWithCurrentTopologyAnalytics setAirplayActive:](v21, "setAirplayActive:", [v39 isAirPlayActive]);
-  if (![v39 isAirPlayActive])
+  -[MRDCreateEndpointWithCurrentTopologyAnalytics setAirplayActive:](v21, "setAirplayActive:", [deviceInfo isAirPlayActive]);
+  if (![deviceInfo isAirPlayActive])
   {
     goto LABEL_7;
   }
 
-  if (![v39 groupContainsDiscoverableGroupLeader])
+  if (![deviceInfo groupContainsDiscoverableGroupLeader])
   {
     goto LABEL_8;
   }
 
-  v40 = [v39 leaderDeviceInfo];
-  if (!v40)
+  leaderDeviceInfo = [deviceInfo leaderDeviceInfo];
+  if (!leaderDeviceInfo)
   {
     goto LABEL_7;
   }
 
-  v41 = v40;
-  [v39 leaderDeviceInfo];
+  v41 = leaderDeviceInfo;
+  [deviceInfo leaderDeviceInfo];
   v59 = v37;
   v42 = v36;
   v43 = v31;
   v44 = v29;
   v46 = v45 = v30;
-  v47 = [v46 deviceUID];
+  deviceUID = [v46 deviceUID];
 
   v30 = v45;
   v29 = v44;
@@ -141,23 +141,23 @@
   v36 = v42;
   v37 = v59;
 
-  if (!v47)
+  if (!deviceUID)
   {
 LABEL_8:
     v60 = v30;
     [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v21 setUndiscoverableGroupLeader:1];
-    v50 = [v39 leaderDeviceInfo];
-    v51 = [v50 groupedDevices];
+    leaderDeviceInfo2 = [deviceInfo leaderDeviceInfo];
+    groupedDevices = [leaderDeviceInfo2 groupedDevices];
 
-    if (v51)
+    if (groupedDevices)
     {
-      v52 = [v39 leaderDeviceInfo];
-      v53 = [v52 groupedDevices];
-      v49 = [v53 msv_map:&stru_1004B7FC0];
+      leaderDeviceInfo3 = [deviceInfo leaderDeviceInfo];
+      groupedDevices2 = [leaderDeviceInfo3 groupedDevices];
+      v49 = [groupedDevices2 msv_map:&stru_1004B7FC0];
 
       [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v21 setContainsLeaderInfo:1];
-      v54 = [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v21 createOptimizedEndpoint];
-      [v54 start];
+      createOptimizedEndpoint = [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v21 createOptimizedEndpoint];
+      [createOptimizedEndpoint start];
 
       v77[0] = _NSConcreteStackBlock;
       v77[1] = 3221225472;
@@ -165,19 +165,19 @@ LABEL_8:
       v77[3] = &unk_1004B7FE8;
       v78 = v21;
       v79 = v31;
-      [MRDCreateOptimizedEndpointRequest createOptimizedEndpointWithOutputDeviceUIDs:v49 timeout:v23 details:v37 previewCallback:v77 completion:a3];
+      [MRDCreateOptimizedEndpointRequest createOptimizedEndpointWithOutputDeviceUIDs:v49 timeout:v23 details:v37 previewCallback:v77 completion:timeout];
 
       v55 = v78;
     }
 
     else
     {
-      v56 = [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v21 discoverGroup];
-      [v56 start];
+      discoverGroup = [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v21 discoverGroup];
+      [discoverGroup start];
 
       v57 = [MRAVReconnaissanceSession alloc];
-      v58 = [v39 groupUID];
-      v49 = [v57 initWithOutputDeviceGroupUID:v58 features:1 details:v23];
+      groupUID = [deviceInfo groupUID];
+      v49 = [v57 initWithOutputDeviceGroupUID:groupUID features:1 details:v23];
 
       [v49 setReturnPartialResults:1];
       v70[0] = _NSConcreteStackBlock;
@@ -185,8 +185,8 @@ LABEL_8:
       v70[2] = sub_1000665E8;
       v70[3] = &unk_1004B8098;
       v71 = v21;
-      v72 = v39;
-      v76 = a3;
+      v72 = deviceInfo;
+      timeoutCopy = timeout;
       v73 = v23;
       v74 = v37;
       v75 = v31;
@@ -201,8 +201,8 @@ LABEL_8:
   else
   {
 LABEL_7:
-    v48 = [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v21 findMyGroupLeader];
-    [v48 start];
+    findMyGroupLeader = [(MRDCreateEndpointWithCurrentTopologyAnalytics *)v21 findMyGroupLeader];
+    [findMyGroupLeader start];
 
     v66[0] = _NSConcreteStackBlock;
     v66[1] = 3221225472;
@@ -211,30 +211,30 @@ LABEL_7:
     v67 = v21;
     v68 = v37;
     v69 = v31;
-    [(MRDCreateEndpointFromCurrentTopologyRequest *)self searchEndpointsForMyGroupLeaderWithTimeout:v23 details:v66 completion:a3];
+    [(MRDCreateEndpointFromCurrentTopologyRequest *)self searchEndpointsForMyGroupLeaderWithTimeout:v23 details:v66 completion:timeout];
 
     v49 = v67;
   }
 }
 
-- (void)searchEndpointsForMyGroupLeaderWithTimeout:(double)a3 details:(id)a4 completion:(id)a5
+- (void)searchEndpointsForMyGroupLeaderWithTimeout:(double)timeout details:(id)details completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  detailsCopy = details;
+  completionCopy = completion;
   v10 = +[MRDMediaRemoteServer server];
-  v11 = [v10 deviceInfo];
+  deviceInfo = [v10 deviceInfo];
 
   v12 = +[NSDate now];
   v13 = [NSMutableString alloc];
-  v14 = [v8 requestID];
-  v15 = [v13 initWithFormat:@"%@<%@>", @"searchEndpointsForMyGroupLeader", v14];
+  requestID = [detailsCopy requestID];
+  v15 = [v13 initWithFormat:@"%@<%@>", @"searchEndpointsForMyGroupLeader", requestID];
 
-  v16 = [v11 deviceUID];
+  deviceUID = [deviceInfo deviceUID];
 
-  if (v16)
+  if (deviceUID)
   {
-    v17 = [v11 deviceUID];
-    [v15 appendFormat:@" for %@", v17];
+    deviceUID2 = [deviceInfo deviceUID];
+    [v15 appendFormat:@" for %@", deviceUID2];
   }
 
   v18 = _MRLogForCategory();
@@ -250,20 +250,20 @@ LABEL_7:
   v30[2] = sub_100066C84;
   v30[3] = &unk_1004B8108;
   v31 = @"searchEndpointsForMyGroupLeader";
-  v19 = v8;
+  v19 = detailsCopy;
   v32 = v19;
   v20 = v12;
   v33 = v20;
-  v21 = v9;
+  v21 = completionCopy;
   v34 = v21;
   v22 = objc_retainBlock(v30);
-  v23 = [v11 deviceUID];
+  deviceUID3 = [deviceInfo deviceUID];
 
-  if (v23)
+  if (deviceUID3)
   {
     v24 = [MRAVReconnaissanceSession alloc];
-    v25 = [v11 deviceUID];
-    v35 = v25;
+    deviceUID4 = [deviceInfo deviceUID];
+    v35 = deviceUID4;
     v26 = [NSArray arrayWithObjects:&v35 count:1];
     v27 = [v24 initWithOutputDeviceUIDs:v26 features:8 details:v19];
 
@@ -274,7 +274,7 @@ LABEL_7:
     v28[3] = &unk_1004B8130;
     v28[4] = self;
     v29 = v22;
-    [v27 beginSearchWithTimeout:v28 endpointsCompletion:a3];
+    [v27 beginSearchWithTimeout:v28 endpointsCompletion:timeout];
   }
 
   else

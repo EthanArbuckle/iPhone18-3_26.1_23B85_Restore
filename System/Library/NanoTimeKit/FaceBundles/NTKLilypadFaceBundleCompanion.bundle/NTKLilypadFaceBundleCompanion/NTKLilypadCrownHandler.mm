@@ -1,7 +1,7 @@
 @interface NTKLilypadCrownHandler
 - (NTKLilypadCrownHandler)init;
-- (float)amplitudeForThread:(int)a3 atTime:(double)a4;
-- (void)pluckThread:(int)a3 withAmplitude:(float)a4 atTime:(double)a5;
+- (float)amplitudeForThread:(int)thread atTime:(double)time;
+- (void)pluckThread:(int)thread withAmplitude:(float)amplitude atTime:(double)time;
 - (void)reset;
 @end
 
@@ -42,25 +42,25 @@
   while (v2);
 }
 
-- (void)pluckThread:(int)a3 withAmplitude:(float)a4 atTime:(double)a5
+- (void)pluckThread:(int)thread withAmplitude:(float)amplitude atTime:(double)time
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (a3 <= 0xF)
+  if (thread <= 0xF)
   {
-    v8 = &self->pluckTimes[64 * a3];
-    if (a5 - *v8 > 1.5)
+    v8 = &self->pluckTimes[64 * thread];
+    if (time - *v8 > 1.5)
     {
       v10 = *(v8 + 2);
       v9 = *(v8 + 3);
       v11 = *(v8 + 1);
       v12 = vextq_s8(v10, v9, 8uLL);
       v9.i64[0] = vdupq_laneq_s64(v9, 1).u64[0];
-      *&v9.i64[1] = a5;
+      *&v9.i64[1] = time;
       *v8 = vextq_s8(*v8, v11, 8uLL);
       *(v8 + 1) = vextq_s8(v11, v10, 8uLL);
       *(v8 + 2) = v12;
       *(v8 + 3) = v9;
-      v13 = (self + 64 * a3);
+      v13 = (self + 64 * thread);
       v14 = v13[68];
       v15 = v13[67];
       v16 = v13[66];
@@ -68,7 +68,7 @@
       v18 = vextq_s8(v13[65], v16, 8uLL);
       v19 = vextq_s8(v15, v14, 8uLL);
       v14.i64[0] = vdupq_laneq_s64(v14, 1).u64[0];
-      *&v14.i64[1] = a4;
+      *&v14.i64[1] = amplitude;
       v13[67] = v19;
       v13[65] = v18;
       v13[66] = v17;
@@ -77,14 +77,14 @@
   }
 }
 
-- (float)amplitudeForThread:(int)a3 atTime:(double)a4
+- (float)amplitudeForThread:(int)thread atTime:(double)time
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
   result = 0.0;
-  if (a3 <= 0xF)
+  if (thread <= 0xF)
   {
-    v7 = vdupq_lane_s64(*&a4, 0);
-    v8 = (self + 64 * a3);
+    v7 = vdupq_lane_s64(*&time, 0);
+    v8 = (self + 64 * thread);
     v9 = vsubq_f64(v7, v8[4]);
     v10 = vsubq_f64(v7, v8[3]);
     v11 = vsubq_f64(v7, v8[2]);

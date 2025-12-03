@@ -1,5 +1,5 @@
 @interface CRKClassKitPersonIDObservation
-- (CRKClassKitPersonIDObservation)initWithPersonIDs:(id)a3 classKitFacade:(id)a4 block:(id)a5;
+- (CRKClassKitPersonIDObservation)initWithPersonIDs:(id)ds classKitFacade:(id)facade block:(id)block;
 - (void)cancel;
 - (void)dealloc;
 @end
@@ -14,19 +14,19 @@
   [(CRKClassKitPersonIDObservation *)&v3 dealloc];
 }
 
-- (CRKClassKitPersonIDObservation)initWithPersonIDs:(id)a3 classKitFacade:(id)a4 block:(id)a5
+- (CRKClassKitPersonIDObservation)initWithPersonIDs:(id)ds classKitFacade:(id)facade block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  facadeCopy = facade;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = CRKClassKitPersonIDObservation;
   v11 = [(CRKClassKitPersonIDObservation *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_classKitFacade, a4);
-    v13 = [(CRKClassKitFacade *)v12->_classKitFacade personObserverWithPersonIDs:v8 sortDescriptors:0];
+    objc_storeStrong(&v11->_classKitFacade, facade);
+    v13 = [(CRKClassKitFacade *)v12->_classKitFacade personObserverWithPersonIDs:dsCopy sortDescriptors:0];
     dataObserver = v12->_dataObserver;
     v12->_dataObserver = v13;
 
@@ -36,7 +36,7 @@
       v17[1] = 3221225472;
       v17[2] = __73__CRKClassKitPersonIDObservation_initWithPersonIDs_classKitFacade_block___block_invoke;
       v17[3] = &unk_278DC1CA0;
-      v18 = v10;
+      v18 = blockCopy;
       [(CRKClassKitDataObserver *)v12->_dataObserver setDataChanged:v17];
       [(CRKClassKitFacade *)v12->_classKitFacade registerDataObserver:v12->_dataObserver];
       v15 = v18;
@@ -79,13 +79,13 @@ uint64_t __73__CRKClassKitPersonIDObservation_initWithPersonIDs_classKitFacade_b
 
 - (void)cancel
 {
-  v3 = [(CRKClassKitPersonIDObservation *)self dataObserver];
+  dataObserver = [(CRKClassKitPersonIDObservation *)self dataObserver];
 
-  if (v3)
+  if (dataObserver)
   {
-    v5 = [(CRKClassKitPersonIDObservation *)self classKitFacade];
-    v4 = [(CRKClassKitPersonIDObservation *)self dataObserver];
-    [v5 deregisterDataObserver:v4];
+    classKitFacade = [(CRKClassKitPersonIDObservation *)self classKitFacade];
+    dataObserver2 = [(CRKClassKitPersonIDObservation *)self dataObserver];
+    [classKitFacade deregisterDataObserver:dataObserver2];
   }
 }
 

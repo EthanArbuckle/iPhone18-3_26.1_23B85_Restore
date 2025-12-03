@@ -1,24 +1,24 @@
 @interface ULUWBMeasurementMO
-+ (id)createFromDO:(const void *)a3 withScanningEventMO:(id)a4 inManagedObjectContext:(id)a5;
++ (id)createFromDO:(const void *)o withScanningEventMO:(id)mO inManagedObjectContext:(id)context;
 - (optional<ULUWBMeasurementDO>)convertToDO;
 @end
 
 @implementation ULUWBMeasurementMO
 
-+ (id)createFromDO:(const void *)a3 withScanningEventMO:(id)a4 inManagedObjectContext:(id)a5
++ (id)createFromDO:(const void *)o withScanningEventMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [[ULUWBMeasurementMO alloc] initWithContext:v8];
-  [(ULUWBMeasurementMO *)v9 setScanningEvent:v7];
-  [(ULUWBMeasurementMO *)v9 setDeviceModel:*(a3 + 14)];
-  LODWORD(v10) = *(a3 + 2);
+  mOCopy = mO;
+  contextCopy = context;
+  v9 = [[ULUWBMeasurementMO alloc] initWithContext:contextCopy];
+  [(ULUWBMeasurementMO *)v9 setScanningEvent:mOCopy];
+  [(ULUWBMeasurementMO *)v9 setDeviceModel:*(o + 14)];
+  LODWORD(v10) = *(o + 2);
   [(ULUWBMeasurementMO *)v9 setRange:v10];
-  v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3 + 12];
-  v12 = [v11 UUIDString];
-  [(ULUWBMeasurementMO *)v9 setSourceIdsUUID:v12];
+  v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o + 12];
+  uUIDString = [v11 UUIDString];
+  [(ULUWBMeasurementMO *)v9 setSourceIdsUUID:uUIDString];
 
-  [(ULUWBMeasurementMO *)v9 setTimestamp:*a3];
+  [(ULUWBMeasurementMO *)v9 setTimestamp:*o];
 
   return v9;
 }
@@ -29,11 +29,11 @@
   v18 = *MEMORY[0x277D85DE8];
   [(ULUWBMeasurementMO *)self timestamp];
   v14 = v4;
-  v5 = [(ULUWBMeasurementMO *)self sourceIdsUUID];
-  v6 = v5;
-  if (v5)
+  sourceIdsUUID = [(ULUWBMeasurementMO *)self sourceIdsUUID];
+  v6 = sourceIdsUUID;
+  if (sourceIdsUUID)
   {
-    [v5 boostUUID];
+    [sourceIdsUUID boostUUID];
   }
 
   else
@@ -46,8 +46,8 @@
   {
     [(ULUWBMeasurementMO *)self range];
     v8 = v7;
-    v13 = [(ULUWBMeasurementMO *)self deviceModel];
-    ULUWBMeasurementDO::ULUWBMeasurementDO(buf, &v14, &v16, &v13, v8);
+    deviceModel = [(ULUWBMeasurementMO *)self deviceModel];
+    ULUWBMeasurementDO::ULUWBMeasurementDO(buf, &v14, &v16, &deviceModel, v8);
     ULUWBMeasurementDO::ULUWBMeasurementDO(v3, buf);
     v3[32] = 1;
   }

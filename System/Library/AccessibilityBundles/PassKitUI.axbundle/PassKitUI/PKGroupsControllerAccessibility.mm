@@ -1,15 +1,15 @@
 @interface PKGroupsControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation PKGroupsControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKGroupsController" hasInstanceMethod:@"indexOfSeparationGroup" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PKGroupsController" hasInstanceMethod:@"_moveGroup:fromIndex:toIndex:notify:" withFullSignature:{"v", "@", "Q", "Q", "B", 0}];
-  [v3 validateClass:@"PKGroupsController" hasInstanceVariable:@"_groups" withType:"NSMutableArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKGroupsController" hasInstanceMethod:@"indexOfSeparationGroup" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PKGroupsController" hasInstanceMethod:@"_moveGroup:fromIndex:toIndex:notify:" withFullSignature:{"v", "@", "Q", "Q", "B", 0}];
+  [validationsCopy validateClass:@"PKGroupsController" hasInstanceVariable:@"_groups" withType:"NSMutableArray"];
 }
 
 uint64_t __71__PKGroupsControllerAccessibility__moveGroup_fromIndex_toIndex_notify___block_invoke(uint64_t a1)

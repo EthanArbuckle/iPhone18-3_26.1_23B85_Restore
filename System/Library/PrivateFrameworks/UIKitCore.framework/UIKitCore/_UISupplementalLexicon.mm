@@ -1,32 +1,32 @@
 @interface _UISupplementalLexicon
-- (_UISupplementalLexicon)initWithItems:(id)a3 searchPrefixes:(unint64_t)a4;
-- (_UISupplementalLexicon)initWithItems:(id)a3 searchPrefixes:(unint64_t)a4 andTISupplementalLexicon:(id)a5;
-- (_UISupplementalLexicon)initWithRTISupplementalLexicon:(id)a3;
+- (_UISupplementalLexicon)initWithItems:(id)items searchPrefixes:(unint64_t)prefixes;
+- (_UISupplementalLexicon)initWithItems:(id)items searchPrefixes:(unint64_t)prefixes andTISupplementalLexicon:(id)lexicon;
+- (_UISupplementalLexicon)initWithRTISupplementalLexicon:(id)lexicon;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation _UISupplementalLexicon
 
-- (_UISupplementalLexicon)initWithItems:(id)a3 searchPrefixes:(unint64_t)a4 andTISupplementalLexicon:(id)a5
+- (_UISupplementalLexicon)initWithItems:(id)items searchPrefixes:(unint64_t)prefixes andTISupplementalLexicon:(id)lexicon
 {
-  v9 = a3;
-  v10 = a5;
+  itemsCopy = items;
+  lexiconCopy = lexicon;
   v18.receiver = self;
   v18.super_class = _UISupplementalLexicon;
   v11 = [(_UISupplementalLexicon *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_items, a3);
-    v12->_searchPrefixes = a4;
-    objc_storeStrong(&v12->_internal, a5);
+    objc_storeStrong(&v11->_items, items);
+    v12->_searchPrefixes = prefixes;
+    objc_storeStrong(&v12->_internal, lexicon);
     v13 = supplementalItemQueue();
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __80___UISupplementalLexicon_initWithItems_searchPrefixes_andTISupplementalLexicon___block_invoke;
     block[3] = &unk_1E70F3590;
-    v17 = v9;
+    v17 = itemsCopy;
     dispatch_sync(v13, block);
 
     v14 = +[UIKeyboardImpl sharedInstance];
@@ -36,10 +36,10 @@
   return v12;
 }
 
-- (_UISupplementalLexicon)initWithItems:(id)a3 searchPrefixes:(unint64_t)a4
+- (_UISupplementalLexicon)initWithItems:(id)items searchPrefixes:(unint64_t)prefixes
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemsCopy = items;
   v25.receiver = self;
   v25.super_class = _UISupplementalLexicon;
   v7 = [(_UISupplementalLexicon *)&v25 init];
@@ -51,7 +51,7 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = v6;
+    v10 = itemsCopy;
     v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v11)
     {
@@ -81,7 +81,7 @@
     v16 = objc_alloc(MEMORY[0x1E69D96C0]);
     if (v15)
     {
-      v17 = [v16 initWithItems:v9 searchPrefixes:a4 & 3];
+      v17 = [v16 initWithItems:v9 searchPrefixes:prefixes & 3];
     }
 
     else
@@ -90,7 +90,7 @@
     }
 
     v19 = v17;
-    v18 = [(_UISupplementalLexicon *)v8 initWithItems:v10 searchPrefixes:a4 andTISupplementalLexicon:v17, v21];
+    v18 = [(_UISupplementalLexicon *)v8 initWithItems:v10 searchPrefixes:prefixes andTISupplementalLexicon:v17, v21];
   }
 
   else
@@ -101,18 +101,18 @@
   return v18;
 }
 
-- (_UISupplementalLexicon)initWithRTISupplementalLexicon:(id)a3
+- (_UISupplementalLexicon)initWithRTISupplementalLexicon:(id)lexicon
 {
-  v4 = a3;
+  lexiconCopy = lexicon;
   v14.receiver = self;
   v14.super_class = _UISupplementalLexicon;
   v5 = [(_UISupplementalLexicon *)&v14 init];
   if (v5)
   {
-    v6 = [v4 lexicon];
+    lexicon = [lexiconCopy lexicon];
     v7 = objc_alloc(MEMORY[0x1E695DF70]);
-    v8 = [v6 items];
-    v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+    items = [lexicon items];
+    v9 = [v7 initWithCapacity:{objc_msgSend(items, "count")}];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -120,8 +120,8 @@
     v12[3] = &unk_1E71289E8;
     v13 = v9;
     v10 = v9;
-    [v4 enumerateSupplementalItems:v12];
-    v5 = -[_UISupplementalLexicon initWithItems:searchPrefixes:andTISupplementalLexicon:](v5, "initWithItems:searchPrefixes:andTISupplementalLexicon:", v10, [v6 searchPrefixes] & 3, v6);
+    [lexiconCopy enumerateSupplementalItems:v12];
+    v5 = -[_UISupplementalLexicon initWithItems:searchPrefixes:andTISupplementalLexicon:](v5, "initWithItems:searchPrefixes:andTISupplementalLexicon:", v10, [lexicon searchPrefixes] & 3, lexicon);
   }
 
   return v5;

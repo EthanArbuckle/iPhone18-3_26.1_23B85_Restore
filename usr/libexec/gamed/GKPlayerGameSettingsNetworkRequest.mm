@@ -1,94 +1,94 @@
 @interface GKPlayerGameSettingsNetworkRequest
-- (BOOL)isDuplicateRequest:(id)a3;
-- (GKPlayerGameSettingsNetworkRequest)initWithBundleID:(id)a3 value:(id)a4;
-- (GKPlayerGameSettingsNetworkRequest)initWithTask:(id)a3;
+- (BOOL)isDuplicateRequest:(id)request;
+- (GKPlayerGameSettingsNetworkRequest)initWithBundleID:(id)d value:(id)value;
+- (GKPlayerGameSettingsNetworkRequest)initWithTask:(id)task;
 - (id)postBody;
 - (id)taskInfo;
-- (void)handleNetworkRequest:(id)a3 session:(id)a4 clientProxy:(id)a5;
-- (void)removeFromStore:(id)a3;
-- (void)updateWithTaskInfo:(id)a3;
+- (void)handleNetworkRequest:(id)request session:(id)session clientProxy:(id)proxy;
+- (void)removeFromStore:(id)store;
+- (void)updateWithTaskInfo:(id)info;
 @end
 
 @implementation GKPlayerGameSettingsNetworkRequest
 
-- (BOOL)isDuplicateRequest:(id)a3
+- (BOOL)isDuplicateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(GKPlayerGameSettingsNetworkRequest *)self settingValue];
-  v6 = [v4 settingValue];
+  requestCopy = request;
+  settingValue = [(GKPlayerGameSettingsNetworkRequest *)self settingValue];
+  settingValue2 = [requestCopy settingValue];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(requestCopy) = [settingValue isEqualToString:settingValue2];
+  return requestCopy;
 }
 
-- (GKPlayerGameSettingsNetworkRequest)initWithBundleID:(id)a3 value:(id)a4
+- (GKPlayerGameSettingsNetworkRequest)initWithBundleID:(id)d value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = GKPlayerGameSettingsNetworkRequest;
   v8 = [(GKPlayerGameSettingsNetworkRequest *)&v13 init];
   if (v8)
   {
     v9 = +[NSUUID UUID];
-    v10 = [v9 UUIDString];
-    [(GKPlayerGameSettingsNetworkRequest *)v8 setUuid:v10];
+    uUIDString = [v9 UUIDString];
+    [(GKPlayerGameSettingsNetworkRequest *)v8 setUuid:uUIDString];
 
     v11 = _localPlayerID();
     [(GKPlayerGameSettingsNetworkRequest *)v8 setPlayerID:v11];
 
-    [(GKPlayerGameSettingsNetworkRequest *)v8 setBundleID:v6];
-    [(GKPlayerGameSettingsNetworkRequest *)v8 setSettingValue:v7];
+    [(GKPlayerGameSettingsNetworkRequest *)v8 setBundleID:dCopy];
+    [(GKPlayerGameSettingsNetworkRequest *)v8 setSettingValue:valueCopy];
   }
 
   return v8;
 }
 
-- (void)updateWithTaskInfo:(id)a3
+- (void)updateWithTaskInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"UUIDKey"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"UUIDKey"];
   [(GKPlayerGameSettingsNetworkRequest *)self setUuid:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"BundleIDKey"];
+  v6 = [infoCopy objectForKeyedSubscript:@"BundleIDKey"];
   [(GKPlayerGameSettingsNetworkRequest *)self setBundleID:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"PlayerIDKey"];
+  v7 = [infoCopy objectForKeyedSubscript:@"PlayerIDKey"];
   [(GKPlayerGameSettingsNetworkRequest *)self setPlayerID:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"playerGameSettingsKey"];
+  v8 = [infoCopy objectForKeyedSubscript:@"playerGameSettingsKey"];
 
   [(GKPlayerGameSettingsNetworkRequest *)self setSettingValue:v8];
 }
 
-- (void)handleNetworkRequest:(id)a3 session:(id)a4 clientProxy:(id)a5
+- (void)handleNetworkRequest:(id)request session:(id)session clientProxy:(id)proxy
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(GKPlayerGameSettingsNetworkRequest *)self nsurlRequest];
-  v14 = [v11 mutableCopy];
+  proxyCopy = proxy;
+  sessionCopy = session;
+  requestCopy = request;
+  nsurlRequest = [(GKPlayerGameSettingsNetworkRequest *)self nsurlRequest];
+  v14 = [nsurlRequest mutableCopy];
 
-  v12 = [(GKPlayerGameSettingsNetworkRequest *)self bundleID];
-  [v14 setValue:v12 forHTTPHeaderField:@"x-gk-bundle-id"];
+  bundleID = [(GKPlayerGameSettingsNetworkRequest *)self bundleID];
+  [v14 setValue:bundleID forHTTPHeaderField:@"x-gk-bundle-id"];
 
   v13 = [v14 copy];
   [(GKPlayerGameSettingsNetworkRequest *)self setNsurlRequest:v13];
 
-  handleStandardRequest(self, v10, v9, v8);
+  handleStandardRequest(self, requestCopy, sessionCopy, proxyCopy);
 }
 
-- (GKPlayerGameSettingsNetworkRequest)initWithTask:(id)a3
+- (GKPlayerGameSettingsNetworkRequest)initWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v9.receiver = self;
   v9.super_class = GKPlayerGameSettingsNetworkRequest;
   v5 = [(GKPlayerGameSettingsNetworkRequest *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(GKPlayerGameSettingsNetworkRequest *)v5 setNsurlTask:v4];
-    v7 = [GKNetworkRequestManager dictionaryFromTaskDescription:v4];
+    [(GKPlayerGameSettingsNetworkRequest *)v5 setNsurlTask:taskCopy];
+    v7 = [GKNetworkRequestManager dictionaryFromTaskDescription:taskCopy];
     [(GKPlayerGameSettingsNetworkRequest *)v6 updateWithTaskInfo:v7];
   }
 
@@ -98,48 +98,48 @@
 - (id)postBody
 {
   v7[0] = @"allow-friend-list-access";
-  v3 = [(GKPlayerGameSettingsNetworkRequest *)self settingValue];
+  settingValue = [(GKPlayerGameSettingsNetworkRequest *)self settingValue];
   v7[1] = @"for-bundle-id";
-  v8[0] = v3;
-  v4 = [(GKPlayerGameSettingsNetworkRequest *)self bundleID];
-  v8[1] = v4;
+  v8[0] = settingValue;
+  bundleID = [(GKPlayerGameSettingsNetworkRequest *)self bundleID];
+  v8[1] = bundleID;
   v5 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-- (void)removeFromStore:(id)a3
+- (void)removeFromStore:(id)store
 {
-  v4 = a3;
-  v5 = [(GKPlayerGameSettingsNetworkRequest *)self playerID];
-  v6 = [(GKPlayerGameSettingsNetworkRequest *)self bundleID];
-  v9 = [v5 stringByAppendingString:v6];
+  storeCopy = store;
+  playerID = [(GKPlayerGameSettingsNetworkRequest *)self playerID];
+  bundleID = [(GKPlayerGameSettingsNetworkRequest *)self bundleID];
+  v9 = [playerID stringByAppendingString:bundleID];
 
-  v7 = [v4 currentTasks];
-  [v7 removeObjectForKey:v9];
+  currentTasks = [storeCopy currentTasks];
+  [currentTasks removeObjectForKey:v9];
 
-  v8 = [v4 pendingRequests];
+  pendingRequests = [storeCopy pendingRequests];
 
-  [v8 removeObjectForKey:v9];
+  [pendingRequests removeObjectForKey:v9];
 }
 
 - (id)taskInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(GKPlayerGameSettingsNetworkRequest *)self playerID];
-  [v3 setObject:v4 forKeyedSubscript:@"PlayerIDKey"];
+  playerID = [(GKPlayerGameSettingsNetworkRequest *)self playerID];
+  [v3 setObject:playerID forKeyedSubscript:@"PlayerIDKey"];
 
-  v5 = [(GKPlayerGameSettingsNetworkRequest *)self bundleID];
-  [v3 setObject:v5 forKeyedSubscript:@"BundleIDKey"];
+  bundleID = [(GKPlayerGameSettingsNetworkRequest *)self bundleID];
+  [v3 setObject:bundleID forKeyedSubscript:@"BundleIDKey"];
 
-  v6 = [objc_opt_class() bagKey];
-  [v3 setObject:v6 forKeyedSubscript:@"BagKeyKey"];
+  bagKey = [objc_opt_class() bagKey];
+  [v3 setObject:bagKey forKeyedSubscript:@"BagKeyKey"];
 
-  v7 = [(GKPlayerGameSettingsNetworkRequest *)self uuid];
-  [v3 setObject:v7 forKeyedSubscript:@"UUIDKey"];
+  uuid = [(GKPlayerGameSettingsNetworkRequest *)self uuid];
+  [v3 setObject:uuid forKeyedSubscript:@"UUIDKey"];
 
-  v8 = [(GKPlayerGameSettingsNetworkRequest *)self settingValue];
-  [v3 setObject:v8 forKeyedSubscript:@"playerGameSettingsKey"];
+  settingValue = [(GKPlayerGameSettingsNetworkRequest *)self settingValue];
+  [v3 setObject:settingValue forKeyedSubscript:@"playerGameSettingsKey"];
 
   return v3;
 }

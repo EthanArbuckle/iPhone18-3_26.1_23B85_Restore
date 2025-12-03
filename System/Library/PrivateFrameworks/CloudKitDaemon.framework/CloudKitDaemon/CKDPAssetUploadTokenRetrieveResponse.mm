@@ -1,52 +1,52 @@
 @interface CKDPAssetUploadTokenRetrieveResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContentResponseHeaders:(id)a3;
-- (void)addUploadTokens:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContentResponseHeaders:(id)headers;
+- (void)addUploadTokens:(id)tokens;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPAssetUploadTokenRetrieveResponse
 
-- (void)addUploadTokens:(id)a3
+- (void)addUploadTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   uploadTokens = self->_uploadTokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!uploadTokens)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_uploadTokens;
     self->_uploadTokens = v6;
 
-    v4 = v8;
+    tokensCopy = v8;
     uploadTokens = self->_uploadTokens;
   }
 
-  objc_msgSend_addObject_(uploadTokens, v4, v4);
+  objc_msgSend_addObject_(uploadTokens, tokensCopy, tokensCopy);
 }
 
-- (void)addContentResponseHeaders:(id)a3
+- (void)addContentResponseHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   contentResponseHeaders = self->_contentResponseHeaders;
-  v8 = v4;
+  v8 = headersCopy;
   if (!contentResponseHeaders)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_contentResponseHeaders;
     self->_contentResponseHeaders = v6;
 
-    v4 = v8;
+    headersCopy = v8;
     contentResponseHeaders = self->_contentResponseHeaders;
   }
 
-  objc_msgSend_addObject_(contentResponseHeaders, v4, v4);
+  objc_msgSend_addObject_(contentResponseHeaders, headersCopy, headersCopy);
 }
 
 - (id)description
@@ -150,10 +150,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -226,12 +226,12 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v26 = a3;
+  toCopy = to;
   if (objc_msgSend_uploadTokensCount(self, v4, v5))
   {
-    objc_msgSend_clearUploadTokens(v26, v6, v7);
+    objc_msgSend_clearUploadTokens(toCopy, v6, v7);
     v10 = objc_msgSend_uploadTokensCount(self, v8, v9);
     if (v10)
     {
@@ -239,7 +239,7 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_uploadTokensAtIndex_(self, v6, i);
-        objc_msgSend_addUploadTokens_(v26, v14, v13);
+        objc_msgSend_addUploadTokens_(toCopy, v14, v13);
       }
     }
   }
@@ -247,12 +247,12 @@
   authPutResponse = self->_authPutResponse;
   if (authPutResponse)
   {
-    objc_msgSend_setAuthPutResponse_(v26, v6, authPutResponse);
+    objc_msgSend_setAuthPutResponse_(toCopy, v6, authPutResponse);
   }
 
   if (objc_msgSend_contentResponseHeadersCount(self, v6, authPutResponse))
   {
-    objc_msgSend_clearContentResponseHeaders(v26, v16, v17);
+    objc_msgSend_clearContentResponseHeaders(toCopy, v16, v17);
     v20 = objc_msgSend_contentResponseHeadersCount(self, v18, v19);
     if (v20)
     {
@@ -260,17 +260,17 @@
       for (j = 0; j != v22; ++j)
       {
         v24 = objc_msgSend_contentResponseHeadersAtIndex_(self, v21, j);
-        objc_msgSend_addContentResponseHeaders_(v26, v25, v24);
+        objc_msgSend_addContentResponseHeaders_(toCopy, v25, v24);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v44 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v38 = 0u;
   v39 = 0u;
@@ -292,7 +292,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v38 + 1) + 8 * v17), v14, a3);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v38 + 1) + 8 * v17), v14, zone);
         objc_msgSend_addUploadTokens_(v10, v19, v18);
 
         ++v17;
@@ -305,7 +305,7 @@
     while (v15);
   }
 
-  v21 = objc_msgSend_copyWithZone_(self->_authPutResponse, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_authPutResponse, v20, zone);
   v22 = v10[1];
   v10[1] = v21;
 
@@ -329,7 +329,7 @@
           objc_enumerationMutation(v23);
         }
 
-        v30 = objc_msgSend_copyWithZone_(*(*(&v34 + 1) + 8 * v29), v26, a3, v34);
+        v30 = objc_msgSend_copyWithZone_(*(*(&v34 + 1) + 8 * v29), v26, zone, v34);
         objc_msgSend_addContentResponseHeaders_(v10, v31, v30);
 
         ++v29;
@@ -346,14 +346,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((uploadTokens = self->_uploadTokens, v9 = v4[3], !(uploadTokens | v9)) || objc_msgSend_isEqual_(uploadTokens, v7, v9)) && ((authPutResponse = self->_authPutResponse, v11 = v4[1], !(authPutResponse | v11)) || objc_msgSend_isEqual_(authPutResponse, v7, v11)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((uploadTokens = self->_uploadTokens, v9 = equalCopy[3], !(uploadTokens | v9)) || objc_msgSend_isEqual_(uploadTokens, v7, v9)) && ((authPutResponse = self->_authPutResponse, v11 = equalCopy[1], !(authPutResponse | v11)) || objc_msgSend_isEqual_(authPutResponse, v7, v11)))
   {
     contentResponseHeaders = self->_contentResponseHeaders;
-    v13 = v4[2];
+    v13 = equalCopy[2];
     if (contentResponseHeaders | v13)
     {
       isEqual = objc_msgSend_isEqual_(contentResponseHeaders, v7, v13);
@@ -380,15 +380,15 @@
   return v7 ^ objc_msgSend_hash(self->_contentResponseHeaders, v8, v9);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v26, v31, 16);
   if (v7)
   {
@@ -412,7 +412,7 @@
     while (v9);
   }
 
-  v13 = *(v4 + 1);
+  v13 = *(fromCopy + 1);
   if (v13)
   {
     objc_msgSend_setAuthPutResponse_(self, v12, v13);
@@ -422,7 +422,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = *(v4 + 2);
+  v14 = *(fromCopy + 2);
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v22, v30, 16);
   if (v16)
   {

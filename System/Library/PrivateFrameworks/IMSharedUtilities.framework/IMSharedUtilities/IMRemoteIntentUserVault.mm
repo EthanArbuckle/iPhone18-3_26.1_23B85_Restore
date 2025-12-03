@@ -1,8 +1,8 @@
 @interface IMRemoteIntentUserVault
 + (id)sharedUserVault;
 - (IMRemoteIntentUserVault)init;
-- (id)convertedCommonPathForDirectory:(id)a3;
-- (id)convertedPathForRemoteFile:(id)a3;
+- (id)convertedCommonPathForDirectory:(id)directory;
+- (id)convertedPathForRemoteFile:(id)file;
 @end
 
 @implementation IMRemoteIntentUserVault
@@ -27,7 +27,7 @@
   return [(IMRemoteIntentUserVault *)&v3 init];
 }
 
-- (id)convertedCommonPathForDirectory:(id)a3
+- (id)convertedCommonPathForDirectory:(id)directory
 {
   v4 = sub_1A88C72E8();
   v5 = *(v4 - 8);
@@ -36,7 +36,7 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v15 - v9;
   sub_1A88C7288();
-  v11 = self;
+  selfCopy = self;
   IMRemoteIntentUserVault.convertedCommonPath(forDirectory:)(v10, v8);
 
   v12 = *(v5 + 8);
@@ -47,7 +47,7 @@
   return v13;
 }
 
-- (id)convertedPathForRemoteFile:(id)a3
+- (id)convertedPathForRemoteFile:(id)file
 {
   v4 = sub_1A870CCE0(&unk_1EB309060);
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -57,7 +57,7 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1A88C7288();
-  v11 = self;
+  selfCopy = self;
   IMRemoteIntentUserVault.convertedPath(forRemoteFile:)(v6);
 
   v12 = *(v8 + 8);

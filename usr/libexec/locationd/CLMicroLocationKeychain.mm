@@ -1,11 +1,11 @@
 @interface CLMicroLocationKeychain
-+ (BOOL)removeKey:(id)a3;
-+ (id)getSymmetricKeyOrCreateNew:(id)a3;
++ (BOOL)removeKey:(id)key;
++ (id)getSymmetricKeyOrCreateNew:(id)new;
 @end
 
 @implementation CLMicroLocationKeychain
 
-+ (id)getSymmetricKeyOrCreateNew:(id)a3
++ (id)getSymmetricKeyOrCreateNew:(id)new
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -33,7 +33,7 @@
   return v12;
 }
 
-+ (BOOL)removeKey:(id)a3
++ (BOOL)removeKey:(id)key
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = sub_1003D9DA0(v3, v4);

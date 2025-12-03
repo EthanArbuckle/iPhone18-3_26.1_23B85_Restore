@@ -1,14 +1,14 @@
 @interface _HPSUICarrySettingsViewController
-+ (void)shouldShowCarrySettingsButtonForHomeID:(id)a3 homeKitIdentifiers:(id)a4 withCompletion:(id)a5;
-+ (void)shouldShowCarrySettingsButtonForHomeID:(id)a3 withCompletion:(id)a4;
++ (void)shouldShowCarrySettingsButtonForHomeID:(id)d homeKitIdentifiers:(id)identifiers withCompletion:(id)completion;
++ (void)shouldShowCarrySettingsButtonForHomeID:(id)d withCompletion:(id)completion;
 - (_HPSUICarrySettingsViewController)init;
-- (_HPSUICarrySettingsViewController)initWithHomeID:(id)a3;
-- (_HPSUICarrySettingsViewController)initWithHomeID:(id)a3 homeKitIdentifiers:(id)a4;
+- (_HPSUICarrySettingsViewController)initWithHomeID:(id)d;
+- (_HPSUICarrySettingsViewController)initWithHomeID:(id)d homeKitIdentifiers:(id)identifiers;
 @end
 
 @implementation _HPSUICarrySettingsViewController
 
-- (_HPSUICarrySettingsViewController)initWithHomeID:(id)a3
+- (_HPSUICarrySettingsViewController)initWithHomeID:(id)d
 {
   v3 = sub_2542AD50C();
   v4 = *(*(v3 - 8) + 64);
@@ -18,7 +18,7 @@
   return CarrySettingsViewController.init(withHomeID:)(v6);
 }
 
-- (_HPSUICarrySettingsViewController)initWithHomeID:(id)a3 homeKitIdentifiers:(id)a4
+- (_HPSUICarrySettingsViewController)initWithHomeID:(id)d homeKitIdentifiers:(id)identifiers
 {
   v4 = sub_2542AD50C();
   v5 = *(*(v4 - 8) + 64);
@@ -37,14 +37,14 @@
   return result;
 }
 
-+ (void)shouldShowCarrySettingsButtonForHomeID:(id)a3 withCompletion:(id)a4
++ (void)shouldShowCarrySettingsButtonForHomeID:(id)d withCompletion:(id)completion
 {
   v5 = sub_2542AD50C();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   MEMORY[0x28223BE20](v5);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   sub_2542AD4FC();
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
@@ -54,14 +54,14 @@
   (*(v6 + 8))(v9, v5);
 }
 
-+ (void)shouldShowCarrySettingsButtonForHomeID:(id)a3 homeKitIdentifiers:(id)a4 withCompletion:(id)a5
++ (void)shouldShowCarrySettingsButtonForHomeID:(id)d homeKitIdentifiers:(id)identifiers withCompletion:(id)completion
 {
   v6 = sub_2542AD50C();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x28223BE20](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a5);
+  v11 = _Block_copy(completion);
   sub_2542AD4FC();
   v12 = swift_allocObject();
   *(v12 + 16) = v11;

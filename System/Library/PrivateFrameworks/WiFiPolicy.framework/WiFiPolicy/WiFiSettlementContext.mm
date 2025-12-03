@@ -1,36 +1,36 @@
 @interface WiFiSettlementContext
-+ (BOOL)networkQualifiesForSettlement:(id)a3;
-- (BOOL)compareWithScanResults:(id)a3;
-- (WiFiSettlementContext)initWithNetworks:(id)a3 maxCount:(unint64_t)a4;
-- (void)_updateStrongestNetworks:(id)a3;
++ (BOOL)networkQualifiesForSettlement:(id)settlement;
+- (BOOL)compareWithScanResults:(id)results;
+- (WiFiSettlementContext)initWithNetworks:(id)networks maxCount:(unint64_t)count;
+- (void)_updateStrongestNetworks:(id)networks;
 @end
 
 @implementation WiFiSettlementContext
 
-- (WiFiSettlementContext)initWithNetworks:(id)a3 maxCount:(unint64_t)a4
+- (WiFiSettlementContext)initWithNetworks:(id)networks maxCount:(unint64_t)count
 {
-  v6 = a3;
+  networksCopy = networks;
   v11.receiver = self;
   v11.super_class = WiFiSettlementContext;
   v7 = [(WiFiSettlementContext *)&v11 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v7->_creationDate;
-    v7->_creationDate = v8;
+    v7->_creationDate = date;
 
-    v7->_maxCount = a4;
-    [(WiFiSettlementContext *)v7 _updateStrongestNetworks:v6];
+    v7->_maxCount = count;
+    [(WiFiSettlementContext *)v7 _updateStrongestNetworks:networksCopy];
   }
 
   return v7;
 }
 
-- (void)_updateStrongestNetworks:(id)a3
+- (void)_updateStrongestNetworks:(id)networks
 {
-  v4 = [a3 allObjects];
+  allObjects = [networks allObjects];
   v5 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_4];
-  v12 = [v4 filteredArrayUsingPredicate:v5];
+  v12 = [allObjects filteredArrayUsingPredicate:v5];
 
   v6 = [v12 networksSortedBySignalStrengthWithMaxCount:{-[WiFiSettlementContext maxCount](self, "maxCount")}];
   strongestNetworks = self->_strongestNetworks;
@@ -43,17 +43,17 @@
   self->_strongestBSSIDs = v10;
 }
 
-- (BOOL)compareWithScanResults:(id)a3
+- (BOOL)compareWithScanResults:(id)results
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  resultsCopy = results;
+  if ([resultsCopy count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v4;
+    v5 = resultsCopy;
     v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
@@ -71,9 +71,9 @@
           v10 = *(*(&v17 + 1) + 8 * i);
           if ([WiFiSettlementContext networkQualifiesForSettlement:v10, v17])
           {
-            v11 = [(WiFiSettlementContext *)self strongestBSSIDs];
-            v12 = [v10 BSSID];
-            v13 = [v11 containsObject:v12];
+            strongestBSSIDs = [(WiFiSettlementContext *)self strongestBSSIDs];
+            bSSID = [v10 BSSID];
+            v13 = [strongestBSSIDs containsObject:bSSID];
 
             if (v13)
             {
@@ -106,21 +106,21 @@ LABEL_13:
   return v14;
 }
 
-+ (BOOL)networkQualifiesForSettlement:(id)a3
++ (BOOL)networkQualifiesForSettlement:(id)settlement
 {
-  v3 = a3;
-  v4 = [v3 scanProperties];
-  v5 = [v4 objectForKey:@"CARPLAY_NETWORK"];
+  settlementCopy = settlement;
+  scanProperties = [settlementCopy scanProperties];
+  v5 = [scanProperties objectForKey:@"CARPLAY_NETWORK"];
 
-  if (v5 || ([v3 scanProperties], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKey:", @"APPLE_DEVICE_IE"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  if (v5 || ([settlementCopy scanProperties], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKey:", @"APPLE_DEVICE_IE"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [v3 BSSID];
-    v9 = v8 != 0;
+    bSSID = [settlementCopy BSSID];
+    v9 = bSSID != 0;
   }
 
   return v9;

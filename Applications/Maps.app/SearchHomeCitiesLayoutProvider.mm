@@ -1,15 +1,15 @@
 @interface SearchHomeCitiesLayoutProvider
-- (SearchHomeCitiesLayoutProvider)initWithTraitEnvironment:(id)a3 parentViewController:(id)a4;
+- (SearchHomeCitiesLayoutProvider)initWithTraitEnvironment:(id)environment parentViewController:(id)controller;
 - (id)cellClasses;
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5;
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8;
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item;
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme;
 @end
 
 @implementation SearchHomeCitiesLayoutProvider
 
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme
 {
-  v9 = a3;
+  environmentCopy = environment;
   v10 = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:0];
   [v10 setHeaderMode:1];
   v11 = +[UIColor clearColor];
@@ -17,11 +17,11 @@
 
   [v10 setHeaderTopPadding:0.0];
   [v10 setShowsSeparators:0];
-  v12 = [NSCollectionLayoutSection sectionWithListConfiguration:v10 layoutEnvironment:v9];
+  v12 = [NSCollectionLayoutSection sectionWithListConfiguration:v10 layoutEnvironment:environmentCopy];
 
   [v12 setContentInsets:{0.0, 0.0, 0.0, 0.0}];
   v13 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
-  v14 = [NSCollectionLayoutDimension estimatedDimension:a4];
+  v14 = [NSCollectionLayoutDimension estimatedDimension:height];
   v15 = [NSCollectionLayoutSize sizeWithWidthDimension:v13 heightDimension:v14];
 
   v16 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v15 elementKind:UICollectionElementKindSectionHeader alignment:1];
@@ -34,18 +34,18 @@
   return v12;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SearchHomeCitiesLayoutProvider *)self cellReuseIdentifier];
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v10];
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  cellReuseIdentifier = [(SearchHomeCitiesLayoutProvider *)self cellReuseIdentifier];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
   v13 = +[_TtC4Maps18SearchHomeCityCell reuseIdentifier];
   [v12 setAccessibilityIdentifier:v13];
 
-  [v12 setGuideLocationViewModels:v8];
+  [v12 setGuideLocationViewModels:itemCopy];
   [v12 setDelegate:self->_parentViewController];
 
   return v12;
@@ -59,20 +59,20 @@
   return v2;
 }
 
-- (SearchHomeCitiesLayoutProvider)initWithTraitEnvironment:(id)a3 parentViewController:(id)a4
+- (SearchHomeCitiesLayoutProvider)initWithTraitEnvironment:(id)environment parentViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SearchHomeCitiesLayoutProvider;
   v8 = [(SearchHomeCitiesLayoutProvider *)&v12 init];
   if (v8)
   {
-    v9 = [[MKPlaceCompactCollectionSizeController alloc] initWithDefaultCollectionsConfigurationUsingTraitCollections:v6 inContext:1];
+    v9 = [[MKPlaceCompactCollectionSizeController alloc] initWithDefaultCollectionsConfigurationUsingTraitCollections:environmentCopy inContext:1];
     sizeController = v8->_sizeController;
     v8->_sizeController = v9;
 
-    objc_storeStrong(&v8->_parentViewController, a4);
+    objc_storeStrong(&v8->_parentViewController, controller);
   }
 
   return v8;

@@ -1,17 +1,17 @@
 @interface VMUDepthGraphEnumerator
-- (VMUDepthGraphEnumerator)initWithGraph:(id)a3 depthGraph:(id)a4;
+- (VMUDepthGraphEnumerator)initWithGraph:(id)graph depthGraph:(id)depthGraph;
 @end
 
 @implementation VMUDepthGraphEnumerator
 
-- (VMUDepthGraphEnumerator)initWithGraph:(id)a3 depthGraph:(id)a4
+- (VMUDepthGraphEnumerator)initWithGraph:(id)graph depthGraph:(id)depthGraph
 {
-  v6 = a4;
+  depthGraphCopy = depthGraph;
   v10.receiver = self;
   v10.super_class = VMUDepthGraphEnumerator;
-  v7 = [(VMUGraphEnumerator *)&v10 initWithGraph:a3];
+  v7 = [(VMUGraphEnumerator *)&v10 initWithGraph:graph];
   depthGraph = v7->_depthGraph;
-  v7->_depthGraph = v6;
+  v7->_depthGraph = depthGraphCopy;
 
   return v7;
 }

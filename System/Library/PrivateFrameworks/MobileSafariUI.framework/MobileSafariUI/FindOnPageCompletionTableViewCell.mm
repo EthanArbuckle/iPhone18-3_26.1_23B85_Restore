@@ -11,14 +11,14 @@
   [(CompletionListTableViewCell *)&v29 layoutSubviews];
   if (_SFDeviceIsPad())
   {
-    v3 = [(FindOnPageCompletionTableViewCell *)self detailTextLabel];
-    [v3 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    detailTextLabel = [(FindOnPageCompletionTableViewCell *)self detailTextLabel];
+    [detailTextLabel sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
     v5 = v4;
-    [v3 frame];
+    [detailTextLabel frame];
     v7 = v6;
     v9 = v8;
-    v10 = [(FindOnPageCompletionTableViewCell *)self textLabel];
-    [v10 frame];
+    textLabel = [(FindOnPageCompletionTableViewCell *)self textLabel];
+    [textLabel frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -58,8 +58,8 @@
       v12 = v12 + v16 - (v27 + -6.0);
     }
 
-    [v10 setFrame:{v12, v14, v23, v18}];
-    [v3 setFrame:{v22, v7, v5, v9}];
+    [textLabel setFrame:{v12, v14, v23, v18}];
+    [detailTextLabel setFrame:{v22, v7, v5, v9}];
   }
 }
 

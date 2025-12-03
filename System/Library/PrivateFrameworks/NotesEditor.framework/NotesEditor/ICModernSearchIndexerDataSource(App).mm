@@ -6,10 +6,10 @@
 
 - (id)mainThreadContext
 {
-  v0 = [MEMORY[0x277D35F30] sharedContext];
-  v1 = [v0 managedObjectContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
 
-  return v1;
+  return managedObjectContext;
 }
 
 @end

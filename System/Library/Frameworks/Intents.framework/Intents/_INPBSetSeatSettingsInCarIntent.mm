@@ -1,90 +1,90 @@
 @interface _INPBSetSeatSettingsInCarIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetSeatSettingsInCarIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetSeatSettingsInCarIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsRelativeLevelSetting:(id)a3;
-- (int)StringAsSeat:(id)a3;
+- (int)StringAsRelativeLevelSetting:(id)setting;
+- (int)StringAsSeat:(id)seat;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasEnableHeating:(BOOL)a3;
-- (void)setHasEnableMassage:(BOOL)a3;
-- (void)setHasRelativeLevelSetting:(BOOL)a3;
-- (void)setHasSeat:(BOOL)a3;
-- (void)setRelativeLevelSetting:(int)a3;
-- (void)setSeat:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasEnableHeating:(BOOL)heating;
+- (void)setHasEnableMassage:(BOOL)massage;
+- (void)setHasRelativeLevelSetting:(BOOL)setting;
+- (void)setHasSeat:(BOOL)seat;
+- (void)setRelativeLevelSetting:(int)setting;
+- (void)setSeat:(int)seat;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetSeatSettingsInCarIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSetSeatSettingsInCarIntent *)self carName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"carName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  carName = [(_INPBSetSeatSettingsInCarIntent *)self carName];
+  dictionaryRepresentation = [carName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"carName"];
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasEnableCooling])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSetSeatSettingsInCarIntent enableCooling](self, "enableCooling")}];
-    [v3 setObject:v6 forKeyedSubscript:@"enableCooling"];
+    [dictionary setObject:v6 forKeyedSubscript:@"enableCooling"];
   }
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasEnableHeating])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSetSeatSettingsInCarIntent enableHeating](self, "enableHeating")}];
-    [v3 setObject:v7 forKeyedSubscript:@"enableHeating"];
+    [dictionary setObject:v7 forKeyedSubscript:@"enableHeating"];
   }
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasEnableMassage])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSetSeatSettingsInCarIntent enableMassage](self, "enableMassage")}];
-    [v3 setObject:v8 forKeyedSubscript:@"enableMassage"];
+    [dictionary setObject:v8 forKeyedSubscript:@"enableMassage"];
   }
 
-  v9 = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
-  v10 = [v9 dictionaryRepresentation];
-  [v3 setObject:v10 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v11 = [(_INPBSetSeatSettingsInCarIntent *)self level];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"level"];
+  level = [(_INPBSetSeatSettingsInCarIntent *)self level];
+  dictionaryRepresentation3 = [level dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"level"];
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasRelativeLevelSetting])
   {
-    v13 = [(_INPBSetSeatSettingsInCarIntent *)self relativeLevelSetting];
-    if ((v13 - 1) >= 4)
+    relativeLevelSetting = [(_INPBSetSeatSettingsInCarIntent *)self relativeLevelSetting];
+    if ((relativeLevelSetting - 1) >= 4)
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v13];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", relativeLevelSetting];
     }
 
     else
     {
-      v14 = off_1E7285BC8[(v13 - 1)];
+      v14 = off_1E7285BC8[(relativeLevelSetting - 1)];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"relativeLevelSetting"];
+    [dictionary setObject:v14 forKeyedSubscript:@"relativeLevelSetting"];
   }
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasSeat])
   {
-    v15 = [(_INPBSetSeatSettingsInCarIntent *)self seat];
-    v16 = v15 - 1;
-    if (v15 - 1) < 0x16 && ((0x3F8383u >> v16))
+    seat = [(_INPBSetSeatSettingsInCarIntent *)self seat];
+    v16 = seat - 1;
+    if (seat - 1) < 0x16 && ((0x3F8383u >> v16))
     {
       v17 = off_1E7285BE8[v16];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v15];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", seat];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"seat"];
+    [dictionary setObject:v17 forKeyedSubscript:@"seat"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -145,28 +145,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
-  v5 = [(_INPBSetSeatSettingsInCarIntent *)self carName];
-  v6 = [v4 carName];
-  if ((v5 != 0) == (v6 == 0))
+  carName = [(_INPBSetSeatSettingsInCarIntent *)self carName];
+  carName2 = [equalCopy carName];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_28;
   }
 
-  v7 = [(_INPBSetSeatSettingsInCarIntent *)self carName];
-  if (v7)
+  carName3 = [(_INPBSetSeatSettingsInCarIntent *)self carName];
+  if (carName3)
   {
-    v8 = v7;
-    v9 = [(_INPBSetSeatSettingsInCarIntent *)self carName];
-    v10 = [v4 carName];
-    v11 = [v9 isEqual:v10];
+    v8 = carName3;
+    carName4 = [(_INPBSetSeatSettingsInCarIntent *)self carName];
+    carName5 = [equalCopy carName];
+    v11 = [carName4 isEqual:carName5];
 
     if (!v11)
     {
@@ -178,74 +178,74 @@
   {
   }
 
-  v12 = [(_INPBSetSeatSettingsInCarIntent *)self hasEnableCooling];
-  if (v12 != [v4 hasEnableCooling])
+  hasEnableCooling = [(_INPBSetSeatSettingsInCarIntent *)self hasEnableCooling];
+  if (hasEnableCooling != [equalCopy hasEnableCooling])
   {
     goto LABEL_29;
   }
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasEnableCooling])
   {
-    if ([v4 hasEnableCooling])
+    if ([equalCopy hasEnableCooling])
     {
       enableCooling = self->_enableCooling;
-      if (enableCooling != [v4 enableCooling])
+      if (enableCooling != [equalCopy enableCooling])
       {
         goto LABEL_29;
       }
     }
   }
 
-  v14 = [(_INPBSetSeatSettingsInCarIntent *)self hasEnableHeating];
-  if (v14 != [v4 hasEnableHeating])
+  hasEnableHeating = [(_INPBSetSeatSettingsInCarIntent *)self hasEnableHeating];
+  if (hasEnableHeating != [equalCopy hasEnableHeating])
   {
     goto LABEL_29;
   }
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasEnableHeating])
   {
-    if ([v4 hasEnableHeating])
+    if ([equalCopy hasEnableHeating])
     {
       enableHeating = self->_enableHeating;
-      if (enableHeating != [v4 enableHeating])
+      if (enableHeating != [equalCopy enableHeating])
       {
         goto LABEL_29;
       }
     }
   }
 
-  v16 = [(_INPBSetSeatSettingsInCarIntent *)self hasEnableMassage];
-  if (v16 != [v4 hasEnableMassage])
+  hasEnableMassage = [(_INPBSetSeatSettingsInCarIntent *)self hasEnableMassage];
+  if (hasEnableMassage != [equalCopy hasEnableMassage])
   {
     goto LABEL_29;
   }
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasEnableMassage])
   {
-    if ([v4 hasEnableMassage])
+    if ([equalCopy hasEnableMassage])
     {
       enableMassage = self->_enableMassage;
-      if (enableMassage != [v4 enableMassage])
+      if (enableMassage != [equalCopy enableMassage])
       {
         goto LABEL_29;
       }
     }
   }
 
-  v5 = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  carName = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
+  carName2 = [equalCopy intentMetadata];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_28;
   }
 
-  v18 = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
-  if (v18)
+  intentMetadata = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v19 = v18;
-    v20 = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
-    v21 = [v4 intentMetadata];
-    v22 = [v20 isEqual:v21];
+    v19 = intentMetadata;
+    intentMetadata2 = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v22 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v22)
     {
@@ -257,22 +257,22 @@
   {
   }
 
-  v5 = [(_INPBSetSeatSettingsInCarIntent *)self level];
-  v6 = [v4 level];
-  if ((v5 != 0) == (v6 == 0))
+  carName = [(_INPBSetSeatSettingsInCarIntent *)self level];
+  carName2 = [equalCopy level];
+  if ((carName != 0) == (carName2 == 0))
   {
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v23 = [(_INPBSetSeatSettingsInCarIntent *)self level];
-  if (v23)
+  level = [(_INPBSetSeatSettingsInCarIntent *)self level];
+  if (level)
   {
-    v24 = v23;
-    v25 = [(_INPBSetSeatSettingsInCarIntent *)self level];
-    v26 = [v4 level];
-    v27 = [v25 isEqual:v26];
+    v24 = level;
+    level2 = [(_INPBSetSeatSettingsInCarIntent *)self level];
+    level3 = [equalCopy level];
+    v27 = [level2 isEqual:level3];
 
     if (!v27)
     {
@@ -284,15 +284,15 @@ LABEL_28:
   {
   }
 
-  v30 = [(_INPBSetSeatSettingsInCarIntent *)self hasRelativeLevelSetting];
-  if (v30 == [v4 hasRelativeLevelSetting])
+  hasRelativeLevelSetting = [(_INPBSetSeatSettingsInCarIntent *)self hasRelativeLevelSetting];
+  if (hasRelativeLevelSetting == [equalCopy hasRelativeLevelSetting])
   {
-    if (!-[_INPBSetSeatSettingsInCarIntent hasRelativeLevelSetting](self, "hasRelativeLevelSetting") || ![v4 hasRelativeLevelSetting] || (relativeLevelSetting = self->_relativeLevelSetting, relativeLevelSetting == objc_msgSend(v4, "relativeLevelSetting")))
+    if (!-[_INPBSetSeatSettingsInCarIntent hasRelativeLevelSetting](self, "hasRelativeLevelSetting") || ![equalCopy hasRelativeLevelSetting] || (relativeLevelSetting = self->_relativeLevelSetting, relativeLevelSetting == objc_msgSend(equalCopy, "relativeLevelSetting")))
     {
-      v32 = [(_INPBSetSeatSettingsInCarIntent *)self hasSeat];
-      if (v32 == [v4 hasSeat])
+      hasSeat = [(_INPBSetSeatSettingsInCarIntent *)self hasSeat];
+      if (hasSeat == [equalCopy hasSeat])
       {
-        if (!-[_INPBSetSeatSettingsInCarIntent hasSeat](self, "hasSeat") || ![v4 hasSeat] || (seat = self->_seat, seat == objc_msgSend(v4, "seat")))
+        if (!-[_INPBSetSeatSettingsInCarIntent hasSeat](self, "hasSeat") || ![equalCopy hasSeat] || (seat = self->_seat, seat == objc_msgSend(equalCopy, "seat")))
         {
           v28 = 1;
           goto LABEL_30;
@@ -308,10 +308,10 @@ LABEL_30:
   return v28;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetSeatSettingsInCarIntent allocWithZone:](_INPBSetSeatSettingsInCarIntent init];
-  v6 = [(_INPBDataString *)self->_carName copyWithZone:a3];
+  v6 = [(_INPBDataString *)self->_carName copyWithZone:zone];
   [(_INPBSetSeatSettingsInCarIntent *)v5 setCarName:v6];
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasEnableCooling])
@@ -329,10 +329,10 @@ LABEL_30:
     [(_INPBSetSeatSettingsInCarIntent *)v5 setEnableMassage:[(_INPBSetSeatSettingsInCarIntent *)self enableMassage]];
   }
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetSeatSettingsInCarIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBInteger *)self->_level copyWithZone:a3];
+  v8 = [(_INPBInteger *)self->_level copyWithZone:zone];
   [(_INPBSetSeatSettingsInCarIntent *)v5 setLevel:v8];
 
   if ([(_INPBSetSeatSettingsInCarIntent *)self hasRelativeLevelSetting])
@@ -348,38 +348,38 @@ LABEL_30:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetSeatSettingsInCarIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetSeatSettingsInCarIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetSeatSettingsInCarIntent)initWithCoder:(id)a3
+- (_INPBSetSeatSettingsInCarIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetSeatSettingsInCarIntent *)self initWithData:v6];
+    self = [(_INPBSetSeatSettingsInCarIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(_INPBSetSeatSettingsInCarIntent *)self carName];
+  toCopy = to;
+  carName = [(_INPBSetSeatSettingsInCarIntent *)self carName];
 
-  if (v4)
+  if (carName)
   {
-    v5 = [(_INPBSetSeatSettingsInCarIntent *)self carName];
+    carName2 = [(_INPBSetSeatSettingsInCarIntent *)self carName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -401,19 +401,19 @@ LABEL_30:
     PBDataWriterWriteBOOLField();
   }
 
-  v9 = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
 
-  if (v9)
+  if (intentMetadata)
   {
-    v10 = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetSeatSettingsInCarIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_INPBSetSeatSettingsInCarIntent *)self level];
+  level = [(_INPBSetSeatSettingsInCarIntent *)self level];
 
-  if (v11)
+  if (level)
   {
-    v12 = [(_INPBSetSeatSettingsInCarIntent *)self level];
+    level2 = [(_INPBSetSeatSettingsInCarIntent *)self level];
     PBDataWriterWriteSubmessage();
   }
 
@@ -430,65 +430,65 @@ LABEL_30:
   }
 }
 
-- (int)StringAsSeat:(id)a3
+- (int)StringAsSeat:(id)seat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DRIVER"])
+  seatCopy = seat;
+  if ([seatCopy isEqualToString:@"DRIVER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PASSENGER"])
+  else if ([seatCopy isEqualToString:@"PASSENGER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FRONT_LEFT"])
+  else if ([seatCopy isEqualToString:@"FRONT_LEFT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"FRONT_RIGHT"])
+  else if ([seatCopy isEqualToString:@"FRONT_RIGHT"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"FRONT"])
+  else if ([seatCopy isEqualToString:@"FRONT"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"REAR_LEFT"])
+  else if ([seatCopy isEqualToString:@"REAR_LEFT"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"REAR_RIGHT"])
+  else if ([seatCopy isEqualToString:@"REAR_RIGHT"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"REAR"])
+  else if ([seatCopy isEqualToString:@"REAR"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_ROW_LEFT"])
+  else if ([seatCopy isEqualToString:@"THIRD_ROW_LEFT"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_ROW_RIGHT"])
+  else if ([seatCopy isEqualToString:@"THIRD_ROW_RIGHT"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_ROW"])
+  else if ([seatCopy isEqualToString:@"THIRD_ROW"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"ALL"])
+  else if ([seatCopy isEqualToString:@"ALL"])
   {
     v4 = 22;
   }
@@ -501,9 +501,9 @@ LABEL_30:
   return v4;
 }
 
-- (void)setHasSeat:(BOOL)a3
+- (void)setHasSeat:(BOOL)seat
 {
-  if (a3)
+  if (seat)
   {
     v3 = 16;
   }
@@ -516,10 +516,10 @@ LABEL_30:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setSeat:(int)a3
+- (void)setSeat:(int)seat
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (seat == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xEF;
   }
@@ -527,29 +527,29 @@ LABEL_30:
   else
   {
     *&self->_has = has | 0x10;
-    self->_seat = a3;
+    self->_seat = seat;
   }
 }
 
-- (int)StringAsRelativeLevelSetting:(id)a3
+- (int)StringAsRelativeLevelSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LOWEST"])
+  settingCopy = setting;
+  if ([settingCopy isEqualToString:@"LOWEST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LOWER"])
+  else if ([settingCopy isEqualToString:@"LOWER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HIGHER"])
+  else if ([settingCopy isEqualToString:@"HIGHER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HIGHEST"])
+  else if ([settingCopy isEqualToString:@"HIGHEST"])
   {
     v4 = 4;
   }
@@ -562,9 +562,9 @@ LABEL_30:
   return v4;
 }
 
-- (void)setHasRelativeLevelSetting:(BOOL)a3
+- (void)setHasRelativeLevelSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 8;
   }
@@ -577,10 +577,10 @@ LABEL_30:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setRelativeLevelSetting:(int)a3
+- (void)setRelativeLevelSetting:(int)setting
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (setting == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7;
   }
@@ -588,13 +588,13 @@ LABEL_30:
   else
   {
     *&self->_has = has | 8;
-    self->_relativeLevelSetting = a3;
+    self->_relativeLevelSetting = setting;
   }
 }
 
-- (void)setHasEnableMassage:(BOOL)a3
+- (void)setHasEnableMassage:(BOOL)massage
 {
-  if (a3)
+  if (massage)
   {
     v3 = 4;
   }
@@ -607,9 +607,9 @@ LABEL_30:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEnableHeating:(BOOL)a3
+- (void)setHasEnableHeating:(BOOL)heating
 {
-  if (a3)
+  if (heating)
   {
     v3 = 2;
   }

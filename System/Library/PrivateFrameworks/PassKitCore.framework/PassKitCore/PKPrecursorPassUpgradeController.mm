@@ -1,33 +1,33 @@
 @interface PKPrecursorPassUpgradeController
-- (BOOL)_updateActiveProofingConfigureFrom:(id)a3;
+- (BOOL)_updateActiveProofingConfigureFrom:(id)from;
 - (NSArray)devicePrecursorRequests;
 - (PKPassUpgradePrecursorPassRequest)devicePrimaryPrecursorRequest;
-- (PKPrecursorPassUpgradeController)initWithPass:(id)a3 webService:(id)a4;
+- (PKPrecursorPassUpgradeController)initWithPass:(id)pass webService:(id)service;
 - (PKPrecursorPassUpgradeControllerDelegate)delegate;
-- (void)_fetchProofingStatusWithCompletion:(id)a3;
+- (void)_fetchProofingStatusWithCompletion:(id)completion;
 - (void)_loadConfigurationIfNeeded;
-- (void)_proofingDescriptionFor:(id)a3 completion:(id)a4;
-- (void)mockIdentityPrecursorPassUpgradeRequestDescriptions:(id)a3;
-- (void)proofingFlowManager:(id)a3 completedProofingWithError:(id)a4;
-- (void)proofingFlowManager:(id)a3 didChangeActiveConfigurations:(id)a4;
+- (void)_proofingDescriptionFor:(id)for completion:(id)completion;
+- (void)mockIdentityPrecursorPassUpgradeRequestDescriptions:(id)descriptions;
+- (void)proofingFlowManager:(id)manager completedProofingWithError:(id)error;
+- (void)proofingFlowManager:(id)manager didChangeActiveConfigurations:(id)configurations;
 - (void)reloadPrecursorRequests;
-- (void)requestDescriptionFor:(id)a3 completion:(id)a4;
+- (void)requestDescriptionFor:(id)for completion:(id)completion;
 @end
 
 @implementation PKPrecursorPassUpgradeController
 
-- (PKPrecursorPassUpgradeController)initWithPass:(id)a3 webService:(id)a4
+- (PKPrecursorPassUpgradeController)initWithPass:(id)pass webService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = PKPrecursorPassUpgradeController;
   v9 = [(PKPrecursorPassUpgradeController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pass, a3);
-    objc_storeStrong(&v10->_webService, a4);
+    objc_storeStrong(&v9->_pass, pass);
+    objc_storeStrong(&v10->_webService, service);
   }
 
   return v10;
@@ -38,18 +38,18 @@
   if (!self->_hasLoadedConfiguration)
   {
     self->_hasLoadedConfiguration = 1;
-    v10 = [(PKPaymentWebService *)self->_webService targetDevice];
-    v4 = [v10 secureElementIdentifiers];
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+    secureElementIdentifiers = [targetDevice secureElementIdentifiers];
     seids = self->_seids;
-    self->_seids = v4;
+    self->_seids = secureElementIdentifiers;
 
-    v6 = [v10 deviceClass];
+    deviceClass = [targetDevice deviceClass];
     deviceClass = self->_deviceClass;
-    self->_deviceClass = v6;
+    self->_deviceClass = deviceClass;
 
-    v8 = [v10 deviceVersion];
+    deviceVersion = [targetDevice deviceVersion];
     deviceVersion = self->_deviceVersion;
-    self->_deviceVersion = v8;
+    self->_deviceVersion = deviceVersion;
   }
 }
 
@@ -66,61 +66,61 @@
 
 - (PKPassUpgradePrecursorPassRequest)devicePrimaryPrecursorRequest
 {
-  v2 = [(PKPrecursorPassUpgradeController *)self devicePrecursorRequests];
-  v3 = [v2 firstObject];
+  devicePrecursorRequests = [(PKPrecursorPassUpgradeController *)self devicePrecursorRequests];
+  firstObject = [devicePrecursorRequests firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)requestDescriptionFor:(id)a3 completion:(id)a4
+- (void)requestDescriptionFor:(id)for completion:(id)completion
 {
-  v11 = a4;
-  v6 = [a3 actions];
-  v7 = [v6 firstObject];
+  completionCopy = completion;
+  actions = [for actions];
+  firstObject = [actions firstObject];
 
-  if (!a3 || !v7)
+  if (!for || !firstObject)
   {
-    v10 = v11[2];
+    v10 = completionCopy[2];
 LABEL_9:
     v10();
     goto LABEL_10;
   }
 
-  v8 = [v7 type];
-  if (v8 <= 2)
+  type = [firstObject type];
+  if (type <= 2)
   {
-    v9 = v11;
-    if (v8 == 1)
+    v9 = completionCopy;
+    if (type == 1)
     {
-      [(PKPrecursorPassUpgradeController *)self _proofingDescriptionFor:v7 completion:v11];
+      [(PKPrecursorPassUpgradeController *)self _proofingDescriptionFor:firstObject completion:completionCopy];
     }
 
     else
     {
-      if (v8 != 2)
+      if (type != 2)
       {
 LABEL_19:
         v10 = v9[2];
         goto LABEL_9;
       }
 
-      [(PKPrecursorPassUpgradeController *)self _carKeyDescriptionFor:v7 completion:v11];
+      [(PKPrecursorPassUpgradeController *)self _carKeyDescriptionFor:firstObject completion:completionCopy];
     }
   }
 
   else
   {
-    v9 = v11;
-    switch(v8)
+    v9 = completionCopy;
+    switch(type)
     {
       case 3:
-        [(PKPrecursorPassUpgradeController *)self _genericReProvisionDescriptionFor:v7 completion:v11];
+        [(PKPrecursorPassUpgradeController *)self _genericReProvisionDescriptionFor:firstObject completion:completionCopy];
         break;
       case 4:
-        [(PKPrecursorPassUpgradeController *)self _issuerAppDescriptionFor:v7 completion:v11];
+        [(PKPrecursorPassUpgradeController *)self _issuerAppDescriptionFor:firstObject completion:completionCopy];
         break;
       case 5:
-        [(PKPrecursorPassUpgradeController *)self _dpanIDSignatureDescriptionFor:v7 completion:v11];
+        [(PKPrecursorPassUpgradeController *)self _dpanIDSignatureDescriptionFor:firstObject completion:completionCopy];
         break;
       default:
         goto LABEL_19;
@@ -130,19 +130,19 @@ LABEL_19:
 LABEL_10:
 }
 
-- (void)_proofingDescriptionFor:(id)a3 completion:(id)a4
+- (void)_proofingDescriptionFor:(id)for completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__PKPrecursorPassUpgradeController__proofingDescriptionFor_completion___block_invoke;
   v10[3] = &unk_1E79C55D0;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = forCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = forCopy;
   [(PKPrecursorPassUpgradeController *)self _fetchProofingStatusWithCompletion:v10];
 }
 
@@ -381,13 +381,13 @@ LABEL_41:
   }
 }
 
-- (void)_fetchProofingStatusWithCompletion:(id)a3
+- (void)_fetchProofingStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   currentProofingConfiguration = self->_currentProofingConfiguration;
   if (currentProofingConfiguration)
   {
-    v4[2](v4, [(PKIdentityProofingConfiguration *)currentProofingConfiguration status]);
+    completionCopy[2](completionCopy, [(PKIdentityProofingConfiguration *)currentProofingConfiguration status]);
   }
 
   else
@@ -412,7 +412,7 @@ LABEL_41:
     v10[2] = __71__PKPrecursorPassUpgradeController__fetchProofingStatusWithCompletion___block_invoke;
     v10[3] = &unk_1E79E4760;
     v10[4] = self;
-    v11 = v4;
+    v11 = completionCopy;
     [(CIDVUIProofingFlowManager *)v9 proofingFlowAvailability:v10];
   }
 }
@@ -462,18 +462,18 @@ void __71__PKPrecursorPassUpgradeController__fetchProofingStatusWithCompletion__
   }
 }
 
-- (BOOL)_updateActiveProofingConfigureFrom:(id)a3
+- (BOOL)_updateActiveProofingConfigureFrom:(id)from
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKSecureElementPass *)self->_pass issuerAdministrativeAreaCode];
-  v27 = self;
-  v6 = [(PKSecureElementPass *)self->_pass issuerCountryCode];
+  fromCopy = from;
+  issuerAdministrativeAreaCode = [(PKSecureElementPass *)self->_pass issuerAdministrativeAreaCode];
+  selfCopy = self;
+  issuerCountryCode = [(PKSecureElementPass *)self->_pass issuerCountryCode];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = fromCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v7)
   {
@@ -489,9 +489,9 @@ LABEL_3:
       }
 
       v11 = *(*(&v29 + 1) + 8 * v10);
-      v12 = [v11 state];
-      v13 = v5;
-      v14 = v12;
+      state = [v11 state];
+      v13 = issuerAdministrativeAreaCode;
+      v14 = state;
       v15 = v14;
       if (v13 == v14)
       {
@@ -499,7 +499,7 @@ LABEL_3:
 
       else
       {
-        if (!v5 || !v14)
+        if (!issuerAdministrativeAreaCode || !v14)
         {
           v18 = v14;
 LABEL_19:
@@ -516,9 +516,9 @@ LABEL_20:
         }
       }
 
-      v17 = [v11 country];
-      v18 = v6;
-      v19 = v17;
+      country = [v11 country];
+      v18 = issuerCountryCode;
+      v19 = country;
       v13 = v19;
       if (v18 == v19)
       {
@@ -533,8 +533,8 @@ LABEL_25:
         }
 
         v21 = [[PKIdentityProofingConfiguration alloc] initWithCIDVUIProofingConfiguration:v11];
-        p_currentProofingConfiguration = &v27->_currentProofingConfiguration;
-        currentProofingConfiguration = v27->_currentProofingConfiguration;
+        p_currentProofingConfiguration = &selfCopy->_currentProofingConfiguration;
+        currentProofingConfiguration = selfCopy->_currentProofingConfiguration;
         if (!v21 || !currentProofingConfiguration)
         {
           goto LABEL_31;
@@ -550,7 +550,7 @@ LABEL_30:
         goto LABEL_33;
       }
 
-      if (!v6 || !v19)
+      if (!issuerCountryCode || !v19)
       {
 
         goto LABEL_19;
@@ -578,8 +578,8 @@ LABEL_21:
   }
 
   v21 = 0;
-  p_currentProofingConfiguration = &v27->_currentProofingConfiguration;
-  currentProofingConfiguration = v27->_currentProofingConfiguration;
+  p_currentProofingConfiguration = &selfCopy->_currentProofingConfiguration;
+  currentProofingConfiguration = selfCopy->_currentProofingConfiguration;
 LABEL_31:
   if (v21 == currentProofingConfiguration)
   {
@@ -596,11 +596,11 @@ LABEL_33:
 
 - (void)reloadPrecursorRequests
 {
-  v3 = [(PKPrecursorPassUpgradeController *)self devicePrimaryPrecursorRequest];
-  v4 = [v3 actions];
-  v5 = [v4 firstObject];
+  devicePrimaryPrecursorRequest = [(PKPrecursorPassUpgradeController *)self devicePrimaryPrecursorRequest];
+  actions = [devicePrimaryPrecursorRequest actions];
+  firstObject = [actions firstObject];
 
-  if ([v5 type] == 1)
+  if ([firstObject type] == 1)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -617,7 +617,7 @@ void __59__PKPrecursorPassUpgradeController_reloadPrecursorRequests__block_invok
   [WeakRetained precursorPassUpgradeRequestDidChange];
 }
 
-- (void)proofingFlowManager:(id)a3 completedProofingWithError:(id)a4
+- (void)proofingFlowManager:(id)manager completedProofingWithError:(id)error
 {
   v4 = PKLogFacilityTypeGetObject(0x27uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -627,9 +627,9 @@ void __59__PKPrecursorPassUpgradeController_reloadPrecursorRequests__block_invok
   }
 }
 
-- (void)proofingFlowManager:(id)a3 didChangeActiveConfigurations:(id)a4
+- (void)proofingFlowManager:(id)manager didChangeActiveConfigurations:(id)configurations
 {
-  v5 = a4;
+  configurationsCopy = configurations;
   v6 = PKLogFacilityTypeGetObject(0x27uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -642,8 +642,8 @@ void __59__PKPrecursorPassUpgradeController_reloadPrecursorRequests__block_invok
   v8[2] = __86__PKPrecursorPassUpgradeController_proofingFlowManager_didChangeActiveConfigurations___block_invoke;
   v8[3] = &unk_1E79C4DD8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = configurationsCopy;
+  v7 = configurationsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
@@ -656,9 +656,9 @@ void __86__PKPrecursorPassUpgradeController_proofingFlowManager_didChangeActiveC
   }
 }
 
-- (void)mockIdentityPrecursorPassUpgradeRequestDescriptions:(id)a3
+- (void)mockIdentityPrecursorPassUpgradeRequestDescriptions:(id)descriptions
 {
-  v4 = a3;
+  descriptionsCopy = descriptions;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v7 = objc_alloc_init(PKIdentityProofingConfiguration);
@@ -764,16 +764,16 @@ void __86__PKPrecursorPassUpgradeController_proofingFlowManager_didChangeActiveC
   v32 = v22;
   v23 = v22;
   [(PKAsyncUnaryOperationComposer *)v6 addOperation:v31];
-  v24 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __88__PKPrecursorPassUpgradeController_mockIdentityPrecursorPassUpgradeRequestDescriptions___block_invoke_14;
   v28[3] = &unk_1E79E4800;
   v29 = v10;
-  v30 = v4;
+  v30 = descriptionsCopy;
   v25 = v10;
-  v26 = v4;
-  v27 = [(PKAsyncUnaryOperationComposer *)v6 evaluateWithInput:v24 completion:v28];
+  v26 = descriptionsCopy;
+  v27 = [(PKAsyncUnaryOperationComposer *)v6 evaluateWithInput:null completion:v28];
 }
 
 void __88__PKPrecursorPassUpgradeController_mockIdentityPrecursorPassUpgradeRequestDescriptions___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,15 +1,15 @@
 @interface ASDSupportedDialogHandlers
-- (ASDSupportedDialogHandlers)initWithCoder:(id)a3;
-- (ASDSupportedDialogHandlers)initWithDialogObserver:(id)a3;
+- (ASDSupportedDialogHandlers)initWithCoder:(id)coder;
+- (ASDSupportedDialogHandlers)initWithDialogObserver:(id)observer;
 - (id)initForInternalClient;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDSupportedDialogHandlers
 
-- (ASDSupportedDialogHandlers)initWithDialogObserver:(id)a3
+- (ASDSupportedDialogHandlers)initWithDialogObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v7.receiver = self;
   v7.super_class = ASDSupportedDialogHandlers;
   v5 = [(ASDSupportedDialogHandlers *)&v7 init];
@@ -38,33 +38,33 @@
   return result;
 }
 
-- (ASDSupportedDialogHandlers)initWithCoder:(id)a3
+- (ASDSupportedDialogHandlers)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ASDSupportedDialogHandlers;
   v5 = [(ASDSupportedDialogHandlers *)&v7 init];
   if (v5)
   {
-    v5->_handlesAlerts = [v4 decodeBoolForKey:@"A"];
-    v5->_handlesAuthentication = [v4 decodeBoolForKey:@"B"];
-    v5->_handlesDialogs = [v4 decodeBoolForKey:@"C"];
-    v5->_handlesEngagement = [v4 decodeBoolForKey:@"D"];
-    v5->_handlesViews = [v4 decodeBoolForKey:@"E"];
+    v5->_handlesAlerts = [coderCopy decodeBoolForKey:@"A"];
+    v5->_handlesAuthentication = [coderCopy decodeBoolForKey:@"B"];
+    v5->_handlesDialogs = [coderCopy decodeBoolForKey:@"C"];
+    v5->_handlesEngagement = [coderCopy decodeBoolForKey:@"D"];
+    v5->_handlesViews = [coderCopy decodeBoolForKey:@"E"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   handlesAlerts = self->_handlesAlerts;
-  v5 = a3;
-  [v5 encodeBool:handlesAlerts forKey:@"A"];
-  [v5 encodeBool:self->_handlesAuthentication forKey:@"B"];
-  [v5 encodeBool:self->_handlesDialogs forKey:@"C"];
-  [v5 encodeBool:self->_handlesEngagement forKey:@"D"];
-  [v5 encodeBool:self->_handlesViews forKey:@"E"];
+  coderCopy = coder;
+  [coderCopy encodeBool:handlesAlerts forKey:@"A"];
+  [coderCopy encodeBool:self->_handlesAuthentication forKey:@"B"];
+  [coderCopy encodeBool:self->_handlesDialogs forKey:@"C"];
+  [coderCopy encodeBool:self->_handlesEngagement forKey:@"D"];
+  [coderCopy encodeBool:self->_handlesViews forKey:@"E"];
 }
 
 @end

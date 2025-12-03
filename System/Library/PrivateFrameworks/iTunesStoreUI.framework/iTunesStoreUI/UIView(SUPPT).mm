@@ -8,12 +8,12 @@
 - (void)_firstDescendantOfKind:()SUPPT
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [a1 subviews];
+  subviews = [self subviews];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v5)
   {
     return 0;
@@ -27,7 +27,7 @@ LABEL_3:
   {
     if (*v13 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(subviews);
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
@@ -44,7 +44,7 @@ LABEL_3:
 
     if (v6 == ++v8)
     {
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
       v9 = 0;
       if (v6)
       {
@@ -60,7 +60,7 @@ LABEL_3:
 {
   v2 = objc_opt_class();
 
-  return [a1 _firstDescendantOfKind:v2];
+  return [self _firstDescendantOfKind:v2];
 }
 
 @end

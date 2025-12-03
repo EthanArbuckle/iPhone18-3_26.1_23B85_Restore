@@ -1,17 +1,17 @@
 @interface SSProximityDevice
-- (SSProximityDevice)initWithQueue:(id)a3 endpoint:(unint64_t)a4 remoteInfo:(id)a5;
+- (SSProximityDevice)initWithQueue:(id)queue endpoint:(unint64_t)endpoint remoteInfo:(id)info;
 - (id)templateSession;
-- (void)proxSetupAuthEventUpdate:(id)a3;
-- (void)verifyPIN:(id)a3;
+- (void)proxSetupAuthEventUpdate:(id)update;
+- (void)verifyPIN:(id)n;
 @end
 
 @implementation SSProximityDevice
 
-- (SSProximityDevice)initWithQueue:(id)a3 endpoint:(unint64_t)a4 remoteInfo:(id)a5
+- (SSProximityDevice)initWithQueue:(id)queue endpoint:(unint64_t)endpoint remoteInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  queueCopy = queue;
+  infoCopy = info;
+  if (endpoint)
   {
     v16.receiver = self;
     v16.super_class = SSProximityDevice;
@@ -19,9 +19,9 @@
     p_isa = &v10->super.isa;
     if (v10)
     {
-      v10->_endpoint = a4;
-      objc_storeStrong(&v10->_remoteInfo, a5);
-      v12 = [objc_alloc(MEMORY[0x277CC37B0]) initWithQueue:v8];
+      v10->_endpoint = endpoint;
+      objc_storeStrong(&v10->_remoteInfo, info);
+      v12 = [objc_alloc(MEMORY[0x277CC37B0]) initWithQueue:queueCopy];
       v13 = p_isa[2];
       p_isa[2] = v12;
 
@@ -29,15 +29,15 @@
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 void __58__SSProximityDevice_activateUsingPreSharedKey_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -104,17 +104,17 @@ void __32__SSProximityDevice_invalidate___block_invoke(uint64_t a1, void *a2)
   [WeakRetained setClient:0];
 }
 
-- (void)verifyPIN:(id)a3
+- (void)verifyPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   client = self->_client;
   endpoint = self->_endpoint;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__SSProximityDevice_verifyPIN___block_invoke;
   v8[3] = &unk_279B44638;
-  v9 = v4;
-  v7 = v4;
+  v9 = nCopy;
+  v7 = nCopy;
   [(CoreTelephonyClient *)client validateProximityTransfer:endpoint pin:v7 completion:v8];
 }
 
@@ -151,22 +151,22 @@ void __31__SSProximityDevice_verifyPIN___block_invoke(uint64_t a1, void *a2)
   return session;
 }
 
-- (void)proxSetupAuthEventUpdate:(id)a3
+- (void)proxSetupAuthEventUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SSProximityDevice *)self eventHandler];
+  updateCopy = update;
+  eventHandler = [(SSProximityDevice *)self eventHandler];
 
-  if (v5)
+  if (eventHandler)
   {
-    v6 = [(SSProximityDevice *)self eventHandler];
-    v7 = [TSUtilities skEventFromDictionary:v4];
-    (*(v6 + 16))(v6, v7);
+    eventHandler2 = [(SSProximityDevice *)self eventHandler];
+    v7 = [TSUtilities skEventFromDictionary:updateCopy];
+    (*(eventHandler2 + 16))(eventHandler2, v7);
   }
 
   else
   {
-    v6 = sLogDomain();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    eventHandler2 = sLogDomain();
+    if (os_log_type_enabled(eventHandler2, OS_LOG_TYPE_ERROR))
     {
       [SSProximityDevice proxSetupAuthEventUpdate:];
     }

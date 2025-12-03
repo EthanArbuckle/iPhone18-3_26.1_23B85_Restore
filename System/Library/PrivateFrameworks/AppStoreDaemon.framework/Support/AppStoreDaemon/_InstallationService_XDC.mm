@@ -1,14 +1,14 @@
 @interface _InstallationService_XDC
 - (_InstallationService_XDC)init;
-- (void)_handleDevicesDidChangeNotification:(id)a3;
-- (void)_handleInstallMessage:(id)a3 fromDevice:(id)a4;
-- (void)_handleProgressMessage:(id)a3 fromDevice:(id)a4;
-- (void)_handleRegisterAppMessage:(id)a3 fromDevice:(id)a4;
+- (void)_handleDevicesDidChangeNotification:(id)notification;
+- (void)_handleInstallMessage:(id)message fromDevice:(id)device;
+- (void)_handleProgressMessage:(id)message fromDevice:(id)device;
+- (void)_handleRegisterAppMessage:(id)message fromDevice:(id)device;
 - (void)dealloc;
-- (void)installEnterpriseApps:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5;
-- (void)installSystemApps:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5;
-- (void)installTestFlightApps:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5;
-- (void)installWatchApps:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5;
+- (void)installEnterpriseApps:(id)apps onPairedDevice:(id)device withReplyHandler:(id)handler;
+- (void)installSystemApps:(id)apps onPairedDevice:(id)device withReplyHandler:(id)handler;
+- (void)installTestFlightApps:(id)apps onPairedDevice:(id)device withReplyHandler:(id)handler;
+- (void)installWatchApps:(id)apps onPairedDevice:(id)device withReplyHandler:(id)handler;
 @end
 
 @implementation _InstallationService_XDC
@@ -17,21 +17,21 @@
 {
   v7.receiver = self;
   v7.super_class = _InstallationService_XDC;
-  v2 = [(InstallationService *)&v7 _init];
-  if (v2)
+  _init = [(InstallationService *)&v7 _init];
+  if (_init)
   {
     v3 = sub_1002EB36C();
-    v4 = *(v2 + 7);
-    *(v2 + 7) = v3;
+    v4 = *(_init + 7);
+    *(_init + 7) = v3;
 
     v5 = +[NSNotificationCenter defaultCenter];
-    [v5 addObserver:v2 selector:"_handleDevicesDidChangeNotification:" name:@"XDCServiceDevicesDidChangeNotification" object:*(v2 + 7)];
-    sub_1002EB6D8(*(v2 + 7), v2, "_handleInstallMessage:fromDevice:", 2);
-    sub_1002EB6D8(*(v2 + 7), v2, "_handleProgressMessage:fromDevice:", 4);
-    sub_1002EB6D8(*(v2 + 7), v2, "_handleRegisterAppMessage:fromDevice:", 5);
+    [v5 addObserver:_init selector:"_handleDevicesDidChangeNotification:" name:@"XDCServiceDevicesDidChangeNotification" object:*(_init + 7)];
+    sub_1002EB6D8(*(_init + 7), _init, "_handleInstallMessage:fromDevice:", 2);
+    sub_1002EB6D8(*(_init + 7), _init, "_handleProgressMessage:fromDevice:", 4);
+    sub_1002EB6D8(*(_init + 7), _init, "_handleRegisterAppMessage:fromDevice:", 5);
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
@@ -44,34 +44,34 @@
   [(InstallationService *)&v4 dealloc];
 }
 
-- (void)installEnterpriseApps:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5
+- (void)installEnterpriseApps:(id)apps onPairedDevice:(id)device withReplyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appsCopy = apps;
+  deviceCopy = device;
+  handlerCopy = handler;
   v11 = sub_100003B90();
   dispatchQueue = self->super._dispatchQueue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001F8114;
   v17[3] = &unk_10051C9C0;
-  v18 = v9;
-  v19 = v8;
+  v18 = deviceCopy;
+  v19 = appsCopy;
   v21 = v11;
-  v22 = v10;
-  v20 = self;
+  v22 = handlerCopy;
+  selfCopy = self;
   v13 = v11;
-  v14 = v10;
-  v15 = v8;
-  v16 = v9;
+  v14 = handlerCopy;
+  v15 = appsCopy;
+  v16 = deviceCopy;
   sub_100005D90(dispatchQueue, v17);
 }
 
-- (void)installSystemApps:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5
+- (void)installSystemApps:(id)apps onPairedDevice:(id)device withReplyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appsCopy = apps;
+  deviceCopy = device;
+  handlerCopy = handler;
   v11 = sub_100003B90();
   v12 = v11;
   if (v11)
@@ -86,7 +86,7 @@
 
   v14 = v13;
 
-  if (v9)
+  if (deviceCopy)
   {
     v15 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -102,14 +102,14 @@
       }
 
       v18 = Property;
-      v19 = [v14 processInfo];
-      v20 = [v19 bundleIdentifier];
+      processInfo = [v14 processInfo];
+      bundleIdentifier = [processInfo bundleIdentifier];
       *buf = 138412802;
       v38 = v18;
       v39 = 2114;
-      v40 = v20;
+      v40 = bundleIdentifier;
       v41 = 2114;
-      v42 = v9;
+      v42 = deviceCopy;
       v21 = "[%@] Received system app install request for clientID: %{public}@ paringID: %{public}@";
       v22 = v15;
       v23 = 32;
@@ -134,12 +134,12 @@ LABEL_13:
       }
 
       v18 = v25;
-      v19 = [v14 processInfo];
-      v20 = [v19 bundleIdentifier];
+      processInfo = [v14 processInfo];
+      bundleIdentifier = [processInfo bundleIdentifier];
       *buf = 138543618;
       v38 = v18;
       v39 = 2114;
-      v40 = v20;
+      v40 = bundleIdentifier;
       v21 = "[InstallationService][%{public}@] Received request to install system apps for clientID: %{public}@";
       v22 = v15;
       v23 = 22;
@@ -152,58 +152,58 @@ LABEL_13:
   v31[1] = 3221225472;
   v31[2] = sub_1001F87F0;
   v31[3] = &unk_10051C9E8;
-  v32 = v9;
-  v33 = v8;
-  v34 = self;
+  v32 = deviceCopy;
+  v33 = appsCopy;
+  selfCopy = self;
   v35 = v14;
-  v36 = v10;
-  v27 = v10;
+  v36 = handlerCopy;
+  v27 = handlerCopy;
   v28 = v14;
-  v29 = v8;
-  v30 = v9;
+  v29 = appsCopy;
+  v30 = deviceCopy;
   sub_100005D90(dispatchQueue, v31);
 }
 
-- (void)installTestFlightApps:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5
+- (void)installTestFlightApps:(id)apps onPairedDevice:(id)device withReplyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appsCopy = apps;
+  deviceCopy = device;
+  handlerCopy = handler;
   v11 = sub_100003B90();
   dispatchQueue = self->super._dispatchQueue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001F8DE8;
   v17[3] = &unk_10051C9C0;
-  v18 = v9;
-  v19 = v8;
+  v18 = deviceCopy;
+  v19 = appsCopy;
   v21 = v11;
-  v22 = v10;
-  v20 = self;
+  v22 = handlerCopy;
+  selfCopy = self;
   v13 = v11;
-  v14 = v10;
-  v15 = v8;
-  v16 = v9;
+  v14 = handlerCopy;
+  v15 = appsCopy;
+  v16 = deviceCopy;
   sub_100005D90(dispatchQueue, v17);
 }
 
-- (void)installWatchApps:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5
+- (void)installWatchApps:(id)apps onPairedDevice:(id)device withReplyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appsCopy = apps;
+  deviceCopy = device;
+  handlerCopy = handler;
   v11 = sub_100003B90();
   v12 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v11 processInfo];
-    v14 = [v13 bundleIdentifier];
+    processInfo = [v11 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     *buf = 138543874;
     v27 = v11;
     v28 = 2114;
-    v29 = v14;
+    v29 = bundleIdentifier;
     v30 = 2114;
-    v31 = v9;
+    v31 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received request from %{public}@ to install watch apps on %{public}@", buf, 0x20u);
   }
 
@@ -212,19 +212,19 @@ LABEL_13:
   v20[1] = 3221225472;
   v20[2] = sub_1001F91D4;
   v20[3] = &unk_10051C9C0;
-  v21 = v9;
-  v22 = v8;
+  v21 = deviceCopy;
+  v22 = appsCopy;
   v24 = v11;
-  v25 = v10;
-  v23 = self;
+  v25 = handlerCopy;
+  selfCopy = self;
   v16 = v11;
-  v17 = v10;
-  v18 = v8;
-  v19 = v9;
+  v17 = handlerCopy;
+  v18 = appsCopy;
+  v19 = deviceCopy;
   sub_100005D90(dispatchQueue, v20);
 }
 
-- (void)_handleDevicesDidChangeNotification:(id)a3
+- (void)_handleDevicesDidChangeNotification:(id)notification
 {
   v4 = +[NSMutableDictionary dictionary];
   databaseStore = self->super._databaseStore;
@@ -240,15 +240,15 @@ LABEL_13:
   v9[2] = sub_1001F9BBC;
   v9[3] = &unk_10051B768;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v8 = v6;
   [(AppInstallsDatabaseStore *)databaseStore asyncReadUsingSession:v7 completion:v9];
 }
 
-- (void)_handleInstallMessage:(id)a3 fromDevice:(id)a4
+- (void)_handleInstallMessage:(id)message fromDevice:(id)device
 {
-  selfa = a3;
-  v39 = a4;
+  selfa = message;
+  deviceCopy = device;
   v42 = sub_1003FA4F0(XPCRequestToken, 0);
   v7 = [XDCInstallRequest alloc];
   Property = selfa;
@@ -384,18 +384,18 @@ LABEL_13:
   v38 = v37;
   if (v37)
   {
-    sub_1002EB834(v37, v36, v39, 0, 0);
+    sub_1002EB834(v37, v36, deviceCopy, 0, 0);
   }
 }
 
-- (void)_handleProgressMessage:(id)a3 fromDevice:(id)a4
+- (void)_handleProgressMessage:(id)message fromDevice:(id)device
 {
-  v4 = a3;
+  messageCopy = message;
   v24 = sub_1003FA4F0(XPCRequestToken, 0);
   v6 = [XDCProgressMessage alloc];
-  if (v4)
+  if (messageCopy)
   {
-    Property = objc_getProperty(v4, v5, 16, 1);
+    Property = objc_getProperty(messageCopy, v5, 16, 1);
   }
 
   else
@@ -411,7 +411,7 @@ LABEL_13:
   v25 = 0u;
   v26 = 0u;
   v22 = v9;
-  v23 = v4;
+  v23 = messageCopy;
   if (v9)
   {
     progress = v9->_progress;
@@ -481,14 +481,14 @@ LABEL_13:
   }
 }
 
-- (void)_handleRegisterAppMessage:(id)a3 fromDevice:(id)a4
+- (void)_handleRegisterAppMessage:(id)message fromDevice:(id)device
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = sub_1003FA4F0(XPCRequestToken, 0);
   v7 = [XDCRegisterAppMessage alloc];
-  if (v4)
+  if (messageCopy)
   {
-    Property = objc_getProperty(v4, v6, 16, 1);
+    Property = objc_getProperty(messageCopy, v6, 16, 1);
   }
 
   else
@@ -505,7 +505,7 @@ LABEL_13:
   v28 = 0u;
   v29 = 0u;
   v24 = v10;
-  v25 = v4;
+  v25 = messageCopy;
   if (v10)
   {
     metadatas = v10->_metadatas;
@@ -533,8 +533,8 @@ LABEL_13:
 
         v18 = sub_100283A8C(*(*(&v26 + 1) + 8 * i));
         v19 = objc_alloc_init(ASDProgress);
-        v20 = [v18 bundleID];
-        [v19 setBundleID:v20];
+        bundleID = [v18 bundleID];
+        [v19 setBundleID:bundleID];
 
         [v19 setCompletedUnitCount:-1];
         [v19 setTotalUnitCount:1000];

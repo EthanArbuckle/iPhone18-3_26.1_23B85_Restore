@@ -1,85 +1,85 @@
 @interface CoreTelephonyShim
 + (CoreTelephonyShim)sharedInstance;
-+ (double)timestampFromCTDumpFolderPrefix:(id)a3;
-+ (id)dateTimeStringFromCTDumpFolderPrefix:(id)a3;
++ (double)timestampFromCTDumpFolderPrefix:(id)prefix;
++ (id)dateTimeStringFromCTDumpFolderPrefix:(id)prefix;
 + (id)elevatedQueue;
-- (BOOL)findSubscriberBestMatchForICCID:(id)a3 MDN:(id)a4 slotID:(int64_t)a5 update:(BOOL)a6;
-- (BOOL)findSubscriberExactMatchForICCID:(id)a3 MDN:(id)a4 slotID:(int64_t)a5;
-- (BOOL)getBasebandTraceEnabledState:(BOOL *)a3 coreDumpEnabled:(BOOL *)a4;
+- (BOOL)findSubscriberBestMatchForICCID:(id)d MDN:(id)n slotID:(int64_t)iD update:(BOOL)update;
+- (BOOL)findSubscriberExactMatchForICCID:(id)d MDN:(id)n slotID:(int64_t)iD;
+- (BOOL)getBasebandTraceEnabledState:(BOOL *)state coreDumpEnabled:(BOOL *)enabled;
 - (BOOL)getSmartDataModeSetting;
-- (BOOL)subscriptionContextIsCurrentDataSubscription:(id)a3;
+- (BOOL)subscriptionContextIsCurrentDataSubscription:(id)subscription;
 - (CoreTelephonyShim)init;
-- (CoreTelephonyShim)initWithQueue:(id)a3;
+- (CoreTelephonyShim)initWithQueue:(id)queue;
 - (NSMutableDictionary)subscriptions;
 - (__CTServerConnection)ctServerConnection;
-- (id)cellCarrierNameForContext:(id)a3 refresh:(BOOL)a4;
-- (id)dictionaryForSubscriptionContext:(id)a3;
-- (id)extractCellInfo:(id)a3;
-- (id)getCachedContentsForEnhancedLinkQualityMetricType:(int64_t)a3 forSlot:(int64_t)a4;
+- (id)cellCarrierNameForContext:(id)context refresh:(BOOL)refresh;
+- (id)dictionaryForSubscriptionContext:(id)context;
+- (id)extractCellInfo:(id)info;
+- (id)getCachedContentsForEnhancedLinkQualityMetricType:(int64_t)type forSlot:(int64_t)slot;
 - (id)getCurrentDataStatus;
 - (id)getCurrentDataSubscriptionContext;
 - (id)getCurrentSIMStatus;
 - (id)getNetworkSlicingStates;
 - (id)getSortedSubscriberKeys;
 - (id)internalVariables;
-- (id)wifiHotSpotOutrankPolicyStringFor:(int)a3;
+- (id)wifiHotSpotOutrankPolicyStringFor:(int)for;
 - (int)getCurrentSISWiFiHotSpotOutrankPolicy;
-- (unsigned)processEnhancedLinkQualityHighThroughputNotification:(id)a3;
+- (unsigned)processEnhancedLinkQualityHighThroughputNotification:(id)notification;
 - (void)_completeInitialization;
-- (void)_deliverRNFSettingAvailable:(BOOL)a3 enabled:(BOOL)a4;
-- (void)_deliverRatSelectionChanged:(id)a3 withSubscriptionDict:(id)a4;
-- (void)_deliverSignalStrengthChanged:(id)a3 cellularRSRP:(id)a4 cellularSNR:(id)a5;
-- (void)_dispatchCellInfoResult:(id)a3 error:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)_processBarcodeActivationNotification:(id)a3;
-- (void)_processEngineReadyNotification:(id)a3;
-- (void)_registerForCoreTelephonyNotifications:(unint64_t)a3;
-- (void)_unregisterFromCoreTelephonyNotifications:(unint64_t)a3;
+- (void)_deliverRNFSettingAvailable:(BOOL)available enabled:(BOOL)enabled;
+- (void)_deliverRatSelectionChanged:(id)changed withSubscriptionDict:(id)dict;
+- (void)_deliverSignalStrengthChanged:(id)changed cellularRSRP:(id)p cellularSNR:(id)r;
+- (void)_dispatchCellInfoResult:(id)result error:(id)error queue:(id)queue completion:(id)completion;
+- (void)_processBarcodeActivationNotification:(id)notification;
+- (void)_processEngineReadyNotification:(id)notification;
+- (void)_registerForCoreTelephonyNotifications:(unint64_t)notifications;
+- (void)_unregisterFromCoreTelephonyNotifications:(unint64_t)notifications;
 - (void)_updateSubscribers;
 - (void)activeSubscriptionsDidChange;
-- (void)addDelegate:(id)a3;
-- (void)addNewSubscriberForICCID:(id)a3 MDN:(id)a4 slotID:(int64_t)a5;
-- (void)cacheEnhancedLinkQualityMetricType:(int64_t)a3 withContents:(id)a4 forSlot:(int64_t)a5;
-- (void)carrierBundleChange:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)addNewSubscriberForICCID:(id)d MDN:(id)n slotID:(int64_t)iD;
+- (void)cacheEnhancedLinkQualityMetricType:(int64_t)type withContents:(id)contents forSlot:(int64_t)slot;
+- (void)carrierBundleChange:(id)change;
 - (void)carrierSettingsDidChange;
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4;
+- (void)cellMonitorUpdate:(id)update info:(id)info;
 - (void)commonInit;
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5;
-- (void)copyCellInfoOnQueue:(id)a3 completion:(id)a4;
-- (void)countryCodeChanged:(id)a3 forContext:(id)a4;
-- (void)currentDataSimChanged:(id)a3;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info;
+- (void)copyCellInfoOnQueue:(id)queue completion:(id)completion;
+- (void)countryCodeChanged:(id)changed forContext:(id)context;
+- (void)currentDataSimChanged:(id)changed;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
 - (void)dealloc;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
-- (void)dualSimStatusChangedTo:(unsigned __int8)a3;
-- (void)dualSimStatusInspection:(id)a3 withSubscriptionsInUse:(id)a4;
-- (void)enhancedDataLinkQualityChanged:(id)a3 metric:(id)a4;
-- (void)get5GSupportedForContext:(id)a3;
-- (void)handleCTServerNotification:(__CFString *)a3 notificationInfo:(__CFDictionary *)a4;
+- (void)displayStatusChanged:(id)changed status:(id)status;
+- (void)dualSimStatusChangedTo:(unsigned __int8)to;
+- (void)dualSimStatusInspection:(id)inspection withSubscriptionsInUse:(id)use;
+- (void)enhancedDataLinkQualityChanged:(id)changed metric:(id)metric;
+- (void)get5GSupportedForContext:(id)context;
+- (void)handleCTServerNotification:(__CFString *)notification notificationInfo:(__CFDictionary *)info;
 - (void)initializeCoreTelephonyClient;
 - (void)initializeStewieStateMonitor;
-- (void)networkCodeChanged:(id)a3 forContext:(id)a4;
-- (void)operatorNameChanged:(id)a3 name:(id)a4;
+- (void)networkCodeChanged:(id)changed forContext:(id)context;
+- (void)operatorNameChanged:(id)changed name:(id)name;
 - (void)preferPrivateNetworkCellularOverWiFiDidChange;
-- (void)processDataStatus:(id)a3 forContext:(id)a4;
-- (void)ratSelectionChanged:(id)a3 selection:(id)a4;
+- (void)processDataStatus:(id)status forContext:(id)context;
+- (void)ratSelectionChanged:(id)changed selection:(id)selection;
 - (void)registerForCTDumpNotifications;
-- (void)registerRNFChangedWithDelegate:(id)a3;
-- (void)registerSignalStrengthChangedWithDelegate:(id)a3;
-- (void)removeCachedContentsForEnhancedLinkQualityMetricType:(int64_t)a3 forSlot:(int64_t)a4;
-- (void)removeDelegate:(id)a3;
+- (void)registerRNFChangedWithDelegate:(id)delegate;
+- (void)registerSignalStrengthChangedWithDelegate:(id)delegate;
+- (void)removeCachedContentsForEnhancedLinkQualityMetricType:(int64_t)type forSlot:(int64_t)slot;
+- (void)removeDelegate:(id)delegate;
 - (void)sendNetworkSlicingStatesToDelegate;
-- (void)sendTaggedInfo:(unint64_t)a3 payload:(id)a4;
-- (void)set5GSupportChanged:(id)a3 forContext:(id)a4;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
+- (void)sendTaggedInfo:(unint64_t)info payload:(id)payload;
+- (void)set5GSupportChanged:(id)changed forContext:(id)context;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
 - (void)simLessSubscriptionsDidChange;
-- (void)stateChanged:(id)a3;
+- (void)stateChanged:(id)changed;
 - (void)subscriptionInfoDidChange;
-- (void)taggedInfoIndicationChanged:(id)a3 type:(unint64_t)a4 payload:(id)a5;
+- (void)taggedInfoIndicationChanged:(id)changed type:(unint64_t)type payload:(id)payload;
 - (void)unregisterForCTDumpNotifications;
-- (void)unregisterRNFChangedWithDelegate:(id)a3;
-- (void)unregisterSignalStrengthChangedWithDelegate:(id)a3;
+- (void)unregisterRNFChangedWithDelegate:(id)delegate;
+- (void)unregisterSignalStrengthChangedWithDelegate:(id)delegate;
 - (void)updateCurrentRatSelection;
-- (void)updateCurrentSubscriberTag:(id)a3;
+- (void)updateCurrentSubscriberTag:(id)tag;
 - (void)updateSubscribers;
 @end
 
@@ -189,7 +189,7 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = __35__CoreTelephonyShim_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_32 != -1)
   {
     dispatch_once(&sharedInstance_pred_32, block);
@@ -218,9 +218,9 @@ void __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
 + (id)elevatedQueue
 {
   v2 = +[CoreTelephonyShim sharedInstance];
-  v3 = [v2 elevatedQueue];
+  elevatedQueue = [v2 elevatedQueue];
 
-  return v3;
+  return elevatedQueue;
 }
 
 - (CoreTelephonyShim)init
@@ -241,16 +241,16 @@ void __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (CoreTelephonyShim)initWithQueue:(id)a3
+- (CoreTelephonyShim)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = CoreTelephonyShim;
   v6 = [(CoreTelephonyShim *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->elevatedQueue, a3);
+    objc_storeStrong(&v6->elevatedQueue, queue);
     [(CoreTelephonyShim *)v7 commonInit];
   }
 
@@ -259,9 +259,9 @@ void __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)commonInit
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   subscriptions = self->_subscriptions;
-  self->_subscriptions = v3;
+  self->_subscriptions = dictionary;
 
   v5 = [MEMORY[0x277CBEB58] set];
   delegates = self->delegates;
@@ -290,13 +290,13 @@ void __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
   self->signalStrengthChangedLock._os_unfair_lock_opaque = 0;
   self->ctClientInitReadyFlag = 0;
   self->initializationComplete = 0;
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __31__CoreTelephonyShim_commonInit__block_invoke;
   v18[3] = &unk_27898A690;
   v18[4] = self;
-  v13 = [v12 addObserverForName:@"kNotificationOfPartialInitialization" object:0 queue:0 usingBlock:v18];
+  v13 = [defaultCenter addObserverForName:@"kNotificationOfPartialInitialization" object:0 queue:0 usingBlock:v18];
   engineReadyObserver = self->engineReadyObserver;
   self->engineReadyObserver = v13;
 
@@ -305,7 +305,7 @@ void __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
   v17[2] = __31__CoreTelephonyShim_commonInit__block_invoke_2;
   v17[3] = &unk_27898A690;
   v17[4] = self;
-  v15 = [v12 addObserverForName:@"kNotificationBarcodeActivation" object:0 queue:0 usingBlock:v17];
+  v15 = [defaultCenter addObserverForName:@"kNotificationBarcodeActivation" object:0 queue:0 usingBlock:v17];
   barcodeActivationObserver = self->barcodeActivationObserver;
   self->barcodeActivationObserver = v15;
 }
@@ -372,14 +372,14 @@ void __31__CoreTelephonyShim_commonInit__block_invoke_130(uint64_t a1)
   [*(a1 + 40) _processBarcodeActivationNotification:v2];
 }
 
-- (void)_processEngineReadyNotification:(id)a3
+- (void)_processEngineReadyNotification:(id)notification
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  if (notificationCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ObjectKey"];
+    v6 = [notificationCopy objectForKeyedSubscript:@"ObjectKey"];
     if (!v6)
     {
       v11 = netepochsLogHandle;
@@ -423,8 +423,8 @@ LABEL_14:
             _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_INFO, "CTShim: Initialization complete, removing engine ready observer", &v26, 2u);
           }
 
-          v19 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v19 removeObserver:self->engineReadyObserver];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter removeObserver:self->engineReadyObserver];
 
           engineReadyObserver = self->engineReadyObserver;
           self->engineReadyObserver = 0;
@@ -637,8 +637,8 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
 
   if (self->barcodeActivationObserver)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self->barcodeActivationObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->barcodeActivationObserver];
 
     barcodeActivationObserver = self->barcodeActivationObserver;
     self->barcodeActivationObserver = 0;
@@ -664,27 +664,27 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
   return v3;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->delegates addObject:v5];
+    [(NSMutableSet *)self->delegates addObject:delegateCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->delegates removeObject:v5];
+    [(NSMutableSet *)self->delegates removeObject:delegateCopy];
   }
 
   objc_sync_exit(v4);
@@ -754,7 +754,7 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
   }
 }
 
-- (void)handleCTServerNotification:(__CFString *)a3 notificationInfo:(__CFDictionary *)a4
+- (void)handleCTServerNotification:(__CFString *)notification notificationInfo:(__CFDictionary *)info
 {
   v62 = *MEMORY[0x277D85DE8];
   v7 = self->delegates;
@@ -763,7 +763,7 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v45 = self;
+  selfCopy = self;
   v8 = self->delegates;
   v9 = [(NSMutableSet *)v8 countByEnumeratingWithState:&v53 objects:v61 count:16];
   if (v9)
@@ -781,7 +781,7 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
         v12 = *(*(&v53 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v12 ctServerConnectionNotification:a3 notificationInfo:a4];
+          [v12 ctServerConnectionNotification:notification notificationInfo:info];
         }
       }
 
@@ -792,42 +792,42 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
   }
 
   objc_sync_exit(v7);
-  if (CFStringCompare(a3, *MEMORY[0x277CC3E98], 0) == kCFCompareEqualTo)
+  if (CFStringCompare(notification, *MEMORY[0x277CC3E98], 0) == kCFCompareEqualTo)
   {
-    v13 = a4;
-    v14 = v13;
-    if (v13)
+    infoCopy = info;
+    v14 = infoCopy;
+    if (infoCopy)
     {
-      v15 = [(__CFDictionary *)v13 objectForKeyedSubscript:*MEMORY[0x277CC3EA0]];
+      v15 = [(__CFDictionary *)infoCopy objectForKeyedSubscript:*MEMORY[0x277CC3EA0]];
       v16 = [(__CFDictionary *)v14 objectForKeyedSubscript:*MEMORY[0x277CC3EA8]];
       v17 = v16;
       if (v16)
       {
-        v18 = [v16 BOOLValue];
-        v19 = [v15 BOOLValue];
+        bOOLValue = [v16 BOOLValue];
+        bOOLValue2 = [v15 BOOLValue];
         v20 = rnfLogHandle;
         if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEBUG))
         {
           v21 = "OFF";
-          if (v18)
+          if (bOOLValue)
           {
             v21 = "ON";
           }
 
           v22 = "available";
-          if (!v19)
+          if (!bOOLValue2)
           {
             v22 = "unavailable";
           }
 
           *buf = 136315394;
-          v58 = v21;
+          notificationCopy = v21;
           v59 = 2080;
           v60 = v22;
           _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_DEBUG, "RNF is %s (%s)", buf, 0x16u);
         }
 
-        [(CoreTelephonyShim *)v45 _deliverRNFSettingAvailable:v19 enabled:v18, v45];
+        [(CoreTelephonyShim *)selfCopy _deliverRNFSettingAvailable:bOOLValue2 enabled:bOOLValue, selfCopy];
       }
 
       else
@@ -852,31 +852,31 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
     }
   }
 
-  if (CFStringCompare(a3, *MEMORY[0x277CC3A40], 0) == kCFCompareEqualTo)
+  if (CFStringCompare(notification, *MEMORY[0x277CC3A40], 0) == kCFCompareEqualTo)
   {
-    v25 = a4;
+    infoCopy2 = info;
     v26 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v58 = v25;
+      notificationCopy = infoCopy2;
       _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEBUG, "Received a callback about signal strength: %@", buf, 0xCu);
     }
 
-    if (v25)
+    if (infoCopy2)
     {
-      v27 = [(__CFDictionary *)v25 objectForKeyedSubscript:*MEMORY[0x277CC3A30]];
+      v27 = [(__CFDictionary *)infoCopy2 objectForKeyedSubscript:*MEMORY[0x277CC3A30]];
       if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v28 = netepochsLogHandle;
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v58 = v27;
+          notificationCopy = v27;
           _os_log_impl(&dword_23255B000, v28, OS_LOG_TYPE_INFO, "Signal strength bars is %@", buf, 0xCu);
         }
 
-        [(CoreTelephonyShim *)v45 _deliverSignalStrengthChanged:v27 cellularRSRP:0 cellularSNR:0, v45];
+        [(CoreTelephonyShim *)selfCopy _deliverSignalStrengthChanged:v27 cellularRSRP:0 cellularSNR:0, selfCopy];
       }
 
       else
@@ -885,7 +885,7 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v58 = v27;
+          notificationCopy = v27;
           _os_log_impl(&dword_23255B000, v29, OS_LOG_TYPE_ERROR, "Failed to retrieve signal strength from CT (%@)", buf, 0xCu);
         }
       }
@@ -904,8 +904,8 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
     }
   }
 
-  v31 = CFStringCompare(a3, *MEMORY[0x277CC3A20], 0) == kCFCompareEqualTo;
-  v32 = CFStringCompare(a3, *MEMORY[0x277CC3A28], 0);
+  v31 = CFStringCompare(notification, *MEMORY[0x277CC3A20], 0) == kCFCompareEqualTo;
+  v32 = CFStringCompare(notification, *MEMORY[0x277CC3A28], 0);
   v33 = v32 == kCFCompareEqualTo;
   if (v32)
   {
@@ -919,20 +919,20 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
 
   if (v34 == 1)
   {
-    v35 = a4;
+    infoCopy3 = info;
     v36 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v58 = a3;
+      notificationCopy = notification;
       v59 = 2112;
-      v60 = v35;
+      v60 = infoCopy3;
       _os_log_impl(&dword_23255B000, v36, OS_LOG_TYPE_INFO, "%@ %@", buf, 0x16u);
     }
 
-    v37 = [(__CFDictionary *)v35 objectForKeyedSubscript:*MEMORY[0x277CC3A58], v45];
-    v38 = [(__CFDictionary *)v35 objectForKeyedSubscript:*MEMORY[0x277CC3A48]];
-    v39 = [(__CFDictionary *)v35 objectForKeyedSubscript:*MEMORY[0x277CC3A50]];
+    selfCopy = [(__CFDictionary *)infoCopy3 objectForKeyedSubscript:*MEMORY[0x277CC3A58], selfCopy];
+    v38 = [(__CFDictionary *)infoCopy3 objectForKeyedSubscript:*MEMORY[0x277CC3A48]];
+    v39 = [(__CFDictionary *)infoCopy3 objectForKeyedSubscript:*MEMORY[0x277CC3A50]];
     v40 = *(v46 + 208);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -940,13 +940,13 @@ uint64_t __44__CoreTelephonyShim__completeInitialization__block_invoke_2(uint64_
     block[3] = &unk_27898BE40;
     v51 = v31;
     block[4] = v46;
-    v48 = v37;
+    v48 = selfCopy;
     v49 = v38;
     v50 = v39;
     v52 = v33;
     v41 = v39;
     v42 = v38;
-    v43 = v37;
+    v43 = selfCopy;
     dispatch_async(v40, block);
   }
 
@@ -1015,20 +1015,20 @@ void __65__CoreTelephonyShim_handleCTServerNotification_notificationInfo___block
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cellCarrierNameForContext:(id)a3 refresh:(BOOL)a4
+- (id)cellCarrierNameForContext:(id)context refresh:(BOOL)refresh
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  contextCopy = context;
+  if (contextCopy)
   {
     v7 = self->_carrierNameForSlot;
     objc_sync_enter(v7);
     carrierNameForSlot = self->_carrierNameForSlot;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "slotID")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
     v10 = [(NSMutableDictionary *)carrierNameForSlot objectForKeyedSubscript:v9];
 
     objc_sync_exit(v7);
-    if (!a4 && v10)
+    if (!refresh && v10)
     {
       v11 = v10;
       goto LABEL_17;
@@ -1037,10 +1037,10 @@ void __65__CoreTelephonyShim_handleCTServerNotification_notificationInfo___block
     v13 = [objc_alloc(MEMORY[0x277CC3620]) initWithBundleType:1];
     coreTelephonyClient = self->coreTelephonyClient;
     v29 = 0;
-    v15 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:v6 key:@"CarrierName" bundleType:v13 error:&v29];
+    v15 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:contextCopy key:@"CarrierName" bundleType:v13 error:&v29];
     v16 = v29;
-    v17 = [v16 domain];
-    if (v17)
+    domain = [v16 domain];
+    if (domain)
     {
     }
 
@@ -1049,7 +1049,7 @@ void __65__CoreTelephonyShim_handleCTServerNotification_notificationInfo___block
       v22 = self->_carrierNameForSlot;
       objc_sync_enter(v22);
       v23 = self->_carrierNameForSlot;
-      v24 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "slotID")}];
+      v24 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
       [(NSMutableDictionary *)v23 setObject:v15 forKeyedSubscript:v24];
 
       objc_sync_exit(v22);
@@ -1059,9 +1059,9 @@ void __65__CoreTelephonyShim_handleCTServerNotification_notificationInfo___block
       if (v26)
       {
         v27 = v25;
-        v28 = [v6 slotID];
+        slotID = [contextCopy slotID];
         *buf = 134218243;
-        v31 = v28;
+        v31 = slotID;
         v32 = 2113;
         v33 = v15;
         _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_DEFAULT, "CTShim: Carrier name for slot %ld updated to %{private}@", buf, 0x16u);
@@ -1116,19 +1116,19 @@ LABEL_17:
   return v11;
 }
 
-- (void)_processBarcodeActivationNotification:(id)a3
+- (void)_processBarcodeActivationNotification:(id)notification
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v23 = self;
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  selfCopy = self;
   if (self->coreTelephonyClient)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    v6 = [notificationCopy countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v6)
     {
       v8 = v6;
@@ -1150,10 +1150,10 @@ LABEL_17:
           v9 = *(*(&v24 + 1) + 8 * v11);
 
           v13 = [v5 objectForKeyedSubscript:v9];
-          v14 = [v13 eventData];
-          if (v14 && (*(v14 + 4) & 1) != 0)
+          eventData = [v13 eventData];
+          if (eventData && (*(eventData + 4) & 1) != 0)
           {
-            v15 = *(v14 + 24) != 0;
+            v15 = *(eventData + 24) != 0;
             v16 = "with";
           }
 
@@ -1188,7 +1188,7 @@ LABEL_17:
               _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_INFO, "CTShim: Asking baseband to activate turbo mode", buf, 2u);
             }
 
-            [(CoreTelephonyClient *)v23->coreTelephonyClient activateTurboMode:&__block_literal_global_179, v22];
+            [(CoreTelephonyClient *)selfCopy->coreTelephonyClient activateTurboMode:&__block_literal_global_179, v22];
           }
 
           ++v11;
@@ -1236,20 +1236,20 @@ void __59__CoreTelephonyShim__processBarcodeActivationNotification___block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerForCoreTelephonyNotifications:(unint64_t)a3
+- (void)_registerForCoreTelephonyNotifications:(unint64_t)notifications
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v22 = a3;
+    notificationsCopy = notifications;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "Registering CoreTelephony notifications with flags: %lx", buf, 0xCu);
   }
 
   if (self->coreTelephonyClient)
   {
-    if (a3)
+    if (notifications)
     {
       v6 = rnfLogHandle;
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_INFO))
@@ -1265,7 +1265,7 @@ void __59__CoreTelephonyShim__processBarcodeActivationNotification___block_invok
       *&self->_pendingCTNotificationRegistrationFlags = v9;
     }
 
-    if ((a3 & 2) != 0)
+    if ((notifications & 2) != 0)
     {
       v10 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
@@ -1284,7 +1284,7 @@ void __59__CoreTelephonyShim__processBarcodeActivationNotification___block_invok
 
   else
   {
-    if (a3)
+    if (notifications)
     {
       v14 = rnfLogHandle;
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_INFO))
@@ -1302,7 +1302,7 @@ void __59__CoreTelephonyShim__processBarcodeActivationNotification___block_invok
       [CTServerConnection registerForCTNofication:v15 ctShim:self completion:v20];
     }
 
-    if ((a3 & 2) != 0)
+    if ((notifications & 2) != 0)
     {
       v16 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
@@ -1372,20 +1372,20 @@ void __60__CoreTelephonyShim__registerForCoreTelephonyNotifications___block_invo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unregisterFromCoreTelephonyNotifications:(unint64_t)a3
+- (void)_unregisterFromCoreTelephonyNotifications:(unint64_t)notifications
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = a3;
+    notificationsCopy = notifications;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "Unregistering CoreTelephony notifications with flags: %lx", buf, 0xCu);
   }
 
   if (self->coreTelephonyClient)
   {
-    if (a3)
+    if (notifications)
     {
       v6 = rnfLogHandle;
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_INFO))
@@ -1397,7 +1397,7 @@ void __60__CoreTelephonyShim__registerForCoreTelephonyNotifications___block_invo
       self->_currentCTNotificationRegistrationFlags &= ~1uLL;
     }
 
-    if ((a3 & 2) != 0)
+    if ((notifications & 2) != 0)
     {
       v7 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
@@ -1412,7 +1412,7 @@ void __60__CoreTelephonyShim__registerForCoreTelephonyNotifications___block_invo
 
   else
   {
-    if (a3)
+    if (notifications)
     {
       v8 = rnfLogHandle;
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_INFO))
@@ -1430,7 +1430,7 @@ void __60__CoreTelephonyShim__registerForCoreTelephonyNotifications___block_invo
       [CTServerConnection unregisterForCTNotification:v9 ctShim:self completion:v14];
     }
 
-    if ((a3 & 2) != 0)
+    if ((notifications & 2) != 0)
     {
       v10 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
@@ -1498,7 +1498,7 @@ void __63__CoreTelephonyShim__unregisterFromCoreTelephonyNotifications___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deliverRNFSettingAvailable:(BOOL)a3 enabled:(BOOL)a4
+- (void)_deliverRNFSettingAvailable:(BOOL)available enabled:(BOOL)enabled
 {
   v13 = 0;
   v14 = &v13;
@@ -1525,8 +1525,8 @@ void __63__CoreTelephonyShim__unregisterFromCoreTelephonyNotifications___block_i
   v8[1] = 3221225472;
   v8[2] = __57__CoreTelephonyShim__deliverRNFSettingAvailable_enabled___block_invoke_186;
   v8[3] = &__block_descriptor_34_e41_v24__0___CoreTelephonyShimDelegate__8_B16l;
-  v9 = a3;
-  v10 = a4;
+  availableCopy = available;
+  enabledCopy = enabled;
   [v7 enumerateObjectsUsingBlock:v8];
   _Block_object_dispose(&v13, 8);
 }
@@ -1550,11 +1550,11 @@ void __57__CoreTelephonyShim__deliverRNFSettingAvailable_enabled___block_invoke_
   }
 }
 
-- (void)_deliverSignalStrengthChanged:(id)a3 cellularRSRP:(id)a4 cellularSNR:(id)a5
+- (void)_deliverSignalStrengthChanged:(id)changed cellularRSRP:(id)p cellularSNR:(id)r
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changedCopy = changed;
+  pCopy = p;
+  rCopy = r;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1580,11 +1580,11 @@ void __57__CoreTelephonyShim__deliverRNFSettingAvailable_enabled___block_invoke_
   v16[1] = 3221225472;
   v16[2] = __76__CoreTelephonyShim__deliverSignalStrengthChanged_cellularRSRP_cellularSNR___block_invoke_191;
   v16[3] = &unk_27898EC58;
-  v13 = v8;
+  v13 = changedCopy;
   v17 = v13;
-  v14 = v9;
+  v14 = pCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = rCopy;
   v19 = v15;
   [v12 enumerateObjectsUsingBlock:v16];
 
@@ -1610,23 +1610,23 @@ void __76__CoreTelephonyShim__deliverSignalStrengthChanged_cellularRSRP_cellular
   }
 }
 
-- (void)copyCellInfoOnQueue:(id)a3 completion:(id)a4
+- (void)copyCellInfoOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-    if (v8)
+    getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+    if (getCurrentDataSubscriptionContext)
     {
       coreTelephonyClient = self->coreTelephonyClient;
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __52__CoreTelephonyShim_copyCellInfoOnQueue_completion___block_invoke;
       v13[3] = &unk_27898D988;
-      v14 = v6;
-      v15 = v7;
-      [(CoreTelephonyClient *)coreTelephonyClient copyCellInfo:v8 completion:v13];
+      v14 = queueCopy;
+      v15 = completionCopy;
+      [(CoreTelephonyClient *)coreTelephonyClient copyCellInfo:getCurrentDataSubscriptionContext completion:v13];
     }
 
     else
@@ -1669,11 +1669,11 @@ void __52__CoreTelephonyShim_copyCellInfoOnQueue_completion___block_invoke(uint6
   dispatch_async(v7, block);
 }
 
-- (void)registerRNFChangedWithDelegate:(id)a3
+- (void)registerRNFChangedWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     elevatedQueue = self->elevatedQueue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -1681,7 +1681,7 @@ void __52__CoreTelephonyShim_copyCellInfoOnQueue_completion___block_invoke(uint6
     v8[2] = __52__CoreTelephonyShim_registerRNFChangedWithDelegate___block_invoke;
     v8[3] = &unk_27898A7D0;
     v8[4] = self;
-    v9 = v4;
+    v9 = delegateCopy;
     dispatch_async(elevatedQueue, v8);
   }
 
@@ -1774,11 +1774,11 @@ void __52__CoreTelephonyShim_registerRNFChangedWithDelegate___block_invoke_2(uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterRNFChangedWithDelegate:(id)a3
+- (void)unregisterRNFChangedWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     elevatedQueue = self->elevatedQueue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -1786,7 +1786,7 @@ void __52__CoreTelephonyShim_registerRNFChangedWithDelegate___block_invoke_2(uin
     v8[2] = __54__CoreTelephonyShim_unregisterRNFChangedWithDelegate___block_invoke;
     v8[3] = &unk_27898A7D0;
     v8[4] = self;
-    v9 = v4;
+    v9 = delegateCopy;
     dispatch_async(elevatedQueue, v8);
   }
 
@@ -1849,11 +1849,11 @@ void __54__CoreTelephonyShim_unregisterRNFChangedWithDelegate___block_invoke_2(u
   }
 }
 
-- (void)registerSignalStrengthChangedWithDelegate:(id)a3
+- (void)registerSignalStrengthChangedWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     elevatedQueue = self->elevatedQueue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -1861,7 +1861,7 @@ void __54__CoreTelephonyShim_unregisterRNFChangedWithDelegate___block_invoke_2(u
     v8[2] = __63__CoreTelephonyShim_registerSignalStrengthChangedWithDelegate___block_invoke;
     v8[3] = &unk_27898A7D0;
     v8[4] = self;
-    v9 = v4;
+    v9 = delegateCopy;
     dispatch_async(elevatedQueue, v8);
   }
 
@@ -1954,11 +1954,11 @@ void __63__CoreTelephonyShim_registerSignalStrengthChangedWithDelegate___block_i
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterSignalStrengthChangedWithDelegate:(id)a3
+- (void)unregisterSignalStrengthChangedWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     elevatedQueue = self->elevatedQueue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -1966,7 +1966,7 @@ void __63__CoreTelephonyShim_registerSignalStrengthChangedWithDelegate___block_i
     v8[2] = __65__CoreTelephonyShim_unregisterSignalStrengthChangedWithDelegate___block_invoke;
     v8[3] = &unk_27898A7D0;
     v8[4] = self;
-    v9 = v4;
+    v9 = delegateCopy;
     dispatch_async(elevatedQueue, v8);
   }
 
@@ -2039,10 +2039,10 @@ void __65__CoreTelephonyShim_unregisterSignalStrengthChangedWithDelegate___block
     _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEBUG, "Updating current SDM setting", buf, 2u);
   }
 
-  v4 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-  if (v4)
+  getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+  if (getCurrentDataSubscriptionContext)
   {
-    v5 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v4];
+    v5 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:getCurrentDataSubscriptionContext];
     if (v5)
     {
       coreTelephonyClient = self->coreTelephonyClient;
@@ -2061,9 +2061,9 @@ LABEL_15:
       if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
       {
         v11 = v10;
-        v12 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 138412290;
-        v19 = v12;
+        v19 = localizedDescription;
         _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_ERROR, "Error querying smartDataMode: %@", buf, 0xCu);
       }
     }
@@ -2098,31 +2098,31 @@ LABEL_16:
 
 - (int)getCurrentSISWiFiHotSpotOutrankPolicy
 {
-  v3 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-  if (v3)
+  getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+  if (getCurrentDataSubscriptionContext)
   {
     coreTelephonyClient = self->coreTelephonyClient;
     v5 = [objc_alloc(MEMORY[0x277CC3620]) initWithBundleType:1];
     v14 = 0;
-    v6 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:v3 key:@"EnableMmWaveSisOutrank" bundleType:v5 error:&v14];
+    v6 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:getCurrentDataSubscriptionContext key:@"EnableMmWaveSisOutrank" bundleType:v5 error:&v14];
     v7 = v14;
 
-    v8 = [v7 domain];
-    if (v8)
+    domain = [v7 domain];
+    if (domain)
     {
     }
 
     else if (![v7 code])
     {
-      v12 = [v6 intValue];
-      if (v12 == 1)
+      intValue = [v6 intValue];
+      if (intValue == 1)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = 2 * (v12 == 2);
+        v10 = 2 * (intValue == 2);
       }
 
       goto LABEL_9;
@@ -2147,15 +2147,15 @@ LABEL_10:
   return v10;
 }
 
-- (id)wifiHotSpotOutrankPolicyStringFor:(int)a3
+- (id)wifiHotSpotOutrankPolicyStringFor:(int)for
 {
   v3 = @"No Advice";
-  if (a3 == 2)
+  if (for == 2)
   {
     v3 = @"Never Outrank";
   }
 
-  if (a3 == 1)
+  if (for == 1)
   {
     return @"Always Outrank";
   }
@@ -2169,12 +2169,12 @@ LABEL_10:
 - (id)getCurrentSIMStatus
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-  if (v3)
+  getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+  if (getCurrentDataSubscriptionContext)
   {
     coreTelephonyClient = self->coreTelephonyClient;
     v12 = 0;
-    v5 = [(CoreTelephonyClient *)coreTelephonyClient getSIMStatus:v3 error:&v12];
+    v5 = [(CoreTelephonyClient *)coreTelephonyClient getSIMStatus:getCurrentDataSubscriptionContext error:&v12];
     v6 = v12;
     if (v6)
     {
@@ -2184,7 +2184,7 @@ LABEL_10:
         *buf = 138412547;
         v14 = v6;
         v15 = 2113;
-        v16 = v3;
+        v16 = getCurrentDataSubscriptionContext;
         _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "getSIMStatus failed error: %@, context: %{private}@", buf, 0x16u);
       }
     }
@@ -2212,12 +2212,12 @@ LABEL_10:
 - (id)getCurrentDataStatus
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-  if (v3)
+  getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+  if (getCurrentDataSubscriptionContext)
   {
     coreTelephonyClient = self->coreTelephonyClient;
     v12 = 0;
-    v5 = [(CoreTelephonyClient *)coreTelephonyClient getDataStatus:v3 error:&v12];
+    v5 = [(CoreTelephonyClient *)coreTelephonyClient getDataStatus:getCurrentDataSubscriptionContext error:&v12];
     v6 = v12;
     if (v6)
     {
@@ -2227,7 +2227,7 @@ LABEL_10:
         *buf = 138412547;
         v14 = v6;
         v15 = 2113;
-        v16 = v3;
+        v16 = getCurrentDataSubscriptionContext;
         _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "getDataStatus failed error: %@, context: %{private}@", buf, 0x16u);
       }
     }
@@ -2255,24 +2255,24 @@ LABEL_10:
 - (id)getNetworkSlicingStates
 {
   v17[8] = *MEMORY[0x277D85DE8];
-  v3 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-  if (v3)
+  getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+  if (getCurrentDataSubscriptionContext)
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 28, v3)}];
+    v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 28, getCurrentDataSubscriptionContext)}];
     v17[0] = v4;
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 29, v3)}];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 29, getCurrentDataSubscriptionContext)}];
     v17[1] = v5;
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 30, v3)}];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 30, getCurrentDataSubscriptionContext)}];
     v17[2] = v6;
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 31, v3)}];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 31, getCurrentDataSubscriptionContext)}];
     v17[3] = v7;
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 32, v3)}];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 32, getCurrentDataSubscriptionContext)}];
     v17[4] = v8;
-    v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 33, v3)}];
+    v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 33, getCurrentDataSubscriptionContext)}];
     v17[5] = v9;
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 34, v3)}];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 34, getCurrentDataSubscriptionContext)}];
     v17[6] = v10;
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 35, v3)}];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim getConnectionType:activeForContext:](self, "getConnectionType:activeForContext:", 35, getCurrentDataSubscriptionContext)}];
     v17[7] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:8];
   }
@@ -2294,16 +2294,16 @@ LABEL_10:
   return v12;
 }
 
-- (void)sendTaggedInfo:(unint64_t)a3 payload:(id)a4
+- (void)sendTaggedInfo:(unint64_t)info payload:(id)payload
 {
-  v11 = a4;
-  v6 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-  if (v6)
+  payloadCopy = payload;
+  getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+  if (getCurrentDataSubscriptionContext)
   {
     coreTelephonyClient = self->coreTelephonyClient;
     if (objc_opt_respondsToSelector())
     {
-      [(CoreTelephonyClient *)self->coreTelephonyClient sendTaggedInfo:v6 type:a3 payload:v11 completion:&__block_literal_global_218];
+      [(CoreTelephonyClient *)self->coreTelephonyClient sendTaggedInfo:getCurrentDataSubscriptionContext type:info payload:payloadCopy completion:&__block_literal_global_218];
       goto LABEL_7;
     }
 
@@ -2355,10 +2355,10 @@ void __44__CoreTelephonyShim_sendTaggedInfo_payload___block_invoke(uint64_t a1, 
     _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEBUG, "Updating current RAT selection", buf, 2u);
   }
 
-  v4 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-  if (v4)
+  getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+  if (getCurrentDataSubscriptionContext)
   {
-    v5 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v4];
+    v5 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:getCurrentDataSubscriptionContext];
     if (v5)
     {
       coreTelephonyClient = self->coreTelephonyClient;
@@ -2371,9 +2371,9 @@ void __44__CoreTelephonyShim_sendTaggedInfo_payload___block_invoke(uint64_t a1, 
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
         {
           v10 = v9;
-          v11 = [v8 localizedDescription];
+          localizedDescription = [v8 localizedDescription];
           *buf = 138412290;
-          v17 = v11;
+          v17 = localizedDescription;
           _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_ERROR, "Error querying getRatSelectionMask: %@", buf, 0xCu);
         }
       }
@@ -2408,14 +2408,14 @@ void __44__CoreTelephonyShim_sendTaggedInfo_payload___block_invoke(uint64_t a1, 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enhancedDataLinkQualityChanged:(id)a3 metric:(id)a4
+- (void)enhancedDataLinkQualityChanged:(id)changed metric:(id)metric
 {
   v140[2] = *MEMORY[0x277D85DE8];
-  v91 = a3;
-  v92 = a4;
-  v6 = [v91 slotID];
+  changedCopy = changed;
+  metricCopy = metric;
+  slotID = [changedCopy slotID];
   v7 = netepochsLogHandle;
-  if (v6 == self->currentSubscriberSlotID)
+  if (slotID == self->currentSubscriberSlotID)
   {
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
     {
@@ -2423,24 +2423,24 @@ void __44__CoreTelephonyShim_sendTaggedInfo_payload___block_invoke(uint64_t a1, 
       *buf = 134218499;
       v134 = currentSubscriberSlotID;
       v135 = 2113;
-      v136 = v91;
+      v136 = changedCopy;
       v137 = 2112;
-      v138 = v92;
+      v138 = metricCopy;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_INFO, "CTShim: enhancedDataLinkQualityChanged, currentSubscriberSlotID: %ld, context: %{private}@, metric: %@", buf, 0x20u);
     }
 
-    v9 = [v92 metricType];
-    if (v9 <= 4)
+    metricType = [metricCopy metricType];
+    if (metricType <= 4)
     {
-      if (v9 > 2)
+      if (metricType > 2)
       {
-        if (v9 == 3)
+        if (metricType == 3)
         {
-          v54 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v91];
+          v54 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changedCopy];
           v55 = self->delegates;
           objc_sync_enter(v55);
-          v56 = [v92 enhancedLinkQuality];
-          [v54 setObject:v56 forKeyedSubscript:@"trafficClass"];
+          enhancedLinkQuality = [metricCopy enhancedLinkQuality];
+          [v54 setObject:enhancedLinkQuality forKeyedSubscript:@"trafficClass"];
 
           v115 = 0u;
           v116 = 0u;
@@ -2482,11 +2482,11 @@ void __44__CoreTelephonyShim_sendTaggedInfo_payload___block_invoke(uint64_t a1, 
 
         else
         {
-          v30 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v91];
+          v30 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changedCopy];
           v31 = self->delegates;
           objc_sync_enter(v31);
-          v32 = [v92 enhancedLinkQuality];
-          [v30 setObject:v32 forKeyedSubscript:@"dataTransferTime"];
+          enhancedLinkQuality2 = [metricCopy enhancedLinkQuality];
+          [v30 setObject:enhancedLinkQuality2 forKeyedSubscript:@"dataTransferTime"];
 
           v111 = 0u;
           v112 = 0u;
@@ -2527,13 +2527,13 @@ void __44__CoreTelephonyShim_sendTaggedInfo_payload___block_invoke(uint64_t a1, 
         }
       }
 
-      else if (v9 == 1)
+      else if (metricType == 1)
       {
-        v46 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v91];
+        v46 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changedCopy];
         v47 = self->delegates;
         objc_sync_enter(v47);
-        v48 = [v92 enhancedLinkQuality];
-        [v46 setObject:v48 forKeyedSubscript:@"linkState"];
+        enhancedLinkQuality3 = [metricCopy enhancedLinkQuality];
+        [v46 setObject:enhancedLinkQuality3 forKeyedSubscript:@"linkState"];
 
         v123 = 0u;
         v124 = 0u;
@@ -2575,27 +2575,27 @@ void __44__CoreTelephonyShim_sendTaggedInfo_payload___block_invoke(uint64_t a1, 
 
       else
       {
-        if (v9 != 2)
+        if (metricType != 2)
         {
 LABEL_101:
           v86 = netepochsLogHandle;
           if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
           {
             v87 = v86;
-            v88 = [v92 metricType];
+            metricType2 = [metricCopy metricType];
             *buf = 134217984;
-            v134 = v88;
+            v134 = metricType2;
             _os_log_impl(&dword_23255B000, v87, OS_LOG_TYPE_INFO, "CTShim: enhancedDataLinkQualityChanged: Unknown metrictype: %lu", buf, 0xCu);
           }
 
           goto LABEL_103;
         }
 
-        v22 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v91];
+        v22 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changedCopy];
         v23 = self->delegates;
         objc_sync_enter(v23);
-        v24 = [v92 enhancedLinkQuality];
-        [v22 setObject:v24 forKeyedSubscript:@"linkQualityFingerprint"];
+        enhancedLinkQuality4 = [metricCopy enhancedLinkQuality];
+        [v22 setObject:enhancedLinkQuality4 forKeyedSubscript:@"linkQualityFingerprint"];
 
         v119 = 0u;
         v120 = 0u;
@@ -2636,15 +2636,15 @@ LABEL_101:
       }
     }
 
-    else if (v9 <= 6)
+    else if (metricType <= 6)
     {
-      if (v9 == 5)
+      if (metricType == 5)
       {
-        v70 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v91];
+        v70 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changedCopy];
         v71 = self->delegates;
         objc_sync_enter(v71);
-        v72 = [v92 enhancedLinkQuality];
-        [v70 setObject:v72 forKeyedSubscript:@"linkPowerCost"];
+        enhancedLinkQuality5 = [metricCopy enhancedLinkQuality];
+        [v70 setObject:enhancedLinkQuality5 forKeyedSubscript:@"linkPowerCost"];
 
         v103 = 0u;
         v104 = 0u;
@@ -2686,11 +2686,11 @@ LABEL_101:
 
       else
       {
-        v38 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v91];
+        v38 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changedCopy];
         v39 = self->delegates;
         objc_sync_enter(v39);
-        v40 = [v92 enhancedLinkQuality];
-        [v38 setObject:v40 forKeyedSubscript:@"dataTransferTimeEnabled"];
+        enhancedLinkQuality6 = [metricCopy enhancedLinkQuality];
+        [v38 setObject:enhancedLinkQuality6 forKeyedSubscript:@"dataTransferTimeEnabled"];
 
         v107 = 0u;
         v108 = 0u;
@@ -2733,14 +2733,14 @@ LABEL_101:
 
     else
     {
-      switch(v9)
+      switch(metricType)
       {
         case 7:
-          v62 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v91];
+          v62 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changedCopy];
           v63 = self->delegates;
           objc_sync_enter(v63);
-          v64 = [v92 enhancedLinkQuality];
-          [v62 setObject:v64 forKeyedSubscript:@"dataStall"];
+          enhancedLinkQuality7 = [metricCopy enhancedLinkQuality];
+          [v62 setObject:enhancedLinkQuality7 forKeyedSubscript:@"dataStall"];
 
           v99 = 0u;
           v100 = 0u;
@@ -2780,9 +2780,9 @@ LABEL_101:
           objc_sync_exit(v63);
           break;
         case 8:
-          -[CoreTelephonyShim removeCachedContentsForEnhancedLinkQualityMetricType:forSlot:](self, "removeCachedContentsForEnhancedLinkQualityMetricType:forSlot:", 8, [v91 slotID]);
-          v78 = [v92 enhancedLinkQuality];
-          v79 = [(CoreTelephonyShim *)self processEnhancedLinkQualityHighThroughputNotification:v78];
+          -[CoreTelephonyShim removeCachedContentsForEnhancedLinkQualityMetricType:forSlot:](self, "removeCachedContentsForEnhancedLinkQualityMetricType:forSlot:", 8, [changedCopy slotID]);
+          enhancedLinkQuality8 = [metricCopy enhancedLinkQuality];
+          v79 = [(CoreTelephonyShim *)self processEnhancedLinkQualityHighThroughputNotification:enhancedLinkQuality8];
 
           obj = self->delegates;
           objc_sync_enter(obj);
@@ -2837,19 +2837,19 @@ LABEL_101:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v7;
-      v11 = [v91 slotID];
+      slotID2 = [changedCopy slotID];
       v12 = self->currentSubscriberSlotID;
       *buf = 134218240;
-      v134 = v11;
+      v134 = slotID2;
       v135 = 2048;
       v136 = v12;
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "CTShim: enhancedDataLinkQualityChanged, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", buf, 0x16u);
     }
 
-    if ([v92 metricType] == 8)
+    if ([metricCopy metricType] == 8)
     {
-      v13 = [v92 enhancedLinkQuality];
-      v14 = [(CoreTelephonyShim *)self processEnhancedLinkQualityHighThroughputNotification:v13];
+      enhancedLinkQuality9 = [metricCopy enhancedLinkQuality];
+      v14 = [(CoreTelephonyShim *)self processEnhancedLinkQualityHighThroughputNotification:enhancedLinkQuality9];
 
       v139[0] = @"highThroughputState";
       v15 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v14];
@@ -2861,7 +2861,7 @@ LABEL_101:
       v140[1] = v17;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v140 forKeys:v139 count:2];
 
-      -[CoreTelephonyShim cacheEnhancedLinkQualityMetricType:withContents:forSlot:](self, "cacheEnhancedLinkQualityMetricType:withContents:forSlot:", 8, v18, [v91 slotID]);
+      -[CoreTelephonyShim cacheEnhancedLinkQualityMetricType:withContents:forSlot:](self, "cacheEnhancedLinkQualityMetricType:withContents:forSlot:", 8, v18, [changedCopy slotID]);
     }
 
     else
@@ -2870,9 +2870,9 @@ LABEL_101:
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
       {
         v20 = v19;
-        v21 = [v92 metricType];
+        metricType3 = [metricCopy metricType];
         *buf = 134217984;
-        v134 = v21;
+        v134 = metricType3;
         _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_INFO, "CTShim: Dropping eLQM metric type %ld", buf, 0xCu);
       }
     }
@@ -2883,12 +2883,12 @@ LABEL_103:
   v89 = *MEMORY[0x277D85DE8];
 }
 
-- (void)taggedInfoIndicationChanged:(id)a3 type:(unint64_t)a4 payload:(id)a5
+- (void)taggedInfoIndicationChanged:(id)changed type:(unint64_t)type payload:(id)payload
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 slotID] == self->currentSubscriberSlotID)
+  changedCopy = changed;
+  payloadCopy = payload;
+  if ([changedCopy slotID] == self->currentSubscriberSlotID)
   {
     obj = self->delegates;
     objc_sync_enter(obj);
@@ -2914,7 +2914,7 @@ LABEL_103:
           v14 = *(*(&v21 + 1) + 8 * v13);
           if (objc_opt_respondsToSelector())
           {
-            [v14 receiveIndicationForTag:a4 payload:v9];
+            [v14 receiveIndicationForTag:type payload:payloadCopy];
           }
 
           ++v13;
@@ -2936,10 +2936,10 @@ LABEL_103:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v8 slotID];
+      slotID = [changedCopy slotID];
       currentSubscriberSlotID = self->currentSubscriberSlotID;
       *buf = 134218240;
-      v27 = v17;
+      v27 = slotID;
       v28 = 2048;
       v29 = currentSubscriberSlotID;
       _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_DEFAULT, "CTShim: taggedInfoIndicationChanged, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", buf, 0x16u);
@@ -2949,14 +2949,14 @@ LABEL_103:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operatorNameChanged:(id)a3 name:(id)a4
+- (void)operatorNameChanged:(id)changed name:(id)name
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 slotID];
+  changedCopy = changed;
+  nameCopy = name;
+  slotID = [changedCopy slotID];
   v9 = netepochsLogHandle;
-  if (v8 == self->currentSubscriberSlotID)
+  if (slotID == self->currentSubscriberSlotID)
   {
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
     {
@@ -2964,17 +2964,17 @@ LABEL_103:
       *buf = 134218499;
       v29 = currentSubscriberSlotID;
       v30 = 2113;
-      v31 = v6;
+      v31 = changedCopy;
       v32 = 2112;
-      v33 = v7;
+      v33 = nameCopy;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "CTShim: operatorNameChanged, currentSubscriberSlotID: %ld, context: %{private}@, name: %@", buf, 0x20u);
     }
 
-    v11 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v6];
+    v11 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changedCopy];
     v12 = self->delegates;
     objc_sync_enter(v12);
-    [v11 setObject:v7 forKeyedSubscript:@"operatorName"];
-    v22 = v7;
+    [v11 setObject:nameCopy forKeyedSubscript:@"operatorName"];
+    v22 = nameCopy;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -3010,17 +3010,17 @@ LABEL_103:
       while (v14);
     }
 
-    v7 = v22;
+    nameCopy = v22;
     objc_sync_exit(v12);
   }
 
   else if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v9;
-    v19 = [v6 slotID];
+    slotID2 = [changedCopy slotID];
     v20 = self->currentSubscriberSlotID;
     *buf = 134218240;
-    v29 = v19;
+    v29 = slotID2;
     v30 = 2048;
     v31 = v20;
     _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEFAULT, "CTShim: operatorNameChanged, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", buf, 0x16u);
@@ -3029,9 +3029,9 @@ LABEL_103:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dualSimStatusChangedTo:(unsigned __int8)a3
+- (void)dualSimStatusChangedTo:(unsigned __int8)to
 {
-  v3 = a3;
+  toCopy = to;
   v17 = *MEMORY[0x277D85DE8];
   v5 = self->delegates;
   objc_sync_enter(v5);
@@ -3057,7 +3057,7 @@ LABEL_103:
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 cellularDualSimStatusChangedTo:{v3, v12}];
+          [v10 cellularDualSimStatusChangedTo:{toCopy, v12}];
         }
 
         ++v9;
@@ -3074,17 +3074,17 @@ LABEL_103:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)get5GSupportedForContext:(id)a3
+- (void)get5GSupportedForContext:(id)context
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   coreTelephonyClient = self->coreTelephonyClient;
   v10 = 0;
-  v6 = [(CoreTelephonyClient *)coreTelephonyClient getSupports5G:v4 error:&v10];
+  v6 = [(CoreTelephonyClient *)coreTelephonyClient getSupports5G:contextCopy error:&v10];
   v7 = v10;
   if (v6)
   {
-    [(CoreTelephonyShim *)self set5GSupportChanged:v6 forContext:v4];
+    [(CoreTelephonyShim *)self set5GSupportChanged:v6 forContext:contextCopy];
   }
 
   else
@@ -3101,16 +3101,16 @@ LABEL_103:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)set5GSupportChanged:(id)a3 forContext:(id)a4
+- (void)set5GSupportChanged:(id)changed forContext:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 slotID];
+  changedCopy = changed;
+  contextCopy = context;
+  slotID = [contextCopy slotID];
   currentSubscriberSlotID = self->currentSubscriberSlotID;
   v10 = netepochsLogHandle;
   v11 = os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT);
-  if (v8 == currentSubscriberSlotID)
+  if (slotID == currentSubscriberSlotID)
   {
     if (v11)
     {
@@ -3118,16 +3118,16 @@ LABEL_103:
       *buf = 134218499;
       v31 = v12;
       v32 = 2113;
-      v33 = v7;
+      v33 = contextCopy;
       v34 = 2112;
-      v35 = v6;
+      v35 = changedCopy;
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "CTShim: supports5G, currentSubscriberSlotID: %ld, context: %{private}@, supports5G: %@", buf, 0x20u);
     }
 
-    v13 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v7];
+    v13 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:contextCopy];
     v14 = self->delegates;
     objc_sync_enter(v14);
-    [v13 setObject:v6 forKeyedSubscript:@"subscriberSupports5G"];
+    [v13 setObject:changedCopy forKeyedSubscript:@"subscriberSupports5G"];
     v24 = v13;
     v27 = 0u;
     v28 = 0u;
@@ -3151,7 +3151,7 @@ LABEL_103:
           v19 = *(*(&v25 + 1) + 8 * v18);
           if (objc_opt_respondsToSelector())
           {
-            [v19 supports5GChangedTo:{objc_msgSend(v6, "BOOLValue")}];
+            [v19 supports5GChangedTo:{objc_msgSend(changedCopy, "BOOLValue")}];
           }
 
           ++v18;
@@ -3170,10 +3170,10 @@ LABEL_103:
   else if (v11)
   {
     v20 = v10;
-    v21 = [v7 slotID];
+    slotID2 = [contextCopy slotID];
     v22 = self->currentSubscriberSlotID;
     *buf = 134218240;
-    v31 = v21;
+    v31 = slotID2;
     v32 = 2048;
     v33 = v22;
     _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_DEFAULT, "CTShim: supports5G, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", buf, 0x16u);
@@ -3182,15 +3182,15 @@ LABEL_103:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkCodeChanged:(id)a3 forContext:(id)a4
+- (void)networkCodeChanged:(id)changed forContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 userDataPreferred];
-  v9 = [v8 BOOLValue];
+  changedCopy = changed;
+  contextCopy = context;
+  userDataPreferred = [contextCopy userDataPreferred];
+  bOOLValue = [userDataPreferred BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3202,11 +3202,11 @@ LABEL_103:
 
   else
   {
-    v11 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v7];
+    v11 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:contextCopy];
     v12 = self->delegates;
     objc_sync_enter(v12);
-    [v11 setObject:v6 forKeyedSubscript:@"mobileNetworkCode"];
-    v19 = v6;
+    [v11 setObject:changedCopy forKeyedSubscript:@"mobileNetworkCode"];
+    v19 = changedCopy;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -3242,22 +3242,22 @@ LABEL_103:
       while (v14);
     }
 
-    v6 = v19;
+    changedCopy = v19;
     objc_sync_exit(v12);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)countryCodeChanged:(id)a3 forContext:(id)a4
+- (void)countryCodeChanged:(id)changed forContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 userDataPreferred];
-  v9 = [v8 BOOLValue];
+  changedCopy = changed;
+  contextCopy = context;
+  userDataPreferred = [contextCopy userDataPreferred];
+  bOOLValue = [userDataPreferred BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3269,11 +3269,11 @@ LABEL_103:
 
   else
   {
-    v11 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v7];
+    v11 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:contextCopy];
     v12 = self->delegates;
     objc_sync_enter(v12);
-    [v11 setObject:v6 forKeyedSubscript:@"mobileCountryCode"];
-    v19 = v6;
+    [v11 setObject:changedCopy forKeyedSubscript:@"mobileCountryCode"];
+    v19 = changedCopy;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -3309,21 +3309,21 @@ LABEL_103:
       while (v14);
     }
 
-    v6 = v19;
+    changedCopy = v19;
     objc_sync_exit(v12);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 slotID];
+  changedCopy = changed;
+  infoCopy = info;
+  slotID = [changedCopy slotID];
   v9 = netepochsLogHandle;
-  if (v8 == self->currentSubscriberSlotID)
+  if (slotID == self->currentSubscriberSlotID)
   {
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
     {
@@ -3331,19 +3331,19 @@ LABEL_103:
       *buf = 134218499;
       v41 = currentSubscriberSlotID;
       v42 = 2113;
-      v43 = v6;
+      v43 = changedCopy;
       v44 = 2112;
-      v45 = v7;
+      v45 = infoCopy;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "CTShim: signalStrengthChanged, currentSubscriberSlotID: %ld, context: %{private}@, info: %@", buf, 0x20u);
     }
 
-    v11 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v6];
+    v11 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changedCopy];
     v12 = self->delegates;
     objc_sync_enter(v12);
-    v13 = [v7 bars];
-    [v11 setObject:v13 forKeyedSubscript:@"bars"];
+    bars = [infoCopy bars];
+    [v11 setObject:bars forKeyedSubscript:@"bars"];
 
-    v33 = v6;
+    v33 = changedCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
@@ -3375,7 +3375,7 @@ LABEL_103:
       while (v15);
     }
 
-    v6 = v33;
+    changedCopy = v33;
     objc_sync_exit(v12);
 
     v19 = [v11 objectForKeyedSubscript:@"isCurrentDataSubscription"];
@@ -3389,13 +3389,13 @@ LABEL_103:
       v23 = v34;
       if (v23)
       {
-        v24 = &unk_2847EFB78;
+        rsrp = &unk_2847EFB78;
         v25 = &unk_2847EFE30;
       }
 
       else
       {
-        v24 = [v22 rsrp];
+        rsrp = [v22 rsrp];
         v25 = [v22 snr];
       }
 
@@ -3403,24 +3403,24 @@ LABEL_103:
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v41 = v24;
+        v41 = rsrp;
         v42 = 2112;
         v43 = v25;
         _os_log_impl(&dword_23255B000, v29, OS_LOG_TYPE_INFO, "CTShim: RSRP: %@ SNR: %@", buf, 0x16u);
       }
 
       v30 = [v11 objectForKeyedSubscript:@"bars"];
-      [(CoreTelephonyShim *)self _deliverSignalStrengthChanged:v30 cellularRSRP:v24 cellularSNR:v25];
+      [(CoreTelephonyShim *)self _deliverSignalStrengthChanged:v30 cellularRSRP:rsrp cellularSNR:v25];
     }
   }
 
   else if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v26 = v9;
-    v27 = [v6 slotID];
+    slotID2 = [changedCopy slotID];
     v28 = self->currentSubscriberSlotID;
     *buf = 134218240;
-    v41 = v27;
+    v41 = slotID2;
     v42 = 2048;
     v43 = v28;
     _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEFAULT, "CTShim: signalStrengthChanged, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", buf, 0x16u);
@@ -3429,14 +3429,14 @@ LABEL_103:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4
+- (void)cellMonitorUpdate:(id)update info:(id)info
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 slotID];
+  updateCopy = update;
+  infoCopy = info;
+  slotID = [updateCopy slotID];
   v9 = netepochsLogHandle;
-  if (v8 == self->currentSubscriberSlotID)
+  if (slotID == self->currentSubscriberSlotID)
   {
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
     {
@@ -3444,26 +3444,26 @@ LABEL_103:
       *buf = 134218499;
       v38 = currentSubscriberSlotID;
       v39 = 2113;
-      v40 = v6;
+      v40 = updateCopy;
       v41 = 2112;
-      v42 = v7;
+      v42 = infoCopy;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "CTShim: cellMonitorUpdate, currentSubscriberSlotID: %ld, context: %{private}@, info: %@", buf, 0x20u);
     }
 
-    if (v7)
+    if (infoCopy)
     {
-      v11 = [v7 legacyInfo];
-      v12 = v11 == 0;
+      legacyInfo = [infoCopy legacyInfo];
+      v12 = legacyInfo == 0;
 
       if (!v12)
       {
-        v13 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v6];
+        v13 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:updateCopy];
         obj = self->delegates;
         objc_sync_enter(obj);
         v14 = [v13 objectForKeyedSubscript:@"ctCellInfo"];
         v15 = [(CoreTelephonyShim *)self extractCellInfo:v14];
 
-        if (v15 && (-[CoreTelephonyShim extractCellInfo:](self, "extractCellInfo:", v7), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v15 isEqualToDictionary:v16], v16, (v17 & 1) != 0))
+        if (v15 && (-[CoreTelephonyShim extractCellInfo:](self, "extractCellInfo:", infoCopy), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v15 isEqualToDictionary:v16], v16, (v17 & 1) != 0))
         {
           v18 = netepochsLogHandle;
           if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3476,8 +3476,8 @@ LABEL_103:
 
         else
         {
-          [v13 setObject:v7 forKeyedSubscript:@"ctCellInfo"];
-          v22 = [(CoreTelephonyShim *)self cellCarrierNameForContext:v6 refresh:0];
+          [v13 setObject:infoCopy forKeyedSubscript:@"ctCellInfo"];
+          v22 = [(CoreTelephonyShim *)self cellCarrierNameForContext:updateCopy refresh:0];
           if (v22)
           {
             [v13 setObject:v22 forKeyedSubscript:@"carrierName"];
@@ -3533,10 +3533,10 @@ LABEL_103:
   else if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v9;
-    v20 = [v6 slotID];
+    slotID2 = [updateCopy slotID];
     v21 = self->currentSubscriberSlotID;
     *buf = 134218240;
-    v38 = v20;
+    v38 = slotID2;
     v39 = 2048;
     v40 = v21;
     _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "CTShim: cellMonitorUpdate, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", buf, 0x16u);
@@ -3545,19 +3545,19 @@ LABEL_103:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ratSelectionChanged:(id)a3 selection:(id)a4
+- (void)ratSelectionChanged:(id)changed selection:(id)selection
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CC3798] contextWithServiceDescriptor:v6];
+  changedCopy = changed;
+  selectionCopy = selection;
+  v8 = [MEMORY[0x277CC3798] contextWithServiceDescriptor:changedCopy];
   v9 = v8;
   if (v8)
   {
     if ([v8 slotID] == self->currentSubscriberSlotID)
     {
       v10 = netepochsLogHandle;
-      if (v7)
+      if (selectionCopy)
       {
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
         {
@@ -3567,12 +3567,12 @@ LABEL_103:
           v23 = 2113;
           v24 = v9;
           v25 = 2112;
-          v26 = v7;
+          v26 = selectionCopy;
           _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_INFO, "CTShim: ratSelectionChanged, currentSubscriberSlotID: %ld, context: %{private}@, selection: %@", &v21, 0x20u);
         }
 
         v12 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v9];
-        [(CoreTelephonyShim *)self _deliverRatSelectionChanged:v7 withSubscriptionDict:v12];
+        [(CoreTelephonyShim *)self _deliverRatSelectionChanged:selectionCopy withSubscriptionDict:v12];
         goto LABEL_11;
       }
 
@@ -3594,10 +3594,10 @@ LABEL_14:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v17;
-      v18 = [v9 slotID];
+      slotID = [v9 slotID];
       v19 = self->currentSubscriberSlotID;
       v21 = 134218240;
-      v22 = v18;
+      v22 = slotID;
       v23 = 2048;
       v24 = v19;
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEFAULT, "CTShim: ratSelectionChanged, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", &v21, 0x16u);
@@ -3611,7 +3611,7 @@ LABEL_11:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v21 = 138412290;
-      v22 = v6;
+      v22 = changedCopy;
       v14 = "CTShim: ratSelectionChanged, couldn't convert descriptor to context = %@";
       v15 = v13;
       v16 = 12;
@@ -3624,38 +3624,38 @@ LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deliverRatSelectionChanged:(id)a3 withSubscriptionDict:(id)a4
+- (void)_deliverRatSelectionChanged:(id)changed withSubscriptionDict:(id)dict
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  dictCopy = dict;
   v8 = self->delegates;
   objc_sync_enter(v8);
-  v9 = [v6 selection];
-  [v7 setObject:v9 forKeyedSubscript:@"currentRATSelection"];
+  selection = [changedCopy selection];
+  [dictCopy setObject:selection forKeyedSubscript:@"currentRATSelection"];
 
-  v10 = [v6 preferred];
-  [v7 setObject:v10 forKeyedSubscript:@"preferredRATSelection"];
+  preferred = [changedCopy preferred];
+  [dictCopy setObject:preferred forKeyedSubscript:@"preferredRATSelection"];
 
-  v11 = [v6 mask];
-  v12 = [MEMORY[0x277CCABB0] numberWithInt:v11 > 0x3F];
-  [v7 setObject:v12 forKeyedSubscript:@"ratSelectionIsNR"];
+  mask = [changedCopy mask];
+  0x3F = [MEMORY[0x277CCABB0] numberWithInt:mask > 0x3F];
+  [dictCopy setObject:0x3F forKeyedSubscript:@"ratSelectionIsNR"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v11];
-  [v7 setObject:v13 forKeyedSubscript:@"ratSelectionMask"];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:mask];
+  [dictCopy setObject:v13 forKeyedSubscript:@"ratSelectionMask"];
 
   v14 = netepochsLogHandle;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v6 mask];
-    v16 = [v6 selection];
-    v17 = [v6 preferred];
+    mask2 = [changedCopy mask];
+    selection2 = [changedCopy selection];
+    preferred2 = [changedCopy preferred];
     *buf = 67109634;
-    *v33 = v15;
+    *v33 = mask2;
     *&v33[4] = 2112;
-    *&v33[6] = v16;
+    *&v33[6] = selection2;
     *&v33[14] = 2112;
-    *&v33[16] = v17;
+    *&v33[16] = preferred2;
     _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEFAULT, "CTShim: ratSelectionChanged mask:%d selection:%@ preferred:%@", buf, 0x1Cu);
   }
 
@@ -3693,7 +3693,7 @@ LABEL_15:
         v25 = *(*(&v27 + 1) + 8 * v24);
         if (objc_opt_respondsToSelector())
         {
-          [v25 ratSelectionChangedForSubscription:{v7, v27}];
+          [v25 ratSelectionChangedForSubscription:{dictCopy, v27}];
         }
 
         ++v24;
@@ -3710,15 +3710,15 @@ LABEL_15:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v26 = v4;
+    v26 = changedCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "CTShim: currentDataSimChanged, context: %{private}@", buf, 0xCu);
   }
 
@@ -3726,9 +3726,9 @@ LABEL_15:
   v20 = 3221225472;
   v21 = __43__CoreTelephonyShim_currentDataSimChanged___block_invoke;
   v22 = &unk_27898A7D0;
-  v6 = v4;
+  v6 = changedCopy;
   v23 = v6;
-  v24 = self;
+  selfCopy = self;
   sf_synchronize(&self->coreTelephonyClientContextLock, &v19);
   coreTelephonyClientContext = self->coreTelephonyClientContext;
   if (!coreTelephonyClientContext)
@@ -3767,12 +3767,12 @@ LABEL_14:
   }
 
   [(CoreTelephonyShim *)self _updateSubscribers];
-  v9 = [(CoreTelephonyShim *)self getSmartDataModeSetting];
+  getSmartDataModeSetting = [(CoreTelephonyShim *)self getSmartDataModeSetting];
   v10 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v11 = "dis";
-    if (v9)
+    if (getSmartDataModeSetting)
     {
       v11 = "en";
     }
@@ -3782,7 +3782,7 @@ LABEL_14:
     _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "Data SIM changed, new SIM's SmartDataMode is %sabled", buf, 0xCu);
   }
 
-  [(CoreTelephonyShim *)self _deliverSmartDataModeSettingChanged:v9];
+  [(CoreTelephonyShim *)self _deliverSmartDataModeSettingChanged:getSmartDataModeSetting];
   [(CoreTelephonyShim *)self get5GSupportedForContext:v6];
 LABEL_15:
 
@@ -3809,14 +3809,14 @@ void __43__CoreTelephonyShim_currentDataSimChanged___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 slotID];
+  statusCopy = status;
+  infoCopy = info;
+  slotID = [statusCopy slotID];
   v9 = netepochsLogHandle;
-  if (v8 == self->currentSubscriberSlotID)
+  if (slotID == self->currentSubscriberSlotID)
   {
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
     {
@@ -3824,22 +3824,22 @@ void __43__CoreTelephonyShim_currentDataSimChanged___block_invoke(uint64_t a1)
       v15 = 134218499;
       v16 = currentSubscriberSlotID;
       v17 = 2113;
-      v18 = v6;
+      v18 = statusCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = infoCopy;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "CTShim: dataStatus, currentSubscriberSlotID: %ld, context: %{private}@, dataStatus: %@", &v15, 0x20u);
     }
 
-    [(CoreTelephonyShim *)self processDataStatus:v7 forContext:v6];
+    [(CoreTelephonyShim *)self processDataStatus:infoCopy forContext:statusCopy];
   }
 
   else if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v9;
-    v12 = [v6 slotID];
+    slotID2 = [statusCopy slotID];
     v13 = self->currentSubscriberSlotID;
     v15 = 134218240;
-    v16 = v12;
+    v16 = slotID2;
     v17 = 2048;
     v18 = v13;
     _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEFAULT, "CTShim: dataStatus, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", &v15, 0x16u);
@@ -3848,18 +3848,18 @@ void __43__CoreTelephonyShim_currentDataSimChanged___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processDataStatus:(id)a3 forContext:(id)a4
+- (void)processDataStatus:(id)status forContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  statusCopy = status;
+  contextCopy = context;
+  if (statusCopy)
   {
-    v16 = v7;
-    v8 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v7];
+    v16 = contextCopy;
+    v8 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:contextCopy];
     v9 = self->delegates;
     objc_sync_enter(v9);
-    [v8 setObject:v6 forKeyedSubscript:@"ctDataStatus"];
+    [v8 setObject:statusCopy forKeyedSubscript:@"ctDataStatus"];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -3896,37 +3896,37 @@ void __43__CoreTelephonyShim_currentDataSimChanged___block_invoke(uint64_t a1)
     }
 
     objc_sync_exit(v9);
-    v7 = v16;
+    contextCopy = v16;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 slotID] == self->currentSubscriberSlotID)
+  changedCopy = changed;
+  infoCopy = info;
+  if ([changedCopy slotID] == self->currentSubscriberSlotID)
   {
-    v10 = [v9 state];
+    state = [infoCopy state];
     v11 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
     {
       v20 = 67109376;
-      *v21 = a4;
+      *v21 = connection;
       *&v21[4] = 1024;
-      *&v21[6] = v10 == 2;
+      *&v21[6] = state == 2;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_INFO, "Received a callback for connection state change. Connection %d active: %{BOOL}d", &v20, 0xEu);
     }
 
-    if (a4 > 31)
+    if (connection > 31)
     {
-      if (a4 <= 33)
+      if (connection <= 33)
       {
-        v12 = v10 == 2;
-        v13 = self;
-        if (a4 == 32)
+        v12 = state == 2;
+        selfCopy6 = self;
+        if (connection == 32)
         {
           v14 = 4;
         }
@@ -3939,18 +3939,18 @@ void __43__CoreTelephonyShim_currentDataSimChanged___block_invoke(uint64_t a1)
         goto LABEL_23;
       }
 
-      if (a4 == 34)
+      if (connection == 34)
       {
-        v12 = v10 == 2;
-        v13 = self;
+        v12 = state == 2;
+        selfCopy6 = self;
         v14 = 6;
         goto LABEL_23;
       }
 
-      if (a4 == 35)
+      if (connection == 35)
       {
-        v12 = v10 == 2;
-        v13 = self;
+        v12 = state == 2;
+        selfCopy6 = self;
         v14 = 7;
         goto LABEL_23;
       }
@@ -3958,11 +3958,11 @@ void __43__CoreTelephonyShim_currentDataSimChanged___block_invoke(uint64_t a1)
 
     else
     {
-      if (a4 > 29)
+      if (connection > 29)
       {
-        v12 = v10 == 2;
-        v13 = self;
-        if (a4 == 30)
+        v12 = state == 2;
+        selfCopy6 = self;
+        if (connection == 30)
         {
           v14 = 2;
         }
@@ -3975,21 +3975,21 @@ void __43__CoreTelephonyShim_currentDataSimChanged___block_invoke(uint64_t a1)
         goto LABEL_23;
       }
 
-      if (a4 == 28)
+      if (connection == 28)
       {
-        v12 = v10 == 2;
-        v13 = self;
+        v12 = state == 2;
+        selfCopy6 = self;
         v14 = 0;
         goto LABEL_23;
       }
 
-      if (a4 == 29)
+      if (connection == 29)
       {
-        v12 = v10 == 2;
-        v13 = self;
+        v12 = state == 2;
+        selfCopy6 = self;
         v14 = 1;
 LABEL_23:
-        [(CoreTelephonyShim *)v13 _deliverNetworkSlicingActiveChangedTo:v12 forSliceIndex:v14];
+        [(CoreTelephonyShim *)selfCopy6 _deliverNetworkSlicingActiveChangedTo:v12 forSliceIndex:v14];
       }
     }
   }
@@ -4000,10 +4000,10 @@ LABEL_23:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v8 slotID];
+      slotID = [changedCopy slotID];
       currentSubscriberSlotID = self->currentSubscriberSlotID;
       v20 = 134218240;
-      *v21 = v17;
+      *v21 = slotID;
       *&v21[8] = 2048;
       v22 = currentSubscriberSlotID;
       _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_DEFAULT, "CTShim: connectionStateChanged, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", &v20, 0x16u);
@@ -4013,33 +4013,33 @@ LABEL_23:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
-  v6 = a4;
-  if ([a3 slotID] == self->currentSubscriberSlotID)
+  statusCopy = status;
+  if ([changed slotID] == self->currentSubscriberSlotID)
   {
-    -[CoreTelephonyShim _deliverNonTerrestrialNetworkActiveChangedTo:](self, "_deliverNonTerrestrialNetworkActiveChangedTo:", [v6 isSatelliteSystem]);
+    -[CoreTelephonyShim _deliverNonTerrestrialNetworkActiveChangedTo:](self, "_deliverNonTerrestrialNetworkActiveChangedTo:", [statusCopy isSatelliteSystem]);
   }
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 slotID] == self->currentSubscriberSlotID)
+  changeCopy = change;
+  if ([changeCopy slotID] == self->currentSubscriberSlotID)
   {
     v5 = self->delegates;
     objc_sync_enter(v5);
-    v6 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:v4];
+    v6 = [(CoreTelephonyShim *)self dictionaryForSubscriptionContext:changeCopy];
     v7 = [v6 objectForKeyedSubscript:@"EnableMmWaveSisOutrank"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
 
-    v9 = [(CoreTelephonyShim *)self getCurrentSISWiFiHotSpotOutrankPolicy];
+    getCurrentSISWiFiHotSpotOutrankPolicy = [(CoreTelephonyShim *)self getCurrentSISWiFiHotSpotOutrankPolicy];
     v10 = netepochsLogHandle;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(CoreTelephonyShim *)self wifiHotSpotOutrankPolicyStringFor:v9];
-      v12 = [(CoreTelephonyShim *)self wifiHotSpotOutrankPolicyStringFor:v8];
+      v11 = [(CoreTelephonyShim *)self wifiHotSpotOutrankPolicyStringFor:getCurrentSISWiFiHotSpotOutrankPolicy];
+      v12 = [(CoreTelephonyShim *)self wifiHotSpotOutrankPolicyStringFor:intValue];
       *buf = 138412546;
       v30 = v11;
       v31 = 2112;
@@ -4047,9 +4047,9 @@ LABEL_23:
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "CTShim: wifiHotSpotOutrankPolicy is now %@, was %@", buf, 0x16u);
     }
 
-    if (v8 != v9)
+    if (intValue != getCurrentSISWiFiHotSpotOutrankPolicy)
     {
-      v13 = [MEMORY[0x277CCABB0] numberWithInt:v9];
+      v13 = [MEMORY[0x277CCABB0] numberWithInt:getCurrentSISWiFiHotSpotOutrankPolicy];
       [v6 setObject:v13 forKeyedSubscript:@"EnableMmWaveSisOutrank"];
 
       v26 = 0u;
@@ -4097,10 +4097,10 @@ LABEL_23:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v4 slotID];
+      slotID = [changeCopy slotID];
       currentSubscriberSlotID = self->currentSubscriberSlotID;
       *buf = 134218240;
-      v30 = v21;
+      v30 = slotID;
       v31 = 2048;
       v32 = currentSubscriberSlotID;
       _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_DEFAULT, "CTShim: carrierBundleChange, context slotID (%ld) does not match with currentSubscriberSlotID (%ld)", buf, 0x16u);
@@ -4110,63 +4110,63 @@ LABEL_23:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = [a3 isStewieActive];
+  isStewieActive = [changed isStewieActive];
 
-  [(CoreTelephonyShim *)self _deliverStewieActiveChangedTo:v4];
+  [(CoreTelephonyShim *)self _deliverStewieActiveChangedTo:isStewieActive];
 }
 
-- (BOOL)subscriptionContextIsCurrentDataSubscription:(id)a3
+- (BOOL)subscriptionContextIsCurrentDataSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subscriptionCopy = subscription;
+  v5 = subscriptionCopy;
+  if (subscriptionCopy)
   {
-    v6 = [v4 uuid];
+    uuid = [subscriptionCopy uuid];
 
-    if (v6)
+    if (uuid)
     {
-      v7 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-      v8 = v7;
-      if (v7)
+      getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+      v8 = getCurrentDataSubscriptionContext;
+      if (getCurrentDataSubscriptionContext)
       {
-        v6 = [v7 uuid];
+        uuid = [getCurrentDataSubscriptionContext uuid];
 
-        if (v6)
+        if (uuid)
         {
-          v9 = [v5 uuid];
-          v10 = [v8 uuid];
-          LOBYTE(v6) = [v9 isEqual:v10];
+          uuid2 = [v5 uuid];
+          uuid3 = [v8 uuid];
+          LOBYTE(uuid) = [uuid2 isEqual:uuid3];
         }
       }
 
       else
       {
-        LOBYTE(v6) = 0;
+        LOBYTE(uuid) = 0;
       }
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(uuid) = 0;
   }
 
-  return v6;
+  return uuid;
 }
 
-- (id)dictionaryForSubscriptionContext:(id)a3
+- (id)dictionaryForSubscriptionContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 uuid], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy && ([contextCopy uuid], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = self->delegates;
     objc_sync_enter(v7);
     subscriptions = self->_subscriptions;
-    v9 = [v5 uuid];
-    v10 = [(NSMutableDictionary *)subscriptions objectForKeyedSubscript:v9];
+    uuid = [v5 uuid];
+    v10 = [(NSMutableDictionary *)subscriptions objectForKeyedSubscript:uuid];
 
     if (!v10)
     {
@@ -4179,31 +4179,31 @@ LABEL_23:
       }
 
       v12 = self->_subscriptions;
-      v13 = [v5 uuid];
-      [(NSMutableDictionary *)v12 setObject:v10 forKeyedSubscript:v13];
+      uuid2 = [v5 uuid];
+      [(NSMutableDictionary *)v12 setObject:v10 forKeyedSubscript:uuid2];
     }
 
-    v14 = [MEMORY[0x277CBEAA8] date];
-    [v14 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v16 = v15;
 
     v17 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
     [v10 setObject:v17 forKeyedSubscript:@"timestamp"];
 
-    v18 = [v5 label];
+    label = [v5 label];
 
-    if (v18)
+    if (label)
     {
-      v19 = [v5 label];
-      [v10 setObject:v19 forKeyedSubscript:@"label"];
+      label2 = [v5 label];
+      [v10 setObject:label2 forKeyedSubscript:@"label"];
     }
 
-    v20 = [v5 userDataPreferred];
+    userDataPreferred = [v5 userDataPreferred];
 
-    if (v20)
+    if (userDataPreferred)
     {
-      v21 = [v5 userDataPreferred];
-      [v10 setObject:v21 forKeyedSubscript:@"userDataPreferred"];
+      userDataPreferred2 = [v5 userDataPreferred];
+      [v10 setObject:userDataPreferred2 forKeyedSubscript:@"userDataPreferred"];
     }
 
     v22 = [MEMORY[0x277CCABB0] numberWithBool:{-[CoreTelephonyShim subscriptionContextIsCurrentDataSubscription:](self, "subscriptionContextIsCurrentDataSubscription:", v5)}];
@@ -4227,14 +4227,14 @@ LABEL_23:
   return v10;
 }
 
-- (void)dualSimStatusInspection:(id)a3 withSubscriptionsInUse:(id)a4
+- (void)dualSimStatusInspection:(id)inspection withSubscriptionsInUse:(id)use
 {
-  v6 = a4;
+  useCopy = use;
   v7 = 2;
-  v10 = v6;
-  if (a3 && v6)
+  v10 = useCopy;
+  if (inspection && useCopy)
   {
-    v8 = [a3 count];
+    v8 = [inspection count];
     v9 = [v10 count] == 2 && v8 == 2;
     v7 = v9 ? 5 : 4;
     if (!v8)
@@ -4483,17 +4483,17 @@ void __45__CoreTelephonyShim_carrierSettingsDidChange__block_invoke_279(uint64_t
 
 - (void)sendNetworkSlicingStatesToDelegate
 {
-  v3 = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
-  if (v3)
+  getCurrentDataSubscriptionContext = [(CoreTelephonyShim *)self getCurrentDataSubscriptionContext];
+  if (getCurrentDataSubscriptionContext)
   {
-    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:28 activeForContext:v3] forSliceIndex:0];
-    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:29 activeForContext:v3] forSliceIndex:1];
-    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:30 activeForContext:v3] forSliceIndex:2];
-    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:31 activeForContext:v3] forSliceIndex:3];
-    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:32 activeForContext:v3] forSliceIndex:4];
-    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:33 activeForContext:v3] forSliceIndex:5];
-    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:34 activeForContext:v3] forSliceIndex:6];
-    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:35 activeForContext:v3] forSliceIndex:7];
+    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:28 activeForContext:getCurrentDataSubscriptionContext] forSliceIndex:0];
+    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:29 activeForContext:getCurrentDataSubscriptionContext] forSliceIndex:1];
+    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:30 activeForContext:getCurrentDataSubscriptionContext] forSliceIndex:2];
+    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:31 activeForContext:getCurrentDataSubscriptionContext] forSliceIndex:3];
+    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:32 activeForContext:getCurrentDataSubscriptionContext] forSliceIndex:4];
+    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:33 activeForContext:getCurrentDataSubscriptionContext] forSliceIndex:5];
+    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:34 activeForContext:getCurrentDataSubscriptionContext] forSliceIndex:6];
+    [(CoreTelephonyShim *)self _deliverNetworkSlicingActiveChangedTo:[(CoreTelephonyShim *)self getConnectionType:35 activeForContext:getCurrentDataSubscriptionContext] forSliceIndex:7];
   }
 
   else
@@ -4725,26 +4725,26 @@ uint64_t __39__CoreTelephonyShim__updateSubscribers__block_invoke_285(uint64_t r
   return result;
 }
 
-- (void)_dispatchCellInfoResult:(id)a3 error:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)_dispatchCellInfoResult:(id)result error:(id)error queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v12)
+  resultCopy = result;
+  errorCopy = error;
+  queueCopy = queue;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (queueCopy)
   {
-    if (v13)
+    if (completionCopy)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __68__CoreTelephonyShim__dispatchCellInfoResult_error_queue_completion___block_invoke;
       v15[3] = &unk_27898EE30;
       v15[4] = self;
-      v16 = v10;
-      v17 = v12;
+      v16 = resultCopy;
+      v17 = queueCopy;
       v19 = v14;
-      v18 = v11;
+      v18 = errorCopy;
       sf_synchronize(&self->cellInfoLock, v15);
     }
 
@@ -4942,13 +4942,13 @@ void __68__CoreTelephonyShim__dispatchCellInfoResult_error_queue_completion___bl
   (*(v2 + 2))(v2, *(a1 + 40), *(a1 + 48));
 }
 
-- (BOOL)findSubscriberExactMatchForICCID:(id)a3 MDN:(id)a4 slotID:(int64_t)a5
+- (BOOL)findSubscriberExactMatchForICCID:(id)d MDN:(id)n slotID:(int64_t)iD
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  dCopy = d;
+  nCopy = n;
+  v10 = nCopy;
+  if (dCopy && nCopy)
   {
     [(CoreTelephonyShim *)self getSortedSubscriberKeys];
     v36 = 0u;
@@ -4959,7 +4959,7 @@ void __68__CoreTelephonyShim__dispatchCellInfoResult_error_queue_completion___bl
     if (v11)
     {
       v12 = v11;
-      v33 = a5;
+      iDCopy = iD;
       v34 = v10;
       v13 = *v37;
       while (2)
@@ -4973,7 +4973,7 @@ void __68__CoreTelephonyShim__dispatchCellInfoResult_error_queue_completion___bl
 
           v15 = *(*(&v36 + 1) + 8 * i);
           v16 = [(NSMutableDictionary *)self->_subscribers objectForKeyedSubscript:v15];
-          if ([(__CFString *)v15 isEqualToString:v8])
+          if ([(__CFString *)v15 isEqualToString:dCopy])
           {
             v17 = [v16 objectForKeyedSubscript:@"subscriberMDN"];
             v18 = [v17 isEqualToString:v34];
@@ -4981,20 +4981,20 @@ void __68__CoreTelephonyShim__dispatchCellInfoResult_error_queue_completion___bl
             if (v18)
             {
               v21 = MEMORY[0x277CCABB0];
-              v22 = [MEMORY[0x277CBEAA8] date];
-              [v22 timeIntervalSince1970];
+              date = [MEMORY[0x277CBEAA8] date];
+              [date timeIntervalSince1970];
               v23 = [v21 numberWithDouble:?];
               [v16 setObject:v23 forKeyedSubscript:@"subscriberLastUpdateTime"];
 
               v24 = [v16 objectForKeyedSubscript:@"subscriberSlotID"];
-              v25 = [v24 integerValue];
+              integerValue = [v24 integerValue];
 
-              if (v25 != v33)
+              if (integerValue != iDCopy)
               {
-                v26 = [MEMORY[0x277CCABB0] numberWithInteger:v33];
+                v26 = [MEMORY[0x277CCABB0] numberWithInteger:iDCopy];
                 [v16 setObject:v26 forKeyedSubscript:@"subscriberSlotID"];
 
-                self->currentSubscriberSlotID = v33;
+                self->currentSubscriberSlotID = iDCopy;
                 v27 = netepochsLogHandle;
                 if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
                 {
@@ -5002,9 +5002,9 @@ void __68__CoreTelephonyShim__dispatchCellInfoResult_error_queue_completion___bl
                   *buf = 138478595;
                   v41 = v15;
                   v42 = 2048;
-                  v43 = v25;
+                  v43 = integerValue;
                   v44 = 2048;
-                  v45 = v33;
+                  v45 = iDCopy;
                   v46 = 2048;
                   v47 = currentSubscriberSlotID;
                   _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_DEFAULT, "CTShim: exact match, slotID changed for subscriber key %{private}@ (old/new): (%ld/%ld), currentSubscriberSlotID: %ld", buf, 0x2Au);
@@ -5048,7 +5048,7 @@ LABEL_19:
 
       v41 = v30;
       v42 = 2113;
-      v43 = v8;
+      v43 = dCopy;
       v44 = 2113;
       v45 = v10;
       _os_log_impl(&dword_23255B000, v29, OS_LOG_TYPE_DEFAULT, "CTShim: Exact match %@ for subscriber key %{private}@, MDN %{private}@", buf, 0x20u);
@@ -5062,7 +5062,7 @@ LABEL_19:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138478083;
-      v41 = v8;
+      v41 = dCopy;
       v42 = 2113;
       v43 = v10;
       _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_DEFAULT, "CTShim: ICCID: %{private}@, MDN: %{private}@, no exact match possible", buf, 0x16u);
@@ -5074,14 +5074,14 @@ LABEL_19:
   return v19;
 }
 
-- (BOOL)findSubscriberBestMatchForICCID:(id)a3 MDN:(id)a4 slotID:(int64_t)a5 update:(BOOL)a6
+- (BOOL)findSubscriberBestMatchForICCID:(id)d MDN:(id)n slotID:(int64_t)iD update:(BOOL)update
 {
-  v39 = a6;
+  updateCopy = update;
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  dCopy = d;
+  nCopy = n;
+  v10 = nCopy;
+  if (!dCopy)
   {
     v24 = netepochsLogHandle;
     LOBYTE(v23) = 0;
@@ -5095,8 +5095,8 @@ LABEL_19:
     goto LABEL_40;
   }
 
-  v37 = a5;
-  if (!v9)
+  iDCopy = iD;
+  if (!nCopy)
   {
     v11 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -5131,9 +5131,9 @@ LABEL_19:
 
       v16 = *(*(&v42 + 1) + 8 * i);
       v17 = [(NSMutableDictionary *)self->_subscribers objectForKeyedSubscript:v16];
-      if ([v8 length])
+      if ([dCopy length])
       {
-        v18 = [(__CFString *)v16 isEqualToString:v8];
+        v18 = [(__CFString *)v16 isEqualToString:dCopy];
         if (!v10)
         {
           goto LABEL_16;
@@ -5163,18 +5163,18 @@ LABEL_16:
       v21 = 1;
 LABEL_17:
       v22 = v18 | v20;
-      if ((v22 & 1) != 0 && v39)
+      if ((v22 & 1) != 0 && updateCopy)
       {
         v25 = MEMORY[0x277CCABB0];
-        v26 = [MEMORY[0x277CBEAA8] date];
-        [v26 timeIntervalSince1970];
+        date = [MEMORY[0x277CBEAA8] date];
+        [date timeIntervalSince1970];
         v27 = [v25 numberWithDouble:?];
         [v17 setObject:v27 forKeyedSubscript:@"subscriberLastUpdateTime"];
 
         v28 = [v17 objectForKeyedSubscript:@"subscriberSlotID"];
-        v29 = [v28 integerValue];
+        integerValue = [v28 integerValue];
 
-        if (v29 != v38)
+        if (integerValue != v38)
         {
           v30 = [MEMORY[0x277CCABB0] numberWithInteger:v38];
           [v17 setObject:v30 forKeyedSubscript:@"subscriberSlotID"];
@@ -5187,7 +5187,7 @@ LABEL_17:
             *buf = 138478595;
             v47 = v16;
             v48 = 2048;
-            v49 = v29;
+            v49 = integerValue;
             v50 = 2048;
             v51 = v38;
             v52 = 2048;
@@ -5203,7 +5203,7 @@ LABEL_17:
 
         if ((v18 & 1) == 0)
         {
-          [(NSMutableDictionary *)self->_subscribers setObject:v17 forKey:v8];
+          [(NSMutableDictionary *)self->_subscribers setObject:v17 forKey:dCopy];
           [(NSMutableDictionary *)self->_subscribers removeObjectForKey:v16];
         }
 
@@ -5242,7 +5242,7 @@ LABEL_35:
 
     v47 = v34;
     v48 = 2113;
-    v49 = v8;
+    v49 = dCopy;
     v50 = 2113;
     v51 = v10;
     _os_log_impl(&dword_23255B000, v33, OS_LOG_TYPE_DEFAULT, "CTShim: best match %@ for subscriber key %{private}@, MDN %{private}@", buf, 0x20u);
@@ -5305,12 +5305,12 @@ uint64_t __44__CoreTelephonyShim_getSortedSubscriberKeys__block_invoke(uint64_t 
   return v7;
 }
 
-- (id)extractCellInfo:(id)a3
+- (id)extractCellInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  infoCopy = info;
+  v4 = infoCopy;
+  if (infoCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -5318,15 +5318,15 @@ uint64_t __44__CoreTelephonyShim_getSortedSubscriberKeys__block_invoke(uint64_t 
     v16 = __Block_byref_object_copy__14;
     v17 = __Block_byref_object_dispose__14;
     v18 = 0;
-    v5 = [v3 legacyInfo];
-    if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    legacyInfo = [infoCopy legacyInfo];
+    if (legacyInfo && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __37__CoreTelephonyShim_extractCellInfo___block_invoke;
       v12[3] = &unk_27898BED8;
       v12[4] = &v13;
-      [v5 enumerateObjectsUsingBlock:v12];
+      [legacyInfo enumerateObjectsUsingBlock:v12];
     }
 
     else
@@ -5379,11 +5379,11 @@ uint64_t __37__CoreTelephonyShim_extractCellInfo___block_invoke(uint64_t a1, voi
   return MEMORY[0x2821F96F8](isKindOfClass, v8);
 }
 
-- (void)addNewSubscriberForICCID:(id)a3 MDN:(id)a4 slotID:(int64_t)a5
+- (void)addNewSubscriberForICCID:(id)d MDN:(id)n slotID:(int64_t)iD
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nCopy = n;
   v10 = [(NSMutableDictionary *)self->_subscribers objectForKeyedSubscript:@"subscriberTagCounter"];
   v11 = v10;
   if (v10)
@@ -5399,31 +5399,31 @@ uint64_t __37__CoreTelephonyShim_extractCellInfo___block_invoke(uint64_t a1, voi
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v12];
   [(NSMutableDictionary *)self->_subscribers setObject:v13 forKeyedSubscript:@"subscriberTagCounter"];
 
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15 = MEMORY[0x277CCABB0];
-  v16 = [MEMORY[0x277CBEAA8] date];
-  [v16 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v17 = [v15 numberWithDouble:?];
-  [v14 setObject:v17 forKeyedSubscript:@"subscriberLastUpdateTime"];
+  [dictionary setObject:v17 forKeyedSubscript:@"subscriberLastUpdateTime"];
 
-  if (v9 && [v9 length])
+  if (nCopy && [nCopy length])
   {
-    [v14 setObject:v9 forKeyedSubscript:@"subscriberMDN"];
+    [dictionary setObject:nCopy forKeyedSubscript:@"subscriberMDN"];
   }
 
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  [v14 setObject:v18 forKeyedSubscript:@"subscriberSlotID"];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:iD];
+  [dictionary setObject:v18 forKeyedSubscript:@"subscriberSlotID"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v12];
-  [v14 setObject:v19 forKeyedSubscript:@"subscriberTag"];
+  [dictionary setObject:v19 forKeyedSubscript:@"subscriberTag"];
 
-  [(NSMutableDictionary *)self->_subscribers setObject:v14 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_subscribers setObject:dictionary forKeyedSubscript:dCopy];
   v20 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     subscribers = self->_subscribers;
     v23 = 138478083;
-    v24 = v8;
+    v24 = dCopy;
     v25 = 2113;
     v26 = subscribers;
     _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_DEFAULT, "CTShim: New subscriber added with subscriber key (ICCID) %{private}@, subscribers: %{private}@", &v23, 0x16u);
@@ -5432,19 +5432,19 @@ uint64_t __37__CoreTelephonyShim_extractCellInfo___block_invoke(uint64_t a1, voi
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCurrentSubscriberTag:(id)a3
+- (void)updateCurrentSubscriberTag:(id)tag
 {
   v79 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 slotID];
-  v49 = self;
+  tagCopy = tag;
+  slotID = [tagCopy slotID];
+  selfCopy = self;
   [(CoreTelephonyShim *)self getSortedSubscriberKeys];
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   obj = v61 = 0u;
   v6 = [obj countByEnumeratingWithState:&v60 objects:v78 count:16];
-  v47 = v4;
+  v47 = tagCopy;
   if (v6)
   {
     v7 = *v61;
@@ -5458,14 +5458,14 @@ uint64_t __37__CoreTelephonyShim_extractCellInfo___block_invoke(uint64_t a1, voi
         }
 
         v9 = *(*(&v60 + 1) + 8 * i);
-        v10 = [(NSMutableDictionary *)v49->_subscribers objectForKeyedSubscript:v9];
+        v10 = [(NSMutableDictionary *)selfCopy->_subscribers objectForKeyedSubscript:v9];
         v11 = [v10 objectForKeyedSubscript:@"subscriberSlotID"];
         v12 = v11;
-        if (v11 && [v11 integerValue] == v5)
+        if (v11 && [v11 integerValue] == slotID)
         {
           [v10 objectForKeyedSubscript:@"subscriberTag"];
-          v43 = p_currentSubscriberTag = &v49->_currentSubscriberTag;
-          if ([(NSNumber *)v49->_currentSubscriberTag isEqualToNumber:v43])
+          v43 = p_currentSubscriberTag = &selfCopy->_currentSubscriberTag;
+          if ([(NSNumber *)selfCopy->_currentSubscriberTag isEqualToNumber:v43])
           {
             v14 = netepochsLogHandle;
             if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
@@ -5511,26 +5511,26 @@ uint64_t __37__CoreTelephonyShim_extractCellInfo___block_invoke(uint64_t a1, voi
             }
 
             objc_storeStrong(p_currentSubscriberTag, v43);
-            v49->currentSubscriberSlotID = v5;
+            selfCopy->currentSubscriberSlotID = slotID;
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __48__CoreTelephonyShim_updateCurrentSubscriberTag___block_invoke;
             block[3] = &unk_27898A7D0;
-            block[4] = v49;
-            v59 = v4;
+            block[4] = selfCopy;
+            v59 = tagCopy;
             if (updateCurrentSubscriberTag__once_token != -1)
             {
               dispatch_once(&updateCurrentSubscriberTag__once_token, block);
             }
           }
 
-          v45 = v49->delegates;
+          v45 = selfCopy->delegates;
           objc_sync_enter(v45);
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v20 = v49->delegates;
+          v20 = selfCopy->delegates;
           v21 = [(NSMutableSet *)v20 countByEnumeratingWithState:&v54 objects:v65 count:16];
           if (v21)
           {
@@ -5557,7 +5557,7 @@ uint64_t __37__CoreTelephonyShim_extractCellInfo___block_invoke(uint64_t a1, voi
             while (v21);
           }
 
-          v4 = v47;
+          tagCopy = v47;
           objc_sync_exit(v45);
 
           goto LABEL_29;
@@ -5576,7 +5576,7 @@ uint64_t __37__CoreTelephonyShim_extractCellInfo___block_invoke(uint64_t a1, voi
 
 LABEL_29:
 
-  v25 = [(CoreTelephonyShim *)v49 getCachedContentsForEnhancedLinkQualityMetricType:8 forSlot:v49->currentSubscriberSlotID];
+  v25 = [(CoreTelephonyShim *)selfCopy getCachedContentsForEnhancedLinkQualityMetricType:8 forSlot:selfCopy->currentSubscriberSlotID];
   if ([v25 count])
   {
     v26 = [v25 objectForKeyedSubscript:@"highThroughputState"];
@@ -5593,10 +5593,10 @@ LABEL_29:
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
         {
           v33 = v32;
-          v34 = [v26 unsignedIntValue];
+          unsignedIntValue = [v26 unsignedIntValue];
           [v27 doubleValue];
           *buf = 67109632;
-          *v67 = v34;
+          *v67 = unsignedIntValue;
           *&v67[4] = 2048;
           *&v67[6] = v35;
           *&v67[14] = 2048;
@@ -5604,13 +5604,13 @@ LABEL_29:
           _os_log_impl(&dword_23255B000, v33, OS_LOG_TYPE_INFO, "CTShim: Processing cached eLQM high throughput indication with value of %d received at %.4lf (%.4lf ago)", buf, 0x1Cu);
         }
 
-        v46 = v49->delegates;
+        v46 = selfCopy->delegates;
         objc_sync_enter(v46);
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v36 = v49->delegates;
+        v36 = selfCopy->delegates;
         v37 = [(NSMutableSet *)v36 countByEnumeratingWithState:&v50 objects:v64 count:16];
         if (v37)
         {
@@ -5637,12 +5637,12 @@ LABEL_29:
           while (v37);
         }
 
-        v4 = v47;
+        tagCopy = v47;
         objc_sync_exit(v46);
       }
     }
 
-    [(CoreTelephonyShim *)v49 removeCachedContentsForEnhancedLinkQualityMetricType:8 forSlot:v49->currentSubscriberSlotID];
+    [(CoreTelephonyShim *)selfCopy removeCachedContentsForEnhancedLinkQualityMetricType:8 forSlot:selfCopy->currentSubscriberSlotID];
   }
 
   v41 = *MEMORY[0x277D85DE8];
@@ -5725,28 +5725,28 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)processEnhancedLinkQualityHighThroughputNotification:(id)a3
+- (unsigned)processEnhancedLinkQualityHighThroughputNotification:(id)notification
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  notificationCopy = notification;
   v18 = -1;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (notificationCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *v20 = v3;
+      *v20 = notificationCopy;
       _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEFAULT, "eLQM: Received BB high throughput enable/disable notification: payload = %{public}@", buf, 0xCu);
     }
 
-    Length = CFDataGetLength(v3);
+    Length = CFDataGetLength(notificationCopy);
     if (Length == 8)
     {
       *buffer = 0;
       v23.location = 4;
       v23.length = 4;
-      CFDataGetBytes(v3, v23, buffer);
+      CFDataGetBytes(notificationCopy, v23, buffer);
       v6 = *buffer;
       v7 = *buffer != 0;
       v18 = *buffer != 0;
@@ -5771,7 +5771,7 @@ LABEL_11:
 
       v24.location = 1;
       v24.length = 1;
-      CFDataGetBytes(v3, v24, &v18);
+      CFDataGetBytes(notificationCopy, v24, &v18);
       v15 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
       {
@@ -5806,7 +5806,7 @@ LABEL_16:
     {
       v10 = v9;
       *buf = 134218242;
-      *v20 = v3;
+      *v20 = notificationCopy;
       *&v20[8] = 2112;
       v21 = objc_opt_class();
       v11 = v21;
@@ -5820,10 +5820,10 @@ LABEL_16:
   return v7;
 }
 
-- (void)cacheEnhancedLinkQualityMetricType:(int64_t)a3 withContents:(id)a4 forSlot:(int64_t)a5
+- (void)cacheEnhancedLinkQualityMetricType:(int64_t)type withContents:(id)contents forSlot:(int64_t)slot
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  contentsCopy = contents;
   cachedELQMMetricsForSlot = self->_cachedELQMMetricsForSlot;
   if (!cachedELQMMetricsForSlot)
   {
@@ -5834,48 +5834,48 @@ LABEL_16:
     cachedELQMMetricsForSlot = self->_cachedELQMMetricsForSlot;
   }
 
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:slot];
   v13 = [(NSMutableDictionary *)cachedELQMMetricsForSlot objectForKeyedSubscript:v12];
 
   if (!v13)
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v14 = self->_cachedELQMMetricsForSlot;
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:slot];
     [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
 
     v16 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
     {
       v20 = 134217984;
-      v21 = a5;
+      typeCopy = slot;
       _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_INFO, "eLQM: Created new metrics cache for slot %ld", &v20, 0xCu);
     }
   }
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v13 setObject:v8 forKeyedSubscript:v17];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  [v13 setObject:contentsCopy forKeyedSubscript:v17];
 
   v18 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
   {
     v20 = 134218498;
-    v21 = a3;
+    typeCopy = type;
     v22 = 2048;
-    v23 = a5;
+    slotCopy2 = slot;
     v24 = 2112;
-    v25 = v8;
+    v25 = contentsCopy;
     _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_INFO, "eLQM: Caching contents for metric type %ld and slot %ld (changed to %@)", &v20, 0x20u);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getCachedContentsForEnhancedLinkQualityMetricType:(int64_t)a3 forSlot:(int64_t)a4
+- (id)getCachedContentsForEnhancedLinkQualityMetricType:(int64_t)type forSlot:(int64_t)slot
 {
   v25 = *MEMORY[0x277D85DE8];
   cachedELQMMetricsForSlot = self->_cachedELQMMetricsForSlot;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:slot];
   v8 = [(NSMutableDictionary *)cachedELQMMetricsForSlot objectForKeyedSubscript:v7];
 
   v9 = netepochsLogHandle;
@@ -5884,7 +5884,7 @@ LABEL_16:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 134217984;
-      v20 = a4;
+      typeCopy2 = slot;
       v13 = "eLQM: Cached metrics for slot %ld is nil";
       v14 = v9;
       v15 = OS_LOG_TYPE_DEFAULT;
@@ -5901,13 +5901,13 @@ LABEL_12:
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
   {
     v19 = 134218242;
-    v20 = a4;
+    typeCopy2 = slot;
     v21 = 2112;
-    v22 = v8;
+    slotCopy4 = v8;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "eLQM: Cached metrics for slot %ld is %@", &v19, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v11 = [v8 objectForKeyedSubscript:v10];
 
   v12 = netepochsLogHandle;
@@ -5916,9 +5916,9 @@ LABEL_12:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v19 = 134218240;
-      v20 = a3;
+      typeCopy2 = type;
       v21 = 2048;
-      v22 = a4;
+      slotCopy4 = slot;
       v13 = "eLQM: Cached contents for metric type %ld and slot %ld is nil";
       v14 = v12;
       v15 = OS_LOG_TYPE_ERROR;
@@ -5932,9 +5932,9 @@ LABEL_12:
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
   {
     v19 = 134218498;
-    v20 = a3;
+    typeCopy2 = type;
     v21 = 2048;
-    v22 = a4;
+    slotCopy4 = slot;
     v23 = 2112;
     v24 = v11;
     _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_INFO, "eLQM: Cached contents for metric type %ld and slot %ld is %@", &v19, 0x20u);
@@ -5947,11 +5947,11 @@ LABEL_13:
   return v11;
 }
 
-- (void)removeCachedContentsForEnhancedLinkQualityMetricType:(int64_t)a3 forSlot:(int64_t)a4
+- (void)removeCachedContentsForEnhancedLinkQualityMetricType:(int64_t)type forSlot:(int64_t)slot
 {
   v23 = *MEMORY[0x277D85DE8];
   cachedELQMMetricsForSlot = self->_cachedELQMMetricsForSlot;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:slot];
   v8 = [(NSMutableDictionary *)cachedELQMMetricsForSlot objectForKeyedSubscript:v7];
 
   v9 = netepochsLogHandle;
@@ -5960,13 +5960,13 @@ LABEL_13:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
     {
       v17 = 134218242;
-      v18 = a4;
+      slotCopy3 = slot;
       v19 = 2112;
-      v20 = v8;
+      slotCopy2 = v8;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "eLQM: Cached metrics for slot %ld is %@", &v17, 0x16u);
     }
 
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     [v8 setObject:0 forKeyedSubscript:v10];
 
     v11 = netepochsLogHandle;
@@ -5974,12 +5974,12 @@ LABEL_13:
     {
       v12 = MEMORY[0x277CCABB0];
       v13 = v11;
-      v14 = [v12 numberWithInteger:a3];
+      v14 = [v12 numberWithInteger:type];
       v15 = [v8 objectForKeyedSubscript:v14];
       v17 = 134218498;
-      v18 = a3;
+      slotCopy3 = type;
       v19 = 2048;
-      v20 = a4;
+      slotCopy2 = slot;
       v21 = 2112;
       v22 = v15;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_INFO, "eLQM: Removed cache for metric type %ld and slot %ld (changed to %@)", &v17, 0x20u);
@@ -5989,7 +5989,7 @@ LABEL_13:
   else if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 134217984;
-    v18 = a4;
+    slotCopy3 = slot;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "eLQM: Cached metrics for slot %ld is nil", &v17, 0xCu);
   }
 
@@ -6225,7 +6225,7 @@ void __53__CoreTelephonyShim_unregisterForCTDumpNotifications__block_invoke_306(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)getBasebandTraceEnabledState:(BOOL *)a3 coreDumpEnabled:(BOOL *)a4
+- (BOOL)getBasebandTraceEnabledState:(BOOL *)state coreDumpEnabled:(BOOL *)enabled
 {
   v25 = *MEMORY[0x277D85DE8];
   [(CoreTelephonyShim *)self ctServerConnection];
@@ -6303,12 +6303,12 @@ LABEL_12:
   return 0;
 }
 
-+ (id)dateTimeStringFromCTDumpFolderPrefix:(id)a3
++ (id)dateTimeStringFromCTDumpFolderPrefix:(id)prefix
 {
-  v3 = a3;
-  if ([v3 length] && objc_msgSend(v3, "hasPrefix:", @"log-bb-"))
+  prefixCopy = prefix;
+  if ([prefixCopy length] && objc_msgSend(prefixCopy, "hasPrefix:", @"log-bb-"))
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"log-bb-", "length")}];
+    v4 = [prefixCopy substringFromIndex:{objc_msgSend(@"log-bb-", "length")}];
   }
 
   else
@@ -6319,9 +6319,9 @@ LABEL_12:
   return v4;
 }
 
-+ (double)timestampFromCTDumpFolderPrefix:(id)a3
++ (double)timestampFromCTDumpFolderPrefix:(id)prefix
 {
-  v3 = [CoreTelephonyShim dateTimeStringFromCTDumpFolderPrefix:a3];
+  v3 = [CoreTelephonyShim dateTimeStringFromCTDumpFolderPrefix:prefix];
   if (![v3 length])
   {
     goto LABEL_3;
@@ -6336,8 +6336,8 @@ LABEL_12:
   if (v7 == 0.0)
   {
 LABEL_3:
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [v8 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v7 = v9;
   }
 

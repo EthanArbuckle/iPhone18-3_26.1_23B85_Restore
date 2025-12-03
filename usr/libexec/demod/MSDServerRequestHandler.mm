@@ -1,37 +1,37 @@
 @interface MSDServerRequestHandler
 + (id)sharedInstance;
 - (MSDServerRequestHandler)init;
-- (id)getDownloadFileRequestFromResponse:(id)a3 forFilePath:(id)a4;
+- (id)getDownloadFileRequestFromResponse:(id)response forFilePath:(id)path;
 - (id)getHmacKey;
-- (id)handleRequest:(id)a3 synchronous:(BOOL)a4;
-- (id)handleRequestSync:(id)a3;
-- (id)updateFileDownloadCredentialFromManifestInfo:(id)a3;
-- (void)autoFillCDNRequest:(id)a3;
-- (void)autoFillCommandRequest:(id)a3;
-- (void)autoFillRequest:(id)a3;
-- (void)checkIPAForResponse:(id)a3 withRequest:(id)a4;
-- (void)downloadIPAForResponse:(id)a3 withRequest:(id)a4;
-- (void)handleAck:(id)a3;
-- (void)handleCheckIn:(id)a3;
-- (void)handleDownloadFile:(id)a3;
-- (void)handleDownloadIPA:(id)a3;
-- (void)handleEnroll:(id)a3;
-- (void)handleFMH:(id)a3;
-- (void)handleGetAccountSettings:(id)a3;
-- (void)handleGetContinuitySettings:(id)a3;
-- (void)handleIsEnrolled:(id)a3;
-- (void)handleKVStore:(id)a3;
-- (void)handleManifestDownload:(id)a3;
-- (void)handleMarkNotDemo:(id)a3;
-- (void)handlePing:(id)a3;
-- (void)handleReportDone:(id)a3;
-- (void)handleReportError:(id)a3;
-- (void)handleRequestAsync:(id)a3;
-- (void)handleS3Upload:(id)a3;
-- (void)handleStoreSearch:(id)a3;
-- (void)handleUnenroll:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setupRequest:(id)a3;
+- (id)handleRequest:(id)request synchronous:(BOOL)synchronous;
+- (id)handleRequestSync:(id)sync;
+- (id)updateFileDownloadCredentialFromManifestInfo:(id)info;
+- (void)autoFillCDNRequest:(id)request;
+- (void)autoFillCommandRequest:(id)request;
+- (void)autoFillRequest:(id)request;
+- (void)checkIPAForResponse:(id)response withRequest:(id)request;
+- (void)downloadIPAForResponse:(id)response withRequest:(id)request;
+- (void)handleAck:(id)ack;
+- (void)handleCheckIn:(id)in;
+- (void)handleDownloadFile:(id)file;
+- (void)handleDownloadIPA:(id)a;
+- (void)handleEnroll:(id)enroll;
+- (void)handleFMH:(id)h;
+- (void)handleGetAccountSettings:(id)settings;
+- (void)handleGetContinuitySettings:(id)settings;
+- (void)handleIsEnrolled:(id)enrolled;
+- (void)handleKVStore:(id)store;
+- (void)handleManifestDownload:(id)download;
+- (void)handleMarkNotDemo:(id)demo;
+- (void)handlePing:(id)ping;
+- (void)handleReportDone:(id)done;
+- (void)handleReportError:(id)error;
+- (void)handleRequestAsync:(id)async;
+- (void)handleS3Upload:(id)upload;
+- (void)handleStoreSearch:(id)search;
+- (void)handleUnenroll:(id)unenroll;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setupRequest:(id)request;
 - (void)updateHubHostNameAndPort;
 @end
 
@@ -59,23 +59,23 @@
     v3 = +[MSDTargetDevice sharedInstance];
     [(MSDServerRequestHandler *)v2 setDevice:v3];
 
-    v4 = [(MSDServerRequestHandler *)v2 device];
-    v5 = [v4 udid];
-    [(MSDServerRequestHandler *)v2 setDeviceUDID:v5];
+    device = [(MSDServerRequestHandler *)v2 device];
+    udid = [device udid];
+    [(MSDServerRequestHandler *)v2 setDeviceUDID:udid];
 
     [(MSDServerRequestHandler *)v2 setHubServer:0];
     [(MSDServerRequestHandler *)v2 setDownloadManager:0];
     v6 = objc_alloc_init(MSDDemoUnitServer);
     [(MSDServerRequestHandler *)v2 setDuServer:v6];
 
-    v7 = [(MSDServerRequestHandler *)v2 getDispatchTable];
-    [(MSDServerRequestHandler *)v2 setDispatchTable:v7];
+    getDispatchTable = [(MSDServerRequestHandler *)v2 getDispatchTable];
+    [(MSDServerRequestHandler *)v2 setDispatchTable:getDispatchTable];
 
-    v8 = [(MSDServerRequestHandler *)v2 device];
-    [v8 addObserver:v2 forKeyPath:@"hubHostName" options:1 context:0];
+    device2 = [(MSDServerRequestHandler *)v2 device];
+    [device2 addObserver:v2 forKeyPath:@"hubHostName" options:1 context:0];
 
-    v9 = [(MSDServerRequestHandler *)v2 device];
-    [v9 addObserver:v2 forKeyPath:@"hubPort" options:1 context:0];
+    device3 = [(MSDServerRequestHandler *)v2 device];
+    [device3 addObserver:v2 forKeyPath:@"hubPort" options:1 context:0];
 
     [(MSDServerRequestHandler *)v2 updateHubHostNameAndPort];
     v10 = v2;
@@ -84,18 +84,18 @@
   return v2;
 }
 
-- (void)handleRequestAsync:(id)a3
+- (void)handleRequestAsync:(id)async
 {
-  v5 = a3;
-  [(MSDServerRequestHandler *)self setupRequest:v5];
-  v4 = [(MSDServerRequestHandler *)self handleRequest:v5 synchronous:0];
+  asyncCopy = async;
+  [(MSDServerRequestHandler *)self setupRequest:asyncCopy];
+  v4 = [(MSDServerRequestHandler *)self handleRequest:asyncCopy synchronous:0];
 }
 
-- (id)handleRequestSync:(id)a3
+- (id)handleRequestSync:(id)sync
 {
-  v4 = a3;
-  [(MSDServerRequestHandler *)self setupRequest:v4];
-  v5 = [(MSDServerRequestHandler *)self handleRequest:v4 synchronous:1];
+  syncCopy = sync;
+  [(MSDServerRequestHandler *)self setupRequest:syncCopy];
+  v5 = [(MSDServerRequestHandler *)self handleRequest:syncCopy synchronous:1];
 
   return v5;
 }
@@ -110,13 +110,13 @@
   return v4;
 }
 
-- (void)autoFillRequest:(id)a3
+- (void)autoFillRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MSDServerRequestHandler *)self autoFillCommandRequest:v4];
+    [(MSDServerRequestHandler *)self autoFillCommandRequest:requestCopy];
   }
 
   else
@@ -124,122 +124,122 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(MSDServerRequestHandler *)self autoFillCDNRequest:v4];
+      [(MSDServerRequestHandler *)self autoFillCDNRequest:requestCopy];
     }
   }
 }
 
-- (void)autoFillCommandRequest:(id)a3
+- (void)autoFillCommandRequest:(id)request
 {
-  v14 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v14 server];
+  requestCopy = request;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  server = [requestCopy server];
 
-  if (!v5)
+  if (!server)
   {
-    v6 = [(MSDServerRequestHandler *)v4 hubHostName];
-    [v14 setServer:v6];
+    hubHostName = [(MSDServerRequestHandler *)selfCopy hubHostName];
+    [requestCopy setServer:hubHostName];
   }
 
-  v7 = [v14 port];
+  port = [requestCopy port];
 
-  if (!v7)
+  if (!port)
   {
-    v8 = [(MSDServerRequestHandler *)v4 hubPort];
-    [v14 setPort:v8];
+    hubPort = [(MSDServerRequestHandler *)selfCopy hubPort];
+    [requestCopy setPort:hubPort];
   }
 
-  v9 = [v14 hubVersion];
+  hubVersion = [requestCopy hubVersion];
 
-  if (!v9)
+  if (!hubVersion)
   {
-    v10 = [(MSDServerRequestHandler *)v4 device];
-    v11 = [v10 hubProtocolVersion];
-    [v14 setHubVersion:v11];
+    device = [(MSDServerRequestHandler *)selfCopy device];
+    hubProtocolVersion = [device hubProtocolVersion];
+    [requestCopy setHubVersion:hubProtocolVersion];
   }
 
-  v12 = [v14 deviceUDID];
+  deviceUDID = [requestCopy deviceUDID];
 
-  if (!v12)
+  if (!deviceUDID)
   {
-    v13 = [(MSDServerRequestHandler *)v4 deviceUDID];
-    [v14 setDeviceUDID:v13];
+    deviceUDID2 = [(MSDServerRequestHandler *)selfCopy deviceUDID];
+    [requestCopy setDeviceUDID:deviceUDID2];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)autoFillCDNRequest:(id)a3
+- (void)autoFillCDNRequest:(id)request
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 downloadCredentials];
+  requestCopy = request;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  downloadCredentials = [requestCopy downloadCredentials];
 
-  if (!v5)
+  if (!downloadCredentials)
   {
     v6 = +[MSDFileDownloadCredentials sharedInstance];
-    [v7 setDownloadCredentials:v6];
+    [requestCopy setDownloadCredentials:v6];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setupRequest:(id)a3
+- (void)setupRequest:(id)request
 {
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  requestCopy = request;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = [(MSDServerRequestHandler *)v4 hubServer];
+    hubServer = [(MSDServerRequestHandler *)selfCopy hubServer];
 
-    if (!v5)
+    if (!hubServer)
     {
       v6 = [[MSDHubServer alloc] initWithCellularAccess:1];
-      [(MSDServerRequestHandler *)v4 setHubServer:v6];
+      [(MSDServerRequestHandler *)selfCopy setHubServer:v6];
 
-      v7 = [(MSDServerRequestHandler *)v4 hubServer];
-      v8 = [(MSDServerRequestHandler *)v4 getHmacKey];
-      [v7 overrideHmacKey:v8];
+      hubServer2 = [(MSDServerRequestHandler *)selfCopy hubServer];
+      getHmacKey = [(MSDServerRequestHandler *)selfCopy getHmacKey];
+      [hubServer2 overrideHmacKey:getHmacKey];
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v9 = [(MSDServerRequestHandler *)v4 downloadManager];
+    downloadManager = [(MSDServerRequestHandler *)selfCopy downloadManager];
 
-    if (!v9)
+    if (!downloadManager)
     {
-      v10 = [[MSDDownloadRequestManager alloc] initWithCellularAccess:1 andFDCUpdateDelegate:v4];
-      [(MSDServerRequestHandler *)v4 setDownloadManager:v10];
+      v10 = [[MSDDownloadRequestManager alloc] initWithCellularAccess:1 andFDCUpdateDelegate:selfCopy];
+      [(MSDServerRequestHandler *)selfCopy setDownloadManager:v10];
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(MSDServerRequestHandler *)v4 s3Server];
+    s3Server = [(MSDServerRequestHandler *)selfCopy s3Server];
 
-    if (!v11)
+    if (!s3Server)
     {
       v12 = [[MSDS3Server alloc] initWithCellularAccess:1];
-      [(MSDServerRequestHandler *)v4 setS3Server:v12];
+      [(MSDServerRequestHandler *)selfCopy setS3Server:v12];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  [(MSDServerRequestHandler *)v4 autoFillRequest:v13];
+  [(MSDServerRequestHandler *)selfCopy autoFillRequest:requestCopy];
 }
 
-- (id)handleRequest:(id)a3 synchronous:(BOOL)a4
+- (id)handleRequest:(id)request synchronous:(BOOL)synchronous
 {
-  v4 = a4;
-  v6 = a3;
+  synchronousCopy = synchronous;
+  requestCopy = request;
   v7 = 0;
   v22 = 0;
   v23 = &v22;
@@ -247,7 +247,7 @@
   v25 = sub_1000A805C;
   v26 = sub_1000A806C;
   v27 = 0;
-  if (v4)
+  if (synchronousCopy)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -256,22 +256,22 @@
     v21 = &v22;
     v7 = dispatch_semaphore_create(0);
     v20 = v7;
-    [v6 setCompletion:v19];
+    [requestCopy setCompletion:v19];
   }
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [(MSDServerRequestHandler *)self dispatchTable];
-  v11 = [v10 allKeys];
-  v12 = [v11 containsObject:v9];
+  dispatchTable = [(MSDServerRequestHandler *)self dispatchTable];
+  allKeys = [dispatchTable allKeys];
+  v12 = [allKeys containsObject:v9];
 
   if (v12)
   {
-    v13 = [(MSDServerRequestHandler *)self dispatchTable];
-    v14 = [v13 objectForKey:v9];
+    dispatchTable2 = [(MSDServerRequestHandler *)self dispatchTable];
+    v14 = [dispatchTable2 objectForKey:v9];
     v15 = NSSelectorFromString(v14);
 
-    ([(MSDServerRequestHandler *)self methodForSelector:v15])(self, v15, v6);
+    ([(MSDServerRequestHandler *)self methodForSelector:v15])(self, v15, requestCopy);
   }
 
   else
@@ -285,7 +285,7 @@
     }
   }
 
-  if (v4)
+  if (synchronousCopy)
   {
     dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -297,45 +297,45 @@
   return v17;
 }
 
-- (void)handleIsEnrolled:(id)a3
+- (void)handleIsEnrolled:(id)enrolled
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self hubServer];
-  [v5 isEnrolled:v4];
+  enrolledCopy = enrolled;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer isEnrolled:enrolledCopy];
 }
 
-- (void)handleEnroll:(id)a3
+- (void)handleEnroll:(id)enroll
 {
-  v4 = a3;
-  [v4 completion];
+  enrollCopy = enroll;
+  [enrollCopy completion];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1000A81FC;
   v10 = &unk_10016C0F8;
   v12 = v11 = self;
   v5 = v12;
-  [v4 setCompletion:&v7];
+  [enrollCopy setCompletion:&v7];
   v6 = [(MSDServerRequestHandler *)self hubServer:v7];
-  [v6 enroll:v4];
+  [v6 enroll:enrollCopy];
 }
 
-- (void)handleUnenroll:(id)a3
+- (void)handleUnenroll:(id)unenroll
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self hubServer];
-  [v5 unenroll:v4];
+  unenrollCopy = unenroll;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer unenroll:unenrollCopy];
 }
 
-- (void)handleDownloadIPA:(id)a3
+- (void)handleDownloadIPA:(id)a
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  aCopy = a;
+  v5 = [aCopy copy];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000A8760;
   v20[3] = &unk_10016C120;
   v20[4] = self;
-  v6 = v4;
+  v6 = aCopy;
   v21 = v6;
   [v5 setCompletion:v20];
   v7 = [v6 copy];
@@ -344,35 +344,35 @@
   v15 = 3221225472;
   v16 = sub_1000A8770;
   v17 = &unk_10016C120;
-  v18 = self;
+  selfCopy = self;
   v19 = v6;
   v8 = v6;
   [v7 setCompletion:&v14];
   v9 = [(MSDServerRequestHandler *)self device:v14];
-  v10 = [v9 hubProtocolVersion];
-  v11 = [v10 isEqualToString:@"2"];
+  hubProtocolVersion = [v9 hubProtocolVersion];
+  v11 = [hubProtocolVersion isEqualToString:@"2"];
 
-  v12 = [(MSDServerRequestHandler *)self hubServer];
-  v13 = v12;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  v13 = hubServer;
   if (v11)
   {
-    [v12 downloadIPAPreCachingHub:v5];
+    [hubServer downloadIPAPreCachingHub:v5];
   }
 
   else
   {
-    [v12 downloadIPACachingHub:v7];
+    [hubServer downloadIPACachingHub:v7];
   }
 }
 
-- (void)handleManifestDownload:(id)a3
+- (void)handleManifestDownload:(id)download
 {
-  v4 = a3;
-  v5 = [v4 completion];
-  v6 = [v4 savePath];
-  v7 = [(MSDServerRequestHandler *)self device];
-  v8 = [v7 hubProtocolVersion];
-  v9 = [v8 isEqualToString:@"3"];
+  downloadCopy = download;
+  completion = [downloadCopy completion];
+  savePath = [downloadCopy savePath];
+  device = [(MSDServerRequestHandler *)self device];
+  hubProtocolVersion = [device hubProtocolVersion];
+  v9 = [hubProtocolVersion isEqualToString:@"3"];
 
   if (v9)
   {
@@ -381,88 +381,88 @@
     v11[2] = sub_1000A88C4;
     v11[3] = &unk_10016C148;
     v11[4] = self;
-    v12 = v6;
-    v13 = v5;
-    [v4 setCompletion:v11];
-    [v4 setSavePath:0];
+    v12 = savePath;
+    v13 = completion;
+    [downloadCopy setCompletion:v11];
+    [downloadCopy setSavePath:0];
   }
 
-  v10 = [(MSDServerRequestHandler *)self hubServer];
-  [v10 downloadManifest:v4];
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer downloadManifest:downloadCopy];
 }
 
-- (void)handleReportError:(id)a3
+- (void)handleReportError:(id)error
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self hubServer];
-  [v5 reportError:v4];
+  errorCopy = error;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer reportError:errorCopy];
 }
 
-- (void)handleReportDone:(id)a3
+- (void)handleReportDone:(id)done
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self hubServer];
-  [v5 reportDone:v4];
+  doneCopy = done;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer reportDone:doneCopy];
 }
 
-- (void)handleFMH:(id)a3
+- (void)handleFMH:(id)h
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self duServer];
-  [v5 findMyHub:v4];
+  hCopy = h;
+  duServer = [(MSDServerRequestHandler *)self duServer];
+  [duServer findMyHub:hCopy];
 }
 
-- (void)handleCheckIn:(id)a3
+- (void)handleCheckIn:(id)in
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self duServer];
-  [v5 checkIn:v4];
+  inCopy = in;
+  duServer = [(MSDServerRequestHandler *)self duServer];
+  [duServer checkIn:inCopy];
 }
 
-- (void)handleMarkNotDemo:(id)a3
+- (void)handleMarkNotDemo:(id)demo
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self duServer];
-  [v5 markAsNotDemo:v4];
+  demoCopy = demo;
+  duServer = [(MSDServerRequestHandler *)self duServer];
+  [duServer markAsNotDemo:demoCopy];
 }
 
-- (void)handleStoreSearch:(id)a3
+- (void)handleStoreSearch:(id)search
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self duServer];
-  [v5 storeSearch:v4];
+  searchCopy = search;
+  duServer = [(MSDServerRequestHandler *)self duServer];
+  [duServer storeSearch:searchCopy];
 }
 
-- (void)handleGetAccountSettings:(id)a3
+- (void)handleGetAccountSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self hubServer];
-  [v5 getAccountSettings:v4];
+  settingsCopy = settings;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer getAccountSettings:settingsCopy];
 }
 
-- (void)handleGetContinuitySettings:(id)a3
+- (void)handleGetContinuitySettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self hubServer];
-  [v5 getContinuitySettings:v4];
+  settingsCopy = settings;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer getContinuitySettings:settingsCopy];
 }
 
-- (void)handleDownloadFile:(id)a3
+- (void)handleDownloadFile:(id)file
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSDServerRequestHandler *)v5 hubHostName];
-  if (v6)
+  fileCopy = file;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hubHostName = [(MSDServerRequestHandler *)selfCopy hubHostName];
+  if (hubHostName)
   {
-    v7 = [(MSDServerRequestHandler *)v5 hubPort];
+    hubPort = [(MSDServerRequestHandler *)selfCopy hubPort];
 
-    if (v7)
+    if (hubPort)
     {
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy);
 
-      v8 = [(MSDServerRequestHandler *)v5 downloadManager];
-      [v8 downloadFileForRequest:v4];
+      downloadManager = [(MSDServerRequestHandler *)selfCopy downloadManager];
+      [downloadManager downloadFileForRequest:fileCopy];
       v9 = 0;
 LABEL_8:
 
@@ -473,22 +473,22 @@ LABEL_8:
   v10 = sub_100063A54();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = [v4 getName];
-    sub_1000E6F20(v11, buf, v10);
+    getName = [fileCopy getName];
+    sub_1000E6F20(getName, buf, v10);
   }
 
   v14 = 0;
   sub_1000C1390(&v14, 3727744769, @"Input is invalid");
   v9 = v14;
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v12 = [v4 completion];
+  completion = [fileCopy completion];
 
-  if (v12)
+  if (completion)
   {
-    v8 = [v4 completion];
+    downloadManager = [fileCopy completion];
     v13 = [[MSDServerResponse alloc] initWithError:v9];
-    (v8)[2](v8, v13);
+    (downloadManager)[2](downloadManager, v13);
 
     goto LABEL_8;
   }
@@ -496,37 +496,37 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)handlePing:(id)a3
+- (void)handlePing:(id)ping
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self hubServer];
-  [v5 ping:v4];
+  pingCopy = ping;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer ping:pingCopy];
 }
 
-- (void)handleAck:(id)a3
+- (void)handleAck:(id)ack
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self hubServer];
-  [v5 ack:v4];
+  ackCopy = ack;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer ack:ackCopy];
 }
 
-- (void)handleS3Upload:(id)a3
+- (void)handleS3Upload:(id)upload
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self s3Server];
-  [v5 uploadMobileStoreDemoLogs:v4];
+  uploadCopy = upload;
+  s3Server = [(MSDServerRequestHandler *)self s3Server];
+  [s3Server uploadMobileStoreDemoLogs:uploadCopy];
 }
 
-- (void)handleKVStore:(id)a3
+- (void)handleKVStore:(id)store
 {
-  v4 = a3;
-  v5 = [(MSDServerRequestHandler *)self hubServer];
-  [v5 handleKVStore:v4];
+  storeCopy = store;
+  hubServer = [(MSDServerRequestHandler *)self hubServer];
+  [hubServer handleKVStore:storeCopy];
 }
 
-- (id)updateFileDownloadCredentialFromManifestInfo:(id)a3
+- (id)updateFileDownloadCredentialFromManifestInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -543,7 +543,7 @@ LABEL_9:
   v23 = 0;
   v7 = objc_alloc_init(MSDFileDownloadCredentialRequest);
   [(MSDServerRequestHandler *)self autoFillCommandRequest:v7];
-  [(MSDFileDownloadCredentialRequest *)v7 setManifestInfo:v4];
+  [(MSDFileDownloadCredentialRequest *)v7 setManifestInfo:infoCopy];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1000E6C70;
@@ -563,84 +563,84 @@ LABEL_9:
   return v10;
 }
 
-- (void)downloadIPAForResponse:(id)a3 withRequest:(id)a4
+- (void)downloadIPAForResponse:(id)response withRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  requestCopy = request;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000A935C;
   v18[3] = &unk_10016C170;
-  v8 = v6;
+  v8 = responseCopy;
   v19 = v8;
-  v20 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = requestCopy;
   v21 = v9;
   v10 = objc_retainBlock(v18);
-  v11 = [v8 error];
+  error = [v8 error];
 
-  if (v11)
+  if (error)
   {
     v14 = 0;
   }
 
   else
   {
-    v12 = [v9 savePath];
-    v13 = [v8 fileName];
-    v14 = [v12 stringByAppendingPathComponent:v13];
+    savePath = [v9 savePath];
+    fileName = [v8 fileName];
+    v14 = [savePath stringByAppendingPathComponent:fileName];
 
     v15 = [(MSDServerRequestHandler *)self getDownloadFileRequestFromResponse:v8 forFilePath:v14];
     if (v15)
     {
-      v16 = v15;
+      completion2 = v15;
       [v15 setCompletion:v10];
-      [(MSDServerRequestHandler *)self handleDownloadFile:v16];
+      [(MSDServerRequestHandler *)self handleDownloadFile:completion2];
       goto LABEL_4;
     }
 
     sub_1000E6F78(v8);
   }
 
-  v17 = [v9 completion];
+  completion = [v9 completion];
 
-  if (!v17)
+  if (!completion)
   {
     goto LABEL_5;
   }
 
-  v16 = [v9 completion];
-  (v16)[2](v16, v8);
+  completion2 = [v9 completion];
+  (completion2)[2](completion2, v8);
 LABEL_4:
 
 LABEL_5:
 }
 
-- (void)checkIPAForResponse:(id)a3 withRequest:(id)a4
+- (void)checkIPAForResponse:(id)response withRequest:(id)request
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 error];
+  responseCopy = response;
+  requestCopy = request;
+  error = [responseCopy error];
 
-  if (!v7)
+  if (!error)
   {
     v8 = +[NSFileManager defaultManager];
     v9 = sub_100063A54();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 appID];
+      appID = [requestCopy appID];
       v19 = 138543362;
-      v20 = v10;
+      v20 = appID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Checking IPA File for %{public}@", &v19, 0xCu);
     }
 
-    v11 = [v6 savePath];
-    v12 = [v8 fileExistsAtPath:v11];
+    savePath = [requestCopy savePath];
+    v12 = [v8 fileExistsAtPath:savePath];
 
     if (v12)
     {
-      v13 = [v6 savePath];
-      v14 = [v8 attributesOfItemAtPath:v13 error:0];
+      savePath2 = [requestCopy savePath];
+      v14 = [v8 attributesOfItemAtPath:savePath2 error:0];
 
       if ([v14 fileSize])
       {
@@ -652,7 +652,7 @@ LABEL_6:
       v17 = sub_100063A54();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        sub_1000E7050(v6);
+        sub_1000E7050(requestCopy);
       }
     }
 
@@ -661,35 +661,35 @@ LABEL_6:
       v17 = sub_100063A54();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        sub_1000E6FCC(v6);
+        sub_1000E6FCC(requestCopy);
       }
 
       v14 = 0;
     }
 
     v18 = [NSError errorDomainMSDWithCode:3727744512 message:@"Unexpected server response."];
-    [v5 setError:v18];
+    [responseCopy setError:v18];
 
     goto LABEL_6;
   }
 
 LABEL_7:
-  v15 = [v6 completion];
+  completion = [requestCopy completion];
 
-  if (v15)
+  if (completion)
   {
-    v16 = [v6 completion];
-    (v16)[2](v16, v5);
+    completion2 = [requestCopy completion];
+    (completion2)[2](completion2, responseCopy);
   }
 }
 
-- (id)getDownloadFileRequestFromResponse:(id)a3 forFilePath:(id)a4
+- (id)getDownloadFileRequestFromResponse:(id)response forFilePath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 fileName];
-  v8 = [v5 originServer];
-  v9 = [v5 conformsToProtocol:&OBJC_PROTOCOL___MSDDownloadFileDetailsProtocol];
+  responseCopy = response;
+  pathCopy = path;
+  fileName = [responseCopy fileName];
+  originServer = [responseCopy originServer];
+  v9 = [responseCopy conformsToProtocol:&OBJC_PROTOCOL___MSDDownloadFileDetailsProtocol];
   v10 = sub_100063A54();
   v11 = v10;
   if (v9)
@@ -697,9 +697,9 @@ LABEL_7:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543618;
-      v18 = v7;
+      v18 = fileName;
       v19 = 2114;
-      v20 = v8;
+      v20 = originServer;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Details to download file are: FileName = %{public}@, OriginServer = %{public}@", &v17, 0x16u);
     }
 
@@ -707,19 +707,19 @@ LABEL_7:
     v13 = +[MSDFileDownloadCredentials sharedInstance];
     [(MSDCDNServerRequest *)v12 setDownloadCredentials:v13];
 
-    v14 = [(MSDDownloadFileRequest *)v12 fileInfo];
-    [v14 setFile:v7];
+    fileInfo = [(MSDDownloadFileRequest *)v12 fileInfo];
+    [fileInfo setFile:fileName];
 
-    v15 = [(MSDDownloadFileRequest *)v12 fileInfo];
-    [v15 setFileHash:v7];
+    fileInfo2 = [(MSDDownloadFileRequest *)v12 fileInfo];
+    [fileInfo2 setFileHash:fileName];
 
-    [(MSDServerRequest *)v12 setSavePath:v6];
-    [(MSDCDNServerRequest *)v12 setOriginServer:v8];
+    [(MSDServerRequest *)v12 setSavePath:pathCopy];
+    [(MSDCDNServerRequest *)v12 setOriginServer:originServer];
   }
 
   else
   {
-    sub_1000E70D4(v10, v5);
+    sub_1000E70D4(v10, responseCopy);
     v12 = 0;
   }
 
@@ -728,48 +728,48 @@ LABEL_7:
 
 - (void)updateHubHostNameAndPort
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSDServerRequestHandler *)v2 device];
-  v4 = [v3 hubHostName];
-  [(MSDServerRequestHandler *)v2 setHubHostName:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  device = [(MSDServerRequestHandler *)selfCopy device];
+  hubHostName = [device hubHostName];
+  [(MSDServerRequestHandler *)selfCopy setHubHostName:hubHostName];
 
-  v5 = [(MSDServerRequestHandler *)v2 device];
-  v6 = [v5 hubPort];
-  [(MSDServerRequestHandler *)v2 setHubPort:v6];
+  device2 = [(MSDServerRequestHandler *)selfCopy device];
+  hubPort = [device2 hubPort];
+  [(MSDServerRequestHandler *)selfCopy setHubPort:hubPort];
 
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(MSDServerRequestHandler *)v2 hubHostName];
-    v9 = [(MSDServerRequestHandler *)v2 hubPort];
+    hubHostName2 = [(MSDServerRequestHandler *)selfCopy hubHostName];
+    hubPort2 = [(MSDServerRequestHandler *)selfCopy hubPort];
     v10 = 136315650;
     v11 = "[MSDServerRequestHandler updateHubHostNameAndPort]";
     v12 = 2114;
-    v13 = v8;
+    v13 = hubHostName2;
     v14 = 2114;
-    v15 = v9;
+    v15 = hubPort2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s - updated hub host name: %{public}@ port: %{public}@", &v10, 0x20u);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (([v9 isEqualToString:@"hubHostName"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"hubPort"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"hubHostName"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"hubPort"))
   {
-    v12 = [(MSDServerRequestHandler *)self device];
+    device = [(MSDServerRequestHandler *)self device];
 
-    if (v12 == v10)
+    if (device == objectCopy)
     {
-      v13 = [v11 objectForKey:NSKeyValueChangeKindKey];
-      v14 = [v13 intValue];
+      v13 = [changeCopy objectForKey:NSKeyValueChangeKindKey];
+      intValue = [v13 intValue];
 
-      if (v14 == 1)
+      if (intValue == 1)
       {
         v15 = sub_100063A54();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -777,7 +777,7 @@ LABEL_7:
           objc_opt_class();
           sub_100006E3C();
           v19 = 2114;
-          v20 = v9;
+          v20 = pathCopy;
           v17 = v16;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Observed %{public}@ change!", v18, 0x16u);
         }

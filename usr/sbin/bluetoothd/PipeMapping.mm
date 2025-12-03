@@ -1,20 +1,20 @@
 @interface PipeMapping
-- (PipeMapping)initWithIdentifier:(id)a3 handle:(unsigned __int16)a4;
+- (PipeMapping)initWithIdentifier:(id)identifier handle:(unsigned __int16)handle;
 @end
 
 @implementation PipeMapping
 
-- (PipeMapping)initWithIdentifier:(id)a3 handle:(unsigned __int16)a4
+- (PipeMapping)initWithIdentifier:(id)identifier handle:(unsigned __int16)handle
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PipeMapping;
   v8 = [(PipeMapping *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_pipeHandle = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_pipeHandle = handle;
   }
 
   return v9;

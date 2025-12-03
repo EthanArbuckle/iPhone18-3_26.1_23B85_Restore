@@ -1,9 +1,9 @@
 @interface PedestrianARSessionTask
 + (BOOL)isPedestrianARModeSupported;
-- (PedestrianARSessionTask)initWithPlatformController:(id)a3;
+- (PedestrianARSessionTask)initWithPlatformController:(id)controller;
 - (PlatformController)platformController;
 - (void)dealloc;
-- (void)stateManager:(id)a3 didChangeState:(BOOL)a4;
+- (void)stateManager:(id)manager didChangeState:(BOOL)state;
 @end
 
 @implementation PedestrianARSessionTask
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_100038600;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195D0C0 != -1)
   {
     dispatch_once(&qword_10195D0C0, block);
@@ -30,16 +30,16 @@
   return WeakRetained;
 }
 
-- (void)stateManager:(id)a3 didChangeState:(BOOL)a4
+- (void)stateManager:(id)manager didChangeState:(BOOL)state
 {
-  v4 = a4;
-  v6 = [(PedestrianARSessionTask *)self platformController];
-  v7 = [v6 chromeViewController];
+  stateCopy = state;
+  platformController = [(PedestrianARSessionTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = chromeViewController;
   }
 
   else
@@ -51,8 +51,8 @@
 
   if (v9)
   {
-    v10 = [v9 userLocationView];
-    [v10 setIsPedestrianARAvailable:v4];
+    userLocationView = [v9 userLocationView];
+    [userLocationView setIsPedestrianARAvailable:stateCopy];
   }
 
   else
@@ -61,7 +61,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = 134349056;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] chromeVC was not an IOSBased one; ignoring", &v12, 0xCu);
     }
   }
@@ -73,7 +73,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -83,10 +83,10 @@
   [(PedestrianARSessionTask *)&v4 dealloc];
 }
 
-- (PedestrianARSessionTask)initWithPlatformController:(id)a3
+- (PedestrianARSessionTask)initWithPlatformController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -128,7 +128,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_platformController, v4);
+    objc_storeWeak(&v5->_platformController, controllerCopy);
     v7 = [PedestrianARSessionStateManager alloc];
     WeakRetained = objc_loadWeakRetained(&v5->_platformController);
     v9 = [(PedestrianARSessionStateManager *)v7 initWithPlatformController:WeakRetained];

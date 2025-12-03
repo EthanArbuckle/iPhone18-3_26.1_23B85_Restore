@@ -1,31 +1,31 @@
 @interface MSDPublicDBManager
-+ (id)_getMatchingObjectForBundleID:(id)a3 bundleID:(id)a4;
-+ (id)_getMatchingObjectForServiceID:(id)a3 serviceID:(id)a4;
-+ (id)_getMatchingObjectForServiceName:(id)a3 serviceName:(id)a4;
++ (id)_getMatchingObjectForBundleID:(id)d bundleID:(id)iD;
++ (id)_getMatchingObjectForServiceID:(id)d serviceID:(id)iD;
++ (id)_getMatchingObjectForServiceName:(id)name serviceName:(id)serviceName;
 + (id)getCachedPublicInfo;
-+ (id)getCachedPublicInfoForBundleID:(id)a3;
-+ (id)getCachedPublicInfoForServiceID:(id)a3;
-+ (id)getCachedPublicInfoForServiceName:(id)a3;
++ (id)getCachedPublicInfoForBundleID:(id)d;
++ (id)getCachedPublicInfoForServiceID:(id)d;
++ (id)getCachedPublicInfoForServiceName:(id)name;
 + (id)shared;
-+ (void)_fetchData:(id)a3;
-+ (void)getPublicInfoForBundleID:(id)a3 completion:(id)a4;
-+ (void)getPublicInfoForServiceID:(id)a3 completion:(id)a4;
-+ (void)getPublicInfoForServiceName:(id)a3 completion:(id)a4;
++ (void)_fetchData:(id)data;
++ (void)getPublicInfoForBundleID:(id)d completion:(id)completion;
++ (void)getPublicInfoForServiceID:(id)d completion:(id)completion;
++ (void)getPublicInfoForServiceName:(id)name completion:(id)completion;
 - (BOOL)shouldUseCloudKit;
 - (MSDPublicDBManager)init;
-- (id)_fetchPreviousChangeToken:(id)a3;
-- (id)_handleChangedRecords:(id)a3 localCachedCopy:(id)a4 error:(id *)a5;
-- (id)_handleDeletedRecordIDS:(id)a3 localCachedCopy:(id)a4;
-- (id)_handleRecordsChanged:(id)a3 deletedRecordIDS:(id)a4 error:(id *)a5;
-- (id)createPublicDBInfoObject:(id)a3;
-- (id)createPublicDBInfoObjectFromDictionary:(id)a3;
+- (id)_fetchPreviousChangeToken:(id)token;
+- (id)_handleChangedRecords:(id)records localCachedCopy:(id)copy error:(id *)error;
+- (id)_handleDeletedRecordIDS:(id)s localCachedCopy:(id)copy;
+- (id)_handleRecordsChanged:(id)changed deletedRecordIDS:(id)s error:(id *)error;
+- (id)createPublicDBInfoObject:(id)object;
+- (id)createPublicDBInfoObjectFromDictionary:(id)dictionary;
 - (void)_clearAllDefaultsData;
-- (void)_syncDataWithCloudKitWithCompletion:(id)a3;
-- (void)_updateDefaultsWithChangeToken:(id)a3 serverChangeToken:(id)a4;
+- (void)_syncDataWithCloudKitWithCompletion:(id)completion;
+- (void)_updateDefaultsWithChangeToken:(id)token serverChangeToken:(id)changeToken;
 - (void)_updateLastRefreshTS;
-- (void)_withLock:(id)a3;
-- (void)executePendingRequests:(id)a3 forPublicDBInfo:(id)a4 error:(id)a5;
-- (void)syncDataWithCloudKit:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)executePendingRequests:(id)requests forPublicDBInfo:(id)info error:(id)error;
+- (void)syncDataWithCloudKit:(id)kit;
 @end
 
 @implementation MSDPublicDBManager
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = sub_100024624;
   block[3] = &unk_1000508C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100059AD0 != -1)
   {
     dispatch_once(&qword_100059AD0, block);
@@ -78,91 +78,91 @@
   return v2;
 }
 
-- (void)syncDataWithCloudKit:(id)a3
+- (void)syncDataWithCloudKit:(id)kit
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100024820;
   v5[3] = &unk_100051558;
-  v6 = a3;
-  v4 = v6;
+  kitCopy = kit;
+  v4 = kitCopy;
   [(MSDPublicDBManager *)self _syncDataWithCloudKitWithCompletion:v5];
 }
 
-+ (void)getPublicInfoForServiceName:(id)a3 completion:(id)a4
++ (void)getPublicInfoForServiceName:(id)name completion:(id)completion
 {
-  v6 = a3;
+  nameCopy = name;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000248F4;
   v9[3] = &unk_100051F90;
-  v11 = a4;
-  v12 = a1;
-  v10 = v6;
-  v7 = v6;
-  v8 = v11;
-  [a1 _fetchData:v9];
+  completionCopy = completion;
+  selfCopy = self;
+  v10 = nameCopy;
+  v7 = nameCopy;
+  v8 = completionCopy;
+  [self _fetchData:v9];
 }
 
-+ (void)getPublicInfoForServiceID:(id)a3 completion:(id)a4
++ (void)getPublicInfoForServiceID:(id)d completion:(id)completion
 {
-  v6 = a3;
+  dCopy = d;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100024A68;
   v9[3] = &unk_100051F90;
-  v11 = a4;
-  v12 = a1;
-  v10 = v6;
-  v7 = v6;
-  v8 = v11;
-  [a1 _fetchData:v9];
+  completionCopy = completion;
+  selfCopy = self;
+  v10 = dCopy;
+  v7 = dCopy;
+  v8 = completionCopy;
+  [self _fetchData:v9];
 }
 
-+ (void)getPublicInfoForBundleID:(id)a3 completion:(id)a4
++ (void)getPublicInfoForBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
+  dCopy = d;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100024BDC;
   v9[3] = &unk_100051F90;
-  v11 = a4;
-  v12 = a1;
-  v10 = v6;
-  v7 = v6;
-  v8 = v11;
-  [a1 _fetchData:v9];
+  completionCopy = completion;
+  selfCopy = self;
+  v10 = dCopy;
+  v7 = dCopy;
+  v8 = completionCopy;
+  [self _fetchData:v9];
 }
 
-+ (id)getCachedPublicInfoForServiceName:(id)a3
++ (id)getCachedPublicInfoForServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[MSDDefaultsManager sharedManager];
   v6 = [v5 objectForDefaultWithCustomClass:@"publicDBData"];
 
-  v7 = [a1 _getMatchingObjectForServiceName:v6 serviceName:v4];
+  v7 = [self _getMatchingObjectForServiceName:v6 serviceName:nameCopy];
 
   return v7;
 }
 
-+ (id)getCachedPublicInfoForServiceID:(id)a3
++ (id)getCachedPublicInfoForServiceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[MSDDefaultsManager sharedManager];
   v6 = [v5 objectForDefaultWithCustomClass:@"publicDBData"];
 
-  v7 = [a1 _getMatchingObjectForServiceID:v6 serviceID:v4];
+  v7 = [self _getMatchingObjectForServiceID:v6 serviceID:dCopy];
 
   return v7;
 }
 
-+ (id)getCachedPublicInfoForBundleID:(id)a3
++ (id)getCachedPublicInfoForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[MSDDefaultsManager sharedManager];
   v6 = [v5 objectForDefaultWithCustomClass:@"publicDBData"];
 
-  v7 = [a1 _getMatchingObjectForBundleID:v6 bundleID:v4];
+  v7 = [self _getMatchingObjectForBundleID:v6 bundleID:dCopy];
 
   return v7;
 }
@@ -175,29 +175,29 @@
   return v3;
 }
 
-- (id)createPublicDBInfoObject:(id)a3
+- (id)createPublicDBInfoObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:MediaServiceName];
-  v5 = [v3 objectForKey:MediaServiceIdentifier];
+  objectCopy = object;
+  v4 = [objectCopy objectForKey:MediaServiceName];
+  v5 = [objectCopy objectForKey:MediaServiceIdentifier];
   v6 = [[MSPublicDBInfo alloc] initWithServiceName:v4 serviceID:v5];
   if (v6)
   {
-    v7 = [v3 recordID];
-    v8 = [v7 recordName];
-    [v6 setRecordName:v8];
+    recordID = [objectCopy recordID];
+    recordName = [recordID recordName];
+    [v6 setRecordName:recordName];
 
-    v9 = [v3 objectForKey:MediaServiceType];
+    v9 = [objectCopy objectForKey:MediaServiceType];
     [v6 setServiceType:v9];
 
-    v10 = [v3 objectForKey:MediaServiceBundleIdentifier];
+    v10 = [objectCopy objectForKey:MediaServiceBundleIdentifier];
     [v6 setBundleIDS:v10];
 
-    v11 = [v3 objectForKey:MediaServiceIconPath];
+    v11 = [objectCopy objectForKey:MediaServiceIconPath];
     v12 = [NSURL URLWithString:v11];
     [v6 setServiceIconPath:v12];
 
-    v13 = [v3 objectForKey:MediaServiceConfigurationPublicKey];
+    v13 = [objectCopy objectForKey:MediaServiceConfigurationPublicKey];
     [v6 setConfigurationPublicKey:v13];
 
     v14 = v6;
@@ -215,25 +215,25 @@
   return v6;
 }
 
-- (id)createPublicDBInfoObjectFromDictionary:(id)a3
+- (id)createPublicDBInfoObjectFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:MediaServiceName];
-  v5 = [v3 objectForKey:MediaServiceIdentifier];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:MediaServiceName];
+  v5 = [dictionaryCopy objectForKey:MediaServiceIdentifier];
   v6 = [[MSPublicDBInfo alloc] initWithServiceName:v4 serviceID:v5];
   if (v6)
   {
-    v7 = [v3 objectForKey:MediaServiceType];
+    v7 = [dictionaryCopy objectForKey:MediaServiceType];
     [v6 setServiceType:v7];
 
-    v8 = [v3 objectForKey:MediaServiceBundleIdentifier];
+    v8 = [dictionaryCopy objectForKey:MediaServiceBundleIdentifier];
     [v6 setBundleIDS:v8];
 
-    v9 = [v3 objectForKey:MediaServiceIconPath];
+    v9 = [dictionaryCopy objectForKey:MediaServiceIconPath];
     v10 = [NSURL URLWithString:v9];
     [v6 setServiceIconPath:v10];
 
-    v11 = [v3 objectForKey:MediaServiceConfigurationPublicKey];
+    v11 = [dictionaryCopy objectForKey:MediaServiceConfigurationPublicKey];
     [v6 setConfigurationPublicKey:v11];
 
     v12 = v6;
@@ -255,9 +255,9 @@
   return v6;
 }
 
-- (void)_syncDataWithCloudKitWithCompletion:(id)a3
+- (void)_syncDataWithCloudKitWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100030FE4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -276,7 +276,7 @@
   v38[3] = &unk_100051FB8;
   v38[4] = self;
   v40 = &v41;
-  v6 = v4;
+  v6 = completionCopy;
   v39 = v6;
   [(MSDPublicDBManager *)self _withLock:v38];
   if (v6 && (v42[3] & 1) == 0)
@@ -303,8 +303,8 @@
   v7 = v10;
   if (v10)
   {
-    v11 = [v10 zoneName];
-    v12 = [(MSDPublicDBManager *)self _fetchPreviousChangeToken:v11];
+    zoneName = [v10 zoneName];
+    v12 = [(MSDPublicDBManager *)self _fetchPreviousChangeToken:zoneName];
 
     v13 = objc_opt_new();
     [v13 setPreviousServerChangeToken:v12];
@@ -384,8 +384,8 @@
       [v18 setRecordZoneFetchCompletionBlock:v23];
       [v18 setQualityOfService:17];
       v19 = +[CKContainer MSDPublicCloudKitContainer];
-      v20 = [v19 publicCloudDatabase];
-      [v20 addOperation:v18];
+      publicCloudDatabase = [v19 publicCloudDatabase];
+      [publicCloudDatabase addOperation:v18];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(&location);
@@ -436,14 +436,14 @@ LABEL_25:
   _Block_object_dispose(&v41, 8);
 }
 
-- (id)_handleRecordsChanged:(id)a3 deletedRecordIDS:(id)a4 error:(id *)a5
+- (id)_handleRecordsChanged:(id)changed deletedRecordIDS:(id)s error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  changedCopy = changed;
+  sCopy = s;
   v10 = +[MSDDefaultsManager sharedManager];
   v11 = [v10 objectForDefaultWithCustomClass:@"publicDBData"];
 
-  v12 = [(MSDPublicDBManager *)self _handleDeletedRecordIDS:v9 localCachedCopy:v11];
+  v12 = [(MSDPublicDBManager *)self _handleDeletedRecordIDS:sCopy localCachedCopy:v11];
 
   if (!v12 || ![v12 count])
   {
@@ -452,34 +452,34 @@ LABEL_25:
     v12 = v13;
   }
 
-  v14 = [(MSDPublicDBManager *)self _handleChangedRecords:v8 localCachedCopy:v12 error:a5];
+  v14 = [(MSDPublicDBManager *)self _handleChangedRecords:changedCopy localCachedCopy:v12 error:error];
 
   return v14;
 }
 
-- (id)_handleDeletedRecordIDS:(id)a3 localCachedCopy:(id)a4
+- (id)_handleDeletedRecordIDS:(id)s localCachedCopy:(id)copy
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count] && objc_msgSend(v5, "count"))
+  sCopy = s;
+  copyCopy = copy;
+  if ([copyCopy count] && objc_msgSend(sCopy, "count"))
   {
-    v7 = [v6 na_dictionaryWithKeyGenerator:&stru_100052100];
+    v7 = [copyCopy na_dictionaryWithKeyGenerator:&stru_100052100];
     v8 = sub_100030FE4();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v34 = v5;
+      v34 = sCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Public] RecordIDS deleted on device: %{private}@", buf, 0xCu);
     }
 
-    v26 = v6;
-    v9 = [NSMutableArray arrayWithArray:v6];
+    v26 = copyCopy;
+    v9 = [NSMutableArray arrayWithArray:copyCopy];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v27 = v5;
-    v10 = v5;
+    v27 = sCopy;
+    v10 = sCopy;
     v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v11)
     {
@@ -495,23 +495,23 @@ LABEL_25:
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          v16 = [v7 allKeys];
-          v17 = [v15 recordName];
-          v18 = [v16 containsObject:v17];
+          allKeys = [v7 allKeys];
+          recordName = [v15 recordName];
+          v18 = [allKeys containsObject:recordName];
 
           if (v18)
           {
             v19 = sub_100030FE4();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [v15 recordName];
+              recordName2 = [v15 recordName];
               *buf = 138477827;
-              v34 = v20;
+              v34 = recordName2;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[Public] Found match for %{private}@, removing obj from local copy", buf, 0xCu);
             }
 
-            v21 = [v15 recordName];
-            v22 = [v7 objectForKey:v21];
+            recordName3 = [v15 recordName];
+            v22 = [v7 objectForKey:recordName3];
 
             [v9 removeObject:v22];
           }
@@ -524,8 +524,8 @@ LABEL_25:
     }
 
     v23 = [v9 copy];
-    v6 = v26;
-    v5 = v27;
+    copyCopy = v26;
+    sCopy = v27;
   }
 
   else
@@ -537,27 +537,27 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "[Public] Deleted recordIDS or cachedData is nil, skipping update", buf, 2u);
     }
 
-    v23 = v6;
+    v23 = copyCopy;
   }
 
   return v23;
 }
 
-- (id)_handleChangedRecords:(id)a3 localCachedCopy:(id)a4 error:(id *)a5
+- (id)_handleChangedRecords:(id)records localCachedCopy:(id)copy error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  recordsCopy = records;
+  copyCopy = copy;
+  if ([recordsCopy count])
   {
-    v10 = [NSMutableArray arrayWithArray:v9];
+    v10 = [NSMutableArray arrayWithArray:copyCopy];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v28 = v8;
-    obj = v8;
+    v28 = recordsCopy;
+    obj = recordsCopy;
     v11 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
-    v12 = v9;
+    v12 = copyCopy;
     v29 = v10;
     if (v11)
     {
@@ -590,16 +590,16 @@ LABEL_25:
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
               {
                 [v17 serviceID];
-                v20 = self;
-                v21 = a5;
+                selfCopy = self;
+                errorCopy = error;
                 v23 = v22 = v12;
                 *buf = 138477827;
                 v42 = v23;
                 _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "A property on a known service (%{private}@) changed", buf, 0xCu);
 
                 v12 = v22;
-                a5 = v21;
-                self = v20;
+                error = errorCopy;
+                self = selfCopy;
                 v10 = v29;
               }
 
@@ -617,9 +617,9 @@ LABEL_25:
               sub_100027DF8(&v35, v36, v24);
             }
 
-            if (a5)
+            if (error)
             {
-              *a5 = [NSError errorWithDomain:v30 code:1 userInfo:0];
+              *error = [NSError errorWithDomain:v30 code:1 userInfo:0];
             }
           }
         }
@@ -631,12 +631,12 @@ LABEL_25:
     }
 
     v25 = v12;
-    v8 = v28;
+    recordsCopy = v28;
   }
 
   else
   {
-    v25 = v9;
+    v25 = copyCopy;
     v26 = sub_100030FE4();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -683,15 +683,15 @@ LABEL_25:
   return v9;
 }
 
-- (id)_fetchPreviousChangeToken:(id)a3
+- (id)_fetchPreviousChangeToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = +[MSDDefaultsManager sharedManager];
   v5 = [v4 objectForDefaultWithCustomClass:@"publicDBChangeTokenMap"];
 
   if (v5)
   {
-    v6 = [v5 objectForKey:v3];
+    v6 = [v5 objectForKey:tokenCopy];
   }
 
   else
@@ -702,10 +702,10 @@ LABEL_25:
   return v6;
 }
 
-- (void)_updateDefaultsWithChangeToken:(id)a3 serverChangeToken:(id)a4
+- (void)_updateDefaultsWithChangeToken:(id)token serverChangeToken:(id)changeToken
 {
-  v5 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  changeTokenCopy = changeToken;
   v7 = +[MSDDefaultsManager sharedManager];
   v8 = [v7 objectForDefaultWithCustomClass:@"publicDBChangeTokenMap"];
   v9 = [v8 mutableCopy];
@@ -715,7 +715,7 @@ LABEL_25:
     v9 = objc_opt_new();
   }
 
-  [v9 na_safeSetObject:v6 forKey:v5];
+  [v9 na_safeSetObject:changeTokenCopy forKey:tokenCopy];
   v10 = sub_100030FE4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -729,20 +729,20 @@ LABEL_25:
   [v11 setObjectWithCustomClass:v12 forDefault:@"publicDBChangeTokenMap"];
 }
 
-+ (void)_fetchData:(id)a3
++ (void)_fetchData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[MSDPublicDBManager shared];
-  v5 = [v4 shouldUseCloudKit];
+  shouldUseCloudKit = [v4 shouldUseCloudKit];
 
-  if (v5)
+  if (shouldUseCloudKit)
   {
     v6 = +[MSDPublicDBManager shared];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100027440;
     v10[3] = &unk_100051558;
-    v11 = v3;
+    v11 = dataCopy;
     [v6 syncDataWithCloudKit:v10];
 
     v7 = v11;
@@ -758,11 +758,11 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Public] Returning data from cached copy, last refresh was less than 24 hours back", buf, 2u);
   }
 
-  if (v3)
+  if (dataCopy)
   {
     v7 = +[MSDDefaultsManager sharedManager];
     v9 = [v7 objectForDefaultWithCustomClass:@"publicDBData"];
-    (*(v3 + 2))(v3, v9, 0);
+    (*(dataCopy + 2))(dataCopy, v9, 0);
 
     goto LABEL_7;
   }
@@ -770,69 +770,69 @@ LABEL_7:
 LABEL_8:
 }
 
-+ (id)_getMatchingObjectForServiceID:(id)a3 serviceID:(id)a4
++ (id)_getMatchingObjectForServiceID:(id)d serviceID:(id)iD
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100027584;
   v8[3] = &unk_100050B60;
-  v9 = a4;
-  v5 = v9;
-  v6 = [a3 na_firstObjectPassingTest:v8];
+  iDCopy = iD;
+  v5 = iDCopy;
+  v6 = [d na_firstObjectPassingTest:v8];
 
   return v6;
 }
 
-+ (id)_getMatchingObjectForBundleID:(id)a3 bundleID:(id)a4
++ (id)_getMatchingObjectForBundleID:(id)d bundleID:(id)iD
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100027678;
   v8[3] = &unk_100050B60;
-  v9 = a4;
-  v5 = v9;
-  v6 = [a3 na_firstObjectPassingTest:v8];
+  iDCopy = iD;
+  v5 = iDCopy;
+  v6 = [d na_firstObjectPassingTest:v8];
 
   return v6;
 }
 
-+ (id)_getMatchingObjectForServiceName:(id)a3 serviceName:(id)a4
++ (id)_getMatchingObjectForServiceName:(id)name serviceName:(id)serviceName
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002776C;
   v8[3] = &unk_100050B60;
-  v9 = a4;
-  v5 = v9;
-  v6 = [a3 na_firstObjectPassingTest:v8];
+  serviceNameCopy = serviceName;
+  v5 = serviceNameCopy;
+  v6 = [name na_firstObjectPassingTest:v8];
 
   return v6;
 }
 
-- (void)executePendingRequests:(id)a3 forPublicDBInfo:(id)a4 error:(id)a5
+- (void)executePendingRequests:(id)requests forPublicDBInfo:(id)info error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestsCopy = requests;
+  infoCopy = info;
+  errorCopy = error;
   notifyQueue = self->_notifyQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100027894;
   block[3] = &unk_100052128;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = requestsCopy;
+  v17 = infoCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = infoCopy;
+  v14 = requestsCopy;
   dispatch_async(notifyQueue, block);
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_syncLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_syncLock);
 }

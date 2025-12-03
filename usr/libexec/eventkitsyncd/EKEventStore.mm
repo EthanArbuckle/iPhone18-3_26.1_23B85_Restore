@@ -1,43 +1,43 @@
 @interface EKEventStore
-+ (id)eks_eventOnlyStoreFor:(id)a3;
-+ (id)eks_eventOnlyStoreIgnoringExternalChangesFor:(id)a3 withClientId:(id)a4;
-+ (id)eks_eventStoreFor:(id)a3;
++ (id)eks_eventOnlyStoreFor:(id)for;
++ (id)eks_eventOnlyStoreIgnoringExternalChangesFor:(id)for withClientId:(id)id;
++ (id)eks_eventStoreFor:(id)for;
 + (int64_t)eks_storeCount;
 - (id)eks_sourcesAlwaysIncludingLocal;
 @end
 
 @implementation EKEventStore
 
-+ (id)eks_eventOnlyStoreIgnoringExternalChangesFor:(id)a3 withClientId:(id)a4
++ (id)eks_eventOnlyStoreIgnoringExternalChangesFor:(id)for withClientId:(id)id
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[EKEventStore alloc] initWithEKOptions:132 path:0 changeTrackingClientId:v5 enablePropertyModificationLogging:0 allowDelegateSources:0];
+  idCopy = id;
+  forCopy = for;
+  v7 = [[EKEventStore alloc] initWithEKOptions:132 path:0 changeTrackingClientId:idCopy enablePropertyModificationLogging:0 allowDelegateSources:0];
 
-  sub_10006A328(v6, v7);
+  sub_10006A328(forCopy, v7);
 
   return v7;
 }
 
-+ (id)eks_eventOnlyStoreFor:(id)a3
++ (id)eks_eventOnlyStoreFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = [[EKEventStore alloc] initWithEKOptions:128];
-  sub_10006A328(v3, v4);
+  sub_10006A328(forCopy, v4);
 
   return v4;
 }
 
-+ (id)eks_eventStoreFor:(id)a3
++ (id)eks_eventStoreFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = [EKChangeTrackingClientId alloc];
   v5 = +[NEKEnvironment instance];
-  v6 = [v5 clientName];
-  v7 = [v4 initWithCustomClientId:v6];
+  clientName = [v5 clientName];
+  v7 = [v4 initWithCustomClientId:clientName];
 
   v8 = [[EKEventStore alloc] initWithEKOptions:4 path:0 changeTrackingClientId:v7 enablePropertyModificationLogging:0 allowDelegateSources:0];
-  sub_10006A328(v3, v8);
+  sub_10006A328(forCopy, v8);
 
   return v8;
 }
@@ -46,14 +46,14 @@
 {
   v2 = sub_10006ABB4();
   os_unfair_lock_lock(&unk_1000D1878);
-  v3 = [v2 keyEnumerator];
-  v4 = [v3 allObjects];
+  keyEnumerator = [v2 keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = allObjects;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -95,13 +95,13 @@
 
 - (id)eks_sourcesAlwaysIncludingLocal
 {
-  v3 = [(EKEventStore *)self sources];
-  v4 = [(EKEventStore *)self localSource];
+  sources = [(EKEventStore *)self sources];
+  localSource = [(EKEventStore *)self localSource];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = sources;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -116,7 +116,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) isEqual:{v4, v13}])
+        if ([*(*(&v13 + 1) + 8 * i) isEqual:{localSource, v13}])
         {
 
           v10 = v5;
@@ -134,7 +134,7 @@
     }
   }
 
-  v10 = [v5 arrayByAddingObject:v4];
+  v10 = [v5 arrayByAddingObject:localSource];
 LABEL_11:
   v11 = v10;
 

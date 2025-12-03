@@ -1,18 +1,18 @@
 @interface MapsSuggestionsDonationsXPCPeer
 - (MapsSuggestionsDaemonMemory)memory;
-- (MapsSuggestionsDonationsXPCPeer)initWithXPCConnection:(id)a3 memory:(id)a4;
+- (MapsSuggestionsDonationsXPCPeer)initWithXPCConnection:(id)connection memory:(id)memory;
 - (NSString)description;
 - (void)dealloc;
-- (void)donateETAData:(id)a3 destinationKey:(id)a4 handler:(id)a5;
-- (void)donateSignalPackData:(id)a3 handler:(id)a4;
+- (void)donateETAData:(id)data destinationKey:(id)key handler:(id)handler;
+- (void)donateSignalPackData:(id)data handler:(id)handler;
 @end
 
 @implementation MapsSuggestionsDonationsXPCPeer
 
-- (MapsSuggestionsDonationsXPCPeer)initWithXPCConnection:(id)a3 memory:(id)a4
+- (MapsSuggestionsDonationsXPCPeer)initWithXPCConnection:(id)connection memory:(id)memory
 {
-  v7 = a3;
-  objc_initWeak(&location, a4);
+  connectionCopy = connection;
+  objc_initWeak(&location, memory);
   v17.receiver = self;
   v17.super_class = MapsSuggestionsDonationsXPCPeer;
   v8 = [(MapsSuggestionsDonationsXPCPeer *)&v17 init];
@@ -23,7 +23,7 @@
     queue = v8->_queue;
     v8->_queue = v10;
 
-    objc_storeStrong(&v8->_connection, a3);
+    objc_storeStrong(&v8->_connection, connection);
     v12 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v8->_memory, v12);
 
@@ -32,7 +32,7 @@
     {
       connection = v8->_connection;
       *buf = 138412290;
-      v20 = connection;
+      connectionCopy2 = connection;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "DonationsXPCPeer{%@} created.", buf, 0xCu);
     }
 
@@ -74,19 +74,19 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MapsSuggestionsDonationsXPCPeer *)self connection];
-  v6 = [v5 debugDescription];
+  connection = [(MapsSuggestionsDonationsXPCPeer *)self connection];
+  v6 = [connection debugDescription];
   v7 = [v3 initWithFormat:@"%@<%p> from %@", v4, self, v6];
 
   return v7;
 }
 
-- (void)donateETAData:(id)a3 destinationKey:(id)a4 handler:(id)a5
+- (void)donateETAData:(id)data destinationKey:(id)key handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  dataCopy = data;
+  keyCopy = key;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -111,7 +111,7 @@ LABEL_11:
 
   v11 = GEOFindOrCreateLog();
   v12 = v11;
-  if (!v9)
+  if (!keyCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
@@ -145,9 +145,9 @@ LABEL_11:
   v16[2] = sub_1000231FC;
   v16[3] = &unk_1000755B0;
   objc_copyWeak(&v20, buf);
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
+  v17 = dataCopy;
+  v18 = keyCopy;
+  v19 = handlerCopy;
   dispatch_async(queue, v16);
 
   objc_destroyWeak(&v20);
@@ -155,11 +155,11 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)donateSignalPackData:(id)a3 handler:(id)a4
+- (void)donateSignalPackData:(id)data handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  handlerCopy = handler;
+  if (dataCopy)
   {
     objc_initWeak(location, self);
     queue = self->_queue;
@@ -168,8 +168,8 @@ LABEL_12:
     block[2] = sub_100023604;
     block[3] = &unk_100075990;
     objc_copyWeak(&v13, location);
-    v11 = v6;
-    v12 = v7;
+    v11 = dataCopy;
+    v12 = handlerCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v13);

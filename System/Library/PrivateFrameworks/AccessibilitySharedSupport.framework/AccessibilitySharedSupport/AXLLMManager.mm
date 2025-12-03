@@ -1,11 +1,11 @@
 @interface AXLLMManager
 - (_TtC26AccessibilitySharedSupport12AXLLMManager)init;
-- (_TtC26AccessibilitySharedSupport12AXLLMManager)initWithClientName:(id)a3 model:(int64_t)a4 handleSensitiveData:(BOOL)a5 systemInstructions:(id)a6 locale:(id)a7;
+- (_TtC26AccessibilitySharedSupport12AXLLMManager)initWithClientName:(id)name model:(int64_t)model handleSensitiveData:(BOOL)data systemInstructions:(id)instructions locale:(id)locale;
 @end
 
 @implementation AXLLMManager
 
-- (_TtC26AccessibilitySharedSupport12AXLLMManager)initWithClientName:(id)a3 model:(int64_t)a4 handleSensitiveData:(BOOL)a5 systemInstructions:(id)a6 locale:(id)a7
+- (_TtC26AccessibilitySharedSupport12AXLLMManager)initWithClientName:(id)name model:(int64_t)model handleSensitiveData:(BOOL)data systemInstructions:(id)instructions locale:(id)locale
 {
   v9 = sub_1C0F4F940();
   v10 = *(*(v9 - 8) + 64);
@@ -16,7 +16,7 @@
   v16 = sub_1C0F501B0();
   v18 = v17;
   sub_1C0F4F8F0();
-  return AXLLMManager.init(clientName:model:handleSensitiveData:systemInstructions:locale:)(v13, v15, a4, a5, v16, v18, v12);
+  return AXLLMManager.init(clientName:model:handleSensitiveData:systemInstructions:locale:)(v13, v15, model, data, v16, v18, v12);
 }
 
 - (_TtC26AccessibilitySharedSupport12AXLLMManager)init

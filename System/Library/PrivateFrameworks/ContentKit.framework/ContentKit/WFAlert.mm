@@ -1,14 +1,14 @@
 @interface WFAlert
-+ (WFAlert)alertWithError:(id)a3 confirmationHandler:(id)a4;
-+ (WFAlert)alertWithPreferredStyle:(int64_t)a3;
++ (WFAlert)alertWithError:(id)error confirmationHandler:(id)handler;
++ (WFAlert)alertWithPreferredStyle:(int64_t)style;
 - (NSArray)buttons;
 - (WFAlert)init;
 - (WFAlertButton)escapeButton;
 - (WFAlertPresenter)presenter;
-- (void)addButton:(id)a3;
-- (void)addTextFieldWithConfigurationHandler:(id)a3;
-- (void)dismissWithCompletionHandler:(id)a3;
-- (void)setButtons:(id)a3;
+- (void)addButton:(id)button;
+- (void)addTextFieldWithConfigurationHandler:(id)handler;
+- (void)dismissWithCompletionHandler:(id)handler;
+- (void)setButtons:(id)buttons;
 @end
 
 @implementation WFAlert
@@ -20,8 +20,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(WFAlert *)self buttons];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  buttons = [(WFAlert *)self buttons];
+  v4 = [buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -32,18 +32,18 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(buttons);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 style] == 1)
         {
-          v9 = v8;
+          firstObject = v8;
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -53,10 +53,10 @@
     }
   }
 
-  v3 = [(WFAlert *)self buttons];
-  v9 = [v3 firstObject];
+  buttons = [(WFAlert *)self buttons];
+  firstObject = [buttons firstObject];
 LABEL_11:
-  v10 = v9;
+  v10 = firstObject;
 
   return v10;
 }
@@ -68,30 +68,30 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (void)dismissWithCompletionHandler:(id)a3
+- (void)dismissWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(WFAlert *)self presenter];
+  handlerCopy = handler;
+  presenter = [(WFAlert *)self presenter];
 
-  if (v4)
+  if (presenter)
   {
-    v5 = [(WFAlert *)self presenter];
-    [v5 dismissAlert:self completionHandler:v6];
+    presenter2 = [(WFAlert *)self presenter];
+    [presenter2 dismissAlert:self completionHandler:handlerCopy];
   }
 
   else
   {
-    v6[2]();
+    handlerCopy[2]();
   }
 }
 
-- (void)addTextFieldWithConfigurationHandler:(id)a3
+- (void)addTextFieldWithConfigurationHandler:(id)handler
 {
-  v4 = a3;
-  v7 = [(WFAlert *)self mutableTextFieldConfigurationHandlers];
-  if (v4)
+  handlerCopy = handler;
+  mutableTextFieldConfigurationHandlers = [(WFAlert *)self mutableTextFieldConfigurationHandlers];
+  if (handlerCopy)
   {
-    v5 = v4;
+    v5 = handlerCopy;
   }
 
   else
@@ -101,26 +101,26 @@ LABEL_11:
 
   v6 = _Block_copy(v5);
 
-  [v7 addObject:v6];
+  [mutableTextFieldConfigurationHandlers addObject:v6];
 }
 
 - (NSArray)buttons
 {
-  v2 = [(WFAlert *)self mutableButtons];
-  v3 = [v2 copy];
+  mutableButtons = [(WFAlert *)self mutableButtons];
+  v3 = [mutableButtons copy];
 
   return v3;
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  buttonsCopy = buttons;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [buttonsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -132,32 +132,32 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttonsCopy);
         }
 
         [*(*(&v12 + 1) + 8 * v8++) setAlert:self];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [buttonsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [v4 mutableCopy];
+  v9 = [buttonsCopy mutableCopy];
   [(WFAlert *)self setMutableButtons:v9];
 
-  v10 = [(WFAlert *)self presenter];
-  v11 = [(WFAlert *)self buttons];
-  [v10 setButtons:v11 forAlert:self];
+  presenter = [(WFAlert *)self presenter];
+  buttons = [(WFAlert *)self buttons];
+  [presenter setButtons:buttons forAlert:self];
 }
 
-- (void)addButton:(id)a3
+- (void)addButton:(id)button
 {
-  v4 = a3;
-  v6 = [(WFAlert *)self buttons];
-  v5 = [v6 arrayByAddingObject:v4];
+  buttonCopy = button;
+  buttons = [(WFAlert *)self buttons];
+  v5 = [buttons arrayByAddingObject:buttonCopy];
 
   [(WFAlert *)self setButtons:v5];
 }
@@ -183,40 +183,40 @@ LABEL_11:
   return v2;
 }
 
-+ (WFAlert)alertWithPreferredStyle:(int64_t)a3
++ (WFAlert)alertWithPreferredStyle:(int64_t)style
 {
   v4 = objc_opt_new();
-  [v4 setPreferredStyle:a3];
+  [v4 setPreferredStyle:style];
 
   return v4;
 }
 
-+ (WFAlert)alertWithError:(id)a3 confirmationHandler:(id)a4
++ (WFAlert)alertWithError:(id)error confirmationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alertWithPreferredStyle:0];
-  objc_setAssociatedObject(v8, sel_associatedError, v6, 1);
-  v9 = [v6 localizedFailureReason];
-  [v8 setTitle:v9];
+  errorCopy = error;
+  handlerCopy = handler;
+  v8 = [self alertWithPreferredStyle:0];
+  objc_setAssociatedObject(v8, sel_associatedError, errorCopy, 1);
+  localizedFailureReason = [errorCopy localizedFailureReason];
+  [v8 setTitle:localizedFailureReason];
 
-  v10 = [v6 localizedDescription];
-  [v8 setMessage:v10];
+  localizedDescription = [errorCopy localizedDescription];
+  [v8 setMessage:localizedDescription];
 
-  v11 = [v6 localizedRecoveryOptions];
-  if (![v11 count])
+  localizedRecoveryOptions = [errorCopy localizedRecoveryOptions];
+  if (![localizedRecoveryOptions count])
   {
 
     goto LABEL_5;
   }
 
-  v12 = [v6 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"WFRecoveryAttempter"];
+  userInfo = [errorCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:@"WFRecoveryAttempter"];
   if (!v13)
   {
-    v16 = [v6 recoveryAttempter];
+    recoveryAttempter = [errorCopy recoveryAttempter];
 
-    if (v16)
+    if (recoveryAttempter)
     {
       goto LABEL_7;
     }
@@ -226,7 +226,7 @@ LABEL_5:
     v28 = 3221225472;
     v29 = __54__WFAlert_Errors__alertWithError_confirmationHandler___block_invoke_4;
     v30 = &unk_27834A5A8;
-    v31 = v7;
+    v31 = handlerCopy;
     v14 = [WFAlertButton okButtonWithHandler:&v27];
     [v8 addButton:{v14, v27, v28, v29, v30}];
 
@@ -235,16 +235,16 @@ LABEL_5:
   }
 
 LABEL_7:
-  v17 = [v6 userInfo];
-  v18 = [v17 objectForKey:@"WFDestructiveRecoveryOptionIndex"];
+  userInfo2 = [errorCopy userInfo];
+  v18 = [userInfo2 objectForKey:@"WFDestructiveRecoveryOptionIndex"];
 
-  v19 = [v6 userInfo];
-  v20 = [v19 objectForKey:@"WFPreferredRecoveryOptionIndex"];
+  userInfo3 = [errorCopy userInfo];
+  v20 = [userInfo3 objectForKey:@"WFPreferredRecoveryOptionIndex"];
 
-  v21 = [v6 userInfo];
-  v22 = [v21 objectForKeyedSubscript:@"WFRecoveryAttempter"];
+  userInfo4 = [errorCopy userInfo];
+  v22 = [userInfo4 objectForKeyedSubscript:@"WFRecoveryAttempter"];
 
-  v23 = [v6 localizedRecoveryOptions];
+  localizedRecoveryOptions2 = [errorCopy localizedRecoveryOptions];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __54__WFAlert_Errors__alertWithError_confirmationHandler___block_invoke;
@@ -253,11 +253,11 @@ LABEL_7:
   v34 = v20;
   v35 = v8;
   v36 = v22;
-  v37 = v6;
+  v37 = errorCopy;
   v24 = v22;
   v25 = v20;
   v15 = v18;
-  [v23 enumerateObjectsUsingBlock:v32];
+  [localizedRecoveryOptions2 enumerateObjectsUsingBlock:v32];
 
 LABEL_8:
 

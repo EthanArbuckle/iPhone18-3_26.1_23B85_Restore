@@ -3,7 +3,7 @@
 - (CGRect)_frame;
 - (CGSize)imageMaxSize;
 - (NTKRichComplicationBezelViewDelegate)bezelTextDelegate;
-- (NTKWidgetRichComplicationInlineView)initWithFamily:(int64_t)a3;
+- (NTKWidgetRichComplicationInlineView)initWithFamily:(int64_t)family;
 - (double)bezelTextAngularWidth;
 - (id)_chsFontFeatures;
 - (id)_chsInlineParameters;
@@ -19,25 +19,25 @@
 - (void)_updateInlineTextParameters;
 - (void)curvedLabelAngularWidthChanged;
 - (void)layoutSubviews;
-- (void)setBezelTextColor:(id)a3;
-- (void)setBezelTextDelegate:(id)a3;
-- (void)setBezelTextRadius:(double)a3;
-- (void)setTextAlignment:(unint64_t)a3;
-- (void)updatePropertiesAsGroupWithHandler:(id)a3;
+- (void)setBezelTextColor:(id)color;
+- (void)setBezelTextDelegate:(id)delegate;
+- (void)setBezelTextRadius:(double)radius;
+- (void)setTextAlignment:(unint64_t)alignment;
+- (void)updatePropertiesAsGroupWithHandler:(id)handler;
 @end
 
 @implementation NTKWidgetRichComplicationInlineView
 
-- (NTKWidgetRichComplicationInlineView)initWithFamily:(int64_t)a3
+- (NTKWidgetRichComplicationInlineView)initWithFamily:(int64_t)family
 {
   v7.receiver = self;
   v7.super_class = NTKWidgetRichComplicationInlineView;
-  v3 = [(NTKWidgetRichComplicationView *)&v7 initWithFamily:a3];
+  v3 = [(NTKWidgetRichComplicationView *)&v7 initWithFamily:family];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     textColor = v3->_textColor;
-    v3->_textColor = v4;
+    v3->_textColor = whiteColor;
 
     v3->_contentVerticalAlignment = 3;
   }
@@ -76,7 +76,7 @@
 
     else
     {
-      v13 = [(CDRichComplicationView *)self device];
+      device = [(CDRichComplicationView *)self device];
       CLKRectCenteredYInRectForDevice();
       v7 = v14;
       v8 = v15;
@@ -84,9 +84,9 @@
       contentHeight = v17;
     }
 
-    v18 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
-    v19 = [v18 view];
-    [v19 setFrame:{v7, v8, v9, contentHeight}];
+    widgetHostViewController = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+    view = [widgetHostViewController view];
+    [view setFrame:{v7, v8, v9, contentHeight}];
   }
 
   [(NTKWidgetRichComplicationView *)self _updateTintParameters];
@@ -94,11 +94,11 @@
   [(NTKWidgetRichComplicationInlineView *)self _updateInlineTextParameters];
 }
 
-- (void)setTextAlignment:(unint64_t)a3
+- (void)setTextAlignment:(unint64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(NTKWidgetRichComplicationInlineView *)self _updateInlineTextParameters];
   }
 }
@@ -114,11 +114,11 @@
   v10 = v9;
   if (![(CDRichComplicationView *)self textLayoutStyle])
   {
-    v11 = [(NTKWidgetRichComplicationInlineView *)self _sizingFont];
-    [v11 lineHeight];
-    v12 = [(CDRichComplicationView *)self device];
-    ___HeightPaddingForNonCurved_block_invoke(v12, v12);
-    v13 = [(CDRichComplicationView *)self device];
+    _sizingFont = [(NTKWidgetRichComplicationInlineView *)self _sizingFont];
+    [_sizingFont lineHeight];
+    device = [(CDRichComplicationView *)self device];
+    ___HeightPaddingForNonCurved_block_invoke(device, device);
+    device2 = [(CDRichComplicationView *)self device];
     CLKCeilForDevice();
     v10 = v14;
   }
@@ -139,8 +139,8 @@
   v4.receiver = self;
   v4.super_class = NTKWidgetRichComplicationInlineView;
   [(NTKWidgetRichComplicationView *)&v4 _configureWidgetHostViewController];
-  v3 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
-  [v3 setWatchComplicationsDelegate:self];
+  widgetHostViewController = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+  [widgetHostViewController setWatchComplicationsDelegate:self];
 
   [(NTKWidgetRichComplicationInlineView *)self _updateCurveMetrics];
   [(NTKWidgetRichComplicationInlineView *)self _updateInlineTextParameters];
@@ -148,27 +148,27 @@
 
 - (void)_updateInlineTextParameters
 {
-  v4 = [(NTKWidgetRichComplicationInlineView *)self _chsInlineParameters];
-  v3 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
-  [v3 setInlineTextParameters:v4];
+  _chsInlineParameters = [(NTKWidgetRichComplicationInlineView *)self _chsInlineParameters];
+  widgetHostViewController = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+  [widgetHostViewController setInlineTextParameters:_chsInlineParameters];
 }
 
 - (void)_updateCurveMetrics
 {
-  v4 = [(NTKWidgetRichComplicationInlineView *)self _chuisCurvedLabelMetrics];
-  v3 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
-  [v3 setComplicationsCurvedLabelMetrics:v4];
+  _chuisCurvedLabelMetrics = [(NTKWidgetRichComplicationInlineView *)self _chuisCurvedLabelMetrics];
+  widgetHostViewController = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+  [widgetHostViewController setComplicationsCurvedLabelMetrics:_chuisCurvedLabelMetrics];
 }
 
 - (id)_chuisCurvedLabelMetrics
 {
   if ([(CDRichComplicationView *)self textLayoutStyle])
   {
-    v3 = [(CDRichComplicationView *)self textLayoutStyle];
+    textLayoutStyle = [(CDRichComplicationView *)self textLayoutStyle];
     v4 = objc_alloc(MEMORY[0x277CFA548]);
-    if (v3 == 1)
+    if (textLayoutStyle == 1)
     {
-      v5 = [(NTKWidgetRichComplicationInlineView *)self interior];
+      interior = [(NTKWidgetRichComplicationInlineView *)self interior];
       [(NTKWidgetRichComplicationInlineView *)self tracking];
       v7 = v6;
       [(NTKWidgetRichComplicationInlineView *)self curveCenter];
@@ -182,27 +182,27 @@
       v17 = v16;
       [(NTKWidgetRichComplicationInlineView *)self fontSize];
       v19 = v18;
-      v20 = [(NTKWidgetRichComplicationInlineView *)self textColor];
-      v21 = [v20 BSColor];
-      v22 = [(NTKWidgetRichComplicationInlineView *)self _chuisAccessoryPlacement];
+      textColor = [(NTKWidgetRichComplicationInlineView *)self textColor];
+      bSColor = [textColor BSColor];
+      _chuisAccessoryPlacement = [(NTKWidgetRichComplicationInlineView *)self _chuisAccessoryPlacement];
       [(NTKWidgetRichComplicationInlineView *)self imagePadding];
       v24 = v23;
       [(NTKWidgetRichComplicationInlineView *)self imageMaxSize];
-      v27 = [v4 initWithInterior:v5 tracking:v21 circleCenter:v22 circleRadius:v7 maximumAngularWidth:v9 centerAngle:v11 fontSize:v13 textColor:v15 accessoryPlacement:v17 accessoryPadding:v19 accessoryMaxSize:{v24, v25, v26}];
+      v27 = [v4 initWithInterior:interior tracking:bSColor circleCenter:_chuisAccessoryPlacement circleRadius:v7 maximumAngularWidth:v9 centerAngle:v11 fontSize:v13 textColor:v15 accessoryPlacement:v17 accessoryPadding:v19 accessoryMaxSize:{v24, v25, v26}];
     }
 
     else
     {
-      v20 = [(NTKWidgetRichComplicationInlineView *)self path];
+      textColor = [(NTKWidgetRichComplicationInlineView *)self path];
       [(NTKWidgetRichComplicationInlineView *)self fontSize];
       v29 = v28;
-      v21 = [(NTKWidgetRichComplicationInlineView *)self textColor];
-      v30 = [v21 BSColor];
-      v31 = [(NTKWidgetRichComplicationInlineView *)self _chuisAccessoryPlacement];
+      bSColor = [(NTKWidgetRichComplicationInlineView *)self textColor];
+      v21BSColor = [bSColor BSColor];
+      _chuisAccessoryPlacement2 = [(NTKWidgetRichComplicationInlineView *)self _chuisAccessoryPlacement];
       [(NTKWidgetRichComplicationInlineView *)self imagePadding];
       v33 = v32;
       [(NTKWidgetRichComplicationInlineView *)self imageMaxSize];
-      v27 = [v4 initWithPath:v20 fontSize:v30 textColor:v31 accessoryPlacement:v29 accessoryPadding:v33 accessoryMaxSize:{v34, v35}];
+      v27 = [v4 initWithPath:textColor fontSize:v21BSColor textColor:_chuisAccessoryPlacement2 accessoryPlacement:v29 accessoryPadding:v33 accessoryMaxSize:{v34, v35}];
     }
   }
 
@@ -225,15 +225,15 @@
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_fontWeight];
   [v3 setWeight:v5];
 
-  v6 = [(NTKWidgetRichComplicationInlineView *)self _chsFontFeatures];
-  [v3 setFontFeatures:v6];
+  _chsFontFeatures = [(NTKWidgetRichComplicationInlineView *)self _chsFontFeatures];
+  [v3 setFontFeatures:_chsFontFeatures];
 
   v7 = objc_opt_new();
   [v7 setFontSpecification:v3];
   [v7 setHorizontalAlignment:{-[NTKWidgetRichComplicationInlineView _chsAlignment](self, "_chsAlignment")}];
-  v8 = [(NTKWidgetRichComplicationInlineView *)self textColor];
-  v9 = [v8 BSColor];
-  [v7 setForegroundColor:v9];
+  textColor = [(NTKWidgetRichComplicationInlineView *)self textColor];
+  bSColor = [textColor BSColor];
+  [v7 setForegroundColor:bSColor];
 
   [(NTKWidgetRichComplicationInlineView *)self imageMaxSize];
   [v7 setGraphicMaxSize:?];
@@ -368,8 +368,8 @@
   else
   {
     fontWeight = self->_fontWeight;
-    v6 = [(NTKWidgetRichComplicationInlineView *)self _uiFontDesign];
-    v4 = [v2 systemFontOfSize:v6 weight:fontSize design:fontWeight];
+    _uiFontDesign = [(NTKWidgetRichComplicationInlineView *)self _uiFontDesign];
+    v4 = [v2 systemFontOfSize:_uiFontDesign weight:fontSize design:fontWeight];
   }
 
   return v4;
@@ -394,23 +394,23 @@
 
 - (double)bezelTextAngularWidth
 {
-  v3 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+  widgetHostViewController = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
 
-  if (!v3)
+  if (!widgetHostViewController)
   {
     return 0.0;
   }
 
-  v4 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
-  [v4 curvedTextAngularWidth];
+  widgetHostViewController2 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+  [widgetHostViewController2 curvedTextAngularWidth];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setBezelTextDelegate:(id)a3
+- (void)setBezelTextDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_bezelTextDelegate);
 
   if (WeakRetained != obj)
@@ -420,23 +420,23 @@
   }
 }
 
-- (void)setBezelTextColor:(id)a3
+- (void)setBezelTextColor:(id)color
 {
-  v6 = a3;
-  v4 = [(NTKWidgetRichComplicationInlineView *)self textColor];
+  colorCopy = color;
+  textColor = [(NTKWidgetRichComplicationInlineView *)self textColor];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = colorCopy;
+  if (textColor != colorCopy)
   {
-    [(NTKWidgetRichComplicationInlineView *)self setTextColor:v6];
+    [(NTKWidgetRichComplicationInlineView *)self setTextColor:colorCopy];
     [(NTKWidgetRichComplicationInlineView *)self _updateCurveMetrics];
-    v5 = v6;
+    v5 = colorCopy;
   }
 }
 
-- (void)setBezelTextRadius:(double)a3
+- (void)setBezelTextRadius:(double)radius
 {
-  if (self->_curveRadius != a3)
+  if (self->_curveRadius != radius)
   {
     [(NTKWidgetRichComplicationInlineView *)self setCurveRadius:?];
 
@@ -444,24 +444,24 @@
   }
 }
 
-- (void)updatePropertiesAsGroupWithHandler:(id)a3
+- (void)updatePropertiesAsGroupWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12 = objc_alloc_init(NTKGroupedBezelProperties);
-  v5 = [(NTKWidgetRichComplicationInlineView *)self textColor];
-  [(NTKGroupedBezelProperties *)v12 setBezelTextColor:v5];
+  textColor = [(NTKWidgetRichComplicationInlineView *)self textColor];
+  [(NTKGroupedBezelProperties *)v12 setBezelTextColor:textColor];
 
   [(NTKWidgetRichComplicationInlineView *)self curveRadius];
   [(NTKGroupedBezelProperties *)v12 setBezelTextRadius:?];
-  v4[2](v4, v12);
+  handlerCopy[2](handlerCopy, v12);
 
-  v6 = [(NTKWidgetRichComplicationInlineView *)self textColor];
-  v7 = [(NTKGroupedBezelProperties *)v12 bezelTextColor];
+  textColor2 = [(NTKWidgetRichComplicationInlineView *)self textColor];
+  bezelTextColor = [(NTKGroupedBezelProperties *)v12 bezelTextColor];
 
-  if (v6 != v7)
+  if (textColor2 != bezelTextColor)
   {
-    v8 = [(NTKGroupedBezelProperties *)v12 bezelTextColor];
-    [(NTKWidgetRichComplicationInlineView *)self setTextColor:v8];
+    bezelTextColor2 = [(NTKGroupedBezelProperties *)v12 bezelTextColor];
+    [(NTKWidgetRichComplicationInlineView *)self setTextColor:bezelTextColor2];
   }
 
   [(NTKGroupedBezelProperties *)v12 bezelTextRadius];

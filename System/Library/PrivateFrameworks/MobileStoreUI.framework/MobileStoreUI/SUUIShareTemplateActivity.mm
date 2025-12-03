@@ -1,5 +1,5 @@
 @interface SUUIShareTemplateActivity
-- (SUUIShareTemplateActivity)initWithActivityViewElement:(id)a3 clientContext:(id)a4;
+- (SUUIShareTemplateActivity)initWithActivityViewElement:(id)element clientContext:(id)context;
 - (id)activityImage;
 - (id)activityTitle;
 - (id)activityType;
@@ -8,18 +8,18 @@
 
 @implementation SUUIShareTemplateActivity
 
-- (SUUIShareTemplateActivity)initWithActivityViewElement:(id)a3 clientContext:(id)a4
+- (SUUIShareTemplateActivity)initWithActivityViewElement:(id)element clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SUUIShareTemplateActivity;
   v9 = [(UIActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_viewElement, a3);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_viewElement, element);
   }
 
   return v10;
@@ -27,8 +27,8 @@
 
 - (id)activityImage
 {
-  v2 = [(SUUIShareSheetActivityViewElement *)self->_viewElement activityType];
-  if ([v2 isEqualToString:@"gift"])
+  activityType = [(SUUIShareSheetActivityViewElement *)self->_viewElement activityType];
+  if ([activityType isEqualToString:@"gift"])
   {
     v3 = @"ShareSheetGift";
 LABEL_5:
@@ -38,7 +38,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v2 isEqualToString:@"wishlist"])
+  if ([activityType isEqualToString:@"wishlist"])
   {
     v3 = @"ShareSheetWishList";
     goto LABEL_5;
@@ -52,10 +52,10 @@ LABEL_7:
 
 - (id)activityTitle
 {
-  v3 = [(SUUIShareSheetActivityViewElement *)self->_viewElement activityType];
-  if (![v3 isEqualToString:@"gift"])
+  activityType = [(SUUIShareSheetActivityViewElement *)self->_viewElement activityType];
+  if (![activityType isEqualToString:@"gift"])
   {
-    if (![v3 isEqualToString:@"wishlist"])
+    if (![activityType isEqualToString:@"wishlist"])
     {
       v7 = 0;
       goto LABEL_13;
@@ -93,13 +93,13 @@ LABEL_13:
 
 - (id)activityType
 {
-  v2 = [(SUUIShareSheetActivityViewElement *)self->_viewElement activityType];
-  if ([v2 isEqualToString:@"gift"])
+  activityType = [(SUUIShareSheetActivityViewElement *)self->_viewElement activityType];
+  if ([activityType isEqualToString:@"gift"])
   {
     v3 = @"SUUIActivityTypeGift";
   }
 
-  else if ([v2 isEqualToString:@"wishlist"])
+  else if ([activityType isEqualToString:@"wishlist"])
   {
     v3 = @"SUUIActivityTypeWishlist";
   }
@@ -121,7 +121,7 @@ LABEL_13:
   v6[2] = __44__SUUIShareTemplateActivity_performActivity__block_invoke;
   v6[3] = &unk_2798F5AF8;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_after(v4, MEMORY[0x277D85CD0], v6);
 }

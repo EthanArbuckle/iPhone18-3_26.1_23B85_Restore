@@ -1,5 +1,5 @@
 @interface _UITextInputControllerLayoutManagerConnection
-- (_UITextInputControllerLayoutManagerConnection)initWithTextInputController:(id)a3;
+- (_UITextInputControllerLayoutManagerConnection)initWithTextInputController:(id)controller;
 - (void)dealloc;
 @end
 
@@ -13,16 +13,16 @@
   [(_UITextInputControllerLayoutManagerConnection *)&v3 dealloc];
 }
 
-- (_UITextInputControllerLayoutManagerConnection)initWithTextInputController:(id)a3
+- (_UITextInputControllerLayoutManagerConnection)initWithTextInputController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = _UITextInputControllerLayoutManagerConnection;
   v6 = [(_UITextInputControllerLayoutManagerConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textInputController, a3);
+    objc_storeStrong(&v6->_textInputController, controller);
   }
 
   return v7;

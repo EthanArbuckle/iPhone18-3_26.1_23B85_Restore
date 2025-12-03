@@ -13,25 +13,25 @@
 - (id)_containedRecommendableObjects
 {
   v2 = [MEMORY[0x277CBEB58] set];
-  v3 = [a1 services];
-  [v2 addObjectsFromArray:v3];
+  services = [self services];
+  [v2 addObjectsFromArray:services];
 
-  v4 = [a1 profiles];
+  profiles = [self profiles];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__HMAccessory_HRERecommendableObjectProtocol___containedRecommendableObjects__block_invoke;
   v7[3] = &unk_2797761A0;
   v5 = v2;
   v8 = v5;
-  [v4 na_each:v7];
+  [profiles na_each:v7];
 
   return v5;
 }
 
 - (id)hre_actionTypes
 {
-  v1 = [a1 _containedRecommendableObjects];
-  v2 = [v1 na_flatMap:&__block_literal_global];
+  _containedRecommendableObjects = [self _containedRecommendableObjects];
+  v2 = [_containedRecommendableObjects na_flatMap:&__block_literal_global];
 
   return v2;
 }
@@ -44,8 +44,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 services];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  services = [self services];
+  v6 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -55,12 +55,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(services);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 hre_actionTypes];
-        v11 = [v10 containsObject:v4];
+        hre_actionTypes = [v9 hre_actionTypes];
+        v11 = [hre_actionTypes containsObject:v4];
 
         if (v11)
         {
@@ -69,7 +69,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -88,40 +88,40 @@ LABEL_11:
 
 - (id)hre_primaryType
 {
-  v1 = [a1 hre_matchingTypes];
-  if ([v1 count] == 1)
+  hre_matchingTypes = [self hre_matchingTypes];
+  if ([hre_matchingTypes count] == 1)
   {
-    v2 = [v1 anyObject];
+    anyObject = [hre_matchingTypes anyObject];
   }
 
   else
   {
-    v2 = 0;
+    anyObject = 0;
   }
 
-  return v2;
+  return anyObject;
 }
 
 - (id)hre_matchingTypes
 {
-  v1 = [a1 _containedRecommendableObjects];
-  v2 = [v1 na_flatMap:&__block_literal_global_72];
+  _containedRecommendableObjects = [self _containedRecommendableObjects];
+  v2 = [_containedRecommendableObjects na_flatMap:&__block_literal_global_72];
 
   return v2;
 }
 
 - (id)hre_characteristics
 {
-  v1 = [a1 _containedRecommendableObjects];
-  v2 = [v1 na_flatMap:&__block_literal_global_74];
+  _containedRecommendableObjects = [self _containedRecommendableObjects];
+  v2 = [_containedRecommendableObjects na_flatMap:&__block_literal_global_74];
 
   return v2;
 }
 
 - (uint64_t)hre_isActionable
 {
-  v1 = [a1 _containedRecommendableObjects];
-  v2 = [v1 na_any:&__block_literal_global_77];
+  _containedRecommendableObjects = [self _containedRecommendableObjects];
+  v2 = [_containedRecommendableObjects na_any:&__block_literal_global_77];
 
   return v2;
 }

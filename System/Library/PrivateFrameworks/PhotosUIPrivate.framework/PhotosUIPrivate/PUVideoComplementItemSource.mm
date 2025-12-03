@@ -1,25 +1,25 @@
 @interface PUVideoComplementItemSource
-- (id)_initWithVideoComplement:(id)a3 bundleAtURL:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
-- (id)activityViewControllerSubject:(id)a3;
+- (id)_initWithVideoComplement:(id)complement bundleAtURL:(id)l;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
+- (id)activityViewControllerSubject:(id)subject;
 @end
 
 @implementation PUVideoComplementItemSource
 
-- (id)activityViewControllerSubject:(id)a3
+- (id)activityViewControllerSubject:(id)subject
 {
-  v3 = [(PFVideoComplement *)self->_videoComplement imagePath];
-  v4 = [v3 lastPathComponent];
+  imagePath = [(PFVideoComplement *)self->_videoComplement imagePath];
+  lastPathComponent = [imagePath lastPathComponent];
 
-  return v4;
+  return lastPathComponent;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = [(PFVideoComplement *)self->_videoComplement imagePath:a3];
+  height = size.height;
+  width = size.width;
+  v7 = [(PFVideoComplement *)self->_videoComplement imagePath:controller];
   v8 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithContentsOfFile:v7];
   [v8 size];
   v18.origin.x = PURectWithAspectRatioFillingRect(v9 / v10, 0.0, 0.0, width, height);
@@ -38,13 +38,13 @@
   return v15;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (![v5 isEqualToString:@"com.apple.Photos.activity.saveToCameraRoll"] || (v6 = self->_videoComplement) == 0)
+  typeCopy = type;
+  if (![typeCopy isEqualToString:@"com.apple.Photos.activity.saveToCameraRoll"] || (v6 = self->_videoComplement) == 0)
   {
-    if ([PUActivityItemSourceConfiguration isLivePhotoBundleSupportedByActivityType:v5])
+    if ([PUActivityItemSourceConfiguration isLivePhotoBundleSupportedByActivityType:typeCopy])
     {
       v6 = self->_bundleURL;
     }
@@ -55,26 +55,26 @@
     }
   }
 
-  v7 = [(PFVideoComplement *)self->_videoComplement imagePath];
+  imagePath = [(PFVideoComplement *)self->_videoComplement imagePath];
   if (!v6)
   {
-    if ([v5 isEqualToString:*MEMORY[0x1E69CDA90]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E69CDA90]])
     {
-      v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v7 options:1 error:0];
+      v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:imagePath options:1 error:0];
       if (!v8)
       {
-        v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v7];
+        v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:imagePath];
       }
 
       v9 = MEMORY[0x1E69C08F0];
-      v10 = [v7 pathExtension];
-      v11 = [v9 typeWithFilenameExtension:v10 conformingToType:*MEMORY[0x1E6982E30]];
+      pathExtension = [imagePath pathExtension];
+      v11 = [v9 typeWithFilenameExtension:pathExtension conformingToType:*MEMORY[0x1E6982E30]];
 
       v6 = 0;
       if (v8 && v11)
       {
-        v12 = [v11 identifier];
-        v14 = v12;
+        identifier = [v11 identifier];
+        v14 = identifier;
         v15[0] = v8;
         v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
       }
@@ -90,9 +90,9 @@
       v6 = 0;
     }
 
-    if (v7)
+    if (imagePath)
     {
-      v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v7 isDirectory:0];
+      v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:imagePath isDirectory:0];
     }
   }
 
@@ -101,18 +101,18 @@ LABEL_18:
   return v6;
 }
 
-- (id)_initWithVideoComplement:(id)a3 bundleAtURL:(id)a4
+- (id)_initWithVideoComplement:(id)complement bundleAtURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  complementCopy = complement;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = PUVideoComplementItemSource;
   v8 = [(PUVideoComplementItemSource *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_bundleURL, a4);
-    v10 = v6 ? v6 : [objc_alloc(MEMORY[0x1E69C0918]) initWithBundleAtURL:v7];
+    objc_storeStrong(&v8->_bundleURL, l);
+    v10 = complementCopy ? complementCopy : [objc_alloc(MEMORY[0x1E69C0918]) initWithBundleAtURL:lCopy];
     p_videoComplement = &v9->_videoComplement;
     videoComplement = v9->_videoComplement;
     v9->_videoComplement = v10;
@@ -121,14 +121,14 @@ LABEL_18:
     {
       if (*p_videoComplement)
       {
-        v13 = [*p_videoComplement imagePath];
-        v14 = [v13 stringByDeletingLastPathComponent];
-        v15 = [v14 pathExtension];
-        v16 = [v15 isEqualToString:*MEMORY[0x1E69C09D0]];
+        imagePath = [*p_videoComplement imagePath];
+        stringByDeletingLastPathComponent = [imagePath stringByDeletingLastPathComponent];
+        pathExtension = [stringByDeletingLastPathComponent pathExtension];
+        v16 = [pathExtension isEqualToString:*MEMORY[0x1E69C09D0]];
 
         if (v16)
         {
-          v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14 isDirectory:1];
+          v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:stringByDeletingLastPathComponent isDirectory:1];
           bundleURL = v9->_bundleURL;
           v9->_bundleURL = v17;
         }

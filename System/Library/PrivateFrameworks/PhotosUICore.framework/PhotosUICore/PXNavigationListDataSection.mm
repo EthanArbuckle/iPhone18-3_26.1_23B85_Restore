@@ -1,16 +1,16 @@
 @interface PXNavigationListDataSection
-- (PXNavigationListDataSection)initWithCollectionsDataSection:(id)a3 indentationLevel:(int64_t)a4 topLevelIdentifier:(id)a5 childDataSections:(id)a6 childIndexHints:(id)a7 skipAssetCountFetches:(BOOL)a8;
-- (PXNavigationListDataSection)initWithOutlineObject:(id)a3;
+- (PXNavigationListDataSection)initWithCollectionsDataSection:(id)section indentationLevel:(int64_t)level topLevelIdentifier:(id)identifier childDataSections:(id)sections childIndexHints:(id)hints skipAssetCountFetches:(BOOL)fetches;
+- (PXNavigationListDataSection)initWithOutlineObject:(id)object;
 - (id)content;
 - (id)debugDescription;
-- (id)existingFetchResultForListItem:(id)a3;
-- (id)objectAtIndex:(int64_t)a3;
-- (id)parentOfListItemAtIndex:(int64_t)a3 localIndex:(int64_t *)a4;
+- (id)existingFetchResultForListItem:(id)item;
+- (id)objectAtIndex:(int64_t)index;
+- (id)parentOfListItemAtIndex:(int64_t)index localIndex:(int64_t *)localIndex;
 - (int64_t)count;
-- (int64_t)indexForListItem:(id)a3;
-- (int64_t)indexInCollectionsDataSectionOfListItem:(id)a3 hintIndex:(int64_t)a4;
-- (int64_t)validatedIndexOfListItem:(id)a3 hintIndex:(int64_t)a4;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (int64_t)indexForListItem:(id)item;
+- (int64_t)indexInCollectionsDataSectionOfListItem:(id)item hintIndex:(int64_t)index;
+- (int64_t)validatedIndexOfListItem:(id)item hintIndex:(int64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)_createDataSubsectionsIfNecessary;
 @end
 
@@ -25,8 +25,8 @@
     do
     {
       v5 = [(PXNavigationListDataSection *)self objectAtIndex:v4];
-      v6 = [v5 visualDescription];
-      [v3 appendFormat:@"\n\t[%ld]%@", v4, v6];
+      visualDescription = [v5 visualDescription];
+      [v3 appendFormat:@"\n\t[%ld]%@", v4, visualDescription];
 
       ++v4;
     }
@@ -39,20 +39,20 @@
   return v3;
 }
 
-- (id)parentOfListItemAtIndex:(int64_t)a3 localIndex:(int64_t *)a4
+- (id)parentOfListItemAtIndex:(int64_t)index localIndex:(int64_t *)localIndex
 {
   v7 = [(PXNavigationListDataSection *)self _dataSubsectionIndexForListItemAtIndex:?];
   if (v7)
   {
     v9 = [(NSArray *)self->_dataSubsections objectAtIndex:v7];
     v10 = [(NSArray *)self->_dataSubsections objectAtIndex:v7 - 1];
-    v11 = [v9 externalStartIndex];
-    v12 = [(PXNavigationListDataSection *)self topLevelIdentifier];
-    v8 = [v10 listItemAtExternalIndex:v11 - 1 topLevelIdentifier:v12];
+    externalStartIndex = [v9 externalStartIndex];
+    topLevelIdentifier = [(PXNavigationListDataSection *)self topLevelIdentifier];
+    v8 = [v10 listItemAtExternalIndex:externalStartIndex - 1 topLevelIdentifier:topLevelIdentifier];
 
-    if (a4)
+    if (localIndex)
     {
-      *a4 = a3 - v11;
+      *localIndex = index - externalStartIndex;
     }
   }
 
@@ -64,9 +64,9 @@
   return v8;
 }
 
-- (int64_t)indexInCollectionsDataSectionOfListItem:(id)a3 hintIndex:(int64_t)a4
+- (int64_t)indexInCollectionsDataSectionOfListItem:(id)item hintIndex:(int64_t)index
 {
-  v5 = [(PXNavigationListDataSection *)self validatedIndexOfListItem:a3 hintIndex:a4];
+  v5 = [(PXNavigationListDataSection *)self validatedIndexOfListItem:item hintIndex:index];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -82,27 +82,27 @@
   return v6;
 }
 
-- (int64_t)validatedIndexOfListItem:(id)a3 hintIndex:(int64_t)a4
+- (int64_t)validatedIndexOfListItem:(id)item hintIndex:(int64_t)index
 {
-  v6 = a3;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL || (-[PXNavigationListDataSection objectAtIndex:](self, "objectAtIndex:", a4), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:v6], v7, (v8 & 1) == 0))
+  itemCopy = item;
+  if (index == 0x7FFFFFFFFFFFFFFFLL || (-[PXNavigationListDataSection objectAtIndex:](self, "objectAtIndex:", index), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:itemCopy], v7, (v8 & 1) == 0))
   {
-    a4 = [(PXNavigationListDataSection *)self indexForListItem:v6];
+    index = [(PXNavigationListDataSection *)self indexForListItem:itemCopy];
   }
 
-  return a4;
+  return index;
 }
 
-- (int64_t)indexForListItem:(id)a3
+- (int64_t)indexForListItem:(id)item
 {
-  v4 = a3;
-  if (v4 && [(PXNavigationListDataSection *)self count]>= 1)
+  itemCopy = item;
+  if (itemCopy && [(PXNavigationListDataSection *)self count]>= 1)
   {
     v5 = 0;
     while (1)
     {
       v6 = [(PXNavigationListDataSection *)self objectAtIndex:v5];
-      v7 = [v4 isEqual:v6];
+      v7 = [itemCopy isEqual:v6];
 
       if (v7)
       {
@@ -125,30 +125,30 @@ LABEL_6:
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v10 = [(PXNavigationListDataSection *)self childDataSections];
-  v11 = [v10 count];
+  childDataSections = [(PXNavigationListDataSection *)self childDataSections];
+  v11 = [childDataSections count];
 
   if (v11)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXNavigationListDataSection.m" lineNumber:244 description:@"This code path is not implemented."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationListDataSection.m" lineNumber:244 description:@"This code path is not implemented."];
 
     abort();
   }
 
-  v12 = [(PXNavigationListDataSection *)self collectionsDataSection];
-  v13 = [v12 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  collectionsDataSection = [(PXNavigationListDataSection *)self collectionsDataSection];
+  v13 = [collectionsDataSection countByEnumeratingWithState:state objects:objects count:count];
 
   return v13;
 }
 
-- (id)objectAtIndex:(int64_t)a3
+- (id)objectAtIndex:(int64_t)index
 {
   v5 = [(NSArray *)self->_dataSubsections objectAtIndex:[(PXNavigationListDataSection *)self _dataSubsectionIndexForListItemAtIndex:?]];
-  v6 = [(PXNavigationListDataSection *)self topLevelIdentifier];
-  v7 = [v5 listItemAtExternalIndex:a3 topLevelIdentifier:v6];
+  topLevelIdentifier = [(PXNavigationListDataSection *)self topLevelIdentifier];
+  v7 = [v5 listItemAtExternalIndex:index topLevelIdentifier:topLevelIdentifier];
 
   return v7;
 }
@@ -159,17 +159,17 @@ LABEL_6:
   countNumber = self->_countNumber;
   if (!countNumber)
   {
-    v4 = [(PXNavigationListDataSection *)self collectionsDataSection];
-    v5 = [v4 count];
+    collectionsDataSection = [(PXNavigationListDataSection *)self collectionsDataSection];
+    v5 = [collectionsDataSection count];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(PXNavigationListDataSection *)self childDataSections];
-    v7 = [v6 allValues];
+    childDataSections = [(PXNavigationListDataSection *)self childDataSections];
+    allValues = [childDataSections allValues];
 
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -181,14 +181,14 @@ LABEL_6:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v5 += [*(*(&v15 + 1) + 8 * v11++) count];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -206,15 +206,15 @@ LABEL_6:
 
 - (id)content
 {
-  v2 = [(PXNavigationListDataSection *)self collectionsDataSection];
-  v3 = [v2 content];
+  collectionsDataSection = [(PXNavigationListDataSection *)self collectionsDataSection];
+  content = [collectionsDataSection content];
 
-  return v3;
+  return content;
 }
 
-- (id)existingFetchResultForListItem:(id)a3
+- (id)existingFetchResultForListItem:(id)item
 {
-  v4 = [(PXNavigationListDataSection *)self indexForListItem:a3];
+  v4 = [(PXNavigationListDataSection *)self indexForListItem:item];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -223,8 +223,8 @@ LABEL_6:
   else
   {
     v6 = v4;
-    v7 = [(PXNavigationListDataSection *)self collectionsDataSection];
-    v5 = [v7 existingAssetsFetchResultAtIndex:v6];
+    collectionsDataSection = [(PXNavigationListDataSection *)self collectionsDataSection];
+    v5 = [collectionsDataSection existingAssetsFetchResultAtIndex:v6];
   }
 
   return v5;
@@ -236,30 +236,30 @@ LABEL_6:
   {
     v4 = objc_opt_new();
     v5 = objc_opt_new();
-    v6 = [(PXNavigationListDataSection *)self childIndexHints];
-    v7 = [(PXNavigationListDataSection *)self collectionsDataSection];
-    v8 = [(PXNavigationListDataSection *)self childDataSections];
+    childIndexHints = [(PXNavigationListDataSection *)self childIndexHints];
+    collectionsDataSection = [(PXNavigationListDataSection *)self collectionsDataSection];
+    childDataSections = [(PXNavigationListDataSection *)self childDataSections];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __64__PXNavigationListDataSection__createDataSubsectionsIfNecessary__block_invoke;
     v34[3] = &unk_1E7748EA8;
-    v25 = v6;
+    v25 = childIndexHints;
     v35 = v25;
-    v9 = v7;
+    v9 = collectionsDataSection;
     v36 = v9;
     v10 = v5;
     v37 = v10;
     v11 = v4;
-    v39 = self;
+    selfCopy = self;
     v40 = a2;
     v38 = v11;
-    [v8 enumerateKeysAndObjectsUsingBlock:v34];
+    [childDataSections enumerateKeysAndObjectsUsingBlock:v34];
 
     v12 = objc_opt_new();
     v13 = objc_opt_new();
     v14 = [PXNavigationListDataSubsection alloc];
-    v15 = [(PXNavigationListDataSection *)self collectionsDataSection];
-    v16 = -[PXNavigationListDataSubsection initWithDataSection:indexDelta:expandedIndex:indentationLevel:externalStartIndex:skipAssetCountFetches:](v14, "initWithDataSection:indexDelta:expandedIndex:indentationLevel:externalStartIndex:skipAssetCountFetches:", v15, 0, [v10 firstIndex], -[PXNavigationListDataSection indentationLevel](self, "indentationLevel"), 0, self->_skipAssetCountFetches);
+    collectionsDataSection2 = [(PXNavigationListDataSection *)self collectionsDataSection];
+    v16 = -[PXNavigationListDataSubsection initWithDataSection:indexDelta:expandedIndex:indentationLevel:externalStartIndex:skipAssetCountFetches:](v14, "initWithDataSection:indexDelta:expandedIndex:indentationLevel:externalStartIndex:skipAssetCountFetches:", collectionsDataSection2, 0, [v10 firstIndex], -[PXNavigationListDataSection indentationLevel](self, "indentationLevel"), 0, self->_skipAssetCountFetches);
     [v12 addObject:v16];
 
     [v13 addIndex:0];
@@ -276,7 +276,7 @@ LABEL_6:
     v32 = v33;
     v18 = v12;
     v28 = v18;
-    v29 = self;
+    selfCopy2 = self;
     v19 = v13;
     v30 = v19;
     v20 = v10;
@@ -334,42 +334,42 @@ void __64__PXNavigationListDataSection__createDataSubsectionsIfNecessary__block_
   [*(a1 + 56) addIndex:v7 + v11];
 }
 
-- (PXNavigationListDataSection)initWithOutlineObject:(id)a3
+- (PXNavigationListDataSection)initWithOutlineObject:(id)object
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXNavigationListDataSection.m" lineNumber:138 description:{@"%s is not available as initializer", "-[PXNavigationListDataSection initWithOutlineObject:]"}];
+  objectCopy = object;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationListDataSection.m" lineNumber:138 description:{@"%s is not available as initializer", "-[PXNavigationListDataSection initWithOutlineObject:]"}];
 
   abort();
 }
 
-- (PXNavigationListDataSection)initWithCollectionsDataSection:(id)a3 indentationLevel:(int64_t)a4 topLevelIdentifier:(id)a5 childDataSections:(id)a6 childIndexHints:(id)a7 skipAssetCountFetches:(BOOL)a8
+- (PXNavigationListDataSection)initWithCollectionsDataSection:(id)section indentationLevel:(int64_t)level topLevelIdentifier:(id)identifier childDataSections:(id)sections childIndexHints:(id)hints skipAssetCountFetches:(BOOL)fetches
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = [v18 count];
-  if (v20 != [v19 count])
+  sectionCopy = section;
+  identifierCopy = identifier;
+  sectionsCopy = sections;
+  hintsCopy = hints;
+  v20 = [sectionsCopy count];
+  if (v20 != [hintsCopy count])
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PXNavigationListDataSection.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"childDataSections.count == childIndexHints.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationListDataSection.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"childDataSections.count == childIndexHints.count"}];
   }
 
-  v21 = [v16 outlineObject];
+  outlineObject = [sectionCopy outlineObject];
   v34.receiver = self;
   v34.super_class = PXNavigationListDataSection;
-  v22 = [(PXDataSection *)&v34 initWithOutlineObject:v21];
+  v22 = [(PXDataSection *)&v34 initWithOutlineObject:outlineObject];
 
   if (v22)
   {
-    objc_storeStrong(&v22->_collectionsDataSection, a3);
-    v22->_indentationLevel = a4;
-    v23 = [v17 copy];
+    objc_storeStrong(&v22->_collectionsDataSection, section);
+    v22->_indentationLevel = level;
+    v23 = [identifierCopy copy];
     topLevelIdentifier = v22->_topLevelIdentifier;
     v22->_topLevelIdentifier = v23;
 
-    v25 = [v18 copy];
+    v25 = [sectionsCopy copy];
     v26 = v25;
     v27 = MEMORY[0x1E695E0F8];
     if (v25)
@@ -384,7 +384,7 @@ void __64__PXNavigationListDataSection__createDataSubsectionsIfNecessary__block_
 
     objc_storeStrong(&v22->_childDataSections, v28);
 
-    v29 = [v19 copy];
+    v29 = [hintsCopy copy];
     v30 = v29;
     if (v29)
     {
@@ -398,7 +398,7 @@ void __64__PXNavigationListDataSection__createDataSubsectionsIfNecessary__block_
 
     objc_storeStrong(&v22->_childIndexHints, v31);
 
-    v22->_skipAssetCountFetches = a8;
+    v22->_skipAssetCountFetches = fetches;
   }
 
   return v22;

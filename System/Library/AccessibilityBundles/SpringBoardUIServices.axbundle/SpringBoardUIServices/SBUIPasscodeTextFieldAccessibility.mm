@@ -1,18 +1,18 @@
 @interface SBUIPasscodeTextFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 @end
 
 @implementation SBUIPasscodeTextFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIPasscodeTextField" isKindOfClass:@"UITextField"];
-  [v3 validateClass:@"UITextField" hasInstanceMethod:@"insertText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UITextField" hasInstanceMethod:@"deleteBackward" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIPasscodeTextField" isKindOfClass:@"UITextField"];
+  [validationsCopy validateClass:@"UITextField" hasInstanceMethod:@"insertText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UITextField" hasInstanceMethod:@"deleteBackward" withFullSignature:{"v", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -22,13 +22,13 @@
   return *MEMORY[0x29EDC7568] | [(SBUIPasscodeTextFieldAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  [(SBUIPasscodeTextFieldAccessibility *)self _accessibilityPostValueChangedNotificationWithInsertedText:v4];
+  textCopy = text;
+  [(SBUIPasscodeTextFieldAccessibility *)self _accessibilityPostValueChangedNotificationWithInsertedText:textCopy];
   v5.receiver = self;
   v5.super_class = SBUIPasscodeTextFieldAccessibility;
-  [(SBUIPasscodeTextFieldAccessibility *)&v5 insertText:v4];
+  [(SBUIPasscodeTextFieldAccessibility *)&v5 insertText:textCopy];
 }
 
 - (void)deleteBackward

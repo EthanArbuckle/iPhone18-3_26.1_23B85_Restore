@@ -1,32 +1,32 @@
 @interface BCSRealTimeTimingSignposter
-+ (id)signposterForBCSType:(uint64_t)a1;
-+ (id)signposterForBCSType:(uint64_t)a3 signpostIdentifier:;
-+ (id)signposterForItemIdentifier:(uint64_t)a1;
-+ (id)signposterForShardIdentifier:(uint64_t)a1;
-- (void)_handleBlastDoorProcessing:(void *)a1;
-- (void)_handleBusinessLinkChoppedFetch:(void *)a1;
-- (void)_handleBusinessLinkHashFetch:(void *)a1;
-- (void)_handleCloudKitConfigFetch:(void *)a1;
-- (void)_handleCloudKitConfigFetchAndDecode:(void *)a1;
-- (void)_handleCloudKitItemFetch:(void *)a1;
-- (void)_handleCloudKitItemFetchAndDecode:(void *)a1;
-- (void)_handleCloudKitMegashardFetch:(void *)a1;
-- (void)_handleCloudKitMegashardFetchAndDecode:(void *)a1;
-- (void)_handleCloudKitShardFetch:(void *)a1;
-- (void)_handleCloudKitShardFetchAndDecode:(void *)a1;
-- (void)_handleConfigResolution:(void *)a1;
-- (void)_handleItemFetch:(void *)a1;
-- (void)_handleItemIsRegistered:(void *)a1;
-- (void)_handleItemResolution:(void *)a1;
-- (void)_handlePIRItemFetch:(void *)a1;
-- (void)_handleShardResolution:(void *)a1;
-- (void)timingMeasurementDidBegin:(id)a3;
-- (void)timingMeasurementDidEnd:(id)a3;
++ (id)signposterForBCSType:(uint64_t)type;
++ (id)signposterForBCSType:(uint64_t)type signpostIdentifier:;
++ (id)signposterForItemIdentifier:(uint64_t)identifier;
++ (id)signposterForShardIdentifier:(uint64_t)identifier;
+- (void)_handleBlastDoorProcessing:(void *)processing;
+- (void)_handleBusinessLinkChoppedFetch:(void *)fetch;
+- (void)_handleBusinessLinkHashFetch:(void *)fetch;
+- (void)_handleCloudKitConfigFetch:(void *)fetch;
+- (void)_handleCloudKitConfigFetchAndDecode:(void *)decode;
+- (void)_handleCloudKitItemFetch:(void *)fetch;
+- (void)_handleCloudKitItemFetchAndDecode:(void *)decode;
+- (void)_handleCloudKitMegashardFetch:(void *)fetch;
+- (void)_handleCloudKitMegashardFetchAndDecode:(void *)decode;
+- (void)_handleCloudKitShardFetch:(void *)fetch;
+- (void)_handleCloudKitShardFetchAndDecode:(void *)decode;
+- (void)_handleConfigResolution:(void *)resolution;
+- (void)_handleItemFetch:(void *)fetch;
+- (void)_handleItemIsRegistered:(void *)registered;
+- (void)_handleItemResolution:(void *)resolution;
+- (void)_handlePIRItemFetch:(void *)fetch;
+- (void)_handleShardResolution:(void *)resolution;
+- (void)timingMeasurementDidBegin:(id)begin;
+- (void)timingMeasurementDidEnd:(id)end;
 @end
 
 @implementation BCSRealTimeTimingSignposter
 
-+ (id)signposterForBCSType:(uint64_t)a1
++ (id)signposterForBCSType:(uint64_t)type
 {
   objc_opt_self();
   v3 = [(BCSRealTimeSignposter *)[BCSRealTimeTimingSignposter alloc] _initWithType:a2 signpostIdentifier:a2];
@@ -34,41 +34,41 @@
   return v3;
 }
 
-+ (id)signposterForBCSType:(uint64_t)a3 signpostIdentifier:
++ (id)signposterForBCSType:(uint64_t)type signpostIdentifier:
 {
   objc_opt_self();
-  v5 = [(BCSRealTimeSignposter *)[BCSRealTimeTimingSignposter alloc] _initWithType:a2 signpostIdentifier:a3];
+  v5 = [(BCSRealTimeSignposter *)[BCSRealTimeTimingSignposter alloc] _initWithType:a2 signpostIdentifier:type];
 
   return v5;
 }
 
-+ (id)signposterForShardIdentifier:(uint64_t)a1
++ (id)signposterForShardIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
   v3 = [BCSRealTimeTimingSignposter alloc];
-  v4 = [v2 type];
+  type = [v2 type];
 
-  v5 = [(BCSRealTimeShardSignposter *)v3 _initWithShardType:v4 signpostIdentifier:v2];
+  v5 = [(BCSRealTimeShardSignposter *)v3 _initWithShardType:type signpostIdentifier:v2];
 
   return v5;
 }
 
-+ (id)signposterForItemIdentifier:(uint64_t)a1
++ (id)signposterForItemIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
   v3 = [BCSRealTimeTimingSignposter alloc];
-  v4 = [v2 type];
+  type = [v2 type];
 
-  v5 = [(BCSRealTimeSignposter *)v3 _initWithType:v4 signpostIdentifier:v2];
+  v5 = [(BCSRealTimeSignposter *)v3 _initWithType:type signpostIdentifier:v2];
 
   return v5;
 }
 
-- (void)timingMeasurementDidBegin:(id)a3
+- (void)timingMeasurementDidBegin:(id)begin
 {
-  switch([a3 timingMeasurementType])
+  switch([begin timingMeasurementType])
   {
     case 0:
 
@@ -147,10 +147,10 @@
   }
 }
 
-- (void)_handleCloudKitConfigFetch:(void *)a1
+- (void)_handleCloudKitConfigFetch:(void *)fetch
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!fetch)
   {
     goto LABEL_50;
   }
@@ -168,7 +168,7 @@
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([fetch type]);
     v24 = 136315650;
     v25 = "_CloudKitFetchConfig";
     v26 = 2080;
@@ -178,21 +178,21 @@
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [fetch type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [fetch signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -204,19 +204,19 @@
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [fetch signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -229,17 +229,17 @@
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [fetch signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -250,13 +250,13 @@
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [fetch signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -267,13 +267,13 @@
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [fetch signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -292,18 +292,18 @@
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [fetch signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -315,19 +315,19 @@
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [fetch signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -347,17 +347,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [fetch signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -368,13 +368,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [fetch signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -385,13 +385,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [fetch signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -406,10 +406,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCloudKitShardFetch:(void *)a1
+- (void)_handleCloudKitShardFetch:(void *)fetch
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!fetch)
   {
     goto LABEL_50;
   }
@@ -427,7 +427,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([fetch type]);
     v24 = 136315650;
     v25 = "_CloudKitFetchShard";
     v26 = 2080;
@@ -437,21 +437,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [fetch type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [fetch signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -463,19 +463,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [fetch signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -488,17 +488,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [fetch signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -509,13 +509,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [fetch signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -526,13 +526,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [fetch signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -551,18 +551,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [fetch signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -574,19 +574,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [fetch signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -606,17 +606,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [fetch signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -627,13 +627,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [fetch signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -644,13 +644,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [fetch signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -665,10 +665,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCloudKitItemFetch:(void *)a1
+- (void)_handleCloudKitItemFetch:(void *)fetch
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!fetch)
   {
     goto LABEL_50;
   }
@@ -686,7 +686,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([fetch type]);
     v24 = 136315650;
     v25 = "_CloudKitFetchBucket";
     v26 = 2080;
@@ -696,21 +696,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [fetch type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [fetch signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -722,19 +722,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [fetch signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -747,17 +747,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [fetch signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -768,13 +768,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [fetch signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -785,13 +785,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [fetch signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -810,18 +810,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [fetch signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -833,19 +833,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [fetch signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -865,17 +865,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [fetch signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -886,13 +886,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [fetch signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -903,13 +903,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [fetch signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -924,10 +924,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCloudKitMegashardFetch:(void *)a1
+- (void)_handleCloudKitMegashardFetch:(void *)fetch
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!fetch)
   {
     goto LABEL_50;
   }
@@ -945,7 +945,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([fetch type]);
     v24 = 136315650;
     v25 = "_CloudKitFetchMegashard";
     v26 = 2080;
@@ -955,21 +955,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [fetch type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [fetch signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -981,19 +981,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [fetch signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -1006,17 +1006,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [fetch signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1027,13 +1027,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [fetch signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1044,13 +1044,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [fetch signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1069,18 +1069,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [fetch signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1092,19 +1092,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [fetch signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1124,17 +1124,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [fetch signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1145,13 +1145,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [fetch signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1162,13 +1162,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [fetch signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1183,10 +1183,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCloudKitConfigFetchAndDecode:(void *)a1
+- (void)_handleCloudKitConfigFetchAndDecode:(void *)decode
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!decode)
   {
     goto LABEL_50;
   }
@@ -1204,7 +1204,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([decode type]);
     v24 = 136315650;
     v25 = "_CloudKitFetchConfigAndDecode";
     v26 = 2080;
@@ -1214,21 +1214,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [decode type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [decode signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -1240,19 +1240,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [decode signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -1265,17 +1265,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [decode signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1286,13 +1286,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [decode signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1303,13 +1303,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [decode signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1328,18 +1328,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [decode signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1351,19 +1351,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [decode signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1383,17 +1383,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [decode signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1404,13 +1404,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [decode signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1421,13 +1421,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [decode signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1442,10 +1442,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCloudKitShardFetchAndDecode:(void *)a1
+- (void)_handleCloudKitShardFetchAndDecode:(void *)decode
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!decode)
   {
     goto LABEL_50;
   }
@@ -1463,7 +1463,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([decode type]);
     v24 = 136315650;
     v25 = "_CloudKitFetchShardAndDecode";
     v26 = 2080;
@@ -1473,21 +1473,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [decode type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [decode signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -1499,19 +1499,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [decode signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -1524,17 +1524,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [decode signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1545,13 +1545,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [decode signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1562,13 +1562,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [decode signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1587,18 +1587,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [decode signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1610,19 +1610,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [decode signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1642,17 +1642,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [decode signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1663,13 +1663,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [decode signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1680,13 +1680,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [decode signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1701,10 +1701,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCloudKitItemFetchAndDecode:(void *)a1
+- (void)_handleCloudKitItemFetchAndDecode:(void *)decode
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!decode)
   {
     goto LABEL_50;
   }
@@ -1722,7 +1722,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([decode type]);
     v24 = 136315650;
     v25 = "_CloudKitFetchBucketAndDecode";
     v26 = 2080;
@@ -1732,21 +1732,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [decode type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [decode signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -1758,19 +1758,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [decode signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -1783,17 +1783,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [decode signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1804,13 +1804,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [decode signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1821,13 +1821,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [decode signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -1846,18 +1846,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [decode signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1869,19 +1869,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [decode signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1901,17 +1901,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [decode signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1922,13 +1922,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [decode signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1939,13 +1939,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [decode signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -1960,10 +1960,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCloudKitMegashardFetchAndDecode:(void *)a1
+- (void)_handleCloudKitMegashardFetchAndDecode:(void *)decode
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!decode)
   {
     goto LABEL_50;
   }
@@ -1981,7 +1981,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([decode type]);
     v24 = 136315650;
     v25 = "_CloudKitFetchMegashardAndDecode";
     v26 = 2080;
@@ -1991,21 +1991,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [decode type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [decode signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -2017,19 +2017,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [decode signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -2042,17 +2042,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [decode signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -2063,13 +2063,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [decode signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -2080,13 +2080,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [decode signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -2105,18 +2105,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [decode signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2128,19 +2128,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [decode signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2160,17 +2160,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [decode signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2181,13 +2181,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [decode signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2198,13 +2198,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [decode signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2219,10 +2219,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleConfigResolution:(void *)a1
+- (void)_handleConfigResolution:(void *)resolution
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!resolution)
   {
     goto LABEL_50;
   }
@@ -2240,7 +2240,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([resolution type]);
     v24 = 136315650;
     v25 = "_ConfigResolution";
     v26 = 2080;
@@ -2250,21 +2250,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [resolution type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [resolution signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -2276,19 +2276,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [resolution signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -2301,17 +2301,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [resolution signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -2322,13 +2322,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [resolution signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -2339,13 +2339,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [resolution signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -2364,18 +2364,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [resolution signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2387,19 +2387,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [resolution signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2419,17 +2419,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [resolution signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2440,13 +2440,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [resolution signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2457,13 +2457,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [resolution signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2478,10 +2478,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleShardResolution:(void *)a1
+- (void)_handleShardResolution:(void *)resolution
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (resolution)
   {
     v4 = ABSLogSignpost();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -2496,7 +2496,7 @@ LABEL_50:
         v17 = "didBegin";
       }
 
-      v18 = NSStringFromBCSShardType([a1 shardType]);
+      v18 = NSStringFromBCSShardType([resolution shardType]);
       v24 = 136315650;
       v25 = "_ShardResolution";
       v26 = 2080;
@@ -2506,22 +2506,22 @@ LABEL_50:
       _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for shard type: %@", &v24, 0x20u);
     }
 
-    v5 = [a1 shardType];
+    shardType = [resolution shardType];
     if (a2)
     {
-      if (v5 > 3)
+      if (shardType > 3)
       {
-        switch(v5)
+        switch(shardType)
         {
           case 4:
             v6 = ABSLogCommon();
-            v14 = [a1 signpostIdentifier];
-            if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+            signpostIdentifier = [resolution signpostIdentifier];
+            if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
             {
               goto LABEL_59;
             }
 
-            v8 = v14;
+            v8 = signpostIdentifier;
             if (!os_signpost_enabled(v6))
             {
               goto LABEL_59;
@@ -2532,13 +2532,13 @@ LABEL_50:
             goto LABEL_58;
           case 5:
             v6 = ABSLogCommon();
-            v16 = [a1 signpostIdentifier];
-            if ((v16 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+            signpostIdentifier2 = [resolution signpostIdentifier];
+            if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
             {
               goto LABEL_59;
             }
 
-            v8 = v16;
+            v8 = signpostIdentifier2;
             if (!os_signpost_enabled(v6))
             {
               goto LABEL_59;
@@ -2549,13 +2549,13 @@ LABEL_50:
             goto LABEL_58;
           case 6:
             v6 = ABSLogCommon();
-            v11 = [a1 signpostIdentifier];
-            if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+            signpostIdentifier3 = [resolution signpostIdentifier];
+            if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
             {
               goto LABEL_59;
             }
 
-            v8 = v11;
+            v8 = signpostIdentifier3;
             if (!os_signpost_enabled(v6))
             {
               goto LABEL_59;
@@ -2569,17 +2569,17 @@ LABEL_50:
 
       else
       {
-        switch(v5)
+        switch(shardType)
         {
           case 1:
             v6 = ABSLogCommon();
-            v13 = [a1 signpostIdentifier];
-            if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+            signpostIdentifier4 = [resolution signpostIdentifier];
+            if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
             {
               goto LABEL_59;
             }
 
-            v8 = v13;
+            v8 = signpostIdentifier4;
             if (!os_signpost_enabled(v6))
             {
               goto LABEL_59;
@@ -2590,13 +2590,13 @@ LABEL_50:
             goto LABEL_58;
           case 2:
             v6 = ABSLogCommon();
-            v15 = [a1 signpostIdentifier];
-            if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+            signpostIdentifier5 = [resolution signpostIdentifier];
+            if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
             {
               goto LABEL_59;
             }
 
-            v8 = v15;
+            v8 = signpostIdentifier5;
             if (!os_signpost_enabled(v6))
             {
               goto LABEL_59;
@@ -2607,13 +2607,13 @@ LABEL_50:
             goto LABEL_58;
           case 3:
             v6 = ABSLogCommon();
-            v7 = [a1 signpostIdentifier];
-            if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+            signpostIdentifier6 = [resolution signpostIdentifier];
+            if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
             {
               goto LABEL_59;
             }
 
-            v8 = v7;
+            v8 = signpostIdentifier6;
             if (!os_signpost_enabled(v6))
             {
               goto LABEL_59;
@@ -2630,19 +2630,19 @@ LABEL_59:
       }
     }
 
-    else if (v5 > 3)
+    else if (shardType > 3)
     {
-      switch(v5)
+      switch(shardType)
       {
         case 4:
           v6 = ABSLogCommon();
-          v20 = [a1 signpostIdentifier];
-          if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier7 = [resolution signpostIdentifier];
+          if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_59;
           }
 
-          v8 = v20;
+          v8 = signpostIdentifier7;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_59;
@@ -2653,13 +2653,13 @@ LABEL_59:
           goto LABEL_58;
         case 5:
           v6 = ABSLogCommon();
-          v22 = [a1 signpostIdentifier];
-          if ((v22 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier8 = [resolution signpostIdentifier];
+          if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_59;
           }
 
-          v8 = v22;
+          v8 = signpostIdentifier8;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_59;
@@ -2670,13 +2670,13 @@ LABEL_59:
           goto LABEL_58;
         case 6:
           v6 = ABSLogCommon();
-          v12 = [a1 signpostIdentifier];
-          if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier9 = [resolution signpostIdentifier];
+          if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_59;
           }
 
-          v8 = v12;
+          v8 = signpostIdentifier9;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_59;
@@ -2690,17 +2690,17 @@ LABEL_59:
 
     else
     {
-      switch(v5)
+      switch(shardType)
       {
         case 1:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier10 = [resolution signpostIdentifier];
+          if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_59;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier10;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_59;
@@ -2711,13 +2711,13 @@ LABEL_59:
           goto LABEL_58;
         case 2:
           v6 = ABSLogCommon();
-          v21 = [a1 signpostIdentifier];
-          if ((v21 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier11 = [resolution signpostIdentifier];
+          if ((signpostIdentifier11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_59;
           }
 
-          v8 = v21;
+          v8 = signpostIdentifier11;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_59;
@@ -2728,13 +2728,13 @@ LABEL_59:
           goto LABEL_58;
         case 3:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier12 = [resolution signpostIdentifier];
+          if ((signpostIdentifier12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_59;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier12;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_59;
@@ -2750,10 +2750,10 @@ LABEL_59:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleItemResolution:(void *)a1
+- (void)_handleItemResolution:(void *)resolution
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!resolution)
   {
     goto LABEL_50;
   }
@@ -2771,7 +2771,7 @@ LABEL_59:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([resolution type]);
     v24 = 136315650;
     v25 = "_ItemResolution";
     v26 = 2080;
@@ -2781,21 +2781,21 @@ LABEL_59:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [resolution type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [resolution signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -2807,19 +2807,19 @@ LABEL_59:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [resolution signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -2832,17 +2832,17 @@ LABEL_59:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [resolution signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -2853,13 +2853,13 @@ LABEL_59:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [resolution signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -2870,13 +2870,13 @@ LABEL_59:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [resolution signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -2895,18 +2895,18 @@ LABEL_59:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [resolution signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2918,19 +2918,19 @@ LABEL_59:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [resolution signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2950,17 +2950,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [resolution signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2971,13 +2971,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [resolution signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -2988,13 +2988,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [resolution signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3009,10 +3009,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleItemFetch:(void *)a1
+- (void)_handleItemFetch:(void *)fetch
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!fetch)
   {
     goto LABEL_50;
   }
@@ -3030,7 +3030,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([fetch type]);
     v24 = 136315650;
     v25 = "_ItemFetch";
     v26 = 2080;
@@ -3040,21 +3040,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [fetch type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [fetch signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -3066,19 +3066,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [fetch signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -3091,17 +3091,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [fetch signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3112,13 +3112,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [fetch signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3129,13 +3129,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [fetch signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3154,18 +3154,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [fetch signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3177,19 +3177,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [fetch signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3209,17 +3209,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [fetch signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3230,13 +3230,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [fetch signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3247,13 +3247,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [fetch signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3268,10 +3268,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleBusinessLinkChoppedFetch:(void *)a1
+- (void)_handleBusinessLinkChoppedFetch:(void *)fetch
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!fetch)
   {
     goto LABEL_50;
   }
@@ -3289,7 +3289,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([fetch type]);
     v24 = 136315650;
     v25 = "_ItemFetchChop";
     v26 = 2080;
@@ -3299,21 +3299,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [fetch type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [fetch signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -3325,19 +3325,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [fetch signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -3350,17 +3350,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [fetch signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3371,13 +3371,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [fetch signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3388,13 +3388,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [fetch signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3413,18 +3413,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [fetch signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3436,19 +3436,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [fetch signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3468,17 +3468,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [fetch signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3489,13 +3489,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [fetch signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3506,13 +3506,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [fetch signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3527,10 +3527,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleBusinessLinkHashFetch:(void *)a1
+- (void)_handleBusinessLinkHashFetch:(void *)fetch
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!fetch)
   {
     goto LABEL_50;
   }
@@ -3548,7 +3548,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([fetch type]);
     v24 = 136315650;
     v25 = "_ItemHashFetch";
     v26 = 2080;
@@ -3558,21 +3558,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [fetch type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [fetch signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -3584,19 +3584,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [fetch signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -3609,17 +3609,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [fetch signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3630,13 +3630,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [fetch signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3647,13 +3647,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [fetch signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3672,18 +3672,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [fetch signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3695,19 +3695,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [fetch signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3727,17 +3727,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [fetch signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3748,13 +3748,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [fetch signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3765,13 +3765,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [fetch signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3786,10 +3786,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleItemIsRegistered:(void *)a1
+- (void)_handleItemIsRegistered:(void *)registered
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!registered)
   {
     goto LABEL_50;
   }
@@ -3807,7 +3807,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([registered type]);
     v24 = 136315650;
     v25 = "IsEnabledCheck";
     v26 = 2080;
@@ -3817,21 +3817,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [registered type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [registered signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -3843,19 +3843,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [registered signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -3868,17 +3868,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [registered signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3889,13 +3889,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [registered signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3906,13 +3906,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [registered signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -3931,18 +3931,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [registered signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3954,19 +3954,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [registered signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -3986,17 +3986,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [registered signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4007,13 +4007,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [registered signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4024,13 +4024,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [registered signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4045,10 +4045,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleBlastDoorProcessing:(void *)a1
+- (void)_handleBlastDoorProcessing:(void *)processing
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!processing)
   {
     goto LABEL_50;
   }
@@ -4066,7 +4066,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([processing type]);
     v24 = 136315650;
     v25 = "_BlastDoorProcessing";
     v26 = 2080;
@@ -4076,21 +4076,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [processing type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [processing signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -4102,19 +4102,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [processing signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -4127,17 +4127,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [processing signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -4148,13 +4148,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [processing signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -4165,13 +4165,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [processing signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -4190,18 +4190,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [processing signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4213,19 +4213,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [processing signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4245,17 +4245,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [processing signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4266,13 +4266,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [processing signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4283,13 +4283,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [processing signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4304,10 +4304,10 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePIRItemFetch:(void *)a1
+- (void)_handlePIRItemFetch:(void *)fetch
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!fetch)
   {
     goto LABEL_50;
   }
@@ -4325,7 +4325,7 @@ LABEL_50:
       v22 = "didBegin";
     }
 
-    v23 = NSStringFromBCSType([a1 type]);
+    v23 = NSStringFromBCSType([fetch type]);
     v24 = 136315650;
     v25 = "_PIRItemFetch";
     v26 = 2080;
@@ -4335,21 +4335,21 @@ LABEL_50:
     _os_log_debug_impl(&dword_242072000, v4, OS_LOG_TYPE_DEBUG, "Signposting %s %s for type: %@", &v24, 0x20u);
   }
 
-  v5 = [a1 type];
+  type = [fetch type];
   if (!a2)
   {
-    if (v5 <= 2)
+    if (type <= 2)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = ABSLogCommon();
-        v20 = [a1 signpostIdentifier];
-        if ((v20 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier = [fetch signpostIdentifier];
+        if ((signpostIdentifier - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v20;
+        v8 = signpostIdentifier;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -4361,19 +4361,19 @@ LABEL_50:
 
       else
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_50;
         }
 
         v6 = ABSLogCommon();
-        v12 = [a1 signpostIdentifier];
-        if ((v12 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+        signpostIdentifier2 = [fetch signpostIdentifier];
+        if ((signpostIdentifier2 - 1) > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_49;
         }
 
-        v8 = v12;
+        v8 = signpostIdentifier2;
         if (!os_signpost_enabled(v6))
         {
           goto LABEL_49;
@@ -4386,17 +4386,17 @@ LABEL_50:
 
     else
     {
-      switch(v5)
+      switch(type)
       {
         case 3:
           v6 = ABSLogCommon();
-          v18 = [a1 signpostIdentifier];
-          if ((v18 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier3 = [fetch signpostIdentifier];
+          if ((signpostIdentifier3 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v18;
+          v8 = signpostIdentifier3;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -4407,13 +4407,13 @@ LABEL_50:
           break;
         case 4:
           v6 = ABSLogCommon();
-          v19 = [a1 signpostIdentifier];
-          if ((v19 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier4 = [fetch signpostIdentifier];
+          if ((signpostIdentifier4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v19;
+          v8 = signpostIdentifier4;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -4424,13 +4424,13 @@ LABEL_50:
           break;
         case 5:
           v6 = ABSLogCommon();
-          v10 = [a1 signpostIdentifier];
-          if ((v10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+          signpostIdentifier5 = [fetch signpostIdentifier];
+          if ((signpostIdentifier5 - 1) > 0xFFFFFFFFFFFFFFFDLL)
           {
             goto LABEL_49;
           }
 
-          v8 = v10;
+          v8 = signpostIdentifier5;
           if (!os_signpost_enabled(v6))
           {
             goto LABEL_49;
@@ -4449,18 +4449,18 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = ABSLogCommon();
-      v15 = [a1 signpostIdentifier];
-      if ((v15 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier6 = [fetch signpostIdentifier];
+      if ((signpostIdentifier6 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v15;
+      v8 = signpostIdentifier6;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4472,19 +4472,19 @@ LABEL_50:
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_50;
       }
 
       v6 = ABSLogCommon();
-      v11 = [a1 signpostIdentifier];
-      if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier7 = [fetch signpostIdentifier];
+      if ((signpostIdentifier7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v11;
+      v8 = signpostIdentifier7;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4504,17 +4504,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
       v6 = ABSLogCommon();
-      v13 = [a1 signpostIdentifier];
-      if ((v13 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier8 = [fetch signpostIdentifier];
+      if ((signpostIdentifier8 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v13;
+      v8 = signpostIdentifier8;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4525,13 +4525,13 @@ LABEL_49:
       goto LABEL_37;
     case 4:
       v6 = ABSLogCommon();
-      v14 = [a1 signpostIdentifier];
-      if ((v14 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier9 = [fetch signpostIdentifier];
+      if ((signpostIdentifier9 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v14;
+      v8 = signpostIdentifier9;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4542,13 +4542,13 @@ LABEL_49:
       goto LABEL_37;
     case 5:
       v6 = ABSLogCommon();
-      v7 = [a1 signpostIdentifier];
-      if ((v7 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+      signpostIdentifier10 = [fetch signpostIdentifier];
+      if ((signpostIdentifier10 - 1) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_49;
       }
 
-      v8 = v7;
+      v8 = signpostIdentifier10;
       if (!os_signpost_enabled(v6))
       {
         goto LABEL_49;
@@ -4563,9 +4563,9 @@ LABEL_50:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timingMeasurementDidEnd:(id)a3
+- (void)timingMeasurementDidEnd:(id)end
 {
-  switch([a3 timingMeasurementType])
+  switch([end timingMeasurementType])
   {
     case 0:
 

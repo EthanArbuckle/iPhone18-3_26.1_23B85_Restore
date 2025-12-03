@@ -1,34 +1,34 @@
 @interface _HDRollingBaseline
-- (_HDRollingBaseline)initWithConfiguration:(id)a3;
+- (_HDRollingBaseline)initWithConfiguration:(id)configuration;
 - (double)currentBaseline;
 - (double)mostRecentSampleStartTime;
 - (double)mostRecentSupplementarySampleStartTime;
 - (int64_t)additionalSampleCountRequiredToBaseline;
-- (void)_assertValidNextStartTime:(double)a3;
-- (void)addNextSampleValue:(double)a3 startTime:(double)a4;
-- (void)addSupplementarySampleValue:(double)a3 startTime:(double)a4;
-- (void)pruneForNextSampleStartTime:(double)a3;
+- (void)_assertValidNextStartTime:(double)time;
+- (void)addNextSampleValue:(double)value startTime:(double)time;
+- (void)addSupplementarySampleValue:(double)value startTime:(double)time;
+- (void)pruneForNextSampleStartTime:(double)time;
 @end
 
 @implementation _HDRollingBaseline
 
-- (_HDRollingBaseline)initWithConfiguration:(id)a3
+- (_HDRollingBaseline)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = _HDRollingBaseline;
   v6 = [(_HDRollingBaseline *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    v8 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v6->_configuration, configuration);
+    array = [MEMORY[0x277CBEB18] array];
     samples = v7->_samples;
-    v7->_samples = v8;
+    v7->_samples = array;
 
-    v10 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     supplementarySamples = v7->_supplementarySamples;
-    v7->_supplementarySamples = v10;
+    v7->_supplementarySamples = array2;
 
     v7->_samplesSum = 0.0;
     v7->_supplementarySamplesSum = 0.0;
@@ -39,16 +39,16 @@
 
 - (int64_t)additionalSampleCountRequiredToBaseline
 {
-  v3 = [(HKRollingBaselineConfiguration *)self->_configuration minimumSampleCount];
-  v4 = [(_HDRollingBaseline *)self _sampleCount];
-  return (v3 - v4) & ~((v3 - v4) >> 63);
+  minimumSampleCount = [(HKRollingBaselineConfiguration *)self->_configuration minimumSampleCount];
+  _sampleCount = [(_HDRollingBaseline *)self _sampleCount];
+  return (minimumSampleCount - _sampleCount) & ~((minimumSampleCount - _sampleCount) >> 63);
 }
 
 - (double)currentBaseline
 {
   if (![(_HDRollingBaseline *)self hasSufficientDataToBaseline])
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
   }
 
   [(_HDRollingBaseline *)self _sum];
@@ -57,19 +57,19 @@
 
 - (double)mostRecentSampleStartTime
 {
-  v3 = [(NSMutableArray *)self->_samples lastObject];
+  lastObject = [(NSMutableArray *)self->_samples lastObject];
 
-  if (v3)
+  if (lastObject)
   {
-    v4 = [(NSMutableArray *)self->_samples lastObject];
-    [v4 _hd_trivialQuantitySampleValue];
+    lastObject2 = [(NSMutableArray *)self->_samples lastObject];
+    [lastObject2 _hd_trivialQuantitySampleValue];
     v6 = v5;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAA8] distantPast];
-    [v4 timeIntervalSinceReferenceDate];
+    lastObject2 = [MEMORY[0x277CBEAA8] distantPast];
+    [lastObject2 timeIntervalSinceReferenceDate];
     v6 = v7;
   }
 
@@ -78,31 +78,31 @@
 
 - (double)mostRecentSupplementarySampleStartTime
 {
-  v3 = [(NSMutableArray *)self->_supplementarySamples lastObject];
+  lastObject = [(NSMutableArray *)self->_supplementarySamples lastObject];
 
-  if (v3)
+  if (lastObject)
   {
-    v4 = [(NSMutableArray *)self->_supplementarySamples lastObject];
-    [v4 _hd_trivialQuantitySampleValue];
+    lastObject2 = [(NSMutableArray *)self->_supplementarySamples lastObject];
+    [lastObject2 _hd_trivialQuantitySampleValue];
     v6 = v5;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAA8] distantPast];
-    [v4 timeIntervalSinceReferenceDate];
+    lastObject2 = [MEMORY[0x277CBEAA8] distantPast];
+    [lastObject2 timeIntervalSinceReferenceDate];
     v6 = v7;
   }
 
   return v6;
 }
 
-- (void)pruneForNextSampleStartTime:(double)a3
+- (void)pruneForNextSampleStartTime:(double)time
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   supplementarySamples = self->_supplementarySamples;
-  self->_supplementarySamples = v5;
+  self->_supplementarySamples = array;
 
   self->_supplementarySamplesSum = 0.0;
   if ([(NSMutableArray *)self->_samples count])
@@ -119,7 +119,7 @@
     {
       v11 = v10;
       v12 = 0;
-      v13 = a3 - v8;
+      v13 = time - v8;
       v14 = *v22;
       v15 = 0.0;
       while (2)
@@ -173,51 +173,51 @@ LABEL_12:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addNextSampleValue:(double)a3 startTime:(double)a4
+- (void)addNextSampleValue:(double)value startTime:(double)time
 {
-  [(_HDRollingBaseline *)self _assertValidNextStartTime:a4];
+  [(_HDRollingBaseline *)self _assertValidNextStartTime:time];
   v7 = [(NSMutableArray *)self->_samples count];
   if (v7 == [(HKRollingBaselineConfiguration *)self->_configuration maximumSampleCount])
   {
-    v8 = [(NSMutableArray *)self->_samples firstObject];
-    [v8 _hd_trivialQuantitySampleValue];
+    firstObject = [(NSMutableArray *)self->_samples firstObject];
+    [firstObject _hd_trivialQuantitySampleValue];
     v10 = v9;
 
     [(NSMutableArray *)self->_samples removeObjectAtIndex:0];
     self->_samplesSum = self->_samplesSum - v10;
   }
 
-  v11 = [MEMORY[0x277CCAE60] _hd_valueWithTrivialQuantitySample:{a3, a4}];
+  v11 = [MEMORY[0x277CCAE60] _hd_valueWithTrivialQuantitySample:{value, time}];
   [(NSMutableArray *)self->_samples addObject:v11];
-  self->_samplesSum = self->_samplesSum + a3;
+  self->_samplesSum = self->_samplesSum + value;
 }
 
-- (void)_assertValidNextStartTime:(double)a3
+- (void)_assertValidNextStartTime:(double)time
 {
   if ([(NSMutableArray *)self->_samples count])
   {
-    v6 = [(NSMutableArray *)self->_samples lastObject];
-    [v6 _hd_trivialQuantitySampleValue];
+    lastObject = [(NSMutableArray *)self->_samples lastObject];
+    [lastObject _hd_trivialQuantitySampleValue];
     v8 = v7;
 
-    if (v8 > a3)
+    if (v8 > time)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"HDRollingBaselineRelativeQuantityCalculator.m" lineNumber:275 description:@"Values must be added in ascending order by date for baseline calculations"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDRollingBaselineRelativeQuantityCalculator.m" lineNumber:275 description:@"Values must be added in ascending order by date for baseline calculations"];
     }
   }
 }
 
-- (void)addSupplementarySampleValue:(double)a3 startTime:(double)a4
+- (void)addSupplementarySampleValue:(double)value startTime:(double)time
 {
   if ([(_HDRollingBaseline *)self hasSufficientDataToBaseline])
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
   }
 
-  v9 = [MEMORY[0x277CCAE60] _hd_valueWithTrivialQuantitySample:{a3, a4}];
+  v9 = [MEMORY[0x277CCAE60] _hd_valueWithTrivialQuantitySample:{value, time}];
   [(NSMutableArray *)self->_supplementarySamples addObject:v9];
-  self->_supplementarySamplesSum = self->_supplementarySamplesSum + a3;
+  self->_supplementarySamplesSum = self->_supplementarySamplesSum + value;
 }
 
 @end

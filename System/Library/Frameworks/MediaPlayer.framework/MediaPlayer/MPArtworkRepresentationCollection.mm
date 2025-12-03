@@ -1,20 +1,20 @@
 @interface MPArtworkRepresentationCollection
-+ (MPArtworkRepresentationCollection)collectionWithImageRepresentation:(id)a3 videoRepresentation:(id)a4 bestRepresentationKinds:(unint64_t)a5;
-- (void)resetForRepresentationKinds:(unint64_t)a3;
++ (MPArtworkRepresentationCollection)collectionWithImageRepresentation:(id)representation videoRepresentation:(id)videoRepresentation bestRepresentationKinds:(unint64_t)kinds;
+- (void)resetForRepresentationKinds:(unint64_t)kinds;
 @end
 
 @implementation MPArtworkRepresentationCollection
 
-- (void)resetForRepresentationKinds:(unint64_t)a3
+- (void)resetForRepresentationKinds:(unint64_t)kinds
 {
-  v3 = a3;
-  if (a3)
+  kindsCopy = kinds;
+  if (kinds)
   {
     [(MPArtworkRepresentationCollection *)self setImageRepresentation:0];
     [(MPArtworkRepresentationCollection *)self setBestRepresentationKinds:[(MPArtworkRepresentationCollection *)self bestRepresentationKinds]& 0xFFFFFFFFFFFFFFFELL];
   }
 
-  if ((v3 & 2) != 0)
+  if ((kindsCopy & 2) != 0)
   {
     [(MPArtworkRepresentationCollection *)self setVideoRepresentation:0];
     v5 = [(MPArtworkRepresentationCollection *)self bestRepresentationKinds]& 0xFFFFFFFFFFFFFFFDLL;
@@ -23,15 +23,15 @@
   }
 }
 
-+ (MPArtworkRepresentationCollection)collectionWithImageRepresentation:(id)a3 videoRepresentation:(id)a4 bestRepresentationKinds:(unint64_t)a5
++ (MPArtworkRepresentationCollection)collectionWithImageRepresentation:(id)representation videoRepresentation:(id)videoRepresentation bestRepresentationKinds:(unint64_t)kinds
 {
-  v7 = a4;
-  v8 = a3;
+  videoRepresentationCopy = videoRepresentation;
+  representationCopy = representation;
   v9 = objc_alloc_init(MPArtworkRepresentationCollection);
-  [(MPArtworkRepresentationCollection *)v9 setImageRepresentation:v8];
+  [(MPArtworkRepresentationCollection *)v9 setImageRepresentation:representationCopy];
 
-  [(MPArtworkRepresentationCollection *)v9 setVideoRepresentation:v7];
-  [(MPArtworkRepresentationCollection *)v9 setBestRepresentationKinds:a5];
+  [(MPArtworkRepresentationCollection *)v9 setVideoRepresentation:videoRepresentationCopy];
+  [(MPArtworkRepresentationCollection *)v9 setBestRepresentationKinds:kinds];
 
   return v9;
 }

@@ -1,34 +1,34 @@
 @interface FMDJSONDecoder
-+ (BOOL)checkAndSetOutError:(id *)a3 WithError:(id)a4;
-+ (id)decodeCollectionClass:(Class)a3 fromData:(id)a4 usingObjectKeyType:(id)a5 forObjectClass:(Class)a6 error:(id *)a7;
-+ (id)decodeObjectOfClass:(Class)a3 fromData:(id)a4 error:(id *)a5;
-+ (id)decodeObjectOfClass:(Class)a3 fromData:(id)a4 usingFactory:(id)a5 error:(id *)a6;
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (BOOL)isValidObject:(id)a3 usingProtocols:(id)a4;
++ (BOOL)checkAndSetOutError:(id *)error WithError:(id)withError;
++ (id)decodeCollectionClass:(Class)class fromData:(id)data usingObjectKeyType:(id)type forObjectClass:(Class)objectClass error:(id *)error;
++ (id)decodeObjectOfClass:(Class)class fromData:(id)data error:(id *)error;
++ (id)decodeObjectOfClass:(Class)class fromData:(id)data usingFactory:(id)factory error:(id *)error;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
+- (BOOL)isValidObject:(id)object usingProtocols:(id)protocols;
 - (FMDJSONDecoder)init;
-- (FMDJSONDecoder)initWithArrayData:(id)a3 andError:(id *)a4;
-- (FMDJSONDecoder)initWithData:(id)a3 error:(id *)a4;
-- (FMDJSONDecoder)initWithData:(id)a3 usingCollectionObjectKeyType:(id)a4 andCollectionObjectClass:(Class)a5 error:(id *)a6;
-- (FMDJSONDecoder)initWithDictionary:(id)a3;
-- (FMDJSONDecoder)initWithDictionaryData:(id)a3 andError:(id *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
-- (id)decodeArrayCollection:(id)a3 usingFactory:(id)a4 error:(id *)a5;
-- (id)decodeCodableClass:(Class)a3 withJSONObject:(id)a4 usingFactory:(id)a5 error:(id *)a6;
-- (id)decodeCodableClass:(Class)a3 withJSONObject:(id)a4 usingObjectKeyType:(id)a5 error:(id *)a6;
-- (id)decodeCollectionOfClass:(Class)a3 fromJSONObject:(id)a4 usingFactory:(id)a5 error:(id *)a6;
-- (id)decodeCollectionOfClass:(Class)a3 usingFactory:(id)a4 forKey:(id)a5 error:(id *)a6;
-- (id)decodeDictionaryCollection:(id)a3 usingFactory:(id)a4 error:(id *)a5;
-- (id)decodeNumberForKey:(id)a3;
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4 error:(id *)a5;
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4 usingFactory:(id)a5 error:(id *)a6;
-- (id)decodeObjectOfProtocols:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)decodeObjectUsingFactories:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)decodeStringForKey:(id)a3;
-- (id)processJSON:(id)a3 forCodableType:(Class)a4 usingFactory:(id)a5 error:(id *)a6;
-- (int64_t)decodeIntegerForKey:(id)a3;
-- (unint64_t)decodeUnsignedIntegerForKey:(id)a3;
+- (FMDJSONDecoder)initWithArrayData:(id)data andError:(id *)error;
+- (FMDJSONDecoder)initWithData:(id)data error:(id *)error;
+- (FMDJSONDecoder)initWithData:(id)data usingCollectionObjectKeyType:(id)type andCollectionObjectClass:(Class)class error:(id *)error;
+- (FMDJSONDecoder)initWithDictionary:(id)dictionary;
+- (FMDJSONDecoder)initWithDictionaryData:(id)data andError:(id *)error;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
+- (id)decodeArrayCollection:(id)collection usingFactory:(id)factory error:(id *)error;
+- (id)decodeCodableClass:(Class)class withJSONObject:(id)object usingFactory:(id)factory error:(id *)error;
+- (id)decodeCodableClass:(Class)class withJSONObject:(id)object usingObjectKeyType:(id)type error:(id *)error;
+- (id)decodeCollectionOfClass:(Class)class fromJSONObject:(id)object usingFactory:(id)factory error:(id *)error;
+- (id)decodeCollectionOfClass:(Class)class usingFactory:(id)factory forKey:(id)key error:(id *)error;
+- (id)decodeDictionaryCollection:(id)collection usingFactory:(id)factory error:(id *)error;
+- (id)decodeNumberForKey:(id)key;
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key error:(id *)error;
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key usingFactory:(id)factory error:(id *)error;
+- (id)decodeObjectOfProtocols:(id)protocols forKey:(id)key error:(id *)error;
+- (id)decodeObjectUsingFactories:(id)factories forKey:(id)key error:(id *)error;
+- (id)decodeStringForKey:(id)key;
+- (id)processJSON:(id)n forCodableType:(Class)type usingFactory:(id)factory error:(id *)error;
+- (int64_t)decodeIntegerForKey:(id)key;
+- (unint64_t)decodeUnsignedIntegerForKey:(id)key;
 @end
 
 @implementation FMDJSONDecoder
@@ -56,9 +56,9 @@
   return v2;
 }
 
-- (FMDJSONDecoder)initWithData:(id)a3 error:(id *)a4
+- (FMDJSONDecoder)initWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = FMDJSONDecoder;
   v7 = [(FMDJSONDecoder *)&v17 init];
@@ -69,7 +69,7 @@
     v7->_factory = v8;
 
     v16 = 0;
-    v10 = [NSJSONSerialization JSONObjectWithData:v6 options:4 error:&v16];
+    v10 = [NSJSONSerialization JSONObjectWithData:dataCopy options:4 error:&v16];
     v11 = v16;
     objc_storeStrong(&v7->_jsonObject, v10);
     objc_opt_class();
@@ -81,20 +81,20 @@
     }
 
     objc_storeStrong((&v7->super.isa + v13), v10);
-    if (a4 && v11)
+    if (error && v11)
     {
       v14 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
   return v7;
 }
 
-- (FMDJSONDecoder)initWithData:(id)a3 usingCollectionObjectKeyType:(id)a4 andCollectionObjectClass:(Class)a5 error:(id *)a6
+- (FMDJSONDecoder)initWithData:(id)data usingCollectionObjectKeyType:(id)type andCollectionObjectClass:(Class)class error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  dataCopy = data;
+  typeCopy = type;
   v22.receiver = self;
   v22.super_class = FMDJSONDecoder;
   v12 = [(FMDJSONDecoder *)&v22 init];
@@ -104,10 +104,10 @@
     factory = v12->_factory;
     v12->_factory = v13;
 
-    objc_storeStrong(&v12->_collectionObjectClass, a5);
-    objc_storeStrong(&v12->_collectionObjectKeyType, a4);
+    objc_storeStrong(&v12->_collectionObjectClass, class);
+    objc_storeStrong(&v12->_collectionObjectKeyType, type);
     v21 = 0;
-    v15 = [NSJSONSerialization JSONObjectWithData:v10 options:4 error:&v21];
+    v15 = [NSJSONSerialization JSONObjectWithData:dataCopy options:4 error:&v21];
     v16 = v21;
     objc_storeStrong(&v12->_jsonObject, v15);
     objc_opt_class();
@@ -119,26 +119,26 @@
     }
 
     objc_storeStrong((&v12->super.isa + v18), v15);
-    if (a6 && v16)
+    if (error && v16)
     {
       v19 = v16;
-      *a6 = v16;
+      *error = v16;
     }
   }
 
   return v12;
 }
 
-- (FMDJSONDecoder)initWithDictionaryData:(id)a3 andError:(id *)a4
+- (FMDJSONDecoder)initWithDictionaryData:(id)data andError:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = FMDJSONDecoder;
   v7 = [(FMDJSONDecoder *)&v17 init];
   if (v7)
   {
     v16 = 0;
-    v8 = [NSJSONSerialization JSONObjectWithData:v6 options:4 error:&v16];
+    v8 = [NSJSONSerialization JSONObjectWithData:dataCopy options:4 error:&v16];
     v9 = v16;
     container = v7->_container;
     v7->_container = v8;
@@ -147,27 +147,27 @@
     factory = v7->_factory;
     v7->_factory = v11;
 
-    if (a4 && v9)
+    if (error && v9)
     {
-      v13 = [v9 code];
-      v14 = [v9 userInfo];
-      *a4 = [NSError errorWithDomain:@"FMJSONDecoderErrorDomain" code:v13 userInfo:v14];
+      code = [v9 code];
+      userInfo = [v9 userInfo];
+      *error = [NSError errorWithDomain:@"FMJSONDecoderErrorDomain" code:code userInfo:userInfo];
     }
   }
 
   return v7;
 }
 
-- (FMDJSONDecoder)initWithArrayData:(id)a3 andError:(id *)a4
+- (FMDJSONDecoder)initWithArrayData:(id)data andError:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = FMDJSONDecoder;
   v7 = [(FMDJSONDecoder *)&v17 init];
   if (v7)
   {
     v16 = 0;
-    v8 = [NSJSONSerialization JSONObjectWithData:v6 options:4 error:&v16];
+    v8 = [NSJSONSerialization JSONObjectWithData:dataCopy options:4 error:&v16];
     v9 = v16;
     stack = v7->_stack;
     v7->_stack = v8;
@@ -176,26 +176,26 @@
     factory = v7->_factory;
     v7->_factory = v11;
 
-    if (a4 && v9)
+    if (error && v9)
     {
-      v13 = [v9 code];
-      v14 = [v9 userInfo];
-      *a4 = [NSError errorWithDomain:@"FMJSONDecoderErrorDomain" code:v13 userInfo:v14];
+      code = [v9 code];
+      userInfo = [v9 userInfo];
+      *error = [NSError errorWithDomain:@"FMJSONDecoderErrorDomain" code:code userInfo:userInfo];
     }
   }
 
   return v7;
 }
 
-- (FMDJSONDecoder)initWithDictionary:(id)a3
+- (FMDJSONDecoder)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = FMDJSONDecoder;
   v5 = [(FMDJSONDecoder *)&v11 init];
   if (v5)
   {
-    v6 = [NSMutableDictionary dictionaryWithDictionary:v4];
+    v6 = [NSMutableDictionary dictionaryWithDictionary:dictionaryCopy];
     container = v5->_container;
     v5->_container = v6;
 
@@ -207,47 +207,47 @@
   return v5;
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FMDJSONDecoder *)self container];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  container = [(FMDJSONDecoder *)self container];
+  v6 = [container objectForKey:keyCopy];
 
   return v6 != 0;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FMDJSONDecoder *)self container];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  container = [(FMDJSONDecoder *)self container];
+  v6 = [container objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(FMDJSONDecoder *)self container];
-    v8 = [v7 objectForKey:v4];
-    v9 = [v8 BOOLValue];
+    container2 = [(FMDJSONDecoder *)self container];
+    v8 = [container2 objectForKey:keyCopy];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
-  return v9;
+  return bOOLValue;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FMDJSONDecoder *)self container];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  container = [(FMDJSONDecoder *)self container];
+  v6 = [container objectForKey:keyCopy];
   objc_opt_class();
   v7 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(FMDJSONDecoder *)self container];
-    v9 = [v8 objectForKey:v4];
+    container2 = [(FMDJSONDecoder *)self container];
+    v9 = [container2 objectForKey:keyCopy];
     [v9 doubleValue];
     v7 = v10;
   }
@@ -255,17 +255,17 @@
   return v7;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FMDJSONDecoder *)self container];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  container = [(FMDJSONDecoder *)self container];
+  v6 = [container objectForKey:keyCopy];
   objc_opt_class();
   v7 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(FMDJSONDecoder *)self container];
-    v9 = [v8 objectForKey:v4];
+    container2 = [(FMDJSONDecoder *)self container];
+    v9 = [container2 objectForKey:keyCopy];
     [v9 floatValue];
     v7 = v10;
   }
@@ -273,78 +273,58 @@
   return v7;
 }
 
-- (int64_t)decodeIntegerForKey:(id)a3
+- (int64_t)decodeIntegerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FMDJSONDecoder *)self container];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  container = [(FMDJSONDecoder *)self container];
+  v6 = [container objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(FMDJSONDecoder *)self container];
-    v8 = [v7 objectForKey:v4];
-    v9 = [v8 integerValue];
+    container2 = [(FMDJSONDecoder *)self container];
+    v8 = [container2 objectForKey:keyCopy];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v9 = 0;
+    integerValue = 0;
   }
 
-  return v9;
+  return integerValue;
 }
 
-- (unint64_t)decodeUnsignedIntegerForKey:(id)a3
+- (unint64_t)decodeUnsignedIntegerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FMDJSONDecoder *)self container];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  container = [(FMDJSONDecoder *)self container];
+  v6 = [container objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(FMDJSONDecoder *)self container];
-    v8 = [v7 objectForKey:v4];
-    v9 = [v8 unsignedIntegerValue];
+    container2 = [(FMDJSONDecoder *)self container];
+    v8 = [container2 objectForKey:keyCopy];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v9 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v9;
+  return unsignedIntegerValue;
 }
 
-- (id)decodeNumberForKey:(id)a3
+- (id)decodeNumberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FMDJSONDecoder *)self container];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  container = [(FMDJSONDecoder *)self container];
+  v6 = [container objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(FMDJSONDecoder *)self container];
-    v8 = [v7 objectForKey:v4];
-  }
-
-  else
-  {
-    v8 = 0;
-  }
-
-  return v8;
-}
-
-- (id)decodeStringForKey:(id)a3
-{
-  v4 = a3;
-  v5 = [(FMDJSONDecoder *)self container];
-  v6 = [v5 objectForKey:v4];
-  objc_opt_class();
-  if (objc_opt_isKindOfClass())
-  {
-    v7 = [(FMDJSONDecoder *)self container];
-    v8 = [v7 objectForKey:v4];
+    container2 = [(FMDJSONDecoder *)self container];
+    v8 = [container2 objectForKey:keyCopy];
   }
 
   else
@@ -355,19 +335,39 @@
   return v8;
 }
 
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4 error:(id *)a5
+- (id)decodeStringForKey:(id)key
 {
-  v8 = a4;
+  keyCopy = key;
+  container = [(FMDJSONDecoder *)self container];
+  v6 = [container objectForKey:keyCopy];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    container2 = [(FMDJSONDecoder *)self container];
+    v8 = [container2 objectForKey:keyCopy];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  return v8;
+}
+
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key error:(id *)error
+{
+  keyCopy = key;
   v9 = sub_10017DAFC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     sub_10022FACC();
   }
 
-  if (objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class)
   {
-    v16 = [(FMDJSONDecoder *)self container];
-    v14 = [v16 objectForKey:v8];
+    container = [(FMDJSONDecoder *)self container];
+    v14 = [container objectForKey:keyCopy];
 
     if (objc_opt_isKindOfClass())
     {
@@ -383,17 +383,17 @@
 
   else
   {
-    if ([(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___FMDCodable])
+    if ([(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___FMDCodable])
     {
       v10 = objc_alloc_init(FMDJSONDecoder);
-      v11 = [(FMDJSONDecoder *)self container];
-      v12 = [v11 objectForKey:v8];
+      container2 = [(FMDJSONDecoder *)self container];
+      v12 = [container2 objectForKey:keyCopy];
 
       if (v12)
       {
-        v13 = [(FMDJSONDecoder *)self factory];
+        factory = [(FMDJSONDecoder *)self factory];
         v20 = 0;
-        v14 = [(FMDJSONDecoder *)v10 processJSON:v12 forCodableType:a3 usingFactory:v13 error:&v20];
+        v14 = [(FMDJSONDecoder *)v10 processJSON:v12 forCodableType:class usingFactory:factory error:&v20];
         v15 = v20;
       }
 
@@ -418,42 +418,42 @@
 LABEL_14:
 
 LABEL_15:
-  [FMDJSONDecoder checkAndSetOutError:a5 WithError:v15];
+  [FMDJSONDecoder checkAndSetOutError:error WithError:v15];
 
   return v14;
 }
 
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4 usingFactory:(id)a5 error:(id *)a6
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key usingFactory:(id)factory error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  factoryCopy = factory;
   v12 = sub_10017DAFC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v23 = a3;
+    classCopy = class;
     v24 = 2112;
-    v25 = v10;
+    v25 = keyCopy;
     v26 = 2112;
-    v27 = v11;
+    v27 = factoryCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "decodeObjectOfClass:%@ forKey:%@ usingFactory:%@", buf, 0x20u);
   }
 
-  if (objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class)
   {
-    v13 = [(FMDJSONDecoder *)self container];
-    v16 = [(FMDJSONDecoder *)v13 objectForKey:v10];
+    container = [(FMDJSONDecoder *)self container];
+    v16 = [(FMDJSONDecoder *)container objectForKey:keyCopy];
     v17 = 0;
   }
 
-  else if ([(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___FMDCodable])
+  else if ([(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___FMDCodable])
   {
-    v13 = objc_alloc_init(FMDJSONDecoder);
-    v14 = [(FMDJSONDecoder *)self container];
-    v15 = [v14 objectForKey:v10];
+    container = objc_alloc_init(FMDJSONDecoder);
+    container2 = [(FMDJSONDecoder *)self container];
+    v15 = [container2 objectForKey:keyCopy];
 
     v19 = 0;
-    v16 = [(FMDJSONDecoder *)v13 processJSON:v15 forCodableType:a3 usingFactory:v11 error:&v19];
+    v16 = [(FMDJSONDecoder *)container processJSON:v15 forCodableType:class usingFactory:factoryCopy error:&v19];
     v17 = v19;
   }
 
@@ -461,39 +461,39 @@ LABEL_15:
   {
     v20 = NSLocalizedFailureReasonErrorKey;
     v21 = @"Object does not conform to FMDCodable.";
-    v13 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v17 = [NSError errorWithDomain:@"FMJSONDecoderErrorDomain" code:0 userInfo:v13];
+    container = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
+    v17 = [NSError errorWithDomain:@"FMJSONDecoderErrorDomain" code:0 userInfo:container];
     v16 = 0;
   }
 
-  [FMDJSONDecoder checkAndSetOutError:a6 WithError:v17];
+  [FMDJSONDecoder checkAndSetOutError:error WithError:v17];
 
   return v16;
 }
 
-- (id)decodeObjectOfProtocols:(id)a3 forKey:(id)a4 error:(id *)a5
+- (id)decodeObjectOfProtocols:(id)protocols forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  protocolsCopy = protocols;
+  keyCopy = key;
   v10 = sub_10017DAFC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     sub_10022FB34();
   }
 
-  v11 = [(FMDJSONDecoder *)self container];
-  v12 = [v11 objectForKey:v9];
+  container = [(FMDJSONDecoder *)self container];
+  v12 = [container objectForKey:keyCopy];
 
   if (v12)
   {
     v13 = objc_opt_class();
-    v14 = [(FMDJSONDecoder *)self factory];
+    factory = [(FMDJSONDecoder *)self factory];
     v21 = 0;
-    v15 = [(FMDJSONDecoder *)self processJSON:v12 forCodableType:v13 usingFactory:v14 error:&v21];
+    v15 = [(FMDJSONDecoder *)self processJSON:v12 forCodableType:v13 usingFactory:factory error:&v21];
     v16 = v21;
 
-    [FMDJSONDecoder checkAndSetOutError:a5 WithError:v16];
-    v17 = [(FMDJSONDecoder *)self isValidObject:v15 usingProtocols:v8];
+    [FMDJSONDecoder checkAndSetOutError:error WithError:v16];
+    v17 = [(FMDJSONDecoder *)self isValidObject:v15 usingProtocols:protocolsCopy];
 
     if (v17)
     {
@@ -516,18 +516,18 @@ LABEL_15:
   return v19;
 }
 
-- (id)decodeObjectUsingFactories:(id)a3 forKey:(id)a4 error:(id *)a5
+- (id)decodeObjectUsingFactories:(id)factories forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  factoriesCopy = factories;
+  keyCopy = key;
   v10 = sub_10017DAFC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     sub_10022FB9C();
   }
 
-  v11 = [(FMDJSONDecoder *)self container];
-  v12 = [v11 objectForKey:v9];
+  container = [(FMDJSONDecoder *)self container];
+  v12 = [container objectForKey:keyCopy];
 
   v13 = &ADClientAddValueForScalarKey_ptr;
   p_vtable = FMDAccessorySerialNumbers.vtable;
@@ -544,12 +544,12 @@ LABEL_15:
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v16 = v8;
+    v16 = factoriesCopy;
     v17 = [v16 countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v17)
     {
       v18 = v17;
-      v37 = a5;
+      errorCopy = error;
       v19 = *v41;
       while (2)
       {
@@ -579,7 +579,7 @@ LABEL_15:
 
       v22 = 0;
 LABEL_22:
-      a5 = v37;
+      error = errorCopy;
       v13 = &ADClientAddValueForScalarKey_ptr;
     }
 
@@ -590,8 +590,8 @@ LABEL_22:
 
     p_vtable = FMDAccessorySerialNumbers.vtable;
     v27 = [[FMDJSONDecoder alloc] initWithDictionary:v15];
-    v28 = [(FMDJSONDecoder *)self factory];
-    [(FMDJSONDecoder *)v27 setFactory:v28];
+    factory = [(FMDJSONDecoder *)self factory];
+    [(FMDJSONDecoder *)v27 setFactory:factory];
 
     v39 = 0;
     v23 = [[v22 alloc] initWithFMDCoder:v27 error:&v39];
@@ -601,16 +601,16 @@ LABEL_22:
       v38 = v29;
       v34 = +[NSMutableDictionary dictionary];
       v30 = v13[402];
-      v31 = [0 userInfo];
-      [v31 objectForKey:NSLocalizedFailureReasonErrorKey];
+      userInfo = [0 userInfo];
+      [userInfo objectForKey:NSLocalizedFailureReasonErrorKey];
       v32 = v36 = v27;
-      v35 = [v30 stringWithFormat:@"Key: %@ | Error: %@", v9, v32];
+      v35 = [v30 stringWithFormat:@"Key: %@ | Error: %@", keyCopy, v32];
 
       [v34 setObject:v35 forKey:NSLocalizedFailureReasonErrorKey];
       [v34 setObject:v38 forKey:NSUnderlyingErrorKey];
-      v33 = [0 domain];
+      domain = [0 domain];
       p_vtable = (FMDAccessorySerialNumbers + 24);
-      v24 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v33, [0 code], v34);
+      v24 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [0 code], v34);
 
       v27 = v36;
       v29 = v38;
@@ -632,39 +632,39 @@ LABEL_22:
     v23 = 0;
   }
 
-  [p_vtable + 337 checkAndSetOutError:a5 WithError:v24];
+  [p_vtable + 337 checkAndSetOutError:error WithError:v24];
 
   return v23;
 }
 
-- (BOOL)isValidObject:(id)a3 usingProtocols:(id)a4
+- (BOOL)isValidObject:(id)object usingProtocols:(id)protocols
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  protocolsCopy = protocols;
   v8 = sub_10017DAFC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10022FC04();
   }
 
-  v9 = [(FMDJSONDecoder *)self protocols];
-  if (v9)
+  protocols = [(FMDJSONDecoder *)self protocols];
+  if (protocols)
   {
-    v10 = [(FMDJSONDecoder *)self protocols];
-    v11 = [v7 setByAddingObjectsFromSet:v10];
+    protocols2 = [(FMDJSONDecoder *)self protocols];
+    v11 = [protocolsCopy setByAddingObjectsFromSet:protocols2];
   }
 
   else
   {
-    v11 = v7;
+    v11 = protocolsCopy;
   }
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [v11 allObjects];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allObjects = [v11 allObjects];
+  v13 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
     v14 = v13;
@@ -675,17 +675,17 @@ LABEL_22:
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allObjects);
         }
 
-        if (![v6 conformsToProtocol:*(*(&v19 + 1) + 8 * i)])
+        if (![objectCopy conformsToProtocol:*(*(&v19 + 1) + 8 * i)])
         {
           v17 = 0;
           goto LABEL_16;
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v14 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v14)
       {
         continue;
@@ -701,25 +701,25 @@ LABEL_16:
   return v17;
 }
 
-- (id)decodeCodableClass:(Class)a3 withJSONObject:(id)a4 usingFactory:(id)a5 error:(id *)a6
+- (id)decodeCodableClass:(Class)class withJSONObject:(id)object usingFactory:(id)factory error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  factoryCopy = factory;
   v11 = sub_10017DAFC();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v21 = a3;
+    classCopy = class;
     v22 = 2112;
-    v23 = v9;
+    v23 = objectCopy;
     v24 = 2112;
-    v25 = v10;
+    v25 = factoryCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "decodeCodableClass:%@ withJSONObject:%@ usingFactory:%@", buf, 0x20u);
   }
 
   if (objc_opt_isKindOfClass() & 1) != 0 && ((objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
-    v12 = v9;
+    v12 = objectCopy;
     v13 = 0;
   }
 
@@ -728,10 +728,10 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [[FMDJSONDecoder alloc] initWithDictionary:v9];
-      [(FMDJSONDecoder *)v14 setFactory:v10];
+      v14 = [[FMDJSONDecoder alloc] initWithDictionary:objectCopy];
+      [(FMDJSONDecoder *)v14 setFactory:factoryCopy];
       v17 = 0;
-      v12 = [[a3 alloc] initWithFMDCoder:v14 error:&v17];
+      v12 = [[class alloc] initWithFMDCoder:v14 error:&v17];
       v13 = v17;
     }
 
@@ -746,68 +746,68 @@ LABEL_16:
     }
   }
 
-  [FMDJSONDecoder checkAndSetOutError:a6 WithError:v13];
+  [FMDJSONDecoder checkAndSetOutError:error WithError:v13];
 
   return v12;
 }
 
-- (id)decodeCodableClass:(Class)a3 withJSONObject:(id)a4 usingObjectKeyType:(id)a5 error:(id *)a6
+- (id)decodeCodableClass:(Class)class withJSONObject:(id)object usingObjectKeyType:(id)type error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  typeCopy = type;
   v11 = sub_10017DAFC();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v25 = a3;
+    classCopy = class;
     v26 = 2112;
-    v27 = v9;
+    v27 = objectCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = typeCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "decodeCodableClass:%@ withJSONObject:%@ usingObjectKeyType:%@", buf, 0x20u);
   }
 
-  v12 = [[FMDJSONDecoder alloc] initWithDictionary:v9];
-  v13 = [(FMDJSONDecoder *)v12 container];
-  v14 = [v13 allKeys];
-  v15 = [v14 containsObject:v10];
+  v12 = [[FMDJSONDecoder alloc] initWithDictionary:objectCopy];
+  container = [(FMDJSONDecoder *)v12 container];
+  allKeys = [container allKeys];
+  v15 = [allKeys containsObject:typeCopy];
 
   if (v15)
   {
     v21 = 0;
-    v16 = [[a3 alloc] initWithFMDCoder:v12 error:&v21];
+    v16 = [[class alloc] initWithFMDCoder:v12 error:&v21];
     v17 = v21;
   }
 
   else
   {
     v22 = NSLocalizedFailureReasonErrorKey;
-    v18 = [NSString stringWithFormat:@"Unsupported object class key - %@", v10];
-    v23 = v18;
+    typeCopy = [NSString stringWithFormat:@"Unsupported object class key - %@", typeCopy];
+    v23 = typeCopy;
     v19 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v17 = [NSError errorWithDomain:@"FMJSONDecoderErrorDomain" code:0 userInfo:v19];
 
     v16 = 0;
   }
 
-  [FMDJSONDecoder checkAndSetOutError:a6 WithError:v17];
+  [FMDJSONDecoder checkAndSetOutError:error WithError:v17];
 
   return v16;
 }
 
-- (id)processJSON:(id)a3 forCodableType:(Class)a4 usingFactory:(id)a5 error:(id *)a6
+- (id)processJSON:(id)n forCodableType:(Class)type usingFactory:(id)factory error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  nCopy = n;
+  factoryCopy = factory;
   v12 = sub_10017DAFC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v24 = v10;
+    v24 = nCopy;
     v25 = 2112;
-    v26 = a4;
+    typeCopy = type;
     v27 = 2112;
-    v28 = v11;
+    v28 = factoryCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "processJSON:%@ forCodableType:%@ usingFactory:%@", buf, 0x20u);
   }
 
@@ -817,20 +817,20 @@ LABEL_16:
     sub_10022FC6C(self, v13);
   }
 
-  if ([(objc_class *)a4 conformsToProtocol:&OBJC_PROTOCOL___FMDCodableCollection])
+  if ([(objc_class *)type conformsToProtocol:&OBJC_PROTOCOL___FMDCodableCollection])
   {
     v20 = 0;
-    v14 = [(FMDJSONDecoder *)self decodeCollectionOfClass:a4 fromJSONObject:v10 usingFactory:v11 error:&v20];
+    v14 = [(FMDJSONDecoder *)self decodeCollectionOfClass:type fromJSONObject:nCopy usingFactory:factoryCopy error:&v20];
     v15 = v20;
 LABEL_9:
     v16 = v15;
     goto LABEL_11;
   }
 
-  if ([(objc_class *)a4 conformsToProtocol:&OBJC_PROTOCOL___FMDCodable])
+  if ([(objc_class *)type conformsToProtocol:&OBJC_PROTOCOL___FMDCodable])
   {
     v19 = 0;
-    v14 = [(FMDJSONDecoder *)self decodeCodableClass:a4 withJSONObject:v10 usingFactory:v11 error:&v19];
+    v14 = [(FMDJSONDecoder *)self decodeCodableClass:type withJSONObject:nCopy usingFactory:factoryCopy error:&v19];
     v15 = v19;
     goto LABEL_9;
   }
@@ -842,34 +842,34 @@ LABEL_9:
 
   v14 = 0;
 LABEL_11:
-  [FMDJSONDecoder checkAndSetOutError:a6 WithError:v16];
+  [FMDJSONDecoder checkAndSetOutError:error WithError:v16];
 
   return v14;
 }
 
-- (id)decodeCollectionOfClass:(Class)a3 usingFactory:(id)a4 forKey:(id)a5 error:(id *)a6
+- (id)decodeCollectionOfClass:(Class)class usingFactory:(id)factory forKey:(id)key error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  factoryCopy = factory;
+  keyCopy = key;
   v12 = sub_10017DAFC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v20 = a3;
+    classCopy = class;
     v21 = 2112;
-    v22 = v10;
+    v22 = factoryCopy;
     v23 = 2112;
-    v24 = v11;
+    v24 = keyCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "decodeCollectionOfClass:%@ usingFactory:%@ forKey:%@", buf, 0x20u);
   }
 
-  v13 = [(FMDJSONDecoder *)self container];
-  v14 = [v13 objectForKey:v11];
+  container = [(FMDJSONDecoder *)self container];
+  v14 = [container objectForKey:keyCopy];
 
   if (v14)
   {
     v18 = 0;
-    v15 = [(FMDJSONDecoder *)self decodeCollectionOfClass:a3 fromJSONObject:v14 usingFactory:v10 error:&v18];
+    v15 = [(FMDJSONDecoder *)self decodeCollectionOfClass:class fromJSONObject:v14 usingFactory:factoryCopy error:&v18];
     v16 = v18;
   }
 
@@ -879,28 +879,28 @@ LABEL_11:
     v16 = 0;
   }
 
-  [FMDJSONDecoder checkAndSetOutError:a6 WithError:v16];
+  [FMDJSONDecoder checkAndSetOutError:error WithError:v16];
 
   return v15;
 }
 
-- (id)decodeCollectionOfClass:(Class)a3 fromJSONObject:(id)a4 usingFactory:(id)a5 error:(id *)a6
+- (id)decodeCollectionOfClass:(Class)class fromJSONObject:(id)object usingFactory:(id)factory error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  factoryCopy = factory;
   v12 = sub_10017DAFC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v27 = a3;
+    classCopy = class;
     v28 = 2112;
-    v29 = v10;
+    v29 = objectCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = factoryCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "decodeCollectionOfClass:%@ fromJSONObject:%@ usingFactory:%@", buf, 0x20u);
   }
 
-  if ([(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___FMDCodableCollection])
+  if ([(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___FMDCodableCollection])
   {
     if (objc_opt_isKindOfClass())
     {
@@ -908,8 +908,8 @@ LABEL_11:
       if (objc_opt_isKindOfClass())
       {
         v21 = 0;
-        v13 = v10;
-        v14 = [(FMDJSONDecoder *)self decodeArrayCollection:v13 usingFactory:v11 error:&v21];
+        v13 = objectCopy;
+        v14 = [(FMDJSONDecoder *)self decodeArrayCollection:v13 usingFactory:factoryCopy error:&v21];
         v15 = v21;
 LABEL_11:
         v16 = v15;
@@ -923,15 +923,15 @@ LABEL_11:
       if (objc_opt_isKindOfClass())
       {
         v20 = 0;
-        v13 = v10;
-        v14 = [(FMDJSONDecoder *)self decodeDictionaryCollection:v13 usingFactory:v11 error:&v20];
+        v13 = objectCopy;
+        v14 = [(FMDJSONDecoder *)self decodeDictionaryCollection:v13 usingFactory:factoryCopy error:&v20];
         v15 = v20;
         goto LABEL_11;
       }
     }
 
     v24 = NSLocalizedFailureReasonErrorKey;
-    v13 = NSStringFromClass(a3);
+    v13 = NSStringFromClass(class);
     v17 = [NSString stringWithFormat:@"Object Type mismatch: %@", v13];
     v25 = v17;
     v18 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
@@ -949,16 +949,16 @@ LABEL_11:
   v14 = 0;
 LABEL_14:
 
-  [FMDJSONDecoder checkAndSetOutError:a6 WithError:v16];
+  [FMDJSONDecoder checkAndSetOutError:error WithError:v16];
 
   return v14;
 }
 
-- (id)decodeArrayCollection:(id)a3 usingFactory:(id)a4 error:(id *)a5
+- (id)decodeArrayCollection:(id)collection usingFactory:(id)factory error:(id *)error
 {
-  v32 = a5;
-  v7 = a3;
-  v8 = a4;
+  errorCopy = error;
+  collectionCopy = collection;
+  factoryCopy = factory;
   v9 = sub_10017DAFC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -970,7 +970,7 @@ LABEL_14:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v11 = v7;
+  v11 = collectionCopy;
   p_vtable = FMDAccessorySerialNumbers.vtable;
   v13 = &ADClientAddValueForScalarKey_ptr;
   v34 = [v11 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -988,7 +988,7 @@ LABEL_5:
 
       v15 = *(*(&v38 + 1) + 8 * v14);
       v16 = objc_alloc_init((p_vtable + 337));
-      [v16 setFactory:v8];
+      [v16 setFactory:factoryCopy];
       v17 = v13[510];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1000,7 +1000,7 @@ LABEL_5:
       {
         v29 = objc_opt_class();
         v35 = 0;
-        v20 = [v16 processJSON:v15 forCodableType:v29 usingFactory:v8 error:&v35];
+        v20 = [v16 processJSON:v15 forCodableType:v29 usingFactory:factoryCopy error:&v35];
         v21 = v35;
 LABEL_14:
         v28 = v21;
@@ -1015,20 +1015,20 @@ LABEL_18:
         goto LABEL_15;
       }
 
-      v22 = [(FMDJSONDecoder *)self collectionObjectClass];
+      collectionObjectClass = [(FMDJSONDecoder *)self collectionObjectClass];
       [(FMDJSONDecoder *)self collectionObjectKeyType];
-      v23 = v8;
+      v23 = factoryCopy;
       v24 = p_vtable;
       v25 = v10;
       v27 = v26 = v11;
       v36 = 0;
-      v20 = [(FMDJSONDecoder *)self decodeCodableClass:v22 withJSONObject:v15 usingObjectKeyType:v27 error:&v36];
+      v20 = [(FMDJSONDecoder *)self decodeCodableClass:collectionObjectClass withJSONObject:v15 usingObjectKeyType:v27 error:&v36];
       v28 = v36;
 
       v11 = v26;
       v10 = v25;
       p_vtable = v24;
-      v8 = v23;
+      factoryCopy = v23;
       v13 = &ADClientAddValueForScalarKey_ptr;
       if (v28)
       {
@@ -1036,7 +1036,7 @@ LABEL_18:
       }
 
 LABEL_15:
-      [v10 addObject:{v20, v32}];
+      [v10 addObject:{v20, errorCopy}];
 
       if (v34 == ++v14)
       {
@@ -1053,7 +1053,7 @@ LABEL_15:
     v18 = v13[510];
     v19 = objc_opt_class();
     v37 = 0;
-    v20 = [v16 processJSON:v15 forCodableType:v19 usingFactory:v8 error:&v37];
+    v20 = [v16 processJSON:v15 forCodableType:v19 usingFactory:factoryCopy error:&v37];
     v21 = v37;
     goto LABEL_14;
   }
@@ -1063,33 +1063,33 @@ LABEL_17:
   v30 = [v13[510] arrayWithArray:v10];
   v28 = 0;
 LABEL_19:
-  [p_vtable + 337 checkAndSetOutError:v32 WithError:{v28, v32}];
+  [p_vtable + 337 checkAndSetOutError:errorCopy WithError:{v28, errorCopy}];
 
   return v30;
 }
 
-- (id)decodeDictionaryCollection:(id)a3 usingFactory:(id)a4 error:(id *)a5
+- (id)decodeDictionaryCollection:(id)collection usingFactory:(id)factory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  collectionCopy = collection;
+  factoryCopy = factory;
   v10 = sub_10017DAFC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v81 = v8;
+    v81 = collectionCopy;
     v82 = 2112;
-    v83 = v9;
+    v83 = factoryCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "decodeDictionaryCollection:%@ usingFactory:%@", buf, 0x16u);
   }
 
   p_vtable = (FMDAccessorySerialNumbers + 24);
-  if ([v8 count])
+  if ([collectionCopy count])
   {
-    v12 = [v9 classForObjectInfo:v8];
+    v12 = [factoryCopy classForObjectInfo:collectionCopy];
     if (v12)
     {
       v76 = 0;
-      v13 = [(FMDJSONDecoder *)self decodeCodableClass:v12 withJSONObject:v8 usingFactory:v9 error:&v76];
+      v13 = [(FMDJSONDecoder *)self decodeCodableClass:v12 withJSONObject:collectionCopy usingFactory:factoryCopy error:&v76];
       v14 = v76;
       goto LABEL_47;
     }
@@ -1098,7 +1098,7 @@ LABEL_19:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v15 = v8;
+    v15 = collectionCopy;
     v16 = [v15 countByEnumeratingWithState:&v72 objects:v79 count:16];
     if (v16)
     {
@@ -1162,7 +1162,7 @@ LABEL_17:
             v29 = v22[510];
             v30 = objc_opt_class();
             v67 = 0;
-            v31 = [v26 processJSON:v27 forCodableType:v30 usingFactory:v9 error:&v67];
+            v31 = [v26 processJSON:v27 forCodableType:v30 usingFactory:factoryCopy error:&v67];
             v32 = v67;
           }
 
@@ -1172,21 +1172,21 @@ LABEL_17:
             if (objc_opt_isKindOfClass())
             {
               v33 = v27;
-              v34 = [v9 classForObjectInfo:v33];
+              v34 = [factoryCopy classForObjectInfo:v33];
               v21 = v24;
               if (v34)
               {
                 v66 = 0;
-                v53 = [v58 processJSON:v33 forCodableType:v34 usingFactory:v9 error:&v66];
+                v53 = [v58 processJSON:v33 forCodableType:v34 usingFactory:factoryCopy error:&v66];
                 v14 = v66;
               }
 
               else if ([(FMDJSONDecoder *)self collectionObjectClass])
               {
-                v36 = [(FMDJSONDecoder *)self collectionObjectClass];
-                v37 = [(FMDJSONDecoder *)self collectionObjectKeyType];
+                collectionObjectClass = [(FMDJSONDecoder *)self collectionObjectClass];
+                collectionObjectKeyType = [(FMDJSONDecoder *)self collectionObjectKeyType];
                 v65 = 0;
-                v53 = [(FMDJSONDecoder *)self decodeCodableClass:v36 withJSONObject:v33 usingObjectKeyType:v37 error:&v65];
+                v53 = [(FMDJSONDecoder *)self decodeCodableClass:collectionObjectClass withJSONObject:v33 usingObjectKeyType:collectionObjectKeyType error:&v65];
                 v14 = v65;
 
                 v22 = &ADClientAddValueForScalarKey_ptr;
@@ -1221,7 +1221,7 @@ LABEL_17:
                       v42 = [v52 objectForKey:v40];
                       v43 = objc_opt_class();
                       v60 = 0;
-                      v44 = [v38 processJSON:v41 forCodableType:v43 usingFactory:v9 error:&v60];
+                      v44 = [v38 processJSON:v41 forCodableType:v43 usingFactory:factoryCopy error:&v60];
                       v14 = v60;
 
                       if (v14)
@@ -1277,7 +1277,7 @@ LABEL_50:
 
             v35 = objc_opt_class();
             v59 = 0;
-            v31 = [v26 processJSON:v27 forCodableType:v35 usingFactory:v9 error:&v59];
+            v31 = [v26 processJSON:v27 forCodableType:v35 usingFactory:factoryCopy error:&v59];
             v32 = v59;
           }
 
@@ -1322,21 +1322,21 @@ LABEL_46:
 
   else
   {
-    v13 = v8;
+    v13 = collectionCopy;
     v14 = 0;
   }
 
 LABEL_47:
-  [p_vtable + 337 checkAndSetOutError:a5 WithError:v14];
+  [p_vtable + 337 checkAndSetOutError:error WithError:v14];
 
   return v13;
 }
 
-+ (id)decodeObjectOfClass:(Class)a3 fromData:(id)a4 usingFactory:(id)a5 error:(id *)a6
++ (id)decodeObjectOfClass:(Class)class fromData:(id)data usingFactory:(id)factory error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  dataCopy = data;
+  factoryCopy = factory;
+  if (!dataCopy)
   {
     v23 = NSLocalizedFailureReasonErrorKey;
     v24 = @"Unsupported nil data found";
@@ -1348,7 +1348,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (![(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___FMDCodable])
+  if (![(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___FMDCodable])
   {
     v21 = NSLocalizedFailureReasonErrorKey;
     v22 = @"Unsupported object class.";
@@ -1358,14 +1358,14 @@ LABEL_7:
   }
 
   v20 = 0;
-  v11 = [NSJSONSerialization JSONObjectWithData:v9 options:4 error:&v20];
+  v11 = [NSJSONSerialization JSONObjectWithData:dataCopy options:4 error:&v20];
   v12 = v20;
   if (!v12)
   {
     v13 = objc_alloc_init(FMDJSONDecoder);
-    [(FMDJSONDecoder *)v13 setFactory:v10];
+    [(FMDJSONDecoder *)v13 setFactory:factoryCopy];
     v19 = 0;
-    v14 = [(FMDJSONDecoder *)v13 processJSON:v11 forCodableType:a3 usingFactory:v10 error:&v19];
+    v14 = [(FMDJSONDecoder *)v13 processJSON:v11 forCodableType:class usingFactory:factoryCopy error:&v19];
     v15 = v19;
 
     goto LABEL_9;
@@ -1376,25 +1376,25 @@ LABEL_8:
   v14 = 0;
 LABEL_9:
 
-  [FMDJSONDecoder checkAndSetOutError:a6 WithError:v15];
+  [FMDJSONDecoder checkAndSetOutError:error WithError:v15];
 
   return v14;
 }
 
-+ (id)decodeObjectOfClass:(Class)a3 fromData:(id)a4 error:(id *)a5
++ (id)decodeObjectOfClass:(Class)class fromData:(id)data error:(id *)error
 {
-  v7 = a4;
+  dataCopy = data;
   v8 = objc_opt_new();
-  v9 = [FMDJSONDecoder decodeObjectOfClass:a3 fromData:v7 usingFactory:v8 error:a5];
+  v9 = [FMDJSONDecoder decodeObjectOfClass:class fromData:dataCopy usingFactory:v8 error:error];
 
   return v9;
 }
 
-+ (id)decodeCollectionClass:(Class)a3 fromData:(id)a4 usingObjectKeyType:(id)a5 forObjectClass:(Class)a6 error:(id *)a7
++ (id)decodeCollectionClass:(Class)class fromData:(id)data usingObjectKeyType:(id)type forObjectClass:(Class)objectClass error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  if (![(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___FMDCodableCollection])
+  dataCopy = data;
+  typeCopy = type;
+  if (![(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___FMDCodableCollection])
   {
     v27 = NSLocalizedFailureReasonErrorKey;
     v28 = @"Unsupported collection class.";
@@ -1404,7 +1404,7 @@ LABEL_9:
   }
 
   v26 = 0;
-  v13 = [[FMDJSONDecoder alloc] initWithData:v11 usingCollectionObjectKeyType:v12 andCollectionObjectClass:a6 error:&v26];
+  v13 = [[FMDJSONDecoder alloc] initWithData:dataCopy usingCollectionObjectKeyType:typeCopy andCollectionObjectClass:objectClass error:&v26];
   v14 = v26;
   if (v14)
   {
@@ -1414,28 +1414,28 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v15 = [(FMDJSONDecoder *)v13 container];
+  container = [(FMDJSONDecoder *)v13 container];
 
-  if (v15)
+  if (container)
   {
-    v16 = [(FMDJSONDecoder *)v13 container];
-    v17 = [(FMDJSONDecoder *)v13 factory];
+    container2 = [(FMDJSONDecoder *)v13 container];
+    factory = [(FMDJSONDecoder *)v13 factory];
     v25 = 0;
     v18 = &v25;
     v19 = &v25;
 LABEL_12:
-    v21 = [(FMDJSONDecoder *)v13 processJSON:v16 forCodableType:a3 usingFactory:v17 error:v19, v24, v25];
+    v21 = [(FMDJSONDecoder *)v13 processJSON:container2 forCodableType:class usingFactory:factory error:v19, v24, v25];
     v20 = *v18;
 
     goto LABEL_7;
   }
 
-  v23 = [(FMDJSONDecoder *)v13 stack];
+  stack = [(FMDJSONDecoder *)v13 stack];
 
-  if (v23)
+  if (stack)
   {
-    v16 = [(FMDJSONDecoder *)v13 stack];
-    v17 = [(FMDJSONDecoder *)v13 factory];
+    container2 = [(FMDJSONDecoder *)v13 stack];
+    factory = [(FMDJSONDecoder *)v13 factory];
     v24 = 0;
     v18 = &v24;
     v19 = &v24;
@@ -1446,30 +1446,30 @@ LABEL_12:
   v20 = 0;
 LABEL_7:
 
-  [FMDJSONDecoder checkAndSetOutError:a7 WithError:v20];
+  [FMDJSONDecoder checkAndSetOutError:error WithError:v20];
 
   return v21;
 }
 
-+ (BOOL)checkAndSetOutError:(id *)a3 WithError:(id)a4
++ (BOOL)checkAndSetOutError:(id *)error WithError:(id)withError
 {
-  v5 = a4;
-  if (v5)
+  withErrorCopy = withError;
+  if (withErrorCopy)
   {
     v6 = sub_10017DAFC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10022FD98(v5, v6);
+      sub_10022FD98(withErrorCopy, v6);
     }
 
-    if (a3)
+    if (error)
     {
-      v7 = v5;
-      *a3 = v5;
+      v7 = withErrorCopy;
+      *error = withErrorCopy;
     }
   }
 
-  return v5 == 0;
+  return withErrorCopy == 0;
 }
 
 @end

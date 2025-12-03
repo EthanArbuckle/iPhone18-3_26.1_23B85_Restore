@@ -16,57 +16,57 @@
 - (BOOL)isSecureScreenShowing
 {
   v2 = +[ICQuickNoteSessionManager sharedManager];
-  v3 = [v2 isSecureScreenShowing];
+  isSecureScreenShowing = [v2 isSecureScreenShowing];
 
-  return v3;
+  return isSecureScreenShowing;
 }
 
 - (UIWindow)keyWindow
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 keyWindow];
+  keyWindow = [v2 keyWindow];
 
-  return v3;
+  return keyWindow;
 }
 
 - (NSArray)windows
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 windows];
+  windows = [v2 windows];
 
-  return v3;
+  return windows;
 }
 
 - (BOOL)isQuickNoteSessionActive
 {
   v2 = +[ICQuickNoteSessionManager sharedManager];
-  v3 = [v2 isQuickNoteSessionActive];
+  isQuickNoteSessionActive = [v2 isQuickNoteSessionActive];
 
-  return v3;
+  return isQuickNoteSessionActive;
 }
 
 - (BOOL)hasClearedInitialSelectedTextIfSecure
 {
   v2 = +[ICQuickNoteSessionManager sharedManager];
-  v3 = [v2 hasClearedInitialSelectedTextIfSecure];
+  hasClearedInitialSelectedTextIfSecure = [v2 hasClearedInitialSelectedTextIfSecure];
 
-  return v3;
+  return hasClearedInitialSelectedTextIfSecure;
 }
 
 - (BOOL)hasClearedInitialSearchTextIfSecure
 {
   v2 = +[ICQuickNoteSessionManager sharedManager];
-  v3 = [v2 hasClearedInitialSearchTextIfSecure];
+  hasClearedInitialSearchTextIfSecure = [v2 hasClearedInitialSearchTextIfSecure];
 
-  return v3;
+  return hasClearedInitialSearchTextIfSecure;
 }
 
 - (BOOL)hasClearedInitialReplaceTextIfSecure
 {
   v2 = +[ICQuickNoteSessionManager sharedManager];
-  v3 = [v2 hasClearedInitialReplaceTextIfSecure];
+  hasClearedInitialReplaceTextIfSecure = [v2 hasClearedInitialReplaceTextIfSecure];
 
-  return v3;
+  return hasClearedInitialReplaceTextIfSecure;
 }
 
 - (void)hasClearedInitialSecureSelectedText

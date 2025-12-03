@@ -1,25 +1,25 @@
 @interface MCUIApplicationCell
-- (void)setApplication:(id)a3;
+- (void)setApplication:(id)application;
 @end
 
 @implementation MCUIApplicationCell
 
-- (void)setApplication:(id)a3
+- (void)setApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   [(MCUIApplicationCell *)self setAccessoryType:0];
   [(MCUIApplicationCell *)self setSelectionStyle:0];
-  v8 = [MEMORY[0x277D756E0] valueCellConfiguration];
-  v5 = [v4 name];
-  [v8 setText:v5];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+  name = [applicationCopy name];
+  [valueCellConfiguration setText:name];
 
-  v6 = [v4 iconForVariant:0];
-  [v8 setImage:v6];
+  v6 = [applicationCopy iconForVariant:0];
+  [valueCellConfiguration setImage:v6];
 
-  v7 = [v4 misStateString];
+  misStateString = [applicationCopy misStateString];
 
-  [v8 setSecondaryText:v7];
-  [(MCUIApplicationCell *)self setContentConfiguration:v8];
+  [valueCellConfiguration setSecondaryText:misStateString];
+  [(MCUIApplicationCell *)self setContentConfiguration:valueCellConfiguration];
 }
 
 @end

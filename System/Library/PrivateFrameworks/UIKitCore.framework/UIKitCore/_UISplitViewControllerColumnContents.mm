@@ -1,17 +1,17 @@
 @interface _UISplitViewControllerColumnContents
 - (UIViewController)viewController;
-- (_UISplitViewControllerColumnContents)initWithViewController:(id)a3 navigationController:(id)a4 navigationControllerWrapper:(id)a5;
+- (_UISplitViewControllerColumnContents)initWithViewController:(id)controller navigationController:(id)navigationController navigationControllerWrapper:(id)wrapper;
 - (id)description;
 @end
 
 @implementation _UISplitViewControllerColumnContents
 
-- (_UISplitViewControllerColumnContents)initWithViewController:(id)a3 navigationController:(id)a4 navigationControllerWrapper:(id)a5
+- (_UISplitViewControllerColumnContents)initWithViewController:(id)controller navigationController:(id)navigationController navigationControllerWrapper:(id)wrapper
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 | v10)
+  controllerCopy = controller;
+  navigationControllerCopy = navigationController;
+  wrapperCopy = wrapper;
+  if (controllerCopy | navigationControllerCopy)
   {
     v16.receiver = self;
     v16.super_class = _UISplitViewControllerColumnContents;
@@ -19,22 +19,22 @@
     p_isa = &v12->super.isa;
     if (v12)
     {
-      objc_storeStrong(&v12->_viewController, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
+      objc_storeStrong(&v12->_viewController, controller);
+      objc_storeStrong(p_isa + 2, navigationController);
+      objc_storeStrong(p_isa + 3, wrapper);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"-[_UISplitViewControllerColumnContents initWithViewController:navigationController:] requires at least one of viewController or navigationController to be non-nil"];
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (UIViewController)viewController
@@ -42,15 +42,15 @@
   viewController = self->_viewController;
   if (viewController)
   {
-    v3 = viewController;
-    navigationController = v3;
+    topViewController = viewController;
+    navigationController = topViewController;
   }
 
   else
   {
-    v3 = [(UINavigationController *)self->_navigationController topViewController];
-    navigationController = v3;
-    if (!v3)
+    topViewController = [(UINavigationController *)self->_navigationController topViewController];
+    navigationController = topViewController;
+    if (!topViewController)
     {
       navigationController = self->_navigationController;
     }
@@ -68,8 +68,8 @@
   v3 = [(_UISplitViewControllerColumnContents *)&v7 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(_UISplitViewControllerColumnContents *)self viewController];
-  [v4 appendFormat:@" viewController=%p", v5];
+  viewController = [(_UISplitViewControllerColumnContents *)self viewController];
+  [v4 appendFormat:@" viewController=%p", viewController];
 
   if (self->_navigationController)
   {

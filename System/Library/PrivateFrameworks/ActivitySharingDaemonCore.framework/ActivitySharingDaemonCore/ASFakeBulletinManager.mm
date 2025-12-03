@@ -19,8 +19,8 @@
 - (void)_showFakeNeedToUpgrade;
 - (void)_showFakeVideoWorkoutNotification;
 - (void)_showFakeWorkoutNotification;
-- (void)_showFakeWorkoutNotificationWithWorkout:(id)a3;
-- (void)activitySharingManagerReady:(id)a3;
+- (void)_showFakeWorkoutNotificationWithWorkout:(id)workout;
+- (void)activitySharingManagerReady:(id)ready;
 - (void)dealloc;
 - (void)deregisterBulletins;
 - (void)registerBulletins;
@@ -28,25 +28,25 @@
 
 @implementation ASFakeBulletinManager
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
-  v4 = a3;
-  v5 = [v4 activityDataBulletinManager];
-  objc_storeWeak(&self->_activityDataBulletinManager, v5);
+  readyCopy = ready;
+  activityDataBulletinManager = [readyCopy activityDataBulletinManager];
+  objc_storeWeak(&self->_activityDataBulletinManager, activityDataBulletinManager);
 
-  v6 = [v4 competitionBulletinManager];
-  objc_storeWeak(&self->_competitionBulletinManager, v6);
+  competitionBulletinManager = [readyCopy competitionBulletinManager];
+  objc_storeWeak(&self->_competitionBulletinManager, competitionBulletinManager);
 
-  v7 = [v4 fakingManager];
-  objc_storeWeak(&self->_fakingManager, v7);
+  fakingManager = [readyCopy fakingManager];
+  objc_storeWeak(&self->_fakingManager, fakingManager);
 
-  v8 = [v4 friendInviteBulletinManager];
-  objc_storeWeak(&self->_friendInviteBulletinManager, v8);
+  friendInviteBulletinManager = [readyCopy friendInviteBulletinManager];
+  objc_storeWeak(&self->_friendInviteBulletinManager, friendInviteBulletinManager);
 
-  v9 = [v4 bulletinPostingManager];
+  bulletinPostingManager = [readyCopy bulletinPostingManager];
 
   bulletinPostingManager = self->_bulletinPostingManager;
-  self->_bulletinPostingManager = v9;
+  self->_bulletinPostingManager = bulletinPostingManager;
 }
 
 - (void)dealloc
@@ -424,47 +424,47 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
 - (void)_showFakeWorkoutNotification
 {
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
-  v4 = [WeakRetained fakeWorkout];
+  fakeWorkout = [WeakRetained fakeWorkout];
 
-  [(ASFakeBulletinManager *)self _showFakeWorkoutNotificationWithWorkout:v4];
+  [(ASFakeBulletinManager *)self _showFakeWorkoutNotificationWithWorkout:fakeWorkout];
 }
 
 - (void)_showFakeVideoWorkoutNotification
 {
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
-  v4 = [WeakRetained fakeVideoWorkout];
+  fakeVideoWorkout = [WeakRetained fakeVideoWorkout];
 
-  [(ASFakeBulletinManager *)self _showFakeWorkoutNotificationWithWorkout:v4];
+  [(ASFakeBulletinManager *)self _showFakeWorkoutNotificationWithWorkout:fakeVideoWorkout];
 }
 
 - (void)_showFakeGuidedRunWorkoutNotification
 {
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
-  v4 = [WeakRetained fakeGuidedRunWorkout];
+  fakeGuidedRunWorkout = [WeakRetained fakeGuidedRunWorkout];
 
-  [(ASFakeBulletinManager *)self _showFakeWorkoutNotificationWithWorkout:v4];
+  [(ASFakeBulletinManager *)self _showFakeWorkoutNotificationWithWorkout:fakeGuidedRunWorkout];
 }
 
 - (void)_showFakeGuidedWalkWorkoutNotification
 {
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
-  v4 = [WeakRetained fakeGuidedWalkWorkout];
+  fakeGuidedWalkWorkout = [WeakRetained fakeGuidedWalkWorkout];
 
-  [(ASFakeBulletinManager *)self _showFakeWorkoutNotificationWithWorkout:v4];
+  [(ASFakeBulletinManager *)self _showFakeWorkoutNotificationWithWorkout:fakeGuidedWalkWorkout];
 }
 
-- (void)_showFakeWorkoutNotificationWithWorkout:(id)a3
+- (void)_showFakeWorkoutNotificationWithWorkout:(id)workout
 {
   v4 = MEMORY[0x277CE9018];
-  v5 = a3;
+  workoutCopy = workout;
   v12 = objc_alloc_init(v4);
   v6 = [MEMORY[0x277CBEB98] set];
   v7 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
-  v9 = [WeakRetained fakeFriend];
-  [v7 setFriend:v9];
+  fakeFriend = [WeakRetained fakeFriend];
+  [v7 setFriend:fakeFriend];
 
-  [v7 setSample:v5];
+  [v7 setSample:workoutCopy];
   v10 = [v6 setByAddingObject:v7];
 
   [v12 setWorkoutNotifications:v10];
@@ -478,12 +478,12 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
   v3 = [MEMORY[0x277CBEB98] set];
   v4 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
-  v6 = [WeakRetained fakeFriend];
-  [v4 setFriend:v6];
+  fakeFriend = [WeakRetained fakeFriend];
+  [v4 setFriend:fakeFriend];
 
   v7 = objc_loadWeakRetained(&self->_fakingManager);
-  v8 = [v7 fakeAchievement];
-  [v4 setSample:v8];
+  fakeAchievement = [v7 fakeAchievement];
+  [v4 setSample:fakeAchievement];
 
   v9 = [v3 setByAddingObject:v4];
 
@@ -498,12 +498,12 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
   v3 = [MEMORY[0x277CBEB98] set];
   v4 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
-  v6 = [WeakRetained fakeFriend];
-  [v4 setFriend:v6];
+  fakeFriend = [WeakRetained fakeFriend];
+  [v4 setFriend:fakeFriend];
 
   v7 = objc_loadWeakRetained(&self->_fakingManager);
-  v8 = [v7 fakeCompleteSnapshot];
-  [v4 setSample:v8];
+  fakeCompleteSnapshot = [v7 fakeCompleteSnapshot];
+  [v4 setSample:fakeCompleteSnapshot];
 
   v9 = [v3 setByAddingObject:v4];
 
@@ -519,31 +519,31 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
   v4 = [MEMORY[0x277CBEB98] set];
   v5 = [MEMORY[0x277CBEB98] set];
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
-  v7 = [WeakRetained fakeFriend];
+  fakeFriend = [WeakRetained fakeFriend];
 
   v8 = objc_opt_new();
-  [v8 setFriend:v7];
+  [v8 setFriend:fakeFriend];
   v9 = objc_loadWeakRetained(&self->_fakingManager);
-  v10 = [v9 fakeWorkout];
-  [v8 setSample:v10];
+  fakeWorkout = [v9 fakeWorkout];
+  [v8 setSample:fakeWorkout];
 
   v11 = [v3 setByAddingObject:v8];
 
   [v21 setWorkoutNotifications:v11];
   v12 = objc_opt_new();
-  [v12 setFriend:v7];
+  [v12 setFriend:fakeFriend];
   v13 = objc_loadWeakRetained(&self->_fakingManager);
-  v14 = [v13 fakeAchievement];
-  [v12 setSample:v14];
+  fakeAchievement = [v13 fakeAchievement];
+  [v12 setSample:fakeAchievement];
 
   v15 = [v4 setByAddingObject:v12];
 
   [v21 setAchievementNotifications:v15];
   v16 = objc_opt_new();
-  [v16 setFriend:v7];
+  [v16 setFriend:fakeFriend];
   v17 = objc_loadWeakRetained(&self->_fakingManager);
-  v18 = [v17 fakeCompleteSnapshot];
-  [v16 setSample:v18];
+  fakeCompleteSnapshot = [v17 fakeCompleteSnapshot];
+  [v16 setSample:fakeCompleteSnapshot];
 
   v19 = [v5 setByAddingObject:v16];
 
@@ -556,9 +556,9 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
 {
   v16 = objc_alloc_init(MEMORY[0x277CE9018]);
   v3 = [MEMORY[0x277CBEB98] set];
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 dateByAddingUnit:16 value:-2 toDate:v5 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [currentCalendar dateByAddingUnit:16 value:-2 toDate:date options:0];
 
   v7 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
@@ -569,8 +569,8 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
   [v7 setFriend:v11];
 
   v12 = objc_loadWeakRetained(&self->_fakingManager);
-  v13 = [v12 fakeCompleteSnapshot];
-  [v7 setSample:v13];
+  fakeCompleteSnapshot = [v12 fakeCompleteSnapshot];
+  [v7 setSample:fakeCompleteSnapshot];
 
   v14 = [v3 setByAddingObject:v7];
 
@@ -581,9 +581,9 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
 
 - (void)_showFakeCompetitionRequestNotification
 {
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v3 dateByAddingUnit:16 value:1 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [currentCalendar dateByAddingUnit:16 value:1 toDate:date options:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
   v6 = [WeakRetained fakeCompetitionWithStartDate:v10 winningParticipant:0];
@@ -597,9 +597,9 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
 
 - (void)_showFakeCompetitionAcceptedNotification
 {
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v3 dateByAddingUnit:16 value:1 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [currentCalendar dateByAddingUnit:16 value:1 toDate:date options:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
   v6 = [WeakRetained fakeCompetitionWithStartDate:v10 winningParticipant:0];
@@ -613,9 +613,9 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
 
 - (void)_showFakeCompetitionEndedWinnerNotification
 {
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v3 dateByAddingUnit:16 value:-7 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
   v6 = [WeakRetained fakeCompetitionWithStartDate:v10 winningParticipant:0];
@@ -629,9 +629,9 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
 
 - (void)_showFakeCompetitionEndedLoserNotification
 {
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v3 dateByAddingUnit:16 value:-7 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
   v6 = [WeakRetained fakeCompetitionWithStartDate:v10 winningParticipant:1];
@@ -645,9 +645,9 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
 
 - (void)_showFakeCompetitionEndedTieNotification
 {
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v3 dateByAddingUnit:16 value:-7 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_fakingManager);
   v6 = [WeakRetained fakeTiedCompetitionWithStartDate:v10];
@@ -661,44 +661,44 @@ void __42__ASFakeBulletinManager_registerBulletins__block_invoke_19(uint64_t a1)
 
 - (void)_showFakeCompetitionScoreCapCelebrationNotification
 {
-  v4 = [MEMORY[0x277CE90F0] fakeFirstGlanceFriendListForMarketing];
+  fakeFirstGlanceFriendListForMarketing = [MEMORY[0x277CE90F0] fakeFirstGlanceFriendListForMarketing];
   WeakRetained = objc_loadWeakRetained(&self->_competitionBulletinManager);
-  [WeakRetained showCompetitionScoreCapCelebrationForFriends:v4 withPostingStyle:1];
+  [WeakRetained showCompetitionScoreCapCelebrationForFriends:fakeFirstGlanceFriendListForMarketing withPostingStyle:1];
 }
 
 - (void)_showFakeInvitationRequest
 {
   WeakRetained = objc_loadWeakRetained(&self->_friendInviteBulletinManager);
-  v3 = [(ASFakeBulletinManager *)self _fakeContact];
-  [WeakRetained showInviteRequestFromContact:v3 withPostingStyle:1];
+  _fakeContact = [(ASFakeBulletinManager *)self _fakeContact];
+  [WeakRetained showInviteRequestFromContact:_fakeContact withPostingStyle:1];
 }
 
 - (void)_showFakeInvitationResponse
 {
   WeakRetained = objc_loadWeakRetained(&self->_friendInviteBulletinManager);
-  v3 = [(ASFakeBulletinManager *)self _fakeContact];
-  [WeakRetained showInviteAcceptResponseFrom:v3];
+  _fakeContact = [(ASFakeBulletinManager *)self _fakeContact];
+  [WeakRetained showInviteAcceptResponseFrom:_fakeContact];
 }
 
 - (void)_showFakeInviteAttemptNeedsSetup
 {
   WeakRetained = objc_loadWeakRetained(&self->_friendInviteBulletinManager);
-  v3 = [(ASFakeBulletinManager *)self _fakeContact];
-  [WeakRetained showInviteAttemptNeedsSetupFromContact:v3];
+  _fakeContact = [(ASFakeBulletinManager *)self _fakeContact];
+  [WeakRetained showInviteAttemptNeedsSetupFromContact:_fakeContact];
 }
 
 - (void)_showFakeNeedToSignIn
 {
   WeakRetained = objc_loadWeakRetained(&self->_friendInviteBulletinManager);
-  v3 = [(ASFakeBulletinManager *)self _fakeContact];
-  [WeakRetained showInviteAttemptNeedToSignInFrom:v3];
+  _fakeContact = [(ASFakeBulletinManager *)self _fakeContact];
+  [WeakRetained showInviteAttemptNeedToSignInFrom:_fakeContact];
 }
 
 - (void)_showFakeNeedToUpgrade
 {
   WeakRetained = objc_loadWeakRetained(&self->_friendInviteBulletinManager);
-  v3 = [(ASFakeBulletinManager *)self _fakeContact];
-  [WeakRetained showInviteAttemptNeedToUpgradeFrom:v3];
+  _fakeContact = [(ASFakeBulletinManager *)self _fakeContact];
+  [WeakRetained showInviteAttemptNeedToUpgradeFrom:_fakeContact];
 }
 
 - (id)_fakeContact

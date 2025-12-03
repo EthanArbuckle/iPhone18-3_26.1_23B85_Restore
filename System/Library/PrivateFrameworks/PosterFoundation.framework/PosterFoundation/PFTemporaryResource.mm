@@ -1,9 +1,9 @@
 @interface PFTemporaryResource
 - (PFTemporaryResource)init;
-- (PFTemporaryResource)initWithResource:(id)a3 URL:(id)a4;
+- (PFTemporaryResource)initWithResource:(id)resource URL:(id)l;
 - (void)dealloc;
-- (void)invalidateWithError:(id *)a3;
-- (void)trackInvalidatable:(id)a3;
+- (void)invalidateWithError:(id *)error;
+- (void)trackInvalidatable:(id)invalidatable;
 @end
 
 @implementation PFTemporaryResource
@@ -15,16 +15,16 @@
   return 0;
 }
 
-- (PFTemporaryResource)initWithResource:(id)a3 URL:(id)a4
+- (PFTemporaryResource)initWithResource:(id)resource URL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  resourceCopy = resource;
+  lCopy = l;
+  if (!resourceCopy)
   {
     [PFTemporaryResource initWithResource:a2 URL:?];
   }
 
-  v10 = v9;
+  v10 = lCopy;
   v19.receiver = self;
   v19.super_class = PFTemporaryResource;
   v11 = [(PFTemporaryResource *)&v19 init];
@@ -34,7 +34,7 @@
     URL = v11->_URL;
     v11->_URL = v12;
 
-    objc_storeStrong(&v11->_resource, a3);
+    objc_storeStrong(&v11->_resource, resource);
     v14 = objc_opt_new();
     trackedInvalidatables = v11->_trackedInvalidatables;
     v11->_trackedInvalidatables = v14;
@@ -55,12 +55,12 @@
   [(PFTemporaryResource *)&v3 dealloc];
 }
 
-- (void)trackInvalidatable:(id)a3
+- (void)trackInvalidatable:(id)invalidatable
 {
-  v4 = a3;
-  if (self != v4 && v4)
+  invalidatableCopy = invalidatable;
+  if (self != invalidatableCopy && invalidatableCopy)
   {
-    v6 = v4;
+    v6 = invalidatableCopy;
     v5 = self->_trackedInvalidatables;
     objc_sync_enter(v5);
     if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
@@ -70,11 +70,11 @@
 
     objc_sync_exit(v5);
 
-    v4 = v6;
+    invalidatableCopy = v6;
   }
 }
 
-- (void)invalidateWithError:(id *)a3
+- (void)invalidateWithError:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = self->_trackedInvalidatables;

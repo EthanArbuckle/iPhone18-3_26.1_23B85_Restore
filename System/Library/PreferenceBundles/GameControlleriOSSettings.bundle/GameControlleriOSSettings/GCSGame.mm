@@ -1,40 +1,40 @@
 @interface GCSGame
 - (BOOL)customizable;
-- (BOOL)profileExistsFor:(id)a3 with:(id)a4;
+- (BOOL)profileExistsFor:(id)for with:(id)with;
 - (NSString)localizedName;
-- (id)profileFor:(id)a3 with:(id)a4;
+- (id)profileFor:(id)for with:(id)with;
 @end
 
 @implementation GCSGame
 
-- (id)profileFor:(id)a3 with:(id)a4
+- (id)profileFor:(id)for with:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_3C5A0(v6, v7);
+  forCopy = for;
+  withCopy = with;
+  selfCopy = self;
+  v9 = sub_3C5A0(forCopy, withCopy);
 
   return v9;
 }
 
-- (BOOL)profileExistsFor:(id)a3 with:(id)a4
+- (BOOL)profileExistsFor:(id)for with:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_3CB48(v6, v7);
+  forCopy = for;
+  withCopy = with;
+  selfCopy = self;
+  v9 = sub_3CB48(forCopy, withCopy);
 
   return v9;
 }
 
 - (BOOL)customizable
 {
-  v2 = self;
-  v3 = [(GCSGame *)v2 bundleIdentifier];
+  selfCopy = self;
+  bundleIdentifier = [(GCSGame *)selfCopy bundleIdentifier];
   v4 = sub_D7C18();
   v6 = v5;
 
-  v7 = [objc_opt_self() defaultIdentifier];
+  defaultIdentifier = [objc_opt_self() defaultIdentifier];
   v8 = sub_D7C18();
   v10 = v9;
 
@@ -56,7 +56,7 @@
 
 - (NSString)localizedName
 {
-  v2 = self;
+  selfCopy = self;
   sub_3D37C();
 
   v3 = sub_D7BD8();

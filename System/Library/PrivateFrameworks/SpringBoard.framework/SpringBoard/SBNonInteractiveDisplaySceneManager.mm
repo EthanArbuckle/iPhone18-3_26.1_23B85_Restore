@@ -1,27 +1,27 @@
 @interface SBNonInteractiveDisplaySceneManager
 - (BOOL)isSuspendedUnderLock;
-- (SBNonInteractiveDisplaySceneManager)initWithReference:(id)a3 sceneIdentityProvider:(id)a4 presentationBinder:(id)a5 snapshotBehavior:(unint64_t)a6;
+- (SBNonInteractiveDisplaySceneManager)initWithReference:(id)reference sceneIdentityProvider:(id)provider presentationBinder:(id)binder snapshotBehavior:(unint64_t)behavior;
 - (id)externalApplicationSceneHandles;
-- (id)suspendedUnderLockManager:(id)a3 sceneHandleForScene:(id)a4;
-- (id)suspendedUnderLockManagerDisplayConfiguration:(id)a3;
+- (id)suspendedUnderLockManager:(id)manager sceneHandleForScene:(id)scene;
+- (id)suspendedUnderLockManagerDisplayConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)setSuspendedUnderLock:(BOOL)a3 alongsideWillChangeBlock:(id)a4 alongsideDidChangeBlock:(id)a5;
+- (void)setSuspendedUnderLock:(BOOL)lock alongsideWillChangeBlock:(id)block alongsideDidChangeBlock:(id)changeBlock;
 @end
 
 @implementation SBNonInteractiveDisplaySceneManager
 
-- (SBNonInteractiveDisplaySceneManager)initWithReference:(id)a3 sceneIdentityProvider:(id)a4 presentationBinder:(id)a5 snapshotBehavior:(unint64_t)a6
+- (SBNonInteractiveDisplaySceneManager)initWithReference:(id)reference sceneIdentityProvider:(id)provider presentationBinder:(id)binder snapshotBehavior:(unint64_t)behavior
 {
   v10.receiver = self;
   v10.super_class = SBNonInteractiveDisplaySceneManager;
-  v6 = [(SBSceneManager *)&v10 initWithReference:a3 sceneIdentityProvider:a4 presentationBinder:a5 snapshotBehavior:a6];
+  v6 = [(SBSceneManager *)&v10 initWithReference:reference sceneIdentityProvider:provider presentationBinder:binder snapshotBehavior:behavior];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v6 selector:sel__externalCoverSheetVisibilityDidPresent_ name:@"SBExternalDisplayCoverSheetDidPresent" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__externalCoverSheetVisibilityDidPresent_ name:@"SBExternalDisplayCoverSheetDidPresent" object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v6 selector:sel__externalCoverSheetVisibilityDidDismiss_ name:@"SBExternalDisplayCoverSheetDidDismiss" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__externalCoverSheetVisibilityDidDismiss_ name:@"SBExternalDisplayCoverSheetDidDismiss" object:0];
   }
 
   return v6;
@@ -29,11 +29,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBExternalDisplayCoverSheetDidPresent" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBExternalDisplayCoverSheetDidPresent" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"SBExternalDisplayCoverSheetDidDismiss" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"SBExternalDisplayCoverSheetDidDismiss" object:0];
 
   v5.receiver = self;
   v5.super_class = SBNonInteractiveDisplaySceneManager;
@@ -44,9 +44,9 @@
 {
   v4.receiver = self;
   v4.super_class = SBNonInteractiveDisplaySceneManager;
-  v2 = [(SBSceneManager *)&v4 externalApplicationSceneHandles];
+  externalApplicationSceneHandles = [(SBSceneManager *)&v4 externalApplicationSceneHandles];
 
-  return v2;
+  return externalApplicationSceneHandles;
 }
 
 - (BOOL)isSuspendedUnderLock
@@ -57,41 +57,41 @@
   return [(SBSuspendedUnderLockManager *)lazy_suspendedUnderLockManager isSuspendedUnderLock];
 }
 
-- (void)setSuspendedUnderLock:(BOOL)a3 alongsideWillChangeBlock:(id)a4 alongsideDidChangeBlock:(id)a5
+- (void)setSuspendedUnderLock:(BOOL)lock alongsideWillChangeBlock:(id)block alongsideDidChangeBlock:(id)changeBlock
 {
-  v6 = a3;
-  v15 = a4;
-  v8 = a5;
+  lockCopy = lock;
+  blockCopy = block;
+  changeBlockCopy = changeBlock;
   BSDispatchQueueAssertMain();
   lazy_suspendedUnderLockManager = self->_lazy_suspendedUnderLockManager;
   if (!lazy_suspendedUnderLockManager)
   {
     v10 = [SBSuspendedUnderLockManager alloc];
     v11 = +[SBWorkspace mainWorkspace];
-    v12 = [v11 eventQueue];
-    v13 = [(SBSuspendedUnderLockManager *)v10 initWithDelegate:self eventQueue:v12];
+    eventQueue = [v11 eventQueue];
+    v13 = [(SBSuspendedUnderLockManager *)v10 initWithDelegate:self eventQueue:eventQueue];
     v14 = self->_lazy_suspendedUnderLockManager;
     self->_lazy_suspendedUnderLockManager = v13;
 
     lazy_suspendedUnderLockManager = self->_lazy_suspendedUnderLockManager;
   }
 
-  [(SBSuspendedUnderLockManager *)lazy_suspendedUnderLockManager setSuspendedUnderLock:v6 alongsideWillChangeBlock:v15 alongsideDidChangeBlock:v8];
+  [(SBSuspendedUnderLockManager *)lazy_suspendedUnderLockManager setSuspendedUnderLock:lockCopy alongsideWillChangeBlock:blockCopy alongsideDidChangeBlock:changeBlockCopy];
 }
 
-- (id)suspendedUnderLockManagerDisplayConfiguration:(id)a3
+- (id)suspendedUnderLockManagerDisplayConfiguration:(id)configuration
 {
-  v3 = [(SBSceneManager *)self displayIdentity];
-  v4 = [v3 currentConfiguration];
+  displayIdentity = [(SBSceneManager *)self displayIdentity];
+  currentConfiguration = [displayIdentity currentConfiguration];
 
-  return v4;
+  return currentConfiguration;
 }
 
-- (id)suspendedUnderLockManager:(id)a3 sceneHandleForScene:(id)a4
+- (id)suspendedUnderLockManager:(id)manager sceneHandleForScene:(id)scene
 {
   v6.receiver = self;
   v6.super_class = SBNonInteractiveDisplaySceneManager;
-  v4 = [(SBSceneManager *)&v6 existingSceneHandleForScene:a4];
+  v4 = [(SBSceneManager *)&v6 existingSceneHandleForScene:scene];
 
   return v4;
 }

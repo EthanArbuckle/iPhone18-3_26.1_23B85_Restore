@@ -1,6 +1,6 @@
 @interface CIFilterClassDefaults
 + (id)cache;
-+ (id)classDefaultsForClass:(Class)a3;
++ (id)classDefaultsForClass:(Class)class;
 + (void)clearCache;
 @end
 
@@ -28,34 +28,34 @@ uint64_t __30__CIFilterClassDefaults_cache__block_invoke()
 
 + (void)clearCache
 {
-  v2 = [a1 cache];
+  cache = [self cache];
 
-  [v2 removeAllObjects];
+  [cache removeAllObjects];
 }
 
-+ (id)classDefaultsForClass:(Class)a3
++ (id)classDefaultsForClass:(Class)class
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [a1 cache];
+  cache = [self cache];
   v5 = objc_opt_class();
-  if (![(objc_class *)a3 isSubclassOfClass:v5])
+  if (![(objc_class *)class isSubclassOfClass:v5])
   {
     return 0;
   }
 
-  if (v5 == a3)
+  if (v5 == class)
   {
     return MEMORY[0x1E695E0F8];
   }
 
-  v6 = [v4 objectForKey:a3];
-  if (!v6)
+  dictionary = [cache objectForKey:class];
+  if (!dictionary)
   {
-    v20 = v4;
-    CustomAttributes = getCustomAttributes(a3);
-    v21 = a3;
-    v8 = [+[CIFilterClassInfo classInfoForClass:](CIFilterClassInfo classInfoForClass:{a3), "inputKeys"}];
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    v20 = cache;
+    CustomAttributes = getCustomAttributes(class);
+    classCopy = class;
+    v8 = [+[CIFilterClassInfo classInfoForClass:](CIFilterClassInfo classInfoForClass:{class), "inputKeys"}];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -75,11 +75,11 @@ uint64_t __30__CIFilterClassDefaults_cache__block_invoke()
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
           StdAttrsForKey = getStdAttrsForKey(v13);
           if (StdAttrsForKey)
           {
-            [v14 addEntriesFromDictionary:StdAttrsForKey];
+            [dictionary2 addEntriesFromDictionary:StdAttrsForKey];
           }
 
           v16 = [CustomAttributes valueForKey:v13];
@@ -89,21 +89,21 @@ uint64_t __30__CIFilterClassDefaults_cache__block_invoke()
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v14 addEntriesFromDictionary:v17];
+              [dictionary2 addEntriesFromDictionary:v17];
             }
           }
 
-          v18 = [v14 objectForKey:@"CIAttributeDefault"];
+          v18 = [dictionary2 objectForKey:@"CIAttributeDefault"];
           if (!v18)
           {
-            v18 = [v14 objectForKey:@"CIAttributeIdentity"];
+            v18 = [dictionary2 objectForKey:@"CIAttributeIdentity"];
             if (!v18)
             {
               continue;
             }
           }
 
-          [v6 setObject:v18 forKey:v13];
+          [dictionary setObject:v18 forKey:v13];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -112,10 +112,10 @@ uint64_t __30__CIFilterClassDefaults_cache__block_invoke()
       while (v10);
     }
 
-    [v20 setObject:v6 forKey:v21];
+    [v20 setObject:dictionary forKey:classCopy];
   }
 
-  return v6;
+  return dictionary;
 }
 
 @end

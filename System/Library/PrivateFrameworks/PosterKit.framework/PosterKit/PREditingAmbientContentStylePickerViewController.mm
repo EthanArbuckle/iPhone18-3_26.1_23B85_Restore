@@ -1,36 +1,36 @@
 @interface PREditingAmbientContentStylePickerViewController
-- (PREditingAmbientContentStylePickerViewController)initWithContentStylePickerConfiguration:(id)a3 width:(double)a4 changeHandler:(id)a5;
+- (PREditingAmbientContentStylePickerViewController)initWithContentStylePickerConfiguration:(id)configuration width:(double)width changeHandler:(id)handler;
 - (PREditingAmbientContentStylePickerViewControllerDelegate)delegate;
-- (void)didSelectStyle:(id)a3;
-- (void)didTapContentStyleItemView:(id)a3;
+- (void)didSelectStyle:(id)style;
+- (void)didTapContentStyleItemView:(id)view;
 - (void)loadView;
-- (void)scrollToSelectedItemAnimated:(BOOL)a3;
+- (void)scrollToSelectedItemAnimated:(BOOL)animated;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PREditingAmbientContentStylePickerViewController
 
-- (PREditingAmbientContentStylePickerViewController)initWithContentStylePickerConfiguration:(id)a3 width:(double)a4 changeHandler:(id)a5
+- (PREditingAmbientContentStylePickerViewController)initWithContentStylePickerConfiguration:(id)configuration width:(double)width changeHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = PREditingAmbientContentStylePickerViewController;
   v11 = [(PREditingAmbientContentStylePickerViewController *)&v19 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_stylePickerConfiguration, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_stylePickerConfiguration, configuration);
+    v13 = [handlerCopy copy];
     changeHandler = v12->_changeHandler;
     v12->_changeHandler = v13;
 
-    [(PREditingAmbientContentStylePickerViewController *)v12 setPreferredContentSize:a4, 84.0];
-    v15 = [v9 prompt];
-    if (v15)
+    [(PREditingAmbientContentStylePickerViewController *)v12 setPreferredContentSize:width, 84.0];
+    prompt = [configurationCopy prompt];
+    if (prompt)
     {
-      [(PREditingAmbientContentStylePickerViewController *)v12 setTitle:v15];
+      [(PREditingAmbientContentStylePickerViewController *)v12 setTitle:prompt];
     }
 
     else
@@ -62,18 +62,18 @@
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = v4;
   objc_storeStrong(&self->_stackView, v4);
-  v6 = [(PREditingAmbientContentStylePickerViewController *)self stylePickerConfiguration];
-  v7 = [v6 selectedStyle];
-  v47 = v6;
-  v8 = [v6 stylePalette];
-  v9 = [v8 styles];
+  stylePickerConfiguration = [(PREditingAmbientContentStylePickerViewController *)self stylePickerConfiguration];
+  selectedStyle = [stylePickerConfiguration selectedStyle];
+  v47 = stylePickerConfiguration;
+  stylePalette = [stylePickerConfiguration stylePalette];
+  styles = [stylePalette styles];
 
-  v51 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  v51 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(styles, "count")}];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v9;
+  obj = styles;
   v10 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v10)
   {
@@ -90,8 +90,8 @@
         }
 
         v14 = *(*(&v52 + 1) + 8 * v13);
-        v15 = [(PREditingAmbientContentStylePickerViewController *)self delegate];
-        v16 = [v15 coordinatorForContentStyle:v14 forAmbientStylePicker:self];
+        delegate = [(PREditingAmbientContentStylePickerViewController *)self delegate];
+        v16 = [delegate coordinatorForContentStyle:v14 forAmbientStylePicker:self];
 
         if (!v16)
         {
@@ -106,7 +106,7 @@
 
         [v51 addObject:v16];
         v18 = [[PREditingContentStyleItemView alloc] initWithContentStyleCoordinator:v16];
-        if (v7 && [v14 isEqual:v7])
+        if (selectedStyle && [v14 isEqual:selectedStyle])
         {
           [(PRSelectableEditingItemView *)v18 setSelected:1];
           objc_storeStrong(&self->_selectedItemView, v18);
@@ -130,38 +130,38 @@ LABEL_13:
   [v48 addSubview:v5];
   [v49 addSubview:v48];
   v36 = MEMORY[0x1E696ACD8];
-  v46 = [v5 leadingAnchor];
-  v45 = [v48 leadingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  leadingAnchor = [v5 leadingAnchor];
+  leadingAnchor2 = [v48 leadingAnchor];
+  v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v56[0] = v44;
-  v43 = [v5 trailingAnchor];
-  v42 = [v48 trailingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  trailingAnchor = [v5 trailingAnchor];
+  trailingAnchor2 = [v48 trailingAnchor];
+  v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v56[1] = v41;
   v26 = v5;
-  v40 = [v5 topAnchor];
-  v39 = [v48 topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  topAnchor = [v5 topAnchor];
+  topAnchor2 = [v48 topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v56[2] = v38;
-  v37 = [v5 bottomAnchor];
-  v35 = [v48 bottomAnchor];
-  v34 = [v37 constraintEqualToAnchor:v35];
+  bottomAnchor = [v5 bottomAnchor];
+  bottomAnchor2 = [v48 bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v56[3] = v34;
-  v33 = [v49 leadingAnchor];
-  v32 = [v48 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  leadingAnchor3 = [v49 leadingAnchor];
+  leadingAnchor4 = [v48 leadingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v56[4] = v31;
-  v30 = [v49 trailingAnchor];
-  v29 = [v48 trailingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  trailingAnchor3 = [v49 trailingAnchor];
+  trailingAnchor4 = [v48 trailingAnchor];
+  v28 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v56[5] = v28;
-  v27 = [v49 topAnchor];
-  v20 = [v48 topAnchor];
-  v21 = [v27 constraintEqualToAnchor:v20];
+  topAnchor3 = [v49 topAnchor];
+  topAnchor4 = [v48 topAnchor];
+  v21 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v56[6] = v21;
-  v22 = [v49 bottomAnchor];
-  v23 = [v48 bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  bottomAnchor3 = [v49 bottomAnchor];
+  bottomAnchor4 = [v48 bottomAnchor];
+  v24 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v56[7] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:8];
   [v36 activateConstraints:v25];
@@ -169,25 +169,25 @@ LABEL_13:
   [(PREditingAmbientContentStylePickerViewController *)self setView:v49];
 }
 
-- (void)didTapContentStyleItemView:(id)a3
+- (void)didTapContentStyleItemView:(id)view
 {
-  v7 = [a3 view];
-  v4 = [v7 contentStyleCoordinator];
-  v5 = [v4 style];
+  view = [view view];
+  contentStyleCoordinator = [view contentStyleCoordinator];
+  style = [contentStyleCoordinator style];
 
-  [(PREditingAmbientContentStylePickerViewController *)self didSelectStyle:v5];
-  v6 = [(PREditingAmbientContentStylePickerViewController *)self selectedItemView];
-  [v6 setSelected:0];
+  [(PREditingAmbientContentStylePickerViewController *)self didSelectStyle:style];
+  selectedItemView = [(PREditingAmbientContentStylePickerViewController *)self selectedItemView];
+  [selectedItemView setSelected:0];
 
-  [v7 setSelected:1];
-  [(PREditingAmbientContentStylePickerViewController *)self setSelectedItemView:v7];
+  [view setSelected:1];
+  [(PREditingAmbientContentStylePickerViewController *)self setSelectedItemView:view];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PREditingAmbientContentStylePickerViewController;
-  [(PREditingAmbientContentStylePickerViewController *)&v4 viewWillAppear:a3];
+  [(PREditingAmbientContentStylePickerViewController *)&v4 viewWillAppear:appear];
   [(PREditingAmbientContentStylePickerViewController *)self setNeedsScrollToSelectedItem:1];
 }
 
@@ -198,37 +198,37 @@ LABEL_13:
   [(PREditingAmbientContentStylePickerViewController *)&v4 viewDidLayoutSubviews];
   if ([(PREditingAmbientContentStylePickerViewController *)self needsScrollToSelectedItem])
   {
-    v3 = [(PREditingAmbientContentStylePickerViewController *)self stackView];
-    [v3 layoutIfNeeded];
+    stackView = [(PREditingAmbientContentStylePickerViewController *)self stackView];
+    [stackView layoutIfNeeded];
 
     [(PREditingAmbientContentStylePickerViewController *)self scrollToSelectedItemAnimated:0];
     [(PREditingAmbientContentStylePickerViewController *)self setNeedsScrollToSelectedItem:0];
   }
 }
 
-- (void)didSelectStyle:(id)a3
+- (void)didSelectStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(PREditingAmbientContentStylePickerViewController *)self changeHandler];
-  v5[2](v5, v4);
+  styleCopy = style;
+  changeHandler = [(PREditingAmbientContentStylePickerViewController *)self changeHandler];
+  changeHandler[2](changeHandler, styleCopy);
 }
 
-- (void)scrollToSelectedItemAnimated:(BOOL)a3
+- (void)scrollToSelectedItemAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
-  v18 = [(PREditingAmbientContentStylePickerViewController *)self selectedItemView];
-  v7 = [(PREditingAmbientContentStylePickerViewController *)self scrollView];
-  [v7 bounds];
-  if (v18)
+  selectedItemView = [(PREditingAmbientContentStylePickerViewController *)self selectedItemView];
+  scrollView = [(PREditingAmbientContentStylePickerViewController *)self scrollView];
+  [scrollView bounds];
+  if (selectedItemView)
   {
     v9 = v8;
-    [v18 frame];
+    [selectedItemView frame];
     v11 = v10;
-    [v18 bounds];
+    [selectedItemView bounds];
     v13 = v11 + (v9 - v12) * -0.5;
-    [v7 contentSize];
+    [scrollView contentSize];
     v15 = v14 - (v9 + -20.0);
     if (v15 >= v13)
     {
@@ -243,8 +243,8 @@ LABEL_13:
     v16 = *v5;
   }
 
-  v17 = [(PREditingAmbientContentStylePickerViewController *)self scrollView];
-  [v17 setContentOffset:v3 animated:{v16, v6}];
+  scrollView2 = [(PREditingAmbientContentStylePickerViewController *)self scrollView];
+  [scrollView2 setContentOffset:animatedCopy animated:{v16, v6}];
 }
 
 - (PREditingAmbientContentStylePickerViewControllerDelegate)delegate

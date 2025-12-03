@@ -38,7 +38,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [*(a1 + 88) doubleValue];
+    [*(self + 88) doubleValue];
     v3 = fmax(v2, 1.0);
     *&v3 = v3;
     return vdup_lane_s32(*&v3, 0);
@@ -49,7 +49,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = *(a1 + 88);
+      v5 = *(self + 88);
       [v5 X];
       v14 = v6;
       [v5 Y];

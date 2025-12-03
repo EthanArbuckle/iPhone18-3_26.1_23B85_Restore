@@ -1,41 +1,41 @@
 @interface CSDAbstractIDSProviderDelegate
-+ (id)handleByFullyQualifyingHandle:(id)a3 usingCountryCode:(id)a4;
-- (BOOL)isCellularDataAllowedForChat:(id)a3;
-- (BOOL)isCellularDataPreferredForChat:(id)a3;
-- (BOOL)isWiFiAllowedForChat:(id)a3;
++ (id)handleByFullyQualifyingHandle:(id)handle usingCountryCode:(id)code;
+- (BOOL)isCellularDataAllowedForChat:(id)chat;
+- (BOOL)isCellularDataPreferredForChat:(id)chat;
+- (BOOL)isWiFiAllowedForChat:(id)chat;
 - (BOOL)shouldAcceptIncomingInvite;
-- (CGSize)localPortraitAspectRatioForChat:(id)a3;
+- (CGSize)localPortraitAspectRatioForChat:(id)chat;
 - (CSDAbstractIDSProviderDelegate)init;
-- (CSDAbstractIDSProviderDelegate)initWithCapabilities:(id)a3 queue:(id)a4;
-- (id)callUpdateForChat:(id)a3;
-- (id)callUpdateForPendingChat:(id)a3;
-- (id)chatWithUUID:(id)a3;
+- (CSDAbstractIDSProviderDelegate)initWithCapabilities:(id)capabilities queue:(id)queue;
+- (id)callUpdateForChat:(id)chat;
+- (id)callUpdateForPendingChat:(id)chat;
+- (id)chatWithUUID:(id)d;
 - (id)chats;
-- (id)waitingChatWithHandle:(id)a3 isOutgoing:(BOOL)a4;
-- (int)TUCallRemoteVideoPresentationStateFromCXVideoPresentationState:(int64_t)a3;
-- (void)chat:(id)a3 changedBytesOfDataUsed:(int64_t)a4;
-- (void)chat:(id)a3 inputFrequencyLevelChangedTo:(id)a4;
-- (void)chat:(id)a3 inputLevelChangedTo:(float)a4;
-- (void)chat:(id)a3 outputFrequencyLevelChangedTo:(id)a4;
-- (void)chat:(id)a3 outputLevelChangedTo:(float)a4;
-- (void)chatConnected:(id)a3;
-- (void)chatEnded:(id)a3;
-- (void)chatSentInvitation:(id)a3;
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4;
-- (void)provider:(id)a3 performEnableVideoCallAction:(id)a4;
-- (void)provider:(id)a3 performEndCallAction:(id)a4;
-- (void)provider:(id)a3 performSetHeldCallAction:(id)a4;
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4;
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4;
-- (void)provider:(id)a3 performSetSendingVideoCallAction:(id)a4;
-- (void)provider:(id)a3 performSetSharingScreenCallAction:(id)a4;
-- (void)provider:(id)a3 performSetVideoPresentationSizeCallAction:(id)a4;
-- (void)provider:(id)a3 performSetVideoPresentationStateCallAction:(id)a4;
-- (void)providerDidBegin:(id)a3;
-- (void)providerDidReset:(id)a3;
-- (void)service:(id)a3 account:(id)a4 incomingPendingMessageOfType:(int64_t)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 inviteReceivedForSession:(id)a5 fromID:(id)a6 withContext:(id)a7;
-- (void)updateCacheWithChat:(id)a3;
+- (id)waitingChatWithHandle:(id)handle isOutgoing:(BOOL)outgoing;
+- (int)TUCallRemoteVideoPresentationStateFromCXVideoPresentationState:(int64_t)state;
+- (void)chat:(id)chat changedBytesOfDataUsed:(int64_t)used;
+- (void)chat:(id)chat inputFrequencyLevelChangedTo:(id)to;
+- (void)chat:(id)chat inputLevelChangedTo:(float)to;
+- (void)chat:(id)chat outputFrequencyLevelChangedTo:(id)to;
+- (void)chat:(id)chat outputLevelChangedTo:(float)to;
+- (void)chatConnected:(id)connected;
+- (void)chatEnded:(id)ended;
+- (void)chatSentInvitation:(id)invitation;
+- (void)provider:(id)provider performAnswerCallAction:(id)action;
+- (void)provider:(id)provider performEnableVideoCallAction:(id)action;
+- (void)provider:(id)provider performEndCallAction:(id)action;
+- (void)provider:(id)provider performSetHeldCallAction:(id)action;
+- (void)provider:(id)provider performSetMutedCallAction:(id)action;
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action;
+- (void)provider:(id)provider performSetSendingVideoCallAction:(id)action;
+- (void)provider:(id)provider performSetSharingScreenCallAction:(id)action;
+- (void)provider:(id)provider performSetVideoPresentationSizeCallAction:(id)action;
+- (void)provider:(id)provider performSetVideoPresentationStateCallAction:(id)action;
+- (void)providerDidBegin:(id)begin;
+- (void)providerDidReset:(id)reset;
+- (void)service:(id)service account:(id)account incomingPendingMessageOfType:(int64_t)type fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account inviteReceivedForSession:(id)session fromID:(id)d withContext:(id)context;
+- (void)updateCacheWithChat:(id)chat;
 @end
 
 @implementation CSDAbstractIDSProviderDelegate
@@ -48,18 +48,18 @@
   return v4;
 }
 
-- (CSDAbstractIDSProviderDelegate)initWithCapabilities:(id)a3 queue:(id)a4
+- (CSDAbstractIDSProviderDelegate)initWithCapabilities:(id)capabilities queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  capabilitiesCopy = capabilities;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = CSDAbstractIDSProviderDelegate;
   v9 = [(CSDAbstractIDSProviderDelegate *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_capabilities, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_capabilities, capabilities);
+    objc_storeStrong(&v10->_queue, queue);
     v11 = +[NSMutableOrderedSet orderedSet];
     mutableChats = v10->_mutableChats;
     v10->_mutableChats = v11;
@@ -89,22 +89,22 @@
 
 - (id)chats
 {
-  v2 = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
-  v3 = [v2 array];
-  v4 = [v3 copy];
+  mutableChats = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
+  array = [mutableChats array];
+  v4 = [array copy];
 
   return v4;
 }
 
-- (id)chatWithUUID:(id)a3
+- (id)chatWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  mutableChats = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
+  v6 = [mutableChats countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -114,12 +114,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(mutableChats);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 UUID];
-        v11 = [v10 isEqual:v4];
+        uUID = [v9 UUID];
+        v11 = [uUID isEqual:dCopy];
 
         if (v11)
         {
@@ -128,7 +128,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [mutableChats countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -143,50 +143,50 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateCacheWithChat:(id)a3
+- (void)updateCacheWithChat:(id)chat
 {
-  v4 = a3;
-  v5 = [v4 dateEnded];
+  chatCopy = chat;
+  dateEnded = [chatCopy dateEnded];
 
-  v6 = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
-  v7 = v6;
-  if (v5)
+  mutableChats = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
+  v7 = mutableChats;
+  if (dateEnded)
   {
-    [v6 removeObject:v4];
+    [mutableChats removeObject:chatCopy];
   }
 
   else
   {
-    [v6 addObject:v4];
+    [mutableChats addObject:chatCopy];
   }
 }
 
-+ (id)handleByFullyQualifyingHandle:(id)a3 usingCountryCode:(id)a4
++ (id)handleByFullyQualifyingHandle:(id)handle usingCountryCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  handleCopy = handle;
+  codeCopy = code;
+  v7 = handleCopy;
   v8 = v7;
   if ([v7 type] == 2)
   {
-    v9 = [v7 value];
-    v10 = [TUPhoneNumber phoneNumberWithDigits:v9 countryCode:v6];
+    value = [v7 value];
+    v10 = [TUPhoneNumber phoneNumberWithDigits:value countryCode:codeCopy];
 
-    v11 = [v10 unformattedInternationalRepresentation];
+    unformattedInternationalRepresentation = [v10 unformattedInternationalRepresentation];
     v12 = sub_100004778();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v6;
+      v15 = codeCopy;
       v16 = 2112;
-      v17 = v11;
+      v17 = unformattedInternationalRepresentation;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Used country code '%@' to determine international phone number representation: %@", &v14, 0x16u);
     }
 
     v8 = v7;
-    if (v11)
+    if (unformattedInternationalRepresentation)
     {
-      v8 = [[TUHandle alloc] initWithType:objc_msgSend(v7 value:{"type"), v11}];
+      v8 = [[TUHandle alloc] initWithType:objc_msgSend(v7 value:{"type"), unformattedInternationalRepresentation}];
     }
   }
 
@@ -195,19 +195,19 @@ LABEL_11:
 
 - (BOOL)shouldAcceptIncomingInvite
 {
-  v3 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
-  v4 = [v3 isWiFiAvailable];
+  capabilities = [(CSDAbstractIDSProviderDelegate *)self capabilities];
+  isWiFiAvailable = [capabilities isWiFiAvailable];
 
-  v5 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
-  v6 = [v5 isWiFiAllowed];
+  capabilities2 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
+  isWiFiAllowed = [capabilities2 isWiFiAllowed];
 
-  v7 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
-  v8 = [v7 isCellularDataAvailable];
+  capabilities3 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
+  isCellularDataAvailable = [capabilities3 isCellularDataAvailable];
 
-  v9 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
-  v10 = [v9 isCellularDataAllowed];
+  capabilities4 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
+  isCellularDataAllowed = [capabilities4 isCellularDataAllowed];
 
-  v11 = (v4 & v6 & 1) != 0 || (v8 & v10 & 1) != 0 || [(CSDAbstractIDSProviderDelegate *)self shouldOverrideNetworkAsAvailable];
+  v11 = (isWiFiAvailable & isWiFiAllowed & 1) != 0 || (isCellularDataAvailable & isCellularDataAllowed & 1) != 0 || [(CSDAbstractIDSProviderDelegate *)self shouldOverrideNetworkAsAvailable];
   v12 = sub_100004778();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -224,50 +224,50 @@ LABEL_11:
     v15 = 138413570;
     v16 = v13;
     v17 = 1024;
-    v18 = v4;
+    v18 = isWiFiAvailable;
     v19 = 1024;
-    v20 = v6 & 1;
+    v20 = isWiFiAllowed & 1;
     v21 = 1024;
-    v22 = v8;
+    v22 = isCellularDataAvailable;
     v23 = 1024;
-    v24 = v10 & 1;
+    v24 = isCellularDataAllowed & 1;
     v25 = 1024;
-    v26 = [(CSDAbstractIDSProviderDelegate *)self shouldOverrideNetworkAsAvailable];
+    shouldOverrideNetworkAsAvailable = [(CSDAbstractIDSProviderDelegate *)self shouldOverrideNetworkAsAvailable];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Determined that invite should be %@ - (isWiFiAvailable=%d isWiFiAllowed=%d isCellularDataAvailable=%d isCellularDataAllowed=%d shouldOverrideNetworkAsAvailable=%d)", &v15, 0x2Au);
   }
 
   return v11;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingPendingMessageOfType:(int64_t)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingPendingMessageOfType:(int64_t)type fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dCopy = d;
+  contextCopy = context;
   v16 = sub_100004778();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v34 = v12;
+    typeCopy2 = serviceCopy;
     v35 = 2112;
-    v36 = v13;
+    v36 = accountCopy;
     v37 = 2112;
-    v38 = v14;
+    v38 = dCopy;
     v39 = 2112;
-    v40 = v15;
+    v40 = contextCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Invite received for service %@ account %@ from (fromID=%@) with context: %@", buf, 0x2Au);
   }
 
   v17 = sub_100004778();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-  if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
-    v30 = v12;
+    v30 = serviceCopy;
     if (v18)
     {
       *buf = 134217984;
-      v34 = a5;
+      typeCopy2 = type;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Recieved pending message of type %ld", buf, 0xCu);
     }
 
@@ -277,38 +277,38 @@ LABEL_11:
     v20 = [TUHandle handleWithDestinationID:v17];
     v21 = [CSDIDSPendingChat alloc];
     v22 = +[NSUUID UUID];
-    v23 = [v15 serviceIdentifier];
-    v24 = -[CSDIDSPendingChat initWithUUID:isVideo:handle:](v21, "initWithUUID:isVideo:handle:", v22, [v23 containsString:@"audio"] ^ 1, v20);
+    serviceIdentifier = [contextCopy serviceIdentifier];
+    v24 = -[CSDIDSPendingChat initWithUUID:isVideo:handle:](v21, "initWithUUID:isVideo:handle:", v22, [serviceIdentifier containsString:@"audio"] ^ 1, v20);
 
-    if (a5 == 6)
+    if (type == 6)
     {
       if (![(CSDAbstractIDSProviderDelegate *)self shouldAcceptIncomingInvite])
       {
 LABEL_13:
 
-        v12 = v30;
+        serviceCopy = v30;
         goto LABEL_14;
       }
 
-      v25 = [(CSDAbstractIDSProviderDelegate *)self callUpdateForPendingChat:v24];
-      v26 = [(CSDAbstractIDSProviderDelegate *)self provider];
-      v27 = [(CSDIDSPendingChat *)v24 uuid];
+      provider2 = [(CSDAbstractIDSProviderDelegate *)self callUpdateForPendingChat:v24];
+      provider = [(CSDAbstractIDSProviderDelegate *)self provider];
+      uuid = [(CSDIDSPendingChat *)v24 uuid];
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_1000FDFC4;
       v31[3] = &unk_10061A4C0;
       v32 = v24;
-      [v26 reportNewIncomingCallWithUUID:v27 update:v25 completion:v31];
+      [provider reportNewIncomingCallWithUUID:uuid update:provider2 completion:v31];
 
-      v28 = v32;
+      uuid2 = v32;
     }
 
     else
     {
-      v25 = [(CSDAbstractIDSProviderDelegate *)self provider];
-      v28 = [(CSDIDSPendingChat *)v24 uuid];
+      provider2 = [(CSDAbstractIDSProviderDelegate *)self provider];
+      uuid2 = [(CSDIDSPendingChat *)v24 uuid];
       v29 = +[NSDate date];
-      [v25 reportCallWithUUID:v28 endedAtDate:v29 reason:3];
+      [provider2 reportCallWithUUID:uuid2 endedAtDate:v29 reason:3];
     }
 
     goto LABEL_13;
@@ -317,21 +317,21 @@ LABEL_13:
   if (v18)
   {
     *buf = 134217984;
-    v34 = a5;
+    typeCopy2 = type;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Not handling pending message of type: %ld", buf, 0xCu);
   }
 
 LABEL_14:
 }
 
-- (id)callUpdateForPendingChat:(id)a3
+- (id)callUpdateForPendingChat:(id)chat
 {
-  v3 = a3;
+  chatCopy = chat;
   v4 = objc_alloc_init(CXCallUpdate);
-  [v4 setHasVideo:{objc_msgSend(v3, "isVideo")}];
-  v5 = [v3 handle];
+  [v4 setHasVideo:{objc_msgSend(chatCopy, "isVideo")}];
+  handle = [chatCopy handle];
 
-  v6 = [CXHandle handleWithTUHandle:v5];
+  v6 = [CXHandle handleWithTUHandle:handle];
   [v4 setRemoteHandle:v6];
 
   [v4 setRequiresAuthentication:1];
@@ -339,22 +339,22 @@ LABEL_14:
   return v4;
 }
 
-- (void)service:(id)a3 account:(id)a4 inviteReceivedForSession:(id)a5 fromID:(id)a6 withContext:(id)a7
+- (void)service:(id)service account:(id)account inviteReceivedForSession:(id)session fromID:(id)d withContext:(id)context
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [[CSDMessagingCallMessage alloc] initWithData:v14];
+  accountCopy = account;
+  sessionCopy = session;
+  dCopy = d;
+  contextCopy = context;
+  v15 = [[CSDMessagingCallMessage alloc] initWithData:contextCopy];
   v16 = sub_100004778();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    *&buf[4] = v12;
+    *&buf[4] = sessionCopy;
     v94 = 2112;
-    v95 = v11;
+    v95 = accountCopy;
     v96 = 2112;
-    v97 = v13;
+    v97 = dCopy;
     v98 = 2112;
     v99 = v15;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Invite received for session %@ account %@ from (fromID=%@) with data: %@", buf, 0x2Au);
@@ -368,15 +368,15 @@ LABEL_14:
     {
       if (v60)
       {
-        v61 = [(CSDMessagingCallMessage *)v15 type];
-        if (v61 >= 3)
+        type = [(CSDMessagingCallMessage *)v15 type];
+        if (type >= 3)
         {
-          v62 = [NSString stringWithFormat:@"(unknown: %i)", v61];
+          v62 = [NSString stringWithFormat:@"(unknown: %i)", type];
         }
 
         else
         {
-          v62 = off_10061BA38[v61];
+          v62 = off_10061BA38[type];
         }
 
         *buf = 138412290;
@@ -416,11 +416,11 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v17 = [(CSDAbstractIDSProviderDelegate *)self incomingSessionProviderGenerator];
-  v18 = [(CSDAbstractIDSProviderDelegate *)self queue];
-  v19 = (v17)[2](v17, v12, v18);
+  incomingSessionProviderGenerator = [(CSDAbstractIDSProviderDelegate *)self incomingSessionProviderGenerator];
+  queue = [(CSDAbstractIDSProviderDelegate *)self queue];
+  v19 = (incomingSessionProviderGenerator)[2](incomingSessionProviderGenerator, sessionCopy, queue);
 
-  v20 = [[CSDExternalIDSDualSession alloc] initAsReceiverWithSessionProvider:v19 remoteFromID:v13 remoteProtocolVersion:[(CSDMessagingCallMessage *)v15 protocolVersion]];
+  v20 = [[CSDExternalIDSDualSession alloc] initAsReceiverWithSessionProvider:v19 remoteFromID:dCopy remoteProtocolVersion:[(CSDMessagingCallMessage *)v15 protocolVersion]];
   [v20 setInvitationTimeout:TUIncomingInvitationTimeout()];
   v21 = IDSCopyAddressDestinationForDestination();
   v22 = IDSCopyRawAddressForDestination();
@@ -429,33 +429,33 @@ LABEL_25:
   v83 = [[CXHandle alloc] initWithDestinationID:v22];
   v23 = [CSDAbstractIDSProviderDelegate waitingChatWithHandle:"waitingChatWithHandle:isOutgoing:" isOutgoing:?];
   v24 = v23;
-  v84 = self;
+  selfCopy = self;
   v82 = v20;
   if (!v23)
   {
     goto LABEL_7;
   }
 
-  v25 = [v23 sessionUUID];
+  sessionUUID = [v23 sessionUUID];
   [v20 UUID];
-  v26 = v14;
+  v26 = contextCopy;
   v27 = v15;
-  v28 = v13;
-  v29 = v11;
-  v30 = v12;
+  v28 = dCopy;
+  v29 = accountCopy;
+  v30 = sessionCopy;
   v32 = v31 = v24;
-  v33 = [v25 caseInsensitiveCompare:v32];
+  v33 = [sessionUUID caseInsensitiveCompare:v32];
 
   v24 = v31;
-  v12 = v30;
-  v11 = v29;
-  v13 = v28;
+  sessionCopy = v30;
+  accountCopy = v29;
+  dCopy = v28;
   v15 = v27;
-  v14 = v26;
+  contextCopy = v26;
   v20 = v82;
 
   v34 = v33 + 1 == 0;
-  self = v84;
+  self = selfCopy;
   if (v34)
   {
     v72 = sub_100004778();
@@ -474,42 +474,42 @@ LABEL_25:
 LABEL_7:
     v78 = v24;
     v79 = v19;
-    v80 = v14;
-    v35 = [(CSDAbstractIDSProviderDelegate *)self incomingChatGenerator];
-    v36 = [v83 tuHandle];
-    v37 = [(CSDMessagingCallMessage *)v15 protoWantsVideo];
-    v38 = [(CSDMessagingCallMessage *)v15 inviteData];
-    v39 = [v38 faceTimeInviteDictionary];
+    v80 = contextCopy;
+    incomingChatGenerator = [(CSDAbstractIDSProviderDelegate *)self incomingChatGenerator];
+    tuHandle = [v83 tuHandle];
+    protoWantsVideo = [(CSDMessagingCallMessage *)v15 protoWantsVideo];
+    inviteData = [(CSDMessagingCallMessage *)v15 inviteData];
+    faceTimeInviteDictionary = [inviteData faceTimeInviteDictionary];
     v40 = v20;
-    v41 = v84;
-    v42 = (v35)[2](v35, v40, v36, v37, v39);
+    v41 = selfCopy;
+    v42 = (incomingChatGenerator)[2](incomingChatGenerator, v40, tuHandle, protoWantsVideo, faceTimeInviteDictionary);
 
-    [v42 setDelegate:v84];
+    [v42 setDelegate:selfCopy];
     [v42 setRemoteMomentsAvailable:{-[CSDMessagingCallMessage isMomentsAvailable](v15, "isMomentsAvailable")}];
     [v42 setShouldSuppressInCallUI:{-[CSDMessagingCallMessage shouldSuppressInCallUI](v15, "shouldSuppressInCallUI")}];
-    v43 = [(CSDAbstractIDSProviderDelegate *)v84 callUpdateForChat:v42];
-    v44 = [v11 loginID];
-    v45 = [v44 length];
+    v43 = [(CSDAbstractIDSProviderDelegate *)selfCopy callUpdateForChat:v42];
+    loginID = [accountCopy loginID];
+    v45 = [loginID length];
 
     if (v45)
     {
-      v76 = v11;
+      v76 = accountCopy;
       v77 = v43;
       v73 = v42;
-      v74 = v13;
-      v75 = v12;
-      v46 = [v11 loginID];
+      v74 = dCopy;
+      v75 = sessionCopy;
+      loginID2 = [accountCopy loginID];
       v47 = TUHandleForIDSCanonicalAddress();
 
-      v48 = [(CSDAbstractIDSProviderDelegate *)v84 provider];
-      v49 = [v48 configuration];
-      v50 = [v49 prioritizedSenderIdentities];
+      provider = [(CSDAbstractIDSProviderDelegate *)selfCopy provider];
+      configuration = [provider configuration];
+      prioritizedSenderIdentities = [configuration prioritizedSenderIdentities];
 
       v90 = 0u;
       v91 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v51 = v50;
+      v51 = prioritizedSenderIdentities;
       v52 = [v51 countByEnumeratingWithState:&v88 objects:v92 count:16];
       if (v52)
       {
@@ -525,18 +525,18 @@ LABEL_7:
             }
 
             v56 = *(*(&v88 + 1) + 8 * i);
-            v57 = [v56 handle];
-            v58 = [v57 tuHandle];
-            v59 = [v58 isEqualToHandle:v47];
+            handle = [v56 handle];
+            tuHandle2 = [handle tuHandle];
+            v59 = [tuHandle2 isEqualToHandle:v47];
 
             if (v59)
             {
-              v66 = [v56 UUID];
-              [v77 setLocalSenderIdentityUUID:v66];
+              uUID = [v56 UUID];
+              [v77 setLocalSenderIdentityUUID:uUID];
 
-              v67 = [v56 account];
-              v68 = [v67 UUID];
-              [v77 setLocalSenderIdentityAccountUUID:v68];
+              account = [v56 account];
+              uUID2 = [account UUID];
+              [v77 setLocalSenderIdentityAccountUUID:uUID2];
 
               goto LABEL_29;
             }
@@ -554,16 +554,16 @@ LABEL_7:
 
 LABEL_29:
 
-      v12 = v75;
-      v11 = v76;
+      sessionCopy = v75;
+      accountCopy = v76;
       v42 = v73;
-      v13 = v74;
-      v41 = v84;
+      dCopy = v74;
+      v41 = selfCopy;
       v43 = v77;
     }
 
-    v69 = [(CSDAbstractIDSProviderDelegate *)v41 provider];
-    v70 = [v42 UUID];
+    provider2 = [(CSDAbstractIDSProviderDelegate *)v41 provider];
+    uUID3 = [v42 UUID];
     v85[0] = _NSConcreteStackBlock;
     v85[1] = 3221225472;
     v85[2] = sub_1000FE8BC;
@@ -573,26 +573,26 @@ LABEL_29:
     v20 = v82;
     v87 = v82;
     v71 = v42;
-    [v69 reportNewIncomingCallWithUUID:v70 update:v43 completion:v85];
+    [provider2 reportNewIncomingCallWithUUID:uUID3 update:v43 completion:v85];
 
     v19 = v79;
-    v14 = v80;
+    contextCopy = v80;
     v24 = v78;
   }
 
 LABEL_35:
 }
 
-- (id)waitingChatWithHandle:(id)a3 isOutgoing:(BOOL)a4
+- (id)waitingChatWithHandle:(id)handle isOutgoing:(BOOL)outgoing
 {
-  v4 = a4;
-  v6 = a3;
+  outgoingCopy = outgoing;
+  handleCopy = handle;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  mutableChats = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
+  v8 = [mutableChats countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v8)
   {
     goto LABEL_14;
@@ -606,18 +606,18 @@ LABEL_35:
     {
       if (*v19 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(mutableChats);
       }
 
       v12 = *(*(&v18 + 1) + 8 * i);
-      v13 = [v12 dateStartedConnecting];
-      if (v13)
+      dateStartedConnecting = [v12 dateStartedConnecting];
+      if (dateStartedConnecting)
       {
         goto LABEL_11;
       }
 
-      v13 = [v12 handle];
-      v14 = [v6 tuHandle];
+      dateStartedConnecting = [v12 handle];
+      tuHandle = [handleCopy tuHandle];
       if ((TUHandlesAreCanonicallyEqual() & 1) == 0)
       {
 
@@ -625,16 +625,16 @@ LABEL_11:
         continue;
       }
 
-      v15 = [v12 isOutgoing];
+      isOutgoing = [v12 isOutgoing];
 
-      if (v15 == v4)
+      if (isOutgoing == outgoingCopy)
       {
         v16 = v12;
         goto LABEL_15;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v9 = [mutableChats countByEnumeratingWithState:&v18 objects:v22 count:16];
   }
 
   while (v9);
@@ -645,56 +645,56 @@ LABEL_15:
   return v16;
 }
 
-- (int)TUCallRemoteVideoPresentationStateFromCXVideoPresentationState:(int64_t)a3
+- (int)TUCallRemoteVideoPresentationStateFromCXVideoPresentationState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
-- (id)callUpdateForChat:(id)a3
+- (id)callUpdateForChat:(id)chat
 {
-  v3 = a3;
-  v4 = [[CXCallUpdate alloc] initWithIDSChat:v3];
+  chatCopy = chat;
+  v4 = [[CXCallUpdate alloc] initWithIDSChat:chatCopy];
 
   return v4;
 }
 
-- (void)providerDidBegin:(id)a3
+- (void)providerDidBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = beginCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "provider: %@", &v8, 0xCu);
   }
 
-  [(CSDAbstractIDSProviderDelegate *)self setProvider:v4];
-  v6 = [(CSDAbstractIDSProviderDelegate *)self providerDidBegin];
+  [(CSDAbstractIDSProviderDelegate *)self setProvider:beginCopy];
+  providerDidBegin = [(CSDAbstractIDSProviderDelegate *)self providerDidBegin];
 
-  if (v6)
+  if (providerDidBegin)
   {
-    v7 = [(CSDAbstractIDSProviderDelegate *)self providerDidBegin];
-    v7[2]();
+    providerDidBegin2 = [(CSDAbstractIDSProviderDelegate *)self providerDidBegin];
+    providerDidBegin2[2]();
   }
 }
 
-- (void)providerDidReset:(id)a3
+- (void)providerDidReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = resetCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "provider: %@", buf, 0xCu);
   }
 
@@ -702,8 +702,8 @@ LABEL_15:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  mutableChats = [(CSDAbstractIDSProviderDelegate *)self mutableChats];
+  v7 = [mutableChats countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -715,7 +715,7 @@ LABEL_15:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mutableChats);
         }
 
         [*(*(&v11 + 1) + 8 * v10) end];
@@ -723,30 +723,30 @@ LABEL_15:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [mutableChats countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4
+- (void)provider:(id)provider performAnswerCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", &v12, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:callUUID];
 
-  v9 = [v8 dateConnected];
+  dateConnected = [v8 dateConnected];
 
-  if (v9)
+  if (dateConnected)
   {
     v10 = sub_100004778();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -754,15 +754,15 @@ LABEL_15:
       sub_100474A2C(v8, v10);
     }
 
-    if (([v5 isComplete] & 1) == 0)
+    if (([actionCopy isComplete] & 1) == 0)
     {
-      [v5 fail];
+      [actionCopy fail];
     }
   }
 
   else
   {
-    if ([v5 downgradeToAudio])
+    if ([actionCopy downgradeToAudio])
     {
       [v8 setVideo:0];
       [v8 setSendingVideo:0];
@@ -776,23 +776,23 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Calling answer on chat %@", &v12, 0xCu);
     }
 
-    [v8 answerWithVideoAspectRatioDescriptor:v5];
+    [v8 answerWithVideoAspectRatioDescriptor:actionCopy];
   }
 }
 
-- (void)provider:(id)a3 performEndCallAction:(id)a4
+- (void)provider:(id)provider performEndCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", &v10, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:callUUID];
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -803,34 +803,34 @@ LABEL_15:
   }
 
   [v8 end];
-  if (([v5 isComplete] & 1) == 0)
+  if (([actionCopy isComplete] & 1) == 0)
   {
-    [v5 fulfill];
+    [actionCopy fulfill];
   }
 }
 
-- (void)provider:(id)a3 performSetHeldCallAction:(id)a4
+- (void)provider:(id)provider performSetHeldCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v5;
+    v16 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", &v15, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:callUUID];
 
-  v9 = [v8 dateConnected];
+  dateConnected = [v8 dateConnected];
 
-  if (v9)
+  if (dateConnected)
   {
-    v10 = [v5 isOnHold];
+    isOnHold = [actionCopy isOnHold];
     v11 = sub_100004778();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (isOnHold)
     {
       if (!v12)
       {
@@ -857,10 +857,10 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v13, &v15, 0xCu);
 LABEL_14:
 
-    [v8 setSendingAudio:v10 ^ 1];
-    if (([v5 isComplete] & 1) == 0)
+    [v8 setSendingAudio:isOnHold ^ 1];
+    if (([actionCopy isComplete] & 1) == 0)
     {
-      [v5 fulfill];
+      [actionCopy fulfill];
     }
 
     goto LABEL_16;
@@ -872,187 +872,187 @@ LABEL_14:
     sub_100474AA4(v8, v14);
   }
 
-  if (([v5 isComplete] & 1) == 0)
+  if (([actionCopy isComplete] & 1) == 0)
   {
-    [v5 fail];
+    [actionCopy fail];
   }
 
 LABEL_16:
 }
 
-- (void)provider:(id)a3 performSetSendingVideoCallAction:(id)a4
+- (void)provider:(id)provider performSetSendingVideoCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12[0] = v5;
+    v12[0] = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", &v11, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:callUUID];
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v5 isSendingVideo];
+    isSendingVideo = [actionCopy isSendingVideo];
     v11 = 67109378;
-    LODWORD(v12[0]) = v10;
+    LODWORD(v12[0]) = isSendingVideo;
     WORD2(v12[0]) = 2112;
     *(v12 + 6) = v8;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Calling setIsSendingVideo with %d for chat %@", &v11, 0x12u);
   }
 
-  [v8 setSendingVideo:{objc_msgSend(v5, "isSendingVideo")}];
-  if (([v5 isComplete] & 1) == 0)
+  [v8 setSendingVideo:{objc_msgSend(actionCopy, "isSendingVideo")}];
+  if (([actionCopy isComplete] & 1) == 0)
   {
-    [v5 fulfill];
+    [actionCopy fulfill];
   }
 }
 
-- (void)provider:(id)a3 performSetSharingScreenCallAction:(id)a4
+- (void)provider:(id)provider performSetSharingScreenCallAction:(id)action
 {
-  v4 = a4;
+  actionCopy = action;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "action: %@", &v6, 0xCu);
   }
 
-  [v4 fail];
+  [actionCopy fail];
 }
 
-- (void)provider:(id)a3 performEnableVideoCallAction:(id)a4
+- (void)provider:(id)provider performEnableVideoCallAction:(id)action
 {
-  v4 = a4;
+  actionCopy = action;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "action: %@", &v6, 0xCu);
   }
 
-  [v4 fail];
+  [actionCopy fail];
 }
 
-- (void)provider:(id)a3 performSetVideoPresentationSizeCallAction:(id)a4
+- (void)provider:(id)provider performSetVideoPresentationSizeCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", &v9, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:callUUID];
 
-  [v5 videoPresentationSize];
+  [actionCopy videoPresentationSize];
   [v8 setRemoteVideoPresentationSize:?];
-  if (([v5 isComplete] & 1) == 0)
+  if (([actionCopy isComplete] & 1) == 0)
   {
-    [v5 fulfill];
+    [actionCopy fulfill];
   }
 }
 
-- (void)provider:(id)a3 performSetVideoPresentationStateCallAction:(id)a4
+- (void)provider:(id)provider performSetVideoPresentationStateCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", &v9, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:callUUID];
 
-  [v8 setRemoteVideoPresentationState:{-[CSDAbstractIDSProviderDelegate TUCallRemoteVideoPresentationStateFromCXVideoPresentationState:](self, "TUCallRemoteVideoPresentationStateFromCXVideoPresentationState:", objc_msgSend(v5, "videoPresentationState"))}];
-  if (([v5 isComplete] & 1) == 0)
+  [v8 setRemoteVideoPresentationState:{-[CSDAbstractIDSProviderDelegate TUCallRemoteVideoPresentationStateFromCXVideoPresentationState:](self, "TUCallRemoteVideoPresentationStateFromCXVideoPresentationState:", objc_msgSend(actionCopy, "videoPresentationState"))}];
+  if (([actionCopy isComplete] & 1) == 0)
   {
-    [v5 fulfill];
+    [actionCopy fulfill];
   }
 }
 
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", &v9, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:callUUID];
 
-  [v8 setRelaying:{objc_msgSend(v5, "isRelaying")}];
-  if (([v5 isComplete] & 1) == 0)
+  [v8 setRelaying:{objc_msgSend(actionCopy, "isRelaying")}];
+  if (([actionCopy isComplete] & 1) == 0)
   {
-    [v5 fulfill];
+    [actionCopy fulfill];
   }
 }
 
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4
+- (void)provider:(id)provider performSetMutedCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", &v9, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDAbstractIDSProviderDelegate *)self chatWithUUID:callUUID];
 
-  [v8 setMuted:{objc_msgSend(v5, "isMuted")}];
-  if (([v5 isComplete] & 1) == 0)
+  [v8 setMuted:{objc_msgSend(actionCopy, "isMuted")}];
+  if (([actionCopy isComplete] & 1) == 0)
   {
-    [v5 fulfill];
+    [actionCopy fulfill];
   }
 }
 
-- (BOOL)isWiFiAllowedForChat:(id)a3
+- (BOOL)isWiFiAllowedForChat:(id)chat
 {
-  v3 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
-  v4 = [v3 isWiFiAllowed];
+  capabilities = [(CSDAbstractIDSProviderDelegate *)self capabilities];
+  isWiFiAllowed = [capabilities isWiFiAllowed];
 
-  return v4;
+  return isWiFiAllowed;
 }
 
-- (BOOL)isCellularDataAllowedForChat:(id)a3
+- (BOOL)isCellularDataAllowedForChat:(id)chat
 {
-  v3 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
-  v4 = [v3 isCellularDataAllowed];
+  capabilities = [(CSDAbstractIDSProviderDelegate *)self capabilities];
+  isCellularDataAllowed = [capabilities isCellularDataAllowed];
 
-  return v4;
+  return isCellularDataAllowed;
 }
 
-- (BOOL)isCellularDataPreferredForChat:(id)a3
+- (BOOL)isCellularDataPreferredForChat:(id)chat
 {
-  v3 = [(CSDAbstractIDSProviderDelegate *)self capabilities];
-  v4 = [v3 isCellularDataPreferred];
+  capabilities = [(CSDAbstractIDSProviderDelegate *)self capabilities];
+  isCellularDataPreferred = [capabilities isCellularDataPreferred];
 
-  return v4;
+  return isCellularDataPreferred;
 }
 
-- (CGSize)localPortraitAspectRatioForChat:(id)a3
+- (CGSize)localPortraitAspectRatioForChat:(id)chat
 {
-  v3 = [CUTWeakLinkClass() mainDisplay];
-  [v3 bounds];
+  mainDisplay = [CUTWeakLinkClass() mainDisplay];
+  [mainDisplay bounds];
   if (v4 <= v5)
   {
     v6 = v4;
@@ -1084,46 +1084,46 @@ LABEL_16:
   return result;
 }
 
-- (void)chatSentInvitation:(id)a3
+- (void)chatSentInvitation:(id)invitation
 {
-  v9 = a3;
-  if ([v9 isOutgoing])
+  invitationCopy = invitation;
+  if ([invitationCopy isOutgoing])
   {
-    v4 = [(CSDAbstractIDSProviderDelegate *)self provider];
-    v5 = [v9 UUID];
-    [v4 reportOutgoingCallWithUUID:v5 sentInvitationAtDate:0];
+    provider = [(CSDAbstractIDSProviderDelegate *)self provider];
+    uUID = [invitationCopy UUID];
+    [provider reportOutgoingCallWithUUID:uUID sentInvitationAtDate:0];
 
-    v6 = [(CSDAbstractIDSProviderDelegate *)self callUpdateForChat:v9];
-    [v6 setMayRequireBreakBeforeMake:{objc_msgSend(v9, "mayRequireBreakBeforeMake")}];
-    v7 = [(CSDAbstractIDSProviderDelegate *)self provider];
-    v8 = [v9 UUID];
-    [v7 reportCallWithUUID:v8 updated:v6];
+    v6 = [(CSDAbstractIDSProviderDelegate *)self callUpdateForChat:invitationCopy];
+    [v6 setMayRequireBreakBeforeMake:{objc_msgSend(invitationCopy, "mayRequireBreakBeforeMake")}];
+    provider2 = [(CSDAbstractIDSProviderDelegate *)self provider];
+    uUID2 = [invitationCopy UUID];
+    [provider2 reportCallWithUUID:uUID2 updated:v6];
   }
 }
 
-- (void)chatConnected:(id)a3
+- (void)chatConnected:(id)connected
 {
-  v4 = a3;
-  v5 = [(CSDAbstractIDSProviderDelegate *)self callUpdateForChat:v4];
-  [v5 setVideoStreamToken:{objc_msgSend(v4, "videoStreamToken")}];
-  v6 = [(CSDAbstractIDSProviderDelegate *)self provider];
-  v7 = [v4 UUID];
-  [v6 reportCallWithUUID:v7 updated:v5];
+  connectedCopy = connected;
+  v5 = [(CSDAbstractIDSProviderDelegate *)self callUpdateForChat:connectedCopy];
+  [v5 setVideoStreamToken:{objc_msgSend(connectedCopy, "videoStreamToken")}];
+  provider = [(CSDAbstractIDSProviderDelegate *)self provider];
+  uUID = [connectedCopy UUID];
+  [provider reportCallWithUUID:uUID updated:v5];
 
-  LODWORD(v7) = [v4 isOutgoing];
-  v8 = [(CSDAbstractIDSProviderDelegate *)self provider];
-  if (v7)
+  LODWORD(uUID) = [connectedCopy isOutgoing];
+  provider2 = [(CSDAbstractIDSProviderDelegate *)self provider];
+  if (uUID)
   {
-    v9 = [v4 UUID];
-    v10 = [v4 dateConnected];
-    [v8 reportOutgoingCallWithUUID:v9 connectedAtDate:v10];
+    uUID2 = [connectedCopy UUID];
+    dateConnected = [connectedCopy dateConnected];
+    [provider2 reportOutgoingCallWithUUID:uUID2 connectedAtDate:dateConnected];
   }
 
   else
   {
     v11 = objc_opt_class();
-    v12 = [v4 UUID];
-    v13 = [v8 pendingCallActionsOfClass:v11 withCallUUID:v12];
+    uUID3 = [connectedCopy UUID];
+    v13 = [provider2 pendingCallActionsOfClass:v11 withCallUUID:uUID3];
 
     if ([v13 count])
     {
@@ -1158,10 +1158,10 @@ LABEL_16:
 
             if (([v19 isComplete] & 1) == 0)
             {
-              v21 = [v4 dateConnected];
-              if (v21)
+              dateConnected2 = [connectedCopy dateConnected];
+              if (dateConnected2)
               {
-                [v19 fulfillWithDateConnected:v21];
+                [v19 fulfillWithDateConnected:dateConnected2];
               }
 
               else
@@ -1192,23 +1192,23 @@ LABEL_16:
       v14 = sub_100004778();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v4 UUID];
+        uUID4 = [connectedCopy UUID];
         *buf = 138412290;
-        v30 = v23;
+        v30 = uUID4;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[WARN] No pending answer call actions found with UUID: %@", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)chatEnded:(id)a3
+- (void)chatEnded:(id)ended
 {
-  v4 = a3;
-  [(CSDAbstractIDSProviderDelegate *)self updateCacheWithChat:v4];
-  v5 = [(CSDAbstractIDSProviderDelegate *)self provider];
+  endedCopy = ended;
+  [(CSDAbstractIDSProviderDelegate *)self updateCacheWithChat:endedCopy];
+  provider = [(CSDAbstractIDSProviderDelegate *)self provider];
   v6 = objc_opt_class();
-  v7 = [v4 UUID];
-  v8 = [v5 pendingCallActionsOfClass:v6 withCallUUID:v7];
+  uUID = [endedCopy UUID];
+  v8 = [provider pendingCallActionsOfClass:v6 withCallUUID:uUID];
 
   v18 = 0u;
   v19 = 0u;
@@ -1234,7 +1234,7 @@ LABEL_16:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v21 = v4;
+          v21 = endedCopy;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Failing answer call action for call because it disconnected before connecting: %@", buf, 0xCu);
         }
 
@@ -1251,54 +1251,54 @@ LABEL_16:
   }
 }
 
-- (void)chat:(id)a3 changedBytesOfDataUsed:(int64_t)a4
+- (void)chat:(id)chat changedBytesOfDataUsed:(int64_t)used
 {
-  v6 = a3;
-  v9 = [(CSDAbstractIDSProviderDelegate *)self provider];
-  v7 = [v6 UUID];
-  v8 = [v6 crossDeviceIdentifier];
+  chatCopy = chat;
+  provider = [(CSDAbstractIDSProviderDelegate *)self provider];
+  uUID = [chatCopy UUID];
+  crossDeviceIdentifier = [chatCopy crossDeviceIdentifier];
 
-  [v9 reportCallWithUUID:v7 crossDeviceIdentifier:v8 changedBytesOfDataUsed:a4];
+  [provider reportCallWithUUID:uUID crossDeviceIdentifier:crossDeviceIdentifier changedBytesOfDataUsed:used];
 }
 
-- (void)chat:(id)a3 inputFrequencyLevelChangedTo:(id)a4
+- (void)chat:(id)chat inputFrequencyLevelChangedTo:(id)to
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(CSDAbstractIDSProviderDelegate *)self provider];
-  v8 = [v7 UUID];
+  toCopy = to;
+  chatCopy = chat;
+  provider = [(CSDAbstractIDSProviderDelegate *)self provider];
+  uUID = [chatCopy UUID];
 
-  [v9 reportCallWithUUID:v8 changedFrequencyData:v6 forDirection:2];
+  [provider reportCallWithUUID:uUID changedFrequencyData:toCopy forDirection:2];
 }
 
-- (void)chat:(id)a3 outputFrequencyLevelChangedTo:(id)a4
+- (void)chat:(id)chat outputFrequencyLevelChangedTo:(id)to
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(CSDAbstractIDSProviderDelegate *)self provider];
-  v8 = [v7 UUID];
+  toCopy = to;
+  chatCopy = chat;
+  provider = [(CSDAbstractIDSProviderDelegate *)self provider];
+  uUID = [chatCopy UUID];
 
-  [v9 reportCallWithUUID:v8 changedFrequencyData:v6 forDirection:1];
+  [provider reportCallWithUUID:uUID changedFrequencyData:toCopy forDirection:1];
 }
 
-- (void)chat:(id)a3 inputLevelChangedTo:(float)a4
+- (void)chat:(id)chat inputLevelChangedTo:(float)to
 {
-  v6 = a3;
-  v9 = [(CSDAbstractIDSProviderDelegate *)self provider];
-  v7 = [v6 UUID];
+  chatCopy = chat;
+  provider = [(CSDAbstractIDSProviderDelegate *)self provider];
+  uUID = [chatCopy UUID];
 
-  *&v8 = a4;
-  [v9 reportCallWithUUID:v7 changedMeterLevel:2 forDirection:v8];
+  *&v8 = to;
+  [provider reportCallWithUUID:uUID changedMeterLevel:2 forDirection:v8];
 }
 
-- (void)chat:(id)a3 outputLevelChangedTo:(float)a4
+- (void)chat:(id)chat outputLevelChangedTo:(float)to
 {
-  v6 = a3;
-  v9 = [(CSDAbstractIDSProviderDelegate *)self provider];
-  v7 = [v6 UUID];
+  chatCopy = chat;
+  provider = [(CSDAbstractIDSProviderDelegate *)self provider];
+  uUID = [chatCopy UUID];
 
-  *&v8 = a4;
-  [v9 reportCallWithUUID:v7 changedMeterLevel:1 forDirection:v8];
+  *&v8 = to;
+  [provider reportCallWithUUID:uUID changedMeterLevel:1 forDirection:v8];
 }
 
 @end

@@ -5,7 +5,7 @@
 - (UILabel)errorLabel;
 - (UIView)underlineView;
 - (void)awakeFromNib;
-- (void)upgradeButtonTouched:(id)a3;
+- (void)upgradeButtonTouched:(id)touched;
 @end
 
 @implementation BKUploadErrorHeaderView
@@ -21,28 +21,28 @@
   v5 = [NSLayoutConstraint constraintWithItem:self attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:v4];
   [(BKUploadErrorHeaderView *)self addConstraint:v5];
 
-  v6 = [(BKUploadErrorHeaderView *)self tintColor];
-  v7 = [v6 CGColor];
-  v8 = [(BKUploadErrorHeaderView *)self upgradeButton];
-  v9 = [v8 layer];
-  [v9 setBorderColor:v7];
+  tintColor = [(BKUploadErrorHeaderView *)self tintColor];
+  cGColor = [tintColor CGColor];
+  upgradeButton = [(BKUploadErrorHeaderView *)self upgradeButton];
+  layer = [upgradeButton layer];
+  [layer setBorderColor:cGColor];
 
   v10 = +[UIScreen mainScreen];
   [v10 scale];
   v12 = 1.0 / v11;
-  v13 = [(BKUploadErrorHeaderView *)self underlineHeightConstraint];
-  [v13 setConstant:v12];
+  underlineHeightConstraint = [(BKUploadErrorHeaderView *)self underlineHeightConstraint];
+  [underlineHeightConstraint setConstant:v12];
 }
 
-- (void)upgradeButtonTouched:(id)a3
+- (void)upgradeButtonTouched:(id)touched
 {
-  v4 = [(BKUploadErrorHeaderView *)self delegate];
+  delegate = [(BKUploadErrorHeaderView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(BKUploadErrorHeaderView *)self delegate];
-    [v6 uploadErrorHeaderViewUpgradeButtonPressed:self];
+    delegate2 = [(BKUploadErrorHeaderView *)self delegate];
+    [delegate2 uploadErrorHeaderViewUpgradeButtonPressed:self];
   }
 }
 

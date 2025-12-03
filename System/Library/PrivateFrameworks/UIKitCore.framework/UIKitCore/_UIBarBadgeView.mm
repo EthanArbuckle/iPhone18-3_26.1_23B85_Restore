@@ -1,5 +1,5 @@
 @interface _UIBarBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDictionary)textAttributes;
 - (NSString)text;
 - (UIColor)badgeColor;
@@ -7,12 +7,12 @@
 - (_UIFloatingTabBarPlatformMetrics)_currentPlatformMetrics;
 - (void)_updateAttributedText;
 - (void)layoutSubviews;
-- (void)setBadgeColor:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextAttributes:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextOffset:(UIOffset)a3;
+- (void)setBadgeColor:(id)color;
+- (void)setFont:(id)font;
+- (void)setText:(id)text;
+- (void)setTextAttributes:(id)attributes;
+- (void)setTextColor:(id)color;
+- (void)setTextOffset:(UIOffset)offset;
 @end
 
 @implementation _UIBarBadgeView
@@ -33,9 +33,9 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_18A4A7288();
     v6 = v5;
@@ -47,50 +47,50 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_189019468(v4, v6);
 }
 
 - (UIColor)badgeColor
 {
-  v2 = [(UIView *)self backgroundColor];
+  backgroundColor = [(UIView *)self backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBadgeColor:(id)a3
+- (void)setBadgeColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v4 = self;
-    v5 = a3;
+    selfCopy = self;
+    colorCopy = color;
   }
 
   else
   {
     v6 = objc_opt_self();
-    v7 = self;
-    v5 = [v6 systemRedColor];
+    selfCopy2 = self;
+    colorCopy = [v6 systemRedColor];
   }
 
-  v8 = a3;
-  [(UIView *)self setBackgroundColor:v5];
+  colorCopy2 = color;
+  [(UIView *)self setBackgroundColor:colorCopy];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = self;
-  v5 = a3;
-  v9 = [(_UIBarBadgeView *)v4 textLabel];
-  v6 = v5;
-  if (!v5)
+  selfCopy = self;
+  fontCopy = font;
+  textLabel = [(_UIBarBadgeView *)selfCopy textLabel];
+  badgeFont = fontCopy;
+  if (!fontCopy)
   {
-    v7 = [(_UIBarBadgeView *)v4 _currentPlatformMetrics];
-    v6 = [(_UIFloatingTabBarPlatformMetrics *)v7 badgeFont];
+    _currentPlatformMetrics = [(_UIBarBadgeView *)selfCopy _currentPlatformMetrics];
+    badgeFont = [(_UIFloatingTabBarPlatformMetrics *)_currentPlatformMetrics badgeFont];
   }
 
-  v8 = v5;
-  [(UILabel *)v9 setFont:v6];
+  v8 = fontCopy;
+  [(UILabel *)textLabel setFont:badgeFont];
 }
 
 - (NSDictionary)textAttributes
@@ -111,9 +111,9 @@
   return v2;
 }
 
-- (void)setTextAttributes:(id)a3
+- (void)setTextAttributes:(id)attributes
 {
-  if (a3)
+  if (attributes)
   {
     type metadata accessor for Key(0);
     sub_188C5E0DC();
@@ -126,9 +126,9 @@
   }
 
   *(self + OBJC_IVAR____UIBarBadgeView_textAttributes) = v4;
-  v5 = self;
+  selfCopy = self;
 
-  [(_UIBarBadgeView *)v5 _updateAttributedText];
+  [(_UIBarBadgeView *)selfCopy _updateAttributedText];
 }
 
 - (UIOffset)textOffset
@@ -140,37 +140,37 @@
   return result;
 }
 
-- (void)setTextOffset:(UIOffset)a3
+- (void)setTextOffset:(UIOffset)offset
 {
   v3 = *(self + OBJC_IVAR____UIBarBadgeView_textOffset);
   v4 = *(self + OBJC_IVAR____UIBarBadgeView_textOffset + 8);
-  *(self + OBJC_IVAR____UIBarBadgeView_textOffset) = a3;
-  if (a3.horizontal != v3 || a3.vertical != v4)
+  *(self + OBJC_IVAR____UIBarBadgeView_textOffset) = offset;
+  if (offset.horizontal != v3 || offset.vertical != v4)
   {
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = self;
-  v5 = a3;
-  v8 = [(_UIBarBadgeView *)v4 textLabel];
-  v6 = v5;
-  if (!v5)
+  selfCopy = self;
+  colorCopy = color;
+  textLabel = [(_UIBarBadgeView *)selfCopy textLabel];
+  whiteColor = colorCopy;
+  if (!colorCopy)
   {
-    v6 = [objc_opt_self() whiteColor];
+    whiteColor = [objc_opt_self() whiteColor];
   }
 
-  v7 = v5;
-  [(UILabel *)v8 setTextColor:v6];
+  v7 = colorCopy;
+  [(UILabel *)textLabel setTextColor:whiteColor];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_189019D30(width, height);
   v7 = v6;
   v9 = v8;
@@ -184,23 +184,23 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_189019ED4();
 }
 
 - (void)_updateAttributedText
 {
-  v2 = self;
+  selfCopy = self;
   sub_18901A0D4();
 }
 
 - (_UIFloatingTabBarPlatformMetrics)_currentPlatformMetrics
 {
-  v2 = self;
-  v3 = [(UIView *)v2 traitCollection];
-  v4 = [(UITraitCollection *)v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(UIView *)selfCopy traitCollection];
+  userInterfaceIdiom = [(UITraitCollection *)traitCollection userInterfaceIdiom];
 
-  v5 = _UIFloatingTabBarGetPlatformMetrics(v4);
+  v5 = _UIFloatingTabBarGetPlatformMetrics(userInterfaceIdiom);
 
   return v5;
 }

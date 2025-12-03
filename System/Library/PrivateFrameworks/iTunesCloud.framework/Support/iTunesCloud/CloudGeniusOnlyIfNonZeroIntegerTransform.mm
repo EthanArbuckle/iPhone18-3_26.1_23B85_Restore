@@ -1,16 +1,16 @@
 @interface CloudGeniusOnlyIfNonZeroIntegerTransform
-- (id)geniusValueForMLValue:(id)a3;
+- (id)geniusValueForMLValue:(id)value;
 @end
 
 @implementation CloudGeniusOnlyIfNonZeroIntegerTransform
 
-- (id)geniusValueForMLValue:(id)a3
+- (id)geniusValueForMLValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 longLongValue])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy longLongValue])
   {
-    v4 = v3;
+    v4 = valueCopy;
   }
 
   else

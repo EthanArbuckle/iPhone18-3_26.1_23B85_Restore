@@ -1,84 +1,84 @@
 @interface DBSceneWidgetViewController
 - (BOOL)entireWidgetFocusable;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (DBSceneWidgetViewController)initWithEnvironment:(id)a3 animationManager:(id)a4 widgetSizeManager:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (DBSceneWidgetViewController)initWithEnvironment:(id)environment animationManager:(id)manager widgetSizeManager:(id)sizeManager;
 - (DBWidgetSizeManaging)widgetSizeManager;
 - (id)getIconPlaceholderLayerView;
 - (id)linearFocusItems;
 - (id)loadingIconLayer;
 - (id)preferredFocusEnvironments;
-- (void)_addWidgetSceneViewControllerForApplication:(id)a3 scene:(id)a4;
+- (void)_addWidgetSceneViewControllerForApplication:(id)application scene:(id)scene;
 - (void)_animateLoadingViewRemovalIfNecessary;
 - (void)_beginTouchCancelation;
 - (void)_endTouchCancelation;
-- (void)_handleTapGesture:(id)a3;
-- (void)_installWidgetSceneViewController:(id)a3;
+- (void)_handleTapGesture:(id)gesture;
+- (void)_installWidgetSceneViewController:(id)controller;
 - (void)_removeWidgetSceneViewController;
-- (void)_scrollViewDidEndDragging:(id)a3;
-- (void)_scrollViewWillBeginDragging:(id)a3;
-- (void)_setTouchActionDisabled:(BOOL)a3 forRequester:(id)a4;
+- (void)_scrollViewDidEndDragging:(id)dragging;
+- (void)_scrollViewWillBeginDragging:(id)dragging;
+- (void)_setTouchActionDisabled:(BOOL)disabled forRequester:(id)requester;
 - (void)_updateLoadingIconLayer;
 - (void)_updateTouchActionDisabled;
 - (void)clientSetContentReady;
-- (void)clientSetFocusableItems:(id)a3;
-- (void)clientSetWantsLargeSize:(BOOL)a3 fenceHandle:(id)a4 animationSettings:(id)a5;
+- (void)clientSetFocusableItems:(id)items;
+- (void)clientSetWantsLargeSize:(BOOL)size fenceHandle:(id)handle animationSettings:(id)settings;
 - (void)connectionReady;
-- (void)focusableItem:(id)a3 didChangeFocused:(BOOL)a4;
-- (void)focusableItem:(id)a3 didChangePressed:(BOOL)a4;
+- (void)focusableItem:(id)item didChangeFocused:(BOOL)focused;
+- (void)focusableItem:(id)item didChangePressed:(BOOL)pressed;
 - (void)invalidate;
-- (void)prepareLoadingViewAnimated:(BOOL)a3;
-- (void)replaceLoadingViewWithView:(id)a3;
-- (void)selectedFocusableItem:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setAvailableWidgetSizes:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setForeground:(BOOL)a3;
-- (void)setScene:(id)a3 application:(id)a4;
-- (void)setWantsLargeSize:(BOOL)a3;
-- (void)setWidgetContextId:(unsigned int)a3;
-- (void)setWidgetStyle:(unint64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)prepareLoadingViewAnimated:(BOOL)animated;
+- (void)replaceLoadingViewWithView:(id)view;
+- (void)selectedFocusableItem:(id)item;
+- (void)setActive:(BOOL)active;
+- (void)setAvailableWidgetSizes:(id)sizes;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setForeground:(BOOL)foreground;
+- (void)setScene:(id)scene application:(id)application;
+- (void)setWantsLargeSize:(BOOL)size;
+- (void)setWidgetContextId:(unsigned int)id;
+- (void)setWidgetStyle:(unint64_t)style;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 - (void)updateAppearanceForWallpaper;
-- (void)updateContextId:(unsigned int)a3;
+- (void)updateContextId:(unsigned int)id;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)widgetSceneHostViewController:(id)a3 sceneContentStateDidUpdate:(int64_t)a4;
-- (void)widgetSceneHostViewControllerSceneWillDeactivate:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)widgetSceneHostViewController:(id)controller sceneContentStateDidUpdate:(int64_t)update;
+- (void)widgetSceneHostViewControllerSceneWillDeactivate:(id)deactivate;
 @end
 
 @implementation DBSceneWidgetViewController
 
-- (DBSceneWidgetViewController)initWithEnvironment:(id)a3 animationManager:(id)a4 widgetSizeManager:(id)a5
+- (DBSceneWidgetViewController)initWithEnvironment:(id)environment animationManager:(id)manager widgetSizeManager:(id)sizeManager
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  sizeManagerCopy = sizeManager;
   v23.receiver = self;
   v23.super_class = DBSceneWidgetViewController;
-  v11 = [(DBWidgetViewController *)&v23 initWithEnvironment:a3];
+  v11 = [(DBWidgetViewController *)&v23 initWithEnvironment:environment];
   v12 = v11;
   if (v11)
   {
     v11->_active = 1;
-    objc_storeStrong(&v11->_animationManager, a4);
-    objc_storeWeak(&v12->_widgetSizeManager, v10);
-    v13 = [MEMORY[0x277CCAE98] anonymousListener];
+    objc_storeStrong(&v11->_animationManager, manager);
+    objc_storeWeak(&v12->_widgetSizeManager, sizeManagerCopy);
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     widgetWindowServiceListener = v12->_widgetWindowServiceListener;
-    v12->_widgetWindowServiceListener = v13;
+    v12->_widgetWindowServiceListener = anonymousListener;
 
     [(NSXPCListener *)v12->_widgetWindowServiceListener setDelegate:v12];
     [(NSXPCListener *)v12->_widgetWindowServiceListener resume];
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v12 selector:sel__scrollViewWillBeginDragging_ name:*MEMORY[0x277D77570] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__scrollViewWillBeginDragging_ name:*MEMORY[0x277D77570] object:0];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v12 selector:sel__scrollViewDidEndDragging_ name:*MEMORY[0x277D77560] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v12 selector:sel__scrollViewDidEndDragging_ name:*MEMORY[0x277D77560] object:0];
 
     if (os_variant_has_internal_diagnostics())
     {
-      v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v12->_debugSnapshotLabelEnabled = [v17 BOOLForKey:@"CAREnableSnapshotDebugLabel"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v12->_debugSnapshotLabelEnabled = [standardUserDefaults BOOLForKey:@"CAREnableSnapshotDebugLabel"];
     }
 
     v18 = objc_opt_self();
@@ -92,12 +92,12 @@
   return v12;
 }
 
-- (void)setScene:(id)a3 application:(id)a4
+- (void)setScene:(id)scene application:(id)application
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  objc_storeStrong(&self->_targetApplication, a4);
-  v8 = a3;
+  applicationCopy = application;
+  objc_storeStrong(&self->_targetApplication, application);
+  sceneCopy = scene;
   v9 = DBLogForCategory(2uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -106,21 +106,21 @@
     v12 = 138543618;
     v13 = v11;
     v14 = 2114;
-    v15 = v7;
+    v15 = applicationCopy;
     _os_log_impl(&dword_248146000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set target application: %{public}@", &v12, 0x16u);
   }
 
   [(DBSceneWidgetViewController *)self setProxySceneContentReady:0];
   [(DBSceneWidgetViewController *)self _removeWidgetSceneViewController];
-  [(DBSceneWidgetViewController *)self _addWidgetSceneViewControllerForApplication:v7 scene:v8];
+  [(DBSceneWidgetViewController *)self _addWidgetSceneViewControllerForApplication:applicationCopy scene:sceneCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     v4 = DBLogForCategory(2uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -135,27 +135,27 @@
     }
 
     enabled = self->_enabled;
-    v9 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    v10 = v9;
+    widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    v10 = widgetSceneViewController;
     if (enabled)
     {
-      [v9 initializeSceneForeground:-[DBSceneWidgetViewController isForeground](self active:{"isForeground"), -[DBSceneWidgetViewController isActive](self, "isActive")}];
+      [widgetSceneViewController initializeSceneForeground:-[DBSceneWidgetViewController isForeground](self active:{"isForeground"), -[DBSceneWidgetViewController isActive](self, "isActive")}];
     }
 
     else
     {
-      [v9 deactivateScene];
+      [widgetSceneViewController deactivateScene];
     }
   }
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_foreground != a3)
+  if (self->_foreground != foreground)
   {
-    v3 = a3;
-    self->_foreground = a3;
+    foregroundCopy = foreground;
+    self->_foreground = foreground;
     v5 = DBLogForCategory(2uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -171,32 +171,32 @@
 
     if (self->_enabled)
     {
-      v9 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-      [v9 setForeground:v3];
+      widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+      [widgetSceneViewController setForeground:foregroundCopy];
     }
 
     else
     {
-      v9 = DBLogForCategory(2uLL);
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      widgetSceneViewController = DBLogForCategory(2uLL);
+      if (os_log_type_enabled(widgetSceneViewController, OS_LOG_TYPE_DEFAULT))
       {
         v10 = objc_opt_class();
         v11 = NSStringFromClass(v10);
         v12 = 138543362;
         v13 = v11;
-        _os_log_impl(&dword_248146000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] is not enabled, skipping foreground update for scene view controller", &v12, 0xCu);
+        _os_log_impl(&dword_248146000, widgetSceneViewController, OS_LOG_TYPE_DEFAULT, "[%{public}@] is not enabled, skipping foreground update for scene view controller", &v12, 0xCu);
       }
     }
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v5 = DBLogForCategory(2uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -210,17 +210,17 @@
       _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Active: %{public}@", &v10, 0x16u);
     }
 
-    v9 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    [v9 setActive:v3];
+    widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    [widgetSceneViewController setActive:activeCopy];
   }
 }
 
-- (void)setWidgetStyle:(unint64_t)a3
+- (void)setWidgetStyle:(unint64_t)style
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_widgetStyle != a3)
+  if (self->_widgetStyle != style)
   {
-    self->_widgetStyle = a3;
+    self->_widgetStyle = style;
     v5 = DBLogForCategory(2uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -234,52 +234,52 @@
       _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Widget style: %{public}ld", &v10, 0x16u);
     }
 
-    v9 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    [v9 setWidgetStyle:a3];
+    widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    [widgetSceneViewController setWidgetStyle:style];
   }
 }
 
-- (void)setAvailableWidgetSizes:(id)a3
+- (void)setAvailableWidgetSizes:(id)sizes
 {
-  v8 = a3;
-  v5 = [(DBSceneWidgetViewController *)self widgetSizeManager];
+  sizesCopy = sizes;
+  widgetSizeManager = [(DBSceneWidgetViewController *)self widgetSizeManager];
 
-  if (v5 && (BSEqualObjects() & 1) == 0)
+  if (widgetSizeManager && (BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_availableWidgetSizes, a3);
-    v6 = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
-    v7 = [v6 remoteObjectProxy];
-    [v7 hostSetWidgetSizes:v8];
+    objc_storeStrong(&self->_availableWidgetSizes, sizes);
+    widgetWindowServiceConnection = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
+    remoteObjectProxy = [widgetWindowServiceConnection remoteObjectProxy];
+    [remoteObjectProxy hostSetWidgetSizes:sizesCopy];
   }
 }
 
-- (void)prepareLoadingViewAnimated:(BOOL)a3
+- (void)prepareLoadingViewAnimated:(BOOL)animated
 {
-  v73 = a3;
+  animatedCopy = animated;
   v80[3] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(DBWidgetViewController *)self contentView];
-  [v5 addSubview:v4];
+  contentView = [(DBWidgetViewController *)self contentView];
+  [contentView addSubview:v4];
 
-  v6 = [(DBSceneWidgetViewController *)self targetApplication];
-  v7 = [v6 bundleIdentifier];
+  targetApplication = [(DBSceneWidgetViewController *)self targetApplication];
+  bundleIdentifier = [targetApplication bundleIdentifier];
   v8 = 0x277CCA000uLL;
-  v74 = self;
+  selfCopy = self;
   v75 = v4;
-  if ([v7 isEqualToString:@"com.apple.Maps"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.Maps"])
   {
-    v9 = [(DBSceneWidgetViewController *)self wantsBlurredMapBackground];
+    wantsBlurredMapBackground = [(DBSceneWidgetViewController *)self wantsBlurredMapBackground];
 
-    if (v9)
+    if (wantsBlurredMapBackground)
     {
       v10 = objc_alloc_init(MEMORY[0x277D755E8]);
       [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
       v11 = MEMORY[0x277D755B8];
       v12 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
-      v13 = [(DBWidgetViewController *)self contentView];
-      v14 = [v13 traitCollection];
-      v15 = [v11 imageNamed:@"MapsNavigationWidgetBackgroundImage" inBundle:v12 compatibleWithTraitCollection:v14];
+      contentView2 = [(DBWidgetViewController *)self contentView];
+      traitCollection = [contentView2 traitCollection];
+      v15 = [v11 imageNamed:@"MapsNavigationWidgetBackgroundImage" inBundle:v12 compatibleWithTraitCollection:traitCollection];
       [v10 setImage:v15];
 
       [v10 setContentMode:2];
@@ -302,35 +302,35 @@
       [v20 setValue:MEMORY[0x277CBEC38] forKey:@"inputHardEdges"];
       [v20 setValue:v21 forKey:@"inputNormalizeEdges"];
       [v20 setValue:v21 forKey:@"inputDither"];
-      v22 = [v10 layer];
+      layer = [v10 layer];
       v80[0] = v16;
       v80[1] = v19;
       v80[2] = v20;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v80 count:3];
-      [v22 setFilters:v23];
+      [layer setFilters:v23];
 
       v57 = MEMORY[0x277CCAAD0];
-      v67 = [v4 topAnchor];
-      v65 = [v10 topAnchor];
-      v63 = [v67 constraintEqualToAnchor:v65];
+      topAnchor = [v4 topAnchor];
+      topAnchor2 = [v10 topAnchor];
+      v63 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v79[0] = v63;
-      v61 = [v4 bottomAnchor];
-      v59 = [v10 bottomAnchor];
-      v24 = [v61 constraintEqualToAnchor:v59];
+      bottomAnchor = [v4 bottomAnchor];
+      bottomAnchor2 = [v10 bottomAnchor];
+      v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v79[1] = v24;
-      v25 = [v4 leftAnchor];
-      v26 = [v10 leftAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      leftAnchor = [v4 leftAnchor];
+      leftAnchor2 = [v10 leftAnchor];
+      v27 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v79[2] = v27;
-      v28 = [v4 rightAnchor];
-      v29 = [v10 rightAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
+      rightAnchor = [v4 rightAnchor];
+      rightAnchor2 = [v10 rightAnchor];
+      v30 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       v79[3] = v30;
       v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:4];
       [v57 activateConstraints:v31];
 
       v4 = v75;
-      self = v74;
+      self = selfCopy;
 
       v8 = 0x277CCA000;
     }
@@ -340,52 +340,52 @@
   {
   }
 
-  v32 = [(DBSceneWidgetViewController *)self getIconPlaceholderLayerView];
-  [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 addSubview:v32];
+  getIconPlaceholderLayerView = [(DBSceneWidgetViewController *)self getIconPlaceholderLayerView];
+  [getIconPlaceholderLayerView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [v4 addSubview:getIconPlaceholderLayerView];
   v51 = *(v8 + 2768);
-  v68 = [v4 topAnchor];
-  v70 = [(DBWidgetViewController *)self contentView];
-  v66 = [v70 topAnchor];
-  v64 = [v68 constraintEqualToAnchor:v66];
+  topAnchor3 = [v4 topAnchor];
+  contentView3 = [(DBWidgetViewController *)self contentView];
+  topAnchor4 = [contentView3 topAnchor];
+  v64 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v78[0] = v64;
-  v60 = [v4 bottomAnchor];
-  v62 = [(DBWidgetViewController *)self contentView];
-  v58 = [v62 bottomAnchor];
-  v56 = [v60 constraintEqualToAnchor:v58];
+  bottomAnchor3 = [v4 bottomAnchor];
+  contentView4 = [(DBWidgetViewController *)self contentView];
+  bottomAnchor4 = [contentView4 bottomAnchor];
+  v56 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v78[1] = v56;
-  v54 = [v4 leftAnchor];
-  v55 = [(DBWidgetViewController *)self contentView];
-  v53 = [v55 leftAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  leftAnchor3 = [v4 leftAnchor];
+  contentView5 = [(DBWidgetViewController *)self contentView];
+  leftAnchor4 = [contentView5 leftAnchor];
+  v52 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v78[2] = v52;
-  v49 = [v4 rightAnchor];
-  v50 = [(DBWidgetViewController *)self contentView];
-  v48 = [v50 rightAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  rightAnchor3 = [v4 rightAnchor];
+  contentView6 = [(DBWidgetViewController *)self contentView];
+  rightAnchor4 = [contentView6 rightAnchor];
+  v47 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v78[3] = v47;
-  v45 = [v32 centerXAnchor];
-  v46 = [(DBWidgetViewController *)self contentView];
-  v44 = [v46 centerXAnchor];
-  v33 = [v45 constraintEqualToAnchor:v44];
+  centerXAnchor = [getIconPlaceholderLayerView centerXAnchor];
+  contentView7 = [(DBWidgetViewController *)self contentView];
+  centerXAnchor2 = [contentView7 centerXAnchor];
+  v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v78[4] = v33;
-  v34 = [v32 centerYAnchor];
-  v35 = [(DBWidgetViewController *)self contentView];
-  v36 = [v35 centerYAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  centerYAnchor = [getIconPlaceholderLayerView centerYAnchor];
+  contentView8 = [(DBWidgetViewController *)self contentView];
+  centerYAnchor2 = [contentView8 centerYAnchor];
+  v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v78[5] = v37;
-  v38 = [v32 widthAnchor];
-  v39 = [v38 constraintEqualToConstant:40.0];
+  widthAnchor = [getIconPlaceholderLayerView widthAnchor];
+  v39 = [widthAnchor constraintEqualToConstant:40.0];
   v78[6] = v39;
-  v72 = v32;
-  v40 = [v32 heightAnchor];
-  v41 = [v40 constraintEqualToConstant:40.0];
+  v72 = getIconPlaceholderLayerView;
+  heightAnchor = [getIconPlaceholderLayerView heightAnchor];
+  v41 = [heightAnchor constraintEqualToConstant:40.0];
   v78[7] = v41;
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:8];
   [v51 activateConstraints:v42];
 
-  [(DBSceneWidgetViewController *)v74 replaceLoadingViewWithView:v75];
-  if (v73)
+  [(DBSceneWidgetViewController *)selfCopy replaceLoadingViewWithView:v75];
+  if (animatedCopy)
   {
     [v75 setAlpha:0.0];
     v43 = MEMORY[0x277D75D18];
@@ -400,23 +400,23 @@
 
 - (void)connectionReady
 {
-  v3 = [(DBWidgetViewController *)self environment];
-  v4 = [v3 environmentConfiguration];
-  v5 = [v4 wallpaperPreferences];
-  v10 = [v5 currentWallpaper];
+  environment = [(DBWidgetViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
+  currentWallpaper = [wallpaperPreferences currentWallpaper];
 
-  v6 = [v10 traits];
-  v7 = [v6 supportsDashboardPlatterMaterials];
+  traits = [currentWallpaper traits];
+  supportsDashboardPlatterMaterials = [traits supportsDashboardPlatterMaterials];
 
-  v8 = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
-  v9 = [v8 remoteObjectProxy];
-  [v9 hostSetUseSystemPrimaryFocusColor:v7];
+  widgetWindowServiceConnection = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
+  remoteObjectProxy = [widgetWindowServiceConnection remoteObjectProxy];
+  [remoteObjectProxy hostSetUseSystemPrimaryFocusColor:supportsDashboardPlatterMaterials];
 }
 
-- (void)replaceLoadingViewWithView:(id)a3
+- (void)replaceLoadingViewWithView:(id)view
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v5 = DBLogForCategory(2uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -425,24 +425,24 @@
     *buf = 138543618;
     v15 = v7;
     v16 = 2112;
-    v17 = v4;
+    v17 = viewCopy;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting loading view: %@", buf, 0x16u);
   }
 
-  v8 = [(DBSceneWidgetViewController *)self loadingView];
-  [v8 removeFromSuperview];
+  loadingView = [(DBSceneWidgetViewController *)self loadingView];
+  [loadingView removeFromSuperview];
 
-  [(DBSceneWidgetViewController *)self setLoadingView:v4];
+  [(DBSceneWidgetViewController *)self setLoadingView:viewCopy];
   objc_initWeak(buf, self);
-  v9 = [(DBSceneWidgetViewController *)self animationManager];
+  animationManager = [(DBSceneWidgetViewController *)self animationManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__DBSceneWidgetViewController_replaceLoadingViewWithView___block_invoke;
   v11[3] = &unk_278F02070;
   objc_copyWeak(&v13, buf);
-  v10 = v4;
+  v10 = viewCopy;
   v12 = v10;
-  [v9 registerAnimation:@"DBWidgetSceneSplashScreenAnimationIdentifier" client:self animation:v11];
+  [animationManager registerAnimation:@"DBWidgetSceneSplashScreenAnimationIdentifier" client:self animation:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -518,13 +518,13 @@ void __58__DBSceneWidgetViewController_replaceLoadingViewWithView___block_invoke
 
 - (id)loadingIconLayer
 {
-  v3 = [(DBSceneWidgetViewController *)self targetApplication];
-  v4 = [v3 bundleIdentifier];
+  targetApplication = [(DBSceneWidgetViewController *)self targetApplication];
+  bundleIdentifier = [targetApplication bundleIdentifier];
 
-  v5 = [(DBSceneWidgetViewController *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(DBSceneWidgetViewController *)self traitCollection];
+  [traitCollection displayScale];
   [_TtC9DashBoard11DBIconImage iconImageInfoForScale:?];
-  v6 = [(DBSceneWidgetViewController *)self traitCollection];
+  traitCollection2 = [(DBSceneWidgetViewController *)self traitCollection];
   v7 = SBHGetApplicationIconLayerWithTraitCollection();
 
   return v7;
@@ -532,9 +532,9 @@ void __58__DBSceneWidgetViewController_replaceLoadingViewWithView___block_invoke
 
 - (id)getIconPlaceholderLayerView
 {
-  v3 = [(DBSceneWidgetViewController *)self iconPlaceholderLayerView];
+  iconPlaceholderLayerView = [(DBSceneWidgetViewController *)self iconPlaceholderLayerView];
 
-  if (!v3)
+  if (!iconPlaceholderLayerView)
   {
     v4 = objc_alloc_init(_TtC9DashBoard15DBIconLayerView);
     [(DBSceneWidgetViewController *)self setIconPlaceholderLayerView:v4];
@@ -545,14 +545,14 @@ void __58__DBSceneWidgetViewController_replaceLoadingViewWithView___block_invoke
 
 - (void)_updateLoadingIconLayer
 {
-  v3 = [(DBSceneWidgetViewController *)self iconPlaceholderLayerView];
+  iconPlaceholderLayerView = [(DBSceneWidgetViewController *)self iconPlaceholderLayerView];
 
-  if (v3)
+  if (iconPlaceholderLayerView)
   {
     [(DBSceneWidgetViewController *)self updateTraitsIfNeeded];
-    v5 = [(DBSceneWidgetViewController *)self iconPlaceholderLayerView];
-    v4 = [(DBSceneWidgetViewController *)self loadingIconLayer];
-    [v5 setIconLayer:v4 animated:1];
+    iconPlaceholderLayerView2 = [(DBSceneWidgetViewController *)self iconPlaceholderLayerView];
+    loadingIconLayer = [(DBSceneWidgetViewController *)self loadingIconLayer];
+    [iconPlaceholderLayerView2 setIconLayer:loadingIconLayer animated:1];
   }
 }
 
@@ -563,30 +563,30 @@ void __58__DBSceneWidgetViewController_replaceLoadingViewWithView___block_invoke
   v53.super_class = DBSceneWidgetViewController;
   [(DBSceneWidgetViewController *)&v53 viewDidLoad];
   v3 = objc_alloc_init(MEMORY[0x277D754F8]);
-  v4 = [(DBSceneWidgetViewController *)self view];
-  [v4 addLayoutGuide:v3];
+  view = [(DBSceneWidgetViewController *)self view];
+  [view addLayoutGuide:v3];
 
   v36 = MEMORY[0x277CCAAD0];
-  v48 = [v3 topAnchor];
-  v50 = [(DBSceneWidgetViewController *)self view];
-  v46 = [v50 topAnchor];
-  v44 = [v48 constraintEqualToAnchor:v46];
+  topAnchor = [v3 topAnchor];
+  view2 = [(DBSceneWidgetViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v44 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v55[0] = v44;
-  v40 = [v3 bottomAnchor];
-  v42 = [(DBSceneWidgetViewController *)self view];
-  v38 = [v42 bottomAnchor];
-  v34 = [v40 constraintEqualToAnchor:v38];
+  bottomAnchor = [v3 bottomAnchor];
+  view3 = [(DBSceneWidgetViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v55[1] = v34;
-  v5 = [v3 leftAnchor];
-  v6 = [(DBSceneWidgetViewController *)self view];
-  v7 = [v6 leftAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  leftAnchor = [v3 leftAnchor];
+  view4 = [(DBSceneWidgetViewController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v8 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v55[2] = v8;
   v52 = v3;
-  v9 = [v3 rightAnchor];
-  v10 = [(DBSceneWidgetViewController *)self view];
-  v11 = [v10 rightAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  rightAnchor = [v3 rightAnchor];
+  view5 = [(DBSceneWidgetViewController *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v12 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v55[3] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:4];
   [v36 activateConstraints:v13];
@@ -595,33 +595,33 @@ void __58__DBSceneWidgetViewController_replaceLoadingViewWithView___block_invoke
   {
     v14 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [v14 layer];
-    [v15 setHitTestsAsOpaque:1];
+    layer = [v14 layer];
+    [layer setHitTestsAsOpaque:1];
 
-    v16 = [(DBSceneWidgetViewController *)self view];
-    [v16 addSubview:v14];
+    view6 = [(DBSceneWidgetViewController *)self view];
+    [view6 addSubview:v14];
 
     [(DBSceneWidgetViewController *)self setTouchActionView:v14];
     v37 = MEMORY[0x277CCAAD0];
-    v49 = [v14 topAnchor];
-    v51 = [(DBSceneWidgetViewController *)self view];
-    v47 = [v51 topAnchor];
-    v45 = [v49 constraintEqualToAnchor:v47];
+    topAnchor3 = [v14 topAnchor];
+    view7 = [(DBSceneWidgetViewController *)self view];
+    topAnchor4 = [view7 topAnchor];
+    v45 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v54[0] = v45;
-    v41 = [v14 bottomAnchor];
-    v43 = [(DBSceneWidgetViewController *)self view];
-    v39 = [v43 bottomAnchor];
-    v35 = [v41 constraintEqualToAnchor:v39];
+    bottomAnchor3 = [v14 bottomAnchor];
+    view8 = [(DBSceneWidgetViewController *)self view];
+    bottomAnchor4 = [view8 bottomAnchor];
+    v35 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v54[1] = v35;
-    v33 = [v14 leftAnchor];
-    v17 = [(DBSceneWidgetViewController *)self view];
-    v18 = [v17 leftAnchor];
-    v19 = [v33 constraintEqualToAnchor:v18];
+    leftAnchor3 = [v14 leftAnchor];
+    view9 = [(DBSceneWidgetViewController *)self view];
+    leftAnchor4 = [view9 leftAnchor];
+    v19 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     v54[2] = v19;
-    v20 = [v14 rightAnchor];
-    v21 = [(DBSceneWidgetViewController *)self view];
-    v22 = [v21 rightAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    rightAnchor3 = [v14 rightAnchor];
+    view10 = [(DBSceneWidgetViewController *)self view];
+    rightAnchor4 = [view10 rightAnchor];
+    v23 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     v54[3] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:4];
     [v37 activateConstraints:v24];
@@ -632,8 +632,8 @@ void __58__DBSceneWidgetViewController_replaceLoadingViewWithView___block_invoke
     [(DBSceneWidgetViewController *)self setTouchTapGestureRecognizer:v25];
     v26 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleTapGesture_];
     [v26 setAllowedPressTypes:&unk_285AA49B8];
-    v27 = [(DBSceneWidgetViewController *)self view];
-    [v27 addGestureRecognizer:v26];
+    view11 = [(DBSceneWidgetViewController *)self view];
+    [view11 addGestureRecognizer:v26];
 
     [(DBSceneWidgetViewController *)self setSelectTapGestureRecognizer:v26];
   }
@@ -643,51 +643,51 @@ void __58__DBSceneWidgetViewController_replaceLoadingViewWithView___block_invoke
     [(DBSceneWidgetViewController *)self _setTouchActionDisabled:0 forRequester:@"FocusItems"];
   }
 
-  v28 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-  if (v28)
+  widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  if (widgetSceneViewController)
   {
-    v29 = v28;
-    v30 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    v31 = [v30 parentViewController];
+    v29 = widgetSceneViewController;
+    widgetSceneViewController2 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    parentViewController = [widgetSceneViewController2 parentViewController];
 
-    if (!v31)
+    if (!parentViewController)
     {
-      v32 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-      [(DBSceneWidgetViewController *)self _installWidgetSceneViewController:v32];
+      widgetSceneViewController3 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+      [(DBSceneWidgetViewController *)self _installWidgetSceneViewController:widgetSceneViewController3];
       goto LABEL_9;
     }
   }
 
   if ([(DBSceneWidgetViewController *)self isEnabled])
   {
-    v32 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    [v32 initializeSceneForeground:-[DBSceneWidgetViewController isForeground](self active:{"isForeground"), -[DBSceneWidgetViewController isActive](self, "isActive")}];
+    widgetSceneViewController3 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    [widgetSceneViewController3 initializeSceneForeground:-[DBSceneWidgetViewController isForeground](self active:{"isForeground"), -[DBSceneWidgetViewController isActive](self, "isActive")}];
 LABEL_9:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = DBSceneWidgetViewController;
-  [(DBSceneWidgetViewController *)&v8 viewWillAppear:a3];
-  v4 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-  if (!v4)
+  [(DBSceneWidgetViewController *)&v8 viewWillAppear:appear];
+  widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  if (!widgetSceneViewController)
   {
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-  if ([v6 sceneContentState] == 2)
+  v5 = widgetSceneViewController;
+  widgetSceneViewController2 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  if ([widgetSceneViewController2 sceneContentState] == 2)
   {
 
     return;
   }
 
-  v7 = [(DBSceneWidgetViewController *)self loadingView];
+  loadingView = [(DBSceneWidgetViewController *)self loadingView];
 
-  if (!v7)
+  if (!loadingView)
   {
 LABEL_5:
     [(DBSceneWidgetViewController *)self prepareLoadingViewAnimated:0];
@@ -710,26 +710,26 @@ LABEL_5:
     _os_log_impl(&dword_248146000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] viewDidLayoutSubviews", buf, 0xCu);
   }
 
-  v6 = [(DBSceneWidgetViewController *)self pendingWidgetResizeFenceHandle];
-  v7 = [(DBSceneWidgetViewController *)self pendingWidgetResizeAnimationSettings];
+  pendingWidgetResizeFenceHandle = [(DBSceneWidgetViewController *)self pendingWidgetResizeFenceHandle];
+  pendingWidgetResizeAnimationSettings = [(DBSceneWidgetViewController *)self pendingWidgetResizeAnimationSettings];
   [(DBSceneWidgetViewController *)self setPendingWidgetResizeFenceHandle:0];
   [(DBSceneWidgetViewController *)self setPendingWidgetResizeAnimationSettings:0];
-  v8 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-  v9 = [(DBSceneWidgetViewController *)self view];
-  [v9 frame];
-  [v8 updateSceneFrame:v7 animationSettings:v6 fenceHandle:?];
+  widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  view = [(DBSceneWidgetViewController *)self view];
+  [view frame];
+  [widgetSceneViewController updateSceneFrame:pendingWidgetResizeAnimationSettings animationSettings:pendingWidgetResizeFenceHandle fenceHandle:?];
 }
 
 - (id)preferredFocusEnvironments
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(DBSceneWidgetViewController *)self focusableItemViews];
-  v5 = [v4 count];
+  focusableItemViews = [(DBSceneWidgetViewController *)self focusableItemViews];
+  v5 = [focusableItemViews count];
 
   if (v5)
   {
-    v6 = [(DBSceneWidgetViewController *)self focusableItemViews];
-    [v3 addObjectsFromArray:v6];
+    focusableItemViews2 = [(DBSceneWidgetViewController *)self focusableItemViews];
+    [v3 addObjectsFromArray:focusableItemViews2];
   }
 
   [v3 addObject:self];
@@ -739,8 +739,8 @@ LABEL_5:
 
 - (BOOL)entireWidgetFocusable
 {
-  v2 = [(DBSceneWidgetViewController *)self focusableItemViews];
-  v3 = [v2 count] == 0;
+  focusableItemViews = [(DBSceneWidgetViewController *)self focusableItemViews];
+  v3 = [focusableItemViews count] == 0;
 
   return v3;
 }
@@ -748,22 +748,22 @@ LABEL_5:
 - (id)linearFocusItems
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [(DBSceneWidgetViewController *)self focusableItemViews];
-  v4 = [v3 count];
+  focusableItemViews = [(DBSceneWidgetViewController *)self focusableItemViews];
+  v4 = [focusableItemViews count];
 
   if (v4)
   {
-    v5 = [(DBSceneWidgetViewController *)self focusableItemViews];
+    focusableItemViews2 = [(DBSceneWidgetViewController *)self focusableItemViews];
   }
 
   else
   {
-    v6 = [(DBSceneWidgetViewController *)self view];
-    v8[0] = v6;
-    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
+    view = [(DBSceneWidgetViewController *)self view];
+    v8[0] = view;
+    focusableItemViews2 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   }
 
-  return v5;
+  return focusableItemViews2;
 }
 
 - (void)updateAppearanceForWallpaper
@@ -771,45 +771,45 @@ LABEL_5:
   v11.receiver = self;
   v11.super_class = DBSceneWidgetViewController;
   [(DBWidgetViewController *)&v11 updateAppearanceForWallpaper];
-  v3 = [(DBWidgetViewController *)self environment];
-  v4 = [v3 environmentConfiguration];
-  v5 = [v4 wallpaperPreferences];
-  v6 = [v5 currentWallpaper];
+  environment = [(DBWidgetViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
+  currentWallpaper = [wallpaperPreferences currentWallpaper];
 
-  v7 = [v6 traits];
-  v8 = [v7 supportsDashboardPlatterMaterials];
+  traits = [currentWallpaper traits];
+  supportsDashboardPlatterMaterials = [traits supportsDashboardPlatterMaterials];
 
-  v9 = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
-  v10 = [v9 remoteObjectProxy];
-  [v10 hostSetUseSystemPrimaryFocusColor:v8];
+  widgetWindowServiceConnection = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
+  remoteObjectProxy = [widgetWindowServiceConnection remoteObjectProxy];
+  [remoteObjectProxy hostSetUseSystemPrimaryFocusColor:supportsDashboardPlatterMaterials];
 }
 
-- (void)setWantsLargeSize:(BOOL)a3
+- (void)setWantsLargeSize:(BOOL)size
 {
-  v3 = a3;
-  if ([(DBWidgetViewController *)self wantsLargeSize]!= a3)
+  sizeCopy = size;
+  if ([(DBWidgetViewController *)self wantsLargeSize]!= size)
   {
     v6.receiver = self;
     v6.super_class = DBSceneWidgetViewController;
-    [(DBWidgetViewController *)&v6 setWantsLargeSize:v3];
-    v5 = [(DBSceneWidgetViewController *)self widgetSizeManager];
-    [v5 requestSizeChange];
+    [(DBWidgetViewController *)&v6 setWantsLargeSize:sizeCopy];
+    widgetSizeManager = [(DBSceneWidgetViewController *)self widgetSizeManager];
+    [widgetSizeManager requestSizeChange];
   }
 }
 
 - (void)invalidate
 {
   [(DBSceneWidgetViewController *)self setInvalidated:1];
-  v3 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-  [v3 invalidate];
+  widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  [widgetSceneViewController invalidate];
 
-  v4 = [(DBSceneWidgetViewController *)self widgetWindowServiceListener];
-  [v4 invalidate];
+  widgetWindowServiceListener = [(DBSceneWidgetViewController *)self widgetWindowServiceListener];
+  [widgetWindowServiceListener invalidate];
 
   [(DBSceneWidgetViewController *)self setWidgetWindowServiceListener:0];
 }
 
-- (void)updateContextId:(unsigned int)a3
+- (void)updateContextId:(unsigned int)id
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = DBLogForCategory(2uLL);
@@ -820,7 +820,7 @@ LABEL_5:
     *buf = 138543618;
     v11 = v7;
     v12 = 1024;
-    v13 = a3;
+    idCopy = id;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_INFO, "[%{public}@ Context id updated: %x", buf, 0x12u);
   }
 
@@ -829,20 +829,20 @@ LABEL_5:
   v8[2] = __47__DBSceneWidgetViewController_updateContextId___block_invoke;
   v8[3] = &unk_278F02F18;
   v8[4] = self;
-  v9 = a3;
+  idCopy2 = id;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)clientSetFocusableItems:(id)a3
+- (void)clientSetFocusableItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__DBSceneWidgetViewController_clientSetFocusableItems___block_invoke;
   v6[3] = &unk_278F014B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = itemsCopy;
+  v5 = itemsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -924,20 +924,20 @@ void __55__DBSceneWidgetViewController_clientSetFocusableItems___block_invoke_3(
   [v4 addSubview:v3];
 }
 
-- (void)clientSetWantsLargeSize:(BOOL)a3 fenceHandle:(id)a4 animationSettings:(id)a5
+- (void)clientSetWantsLargeSize:(BOOL)size fenceHandle:(id)handle animationSettings:(id)settings
 {
-  v8 = a4;
-  v9 = a5;
+  handleCopy = handle;
+  settingsCopy = settings;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__DBSceneWidgetViewController_clientSetWantsLargeSize_fenceHandle_animationSettings___block_invoke;
   v12[3] = &unk_278F02FB0;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = handleCopy;
+  v14 = settingsCopy;
+  sizeCopy = size;
+  v10 = settingsCopy;
+  v11 = handleCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 
@@ -974,39 +974,39 @@ uint64_t __52__DBSceneWidgetViewController_clientSetContentReady__block_invoke(u
   return [v2 _animateLoadingViewRemovalIfNecessary];
 }
 
-- (void)focusableItem:(id)a3 didChangePressed:(BOOL)a4
+- (void)focusableItem:(id)item didChangePressed:(BOOL)pressed
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
-  v7 = [v8 remoteObjectProxy];
-  [v7 hostFocusableItem:v6 pressed:v4];
+  pressedCopy = pressed;
+  itemCopy = item;
+  widgetWindowServiceConnection = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
+  remoteObjectProxy = [widgetWindowServiceConnection remoteObjectProxy];
+  [remoteObjectProxy hostFocusableItem:itemCopy pressed:pressedCopy];
 }
 
-- (void)focusableItem:(id)a3 didChangeFocused:(BOOL)a4
+- (void)focusableItem:(id)item didChangeFocused:(BOOL)focused
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
-  v7 = [v8 remoteObjectProxy];
-  [v7 hostFocusableItem:v6 focused:v4];
+  focusedCopy = focused;
+  itemCopy = item;
+  widgetWindowServiceConnection = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
+  remoteObjectProxy = [widgetWindowServiceConnection remoteObjectProxy];
+  [remoteObjectProxy hostFocusableItem:itemCopy focused:focusedCopy];
 }
 
-- (void)selectedFocusableItem:(id)a3
+- (void)selectedFocusableItem:(id)item
 {
-  v4 = a3;
-  v6 = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 hostSelectedFocusableItem:v4];
+  itemCopy = item;
+  widgetWindowServiceConnection = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
+  remoteObjectProxy = [widgetWindowServiceConnection remoteObjectProxy];
+  [remoteObjectProxy hostSelectedFocusableItem:itemCopy];
 }
 
-- (void)widgetSceneHostViewController:(id)a3 sceneContentStateDidUpdate:(int64_t)a4
+- (void)widgetSceneHostViewController:(id)controller sceneContentStateDidUpdate:(int64_t)update
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  controllerCopy = controller;
+  widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
 
-  if (v7 != v6)
+  if (widgetSceneViewController != controllerCopy)
   {
     v8 = DBLogForCategory(2uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1014,7 +1014,7 @@ uint64_t __52__DBSceneWidgetViewController_clientSetContentReady__block_invoke(u
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v29 = 138543362;
-      v30 = v10;
+      selfCopy2 = v10;
       _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ignoring delegate call from stale widget scene host view controller", &v29, 0xCu);
     }
 
@@ -1025,12 +1025,12 @@ LABEL_4:
 
   v11 = DBLogForCategory(2uLL);
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (a4 == 2)
+  if (update == 2)
   {
     if (v12)
     {
       v29 = 138543362;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_248146000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Widget scene content ready", &v29, 0xCu);
     }
 
@@ -1042,13 +1042,13 @@ LABEL_4:
     if (v12)
     {
       v29 = 138543362;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_248146000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Widget scene content not ready", &v29, 0xCu);
     }
 
-    v13 = [(DBSceneWidgetViewController *)self loadingView];
+    loadingView = [(DBSceneWidgetViewController *)self loadingView];
 
-    if (!v13)
+    if (!loadingView)
     {
       v14 = DBLogForCategory(2uLL);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1056,15 +1056,15 @@ LABEL_4:
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
         v29 = 138543362;
-        v30 = v16;
+        selfCopy2 = v16;
         _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Taking snapshot", &v29, 0xCu);
       }
 
-      v17 = [(DBWidgetViewController *)self contentView];
-      v8 = [v17 snapshotViewAfterScreenUpdates:0];
+      contentView = [(DBWidgetViewController *)self contentView];
+      v8 = [contentView snapshotViewAfterScreenUpdates:0];
 
-      v18 = [(DBWidgetViewController *)self contentView];
-      [v18 addSubview:v8];
+      contentView2 = [(DBWidgetViewController *)self contentView];
+      [contentView2 addSubview:v8];
 
       [(DBSceneWidgetViewController *)self replaceLoadingViewWithView:v8];
       if ([(DBSceneWidgetViewController *)self debugSnapshotLabelEnabled])
@@ -1075,21 +1075,21 @@ LABEL_4:
           v20 = objc_opt_class();
           v21 = NSStringFromClass(v20);
           v29 = 138543362;
-          v30 = v21;
+          selfCopy2 = v21;
           _os_log_impl(&dword_248146000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Displaying snapshot debug label", &v29, 0xCu);
         }
 
         v22 = objc_alloc_init(MEMORY[0x277D756B8]);
         [v22 setText:@"Snapshot placeholder..."];
-        v23 = [MEMORY[0x277D75348] redColor];
-        [v22 setTextColor:v23];
+        redColor = [MEMORY[0x277D75348] redColor];
+        [v22 setTextColor:redColor];
 
         v24 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
         [v22 setFont:v24];
 
         [v22 sizeToFit];
-        v25 = [(DBSceneWidgetViewController *)self loadingView];
-        [v25 addSubview:v22];
+        loadingView2 = [(DBSceneWidgetViewController *)self loadingView];
+        [loadingView2 addSubview:v22];
       }
 
       v26 = DBLogForCategory(2uLL);
@@ -1098,7 +1098,7 @@ LABEL_4:
         v27 = objc_opt_class();
         v28 = NSStringFromClass(v27);
         v29 = 138543618;
-        v30 = v28;
+        selfCopy2 = v28;
         v31 = 2112;
         v32 = v8;
         _os_log_impl(&dword_248146000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Using snapshot view: %@", &v29, 0x16u);
@@ -1109,30 +1109,30 @@ LABEL_4:
   }
 }
 
-- (void)widgetSceneHostViewControllerSceneWillDeactivate:(id)a3
+- (void)widgetSceneHostViewControllerSceneWillDeactivate:(id)deactivate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  deactivateCopy = deactivate;
+  widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
 
-  if (v5 != v4)
+  if (widgetSceneViewController != deactivateCopy)
   {
-    v6 = DBLogForCategory(2uLL);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    view2 = DBLogForCategory(2uLL);
+    if (os_log_type_enabled(view2, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v19 = 138543362;
       v20 = v8;
-      _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ignoring delegate call from stale widget scene host view controller", &v19, 0xCu);
+      _os_log_impl(&dword_248146000, view2, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ignoring delegate call from stale widget scene host view controller", &v19, 0xCu);
     }
 
     goto LABEL_4;
   }
 
-  v9 = [v4 application];
-  v10 = [(DBSceneWidgetViewController *)self targetApplication];
-  v11 = [v9 isEqual:v10];
+  application = [deactivateCopy application];
+  targetApplication = [(DBSceneWidgetViewController *)self targetApplication];
+  v11 = [application isEqual:targetApplication];
 
   v12 = DBLogForCategory(2uLL);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1148,34 +1148,34 @@ LABEL_4:
   }
 
   [(DBSceneWidgetViewController *)self setProxySceneContentReady:0];
-  v16 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-  v17 = [v16 view];
-  [v17 setAlpha:0.0];
+  widgetSceneViewController2 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  view = [widgetSceneViewController2 view];
+  [view setAlpha:0.0];
 
   [(DBSceneWidgetViewController *)self clientSetFocusableItems:MEMORY[0x277CBEBF8]];
   if (![(DBSceneWidgetViewController *)self isInvalidated]&& ((v11 ^ 1) & 1) == 0)
   {
-    v18 = [(DBSceneWidgetViewController *)self loadingView];
+    loadingView = [(DBSceneWidgetViewController *)self loadingView];
 
-    if (!v18)
+    if (!loadingView)
     {
-      v6 = [(DBSceneWidgetViewController *)self view];
-      [(DBSceneWidgetViewController *)self prepareLoadingViewAnimated:[v6 isHidden]^ 1];
+      view2 = [(DBSceneWidgetViewController *)self view];
+      [(DBSceneWidgetViewController *)self prepareLoadingViewAnimated:[view2 isHidden]^ 1];
 LABEL_4:
     }
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
+  connectionCopy = connection;
+  widgetWindowServiceConnection = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
 
-  if (v6)
+  if (widgetWindowServiceConnection)
   {
-    v7 = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
-    [v7 invalidate];
+    widgetWindowServiceConnection2 = [(DBSceneWidgetViewController *)self widgetWindowServiceConnection];
+    [widgetWindowServiceConnection2 invalidate];
 
     [(DBSceneWidgetViewController *)self setWidgetWindowServiceConnection:0];
   }
@@ -1196,8 +1196,8 @@ LABEL_4:
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
   [v11 setClasses:v14 forSelector:sel_clientSetFocusableItems_ argumentIndex:0 ofReply:0];
 
-  [v5 setExportedInterface:v11];
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedInterface:v11];
+  [connectionCopy setExportedObject:self];
   v15 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285B71CE8];
   v16 = MEMORY[0x277CBEB98];
   v22[0] = objc_opt_class();
@@ -1206,21 +1206,21 @@ LABEL_4:
   v18 = [v16 setWithArray:v17];
   [v15 setClasses:v18 forSelector:sel_hostSetWidgetSizes_ argumentIndex:0 ofReply:0];
 
-  [v5 setRemoteObjectInterface:v15];
+  [connectionCopy setRemoteObjectInterface:v15];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __66__DBSceneWidgetViewController_listener_shouldAcceptNewConnection___block_invoke;
   v21[3] = &unk_278F01580;
   v21[4] = self;
-  [v5 setInterruptionHandler:v21];
+  [connectionCopy setInterruptionHandler:v21];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __66__DBSceneWidgetViewController_listener_shouldAcceptNewConnection___block_invoke_342;
   v20[3] = &unk_278F01580;
   v20[4] = self;
-  [v5 setInvalidationHandler:v20];
-  [v5 resume];
-  [(DBSceneWidgetViewController *)self setWidgetWindowServiceConnection:v5];
+  [connectionCopy setInvalidationHandler:v20];
+  [connectionCopy resume];
+  [(DBSceneWidgetViewController *)self setWidgetWindowServiceConnection:connectionCopy];
 
   [(DBSceneWidgetViewController *)self connectionReady];
   return 1;
@@ -1244,47 +1244,47 @@ void __66__DBSceneWidgetViewController_listener_shouldAcceptNewConnection___bloc
   }
 }
 
-- (void)_addWidgetSceneViewControllerForApplication:(id)a3 scene:(id)a4
+- (void)_addWidgetSceneViewControllerForApplication:(id)application scene:(id)scene
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  sceneCopy = scene;
   if ([(DBSceneWidgetViewController *)self isInvalidated])
   {
-    v8 = DBLogForCategory(2uLL);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    appPolicy = DBLogForCategory(2uLL);
+    if (os_log_type_enabled(appPolicy, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v19 = 138543362;
       v20 = v10;
-      _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Widget is invalidated, not creating widget scene.", &v19, 0xCu);
+      _os_log_impl(&dword_248146000, appPolicy, OS_LOG_TYPE_DEFAULT, "[%{public}@] Widget is invalidated, not creating widget scene.", &v19, 0xCu);
     }
   }
 
   else
   {
-    v8 = [v6 appPolicy];
-    if ([v8 launchUsingTemplateUI])
+    appPolicy = [applicationCopy appPolicy];
+    if ([appPolicy launchUsingTemplateUI])
     {
       v11 = +[DBApplicationController sharedInstance];
-      v12 = [v11 templateUIHostApplication];
+      templateUIHostApplication = [v11 templateUIHostApplication];
     }
 
     else
     {
-      v12 = 0;
+      templateUIHostApplication = 0;
     }
 
     v13 = [DBWidgetSceneHostViewController alloc];
-    v14 = [(DBWidgetViewController *)self environment];
-    v15 = [(DBSceneHostViewController *)v13 initWithScene:v7 application:v6 proxyApplication:v12 environment:v14];
+    environment = [(DBWidgetViewController *)self environment];
+    v15 = [(DBSceneHostViewController *)v13 initWithScene:sceneCopy application:applicationCopy proxyApplication:templateUIHostApplication environment:environment];
 
     [(DBWidgetSceneHostViewController *)v15 setDelegate:self];
-    v16 = [(DBSceneWidgetViewController *)self widgetWindowServiceListener];
-    v17 = [v16 endpoint];
-    v18 = [v17 _endpoint];
-    [(DBWidgetSceneHostViewController *)v15 setWidgetWindowServiceEndpoint:v18];
+    widgetWindowServiceListener = [(DBSceneWidgetViewController *)self widgetWindowServiceListener];
+    endpoint = [widgetWindowServiceListener endpoint];
+    _endpoint = [endpoint _endpoint];
+    [(DBWidgetSceneHostViewController *)v15 setWidgetWindowServiceEndpoint:_endpoint];
 
     [(DBWidgetSceneHostViewController *)v15 setWidgetStyle:[(DBSceneWidgetViewController *)self widgetStyle]];
     [(DBSceneWidgetViewController *)self _installWidgetSceneViewController:v15];
@@ -1292,31 +1292,31 @@ void __66__DBSceneWidgetViewController_listener_shouldAcceptNewConnection___bloc
   }
 }
 
-- (void)_installWidgetSceneViewController:(id)a3
+- (void)_installWidgetSceneViewController:(id)controller
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   if (([(DBSceneWidgetViewController *)self isViewLoaded]& 1) != 0)
   {
-    [(DBSceneWidgetViewController *)self addChildViewController:v4];
-    v5 = [(DBWidgetViewController *)self contentView];
-    v6 = [v4 view];
-    [v5 insertSubview:v6 atIndex:0];
+    [(DBSceneWidgetViewController *)self addChildViewController:controllerCopy];
+    contentView = [(DBWidgetViewController *)self contentView];
+    view = [controllerCopy view];
+    [contentView insertSubview:view atIndex:0];
 
-    [v4 didMoveToParentViewController:self];
-    v7 = [v4 view];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [controllerCopy didMoveToParentViewController:self];
+    view2 = [controllerCopy view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [v4 view];
-    [v8 setAlpha:0.0];
+    view3 = [controllerCopy view];
+    [view3 setAlpha:0.0];
 
     v9 = DBLogForCategory(2uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [(DBWidgetViewController *)self contentView];
-      [v12 bounds];
+      contentView2 = [(DBWidgetViewController *)self contentView];
+      [contentView2 bounds];
       v13 = NSStringFromCGRect(v56);
       *buf = 138543618;
       v52 = v11;
@@ -1325,50 +1325,50 @@ void __66__DBSceneWidgetViewController_listener_shouldAcceptNewConnection___bloc
       _os_log_impl(&dword_248146000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Adding widget scene view controller, frame: %{public}@", buf, 0x16u);
     }
 
-    v14 = [(DBWidgetViewController *)self contentView];
-    [v14 bounds];
+    contentView3 = [(DBWidgetViewController *)self contentView];
+    [contentView3 bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [v4 view];
-    [v23 setFrame:{v16, v18, v20, v22}];
+    view4 = [controllerCopy view];
+    [view4 setFrame:{v16, v18, v20, v22}];
 
     v40 = MEMORY[0x277CCAAD0];
-    v49 = [v4 view];
-    v47 = [v49 leadingAnchor];
-    v48 = [(DBWidgetViewController *)self contentView];
-    v46 = [v48 leadingAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    view5 = [controllerCopy view];
+    leadingAnchor = [view5 leadingAnchor];
+    contentView4 = [(DBWidgetViewController *)self contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v50[0] = v45;
-    v44 = [v4 view];
-    v42 = [v44 trailingAnchor];
-    v43 = [(DBWidgetViewController *)self contentView];
-    v41 = [v43 trailingAnchor];
-    v39 = [v42 constraintEqualToAnchor:v41];
+    view6 = [controllerCopy view];
+    trailingAnchor = [view6 trailingAnchor];
+    contentView5 = [(DBWidgetViewController *)self contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v50[1] = v39;
-    v38 = [v4 view];
-    v36 = [v38 topAnchor];
-    v37 = [(DBWidgetViewController *)self contentView];
-    v24 = [v37 topAnchor];
-    v25 = [v36 constraintEqualToAnchor:v24];
+    view7 = [controllerCopy view];
+    topAnchor = [view7 topAnchor];
+    contentView6 = [(DBWidgetViewController *)self contentView];
+    topAnchor2 = [contentView6 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v50[2] = v25;
-    v26 = [v4 view];
-    v27 = [v26 bottomAnchor];
-    v28 = [(DBWidgetViewController *)self contentView];
-    v29 = [v28 bottomAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    view8 = [controllerCopy view];
+    bottomAnchor = [view8 bottomAnchor];
+    contentView7 = [(DBWidgetViewController *)self contentView];
+    bottomAnchor2 = [contentView7 bottomAnchor];
+    v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v50[3] = v30;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:4];
     [v40 activateConstraints:v31];
 
-    v32 = [(DBWidgetViewController *)self contentView];
-    [v32 layoutIfNeeded];
+    contentView8 = [(DBWidgetViewController *)self contentView];
+    [contentView8 layoutIfNeeded];
 
     if ([(DBSceneWidgetViewController *)self isEnabled])
     {
-      [v4 initializeSceneForeground:-[DBSceneWidgetViewController isForeground](self active:{"isForeground"), -[DBSceneWidgetViewController isActive](self, "isActive")}];
-      [(DBSceneWidgetViewController *)self setWidgetSceneViewController:v4];
+      [controllerCopy initializeSceneForeground:-[DBSceneWidgetViewController isForeground](self active:{"isForeground"), -[DBSceneWidgetViewController isActive](self, "isActive")}];
+      [(DBSceneWidgetViewController *)self setWidgetSceneViewController:controllerCopy];
     }
   }
 
@@ -1388,31 +1388,31 @@ void __66__DBSceneWidgetViewController_listener_shouldAcceptNewConnection___bloc
 
 - (void)_removeWidgetSceneViewController
 {
-  v3 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
 
-  if (v3)
+  if (widgetSceneViewController)
   {
-    v4 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    [v4 setDelegate:0];
+    widgetSceneViewController2 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    [widgetSceneViewController2 setDelegate:0];
 
-    v5 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    [v5 invalidate];
+    widgetSceneViewController3 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    [widgetSceneViewController3 invalidate];
 
-    v6 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    [v6 willMoveToParentViewController:0];
+    widgetSceneViewController4 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    [widgetSceneViewController4 willMoveToParentViewController:0];
 
-    v7 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    v8 = [v7 view];
-    [v8 removeFromSuperview];
+    widgetSceneViewController5 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    view = [widgetSceneViewController5 view];
+    [view removeFromSuperview];
 
-    v9 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    [v9 removeFromParentViewController];
+    widgetSceneViewController6 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    [widgetSceneViewController6 removeFromParentViewController];
 
     [(DBSceneWidgetViewController *)self setWidgetSceneViewController:0];
   }
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = DBLogForCategory(2uLL);
@@ -1427,24 +1427,24 @@ void __66__DBSceneWidgetViewController_listener_shouldAcceptNewConnection___bloc
 
   v7 = objc_alloc_init(DBActivationSettings);
   [(DBActivationSettings *)v7 setLaunchSource:5];
-  v8 = [(DBSceneWidgetViewController *)self targetApplication];
-  v9 = [DBApplicationLaunchInfo launchInfoForApplication:v8 withActivationSettings:v7];
+  targetApplication = [(DBSceneWidgetViewController *)self targetApplication];
+  v9 = [DBApplicationLaunchInfo launchInfoForApplication:targetApplication withActivationSettings:v7];
 
-  v10 = [(DBWidgetViewController *)self environment];
+  environment = [(DBWidgetViewController *)self environment];
   v11 = [DBEvent eventWithType:4 context:v9];
-  [v10 handleEvent:v11];
+  [environment handleEvent:v11];
 }
 
 - (void)_animateLoadingViewRemovalIfNecessary
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-  v4 = [v3 sceneContentState];
+  widgetSceneViewController = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  sceneContentState = [widgetSceneViewController sceneContentState];
 
-  v5 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-  v6 = [v5 proxyApplication];
+  widgetSceneViewController2 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+  proxyApplication = [widgetSceneViewController2 proxyApplication];
 
-  if (v4 == 2 && v6)
+  if (sceneContentState == 2 && proxyApplication)
   {
     if (![(DBSceneWidgetViewController *)self proxySceneContentReady])
     {
@@ -1452,19 +1452,19 @@ void __66__DBSceneWidgetViewController_listener_shouldAcceptNewConnection___bloc
     }
   }
 
-  else if (v4 != 2)
+  else if (sceneContentState != 2)
   {
 LABEL_4:
-    v7 = DBLogForCategory(2uLL);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    animationManager = DBLogForCategory(2uLL);
+    if (os_log_type_enabled(animationManager, OS_LOG_TYPE_DEFAULT))
     {
       v8 = NSStringFromBOOL();
       v9 = NSStringFromBOOL();
       [(DBSceneWidgetViewController *)self proxySceneContentReady];
       v10 = NSStringFromBOOL();
-      v11 = [(DBSceneWidgetViewController *)self loadingView];
+      loadingView = [(DBSceneWidgetViewController *)self loadingView];
       v21 = 138544386;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2114;
       v24 = v8;
       v25 = 2114;
@@ -1472,37 +1472,37 @@ LABEL_4:
       v27 = 2114;
       v28 = v10;
       v29 = 2114;
-      v30 = v11;
-      _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Scene not ready yet. Content state ready: %{public}@, proxied: %{public}@, proxy scene content ready: %{public}@, loading view: %{public}@", &v21, 0x34u);
+      v30 = loadingView;
+      _os_log_impl(&dword_248146000, animationManager, OS_LOG_TYPE_DEFAULT, "[%{public}@] Scene not ready yet. Content state ready: %{public}@, proxied: %{public}@, proxy scene content ready: %{public}@, loading view: %{public}@", &v21, 0x34u);
     }
 
     goto LABEL_15;
   }
 
-  v12 = [(DBSceneWidgetViewController *)self loadingView];
+  loadingView2 = [(DBSceneWidgetViewController *)self loadingView];
 
-  if (v12)
+  if (loadingView2)
   {
     v13 = DBLogForCategory(2uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(DBSceneWidgetViewController *)self loadingView];
+      loadingView3 = [(DBSceneWidgetViewController *)self loadingView];
       v21 = 138543618;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2112;
-      v24 = v14;
+      v24 = loadingView3;
       _os_log_impl(&dword_248146000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Loading view present, will attempt animating removal: %@", &v21, 0x16u);
     }
 
-    v7 = [(DBSceneWidgetViewController *)self animationManager];
-    [v7 runAnimationIfPossible:@"DBWidgetSceneSplashScreenAnimationIdentifier" client:self];
+    animationManager = [(DBSceneWidgetViewController *)self animationManager];
+    [animationManager runAnimationIfPossible:@"DBWidgetSceneSplashScreenAnimationIdentifier" client:self];
   }
 
   else
   {
-    v15 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    v16 = [v15 view];
-    [v16 alpha];
+    widgetSceneViewController3 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    view = [widgetSceneViewController3 view];
+    [view alpha];
     v18 = v17;
 
     if (v18 >= 1.0)
@@ -1514,23 +1514,23 @@ LABEL_4:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138543362;
-      v22 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_248146000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Loading view NOT present, will set alpha on widgetSceneViewController", &v21, 0xCu);
     }
 
-    v7 = [(DBSceneWidgetViewController *)self widgetSceneViewController];
-    v20 = [v7 view];
-    [v20 setAlpha:1.0];
+    animationManager = [(DBSceneWidgetViewController *)self widgetSceneViewController];
+    view2 = [animationManager view];
+    [view2 setAlpha:1.0];
   }
 
 LABEL_15:
 }
 
-- (void)_setTouchActionDisabled:(BOOL)a3 forRequester:(id)a4
+- (void)_setTouchActionDisabled:(BOOL)disabled forRequester:(id)requester
 {
-  v4 = a3;
-  v9 = a4;
-  if (v4)
+  disabledCopy = disabled;
+  requesterCopy = requester;
+  if (disabledCopy)
   {
     if (!self->_touchActionDisabledRequesters)
     {
@@ -1539,14 +1539,14 @@ LABEL_15:
       self->_touchActionDisabledRequesters = v6;
     }
 
-    v8 = [(DBSceneWidgetViewController *)self touchActionDisabledRequesters];
-    [v8 addObject:v9];
+    touchActionDisabledRequesters = [(DBSceneWidgetViewController *)self touchActionDisabledRequesters];
+    [touchActionDisabledRequesters addObject:requesterCopy];
   }
 
   else
   {
-    v8 = [(DBSceneWidgetViewController *)self touchActionDisabledRequesters];
-    [v8 removeObject:v9];
+    touchActionDisabledRequesters = [(DBSceneWidgetViewController *)self touchActionDisabledRequesters];
+    [touchActionDisabledRequesters removeObject:requesterCopy];
   }
 
   [(DBSceneWidgetViewController *)self _updateTouchActionDisabled];
@@ -1554,24 +1554,24 @@ LABEL_15:
 
 - (void)_updateTouchActionDisabled
 {
-  v3 = [(DBSceneWidgetViewController *)self touchActionDisabledRequesters];
-  v4 = [v3 count] == 0;
+  touchActionDisabledRequesters = [(DBSceneWidgetViewController *)self touchActionDisabledRequesters];
+  v4 = [touchActionDisabledRequesters count] == 0;
 
-  v5 = [(DBSceneWidgetViewController *)self touchTapGestureRecognizer];
-  [v5 setEnabled:v4];
+  touchTapGestureRecognizer = [(DBSceneWidgetViewController *)self touchTapGestureRecognizer];
+  [touchTapGestureRecognizer setEnabled:v4];
 
-  v7 = [(DBSceneWidgetViewController *)self touchActionView];
-  v6 = [v7 layer];
-  [v6 setHitTestsAsOpaque:v4];
+  touchActionView = [(DBSceneWidgetViewController *)self touchActionView];
+  layer = [touchActionView layer];
+  [layer setHitTestsAsOpaque:v4];
 }
 
-- (void)setWidgetContextId:(unsigned int)a3
+- (void)setWidgetContextId:(unsigned int)id
 {
-  if (self->_widgetContextId != a3)
+  if (self->_widgetContextId != id)
   {
-    self->_widgetContextId = a3;
-    v4 = [(DBSceneWidgetViewController *)self touchDeliveryPolicyAssertion];
-    [v4 invalidate];
+    self->_widgetContextId = id;
+    touchDeliveryPolicyAssertion = [(DBSceneWidgetViewController *)self touchDeliveryPolicyAssertion];
+    [touchDeliveryPolicyAssertion invalidate];
 
     [(DBSceneWidgetViewController *)self setTouchDeliveryPolicyAssertion:0];
     v5 = objc_alloc_init(MEMORY[0x277CF0798]);
@@ -1579,13 +1579,13 @@ LABEL_15:
 
     v6 = MEMORY[0x277CF0790];
     widgetContextId = self->_widgetContextId;
-    v8 = [(DBSceneWidgetViewController *)self view];
-    v9 = [v8 window];
-    v10 = [v6 policyRequiringSharingOfTouchesDeliveredToChildContextId:widgetContextId withHostContextId:{objc_msgSend(v9, "_contextId")}];
+    view = [(DBSceneWidgetViewController *)self view];
+    window = [view window];
+    v10 = [v6 policyRequiringSharingOfTouchesDeliveredToChildContextId:widgetContextId withHostContextId:{objc_msgSend(window, "_contextId")}];
 
-    v11 = [(DBSceneWidgetViewController *)self touchDeliveryPolicyAssertion];
-    v12 = [v11 endpoint];
-    [v10 setAssertionEndpoint:v12];
+    touchDeliveryPolicyAssertion2 = [(DBSceneWidgetViewController *)self touchDeliveryPolicyAssertion];
+    endpoint = [touchDeliveryPolicyAssertion2 endpoint];
+    [v10 setAssertionEndpoint:endpoint];
 
     v13 = BKSTouchDeliveryPolicyServerGetProxyWithErrorHandler();
     v14 = v13;
@@ -1606,25 +1606,25 @@ void __50__DBSceneWidgetViewController_setWidgetContextId___block_invoke(uint64_
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = DBSceneWidgetViewController;
-  v6 = a4;
-  [(DBWidgetViewController *)&v9 touchesBegan:a3 withEvent:v6];
-  [v6 _initialTouchTimestamp];
+  eventCopy = event;
+  [(DBWidgetViewController *)&v9 touchesBegan:began withEvent:eventCopy];
+  [eventCopy _initialTouchTimestamp];
   v8 = v7;
 
   [(DBSceneWidgetViewController *)self setInitialTouchTimestamp:v8];
 }
 
-- (void)_scrollViewWillBeginDragging:(id)a3
+- (void)_scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [draggingCopy object];
 
-  v6 = v5;
+  v6 = object;
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v9 = v6;
@@ -1635,8 +1635,8 @@ void __50__DBSceneWidgetViewController_setWidgetContextId___block_invoke(uint64_
     v9 = 0;
   }
 
-  v7 = [(DBSceneWidgetViewController *)self view];
-  v8 = [v9 containsView:v7];
+  view = [(DBSceneWidgetViewController *)self view];
+  v8 = [v9 containsView:view];
 
   if (v8)
   {
@@ -1644,13 +1644,13 @@ void __50__DBSceneWidgetViewController_setWidgetContextId___block_invoke(uint64_
   }
 }
 
-- (void)_scrollViewDidEndDragging:(id)a3
+- (void)_scrollViewDidEndDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [draggingCopy object];
 
-  v6 = v5;
+  v6 = object;
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v9 = v6;
@@ -1661,8 +1661,8 @@ void __50__DBSceneWidgetViewController_setWidgetContextId___block_invoke(uint64_
     v9 = 0;
   }
 
-  v7 = [(DBSceneWidgetViewController *)self view];
-  v8 = [v9 containsView:v7];
+  view = [(DBSceneWidgetViewController *)self view];
+  v8 = [v9 containsView:view];
 
   if (v8)
   {
@@ -1682,11 +1682,11 @@ void __50__DBSceneWidgetViewController_setWidgetContextId___block_invoke(uint64_
     {
       v5 = objc_alloc_init(MEMORY[0x277CF0798]);
       v6 = MEMORY[0x277CF0790];
-      v7 = [(DBSceneWidgetViewController *)self widgetContextId];
+      widgetContextId = [(DBSceneWidgetViewController *)self widgetContextId];
       [(DBSceneWidgetViewController *)self initialTouchTimestamp];
-      v8 = [v6 policyCancelingTouchesDeliveredToContextId:v7 withInitialTouchTimestamp:?];
-      v9 = [v5 endpoint];
-      [v8 setAssertionEndpoint:v9];
+      v8 = [v6 policyCancelingTouchesDeliveredToContextId:widgetContextId withInitialTouchTimestamp:?];
+      endpoint = [v5 endpoint];
+      [v8 setAssertionEndpoint:endpoint];
 
       [v11 ipc_addPolicy:v8];
       cancelTouchesInIsolatedViewAssertion = self->_cancelTouchesInIsolatedViewAssertion;
@@ -1708,8 +1708,8 @@ void __53__DBSceneWidgetViewController__beginTouchCancelation__block_invoke()
 
 - (void)_endTouchCancelation
 {
-  v3 = [(DBSceneWidgetViewController *)self cancelTouchesInIsolatedViewAssertion];
-  [v3 invalidate];
+  cancelTouchesInIsolatedViewAssertion = [(DBSceneWidgetViewController *)self cancelTouchesInIsolatedViewAssertion];
+  [cancelTouchesInIsolatedViewAssertion invalidate];
 
   cancelTouchesInIsolatedViewAssertion = self->_cancelTouchesInIsolatedViewAssertion;
   self->_cancelTouchesInIsolatedViewAssertion = 0;

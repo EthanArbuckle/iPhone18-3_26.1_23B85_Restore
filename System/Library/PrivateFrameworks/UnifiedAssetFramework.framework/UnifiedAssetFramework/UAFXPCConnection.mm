@@ -1,27 +1,27 @@
 @interface UAFXPCConnection
 + (id)selectXPCEndpoint;
 - (UAFXPCConnection)initWithDefaultService;
-- (UAFXPCConnection)initWithMachServiceName:(id)a3;
+- (UAFXPCConnection)initWithMachServiceName:(id)name;
 - (UAFXPCConnection)initWithSubscriptionServiceName;
 - (UAFXPCConnection)initWithUserService;
 - (id)_connection;
 - (void)_invalidate;
-- (void)checkAssetStatus:(id)a3;
+- (void)checkAssetStatus:(id)status;
 - (void)dealloc;
-- (void)diagnosticInformation:(id)a3;
-- (void)diskSpaceNeededInBytesForLanguage:(id)a3 forClient:(unint64_t)a4 completion:(id)a5;
-- (void)downloadDictationAssetsForLanguage:(id)a3;
+- (void)diagnosticInformation:(id)information;
+- (void)diskSpaceNeededInBytesForLanguage:(id)language forClient:(unint64_t)client completion:(id)completion;
+- (void)downloadDictationAssetsForLanguage:(id)language;
 - (void)downloadSiriAssets;
 - (void)downloadSiriAssetsOverCellular;
-- (void)expireSubscriptions:(id)a3;
+- (void)expireSubscriptions:(id)subscriptions;
 - (void)invalidate;
-- (void)lockLatestAtomicInstance:(id)a3 completion:(id)a4;
-- (void)markAssetsExpired:(id)a3 completion:(id)a4;
-- (void)operationWithConfig:(id)a3 completion:(id)a4;
+- (void)lockLatestAtomicInstance:(id)instance completion:(id)completion;
+- (void)markAssetsExpired:(id)expired completion:(id)completion;
+- (void)operationWithConfig:(id)config completion:(id)completion;
 - (void)postAssetNotificationIfNeeded;
-- (void)postDictationAssetNotificationForLanguage:(id)a3;
-- (void)setSystemConfigurationForKey:(id)a3 withValue:(id)a4 completion:(id)a5;
-- (void)subscriptions:(id)a3 subscriber:(id)a4 user:(id)a5 completion:(id)a6;
+- (void)postDictationAssetNotificationForLanguage:(id)language;
+- (void)setSystemConfigurationForKey:(id)key withValue:(id)value completion:(id)completion;
+- (void)subscriptions:(id)subscriptions subscriber:(id)subscriber user:(id)user completion:(id)completion;
 @end
 
 @implementation UAFXPCConnection
@@ -29,8 +29,8 @@
 - (UAFXPCConnection)initWithUserService
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [objc_opt_class() getUserServiceXPCEndpoint];
-  v5 = [v3 initWithMachServiceName:v4];
+  getUserServiceXPCEndpoint = [objc_opt_class() getUserServiceXPCEndpoint];
+  v5 = [v3 initWithMachServiceName:getUserServiceXPCEndpoint];
 
   return v5;
 }
@@ -114,8 +114,8 @@
   block[1] = 3221225472;
   block[2] = __42__UAFXPCConnection_initWithDefaultService__block_invoke;
   block[3] = &unk_1E7FFCFD0;
-  v2 = self;
-  v8 = v2;
+  selfCopy = self;
+  v8 = selfCopy;
   if (qword_1ED7D1040 != -1)
   {
     dispatch_once(&qword_1ED7D1040, block);
@@ -144,20 +144,20 @@ void __42__UAFXPCConnection_initWithDefaultService__block_invoke(uint64_t a1)
   _MergedGlobals = v2;
 }
 
-- (UAFXPCConnection)initWithMachServiceName:(id)a3
+- (UAFXPCConnection)initWithMachServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = UAFXPCConnection;
   v6 = [(UAFXPCConnection *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceName, a3);
+    objc_storeStrong(&v6->_serviceName, name);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_USER_INTERACTIVE, 0);
 
-    v10 = [v5 stringByAppendingString:@".queue.connection"];
+    v10 = [nameCopy stringByAppendingString:@".queue.connection"];
     v11 = dispatch_queue_create([v10 cStringUsingEncoding:1], v9);
     queue = v7->_queue;
     v7->_queue = v11;
@@ -217,20 +217,20 @@ void __31__UAFXPCConnection__connection__block_invoke_291(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWithConfig:(id)a3 completion:(id)a4
+- (void)operationWithConfig:(id)config completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__UAFXPCConnection_operationWithConfig_completion___block_invoke;
   block[3] = &unk_1E7FFD558;
-  v12 = v6;
-  v13 = v7;
+  v12 = configCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = configCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -304,17 +304,17 @@ void __51__UAFXPCConnection_operationWithConfig_completion___block_invoke_293(ui
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)diagnosticInformation:(id)a3
+- (void)diagnosticInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__UAFXPCConnection_diagnosticInformation___block_invoke;
   v7[3] = &unk_1E7FFD5A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = informationCopy;
+  v6 = informationCopy;
   dispatch_async(queue, v7);
 }
 
@@ -388,20 +388,20 @@ void __42__UAFXPCConnection_diagnosticInformation___block_invoke_294(uint64_t a1
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)lockLatestAtomicInstance:(id)a3 completion:(id)a4
+- (void)lockLatestAtomicInstance:(id)instance completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  instanceCopy = instance;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__UAFXPCConnection_lockLatestAtomicInstance_completion___block_invoke;
   block[3] = &unk_1E7FFD558;
-  v12 = v6;
-  v13 = v7;
+  v12 = instanceCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = instanceCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -465,20 +465,20 @@ void __56__UAFXPCConnection_lockLatestAtomicInstance_completion___block_invoke_2
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)markAssetsExpired:(id)a3 completion:(id)a4
+- (void)markAssetsExpired:(id)expired completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  expiredCopy = expired;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__UAFXPCConnection_markAssetsExpired_completion___block_invoke;
   block[3] = &unk_1E7FFD620;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = expiredCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = expiredCopy;
   dispatch_async(queue, block);
 }
 
@@ -543,23 +543,23 @@ void __49__UAFXPCConnection_markAssetsExpired_completion___block_invoke_297(uint
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSystemConfigurationForKey:(id)a3 withValue:(id)a4 completion:(id)a5
+- (void)setSystemConfigurationForKey:(id)key withValue:(id)value completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__UAFXPCConnection_setSystemConfigurationForKey_withValue_completion___block_invoke;
   v15[3] = &unk_1E7FFD670;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = keyCopy;
+  v17 = valueCopy;
+  v18 = completionCopy;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v14 = completionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -632,17 +632,17 @@ void __70__UAFXPCConnection_setSystemConfigurationForKey_withValue_completion___
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)expireSubscriptions:(id)a3
+- (void)expireSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__UAFXPCConnection_expireSubscriptions___block_invoke;
   v7[3] = &unk_1E7FFD5A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = subscriptionsCopy;
+  v6 = subscriptionsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -705,12 +705,12 @@ void __40__UAFXPCConnection_expireSubscriptions___block_invoke_299(uint64_t a1, 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)subscriptions:(id)a3 subscriber:(id)a4 user:(id)a5 completion:(id)a6
+- (void)subscriptions:(id)subscriptions subscriber:(id)subscriber user:(id)user completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  subscriptionsCopy = subscriptions;
+  subscriberCopy = subscriber;
+  userCopy = user;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -730,7 +730,7 @@ void __40__UAFXPCConnection_expireSubscriptions___block_invoke_299(uint64_t a1, 
   v21[1] = 3221225472;
   v21[2] = __61__UAFXPCConnection_subscriptions_subscriber_user_completion___block_invoke_2;
   v21[3] = &unk_1E7FFD530;
-  v16 = v13;
+  v16 = completionCopy;
   v22 = v16;
   v17 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v21];
   v19[0] = MEMORY[0x1E69E9820];
@@ -739,7 +739,7 @@ void __40__UAFXPCConnection_expireSubscriptions___block_invoke_299(uint64_t a1, 
   v19[3] = &unk_1E7FFD698;
   v18 = v16;
   v20 = v18;
-  [v17 subscriptions:v10 subscriber:v11 user:v12 completion:v19];
+  [v17 subscriptions:subscriptionsCopy subscriber:subscriberCopy user:userCopy completion:v19];
 
   _Block_object_dispose(&v24, 8);
 }
@@ -911,17 +911,17 @@ void __49__UAFXPCConnection_postAssetNotificationIfNeeded__block_invoke_2(uint64
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)downloadDictationAssetsForLanguage:(id)a3
+- (void)downloadDictationAssetsForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__UAFXPCConnection_downloadDictationAssetsForLanguage___block_invoke;
   v7[3] = &unk_1E7FFD098;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = languageCopy;
+  v6 = languageCopy;
   dispatch_async(queue, v7);
 }
 
@@ -952,17 +952,17 @@ void __55__UAFXPCConnection_downloadDictationAssetsForLanguage___block_invoke_2(
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postDictationAssetNotificationForLanguage:(id)a3
+- (void)postDictationAssetNotificationForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__UAFXPCConnection_postDictationAssetNotificationForLanguage___block_invoke;
   v7[3] = &unk_1E7FFD098;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = languageCopy;
+  v6 = languageCopy;
   dispatch_async(queue, v7);
 }
 
@@ -993,17 +993,17 @@ void __62__UAFXPCConnection_postDictationAssetNotificationForLanguage___block_in
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkAssetStatus:(id)a3
+- (void)checkAssetStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__UAFXPCConnection_checkAssetStatus___block_invoke;
   v7[3] = &unk_1E7FFD5A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statusCopy;
+  v6 = statusCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1077,21 +1077,21 @@ void __37__UAFXPCConnection_checkAssetStatus___block_invoke_310(uint64_t a1, voi
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)diskSpaceNeededInBytesForLanguage:(id)a3 forClient:(unint64_t)a4 completion:(id)a5
+- (void)diskSpaceNeededInBytesForLanguage:(id)language forClient:(unint64_t)client completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  languageCopy = language;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__UAFXPCConnection_diskSpaceNeededInBytesForLanguage_forClient_completion___block_invoke;
   v13[3] = &unk_1E7FFD730;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = languageCopy;
+  v15 = completionCopy;
+  clientCopy = client;
+  v11 = languageCopy;
+  v12 = completionCopy;
   dispatch_async(queue, v13);
 }
 

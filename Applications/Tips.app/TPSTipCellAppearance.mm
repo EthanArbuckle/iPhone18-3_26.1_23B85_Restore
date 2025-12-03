@@ -1,5 +1,5 @@
 @interface TPSTipCellAppearance
-- (void)updateAppearanceWithSize:(CGSize)a3;
+- (void)updateAppearanceWithSize:(CGSize)size;
 - (void)updateMediaSizeType;
 @end
 
@@ -27,27 +27,27 @@
   }
 }
 
-- (void)updateAppearanceWithSize:(CGSize)a3
+- (void)updateAppearanceWithSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v39.receiver = self;
   v39.super_class = TPSTipCellAppearance;
-  [(TPSTipCellAppearance *)&v39 updateAppearanceWithSize:a3.width, a3.height];
+  [(TPSTipCellAppearance *)&v39 updateAppearanceWithSize:size.width, size.height];
   [(TPSTipCellAppearance *)self updateMediaSizeType];
-  v5 = [(TPSTipCellAppearance *)self traitCollection];
+  traitCollection = [(TPSTipCellAppearance *)self traitCollection];
 
-  if (v5)
+  if (traitCollection)
   {
     v6 = +[TPSUIAppController sharedInstance];
-    v7 = [v6 assetSizes];
+    assetSizes = [v6 assetSizes];
 
     if (+[TPSAppearance isPhoneUI])
     {
       self->_outroTextLabelTopPadding = 26.0;
       v8 = +[TPSCommonDefines sharedInstance];
-      v9 = [v8 assetRatioType];
+      assetRatioType = [v8 assetRatioType];
 
-      if (v9)
+      if (assetRatioType)
       {
         self->_outroWidthMultiplier = 2.31466667;
         v10 = 1.28019324;
@@ -61,7 +61,7 @@
       }
 
       self->_bookendsHeightMultiplier = v11;
-      v22 = [v7 tip];
+      v22 = [assetSizes tip];
       [(TPSTipCellAppearance *)self heightToWidthRatioFromSizes:v22 mediaSizeType:[(TPSTipCellAppearance *)self mediaSizeType] defaultValue:v10];
       v24 = v23;
 
@@ -106,9 +106,9 @@
       v30 = [v29 assetRatioType] == 0;
 
       self->_outroTextLabelTopPadding = v21;
-      v31 = [(TPSTipCellAppearance *)self isBookendsCompactLayout];
+      isBookendsCompactLayout = [(TPSTipCellAppearance *)self isBookendsCompactLayout];
       v32 = &unk_1000777A0;
-      if (v31)
+      if (isBookendsCompactLayout)
       {
         v32 = &unk_1000777B0;
       }
@@ -153,8 +153,8 @@
     }
 
     self->_assetHeight = v25;
-    v37 = [v7 tipIntro];
-    [(TPSTipCellAppearance *)self heightToWidthRatioFromSizes:v37 mediaSizeType:self->_bookendsMediaSizeType defaultValue:self->_bookendsHeightMultiplier];
+    tipIntro = [assetSizes tipIntro];
+    [(TPSTipCellAppearance *)self heightToWidthRatioFromSizes:tipIntro mediaSizeType:self->_bookendsMediaSizeType defaultValue:self->_bookendsHeightMultiplier];
     self->_bookendsHeightMultiplier = v38;
 
     self->_contentSidePadding = v26;

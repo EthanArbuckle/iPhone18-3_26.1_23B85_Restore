@@ -1,33 +1,33 @@
 @interface MTPillView
 - (MTPillView)init;
-- (MTPillView)initWithFrame:(CGRect)a3;
-- (MTPillView)initWithFrame:(CGRect)a3 settings:(id)a4;
+- (MTPillView)initWithFrame:(CGRect)frame;
+- (MTPillView)initWithFrame:(CGRect)frame settings:(id)settings;
 @end
 
 @implementation MTPillView
 
-- (MTPillView)initWithFrame:(CGRect)a3 settings:(id)a4
+- (MTPillView)initWithFrame:(CGRect)frame settings:(id)settings
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  settingsCopy = settings;
   BSDispatchQueueAssertMain();
   v18.receiver = self;
   v18.super_class = MTPillView;
-  v10 = [(MTPillView *)&v18 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(MTPillView *)&v18 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v12 = [v9 cornerMask];
+    cornerMask = [settingsCopy cornerMask];
     v13 = @"lumaDodgePillCorners-thin";
-    if (v12 != 1)
+    if (cornerMask != 1)
     {
       v13 = 0;
     }
 
-    if (v12)
+    if (cornerMask)
     {
       v14 = v13;
     }
@@ -38,27 +38,27 @@
     }
 
     v15 = [MEMORY[0x277D755B8] imageNamed:v14 inBundle:v11];
-    v16 = [(MTPillView *)v10 layer];
-    [v16 setCornerContents:{objc_msgSend(v15, "CGImage")}];
-    [v16 setCornerContentsCenter:{0.5, 0.5, 0.0, 0.0}];
-    [v9 cornerRadius];
-    [v16 setCornerRadius:?];
-    [v16 setMasksToBounds:1];
+    layer = [(MTPillView *)height layer];
+    [layer setCornerContents:{objc_msgSend(v15, "CGImage")}];
+    [layer setCornerContentsCenter:{0.5, 0.5, 0.0, 0.0}];
+    [settingsCopy cornerRadius];
+    [layer setCornerRadius:?];
+    [layer setMasksToBounds:1];
   }
 
-  return v10;
+  return height;
 }
 
-- (MTPillView)initWithFrame:(CGRect)a3
+- (MTPillView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = +[MTLumaDodgePillDomain rootSettings];
-  v9 = [(MTPillView *)self initWithFrame:v8 settings:x, y, width, height];
+  height = [(MTPillView *)self initWithFrame:v8 settings:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
 - (MTPillView)init

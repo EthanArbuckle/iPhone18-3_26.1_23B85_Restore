@@ -2,21 +2,21 @@
 + (BOOL)_shouldControlInputUIScene;
 + (id)_setupInfo;
 - (BOOL)isVisibleForSpringBoard;
-- (SBInputUISceneController)initWithSceneWorkspaceIdentifier:(id)a3 clientProcessIdentity:(id)a4 sceneVendingPolicy:(int64_t)a5 traitsRole:(id)a6 jobLabel:(id)a7 level:(double)a8;
+- (SBInputUISceneController)initWithSceneWorkspaceIdentifier:(id)identifier clientProcessIdentity:(id)identity sceneVendingPolicy:(int64_t)policy traitsRole:(id)role jobLabel:(id)label level:(double)level;
 - (UIWindow)hostingWindow;
 - (id)_currentDisplayConfiguration;
 - (id)_currentTraitsPipelineManager;
-- (id)_targetSceneForFocusedSceneTokenString:(id)a3;
-- (id)_targetSceneForKeyboardFocusContext:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)_targetSceneForFocusedSceneTokenString:(id)string;
+- (id)_targetSceneForKeyboardFocusContext:(id)context;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (void)_createInputUIScene;
-- (void)_evaluateAvailablePresenters:(id)a3 forSceneControllers:(id)a4;
-- (void)_setupDefaultPresentationForTargetHostingGraph:(id)a3 targetScene:(id)a4;
-- (void)_updateDefaultPresenterForTargetScene:(id)a3 contextID:(unsigned int)a4;
-- (void)_userSwipedToKillFromSwitcher:(id)a3;
+- (void)_evaluateAvailablePresenters:(id)presenters forSceneControllers:(id)controllers;
+- (void)_setupDefaultPresentationForTargetHostingGraph:(id)graph targetScene:(id)scene;
+- (void)_updateDefaultPresenterForTargetScene:(id)scene contextID:(unsigned int)d;
+- (void)_userSwipedToKillFromSwitcher:(id)switcher;
 - (void)dealloc;
-- (void)focusContextDidChange:(id)a3;
-- (void)terminateWithReason:(id)a3;
+- (void)focusContextDidChange:(id)change;
+- (void)terminateWithReason:(id)reason;
 @end
 
 @implementation SBInputUISceneController
@@ -27,7 +27,7 @@
   v6[0] = @"class";
   v7[0] = objc_opt_class();
   v6[1] = @"enabled";
-  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "_shouldControlInputUIScene")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "_shouldControlInputUIScene")}];
   v7[1] = v3;
   v7[2] = @"com.apple.InputUI";
   v6[2] = @"jobLabel";
@@ -52,11 +52,11 @@
   return v2 & 1;
 }
 
-- (SBInputUISceneController)initWithSceneWorkspaceIdentifier:(id)a3 clientProcessIdentity:(id)a4 sceneVendingPolicy:(int64_t)a5 traitsRole:(id)a6 jobLabel:(id)a7 level:(double)a8
+- (SBInputUISceneController)initWithSceneWorkspaceIdentifier:(id)identifier clientProcessIdentity:(id)identity sceneVendingPolicy:(int64_t)policy traitsRole:(id)role jobLabel:(id)label level:(double)level
 {
   v12.receiver = self;
   v12.super_class = SBInputUISceneController;
-  v8 = [(SBSystemUISceneController *)&v12 initWithSceneWorkspaceIdentifier:a3 clientProcessIdentity:a4 sceneVendingPolicy:a5 traitsRole:a6 jobLabel:a7 level:a8];
+  v8 = [(SBSystemUISceneController *)&v12 initWithSceneWorkspaceIdentifier:identifier clientProcessIdentity:identity sceneVendingPolicy:policy traitsRole:role jobLabel:label level:level];
   v9 = v8;
   if (v8)
   {
@@ -76,8 +76,8 @@ void __128__SBInputUISceneController_initWithSceneWorkspaceIdentifier_clientProc
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBInputUISceneController;
@@ -92,32 +92,32 @@ void __128__SBInputUISceneController_initWithSceneWorkspaceIdentifier_clientProc
   [v15 setSpecification:v3];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(SBSystemUISceneController *)self jobLabel];
-  v6 = [v4 stringWithFormat:@"SystemUIScene-[%@]", v5];
+  jobLabel = [(SBSystemUISceneController *)self jobLabel];
+  v6 = [v4 stringWithFormat:@"SystemUIScene-[%@]", jobLabel];
   [v15 setIdentifier:v6];
 
   v7 = [SBSingleSceneController alloc];
-  v8 = [(SBSystemUISceneController *)self sceneWorkspaceController];
-  v9 = [(SBSystemUISceneController *)self clientProcessIdentity];
-  v10 = [(SBSystemUISceneController *)self traitsRole];
-  v11 = [(SBSingleSceneController *)v7 initWithSceneWorkspaceController:v8 sceneRequestOptions:v15 clientIdentity:v9 traitsRole:v10 level:1.79769313e308];
+  sceneWorkspaceController = [(SBSystemUISceneController *)self sceneWorkspaceController];
+  clientProcessIdentity = [(SBSystemUISceneController *)self clientProcessIdentity];
+  traitsRole = [(SBSystemUISceneController *)self traitsRole];
+  v11 = [(SBSingleSceneController *)v7 initWithSceneWorkspaceController:sceneWorkspaceController sceneRequestOptions:v15 clientIdentity:clientProcessIdentity traitsRole:traitsRole level:1.79769313e308];
   sceneController = self->_sceneController;
   self->_sceneController = v11;
 
   [(SBSingleSceneController *)self->_sceneController setShouldActivateForDisplayConfiguration:1];
   [(SBSingleSceneController *)self->_sceneController setShouldForegroundForDisplayConfiguration:1];
   [(SBSingleSceneController *)self->_sceneController setShouldBeKeptActiveWhileForeground:1];
-  v13 = [(SBSingleSceneController *)self->_sceneController scene];
+  scene = [(SBSingleSceneController *)self->_sceneController scene];
   inputUIScene = self->_inputUIScene;
-  self->_inputUIScene = v13;
+  self->_inputUIScene = scene;
 }
 
 - (BOOL)isVisibleForSpringBoard
 {
-  v3 = [MEMORY[0x277D46F48] currentProcess];
-  v4 = [(FBScene *)self->_targetScene clientHandle];
-  v5 = [v4 processHandle];
-  v6 = [v5 isEqual:v3];
+  currentProcess = [MEMORY[0x277D46F48] currentProcess];
+  clientHandle = [(FBScene *)self->_targetScene clientHandle];
+  processHandle = [clientHandle processHandle];
+  v6 = [processHandle isEqual:currentProcess];
 
   return v6;
 }
@@ -125,25 +125,25 @@ void __128__SBInputUISceneController_initWithSceneWorkspaceIdentifier_clientProc
 - (UIWindow)hostingWindow
 {
   v3 = objc_opt_class();
-  v4 = [(SBSingleSceneController *)self->_sceneController presenter];
-  v5 = SBSafeCast(v3, v4);
+  presenter = [(SBSingleSceneController *)self->_sceneController presenter];
+  v5 = SBSafeCast(v3, presenter);
 
-  v6 = [(SBSingleSceneController *)self->_sceneController scene];
-  v7 = [v5 hostingWindowForScene:v6];
+  scene = [(SBSingleSceneController *)self->_sceneController scene];
+  v7 = [v5 hostingWindowForScene:scene];
 
   return v7;
 }
 
-- (void)terminateWithReason:(id)a3
+- (void)terminateWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBSystemUISceneController *)self clientProcessIdentity];
-  v6 = [MEMORY[0x277D0AAC0] sharedInstanceIfExists];
-  v7 = [v6 processForIdentity:v5];
+  reasonCopy = reason;
+  clientProcessIdentity = [(SBSystemUISceneController *)self clientProcessIdentity];
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstanceIfExists];
+  v7 = [mEMORY[0x277D0AAC0] processForIdentity:clientProcessIdentity];
 
   if ([v7 isRunning])
   {
-    v8 = [objc_alloc(MEMORY[0x277D47010]) initWithExplanation:v4];
+    v8 = [objc_alloc(MEMORY[0x277D47010]) initWithExplanation:reasonCopy];
     [v8 setReportType:0];
     [v8 setExceptionDomain:10];
     [v8 setExceptionCode:439025681];
@@ -164,9 +164,9 @@ void __128__SBInputUISceneController_initWithSceneWorkspaceIdentifier_clientProc
     block[1] = 3221225472;
     block[2] = __48__SBInputUISceneController_terminateWithReason___block_invoke;
     block[3] = &unk_2783A8ED8;
-    v13 = v5;
+    v13 = clientProcessIdentity;
     v14 = v8;
-    v15 = v4;
+    v15 = reasonCopy;
     v11 = v8;
     dispatch_async(v10, block);
   }
@@ -199,24 +199,24 @@ void __48__SBInputUISceneController_terminateWithReason___block_invoke(void *a1)
   }
 }
 
-- (void)_evaluateAvailablePresenters:(id)a3 forSceneControllers:(id)a4
+- (void)_evaluateAvailablePresenters:(id)presenters forSceneControllers:(id)controllers
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  presentersCopy = presenters;
+  controllersCopy = controllers;
   if (self->_targetScene)
   {
-    v30 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v30 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(presentersCopy, "count")}];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = v6;
+    v8 = presentersCopy;
     v9 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v9)
     {
       v10 = v9;
-      v29 = v6;
+      v29 = presentersCopy;
       v11 = 0;
       v12 = *v33;
       obj = v8;
@@ -230,10 +230,10 @@ void __48__SBInputUISceneController_terminateWithReason___block_invoke(void *a1)
           }
 
           v14 = *(*(&v32 + 1) + 8 * i);
-          v15 = [v14 parentSceneIdentityToken];
-          v16 = self;
-          v17 = [(FBScene *)self->_targetScene identityToken];
-          v18 = [v15 isEqual:v17];
+          parentSceneIdentityToken = [v14 parentSceneIdentityToken];
+          selfCopy = self;
+          identityToken = [(FBScene *)self->_targetScene identityToken];
+          v18 = [parentSceneIdentityToken isEqual:identityToken];
 
           if (v18)
           {
@@ -254,13 +254,13 @@ void __48__SBInputUISceneController_terminateWithReason___block_invoke(void *a1)
               v11 = v20;
             }
 
-            self = v16;
+            self = selfCopy;
             [v30 addObject:v14];
           }
 
           else
           {
-            self = v16;
+            self = selfCopy;
           }
         }
 
@@ -269,11 +269,11 @@ void __48__SBInputUISceneController_terminateWithReason___block_invoke(void *a1)
 
       while (v10);
 
-      v6 = v29;
+      presentersCopy = v29;
       if (v11)
       {
         v21 = v11;
-        v22 = v21;
+        defaultPresenter = v21;
         goto LABEL_22;
       }
     }
@@ -282,17 +282,17 @@ void __48__SBInputUISceneController_terminateWithReason___block_invoke(void *a1)
     {
     }
 
-    v23 = [v30 lastObject];
-    if (!v23)
+    lastObject = [v30 lastObject];
+    if (!lastObject)
     {
-      v26 = [(FBScene *)self->_targetScene identityToken];
-      v27 = [v26 isEqual:self->_lastExternallyPresentedSceneToken];
+      identityToken2 = [(FBScene *)self->_targetScene identityToken];
+      v27 = [identityToken2 isEqual:self->_lastExternallyPresentedSceneToken];
 
       if (v27)
       {
         objc_storeWeak(&self->_currentExternalPresenter, 0);
         v21 = 0;
-        v22 = 0;
+        defaultPresenter = 0;
       }
 
       else
@@ -301,30 +301,30 @@ void __48__SBInputUISceneController_terminateWithReason___block_invoke(void *a1)
         self->_lastExternallyPresentedSceneToken = 0;
 
         objc_storeWeak(&self->_currentExternalPresenter, 0);
-        v22 = [(SBSystemUISceneController *)self defaultPresenter];
+        defaultPresenter = [(SBSystemUISceneController *)self defaultPresenter];
         v21 = 0;
       }
 
       goto LABEL_23;
     }
 
-    v22 = v23;
+    defaultPresenter = lastObject;
     v21 = 0;
 LABEL_22:
-    v24 = [(FBScene *)self->_targetScene identityToken];
+    identityToken3 = [(FBScene *)self->_targetScene identityToken];
     v25 = self->_lastExternallyPresentedSceneToken;
-    self->_lastExternallyPresentedSceneToken = v24;
+    self->_lastExternallyPresentedSceneToken = identityToken3;
 
-    objc_storeWeak(&self->_currentExternalPresenter, v22);
+    objc_storeWeak(&self->_currentExternalPresenter, defaultPresenter);
 LABEL_23:
-    [(SBSingleSceneController *)self->_sceneController setPresenter:v22];
+    [(SBSingleSceneController *)self->_sceneController setPresenter:defaultPresenter];
   }
 }
 
-- (void)focusContextDidChange:(id)a3
+- (void)focusContextDidChange:(id)change
 {
-  v4 = a3;
-  v3 = v4;
+  changeCopy = change;
+  v3 = changeCopy;
   BSDispatchMain();
 }
 
@@ -586,20 +586,20 @@ void __50__SBInputUISceneController_focusContextDidChange___block_invoke_57(uint
   }
 }
 
-- (id)_targetSceneForKeyboardFocusContext:(id)a3
+- (id)_targetSceneForKeyboardFocusContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 sceneIdentity];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  sceneIdentity = [contextCopy sceneIdentity];
+  v6 = sceneIdentity;
+  if (sceneIdentity)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x3032000000;
     v17 = __Block_byref_object_copy__13;
     v18 = __Block_byref_object_dispose__13;
-    v7 = [v5 stringRepresentation];
-    v19 = [(SBInputUISceneController *)self _targetSceneForFocusedSceneTokenString:v7];
+    stringRepresentation = [sceneIdentity stringRepresentation];
+    v19 = [(SBInputUISceneController *)self _targetSceneForFocusedSceneTokenString:stringRepresentation];
 
     v8 = v15[5];
     if (!v8)
@@ -619,7 +619,7 @@ void __50__SBInputUISceneController_focusContextDidChange___block_invoke_57(uint
         v10 = SBLogInputUI();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          [(SBInputUISceneController *)v4 _targetSceneForKeyboardFocusContext:v10];
+          [(SBInputUISceneController *)contextCopy _targetSceneForKeyboardFocusContext:v10];
         }
 
         v8 = v15[5];
@@ -651,40 +651,40 @@ void __64__SBInputUISceneController__targetSceneForKeyboardFocusContext___block_
   }
 }
 
-- (id)_targetSceneForFocusedSceneTokenString:(id)a3
+- (id)_targetSceneForFocusedSceneTokenString:(id)string
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v4 = [SBApp systemUIScenesCoordinator];
-    v5 = [v4 sceneFromIdentityTokenStringRepresentation:v3];
+    systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+    sceneIfExists = [systemUIScenesCoordinator sceneFromIdentityTokenStringRepresentation:stringCopy];
 
-    if (!v5)
+    if (!sceneIfExists)
     {
-      v6 = [MEMORY[0x277D0AAD8] sharedInstance];
-      v5 = [v6 sceneFromIdentityTokenStringRepresentation:v3];
+      mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+      sceneIfExists = [mEMORY[0x277D0AAD8] sceneFromIdentityTokenStringRepresentation:stringCopy];
 
-      if (!v5)
+      if (!sceneIfExists)
       {
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v7 = [SBApp windowSceneManager];
-        v8 = [v7 connectedWindowScenes];
+        windowSceneManager = [SBApp windowSceneManager];
+        connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-        obj = v8;
-        v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        obj = connectedWindowScenes;
+        v9 = [connectedWindowScenes countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v9)
         {
           v10 = v9;
-          v5 = 0;
+          sceneIfExists = 0;
           v11 = *v25;
           do
           {
             v12 = 0;
-            v13 = v5;
+            v13 = sceneIfExists;
             do
             {
               if (*v25 != v11)
@@ -694,20 +694,20 @@ void __64__SBInputUISceneController__targetSceneForKeyboardFocusContext___block_
 
               v14 = *(*(&v24 + 1) + 8 * v12);
               v15 = +[SBSceneManagerCoordinator sharedInstance];
-              v16 = [v14 _fbsDisplayIdentity];
-              v17 = [v15 sceneManagerForDisplayIdentity:v16];
-              v18 = [v17 externalForegroundApplicationSceneHandles];
+              _fbsDisplayIdentity = [v14 _fbsDisplayIdentity];
+              v17 = [v15 sceneManagerForDisplayIdentity:_fbsDisplayIdentity];
+              externalForegroundApplicationSceneHandles = [v17 externalForegroundApplicationSceneHandles];
 
               v22[0] = MEMORY[0x277D85DD0];
               v22[1] = 3221225472;
               v22[2] = __67__SBInputUISceneController__targetSceneForFocusedSceneTokenString___block_invoke;
               v22[3] = &unk_2783ADC40;
-              v23 = v3;
-              v19 = [v18 bs_firstObjectPassingTest:v22];
-              v5 = [v19 sceneIfExists];
+              v23 = stringCopy;
+              v19 = [externalForegroundApplicationSceneHandles bs_firstObjectPassingTest:v22];
+              sceneIfExists = [v19 sceneIfExists];
 
               ++v12;
-              v13 = v5;
+              v13 = sceneIfExists;
             }
 
             while (v10 != v12);
@@ -719,7 +719,7 @@ void __64__SBInputUISceneController__targetSceneForKeyboardFocusContext___block_
 
         else
         {
-          v5 = 0;
+          sceneIfExists = 0;
         }
       }
     }
@@ -727,10 +727,10 @@ void __64__SBInputUISceneController__targetSceneForKeyboardFocusContext___block_
 
   else
   {
-    v5 = 0;
+    sceneIfExists = 0;
   }
 
-  return v5;
+  return sceneIfExists;
 }
 
 BOOL __67__SBInputUISceneController__targetSceneForFocusedSceneTokenString___block_invoke(uint64_t a1, void *a2)
@@ -767,11 +767,11 @@ uint64_t __67__SBInputUISceneController__targetSceneForFocusedSceneTokenString__
   return v5;
 }
 
-- (void)_updateDefaultPresenterForTargetScene:(id)a3 contextID:(unsigned int)a4
+- (void)_updateDefaultPresenterForTargetScene:(id)scene contextID:(unsigned int)d
 {
-  v4 = *&a4;
-  v7 = a3;
-  if (!v7)
+  v4 = *&d;
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [SBInputUISceneController _updateDefaultPresenterForTargetScene:a2 contextID:self];
     if (v4)
@@ -790,7 +790,7 @@ LABEL_5:
   }
 
 LABEL_3:
-  v8 = [MEMORY[0x277D75978] sceneHostingGraph];
+  sceneHostingGraph = [MEMORY[0x277D75978] sceneHostingGraph];
   objc_initWeak(&location, self);
   [(BSInvalidatable *)self->_hostingGraphObservationInvalidatable invalidate];
   v12[0] = MEMORY[0x277D85DD0];
@@ -798,18 +798,18 @@ LABEL_3:
   v12[2] = __76__SBInputUISceneController__updateDefaultPresenterForTargetScene_contextID___block_invoke;
   v12[3] = &unk_2783ADC68;
   objc_copyWeak(&v14, &location);
-  v13 = v7;
-  v9 = [v8 observeLocalWindowGraphHostingContextID:v4 withHandler:v12];
+  v13 = sceneCopy;
+  v9 = [sceneHostingGraph observeLocalWindowGraphHostingContextID:v4 withHandler:v12];
   hostingGraphObservationInvalidatable = self->_hostingGraphObservationInvalidatable;
   self->_hostingGraphObservationInvalidatable = v9;
 
-  v11 = [v8 localWindowGraphHostingContextID:v4];
+  v11 = [sceneHostingGraph localWindowGraphHostingContextID:v4];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 
 LABEL_6:
-  [(SBInputUISceneController *)self _setupDefaultPresentationForTargetHostingGraph:v11 targetScene:v7];
+  [(SBInputUISceneController *)self _setupDefaultPresentationForTargetHostingGraph:v11 targetScene:sceneCopy];
   [(SBSystemUISceneController *)self _setNeedsPresentersEvaluation];
 }
 
@@ -825,12 +825,12 @@ void __76__SBInputUISceneController__updateDefaultPresenterForTargetScene_contex
   }
 }
 
-- (void)_setupDefaultPresentationForTargetHostingGraph:(id)a3 targetScene:(id)a4
+- (void)_setupDefaultPresentationForTargetHostingGraph:(id)graph targetScene:(id)scene
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  graphCopy = graph;
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [SBInputUISceneController _setupDefaultPresentationForTargetHostingGraph:a2 targetScene:self];
   }
@@ -839,8 +839,8 @@ void __76__SBInputUISceneController__updateDefaultPresenterForTargetScene_contex
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v9 = [v7 reverseObjectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v44 objects:v52 count:16];
+  reverseObjectEnumerator = [graphCopy reverseObjectEnumerator];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v10)
   {
     v11 = v10;
@@ -853,7 +853,7 @@ LABEL_5:
     {
       if (*v45 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v16 = *(*(&v44 + 1) + 8 * v14);
@@ -869,7 +869,7 @@ LABEL_5:
       v15 = v12;
       if (v11 == v14)
       {
-        v11 = [v9 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v44 objects:v52 count:16];
         if (v11)
         {
           goto LABEL_5;
@@ -888,51 +888,51 @@ LABEL_5:
     v12 = 0;
   }
 
-  v18 = [v8 settings];
-  v19 = [v18 sb_displayConfigurationForSceneManagers];
+  settings = [sceneCopy settings];
+  sb_displayConfigurationForSceneManagers = [settings sb_displayConfigurationForSceneManagers];
 
-  v20 = [v12 windowScene];
-  v21 = [(SBSystemUISceneController *)self defaultPresenter];
+  windowScene = [v12 windowScene];
+  defaultPresenter = [(SBSystemUISceneController *)self defaultPresenter];
 
-  if (v21)
+  if (defaultPresenter)
   {
-    v22 = [(SBSystemUISceneController *)self defaultPresenter];
-    v23 = [v22 targetWindowScene];
+    defaultPresenter2 = [(SBSystemUISceneController *)self defaultPresenter];
+    targetWindowScene = [defaultPresenter2 targetWindowScene];
 
     if (v12)
     {
-      if ([v20 isEqual:v23])
+      if ([windowScene isEqual:targetWindowScene])
       {
         goto LABEL_26;
       }
 
-      v24 = [(SBSystemUISceneController *)self defaultPresenter];
-      v25 = [v24 dismissScene:self->_inputUIScene];
+      defaultPresenter3 = [(SBSystemUISceneController *)self defaultPresenter];
+      v25 = [defaultPresenter3 dismissScene:self->_inputUIScene];
 
-      v26 = [[SBSystemUISceneDefaultPresenter alloc] initWithWindowHostingPresentationOnWindowScene:v20];
+      v26 = [[SBSystemUISceneDefaultPresenter alloc] initWithWindowHostingPresentationOnWindowScene:windowScene];
     }
 
     else
     {
-      v43 = v8;
-      v29 = v7;
-      v30 = [(SBSystemUISceneController *)self defaultPresenter];
-      v31 = [v30 targetDisplayConfiguration];
-      v32 = [v31 isEqual:v19];
+      v43 = sceneCopy;
+      v29 = graphCopy;
+      defaultPresenter4 = [(SBSystemUISceneController *)self defaultPresenter];
+      targetDisplayConfiguration = [defaultPresenter4 targetDisplayConfiguration];
+      v32 = [targetDisplayConfiguration isEqual:sb_displayConfigurationForSceneManagers];
 
       if (v32)
       {
-        v7 = v29;
-        v8 = v43;
+        graphCopy = v29;
+        sceneCopy = v43;
         goto LABEL_26;
       }
 
-      v33 = [(SBSystemUISceneController *)self defaultPresenter];
-      v34 = [v33 dismissScene:self->_inputUIScene];
+      defaultPresenter5 = [(SBSystemUISceneController *)self defaultPresenter];
+      v34 = [defaultPresenter5 dismissScene:self->_inputUIScene];
 
-      v26 = [[SBSystemUISceneDefaultPresenter alloc] initWithTargetDisplayConfiguration:v19];
-      v7 = v29;
-      v8 = v43;
+      v26 = [[SBSystemUISceneDefaultPresenter alloc] initWithTargetDisplayConfiguration:sb_displayConfigurationForSceneManagers];
+      graphCopy = v29;
+      sceneCopy = v43;
     }
 
     [(SBSystemUISceneController *)self setDefaultPresenter:v26];
@@ -943,15 +943,15 @@ LABEL_5:
     v27 = [SBSystemUISceneDefaultPresenter alloc];
     if (v12)
     {
-      v28 = [(SBSystemUISceneDefaultPresenter *)v27 initWithWindowHostingPresentationOnWindowScene:v20];
+      v28 = [(SBSystemUISceneDefaultPresenter *)v27 initWithWindowHostingPresentationOnWindowScene:windowScene];
     }
 
     else
     {
-      v28 = [(SBSystemUISceneDefaultPresenter *)v27 initWithTargetDisplayConfiguration:v19];
+      v28 = [(SBSystemUISceneDefaultPresenter *)v27 initWithTargetDisplayConfiguration:sb_displayConfigurationForSceneManagers];
     }
 
-    v23 = v28;
+    targetWindowScene = v28;
     [(SBSystemUISceneController *)self setDefaultPresenter:v28];
   }
 
@@ -968,7 +968,7 @@ LABEL_26:
   }
 
   v36 = v35;
-  v37 = [(SBSystemUISceneController *)self defaultPresenter];
+  defaultPresenter6 = [(SBSystemUISceneController *)self defaultPresenter];
   v38 = MEMORY[0x277CCABB0];
   if (v36)
   {
@@ -983,13 +983,13 @@ LABEL_26:
   }
 
   v41 = [v38 numberWithDouble:v39 + v40];
-  [v37 setPreferredWindowLevel:v41];
+  [defaultPresenter6 setPreferredWindowLevel:v41];
 
   v42 = SBLogInputUI();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v49 = v7;
+    v49 = graphCopy;
     v50 = 2114;
     v51 = v12;
     _os_log_impl(&dword_21ED4E000, v42, OS_LOG_TYPE_DEFAULT, "localWindowsGraphForFocusedContextID[%{public}@] targetWindow[%{public}@]", buf, 0x16u);
@@ -998,51 +998,51 @@ LABEL_26:
 
 - (id)_currentTraitsPipelineManager
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [(SBInputUISceneController *)self _currentDisplayConfiguration];
-  v5 = [v4 identity];
-  v6 = [v3 windowSceneForDisplayIdentity:v5];
-  v7 = [v6 traitsPipelineManager];
+  windowSceneManager = [SBApp windowSceneManager];
+  _currentDisplayConfiguration = [(SBInputUISceneController *)self _currentDisplayConfiguration];
+  identity = [_currentDisplayConfiguration identity];
+  v6 = [windowSceneManager windowSceneForDisplayIdentity:identity];
+  traitsPipelineManager = [v6 traitsPipelineManager];
 
-  return v7;
+  return traitsPipelineManager;
 }
 
 - (id)_currentDisplayConfiguration
 {
-  v3 = [(SBSystemUISceneController *)self defaultPresenter];
-  v4 = [v3 targetWindowScene];
+  defaultPresenter = [(SBSystemUISceneController *)self defaultPresenter];
+  targetWindowScene = [defaultPresenter targetWindowScene];
 
-  v5 = [(SBSystemUISceneController *)self defaultPresenter];
-  v6 = [v5 targetDisplayConfiguration];
+  defaultPresenter2 = [(SBSystemUISceneController *)self defaultPresenter];
+  targetDisplayConfiguration = [defaultPresenter2 targetDisplayConfiguration];
 
-  if (v4)
+  if (targetWindowScene)
   {
-    v7 = [v4 _sbDisplayConfiguration];
+    _sbDisplayConfiguration = [targetWindowScene _sbDisplayConfiguration];
 LABEL_5:
-    v8 = v7;
+    sb_displayConfigurationForSceneManagers = _sbDisplayConfiguration;
     goto LABEL_6;
   }
 
-  if (v6)
+  if (targetDisplayConfiguration)
   {
-    v7 = v6;
+    _sbDisplayConfiguration = targetDisplayConfiguration;
     goto LABEL_5;
   }
 
-  v10 = [(FBScene *)self->_targetScene settings];
-  v8 = [v10 sb_displayConfigurationForSceneManagers];
+  settings = [(FBScene *)self->_targetScene settings];
+  sb_displayConfigurationForSceneManagers = [settings sb_displayConfigurationForSceneManagers];
 
 LABEL_6:
 
-  return v8;
+  return sb_displayConfigurationForSceneManagers;
 }
 
-- (void)_userSwipedToKillFromSwitcher:(id)a3
+- (void)_userSwipedToKillFromSwitcher:(id)switcher
 {
-  v4 = a3;
-  v5 = [(SBSystemUISceneController *)self clientProcessIdentity];
-  v6 = [MEMORY[0x277D0AAC0] sharedInstanceIfExists];
-  v7 = [v6 processForIdentity:v5];
+  switcherCopy = switcher;
+  clientProcessIdentity = [(SBSystemUISceneController *)self clientProcessIdentity];
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstanceIfExists];
+  v7 = [mEMORY[0x277D0AAC0] processForIdentity:clientProcessIdentity];
 
   if ([v7 isRunning])
   {
@@ -1061,9 +1061,9 @@ LABEL_6:
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Sending SBSUIUserSwipedToKillAction", v13, 2u);
     }
 
-    v11 = [v7 workspace];
+    workspace = [v7 workspace];
     v12 = [MEMORY[0x277CBEB98] setWithObject:v9];
-    [v11 sendActions:v12];
+    [workspace sendActions:v12];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -1076,11 +1076,11 @@ void __58__SBInputUISceneController__userSwipedToKillFromSwitcher___block_invoke
   [WeakRetained terminateWithReason:@"SBSUIUserSwipedToKillAction InputUI timeout"];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBInputUISceneController;
-  v4 = [(SBSystemUISceneController *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBSystemUISceneController *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendObject:self->_sceneController withName:@"InputUI Scene Controller"];
 
   return v4;

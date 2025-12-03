@@ -1,14 +1,14 @@
 @interface _MPCPlaybackContextPlaybackIntentDataSource
-- (void)_getPlaybackContextForIntent:(id)a3 withCompletion:(id)a4;
+- (void)_getPlaybackContextForIntent:(id)intent withCompletion:(id)completion;
 @end
 
 @implementation _MPCPlaybackContextPlaybackIntentDataSource
 
-- (void)_getPlaybackContextForIntent:(id)a3 withCompletion:(id)a4
+- (void)_getPlaybackContextForIntent:(id)intent withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 tracklistToken];
-  (*(a4 + 2))(v6, v7, 0);
+  completionCopy = completion;
+  tracklistToken = [intent tracklistToken];
+  (*(completion + 2))(completionCopy, tracklistToken, 0);
 }
 
 @end

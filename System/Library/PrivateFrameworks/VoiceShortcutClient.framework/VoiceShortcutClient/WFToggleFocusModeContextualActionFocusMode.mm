@@ -1,32 +1,32 @@
 @interface WFToggleFocusModeContextualActionFocusMode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WFColor)color;
-- (WFToggleFocusModeContextualActionFocusMode)initWithCoder:(id)a3;
-- (WFToggleFocusModeContextualActionFocusMode)initWithIdentifier:(id)a3 name:(id)a4 symbolName:(id)a5 colorName:(id)a6;
+- (WFToggleFocusModeContextualActionFocusMode)initWithCoder:(id)coder;
+- (WFToggleFocusModeContextualActionFocusMode)initWithIdentifier:(id)identifier name:(id)name symbolName:(id)symbolName colorName:(id)colorName;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFToggleFocusModeContextualActionFocusMode
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_symbolName forKey:@"symbolName"];
-  [v5 encodeObject:self->_colorName forKey:@"colorName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_symbolName forKey:@"symbolName"];
+  [coderCopy encodeObject:self->_colorName forKey:@"colorName"];
 }
 
-- (WFToggleFocusModeContextualActionFocusMode)initWithCoder:(id)a3
+- (WFToggleFocusModeContextualActionFocusMode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorName"];
 
   if (v5)
   {
@@ -40,26 +40,26 @@
 
   if (v9 || v7 == 0)
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(WFToggleFocusModeContextualActionFocusMode *)self initWithIdentifier:v5 name:v6 symbolName:v7 colorName:v8];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (WFColor)color
 {
-  v3 = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
+  colorName = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
 
-  if (v3)
+  if (colorName)
   {
-    v4 = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
-    v5 = [WFColor colorWithFocusColorName:v4];
+    colorName2 = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
+    v5 = [WFColor colorWithFocusColorName:colorName2];
     v6 = v5;
     if (v5)
     {
@@ -82,13 +82,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -97,10 +97,10 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v7 = [(WFToggleFocusModeContextualActionFocusMode *)v6 identifier];
-    v8 = [(WFToggleFocusModeContextualActionFocusMode *)self identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(WFToggleFocusModeContextualActionFocusMode *)v6 identifier];
+    identifier2 = [(WFToggleFocusModeContextualActionFocusMode *)self identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -127,10 +127,10 @@ LABEL_35:
       }
     }
 
-    v16 = [(WFToggleFocusModeContextualActionFocusMode *)v6 name];
-    v17 = [(WFToggleFocusModeContextualActionFocusMode *)self name];
-    v14 = v16;
-    v18 = v17;
+    name = [(WFToggleFocusModeContextualActionFocusMode *)v6 name];
+    name2 = [(WFToggleFocusModeContextualActionFocusMode *)self name];
+    v14 = name;
+    v18 = name2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -157,10 +157,10 @@ LABEL_34:
       }
     }
 
-    v22 = [(WFToggleFocusModeContextualActionFocusMode *)v6 symbolName];
-    v23 = [(WFToggleFocusModeContextualActionFocusMode *)self symbolName];
-    v24 = v22;
-    v25 = v23;
+    symbolName = [(WFToggleFocusModeContextualActionFocusMode *)v6 symbolName];
+    symbolName2 = [(WFToggleFocusModeContextualActionFocusMode *)self symbolName];
+    v24 = symbolName;
+    v25 = symbolName2;
     v32 = v24;
     v33 = v25;
     if (v24 != v25)
@@ -200,10 +200,10 @@ LABEL_33:
     }
 
 LABEL_24:
-    v28 = [(WFToggleFocusModeContextualActionFocusMode *)v6 colorName];
-    v29 = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
-    v26 = v28;
-    v30 = v29;
+    colorName = [(WFToggleFocusModeContextualActionFocusMode *)v6 colorName];
+    colorName2 = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
+    v26 = colorName;
+    v30 = colorName2;
     v27 = v30;
     if (v26 == v30)
     {
@@ -231,17 +231,17 @@ LABEL_37:
 - (unint64_t)hash
 {
   v3 = objc_opt_new();
-  v4 = [(WFToggleFocusModeContextualActionFocusMode *)self identifier];
-  v5 = [v3 combineContentsOfPropertyListObject:v4];
+  identifier = [(WFToggleFocusModeContextualActionFocusMode *)self identifier];
+  v5 = [v3 combineContentsOfPropertyListObject:identifier];
 
-  v6 = [(WFToggleFocusModeContextualActionFocusMode *)self name];
-  v7 = [v3 combineContentsOfPropertyListObject:v6];
+  name = [(WFToggleFocusModeContextualActionFocusMode *)self name];
+  v7 = [v3 combineContentsOfPropertyListObject:name];
 
-  v8 = [(WFToggleFocusModeContextualActionFocusMode *)self symbolName];
-  v9 = [v3 combineContentsOfPropertyListObject:v8];
+  symbolName = [(WFToggleFocusModeContextualActionFocusMode *)self symbolName];
+  v9 = [v3 combineContentsOfPropertyListObject:symbolName];
 
-  v10 = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
-  v11 = [v3 combineContentsOfPropertyListObject:v10];
+  colorName = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
+  v11 = [v3 combineContentsOfPropertyListObject:colorName];
 
   v12 = [v3 finalize];
   return v12;
@@ -252,33 +252,33 @@ LABEL_37:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFToggleFocusModeContextualActionFocusMode *)self identifier];
-  v7 = [(WFToggleFocusModeContextualActionFocusMode *)self name];
-  v8 = [(WFToggleFocusModeContextualActionFocusMode *)self symbolName];
-  v9 = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
-  v10 = [v3 stringWithFormat:@"<%@ %p> Identifier: %@, Name: %@, Symbol Name: %@, Color Name: %@", v5, self, v6, v7, v8, v9];
+  identifier = [(WFToggleFocusModeContextualActionFocusMode *)self identifier];
+  name = [(WFToggleFocusModeContextualActionFocusMode *)self name];
+  symbolName = [(WFToggleFocusModeContextualActionFocusMode *)self symbolName];
+  colorName = [(WFToggleFocusModeContextualActionFocusMode *)self colorName];
+  v10 = [v3 stringWithFormat:@"<%@ %p> Identifier: %@, Name: %@, Symbol Name: %@, Color Name: %@", v5, self, identifier, name, symbolName, colorName];
 
   return v10;
 }
 
-- (WFToggleFocusModeContextualActionFocusMode)initWithIdentifier:(id)a3 name:(id)a4 symbolName:(id)a5 colorName:(id)a6
+- (WFToggleFocusModeContextualActionFocusMode)initWithIdentifier:(id)identifier name:(id)name symbolName:(id)symbolName colorName:(id)colorName
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  identifierCopy = identifier;
+  nameCopy = name;
+  symbolNameCopy = symbolName;
+  colorNameCopy = colorName;
+  if (identifierCopy)
   {
-    if (v12)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"WFToggleFocusModeContextualAction.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFToggleFocusModeContextualAction.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-    if (v13)
+    if (symbolNameCopy)
     {
       goto LABEL_4;
     }
@@ -286,23 +286,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"WFToggleFocusModeContextualAction.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFToggleFocusModeContextualAction.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-  if (!v12)
+  if (!nameCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v13)
+  if (symbolNameCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v28 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v28 handleFailureInMethod:a2 object:self file:@"WFToggleFocusModeContextualAction.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"symbolName"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFToggleFocusModeContextualAction.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"symbolName"}];
 
 LABEL_4:
   v29.receiver = self;
@@ -310,19 +310,19 @@ LABEL_4:
   v15 = [(WFToggleFocusModeContextualActionFocusMode *)&v29 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 
-    v18 = [v12 copy];
+    v18 = [nameCopy copy];
     name = v15->_name;
     v15->_name = v18;
 
-    v20 = [v13 copy];
+    v20 = [symbolNameCopy copy];
     symbolName = v15->_symbolName;
     v15->_symbolName = v20;
 
-    v22 = [v14 copy];
+    v22 = [colorNameCopy copy];
     colorName = v15->_colorName;
     v15->_colorName = v22;
 

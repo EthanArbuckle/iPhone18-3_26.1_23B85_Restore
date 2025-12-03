@@ -1,35 +1,35 @@
 @interface _UINavigationBarLargeTitleViewLayout
 - (CGRect)_contentLayoutBounds;
-- (CGRect)_contentLayoutBoundsUsingRestingTitleHeight:(BOOL)a3;
-- (CGRect)textRectForTitleLabelInBounds:(CGRect)a3 limitedToNumberOfLines:(unint64_t)a4;
-- (CGSize)_cachedTitleHeightSizeAndUpdateRestingSizeForWidth:(double)a3;
-- (CGSize)_cachedTitleHeightSizeAndUpdateRestingSizeForWidthSupportingMultiLineShrinkToFit:(double)a3;
-- (CGSize)_systemLayoutSizeForView:(id)a3 fittingMaximumWidth:(double)a4 flexibleHeight:(double)a5;
-- (CGSize)sizeFittingSize:(CGSize)a3 titleType:(int64_t)a4;
+- (CGRect)_contentLayoutBoundsUsingRestingTitleHeight:(BOOL)height;
+- (CGRect)textRectForTitleLabelInBounds:(CGRect)bounds limitedToNumberOfLines:(unint64_t)lines;
+- (CGSize)_cachedTitleHeightSizeAndUpdateRestingSizeForWidth:(double)width;
+- (CGSize)_cachedTitleHeightSizeAndUpdateRestingSizeForWidthSupportingMultiLineShrinkToFit:(double)fit;
+- (CGSize)_systemLayoutSizeForView:(id)view fittingMaximumWidth:(double)width flexibleHeight:(double)height;
+- (CGSize)sizeFittingSize:(CGSize)size titleType:(int64_t)type;
 - (NSDirectionalEdgeInsets)layoutMargins;
-- (_UINavigationBarLargeTitleViewLayout)initWithContentView:(id)a3;
-- (double)_baselineAlignView:(id)a3 withSize:(CGSize)a4 inBounds:(CGRect)a5 baselineOffsetFromBottom:(double)a6 distanceToBaseline:(double)a7 scale:(double)a8 displayScale:(double)a9 offset:(CGVector)a10;
-- (double)_heightForSize:(CGSize)a3 titleType:(int64_t)a4;
-- (double)restingHeightForSize:(CGSize)a3 type:(int64_t)a4;
+- (_UINavigationBarLargeTitleViewLayout)initWithContentView:(id)view;
+- (double)_baselineAlignView:(id)view withSize:(CGSize)size inBounds:(CGRect)bounds baselineOffsetFromBottom:(double)bottom distanceToBaseline:(double)baseline scale:(double)scale displayScale:(double)displayScale offset:(CGVector)self0;
+- (double)_heightForSize:(CGSize)size titleType:(int64_t)type;
+- (double)restingHeightForSize:(CGSize)size type:(int64_t)type;
 - (id)description;
 - (void)_enforceLayoutOrdering;
 - (void)_invalidateTitleHeightCache;
 - (void)_updateEffectiveSubtitleView;
 - (void)_updateEffectiveTitleView;
-- (void)layoutViewsWithOffset:(UIOffset)a3 useRestingTitleHeight:(BOOL)a4;
-- (void)layoutViewsWithOffsetSupportingMultiLineShrinkToFit:(UIOffset)a3 useRestingTitleHeight:(BOOL)a4;
+- (void)layoutViewsWithOffset:(UIOffset)offset useRestingTitleHeight:(BOOL)height;
+- (void)layoutViewsWithOffsetSupportingMultiLineShrinkToFit:(UIOffset)fit useRestingTitleHeight:(BOOL)height;
 - (void)removeContent;
-- (void)setAccessoryView:(id)a3;
-- (void)setContentAlpha:(double)a3;
-- (void)setContentHidden:(BOOL)a3;
-- (void)setContentView:(id)a3;
-- (void)setCustomTitleView:(id)a3;
-- (void)setOverlaysContentView:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleView:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTwoLineMode:(unint64_t)a3;
-- (void)updateLayoutData:(id)a3 layoutWidth:(double)a4;
+- (void)setAccessoryView:(id)view;
+- (void)setContentAlpha:(double)alpha;
+- (void)setContentHidden:(BOOL)hidden;
+- (void)setContentView:(id)view;
+- (void)setCustomTitleView:(id)view;
+- (void)setOverlaysContentView:(BOOL)view;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleView:(id)view;
+- (void)setTitle:(id)title;
+- (void)setTwoLineMode:(unint64_t)mode;
+- (void)updateLayoutData:(id)data layoutWidth:(double)width;
 - (void)updateRestingTitleHeight;
 @end
 
@@ -177,16 +177,16 @@ LABEL_8:
   return v4;
 }
 
-- (_UINavigationBarLargeTitleViewLayout)initWithContentView:(id)a3
+- (_UINavigationBarLargeTitleViewLayout)initWithContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _UINavigationBarLargeTitleViewLayout;
   v5 = [(_UINavigationBarLargeTitleViewLayout *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v5->_contentView = v4;
+    v5->_contentView = viewCopy;
     v7 = _UINavigationBarLargeTitleViewNewLabel();
     titleLabel = v6->_titleLabel;
     v6->_titleLabel = v7;
@@ -198,24 +198,24 @@ LABEL_8:
   return v6;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  if (self->_contentView != a3)
+  if (self->_contentView != view)
   {
-    v5 = a3;
+    viewCopy = view;
     [(_UINavigationBarLargeTitleViewLayout *)self removeContent];
-    self->_contentView = v5;
-    [(UIView *)v5 setNeedsLayout];
+    self->_contentView = viewCopy;
+    [(UIView *)viewCopy setNeedsLayout];
   }
 }
 
-- (void)setTwoLineMode:(unint64_t)a3
+- (void)setTwoLineMode:(unint64_t)mode
 {
-  if (self->_twoLineMode != a3)
+  if (self->_twoLineMode != mode)
   {
     v13 = v3;
-    self->_twoLineMode = a3;
-    if (a3)
+    self->_twoLineMode = mode;
+    if (mode)
     {
       v10 = 2;
     }
@@ -249,14 +249,14 @@ LABEL_8:
   }
 }
 
-- (CGRect)_contentLayoutBoundsUsingRestingTitleHeight:(BOOL)a3
+- (CGRect)_contentLayoutBoundsUsingRestingTitleHeight:(BOOL)height
 {
-  v3 = a3;
+  heightCopy = height;
   [(UIView *)self->_contentView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  if (v3)
+  if (heightCopy)
   {
     [(_UINavigationBarLargeTitleViewLayout *)self titleRestingHeight];
     v5 = v12;
@@ -300,13 +300,13 @@ LABEL_8:
   return result;
 }
 
-- (double)restingHeightForSize:(CGSize)a3 type:(int64_t)a4
+- (double)restingHeightForSize:(CGSize)size type:(int64_t)type
 {
-  width = a3.width;
+  width = size.width;
   result = 0.0;
   if (width >= 0.0)
   {
-    [(_UINavigationBarLargeTitleViewLayout *)self _heightForSize:self->_titleType titleType:width, a3.height];
+    [(_UINavigationBarLargeTitleViewLayout *)self _heightForSize:self->_titleType titleType:width, size.height];
     if (result <= 0.0)
     {
       result = _largeTitleRestingHeight();
@@ -321,12 +321,12 @@ LABEL_8:
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_titleLabel attributedText];
-  v8 = v4;
-  v6 = v5;
+  titleCopy = title;
+  attributedText = [(UILabel *)self->_titleLabel attributedText];
+  v8 = titleCopy;
+  v6 = attributedText;
   if (v6 == v8)
   {
 
@@ -351,40 +351,40 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setCustomTitleView:(id)a3
+- (void)setCustomTitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customTitleView = self->_customTitleView;
-  if (customTitleView != v5)
+  if (customTitleView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)customTitleView removeFromSuperview];
-    objc_storeStrong(&self->_customTitleView, a3);
+    objc_storeStrong(&self->_customTitleView, view);
     [(UIView *)self->_customTitleView setTranslatesAutoresizingMaskIntoConstraints:1];
     [(_UINavigationBarLargeTitleViewLayout *)self _updateEffectiveTitleView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   subtitle = self->_subtitle;
-  v10 = v4;
-  v6 = subtitle;
-  if (v6 == v10)
+  v10 = subtitleCopy;
+  subtitleCopy2 = subtitle;
+  if (subtitleCopy2 == v10)
   {
 
     goto LABEL_9;
   }
 
-  if (!v10 || !v6)
+  if (!v10 || !subtitleCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(NSAttributedString *)v10 isEqual:v6];
+  v7 = [(NSAttributedString *)v10 isEqual:subtitleCopy2];
 
   if ((v7 & 1) == 0)
   {
@@ -399,60 +399,60 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSubtitleView:(id)a3
+- (void)setSubtitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   subtitleView = self->_subtitleView;
-  if (subtitleView != v5)
+  if (subtitleView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)subtitleView removeFromSuperview];
-    objc_storeStrong(&self->_subtitleView, a3);
+    objc_storeStrong(&self->_subtitleView, view);
     [(UIView *)self->_subtitleView setTranslatesAutoresizingMaskIntoConstraints:1];
     [(_UINavigationBarLargeTitleViewLayout *)self _updateEffectiveSubtitleView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_accessoryView = &self->_accessoryView;
   accessoryView = self->_accessoryView;
-  v9 = v5;
-  if (accessoryView != v5)
+  v9 = viewCopy;
+  if (accessoryView != viewCopy)
   {
     [(UIView *)accessoryView removeFromSuperview];
-    objc_storeStrong(&self->_accessoryView, a3);
+    objc_storeStrong(&self->_accessoryView, view);
     [(UIView *)*p_accessoryView setTranslatesAutoresizingMaskIntoConstraints:1];
     accessoryView = *p_accessoryView;
   }
 
   if (accessoryView)
   {
-    v8 = [(UIView *)accessoryView superview];
+    superview = [(UIView *)accessoryView superview];
 
-    if (!v8)
+    if (!superview)
     {
       [(_UINavigationBarLargeTitleViewLayout *)self _enforceLayoutOrdering];
     }
   }
 }
 
-- (void)setOverlaysContentView:(BOOL)a3
+- (void)setOverlaysContentView:(BOOL)view
 {
-  if (self->_overlaysContentView != a3)
+  if (self->_overlaysContentView != view)
   {
-    self->_overlaysContentView = a3;
+    self->_overlaysContentView = view;
     [(_UINavigationBarLargeTitleViewLayout *)self updateRestingTitleHeight];
   }
 }
 
-- (void)layoutViewsWithOffsetSupportingMultiLineShrinkToFit:(UIOffset)a3 useRestingTitleHeight:(BOOL)a4
+- (void)layoutViewsWithOffsetSupportingMultiLineShrinkToFit:(UIOffset)fit useRestingTitleHeight:(BOOL)height
 {
-  v4 = a4;
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  heightCopy = height;
+  vertical = fit.vertical;
+  horizontal = fit.horizontal;
   [(_UINavigationBarLargeTitleViewLayout *)self _contentLayoutBoundsUsingRestingTitleHeight:?];
   x = v94.origin.x;
   y = v94.origin.y;
@@ -514,8 +514,8 @@ LABEL_9:
       v22 = *(MEMORY[0x1E695F058] + 16);
     }
 
-    v26 = [(UIView *)self->_contentView traitCollection];
-    [v26 displayScale];
+    traitCollection = [(UIView *)self->_contentView traitCollection];
+    [traitCollection displayScale];
     v28 = v27;
 
     if (self->_titleType)
@@ -540,13 +540,13 @@ LABEL_9:
     {
       v85 = v23;
       v86 = v15;
-      v32 = [objc_opt_self() mainScreen];
-      [v32 bounds];
-      v34 = height;
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen bounds];
+      heightCopy2 = height;
       v35 = v28;
       v36 = v28 * (v33 * 0.66);
 
-      v37 = fmin((v34 - self->_titleRestingHeight) / v36 + 1.0, 1.1);
+      v37 = fmin((heightCopy2 - self->_titleRestingHeight) / v36 + 1.0, 1.1);
       if (v37 < 1.0)
       {
         v37 = 1.0;
@@ -566,14 +566,14 @@ LABEL_9:
         v96.origin.y = rect;
         v96.origin.x = v90;
         v96.size.width = width;
-        v41 = v34;
-        v96.size.height = v34;
+        v41 = heightCopy2;
+        v96.size.height = heightCopy2;
         v42 = CGRectGetMaxX(v96) - v40;
       }
 
       else
       {
-        v41 = v34;
+        v41 = heightCopy2;
         v42 = v90 + v40;
       }
 
@@ -781,7 +781,7 @@ LABEL_68:
         {
 LABEL_65:
           titleRestingHeight = height;
-          if (v4)
+          if (heightCopy)
           {
             titleRestingHeight = self->_titleRestingHeight;
           }
@@ -798,8 +798,8 @@ LABEL_65:
 
       [(UIView *)self->_titleLabel frame];
       MinY = CGRectGetMinY(v103);
-      v80 = [(UILabel *)self->_titleLabel font];
-      [v80 lineHeight];
+      font = [(UILabel *)self->_titleLabel font];
+      [font lineHeight];
       v63 = MinY + v70 * (v81 * 0.5) - v23 * 0.5;
 
       goto LABEL_80;
@@ -807,20 +807,20 @@ LABEL_65:
   }
 }
 
-- (void)layoutViewsWithOffset:(UIOffset)a3 useRestingTitleHeight:(BOOL)a4
+- (void)layoutViewsWithOffset:(UIOffset)offset useRestingTitleHeight:(BOOL)height
 {
-  v4 = a4;
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  heightCopy = height;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   [(_UINavigationBarLargeTitleViewLayout *)self _enforceLayoutOrdering];
   if (!self->_customTitleView && self->_twoLineMode == 2)
   {
 
-    [(_UINavigationBarLargeTitleViewLayout *)self layoutViewsWithOffsetSupportingMultiLineShrinkToFit:v4 useRestingTitleHeight:horizontal, vertical];
+    [(_UINavigationBarLargeTitleViewLayout *)self layoutViewsWithOffsetSupportingMultiLineShrinkToFit:heightCopy useRestingTitleHeight:horizontal, vertical];
     return;
   }
 
-  [(_UINavigationBarLargeTitleViewLayout *)self _contentLayoutBoundsUsingRestingTitleHeight:v4];
+  [(_UINavigationBarLargeTitleViewLayout *)self _contentLayoutBoundsUsingRestingTitleHeight:heightCopy];
   x = v103.origin.x;
   y = v103.origin.y;
   width = v103.size.width;
@@ -874,12 +874,12 @@ LABEL_65:
       v21 = *(MEMORY[0x1E695F060] + 8);
     }
 
-    v25 = [(UIView *)self->_contentView traitCollection];
-    [v25 displayScale];
+    traitCollection = [(UIView *)self->_contentView traitCollection];
+    [traitCollection displayScale];
     v100 = v26;
 
-    v27 = [objc_opt_self() mainScreen];
-    [v27 bounds];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen bounds];
     v29 = v28;
 
     if (self->_titleType)
@@ -1003,7 +1003,7 @@ LABEL_65:
           v63 = v64;
         }
 
-        v65 = height;
+        heightCopy2 = height;
         v66 = width;
         v67 = v96;
         v68 = v101;
@@ -1017,11 +1017,11 @@ LABEL_65:
           v68 = v106.origin.x;
           v67 = v106.origin.y;
           v66 = v106.size.width;
-          v65 = v106.size.height;
+          heightCopy2 = v106.size.height;
           v62 = 6.0;
         }
 
-        [(_UINavigationBarLargeTitleViewLayout *)self _baselineAlignView:v33 withSize:v38 inBounds:v99 baselineOffsetFromBottom:v68 distanceToBaseline:v67 scale:v66 displayScale:v65 offset:v63, v62, *&v98, *&v100, *&v92, *&v91];
+        [(_UINavigationBarLargeTitleViewLayout *)self _baselineAlignView:v33 withSize:v38 inBounds:v99 baselineOffsetFromBottom:v68 distanceToBaseline:v67 scale:v66 displayScale:heightCopy2 offset:v63, v62, *&v98, *&v100, *&v92, *&v91];
       }
 
       v19 = v94;
@@ -1049,7 +1049,7 @@ LABEL_65:
         v69 = v37;
         v70 = v12;
         v71 = width;
-        v72 = height;
+        heightCopy3 = height;
         if ((v13 & 0x400000) != 0)
         {
           MaxX = CGRectGetMaxX(*&v69);
@@ -1100,15 +1100,15 @@ LABEL_73:
         {
           [(UIView *)self->_titleLabel frame];
           MinY = CGRectGetMinY(v110);
-          v86 = [(UILabel *)self->_titleLabel font];
-          [v86 lineHeight];
+          font = [(UILabel *)self->_titleLabel font];
+          [font lineHeight];
           v82 = MinY + v98 * (v87 * 0.5) - v20 * 0.5;
 
           goto LABEL_83;
         }
 
         titleRestingHeight = height;
-        if (v4)
+        if (heightCopy)
         {
           titleRestingHeight = self->_titleRestingHeight;
         }
@@ -1131,19 +1131,19 @@ LABEL_83:
   }
 }
 
-- (double)_baselineAlignView:(id)a3 withSize:(CGSize)a4 inBounds:(CGRect)a5 baselineOffsetFromBottom:(double)a6 distanceToBaseline:(double)a7 scale:(double)a8 displayScale:(double)a9 offset:(CGVector)a10
+- (double)_baselineAlignView:(id)view withSize:(CGSize)size inBounds:(CGRect)bounds baselineOffsetFromBottom:(double)bottom distanceToBaseline:(double)baseline scale:(double)scale displayScale:(double)displayScale offset:(CGVector)self0
 {
-  width = a5.size.width;
-  rect = a5.size.height;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  height = a4.height;
-  v14 = a4.width;
-  v16 = a3;
+  width = bounds.size.width;
+  rect = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  height = size.height;
+  v14 = size.width;
+  viewCopy = view;
   v25 = *MEMORY[0x1E695EFF8];
   v24 = *(MEMORY[0x1E695EFF8] + 8);
   v26 = v14;
-  v17 = v14 * 0.5 * a8;
+  v17 = v14 * 0.5 * scale;
   if ((*(&self->_contentView->super._viewFlags + 18) & 0x40) != 0)
   {
     v34.origin.x = x;
@@ -1158,37 +1158,37 @@ LABEL_83:
     v18 = x + v17;
   }
 
-  UIRoundToScale(v32 + v18, a9);
+  UIRoundToScale(v32 + v18, displayScale);
   v20 = v19 - v32;
   v35.origin.x = x;
   v35.origin.y = y;
   v35.size.width = width;
   v35.size.height = rect;
   MaxY = CGRectGetMaxY(v35);
-  UIRoundToScale(v33 + a6 * a8 + MaxY - a7 + height * -0.5 * a8, a9);
-  [v16 setCenter:{v20, v22 - v33}];
-  [v16 setBounds:{v25, v24, v26, height}];
-  CGAffineTransformMakeScale(&v31, a8, a8);
+  UIRoundToScale(v33 + bottom * scale + MaxY - baseline + height * -0.5 * scale, displayScale);
+  [viewCopy setCenter:{v20, v22 - v33}];
+  [viewCopy setBounds:{v25, v24, v26, height}];
+  CGAffineTransformMakeScale(&v31, scale, scale);
   v30 = v31;
-  [v16 setTransform:&v30];
+  [viewCopy setTransform:&v30];
 
-  return height + a7 - a6;
+  return height + baseline - bottom;
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
   [(UIView *)self->_titleLabel setAlpha:?];
-  [(UIView *)self->_subtitleLabel setAlpha:a3];
-  [(UIView *)self->_subtitleView setAlpha:a3];
+  [(UIView *)self->_subtitleLabel setAlpha:alpha];
+  [(UIView *)self->_subtitleView setAlpha:alpha];
   accessoryView = self->_accessoryView;
 
-  [(UIView *)accessoryView setAlpha:a3];
+  [(UIView *)accessoryView setAlpha:alpha];
 }
 
-- (void)setContentHidden:(BOOL)a3
+- (void)setContentHidden:(BOOL)hidden
 {
   v3 = 1.0;
-  if (a3)
+  if (hidden)
   {
     v3 = 0.0;
   }
@@ -1196,19 +1196,19 @@ LABEL_83:
   [(_UINavigationBarLargeTitleViewLayout *)self setContentAlpha:v3];
 }
 
-- (double)_heightForSize:(CGSize)a3 titleType:(int64_t)a4
+- (double)_heightForSize:(CGSize)size titleType:(int64_t)type
 {
-  if (!a4)
+  if (!type)
   {
     return 0.0;
   }
 
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   accessoryView = self->_accessoryView;
   if (accessoryView)
   {
-    [(UIView *)accessoryView sizeThatFits:a3.width, a3.height];
+    [(UIView *)accessoryView sizeThatFits:size.width, size.height];
     v10 = v9 == *(MEMORY[0x1E695F060] + 8) && v8 == *MEMORY[0x1E695F060];
     v11 = width - v8;
     if (!v10)
@@ -1238,8 +1238,8 @@ LABEL_83:
 
   else
   {
-    v17 = [(UILabel *)self->_subtitleLabel text];
-    v18 = [v17 length];
+    text = [(UILabel *)self->_subtitleLabel text];
+    v18 = [text length];
 
     if (!v18)
     {
@@ -1263,10 +1263,10 @@ LABEL_83:
   }
 }
 
-- (CGSize)_cachedTitleHeightSizeAndUpdateRestingSizeForWidthSupportingMultiLineShrinkToFit:(double)a3
+- (CGSize)_cachedTitleHeightSizeAndUpdateRestingSizeForWidthSupportingMultiLineShrinkToFit:(double)fit
 {
-  v5 = [(UILabel *)self->_titleLabel text];
-  v6 = [v5 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v6 = [text length];
 
   if (v6)
   {
@@ -1275,40 +1275,40 @@ LABEL_83:
 
   else
   {
-    v8 = [(_UINavigationBarLargeTitleView *)self->_contentView effectiveTitleAttributes];
+    effectiveTitleAttributes = [(_UINavigationBarLargeTitleView *)self->_contentView effectiveTitleAttributes];
     v9 = self->_twoLineMode == 2;
-    v10 = [(UIView *)self->_contentView window];
-    v7 = _UINavigationBarLargeTitleViewLabelForMeasuring(v8, v9, v10);
+    window = [(UIView *)self->_contentView window];
+    v7 = _UINavigationBarLargeTitleViewLabelForMeasuring(effectiveTitleAttributes, v9, window);
 
     [(UILabel *)v7 setNumberOfLines:[(UILabel *)self->_titleLabel numberOfLines]];
   }
 
-  v11 = a3 > 0.0 || [(UILabel *)v7 numberOfLines]== 1;
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v11 = fit > 0.0 || [(UILabel *)v7 numberOfLines]== 1;
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:fit];
   v13 = [(NSMutableDictionary *)self->_titleHeightCache objectForKey:v12];
   v14 = v13;
   if (v13)
   {
     [v13 CGSizeValue];
-    v16 = v15;
+    fitCopy = v15;
     v18 = v17;
     goto LABEL_30;
   }
 
-  v16 = *MEMORY[0x1E695F060];
+  fitCopy = *MEMORY[0x1E695F060];
   v18 = *(MEMORY[0x1E695F060] + 8);
   if (v11)
   {
-    if (a3 <= 0.0)
+    if (fit <= 0.0)
     {
-      a3 = 500.0;
+      fit = 500.0;
     }
 
     twoLineMode = self->_twoLineMode;
     if (twoLineMode == 2)
     {
       v18 = 50.0;
-      v16 = a3;
+      fitCopy = fit;
       goto LABEL_25;
     }
 
@@ -1335,7 +1335,7 @@ LABEL_83:
       }
 
       v21 = v7;
-      v22 = a3;
+      fitCopy3 = fit;
       v23 = 2;
     }
 
@@ -1346,8 +1346,8 @@ LABEL_83:
 LABEL_25:
         if (self->_providesExtraSpaceForExcessiveLineHeights)
         {
-          v27 = [(UILabel *)v7 font];
-          _UINavigationBarExcessiveLineHeightOutsetsForFontInView(v27, v7);
+          font = [(UILabel *)v7 font];
+          _UINavigationBarExcessiveLineHeightOutsetsForFontInView(font, v7);
           v29 = v28;
 
           v18 = v18 + v29;
@@ -1360,7 +1360,7 @@ LABEL_25:
           self->_titleHeightCache = v30;
         }
 
-        *v43 = v16;
+        *v43 = fitCopy;
         *&v43[1] = v18;
         v32 = [MEMORY[0x1E696B098] valueWithBytes:v43 objCType:"{CGSize=dd}"];
         [(NSMutableDictionary *)self->_titleHeightCache setObject:v32 forKeyedSubscript:v12];
@@ -1389,12 +1389,12 @@ LABEL_25:
       }
 
       v21 = v7;
-      v22 = a3;
+      fitCopy3 = fit;
       v23 = 1;
     }
 
-    [(UILabel *)v21 textRectForBounds:v23 limitedToNumberOfLines:0.0, 0.0, v22, 1.79769313e308];
-    v16 = v25;
+    [(UILabel *)v21 textRectForBounds:v23 limitedToNumberOfLines:0.0, 0.0, fitCopy3, 1.79769313e308];
+    fitCopy = v25;
     v18 = v26;
     goto LABEL_25;
   }
@@ -1422,27 +1422,27 @@ LABEL_30:
     [(NSMutableDictionary *)self->_restingHeightCache setObject:v38 forKeyedSubscript:v12];
   }
 
-  v39 = v16;
+  v39 = fitCopy;
   v40 = v18;
   result.height = v40;
   result.width = v39;
   return result;
 }
 
-- (CGSize)_cachedTitleHeightSizeAndUpdateRestingSizeForWidth:(double)a3
+- (CGSize)_cachedTitleHeightSizeAndUpdateRestingSizeForWidth:(double)width
 {
-  v3 = a3;
+  widthCopy = width;
   if (self->_twoLineMode == 2)
   {
-    [(_UINavigationBarLargeTitleViewLayout *)self _cachedTitleHeightSizeAndUpdateRestingSizeForWidthSupportingMultiLineShrinkToFit:a3];
+    [(_UINavigationBarLargeTitleViewLayout *)self _cachedTitleHeightSizeAndUpdateRestingSizeForWidthSupportingMultiLineShrinkToFit:width];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(UILabel *)self->_titleLabel text];
-    v10 = [v9 length];
+    text = [(UILabel *)self->_titleLabel text];
+    v10 = [text length];
 
     if (v10)
     {
@@ -1451,16 +1451,16 @@ LABEL_30:
 
     else
     {
-      v12 = [(_UINavigationBarLargeTitleView *)self->_contentView effectiveTitleAttributes];
+      effectiveTitleAttributes = [(_UINavigationBarLargeTitleView *)self->_contentView effectiveTitleAttributes];
       v13 = self->_twoLineMode == 2;
-      v14 = [(UIView *)self->_contentView window];
-      v11 = _UINavigationBarLargeTitleViewLabelForMeasuring(v12, v13, v14);
+      window = [(UIView *)self->_contentView window];
+      v11 = _UINavigationBarLargeTitleViewLabelForMeasuring(effectiveTitleAttributes, v13, window);
 
       [(UILabel *)v11 setNumberOfLines:[(UILabel *)self->_titleLabel numberOfLines]];
     }
 
-    v15 = v3 > 0.0 || [(UILabel *)v11 numberOfLines]== 1;
-    v16 = [MEMORY[0x1E696AD98] numberWithDouble:v3];
+    v15 = widthCopy > 0.0 || [(UILabel *)v11 numberOfLines]== 1;
+    v16 = [MEMORY[0x1E696AD98] numberWithDouble:widthCopy];
     v17 = [(NSMutableDictionary *)self->_titleHeightCache objectForKey:v16];
     v18 = v17;
     if (v17)
@@ -1472,9 +1472,9 @@ LABEL_30:
 
     else if (v15)
     {
-      if (v3 <= 0.0)
+      if (widthCopy <= 0.0)
       {
-        v3 = 500.0;
+        widthCopy = 500.0;
       }
 
       if (self->_twoLineMode == 1)
@@ -1493,14 +1493,14 @@ LABEL_30:
       v45 = 0;
       if (![(UILabel *)v11 lineBreakStrategy])
       {
-        v22 = [(UILabel *)v11 _synthesizedAttributedText];
-        v23 = [v22 length];
+        _synthesizedAttributedText = [(UILabel *)v11 _synthesizedAttributedText];
+        v23 = [_synthesizedAttributedText length];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __91___UINavigationBarLargeTitleViewLayout__cachedTitleHeightSizeAndUpdateRestingSizeForWidth___block_invoke;
         v41[3] = &unk_1E70F8050;
         v41[4] = &v42;
-        [v22 enumerateAttribute:@"kTUIAllCapsAttributeName" inRange:0 options:v23 usingBlock:{0, v41}];
+        [_synthesizedAttributedText enumerateAttribute:@"kTUIAllCapsAttributeName" inRange:0 options:v23 usingBlock:{0, v41}];
       }
 
       if (*(v43 + 24) == 1)
@@ -1508,7 +1508,7 @@ LABEL_30:
         [(UILabel *)v11 setLineBreakStrategy:0xFFFFLL];
       }
 
-      [(UILabel *)v11 textRectForBounds:v21 limitedToNumberOfLines:0.0, 0.0, v3, 1.79769313e308];
+      [(UILabel *)v11 textRectForBounds:v21 limitedToNumberOfLines:0.0, 0.0, widthCopy, 1.79769313e308];
       v6 = v24;
       v8 = v25;
       if (*(v43 + 24) == 1)
@@ -1518,8 +1518,8 @@ LABEL_30:
 
       if (self->_providesExtraSpaceForExcessiveLineHeights)
       {
-        v26 = [(UILabel *)v11 font];
-        _UINavigationBarExcessiveLineHeightOutsetsForFontInView(v26, v11);
+        font = [(UILabel *)v11 font];
+        _UINavigationBarExcessiveLineHeightOutsetsForFontInView(font, v11);
         v28 = v27;
 
         v8 = v8 + v28;
@@ -1576,10 +1576,10 @@ LABEL_30:
   return result;
 }
 
-- (CGSize)sizeFittingSize:(CGSize)a3 titleType:(int64_t)a4
+- (CGSize)sizeFittingSize:(CGSize)size titleType:(int64_t)type
 {
-  width = a3.width;
-  [(_UINavigationBarLargeTitleViewLayout *)self _heightForSize:a4 titleType:a3.width, a3.height];
+  width = size.width;
+  [(_UINavigationBarLargeTitleViewLayout *)self _heightForSize:type titleType:size.width, size.height];
   v6 = v5;
   v7 = width;
   result.height = v6;
@@ -1587,9 +1587,9 @@ LABEL_30:
   return result;
 }
 
-- (CGRect)textRectForTitleLabelInBounds:(CGRect)a3 limitedToNumberOfLines:(unint64_t)a4
+- (CGRect)textRectForTitleLabelInBounds:(CGRect)bounds limitedToNumberOfLines:(unint64_t)lines
 {
-  [(UILabel *)self->_titleLabel textRectForBounds:a4 limitedToNumberOfLines:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UILabel *)self->_titleLabel textRectForBounds:lines limitedToNumberOfLines:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1608,44 +1608,44 @@ LABEL_30:
   [(_UINavigationBarLargeTitleViewLayout *)self _invalidateTitleHeightCache];
 }
 
-- (void)updateLayoutData:(id)a3 layoutWidth:(double)a4
+- (void)updateLayoutData:(id)data layoutWidth:(double)width
 {
-  v6 = a3;
-  [(_UINavigationBarLargeTitleViewLayout *)self restingHeightForSize:1 type:a4, 10000.0];
+  dataCopy = data;
+  [(_UINavigationBarLargeTitleViewLayout *)self restingHeightForSize:1 type:width, 10000.0];
   if (self->_overlaysContentView)
   {
-    [v6 setPreferredHeight:?];
+    [dataCopy setPreferredHeight:?];
   }
 
   else
   {
-    [v6 setFixedHeight:?];
+    [dataCopy setFixedHeight:?];
   }
 }
 
-- (CGSize)_systemLayoutSizeForView:(id)a3 fittingMaximumWidth:(double)a4 flexibleHeight:(double)a5
+- (CGSize)_systemLayoutSizeForView:(id)view fittingMaximumWidth:(double)width flexibleHeight:(double)height
 {
-  v7 = a3;
+  viewCopy = view;
   LODWORD(v8) = 1112014848;
   LODWORD(v9) = 1112014848;
-  [v7 systemLayoutSizeFittingSize:a4 withHorizontalFittingPriority:a5 verticalFittingPriority:{v8, v9}];
-  if (v10 > a4)
+  [viewCopy systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v8, v9}];
+  if (v10 > width)
   {
     LODWORD(v12) = 1148846080;
     LODWORD(v13) = 1112014848;
-    [v7 systemLayoutSizeFittingSize:a4 withHorizontalFittingPriority:a5 verticalFittingPriority:{v12, v13}];
+    [viewCopy systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v12, v13}];
   }
 
   v14 = v11;
-  if (v10 >= a4)
+  if (v10 >= width)
   {
-    a4 = v10;
+    width = v10;
   }
 
-  v15 = a4;
+  widthCopy = width;
   v16 = v14;
   result.height = v16;
-  result.width = v15;
+  result.width = widthCopy;
   return result;
 }
 

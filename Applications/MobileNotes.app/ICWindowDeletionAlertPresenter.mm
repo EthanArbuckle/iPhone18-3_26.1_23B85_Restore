@@ -1,36 +1,36 @@
 @interface ICWindowDeletionAlertPresenter
-- (ICWindowDeletionAlertPresenter)initWithWindow:(id)a3 sender:(id)a4;
-- (void)presentAlert:(id)a3 withCompletion:(id)a4;
+- (ICWindowDeletionAlertPresenter)initWithWindow:(id)window sender:(id)sender;
+- (void)presentAlert:(id)alert withCompletion:(id)completion;
 @end
 
 @implementation ICWindowDeletionAlertPresenter
 
-- (ICWindowDeletionAlertPresenter)initWithWindow:(id)a3 sender:(id)a4
+- (ICWindowDeletionAlertPresenter)initWithWindow:(id)window sender:(id)sender
 {
-  v7 = a3;
-  v8 = a4;
+  windowCopy = window;
+  senderCopy = sender;
   v12.receiver = self;
   v12.super_class = ICWindowDeletionAlertPresenter;
   v9 = [(ICWindowDeletionAlertPresenter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_window, a3);
-    objc_storeStrong(&v10->_sender, a4);
+    objc_storeStrong(&v9->_window, window);
+    objc_storeStrong(&v10->_sender, sender);
   }
 
   return v10;
 }
 
-- (void)presentAlert:(id)a3 withCompletion:(id)a4
+- (void)presentAlert:(id)alert withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  alertCopy = alert;
+  completionCopy = completion;
   if (+[ICDeleteAlert suppressesAlerts])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -39,45 +39,45 @@
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"Cancel" value:&stru_100661CF0 table:0];
 
-    v10 = [v6 title];
-    v11 = [v6 message];
-    v30 = [v6 confirmationStringForSender:self->_sender];
-    v12 = [v6 canCancel];
-    v13 = [(ICWindowDeletionAlertPresenter *)self sender];
-    v14 = [v6 shouldShowAsAlertForSender:v13];
+    title = [alertCopy title];
+    message = [alertCopy message];
+    v30 = [alertCopy confirmationStringForSender:self->_sender];
+    canCancel = [alertCopy canCancel];
+    sender = [(ICWindowDeletionAlertPresenter *)self sender];
+    v14 = [alertCopy shouldShowAsAlertForSender:sender];
 
-    v31 = v10;
+    v31 = title;
     if (v14)
     {
-      v15 = [ICAlertController alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+      v15 = [ICAlertController alertControllerWithTitle:title message:message preferredStyle:1];
     }
 
     else
     {
-      v15 = [ICAlertController alertControllerWithTitle:v11 message:0 preferredStyle:0];
+      v15 = [ICAlertController alertControllerWithTitle:message message:0 preferredStyle:0];
       objc_opt_class();
-      v16 = [(ICWindowDeletionAlertPresenter *)self sender];
+      sender2 = [(ICWindowDeletionAlertPresenter *)self sender];
       v17 = ICDynamicCast();
 
       objc_opt_class();
-      v18 = [(ICWindowDeletionAlertPresenter *)self sender];
+      sender3 = [(ICWindowDeletionAlertPresenter *)self sender];
       v19 = ICDynamicCast();
 
-      v20 = [v15 popoverPresentationController];
-      [v20 setSourceView:v17];
+      popoverPresentationController = [v15 popoverPresentationController];
+      [popoverPresentationController setSourceView:v17];
 
-      v21 = [v15 popoverPresentationController];
-      [v21 setBarButtonItem:v19];
+      popoverPresentationController2 = [v15 popoverPresentationController];
+      [popoverPresentationController2 setBarButtonItem:v19];
     }
 
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_1000840AC;
     v38[3] = &unk_100645CC8;
-    v22 = v7;
+    v22 = completionCopy;
     v39 = v22;
     [v15 setDismissWithoutActionBlock:v38];
-    if (v12)
+    if (canCancel)
     {
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
@@ -106,9 +106,9 @@
     v26 = v15;
     v27 = [UIAlertAction actionWithTitle:v30 style:v25 handler:v32];
     [v26 addAction:v27];
-    v28 = [(ICWindowDeletionAlertPresenter *)self window];
-    v29 = [v28 rootViewController];
-    [v29 presentViewController:v26 animated:1 completion:0];
+    window = [(ICWindowDeletionAlertPresenter *)self window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v26 animated:1 completion:0];
   }
 }
 

@@ -1,12 +1,12 @@
 @interface WRWidgetRendererSessionKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (WRWidgetRendererSessionKey)initWithBSXPCCoder:(id)a3;
-- (WRWidgetRendererSessionKey)initWithCoder:(id)a3;
-- (WRWidgetRendererSessionKey)initWithIdentifier:(id)a3 widget:(id)a4 metrics:(id)a5;
+- (WRWidgetRendererSessionKey)initWithBSXPCCoder:(id)coder;
+- (WRWidgetRendererSessionKey)initWithCoder:(id)coder;
+- (WRWidgetRendererSessionKey)initWithIdentifier:(id)identifier widget:(id)widget metrics:(id)metrics;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WRWidgetRendererSessionKey
@@ -28,29 +28,29 @@
   return v5;
 }
 
-- (WRWidgetRendererSessionKey)initWithIdentifier:(id)a3 widget:(id)a4 metrics:(id)a5
+- (WRWidgetRendererSessionKey)initWithIdentifier:(id)identifier widget:(id)widget metrics:(id)metrics
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  widgetCopy = widget;
+  metricsCopy = metrics;
   v15.receiver = self;
   v15.super_class = WRWidgetRendererSessionKey;
   v12 = [(WRWidgetRendererSessionKey *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_widget, a4);
-    objc_storeStrong(&v13->_metrics, a5);
-    objc_storeStrong(&v13->_identifier, a3);
+    objc_storeStrong(&v12->_widget, widget);
+    objc_storeStrong(&v13->_metrics, metrics);
+    objc_storeStrong(&v13->_identifier, identifier);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -60,18 +60,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       widget = self->_widget;
-      v7 = [(WRWidgetRendererSessionKey *)v5 widget];
-      if ([(CHSWidget *)widget isEqual:v7])
+      widget = [(WRWidgetRendererSessionKey *)v5 widget];
+      if ([(CHSWidget *)widget isEqual:widget])
       {
         metrics = self->_metrics;
-        v9 = [(WRWidgetRendererSessionKey *)v5 metrics];
-        if ([(CHSWidgetMetrics *)metrics isEqual:v9])
+        metrics = [(WRWidgetRendererSessionKey *)v5 metrics];
+        if ([(CHSWidgetMetrics *)metrics isEqual:metrics])
         {
           identifier = self->_identifier;
-          v11 = [(WRWidgetRendererSessionKey *)v5 identifier];
-          v12 = [(NSString *)identifier isEqual:v11];
+          identifier = [(WRWidgetRendererSessionKey *)v5 identifier];
+          v12 = [(NSString *)identifier isEqual:identifier];
         }
 
         else
@@ -95,18 +95,18 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_widget forKey:@"widget"];
-  [v5 encodeObject:self->_metrics forKey:@"metrics"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_widget forKey:@"widget"];
+  [coderCopy encodeObject:self->_metrics forKey:@"metrics"];
 }
 
-- (WRWidgetRendererSessionKey)initWithCoder:(id)a3
+- (WRWidgetRendererSessionKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = WRWidgetRendererSessionKey;
   v5 = [(WRWidgetRendererSessionKey *)&v19 init];
@@ -115,9 +115,9 @@
     goto LABEL_11;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
   v9 = v8;
   if (v6)
   {
@@ -154,18 +154,18 @@ LABEL_12:
   return v17;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_widget forKey:@"widget"];
-  [v5 encodeObject:self->_metrics forKey:@"metrics"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_widget forKey:@"widget"];
+  [coderCopy encodeObject:self->_metrics forKey:@"metrics"];
 }
 
-- (WRWidgetRendererSessionKey)initWithBSXPCCoder:(id)a3
+- (WRWidgetRendererSessionKey)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WRWidgetRendererSessionKey;
   v5 = [(WRWidgetRendererSessionKey *)&v16 init];
@@ -174,9 +174,9 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
-  v8 = [v4 decodeStringForKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
+  v8 = [coderCopy decodeStringForKey:@"identifier"];
   if (!v8 || !v6 || !v7)
   {
 

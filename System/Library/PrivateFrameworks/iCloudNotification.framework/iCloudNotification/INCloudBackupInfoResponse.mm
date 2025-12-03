@@ -1,17 +1,17 @@
 @interface INCloudBackupInfoResponse
-- (INCloudBackupInfoResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
-- (id)_parseBackUpDevice:(id)a3;
-- (id)_parseBackUpDeviceGroups:(id)a3;
+- (INCloudBackupInfoResponse)initWithHTTPResponse:(id)response data:(id)data;
+- (id)_parseBackUpDevice:(id)device;
+- (id)_parseBackUpDeviceGroups:(id)groups;
 - (void)_parseResponseDict;
 @end
 
 @implementation INCloudBackupInfoResponse
 
-- (INCloudBackupInfoResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (INCloudBackupInfoResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v9.receiver = self;
   v9.super_class = INCloudBackupInfoResponse;
-  v4 = [(INCloudBackupInfoResponse *)&v9 initWithHTTPResponse:a3 data:a4 bodyIsPlist:0];
+  v4 = [(INCloudBackupInfoResponse *)&v9 initWithHTTPResponse:response data:data bodyIsPlist:0];
   v5 = v4;
   if (v4)
   {
@@ -60,56 +60,56 @@
   }
 }
 
-- (id)_parseBackUpDeviceGroups:(id)a3
+- (id)_parseBackUpDeviceGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10000A3CC;
   v11 = &unk_100055430;
-  v12 = self;
+  selfCopy = self;
   v13 = objc_alloc_init(NSMutableArray);
   v5 = v13;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [groupsCopy enumerateObjectsUsingBlock:&v8];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (id)_parseBackUpDevice:(id)a3
+- (id)_parseBackUpDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(ICQBackupDevice);
-  v5 = [v3 objectForKeyedSubscript:@"deviceName"];
+  v5 = [deviceCopy objectForKeyedSubscript:@"deviceName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setDeviceName:v5];
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"deviceSubTitle"];
+  v6 = [deviceCopy objectForKeyedSubscript:@"deviceSubTitle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setDeviceSubtitle:v6];
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"deviceUDID"];
+  v7 = [deviceCopy objectForKeyedSubscript:@"deviceUDID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setDeviceUDID:v7];
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"storageUsedInBytes"];
+  v8 = [deviceCopy objectForKeyedSubscript:@"storageUsedInBytes"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setStorageUsed:v8];
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"storageUsedLabel"];
+  v9 = [deviceCopy objectForKeyedSubscript:@"storageUsedLabel"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -119,7 +119,7 @@
   v29 = v7;
   v30 = v6;
   v31 = v5;
-  v10 = [v3 objectForKeyedSubscript:@"backupSize"];
+  v10 = [deviceCopy objectForKeyedSubscript:@"backupSize"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -127,7 +127,7 @@
   }
 
   v26 = v10;
-  v11 = [v3 objectForKeyedSubscript:@"deviceImageURLs"];
+  v11 = [deviceCopy objectForKeyedSubscript:@"deviceImageURLs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -135,7 +135,7 @@
     [v4 setImageURL:v12];
   }
 
-  v13 = [v3 objectForKeyedSubscript:@"deviceLargeImageURLs"];
+  v13 = [deviceCopy objectForKeyedSubscript:@"deviceLargeImageURLs"];
   objc_opt_class();
   v32 = v13;
   if (objc_opt_isKindOfClass())
@@ -144,7 +144,7 @@
     [v4 setLargeImageURL:v14];
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"detailViewController"];
+  v15 = [deviceCopy objectForKeyedSubscript:@"detailViewController"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -152,14 +152,14 @@
   }
 
   v28 = v8;
-  v16 = [v3 objectForKeyedSubscript:@"backupTimestamp"];
+  v16 = [deviceCopy objectForKeyedSubscript:@"backupTimestamp"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setBackupTimestamp:v16];
   }
 
-  v17 = [v3 objectForKeyedSubscript:@"deleteURL"];
+  v17 = [deviceCopy objectForKeyedSubscript:@"deleteURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -167,7 +167,7 @@
     [v4 setDeleteURL:v18];
   }
 
-  v19 = [v3 objectForKeyedSubscript:@"deleteButtonLabel"];
+  v19 = [deviceCopy objectForKeyedSubscript:@"deleteButtonLabel"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -175,7 +175,7 @@
   }
 
   v27 = v9;
-  v20 = [v3 objectForKeyedSubscript:@"backupFailedByInBytes"];
+  v20 = [deviceCopy objectForKeyedSubscript:@"backupFailedByInBytes"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -183,21 +183,21 @@
   }
 
   v25 = v11;
-  v21 = [v3 objectForKeyedSubscript:@"bytesRequiredForBackup"];
+  v21 = [deviceCopy objectForKeyedSubscript:@"bytesRequiredForBackup"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setBytesRequiredForBackup:v21];
   }
 
-  v22 = [v3 objectForKeyedSubscript:@"isActive"];
+  v22 = [deviceCopy objectForKeyedSubscript:@"isActive"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setIsActive:{objc_msgSend(v22, "BOOLValue")}];
   }
 
-  v23 = [v3 objectForKeyedSubscript:@"isLocalBackup"];
+  v23 = [deviceCopy objectForKeyedSubscript:@"isLocalBackup"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

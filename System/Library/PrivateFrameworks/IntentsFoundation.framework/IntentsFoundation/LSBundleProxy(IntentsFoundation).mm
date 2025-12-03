@@ -9,16 +9,16 @@
 
 - (uint64_t)if_isSystem
 {
-  v2 = [a1 bundleType];
-  if ([v2 isEqualToString:*MEMORY[0x277CC1E18]])
+  bundleType = [self bundleType];
+  if ([bundleType isEqualToString:*MEMORY[0x277CC1E18]])
   {
-    v3 = a1;
-    if (v3)
+    selfCopy = self;
+    if (selfCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = v3;
+        v4 = selfCopy;
       }
 
       else
@@ -34,41 +34,41 @@
 
     v8 = v4;
 
-    v9 = [v8 containingBundle];
+    containingBundle = [v8 containingBundle];
 
-    LOBYTE(v8) = [v9 if_isSystem];
+    LOBYTE(v8) = [containingBundle if_isSystem];
     if (v8)
     {
       goto LABEL_12;
     }
 
-    v10 = [v3 if_containingAppProxy];
-    if (v10)
+    if_containingAppProxy = [selfCopy if_containingAppProxy];
+    if (if_containingAppProxy)
     {
 
 LABEL_22:
-      v15 = [v3 if_containingAppProxy];
-      if (v15)
+      if_containingAppProxy2 = [selfCopy if_containingAppProxy];
+      if (if_containingAppProxy2)
       {
-        v5 = v15;
+        bundleURL2 = if_containingAppProxy2;
         v7 = 0;
 LABEL_26:
 
         goto LABEL_27;
       }
 
-      v6 = [v3 bundleURL];
+      bundleURL = [selfCopy bundleURL];
       v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/AppleInternal/Library/" isDirectory:1];
-      v7 = [v6 if_isContainedByDirectoryAtURL:v16];
+      v7 = [bundleURL if_isContainedByDirectoryAtURL:v16];
 
-      v5 = 0;
+      bundleURL2 = 0;
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    v11 = v3;
-    if (v3)
+    v11 = selfCopy;
+    if (selfCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -89,24 +89,24 @@ LABEL_25:
 
     v13 = v12;
 
-    v14 = [v13 isOnSystemPartition];
-    if ((v14 & 1) == 0)
+    isOnSystemPartition = [v13 isOnSystemPartition];
+    if ((isOnSystemPartition & 1) == 0)
     {
       goto LABEL_22;
     }
   }
 
-  else if (([v2 isEqualToString:*MEMORY[0x277CC1E08]] & 1) == 0 && (objc_msgSend(v2, "isEqualToString:", *MEMORY[0x277CC1E30]) & 1) == 0)
+  else if (([bundleType isEqualToString:*MEMORY[0x277CC1E08]] & 1) == 0 && (objc_msgSend(bundleType, "isEqualToString:", *MEMORY[0x277CC1E30]) & 1) == 0)
   {
-    if (![v2 isEqualToString:*MEMORY[0x277CC1E00]])
+    if (![bundleType isEqualToString:*MEMORY[0x277CC1E00]])
     {
       v7 = 0;
       goto LABEL_27;
     }
 
-    v5 = [a1 bundleURL];
-    v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/System/Library/" isDirectory:1];
-    v7 = [v5 if_isContainedByDirectoryAtURL:v6];
+    bundleURL2 = [self bundleURL];
+    bundleURL = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/System/Library/" isDirectory:1];
+    v7 = [bundleURL2 if_isContainedByDirectoryAtURL:bundleURL];
     goto LABEL_25;
   }
 
@@ -119,10 +119,10 @@ LABEL_27:
 
 - (uint64_t)if_isWatchKitAppExtension
 {
-  v1 = a1;
-  if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  selfCopy = self;
+  if (selfCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = [v1 objectForInfoDictionaryKey:*MEMORY[0x277D3D380] ofClass:objc_opt_class() inScope:1];
+    v2 = [selfCopy objectForInfoDictionaryKey:*MEMORY[0x277D3D380] ofClass:objc_opt_class() inScope:1];
     v3 = [v2 isEqualToString:@"com.apple.watchkit"];
   }
 
@@ -136,8 +136,8 @@ LABEL_27:
 
 - (uint64_t)if_isAppExtension
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -156,14 +156,14 @@ LABEL_27:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 containingBundle];
+    selfCopy = [self containingBundle];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -171,10 +171,10 @@ LABEL_27:
     }
   }
 
-  v2 = 0;
+  selfCopy = 0;
 LABEL_7:
 
-  return v2;
+  return selfCopy;
 }
 
 @end

@@ -2,10 +2,10 @@
 - (TNPageCoordinateDictionary)init;
 - (id).cxx_construct;
 - (id)allObjects;
-- (id)objectForPageCoordinate:(TSUCellCoord)a3;
+- (id)objectForPageCoordinate:(TSUCellCoord)coordinate;
 - (void)dealloc;
 - (void)removeAllObjects;
-- (void)setObject:(id)a3 forPageCoordinate:(TSUCellCoord)a4;
+- (void)setObject:(id)object forPageCoordinate:(TSUCellCoord)coordinate;
 @end
 
 @implementation TNPageCoordinateDictionary
@@ -32,42 +32,42 @@
   [(TNPageCoordinateDictionary *)&v3 dealloc];
 }
 
-- (void)setObject:(id)a3 forPageCoordinate:(TSUCellCoord)a4
+- (void)setObject:(id)object forPageCoordinate:(TSUCellCoord)coordinate
 {
-  v12 = a4;
+  coordinateCopy = coordinate;
   pthread_rwlock_wrlock(&self->_rwlock);
   p_pageCoordinateDictionary = &self->_pageCoordinateDictionary;
-  if (a3)
+  if (object)
   {
-    v7 = sub_275F2B578(p_pageCoordinateDictionary, &v12);
+    v7 = sub_275F2B578(p_pageCoordinateDictionary, &coordinateCopy);
     if (&self->_pageCoordinateDictionary.__tree_.__end_node_ == v7)
     {
-      v8 = a3;
-      v10 = v12;
-      v11 = a3;
-      v9 = a3;
+      objectCopy = object;
+      v10 = coordinateCopy;
+      objectCopy2 = object;
+      objectCopy3 = object;
       sub_275F2B600(&self->_pageCoordinateDictionary, &v10);
     }
 
     else
     {
-      sub_275F2B370(v7 + 5, a3);
+      sub_275F2B370(v7 + 5, object);
     }
   }
 
   else
   {
-    sub_275F2B744(p_pageCoordinateDictionary, &v12);
+    sub_275F2B744(p_pageCoordinateDictionary, &coordinateCopy);
   }
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (id)objectForPageCoordinate:(TSUCellCoord)a3
+- (id)objectForPageCoordinate:(TSUCellCoord)coordinate
 {
-  v7 = a3;
+  coordinateCopy = coordinate;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v4 = sub_275F2B578(&self->_pageCoordinateDictionary, &v7);
+  v4 = sub_275F2B578(&self->_pageCoordinateDictionary, &coordinateCopy);
   if (&self->_pageCoordinateDictionary.__tree_.__end_node_ == v4)
   {
     v5 = 0;

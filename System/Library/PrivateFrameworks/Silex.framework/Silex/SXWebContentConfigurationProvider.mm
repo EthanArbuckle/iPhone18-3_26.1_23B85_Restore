@@ -1,35 +1,35 @@
 @interface SXWebContentConfigurationProvider
-- (SXWebContentConfigurationProvider)initWithPresentationAttributesProvider:(id)a3 storeFrontProvider:(id)a4 liveActivityAttributesProvider:(id)a5 feedConfigurationFactory:(id)a6 viewControllerPresentationManager:(id)a7 locale:(id)a8 location:(id)a9;
-- (id)configurationForSize:(CGSize)a3 dataSources:(id)a4 sourceURL:(id)a5;
+- (SXWebContentConfigurationProvider)initWithPresentationAttributesProvider:(id)provider storeFrontProvider:(id)frontProvider liveActivityAttributesProvider:(id)attributesProvider feedConfigurationFactory:(id)factory viewControllerPresentationManager:(id)manager locale:(id)locale location:(id)location;
+- (id)configurationForSize:(CGSize)size dataSources:(id)sources sourceURL:(id)l;
 - (void)invokeChangeListener;
-- (void)presentationAttributesDidChangeFrom:(id)a3 toAttributes:(id)a4;
+- (void)presentationAttributesDidChangeFrom:(id)from toAttributes:(id)attributes;
 @end
 
 @implementation SXWebContentConfigurationProvider
 
-- (SXWebContentConfigurationProvider)initWithPresentationAttributesProvider:(id)a3 storeFrontProvider:(id)a4 liveActivityAttributesProvider:(id)a5 feedConfigurationFactory:(id)a6 viewControllerPresentationManager:(id)a7 locale:(id)a8 location:(id)a9
+- (SXWebContentConfigurationProvider)initWithPresentationAttributesProvider:(id)provider storeFrontProvider:(id)frontProvider liveActivityAttributesProvider:(id)attributesProvider feedConfigurationFactory:(id)factory viewControllerPresentationManager:(id)manager locale:(id)locale location:(id)location
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  providerCopy = provider;
+  frontProviderCopy = frontProvider;
+  attributesProviderCopy = attributesProvider;
+  factoryCopy = factory;
+  managerCopy = manager;
+  localeCopy = locale;
+  locationCopy = location;
   v26.receiver = self;
   v26.super_class = SXWebContentConfigurationProvider;
   v18 = [(SXWebContentConfigurationProvider *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_presentationAttributesProvider, a3);
-    [v25 addObserver:v19];
-    objc_storeStrong(&v19->_storeFrontProvider, a4);
-    objc_storeStrong(&v19->_liveActivityAttributesProvider, a5);
-    objc_storeStrong(&v19->_feedConfigurationFactory, a6);
-    objc_storeStrong(&v19->_viewControllerPresentationManager, a7);
-    objc_storeStrong(&v19->_locale, a8);
-    objc_storeStrong(&v19->_location, a9);
+    objc_storeStrong(&v18->_presentationAttributesProvider, provider);
+    [providerCopy addObserver:v19];
+    objc_storeStrong(&v19->_storeFrontProvider, frontProvider);
+    objc_storeStrong(&v19->_liveActivityAttributesProvider, attributesProvider);
+    objc_storeStrong(&v19->_feedConfigurationFactory, factory);
+    objc_storeStrong(&v19->_viewControllerPresentationManager, manager);
+    objc_storeStrong(&v19->_locale, locale);
+    objc_storeStrong(&v19->_location, location);
   }
 
   return v19;
@@ -37,32 +37,32 @@
 
 - (void)invokeChangeListener
 {
-  v3 = [(SXWebContentConfigurationProvider *)self changeBlock];
+  changeBlock = [(SXWebContentConfigurationProvider *)self changeBlock];
 
-  if (v3)
+  if (changeBlock)
   {
-    v4 = [(SXWebContentConfigurationProvider *)self changeBlock];
-    v4[2]();
+    changeBlock2 = [(SXWebContentConfigurationProvider *)self changeBlock];
+    changeBlock2[2]();
   }
 }
 
-- (id)configurationForSize:(CGSize)a3 dataSources:(id)a4 sourceURL:(id)a5
+- (id)configurationForSize:(CGSize)size dataSources:(id)sources sourceURL:(id)l
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = MEMORY[0x1E69CE168];
-  v33 = a5;
-  v32 = a4;
+  lCopy = l;
+  sourcesCopy = sources;
   v10 = objc_alloc_init(v9);
-  v11 = [(SXWebContentConfigurationProvider *)self viewControllerPresentationManager];
-  v12 = [v11 presentingViewController];
+  viewControllerPresentationManager = [(SXWebContentConfigurationProvider *)self viewControllerPresentationManager];
+  presentingViewController = [viewControllerPresentationManager presentingViewController];
 
-  if (v12)
+  if (presentingViewController)
   {
-    v13 = [(SXWebContentConfigurationProvider *)self feedConfigurationFactory];
-    v14 = [(SXWebContentConfigurationProvider *)self viewControllerPresentationManager];
-    v15 = [v14 presentingViewController];
-    v16 = [v13 createFeedConfigurationForViewController:v15];
+    feedConfigurationFactory = [(SXWebContentConfigurationProvider *)self feedConfigurationFactory];
+    viewControllerPresentationManager2 = [(SXWebContentConfigurationProvider *)self viewControllerPresentationManager];
+    presentingViewController2 = [viewControllerPresentationManager2 presentingViewController];
+    v16 = [feedConfigurationFactory createFeedConfigurationForViewController:presentingViewController2];
 
     v17 = v16;
   }
@@ -74,29 +74,29 @@
 
   v18 = [objc_alloc(MEMORY[0x1E69CE188]) initWithBounds:0.0 contentFrame:0.0 contentSafeAreaFrame:width systemSafeAreaFrame:{height, 0.0, 0.0, width, height, 0, 0, *&width, *&height, 0, 0, *&width, *&height}];
   v19 = objc_alloc(MEMORY[0x1E69CE138]);
-  v31 = [(SXWebContentConfigurationProvider *)self storeFrontProvider];
-  v20 = [v31 storeFrontIdentifier];
-  v21 = [(SXWebContentConfigurationProvider *)self locale];
-  v22 = [(SXWebContentConfigurationProvider *)self presentationAttributesProvider];
-  v23 = [v22 presentationAttributes];
-  v24 = [v23 contentSizeCategory];
-  v25 = [(SXWebContentConfigurationProvider *)self location];
-  v26 = [(SXWebContentConfigurationProvider *)self liveActivityAttributesProvider];
+  storeFrontProvider = [(SXWebContentConfigurationProvider *)self storeFrontProvider];
+  storeFrontIdentifier = [storeFrontProvider storeFrontIdentifier];
+  locale = [(SXWebContentConfigurationProvider *)self locale];
+  presentationAttributesProvider = [(SXWebContentConfigurationProvider *)self presentationAttributesProvider];
+  presentationAttributes = [presentationAttributesProvider presentationAttributes];
+  contentSizeCategory = [presentationAttributes contentSizeCategory];
+  location = [(SXWebContentConfigurationProvider *)self location];
+  liveActivityAttributesProvider = [(SXWebContentConfigurationProvider *)self liveActivityAttributesProvider];
   LOBYTE(v29) = 0;
-  LOBYTE(v28) = [v26 supportsLiveActivities];
-  v30 = [v19 initWithStoreFront:v20 locale:v21 contentEnvironment:0 contentSizeCategory:v24 layoutGuide:v18 dataSources:v32 location:v25 sourceURL:v33 activePictureInPictureURL:0 feedConfiguration:v17 supportsLiveActivities:v28 keyboardConfiguration:0 networkStatus:0 isTransitioning:v29];
+  LOBYTE(v28) = [liveActivityAttributesProvider supportsLiveActivities];
+  v30 = [v19 initWithStoreFront:storeFrontIdentifier locale:locale contentEnvironment:0 contentSizeCategory:contentSizeCategory layoutGuide:v18 dataSources:sourcesCopy location:location sourceURL:lCopy activePictureInPictureURL:0 feedConfiguration:v17 supportsLiveActivities:v28 keyboardConfiguration:0 networkStatus:0 isTransitioning:v29];
 
   return v30;
 }
 
-- (void)presentationAttributesDidChangeFrom:(id)a3 toAttributes:(id)a4
+- (void)presentationAttributesDidChangeFrom:(id)from toAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = [a3 contentSizeCategory];
-  v8 = [v6 contentSizeCategory];
+  attributesCopy = attributes;
+  contentSizeCategory = [from contentSizeCategory];
+  contentSizeCategory2 = [attributesCopy contentSizeCategory];
 
-  LOBYTE(v6) = [v7 isEqualToString:v8];
-  if ((v6 & 1) == 0)
+  LOBYTE(attributesCopy) = [contentSizeCategory isEqualToString:contentSizeCategory2];
+  if ((attributesCopy & 1) == 0)
   {
 
     [(SXWebContentConfigurationProvider *)self invokeChangeListener];

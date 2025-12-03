@@ -11,59 +11,59 @@
 - (UIEdgeInsets)scopeContainerSpecificInsets;
 - (UIOffset)searchFieldBackgroundPositionAdjustment;
 - (double)idealSearchContainerWidth;
-- (double)layout:(id)a3 fontScaledValueForValue:(double)a4;
+- (double)layout:(id)layout fontScaledValueForValue:(double)value;
 - (double)naturalPromptContainerHeight;
 - (double)naturalScopeContainerHeight;
 - (double)naturalSearchFieldContainerHeight;
 - (double)naturalSearchFieldHeight;
 - (double)naturalTotalHeight;
 - (double)prescribedSearchContainerWidth;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)applyLayout;
 - (void)applyScopeContainerSublayout;
 - (void)cleanUpLayout;
-- (void)containerLayoutWillUpdateLayout:(id)a3;
+- (void)containerLayoutWillUpdateLayout:(id)layout;
 - (void)ensureCorrectContainerViewOrdering;
-- (void)prepareBaseConfigurationForSublayout:(id)a3;
+- (void)prepareBaseConfigurationForSublayout:(id)sublayout;
 - (void)prepareScopeContainerLayout;
 - (void)prepareSearchContainerLayout;
 - (void)prepareSublayouts;
-- (void)setAdditionalPaddingForCancelButtonAtLeadingEdge:(double)a3;
-- (void)setAdditionalPaddingForSearchFieldAtLeadingEdge:(double)a3;
-- (void)setAllowSearchFieldShrinkage:(BOOL)a3;
-- (void)setAlwaysForceReadableWidth:(BOOL)a3;
-- (void)setBackgroundExtension:(double)a3;
-- (void)setCancelButton:(id)a3;
-- (void)setDelegateSearchFieldFrameManipulationBlock:(id)a3;
-- (void)setDeleteButton:(id)a3;
-- (void)setFloating:(BOOL)a3;
-- (void)setFloatingSearchIconBackgroundView:(id)a3;
-- (void)setFloatingSearchIconView:(id)a3;
-- (void)setHasCancelButton:(BOOL)a3;
-- (void)setHasDeleteButton:(BOOL)a3;
-- (void)setHasFloatingSearchIconBackgroundView:(BOOL)a3;
-- (void)setHasLeftButton:(BOOL)a3;
-- (void)setHasPromptLabel:(BOOL)a3;
-- (void)setHasScopeBar:(BOOL)a3;
-- (void)setHasSearchBarBackdrop:(BOOL)a3;
-- (void)setHasSearchBarBackground:(BOOL)a3;
-- (void)setHasSeparator:(BOOL)a3;
-- (void)setHostedInlineByNavigationBar:(BOOL)a3;
-- (void)setHostedInlineByToolbar:(BOOL)a3;
-- (void)setHostingNavBarTransitionActive:(BOOL)a3;
-- (void)setLayoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback:(id)a3;
-- (void)setLeftButton:(id)a3;
-- (void)setNeedsReconfigurationForScopeBar:(BOOL)a3;
-- (void)setProspective:(BOOL)a3;
-- (void)setScopeBar:(id)a3;
-- (void)setScopeBarContentInset:(UIEdgeInsets)a3;
-- (void)setSearchField:(id)a3;
-- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)a3;
-- (void)setSearchFieldEffectivelySupportsDynamicType:(BOOL)a3;
-- (void)setSearchFieldFont:(id)a3;
-- (void)setSearchFieldUsesCustomBackgroundImage:(BOOL)a3;
-- (void)setSearchIconBarButtonItem:(id)a3;
-- (void)setTextFieldManagedInNSToolbar:(BOOL)a3;
+- (void)setAdditionalPaddingForCancelButtonAtLeadingEdge:(double)edge;
+- (void)setAdditionalPaddingForSearchFieldAtLeadingEdge:(double)edge;
+- (void)setAllowSearchFieldShrinkage:(BOOL)shrinkage;
+- (void)setAlwaysForceReadableWidth:(BOOL)width;
+- (void)setBackgroundExtension:(double)extension;
+- (void)setCancelButton:(id)button;
+- (void)setDelegateSearchFieldFrameManipulationBlock:(id)block;
+- (void)setDeleteButton:(id)button;
+- (void)setFloating:(BOOL)floating;
+- (void)setFloatingSearchIconBackgroundView:(id)view;
+- (void)setFloatingSearchIconView:(id)view;
+- (void)setHasCancelButton:(BOOL)button;
+- (void)setHasDeleteButton:(BOOL)button;
+- (void)setHasFloatingSearchIconBackgroundView:(BOOL)view;
+- (void)setHasLeftButton:(BOOL)button;
+- (void)setHasPromptLabel:(BOOL)label;
+- (void)setHasScopeBar:(BOOL)bar;
+- (void)setHasSearchBarBackdrop:(BOOL)backdrop;
+- (void)setHasSearchBarBackground:(BOOL)background;
+- (void)setHasSeparator:(BOOL)separator;
+- (void)setHostedInlineByNavigationBar:(BOOL)bar;
+- (void)setHostedInlineByToolbar:(BOOL)toolbar;
+- (void)setHostingNavBarTransitionActive:(BOOL)active;
+- (void)setLayoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback:(id)callback;
+- (void)setLeftButton:(id)button;
+- (void)setNeedsReconfigurationForScopeBar:(BOOL)bar;
+- (void)setProspective:(BOOL)prospective;
+- (void)setScopeBar:(id)bar;
+- (void)setScopeBarContentInset:(UIEdgeInsets)inset;
+- (void)setSearchField:(id)field;
+- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)adjustment;
+- (void)setSearchFieldEffectivelySupportsDynamicType:(BOOL)type;
+- (void)setSearchFieldFont:(id)font;
+- (void)setSearchFieldUsesCustomBackgroundImage:(BOOL)image;
+- (void)setSearchIconBarButtonItem:(id)item;
+- (void)setTextFieldManagedInNSToolbar:(BOOL)toolbar;
 - (void)setUpScopeContainerLayout;
 - (void)setUpSearchContainerLayout;
 - (void)updateLayout;
@@ -82,16 +82,16 @@
     [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setDelegate:self];
   }
 
-  v5 = [(_UISearchBarLayout *)self searchField];
+  searchField = [(_UISearchBarLayout *)self searchField];
 
   v6 = self->_searchContainerLayout;
-  if (v5)
+  if (searchField)
   {
     [(_UISearchBarSearchContainerLayout *)v6 searchBarFieldHeight];
     if (v7 == 0.0)
     {
-      v8 = [(_UISearchBarLayout *)self searchField];
-      [v8 _defaultHeightForBarMetrics:{-[_UISearchBarLayoutBase barMetrics](self, "barMetrics")}];
+      searchField2 = [(_UISearchBarLayout *)self searchField];
+      [searchField2 _defaultHeightForBarMetrics:{-[_UISearchBarLayoutBase barMetrics](self, "barMetrics")}];
       [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setSearchBarFieldHeight:?];
     }
   }
@@ -219,12 +219,12 @@
   [(_UISearchBarLayoutBase *)self->_searchContainerLayout setLayoutSize:self->_searchFieldContainerLayoutFrame.size.width, self->_searchFieldContainerLayoutFrame.size.height];
   [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setRepresentedLayoutState:self->_representedLayoutState];
   [(_UISearchBarLayoutBase *)self->_searchContainerLayout setShouldApplyContainerSafeAreaInsets:[(_UISearchBarLayoutBase *)self shouldApplyContainerSafeAreaInsets]];
-  v7 = [(_UISearchBarLayout *)self searchField];
+  searchField = [(_UISearchBarLayout *)self searchField];
 
-  if (v7)
+  if (searchField)
   {
-    v12 = [(_UISearchBarLayout *)self searchField];
-    [v12 _defaultHeightForBarMetrics:{-[_UISearchBarLayoutBase barMetrics](self, "barMetrics")}];
+    searchField2 = [(_UISearchBarLayout *)self searchField];
+    [searchField2 _defaultHeightForBarMetrics:{-[_UISearchBarLayoutBase barMetrics](self, "barMetrics")}];
     [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setSearchBarFieldHeight:?];
   }
 
@@ -305,9 +305,9 @@
   {
     if ((*&self->_searchBarLayoutFlags & 0x20) != 0)
     {
-      v4 = [(UIView *)self->_promptContainer superview];
+      superview = [(UIView *)self->_promptContainer superview];
 
-      if (!v4)
+      if (!superview)
       {
         if (dyld_program_sdk_at_least())
         {
@@ -347,9 +347,9 @@
     {
       if ((*&searchBarLayoutFlags & 0x10) != 0)
       {
-        v8 = [(UIView *)self->_scopeBarContainer superview];
+        superview2 = [(UIView *)self->_scopeBarContainer superview];
 
-        if (!v8)
+        if (!superview2)
         {
           if (dyld_program_sdk_at_least())
           {
@@ -389,9 +389,9 @@
 
     if ((*&searchBarLayoutFlags & 0x40) != 0)
     {
-      v11 = [(UIView *)self->_searchBarBackground superview];
+      superview3 = [(UIView *)self->_searchBarBackground superview];
 
-      if (!v11)
+      if (!superview3)
       {
         if (dyld_program_sdk_at_least())
         {
@@ -429,10 +429,10 @@
     v14 = self->_searchBarLayoutFlags;
     if ((*&v14 & 0x80) != 0)
     {
-      v15 = [(UIView *)self->_searchBarBackdrop superview];
+      superview4 = [(UIView *)self->_searchBarBackdrop superview];
       v16 = self->_searchBarBackground;
 
-      if (v15 != v16)
+      if (superview4 != v16)
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -462,9 +462,9 @@
 
     if ((*&v14 & 0x100) != 0)
     {
-      v17 = [(UIView *)self->_separator superview];
+      superview5 = [(UIView *)self->_separator superview];
 
-      if (!v17)
+      if (!superview5)
       {
         if (dyld_program_sdk_at_least())
         {
@@ -704,11 +704,11 @@
 
 - (void)ensureCorrectContainerViewOrdering
 {
-  v3 = [(UIView *)self->_searchFieldContainer superview];
-  [v3 insertSubview:self->_searchFieldContainer aboveSubview:self->_searchBarBackground];
+  superview = [(UIView *)self->_searchFieldContainer superview];
+  [superview insertSubview:self->_searchFieldContainer aboveSubview:self->_searchBarBackground];
   if ((*&self->_searchBarLayoutFlags & 0x610) == 0x10)
   {
-    [v3 insertSubview:self->_scopeBarContainer aboveSubview:self->_searchBarBackground];
+    [superview insertSubview:self->_scopeBarContainer aboveSubview:self->_searchBarBackground];
   }
 }
 
@@ -746,11 +746,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24.receiver = self;
   v24.super_class = _UISearchBarLayout;
-  v4 = [(_UISearchBarLayoutBase *)&v24 copyWithZone:a3];
+  v4 = [(_UISearchBarLayoutBase *)&v24 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -817,20 +817,20 @@
   return v5;
 }
 
-- (void)setHasCancelButton:(BOOL)a3
+- (void)setHasCancelButton:(BOOL)button
 {
-  if ((*&self->_searchBarLayoutFlags & 1) != a3)
+  if ((*&self->_searchBarLayoutFlags & 1) != button)
   {
-    self->_searchBarLayoutFlags = (*&self->_searchBarLayoutFlags & 0xFFFFFFFE | a3);
+    self->_searchBarLayoutFlags = (*&self->_searchBarLayoutFlags & 0xFFFFFFFE | button);
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setHasDeleteButton:(BOOL)a3
+- (void)setHasDeleteButton:(BOOL)button
 {
-  if (((((*&self->_searchBarLayoutFlags & 2) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 2) == 0) ^ button) & 1) == 0)
   {
-    if (a3)
+    if (button)
     {
       v3 = 2;
     }
@@ -845,11 +845,11 @@
   }
 }
 
-- (void)setHasLeftButton:(BOOL)a3
+- (void)setHasLeftButton:(BOOL)button
 {
-  if (((((*&self->_searchBarLayoutFlags & 4) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 4) == 0) ^ button) & 1) == 0)
   {
-    if (a3)
+    if (button)
     {
       v3 = 4;
     }
@@ -864,11 +864,11 @@
   }
 }
 
-- (void)setHasFloatingSearchIconBackgroundView:(BOOL)a3
+- (void)setHasFloatingSearchIconBackgroundView:(BOOL)view
 {
-  if (((((*&self->_searchBarLayoutFlags & 8) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 8) == 0) ^ view) & 1) == 0)
   {
-    if (a3)
+    if (view)
     {
       v3 = 8;
     }
@@ -883,11 +883,11 @@
   }
 }
 
-- (void)setHasScopeBar:(BOOL)a3
+- (void)setHasScopeBar:(BOOL)bar
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x10) == 0) ^ bar) & 1) == 0)
   {
-    if (a3)
+    if (bar)
     {
       v3 = 16;
     }
@@ -902,11 +902,11 @@
   }
 }
 
-- (void)setHasPromptLabel:(BOOL)a3
+- (void)setHasPromptLabel:(BOOL)label
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x20) == 0) ^ label) & 1) == 0)
   {
-    if (a3)
+    if (label)
     {
       v3 = 32;
     }
@@ -921,11 +921,11 @@
   }
 }
 
-- (void)setHasSearchBarBackground:(BOOL)a3
+- (void)setHasSearchBarBackground:(BOOL)background
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x40) == 0) ^ background) & 1) == 0)
   {
-    if (a3)
+    if (background)
     {
       v3 = 64;
     }
@@ -940,11 +940,11 @@
   }
 }
 
-- (void)setHasSearchBarBackdrop:(BOOL)a3
+- (void)setHasSearchBarBackdrop:(BOOL)backdrop
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x80) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x80) == 0) ^ backdrop) & 1) == 0)
   {
-    if (a3)
+    if (backdrop)
     {
       v3 = 128;
     }
@@ -959,11 +959,11 @@
   }
 }
 
-- (void)setHasSeparator:(BOOL)a3
+- (void)setHasSeparator:(BOOL)separator
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x100) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x100) == 0) ^ separator) & 1) == 0)
   {
-    if (a3)
+    if (separator)
     {
       v3 = 256;
     }
@@ -978,67 +978,67 @@
   }
 }
 
-- (void)setSearchField:(id)a3
+- (void)setSearchField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
-  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setSearchField:v4];
+  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setSearchField:fieldCopy];
 }
 
-- (void)setCancelButton:(id)a3
+- (void)setCancelButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
-  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setCancelButton:v4];
+  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setCancelButton:buttonCopy];
 }
 
-- (void)setDeleteButton:(id)a3
+- (void)setDeleteButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
-  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setDeleteButton:v4];
+  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setDeleteButton:buttonCopy];
 }
 
-- (void)setLeftButton:(id)a3
+- (void)setLeftButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
-  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setLeftButton:v4];
+  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setLeftButton:buttonCopy];
 }
 
-- (void)setFloatingSearchIconView:(id)a3
+- (void)setFloatingSearchIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
-  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setFloatingSearchIconView:v4];
+  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setFloatingSearchIconView:viewCopy];
 }
 
-- (void)setFloatingSearchIconBackgroundView:(id)a3
+- (void)setFloatingSearchIconBackgroundView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
-  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setFloatingSearchIconBackgroundView:v4];
+  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setFloatingSearchIconBackgroundView:viewCopy];
 }
 
-- (void)setSearchIconBarButtonItem:(id)a3
+- (void)setSearchIconBarButtonItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
-  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setSearchIconBarButtonItem:v4];
+  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setSearchIconBarButtonItem:itemCopy];
 }
 
-- (void)setScopeBar:(id)a3
+- (void)setScopeBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   [(_UISearchBarLayout *)self setUpScopeContainerLayout];
-  [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout setScopeBar:v4];
+  [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout setScopeBar:barCopy];
 }
 
-- (void)setAllowSearchFieldShrinkage:(BOOL)a3
+- (void)setAllowSearchFieldShrinkage:(BOOL)shrinkage
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x2000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x2000) == 0) ^ shrinkage) & 1) == 0)
   {
-    if (a3)
+    if (shrinkage)
     {
       v3 = 0x2000;
     }
@@ -1053,11 +1053,11 @@
   }
 }
 
-- (void)setHostedInlineByNavigationBar:(BOOL)a3
+- (void)setHostedInlineByNavigationBar:(BOOL)bar
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x200) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x200) == 0) ^ bar) & 1) == 0)
   {
-    if (a3)
+    if (bar)
     {
       v3 = 512;
     }
@@ -1072,11 +1072,11 @@
   }
 }
 
-- (void)setHostedInlineByToolbar:(BOOL)a3
+- (void)setHostedInlineByToolbar:(BOOL)toolbar
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x400) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x400) == 0) ^ toolbar) & 1) == 0)
   {
-    if (a3)
+    if (toolbar)
     {
       v3 = 1024;
     }
@@ -1091,11 +1091,11 @@
   }
 }
 
-- (void)setFloating:(BOOL)a3
+- (void)setFloating:(BOOL)floating
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x800) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x800) == 0) ^ floating) & 1) == 0)
   {
-    if (a3)
+    if (floating)
     {
       v3 = 2048;
     }
@@ -1110,12 +1110,12 @@
   }
 }
 
-- (void)setAlwaysForceReadableWidth:(BOOL)a3
+- (void)setAlwaysForceReadableWidth:(BOOL)width
 {
   searchBarLayoutFlags = self->_searchBarLayoutFlags;
-  if (((((*&searchBarLayoutFlags & 0x40000) == 0) ^ a3) & 1) == 0)
+  if (((((*&searchBarLayoutFlags & 0x40000) == 0) ^ width) & 1) == 0)
   {
-    if (a3)
+    if (width)
     {
       v4 = 0x40000;
     }
@@ -1130,11 +1130,11 @@
   }
 }
 
-- (void)setTextFieldManagedInNSToolbar:(BOOL)a3
+- (void)setTextFieldManagedInNSToolbar:(BOOL)toolbar
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x1000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x1000) == 0) ^ toolbar) & 1) == 0)
   {
-    if (a3)
+    if (toolbar)
     {
       v3 = 4096;
     }
@@ -1149,11 +1149,11 @@
   }
 }
 
-- (void)setSearchFieldUsesCustomBackgroundImage:(BOOL)a3
+- (void)setSearchFieldUsesCustomBackgroundImage:(BOOL)image
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x4000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x4000) == 0) ^ image) & 1) == 0)
   {
-    if (a3)
+    if (image)
     {
       v3 = 0x4000;
     }
@@ -1168,11 +1168,11 @@
   }
 }
 
-- (void)setSearchFieldEffectivelySupportsDynamicType:(BOOL)a3
+- (void)setSearchFieldEffectivelySupportsDynamicType:(BOOL)type
 {
-  if (((((*&self->_searchBarLayoutFlags & 0x8000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_searchBarLayoutFlags & 0x8000) == 0) ^ type) & 1) == 0)
   {
-    if (a3)
+    if (type)
     {
       v3 = 0x8000;
     }
@@ -1187,12 +1187,12 @@
   }
 }
 
-- (void)setNeedsReconfigurationForScopeBar:(BOOL)a3
+- (void)setNeedsReconfigurationForScopeBar:(BOOL)bar
 {
   searchBarLayoutFlags = self->_searchBarLayoutFlags;
-  if (((((*&searchBarLayoutFlags & 0x80000) == 0) ^ a3) & 1) == 0)
+  if (((((*&searchBarLayoutFlags & 0x80000) == 0) ^ bar) & 1) == 0)
   {
-    if (a3)
+    if (bar)
     {
       v4 = 0x80000;
     }
@@ -1207,22 +1207,22 @@
   }
 }
 
-- (void)setSearchFieldFont:(id)a3
+- (void)setSearchFieldFont:(id)font
 {
-  v5 = a3;
-  if (self->_searchFieldFont != v5)
+  fontCopy = font;
+  if (self->_searchFieldFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_searchFieldFont, a3);
-    v5 = v6;
+    v6 = fontCopy;
+    objc_storeStrong(&self->_searchFieldFont, font);
+    fontCopy = v6;
     self->_cachedFontValueBeforeScaling = 0.0;
     self->_cachedFontValueAfterScaling = 0.0;
   }
 }
 
-- (void)setProspective:(BOOL)a3
+- (void)setProspective:(BOOL)prospective
 {
-  if (a3)
+  if (prospective)
   {
     v3 = 0x10000;
   }
@@ -1235,9 +1235,9 @@
   self->_searchBarLayoutFlags = (*&self->_searchBarLayoutFlags & 0xFFFEFFFF | v3);
 }
 
-- (void)setHostingNavBarTransitionActive:(BOOL)a3
+- (void)setHostingNavBarTransitionActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 0x20000;
   }
@@ -1250,33 +1250,33 @@
   self->_searchBarLayoutFlags = (*&self->_searchBarLayoutFlags & 0xFFFDFFFF | v3);
 }
 
-- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)a3
+- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)adjustment
 {
-  if (a3.horizontal != self->_searchFieldBackgroundPositionAdjustment.horizontal || a3.vertical != self->_searchFieldBackgroundPositionAdjustment.vertical)
+  if (adjustment.horizontal != self->_searchFieldBackgroundPositionAdjustment.horizontal || adjustment.vertical != self->_searchFieldBackgroundPositionAdjustment.vertical)
   {
-    self->_searchFieldBackgroundPositionAdjustment = a3;
+    self->_searchFieldBackgroundPositionAdjustment = adjustment;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setBackgroundExtension:(double)a3
+- (void)setBackgroundExtension:(double)extension
 {
-  if (self->_backgroundExtension != a3)
+  if (self->_backgroundExtension != extension)
   {
-    self->_backgroundExtension = a3;
+    self->_backgroundExtension = extension;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setScopeBarContentInset:(UIEdgeInsets)a3
+- (void)setScopeBarContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_scopeBarContentInset.top), vceqq_f64(v4, *&self->_scopeBarContentInset.bottom)))) & 1) == 0)
   {
-    self->_scopeBarContentInset = a3;
+    self->_scopeBarContentInset = inset;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
     scopeContainerLayout = self->_scopeContainerLayout;
 
@@ -1305,27 +1305,27 @@
   return v5;
 }
 
-- (void)prepareBaseConfigurationForSublayout:(id)a3
+- (void)prepareBaseConfigurationForSublayout:(id)sublayout
 {
-  v4 = a3;
-  [v4 setBarMetrics:{-[_UISearchBarLayoutBase barMetrics](self, "barMetrics")}];
-  [v4 setLayoutRTL:{-[_UISearchBarLayoutBase isLayoutRTL](self, "isLayoutRTL")}];
-  [v4 setHostedByNavigationBar:{-[_UISearchBarLayoutBase isHostedByNavigationBar](self, "isHostedByNavigationBar")}];
+  sublayoutCopy = sublayout;
+  [sublayoutCopy setBarMetrics:{-[_UISearchBarLayoutBase barMetrics](self, "barMetrics")}];
+  [sublayoutCopy setLayoutRTL:{-[_UISearchBarLayoutBase isLayoutRTL](self, "isLayoutRTL")}];
+  [sublayoutCopy setHostedByNavigationBar:{-[_UISearchBarLayoutBase isHostedByNavigationBar](self, "isHostedByNavigationBar")}];
 }
 
-- (void)containerLayoutWillUpdateLayout:(id)a3
+- (void)containerLayoutWillUpdateLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   [(_UISearchBarLayoutBase *)self updateLayoutIfNeeded];
-  v4 = v5;
-  if (self->_searchContainerLayout == v5)
+  v4 = layoutCopy;
+  if (self->_searchContainerLayout == layoutCopy)
   {
     [(_UISearchBarLayout *)self prepareSearchContainerLayout];
   }
 
   else
   {
-    if (self->_scopeContainerLayout != v5)
+    if (self->_scopeContainerLayout != layoutCopy)
     {
       goto LABEL_6;
     }
@@ -1333,24 +1333,24 @@
     [(_UISearchBarLayout *)self prepareScopeContainerLayout];
   }
 
-  v4 = v5;
+  v4 = layoutCopy;
 LABEL_6:
 }
 
-- (double)layout:(id)a3 fontScaledValueForValue:(double)a4
+- (double)layout:(id)layout fontScaledValueForValue:(double)value
 {
-  v4 = a4;
-  if (self->_cachedFontValueBeforeScaling == a4)
+  valueCopy = value;
+  if (self->_cachedFontValueBeforeScaling == value)
   {
     return self->_cachedFontValueAfterScaling;
   }
 
-  self->_cachedFontValueBeforeScaling = a4;
-  v6 = [(_UISearchBarLayout *)self searchField];
+  self->_cachedFontValueBeforeScaling = value;
+  searchField = [(_UISearchBarLayout *)self searchField];
   searchFieldFont = self->_searchFieldFont;
   if (searchFieldFont)
   {
-    v8 = v6 == 0;
+    v8 = searchField == 0;
   }
 
   else
@@ -1360,145 +1360,145 @@ LABEL_6:
 
   if (!v8)
   {
-    [(UIFont *)searchFieldFont _scaledValueForValue:v4];
-    UIRoundToViewScale(v6);
-    v4 = v9;
+    [(UIFont *)searchFieldFont _scaledValueForValue:valueCopy];
+    UIRoundToViewScale(searchField);
+    valueCopy = v9;
   }
 
-  self->_cachedFontValueAfterScaling = v4;
+  self->_cachedFontValueAfterScaling = valueCopy;
 
-  return v4;
+  return valueCopy;
 }
 
 - (void)applyScopeContainerSublayout
 {
   [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout applyLayout];
-  v3 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
-  [v3 layoutIfNeeded];
+  scopeBar = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
+  [scopeBar layoutIfNeeded];
 }
 
 - (void)cleanUpLayout
 {
   searchBarLayoutFlags = self->_searchBarLayoutFlags;
-  v5 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
-  v6 = [v5 superview];
+  cancelButton = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
+  superview = [cancelButton superview];
 
   if ((*&searchBarLayoutFlags & 1) == 0)
   {
-    if (!v6)
+    if (!superview)
     {
       goto LABEL_9;
     }
 
-    v7 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
-    [v7 setHidden:1];
+    cancelButton2 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
+    [cancelButton2 setHidden:1];
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!superview)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:678 description:@"Missing or detached view for search bar layout cleanup"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:678 description:@"Missing or detached view for search bar layout cleanup"];
   }
 
-  v8 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
-  [v8 setHidden:0];
+  cancelButton3 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
+  [cancelButton3 setHidden:0];
 
-  v9 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
-  [v9 alpha];
+  cancelButton4 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
+  [cancelButton4 alpha];
   v11 = v10;
 
   if (v11 < 0.01)
   {
-    v7 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
-    [v7 setAlpha:1.0];
+    cancelButton2 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout cancelButton];
+    [cancelButton2 setAlpha:1.0];
 LABEL_8:
   }
 
 LABEL_9:
   v12 = self->_searchBarLayoutFlags;
-  v13 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
-  v14 = [v13 superview];
+  deleteButton = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
+  superview2 = [deleteButton superview];
 
   if ((*&v12 & 2) == 0)
   {
-    if (!v14)
+    if (!superview2)
     {
       goto LABEL_17;
     }
 
-    v15 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
-    [v15 setHidden:1];
+    deleteButton2 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
+    [deleteButton2 setHidden:1];
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!superview2)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:679 description:@"Missing or detached view for search bar layout cleanup"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:679 description:@"Missing or detached view for search bar layout cleanup"];
   }
 
-  v16 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
-  [v16 setHidden:0];
+  deleteButton3 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
+  [deleteButton3 setHidden:0];
 
-  v17 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
-  [v17 alpha];
+  deleteButton4 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
+  [deleteButton4 alpha];
   v19 = v18;
 
   if (v19 < 0.01)
   {
-    v15 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
-    [v15 setAlpha:1.0];
+    deleteButton2 = [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout deleteButton];
+    [deleteButton2 setAlpha:1.0];
 LABEL_16:
   }
 
 LABEL_17:
   v20 = self->_searchBarLayoutFlags;
-  v21 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
-  v22 = [v21 superview];
+  scopeBar = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
+  superview3 = [scopeBar superview];
 
   if ((*&v20 & 0x10) == 0)
   {
-    if (!v22)
+    if (!superview3)
     {
       goto LABEL_25;
     }
 
-    v23 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
-    [v23 setHidden:1];
+    scopeBar2 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
+    [scopeBar2 setHidden:1];
     goto LABEL_24;
   }
 
-  if (!v22)
+  if (!superview3)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:680 description:@"Missing or detached view for search bar layout cleanup"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:680 description:@"Missing or detached view for search bar layout cleanup"];
   }
 
-  v24 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
-  [v24 setHidden:0];
+  scopeBar3 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
+  [scopeBar3 setHidden:0];
 
-  v25 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
-  [v25 alpha];
+  scopeBar4 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
+  [scopeBar4 alpha];
   v27 = v26;
 
   if (v27 < 0.01)
   {
-    v23 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
-    [v23 setAlpha:1.0];
+    scopeBar2 = [(_UISearchBarScopeContainerLayout *)self->_scopeContainerLayout scopeBar];
+    [scopeBar2 setAlpha:1.0];
 LABEL_24:
   }
 
 LABEL_25:
   v28 = self->_searchBarLayoutFlags;
-  v29 = [(UIView *)self->_promptContainer superview];
+  superview4 = [(UIView *)self->_promptContainer superview];
 
   if ((*&v28 & 0x20) != 0)
   {
-    if (!v29)
+    if (!superview4)
     {
-      v45 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v45 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:681 description:@"Missing or detached view for search bar layout cleanup"];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:681 description:@"Missing or detached view for search bar layout cleanup"];
     }
 
     [(UIView *)self->_promptContainer setHidden:0];
@@ -1509,20 +1509,20 @@ LABEL_25:
     }
   }
 
-  else if (v29)
+  else if (superview4)
   {
     [(UIView *)self->_promptContainer setHidden:1];
   }
 
   v31 = self->_searchBarLayoutFlags;
-  v32 = [(UIView *)self->_searchBarBackground superview];
+  superview5 = [(UIView *)self->_searchBarBackground superview];
 
   if ((*&v31 & 0x40) != 0)
   {
-    if (!v32)
+    if (!superview5)
     {
-      v46 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v46 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:682 description:@"Missing or detached view for search bar layout cleanup"];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:682 description:@"Missing or detached view for search bar layout cleanup"];
     }
 
     [(UIView *)self->_searchBarBackground setHidden:0];
@@ -1533,20 +1533,20 @@ LABEL_25:
     }
   }
 
-  else if (v32)
+  else if (superview5)
   {
     [(UIView *)self->_searchBarBackground setHidden:1];
   }
 
   v34 = self->_searchBarLayoutFlags;
-  v35 = [(UIView *)self->_searchBarBackdrop superview];
+  superview6 = [(UIView *)self->_searchBarBackdrop superview];
 
   if ((*&v34 & 0x80) != 0)
   {
-    if (!v35)
+    if (!superview6)
     {
-      v47 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v47 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:683 description:@"Missing or detached view for search bar layout cleanup"];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler6 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:683 description:@"Missing or detached view for search bar layout cleanup"];
     }
 
     [(UIView *)self->_searchBarBackdrop setHidden:0];
@@ -1557,20 +1557,20 @@ LABEL_25:
     }
   }
 
-  else if (v35)
+  else if (superview6)
   {
     [(UIView *)self->_searchBarBackdrop setHidden:1];
   }
 
   v37 = self->_searchBarLayoutFlags;
-  v38 = [(UIView *)self->_separator superview];
+  superview7 = [(UIView *)self->_separator superview];
 
   if ((*&v37 & 0x100) != 0)
   {
-    if (!v38)
+    if (!superview7)
     {
-      v48 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v48 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:684 description:@"Missing or detached view for search bar layout cleanup"];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler7 handleFailureInMethod:a2 object:self file:@"_UISearchBarLayout.m" lineNumber:684 description:@"Missing or detached view for search bar layout cleanup"];
     }
 
     [(UIView *)self->_separator setHidden:0];
@@ -1583,7 +1583,7 @@ LABEL_25:
     }
   }
 
-  else if (v38)
+  else if (superview7)
   {
     v39 = self->_separator;
 
@@ -1712,34 +1712,34 @@ LABEL_2:
   return v3;
 }
 
-- (void)setDelegateSearchFieldFrameManipulationBlock:(id)a3
+- (void)setDelegateSearchFieldFrameManipulationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
-  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setDelegateSearchFieldFrameForProposedFrame:v4];
+  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setDelegateSearchFieldFrameForProposedFrame:blockCopy];
 }
 
-- (void)setLayoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback:(id)a3
+- (void)setLayoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
-  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setLayoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback:v4];
+  [(_UISearchBarSearchContainerLayout *)self->_searchContainerLayout setLayoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback:callbackCopy];
 }
 
-- (void)setAdditionalPaddingForCancelButtonAtLeadingEdge:(double)a3
+- (void)setAdditionalPaddingForCancelButtonAtLeadingEdge:(double)edge
 {
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
   searchContainerLayout = self->_searchContainerLayout;
 
-  [(_UISearchBarSearchContainerLayout *)searchContainerLayout setAdditionalPaddingForCancelButtonAtLeadingEdge:a3];
+  [(_UISearchBarSearchContainerLayout *)searchContainerLayout setAdditionalPaddingForCancelButtonAtLeadingEdge:edge];
 }
 
-- (void)setAdditionalPaddingForSearchFieldAtLeadingEdge:(double)a3
+- (void)setAdditionalPaddingForSearchFieldAtLeadingEdge:(double)edge
 {
   [(_UISearchBarLayout *)self setUpSearchContainerLayout];
   searchContainerLayout = self->_searchContainerLayout;
 
-  [(_UISearchBarSearchContainerLayout *)searchContainerLayout setAdditionalPaddingForSearchFieldAtLeadingEdge:a3];
+  [(_UISearchBarSearchContainerLayout *)searchContainerLayout setAdditionalPaddingForSearchFieldAtLeadingEdge:edge];
 }
 
 - (UIEdgeInsets)scopeBarContentInset

@@ -1,47 +1,47 @@
 @interface STUIStatusBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axElementWithinFocused;
-- (CGRect)_frameForActionable:(id)a3 actionInsets:(UIEdgeInsets)a4;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGRect)_frameForActionable:(id)actionable actionInsets:(UIEdgeInsets)insets;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_prepareVisualProviderIfNeeded;
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5;
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations;
 @end
 
 @implementation STUIStatusBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarItem"];
-  [v3 validateClass:@"STUIStatusBarDisplayItem"];
-  [v3 validateClass:@"STUIStatusBarDisplayItemState"];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"items" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"displayItemStates" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"currentAggregatedData" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"styleAttributes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"visualProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"foregroundView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"_prepareVisualProviderIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"displayItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_UIStatusBarDisplayItem" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_UIStatusBarDisplayItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarDisplayItemState" hasInstanceMethod:@"enabilityStatus" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"STUIStatusBarDisplayItemPlacementState" hasInstanceMethod:@"region" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarRegion" hasInstanceMethod:@"overriddenStyleAttributes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceVariable:@"_regions" withType:"NSDictionary"];
-  [v3 validateClass:@"STUIStatusBarRegion" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarRegion" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"_updateDisplayedItemsWithData:styleAttributes:extraAnimations:" withFullSignature:{"v", "@", "@", "@", 0}];
-  [v3 validateClass:@"STUIStatusBarDisplayItemState" hasInstanceMethod:@"currentPlacementState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarDisplayItemState" hasInstanceMethod:@"_updateForUpdatedData:updatedStyleAttributes:updatedEnability:" withFullSignature:{"@", "@", "@", "@", 0}];
-  [v3 validateClass:@"STUIStatusBarStyleAttributes" hasInstanceMethod:@"styleAttributesWithOverrides:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"STUIStatusBar" hasInstanceMethod:@"_frameForActionable:actionInsets:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "{UIEdgeInsets=dddd}", 0}];
-  [v3 validateClass:@"STUIStatusBarRegion" hasInstanceMethod:@"displayItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarDisplayItem" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarNavigationItem" isKindOfClass:@"STUIStatusBarItem"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarItem"];
+  [validationsCopy validateClass:@"STUIStatusBarDisplayItem"];
+  [validationsCopy validateClass:@"STUIStatusBarDisplayItemState"];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"items" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"displayItemStates" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"currentAggregatedData" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"styleAttributes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"visualProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"foregroundView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"_prepareVisualProviderIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"displayItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_UIStatusBarDisplayItem" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_UIStatusBarDisplayItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDisplayItemState" hasInstanceMethod:@"enabilityStatus" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDisplayItemPlacementState" hasInstanceMethod:@"region" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarRegion" hasInstanceMethod:@"overriddenStyleAttributes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceVariable:@"_regions" withType:"NSDictionary"];
+  [validationsCopy validateClass:@"STUIStatusBarRegion" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarRegion" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"_updateDisplayedItemsWithData:styleAttributes:extraAnimations:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDisplayItemState" hasInstanceMethod:@"currentPlacementState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDisplayItemState" hasInstanceMethod:@"_updateForUpdatedData:updatedStyleAttributes:updatedEnability:" withFullSignature:{"@", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarStyleAttributes" hasInstanceMethod:@"styleAttributesWithOverrides:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBar" hasInstanceMethod:@"_frameForActionable:actionInsets:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "{UIEdgeInsets=dddd}", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarRegion" hasInstanceMethod:@"displayItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDisplayItem" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarNavigationItem" isKindOfClass:@"STUIStatusBarItem"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -215,36 +215,36 @@ void __72__STUIStatusBarAccessibility__accessibilityLoadAccessibilityInformation
   [a1[6] _accessibilitySetRetainedValue:v7 forKey:@"AccessibilityStatusBarUpdateData"];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v76 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   [(STUIStatusBarAccessibility *)self _axSetIsHitTesting:1];
   v73.receiver = self;
   v73.super_class = STUIStatusBarAccessibility;
-  v8 = [(STUIStatusBarAccessibility *)&v73 _accessibilityHitTest:v7 withEvent:x, y];
+  v8 = [(STUIStatusBarAccessibility *)&v73 _accessibilityHitTest:eventCopy withEvent:x, y];
   if (!v8)
   {
-    v9 = self;
-    v10 = [(STUIStatusBarAccessibility *)v9 superview];
-    [v10 convertPoint:v9 toView:{x, y}];
+    selfCopy = self;
+    superview = [(STUIStatusBarAccessibility *)selfCopy superview];
+    [superview convertPoint:selfCopy toView:{x, y}];
     v12 = v11;
     v14 = v13;
 
-    [(STUIStatusBarAccessibility *)v9 frame];
+    [(STUIStatusBarAccessibility *)selfCopy frame];
     v78.x = v12;
     v78.y = v14;
     if (CGRectContainsPoint(v79, v78))
     {
       v72 = 0;
       objc_opt_class();
-      v15 = [(STUIStatusBarAccessibility *)v9 safeValueForKey:@"items"];
+      v15 = [(STUIStatusBarAccessibility *)selfCopy safeValueForKey:@"items"];
       v16 = __UIAccessibilityCastAsClass();
 
-      v61 = v7;
-      v55 = self;
+      v61 = eventCopy;
+      selfCopy2 = self;
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
@@ -289,8 +289,8 @@ void __72__STUIStatusBarAccessibility__accessibilityLoadAccessibilityInformation
               v65 = 0u;
               v66 = 0u;
               v67 = 0u;
-              v25 = [v24 allValues];
-              v26 = [v25 countByEnumeratingWithState:&v64 objects:v74 count:16];
+              allValues = [v24 allValues];
+              v26 = [allValues countByEnumeratingWithState:&v64 objects:v74 count:16];
               if (v26)
               {
                 v27 = v26;
@@ -301,7 +301,7 @@ void __72__STUIStatusBarAccessibility__accessibilityLoadAccessibilityInformation
                   {
                     if (*v65 != v28)
                     {
-                      objc_enumerationMutation(v25);
+                      objc_enumerationMutation(allValues);
                     }
 
                     v30 = *(*(&v64 + 1) + 8 * i);
@@ -309,21 +309,21 @@ void __72__STUIStatusBarAccessibility__accessibilityLoadAccessibilityInformation
                     if ((objc_opt_isKindOfClass() & 1) != 0 && [v30 safeBoolForKey:@"isEnabled"])
                     {
                       v31 = [v30 safeUIViewForKey:@"view"];
-                      v32 = [MEMORY[0x29EDC7C40] mainScreen];
-                      v33 = [v32 coordinateSpace];
+                      mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+                      coordinateSpace = [mainScreen coordinateSpace];
                       [v31 center];
                       v35 = v34;
                       v37 = v36;
-                      v38 = [v31 superview];
-                      [v33 convertPoint:v38 fromCoordinateSpace:{v35, v37}];
+                      superview2 = [v31 superview];
+                      [coordinateSpace convertPoint:superview2 fromCoordinateSpace:{v35, v37}];
                       v40 = v39;
                       v42 = v41;
 
                       AX_CGPointGetDistanceToPoint();
                       v44 = v43;
-                      v45 = [MEMORY[0x29EDBDFA8] server];
-                      v46 = [v45 medusaApps];
-                      v47 = [v46 count];
+                      server = [MEMORY[0x29EDBDFA8] server];
+                      medusaApps = [server medusaApps];
+                      v47 = [medusaApps count];
 
                       if (v47 < 2)
                       {
@@ -338,7 +338,7 @@ void __72__STUIStatusBarAccessibility__accessibilityLoadAccessibilityInformation
 
                       if (v44 <= v48 && v44 < v20)
                       {
-                        v63.receiver = v9;
+                        v63.receiver = selfCopy;
                         v63.super_class = STUIStatusBarAccessibility;
                         v50 = [(STUIStatusBarAccessibility *)&v63 _accessibilityHitTest:v61 withEvent:v40, v42];
                         v51 = v50;
@@ -353,7 +353,7 @@ void __72__STUIStatusBarAccessibility__accessibilityLoadAccessibilityInformation
                     }
                   }
 
-                  v27 = [v25 countByEnumeratingWithState:&v64 objects:v74 count:16];
+                  v27 = [allValues countByEnumeratingWithState:&v64 objects:v74 count:16];
                 }
 
                 while (v27);
@@ -379,8 +379,8 @@ void __72__STUIStatusBarAccessibility__accessibilityLoadAccessibilityInformation
         v62 = 0;
       }
 
-      self = v55;
-      v7 = v61;
+      self = selfCopy2;
+      eventCopy = v61;
     }
 
     else
@@ -504,48 +504,48 @@ LABEL_11:
 {
   if (AXProcessIsSpringBoard() && AXDeviceHasJindo() && UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [*MEMORY[0x29EDC8008] _accessibilityStatusBarElements:1 sorted:1];
+    accessibilityElements = [*MEMORY[0x29EDC8008] _accessibilityStatusBarElements:1 sorted:1];
   }
 
   else if ([(STUIStatusBarAccessibility *)self _axElementWithinFocused])
   {
     v5.receiver = self;
     v5.super_class = STUIStatusBarAccessibility;
-    v3 = [(STUIStatusBarAccessibility *)&v5 accessibilityElements];
+    accessibilityElements = [(STUIStatusBarAccessibility *)&v5 accessibilityElements];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityElements = 0;
   }
 
-  return v3;
+  return accessibilityElements;
 }
 
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations
 {
   v6.receiver = self;
   v6.super_class = STUIStatusBarAccessibility;
-  [(STUIStatusBarAccessibility *)&v6 _updateDisplayedItemsWithData:a3 styleAttributes:a4 extraAnimations:a5];
+  [(STUIStatusBarAccessibility *)&v6 _updateDisplayedItemsWithData:data styleAttributes:attributes extraAnimations:animations];
   if ([(STUIStatusBarAccessibility *)self _axElementWithinFocused])
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }
 }
 
-- (CGRect)_frameForActionable:(id)a3 actionInsets:(UIEdgeInsets)a4
+- (CGRect)_frameForActionable:(id)actionable actionInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v39 = *MEMORY[0x29EDCA608];
-  v9 = a3;
+  actionableCopy = actionable;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v37 = 0;
     objc_opt_class();
-    v10 = [v9 safeValueForKey:@"displayItems"];
+    v10 = [actionableCopy safeValueForKey:@"displayItems"];
     v11 = __UIAccessibilityCastAsClass();
 
     v33 = 0u;
@@ -596,7 +596,7 @@ LABEL_12:
 
   v32.receiver = self;
   v32.super_class = STUIStatusBarAccessibility;
-  [(STUIStatusBarAccessibility *)&v32 _frameForActionable:v9 actionInsets:top, left, bottom, right];
+  [(STUIStatusBarAccessibility *)&v32 _frameForActionable:actionableCopy actionInsets:top, left, bottom, right];
   v20 = v19;
   v22 = v21;
   v24 = v23;

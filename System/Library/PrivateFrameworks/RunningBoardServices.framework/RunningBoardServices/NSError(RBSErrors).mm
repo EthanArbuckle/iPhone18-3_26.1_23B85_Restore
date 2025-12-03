@@ -8,14 +8,14 @@
 
 - (BOOL)rbs_isPermanentFailure
 {
-  result = [(NSError *)a1 rbs_isServiceDenied];
+  result = [(NSError *)self rbs_isServiceDenied];
   if (result)
   {
-    v3 = [a1 userInfo];
-    v4 = [v3 valueForKey:@"RBSPermanent"];
-    v5 = [v4 BOOLValue];
+    userInfo = [self userInfo];
+    v4 = [userInfo valueForKey:@"RBSPermanent"];
+    bOOLValue = [v4 BOOLValue];
 
-    return v5;
+    return bOOLValue;
   }
 
   return result;
@@ -24,27 +24,27 @@
 + (id)rbs_errorClientNotEntitled:()RBSErrors permanent:
 {
   v5 = a3;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  [v6 setObject:@"Client not entitled" forKey:*MEMORY[0x1E696A588]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"Client not entitled" forKey:*MEMORY[0x1E696A588]];
   if (v5)
   {
-    [v6 setObject:v5 forKey:@"RBSEntitlement"];
+    [dictionary setObject:v5 forKey:@"RBSEntitlement"];
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:a4];
-  [v6 setObject:v7 forKey:@"RBSPermanent"];
+  [dictionary setObject:v7 forKey:@"RBSPermanent"];
 
-  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"RBSServiceErrorDomain" code:1 userInfo:v6];
+  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"RBSServiceErrorDomain" code:1 userInfo:dictionary];
 
   return v8;
 }
 
 + (id)rbs_errorClientNotAuthorized
 {
-  v0 = [MEMORY[0x1E695DF90] dictionary];
-  [v0 setObject:@"Client not authorized" forKey:*MEMORY[0x1E696A588]];
-  [v0 setObject:MEMORY[0x1E695E110] forKey:@"RBSPermanent"];
-  v1 = [MEMORY[0x1E696ABC0] errorWithDomain:@"RBSServiceErrorDomain" code:1 userInfo:v0];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"Client not authorized" forKey:*MEMORY[0x1E696A588]];
+  [dictionary setObject:MEMORY[0x1E695E110] forKey:@"RBSPermanent"];
+  v1 = [MEMORY[0x1E696ABC0] errorWithDomain:@"RBSServiceErrorDomain" code:1 userInfo:dictionary];
 
   return v1;
 }

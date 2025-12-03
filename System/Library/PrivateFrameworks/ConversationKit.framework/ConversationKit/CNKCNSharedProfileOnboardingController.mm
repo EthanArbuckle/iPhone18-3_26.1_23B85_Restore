@@ -1,32 +1,32 @@
 @interface CNKCNSharedProfileOnboardingController
-- (void)presentOnboardingControllerFrom:(id)a3 withContactStore:(id)a4;
-- (void)presentOnboardingControllerOnLaunchIfNeededFrom:(id)a3 withContactStore:(id)a4;
+- (void)presentOnboardingControllerFrom:(id)from withContactStore:(id)store;
+- (void)presentOnboardingControllerOnLaunchIfNeededFrom:(id)from withContactStore:(id)store;
 @end
 
 @implementation CNKCNSharedProfileOnboardingController
 
-- (void)presentOnboardingControllerFrom:(id)a3 withContactStore:(id)a4
+- (void)presentOnboardingControllerFrom:(id)from withContactStore:(id)store
 {
   v6 = MEMORY[0x1E695D1A0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithContactStore:v7];
+  storeCopy = store;
+  fromCopy = from;
+  v9 = [[v6 alloc] initWithContactStore:storeCopy];
 
   [(CNKCNSharedProfileOnboardingController *)self setOnboardingController:v9];
-  v10 = [(CNKCNSharedProfileOnboardingController *)self onboardingController];
-  [v10 startOnboardingOrEditForMode:1 fromViewController:v8];
+  onboardingController = [(CNKCNSharedProfileOnboardingController *)self onboardingController];
+  [onboardingController startOnboardingOrEditForMode:1 fromViewController:fromCopy];
 }
 
-- (void)presentOnboardingControllerOnLaunchIfNeededFrom:(id)a3 withContactStore:(id)a4
+- (void)presentOnboardingControllerOnLaunchIfNeededFrom:(id)from withContactStore:(id)store
 {
   v6 = MEMORY[0x1E695D1A0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithContactStore:v7];
+  storeCopy = store;
+  fromCopy = from;
+  v9 = [[v6 alloc] initWithContactStore:storeCopy];
 
   [(CNKCNSharedProfileOnboardingController *)self setOnboardingController:v9];
-  v10 = [(CNKCNSharedProfileOnboardingController *)self onboardingController];
-  [v10 presentOnboardingFlowIfNeededForMode:1 fromViewController:v8];
+  onboardingController = [(CNKCNSharedProfileOnboardingController *)self onboardingController];
+  [onboardingController presentOnboardingFlowIfNeededForMode:1 fromViewController:fromCopy];
 }
 
 @end

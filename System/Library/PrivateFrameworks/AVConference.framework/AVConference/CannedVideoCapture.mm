@@ -1,22 +1,22 @@
 @interface CannedVideoCapture
-+ (int)cannedVideoTypeForPath:(id)a3;
-+ (int)createPixelBufferPool:(__CVPixelBufferPool *)a3 withWidth:(int)a4 height:(int)a5;
-- (CannedVideoCapture)initWithCaptureServer:(id)a3 protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)a4 width:(int)a5 height:(int)a6 frameRate:(int)a7 videoSourceToken:(_VCVideoSourceToken)a8 video:(id)a9 isCamera:(BOOL)a10 error:(int *)a11;
-- (int)copyColorInfo:(const __CFDictionary *)a3;
-- (int)setWidth:(int)a3 height:(int)a4 frameRate:(int)a5;
-- (int)startCaptureWithWidth:(int)a3 height:(int)a4 frameRate:(int)a5;
++ (int)cannedVideoTypeForPath:(id)path;
++ (int)createPixelBufferPool:(__CVPixelBufferPool *)pool withWidth:(int)width height:(int)height;
+- (CannedVideoCapture)initWithCaptureServer:(id)server protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)functions width:(int)width height:(int)height frameRate:(int)rate videoSourceToken:(_VCVideoSourceToken)token video:(id)video isCamera:(BOOL)self0 error:(int *)self1;
+- (int)copyColorInfo:(const __CFDictionary *)info;
+- (int)setWidth:(int)width height:(int)height frameRate:(int)rate;
+- (int)startCaptureWithWidth:(int)width height:(int)height frameRate:(int)rate;
 - (int)startPreview;
-- (int)stop:(BOOL)a3;
+- (int)stop:(BOOL)stop;
 - (void)dealloc;
 @end
 
 @implementation CannedVideoCapture
 
-- (CannedVideoCapture)initWithCaptureServer:(id)a3 protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)a4 width:(int)a5 height:(int)a6 frameRate:(int)a7 videoSourceToken:(_VCVideoSourceToken)a8 video:(id)a9 isCamera:(BOOL)a10 error:(int *)a11
+- (CannedVideoCapture)initWithCaptureServer:(id)server protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)functions width:(int)width height:(int)height frameRate:(int)rate videoSourceToken:(_VCVideoSourceToken)token video:(id)video isCamera:(BOOL)self0 error:(int *)self1
 {
-  v12 = *&a7;
-  v13 = *&a6;
-  v14 = *&a5;
+  v12 = *&rate;
+  v13 = *&height;
+  v14 = *&width;
   v47 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -37,9 +37,9 @@
       v41 = 1024;
       v42 = v12;
       v43 = 1024;
-      var0 = a8.var0.var0;
+      var0 = token.var0.var0;
       v45 = 2112;
-      v46 = a9;
+      videoCopy = video;
       _os_log_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d width=%d, height=%d, frameRate=%d, sourceToken=0x%x, video=%@", buf, 0x3Eu);
     }
   }
@@ -57,7 +57,7 @@ LABEL_21:
 
   v31.receiver = self;
   v31.super_class = CannedVideoCapture;
-  v21 = [(VCVideoCapture *)&v31 initWithCaptureServer:a3 protocolFunctions:a4];
+  v21 = [(VCVideoCapture *)&v31 initWithCaptureServer:server protocolFunctions:functions];
   if (!v21)
   {
     [CannedVideoCapture initWithCaptureServer:buf protocolFunctions:? width:? height:? frameRate:? videoSourceToken:? video:? isCamera:? error:?];
@@ -74,7 +74,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v25 = [[VCCannedVideoCaptureSource alloc] initWithVideo:a9 callbackContext:v22 frameCallback:CannedVideoCapture_OnVideoFrame shouldScaleAndPad:0];
+  v25 = [[VCCannedVideoCaptureSource alloc] initWithVideo:video callbackContext:v22 frameCallback:CannedVideoCapture_OnVideoFrame shouldScaleAndPad:0];
   v22->_captureSource = v25;
   if (!v25)
   {
@@ -92,8 +92,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v26[16].var0.var0 = a8.var0.var0;
-  if (a10)
+  v26[16].var0.var0 = token.var0.var0;
+  if (camera)
   {
     v27 = 0;
   }
@@ -104,15 +104,15 @@ LABEL_21:
   }
 
   pimpl = v22->_pimpl;
-  pimpl->var4.var0 = a10;
-  pimpl->var4.var1 = a10;
+  pimpl->var4.var0 = camera;
+  pimpl->var4.var1 = camera;
   *(&pimpl->var4.var1 + 1) = -21846;
   pimpl->var4.var2 = v27;
   *&pimpl->var4.var3 = 2863267840;
   *&pimpl->var4.var6 = -1431655936;
-  if (a11)
+  if (error)
   {
-    *a11 = 0;
+    *error = 0;
   }
 
   [v20 drain];
@@ -130,16 +130,16 @@ LABEL_21:
   [(VCVideoCapture *)&v3 dealloc];
 }
 
-- (int)setWidth:(int)a3 height:(int)a4 frameRate:(int)a5
+- (int)setWidth:(int)width height:(int)height frameRate:(int)rate
 {
-  v5 = *&a5;
-  [(VCCannedVideoCaptureSource *)self->_captureSource setWidth:*&a3 height:*&a4];
+  v5 = *&rate;
+  [(VCCannedVideoCaptureSource *)self->_captureSource setWidth:*&width height:*&height];
   [(VCCannedVideoCaptureSource *)self->_captureSource setFrameRate:v5];
   [(VCVideoCaptureServer *)[(VCVideoCapture *)self captureServer] sourceFrameRateDidChange:v5];
   return 0;
 }
 
-- (int)copyColorInfo:(const __CFDictionary *)a3
+- (int)copyColorInfo:(const __CFDictionary *)info
 {
   Mutable = CFDictionaryCreateMutable(0, 3, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   if (!Mutable)
@@ -152,9 +152,9 @@ LABEL_21:
   CFDictionaryAddValue(v5, *MEMORY[0x1E6983878], @"ITU_R_709_2");
   CFDictionaryAddValue(v5, *MEMORY[0x1E69838B8], @"ITU_R_709_2");
   result = 0;
-  if (a3)
+  if (info)
   {
-    *a3 = v5;
+    *info = v5;
   }
 
   return result;
@@ -174,7 +174,7 @@ LABEL_21:
   else
   {
     pimpl->var3 = 1;
-    v5 = [(VCCannedVideoCaptureSource *)self->_captureSource start];
+    start = [(VCCannedVideoCaptureSource *)self->_captureSource start];
     captureSessionQueue = self->_captureSessionQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -183,7 +183,7 @@ LABEL_21:
     v7[4] = self;
     dispatch_async(captureSessionQueue, v7);
     pthread_mutex_unlock(&self->_pimpl->var0);
-    return v5;
+    return start;
   }
 }
 
@@ -194,23 +194,23 @@ uint64_t __34__CannedVideoCapture_startPreview__block_invoke(uint64_t a1)
   return [v1 handleCaptureEvent:@"avCaptureCameraDidStart"];
 }
 
-- (int)startCaptureWithWidth:(int)a3 height:(int)a4 frameRate:(int)a5
+- (int)startCaptureWithWidth:(int)width height:(int)height frameRate:(int)rate
 {
-  [(CannedVideoCapture *)self setWidth:*&a3 height:*&a4 frameRate:*&a5];
+  [(CannedVideoCapture *)self setWidth:*&width height:*&height frameRate:*&rate];
   pthread_mutex_lock(&self->_pimpl->var0);
-  v6 = [(VCCannedVideoCaptureSource *)self->_captureSource start];
+  start = [(VCCannedVideoCaptureSource *)self->_captureSource start];
   pthread_mutex_unlock(&self->_pimpl->var0);
-  return v6;
+  return start;
 }
 
-- (int)stop:(BOOL)a3
+- (int)stop:(BOOL)stop
 {
-  v3 = a3;
+  stopCopy = stop;
   v10[5] = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_pimpl->var0);
   pimpl = self->_pimpl;
   var3 = pimpl->var3;
-  if (!var3 || v3)
+  if (!var3 || stopCopy)
   {
     [(VCCannedVideoCaptureSource *)self->_captureSource stop];
     captureSessionQueue = self->_captureSessionQueue;
@@ -224,7 +224,7 @@ uint64_t __34__CannedVideoCapture_startPreview__block_invoke(uint64_t a1)
     LOBYTE(var3) = pimpl->var3;
   }
 
-  pimpl->var3 = var3 && !v3;
+  pimpl->var3 = var3 && !stopCopy;
   pthread_mutex_unlock(&pimpl->var0);
   return 0;
 }
@@ -236,7 +236,7 @@ uint64_t __27__CannedVideoCapture_stop___block_invoke(uint64_t a1)
   return [v1 handleCaptureEvent:@"avCaptureCameraDidStop"];
 }
 
-+ (int)cannedVideoTypeForPath:(id)a3
++ (int)cannedVideoTypeForPath:(id)path
 {
   v6 = *MEMORY[0x1E69E9840];
   if ([objc_msgSend(MEMORY[0x1E695DFF8] "URLWithString:"scheme"")])
@@ -256,12 +256,12 @@ uint64_t __27__CannedVideoCapture_stop___block_invoke(uint64_t a1)
   }
 }
 
-+ (int)createPixelBufferPool:(__CVPixelBufferPool *)a3 withWidth:(int)a4 height:(int)a5
++ (int)createPixelBufferPool:(__CVPixelBufferPool *)pool withWidth:(int)width height:(int)height
 {
-  v5 = *&a5;
+  v5 = *&height;
   v13[4] = *MEMORY[0x1E69E9840];
   v12[0] = *MEMORY[0x1E6966208];
-  v13[0] = [MEMORY[0x1E696AD98] numberWithInt:*&a4];
+  v13[0] = [MEMORY[0x1E696AD98] numberWithInt:*&width];
   v12[1] = *MEMORY[0x1E69660B8];
   v13[1] = [MEMORY[0x1E696AD98] numberWithInt:v5];
   v12[2] = *MEMORY[0x1E6966130];
@@ -274,7 +274,7 @@ uint64_t __27__CannedVideoCapture_stop___block_invoke(uint64_t a1)
   v11[1] = @"AVConference:CannedVideo";
   v13[3] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:4];
-  return CVPixelBufferPoolCreate(*MEMORY[0x1E695E480], 0, v8, a3);
+  return CVPixelBufferPoolCreate(*MEMORY[0x1E695E480], 0, v8, pool);
 }
 
 - (void)initWithCaptureServer:protocolFunctions:width:height:frameRate:videoSourceToken:video:isCamera:error:.cold.1()

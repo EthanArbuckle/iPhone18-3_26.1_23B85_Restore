@@ -1,82 +1,82 @@
 @interface SNTestRun
 - (BOOL)waitForCommitToFinish;
-- (SNTestRun)initWithTestCase:(id)a3 testSuite:(id)a4;
+- (SNTestRun)initWithTestCase:(id)case testSuite:(id)suite;
 - (int64_t)orientation;
-- (void)runTestWithContext:(id)a3 testCoordinator:(id)a4 completion:(id)a5;
-- (void)runTestWithContext:(id)a3 testName:(id)a4 testCoordinator:(id)a5 completion:(id)a6;
-- (void)setupWithContext:(id)a3 completion:(id)a4;
+- (void)runTestWithContext:(id)context testCoordinator:(id)coordinator completion:(id)completion;
+- (void)runTestWithContext:(id)context testName:(id)name testCoordinator:(id)coordinator completion:(id)completion;
+- (void)setupWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation SNTestRun
 
 - (int64_t)orientation
 {
-  v3 = [(SNTestRun *)self testCase];
-  v4 = [v3 conformsToProtocol:&unk_287E95B68];
+  testCase = [(SNTestRun *)self testCase];
+  v4 = [testCase conformsToProtocol:&unk_287E95B68];
 
   if (!v4)
   {
     return 1;
   }
 
-  v5 = [(SNTestRun *)self testCase];
-  v6 = [v5 orientation];
+  testCase2 = [(SNTestRun *)self testCase];
+  orientation = [testCase2 orientation];
 
-  return v6;
+  return orientation;
 }
 
 - (BOOL)waitForCommitToFinish
 {
-  v3 = [(SNTestRun *)self testCase];
-  v4 = [v3 conformsToProtocol:&unk_287E95B68];
+  testCase = [(SNTestRun *)self testCase];
+  v4 = [testCase conformsToProtocol:&unk_287E95B68];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(SNTestRun *)self testCase];
-  v6 = [v5 waitForCommitToFinish];
+  testCase2 = [(SNTestRun *)self testCase];
+  waitForCommitToFinish = [testCase2 waitForCommitToFinish];
 
-  return v6;
+  return waitForCommitToFinish;
 }
 
-- (SNTestRun)initWithTestCase:(id)a3 testSuite:(id)a4
+- (SNTestRun)initWithTestCase:(id)case testSuite:(id)suite
 {
-  v7 = a3;
-  v8 = a4;
+  caseCopy = case;
+  suiteCopy = suite;
   v12.receiver = self;
   v12.super_class = SNTestRun;
   v9 = [(SNTestRun *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_testCase, a3);
-    objc_storeStrong(&v10->_testSuite, a4);
+    objc_storeStrong(&v9->_testCase, case);
+    objc_storeStrong(&v10->_testSuite, suite);
   }
 
   return v10;
 }
 
-- (void)setupWithContext:(id)a3 completion:(id)a4
+- (void)setupWithContext:(id)context completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = objc_alloc_init(SNTestChain);
-  v9 = [(SNTestRun *)self testSuite];
+  testSuite = [(SNTestRun *)self testSuite];
 
-  if (v9)
+  if (testSuite)
   {
-    v20 = v7;
+    v20 = completionCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [(SNTestRun *)self testSuite];
-    v11 = [v10 testSetupList];
+    testSuite2 = [(SNTestRun *)self testSuite];
+    testSetupList = [testSuite2 testSetupList];
 
-    v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v12 = [testSetupList countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v12)
     {
       v13 = v12;
@@ -88,7 +88,7 @@
         {
           if (*v26 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(testSetupList);
           }
 
           v16 = *(*(&v25 + 1) + 8 * v15);
@@ -97,23 +97,23 @@
           v23[2] = __41__SNTestRun_setupWithContext_completion___block_invoke;
           v23[3] = &unk_279D94118;
           v23[4] = v16;
-          v24 = v6;
+          v24 = contextCopy;
           [(SNTestChain *)v8 addLink:v23];
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v13 = [testSetupList countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v13);
     }
 
-    v7 = v20;
+    completionCopy = v20;
   }
 
-  v17 = [(SNTestRun *)self testCase];
+  testCase = [(SNTestRun *)self testCase];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
@@ -123,11 +123,11 @@
     v21[2] = __41__SNTestRun_setupWithContext_completion___block_invoke_2;
     v21[3] = &unk_279D94118;
     v21[4] = self;
-    v22 = v6;
+    v22 = contextCopy;
     [(SNTestChain *)v8 addLink:v21];
   }
 
-  [(SNTestChain *)v8 runWithCompletion:v7];
+  [(SNTestChain *)v8 runWithCompletion:completionCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -140,36 +140,36 @@ void __41__SNTestRun_setupWithContext_completion___block_invoke_2(uint64_t a1, v
   [v5 setupTestWithContext:*(a1 + 40) completion:v4];
 }
 
-- (void)runTestWithContext:(id)a3 testCoordinator:(id)a4 completion:(id)a5
+- (void)runTestWithContext:(id)context testCoordinator:(id)coordinator completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(SNTestRun *)self testCase];
-  v11 = [v12 testName];
-  [(SNTestRun *)self runTestWithContext:v10 testName:v11 testCoordinator:v9 completion:v8];
+  completionCopy = completion;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  testCase = [(SNTestRun *)self testCase];
+  testName = [testCase testName];
+  [(SNTestRun *)self runTestWithContext:contextCopy testName:testName testCoordinator:coordinatorCopy completion:completionCopy];
 }
 
-- (void)runTestWithContext:(id)a3 testName:(id)a4 testCoordinator:(id)a5 completion:(id)a6
+- (void)runTestWithContext:(id)context testName:(id)name testCoordinator:(id)coordinator completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  nameCopy = name;
+  coordinatorCopy = coordinator;
+  completionCopy = completion;
   v14 = objc_alloc_init(SNTestChain);
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __68__SNTestRun_runTestWithContext_testName_testCoordinator_completion___block_invoke;
   v21 = &unk_279D941B8;
-  v22 = self;
-  v23 = v10;
-  v24 = v12;
-  v25 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = v10;
+  selfCopy = self;
+  v23 = contextCopy;
+  v24 = coordinatorCopy;
+  v25 = nameCopy;
+  v15 = nameCopy;
+  v16 = coordinatorCopy;
+  v17 = contextCopy;
   [(SNTestChain *)v14 addLink:&v18];
-  [(SNTestChain *)v14 runWithCompletion:v13, v18, v19, v20, v21, v22];
+  [(SNTestChain *)v14 runWithCompletion:completionCopy, v18, v19, v20, v21, selfCopy];
 }
 
 void __68__SNTestRun_runTestWithContext_testName_testCoordinator_completion___block_invoke(uint64_t a1, void *a2)

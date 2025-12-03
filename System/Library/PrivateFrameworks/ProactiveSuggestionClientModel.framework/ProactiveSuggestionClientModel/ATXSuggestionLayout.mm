@@ -1,31 +1,31 @@
 @interface ATXSuggestionLayout
-+ (id)maxSuggestionLayoutTypesForUILayoutType:(int64_t)a3;
-+ (id)minSuggestionLayoutTypesForUILayoutType:(int64_t)a3;
-+ (id)stringFromUILayoutType:(int64_t)a3;
-- (ATXSuggestionLayout)initWithCoder:(id)a3;
-- (ATXSuggestionLayout)initWithLayoutType:(int64_t)a3 oneByOneSuggestions:(id)a4 oneByTwoSuggestions:(id)a5 twoByTwoSuggestions:(id)a6 oneByFourSuggestions:(id)a7 twoByFourSuggestions:(id)a8 fourByFourSuggestions:(id)a9 fourByEightSuggestions:(id)a10;
-- (ATXSuggestionLayout)initWithLayoutType:(int64_t)a3 oneByOneSuggestions:(id)a4 oneByTwoSuggestions:(id)a5 twoByTwoSuggestions:(id)a6 oneByFourSuggestions:(id)a7 twoByFourSuggestions:(id)a8 fourByFourSuggestions:(id)a9 fourByEightSuggestions:(id)a10 uuid:(id)a11 layoutScore:(double)a12 isValidForSuggestionsWidget:(BOOL)a13 confidenceWarrantsSnappingOrNPlusOne:(BOOL)a14 isNPlusOne:(BOOL)a15 isLowConfidenceStackRotationForStaleStack:(BOOL)a16 widgetUniqueId:(id)a17 uuidOfHighestConfidenceSuggestion:(id)a18 numWidgetsInStack:(unint64_t)a19;
-- (ATXSuggestionLayout)initWithProto:(id)a3;
-- (ATXSuggestionLayout)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)maxSuggestionLayoutTypesForUILayoutType:(int64_t)type;
++ (id)minSuggestionLayoutTypesForUILayoutType:(int64_t)type;
++ (id)stringFromUILayoutType:(int64_t)type;
+- (ATXSuggestionLayout)initWithCoder:(id)coder;
+- (ATXSuggestionLayout)initWithLayoutType:(int64_t)type oneByOneSuggestions:(id)suggestions oneByTwoSuggestions:(id)twoSuggestions twoByTwoSuggestions:(id)byTwoSuggestions oneByFourSuggestions:(id)fourSuggestions twoByFourSuggestions:(id)byFourSuggestions fourByFourSuggestions:(id)fourByFourSuggestions fourByEightSuggestions:(id)self0;
+- (ATXSuggestionLayout)initWithLayoutType:(int64_t)type oneByOneSuggestions:(id)suggestions oneByTwoSuggestions:(id)twoSuggestions twoByTwoSuggestions:(id)byTwoSuggestions oneByFourSuggestions:(id)fourSuggestions twoByFourSuggestions:(id)byFourSuggestions fourByFourSuggestions:(id)fourByFourSuggestions fourByEightSuggestions:(id)self0 uuid:(id)self1 layoutScore:(double)self2 isValidForSuggestionsWidget:(BOOL)self3 confidenceWarrantsSnappingOrNPlusOne:(BOOL)self4 isNPlusOne:(BOOL)self5 isLowConfidenceStackRotationForStaleStack:(BOOL)self6 widgetUniqueId:(id)self7 uuidOfHighestConfidenceSuggestion:(id)self8 numWidgetsInStack:(unint64_t)self9;
+- (ATXSuggestionLayout)initWithProto:(id)proto;
+- (ATXSuggestionLayout)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)l key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isShortcutConversion;
 - (NSString)description;
 - (id)allSuggestionsInLayout;
-- (id)arrayOfJSONFromSuggestionArray:(id)a3;
+- (id)arrayOfJSONFromSuggestionArray:(id)array;
 - (id)compactDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsProto;
 - (id)jsonRawData;
 - (id)minSuggestionListInLayout;
 - (id)proto;
-- (id)suggestionWithUUID:(id)a3;
-- (int)_protoLayoutTypeFromLayoutType:(int64_t)a3;
-- (int64_t)_layoutTypeFromProtoLayoutType:(int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)suggestionWithUUID:(id)d;
+- (int)_protoLayoutTypeFromLayoutType:(int64_t)type;
+- (int64_t)_layoutTypeFromProtoLayoutType:(int)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSuggestionLayout
@@ -79,10 +79,10 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXSuggestionLayout *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXSuggestionLayout *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
@@ -90,8 +90,8 @@
   v3 = objc_opt_new();
   [(ATXPBSuggestionLayout *)v3 setLayoutType:?];
   [(ATXPBSuggestionLayout *)v3 setLayoutScore:?];
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [(ATXPBSuggestionLayout *)v3 setUuidString:v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [(ATXPBSuggestionLayout *)v3 setUuidString:uUIDString];
 
   v5 = [ATXProactiveSuggestion protoSuggestionsFromSuggestions:self->_oneByOneSuggestions];
   [(ATXPBSuggestionLayout *)v3 setOneByOneSuggestions:v5];
@@ -119,50 +119,50 @@
   [(ATXPBSuggestionLayout *)v3 setIsNPlusOne:?];
   [(ATXPBSuggestionLayout *)v3 setWidgetUniqueId:?];
   [(ATXPBSuggestionLayout *)v3 setIsLowConfidenceStackRotationForStaleStack:?];
-  v12 = [(NSUUID *)self->_uuidOfHighestConfidenceSuggestion UUIDString];
-  [(ATXPBSuggestionLayout *)v3 setUuidOfHighestConfidenceSuggestion:v12];
+  uUIDString2 = [(NSUUID *)self->_uuidOfHighestConfidenceSuggestion UUIDString];
+  [(ATXPBSuggestionLayout *)v3 setUuidOfHighestConfidenceSuggestion:uUIDString2];
 
   [(ATXPBSuggestionLayout *)v3 setNumWidgetsInStack:?];
 
   return v3;
 }
 
-- (ATXSuggestionLayout)initWithLayoutType:(int64_t)a3 oneByOneSuggestions:(id)a4 oneByTwoSuggestions:(id)a5 twoByTwoSuggestions:(id)a6 oneByFourSuggestions:(id)a7 twoByFourSuggestions:(id)a8 fourByFourSuggestions:(id)a9 fourByEightSuggestions:(id)a10
+- (ATXSuggestionLayout)initWithLayoutType:(int64_t)type oneByOneSuggestions:(id)suggestions oneByTwoSuggestions:(id)twoSuggestions twoByTwoSuggestions:(id)byTwoSuggestions oneByFourSuggestions:(id)fourSuggestions twoByFourSuggestions:(id)byFourSuggestions fourByFourSuggestions:(id)fourByFourSuggestions fourByEightSuggestions:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
+  eightSuggestionsCopy = eightSuggestions;
+  fourByFourSuggestionsCopy = fourByFourSuggestions;
+  byFourSuggestionsCopy = byFourSuggestions;
+  fourSuggestionsCopy = fourSuggestions;
+  byTwoSuggestionsCopy = byTwoSuggestions;
+  twoSuggestionsCopy = twoSuggestions;
+  suggestionsCopy = suggestions;
   v24 = objc_opt_new();
-  v25 = [(ATXSuggestionLayout *)self initWithLayoutType:a3 oneByOneSuggestions:v23 oneByTwoSuggestions:v22 twoByTwoSuggestions:v21 oneByFourSuggestions:v20 twoByFourSuggestions:v19 fourByFourSuggestions:v18 fourByEightSuggestions:v17 uuid:v24];
+  v25 = [(ATXSuggestionLayout *)self initWithLayoutType:type oneByOneSuggestions:suggestionsCopy oneByTwoSuggestions:twoSuggestionsCopy twoByTwoSuggestions:byTwoSuggestionsCopy oneByFourSuggestions:fourSuggestionsCopy twoByFourSuggestions:byFourSuggestionsCopy fourByFourSuggestions:fourByFourSuggestionsCopy fourByEightSuggestions:eightSuggestionsCopy uuid:v24];
 
   return v25;
 }
 
-- (ATXSuggestionLayout)initWithLayoutType:(int64_t)a3 oneByOneSuggestions:(id)a4 oneByTwoSuggestions:(id)a5 twoByTwoSuggestions:(id)a6 oneByFourSuggestions:(id)a7 twoByFourSuggestions:(id)a8 fourByFourSuggestions:(id)a9 fourByEightSuggestions:(id)a10 uuid:(id)a11 layoutScore:(double)a12 isValidForSuggestionsWidget:(BOOL)a13 confidenceWarrantsSnappingOrNPlusOne:(BOOL)a14 isNPlusOne:(BOOL)a15 isLowConfidenceStackRotationForStaleStack:(BOOL)a16 widgetUniqueId:(id)a17 uuidOfHighestConfidenceSuggestion:(id)a18 numWidgetsInStack:(unint64_t)a19
+- (ATXSuggestionLayout)initWithLayoutType:(int64_t)type oneByOneSuggestions:(id)suggestions oneByTwoSuggestions:(id)twoSuggestions twoByTwoSuggestions:(id)byTwoSuggestions oneByFourSuggestions:(id)fourSuggestions twoByFourSuggestions:(id)byFourSuggestions fourByFourSuggestions:(id)fourByFourSuggestions fourByEightSuggestions:(id)self0 uuid:(id)self1 layoutScore:(double)self2 isValidForSuggestionsWidget:(BOOL)self3 confidenceWarrantsSnappingOrNPlusOne:(BOOL)self4 isNPlusOne:(BOOL)self5 isLowConfidenceStackRotationForStaleStack:(BOOL)self6 widgetUniqueId:(id)self7 uuidOfHighestConfidenceSuggestion:(id)self8 numWidgetsInStack:(unint64_t)self9
 {
-  v24 = a4;
-  v25 = a5;
-  v53 = a6;
-  v26 = a7;
-  v27 = a8;
-  v28 = v25;
-  v29 = a9;
-  v30 = a10;
-  v52 = a11;
-  v31 = a17;
-  v32 = a18;
+  suggestionsCopy = suggestions;
+  twoSuggestionsCopy = twoSuggestions;
+  byTwoSuggestionsCopy = byTwoSuggestions;
+  fourSuggestionsCopy = fourSuggestions;
+  byFourSuggestionsCopy = byFourSuggestions;
+  v28 = twoSuggestionsCopy;
+  fourByFourSuggestionsCopy = fourByFourSuggestions;
+  eightSuggestionsCopy = eightSuggestions;
+  uuidCopy = uuid;
+  idCopy = id;
+  suggestionCopy = suggestion;
   v54.receiver = self;
   v54.super_class = ATXSuggestionLayout;
   v33 = [(ATXSuggestionLayout *)&v54 init];
   v34 = v33;
   if (v33)
   {
-    v33->_layoutType = a3;
-    v35 = [v24 copy];
+    v33->_layoutType = type;
+    v35 = [suggestionsCopy copy];
     oneByOneSuggestions = v34->_oneByOneSuggestions;
     v34->_oneByOneSuggestions = v35;
 
@@ -170,35 +170,35 @@
     oneByTwoSuggestions = v34->_oneByTwoSuggestions;
     v34->_oneByTwoSuggestions = v37;
 
-    v39 = [v53 copy];
+    v39 = [byTwoSuggestionsCopy copy];
     twoByTwoSuggestions = v34->_twoByTwoSuggestions;
     v34->_twoByTwoSuggestions = v39;
 
-    v41 = [v26 copy];
+    v41 = [fourSuggestionsCopy copy];
     oneByFourSuggestions = v34->_oneByFourSuggestions;
     v34->_oneByFourSuggestions = v41;
 
-    v43 = [v27 copy];
+    v43 = [byFourSuggestionsCopy copy];
     twoByFourSuggestions = v34->_twoByFourSuggestions;
     v34->_twoByFourSuggestions = v43;
 
-    v45 = [v29 copy];
+    v45 = [fourByFourSuggestionsCopy copy];
     fourByFourSuggestions = v34->_fourByFourSuggestions;
     v34->_fourByFourSuggestions = v45;
 
-    v47 = [v30 copy];
+    v47 = [eightSuggestionsCopy copy];
     fourByEightSuggestions = v34->_fourByEightSuggestions;
     v34->_fourByEightSuggestions = v47;
 
-    objc_storeStrong(&v34->_uuid, a11);
-    v34->_layoutScore = a12;
-    v34->_isValidForSuggestionsWidget = a13;
-    v34->_confidenceWarrantsSnappingOrNPlusOne = a14;
-    v34->_isNPlusOne = a15;
-    v34->_isLowConfidenceStackRotationForStaleStack = a16;
-    objc_storeStrong(&v34->_widgetUniqueId, a17);
-    objc_storeStrong(&v34->_uuidOfHighestConfidenceSuggestion, a18);
-    v34->_numWidgetsInStack = a19;
+    objc_storeStrong(&v34->_uuid, uuid);
+    v34->_layoutScore = score;
+    v34->_isValidForSuggestionsWidget = widget;
+    v34->_confidenceWarrantsSnappingOrNPlusOne = one;
+    v34->_isNPlusOne = plusOne;
+    v34->_isLowConfidenceStackRotationForStaleStack = stack;
+    objc_storeStrong(&v34->_widgetUniqueId, id);
+    objc_storeStrong(&v34->_uuidOfHighestConfidenceSuggestion, suggestion);
+    v34->_numWidgetsInStack = inStack;
   }
 
   return v34;
@@ -207,9 +207,9 @@
 - (id)compactDescription
 {
   v3 = objc_opt_class();
-  v4 = [(ATXSuggestionLayout *)self layoutType];
+  layoutType = [(ATXSuggestionLayout *)self layoutType];
 
-  return [v3 stringFromUILayoutType:v4];
+  return [v3 stringFromUILayoutType:layoutType];
 }
 
 - (NSString)description
@@ -258,11 +258,11 @@
   return v3;
 }
 
-- (id)suggestionWithUUID:(id)a3
+- (id)suggestionWithUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     [(ATXSuggestionLayout *)self allSuggestionsInLayout];
     v14 = 0u;
@@ -283,8 +283,8 @@
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 uuid];
-          v11 = [v4 isEqual:v10];
+          uuid = [v9 uuid];
+          v11 = [dCopy isEqual:uuid];
 
           if (v11)
           {
@@ -321,96 +321,96 @@ LABEL_12:
   v3 = objc_opt_new();
   v4 = [ATXSuggestionLayout minSuggestionLayoutTypesForUILayoutType:self->_layoutType];
   v5 = [v4 objectForKeyedSubscript:&unk_1F5A40FC0];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 >= 1)
+  if (intValue >= 1)
   {
     v7 = [v4 objectForKeyedSubscript:&unk_1F5A40FC0];
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    v9 = [(NSArray *)self->_oneByOneSuggestions subarrayWithRange:0, v8];
+    v9 = [(NSArray *)self->_oneByOneSuggestions subarrayWithRange:0, unsignedIntegerValue];
     [v3 addObjectsFromArray:v9];
   }
 
   v10 = [v4 objectForKeyedSubscript:&unk_1F5A40FD8];
-  v11 = [v10 intValue];
+  intValue2 = [v10 intValue];
 
-  if (v11 >= 1)
+  if (intValue2 >= 1)
   {
     v12 = [v4 objectForKeyedSubscript:&unk_1F5A40FD8];
-    v13 = [v12 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v12 unsignedIntegerValue];
 
-    v14 = [(NSArray *)self->_oneByTwoSuggestions subarrayWithRange:0, v13];
+    v14 = [(NSArray *)self->_oneByTwoSuggestions subarrayWithRange:0, unsignedIntegerValue2];
     [v3 addObjectsFromArray:v14];
   }
 
   v15 = [v4 objectForKeyedSubscript:&unk_1F5A40FF0];
-  v16 = [v15 intValue];
+  intValue3 = [v15 intValue];
 
-  if (v16 >= 1)
+  if (intValue3 >= 1)
   {
     v17 = [v4 objectForKeyedSubscript:&unk_1F5A40FF0];
-    v18 = [v17 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v17 unsignedIntegerValue];
 
-    v19 = [(NSArray *)self->_twoByTwoSuggestions subarrayWithRange:0, v18];
+    v19 = [(NSArray *)self->_twoByTwoSuggestions subarrayWithRange:0, unsignedIntegerValue3];
     [v3 addObjectsFromArray:v19];
   }
 
   v20 = [v4 objectForKeyedSubscript:&unk_1F5A41008];
-  v21 = [v20 intValue];
+  intValue4 = [v20 intValue];
 
-  if (v21 >= 1)
+  if (intValue4 >= 1)
   {
     v22 = [v4 objectForKeyedSubscript:&unk_1F5A41008];
-    v23 = [v22 unsignedIntegerValue];
+    unsignedIntegerValue4 = [v22 unsignedIntegerValue];
 
-    v24 = [(NSArray *)self->_twoByFourSuggestions subarrayWithRange:0, v23];
+    v24 = [(NSArray *)self->_twoByFourSuggestions subarrayWithRange:0, unsignedIntegerValue4];
     [v3 addObjectsFromArray:v24];
   }
 
   v25 = [v4 objectForKeyedSubscript:&unk_1F5A41020];
-  v26 = [v25 intValue];
+  intValue5 = [v25 intValue];
 
-  if (v26 >= 1)
+  if (intValue5 >= 1)
   {
     v27 = [v4 objectForKeyedSubscript:&unk_1F5A41020];
-    v28 = [v27 unsignedIntegerValue];
+    unsignedIntegerValue5 = [v27 unsignedIntegerValue];
 
-    v29 = [(NSArray *)self->_oneByFourSuggestions subarrayWithRange:0, v28];
+    v29 = [(NSArray *)self->_oneByFourSuggestions subarrayWithRange:0, unsignedIntegerValue5];
     [v3 addObjectsFromArray:v29];
   }
 
   v30 = [v4 objectForKeyedSubscript:&unk_1F5A41038];
-  v31 = [v30 intValue];
+  intValue6 = [v30 intValue];
 
-  if (v31 >= 1)
+  if (intValue6 >= 1)
   {
     v32 = [v4 objectForKeyedSubscript:&unk_1F5A41038];
-    v33 = [v32 unsignedIntegerValue];
+    unsignedIntegerValue6 = [v32 unsignedIntegerValue];
 
-    v34 = [(NSArray *)self->_fourByFourSuggestions subarrayWithRange:0, v33];
+    v34 = [(NSArray *)self->_fourByFourSuggestions subarrayWithRange:0, unsignedIntegerValue6];
     [v3 addObjectsFromArray:v34];
   }
 
   v35 = [v4 objectForKeyedSubscript:&unk_1F5A41050];
-  v36 = [v35 intValue];
+  intValue7 = [v35 intValue];
 
-  if (v36 >= 1)
+  if (intValue7 >= 1)
   {
     v37 = [v4 objectForKeyedSubscript:&unk_1F5A41050];
-    v38 = [v37 unsignedIntegerValue];
+    unsignedIntegerValue7 = [v37 unsignedIntegerValue];
 
-    v39 = [(NSArray *)self->_fourByEightSuggestions subarrayWithRange:0, v38];
+    v39 = [(NSArray *)self->_fourByEightSuggestions subarrayWithRange:0, unsignedIntegerValue7];
     [v3 addObjectsFromArray:v39];
   }
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -420,9 +420,9 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATXSuggestionLayout *)v5 layoutType];
-      if (v6 == [(ATXSuggestionLayout *)self layoutType])
+      v5 = equalCopy;
+      layoutType = [(ATXSuggestionLayout *)v5 layoutType];
+      if (layoutType == [(ATXSuggestionLayout *)self layoutType])
       {
         v7 = self->_oneByOneSuggestions;
         v8 = v7;
@@ -629,10 +629,10 @@ LABEL_50:
   return v10;
 }
 
-+ (id)minSuggestionLayoutTypesForUILayoutType:(int64_t)a3
++ (id)minSuggestionLayoutTypesForUILayoutType:(int64_t)type
 {
   v43[7] = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(type)
   {
     case 0:
       v42[0] = &unk_1F5A40FC0;
@@ -976,7 +976,7 @@ LABEL_50:
       v4 = v9;
       v5 = v8;
 LABEL_20:
-      a1 = [v3 dictionaryWithObjects:v4 forKeys:v5 count:7];
+      self = [v3 dictionaryWithObjects:v4 forKeys:v5 count:7];
       break;
     default:
       break;
@@ -984,19 +984,19 @@ LABEL_20:
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-+ (id)maxSuggestionLayoutTypesForUILayoutType:(int64_t)a3
++ (id)maxSuggestionLayoutTypesForUILayoutType:(int64_t)type
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  if (a3 <= 12)
+  if (type <= 12)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 8)
+      if (type != 8)
       {
-        if (a3 == 12)
+        if (type == 12)
         {
           v16[0] = &unk_1F5A40FC0;
           v16[1] = &unk_1F5A40FD8;
@@ -1019,7 +1019,7 @@ LABEL_15:
         }
 
 LABEL_13:
-        v7 = [a1 minSuggestionLayoutTypesForUILayoutType:?];
+        v7 = [self minSuggestionLayoutTypesForUILayoutType:?];
         goto LABEL_20;
       }
 
@@ -1060,9 +1060,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3 <= 14)
+  if (type <= 14)
   {
-    if (a3 == 13)
+    if (type == 13)
     {
       v14[0] = &unk_1F5A40FC0;
       v14[1] = &unk_1F5A40FD8;
@@ -1103,7 +1103,7 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  if (a3 == 15)
+  if (type == 15)
   {
     v18[0] = &unk_1F5A40FC0;
     v18[1] = &unk_1F5A40FD8;
@@ -1121,7 +1121,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a3 != 17)
+  if (type != 17)
   {
     goto LABEL_13;
   }
@@ -1152,54 +1152,54 @@ LABEL_20:
   return v7;
 }
 
-+ (id)stringFromUILayoutType:(int64_t)a3
++ (id)stringFromUILayoutType:(int64_t)type
 {
-  if ((a3 - 1) > 0x10)
+  if ((type - 1) > 0x10)
   {
     return @"ATXUILayoutTypeEight1x1";
   }
 
   else
   {
-    return off_1E86A4070[a3 - 1];
+    return off_1E86A4070[type - 1];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXSuggestionLayout allocWithZone:a3];
+  v4 = [ATXSuggestionLayout allocWithZone:zone];
   uuidOfHighestConfidenceSuggestion = self->_uuidOfHighestConfidenceSuggestion;
   LODWORD(v7) = *&self->_isValidForSuggestionsWidget;
   return [ATXSuggestionLayout initWithLayoutType:v4 oneByOneSuggestions:"initWithLayoutType:oneByOneSuggestions:oneByTwoSuggestions:twoByTwoSuggestions:oneByFourSuggestions:twoByFourSuggestions:fourByFourSuggestions:fourByEightSuggestions:uuid:layoutScore:isValidForSuggestionsWidget:confidenceWarrantsSnappingOrNPlusOne:isNPlusOne:isLowConfidenceStackRotationForStaleStack:widgetUniqueId:uuidOfHighestConfidenceSuggestion:numWidgetsInStack:" oneByTwoSuggestions:self->_layoutType twoByTwoSuggestions:self->_oneByOneSuggestions oneByFourSuggestions:self->_oneByTwoSuggestions twoByFourSuggestions:self->_twoByTwoSuggestions fourByFourSuggestions:self->_oneByFourSuggestions fourByEightSuggestions:self->_twoByFourSuggestions uuid:self->_layoutScore layoutScore:self->_fourByFourSuggestions isValidForSuggestionsWidget:self->_fourByEightSuggestions confidenceWarrantsSnappingOrNPlusOne:self->_uuid isNPlusOne:v7 isLowConfidenceStackRotationForStaleStack:self->_widgetUniqueId widgetUniqueId:uuidOfHighestConfidenceSuggestion uuidOfHighestConfidenceSuggestion:self->_numWidgetsInStack numWidgetsInStack:?];
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -1211,33 +1211,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -1249,33 +1249,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 0.0)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (fordouble == 0.0)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -1287,33 +1287,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)l key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!l)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -1325,45 +1325,45 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXSuggestionLayout *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXSuggestionLayout *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXSuggestionLayout)initWithCoder:(id)a3
+- (ATXSuggestionLayout)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXSuggestionLayout *)self initWithProtoData:v5];
   return v6;
 }
 
-- (ATXSuggestionLayout)initWithProtoData:(id)a3
+- (ATXSuggestionLayout)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBSuggestionLayout alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBSuggestionLayout alloc] initWithData:dataCopy];
 
     self = [(ATXSuggestionLayout *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXSuggestionLayout)initWithProto:(id)a3
+- (ATXSuggestionLayout)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
     v9 = 0;
@@ -1382,12 +1382,12 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   if ([(ATXPBSuggestionLayout *)v5 hasUuidOfHighestConfidenceSuggestion])
   {
     v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v7 = [(ATXPBSuggestionLayout *)v5 uuidOfHighestConfidenceSuggestion];
-    v37 = [v6 initWithUUIDString:v7];
+    uuidOfHighestConfidenceSuggestion = [(ATXPBSuggestionLayout *)v5 uuidOfHighestConfidenceSuggestion];
+    v37 = [v6 initWithUUIDString:uuidOfHighestConfidenceSuggestion];
   }
 
   else
@@ -1396,34 +1396,34 @@ LABEL_8:
   }
 
   v31 = [(ATXSuggestionLayout *)self _layoutTypeFromProtoLayoutType:[(ATXPBSuggestionLayout *)v5 layoutType]];
-  v35 = [(ATXPBSuggestionLayout *)v5 oneByOneSuggestions];
-  v36 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:v35];
-  v34 = [(ATXPBSuggestionLayout *)v5 oneByTwoSuggestions];
-  v29 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:v34];
-  v33 = [(ATXPBSuggestionLayout *)v5 twoByTwoSuggestions];
-  v27 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:v33];
-  v32 = [(ATXPBSuggestionLayout *)v5 oneByFourSuggestions];
-  v26 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:v32];
-  v30 = [(ATXPBSuggestionLayout *)v5 twoByFourSuggestions];
-  v24 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:v30];
-  v28 = [(ATXPBSuggestionLayout *)v5 fourByFourSuggestions];
-  v22 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:v28];
-  v25 = [(ATXPBSuggestionLayout *)v5 fourByEightSuggestions];
-  v21 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:v25];
+  oneByOneSuggestions = [(ATXPBSuggestionLayout *)v5 oneByOneSuggestions];
+  v36 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:oneByOneSuggestions];
+  oneByTwoSuggestions = [(ATXPBSuggestionLayout *)v5 oneByTwoSuggestions];
+  v29 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:oneByTwoSuggestions];
+  twoByTwoSuggestions = [(ATXPBSuggestionLayout *)v5 twoByTwoSuggestions];
+  v27 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:twoByTwoSuggestions];
+  oneByFourSuggestions = [(ATXPBSuggestionLayout *)v5 oneByFourSuggestions];
+  v26 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:oneByFourSuggestions];
+  twoByFourSuggestions = [(ATXPBSuggestionLayout *)v5 twoByFourSuggestions];
+  v24 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:twoByFourSuggestions];
+  fourByFourSuggestions = [(ATXPBSuggestionLayout *)v5 fourByFourSuggestions];
+  v22 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:fourByFourSuggestions];
+  fourByEightSuggestions = [(ATXPBSuggestionLayout *)v5 fourByEightSuggestions];
+  v21 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:fourByEightSuggestions];
   v10 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v23 = [(ATXPBSuggestionLayout *)v5 uuidString];
-  v11 = [v10 initWithUUIDString:v23];
-  v12 = [(ATXPBSuggestionLayout *)v5 layoutScore];
-  v13 = [(ATXPBSuggestionLayout *)v5 isValidForSuggestionsWidget];
-  v14 = [(ATXPBSuggestionLayout *)v5 confidenceWarrantsSnappingOrNPlusOne];
-  v15 = [(ATXPBSuggestionLayout *)v5 isNPlusOne];
-  v16 = [(ATXPBSuggestionLayout *)v5 isLowConfidenceStackRotationForStaleStack];
-  v17 = [(ATXPBSuggestionLayout *)v5 widgetUniqueId];
-  BYTE3(v20) = v16;
-  BYTE2(v20) = v15;
-  BYTE1(v20) = v14;
-  LOBYTE(v20) = v13;
-  v18 = [ATXSuggestionLayout initWithLayoutType:"initWithLayoutType:oneByOneSuggestions:oneByTwoSuggestions:twoByTwoSuggestions:oneByFourSuggestions:twoByFourSuggestions:fourByFourSuggestions:fourByEightSuggestions:uuid:layoutScore:isValidForSuggestionsWidget:confidenceWarrantsSnappingOrNPlusOne:isNPlusOne:isLowConfidenceStackRotationForStaleStack:widgetUniqueId:uuidOfHighestConfidenceSuggestion:numWidgetsInStack:" oneByOneSuggestions:v31 oneByTwoSuggestions:v36 twoByTwoSuggestions:v29 oneByFourSuggestions:v27 twoByFourSuggestions:v26 fourByFourSuggestions:v24 fourByEightSuggestions:v12 uuid:v22 layoutScore:v21 isValidForSuggestionsWidget:v11 confidenceWarrantsSnappingOrNPlusOne:v20 isNPlusOne:v17 isLowConfidenceStackRotationForStaleStack:v37 widgetUniqueId:[(ATXPBSuggestionLayout *)v5 numWidgetsInStack] uuidOfHighestConfidenceSuggestion:? numWidgetsInStack:?];
+  uuidString = [(ATXPBSuggestionLayout *)v5 uuidString];
+  v11 = [v10 initWithUUIDString:uuidString];
+  layoutScore = [(ATXPBSuggestionLayout *)v5 layoutScore];
+  isValidForSuggestionsWidget = [(ATXPBSuggestionLayout *)v5 isValidForSuggestionsWidget];
+  confidenceWarrantsSnappingOrNPlusOne = [(ATXPBSuggestionLayout *)v5 confidenceWarrantsSnappingOrNPlusOne];
+  isNPlusOne = [(ATXPBSuggestionLayout *)v5 isNPlusOne];
+  isLowConfidenceStackRotationForStaleStack = [(ATXPBSuggestionLayout *)v5 isLowConfidenceStackRotationForStaleStack];
+  widgetUniqueId = [(ATXPBSuggestionLayout *)v5 widgetUniqueId];
+  BYTE3(v20) = isLowConfidenceStackRotationForStaleStack;
+  BYTE2(v20) = isNPlusOne;
+  BYTE1(v20) = confidenceWarrantsSnappingOrNPlusOne;
+  LOBYTE(v20) = isValidForSuggestionsWidget;
+  v18 = [ATXSuggestionLayout initWithLayoutType:"initWithLayoutType:oneByOneSuggestions:oneByTwoSuggestions:twoByTwoSuggestions:oneByFourSuggestions:twoByFourSuggestions:fourByFourSuggestions:fourByEightSuggestions:uuid:layoutScore:isValidForSuggestionsWidget:confidenceWarrantsSnappingOrNPlusOne:isNPlusOne:isLowConfidenceStackRotationForStaleStack:widgetUniqueId:uuidOfHighestConfidenceSuggestion:numWidgetsInStack:" oneByOneSuggestions:v31 oneByTwoSuggestions:v36 twoByTwoSuggestions:v29 oneByFourSuggestions:v27 twoByFourSuggestions:v26 fourByFourSuggestions:v24 fourByEightSuggestions:layoutScore uuid:v22 layoutScore:v21 isValidForSuggestionsWidget:v11 confidenceWarrantsSnappingOrNPlusOne:v20 isNPlusOne:widgetUniqueId isLowConfidenceStackRotationForStaleStack:v37 widgetUniqueId:[(ATXPBSuggestionLayout *)v5 numWidgetsInStack] uuidOfHighestConfidenceSuggestion:? numWidgetsInStack:?];
 
   self = v18;
   v9 = v18;
@@ -1432,9 +1432,9 @@ LABEL_11:
   return v9;
 }
 
-- (int64_t)_layoutTypeFromProtoLayoutType:(int)a3
+- (int64_t)_layoutTypeFromProtoLayoutType:(int)type
 {
-  v3 = (a3 - 1);
+  v3 = (type - 1);
   if (v3 < 0x11)
   {
     return v3 + 1;
@@ -1446,11 +1446,11 @@ LABEL_11:
   }
 }
 
-- (int)_protoLayoutTypeFromLayoutType:(int64_t)a3
+- (int)_protoLayoutTypeFromLayoutType:(int64_t)type
 {
-  if ((a3 - 1) < 0x11)
+  if ((type - 1) < 0x11)
   {
-    return a3;
+    return type;
   }
 
   else
@@ -1459,11 +1459,11 @@ LABEL_11:
   }
 }
 
-- (id)arrayOfJSONFromSuggestionArray:(id)a3
+- (id)arrayOfJSONFromSuggestionArray:(id)array
 {
-  if (a3)
+  if (array)
   {
-    v4 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_3];
+    v4 = [array _pas_mappedArrayWithTransform:&__block_literal_global_3];
   }
 
   else
@@ -1479,21 +1479,21 @@ LABEL_11:
   v29[17] = *MEMORY[0x1E69E9840];
   v3 = [(ATXSuggestionLayout *)self suggestionWithUUID:self->_uuidOfHighestConfidenceSuggestion];
   uuid = self->_uuid;
-  v5 = @"nil";
+  jsonRawData = @"nil";
   v27 = uuid;
   v28[0] = @"uuid";
   if (uuid)
   {
-    v6 = [(NSUUID *)uuid UUIDString];
+    uUIDString = [(NSUUID *)uuid UUIDString];
   }
 
   else
   {
-    v6 = @"nil";
+    uUIDString = @"nil";
   }
 
-  v23 = v6;
-  v29[0] = v6;
+  v23 = uUIDString;
+  v29[0] = uUIDString;
   v28[1] = @"layoutType";
   v26 = [objc_opt_class() stringFromUILayoutType:self->_layoutType];
   v29[1] = v26;
@@ -1581,10 +1581,10 @@ LABEL_11:
   v28[15] = @"highestConfidenceSuggestion";
   if (v3)
   {
-    v5 = [v3 jsonRawData];
+    jsonRawData = [v3 jsonRawData];
   }
 
-  v29[15] = v5;
+  v29[15] = jsonRawData;
   v28[16] = @"numWidgetsInStack";
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_numWidgetsInStack];
   v29[16] = v19;
@@ -1610,18 +1610,18 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(ATXSuggestionLayout *)self allSuggestionsInLayout];
-  if ([v3 count])
+  allSuggestionsInLayout = [(ATXSuggestionLayout *)self allSuggestionsInLayout];
+  if ([allSuggestionsInLayout count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 executableSpecification];
-    v6 = [v5 executableType];
+    firstObject = [allSuggestionsInLayout firstObject];
+    executableSpecification = [firstObject executableSpecification];
+    executableType = [executableSpecification executableType];
 
-    if (v6 == 3)
+    if (executableType == 3)
     {
-      v7 = [v4 clientModelSpecification];
-      v8 = [v7 clientModelId];
-      v9 = [ATXProactiveSuggestionClientModel clientModelTypeFromClientModelId:v8];
+      clientModelSpecification = [firstObject clientModelSpecification];
+      clientModelId = [clientModelSpecification clientModelId];
+      v9 = [ATXProactiveSuggestionClientModel clientModelTypeFromClientModelId:clientModelId];
 
       v2 = [ATXProactiveSuggestionClientModel clientModelTypeIsShortcutConversion:v9];
     }

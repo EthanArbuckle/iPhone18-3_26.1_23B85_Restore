@@ -8,7 +8,7 @@
 - (void)setIdsMetadataFileURLType:()IDSMetadataURLType
 {
   v2 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-  [a1 setObject:v2 forKeyedSubscript:@"BLTFileURLType"];
+  [self setObject:v2 forKeyedSubscript:@"BLTFileURLType"];
 }
 
 - (void)setIdsMetadataFileKey:()IDSMetadataURLType
@@ -16,7 +16,7 @@
   if (a3)
   {
     v4 = [a3 copy];
-    [a1 setObject:v4 forKeyedSubscript:@"BLTFileURLKey"];
+    [self setObject:v4 forKeyedSubscript:@"BLTFileURLKey"];
   }
 }
 

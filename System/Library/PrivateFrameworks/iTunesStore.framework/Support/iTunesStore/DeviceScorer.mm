@@ -1,21 +1,21 @@
 @interface DeviceScorer
-+ (BOOL)_resultForSamplingSession:(id)a3 isActive:(BOOL *)a4;
-+ (BOOL)_shouldSampleWithPercentage:(double)a3 sessionDuration:(double)a4 identifier:(id)a5;
++ (BOOL)_resultForSamplingSession:(id)session isActive:(BOOL *)active;
++ (BOOL)_shouldSampleWithPercentage:(double)percentage sessionDuration:(double)duration identifier:(id)identifier;
 + (double)_randomDouble;
-+ (id)_hexEncodingForData:(id)a3;
++ (id)_hexEncodingForData:(id)data;
 + (id)_loadURLBag;
-+ (id)_valueForKey:(id)a3;
-+ (void)_setValue:(id)a3 forKey:(id)a4;
-- (DeviceScorer)initWithServerEndpoint:(int64_t)a3;
-- (id)_serverEndpointIdentifierForServerEndpoint:(int64_t)a3;
-- (void)_initDeviceScorerWithContext:(id)a3;
-- (void)deviceScoreWithNonce:(id)a3 completion:(id)a4;
-- (void)didConsumeDeviceScore:(BOOL)a3;
++ (id)_valueForKey:(id)key;
++ (void)_setValue:(id)value forKey:(id)key;
+- (DeviceScorer)initWithServerEndpoint:(int64_t)endpoint;
+- (id)_serverEndpointIdentifierForServerEndpoint:(int64_t)endpoint;
+- (void)_initDeviceScorerWithContext:(id)context;
+- (void)deviceScoreWithNonce:(id)nonce completion:(id)completion;
+- (void)didConsumeDeviceScore:(BOOL)score;
 @end
 
 @implementation DeviceScorer
 
-- (DeviceScorer)initWithServerEndpoint:(int64_t)a3
+- (DeviceScorer)initWithServerEndpoint:(int64_t)endpoint
 {
   v9.receiver = self;
   v9.super_class = DeviceScorer;
@@ -23,7 +23,7 @@
   if (v4)
   {
     v5 = objc_alloc_init(DeviceScorerContext);
-    [(DeviceScorerContext *)v5 setServerEndpoint:a3];
+    [(DeviceScorerContext *)v5 setServerEndpoint:endpoint];
     context = v4->_context;
     v4->_context = v5;
     v7 = v5;
@@ -34,10 +34,10 @@
   return v4;
 }
 
-- (void)deviceScoreWithNonce:(id)a3 completion:(id)a4
+- (void)deviceScoreWithNonce:(id)nonce completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nonceCopy = nonce;
+  completionCopy = completion;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x3032000000;
@@ -52,21 +52,21 @@
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
-    v13 = [v11 shouldLogToDisk];
-    v14 = [v11 OSLogObject];
-    v15 = v14;
-    if (v13)
+    shouldLog = [v11 shouldLog];
+    shouldLogToDisk = [v11 shouldLogToDisk];
+    oSLogObject = [v11 OSLogObject];
+    v15 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v12 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v12 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v12)
+    if (shouldLog)
     {
       v16 = objc_opt_class();
       LODWORD(location[0]) = 138543362;
@@ -91,7 +91,7 @@ LABEL_13:
   }
 
   v8 = objc_alloc_init(RvCyrXrrh7eJhtzx);
-  [(RvCyrXrrh7eJhtzx *)v8 setNonce:v6];
+  [(RvCyrXrrh7eJhtzx *)v8 setNonce:nonceCopy];
   objc_initWeak(location, self);
   v9 = dispatch_get_global_queue(-32768, 0);
   block[0] = _NSConcreteStackBlock;
@@ -100,7 +100,7 @@ LABEL_13:
   block[3] = &unk_100327E58;
   objc_copyWeak(&v24, location);
   v21 = v8;
-  v22 = v7;
+  v22 = completionCopy;
   v23 = v25;
   v10 = v8;
   dispatch_async(v9, block);
@@ -111,9 +111,9 @@ LABEL_14:
   _Block_object_dispose(v25, 8);
 }
 
-- (void)didConsumeDeviceScore:(BOOL)a3
+- (void)didConsumeDeviceScore:(BOOL)score
 {
-  v3 = a3;
+  scoreCopy = score;
   deviceScorer = self->_deviceScorer;
   v6 = +[SSLogConfig sharedDaemonConfig];
   v7 = v6;
@@ -124,19 +124,19 @@ LABEL_14:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [(L1vrniCr6VjgMaLl *)v7 shouldLog];
+    shouldLog = [(L1vrniCr6VjgMaLl *)v7 shouldLog];
     if ([(L1vrniCr6VjgMaLl *)v7 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v14 = [(L1vrniCr6VjgMaLl *)v7 OSLogObject];
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [(L1vrniCr6VjgMaLl *)v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 &= 2u;
     }
@@ -154,7 +154,7 @@ LABEL_14:
         goto LABEL_25;
       }
 
-      v14 = [NSString stringWithCString:v16 encoding:4, &v18, v17, v18];
+      oSLogObject = [NSString stringWithCString:v16 encoding:4, &v18, v17, v18];
       free(v16);
       SSFileLog();
     }
@@ -167,19 +167,19 @@ LABEL_14:
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [(L1vrniCr6VjgMaLl *)v7 shouldLog];
+  shouldLog2 = [(L1vrniCr6VjgMaLl *)v7 shouldLog];
   if ([(L1vrniCr6VjgMaLl *)v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog2 | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog2;
   }
 
-  v10 = [(L1vrniCr6VjgMaLl *)v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [(L1vrniCr6VjgMaLl *)v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -196,27 +196,27 @@ LABEL_14:
 
   if (v11)
   {
-    v10 = [NSString stringWithCString:v11 encoding:4, &v18, v17];
+    oSLogObject2 = [NSString stringWithCString:v11 encoding:4, &v18, v17];
     free(v11);
     SSFileLog();
 LABEL_12:
   }
 
   v7 = objc_alloc_init(L1vrniCr6VjgMaLl);
-  [(L1vrniCr6VjgMaLl *)v7 setConsumed:v3];
+  [(L1vrniCr6VjgMaLl *)v7 setConsumed:scoreCopy];
   [(CerKRQOmMu7LBUoc *)self->_deviceScorer eVZ8hjC0Tuzwvnqc:v7];
 LABEL_25:
 }
 
-+ (id)_hexEncodingForData:(id)a3
++ (id)_hexEncodingForData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(NSMutableString);
-  v5 = [v3 length];
-  v6 = [v3 bytes];
+  v5 = [dataCopy length];
+  bytes = [dataCopy bytes];
   if (v5)
   {
-    v7 = v6;
+    v7 = bytes;
     do
     {
       v8 = *v7++;
@@ -232,10 +232,10 @@ LABEL_25:
   return v9;
 }
 
-- (void)_initDeviceScorerWithContext:(id)a3
+- (void)_initDeviceScorerWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   if (self->_deviceScorer)
   {
 LABEL_111:
@@ -245,21 +245,21 @@ LABEL_111:
       v84 = +[SSLogConfig sharedConfig];
     }
 
-    v85 = [v84 shouldLog];
+    shouldLog = [v84 shouldLog];
     if ([v84 shouldLogToDisk])
     {
-      v85 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v86 = [v84 OSLogObject];
-    if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v84 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v87 = v85;
+      v87 = shouldLog;
     }
 
     else
     {
-      v87 = v85 & 2;
+      v87 = shouldLog & 2;
     }
 
     if (v87)
@@ -279,7 +279,7 @@ LABEL_122:
         goto LABEL_123;
       }
 
-      v86 = [NSString stringWithCString:v90 encoding:4, &v102, v92];
+      oSLogObject = [NSString stringWithCString:v90 encoding:4, &v102, v92];
       free(v90);
       SSFileLog();
     }
@@ -287,26 +287,26 @@ LABEL_122:
     goto LABEL_122;
   }
 
-  v6 = -[DeviceScorer _serverEndpointIdentifierForServerEndpoint:](self, "_serverEndpointIdentifierForServerEndpoint:", [v4 serverEndpoint]);
+  v6 = -[DeviceScorer _serverEndpointIdentifierForServerEndpoint:](self, "_serverEndpointIdentifierForServerEndpoint:", [contextCopy serverEndpoint]);
   v7 = +[SSLogConfig sharedDaemonConfig];
   if (!v7)
   {
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog2 = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog2 | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog2;
   }
 
-  v10 = [v7 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v9;
   }
@@ -332,9 +332,9 @@ LABEL_122:
       goto LABEL_14;
     }
 
-    v10 = [NSString stringWithCString:v13 encoding:4, &v102, v92];
+    oSLogObject2 = [NSString stringWithCString:v13 encoding:4, &v102, v92];
     free(v13);
-    v91 = v10;
+    v91 = oSLogObject2;
     SSFileLog();
   }
 
@@ -348,40 +348,40 @@ LABEL_14:
     v98 = v6;
     v101 = objc_alloc_init(NSMutableSet);
     v16 = +[SSAccountStore defaultStore];
-    v17 = [v16 activeAccount];
+    activeAccount = [v16 activeAccount];
 
-    v18 = [v17 firstName];
-    v19 = [v17 lastName];
-    v95 = v19;
-    v96 = v18;
-    if (v18 && v19)
+    firstName = [activeAccount firstName];
+    lastName = [activeAccount lastName];
+    v95 = lastName;
+    v96 = firstName;
+    if (firstName && lastName)
     {
-      v20 = [[cBEET4QRedIfcDrp alloc] initWithFirstName:v18 lastName:v19 source:0];
+      v20 = [[cBEET4QRedIfcDrp alloc] initWithFirstName:firstName lastName:lastName source:0];
       if (v20)
       {
         [v101 addObject:v20];
         goto LABEL_54;
       }
 
-      v31 = +[SSLogConfig sharedDaemonConfig];
-      if (!v31)
+      oSLogObject4 = +[SSLogConfig sharedDaemonConfig];
+      if (!oSLogObject4)
       {
-        v31 = +[SSLogConfig sharedConfig];
+        oSLogObject4 = +[SSLogConfig sharedConfig];
       }
 
-      v36 = [v31 shouldLog];
-      if ([v31 shouldLogToDisk])
+      shouldLog3 = [oSLogObject4 shouldLog];
+      if ([oSLogObject4 shouldLogToDisk])
       {
-        v37 = v36 | 2;
+        v37 = shouldLog3 | 2;
       }
 
       else
       {
-        v37 = v36;
+        v37 = shouldLog3;
       }
 
-      v38 = [v31 OSLogObject];
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [oSLogObject4 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v39 = v37;
       }
@@ -406,9 +406,9 @@ LABEL_14:
 
       if (v42)
       {
-        v38 = [NSString stringWithCString:v42 encoding:4, &v102, v92];
+        oSLogObject3 = [NSString stringWithCString:v42 encoding:4, &v102, v92];
         free(v42);
-        v91 = v38;
+        v91 = oSLogObject3;
         SSFileLog();
 LABEL_52:
       }
@@ -422,19 +422,19 @@ LABEL_52:
         v20 = +[SSLogConfig sharedConfig];
       }
 
-      v29 = [(cBEET4QRedIfcDrp *)v20 shouldLog];
+      shouldLog4 = [(cBEET4QRedIfcDrp *)v20 shouldLog];
       if ([(cBEET4QRedIfcDrp *)v20 shouldLogToDisk])
       {
-        v30 = v29 | 2;
+        v30 = shouldLog4 | 2;
       }
 
       else
       {
-        v30 = v29;
+        v30 = shouldLog4;
       }
 
-      v31 = [(cBEET4QRedIfcDrp *)v20 OSLogObject];
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+      oSLogObject4 = [(cBEET4QRedIfcDrp *)v20 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
       {
         v32 = v30;
       }
@@ -459,20 +459,20 @@ LABEL_52:
           goto LABEL_54;
         }
 
-        v31 = [NSString stringWithCString:v35 encoding:4, &v102, v92];
+        oSLogObject4 = [NSString stringWithCString:v35 encoding:4, &v102, v92];
         free(v35);
-        v91 = v31;
+        v91 = oSLogObject4;
         SSFileLog();
       }
     }
 
 LABEL_54:
-    v97 = v17;
-    v43 = [v17 accountName];
-    v94 = v43;
-    if (v43)
+    v97 = activeAccount;
+    accountName = [activeAccount accountName];
+    v94 = accountName;
+    if (accountName)
     {
-      v44 = [[cBEET4QRedIfcDrp alloc] initWithEmailAddress:v43 source:1];
+      v44 = [[cBEET4QRedIfcDrp alloc] initWithEmailAddress:accountName source:1];
       v45 = v100;
       v46 = v101;
       if (v44)
@@ -481,25 +481,25 @@ LABEL_54:
         goto LABEL_81;
       }
 
-      v49 = +[SSLogConfig sharedDaemonConfig];
-      if (!v49)
+      oSLogObject6 = +[SSLogConfig sharedDaemonConfig];
+      if (!oSLogObject6)
       {
-        v49 = +[SSLogConfig sharedConfig];
+        oSLogObject6 = +[SSLogConfig sharedConfig];
       }
 
-      v54 = [v49 shouldLog];
-      if ([v49 shouldLogToDisk])
+      shouldLog5 = [oSLogObject6 shouldLog];
+      if ([oSLogObject6 shouldLogToDisk])
       {
-        v55 = v54 | 2;
+        v55 = shouldLog5 | 2;
       }
 
       else
       {
-        v55 = v54;
+        v55 = shouldLog5;
       }
 
-      v56 = [v49 OSLogObject];
-      if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+      oSLogObject5 = [oSLogObject6 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
       {
         v57 = v55;
       }
@@ -524,9 +524,9 @@ LABEL_54:
 
       if (v60)
       {
-        v56 = [NSString stringWithCString:v60 encoding:4, &v102, v92];
+        oSLogObject5 = [NSString stringWithCString:v60 encoding:4, &v102, v92];
         free(v60);
-        v91 = v56;
+        v91 = oSLogObject5;
         SSFileLog();
 LABEL_79:
       }
@@ -542,19 +542,19 @@ LABEL_79:
         v44 = +[SSLogConfig sharedConfig];
       }
 
-      v47 = [(cBEET4QRedIfcDrp *)v44 shouldLog];
+      shouldLog6 = [(cBEET4QRedIfcDrp *)v44 shouldLog];
       if ([(cBEET4QRedIfcDrp *)v44 shouldLogToDisk])
       {
-        v48 = v47 | 2;
+        v48 = shouldLog6 | 2;
       }
 
       else
       {
-        v48 = v47;
+        v48 = shouldLog6;
       }
 
-      v49 = [(cBEET4QRedIfcDrp *)v44 OSLogObject];
-      if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
+      oSLogObject6 = [(cBEET4QRedIfcDrp *)v44 OSLogObject];
+      if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
       {
         v50 = v48;
       }
@@ -579,9 +579,9 @@ LABEL_79:
           goto LABEL_81;
         }
 
-        v49 = [NSString stringWithCString:v53 encoding:4, &v102, v92];
+        oSLogObject6 = [NSString stringWithCString:v53 encoding:4, &v102, v92];
         free(v53);
-        v91 = v49;
+        v91 = oSLogObject6;
         SSFileLog();
       }
     }
@@ -589,12 +589,12 @@ LABEL_79:
 LABEL_81:
     [(wumZ2SSA5KbWdu7E *)v45 setIdentities:v46];
     v61 = +[SSDevice currentDevice];
-    v62 = [v61 phoneNumber];
+    phoneNumber = [v61 phoneNumber];
 
-    v93 = v62;
-    if (v62)
+    v93 = phoneNumber;
+    if (phoneNumber)
     {
-      [(wumZ2SSA5KbWdu7E *)v45 setPhoneNumber:v62];
+      [(wumZ2SSA5KbWdu7E *)v45 setPhoneNumber:phoneNumber];
       goto LABEL_96;
     }
 
@@ -604,19 +604,19 @@ LABEL_81:
       v63 = +[SSLogConfig sharedConfig];
     }
 
-    v64 = [v63 shouldLog];
+    shouldLog7 = [v63 shouldLog];
     if ([v63 shouldLogToDisk])
     {
-      v65 = v64 | 2;
+      v65 = shouldLog7 | 2;
     }
 
     else
     {
-      v65 = v64;
+      v65 = shouldLog7;
     }
 
-    v66 = [v63 OSLogObject];
-    if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
+    oSLogObject7 = [v63 OSLogObject];
+    if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_ERROR))
     {
       v67 = v65;
     }
@@ -642,26 +642,26 @@ LABEL_95:
 
 LABEL_96:
         v71 = objc_alloc_init(SSDevice);
-        v72 = [v71 clientName];
+        clientName = [v71 clientName];
         v73 = +[SSLogConfig sharedDaemonConfig];
         if (!v73)
         {
           v73 = +[SSLogConfig sharedConfig];
         }
 
-        v74 = [v73 shouldLog];
+        shouldLog8 = [v73 shouldLog];
         if ([v73 shouldLogToDisk])
         {
-          v75 = v74 | 2;
+          v75 = shouldLog8 | 2;
         }
 
         else
         {
-          v75 = v74;
+          v75 = shouldLog8;
         }
 
-        v76 = [v73 OSLogObject];
-        if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
+        oSLogObject8 = [v73 OSLogObject];
+        if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_INFO))
         {
           v77 = v75;
         }
@@ -689,7 +689,7 @@ LABEL_96:
 LABEL_108:
 
             v15 = v100;
-            [(wumZ2SSA5KbWdu7E *)v100 setCallerID:v72];
+            [(wumZ2SSA5KbWdu7E *)v100 setCallerID:clientName];
             v82 = [CerKRQOmMu7LBUoc scorerWithContext:v100];
             deviceScorer = self->_deviceScorer;
             self->_deviceScorer = v82;
@@ -697,22 +697,22 @@ LABEL_108:
             v6 = v98;
             v5 = v99;
             v21 = v101;
-            v24 = v97;
+            oSLogObject9 = v97;
             goto LABEL_109;
           }
 
-          v76 = [NSString stringWithCString:v81 encoding:4, &v102, v92];
+          oSLogObject8 = [NSString stringWithCString:v81 encoding:4, &v102, v92];
           free(v81);
-          v91 = v76;
+          v91 = oSLogObject8;
           SSFileLog();
         }
 
         goto LABEL_108;
       }
 
-      v66 = [NSString stringWithCString:v70 encoding:4, &v102, v92];
+      oSLogObject7 = [NSString stringWithCString:v70 encoding:4, &v102, v92];
       free(v70);
-      v91 = v66;
+      v91 = oSLogObject7;
       SSFileLog();
     }
 
@@ -725,19 +725,19 @@ LABEL_108:
     v21 = +[SSLogConfig sharedConfig];
   }
 
-  v22 = [v21 shouldLog];
+  shouldLog9 = [v21 shouldLog];
   if ([v21 shouldLogToDisk])
   {
-    v23 = v22 | 2;
+    v23 = shouldLog9 | 2;
   }
 
   else
   {
-    v23 = v22;
+    v23 = shouldLog9;
   }
 
-  v24 = [v21 OSLogObject];
-  if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+  oSLogObject9 = [v21 OSLogObject];
+  if (os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_ERROR))
   {
     v25 = v23;
   }
@@ -762,9 +762,9 @@ LABEL_108:
       goto LABEL_110;
     }
 
-    v24 = [NSString stringWithCString:v28 encoding:4, &v102, v92];
+    oSLogObject9 = [NSString stringWithCString:v28 encoding:4, &v102, v92];
     free(v28);
-    v91 = v24;
+    v91 = oSLogObject9;
     SSFileLog();
   }
 
@@ -808,21 +808,21 @@ LABEL_123:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
-    v9 = [v7 shouldLogToDisk];
-    v10 = [v7 OSLogObject];
-    v11 = v10;
-    if (v9)
+    shouldLog = [v7 shouldLog];
+    shouldLogToDisk = [v7 shouldLogToDisk];
+    oSLogObject = [v7 OSLogObject];
+    v11 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v8 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v8 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v8)
+    if (shouldLog)
     {
       v12 = objc_opt_class();
       v37 = 138543362;
@@ -851,7 +851,7 @@ LABEL_12:
 LABEL_13:
   if ([v3 success])
   {
-    v15 = [v3 URLBag];
+    uRLBag = [v3 URLBag];
     goto LABEL_26;
   }
 
@@ -861,21 +861,21 @@ LABEL_13:
     v16 = +[SSLogConfig sharedConfig];
   }
 
-  v17 = [v16 shouldLog];
-  v18 = [v16 shouldLogToDisk];
-  v19 = [v16 OSLogObject];
-  v20 = v19;
-  if (v18)
+  shouldLog2 = [v16 shouldLog];
+  shouldLogToDisk2 = [v16 shouldLogToDisk];
+  oSLogObject2 = [v16 OSLogObject];
+  v20 = oSLogObject2;
+  if (shouldLogToDisk2)
   {
-    v17 |= 2u;
+    shouldLog2 |= 2u;
   }
 
-  if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
-    v17 &= 2u;
+    shouldLog2 &= 2u;
   }
 
-  if (!v17)
+  if (!shouldLog2)
   {
     goto LABEL_24;
   }
@@ -895,24 +895,24 @@ LABEL_13:
 LABEL_24:
   }
 
-  v15 = 0;
+  uRLBag = 0;
 LABEL_26:
 
   _Block_object_dispose(&v33, 8);
 
-  return v15;
+  return uRLBag;
 }
 
-- (id)_serverEndpointIdentifierForServerEndpoint:(int64_t)a3
+- (id)_serverEndpointIdentifierForServerEndpoint:(int64_t)endpoint
 {
-  if (a3 > 3)
+  if (endpoint > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_100327E98[a3];
+    return off_100327E98[endpoint];
   }
 }
 
@@ -930,51 +930,51 @@ LABEL_26:
   return drand48();
 }
 
-+ (BOOL)_resultForSamplingSession:(id)a3 isActive:(BOOL *)a4
++ (BOOL)_resultForSamplingSession:(id)session isActive:(BOOL *)active
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"date"];
-  v7 = [v5 objectForKeyedSubscript:@"result"];
-  v8 = [v7 BOOLValue];
+  sessionCopy = session;
+  v6 = [sessionCopy objectForKeyedSubscript:@"date"];
+  v7 = [sessionCopy objectForKeyedSubscript:@"result"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v5 objectForKeyedSubscript:@"duration"];
+  v9 = [sessionCopy objectForKeyedSubscript:@"duration"];
 
-  v10 = [v9 BOOLValue];
+  bOOLValue2 = [v9 BOOLValue];
   v11 = +[NSDate date];
   if (!v6)
   {
 LABEL_4:
-    v8 = 0;
-    if (a4)
+    bOOLValue = 0;
+    if (active)
     {
-      *a4 = 0;
+      *active = 0;
     }
 
     goto LABEL_9;
   }
 
-  v12 = [v6 dateByAddingTimeInterval:v10];
+  v12 = [v6 dateByAddingTimeInterval:bOOLValue2];
   if ([v11 compare:v12] != -1)
   {
 
     goto LABEL_4;
   }
 
-  if (a4)
+  if (active)
   {
-    *a4 = 1;
+    *active = 1;
   }
 
 LABEL_9:
-  return v8;
+  return bOOLValue;
 }
 
-+ (BOOL)_shouldSampleWithPercentage:(double)a3 sessionDuration:(double)a4 identifier:(id)a5
++ (BOOL)_shouldSampleWithPercentage:(double)percentage sessionDuration:(double)duration identifier:(id)identifier
 {
-  v8 = [NSString stringWithFormat:@"%@-%@", @"SSSampleSession", a5];
-  v9 = [a1 _valueForKey:v8];
+  identifier = [NSString stringWithFormat:@"%@-%@", @"SSSampleSession", identifier];
+  v9 = [self _valueForKey:identifier];
   v19 = 0;
-  v10 = [a1 _resultForSamplingSession:v9 isActive:&v19];
+  v10 = [self _resultForSamplingSession:v9 isActive:&v19];
   if (v19)
   {
     LOBYTE(v11) = v10;
@@ -982,15 +982,15 @@ LABEL_9:
 
   else
   {
-    [a1 _randomDouble];
+    [self _randomDouble];
     v13 = v12 <= 1.0;
-    if (v12 > a3)
+    if (v12 > percentage)
     {
       v13 = 0;
     }
 
     v11 = v12 >= 0.0 && v13;
-    if (a4 > 0.0)
+    if (duration > 0.0)
     {
       v20[0] = @"date";
       v14 = +[NSDate date];
@@ -999,31 +999,31 @@ LABEL_9:
       v15 = [NSNumber numberWithBool:v11];
       v21[1] = v15;
       v20[2] = @"duration";
-      v16 = [NSNumber numberWithDouble:a4];
+      v16 = [NSNumber numberWithDouble:duration];
       v21[2] = v16;
       v17 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:3];
 
-      [a1 _setValue:v17 forKey:v8];
+      [self _setValue:v17 forKey:identifier];
     }
   }
 
   return v11;
 }
 
-+ (id)_valueForKey:(id)a3
++ (id)_valueForKey:(id)key
 {
   v3 = kSSUserDefaultsIdentifier;
-  v4 = a3;
+  keyCopy = key;
   CFPreferencesAppSynchronize(v3);
-  v5 = CFPreferencesCopyAppValue(v4, v3);
+  v5 = CFPreferencesCopyAppValue(keyCopy, v3);
 
   return v5;
 }
 
-+ (void)_setValue:(id)a3 forKey:(id)a4
++ (void)_setValue:(id)value forKey:(id)key
 {
   v4 = kSSUserDefaultsIdentifier;
-  CFPreferencesSetAppValue(a4, a3, kSSUserDefaultsIdentifier);
+  CFPreferencesSetAppValue(key, value, kSSUserDefaultsIdentifier);
 
   CFPreferencesAppSynchronize(v4);
 }

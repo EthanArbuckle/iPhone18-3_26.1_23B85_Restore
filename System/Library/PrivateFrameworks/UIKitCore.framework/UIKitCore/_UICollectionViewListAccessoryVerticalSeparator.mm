@@ -1,30 +1,30 @@
 @interface _UICollectionViewListAccessoryVerticalSeparator
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UICollectionViewListAccessoryVerticalSeparator)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UICollectionViewListAccessoryVerticalSeparator)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _UICollectionViewListAccessoryVerticalSeparator
 
-- (_UICollectionViewListAccessoryVerticalSeparator)initWithFrame:(CGRect)a3
+- (_UICollectionViewListAccessoryVerticalSeparator)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UICollectionViewListAccessoryVerticalSeparator;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 layer];
-    [v5 setAllowsEdgeAntialiasing:1];
+    layer = [(UIView *)v3 layer];
+    [layer setAllowsEdgeAntialiasing:1];
   }
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  v4 = [(UIView *)self traitCollection];
-  v5 = _UISeparatorThicknessForTraitCollection(v4);
+  height = fits.height;
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = _UISeparatorThicknessForTraitCollection(traitCollection);
 
   v6 = v5;
   v7 = height;

@@ -1,20 +1,20 @@
 @interface IDSKeyTransparencyEndpointFilterComponent
-- (IDSKeyTransparencyEndpointFilterComponent)initWithTransparencyVerifier:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IDSKeyTransparencyEndpointFilterComponent)initWithTransparencyVerifier:(id)verifier;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IDSKeyTransparencyEndpointFilterComponent
 
-- (IDSKeyTransparencyEndpointFilterComponent)initWithTransparencyVerifier:(id)a3
+- (IDSKeyTransparencyEndpointFilterComponent)initWithTransparencyVerifier:(id)verifier
 {
-  v5 = a3;
+  verifierCopy = verifier;
   v11.receiver = self;
   v11.super_class = IDSKeyTransparencyEndpointFilterComponent;
   v6 = [(IDSKeyTransparencyEndpointFilterComponent *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyTransparencyVerifier, a3);
+    objc_storeStrong(&v6->_keyTransparencyVerifier, verifier);
     v7->_messageEnforcement = _os_feature_enabled_impl();
     v7->_messageEnforcementFailNotResolved = _os_feature_enabled_impl();
     v7->_messageEnforcementPedantic = _os_feature_enabled_impl();
@@ -26,20 +26,20 @@
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v4 = a3;
-  v5 = [v4 service];
-  v6 = [v5 isEqualToString:IDSServiceNameiMessage];
+  inputCopy = input;
+  service = [inputCopy service];
+  v6 = [service isEqualToString:IDSServiceNameiMessage];
 
   if ((v6 & 1) == 0)
   {
     v24 = +[IDSFoundationLog delivery_keyTransparency];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v4 service];
+      service2 = [inputCopy service];
       *buf = 138412290;
-      v156 = v25;
+      v156 = service2;
       v26 = "Service is not iMessage, no KT filtering needed, { service: %@ }";
 LABEL_24:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, v26, buf, 0xCu);
@@ -47,22 +47,22 @@ LABEL_24:
 
 LABEL_25:
 
-    v27 = [CUTUnsafePromise fulfilledPromiseWithValue:v4];
+    v27 = [CUTUnsafePromise fulfilledPromiseWithValue:inputCopy];
     goto LABEL_137;
   }
 
   keyTransparencyVerifier = self->_keyTransparencyVerifier;
-  v8 = [v4 service];
-  LOBYTE(keyTransparencyVerifier) = [(IDSKeyTransparencyVerifier *)keyTransparencyVerifier isOptedInForServiceIdentifier:v8];
+  service3 = [inputCopy service];
+  LOBYTE(keyTransparencyVerifier) = [(IDSKeyTransparencyVerifier *)keyTransparencyVerifier isOptedInForServiceIdentifier:service3];
 
   if ((keyTransparencyVerifier & 1) == 0)
   {
     v24 = +[IDSFoundationLog delivery_keyTransparency];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v4 service];
+      service2 = [inputCopy service];
       *buf = 138412290;
-      v156 = v25;
+      v156 = service2;
       v26 = "Not opted into KT for service, no KT filtering needed. { service: %@ }";
       goto LABEL_24;
     }
@@ -70,9 +70,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v127 = self;
-  v128 = v4;
-  v9 = [v4 endpoints];
+  selfCopy = self;
+  v128 = inputCopy;
+  endpoints = [inputCopy endpoints];
   v122 = objc_alloc_init(NSMutableArray);
   v129 = +[NSMutableSet set];
   v10 = +[NSMutableDictionary dictionary];
@@ -80,7 +80,7 @@ LABEL_25:
   v142 = 0u;
   v143 = 0u;
   v144 = 0u;
-  v11 = v9;
+  v11 = endpoints;
   v12 = [v11 countByEnumeratingWithState:&v141 objects:v164 count:16];
   if (!v12)
   {
@@ -105,12 +105,12 @@ LABEL_25:
 
       v17 = *(*(&v141 + 1) + 8 * i);
       v18 = [v17 URI];
-      v19 = [v18 prefixedURI];
+      prefixedURI = [v18 prefixedURI];
 
-      v20 = [v17 capabilities];
-      v21 = [v20 valueForCapability:v15];
+      capabilities = [v17 capabilities];
+      v21 = [capabilities valueForCapability:v15];
 
-      v22 = [v10 objectForKeyedSubscript:v19];
+      v22 = [v10 objectForKeyedSubscript:prefixedURI];
       if (!v22)
       {
         v22 = [NSNumber numberWithInteger:v21];
@@ -135,7 +135,7 @@ LABEL_25:
       v131 = 1;
       v23 = &off_100C3CCD0;
 LABEL_17:
-      [v10 setObject:v23 forKeyedSubscript:v19];
+      [v10 setObject:v23 forKeyedSubscript:prefixedURI];
     }
 
     v13 = [v11 countByEnumeratingWithState:&v141 objects:v164 count:16];
@@ -156,9 +156,9 @@ LABEL_27:
 
     v97 = 0;
     v136 = 0;
-    v4 = v128;
+    inputCopy = v128;
     v91 = v129;
-    v32 = v127;
+    v32 = selfCopy;
     goto LABEL_85;
   }
 
@@ -170,7 +170,7 @@ LABEL_27:
   v133 = *v138;
   *&v29 = 138544386;
   v121 = v29;
-  v32 = v127;
+  v32 = selfCopy;
   while (2)
   {
     v33 = 0;
@@ -183,15 +183,15 @@ LABEL_27:
 
       v34 = *(*(&v137 + 1) + 8 * v33);
       v35 = [v34 URI];
-      v36 = [v35 prefixedURI];
+      prefixedURI2 = [v35 prefixedURI];
 
-      v37 = [v34 pushToken];
-      v135 = v36;
-      v38 = [v10 objectForKeyedSubscript:v36];
-      v39 = [v38 integerValue];
+      pushToken = [v34 pushToken];
+      v135 = prefixedURI2;
+      v38 = [v10 objectForKeyedSubscript:prefixedURI2];
+      integerValue = [v38 integerValue];
 
-      v40 = [v34 transparency];
-      if (!v40)
+      transparency = [v34 transparency];
+      if (!transparency)
       {
 
         if (v32->_messageEnforcementFailNotResolved)
@@ -203,8 +203,8 @@ LABEL_27:
       }
 
       v132 = v31;
-      v41 = [v34 transparency];
-      if ([v41 ktValidation])
+      transparency2 = [v34 transparency];
+      if ([transparency2 ktValidation])
       {
         [v34 transparency];
         v42 = v10;
@@ -213,7 +213,7 @@ LABEL_27:
 
         v30 = v43;
         v10 = v42;
-        v32 = v127;
+        v32 = selfCopy;
       }
 
       else
@@ -228,15 +228,15 @@ LABEL_40:
         v47 = v135;
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [v128 service];
+          service4 = [v128 service];
           [v34 transparency];
           v50 = v49 = v30;
           *buf = 138544130;
-          v156 = v48;
+          v156 = service4;
           v157 = 2114;
           v158 = v135;
           v159 = 2114;
-          v160 = v37;
+          v160 = pushToken;
           v161 = 2114;
           *v162 = v50;
           _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Recipient endpoint not resolved transparency status, will fail { service: %{public}@, uri: %{public}@, token: %{public}@, transparency: %{public}@ }", buf, 0x2Au);
@@ -244,24 +244,24 @@ LABEL_40:
           v30 = v49;
         }
 
-        v51 = [v34 transparency];
-        v52 = [v51 ktError];
+        transparency3 = [v34 transparency];
+        ktError = [transparency3 ktError];
 
-        if (v52)
+        if (ktError)
         {
           if (!v30)
           {
             v30 = +[NSMutableArray array];
           }
 
-          v53 = [v34 transparency];
-          v54 = [v53 ktError];
-          [v30 addObject:v54];
+          transparency4 = [v34 transparency];
+          ktError2 = [transparency4 ktError];
+          [v30 addObject:ktError2];
         }
 
         v55 = [v34 URI];
-        v56 = [v55 prefixedURI];
-        [v129 addObject:v56];
+        prefixedURI3 = [v55 prefixedURI];
+        [v129 addObject:prefixedURI3];
 
         v31 = 1;
         goto LABEL_79;
@@ -269,10 +269,10 @@ LABEL_40:
 
       if (!v45)
       {
-        v60 = [v34 transparency];
-        v61 = [v60 ktValidation];
+        transparency5 = [v34 transparency];
+        ktValidation = [transparency5 ktValidation];
 
-        if (v61 == 3)
+        if (ktValidation == 3)
         {
 LABEL_52:
           v124 = 1;
@@ -281,16 +281,16 @@ LABEL_52:
           goto LABEL_79;
         }
 
-        v62 = [v34 transparency];
-        v63 = [v62 ktValidation];
+        transparency6 = [v34 transparency];
+        ktValidation2 = [transparency6 ktValidation];
 
-        v64 = [v34 transparency];
-        v65 = v64;
-        if (v63 == 5)
+        transparency7 = [v34 transparency];
+        v65 = transparency7;
+        if (ktValidation2 == 5)
         {
-          v66 = [v64 ktError];
+          ktError3 = [transparency7 ktError];
 
-          if (!v66)
+          if (!ktError3)
           {
             goto LABEL_52;
           }
@@ -301,9 +301,9 @@ LABEL_52:
             v30 = +[NSMutableArray array];
           }
 
-          v67 = [v34 transparency];
-          v68 = [v67 ktError];
-          [v30 addObject:v68];
+          transparency8 = [v34 transparency];
+          ktError4 = [transparency8 ktError];
+          [v30 addObject:ktError4];
 
           v124 = 1;
 LABEL_78:
@@ -311,80 +311,80 @@ LABEL_78:
           goto LABEL_79;
         }
 
-        v69 = [v64 ktValidation];
+        ktValidation3 = [transparency7 ktValidation];
 
         v70 = +[IDSFoundationLog delivery_keyTransparency];
         v71 = os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT);
-        if (v69 == 2)
+        if (ktValidation3 == 2)
         {
           v72 = v30;
           v47 = v135;
           if (v71)
           {
-            v73 = [v128 service];
+            service5 = [v128 service];
             *buf = 138543874;
-            v156 = v73;
+            v156 = service5;
             v157 = 2112;
             v158 = v135;
             v159 = 2114;
-            v160 = v37;
+            v160 = pushToken;
             _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "Recipient endpoint is opted into KT and this endpoint is verified. Will send to this endpoint. { service: %{public}@, uri: %@, token: %{public}@ }", buf, 0x20u);
           }
 
           [v122 addObject:v34];
           v74 = [v34 URI];
-          v75 = [v74 prefixedURI];
-          v76 = [v128 fromID];
-          v77 = [v75 isEqual:v76];
+          prefixedURI4 = [v74 prefixedURI];
+          fromID = [v128 fromID];
+          v77 = [prefixedURI4 isEqual:fromID];
 
           v123 |= v77 ^ 1;
           v30 = v72;
           goto LABEL_78;
         }
 
-        if (v39 == 1)
+        if (integerValue == 1)
         {
           if (!v71)
           {
             goto LABEL_72;
           }
 
-          v78 = [v128 service];
+          service6 = [v128 service];
           [v34 transparency];
           v80 = v79 = v30;
-          v81 = [v80 ktError];
+          ktError5 = [v80 ktError];
           *buf = 138544130;
-          v156 = v78;
+          v156 = service6;
           v157 = 2114;
           v158 = v135;
           v159 = 2114;
-          v160 = v37;
+          v160 = pushToken;
           v161 = 2112;
-          *v162 = v81;
+          *v162 = ktError5;
           v82 = v70;
           v83 = "Recipient endpoint is opted into KT, supporting metrics, will fall back to warning { service: %{public}@, uri: %{public}@, token: %{public}@ }: %@";
         }
 
         else
         {
-          if (v39 == 2)
+          if (integerValue == 2)
           {
             if (v71)
             {
-              v78 = [v128 service];
+              service6 = [v128 service];
               [v34 transparency];
               v80 = v79 = v30;
-              v81 = [v80 ktError];
+              ktError5 = [v80 ktError];
               *buf = v121;
-              v156 = v78;
+              v156 = service6;
               v157 = 2114;
               v158 = v135;
               v159 = 2114;
-              v160 = v37;
+              v160 = pushToken;
               v161 = 1024;
               *v162 = 0;
               *&v162[4] = 2112;
-              *&v162[6] = v81;
+              *&v162[6] = ktError5;
               v82 = v70;
               v83 = "Recipient endpoint is opted into KT and is not verified, will not send to this endpoint. { service: %{public}@, uri: %{public}@, token: %{public}@ pending: %d }: %@";
               v84 = 48;
@@ -396,10 +396,10 @@ LABEL_71:
 
 LABEL_72:
 
-            v85 = [v34 transparency];
-            v86 = [v85 ktError];
+            transparency9 = [v34 transparency];
+            ktError6 = [transparency9 ktError];
 
-            if (v86)
+            if (ktError6)
             {
               v47 = v135;
               if (!v30)
@@ -407,9 +407,9 @@ LABEL_72:
                 v30 = +[NSMutableArray array];
               }
 
-              v87 = [v34 transparency];
-              v88 = [v87 ktError];
-              [v30 addObject:v88];
+              transparency10 = [v34 transparency];
+              ktError7 = [transparency10 ktError];
+              [v30 addObject:ktError7];
             }
 
             else
@@ -418,8 +418,8 @@ LABEL_72:
             }
 
             v89 = [v34 URI];
-            v90 = [v89 prefixedURI];
-            [v129 addObject:v90];
+            prefixedURI5 = [v89 prefixedURI];
+            [v129 addObject:prefixedURI5];
 
             goto LABEL_78;
           }
@@ -429,18 +429,18 @@ LABEL_72:
             goto LABEL_72;
           }
 
-          v78 = [v128 service];
+          service6 = [v128 service];
           [v34 transparency];
           v80 = v79 = v30;
-          v81 = [v80 ktError];
+          ktError5 = [v80 ktError];
           *buf = 138544130;
-          v156 = v78;
+          v156 = service6;
           v157 = 2114;
           v158 = v135;
           v159 = 2114;
-          v160 = v37;
+          v160 = pushToken;
           v161 = 2112;
-          *v162 = v81;
+          *v162 = ktError5;
           v82 = v70;
           v83 = "Recipient endpoint is opted into KT but not supporting enforcement, send with warning { service: %{public}@, uri: %{public}@, token: %{public}@ }: %@";
         }
@@ -454,16 +454,16 @@ LABEL_48:
       v47 = v135;
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
       {
-        v58 = [v128 service];
-        v59 = [v34 transparency];
+        service7 = [v128 service];
+        transparency11 = [v34 transparency];
         *buf = 138544130;
-        v156 = v58;
+        v156 = service7;
         v157 = 2114;
         v158 = v135;
         v159 = 2114;
-        v160 = v37;
+        v160 = pushToken;
         v161 = 2114;
-        *v162 = v59;
+        *v162 = transparency11;
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Recipient endpoint not resolved transparency status, allowing due to feature flag { service: %{public}@, uri: %{public}@, token: %{public}@, transparency: %{public}@ }", buf, 0x2Au);
       }
 
@@ -490,7 +490,7 @@ LABEL_79:
 
   v136 = v30;
 
-  v4 = v128;
+  inputCopy = v128;
   v91 = v129;
   if ((v124 & 1) == 0)
   {
@@ -581,9 +581,9 @@ LABEL_113:
       goto LABEL_127;
     }
 
-    v100 = [v4 fromID];
-    v101 = [v91 containsObject:v100];
-    [v91 removeObject:v100];
+    fromID2 = [inputCopy fromID];
+    v101 = [v91 containsObject:fromID2];
+    [v91 removeObject:fromID2];
     if (!v32->_messageEnforcementPedantic && (([v91 count] != 0) & v97) == 1 && objc_msgSend(v122, "count"))
     {
       if (v136)
@@ -731,9 +731,9 @@ LABEL_128:
       goto LABEL_135;
     }
 
-    v113 = [v4 service];
+    service8 = [inputCopy service];
     *buf = 138412290;
-    v156 = v113;
+    v156 = service8;
     v114 = "KT enforcement off. { service: %@ }";
     goto LABEL_134;
   }
@@ -748,9 +748,9 @@ LABEL_128:
         goto LABEL_135;
       }
 
-      v113 = [v4 service];
+      service8 = [inputCopy service];
       *buf = 138412290;
-      v156 = v113;
+      v156 = service8;
       v114 = "KT pending resolutions, allowing. { service: %@ }";
       goto LABEL_134;
     }
@@ -758,7 +758,7 @@ LABEL_128:
     if (v92)
     {
 LABEL_144:
-      [v4 setEndpoints:&__NSArray0__struct];
+      [inputCopy setEndpoints:&__NSArray0__struct];
       v115 = [CUTUnsafePromise failedPromiseWithError:v104];
       goto LABEL_136;
     }
@@ -771,9 +771,9 @@ LABEL_144:
         goto LABEL_135;
       }
 
-      v113 = [v4 service];
+      service8 = [inputCopy service];
       *buf = 138412290;
-      v156 = v113;
+      v156 = service8;
       v114 = "KT enforcement conditional, still allowing. { service: %@ }";
     }
 
@@ -785,9 +785,9 @@ LABEL_144:
         goto LABEL_135;
       }
 
-      v113 = [v4 service];
+      service8 = [inputCopy service];
       *buf = 138412290;
-      v156 = v113;
+      v156 = service8;
       v114 = "KT metrics mode. { service: %@ }";
     }
 
@@ -800,30 +800,30 @@ LABEL_144:
           v117 = +[IDSFoundationLog delivery_keyTransparency];
           if (os_log_type_enabled(v117, OS_LOG_TYPE_DEFAULT))
           {
-            v118 = [v4 service];
+            service9 = [inputCopy service];
             *buf = 138412546;
             v156 = v104;
             v157 = 2112;
-            v158 = v118;
+            v158 = service9;
             _os_log_impl(&_mh_execute_header, v117, OS_LOG_TYPE_DEFAULT, "KT rejected with failure: %@. { service: %@ }", buf, 0x16u);
           }
 
           goto LABEL_144;
         }
 
-        [v4 setPedanticEnforcementFailure:1];
+        [inputCopy setPedanticEnforcementFailure:1];
       }
 
-      [v4 setEndpoints:v122];
+      [inputCopy setEndpoints:v122];
       v112 = +[IDSFoundationLog delivery_keyTransparency];
       if (!os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_135;
       }
 
-      v113 = [v4 service];
+      service8 = [inputCopy service];
       *buf = 138412290;
-      v156 = v113;
+      v156 = service8;
       v114 = "KT enforcement success. { service: %@ }";
     }
 
@@ -836,16 +836,16 @@ LABEL_134:
   v112 = +[IDSFoundationLog delivery_keyTransparency];
   if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
   {
-    v113 = [v4 service];
+    service8 = [inputCopy service];
     *buf = 138412290;
-    v156 = v113;
+    v156 = service8;
     v114 = "KT opt out, allowing. { service: %@ }";
     goto LABEL_134;
   }
 
 LABEL_135:
 
-  v115 = [CUTUnsafePromise fulfilledPromiseWithValue:v4];
+  v115 = [CUTUnsafePromise fulfilledPromiseWithValue:inputCopy];
 LABEL_136:
   v27 = v115;
 

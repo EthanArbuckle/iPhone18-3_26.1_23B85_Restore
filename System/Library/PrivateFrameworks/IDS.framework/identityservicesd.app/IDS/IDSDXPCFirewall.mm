@@ -1,34 +1,34 @@
 @interface IDSDXPCFirewall
-- (IDSDXPCFirewall)initWithService:(id)a3 queue:(id)a4 connection:(id)a5;
-- (void)addEntries:(id)a3 withCompletion:(id)a4;
-- (void)currentDonatedEntries:(id)a3;
-- (void)currentEntries:(id)a3;
-- (void)impactedServicesForService:(id)a3 withCompletion:(id)a4;
-- (void)populateMergeIDForEntries:(id)a3 withCompletion:(id)a4;
+- (IDSDXPCFirewall)initWithService:(id)service queue:(id)queue connection:(id)connection;
+- (void)addEntries:(id)entries withCompletion:(id)completion;
+- (void)currentDonatedEntries:(id)entries;
+- (void)currentEntries:(id)entries;
+- (void)impactedServicesForService:(id)service withCompletion:(id)completion;
+- (void)populateMergeIDForEntries:(id)entries withCompletion:(id)completion;
 - (void)processStoredRemoteIncomingMessagesForCategoryFired;
-- (void)recentlyBlockedEntries:(id)a3;
-- (void)removeAllDonatedEntries:(id)a3;
-- (void)removeAllEntries:(id)a3;
-- (void)removeDonatedEntries:(id)a3 withCompletion:(id)a4;
-- (void)removeEntries:(id)a3 withCompletion:(id)a4;
-- (void)replaceEntries:(id)a3 replaceAll:(BOOL)a4 withCompletion:(id)a5;
+- (void)recentlyBlockedEntries:(id)entries;
+- (void)removeAllDonatedEntries:(id)entries;
+- (void)removeAllEntries:(id)entries;
+- (void)removeDonatedEntries:(id)entries withCompletion:(id)completion;
+- (void)removeEntries:(id)entries withCompletion:(id)completion;
+- (void)replaceEntries:(id)entries replaceAll:(BOOL)all withCompletion:(id)completion;
 - (void)scheduleProcessStoredRemoteIncomingMessages;
 @end
 
 @implementation IDSDXPCFirewall
 
-- (IDSDXPCFirewall)initWithService:(id)a3 queue:(id)a4 connection:(id)a5
+- (IDSDXPCFirewall)initWithService:(id)service queue:(id)queue connection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (([v11 hasEntitlement:kIDSFirewallEntitlement] & 1) == 0)
+  serviceCopy = service;
+  queueCopy = queue;
+  connectionCopy = connection;
+  if (([connectionCopy hasEntitlement:kIDSFirewallEntitlement] & 1) == 0)
   {
     v24 = +[IDSFoundationLog IDSFirewall];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v11;
+      v31 = connectionCopy;
       v25 = "Missing IDS Firewall entitlement -- failing creation of IDSDXPCFirewall collaborator {connection: %@}";
       v26 = v24;
       v27 = 12;
@@ -38,7 +38,7 @@ LABEL_8:
 
 LABEL_9:
 
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -48,22 +48,22 @@ LABEL_9:
   self = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a4);
+    objc_storeStrong(&v12->_queue, queue);
     processMessageTimer = self->_processMessageTimer;
     self->_processMessageTimer = 0;
 
-    objc_storeStrong(&self->_service, a3);
+    objc_storeStrong(&self->_service, service);
     v14 = +[IDSDServiceController sharedInstance];
-    v15 = [v14 serviceWithName:v9];
+    v15 = [v14 serviceWithName:serviceCopy];
 
     if (v15)
     {
       self->_category = [v15 controlCategory];
       v16 = [NSSet alloc];
       v17 = +[IDSDServiceController sharedInstance];
-      v18 = [v17 serviceNameToControlCategoryMap];
+      serviceNameToControlCategoryMap = [v17 serviceNameToControlCategoryMap];
       v19 = [NSNumber numberWithUnsignedInt:self->_category];
-      v20 = [v18 objectForKey:v19];
+      v20 = [serviceNameToControlCategoryMap objectForKey:v19];
       v21 = [v16 initWithArray:v20];
       impactedServices = self->_impactedServices;
       self->_impactedServices = v21;
@@ -86,19 +86,19 @@ LABEL_9:
 
 LABEL_5:
   self = self;
-  v23 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v23;
+  return selfCopy;
 }
 
-- (void)impactedServicesForService:(id)a3 withCompletion:(id)a4
+- (void)impactedServicesForService:(id)service withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  serviceCopy = service;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v7)
+    if (serviceCopy)
     {
       goto LABEL_3;
     }
@@ -107,7 +107,7 @@ LABEL_10:
   else
   {
     sub_10091EF90();
-    if (v7)
+    if (serviceCopy)
     {
       goto LABEL_3;
     }
@@ -119,27 +119,27 @@ LABEL_3:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v7;
+    v25 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Fetching impacted services for service {%@}", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_service, a3);
+  objc_storeStrong(&self->_service, service);
   v10 = +[IDSDServiceController sharedInstance];
-  v11 = [v10 serviceWithName:v7];
+  v11 = [v10 serviceWithName:serviceCopy];
 
   if (v11)
   {
     self->_category = [v11 controlCategory];
     v12 = [NSSet alloc];
     v13 = +[IDSDServiceController sharedInstance];
-    v14 = [v13 serviceNameToControlCategoryMap];
+    serviceNameToControlCategoryMap = [v13 serviceNameToControlCategoryMap];
     v15 = [NSNumber numberWithUnsignedInt:self->_category];
-    v16 = [v14 objectForKey:v15];
+    v16 = [serviceNameToControlCategoryMap objectForKey:v15];
     v17 = [v12 initWithArray:v16];
     impactedServices = self->_impactedServices;
     self->_impactedServices = v17;
 
-    v8[2](v8, self->_impactedServices, 0);
+    completionCopy[2](completionCopy, self->_impactedServices, 0);
   }
 
   else
@@ -150,15 +150,15 @@ LABEL_3:
     v20 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v21 = [NSError errorWithDomain:v19 code:1 userInfo:v20];
 
-    (v8)[2](v8, 0, v21);
+    (completionCopy)[2](completionCopy, 0, v21);
   }
 }
 
-- (void)addEntries:(id)a3 withCompletion:(id)a4
+- (void)addEntries:(id)entries withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  entriesCopy = entries;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     sub_10091F078();
   }
@@ -170,7 +170,7 @@ LABEL_3:
     *buf = 67109378;
     v16 = category;
     v17 = 2112;
-    v18 = v6;
+    v18 = entriesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Update to category %u addEntries %@", buf, 0x12u);
   }
 
@@ -179,18 +179,18 @@ LABEL_3:
   v12[2] = sub_100441BC8;
   v12[3] = &unk_100BDA978;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = entriesCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = entriesCopy;
   [(IDSDXPCFirewall *)self populateMergeIDForEntries:v11 withCompletion:v12];
 }
 
-- (void)removeEntries:(id)a3 withCompletion:(id)a4
+- (void)removeEntries:(id)entries withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  entriesCopy = entries;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     sub_10091F0EC();
   }
@@ -200,18 +200,18 @@ LABEL_3:
   v10[2] = sub_100441E34;
   v10[3] = &unk_100BDA978;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = entriesCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = entriesCopy;
   [(IDSDXPCFirewall *)self populateMergeIDForEntries:v9 withCompletion:v10];
 }
 
-- (void)removeDonatedEntries:(id)a3 withCompletion:(id)a4
+- (void)removeDonatedEntries:(id)entries withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  entriesCopy = entries;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     sub_10091F160();
   }
@@ -221,26 +221,26 @@ LABEL_3:
   v10[2] = sub_100442094;
   v10[3] = &unk_100BDA978;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = entriesCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = entriesCopy;
   [(IDSDXPCFirewall *)self populateMergeIDForEntries:v9 withCompletion:v10];
 }
 
-- (void)replaceEntries:(id)a3 replaceAll:(BOOL)a4 withCompletion:(id)a5
+- (void)replaceEntries:(id)entries replaceAll:(BOOL)all withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  allCopy = all;
+  entriesCopy = entries;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     sub_10091F1D4();
   }
 
   v10 = +[IDSFoundationLog IDSFirewall];
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (allCopy)
   {
     if (v11)
     {
@@ -248,12 +248,12 @@ LABEL_3:
       *buf = 67109378;
       v26 = category;
       v27 = 2112;
-      v28 = v8;
+      v28 = entriesCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Update to category %u replaceAllEntries %@", buf, 0x12u);
     }
 
-    v13 = [(IDSDXPCFirewall *)self _firewallStore];
-    v14 = [v13 removeAllEntriesWithCategory:self->_category];
+    _firewallStore = [(IDSDXPCFirewall *)self _firewallStore];
+    v14 = [_firewallStore removeAllEntriesWithCategory:self->_category];
   }
 
   else
@@ -264,12 +264,12 @@ LABEL_3:
       *buf = 67109378;
       v26 = v15;
       v27 = 2112;
-      v28 = v8;
+      v28 = entriesCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Update to category %u replaceEntries %@", buf, 0x12u);
     }
 
-    v13 = [(IDSDXPCFirewall *)self _firewallStore];
-    v14 = [v13 removeEntriesWithCategory:self->_category isDonated:1];
+    _firewallStore = [(IDSDXPCFirewall *)self _firewallStore];
+    v14 = [_firewallStore removeEntriesWithCategory:self->_category isDonated:1];
   }
 
   v16 = v14;
@@ -281,8 +281,8 @@ LABEL_3:
     v20[2] = sub_1004424B4;
     v20[3] = &unk_100BDA978;
     v20[4] = self;
-    v21 = v8;
-    v22 = v9;
+    v21 = entriesCopy;
+    v22 = completionCopy;
     [(IDSDXPCFirewall *)self populateMergeIDForEntries:v21 withCompletion:v20];
   }
 
@@ -294,14 +294,14 @@ LABEL_3:
     v18 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v19 = [NSError errorWithDomain:v17 code:4 userInfo:v18];
 
-    (*(v9 + 2))(v9, v19);
+    (*(completionCopy + 2))(completionCopy, v19);
   }
 }
 
-- (void)currentDonatedEntries:(id)a3
+- (void)currentDonatedEntries:(id)entries
 {
-  v4 = a3;
-  if (!v4)
+  entriesCopy = entries;
+  if (!entriesCopy)
   {
     sub_10091F248();
   }
@@ -315,12 +315,12 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Fetching all entries for category %u", buf, 8u);
   }
 
-  v7 = [(IDSDXPCFirewall *)self _firewallStore];
-  v8 = [v7 getDonatedAllowedEntriesForCategory:self->_category];
+  _firewallStore = [(IDSDXPCFirewall *)self _firewallStore];
+  v8 = [_firewallStore getDonatedAllowedEntriesForCategory:self->_category];
 
   if (v8)
   {
-    v4[2](v4, v8, 0);
+    entriesCopy[2](entriesCopy, v8, 0);
   }
 
   else
@@ -331,14 +331,14 @@ LABEL_3:
     v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v11 = [NSError errorWithDomain:v9 code:4 userInfo:v10];
 
-    (v4)[2](v4, 0, v11);
+    (entriesCopy)[2](entriesCopy, 0, v11);
   }
 }
 
-- (void)currentEntries:(id)a3
+- (void)currentEntries:(id)entries
 {
-  v4 = a3;
-  if (!v4)
+  entriesCopy = entries;
+  if (!entriesCopy)
   {
     sub_10091F2BC();
   }
@@ -352,12 +352,12 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Fetching all entries for category %u", buf, 8u);
   }
 
-  v7 = [(IDSDXPCFirewall *)self _firewallStore];
-  v8 = [v7 getAllAllowedEntriesForCategory:self->_category];
+  _firewallStore = [(IDSDXPCFirewall *)self _firewallStore];
+  v8 = [_firewallStore getAllAllowedEntriesForCategory:self->_category];
 
   if (v8)
   {
-    v4[2](v4, v8, 0);
+    entriesCopy[2](entriesCopy, v8, 0);
   }
 
   else
@@ -368,14 +368,14 @@ LABEL_3:
     v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v11 = [NSError errorWithDomain:v9 code:4 userInfo:v10];
 
-    (v4)[2](v4, 0, v11);
+    (entriesCopy)[2](entriesCopy, 0, v11);
   }
 }
 
-- (void)removeAllDonatedEntries:(id)a3
+- (void)removeAllDonatedEntries:(id)entries
 {
-  v4 = a3;
-  if (!v4)
+  entriesCopy = entries;
+  if (!entriesCopy)
   {
     sub_10091F330();
   }
@@ -389,8 +389,8 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Update to category %u removeAllDonatedEntries", buf, 8u);
   }
 
-  v7 = [(IDSDXPCFirewall *)self _firewallStore];
-  v8 = [v7 removeEntriesWithCategory:self->_category isDonated:1];
+  _firewallStore = [(IDSDXPCFirewall *)self _firewallStore];
+  v8 = [_firewallStore removeEntriesWithCategory:self->_category isDonated:1];
 
   if (v8)
   {
@@ -406,13 +406,13 @@ LABEL_3:
     v9 = [NSError errorWithDomain:v10 code:4 userInfo:v11];
   }
 
-  v4[2](v4, v9);
+  entriesCopy[2](entriesCopy, v9);
 }
 
-- (void)removeAllEntries:(id)a3
+- (void)removeAllEntries:(id)entries
 {
-  v4 = a3;
-  if (!v4)
+  entriesCopy = entries;
+  if (!entriesCopy)
   {
     sub_10091F3A4();
   }
@@ -426,8 +426,8 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Update to category %u removeAllEntries", buf, 8u);
   }
 
-  v7 = [(IDSDXPCFirewall *)self _firewallStore];
-  v8 = [v7 removeAllEntriesWithCategory:self->_category];
+  _firewallStore = [(IDSDXPCFirewall *)self _firewallStore];
+  v8 = [_firewallStore removeAllEntriesWithCategory:self->_category];
 
   if (v8)
   {
@@ -443,13 +443,13 @@ LABEL_3:
     v9 = [NSError errorWithDomain:v10 code:4 userInfo:v11];
   }
 
-  v4[2](v4, v9);
+  entriesCopy[2](entriesCopy, v9);
 }
 
-- (void)recentlyBlockedEntries:(id)a3
+- (void)recentlyBlockedEntries:(id)entries
 {
-  v4 = a3;
-  if (!v4)
+  entriesCopy = entries;
+  if (!entriesCopy)
   {
     sub_10091F418();
   }
@@ -463,8 +463,8 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Fetching recently blocked handles for service {%@}", buf, 0xCu);
   }
 
-  v7 = [(IDSDXPCFirewall *)self _firewallStore];
-  v8 = [v7 blockedEntriesForCategory:self->_category];
+  _firewallStore = [(IDSDXPCFirewall *)self _firewallStore];
+  v8 = [_firewallStore blockedEntriesForCategory:self->_category];
 
   if (v8)
   {
@@ -480,7 +480,7 @@ LABEL_3:
     v9 = [NSError errorWithDomain:v10 code:4 userInfo:v11];
   }
 
-  v4[2](v4, v8, v9);
+  entriesCopy[2](entriesCopy, v8, v9);
 }
 
 - (void)scheduleProcessStoredRemoteIncomingMessages
@@ -540,16 +540,16 @@ LABEL_3:
   dispatch_async(v6, block);
 }
 
-- (void)populateMergeIDForEntries:(id)a3 withCompletion:(id)a4
+- (void)populateMergeIDForEntries:(id)entries withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   v62 = objc_alloc_init(NSMutableArray);
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v7 = v5;
+  v7 = entriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v71 objects:v86 count:16];
   if (v8)
   {
@@ -566,8 +566,8 @@ LABEL_3:
         }
 
         v12 = *(*(&v71 + 1) + 8 * v11);
-        v13 = [v12 mergeID];
-        if (v13)
+        mergeID = [v12 mergeID];
+        if (mergeID)
         {
           goto LABEL_7;
         }
@@ -577,12 +577,12 @@ LABEL_3:
         {
           v15 = v14;
           v16 = [v12 uri];
-          v17 = [v16 prefixedURI];
+          prefixedURI = [v16 prefixedURI];
 
-          if (v17)
+          if (prefixedURI)
           {
-            v13 = [v12 uri];
-            [v62 addObject:v13];
+            mergeID = [v12 uri];
+            [v62 addObject:mergeID];
 LABEL_7:
           }
         }
@@ -619,10 +619,10 @@ LABEL_7:
   if (v25)
   {
     v60 = v24;
-    v27 = [v25 primaryRegistration];
-    v28 = [v27 registrationCert];
+    primaryRegistration = [v25 primaryRegistration];
+    registrationCert = [primaryRegistration registrationCert];
 
-    v29 = v28;
+    v29 = registrationCert;
     v59 = v26;
     v30 = [IDSQueryUtilities prefixedAliasStringToQueryFrom:v26 withPreferredFromURI:0];
     v31 = [IDSURI URIWithPrefixedURI:v30 withServiceLoggingHint:self->_service];
@@ -631,7 +631,7 @@ LABEL_7:
     v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
     if (v31 && v29)
     {
-      v58 = v6;
+      v58 = completionCopy;
       if (v33)
       {
         *buf = 138412290;
@@ -700,13 +700,13 @@ LABEL_7:
         LOBYTE(v56) = 0;
         [v45 startQueryForURIs:v64 fromIdentity:v29 fromURI:v31 fromService:service forSending:0 forceToServer:1 clientRequestedForceQuery:v56 reason:@"FirewallPopulate" completionBlock:v63];
 
-        v6 = v58;
+        completionCopy = v58;
         v7 = v57;
       }
 
       else
       {
-        v6 = v58;
+        completionCopy = v58;
         v58[2](v58, 0);
 
         v7 = v57;
@@ -741,7 +741,7 @@ LABEL_7:
       v54 = [NSDictionary dictionaryWithObjects:&v77 forKeys:&v76 count:1];
       v55 = [NSError errorWithDomain:v53 code:6 userInfo:v54];
 
-      (*(v6 + 2))(v6, v55);
+      (*(completionCopy + 2))(completionCopy, v55);
     }
 
     v26 = v59;
@@ -767,7 +767,7 @@ LABEL_7:
     v50 = [NSDictionary dictionaryWithObjects:&v85 forKeys:&v84 count:1];
     v29 = [NSError errorWithDomain:v49 code:6 userInfo:v50];
 
-    (*(v6 + 2))(v6, v29);
+    (*(completionCopy + 2))(completionCopy, v29);
   }
 }
 

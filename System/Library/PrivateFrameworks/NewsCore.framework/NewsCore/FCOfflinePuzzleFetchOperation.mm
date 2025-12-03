@@ -1,11 +1,11 @@
 @interface FCOfflinePuzzleFetchOperation
 - (BOOL)validateOperation;
 - (FCOfflinePuzzleFetchOperation)init;
-- (FCOfflinePuzzleFetchOperation)initWithContext:(id)a3 puzzle:(id)a4;
-- (FCOfflinePuzzleFetchOperation)initWithContext:(id)a3 puzzleID:(id)a4;
-- (void)_handleArchive:(void *)a1;
-- (void)_updateProgress:(double *)a1;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCOfflinePuzzleFetchOperation)initWithContext:(id)context puzzle:(id)puzzle;
+- (FCOfflinePuzzleFetchOperation)initWithContext:(id)context puzzleID:(id)d;
+- (void)_handleArchive:(void *)archive;
+- (void)_updateProgress:(double *)progress;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 @end
@@ -38,18 +38,18 @@
   objc_exception_throw(v6);
 }
 
-- (FCOfflinePuzzleFetchOperation)initWithContext:(id)a3 puzzleID:(id)a4
+- (FCOfflinePuzzleFetchOperation)initWithContext:(id)context puzzleID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = FCOfflinePuzzleFetchOperation;
   v9 = [(FCOperation *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_context, context);
+    v11 = [dCopy copy];
     puzzleID = v10->_puzzleID;
     v10->_puzzleID = v11;
 
@@ -61,11 +61,11 @@
   return v10;
 }
 
-- (FCOfflinePuzzleFetchOperation)initWithContext:(id)a3 puzzle:(id)a4
+- (FCOfflinePuzzleFetchOperation)initWithContext:(id)context puzzle:(id)puzzle
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  v8 = [(FCOfflinePuzzleFetchOperation *)self initWithContext:v6 puzzleID:v7];
+  contextCopy = context;
+  identifier = [puzzle identifier];
+  v8 = [(FCOfflinePuzzleFetchOperation *)self initWithContext:contextCopy puzzleID:identifier];
 
   return v8;
 }
@@ -104,18 +104,18 @@
 
 - (void)prepareOperation
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_context;
   }
 
-  v5 = [(FCOfflinePuzzleFetchOperation *)self appConfigurationManager];
-  v3 = [v5 possiblyUnfetchedAppConfiguration];
-  v4 = [v3 offlineDownloadsConfig];
-  if (v2)
+  appConfigurationManager = [(FCOfflinePuzzleFetchOperation *)self appConfigurationManager];
+  possiblyUnfetchedAppConfiguration = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+  offlineDownloadsConfig = [possiblyUnfetchedAppConfiguration offlineDownloadsConfig];
+  if (selfCopy)
   {
-    objc_storeStrong(&v2->_config, v4);
+    objc_storeStrong(&selfCopy->_config, offlineDownloadsConfig);
   }
 }
 
@@ -131,7 +131,7 @@
   v3 = FCOperationLog;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     if ([(FCOfflinePuzzleFetchOperation *)self cachedOnly])
     {
       v5 = @"lookup cached";
@@ -157,12 +157,12 @@
     }
 
     v9 = config;
-    v10 = [(FCOfflineDownloadsConfiguration *)v9 useSmallestPuzzleThumbnails];
+    useSmallestPuzzleThumbnails = [(FCOfflineDownloadsConfiguration *)v9 useSmallestPuzzleThumbnails];
     v11 = @"normal";
     *buf = 138544130;
-    v30 = v4;
+    v30 = shortOperationDescription;
     v31 = 2114;
-    if (v10)
+    if (useSmallestPuzzleThumbnails)
     {
       v11 = @"small";
     }
@@ -239,12 +239,12 @@ id __49__FCOfflinePuzzleFetchOperation_performOperation__block_invoke(uint64_t a
   return v4;
 }
 
-- (void)_updateProgress:(double *)a1
+- (void)_updateProgress:(double *)progress
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1 && ([a1 isFinished] & 1) == 0)
+  if (progress && ([progress isFinished] & 1) == 0)
   {
-    if (a1[57] > a2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (progress[57] > a2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"fetch progress should never go backward"];
       *buf = 136315906;
@@ -258,30 +258,30 @@ id __49__FCOfflinePuzzleFetchOperation_performOperation__block_invoke(uint64_t a
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    a1[57] = a2;
-    v4 = [a1 progressQueue];
+    progress[57] = a2;
+    progressQueue = [progress progressQueue];
 
-    v5 = [a1 progressHandler];
+    progressHandler = [progress progressHandler];
 
-    if (v4)
+    if (progressQueue)
     {
-      if (v5)
+      if (progressHandler)
       {
-        v6 = [a1 progressQueue];
+        progressQueue2 = [progress progressQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __49__FCOfflinePuzzleFetchOperation__updateProgress___block_invoke_57;
         block[3] = &unk_1E7C36EA0;
-        block[4] = a1;
-        dispatch_async(v6, block);
+        block[4] = progress;
+        dispatch_async(progressQueue2, block);
 LABEL_11:
       }
     }
 
-    else if (v5)
+    else if (progressHandler)
     {
-      v6 = [a1 progressHandler];
-      (*(v6 + 16))(a1[57]);
+      progressQueue2 = [progress progressHandler];
+      (*(progressQueue2 + 16))(progress[57]);
       goto LABEL_11;
     }
   }
@@ -341,36 +341,36 @@ id __49__FCOfflinePuzzleFetchOperation_performOperation__block_invoke_3(uint64_t
   return v5;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [(FCOfflinePuzzleFetchOperation *)self _updateProgress:?];
   }
 
-  v5 = [(FCOfflinePuzzleFetchOperation *)self fetchCompletionQueue];
+  fetchCompletionQueue = [(FCOfflinePuzzleFetchOperation *)self fetchCompletionQueue];
 
-  v6 = [(FCOfflinePuzzleFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCOfflinePuzzleFetchOperation *)self fetchCompletionHandler];
 
-  if (v5)
+  if (fetchCompletionQueue)
   {
-    if (v6)
+    if (fetchCompletionHandler)
     {
-      v7 = [(FCOfflinePuzzleFetchOperation *)self fetchCompletionQueue];
+      fetchCompletionQueue2 = [(FCOfflinePuzzleFetchOperation *)self fetchCompletionQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __62__FCOfflinePuzzleFetchOperation_operationWillFinishWithError___block_invoke;
       v12[3] = &unk_1E7C36C58;
       v12[4] = self;
-      v13 = v4;
-      dispatch_async(v7, v12);
+      v13 = errorCopy;
+      dispatch_async(fetchCompletionQueue2, v12);
     }
   }
 
-  else if (v6)
+  else if (fetchCompletionHandler)
   {
-    v8 = [(FCOfflinePuzzleFetchOperation *)self fetchCompletionHandler];
+    fetchCompletionHandler2 = [(FCOfflinePuzzleFetchOperation *)self fetchCompletionHandler];
     if (self)
     {
       resultInterestTokens = self->_resultInterestTokens;
@@ -382,8 +382,8 @@ id __49__FCOfflinePuzzleFetchOperation_performOperation__block_invoke_3(uint64_t
     }
 
     v10 = resultInterestTokens;
-    v11 = [(FCThreadSafeMutableArray *)v10 readOnlyArray];
-    (v8)[2](v8, v11, v4);
+    readOnlyArray = [(FCThreadSafeMutableArray *)v10 readOnlyArray];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, readOnlyArray, errorCopy);
   }
 }
 
@@ -594,35 +594,35 @@ void __54__FCOfflinePuzzleFetchOperation__promisePuzzleRecords__block_invoke_5(u
   [(FCOfflinePuzzleFetchOperation *)v2 _handleArchive:v3];
 }
 
-- (void)_handleArchive:(void *)a1
+- (void)_handleArchive:(void *)archive
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (archive && v3)
   {
-    v5 = [a1 archiveQueue];
+    archiveQueue = [archive archiveQueue];
 
-    v6 = [a1 archiveHandler];
+    archiveHandler = [archive archiveHandler];
 
-    if (v5)
+    if (archiveQueue)
     {
-      if (v6)
+      if (archiveHandler)
       {
-        v7 = [a1 archiveQueue];
+        archiveQueue2 = [archive archiveQueue];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __48__FCOfflinePuzzleFetchOperation__handleArchive___block_invoke_2;
         v9[3] = &unk_1E7C36C58;
-        v9[4] = a1;
+        v9[4] = archive;
         v10 = v4;
-        dispatch_async(v7, v9);
+        dispatch_async(archiveQueue2, v9);
       }
     }
 
-    else if (v6)
+    else if (archiveHandler)
     {
-      v8 = [a1 archiveHandler];
-      (v8)[2](v8, v4);
+      archiveHandler2 = [archive archiveHandler];
+      (archiveHandler2)[2](archiveHandler2, v4);
     }
   }
 }

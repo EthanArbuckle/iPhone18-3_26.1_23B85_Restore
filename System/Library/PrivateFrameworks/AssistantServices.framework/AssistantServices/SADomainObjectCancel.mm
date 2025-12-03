@@ -6,10 +6,10 @@
 
 - (id)domainFromSADObject
 {
-  v2 = [(SADomainObjectCancel *)self identifier];
-  v3 = [v2 groupIdentifier];
+  identifier = [(SADomainObjectCancel *)self identifier];
+  groupIdentifier = [identifier groupIdentifier];
 
-  return v3;
+  return groupIdentifier;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface OrgLukhnosPortmobileLangClassValue
 - (OrgLukhnosPortmobileLangClassValue)init;
-- (id)getWithIOSClass:(id)a3;
+- (id)getWithIOSClass:(id)class;
 - (void)dealloc;
-- (void)removeWithIOSClass:(id)a3;
+- (void)removeWithIOSClass:(id)class;
 @end
 
 @implementation OrgLukhnosPortmobileLangClassValue
@@ -16,7 +16,7 @@
   return self;
 }
 
-- (id)getWithIOSClass:(id)a3
+- (id)getWithIOSClass:(id)class
 {
   cache = self->cache_;
   if (!cache)
@@ -28,18 +28,18 @@
   {
     v6 = self->cache_;
 
-    return [(JavaUtilMap *)v6 getWithId:a3];
+    return [(JavaUtilMap *)v6 getWithId:class];
   }
 
   else
   {
-    v8 = [(OrgLukhnosPortmobileLangClassValue *)self computeValueWithIOSClass:a3];
-    [(JavaUtilMap *)self->cache_ putWithId:a3 withId:v8];
+    v8 = [(OrgLukhnosPortmobileLangClassValue *)self computeValueWithIOSClass:class];
+    [(JavaUtilMap *)self->cache_ putWithId:class withId:v8];
     return v8;
   }
 }
 
-- (void)removeWithIOSClass:(id)a3
+- (void)removeWithIOSClass:(id)class
 {
   cache = self->cache_;
   if (!cache)
@@ -47,7 +47,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilMap *)cache removeWithId:a3];
+  [(JavaUtilMap *)cache removeWithId:class];
 }
 
 - (void)dealloc

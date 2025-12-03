@@ -1,34 +1,34 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer
-- (void)addBinaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4;
-- (void)addNumericFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4 withBoolean:(BOOL)a5;
-- (void)addSortedFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4 withJavaLangIterable:(id)a5;
-- (void)addSortedNumericFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4 withJavaLangIterable:(id)a5;
-- (void)addSortedSetFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4 withJavaLangIterable:(id)a5 withJavaLangIterable:(id)a6;
+- (void)addBinaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable;
+- (void)addNumericFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable withBoolean:(BOOL)boolean;
+- (void)addSortedFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable withJavaLangIterable:(id)langIterable;
+- (void)addSortedNumericFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable withJavaLangIterable:(id)langIterable;
+- (void)addSortedSetFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable withJavaLangIterable:(id)langIterable withJavaLangIterable:(id)javaLangIterable;
 - (void)close;
 - (void)dealloc;
-- (void)writeMissingBitsetWithJavaLangIterable:(id)a3;
+- (void)writeMissingBitsetWithJavaLangIterable:(id)iterable;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer
 
-- (void)addNumericFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4 withBoolean:(BOOL)a5
+- (void)addNumericFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable withBoolean:(BOOL)boolean
 {
-  if (a5)
+  if (boolean)
   {
     v7 = new_JavaUtilHashSet_init();
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
-    if (!a4)
+    if (!iterable)
     {
       goto LABEL_124;
     }
 
     v8 = v7;
-    v81 = a3;
-    obj = a4;
-    v9 = [a4 countByEnumeratingWithState:&v107 objects:v115 count:16];
+    infoCopy = info;
+    obj = iterable;
+    v9 = [iterable countByEnumeratingWithState:&v107 objects:v115 count:16];
     if (v9)
     {
       v10 = v9;
@@ -55,13 +55,13 @@
           v18 = *(*(&v107 + 1) + 8 * v16);
           if (v18)
           {
-            v19 = [v18 longLongValue];
-            v20 = v19 == 0;
+            longLongValue = [v18 longLongValue];
+            v20 = longLongValue == 0;
           }
 
           else
           {
-            v19 = 0;
+            longLongValue = 0;
             ++v87;
             v20 = 1;
           }
@@ -74,7 +74,7 @@
           else
           {
             v12 = 1;
-            if (((v19 - 0x4000000000000000) & 0x8000000000000000) != 0)
+            if (((longLongValue - 0x4000000000000000) & 0x8000000000000000) != 0)
             {
               if (v84 == v16)
               {
@@ -83,14 +83,14 @@
 
               else
               {
-                v12 = OrgApacheLuceneUtilMathUtil_gcdWithLong_withLong_(v17, v19 - v14);
+                v12 = OrgApacheLuceneUtilMathUtil_gcdWithLong_withLong_(v17, longLongValue - v14);
               }
             }
           }
 
-          v14 = JavaLangMath_minWithLong_withLong_(v14, v19);
-          v15 = JavaLangMath_maxWithLong_withLong_(v15, v19);
-          if (v8 && [(JavaUtilHashSet *)v8 addWithId:JavaLangLong_valueOfWithLong_(v19)]&& [(JavaUtilHashSet *)v8 size]> 256)
+          v14 = JavaLangMath_minWithLong_withLong_(v14, longLongValue);
+          v15 = JavaLangMath_maxWithLong_withLong_(v15, longLongValue);
+          if (v8 && [(JavaUtilHashSet *)v8 addWithId:JavaLangLong_valueOfWithLong_(longLongValue)]&& [(JavaUtilHashSet *)v8 size]> 256)
           {
             v8 = 0;
           }
@@ -125,7 +125,7 @@
     {
       v32 = [(JavaUtilHashSet *)v8 size];
       v40 = OrgApacheLuceneUtilPackedDirectWriter_bitsRequiredWithLong_((v32 - 1), v33, v34, v35, v36, v37, v38, v39);
-      v41 = v81;
+      infoCopy2 = infoCopy;
       if (v24 <= 0x7FFFFFFF)
       {
         if ([(JavaUtilHashSet *)v8 size]== 1)
@@ -156,7 +156,7 @@ LABEL_48:
     else
     {
       v40 = 0x7FFFFFFF;
-      v41 = v81;
+      infoCopy2 = infoCopy;
     }
 
     v11 = v87;
@@ -170,12 +170,12 @@ LABEL_48:
     v106 = 0u;
     v103 = 0u;
     v104 = 0u;
-    if (!a4)
+    if (!iterable)
     {
       goto LABEL_124;
     }
 
-    v22 = [a4 countByEnumeratingWithState:&v103 objects:v114 count:16];
+    v22 = [iterable countByEnumeratingWithState:&v103 objects:v114 count:16];
     if (v22)
     {
       v23 = v22;
@@ -191,7 +191,7 @@ LABEL_48:
         {
           if (*v104 != v25)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(iterable);
           }
 
           v28 = *(*(&v103 + 1) + 8 * v27);
@@ -200,14 +200,14 @@ LABEL_48:
             goto LABEL_124;
           }
 
-          v29 = [v28 longLongValue];
-          v14 = JavaLangMath_minWithLong_withLong_(v14, v29);
-          v26 = JavaLangMath_maxWithLong_withLong_(v26, v29);
+          longLongValue2 = [v28 longLongValue];
+          v14 = JavaLangMath_minWithLong_withLong_(v14, longLongValue2);
+          v26 = JavaLangMath_maxWithLong_withLong_(v26, longLongValue2);
           v27 = v27 + 1;
         }
 
         while (v23 != v27);
-        v23 = [a4 countByEnumeratingWithState:&v103 objects:v114 count:16];
+        v23 = [iterable countByEnumeratingWithState:&v103 objects:v114 count:16];
       }
 
       while (v23);
@@ -220,7 +220,7 @@ LABEL_48:
       v26 = 0x8000000000000000;
     }
 
-    obj = a4;
+    obj = iterable;
     v30 = v26 - v14;
     v90 = OrgApacheLuceneUtilPackedDirectWriter_unsignedBitsRequiredWithLong_(v30);
     v8 = 0;
@@ -229,19 +229,19 @@ LABEL_48:
     v42 = 0;
     v85 = 1;
     v40 = 0x7FFFFFFF;
-    v41 = a3;
+    infoCopy2 = info;
   }
 
 LABEL_52:
   meta = self->meta_;
-  if (!meta || !v41)
+  if (!meta || !infoCopy2)
   {
     goto LABEL_124;
   }
 
   v88 = v40;
-  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:v41[4]];
-  v44 = self;
+  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:infoCopy2[4]];
+  selfCopy3 = self;
   [(OrgApacheLuceneStoreIndexOutput *)self->meta_ writeByteWithByte:0];
   [(OrgApacheLuceneStoreDataOutput *)self->meta_ writeVIntWithInt:v42];
   if (!v11)
@@ -253,7 +253,7 @@ LABEL_52:
 
   if (v11 == v24)
   {
-    v44 = self;
+    selfCopy3 = self;
     v45 = self->meta_;
     v46 = -2;
 LABEL_58:
@@ -261,7 +261,7 @@ LABEL_58:
     goto LABEL_61;
   }
 
-  v44 = self;
+  selfCopy3 = self;
   data = self->data_;
   if (!data)
   {
@@ -271,14 +271,14 @@ LABEL_58:
   [(OrgApacheLuceneStoreDataOutput *)self->meta_ writeLongWithLong:[(OrgApacheLuceneStoreIndexOutput *)data getFilePointer]];
   [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self writeMissingBitsetWithJavaLangIterable:obj];
 LABEL_61:
-  v48 = v44->data_;
+  v48 = selfCopy3->data_;
   if (!v48)
   {
     goto LABEL_124;
   }
 
-  [(OrgApacheLuceneStoreDataOutput *)v44->meta_ writeLongWithLong:[(OrgApacheLuceneStoreIndexOutput *)v48 getFilePointer]];
-  [(OrgApacheLuceneStoreDataOutput *)v44->meta_ writeVLongWithLong:v24];
+  [(OrgApacheLuceneStoreDataOutput *)selfCopy3->meta_ writeLongWithLong:[(OrgApacheLuceneStoreIndexOutput *)v48 getFilePointer]];
+  [(OrgApacheLuceneStoreDataOutput *)selfCopy3->meta_ writeVLongWithLong:v24];
   if (v42 > 1)
   {
     if (v42 == 2)
@@ -288,7 +288,7 @@ LABEL_61:
         v67 = [(JavaUtilAbstractCollection *)v8 toArrayWithNSObjectArray:[IOSObjectArray arrayWithLength:[(JavaUtilHashSet *)v8 size] type:JavaLangLong_class_()]];
         JavaUtilArrays_sortWithNSObjectArray_(v67);
         v68 = new_JavaUtilHashMap_init();
-        v49 = self;
+        selfCopy7 = self;
         if (v67)
         {
           v69 = v68;
@@ -327,13 +327,13 @@ LABEL_102:
                     goto LABEL_124;
                   }
 
-                  v79 = *(*(&v91 + 1) + 8 * i);
-                  if (v79)
+                  longLongValue3 = *(*(&v91 + 1) + 8 * i);
+                  if (longLongValue3)
                   {
-                    v79 = [v79 longLongValue];
+                    longLongValue3 = [longLongValue3 longLongValue];
                   }
 
-                  v80 = [(JavaUtilHashMap *)v69 getWithId:JavaLangLong_valueOfWithLong_(v79)];
+                  v80 = [(JavaUtilHashMap *)v69 getWithId:JavaLangLong_valueOfWithLong_(longLongValue3)];
                   if (!v80)
                   {
                     goto LABEL_124;
@@ -386,7 +386,7 @@ LABEL_124:
       JreThrowNullPointerException();
     }
 
-    v49 = self;
+    selfCopy7 = self;
     v58 = self->meta_;
     if (v14 < 0)
     {
@@ -405,7 +405,7 @@ LABEL_124:
   {
     if (v42)
     {
-      v49 = self;
+      selfCopy7 = self;
       [(OrgApacheLuceneStoreDataOutput *)self->meta_ writeLongWithLong:v14];
       [(OrgApacheLuceneStoreDataOutput *)self->meta_ writeLongWithLong:v12];
       v50 = OrgApacheLuceneUtilPackedDirectWriter_unsignedBitsRequiredWithLong_(v30 / v12);
@@ -432,10 +432,10 @@ LABEL_124:
                 objc_enumerationMutation(obj);
               }
 
-              v57 = *(*(&v99 + 1) + 8 * j);
-              if (v57)
+              longLongValue4 = *(*(&v99 + 1) + 8 * j);
+              if (longLongValue4)
               {
-                v57 = [v57 longLongValue];
+                longLongValue4 = [longLongValue4 longLongValue];
               }
 
               if (!v52)
@@ -443,7 +443,7 @@ LABEL_124:
                 goto LABEL_124;
               }
 
-              [(OrgApacheLuceneUtilPackedDirectWriter *)v52 addWithLong:(v57 - v14) / v12];
+              [(OrgApacheLuceneUtilPackedDirectWriter *)v52 addWithLong:(longLongValue4 - v14) / v12];
             }
 
             v54 = [obj countByEnumeratingWithState:&v99 objects:v113 count:16];
@@ -469,7 +469,7 @@ LABEL_120:
       v14 = 0;
     }
 
-    v49 = self;
+    selfCopy7 = self;
     [(OrgApacheLuceneStoreDataOutput *)self->meta_ writeLongWithLong:v14];
     [(OrgApacheLuceneStoreDataOutput *)self->meta_ writeVIntWithInt:v90];
     v60 = OrgApacheLuceneUtilPackedDirectWriter_getInstanceWithOrgApacheLuceneStoreIndexOutput_withLong_withInt_(self->data_, v24, v90);
@@ -497,10 +497,10 @@ LABEL_120:
             objc_enumerationMutation(obj);
           }
 
-          v66 = *(*(&v95 + 1) + 8 * k);
-          if (v66)
+          longLongValue5 = *(*(&v95 + 1) + 8 * k);
+          if (longLongValue5)
           {
-            v66 = [v66 longLongValue];
+            longLongValue5 = [longLongValue5 longLongValue];
           }
 
           if (!v61)
@@ -508,7 +508,7 @@ LABEL_120:
             goto LABEL_124;
           }
 
-          [(OrgApacheLuceneUtilPackedDirectWriter *)v61 addWithLong:&v66[-v14]];
+          [(OrgApacheLuceneUtilPackedDirectWriter *)v61 addWithLong:&longLongValue5[-v14]];
         }
 
         v63 = [obj countByEnumeratingWithState:&v95 objects:v112 count:16];
@@ -526,21 +526,21 @@ LABEL_120:
   }
 
 LABEL_123:
-  [(OrgApacheLuceneStoreDataOutput *)v49->meta_ writeLongWithLong:[(OrgApacheLuceneStoreIndexOutput *)v49->data_ getFilePointer]];
+  [(OrgApacheLuceneStoreDataOutput *)selfCopy7->meta_ writeLongWithLong:[(OrgApacheLuceneStoreIndexOutput *)selfCopy7->data_ getFilePointer]];
 }
 
-- (void)writeMissingBitsetWithJavaLangIterable:(id)a3
+- (void)writeMissingBitsetWithJavaLangIterable:(id)iterable
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  if (!a3)
+  if (!iterable)
   {
     goto LABEL_19;
   }
 
-  v5 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [iterable countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -553,7 +553,7 @@ LABEL_123:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(iterable);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -585,7 +585,7 @@ LABEL_123:
         v8 = v13 + 1;
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [iterable countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -604,7 +604,7 @@ LABEL_19:
   }
 }
 
-- (void)addBinaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4
+- (void)addBinaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable
 {
   meta = self->meta_;
   if (!meta)
@@ -612,23 +612,23 @@ LABEL_19:
     goto LABEL_37;
   }
 
-  if (!a3)
+  if (!info)
   {
     goto LABEL_37;
   }
 
-  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:*(a3 + 4)];
+  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:*(info + 4)];
   [(OrgApacheLuceneStoreIndexOutput *)self->meta_ writeByteWithByte:1];
   data = self->data_;
-  if (!data || (v8 = [(OrgApacheLuceneStoreIndexOutput *)data getFilePointer], v36 = 0u, v37 = 0u, v38 = 0u, v39 = 0u, !a4))
+  if (!data || (v8 = [(OrgApacheLuceneStoreIndexOutput *)data getFilePointer], v36 = 0u, v37 = 0u, v38 = 0u, v39 = 0u, !iterable))
   {
 LABEL_37:
     JreThrowNullPointerException();
   }
 
   v29 = v8;
-  v31 = self;
-  v9 = [a4 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  selfCopy = self;
+  v9 = [iterable countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
@@ -640,12 +640,12 @@ LABEL_37:
     do
     {
       v30 = v11;
-      v16 = a4;
+      iterableCopy = iterable;
       for (i = 0; i != v10; ++i)
       {
         if (*v37 != v13)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(iterableCopy);
         }
 
         v18 = *(*(&v36 + 1) + 8 * i);
@@ -664,13 +664,13 @@ LABEL_37:
         v15 = JavaLangMath_maxWithInt_withInt_(v15, v19);
         if (v18)
         {
-          [(OrgApacheLuceneStoreIndexOutput *)v31->data_ writeBytesWithByteArray:*(v18 + 8) withInt:*(v18 + 16) withInt:*(v18 + 20)];
+          [(OrgApacheLuceneStoreIndexOutput *)selfCopy->data_ writeBytesWithByteArray:*(v18 + 8) withInt:*(v18 + 16) withInt:*(v18 + 20)];
         }
       }
 
       v11 = &v10[v30];
-      a4 = v16;
-      v10 = [v16 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      iterable = iterableCopy;
+      v10 = [iterableCopy countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v10);
@@ -684,42 +684,42 @@ LABEL_37:
     v15 = 0x80000000;
   }
 
-  [(OrgApacheLuceneStoreDataOutput *)v31->meta_ writeVIntWithInt:v14 != v15];
+  [(OrgApacheLuceneStoreDataOutput *)selfCopy->meta_ writeVIntWithInt:v14 != v15];
   if (!v12)
   {
-    v20 = v31->meta_;
+    v20 = selfCopy->meta_;
     v21 = -1;
     goto LABEL_23;
   }
 
   if (v12 == v11)
   {
-    v20 = v31->meta_;
+    v20 = selfCopy->meta_;
     v21 = -2;
 LABEL_23:
     [(OrgApacheLuceneStoreDataOutput *)v20 writeLongWithLong:v21];
     goto LABEL_25;
   }
 
-  [(OrgApacheLuceneStoreDataOutput *)v31->meta_ writeLongWithLong:[(OrgApacheLuceneStoreIndexOutput *)v31->data_ getFilePointer]];
-  [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)v31 writeMissingBitsetWithJavaLangIterable:a4];
+  [(OrgApacheLuceneStoreDataOutput *)selfCopy->meta_ writeLongWithLong:[(OrgApacheLuceneStoreIndexOutput *)selfCopy->data_ getFilePointer]];
+  [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)selfCopy writeMissingBitsetWithJavaLangIterable:iterable];
 LABEL_25:
-  [(OrgApacheLuceneStoreDataOutput *)v31->meta_ writeVIntWithInt:v14];
-  [(OrgApacheLuceneStoreDataOutput *)v31->meta_ writeVIntWithInt:v15];
-  [(OrgApacheLuceneStoreDataOutput *)v31->meta_ writeVLongWithLong:v11];
-  [(OrgApacheLuceneStoreDataOutput *)v31->meta_ writeLongWithLong:v29];
+  [(OrgApacheLuceneStoreDataOutput *)selfCopy->meta_ writeVIntWithInt:v14];
+  [(OrgApacheLuceneStoreDataOutput *)selfCopy->meta_ writeVIntWithInt:v15];
+  [(OrgApacheLuceneStoreDataOutput *)selfCopy->meta_ writeVLongWithLong:v11];
+  [(OrgApacheLuceneStoreDataOutput *)selfCopy->meta_ writeLongWithLong:v29];
   if (v14 != v15)
   {
-    [(OrgApacheLuceneStoreDataOutput *)v31->meta_ writeLongWithLong:[(OrgApacheLuceneStoreIndexOutput *)v31->data_ getFilePointer]];
-    [(OrgApacheLuceneStoreDataOutput *)v31->meta_ writeVIntWithInt:2];
-    [(OrgApacheLuceneStoreDataOutput *)v31->meta_ writeVIntWithInt:0x4000];
-    v22 = new_OrgApacheLuceneUtilPackedMonotonicBlockPackedWriter_initWithOrgApacheLuceneStoreDataOutput_withInt_(v31->data_, 0x4000);
+    [(OrgApacheLuceneStoreDataOutput *)selfCopy->meta_ writeLongWithLong:[(OrgApacheLuceneStoreIndexOutput *)selfCopy->data_ getFilePointer]];
+    [(OrgApacheLuceneStoreDataOutput *)selfCopy->meta_ writeVIntWithInt:2];
+    [(OrgApacheLuceneStoreDataOutput *)selfCopy->meta_ writeVIntWithInt:0x4000];
+    v22 = new_OrgApacheLuceneUtilPackedMonotonicBlockPackedWriter_initWithOrgApacheLuceneStoreDataOutput_withInt_(selfCopy->data_, 0x4000);
     [(OrgApacheLuceneUtilPackedMonotonicBlockPackedWriter *)v22 addWithLong:0];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v23 = [a4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    v23 = [iterable countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v23)
     {
       v24 = v23;
@@ -731,7 +731,7 @@ LABEL_25:
         {
           if (*v33 != v26)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(iterable);
           }
 
           v28 = *(*(&v32 + 1) + 8 * j);
@@ -743,7 +743,7 @@ LABEL_25:
           [(OrgApacheLuceneUtilPackedMonotonicBlockPackedWriter *)v22 addWithLong:v25];
         }
 
-        v24 = [a4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v24 = [iterable countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v24);
@@ -753,102 +753,102 @@ LABEL_25:
   }
 }
 
-- (void)addSortedFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4 withJavaLangIterable:(id)a5
+- (void)addSortedFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable withJavaLangIterable:(id)langIterable
 {
   meta = self->meta_;
-  if (!meta || !a3)
+  if (!meta || !info)
   {
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:*(a3 + 4)];
+  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:*(info + 4)];
   [(OrgApacheLuceneStoreIndexOutput *)self->meta_ writeByteWithByte:2];
-  sub_1000B2644(&self->super.super.isa, a3, a4);
+  sub_1000B2644(&self->super.super.isa, info, iterable);
 
-  [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:a3 withJavaLangIterable:a5 withBoolean:0];
+  [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:info withJavaLangIterable:langIterable withBoolean:0];
 }
 
-- (void)addSortedNumericFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4 withJavaLangIterable:(id)a5
+- (void)addSortedNumericFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable withJavaLangIterable:(id)langIterable
 {
   meta = self->meta_;
-  if (!meta || !a3)
+  if (!meta || !info)
   {
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:*(a3 + 4)];
+  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:*(info + 4)];
   [(OrgApacheLuceneStoreIndexOutput *)self->meta_ writeByteWithByte:4];
-  if (OrgApacheLuceneCodecsDocValuesConsumer_isSingleValuedWithJavaLangIterable_(a4))
+  if (OrgApacheLuceneCodecsDocValuesConsumer_isSingleValuedWithJavaLangIterable_(iterable))
   {
     [(OrgApacheLuceneStoreDataOutput *)self->meta_ writeVIntWithInt:1];
-    v10 = OrgApacheLuceneCodecsDocValuesConsumer_singletonViewWithJavaLangIterable_withJavaLangIterable_withNSNumber_(a4, a5, 0);
+    v10 = OrgApacheLuceneCodecsDocValuesConsumer_singletonViewWithJavaLangIterable_withJavaLangIterable_withNSNumber_(iterable, langIterable, 0);
 
-    [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:a3 withJavaLangIterable:v10];
+    [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:info withJavaLangIterable:v10];
   }
 
   else
   {
-    v11 = sub_1000B31C8(a4, a5);
+    v11 = sub_1000B31C8(iterable, langIterable);
     v12 = self->meta_;
     if (v11)
     {
       [(OrgApacheLuceneStoreDataOutput *)v12 writeVIntWithInt:2];
       sub_1000B33B8(self, v11);
-      v13 = sub_1000B36FC(v11, a4, a5);
+      v13 = sub_1000B36FC(v11, iterable, langIterable);
 
-      [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:a3 withJavaLangIterable:v13 withBoolean:0];
+      [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:info withJavaLangIterable:v13 withBoolean:0];
     }
 
     else
     {
       [(OrgApacheLuceneStoreDataOutput *)v12 writeVIntWithInt:0];
-      [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:a3 withJavaLangIterable:a5 withBoolean:1];
+      [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:info withJavaLangIterable:langIterable withBoolean:1];
 
-      sub_1000B386C(self, a3, a4);
+      sub_1000B386C(self, info, iterable);
     }
   }
 }
 
-- (void)addSortedSetFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withJavaLangIterable:(id)a4 withJavaLangIterable:(id)a5 withJavaLangIterable:(id)a6
+- (void)addSortedSetFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withJavaLangIterable:(id)iterable withJavaLangIterable:(id)langIterable withJavaLangIterable:(id)javaLangIterable
 {
   meta = self->meta_;
-  if (!meta || !a3)
+  if (!meta || !info)
   {
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:*(a3 + 4)];
+  [(OrgApacheLuceneStoreDataOutput *)meta writeVIntWithInt:*(info + 4)];
   [(OrgApacheLuceneStoreIndexOutput *)self->meta_ writeByteWithByte:3];
-  if (OrgApacheLuceneCodecsDocValuesConsumer_isSingleValuedWithJavaLangIterable_(a5))
+  if (OrgApacheLuceneCodecsDocValuesConsumer_isSingleValuedWithJavaLangIterable_(langIterable))
   {
     [(OrgApacheLuceneStoreDataOutput *)self->meta_ writeVIntWithInt:1];
     v12 = JavaLangLong_valueOfWithLong_(-1);
-    v13 = OrgApacheLuceneCodecsDocValuesConsumer_singletonViewWithJavaLangIterable_withJavaLangIterable_withNSNumber_(a5, a6, v12);
+    v13 = OrgApacheLuceneCodecsDocValuesConsumer_singletonViewWithJavaLangIterable_withJavaLangIterable_withNSNumber_(langIterable, javaLangIterable, v12);
 
-    [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addSortedFieldWithOrgApacheLuceneIndexFieldInfo:a3 withJavaLangIterable:a4 withJavaLangIterable:v13];
+    [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addSortedFieldWithOrgApacheLuceneIndexFieldInfo:info withJavaLangIterable:iterable withJavaLangIterable:v13];
   }
 
   else
   {
-    v14 = sub_1000B31C8(a5, a6);
+    v14 = sub_1000B31C8(langIterable, javaLangIterable);
     v15 = self->meta_;
     if (v14)
     {
       [(OrgApacheLuceneStoreDataOutput *)v15 writeVIntWithInt:2];
       sub_1000B33B8(self, v14);
-      sub_1000B2644(&self->super.super.isa, a3, a4);
-      v16 = sub_1000B36FC(v14, a5, a6);
+      sub_1000B2644(&self->super.super.isa, info, iterable);
+      v16 = sub_1000B36FC(v14, langIterable, javaLangIterable);
 
-      [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:a3 withJavaLangIterable:v16 withBoolean:0];
+      [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:info withJavaLangIterable:v16 withBoolean:0];
     }
 
     else
     {
       [(OrgApacheLuceneStoreDataOutput *)v15 writeVIntWithInt:0];
-      sub_1000B2644(&self->super.super.isa, a3, a4);
-      [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:a3 withJavaLangIterable:a6 withBoolean:0];
+      sub_1000B2644(&self->super.super.isa, info, iterable);
+      [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer *)self addNumericFieldWithOrgApacheLuceneIndexFieldInfo:info withJavaLangIterable:javaLangIterable withBoolean:0];
 
-      sub_1000B386C(self, a3, a5);
+      sub_1000B386C(self, info, langIterable);
     }
   }
 }

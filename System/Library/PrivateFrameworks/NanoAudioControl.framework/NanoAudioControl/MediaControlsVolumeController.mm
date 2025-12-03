@@ -1,17 +1,17 @@
 @interface MediaControlsVolumeController
 - (BOOL)_setupOutputDevicesAndVolumeControllersIfNeeded;
-- (BOOL)setCurrentBluetoothListeningModeForRouteType:(unint64_t)a3 bluetoothListeningMode:(id)a4 error:(id *)a5;
-- (BOOL)volumeControlAvailableForRouteType:(unint64_t)a3;
+- (BOOL)setCurrentBluetoothListeningModeForRouteType:(unint64_t)type bluetoothListeningMode:(id)mode error:(id *)error;
+- (BOOL)volumeControlAvailableForRouteType:(unint64_t)type;
 - (MediaControlsVolumeController)init;
-- (float)volumeForRouteType:(unint64_t)a3;
-- (id)availableBluetoothListeningModeForRouteType:(unint64_t)a3;
-- (id)currentBluetoothListeningModeForRouteType:(unint64_t)a3;
-- (id)imageForRouteType:(unint64_t)a3;
-- (id)routeNameForRouteType:(unint64_t)a3;
-- (unint64_t)_routeForVolumeController:(id)a3;
+- (float)volumeForRouteType:(unint64_t)type;
+- (id)availableBluetoothListeningModeForRouteType:(unint64_t)type;
+- (id)currentBluetoothListeningModeForRouteType:(unint64_t)type;
+- (id)imageForRouteType:(unint64_t)type;
+- (id)routeNameForRouteType:(unint64_t)type;
+- (unint64_t)_routeForVolumeController:(id)controller;
 - (void)routeDidChangeNotification;
-- (void)setVolume:(float)a3 forRouteType:(unint64_t)a4;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
+- (void)setVolume:(float)volume forRouteType:(unint64_t)type;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
 @end
 
 @implementation MediaControlsVolumeController
@@ -23,16 +23,16 @@
   v2 = [(MediaControlsVolumeController *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x277CD5D48] systemRoute];
+    systemRoute = [MEMORY[0x277CD5D48] systemRoute];
     systemRoute = v2->_systemRoute;
-    v2->_systemRoute = v5;
+    v2->_systemRoute = systemRoute;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_routeDidChangeNotification name:*MEMORY[0x277CD5640] object:v2->_systemRoute];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_routeDidChangeNotification name:*MEMORY[0x277CD5640] object:v2->_systemRoute];
 
     v8 = objc_alloc_init(MEMORY[0x277CD60F0]);
     systemVolumeController = v2->_systemVolumeController;
@@ -45,46 +45,46 @@
   return v2;
 }
 
-- (id)routeNameForRouteType:(unint64_t)a3
+- (id)routeNameForRouteType:(unint64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    a2 = [*(&self->super.isa + qword_25AEEB470[a3]) routeName];
+    a2 = [*(&self->super.isa + qword_25AEEB470[type]) routeName];
   }
 
   return a2;
 }
 
-- (id)imageForRouteType:(unint64_t)a3
+- (id)imageForRouteType:(unint64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    a2 = [MEMORY[0x277CD5D48] _iconImageForRoute:{*(&self->_systemOutputDeviceRoute + a3), v3}];
+    a2 = [MEMORY[0x277CD5D48] _iconImageForRoute:{*(&self->_systemOutputDeviceRoute + type), v3}];
   }
 
   return a2;
 }
 
-- (id)currentBluetoothListeningModeForRouteType:(unint64_t)a3
+- (id)currentBluetoothListeningModeForRouteType:(unint64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    [*(&self->_systemOutputDeviceRoute + a3) logicalLeaderOutputDevice];
+    [*(&self->_systemOutputDeviceRoute + type) logicalLeaderOutputDevice];
     self = MRAVOutputDeviceCopyCurrentBluetoothListeningMode();
   }
 
   return self;
 }
 
-- (BOOL)setCurrentBluetoothListeningModeForRouteType:(unint64_t)a3 bluetoothListeningMode:(id)a4 error:(id *)a5
+- (BOOL)setCurrentBluetoothListeningModeForRouteType:(unint64_t)type bluetoothListeningMode:(id)mode error:(id *)error
 {
-  v8 = a4;
-  if (a3 <= 2)
+  modeCopy = mode;
+  if (type <= 2)
   {
-    [*(&self->_systemOutputDeviceRoute + a3) logicalLeaderOutputDevice];
-    v9 = v8;
+    [*(&self->_systemOutputDeviceRoute + type) logicalLeaderOutputDevice];
+    v9 = modeCopy;
     v10 = MRAVOutputDeviceSetCurrentBluetoothListeningMode();
-    if (!a5)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -93,10 +93,10 @@
   }
 
   v10 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_5:
-    *a5 = 0;
+    *error = 0;
   }
 
 LABEL_6:
@@ -104,11 +104,11 @@ LABEL_6:
   return v10;
 }
 
-- (id)availableBluetoothListeningModeForRouteType:(unint64_t)a3
+- (id)availableBluetoothListeningModeForRouteType:(unint64_t)type
 {
-  if (a3 >= 2)
+  if (type >= 2)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_8;
     }
@@ -133,9 +133,9 @@ LABEL_8:
   return a2;
 }
 
-- (float)volumeForRouteType:(unint64_t)a3
+- (float)volumeForRouteType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     p_secondaryVolumeController = &self->_secondaryVolumeController;
     if ([(MPVolumeController *)self->_secondaryVolumeController isVolumeControlAvailable])
@@ -146,9 +146,9 @@ LABEL_8:
     return 1.0;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
-    if (!a3)
+    if (!type)
     {
       p_secondaryVolumeController = &self->_systemVolumeController;
       systemVolumeController = self->_systemVolumeController;
@@ -173,24 +173,24 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)volumeControlAvailableForRouteType:(unint64_t)a3
+- (BOOL)volumeControlAvailableForRouteType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return 0;
   }
 
   else
   {
-    return [*(&self->_systemVolumeController + a3) isVolumeControlAvailable];
+    return [*(&self->_systemVolumeController + type) isVolumeControlAvailable];
   }
 }
 
-- (void)setVolume:(float)a3 forRouteType:(unint64_t)a4
+- (void)setVolume:(float)volume forRouteType:(unint64_t)type
 {
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    [*(&self->_systemVolumeController + a4) setVolume:? withNotificationDelay:?];
+    [*(&self->_systemVolumeController + type) setVolume:? withNotificationDelay:?];
   }
 }
 
@@ -241,39 +241,39 @@ void __59__MediaControlsVolumeController_routeDidChangeNotification__block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
-  v8 = a3;
-  v6 = [v8 isVolumeControlAvailable];
-  *&v7 = a4;
-  [(MediaControlsVolumeController *)self _notifyVolumeChangedForVolumeController:v8 volumeControlAvailable:v6 effectiveVolume:v7];
+  controllerCopy = controller;
+  isVolumeControlAvailable = [controllerCopy isVolumeControlAvailable];
+  *&v7 = change;
+  [(MediaControlsVolumeController *)self _notifyVolumeChangedForVolumeController:controllerCopy volumeControlAvailable:isVolumeControlAvailable effectiveVolume:v7];
 }
 
-- (unint64_t)_routeForVolumeController:(id)a3
+- (unint64_t)_routeForVolumeController:(id)controller
 {
-  if (self->_primaryVolumeController == a3)
+  if (self->_primaryVolumeController == controller)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (self->_secondaryVolumeController == a3);
+    return 2 * (self->_secondaryVolumeController == controller);
   }
 }
 
 - (BOOL)_setupOutputDevicesAndVolumeControllersIfNeeded
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v3 = [(MPAVEndpointRoute *)self->_systemRoute endpointWrapper];
-  [v3 unwrappedValue];
+  endpointWrapper = [(MPAVEndpointRoute *)self->_systemRoute endpointWrapper];
+  [endpointWrapper unwrappedValue];
   v4 = MRAVEndpointCopyOutputDevices();
 
   if (v4)
   {
-    v5 = [(MPAVEndpointRoute *)self->_systemRoute isSplitRoute];
+    isSplitRoute = [(MPAVEndpointRoute *)self->_systemRoute isSplitRoute];
     systemOutputDeviceRoute = self->_systemOutputDeviceRoute;
-    if (v5)
+    if (isSplitRoute)
     {
       self->_systemOutputDeviceRoute = 0;
 
@@ -347,8 +347,8 @@ void __59__MediaControlsVolumeController_routeDidChangeNotification__block_invok
 
     else
     {
-      v29 = [(MPAVOutputDeviceRoute *)systemOutputDeviceRoute outputDevices];
-      LODWORD(v28) = [v29 isEqualToArray:v4] ^ 1;
+      outputDevices = [(MPAVOutputDeviceRoute *)systemOutputDeviceRoute outputDevices];
+      LODWORD(v28) = [outputDevices isEqualToArray:v4] ^ 1;
 
       v30 = self->_primaryOutputDeviceRoute;
       self->_primaryOutputDeviceRoute = 0;

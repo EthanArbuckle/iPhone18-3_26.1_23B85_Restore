@@ -1,16 +1,16 @@
 @interface AMSFamilyMember
-- (AMSFamilyMember)initWithDictionaryRepresentation:(id)a3;
+- (AMSFamilyMember)initWithDictionaryRepresentation:(id)representation;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation AMSFamilyMember
 
-- (AMSFamilyMember)initWithDictionaryRepresentation:(id)a3
+- (AMSFamilyMember)initWithDictionaryRepresentation:(id)representation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ITunesPreferredDsid"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"ITunesPreferredDsid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -23,7 +23,7 @@
       v7 = [(AMSFamilyMember *)&v31 init];
       if (v7)
       {
-        v8 = [v4 objectForKeyedSubscript:@"askToBuy"];
+        v8 = [representationCopy objectForKeyedSubscript:@"askToBuy"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -36,7 +36,7 @@
         }
 
         v7->_askToBuyEnabled = [v9 BOOLValue];
-        v13 = [v4 objectForKeyedSubscript:@"firstName"];
+        v13 = [representationCopy objectForKeyedSubscript:@"firstName"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -51,7 +51,7 @@
         firstName = v7->_firstName;
         v7->_firstName = v14;
 
-        v16 = [v4 objectForKeyedSubscript:@"ICloudDsid"];
+        v16 = [representationCopy objectForKeyedSubscript:@"ICloudDsid"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -66,7 +66,7 @@
         iCloudDSID = v7->_iCloudDSID;
         v7->_iCloudDSID = v17;
 
-        v19 = [v4 objectForKeyedSubscript:@"accountName"];
+        v19 = [representationCopy objectForKeyedSubscript:@"accountName"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -82,7 +82,7 @@
         v7->_iCloudUsername = v20;
 
         objc_storeStrong(&v7->_iTunesDSID, v5);
-        v22 = [v4 objectForKeyedSubscript:@"ITunesPreferredAccountName"];
+        v22 = [representationCopy objectForKeyedSubscript:@"ITunesPreferredAccountName"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -97,7 +97,7 @@
         iTunesUsername = v7->_iTunesUsername;
         v7->_iTunesUsername = v23;
 
-        v25 = [v4 objectForKeyedSubscript:@"lastName"];
+        v25 = [representationCopy objectForKeyedSubscript:@"lastName"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -112,7 +112,7 @@
         lastName = v7->_lastName;
         v7->_lastName = v26;
 
-        v28 = [v4 objectForKeyedSubscript:@"sharingPurchases"];
+        v28 = [representationCopy objectForKeyedSubscript:@"sharingPurchases"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -128,7 +128,7 @@
       }
 
       self = v7;
-      v12 = self;
+      selfCopy = self;
       goto LABEL_33;
     }
   }
@@ -143,19 +143,19 @@
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v33 = v4;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "AMSFamilyMember: Received an invalid server response for AMSFamilyMember. serverResponse = %@", buf, 0xCu);
+    v33 = representationCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "AMSFamilyMember: Received an invalid server response for AMSFamilyMember. serverResponse = %@", buf, 0xCu);
   }
 
   v6 = 0;
-  v12 = 0;
+  selfCopy = 0;
 LABEL_33:
 
-  return v12;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -164,26 +164,26 @@ LABEL_33:
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSFamilyMember isAskToBuyEnabled](self, "isAskToBuyEnabled")}];
   [v3 setObject:v4 forKeyedSubscript:@"askToBuy"];
 
-  v5 = [(AMSFamilyMember *)self iTunesDSID];
-  [v3 setObject:v5 forKeyedSubscript:@"ITunesPreferredDsid"];
+  iTunesDSID = [(AMSFamilyMember *)self iTunesDSID];
+  [v3 setObject:iTunesDSID forKeyedSubscript:@"ITunesPreferredDsid"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSFamilyMember isSharingPurchases](self, "isSharingPurchases")}];
   [v3 setObject:v6 forKeyedSubscript:@"sharingPurchases"];
 
-  v7 = [(AMSFamilyMember *)self firstName];
-  [v3 ams_setNullableObject:v7 forKey:@"firstName"];
+  firstName = [(AMSFamilyMember *)self firstName];
+  [v3 ams_setNullableObject:firstName forKey:@"firstName"];
 
-  v8 = [(AMSFamilyMember *)self iCloudDSID];
-  [v3 ams_setNullableObject:v8 forKey:@"ICloudDsid"];
+  iCloudDSID = [(AMSFamilyMember *)self iCloudDSID];
+  [v3 ams_setNullableObject:iCloudDSID forKey:@"ICloudDsid"];
 
-  v9 = [(AMSFamilyMember *)self iCloudUsername];
-  [v3 ams_setNullableObject:v9 forKey:@"accountName"];
+  iCloudUsername = [(AMSFamilyMember *)self iCloudUsername];
+  [v3 ams_setNullableObject:iCloudUsername forKey:@"accountName"];
 
-  v10 = [(AMSFamilyMember *)self iTunesUsername];
-  [v3 ams_setNullableObject:v10 forKey:@"ITunesPreferredAccountName"];
+  iTunesUsername = [(AMSFamilyMember *)self iTunesUsername];
+  [v3 ams_setNullableObject:iTunesUsername forKey:@"ITunesPreferredAccountName"];
 
-  v11 = [(AMSFamilyMember *)self lastName];
-  [v3 ams_setNullableObject:v11 forKey:@"lastName"];
+  lastName = [(AMSFamilyMember *)self lastName];
+  [v3 ams_setNullableObject:lastName forKey:@"lastName"];
 
   v12 = [v3 copy];
 
@@ -194,14 +194,14 @@ LABEL_33:
 {
   v16[9] = *MEMORY[0x1E69E9840];
   v15[0] = @"firstName";
-  v3 = [(AMSFamilyMember *)self firstName];
-  v16[0] = v3;
+  firstName = [(AMSFamilyMember *)self firstName];
+  v16[0] = firstName;
   v15[1] = @"iCloudDSID";
-  v4 = [(AMSFamilyMember *)self iCloudDSID];
-  v16[1] = v4;
+  iCloudDSID = [(AMSFamilyMember *)self iCloudDSID];
+  v16[1] = iCloudDSID;
   v15[2] = @"iCloudUsername";
-  v5 = [(AMSFamilyMember *)self iCloudUsername];
-  v16[2] = v5;
+  iCloudUsername = [(AMSFamilyMember *)self iCloudUsername];
+  v16[2] = iCloudUsername;
   v15[3] = @"isCurrentSignedInUser";
   if ([(AMSFamilyMember *)self isCurrentSignedInUser])
   {
@@ -215,11 +215,11 @@ LABEL_33:
 
   v16[3] = v6;
   v15[4] = @"iTunesDSID";
-  v7 = [(AMSFamilyMember *)self iTunesDSID];
-  v16[4] = v7;
+  iTunesDSID = [(AMSFamilyMember *)self iTunesDSID];
+  v16[4] = iTunesDSID;
   v15[5] = @"iTunesUsername";
-  v8 = [(AMSFamilyMember *)self iTunesUsername];
-  v16[5] = v8;
+  iTunesUsername = [(AMSFamilyMember *)self iTunesUsername];
+  v16[5] = iTunesUsername;
   v15[6] = @"isAskToBuyEnabled";
   if ([(AMSFamilyMember *)self isAskToBuyEnabled])
   {
@@ -245,8 +245,8 @@ LABEL_33:
 
   v16[7] = v10;
   v15[8] = @"lastName";
-  v11 = [(AMSFamilyMember *)self lastName];
-  v16[8] = v11;
+  lastName = [(AMSFamilyMember *)self lastName];
+  v16[8] = lastName;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:9];
   v13 = [self ams_generateDescriptionWithSubObjects:v12];
 

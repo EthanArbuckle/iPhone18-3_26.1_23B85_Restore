@@ -1,10 +1,10 @@
 @interface RecordDataSourceCell
-- (_TtC15HealthRecordsUI20RecordDataSourceCell)initWithCoder:(id)a3;
+- (_TtC15HealthRecordsUI20RecordDataSourceCell)initWithCoder:(id)coder;
 @end
 
 @implementation RecordDataSourceCell
 
-- (_TtC15HealthRecordsUI20RecordDataSourceCell)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI20RecordDataSourceCell)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC15HealthRecordsUI20RecordDataSourceCell_brandView;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(WDMedicalRecordBrandView) initWithFrame_];

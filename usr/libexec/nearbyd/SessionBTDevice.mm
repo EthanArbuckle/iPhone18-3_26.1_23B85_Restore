@@ -1,40 +1,40 @@
 @interface SessionBTDevice
 - (BOOL)removeRateForClient:()basic_string<char;
-- (SessionBTDevice)initWithUWBAddr:(unint64_t)a3 ticketID:(unsigned __int16)a4 clientId:()basic_string<char throttleRate:()std:(std::allocator<char>> *)a5 :char_traits<char>;
+- (SessionBTDevice)initWithUWBAddr:(unint64_t)addr ticketID:(unsigned __int16)d clientId:()basic_string<char throttleRate:()std:(std::allocator<char>> *)std :char_traits<char>;
 - (float)currentHighestThrottleRate;
 - (id).cxx_construct;
-- (void)setRate:(float)a3 forClient:()basic_string<char shouldReplace:()std:(std::allocator<char>> *)a4 :char_traits<char>;
+- (void)setRate:(float)rate forClient:()basic_string<char shouldReplace:()std:(std::allocator<char>> *)std :char_traits<char>;
 @end
 
 @implementation SessionBTDevice
 
-- (SessionBTDevice)initWithUWBAddr:(unint64_t)a3 ticketID:(unsigned __int16)a4 clientId:()basic_string<char throttleRate:()std:(std::allocator<char>> *)a5 :char_traits<char>
+- (SessionBTDevice)initWithUWBAddr:(unint64_t)addr ticketID:(unsigned __int16)d clientId:()basic_string<char throttleRate:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v6 = v5;
   v12.receiver = self;
   v12.super_class = SessionBTDevice;
-  v13[0] = a3;
+  v13[0] = addr;
   v9 = [(SessionBTDevice *)&v12 init];
   if (v9)
   {
     v11 = sub_100005288();
-    v14 = v13;
+    stdCopy = v13;
     v13[1] = &v11;
     sub_100020BD0(&v9->uwbAddrs.__table_.__bucket_list_.__ptr_, v13);
-    v14 = a5;
-    *(sub_10002106C(&v9->ratePerClient.__table_.__bucket_list_.__ptr_, a5) + 10) = v6;
-    v9->ticketId = a4;
+    stdCopy = std;
+    *(sub_10002106C(&v9->ratePerClient.__table_.__bucket_list_.__ptr_, std) + 10) = v6;
+    v9->ticketId = d;
     v9->_isRunning = 0;
   }
 
   return v9;
 }
 
-- (void)setRate:(float)a3 forClient:()basic_string<char shouldReplace:()std:(std::allocator<char>> *)a4 :char_traits<char>
+- (void)setRate:(float)rate forClient:()basic_string<char shouldReplace:()std:(std::allocator<char>> *)std :char_traits<char>
 {
-  if (v4 || !sub_100021574(&self->ratePerClient.__table_.__bucket_list_.__ptr_, a4))
+  if (v4 || !sub_100021574(&self->ratePerClient.__table_.__bucket_list_.__ptr_, std))
   {
-    *(sub_10002106C(&self->ratePerClient.__table_.__bucket_list_.__ptr_, a4) + 10) = a3;
+    *(sub_10002106C(&self->ratePerClient.__table_.__bucket_list_.__ptr_, std) + 10) = rate;
   }
 }
 

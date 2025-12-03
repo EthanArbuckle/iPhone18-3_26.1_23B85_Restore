@@ -1,5 +1,5 @@
 @interface LibraryAddKeepLocalHandlingController
-+ (id)requiredPropertiesForModelClass:(Class)a3;
++ (id)requiredPropertiesForModelClass:(Class)class;
 - (_TtC16MusicApplication37LibraryAddKeepLocalHandlingController)init;
 @end
 
@@ -12,7 +12,7 @@
   return [(LibraryAddKeepLocalHandlingController *)&v3 init];
 }
 
-+ (id)requiredPropertiesForModelClass:(Class)a3
++ (id)requiredPropertiesForModelClass:(Class)class
 {
   swift_getObjCClassMetadata();
   v3 = sub_2BAFF8();

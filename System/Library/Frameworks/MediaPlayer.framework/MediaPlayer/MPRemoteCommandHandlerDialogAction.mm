@@ -1,9 +1,9 @@
 @interface MPRemoteCommandHandlerDialogAction
-+ (id)actionWithTitle:(id)a3 type:(int64_t)a4 commandEvent:(id)a5;
++ (id)actionWithTitle:(id)title type:(int64_t)type commandEvent:(id)event;
 - (MPRemoteCommandEvent)event;
-- (MPRemoteCommandHandlerDialogAction)initWithMediaRemoteType:(id)a3;
+- (MPRemoteCommandHandlerDialogAction)initWithMediaRemoteType:(id)type;
 - (NSString)title;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)type;
 @end
@@ -12,16 +12,16 @@
 
 - (MPRemoteCommandEvent)event
 {
-  v2 = [(MPRemoteCommandHandlerDialogAction *)self mediaRemoteType];
-  v3 = [v2 event];
+  mediaRemoteType = [(MPRemoteCommandHandlerDialogAction *)self mediaRemoteType];
+  event = [mediaRemoteType event];
 
-  if (v3)
+  if (event)
   {
-    v4 = -[MPRemoteCommand initWithMediaRemoteCommandType:]([MPRemoteCommand alloc], "initWithMediaRemoteCommandType:", [v3 command]);
+    v4 = -[MPRemoteCommand initWithMediaRemoteCommandType:]([MPRemoteCommand alloc], "initWithMediaRemoteCommandType:", [event command]);
     v5 = [MPRemoteCommandEvent alloc];
-    v6 = [v3 command];
-    v7 = [v3 options];
-    v8 = [(MPRemoteCommandEvent *)v5 initWithCommand:v4 mediaRemoteType:v6 options:v7];
+    command = [event command];
+    options = [event options];
+    v8 = [(MPRemoteCommandEvent *)v5 initWithCommand:v4 mediaRemoteType:command options:options];
   }
 
   else
@@ -34,16 +34,16 @@
 
 - (int64_t)type
 {
-  v2 = [(MPRemoteCommandHandlerDialogAction *)self mediaRemoteType];
-  v3 = [v2 type];
-  if (v3 == 2)
+  mediaRemoteType = [(MPRemoteCommandHandlerDialogAction *)self mediaRemoteType];
+  type = [mediaRemoteType type];
+  if (type == 2)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = v3 == 1;
+    v4 = type == 1;
   }
 
   return v4;
@@ -51,18 +51,18 @@
 
 - (NSString)title
 {
-  v2 = [(MPRemoteCommandHandlerDialogAction *)self mediaRemoteType];
-  v3 = [v2 title];
+  mediaRemoteType = [(MPRemoteCommandHandlerDialogAction *)self mediaRemoteType];
+  title = [mediaRemoteType title];
 
-  return v3;
+  return title;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(MPRemoteCommandHandlerDialogAction *)self mediaRemoteType];
-  v5 = [v4 copyWithZone:a3];
+  mediaRemoteType = [(MPRemoteCommandHandlerDialogAction *)self mediaRemoteType];
+  v5 = [mediaRemoteType copyWithZone:zone];
 
-  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithMediaRemoteType:", v5}];
+  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithMediaRemoteType:", v5}];
   return v6;
 }
 
@@ -70,56 +70,56 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPRemoteCommandHandlerDialogAction *)self title];
+  title = [(MPRemoteCommandHandlerDialogAction *)self title];
   v6 = NSStringFromMPRemoteCommandHandlerDialogActionType([(MPRemoteCommandHandlerDialogAction *)self type]);
-  v7 = [(MPRemoteCommandHandlerDialogAction *)self event];
-  v8 = [v3 stringWithFormat:@"<%@: %p title=%@ type=%@ event=%@>", v4, self, v5, v6, v7];
+  event = [(MPRemoteCommandHandlerDialogAction *)self event];
+  v8 = [v3 stringWithFormat:@"<%@: %p title=%@ type=%@ event=%@>", v4, self, title, v6, event];
 
   return v8;
 }
 
-- (MPRemoteCommandHandlerDialogAction)initWithMediaRemoteType:(id)a3
+- (MPRemoteCommandHandlerDialogAction)initWithMediaRemoteType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = MPRemoteCommandHandlerDialogAction;
   v6 = [(MPRemoteCommandHandlerDialogAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaRemoteType, a3);
+    objc_storeStrong(&v6->_mediaRemoteType, type);
   }
 
   return v7;
 }
 
-+ (id)actionWithTitle:(id)a3 type:(int64_t)a4 commandEvent:(id)a5
++ (id)actionWithTitle:(id)title type:(int64_t)type commandEvent:(id)event
 {
-  v8 = a3;
-  if (a5)
+  titleCopy = title;
+  if (event)
   {
-    v9 = a5;
-    v10 = [v9 command];
-    v11 = [v10 mediaRemoteCommandType];
+    eventCopy = event;
+    command = [eventCopy command];
+    mediaRemoteCommandType = [command mediaRemoteCommandType];
 
     v12 = MEMORY[0x1E69B0AF8];
-    v13 = [v9 mediaRemoteOptions];
+    mediaRemoteOptions = [eventCopy mediaRemoteOptions];
 
-    a5 = [v12 eventWithCommand:v11 options:v13];
+    event = [v12 eventWithCommand:mediaRemoteCommandType options:mediaRemoteOptions];
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v14 = 2;
   }
 
   else
   {
-    v14 = a4 == 1;
+    v14 = type == 1;
   }
 
-  v15 = [MEMORY[0x1E69B0AF0] actionWithTitle:v8 type:v14 commandEvent:a5];
-  v16 = [[a1 alloc] initWithMediaRemoteType:v15];
+  v15 = [MEMORY[0x1E69B0AF0] actionWithTitle:titleCopy type:v14 commandEvent:event];
+  v16 = [[self alloc] initWithMediaRemoteType:v15];
 
   return v16;
 }

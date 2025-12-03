@@ -1,14 +1,14 @@
 @interface ACUISAddAccountControllerSwap
-+ (id)modernAddFlowWrappedForViewController:(id)a3;
++ (id)modernAddFlowWrappedForViewController:(id)controller;
 - (ACUISAddAccountControllerSwap)init;
 @end
 
 @implementation ACUISAddAccountControllerSwap
 
-+ (id)modernAddFlowWrappedForViewController:(id)a3
++ (id)modernAddFlowWrappedForViewController:(id)controller
 {
-  v3 = a3;
-  sub_23DCFFAE8(v3);
+  controllerCopy = controller;
+  sub_23DCFFAE8(controllerCopy);
   v5 = v4;
 
   return v5;

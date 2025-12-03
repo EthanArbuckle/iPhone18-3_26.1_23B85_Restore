@@ -3,40 +3,40 @@
 + (void)clearEntry;
 - (BOOL)isOld;
 - (VIOSessionDailyUsageEntry)init;
-- (VIOSessionDailyUsageEntry)initWithCoder:(id)a3;
+- (VIOSessionDailyUsageEntry)initWithCoder:(id)coder;
 - (double)timeMultiplier;
 - (double)timeRemaining;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)save;
 @end
 
 @implementation VIOSessionDailyUsageEntry
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(VIOSessionDailyUsageEntry *)self creationDate];
+  coderCopy = coder;
+  creationDate = [(VIOSessionDailyUsageEntry *)self creationDate];
   v6 = NSStringFromSelector("creationDate");
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:creationDate forKey:v6];
 
-  v7 = [(VIOSessionDailyUsageEntry *)self lastStartDate];
+  lastStartDate = [(VIOSessionDailyUsageEntry *)self lastStartDate];
   v8 = NSStringFromSelector("lastStartDate");
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:lastStartDate forKey:v8];
 
   [(VIOSessionDailyUsageEntry *)self currentUsage];
   v9 = [NSNumber numberWithDouble:?];
   v10 = NSStringFromSelector("currentUsage");
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:v9 forKey:v10];
 
-  v11 = [(VIOSessionDailyUsageEntry *)self isRunningVIO];
+  isRunningVIO = [(VIOSessionDailyUsageEntry *)self isRunningVIO];
   v12 = NSStringFromSelector("isRunningVIO");
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:isRunningVIO forKey:v12];
 }
 
-- (VIOSessionDailyUsageEntry)initWithCoder:(id)a3
+- (VIOSessionDailyUsageEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = VIOSessionDailyUsageEntry;
   v5 = [(VIOSessionDailyUsageEntry *)&v20 init];
@@ -44,24 +44,24 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector("creationDate");
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     creationDate = v5->_creationDate;
     v5->_creationDate = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector("lastStartDate");
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     lastStartDate = v5->_lastStartDate;
     v5->_lastStartDate = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector("currentUsage");
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     [v16 doubleValue];
     v5->_currentUsage = v17;
 
     v18 = NSStringFromSelector("isRunningVIO");
-    v5->_isRunningVIO = [v4 decodeBoolForKey:v18];
+    v5->_isRunningVIO = [coderCopy decodeBoolForKey:v18];
   }
 
   return v5;
@@ -69,9 +69,9 @@
 
 - (double)timeMultiplier
 {
-  v2 = [(VIOSessionDailyUsageEntry *)self isRunningVIO];
+  isRunningVIO = [(VIOSessionDailyUsageEntry *)self isRunningVIO];
   result = 1.2;
-  if (v2)
+  if (isRunningVIO)
   {
     return 1.0;
   }
@@ -82,16 +82,16 @@
 - (BOOL)isOld
 {
   v3 = +[NSCalendar currentCalendar];
-  v4 = [(VIOSessionDailyUsageEntry *)self creationDate];
+  creationDate = [(VIOSessionDailyUsageEntry *)self creationDate];
   v5 = +[NSDate date];
-  v6 = [v3 components:16 fromDate:v4 toDate:v5 options:0];
+  v6 = [v3 components:16 fromDate:creationDate toDate:v5 options:0];
 
   v7 = [v6 day];
   v8 = sub_100F628C0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@ is %ld day(s) old", &v10, 0x16u);
@@ -230,12 +230,12 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(VIOSessionDailyUsageEntry *)self creationDate];
-  v6 = [(VIOSessionDailyUsageEntry *)self lastStartDate];
+  creationDate = [(VIOSessionDailyUsageEntry *)self creationDate];
+  lastStartDate = [(VIOSessionDailyUsageEntry *)self lastStartDate];
   [(VIOSessionDailyUsageEntry *)self currentUsage];
   v8 = v7;
   [(VIOSessionDailyUsageEntry *)self timeRemaining];
-  v10 = [NSString stringWithFormat:@"<%@ %p: creationDate: %@ lastStartDate: %@ currentUsage: %f timeRemaining: %f>", v4, self, v5, v6, v8, v9];
+  v10 = [NSString stringWithFormat:@"<%@ %p: creationDate: %@ lastStartDate: %@ currentUsage: %f timeRemaining: %f>", v4, self, creationDate, lastStartDate, v8, v9];
 
   return v10;
 }
@@ -269,7 +269,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Error saving entry %@: %@", buf, 0x16u);
@@ -347,22 +347,22 @@ LABEL_12:
 
   v6 = 0;
 LABEL_16:
-  v11 = [v4 lastStartDate];
+  lastStartDate = [v4 lastStartDate];
 
-  if (v11)
+  if (lastStartDate)
   {
     v12 = sub_100F628C0();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v4 lastStartDate];
+      lastStartDate2 = [v4 lastStartDate];
       *buf = 138412290;
-      v29 = v13;
+      v29 = lastStartDate2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Detected last VIO session did not end gracefully; assuming VIO session was running consecutively since %@", buf, 0xCu);
     }
 
     v14 = +[NSDate date];
-    v15 = [v4 lastStartDate];
-    [v14 timeIntervalSinceDate:v15];
+    lastStartDate3 = [v4 lastStartDate];
+    [v14 timeIntervalSinceDate:lastStartDate3];
     v17 = v16;
     [v4 timeMultiplier];
     v19 = v18;

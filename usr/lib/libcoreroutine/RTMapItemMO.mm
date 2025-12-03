@@ -1,13 +1,13 @@
 @interface RTMapItemMO
-+ (id)fetchManagedObjectsForMapItem:(id)a3 predicate:(id)a4 inManagedObjectContext:(id)a5;
++ (id)fetchManagedObjectsForMapItem:(id)item predicate:(id)predicate inManagedObjectContext:(id)context;
 + (id)fetchRequest;
-+ (id)managedObjectWithMapItem:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
-+ (id)mapItemForIdentifier:(id)a3 error:(id *)a4;
-+ (void)updateDatabaseWithMapItem:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
++ (id)managedObjectWithMapItem:(id)item managedObject:(id)object inManagedObjectContext:(id)context;
++ (id)mapItemForIdentifier:(id)identifier error:(id *)error;
++ (void)updateDatabaseWithMapItem:(id)item managedObjectContext:(id)context error:(id *)error;
 - (id)description;
 - (id)extendedAttributes;
 - (void)didSave;
-- (void)setExtendedAttributes:(id)a3;
+- (void)setExtendedAttributes:(id)attributes;
 @end
 
 @implementation RTMapItemMO
@@ -23,20 +23,20 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   [(RTMapItemMO *)self willAccessValueForKey:@"extendedAttributes"];
-  v3 = [(RTMapItemMO *)self cachedExtendedAttributes];
+  cachedExtendedAttributes = [(RTMapItemMO *)self cachedExtendedAttributes];
 
-  if (!v3)
+  if (!cachedExtendedAttributes)
   {
-    v4 = [(RTMapItemMO *)self extendedAttributesIdentifier];
+    extendedAttributesIdentifier = [(RTMapItemMO *)self extendedAttributesIdentifier];
 
-    if (v4)
+    if (extendedAttributesIdentifier)
     {
       v5 = +[RTMapItemExtendedAttributesMO fetchRequest];
       [v5 setReturnsObjectsAsFaults:0];
       [v5 setFetchLimit:1];
       v6 = MEMORY[0x277CCAC30];
-      v7 = [(RTMapItemMO *)self extendedAttributesIdentifier];
-      v8 = [v6 predicateWithFormat:@"%K == %@", @"identifier", v7];
+      extendedAttributesIdentifier2 = [(RTMapItemMO *)self extendedAttributesIdentifier];
+      v8 = [v6 predicateWithFormat:@"%K == %@", @"identifier", extendedAttributesIdentifier2];
       [v5 setPredicate:v8];
 
       v15 = 0;
@@ -53,39 +53,39 @@
         }
       }
 
-      v12 = [v9 firstObject];
-      [(RTMapItemMO *)self setCachedExtendedAttributes:v12];
+      firstObject = [v9 firstObject];
+      [(RTMapItemMO *)self setCachedExtendedAttributes:firstObject];
     }
   }
 
   [(RTMapItemMO *)self didAccessValueForKey:@"extendedAttributes"];
-  v13 = [(RTMapItemMO *)self cachedExtendedAttributes];
+  cachedExtendedAttributes2 = [(RTMapItemMO *)self cachedExtendedAttributes];
 
-  return v13;
+  return cachedExtendedAttributes2;
 }
 
-- (void)setExtendedAttributes:(id)a3
+- (void)setExtendedAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   [(RTCloudManagedObject *)self willChangeValueForKey:@"extendedAttributes"];
-  v5 = [v4 identifier];
+  identifier = [attributesCopy identifier];
 
-  [(RTMapItemMO *)self setExtendedAttributesIdentifier:v5];
+  [(RTMapItemMO *)self setExtendedAttributesIdentifier:identifier];
   [(RTMapItemMO *)self setCachedExtendedAttributes:0];
 
   [(RTMapItemMO *)self didChangeValueForKey:@"extendedAttributes"];
 }
 
-+ (id)managedObjectWithMapItem:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithMapItem:(id)item managedObject:(id)object inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  itemCopy = item;
+  objectCopy = object;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (!itemCopy)
   {
-    v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -93,14 +93,14 @@
     *buf = 0;
     v15 = "Invalid parameter not satisfying: mapItem";
 LABEL_16:
-    _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, v15, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, managedObjectContext2, OS_LOG_TYPE_ERROR, v15, buf, 2u);
     goto LABEL_11;
   }
 
-  if (!v9)
+  if (!contextCopy)
   {
-    v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -110,7 +110,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v11 = [v8 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -128,9 +128,9 @@ LABEL_7:
     v17[2] = __77__RTMapItemMO_managedObjectWithMapItem_managedObject_inManagedObjectContext___block_invoke;
     v17[3] = &unk_2788C5DA0;
     v21 = buf;
-    v18 = v8;
+    v18 = objectCopy;
     v19 = v10;
-    v20 = v7;
+    v20 = itemCopy;
     [v19 performBlockAndWait:v17];
     v14 = *(v23 + 5);
 
@@ -138,8 +138,8 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v13 = [v8 managedObjectContext];
-  if ((-[NSObject allowTombstones](v13, "allowTombstones") & 1) != 0 || ([v8 flags] & 1) == 0)
+  managedObjectContext2 = [objectCopy managedObjectContext];
+  if ((-[NSObject allowTombstones](managedObjectContext2, "allowTombstones") & 1) != 0 || ([objectCopy flags] & 1) == 0)
   {
 
     goto LABEL_7;
@@ -286,10 +286,10 @@ void __77__RTMapItemMO_managedObjectWithMapItem_managedObject_inManagedObjectCon
   [*(*(*(a1 + 56) + 8) + 40) setAddress:v52];
 }
 
-+ (id)mapItemForIdentifier:(id)a3 error:(id *)a4
++ (id)mapItemForIdentifier:(id)identifier error:(id *)error
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocationStore);
   v7 = os_signpost_id_generate(v6);
 
@@ -301,7 +301,7 @@ void __77__RTMapItemMO_managedObjectWithMapItem_managedObject_inManagedObjectCon
     _os_signpost_emit_with_name_impl(&dword_2304B3000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "mapItemForIdentifier", " enableTelemetry=YES ", buf, 2u);
   }
 
-  if (v5)
+  if (identifierCopy)
   {
     v10 = +[RTMapItemMO fetchRequest];
     [v10 setReturnsObjectsAsFaults:0];
@@ -311,8 +311,8 @@ void __77__RTMapItemMO_managedObjectWithMapItem_managedObject_inManagedObjectCon
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
     [v10 setRelationshipKeyPathsForPrefetching:v11];
 
-    v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"identifier", v5];
-    [v10 setPredicate:v12];
+    identifierCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"identifier", identifierCopy];
+    [v10 setPredicate:identifierCopy];
 
     v20 = 0;
     v13 = [v10 execute:&v20];
@@ -325,30 +325,30 @@ void __77__RTMapItemMO_managedObjectWithMapItem_managedObject_inManagedObjectCon
       _os_signpost_emit_with_name_impl(&dword_2304B3000, v16, OS_SIGNPOST_INTERVAL_END, v7, "mapItemForIdentifier", " enableTelemetry=YES ", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v17 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
-    v18 = [v13 firstObject];
+    firstObject = [v13 firstObject];
   }
 
   else
   {
-    v18 = 0;
+    firstObject = 0;
   }
 
-  return v18;
+  return firstObject;
 }
 
-+ (id)fetchManagedObjectsForMapItem:(id)a3 predicate:(id)a4 inManagedObjectContext:(id)a5
++ (id)fetchManagedObjectsForMapItem:(id)item predicate:(id)predicate inManagedObjectContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  itemCopy = item;
+  predicateCopy = predicate;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (!itemCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -363,20 +363,20 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v10)
+  if (contextCopy)
   {
     *buf = 0;
     v23 = buf;
     v24 = 0x3032000000;
     v25 = __Block_byref_object_copy__113;
     v26 = __Block_byref_object_dispose__113;
-    v27 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __78__RTMapItemMO_fetchManagedObjectsForMapItem_predicate_inManagedObjectContext___block_invoke;
     v16[3] = &unk_2788CB638;
-    v17 = v9;
-    v18 = v8;
+    v17 = predicateCopy;
+    v18 = itemCopy;
     v19 = v11;
     v20 = buf;
     v21 = a2;
@@ -563,12 +563,12 @@ void __78__RTMapItemMO_fetchManagedObjectsForMapItem_predicate_inManagedObjectCo
   }
 }
 
-+ (void)updateDatabaseWithMapItem:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
++ (void)updateDatabaseWithMapItem:(id)item managedObjectContext:(id)context error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  itemCopy = item;
+  contextCopy = context;
+  if (itemCopy)
   {
     *v42 = 0;
     v43 = v42;
@@ -587,11 +587,11 @@ void __78__RTMapItemMO_fetchManagedObjectsForMapItem_predicate_inManagedObjectCo
     v31[2] = __68__RTMapItemMO_updateDatabaseWithMapItem_managedObjectContext_error___block_invoke;
     v31[3] = &unk_2788CE578;
     v33 = v42;
-    v35 = a1;
-    v11 = v9;
+    selfCopy = self;
+    v11 = itemCopy;
     v32 = v11;
     v34 = &v36;
-    [v10 performBlockAndWait:v31];
+    [contextCopy performBlockAndWait:v31];
     if (v37[5])
     {
       v12 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
@@ -612,7 +612,7 @@ void __78__RTMapItemMO_fetchManagedObjectsForMapItem_predicate_inManagedObjectCo
     else
     {
       v14 = *(v43 + 5);
-      if (!v14 || ([v14 device], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "identifier"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "currentDevice"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "identifier"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v16, "isEqual:", v18), v18, v17, v16, v15, v19))
+      if (!v14 || ([v14 device], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "identifier"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(contextCopy, "currentDevice"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "identifier"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v16, "isEqual:", v18), v18, v17, v16, v15, v19))
       {
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
@@ -620,7 +620,7 @@ void __78__RTMapItemMO_fetchManagedObjectsForMapItem_predicate_inManagedObjectCo
         v25[3] = &unk_2788CE5A0;
         v26 = v11;
         v28 = v42;
-        v27 = v10;
+        v27 = contextCopy;
         v29 = &v36;
         v30 = a2;
         [v27 performBlockAndWait:v25];
@@ -646,9 +646,9 @@ void __78__RTMapItemMO_fetchManagedObjectsForMapItem_predicate_inManagedObjectCo
       }
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v37[5];
+      *error = v37[5];
     }
 
 LABEL_18:
@@ -729,20 +729,20 @@ void __68__RTMapItemMO_updateDatabaseWithMapItem_managedObjectContext_error___bl
 - (id)description
 {
   v25 = MEMORY[0x277CCACA8];
-  v32 = [(RTCloudManagedObject *)self identifier];
-  v30 = [(RTMapItemMO *)self name];
-  v28 = [(RTMapItemMO *)self category];
-  v31 = [(RTMapItemMO *)self categoryMUID];
-  v23 = [(RTMapItemMO *)self latitude];
-  v29 = [(RTMapItemMO *)self longitude];
-  v21 = [(RTMapItemMO *)self uncertainty];
-  v27 = [(RTMapItemMO *)self referenceFrame];
-  v19 = [(RTMapItemMO *)self mapItemSource];
-  v18 = [(RTMapItemMO *)self mapItemPlaceType];
-  v3 = [(RTMapItemMO *)self muid];
-  v4 = [(RTMapItemMO *)self resultProviderID];
-  v24 = [(RTMapItemMO *)self geoMapItemHandle];
-  if (v24)
+  identifier = [(RTCloudManagedObject *)self identifier];
+  name = [(RTMapItemMO *)self name];
+  category = [(RTMapItemMO *)self category];
+  categoryMUID = [(RTMapItemMO *)self categoryMUID];
+  latitude = [(RTMapItemMO *)self latitude];
+  longitude = [(RTMapItemMO *)self longitude];
+  uncertainty = [(RTMapItemMO *)self uncertainty];
+  referenceFrame = [(RTMapItemMO *)self referenceFrame];
+  mapItemSource = [(RTMapItemMO *)self mapItemSource];
+  mapItemPlaceType = [(RTMapItemMO *)self mapItemPlaceType];
+  muid = [(RTMapItemMO *)self muid];
+  resultProviderID = [(RTMapItemMO *)self resultProviderID];
+  geoMapItemHandle = [(RTMapItemMO *)self geoMapItemHandle];
+  if (geoMapItemHandle)
   {
     v5 = @"YES";
   }
@@ -753,8 +753,8 @@ void __68__RTMapItemMO_updateDatabaseWithMapItem_managedObjectContext_error___bl
   }
 
   v17 = v5;
-  v22 = [(RTMapItemMO *)self geoMapItemIdentifier];
-  if (v22)
+  geoMapItemIdentifier = [(RTMapItemMO *)self geoMapItemIdentifier];
+  if (geoMapItemIdentifier)
   {
     v6 = @"YES";
   }
@@ -765,11 +765,11 @@ void __68__RTMapItemMO_updateDatabaseWithMapItem_managedObjectContext_error___bl
   }
 
   v16 = v6;
-  v20 = [(RTMapItemMO *)self creationDate];
-  v7 = [v20 stringFromDate];
-  v8 = [(RTMapItemMO *)self expirationDate];
-  v9 = [v8 stringFromDate];
-  v10 = [(RTMapItemMO *)self displayLanguage];
+  creationDate = [(RTMapItemMO *)self creationDate];
+  stringFromDate = [creationDate stringFromDate];
+  expirationDate = [(RTMapItemMO *)self expirationDate];
+  stringFromDate2 = [expirationDate stringFromDate];
+  displayLanguage = [(RTMapItemMO *)self displayLanguage];
   if ([(RTMapItemMO *)self disputed])
   {
     v11 = @"YES";
@@ -780,10 +780,10 @@ void __68__RTMapItemMO_updateDatabaseWithMapItem_managedObjectContext_error___bl
     v11 = @"NO";
   }
 
-  v12 = [(RTMapItemMO *)self address];
-  v13 = [v12 description];
-  v14 = [(RTMapItemMO *)self extendedAttributesIdentifier];
-  v26 = [v25 stringWithFormat:@"identifier, %@, name, %@, category, %@, categoryMUID, %@, latitude, %@, longitude, %@, uncertainty, %@, referenceFrame, %@, mapItemSource, %@, mapItemPlaceType, %@, muid, %@, resultProviderID, %@, geoMapItemHandle, %@, geoMapItemIdentifier, %@, creationDate, %@, expirationDate, %@, displayLanguage, %@, disputed, %@, address, %@, extendedAttributesIdentifier, %@", v32, v30, v28, v31, v23, v29, v21, v27, v19, v18, v3, v4, v17, v16, v7, v9, v10, v11, v13, v14];
+  address = [(RTMapItemMO *)self address];
+  v13 = [address description];
+  extendedAttributesIdentifier = [(RTMapItemMO *)self extendedAttributesIdentifier];
+  v26 = [v25 stringWithFormat:@"identifier, %@, name, %@, category, %@, categoryMUID, %@, latitude, %@, longitude, %@, uncertainty, %@, referenceFrame, %@, mapItemSource, %@, mapItemPlaceType, %@, muid, %@, resultProviderID, %@, geoMapItemHandle, %@, geoMapItemIdentifier, %@, creationDate, %@, expirationDate, %@, displayLanguage, %@, disputed, %@, address, %@, extendedAttributesIdentifier, %@", identifier, name, category, categoryMUID, latitude, longitude, uncertainty, referenceFrame, mapItemSource, mapItemPlaceType, muid, resultProviderID, v17, v16, stringFromDate, stringFromDate2, displayLanguage, v11, v13, extendedAttributesIdentifier];
 
   return v26;
 }
@@ -791,9 +791,9 @@ void __68__RTMapItemMO_updateDatabaseWithMapItem_managedObjectContext_error___bl
 - (void)didSave
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(RTMapItemMO *)self geoMapItemHandle];
+  geoMapItemHandle = [(RTMapItemMO *)self geoMapItemHandle];
 
-  if (!v3)
+  if (!geoMapItemHandle)
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))

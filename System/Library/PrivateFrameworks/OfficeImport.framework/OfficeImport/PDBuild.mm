@@ -1,5 +1,5 @@
 @interface PDBuild
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PDBuild)init;
 - (id)description;
 - (unint64_t)hash;
@@ -20,17 +20,17 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v4);
+  v6 = TSUDynamicCast(v5, equalCopy);
   v7 = v6;
   if (v6 && (mIsAnimateBackground = self->mIsAnimateBackground, mIsAnimateBackground == [v6 isAnimateBackground]))
   {
     mDrawable = self->mDrawable;
-    v10 = [v7 drawable];
-    v11 = mDrawable == v10;
+    drawable = [v7 drawable];
+    v11 = mDrawable == drawable;
   }
 
   else

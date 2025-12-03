@@ -1,11 +1,11 @@
 @interface RouteButton_iOS
-- (_TtC12NowPlayingUI15RouteButton_iOS)initWithCoder:(id)a3;
-- (_TtC12NowPlayingUI15RouteButton_iOS)initWithFrame:(CGRect)a3;
+- (_TtC12NowPlayingUI15RouteButton_iOS)initWithCoder:(id)coder;
+- (_TtC12NowPlayingUI15RouteButton_iOS)initWithFrame:(CGRect)frame;
 @end
 
 @implementation RouteButton_iOS
 
-- (_TtC12NowPlayingUI15RouteButton_iOS)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUI15RouteButton_iOS)initWithFrame:(CGRect)frame
 {
   *&self->MPRouteButton_opaque[OBJC_IVAR____TtC12NowPlayingUI15RouteButton_iOS_controlsViewController] = 0;
   *&self->controlsViewController[OBJC_IVAR____TtC12NowPlayingUI15RouteButton_iOS_pickerDelegate] = 0;
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtC12NowPlayingUI15RouteButton_iOS)initWithCoder:(id)a3
+- (_TtC12NowPlayingUI15RouteButton_iOS)initWithCoder:(id)coder
 {
   *&self->MPRouteButton_opaque[OBJC_IVAR____TtC12NowPlayingUI15RouteButton_iOS_controlsViewController] = 0;
   *&self->controlsViewController[OBJC_IVAR____TtC12NowPlayingUI15RouteButton_iOS_pickerDelegate] = 0;

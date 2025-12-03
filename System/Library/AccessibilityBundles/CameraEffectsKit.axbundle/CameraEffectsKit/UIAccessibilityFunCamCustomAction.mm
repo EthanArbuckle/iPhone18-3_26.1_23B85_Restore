@@ -1,26 +1,26 @@
 @interface UIAccessibilityFunCamCustomAction
 - (UIAccessibilityElement)axElement;
-- (UIAccessibilityFunCamCustomAction)initWithName:(id)a3 target:(id)a4 selector:(SEL)a5 effect:(id)a6 axElement:(id)a7 vc:(id)a8;
+- (UIAccessibilityFunCamCustomAction)initWithName:(id)name target:(id)target selector:(SEL)selector effect:(id)effect axElement:(id)element vc:(id)vc;
 - (UIViewController)vc;
 - (id)effect;
 @end
 
 @implementation UIAccessibilityFunCamCustomAction
 
-- (UIAccessibilityFunCamCustomAction)initWithName:(id)a3 target:(id)a4 selector:(SEL)a5 effect:(id)a6 axElement:(id)a7 vc:(id)a8
+- (UIAccessibilityFunCamCustomAction)initWithName:(id)name target:(id)target selector:(SEL)selector effect:(id)effect axElement:(id)element vc:(id)vc
 {
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  effectCopy = effect;
+  elementCopy = element;
+  vcCopy = vc;
   v20.receiver = self;
   v20.super_class = UIAccessibilityFunCamCustomAction;
-  v17 = [(UIAccessibilityFunCamCustomAction *)&v20 initWithName:a3 target:a4 selector:a5];
+  v17 = [(UIAccessibilityFunCamCustomAction *)&v20 initWithName:name target:target selector:selector];
   v18 = v17;
   if (v17)
   {
-    [(UIAccessibilityFunCamCustomAction *)v17 setEffect:v14];
-    [(UIAccessibilityFunCamCustomAction *)v18 setAxElement:v15];
-    [(UIAccessibilityFunCamCustomAction *)v18 setVc:v16];
+    [(UIAccessibilityFunCamCustomAction *)v17 setEffect:effectCopy];
+    [(UIAccessibilityFunCamCustomAction *)v18 setAxElement:elementCopy];
+    [(UIAccessibilityFunCamCustomAction *)v18 setVc:vcCopy];
   }
 
   return v18;

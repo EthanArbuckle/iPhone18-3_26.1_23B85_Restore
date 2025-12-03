@@ -1,58 +1,58 @@
 @interface CMWakeGestureEvent
-- (CMWakeGestureEvent)initWithCoder:(id)a3;
-- (CMWakeGestureEvent)initWithState:(int64_t)a3 type:(int64_t)a4 orientation:(int)a5 timestamp:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMWakeGestureEvent)initWithCoder:(id)coder;
+- (CMWakeGestureEvent)initWithState:(int64_t)state type:(int64_t)type orientation:(int)orientation timestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMWakeGestureEvent
 
-- (CMWakeGestureEvent)initWithState:(int64_t)a3 type:(int64_t)a4 orientation:(int)a5 timestamp:(double)a6
+- (CMWakeGestureEvent)initWithState:(int64_t)state type:(int64_t)type orientation:(int)orientation timestamp:(double)timestamp
 {
   v10.receiver = self;
   v10.super_class = CMWakeGestureEvent;
-  result = [(CMLogItem *)&v10 initWithTimestamp:a6];
+  result = [(CMLogItem *)&v10 initWithTimestamp:timestamp];
   if (result)
   {
-    result->_state = a3;
-    result->_type = a4;
-    result->_orientation = a5;
+    result->_state = state;
+    result->_type = type;
+    result->_orientation = orientation;
   }
 
   return result;
 }
 
-- (CMWakeGestureEvent)initWithCoder:(id)a3
+- (CMWakeGestureEvent)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = CMWakeGestureEvent;
   v5 = [(CMLogItem *)&v9 initWithCoder:?];
   if (v5)
   {
-    v5->_state = objc_msgSend_decodeIntegerForKey_(a3, v4, @"kCMWakeGestureEventCodingKeyState");
-    v5->_type = objc_msgSend_decodeIntegerForKey_(a3, v6, @"kCMWakeGestureEventCodingKeyType");
-    v5->_orientation = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kCMWakeGestureEventCodingKeyOrientation");
+    v5->_state = objc_msgSend_decodeIntegerForKey_(coder, v4, @"kCMWakeGestureEventCodingKeyState");
+    v5->_type = objc_msgSend_decodeIntegerForKey_(coder, v6, @"kCMWakeGestureEventCodingKeyType");
+    v5->_orientation = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kCMWakeGestureEventCodingKeyOrientation");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CMWakeGestureEvent;
   [(CMLogItem *)&v8 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_state, @"kCMWakeGestureEventCodingKeyState");
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->_type, @"kCMWakeGestureEventCodingKeyType");
-  objc_msgSend_encodeInteger_forKey_(a3, v7, self->_orientation, @"kCMWakeGestureEventCodingKeyOrientation");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_state, @"kCMWakeGestureEventCodingKeyState");
+  objc_msgSend_encodeInteger_forKey_(coder, v6, self->_type, @"kCMWakeGestureEventCodingKeyType");
+  objc_msgSend_encodeInteger_forKey_(coder, v7, self->_orientation, @"kCMWakeGestureEventCodingKeyOrientation");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = CMWakeGestureEvent;
-  result = [(CMLogItem *)&v5 copyWithZone:a3];
+  result = [(CMLogItem *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 3) = self->_state;

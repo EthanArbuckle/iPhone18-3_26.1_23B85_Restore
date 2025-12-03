@@ -9,15 +9,15 @@
 - (id)dictionary;
 - (unint64_t)format;
 - (void)dealloc;
-- (void)importFromDictionary:(id)a3;
+- (void)importFromDictionary:(id)dictionary;
 - (void)reset;
-- (void)setCouchPotatoDelay:(double)a3;
-- (void)setCouchPotatoStepDuration:(double)a3;
-- (void)setFormat:(unint64_t)a3;
-- (void)setMainFeederName:(id)a3;
-- (void)setMainNavigatorName:(id)a3;
-- (void)setResolutions:(id)a3;
-- (void)setTrailerNavigatorName:(id)a3;
+- (void)setCouchPotatoDelay:(double)delay;
+- (void)setCouchPotatoStepDuration:(double)duration;
+- (void)setFormat:(unint64_t)format;
+- (void)setMainFeederName:(id)name;
+- (void)setMainNavigatorName:(id)name;
+- (void)setResolutions:(id)resolutions;
+- (void)setTrailerNavigatorName:(id)name;
 @end
 
 @implementation OKPresentationInfo
@@ -126,12 +126,12 @@
   [(OKPresentationInfo *)&v15 dealloc];
 }
 
-- (void)setFormat:(unint64_t)a3
+- (void)setFormat:(unint64_t)format
 {
   objc_sync_enter(self);
-  if (self->_format != a3)
+  if (self->_format != format)
   {
-    self->_format = a3;
+    self->_format = format;
     [[(OKPresentationInfo *)self presentation] setPresentationChanged:1];
   }
 
@@ -146,14 +146,14 @@
   return format;
 }
 
-- (void)setResolutions:(id)a3
+- (void)setResolutions:(id)resolutions
 {
   objc_sync_enter(self);
-  if (self->_resolutions != a3)
+  if (self->_resolutions != resolutions)
   {
     [(OKPresentationInfo *)self willChangeValueForKey:@"resolutions"];
 
-    self->_resolutions = [a3 copy];
+    self->_resolutions = [resolutions copy];
     [(OKPresentationInfo *)self didChangeValueForKey:@"resolutions"];
   }
 
@@ -185,23 +185,23 @@
   return couchPotatoStepDuration;
 }
 
-- (void)setCouchPotatoStepDuration:(double)a3
+- (void)setCouchPotatoStepDuration:(double)duration
 {
   objc_sync_enter(self);
-  if (self->_couchPotatoStepDuration != a3)
+  if (self->_couchPotatoStepDuration != duration)
   {
-    self->_couchPotatoStepDuration = a3;
+    self->_couchPotatoStepDuration = duration;
   }
 
   objc_sync_exit(self);
 }
 
-- (void)setCouchPotatoDelay:(double)a3
+- (void)setCouchPotatoDelay:(double)delay
 {
   objc_sync_enter(self);
-  if (self->_couchPotatoDelay != a3)
+  if (self->_couchPotatoDelay != delay)
   {
-    self->_couchPotatoDelay = a3;
+    self->_couchPotatoDelay = delay;
   }
 
   objc_sync_exit(self);
@@ -224,14 +224,14 @@
   return couchPotatoDelay;
 }
 
-- (void)setTrailerNavigatorName:(id)a3
+- (void)setTrailerNavigatorName:(id)name
 {
   objc_sync_enter(self);
   trailerNavigatorName = self->_trailerNavigatorName;
-  if (trailerNavigatorName != a3)
+  if (trailerNavigatorName != name)
   {
 
-    self->_trailerNavigatorName = [a3 copy];
+    self->_trailerNavigatorName = [name copy];
   }
 
   objc_sync_exit(self);
@@ -254,14 +254,14 @@
   return &trailerNavigatorName->isa;
 }
 
-- (void)setMainNavigatorName:(id)a3
+- (void)setMainNavigatorName:(id)name
 {
   objc_sync_enter(self);
   mainNavigatorName = self->_mainNavigatorName;
-  if (mainNavigatorName != a3)
+  if (mainNavigatorName != name)
   {
 
-    self->_mainNavigatorName = [a3 copy];
+    self->_mainNavigatorName = [name copy];
   }
 
   objc_sync_exit(self);
@@ -284,14 +284,14 @@
   return &mainNavigatorName->isa;
 }
 
-- (void)setMainFeederName:(id)a3
+- (void)setMainFeederName:(id)name
 {
   objc_sync_enter(self);
   mainFeederName = self->_mainFeederName;
-  if (mainFeederName != a3)
+  if (mainFeederName != name)
   {
 
-    self->_mainFeederName = [a3 copy];
+    self->_mainFeederName = [name copy];
   }
 
   objc_sync_exit(self);
@@ -342,141 +342,141 @@
   [(OKPresentationInfo *)self unlock];
 }
 
-- (void)importFromDictionary:(id)a3
+- (void)importFromDictionary:(id)dictionary
 {
   [(OKPresentationInfo *)self lock];
   [(OKPresentationInfo *)self reset];
-  v5 = [a3 objectForKey:@"uuid"];
+  v5 = [dictionary objectForKey:@"uuid"];
   if (v5)
   {
     [(OKPresentationInfo *)self setUuid:v5];
   }
 
-  v6 = [a3 objectForKey:@"creationDate"];
+  v6 = [dictionary objectForKey:@"creationDate"];
   if (v6)
   {
     [(OKPresentationInfo *)self setCreationDate:v6];
   }
 
-  v7 = [a3 objectForKey:@"lastModifiedDate"];
+  v7 = [dictionary objectForKey:@"lastModifiedDate"];
   if (v7)
   {
     [(OKPresentationInfo *)self setLastModifiedDate:v7];
   }
 
-  v8 = [a3 objectForKey:@"versionID"];
+  v8 = [dictionary objectForKey:@"versionID"];
   if (v8)
   {
     [(OKPresentationInfo *)self setVersionID:v8];
   }
 
-  v9 = [a3 objectForKey:@"format"];
+  v9 = [dictionary objectForKey:@"format"];
   if (v9)
   {
     -[OKPresentationInfo setFormat:](self, "setFormat:", [v9 unsignedIntegerValue]);
   }
 
-  v10 = [a3 objectForKey:@"formatVersion"];
+  v10 = [dictionary objectForKey:@"formatVersion"];
   if (v10)
   {
     -[OKPresentationInfo setFormatVersion:](self, "setFormatVersion:", [v10 unsignedIntegerValue]);
   }
 
-  v11 = [a3 objectForKey:@"apiVersion"];
+  v11 = [dictionary objectForKey:@"apiVersion"];
   if (v11)
   {
     [v11 doubleValue];
     [(OKPresentationInfo *)self setApiVersion:?];
   }
 
-  v12 = [a3 objectForKey:@"producerIdentifier"];
+  v12 = [dictionary objectForKey:@"producerIdentifier"];
   if (v12)
   {
     [(OKPresentationInfo *)self setProducerIdentifier:v12];
   }
 
-  v13 = [a3 objectForKey:@"producerVersion"];
+  v13 = [dictionary objectForKey:@"producerVersion"];
   if (v13)
   {
     [v13 doubleValue];
     [(OKPresentationInfo *)self setProducerVersion:?];
   }
 
-  v14 = [a3 objectForKey:@"requiresProducer"];
+  v14 = [dictionary objectForKey:@"requiresProducer"];
   if (v14)
   {
     -[OKPresentationInfo setRequiresProducer:](self, "setRequiresProducer:", [v14 BOOLValue]);
   }
 
-  v15 = [a3 objectForKey:@"resolutions"];
+  v15 = [dictionary objectForKey:@"resolutions"];
   if (v15)
   {
     -[OKPresentationInfo setResolutions:](self, "setResolutions:", [MEMORY[0x277CBEB18] arrayWithArray:v15]);
   }
 
-  v16 = [a3 objectForKey:@"couchPotatoSupported"];
+  v16 = [dictionary objectForKey:@"couchPotatoSupported"];
   if (v16)
   {
     -[OKPresentationInfo setCouchPotatoSupported:](self, "setCouchPotatoSupported:", [v16 BOOLValue]);
   }
 
-  v17 = [a3 objectForKey:@"couchPotatoStepDuration"];
+  v17 = [dictionary objectForKey:@"couchPotatoStepDuration"];
   if (v17)
   {
     [v17 doubleValue];
     [(OKPresentationInfo *)self setCouchPotatoStepDuration:?];
   }
 
-  v18 = [a3 objectForKey:@"couchPotatoDelay"];
+  v18 = [dictionary objectForKey:@"couchPotatoDelay"];
   if (v18)
   {
     [v18 doubleValue];
     [(OKPresentationInfo *)self setCouchPotatoDelay:?];
   }
 
-  v19 = [a3 objectForKey:@"motionSupported"];
+  v19 = [dictionary objectForKey:@"motionSupported"];
   if (v19)
   {
     -[OKPresentationInfo setMotionSupported:](self, "setMotionSupported:", [v19 BOOLValue]);
   }
 
-  v20 = [a3 objectForKey:@"wheelControllerSupported"];
+  v20 = [dictionary objectForKey:@"wheelControllerSupported"];
   if (v20)
   {
     -[OKPresentationInfo setWheelControllerSupported:](self, "setWheelControllerSupported:", [v20 BOOLValue]);
   }
 
-  v21 = [a3 objectForKey:@"overviewSupported"];
+  v21 = [dictionary objectForKey:@"overviewSupported"];
   if (v21)
   {
     -[OKPresentationInfo setOverviewSupported:](self, "setOverviewSupported:", [v21 BOOLValue]);
   }
 
-  v22 = [a3 objectForKey:@"trailerSupported"];
+  v22 = [dictionary objectForKey:@"trailerSupported"];
   if (v22)
   {
     -[OKPresentationInfo setTrailerSupported:](self, "setTrailerSupported:", [v22 BOOLValue]);
   }
 
-  v23 = [a3 objectForKey:@"trailerNavigatorName"];
+  v23 = [dictionary objectForKey:@"trailerNavigatorName"];
   if (v23)
   {
     [(OKPresentationInfo *)self setTrailerNavigatorName:v23];
   }
 
-  v24 = [a3 objectForKey:@"mainNavigatorName"];
+  v24 = [dictionary objectForKey:@"mainNavigatorName"];
   if (v24)
   {
     [(OKPresentationInfo *)self setMainNavigatorName:v24];
   }
 
-  v25 = [a3 objectForKey:@"mainFeederName"];
+  v25 = [dictionary objectForKey:@"mainFeederName"];
   if (v25)
   {
     [(OKPresentationInfo *)self setMainFeederName:v25];
   }
 
-  if ([a3 objectForKey:@"backgroundColor"])
+  if ([dictionary objectForKey:@"backgroundColor"])
   {
     [(OKPresentationInfo *)self setBackgroundColor:UIColorFromString()];
   }

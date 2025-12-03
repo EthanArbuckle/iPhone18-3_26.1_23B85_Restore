@@ -1,8 +1,8 @@
 @interface TSKernelClock
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4;
-- (TSKernelClock)initWithClockIdentifier:(unint64_t)a3;
-- (TSKernelClock)initWithImplDC:(id)a3;
-- (void)addClient:(id)a3;
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent;
+- (TSKernelClock)initWithClockIdentifier:(unint64_t)identifier;
+- (TSKernelClock)initWithImplDC:(id)c;
+- (void)addClient:(id)client;
 - (void)dealloc;
 - (void)didBeginClockGrandmasterChange;
 - (void)didChangeClockMaster;
@@ -10,17 +10,17 @@
 - (void)didProcessSync;
 - (void)didResetClock;
 - (void)interruptedConnection;
-- (void)removeClient:(id)a3;
-- (void)setPropertyUpdateQueue:(id)a3;
+- (void)removeClient:(id)client;
+- (void)setPropertyUpdateQueue:(id)queue;
 @end
 
 @implementation TSKernelClock
 
-- (TSKernelClock)initWithImplDC:(id)a3
+- (TSKernelClock)initWithImplDC:(id)c
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  cCopy = c;
+  v6 = cCopy;
+  if (!cCopy)
   {
     [(TSKernelClock *)self initWithImplDC:&v16];
     clients = v15;
@@ -30,30 +30,30 @@
 
   v14.receiver = self;
   v14.super_class = TSKernelClock;
-  v7 = -[TSClock initWithClockIdentifier:](&v14, sel_initWithClockIdentifier_, [v5 clockIdentifier]);
+  v7 = -[TSClock initWithClockIdentifier:](&v14, sel_initWithClockIdentifier_, [cCopy clockIdentifier]);
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_impl, a3);
+    objc_storeStrong(&v7->_impl, c);
     v13.receiver = v8;
     v13.super_class = TSKernelClock;
-    v9 = [(TSClock *)&v13 propertyUpdateQueue];
-    [(TSDCKernelClock *)v8->_impl setPropertyUpdateQueue:v9];
+    propertyUpdateQueue = [(TSClock *)&v13 propertyUpdateQueue];
+    [(TSDCKernelClock *)v8->_impl setPropertyUpdateQueue:propertyUpdateQueue];
 
     [(TSDCKernelClock *)v8->_impl setClient:v8];
     v8->_clientLock._os_unfair_lock_opaque = 0;
-    v10 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     clients = v8->_clients;
-    v8->_clients = v10;
+    v8->_clients = weakObjectsPointerArray;
 LABEL_4:
   }
 
   return v8;
 }
 
-- (TSKernelClock)initWithClockIdentifier:(unint64_t)a3
+- (TSKernelClock)initWithClockIdentifier:(unint64_t)identifier
 {
-  v4 = [TSDCKernelClock clockWithIdentifier:a3];
+  v4 = [TSDCKernelClock clockWithIdentifier:identifier];
   if (v4)
   {
     v5 = [(TSKernelClock *)self initWithImplDC:v4];
@@ -76,24 +76,24 @@ LABEL_4:
   [(TSKernelClock *)&v3 dealloc];
 }
 
-- (void)setPropertyUpdateQueue:(id)a3
+- (void)setPropertyUpdateQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = TSKernelClock;
-  [(TSClock *)&v6 setPropertyUpdateQueue:a3];
+  [(TSClock *)&v6 setPropertyUpdateQueue:queue];
   v5.receiver = self;
   v5.super_class = TSKernelClock;
-  v4 = [(TSClock *)&v5 propertyUpdateQueue];
-  [(TSDCKernelClock *)self->_impl setPropertyUpdateQueue:v4];
+  propertyUpdateQueue = [(TSClock *)&v5 propertyUpdateQueue];
+  [(TSDCKernelClock *)self->_impl setPropertyUpdateQueue:propertyUpdateQueue];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = TSKernelClock;
-  [(TSClock *)&v15 addClient:v4];
+  [(TSClock *)&v15 addClient:clientCopy];
   os_unfair_lock_lock(&self->_clientLock);
   [(NSPointerArray *)self->_clients compact];
   v13 = 0u;
@@ -116,7 +116,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v11 + 1) + 8 * v9) == v4)
+        if (*(*(&v11 + 1) + 8 * v9) == clientCopy)
         {
 
           goto LABEL_11;
@@ -136,17 +136,17 @@ LABEL_4:
     }
   }
 
-  [(NSPointerArray *)self->_clients addPointer:v4, v11];
+  [(NSPointerArray *)self->_clients addPointer:clientCopy, v11];
 LABEL_11:
   os_unfair_lock_unlock(&self->_clientLock);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_clientLock);
   [(NSPointerArray *)self->_clients compact];
   v16 = 0u;
@@ -172,7 +172,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v14 + 1) + 8 * v10) == v4)
+        if (*(*(&v14 + 1) + 8 * v10) == clientCopy)
         {
 
           [(NSPointerArray *)self->_clients removePointerAtIndex:v11];
@@ -198,34 +198,34 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_clientLock);
   v13.receiver = self;
   v13.super_class = TSKernelClock;
-  [(TSClock *)&v13 removeClient:v4];
+  [(TSClock *)&v13 removeClient:clientCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAB68] string];
-  v8 = [v5 objectForKeyedSubscript:@"ClassName"];
-  [v7 appendFormat:@"%@+%@\n", v6, v8];
+  infoCopy = info;
+  indentCopy = indent;
+  string = [MEMORY[0x277CCAB68] string];
+  v8 = [infoCopy objectForKeyedSubscript:@"ClassName"];
+  [string appendFormat:@"%@+%@\n", indentCopy, v8];
 
-  [v7 appendFormat:@"%@    Clock Identifier: ", v6];
-  v9 = [v5 objectForKeyedSubscript:@"ClockIdentifier"];
+  [string appendFormat:@"%@    Clock Identifier: ", indentCopy];
+  v9 = [infoCopy objectForKeyedSubscript:@"ClockIdentifier"];
   v10 = v9;
   if (v9)
   {
-    [v7 appendFormat:@"0x%016llx\n", objc_msgSend(v9, "unsignedLongLongValue")];
+    [string appendFormat:@"0x%016llx\n", objc_msgSend(v9, "unsignedLongLongValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  [v7 appendFormat:@"%@    Lock State: ", v6];
-  v11 = [v5 objectForKeyedSubscript:@"ClockLockState"];
+  [string appendFormat:@"%@    Lock State: ", indentCopy];
+  v11 = [infoCopy objectForKeyedSubscript:@"ClockLockState"];
 
   if (!v11)
   {
@@ -233,8 +233,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v12 = [v11 intValue];
-  switch(v12)
+  intValue = [v11 intValue];
+  switch(intValue)
   {
     case 2:
       v13 = @"Locked\n";
@@ -245,14 +245,14 @@ LABEL_11:
     case 0:
       v13 = @"Not Locking\n";
 LABEL_12:
-      [v7 appendString:v13];
+      [string appendString:v13];
       goto LABEL_13;
   }
 
-  [v7 appendFormat:@"Unknown (%d)\n", objc_msgSend(v11, "intValue")];
+  [string appendFormat:@"Unknown (%d)\n", objc_msgSend(v11, "intValue")];
 LABEL_13:
 
-  return v7;
+  return string;
 }
 
 - (void)didResetClock
@@ -477,12 +477,12 @@ LABEL_13:
 
 - (void)interruptedConnection
 {
-  v3 = [(TSKernelClock *)self interruptionHandler];
+  interruptionHandler = [(TSKernelClock *)self interruptionHandler];
 
-  if (v3)
+  if (interruptionHandler)
   {
-    v4 = [(TSKernelClock *)self interruptionHandler];
-    v4[2](v4, self);
+    interruptionHandler2 = [(TSKernelClock *)self interruptionHandler];
+    interruptionHandler2[2](interruptionHandler2, self);
   }
 }
 

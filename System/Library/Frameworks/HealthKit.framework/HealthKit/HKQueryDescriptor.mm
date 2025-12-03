@@ -1,40 +1,40 @@
 @interface HKQueryDescriptor
-+ (HKQueryDescriptor)queryDescriptorWithSampleType:(id)a3;
-+ (HKQueryDescriptor)queryDescriptorWithSampleType:(id)a3 predicate:(id)a4;
-+ (id)allergiesDescriptionsWithPredicate:(id)a3;
-+ (id)clinicalNotesDescriptionsWithPredicate:(id)a3;
-+ (id)conditionsDescriptionsWithPredicate:(id)a3;
-+ (id)coverageDescriptionsWithPredicate:(id)a3;
-+ (id)immunizationsDescriptionsWithPredicate:(id)a3;
-+ (id)labsDescriptionsWithPredicate:(id)a3;
-+ (id)medicalRecordDescriptionsWithPredicate:(id)a3 futureMigrationsEnabled:(BOOL)a4;
-+ (id)medicationsDescriptionsWithPredicate:(id)a3;
-+ (id)proceduresDescriptionsWithPredicate:(id)a3;
-+ (id)vitalsDescriptionsWithPredicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (HKQueryDescriptor)queryDescriptorWithSampleType:(id)type;
++ (HKQueryDescriptor)queryDescriptorWithSampleType:(id)type predicate:(id)predicate;
++ (id)allergiesDescriptionsWithPredicate:(id)predicate;
++ (id)clinicalNotesDescriptionsWithPredicate:(id)predicate;
++ (id)conditionsDescriptionsWithPredicate:(id)predicate;
++ (id)coverageDescriptionsWithPredicate:(id)predicate;
++ (id)immunizationsDescriptionsWithPredicate:(id)predicate;
++ (id)labsDescriptionsWithPredicate:(id)predicate;
++ (id)medicalRecordDescriptionsWithPredicate:(id)predicate futureMigrationsEnabled:(BOOL)enabled;
++ (id)medicationsDescriptionsWithPredicate:(id)predicate;
++ (id)proceduresDescriptionsWithPredicate:(id)predicate;
++ (id)vitalsDescriptionsWithPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
 - (HKQueryDescriptor)init;
-- (HKQueryDescriptor)initWithCoder:(id)a3;
+- (HKQueryDescriptor)initWithCoder:(id)coder;
 - (HKQueryDescriptor)initWithSampleType:(HKSampleType *)sampleType predicate:(NSPredicate *)predicate;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKQueryDescriptor
 
-+ (HKQueryDescriptor)queryDescriptorWithSampleType:(id)a3
++ (HKQueryDescriptor)queryDescriptorWithSampleType:(id)type
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSampleType:v4 predicate:0];
+  typeCopy = type;
+  v5 = [[self alloc] initWithSampleType:typeCopy predicate:0];
 
   return v5;
 }
 
-+ (HKQueryDescriptor)queryDescriptorWithSampleType:(id)a3 predicate:(id)a4
++ (HKQueryDescriptor)queryDescriptorWithSampleType:(id)type predicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithSampleType:v7 predicate:v6];
+  predicateCopy = predicate;
+  typeCopy = type;
+  v8 = [[self alloc] initWithSampleType:typeCopy predicate:predicateCopy];
 
   return v8;
 }
@@ -77,18 +77,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HKQueryDescriptor *)self sampleType];
-  v4 = [v3 hash];
-  v5 = [(HKQueryDescriptor *)self _filter];
-  v6 = [v5 hash];
+  sampleType = [(HKQueryDescriptor *)self sampleType];
+  v4 = [sampleType hash];
+  _filter = [(HKQueryDescriptor *)self _filter];
+  v6 = [_filter hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -98,26 +98,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKQueryDescriptor *)self sampleType];
-      v7 = [(HKQueryDescriptor *)v5 sampleType];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      sampleType = [(HKQueryDescriptor *)self sampleType];
+      sampleType2 = [(HKQueryDescriptor *)v5 sampleType];
+      v8 = sampleType2;
+      if (sampleType == sampleType2)
       {
       }
 
       else
       {
-        v9 = [(HKQueryDescriptor *)v5 sampleType];
-        if (!v9)
+        sampleType3 = [(HKQueryDescriptor *)v5 sampleType];
+        if (!sampleType3)
         {
           goto LABEL_14;
         }
 
-        v10 = v9;
-        v11 = [(HKQueryDescriptor *)self sampleType];
-        v12 = [(HKQueryDescriptor *)v5 sampleType];
-        v13 = [v11 isEqual:v12];
+        v10 = sampleType3;
+        sampleType4 = [(HKQueryDescriptor *)self sampleType];
+        sampleType5 = [(HKQueryDescriptor *)v5 sampleType];
+        v13 = [sampleType4 isEqual:sampleType5];
 
         if (!v13)
         {
@@ -125,10 +125,10 @@
         }
       }
 
-      v6 = [(HKQueryDescriptor *)self _filter];
-      v15 = [(HKQueryDescriptor *)v5 _filter];
-      v8 = v15;
-      if (v6 == v15)
+      sampleType = [(HKQueryDescriptor *)self _filter];
+      _filter = [(HKQueryDescriptor *)v5 _filter];
+      v8 = _filter;
+      if (sampleType == _filter)
       {
 
 LABEL_17:
@@ -136,13 +136,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v16 = [(HKQueryDescriptor *)v5 _filter];
-      if (v16)
+      _filter2 = [(HKQueryDescriptor *)v5 _filter];
+      if (_filter2)
       {
-        v17 = v16;
-        v18 = [(HKQueryDescriptor *)self _filter];
-        v19 = [(HKQueryDescriptor *)v5 _filter];
-        v20 = [v18 isEqual:v19];
+        v17 = _filter2;
+        _filter3 = [(HKQueryDescriptor *)self _filter];
+        _filter4 = [(HKQueryDescriptor *)v5 _filter];
+        v20 = [_filter3 isEqual:_filter4];
 
         if (v20)
         {
@@ -173,25 +173,25 @@ LABEL_19:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HKQueryDescriptor *)self sampleType];
-  v6 = [(HKQueryDescriptor *)self predicate];
-  v7 = [v3 stringWithFormat:@"<%@: %@, Predicate: %@>", v4, v5, v6];
+  sampleType = [(HKQueryDescriptor *)self sampleType];
+  predicate = [(HKQueryDescriptor *)self predicate];
+  v7 = [v3 stringWithFormat:@"<%@: %@, Predicate: %@>", v4, sampleType, predicate];
 
   return v7;
 }
 
-- (HKQueryDescriptor)initWithCoder:(id)a3
+- (HKQueryDescriptor)initWithCoder:(id)coder
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SampleType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SampleType"];
   sampleType = self->_sampleType;
   self->_sampleType = v5;
 
   v7 = [(HKQueryDescriptor *)self initWithSampleType:self->_sampleType predicate:0];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Filter"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Filter"];
     filter = v7->_filter;
     v7->_filter = v8;
 
@@ -204,7 +204,7 @@ LABEL_19:
       v19[3] = objc_opt_class();
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
       v12 = [v10 setWithArray:v11];
-      v13 = [v4 decodeObjectOfClasses:v12 forKey:@"Predicate"];
+      v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"Predicate"];
 
       if (v13)
       {
@@ -220,21 +220,21 @@ LABEL_19:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKQueryDescriptor *)self sampleType];
-  [v4 encodeObject:v5 forKey:@"SampleType"];
+  coderCopy = coder;
+  sampleType = [(HKQueryDescriptor *)self sampleType];
+  [coderCopy encodeObject:sampleType forKey:@"SampleType"];
 
-  v6 = [(HKQueryDescriptor *)self _filter];
-  [v4 encodeObject:v6 forKey:@"Filter"];
+  _filter = [(HKQueryDescriptor *)self _filter];
+  [coderCopy encodeObject:_filter forKey:@"Filter"];
 }
 
-+ (id)medicalRecordDescriptionsWithPredicate:(id)a3 futureMigrationsEnabled:(BOOL)a4
++ (id)medicalRecordDescriptionsWithPredicate:(id)predicate futureMigrationsEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4)
+  enabledCopy = enabled;
+  predicateCopy = predicate;
+  if (enabledCopy)
   {
     v6 = 8;
   }
@@ -249,19 +249,19 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = __99__HKQueryDescriptor_HealthRecords__medicalRecordDescriptionsWithPredicate_futureMigrationsEnabled___block_invoke;
   v11[3] = &unk_1E73847E8;
-  v12 = v5;
-  v8 = v5;
+  v12 = predicateCopy;
+  v8 = predicateCopy;
   v9 = [v7 hk_map:v11];
 
   return v9;
 }
 
-+ (id)allergiesDescriptionsWithPredicate:(id)a3
++ (id)allergiesDescriptionsWithPredicate:(id)predicate
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = +[HKAllergyRecordType allergyRecordType];
-  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:v3];
+  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:predicateCopy];
 
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
@@ -271,12 +271,12 @@ LABEL_19:
   return v6;
 }
 
-+ (id)clinicalNotesDescriptionsWithPredicate:(id)a3
++ (id)clinicalNotesDescriptionsWithPredicate:(id)predicate
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = +[HKClinicalNoteRecordType clinicalNoteRecordType];
-  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:v3];
+  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:predicateCopy];
 
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
@@ -286,12 +286,12 @@ LABEL_19:
   return v6;
 }
 
-+ (id)conditionsDescriptionsWithPredicate:(id)a3
++ (id)conditionsDescriptionsWithPredicate:(id)predicate
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = +[HKConditionRecordType conditionRecordType];
-  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:v3];
+  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:predicateCopy];
 
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
@@ -301,12 +301,12 @@ LABEL_19:
   return v6;
 }
 
-+ (id)coverageDescriptionsWithPredicate:(id)a3
++ (id)coverageDescriptionsWithPredicate:(id)predicate
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = +[HKCoverageRecordType coverageRecordType];
-  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:v3];
+  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:predicateCopy];
 
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
@@ -316,12 +316,12 @@ LABEL_19:
   return v6;
 }
 
-+ (id)immunizationsDescriptionsWithPredicate:(id)a3
++ (id)immunizationsDescriptionsWithPredicate:(id)predicate
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = +[HKVaccinationRecordType vaccinationRecordType];
-  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:v3];
+  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:predicateCopy];
 
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
@@ -331,17 +331,17 @@ LABEL_19:
   return v6;
 }
 
-+ (id)labsDescriptionsWithPredicate:(id)a3
++ (id)labsDescriptionsWithPredicate:(id)predicate
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = [HKQuery predicateForDiagnosticTestResultCategory:@"laboratory"];
   v5 = v4;
-  if (v3)
+  if (predicateCopy)
   {
     v6 = MEMORY[0x1E696AB28];
     v17[0] = v4;
-    v17[1] = v3;
+    v17[1] = predicateCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v8 = [v6 andPredicateWithSubpredicates:v7];
 
@@ -349,7 +349,7 @@ LABEL_19:
   }
 
   v9 = +[HKDiagnosticTestReportType diagnosticTestReportType];
-  v10 = [HKQueryDescriptor queryDescriptorWithSampleType:v9 predicate:v3];
+  v10 = [HKQueryDescriptor queryDescriptorWithSampleType:v9 predicate:predicateCopy];
   v16[0] = v10;
   v11 = +[HKDiagnosticTestResultType diagnosticTestResultType];
   v12 = [HKQueryDescriptor queryDescriptorWithSampleType:v11 predicate:v5];
@@ -361,17 +361,17 @@ LABEL_19:
   return v13;
 }
 
-+ (id)medicationsDescriptionsWithPredicate:(id)a3
++ (id)medicationsDescriptionsWithPredicate:(id)predicate
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = +[HKMedicationDispenseRecordType medicationDispenseRecordType];
-  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:v3];
+  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:predicateCopy];
   v6 = +[HKMedicationOrderType medicationOrderType];
-  v7 = [HKQueryDescriptor queryDescriptorWithSampleType:v6 predicate:v3];
+  v7 = [HKQueryDescriptor queryDescriptorWithSampleType:v6 predicate:predicateCopy];
   v13[1] = v7;
   v8 = +[HKMedicationRecordType medicationRecordType];
-  v9 = [HKQueryDescriptor queryDescriptorWithSampleType:v8 predicate:v3];
+  v9 = [HKQueryDescriptor queryDescriptorWithSampleType:v8 predicate:predicateCopy];
 
   v13[2] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
@@ -381,12 +381,12 @@ LABEL_19:
   return v10;
 }
 
-+ (id)proceduresDescriptionsWithPredicate:(id)a3
++ (id)proceduresDescriptionsWithPredicate:(id)predicate
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = +[HKProcedureRecordType procedureRecordType];
-  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:v3];
+  v5 = [HKQueryDescriptor queryDescriptorWithSampleType:v4 predicate:predicateCopy];
 
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
@@ -396,17 +396,17 @@ LABEL_19:
   return v6;
 }
 
-+ (id)vitalsDescriptionsWithPredicate:(id)a3
++ (id)vitalsDescriptionsWithPredicate:(id)predicate
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = [HKQuery predicateForDiagnosticTestResultCategory:@"vital-signs"];
   v5 = v4;
-  if (v3)
+  if (predicateCopy)
   {
     v6 = MEMORY[0x1E696AB28];
     v15[0] = v4;
-    v15[1] = v3;
+    v15[1] = predicateCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v8 = [v6 andPredicateWithSubpredicates:v7];
 

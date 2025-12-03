@@ -1,12 +1,12 @@
 @interface DividerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore11DividerView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore11DividerView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation DividerView
 
-- (_TtC8AppStore11DividerView)initWithCoder:(id)a3
+- (_TtC8AppStore11DividerView)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC8AppStore11DividerView_separatorInset);
   v5 = *&UIEdgeInsetsZero.bottom;
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = type metadata accessor for FloatingPointRoundingRule();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
@@ -40,7 +40,7 @@
   swift_beginAccess();
   sub_1002BB2D0(self + v12, v11);
   v13 = qword_10096EE38;
-  v14 = self;
+  selfCopy = self;
   if (v13 != -1)
   {
     swift_once();
@@ -63,7 +63,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D9EEC();
 }
 

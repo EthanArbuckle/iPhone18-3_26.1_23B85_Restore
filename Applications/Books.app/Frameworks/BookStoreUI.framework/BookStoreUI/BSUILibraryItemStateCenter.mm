@@ -1,30 +1,30 @@
 @interface BSUILibraryItemStateCenter
-- (BSUILibraryItemStateCenter)initWithProvider:(id)a3;
+- (BSUILibraryItemStateCenter)initWithProvider:(id)provider;
 - (BSUILibraryItemStateProviding)provider;
-- (id)dynamicStateForKind:(id)a3 instance:(id)a4 parameters:(id)a5;
-- (id)mapItemState:(id)a3;
-- (id)observersToNotifyForItemIdentifier:(id)a3;
-- (void)_notifyObserversItemUpdatedFor:(id)a3 itemState:(id)a4;
-- (void)addObserver:(id)a3 forItemIdentifier:(id)a4;
-- (void)addOrUpdateObserver:(id)a3 forSingleItemIdentifier:(id)a4;
+- (id)dynamicStateForKind:(id)kind instance:(id)instance parameters:(id)parameters;
+- (id)mapItemState:(id)state;
+- (id)observersToNotifyForItemIdentifier:(id)identifier;
+- (void)_notifyObserversItemUpdatedFor:(id)for itemState:(id)state;
+- (void)addObserver:(id)observer forItemIdentifier:(id)identifier;
+- (void)addOrUpdateObserver:(id)observer forSingleItemIdentifier:(id)identifier;
 - (void)aq_updateInterest;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 forItemIdentifier:(id)a4;
-- (void)updateItemWithIdentifier:(id)a3 state:(id)a4 allowsInsert:(BOOL)a5;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer forItemIdentifier:(id)identifier;
+- (void)updateItemWithIdentifier:(id)identifier state:(id)state allowsInsert:(BOOL)insert;
 @end
 
 @implementation BSUILibraryItemStateCenter
 
-- (BSUILibraryItemStateCenter)initWithProvider:(id)a3
+- (BSUILibraryItemStateCenter)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = BSUILibraryItemStateCenter;
   v5 = [(BSUILibraryItemStateCenter *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_provider, v4);
+    objc_storeWeak(&v5->_provider, providerCopy);
     v7 = [NSMapTable mapTableWithKeyOptions:0 valueOptions:517];
     instanceMap = v6->_instanceMap;
     v6->_instanceMap = v7;
@@ -41,75 +41,75 @@
   return v6;
 }
 
-- (id)mapItemState:(id)a3
+- (id)mapItemState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = objc_opt_new();
-  v5 = [v3 itemIdentifier];
-  [v4 setObject:v5 forKeyedSubscript:@"itemIdentifier"];
+  itemIdentifier = [stateCopy itemIdentifier];
+  [v4 setObject:itemIdentifier forKeyedSubscript:@"itemIdentifier"];
 
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isSample]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [stateCopy isSample]);
   [v4 setObject:v6 forKeyedSubscript:@"sample"];
 
-  v7 = [v3 readingProgress];
-  [v4 setObject:v7 forKeyedSubscript:@"readingProgress"];
+  readingProgress = [stateCopy readingProgress];
+  [v4 setObject:readingProgress forKeyedSubscript:@"readingProgress"];
 
-  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 wantToRead]);
+  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [stateCopy wantToRead]);
   [v4 setObject:v8 forKeyedSubscript:@"wantToRead"];
 
-  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isUpdateAvailable]);
+  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [stateCopy isUpdateAvailable]);
   [v4 setObject:v9 forKeyedSubscript:@"updateAvailable"];
 
-  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isStreamable]);
+  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [stateCopy isStreamable]);
   [v4 setObject:v10 forKeyedSubscript:@"streamable"];
 
-  if ([v3 library] > 5)
+  if ([stateCopy library] > 5)
   {
     v11 = @"unknown";
   }
 
   else
   {
-    v11 = *(&off_387418 + [v3 library]);
+    v11 = *(&off_387418 + [stateCopy library]);
   }
 
   [v4 setObject:v11 forKeyedSubscript:@"library"];
-  if ([v3 download] > 2)
+  if ([stateCopy download] > 2)
   {
     v12 = @"unknown";
   }
 
   else
   {
-    v12 = *(&off_387448 + [v3 download]);
+    v12 = *(&off_387448 + [stateCopy download]);
   }
 
   [v4 setObject:v12 forKeyedSubscript:@"download"];
-  if ([v3 play] > 2)
+  if ([stateCopy play] > 2)
   {
     v13 = @"unknown";
   }
 
   else
   {
-    v13 = *(&off_387460 + [v3 play]);
+    v13 = *(&off_387460 + [stateCopy play]);
   }
 
   [v4 setObject:v13 forKeyedSubscript:@"play"];
-  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isTrackedAsRecent]);
+  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [stateCopy isTrackedAsRecent]);
   [v4 setObject:v14 forKeyedSubscript:@"trackedAsRecent"];
 
-  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isPurchased]);
+  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [stateCopy isPurchased]);
   [v4 setObject:v15 forKeyedSubscript:@"isPurchased"];
 
   return v4;
 }
 
-- (id)dynamicStateForKind:(id)a3 instance:(id)a4 parameters:(id)a5
+- (id)dynamicStateForKind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  kindCopy = kind;
+  instanceCopy = instance;
+  parametersCopy = parameters;
   WeakRetained = objc_loadWeakRetained(&self->_provider);
   v28 = 0;
   v29 = &v28;
@@ -119,7 +119,7 @@
   v33 = 0;
   objc_opt_class();
   v12 = BUDynamicCast();
-  if (v12 || (objc_opt_respondsToSelector() & 1) != 0 && ([v9 stringValue], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v12 || (objc_opt_respondsToSelector() & 1) != 0 && ([instanceCopy stringValue], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     access = self->_access;
     block[0] = _NSConcreteStackBlock;
@@ -167,18 +167,18 @@
   return v20;
 }
 
-- (void)updateItemWithIdentifier:(id)a3 state:(id)a4 allowsInsert:(BOOL)a5
+- (void)updateItemWithIdentifier:(id)identifier state:(id)state allowsInsert:(BOOL)insert
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  stateCopy = state;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_144A4;
   v21 = sub_144B4;
   v22 = 0;
-  v10 = [(BSUILibraryItemStateCenter *)self mapItemState:v9];
-  if (v8)
+  v10 = [(BSUILibraryItemStateCenter *)self mapItemState:stateCopy];
+  if (identifierCopy)
   {
     access = self->_access;
     block[0] = _NSConcreteStackBlock;
@@ -187,29 +187,29 @@
     block[3] = &unk_387480;
     v15 = &v17;
     block[4] = self;
-    v13 = v8;
-    v16 = a5;
+    v13 = identifierCopy;
+    insertCopy = insert;
     v14 = v10;
     dispatch_sync(access, block);
   }
 
   [v18[5] updateWithValue:v10];
-  [(BSUILibraryItemStateCenter *)self _notifyObserversItemUpdatedFor:v8 itemState:v9];
+  [(BSUILibraryItemStateCenter *)self _notifyObserversItemUpdatedFor:identifierCopy itemState:stateCopy];
 
   _Block_object_dispose(&v17, 8);
 }
 
 - (void)aq_updateInterest
 {
-  v3 = [(NSMapTable *)self->_instanceMap keyEnumerator];
-  v4 = [v3 allObjects];
-  v5 = [NSMutableSet setWithArray:v4];
+  keyEnumerator = [(NSMapTable *)self->_instanceMap keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v5 = [NSMutableSet setWithArray:allObjects];
 
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_148BC;
   v11 = &unk_386D98;
-  v12 = self;
+  selfCopy = self;
   v13 = v5;
   v6 = v5;
   os_unfair_lock_lock_with_options();
@@ -219,9 +219,9 @@
   [WeakRetained updateInterest:{v6, v8, v9}];
 }
 
-- (id)observersToNotifyForItemIdentifier:(id)a3
+- (id)observersToNotifyForItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -232,8 +232,8 @@
   v9[1] = 3221225472;
   v10 = sub_14B34;
   v11 = &unk_387050;
-  v12 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = identifierCopy;
   v13 = v5;
   v14 = &v15;
   v6 = v9;
@@ -247,17 +247,17 @@
   return v7;
 }
 
-- (void)addObserver:(id)a3 forItemIdentifier:(id)a4
+- (void)addObserver:(id)observer forItemIdentifier:(id)identifier
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_14DA8;
   v10[3] = &unk_387000;
   v10[4] = self;
-  v11 = a3;
-  v12 = a4;
-  v6 = v12;
-  v7 = v11;
+  observerCopy = observer;
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  v7 = observerCopy;
   os_unfair_lock_lock_with_options();
   sub_14DA8(v10);
   os_unfair_lock_unlock(&self->_accessLock);
@@ -270,18 +270,18 @@
   dispatch_sync(access, v9);
 }
 
-- (void)addOrUpdateObserver:(id)a3 forSingleItemIdentifier:(id)a4
+- (void)addOrUpdateObserver:(id)observer forSingleItemIdentifier:(id)identifier
 {
-  v6 = a3;
+  observerCopy = observer;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_14FA8;
   v11[3] = &unk_387000;
   v11[4] = self;
-  v12 = a4;
-  v13 = v6;
-  v7 = v6;
-  v8 = v12;
+  identifierCopy = identifier;
+  v13 = observerCopy;
+  v7 = observerCopy;
+  v8 = identifierCopy;
   os_unfair_lock_lock_with_options();
   sub_14FA8(v11);
   os_unfair_lock_unlock(&self->_accessLock);
@@ -294,17 +294,17 @@
   dispatch_sync(access, v10);
 }
 
-- (void)removeObserver:(id)a3 forItemIdentifier:(id)a4
+- (void)removeObserver:(id)observer forItemIdentifier:(id)identifier
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_15150;
   v10[3] = &unk_387000;
   v10[4] = self;
-  v11 = a3;
-  v12 = a4;
-  v6 = v12;
-  v7 = v11;
+  observerCopy = observer;
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  v7 = observerCopy;
   os_unfair_lock_lock_with_options();
   sub_15150(v10);
   os_unfair_lock_unlock(&self->_accessLock);
@@ -317,15 +317,15 @@
   dispatch_sync(access, v9);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_15354;
   v7[3] = &unk_386D98;
   v7[4] = self;
-  v8 = a3;
-  v4 = v8;
+  observerCopy = observer;
+  v4 = observerCopy;
   os_unfair_lock_lock_with_options();
   sub_15354(v7);
   os_unfair_lock_unlock(&self->_accessLock);
@@ -338,15 +338,15 @@
   dispatch_sync(access, block);
 }
 
-- (void)_notifyObserversItemUpdatedFor:(id)a3 itemState:(id)a4
+- (void)_notifyObserversItemUpdatedFor:(id)for itemState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  stateCopy = state;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(BSUILibraryItemStateCenter *)self observersToNotifyForItemIdentifier:v6, 0];
+  v8 = [(BSUILibraryItemStateCenter *)self observersToNotifyForItemIdentifier:forCopy, 0];
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
@@ -362,7 +362,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) libraryItemStateCenter:self didUpdateItemState:v7 forIdentifier:v6];
+        [*(*(&v13 + 1) + 8 * v12) libraryItemStateCenter:self didUpdateItemState:stateCopy forIdentifier:forCopy];
         v12 = v12 + 1;
       }
 

@@ -6,66 +6,66 @@
 - (BOOL)blueLightStatusEnabled;
 - (BOOL)brightnessFiltersEnabled;
 - (BOOL)supportsAdaptation;
-- (id)_axPreferenceAsMobile:(id)a3;
+- (id)_axPreferenceAsMobile:(id)mobile;
 - (id)_gaxBackboard;
-- (id)_handleAXUIServerPID:(id)a3;
-- (id)_handleAdaptationEnabled:(id)a3;
-- (id)_handleAssistiveTouchPID:(id)a3;
-- (id)_handleBlueLightStatusEnabled:(id)a3;
-- (id)_handleBrightnessFiltersEnabled:(id)a3;
-- (id)_handleContextHostingIdForContextId:(id)a3;
-- (id)_handleContextIdForPosition:(id)a3;
-- (id)_handleConvertFrameFromContextId:(id)a3;
-- (id)_handleConvertFrameFromContextIdToContextId:(id)a3;
-- (id)_handleConvertFrameToContextId:(id)a3;
-- (id)_handleConvertPointFromContextId:(id)a3;
-- (id)_handleConvertPointToContextId:(id)a3;
-- (id)_handleEventListenerRegistration:(id)a3;
-- (id)_handleFullKeyboardAccessDaemonPID:(id)a3;
-- (id)_handleGetGuidedAccessAvailability:(id)a3;
-- (id)_handleGetLastSetColorFilter:(id)a3;
-- (id)_handleGetZoomInitialFocusRect:(id)a3;
-- (id)_handleGuidedAccessCurrentModeAndSessionApp:(id)a3;
-- (id)_handleGuidedAccessEffectiveAppBundleIdentifier:(id)a3;
-- (id)_handleGuidedAccessIgnoredRegions:(id)a3;
-- (id)_handleHearingAidServerPID:(id)a3;
-- (id)_handleHomeClickSwallowedForGuidedAccess:(id)a3;
-- (id)_handleInvertColorsChange:(id)a3;
-- (id)_handleIsGuidedAccessActive:(id)a3;
-- (id)_handleIsGuidedAccessInWorkspace:(id)a3;
-- (id)_handleIsGuidedAccessSelfLockedToRequestingApp:(id)a3;
-- (id)_handleIsGuidedAccessUnmanagedSelfLocked:(id)a3;
-- (id)_handleIsHearingControlEnabled:(id)a3;
-- (id)_handleIsRestrictedForAAC:(id)a3;
-- (id)_handleLockScreenDimTimerEnabled:(id)a3;
-- (id)_handlePostEvent:(id)a3;
-- (id)_handleRegisterAccessibilityUIServerPID:(id)a3;
-- (id)_handleRegisterAssistiveTouchPID:(id)a3;
-- (id)_handleRegisterFullKeyboardAccessDaemonPID:(id)a3;
-- (id)_handleRegisterHearingAidServerPID:(id)a3;
-- (id)_handleRegisterLiveCaptionsPID:(id)a3;
-- (id)_handleRegisterSiriViewServicePID:(id)a3;
-- (id)_handleRegisterZoomConflict:(id)a3;
-- (id)_handleResetAccessibilityFeatures:(id)a3;
-- (id)_handleSessionIsLoginSession:(id)a3;
-- (id)_handleSetCapsLockLightOn:(id)a3;
-- (id)_handleSetClarityUIAdminPasscode:(id)a3;
-- (id)_handleSetIsSpeakScreenHighlightVisible:(id)a3;
-- (id)_handleSetSessionIsLoginSession:(id)a3;
-- (id)_handleSetSwitchControlHasScreenSwitch:(id)a3;
-- (id)_handleSetSwitchControlRendersDeviceUnusable:(id)a3;
-- (id)_handleSetZoomInitialFocusRect:(id)a3;
-- (id)_handleSupportsAdaptation:(id)a3;
-- (id)_handleToggleGuidedAccess:(id)a3;
-- (id)_handleTripleClickHomeButtonFired:(id)a3;
-- (id)_handleUserEventOccurred:(id)a3;
-- (id)_handleValidateClarityUIAdminPasscode:(id)a3;
-- (id)_handleZoomAdjustment:(id)a3;
+- (id)_handleAXUIServerPID:(id)d;
+- (id)_handleAdaptationEnabled:(id)enabled;
+- (id)_handleAssistiveTouchPID:(id)d;
+- (id)_handleBlueLightStatusEnabled:(id)enabled;
+- (id)_handleBrightnessFiltersEnabled:(id)enabled;
+- (id)_handleContextHostingIdForContextId:(id)id;
+- (id)_handleContextIdForPosition:(id)position;
+- (id)_handleConvertFrameFromContextId:(id)id;
+- (id)_handleConvertFrameFromContextIdToContextId:(id)id;
+- (id)_handleConvertFrameToContextId:(id)id;
+- (id)_handleConvertPointFromContextId:(id)id;
+- (id)_handleConvertPointToContextId:(id)id;
+- (id)_handleEventListenerRegistration:(id)registration;
+- (id)_handleFullKeyboardAccessDaemonPID:(id)d;
+- (id)_handleGetGuidedAccessAvailability:(id)availability;
+- (id)_handleGetLastSetColorFilter:(id)filter;
+- (id)_handleGetZoomInitialFocusRect:(id)rect;
+- (id)_handleGuidedAccessCurrentModeAndSessionApp:(id)app;
+- (id)_handleGuidedAccessEffectiveAppBundleIdentifier:(id)identifier;
+- (id)_handleGuidedAccessIgnoredRegions:(id)regions;
+- (id)_handleHearingAidServerPID:(id)d;
+- (id)_handleHomeClickSwallowedForGuidedAccess:(id)access;
+- (id)_handleInvertColorsChange:(id)change;
+- (id)_handleIsGuidedAccessActive:(id)active;
+- (id)_handleIsGuidedAccessInWorkspace:(id)workspace;
+- (id)_handleIsGuidedAccessSelfLockedToRequestingApp:(id)app;
+- (id)_handleIsGuidedAccessUnmanagedSelfLocked:(id)locked;
+- (id)_handleIsHearingControlEnabled:(id)enabled;
+- (id)_handleIsRestrictedForAAC:(id)c;
+- (id)_handleLockScreenDimTimerEnabled:(id)enabled;
+- (id)_handlePostEvent:(id)event;
+- (id)_handleRegisterAccessibilityUIServerPID:(id)d;
+- (id)_handleRegisterAssistiveTouchPID:(id)d;
+- (id)_handleRegisterFullKeyboardAccessDaemonPID:(id)d;
+- (id)_handleRegisterHearingAidServerPID:(id)d;
+- (id)_handleRegisterLiveCaptionsPID:(id)d;
+- (id)_handleRegisterSiriViewServicePID:(id)d;
+- (id)_handleRegisterZoomConflict:(id)conflict;
+- (id)_handleResetAccessibilityFeatures:(id)features;
+- (id)_handleSessionIsLoginSession:(id)session;
+- (id)_handleSetCapsLockLightOn:(id)on;
+- (id)_handleSetClarityUIAdminPasscode:(id)passcode;
+- (id)_handleSetIsSpeakScreenHighlightVisible:(id)visible;
+- (id)_handleSetSessionIsLoginSession:(id)session;
+- (id)_handleSetSwitchControlHasScreenSwitch:(id)switch;
+- (id)_handleSetSwitchControlRendersDeviceUnusable:(id)unusable;
+- (id)_handleSetZoomInitialFocusRect:(id)rect;
+- (id)_handleSupportsAdaptation:(id)adaptation;
+- (id)_handleToggleGuidedAccess:(id)access;
+- (id)_handleTripleClickHomeButtonFired:(id)fired;
+- (id)_handleUserEventOccurred:(id)occurred;
+- (id)_handleValidateClarityUIAdminPasscode:(id)passcode;
+- (id)_handleZoomAdjustment:(id)adjustment;
 - (id)_initServer;
-- (id)_setAXPreferenceAsMobile:(id)a3;
-- (id)_setDeviceOrientation:(id)a3;
-- (void)_handleGuidedAccessAutomationCommand:(id)a3 completion:(id)a4;
-- (void)_handleSetGuidedAccessEnabledByRequestingApp:(id)a3 completion:(id)a4;
+- (id)_setAXPreferenceAsMobile:(id)mobile;
+- (id)_setDeviceOrientation:(id)orientation;
+- (void)_handleGuidedAccessAutomationCommand:(id)command completion:(id)completion;
+- (void)_handleSetGuidedAccessEnabledByRequestingApp:(id)app completion:(id)completion;
 - (void)_initializeHandlers;
 - (void)dealloc;
 - (void)disableBrightnessFilters;
@@ -205,8 +205,8 @@ uint64_t __52__AXBackBoardServerInstance_backBoardServerInstance__block_invoke()
 
     [(AXIPCServer *)v2->_server setQueueSize:100];
     [(AXBackBoardServerInstance *)v2 _initializeHandlers];
-    v15 = [MEMORY[0x29EDB8DB0] date];
-    [v15 timeIntervalSince1970];
+    date = [MEMORY[0x29EDB8DB0] date];
+    [date timeIntervalSince1970];
     v17 = v16;
     v18 = AXBSystemBootTime___boottime;
     if (!AXBSystemBootTime___boottime)
@@ -259,17 +259,17 @@ uint64_t __52__AXBackBoardServerInstance_backBoardServerInstance__block_invoke()
 - (BOOL)brightnessFiltersEnabled
 {
   v2 = +[AXBBlueLightManager sharedManager];
-  v3 = [v2 brightnessFiltersEnabled];
+  brightnessFiltersEnabled = [v2 brightnessFiltersEnabled];
 
-  return v3;
+  return brightnessFiltersEnabled;
 }
 
 - (BOOL)blueLightStatusEnabled
 {
   v2 = +[AXBBlueLightManager sharedManager];
-  v3 = [v2 blueLightStatusEnabled];
+  blueLightStatusEnabled = [v2 blueLightStatusEnabled];
 
-  return v3;
+  return blueLightStatusEnabled;
 }
 
 - (void)restoreCachedBrightnessFilters
@@ -281,26 +281,26 @@ uint64_t __52__AXBackBoardServerInstance_backBoardServerInstance__block_invoke()
 - (BOOL)adaptationEnabled
 {
   v2 = +[AXBBlueLightManager sharedManager];
-  v3 = [v2 adaptationEnabled];
+  adaptationEnabled = [v2 adaptationEnabled];
 
-  return v3;
+  return adaptationEnabled;
 }
 
 - (BOOL)supportsAdaptation
 {
   v2 = +[AXBBlueLightManager sharedManager];
-  v3 = [v2 supportsAdaptation];
+  supportsAdaptation = [v2 supportsAdaptation];
 
-  return v3;
+  return supportsAdaptation;
 }
 
 - (void)forceLoadGAXBundle
 {
-  v2 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v2 postNotificationName:*MEMORY[0x29EDC8438] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x29EDC8438] object:0];
 
-  v3 = [MEMORY[0x29EDBDF98] replayer];
-  [v3 replayWithName:@"Ping SpringBoard for unmanaged ASAM" attempts:10 interval:1 async:MEMORY[0x29EDCA578] queue:&__block_literal_global_490 replayBlock:&__block_literal_global_494 completion:0.5];
+  replayer = [MEMORY[0x29EDBDF98] replayer];
+  [replayer replayWithName:@"Ping SpringBoard for unmanaged ASAM" attempts:10 interval:1 async:MEMORY[0x29EDCA578] queue:&__block_literal_global_490 replayBlock:&__block_literal_global_494 completion:0.5];
 }
 
 uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke()
@@ -348,37 +348,37 @@ uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke_2(uint
   return result;
 }
 
-- (id)_handleRegisterZoomConflict:(id)a3
+- (id)_handleRegisterZoomConflict:(id)conflict
 {
   v3 = MEMORY[0x29EDBA068];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  v6 = [v4 payload];
+  conflictCopy = conflict;
+  defaultCenter = [v3 defaultCenter];
+  payload = [conflictCopy payload];
 
-  [v5 postNotificationName:@"UIAXZoomRegisterConflict" object:0 userInfo:v6];
+  [defaultCenter postNotificationName:@"UIAXZoomRegisterConflict" object:0 userInfo:payload];
   return 0;
 }
 
-- (id)_handleZoomAdjustment:(id)a3
+- (id)_handleZoomAdjustment:(id)adjustment
 {
   v3 = MEMORY[0x29EDBA068];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
+  adjustmentCopy = adjustment;
+  defaultCenter = [v3 defaultCenter];
   v6 = *MEMORY[0x29EDBDFE8];
-  v7 = [v4 payload];
+  payload = [adjustmentCopy payload];
 
-  [v5 postNotificationName:v6 object:0 userInfo:v7];
+  [defaultCenter postNotificationName:v6 object:0 userInfo:payload];
   return 0;
 }
 
-- (id)_handleContextIdForPosition:(id)a3
+- (id)_handleContextIdForPosition:(id)position
 {
   v16[1] = *MEMORY[0x29EDCA608];
-  v4 = [a3 payload];
-  v5 = [(AXBackBoardServerInstance *)self delegate];
-  v6 = [v4 objectForKey:@"displayPoint"];
+  payload = [position payload];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  v6 = [payload objectForKey:@"displayPoint"];
   v7 = NSPointFromString(v6);
-  v8 = [v5 contextIdForDisplayPoint:{v7.x, v7.y}];
+  v8 = [delegate contextIdForDisplayPoint:{v7.x, v7.y}];
 
   v9 = objc_alloc(MEMORY[0x29EDBDF70]);
   v15 = @"result";
@@ -392,13 +392,13 @@ uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke_2(uint
   return v12;
 }
 
-- (id)_handleContextHostingIdForContextId:(id)a3
+- (id)_handleContextHostingIdForContextId:(id)id
 {
   v15[1] = *MEMORY[0x29EDCA608];
-  v4 = [a3 payload];
-  v5 = [(AXBackBoardServerInstance *)self delegate];
-  v6 = [v4 objectForKey:@"contextId"];
-  v7 = [v5 contextIdHosterForContextId:{objc_msgSend(v6, "unsignedIntValue")}];
+  payload = [id payload];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  v6 = [payload objectForKey:@"contextId"];
+  v7 = [delegate contextIdHosterForContextId:{objc_msgSend(v6, "unsignedIntValue")}];
 
   v8 = objc_alloc(MEMORY[0x29EDBDF70]);
   v14 = @"result";
@@ -412,20 +412,20 @@ uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke_2(uint
   return v11;
 }
 
-- (id)_handleConvertFrameToContextId:(id)a3
+- (id)_handleConvertFrameToContextId:(id)id
 {
-  v4 = [a3 payload];
-  v5 = [(AXBackBoardServerInstance *)self delegate];
-  v6 = [v4 objectForKey:@"frame"];
+  payload = [id payload];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  v6 = [payload objectForKey:@"frame"];
   v29 = NSRectFromString(v6);
   x = v29.origin.x;
   y = v29.origin.y;
   width = v29.size.width;
   height = v29.size.height;
-  v11 = [v4 objectForKey:@"contextId"];
-  v12 = [v11 unsignedIntValue];
-  v13 = [v4 objectForKeyedSubscript:@"displayId"];
-  [v5 convertFrame:v12 toContextId:objc_msgSend(v13 displayId:{"unsignedIntValue"), x, y, width, height}];
+  v11 = [payload objectForKey:@"contextId"];
+  unsignedIntValue = [v11 unsignedIntValue];
+  v13 = [payload objectForKeyedSubscript:@"displayId"];
+  [delegate convertFrame:unsignedIntValue toContextId:objc_msgSend(v13 displayId:{"unsignedIntValue"), x, y, width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -444,20 +444,20 @@ uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke_2(uint
   return v26;
 }
 
-- (id)_handleConvertFrameFromContextId:(id)a3
+- (id)_handleConvertFrameFromContextId:(id)id
 {
-  v4 = [a3 payload];
-  v5 = [(AXBackBoardServerInstance *)self delegate];
-  v6 = [v4 objectForKey:@"frame"];
+  payload = [id payload];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  v6 = [payload objectForKey:@"frame"];
   v29 = NSRectFromString(v6);
   x = v29.origin.x;
   y = v29.origin.y;
   width = v29.size.width;
   height = v29.size.height;
-  v11 = [v4 objectForKey:@"contextId"];
-  v12 = [v11 unsignedIntValue];
-  v13 = [v4 objectForKeyedSubscript:@"displayId"];
-  [v5 convertFrame:v12 fromContextId:objc_msgSend(v13 displayId:{"unsignedIntValue"), x, y, width, height}];
+  v11 = [payload objectForKey:@"contextId"];
+  unsignedIntValue = [v11 unsignedIntValue];
+  v13 = [payload objectForKeyedSubscript:@"displayId"];
+  [delegate convertFrame:unsignedIntValue fromContextId:objc_msgSend(v13 displayId:{"unsignedIntValue"), x, y, width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -476,37 +476,37 @@ uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke_2(uint
   return v26;
 }
 
-- (id)_handleConvertFrameFromContextIdToContextId:(id)a3
+- (id)_handleConvertFrameFromContextIdToContextId:(id)id
 {
   v46[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [(AXBackBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
-  v7 = [v6 objectForKeyedSubscript:@"frame"];
+  idCopy = id;
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  payload = [idCopy payload];
+  v7 = [payload objectForKeyedSubscript:@"frame"];
   v48 = NSRectFromString(v7);
   x = v48.origin.x;
   y = v48.origin.y;
   width = v48.size.width;
   height = v48.size.height;
-  v12 = [v4 payload];
-  v13 = [v12 objectForKeyedSubscript:@"fromContextId"];
-  v14 = [v13 unsignedIntValue];
-  v15 = [v4 payload];
-  v16 = [v15 objectForKeyedSubscript:@"displayId"];
-  [v5 convertFrame:v14 fromContextId:objc_msgSend(v16 displayId:{"unsignedIntValue"), x, y, width, height}];
+  payload2 = [idCopy payload];
+  v13 = [payload2 objectForKeyedSubscript:@"fromContextId"];
+  unsignedIntValue = [v13 unsignedIntValue];
+  payload3 = [idCopy payload];
+  v16 = [payload3 objectForKeyedSubscript:@"displayId"];
+  [delegate convertFrame:unsignedIntValue fromContextId:objc_msgSend(v16 displayId:{"unsignedIntValue"), x, y, width, height}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  v25 = [(AXBackBoardServerInstance *)self delegate];
-  v26 = [v4 payload];
-  v27 = [v26 objectForKeyedSubscript:@"toContextId"];
-  v28 = [v27 unsignedIntValue];
-  v29 = [v4 payload];
+  delegate2 = [(AXBackBoardServerInstance *)self delegate];
+  payload4 = [idCopy payload];
+  v27 = [payload4 objectForKeyedSubscript:@"toContextId"];
+  unsignedIntValue2 = [v27 unsignedIntValue];
+  payload5 = [idCopy payload];
 
-  v30 = [v29 objectForKeyedSubscript:@"displayId"];
-  [v25 convertFrame:v28 toContextId:objc_msgSend(v30 displayId:{"unsignedIntValue"), v18, v20, v22, v24}];
+  v30 = [payload5 objectForKeyedSubscript:@"displayId"];
+  [delegate2 convertFrame:unsignedIntValue2 toContextId:objc_msgSend(v30 displayId:{"unsignedIntValue"), v18, v20, v22, v24}];
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -528,20 +528,20 @@ uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke_2(uint
   return v42;
 }
 
-- (id)_handleConvertPointFromContextId:(id)a3
+- (id)_handleConvertPointFromContextId:(id)id
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"contextId"];
-  v6 = [v5 unsignedIntValue];
+  payload = [id payload];
+  v5 = [payload objectForKey:@"contextId"];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  v7 = [v4 objectForKey:@"displayId"];
-  v8 = [v7 unsignedIntValue];
+  v7 = [payload objectForKey:@"displayId"];
+  unsignedIntValue2 = [v7 unsignedIntValue];
 
-  v9 = [v4 objectForKey:@"point"];
+  v9 = [payload objectForKey:@"point"];
   v10 = NSPointFromString(v9);
 
-  v11 = [(AXBackBoardServerInstance *)self delegate];
-  [v11 convertPoint:v6 fromContextId:v8 displayId:{v10.x, v10.y}];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  [delegate convertPoint:unsignedIntValue fromContextId:unsignedIntValue2 displayId:{v10.x, v10.y}];
   v13 = v12;
   v15 = v14;
 
@@ -556,20 +556,20 @@ uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke_2(uint
   return v20;
 }
 
-- (id)_handleConvertPointToContextId:(id)a3
+- (id)_handleConvertPointToContextId:(id)id
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"contextId"];
-  v6 = [v5 unsignedIntValue];
+  payload = [id payload];
+  v5 = [payload objectForKey:@"contextId"];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  v7 = [v4 objectForKey:@"displayId"];
-  v8 = [v7 unsignedIntValue];
+  v7 = [payload objectForKey:@"displayId"];
+  unsignedIntValue2 = [v7 unsignedIntValue];
 
-  v9 = [v4 objectForKey:@"point"];
+  v9 = [payload objectForKey:@"point"];
   v10 = NSPointFromString(v9);
 
-  v11 = [(AXBackBoardServerInstance *)self delegate];
-  [v11 convertPoint:v6 toContextId:v8 displayId:{v10.x, v10.y}];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  [delegate convertPoint:unsignedIntValue toContextId:unsignedIntValue2 displayId:{v10.x, v10.y}];
   v13 = v12;
   v15 = v14;
 
@@ -584,9 +584,9 @@ uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke_2(uint
   return v20;
 }
 
-- (id)_handlePostEvent:(id)a3
+- (id)_handlePostEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (_handlePostEvent__onceToken != -1)
   {
     [AXBackBoardServerInstance _handlePostEvent:];
@@ -599,8 +599,8 @@ uint64_t __47__AXBackBoardServerInstance_forceLoadGAXBundle__block_invoke_2(uint
     v7[1] = 3221225472;
     v7[2] = __46__AXBackBoardServerInstance__handlePostEvent___block_invoke_2;
     v7[3] = &unk_29F2A4CC0;
-    v8 = v4;
-    v9 = self;
+    v8 = eventCopy;
+    selfCopy = self;
     dispatch_async(v5, v7);
   }
 
@@ -631,58 +631,58 @@ void __46__AXBackBoardServerInstance__handlePostEvent___block_invoke_2(uint64_t 
   [v6 postEvent:v11 systemEvent:v5 afterNamedTap:v8 namedTaps:v10];
 }
 
-- (id)_handleUserEventOccurred:(id)a3
+- (id)_handleUserEventOccurred:(id)occurred
 {
-  v3 = [(AXBackBoardServerInstance *)self delegate];
-  [v3 userEventOccurred];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  [delegate userEventOccurred];
 
   return 0;
 }
 
-- (id)_handleSetCapsLockLightOn:(id)a3
+- (id)_handleSetCapsLockLightOn:(id)on
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"on"];
-  v6 = [v5 BOOLValue];
+  payload = [on payload];
+  v5 = [payload objectForKeyedSubscript:@"on"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [(AXBackBoardServerInstance *)self delegate];
-  [v7 setCapsLockLightOn:v6];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  [delegate setCapsLockLightOn:bOOLValue];
 
   return 0;
 }
 
-- (id)_handleEventListenerRegistration:(id)a3
+- (id)_handleEventListenerRegistration:(id)registration
 {
-  v4 = a3;
-  v5 = [v4 clientPort];
+  registrationCopy = registration;
+  clientPort = [registrationCopy clientPort];
   eventListeners = self->_eventListeners;
   v16[0] = MEMORY[0x29EDCA5F8];
   v16[1] = 3221225472;
   v16[2] = __62__AXBackBoardServerInstance__handleEventListenerRegistration___block_invoke;
   v16[3] = &__block_descriptor_36_e15_B32__0_8Q16_B24l;
-  v17 = v5;
+  v17 = clientPort;
   v7 = [(NSMutableArray *)eventListeners indexOfObjectPassingTest:v16];
-  v8 = [v4 payload];
+  payload = [registrationCopy payload];
 
-  v9 = [v8 objectForKey:@"start"];
-  v10 = [v9 BOOLValue];
+  v9 = [payload objectForKey:@"start"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [objc_alloc(MEMORY[0x29EDBDF68]) initWithPort:v5];
-      [v11 connectWithError:0];
+      delegate2 = [objc_alloc(MEMORY[0x29EDBDF68]) initWithPort:clientPort];
+      [delegate2 connectWithError:0];
       v14[0] = MEMORY[0x29EDCA5F8];
       v14[1] = 3221225472;
       v14[2] = __62__AXBackBoardServerInstance__handleEventListenerRegistration___block_invoke_2;
       v14[3] = &unk_29F2A4F40;
       v14[4] = self;
-      v15 = v5;
-      [v11 setPortDeathHandler:v14];
-      [(NSMutableArray *)self->_eventListeners addObject:v11];
-      v12 = [(AXBackBoardServerInstance *)self delegate];
-      [v12 registerEventListener:1];
+      v15 = clientPort;
+      [delegate2 setPortDeathHandler:v14];
+      [(NSMutableArray *)self->_eventListeners addObject:delegate2];
+      delegate = [(AXBackBoardServerInstance *)self delegate];
+      [delegate registerEventListener:1];
 
 LABEL_7:
     }
@@ -693,8 +693,8 @@ LABEL_7:
     [(NSMutableArray *)self->_eventListeners removeObjectAtIndex:v7];
     if (![(NSMutableArray *)self->_eventListeners count])
     {
-      v11 = [(AXBackBoardServerInstance *)self delegate];
-      [v11 registerEventListener:0];
+      delegate2 = [(AXBackBoardServerInstance *)self delegate];
+      [delegate2 registerEventListener:0];
       goto LABEL_7;
     }
   }
@@ -722,14 +722,14 @@ void __62__AXBackBoardServerInstance__handleEventListenerRegistration___block_in
   }
 }
 
-- (id)_handleRegisterLiveCaptionsPID:(id)a3
+- (id)_handleRegisterLiveCaptionsPID:(id)d
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"pid"];
-  v6 = [v5 intValue];
+  payload = [d payload];
+  v5 = [payload objectForKey:@"pid"];
+  intValue = [v5 intValue];
 
-  v7 = [(AXBackBoardServerInstance *)self delegate];
-  [v7 setLiveCaptionsPid:v6];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  [delegate setLiveCaptionsPid:intValue];
 
   v8 = objc_alloc(MEMORY[0x29EDBFBE0]);
   v12[0] = MEMORY[0x29EDCA5F8];
@@ -737,8 +737,8 @@ void __62__AXBackBoardServerInstance__handleEventListenerRegistration___block_in
   v12[2] = __60__AXBackBoardServerInstance__handleRegisterLiveCaptionsPID___block_invoke;
   v12[3] = &unk_29F2A4F40;
   v12[4] = self;
-  v13 = v6;
-  v9 = [v8 initWithPID:v6 queue:MEMORY[0x29EDCA578] deathHandler:v12];
+  v13 = intValue;
+  v9 = [v8 initWithPID:intValue queue:MEMORY[0x29EDCA578] deathHandler:v12];
   lcDeathWatcher = self->_lcDeathWatcher;
   self->_lcDeathWatcher = v9;
 
@@ -765,14 +765,14 @@ void __60__AXBackBoardServerInstance__handleRegisterLiveCaptionsPID___block_invo
   }
 }
 
-- (id)_handleRegisterAssistiveTouchPID:(id)a3
+- (id)_handleRegisterAssistiveTouchPID:(id)d
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"pid"];
-  v6 = [v5 intValue];
+  payload = [d payload];
+  v5 = [payload objectForKey:@"pid"];
+  intValue = [v5 intValue];
 
-  v7 = [(AXBackBoardServerInstance *)self delegate];
-  [v7 setAssistiveTouchPid:v6];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  [delegate setAssistiveTouchPid:intValue];
 
   v8 = objc_alloc(MEMORY[0x29EDBFBE0]);
   v12[0] = MEMORY[0x29EDCA5F8];
@@ -780,8 +780,8 @@ void __60__AXBackBoardServerInstance__handleRegisterLiveCaptionsPID___block_invo
   v12[2] = __62__AXBackBoardServerInstance__handleRegisterAssistiveTouchPID___block_invoke;
   v12[3] = &unk_29F2A4F40;
   v12[4] = self;
-  v13 = v6;
-  v9 = [v8 initWithPID:v6 queue:MEMORY[0x29EDCA578] deathHandler:v12];
+  v13 = intValue;
+  v9 = [v8 initWithPID:intValue queue:MEMORY[0x29EDCA578] deathHandler:v12];
   astDeathWatcher = self->_astDeathWatcher;
   self->_astDeathWatcher = v9;
 
@@ -808,15 +808,15 @@ void __62__AXBackBoardServerInstance__handleRegisterAssistiveTouchPID___block_in
   }
 }
 
-- (id)_handleAXUIServerPID:(id)a3
+- (id)_handleAXUIServerPID:(id)d
 {
   v12[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self delegate];
-  v4 = [v3 accessibilityUIServerPid];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  accessibilityUIServerPid = [delegate accessibilityUIServerPid];
 
   v5 = objc_alloc(MEMORY[0x29EDBDF70]);
   v11 = @"pid";
-  v6 = [MEMORY[0x29EDBA070] numberWithInt:v4];
+  v6 = [MEMORY[0x29EDBA070] numberWithInt:accessibilityUIServerPid];
   v12[0] = v6;
   v7 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v5 initWithKey:2033 payload:v7];
@@ -826,15 +826,15 @@ void __62__AXBackBoardServerInstance__handleRegisterAssistiveTouchPID___block_in
   return v8;
 }
 
-- (id)_handleAssistiveTouchPID:(id)a3
+- (id)_handleAssistiveTouchPID:(id)d
 {
   v12[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self delegate];
-  v4 = [v3 accessibilityAssistiveTouchPid];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  accessibilityAssistiveTouchPid = [delegate accessibilityAssistiveTouchPid];
 
   v5 = objc_alloc(MEMORY[0x29EDBDF70]);
   v11 = @"pid";
-  v6 = [MEMORY[0x29EDBA070] numberWithInt:v4];
+  v6 = [MEMORY[0x29EDBA070] numberWithInt:accessibilityAssistiveTouchPid];
   v12[0] = v6;
   v7 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v5 initWithKey:2063 payload:v7];
@@ -844,15 +844,15 @@ void __62__AXBackBoardServerInstance__handleRegisterAssistiveTouchPID___block_in
   return v8;
 }
 
-- (id)_handleHearingAidServerPID:(id)a3
+- (id)_handleHearingAidServerPID:(id)d
 {
   v12[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self delegate];
-  v4 = [v3 hearingAidServerPid];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  hearingAidServerPid = [delegate hearingAidServerPid];
 
   v5 = objc_alloc(MEMORY[0x29EDBDF70]);
   v11 = @"pid";
-  v6 = [MEMORY[0x29EDBA070] numberWithInt:v4];
+  v6 = [MEMORY[0x29EDBA070] numberWithInt:hearingAidServerPid];
   v12[0] = v6;
   v7 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v5 initWithKey:2073 payload:v7];
@@ -862,15 +862,15 @@ void __62__AXBackBoardServerInstance__handleRegisterAssistiveTouchPID___block_in
   return v8;
 }
 
-- (id)_handleFullKeyboardAccessDaemonPID:(id)a3
+- (id)_handleFullKeyboardAccessDaemonPID:(id)d
 {
   v12[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self delegate];
-  v4 = [v3 accessibilityFullKeyboardAccessDaemonPid];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  accessibilityFullKeyboardAccessDaemonPid = [delegate accessibilityFullKeyboardAccessDaemonPid];
 
   v5 = objc_alloc(MEMORY[0x29EDBDF70]);
   v11 = @"pid";
-  v6 = [MEMORY[0x29EDBA070] numberWithInt:v4];
+  v6 = [MEMORY[0x29EDBA070] numberWithInt:accessibilityFullKeyboardAccessDaemonPid];
   v12[0] = v6;
   v7 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v5 initWithKey:2070 payload:v7];
@@ -880,14 +880,14 @@ void __62__AXBackBoardServerInstance__handleRegisterAssistiveTouchPID___block_in
   return v8;
 }
 
-- (id)_handleRegisterAccessibilityUIServerPID:(id)a3
+- (id)_handleRegisterAccessibilityUIServerPID:(id)d
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"pid"];
-  v6 = [v5 intValue];
+  payload = [d payload];
+  v5 = [payload objectForKey:@"pid"];
+  intValue = [v5 intValue];
 
-  v7 = [(AXBackBoardServerInstance *)self delegate];
-  [v7 setAccessibilityUIServerPid:v6];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  [delegate setAccessibilityUIServerPid:intValue];
 
   v8 = objc_alloc(MEMORY[0x29EDBFBE0]);
   v12[0] = MEMORY[0x29EDCA5F8];
@@ -895,8 +895,8 @@ void __62__AXBackBoardServerInstance__handleRegisterAssistiveTouchPID___block_in
   v12[2] = __69__AXBackBoardServerInstance__handleRegisterAccessibilityUIServerPID___block_invoke;
   v12[3] = &unk_29F2A4F40;
   v12[4] = self;
-  v13 = v6;
-  v9 = [v8 initWithPID:v6 queue:MEMORY[0x29EDCA578] deathHandler:v12];
+  v13 = intValue;
+  v9 = [v8 initWithPID:intValue queue:MEMORY[0x29EDCA578] deathHandler:v12];
   uiServerDeathWatcher = self->_uiServerDeathWatcher;
   self->_uiServerDeathWatcher = v9;
 
@@ -923,14 +923,14 @@ void __69__AXBackBoardServerInstance__handleRegisterAccessibilityUIServerPID___b
   }
 }
 
-- (id)_handleRegisterFullKeyboardAccessDaemonPID:(id)a3
+- (id)_handleRegisterFullKeyboardAccessDaemonPID:(id)d
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"pid"];
-  v6 = [v5 intValue];
+  payload = [d payload];
+  v5 = [payload objectForKey:@"pid"];
+  intValue = [v5 intValue];
 
-  v7 = [(AXBackBoardServerInstance *)self delegate];
-  [v7 setFullKeyboardAccessDaemonPID:v6];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  [delegate setFullKeyboardAccessDaemonPID:intValue];
 
   v8 = objc_alloc(MEMORY[0x29EDBFBE0]);
   v12[0] = MEMORY[0x29EDCA5F8];
@@ -938,8 +938,8 @@ void __69__AXBackBoardServerInstance__handleRegisterAccessibilityUIServerPID___b
   v12[2] = __72__AXBackBoardServerInstance__handleRegisterFullKeyboardAccessDaemonPID___block_invoke;
   v12[3] = &unk_29F2A4F40;
   v12[4] = self;
-  v13 = v6;
-  v9 = [v8 initWithPID:v6 queue:MEMORY[0x29EDCA578] deathHandler:v12];
+  v13 = intValue;
+  v9 = [v8 initWithPID:intValue queue:MEMORY[0x29EDCA578] deathHandler:v12];
   fkaDeathWatcher = self->_fkaDeathWatcher;
   self->_fkaDeathWatcher = v9;
 
@@ -966,26 +966,26 @@ void __72__AXBackBoardServerInstance__handleRegisterFullKeyboardAccessDaemonPID_
   }
 }
 
-- (id)_handleRegisterSiriViewServicePID:(id)a3
+- (id)_handleRegisterSiriViewServicePID:(id)d
 {
-  v4 = a3;
-  v5 = [(AXBackBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  dCopy = d;
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  payload = [dCopy payload];
 
-  v7 = [v6 objectForKey:@"pid"];
-  [v5 setSiriViewServicePid:{objc_msgSend(v7, "intValue")}];
+  v7 = [payload objectForKey:@"pid"];
+  [delegate setSiriViewServicePid:{objc_msgSend(v7, "intValue")}];
 
   return 0;
 }
 
-- (id)_handleRegisterHearingAidServerPID:(id)a3
+- (id)_handleRegisterHearingAidServerPID:(id)d
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"pid"];
-  v6 = [v5 intValue];
+  payload = [d payload];
+  v5 = [payload objectForKey:@"pid"];
+  intValue = [v5 intValue];
 
-  v7 = [(AXBackBoardServerInstance *)self delegate];
-  [v7 setHearingAidServerPid:v6];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  [delegate setHearingAidServerPid:intValue];
 
   v8 = objc_alloc(MEMORY[0x29EDBFBE0]);
   v12[0] = MEMORY[0x29EDCA5F8];
@@ -993,8 +993,8 @@ void __72__AXBackBoardServerInstance__handleRegisterFullKeyboardAccessDaemonPID_
   v12[2] = __64__AXBackBoardServerInstance__handleRegisterHearingAidServerPID___block_invoke;
   v12[3] = &unk_29F2A4F40;
   v12[4] = self;
-  v13 = v6;
-  v9 = [v8 initWithPID:v6 queue:MEMORY[0x29EDCA578] deathHandler:v12];
+  v13 = intValue;
+  v9 = [v8 initWithPID:intValue queue:MEMORY[0x29EDCA578] deathHandler:v12];
   heardDeathWatcher = self->_heardDeathWatcher;
   self->_heardDeathWatcher = v9;
 
@@ -1014,10 +1014,10 @@ void __64__AXBackBoardServerInstance__handleRegisterHearingAidServerPID___block_
   }
 }
 
-- (id)_handleInvertColorsChange:(id)a3
+- (id)_handleInvertColorsChange:(id)change
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"enabled"];
+  payload = [change payload];
+  v4 = [payload objectForKey:@"enabled"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1029,54 +1029,54 @@ void __64__AXBackBoardServerInstance__handleRegisterHearingAidServerPID___block_
   return 0;
 }
 
-- (id)_handleLockScreenDimTimerEnabled:(id)a3
+- (id)_handleLockScreenDimTimerEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(AXBackBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  enabledCopy = enabled;
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  payload = [enabledCopy payload];
 
-  v7 = [v6 objectForKey:@"enabled"];
-  [v5 setLockScreenDimTimerEnabled:{objc_msgSend(v7, "BOOLValue")}];
+  v7 = [payload objectForKey:@"enabled"];
+  [delegate setLockScreenDimTimerEnabled:{objc_msgSend(v7, "BOOLValue")}];
 
   return 0;
 }
 
-- (id)_handleSetSwitchControlRendersDeviceUnusable:(id)a3
+- (id)_handleSetSwitchControlRendersDeviceUnusable:(id)unusable
 {
   v3 = MEMORY[0x29EDBDFB8];
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"result"];
+  payload = [unusable payload];
+  v5 = [payload objectForKey:@"result"];
   [v3 setSwitchControlRendersDeviceUnusable:{objc_msgSend(v5, "BOOLValue")}];
 
   return 0;
 }
 
-- (id)_handleSetSwitchControlHasScreenSwitch:(id)a3
+- (id)_handleSetSwitchControlHasScreenSwitch:(id)switch
 {
   v3 = MEMORY[0x29EDBDFB8];
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"result"];
+  payload = [switch payload];
+  v5 = [payload objectForKey:@"result"];
   [v3 setSwitchControlHasScreenSwitch:{objc_msgSend(v5, "BOOLValue")}];
 
   return 0;
 }
 
-- (id)_handleSetZoomInitialFocusRect:(id)a3
+- (id)_handleSetZoomInitialFocusRect:(id)rect
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"rect"];
+  payload = [rect payload];
+  v5 = [payload objectForKeyedSubscript:@"rect"];
   v19 = NSRectFromString(v5);
   x = v19.origin.x;
   y = v19.origin.y;
   width = v19.size.width;
   height = v19.size.height;
 
-  v10 = [v4 objectForKeyedSubscript:@"contextId"];
-  v11 = [v10 unsignedIntValue];
+  v10 = [payload objectForKeyedSubscript:@"contextId"];
+  unsignedIntValue = [v10 unsignedIntValue];
 
-  v12 = [(AXBackBoardServerInstance *)self delegate];
-  v13 = [v4 objectForKeyedSubscript:@"displayId"];
-  [v12 convertFrame:v11 fromContextId:objc_msgSend(v13 displayId:{"unsignedIntValue"), x, y, width, height}];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  v13 = [payload objectForKeyedSubscript:@"displayId"];
+  [delegate convertFrame:unsignedIntValue fromContextId:objc_msgSend(v13 displayId:{"unsignedIntValue"), x, y, width, height}];
   self->_initialZoomFocusRect.origin.x = v14;
   self->_initialZoomFocusRect.origin.y = v15;
   self->_initialZoomFocusRect.size.width = v16;
@@ -1085,19 +1085,19 @@ void __64__AXBackBoardServerInstance__handleRegisterHearingAidServerPID___block_
   return 0;
 }
 
-- (id)_handleGetZoomInitialFocusRect:(id)a3
+- (id)_handleGetZoomInitialFocusRect:(id)rect
 {
   v25[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKeyedSubscript:@"contextId"];
-  v7 = [v6 unsignedIntValue];
+  rectCopy = rect;
+  payload = [rectCopy payload];
+  v6 = [payload objectForKeyedSubscript:@"contextId"];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  v8 = [(AXBackBoardServerInstance *)self delegate];
-  v9 = [v4 payload];
+  delegate = [(AXBackBoardServerInstance *)self delegate];
+  payload2 = [rectCopy payload];
 
-  v10 = [v9 objectForKeyedSubscript:@"displayId"];
-  [v8 convertFrame:v7 toContextId:objc_msgSend(v10 displayId:{"unsignedIntValue"), self->_initialZoomFocusRect.origin.x, self->_initialZoomFocusRect.origin.y, self->_initialZoomFocusRect.size.width, self->_initialZoomFocusRect.size.height}];
+  v10 = [payload2 objectForKeyedSubscript:@"displayId"];
+  [delegate convertFrame:unsignedIntValue toContextId:objc_msgSend(v10 displayId:{"unsignedIntValue"), self->_initialZoomFocusRect.origin.x, self->_initialZoomFocusRect.origin.y, self->_initialZoomFocusRect.size.width, self->_initialZoomFocusRect.size.height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -1133,26 +1133,26 @@ void __64__AXBackBoardServerInstance__handleRegisterHearingAidServerPID___block_
   return v2;
 }
 
-- (id)_handleTripleClickHomeButtonFired:(id)a3
+- (id)_handleTripleClickHomeButtonFired:(id)fired
 {
   LocalCenter = CFNotificationCenterGetLocalCenter();
   CFNotificationCenterPostNotification(LocalCenter, *MEMORY[0x29EDC8518], 0, 0, 1u);
   return 0;
 }
 
-- (id)_handleHomeClickSwallowedForGuidedAccess:(id)a3
+- (id)_handleHomeClickSwallowedForGuidedAccess:(id)access
 {
-  v3 = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
   if (objc_opt_respondsToSelector())
   {
-    v5 = v3;
+    v5 = _gaxBackboard;
     AXPerformSafeBlock();
   }
 
   return 0;
 }
 
-- (id)_handleSessionIsLoginSession:(id)a3
+- (id)_handleSessionIsLoginSession:(id)session
 {
   v11[1] = *MEMORY[0x29EDCA608];
   v4 = objc_alloc(MEMORY[0x29EDBDF70]);
@@ -1167,40 +1167,40 @@ void __64__AXBackBoardServerInstance__handleRegisterHearingAidServerPID___block_
   return v7;
 }
 
-- (id)_handleSetSessionIsLoginSession:(id)a3
+- (id)_handleSetSessionIsLoginSession:(id)session
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKeyedSubscript:@"sesionIsLoginSession"];
+  payload = [session payload];
+  v4 = [payload objectForKeyedSubscript:@"sesionIsLoginSession"];
   SessionIsLoginSession = [v4 BOOLValue];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, *MEMORY[0x29EDBDEB8], 0, 0, 1u);
   if (SessionIsLoginSession == 1)
   {
-    v6 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    [v6 addRotorOptionsForLoginSession];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+    [mEMORY[0x29EDBDFA0] addRotorOptionsForLoginSession];
 
-    v7 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    [v7 configureZoomForLoginSession];
+    mEMORY[0x29EDBDFA0]2 = [MEMORY[0x29EDBDFA0] sharedInstance];
+    [mEMORY[0x29EDBDFA0]2 configureZoomForLoginSession];
   }
 
   return 0;
 }
 
-- (id)_handleGetGuidedAccessAvailability:(id)a3
+- (id)_handleGetGuidedAccessAvailability:(id)availability
 {
   v20[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  availabilityCopy = availability;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 12;
-  v5 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-  v6 = v5;
-  if (v5)
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  v6 = _gaxBackboard;
+  if (_gaxBackboard)
   {
-    v13 = v5;
-    v14 = v4;
+    v13 = _gaxBackboard;
+    v14 = availabilityCopy;
     AXPerformSafeBlock();
   }
 
@@ -1224,16 +1224,16 @@ void __64__AXBackBoardServerInstance__handleGetGuidedAccessAvailability___block_
   *(*(*(a1 + 48) + 8) + 24) = [v2 availabilityForExternalRequestWithSpringboardParameters:v3];
 }
 
-- (id)_handleIsGuidedAccessInWorkspace:(id)a3
+- (id)_handleIsGuidedAccessInWorkspace:(id)workspace
 {
   v13[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-  v4 = v3;
-  if (v3)
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  v4 = _gaxBackboard;
+  if (_gaxBackboard)
   {
     v12 = @"result";
     v5 = MEMORY[0x29EDBA070];
-    if ([v3 safeBoolForKey:@"isInWorkspace"])
+    if ([_gaxBackboard safeBoolForKey:@"isInWorkspace"])
     {
       v6 = 1;
     }
@@ -1260,11 +1260,11 @@ void __64__AXBackBoardServerInstance__handleGetGuidedAccessAvailability___block_
   return v7;
 }
 
-- (id)_handleGuidedAccessEffectiveAppBundleIdentifier:(id)a3
+- (id)_handleGuidedAccessEffectiveAppBundleIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-  v4 = [v3 safeValueForKey:@"effectiveAppBundleIdentifier"];
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  v4 = [_gaxBackboard safeValueForKey:@"effectiveAppBundleIdentifier"];
   v5 = v4;
   if (v4)
   {
@@ -1284,32 +1284,32 @@ void __64__AXBackBoardServerInstance__handleGetGuidedAccessAvailability___block_
   return v7;
 }
 
-- (void)_handleGuidedAccessAutomationCommand:(id)a3 completion:(id)a4
+- (void)_handleGuidedAccessAutomationCommand:(id)command completion:(id)completion
 {
   v23[1] = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  commandCopy = command;
+  completionCopy = completion;
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
   aBlock[0] = MEMORY[0x29EDCA5F8];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__AXBackBoardServerInstance__handleGuidedAccessAutomationCommand_completion___block_invoke;
   aBlock[3] = &unk_29F2A5208;
-  v9 = v7;
+  v9 = completionCopy;
   v21 = v9;
   v10 = _Block_copy(aBlock);
-  if (v8)
+  if (_gaxBackboard)
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v6 payload];
-      v12 = [v11 objectForKeyedSubscript:@"command"];
+      payload = [commandCopy payload];
+      v12 = [payload objectForKeyedSubscript:@"command"];
 
       v18[0] = MEMORY[0x29EDCA5F8];
       v18[1] = 3221225472;
       v18[2] = __77__AXBackBoardServerInstance__handleGuidedAccessAutomationCommand_completion___block_invoke_2;
       v18[3] = &unk_29F2A5230;
       v19 = v10;
-      [v8 handleGuidedAccessAutomationCommand:v12 completion:v18];
+      [_gaxBackboard handleGuidedAccessAutomationCommand:v12 completion:v18];
 
       v13 = 0;
       goto LABEL_9;
@@ -1363,15 +1363,15 @@ void __77__AXBackBoardServerInstance__handleGuidedAccessAutomationCommand_comple
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_handleIsGuidedAccessActive:(id)a3
+- (id)_handleIsGuidedAccessActive:(id)active
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-  if (v3)
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  if (_gaxBackboard)
   {
     v4 = objc_alloc(MEMORY[0x29EDBDF70]);
     v10 = @"result";
-    v5 = [MEMORY[0x29EDBA070] numberWithBool:{objc_msgSend(v3, "safeBoolForKey:", @"isActive"}];
+    v5 = [MEMORY[0x29EDBA070] numberWithBool:{objc_msgSend(_gaxBackboard, "safeBoolForKey:", @"isActive"}];
     v11[0] = v5;
     v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v7 = [v4 initWithKey:2030 payload:v6];
@@ -1387,42 +1387,42 @@ void __77__AXBackBoardServerInstance__handleGuidedAccessAutomationCommand_comple
   return v7;
 }
 
-- (void)_handleSetGuidedAccessEnabledByRequestingApp:(id)a3 completion:(id)a4
+- (void)_handleSetGuidedAccessEnabledByRequestingApp:(id)app completion:(id)completion
 {
   v34 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 senderBundleId];
-  v9 = [v6 payload];
-  v10 = [v9 objectForKey:*MEMORY[0x29EDBDE90]];
-  v11 = [v10 BOOLValue];
+  appCopy = app;
+  completionCopy = completion;
+  senderBundleId = [appCopy senderBundleId];
+  payload = [appCopy payload];
+  v10 = [payload objectForKey:*MEMORY[0x29EDBDE90]];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [v6 payload];
-  v13 = [v12 objectForKey:*MEMORY[0x29EDBDE70]];
+  payload2 = [appCopy payload];
+  v13 = [payload2 objectForKey:*MEMORY[0x29EDBDE70]];
 
   aBlock[0] = MEMORY[0x29EDCA5F8];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__AXBackBoardServerInstance__handleSetGuidedAccessEnabledByRequestingApp_completion___block_invoke;
   aBlock[3] = &unk_29F2A5258;
-  v14 = v7;
+  v14 = completionCopy;
   v31 = v14;
   v15 = _Block_copy(aBlock);
   v16 = v15;
-  if (v8)
+  if (senderBundleId)
   {
-    v17 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-    v18 = v17;
-    if (v17)
+    _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+    v18 = _gaxBackboard;
+    if (_gaxBackboard)
     {
       v23[1] = MEMORY[0x29EDCA5F8];
       v23[2] = 3221225472;
       v23[3] = __85__AXBackBoardServerInstance__handleSetGuidedAccessEnabledByRequestingApp_completion___block_invoke_2;
       v23[4] = &unk_29F2A5280;
       v19 = &v24;
-      v24 = v17;
-      v29 = v11;
-      v25 = v8;
-      v26 = v6;
+      v24 = _gaxBackboard;
+      v29 = bOOLValue;
+      v25 = senderBundleId;
+      v26 = appCopy;
       v27 = v13;
       v28 = v16;
       AXPerformSafeBlock();
@@ -1434,7 +1434,7 @@ void __77__AXBackBoardServerInstance__handleGuidedAccessAutomationCommand_comple
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        v33 = v11;
+        v33 = bOOLValue;
         _os_log_impl(&dword_29BBBD000, v20, OS_LOG_TYPE_INFO, "Received request to set Guided Access enabled=%i, but GAXBackboard was nil.", buf, 8u);
       }
 
@@ -1496,23 +1496,23 @@ void __85__AXBackBoardServerInstance__handleSetGuidedAccessEnabledByRequestingAp
   [v3 setEnabled:v2 fromAppWithIdentifier:v4 withAuditToken:v9 configuration:v6 completion:v7];
 }
 
-- (id)_handleIsGuidedAccessSelfLockedToRequestingApp:(id)a3
+- (id)_handleIsGuidedAccessSelfLockedToRequestingApp:(id)app
 {
   v21[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  appCopy = app;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [v4 senderBundleId];
-  if (v5)
+  senderBundleId = [appCopy senderBundleId];
+  if (senderBundleId)
   {
-    v6 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-    v7 = v6;
-    if (v6)
+    _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+    v7 = _gaxBackboard;
+    if (_gaxBackboard)
     {
-      v14 = v6;
-      v15 = v5;
+      v14 = _gaxBackboard;
+      v15 = senderBundleId;
       AXPerformSafeBlock();
     }
   }
@@ -1537,13 +1537,13 @@ uint64_t __76__AXBackBoardServerInstance__handleIsGuidedAccessSelfLockedToReques
   return result;
 }
 
-- (id)_handleIsGuidedAccessUnmanagedSelfLocked:(id)a3
+- (id)_handleIsGuidedAccessUnmanagedSelfLocked:(id)locked
 {
   v11[1] = *MEMORY[0x29EDCA608];
   v10 = @"result";
   v3 = MEMORY[0x29EDBA070];
-  v4 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "isUnmanagedSelfLocked")}];
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  v5 = [v3 numberWithBool:{objc_msgSend(_gaxBackboard, "isUnmanagedSelfLocked")}];
   v11[0] = v5;
   v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
@@ -1553,13 +1553,13 @@ uint64_t __76__AXBackBoardServerInstance__handleIsGuidedAccessSelfLockedToReques
   return v7;
 }
 
-- (id)_handleIsRestrictedForAAC:(id)a3
+- (id)_handleIsRestrictedForAAC:(id)c
 {
   v11[1] = *MEMORY[0x29EDCA608];
   v10 = @"result";
   v3 = MEMORY[0x29EDBA070];
-  v4 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "isRestrictedForAAC")}];
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  v5 = [v3 numberWithBool:{objc_msgSend(_gaxBackboard, "isRestrictedForAAC")}];
   v11[0] = v5;
   v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
@@ -1569,17 +1569,17 @@ uint64_t __76__AXBackBoardServerInstance__handleIsGuidedAccessSelfLockedToReques
   return v7;
 }
 
-- (id)_handleGuidedAccessIgnoredRegions:(id)a3
+- (id)_handleGuidedAccessIgnoredRegions:(id)regions
 {
   v25 = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-  v4 = v3;
-  if (!v3)
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  v4 = _gaxBackboard;
+  if (!_gaxBackboard)
   {
     goto LABEL_12;
   }
 
-  v5 = [v3 safeValueForKey:@"_accessIgnoredTouchRegions"];
+  v5 = [_gaxBackboard safeValueForKey:@"_accessIgnoredTouchRegions"];
   if (![v5 count])
   {
 
@@ -1630,23 +1630,23 @@ LABEL_13:
   return v15;
 }
 
-- (id)_handleGuidedAccessCurrentModeAndSessionApp:(id)a3
+- (id)_handleGuidedAccessCurrentModeAndSessionApp:(id)app
 {
   v14[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self _gaxBackboard];
-  if (v3)
+  _gaxBackboard = [(AXBackBoardServerInstance *)self _gaxBackboard];
+  if (_gaxBackboard)
   {
     v4 = objc_opt_new();
-    v5 = [v3 currentGuidedAccessModeForBackboardServer];
-    v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v5];
+    currentGuidedAccessModeForBackboardServer = [_gaxBackboard currentGuidedAccessModeForBackboardServer];
+    v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:currentGuidedAccessModeForBackboardServer];
     [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x29EDBDE78]];
 
-    if (v5)
+    if (currentGuidedAccessModeForBackboardServer)
     {
-      v7 = [v3 currentSessionApp];
-      if (v7)
+      currentSessionApp = [_gaxBackboard currentSessionApp];
+      if (currentSessionApp)
       {
-        [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x29EDBDE98]];
+        [v4 setObject:currentSessionApp forKeyedSubscript:*MEMORY[0x29EDBDE98]];
       }
     }
 
@@ -1667,15 +1667,15 @@ LABEL_13:
   return v8;
 }
 
-- (id)_axPreferenceAsMobile:(id)a3
+- (id)_axPreferenceAsMobile:(id)mobile
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKey:@"preference"];
+  mobileCopy = mobile;
+  payload = [mobileCopy payload];
+  v5 = [payload objectForKey:@"preference"];
   v6 = __UIAccessibilitySafeClass();
 
-  v7 = [v3 payload];
-  v8 = [v7 objectForKey:@"domain"];
+  payload2 = [mobileCopy payload];
+  v8 = [payload2 objectForKey:@"domain"];
   v9 = __UIAccessibilitySafeClass();
 
   if (![v9 length])
@@ -1685,11 +1685,11 @@ LABEL_13:
   }
 
   v10 = MEMORY[0x29C2CBB40](v6, v9, 0);
-  v11 = [MEMORY[0x29EDB8E00] dictionary];
-  v12 = v11;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v12 = dictionary;
   if (v10)
   {
-    [v11 setObject:v10 forKeyedSubscript:@"value"];
+    [dictionary setObject:v10 forKeyedSubscript:@"value"];
   }
 
   v13 = [objc_alloc(MEMORY[0x29EDBDF70]) initWithKey:2067 payload:v12];
@@ -1697,17 +1697,17 @@ LABEL_13:
   return v13;
 }
 
-- (id)_setAXPreferenceAsMobile:(id)a3
+- (id)_setAXPreferenceAsMobile:(id)mobile
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKey:@"preference"];
+  mobileCopy = mobile;
+  payload = [mobileCopy payload];
+  v5 = [payload objectForKey:@"preference"];
 
-  v6 = [v3 payload];
-  v7 = [v6 objectForKey:@"value"];
+  payload2 = [mobileCopy payload];
+  v7 = [payload2 objectForKey:@"value"];
 
-  v8 = [MEMORY[0x29EDB8E28] null];
-  v9 = [v7 isEqual:v8];
+  null = [MEMORY[0x29EDB8E28] null];
+  v9 = [v7 isEqual:null];
 
   if (v9)
   {
@@ -1715,11 +1715,11 @@ LABEL_13:
     v7 = 0;
   }
 
-  v10 = [v3 payload];
-  v11 = [v10 objectForKey:@"notification"];
+  payload3 = [mobileCopy payload];
+  v11 = [payload3 objectForKey:@"notification"];
 
-  v12 = [MEMORY[0x29EDB8E28] null];
-  v13 = [v11 isEqual:v12];
+  null2 = [MEMORY[0x29EDB8E28] null];
+  v13 = [v11 isEqual:null2];
 
   if (v13)
   {
@@ -1732,25 +1732,25 @@ LABEL_13:
   return 0;
 }
 
-- (id)_handleIsHearingControlEnabled:(id)a3
+- (id)_handleIsHearingControlEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[AXBHomeClickController controller];
-  v5 = [v3 payload];
+  payload = [enabledCopy payload];
 
-  v6 = [v5 objectForKey:@"result"];
+  v6 = [payload objectForKey:@"result"];
   [v4 setIsHearingAidControlVisible:{objc_msgSend(v6, "BOOLValue")}];
 
   return 0;
 }
 
-- (id)_handleBrightnessFiltersEnabled:(id)a3
+- (id)_handleBrightnessFiltersEnabled:(id)enabled
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self brightnessFiltersEnabled];
+  brightnessFiltersEnabled = [(AXBackBoardServerInstance *)self brightnessFiltersEnabled];
   v4 = objc_alloc(MEMORY[0x29EDBDF70]);
   v10 = @"result";
-  v5 = [MEMORY[0x29EDBA070] numberWithBool:v3];
+  v5 = [MEMORY[0x29EDBA070] numberWithBool:brightnessFiltersEnabled];
   v11[0] = v5;
   v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v4 initWithKey:2048 payload:v6];
@@ -1760,13 +1760,13 @@ LABEL_13:
   return v7;
 }
 
-- (id)_handleBlueLightStatusEnabled:(id)a3
+- (id)_handleBlueLightStatusEnabled:(id)enabled
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self blueLightStatusEnabled];
+  blueLightStatusEnabled = [(AXBackBoardServerInstance *)self blueLightStatusEnabled];
   v4 = objc_alloc(MEMORY[0x29EDBDF70]);
   v10 = @"result";
-  v5 = [MEMORY[0x29EDBA070] numberWithBool:v3];
+  v5 = [MEMORY[0x29EDBA070] numberWithBool:blueLightStatusEnabled];
   v11[0] = v5;
   v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v4 initWithKey:2049 payload:v6];
@@ -1776,13 +1776,13 @@ LABEL_13:
   return v7;
 }
 
-- (id)_handleAdaptationEnabled:(id)a3
+- (id)_handleAdaptationEnabled:(id)enabled
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self adaptationEnabled];
+  adaptationEnabled = [(AXBackBoardServerInstance *)self adaptationEnabled];
   v4 = objc_alloc(MEMORY[0x29EDBDF70]);
   v10 = @"result";
-  v5 = [MEMORY[0x29EDBA070] numberWithBool:v3];
+  v5 = [MEMORY[0x29EDBA070] numberWithBool:adaptationEnabled];
   v11[0] = v5;
   v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v4 initWithKey:2051 payload:v6];
@@ -1792,13 +1792,13 @@ LABEL_13:
   return v7;
 }
 
-- (id)_handleSupportsAdaptation:(id)a3
+- (id)_handleSupportsAdaptation:(id)adaptation
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  v3 = [(AXBackBoardServerInstance *)self supportsAdaptation];
+  supportsAdaptation = [(AXBackBoardServerInstance *)self supportsAdaptation];
   v4 = objc_alloc(MEMORY[0x29EDBDF70]);
   v10 = @"result";
-  v5 = [MEMORY[0x29EDBA070] numberWithBool:v3];
+  v5 = [MEMORY[0x29EDBA070] numberWithBool:supportsAdaptation];
   v11[0] = v5;
   v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v4 initWithKey:2052 payload:v6];
@@ -1808,9 +1808,9 @@ LABEL_13:
   return v7;
 }
 
-- (id)_handleResetAccessibilityFeatures:(id)a3
+- (id)_handleResetAccessibilityFeatures:(id)features
 {
-  v6 = [a3 senderBundleId];
+  senderBundleId = [features senderBundleId];
   LOBYTE(v5) = 1;
   _AXLogWithFacility();
 
@@ -1818,29 +1818,29 @@ LABEL_13:
   return 0;
 }
 
-- (id)_handleToggleGuidedAccess:(id)a3
+- (id)_handleToggleGuidedAccess:(id)access
 {
   v10 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  accessCopy = access;
   v4 = GAXLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = accessCopy;
     _os_log_impl(&dword_29BBBD000, v4, OS_LOG_TYPE_DEFAULT, "_handleToggleGuidedAccess: %@", &v8, 0xCu);
   }
 
-  v5 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v5 postNotificationName:*MEMORY[0x29EDBDE50] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x29EDBDE50] object:0];
 
   v6 = *MEMORY[0x29EDCA608];
   return 0;
 }
 
-- (id)_handleGetLastSetColorFilter:(id)a3
+- (id)_handleGetLastSetColorFilter:(id)filter
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  [(AXBackBoardServerInstance *)self colorFilterFromLastUpdate:a3];
+  [(AXBackBoardServerInstance *)self colorFilterFromLastUpdate:filter];
   v3 = [MEMORY[0x29EDB8DA0] dataWithBytes:&v9 length:72];
   v4 = objc_alloc(MEMORY[0x29EDBDF70]);
   v10 = @"filterData";
@@ -1853,25 +1853,25 @@ LABEL_13:
   return v6;
 }
 
-- (id)_handleSetIsSpeakScreenHighlightVisible:(id)a3
+- (id)_handleSetIsSpeakScreenHighlightVisible:(id)visible
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"visible"];
+  payload = [visible payload];
+  v5 = [payload objectForKey:@"visible"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(AXBackBoardServerInstance *)self delegate];
-    [v6 setIsSpeakScreenHighlightVisible:{objc_msgSend(v5, "BOOLValue")}];
+    delegate = [(AXBackBoardServerInstance *)self delegate];
+    [delegate setIsSpeakScreenHighlightVisible:{objc_msgSend(v5, "BOOLValue")}];
   }
 
   return 0;
 }
 
-- (id)_setDeviceOrientation:(id)a3
+- (id)_setDeviceOrientation:(id)orientation
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"deviceOrientation"];
+  payload = [orientation payload];
+  v4 = [payload objectForKey:@"deviceOrientation"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 integerValue] - 1) <= 3)
@@ -1882,10 +1882,10 @@ LABEL_13:
   return 0;
 }
 
-- (id)_handleSetClarityUIAdminPasscode:(id)a3
+- (id)_handleSetClarityUIAdminPasscode:(id)passcode
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"passcode"];
+  payload = [passcode payload];
+  v4 = [payload objectForKey:@"passcode"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1907,11 +1907,11 @@ LABEL_13:
   return 0;
 }
 
-- (id)_handleValidateClarityUIAdminPasscode:(id)a3
+- (id)_handleValidateClarityUIAdminPasscode:(id)passcode
 {
   v15[1] = *MEMORY[0x29EDCA608];
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"passcode"];
+  payload = [passcode payload];
+  v4 = [payload objectForKey:@"passcode"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

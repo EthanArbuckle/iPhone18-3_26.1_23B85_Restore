@@ -3,24 +3,24 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-- (AMSAutomaticDownloadKindsFetchTask)initWithAccount:(id)a3 bag:(id)a4;
+- (AMSAutomaticDownloadKindsFetchTask)initWithAccount:(id)account bag:(id)bag;
 - (id)perform;
 @end
 
 @implementation AMSAutomaticDownloadKindsFetchTask
 
-- (AMSAutomaticDownloadKindsFetchTask)initWithAccount:(id)a3 bag:(id)a4
+- (AMSAutomaticDownloadKindsFetchTask)initWithAccount:(id)account bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSAutomaticDownloadKindsFetchTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_bag, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_bag, bag);
   }
 
   return v10;
@@ -29,18 +29,18 @@
 - (id)perform
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
+  account = [(AMSAutomaticDownloadKindsFetchTask *)self account];
 
-  if (!v3)
+  if (!account)
   {
     v6 = @"An account is required.";
     goto LABEL_5;
   }
 
-  v4 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
-  v5 = [v4 ams_isLocalAccount];
+  account2 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
+  ams_isLocalAccount = [account2 ams_isLocalAccount];
 
-  if (v5)
+  if (ams_isLocalAccount)
   {
     v6 = @"We cannot sync the local account's automatic download kinds.";
 LABEL_5:
@@ -49,8 +49,8 @@ LABEL_5:
     goto LABEL_21;
   }
 
-  v9 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
-  v10 = [v9 objectForKeyedSubscript:0x1F071B4D8];
+  account3 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
+  v10 = [account3 objectForKeyedSubscript:0x1F071B4D8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -73,25 +73,25 @@ LABEL_5:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v15 = objc_opt_class();
       v16 = AMSLogKey();
-      v17 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
-      v18 = AMSHashIfNeeded(v17);
+      account4 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
+      v18 = AMSHashIfNeeded(account4);
       *buf = 138543874;
       v39 = v15;
       v40 = 2114;
       v41 = v16;
       v42 = 2114;
       v43 = v18;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Returning cached automatic download kinds. account = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Returning cached automatic download kinds. account = %{public}@", buf, 0x20u);
     }
 
     v19 = [AMSAutomaticDownloadKindsResult alloc];
-    v20 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
-    v21 = [(AMSAutomaticDownloadKindsResult *)v19 initWithAccount:v20 andEnabledMediaKinds:v7];
+    account5 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
+    v21 = [(AMSAutomaticDownloadKindsResult *)v19 initWithAccount:account5 andEnabledMediaKinds:v7];
 
     v8 = [AMSPromise promiseWithResult:v21];
   }
@@ -103,28 +103,28 @@ LABEL_5:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v13 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
       v24 = AMSLogKey();
-      v25 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
-      v26 = AMSHashIfNeeded(v25);
+      account6 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
+      v26 = AMSHashIfNeeded(account6);
       *buf = 138543874;
       v39 = v23;
       v40 = 2114;
       v41 = v24;
       v42 = 2114;
       v43 = v26;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Syncing automatic download kinds. account = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Syncing automatic download kinds. account = %{public}@", buf, 0x20u);
     }
 
     v27 = [AMSURLRequestEncoder alloc];
     v28 = [(AMSAutomaticDownloadKindsFetchTask *)self bag];
     v21 = [(AMSURLRequestEncoder *)v27 initWithBag:v28];
 
-    v29 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
-    [(AMSAutomaticDownloadKindsResult *)v21 setAccount:v29];
+    account7 = [(AMSAutomaticDownloadKindsFetchTask *)self account];
+    [(AMSAutomaticDownloadKindsResult *)v21 setAccount:account7];
 
     [(AMSAutomaticDownloadKindsResult *)v21 setRequestEncoding:2];
     v30 = AMSLogKey();
@@ -278,9 +278,9 @@ void __58__AMSAutomaticDownloadKindsFetchTask_bagSubProfileVersion__block_invoke
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

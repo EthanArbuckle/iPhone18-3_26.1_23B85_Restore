@@ -1,12 +1,12 @@
 @interface OrgLukhnosPortmobileFilePaths
-+ (id)getWithNSString:(id)a3;
++ (id)getWithNSString:(id)string;
 @end
 
 @implementation OrgLukhnosPortmobileFilePaths
 
-+ (id)getWithNSString:(id)a3
++ (id)getWithNSString:(id)string
 {
-  v3 = new_OrgLukhnosPortmobileFilePath_initWithNSString_(a3);
+  v3 = new_OrgLukhnosPortmobileFilePath_initWithNSString_(string);
 
   return v3;
 }

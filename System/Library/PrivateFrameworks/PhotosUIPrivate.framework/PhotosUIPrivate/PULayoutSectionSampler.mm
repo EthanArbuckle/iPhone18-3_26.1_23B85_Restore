@@ -1,20 +1,20 @@
 @interface PULayoutSectionSampler
-- (int64_t)indexForUnsampledIndex:(int64_t)a3 isMainItem:(BOOL *)a4;
-- (void)enumerateUnsampledIndexesForSampledIndexInRange:(_NSRange)a3 usingBlock:(id)a4;
+- (int64_t)indexForUnsampledIndex:(int64_t)index isMainItem:(BOOL *)item;
+- (void)enumerateUnsampledIndexesForSampledIndexInRange:(_NSRange)range usingBlock:(id)block;
 @end
 
 @implementation PULayoutSectionSampler
 
-- (void)enumerateUnsampledIndexesForSampledIndexInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateUnsampledIndexesForSampledIndexInRange:(_NSRange)range usingBlock:(id)block
 {
   v7 = 0;
-  if (a3.location < (a3.location + a3.length))
+  if (range.location < (range.location + range.length))
   {
-    location = a3.location;
-    v6 = a3.length - 1;
+    location = range.location;
+    v6 = range.length - 1;
     do
     {
-      (*(a4 + 2))(a4, location, location, &v7);
+      (*(block + 2))(block, location, location, &v7);
       if (!v6)
       {
         break;
@@ -28,12 +28,12 @@
   }
 }
 
-- (int64_t)indexForUnsampledIndex:(int64_t)a3 isMainItem:(BOOL *)a4
+- (int64_t)indexForUnsampledIndex:(int64_t)index isMainItem:(BOOL *)item
 {
-  result = a3;
-  if (a4)
+  result = index;
+  if (item)
   {
-    *a4 = 1;
+    *item = 1;
   }
 
   return result;

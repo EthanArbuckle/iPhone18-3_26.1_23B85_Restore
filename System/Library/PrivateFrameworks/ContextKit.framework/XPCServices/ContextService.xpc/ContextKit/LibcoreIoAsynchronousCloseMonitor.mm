@@ -1,12 +1,12 @@
 @interface LibcoreIoAsynchronousCloseMonitor
-+ (void)signalBlockedThreadsWithJavaIoFileDescriptor:(id)a3;
++ (void)signalBlockedThreadsWithJavaIoFileDescriptor:(id)descriptor;
 @end
 
 @implementation LibcoreIoAsynchronousCloseMonitor
 
-+ (void)signalBlockedThreadsWithJavaIoFileDescriptor:(id)a3
++ (void)signalBlockedThreadsWithJavaIoFileDescriptor:(id)descriptor
 {
-  v3 = [a3 getInt$];
+  v3 = [descriptor getInt$];
 
   [AsynchronousSocketCloseMonitor signalBlockedThreads:v3];
 }

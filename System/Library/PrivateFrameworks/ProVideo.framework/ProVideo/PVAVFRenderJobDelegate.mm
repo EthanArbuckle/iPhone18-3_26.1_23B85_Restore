@@ -1,48 +1,48 @@
 @interface PVAVFRenderJobDelegate
-- (PVAVFRenderJobDelegate)initWithCompositor:(id)a3 request:(id)a4 compositionTime:(id *)a5 thumbnailCompositing:(BOOL)a6;
+- (PVAVFRenderJobDelegate)initWithCompositor:(id)compositor request:(id)request compositionTime:(id *)time thumbnailCompositing:(BOOL)compositing;
 - (id).cxx_construct;
 - (int)jobPriority;
 - (int)renderContextPriority;
 - (int)renderThreadPriority;
 - (unint64_t)packedFamilyCode;
 - (unsigned)jobTypeTag;
-- (void)_buildGraph:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5 outputNodes:(void *)a6;
-- (void)_setupInputs:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5;
-- (void)buildGraph:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5;
+- (void)_buildGraph:(void *)graph renderContext:(const void *)context frameStats:(void *)stats outputNodes:(void *)nodes;
+- (void)_setupInputs:(void *)inputs renderContext:(const void *)context frameStats:(void *)stats;
+- (void)buildGraph:(void *)graph renderContext:(const void *)context frameStats:(void *)stats;
 - (void)finishCancelledJob;
 - (void)finishCompletedJob;
-- (void)renderJobFinished:(HGRef<PVRenderJob>)a3;
-- (void)setupDestinationBuffers:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5;
+- (void)renderJobFinished:(HGRef<PVRenderJob>)finished;
+- (void)setupDestinationBuffers:(void *)buffers renderContext:(const void *)context frameStats:(void *)stats;
 @end
 
 @implementation PVAVFRenderJobDelegate
 
-- (PVAVFRenderJobDelegate)initWithCompositor:(id)a3 request:(id)a4 compositionTime:(id *)a5 thumbnailCompositing:(BOOL)a6
+- (PVAVFRenderJobDelegate)initWithCompositor:(id)compositor request:(id)request compositionTime:(id *)time thumbnailCompositing:(BOOL)compositing
 {
-  v11 = a3;
-  v12 = a4;
+  compositorCopy = compositor;
+  requestCopy = request;
   v38.receiver = self;
   v38.super_class = PVAVFRenderJobDelegate;
   v13 = [(PVAVFRenderJobDelegate *)&v38 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->m_compositor, a3);
-    objc_storeStrong(&v14->m_request, a4);
-    v15 = [(AVAsynchronousVideoCompositionRequest *)v14->m_request videoCompositionInstruction];
+    objc_storeStrong(&v13->m_compositor, compositor);
+    objc_storeStrong(&v14->m_request, request);
+    videoCompositionInstruction = [(AVAsynchronousVideoCompositionRequest *)v14->m_request videoCompositionInstruction];
     m_instruction = v14->m_instruction;
-    v14->m_instruction = v15;
+    v14->m_instruction = videoCompositionInstruction;
 
-    v17 = *&a5->var0;
-    v14->m_compositionTime.epoch = a5->var3;
+    v17 = *&time->var0;
+    v14->m_compositionTime.epoch = time->var3;
     *&v14->m_compositionTime.value = v17;
-    v14->m_thumbnailCompositing = a6;
+    v14->m_thumbnailCompositing = compositing;
     v14->m_minimumRequestCompletionTimeMS = 0;
     PerfTimer::Start(&v14->m_timer);
-    v18 = [(PVAVFRenderJobDelegate *)v14 jobTypeTag];
-    v14->m_parentCode = v18;
+    jobTypeTag = [(PVAVFRenderJobDelegate *)v14 jobTypeTag];
+    v14->m_parentCode = jobTypeTag;
     v14->m_childCode = 0;
-    PVRenderManager::INSTANCE(v18, &time);
+    PVRenderManager::INSTANCE(jobTypeTag, &time);
     m_Obj = v14->m_renderManager.m_Obj;
     value = time.value;
     if (m_Obj == time.value)
@@ -64,11 +64,11 @@
       v14->m_renderManager.m_Obj = value;
     }
 
-    v21 = [(PVVideoCompositing *)v14->m_compositor videoCompositingContext];
-    v22 = [(AVAsynchronousVideoCompositionRequest *)v14->m_request renderContext];
-    v23 = [(PVVideoCompositing *)v14->m_compositor thumbnailCompositing];
+    videoCompositingContext = [(PVVideoCompositing *)v14->m_compositor videoCompositingContext];
+    renderContext = [(AVAsynchronousVideoCompositionRequest *)v14->m_request renderContext];
+    thumbnailCompositing = [(PVVideoCompositing *)v14->m_compositor thumbnailCompositing];
     v24 = HGObject::operator new(0x88uLL);
-    PVAVFInstructionGraphContext::PVAVFInstructionGraphContext(v24, v21, v22, v23);
+    PVAVFInstructionGraphContext::PVAVFInstructionGraphContext(v24, videoCompositingContext, renderContext, thumbnailCompositing);
     v25 = v14->m_instructionGraphContext.m_Obj;
     if (v25 == v24)
     {
@@ -99,8 +99,8 @@
     v30 = [v26 stringWithFormat:@"RequestTime: %@", v29];
 
     v31 = v14->m_instructionGraphContext.m_Obj;
-    v32 = [v30 UTF8String];
-    v33 = strlen(v32);
+    uTF8String = [v30 UTF8String];
+    v33 = strlen(uTF8String);
     if (v33 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -115,7 +115,7 @@
     v37 = v33;
     if (v33)
     {
-      memmove(&__dst, v32, v33);
+      memmove(&__dst, uTF8String, v33);
     }
 
     *(&__dst + v34) = 0;
@@ -151,12 +151,12 @@
 
 - (int)renderThreadPriority
 {
-  v3 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
-  if ([v3 highQualityRendering])
+  renderContext = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
+  if ([renderContext highQualityRendering])
   {
-    v4 = [(PVVideoCompositing *)self->m_compositor shouldDoLowPowerExport];
+    shouldDoLowPowerExport = [(PVVideoCompositing *)self->m_compositor shouldDoLowPowerExport];
 
-    if (v4)
+    if (shouldDoLowPowerExport)
     {
       return 1;
     }
@@ -176,12 +176,12 @@
 
 - (int)renderContextPriority
 {
-  v3 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
-  if ([v3 highQualityRendering])
+  renderContext = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
+  if ([renderContext highQualityRendering])
   {
-    v4 = [(PVVideoCompositing *)self->m_compositor shouldDoLowPowerExport];
+    shouldDoLowPowerExport = [(PVVideoCompositing *)self->m_compositor shouldDoLowPowerExport];
 
-    if (v4)
+    if (shouldDoLowPowerExport)
     {
       return 0;
     }
@@ -199,7 +199,7 @@
   }
 }
 
-- (void)buildGraph:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5
+- (void)buildGraph:(void *)graph renderContext:(const void *)context frameStats:(void *)stats
 {
   v9 = v10;
   v10[0] = 0;
@@ -220,11 +220,11 @@
   v14[1] = 0;
   v14[2] = v15;
   [PVAVFRenderJobDelegate _setupInputs:"_setupInputs:renderContext:frameStats:" renderContext:&v9 frameStats:?];
-  [(PVAVFRenderJobDelegate *)self _buildGraph:&v9 renderContext:a4 frameStats:a5 outputNodes:a3];
+  [(PVAVFRenderJobDelegate *)self _buildGraph:&v9 renderContext:context frameStats:stats outputNodes:graph];
   PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::~PVInputHGNodeMap(&v9);
 }
 
-- (void)_setupInputs:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5
+- (void)_setupInputs:(void *)inputs renderContext:(const void *)context frameStats:(void *)stats
 {
   v97 = *MEMORY[0x277D85DE8];
   if (HGLogger::getLevel("PVSignPost", a2) >= 1)
@@ -235,23 +235,23 @@
 
   PerfTimer::PerfTimer(&v90);
   PerfTimer::Start(&v90);
-  v47 = [(AVAsynchronousVideoCompositionRequest *)self->m_request sourceTrackIDs];
-  if (+[PVEnvironment PV_MULTI_SOURCE_PLAYBACK_FPS](PVEnvironment, "PV_MULTI_SOURCE_PLAYBACK_FPS") && *(a5 + 56) == 1 && [v47 count] <= 1)
+  sourceTrackIDs = [(AVAsynchronousVideoCompositionRequest *)self->m_request sourceTrackIDs];
+  if (+[PVEnvironment PV_MULTI_SOURCE_PLAYBACK_FPS](PVEnvironment, "PV_MULTI_SOURCE_PLAYBACK_FPS") && *(stats + 56) == 1 && [sourceTrackIDs count] <= 1)
   {
-    *(a5 + 56) = 0;
+    *(stats + 56) = 0;
   }
 
-  if (v47 && [v47 count])
+  if (sourceTrackIDs && [sourceTrackIDs count])
   {
     v57 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v7 = [(PVVideoCompositionInstruction *)self->m_instruction outputNode];
-    v8 = [v7 getAllSourceNodes];
+    outputNode = [(PVVideoCompositionInstruction *)self->m_instruction outputNode];
+    getAllSourceNodes = [outputNode getAllSourceNodes];
 
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    obj = v8;
+    obj = getAllSourceNodes;
     v9 = [obj countByEnumeratingWithState:&v85 objects:v96 count:16];
     if (v9)
     {
@@ -320,13 +320,13 @@
             *(&v59 + 1) = 0;
             v60 = 0.0;
             *&v59 = &v59 + 8;
-            v24 = [v23 requiredSourceTrackIDs];
+            requiredSourceTrackIDs = [v23 requiredSourceTrackIDs];
             v55 = v23;
             v79 = 0u;
             v80 = 0u;
             v77 = 0u;
             v78 = 0u;
-            v25 = v24;
+            v25 = requiredSourceTrackIDs;
             v26 = [v25 countByEnumeratingWithState:&v77 objects:v94 count:16];
             if (v26)
             {
@@ -340,11 +340,11 @@
                     objc_enumerationMutation(v25);
                   }
 
-                  v29 = [*(*(&v77 + 1) + 8 * j) intValue];
-                  v76 = v29;
-                  if (v29)
+                  intValue = [*(*(&v77 + 1) + 8 * j) intValue];
+                  v76 = intValue;
+                  if (intValue)
                   {
-                    v30 = [(AVAsynchronousVideoCompositionRequest *)self->m_request sourceFrameByTrackID:v29];
+                    v30 = [(AVAsynchronousVideoCompositionRequest *)self->m_request sourceFrameByTrackID:intValue];
                     v91 = &v76;
                     std::__tree<std::__value_type<int,__CVBuffer *>,std::__map_value_compare<int,std::__value_type<int,__CVBuffer *>,std::less<int>,true>,std::allocator<std::__value_type<int,__CVBuffer *>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(&v59, &v76)[5] = v30;
                   }
@@ -374,7 +374,7 @@
               v75 = 0;
             }
 
-            PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(a3, v55, &v75);
+            PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(inputs, v55, &v75);
             if (v75)
             {
               (*(*v75 + 24))(v75);
@@ -402,7 +402,7 @@
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v49 = v47;
+    v49 = sourceTrackIDs;
     v52 = [v49 countByEnumeratingWithState:&v71 objects:v93 count:16];
     if (v52)
     {
@@ -436,10 +436,10 @@
                 }
 
                 v36 = *(*(&v67 + 1) + 8 * m);
-                v37 = [v31 intValue];
-                if (v37)
+                intValue2 = [v31 intValue];
+                if (intValue2)
                 {
-                  v38 = [(AVAsynchronousVideoCompositionRequest *)self->m_request sourceFrameByTrackID:v37];
+                  v38 = [(AVAsynchronousVideoCompositionRequest *)self->m_request sourceFrameByTrackID:intValue2];
                   if (v38)
                   {
                     if ([v36 dataTrackID])
@@ -451,7 +451,7 @@
                         (*(*v59 + 16))(v59);
                       }
 
-                      PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetFrameDataPixelBuffer(a3, v36, &v64);
+                      PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetFrameDataPixelBuffer(inputs, v36, &v64);
                       if (v64)
                       {
                         (*(*v64 + 24))(v64);
@@ -493,7 +493,7 @@
                       (*(*v91 + 16))(v91);
                     }
 
-                    PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(a3, v36, &v62);
+                    PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(inputs, v36, &v62);
                     if (v62)
                     {
                       (*(*v62 + 24))(v62);
@@ -504,7 +504,7 @@
                     v59 = 0uLL;
                     v60 = Width;
                     v61 = Height;
-                    v43 = PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetInputSize(a3, v36, &v59);
+                    v43 = PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetInputSize(inputs, v36, &v59);
                     if (v91)
                     {
                       (*(*v91 + 24))(v91, v43);
@@ -521,7 +521,7 @@
                       (*(*v44 + 16))(v44);
                     }
 
-                    PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(a3, v36, &v65);
+                    PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(inputs, v36, &v65);
                     if (v65)
                     {
                       (*(*v65 + 24))(v65);
@@ -544,7 +544,7 @@
                     (*(*v44 + 16))(v44);
                   }
 
-                  PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(a3, v36, &v66);
+                  PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(inputs, v36, &v66);
                   if (v66)
                   {
                     (*(*v66 + 24))(v66);
@@ -583,7 +583,7 @@ LABEL_91:
       (*(*v45 + 16))(v45);
     }
 
-    PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(a3, 0, &v89);
+    PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::SetNode(inputs, 0, &v89);
     if (v89)
     {
       (*(*v89 + 24))(v89);
@@ -596,16 +596,16 @@ LABEL_91:
   }
 
   PerfTimer::End(&v90);
-  PVPerfStats::FrameStats::SetValueForIndex(a5, 1u, v90._end - v90._start);
+  PVPerfStats::FrameStats::SetValueForIndex(stats, 1u, v90._end - v90._start);
   if (HGLogger::getLevel("PVSignPost", v46) >= 1)
   {
     kdebug_trace();
   }
 }
 
-- (void)_buildGraph:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5 outputNodes:(void *)a6
+- (void)_buildGraph:(void *)graph renderContext:(const void *)context frameStats:(void *)stats outputNodes:(void *)nodes
 {
-  Renderer = HGRenderContext::GetRenderer(a4);
+  Renderer = HGRenderContext::GetRenderer(context);
   v10 = Renderer;
   if (Renderer)
   {
@@ -614,9 +614,9 @@ LABEL_91:
 
   v81 = 0;
   v82 = v10;
-  v11 = [(PVVideoCompositionInstruction *)self->m_instruction outputNode];
+  outputNode = [(PVVideoCompositionInstruction *)self->m_instruction outputNode];
 
-  if (v11)
+  if (outputNode)
   {
     if (HGLogger::getLevel("kPVInstructionGraphToHeliumGraphLogContext", v12) >= 1)
     {
@@ -627,8 +627,8 @@ LABEL_91:
       v17 = atomic_load(HGLogger::_enabled);
       if (v17)
       {
-        v18 = [v15 UTF8String];
-        HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Current Time:           %s\n", v19, v20, v18);
+        uTF8String = [v15 UTF8String];
+        HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Current Time:           %s\n", v19, v20, uTF8String);
       }
 
       CFRelease(v16);
@@ -648,14 +648,14 @@ LABEL_91:
       v25 = atomic_load(HGLogger::_enabled);
       if (v25)
       {
-        v26 = [v24 UTF8String];
-        HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Instruction Time Range: %s\n", v27, v28, v26);
+        uTF8String2 = [v24 UTF8String];
+        HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Instruction Time Range: %s\n", v27, v28, uTF8String2);
       }
 
       CFRelease(v24);
     }
 
-    v29 = [(PVVideoCompositionInstruction *)self->m_instruction outputNode];
+    outputNode2 = [(PVVideoCompositionInstruction *)self->m_instruction outputNode];
     *&time.start.value = *&self->m_compositionTime.value;
     time.start.epoch = self->m_compositionTime.epoch;
     m_Obj = self->m_instructionGraphContext.m_Obj;
@@ -665,9 +665,9 @@ LABEL_91:
       (*(*m_Obj + 16))(m_Obj);
     }
 
-    if (v29)
+    if (outputNode2)
     {
-      [v29 hgNodeForTime:&time trackInputs:a3 renderer:&v82 igContext:&v78];
+      [outputNode2 hgNodeForTime:&time trackInputs:graph renderer:&v82 igContext:&v78];
       v31 = v79;
       v32 = v81;
       if (v81 == v79)
@@ -886,27 +886,27 @@ LABEL_29:
     NSLog(&cfstr_ConformError.isa, v41);
   }
 
-  v43 = [(PVVideoCompositing *)self->m_compositor requiredPixelBufferAttributesForRenderContext];
-  v44 = [v43 objectForKey:*MEMORY[0x277CC4E30]];
+  requiredPixelBufferAttributesForRenderContext = [(PVVideoCompositing *)self->m_compositor requiredPixelBufferAttributesForRenderContext];
+  v44 = [requiredPixelBufferAttributesForRenderContext objectForKey:*MEMORY[0x277CC4E30]];
   v45 = [v44 objectAtIndex:0];
-  v46 = [v45 unsignedIntValue];
+  unsignedIntValue = [v45 unsignedIntValue];
 
-  if (PVIsMultiplaneCoreVideo420Format(v46) || PVIsMultiplaneCoreVideo422Format(v46))
+  if (PVIsMultiplaneCoreVideo420Format(unsignedIntValue) || PVIsMultiplaneCoreVideo422Format(unsignedIntValue))
   {
     v73 = v41;
-    v47 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
-    [v47 size];
+    renderContext = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
+    [renderContext size];
     v49 = v48;
-    v50 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
-    [v50 renderScale];
+    renderContext2 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
+    [renderContext2 renderScale];
     v52 = v51;
 
-    v53 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
-    [v53 size];
+    renderContext3 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
+    [renderContext3 size];
     v55 = v54;
-    v56 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
-    [v56 renderScale];
-    v57 = a6;
+    renderContext4 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
+    [renderContext4 renderScale];
+    nodesCopy = nodes;
     v58 = (v49 * v52);
     v60 = (v55 * v59);
 
@@ -921,18 +921,18 @@ LABEL_29:
     DOD = HGRenderer::GetDOD(v82, v81);
     v67 = v66;
     v68 = PVInstructionGraphContext::OutputColorSpace(self->m_instructionGraphContext.m_Obj);
-    v69 = [v68 nclcTriplet];
+    nclcTriplet = [v68 nclcTriplet];
 
-    PVCreateYUVPlanesWithBackfillBlackBackground(DOD, v67, v62, v64, &v81, v69, v46, v57);
+    PVCreateYUVPlanesWithBackfillBlackBackground(DOD, v67, v62, v64, &v81, nclcTriplet, unsignedIntValue, nodesCopy);
     v41 = v73;
   }
 
   else
   {
-    v70 = *(a6 + 1);
-    if (v70 >= *(a6 + 2))
+    v70 = *(nodes + 1);
+    if (v70 >= *(nodes + 2))
     {
-      v72 = std::vector<HGRef<HGNode>>::__emplace_back_slow_path<HGRef<HGNode> const&>(a6, &v81);
+      v72 = std::vector<HGRef<HGNode>>::__emplace_back_slow_path<HGRef<HGNode> const&>(nodes, &v81);
     }
 
     else
@@ -945,10 +945,10 @@ LABEL_29:
       }
 
       v72 = (v70 + 1);
-      *(a6 + 1) = v70 + 1;
+      *(nodes + 1) = v70 + 1;
     }
 
-    *(a6 + 1) = v72;
+    *(nodes + 1) = v72;
   }
 
   if (v81)
@@ -962,18 +962,18 @@ LABEL_29:
   }
 }
 
-- (void)setupDestinationBuffers:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5
+- (void)setupDestinationBuffers:(void *)buffers renderContext:(const void *)context frameStats:(void *)stats
 {
   m_destinationPixelBuffer = self->m_destinationPixelBuffer;
   if (!m_destinationPixelBuffer)
   {
-    v9 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext:a3];
+    v9 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext:buffers];
     self->m_destinationPixelBuffer = [v9 newPixelBuffer];
 
     m_destinationPixelBuffer = self->m_destinationPixelBuffer;
   }
 
-  PVCreateOutputBufferForHGCVPixelBuffer(m_destinationPixelBuffer, a4, a3);
+  PVCreateOutputBufferForHGCVPixelBuffer(m_destinationPixelBuffer, context, buffers);
 }
 
 - (void)finishCompletedJob
@@ -1004,10 +1004,10 @@ LABEL_29:
   }
 }
 
-- (void)renderJobFinished:(HGRef<PVRenderJob>)a3
+- (void)renderJobFinished:(HGRef<PVRenderJob>)finished
 {
   m_compositor = self->m_compositor;
-  v4 = *a3.var0;
+  v4 = *finished.var0;
   v5 = v4;
   if (v4)
   {
@@ -1023,19 +1023,19 @@ LABEL_29:
 
 - (unint64_t)packedFamilyCode
 {
-  v3 = [(PVAVFRenderJobDelegate *)self parentCode];
-  v4 = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
-  v5 = [v4 highQualityRendering];
+  parentCode = [(PVAVFRenderJobDelegate *)self parentCode];
+  renderContext = [(AVAsynchronousVideoCompositionRequest *)self->m_request renderContext];
+  highQualityRendering = [renderContext highQualityRendering];
 
-  LODWORD(v6) = v3 + 100;
-  if (v5)
+  LODWORD(v6) = parentCode + 100;
+  if (highQualityRendering)
   {
     v6 = v6;
   }
 
   else
   {
-    v6 = v3;
+    v6 = parentCode;
   }
 
   return self->m_childCode | (v6 << 32);

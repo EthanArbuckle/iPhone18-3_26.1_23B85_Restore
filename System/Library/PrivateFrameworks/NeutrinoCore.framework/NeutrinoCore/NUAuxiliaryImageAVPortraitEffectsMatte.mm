@@ -1,10 +1,10 @@
 @interface NUAuxiliaryImageAVPortraitEffectsMatte
 - (__CVBuffer)cvPixelBufferRef;
-- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)a3;
-- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
+- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)orientation;
+- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)a3;
-- (id)initAuxiliaryImageFromAVPortraitEffectMatte:(id)a3;
+- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)type;
+- (id)initAuxiliaryImageFromAVPortraitEffectMatte:(id)matte;
 - (unsigned)pixelFormatType;
 @end
 
@@ -12,24 +12,24 @@
 
 - (__CVBuffer)cvPixelBufferRef
 {
-  v2 = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
-  v3 = [v2 mattingImage];
+  avPortraitEffectsMatte = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
+  mattingImage = [avPortraitEffectsMatte mattingImage];
 
-  return v3;
+  return mattingImage;
 }
 
 - (unsigned)pixelFormatType
 {
-  v2 = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
-  v3 = [v2 pixelFormatType];
+  avPortraitEffectsMatte = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
+  pixelFormatType = [avPortraitEffectsMatte pixelFormatType];
 
-  return v3;
+  return pixelFormatType;
 }
 
-- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)a3
+- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)type
 {
-  v4 = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
-  v5 = [v4 dictionaryRepresentationForAuxiliaryDataType:a3];
+  avPortraitEffectsMatte = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
+  v5 = [avPortraitEffectsMatte dictionaryRepresentationForAuxiliaryDataType:type];
 
   return v5;
 }
@@ -42,10 +42,10 @@
   return v2;
 }
 
-- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
-  v6 = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
-  v7 = [v6 portraitEffectsMatteByReplacingPortraitEffectsMatteWithPixelBuffer:a3 error:a4];
+  avPortraitEffectsMatte = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
+  v7 = [avPortraitEffectsMatte portraitEffectsMatteByReplacingPortraitEffectsMatteWithPixelBuffer:buffer error:error];
 
   if (v7)
   {
@@ -60,22 +60,22 @@
   return v8;
 }
 
-- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)a3
+- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)orientation
 {
-  v3 = *&a3;
-  v4 = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
-  v5 = [v4 portraitEffectsMatteByApplyingExifOrientation:v3];
+  v3 = *&orientation;
+  avPortraitEffectsMatte = [(NUAuxiliaryImageAVPortraitEffectsMatte *)self avPortraitEffectsMatte];
+  v5 = [avPortraitEffectsMatte portraitEffectsMatteByApplyingExifOrientation:v3];
 
   v6 = [[NUAuxiliaryImageAVPortraitEffectsMatte alloc] initAuxiliaryImageFromAVPortraitEffectMatte:v5];
 
   return v6;
 }
 
-- (id)initAuxiliaryImageFromAVPortraitEffectMatte:(id)a3
+- (id)initAuxiliaryImageFromAVPortraitEffectMatte:(id)matte
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  matteCopy = matte;
+  if (!matteCopy)
   {
     v10 = NUAssertLogger_16664();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -96,8 +96,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -108,8 +108,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -118,7 +118,7 @@
     _NUAssertFailHandler("[NUAuxiliaryImageAVPortraitEffectsMatte initAuxiliaryImageFromAVPortraitEffectMatte:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUAuxiliaryImage.m", 356, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "avPortraitEffectMatte != nil");
   }
 
-  v6 = v5;
+  v6 = matteCopy;
   v26.receiver = self;
   v26.super_class = NUAuxiliaryImageAVPortraitEffectsMatte;
   v7 = [(NUAuxiliaryImageAVPortraitEffectsMatte *)&v26 init];
@@ -126,7 +126,7 @@
   if (v7)
   {
     v7->_auxiliaryImageType = 3;
-    objc_storeStrong(&v7->_avPortraitEffectsMatte, a3);
+    objc_storeStrong(&v7->_avPortraitEffectsMatte, matte);
   }
 
   return v8;

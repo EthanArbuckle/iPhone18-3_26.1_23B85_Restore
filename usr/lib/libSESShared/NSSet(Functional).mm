@@ -6,7 +6,7 @@
 
 - (BOOL)contains:()Functional
 {
-  v3 = Find(a1, a3);
+  v3 = Find(self, a3);
   v4 = v3 != 0;
 
   return v4;

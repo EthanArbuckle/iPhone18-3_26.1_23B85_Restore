@@ -1,27 +1,27 @@
 @interface AIASRequest
-- (AIASRequest)initWithURL:(id)a3 data:(__CFDictionary *)a4 clientInfo:(id)a5 proxiedClientInfo:(id)a6 companionClientInfo:(id)a7 appleITeamId:(id)a8 appleIClientId:(id)a9 additionalHeaders:(id)a10;
+- (AIASRequest)initWithURL:(id)l data:(__CFDictionary *)data clientInfo:(id)info proxiedClientInfo:(id)clientInfo companionClientInfo:(id)companionClientInfo appleITeamId:(id)id appleIClientId:(id)clientId additionalHeaders:(id)self0;
 - (void)resume;
 @end
 
 @implementation AIASRequest
 
-- (AIASRequest)initWithURL:(id)a3 data:(__CFDictionary *)a4 clientInfo:(id)a5 proxiedClientInfo:(id)a6 companionClientInfo:(id)a7 appleITeamId:(id)a8 appleIClientId:(id)a9 additionalHeaders:(id)a10
+- (AIASRequest)initWithURL:(id)l data:(__CFDictionary *)data clientInfo:(id)info proxiedClientInfo:(id)clientInfo companionClientInfo:(id)companionClientInfo appleITeamId:(id)id appleIClientId:(id)clientId additionalHeaders:(id)self0
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v46 = a8;
-  v20 = a9;
-  v21 = a10;
+  lCopy = l;
+  infoCopy = info;
+  clientInfoCopy = clientInfo;
+  companionClientInfoCopy = companionClientInfo;
+  idCopy = id;
+  clientIdCopy = clientId;
+  headersCopy = headers;
   v49.receiver = self;
   v49.super_class = AIASRequest;
   v22 = [(AIASRequest *)&v49 init];
   if (v22)
   {
-    v45 = v16;
-    v23 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v16];
+    v45 = lCopy;
+    v23 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:lCopy];
     [(AIASRequest *)v22 setURLRequest:v23];
 
     v52 = @"Version";
@@ -31,10 +31,10 @@
     v50[1] = @"Request";
     v44 = v24;
     v51[0] = v24;
-    v51[1] = a4;
+    v51[1] = data;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:2];
-    v26 = v17;
-    if (!v17)
+    v26 = infoCopy;
+    if (!infoCopy)
     {
       v26 = AppleIDAuthSupportGetClientInfo();
     }
@@ -42,70 +42,70 @@
     v27 = [MEMORY[0x277CCAC58] dataWithPropertyList:v25 format:100 options:0 error:0];
     if (v27)
     {
-      v28 = [(AIASRequest *)v22 URLRequest];
-      [v28 setHTTPMethod:@"POST"];
+      uRLRequest = [(AIASRequest *)v22 URLRequest];
+      [uRLRequest setHTTPMethod:@"POST"];
 
-      v29 = [(AIASRequest *)v22 URLRequest];
-      [v29 setHTTPBody:v27];
+      uRLRequest2 = [(AIASRequest *)v22 URLRequest];
+      [uRLRequest2 setHTTPBody:v27];
 
-      v30 = [(AIASRequest *)v22 URLRequest];
-      [v30 setValue:@"text/x-xml-plist" forHTTPHeaderField:@"Content-Type"];
+      uRLRequest3 = [(AIASRequest *)v22 URLRequest];
+      [uRLRequest3 setValue:@"text/x-xml-plist" forHTTPHeaderField:@"Content-Type"];
 
-      v31 = [(AIASRequest *)v22 URLRequest];
-      v32 = v31;
-      if (v17)
+      uRLRequest4 = [(AIASRequest *)v22 URLRequest];
+      v32 = uRLRequest4;
+      if (infoCopy)
       {
         v33 = @"X-MMe-Client-Info";
       }
 
       else
       {
-        [v31 setValue:v26 forHTTPHeaderField:@"User-Agent"];
+        [uRLRequest4 setValue:v26 forHTTPHeaderField:@"User-Agent"];
 
-        v31 = [(AIASRequest *)v22 URLRequest];
-        v32 = v31;
+        uRLRequest4 = [(AIASRequest *)v22 URLRequest];
+        v32 = uRLRequest4;
         v33 = @"X-GS-Client-Info";
       }
 
-      [v31 setValue:v26 forHTTPHeaderField:v33];
-      v35 = v46;
+      [uRLRequest4 setValue:v26 forHTTPHeaderField:v33];
+      v35 = idCopy;
 
-      if (v18)
+      if (clientInfoCopy)
       {
-        v36 = [(AIASRequest *)v22 URLRequest];
-        [v36 setValue:v18 forHTTPHeaderField:@"X-MMe-Proxied-Client-Info"];
+        uRLRequest5 = [(AIASRequest *)v22 URLRequest];
+        [uRLRequest5 setValue:clientInfoCopy forHTTPHeaderField:@"X-MMe-Proxied-Client-Info"];
       }
 
-      if (v19)
+      if (companionClientInfoCopy)
       {
-        v37 = [(AIASRequest *)v22 URLRequest];
-        [v37 setValue:v19 forHTTPHeaderField:@"X-MMe-Companion-Client-Info"];
+        uRLRequest6 = [(AIASRequest *)v22 URLRequest];
+        [uRLRequest6 setValue:companionClientInfoCopy forHTTPHeaderField:@"X-MMe-Companion-Client-Info"];
       }
 
-      if (v46)
+      if (idCopy)
       {
-        v38 = [(AIASRequest *)v22 URLRequest];
-        [v38 setValue:v46 forHTTPHeaderField:@"X-Apple-I-Team-Id"];
+        uRLRequest7 = [(AIASRequest *)v22 URLRequest];
+        [uRLRequest7 setValue:idCopy forHTTPHeaderField:@"X-Apple-I-Team-Id"];
       }
 
-      if (v20)
+      if (clientIdCopy)
       {
-        v39 = [(AIASRequest *)v22 URLRequest];
-        [v39 setValue:v20 forHTTPHeaderField:@"X-Apple-I-Client-Id"];
+        uRLRequest8 = [(AIASRequest *)v22 URLRequest];
+        [uRLRequest8 setValue:clientIdCopy forHTTPHeaderField:@"X-Apple-I-Client-Id"];
       }
 
-      if (v21)
+      if (headersCopy)
       {
         v47[0] = MEMORY[0x277D85DD0];
         v47[1] = 3221225472;
         v47[2] = __127__AIASRequest_initWithURL_data_clientInfo_proxiedClientInfo_companionClientInfo_appleITeamId_appleIClientId_additionalHeaders___block_invoke;
         v47[3] = &unk_278CAB7C0;
         v48 = v22;
-        [v21 enumerateKeysAndObjectsUsingBlock:v47];
+        [headersCopy enumerateKeysAndObjectsUsingBlock:v47];
       }
 
-      v40 = [MEMORY[0x277CBEB28] data];
-      [(AIASRequest *)v22 setData:v40];
+      data = [MEMORY[0x277CBEB28] data];
+      [(AIASRequest *)v22 setData:data];
 
       [(AIASRequest *)v22 setDone:0];
       [(AIASRequest *)v22 setSuccess:0];
@@ -120,17 +120,17 @@
     else
     {
       v34 = 0;
-      v35 = v46;
+      v35 = idCopy;
     }
 
-    v16 = v45;
+    lCopy = v45;
   }
 
   else
   {
     v34 = 0;
-    v26 = v17;
-    v35 = v46;
+    v26 = infoCopy;
+    v35 = idCopy;
   }
 
   v42 = *MEMORY[0x277D85DE8];
@@ -200,8 +200,8 @@ LABEL_10:
 
 - (void)resume
 {
-  v2 = [(AIASRequest *)self task];
-  [v2 resume];
+  task = [(AIASRequest *)self task];
+  [task resume];
 }
 
 @end

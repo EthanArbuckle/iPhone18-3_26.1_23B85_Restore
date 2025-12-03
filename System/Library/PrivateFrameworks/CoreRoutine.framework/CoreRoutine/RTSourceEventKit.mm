@@ -1,24 +1,24 @@
 @interface RTSourceEventKit
-+ (id)sharingStatusToString:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTSourceEventKit)initWithCoder:(id)a3;
-- (RTSourceEventKit)initWithEventIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 title:(id)a6 location:(id)a7 allDay:(BOOL)a8 sharingStatus:(unint64_t)a9 tentative:(BOOL)a10 participationOptional:(BOOL)a11 suggestionInfo_opaqueKey:(id)a12 suggestionsSchemaOrg:(id)a13;
++ (id)sharingStatusToString:(unint64_t)string;
+- (BOOL)isEqual:(id)equal;
+- (RTSourceEventKit)initWithCoder:(id)coder;
+- (RTSourceEventKit)initWithEventIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate title:(id)title location:(id)location allDay:(BOOL)day sharingStatus:(unint64_t)status tentative:(BOOL)self0 participationOptional:(BOOL)self1 suggestionInfo_opaqueKey:(id)self2 suggestionsSchemaOrg:(id)self3;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTSourceEventKit
 
-+ (id)sharingStatusToString:(unint64_t)a3
++ (id)sharingStatusToString:(unint64_t)string
 {
   v3 = @"Not Shared";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Shared From Me";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"Shared To Me";
   }
@@ -29,49 +29,49 @@
   }
 }
 
-- (RTSourceEventKit)initWithEventIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 title:(id)a6 location:(id)a7 allDay:(BOOL)a8 sharingStatus:(unint64_t)a9 tentative:(BOOL)a10 participationOptional:(BOOL)a11 suggestionInfo_opaqueKey:(id)a12 suggestionsSchemaOrg:(id)a13
+- (RTSourceEventKit)initWithEventIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate title:(id)title location:(id)location allDay:(BOOL)day sharingStatus:(unint64_t)status tentative:(BOOL)self0 participationOptional:(BOOL)self1 suggestionInfo_opaqueKey:(id)self2 suggestionsSchemaOrg:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a12;
-  v24 = a13;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  titleCopy = title;
+  locationCopy = location;
+  keyCopy = key;
+  orgCopy = org;
   v42.receiver = self;
   v42.super_class = RTSourceEventKit;
   v25 = [(RTSourceEventKit *)&v42 init];
   if (v25)
   {
-    v26 = [v18 copy];
+    v26 = [identifierCopy copy];
     eventIdentifier = v25->_eventIdentifier;
     v25->_eventIdentifier = v26;
 
-    v28 = [v19 copy];
+    v28 = [dateCopy copy];
     startDate = v25->_startDate;
     v25->_startDate = v28;
 
-    v30 = [v20 copy];
+    v30 = [endDateCopy copy];
     endDate = v25->_endDate;
     v25->_endDate = v30;
 
-    v32 = [v21 copy];
+    v32 = [titleCopy copy];
     title = v25->_title;
     v25->_title = v32;
 
-    v34 = [v22 copy];
+    v34 = [locationCopy copy];
     location = v25->_location;
     v25->_location = v34;
 
-    v25->_allDay = a8;
-    v25->_sharingStatus = a9;
-    v25->_tentative = a10;
-    v25->_participationOptional = a11;
-    v36 = [v23 copy];
+    v25->_allDay = day;
+    v25->_sharingStatus = status;
+    v25->_tentative = tentative;
+    v25->_participationOptional = optional;
+    v36 = [keyCopy copy];
     suggestionInfo_opaqueKey = v25->_suggestionInfo_opaqueKey;
     v25->_suggestionInfo_opaqueKey = v36;
 
-    v38 = [v24 copy];
+    v38 = [orgCopy copy];
     suggestionsSchemaOrg = v25->_suggestionsSchemaOrg;
     v25->_suggestionsSchemaOrg = v38;
   }
@@ -79,53 +79,53 @@
   return v25;
 }
 
-- (RTSourceEventKit)initWithCoder:(id)a3
+- (RTSourceEventKit)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"eventIdentifier"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-  v18 = [v3 decodeBoolForKey:@"allDay"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sharingStatus"];
-  v7 = [v6 unsignedIntegerValue];
+  coderCopy = coder;
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventIdentifier"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  v18 = [coderCopy decodeBoolForKey:@"allDay"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingStatus"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v3 decodeBoolForKey:@"tentative"];
-  LOBYTE(v6) = [v3 decodeBoolForKey:@"participationOptional"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"suggestionInfo_opaqueKey"];
+  v8 = [coderCopy decodeBoolForKey:@"tentative"];
+  LOBYTE(v6) = [coderCopy decodeBoolForKey:@"participationOptional"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestionInfo_opaqueKey"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"suggestionsSchemaOrg"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"suggestionsSchemaOrg"];
 
   BYTE1(v17) = v6;
   LOBYTE(v17) = v8;
-  v15 = [(RTSourceEventKit *)self initWithEventIdentifier:v21 startDate:v20 endDate:v19 title:v4 location:v5 allDay:v18 sharingStatus:v7 tentative:v17 participationOptional:v9 suggestionInfo_opaqueKey:v14 suggestionsSchemaOrg:?];
+  v15 = [(RTSourceEventKit *)self initWithEventIdentifier:v21 startDate:v20 endDate:v19 title:v4 location:v5 allDay:v18 sharingStatus:unsignedIntegerValue tentative:v17 participationOptional:v9 suggestionInfo_opaqueKey:v14 suggestionsSchemaOrg:?];
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RTSourceEventKit;
-  v4 = a3;
-  [(RTSource *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_eventIdentifier forKey:{@"eventIdentifier", v6.receiver, v6.super_class}];
-  [v4 encodeObject:self->_startDate forKey:@"startDate"];
-  [v4 encodeObject:self->_endDate forKey:@"endDate"];
-  [v4 encodeObject:self->_title forKey:@"title"];
-  [v4 encodeObject:self->_location forKey:@"location"];
-  [v4 encodeBool:self->_allDay forKey:@"allDay"];
+  coderCopy = coder;
+  [(RTSource *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_eventIdentifier forKey:{@"eventIdentifier", v6.receiver, v6.super_class}];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeBool:self->_allDay forKey:@"allDay"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_sharingStatus];
-  [v4 encodeObject:v5 forKey:@"sharingStatus"];
+  [coderCopy encodeObject:v5 forKey:@"sharingStatus"];
 
-  [v4 encodeBool:self->_tentative forKey:@"tentative"];
-  [v4 encodeBool:self->_participationOptional forKey:@"participationOptional"];
-  [v4 encodeObject:self->_suggestionInfo_opaqueKey forKey:@"suggestionInfo_opaqueKey"];
-  [v4 encodeObject:self->_suggestionsSchemaOrg forKey:@"suggestionsSchemaOrg"];
+  [coderCopy encodeBool:self->_tentative forKey:@"tentative"];
+  [coderCopy encodeBool:self->_participationOptional forKey:@"participationOptional"];
+  [coderCopy encodeObject:self->_suggestionInfo_opaqueKey forKey:@"suggestionInfo_opaqueKey"];
+  [coderCopy encodeObject:self->_suggestionsSchemaOrg forKey:@"suggestionsSchemaOrg"];
 }
 
 - (id)description
@@ -133,14 +133,14 @@
   v17 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v16 = NSStringFromClass(v3);
-  v15 = [(RTSourceEventKit *)self eventIdentifier];
-  v14 = [(RTSourceEventKit *)self startDate];
-  v4 = [(RTSourceEventKit *)self endDate];
-  v5 = [(RTSourceEventKit *)self title];
-  v6 = [(RTSourceEventKit *)self location];
+  eventIdentifier = [(RTSourceEventKit *)self eventIdentifier];
+  startDate = [(RTSourceEventKit *)self startDate];
+  endDate = [(RTSourceEventKit *)self endDate];
+  title = [(RTSourceEventKit *)self title];
+  location = [(RTSourceEventKit *)self location];
   v7 = [objc_opt_class() sharingStatusToString:{-[RTSourceEventKit sharingStatus](self, "sharingStatus")}];
-  v8 = [(RTSourceEventKit *)self suggestionsSchemaOrg];
-  if (v8)
+  suggestionsSchemaOrg = [(RTSourceEventKit *)self suggestionsSchemaOrg];
+  if (suggestionsSchemaOrg)
   {
     v9 = @"YES";
   }
@@ -170,27 +170,27 @@
     v11 = @"NO";
   }
 
-  v12 = [v17 stringWithFormat:@"%@, eventIdentifier, %@, startDate, %@, endDate, %@, title, %@, location %@, sharingStatus, %@, suggestionsSchemaOrg, %@, participationTentative, %@, participationOptional, %@", v16, v15, v14, v4, v5, v6, v7, v9, v10, v11];
+  v12 = [v17 stringWithFormat:@"%@, eventIdentifier, %@, startDate, %@, endDate, %@, title, %@, location %@, sharingStatus, %@, suggestionsSchemaOrg, %@, participationTentative, %@, participationOptional, %@", v16, eventIdentifier, startDate, endDate, title, location, v7, v9, v10, v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = RTSourceEventKit;
-  if ([(RTSource *)&v12 isEqual:v5])
+  if ([(RTSource *)&v12 isEqual:equalCopy])
   {
-    v6 = v5;
-    v7 = [(RTSourceEventKit *)self eventIdentifier];
-    if (v7 || ([v6 eventIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    eventIdentifier = [(RTSourceEventKit *)self eventIdentifier];
+    if (eventIdentifier || ([v6 eventIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(RTSourceEventKit *)self eventIdentifier];
-      v9 = [v6 eventIdentifier];
-      v10 = [v8 isEqualToString:v9];
+      eventIdentifier2 = [(RTSourceEventKit *)self eventIdentifier];
+      eventIdentifier3 = [v6 eventIdentifier];
+      v10 = [eventIdentifier2 isEqualToString:eventIdentifier3];
 
-      if (v7)
+      if (eventIdentifier)
       {
 LABEL_9:
 
@@ -217,8 +217,8 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = RTSourceEventKit;
   v3 = [(RTSource *)&v7 hash];
-  v4 = [(RTSourceEventKit *)self eventIdentifier];
-  v5 = [v4 hash];
+  eventIdentifier = [(RTSourceEventKit *)self eventIdentifier];
+  v5 = [eventIdentifier hash];
 
   return v5 ^ v3;
 }

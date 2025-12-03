@@ -1,7 +1,7 @@
 @interface PLContactPhotoOverlay
 - (CGRect)inscribingBounds;
-- (PLContactPhotoOverlay)initWithCoder:(id)a3;
-- (PLContactPhotoOverlay)initWithFrame:(CGRect)a3;
+- (PLContactPhotoOverlay)initWithCoder:(id)coder;
+- (PLContactPhotoOverlay)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)overlayEdgeInsets;
 - (void)_commonPLContactPhotoOverlayInitialization;
 - (void)dealloc;
@@ -98,19 +98,19 @@
   v26 = [MEMORY[0x277D75208] bezierPathWithRect:{v4, v6, v8, v10}];
   [v26 appendPath:{objc_msgSend(MEMORY[0x277D75208], "bezierPathWithOvalInRect:", v19, v21, v23, v25)}];
   [v26 setUsesEvenOddFillRule:1];
-  v27 = [(PLContactPhotoOverlay *)self circularLayer];
-  if (!v27)
+  circularLayer = [(PLContactPhotoOverlay *)self circularLayer];
+  if (!circularLayer)
   {
-    v28 = [MEMORY[0x277CD9F90] layer];
-    [v28 setPath:{objc_msgSend(v26, "CGPath")}];
-    [v28 setFillRule:*MEMORY[0x277CDA248]];
-    [v28 setFillColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "colorWithRed:green:blue:alpha:", 0.043, 0.043, 0.043, 0.73), "CGColor")}];
+    layer = [MEMORY[0x277CD9F90] layer];
+    [layer setPath:{objc_msgSend(v26, "CGPath")}];
+    [layer setFillRule:*MEMORY[0x277CDA248]];
+    [layer setFillColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "colorWithRed:green:blue:alpha:", 0.043, 0.043, 0.043, 0.73), "CGColor")}];
     [-[PLContactPhotoOverlay layer](self "layer")];
     [(PLContactPhotoOverlay *)self bringSubviewToFront:self->_titleLabel];
-    [(PLContactPhotoOverlay *)self setCircularLayer:v28];
+    [(PLContactPhotoOverlay *)self setCircularLayer:layer];
   }
 
-  -[CAShapeLayer setPath:](v27, "setPath:", [v26 CGPath]);
+  -[CAShapeLayer setPath:](circularLayer, "setPath:", [v26 CGPath]);
 }
 
 - (void)dealloc
@@ -120,11 +120,11 @@
   [(PLContactPhotoOverlay *)&v3 dealloc];
 }
 
-- (PLContactPhotoOverlay)initWithCoder:(id)a3
+- (PLContactPhotoOverlay)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PLContactPhotoOverlay;
-  v3 = [(PLContactPhotoOverlay *)&v6 initWithCoder:a3];
+  v3 = [(PLContactPhotoOverlay *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -134,11 +134,11 @@
   return v4;
 }
 
-- (PLContactPhotoOverlay)initWithFrame:(CGRect)a3
+- (PLContactPhotoOverlay)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLContactPhotoOverlay;
-  v3 = [(PLContactPhotoOverlay *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLContactPhotoOverlay *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

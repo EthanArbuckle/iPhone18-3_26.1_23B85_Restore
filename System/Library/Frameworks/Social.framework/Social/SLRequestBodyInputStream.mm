@@ -1,25 +1,25 @@
 @interface SLRequestBodyInputStream
-- (BOOL)_setCFClientFlags:(unint64_t)a3 callback:(void *)a4 context:(id *)a5;
+- (BOOL)_setCFClientFlags:(unint64_t)flags callback:(void *)callback context:(id *)context;
 - (NSStreamDelegate)delegate;
-- (SLRequestBodyInputStream)initWithMultiParts:(id)a3 multiPartBoundary:(id)a4;
+- (SLRequestBodyInputStream)initWithMultiParts:(id)parts multiPartBoundary:(id)boundary;
 - (id)nextStream;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
-- (void)_scheduleInCFRunLoop:(__CFRunLoop *)a3 forMode:(__CFString *)a4;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
+- (void)_scheduleInCFRunLoop:(__CFRunLoop *)loop forMode:(__CFString *)mode;
 - (void)_streamEventTrigger;
 - (void)close;
 - (void)dealloc;
 - (void)open;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
 @end
 
 @implementation SLRequestBodyInputStream
 
-- (SLRequestBodyInputStream)initWithMultiParts:(id)a3 multiPartBoundary:(id)a4
+- (SLRequestBodyInputStream)initWithMultiParts:(id)parts multiPartBoundary:(id)boundary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  partsCopy = parts;
+  boundaryCopy = boundary;
   v38.receiver = self;
   v38.super_class = SLRequestBodyInputStream;
   v9 = [(SLRequestBodyInputStream *)&v38 init];
@@ -30,7 +30,7 @@
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = v7;
+    v11 = partsCopy;
     v12 = [v11 countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v12)
     {
@@ -55,8 +55,8 @@
       while (v13);
     }
 
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"--%@--\r\n", v8];
-    v18 = [v17 dataUsingEncoding:4];
+    boundaryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"--%@--\r\n", boundaryCopy];
+    v18 = [boundaryCopy dataUsingEncoding:4];
 
     v32 = 0u;
     v33 = 0u;
@@ -144,11 +144,11 @@
 
 - (void)_streamEventTrigger
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SLRequestBodyInputStream.m" lineNumber:140 description:@"sanity check for stream data"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SLRequestBodyInputStream.m" lineNumber:140 description:@"sanity check for stream data"];
 }
 
-- (void)_scheduleInCFRunLoop:(__CFRunLoop *)a3 forMode:(__CFString *)a4
+- (void)_scheduleInCFRunLoop:(__CFRunLoop *)loop forMode:(__CFString *)mode
 {
   rls = self->_rls;
   if (!rls)
@@ -166,23 +166,23 @@
     }
   }
 
-  CFRunLoopAddSource(a3, rls, a4);
+  CFRunLoopAddSource(loop, rls, mode);
 }
 
-- (BOOL)_setCFClientFlags:(unint64_t)a3 callback:(void *)a4 context:(id *)a5
+- (BOOL)_setCFClientFlags:(unint64_t)flags callback:(void *)callback context:(id *)context
 {
   p_clientContext = &self->_clientContext;
-  if (a5)
+  if (context)
   {
-    v8 = *&a5->var0;
-    v9 = *&a5->var2;
-    self->_clientContext.copyDescription = a5->var4;
+    v8 = *&context->var0;
+    v9 = *&context->var2;
+    self->_clientContext.copyDescription = context->var4;
     *&p_clientContext->version = v8;
     *&self->_clientContext.retain = v9;
     retain = self->_clientContext.retain;
     if (retain)
     {
-      retain(self->_clientContext.info, a2, a3);
+      retain(self->_clientContext.info, a2, flags);
     }
   }
 
@@ -191,7 +191,7 @@
     release = self->_clientContext.release;
     if (release)
     {
-      release(self->_clientContext.info, a2, a3);
+      release(self->_clientContext.info, a2, flags);
     }
 
     p_clientContext->copyDescription = 0;
@@ -199,20 +199,20 @@
     *&p_clientContext->retain = 0u;
   }
 
-  self->_clientCallback = a4;
+  self->_clientCallback = callback;
   return 1;
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  v6 = a4;
-  -[SLRequestBodyInputStream _scheduleInCFRunLoop:forMode:](self, "_scheduleInCFRunLoop:forMode:", [a3 getCFRunLoop], v6);
+  modeCopy = mode;
+  -[SLRequestBodyInputStream _scheduleInCFRunLoop:forMode:](self, "_scheduleInCFRunLoop:forMode:", [loop getCFRunLoop], modeCopy);
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  v6 = a4;
-  -[SLRequestBodyInputStream _unscheduleFromCFRunLoop:forMode:](self, "_unscheduleFromCFRunLoop:forMode:", [a3 getCFRunLoop], v6);
+  modeCopy = mode;
+  -[SLRequestBodyInputStream _unscheduleFromCFRunLoop:forMode:](self, "_unscheduleFromCFRunLoop:forMode:", [loop getCFRunLoop], modeCopy);
 }
 
 - (void)open
@@ -234,25 +234,25 @@
   self->_streamStatus = 6;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
-  [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v18 = v16 = a3;
-  v15 = self;
+  [MEMORY[0x1E696AD98] numberWithUnsignedInteger:length];
+  v18 = v16 = read;
+  selfCopy2 = self;
   _SLLog(v4, 7, @"SLRequestBodyInputStream %@ read: %p maxLength: %@");
 
   v8 = 0;
-  if (a4)
+  if (length)
   {
     while (self->_dataOffset + v8 < self->_dataLength)
     {
-      if (![(SLRequestMultiPartInputStream *)self->_currentStream hasBytesAvailable:v15])
+      if (![(SLRequestMultiPartInputStream *)self->_currentStream hasBytesAvailable:selfCopy2])
       {
         _SLLog(v4, 6, @"SLRequestBodyInputStream %@ Current stream has no bytes, switching");
         [(SLRequestMultiPartInputStream *)self->_currentStream close];
-        v9 = [(SLRequestBodyInputStream *)self nextStream];
+        nextStream = [(SLRequestBodyInputStream *)self nextStream];
         currentStream = self->_currentStream;
-        self->_currentStream = v9;
+        self->_currentStream = nextStream;
 
         v11 = self->_currentStream;
         if (!v11)
@@ -267,14 +267,14 @@
       v17 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
       _SLLog(v4, 6, @"SLRequestBodyInputStream %@ read:maxLength: Will source bytes at offset %@");
 
-      v8 += [(SLRequestMultiPartInputStream *)self->_currentStream read:&a3[v8] maxLength:a4 - v8, self, v17];
+      v8 += [(SLRequestMultiPartInputStream *)self->_currentStream read:&read[v8] maxLength:length - v8, self, v17];
       v12 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
-      [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+      [MEMORY[0x1E696AD98] numberWithUnsignedInteger:length];
       v18 = v16 = v12;
-      v15 = self;
+      selfCopy2 = self;
       _SLLog(v4, 6, @"SLRequestBodyInputStream %@ read:maxLength: Total %@ bytes written to buffer, maxLen %@");
 
-      if (v8 >= a4)
+      if (v8 >= length)
       {
         break;
       }
@@ -282,7 +282,7 @@
   }
 
   self->_dataOffset += v8;
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:selfCopy2];
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_dataLength];
   _SLLog(v4, 6, @"SLRequestBodyInputStream %@ read:maxLength: Total %@ bytes streamed, total length is %@");
 

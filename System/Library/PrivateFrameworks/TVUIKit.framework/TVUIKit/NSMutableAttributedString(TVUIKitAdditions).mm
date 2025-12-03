@@ -8,9 +8,9 @@
 {
   v84[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v51 = a1;
-  v5 = [a1 string];
-  v6 = [(__CFString *)v5 length];
+  selfCopy = self;
+  string = [self string];
+  v6 = [(__CFString *)string length];
   if (v6)
   {
     v7 = v6;
@@ -31,15 +31,15 @@
     v63 = 0u;
     *buffer = 0u;
     v61 = 0u;
-    v76 = v5;
+    v76 = string;
     v79 = 0;
     v80 = v6;
-    CharactersPtr = CFStringGetCharactersPtr(v5);
+    CharactersPtr = CFStringGetCharactersPtr(string);
     CStringPtr = 0;
     v77 = CharactersPtr;
     if (!CharactersPtr)
     {
-      CStringPtr = CFStringGetCStringPtr(v5, 0x600u);
+      CStringPtr = CFStringGetCStringPtr(string, 0x600u);
     }
 
     v54 = 0;
@@ -54,7 +54,7 @@
     v82 = 0;
     v78 = CStringPtr;
     v45 = v7 - 1;
-    v46 = v5;
+    v46 = string;
     v49 = *MEMORY[0x277D74200];
     v12 = -1;
     v47 = *MEMORY[0x277D74118];
@@ -139,7 +139,7 @@
                 {
 LABEL_87:
                   v32 = 1;
-                  [v51 replaceCharactersInRange:v15 withString:{1, @"\n", v45}];
+                  [selfCopy replaceCharactersInRange:v15 withString:{1, @"\n", v45}];
                   LODWORD(v31) = 1;
                   v33 = 1;
                   goto LABEL_88;
@@ -446,7 +446,7 @@ LABEL_132:
         v20 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
         v84[0] = v20;
         v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v84 count:1];
-        [v51 addAttribute:v49 value:v21 range:{v54, v11}];
+        [selfCopy addAttribute:v49 value:v21 range:{v54, v11}];
       }
 
       if (v30)
@@ -463,7 +463,7 @@ LABEL_58:
       if (v10 == v53)
       {
         v4 = v50;
-        v5 = v46;
+        string = v46;
         goto LABEL_134;
       }
     }
@@ -517,7 +517,7 @@ LABEL_54:
 
       if (v36)
       {
-        [v51 addAttribute:v47 value:v35 range:{v23, range2}];
+        [selfCopy addAttribute:v47 value:v35 range:{v23, range2}];
       }
 
       v11 = 0;
@@ -531,7 +531,7 @@ LABEL_54:
 
     v83.location = 0;
     v83.length = 0;
-    v37 = [v51 attribute:v47 atIndex:v23 effectiveRange:&v83];
+    v37 = [selfCopy attribute:v47 atIndex:v23 effectiveRange:&v83];
     if (v37)
     {
       v85.location = v23;

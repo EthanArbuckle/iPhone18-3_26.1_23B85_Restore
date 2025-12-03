@@ -12,58 +12,58 @@
 
 - (id)sceneCamera
 {
-  v1 = [a1 rawSceneUnderstandingData];
-  v2 = [v1 wideCamera];
+  rawSceneUnderstandingData = [self rawSceneUnderstandingData];
+  wideCamera = [rawSceneUnderstandingData wideCamera];
 
-  return v2;
+  return wideCamera;
 }
 
 - (uint64_t)sceneColorBuffer
 {
-  v1 = [a1 rawSceneUnderstandingData];
-  v2 = [v1 capturedImage];
+  rawSceneUnderstandingData = [self rawSceneUnderstandingData];
+  capturedImage = [rawSceneUnderstandingData capturedImage];
 
-  return v2;
+  return capturedImage;
 }
 
 - (uint64_t)sceneDepthBuffer
 {
-  v1 = [a1 rawSceneUnderstandingData];
-  v2 = [v1 depthBuffer];
+  rawSceneUnderstandingData = [self rawSceneUnderstandingData];
+  depthBuffer = [rawSceneUnderstandingData depthBuffer];
 
-  return v2;
+  return depthBuffer;
 }
 
 - (uint64_t)sceneDepthConfidenceBuffer
 {
-  v1 = [a1 rawSceneUnderstandingData];
-  v2 = [v1 depthConfidenceBuffer];
+  rawSceneUnderstandingData = [self rawSceneUnderstandingData];
+  depthConfidenceBuffer = [rawSceneUnderstandingData depthConfidenceBuffer];
 
-  return v2;
+  return depthConfidenceBuffer;
 }
 
 - (uint64_t)semanticLabelBuffer
 {
-  v1 = [a1 rawSceneUnderstandingData];
-  v2 = [v1 semanticSegmentationBufferSampledForDepth];
+  rawSceneUnderstandingData = [self rawSceneUnderstandingData];
+  semanticSegmentationBufferSampledForDepth = [rawSceneUnderstandingData semanticSegmentationBufferSampledForDepth];
 
-  return v2;
+  return semanticSegmentationBufferSampledForDepth;
 }
 
 - (uint64_t)semanticConfidenceBuffer
 {
-  v1 = [a1 rawSceneUnderstandingData];
-  v2 = [v1 semanticSegmentationConfidenceBufferSampledForDepth];
+  rawSceneUnderstandingData = [self rawSceneUnderstandingData];
+  semanticSegmentationConfidenceBufferSampledForDepth = [rawSceneUnderstandingData semanticSegmentationConfidenceBufferSampledForDepth];
 
-  return v2;
+  return semanticSegmentationConfidenceBufferSampledForDepth;
 }
 
 - (uint64_t)vioTrackingState
 {
-  v1 = [a1 worldTrackingState];
-  v2 = [v1 vioTrackingState];
+  worldTrackingState = [self worldTrackingState];
+  vioTrackingState = [worldTrackingState vioTrackingState];
 
-  return v2;
+  return vioTrackingState;
 }
 
 @end

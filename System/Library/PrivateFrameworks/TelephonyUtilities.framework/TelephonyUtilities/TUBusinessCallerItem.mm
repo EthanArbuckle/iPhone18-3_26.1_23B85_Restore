@@ -1,28 +1,28 @@
 @interface TUBusinessCallerItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCallerItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCallerItem:(id)item;
 - (NSString)description;
-- (TUBusinessCallerItem)initWithName:(id)a3 department:(id)a4 logoURL:(id)a5;
+- (TUBusinessCallerItem)initWithName:(id)name department:(id)department logoURL:(id)l;
 - (unint64_t)hash;
 @end
 
 @implementation TUBusinessCallerItem
 
-- (TUBusinessCallerItem)initWithName:(id)a3 department:(id)a4 logoURL:(id)a5
+- (TUBusinessCallerItem)initWithName:(id)name department:(id)department logoURL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  departmentCopy = department;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = TUBusinessCallerItem;
   v12 = [(TUBusinessCallerItem *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_department, a4);
-    if (v11)
+    objc_storeStrong(&v12->_department, department);
+    if (lCopy)
     {
-      v14 = v11;
+      v14 = lCopy;
     }
 
     else
@@ -33,7 +33,7 @@
     logoURL = v13->_logoURL;
     v13->_logoURL = v14;
 
-    objc_storeStrong(&v13->_name, a3);
+    objc_storeStrong(&v13->_name, name);
   }
 
   return v13;
@@ -43,37 +43,37 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUBusinessCallerItem *)self name];
-  v6 = [(TUBusinessCallerItem *)self department];
-  v7 = [(TUBusinessCallerItem *)self logoURL];
-  v8 = [v3 stringWithFormat:@"<%@: name=%@, department=%@, logoURL=%@>", v4, v5, v6, v7];
+  name = [(TUBusinessCallerItem *)self name];
+  department = [(TUBusinessCallerItem *)self department];
+  logoURL = [(TUBusinessCallerItem *)self logoURL];
+  v8 = [v3 stringWithFormat:@"<%@: name=%@, department=%@, logoURL=%@>", v4, name, department, logoURL];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUBusinessCallerItem *)self isEqualToCallerItem:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUBusinessCallerItem *)self isEqualToCallerItem:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCallerItem:(id)a3
+- (BOOL)isEqualToCallerItem:(id)item
 {
-  v4 = a3;
-  v5 = [(TUBusinessCallerItem *)self logoURL];
-  v6 = [v4 logoURL];
-  if (TUObjectsAreEqualOrNil(v5, v6))
+  itemCopy = item;
+  logoURL = [(TUBusinessCallerItem *)self logoURL];
+  logoURL2 = [itemCopy logoURL];
+  if (TUObjectsAreEqualOrNil(logoURL, logoURL2))
   {
-    v7 = [(TUBusinessCallerItem *)self name];
-    v8 = [v4 name];
-    if (TUStringsAreEqualOrNil(v7, v8))
+    name = [(TUBusinessCallerItem *)self name];
+    name2 = [itemCopy name];
+    if (TUStringsAreEqualOrNil(name, name2))
     {
-      v9 = [(TUBusinessCallerItem *)self department];
-      v10 = [v4 department];
-      v11 = TUStringsAreEqualOrNil(v9, v10);
+      department = [(TUBusinessCallerItem *)self department];
+      department2 = [itemCopy department];
+      v11 = TUStringsAreEqualOrNil(department, department2);
     }
 
     else
@@ -92,12 +92,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUBusinessCallerItem *)self name];
-  v4 = [v3 hash];
-  v5 = [(TUBusinessCallerItem *)self department];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TUBusinessCallerItem *)self logoURL];
-  v8 = [v7 hash];
+  name = [(TUBusinessCallerItem *)self name];
+  v4 = [name hash];
+  department = [(TUBusinessCallerItem *)self department];
+  v6 = [department hash] ^ v4;
+  logoURL = [(TUBusinessCallerItem *)self logoURL];
+  v8 = [logoURL hash];
 
   return v6 ^ v8;
 }

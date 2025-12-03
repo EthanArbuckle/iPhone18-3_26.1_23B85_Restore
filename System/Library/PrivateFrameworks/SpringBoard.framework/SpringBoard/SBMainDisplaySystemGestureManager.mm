@@ -1,19 +1,19 @@
 @interface SBMainDisplaySystemGestureManager
-- (BOOL)_isGestureWithTypeAllowed:(unint64_t)a3;
-- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)a3;
-- (BOOL)shouldSystemGestureReceiveTouchWithLocation:(CGPoint)a3 ignoringUCB:(BOOL)a4;
-- (SBMainDisplaySystemGestureManager)initWithDisplayIdentity:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (BOOL)_isGestureWithTypeAllowed:(unint64_t)allowed;
+- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)type;
+- (BOOL)shouldSystemGestureReceiveTouchWithLocation:(CGPoint)location ignoringUCB:(BOOL)b;
+- (SBMainDisplaySystemGestureManager)initWithDisplayIdentity:(id)identity;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (void)dealloc;
-- (void)setSystemGesturesDisabledForAccessibility:(BOOL)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)setSystemGesturesDisabledForAccessibility:(BOOL)accessibility;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBMainDisplaySystemGestureManager
 
-- (SBMainDisplaySystemGestureManager)initWithDisplayIdentity:(id)a3
+- (SBMainDisplaySystemGestureManager)initWithDisplayIdentity:(id)identity
 {
-  v6 = a3;
+  identityCopy = identity;
   if (__sharedInstance_3)
   {
     [(SBMainDisplaySystemGestureManager *)a2 initWithDisplayIdentity:?];
@@ -21,11 +21,11 @@
 
   v10.receiver = self;
   v10.super_class = SBMainDisplaySystemGestureManager;
-  v7 = [(SBSystemGestureManager *)&v10 _initWithDisplayIdentity:v6];
+  v7 = [(SBSystemGestureManager *)&v10 _initWithDisplayIdentity:identityCopy];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(v7 + 23, a3);
+    objc_storeStrong(v7 + 23, identity);
     v8->_multitaskingGesturesEnabled = BSSystemHasCapability();
     [(SBSystemGestureManager *)v8 _evaluateEnablement];
   }
@@ -37,52 +37,52 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBMainDisplaySystemGestureManager;
   [(SBMainDisplaySystemGestureManager *)&v4 dealloc];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBMainDisplaySystemGestureManager;
-  v4 = [(SBSystemGestureManager *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBSystemGestureManager *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendBool:self->_multitaskingGesturesEnabled withName:@"_multitaskingGesturesEnabled"];
 
   return v4;
 }
 
-- (BOOL)_isGestureWithTypeAllowed:(unint64_t)a3
+- (BOOL)_isGestureWithTypeAllowed:(unint64_t)allowed
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = [SBApp windowSceneManager];
-  v6 = [v5 windowSceneForDisplayIdentity:self->_displayIdentity];
+  windowSceneManager = [SBApp windowSceneManager];
+  v6 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
 
-  v7 = [v6 homeScreenController];
-  v8 = [v7 isIconListViewTornDown];
-  v9 = [v7 iconManager];
-  v10 = [v9 isFolderScrolling];
+  homeScreenController = [v6 homeScreenController];
+  isIconListViewTornDown = [homeScreenController isIconListViewTornDown];
+  iconManager = [homeScreenController iconManager];
+  isFolderScrolling = [iconManager isFolderScrolling];
 
-  if ((v8 & 1) != 0 || !v10)
+  if ((isIconListViewTornDown & 1) != 0 || !isFolderScrolling)
   {
     v32.receiver = self;
     v32.super_class = SBMainDisplaySystemGestureManager;
-    v13 = [(SBSystemGestureManager *)&v32 _isGestureWithTypeAllowed:a3];
+    v13 = [(SBSystemGestureManager *)&v32 _isGestureWithTypeAllowed:allowed];
     v14 = +[SBSetupManager sharedInstance];
-    v15 = [v14 isInSetupMode];
+    isInSetupMode = [v14 isInSetupMode];
 
-    if (v15)
+    if (isInSetupMode)
     {
       v16 = +[SBSetupManager sharedInstance];
-      v17 = [v16 isInSetupModeReadyToExit];
+      isInSetupModeReadyToExit = [v16 isInSetupModeReadyToExit];
 
-      v19 = a3 == 2 || a3 == 7;
-      if (v17)
+      v19 = allowed == 2 || allowed == 7;
+      if (isInSetupModeReadyToExit)
       {
-        v22 = a3 == 42 || a3 == 12 || (a3 & 0xFFFFFFFFFFFFFFFBLL) == 35;
+        v22 = allowed == 42 || allowed == 12 || (allowed & 0xFFFFFFFFFFFFFFFBLL) == 35;
       }
 
       else
@@ -96,9 +96,9 @@
     else
     {
       v23 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-      v24 = [v23 policyAggregator];
+      policyAggregator = [v23 policyAggregator];
       v31 = 0;
-      v25 = [v24 allowsCapability:7 explanation:&v31];
+      v25 = [policyAggregator allowsCapability:7 explanation:&v31];
       v26 = v31;
 
       if ((v25 & 1) == 0)
@@ -142,10 +142,10 @@
   return v13;
 }
 
-- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)a3
+- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)type
 {
   multitaskingGesturesEnabled = 1;
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
     case 0x44uLL:
@@ -177,8 +177,8 @@
     case 0x7BuLL:
       if (!__sb__runningInSpringBoard())
       {
-        v10 = [MEMORY[0x277D75418] currentDevice];
-        multitaskingGesturesEnabled = [v10 userInterfaceIdiom] == 1;
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        multitaskingGesturesEnabled = [currentDevice userInterfaceIdiom] == 1;
         goto LABEL_6;
       }
 
@@ -200,8 +200,8 @@ LABEL_8:
 
       else
       {
-        v11 = [MEMORY[0x277D75418] currentDevice];
-        multitaskingGesturesEnabled = [v11 userInterfaceIdiom] == 1 && self->_multitaskingGesturesEnabled;
+        currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+        multitaskingGesturesEnabled = [currentDevice2 userInterfaceIdiom] == 1 && self->_multitaskingGesturesEnabled;
 LABEL_37:
       }
 
@@ -230,15 +230,15 @@ LABEL_37:
     case 0x2FuLL:
     case 0x30uLL:
     case 0x33uLL:
-      v6 = [SBApp windowSceneManager];
-      v7 = [v6 windowSceneForDisplayIdentity:self->_displayIdentity];
-      v8 = [v7 supportsMultitasking];
+      windowSceneManager = [SBApp windowSceneManager];
+      v7 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
+      supportsMultitasking = [v7 supportsMultitasking];
 
-      return v8;
+      return supportsMultitasking;
     case 0x31uLL:
     case 0x32uLL:
-      v11 = [SBApp windowSceneManager];
-      v12 = [v11 windowSceneForDisplayIdentity:self->_displayIdentity];
+      currentDevice2 = [SBApp windowSceneManager];
+      v12 = [currentDevice2 windowSceneForDisplayIdentity:self->_displayIdentity];
       if ([v12 supportsMultitasking])
       {
         multitaskingGesturesEnabled = SBFIsChamoisOverflowGestureAvailable();
@@ -264,8 +264,8 @@ LABEL_37:
 
       return SBUIIsSystemApertureEnabled();
     case 0x8AuLL:
-      v13 = [SBApp systemActionControl];
-      multitaskingGesturesEnabled = v13 != 0;
+      systemActionControl = [SBApp systemActionControl];
+      multitaskingGesturesEnabled = systemActionControl != 0;
 
       return multitaskingGesturesEnabled & 1;
     case 0x8BuLL:
@@ -287,8 +287,8 @@ LABEL_37:
     case 0x8FuLL:
       if (!__sb__runningInSpringBoard())
       {
-        v10 = [MEMORY[0x277D75418] currentDevice];
-        if ([v10 userInterfaceIdiom] == 1)
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice userInterfaceIdiom] == 1)
         {
           multitaskingGesturesEnabled = _UIEnhancedMainMenuEnabled();
         }
@@ -316,11 +316,11 @@ LABEL_24:
   }
 }
 
-- (BOOL)shouldSystemGestureReceiveTouchWithLocation:(CGPoint)a3 ignoringUCB:(BOOL)a4
+- (BOOL)shouldSystemGestureReceiveTouchWithLocation:(CGPoint)location ignoringUCB:(BOOL)b
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  bCopy = b;
+  y = location.y;
+  x = location.x;
   v41 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = SBMainDisplaySystemGestureManager;
@@ -329,8 +329,8 @@ LABEL_24:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [MEMORY[0x277D75830] allVisiblePeripheralFrames];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v40 count:16];
+  allVisiblePeripheralFrames = [MEMORY[0x277D75830] allVisiblePeripheralFrames];
+  v9 = [allVisiblePeripheralFrames countByEnumeratingWithState:&v25 objects:v40 count:16];
   if (v9)
   {
     v10 = v9;
@@ -341,7 +341,7 @@ LABEL_24:
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allVisiblePeripheralFrames);
         }
 
         [*(*(&v25 + 1) + 8 * i) CGRectValue];
@@ -353,7 +353,7 @@ LABEL_24:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v40 count:16];
+      v10 = [allVisiblePeripheralFrames countByEnumeratingWithState:&v25 objects:v40 count:16];
       if (v10)
       {
         continue;
@@ -365,7 +365,7 @@ LABEL_24:
 
   v14 = 1;
   v15 = 1;
-  if (!v4)
+  if (!bCopy)
   {
 LABEL_12:
     v15 = [MEMORY[0x277D75830] pointIsWithinKeyboardContent:{x, y}] ^ 1;
@@ -392,7 +392,7 @@ LABEL_12:
 
     *buf = 138413314;
     v31 = v18;
-    if (v4)
+    if (bCopy)
     {
       v22 = @"YES";
     }
@@ -431,22 +431,22 @@ LABEL_12:
   return v16;
 }
 
-- (void)setSystemGesturesDisabledForAccessibility:(BOOL)a3
+- (void)setSystemGesturesDisabledForAccessibility:(BOOL)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v11.receiver = self;
   v11.super_class = SBMainDisplaySystemGestureManager;
   [(SBSystemGestureManager *)&v11 setSystemGesturesDisabledForAccessibility:?];
-  v5 = [(SBMainDisplaySystemGestureManager *)self accessibilityZStackParticipant];
+  accessibilityZStackParticipant = [(SBMainDisplaySystemGestureManager *)self accessibilityZStackParticipant];
 
-  if (!v3 || v5)
+  if (!accessibilityCopy || accessibilityZStackParticipant)
   {
-    if (!v3)
+    if (!accessibilityCopy)
     {
-      if (v5)
+      if (accessibilityZStackParticipant)
       {
-        v10 = [(SBMainDisplaySystemGestureManager *)self accessibilityZStackParticipant];
-        [v10 invalidate];
+        accessibilityZStackParticipant2 = [(SBMainDisplaySystemGestureManager *)self accessibilityZStackParticipant];
+        [accessibilityZStackParticipant2 invalidate];
 
         [(SBMainDisplaySystemGestureManager *)self setAccessibilityZStackParticipant:0];
       }
@@ -455,20 +455,20 @@ LABEL_12:
 
   else
   {
-    v6 = [SBApp windowSceneManager];
-    v7 = [v6 windowSceneForDisplayIdentity:self->_displayIdentity];
+    windowSceneManager = [SBApp windowSceneManager];
+    v7 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
 
-    v8 = [v7 zStackResolver];
-    v9 = [v8 acquireParticipantWithIdentifier:27 delegate:self];
+    zStackResolver = [v7 zStackResolver];
+    v9 = [zStackResolver acquireParticipantWithIdentifier:27 delegate:self];
     [(SBMainDisplaySystemGestureManager *)self setAccessibilityZStackParticipant:v9];
   }
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v4 = a4;
-  [v4 setActivationPolicyForParticipantsBelow:0];
-  [v4 setHomeGestureConsumption:1];
+  preferencesCopy = preferences;
+  [preferencesCopy setActivationPolicyForParticipantsBelow:0];
+  [preferencesCopy setHomeGestureConsumption:1];
 }
 
 - (void)initWithDisplayIdentity:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

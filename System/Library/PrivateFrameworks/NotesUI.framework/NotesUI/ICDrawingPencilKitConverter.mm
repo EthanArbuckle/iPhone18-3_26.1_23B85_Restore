@@ -1,28 +1,28 @@
 @interface ICDrawingPencilKitConverter
-+ (BOOL)canUpdateFullscreenSketchAttachment:(id)a3;
-+ (BOOL)canUpdateInlineDrawingAttachment:(id)a3;
++ (BOOL)canUpdateFullscreenSketchAttachment:(id)attachment;
++ (BOOL)canUpdateInlineDrawingAttachment:(id)attachment;
 + (id)newThrowawayConverter;
 + (id)sharedConverter;
-+ (unint64_t)countOfUpdatableDrawingsInNote:(id)a3;
-- (BOOL)compareDrawingAttachment:(id)a3 withConvertedDrawing:(id)a4;
-- (BOOL)shouldAutoConvertNote:(id)a3;
++ (unint64_t)countOfUpdatableDrawingsInNote:(id)note;
+- (BOOL)compareDrawingAttachment:(id)attachment withConvertedDrawing:(id)drawing;
+- (BOOL)shouldAutoConvertNote:(id)note;
 - (BOOL)shouldConvertAllDrawingsIfNeeded;
 - (ICDrawingPencilKitConverter)init;
 - (NSArray)failedSketches;
 - (NSMutableArray)mutableFailedSketches;
-- (id)addOperationForAttachment:(id)a3 automatic:(BOOL)a4;
-- (id)convertSketch:(id)a3;
-- (id)convertSketchAttachment:(id)a3 toInlineDrawingAtRange:(_NSRange)a4 inNote:(id)a5;
-- (id)updateInlineDrawingAttachment:(id)a3;
-- (unint64_t)convertAllSketchesInNote:(id)a3;
-- (unint64_t)countOfDrawingsNeedingConversionInNote:(id)a3;
-- (void)canAutoUpdateDrawingsInAccount:(id)a3 completion:(id)a4;
+- (id)addOperationForAttachment:(id)attachment automatic:(BOOL)automatic;
+- (id)convertSketch:(id)sketch;
+- (id)convertSketchAttachment:(id)attachment toInlineDrawingAtRange:(_NSRange)range inNote:(id)note;
+- (id)updateInlineDrawingAttachment:(id)attachment;
+- (unint64_t)convertAllSketchesInNote:(id)note;
+- (unint64_t)countOfDrawingsNeedingConversionInNote:(id)note;
+- (void)canAutoUpdateDrawingsInAccount:(id)account completion:(id)completion;
 - (void)convertAllDrawingsIfNeeded;
-- (void)convertAllSketchesWithProgress:(id)a3 completion:(id)a4;
-- (void)convertDrawingsInNote:(id)a3 inWindow:(id)a4 message:(id)a5 completion:(id)a6;
-- (void)convertDrawingsInNote:(id)a3 waitUntilFinished:(BOOL)a4;
-- (void)convertDrawingsInNoteIfNeeded:(id)a3;
-- (void)operationComplete:(id)a3;
+- (void)convertAllSketchesWithProgress:(id)progress completion:(id)completion;
+- (void)convertDrawingsInNote:(id)note inWindow:(id)window message:(id)message completion:(id)completion;
+- (void)convertDrawingsInNote:(id)note waitUntilFinished:(BOOL)finished;
+- (void)convertDrawingsInNoteIfNeeded:(id)needed;
+- (void)operationComplete:(id)complete;
 @end
 
 @implementation ICDrawingPencilKitConverter
@@ -59,9 +59,9 @@ uint64_t __46__ICDrawingPencilKitConverter_sharedConverter__block_invoke()
 
     [(NSOperationQueue *)v2->_converterQueue setName:@"Converter Queue"];
     [(NSOperationQueue *)v2->_converterQueue setMaxConcurrentOperationCount:1];
-    v5 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     lastOperationForAttachmentID = v2->_lastOperationForAttachmentID;
-    v2->_lastOperationForAttachmentID = v5;
+    v2->_lastOperationForAttachmentID = strongToWeakObjectsMapTable;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.notes.drawing-converter", v7);
@@ -74,8 +74,8 @@ uint64_t __46__ICDrawingPencilKitConverter_sharedConverter__block_invoke()
 
 - (BOOL)shouldConvertAllDrawingsIfNeeded
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:*MEMORY[0x1E69B7B48]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:*MEMORY[0x1E69B7B48]];
 
   return v3 ^ 1;
 }
@@ -87,27 +87,27 @@ uint64_t __46__ICDrawingPencilKitConverter_sharedConverter__block_invoke()
   return v2;
 }
 
-+ (BOOL)canUpdateFullscreenSketchAttachment:(id)a3
++ (BOOL)canUpdateFullscreenSketchAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = [v3 attachmentType];
-  v5 = [v3 note];
-  v6 = [v5 isEditable];
+  attachmentCopy = attachment;
+  attachmentType = [attachmentCopy attachmentType];
+  note = [attachmentCopy note];
+  isEditable = [note isEditable];
 
-  if ([v3 needsToBeFetchedFromCloud])
+  if ([attachmentCopy needsToBeFetchedFromCloud])
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v7 = [v3 needsInitialFetchFromCloud] ^ 1;
+    v7 = [attachmentCopy needsInitialFetchFromCloud] ^ 1;
   }
 
-  v8 = v4 == 9;
-  v9 = [v3 mergeableData];
+  v8 = attachmentType == 9;
+  mergeableData = [attachmentCopy mergeableData];
 
-  if (v9)
+  if (mergeableData)
   {
     v10 = v7;
   }
@@ -117,37 +117,37 @@ uint64_t __46__ICDrawingPencilKitConverter_sharedConverter__block_invoke()
     v10 = 0;
   }
 
-  v11 = (v8 & v6) == 1 && v10;
+  v11 = (v8 & isEditable) == 1 && v10;
 
   return v11;
 }
 
-+ (BOOL)canUpdateInlineDrawingAttachment:(id)a3
++ (BOOL)canUpdateInlineDrawingAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = [v3 attachmentType];
-  v5 = [v3 typeUTI];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69B7440]];
+  attachmentCopy = attachment;
+  attachmentType = [attachmentCopy attachmentType];
+  typeUTI = [attachmentCopy typeUTI];
+  v6 = [typeUTI isEqualToString:*MEMORY[0x1E69B7440]];
 
-  v7 = [v3 note];
-  v8 = [v7 isEditable];
+  note = [attachmentCopy note];
+  isEditable = [note isEditable];
 
-  if ([v3 needsToBeFetchedFromCloud])
+  if ([attachmentCopy needsToBeFetchedFromCloud])
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v9 = [v3 needsInitialFetchFromCloud] ^ 1;
+    v9 = [attachmentCopy needsInitialFetchFromCloud] ^ 1;
   }
 
-  v10 = v4 == 10;
-  v11 = [v3 mergeableData];
+  v10 = attachmentType == 10;
+  mergeableData = [attachmentCopy mergeableData];
 
-  if ((v10 & v8 & v6) == 1)
+  if ((v10 & isEditable & v6) == 1)
   {
-    if (v11)
+    if (mergeableData)
     {
       v12 = v9;
     }
@@ -166,9 +166,9 @@ uint64_t __46__ICDrawingPencilKitConverter_sharedConverter__block_invoke()
   return v12;
 }
 
-+ (unint64_t)countOfUpdatableDrawingsInNote:(id)a3
++ (unint64_t)countOfUpdatableDrawingsInNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -178,8 +178,8 @@ uint64_t __46__ICDrawingPencilKitConverter_sharedConverter__block_invoke()
   v7[2] = __62__ICDrawingPencilKitConverter_countOfUpdatableDrawingsInNote___block_invoke;
   v7[3] = &unk_1E8469060;
   v7[4] = &v8;
-  v7[5] = a1;
-  [v4 enumerateAttachmentsInOrderUsingBlock:v7];
+  v7[5] = self;
+  [noteCopy enumerateAttachmentsInOrderUsingBlock:v7];
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
 
@@ -195,25 +195,25 @@ void __62__ICDrawingPencilKitConverter_countOfUpdatableDrawingsInNote___block_in
   }
 }
 
-- (void)canAutoUpdateDrawingsInAccount:(id)a3 completion:(id)a4
+- (void)canAutoUpdateDrawingsInAccount:(id)account completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 accountType];
-  if (v7 == 1)
+  accountCopy = account;
+  completionCopy = completion;
+  accountType = [accountCopy accountType];
+  if (accountType == 1)
   {
-    v8 = [MEMORY[0x1E69B7708] sharedController];
+    mEMORY[0x1E69B7708] = [MEMORY[0x1E69B7708] sharedController];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __73__ICDrawingPencilKitConverter_canAutoUpdateDrawingsInAccount_completion___block_invoke;
     v9[3] = &unk_1E84690A8;
-    v10 = v6;
-    [v8 devicesForAccount:v5 completionHandler:v9];
+    v10 = completionCopy;
+    [mEMORY[0x1E69B7708] devicesForAccount:accountCopy completionHandler:v9];
   }
 
-  else if (v7 == 3 && v6)
+  else if (accountType == 3 && completionCopy)
   {
-    (*(v6 + 2))(v6, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -248,46 +248,46 @@ uint64_t __73__ICDrawingPencilKitConverter_canAutoUpdateDrawingsInAccount_comple
 
 - (NSArray)failedSketches
 {
-  v2 = [(ICDrawingPencilKitConverter *)self mutableFailedSketches];
-  v3 = [v2 copy];
+  mutableFailedSketches = [(ICDrawingPencilKitConverter *)self mutableFailedSketches];
+  v3 = [mutableFailedSketches copy];
 
   return v3;
 }
 
-- (void)convertAllSketchesWithProgress:(id)a3 completion:(id)a4
+- (void)convertAllSketchesWithProgress:(id)progress completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69B7800] sharedContext];
-  v9 = [v8 workerManagedObjectContext];
+  progressCopy = progress;
+  completionCopy = completion;
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __73__ICDrawingPencilKitConverter_convertAllSketchesWithProgress_completion___block_invoke;
   v17[3] = &unk_1E8468D98;
-  v10 = v9;
+  v10 = workerManagedObjectContext;
   v18 = v10;
-  v11 = v6;
+  v11 = progressCopy;
   v19 = v11;
-  v20 = self;
+  selfCopy = self;
   [v10 performBlockAndWait:v17];
   if (![(ICDrawingPencilKitConverter *)self isThrowaway])
   {
-    v12 = [MEMORY[0x1E69B7800] sharedContext];
-    v13 = [v12 managedObjectContext];
-    [v13 ic_saveWithLogDescription:@"saving main context after converting all sketch attachments"];
+    mEMORY[0x1E69B7800]2 = [MEMORY[0x1E69B7800] sharedContext];
+    managedObjectContext = [mEMORY[0x1E69B7800]2 managedObjectContext];
+    [managedObjectContext ic_saveWithLogDescription:@"saving main context after converting all sketch attachments"];
 
     v14 = +[ICAttachmentPreviewGenerator sharedGenerator];
     [v14 generatePreviewsIfNeeded];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __73__ICDrawingPencilKitConverter_convertAllSketchesWithProgress_completion___block_invoke_46;
     v15[3] = &unk_1E84690D0;
-    v16 = v7;
+    v16 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v15);
   }
 }
@@ -423,21 +423,21 @@ uint64_t __73__ICDrawingPencilKitConverter_convertAllSketchesWithProgress_comple
   return result;
 }
 
-- (unint64_t)convertAllSketchesInNote:(id)a3
+- (unint64_t)convertAllSketchesInNote:(id)note
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  noteCopy = note;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  if (([v4 isSharedViaICloud] & 1) != 0 || (objc_msgSend(v4, "isDeletedOrInTrash") & 1) != 0 || (objc_msgSend(v4, "isPasswordProtected") & 1) != 0 || !objc_msgSend(v4, "isEditable"))
+  if (([noteCopy isSharedViaICloud] & 1) != 0 || (objc_msgSend(noteCopy, "isDeletedOrInTrash") & 1) != 0 || (objc_msgSend(noteCopy, "isPasswordProtected") & 1) != 0 || !objc_msgSend(noteCopy, "isEditable"))
   {
     v16 = os_log_create("com.apple.notes", "PencilKit");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [v4 shortLoggingDescription];
-      if ([v4 isSharedViaICloud])
+      shortLoggingDescription = [noteCopy shortLoggingDescription];
+      if ([noteCopy isSharedViaICloud])
       {
         v20 = @"shared";
       }
@@ -447,7 +447,7 @@ uint64_t __73__ICDrawingPencilKitConverter_convertAllSketchesWithProgress_comple
         v20 = @"n";
       }
 
-      if ([v4 isDeletedOrInTrash])
+      if ([noteCopy isDeletedOrInTrash])
       {
         v21 = @"deleted";
       }
@@ -457,21 +457,21 @@ uint64_t __73__ICDrawingPencilKitConverter_convertAllSketchesWithProgress_comple
         v21 = @"n";
       }
 
-      v22 = [v4 isPasswordProtected];
-      v23 = [v4 isEditable];
+      isPasswordProtected = [noteCopy isPasswordProtected];
+      isEditable = [noteCopy isEditable];
       v24 = @"password-protected";
       *buf = 138413314;
-      if (!v22)
+      if (!isPasswordProtected)
       {
         v24 = @"n";
       }
 
-      v38 = v19;
+      v38 = shortLoggingDescription;
       v25 = @"not-editable";
       v39 = 2112;
       v40 = v20;
       v41 = 2112;
-      if (v23)
+      if (isEditable)
       {
         v25 = @"editable";
       }
@@ -490,36 +490,36 @@ uint64_t __73__ICDrawingPencilKitConverter_convertAllSketchesWithProgress_comple
     v5 = os_log_create("com.apple.notes", "PencilKit");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [v4 shortLoggingDescription];
-      [(ICDrawingPencilKitConverter *)v6 convertAllSketchesInNote:v47, v5];
+      shortLoggingDescription2 = [noteCopy shortLoggingDescription];
+      [(ICDrawingPencilKitConverter *)shortLoggingDescription2 convertAllSketchesInNote:v47, v5];
     }
 
-    v7 = [v4 textStorage];
-    v8 = [v4 managedObjectContext];
-    v9 = [v4 textStorage];
-    v10 = [v9 length];
+    textStorage = [noteCopy textStorage];
+    managedObjectContext = [noteCopy managedObjectContext];
+    textStorage2 = [noteCopy textStorage];
+    v10 = [textStorage2 length];
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __56__ICDrawingPencilKitConverter_convertAllSketchesInNote___block_invoke;
     v29 = &unk_1E84690F8;
-    v30 = self;
-    v11 = v4;
+    selfCopy = self;
+    v11 = noteCopy;
     v31 = v11;
     v32 = &v33;
-    [v7 ic_enumerateAttachmentsInContext:v8 range:0 options:v10 usingBlock:{2, &v26}];
+    [textStorage ic_enumerateAttachmentsInContext:managedObjectContext range:0 options:v10 usingBlock:{2, &v26}];
 
     v12 = os_log_create("com.apple.notes", "PencilKit");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v13 = v34[3];
-      v14 = [v11 shortLoggingDescription];
-      [(ICDrawingPencilKitConverter *)v14 convertAllSketchesInNote:buf, v13, v12];
+      shortLoggingDescription3 = [v11 shortLoggingDescription];
+      [(ICDrawingPencilKitConverter *)shortLoggingDescription3 convertAllSketchesInNote:buf, v13, v12];
     }
 
     if (v34[3] && ![(ICDrawingPencilKitConverter *)self isThrowaway])
     {
-      v15 = [v11 managedObjectContext];
-      [v15 ic_saveWithLogDescription:{@"saving note with %lu converted sketches", v34[3], v26, v27, v28, v29, v30}];
+      managedObjectContext2 = [v11 managedObjectContext];
+      [managedObjectContext2 ic_saveWithLogDescription:{@"saving note with %lu converted sketches", v34[3], v26, v27, v28, v29, selfCopy}];
     }
   }
 
@@ -541,23 +541,23 @@ void __56__ICDrawingPencilKitConverter_convertAllSketchesInNote___block_invoke(u
   }
 }
 
-- (id)convertSketchAttachment:(id)a3 toInlineDrawingAtRange:(_NSRange)a4 inNote:(id)a5
+- (id)convertSketchAttachment:(id)attachment toInlineDrawingAtRange:(_NSRange)range inNote:(id)note
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 drawingModel];
-  v12 = [v11 drawing];
+  attachmentCopy = attachment;
+  noteCopy = note;
+  drawingModel = [attachmentCopy drawingModel];
+  drawing = [drawingModel drawing];
 
-  v13 = [(ICDrawingPencilKitConverter *)self convertSketch:v12];
+  v13 = [(ICDrawingPencilKitConverter *)self convertSketch:drawing];
   v14 = [v13 serializeWithVersion:2];
-  if (!v13 || [(ICDrawingPencilKitConverter *)self compareDrawingAttachment:v9 withConvertedDrawing:v13])
+  if (!v13 || [(ICDrawingPencilKitConverter *)self compareDrawingAttachment:attachmentCopy withConvertedDrawing:v13])
   {
-    v15 = [(ICDrawingPencilKitConverter *)self mutableFailedSketches];
-    v16 = [v9 objectID];
-    [v15 addObject:v16];
+    mutableFailedSketches = [(ICDrawingPencilKitConverter *)self mutableFailedSketches];
+    objectID = [attachmentCopy objectID];
+    [mutableFailedSketches addObject:objectID];
   }
 
   if (!v14)
@@ -569,19 +569,19 @@ void __56__ICDrawingPencilKitConverter_convertAllSketchesInNote___block_invoke(u
   v17 = 0;
   if (![(ICDrawingPencilKitConverter *)self isThrowaway]&& location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v18 = [v10 attachmentExceedsMaxSizeAllowed:{objc_msgSend(v14, "length")}];
+    v18 = [noteCopy attachmentExceedsMaxSizeAllowed:{objc_msgSend(v14, "length")}];
     v19 = os_log_create("com.apple.notes", "PencilKit");
     v20 = v19;
     if (v18)
     {
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v46 = [v9 shortLoggingDescription];
-        v47 = [v13 ic_loggingDescription];
+        shortLoggingDescription = [attachmentCopy shortLoggingDescription];
+        ic_loggingDescription = [v13 ic_loggingDescription];
         *buf = 138412802;
-        v58 = v46;
+        v58 = shortLoggingDescription;
         v59 = 2112;
-        v60 = v47;
+        v60 = ic_loggingDescription;
         v61 = 2048;
         v62 = [v14 length];
         _os_log_error_impl(&dword_1D4171000, v20, OS_LOG_TYPE_ERROR, "over limit when converting: sketch %@ has pkDrawing %@ with size %lu", buf, 0x20u);
@@ -595,16 +595,16 @@ void __56__ICDrawingPencilKitConverter_convertAllSketchesInNote___block_invoke(u
     {
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v48 = [v9 shortLoggingDescription];
-        v49 = [v10 shortLoggingDescription];
+        shortLoggingDescription2 = [attachmentCopy shortLoggingDescription];
+        shortLoggingDescription3 = [noteCopy shortLoggingDescription];
         v65.location = location;
         v65.length = length;
         NSStringFromRange(v65);
         v50 = v56 = location;
         *buf = 138412802;
-        v58 = v48;
+        v58 = shortLoggingDescription2;
         v59 = 2112;
-        v60 = v49;
+        v60 = shortLoggingDescription3;
         v61 = 2112;
         v62 = v50;
         _os_log_debug_impl(&dword_1D4171000, v20, OS_LOG_TYPE_DEBUG, "converting sketch %@ in note %@ at range %@", buf, 0x20u);
@@ -612,13 +612,13 @@ void __56__ICDrawingPencilKitConverter_convertAllSketchesInNote___block_invoke(u
         location = v56;
       }
 
-      v22 = [v10 textStorage];
-      v23 = [v22 wantsUndoCommands];
+      textStorage = [noteCopy textStorage];
+      wantsUndoCommands = [textStorage wantsUndoCommands];
 
-      v24 = [v10 textStorage];
-      [v24 setWantsUndoCommands:0];
+      textStorage2 = [noteCopy textStorage];
+      [textStorage2 setWantsUndoCommands:0];
 
-      v25 = [v10 addInlineDrawingAttachmentWithAnalytics:0];
+      v25 = [noteCopy addInlineDrawingAttachmentWithAnalytics:0];
       if (!v25)
       {
         v21 = os_log_create("com.apple.notes", "PencilKit");
@@ -632,69 +632,69 @@ void __56__ICDrawingPencilKitConverter_convertAllSketchesInNote___block_invoke(u
       }
 
       v17 = v25;
-      v52 = v23;
+      v52 = wantsUndoCommands;
       [v25 setMergeableData:v14];
-      v26 = [v17 metadata];
-      v27 = v26;
-      if (!v26)
+      metadata = [v17 metadata];
+      v27 = metadata;
+      if (!metadata)
       {
-        v26 = MEMORY[0x1E695E0F8];
+        metadata = MEMORY[0x1E695E0F8];
       }
 
-      v28 = [v26 mutableCopy];
+      v28 = [metadata mutableCopy];
 
       [v28 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69B7400]];
       v53 = v28;
       [v17 setMetadata:v28];
       [MEMORY[0x1E69B7748] defaultPixelSize];
-      v29 = [v9 attachmentPreviewImageWithMinSize:? scale:?];
+      v29 = [attachmentCopy attachmentPreviewImageWithMinSize:? scale:?];
       v20 = v29;
       v54 = length;
       v55 = location;
       if (v29 && (-[NSObject image](v29, "image"), (v30 = objc_claimAutoreleasedReturnValue()) != 0) && (v31 = v30, v51 = -[NSObject version](v20, "version"), v32 = [MEMORY[0x1E69B7750] serializationVersion], v31, v32 <= v51))
       {
-        v33 = [v20 image];
-        [v33 size];
+        image = [v20 image];
+        [image size];
         [v17 setSizeWidth:?];
-        [v33 size];
+        [image size];
         [v17 setSizeHeight:v34];
-        v35 = [MEMORY[0x1E69B7680] fallbackImageUTI];
-        v36 = [v33 ic_imageDataWithUTType:v35];
+        fallbackImageUTI = [MEMORY[0x1E69B7680] fallbackImageUTI];
+        v36 = [image ic_imageDataWithUTType:fallbackImageUTI];
         [v17 writeFallbackImageData:v36];
       }
 
       else
       {
-        v33 = os_log_create("com.apple.notes", "PencilKit");
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+        image = os_log_create("com.apple.notes", "PencilKit");
+        if (os_log_type_enabled(image, OS_LOG_TYPE_ERROR))
         {
           [ICDrawingPencilKitConverter convertSketchAttachment:toInlineDrawingAtRange:inNote:];
         }
       }
 
-      v37 = [v9 userTitle];
-      [v17 setUserTitle:v37];
+      userTitle = [attachmentCopy userTitle];
+      [v17 setUserTitle:userTitle];
 
-      v38 = [v9 title];
-      [v17 setTitle:v38];
+      title = [attachmentCopy title];
+      [v17 setTitle:title];
 
-      v39 = [v9 summary];
-      [v17 setSummary:v39];
+      summary = [attachmentCopy summary];
+      [v17 setSummary:summary];
 
       v40 = [ICTextAttachment textAttachmentWithAttachment:v17];
       v41 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v40];
       v42 = [v41 mutableCopy];
 
       [v42 addAttribute:*MEMORY[0x1E69DB5F8] value:v40 range:{0, objc_msgSend(v42, "length")}];
-      v43 = [v10 textStorage];
-      [v43 replaceCharactersInRange:v55 withAttributedString:{v54, v42}];
+      textStorage3 = [noteCopy textStorage];
+      [textStorage3 replaceCharactersInRange:v55 withAttributedString:{v54, v42}];
 
-      [v9 markForDeletion];
-      [v9 updateChangeCountWithReason:@"Converted sketch to inline drawing"];
+      [attachmentCopy markForDeletion];
+      [attachmentCopy updateChangeCountWithReason:@"Converted sketch to inline drawing"];
       [v17 updateChangeCountWithReason:@"Converted sketch to inline drawing"];
-      [v10 updateChangeCountWithReason:@"Converted sketch to inline drawing"];
-      v44 = [v10 textStorage];
-      [v44 setWantsUndoCommands:v52];
+      [noteCopy updateChangeCountWithReason:@"Converted sketch to inline drawing"];
+      textStorage4 = [noteCopy textStorage];
+      [textStorage4 setWantsUndoCommands:v52];
 
       v21 = v53;
     }
@@ -707,10 +707,10 @@ LABEL_29:
   return v17;
 }
 
-- (id)convertSketch:(id)a3
+- (id)convertSketch:(id)sketch
 {
-  v3 = a3;
-  v4 = [v3 serializeWithPathData:1];
+  sketchCopy = sketch;
+  v4 = [sketchCopy serializeWithPathData:1];
   v5 = dispatch_semaphore_create(0);
   v23[0] = 0;
   v23[1] = v23;
@@ -727,7 +727,7 @@ LABEL_29:
   v12[1] = 3221225472;
   v12[2] = __45__ICDrawingPencilKitConverter_convertSketch___block_invoke;
   v12[3] = &unk_1E8469120;
-  v7 = v3;
+  v7 = sketchCopy;
   v13 = v7;
   v15 = v23;
   v16 = &v17;
@@ -766,16 +766,16 @@ void __45__ICDrawingPencilKitConverter_convertSketch___block_invoke(uint64_t a1,
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)updateInlineDrawingAttachment:(id)a3
+- (id)updateInlineDrawingAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = [v3 typeUTI];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E69B7440]];
+  attachmentCopy = attachment;
+  typeUTI = [attachmentCopy typeUTI];
+  v5 = [typeUTI isEqualToString:*MEMORY[0x1E69B7440]];
 
-  v6 = [v3 rangeInNote];
+  rangeInNote = [attachmentCopy rangeInNote];
   if (v5)
   {
-    v7 = v6 == 0x7FFFFFFFFFFFFFFFLL;
+    v7 = rangeInNote == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -790,99 +790,99 @@ void __45__ICDrawingPencilKitConverter_convertSketch___block_invoke(uint64_t a1,
 
   else
   {
-    v8 = [v3 note];
-    v9 = [v8 textStorage];
-    v10 = [v9 wantsUndoCommands];
+    note = [attachmentCopy note];
+    textStorage = [note textStorage];
+    wantsUndoCommands = [textStorage wantsUndoCommands];
 
-    v11 = [v8 textStorage];
-    [v11 setWantsUndoCommands:0];
+    textStorage2 = [note textStorage];
+    [textStorage2 setWantsUndoCommands:0];
 
-    v12 = [v8 addInlineDrawingAttachmentWithAnalytics:0];
-    v13 = [v3 mergeableData];
-    [v12 setMergeableData:v13];
+    v12 = [note addInlineDrawingAttachmentWithAnalytics:0];
+    mergeableData = [attachmentCopy mergeableData];
+    [v12 setMergeableData:mergeableData];
 
     [v12 setTypeUTI:*MEMORY[0x1E69B7438]];
-    [v3 sizeWidth];
+    [attachmentCopy sizeWidth];
     [v12 setSizeWidth:?];
-    [v3 sizeHeight];
+    [attachmentCopy sizeHeight];
     [v12 setSizeHeight:?];
-    v14 = [v3 fallbackImageData];
-    [v12 writeFallbackImageData:v14];
+    fallbackImageData = [attachmentCopy fallbackImageData];
+    [v12 writeFallbackImageData:fallbackImageData];
 
-    v15 = [v3 userTitle];
-    [v12 setUserTitle:v15];
+    userTitle = [attachmentCopy userTitle];
+    [v12 setUserTitle:userTitle];
 
-    v16 = [v3 title];
-    [v12 setTitle:v16];
+    title = [attachmentCopy title];
+    [v12 setTitle:title];
 
-    v17 = [v3 summary];
-    [v12 setSummary:v17];
+    summary = [attachmentCopy summary];
+    [v12 setSummary:summary];
 
     v18 = [ICTextAttachment textAttachmentWithAttachment:v12];
     v19 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v18];
     v20 = [v19 mutableCopy];
 
     v21 = *MEMORY[0x1E69DB5F8];
-    v22 = [v20 ic_range];
-    [v20 addAttribute:v21 value:v18 range:{v22, v23}];
-    v24 = [v3 rangeInNote];
+    ic_range = [v20 ic_range];
+    [v20 addAttribute:v21 value:v18 range:{ic_range, v23}];
+    rangeInNote2 = [attachmentCopy rangeInNote];
     v26 = v25;
-    v27 = [v8 textStorage];
-    [v27 replaceCharactersInRange:v24 withAttributedString:{v26, v20}];
+    textStorage3 = [note textStorage];
+    [textStorage3 replaceCharactersInRange:rangeInNote2 withAttributedString:{v26, v20}];
 
-    [v3 markForDeletion];
-    [v3 updateChangeCountWithReason:@"Updated inline drawing"];
+    [attachmentCopy markForDeletion];
+    [attachmentCopy updateChangeCountWithReason:@"Updated inline drawing"];
     [v12 updateChangeCountWithReason:@"Updated inline drawing"];
-    [v8 updateChangeCountWithReason:@"Updated inline drawing"];
-    v28 = [v8 textStorage];
-    [v28 setWantsUndoCommands:v10];
+    [note updateChangeCountWithReason:@"Updated inline drawing"];
+    textStorage4 = [note textStorage];
+    [textStorage4 setWantsUndoCommands:wantsUndoCommands];
 
     v29 = os_log_create("com.apple.notes", "PencilKit");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      [(ICDrawingPencilKitConverter *)v3 updateInlineDrawingAttachment:v12];
+      [(ICDrawingPencilKitConverter *)attachmentCopy updateInlineDrawingAttachment:v12];
     }
   }
 
   return v12;
 }
 
-- (BOOL)compareDrawingAttachment:(id)a3 withConvertedDrawing:(id)a4
+- (BOOL)compareDrawingAttachment:(id)attachment withConvertedDrawing:(id)drawing
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69B7AD0] isInternalInstall];
+  attachmentCopy = attachment;
+  drawingCopy = drawing;
+  isInternalInstall = [MEMORY[0x1E69B7AD0] isInternalInstall];
   v8 = 0;
-  if (v5 && v7)
+  if (attachmentCopy && isInternalInstall)
   {
     [MEMORY[0x1E69B7748] defaultPixelSize];
-    v9 = [v5 attachmentPreviewImageWithMinSize:? scale:?];
+    v9 = [attachmentCopy attachmentPreviewImageWithMinSize:? scale:?];
     v10 = v9;
     if (v9 && (v11 = [v9 version], objc_msgSend(MEMORY[0x1E69B7750], "serializationVersion") == v11))
     {
-      v12 = [v10 image];
-      if (!v12)
+      image = [v10 image];
+      if (!image)
       {
         goto LABEL_16;
       }
 
-      [MEMORY[0x1E6978470] compareLegacyDrawingImage:v12 toConvertedDrawing:v6];
+      [MEMORY[0x1E6978470] compareLegacyDrawingImage:image toConvertedDrawing:drawingCopy];
       v14 = v13;
       v15 = os_log_create("com.apple.notes", "PencilKit");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        [v12 size];
+        [image size];
         v16 = NSStringFromCGSize(v30);
-        v17 = [v12 imageOrientation];
-        [v6 _canvasBounds];
+        imageOrientation = [image imageOrientation];
+        [drawingCopy _canvasBounds];
         v18 = NSStringFromCGRect(v31);
         v21 = 134218754;
         v22 = v14;
         v23 = 2112;
         v24 = v16;
         v25 = 2048;
-        v26 = v17;
+        v26 = imageOrientation;
         v27 = 2112;
         v28 = v18;
         _os_log_impl(&dword_1D4171000, v15, OS_LOG_TYPE_DEFAULT, "convertSketch compareError %f %@ %lu %@", &v21, 0x2Au);
@@ -912,7 +912,7 @@ LABEL_16:
         [ICDrawingPencilKitConverter compareDrawingAttachment:v10 withConvertedDrawing:?];
       }
 
-      v12 = 0;
+      image = 0;
       v8 = 0;
     }
 
@@ -922,22 +922,22 @@ LABEL_17:
   return v8;
 }
 
-- (void)convertDrawingsInNote:(id)a3 inWindow:(id)a4 message:(id)a5 completion:(id)a6
+- (void)convertDrawingsInNote:(id)note inWindow:(id)window message:(id)message completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [[ICLongRunningTaskController alloc] initWithWindow:v11 intervalBeforeOpeningProgressDialog:0.1];
+  noteCopy = note;
+  messageCopy = message;
+  windowCopy = window;
+  v12 = [[ICLongRunningTaskController alloc] initWithWindow:windowCopy intervalBeforeOpeningProgressDialog:0.1];
 
-  [(ICLongRunningTaskController *)v12 setProgressString:v10];
+  [(ICLongRunningTaskController *)v12 setProgressString:messageCopy];
   [(ICLongRunningTaskController *)v12 setAllowSingleUnitProgress:1];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__ICDrawingPencilKitConverter_convertDrawingsInNote_inWindow_message_completion___block_invoke;
   v14[3] = &unk_1E8469148;
-  v15 = v9;
-  v16 = self;
-  v13 = v9;
+  v15 = noteCopy;
+  selfCopy = self;
+  v13 = noteCopy;
   [(ICLongRunningTaskController *)v12 startTask:v14 completionBlock:&__block_literal_global_86];
 }
 
@@ -958,25 +958,25 @@ void __81__ICDrawingPencilKitConverter_convertDrawingsInNote_inWindow_message_co
   [v4 performBlockAndWait:v7];
 }
 
-- (BOOL)shouldAutoConvertNote:(id)a3
+- (BOOL)shouldAutoConvertNote:(id)note
 {
-  v3 = a3;
-  if ([v3 isSharedViaICloud])
+  noteCopy = note;
+  if ([noteCopy isSharedViaICloud])
   {
-    v4 = 0;
+    isEditable = 0;
   }
 
   else
   {
-    v4 = [v3 isEditable];
+    isEditable = [noteCopy isEditable];
   }
 
-  return v4;
+  return isEditable;
 }
 
-- (id)addOperationForAttachment:(id)a3 automatic:(BOOL)a4
+- (id)addOperationForAttachment:(id)attachment automatic:(BOOL)automatic
 {
-  v6 = a3;
+  attachmentCopy = attachment;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -989,20 +989,20 @@ void __81__ICDrawingPencilKitConverter_convertDrawingsInNote_inWindow_message_co
   v24[3] = __Block_byref_object_copy__1;
   v24[4] = __Block_byref_object_dispose__1;
   v25 = 0;
-  v7 = [MEMORY[0x1E69B7800] sharedContext];
-  v8 = [v7 managedObjectContext];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  managedObjectContext = [mEMORY[0x1E69B7800] managedObjectContext];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __67__ICDrawingPencilKitConverter_addOperationForAttachment_automatic___block_invoke;
   v20[3] = &unk_1E8469190;
-  v9 = v6;
+  v9 = attachmentCopy;
   v21 = v9;
-  v10 = v8;
+  v10 = managedObjectContext;
   v22 = v10;
   v23 = v24;
   [v10 performBlockAndWait:v20];
-  v11 = [(ICDrawingPencilKitConverter *)self convertDispatchQueue];
+  convertDispatchQueue = [(ICDrawingPencilKitConverter *)self convertDispatchQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__ICDrawingPencilKitConverter_addOperationForAttachment_automatic___block_invoke_2;
@@ -1011,9 +1011,9 @@ void __81__ICDrawingPencilKitConverter_convertDrawingsInNote_inWindow_message_co
   v16 = v9;
   v17 = &v26;
   v18 = v24;
-  v19 = a4;
+  automaticCopy = automatic;
   v12 = v9;
-  dispatch_sync(v11, v15);
+  dispatch_sync(convertDispatchQueue, v15);
 
   v13 = v27[5];
   _Block_object_dispose(v24, 8);
@@ -1083,16 +1083,16 @@ void __67__ICDrawingPencilKitConverter_addOperationForAttachment_automatic___blo
 {
   if ([(ICDrawingPencilKitConverter *)self shouldConvertAllDrawingsIfNeeded])
   {
-    v3 = [MEMORY[0x1E69B7800] sharedContext];
-    v4 = [v3 workerManagedObjectContext];
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __57__ICDrawingPencilKitConverter_convertAllDrawingsIfNeeded__block_invoke;
     v6[3] = &unk_1E8468F80;
-    v7 = v4;
-    v8 = self;
-    v5 = v4;
+    v7 = workerManagedObjectContext;
+    selfCopy = self;
+    v5 = workerManagedObjectContext;
     [v5 performBlock:v6];
   }
 }
@@ -1262,15 +1262,15 @@ id *__57__ICDrawingPencilKitConverter_convertAllDrawingsIfNeeded__block_invoke_3
   return result;
 }
 
-- (void)convertDrawingsInNote:(id)a3 waitUntilFinished:(BOOL)a4
+- (void)convertDrawingsInNote:(id)note waitUntilFinished:(BOOL)finished
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __71__ICDrawingPencilKitConverter_convertDrawingsInNote_waitUntilFinished___block_invoke;
   v4[3] = &unk_1E8469208;
   v4[4] = self;
-  v5 = a4;
-  [a3 enumerateAttachmentsInOrderUsingBlock:v4];
+  finishedCopy = finished;
+  [note enumerateAttachmentsInOrderUsingBlock:v4];
 }
 
 void __71__ICDrawingPencilKitConverter_convertDrawingsInNote_waitUntilFinished___block_invoke(uint64_t a1, void *a2)
@@ -1288,27 +1288,27 @@ void __71__ICDrawingPencilKitConverter_convertDrawingsInNote_waitUntilFinished__
   }
 }
 
-- (void)convertDrawingsInNoteIfNeeded:(id)a3
+- (void)convertDrawingsInNoteIfNeeded:(id)needed
 {
-  v4 = a3;
-  if ([(ICDrawingPencilKitConverter *)self shouldAutoConvertNote:v4]&& [(ICDrawingPencilKitConverter *)self shouldConvertAllDrawingsIfNeeded]&& [(ICDrawingPencilKitConverter *)self countOfDrawingsNeedingConversionInNote:v4])
+  neededCopy = needed;
+  if ([(ICDrawingPencilKitConverter *)self shouldAutoConvertNote:neededCopy]&& [(ICDrawingPencilKitConverter *)self shouldConvertAllDrawingsIfNeeded]&& [(ICDrawingPencilKitConverter *)self countOfDrawingsNeedingConversionInNote:neededCopy])
   {
     v5 = os_log_create("com.apple.notes", "PencilKit");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [ICDrawingPencilKitConverter convertDrawingsInNoteIfNeeded:v4];
+      [ICDrawingPencilKitConverter convertDrawingsInNoteIfNeeded:neededCopy];
     }
 
     objc_initWeak(&location, self);
     v6 = +[ICDrawingPencilKitConverter sharedConverter];
-    v7 = [v4 account];
+    account = [neededCopy account];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __61__ICDrawingPencilKitConverter_convertDrawingsInNoteIfNeeded___block_invoke;
     v8[3] = &unk_1E8469258;
-    v9 = v4;
+    v9 = neededCopy;
     objc_copyWeak(&v10, &location);
-    [v6 canAutoUpdateDrawingsInAccount:v7 completion:v8];
+    [v6 canAutoUpdateDrawingsInAccount:account completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -1345,17 +1345,17 @@ void __61__ICDrawingPencilKitConverter_convertDrawingsInNoteIfNeeded___block_inv
   [WeakRetained convertDrawingsInNote:*(a1 + 32) waitUntilFinished:0];
 }
 
-- (unint64_t)countOfDrawingsNeedingConversionInNote:(id)a3
+- (unint64_t)countOfDrawingsNeedingConversionInNote:(id)note
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  noteCopy = note;
   v4 = [MEMORY[0x1E695DFA8] set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v3 attachments];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  attachments = [noteCopy attachments];
+  v6 = [attachments countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1367,23 +1367,23 @@ void __61__ICDrawingPencilKitConverter_convertDrawingsInNoteIfNeeded___block_inv
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attachments);
         }
 
-        v10 = [*(*(&v22 + 1) + 8 * v9) objectID];
-        [v4 addObject:v10];
+        objectID = [*(*(&v22 + 1) + 8 * v9) objectID];
+        [v4 addObject:objectID];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v7 = [attachments countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [v3 managedObjectContext];
+  managedObjectContext = [noteCopy managedObjectContext];
   v12 = MEMORY[0x1E696AE18];
   v13 = *MEMORY[0x1E69B7440];
   v26[0] = *MEMORY[0x1E69B7430];
@@ -1395,7 +1395,7 @@ void __61__ICDrawingPencilKitConverter_convertDrawingsInNoteIfNeeded___block_inv
   [v16 setPredicate:v15];
   [v16 setIncludesSubentities:0];
   v21 = 0;
-  v17 = [v11 countForFetchRequest:v16 error:&v21];
+  v17 = [managedObjectContext countForFetchRequest:v16 error:&v21];
   v18 = v21;
   if (v18)
   {
@@ -1409,18 +1409,18 @@ void __61__ICDrawingPencilKitConverter_convertDrawingsInNoteIfNeeded___block_inv
   return v17;
 }
 
-- (void)operationComplete:(id)a3
+- (void)operationComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(ICDrawingPencilKitConverter *)self convertDispatchQueue];
+  completeCopy = complete;
+  convertDispatchQueue = [(ICDrawingPencilKitConverter *)self convertDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__ICDrawingPencilKitConverter_operationComplete___block_invoke;
   block[3] = &unk_1E8468F80;
-  v6 = v4;
+  v6 = completeCopy;
   v11 = v6;
-  v12 = self;
-  dispatch_async(v5, block);
+  selfCopy = self;
+  dispatch_async(convertDispatchQueue, block);
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;

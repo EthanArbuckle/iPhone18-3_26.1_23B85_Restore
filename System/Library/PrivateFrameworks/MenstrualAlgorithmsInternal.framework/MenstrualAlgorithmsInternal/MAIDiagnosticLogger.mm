@@ -7,17 +7,17 @@
 - (shared_ptr<std::ofstream>)inputFile;
 - (shared_ptr<std::ofstream>)outputFile;
 - (void)appendDay:;
-- (void)appendDay:(id)a3;
-- (void)beginPhase:(unsigned __int8)a3 onJulianDay:(unsigned int)a4;
+- (void)appendDay:(id)day;
+- (void)beginPhase:(unsigned __int8)phase onJulianDay:(unsigned int)day;
 - (void)dealloc;
-- (void)endPhase:(unsigned __int8)a3 onJulianDay:(unsigned int)a4;
+- (void)endPhase:(unsigned __int8)phase onJulianDay:(unsigned int)day;
 - (void)init;
 - (void)removeOldFiles;
-- (void)setInputFile:(shared_ptr<std::ofstream>)a3;
-- (void)setInputJson:(shared_ptr<nlohmann::basic_json<>>)a3;
-- (void)setNotifyState:(BOOL)a3;
-- (void)setOutputFile:(shared_ptr<std::ofstream>)a3;
-- (void)setOutputJson:(shared_ptr<nlohmann::basic_json<>>)a3;
+- (void)setInputFile:(shared_ptr<std::ofstream>)file;
+- (void)setInputJson:(shared_ptr<nlohmann::basic_json<>>)json;
+- (void)setNotifyState:(BOOL)state;
+- (void)setOutputFile:(shared_ptr<std::ofstream>)file;
+- (void)setOutputJson:(shared_ptr<nlohmann::basic_json<>>)json;
 @end
 
 @implementation MAIDiagnosticLogger
@@ -29,11 +29,11 @@
   return state64 != 0;
 }
 
-- (void)setNotifyState:(BOOL)a3
+- (void)setNotifyState:(BOOL)state
 {
-  notify_set_state([(MAIDiagnosticLogger *)self notifyToken], a3);
-  v4 = [(MAIDiagnosticLogger *)self notificationName];
-  notify_post([v4 UTF8String]);
+  notify_set_state([(MAIDiagnosticLogger *)self notifyToken], state);
+  notificationName = [(MAIDiagnosticLogger *)self notificationName];
+  notify_post([notificationName UTF8String]);
 }
 
 - (void)removeOldFiles
@@ -49,11 +49,11 @@
   v24 = *MEMORY[0x277CBE798];
   v38[0] = *MEMORY[0x277CBE798];
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"/var/mobile/Library/Logs/CycleTracking"];
-  v21 = [v3 enumeratorAtURL:v4 includingPropertiesForKeys:v22 options:1 errorHandler:0];
+  v21 = [defaultManager enumeratorAtURL:v4 includingPropertiesForKeys:v22 options:1 errorHandler:0];
 
-  v23 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -73,8 +73,8 @@
         }
 
         v8 = *(*(&v29 + 1) + 8 * i);
-        v9 = [v8 pathExtension];
-        v10 = [v9 isEqualToString:@"json"];
+        pathExtension = [v8 pathExtension];
+        v10 = [pathExtension isEqualToString:@"json"];
 
         if (v10)
         {
@@ -83,11 +83,11 @@
           [v8 getResourceValue:&v28 forKey:v24 error:&v27];
           v11 = v28;
           v12 = v27;
-          if (v11 && ([v23 timeIntervalSinceDate:v11], v13 > 86400.0))
+          if (v11 && ([date timeIntervalSinceDate:v11], v13 > 86400.0))
           {
-            v14 = [MEMORY[0x277CCAA00] defaultManager];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
             v26 = v12;
-            v15 = [v14 removeItemAtURL:v8 error:&v26];
+            v15 = [defaultManager2 removeItemAtURL:v8 error:&v26];
             v16 = v26;
 
             if (v15)
@@ -95,9 +95,9 @@
               v17 = ha_get_log();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
-                v18 = [v8 lastPathComponent];
+                lastPathComponent = [v8 lastPathComponent];
                 *buf = 138543362;
-                v34 = v18;
+                v34 = lastPathComponent;
                 _os_log_impl(&dword_2588F5000, v17, OS_LOG_TYPE_DEFAULT, "deleted %{public}@", buf, 0xCu);
               }
             }
@@ -107,9 +107,9 @@
               v17 = ha_get_log();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
-                v19 = [v8 lastPathComponent];
+                lastPathComponent2 = [v8 lastPathComponent];
                 *buf = 138543618;
-                v34 = v19;
+                v34 = lastPathComponent2;
                 v35 = 2114;
                 v36 = v16;
                 _os_log_impl(&dword_2588F5000, v17, OS_LOG_TYPE_DEFAULT, "failed to delete %{public}@ with error: %{public}@", buf, 0x16u);
@@ -144,11 +144,11 @@
   {
     v2->_notifyToken = -1;
     p_notifyToken = &v2->_notifyToken;
-    v5 = [(MAIDiagnosticLogger *)v2 notificationName];
-    v6 = v5;
-    if (v5)
+    notificationName = [(MAIDiagnosticLogger *)v2 notificationName];
+    v6 = notificationName;
+    if (notificationName)
     {
-      v7 = v5;
+      v7 = notificationName;
       notify_register_check([v6 UTF8String], v3 + 2);
       if (*p_notifyToken != -1)
       {
@@ -180,7 +180,7 @@
   return 0;
 }
 
-- (void)beginPhase:(unsigned __int8)a3 onJulianDay:(unsigned int)a4
+- (void)beginPhase:(unsigned __int8)phase onJulianDay:(unsigned int)day
 {
   v13 = *MEMORY[0x277D85DE8];
   [(MAIDiagnosticLogger *)self inputJson];
@@ -206,7 +206,7 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endPhase:(unsigned __int8)a3 onJulianDay:(unsigned int)a4
+- (void)endPhase:(unsigned __int8)phase onJulianDay:(unsigned int)day
 {
   v13 = *MEMORY[0x277D85DE8];
   [(MAIDiagnosticLogger *)self inputJson];
@@ -232,10 +232,10 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendDay:(id)a3
+- (void)appendDay:(id)day
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dayCopy = day;
   [(MAIDiagnosticLogger *)self inputJson];
   if (v7)
   {
@@ -253,7 +253,7 @@
 - (void)appendDay:
 {
   v3 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   nlohmann::basic_json<std::map,std::vector,std::string,BOOL,long long,unsigned long long,double,std::allocator,nlohmann::adl_serializer,std::vector<unsigned char>>::basic_json<char const(&)[12],char [12],0>(v2);
 }
 
@@ -348,10 +348,10 @@
   return result;
 }
 
-- (void)setInputJson:(shared_ptr<nlohmann::basic_json<>>)a3
+- (void)setInputJson:(shared_ptr<nlohmann::basic_json<>>)json
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *json.__ptr_;
+  v3 = *(json.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -381,10 +381,10 @@
   return result;
 }
 
-- (void)setOutputJson:(shared_ptr<nlohmann::basic_json<>>)a3
+- (void)setOutputJson:(shared_ptr<nlohmann::basic_json<>>)json
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *json.__ptr_;
+  v3 = *(json.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -414,10 +414,10 @@
   return result;
 }
 
-- (void)setInputFile:(shared_ptr<std::ofstream>)a3
+- (void)setInputFile:(shared_ptr<std::ofstream>)file
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *file.__ptr_;
+  v3 = *(file.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -447,10 +447,10 @@
   return result;
 }
 
-- (void)setOutputFile:(shared_ptr<std::ofstream>)a3
+- (void)setOutputFile:(shared_ptr<std::ofstream>)file
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *file.__ptr_;
+  v3 = *(file.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -478,7 +478,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2588F5000, a2, OS_LOG_TYPE_ERROR, "failed to create directory: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

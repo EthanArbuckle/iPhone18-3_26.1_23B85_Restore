@@ -1,7 +1,7 @@
 @interface SSLocalRankingResultSignalManager
 + (id)_getSpotlightRecentEngagementAttributes;
 + (id)_getSpotlightRecentEngagementAttributesNonUnique;
-+ (id)updateRecentEngagementAttributes:(id)a3 queryString:(id)a4 renderPosition:(id)a5 engagementAttributes:(id)a6 unique:(BOOL)a7;
++ (id)updateRecentEngagementAttributes:(id)attributes queryString:(id)string renderPosition:(id)position engagementAttributes:(id)engagementAttributes unique:(BOOL)unique;
 @end
 
 @implementation SSLocalRankingResultSignalManager
@@ -58,44 +58,44 @@ void __85__SSLocalRankingResultSignalManager__getSpotlightRecentEngagementAttrib
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)updateRecentEngagementAttributes:(id)a3 queryString:(id)a4 renderPosition:(id)a5 engagementAttributes:(id)a6 unique:(BOOL)a7
++ (id)updateRecentEngagementAttributes:(id)attributes queryString:(id)string renderPosition:(id)position engagementAttributes:(id)engagementAttributes unique:(BOOL)unique
 {
-  v7 = a7;
+  uniqueCopy = unique;
   v63[3] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v61 = a5;
-  v13 = a6;
-  v60 = [MEMORY[0x1E695DF00] date];
+  attributesCopy = attributes;
+  stringCopy = string;
+  positionCopy = position;
+  engagementAttributesCopy = engagementAttributes;
+  date = [MEMORY[0x1E695DF00] date];
   v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
   v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
   v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
-  v59 = v11;
-  if ([v11 count] == 3)
+  v59 = attributesCopy;
+  if ([attributesCopy count] == 3)
   {
-    v54 = v7;
+    v54 = uniqueCopy;
     v56 = v14;
-    v17 = [v11 objectAtIndexedSubscript:0];
+    v17 = [attributesCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v11 objectAtIndexedSubscript:1];
+      v18 = [attributesCopy objectAtIndexedSubscript:1];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [v11 objectAtIndexedSubscript:2];
+        v19 = [attributesCopy objectAtIndexedSubscript:2];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
-        v7 = v54;
+        uniqueCopy = v54;
         if ((isKindOfClass & 1) == 0)
         {
           goto LABEL_19;
         }
 
-        v17 = [v11 objectAtIndexedSubscript:0];
-        v21 = [v11 objectAtIndexedSubscript:1];
-        v22 = [v11 objectAtIndexedSubscript:2];
+        v17 = [attributesCopy objectAtIndexedSubscript:0];
+        v21 = [attributesCopy objectAtIndexedSubscript:1];
+        v22 = [attributesCopy objectAtIndexedSubscript:2];
         v23 = [v17 count];
         v53 = v21;
         if (v23 == [v21 count])
@@ -125,11 +125,11 @@ void __85__SSLocalRankingResultSignalManager__getSpotlightRecentEngagementAttrib
 
                 [v22 objectAtIndexedSubscript:v25];
                 v28 = v16;
-                v30 = v29 = v13;
+                v30 = v29 = engagementAttributesCopy;
                 objc_opt_class();
                 v52 = objc_opt_isKindOfClass();
 
-                v13 = v29;
+                engagementAttributesCopy = v29;
                 v16 = v28;
 
                 if (v52)
@@ -163,16 +163,16 @@ LABEL_16:
 
     v14 = v56;
 
-    v7 = v54;
+    uniqueCopy = v54;
   }
 
 LABEL_19:
-  if ([v12 length])
+  if ([stringCopy length])
   {
-    v57 = v13;
+    v57 = engagementAttributesCopy;
     v34 = [v14 count];
     v35 = v34;
-    if (v7)
+    if (uniqueCopy)
     {
       v36 = 0x7FFFFFFFFFFFFFFFLL;
       if (v34)
@@ -181,7 +181,7 @@ LABEL_19:
         while (1)
         {
           v37 = [v14 objectAtIndexedSubscript:v36];
-          v38 = [v37 isEqualToString:v12];
+          v38 = [v37 isEqualToString:stringCopy];
 
           if (v38)
           {
@@ -217,40 +217,40 @@ LABEL_25:
         }
       }
 
-      [v14 setObject:v12 atIndexedSubscript:v36];
+      [v14 setObject:stringCopy atIndexedSubscript:v36];
     }
 
     if (v36 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v14 addObject:v12];
-      [v15 addObject:v60];
-      [v16 addObject:v61];
+      [v14 addObject:stringCopy];
+      [v15 addObject:date];
+      [v16 addObject:positionCopy];
     }
 
     else
     {
-      [v15 setObject:v60 atIndexedSubscript:v36];
-      [v16 setObject:v61 atIndexedSubscript:v36];
+      [v15 setObject:date atIndexedSubscript:v36];
+      [v16 setObject:positionCopy atIndexedSubscript:v36];
     }
 
-    v13 = v57;
+    engagementAttributesCopy = v57;
   }
 
-  if ([v13 count] != 3)
+  if ([engagementAttributesCopy count] != 3)
   {
     +[SSLocalRankingResultSignalManager updateRecentEngagementAttributes:queryString:renderPosition:engagementAttributes:unique:];
   }
 
-  v43 = [v13 objectAtIndexedSubscript:0];
+  v43 = [engagementAttributesCopy objectAtIndexedSubscript:0];
   v62[0] = v43;
   v44 = [v14 copy];
   v63[0] = v44;
-  v45 = [v13 objectAtIndexedSubscript:1];
+  v45 = [engagementAttributesCopy objectAtIndexedSubscript:1];
   v62[1] = v45;
   v46 = [v15 copy];
   v63[1] = v46;
-  [v13 objectAtIndexedSubscript:2];
-  v47 = v58 = v12;
+  [engagementAttributesCopy objectAtIndexedSubscript:2];
+  v47 = v58 = stringCopy;
   v62[2] = v47;
   v48 = v14;
   v49 = [v16 copy];

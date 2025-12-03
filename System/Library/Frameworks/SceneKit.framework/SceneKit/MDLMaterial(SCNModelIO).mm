@@ -7,7 +7,7 @@
 + (MDLMaterial)materialWithSCNMaterial:()SCNModelIO
 {
   v5 = objc_opt_new();
-  v6 = [[a1 alloc] initWithName:objc_msgSend(a3 scatteringFunction:{"name"), v5}];
+  v6 = [[self alloc] initWithName:objc_msgSend(a3 scatteringFunction:{"name"), v5}];
 
   -[MDLMaterial setName:](v6, "setName:", [a3 name]);
   objc_setAssociatedObject(v6, @"SCNSceneKitAssociatedObject", a3, 0x301);

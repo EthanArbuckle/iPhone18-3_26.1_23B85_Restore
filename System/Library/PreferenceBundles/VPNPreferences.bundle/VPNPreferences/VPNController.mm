@@ -1,51 +1,51 @@
 @interface VPNController
 - (BOOL)shouldHideAddVPNButton;
 - (VPNController)init;
-- (id)dnsStatusForSpecifier:(id)a3;
-- (id)getAOVPNEnabledForSpecifier:(id)a3;
-- (id)getDNSSummary:(id)a3;
-- (id)getDeviceRelayStateForSpecifier:(id)a3;
-- (id)getEnterpriseConnectionStateForSpecifier:(id)a3;
-- (id)getPersonalConnectionStateForSpecifier:(id)a3;
-- (id)messageForConnection:(id)a3;
+- (id)dnsStatusForSpecifier:(id)specifier;
+- (id)getAOVPNEnabledForSpecifier:(id)specifier;
+- (id)getDNSSummary:(id)summary;
+- (id)getDeviceRelayStateForSpecifier:(id)specifier;
+- (id)getEnterpriseConnectionStateForSpecifier:(id)specifier;
+- (id)getPersonalConnectionStateForSpecifier:(id)specifier;
+- (id)messageForConnection:(id)connection;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)addListForGrade:(unint64_t)a3 toSpecifiers:(id)a4;
-- (void)addVPNConfiguration:(id)a3;
-- (void)changeActiveVPN:(id)a3;
-- (void)confirmAirplaneModeDisable:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)addListForGrade:(unint64_t)grade toSpecifiers:(id)specifiers;
+- (void)addVPNConfiguration:(id)configuration;
+- (void)changeActiveVPN:(id)n;
+- (void)confirmAirplaneModeDisable:(id)disable;
 - (void)dealloc;
-- (void)handleURL:(id)a3;
+- (void)handleURL:(id)l;
 - (void)loadView;
 - (void)privacyLinkAction;
-- (void)setAOVPNEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setEnterpriseConnectionState:(id)a3 forSpecifier:(id)a4;
-- (void)setEnterpriseVPNActive:(BOOL)a3 specifier:(id)a4;
-- (void)setPersonalConnectionState:(id)a3 forSpecifier:(id)a4;
-- (void)setPersonalVPNActive:(BOOL)a3 specifier:(id)a4;
-- (void)someVPNStatusChanged:(id)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAOVPNEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setEnterpriseConnectionState:(id)state forSpecifier:(id)specifier;
+- (void)setEnterpriseVPNActive:(BOOL)active specifier:(id)specifier;
+- (void)setPersonalConnectionState:(id)state forSpecifier:(id)specifier;
+- (void)setPersonalVPNActive:(BOOL)active specifier:(id)specifier;
+- (void)someVPNStatusChanged:(id)changed;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)vpnEnterpriseStatusChanged:(id)a3;
-- (void)vpnPersonalStatusChanged:(id)a3;
+- (void)vpnEnterpriseStatusChanged:(id)changed;
+- (void)vpnPersonalStatusChanged:(id)changed;
 - (void)willBecomeActive;
 @end
 
 @implementation VPNController
 
-- (void)someVPNStatusChanged:(id)a3
+- (void)someVPNStatusChanged:(id)changed
 {
-  v5 = a3;
-  v4 = [v5 object];
-  if ([v4 grade] == &dword_0 + 1)
+  changedCopy = changed;
+  object = [changedCopy object];
+  if ([object grade] == &dword_0 + 1)
   {
-    [(VPNController *)self vpnPersonalStatusChanged:v5];
+    [(VPNController *)self vpnPersonalStatusChanged:changedCopy];
   }
 
-  else if ([v4 grade])
+  else if ([object grade])
   {
-    if ([v4 grade] == &dword_0 + 2 || objc_msgSend(v4, "grade") == &dword_0 + 3)
+    if ([object grade] == &dword_0 + 2 || objc_msgSend(object, "grade") == &dword_0 + 3)
     {
       [(VPNController *)self reloadSpecifiers];
     }
@@ -53,36 +53,36 @@
 
   else
   {
-    [(VPNController *)self vpnEnterpriseStatusChanged:v5];
+    [(VPNController *)self vpnEnterpriseStatusChanged:changedCopy];
   }
 }
 
-- (id)messageForConnection:(id)a3
+- (id)messageForConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = +[VPNConnectionStore sharedInstance];
-  v5 = [v3 serviceID];
-  v6 = [v4 optionsForServiceID:v5 withGrade:0];
+  serviceID = [connectionCopy serviceID];
+  v6 = [v4 optionsForServiceID:serviceID withGrade:0];
 
   v7 = [v6 objectForKey:@"VPNOnDemandCapable"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = [v6 objectForKey:@"VPNOnDemandEnabled"];
-    v10 = [v9 BOOLValue];
+    bOOLValue2 = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue2 = 0;
   }
 
   v22 = 0;
-  v11 = [v3 serviceID];
-  v12 = [v4 isTypeEnabledWithServiceID:v11 withGrade:0 outProviderAvailable:&v22];
+  serviceID2 = [connectionCopy serviceID];
+  v12 = [v4 isTypeEnabledWithServiceID:serviceID2 withGrade:0 outProviderAvailable:&v22];
 
-  if ([v3 vpnConnectionType] != &dword_0 + 3)
+  if ([connectionCopy vpnConnectionType] != &dword_0 + 3)
   {
     goto LABEL_7;
   }
@@ -91,28 +91,28 @@
   {
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = [v14 localizedStringForKey:@"MISSING_PROVIDER_MESSAGE" value:&stru_411E8 table:@"MobileVPN"];
-    v17 = [v3 serviceID];
-    v19 = [v4 appNameForServiceID:v17 withGrade:0];
-    v20 = [v3 displayName];
-    [NSString stringWithFormat:v16, v19, v20];
+    serviceID3 = [connectionCopy serviceID];
+    serviceID4 = [v4 appNameForServiceID:serviceID3 withGrade:0];
+    displayName = [connectionCopy displayName];
+    [NSString stringWithFormat:v16, serviceID4, displayName];
     v18 = LABEL_15:;
 
     goto LABEL_16;
   }
 
-  if ((v12 & v8 & 1) == 0)
+  if ((v12 & bOOLValue & 1) == 0)
   {
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = [v14 localizedStringForKey:@"SSL_MESSAGE" value:&stru_411E8 table:@"MobileVPN"];
-    v17 = [v3 displayName];
-    v19 = [v3 serviceID];
-    v20 = [v4 appNameForServiceID:v19 withGrade:0];
-    [NSString stringWithFormat:v16, v17, v20];
+    serviceID3 = [connectionCopy displayName];
+    serviceID4 = [connectionCopy serviceID];
+    displayName = [v4 appNameForServiceID:serviceID4 withGrade:0];
+    [NSString stringWithFormat:v16, serviceID3, displayName];
     goto LABEL_15;
   }
 
 LABEL_7:
-  if ([v3 onDemandAction] == &dword_0 + 2)
+  if ([connectionCopy onDemandAction] == &dword_0 + 2)
   {
     v13 = [NSBundle bundleForClass:objc_opt_class()];
     v14 = v13;
@@ -121,7 +121,7 @@ LABEL_7:
 
   else
   {
-    if (!v10 || [v3 onDemandAction] == &dword_4)
+    if (!bOOLValue2 || [connectionCopy onDemandAction] == &dword_4)
     {
       v18 = 0;
       goto LABEL_17;
@@ -133,8 +133,8 @@ LABEL_7:
   }
 
   v16 = [v13 localizedStringForKey:v15 value:&stru_411E8 table:@"MobileVPN"];
-  v17 = [v3 displayName];
-  v18 = [NSString stringWithFormat:v16, v17];
+  serviceID3 = [connectionCopy displayName];
+  v18 = [NSString stringWithFormat:v16, serviceID3];
 LABEL_16:
 
 LABEL_17:
@@ -142,27 +142,27 @@ LABEL_17:
   return v18;
 }
 
-- (void)vpnPersonalStatusChanged:(id)a3
+- (void)vpnPersonalStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = +[VPNConnectionStore sharedInstance];
   v6 = [v5 currentConnectionWithGrade:1];
 
-  v27 = v4;
-  v7 = [v4 object];
-  v25 = [v6 isEqual:v7];
+  v27 = changedCopy;
+  object = [changedCopy object];
+  v25 = [v6 isEqual:object];
   if (v25)
   {
     [(VPNController *)self beginUpdates];
-    v8 = [(VPNController *)self connectPersonalSpecifier];
-    v9 = [v8 propertyForKey:PSTableCellKey];
+    connectPersonalSpecifier = [(VPNController *)self connectPersonalSpecifier];
+    v9 = [connectPersonalSpecifier propertyForKey:PSTableCellKey];
 
-    v10 = [v6 statusText];
-    v11 = [v9 detailTextLabel];
-    [v11 setText:v10];
+    statusText = [v6 statusText];
+    detailTextLabel = [v9 detailTextLabel];
+    [detailTextLabel setText:statusText];
 
-    v12 = [(VPNController *)self connectPersonalSpecifier];
-    [(VPNController *)self reloadSpecifier:v12 animated:0];
+    connectPersonalSpecifier2 = [(VPNController *)self connectPersonalSpecifier];
+    [(VPNController *)self reloadSpecifier:connectPersonalSpecifier2 animated:0];
   }
 
   v26 = v6;
@@ -187,16 +187,16 @@ LABEL_17:
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [v17 userInfo];
-        v19 = [v18 objectForKey:@"vpn-service-id"];
-        v20 = [v7 serviceID];
-        v21 = [v19 isEqual:v20];
+        userInfo = [v17 userInfo];
+        v19 = [userInfo objectForKey:@"vpn-service-id"];
+        serviceID = [object serviceID];
+        v21 = [v19 isEqual:serviceID];
 
         if (v21)
         {
           v22 = [v17 propertyForKey:v28];
-          v23 = [v7 alertText];
-          [v22 setAlert:v23];
+          alertText = [object alertText];
+          [v22 setAlert:alertText];
         }
       }
 
@@ -212,27 +212,27 @@ LABEL_17:
   }
 }
 
-- (void)vpnEnterpriseStatusChanged:(id)a3
+- (void)vpnEnterpriseStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = +[VPNConnectionStore sharedInstance];
   v6 = [v5 currentConnectionWithGrade:0];
 
-  v27 = v4;
-  v7 = [v4 object];
-  v25 = [v6 isEqual:v7];
+  v27 = changedCopy;
+  object = [changedCopy object];
+  v25 = [v6 isEqual:object];
   if (v25)
   {
     [(VPNController *)self beginUpdates];
-    v8 = [(VPNController *)self connectEnterpriseSpecifier];
-    v9 = [v8 propertyForKey:PSTableCellKey];
+    connectEnterpriseSpecifier = [(VPNController *)self connectEnterpriseSpecifier];
+    v9 = [connectEnterpriseSpecifier propertyForKey:PSTableCellKey];
 
-    v10 = [v6 statusText];
-    v11 = [v9 detailTextLabel];
-    [v11 setText:v10];
+    statusText = [v6 statusText];
+    detailTextLabel = [v9 detailTextLabel];
+    [detailTextLabel setText:statusText];
 
-    v12 = [(VPNController *)self connectEnterpriseSpecifier];
-    [(VPNController *)self reloadSpecifier:v12 animated:0];
+    connectEnterpriseSpecifier2 = [(VPNController *)self connectEnterpriseSpecifier];
+    [(VPNController *)self reloadSpecifier:connectEnterpriseSpecifier2 animated:0];
   }
 
   v26 = v6;
@@ -257,16 +257,16 @@ LABEL_17:
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [v17 userInfo];
-        v19 = [v18 objectForKey:@"vpn-service-id"];
-        v20 = [v7 serviceID];
-        v21 = [v19 isEqual:v20];
+        userInfo = [v17 userInfo];
+        v19 = [userInfo objectForKey:@"vpn-service-id"];
+        serviceID = [object serviceID];
+        v21 = [v19 isEqual:serviceID];
 
         if (v21)
         {
           v22 = [v17 propertyForKey:v28];
-          v23 = [v7 alertText];
-          [v22 setAlert:v23];
+          alertText = [object alertText];
+          [v22 setAlert:alertText];
         }
       }
 
@@ -320,23 +320,23 @@ LABEL_17:
   return v2;
 }
 
-- (void)setPersonalVPNActive:(BOOL)a3 specifier:(id)a4
+- (void)setPersonalVPNActive:(BOOL)active specifier:(id)specifier
 {
-  v4 = a3;
-  v10 = a4;
+  activeCopy = active;
+  specifierCopy = specifier;
   v6 = +[VPNConnectionStore sharedInstance];
   v7 = [v6 currentConnectionWithGrade:1];
 
   if (v7)
   {
-    if (v4)
+    if (activeCopy)
     {
       if (+[VPNBundleController networkingIsDisabled])
       {
-        v8 = [(VPNController *)self rootController];
-        v9 = [v8 topViewController];
+        rootController = [(VPNController *)self rootController];
+        topViewController = [rootController topViewController];
 
-        [v9 showConfirmationViewForSpecifier:v10];
+        [topViewController showConfirmationViewForSpecifier:specifierCopy];
       }
 
       else
@@ -354,23 +354,23 @@ LABEL_17:
   }
 }
 
-- (void)setEnterpriseVPNActive:(BOOL)a3 specifier:(id)a4
+- (void)setEnterpriseVPNActive:(BOOL)active specifier:(id)specifier
 {
-  v4 = a3;
-  v10 = a4;
+  activeCopy = active;
+  specifierCopy = specifier;
   v6 = +[VPNConnectionStore sharedInstance];
   v7 = [v6 currentConnectionWithGrade:0];
 
   if (v7)
   {
-    if (v4)
+    if (activeCopy)
     {
       if (+[VPNBundleController networkingIsDisabled])
       {
-        v8 = [(VPNController *)self rootController];
-        v9 = [v8 topViewController];
+        rootController = [(VPNController *)self rootController];
+        topViewController = [rootController topViewController];
 
-        [v9 showConfirmationViewForSpecifier:v10];
+        [topViewController showConfirmationViewForSpecifier:specifierCopy];
       }
 
       else
@@ -388,13 +388,13 @@ LABEL_17:
   }
 }
 
-- (void)setEnterpriseConnectionState:(id)a3 forSpecifier:(id)a4
+- (void)setEnterpriseConnectionState:(id)state forSpecifier:(id)specifier
 {
-  v6 = a4;
-  -[VPNController setEnterpriseVPNActive:specifier:](self, "setEnterpriseVPNActive:specifier:", [a3 BOOLValue], v6);
+  specifierCopy = specifier;
+  -[VPNController setEnterpriseVPNActive:specifier:](self, "setEnterpriseVPNActive:specifier:", [state BOOLValue], specifierCopy);
 }
 
-- (id)getEnterpriseConnectionStateForSpecifier:(id)a3
+- (id)getEnterpriseConnectionStateForSpecifier:(id)specifier
 {
   v3 = +[VPNConnectionStore sharedInstance];
   v4 = [v3 currentConnectionWithGrade:0];
@@ -404,50 +404,50 @@ LABEL_17:
   return v5;
 }
 
-- (id)getDeviceRelayStateForSpecifier:(id)a3
+- (id)getDeviceRelayStateForSpecifier:(id)specifier
 {
   v3 = +[VPNConnectionStore sharedInstance];
   v4 = [v3 currentConnectionWithGrade:7];
 
-  v5 = [v4 statusText];
+  statusText = [v4 statusText];
 
-  return v5;
+  return statusText;
 }
 
-- (void)setAOVPNEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setAOVPNEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v10 = +[VPNConnectionStore sharedInstance];
   v5 = [v10 currentConnectionWithGrade:3];
-  v6 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v7 = [v5 serviceID];
-  v8 = [v10 isEnabledWithServiceID:v7 withGrade:3];
+  serviceID = [v5 serviceID];
+  v8 = [v10 isEnabledWithServiceID:serviceID withGrade:3];
 
-  if (v6 != v8)
+  if (bOOLValue != v8)
   {
-    v9 = [v5 serviceID];
-    [v10 enable:v6 serviceID:v9 withGrade:3];
+    serviceID2 = [v5 serviceID];
+    [v10 enable:bOOLValue serviceID:serviceID2 withGrade:3];
   }
 }
 
-- (id)getAOVPNEnabledForSpecifier:(id)a3
+- (id)getAOVPNEnabledForSpecifier:(id)specifier
 {
   v3 = +[VPNConnectionStore sharedInstance];
   v4 = [v3 currentConnectionWithGrade:3];
-  v5 = [v4 serviceID];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledWithServiceID:v5 withGrade:3]);
+  serviceID = [v4 serviceID];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledWithServiceID:serviceID withGrade:3]);
 
   return v6;
 }
 
-- (void)setPersonalConnectionState:(id)a3 forSpecifier:(id)a4
+- (void)setPersonalConnectionState:(id)state forSpecifier:(id)specifier
 {
-  v6 = a4;
-  -[VPNController setPersonalVPNActive:specifier:](self, "setPersonalVPNActive:specifier:", [a3 BOOLValue], v6);
+  specifierCopy = specifier;
+  -[VPNController setPersonalVPNActive:specifier:](self, "setPersonalVPNActive:specifier:", [state BOOLValue], specifierCopy);
 }
 
-- (id)getPersonalConnectionStateForSpecifier:(id)a3
+- (id)getPersonalConnectionStateForSpecifier:(id)specifier
 {
   v3 = +[VPNConnectionStore sharedInstance];
   v4 = [v3 currentConnectionWithGrade:1];
@@ -457,10 +457,10 @@ LABEL_17:
   return v5;
 }
 
-- (void)addVPNConfiguration:(id)a3
+- (void)addVPNConfiguration:(id)configuration
 {
-  v4 = *(a3 + OBJC_IVAR___PSSpecifier_detailControllerClass);
-  v5 = a3;
+  v4 = *(configuration + OBJC_IVAR___PSSpecifier_detailControllerClass);
+  configurationCopy = configuration;
   v6 = objc_alloc_init(v4);
   if (!v6)
   {
@@ -472,7 +472,7 @@ LABEL_17:
   [v8 setRootController:WeakRetained];
 
   [v8 setParentController:self];
-  [v8 setSpecifier:v5];
+  [v8 setSpecifier:configurationCopy];
 
   [(VPNController *)self showController:v8];
 }
@@ -491,13 +491,13 @@ LABEL_17:
   [(VPNController *)&v2 loadView];
 }
 
-- (void)addListForGrade:(unint64_t)a3 toSpecifiers:(id)a4
+- (void)addListForGrade:(unint64_t)grade toSpecifiers:(id)specifiers
 {
-  v36 = a4;
+  specifiersCopy = specifiers;
   v5 = &selRef_setImageHidden_;
   v6 = +[VPNConnectionStore sharedInstance];
-  v42 = a3;
-  v7 = [v6 vpnServicesForCurrentSetWithGrade:a3];
+  gradeCopy = grade;
+  v7 = [v6 vpnServicesForCurrentSetWithGrade:grade];
 
   if (v7)
   {
@@ -528,23 +528,23 @@ LABEL_17:
           }
 
           v11 = *(*(&v43 + 1) + 8 * v10);
-          v12 = [v5 + 241 sharedInstance];
-          v13 = [v12 connectionWithServiceID:v11 withGrade:v42];
+          sharedInstance = [v5 + 241 sharedInstance];
+          v13 = [sharedInstance connectionWithServiceID:v11 withGrade:gradeCopy];
 
           if (v13)
           {
-            v14 = [v13 displayName];
-            v15 = [v5 + 241 sharedInstance];
-            v16 = [v15 isUserCreatedVPN:v11];
+            displayName = [v13 displayName];
+            sharedInstance2 = [v5 + 241 sharedInstance];
+            v16 = [sharedInstance2 isUserCreatedVPN:v11];
 
-            v17 = [v5 + 241 sharedInstance];
-            v18 = [v17 isProfileBacked:v11];
+            sharedInstance3 = [v5 + 241 sharedInstance];
+            v18 = [sharedInstance3 isProfileBacked:v11];
 
-            v19 = [v5 + 241 sharedInstance];
-            v20 = [v19 organizationForServiceID:v11];
+            sharedInstance4 = [v5 + 241 sharedInstance];
+            v20 = [sharedInstance4 organizationForServiceID:v11];
 
-            v21 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
-            [v21 setIdentifier:v14];
+            v21 = [PSSpecifier preferenceSpecifierNamed:displayName target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+            [v21 setIdentifier:displayName];
             if (v21)
             {
               v50[0] = @"VPNSetupListController";
@@ -554,15 +554,15 @@ LABEL_17:
               v50[2] = @"VPNSetupListController";
               v49[2] = v33;
               v49[3] = v32;
-              v22 = [v13 vpnConnectionType];
+              vpnConnectionType = [v13 vpnConnectionType];
               v23 = &off_43650;
-              if (v22 == &dword_0 + 1)
+              if (vpnConnectionType == &dword_0 + 1)
               {
                 v23 = &off_43638;
               }
 
               v50[3] = v23;
-              v40 = v14;
+              v40 = displayName;
               v24 = [NSDictionary dictionaryWithObjects:v50 forKeys:v49 count:4];
               [v21 setProperties:v24];
 
@@ -574,25 +574,25 @@ LABEL_17:
               v48[2] = v20;
               v47[2] = @"vpn-organization";
               v47[3] = @"service-grade";
-              v26 = [NSNumber numberWithUnsignedInteger:v42];
+              v26 = [NSNumber numberWithUnsignedInteger:gradeCopy];
               v48[3] = v26;
               v47[4] = @"overview-mode";
               v27 = [NSNumber numberWithBool:1];
               v48[4] = v27;
               v47[5] = @"vpn-alert";
-              v28 = [v13 alertText];
-              v48[5] = v28;
+              alertText = [v13 alertText];
+              v48[5] = alertText;
               v47[6] = @"vpn-profile-backed";
               v29 = [NSNumber numberWithBool:v18];
               v48[6] = v29;
               v30 = [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:7];
               [v21 setUserInfo:v30];
 
-              v14 = v40;
+              displayName = v40;
               v9 = v37;
 
               v5 = &selRef_setImageHidden_;
-              [v36 addObject:v21];
+              [specifiersCopy addObject:v21];
             }
           }
 
@@ -614,28 +614,28 @@ LABEL_17:
 {
   v3 = +[VPNConnectionStore sharedInstance];
   v4 = [v3 vpnServiceCountWithGrade:3];
-  v265 = [v4 intValue];
+  intValue = [v4 intValue];
 
   v5 = [v3 vpnServiceCountWithGrade:0];
-  v6 = [v5 intValue];
+  intValue2 = [v5 intValue];
 
   v7 = [v3 vpnServiceCountWithGrade:7];
-  v8 = [v7 intValue];
+  intValue3 = [v7 intValue];
 
   v9 = [v3 vpnServiceCountWithGrade:8];
-  v10 = [v9 intValue];
+  intValue4 = [v9 intValue];
 
   v11 = [v3 vpnServiceCountWithGrade:2];
-  v12 = [v11 intValue];
+  intValue5 = [v11 intValue];
 
   v13 = [v3 vpnServiceCountWithGrade:1];
-  v14 = [v13 intValue];
+  intValue6 = [v13 intValue];
 
   v15 = [v3 vpnServiceCountWithGrade:4];
-  v16 = [v15 intValue];
+  intValue7 = [v15 intValue];
 
   v17 = [v3 vpnServiceCountWithGrade:5];
-  v18 = [v17 intValue];
+  intValue8 = [v17 intValue];
 
   v19 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (v19)
@@ -643,20 +643,20 @@ LABEL_17:
     goto LABEL_111;
   }
 
-  v262 = v10;
-  v244 = v12;
-  v245 = v14;
-  v246 = __PAIR64__(v16, v18);
+  v262 = intValue4;
+  v244 = intValue5;
+  v245 = intValue6;
+  v246 = __PAIR64__(intValue7, intValue8);
   v247 = OBJC_IVAR___PSListController__specifiers;
   v20 = objc_alloc_init(NSMutableArray);
   v270 = v3;
-  v271 = self;
+  selfCopy = self;
   v255 = v20;
-  if (v265)
+  if (intValue)
   {
-    v21 = [(VPNController *)self alwaysOnGroupTitleSpecifier];
+    alwaysOnGroupTitleSpecifier = [(VPNController *)self alwaysOnGroupTitleSpecifier];
 
-    if (!v21)
+    if (!alwaysOnGroupTitleSpecifier)
     {
       v22 = [NSBundle bundleForClass:objc_opt_class()];
       v23 = [v22 localizedStringForKey:@"ALWAYS_ON_VPN_GROUP_TITLE" value:&stru_411E8 table:@"MobileVPN"];
@@ -664,15 +664,15 @@ LABEL_17:
       [(VPNController *)self setAlwaysOnGroupTitleSpecifier:v24];
     }
 
-    v25 = [(VPNController *)self alwaysOnGroupTitleSpecifier];
-    [v20 addObject:v25];
+    alwaysOnGroupTitleSpecifier2 = [(VPNController *)self alwaysOnGroupTitleSpecifier];
+    [v20 addObject:alwaysOnGroupTitleSpecifier2];
 
     v26 = [v3 currentConnectionWithGrade:3];
     if (v26)
     {
       v27 = [v3 currentConnectionWithGrade:3];
-      v28 = [v27 displayName];
-      v29 = [PSSpecifier preferenceSpecifierNamed:v28 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+      displayName = [v27 displayName];
+      v29 = [PSSpecifier preferenceSpecifierNamed:displayName target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
       v335[0] = @"VPNSetupListController";
       v334[0] = PSSetupCustomClassKey;
@@ -685,18 +685,18 @@ LABEL_17:
       [v29 setProperties:v31];
 
       v332[0] = @"vpn-service-id";
-      v266 = [v26 serviceID];
-      v333[0] = v266;
+      serviceID = [v26 serviceID];
+      v333[0] = serviceID;
       v332[1] = @"vpn-user-created";
       v32 = [NSNumber numberWithInteger:0];
       v333[1] = v32;
       v332[2] = @"vpn-organization";
-      v33 = [v26 serviceID];
-      v34 = [v270 organizationForServiceID:v33];
+      serviceID2 = [v26 serviceID];
+      v34 = [v270 organizationForServiceID:serviceID2];
       v333[2] = v34;
       v332[3] = @"vpn-status";
-      v35 = [v26 statusText];
-      v333[3] = v35;
+      statusText = [v26 statusText];
+      v333[3] = statusText;
       v332[4] = @"service-grade";
       v36 = [NSNumber numberWithInteger:3];
       v333[4] = v36;
@@ -711,27 +711,27 @@ LABEL_17:
       [v29 setUserInfo:v40];
 
       v26 = v38;
-      self = v271;
+      self = selfCopy;
 
       v3 = v270;
-      [(VPNController *)v271 setCurrentAOVPNSpecifier:v29];
-      v41 = [(VPNController *)v271 currentAOVPNSpecifier];
-      [v255 addObject:v41];
+      [(VPNController *)selfCopy setCurrentAOVPNSpecifier:v29];
+      currentAOVPNSpecifier = [(VPNController *)selfCopy currentAOVPNSpecifier];
+      [v255 addObject:currentAOVPNSpecifier];
 
-      v42 = [v38 serviceID];
-      LODWORD(v36) = [v270 alwaysOnToggleEnabledForServiceID:v42];
+      serviceID3 = [v38 serviceID];
+      LODWORD(v36) = [v270 alwaysOnToggleEnabledForServiceID:serviceID3];
 
       if (v36)
       {
         v43 = [NSBundle bundleForClass:objc_opt_class()];
         v44 = [v43 localizedStringForKey:@"CONNECT_AUTOMATICALLY" value:&stru_411E8 table:@"MobileVPN"];
-        v45 = [PSConfirmationSpecifier preferenceSpecifierNamed:v44 target:v271 set:"setAOVPNEnabled:forSpecifier:" get:"getAOVPNEnabledForSpecifier:" detail:0 cell:6 edit:0];
+        v45 = [PSConfirmationSpecifier preferenceSpecifierNamed:v44 target:selfCopy set:"setAOVPNEnabled:forSpecifier:" get:"getAOVPNEnabledForSpecifier:" detail:0 cell:6 edit:0];
 
         [v255 addObject:v45];
       }
 
-      v46 = [v38 serviceID];
-      v47 = [v270 isEnabledWithServiceID:v46 withGrade:3];
+      serviceID4 = [v38 serviceID];
+      v47 = [v270 isEnabledWithServiceID:serviceID4 withGrade:3];
       v48 = [NSBundle bundleForClass:objc_opt_class()];
       v49 = v48;
       if (v47)
@@ -745,37 +745,37 @@ LABEL_17:
       }
 
       v51 = [v48 localizedStringForKey:v50 value:&stru_411E8 table:@"MobileVPN"];
-      v52 = [v38 displayName];
-      v53 = [NSString stringWithFormat:v51, v52];
+      displayName2 = [v38 displayName];
+      v53 = [NSString stringWithFormat:v51, displayName2];
 
-      v54 = [(VPNController *)v271 alwaysOnGroupTitleSpecifier];
+      alwaysOnGroupTitleSpecifier3 = [(VPNController *)selfCopy alwaysOnGroupTitleSpecifier];
       v330 = PSFooterTextGroupKey;
       v331 = v53;
       v55 = [NSDictionary dictionaryWithObjects:&v331 forKeys:&v330 count:1];
-      [v54 setProperties:v55];
+      [alwaysOnGroupTitleSpecifier3 setProperties:v55];
     }
 
     goto LABEL_106;
   }
 
   [(VPNController *)self setCurrentEnterpriseVPNSpecifiers:0];
-  v56 = v8;
-  v57 = v6;
-  v243 = v6;
-  if (v6 | v56)
+  v56 = intValue3;
+  v57 = intValue2;
+  v243 = intValue2;
+  if (intValue2 | v56)
   {
-    v58 = [(VPNController *)self enterpriseGroupTitleSpecifier];
+    enterpriseGroupTitleSpecifier = [(VPNController *)self enterpriseGroupTitleSpecifier];
 
-    if (!v58)
+    if (!enterpriseGroupTitleSpecifier)
     {
       v59 = +[PSSpecifier emptyGroupSpecifier];
       [(VPNController *)self setEnterpriseGroupTitleSpecifier:v59];
     }
 
-    v60 = [(VPNController *)self enterpriseGroupTitleSpecifier];
-    [v20 addObject:v60];
+    enterpriseGroupTitleSpecifier2 = [(VPNController *)self enterpriseGroupTitleSpecifier];
+    [v20 addObject:enterpriseGroupTitleSpecifier2];
 
-    if (v6)
+    if (intValue2)
     {
       v61 = [v3 currentConnectionWithGrade:0];
       if (v61)
@@ -798,20 +798,20 @@ LABEL_21:
     if (v61)
     {
 LABEL_35:
-      v69 = [v61 grade];
+      grade = [v61 grade];
       v70 = [NSBundle bundleForClass:objc_opt_class()];
       v71 = v70;
-      if (v69 == &dword_4 + 3)
+      if (grade == &dword_4 + 3)
       {
         v72 = [v70 localizedStringForKey:@"RELAY_STATUS" value:&stru_411E8 table:@"MobileVPN"];
 
         v73 = [PSSpecifier preferenceSpecifierNamed:v72 target:self set:0 get:"getDeviceRelayStateForSpecifier:" detail:0 cell:4 edit:0];
         [(VPNController *)self setConnectEnterpriseSpecifier:v73];
-        v74 = [(VPNController *)self connectEnterpriseSpecifier];
-        [v20 addObject:v74];
+        connectEnterpriseSpecifier = [(VPNController *)self connectEnterpriseSpecifier];
+        [v20 addObject:connectEnterpriseSpecifier];
 
-        v75 = [(VPNController *)self enterpriseGroupTitleSpecifier];
-        [v75 removePropertyForKey:PSFooterTextGroupKey];
+        enterpriseGroupTitleSpecifier3 = [(VPNController *)self enterpriseGroupTitleSpecifier];
+        [enterpriseGroupTitleSpecifier3 removePropertyForKey:PSFooterTextGroupKey];
       }
 
       else
@@ -844,45 +844,45 @@ LABEL_35:
         v326[2] = PSEnabledKey;
         if ([v61 onDemandAction] == &dword_0 + 2)
         {
-          v86 = 0;
+          isProviderAvailable = 0;
         }
 
         else
         {
-          v86 = [v61 isProviderAvailable];
+          isProviderAvailable = [v61 isProviderAvailable];
         }
 
-        v87 = [NSNumber numberWithInt:v86];
+        v87 = [NSNumber numberWithInt:isProviderAvailable];
         v327[2] = v87;
         v88 = [NSDictionary dictionaryWithObjects:v327 forKeys:v326 count:3];
         [v73 setProperties:v88];
 
         v324 = @"vpn-status";
-        v89 = [v61 statusText];
-        v325 = v89;
+        statusText2 = [v61 statusText];
+        v325 = statusText2;
         v90 = [NSDictionary dictionaryWithObjects:&v325 forKeys:&v324 count:1];
         [v73 setUserInfo:v90];
 
         [v73 setConfirmationAction:"confirmAirplaneModeDisable:"];
         [v73 setConfirmationCancelAction:"cancelAirplaneModeDisable:"];
         [(VPNController *)self setConnectEnterpriseSpecifier:v73];
-        v91 = [(VPNController *)self connectEnterpriseSpecifier];
-        [v20 addObject:v91];
+        connectEnterpriseSpecifier2 = [(VPNController *)self connectEnterpriseSpecifier];
+        [v20 addObject:connectEnterpriseSpecifier2];
 
-        v75 = [(VPNController *)self messageForConnection:v61];
-        v92 = [(VPNController *)self enterpriseGroupTitleSpecifier];
-        v93 = v92;
-        if (v75)
+        enterpriseGroupTitleSpecifier3 = [(VPNController *)self messageForConnection:v61];
+        enterpriseGroupTitleSpecifier4 = [(VPNController *)self enterpriseGroupTitleSpecifier];
+        v93 = enterpriseGroupTitleSpecifier4;
+        if (enterpriseGroupTitleSpecifier3)
         {
           v322 = PSFooterTextGroupKey;
-          v323 = v75;
+          v323 = enterpriseGroupTitleSpecifier3;
           v94 = [NSDictionary dictionaryWithObjects:&v323 forKeys:&v322 count:1];
           [v93 setProperties:v94];
         }
 
         else
         {
-          [v92 removePropertyForKey:PSFooterTextGroupKey];
+          [enterpriseGroupTitleSpecifier4 removePropertyForKey:PSFooterTextGroupKey];
         }
 
         v72 = v267;
@@ -1018,27 +1018,27 @@ LABEL_45:
       v97 = v101;
     }
 
-    v102 = [(VPNController *)self currentEnterpriseVPNSpecifiers];
+    currentEnterpriseVPNSpecifiers = [(VPNController *)self currentEnterpriseVPNSpecifiers];
     v103 = [PSSpecifier groupSpecifierWithName:v97];
-    [v102 addObject:v103];
+    [currentEnterpriseVPNSpecifiers addObject:v103];
 
-    v104 = [(VPNController *)self currentEnterpriseVPNSpecifiers];
-    [(VPNController *)self addListForGrade:0 toSpecifiers:v104];
+    currentEnterpriseVPNSpecifiers2 = [(VPNController *)self currentEnterpriseVPNSpecifiers];
+    [(VPNController *)self addListForGrade:0 toSpecifiers:currentEnterpriseVPNSpecifiers2];
 
-    v105 = [(VPNController *)self currentEnterpriseVPNSpecifiers];
-    [(VPNController *)self addListForGrade:7 toSpecifiers:v105];
+    currentEnterpriseVPNSpecifiers3 = [(VPNController *)self currentEnterpriseVPNSpecifiers];
+    [(VPNController *)self addListForGrade:7 toSpecifiers:currentEnterpriseVPNSpecifiers3];
 
-    v106 = [(VPNController *)self currentEnterpriseVPNSpecifiers];
-    [v20 addObjectsFromArray:v106];
+    currentEnterpriseVPNSpecifiers4 = [(VPNController *)self currentEnterpriseVPNSpecifiers];
+    [v20 addObjectsFromArray:currentEnterpriseVPNSpecifiers4];
   }
 
   [(VPNController *)self setCurrentPersonalVPNSpecifiers:0];
   v107 = v262;
-  if (v14)
+  if (intValue6)
   {
-    v108 = [(VPNController *)self personalGroupTitleSpecifier];
+    personalGroupTitleSpecifier = [(VPNController *)self personalGroupTitleSpecifier];
 
-    if (!v108)
+    if (!personalGroupTitleSpecifier)
     {
       v109 = [NSBundle bundleForClass:objc_opt_class()];
       v110 = [v109 localizedStringForKey:@"PERSONAL_VPN_GROUP_TITLE" value:&stru_411E8 table:@"MobileVPN"];
@@ -1046,8 +1046,8 @@ LABEL_45:
       [(VPNController *)self setPersonalGroupTitleSpecifier:v111];
     }
 
-    v112 = [(VPNController *)self personalGroupTitleSpecifier];
-    [v20 addObject:v112];
+    personalGroupTitleSpecifier2 = [(VPNController *)self personalGroupTitleSpecifier];
+    [v20 addObject:personalGroupTitleSpecifier2];
 
     v113 = [v3 currentConnectionWithGrade:1];
     if (v113)
@@ -1126,9 +1126,9 @@ LABEL_66:
       v319[1] = PSCellClassKey;
       v320[1] = objc_opt_class();
       v319[2] = PSEnabledKey;
-      v134 = [v120 onDemandAction];
+      onDemandAction = [v120 onDemandAction];
       v135 = &off_43650;
-      if (v134 == &dword_0 + 2)
+      if (onDemandAction == &dword_0 + 2)
       {
         v135 = &off_43638;
       }
@@ -1138,20 +1138,20 @@ LABEL_66:
       [v124 setProperties:v136];
 
       v317 = @"vpn-status";
-      v137 = [v120 statusText];
-      v318 = v137;
+      statusText3 = [v120 statusText];
+      v318 = statusText3;
       v138 = [NSDictionary dictionaryWithObjects:&v318 forKeys:&v317 count:1];
       [v124 setUserInfo:v138];
 
       [v124 setConfirmationAction:"confirmAirplaneModeDisable:"];
       [v124 setConfirmationCancelAction:"cancelAirplaneModeDisable:"];
       [(VPNController *)self setConnectPersonalSpecifier:v124];
-      v139 = [(VPNController *)self connectPersonalSpecifier];
-      [v20 addObject:v139];
+      connectPersonalSpecifier = [(VPNController *)self connectPersonalSpecifier];
+      [v20 addObject:connectPersonalSpecifier];
 
       v140 = [(VPNController *)self messageForConnection:v120];
-      v141 = [(VPNController *)self personalGroupTitleSpecifier];
-      v142 = v141;
+      personalGroupTitleSpecifier3 = [(VPNController *)self personalGroupTitleSpecifier];
+      v142 = personalGroupTitleSpecifier3;
       if (v140)
       {
         v315 = PSFooterTextGroupKey;
@@ -1162,7 +1162,7 @@ LABEL_66:
 
       else
       {
-        [v141 removePropertyForKey:PSFooterTextGroupKey];
+        [personalGroupTitleSpecifier3 removePropertyForKey:PSFooterTextGroupKey];
       }
 
       v57 = v243;
@@ -1173,15 +1173,15 @@ LABEL_66:
     v144 = objc_alloc_init(NSMutableArray);
     [(VPNController *)self setCurrentPersonalVPNSpecifiers:v144];
 
-    v145 = [(VPNController *)self currentPersonalVPNSpecifiers];
+    currentPersonalVPNSpecifiers = [(VPNController *)self currentPersonalVPNSpecifiers];
     v146 = +[PSSpecifier emptyGroupSpecifier];
-    [v145 addObject:v146];
+    [currentPersonalVPNSpecifiers addObject:v146];
 
-    v147 = [(VPNController *)self currentPersonalVPNSpecifiers];
-    [(VPNController *)self addListForGrade:1 toSpecifiers:v147];
+    currentPersonalVPNSpecifiers2 = [(VPNController *)self currentPersonalVPNSpecifiers];
+    [(VPNController *)self addListForGrade:1 toSpecifiers:currentPersonalVPNSpecifiers2];
 
-    v148 = [(VPNController *)self currentPersonalVPNSpecifiers];
-    [v20 addObjectsFromArray:v148];
+    currentPersonalVPNSpecifiers3 = [(VPNController *)self currentPersonalVPNSpecifiers];
+    [v20 addObjectsFromArray:currentPersonalVPNSpecifiers3];
   }
 
   if (v107)
@@ -1219,8 +1219,8 @@ LABEL_66:
           v156 = +[VPNConnectionStore sharedInstance];
           v157 = [v156 isProfileBacked:v153];
 
-          v158 = [v155 displayName];
-          v159 = [PSSpecifier preferenceSpecifierNamed:v158 target:v271 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+          displayName3 = [v155 displayName];
+          v159 = [PSSpecifier preferenceSpecifierNamed:displayName3 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
           v313[0] = @"VPNSetupListController";
           v312[0] = v258;
@@ -1233,17 +1233,17 @@ LABEL_66:
           [v159 setProperties:v161];
 
           v310[0] = @"vpn-service-id";
-          v268 = [v155 serviceID];
-          v311[0] = v268;
+          serviceID5 = [v155 serviceID];
+          v311[0] = serviceID5;
           v311[1] = &off_43638;
           v310[1] = @"vpn-user-created";
           v310[2] = @"vpn-organization";
-          v162 = [v155 serviceID];
-          v163 = [v270 organizationForServiceID:v162];
+          serviceID6 = [v155 serviceID];
+          v163 = [v270 organizationForServiceID:serviceID6];
           v311[2] = v163;
           v310[3] = @"vpn-status";
-          v164 = [v155 statusText];
-          v311[3] = v164;
+          statusText4 = [v155 statusText];
+          v311[3] = statusText4;
           v310[4] = @"vpn-status-value";
           v165 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v155 status]);
           v311[4] = v165;
@@ -1255,8 +1255,8 @@ LABEL_66:
           v166 = [NSNumber numberWithBool:v157];
           v311[7] = v166;
           v310[8] = @"vpn-alert";
-          v167 = [v155 alertText];
-          v311[8] = v167;
+          alertText = [v155 alertText];
+          v311[8] = alertText;
           v168 = [NSDictionary dictionaryWithObjects:v311 forKeys:v310 count:9];
           [v159 setUserInfo:v168];
 
@@ -1270,7 +1270,7 @@ LABEL_66:
     }
 
     v3 = v270;
-    self = v271;
+    self = selfCopy;
     v20 = v255;
     v57 = v243;
   }
@@ -1278,9 +1278,9 @@ LABEL_66:
   v169 = v245;
   if (v244)
   {
-    v170 = [(VPNController *)self appGroupTitleSpecifier];
+    appGroupTitleSpecifier = [(VPNController *)self appGroupTitleSpecifier];
 
-    if (!v170)
+    if (!appGroupTitleSpecifier)
     {
       v171 = [NSBundle bundleForClass:objc_opt_class()];
       v172 = [v171 localizedStringForKey:@"APP_VPN_GROUP_TITLE" value:&stru_411E8 table:@"MobileVPN"];
@@ -1288,8 +1288,8 @@ LABEL_66:
       [(VPNController *)self setAppGroupTitleSpecifier:v173];
     }
 
-    v174 = [(VPNController *)self appGroupTitleSpecifier];
-    [v20 addObject:v174];
+    appGroupTitleSpecifier2 = [(VPNController *)self appGroupTitleSpecifier];
+    [v20 addObject:appGroupTitleSpecifier2];
 
     [(VPNController *)self setCurrentAppVPNSpecifiers:0];
     [v3 vpnServicesForCurrentSetWithGrade:2];
@@ -1320,8 +1320,8 @@ LABEL_66:
           v179 = +[VPNConnectionStore sharedInstance];
           v269 = [v179 isProfileBacked:v176];
 
-          v180 = [v178 displayName];
-          v181 = [PSSpecifier preferenceSpecifierNamed:v180 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+          displayName4 = [v178 displayName];
+          v181 = [PSSpecifier preferenceSpecifierNamed:displayName4 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
           v308[0] = @"VPNSetupListController";
           v307[0] = obja;
@@ -1334,18 +1334,18 @@ LABEL_66:
           [v181 setProperties:v183];
 
           v305[0] = @"vpn-service-id";
-          v264 = [v178 serviceID];
-          v306[0] = v264;
+          serviceID7 = [v178 serviceID];
+          v306[0] = serviceID7;
           v305[1] = @"vpn-user-created";
           v261 = [NSNumber numberWithInteger:0];
           v306[1] = v261;
           v305[2] = @"vpn-organization";
-          v259 = [v178 serviceID];
-          v184 = [v3 organizationForServiceID:v259];
+          serviceID8 = [v178 serviceID];
+          v184 = [v3 organizationForServiceID:serviceID8];
           v306[2] = v184;
           v305[3] = @"vpn-status";
-          v185 = [v178 statusText];
-          v306[3] = v185;
+          statusText5 = [v178 statusText];
+          v306[3] = statusText5;
           v305[4] = @"vpn-status-value";
           v186 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v178 status]);
           v306[4] = v186;
@@ -1361,17 +1361,17 @@ LABEL_66:
           v190 = [NSDictionary dictionaryWithObjects:v306 forKeys:v305 count:8];
           [v181 setUserInfo:v190];
 
-          self = v271;
-          v191 = [(VPNController *)v271 currentAppVPNSpecifiers];
+          self = selfCopy;
+          currentAppVPNSpecifiers = [(VPNController *)selfCopy currentAppVPNSpecifiers];
 
-          if (!v191)
+          if (!currentAppVPNSpecifiers)
           {
             v192 = objc_alloc_init(NSMutableArray);
-            [(VPNController *)v271 setCurrentAppVPNSpecifiers:v192];
+            [(VPNController *)selfCopy setCurrentAppVPNSpecifiers:v192];
           }
 
-          v193 = [(VPNController *)v271 currentAppVPNSpecifiers];
-          [v193 addObject:v181];
+          currentAppVPNSpecifiers2 = [(VPNController *)selfCopy currentAppVPNSpecifiers];
+          [currentAppVPNSpecifiers2 addObject:v181];
 
           v3 = v270;
         }
@@ -1386,8 +1386,8 @@ LABEL_66:
     v275 = 0u;
     v272 = 0u;
     v273 = 0u;
-    v194 = [(VPNController *)self currentAppVPNSpecifiers];
-    v195 = [v194 countByEnumeratingWithState:&v272 objects:v304 count:16];
+    currentAppVPNSpecifiers3 = [(VPNController *)self currentAppVPNSpecifiers];
+    v195 = [currentAppVPNSpecifiers3 countByEnumeratingWithState:&v272 objects:v304 count:16];
     v169 = v245;
     if (v195)
     {
@@ -1399,13 +1399,13 @@ LABEL_66:
         {
           if (*v273 != v197)
           {
-            objc_enumerationMutation(v194);
+            objc_enumerationMutation(currentAppVPNSpecifiers3);
           }
 
           [v255 addObject:*(*(&v272 + 1) + 8 * ii)];
         }
 
-        v196 = [v194 countByEnumeratingWithState:&v272 objects:v304 count:16];
+        v196 = [currentAppVPNSpecifiers3 countByEnumeratingWithState:&v272 objects:v304 count:16];
       }
 
       while (v196);
@@ -1441,9 +1441,9 @@ LABEL_66:
     v206 = [v203 stringByAppendingString:v205];
 
     v207 = +[PSSpecifier emptyGroupSpecifier];
-    [(VPNController *)v271 setPrivacyLinkSpecifier:v207];
+    [(VPNController *)selfCopy setPrivacyLinkSpecifier:v207];
 
-    v208 = [(VPNController *)v271 privacyLinkSpecifier];
+    privacyLinkSpecifier = [(VPNController *)selfCopy privacyLinkSpecifier];
     v300[0] = PSFooterCellClassGroupKey;
     v209 = objc_opt_class();
     v210 = NSStringFromClass(v209);
@@ -1457,27 +1457,27 @@ LABEL_66:
     v213 = NSStringFromRange(v336);
     v301[2] = v213;
     v300[3] = PSFooterHyperlinkViewTargetKey;
-    v214 = [NSValue valueWithNonretainedObject:v271];
+    v214 = [NSValue valueWithNonretainedObject:selfCopy];
     v301[3] = v214;
     v300[4] = PSFooterHyperlinkViewActionKey;
     v215 = NSStringFromSelector("privacyLinkAction");
     v301[4] = v215;
     v216 = [NSDictionary dictionaryWithObjects:v301 forKeys:v300 count:5];
-    [v208 setProperties:v216];
+    [privacyLinkSpecifier setProperties:v216];
 
     v26 = v206;
-    self = v271;
+    self = selfCopy;
 
     v3 = v270;
-    v217 = [(VPNController *)v271 privacyLinkSpecifier];
-    [v255 addObject:v217];
+    privacyLinkSpecifier2 = [(VPNController *)selfCopy privacyLinkSpecifier];
+    [v255 addObject:privacyLinkSpecifier2];
 
     v218 = [NSBundle bundleForClass:objc_opt_class()];
     v219 = [v218 localizedStringForKey:@"OTHER" value:&stru_411E8 table:@"MobileVPN"];
-    v220 = [PSSpecifier preferenceSpecifierNamed:v219 target:v271 set:0 get:0 detail:objc_opt_class() cell:13 edit:0];
-    [(VPNController *)v271 setAddVPNButtonSpecifier:v220];
+    v220 = [PSSpecifier preferenceSpecifierNamed:v219 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:13 edit:0];
+    [(VPNController *)selfCopy setAddVPNButtonSpecifier:v220];
 
-    v221 = [(VPNController *)v271 addVPNButtonSpecifier];
+    addVPNButtonSpecifier = [(VPNController *)selfCopy addVPNButtonSpecifier];
     v298[0] = @"service-grade";
     v222 = [NSNumber numberWithInteger:0];
     v299[0] = v222;
@@ -1485,19 +1485,19 @@ LABEL_66:
     v223 = [NSNumber numberWithBool:0];
     v299[1] = v223;
     v224 = [NSDictionary dictionaryWithObjects:v299 forKeys:v298 count:2];
-    [v221 setUserInfo:v224];
+    [addVPNButtonSpecifier setUserInfo:v224];
 
-    v225 = [(VPNController *)v271 addVPNButtonSpecifier];
+    addVPNButtonSpecifier2 = [(VPNController *)selfCopy addVPNButtonSpecifier];
     v296 = PSSetupCustomClassKey;
     v297 = @"VPNSetupListController";
     v226 = [NSDictionary dictionaryWithObjects:&v297 forKeys:&v296 count:1];
-    [v225 setProperties:v226];
+    [addVPNButtonSpecifier2 setProperties:v226];
 
-    v227 = [(VPNController *)v271 addVPNButtonSpecifier];
-    [v227 setButtonAction:"addVPNConfiguration:"];
+    addVPNButtonSpecifier3 = [(VPNController *)selfCopy addVPNButtonSpecifier];
+    [addVPNButtonSpecifier3 setButtonAction:"addVPNConfiguration:"];
 
-    v228 = [(VPNController *)v271 addVPNButtonSpecifier];
-    [v255 addObject:v228];
+    addVPNButtonSpecifier4 = [(VPNController *)selfCopy addVPNButtonSpecifier];
+    [v255 addObject:addVPNButtonSpecifier4];
   }
 
 LABEL_106:
@@ -1505,8 +1505,8 @@ LABEL_106:
 LABEL_107:
   if (v246)
   {
-    v229 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-    v230 = [v229 objectForKey:@"vpn-show-dns"];
+    userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+    v230 = [userInfo objectForKey:@"vpn-show-dns"];
 
     if (v230)
     {
@@ -1530,9 +1530,9 @@ LABEL_111:
   return v19;
 }
 
-- (id)getDNSSummary:(id)a3
+- (id)getDNSSummary:(id)summary
 {
-  v3 = a3;
+  summaryCopy = summary;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1561,9 +1561,9 @@ LABEL_111:
   return v6;
 }
 
-- (id)dnsStatusForSpecifier:(id)a3
+- (id)dnsStatusForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1575,7 +1575,7 @@ LABEL_111:
   v8[1] = 3221225472;
   v8[2] = sub_189BC;
   v8[3] = &unk_40AD0;
-  v5 = v3;
+  v5 = specifierCopy;
   v9 = v5;
   v10 = &v11;
   [v4 iterateDNSServicesWithBlock:v8];
@@ -1586,34 +1586,34 @@ LABEL_111:
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VPNController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(VPNController *)self indexForIndexPath:pathCopy];
   v36.receiver = self;
   v36.super_class = VPNController;
-  v9 = [(VPNController *)&v36 tableView:v7 cellForRowAtIndexPath:v6];
+  v9 = [(VPNController *)&v36 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   v10 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v11 = [v10 userInfo];
-  if (!v11)
+  userInfo = [v10 userInfo];
+  if (!userInfo)
   {
     goto LABEL_27;
   }
 
-  v12 = [(VPNController *)self connectEnterpriseSpecifier];
+  connectEnterpriseSpecifier = [(VPNController *)self connectEnterpriseSpecifier];
 
-  if (v10 == v12)
+  if (v10 == connectEnterpriseSpecifier)
   {
     v14 = 0;
   }
 
   else
   {
-    v13 = [(VPNController *)self connectPersonalSpecifier];
+    connectPersonalSpecifier = [(VPNController *)self connectPersonalSpecifier];
 
-    if (v10 != v13)
+    if (v10 != connectPersonalSpecifier)
     {
       goto LABEL_7;
     }
@@ -1624,21 +1624,21 @@ LABEL_111:
   v15 = +[VPNConnectionStore sharedInstance];
   v16 = [v15 currentConnectionWithGrade:v14];
 
-  v17 = [v16 statusText];
-  v18 = [v9 detailTextLabel];
-  [v18 setText:v17];
+  statusText = [v16 statusText];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:statusText];
 
 LABEL_7:
-  v19 = [(VPNController *)self addVPNButtonSpecifier];
-  if (v10 != v19)
+  addVPNButtonSpecifier = [(VPNController *)self addVPNButtonSpecifier];
+  if (v10 != addVPNButtonSpecifier)
   {
-    v20 = [(VPNController *)self connectEnterpriseSpecifier];
-    v21 = v20;
-    if (v10 != v20)
+    connectEnterpriseSpecifier2 = [(VPNController *)self connectEnterpriseSpecifier];
+    v21 = connectEnterpriseSpecifier2;
+    if (v10 != connectEnterpriseSpecifier2)
     {
-      v22 = [(VPNController *)self connectPersonalSpecifier];
+      connectPersonalSpecifier2 = [(VPNController *)self connectPersonalSpecifier];
 
-      if (v10 != v22)
+      if (v10 != connectPersonalSpecifier2)
       {
         [v9 setAccessoryType:4];
       }
@@ -1653,9 +1653,9 @@ LABEL_13:
 
   if (v23 == v24 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v25 = [v11 objectForKey:@"vpn-service-id"];
+    v25 = [userInfo objectForKey:@"vpn-service-id"];
     v26 = +[VPNConnectionStore sharedInstance];
-    v27 = [v11 objectForKey:@"service-grade"];
+    v27 = [userInfo objectForKey:@"service-grade"];
     v28 = [v26 isActiveVPNID:v25 withGrade:{objc_msgSend(v27, "unsignedIntegerValue")}];
 
     [v9 setChecked:v28];
@@ -1663,28 +1663,28 @@ LABEL_13:
 
   if (objc_opt_respondsToSelector())
   {
-    v29 = [v11 objectForKey:@"vpn-organization"];
+    v29 = [userInfo objectForKey:@"vpn-organization"];
     [v9 setSubtitle:v29];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v30 = [v11 objectForKey:@"vpn-alert"];
+    v30 = [userInfo objectForKey:@"vpn-alert"];
     [v9 setAlert:v30];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v31 = [v11 objectForKey:@"vpn-status"];
+    v31 = [userInfo objectForKey:@"vpn-status"];
     [v9 setVpnPrimaryTableCellStatus:v31];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v32 = [v11 objectForKey:@"vpn-status-value"];
+    v32 = [userInfo objectForKey:@"vpn-status-value"];
     if (v32)
     {
-      v33 = [v11 objectForKey:@"vpn-status-value"];
+      v33 = [userInfo objectForKey:@"vpn-status-value"];
       v34 = [v33 unsignedIntegerValue] == &dword_4 + 1;
     }
 
@@ -1701,9 +1701,9 @@ LABEL_27:
   return v9;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = [(VPNController *)self indexForIndexPath:a4];
+  v5 = [(VPNController *)self indexForIndexPath:path];
   v8 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v5];
   v6 = objc_alloc_init(*&v8[OBJC_IVAR___PSSpecifier_detailControllerClass]);
   if (!v6)
@@ -1719,41 +1719,41 @@ LABEL_27:
   [(VPNController *)self showController:v6];
 }
 
-- (void)changeActiveVPN:(id)a3
+- (void)changeActiveVPN:(id)n
 {
-  v10 = [a3 userInfo];
-  v4 = [v10 objectForKey:@"vpn-service-id"];
-  v5 = [v10 objectForKey:@"service-grade"];
-  v6 = [v5 unsignedIntegerValue];
+  userInfo = [n userInfo];
+  v4 = [userInfo objectForKey:@"vpn-service-id"];
+  v5 = [userInfo objectForKey:@"service-grade"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   v7 = +[VPNConnectionStore sharedInstance];
-  v8 = [v7 isActiveVPNID:v4 withGrade:v6];
+  v8 = [v7 isActiveVPNID:v4 withGrade:unsignedIntegerValue];
 
   if ((v8 & 1) == 0)
   {
     v9 = +[VPNConnectionStore sharedInstance];
-    [v9 setActiveVPNID:v4 withGrade:v6];
+    [v9 setActiveVPNID:v4 withGrade:unsignedIntegerValue];
   }
 
   [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] selectRowAtIndexPath:0 animated:0 scrollPosition:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VPNController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(VPNController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   v10 = [v9 propertyForKey:PSCellClassKey];
   v11 = objc_opt_class();
 
   if (v10 == v11)
   {
-    v14 = [v9 userInfo];
-    v12 = v14;
-    if (v14)
+    userInfo = [v9 userInfo];
+    connectEnterpriseSpecifier = userInfo;
+    if (userInfo)
     {
-      v15 = [v14 objectForKey:@"vpn-service-id"];
+      v15 = [userInfo objectForKey:@"vpn-service-id"];
 
       if (v15)
       {
@@ -1764,43 +1764,43 @@ LABEL_27:
     goto LABEL_8;
   }
 
-  v12 = [(VPNController *)self connectEnterpriseSpecifier];
-  if (v9 == v12)
+  connectEnterpriseSpecifier = [(VPNController *)self connectEnterpriseSpecifier];
+  if (v9 == connectEnterpriseSpecifier)
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v13 = [(VPNController *)self connectPersonalSpecifier];
+  connectPersonalSpecifier = [(VPNController *)self connectPersonalSpecifier];
 
-  if (v9 != v13)
+  if (v9 != connectPersonalSpecifier)
   {
     v16.receiver = self;
     v16.super_class = VPNController;
-    [(VPNController *)&v16 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(VPNController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
 LABEL_9:
 }
 
-- (void)confirmAirplaneModeDisable:(id)a3
+- (void)confirmAirplaneModeDisable:(id)disable
 {
-  v7 = a3;
+  disableCopy = disable;
   +[VPNBundleController disableAirplaneMode];
-  v4 = [(VPNController *)self connectPersonalSpecifier];
+  connectPersonalSpecifier = [(VPNController *)self connectPersonalSpecifier];
 
-  if (v4 == v7)
+  if (connectPersonalSpecifier == disableCopy)
   {
     [(VPNController *)self setPersonalVPNActive:1 specifier:0];
   }
 
   else
   {
-    v5 = [(VPNController *)self connectEnterpriseSpecifier];
+    connectEnterpriseSpecifier = [(VPNController *)self connectEnterpriseSpecifier];
 
-    v6 = v7;
-    if (v5 != v7)
+    v6 = disableCopy;
+    if (connectEnterpriseSpecifier != disableCopy)
     {
       goto LABEL_6;
     }
@@ -1808,18 +1808,18 @@ LABEL_9:
     [(VPNController *)self setEnterpriseVPNActive:1 specifier:0];
   }
 
-  v6 = v7;
+  v6 = disableCopy;
 LABEL_6:
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v7 = a3;
-  v3 = [v7 objectForKeyedSubscript:@"path"];
+  lCopy = l;
+  v3 = [lCopy objectForKeyedSubscript:@"path"];
   if ([v3 isEqualToString:@"LocalAuthenticationTrigger"])
   {
-    v4 = [v7 objectForKeyedSubscript:@"configID"];
-    v5 = [v7 objectForKeyedSubscript:@"sender"];
+    v4 = [lCopy objectForKeyedSubscript:@"configID"];
+    v5 = [lCopy objectForKeyedSubscript:@"sender"];
     v6 = +[VPNConnectionStore sharedInstance];
     [v6 triggerLocalAuthenticationForConfigurationIdentifier:v4 requestedByApp:v5];
   }
@@ -1840,20 +1840,20 @@ LABEL_6:
   v3 = +[VPNBundleController navigationTitle];
   [(VPNController *)self setTitle:v3];
 
-  v4 = [(VPNController *)self table];
+  table = [(VPNController *)self table];
   v5 = objc_opt_class();
   v6 = +[VPNToggleCell cellReuseIdentifier];
-  [v4 registerClass:v5 forCellReuseIdentifier:v6];
+  [table registerClass:v5 forCellReuseIdentifier:v6];
 
-  v7 = [(VPNController *)self table];
+  table2 = [(VPNController *)self table];
   v8 = objc_opt_class();
   v9 = +[VPNTableCell cellReuseIdentifier];
-  [v7 registerClass:v8 forCellReuseIdentifier:v9];
+  [table2 registerClass:v8 forCellReuseIdentifier:v9];
 
-  v10 = [(VPNController *)self table];
+  table3 = [(VPNController *)self table];
   v11 = objc_opt_class();
   v12 = +[VPNPrimaryTableCell cellReuseIdentifier];
-  [v10 registerClass:v11 forCellReuseIdentifier:v12];
+  [table3 registerClass:v11 forCellReuseIdentifier:v12];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface SESViewInformation
-+ (id)withViewName:(id)a3 currentTLK:(id)a4 tlkShares:(id)a5 previousTLKs:(id)a6;
++ (id)withViewName:(id)name currentTLK:(id)k tlkShares:(id)shares previousTLKs:(id)ks;
 - (NSDictionary)dumpState;
 @end
 
 @implementation SESViewInformation
 
-+ (id)withViewName:(id)a3 currentTLK:(id)a4 tlkShares:(id)a5 previousTLKs:(id)a6
++ (id)withViewName:(id)name currentTLK:(id)k tlkShares:(id)shares previousTLKs:(id)ks
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  kCopy = k;
+  sharesCopy = shares;
+  ksCopy = ks;
   v14 = objc_opt_new();
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong((v14 + 8), a3);
-    objc_storeStrong(v15 + 2, a4);
-    objc_storeStrong(v15 + 3, a5);
-    objc_storeStrong(v15 + 4, a6);
+    objc_storeStrong((v14 + 8), name);
+    objc_storeStrong(v15 + 2, k);
+    objc_storeStrong(v15 + 3, shares);
+    objc_storeStrong(v15 + 4, ks);
   }
 
   return v15;
@@ -26,7 +26,7 @@
 
 - (NSDictionary)dumpState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100289300();
 
   return v3;

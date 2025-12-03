@@ -1,9 +1,9 @@
 @interface CRLTextRange
-+ (_TtC8Freeform12CRLTextRange)textRangeWith:(_NSRange)a3;
-+ (id)textRangeForStartOf:(id)a3;
-- (BOOL)containsPosition:(id)a3;
-- (BOOL)containsTextRange:(id)a3;
-- (BOOL)isAtParagraphBoundaryIn:(id)a3;
++ (_TtC8Freeform12CRLTextRange)textRangeWith:(_NSRange)with;
++ (id)textRangeForStartOf:(id)of;
+- (BOOL)containsPosition:(id)position;
+- (BOOL)containsTextRange:(id)range;
+- (BOOL)isAtParagraphBoundaryIn:(id)in;
 - (BOOL)isEmpty;
 - (_NSRange)nsRange;
 - (_TtC8Freeform12CRLTextRange)init;
@@ -11,8 +11,8 @@
 - (_TtC8Freeform15CRLTextPosition)start;
 - (id)makeInsertionPoint;
 - (id)makeTrailingInsertionPoint;
-- (id)textRangeByExpandingTo:(id)a3;
-- (id)textRangeByMovingLocationBy:(int64_t)a3;
+- (id)textRangeByExpandingTo:(id)to;
+- (id)textRangeByMovingLocationBy:(int64_t)by;
 - (int64_t)length;
 @end
 
@@ -20,7 +20,7 @@
 
 - (id)makeInsertionPoint
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = sub_10078D7D8();
 
   return v2;
@@ -28,9 +28,9 @@
 
 - (_NSRange)nsRange
 {
-  v2 = self;
-  v3 = [(CRLTextRange *)v2 start];
-  v4 = *(&v3->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
+  selfCopy = self;
+  start = [(CRLTextRange *)selfCopy start];
+  v4 = *(&start->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
 
   if (v4 == NSNotFound.getter())
   {
@@ -40,8 +40,8 @@
 
   else
   {
-    v5 = *(&v2->super.super.isa + OBJC_IVAR____TtC8Freeform12CRLTextRange_range);
-    v7 = *&v2->range[OBJC_IVAR____TtC8Freeform12CRLTextRange_range];
+    v5 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC8Freeform12CRLTextRange_range);
+    v7 = *&selfCopy->range[OBJC_IVAR____TtC8Freeform12CRLTextRange_range];
 
     v10 = __OFSUB__(v7, v5);
     v6 = v7 - v5;
@@ -95,7 +95,7 @@ LABEL_6:
 
 - (_TtC8Freeform15CRLTextPosition)end
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10078CC4C();
 
   return v3;
@@ -103,9 +103,9 @@ LABEL_6:
 
 - (int64_t)length
 {
-  v2 = self;
-  v3 = [(CRLTextRange *)v2 start];
-  v4 = *(&v3->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
+  selfCopy = self;
+  start = [(CRLTextRange *)selfCopy start];
+  v4 = *(&start->super.super.isa + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
 
   if (v4 == NSNotFound.getter())
   {
@@ -114,8 +114,8 @@ LABEL_6:
     return v5;
   }
 
-  v6 = *(&v2->super.super.isa + OBJC_IVAR____TtC8Freeform12CRLTextRange_range);
-  v7 = *&v2->range[OBJC_IVAR____TtC8Freeform12CRLTextRange_range];
+  v6 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC8Freeform12CRLTextRange_range);
+  v7 = *&selfCopy->range[OBJC_IVAR____TtC8Freeform12CRLTextRange_range];
 
   v9 = __OFSUB__(v7, v6);
   v5 = v7 - v6;
@@ -128,71 +128,71 @@ LABEL_6:
   return result;
 }
 
-+ (_TtC8Freeform12CRLTextRange)textRangeWith:(_NSRange)a3
++ (_TtC8Freeform12CRLTextRange)textRangeWith:(_NSRange)with
 {
-  length = a3.length;
-  location = a3.location;
+  length = with.length;
+  location = with.location;
   v5 = objc_allocWithZone(type metadata accessor for CRLTextRange());
   v6 = sub_10078CDF0(location, length);
 
   return v6;
 }
 
-+ (id)textRangeForStartOf:(id)a3
++ (id)textRangeForStartOf:(id)of
 {
   v3 = sub_10078EA84();
 
   return v3;
 }
 
-- (BOOL)isAtParagraphBoundaryIn:(id)a3
+- (BOOL)isAtParagraphBoundaryIn:(id)in
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_10078D054(v4);
+  inCopy = in;
+  selfCopy = self;
+  LOBYTE(self) = sub_10078D054(inCopy);
 
   return self & 1;
 }
 
-- (id)textRangeByExpandingTo:(id)a3
+- (id)textRangeByExpandingTo:(id)to
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10078D6DC(v4);
+  toCopy = to;
+  selfCopy = self;
+  v6 = sub_10078D6DC(toCopy);
 
   return v6;
 }
 
 - (id)makeTrailingInsertionPoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10078D8B8();
 
   return v3;
 }
 
-- (id)textRangeByMovingLocationBy:(int64_t)a3
+- (id)textRangeByMovingLocationBy:(int64_t)by
 {
-  v4 = self;
-  v5 = sub_10078D9DC(a3);
+  selfCopy = self;
+  v5 = sub_10078D9DC(by);
 
   return v5;
 }
 
-- (BOOL)containsTextRange:(id)a3
+- (BOOL)containsTextRange:(id)range
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_10078DD28(v4);
+  rangeCopy = range;
+  selfCopy = self;
+  LOBYTE(self) = sub_10078DD28(rangeCopy);
 
   return self & 1;
 }
 
-- (BOOL)containsPosition:(id)a3
+- (BOOL)containsPosition:(id)position
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_10078DE78(v4);
+  positionCopy = position;
+  selfCopy = self;
+  LOBYTE(self) = sub_10078DE78(positionCopy);
 
   return self & 1;
 }

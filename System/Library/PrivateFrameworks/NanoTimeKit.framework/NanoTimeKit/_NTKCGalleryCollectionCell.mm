@@ -6,34 +6,34 @@
 + (id)classicReuseIdentifier;
 + (id)luxoReuseIdentifier;
 + (id)reuseIdentifier;
-- (_NTKCGalleryCollectionCell)initWithFrame:(CGRect)a3;
+- (_NTKCGalleryCollectionCell)initWithFrame:(CGRect)frame;
 - (void)_highlight;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setCalloutName:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setCalloutName:(id)name;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation _NTKCGalleryCollectionCell
 
 + (id)reuseIdentifier
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = [v3 deviceCategory];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  deviceCategory = [currentDevice deviceCategory];
 
-  if (v4 > 3)
+  if (deviceCategory > 3)
   {
-    switch(v4)
+    switch(deviceCategory)
     {
       case 4:
-        v5 = [a1 agaveReuseIdentifier];
+        agaveReuseIdentifier = [self agaveReuseIdentifier];
         break;
       case 5:
-        v5 = [a1 avoniaReuseIdentifier];
+        agaveReuseIdentifier = [self avoniaReuseIdentifier];
         break;
       case 6:
-        v5 = [a1 begoniaReuseIdentifier];
+        agaveReuseIdentifier = [self begoniaReuseIdentifier];
         break;
       default:
         goto LABEL_10;
@@ -42,30 +42,30 @@
 
   else
   {
-    if (v4 == 1)
+    if (deviceCategory == 1)
     {
 LABEL_10:
-      v5 = [a1 classicReuseIdentifier];
+      agaveReuseIdentifier = [self classicReuseIdentifier];
       goto LABEL_14;
     }
 
-    if (v4 != 2)
+    if (deviceCategory != 2)
     {
-      if (v4 == 3)
+      if (deviceCategory == 3)
       {
-        v5 = [a1 aloeReuseIdentifier];
+        agaveReuseIdentifier = [self aloeReuseIdentifier];
         goto LABEL_14;
       }
 
       goto LABEL_10;
     }
 
-    v5 = [a1 luxoReuseIdentifier];
+    agaveReuseIdentifier = [self luxoReuseIdentifier];
   }
 
 LABEL_14:
 
-  return v5;
+  return agaveReuseIdentifier;
 }
 
 + (id)classicReuseIdentifier
@@ -77,50 +77,50 @@ LABEL_14:
 
 + (id)luxoReuseIdentifier
 {
-  v2 = [a1 classicReuseIdentifier];
-  v3 = [v2 stringByAppendingString:@"-luxo"];
+  classicReuseIdentifier = [self classicReuseIdentifier];
+  v3 = [classicReuseIdentifier stringByAppendingString:@"-luxo"];
 
   return v3;
 }
 
 + (id)aloeReuseIdentifier
 {
-  v2 = [a1 classicReuseIdentifier];
-  v3 = [v2 stringByAppendingString:@"-aloe"];
+  classicReuseIdentifier = [self classicReuseIdentifier];
+  v3 = [classicReuseIdentifier stringByAppendingString:@"-aloe"];
 
   return v3;
 }
 
 + (id)agaveReuseIdentifier
 {
-  v2 = [a1 classicReuseIdentifier];
-  v3 = [v2 stringByAppendingString:@"-agave"];
+  classicReuseIdentifier = [self classicReuseIdentifier];
+  v3 = [classicReuseIdentifier stringByAppendingString:@"-agave"];
 
   return v3;
 }
 
 + (id)avoniaReuseIdentifier
 {
-  v2 = [a1 classicReuseIdentifier];
-  v3 = [v2 stringByAppendingString:@"-avonia"];
+  classicReuseIdentifier = [self classicReuseIdentifier];
+  v3 = [classicReuseIdentifier stringByAppendingString:@"-avonia"];
 
   return v3;
 }
 
 + (id)begoniaReuseIdentifier
 {
-  v2 = [a1 classicReuseIdentifier];
-  v3 = [v2 stringByAppendingString:@"-begonia"];
+  classicReuseIdentifier = [self classicReuseIdentifier];
+  v3 = [classicReuseIdentifier stringByAppendingString:@"-begonia"];
 
   return v3;
 }
 
-- (_NTKCGalleryCollectionCell)initWithFrame:(CGRect)a3
+- (_NTKCGalleryCollectionCell)initWithFrame:(CGRect)frame
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = _NTKCGalleryCollectionCell;
-  v3 = [(_NTKCGalleryCollectionCell *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_NTKCGalleryCollectionCell *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = FaceSize();
@@ -139,24 +139,24 @@ LABEL_14:
     [(UIStackView *)v3->_contentStack setAxis:1];
     [(UIStackView *)v3->_contentStack setSpacing:10.0];
     [(UIStackView *)v3->_contentStack setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(_NTKCGalleryCollectionCell *)v3 contentView];
-    [v12 addSubview:v3->_contentStack];
+    contentView = [(_NTKCGalleryCollectionCell *)v3 contentView];
+    [contentView addSubview:v3->_contentStack];
 
     v23 = MEMORY[0x277CCAAD0];
-    v27 = [(_NTKCGalleryCollectionCell *)v3 contentView];
-    v26 = [v27 leadingAnchor];
-    v25 = [(UIStackView *)v3->_contentStack leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    contentView2 = [(_NTKCGalleryCollectionCell *)v3 contentView];
+    leadingAnchor = [contentView2 leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)v3->_contentStack leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v29[0] = v24;
-    v13 = [(_NTKCGalleryCollectionCell *)v3 contentView];
-    v14 = [v13 trailingAnchor];
-    v15 = [(UIStackView *)v3->_contentStack trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    contentView3 = [(_NTKCGalleryCollectionCell *)v3 contentView];
+    trailingAnchor = [contentView3 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)v3->_contentStack trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v29[1] = v16;
-    v17 = [(_NTKCGalleryCollectionCell *)v3 contentView];
-    v18 = [v17 topAnchor];
-    v19 = [(UIStackView *)v3->_contentStack topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    contentView4 = [(_NTKCGalleryCollectionCell *)v3 contentView];
+    topAnchor = [contentView4 topAnchor];
+    topAnchor2 = [(UIStackView *)v3->_contentStack topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v29[2] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
     [v23 activateConstraints:v21];
@@ -167,8 +167,8 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _NTKCGalleryCollectionCell;
@@ -184,14 +184,14 @@ LABEL_14:
   [(NTKCFaceContainerView *)self->_faceContainerView setFaceView:0];
 }
 
-- (void)setCalloutName:(id)a3
+- (void)setCalloutName:(id)name
 {
-  v15 = a3;
-  v4 = [v15 isEqualToString:self->_calloutName];
-  v5 = v15;
+  nameCopy = name;
+  v4 = [nameCopy isEqualToString:self->_calloutName];
+  v5 = nameCopy;
   if ((v4 & 1) == 0)
   {
-    v6 = [v15 copy];
+    v6 = [nameCopy copy];
     calloutName = self->_calloutName;
     self->_calloutName = v6;
 
@@ -234,23 +234,23 @@ LABEL_14:
       [(UILabel *)nameLabel setHidden:1];
     }
 
-    v5 = v15;
+    v5 = nameCopy;
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = _NTKCGalleryCollectionCell;
-  [(_NTKCGalleryCollectionCell *)&v4 setHighlighted:a3];
+  [(_NTKCGalleryCollectionCell *)&v4 setHighlighted:highlighted];
   [(_NTKCGalleryCollectionCell *)self _highlight];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = _NTKCGalleryCollectionCell;
-  [(_NTKCGalleryCollectionCell *)&v4 setSelected:a3];
+  [(_NTKCGalleryCollectionCell *)&v4 setSelected:selected];
   [(_NTKCGalleryCollectionCell *)self _highlight];
 }
 
@@ -258,17 +258,17 @@ LABEL_14:
 {
   if (([(_NTKCGalleryCollectionCell *)self isSelected]& 1) != 0)
   {
-    v3 = 1;
+    isHighlighted = 1;
   }
 
   else
   {
-    v3 = [(_NTKCGalleryCollectionCell *)self isHighlighted];
+    isHighlighted = [(_NTKCGalleryCollectionCell *)self isHighlighted];
   }
 
   faceContainerView = self->_faceContainerView;
 
-  [(NTKCFaceContainerView *)faceContainerView setHighlighted:v3];
+  [(NTKCFaceContainerView *)faceContainerView setHighlighted:isHighlighted];
 }
 
 @end

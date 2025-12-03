@@ -1,8 +1,8 @@
 @interface CKDPowerLogger
 + (BOOL)isEnabled;
 + (id)sharedLogger;
-- (id)zoneIDsToZoneNamesString:(id)a3;
-- (void)logOperationCombinedMetrics:(id)a3 forOperationID:(id)a4 operationType:(int64_t)a5 operationGroupID:(id)a6 operationGroupName:(id)a7 operationGroupQuantity:(unint64_t)a8 operationQualityOfService:(int64_t)a9 backgroundTaskIdentifier:(id)a10 appContainerTuple:(id)a11;
+- (id)zoneIDsToZoneNamesString:(id)string;
+- (void)logOperationCombinedMetrics:(id)metrics forOperationID:(id)d operationType:(int64_t)type operationGroupID:(id)iD operationGroupName:(id)name operationGroupQuantity:(unint64_t)quantity operationQualityOfService:(int64_t)service backgroundTaskIdentifier:(id)self0 appContainerTuple:(id)self1;
 @end
 
 @implementation CKDPowerLogger
@@ -27,27 +27,27 @@
   return v3;
 }
 
-- (void)logOperationCombinedMetrics:(id)a3 forOperationID:(id)a4 operationType:(int64_t)a5 operationGroupID:(id)a6 operationGroupName:(id)a7 operationGroupQuantity:(unint64_t)a8 operationQualityOfService:(int64_t)a9 backgroundTaskIdentifier:(id)a10 appContainerTuple:(id)a11
+- (void)logOperationCombinedMetrics:(id)metrics forOperationID:(id)d operationType:(int64_t)type operationGroupID:(id)iD operationGroupName:(id)name operationGroupQuantity:(unint64_t)quantity operationQualityOfService:(int64_t)service backgroundTaskIdentifier:(id)self0 appContainerTuple:(id)self1
 {
   v257[38] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a10;
-  v21 = a11;
-  v255 = self;
+  metricsCopy = metrics;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
+  identifierCopy = identifier;
+  tupleCopy = tuple;
+  selfCopy = self;
   v22 = objc_opt_class();
   if (objc_msgSend_isEnabled(v22, v23, v24))
   {
-    v27 = v20;
-    v217 = objc_msgSend_cloudKitMetrics(v16, v25, v26);
-    v254 = objc_msgSend_MMCSMetrics(v16, v28, v29);
-    v251 = v18;
-    v252 = v17;
-    if (v17)
+    v27 = identifierCopy;
+    v217 = objc_msgSend_cloudKitMetrics(metricsCopy, v25, v26);
+    v254 = objc_msgSend_MMCSMetrics(metricsCopy, v28, v29);
+    v251 = iDCopy;
+    v252 = dCopy;
+    if (dCopy)
     {
-      v31 = v17;
+      v31 = dCopy;
     }
 
     else
@@ -57,9 +57,9 @@
 
     v256[0] = @"operationID";
     v256[1] = @"operationGroupID";
-    if (v18)
+    if (iDCopy)
     {
-      v32 = v18;
+      v32 = iDCopy;
     }
 
     else
@@ -69,10 +69,10 @@
 
     v257[0] = v31;
     v257[1] = v32;
-    v250 = v19;
-    if (v19)
+    v250 = nameCopy;
+    if (nameCopy)
     {
-      v33 = v19;
+      v33 = nameCopy;
     }
 
     else
@@ -83,16 +83,16 @@
     v257[2] = v33;
     v256[2] = @"operationGroupName";
     v256[3] = @"operationGroupQuantity";
-    v248 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v30, a8);
+    v248 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v30, quantity);
     v257[3] = v248;
     v256[4] = @"operationQualityOfService";
-    v247 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v34, a9);
+    v247 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v34, service);
     v257[4] = v247;
     v256[5] = @"operationType";
-    v246 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v35, a5);
+    v246 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v35, type);
     v257[5] = v246;
     v256[6] = @"containerIdentifier";
-    v245 = objc_msgSend_containerID(v21, v36, v37);
+    v245 = objc_msgSend_containerID(tupleCopy, v36, v37);
     v40 = objc_msgSend_containerIdentifier(v245, v38, v39);
     v244 = v40;
     if (v40)
@@ -108,12 +108,12 @@
     v257[6] = v43;
     v256[7] = @"containerEnvironment";
     v44 = MEMORY[0x277CCABB0];
-    v243 = objc_msgSend_containerID(v21, v41, v42);
+    v243 = objc_msgSend_containerID(tupleCopy, v41, v42);
     v47 = objc_msgSend_environment(v243, v45, v46);
     v242 = objc_msgSend_numberWithInteger_(v44, v48, v47);
     v257[7] = v242;
     v256[8] = @"bundleIdentifier";
-    v241 = objc_msgSend_applicationID(v21, v49, v50);
+    v241 = objc_msgSend_applicationID(tupleCopy, v49, v50);
     v53 = objc_msgSend_applicationBundleIdentifier(v241, v51, v52);
     v240 = v53;
     if (v53)
@@ -128,8 +128,8 @@
 
     v257[8] = v56;
     v256[9] = @"sourceAppBundleIdentifier";
-    v249 = v21;
-    v239 = objc_msgSend_applicationID(v21, v54, v55);
+    v249 = tupleCopy;
+    v239 = objc_msgSend_applicationID(tupleCopy, v54, v55);
     v59 = objc_msgSend_applicationBundleIdentifierOverrideForNetworkAttribution(v239, v57, v58);
     v238 = v59;
     if (v59)
@@ -142,9 +142,9 @@
       v62 = &stru_28385ED00;
     }
 
-    if (v20)
+    if (identifierCopy)
     {
-      v63 = v20;
+      v63 = identifierCopy;
     }
 
     else
@@ -341,7 +341,7 @@
     }
 
     v205 = objc_msgSend_zoneIDs(v217, v203, v204);
-    v207 = objc_msgSend_zoneIDsToZoneNamesString_(v255, v206, v205);
+    v207 = objc_msgSend_zoneIDsToZoneNamesString_(selfCopy, v206, v205);
 
     if (v207)
     {
@@ -352,32 +352,32 @@
       v202 = v214;
     }
 
-    v17 = v252;
-    v19 = v250;
-    v18 = v251;
-    v20 = v27;
+    dCopy = v252;
+    nameCopy = v250;
+    iDCopy = v251;
+    identifierCopy = v27;
     PLLogRegisteredEvent();
 
-    v21 = v249;
+    tupleCopy = v249;
   }
 
   v215 = *MEMORY[0x277D85DE8];
 }
 
-- (id)zoneIDsToZoneNamesString:(id)a3
+- (id)zoneIDsToZoneNamesString:(id)string
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   if (CKMainBundleIsAppleExecutable())
   {
-    if (objc_msgSend_count(v3, v4, v5))
+    if (objc_msgSend_count(stringCopy, v4, v5))
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v7 = v3;
+      v7 = stringCopy;
       v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v37, v41, 16);
       if (v9)
       {

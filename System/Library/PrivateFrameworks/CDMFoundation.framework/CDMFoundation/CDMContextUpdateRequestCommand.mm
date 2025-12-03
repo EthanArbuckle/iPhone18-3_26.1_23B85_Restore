@@ -1,17 +1,17 @@
 @interface CDMContextUpdateRequestCommand
-- (CDMContextUpdateRequestCommand)initWithCtxUpdateRequest:(id)a3;
+- (CDMContextUpdateRequestCommand)initWithCtxUpdateRequest:(id)request;
 @end
 
 @implementation CDMContextUpdateRequestCommand
 
-- (CDMContextUpdateRequestCommand)initWithCtxUpdateRequest:(id)a3
+- (CDMContextUpdateRequestCommand)initWithCtxUpdateRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = [(CDMBaseCommand *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ctxUpdateRequest, a3);
+    objc_storeStrong(&v6->_ctxUpdateRequest, request);
   }
 
   return v7;

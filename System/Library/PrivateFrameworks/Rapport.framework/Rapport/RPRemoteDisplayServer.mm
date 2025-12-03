@@ -1,21 +1,21 @@
 @interface RPRemoteDisplayServer
 - (RPRemoteDisplayServer)init;
-- (RPRemoteDisplayServer)initWithCoder:(id)a3;
+- (RPRemoteDisplayServer)initWithCoder:(id)coder;
 - (id)description;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)remoteDisplayReceivedEventID:(id)a3 event:(id)a4 options:(id)a5 sessionID:(id)a6;
-- (void)remoteDisplayReceivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6 sessionID:(id)a7;
-- (void)remoteDisplaySessionEndedWithID:(id)a3;
-- (void)remoteDisplayStartServerSessionID:(id)a3 device:(id)a4 linkType:(id)a5 completion:(id)a6;
-- (void)startPairingServerWithCompletion:(id)a3;
+- (void)remoteDisplayReceivedEventID:(id)d event:(id)event options:(id)options sessionID:(id)iD;
+- (void)remoteDisplayReceivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler sessionID:(id)iD;
+- (void)remoteDisplaySessionEndedWithID:(id)d;
+- (void)remoteDisplayStartServerSessionID:(id)d device:(id)device linkType:(id)type completion:(id)completion;
+- (void)startPairingServerWithCompletion:(id)completion;
 - (void)stopPairingServer;
-- (void)tryPassword:(id)a3;
+- (void)tryPassword:(id)password;
 @end
 
 @implementation RPRemoteDisplayServer
@@ -36,9 +36,9 @@
   return v3;
 }
 
-- (RPRemoteDisplayServer)initWithCoder:(id)a3
+- (RPRemoteDisplayServer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RPRemoteDisplayServer;
   v5 = [(RPRemoteDisplayServer *)&v10 init];
@@ -58,7 +58,7 @@
       v6->_passwordType = v11;
     }
 
-    v7 = v4;
+    v7 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -68,29 +68,29 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   internalAuthFlags = self->_internalAuthFlags;
-  v8 = v4;
+  v8 = coderCopy;
   if (internalAuthFlags)
   {
-    [v4 encodeInt64:internalAuthFlags forKey:@"iaf"];
-    v4 = v8;
+    [coderCopy encodeInt64:internalAuthFlags forKey:@"iaf"];
+    coderCopy = v8;
   }
 
   passwordType = self->_passwordType;
   if (passwordType)
   {
     [v8 encodeInteger:passwordType forKey:@"pwTy"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   serviceType = self->_serviceType;
   if (serviceType)
   {
     [v8 encodeObject:serviceType forKey:@"srvTy"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
@@ -113,25 +113,25 @@
   return v4;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__RPRemoteDisplayServer_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  reactivateCopy = reactivate;
+  completionCopy = completion;
+  if (reactivateCopy)
   {
     if (gLogCategory_RPRemoteDisplayServer <= 30 && (gLogCategory_RPRemoteDisplayServer != -1 || _LogCategory_Initialize()))
     {
@@ -171,15 +171,15 @@ LABEL_18:
   v14[1] = 3221225472;
   v14[2] = __60__RPRemoteDisplayServer__activateWithCompletion_reactivate___block_invoke;
   v14[3] = &unk_1E7C92F88;
-  v16 = v4;
-  v8 = v6;
+  v16 = reactivateCopy;
+  v8 = completionCopy;
   v15 = v8;
   v9 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__RPRemoteDisplayServer__activateWithCompletion_reactivate___block_invoke_2;
   v11[3] = &unk_1E7C92F88;
-  v13 = v4;
+  v13 = reactivateCopy;
   v12 = v8;
   v10 = v8;
   [v9 remoteDisplayActivateServer:self completion:v11];
@@ -440,13 +440,13 @@ uint64_t __35__RPRemoteDisplayServer_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)tryPassword:(id)a3
+- (void)tryPassword:(id)password
 {
-  v3 = a3;
-  v4 = v3;
+  passwordCopy = password;
+  v4 = passwordCopy;
   if (gLogCategory_RPRemoteDisplayServer <= 90)
   {
-    v6 = v3;
+    v6 = passwordCopy;
     if (gLogCategory_RPRemoteDisplayServer != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       [RPRemoteDisplayServer tryPassword:];
@@ -455,9 +455,9 @@ uint64_t __35__RPRemoteDisplayServer_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)startPairingServerWithCompletion:(id)a3
+- (void)startPairingServerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sessionStartHandler = self->_sessionStartHandler;
   self->_sessionStartHandler = &__block_literal_global_107;
 
@@ -466,7 +466,7 @@ uint64_t __35__RPRemoteDisplayServer_invalidate__block_invoke(uint64_t result)
   v13[1] = 3221225472;
   v13[2] = __58__RPRemoteDisplayServer_startPairingServerWithCompletion___block_invoke_2;
   v13[3] = &unk_1E7C92DA8;
-  v7 = v4;
+  v7 = completionCopy;
   v14 = v7;
   v8 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v13];
   guestPairStartReason = self->_guestPairStartReason;
@@ -541,30 +541,30 @@ void *__58__RPRemoteDisplayServer_startPairingServerWithCompletion___block_invok
 
 - (void)stopPairingServer
 {
-  v3 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-  [v3 remoteDisplayStopPairingServer];
+  remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+  [remoteObjectProxy remoteDisplayStopPairingServer];
 
   self->_pairingServerRunning = 0;
 }
 
-- (void)remoteDisplayStartServerSessionID:(id)a3 device:(id)a4 linkType:(id)a5 completion:(id)a6
+- (void)remoteDisplayStartServerSessionID:(id)d device:(id)device linkType:(id)type completion:(id)completion
 {
-  v22 = a3;
-  v10 = a6;
+  dCopy = d;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
-  v12 = a5;
-  v13 = a4;
+  typeCopy = type;
+  deviceCopy = device;
   dispatch_assert_queue_V2(dispatchQueue);
   v14 = objc_alloc_init(RPRemoteDisplaySession);
-  [(RPRemoteDisplaySession *)v14 setDestinationDevice:v13];
+  [(RPRemoteDisplaySession *)v14 setDestinationDevice:deviceCopy];
 
   [(RPRemoteDisplaySession *)v14 setDispatchQueue:self->_dispatchQueue];
   [(RPRemoteDisplaySession *)v14 setServer:self];
-  [(RPRemoteDisplaySession *)v14 setSessionID:v22];
+  [(RPRemoteDisplaySession *)v14 setSessionID:dCopy];
   [(RPRemoteDisplaySession *)v14 setXpcCnx:self->_xpcCnx];
-  v15 = [v12 intValue];
+  intValue = [typeCopy intValue];
 
-  [(RPRemoteDisplaySession *)v14 setLinkType:v15];
+  [(RPRemoteDisplaySession *)v14 setLinkType:intValue];
   sessions = self->_sessions;
   if (!sessions)
   {
@@ -575,27 +575,27 @@ void *__58__RPRemoteDisplayServer_startPairingServerWithCompletion___block_invok
     sessions = self->_sessions;
   }
 
-  [(NSMutableDictionary *)sessions setObject:v14 forKeyedSubscript:v22];
+  [(NSMutableDictionary *)sessions setObject:v14 forKeyedSubscript:dCopy];
   v19 = _Block_copy(self->_sessionStartHandler);
   v20 = v19;
   if (v19)
   {
-    (*(v19 + 2))(v19, v14, v10);
+    (*(v19 + 2))(v19, v14, completionCopy);
   }
 
   else
   {
     v21 = RPErrorF();
-    v10[2](v10, v21);
+    completionCopy[2](completionCopy, v21);
   }
 }
 
-- (void)remoteDisplaySessionEndedWithID:(id)a3
+- (void)remoteDisplaySessionEndedWithID:(id)d
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(dispatchQueue);
-  v8 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v5];
+  v8 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:dCopy];
 
   if (v8)
   {
@@ -608,36 +608,36 @@ void *__58__RPRemoteDisplayServer_startPairingServerWithCompletion___block_invok
   }
 }
 
-- (void)remoteDisplayReceivedEventID:(id)a3 event:(id)a4 options:(id)a5 sessionID:(id)a6
+- (void)remoteDisplayReceivedEventID:(id)d event:(id)event options:(id)options sessionID:(id)iD
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  eventCopy = event;
+  optionsCopy = options;
   dispatchQueue = self->_dispatchQueue;
-  v13 = a6;
+  iDCopy = iD;
   dispatch_assert_queue_V2(dispatchQueue);
-  v14 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v13];
+  v14 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:iDCopy];
 
   if (v14)
   {
-    [v14 remoteDisplayReceivedEventID:v15 event:v10 options:v11];
+    [v14 remoteDisplayReceivedEventID:dCopy event:eventCopy options:optionsCopy];
   }
 }
 
-- (void)remoteDisplayReceivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6 sessionID:(id)a7
+- (void)remoteDisplayReceivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler sessionID:(id)iD
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
-  v16 = a7;
+  iDCopy = iD;
   dispatch_assert_queue_V2(dispatchQueue);
-  v17 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v16];
+  v17 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:iDCopy];
 
   if (v17)
   {
-    [v17 remoteDisplayReceivedRequestID:v18 request:v12 options:v13 responseHandler:v14];
+    [v17 remoteDisplayReceivedRequestID:dCopy request:requestCopy options:optionsCopy responseHandler:handlerCopy];
   }
 }
 

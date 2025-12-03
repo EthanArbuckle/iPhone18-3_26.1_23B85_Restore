@@ -4,19 +4,19 @@
 - (JSABridgeDataSource)dataSource;
 - (JSABridgeTemplateBundleRegistering)templateBundleRegistrar;
 - (JSAEnvironment)environment;
-- (void)bootstrapWithObjectRegistrations:(id)a3;
-- (void)checkForUpgradeWithCompletion:(id)a3;
-- (void)enqueueBlock:(id)a3 file:(id)a4 line:(int64_t)a5;
-- (void)enqueueBlockForInitialLaunch:(id)a3 file:(id)a4 line:(int64_t)a5;
-- (void)enqueueBlockPrefersSync:(id)a3 file:(id)a4 line:(int64_t)a5;
-- (void)enqueueManagedValueCall:(id)a3 arguments:(id)a4 file:(id)a5 line:(int64_t)a6;
-- (void)enqueueManagedValueInvocation:(id)a3 method:(id)a4 arguments:(id)a5 file:(id)a6 line:(int64_t)a7;
-- (void)enqueueValueCall:(id)a3 arguments:(id)a4 file:(id)a5 line:(int64_t)a6;
-- (void)enqueueValueInvocation:(id)a3 method:(id)a4 arguments:(id)a5 file:(id)a6 line:(int64_t)a7;
-- (void)initializeEnvironmentWithDataSource:(id)a3 completion:(id)a4;
-- (void)setupWithPackage:(id)a3 completion:(id)a4;
+- (void)bootstrapWithObjectRegistrations:(id)registrations;
+- (void)checkForUpgradeWithCompletion:(id)completion;
+- (void)enqueueBlock:(id)block file:(id)file line:(int64_t)line;
+- (void)enqueueBlockForInitialLaunch:(id)launch file:(id)file line:(int64_t)line;
+- (void)enqueueBlockPrefersSync:(id)sync file:(id)file line:(int64_t)line;
+- (void)enqueueManagedValueCall:(id)call arguments:(id)arguments file:(id)file line:(int64_t)line;
+- (void)enqueueManagedValueInvocation:(id)invocation method:(id)method arguments:(id)arguments file:(id)file line:(int64_t)line;
+- (void)enqueueValueCall:(id)call arguments:(id)arguments file:(id)file line:(int64_t)line;
+- (void)enqueueValueInvocation:(id)invocation method:(id)method arguments:(id)arguments file:(id)file line:(int64_t)line;
+- (void)initializeEnvironmentWithDataSource:(id)source completion:(id)completion;
+- (void)setupWithPackage:(id)package completion:(id)completion;
 - (void)startProvisioningPackage;
-- (void)upgradePackage:(id)a3 completion:(id)a4;
+- (void)upgradePackage:(id)package completion:(id)completion;
 @end
 
 @implementation JSABridge
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = sub_1EDE4;
   block[3] = &unk_B25E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_CC180 != -1)
   {
     dispatch_once(&qword_CC180, block);
@@ -73,16 +73,16 @@
   return v2;
 }
 
-- (void)bootstrapWithObjectRegistrations:(id)a3
+- (void)bootstrapWithObjectRegistrations:(id)registrations
 {
-  v4 = a3;
+  registrationsCopy = registrations;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[NSBundle mainBundle];
-    v7 = [v6 bundleIdentifier];
+    bundleIdentifier = [v6 bundleIdentifier];
     *buf = 138543362;
-    v13 = v7;
+    v13 = bundleIdentifier;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "JSABridge bootstrapping for %{public}@", buf, 0xCu);
   }
 
@@ -92,23 +92,23 @@
   v10[2] = sub_1EF78;
   v10[3] = &unk_B2128;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = registrationsCopy;
+  v9 = registrationsCopy;
   dispatch_sync(bootstrapQueue, v10);
 }
 
-- (void)initializeEnvironmentWithDataSource:(id)a3 completion:(id)a4
+- (void)initializeEnvironmentWithDataSource:(id)source completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  completionCopy = completion;
   +[JSAMetricsAppLaunchEvent markJSBootstrapStartTime];
   v8 = JSALog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = +[NSBundle mainBundle];
-    v10 = [v9 bundleIdentifier];
+    bundleIdentifier = [v9 bundleIdentifier];
     *buf = 138543362;
-    v23 = v10;
+    v23 = bundleIdentifier;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "JSABridge initializing environment for %{public}@", buf, 0xCu);
   }
 
@@ -128,8 +128,8 @@
 LABEL_6:
   }
 
-  [(JSABridge *)self setDataSource:v6];
-  v13 = [v6 windowProviderForBridge:self];
+  [(JSABridge *)self setDataSource:sourceCopy];
+  v13 = [sourceCopy windowProviderForBridge:self];
   v14 = [[JSAWindowManager alloc] initWithWindowProvider:v13];
   [(JSABridge *)self setWindowManager:v14];
 
@@ -141,11 +141,11 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = sub_1F220;
   block[3] = &unk_B3308;
-  v20 = v6;
-  v21 = v7;
+  v20 = sourceCopy;
+  v21 = completionCopy;
   block[4] = self;
-  v17 = v6;
-  v18 = v7;
+  v17 = sourceCopy;
+  v18 = completionCopy;
   dispatch_async(bootstrapQueue, block);
 }
 
@@ -158,39 +158,39 @@ LABEL_6:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Start provisioning package for launch", v5, 2u);
   }
 
-  v4 = [(JSABridge *)self launchPackageProvisioner];
-  [v4 provisionWithCompletionHandler:&stru_B3348];
+  launchPackageProvisioner = [(JSABridge *)self launchPackageProvisioner];
+  [launchPackageProvisioner provisionWithCompletionHandler:&stru_B3348];
 }
 
-- (void)checkForUpgradeWithCompletion:(id)a3
+- (void)checkForUpgradeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[JSAPackageProvisioner alloc] initWithLaunching:0];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1F678;
   v7[3] = &unk_B3370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(JSAPackageProvisioner *)v5 provisionWithCompletionHandler:v7];
 }
 
-- (void)upgradePackage:(id)a3 completion:(id)a4
+- (void)upgradePackage:(id)package completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  packageCopy = package;
+  completionCopy = completion;
+  if (packageCopy)
   {
-    v8 = v6;
+    v8 = packageCopy;
     v9 = JSALog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 version];
+      version = [v8 version];
       *buf = 136446466;
       v23 = "[JSABridge upgradePackage:completion:]";
       v24 = 2114;
-      v25 = v10;
+      v25 = version;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}s upgrading to given package with version %{public}@", buf, 0x16u);
     }
 
@@ -199,8 +199,8 @@ LABEL_6:
     v19[2] = sub_1FB74;
     v19[3] = &unk_B2728;
     v20 = v8;
-    v21 = v7;
-    v11 = v7;
+    v21 = completionCopy;
+    v11 = completionCopy;
     v12 = v8;
     [(JSABridge *)self setupWithPackage:v12 completion:v19];
 
@@ -212,11 +212,11 @@ LABEL_6:
     v14 = JSALog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(JSABridge *)self pendingPackageVersion];
+      pendingPackageVersion = [(JSABridge *)self pendingPackageVersion];
       *buf = 136446466;
       v23 = "[JSABridge upgradePackage:completion:]";
       v24 = 2114;
-      v25 = v15;
+      v25 = pendingPackageVersion;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%{public}s upgrading to pending package with last known version %{public}@", buf, 0x16u);
     }
 
@@ -226,60 +226,60 @@ LABEL_6:
     v17[2] = sub_1FC70;
     v17[3] = &unk_B3370;
     v17[4] = self;
-    v18 = v7;
-    v16 = v7;
+    v18 = completionCopy;
+    v16 = completionCopy;
     [(JSAPackageProvisioner *)v12 provisionWithCompletionHandler:v17];
     v13 = v18;
   }
 }
 
-- (void)setupWithPackage:(id)a3 completion:(id)a4
+- (void)setupWithPackage:(id)package completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  packageCopy = package;
+  completionCopy = completion;
   v8 = JSALog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v6;
+    v31 = packageCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "JSABridge loadScriptFromPackage: %@", buf, 0xCu);
   }
 
   [(JSABridge *)self setIsLoadingScript:1];
-  v9 = [(JSABridge *)self currentPackage];
+  currentPackage = [(JSABridge *)self currentPackage];
 
-  if (v9)
+  if (currentPackage)
   {
-    v10 = [AMSPromise promiseWithResult:v6];
-    [(JSABridge *)self setPackagePromise:v10];
+    packagePromise2 = [AMSPromise promiseWithResult:packageCopy];
+    [(JSABridge *)self setPackagePromise:packagePromise2];
   }
 
   else
   {
-    v11 = [(JSABridge *)self packagePromise];
-    v12 = [v11 isFinished];
+    packagePromise = [(JSABridge *)self packagePromise];
+    isFinished = [packagePromise isFinished];
 
-    if (v12)
+    if (isFinished)
     {
       goto LABEL_8;
     }
 
-    v10 = [(JSABridge *)self packagePromise];
-    [v10 finishWithResult:v6];
+    packagePromise2 = [(JSABridge *)self packagePromise];
+    [packagePromise2 finishWithResult:packageCopy];
   }
 
 LABEL_8:
-  [(JSABridge *)self setCurrentPackage:v6];
-  v13 = [(JSABridge *)self isScriptLoaded];
-  if (v13)
+  [(JSABridge *)self setCurrentPackage:packageCopy];
+  isScriptLoaded = [(JSABridge *)self isScriptLoaded];
+  if (isScriptLoaded)
   {
     dispatch_async(&_dispatch_main_q, &stru_B3390);
   }
 
   v14 = objc_alloc_init(AMSPromise);
   [(JSABridge *)self setTemplateRegistrationPromise:v14];
-  v15 = [(JSABridge *)self templateBundleRegistrar];
-  if (!v15)
+  templateBundleRegistrar = [(JSABridge *)self templateBundleRegistrar];
+  if (!templateBundleRegistrar)
   {
     v16 = JSALog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -288,7 +288,7 @@ LABEL_8:
     }
   }
 
-  if (v13)
+  if (isScriptLoaded)
   {
     v17 = 25;
   }
@@ -304,235 +304,235 @@ LABEL_8:
   block[2] = sub_20280;
   block[3] = &unk_B2638;
   block[4] = self;
-  v19 = v6;
+  v19 = packageCopy;
   v28 = v19;
   v29 = v14;
   v20 = v14;
   dispatch_async(v18, block);
 
-  v21 = [(JSABridge *)self environment];
+  environment = [(JSABridge *)self environment];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_202F8;
   v24[3] = &unk_B33B8;
   v24[4] = self;
   v25 = v19;
-  v26 = v7;
-  v22 = v7;
+  v26 = completionCopy;
+  v22 = completionCopy;
   v23 = v19;
-  [v21 loadScriptFromPackage:v23 completion:v24];
+  [environment loadScriptFromPackage:v23 completion:v24];
 }
 
-- (void)enqueueBlock:(id)a3 file:(id)a4 line:(int64_t)a5
+- (void)enqueueBlock:(id)block file:(id)file line:(int64_t)line
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  blockCopy = block;
+  fileCopy = file;
+  if (blockCopy)
   {
     v10 = JSALog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = objc_retainBlock(v8);
+      v11 = objc_retainBlock(blockCopy);
       v14 = 138543874;
       v15 = v11;
       v16 = 2114;
-      v17 = v9;
+      v17 = fileCopy;
       v18 = 2048;
-      v19 = a5;
+      lineCopy = line;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "JSABridge enqueue block '%{public}@' from %{public}@:%li", &v14, 0x20u);
     }
 
-    v12 = [[JSAPendingExecutionRecord alloc] initWithBlock:v8];
-    v13 = [(JSABridge *)self generalExecutionRecordQueue];
-    [v13 enqueueRecord:v12];
+    v12 = [[JSAPendingExecutionRecord alloc] initWithBlock:blockCopy];
+    generalExecutionRecordQueue = [(JSABridge *)self generalExecutionRecordQueue];
+    [generalExecutionRecordQueue enqueueRecord:v12];
 
     sub_20480(self, 0);
   }
 }
 
-- (void)enqueueBlockPrefersSync:(id)a3 file:(id)a4 line:(int64_t)a5
+- (void)enqueueBlockPrefersSync:(id)sync file:(id)file line:(int64_t)line
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  syncCopy = sync;
+  fileCopy = file;
+  if (syncCopy)
   {
     v10 = JSALog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = objc_retainBlock(v8);
+      v11 = objc_retainBlock(syncCopy);
       v14 = 138543874;
       v15 = v11;
       v16 = 2114;
-      v17 = v9;
+      v17 = fileCopy;
       v18 = 2048;
-      v19 = a5;
+      lineCopy = line;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "JSABridge enqueue block sync '%{public}@' from %{public}@:%li", &v14, 0x20u);
     }
 
-    v12 = [[JSAPendingExecutionRecord alloc] initWithBlock:v8];
-    v13 = [(JSABridge *)self generalExecutionRecordQueue];
-    [v13 enqueueRecord:v12];
+    v12 = [[JSAPendingExecutionRecord alloc] initWithBlock:syncCopy];
+    generalExecutionRecordQueue = [(JSABridge *)self generalExecutionRecordQueue];
+    [generalExecutionRecordQueue enqueueRecord:v12];
 
     sub_20480(self, 1);
   }
 }
 
-- (void)enqueueBlockForInitialLaunch:(id)a3 file:(id)a4 line:(int64_t)a5
+- (void)enqueueBlockForInitialLaunch:(id)launch file:(id)file line:(int64_t)line
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  launchCopy = launch;
+  fileCopy = file;
+  if (launchCopy)
   {
     v10 = JSALog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = objc_retainBlock(v8);
+      v11 = objc_retainBlock(launchCopy);
       v17 = 138543874;
       v18 = v11;
       v19 = 2114;
-      v20 = v9;
+      v20 = fileCopy;
       v21 = 2048;
-      v22 = a5;
+      lineCopy = line;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "JSABridge enqueue block for initial launch '%{public}@' from %{public}@:%li", &v17, 0x20u);
     }
 
-    v12 = [(JSABridge *)self launchExecutionRecordQueue];
-    v13 = v12;
-    if (v12)
+    launchExecutionRecordQueue = [(JSABridge *)self launchExecutionRecordQueue];
+    v13 = launchExecutionRecordQueue;
+    if (launchExecutionRecordQueue)
     {
-      v14 = v12;
+      generalExecutionRecordQueue = launchExecutionRecordQueue;
     }
 
     else
     {
-      v14 = [(JSABridge *)self generalExecutionRecordQueue];
+      generalExecutionRecordQueue = [(JSABridge *)self generalExecutionRecordQueue];
     }
 
-    v15 = v14;
+    v15 = generalExecutionRecordQueue;
 
-    v16 = [[JSAPendingExecutionRecord alloc] initWithBlock:v8];
+    v16 = [[JSAPendingExecutionRecord alloc] initWithBlock:launchCopy];
     [v15 enqueueRecord:v16];
     sub_20480(self, 0);
   }
 }
 
-- (void)enqueueValueCall:(id)a3 arguments:(id)a4 file:(id)a5 line:(int64_t)a6
+- (void)enqueueValueCall:(id)call arguments:(id)arguments file:(id)file line:(int64_t)line
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  callCopy = call;
+  argumentsCopy = arguments;
+  fileCopy = file;
+  if (callCopy)
   {
     v13 = JSALog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134349826;
-      v17 = v10;
+      v17 = callCopy;
       v18 = 2048;
-      v19 = [v11 count];
+      v19 = [argumentsCopy count];
       v20 = 2114;
-      v21 = v12;
+      v21 = fileCopy;
       v22 = 2048;
-      v23 = a6;
+      lineCopy = line;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "JSABridge enqueue value call '%{public}p' with %lu args from %{public}@:%li", &v16, 0x2Au);
     }
 
-    v14 = [[JSAPendingExecutionRecord alloc] initWithValue:v10 method:0 arguments:v11 type:2];
-    v15 = [(JSABridge *)self generalExecutionRecordQueue];
-    [v15 enqueueRecord:v14];
+    v14 = [[JSAPendingExecutionRecord alloc] initWithValue:callCopy method:0 arguments:argumentsCopy type:2];
+    generalExecutionRecordQueue = [(JSABridge *)self generalExecutionRecordQueue];
+    [generalExecutionRecordQueue enqueueRecord:v14];
 
     sub_20480(self, 0);
   }
 }
 
-- (void)enqueueValueInvocation:(id)a3 method:(id)a4 arguments:(id)a5 file:(id)a6 line:(int64_t)a7
+- (void)enqueueValueInvocation:(id)invocation method:(id)method arguments:(id)arguments file:(id)file line:(int64_t)line
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  invocationCopy = invocation;
+  methodCopy = method;
+  argumentsCopy = arguments;
+  fileCopy = file;
+  if (invocationCopy)
   {
     v16 = JSALog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 134350082;
-      v20 = v12;
+      v20 = invocationCopy;
       v21 = 2114;
-      v22 = v13;
+      v22 = methodCopy;
       v23 = 2048;
-      v24 = [v14 count];
+      v24 = [argumentsCopy count];
       v25 = 2114;
-      v26 = v15;
+      v26 = fileCopy;
       v27 = 2048;
-      v28 = a7;
+      lineCopy = line;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "JSABridge enqueue value invocation '%{public}p' for '%{public}@' with %lu args from %{public}@:%li", &v19, 0x34u);
     }
 
-    v17 = [[JSAPendingExecutionRecord alloc] initWithValue:v12 method:v13 arguments:v14 type:3];
-    v18 = [(JSABridge *)self generalExecutionRecordQueue];
-    [v18 enqueueRecord:v17];
+    v17 = [[JSAPendingExecutionRecord alloc] initWithValue:invocationCopy method:methodCopy arguments:argumentsCopy type:3];
+    generalExecutionRecordQueue = [(JSABridge *)self generalExecutionRecordQueue];
+    [generalExecutionRecordQueue enqueueRecord:v17];
 
     sub_20480(self, 0);
   }
 }
 
-- (void)enqueueManagedValueCall:(id)a3 arguments:(id)a4 file:(id)a5 line:(int64_t)a6
+- (void)enqueueManagedValueCall:(id)call arguments:(id)arguments file:(id)file line:(int64_t)line
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  callCopy = call;
+  argumentsCopy = arguments;
+  fileCopy = file;
+  if (callCopy)
   {
     v13 = JSALog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134349826;
-      v17 = v10;
+      v17 = callCopy;
       v18 = 2048;
-      v19 = [v11 count];
+      v19 = [argumentsCopy count];
       v20 = 2114;
-      v21 = v12;
+      v21 = fileCopy;
       v22 = 2048;
-      v23 = a6;
+      lineCopy = line;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "JSABridge enqueue managed value call '%{public}p' with %lu args from %{public}@:%li", &v16, 0x2Au);
     }
 
-    v14 = [[JSAPendingExecutionRecord alloc] initWithManagedValue:v10 method:0 arguments:v11 type:2];
-    v15 = [(JSABridge *)self generalExecutionRecordQueue];
-    [v15 enqueueRecord:v14];
+    v14 = [[JSAPendingExecutionRecord alloc] initWithManagedValue:callCopy method:0 arguments:argumentsCopy type:2];
+    generalExecutionRecordQueue = [(JSABridge *)self generalExecutionRecordQueue];
+    [generalExecutionRecordQueue enqueueRecord:v14];
 
     sub_20480(self, 0);
   }
 }
 
-- (void)enqueueManagedValueInvocation:(id)a3 method:(id)a4 arguments:(id)a5 file:(id)a6 line:(int64_t)a7
+- (void)enqueueManagedValueInvocation:(id)invocation method:(id)method arguments:(id)arguments file:(id)file line:(int64_t)line
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  invocationCopy = invocation;
+  methodCopy = method;
+  argumentsCopy = arguments;
+  fileCopy = file;
+  if (invocationCopy)
   {
     v16 = JSALog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 134350082;
-      v20 = v12;
+      v20 = invocationCopy;
       v21 = 2114;
-      v22 = v13;
+      v22 = methodCopy;
       v23 = 2048;
-      v24 = [v14 count];
+      v24 = [argumentsCopy count];
       v25 = 2114;
-      v26 = v15;
+      v26 = fileCopy;
       v27 = 2048;
-      v28 = a7;
+      lineCopy = line;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "JSABridge enqueue managed value invocation '%{public}p' for '%{public}@' with %lu args from %{public}@:%li", &v19, 0x34u);
     }
 
-    v17 = [[JSAPendingExecutionRecord alloc] initWithManagedValue:v12 method:v13 arguments:v14 type:3];
-    v18 = [(JSABridge *)self generalExecutionRecordQueue];
-    [v18 enqueueRecord:v17];
+    v17 = [[JSAPendingExecutionRecord alloc] initWithManagedValue:invocationCopy method:methodCopy arguments:argumentsCopy type:3];
+    generalExecutionRecordQueue = [(JSABridge *)self generalExecutionRecordQueue];
+    [generalExecutionRecordQueue enqueueRecord:v17];
 
     sub_20480(self, 0);
   }

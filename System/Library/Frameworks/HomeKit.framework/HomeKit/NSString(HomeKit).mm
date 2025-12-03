@@ -14,7 +14,7 @@
   v46 = 0;
   v5 = [MEMORY[0x1E696AB60] dataDetectorWithTypes:a3 error:&v46];
   v6 = v46;
-  [v5 matchesInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}];
+  [v5 matchesInString:self options:0 range:{0, objc_msgSend(self, "length")}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -56,13 +56,13 @@
     v31 = v6;
     v32 = v5;
     v14 = &unk_1F0EFDB38;
-    v15 = [a1 copy];
+    v15 = [self copy];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v16 = [&unk_1F0EFDB38 allKeys];
-    v17 = [v16 countByEnumeratingWithState:&v38 objects:v48 count:16];
+    allKeys = [&unk_1F0EFDB38 allKeys];
+    v17 = [allKeys countByEnumeratingWithState:&v38 objects:v48 count:16];
     if (v17)
     {
       v18 = v17;
@@ -75,7 +75,7 @@
         {
           if (*v39 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allKeys);
           }
 
           v22 = *(*(&v38 + 1) + 8 * v20);
@@ -87,13 +87,13 @@
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v38 objects:v48 count:16];
+        v18 = [allKeys countByEnumeratingWithState:&v38 objects:v48 count:16];
       }
 
       while (v18);
     }
 
-    if ([a1 isEqualToString:v15])
+    if ([self isEqualToString:v15])
     {
       v12 = 0;
       v6 = v31;
@@ -173,10 +173,10 @@ LABEL_33:
   }
 
   v2 = HMMaxLengthForNaming__hmf_once_v9;
-  if (HMMaxLengthForNaming__hmf_once_v9 && [a1 length] > v2)
+  if (HMMaxLengthForNaming__hmf_once_v9 && [self length] > v2)
   {
-    v3 = [a1 rangeOfComposedCharacterSequencesForRange:{0, v2}];
-    v5 = [a1 substringWithRange:{v3, v4}];
+    v3 = [self rangeOfComposedCharacterSequencesForRange:{0, v2}];
+    v5 = [self substringWithRange:{v3, v4}];
     if ([v5 length] <= v2)
     {
       v6 = v5;
@@ -187,23 +187,23 @@ LABEL_33:
       v6 = [v5 substringToIndex:v2 - 1];
     }
 
-    v7 = v6;
+    selfCopy = v6;
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)hm_truncatedDisplayableVersionString
 {
-  if ([a1 length] > 0x40)
+  if ([self length] > 0x40)
   {
-    v3 = [a1 rangeOfComposedCharacterSequencesForRange:{0, 64}];
-    v5 = [a1 substringWithRange:{v3, v4}];
+    v3 = [self rangeOfComposedCharacterSequencesForRange:{0, 64}];
+    v5 = [self substringWithRange:{v3, v4}];
     if ([v5 length] <= 0x40)
     {
       v6 = v5;
@@ -214,15 +214,15 @@ LABEL_33:
       v6 = [v5 substringToIndex:63];
     }
 
-    v2 = v6;
+    selfCopy = v6;
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)stringByTransformingFirstWordUsingBlock:()HomeKit
@@ -239,7 +239,7 @@ LABEL_33:
   v18 = __Block_byref_object_copy__66567;
   v19 = __Block_byref_object_dispose__66568;
   v20 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__NSString_HomeKit__stringByTransformingFirstWordUsingBlock___block_invoke;
@@ -248,19 +248,19 @@ LABEL_33:
   v14 = &v15;
   v6 = v4;
   v12 = v6;
-  [a1 enumerateSubstringsInRange:0 options:v5 usingBlock:{3, v11}];
+  [self enumerateSubstringsInRange:0 options:v5 usingBlock:{3, v11}];
   v7 = v22[4];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [a1 stringByReplacingCharactersInRange:v7 withString:{v22[5], v16[5]}];
+    selfCopy = [self stringByReplacingCharactersInRange:v7 withString:{v22[5], v16[5]}];
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v21, 8);
@@ -270,10 +270,10 @@ LABEL_33:
 
 - (id)hm_generateSHA1
 {
-  v1 = [a1 dataUsingEncoding:4];
-  v2 = [v1 hm_generateSHA1];
+  v1 = [self dataUsingEncoding:4];
+  hm_generateSHA1 = [v1 hm_generateSHA1];
 
-  return v2;
+  return hm_generateSHA1;
 }
 
 @end

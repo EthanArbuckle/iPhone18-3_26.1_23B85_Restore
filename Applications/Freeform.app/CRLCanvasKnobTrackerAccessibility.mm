@@ -1,28 +1,28 @@
 @interface CRLCanvasKnobTrackerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-+ (id)crlaxKnobTrackerWithRep:(id)a3 knob:(id)a4;
++ (id)crlaxCastFrom:(id)from;
++ (id)crlaxKnobTrackerWithRep:(id)rep knob:(id)knob;
 - (CGRect)crlaxCurrentBoundsForStandardKnobs;
 - (CRLCanvasKnobAccessibility)crlaxKnob;
-- (void)crlaxAnnounceString:(id)a3;
-- (void)crlaxPerformBlockWhilePreventingDisplayOfCurrentValueHUD:(id)a3;
+- (void)crlaxAnnounceString:(id)string;
+- (void)crlaxPerformBlockWhilePreventingDisplayOfCurrentValueHUD:(id)d;
 - (void)endMovingKnob;
 @end
 
 @implementation CRLCanvasKnobTrackerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
-+ (id)crlaxKnobTrackerWithRep:(id)a3 knob:(id)a4
++ (id)crlaxKnobTrackerWithRep:(id)rep knob:(id)knob
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  knobCopy = knob;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -34,10 +34,10 @@
   v12[2] = sub_1004FF270;
   v12[3] = &unk_10185DF18;
   v15 = &v17;
-  v16 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = repCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = knobCopy;
   v14 = v9;
   if (__CRLAccessibilityPerformSafeBlock(v12))
   {
@@ -53,11 +53,11 @@
 - (CRLCanvasKnobAccessibility)crlaxKnob
 {
   v8 = 0;
-  v2 = [(CRLCanvasKnobTrackerAccessibility *)self crlaxTarget];
-  v3 = [v2 knob];
+  crlaxTarget = [(CRLCanvasKnobTrackerAccessibility *)self crlaxTarget];
+  knob = [crlaxTarget knob];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, knob, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -70,8 +70,8 @@
 
 - (CGRect)crlaxCurrentBoundsForStandardKnobs
 {
-  v2 = [(CRLCanvasKnobTrackerAccessibility *)self crlaxTarget];
-  [v2 currentBoundsForStandardKnobs];
+  crlaxTarget = [(CRLCanvasKnobTrackerAccessibility *)self crlaxTarget];
+  [crlaxTarget currentBoundsForStandardKnobs];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -88,28 +88,28 @@
   return result;
 }
 
-- (void)crlaxPerformBlockWhilePreventingDisplayOfCurrentValueHUD:(id)a3
+- (void)crlaxPerformBlockWhilePreventingDisplayOfCurrentValueHUD:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(CRLCanvasKnobTrackerAccessibility *)self _crlaxIsPerformingBlockWhilePreventingDisplayOfCurrentValueHUD])
   {
-    v4[2]();
+    dCopy[2]();
   }
 
   else
   {
     [(CRLCanvasKnobTrackerAccessibility *)self _crlaxSetIsPerformingBlockWhilePreventingDisplayOfCurrentValueHUD:1];
-    v4[2]();
+    dCopy[2]();
     [(CRLCanvasKnobTrackerAccessibility *)self _crlaxSetIsPerformingBlockWhilePreventingDisplayOfCurrentValueHUD:0];
   }
 }
 
-- (void)crlaxAnnounceString:(id)a3
+- (void)crlaxAnnounceString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    CRLAccessibilityPostAnnouncementNotification(0, v3);
+    CRLAccessibilityPostAnnouncementNotification(0, stringCopy);
   }
 }
 
@@ -120,9 +120,9 @@
   [(CRLCanvasKnobTrackerAccessibility *)&v5 endMovingKnob];
   if ([(CRLCanvasKnobTrackerAccessibility *)self crlaxShouldAnnounceValueUponEndMovingKnob])
   {
-    v3 = [(CRLCanvasKnobTrackerAccessibility *)self crlaxKnob];
-    v4 = [v3 crlaxValue];
-    [(CRLCanvasKnobTrackerAccessibility *)self crlaxAnnounceString:v4];
+    crlaxKnob = [(CRLCanvasKnobTrackerAccessibility *)self crlaxKnob];
+    crlaxValue = [crlaxKnob crlaxValue];
+    [(CRLCanvasKnobTrackerAccessibility *)self crlaxAnnounceString:crlaxValue];
   }
 }
 

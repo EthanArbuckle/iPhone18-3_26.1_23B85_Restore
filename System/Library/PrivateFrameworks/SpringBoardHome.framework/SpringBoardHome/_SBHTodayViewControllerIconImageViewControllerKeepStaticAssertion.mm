@@ -1,8 +1,8 @@
 @interface _SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion
 - (SBHTodayViewController)todayViewController;
-- (_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion)initWithTodayViewController:(id)a3 reason:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion)initWithTodayViewController:(id)controller reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,18 +10,18 @@
 
 @implementation _SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion
 
-- (_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion)initWithTodayViewController:(id)a3 reason:(id)a4
+- (_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion)initWithTodayViewController:(id)controller reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  reasonCopy = reason;
   v13.receiver = self;
   v13.super_class = _SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion;
   v8 = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_todayViewController, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_todayViewController, controllerCopy);
+    v10 = [reasonCopy copy];
     reason = v9->_reason;
     v9->_reason = v10;
   }
@@ -53,39 +53,39 @@
   if (![(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self isInvalidated])
   {
     [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self setInvalidated:1];
-    v3 = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self todayViewController];
-    [v3 _removeIconImageViewControllerKeepStaticAssertion:self];
+    todayViewController = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self todayViewController];
+    [todayViewController _removeIconImageViewControllerKeepStaticAssertion:self];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self succinctDescriptionBuilder];
-  v5 = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self todayViewController];
-  v6 = [v4 appendPointer:v5 withName:@"todayViewController"];
+  succinctDescriptionBuilder = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self succinctDescriptionBuilder];
+  todayViewController = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self todayViewController];
+  v6 = [succinctDescriptionBuilder appendPointer:todayViewController withName:@"todayViewController"];
 
-  v7 = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self reason];
-  v8 = [v4 appendObject:v7 withName:@"reason"];
+  reason = [(_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion *)self reason];
+  v8 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v9 = [v4 appendBool:-[_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
+  v9 = [succinctDescriptionBuilder appendBool:-[_SBHTodayViewControllerIconImageViewControllerKeepStaticAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBHTodayViewController)todayViewController

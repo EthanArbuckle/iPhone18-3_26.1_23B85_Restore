@@ -1,23 +1,23 @@
 @interface HFCharacteristicStateItem
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFCharacteristicStateItem)init;
-- (HFCharacteristicStateItem)initWithCharacteristicType:(id)a3 valueSource:(id)a4 resultsProvider:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFCharacteristicStateItem)initWithCharacteristicType:(id)type valueSource:(id)source resultsProvider:(id)provider;
+- (id)_subclass_updateWithOptions:(id)options;
 - (unint64_t)hash;
 @end
 
 @implementation HFCharacteristicStateItem
 
-- (HFCharacteristicStateItem)initWithCharacteristicType:(id)a3 valueSource:(id)a4 resultsProvider:(id)a5
+- (HFCharacteristicStateItem)initWithCharacteristicType:(id)type valueSource:(id)source resultsProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  typeCopy = type;
+  sourceCopy = source;
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HFCharacteristicStateItem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"resultsProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicStateItem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"resultsProvider"}];
   }
 
   v19.receiver = self;
@@ -25,12 +25,12 @@
   v12 = [(HFCharacteristicStateItem *)&v19 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [typeCopy copy];
     characteristicType = v12->_characteristicType;
     v12->_characteristicType = v13;
 
-    objc_storeStrong(&v12->_valueSource, a4);
-    v15 = [v11 copy];
+    objc_storeStrong(&v12->_valueSource, source);
+    v15 = [providerCopy copy];
     resultsProvider = v12->_resultsProvider;
     v12->_resultsProvider = v15;
   }
@@ -40,9 +40,9 @@
 
 - (HFCharacteristicStateItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithCharacteristicType_valueSource_resultsProvider_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCharacteristicStateItem.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFCharacteristicStateItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicStateItem.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFCharacteristicStateItem init]", v5}];
 
   return 0;
 }
@@ -71,29 +71,29 @@ void __40__HFCharacteristicStateItem_na_identity__block_invoke_2()
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(HFCharacteristicStateItem *)self characteristicType];
-  v6 = [v4 setWithObject:v5];
+  characteristicType = [(HFCharacteristicStateItem *)self characteristicType];
+  v6 = [v4 setWithObject:characteristicType];
 
-  v7 = [(HFCharacteristicStateItem *)self valueSource];
-  v8 = [v7 readValuesForCharacteristicTypes:v6];
+  valueSource = [(HFCharacteristicStateItem *)self valueSource];
+  v8 = [valueSource readValuesForCharacteristicTypes:v6];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__HFCharacteristicStateItem__subclass_updateWithOptions___block_invoke;

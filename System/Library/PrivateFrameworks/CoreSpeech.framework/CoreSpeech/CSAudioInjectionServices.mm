@@ -1,25 +1,25 @@
 @interface CSAudioInjectionServices
 + (BOOL)audioInjectionEnabled;
-+ (id)GetConnectionForDaemon:(int)a3;
++ (id)GetConnectionForDaemon:(int)daemon;
 + (id)getAudioInjectionXPCConnectionForCoreSpeechD;
-+ (void)pingpong:(id)a3 completion:(id)a4;
++ (void)pingpong:(id)pingpong completion:(id)completion;
 @end
 
 @implementation CSAudioInjectionServices
 
-+ (id)GetConnectionForDaemon:(int)a3
++ (id)GetConnectionForDaemon:(int)daemon
 {
-  if (a3)
+  if (daemon)
   {
-    v5 = 0;
+    getAudioInjectionXPCConnectionForCoreSpeechD = 0;
   }
 
   else
   {
-    v5 = [a1 getAudioInjectionXPCConnectionForCoreSpeechD];
+    getAudioInjectionXPCConnectionForCoreSpeechD = [self getAudioInjectionXPCConnectionForCoreSpeechD];
   }
 
-  return v5;
+  return getAudioInjectionXPCConnectionForCoreSpeechD;
 }
 
 uint64_t __84__CSAudioInjectionServices_primaryInputDeviceUUIDWithhandlingDaemon_WithCompletion___block_invoke(uint64_t a1)
@@ -523,29 +523,29 @@ void __91__CSAudioInjectionServices_selectBuiltInInjectionDeviceWithUUID_handlin
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)pingpong:(id)a3 completion:(id)a4
++ (void)pingpong:(id)pingpong completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   CSLogInitIfNeeded();
-  v6 = [a1 getAudioInjectionXPCConnectionForCoreSpeechD];
+  getAudioInjectionXPCConnectionForCoreSpeechD = [self getAudioInjectionXPCConnectionForCoreSpeechD];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __48__CSAudioInjectionServices_pingpong_completion___block_invoke;
   v17[3] = &unk_2784C6C90;
-  v7 = v5;
+  v7 = completionCopy;
   v18 = v7;
-  [v6 setInterruptionHandler:v17];
+  [getAudioInjectionXPCConnectionForCoreSpeechD setInterruptionHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__CSAudioInjectionServices_pingpong_completion___block_invoke_2;
   v15[3] = &unk_2784C6C90;
   v8 = v7;
   v16 = v8;
-  [v6 setInvalidationHandler:v15];
-  [v6 resume];
-  v9 = [v6 remoteObjectProxy];
-  if (!v9)
+  [getAudioInjectionXPCConnectionForCoreSpeechD setInvalidationHandler:v15];
+  [getAudioInjectionXPCConnectionForCoreSpeechD resume];
+  remoteObjectProxy = [getAudioInjectionXPCConnectionForCoreSpeechD remoteObjectProxy];
+  if (!remoteObjectProxy)
   {
     v11 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
@@ -568,13 +568,13 @@ void __91__CSAudioInjectionServices_selectBuiltInInjectionDeviceWithUUID_handlin
     goto LABEL_6;
   }
 
-  v10 = [v6 remoteObjectProxy];
+  remoteObjectProxy2 = [getAudioInjectionXPCConnectionForCoreSpeechD remoteObjectProxy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48__CSAudioInjectionServices_pingpong_completion___block_invoke_4;
   v13[3] = &unk_2784C6CB8;
   v14 = v8;
-  [v10 pingpong:@"TEST" completion:v13];
+  [remoteObjectProxy2 pingpong:@"TEST" completion:v13];
 
 LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
@@ -637,8 +637,8 @@ uint64_t __48__CSAudioInjectionServices_pingpong_completion___block_invoke_4(uin
 {
   v11 = *MEMORY[0x277D85DE8];
   CSLogInitIfNeeded();
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 programmableAudioInjectionEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  programmableAudioInjectionEnabled = [mEMORY[0x277D01788] programmableAudioInjectionEnabled];
 
   v4 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -646,12 +646,12 @@ uint64_t __48__CSAudioInjectionServices_pingpong_completion___block_invoke_4(uin
     v7 = 136315394;
     v8 = "+[CSAudioInjectionServices audioInjectionEnabled]";
     v9 = 1024;
-    v10 = v3;
+    v10 = programmableAudioInjectionEnabled;
     _os_log_impl(&dword_222E4D000, v4, OS_LOG_TYPE_DEFAULT, "%s Fetched audio injection enabled : %d", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v3;
+  return programmableAudioInjectionEnabled;
 }
 
 + (id)getAudioInjectionXPCConnectionForCoreSpeechD

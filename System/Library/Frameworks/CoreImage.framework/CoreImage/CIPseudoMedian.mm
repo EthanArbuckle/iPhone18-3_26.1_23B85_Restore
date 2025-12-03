@@ -30,33 +30,33 @@
     [(CIFilter *)v10 setValue:self->inputImage forKey:@"inputImage"];
     *&v11 = v7 + -1.0;
     -[CIFilter setValue:forKey:](v10, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v11], @"inputRadius");
-    v12 = [(CIFilter *)v10 outputImage];
+    outputImage = [(CIFilter *)v10 outputImage];
     *&v13 = -(v7 + -1.0);
     -[CIFilter setValue:forKey:](v10, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v13], @"inputRadius");
     [(CIFilter *)v10 setValue:[(CIFilter *)v10 outputImage] forKey:@"inputImage"];
     [(CIFilter *)v10 setValue:self->inputRadius forKey:@"inputRadius"];
-    v14 = [(CIFilter *)v10 outputImage];
-    [(CIFilter *)v10 setValue:v12 forKey:@"inputImage"];
+    outputImage2 = [(CIFilter *)v10 outputImage];
+    [(CIFilter *)v10 setValue:outputImage forKey:@"inputImage"];
     *&v15 = -v7;
     -[CIFilter setValue:forKey:](v10, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v15], @"inputRadius");
-    v4 = [(CIFilter *)v10 outputImage];
+    outputImage3 = [(CIFilter *)v10 outputImage];
     [(CIFilter *)v10 setValue:0 forKey:@"inputImage"];
     if (v9 != 0.0)
     {
       if (v9 == 1.0)
       {
-        return v14;
+        return outputImage2;
       }
 
       else
       {
         v17 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_average];
-        [(CIImage *)v4 extent];
+        [(CIImage *)outputImage3 extent];
         v19 = v18;
         v21 = v20;
         v23 = v22;
         v25 = v24;
-        [(CIImage *)v14 extent];
+        [(CIImage *)outputImage2 extent];
         v36.origin.x = v26;
         v36.origin.y = v27;
         v36.size.width = v28;
@@ -66,8 +66,8 @@
         v34.size.width = v23;
         v34.size.height = v25;
         v35 = CGRectUnion(v34, v36);
-        v31[0] = v4;
-        v31[1] = v14;
+        v31[0] = outputImage3;
+        v31[1] = outputImage2;
         v31[2] = self->inputWeights;
         v30 = -[CIColorKernel applyWithExtent:arguments:](v17, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:3], v35.origin.x, v35.origin.y, v35.size.width, v35.size.height);
         [(CIImage *)self->inputImage extent];
@@ -75,7 +75,7 @@
       }
     }
 
-    return v4;
+    return outputImage3;
   }
 
   v16 = self->inputImage;

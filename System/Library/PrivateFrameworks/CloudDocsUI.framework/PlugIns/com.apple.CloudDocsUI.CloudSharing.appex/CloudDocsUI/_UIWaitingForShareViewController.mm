@@ -15,18 +15,18 @@
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 startAnimating];
-  v5 = [(_UIWaitingForShareViewController *)self view];
-  [v5 addSubview:v3];
+  view = [(_UIWaitingForShareViewController *)self view];
+  [view addSubview:v3];
 
-  v6 = [v3 centerXAnchor];
-  v7 = [(_UIWaitingForShareViewController *)self view];
-  v8 = [v7 centerXAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  centerXAnchor = [v3 centerXAnchor];
+  view2 = [(_UIWaitingForShareViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v16[0] = v9;
-  v10 = [v3 centerYAnchor];
-  v11 = [(_UIWaitingForShareViewController *)self view];
-  v12 = [v11 centerYAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  centerYAnchor = [v3 centerYAnchor];
+  view3 = [(_UIWaitingForShareViewController *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v16[1] = v13;
   v14 = [NSArray arrayWithObjects:v16 count:2];
   [NSLayoutConstraint activateConstraints:v14];

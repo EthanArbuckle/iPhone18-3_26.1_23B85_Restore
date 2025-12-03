@@ -1,25 +1,25 @@
 @interface MRMarimbaLayerView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)marimbaInteractivityIsEnabled;
-- (MRMarimbaLayerView)initWithFrame:(CGRect)a3;
+- (MRMarimbaLayerView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)pinch:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)tap:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)pinch:(id)pinch;
+- (void)setFrame:(CGRect)frame;
+- (void)tap:(id)tap;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation MRMarimbaLayerView
 
-- (MRMarimbaLayerView)initWithFrame:(CGRect)a3
+- (MRMarimbaLayerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = MRMarimbaLayerView;
   v7 = [(MRMarimbaLayerView *)&v11 initWithFrame:?];
@@ -48,22 +48,22 @@
   [(MRMarimbaLayerView *)&v3 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = MRMarimbaLayerView;
-  [(MRMarimbaLayerView *)&v10 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MRMarimbaLayerView *)&v10 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   marimbaLayer = self->_marimbaLayer;
   if (marimbaLayer)
   {
     if (![(MRMarimbaLayer *)marimbaLayer renderer]|| ![(MRRenderer *)[(MRMarimbaLayer *)self->_marimbaLayer renderer] orientation])
     {
-      v5 = [+[UIApplication sharedApplication](UIApplication statusBarOrientation];
+      statusBarOrientation = [+[UIApplication sharedApplication](UIApplication statusBarOrientation];
       v6 = self->_marimbaLayer;
       [(MRMarimbaLayerView *)self bounds];
       v8 = v7;
       [(MRMarimbaLayerView *)self bounds];
-      [(MRMarimbaLayer *)v6 beginMorphingToAspectRatio:v5 andOrientation:0 withDuration:v8 / v9 switchToDocument:0.0];
+      [(MRMarimbaLayer *)v6 beginMorphingToAspectRatio:statusBarOrientation andOrientation:0 withDuration:v8 / v9 switchToDocument:0.0];
       [(MRMarimbaLayer *)self->_marimbaLayer endMorphing];
     }
 
@@ -85,33 +85,33 @@
   return v3;
 }
 
-- (void)pinch:(id)a3
+- (void)pinch:(id)pinch
 {
   if ([(MRMarimbaLayerView *)self marimbaInteractivityIsEnabled])
   {
-    v5 = [(MRMarimbaLayerView *)self superview];
+    superview = [(MRMarimbaLayerView *)self superview];
 
-    [v5 pinchIn:a3];
+    [superview pinchIn:pinch];
   }
 }
 
-- (void)tap:(id)a3
+- (void)tap:(id)tap
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([tap state] == &dword_0 + 3)
   {
-    v5 = [(MRMarimbaLayerView *)self superview];
-    [a3 locationInView:self];
+    superview = [(MRMarimbaLayerView *)self superview];
+    [tap locationInView:self];
 
-    [v5 marimbaWasSingleTappedAtPoint:?];
+    [superview marimbaWasSingleTappedAtPoint:?];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v5 = [-[MRMarimbaLayerView superview](self "superview")];
-  if (self->_tapRecognizer != a3)
+  if (self->_tapRecognizer != begin)
   {
-    if (self->_pinchRecognizer == a3)
+    if (self->_pinchRecognizer == begin)
     {
       if (!v5)
       {
@@ -126,11 +126,11 @@
       }
     }
 
-    else if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([a3 velocityInView:self], !-[MRRenderer canGoToMoreSlides:](-[MRMarimbaLayer renderer](self->_marimbaLayer, "renderer"), "canGoToMoreSlides:", v6 > 0.0)))
+    else if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([begin velocityInView:self], !-[MRRenderer canGoToMoreSlides:](-[MRMarimbaLayer renderer](self->_marimbaLayer, "renderer"), "canGoToMoreSlides:", v6 > 0.0)))
     {
       v10.receiver = self;
       v10.super_class = MRMarimbaLayerView;
-      LOBYTE(v5) = [(MRMarimbaLayerView *)&v10 gestureRecognizerShouldBegin:a3];
+      LOBYTE(v5) = [(MRMarimbaLayerView *)&v10 gestureRecognizerShouldBegin:begin];
       return v5;
     }
 
@@ -140,54 +140,54 @@
 
   if (v5)
   {
-    v7 = [(MRMarimbaLayerView *)self superview];
+    superview = [(MRMarimbaLayerView *)self superview];
 
-    LOBYTE(v5) = [v7 wantsSingleTap];
+    LOBYTE(v5) = [superview wantsSingleTap];
   }
 
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   if ([-[MRMarimbaLayerView superview](self superview])
   {
     touchSet = self->_touchSet;
     if (touchSet)
     {
-      v7 = [(MRTouchSet *)touchSet updateWithUITouches:a3 inView:self];
+      touches = [(MRTouchSet *)touchSet updateWithUITouches:began inView:self];
     }
 
     else
     {
-      v8 = [[MRTouchSet alloc] initWithUITouches:a3 inView:self];
+      v8 = [[MRTouchSet alloc] initWithUITouches:began inView:self];
       self->_touchSet = v8;
-      v7 = [(MRTouchSet *)v8 touches];
+      touches = [(MRTouchSet *)v8 touches];
     }
 
-    v9 = v7;
+    v9 = touches;
     marimbaLayer = self->_marimbaLayer;
 
     [(MRMarimbaLayer *)marimbaLayer touchesBegan:v9];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if ([-[MRMarimbaLayerView superview](self superview])
   {
-    v6 = [(MRTouchSet *)self->_touchSet updateWithUITouches:a3 inView:self];
+    v6 = [(MRTouchSet *)self->_touchSet updateWithUITouches:moved inView:self];
     marimbaLayer = self->_marimbaLayer;
 
     [(MRMarimbaLayer *)marimbaLayer touchesMoved:v6];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if ([-[MRMarimbaLayerView superview](self superview])
   {
-    [(MRMarimbaLayer *)self->_marimbaLayer touchesCancelled:[(MRTouchSet *)self->_touchSet updateWithUITouches:a3 inView:self]];
+    [(MRMarimbaLayer *)self->_marimbaLayer touchesCancelled:[(MRTouchSet *)self->_touchSet updateWithUITouches:cancelled inView:self]];
     if (![(MRTouchSet *)self->_touchSet isActive])
     {
 
@@ -196,11 +196,11 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if ([-[MRMarimbaLayerView superview](self superview])
   {
-    [(MRMarimbaLayer *)self->_marimbaLayer touchesEnded:[(MRTouchSet *)self->_touchSet updateWithUITouches:a3 inView:self]];
+    [(MRMarimbaLayer *)self->_marimbaLayer touchesEnded:[(MRTouchSet *)self->_touchSet updateWithUITouches:ended inView:self]];
     if (![(MRTouchSet *)self->_touchSet isActive])
     {
 

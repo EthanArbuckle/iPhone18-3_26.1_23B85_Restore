@@ -7,7 +7,7 @@
 - (void)_set_pk_longSqueezeAction:()PKLongSqueeze
 {
   v4 = _Block_copy(aBlock);
-  objc_setAssociatedObject(a1, &kUIViewPKLongSqueezeActionKey, v4, 3);
+  objc_setAssociatedObject(self, &kUIViewPKLongSqueezeActionKey, v4, 3);
 }
 
 @end

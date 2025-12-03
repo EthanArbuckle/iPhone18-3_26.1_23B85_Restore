@@ -1,7 +1,7 @@
 @interface MSXPCConnection
-- (MSXPCConnection)initWithProtocol:(id)a3;
+- (MSXPCConnection)initWithProtocol:(id)protocol;
 - (id)_connection;
-- (id)_connectionForPromise:(id)a3;
+- (id)_connectionForPromise:(id)promise;
 - (id)_nts_wrappedInterruptionHandler;
 - (id)description;
 - (id)exportedInterface;
@@ -10,24 +10,24 @@
 - (id)invalidationHandler;
 - (id)remoteObjectInterface;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (int)auditSessionIdentifier;
 - (int)processIdentifier;
 - (unsigned)effectiveGroupIdentifier;
 - (unsigned)effectiveUserIdentifier;
-- (void)_finishPromise:(id)a3 withConnection:(id)a4 error:(id)a5;
-- (void)_invalidatePromise:(id)a3;
-- (void)_invokeInterruptionHandlerForPromise:(id)a3;
+- (void)_finishPromise:(id)promise withConnection:(id)connection error:(id)error;
+- (void)_invalidatePromise:(id)promise;
+- (void)_invokeInterruptionHandlerForPromise:(id)promise;
 - (void)_queue_invokeInvalidationHandler;
-- (void)_sendInvocation:(id)a3 remoteInterface:(id)a4 remoteProxy:(id)a5 errorHandler:(id)a6;
+- (void)_sendInvocation:(id)invocation remoteInterface:(id)interface remoteProxy:(id)proxy errorHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 - (void)resume;
-- (void)setExportedInterface:(id)a3;
-- (void)setExportedObject:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setRemoteObjectInterface:(id)a3;
+- (void)setExportedInterface:(id)interface;
+- (void)setExportedObject:(id)object;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setRemoteObjectInterface:(id)interface;
 - (void)suspend;
 @end
 
@@ -83,8 +83,8 @@
 {
   dispatch_assert_queue_V2(self->_queue);
   [(NSLock *)self->_lock lock];
-  v7 = [(EFPromise *)self->_connectionPromise future];
-  [v7 cancel];
+  future = [(EFPromise *)self->_connectionPromise future];
+  [future cancel];
 
   invalidationHandler = self->_invalidationHandler;
   if (invalidationHandler)
@@ -116,9 +116,9 @@
   [(MSXPCConnection *)&v3 dealloc];
 }
 
-- (MSXPCConnection)initWithProtocol:(id)a3
+- (MSXPCConnection)initWithProtocol:(id)protocol
 {
-  v5 = a3;
+  protocolCopy = protocol;
   v17.receiver = self;
   v17.super_class = MSXPCConnection;
   v6 = [(MSXPCConnection *)&v17 init];
@@ -126,14 +126,14 @@
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = objc_opt_class();
-    v9 = NSStringFromProtocol(v5);
+    v9 = NSStringFromProtocol(protocolCopy);
     v10 = [v7 stringWithFormat:@"com.apple.mailservices.%@.%@.%p", v8, v9, v6];
 
     v11 = objc_alloc_init(MEMORY[0x1E696AD10]);
     lock = v6->_lock;
     v6->_lock = v11;
 
-    objc_storeStrong(&v6->_protocol, a3);
+    objc_storeStrong(&v6->_protocol, protocol);
     v13 = dispatch_queue_create([v10 UTF8String], 0);
     queue = v6->_queue;
     v6->_queue = v13;
@@ -162,11 +162,11 @@
   return v3;
 }
 
-- (void)setRemoteObjectInterface:(id)a3
+- (void)setRemoteObjectInterface:(id)interface
 {
-  v7 = a3;
+  interfaceCopy = interface;
   [(NSLock *)self->_lock lock];
-  objc_storeStrong(&self->_remoteObjectInterface, a3);
+  objc_storeStrong(&self->_remoteObjectInterface, interface);
   v6 = [(MSXPCConnection *)self _connectionForPromise:self->_connectionPromise];
   [v6 a2];
 
@@ -182,11 +182,11 @@
   return v3;
 }
 
-- (void)setExportedInterface:(id)a3
+- (void)setExportedInterface:(id)interface
 {
-  v7 = a3;
+  interfaceCopy = interface;
   [(NSLock *)self->_lock lock];
-  objc_storeStrong(&self->_exportedInterface, a3);
+  objc_storeStrong(&self->_exportedInterface, interface);
   v6 = [(MSXPCConnection *)self _connectionForPromise:self->_connectionPromise];
   [v6 a2];
 
@@ -202,43 +202,43 @@
   return v3;
 }
 
-- (void)setExportedObject:(id)a3
+- (void)setExportedObject:(id)object
 {
-  v7 = a3;
+  objectCopy = object;
   [(NSLock *)self->_lock lock];
-  objc_storeStrong(&self->_exportedObject, a3);
+  objc_storeStrong(&self->_exportedObject, object);
   v6 = [(MSXPCConnection *)self _connectionForPromise:self->_connectionPromise];
   [v6 a2];
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (id)_connectionForPromise:(id)a3
+- (id)_connectionForPromise:(id)promise
 {
-  v3 = [a3 future];
-  v4 = [v3 resultIfAvailable:0];
+  future = [promise future];
+  v4 = [future resultIfAvailable:0];
 
   return v4;
 }
 
-- (void)_invalidatePromise:(id)a3
+- (void)_invalidatePromise:(id)promise
 {
-  v6 = a3;
-  v4 = [v6 future];
-  [v4 cancel];
+  promiseCopy = promise;
+  future = [promiseCopy future];
+  [future cancel];
 
-  v5 = [(MSXPCConnection *)self _connectionForPromise:v6];
+  v5 = [(MSXPCConnection *)self _connectionForPromise:promiseCopy];
   [v5 invalidate];
 }
 
-- (void)_finishPromise:(id)a3 withConnection:(id)a4 error:(id)a5
+- (void)_finishPromise:(id)promise withConnection:(id)connection error:(id)error
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (([v9 finishWithResult:v7 error:v8] & 1) == 0)
+  promiseCopy = promise;
+  connectionCopy = connection;
+  errorCopy = error;
+  if (([promiseCopy finishWithResult:connectionCopy error:errorCopy] & 1) == 0)
   {
-    [v7 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -248,12 +248,12 @@ void __50__MSXPCConnection__nts_wrappedInterruptionHandler__block_invoke(uint64_
   [WeakRetained _invokeInterruptionHandlerForPromise:*(a1 + 32)];
 }
 
-- (void)_invokeInterruptionHandlerForPromise:(id)a3
+- (void)_invokeInterruptionHandlerForPromise:(id)promise
 {
-  v8 = a3;
+  promiseCopy = promise;
   [(NSLock *)self->_lock lock];
-  v4 = [(EFPromise *)v8 future];
-  [v4 cancel];
+  future = [(EFPromise *)promiseCopy future];
+  [future cancel];
 
   interruptionHandler = self->_interruptionHandler;
   if (interruptionHandler)
@@ -261,12 +261,12 @@ void __50__MSXPCConnection__nts_wrappedInterruptionHandler__block_invoke(uint64_
     dispatch_async(self->_queue, interruptionHandler);
   }
 
-  v6 = [(MSXPCConnection *)self _connectionForPromise:v8];
+  v6 = [(MSXPCConnection *)self _connectionForPromise:promiseCopy];
   [v6 setInterruptionHandler:0];
   [v6 setInvalidationHandler:0];
   [v6 invalidate];
   connectionPromise = self->_connectionPromise;
-  if (connectionPromise == v8)
+  if (connectionPromise == promiseCopy)
   {
     self->_connectionPromise = 0;
   }
@@ -284,22 +284,22 @@ void __50__MSXPCConnection__nts_wrappedInterruptionHandler__block_invoke(uint64_
   return v4;
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   [(NSLock *)self->_lock lock];
-  if (self->_interruptionHandler != v8)
+  if (self->_interruptionHandler != handlerCopy)
   {
-    v4 = MEMORY[0x1DA71BD00](v8);
+    v4 = MEMORY[0x1DA71BD00](handlerCopy);
     interruptionHandler = self->_interruptionHandler;
     self->_interruptionHandler = v4;
 
     v6 = [(MSXPCConnection *)self _connectionForPromise:self->_connectionPromise];
     if (v6)
     {
-      v7 = [(MSXPCConnection *)self _nts_wrappedInterruptionHandler];
-      [v6 setInterruptionHandler:v7];
-      [v6 setInvalidationHandler:v7];
+      _nts_wrappedInterruptionHandler = [(MSXPCConnection *)self _nts_wrappedInterruptionHandler];
+      [v6 setInterruptionHandler:_nts_wrappedInterruptionHandler];
+      [v6 setInvalidationHandler:_nts_wrappedInterruptionHandler];
     }
   }
 
@@ -316,11 +316,11 @@ void __50__MSXPCConnection__nts_wrappedInterruptionHandler__block_invoke(uint64_
   return v4;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   [(NSLock *)self->_lock lock];
-  v4 = MEMORY[0x1DA71BD00](v6);
+  v4 = MEMORY[0x1DA71BD00](handlerCopy);
   invalidationHandler = self->_invalidationHandler;
   self->_invalidationHandler = v4;
 
@@ -350,34 +350,34 @@ void __50__MSXPCConnection__nts_wrappedInterruptionHandler__block_invoke(uint64_
 
 - (int)auditSessionIdentifier
 {
-  v2 = [(MSXPCConnection *)self _connection];
-  v3 = [v2 auditSessionIdentifier];
+  _connection = [(MSXPCConnection *)self _connection];
+  auditSessionIdentifier = [_connection auditSessionIdentifier];
 
-  return v3;
+  return auditSessionIdentifier;
 }
 
 - (int)processIdentifier
 {
-  v2 = [(MSXPCConnection *)self _connection];
-  v3 = [v2 processIdentifier];
+  _connection = [(MSXPCConnection *)self _connection];
+  processIdentifier = [_connection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (unsigned)effectiveUserIdentifier
 {
-  v2 = [(MSXPCConnection *)self _connection];
-  v3 = [v2 effectiveUserIdentifier];
+  _connection = [(MSXPCConnection *)self _connection];
+  effectiveUserIdentifier = [_connection effectiveUserIdentifier];
 
-  return v3;
+  return effectiveUserIdentifier;
 }
 
 - (unsigned)effectiveGroupIdentifier
 {
-  v2 = [(MSXPCConnection *)self _connection];
-  v3 = [v2 effectiveGroupIdentifier];
+  _connection = [(MSXPCConnection *)self _connection];
+  effectiveGroupIdentifier = [_connection effectiveGroupIdentifier];
 
-  return v3;
+  return effectiveGroupIdentifier;
 }
 
 - (id)remoteObjectProxy
@@ -387,52 +387,52 @@ void __50__MSXPCConnection__nts_wrappedInterruptionHandler__block_invoke(uint64_
   return v2;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[_MSXPCRemoteProxy alloc] initWithConnection:self interface:self->_remoteObjectInterface errorHandler:v4];
+  handlerCopy = handler;
+  v5 = [[_MSXPCRemoteProxy alloc] initWithConnection:self interface:self->_remoteObjectInterface errorHandler:handlerCopy];
 
   return v5;
 }
 
-- (void)_sendInvocation:(id)a3 remoteInterface:(id)a4 remoteProxy:(id)a5 errorHandler:(id)a6
+- (void)_sendInvocation:(id)invocation remoteInterface:(id)interface remoteProxy:(id)proxy errorHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  invocationCopy = invocation;
+  interfaceCopy = interface;
+  proxyCopy = proxy;
+  handlerCopy = handler;
+  v14 = handlerCopy;
   v15 = atomic_load(&self->_locallyInvalidated);
   if ((v15 & 1) == 0)
   {
-    [v10 retainArguments];
+    [invocationCopy retainArguments];
     [(NSLock *)self->_lock lock];
     if (!self->_connectionPromise)
     {
-      v27 = v11;
+      v27 = interfaceCopy;
       v18 = objc_alloc_init(MEMORY[0x1E699B868]);
       objc_storeStrong(&self->_connectionPromise, v18);
       v19 = objc_alloc_init(MSXPCEndpoint);
       [(MSMailDefaultService *)v19 setShouldLaunchMobileMail:self->_shouldLaunchMobileMail];
-      v20 = [v11 protocol];
+      protocol = [interfaceCopy protocol];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __76__MSXPCConnection__sendInvocation_remoteInterface_remoteProxy_errorHandler___block_invoke_2;
       v36[3] = &unk_1E855F150;
       v36[4] = self;
-      v37 = v11;
-      v38 = v12;
+      v37 = interfaceCopy;
+      v38 = proxyCopy;
       v40 = v14;
       v21 = v18;
       v39 = v21;
-      [(MSXPCEndpoint *)v19 connectionForProtocol:v20 completionHandler:v36];
+      [(MSXPCEndpoint *)v19 connectionForProtocol:protocol completionHandler:v36];
 
-      v11 = v27;
+      interfaceCopy = v27;
     }
 
-    v22 = [MEMORY[0x1E696AE38] currentProgress];
+    currentProgress = [MEMORY[0x1E696AE38] currentProgress];
 
-    if (v22)
+    if (currentProgress)
     {
       v23 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
     }
@@ -442,41 +442,41 @@ void __50__MSXPCConnection__nts_wrappedInterruptionHandler__block_invoke(uint64_
       v23 = 0;
     }
 
-    v24 = [(EFPromise *)self->_connectionPromise future];
+    future = [(EFPromise *)self->_connectionPromise future];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __76__MSXPCConnection__sendInvocation_remoteInterface_remoteProxy_errorHandler___block_invoke_3;
     v30[3] = &unk_1E855F1A0;
-    v31 = v12;
+    v31 = proxyCopy;
     v25 = v14;
     v35 = v25;
-    v32 = self;
+    selfCopy = self;
     v17 = v23;
     v33 = v17;
-    v34 = v10;
-    [v24 addSuccessBlock:v30];
+    v34 = invocationCopy;
+    [future addSuccessBlock:v30];
 
-    v26 = [(EFPromise *)self->_connectionPromise future];
+    future2 = [(EFPromise *)self->_connectionPromise future];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __76__MSXPCConnection__sendInvocation_remoteInterface_remoteProxy_errorHandler___block_invoke_5;
     v28[3] = &unk_1E855F1F0;
     v28[4] = self;
     v29 = v25;
-    [v26 addFailureBlock:v28];
+    [future2 addFailureBlock:v28];
 
     [(NSLock *)self->_lock unlock];
     goto LABEL_10;
   }
 
-  if (v13)
+  if (handlerCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __76__MSXPCConnection__sendInvocation_remoteInterface_remoteProxy_errorHandler___block_invoke;
     block[3] = &unk_1E855EF38;
-    v42 = v13;
+    v42 = handlerCopy;
     dispatch_async(queue, block);
     v17 = v42;
 LABEL_10:

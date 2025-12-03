@@ -1,32 +1,32 @@
 @interface SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier
-- (SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier)initWithAppLayout:(id)a3 gestureEdge:(unint64_t)a4 liftOffVelocity:(CGPoint)a5;
+- (SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier)initWithAppLayout:(id)layout gestureEdge:(unint64_t)edge liftOffVelocity:(CGPoint)velocity;
 - (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom;
-- (double)scaleForIndex:(unint64_t)a3;
+- (double)scaleForIndex:(unint64_t)index;
 - (id)_layoutSettings;
 - (id)_positionSettings;
 - (id)_scaleSettings;
-- (id)_settingsByInterpolatingBetween:(id)a3 and:(id)a4 progress:(double)a5;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)genieAttributesForAppLayout:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)_settingsByInterpolatingBetween:(id)between and:(id)and progress:(double)progress;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)genieAttributesForAppLayout:(id)layout;
+- (id)handleTimerEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 @end
 
 @implementation SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier
 
-- (SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier)initWithAppLayout:(id)a3 gestureEdge:(unint64_t)a4 liftOffVelocity:(CGPoint)a5
+- (SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier)initWithAppLayout:(id)layout gestureEdge:(unint64_t)edge liftOffVelocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  layoutCopy = layout;
   v14.receiver = self;
   v14.super_class = SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier;
   v11 = [(SBSwitcherModifier *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_appLayout, a3);
-    v12->_gestureEdge = a4;
+    objc_storeStrong(&v11->_appLayout, layout);
+    v12->_gestureEdge = edge;
     v12->_liftOffVelocity.x = x;
     v12->_liftOffVelocity.y = y;
   }
@@ -34,15 +34,15 @@
   return v12;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v17.receiver = self;
   v17.super_class = SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v17 handleTransitionEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v17 handleTransitionEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 == 2)
+  if (phase == 2)
   {
     v7 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self homeScreenIconGridSizeClassForAppLayout:self->_appLayout];
     iconGridSizeClass = self->_iconGridSizeClass;
@@ -52,9 +52,9 @@
     self->_overshootScaleForWidgetZoomDown = v9;
     if (v9)
     {
-      v10 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
-      v11 = [v10 animationSettings];
-      [v11 zoomDownWidgetScaleOvershootDuration];
+      switcherSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
+      animationSettings = [switcherSettings animationSettings];
+      [animationSettings zoomDownWidgetScaleOvershootDuration];
       v13 = v12;
 
       v14 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:@"OvershootScaleForWidgetZoomDown" reason:v13];
@@ -67,16 +67,16 @@
   return v5;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:@"OvershootScaleForWidgetZoomDown"];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:@"OvershootScaleForWidgetZoomDown"];
+  if (eventCopy)
   {
     self->_overshootScaleForWidgetZoomDown = 0;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:3];
@@ -88,27 +88,27 @@
   return v5;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v21.receiver = self;
   v21.super_class = SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier;
   [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)&v21 scaleForIndex:?];
   v6 = v5;
-  v7 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a3];
+  appLayouts = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
   if (v8 == self->_appLayout && self->_overshootScaleForWidgetZoomDown)
   {
-    v9 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
-    v10 = [v9 animationSettings];
+    switcherSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
 
-    [v10 zoomDownWidgetScaleVelocityYMinimum];
+    [animationSettings zoomDownWidgetScaleVelocityYMinimum];
     v12 = v11;
-    [v10 zoomDownWidgetScaleVelocityYMaximum];
+    [animationSettings zoomDownWidgetScaleVelocityYMaximum];
     v14 = v13;
-    [v10 zoomDownWidgetScaleOvershootMinimumMultiplier];
+    [animationSettings zoomDownWidgetScaleOvershootMinimumMultiplier];
     v16 = v15;
-    [v10 zoomDownWidgetScaleOvershootMaximumMultiplier];
+    [animationSettings zoomDownWidgetScaleOvershootMaximumMultiplier];
     v18 = v16 + (v17 - v16) * (-self->_liftOffVelocity.y - v12) / (v14 - v12);
     if (v16 >= v17)
     {
@@ -141,42 +141,42 @@
   return v6;
 }
 
-- (id)genieAttributesForAppLayout:(id)a3
+- (id)genieAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier;
-  v5 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)&v8 genieAttributesForAppLayout:v4];
-  if (v5 && [(SBAppLayout *)self->_appLayout isEqual:v4])
+  v5 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)&v8 genieAttributesForAppLayout:layoutCopy];
+  if (v5 && [(SBAppLayout *)self->_appLayout isEqual:layoutCopy])
   {
-    v6 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _layoutSettings];
-    [v5 setLayoutSettings:v6];
+    _layoutSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _layoutSettings];
+    [v5 setLayoutSettings:_layoutSettings];
   }
 
   return v5;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier;
-  v5 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)&v13 animationAttributesForLayoutElement:v4];
+  v5 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)&v13 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _layoutSettings];
-  [v6 setLayoutSettings:v7];
+  _layoutSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _layoutSettings];
+  [v6 setLayoutSettings:_layoutSettings];
 
-  if (![v4 switcherLayoutElementType])
+  if (![elementCopy switcherLayoutElementType])
   {
-    v8 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _positionSettings];
-    [v6 setPositionSettings:v8];
+    _positionSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _positionSettings];
+    [v6 setPositionSettings:_positionSettings];
 
-    v9 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _scaleSettings];
-    [v6 setScaleSettings:v9];
+    _scaleSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _scaleSettings];
+    [v6 setScaleSettings:_scaleSettings];
 
-    v10 = [v4 appLayout];
-    if ([v10 isEqual:self->_appLayout])
+    appLayout = [elementCopy appLayout];
+    if ([appLayout isEqual:self->_appLayout])
     {
       v11 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self genieAttributesForAppLayout:self->_appLayout];
 
@@ -185,8 +185,8 @@
         goto LABEL_6;
       }
 
-      v10 = [v6 layoutSettings];
-      [v6 setCornerRadiusSettings:v10];
+      appLayout = [v6 layoutSettings];
+      [v6 setCornerRadiusSettings:appLayout];
     }
   }
 
@@ -197,8 +197,8 @@ LABEL_6:
 
 - (id)_layoutSettings
 {
-  v3 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if (![(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self isDevicePad])
   {
@@ -211,27 +211,27 @@ LABEL_6:
     v7 = self->_iconGridSizeClass;
     if (v7 == *MEMORY[0x277D66520] || [(NSString *)v7 isEqualToString:?])
     {
-      v6 = [v4 homeGestureMediumWidgetZoomDownLayoutSettings];
+      homeGestureMediumWidgetZoomDownLayoutSettings = [animationSettings homeGestureMediumWidgetZoomDownLayoutSettings];
       goto LABEL_15;
     }
 
     v8 = self->_iconGridSizeClass;
     if (v8 == *MEMORY[0x277D66518] || [(NSString *)v8 isEqualToString:?]|| (v9 = self->_iconGridSizeClass, v9 == *MEMORY[0x277D66528]) || [(NSString *)v9 isEqualToString:?]|| (v10 = self->_iconGridSizeClass, v10 == *MEMORY[0x277D66510]) || [(NSString *)v10 isEqualToString:?])
     {
-      v6 = [v4 homeGestureLargeWidgetZoomDownLayoutSettings];
+      homeGestureMediumWidgetZoomDownLayoutSettings = [animationSettings homeGestureLargeWidgetZoomDownLayoutSettings];
       goto LABEL_15;
     }
 
 LABEL_16:
-    v12 = [v4 homeGestureTopRowZoomDownLayoutSettings];
-    v13 = [v4 homeGestureBottomRowZoomDownLayoutSettings];
+    homeGestureTopRowZoomDownLayoutSettings = [animationSettings homeGestureTopRowZoomDownLayoutSettings];
+    homeGestureBottomRowZoomDownLayoutSettings = [animationSettings homeGestureBottomRowZoomDownLayoutSettings];
     [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _normalizedHomeScreenIconZoomPercentBetweenTopAndBottom];
-    v11 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _settingsByInterpolatingBetween:v12 and:v13 progress:?];
-    [v4 zoomDownVelocityYMinimum];
+    v11 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _settingsByInterpolatingBetween:homeGestureTopRowZoomDownLayoutSettings and:homeGestureBottomRowZoomDownLayoutSettings progress:?];
+    [animationSettings zoomDownVelocityYMinimum];
     v15 = v14;
-    [v4 zoomDownVelocityYMaximum];
+    [animationSettings zoomDownVelocityYMaximum];
     v17 = v16;
-    [v4 zoomDownVelocityYLayoutResponseMultiplier];
+    [animationSettings zoomDownVelocityYLayoutResponseMultiplier];
     v19 = v18;
     v20 = (-self->_liftOffVelocity.y - v15) / (v17 - v15);
     if (v20 <= 0.0)
@@ -251,9 +251,9 @@ LABEL_16:
     goto LABEL_20;
   }
 
-  v6 = [v4 homeGestureSmallWidgetZoomDownLayoutSettings];
+  homeGestureMediumWidgetZoomDownLayoutSettings = [animationSettings homeGestureSmallWidgetZoomDownLayoutSettings];
 LABEL_15:
-  v11 = v6;
+  v11 = homeGestureMediumWidgetZoomDownLayoutSettings;
 LABEL_20:
 
   return v11;
@@ -261,8 +261,8 @@ LABEL_20:
 
 - (id)_positionSettings
 {
-  v3 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if (![(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self isDevicePad])
   {
@@ -275,27 +275,27 @@ LABEL_20:
     v7 = self->_iconGridSizeClass;
     if (v7 == *MEMORY[0x277D66520] || [(NSString *)v7 isEqualToString:?])
     {
-      v6 = [v4 homeGestureMediumWidgetZoomDownPositionSettings];
+      homeGestureMediumWidgetZoomDownPositionSettings = [animationSettings homeGestureMediumWidgetZoomDownPositionSettings];
       goto LABEL_13;
     }
 
     v8 = self->_iconGridSizeClass;
     if (v8 == *MEMORY[0x277D66518] || [(NSString *)v8 isEqualToString:?]|| (v9 = self->_iconGridSizeClass, v9 == *MEMORY[0x277D66510]) || [(NSString *)v9 isEqualToString:?])
     {
-      v6 = [v4 homeGestureLargeWidgetZoomDownPositionSettings];
+      homeGestureMediumWidgetZoomDownPositionSettings = [animationSettings homeGestureLargeWidgetZoomDownPositionSettings];
       goto LABEL_13;
     }
 
 LABEL_14:
-    v11 = [v4 homeGestureTopRowZoomDownPositionSettings];
-    v12 = [v4 homeGestureBottomRowZoomDownPositionSettings];
+    homeGestureTopRowZoomDownPositionSettings = [animationSettings homeGestureTopRowZoomDownPositionSettings];
+    homeGestureBottomRowZoomDownPositionSettings = [animationSettings homeGestureBottomRowZoomDownPositionSettings];
     [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _normalizedHomeScreenIconZoomPercentBetweenTopAndBottom];
-    v10 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _settingsByInterpolatingBetween:v11 and:v12 progress:?];
-    [v4 zoomDownVelocityXMinimum];
+    v10 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _settingsByInterpolatingBetween:homeGestureTopRowZoomDownPositionSettings and:homeGestureBottomRowZoomDownPositionSettings progress:?];
+    [animationSettings zoomDownVelocityXMinimum];
     v14 = v13;
-    [v4 zoomDownVelocityXMaximum];
+    [animationSettings zoomDownVelocityXMaximum];
     v16 = v15;
-    [v4 zoomDownVelocityXPositionResponseMultiplier];
+    [animationSettings zoomDownVelocityXPositionResponseMultiplier];
     v18 = v17;
     v19 = (fabs(self->_liftOffVelocity.x) - v14) / (v16 - v14);
     if (v19 <= 0.0)
@@ -317,9 +317,9 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  v6 = [v4 homeGestureSmallWidgetZoomDownPositionSettings];
+  homeGestureMediumWidgetZoomDownPositionSettings = [animationSettings homeGestureSmallWidgetZoomDownPositionSettings];
 LABEL_13:
-  v10 = v6;
+  v10 = homeGestureMediumWidgetZoomDownPositionSettings;
 LABEL_18:
 
   return v10;
@@ -327,56 +327,56 @@ LABEL_18:
 
 - (id)_scaleSettings
 {
-  v3 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if ([(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self isDevicePad])
   {
     iconGridSizeClass = self->_iconGridSizeClass;
     if (iconGridSizeClass == *MEMORY[0x277D66548] || [(NSString *)iconGridSizeClass isEqualToString:?])
     {
-      v6 = [v4 homeGestureSmallWidgetZoomDownScaleSettings];
+      homeGestureSmallWidgetZoomDownScaleSettings = [animationSettings homeGestureSmallWidgetZoomDownScaleSettings];
 LABEL_13:
-      v10 = v6;
+      v10 = homeGestureSmallWidgetZoomDownScaleSettings;
       goto LABEL_15;
     }
 
     v7 = self->_iconGridSizeClass;
     if (v7 == *MEMORY[0x277D66520] || [(NSString *)v7 isEqualToString:?])
     {
-      v6 = [v4 homeGestureMediumWidgetZoomDownScaleSettings];
+      homeGestureSmallWidgetZoomDownScaleSettings = [animationSettings homeGestureMediumWidgetZoomDownScaleSettings];
       goto LABEL_13;
     }
 
     v8 = self->_iconGridSizeClass;
     if (v8 == *MEMORY[0x277D66518] || [(NSString *)v8 isEqualToString:?]|| (v9 = self->_iconGridSizeClass, v9 == *MEMORY[0x277D66510]) || [(NSString *)v9 isEqualToString:?])
     {
-      v6 = [v4 homeGestureLargeWidgetZoomDownScaleSettings];
+      homeGestureSmallWidgetZoomDownScaleSettings = [animationSettings homeGestureLargeWidgetZoomDownScaleSettings];
       goto LABEL_13;
     }
   }
 
-  v11 = [v4 homeGestureTopRowZoomDownScaleSettings];
-  v12 = [v4 homeGestureBottomRowZoomDownScaleSettings];
+  homeGestureTopRowZoomDownScaleSettings = [animationSettings homeGestureTopRowZoomDownScaleSettings];
+  homeGestureBottomRowZoomDownScaleSettings = [animationSettings homeGestureBottomRowZoomDownScaleSettings];
   [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _normalizedHomeScreenIconZoomPercentBetweenTopAndBottom];
-  v10 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _settingsByInterpolatingBetween:v11 and:v12 progress:?];
+  v10 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self _settingsByInterpolatingBetween:homeGestureTopRowZoomDownScaleSettings and:homeGestureBottomRowZoomDownScaleSettings progress:?];
 
 LABEL_15:
 
   return v10;
 }
 
-- (id)_settingsByInterpolatingBetween:(id)a3 and:(id)a4 progress:(double)a5
+- (id)_settingsByInterpolatingBetween:(id)between and:(id)and progress:(double)progress
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
-  v10 = [v9 animationSettings];
+  andCopy = and;
+  betweenCopy = between;
+  switcherSettings = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   iconGridSizeClass = self->_iconGridSizeClass;
   if (iconGridSizeClass == *MEMORY[0x277D66548] || [(NSString *)iconGridSizeClass isEqualToString:?]|| (v12 = self->_iconGridSizeClass, v12 == *MEMORY[0x277D66520]) || [(NSString *)v12 isEqualToString:?]|| (v13 = self->_iconGridSizeClass, v13 == *MEMORY[0x277D66518]) || [(NSString *)v13 isEqualToString:?]|| (v14 = self->_iconGridSizeClass, v14 == *MEMORY[0x277D66510]) || [(NSString *)v14 isEqualToString:?])
   {
-    [v10 homeGestureZoomDownScaleMultiplierWidgets];
+    [animationSettings homeGestureZoomDownScaleMultiplierWidgets];
 LABEL_10:
     v16 = v15;
     goto LABEL_11;
@@ -385,24 +385,24 @@ LABEL_10:
   v16 = 1.0;
   if (([(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self isDevicePad]& 1) == 0)
   {
-    [v10 homeGestureZoomDownScaleMultiplier];
+    [animationSettings homeGestureZoomDownScaleMultiplier];
     goto LABEL_10;
   }
 
 LABEL_11:
   v17 = objc_alloc_init(MEMORY[0x277D65E60]);
   [v17 setDefaultValues];
-  [v8 dampingRatio];
-  [v7 dampingRatio];
+  [betweenCopy dampingRatio];
+  [andCopy dampingRatio];
   BSFloatByLinearlyInterpolatingFloats();
   [v17 setDampingRatio:?];
-  [v8 response];
-  [v7 response];
+  [betweenCopy response];
+  [andCopy response];
   BSFloatByLinearlyInterpolatingFloats();
   [v17 setResponse:v16 * v18];
-  [v8 retargetImpulse];
+  [betweenCopy retargetImpulse];
 
-  [v7 retargetImpulse];
+  [andCopy retargetImpulse];
   BSFloatByLinearlyInterpolatingFloats();
   [v17 setRetargetImpulse:?];
   v21 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
@@ -413,23 +413,23 @@ LABEL_11:
 
 - (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom
 {
-  v3 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherInterfaceOrientation];
+  switcherInterfaceOrientation = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self switcherInterfaceOrientation];
   [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self containerViewBounds];
   v22 = v4;
-  v5 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self appLayouts];
-  v6 = [v5 indexOfObject:self->_appLayout];
+  appLayouts = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts indexOfObject:self->_appLayout];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self appLayouts];
+    appLayouts2 = [(SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier *)self appLayouts];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __120__SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier__normalizedHomeScreenIconZoomPercentBetweenTopAndBottom__block_invoke;
     v24[3] = &unk_2783AE1A0;
     v24[4] = self;
-    v6 = [v7 indexOfObjectPassingTest:v24];
+    v6 = [appLayouts2 indexOfObjectPassingTest:v24];
   }
 
-  if ((v3 - 1) >= 2)
+  if ((switcherInterfaceOrientation - 1) >= 2)
   {
     v8 = 0.0;
   }

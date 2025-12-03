@@ -1,7 +1,7 @@
 @interface BYSeedProgramManager
 - (NSDictionary)currentEnrollmentMetadata;
 - (int64_t)currentSeedProgram;
-- (void)enrollInSeedProgramNamed:(id)a3 withAssetAudience:(id)a4 programID:(id)a5 completion:(id)a6;
+- (void)enrollInSeedProgramNamed:(id)named withAssetAudience:(id)audience programID:(id)d completion:(id)completion;
 @end
 
 @implementation BYSeedProgramManager
@@ -10,17 +10,17 @@
 {
   if (objc_opt_class())
   {
-    v2 = [MEMORY[0x1E69CA650] sharedManager];
-    v3 = [v2 enrolledBetaProgramForCurrentDevice];
+    mEMORY[0x1E69CA650] = [MEMORY[0x1E69CA650] sharedManager];
+    enrolledBetaProgramForCurrentDevice = [mEMORY[0x1E69CA650] enrolledBetaProgramForCurrentDevice];
 
-    if (v3)
+    if (enrolledBetaProgramForCurrentDevice)
     {
-      v4 = [v3 program];
+      program = [enrolledBetaProgramForCurrentDevice program];
     }
 
     else
     {
-      v4 = 0;
+      program = 0;
     }
   }
 
@@ -35,15 +35,15 @@
     return 0;
   }
 
-  return v4;
+  return program;
 }
 
 - (NSDictionary)currentEnrollmentMetadata
 {
   if (objc_opt_class())
   {
-    v2 = [MEMORY[0x1E69CA650] sharedManager];
-    v3 = [v2 enrollmentMetadataForCurrentDevice];
+    mEMORY[0x1E69CA650] = [MEMORY[0x1E69CA650] sharedManager];
+    enrollmentMetadataForCurrentDevice = [mEMORY[0x1E69CA650] enrollmentMetadataForCurrentDevice];
   }
 
   else
@@ -54,35 +54,35 @@
       [BYSeedProgramManager currentSeedProgram];
     }
 
-    v3 = MEMORY[0x1E695E0F8];
+    enrollmentMetadataForCurrentDevice = MEMORY[0x1E695E0F8];
   }
 
-  return v3;
+  return enrollmentMetadataForCurrentDevice;
 }
 
-- (void)enrollInSeedProgramNamed:(id)a3 withAssetAudience:(id)a4 programID:(id)a5 completion:(id)a6
+- (void)enrollInSeedProgramNamed:(id)named withAssetAudience:(id)audience programID:(id)d completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  namedCopy = named;
+  audienceCopy = audience;
+  dCopy = d;
+  completionCopy = completion;
   if (objc_opt_class())
   {
     v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
-    [v13 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69CA668]];
-    [v13 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69CA660]];
-    if (v11)
+    [v13 setObject:namedCopy forKeyedSubscript:*MEMORY[0x1E69CA668]];
+    [v13 setObject:audienceCopy forKeyedSubscript:*MEMORY[0x1E69CA660]];
+    if (dCopy)
     {
-      [v13 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69CA670]];
+      [v13 setObject:dCopy forKeyedSubscript:*MEMORY[0x1E69CA670]];
     }
 
-    v14 = [MEMORY[0x1E69CA650] sharedManager];
+    mEMORY[0x1E69CA650] = [MEMORY[0x1E69CA650] sharedManager];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __88__BYSeedProgramManager_enrollInSeedProgramNamed_withAssetAudience_programID_completion___block_invoke;
     v16[3] = &unk_1E7D02BD8;
-    v17 = v12;
-    [v14 enrollCurrentDeviceWithEnrollmentMetadata:v13 completion:v16];
+    v17 = completionCopy;
+    [mEMORY[0x1E69CA650] enrollCurrentDeviceWithEnrollmentMetadata:v13 completion:v16];
   }
 
   else
@@ -93,9 +93,9 @@
       [BYSeedProgramManager currentSeedProgram];
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }

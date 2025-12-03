@@ -1,34 +1,34 @@
 @interface EMFDefaultAutocompleteCandidateProvider
-+ (id)providerFromInvertedIndex:(id)a3;
-- (EMFDefaultAutocompleteCandidateProvider)initWithBundle:(id)a3;
-- (EMFDefaultAutocompleteCandidateProvider)initWithTokens:(id)a3;
-- (id)firstMatchForPrefix:(id)a3;
-- (id)matchesForPrefix:(id)a3 usingAlgorithm:(unint64_t)a4;
-- (void)enumerateCandidatesMatchingPrefix:(id)a3 withEnumerationType:(int64_t)a4 maxCandidates:(unint64_t)a5 usingBlock:(id)a6;
++ (id)providerFromInvertedIndex:(id)index;
+- (EMFDefaultAutocompleteCandidateProvider)initWithBundle:(id)bundle;
+- (EMFDefaultAutocompleteCandidateProvider)initWithTokens:(id)tokens;
+- (id)firstMatchForPrefix:(id)prefix;
+- (id)matchesForPrefix:(id)prefix usingAlgorithm:(unint64_t)algorithm;
+- (void)enumerateCandidatesMatchingPrefix:(id)prefix withEnumerationType:(int64_t)type maxCandidates:(unint64_t)candidates usingBlock:(id)block;
 @end
 
 @implementation EMFDefaultAutocompleteCandidateProvider
 
-+ (id)providerFromInvertedIndex:(id)a3
++ (id)providerFromInvertedIndex:(id)index
 {
-  v4 = [a3 termIndex];
-  v5 = [v4 allKeys];
-  v6 = [v5 copy];
+  termIndex = [index termIndex];
+  allKeys = [termIndex allKeys];
+  v6 = [allKeys copy];
 
-  v7 = [[a1 alloc] initWithTokens:v6];
+  v7 = [[self alloc] initWithTokens:v6];
 
   return v7;
 }
 
-- (EMFDefaultAutocompleteCandidateProvider)initWithBundle:(id)a3
+- (EMFDefaultAutocompleteCandidateProvider)initWithBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 URLForResource:@"vocabulary" withExtension:@"plist"];
+  bundleCopy = bundle;
+  v5 = [bundleCopy URLForResource:@"vocabulary" withExtension:@"plist"];
   if (!v5)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      [EMFDefaultAutocompleteCandidateProvider initWithBundle:v4];
+      [EMFDefaultAutocompleteCandidateProvider initWithBundle:bundleCopy];
     }
 
     __assert_rtn("[EMFDefaultAutocompleteCandidateProvider initWithBundle:]", "EMFDefaultAutocompleteCandidateProvider.m", 35, "vocabularyFileURL");
@@ -52,15 +52,15 @@
   return v8;
 }
 
-- (EMFDefaultAutocompleteCandidateProvider)initWithTokens:(id)a3
+- (EMFDefaultAutocompleteCandidateProvider)initWithTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   v9.receiver = self;
   v9.super_class = EMFDefaultAutocompleteCandidateProvider;
   v5 = [(EMFDefaultAutocompleteCandidateProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [tokensCopy copy];
     tokens = v5->_tokens;
     v5->_tokens = v6;
   }
@@ -68,14 +68,14 @@
   return v5;
 }
 
-- (id)matchesForPrefix:(id)a3 usingAlgorithm:(unint64_t)a4
+- (id)matchesForPrefix:(id)prefix usingAlgorithm:(unint64_t)algorithm
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 3)
+  prefixCopy = prefix;
+  v7 = prefixCopy;
+  if (algorithm == 3)
   {
-    v8 = [(EMFDefaultAutocompleteCandidateProvider *)self firstMatchForPrefix:v6];
+    v8 = [(EMFDefaultAutocompleteCandidateProvider *)self firstMatchForPrefix:prefixCopy];
     v9 = v8;
     if (v8)
     {
@@ -96,14 +96,14 @@
     v15[2] = 0x3032000000;
     v15[3] = __Block_byref_object_copy__4;
     v15[4] = __Block_byref_object_dispose__4;
-    v16 = [v6 copy];
+    v16 = [prefixCopy copy];
     tokens = self->_tokens;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __75__EMFDefaultAutocompleteCandidateProvider_matchesForPrefix_usingAlgorithm___block_invoke;
     v14[3] = &unk_1E7A5F8E8;
     v14[4] = v15;
-    v12 = [(NSArray *)tokens indexesOfObjectsWithOptions:a4 == 2 passingTest:v14];
+    v12 = [(NSArray *)tokens indexesOfObjectsWithOptions:algorithm == 2 passingTest:v14];
     v10 = [(NSArray *)self->_tokens objectsAtIndexes:v12];
 
     _Block_object_dispose(v15, 8);
@@ -112,15 +112,15 @@
   return v10;
 }
 
-- (id)firstMatchForPrefix:(id)a3
+- (id)firstMatchForPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__4;
   v11[4] = __Block_byref_object_dispose__4;
-  v12 = [v4 copy];
+  v12 = [prefixCopy copy];
   tokens = self->_tokens;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -144,11 +144,11 @@
   return v7;
 }
 
-- (void)enumerateCandidatesMatchingPrefix:(id)a3 withEnumerationType:(int64_t)a4 maxCandidates:(unint64_t)a5 usingBlock:(id)a6
+- (void)enumerateCandidatesMatchingPrefix:(id)prefix withEnumerationType:(int64_t)type maxCandidates:(unint64_t)candidates usingBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
+  prefixCopy = prefix;
+  blockCopy = block;
   v10 = emf_signpost_get_log();
   v11 = os_signpost_id_generate(v10);
 
@@ -160,7 +160,7 @@
     _os_signpost_emit_with_name_impl(&dword_1AF04E000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "YieldAutocompleteCandidates", &unk_1AF0BC4C3, buf, 2u);
   }
 
-  v14 = [(EMFDefaultAutocompleteCandidateProvider *)self matchesForPrefix:v8 usingAlgorithm:2];
+  v14 = [(EMFDefaultAutocompleteCandidateProvider *)self matchesForPrefix:prefixCopy usingAlgorithm:2];
   v15 = emf_signpost_get_log();
   v16 = v15;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
@@ -195,7 +195,7 @@ LABEL_9:
         break;
       }
 
-      v9[2](v9, *(*(&v23 + 1) + 8 * v22), v20++, buf);
+      blockCopy[2](blockCopy, *(*(&v23 + 1) + 8 * v22), v20++, buf);
       if (v19 == ++v22)
       {
         v19 = [v17 countByEnumeratingWithState:&v23 objects:v28 count:16];

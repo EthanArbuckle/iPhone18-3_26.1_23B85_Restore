@@ -1,5 +1,5 @@
 @interface MusicAngel.Client.WrapperViewController
-- (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client21WrapperViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client21WrapperViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21665FD20();
 }
 
-- (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client21WrapperViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client21WrapperViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_21666D44C();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_21665FF30();
 }
 

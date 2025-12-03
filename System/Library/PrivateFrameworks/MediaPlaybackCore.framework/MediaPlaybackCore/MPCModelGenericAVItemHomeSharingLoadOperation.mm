@@ -12,21 +12,21 @@
   aBlock[3] = &unk_1E8233408;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(MPCModelGenericAVItemHomeSharingLoadOperation *)self assetLoadProperties];
-  v5 = [v4 homeSharingAsset];
-  if ([v5 isAvailable])
+  assetLoadProperties = [(MPCModelGenericAVItemHomeSharingLoadOperation *)self assetLoadProperties];
+  homeSharingAsset = [assetLoadProperties homeSharingAsset];
+  if ([homeSharingAsset isAvailable])
   {
-    v6 = [v5 URL];
+    v6 = [homeSharingAsset URL];
     if (v6)
     {
       v7 = objc_alloc_init(MPCModelGenericAVItemAssetLoadResult);
       [(MPCModelGenericAVItemAssetLoadResult *)v7 setAssetURL:v6];
-      v8 = [v6 pathExtension];
-      [(MPCModelGenericAVItemAssetLoadResult *)v7 setAssetPathExtension:v8];
+      pathExtension = [v6 pathExtension];
+      [(MPCModelGenericAVItemAssetLoadResult *)v7 setAssetPathExtension:pathExtension];
 
       [(MPCModelGenericAVItemAssetLoadResult *)v7 setAssetQualityType:2];
-      v9 = [v5 protectedContentSupportStorageFileURL];
-      [(MPCModelGenericAVItemAssetLoadResult *)v7 setProtectedContentSupportStorageFileURL:v9];
+      protectedContentSupportStorageFileURL = [homeSharingAsset protectedContentSupportStorageFileURL];
+      [(MPCModelGenericAVItemAssetLoadResult *)v7 setProtectedContentSupportStorageFileURL:protectedContentSupportStorageFileURL];
 
       [(MPCModelGenericAVItemAssetLoadResult *)v7 setIsHomeSharingAsset:1];
       [(MPCModelGenericAVItemAssetLoadResult *)v7 setSource:2];

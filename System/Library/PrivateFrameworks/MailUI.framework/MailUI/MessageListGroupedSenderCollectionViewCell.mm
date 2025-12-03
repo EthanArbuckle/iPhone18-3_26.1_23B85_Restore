@@ -3,14 +3,14 @@
 - (EMCollectionItemID)itemID;
 - (EMMessageListItem)messageListItem;
 - (id)messageListItemFuture;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)applyIndicatorPreviewChangeAction:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)applyIndicatorPreviewChangeAction:(id)action;
 - (void)prepareForReuse;
-- (void)setItemID:(id)a3;
-- (void)setMessageListItem:(id)a3;
-- (void)setMessageListItemFetchTimeoutCancelable:(id)a3;
-- (void)setMessageListItemFuture:(id)a3;
-- (void)updateWithMessageListItem:(id)a3 avatarResult:(id)a4 maximumPreviewLines:(int64_t)a5 hideAvatar:(BOOL)a6 displayName:(id)a7;
+- (void)setItemID:(id)d;
+- (void)setMessageListItem:(id)item;
+- (void)setMessageListItemFetchTimeoutCancelable:(id)cancelable;
+- (void)setMessageListItemFuture:(id)future;
+- (void)updateWithMessageListItem:(id)item avatarResult:(id)result maximumPreviewLines:(int64_t)lines hideAvatar:(BOOL)avatar displayName:(id)name;
 @end
 
 @implementation MessageListGroupedSenderCollectionViewCell
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (void)setItemID:(id)a3
+- (void)setItemID:(id)d
 {
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
-  MessageListGroupedSenderCollectionViewCell.itemID.setter(a3);
+  MessageListGroupedSenderCollectionViewCell.itemID.setter(d);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -41,11 +41,11 @@
   return v4;
 }
 
-- (void)setMessageListItem:(id)a3
+- (void)setMessageListItem:(id)item
 {
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
-  MessageListGroupedSenderCollectionViewCell.messageListItem.setter(a3);
+  MessageListGroupedSenderCollectionViewCell.messageListItem.setter(item);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -58,11 +58,11 @@
   return v4;
 }
 
-- (void)setMessageListItemFuture:(id)a3
+- (void)setMessageListItemFuture:(id)future
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](future);
   MEMORY[0x277D82BE0](self);
-  MessageListGroupedSenderCollectionViewCell.messageListItemFuture.setter(a3);
+  MessageListGroupedSenderCollectionViewCell.messageListItemFuture.setter(future);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -75,11 +75,11 @@
   return Timeout;
 }
 
-- (void)setMessageListItemFetchTimeoutCancelable:(id)a3
+- (void)setMessageListItemFetchTimeoutCancelable:(id)cancelable
 {
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
-  MessageListGroupedSenderCollectionViewCell.messageListItemFetchTimeoutCancelable.setter(a3);
+  MessageListGroupedSenderCollectionViewCell.messageListItemFetchTimeoutCancelable.setter(cancelable);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -90,48 +90,48 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)updateWithMessageListItem:(id)a3 avatarResult:(id)a4 maximumPreviewLines:(int64_t)a5 hideAvatar:(BOOL)a6 displayName:(id)a7
+- (void)updateWithMessageListItem:(id)item avatarResult:(id)result maximumPreviewLines:(int64_t)lines hideAvatar:(BOOL)avatar displayName:(id)name
 {
   swift_unknownObjectRetain();
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a7);
+  MEMORY[0x277D82BE0](result);
+  MEMORY[0x277D82BE0](name);
   MEMORY[0x277D82BE0](self);
   v11 = sub_214CCD394();
   v8 = sub_214CCF564();
-  MessageListGroupedSenderCollectionViewCell.update(messageListItem:avatarResult:maximumPreviewLines:hideAvatar:displayName:)(a3, a4, a5, v11 & 1, v8, v9);
+  MessageListGroupedSenderCollectionViewCell.update(messageListItem:avatarResult:maximumPreviewLines:hideAvatar:displayName:)(item, result, lines, v11 & 1, v8, v9);
 
-  MEMORY[0x277D82BD8](a7);
+  MEMORY[0x277D82BD8](name);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](result);
   swift_unknownObjectRelease();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
-  v12 = self;
-  v11 = a3;
+  selfCopy = self;
+  stateCopy = state;
   v10 = sub_214CCDB84();
   v7 = *(v10 - 8);
   v8 = v10 - 8;
   v6 = (*(v7 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v11);
+  MEMORY[0x28223BE20](stateCopy);
   v9 = &v5 - v6;
   MEMORY[0x277D82BE0](v4);
   MEMORY[0x277D82BE0](self);
   sub_214CCDB64();
   MessageListGroupedSenderCollectionViewCell.updateConfiguration(using:)(v9);
   (*(v7 + 8))(v9, v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](stateCopy);
+  MEMORY[0x277D82BD8](selfCopy);
 }
 
-- (void)applyIndicatorPreviewChangeAction:(id)a3
+- (void)applyIndicatorPreviewChangeAction:(id)action
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](action);
   MEMORY[0x277D82BE0](self);
-  MessageListGroupedSenderCollectionViewCell.applyIndicatorPreviewChangeAction(_:)(a3);
+  MessageListGroupedSenderCollectionViewCell.applyIndicatorPreviewChangeAction(_:)(action);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](action);
 }
 
 @end

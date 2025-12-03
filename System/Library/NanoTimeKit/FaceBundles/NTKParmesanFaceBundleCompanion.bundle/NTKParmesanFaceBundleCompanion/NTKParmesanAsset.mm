@@ -1,7 +1,7 @@
 @interface NTKParmesanAsset
-+ (id)decodeFromDictionary:(id)a3;
-+ (id)decodeFromDictionary:(id)a3 inResourceDirectory:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)decodeFromDictionary:(id)dictionary;
++ (id)decodeFromDictionary:(id)dictionary inResourceDirectory:(id)directory;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)presentationSize;
 - (NSDate)modificationDate;
 - (NSDictionary)layouts;
@@ -10,21 +10,21 @@
 - (NSString)localIdentifier;
 - (NSURL)resourceDirectory;
 - (NTKParmesanAsset)init;
-- (NTKParmesanAsset)initWithLocalIdentifier:(id)a3 modificationDate:(id)a4 presentationSize:(CGSize)a5 videoInfo:(id)a6 resourceDirectory:(id)a7 preferredTimeLayout:(id)a8 layouts:(id)a9 accessibilityDescription:(id)a10;
+- (NTKParmesanAsset)initWithLocalIdentifier:(id)identifier modificationDate:(id)date presentationSize:(CGSize)size videoInfo:(id)info resourceDirectory:(id)directory preferredTimeLayout:(id)layout layouts:(id)layouts accessibilityDescription:(id)self0;
 - (NTKParmesanAssetLayout)preferredLayout;
 - (id)asDictionary;
-- (id)copyWithZone:(void *)a3;
-- (id)layoutFor:(id)a3;
-- (id)layoutForScale:(int64_t)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)layoutFor:(id)for;
+- (id)layoutForScale:(int64_t)scale;
 - (id)preferredLayoutImageURL;
-- (id)uniqueSnapshotIdentifierForTimeOption:(id)a3;
-- (void)setAccessibilityDescription:(id)a3;
-- (void)setLayouts:(id)a3;
-- (void)setLocalIdentifier:(id)a3;
-- (void)setModificationDate:(id)a3;
-- (void)setPreferredTimeLayout:(id)a3;
-- (void)setResourceDirectory:(id)a3;
-- (void)setVideoInfo:(id)a3;
+- (id)uniqueSnapshotIdentifierForTimeOption:(id)option;
+- (void)setAccessibilityDescription:(id)description;
+- (void)setLayouts:(id)layouts;
+- (void)setLocalIdentifier:(id)identifier;
+- (void)setModificationDate:(id)date;
+- (void)setPreferredTimeLayout:(id)layout;
+- (void)setResourceDirectory:(id)directory;
+- (void)setVideoInfo:(id)info;
 @end
 
 @implementation NTKParmesanAsset
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (void)setLocalIdentifier:(id)a3
+- (void)setLocalIdentifier:(id)identifier
 {
   v4 = sub_23BFFA300();
   v5 = (self + OBJC_IVAR___NTKParmesanAsset_localIdentifier);
@@ -67,12 +67,12 @@
   return v10;
 }
 
-- (void)setModificationDate:(id)a3
+- (void)setModificationDate:(id)date
 {
   v5 = sub_23BF4A264(&qword_27E1E0B80);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (date)
   {
     sub_23BFF8D80();
     v8 = sub_23BFF8D90();
@@ -87,16 +87,16 @@
 
   v10 = OBJC_IVAR___NTKParmesanAsset_modificationDate;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_23BFE4B60(v7, self + v10, &qword_27E1E0B80);
   swift_endAccess();
 }
 
-- (void)setPreferredTimeLayout:(id)a3
+- (void)setPreferredTimeLayout:(id)layout
 {
   v4 = *(self + OBJC_IVAR___NTKParmesanAsset_preferredTimeLayout);
-  *(self + OBJC_IVAR___NTKParmesanAsset_preferredTimeLayout) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NTKParmesanAsset_preferredTimeLayout) = layout;
+  layoutCopy = layout;
 }
 
 - (NSDictionary)layouts
@@ -111,7 +111,7 @@
   return v2;
 }
 
-- (void)setLayouts:(id)a3
+- (void)setLayouts:(id)layouts
 {
   type metadata accessor for ParmesanTimeLayout();
   type metadata accessor for ParmesanAssetLayout();
@@ -138,9 +138,9 @@
   return v2;
 }
 
-- (void)setAccessibilityDescription:(id)a3
+- (void)setAccessibilityDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
     v4 = sub_23BFFA300();
   }
@@ -156,11 +156,11 @@
   v6[1] = v5;
 }
 
-- (void)setVideoInfo:(id)a3
+- (void)setVideoInfo:(id)info
 {
   v4 = *(self + OBJC_IVAR___NTKParmesanAsset_videoInfo);
-  *(self + OBJC_IVAR___NTKParmesanAsset_videoInfo) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NTKParmesanAsset_videoInfo) = info;
+  infoCopy = info;
 }
 
 - (NSURL)resourceDirectory
@@ -185,12 +185,12 @@
   return v10;
 }
 
-- (void)setResourceDirectory:(id)a3
+- (void)setResourceDirectory:(id)directory
 {
   v5 = sub_23BF4A264(&qword_27E1E0B78);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (directory)
   {
     sub_23BFF8CA0();
     v8 = sub_23BFF8D10();
@@ -205,7 +205,7 @@
 
   v10 = OBJC_IVAR___NTKParmesanAsset_resourceDirectory;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_23BFE4B60(v7, self + v10, &qword_27E1E0B78);
   swift_endAccess();
 }
@@ -219,10 +219,10 @@
   return result;
 }
 
-- (NTKParmesanAsset)initWithLocalIdentifier:(id)a3 modificationDate:(id)a4 presentationSize:(CGSize)a5 videoInfo:(id)a6 resourceDirectory:(id)a7 preferredTimeLayout:(id)a8 layouts:(id)a9 accessibilityDescription:(id)a10
+- (NTKParmesanAsset)initWithLocalIdentifier:(id)identifier modificationDate:(id)date presentationSize:(CGSize)size videoInfo:(id)info resourceDirectory:(id)directory preferredTimeLayout:(id)layout layouts:(id)layouts accessibilityDescription:(id)self0
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v37[1] = self;
   v16 = sub_23BF4A264(&qword_27E1E0B78);
   MEMORY[0x28223BE20](v16 - 8);
@@ -232,7 +232,7 @@
   v21 = v37 - v20;
   v22 = sub_23BFFA300();
   v24 = v23;
-  if (a4)
+  if (date)
   {
     sub_23BFF8D80();
     v25 = sub_23BFF8D90();
@@ -245,8 +245,8 @@
     (*(*(v26 - 8) + 56))(v21, 1, 1, v26);
   }
 
-  v27 = a10;
-  if (a7)
+  descriptionCopy = description;
+  if (directory)
   {
     sub_23BFF8CA0();
     v28 = 0;
@@ -263,10 +263,10 @@
   type metadata accessor for ParmesanAssetLayout();
   sub_23BFE5284(&unk_27E1E2848, type metadata accessor for ParmesanTimeLayout);
   v30 = sub_23BFFA270();
-  if (a10)
+  if (description)
   {
     v31 = sub_23BFFA300();
-    v27 = v32;
+    descriptionCopy = v32;
   }
 
   else
@@ -274,9 +274,9 @@
     v31 = 0;
   }
 
-  v33 = a6;
-  v34 = a8;
-  v35 = sub_23BFE52CC(v22, v24, v21, v33, v18, v34, v30, v31, width, height, v27);
+  infoCopy = info;
+  layoutCopy = layout;
+  v35 = sub_23BFE52CC(v22, v24, v21, infoCopy, v18, layoutCopy, v30, v31, width, height, descriptionCopy);
 
   return v35;
 }
@@ -288,10 +288,10 @@
   return result;
 }
 
-- (id)uniqueSnapshotIdentifierForTimeOption:(id)a3
+- (id)uniqueSnapshotIdentifierForTimeOption:(id)option
 {
-  v4 = a3;
-  v5 = self;
+  optionCopy = option;
+  selfCopy = self;
   sub_23BFE0114();
 
   v6 = sub_23BFFA2C0();
@@ -299,11 +299,11 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23BFFA960();
     swift_unknownObjectRelease();
@@ -312,7 +312,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_23BF4B33C(v11, v9, &qword_27E1E0530);
@@ -338,9 +338,9 @@ LABEL_9:
   return v6 & 1;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_23BFE0858(v6);
 
   sub_23BF4C484(v6, v6[3]);
@@ -351,7 +351,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFE0D7C();
 
   v3 = sub_23BFFA2C0();
@@ -361,7 +361,7 @@ LABEL_9:
 
 - (id)asDictionary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23BFE0F34();
 
   if (v3)
@@ -377,23 +377,23 @@ LABEL_9:
   return v4;
 }
 
-+ (id)decodeFromDictionary:(id)a3
++ (id)decodeFromDictionary:(id)dictionary
 {
   sub_23BFFA270();
   v4 = sub_23BFFA260();
 
-  v5 = [a1 decodeFromDictionary:v4 inResourceDirectory:0];
+  v5 = [self decodeFromDictionary:v4 inResourceDirectory:0];
 
   return v5;
 }
 
-+ (id)decodeFromDictionary:(id)a3 inResourceDirectory:(id)a4
++ (id)decodeFromDictionary:(id)dictionary inResourceDirectory:(id)directory
 {
   v5 = sub_23BFFA270();
-  if (a4)
+  if (directory)
   {
     v6 = sub_23BFFA300();
-    a4 = v7;
+    directory = v7;
   }
 
   else
@@ -402,7 +402,7 @@ LABEL_9:
   }
 
   swift_getObjCClassMetadata();
-  v8 = sub_23BFE1264(v5, v6, a4);
+  v8 = sub_23BFE1264(v5, v6, directory);
 
   return v8;
 }
@@ -422,8 +422,8 @@ LABEL_9:
   MEMORY[0x28223BE20](v6);
   v8 = &v19 - v7;
   v9 = *(self + OBJC_IVAR___NTKParmesanAsset_preferredTimeLayout);
-  v10 = self;
-  v11 = [(NTKParmesanAsset *)v10 imageURLForTimeLayout:v9];
+  selfCopy = self;
+  v11 = [(NTKParmesanAsset *)selfCopy imageURLForTimeLayout:v9];
   if (v11)
   {
     v12 = v11;
@@ -455,23 +455,23 @@ LABEL_9:
   return v16;
 }
 
-- (id)layoutFor:(id)a3
+- (id)layoutFor:(id)for
 {
   v5 = OBJC_IVAR___NTKParmesanAsset_layouts;
   swift_beginAccess();
   v6 = *(self + v5);
-  v7 = a3;
-  v8 = self;
+  forCopy = for;
+  selfCopy = self;
 
-  v9 = sub_23BFDD8E4(v7, v6);
+  v9 = sub_23BFDD8E4(forCopy, v6);
 
   return v9;
 }
 
-- (id)layoutForScale:(int64_t)a3
+- (id)layoutForScale:(int64_t)scale
 {
-  v4 = self;
-  v5 = sub_23BFE194C(a3);
+  selfCopy = self;
+  v5 = sub_23BFE194C(scale);
 
   return v5;
 }

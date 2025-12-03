@@ -1,21 +1,21 @@
 @interface PXSearchRecipientController
 - (BOOL)_searchHasNoResultsFound;
 - (CNContactViewController)_contactViewController;
-- (PXSearchRecipientController)initWithSearchDataSourceManager:(id)a3;
+- (PXSearchRecipientController)initWithSearchDataSourceManager:(id)manager;
 - (PXSearchRecipientControllerDelegate)delegate;
 - (UIView)searchResultsView;
-- (id)_contactViewControllerForRecipient:(id)a3;
-- (id)_validationTextColorForSearchResult:(id)a3;
+- (id)_contactViewControllerForRecipient:(id)recipient;
+- (id)_validationTextColorForSearchResult:(id)result;
 - (void)_removeRecent;
-- (void)_setSearchDataSource:(id)a3;
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4;
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5;
-- (void)autocompleteResultsController:(id)a3 tintColorForRecipient:(id)a4 completion:(id)a5;
-- (void)disambiguateRecipient:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDelegate:(id)a3;
-- (void)setNumberOfSearchRecipients:(unint64_t)a3;
-- (void)setSearchState:(int64_t)a3;
+- (void)_setSearchDataSource:(id)source;
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient;
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
+- (void)autocompleteResultsController:(id)controller tintColorForRecipient:(id)recipient completion:(id)completion;
+- (void)disambiguateRecipient:(id)recipient;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDelegate:(id)delegate;
+- (void)setNumberOfSearchRecipients:(unint64_t)recipients;
+- (void)setSearchState:(int64_t)state;
 @end
 
 @implementation PXSearchRecipientController
@@ -34,39 +34,39 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSearchDataSourceManagerContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSearchDataSourceManagerContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:270 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:270 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v12 = v9;
-  if (v6)
+  v12 = observableCopy;
+  if (changeCopy)
   {
-    v10 = [(PXSectionedDataSourceManager *)self->_searchDataSourceManager dataSource];
-    [(PXSearchRecipientController *)self _setSearchDataSource:v10];
+    dataSource = [(PXSectionedDataSourceManager *)self->_searchDataSourceManager dataSource];
+    [(PXSearchRecipientController *)self _setSearchDataSource:dataSource];
 
-    v9 = v12;
+    observableCopy = v12;
   }
 
-  if ((v6 & 2) != 0)
+  if ((changeCopy & 2) != 0)
   {
     [(PXSearchRecipientController *)self setSearchState:[(PXRecipientSearchDataSourceManager *)self->_searchDataSourceManager searchState]== 1];
-    v9 = v12;
+    observableCopy = v12;
   }
 }
 
 - (void)_removeRecent
 {
-  v4 = [(PXSearchRecipientController *)self _searchResultsTableViewController];
-  v5 = [(PXSearchRecipientController *)self suggestedRecipientBeingViewed];
-  [v4 invalidateSearchResultRecipient:v5];
+  _searchResultsTableViewController = [(PXSearchRecipientController *)self _searchResultsTableViewController];
+  suggestedRecipientBeingViewed = [(PXSearchRecipientController *)self suggestedRecipientBeingViewed];
+  [_searchResultsTableViewController invalidateSearchResultRecipient:suggestedRecipientBeingViewed];
 
   v18 = self->_searchDataSourceManager;
   if (v18)
@@ -77,71 +77,71 @@
       goto LABEL_3;
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v15 = NSStringFromClass(v16);
-    v17 = [(PXRecipientSearchDataSourceManager *)v18 px_descriptionForAssertionMessage];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:244 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_searchDataSourceManager", v15, v17}];
+    px_descriptionForAssertionMessage = [(PXRecipientSearchDataSourceManager *)v18 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:244 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_searchDataSourceManager", v15, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:244 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_searchDataSourceManager", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:244 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_searchDataSourceManager", v15}];
   }
 
 LABEL_3:
-  v6 = [(PXSearchRecipientController *)self suggestedRecipientBeingViewed];
-  [(PXRecipientSearchDataSourceManager *)v18 removeRecipientResult:v6];
+  suggestedRecipientBeingViewed2 = [(PXSearchRecipientController *)self suggestedRecipientBeingViewed];
+  [(PXRecipientSearchDataSourceManager *)v18 removeRecipientResult:suggestedRecipientBeingViewed2];
 
   [(PXSearchRecipientController *)self setSuggestedRecipientBeingViewed:0];
-  v7 = [(PXSearchRecipientController *)self _contactViewController];
-  v8 = [v7 navigationController];
+  _contactViewController = [(PXSearchRecipientController *)self _contactViewController];
+  navigationController = [_contactViewController navigationController];
 
-  v9 = [(PXSearchRecipientController *)self _contactViewController];
-  v10 = v9;
-  if (v8)
+  _contactViewController2 = [(PXSearchRecipientController *)self _contactViewController];
+  v10 = _contactViewController2;
+  if (navigationController)
   {
-    v11 = [v9 navigationController];
-    v12 = [v11 popViewControllerAnimated:1];
+    navigationController2 = [_contactViewController2 navigationController];
+    v12 = [navigationController2 popViewControllerAnimated:1];
   }
 
   else
   {
-    v11 = [v9 presentingViewController];
-    [v11 dismissViewControllerAnimated:1 completion:0];
+    navigationController2 = [_contactViewController2 presentingViewController];
+    [navigationController2 dismissViewControllerAnimated:1 completion:0];
   }
 
   [(PXSearchRecipientController *)self set_contactViewController:0];
 }
 
-- (id)_contactViewControllerForRecipient:(id)a3
+- (id)_contactViewControllerForRecipient:(id)recipient
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 contact];
-  if (!v4)
+  recipientCopy = recipient;
+  contact = [recipientCopy contact];
+  if (!contact)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    v6 = [v3 uncommentedAddress];
-    v7 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:*MEMORY[0x1E695CB68] value:v6];
+    uncommentedAddress = [recipientCopy uncommentedAddress];
+    v7 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:*MEMORY[0x1E695CB68] value:uncommentedAddress];
     v16[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     [v5 setEmailAddresses:v8];
 
-    v4 = [v5 copy];
+    contact = [v5 copy];
   }
 
-  if ([v4 isUnknown])
+  if ([contact isUnknown])
   {
-    [MEMORY[0x1E695D148] viewControllerForUnknownContact:v4];
+    [MEMORY[0x1E695D148] viewControllerForUnknownContact:contact];
   }
 
   else
   {
-    [MEMORY[0x1E695D148] viewControllerForContact:v4];
+    [MEMORY[0x1E695D148] viewControllerForContact:contact];
   }
   v9 = ;
   v10 = *MEMORY[0x1E695C208];
@@ -161,29 +161,29 @@ LABEL_3:
   return v9;
 }
 
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient
 {
-  v13 = a4;
-  v5 = [(PXSearchRecipientController *)self _contactViewControllerForRecipient:v13];
-  if ([v13 isRemovableFromSearchResults])
+  recipientCopy = recipient;
+  v5 = [(PXSearchRecipientController *)self _contactViewControllerForRecipient:recipientCopy];
+  if ([recipientCopy isRemovableFromSearchResults])
   {
-    v6 = [v5 contentViewController];
+    contentViewController = [v5 contentViewController];
     v7 = PXLocalizedStringFromTable(@"PXComposeRecipientRemoveRecentSuggestionButtonTitle", @"PhotosUICore");
-    v8 = [v6 cardFooterGroup];
-    [v6 addActionWithTitle:v7 target:self selector:sel__removeRecent inGroup:v8 destructive:1];
+    cardFooterGroup = [contentViewController cardFooterGroup];
+    [contentViewController addActionWithTitle:v7 target:self selector:sel__removeRecent inGroup:cardFooterGroup destructive:1];
   }
 
-  [(PXSearchRecipientController *)self setSuggestedRecipientBeingViewed:v13];
+  [(PXSearchRecipientController *)self setSuggestedRecipientBeingViewed:recipientCopy];
   [(PXSearchRecipientController *)self set_contactViewController:v5];
-  v9 = [(PXSearchRecipientController *)self delegate];
-  v10 = [v9 viewControllerForPresentingContactViewControllerBySearchRecipientController:self];
+  delegate = [(PXSearchRecipientController *)self delegate];
+  v10 = [delegate viewControllerForPresentingContactViewControllerBySearchRecipientController:self];
 
-  v11 = [v10 navigationController];
-  v12 = [v10 navigationController];
+  navigationController = [v10 navigationController];
+  navigationController2 = [v10 navigationController];
 
-  if (v12)
+  if (navigationController2)
   {
-    [v11 pushViewController:v5 animated:1];
+    [navigationController pushViewController:v5 animated:1];
   }
 
   else
@@ -192,22 +192,22 @@ LABEL_3:
   }
 }
 
-- (void)autocompleteResultsController:(id)a3 tintColorForRecipient:(id)a4 completion:(id)a5
+- (void)autocompleteResultsController:(id)controller tintColorForRecipient:(id)recipient completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  recipientCopy = recipient;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__10213;
   v28 = __Block_byref_object_dispose__10214;
   v29 = 0;
-  v12 = [(PXSearchRecipientController *)self _searchDataSource];
-  v13 = v12;
-  if (v12)
+  _searchDataSource = [(PXSearchRecipientController *)self _searchDataSource];
+  v13 = _searchDataSource;
+  if (_searchDataSource)
   {
-    [v12 firstItemIndexPath];
+    [_searchDataSource firstItemIndexPath];
   }
 
   else
@@ -222,15 +222,15 @@ LABEL_3:
   v14 = v13;
   v22 = a2;
   v18 = v14;
-  v19 = self;
-  v15 = v10;
+  selfCopy = self;
+  v15 = recipientCopy;
   v20 = v15;
   v21 = &v24;
   [v14 enumerateItemIndexPathsStartingAtIndexPath:v23 reverseDirection:0 usingBlock:v17];
   if (v25[5])
   {
     v16 = [(PXSearchRecipientController *)self _validationTextColorForSearchResult:?];
-    v11[2](v11, v16);
+    completionCopy[2](completionCopy, v16);
   }
 
   _Block_object_dispose(&v24, 8);
@@ -281,10 +281,10 @@ LABEL_3:
   }
 }
 
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
-  v6 = a4;
-  v7 = [(PXCNComposeRecipient *)[PXCNRecipientSearchResult alloc] initWithRecipient:v6];
+  recipientCopy = recipient;
+  v7 = [(PXCNComposeRecipient *)[PXCNRecipientSearchResult alloc] initWithRecipient:recipientCopy];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -295,8 +295,8 @@ LABEL_3:
     {
       if (self->_delegateRespondsTo.didSelectRecipient)
       {
-        v9 = [(PXSearchRecipientController *)self delegate];
-        [v9 searchRecipientController:self didSelectRecipient:v10];
+        delegate = [(PXSearchRecipientController *)self delegate];
+        [delegate searchRecipientController:self didSelectRecipient:v10];
       }
 
       [(PXRecipientSearchDataSourceManager *)self->_searchDataSourceManager setQueryString:&stru_1F1741150];
@@ -311,45 +311,45 @@ LABEL_3:
   }
 }
 
-- (id)_validationTextColorForSearchResult:(id)a3
+- (id)_validationTextColorForSearchResult:(id)result
 {
-  v3 = [a3 validationType];
-  if (v3)
+  validationType = [result validationType];
+  if (validationType)
   {
-    if (v3 == 2)
+    if (validationType == 2)
     {
-      v4 = [MEMORY[0x1E69DC888] systemGreenColor];
+      systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
     }
 
-    else if (v3 == 1)
+    else if (validationType == 1)
     {
-      v4 = [MEMORY[0x1E69DC888] systemBlueColor];
+      systemGreenColor = [MEMORY[0x1E69DC888] systemBlueColor];
     }
 
     else
     {
-      v4 = 0;
+      systemGreenColor = 0;
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGrayColor];
   }
 
-  return v4;
+  return systemGreenColor;
 }
 
-- (void)disambiguateRecipient:(id)a3
+- (void)disambiguateRecipient:(id)recipient
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  recipientCopy = recipient;
+  if (!recipientCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"recipient", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"recipient", v11}];
 LABEL_6:
 
     goto LABEL_3;
@@ -358,57 +358,57 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v5 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"recipient", v11, v13}];
+    px_descriptionForAssertionMessage = [recipientCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSearchRecipientController.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"recipient", v11, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v6 = [v5 recipient];
+  recipient = [recipientCopy recipient];
   searchResultsTableViewController = self->__searchResultsTableViewController;
-  v14[0] = v6;
+  v14[0] = recipient;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [(CNAutocompleteResultsTableViewController *)searchResultsTableViewController updateRecipients:v8 disambiguatingRecipient:v6];
+  [(CNAutocompleteResultsTableViewController *)searchResultsTableViewController updateRecipients:v8 disambiguatingRecipient:recipient];
 }
 
-- (void)setNumberOfSearchRecipients:(unint64_t)a3
+- (void)setNumberOfSearchRecipients:(unint64_t)recipients
 {
-  if (self->_numberOfSearchRecipients != a3)
+  if (self->_numberOfSearchRecipients != recipients)
   {
-    self->_numberOfSearchRecipients = a3;
+    self->_numberOfSearchRecipients = recipients;
     if (self->_delegateRespondsTo.numberOfSearchRecipientsDidChange)
     {
-      v5 = [(PXSearchRecipientController *)self delegate];
-      [v5 searchRecipientController:self numberOfSearchRecipientsDidChange:a3];
+      delegate = [(PXSearchRecipientController *)self delegate];
+      [delegate searchRecipientController:self numberOfSearchRecipientsDidChange:recipients];
     }
   }
 }
 
-- (void)setSearchState:(int64_t)a3
+- (void)setSearchState:(int64_t)state
 {
-  if (self->_searchState != a3)
+  if (self->_searchState != state)
   {
-    self->_searchState = a3;
+    self->_searchState = state;
     if (self->_delegateRespondsTo.searchStateDidChange)
     {
-      v5 = [(PXSearchRecipientController *)self delegate];
-      [v5 searchRecipientController:self searchStateDidChange:a3];
+      delegate = [(PXSearchRecipientController *)self delegate];
+      [delegate searchRecipientController:self searchStateDidChange:state];
     }
   }
 }
 
-- (void)_setSearchDataSource:(id)a3
+- (void)_setSearchDataSource:(id)source
 {
-  v6 = a3;
-  if (self->__searchDataSource != v6)
+  sourceCopy = source;
+  if (self->__searchDataSource != sourceCopy)
   {
-    objc_storeStrong(&self->__searchDataSource, a3);
+    objc_storeStrong(&self->__searchDataSource, source);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [(PXRecipientSearchDataSource *)v6 recipientSearchResultsInSection:0];
+    v8 = [(PXRecipientSearchDataSource *)sourceCopy recipientSearchResultsInSection:0];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __52__PXSearchRecipientController__setSearchDataSource___block_invoke;
@@ -476,25 +476,25 @@ LABEL_3:
     return 0;
   }
 
-  v3 = [(PXSectionedDataSourceManager *)self->_searchDataSourceManager dataSource];
-  v4 = [v3 numberOfItemsInSection:0] == 0;
+  dataSource = [(PXSectionedDataSourceManager *)self->_searchDataSourceManager dataSource];
+  v4 = [dataSource numberOfItemsInSection:0] == 0;
 
   return v4;
 }
 
 - (UIView)searchResultsView
 {
-  v2 = [(CNAutocompleteResultsTableViewController *)self->__searchResultsTableViewController tableView];
-  [v2 setKeyboardDismissMode:2];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v2 setBackgroundColor:v3];
+  tableView = [(CNAutocompleteResultsTableViewController *)self->__searchResultsTableViewController tableView];
+  [tableView setKeyboardDismissMode:2];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [tableView setBackgroundColor:systemBackgroundColor];
 
-  return v2;
+  return tableView;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -506,16 +506,16 @@ LABEL_3:
   }
 }
 
-- (PXSearchRecipientController)initWithSearchDataSourceManager:(id)a3
+- (PXSearchRecipientController)initWithSearchDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = PXSearchRecipientController;
   v6 = [(PXSearchRecipientController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchDataSourceManager, a3);
+    objc_storeStrong(&v6->_searchDataSourceManager, manager);
     [(PXSectionedDataSourceManager *)v7->_searchDataSourceManager registerChangeObserver:v7 context:PXSearchDataSourceManagerContext];
     v8 = objc_alloc_init(MEMORY[0x1E69963B0]);
     searchResultsTableViewController = v7->__searchResultsTableViewController;

@@ -5,10 +5,10 @@
 - (NSString)capabilityKey;
 - (NSString)description;
 - (NSString)key;
-- (_TtC27SiriVirtualDeviceResolution21CapabilityDescription)initWithKey:(id)a3 lowerbound:(double)a4 upperbound:(double)a5;
-- (_TtC27SiriVirtualDeviceResolution21CapabilityDescription)initWithKey:(id)a3 valueSet:(id)a4;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC27SiriVirtualDeviceResolution21CapabilityDescription)initWithKey:(id)key lowerbound:(double)lowerbound upperbound:(double)upperbound;
+- (_TtC27SiriVirtualDeviceResolution21CapabilityDescription)initWithKey:(id)key valueSet:(id)set;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CapabilityDescription
@@ -40,7 +40,7 @@
 
 - (NSString)capabilityKey
 {
-  v2 = self;
+  selfCopy = self;
   CapabilityDescription.capabilityKey.getter();
   v4 = v3;
 
@@ -59,7 +59,7 @@
 
 - (NSNumber)valueRangeLowerBound
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CapabilityDescription.valueRangeLowerBound.getter();
 
   return v3;
@@ -67,13 +67,13 @@
 
 - (NSNumber)valueRangeUpperBound
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CapabilityDescription.valueRangeUpperBound.getter();
 
   return v3;
 }
 
-- (_TtC27SiriVirtualDeviceResolution21CapabilityDescription)initWithKey:(id)a3 valueSet:(id)a4
+- (_TtC27SiriVirtualDeviceResolution21CapabilityDescription)initWithKey:(id)key valueSet:(id)set
 {
   sub_26990390C();
   sub_2698D23FC(0, &qword_28131C3F0, 0x277D82BB8);
@@ -82,23 +82,23 @@
   return CapabilityDescription.init(key:valueSet:)();
 }
 
-- (_TtC27SiriVirtualDeviceResolution21CapabilityDescription)initWithKey:(id)a3 lowerbound:(double)a4 upperbound:(double)a5
+- (_TtC27SiriVirtualDeviceResolution21CapabilityDescription)initWithKey:(id)key lowerbound:(double)lowerbound upperbound:(double)upperbound
 {
   sub_26990390C();
-  CapabilityDescription.init(key:lowerbound:upperbound:)(a4, a5);
+  CapabilityDescription.init(key:lowerbound:upperbound:)(lowerbound, upperbound);
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CapabilityDescription.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CapabilityDescription.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   CapabilityDescription.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -109,7 +109,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CapabilityDescription.description.getter();
 
   v3 = sub_2699038FC();

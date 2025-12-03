@@ -2,7 +2,7 @@
 - (CKCompositionTranslatorDelegate)delegate;
 - (void)dealloc;
 - (void)resetTranslationLogIdentifier;
-- (void)translate:(id)a3 into:(id)a4 from:(id)a5 version:(int64_t)a6;
+- (void)translate:(id)translate into:(id)into from:(id)from version:(int64_t)version;
 @end
 
 @implementation CKCompositionTranslator
@@ -18,14 +18,14 @@
 {
   if (*(self + OBJC_IVAR___CKCompositionTranslator_task))
   {
-    v3 = self;
+    selfCopy = self;
     sub_190D50920();
     sub_190D57330();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -33,7 +33,7 @@
   [(CKCompositionTranslator *)&v5 dealloc];
 }
 
-- (void)translate:(id)a3 into:(id)a4 from:(id)a5 version:(int64_t)a6
+- (void)translate:(id)translate into:(id)into from:(id)from version:(int64_t)version
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAD54C10);
   MEMORY[0x1EEE9AC00](v10 - 8);
@@ -43,7 +43,7 @@
   MEMORY[0x1EEE9AC00](v13);
   v16 = &v20 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D51970();
-  if (a5)
+  if (from)
   {
     sub_190D51970();
     v17 = 0;
@@ -55,9 +55,9 @@
   }
 
   (*(v14 + 56))(v12, v17, 1, v13);
-  v18 = a3;
-  v19 = self;
-  sub_190A9A204(v18, v16, v12, a6);
+  translateCopy = translate;
+  selfCopy = self;
+  sub_190A9A204(translateCopy, v16, v12, version);
 
   sub_19022EEA4(v12, &qword_1EAD54C10);
   (*(v14 + 8))(v16, v13);

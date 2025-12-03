@@ -1,23 +1,23 @@
 @interface _MFNSShadowTransformer
-- (id)transformValue:(id)a3 inverse:(BOOL)a4;
+- (id)transformValue:(id)value inverse:(BOOL)inverse;
 @end
 
 @implementation _MFNSShadowTransformer
 
-- (id)transformValue:(id)a3 inverse:(BOOL)a4
+- (id)transformValue:(id)value inverse:(BOOL)inverse
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  inverseCopy = inverse;
+  valueCopy = value;
+  if (valueCopy)
   {
-    if (v4)
+    if (inverseCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v5 shadow];
+        shadow = [valueCopy shadow];
 LABEL_7:
-        v7 = v6;
+        v7 = shadow;
         goto LABEL_9;
       }
     }
@@ -27,7 +27,7 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [[_MFNSShadow alloc] initWithShadow:v5];
+        shadow = [[_MFNSShadow alloc] initWithShadow:valueCopy];
         goto LABEL_7;
       }
     }

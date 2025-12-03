@@ -1,18 +1,18 @@
 @interface HUCameraEventReachabilityCell
 - (CALayer)badgeLayer;
-- (HUCameraEventReachabilityCell)initWithFrame:(CGRect)a3;
+- (HUCameraEventReachabilityCell)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
-- (void)drawRect:(CGRect)a3;
-- (void)updateWithReachabilityEventContainer:(id)a3 mode:(unint64_t)a4;
+- (void)drawRect:(CGRect)rect;
+- (void)updateWithReachabilityEventContainer:(id)container mode:(unint64_t)mode;
 @end
 
 @implementation HUCameraEventReachabilityCell
 
-- (HUCameraEventReachabilityCell)initWithFrame:(CGRect)a3
+- (HUCameraEventReachabilityCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUCameraEventReachabilityCell;
-  v3 = [(HUCameraEventReachabilityCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCameraEventReachabilityCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,41 +22,41 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetLineDash(CurrentContext, 2.0, drawRect__lengths, 2uLL);
-  v9 = [MEMORY[0x277D75208] bezierPath];
-  [v9 setLineWidth:2.0];
-  [v9 setLineCapStyle:1];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
+  [bezierPath setLineWidth:2.0];
+  [bezierPath setLineCapStyle:1];
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
   v18.size.height = height;
   MidY = CGRectGetMidY(v18);
-  [v9 moveToPoint:{0.0, MidY}];
-  v11 = [(HUCameraEventReachabilityCell *)self needsFullDashedLineWidth];
+  [bezierPath moveToPoint:{0.0, MidY}];
+  needsFullDashedLineWidth = [(HUCameraEventReachabilityCell *)self needsFullDashedLineWidth];
   v12 = -9.0;
-  if (v11)
+  if (needsFullDashedLineWidth)
   {
     v12 = 1.0;
   }
 
-  [v9 addLineToPoint:{width + v12, MidY}];
+  [bezierPath addLineToPoint:{width + v12, MidY}];
   v16 = 0.0;
   v17 = 0.0;
   v15 = 0.0;
-  v13 = [MEMORY[0x277D75348] systemRedColor];
-  [v13 getRed:&v17 green:&v16 blue:&v15 alpha:0];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  [systemRedColor getRed:&v17 green:&v16 blue:&v15 alpha:0];
 
   v14 = [MEMORY[0x277D75348] colorWithRed:v17 green:v16 blue:v15 alpha:0.35];
   [v14 setStroke];
 
-  [v9 stroke];
+  [bezierPath stroke];
 }
 
 - (CALayer)badgeLayer
@@ -64,14 +64,14 @@
   badgeLayer = self->_badgeLayer;
   if (!badgeLayer)
   {
-    v4 = [MEMORY[0x277CD9ED0] layer];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    -[CALayer setBackgroundColor:](v4, "setBackgroundColor:", [v5 CGColor]);
+    layer = [MEMORY[0x277CD9ED0] layer];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CALayer setBackgroundColor:](layer, "setBackgroundColor:", [clearColor CGColor]);
 
-    [(CALayer *)v4 setCornerRadius:9.0];
-    [(CALayer *)v4 setOpaque:0];
-    v6 = [(HUCameraEventReachabilityCell *)self layer];
-    [v6 addSublayer:v4];
+    [(CALayer *)layer setCornerRadius:9.0];
+    [(CALayer *)layer setOpaque:0];
+    layer2 = [(HUCameraEventReachabilityCell *)self layer];
+    [layer2 addSublayer:layer];
 
     v7 = HUImageNamed(@"CameraEventMarkerCameraOffline");
     [(HUCameraEventReachabilityCell *)self bounds];
@@ -80,11 +80,11 @@
     [v7 size];
     v13 = v12;
     [v7 size];
-    [(CALayer *)v4 setFrame:v9 + 18.0, v11 * 0.5 + -9.0, v13, v14];
-    -[CALayer setContents:](v4, "setContents:", [v7 CGImage]);
-    [(CALayer *)v4 setHidden:1];
+    [(CALayer *)layer setFrame:v9 + 18.0, v11 * 0.5 + -9.0, v13, v14];
+    -[CALayer setContents:](layer, "setContents:", [v7 CGImage]);
+    [(CALayer *)layer setHidden:1];
     v15 = self->_badgeLayer;
-    self->_badgeLayer = v4;
+    self->_badgeLayer = layer;
 
     badgeLayer = self->_badgeLayer;
   }
@@ -92,16 +92,16 @@
   return badgeLayer;
 }
 
-- (void)updateWithReachabilityEventContainer:(id)a3 mode:(unint64_t)a4
+- (void)updateWithReachabilityEventContainer:(id)container mode:(unint64_t)mode
 {
-  v9 = a3;
-  [(HUCameraEventReachabilityCell *)self setDisplayMode:a4];
-  [(HUCameraEventReachabilityCell *)self setReachabilityEvent:v9];
-  v6 = [v9 endEvent];
-  if (v6)
+  containerCopy = container;
+  [(HUCameraEventReachabilityCell *)self setDisplayMode:mode];
+  [(HUCameraEventReachabilityCell *)self setReachabilityEvent:containerCopy];
+  endEvent = [containerCopy endEvent];
+  if (endEvent)
   {
-    v7 = [v9 endEvent];
-    -[HUCameraEventReachabilityCell setNeedsFullDashedLineWidth:](self, "setNeedsFullDashedLineWidth:", [v7 containerType] == 2);
+    endEvent2 = [containerCopy endEvent];
+    -[HUCameraEventReachabilityCell setNeedsFullDashedLineWidth:](self, "setNeedsFullDashedLineWidth:", [endEvent2 containerType] == 2);
   }
 
   else
@@ -111,8 +111,8 @@
 
   if (!self->_badgeLayer)
   {
-    v8 = [(HUCameraEventReachabilityCell *)self badgeLayer];
-    [v8 setHidden:0];
+    badgeLayer = [(HUCameraEventReachabilityCell *)self badgeLayer];
+    [badgeLayer setHidden:0];
   }
 
   [(HUCameraEventReachabilityCell *)self setNeedsDisplay];
@@ -123,20 +123,20 @@
   if ([MEMORY[0x277D14CE8] isInternalInstall])
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(HUCameraEventReachabilityCell *)self reachabilityEvent];
-    v5 = [v4 uniqueIdentifier];
-    v6 = [(HUCameraEventReachabilityCell *)self reachabilityEvent];
-    v7 = [v6 dateOfOccurrence];
-    v8 = [v3 stringWithFormat:@"Reachability Event UUID:%@ Date:%@", v5, v7];
+    reachabilityEvent = [(HUCameraEventReachabilityCell *)self reachabilityEvent];
+    uniqueIdentifier = [reachabilityEvent uniqueIdentifier];
+    reachabilityEvent2 = [(HUCameraEventReachabilityCell *)self reachabilityEvent];
+    dateOfOccurrence = [reachabilityEvent2 dateOfOccurrence];
+    displayDescription = [v3 stringWithFormat:@"Reachability Event UUID:%@ Date:%@", uniqueIdentifier, dateOfOccurrence];
   }
 
   else
   {
-    v4 = [(HUCameraEventReachabilityCell *)self reachabilityEvent];
-    v8 = [v4 displayDescription];
+    reachabilityEvent = [(HUCameraEventReachabilityCell *)self reachabilityEvent];
+    displayDescription = [reachabilityEvent displayDescription];
   }
 
-  return v8;
+  return displayDescription;
 }
 
 @end

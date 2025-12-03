@@ -1,15 +1,15 @@
 @interface PLJournalManager
-+ (id)journalManagerWithClass:(Class)a3 libraryServiceManager:(id)a4;
-- (BOOL)_enumerateJournalEntriesFromHistoryToken:(id)a3 latestHistoryToken:(id *)a4 withManagedObjectContext:(id)a5 journalEntryBlock:(id)a6 shouldStopBlock:(id)a7 error:(id *)a8;
++ (id)journalManagerWithClass:(Class)class libraryServiceManager:(id)manager;
+- (BOOL)_enumerateJournalEntriesFromHistoryToken:(id)token latestHistoryToken:(id *)historyToken withManagedObjectContext:(id)context journalEntryBlock:(id)block shouldStopBlock:(id)stopBlock error:(id *)error;
 - (BOOL)_needsFullSnapshot;
-- (BOOL)_needsPartialSnapshot:(id)a3;
-- (BOOL)coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 error:(id *)a5;
+- (BOOL)_needsPartialSnapshot:(id)snapshot;
+- (BOOL)coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold error:(id *)error;
 - (BOOL)needsSnapshot;
-- (BOOL)performFullSnapshotAppend:(BOOL)a3 createOnlyIfNecessary:(BOOL)a4 withManagedObjectContext:(id)a5 entryLimitBlock:(id)a6 error:(id *)a7;
-- (BOOL)performPartialSnapshotForPayloadClassIDs:(id)a3 append:(BOOL)a4 createOnlyIfNecessary:(BOOL)a5 withManagedObjectContext:(id)a6 error:(id *)a7;
-- (BOOL)performSnapshotIfNecessaryAppend:(BOOL)a3 withManagedObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)replayFromCurrentHistoryTokenWithManagedObjectContext:(id)a3 updatedPayloadClassIDs:(id)a4 error:(id *)a5;
-- (id)_existingObjectWithID:(id)a3 managedObjectContext:(id)a4;
+- (BOOL)performFullSnapshotAppend:(BOOL)append createOnlyIfNecessary:(BOOL)necessary withManagedObjectContext:(id)context entryLimitBlock:(id)block error:(id *)error;
+- (BOOL)performPartialSnapshotForPayloadClassIDs:(id)ds append:(BOOL)append createOnlyIfNecessary:(BOOL)necessary withManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)performSnapshotIfNecessaryAppend:(BOOL)append withManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)replayFromCurrentHistoryTokenWithManagedObjectContext:(id)context updatedPayloadClassIDs:(id)ds error:(id *)error;
+- (id)_existingObjectWithID:(id)d managedObjectContext:(id)context;
 - (id)currentHistoryToken;
 - (void)_loadHistoryTokenIfNecessary;
 - (void)clearHistoryToken;
@@ -17,24 +17,24 @@
 
 @implementation PLJournalManager
 
-+ (id)journalManagerWithClass:(Class)a3 libraryServiceManager:(id)a4
++ (id)journalManagerWithClass:(Class)class libraryServiceManager:(id)manager
 {
-  v6 = [a4 pathManager];
-  v7 = [(objc_class *)a3 baseURLFromPathManager:v6];
+  pathManager = [manager pathManager];
+  v7 = [(objc_class *)class baseURLFromPathManager:pathManager];
 
-  v8 = [a1 alloc];
-  v9 = [(objc_class *)a3 name];
-  v10 = [(objc_class *)a3 payloadClasses];
-  v11 = [v8 initWithName:v9 baseURL:v7 payloadClasses:v10];
+  v8 = [self alloc];
+  name = [(objc_class *)class name];
+  payloadClasses = [(objc_class *)class payloadClasses];
+  v11 = [v8 initWithName:name baseURL:v7 payloadClasses:payloadClasses];
 
   return v11;
 }
 
-- (BOOL)replayFromCurrentHistoryTokenWithManagedObjectContext:(id)a3 updatedPayloadClassIDs:(id)a4 error:(id *)a5
+- (BOOL)replayFromCurrentHistoryTokenWithManagedObjectContext:(id)context updatedPayloadClassIDs:(id)ds error:(id *)error
 {
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  dsCopy = ds;
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -49,9 +49,9 @@
     v11 = PLMigrationGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(PLJournalManagerCore *)self name];
+      name = [(PLJournalManagerCore *)self name];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v12;
+      *(&buf + 4) = name;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "JournalManager[%{public}@]: Skipping replay from current history due to ignoreHistoryDuringSnapshot token", &buf, 0xCu);
     }
 
@@ -91,7 +91,7 @@
     v37 = &v59;
     p_buf = &buf;
     v34[4] = self;
-    v35 = v8;
+    v35 = contextCopy;
     v15 = v14;
     v36 = v15;
     v39 = &v55;
@@ -110,7 +110,7 @@
           v32[2] = __103__PLJournalManager_replayFromCurrentHistoryTokenWithManagedObjectContext_updatedPayloadClassIDs_error___block_invoke_44;
           v32[3] = &unk_1E7567440;
           v32[4] = self;
-          v33 = v9;
+          v33 = dsCopy;
           [v15 enumerateKeysAndObjectsUsingBlock:v32];
           v16 = [*(*(&buf + 1) + 40) copy];
           currentHistoryToken = self->_currentHistoryToken;
@@ -126,18 +126,18 @@
             v21 = PLMigrationGetLog();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              v22 = [(PLJournalManagerCore *)self name];
+              name2 = [(PLJournalManagerCore *)self name];
               v23 = v44[5];
               *v67 = 138543618;
-              v68 = v22;
+              v68 = name2;
               v69 = 2112;
               v70 = v23;
               _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "JournalManager[%{public}@]: history token property list could not be written after appending entries: %@", v67, 0x16u);
             }
 
-            if (a5)
+            if (error)
             {
-              *a5 = v44[5];
+              *error = v44[5];
             }
 
             *(v60 + 24) = 0;
@@ -150,18 +150,18 @@
         v27 = PLMigrationGetLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v28 = [(PLJournalManagerCore *)self name];
+          name3 = [(PLJournalManagerCore *)self name];
           v29 = v50[5];
           *v67 = 138543618;
-          v68 = v28;
+          v68 = name3;
           v69 = 2112;
           v70 = v29;
           _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "JournalManager[%{public}@]: Error writing to journals: %@", v67, 0x16u);
         }
 
-        if (a5)
+        if (error)
         {
-          *a5 = v50[5];
+          *error = v50[5];
         }
 
         *(v60 + 24) = 0;
@@ -173,18 +173,18 @@
       v24 = PLMigrationGetLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [(PLJournalManagerCore *)self name];
+        name4 = [(PLJournalManagerCore *)self name];
         v26 = v44[5];
         *v67 = 138543618;
-        v68 = v25;
+        v68 = name4;
         v69 = 2112;
         v70 = v26;
         _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "JournalManager[%{public}@]: Error enumerating history: %@", v67, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = v44[5];
+        *error = v44[5];
       }
     }
 
@@ -312,15 +312,15 @@ uint64_t __103__PLJournalManager_replayFromCurrentHistoryTokenWithManagedObjectC
   return v5 & 1;
 }
 
-- (BOOL)_enumerateJournalEntriesFromHistoryToken:(id)a3 latestHistoryToken:(id *)a4 withManagedObjectContext:(id)a5 journalEntryBlock:(id)a6 shouldStopBlock:(id)a7 error:(id *)a8
+- (BOOL)_enumerateJournalEntriesFromHistoryToken:(id)token latestHistoryToken:(id *)historyToken withManagedObjectContext:(id)context journalEntryBlock:(id)block shouldStopBlock:(id)stopBlock error:(id *)error
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  tokenCopy = token;
+  contextCopy = context;
+  blockCopy = block;
+  stopBlockCopy = stopBlock;
   v45 = 0;
-  v18 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:v14 withManagedObjectObjectContext:v15 error:&v45];
+  v18 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:tokenCopy withManagedObjectObjectContext:contextCopy error:&v45];
   v19 = v45;
   v20 = v19;
   if (v18)
@@ -339,14 +339,14 @@ LABEL_3:
     v23 = v22;
     v34 = v23;
     v39 = &v40;
-    v37 = v17;
-    v35 = self;
-    v36 = v15;
-    v38 = v16;
+    v37 = stopBlockCopy;
+    selfCopy = self;
+    v36 = contextCopy;
+    v38 = blockCopy;
     [v18 enumerateRemainingTransactionsWithBlock:&v30];
-    if (a4 && (v41[3] & 1) == 0)
+    if (historyToken && (v41[3] & 1) == 0)
     {
-      *a4 = [v18 lastIteratedToken];
+      *historyToken = [v18 lastIteratedToken];
     }
 
     _Block_object_dispose(&v40, 8);
@@ -357,12 +357,12 @@ LABEL_3:
   if ([v19 code] == 134501)
   {
     v44 = v20;
-    v18 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:0 withManagedObjectObjectContext:v15 error:&v44];
+    v18 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:0 withManagedObjectObjectContext:contextCopy error:&v44];
     v21 = v44;
 
     if (!v18)
     {
-      if (!a8)
+      if (!error)
       {
         v24 = 0;
         goto LABEL_8;
@@ -373,7 +373,7 @@ LABEL_3:
       v51[0] = v21;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:&v50 count:1];
       [v26 errorWithDomain:*MEMORY[0x1E69BFF48] code:51011 userInfo:v18];
-      *a8 = v24 = 0;
+      *error = v24 = 0;
       goto LABEL_7;
     }
 
@@ -382,7 +382,7 @@ LABEL_3:
 
   if ([v20 code] != 134301)
   {
-    if (a8)
+    if (error)
     {
       v29 = MEMORY[0x1E696ABC0];
       v46 = *MEMORY[0x1E696AA08];
@@ -398,7 +398,7 @@ LABEL_19:
     goto LABEL_8;
   }
 
-  if (!a8)
+  if (!error)
   {
     goto LABEL_19;
   }
@@ -410,7 +410,7 @@ LABEL_19:
   v28 = [v27 errorWithDomain:*MEMORY[0x1E69BFF48] code:51009 userInfo:v18];
 LABEL_18:
   v24 = 0;
-  *a8 = v28;
+  *error = v28;
   v21 = v20;
 LABEL_7:
 
@@ -819,23 +819,23 @@ void __145__PLJournalManager__enumerateJournalEntriesFromHistoryToken_latestHist
 LABEL_13:
 }
 
-- (id)_existingObjectWithID:(id)a3 managedObjectContext:(id)a4
+- (id)_existingObjectWithID:(id)d managedObjectContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v12 = 0;
-  v7 = [a4 existingObjectWithID:v6 error:&v12];
+  v7 = [context existingObjectWithID:dCopy error:&v12];
   v8 = v12;
   if (!v7 && (PLIsErrorEqualToCode() & 1) == 0)
   {
     v9 = PLMigrationGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PLJournalManagerCore *)self name];
+      name = [(PLJournalManagerCore *)self name];
       *buf = 138543874;
-      v14 = v10;
+      v14 = name;
       v15 = 2114;
-      v16 = v6;
+      v16 = dCopy;
       v17 = 2112;
       v18 = v8;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "JournalManager[%{public}@]: failed to fetch object with ID %{public}@: %@", buf, 0x20u);
@@ -845,37 +845,37 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 error:(id *)a5
+- (BOOL)coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(PLJournalManagerCore *)self baseURL];
-  v10 = [(PLJournalManagerCore *)self payloadClasses];
+  dsCopy = ds;
+  baseURL = [(PLJournalManagerCore *)self baseURL];
+  payloadClasses = [(PLJournalManagerCore *)self payloadClasses];
   v45 = 0;
-  v11 = [PLJournal recoverJournalsIfNecessaryForBaseURL:v9 payloadClasses:v10 error:&v45];
+  v11 = [PLJournal recoverJournalsIfNecessaryForBaseURL:baseURL payloadClasses:payloadClasses error:&v45];
   v12 = v45;
 
   if (v11)
   {
-    if (![v8 count])
+    if (![dsCopy count])
     {
-      v13 = [(PLJournalManagerCore *)self payloadClassIDs];
+      payloadClassIDs = [(PLJournalManagerCore *)self payloadClassIDs];
 
-      v8 = v13;
+      dsCopy = payloadClassIDs;
     }
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v8 = v8;
-    v14 = [v8 countByEnumeratingWithState:&v41 objects:v58 count:16];
+    dsCopy = dsCopy;
+    v14 = [dsCopy countByEnumeratingWithState:&v41 objects:v58 count:16];
     if (v14)
     {
       v15 = v14;
-      v35 = a5;
+      errorCopy = error;
       v16 = *v42;
-      obj = v8;
+      obj = dsCopy;
       while (2)
       {
         for (i = 0; i != v15; ++i)
@@ -892,23 +892,23 @@ LABEL_13:
           {
             v21 = v20;
             v22 = [PLJournal alloc];
-            v23 = [(PLJournalManagerCore *)self baseURL];
-            v24 = [(PLJournal *)v22 initWithBaseURL:v23 payloadClass:v21];
+            baseURL2 = [(PLJournalManagerCore *)self baseURL];
+            v24 = [(PLJournal *)v22 initWithBaseURL:baseURL2 payloadClass:v21];
 
             v39 = 0;
             v40 = 0;
             v38 = v12;
-            LODWORD(v23) = [(PLJournal *)v24 snapshotJournalFileSize:&v40 changeJournalFileSize:&v39 error:&v38];
+            LODWORD(baseURL2) = [(PLJournal *)v24 snapshotJournalFileSize:&v40 changeJournalFileSize:&v39 error:&v38];
             v25 = v38;
 
-            if (!v23)
+            if (!baseURL2)
             {
               v30 = PLMigrationGetLog();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
               {
-                v31 = [(PLJournalManagerCore *)self name];
+                name = [(PLJournalManagerCore *)self name];
                 *buf = 138543874;
-                v47 = v31;
+                v47 = name;
                 v48 = 2114;
                 v49 = v18;
                 v50 = 2112;
@@ -920,24 +920,24 @@ LABEL_13:
               goto LABEL_24;
             }
 
-            if (a4 >= 0.0 && v39 > (v40 * a4))
+            if (threshold >= 0.0 && v39 > (v40 * threshold))
             {
               v26 = PLMigrationGetLog();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
-                v27 = [(PLJournalManagerCore *)self name];
+                name2 = [(PLJournalManagerCore *)self name];
                 *buf = 138544642;
-                v47 = v27;
+                v47 = name2;
                 v48 = 2114;
                 v49 = v18;
                 v50 = 2048;
                 v51 = v39;
                 v52 = 2048;
-                v53 = (v40 * a4);
+                v53 = (v40 * threshold);
                 v54 = 2048;
                 v55 = v40;
                 v56 = 2048;
-                v57 = a4;
+                thresholdCopy = threshold;
                 _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_DEFAULT, "JournalManager[%{public}@]: coalescing journal %{public}@, change journal size %llu greater than %llu for snapshot size %llu with threshold: %f", buf, 0x3Eu);
               }
 
@@ -950,9 +950,9 @@ LABEL_13:
                 v30 = PLMigrationGetLog();
                 if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
                 {
-                  v34 = [(PLJournalManagerCore *)self name];
+                  name3 = [(PLJournalManagerCore *)self name];
                   *buf = 138543874;
-                  v47 = v34;
+                  v47 = name3;
                   v48 = 2114;
                   v49 = v18;
                   v50 = 2112;
@@ -961,8 +961,8 @@ LABEL_13:
                 }
 
 LABEL_24:
-                v8 = obj;
-                a5 = v35;
+                dsCopy = obj;
+                error = errorCopy;
 
                 objc_autoreleasePoolPop(v19);
                 goto LABEL_25;
@@ -977,7 +977,7 @@ LABEL_24:
           objc_autoreleasePoolPop(v19);
         }
 
-        v8 = obj;
+        dsCopy = obj;
         v15 = [obj countByEnumeratingWithState:&v41 objects:v58 count:16];
         if (v15)
         {
@@ -994,11 +994,11 @@ LABEL_24:
   else
   {
 LABEL_25:
-    if (a5)
+    if (error)
     {
       v32 = v12;
       v29 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -1010,11 +1010,11 @@ LABEL_25:
   return v29;
 }
 
-- (BOOL)performPartialSnapshotForPayloadClassIDs:(id)a3 append:(BOOL)a4 createOnlyIfNecessary:(BOOL)a5 withManagedObjectContext:(id)a6 error:(id *)a7
+- (BOOL)performPartialSnapshotForPayloadClassIDs:(id)ds append:(BOOL)append createOnlyIfNecessary:(BOOL)necessary withManagedObjectContext:(id)context error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
+  dsCopy = ds;
+  contextCopy = context;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -1024,11 +1024,11 @@ LABEL_25:
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
-  v14 = [(PLJournalManagerCore *)self baseURL];
-  v15 = [(PLJournalManagerCore *)self payloadClasses];
+  baseURL = [(PLJournalManagerCore *)self baseURL];
+  payloadClasses = [(PLJournalManagerCore *)self payloadClasses];
   v16 = (v37 + 5);
   obj = v37[5];
-  v17 = [PLJournal recoverJournalsIfNecessaryForBaseURL:v14 payloadClasses:v15 error:&obj];
+  v17 = [PLJournal recoverJournalsIfNecessaryForBaseURL:baseURL payloadClasses:payloadClasses error:&obj];
   objc_storeStrong(v16, obj);
 
   v35 = v17;
@@ -1041,11 +1041,11 @@ LABEL_25:
   v19 = PLMigrationGetLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(PLJournalManagerCore *)self name];
+    name = [(PLJournalManagerCore *)self name];
     *buf = 138543618;
-    v43 = v20;
+    v43 = name;
     v44 = 2114;
-    v45 = v12;
+    v45 = dsCopy;
     _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "JournalManager[%{public}@]: performing partial snapshot for payloadClassIDs: %{public}@", buf, 0x16u);
   }
 
@@ -1053,13 +1053,13 @@ LABEL_25:
   v23[1] = 3221225472;
   v23[2] = __121__PLJournalManager_performPartialSnapshotForPayloadClassIDs_append_createOnlyIfNecessary_withManagedObjectContext_error___block_invoke;
   v23[3] = &unk_1E7567378;
-  v24 = v13;
-  v25 = v12;
-  v26 = self;
-  v29 = a4;
+  v24 = contextCopy;
+  v25 = dsCopy;
+  selfCopy = self;
+  appendCopy = append;
   v27 = &v32;
   v28 = &v36;
-  v30 = a5;
+  necessaryCopy = necessary;
   [v24 performBlockAndWait:v23];
 
   v18 = v33;
@@ -1071,9 +1071,9 @@ LABEL_25:
   else
   {
 LABEL_6:
-    if (a7)
+    if (error)
     {
-      *a7 = v37[5];
+      *error = v37[5];
       v18 = v33;
     }
 
@@ -1201,10 +1201,10 @@ LABEL_18:
   }
 }
 
-- (BOOL)performFullSnapshotAppend:(BOOL)a3 createOnlyIfNecessary:(BOOL)a4 withManagedObjectContext:(id)a5 entryLimitBlock:(id)a6 error:(id *)a7
+- (BOOL)performFullSnapshotAppend:(BOOL)append createOnlyIfNecessary:(BOOL)necessary withManagedObjectContext:(id)context entryLimitBlock:(id)block error:(id *)error
 {
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  blockCopy = block;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -1220,30 +1220,30 @@ LABEL_18:
   v17[2] = __115__PLJournalManager_performFullSnapshotAppend_createOnlyIfNecessary_withManagedObjectContext_entryLimitBlock_error___block_invoke;
   v17[3] = &unk_1E7567350;
   v17[4] = self;
-  v14 = v12;
-  v22 = a3;
+  v14 = contextCopy;
+  appendCopy = append;
   v18 = v14;
   v20 = &v30;
-  v15 = v13;
+  v15 = blockCopy;
   v19 = v15;
   v21 = &v24;
-  v23 = a4;
+  necessaryCopy = necessary;
   [v14 performBlockAndWait:v17];
   if (v31[3])
   {
-    LOBYTE(a7) = 1;
+    LOBYTE(error) = 1;
   }
 
-  else if (a7)
+  else if (error)
   {
-    *a7 = v25[5];
-    LOBYTE(a7) = *(v31 + 24);
+    *error = v25[5];
+    LOBYTE(error) = *(v31 + 24);
   }
 
   _Block_object_dispose(&v24, 8);
   _Block_object_dispose(&v30, 8);
 
-  return a7 & 1;
+  return error & 1;
 }
 
 void __115__PLJournalManager_performFullSnapshotAppend_createOnlyIfNecessary_withManagedObjectContext_entryLimitBlock_error___block_invoke(uint64_t a1)
@@ -1441,13 +1441,13 @@ uint64_t __115__PLJournalManager_performFullSnapshotAppend_createOnlyIfNecessary
   return v10;
 }
 
-- (BOOL)performSnapshotIfNecessaryAppend:(BOOL)a3 withManagedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)performSnapshotIfNecessaryAppend:(BOOL)append withManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v8 = a4;
+  appendCopy = append;
+  contextCopy = context;
   if ([(PLJournalManager *)self _needsFullSnapshot])
   {
-    v9 = [(PLJournalManager *)self performFullSnapshotAppend:v6 createOnlyIfNecessary:0 withManagedObjectContext:v8 error:a5];
+    v9 = [(PLJournalManager *)self performFullSnapshotAppend:appendCopy createOnlyIfNecessary:0 withManagedObjectContext:contextCopy error:error];
   }
 
   else
@@ -1455,7 +1455,7 @@ uint64_t __115__PLJournalManager_performFullSnapshotAppend_createOnlyIfNecessary
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     if ([(PLJournalManager *)self _needsPartialSnapshot:v10])
     {
-      v9 = [(PLJournalManager *)self performPartialSnapshotForPayloadClassIDs:v10 append:v6 createOnlyIfNecessary:0 withManagedObjectContext:v8 error:a5];
+      v9 = [(PLJournalManager *)self performPartialSnapshotForPayloadClassIDs:v10 append:appendCopy createOnlyIfNecessary:0 withManagedObjectContext:contextCopy error:error];
     }
 
     else
@@ -1467,28 +1467,28 @@ uint64_t __115__PLJournalManager_performFullSnapshotAppend_createOnlyIfNecessary
   return v9;
 }
 
-- (BOOL)_needsPartialSnapshot:(id)a3
+- (BOOL)_needsPartialSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(PLJournalManagerCore *)self payloadClasses];
+  payloadClasses = [(PLJournalManagerCore *)self payloadClasses];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__PLJournalManager__needsPartialSnapshot___block_invoke;
   v8[3] = &unk_1E756FE60;
   v8[4] = self;
   v10 = &v11;
-  v6 = v4;
+  v6 = snapshotCopy;
   v9 = v6;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [payloadClasses enumerateObjectsUsingBlock:v8];
 
-  LOBYTE(v5) = *(v12 + 24);
+  LOBYTE(payloadClasses) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return payloadClasses;
 }
 
 void __42__PLJournalManager__needsPartialSnapshot___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1524,17 +1524,17 @@ void __42__PLJournalManager__needsPartialSnapshot___block_invoke(uint64_t a1, vo
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(PLJournalManagerCore *)self payloadClasses];
+  payloadClasses = [(PLJournalManagerCore *)self payloadClasses];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__PLJournalManager__needsFullSnapshot__block_invoke;
   v7[3] = &unk_1E756D320;
   v7[4] = self;
   v7[5] = &v8;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [payloadClasses enumerateObjectsUsingBlock:v7];
 
-  v4 = [(PLJournalManager *)self currentHistoryToken];
-  if (v4)
+  currentHistoryToken = [(PLJournalManager *)self currentHistoryToken];
+  if (currentHistoryToken)
   {
     v5 = *(v9 + 24) ^ 1;
   }
@@ -1565,8 +1565,8 @@ void __38__PLJournalManager__needsFullSnapshot__block_invoke(uint64_t a1, uint64
 
 - (BOOL)needsSnapshot
 {
-  v3 = [(PLJournalManager *)self currentHistoryToken];
-  if (v3)
+  currentHistoryToken = [(PLJournalManager *)self currentHistoryToken];
+  if (currentHistoryToken)
   {
     v4 = [(PLJournalManager *)self _needsPartialSnapshot:0];
   }
@@ -1611,9 +1611,9 @@ void __38__PLJournalManager__needsFullSnapshot__block_invoke(uint64_t a1, uint64
       v6 = PLMigrationGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        v7 = [(PLJournalManagerCore *)self name];
+        name = [(PLJournalManagerCore *)self name];
         *buf = 138543618;
-        v10 = v7;
+        v10 = name;
         v11 = 2112;
         v12 = v4;
         _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_ERROR, "JournalManager[%{public}@]: could not read history token: %@", buf, 0x16u);

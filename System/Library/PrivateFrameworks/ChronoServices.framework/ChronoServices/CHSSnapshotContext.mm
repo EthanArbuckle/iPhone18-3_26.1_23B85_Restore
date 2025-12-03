@@ -1,7 +1,7 @@
 @interface CHSSnapshotContext
 - (BOOL)fileExists;
 - (BOOL)needsCAPackage;
-- (CHSSnapshotContext)initWithURL:(id)a3 attributes:(id)a4 fileManager:(id)a5;
+- (CHSSnapshotContext)initWithURL:(id)l attributes:(id)attributes fileManager:(id)manager;
 - (NSString)contentIdentifier;
 - (NSString)typeIdentifier;
 @end
@@ -17,8 +17,8 @@
 
   else
   {
-    v4 = [(CHSSnapshotContext *)self typeIdentifier];
-    usesCAPackage = [v4 hasPrefix:@"com.apple.coreanimation"];
+    typeIdentifier = [(CHSSnapshotContext *)self typeIdentifier];
+    usesCAPackage = [typeIdentifier hasPrefix:@"com.apple.coreanimation"];
     self->_usesCAPackage = usesCAPackage;
     self->_checkedContentType = 1;
   }
@@ -57,20 +57,20 @@ LABEL_7:
   return v8;
 }
 
-- (CHSSnapshotContext)initWithURL:(id)a3 attributes:(id)a4 fileManager:(id)a5
+- (CHSSnapshotContext)initWithURL:(id)l attributes:(id)attributes fileManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  attributesCopy = attributes;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = CHSSnapshotContext;
   v12 = [(CHSSnapshotContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_url, a3);
-    objc_storeStrong(&v13->_attributes, a4);
-    objc_storeStrong(&v13->_fileManager, a5);
+    objc_storeStrong(&v12->_url, l);
+    objc_storeStrong(&v13->_attributes, attributes);
+    objc_storeStrong(&v13->_fileManager, manager);
   }
 
   return v13;
@@ -122,8 +122,8 @@ LABEL_7:
   else
   {
     fileManager = self->_fileManager;
-    v5 = [(NSURL *)self->_url path];
-    self->_fileExists = [(NSFileManager *)fileManager fileExistsAtPath:v5];
+    path = [(NSURL *)self->_url path];
+    self->_fileExists = [(NSFileManager *)fileManager fileExistsAtPath:path];
     p_fileExists = &self->_fileExists;
 
     p_fileExists[1] = 1;

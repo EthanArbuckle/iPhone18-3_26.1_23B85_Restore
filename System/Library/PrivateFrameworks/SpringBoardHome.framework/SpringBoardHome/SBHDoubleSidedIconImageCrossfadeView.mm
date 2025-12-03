@@ -1,11 +1,11 @@
 @interface SBHDoubleSidedIconImageCrossfadeView
-- (SBHDoubleSidedIconImageCrossfadeView)initWithSource:(id)a3 crossfadeView:(id)a4;
+- (SBHDoubleSidedIconImageCrossfadeView)initWithSource:(id)source crossfadeView:(id)view;
 - (void)_applyCornerRadiusToBackgroundView;
 - (void)_applyCornerRadiusToCrossfadeView;
 - (void)_applyCornerRadiusToIconImageView;
 - (void)_applyCornerRadiusToViews;
-- (void)_applyCrossfadeScaleX:(double)a3 scaleY:(double)a4;
-- (void)_setCornerRadiusEnabled:(BOOL)a3;
+- (void)_applyCrossfadeScaleX:(double)x scaleY:(double)y;
+- (void)_setCornerRadiusEnabled:(BOOL)enabled;
 - (void)cleanup;
 - (void)layoutSubviews;
 - (void)prepareGeometry;
@@ -13,16 +13,16 @@
 
 @implementation SBHDoubleSidedIconImageCrossfadeView
 
-- (SBHDoubleSidedIconImageCrossfadeView)initWithSource:(id)a3 crossfadeView:(id)a4
+- (SBHDoubleSidedIconImageCrossfadeView)initWithSource:(id)source crossfadeView:(id)view
 {
   v8.receiver = self;
   v8.super_class = SBHDoubleSidedIconImageCrossfadeView;
-  v4 = [(SBIconImageCrossfadeView *)&v8 initWithSource:a3 crossfadeView:a4];
+  v4 = [(SBIconImageCrossfadeView *)&v8 initWithSource:source crossfadeView:view];
   v5 = v4;
   if (v4)
   {
-    v6 = [(SBIconImageCrossfadeView *)v4 iconImageView];
-    v5->_iconImageViewClipsToBounds = [v6 clipsToBounds];
+    iconImageView = [(SBIconImageCrossfadeView *)v4 iconImageView];
+    v5->_iconImageViewClipsToBounds = [iconImageView clipsToBounds];
   }
 
   return v5;
@@ -33,37 +33,37 @@
   v11.receiver = self;
   v11.super_class = SBHDoubleSidedIconImageCrossfadeView;
   [(SBIconImageCrossfadeView *)&v11 prepareGeometry];
-  v3 = [(SBIconImageCrossfadeView *)self iconImageView];
-  v4 = [v3 layer];
+  iconImageView = [(SBIconImageCrossfadeView *)self iconImageView];
+  layer = [iconImageView layer];
 
-  [v4 setZPosition:0.01];
-  [v4 setDoubleSided:0];
-  v5 = [(SBIconImageCrossfadeView *)self backgroundView];
-  v6 = [v5 layer];
-  [v6 setDoubleSided:0];
+  [layer setZPosition:0.01];
+  [layer setDoubleSided:0];
+  backgroundView = [(SBIconImageCrossfadeView *)self backgroundView];
+  layer2 = [backgroundView layer];
+  [layer2 setDoubleSided:0];
 
-  v7 = [(SBIconImageCrossfadeView *)self crossfadeContainerView];
-  v8 = [v7 layer];
+  crossfadeContainerView = [(SBIconImageCrossfadeView *)self crossfadeContainerView];
+  layer3 = [crossfadeContainerView layer];
 
-  [v8 setZPosition:-0.01];
-  v9 = [(SBIconImageCrossfadeView *)self crossfadeView];
-  v10 = [v9 layer];
-  [v10 setDoubleSided:0];
+  [layer3 setZPosition:-0.01];
+  crossfadeView = [(SBIconImageCrossfadeView *)self crossfadeView];
+  layer4 = [crossfadeView layer];
+  [layer4 setDoubleSided:0];
 }
 
-- (void)_applyCrossfadeScaleX:(double)a3 scaleY:(double)a4
+- (void)_applyCrossfadeScaleX:(double)x scaleY:(double)y
 {
-  self->_scaleX = a3;
-  self->_scaleY = a4;
+  self->_scaleX = x;
+  self->_scaleY = y;
   memset(&v10, 0, sizeof(v10));
-  CATransform3DMakeScale(&v10, a3, a4, 1.0);
+  CATransform3DMakeScale(&v10, x, y, 1.0);
   memset(&v9, 0, sizeof(v9));
   CATransform3DMakeRotation(&v9, -3.14159265, 0.0, 1.0, 0.0);
-  v5 = [(SBIconImageCrossfadeView *)self crossfadeView];
+  crossfadeView = [(SBIconImageCrossfadeView *)self crossfadeView];
   a = v9;
   v6 = v10;
   CATransform3DConcat(&v8, &a, &v6);
-  [v5 setTransform3D:&v8];
+  [crossfadeView setTransform3D:&v8];
 }
 
 - (void)layoutSubviews
@@ -79,7 +79,7 @@
   v16.receiver = self;
   v16.super_class = SBHDoubleSidedIconImageCrossfadeView;
   [(SBIconImageCrossfadeView *)&v16 cleanup];
-  v3 = [(SBIconImageCrossfadeView *)self crossfadeView];
+  crossfadeView = [(SBIconImageCrossfadeView *)self crossfadeView];
   v4 = *(MEMORY[0x1E69792E8] + 80);
   v15[4] = *(MEMORY[0x1E69792E8] + 64);
   v15[5] = v4;
@@ -92,35 +92,35 @@
   v7 = *(MEMORY[0x1E69792E8] + 48);
   v15[2] = *(MEMORY[0x1E69792E8] + 32);
   v15[3] = v7;
-  [v3 setTransform3D:v15];
-  v8 = [(SBIconImageCrossfadeView *)self iconImageView];
-  [v8 setClipsToBounds:self->_iconImageViewClipsToBounds];
-  v9 = [v8 layer];
-  [v9 setZPosition:0.0];
-  [v9 setDoubleSided:1];
-  v10 = [(SBIconImageCrossfadeView *)self backgroundView];
-  v11 = [v10 layer];
-  [v11 setDoubleSided:1];
+  [crossfadeView setTransform3D:v15];
+  iconImageView = [(SBIconImageCrossfadeView *)self iconImageView];
+  [iconImageView setClipsToBounds:self->_iconImageViewClipsToBounds];
+  layer = [iconImageView layer];
+  [layer setZPosition:0.0];
+  [layer setDoubleSided:1];
+  backgroundView = [(SBIconImageCrossfadeView *)self backgroundView];
+  layer2 = [backgroundView layer];
+  [layer2 setDoubleSided:1];
 
-  v12 = [(SBIconImageCrossfadeView *)self crossfadeContainerView];
-  v13 = [v12 layer];
+  crossfadeContainerView = [(SBIconImageCrossfadeView *)self crossfadeContainerView];
+  layer3 = [crossfadeContainerView layer];
 
-  [v13 setZPosition:0.0];
-  v14 = [v3 layer];
-  [v14 setDoubleSided:1];
+  [layer3 setZPosition:0.0];
+  layer4 = [crossfadeView layer];
+  [layer4 setDoubleSided:1];
 }
 
-- (void)_setCornerRadiusEnabled:(BOOL)a3
+- (void)_setCornerRadiusEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SBIconImageCrossfadeView *)self iconImageView];
-  [v5 setClipsToBounds:v3];
+  enabledCopy = enabled;
+  iconImageView = [(SBIconImageCrossfadeView *)self iconImageView];
+  [iconImageView setClipsToBounds:enabledCopy];
 
-  v6 = [(SBIconImageCrossfadeView *)self backgroundView];
-  [v6 setClipsToBounds:v3];
+  backgroundView = [(SBIconImageCrossfadeView *)self backgroundView];
+  [backgroundView setClipsToBounds:enabledCopy];
 
-  v7 = [(SBIconImageCrossfadeView *)self crossfadeView];
-  [v7 setClipsToBounds:v3];
+  crossfadeView = [(SBIconImageCrossfadeView *)self crossfadeView];
+  [crossfadeView setClipsToBounds:enabledCopy];
 }
 
 - (void)_applyCornerRadiusToViews
@@ -145,14 +145,14 @@
 
   [(SBIconImageCrossfadeView *)self morphFraction];
   v5 = 1.0 - v4 * (1.0 - v3);
-  v6 = [(SBIconImageCrossfadeView *)self iconImageView];
-  [v6 _setContinuousCornerRadius:self->_cornerRadius / v5];
+  iconImageView = [(SBIconImageCrossfadeView *)self iconImageView];
+  [iconImageView _setContinuousCornerRadius:self->_cornerRadius / v5];
 }
 
 - (void)_applyCornerRadiusToBackgroundView
 {
-  v3 = [(SBIconImageCrossfadeView *)self backgroundView];
-  [v3 _setContinuousCornerRadius:self->_cornerRadius];
+  backgroundView = [(SBIconImageCrossfadeView *)self backgroundView];
+  [backgroundView _setContinuousCornerRadius:self->_cornerRadius];
 }
 
 - (void)_applyCornerRadiusToCrossfadeView
@@ -169,8 +169,8 @@
 
   [(SBIconImageCrossfadeView *)self morphFraction];
   v5 = 1.0 - (1.0 - v4) * (1.0 - scaleX);
-  v6 = [(SBIconImageCrossfadeView *)self crossfadeView];
-  [v6 _setContinuousCornerRadius:self->_cornerRadius / v5];
+  crossfadeView = [(SBIconImageCrossfadeView *)self crossfadeView];
+  [crossfadeView _setContinuousCornerRadius:self->_cornerRadius / v5];
 }
 
 @end

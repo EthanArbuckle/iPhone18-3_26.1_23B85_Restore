@@ -1,22 +1,22 @@
 @interface MessageHeaderViewModel
-- (BOOL)_viewModelHasChanges:(_BOOL8)a1;
-- (MessageHeaderViewModel)initWithBuilder:(id)a3;
-- (MessageHeaderViewModel)initWithItemBuilder:(id)a3;
-- (id)updatedFlagsModelWithBuilder:(id)a3;
-- (id)updatedModelWithBuilder:(id)a3;
-- (id)updatedModelWithMessage:(id)a3;
-- (uint64_t)_flagsChangedInModel:(uint64_t)a1;
+- (BOOL)_viewModelHasChanges:(_BOOL8)changes;
+- (MessageHeaderViewModel)initWithBuilder:(id)builder;
+- (MessageHeaderViewModel)initWithItemBuilder:(id)builder;
+- (id)updatedFlagsModelWithBuilder:(id)builder;
+- (id)updatedModelWithBuilder:(id)builder;
+- (id)updatedModelWithMessage:(id)message;
+- (uint64_t)_flagsChangedInModel:(uint64_t)model;
 @end
 
 @implementation MessageHeaderViewModel
 
-- (MessageHeaderViewModel)initWithBuilder:(id)a3
+- (MessageHeaderViewModel)initWithBuilder:(id)builder
 {
-  v5 = a3;
-  if (!v5)
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MessageHeaderViewModel.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MessageHeaderViewModel.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
   }
 
   v11.receiver = self;
@@ -24,30 +24,30 @@
   v6 = [(MessageHeaderViewModel *)&v11 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277D07180] observableObserver];
+    observableObserver = [MEMORY[0x277D07180] observableObserver];
     observableObserver = v6->_observableObserver;
-    v6->_observableObserver = v7;
+    v6->_observableObserver = observableObserver;
 
-    v5[2](v5, v6);
+    builderCopy[2](builderCopy, v6);
   }
 
   return v6;
 }
 
-- (MessageHeaderViewModel)initWithItemBuilder:(id)a3
+- (MessageHeaderViewModel)initWithItemBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   [(MessageHeaderViewModel *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MessageHeaderViewModel initWithItemBuilder:]", "MessageHeaderViewModel.m", 47, "0");
 }
 
-- (id)updatedModelWithBuilder:(id)a3
+- (id)updatedModelWithBuilder:(id)builder
 {
-  v5 = a3;
-  if (!v5)
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MessageHeaderViewModel.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MessageHeaderViewModel.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
   }
 
   v6 = objc_alloc(objc_opt_class());
@@ -56,16 +56,16 @@
   v13[2] = __50__MessageHeaderViewModel_updatedModelWithBuilder___block_invoke;
   v13[3] = &unk_2781818F0;
   v13[4] = self;
-  v7 = v5;
+  v7 = builderCopy;
   v14 = v7;
   v8 = [v6 initWithBuilder:v13];
-  v9 = [(MessageHeaderViewModel *)self observableObserver];
-  [v8 setObservableObserver:v9];
+  observableObserver = [(MessageHeaderViewModel *)self observableObserver];
+  [v8 setObservableObserver:observableObserver];
 
   if ([(MessageHeaderViewModel *)self _viewModelHasChanges:v8])
   {
-    v10 = [v8 observableObserver];
-    [v10 observerDidReceiveResult:v8];
+    observableObserver2 = [v8 observableObserver];
+    [observableObserver2 observerDidReceiveResult:v8];
   }
 
   return v8;
@@ -151,183 +151,183 @@ void __50__MessageHeaderViewModel_updatedModelWithBuilder___block_invoke(uint64_
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_viewModelHasChanges:(_BOOL8)a1
+- (BOOL)_viewModelHasChanges:(_BOOL8)changes
 {
   v3 = a2;
-  if (a1)
+  if (changes)
   {
-    if (([(MessageHeaderViewModel *)a1 _flagsChangedInModel:v3]& 1) != 0)
+    if (([(MessageHeaderViewModel *)changes _flagsChangedInModel:v3]& 1) != 0)
     {
-      a1 = 1;
+      changes = 1;
     }
 
     else
     {
-      v4 = [a1 itemID];
-      v5 = [v3 itemID];
-      if ([v4 isEqual:v5])
+      itemID = [changes itemID];
+      itemID2 = [v3 itemID];
+      if ([itemID isEqual:itemID2])
       {
-        v6 = [a1 dateSent];
-        v7 = [v3 dateSent];
-        if ([v6 isEqual:v7])
+        dateSent = [changes dateSent];
+        dateSent2 = [v3 dateSent];
+        if ([dateSent isEqual:dateSent2])
         {
-          v8 = [a1 subject];
-          v9 = [v3 subject];
-          if ([v8 isEqual:v9])
+          subject = [changes subject];
+          subject2 = [v3 subject];
+          if ([subject isEqual:subject2])
           {
-            v10 = [a1 sendLaterDate];
-            v11 = [v3 sendLaterDate];
-            if ([v10 isEqual:v11])
+            sendLaterDate = [changes sendLaterDate];
+            sendLaterDate2 = [v3 sendLaterDate];
+            if ([sendLaterDate isEqual:sendLaterDate2])
             {
-              v37 = [a1 readLaterDate];
-              v36 = [v3 readLaterDate];
-              if ([v37 isEqual:?])
+              readLaterDate = [changes readLaterDate];
+              readLaterDate2 = [v3 readLaterDate];
+              if ([readLaterDate isEqual:?])
               {
-                v35 = [a1 sendLaterDate];
-                v34 = [v3 sendLaterDate];
-                if ([v35 isEqual:?])
+                sendLaterDate3 = [changes sendLaterDate];
+                sendLaterDate4 = [v3 sendLaterDate];
+                if ([sendLaterDate3 isEqual:?])
                 {
-                  v33 = [a1 displayDate];
-                  v32 = [v3 displayDate];
-                  if ([v33 isEqual:?])
+                  displayDate = [changes displayDate];
+                  displayDate2 = [v3 displayDate];
+                  if ([displayDate isEqual:?])
                   {
-                    v31 = [a1 followUp];
-                    v30 = [v3 followUp];
-                    if ([v31 isEqual:?])
+                    followUp = [changes followUp];
+                    followUp2 = [v3 followUp];
+                    if ([followUp isEqual:?])
                     {
-                      v29 = [a1 date];
-                      v28 = [v3 date];
-                      if ([v29 isEqual:?])
+                      date = [changes date];
+                      date2 = [v3 date];
+                      if ([date isEqual:?])
                       {
-                        v27 = [a1 displayDate];
-                        v26 = [v3 displayDate];
-                        if ([v27 isEqual:?])
+                        displayDate3 = [changes displayDate];
+                        displayDate4 = [v3 displayDate];
+                        if ([displayDate3 isEqual:?])
                         {
-                          v25 = [a1 senderList];
-                          v24 = [v3 senderList];
-                          if ([v25 isEqualToArray:?])
+                          senderList = [changes senderList];
+                          senderList2 = [v3 senderList];
+                          if ([senderList isEqualToArray:?])
                           {
-                            v23 = [a1 replyToList];
-                            v22 = [v3 replyToList];
-                            if ([v23 isEqualToArray:v22])
+                            replyToList = [changes replyToList];
+                            replyToList2 = [v3 replyToList];
+                            if ([replyToList isEqualToArray:replyToList2])
                             {
-                              v21 = [a1 toList];
-                              v20 = [v3 toList];
-                              if ([v21 isEqualToArray:v20])
+                              toList = [changes toList];
+                              toList2 = [v3 toList];
+                              if ([toList isEqualToArray:toList2])
                               {
-                                v19 = [a1 ccList];
-                                v18 = [v3 ccList];
-                                if ([v19 isEqualToArray:v18])
+                                ccList = [changes ccList];
+                                ccList2 = [v3 ccList];
+                                if ([ccList isEqualToArray:ccList2])
                                 {
-                                  v17 = [a1 bccList];
-                                  v16 = [v3 bccList];
-                                  if ([v17 isEqualToArray:v16] && (v14 = objc_msgSend(a1, "hasAttachments"), v14 == objc_msgSend(v3, "hasAttachments")) && (v15 = objc_msgSend(a1, "isBlockedSender"), v15 == objc_msgSend(v3, "isBlockedSender")))
+                                  bccList = [changes bccList];
+                                  bccList2 = [v3 bccList];
+                                  if ([bccList isEqualToArray:bccList2] && (v14 = objc_msgSend(changes, "hasAttachments"), v14 == objc_msgSend(v3, "hasAttachments")) && (v15 = objc_msgSend(changes, "isBlockedSender"), v15 == objc_msgSend(v3, "isBlockedSender")))
                                   {
-                                    v13 = [a1 unsubscribeType];
-                                    a1 = v13 != [v3 unsubscribeType];
+                                    unsubscribeType = [changes unsubscribeType];
+                                    changes = unsubscribeType != [v3 unsubscribeType];
                                   }
 
                                   else
                                   {
-                                    a1 = 1;
+                                    changes = 1;
                                   }
                                 }
 
                                 else
                                 {
-                                  a1 = 1;
+                                  changes = 1;
                                 }
                               }
 
                               else
                               {
-                                a1 = 1;
+                                changes = 1;
                               }
                             }
 
                             else
                             {
-                              a1 = 1;
+                              changes = 1;
                             }
                           }
 
                           else
                           {
-                            a1 = 1;
+                            changes = 1;
                           }
                         }
 
                         else
                         {
-                          a1 = 1;
+                          changes = 1;
                         }
                       }
 
                       else
                       {
-                        a1 = 1;
+                        changes = 1;
                       }
                     }
 
                     else
                     {
-                      a1 = 1;
+                      changes = 1;
                     }
                   }
 
                   else
                   {
-                    a1 = 1;
+                    changes = 1;
                   }
                 }
 
                 else
                 {
-                  a1 = 1;
+                  changes = 1;
                 }
               }
 
               else
               {
-                a1 = 1;
+                changes = 1;
               }
             }
 
             else
             {
-              a1 = 1;
+              changes = 1;
             }
           }
 
           else
           {
-            a1 = 1;
+            changes = 1;
           }
         }
 
         else
         {
-          a1 = 1;
+          changes = 1;
         }
       }
 
       else
       {
-        a1 = 1;
+        changes = 1;
       }
     }
   }
 
-  return a1;
+  return changes;
 }
 
-- (id)updatedFlagsModelWithBuilder:(id)a3
+- (id)updatedFlagsModelWithBuilder:(id)builder
 {
-  v5 = a3;
-  if (!v5)
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MessageHeaderViewModel.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"flagsBuilderBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MessageHeaderViewModel.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"flagsBuilderBlock"}];
   }
 
   v6 = objc_alloc(objc_opt_class());
@@ -336,16 +336,16 @@ void __50__MessageHeaderViewModel_updatedModelWithBuilder___block_invoke(uint64_
   v13[2] = __55__MessageHeaderViewModel_updatedFlagsModelWithBuilder___block_invoke;
   v13[3] = &unk_2781818F0;
   v13[4] = self;
-  v7 = v5;
+  v7 = builderCopy;
   v14 = v7;
   v8 = [v6 initWithBuilder:v13];
-  v9 = [(MessageHeaderViewModel *)self observableObserver];
-  [v8 setObservableObserver:v9];
+  observableObserver = [(MessageHeaderViewModel *)self observableObserver];
+  [v8 setObservableObserver:observableObserver];
 
   if ([(MessageHeaderViewModel *)self _flagsChangedInModel:v8])
   {
-    v10 = [v8 observableObserver];
-    [v10 observerDidReceiveResult:v8];
+    observableObserver2 = [v8 observableObserver];
+    [observableObserver2 observerDidReceiveResult:v8];
   }
 
   return v8;
@@ -410,44 +410,44 @@ void __55__MessageHeaderViewModel_updatedFlagsModelWithBuilder___block_invoke(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (uint64_t)_flagsChangedInModel:(uint64_t)a1
+- (uint64_t)_flagsChangedInModel:(uint64_t)model
 {
   v3 = a2;
-  if (a1)
+  if (model)
   {
-    v4 = [a1 isRead];
-    if (v4 == [v3 isRead] && (v5 = objc_msgSend(a1, "isFlagged"), v5 == objc_msgSend(v3, "isFlagged")))
+    isRead = [model isRead];
+    if (isRead == [v3 isRead] && (v5 = objc_msgSend(model, "isFlagged"), v5 == objc_msgSend(v3, "isFlagged")))
     {
-      v6 = [a1 flagColors];
-      v7 = [v3 flagColors];
-      if ([v6 isEqualToIndexSet:v7] && (v8 = objc_msgSend(a1, "isReplied"), v8 == objc_msgSend(v3, "isReplied")) && (v9 = objc_msgSend(a1, "isForwarded"), v9 == objc_msgSend(v3, "isForwarded")) && (v10 = objc_msgSend(a1, "isVIP"), v10 == objc_msgSend(v3, "isVIP")) && (v11 = objc_msgSend(a1, "isNotify"), v11 == objc_msgSend(v3, "isNotify")))
+      flagColors = [model flagColors];
+      flagColors2 = [v3 flagColors];
+      if ([flagColors isEqualToIndexSet:flagColors2] && (v8 = objc_msgSend(model, "isReplied"), v8 == objc_msgSend(v3, "isReplied")) && (v9 = objc_msgSend(model, "isForwarded"), v9 == objc_msgSend(v3, "isForwarded")) && (v10 = objc_msgSend(model, "isVIP"), v10 == objc_msgSend(v3, "isVIP")) && (v11 = objc_msgSend(model, "isNotify"), v11 == objc_msgSend(v3, "isNotify")))
       {
-        v13 = [a1 isMute];
-        a1 = v13 ^ [v3 isMute];
+        isMute = [model isMute];
+        model = isMute ^ [v3 isMute];
       }
 
       else
       {
-        a1 = 1;
+        model = 1;
       }
     }
 
     else
     {
-      a1 = 1;
+      model = 1;
     }
   }
 
-  return a1;
+  return model;
 }
 
-- (id)updatedModelWithMessage:(id)a3
+- (id)updatedModelWithMessage:(id)message
 {
-  v5 = a3;
-  if (!v5)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MessageHeaderViewModel.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MessageHeaderViewModel.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
   v6 = objc_alloc(objc_opt_class());
@@ -455,17 +455,17 @@ void __55__MessageHeaderViewModel_updatedFlagsModelWithBuilder___block_invoke(ui
   v13[1] = 3221225472;
   v13[2] = __50__MessageHeaderViewModel_updatedModelWithMessage___block_invoke;
   v13[3] = &unk_278181918;
-  v7 = v5;
+  v7 = messageCopy;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v8 = [v6 initWithBuilder:v13];
-  v9 = [(MessageHeaderViewModel *)self observableObserver];
-  [v8 setObservableObserver:v9];
+  observableObserver = [(MessageHeaderViewModel *)self observableObserver];
+  [v8 setObservableObserver:observableObserver];
 
   if ([(MessageHeaderViewModel *)self _viewModelHasChanges:v8])
   {
-    v10 = [v8 observableObserver];
-    [v10 observerDidReceiveResult:v8];
+    observableObserver2 = [v8 observableObserver];
+    [observableObserver2 observerDidReceiveResult:v8];
   }
 
   return v8;

@@ -1,59 +1,59 @@
 @interface SVXLocalizationUtils
 - (SVXLocalizationUtils)init;
-- (SVXLocalizationUtils)initWithBundleUtils:(id)a3;
-- (id)getLocalizedStringWithLanguageCode:(id)a3 gender:(int64_t)a4 key:(id)a5;
+- (SVXLocalizationUtils)initWithBundleUtils:(id)utils;
+- (id)getLocalizedStringWithLanguageCode:(id)code gender:(int64_t)gender key:(id)key;
 @end
 
 @implementation SVXLocalizationUtils
 
-- (id)getLocalizedStringWithLanguageCode:(id)a3 gender:(int64_t)a4 key:(id)a5
+- (id)getLocalizedStringWithLanguageCode:(id)code gender:(int64_t)gender key:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  codeCopy = code;
+  keyCopy = key;
   v10 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    if (a4 > 3)
+    if (gender > 3)
     {
       v12 = @"(unknown)";
     }
 
     else
     {
-      v12 = off_279C66CC8[a4];
+      v12 = off_279C66CC8[gender];
     }
 
     v13 = v12;
     v17 = 136315906;
     v18 = "[SVXLocalizationUtils getLocalizedStringWithLanguageCode:gender:key:]";
     v19 = 2112;
-    v20 = v8;
+    v20 = codeCopy;
     v21 = 2112;
     v22 = v13;
     v23 = 2112;
-    v24 = v9;
+    v24 = keyCopy;
     _os_log_impl(&dword_2695B9000, v11, OS_LOG_TYPE_INFO, "%s getLocalizedStringWith (languageCode: %@, gender: %@, key: %@)", &v17, 0x2Au);
   }
 
-  v14 = [(SVXBundleUtilsProtocol *)self->_bundleUtils getLocalizedStringWithBundle:0 table:0 key:v9 languageCode:v8 gender:a4];
+  v14 = [(SVXBundleUtilsProtocol *)self->_bundleUtils getLocalizedStringWithBundle:0 table:0 key:keyCopy languageCode:codeCopy gender:gender];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (SVXLocalizationUtils)initWithBundleUtils:(id)a3
+- (SVXLocalizationUtils)initWithBundleUtils:(id)utils
 {
-  v5 = a3;
+  utilsCopy = utils;
   v9.receiver = self;
   v9.super_class = SVXLocalizationUtils;
   v6 = [(SVXLocalizationUtils *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleUtils, a3);
+    objc_storeStrong(&v6->_bundleUtils, utils);
   }
 
   return v7;

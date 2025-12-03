@@ -1,24 +1,24 @@
 @interface NPKExpressUWBTransactionInfo
-- (NPKExpressUWBTransactionInfo)initWithReaderID:(id)a3 lockStatus:(id)a4 timestamp:(id)a5;
+- (NPKExpressUWBTransactionInfo)initWithReaderID:(id)d lockStatus:(id)status timestamp:(id)timestamp;
 - (id)description;
 @end
 
 @implementation NPKExpressUWBTransactionInfo
 
-- (NPKExpressUWBTransactionInfo)initWithReaderID:(id)a3 lockStatus:(id)a4 timestamp:(id)a5
+- (NPKExpressUWBTransactionInfo)initWithReaderID:(id)d lockStatus:(id)status timestamp:(id)timestamp
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  statusCopy = status;
+  timestampCopy = timestamp;
   v15.receiver = self;
   v15.super_class = NPKExpressUWBTransactionInfo;
   v12 = [(NPKExpressUWBTransactionInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_readerID, a3);
-    objc_storeStrong(&v13->_lockStatus, a4);
-    objc_storeStrong(&v13->_timestamp, a5);
+    objc_storeStrong(&v12->_readerID, d);
+    objc_storeStrong(&v13->_lockStatus, status);
+    objc_storeStrong(&v13->_timestamp, timestamp);
   }
 
   return v13;
@@ -28,10 +28,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NPKExpressUWBTransactionInfo *)self readerID];
-  v6 = [(NPKExpressUWBTransactionInfo *)self lockStatus];
-  v7 = [(NPKExpressUWBTransactionInfo *)self timestamp];
-  v8 = [v3 stringWithFormat:@"<%@: %p\n\treaderID: %@\n\tlockStatus: %@\n\ttimestamp: %@\n>", v4, self, v5, v6, v7];
+  readerID = [(NPKExpressUWBTransactionInfo *)self readerID];
+  lockStatus = [(NPKExpressUWBTransactionInfo *)self lockStatus];
+  timestamp = [(NPKExpressUWBTransactionInfo *)self timestamp];
+  v8 = [v3 stringWithFormat:@"<%@: %p\n\treaderID: %@\n\tlockStatus: %@\n\ttimestamp: %@\n>", v4, self, readerID, lockStatus, timestamp];
 
   return v8;
 }

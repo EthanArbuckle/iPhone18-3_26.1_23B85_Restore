@@ -8,8 +8,8 @@
 
 - (void)_performRouteUpdateWithDetails
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestPauseRealtimeTransitUpdates];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestPauseRealtimeTransitUpdates];
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -22,8 +22,8 @@
 - (void)_performRouteUpdateWithList
 {
   [(MapsAppTest *)self startedTest];
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestPauseRealtimeTransitUpdates];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestPauseRealtimeTransitUpdates];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -49,17 +49,17 @@
   v5[3] = &unk_101650D20;
   v5[4] = self;
   [PPTNotificationCenter addOnceObserverForName:@"MapsTestingTransitRouteUpdateDidUpdateSummary" object:0 usingBlock:v5];
-  v4 = [(MapsAppTest *)self testCoordinator];
-  [v4 pptTestResumeRealtimeTransitUpdates];
+  testCoordinator2 = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator2 pptTestResumeRealtimeTransitUpdates];
 }
 
 - (void)doAfterSubTestForDisplayingRoutes
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 objectForKeyedSubscript:@"realtime"];
-  v5 = [v4 BOOLValue];
+  options = [(MapsAppTest *)self options];
+  v4 = [options objectForKeyedSubscript:@"realtime"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
 
     [(MapsAppTestTransitRoute *)self _performRouteUpdateWithList];

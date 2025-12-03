@@ -1,45 +1,45 @@
 @interface SUICStreamingTextView
-- (CGImage)_imageRefForImage:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUICStreamingTextView)initWithCoder:(id)a3;
-- (SUICStreamingTextView)initWithFrame:(CGRect)a3;
+- (CGImage)_imageRefForImage:(id)image;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUICStreamingTextView)initWithCoder:(id)coder;
+- (SUICStreamingTextView)initWithFrame:(CGRect)frame;
 - (SUICStreamingTextViewDelegate)streamingTextViewDelegate;
 - (_NSRange)underlinedRange;
 - (id)_createEditTextImage;
-- (id)_createGlyphImage:(CGRect)a3 glyphRange:(_NSRange)a4 layoutManager:(id)a5 isUnderlined:(BOOL)a6;
-- (id)_glyphImageForWord:(id)a3 frame:(CGRect)a4 glyphRange:(_NSRange)a5 textColor:(id)a6;
-- (id)_substringRangesContainingEmojiInString:(id)a3 startingIndex:(int64_t)a4;
+- (id)_createGlyphImage:(CGRect)image glyphRange:(_NSRange)range layoutManager:(id)manager isUnderlined:(BOOL)underlined;
+- (id)_glyphImageForWord:(id)word frame:(CGRect)frame glyphRange:(_NSRange)range textColor:(id)color;
+- (id)_substringRangesContainingEmojiInString:(id)string startingIndex:(int64_t)index;
 - (void)_animateLayers;
-- (void)_animateWordIn:(id)a3;
-- (void)_animateWordInSAE:(id)a3 displacement:(double)a4;
-- (void)_animateWordOut:(id)a3;
-- (void)_carouselWordOut:(id)a3 speed:(double)a4 displacement:(double)a5;
+- (void)_animateWordIn:(id)in;
+- (void)_animateWordInSAE:(id)e displacement:(double)displacement;
+- (void)_animateWordOut:(id)out;
+- (void)_carouselWordOut:(id)out speed:(double)speed displacement:(double)displacement;
 - (void)_layoutFrames;
 - (void)_renderByWord;
 - (void)_renderInFull;
 - (void)_resetState;
-- (void)_setShowEditTextImageWithoutRelayout:(BOOL)a3;
+- (void)_setShowEditTextImageWithoutRelayout:(BOOL)relayout;
 - (void)_sharedInit;
-- (void)_updateText:(id)a3;
+- (void)_updateText:(id)text;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setEndTextColor:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setShowEditTextImage:(BOOL)a3;
-- (void)setUnderlinedRange:(_NSRange)a3;
-- (void)setWords:(id)a3;
-- (void)setWords:(id)a3 showEditImage:(BOOL)a4 useCarouselAnimation:(BOOL)a5;
+- (void)setBounds:(CGRect)bounds;
+- (void)setEndTextColor:(id)color;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setShowEditTextImage:(BOOL)image;
+- (void)setUnderlinedRange:(_NSRange)range;
+- (void)setWords:(id)words;
+- (void)setWords:(id)words showEditImage:(BOOL)image useCarouselAnimation:(BOOL)animation;
 - (void)updateLastWord;
 @end
 
 @implementation SUICStreamingTextView
 
-- (SUICStreamingTextView)initWithFrame:(CGRect)a3
+- (SUICStreamingTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SUICStreamingTextView;
-  v3 = [(SUICStreamingTextView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUICStreamingTextView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (SUICStreamingTextView)initWithCoder:(id)a3
+- (SUICStreamingTextView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SUICStreamingTextView;
-  v3 = [(SUICStreamingTextView *)&v6 initWithCoder:a3];
+  v3 = [(SUICStreamingTextView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -108,50 +108,50 @@
   startTextColor = self->_startTextColor;
   self->_startTextColor = v17;
 
-  v19 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   endTextColor = self->_endTextColor;
-  self->_endTextColor = v19;
+  self->_endTextColor = whiteColor;
 
   v21 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   font = self->_font;
   self->_font = v21;
 
-  v23 = [MEMORY[0x1E6979398] layer];
+  layer = [MEMORY[0x1E6979398] layer];
   fullTextViewLayer = self->_fullTextViewLayer;
-  self->_fullTextViewLayer = v23;
+  self->_fullTextViewLayer = layer;
 
   [(SUICStreamingTextView *)self setHyphenationFactor:1.0];
 
   [(SUICStreamingTextView *)self _updateAnimatedInternal];
 }
 
-- (void)setWords:(id)a3
+- (void)setWords:(id)words
 {
-  [(SUICStreamingTextView *)self _updateText:a3];
+  [(SUICStreamingTextView *)self _updateText:words];
   [(SUICStreamingTextView *)self setNeedsLayout];
   [(SUICStreamingTextView *)self layoutIfNeeded];
 
   [(SUICStreamingTextView *)self _resetState];
 }
 
-- (void)setWords:(id)a3 showEditImage:(BOOL)a4 useCarouselAnimation:(BOOL)a5
+- (void)setWords:(id)words showEditImage:(BOOL)image useCarouselAnimation:(BOOL)animation
 {
-  v6 = a4;
-  v8 = a3;
-  if (![v8 isEqualToArray:self->_words] || self->_showEditTextImage != v6)
+  imageCopy = image;
+  wordsCopy = words;
+  if (![wordsCopy isEqualToArray:self->_words] || self->_showEditTextImage != imageCopy)
   {
-    self->_carouselWordsToDelete = a5;
-    [(SUICStreamingTextView *)self _setShowEditTextImageWithoutRelayout:v6];
-    [(SUICStreamingTextView *)self setWords:v8];
+    self->_carouselWordsToDelete = animation;
+    [(SUICStreamingTextView *)self _setShowEditTextImageWithoutRelayout:imageCopy];
+    [(SUICStreamingTextView *)self setWords:wordsCopy];
   }
 }
 
-- (void)setEndTextColor:(id)a3
+- (void)setEndTextColor:(id)color
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  colorCopy = color;
   self->_animatedInternal = 0;
-  objc_storeStrong(&self->_endTextColor, a3);
+  objc_storeStrong(&self->_endTextColor, color);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -173,8 +173,8 @@
 
         v11 = *(*(&v15 + 1) + 8 * i);
         [v11 setInsertType:{1, v15}];
-        v12 = [v11 wordLayer];
-        [v12 removeFromSuperlayer];
+        wordLayer = [v11 wordLayer];
+        [wordLayer removeFromSuperlayer];
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -187,9 +187,9 @@
   {
     if ([(SUICStreamingTextView *)self showEditTextImage])
     {
-      v13 = [(SUICStreamingTextView *)self _createEditTextImage];
+      _createEditTextImage = [(SUICStreamingTextView *)self _createEditTextImage];
       editTextImage = self->_editTextImage;
-      self->_editTextImage = v13;
+      self->_editTextImage = _createEditTextImage;
     }
 
     [(SUICStreamingTextView *)self updateLastWord];
@@ -200,77 +200,77 @@
   [(SUICStreamingTextView *)self _updateAnimatedInternal];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_font != v5)
+  fontCopy = font;
+  v6 = fontCopy;
+  if (self->_font != fontCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_font, a3);
-    v5 = [(SUICStreamingTextView *)self showEditTextImage];
+    v9 = fontCopy;
+    objc_storeStrong(&self->_font, font);
+    fontCopy = [(SUICStreamingTextView *)self showEditTextImage];
     v6 = v9;
-    if (v5)
+    if (fontCopy)
     {
-      v7 = [(SUICStreamingTextView *)self _createEditTextImage];
+      _createEditTextImage = [(SUICStreamingTextView *)self _createEditTextImage];
       editTextImage = self->_editTextImage;
-      self->_editTextImage = v7;
+      self->_editTextImage = _createEditTextImage;
 
       v6 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](fontCopy, v6);
 }
 
-- (void)_setShowEditTextImageWithoutRelayout:(BOOL)a3
+- (void)_setShowEditTextImageWithoutRelayout:(BOOL)relayout
 {
-  if (self->_showEditTextImage != a3)
+  if (self->_showEditTextImage != relayout)
   {
-    self->_showEditTextImage = a3;
-    if (a3)
+    self->_showEditTextImage = relayout;
+    if (relayout)
     {
-      v4 = [(SUICStreamingTextView *)self _createEditTextImage];
+      _createEditTextImage = [(SUICStreamingTextView *)self _createEditTextImage];
     }
 
     else
     {
-      v4 = 0;
+      _createEditTextImage = 0;
     }
 
     editTextImage = self->_editTextImage;
-    self->_editTextImage = v4;
+    self->_editTextImage = _createEditTextImage;
 
     if (!self->_carouselWordsToDelete)
     {
-      v6 = [(NSMutableArray *)self->_wordsToShow lastObject];
-      if (v6)
+      lastObject = [(NSMutableArray *)self->_wordsToShow lastObject];
+      if (lastObject)
       {
-        v7 = v6;
-        [v6 setInsertType:4];
-        v6 = v7;
+        v7 = lastObject;
+        [lastObject setInsertType:4];
+        lastObject = v7;
       }
     }
   }
 }
 
-- (void)setShowEditTextImage:(BOOL)a3
+- (void)setShowEditTextImage:(BOOL)image
 {
-  if (self->_showEditTextImage != a3)
+  if (self->_showEditTextImage != image)
   {
-    self->_showEditTextImage = a3;
-    if (a3)
+    self->_showEditTextImage = image;
+    if (image)
     {
-      v5 = [(SUICStreamingTextView *)self _createEditTextImage];
+      _createEditTextImage = [(SUICStreamingTextView *)self _createEditTextImage];
     }
 
     else
     {
-      v5 = 0;
+      _createEditTextImage = 0;
     }
 
     editTextImage = self->_editTextImage;
-    self->_editTextImage = v5;
+    self->_editTextImage = _createEditTextImage;
 
     [(SUICStreamingTextView *)self updateLastWord];
   }
@@ -278,24 +278,24 @@
 
 - (void)updateLastWord
 {
-  v3 = [(NSMutableArray *)self->_wordsToShow lastObject];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_wordsToShow lastObject];
+  if (lastObject)
   {
-    v4 = v3;
-    [v3 setInsertType:4];
+    v4 = lastObject;
+    [lastObject setInsertType:4];
     [(SUICStreamingTextView *)self setWords:self->_words];
-    v3 = v4;
+    lastObject = v4;
   }
 }
 
-- (void)setUnderlinedRange:(_NSRange)a3
+- (void)setUnderlinedRange:(_NSRange)range
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3.location != 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    length = a3.length;
-    location = a3.location;
-    if (a3.location + a3.length <= [(NSTextStorage *)self->_textStorage length]&& (location != self->_underlinedRange.location || length != self->_underlinedRange.length))
+    length = range.length;
+    location = range.location;
+    if (range.location + range.length <= [(NSTextStorage *)self->_textStorage length]&& (location != self->_underlinedRange.location || length != self->_underlinedRange.length))
     {
       self->_underlinedRange.location = location;
       self->_underlinedRange.length = length;
@@ -320,8 +320,8 @@
                 objc_enumerationMutation(v6);
               }
 
-              v11 = [*(*(&v12 + 1) + 8 * i) wordLayer];
-              [v11 removeFromSuperlayer];
+              wordLayer = [*(*(&v12 + 1) + 8 * i) wordLayer];
+              [wordLayer removeFromSuperlayer];
             }
 
             v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -337,10 +337,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(NSTextContainer *)self->_textContainer size:a3.width];
+  width = fits.width;
+  [(NSTextContainer *)self->_textContainer size:fits.width];
   v6 = v5;
   v8 = v7;
   [(NSTextContainer *)self->_textContainer setSize:width, 1.79769313e308];
@@ -356,25 +356,25 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(NSTextContainer *)self->_textContainer setSize:CGRectGetWidth(a3), 1.79769313e308];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(NSTextContainer *)self->_textContainer setSize:CGRectGetWidth(frame), 1.79769313e308];
   v8.receiver = self;
   v8.super_class = SUICStreamingTextView;
   [(SUICStreamingTextView *)&v8 setFrame:x, y, width, height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(NSTextContainer *)self->_textContainer setSize:CGRectGetWidth(a3), 1.79769313e308];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(NSTextContainer *)self->_textContainer setSize:CGRectGetWidth(bounds), 1.79769313e308];
   v8.receiver = self;
   v8.super_class = SUICStreamingTextView;
   [(SUICStreamingTextView *)&v8 setBounds:x, y, width, height];
@@ -388,11 +388,11 @@
   [(SUICStreamingTextView *)self _layoutFrames];
 }
 
-- (void)_updateText:(id)a3
+- (void)_updateText:(id)text
 {
   v47 = *MEMORY[0x1E69E9840];
   v4 = -1;
-  v5 = [_SUICEditScriptIndexed editScriptFromArray:self->_words toArray:a3 orderAtomsAscending:1 operationPrecedence:-1];
+  v5 = [_SUICEditScriptIndexed editScriptFromArray:self->_words toArray:text orderAtomsAscending:1 operationPrecedence:-1];
   CompositionLanguageForLanguage = CTParagraphStyleGetCompositionLanguageForLanguage();
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
@@ -417,8 +417,8 @@
   v39 = 0u;
   v40 = 0u;
   v28 = v5;
-  v9 = [v5 script];
-  v10 = [v9 countByEnumeratingWithState:&v37 objects:v46 count:16];
+  script = [v5 script];
+  v10 = [script countByEnumeratingWithState:&v37 objects:v46 count:16];
   v29 = v8;
   v30 = v7;
   if (v10)
@@ -431,53 +431,53 @@
       {
         if (*v38 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(script);
         }
 
         v14 = *(*(&v37 + 1) + 8 * i);
-        v15 = [v14 editOperation];
-        if (v15 == 3)
+        editOperation = [v14 editOperation];
+        if (editOperation == 3)
         {
-          v17 = [v14 replacementText];
-          v16 = [v14 indexToEdit];
-          [(NSMutableArray *)self->_words replaceObjectAtIndex:v16 withObject:v17];
-          v31[2](v31, v16, 2);
+          replacementText = [v14 replacementText];
+          indexToEdit = [v14 indexToEdit];
+          [(NSMutableArray *)self->_words replaceObjectAtIndex:indexToEdit withObject:replacementText];
+          v31[2](v31, indexToEdit, 2);
           goto LABEL_12;
         }
 
-        if (v15 == 2)
+        if (editOperation == 2)
         {
-          v17 = [v14 replacementText];
-          v16 = [v14 indexInArrayB];
-          [(NSMutableArray *)self->_words insertObject:v17 atIndex:v16];
-          v29[2](v29, v16);
+          replacementText = [v14 replacementText];
+          indexToEdit = [v14 indexInArrayB];
+          [(NSMutableArray *)self->_words insertObject:replacementText atIndex:indexToEdit];
+          v29[2](v29, indexToEdit);
 LABEL_12:
 
           goto LABEL_13;
         }
 
-        if (v15 != 1)
+        if (editOperation != 1)
         {
           continue;
         }
 
-        v16 = [v14 indexToEdit];
-        [(NSMutableArray *)self->_words removeObjectAtIndex:v16];
-        v30[2](v30, v16);
+        indexToEdit = [v14 indexToEdit];
+        [(NSMutableArray *)self->_words removeObjectAtIndex:indexToEdit];
+        v30[2](v30, indexToEdit);
 LABEL_13:
-        if (v16 < v4)
+        if (indexToEdit < v4)
         {
-          v4 = v16;
+          v4 = indexToEdit;
         }
 
-        if (CompositionLanguageForLanguage != 1 && v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+        if (CompositionLanguageForLanguage != 1 && indexToEdit - 1 <= 0xFFFFFFFFFFFFFFFDLL)
         {
           v18 = [(NSMutableArray *)self->_wordsToShow objectAtIndexedSubscript:?];
           [v18 setInsertType:4];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v37 objects:v46 count:16];
+      v11 = [script countByEnumeratingWithState:&v37 objects:v46 count:16];
     }
 
     while (v11);
@@ -510,9 +510,9 @@ LABEL_13:
 
   [v21 setAlignment:v22];
   v44[0] = *MEMORY[0x1E69DB648];
-  v23 = [(SUICStreamingTextView *)self font];
+  font = [(SUICStreamingTextView *)self font];
   v44[1] = *MEMORY[0x1E69DB688];
-  v45[0] = v23;
+  v45[0] = font;
   v45[1] = v21;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
 
@@ -602,8 +602,8 @@ void __37__SUICStreamingTextView__updateText___block_invoke_5(uint64_t a1, void 
   [(NSTextContainer *)self->_textContainer size];
   if (v3 == 0.0)
   {
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v6 = v5;
 
     textContainer = self->_textContainer;
@@ -614,8 +614,8 @@ void __37__SUICStreamingTextView__updateText___block_invoke_5(uint64_t a1, void 
   [(NSTextContainer *)self->_textContainer size];
   if (v8 == 0.0)
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v9 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
 
     v10 = self->_textContainer;
     [(NSTextContainer *)v10 size];
@@ -661,8 +661,8 @@ void __37__SUICStreamingTextView__updateText___block_invoke_5(uint64_t a1, void 
 
         v6 = *(*(&v59 + 1) + 8 * v5);
         layoutManager = self->_layoutManager;
-        v8 = [v6 textRange];
-        v10 = [(SUICStreamingLayoutManager *)layoutManager glyphRangeForCharacterRange:v8 actualCharacterRange:v9, 0];
+        textRange = [v6 textRange];
+        v10 = [(SUICStreamingLayoutManager *)layoutManager glyphRangeForCharacterRange:textRange actualCharacterRange:v9, 0];
         v12 = v11;
         [(SUICStreamingLayoutManager *)self->_layoutManager boundingRectForGlyphRange:v10 inTextContainer:v11, self->_textContainer];
         v14 = v13;
@@ -671,18 +671,18 @@ void __37__SUICStreamingTextView__updateText___block_invoke_5(uint64_t a1, void 
         v20 = v19;
         [(SUICStreamingLayoutManager *)self->_layoutManager locationForGlyphAtIndex:v10];
         v22 = v21;
-        v23 = [v6 previous];
-        if (v23)
+        previous = [v6 previous];
+        if (previous)
         {
-          v24 = [v6 previous];
+          previous2 = [v6 previous];
         }
 
         else
         {
-          v24 = v6;
+          previous2 = v6;
         }
 
-        v25 = v24;
+        v25 = previous2;
         v26 = v22 - v14;
         v27 = roundf(v26);
 
@@ -698,21 +698,21 @@ void __37__SUICStreamingTextView__updateText___block_invoke_5(uint64_t a1, void 
         }
 
         [v6 setGlyphLocationInWordX:v27];
-        v30 = [v6 insertType];
+        insertType = [v6 insertType];
         v31 = 0;
-        if (v30 > 2)
+        if (insertType > 2)
         {
-          if (v30 == 3)
+          if (insertType == 3)
           {
             if (v28)
             {
-              v33 = [v6 previous];
-              v34 = [v33 beginImage];
-              v31 = [v34 copy];
+              previous3 = [v6 previous];
+              beginImage = [previous3 beginImage];
+              v31 = [beginImage copy];
 
-              v35 = [v6 previous];
-              v36 = [v35 endImage];
-              v32 = [v36 copy];
+              previous4 = [v6 previous];
+              endImage = [previous4 endImage];
+              v32 = [endImage copy];
 
               goto LABEL_23;
             }
@@ -724,7 +724,7 @@ LABEL_22:
           }
 
           v32 = 0;
-          if (v30 == 4)
+          if (insertType == 4)
           {
             goto LABEL_22;
           }
@@ -732,13 +732,13 @@ LABEL_22:
 
         else
         {
-          if ((v30 - 1) < 2)
+          if ((insertType - 1) < 2)
           {
             goto LABEL_22;
           }
 
           v32 = 0;
-          if (!v30)
+          if (!insertType)
           {
             if (v28)
             {
@@ -750,11 +750,11 @@ LABEL_22:
             {
               v31 = [(SUICStreamingTextView *)self _glyphImageForWord:v6 frame:v10 glyphRange:v12 textColor:self->_startTextColor, v14, v16, v18, v20];
               v32 = [(SUICStreamingTextView *)self _glyphImageForWord:v6 frame:v10 glyphRange:v12 textColor:self->_endTextColor, v14, v16, v18, v20];
-              v44 = [v6 wordLayer];
-              [v44 removeFromSuperlayer];
+              wordLayer = [v6 wordLayer];
+              [wordLayer removeFromSuperlayer];
 
-              v45 = [MEMORY[0x1E6979398] layer];
-              [v6 setWordLayer:v45];
+              layer = [MEMORY[0x1E6979398] layer];
+              [v6 setWordLayer:layer];
 
               [v6 setInsertType:1];
             }
@@ -762,8 +762,8 @@ LABEL_22:
         }
 
 LABEL_23:
-        v37 = [v6 wordLayer];
-        [v37 setFrame:{v14, v16, v18, v20}];
+        wordLayer2 = [v6 wordLayer];
+        [wordLayer2 setFrame:{v14, v16, v18, v20}];
 
         if (v31)
         {
@@ -773,19 +773,19 @@ LABEL_23:
         if (v32)
         {
           [v6 setEndImage:v32];
-          v38 = [v6 wordLayer];
-          v39 = [v6 endImage];
-          [v38 setContents:{-[SUICStreamingTextView _imageRefForImage:](self, "_imageRefForImage:", v39)}];
+          wordLayer3 = [v6 wordLayer];
+          endImage2 = [v6 endImage];
+          [wordLayer3 setContents:{-[SUICStreamingTextView _imageRefForImage:](self, "_imageRefForImage:", endImage2)}];
         }
 
-        v40 = [v6 wordLayer];
-        v41 = [v40 superlayer];
+        wordLayer4 = [v6 wordLayer];
+        superlayer = [wordLayer4 superlayer];
 
-        if (!v41)
+        if (!superlayer)
         {
-          v42 = [(SUICStreamingTextView *)self layer];
-          v43 = [v6 wordLayer];
-          [v42 addSublayer:v43];
+          layer2 = [(SUICStreamingTextView *)self layer];
+          wordLayer5 = [v6 wordLayer];
+          [layer2 addSublayer:wordLayer5];
         }
 
         ++v5;
@@ -825,8 +825,8 @@ LABEL_23:
             objc_enumerationMutation(v47);
           }
 
-          v52 = [*(*(&v55 + 1) + 8 * i) wordLayer];
-          [v52 removeFromSuperlayer];
+          wordLayer6 = [*(*(&v55 + 1) + 8 * i) wordLayer];
+          [wordLayer6 removeFromSuperlayer];
         }
 
         v49 = [(NSMutableSet *)v47 countByEnumeratingWithState:&v55 objects:v63 count:16];
@@ -860,12 +860,12 @@ LABEL_23:
   v16 = [(SUICStreamingTextView *)self _createGlyphImage:0 glyphRange:v3 layoutManager:self->_layoutManager isUnderlined:self->_underlinedRange.length != 0];
   [(CALayer *)self->_fullTextViewLayer setFrame:v9, v11, v13, v15];
   [(CALayer *)self->_fullTextViewLayer setContents:[(SUICStreamingTextView *)self _imageRefForImage:v16]];
-  v17 = [(CALayer *)self->_fullTextViewLayer superlayer];
+  superlayer = [(CALayer *)self->_fullTextViewLayer superlayer];
 
-  if (!v17)
+  if (!superlayer)
   {
-    v18 = [(SUICStreamingTextView *)self layer];
-    [v18 addSublayer:self->_fullTextViewLayer];
+    layer = [(SUICStreamingTextView *)self layer];
+    [layer addSublayer:self->_fullTextViewLayer];
   }
 }
 
@@ -970,8 +970,8 @@ LABEL_23:
             [(SUICStreamingTextView *)self _animateWordOut:v30, v32];
           }
 
-          v31 = [v30 wordLayer];
-          [v18 addObject:v31];
+          wordLayer = [v30 wordLayer];
+          [v18 addObject:wordLayer];
         }
 
         v25 = [(NSMutableSet *)v23 countByEnumeratingWithState:&v32 objects:v42 count:16];
@@ -1019,37 +1019,37 @@ void __39__SUICStreamingTextView__animateLayers__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_animateWordIn:(id)a3
+- (void)_animateWordIn:(id)in
 {
   v4 = MEMORY[0x1E6979318];
-  v5 = a3;
+  inCopy = in;
   v11 = [v4 animationWithKeyPath:@"contents"];
   [v11 setDuration:self->_animationDuration];
-  v6 = [v5 beginImage];
-  [v11 setFromValue:{-[SUICStreamingTextView _imageRefForImage:](self, "_imageRefForImage:", v6)}];
+  beginImage = [inCopy beginImage];
+  [v11 setFromValue:{-[SUICStreamingTextView _imageRefForImage:](self, "_imageRefForImage:", beginImage)}];
 
-  v7 = [v5 endImage];
-  [v11 setToValue:{-[SUICStreamingTextView _imageRefForImage:](self, "_imageRefForImage:", v7)}];
+  endImage = [inCopy endImage];
+  [v11 setToValue:{-[SUICStreamingTextView _imageRefForImage:](self, "_imageRefForImage:", endImage)}];
 
-  v8 = [v5 wordLayer];
-  [v8 addAnimation:v11 forKey:@"contents"];
+  wordLayer = [inCopy wordLayer];
+  [wordLayer addAnimation:v11 forKey:@"contents"];
 
   v9 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v9 setDuration:self->_animationDuration];
   [v9 setFromValue:&unk_1F43C75A0];
   [v9 setToValue:&unk_1F43C75B0];
-  v10 = [v5 wordLayer];
+  wordLayer2 = [inCopy wordLayer];
 
-  [v10 addAnimation:v9 forKey:@"opacity"];
+  [wordLayer2 addAnimation:v9 forKey:@"opacity"];
 }
 
-- (void)_animateWordInSAE:(id)a3 displacement:(double)a4
+- (void)_animateWordInSAE:(id)e displacement:(double)displacement
 {
-  v6 = a3;
-  v13 = v6;
+  eCopy = e;
+  v13 = eCopy;
   if (self->_editTextImage && !self->_carouselWordsToDelete)
   {
-    if ([v6 insertType] != 1)
+    if ([eCopy insertType] != 1)
     {
       [(SUICStreamingTextView *)self _animateWordIn:v13];
     }
@@ -1065,81 +1065,81 @@ void __39__SUICStreamingTextView__animateLayers__block_invoke(uint64_t a1)
 
     [v7 setFromValue:&unk_1F43C75C0];
     [v7 setToValue:&unk_1F43C7428];
-    v9 = [v13 wordLayer];
-    [v9 addAnimation:v7 forKey:@"blurIn"];
+    wordLayer = [v13 wordLayer];
+    [wordLayer addAnimation:v7 forKey:@"blurIn"];
 
     v10 = [objc_alloc(MEMORY[0x1E69794A8]) initWithPerceptualDuration:self->_animationDuration bounce:0.35];
     [v10 setKeyPath:@"transform.translation.y"];
-    v11 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithDouble:displacement];
     [v10 setFromValue:v11];
 
     [v10 setToValue:&unk_1F43C7428];
-    v12 = [v13 wordLayer];
-    [v12 addAnimation:v10 forKey:@"moveUp"];
+    wordLayer2 = [v13 wordLayer];
+    [wordLayer2 addAnimation:v10 forKey:@"moveUp"];
   }
 }
 
-- (void)_animateWordOut:(id)a3
+- (void)_animateWordOut:(id)out
 {
-  v9 = a3;
+  outCopy = out;
   if ([MEMORY[0x1E698D258] saeAvailable])
   {
     v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"filters.blurFilter.inputRadius"];
     [v4 setAdditive:1];
     [v4 setDuration:self->_animationDuration];
     [v4 setByValue:&unk_1F43C75C0];
-    v5 = [v9 wordLayer];
-    [v5 addAnimation:v4 forKey:@"blurOut"];
+    wordLayer = [outCopy wordLayer];
+    [wordLayer addAnimation:v4 forKey:@"blurOut"];
   }
 
   v6 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-  v7 = [v9 wordLayer];
-  [v7 setOpacity:0.0];
+  wordLayer2 = [outCopy wordLayer];
+  [wordLayer2 setOpacity:0.0];
 
   [v6 setDuration:self->_animationDuration];
   [v6 setFromValue:&unk_1F43C75B0];
   [v6 setToValue:&unk_1F43C75A0];
-  v8 = [v9 wordLayer];
-  [v8 addAnimation:v6 forKey:@"opacity"];
+  wordLayer3 = [outCopy wordLayer];
+  [wordLayer3 addAnimation:v6 forKey:@"opacity"];
 }
 
-- (void)_carouselWordOut:(id)a3 speed:(double)a4 displacement:(double)a5
+- (void)_carouselWordOut:(id)out speed:(double)speed displacement:(double)displacement
 {
-  v7 = a3;
-  v8 = [v7 wordLayer];
-  [v8 frame];
-  v10 = -v9 - a5;
+  outCopy = out;
+  wordLayer = [outCopy wordLayer];
+  [wordLayer frame];
+  v10 = -v9 - displacement;
 
-  v11 = [v7 wordLayer];
-  [v11 frame];
-  v13 = v12 + a5;
+  wordLayer2 = [outCopy wordLayer];
+  [wordLayer2 frame];
+  v13 = v12 + displacement;
 
-  v14 = v13 / a4;
+  v14 = v13 / speed;
   v22 = [MEMORY[0x1E6979318] animationWithKeyPath:@"filters.blurFilter.inputRadius"];
   [v22 setAdditive:1];
   [v22 setDuration:v14];
   [v22 setByValue:&unk_1F43C75C0];
-  v15 = [v7 wordLayer];
-  [v15 addAnimation:v22 forKey:@"blurOut"];
+  wordLayer3 = [outCopy wordLayer];
+  [wordLayer3 addAnimation:v22 forKey:@"blurOut"];
 
   v16 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-  v17 = [v7 wordLayer];
-  [v17 setOpacity:0.0];
+  wordLayer4 = [outCopy wordLayer];
+  [wordLayer4 setOpacity:0.0];
 
   [v16 setDuration:v14];
   [v16 setFromValue:&unk_1F43C75B0];
   [v16 setToValue:&unk_1F43C75A0];
-  v18 = [v7 wordLayer];
-  [v18 addAnimation:v16 forKey:@"opacity"];
+  wordLayer5 = [outCopy wordLayer];
+  [wordLayer5 addAnimation:v16 forKey:@"opacity"];
 
   v19 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.translation.y"];
   [v19 setDuration:v14];
   v20 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
   [v19 setByValue:v20];
 
-  v21 = [v7 wordLayer];
+  wordLayer6 = [outCopy wordLayer];
 
-  [v21 addAnimation:v19 forKey:@"moveOut"];
+  [wordLayer6 addAnimation:v19 forKey:@"moveOut"];
 }
 
 - (void)_resetState
@@ -1178,22 +1178,22 @@ void __39__SUICStreamingTextView__animateLayers__block_invoke(uint64_t a1)
   [(NSMutableSet *)self->_wordsToDelete removeAllObjects];
 }
 
-- (id)_substringRangesContainingEmojiInString:(id)a3 startingIndex:(int64_t)a4
+- (id)_substringRangesContainingEmojiInString:(id)string startingIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = [SUICUtilities substringRangesContainingEmojiInString:v5];
+  stringCopy = string;
+  v6 = [SUICUtilities substringRangesContainingEmojiInString:stringCopy];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__2;
   v14 = __Block_byref_object_dispose__2;
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__SUICStreamingTextView__substringRangesContainingEmojiInString_startingIndex___block_invoke;
   v9[3] = &unk_1E81E83E0;
   v9[4] = &v10;
-  v9[5] = a4;
+  v9[5] = index;
   [v6 enumerateObjectsUsingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -1215,36 +1215,36 @@ void __79__SUICStreamingTextView__substringRangesContainingEmojiInString_startin
   [v3 addObject:v10];
 }
 
-- (id)_glyphImageForWord:(id)a3 frame:(CGRect)a4 glyphRange:(_NSRange)a5 textColor:(id)a6
+- (id)_glyphImageForWord:(id)word frame:(CGRect)frame glyphRange:(_NSRange)range textColor:(id)color
 {
-  length = a5.length;
-  location = a5.location;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  length = range.length;
+  location = range.location;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v59 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a6;
-  v16 = [(SUICStreamingTextView *)self renderEmojisOnly];
+  wordCopy = word;
+  colorCopy = color;
+  renderEmojisOnly = [(SUICStreamingTextView *)self renderEmojisOnly];
   textStorage = self->_textStorage;
   v18 = *MEMORY[0x1E69DB650];
-  if (v16)
+  if (renderEmojisOnly)
   {
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    v20 = [v14 textRange];
-    [(NSTextStorage *)textStorage addAttribute:v18 value:v19 range:v20, v21];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    textRange = [wordCopy textRange];
+    [(NSTextStorage *)textStorage addAttribute:v18 value:clearColor range:textRange, v21];
 
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v22 = [v14 emojiRangesInText];
-    v23 = [v22 countByEnumeratingWithState:&v53 objects:v58 count:16];
+    emojiRangesInText = [wordCopy emojiRangesInText];
+    v23 = [emojiRangesInText countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v23)
     {
       v24 = v23;
-      v45 = v14;
+      v45 = wordCopy;
       v47 = location;
       v25 = *v54;
       do
@@ -1253,27 +1253,27 @@ void __79__SUICStreamingTextView__substringRangesContainingEmojiInString_startin
         {
           if (*v54 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(emojiRangesInText);
           }
 
           v27 = self->_textStorage;
-          v28 = [*(*(&v53 + 1) + 8 * i) rangeValue];
-          [(NSTextStorage *)v27 addAttribute:v18 value:v15 range:v28, v29];
+          rangeValue = [*(*(&v53 + 1) + 8 * i) rangeValue];
+          [(NSTextStorage *)v27 addAttribute:v18 value:colorCopy range:rangeValue, v29];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v53 objects:v58 count:16];
+        v24 = [emojiRangesInText countByEnumeratingWithState:&v53 objects:v58 count:16];
       }
 
       while (v24);
-      v14 = v45;
+      wordCopy = v45;
       location = v47;
     }
   }
 
   else
   {
-    v30 = [v14 textRange];
-    [(NSTextStorage *)textStorage addAttribute:v18 value:v15 range:v30, v31];
+    textRange2 = [wordCopy textRange];
+    [(NSTextStorage *)textStorage addAttribute:v18 value:colorCopy range:textRange2, v31];
     if ([(SUICStreamingTextView *)self renderEmojis])
     {
       goto LABEL_20;
@@ -1283,14 +1283,14 @@ void __79__SUICStreamingTextView__substringRangesContainingEmojiInString_startin
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v22 = [v14 emojiRangesInText];
-    v32 = [v22 countByEnumeratingWithState:&v49 objects:v57 count:16];
+    emojiRangesInText = [wordCopy emojiRangesInText];
+    v32 = [emojiRangesInText countByEnumeratingWithState:&v49 objects:v57 count:16];
     if (v32)
     {
       v33 = v32;
-      v43 = v15;
+      v43 = colorCopy;
       v44 = length;
-      v46 = v14;
+      v46 = wordCopy;
       v48 = location;
       v34 = *v50;
       do
@@ -1299,45 +1299,45 @@ void __79__SUICStreamingTextView__substringRangesContainingEmojiInString_startin
         {
           if (*v50 != v34)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(emojiRangesInText);
           }
 
           v36 = *(*(&v49 + 1) + 8 * j);
           v37 = self->_textStorage;
-          v38 = [MEMORY[0x1E69DC888] clearColor];
-          v39 = [v36 rangeValue];
-          [(NSTextStorage *)v37 addAttribute:v18 value:v38 range:v39, v40];
+          clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+          rangeValue2 = [v36 rangeValue];
+          [(NSTextStorage *)v37 addAttribute:v18 value:clearColor2 range:rangeValue2, v40];
         }
 
-        v33 = [v22 countByEnumeratingWithState:&v49 objects:v57 count:16];
+        v33 = [emojiRangesInText countByEnumeratingWithState:&v49 objects:v57 count:16];
       }
 
       while (v33);
       length = v44;
-      v14 = v46;
+      wordCopy = v46;
       location = v48;
-      v15 = v43;
+      colorCopy = v43;
     }
   }
 
 LABEL_20:
-  v41 = [(SUICStreamingTextView *)self _createGlyphImage:location glyphRange:length layoutManager:self->_layoutManager isUnderlined:0, x, y, width, height];
+  height = [(SUICStreamingTextView *)self _createGlyphImage:location glyphRange:length layoutManager:self->_layoutManager isUnderlined:0, x, y, width, height];
 
-  return v41;
+  return height;
 }
 
-- (id)_createGlyphImage:(CGRect)a3 glyphRange:(_NSRange)a4 layoutManager:(id)a5 isUnderlined:(BOOL)a6
+- (id)_createGlyphImage:(CGRect)image glyphRange:(_NSRange)range layoutManager:(id)manager isUnderlined:(BOOL)underlined
 {
-  v6 = a6;
-  length = a4.length;
-  location = a4.location;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a5;
+  underlinedCopy = underlined;
+  length = range.length;
+  location = range.location;
+  height = image.size.height;
+  width = image.size.width;
+  y = image.origin.y;
+  x = image.origin.x;
+  managerCopy = manager;
   v14 = 0;
-  if (v6)
+  if (underlinedCopy)
   {
     +[_TtC10SiriUICore26SUICStreamingLayoutManager underlineThickness];
     v14 = v15;
@@ -1362,10 +1362,10 @@ LABEL_20:
   v28 = v18;
   v29 = v19;
   v30 = v14;
-  v25 = v13;
+  v25 = managerCopy;
   v31 = location;
   v32 = length;
-  v21 = v13;
+  v21 = managerCopy;
   v22 = [v20 imageWithActions:v24];
 
   return v22;
@@ -1396,8 +1396,8 @@ uint64_t __81__SUICStreamingTextView__createGlyphImage_glyphRange_layoutManager_
   }
 
   v4 = MEMORY[0x1E69DCAD8];
-  v5 = [(SUICStreamingTextView *)self font];
-  v6 = [v4 configurationWithFont:v5 scale:v3];
+  font = [(SUICStreamingTextView *)self font];
+  v6 = [v4 configurationWithFont:font scale:v3];
 
   if ([MEMORY[0x1E698D258] saeAvailable])
   {
@@ -1412,11 +1412,11 @@ uint64_t __81__SUICStreamingTextView__createGlyphImage_glyphRange_layoutManager_
   return v9;
 }
 
-- (CGImage)_imageRefForImage:(id)a3
+- (CGImage)_imageRefForImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
 
-  return [v3 CGImage];
+  return [imageCopy CGImage];
 }
 
 - (SUICStreamingTextViewDelegate)streamingTextViewDelegate

@@ -1,18 +1,18 @@
 @interface HMDAuthServer
 + (id)logCategory;
 - (BOOL)resumeRetryIfPending;
-- (HMDAuthServer)initWithDelegate:(id)a3;
+- (HMDAuthServer)initWithDelegate:(id)delegate;
 - (HMDAuthServerDelegate)delegate;
-- (void)_handleResponseMetadata:(id)a3 ppid:(id)a4 locale:(id)a5 context:(id)a6 error:(id)a7;
-- (void)_reportFailureWithContext:(id)a3 error:(id)a4;
-- (void)getPPIDInfo:(id)a3 model:(id)a4 cert:(id)a5 context:(id)a6;
+- (void)_handleResponseMetadata:(id)metadata ppid:(id)ppid locale:(id)locale context:(id)context error:(id)error;
+- (void)_reportFailureWithContext:(id)context error:(id)error;
+- (void)getPPIDInfo:(id)info model:(id)model cert:(id)cert context:(id)context;
 - (void)resetRetryOperation;
-- (void)retryOrReportFailure:(id)a3 context:(id)a4;
-- (void)saveRetryOperation:(unint64_t)a3 token:(id)a4 authFeatures:(unint64_t)a5 uuid:(id)a6 context:(id)a7 locale:(id)a8 model:(id)a9;
-- (void)sendActivationConfirmation:(id)a3 uuid:(id)a4 context:(id)a5;
-- (void)sendActivationRequest:(id)a3 uuid:(id)a4 context:(id)a5;
-- (void)sendPPIDInfoRequest:(id)a3 model:(id)a4 token:(id)a5 authFeatures:(unint64_t)a6 uuid:(id)a7 context:(id)a8;
-- (void)timerDidFire:(id)a3;
+- (void)retryOrReportFailure:(id)failure context:(id)context;
+- (void)saveRetryOperation:(unint64_t)operation token:(id)token authFeatures:(unint64_t)features uuid:(id)uuid context:(id)context locale:(id)locale model:(id)model;
+- (void)sendActivationConfirmation:(id)confirmation uuid:(id)uuid context:(id)context;
+- (void)sendActivationRequest:(id)request uuid:(id)uuid context:(id)context;
+- (void)sendPPIDInfoRequest:(id)request model:(id)model token:(id)token authFeatures:(unint64_t)features uuid:(id)uuid context:(id)context;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDAuthServer
@@ -24,24 +24,24 @@
   return WeakRetained;
 }
 
-- (void)sendActivationConfirmation:(id)a3 uuid:(id)a4 context:(id)a5
+- (void)sendActivationConfirmation:(id)confirmation uuid:(id)uuid context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDAuthServer *)self workQueue];
+  confirmationCopy = confirmation;
+  uuidCopy = uuid;
+  contextCopy = context;
+  workQueue = [(HMDAuthServer *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__HMDAuthServer_sendActivationConfirmation_uuid_context___block_invoke;
   v15[3] = &unk_279734870;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = confirmationCopy;
+  v17 = uuidCopy;
+  v18 = contextCopy;
+  v12 = contextCopy;
+  v13 = uuidCopy;
+  v14 = confirmationCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __57__HMDAuthServer_sendActivationConfirmation_uuid_context___block_invoke(uint64_t a1)
@@ -138,24 +138,24 @@ void __57__HMDAuthServer_sendActivationConfirmation_uuid_context___block_invoke_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendActivationRequest:(id)a3 uuid:(id)a4 context:(id)a5
+- (void)sendActivationRequest:(id)request uuid:(id)uuid context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDAuthServer *)self workQueue];
+  requestCopy = request;
+  uuidCopy = uuid;
+  contextCopy = context;
+  workQueue = [(HMDAuthServer *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __52__HMDAuthServer_sendActivationRequest_uuid_context___block_invoke;
   v15[3] = &unk_279734870;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = requestCopy;
+  v17 = uuidCopy;
+  v18 = contextCopy;
+  v12 = contextCopy;
+  v13 = uuidCopy;
+  v14 = requestCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __52__HMDAuthServer_sendActivationRequest_uuid_context___block_invoke(uint64_t a1)
@@ -280,31 +280,31 @@ LABEL_15:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendPPIDInfoRequest:(id)a3 model:(id)a4 token:(id)a5 authFeatures:(unint64_t)a6 uuid:(id)a7 context:(id)a8
+- (void)sendPPIDInfoRequest:(id)request model:(id)model token:(id)token authFeatures:(unint64_t)features uuid:(id)uuid context:(id)context
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(HMDAuthServer *)self workQueue];
+  requestCopy = request;
+  modelCopy = model;
+  tokenCopy = token;
+  uuidCopy = uuid;
+  contextCopy = context;
+  workQueue = [(HMDAuthServer *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__HMDAuthServer_sendPPIDInfoRequest_model_token_authFeatures_uuid_context___block_invoke;
   block[3] = &unk_279728560;
   block[4] = self;
-  v26 = v16;
-  v30 = v15;
-  v31 = a6;
-  v27 = v17;
-  v28 = v18;
-  v29 = v14;
-  v20 = v15;
-  v21 = v14;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  dispatch_async(v19, block);
+  v26 = tokenCopy;
+  v30 = modelCopy;
+  featuresCopy = features;
+  v27 = uuidCopy;
+  v28 = contextCopy;
+  v29 = requestCopy;
+  v20 = modelCopy;
+  v21 = requestCopy;
+  v22 = contextCopy;
+  v23 = uuidCopy;
+  v24 = tokenCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __75__HMDAuthServer_sendPPIDInfoRequest_model_token_authFeatures_uuid_context___block_invoke(uint64_t a1)
@@ -461,27 +461,27 @@ void __75__HMDAuthServer_sendPPIDInfoRequest_model_token_authFeatures_uuid_conte
   }
 }
 
-- (void)getPPIDInfo:(id)a3 model:(id)a4 cert:(id)a5 context:(id)a6
+- (void)getPPIDInfo:(id)info model:(id)model cert:(id)cert context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDAuthServer *)self workQueue];
+  infoCopy = info;
+  modelCopy = model;
+  certCopy = cert;
+  contextCopy = context;
+  workQueue = [(HMDAuthServer *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HMDAuthServer_getPPIDInfo_model_cert_context___block_invoke;
   block[3] = &unk_2797352C0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = infoCopy;
+  v21 = modelCopy;
+  v22 = certCopy;
+  v23 = contextCopy;
+  v15 = contextCopy;
+  v16 = certCopy;
+  v17 = modelCopy;
+  v18 = infoCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __48__HMDAuthServer_getPPIDInfo_model_cert_context___block_invoke(uint64_t a1)
@@ -559,25 +559,25 @@ void __48__HMDAuthServer_getPPIDInfo_model_cert_context___block_invoke_74(uint64
   }
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMDAuthServer *)v6 currentOperation];
-    if (v9 > 3)
+    currentOperation = [(HMDAuthServer *)selfCopy currentOperation];
+    if (currentOperation > 3)
     {
       v10 = @"HMDAuthServerOperationPPIDInfo";
     }
 
     else
     {
-      v10 = off_2797285A8[v9];
+      v10 = off_2797285A8[currentOperation];
     }
 
     v29 = 138543618;
@@ -588,32 +588,32 @@ void __48__HMDAuthServer_getPPIDInfo_model_cert_context___block_invoke_74(uint64
   }
 
   objc_autoreleasePoolPop(v5);
-  v11 = [(HMDAuthServer *)v6 retryTimer];
+  retryTimer = [(HMDAuthServer *)selfCopy retryTimer];
 
-  if (v11 == v4)
+  if (retryTimer == fireCopy)
   {
-    v12 = [(HMDAuthServer *)v6 currentOperation];
-    if (v12 != 3)
+    currentOperation2 = [(HMDAuthServer *)selfCopy currentOperation];
+    if (currentOperation2 != 3)
     {
-      if (v12 != 2)
+      if (currentOperation2 != 2)
       {
-        if (v12 != 1)
+        if (currentOperation2 != 1)
         {
           v22 = objc_autoreleasePoolPush();
-          v23 = v6;
+          v23 = selfCopy;
           v24 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
             v25 = HMFGetLogIdentifier();
-            v26 = [(HMDAuthServer *)v23 currentOperation];
-            if (v26 > 3)
+            currentOperation3 = [(HMDAuthServer *)v23 currentOperation];
+            if (currentOperation3 > 3)
             {
               v27 = @"HMDAuthServerOperationPPIDInfo";
             }
 
             else
             {
-              v27 = off_2797285A8[v26];
+              v27 = off_2797285A8[currentOperation3];
             }
 
             v29 = 138543618;
@@ -625,19 +625,19 @@ void __48__HMDAuthServer_getPPIDInfo_model_cert_context___block_invoke_74(uint64
 
           objc_autoreleasePoolPop(v22);
           [(HMDAuthServer *)v23 resetRetryOperation];
-          v13 = [(HMDAuthServer *)v23 context];
-          v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:-1 userInfo:0];
-          [(HMDAuthServer *)v23 _reportFailureWithContext:v13 error:v14];
+          context = [(HMDAuthServer *)v23 context];
+          model = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:-1 userInfo:0];
+          [(HMDAuthServer *)v23 _reportFailureWithContext:context error:model];
           goto LABEL_20;
         }
 
-        v13 = [(HMDAuthServer *)v6 locale];
-        v14 = [(HMDAuthServer *)v6 model];
-        v15 = [(HMDAuthServer *)v6 token];
-        v16 = [(HMDAuthServer *)v6 authFeatures];
-        v17 = [(HMDAuthServer *)v6 uuid];
-        v18 = [(HMDAuthServer *)v6 context];
-        [(HMDAuthServer *)v6 sendPPIDInfoRequest:v13 model:v14 token:v15 authFeatures:v16 uuid:v17 context:v18];
+        context = [(HMDAuthServer *)selfCopy locale];
+        model = [(HMDAuthServer *)selfCopy model];
+        token = [(HMDAuthServer *)selfCopy token];
+        authFeatures = [(HMDAuthServer *)selfCopy authFeatures];
+        uuid = [(HMDAuthServer *)selfCopy uuid];
+        context2 = [(HMDAuthServer *)selfCopy context];
+        [(HMDAuthServer *)selfCopy sendPPIDInfoRequest:context model:model token:token authFeatures:authFeatures uuid:uuid context:context2];
 
 LABEL_13:
 LABEL_20:
@@ -645,16 +645,16 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v19 = [(HMDAuthServer *)v6 token];
-      v20 = [(HMDAuthServer *)v6 uuid];
-      v21 = [(HMDAuthServer *)v6 context];
-      [(HMDAuthServer *)v6 sendActivationRequest:v19 uuid:v20 context:v21];
+      token2 = [(HMDAuthServer *)selfCopy token];
+      uuid2 = [(HMDAuthServer *)selfCopy uuid];
+      context3 = [(HMDAuthServer *)selfCopy context];
+      [(HMDAuthServer *)selfCopy sendActivationRequest:token2 uuid:uuid2 context:context3];
     }
 
-    v13 = [(HMDAuthServer *)v6 token];
-    v14 = [(HMDAuthServer *)v6 uuid];
-    v15 = [(HMDAuthServer *)v6 context];
-    [(HMDAuthServer *)v6 sendActivationConfirmation:v13 uuid:v14 context:v15];
+    context = [(HMDAuthServer *)selfCopy token];
+    model = [(HMDAuthServer *)selfCopy uuid];
+    token = [(HMDAuthServer *)selfCopy context];
+    [(HMDAuthServer *)selfCopy sendActivationConfirmation:context uuid:model context:token];
     goto LABEL_13;
   }
 
@@ -665,22 +665,22 @@ LABEL_21:
 
 - (BOOL)resumeRetryIfPending
 {
-  v3 = [(HMDAuthServer *)self retryTimer];
+  retryTimer = [(HMDAuthServer *)self retryTimer];
 
-  if (v3)
+  if (retryTimer)
   {
-    v4 = [(HMDAuthServer *)self retryTimer];
-    [v4 resume];
+    retryTimer2 = [(HMDAuthServer *)self retryTimer];
+    [retryTimer2 resume];
   }
 
-  return v3 != 0;
+  return retryTimer != 0;
 }
 
 - (void)resetRetryOperation
 {
   [(HMDAuthServer *)self setRetryCount:0];
-  v3 = [(HMDAuthServer *)self retryTimer];
-  [v3 cancel];
+  retryTimer = [(HMDAuthServer *)self retryTimer];
+  [retryTimer cancel];
 
   [(HMDAuthServer *)self setRetryTimer:0];
   [(HMDAuthServer *)self setCurrentOperation:0];
@@ -692,16 +692,16 @@ LABEL_21:
   [(HMDAuthServer *)self setContext:0];
 }
 
-- (void)saveRetryOperation:(unint64_t)a3 token:(id)a4 authFeatures:(unint64_t)a5 uuid:(id)a6 context:(id)a7 locale:(id)a8 model:(id)a9
+- (void)saveRetryOperation:(unint64_t)operation token:(id)token authFeatures:(unint64_t)features uuid:(id)uuid context:(id)context locale:(id)locale model:(id)model
 {
-  v23 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = [(HMDAuthServer *)self retryTimer];
+  tokenCopy = token;
+  uuidCopy = uuid;
+  contextCopy = context;
+  localeCopy = locale;
+  modelCopy = model;
+  retryTimer = [(HMDAuthServer *)self retryTimer];
 
-  if (v19)
+  if (retryTimer)
   {
     if ([(HMDAuthServer *)self retryCount]< 1)
     {
@@ -720,30 +720,30 @@ LABEL_21:
     v21 = [v20 initWithTimeInterval:1 options:*&authServerRetryTimeIntervalInSeconds];
     [(HMDAuthServer *)self setRetryTimer:v21];
 
-    v22 = [(HMDAuthServer *)self retryTimer];
-    [v22 setDelegate:self];
+    retryTimer2 = [(HMDAuthServer *)self retryTimer];
+    [retryTimer2 setDelegate:self];
 
-    [(HMDAuthServer *)self setLocale:v17];
-    [(HMDAuthServer *)self setModel:v18];
-    [(HMDAuthServer *)self setToken:v23];
-    [(HMDAuthServer *)self setAuthFeatures:a5];
-    [(HMDAuthServer *)self setUuid:v15];
-    [(HMDAuthServer *)self setContext:v16];
+    [(HMDAuthServer *)self setLocale:localeCopy];
+    [(HMDAuthServer *)self setModel:modelCopy];
+    [(HMDAuthServer *)self setToken:tokenCopy];
+    [(HMDAuthServer *)self setAuthFeatures:features];
+    [(HMDAuthServer *)self setUuid:uuidCopy];
+    [(HMDAuthServer *)self setContext:contextCopy];
     [(HMDAuthServer *)self setRetryCount:authServerRetryCount];
-    [(HMDAuthServer *)self setCurrentOperation:a3];
+    [(HMDAuthServer *)self setCurrentOperation:operation];
   }
 }
 
-- (void)_handleResponseMetadata:(id)a3 ppid:(id)a4 locale:(id)a5 context:(id)a6 error:(id)a7
+- (void)_handleResponseMetadata:(id)metadata ppid:(id)ppid locale:(id)locale context:(id)context error:(id)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v34 = a6;
-  v39 = a7;
+  metadataCopy = metadata;
+  ppidCopy = ppid;
+  localeCopy = locale;
+  contextCopy = context;
+  errorCopy = error;
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -751,26 +751,26 @@ LABEL_21:
     *buf = 138544130;
     v53 = v18;
     v54 = 2112;
-    v55 = v12;
+    v55 = metadataCopy;
     v56 = 2112;
-    v57 = v13;
+    v57 = ppidCopy;
     v58 = 2112;
-    v59 = v14;
+    v59 = localeCopy;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Received metadata: %@ for PPID: %@, locale: %@", buf, 0x2Au);
   }
 
-  v37 = v13;
-  v40 = v14;
+  v37 = ppidCopy;
+  v40 = localeCopy;
 
   objc_autoreleasePoolPop(v15);
-  if (v12)
+  if (metadataCopy)
   {
-    v19 = [v12 hmf_stringForKey:@"accessory_name"];
-    v20 = [v12 hmf_stringForKey:@"brand"];
-    v21 = [v12 hmf_stringForKey:@"model"];
-    v22 = [v12 hmf_numberForKey:@"category"];
-    v23 = [v12 hmf_stringForKey:@"certification_status"];
-    v24 = [v12 hmf_stringForKey:@"blacklisted_status"];
+    v19 = [metadataCopy hmf_stringForKey:@"accessory_name"];
+    v20 = [metadataCopy hmf_stringForKey:@"brand"];
+    v21 = [metadataCopy hmf_stringForKey:@"model"];
+    v22 = [metadataCopy hmf_numberForKey:@"category"];
+    v23 = [metadataCopy hmf_stringForKey:@"certification_status"];
+    v24 = [metadataCopy hmf_stringForKey:@"blacklisted_status"];
   }
 
   else
@@ -783,13 +783,13 @@ LABEL_21:
     v24 = 0;
   }
 
-  v25 = [(HMDAuthServer *)v16 workQueue];
+  workQueue = [(HMDAuthServer *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__HMDAuthServer__handleResponseMetadata_ppid_locale_context_error___block_invoke;
   block[3] = &unk_279728510;
-  v42 = v39;
-  v43 = v16;
+  v42 = errorCopy;
+  v43 = selfCopy;
   v44 = v19;
   v45 = v20;
   v46 = v21;
@@ -806,8 +806,8 @@ LABEL_21:
   v29 = v21;
   v30 = v20;
   v31 = v19;
-  v32 = v39;
-  dispatch_async(v25, block);
+  v32 = errorCopy;
+  dispatch_async(workQueue, block);
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -869,33 +869,33 @@ void __67__HMDAuthServer__handleResponseMetadata_ppid_locale_context_error___blo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retryOrReportFailure:(id)a3 context:(id)a4
+- (void)retryOrReportFailure:(id)failure context:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 domain];
-  if (![v8 isEqual:*MEMORY[0x277D24E18]])
+  failureCopy = failure;
+  contextCopy = context;
+  domain = [failureCopy domain];
+  if (![domain isEqual:*MEMORY[0x277D24E18]])
   {
 
     goto LABEL_10;
   }
 
-  v9 = [v6 code];
+  code = [failureCopy code];
 
-  if (v9 != -5)
+  if (code != -5)
   {
 LABEL_10:
     v18 = 55;
 LABEL_11:
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:v18 userInfo:0];
-    [(HMDAuthServer *)self _reportFailureWithContext:v7 error:v19];
+    [(HMDAuthServer *)self _reportFailureWithContext:contextCopy error:v19];
 
     goto LABEL_12;
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
@@ -906,14 +906,14 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v10);
-  if (![(HMDAuthServer *)v11 resumeRetryIfPending])
+  if (![(HMDAuthServer *)selfCopy resumeRetryIfPending])
   {
     v18 = 78;
     goto LABEL_11;
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = v11;
+  v15 = selfCopy;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -929,13 +929,13 @@ LABEL_12:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportFailureWithContext:(id)a3 error:(id)a4
+- (void)_reportFailureWithContext:(id)context error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -946,16 +946,16 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDAuthServer *)v9 delegate];
+  delegate = [(HMDAuthServer *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v12 didFinishActivation:v7 context:v6];
+    [delegate didFinishActivation:errorCopy context:contextCopy];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v9;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -971,15 +971,15 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAuthServer)initWithDelegate:(id)a3
+- (HMDAuthServer)initWithDelegate:(id)delegate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (!delegateCopy)
   {
     v14 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -998,10 +998,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (([v4 conformsToProtocol:&unk_286713A20] & 1) == 0)
+  if (([delegateCopy conformsToProtocol:&unk_286713A20] & 1) == 0)
   {
     v14 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -1026,13 +1026,13 @@ LABEL_11:
     v6->_workQueue = v8;
 
     objc_storeWeak(&v6->_delegate, v5);
-    v10 = [MEMORY[0x277D24E30] sharedManager];
+    mEMORY[0x277D24E30] = [MEMORY[0x277D24E30] sharedManager];
     tokenManager = v6->_tokenManager;
-    v6->_tokenManager = v10;
+    v6->_tokenManager = mEMORY[0x277D24E30];
   }
 
-  v12 = v6;
-  v13 = v12;
+  selfCopy2 = v6;
+  v13 = selfCopy2;
 LABEL_12:
 
   v18 = *MEMORY[0x277D85DE8];

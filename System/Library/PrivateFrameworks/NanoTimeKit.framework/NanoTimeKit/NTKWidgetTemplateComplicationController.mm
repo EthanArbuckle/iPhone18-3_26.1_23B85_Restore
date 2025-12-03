@@ -1,41 +1,41 @@
 @interface NTKWidgetTemplateComplicationController
-+ (BOOL)_acceptsComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (NTKWidgetTemplateComplicationController)initWithComplication:(id)a3 variant:(id)a4 device:(id)a5;
-- (void)addDisplayWrapper:(id)a3;
++ (BOOL)_acceptsComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device;
+- (NTKWidgetTemplateComplicationController)initWithComplication:(id)complication variant:(id)variant device:(id)device;
+- (void)addDisplayWrapper:(id)wrapper;
 @end
 
 @implementation NTKWidgetTemplateComplicationController
 
-- (NTKWidgetTemplateComplicationController)initWithComplication:(id)a3 variant:(id)a4 device:(id)a5
+- (NTKWidgetTemplateComplicationController)initWithComplication:(id)complication variant:(id)variant device:(id)device
 {
-  v9 = a3;
-  v10 = a4;
+  complicationCopy = complication;
+  variantCopy = variant;
   v15.receiver = self;
   v15.super_class = NTKWidgetTemplateComplicationController;
-  v11 = [(NTKComplicationController *)&v15 initWithComplication:v9 variant:v10 device:a5];
+  v11 = [(NTKComplicationController *)&v15 initWithComplication:complicationCopy variant:variantCopy device:device];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_variant, a4);
-    if ([v9 complicationType] != 56)
+    objc_storeStrong(&v11->_variant, variant);
+    if ([complicationCopy complicationType] != 56)
     {
       v13 = _NTKLoggingObjectForDomain(47, "NTKLoggingDomainWidget");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        [NTKWidgetTemplateComplicationController initWithComplication:v9 variant:v13 device:?];
+        [NTKWidgetTemplateComplicationController initWithComplication:complicationCopy variant:v13 device:?];
       }
     }
 
-    objc_storeStrong(&v12->_widgetComplication, a3);
+    objc_storeStrong(&v12->_widgetComplication, complication);
   }
 
   return v12;
 }
 
-+ (BOOL)_acceptsComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5
++ (BOOL)_acceptsComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device
 {
-  v6 = [a5 isRunningNapiliGMOrLater] ^ 1;
-  if (a3 == 56)
+  v6 = [device isRunningNapiliGMOrLater] ^ 1;
+  if (type == 56)
   {
     return v6;
   }
@@ -46,16 +46,16 @@
   }
 }
 
-- (void)addDisplayWrapper:(id)a3
+- (void)addDisplayWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   v10.receiver = self;
   v10.super_class = NTKWidgetTemplateComplicationController;
-  [(NTKComplicationController *)&v10 addDisplayWrapper:v4];
-  v5 = [(NTKComplicationController *)self device];
-  v6 = [NTKCompanionWidgetComplicationManager instanceForDevice:v5];
-  v7 = [(NTKWidgetComplication *)self->_widgetComplication descriptor];
-  v8 = [v6 sampleTemplateForWidget:v7 family:{-[NTKComplicationController complicationFamily](self, "complicationFamily")}];
+  [(NTKComplicationController *)&v10 addDisplayWrapper:wrapperCopy];
+  device = [(NTKComplicationController *)self device];
+  v6 = [NTKCompanionWidgetComplicationManager instanceForDevice:device];
+  descriptor = [(NTKWidgetComplication *)self->_widgetComplication descriptor];
+  v8 = [v6 sampleTemplateForWidget:descriptor family:{-[NTKComplicationController complicationFamily](self, "complicationFamily")}];
 
   [v8 finalize];
   if (!v8)
@@ -67,7 +67,7 @@
     }
   }
 
-  [v4 setComplicationTemplate:v8 reason:0 animation:0];
+  [wrapperCopy setComplicationTemplate:v8 reason:0 animation:0];
 }
 
 - (void)initWithComplication:(uint64_t)a1 variant:(NSObject *)a2 device:.cold.1(uint64_t a1, NSObject *a2)

@@ -1,29 +1,29 @@
 @interface VUITransactionButton
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (VUITransactionButton)initWithType:(unint64_t)a3 interfaceStyle:(unint64_t)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (VUITransactionButton)initWithType:(unint64_t)type interfaceStyle:(unint64_t)style;
 - (id)_carouselView;
-- (void)_addProgressIndicatorWithFrame:(CGRect)a3;
-- (void)_buttonTapped:(id)a3 eventName:(id)a4;
-- (void)_handleTransactionDidFinishNotification:(id)a3;
-- (void)_handleTransactionDidStartNotification:(id)a3;
+- (void)_addProgressIndicatorWithFrame:(CGRect)frame;
+- (void)_buttonTapped:(id)tapped eventName:(id)name;
+- (void)_handleTransactionDidFinishNotification:(id)notification;
+- (void)_handleTransactionDidStartNotification:(id)notification;
 - (void)_layoutProgressIndicatorIfNeeded;
 - (void)_registerForTransactionNotification;
 - (void)_unregisterTransactionNotifications;
-- (void)_updateProgressIndicatorTintColor:(id)a3;
+- (void)_updateProgressIndicatorTintColor:(id)color;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setMonitorTransaction:(BOOL)a3;
-- (void)setTransactionIDs:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setMonitorTransaction:(BOOL)transaction;
+- (void)setTransactionIDs:(id)ds;
 @end
 
 @implementation VUITransactionButton
 
-- (VUITransactionButton)initWithType:(unint64_t)a3 interfaceStyle:(unint64_t)a4
+- (VUITransactionButton)initWithType:(unint64_t)type interfaceStyle:(unint64_t)style
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = VUITransactionButton;
-  v4 = [(VUIButton *)&v15 initWithType:a3 interfaceStyle:a4];
+  v4 = [(VUIButton *)&v15 initWithType:type interfaceStyle:style];
   if (v4)
   {
     objc_initWeak(&location, v4);
@@ -75,8 +75,8 @@ void __52__VUITransactionButton_initWithType_interfaceStyle___block_invoke_2(uin
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0];
 
   [(VUITransactionButton *)self _unregisterTransactionNotifications];
   v4.receiver = self;
@@ -84,11 +84,11 @@ void __52__VUITransactionButton_initWithType_interfaceStyle___block_invoke_2(uin
   [(VUITransactionButton *)&v4 dealloc];
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
   v11.receiver = self;
   v11.super_class = VUITransactionButton;
-  [(VUIButton *)&v11 vui_layoutSubviews:a4 computationOnly:a3.width, a3.height];
+  [(VUIButton *)&v11 vui_layoutSubviews:only computationOnly:subviews.width, subviews.height];
   v6 = v5;
   v8 = v7;
   [(VUITransactionButton *)self _layoutProgressIndicatorIfNeeded];
@@ -99,18 +99,18 @@ void __52__VUITransactionButton_initWithType_interfaceStyle___block_invoke_2(uin
   return result;
 }
 
-- (void)setTransactionIDs:(id)a3
+- (void)setTransactionIDs:(id)ds
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dsCopy = ds;
+  v5 = dsCopy;
+  if (!dsCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFD8]);
   }
 
   objc_storeStrong(&self->_transactionIDs, v5);
-  if (!v4)
+  if (!dsCopy)
   {
   }
 
@@ -156,7 +156,7 @@ LABEL_15:
   {
     v11 = [(NSSet *)self->_transactionIDs count];
     *buf = 134218496;
-    v19 = self;
+    selfCopy = self;
     v20 = 1024;
     v21 = v7;
     v22 = 2048;
@@ -167,35 +167,35 @@ LABEL_15:
   [(VUITransactionButton *)self setMonitorTransaction:v7];
   if ((v7 & 1) == 0 && [(NSSet *)self->_transactionIDs count])
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 removeObserver:self name:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:self selector:sel__handleTransactionDidStartNotification_ name:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__handleTransactionDidStartNotification_ name:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = VUITransactionButton;
-  [(VUITransactionButton *)&v11 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
-  v8 = v7;
-  if (v7 == self)
+  [(VUITransactionButton *)&v11 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  v8 = nextFocusedItem;
+  if (nextFocusedItem == self)
   {
 
 LABEL_5:
-    v10 = [(VUITransactionButton *)self progressIndicator];
-    [(VUITransactionButton *)self _updateProgressIndicatorTintColor:v10];
+    progressIndicator = [(VUITransactionButton *)self progressIndicator];
+    [(VUITransactionButton *)self _updateProgressIndicatorTintColor:progressIndicator];
 
     goto LABEL_6;
   }
 
-  v9 = [v6 previouslyFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-  if (v9 == self)
+  if (previouslyFocusedItem == self)
   {
     goto LABEL_5;
   }
@@ -203,12 +203,12 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setMonitorTransaction:(BOOL)a3
+- (void)setMonitorTransaction:(BOOL)transaction
 {
-  if (self->_monitorTransaction != a3)
+  if (self->_monitorTransaction != transaction)
   {
-    self->_monitorTransaction = a3;
-    if (a3)
+    self->_monitorTransaction = transaction;
+    if (transaction)
     {
       v5 = *MEMORY[0x1E695F058];
       v6 = *(MEMORY[0x1E695F058] + 8);
@@ -222,28 +222,28 @@ LABEL_6:
 
     else
     {
-      v11 = [(VUITransactionButton *)self progressIndicator];
-      [v11 vui_removeFromSuperView];
+      progressIndicator = [(VUITransactionButton *)self progressIndicator];
+      [progressIndicator vui_removeFromSuperView];
 
       [(VUITransactionButton *)self setProgressIndicator:0];
       v10 = 0;
     }
 
-    v12 = [(VUITransactionButton *)self _carouselView];
-    [v12 setScrollMode:v10];
+    _carouselView = [(VUITransactionButton *)self _carouselView];
+    [_carouselView setScrollMode:v10];
   }
 }
 
 - (id)_carouselView
 {
-  v3 = [(VUITransactionButton *)self superview];
+  superview = [(VUITransactionButton *)self superview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUITransactionButton *)self superview];
-    if (v5)
+    superview2 = [(VUITransactionButton *)self superview];
+    if (superview2)
     {
       do
       {
@@ -253,21 +253,21 @@ LABEL_6:
           break;
         }
 
-        v6 = [v5 superview];
+        v5Superview = [superview2 superview];
 
-        v5 = v6;
+        superview2 = v5Superview;
       }
 
-      while (v6);
+      while (v5Superview);
     }
   }
 
   else
   {
-    v5 = 0;
+    superview2 = 0;
   }
 
-  return v5;
+  return superview2;
 }
 
 - (void)_layoutProgressIndicatorIfNeeded
@@ -282,16 +282,16 @@ LABEL_6:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(VUITransactionButton *)self progressIndicator];
-  v36 = v19;
-  if (v19)
+  progressIndicator = [(VUITransactionButton *)self progressIndicator];
+  v36 = progressIndicator;
+  if (progressIndicator)
   {
     v20 = v4 + v14;
     v21 = v6 + v12;
     v22 = v8 - (v14 + v18);
     v23 = v10 - (v12 + v16);
-    v24 = [(VUITransactionButton *)self progressIndicator];
-    [v24 frame];
+    progressIndicator2 = [(VUITransactionButton *)self progressIndicator];
+    [progressIndicator2 frame];
 
     v25 = v22;
     v26 = v23;
@@ -332,10 +332,10 @@ LABEL_8:
         v26 = v29;
 LABEL_14:
         [(VUITransactionButton *)self vui_bringSubviewToFront:v36];
-        v31 = [(VUITransactionButton *)self progressIndicator];
-        [v31 setFrame:{v20 + (v22 - v25) * 0.5, v21 + (v23 - v26) * 0.5, v25, v26}];
+        progressIndicator3 = [(VUITransactionButton *)self progressIndicator];
+        [progressIndicator3 setFrame:{v20 + (v22 - v25) * 0.5, v21 + (v23 - v26) * 0.5, v25, v26}];
 
-        v19 = v36;
+        progressIndicator = v36;
         goto LABEL_15;
       }
 
@@ -347,29 +347,29 @@ LABEL_14:
   }
 
 LABEL_15:
-  v32 = v19 != 0;
-  v33 = [(VUIButton *)self textContentView];
-  [v33 setHidden:v32];
+  v32 = progressIndicator != 0;
+  textContentView = [(VUIButton *)self textContentView];
+  [textContentView setHidden:v32];
 
-  v34 = [(VUIButton *)self subtitleContentView];
-  [v34 setHidden:v32];
+  subtitleContentView = [(VUIButton *)self subtitleContentView];
+  [subtitleContentView setHidden:v32];
 
-  v35 = [(VUIButton *)self imageView];
-  [v35 setHidden:v32];
+  imageView = [(VUIButton *)self imageView];
+  [imageView setHidden:v32];
 }
 
-- (void)_buttonTapped:(id)a3 eventName:(id)a4
+- (void)_buttonTapped:(id)tapped eventName:(id)name
 {
   v12 = *MEMORY[0x1E69E9840];
-  if ([(VUITransactionButton *)self isWaitingForTransactionToStart:a3]|| [(VUITransactionButton *)self monitorTransaction])
+  if ([(VUITransactionButton *)self isWaitingForTransactionToStart:tapped]|| [(VUITransactionButton *)self monitorTransaction])
   {
     v5 = VUIDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v9 = [(VUITransactionButton *)self isWaitingForTransactionToStart];
+      isWaitingForTransactionToStart = [(VUITransactionButton *)self isWaitingForTransactionToStart];
       v10 = 1024;
-      v11 = [(VUITransactionButton *)self monitorTransaction];
+      monitorTransaction = [(VUITransactionButton *)self monitorTransaction];
       _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Ignoring transaction button tap. isWaitingForTransactionToStart %d, monitorTransaction %d", buf, 0xEu);
     }
   }
@@ -377,41 +377,41 @@ LABEL_15:
   else
   {
     [(VUITransactionButton *)self setWaitingForTransactionToStart:1];
-    v6 = [(VUIButton *)self selectActionHandler];
+    selectActionHandler = [(VUIButton *)self selectActionHandler];
 
-    if (v6)
+    if (selectActionHandler)
     {
-      v7 = [(VUIButton *)self selectActionHandler];
-      v7[2](v7, self);
+      selectActionHandler2 = [(VUIButton *)self selectActionHandler];
+      selectActionHandler2[2](selectActionHandler2, self);
     }
   }
 }
 
-- (void)_updateProgressIndicatorTintColor:(id)a3
+- (void)_updateProgressIndicatorTintColor:(id)color
 {
-  v7 = a3;
-  v4 = [(VUIButton *)self textContentView];
-  v5 = [v4 textLayout];
-  v6 = [v5 color];
+  colorCopy = color;
+  textContentView = [(VUIButton *)self textContentView];
+  textLayout = [textContentView textLayout];
+  color = [textLayout color];
 
-  if (!v6)
+  if (!color)
   {
-    v6 = [(VUITransactionButton *)self vuiTintColor];
+    color = [(VUITransactionButton *)self vuiTintColor];
   }
 
-  [v7 setVuiTintColor:v6];
+  [colorCopy setVuiTintColor:color];
 }
 
-- (void)_addProgressIndicatorWithFrame:(CGRect)a3
+- (void)_addProgressIndicatorWithFrame:(CGRect)frame
 {
   if (!self->_progressIndicator)
   {
-    v7 = [[VUICircularProgress alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(VUICircularProgress *)v7 setVuiBackgroundColor:v5];
+    v7 = [[VUICircularProgress alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(VUICircularProgress *)v7 setVuiBackgroundColor:clearColor];
 
-    v6 = [(VUICircularProgress *)v7 vuiLayer];
-    [v6 removeAllAnimations];
+    vuiLayer = [(VUICircularProgress *)v7 vuiLayer];
+    [vuiLayer removeAllAnimations];
 
     [(VUICircularProgress *)v7 setUserInteractionEnabled:0];
     [(VUITransactionButton *)self _updateProgressIndicatorTintColor:v7];
@@ -423,26 +423,26 @@ LABEL_15:
 
 - (void)_registerForTransactionNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleTransactionDidFinishNotification_ name:@"VUISubscribeRequestDidFinishNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleTransactionDidFinishNotification_ name:@"VUISubscribeRequestDidFinishNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__handleTransactionDidFinishNotification_ name:@"VUIPurchaseRequestDidFinishNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleTransactionDidFinishNotification_ name:@"VUIPurchaseRequestDidFinishNotification" object:0];
 }
 
 - (void)_unregisterTransactionNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"VUISubscribeRequestDidFinishNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VUISubscribeRequestDidFinishNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"VUIPurchaseRequestDidFinishNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"VUIPurchaseRequestDidFinishNotification" object:0];
 }
 
-- (void)_handleTransactionDidStartNotification:(id)a3
+- (void)_handleTransactionDidStartNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"TransactionID"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"TransactionID"];
 
   if ([v5 length])
   {
@@ -478,11 +478,11 @@ void __63__VUITransactionButton__handleTransactionDidStartNotification___block_i
   }
 }
 
-- (void)_handleTransactionDidFinishNotification:(id)a3
+- (void)_handleTransactionDidFinishNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"TransactionID"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"TransactionID"];
 
   if ([v6 length])
   {
@@ -492,7 +492,7 @@ void __63__VUITransactionButton__handleTransactionDidStartNotification___block_i
     block[3] = &unk_1E872E008;
     block[4] = self;
     v8 = v6;
-    v9 = v4;
+    v9 = notificationCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }

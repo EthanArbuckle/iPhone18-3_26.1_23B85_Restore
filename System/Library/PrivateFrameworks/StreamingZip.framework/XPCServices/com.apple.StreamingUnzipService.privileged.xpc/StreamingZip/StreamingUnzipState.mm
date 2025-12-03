@@ -1,14 +1,14 @@
 @interface StreamingUnzipState
-+ (id)unzipStateWithPath:(id)a3 options:(id)a4 error:(id *)a5;
++ (id)unzipStateWithPath:(id)path options:(id)options error:(id *)error;
 - ($C22611018BC199C49300C24FA2540CE8)hashContext;
-- (BOOL)resolveOwnershipWithExtraField:(id *)a3 outUID:(unsigned int *)a4 outGID:(unsigned int *)a5;
+- (BOOL)resolveOwnershipWithExtraField:(id *)field outUID:(unsigned int *)d outGID:(unsigned int *)iD;
 - (id)checkLastChunkPartialHash;
 - (id)finishStream;
 - (id)serializeState;
-- (id)updateHashFromOffset:(unint64_t)a3 withBytes:(const void *)a4 length:(unint64_t)a5 onlyFinishCurrentChunk:(BOOL)a6;
+- (id)updateHashFromOffset:(unint64_t)offset withBytes:(const void *)bytes length:(unint64_t)length onlyFinishCurrentChunk:(BOOL)chunk;
 - (void)clearSavedState;
 - (void)dealloc;
-- (void)setStreamState:(unsigned __int8)a3;
+- (void)setStreamState:(unsigned __int8)state;
 @end
 
 @implementation StreamingUnzipState
@@ -38,39 +38,39 @@
   return self;
 }
 
-- (BOOL)resolveOwnershipWithExtraField:(id *)a3 outUID:(unsigned int *)a4 outGID:(unsigned int *)a5
+- (BOOL)resolveOwnershipWithExtraField:(id *)field outUID:(unsigned int *)d outGID:(unsigned int *)iD
 {
-  if (a3 && a3->var1.var0 >= 0xCu)
+  if (field && field->var1.var0 >= 0xCu)
   {
-    var0 = a3->var4.var0;
-    v9 = a3->var5.var0;
+    var0 = field->var4.var0;
+    unsignedIntValue = field->var5.var0;
     v10 = 1;
   }
 
   else
   {
     v10 = 0;
-    v9 = 0xFFFFFFFFLL;
+    unsignedIntValue = 0xFFFFFFFFLL;
     var0 = -1;
   }
 
-  v11 = [(StreamingUnzipState *)self overrideUID];
-  v12 = [(StreamingUnzipState *)self overrideGID];
-  v13 = v12;
-  if (v11)
+  overrideUID = [(StreamingUnzipState *)self overrideUID];
+  overrideGID = [(StreamingUnzipState *)self overrideGID];
+  v13 = overrideGID;
+  if (overrideUID)
   {
-    var0 = [v11 unsignedIntValue];
+    var0 = [overrideUID unsignedIntValue];
     if (!v13)
     {
       goto LABEL_10;
     }
 
 LABEL_9:
-    v9 = [v13 unsignedIntValue];
+    unsignedIntValue = [v13 unsignedIntValue];
     goto LABEL_10;
   }
 
-  if (v12)
+  if (overrideGID)
   {
     goto LABEL_9;
   }
@@ -81,7 +81,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  v14 = [(StreamingUnzipState *)self cachedGIDs];
+  cachedGIDs = [(StreamingUnzipState *)self cachedGIDs];
   v15 = getuid();
   if (v15)
   {
@@ -90,16 +90,16 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    if (v9 == -1)
+    if (unsignedIntValue == -1)
     {
       v18 = 0;
     }
 
     else
     {
-      v17 = [NSNumber numberWithUnsignedInt:v9];
+      v17 = [NSNumber numberWithUnsignedInt:unsignedIntValue];
       v18 = v17;
-      if (v14 && v17 && ![v14 containsObject:v17])
+      if (cachedGIDs && v17 && ![cachedGIDs containsObject:v17])
       {
 
 LABEL_13:
@@ -110,7 +110,7 @@ LABEL_14:
     }
   }
 
-  if (a4)
+  if (d)
   {
     if (getuid())
     {
@@ -122,12 +122,12 @@ LABEL_14:
       v19 = var0;
     }
 
-    *a4 = v19;
+    *d = v19;
   }
 
-  if (a5)
+  if (iD)
   {
-    *a5 = v9;
+    *iD = unsignedIntValue;
   }
 
   v16 = 1;
@@ -168,7 +168,7 @@ LABEL_8:
   return v6;
 }
 
-- (id)updateHashFromOffset:(unint64_t)a3 withBytes:(const void *)a4 length:(unint64_t)a5 onlyFinishCurrentChunk:(BOOL)a6
+- (id)updateHashFromOffset:(unint64_t)offset withBytes:(const void *)bytes length:(unint64_t)length onlyFinishCurrentChunk:(BOOL)chunk
 {
   hashes = self->_hashes;
   if (hashes)
@@ -178,20 +178,20 @@ LABEL_8:
     {
       if (self->_hashedChunkSize || [(NSArray *)self->_hashes count]< 2)
       {
-        if (a5)
+        if (length)
         {
           while (1)
           {
             hashedChunkSize = self->_hashedChunkSize;
-            v16 = a5;
-            if (hashedChunkSize && ((bytesHashedInChunk = self->_bytesHashedInChunk, a5 >= hashedChunkSize - bytesHashedInChunk) ? (v16 = hashedChunkSize - bytesHashedInChunk) : (v16 = a5), !v16))
+            lengthCopy = length;
+            if (hashedChunkSize && ((bytesHashedInChunk = self->_bytesHashedInChunk, length >= hashedChunkSize - bytesHashedInChunk) ? (lengthCopy = hashedChunkSize - bytesHashedInChunk) : (lengthCopy = length), !lengthCopy))
             {
               self->_bytesHashedInChunk = bytesHashedInChunk;
             }
 
             else
             {
-              v18 = v16;
+              v18 = lengthCopy;
               do
               {
                 if (v18 >= 0xFFFFFFFF)
@@ -210,13 +210,13 @@ LABEL_8:
                   switch(hashType)
                   {
                     case 5:
-                      CC_SHA256_Update(&self->_hashContext.context, a4, v19);
+                      CC_SHA256_Update(&self->_hashContext.context, bytes, v19);
                       break;
                     case 6:
-                      CC_SHA384_Update(&self->_hashContext.context, a4, v19);
+                      CC_SHA384_Update(&self->_hashContext.context, bytes, v19);
                       break;
                     case 7:
-                      CC_SHA512_Update(&self->_hashContext.context, a4, v19);
+                      CC_SHA512_Update(&self->_hashContext.context, bytes, v19);
                       break;
                   }
                 }
@@ -225,18 +225,18 @@ LABEL_8:
                 {
                   if (hashType == 1)
                   {
-                    CC_SHA1_Update(&self->_hashContext.context, a4, v19);
+                    CC_SHA1_Update(&self->_hashContext.context, bytes, v19);
                   }
 
                   else if (hashType == 4)
                   {
-                    CC_SHA224_Update(&self->_hashContext.context, a4, v19);
+                    CC_SHA224_Update(&self->_hashContext.context, bytes, v19);
                   }
                 }
 
                 else
                 {
-                  CC_MD5_Update(&self->_hashContext.context.md5, a4, v19);
+                  CC_MD5_Update(&self->_hashContext.context.md5, bytes, v19);
                 }
 
                 v18 -= v19;
@@ -244,16 +244,16 @@ LABEL_8:
 
               while (v18);
               hashedChunkSize = self->_hashedChunkSize;
-              bytesHashedInChunk = self->_bytesHashedInChunk + v16;
+              bytesHashedInChunk = self->_bytesHashedInChunk + lengthCopy;
               self->_bytesHashedInChunk = bytesHashedInChunk;
               if (!hashedChunkSize)
               {
                 break;
               }
 
-              a4 = a4 + v16;
-              a5 -= v16;
-              a3 += v16;
+              bytes = bytes + lengthCopy;
+              length -= lengthCopy;
+              offset += lengthCopy;
             }
 
             if (bytesHashedInChunk > hashedChunkSize)
@@ -263,7 +263,7 @@ LABEL_8:
 
             if (bytesHashedInChunk == hashedChunkSize)
             {
-              hashes = sub_100011D38(self, a3 - hashedChunkSize);
+              hashes = sub_100011D38(self, offset - hashedChunkSize);
               if (hashes)
               {
                 goto LABEL_43;
@@ -272,13 +272,13 @@ LABEL_8:
               sub_100001794(&self->_hashContext, self->_hashContext.hashType);
               hashes = 0;
               self->_bytesHashedInChunk = 0;
-              if (a6 || !a5)
+              if (chunk || !length)
               {
                 goto LABEL_43;
               }
             }
 
-            else if (!a5)
+            else if (!length)
             {
               break;
             }
@@ -409,9 +409,9 @@ LABEL_7:
         }
 
         [v8 encodeBool:self->_useFilesystemCompression forKey:@"WasUsingFSCompression"];
-        v9 = [v8 encodedData];
+        encodedData = [v8 encodedData];
 
-        if (!v9)
+        if (!encodedData)
         {
           goto LABEL_13;
         }
@@ -419,8 +419,8 @@ LABEL_7:
 
       else
       {
-        v9 = objc_opt_new();
-        if (!v9)
+        encodedData = objc_opt_new();
+        if (!encodedData)
         {
 LABEL_13:
           v10 = sub_10000126C();
@@ -446,7 +446,7 @@ LABEL_60:
         }
       }
 
-      if (setxattr(-[NSString fileSystemRepresentation](self->_unzipPath, "fileSystemRepresentation"), "com.apple.StreamingPassthroughResumptionData", [v9 bytes], objc_msgSend(v9, "length"), 0, 1))
+      if (setxattr(-[NSString fileSystemRepresentation](self->_unzipPath, "fileSystemRepresentation"), "com.apple.StreamingPassthroughResumptionData", [encodedData bytes], objc_msgSend(encodedData, "length"), 0, 1))
       {
         v40 = *__error();
         v41 = sub_10000126C();
@@ -478,21 +478,21 @@ LABEL_60:
       goto LABEL_51;
     }
 
-    v9 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-    [v9 setOutputFormat:200];
-    [v9 encodeInt:8 forKey:@"SerializationVersion"];
+    encodedData = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
+    [encodedData setOutputFormat:200];
+    [encodedData encodeInt:8 forKey:@"SerializationVersion"];
     v14 = self->_hashes;
     if (v14 && [(NSArray *)v14 count])
     {
-      [v9 encodeBytes:&self->_hashContext.context length:qword_10001A718[self->_hashContext.hashType] forKey:@"HashContext"];
+      [encodedData encodeBytes:&self->_hashContext.context length:qword_10001A718[self->_hashContext.hashType] forKey:@"HashContext"];
     }
 
-    [v9 encodeObject:self->_streamInfoDict forKey:@"StreamInfoDict"];
-    [v9 encodeObject:self->_lastChunkPartialHash forKey:@"LastChunkPartialHash"];
-    [v9 encodeObject:self->_unsureData forKey:@"UnsureData"];
-    [v9 encodeObject:self->_inMemoryFileData forKey:@"InMemoryFileData"];
-    v15 = [(NSMutableSet *)self->_appleDoublePaths allObjects];
-    [v9 encodeObject:v15 forKey:@"AppleDoublePaths"];
+    [encodedData encodeObject:self->_streamInfoDict forKey:@"StreamInfoDict"];
+    [encodedData encodeObject:self->_lastChunkPartialHash forKey:@"LastChunkPartialHash"];
+    [encodedData encodeObject:self->_unsureData forKey:@"UnsureData"];
+    [encodedData encodeObject:self->_inMemoryFileData forKey:@"InMemoryFileData"];
+    allObjects = [(NSMutableSet *)self->_appleDoublePaths allObjects];
+    [encodedData encodeObject:allObjects forKey:@"AppleDoublePaths"];
 
     currentLFRecord = self->_currentLFRecord;
     if (currentLFRecord)
@@ -507,14 +507,14 @@ LABEL_60:
         currentLFRecordAllocationSize = HIWORD(currentLFRecord->var7.var0) + currentLFRecord->var8.var0 + 30;
       }
 
-      [v9 encodeBytes:currentLFRecord length:currentLFRecordAllocationSize forKey:@"LocalFileRecord"];
+      [encodedData encodeBytes:currentLFRecord length:currentLFRecordAllocationSize forKey:@"LocalFileRecord"];
     }
 
     v18 = [NSNumber numberWithUnsignedLongLong:self->_thisStageBytesComplete];
-    [v9 encodeObject:v18 forKey:@"StageBytesComplete"];
+    [encodedData encodeObject:v18 forKey:@"StageBytesComplete"];
 
     v19 = [NSNumber numberWithUnsignedLongLong:self->_currentOffset];
-    [v9 encodeObject:v19 forKey:@"CurrentOffset"];
+    [encodedData encodeObject:v19 forKey:@"CurrentOffset"];
 
     v20 = self->_fileWriter;
     if (!v20)
@@ -537,8 +537,8 @@ LABEL_60:
       }
 
       v71 = NSFilePathErrorKey;
-      v45 = [(StreamingFileWriter *)self->_fileWriter path];
-      v72 = v45;
+      path = [(StreamingFileWriter *)self->_fileWriter path];
+      v72 = path;
       v47 = [NSDictionary dictionaryWithObjects:&v72 forKeys:&v71 count:1];
       v48 = @"Unable to get current output offset from current output file";
       v49 = 365;
@@ -551,48 +551,48 @@ LABEL_60:
 
 LABEL_28:
         v24 = [NSNumber numberWithUnsignedLongLong:self->_uncompressedBytesOutput];
-        [v9 encodeObject:v24 forKey:@"CurrentOutputFileOffset"];
+        [encodedData encodeObject:v24 forKey:@"CurrentOutputFileOffset"];
 
         v25 = [NSNumber numberWithUnsignedLongLong:self->_totalFileSizeWritten];
-        [v9 encodeObject:v25 forKey:@"TotalFileSizeWritten"];
+        [encodedData encodeObject:v25 forKey:@"TotalFileSizeWritten"];
 
         v26 = [NSNumber numberWithUnsignedLong:self->_currentCRC32];
-        [v9 encodeObject:v26 forKey:@"CurrentCRC32"];
+        [encodedData encodeObject:v26 forKey:@"CurrentCRC32"];
 
         state = self->_cmpState.state;
         if (state)
         {
           v28 = [NSData dataWithBytesNoCopy:state length:compression_stream_get_state_size() freeWhenDone:0];
-          [v9 encodeObject:v28 forKey:@"SerializedCompressionState"];
+          [encodedData encodeObject:v28 forKey:@"SerializedCompressionState"];
         }
 
-        [v9 encodeBool:self->_fileWriter != 0 forKey:@"OpenCurrentOutputFile"];
+        [encodedData encodeBool:self->_fileWriter != 0 forKey:@"OpenCurrentOutputFile"];
         v29 = [NSNumber numberWithUnsignedLongLong:self->_recordsProcessed];
-        [v9 encodeObject:v29 forKey:@"RecordsProcessed"];
+        [encodedData encodeObject:v29 forKey:@"RecordsProcessed"];
 
         v30 = [NSNumber numberWithUnsignedShort:self->_currentLFMode];
-        [v9 encodeObject:v30 forKey:@"LocalFileMode"];
+        [encodedData encodeObject:v30 forKey:@"LocalFileMode"];
 
         v31 = [NSNumber numberWithUnsignedChar:self->_streamState];
-        [v9 encodeObject:v31 forKey:@"StreamState"];
+        [encodedData encodeObject:v31 forKey:@"StreamState"];
 
-        [v9 encodeBool:self->_storeCurrentFileInMemory forKey:@"StoreCurrentFileInMemory"];
+        [encodedData encodeBool:self->_storeCurrentFileInMemory forKey:@"StoreCurrentFileInMemory"];
         if (v5)
         {
-          [v9 encodeObject:v5 forKey:@"FileWriterData"];
+          [encodedData encodeObject:v5 forKey:@"FileWriterData"];
         }
 
-        [v9 encodeBool:self->_useFilesystemCompression forKey:@"WasUsingFSCompression"];
-        [v9 encodeBool:self->_expectAppleDoubleFiles forKey:@"ExpectAppleDoubleFiles"];
-        v32 = [v9 encodedData];
+        [encodedData encodeBool:self->_useFilesystemCompression forKey:@"WasUsingFSCompression"];
+        [encodedData encodeBool:self->_expectAppleDoubleFiles forKey:@"ExpectAppleDoubleFiles"];
+        v9EncodedData = [encodedData encodedData];
         v23 = [(NSString *)self->_unzipPath stringByAppendingPathComponent:@"com.apple.StreamingUnzipResumptionData"];
         v33 = sub_10000126C();
         v34 = v33;
-        if (v32)
+        if (v9EncodedData)
         {
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
           {
-            v57 = [v32 length];
+            v57 = [v9EncodedData length];
             currentOffset = self->_currentOffset;
             *buf = 134218240;
             v76 = v57;
@@ -602,7 +602,7 @@ LABEL_28:
           }
 
           v62 = 0;
-          v35 = [v32 writeToFile:v23 options:1 error:&v62];
+          v35 = [v9EncodedData writeToFile:v23 options:1 error:&v62];
           v36 = v62;
           if ((v35 & 1) == 0)
           {
@@ -666,8 +666,8 @@ LABEL_59:
       }
 
       v69 = NSFilePathErrorKey;
-      v45 = [(StreamingFileWriter *)self->_fileWriter path];
-      v70 = v45;
+      path = [(StreamingFileWriter *)self->_fileWriter path];
+      v70 = path;
       v47 = [NSDictionary dictionaryWithObjects:&v70 forKeys:&v69 count:1];
       v60 = self->_uncompressedBytesOutput;
       v48 = @"Mismatch between uncompressed bytes output (%llu) and output file offset (%lld)";
@@ -714,9 +714,9 @@ LABEL_62:
   }
 }
 
-- (void)setStreamState:(unsigned __int8)a3
+- (void)setStreamState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   self->_thisStageBytesComplete = 0;
   v5 = sub_10000126C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -732,14 +732,14 @@ LABEL_62:
       v17 = off_100028798[streamState];
     }
 
-    if (v3 > 8)
+    if (stateCopy > 8)
     {
       v18 = @"Unknown";
     }
 
     else
     {
-      v18 = off_100028798[v3];
+      v18 = off_100028798[stateCopy];
     }
 
     v19 = 138412546;
@@ -749,13 +749,13 @@ LABEL_62:
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Updating stream state from %@ to %@", &v19, 0x16u);
   }
 
-  if (v3 > 3)
+  if (stateCopy > 3)
   {
-    if (v3 > 5)
+    if (stateCopy > 5)
     {
-      if (v3 != 6)
+      if (stateCopy != 6)
       {
-        if (v3 != 7)
+        if (stateCopy != 7)
         {
           goto LABEL_29;
         }
@@ -774,7 +774,7 @@ LABEL_62:
       goto LABEL_29;
     }
 
-    if (v3 == 4)
+    if (stateCopy == 4)
     {
       if (self->_streamState - 1 >= 3)
       {
@@ -803,9 +803,9 @@ LABEL_62:
     }
   }
 
-  else if (v3 > 1)
+  else if (stateCopy > 1)
   {
-    if (v3 == 2)
+    if (stateCopy == 2)
     {
       if (self->_streamState != 1)
       {
@@ -819,9 +819,9 @@ LABEL_62:
     }
   }
 
-  else if (v3)
+  else if (stateCopy)
   {
-    if (v3 == 1)
+    if (stateCopy == 1)
     {
       if (self->_streamState)
       {
@@ -870,7 +870,7 @@ LABEL_62:
   }
 
 LABEL_29:
-  self->_streamState = v3;
+  self->_streamState = stateCopy;
   [(StreamingUnzipState *)self markResumptionPoint];
 }
 
@@ -892,11 +892,11 @@ LABEL_29:
   [(StreamingUnzipState *)&v5 dealloc];
 }
 
-+ (id)unzipStateWithPath:(id)a3 options:(id)a4 error:(id *)a5
++ (id)unzipStateWithPath:(id)path options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = sub_1000137B8([StreamingUnzipState alloc], v7, v8, 0);
+  pathCopy = path;
+  optionsCopy = options;
+  v9 = sub_1000137B8([StreamingUnzipState alloc], pathCopy, optionsCopy, 0);
   if (v9)
   {
     v10 = 0;
@@ -905,21 +905,21 @@ LABEL_29:
   else
   {
     v16 = 0;
-    v11 = sub_100015E3C(v7, &v16);
+    v11 = sub_100015E3C(pathCopy, &v16);
     v10 = v16;
     if (v11)
     {
       v15 = v10;
-      v9 = sub_1000137B8([StreamingUnzipState alloc], v7, v8, &v15);
+      v9 = sub_1000137B8([StreamingUnzipState alloc], pathCopy, optionsCopy, &v15);
       v12 = v15;
 
       v10 = v12;
     }
 
-    if (a5 && !v9)
+    if (error && !v9)
     {
       v13 = v10;
-      *a5 = v10;
+      *error = v10;
     }
   }
 

@@ -1,19 +1,19 @@
 @interface ATXToolKitActionStreamEvent
 - (ATXToolKitActionStreamEvent)init;
-- (ATXToolKitActionStreamEvent)initWithEncodedTool:(id)a3 toolID:(id)a4 bundleID:(id)a5 title:(id)a6 subtitle:(id)a7 eventTimeStamp:(id)a8 parameterKeys:(id)a9;
+- (ATXToolKitActionStreamEvent)initWithEncodedTool:(id)tool toolID:(id)d bundleID:(id)iD title:(id)title subtitle:(id)subtitle eventTimeStamp:(id)stamp parameterKeys:(id)keys;
 - (NSArray)parameterKeys;
 - (NSData)encodedTool;
 - (NSDate)eventTimeStamp;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXToolKitActionStreamEvent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ToolKitActionStreamEvent.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ToolKitActionStreamEvent.encode(with:)(coderCopy);
 }
 
 - (NSData)encodedTool
@@ -58,10 +58,10 @@
   return v3;
 }
 
-- (ATXToolKitActionStreamEvent)initWithEncodedTool:(id)a3 toolID:(id)a4 bundleID:(id)a5 title:(id)a6 subtitle:(id)a7 eventTimeStamp:(id)a8 parameterKeys:(id)a9
+- (ATXToolKitActionStreamEvent)initWithEncodedTool:(id)tool toolID:(id)d bundleID:(id)iD title:(id)title subtitle:(id)subtitle eventTimeStamp:(id)stamp parameterKeys:(id)keys
 {
-  v56 = a9;
-  v57 = a8;
+  keysCopy = keys;
+  stampCopy = stamp;
   ObjectType = swift_getObjectType();
   v15 = sub_260DF5444();
   v59 = *(v15 - 8);
@@ -69,16 +69,16 @@
   v16 = *(v59 + 64);
   MEMORY[0x28223BE20](v15);
   v18 = &v51 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = v57;
-  v25 = v56;
+  toolCopy = tool;
+  dCopy = d;
+  iDCopy = iD;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  v24 = stampCopy;
+  v25 = keysCopy;
   v26 = sub_260DF53B4();
-  v56 = v27;
-  v57 = v26;
+  keysCopy = v27;
+  stampCopy = v26;
 
   v28 = sub_260DF59C4();
   v54 = v29;
@@ -106,8 +106,8 @@
   }
 
   v39 = (self + OBJC_IVAR___ATXToolKitActionStreamEvent_encodedTool);
-  v40 = v56;
-  *v39 = v57;
+  v40 = keysCopy;
+  *v39 = stampCopy;
   v39[1] = v40;
   v41 = (self + OBJC_IVAR___ATXToolKitActionStreamEvent_toolID);
   v42 = v54;

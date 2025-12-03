@@ -1,22 +1,22 @@
 @interface CUBonjourAdvertiser
 - (CUBonjourAdvertiser)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activateLocked;
-- (void)_activateSafeInvokeBlock:(id)a3;
+- (void)_activateSafeInvokeBlock:(id)block;
 - (void)_updateLocked;
 - (void)_updateTXTDictionary;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setAdvertiseFlags:(unint64_t)a3;
-- (void)setDomain:(id)a3;
-- (void)setInterfaceIndex:(unsigned int)a3;
-- (void)setInterfaceName:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPort:(int)a3;
-- (void)setServiceType:(id)a3;
-- (void)setTxtDictionary:(id)a3;
+- (void)setAdvertiseFlags:(unint64_t)flags;
+- (void)setDomain:(id)domain;
+- (void)setInterfaceIndex:(unsigned int)index;
+- (void)setInterfaceName:(id)name;
+- (void)setLabel:(id)label;
+- (void)setName:(id)name;
+- (void)setPort:(int)port;
+- (void)setServiceType:(id)type;
+- (void)setTxtDictionary:(id)dictionary;
 @end
 
 @implementation CUBonjourAdvertiser
@@ -411,24 +411,24 @@ LABEL_6:
   }
 }
 
-- (void)_activateSafeInvokeBlock:(id)a3
+- (void)_activateSafeInvokeBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4[2](v4) && v5->_activated && !v5->_invalidateCalled && !v5->_updatePending)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (blockCopy[2](blockCopy) && selfCopy->_activated && !selfCopy->_invalidateCalled && !selfCopy->_updatePending)
   {
-    v5->_updatePending = 1;
-    dispatchQueue = v5->_dispatchQueue;
+    selfCopy->_updatePending = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__CUBonjourAdvertiser__activateSafeInvokeBlock___block_invoke;
     block[3] = &unk_1E73A4F68;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __48__CUBonjourAdvertiser__activateSafeInvokeBlock___block_invoke(uint64_t a1)
@@ -504,16 +504,16 @@ LABEL_7:
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __31__CUBonjourAdvertiser_activate__block_invoke;
   block[3] = &unk_1E73A4F68;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __31__CUBonjourAdvertiser_activate__block_invoke(uint64_t a1)
@@ -525,16 +525,16 @@ void __31__CUBonjourAdvertiser_activate__block_invoke(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (void)setTxtDictionary:(id)a3
+- (void)setTxtDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__CUBonjourAdvertiser_setTxtDictionary___block_invoke;
   v6[3] = &unk_1E73A30D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = dictionaryCopy;
+  selfCopy = self;
+  v5 = dictionaryCopy;
   [(CUBonjourAdvertiser *)self _activateSafeInvokeBlock:v6];
 }
 
@@ -573,16 +573,16 @@ LABEL_8:
   return result;
 }
 
-- (void)setServiceType:(id)a3
+- (void)setServiceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__CUBonjourAdvertiser_setServiceType___block_invoke;
   v6[3] = &unk_1E73A30D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = typeCopy;
+  selfCopy = self;
+  v5 = typeCopy;
   [(CUBonjourAdvertiser *)self _activateSafeInvokeBlock:v6];
 }
 
@@ -621,13 +621,13 @@ LABEL_8:
   return result;
 }
 
-- (void)setPort:(int)a3
+- (void)setPort:(int)port
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __31__CUBonjourAdvertiser_setPort___block_invoke;
   v3[3] = &unk_1E73A3100;
-  v4 = a3;
+  portCopy = port;
   v3[4] = self;
   [(CUBonjourAdvertiser *)self _activateSafeInvokeBlock:v3];
 }
@@ -646,16 +646,16 @@ BOOL __31__CUBonjourAdvertiser_setPort___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__CUBonjourAdvertiser_setName___block_invoke;
   v6[3] = &unk_1E73A30D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = nameCopy;
+  selfCopy = self;
+  v5 = nameCopy;
   [(CUBonjourAdvertiser *)self _activateSafeInvokeBlock:v6];
 }
 
@@ -694,26 +694,26 @@ LABEL_8:
   return result;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE9568;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 
-- (void)setInterfaceName:(id)a3
+- (void)setInterfaceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__CUBonjourAdvertiser_setInterfaceName___block_invoke;
   v6[3] = &unk_1E73A30D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = nameCopy;
+  selfCopy = self;
+  v5 = nameCopy;
   [(CUBonjourAdvertiser *)self _activateSafeInvokeBlock:v6];
 }
 
@@ -752,13 +752,13 @@ LABEL_8:
   return result;
 }
 
-- (void)setInterfaceIndex:(unsigned int)a3
+- (void)setInterfaceIndex:(unsigned int)index
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__CUBonjourAdvertiser_setInterfaceIndex___block_invoke;
   v3[3] = &unk_1E73A3100;
-  v4 = a3;
+  indexCopy = index;
   v3[4] = self;
   [(CUBonjourAdvertiser *)self _activateSafeInvokeBlock:v3];
 }
@@ -777,16 +777,16 @@ BOOL __41__CUBonjourAdvertiser_setInterfaceIndex___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setDomain:(id)a3
+- (void)setDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__CUBonjourAdvertiser_setDomain___block_invoke;
   v6[3] = &unk_1E73A30D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = domainCopy;
+  selfCopy = self;
+  v5 = domainCopy;
   [(CUBonjourAdvertiser *)self _activateSafeInvokeBlock:v6];
 }
 
@@ -825,14 +825,14 @@ LABEL_8:
   return result;
 }
 
-- (void)setAdvertiseFlags:(unint64_t)a3
+- (void)setAdvertiseFlags:(unint64_t)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__CUBonjourAdvertiser_setAdvertiseFlags___block_invoke;
   v3[3] = &unk_1E73A30B0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = flags;
   [(CUBonjourAdvertiser *)self _activateSafeInvokeBlock:v3];
 }
 
@@ -850,10 +850,10 @@ BOOL __41__CUBonjourAdvertiser_setAdvertiseFlags___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v65 = 0;
-  NSAppendPrintF(&v65, "CUBonjourAdvertiser %@", *&a3, v3, v4, v5, v6, v7, self->_serviceType);
+  NSAppendPrintF(&v65, "CUBonjourAdvertiser %@", *&level, v3, v4, v5, v6, v7, self->_serviceType);
   v10 = v65;
   v17 = v10;
   name = self->_name;
@@ -910,7 +910,7 @@ BOOL __41__CUBonjourAdvertiser_setAdvertiseFlags___block_invoke(uint64_t a1)
     v20 = v34;
   }
 
-  if (a3 < 50)
+  if (level < 50)
   {
     txtDictionary = self->_txtDictionary;
     if (txtDictionary)
@@ -929,7 +929,7 @@ BOOL __41__CUBonjourAdvertiser_setAdvertiseFlags___block_invoke(uint64_t a1)
 
     v45 = *v44;
 
-    if (a3 > 20)
+    if (level > 20)
     {
       goto LABEL_19;
     }

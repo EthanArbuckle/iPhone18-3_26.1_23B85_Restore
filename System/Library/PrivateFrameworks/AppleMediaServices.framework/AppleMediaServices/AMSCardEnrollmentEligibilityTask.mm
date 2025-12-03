@@ -1,42 +1,42 @@
 @interface AMSCardEnrollmentEligibilityTask
-- (AMSCardEnrollmentEligibilityTask)initWithBag:(id)a3;
-- (AMSCardEnrollmentEligibilityTask)initWithBag:(id)a3 countryCode:(id)a4;
-- (AMSCardEnrollmentEligibilityTask)initWithCountryCode:(id)a3;
+- (AMSCardEnrollmentEligibilityTask)initWithBag:(id)bag;
+- (AMSCardEnrollmentEligibilityTask)initWithBag:(id)bag countryCode:(id)code;
+- (AMSCardEnrollmentEligibilityTask)initWithCountryCode:(id)code;
 - (id)_checkForCombinediTunesAccount;
 - (id)_checkThatSilentEnrollmentIsEnabled;
-- (id)_createEligibilityRequestWithBag:(id)a3 iTunesAccount:(id)a4 iCloudAccount:(id)a5 cardType:(unint64_t)a6;
-- (id)_performSilentEnrollmentCheckWithRequest:(id)a3;
-- (id)performCanWriteBillingInfoQueryWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4;
-- (unint64_t)_cardTypeForPassTypeIdentifier:(id)a3 serialNumber:(id)a4;
-- (void)canWriteBillingInfoWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4 completion:(id)a5;
+- (id)_createEligibilityRequestWithBag:(id)bag iTunesAccount:(id)account iCloudAccount:(id)cloudAccount cardType:(unint64_t)type;
+- (id)_performSilentEnrollmentCheckWithRequest:(id)request;
+- (id)performCanWriteBillingInfoQueryWithPassTypeIdentifier:(id)identifier serialNumber:(id)number;
+- (unint64_t)_cardTypeForPassTypeIdentifier:(id)identifier serialNumber:(id)number;
+- (void)canWriteBillingInfoWithPassTypeIdentifier:(id)identifier serialNumber:(id)number completion:(id)completion;
 @end
 
 @implementation AMSCardEnrollmentEligibilityTask
 
-- (AMSCardEnrollmentEligibilityTask)initWithBag:(id)a3
+- (AMSCardEnrollmentEligibilityTask)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v9.receiver = self;
   v9.super_class = AMSCardEnrollmentEligibilityTask;
   v6 = [(AMSTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
   }
 
   return v7;
 }
 
-- (AMSCardEnrollmentEligibilityTask)initWithCountryCode:(id)a3
+- (AMSCardEnrollmentEligibilityTask)initWithCountryCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v9.receiver = self;
   v9.super_class = AMSCardEnrollmentEligibilityTask;
   v5 = [(AMSTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [codeCopy copy];
     countryCode = v5->_countryCode;
     v5->_countryCode = v6;
   }
@@ -44,18 +44,18 @@
   return v5;
 }
 
-- (AMSCardEnrollmentEligibilityTask)initWithBag:(id)a3 countryCode:(id)a4
+- (AMSCardEnrollmentEligibilityTask)initWithBag:(id)bag countryCode:(id)code
 {
-  v7 = a3;
-  v8 = a4;
+  bagCopy = bag;
+  codeCopy = code;
   v14.receiver = self;
   v14.super_class = AMSCardEnrollmentEligibilityTask;
   v9 = [(AMSTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bag, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_bag, bag);
+    v11 = [codeCopy copy];
     countryCode = v10->_countryCode;
     v10->_countryCode = v11;
   }
@@ -63,16 +63,16 @@
   return v10;
 }
 
-- (void)canWriteBillingInfoWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4 completion:(id)a5
+- (void)canWriteBillingInfoWithPassTypeIdentifier:(id)identifier serialNumber:(id)number completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(AMSCardEnrollmentEligibilityTask *)self performCanWriteBillingInfoQueryWithPassTypeIdentifier:a3 serialNumber:a4];
+  completionCopy = completion;
+  v9 = [(AMSCardEnrollmentEligibilityTask *)self performCanWriteBillingInfoQueryWithPassTypeIdentifier:identifier serialNumber:number];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __102__AMSCardEnrollmentEligibilityTask_canWriteBillingInfoWithPassTypeIdentifier_serialNumber_completion___block_invoke;
   v11[3] = &unk_1E73B4F28;
-  v12 = v8;
-  v10 = v8;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v9 addFinishBlock:v11];
 }
 
@@ -94,11 +94,11 @@ void __102__AMSCardEnrollmentEligibilityTask_canWriteBillingInfoWithPassTypeIden
   (*(v6 + 16))(v6, v7, v5);
 }
 
-- (id)performCanWriteBillingInfoQueryWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4
+- (id)performCanWriteBillingInfoQueryWithPassTypeIdentifier:(id)identifier serialNumber:(id)number
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  numberCopy = number;
   v8 = 0x1E73B0000uLL;
   v9 = +[AMSLogConfig sharedConfig];
   if (!v9)
@@ -106,8 +106,8 @@ void __102__AMSCardEnrollmentEligibilityTask_canWriteBillingInfoWithPassTypeIden
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = AMSLogKey();
     v12 = MEMORY[0x1E696AEC0];
@@ -124,15 +124,15 @@ void __102__AMSCardEnrollmentEligibilityTask_canWriteBillingInfoWithPassTypeIden
       [v12 stringWithFormat:@"%@: ", v13];
     }
     v15 = ;
-    v16 = AMSHashIfNeeded(v6);
-    v17 = AMSHashIfNeeded(v7);
+    v16 = AMSHashIfNeeded(identifierCopy);
+    v17 = AMSHashIfNeeded(numberCopy);
     *buf = 138543874;
     v37 = v15;
     v38 = 2114;
     v39 = v16;
     v40 = 2114;
     v41 = v17;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Performing can write billing info with passTypeIdentifier: %{public}@, serialNumber: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Performing can write billing info with passTypeIdentifier: %{public}@, serialNumber: %{public}@", buf, 0x20u);
     if (v11)
     {
 
@@ -147,9 +147,9 @@ void __102__AMSCardEnrollmentEligibilityTask_canWriteBillingInfoWithPassTypeIden
     goto LABEL_13;
   }
 
-  v19 = [objc_opt_class() bagSubProfile];
-  v20 = [objc_opt_class() bagSubProfileVersion];
-  v21 = [AMSBag bagForProfile:v19 profileVersion:v20];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v21 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
   [(AMSCardEnrollmentEligibilityTask *)self setBag:v21];
 
   v22 = [(AMSCardEnrollmentEligibilityTask *)self bag];
@@ -158,15 +158,15 @@ void __102__AMSCardEnrollmentEligibilityTask_canWriteBillingInfoWithPassTypeIden
   {
 
 LABEL_13:
-    v19 = [(AMSCardEnrollmentEligibilityTask *)self _checkThatSilentEnrollmentIsEnabled];
+    bagSubProfile = [(AMSCardEnrollmentEligibilityTask *)self _checkThatSilentEnrollmentIsEnabled];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPassTypeIdentifier_serialNumber___block_invoke;
     v33[3] = &unk_1E73B5860;
     v33[4] = self;
-    v34 = v6;
-    v35 = v7;
-    v23 = [v19 thenWithPromiseBlock:v33];
+    v34 = identifierCopy;
+    v35 = numberCopy;
+    v23 = [bagSubProfile thenWithPromiseBlock:v33];
 
     goto LABEL_14;
   }
@@ -177,8 +177,8 @@ LABEL_13:
     v25 = +[AMSLogConfig sharedConfig];
   }
 
-  v26 = [v25 OSLogObject];
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v25 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v27 = AMSLogKey();
     v28 = MEMORY[0x1E696AEC0];
@@ -194,14 +194,14 @@ LABEL_13:
     {
       [v28 stringWithFormat:@"%@: ", v29];
     }
-    v31 = ;
+    selfCopy = ;
     *buf = 138543362;
-    v37 = v31;
-    _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@Failed to load bag", buf, 0xCu);
+    v37 = selfCopy;
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Failed to load bag", buf, 0xCu);
     if (v27)
     {
 
-      v31 = self;
+      selfCopy = self;
     }
   }
 
@@ -250,13 +250,13 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
   return v10;
 }
 
-- (unint64_t)_cardTypeForPassTypeIdentifier:(id)a3 serialNumber:(id)a4
+- (unint64_t)_cardTypeForPassTypeIdentifier:(id)identifier serialNumber:(id)number
 {
   v85 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v77 = v7;
-  if (!v6 || !v7)
+  identifierCopy = identifier;
+  numberCopy = number;
+  v77 = numberCopy;
+  if (!identifierCopy || !numberCopy)
   {
     v9 = +[AMSLogConfig sharedConfig];
     if (!v9)
@@ -264,8 +264,8 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v9 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v19 = AMSLogKey();
       v20 = MEMORY[0x1E696AEC0];
@@ -283,15 +283,15 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
         v23 = v24;
       }
 
-      v30 = AMSHashIfNeeded(v6);
-      v4 = AMSHashIfNeeded(v77);
+      v30 = AMSHashIfNeeded(identifierCopy);
+      v18OSLogObject2 = AMSHashIfNeeded(v77);
       *buf = 138543874;
       *&buf[4] = v24;
       *&buf[12] = 2114;
       *&buf[14] = v30;
       *&buf[22] = 2114;
-      v83 = v4;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@Indeterminate passTypeIdentifier: %{public}@, serialNumer: %{public}@", buf, 0x20u);
+      v83 = v18OSLogObject2;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Indeterminate passTypeIdentifier: %{public}@, serialNumer: %{public}@", buf, 0x20u);
       if (v19)
       {
       }
@@ -303,7 +303,7 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
   v78 = 0;
   v79 = &v78;
   v80 = 0x2050000000;
-  v4 = _MergedGlobals_1_4;
+  v18OSLogObject2 = _MergedGlobals_1_4;
   v81 = _MergedGlobals_1_4;
   if (!_MergedGlobals_1_4)
   {
@@ -313,54 +313,54 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
     v83 = &unk_1E73B3880;
     v84 = &v78;
     __getPKPassLibraryClass_block_invoke(buf);
-    v4 = v79[3];
+    v18OSLogObject2 = v79[3];
   }
 
-  v8 = v4;
+  v8 = v18OSLogObject2;
   _Block_object_dispose(&v78, 8);
-  v9 = objc_alloc_init(v4);
+  v9 = objc_alloc_init(v18OSLogObject2);
   if (!v9)
   {
     v25 = +[AMSUnitTests isRunningUnitTests];
     v26 = +[AMSLogConfig sharedConfig];
-    v18 = v26;
+    oSLogObject = v26;
     if (v25)
     {
       if (!v26)
       {
-        v18 = +[AMSLogConfig sharedConfig];
+        oSLogObject = +[AMSLogConfig sharedConfig];
       }
 
-      v27 = [v18 OSLogObject];
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+      v18OSLogObject = [oSLogObject OSLogObject];
+      if (os_log_type_enabled(v18OSLogObject, OS_LOG_TYPE_ERROR))
       {
         v28 = objc_opt_class();
         v29 = NSStringFromClass(v28);
         *buf = 138543362;
         *&buf[4] = v29;
-        _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_ERROR, "%{public}@Could not instantiate PKPassLibrary", buf, 0xCu);
+        _os_log_impl(&dword_192869000, v18OSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Could not instantiate PKPassLibrary", buf, 0xCu);
       }
 
-      v18 = [MEMORY[0x1E696AD88] defaultCenter];
-      v4 = +[AMSLogConfig sharedConfig];
-      [v18 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v4 userInfo:0];
+      oSLogObject = [MEMORY[0x1E696AD88] defaultCenter];
+      v18OSLogObject2 = +[AMSLogConfig sharedConfig];
+      [oSLogObject postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v18OSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v26)
       {
-        v18 = +[AMSLogConfig sharedConfig];
+        oSLogObject = +[AMSLogConfig sharedConfig];
       }
 
-      v4 = [v18 OSLogObject];
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
+      v18OSLogObject2 = [oSLogObject OSLogObject];
+      if (os_log_type_enabled(v18OSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v31 = objc_opt_class();
         v32 = NSStringFromClass(v31);
         *buf = 138543362;
         *&buf[4] = v32;
-        _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_FAULT, "%{public}@Could not instantiate PKPassLibrary", buf, 0xCu);
+        _os_log_impl(&dword_192869000, v18OSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Could not instantiate PKPassLibrary", buf, 0xCu);
       }
     }
 
@@ -374,8 +374,8 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v12 = AMSLogKey();
     v13 = MEMORY[0x1E696AEC0];
@@ -393,27 +393,27 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
       v16 = v17;
     }
 
-    v33 = AMSHashIfNeeded(v6);
-    v4 = AMSHashIfNeeded(v77);
+    v33 = AMSHashIfNeeded(identifierCopy);
+    v18OSLogObject2 = AMSHashIfNeeded(v77);
     *buf = 138543874;
     *&buf[4] = v17;
     *&buf[12] = 2114;
     *&buf[14] = v33;
     *&buf[22] = 2114;
-    v83 = v4;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Attempting to determine card type for passTypeIdentifier: %{public}@, serialNumber: %{public}@", buf, 0x20u);
+    v83 = v18OSLogObject2;
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Attempting to determine card type for passTypeIdentifier: %{public}@, serialNumber: %{public}@", buf, 0x20u);
     if (v12)
     {
     }
   }
 
-  v18 = [v9 passWithPassTypeIdentifier:v6 serialNumber:v77];
-  if (v18)
+  oSLogObject = [v9 passWithPassTypeIdentifier:identifierCopy serialNumber:v77];
+  if (oSLogObject)
   {
     v78 = 0;
     v79 = &v78;
     v80 = 0x2050000000;
-    v4 = qword_1ED6E1E08;
+    v18OSLogObject2 = qword_1ED6E1E08;
     v81 = qword_1ED6E1E08;
     if (!qword_1ED6E1E08)
     {
@@ -423,17 +423,17 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
       v83 = &unk_1E73B3880;
       v84 = &v78;
       __getPKPaymentPassClass_block_invoke(buf);
-      v4 = v79[3];
+      v18OSLogObject2 = v79[3];
     }
 
-    v34 = v4;
+    v34 = v18OSLogObject2;
     _Block_object_dispose(&v78, 8);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v18;
-      v4 = [v18 paymentApplications];
-      v35 = [v4 ams_anyWithTest:&__block_literal_global_25];
+      oSLogObject = oSLogObject;
+      v18OSLogObject2 = [oSLogObject paymentApplications];
+      v35 = [v18OSLogObject2 ams_anyWithTest:&__block_literal_global_25];
 
       if (v35)
       {
@@ -443,18 +443,18 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
           v36 = +[AMSLogConfig sharedConfig];
         }
 
-        v37 = [v36 OSLogObject];
-        if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+        oSLogObject3 = [v36 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
           v38 = AMSLogKey();
           v39 = v38 == 0;
           v40 = MEMORY[0x1E696AEC0];
           v41 = objc_opt_class();
-          v4 = v41;
+          v18OSLogObject2 = v41;
           if (v38)
           {
             v39 = AMSLogKey();
-            [v40 stringWithFormat:@"%@: [%@] ", v4, v39];
+            [v40 stringWithFormat:@"%@: [%@] ", v18OSLogObject2, v39];
           }
 
           else
@@ -464,7 +464,7 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
           v42 = ;
           *buf = 138543362;
           *&buf[4] = v42;
-          _os_log_impl(&dword_192869000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@Found barcode network identifier", buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@Found barcode network identifier", buf, 0xCu);
           if (v38)
           {
 
@@ -473,17 +473,17 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
         }
       }
 
-      if (([v18 hasAssociatedPeerPaymentAccount]& 1) != 0)
+      if (([oSLogObject hasAssociatedPeerPaymentAccount]& 1) != 0)
       {
         v57 = 2;
       }
 
       else
       {
-        v4 = [v18 associatedAccountServiceAccountIdentifier];
+        v18OSLogObject2 = [oSLogObject associatedAccountServiceAccountIdentifier];
 
-        v68 = (v4 != 0) | v35;
-        if (v4)
+        v68 = (v18OSLogObject2 != 0) | v35;
+        if (v18OSLogObject2)
         {
           v57 = 3;
         }
@@ -501,8 +501,8 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
             v69 = +[AMSLogConfig sharedConfig];
           }
 
-          v70 = [v69 OSLogObject];
-          if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
+          oSLogObject4 = [v69 OSLogObject];
+          if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
           {
             v71 = AMSLogKey();
             v72 = MEMORY[0x1E696AEC0];
@@ -510,8 +510,8 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
             v74 = v73;
             if (v71)
             {
-              v4 = AMSLogKey();
-              [v72 stringWithFormat:@"%@: [%@] ", v74, v4];
+              v18OSLogObject2 = AMSLogKey();
+              [v72 stringWithFormat:@"%@: [%@] ", v74, v18OSLogObject2];
             }
 
             else
@@ -521,11 +521,11 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
             v75 = ;
             *buf = 138543362;
             *&buf[4] = v75;
-            _os_log_impl(&dword_192869000, v70, OS_LOG_TYPE_ERROR, "%{public}@Card is unknown type of PKPaymentPass", buf, 0xCu);
+            _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@Card is unknown type of PKPaymentPass", buf, 0xCu);
             if (v71)
             {
 
-              v75 = v4;
+              v75 = v18OSLogObject2;
             }
           }
 
@@ -542,8 +542,8 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
       v50 = +[AMSLogConfig sharedConfig];
     }
 
-    v51 = [v50 OSLogObject];
-    if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
+    oSLogObject5 = [v50 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
     {
       v76 = AMSLogKey();
       v52 = MEMORY[0x1E696AEC0];
@@ -562,13 +562,13 @@ id __103__AMSCardEnrollmentEligibilityTask_performCanWriteBillingInfoQueryWithPa
       }
 
       v58 = objc_opt_class();
-      v4 = NSStringFromClass(v58);
-      v59 = AMSHashIfNeeded(v4);
+      v18OSLogObject2 = NSStringFromClass(v58);
+      v59 = AMSHashIfNeeded(v18OSLogObject2);
       *buf = 138543618;
       *&buf[4] = v56;
       *&buf[12] = 2114;
       *&buf[14] = v59;
-      _os_log_impl(&dword_192869000, v51, OS_LOG_TYPE_ERROR, "%{public}@Pass is not a PKPaymentPass: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@Pass is not a PKPaymentPass: %{public}@", buf, 0x16u);
 
       if (v76)
       {
@@ -586,8 +586,8 @@ LABEL_66:
     v43 = +[AMSLogConfig sharedConfig];
   }
 
-  v44 = [v43 OSLogObject];
-  if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+  oSLogObject6 = [v43 OSLogObject];
+  if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
   {
     v45 = AMSLogKey();
     v46 = MEMORY[0x1E696AEC0];
@@ -595,8 +595,8 @@ LABEL_66:
     v48 = v47;
     if (v45)
     {
-      v4 = AMSLogKey();
-      [v46 stringWithFormat:@"%@: [%@] ", v48, v4];
+      v18OSLogObject2 = AMSLogKey();
+      [v46 stringWithFormat:@"%@: [%@] ", v48, v18OSLogObject2];
     }
 
     else
@@ -606,15 +606,15 @@ LABEL_66:
     v49 = ;
     *buf = 138543362;
     *&buf[4] = v49;
-    _os_log_impl(&dword_192869000, v44, OS_LOG_TYPE_ERROR, "%{public}@No card found", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_ERROR, "%{public}@No card found", buf, 0xCu);
     if (v45)
     {
 
-      v49 = v4;
+      v49 = v18OSLogObject2;
     }
   }
 
-  v18 = 0;
+  oSLogObject = 0;
   v57 = 1;
 LABEL_67:
 
@@ -624,8 +624,8 @@ LABEL_67:
     v60 = +[AMSLogConfig sharedConfig];
   }
 
-  v61 = [v60 OSLogObject];
-  if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+  oSLogObject7 = [v60 OSLogObject];
+  if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_DEFAULT))
   {
     v62 = AMSLogKey();
     v63 = MEMORY[0x1E696AEC0];
@@ -633,8 +633,8 @@ LABEL_67:
     v65 = v64;
     if (v62)
     {
-      v4 = AMSLogKey();
-      [v63 stringWithFormat:@"%@: [%@] ", v65, v4];
+      v18OSLogObject2 = AMSLogKey();
+      [v63 stringWithFormat:@"%@: [%@] ", v65, v18OSLogObject2];
     }
 
     else
@@ -646,11 +646,11 @@ LABEL_67:
     *&buf[4] = v66;
     *&buf[12] = 2048;
     *&buf[14] = v57;
-    _os_log_impl(&dword_192869000, v61, OS_LOG_TYPE_DEFAULT, "%{public}@Found card type: %lu", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject7, OS_LOG_TYPE_DEFAULT, "%{public}@Found card type: %lu", buf, 0x16u);
     if (v62)
     {
 
-      v66 = v4;
+      v66 = v18OSLogObject2;
     }
   }
 
@@ -660,11 +660,11 @@ LABEL_67:
 - (id)_checkForCombinediTunesAccount
 {
   v3 = MEMORY[0x1E6959A48];
-  v4 = [(AMSCardEnrollmentEligibilityTask *)self _mediaType];
-  v5 = [v3 ams_sharedAccountStoreForMediaType:v4];
+  _mediaType = [(AMSCardEnrollmentEligibilityTask *)self _mediaType];
+  v5 = [v3 ams_sharedAccountStoreForMediaType:_mediaType];
 
-  v6 = [(AMSCardEnrollmentEligibilityTask *)self _mediaType];
-  v7 = [v5 ams_activeiTunesAccountForMediaType:v6];
+  _mediaType2 = [(AMSCardEnrollmentEligibilityTask *)self _mediaType];
+  v7 = [v5 ams_activeiTunesAccountForMediaType:_mediaType2];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__AMSCardEnrollmentEligibilityTask__checkForCombinediTunesAccount__block_invoke;
@@ -857,13 +857,13 @@ LABEL_28:
 {
   v3 = [(AMSCardEnrollmentEligibilityTask *)self bag];
   v4 = [v3 BOOLForKey:@"use-silent-enrollment"];
-  v5 = [v4 valuePromise];
+  valuePromise = [v4 valuePromise];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__AMSCardEnrollmentEligibilityTask__checkThatSilentEnrollmentIsEnabled__block_invoke;
   v8[3] = &unk_1E73B58A8;
   v8[4] = self;
-  v6 = [v5 continueWithBinaryPromiseBlock:v8];
+  v6 = [valuePromise continueWithBinaryPromiseBlock:v8];
 
   return v6;
 }
@@ -921,26 +921,26 @@ id __71__AMSCardEnrollmentEligibilityTask__checkThatSilentEnrollmentIsEnabled__b
   return v7;
 }
 
-- (id)_createEligibilityRequestWithBag:(id)a3 iTunesAccount:(id)a4 iCloudAccount:(id)a5 cardType:(unint64_t)a6
+- (id)_createEligibilityRequestWithBag:(id)bag iTunesAccount:(id)account iCloudAccount:(id)cloudAccount cardType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 URLForKey:@"applePaySilentEnrollEligible" account:v11];
-  v14 = [v13 valuePromise];
+  bagCopy = bag;
+  accountCopy = account;
+  cloudAccountCopy = cloudAccount;
+  v13 = [bagCopy URLForKey:@"applePaySilentEnrollEligible" account:accountCopy];
+  valuePromise = [v13 valuePromise];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __106__AMSCardEnrollmentEligibilityTask__createEligibilityRequestWithBag_iTunesAccount_iCloudAccount_cardType___block_invoke;
   v20[3] = &unk_1E73B5920;
-  v21 = v10;
-  v22 = v11;
-  v24 = v12;
-  v25 = a6;
-  v23 = self;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = [v14 thenWithBlock:v20];
+  v21 = bagCopy;
+  v22 = accountCopy;
+  v24 = cloudAccountCopy;
+  typeCopy = type;
+  selfCopy = self;
+  v15 = cloudAccountCopy;
+  v16 = accountCopy;
+  v17 = bagCopy;
+  v18 = [valuePromise thenWithBlock:v20];
 
   return v18;
 }
@@ -1142,10 +1142,10 @@ id __106__AMSCardEnrollmentEligibilityTask__createEligibilityRequestWithBag_iTun
   return v12;
 }
 
-- (id)_performSilentEnrollmentCheckWithRequest:(id)a3
+- (id)_performSilentEnrollmentCheckWithRequest:(id)request
 {
   v4 = MEMORY[0x1E696AD50];
-  v5 = a3;
+  requestCopy = request;
   v6 = objc_alloc_init(v4);
   [v6 addIndexesInRange:{200, 100}];
   [v6 addIndexesInRange:{400, 100}];
@@ -1163,7 +1163,7 @@ id __106__AMSCardEnrollmentEligibilityTask__createEligibilityRequestWithBag_iTun
   v14 = objc_alloc_init(AMSAppleCardSilentEnrollmentProtocolHandler);
   [(AMSURLSession *)v11 setDelegate:v14];
   [(AMSURLSession *)v11 setProtocolHandler:v14];
-  v15 = [(AMSURLSession *)v11 dataTaskPromiseWithRequest:v5];
+  v15 = [(AMSURLSession *)v11 dataTaskPromiseWithRequest:requestCopy];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;

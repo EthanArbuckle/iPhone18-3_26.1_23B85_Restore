@@ -2,8 +2,8 @@
 + (id)sharedHelper;
 - (MSCRODBrailleConnectionHelper)init;
 - (void)_processDeviceReconnectQueue;
-- (void)handleBluetoothConnectionEventForQueue:(id)a3 forceProcess:(BOOL)a4;
-- (void)queueDeviceConnection:(id)a3 withCallback:(id)a4;
+- (void)handleBluetoothConnectionEventForQueue:(id)queue forceProcess:(BOOL)process;
+- (void)queueDeviceConnection:(id)connection withCallback:(id)callback;
 @end
 
 @implementation MSCRODBrailleConnectionHelper
@@ -46,20 +46,20 @@
   if (!self->_waitingForCallback)
   {
 LABEL_6:
-    v4 = [(NSMutableArray *)self->_reconnectDeviceQueue firstObject];
-    if (v4)
+    firstObject = [(NSMutableArray *)self->_reconnectDeviceQueue firstObject];
+    if (firstObject)
     {
       v6 = AXLogBrailleHW();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v15 = v4;
+        v15 = firstObject;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ATTEMPT BT CONNECT: %@", buf, 0xCu);
       }
 
       self->_waitingForCallback = 1;
       self->_lastBTConnectTime = CFAbsoluteTimeGetCurrent();
-      [v4 device];
+      [firstObject device];
       v7 = BTDeviceConnectServices();
       v8 = AXLogBrailleHW();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -71,8 +71,8 @@ LABEL_6:
       }
 
       reconnectDeviceCallbacks = self->_reconnectDeviceCallbacks;
-      v11 = [v4 address];
-      v12 = [(NSMutableDictionary *)reconnectDeviceCallbacks objectForKey:v11];
+      address = [firstObject address];
+      v12 = [(NSMutableDictionary *)reconnectDeviceCallbacks objectForKey:address];
 
       if (v12)
       {
@@ -85,14 +85,14 @@ LABEL_6:
   }
 
   v3 = CFAbsoluteTimeGetCurrent() - self->_lastBTConnectTime;
-  v4 = AXLogBrailleHW();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
+  firstObject = AXLogBrailleHW();
+  v5 = os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT);
   if (v3 > 30.0)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Waited 30 seconds for BT callback, which never came...", buf, 2u);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, "Waited 30 seconds for BT callback, which never came...", buf, 2u);
     }
 
     self->_waitingForCallback = 0;
@@ -102,38 +102,38 @@ LABEL_6:
   if (v5)
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Still waiting for BT callback", buf, 2u);
+    _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, "Still waiting for BT callback", buf, 2u);
   }
 
 LABEL_16:
 }
 
-- (void)handleBluetoothConnectionEventForQueue:(id)a3 forceProcess:(BOOL)a4
+- (void)handleBluetoothConnectionEventForQueue:(id)queue forceProcess:(BOOL)process
 {
-  v6 = a3;
+  queueCopy = queue;
   reconnectQueue = self->_reconnectQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000015D4;
   block[3] = &unk_100014720;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = queueCopy;
+  processCopy = process;
+  v8 = queueCopy;
   dispatch_async(reconnectQueue, block);
 }
 
-- (void)queueDeviceConnection:(id)a3 withCallback:(id)a4
+- (void)queueDeviceConnection:(id)connection withCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  connectionCopy = connection;
+  callbackCopy = callback;
+  if (connectionCopy)
   {
     v8 = AXLogBrailleHW();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Queuing connect BT device: %@", buf, 0xCu);
     }
 
@@ -143,8 +143,8 @@ LABEL_16:
     block[2] = sub_1000019D4;
     block[3] = &unk_100014748;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = connectionCopy;
+    v12 = callbackCopy;
     dispatch_async(reconnectQueue, block);
   }
 }

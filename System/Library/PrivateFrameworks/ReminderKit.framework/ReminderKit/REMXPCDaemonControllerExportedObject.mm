@@ -1,8 +1,8 @@
 @interface REMXPCDaemonControllerExportedObject
 - (REMXPCDaemonControllerAutoCategorizationActivityObserver)autoCategorizationActivityObserver;
 - (REMXPCDaemonControllerCloudKitNetworkActivityDelegate)cloudKitNetworkActivityDelegate;
-- (void)autoCategorizationActivityDidUpdate:(id)a3;
-- (void)cloudKitNetworkActivityDidUpdate:(id)a3;
+- (void)autoCategorizationActivityDidUpdate:(id)update;
+- (void)cloudKitNetworkActivityDidUpdate:(id)update;
 @end
 
 @implementation REMXPCDaemonControllerExportedObject
@@ -14,18 +14,18 @@
   return WeakRetained;
 }
 
-- (void)cloudKitNetworkActivityDidUpdate:(id)a3
+- (void)cloudKitNetworkActivityDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(REMXPCDaemonControllerExportedObject *)self cloudKitNetworkActivityDelegate];
-  [v5 cloudKitNetworkActivityDidChange:v4];
+  updateCopy = update;
+  cloudKitNetworkActivityDelegate = [(REMXPCDaemonControllerExportedObject *)self cloudKitNetworkActivityDelegate];
+  [cloudKitNetworkActivityDelegate cloudKitNetworkActivityDidChange:updateCopy];
 }
 
-- (void)autoCategorizationActivityDidUpdate:(id)a3
+- (void)autoCategorizationActivityDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(REMXPCDaemonControllerExportedObject *)self autoCategorizationActivityObserver];
-  [v5 autoCategorizationActivityDidChange:v4];
+  updateCopy = update;
+  autoCategorizationActivityObserver = [(REMXPCDaemonControllerExportedObject *)self autoCategorizationActivityObserver];
+  [autoCategorizationActivityObserver autoCategorizationActivityDidChange:updateCopy];
 }
 
 - (REMXPCDaemonControllerAutoCategorizationActivityObserver)autoCategorizationActivityObserver

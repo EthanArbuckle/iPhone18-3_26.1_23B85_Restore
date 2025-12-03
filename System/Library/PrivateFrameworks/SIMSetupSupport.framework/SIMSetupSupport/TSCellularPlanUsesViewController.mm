@@ -1,35 +1,35 @@
 @interface TSCellularPlanUsesViewController
-+ (BOOL)sInPrivateNetworkMode:(id)a3;
++ (BOOL)sInPrivateNetworkMode:(id)mode;
 + (id)sGetSelectedPlanItems;
-- (TSCellularPlanUsesViewController)initWithType:(unint64_t)a3 withDoneButton:(BOOL)a4;
+- (TSCellularPlanUsesViewController)initWithType:(unint64_t)type withDoneButton:(BOOL)button;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_doneButtonTapped;
 - (void)_maybeEnableDoneButton;
-- (void)prepare:(id)a3;
-- (void)saveDefaultUse:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
+- (void)prepare:(id)prepare;
+- (void)saveDefaultUse:(id)use;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation TSCellularPlanUsesViewController
 
-- (TSCellularPlanUsesViewController)initWithType:(unint64_t)a3 withDoneButton:(BOOL)a4
+- (TSCellularPlanUsesViewController)initWithType:(unint64_t)type withDoneButton:(BOOL)button
 {
-  v4 = a4;
+  buttonCopy = button;
   v7 = +[TSCellularPlanUsesViewController sGetSelectedPlanItems];
   v8 = [TSCellularPlanUsesViewController sInPrivateNetworkMode:v7];
-  switch(a3)
+  switch(type)
   {
     case 2uLL:
       v19 = MEMORY[0x277D755B8];
-      v30 = v4;
+      v30 = buttonCopy;
       v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v21 = [v19 imageNamed:@"imessage" inBundle:v20 withConfiguration:0];
 
@@ -41,14 +41,14 @@
       v31.super_class = TSCellularPlanUsesViewController;
       self = [(OBTableWelcomeController *)&v31 initWithTitle:v23 detailText:v25 icon:v21 adoptTableViewScrollView:0];
 
-      v4 = v30;
+      buttonCopy = v30;
       v26 = objc_opt_new();
       chosenUseIndexPaths = self->_chosenUseIndexPaths;
       self->_chosenUseIndexPaths = v26;
 
 LABEL_12:
-      self->_usesType = a3;
-      if (v4)
+      self->_usesType = type;
+      if (buttonCopy)
       {
         v28 = !+[TSUtilities inBuddy];
       }
@@ -138,8 +138,8 @@ LABEL_16:
 
   [(SSOBBoldTrayButton *)self->_doneButton addTarget:self action:sel__doneButtonTapped forControlEvents:64];
   [(SSOBBoldTrayButton *)self->_doneButton setTitle:v7 forState:0];
-  v10 = [(TSCellularPlanUsesViewController *)self buttonTray];
-  [v10 addButton:self->_doneButton];
+  buttonTray = [(TSCellularPlanUsesViewController *)self buttonTray];
+  [buttonTray addButton:self->_doneButton];
 
   if (!self->_inPrivateNetworkMode)
   {
@@ -147,42 +147,42 @@ LABEL_16:
     v12 = [v11 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(OBTableWelcomeController *)self setTableView:v12];
 
-    v13 = [(OBTableWelcomeController *)self tableView];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v14 = [(OBTableWelcomeController *)self tableView];
-    [v14 setRowHeight:*MEMORY[0x277D76F30]];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    [tableView2 setRowHeight:*MEMORY[0x277D76F30]];
 
-    v15 = [(OBTableWelcomeController *)self tableView];
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [v15 setBackgroundColor:v16];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [tableView3 setBackgroundColor:clearColor];
 
-    v17 = [(OBTableWelcomeController *)self tableView];
-    [v17 setDataSource:self];
+    tableView4 = [(OBTableWelcomeController *)self tableView];
+    [tableView4 setDataSource:self];
 
-    v18 = [(OBTableWelcomeController *)self tableView];
-    [v18 setDelegate:self];
+    tableView5 = [(OBTableWelcomeController *)self tableView];
+    [tableView5 setDelegate:self];
 
-    v19 = [(OBTableWelcomeController *)self tableView];
-    [v19 setScrollEnabled:0];
+    tableView6 = [(OBTableWelcomeController *)self tableView];
+    [tableView6 setScrollEnabled:0];
   }
 
   v20 = self->_usesType == 2;
-  v21 = [(OBTableWelcomeController *)self tableView];
-  [v21 setAllowsMultipleSelection:v20];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setAllowsMultipleSelection:v20];
 
-  v22 = [(OBTableWelcomeController *)self tableView];
-  [v22 reloadData];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 reloadData];
 
-  v23 = [(OBTableWelcomeController *)self tableView];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
 
-  if (v23)
+  if (tableView9)
   {
-    v24 = [(OBTableWelcomeController *)self tableView];
-    v25 = [v24 heightAnchor];
-    v26 = [(OBTableWelcomeController *)self tableView];
-    [v26 contentSize];
-    v28 = [v25 constraintEqualToConstant:v27];
+    tableView10 = [(OBTableWelcomeController *)self tableView];
+    heightAnchor = [tableView10 heightAnchor];
+    tableView11 = [(OBTableWelcomeController *)self tableView];
+    [tableView11 contentSize];
+    v28 = [heightAnchor constraintEqualToConstant:v27];
     heightConstraint = self->_heightConstraint;
     self->_heightConstraint = v28;
 
@@ -197,20 +197,20 @@ LABEL_16:
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(TSCellularPlanUsesViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(TSCellularPlanUsesViewController *)self view];
+  [view layoutIfNeeded];
 
   v12.receiver = self;
   v12.super_class = TSCellularPlanUsesViewController;
   [(TSCellularPlanUsesViewController *)&v12 updateViewConstraints];
   if (self->_heightConstraint)
   {
-    v4 = [(OBTableWelcomeController *)self tableView];
-    [v4 contentSize];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView contentSize];
     v6 = v5;
 
-    v7 = [(OBTableWelcomeController *)self tableView];
-    [v7 frame];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    [tableView2 frame];
     v9 = v8;
 
     if (v6 >= v9)
@@ -235,14 +235,14 @@ LABEL_16:
 {
   v19 = *MEMORY[0x277D85DE8];
   v2 = +[TSCellularPlanManagerCache sharedInstance];
-  v3 = [v2 planItems];
+  planItems = [v2 planItems];
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = planItems;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -260,7 +260,7 @@ LABEL_16:
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 isSelected])
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -270,22 +270,22 @@ LABEL_16:
     while (v7);
   }
 
-  v11 = [v4 sortedArrayUsingSelector:sel_compare_];
+  v11 = [array sortedArrayUsingSelector:sel_compare_];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-+ (BOOL)sInPrivateNetworkMode:(id)a3
++ (BOOL)sInPrivateNetworkMode:(id)mode
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  modeCopy = mode;
+  v4 = [modeCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -295,7 +295,7 @@ LABEL_16:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(modeCopy);
         }
 
         if ([TSCellularPlanUsesViewController sInPrivateNetworkModeForItem:*(*(&v9 + 1) + 8 * i), v9])
@@ -305,7 +305,7 @@ LABEL_16:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [modeCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -321,10 +321,10 @@ LABEL_11:
   return v4;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v4 = a3;
-  if (!v4)
+  prepareCopy = prepare;
+  if (!prepareCopy)
   {
     v10 = _TSLogDomain();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -339,10 +339,10 @@ LABEL_11:
   {
     v5 = objc_alloc(MEMORY[0x277CBEA60]);
     v6 = [(NSArray *)self->_selectedPlanItems objectAtIndex:0];
-    v7 = [v6 userLabel];
+    userLabel = [v6 userLabel];
     v8 = [(NSArray *)self->_selectedPlanItems objectAtIndex:1];
-    v9 = [v8 userLabel];
-    v10 = [v5 initWithObjects:{v7, v9, 0}];
+    userLabel2 = [v8 userLabel];
+    v10 = [v5 initWithObjects:{userLabel, userLabel2, 0}];
 
     v11 = +[TSCellularPlanManagerCache sharedInstance];
     v12 = [v11 getShortLabelsForLabels:v10];
@@ -351,7 +351,7 @@ LABEL_11:
 
     if (self->_usesType == 1)
     {
-      v4[2](v4, 1);
+      prepareCopy[2](prepareCopy, 1);
     }
 
     else
@@ -363,7 +363,7 @@ LABEL_11:
       v16[2] = __44__TSCellularPlanUsesViewController_prepare___block_invoke;
       v16[3] = &unk_279B44750;
       objc_copyWeak(&v18, &location);
-      v17 = v4;
+      v17 = prepareCopy;
       [v15 getSubscriptionInfo:v16];
 
       objc_destroyWeak(&v18);
@@ -384,7 +384,7 @@ LABEL_13:
     }
   }
 
-  v4[2](v4, 0);
+  prepareCopy[2](prepareCopy, 0);
 LABEL_14:
 }
 
@@ -482,18 +482,18 @@ LABEL_19:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if (self->_usesType == 2)
   {
-    v7 = 0;
+    tableView = 0;
     goto LABEL_10;
   }
 
-  v7 = [(OBTableWelcomeController *)self tableView];
+  tableView = [(OBTableWelcomeController *)self tableView];
 
-  if (v7)
+  if (tableView)
   {
     usesType = self->_usesType;
     if (!usesType)
@@ -502,29 +502,29 @@ LABEL_19:
       goto LABEL_9;
     }
 
-    v7 = 0;
-    if (a4 && usesType == 1)
+    tableView = 0;
+    if (section && usesType == 1)
     {
       v9 = @"CELLULAR_PLAN_DATA_SECTION_FOOTER";
 LABEL_9:
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v7 = [v10 localizedStringForKey:v9 value:&stru_28753DF48 table:@"Localizable"];
+      tableView = [v10 localizedStringForKey:v9 value:&stru_28753DF48 table:@"Localizable"];
     }
   }
 
 LABEL_10:
 
-  return v7;
+  return tableView;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v6 = [a4 textLabel];
-  v5 = [MEMORY[0x277D75348] systemGrayColor];
-  [v6 setTextColor:v5];
+  textLabel = [footerView textLabel];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [textLabel setTextColor:systemGrayColor];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_inPrivateNetworkMode)
   {
@@ -539,9 +539,9 @@ LABEL_10:
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -552,29 +552,29 @@ LABEL_10:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v6 = [[TSCellularPlanUsesDataSwitchCell alloc] initWithStyle:0 reuseIdentifier:@"dataswitch"];
     dataSwitchEnabled = self->_dataSwitchEnabled;
-    v8 = [(TSCellularPlanUsesDataSwitchCell *)v6 switchControl];
-    [v8 setOn:dataSwitchEnabled];
+    switchControl = [(TSCellularPlanUsesDataSwitchCell *)v6 switchControl];
+    [switchControl setOn:dataSwitchEnabled];
 
-    v9 = [(TSCellularPlanUsesDataSwitchCell *)v6 switchControl];
-    [v9 addTarget:self action:sel_dataSwitchChanged_ forControlEvents:4096];
+    switchControl2 = [(TSCellularPlanUsesDataSwitchCell *)v6 switchControl];
+    [switchControl2 addTarget:self action:sel_dataSwitchChanged_ forControlEvents:4096];
     goto LABEL_19;
   }
 
   v6 = [[TSCellularPlanUsesTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"uses"];
   [(TSCellularPlanUsesDataSwitchCell *)v6 setSelectionStyle:0];
-  v10 = -[NSArray objectAtIndex:](self->_selectedPlanItems, "objectAtIndex:", [v5 row]);
-  v9 = [v10 label];
+  v10 = -[NSArray objectAtIndex:](self->_selectedPlanItems, "objectAtIndex:", [pathCopy row]);
+  switchControl2 = [v10 label];
 
   if (self->_usesType > 1)
   {
-    if ([(NSMutableArray *)self->_chosenUseIndexPaths containsObject:v5])
+    if ([(NSMutableArray *)self->_chosenUseIndexPaths containsObject:pathCopy])
     {
       v13 = 3;
     }
@@ -585,50 +585,50 @@ LABEL_10:
     }
 
     [(TSCellularPlanUsesDataSwitchCell *)v6 setAccessoryType:v13];
-    v14 = -[NSArray objectAtIndex:](self->_selectedPlanItems, "objectAtIndex:", [v5 row]);
-    v15 = [v14 phoneNumber];
-    v16 = [v15 length];
+    v14 = -[NSArray objectAtIndex:](self->_selectedPlanItems, "objectAtIndex:", [pathCopy row]);
+    phoneNumber = [v14 phoneNumber];
+    v16 = [phoneNumber length];
 
-    v17 = -[NSArray objectAtIndex:](self->_selectedPlanItems, "objectAtIndex:", [v5 row]);
+    v17 = -[NSArray objectAtIndex:](self->_selectedPlanItems, "objectAtIndex:", [pathCopy row]);
     v12 = v17;
     if (v16)
     {
-      v18 = [v17 phoneNumber];
-      v19 = [v18 formattedPhoneNumber];
-      v20 = -[NSArray objectAtIndex:](self->_planItemBadges, "objectAtIndex:", [v5 row]);
-      [(TSCellularPlanUsesDataSwitchCell *)v6 setLabel:v9 description:v19 badge:v20];
+      phoneNumber2 = [v17 phoneNumber];
+      formattedPhoneNumber = [phoneNumber2 formattedPhoneNumber];
+      v20 = -[NSArray objectAtIndex:](self->_planItemBadges, "objectAtIndex:", [pathCopy row]);
+      [(TSCellularPlanUsesDataSwitchCell *)v6 setLabel:switchControl2 description:formattedPhoneNumber badge:v20];
     }
 
     else
     {
-      v21 = [v17 carrierName];
-      v22 = [v21 length];
+      carrierName = [v17 carrierName];
+      v22 = [carrierName length];
 
       if (v22)
       {
         v23 = MEMORY[0x277CCACA8];
         v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v18 = [v12 localizedStringForKey:@"CELLULAR_PLAN_IMESSAGE_NO_PHONE_NUMBER_%@" value:&stru_28753DF48 table:@"Localizable"];
-        v24 = -[NSArray objectAtIndex:](self->_selectedPlanItems, "objectAtIndex:", [v5 row]);
-        v25 = [v24 carrierName];
-        v26 = [v23 stringWithFormat:v18, v25];
-        v27 = -[NSArray objectAtIndex:](self->_planItemBadges, "objectAtIndex:", [v5 row]);
-        [(TSCellularPlanUsesDataSwitchCell *)v6 setLabel:v9 description:v26 badge:v27];
+        phoneNumber2 = [v12 localizedStringForKey:@"CELLULAR_PLAN_IMESSAGE_NO_PHONE_NUMBER_%@" value:&stru_28753DF48 table:@"Localizable"];
+        v24 = -[NSArray objectAtIndex:](self->_selectedPlanItems, "objectAtIndex:", [pathCopy row]);
+        carrierName2 = [v24 carrierName];
+        v26 = [v23 stringWithFormat:phoneNumber2, carrierName2];
+        v27 = -[NSArray objectAtIndex:](self->_planItemBadges, "objectAtIndex:", [pathCopy row]);
+        [(TSCellularPlanUsesDataSwitchCell *)v6 setLabel:switchControl2 description:v26 badge:v27];
 
         goto LABEL_16;
       }
 
       v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v18 = [v12 localizedStringForKey:@"CELLULAR_PLAN_IMESSAGE_NO_CARRIER_NAME" value:&stru_28753DF48 table:@"Localizable"];
-      v19 = -[NSArray objectAtIndex:](self->_planItemBadges, "objectAtIndex:", [v5 row]);
-      [(TSCellularPlanUsesDataSwitchCell *)v6 setLabel:v9 description:v18 badge:v19];
+      phoneNumber2 = [v12 localizedStringForKey:@"CELLULAR_PLAN_IMESSAGE_NO_CARRIER_NAME" value:&stru_28753DF48 table:@"Localizable"];
+      formattedPhoneNumber = -[NSArray objectAtIndex:](self->_planItemBadges, "objectAtIndex:", [pathCopy row]);
+      [(TSCellularPlanUsesDataSwitchCell *)v6 setLabel:switchControl2 description:phoneNumber2 badge:formattedPhoneNumber];
     }
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  if ([(NSIndexPath *)self->_chosenUseIndexPath isEqual:v5])
+  if ([(NSIndexPath *)self->_chosenUseIndexPath isEqual:pathCopy])
   {
     v11 = 3;
   }
@@ -639,14 +639,14 @@ LABEL_16:
   }
 
   [(TSCellularPlanUsesDataSwitchCell *)v6 setAccessoryType:v11];
-  v12 = -[NSArray objectAtIndex:](self->_planItemBadges, "objectAtIndex:", [v5 row]);
-  [(TSCellularPlanUsesDataSwitchCell *)v6 setLabel:v9 description:0 badge:v12];
+  v12 = -[NSArray objectAtIndex:](self->_planItemBadges, "objectAtIndex:", [pathCopy row]);
+  [(TSCellularPlanUsesDataSwitchCell *)v6 setLabel:switchControl2 description:0 badge:v12];
 LABEL_17:
 
-  v28 = [(TSCellularPlanUsesViewController *)self traitCollection];
-  v29 = [v28 userInterfaceStyle];
+  traitCollection = [(TSCellularPlanUsesViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v29 == 1)
+  if (userInterfaceStyle == 1)
   {
     v30 = [MEMORY[0x277D75348] colorWithWhite:0.95 alpha:1.0];
     [(TSCellularPlanUsesDataSwitchCell *)v6 setBackgroundColor:v30];
@@ -657,41 +657,41 @@ LABEL_19:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a4;
+  pathCopy = path;
   [(OBBoldTrayButton *)self->_doneButton setEnabled:1];
   usesType = self->_usesType;
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 
   if (usesType > 1)
   {
-    v8 = [(NSMutableArray *)self->_chosenUseIndexPaths containsObject:v10];
+    v8 = [(NSMutableArray *)self->_chosenUseIndexPaths containsObject:pathCopy];
     chosenUseIndexPaths = self->_chosenUseIndexPaths;
     if (v8)
     {
-      [(NSMutableArray *)chosenUseIndexPaths removeObject:v10];
+      [(NSMutableArray *)chosenUseIndexPaths removeObject:pathCopy];
     }
 
     else
     {
-      [(NSMutableArray *)chosenUseIndexPaths addObject:v10];
+      [(NSMutableArray *)chosenUseIndexPaths addObject:pathCopy];
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_chosenUseIndexPath, a4);
+    objc_storeStrong(&self->_chosenUseIndexPath, path);
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_usesType == 1 && [v7 section] == 1)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (self->_usesType == 1 && [pathCopy section] == 1)
   {
     v9 = 0;
   }
@@ -706,11 +706,11 @@ LABEL_19:
 
 - (void)_doneButtonTapped
 {
-  v3 = [(TSCellularPlanUsesViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(TSCellularPlanUsesViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v4 = [(TSCellularPlanUsesViewController *)self buttonTray];
-  [v4 showButtonsBusy];
+  buttonTray = [(TSCellularPlanUsesViewController *)self buttonTray];
+  [buttonTray showButtonsBusy];
 
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(2, 0);
@@ -781,14 +781,14 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [(TSCellularPlanUsesViewController *)self tableView:v6 didSelectRowAtIndexPath:self->_chosenUseIndexPath];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [(TSCellularPlanUsesViewController *)self tableView:tableView didSelectRowAtIndexPath:self->_chosenUseIndexPath];
 }
 
-- (void)saveDefaultUse:(id)a3
+- (void)saveDefaultUse:(id)use
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  useCopy = use;
   v5 = +[TSCellularPlanManagerCache sharedInstance];
   v6 = +[TSCoreTelephonyClientCache sharedInstance];
   v7 = v6;
@@ -862,8 +862,8 @@ LABEL_10:
   {
     v16 = [(NSArray *)self->_selectedPlanItems objectAtIndex:[(NSIndexPath *)self->_chosenUseIndexPath row]== 0];
     dataSwitchEnabled = self->_dataSwitchEnabled;
-    v18 = [v16 iccid];
-    [v7 setDataFallbackEnabled:dataSwitchEnabled forIccid:v18];
+    iccid = [v16 iccid];
+    [v7 setDataFallbackEnabled:dataSwitchEnabled forIccid:iccid];
 
     v19 = _TSLogDomain();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -872,9 +872,9 @@ LABEL_10:
     }
   }
 
-  if (v4)
+  if (useCopy)
   {
-    v4[2](v4);
+    useCopy[2](useCopy);
   }
 
   v20 = *MEMORY[0x277D85DE8];

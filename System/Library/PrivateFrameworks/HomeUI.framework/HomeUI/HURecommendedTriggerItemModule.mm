@@ -1,28 +1,28 @@
 @interface HURecommendedTriggerItemModule
-+ (BOOL)shouldShowRecommendation:(id)a3;
++ (BOOL)shouldShowRecommendation:(id)recommendation;
 + (id)rankComparator;
-- (HURecommendedTriggerItemModule)initWithItemUpdater:(id)a3;
-- (HURecommendedTriggerItemModule)initWithItemUpdater:(id)a3 home:(id)a4;
+- (HURecommendedTriggerItemModule)initWithItemUpdater:(id)updater;
+- (HURecommendedTriggerItemModule)initWithItemUpdater:(id)updater home:(id)home;
 - (id)_buildStaticItems;
-- (id)_itemsToHideInSet:(id)a3;
+- (id)_itemsToHideInSet:(id)set;
 - (id)buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (void)setConfigureBlock:(id)a3;
-- (void)setEngineOptions:(unint64_t)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (void)setConfigureBlock:(id)block;
+- (void)setEngineOptions:(unint64_t)options;
 @end
 
 @implementation HURecommendedTriggerItemModule
 
-- (HURecommendedTriggerItemModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HURecommendedTriggerItemModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HURecommendedTriggerItemModule;
-  v8 = [(HFItemModule *)&v11 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v11 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     v9->_maximumNumberOfShownRecommendations = 3;
     v9->_hideSectionHeaderTitle = 0;
     v9->_engineOptions = 2;
@@ -31,24 +31,24 @@
   return v9;
 }
 
-- (HURecommendedTriggerItemModule)initWithItemUpdater:(id)a3
+- (HURecommendedTriggerItemModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HURecommendedTriggerItemModule.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HURecommendedTriggerItemModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HURecommendedTriggerItemModule.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HURecommendedTriggerItemModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
-- (void)setConfigureBlock:(id)a3
+- (void)setConfigureBlock:(id)block
 {
-  aBlock = a3;
-  v4 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+  aBlock = block;
+  recommendationItemProvider = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
 
-  if (v4)
+  if (recommendationItemProvider)
   {
-    v5 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
-    [v5 setConfigureBlock:aBlock];
+    recommendationItemProvider2 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+    [recommendationItemProvider2 setConfigureBlock:aBlock];
   }
 
   v6 = _Block_copy(aBlock);
@@ -56,29 +56,29 @@
   self->_configureBlock = v6;
 }
 
-- (void)setEngineOptions:(unint64_t)a3
+- (void)setEngineOptions:(unint64_t)options
 {
-  self->_engineOptions = [(HURecommendedTriggerItemModule *)self _effectiveRecommendationEngineOptionsWithOptions:a3];
-  v4 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+  self->_engineOptions = [(HURecommendedTriggerItemModule *)self _effectiveRecommendationEngineOptionsWithOptions:options];
+  recommendationItemProvider = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
 
-  if (v4)
+  if (recommendationItemProvider)
   {
     engineOptions = self->_engineOptions;
-    v6 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
-    [v6 setEngineOptions:engineOptions];
+    recommendationItemProvider2 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+    [recommendationItemProvider2 setEngineOptions:engineOptions];
   }
 }
 
 - (id)buildItemProviders
 {
   v3 = objc_alloc(MEMORY[0x277D17E58]);
-  v4 = [(HURecommendedTriggerItemModule *)self home];
-  v5 = [v3 initWithHome:v4 andServiceLikeItems:0];
+  home = [(HURecommendedTriggerItemModule *)self home];
+  v5 = [v3 initWithHome:home andServiceLikeItems:0];
   [(HURecommendedTriggerItemModule *)self setRecommendationItemProvider:v5];
 
-  v6 = [(HURecommendedTriggerItemModule *)self engineOptions];
-  v7 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
-  [v7 setEngineOptions:v6];
+  engineOptions = [(HURecommendedTriggerItemModule *)self engineOptions];
+  recommendationItemProvider = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+  [recommendationItemProvider setEngineOptions:engineOptions];
 
   objc_initWeak(&location, self);
   v19 = MEMORY[0x277D85DD0];
@@ -86,25 +86,25 @@
   v21 = __52__HURecommendedTriggerItemModule_buildItemProviders__block_invoke;
   v22 = &unk_277DBB0E8;
   objc_copyWeak(&v23, &location);
-  v8 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
-  [v8 setFilter:&v19];
+  recommendationItemProvider2 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+  [recommendationItemProvider2 setFilter:&v19];
 
-  v9 = [(HURecommendedTriggerItemModule *)self configureBlock];
+  configureBlock = [(HURecommendedTriggerItemModule *)self configureBlock];
 
-  if (v9)
+  if (configureBlock)
   {
-    v10 = [(HURecommendedTriggerItemModule *)self configureBlock];
-    v11 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
-    [v11 setConfigureBlock:v10];
+    configureBlock2 = [(HURecommendedTriggerItemModule *)self configureBlock];
+    recommendationItemProvider3 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+    [recommendationItemProvider3 setConfigureBlock:configureBlock2];
   }
 
   v12 = objc_alloc(MEMORY[0x277D14B40]);
-  v13 = [(HURecommendedTriggerItemModule *)self _buildStaticItems];
-  v14 = [v12 initWithItems:v13];
+  _buildStaticItems = [(HURecommendedTriggerItemModule *)self _buildStaticItems];
+  v14 = [v12 initWithItems:_buildStaticItems];
 
   v15 = MEMORY[0x277CBEB98];
-  v16 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
-  v17 = [v15 setWithObjects:{v16, v14, 0, v19, v20, v21, v22}];
+  recommendationItemProvider4 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+  v17 = [v15 setWithObjects:{recommendationItemProvider4, v14, 0, v19, v20, v21, v22}];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -151,9 +151,9 @@ uint64_t __52__HURecommendedTriggerItemModule_buildItemProviders__block_invoke(u
 - (id)_buildStaticItems
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HURecommendedTriggerItemModule *)self moreButtonItem];
+  moreButtonItem = [(HURecommendedTriggerItemModule *)self moreButtonItem];
 
-  if (!v3)
+  if (!moreButtonItem)
   {
     v4 = objc_alloc(MEMORY[0x277D14B38]);
     v12 = *MEMORY[0x277D13F60];
@@ -165,17 +165,17 @@ uint64_t __52__HURecommendedTriggerItemModule_buildItemProviders__block_invoke(u
   }
 
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(HURecommendedTriggerItemModule *)self moreButtonItem];
-  v10 = [v8 setWithObject:v9];
+  moreButtonItem2 = [(HURecommendedTriggerItemModule *)self moreButtonItem];
+  v10 = [v8 setWithObject:moreButtonItem2];
 
   return v10;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"HURecommendedTriggerItemModuleSection"];
   if (![(HURecommendedTriggerItemModule *)self hideSectionHeaderTitle])
   {
@@ -183,77 +183,77 @@ uint64_t __52__HURecommendedTriggerItemModule_buildItemProviders__block_invoke(u
     [v6 setHeaderTitle:v7];
   }
 
-  v8 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
-  v9 = [v8 items];
-  v10 = [v9 allObjects];
-  v11 = [objc_opt_class() rankComparator];
-  v12 = [v10 sortedArrayUsingComparator:v11];
+  recommendationItemProvider = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+  items = [recommendationItemProvider items];
+  allObjects = [items allObjects];
+  rankComparator = [objc_opt_class() rankComparator];
+  v12 = [allObjects sortedArrayUsingComparator:rankComparator];
   [v6 setItems:v12];
 
-  v13 = [v6 items];
-  v14 = [(HURecommendedTriggerItemModule *)self moreButtonItem];
-  v15 = [v13 arrayByAddingObject:v14];
+  items2 = [v6 items];
+  moreButtonItem = [(HURecommendedTriggerItemModule *)self moreButtonItem];
+  v15 = [items2 arrayByAddingObject:moreButtonItem];
   [v6 setItems:v15];
 
   v16 = MEMORY[0x277D14778];
   v20[0] = v6;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-  v18 = [v16 filterSections:v17 toDisplayedItems:v5];
+  v18 = [v16 filterSections:v17 toDisplayedItems:itemsCopy];
 
   return v18;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
-  v7 = [v6 items];
-  v8 = [v4 na_setByIntersectingWithSet:v7];
+  recommendationItemProvider = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+  items = [recommendationItemProvider items];
+  v8 = [setCopy na_setByIntersectingWithSet:items];
   v9 = [v8 count];
 
   if ([(HURecommendedTriggerItemModule *)self maximumNumberOfShownRecommendations]== 0x7FFFFFFFFFFFFFFFLL || v9 <= [(HURecommendedTriggerItemModule *)self maximumNumberOfShownRecommendations])
   {
-    v15 = [(HURecommendedTriggerItemModule *)self moreButtonItem];
-    [v5 addObject:v15];
+    moreButtonItem = [(HURecommendedTriggerItemModule *)self moreButtonItem];
+    [v5 addObject:moreButtonItem];
   }
 
   else
   {
-    v10 = [(HURecommendedTriggerItemModule *)self maximumNumberOfShownRecommendations];
-    v11 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
-    v12 = [v11 items];
-    v13 = [v12 allObjects];
-    v14 = [objc_opt_class() rankComparator];
-    v15 = [v13 sortedArrayUsingComparator:v14];
+    maximumNumberOfShownRecommendations = [(HURecommendedTriggerItemModule *)self maximumNumberOfShownRecommendations];
+    recommendationItemProvider2 = [(HURecommendedTriggerItemModule *)self recommendationItemProvider];
+    items2 = [recommendationItemProvider2 items];
+    allObjects = [items2 allObjects];
+    rankComparator = [objc_opt_class() rankComparator];
+    moreButtonItem = [allObjects sortedArrayUsingComparator:rankComparator];
 
-    while (v10 < [v15 count])
+    while (maximumNumberOfShownRecommendations < [moreButtonItem count])
     {
-      v16 = [v15 objectAtIndex:v10];
+      v16 = [moreButtonItem objectAtIndex:maximumNumberOfShownRecommendations];
       [v5 addObject:v16];
 
-      ++v10;
+      ++maximumNumberOfShownRecommendations;
     }
   }
 
   return v5;
 }
 
-+ (BOOL)shouldShowRecommendation:(id)a3
++ (BOOL)shouldShowRecommendation:(id)recommendation
 {
-  v3 = a3;
-  v4 = [v3 hu_triggerBuilderIfAny];
-  v5 = [v4 requiresFMFDeviceToRun];
+  recommendationCopy = recommendation;
+  hu_triggerBuilderIfAny = [recommendationCopy hu_triggerBuilderIfAny];
+  requiresFMFDeviceToRun = [hu_triggerBuilderIfAny requiresFMFDeviceToRun];
 
-  v6 = [v3 home];
-  v7 = [v3 home];
-  v8 = [v7 currentUser];
-  v9 = [v6 homeAccessControlForUser:v8];
-  v10 = [v9 presenceComputationStatus];
+  home = [recommendationCopy home];
+  home2 = [recommendationCopy home];
+  currentUser = [home2 currentUser];
+  v9 = [home homeAccessControlForUser:currentUser];
+  presenceComputationStatus = [v9 presenceComputationStatus];
 
-  v11 = [v3 hu_triggerBuilderIfAny];
+  hu_triggerBuilderIfAny2 = [recommendationCopy hu_triggerBuilderIfAny];
   objc_opt_class();
-  v12 = v11;
+  v12 = hu_triggerBuilderIfAny2;
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -267,11 +267,11 @@ uint64_t __52__HURecommendedTriggerItemModule_buildItemProviders__block_invoke(u
   v14 = v13;
 
   objc_opt_class();
-  v15 = [v14 locationInterface];
-  v16 = [v15 locationEventBuilder];
+  locationInterface = [v14 locationInterface];
+  locationEventBuilder = [locationInterface locationEventBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v17 = v16;
+    v17 = locationEventBuilder;
   }
 
   else
@@ -283,8 +283,8 @@ uint64_t __52__HURecommendedTriggerItemModule_buildItemProviders__block_invoke(u
 
   if (v18)
   {
-    v19 = [v18 region];
-    v20 = v19 != 0;
+    region = [v18 region];
+    v20 = region != 0;
   }
 
   else
@@ -292,30 +292,30 @@ uint64_t __52__HURecommendedTriggerItemModule_buildItemProviders__block_invoke(u
     v20 = 1;
   }
 
-  v21 = [v3 hu_asTriggerRecommendation];
-  v22 = [v21 triggerBuilders];
-  v23 = [v22 na_any:&__block_literal_global_112];
+  hu_asTriggerRecommendation = [recommendationCopy hu_asTriggerRecommendation];
+  triggerBuilders = [hu_asTriggerRecommendation triggerBuilders];
+  v23 = [triggerBuilders na_any:&__block_literal_global_112];
 
   if ([MEMORY[0x277D14CE8] supportsBeingCurrentLocationDevice])
   {
-    v24 = [MEMORY[0x277D147A8] sharedDispatcher];
-    [v24 authorizationStatus];
+    mEMORY[0x277D147A8] = [MEMORY[0x277D147A8] sharedDispatcher];
+    [mEMORY[0x277D147A8] authorizationStatus];
 
     v35 = HFLocationServicesAvailableForAuthorizationStatus();
     v25 = MEMORY[0x277CD1D20];
-    [v3 home];
-    LOBYTE(v24) = v23;
+    [recommendationCopy home];
+    LOBYTE(mEMORY[0x277D147A8]) = v23;
     v26 = v14;
     v27 = v20;
-    v28 = v10;
-    v30 = v29 = v5;
+    v28 = presenceComputationStatus;
+    v30 = v29 = requiresFMFDeviceToRun;
     LOBYTE(v25) = [v25 hf_presenceDisableReasonsForHome:v30];
 
-    v5 = v29;
-    v10 = v28;
+    requiresFMFDeviceToRun = v29;
+    presenceComputationStatus = v28;
     v20 = v27;
     v14 = v26;
-    v23 = v24;
+    v23 = mEMORY[0x277D147A8];
     v31 = v35;
     if ((v25 & 2) != 0)
     {
@@ -328,9 +328,9 @@ uint64_t __52__HURecommendedTriggerItemModule_buildItemProviders__block_invoke(u
     v31 = 1;
   }
 
-  if (v10 == 3)
+  if (presenceComputationStatus == 3)
   {
-    v32 = v5 ^ 1;
+    v32 = requiresFMFDeviceToRun ^ 1;
   }
 
   else

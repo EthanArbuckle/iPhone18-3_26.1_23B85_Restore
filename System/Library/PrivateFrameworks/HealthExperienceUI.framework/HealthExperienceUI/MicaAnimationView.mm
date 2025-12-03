@@ -1,14 +1,14 @@
 @interface MicaAnimationView
 - (CGSize)intrinsicContentSize;
-- (_TtC18HealthExperienceUI17MicaAnimationView)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI17MicaAnimationView)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI17MicaAnimationView)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI17MicaAnimationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)stepAnimationForLayer:(id)a3;
+- (void)stepAnimationForLayer:(id)layer;
 @end
 
 @implementation MicaAnimationView
 
-- (_TtC18HealthExperienceUI17MicaAnimationView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI17MicaAnimationView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI17MicaAnimationView_stateController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI17MicaAnimationView_transitionSpeed) = 1065353216;
@@ -24,7 +24,7 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI17MicaAnimationView_packageLayer);
-  v3 = self;
+  selfCopy = self;
   [v2 bounds];
   v5 = v4;
   v7 = v6;
@@ -33,7 +33,7 @@
   v14.width = v5;
   v14.height = v7;
   v8 = CGSizeApplyAffineTransform(v14, &v12);
-  v9 = *(&v3->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI17MicaAnimationView_insetSize);
+  v9 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI17MicaAnimationView_insetSize);
 
   v10 = v8.width + v9;
   v11 = v8.height + v9;
@@ -44,18 +44,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA220D4C();
 }
 
-- (void)stepAnimationForLayer:(id)a3
+- (void)stepAnimationForLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA221280(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_1BA221280(layerCopy);
 }
 
-- (_TtC18HealthExperienceUI17MicaAnimationView)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI17MicaAnimationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

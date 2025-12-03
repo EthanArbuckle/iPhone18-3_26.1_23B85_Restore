@@ -1,13 +1,13 @@
 @interface DMFControlSessionIdentifier
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToControlSessionIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToControlSessionIdentifier:(id)identifier;
 - (DMFControlGroupIdentifier)groupIdentifier;
-- (DMFControlSessionIdentifier)initWithCoder:(id)a3;
-- (DMFControlSessionIdentifier)initWithString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DMFControlSessionIdentifier)initWithCoder:(id)coder;
+- (DMFControlSessionIdentifier)initWithString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)stringValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFControlSessionIdentifier
@@ -15,11 +15,11 @@
 - (id)stringValue
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(DMFControlGroupIdentifier *)self organizationUUID];
-  v5 = [v4 UUIDString];
-  v6 = [(DMFControlGroupIdentifier *)self groupID];
+  organizationUUID = [(DMFControlGroupIdentifier *)self organizationUUID];
+  uUIDString = [organizationUUID UUIDString];
+  groupID = [(DMFControlGroupIdentifier *)self groupID];
   v7.s_addr = self->_leaderIP;
-  v8 = [v3 stringWithFormat:@"%@:%d:%s:%d", v5, v6, inet_ntoa(v7), -[DMFControlSessionIdentifier port](self, "port")];
+  v8 = [v3 stringWithFormat:@"%@:%d:%s:%d", uUIDString, groupID, inet_ntoa(v7), -[DMFControlSessionIdentifier port](self, "port")];
 
   return v8;
 }
@@ -27,36 +27,36 @@
 - (DMFControlGroupIdentifier)groupIdentifier
 {
   v3 = [DMFControlGroupIdentifier alloc];
-  v4 = [(DMFControlGroupIdentifier *)self organizationUUID];
-  v5 = [(DMFControlGroupIdentifier *)v3 initWithOrganizationUUID:v4 groupID:[(DMFControlGroupIdentifier *)self groupID]];
+  organizationUUID = [(DMFControlGroupIdentifier *)self organizationUUID];
+  v5 = [(DMFControlGroupIdentifier *)v3 initWithOrganizationUUID:organizationUUID groupID:[(DMFControlGroupIdentifier *)self groupID]];
 
   return v5;
 }
 
-- (DMFControlSessionIdentifier)initWithString:(id)a3
+- (DMFControlSessionIdentifier)initWithString:(id)string
 {
-  v5 = a3;
-  if (!v5)
+  stringCopy = string;
+  if (!stringCopy)
   {
     [(DMFControlSessionIdentifier *)a2 initWithString:?];
   }
 
-  v6 = [v5 componentsSeparatedByString:@":"];
+  v6 = [stringCopy componentsSeparatedByString:@":"];
   v7 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v8 = [v6 firstObject];
-  v9 = [v7 initWithUUIDString:v8];
+  firstObject = [v6 firstObject];
+  v9 = [v7 initWithUUIDString:firstObject];
 
   if (v9)
   {
     if ([v6 count] < 2)
     {
-      v11 = 0;
+      intValue = 0;
     }
 
     else
     {
       v10 = [v6 objectAtIndexedSubscript:1];
-      v11 = [v10 intValue];
+      intValue = [v10 intValue];
     }
 
     if ([v6 count] < 3)
@@ -92,46 +92,46 @@
 
     if ([v16 length])
     {
-      v17 = [v16 intValue];
+      intValue2 = [v16 intValue];
     }
 
     else
     {
-      v17 = 3283;
+      intValue2 = 3283;
     }
 
-    self = [(DMFControlSessionIdentifier *)self initWithOrganizationUUID:v9 groupID:v11 leaderIP:v15 port:v17];
+    self = [(DMFControlSessionIdentifier *)self initWithOrganizationUUID:v9 groupID:intValue leaderIP:v15 port:intValue2];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(DMFControlGroupIdentifier *)self organizationUUID];
-  v4 = [v3 hash];
+  organizationUUID = [(DMFControlGroupIdentifier *)self organizationUUID];
+  v4 = [organizationUUID hash];
   v5 = v4 ^ [(DMFControlGroupIdentifier *)self groupID];
-  v6 = [(DMFControlSessionIdentifier *)self leaderIP];
-  v7 = v6 ^ [(DMFControlSessionIdentifier *)self port];
+  leaderIP = [(DMFControlSessionIdentifier *)self leaderIP];
+  v7 = leaderIP ^ [(DMFControlSessionIdentifier *)self port];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = DMFControlSessionIdentifier;
-  if ([(DMFControlGroupIdentifier *)&v7 isEqual:v4])
+  if ([(DMFControlGroupIdentifier *)&v7 isEqual:equalCopy])
   {
-    v5 = [(DMFControlSessionIdentifier *)self isEqualToControlSessionIdentifier:v4];
+    v5 = [(DMFControlSessionIdentifier *)self isEqualToControlSessionIdentifier:equalCopy];
   }
 
   else
@@ -142,14 +142,14 @@
   return v5;
 }
 
-- (BOOL)isEqualToControlSessionIdentifier:(id)a3
+- (BOOL)isEqualToControlSessionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DMFControlSessionIdentifier *)self leaderIP];
-  if (v5 == [v4 leaderIP])
+  identifierCopy = identifier;
+  leaderIP = [(DMFControlSessionIdentifier *)self leaderIP];
+  if (leaderIP == [identifierCopy leaderIP])
   {
-    v6 = [(DMFControlSessionIdentifier *)self port];
-    v7 = v6 == [v4 port];
+    port = [(DMFControlSessionIdentifier *)self port];
+    v7 = port == [identifierCopy port];
   }
 
   else
@@ -160,29 +160,29 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(DMFControlGroupIdentifier *)self organizationUUID];
-  v6 = [v4 initWithOrganizationUUID:v5 groupID:-[DMFControlGroupIdentifier groupID](self leaderIP:"groupID") port:{-[DMFControlSessionIdentifier leaderIP](self, "leaderIP"), -[DMFControlSessionIdentifier port](self, "port")}];
+  organizationUUID = [(DMFControlGroupIdentifier *)self organizationUUID];
+  v6 = [v4 initWithOrganizationUUID:organizationUUID groupID:-[DMFControlGroupIdentifier groupID](self leaderIP:"groupID") port:{-[DMFControlSessionIdentifier leaderIP](self, "leaderIP"), -[DMFControlSessionIdentifier port](self, "port")}];
 
   return v6;
 }
 
-- (DMFControlSessionIdentifier)initWithCoder:(id)a3
+- (DMFControlSessionIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DMFControlSessionIdentifier;
-  v5 = [(DMFControlGroupIdentifier *)&v9 initWithCoder:v4];
+  v5 = [(DMFControlGroupIdentifier *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leaderIP"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leaderIP"];
     v5->_leaderIP = [v6 unsignedIntegerValue];
 
-    if ([v4 containsValueForKey:@"port"])
+    if ([coderCopy containsValueForKey:@"port"])
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"port"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"port"];
       v5->_port = [v7 unsignedIntegerValue];
     }
 
@@ -195,17 +195,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = DMFControlSessionIdentifier;
-  v4 = a3;
-  [(DMFControlGroupIdentifier *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DMFControlGroupIdentifier *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DMFControlSessionIdentifier leaderIP](self, "leaderIP", v7.receiver, v7.super_class)}];
-  [v4 encodeObject:v5 forKey:@"leaderIP"];
+  [coderCopy encodeObject:v5 forKey:@"leaderIP"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[DMFControlSessionIdentifier port](self, "port")}];
-  [v4 encodeObject:v6 forKey:@"port"];
+  [coderCopy encodeObject:v6 forKey:@"port"];
 }
 
 - (void)initWithString:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

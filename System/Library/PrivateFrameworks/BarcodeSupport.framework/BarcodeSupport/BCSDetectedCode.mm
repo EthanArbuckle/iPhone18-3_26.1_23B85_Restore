@@ -1,36 +1,36 @@
 @interface BCSDetectedCode
-+ (id)detectedCodeWithBarcodeObservation:(id)a3;
-+ (id)detectedCodeWithMachineReadableObject:(id)a3;
-- (BOOL)isLikelyEqualToCode:(id)a3;
-- (void)parseCodeWithCompletion:(id)a3;
++ (id)detectedCodeWithBarcodeObservation:(id)observation;
++ (id)detectedCodeWithMachineReadableObject:(id)object;
+- (BOOL)isLikelyEqualToCode:(id)code;
+- (void)parseCodeWithCompletion:(id)completion;
 @end
 
 @implementation BCSDetectedCode
 
-+ (id)detectedCodeWithMachineReadableObject:(id)a3
++ (id)detectedCodeWithMachineReadableObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(BCSDetectedCode);
   mrcObject = v4->_mrcObject;
-  v4->_mrcObject = v3;
+  v4->_mrcObject = objectCopy;
 
   return v4;
 }
 
-+ (id)detectedCodeWithBarcodeObservation:(id)a3
++ (id)detectedCodeWithBarcodeObservation:(id)observation
 {
-  v3 = a3;
+  observationCopy = observation;
   v4 = objc_alloc_init(BCSDetectedCode);
   observation = v4->_observation;
-  v4->_observation = v3;
+  v4->_observation = observationCopy;
 
   return v4;
 }
 
-- (void)parseCodeWithCompletion:(id)a3
+- (void)parseCodeWithCompletion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_241993000, "parseCodeWithCompletion:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -41,13 +41,13 @@
   v24 = __43__BCSDetectedCode_parseCodeWithCompletion___block_invoke;
   v25 = &unk_278CFE5F8;
   objc_copyWeak(&v27, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v26 = v6;
   v7 = MEMORY[0x245CF4600](&v22);
   if (self->_mrcObject)
   {
-    v8 = +[BCSQRCodeParser sharedParser];
-    [v8 parseCodeFromMetadataMachineReadableCodeObject:self->_mrcObject completionHandler:v7];
+    payloadDataValue = +[BCSQRCodeParser sharedParser];
+    [payloadDataValue parseCodeFromMetadataMachineReadableCodeObject:self->_mrcObject completionHandler:v7];
   }
 
   else if (self->_observation)
@@ -56,15 +56,15 @@
     v10 = MEMORY[0x277D86220];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v11 = [(VNBarcodeObservation *)self->_observation symbology];
+      symbology = [(VNBarcodeObservation *)self->_observation symbology];
       *buf = 138412547;
       *&buf[4] = self;
       *&buf[12] = 2113;
-      *&buf[14] = v11;
+      *&buf[14] = symbology;
       _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSDetectedCode: (%@) did receive VNObservation with symbology %{private}@", buf, 0x16u);
     }
 
-    v12 = [(VNBarcodeObservation *)self->_observation symbology];
+    symbology2 = [(VNBarcodeObservation *)self->_observation symbology];
     v30 = 0;
     v31 = &v30;
     v32 = 0x2020000000;
@@ -84,25 +84,25 @@
     _Block_object_dispose(&v30, 8);
     if (!v13)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"VNBarcodeSymbology getVNBarcodeSymbologyAppClipCode(void)"];
-      [v20 handleFailureInFunction:v21 file:@"BCSDetectedCode.m" lineNumber:23 description:{@"%s", dlerror(), v22, v23, v24, v25}];
+      [currentHandler handleFailureInFunction:v21 file:@"BCSDetectedCode.m" lineNumber:23 description:{@"%s", dlerror(), v22, v23, v24, v25}];
 
       __break(1u);
     }
 
     v14 = *v13;
-    v15 = [v12 isEqualToString:v14];
+    v15 = [symbology2 isEqualToString:v14];
 
     if (v15)
     {
-      v8 = [(VNBarcodeObservation *)self->_observation payloadDataValue];
-      v16 = [(VNBarcodeObservation *)self->_observation appClipCodeMetadataValue];
-      v17 = v16;
-      if (v8 && v16)
+      payloadDataValue = [(VNBarcodeObservation *)self->_observation payloadDataValue];
+      appClipCodeMetadataValue = [(VNBarcodeObservation *)self->_observation appClipCodeMetadataValue];
+      payloadStringValue = appClipCodeMetadataValue;
+      if (payloadDataValue && appClipCodeMetadataValue)
       {
         v18 = +[BCSAppClipCodeURLDecoder sharedDecoder];
-        [v18 parseEncodedURLData:v8 version:objc_msgSend(v17 completion:{"unsignedIntValue"), v7}];
+        [v18 parseEncodedURLData:payloadDataValue version:objc_msgSend(payloadStringValue completion:{"unsignedIntValue"), v7}];
       }
 
       else
@@ -114,16 +114,16 @@
 
     else
     {
-      v8 = +[BCSQRCodeParser sharedParser];
-      v17 = [(VNBarcodeObservation *)self->_observation payloadStringValue];
-      [v8 parseCodeFromString:v17 completionHandler:v7];
+      payloadDataValue = +[BCSQRCodeParser sharedParser];
+      payloadStringValue = [(VNBarcodeObservation *)self->_observation payloadStringValue];
+      [payloadDataValue parseCodeFromString:payloadStringValue completionHandler:v7];
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"BCSDetectedCodeErrorDomain" code:1 userInfo:0];
-    (*(v6 + 2))(v6, 0, v8);
+    payloadDataValue = [MEMORY[0x277CCA9B8] errorWithDomain:@"BCSDetectedCodeErrorDomain" code:1 userInfo:0];
+    (*(v6 + 2))(v6, 0, payloadDataValue);
   }
 
   objc_destroyWeak(&v27);
@@ -154,34 +154,34 @@ void __43__BCSDetectedCode_parseCodeWithCompletion___block_invoke(uint64_t a1, v
   }
 }
 
-- (BOOL)isLikelyEqualToCode:(id)a3
+- (BOOL)isLikelyEqualToCode:(id)code
 {
-  v4 = a3;
-  v5 = [v4 mrcObject];
+  codeCopy = code;
+  mrcObject = [codeCopy mrcObject];
 
-  if (v5)
+  if (mrcObject)
   {
-    v6 = [v4 mrcObject];
-    v7 = [(BCSDetectedCode *)self mrcObject];
-    v8 = [v7 basicDescriptor];
-    v9 = [v6 _bcs_probablyContainsSameCodeInBasicDescriptor:v8];
+    mrcObject2 = [codeCopy mrcObject];
+    mrcObject3 = [(BCSDetectedCode *)self mrcObject];
+    basicDescriptor = [mrcObject3 basicDescriptor];
+    v9 = [mrcObject2 _bcs_probablyContainsSameCodeInBasicDescriptor:basicDescriptor];
   }
 
   else
   {
-    v10 = [v4 observation];
+    observation = [codeCopy observation];
 
-    if (!v10)
+    if (!observation)
     {
       v9 = 0;
       goto LABEL_6;
     }
 
-    v6 = [v4 observation];
-    v7 = [v6 payloadStringValue];
-    v8 = [(BCSDetectedCode *)self observation];
-    v11 = [v8 payloadStringValue];
-    v9 = [v7 isEqualToString:v11];
+    mrcObject2 = [codeCopy observation];
+    mrcObject3 = [mrcObject2 payloadStringValue];
+    basicDescriptor = [(BCSDetectedCode *)self observation];
+    payloadStringValue = [basicDescriptor payloadStringValue];
+    v9 = [mrcObject3 isEqualToString:payloadStringValue];
   }
 
 LABEL_6:

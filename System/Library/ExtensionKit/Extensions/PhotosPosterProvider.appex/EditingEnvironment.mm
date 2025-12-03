@@ -2,10 +2,10 @@
 - (BOOL)px_isBackdrop;
 - (BOOL)px_isCallServices;
 - (CGRect)px_floatingObscurableBounds;
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3;
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout;
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout;
 - (CGRect)px_salientContentRectangle;
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout;
 - (NSString)pu_role;
 - (PFPosterConfiguration)pu_sourcePosterConfiguration;
 - (PFPosterDescriptor)pu_posterDescriptor;
@@ -26,7 +26,7 @@
 
 - (int64_t)pu_posterType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000E418();
 
   return v3;
@@ -34,7 +34,7 @@
 
 - (unint64_t)editingVariant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000E47C();
 
   return v3;
@@ -56,7 +56,7 @@
 
 - (UIColor)pu_caseColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000E794();
 
   return v3;
@@ -64,7 +64,7 @@
 
 - (int64_t)pu_userInterfaceStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000E808();
 
   return v3;
@@ -72,7 +72,7 @@
 
 - (unint64_t)pu_legacyConfigurationType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000E904();
 
   return v3;
@@ -80,7 +80,7 @@
 
 - (NSString)pu_role
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000E9E0();
 
   v3 = sub_10002F3D4();
@@ -90,7 +90,7 @@
 
 - (PUPosterOverrideConfiguration)pu_overrideConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000EDD0();
 
   return v3;
@@ -98,7 +98,7 @@
 
 - (PUMutablePosterConfiguration)pu_targetConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000EE94();
 
   return v3;
@@ -106,7 +106,7 @@
 
 - (int64_t)px_significantEventsCounter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000EF08();
 
   return v3;
@@ -114,7 +114,7 @@
 
 - (BOOL)px_isCallServices
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000EF54();
 
   return v3 & 1;
@@ -122,7 +122,7 @@
 
 - (BOOL)px_isBackdrop
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000EFAC();
 
   return v3 & 1;
@@ -130,7 +130,7 @@
 
 - (int64_t)px_boundingShape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000F004();
 
   return v3;
@@ -148,15 +148,15 @@
 
 - (UITraitCollection)px_traitCollection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000F08C();
 
   return v3;
 }
 
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout
 {
-  sub_10000713C(self, a2, a3, sub_10000F0CC);
+  sub_10000713C(self, a2, layout, sub_10000F0CC);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -164,9 +164,9 @@
   return result;
 }
 
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout
 {
-  sub_10000713C(self, a2, a3, sub_100010A10);
+  sub_10000713C(self, a2, layout, sub_100010A10);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -174,9 +174,9 @@
   return result;
 }
 
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout
 {
-  sub_10000713C(self, a2, a3, sub_100010A10);
+  sub_10000713C(self, a2, layout, sub_100010A10);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -186,7 +186,7 @@
 
 - (unint64_t)effectiveMotionEffectsMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000F168();
 
   return v3;

@@ -1,21 +1,21 @@
 @interface SBSystemActionSuppressionManagerStateReducer
 - (id)_buildSuppressionMetrics;
 - (id)_reduceState;
-- (id)initWithReduceBlock:(void *)a3 viewObstructionEligibility:(void *)a4 viewObstructionState:(void *)a5 selectedAction:(void *)a6 pocketState:(void *)a7 displayState:(char)a8 isAlwaysOnDisplayEnabled:;
+- (id)initWithReduceBlock:(void *)block viewObstructionEligibility:(void *)eligibility viewObstructionState:(void *)state selectedAction:(void *)action pocketState:(void *)pocketState displayState:(char)displayState isAlwaysOnDisplayEnabled:;
 - (uint64_t)isAlwaysOnDisplayEnabled;
-- (void)setDisplayState:(void *)a1;
-- (void)setIsAlwaysOnDisplayEnabled:(_BYTE *)a1;
-- (void)setPocketState:(void *)a1;
-- (void)setSelectedAction:(id *)a1;
-- (void)setViewObstructionEligibility:(void *)a1;
-- (void)setViewObstructionState:(id *)a1;
+- (void)setDisplayState:(void *)state;
+- (void)setIsAlwaysOnDisplayEnabled:(_BYTE *)enabled;
+- (void)setPocketState:(void *)state;
+- (void)setSelectedAction:(id *)action;
+- (void)setViewObstructionEligibility:(void *)eligibility;
+- (void)setViewObstructionState:(id *)state;
 @end
 
 @implementation SBSystemActionSuppressionManagerStateReducer
 
 - (id)_buildSuppressionMetrics
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = NSStringFromSBSystemActionSuppressionViewObstructionEligibility(self->_viewObstructionEligibility);
   OUTLINED_FUNCTION_6_6();
 
@@ -30,7 +30,7 @@
     v6 = off_2783BBFB8[pocketState];
   }
 
-  [v3 setObject:v6 forKeyedSubscript:@"pocket_state"];
+  [dictionary setObject:v6 forKeyedSubscript:@"pocket_state"];
   v7 = NSStringFromBLSBacklightState();
   OUTLINED_FUNCTION_6_6();
 
@@ -56,18 +56,18 @@
       event = 0;
     }
 
-    v12 = [(CMSuppressionEvent *)event type];
-    if (v12 > 3)
+    type = [(CMSuppressionEvent *)event type];
+    if (type > 3)
     {
       v13 = @"Suppress";
     }
 
     else
     {
-      v13 = off_2783BBFD8[v12];
+      v13 = off_2783BBFD8[type];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"event_type"];
+    [dictionary setObject:v13 forKeyedSubscript:@"event_type"];
     v14 = MEMORY[0x277CCABB0];
     v15 = self->_viewObstructionState;
     if (v15)
@@ -82,8 +82,8 @@
 
     [(CMSuppressionEvent *)v16 timestamp];
     v18 = v17;
-    v19 = [MEMORY[0x277CCAC38] processInfo];
-    [v19 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v21 = v20;
 
     v22 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v18 - v21];
@@ -110,7 +110,7 @@
     }
 
     v29 = v28;
-    v30 = [(SBSystemActionViewObstructionState *)v29 domain];
+    domain = [(SBSystemActionViewObstructionState *)v29 domain];
     v31 = self->_viewObstructionState;
     if (v31)
     {
@@ -123,20 +123,20 @@
     }
 
     v33 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NSError code](error, "code")}];
-    v34 = [v27 stringWithFormat:@"%@: %@", v30, v33];
-    [v3 setObject:v34 forKeyedSubscript:@"error"];
+    v34 = [v27 stringWithFormat:@"%@: %@", domain, v33];
+    [dictionary setObject:v34 forKeyedSubscript:@"error"];
   }
 
-  v35 = [v3 copy];
+  v35 = [dictionary copy];
 
   return v35;
 }
 
 - (id)_reduceState
 {
-  v3 = [(SBSystemAction *)self->_selectedAction configuredAction];
-  v4 = [v3 sectionIdentifier];
-  v5 = [v4 isEqualToString:@"Nothing"];
+  configuredAction = [(SBSystemAction *)self->_selectedAction configuredAction];
+  sectionIdentifier = [configuredAction sectionIdentifier];
+  v5 = [sectionIdentifier isEqualToString:@"Nothing"];
 
   if ([MEMORY[0x277CC1D50] isAvailable])
   {
@@ -238,65 +238,65 @@ LABEL_24:
 
 LABEL_25:
   v12 = [SBSystemActionSuppressionStatus alloc];
-  v13 = [(SBSystemActionSuppressionManagerStateReducer *)self _buildSuppressionMetrics];
-  v14 = [(SBSystemActionSuppressionStatus *)&v12->super.isa initWithState:v9 metrics:v13];
+  _buildSuppressionMetrics = [(SBSystemActionSuppressionManagerStateReducer *)self _buildSuppressionMetrics];
+  v14 = [(SBSystemActionSuppressionStatus *)&v12->super.isa initWithState:v9 metrics:_buildSuppressionMetrics];
 
   v15 = [[SBSystemActionSuppressionManagerState alloc] initWithSuppressionStatus:v14 isEligibleForViewObstructionEvents:v8 canUsePocketStateForSuppression:v7];
 
   return v15;
 }
 
-- (id)initWithReduceBlock:(void *)a3 viewObstructionEligibility:(void *)a4 viewObstructionState:(void *)a5 selectedAction:(void *)a6 pocketState:(void *)a7 displayState:(char)a8 isAlwaysOnDisplayEnabled:
+- (id)initWithReduceBlock:(void *)block viewObstructionEligibility:(void *)eligibility viewObstructionState:(void *)state selectedAction:(void *)action pocketState:(void *)pocketState displayState:(char)displayState isAlwaysOnDisplayEnabled:
 {
   v15 = a2;
-  v16 = a4;
-  v17 = a5;
-  if (a1)
+  eligibilityCopy = eligibility;
+  stateCopy = state;
+  if (self)
   {
     if (!v15)
     {
       [SBSystemActionSuppressionManagerStateReducer initWithReduceBlock:? viewObstructionEligibility:? viewObstructionState:? selectedAction:? pocketState:? displayState:? isAlwaysOnDisplayEnabled:?];
     }
 
-    if (!v16)
+    if (!eligibilityCopy)
     {
       [SBSystemActionSuppressionManagerStateReducer initWithReduceBlock:? viewObstructionEligibility:? viewObstructionState:? selectedAction:? pocketState:? displayState:? isAlwaysOnDisplayEnabled:?];
     }
 
-    if (!v17)
+    if (!stateCopy)
     {
       [SBSystemActionSuppressionManagerStateReducer initWithReduceBlock:? viewObstructionEligibility:? viewObstructionState:? selectedAction:? pocketState:? displayState:? isAlwaysOnDisplayEnabled:?];
     }
 
-    v23.receiver = a1;
+    v23.receiver = self;
     v23.super_class = SBSystemActionSuppressionManagerStateReducer;
-    a1 = objc_msgSendSuper2(&v23, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v23, sel_init);
+    if (self)
     {
       v18 = MEMORY[0x223D6F7F0](v15);
-      v19 = a1[2];
-      a1[2] = v18;
+      v19 = self[2];
+      self[2] = v18;
 
-      a1[1] = a3;
-      objc_storeStrong(a1 + 4, a4);
-      objc_storeStrong(a1 + 5, a5);
-      a1[6] = a6;
-      a1[7] = a7;
-      *(a1 + 24) = a8;
-      v20 = a1[2];
-      v21 = [a1 _reduceState];
-      v20[2](v20, v21);
+      self[1] = block;
+      objc_storeStrong(self + 4, eligibility);
+      objc_storeStrong(self + 5, state);
+      self[6] = action;
+      self[7] = pocketState;
+      *(self + 24) = displayState;
+      v20 = self[2];
+      _reduceState = [self _reduceState];
+      v20[2](v20, _reduceState);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setViewObstructionState:(id *)a1
+- (void)setViewObstructionState:(id *)state
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (state)
   {
     if (!v3)
     {
@@ -304,16 +304,16 @@ LABEL_25:
     }
 
     v5 = v3;
-    [(SBSystemActionSuppressionManagerStateReducer *)a1 setViewObstructionState:v3];
+    [(SBSystemActionSuppressionManagerStateReducer *)state setViewObstructionState:v3];
     v4 = v5;
   }
 }
 
-- (void)setSelectedAction:(id *)a1
+- (void)setSelectedAction:(id *)action
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (action)
   {
     if (!v3)
     {
@@ -321,53 +321,53 @@ LABEL_25:
     }
 
     v5 = v3;
-    [(SBSystemActionSuppressionManagerStateReducer *)a1 setSelectedAction:v3];
+    [(SBSystemActionSuppressionManagerStateReducer *)action setSelectedAction:v3];
     v4 = v5;
   }
 }
 
-- (void)setViewObstructionEligibility:(void *)a1
+- (void)setViewObstructionEligibility:(void *)eligibility
 {
-  if (a1 && a1[1] != a2)
+  if (eligibility && eligibility[1] != a2)
   {
-    a1[1] = a2;
-    [a1 _reduceState];
+    eligibility[1] = a2;
+    [eligibility _reduceState];
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_0_8();
     v4(v3);
   }
 }
 
-- (void)setPocketState:(void *)a1
+- (void)setPocketState:(void *)state
 {
-  if (a1 && a1[6] != a2)
+  if (state && state[6] != a2)
   {
-    a1[6] = a2;
-    [a1 _reduceState];
+    state[6] = a2;
+    [state _reduceState];
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_0_8();
     v4(v3);
   }
 }
 
-- (void)setDisplayState:(void *)a1
+- (void)setDisplayState:(void *)state
 {
-  if (a1 && a1[7] != a2)
+  if (state && state[7] != a2)
   {
-    a1[7] = a2;
-    [a1 _reduceState];
+    state[7] = a2;
+    [state _reduceState];
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_0_8();
     v4(v3);
   }
 }
 
-- (void)setIsAlwaysOnDisplayEnabled:(_BYTE *)a1
+- (void)setIsAlwaysOnDisplayEnabled:(_BYTE *)enabled
 {
-  if (a1 && a1[24] != a2)
+  if (enabled && enabled[24] != a2)
   {
-    a1[24] = a2;
-    [a1 _reduceState];
+    enabled[24] = a2;
+    [enabled _reduceState];
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_0_8();
     v4(v3);
@@ -376,9 +376,9 @@ LABEL_25:
 
 - (uint64_t)isAlwaysOnDisplayEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 24));
+    return OUTLINED_FUNCTION_0_9(*(self + 24));
   }
 
   else

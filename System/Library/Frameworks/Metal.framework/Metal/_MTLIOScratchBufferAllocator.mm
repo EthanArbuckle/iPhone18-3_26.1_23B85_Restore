@@ -1,40 +1,40 @@
 @interface _MTLIOScratchBufferAllocator
 - (BOOL)updateScratchBuffersPurgeability;
-- (_MTLIOScratchBufferAllocator)initWithDevice:(id)a3;
-- (id)newScratchBufferWithMinimumSize:(unint64_t)a3;
+- (_MTLIOScratchBufferAllocator)initWithDevice:(id)device;
+- (id)newScratchBufferWithMinimumSize:(unint64_t)size;
 - (void)dealloc;
 - (void)kickCleanupQueue;
 - (void)returnActiveScratchBuffersToPool;
-- (void)returnPriv:(MTLIOScratchBufferPrivate *)a3;
+- (void)returnPriv:(MTLIOScratchBufferPrivate *)priv;
 - (void)updateScratchBuffersPurgeabilityHandler;
 @end
 
 @implementation _MTLIOScratchBufferAllocator
 
-- (void)returnPriv:(MTLIOScratchBufferPrivate *)a3
+- (void)returnPriv:(MTLIOScratchBufferPrivate *)priv
 {
   pthread_mutex_lock(&self->_pool_lock);
-  v5 = a3->var3 - 1;
-  a3->var3 = v5;
+  v5 = priv->var3 - 1;
+  priv->var3 = v5;
   if (!v5)
   {
-    if ([a3->var1 allocatedSize] >= self->_currentSize)
+    if ([priv->var1 allocatedSize] >= self->_currentSize)
     {
-      if (!a3->var5)
+      if (!priv->var5)
       {
-        var0 = a3->var0.var0;
-        var1 = a3->var0.var1;
+        var0 = priv->var0.var0;
+        var1 = priv->var0.var1;
         p_tqh_last = &self->_activeq.tqh_last;
-        if (a3->var0.var0)
+        if (priv->var0.var0)
         {
-          p_tqh_last = &a3->var0.var0->var0.var1;
+          p_tqh_last = &priv->var0.var0->var0.var1;
         }
 
         *p_tqh_last = var1;
         *var1 = var0;
         p_poolq = &self->_poolq;
         tqh_first = self->_poolq.tqh_first;
-        a3->var0.var0 = tqh_first;
+        priv->var0.var0 = tqh_first;
         if (tqh_first)
         {
           p_var1 = &tqh_first->var0.var1;
@@ -45,29 +45,29 @@
           p_var1 = &self->_poolq.tqh_last;
         }
 
-        *p_var1 = &a3->var0.var0;
-        p_poolq->tqh_first = a3;
-        a3->var0.var1 = &p_poolq->tqh_first;
-        a3->var5 = 1;
+        *p_var1 = &priv->var0.var0;
+        p_poolq->tqh_first = priv;
+        priv->var0.var1 = &p_poolq->tqh_first;
+        priv->var5 = 1;
       }
 
-      a3->var4 = mach_absolute_time();
+      priv->var4 = mach_absolute_time();
     }
 
     else
     {
 
-      free(a3);
+      free(priv);
     }
   }
 
   pthread_mutex_unlock(&self->_pool_lock);
 }
 
-- (id)newScratchBufferWithMinimumSize:(unint64_t)a3
+- (id)newScratchBufferWithMinimumSize:(unint64_t)size
 {
   pthread_mutex_lock(&self->_pool_lock);
-  if (self->_currentSize < a3)
+  if (self->_currentSize < size)
   {
     tqh_first = self->_activeq.tqh_first;
     if (tqh_first)
@@ -149,16 +149,16 @@
       while (v16);
     }
 
-    v18 = [(MTLDevice *)self->_device maxBufferLength];
-    if (v18 < a3)
+    maxBufferLength = [(MTLDevice *)self->_device maxBufferLength];
+    if (maxBufferLength < size)
     {
       goto LABEL_19;
     }
 
-    v20 = *MEMORY[0x1E69E9AB0] + 4 * a3 - 1;
-    if ((v20 & -*MEMORY[0x1E69E9AB0]) >= v18)
+    v20 = *MEMORY[0x1E69E9AB0] + 4 * size - 1;
+    if ((v20 & -*MEMORY[0x1E69E9AB0]) >= maxBufferLength)
     {
-      v21 = v18;
+      v21 = maxBufferLength;
     }
 
     else
@@ -309,9 +309,9 @@ LABEL_19:
   os_unfair_lock_lock(&self->_pool_cleanup_lock);
   self->_pool_cleanup_requested = 0;
   os_unfair_lock_unlock(&self->_pool_cleanup_lock);
-  v3 = [(_MTLIOScratchBufferAllocator *)self updateScratchBuffersPurgeability];
+  updateScratchBuffersPurgeability = [(_MTLIOScratchBufferAllocator *)self updateScratchBuffersPurgeability];
   os_unfair_lock_lock(&self->_pool_cleanup_lock);
-  if (!v3 && !self->_pool_cleanup_requested)
+  if (!updateScratchBuffersPurgeability && !self->_pool_cleanup_requested)
   {
     dispatch_suspend(self->_pool_cleanup_source);
     self->_pool_cleanup_scheduled = 0;
@@ -387,19 +387,19 @@ LABEL_19:
   return v13;
 }
 
-- (_MTLIOScratchBufferAllocator)initWithDevice:(id)a3
+- (_MTLIOScratchBufferAllocator)initWithDevice:(id)device
 {
   v12.receiver = self;
   v12.super_class = _MTLIOScratchBufferAllocator;
   v4 = [(_MTLIOScratchBufferAllocator *)&v12 init];
   if (v4)
   {
-    v5 = a3;
+    deviceCopy = device;
     *(v4 + 24) = 0u;
     *(v4 + 40) = 0u;
     *(v4 + 56) = 0u;
     *(v4 + 9) = 0;
-    *(v4 + 10) = v5;
+    *(v4 + 10) = deviceCopy;
     *(v4 + 11) = 0;
     *(v4 + 12) = v4 + 88;
     *(v4 + 13) = 0;

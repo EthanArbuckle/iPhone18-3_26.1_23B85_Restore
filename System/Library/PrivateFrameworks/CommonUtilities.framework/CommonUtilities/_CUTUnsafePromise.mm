@@ -1,8 +1,8 @@
 @interface _CUTUnsafePromise
 - (_CUTUnsafePromise)init;
-- (_CUTUnsafePromise)initWithResult:(id)a3;
-- (void)_fulfillWithResult:(id)a3;
-- (void)registerResultBlock:(id)a3;
+- (_CUTUnsafePromise)initWithResult:(id)result;
+- (void)_fulfillWithResult:(id)result;
+- (void)registerResultBlock:(id)block;
 @end
 
 @implementation _CUTUnsafePromise
@@ -11,11 +11,11 @@
 {
   v7.receiver = self;
   v7.super_class = _CUTUnsafePromise;
-  v2 = [(CUTUnsafePromise *)&v7 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(CUTUnsafePromise *)&v7 _init];
+  v3 = _init;
+  if (_init)
   {
-    v2->_done = 0;
+    _init->_done = 0;
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     resultBlocks = v3->_resultBlocks;
     v3->_resultBlocks = v4;
@@ -24,33 +24,33 @@
   return v3;
 }
 
-- (_CUTUnsafePromise)initWithResult:(id)a3
+- (_CUTUnsafePromise)initWithResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = _CUTUnsafePromise;
-  v6 = [(CUTUnsafePromise *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(CUTUnsafePromise *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    v6->_done = 1;
-    objc_storeStrong(&v6->_result, a3);
+    _init->_done = 1;
+    objc_storeStrong(&_init->_result, result);
   }
 
   return v7;
 }
 
-- (void)_fulfillWithResult:(id)a3
+- (void)_fulfillWithResult:(id)result
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultCopy = result;
   if ([(_CUTUnsafePromise *)self done])
   {
     sub_1B2330F88(a2, self);
   }
 
   [(_CUTUnsafePromise *)self setDone:1];
-  [(_CUTUnsafePromise *)self setResult:v5];
+  [(_CUTUnsafePromise *)self setResult:resultCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -88,20 +88,20 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerResultBlock:(id)a3
+- (void)registerResultBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(_CUTUnsafePromise *)self done])
   {
-    v4 = [(_CUTUnsafePromise *)self result];
-    v6[2](v6, v4);
+    result = [(_CUTUnsafePromise *)self result];
+    blockCopy[2](blockCopy, result);
   }
 
   else
   {
     resultBlocks = self->_resultBlocks;
-    v4 = MEMORY[0x1B2746240](v6);
-    [(NSMutableArray *)resultBlocks addObject:v4];
+    result = MEMORY[0x1B2746240](blockCopy);
+    [(NSMutableArray *)resultBlocks addObject:result];
   }
 }
 

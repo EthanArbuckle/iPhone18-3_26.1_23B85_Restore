@@ -1,15 +1,15 @@
 @interface DiagsPrivacyHelpViewController
-- (DiagsPrivacyHelpViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DiagsPrivacyHelpViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
 @implementation DiagsPrivacyHelpViewController
 
-- (DiagsPrivacyHelpViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (DiagsPrivacyHelpViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = DiagsPrivacyHelpViewController;
-  return [(DiagsPrivacyHelpViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(DiagsPrivacyHelpViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 - (void)loadView

@@ -1,14 +1,14 @@
 @interface HPRFMindReminderViewController
 + (NSString)remindersDidChangeNotification;
-- (HPRFMindReminderViewController)initWithCoder:(id)a3;
-- (HPRFMindReminderViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (HPRFMindReminderViewController)initWithReminderProvider:(id)a3 currentReminder:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)enableSwitchTappedWithEnableSwitch:(id)a3;
+- (HPRFMindReminderViewController)initWithCoder:(id)coder;
+- (HPRFMindReminderViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (HPRFMindReminderViewController)initWithReminderProvider:(id)provider currentReminder:(id)reminder;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)enableSwitchTappedWithEnableSwitch:(id)switch;
 - (void)rightBarButtonTapped;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -26,31 +26,31 @@
   return v3;
 }
 
-- (HPRFMindReminderViewController)initWithReminderProvider:(id)a3 currentReminder:(id)a4
+- (HPRFMindReminderViewController)initWithReminderProvider:(id)provider currentReminder:(id)reminder
 {
-  if (a4)
+  if (reminder)
   {
     objc_allocWithZone(type metadata accessor for MindReminderViewController());
-    v6 = a3;
-    v7 = a4;
-    v8 = v6;
-    v9 = a4;
+    providerCopy = provider;
+    reminderCopy = reminder;
+    providerCopy2 = providerCopy;
+    reminderCopy2 = reminder;
   }
 
   else
   {
     objc_allocWithZone(type metadata accessor for MindReminderViewController());
-    v8 = a3;
-    v9 = 0;
+    providerCopy2 = provider;
+    reminderCopy2 = 0;
   }
 
-  v10 = sub_622C(v8, v9);
+  v10 = sub_622C(providerCopy2, reminderCopy2);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v10;
 }
 
-- (HPRFMindReminderViewController)initWithCoder:(id)a3
+- (HPRFMindReminderViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___HPRFMindReminderViewController_reminderEnabled) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___HPRFMindReminderViewController_weekdaySelection) = 0;
@@ -61,33 +61,33 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_64F4();
 }
 
 - (void)rightBarButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_7490();
 }
 
-- (void)enableSwitchTappedWithEnableSwitch:(id)a3
+- (void)enableSwitchTappedWithEnableSwitch:(id)switch
 {
-  v5 = self;
-  v4 = [a3 isOn];
-  *(&v5->super.super.super.isa + OBJC_IVAR___HPRFMindReminderViewController_reminderEnabled) = v4;
+  selfCopy = self;
+  isOn = [switch isOn];
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR___HPRFMindReminderViewController_reminderEnabled) = isOn;
 
   _objc_release_x1();
 }
 
-- (HPRFMindReminderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HPRFMindReminderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_ED48();
   v7 = *(v6 - 8);
@@ -95,14 +95,14 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_ED18();
-  v11 = a3;
-  v12 = self;
-  sub_80B8(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_80B8(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR___HPRFMindReminderViewController_state))
   {
@@ -115,9 +115,9 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -130,7 +130,7 @@
   return 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_ED48();
   v7 = *(v6 - 8);
@@ -138,8 +138,8 @@
   __chkstk_darwin(v6);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_ED18();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_ED38();
   if (v13 == 1)
   {

@@ -8,11 +8,11 @@
 {
   v7.receiver = self;
   v7.super_class = CCDProvisionalEnrollmentRequestPayload;
-  v3 = [(CCDRequestPayload *)&v7 dictionary];
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  dictionary = [(CCDRequestPayload *)&v7 dictionary];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:dictionary];
 
-  v5 = [(CCDProvisionalEnrollmentRequestPayload *)self nonce];
-  [v4 setObject:v5 forKeyedSubscript:@"nonce"];
+  nonce = [(CCDProvisionalEnrollmentRequestPayload *)self nonce];
+  [v4 setObject:nonce forKeyedSubscript:@"nonce"];
 
   return v4;
 }

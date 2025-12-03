@@ -17,9 +17,9 @@
     [(NTKInterpolatedColorPalette *)self fromPalette];
   }
   v4 = ;
-  v5 = [v4 isSpecialColor];
+  isSpecialColor = [v4 isSpecialColor];
 
-  return v5;
+  return isSpecialColor;
 }
 
 @end

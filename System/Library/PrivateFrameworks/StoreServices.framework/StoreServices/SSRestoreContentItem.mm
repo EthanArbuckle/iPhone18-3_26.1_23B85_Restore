@@ -1,6 +1,6 @@
 @interface SSRestoreContentItem
 - (BOOL)isDRMFree;
-- (BOOL)isEligibleForRestore:(id *)a3;
+- (BOOL)isEligibleForRestore:(id *)restore;
 - (NSNumber)cloudItemID;
 - (NSNumber)cloudMatchStatus;
 - (NSNumber)storeAccountID;
@@ -14,20 +14,20 @@
 - (NSString)storeSoftwareVersionID;
 - (NSString)title;
 - (NSString)videoDimensions;
-- (SSRestoreContentItem)initWithRestoreDownload:(id)a3;
+- (SSRestoreContentItem)initWithRestoreDownload:(id)download;
 - (id)_initSSRestoreContentItem;
-- (id)_restoreKeyForAssetProperty:(id)a3;
-- (id)_restoreKeyForDownloadProperty:(id)a3;
+- (id)_restoreKeyForAssetProperty:(id)property;
+- (id)_restoreKeyForDownloadProperty:(id)property;
 - (id)copyRestoreDictionary;
-- (void)_setValue:(id)a3 forProperty:(id)a4;
+- (void)_setValue:(id)value forProperty:(id)property;
 - (void)dealloc;
-- (void)setCloudMatchStatus:(id)a3;
-- (void)setDRMFree:(BOOL)a3;
-- (void)setStoreAccountAppleID:(id)a3;
-- (void)setStoreAccountID:(id)a3;
-- (void)setStoreOriginalPurchaserAccountID:(id)a3;
-- (void)setValue:(id)a3 forAssetProperty:(id)a4;
-- (void)setValue:(id)a3 forDownloadProperty:(id)a4;
+- (void)setCloudMatchStatus:(id)status;
+- (void)setDRMFree:(BOOL)free;
+- (void)setStoreAccountAppleID:(id)d;
+- (void)setStoreAccountID:(id)d;
+- (void)setStoreOriginalPurchaserAccountID:(id)d;
+- (void)setValue:(id)value forAssetProperty:(id)property;
+- (void)setValue:(id)value forDownloadProperty:(id)property;
 @end
 
 @implementation SSRestoreContentItem
@@ -45,11 +45,11 @@
   return v2;
 }
 
-- (SSRestoreContentItem)initWithRestoreDownload:(id)a3
+- (SSRestoreContentItem)initWithRestoreDownload:(id)download
 {
   v11[12] = *MEMORY[0x1E69E9840];
-  v4 = [(SSRestoreContentItem *)self _initSSRestoreContentItem];
-  if (v4)
+  _initSSRestoreContentItem = [(SSRestoreContentItem *)self _initSSRestoreContentItem];
+  if (_initSSRestoreContentItem)
   {
     v11[0] = @"c";
     v11[1] = @"A";
@@ -63,23 +63,23 @@
     v11[9] = @"01";
     v11[10] = @"Y";
     v11[11] = @"R";
-    [a3 getValues:v10 forProperties:v11 count:12];
+    [download getValues:v10 forProperties:v11 count:12];
     for (i = 0; i != 12; ++i)
     {
-      [(SSRestoreContentItem *)v4 setValue:*&v10[i * 8] forDownloadProperty:v11[i]];
+      [(SSRestoreContentItem *)_initSSRestoreContentItem setValue:*&v10[i * 8] forDownloadProperty:v11[i]];
     }
 
     v9[0] = @"h";
     v9[1] = @"f";
     v9[2] = @"g";
-    [objc_msgSend(objc_msgSend(a3 assetsForType:{@"media", "lastObject"), "getValues:forProperties:count:", v8, v9, 3}];
+    [objc_msgSend(objc_msgSend(download assetsForType:{@"media", "lastObject"), "getValues:forProperties:count:", v8, v9, 3}];
     for (j = 0; j != 3; ++j)
     {
-      [(SSRestoreContentItem *)v4 setValue:*&v8[j * 8] forAssetProperty:v9[j]];
+      [(SSRestoreContentItem *)_initSSRestoreContentItem setValue:*&v8[j * 8] forAssetProperty:v9[j]];
     }
   }
 
-  return v4;
+  return _initSSRestoreContentItem;
 }
 
 - (void)dealloc
@@ -145,7 +145,7 @@
   return [v2 BOOLValue];
 }
 
-- (BOOL)isEligibleForRestore:(id *)a3
+- (BOOL)isEligibleForRestore:(id *)restore
 {
   if (self->_isRestore)
   {
@@ -205,7 +205,7 @@ LABEL_8:
 LABEL_20:
     v10 = 0;
     v11 = 1;
-    if (!a3)
+    if (!restore)
     {
       return v11;
     }
@@ -218,10 +218,10 @@ LABEL_25:
   v10 = SSError(@"SSErrorDomain", v8, 0, 0);
 LABEL_26:
   v11 = 0;
-  if (a3)
+  if (restore)
   {
 LABEL_27:
-    *a3 = v10;
+    *restore = v10;
   }
 
   return v11;
@@ -234,102 +234,102 @@ LABEL_27:
   return v2;
 }
 
-- (void)setCloudMatchStatus:(id)a3
+- (void)setCloudMatchStatus:(id)status
 {
   cloudMatchStatus = self->_cloudMatchStatus;
-  if (cloudMatchStatus != a3)
+  if (cloudMatchStatus != status)
   {
 
-    self->_cloudMatchStatus = a3;
+    self->_cloudMatchStatus = status;
   }
 }
 
-- (void)setDRMFree:(BOOL)a3
+- (void)setDRMFree:(BOOL)free
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:free];
 
   [(SSRestoreContentItem *)self _setValue:v4 forProperty:@"drm-free"];
 }
 
-- (void)setStoreOriginalPurchaserAccountID:(id)a3
+- (void)setStoreOriginalPurchaserAccountID:(id)d
 {
   originalPurchaserAccountID = self->_originalPurchaserAccountID;
-  if (originalPurchaserAccountID != a3)
+  if (originalPurchaserAccountID != d)
   {
 
-    self->_originalPurchaserAccountID = a3;
+    self->_originalPurchaserAccountID = d;
   }
 }
 
-- (void)setStoreAccountAppleID:(id)a3
+- (void)setStoreAccountAppleID:(id)d
 {
   appleID = self->_appleID;
-  if (appleID != a3)
+  if (appleID != d)
   {
 
-    self->_appleID = [a3 copy];
+    self->_appleID = [d copy];
   }
 }
 
-- (void)setStoreAccountID:(id)a3
+- (void)setStoreAccountID:(id)d
 {
   accountID = self->_accountID;
-  if (accountID != a3)
+  if (accountID != d)
   {
 
-    self->_accountID = a3;
+    self->_accountID = d;
   }
 }
 
-- (void)setValue:(id)a3 forAssetProperty:(id)a4
+- (void)setValue:(id)value forAssetProperty:(id)property
 {
-  v6 = [(SSRestoreContentItem *)self _restoreKeyForAssetProperty:a4];
+  v6 = [(SSRestoreContentItem *)self _restoreKeyForAssetProperty:property];
 
-  [(SSRestoreContentItem *)self _setValue:a3 forProperty:v6];
+  [(SSRestoreContentItem *)self _setValue:value forProperty:v6];
 }
 
-- (void)setValue:(id)a3 forDownloadProperty:(id)a4
+- (void)setValue:(id)value forDownloadProperty:(id)property
 {
-  v7 = [(SSRestoreContentItem *)self _restoreKeyForDownloadProperty:a4];
+  v7 = [(SSRestoreContentItem *)self _restoreKeyForDownloadProperty:property];
   if (v7)
   {
 
-    [(SSRestoreContentItem *)self _setValue:a3 forProperty:v7];
+    [(SSRestoreContentItem *)self _setValue:value forProperty:v7];
   }
 
-  else if ([a4 isEqualToString:@"c"])
+  else if ([property isEqualToString:@"c"])
   {
 
-    [(SSRestoreContentItem *)self setBundleID:a3];
+    [(SSRestoreContentItem *)self setBundleID:value];
   }
 
-  else if ([a4 isEqualToString:@"V"])
+  else if ([property isEqualToString:@"V"])
   {
-    self->_isRestore = [a3 BOOLValue];
+    self->_isRestore = [value BOOLValue];
   }
 
-  else if ([a4 isEqualToString:@"Z"])
+  else if ([property isEqualToString:@"Z"])
   {
 
-    [(SSRestoreContentItem *)self setStoreAccountAppleID:a3];
+    [(SSRestoreContentItem *)self setStoreAccountAppleID:value];
   }
 
-  else if ([a4 isEqualToString:@"U"])
+  else if ([property isEqualToString:@"U"])
   {
 
-    [(SSRestoreContentItem *)self setStoreAccountID:a3];
+    [(SSRestoreContentItem *)self setStoreAccountID:value];
   }
 
-  else if ([a4 isEqualToString:@"01"])
+  else if ([property isEqualToString:@"01"])
   {
 
-    [(SSRestoreContentItem *)self setCloudMatchStatus:a3];
+    [(SSRestoreContentItem *)self setCloudMatchStatus:value];
   }
 
-  else if ([a4 isEqualToString:@"2"])
+  else if ([property isEqualToString:@"2"])
   {
 
-    [(SSRestoreContentItem *)self setTitle:a3];
+    [(SSRestoreContentItem *)self setTitle:value];
   }
 }
 
@@ -396,14 +396,14 @@ LABEL_27:
   return v2;
 }
 
-- (id)_restoreKeyForAssetProperty:(id)a3
+- (id)_restoreKeyForAssetProperty:(id)property
 {
   v4 = 0;
   v9 = *MEMORY[0x1E69E9840];
   v6 = @"f";
   v7 = @"g";
   v8 = @"h";
-  while (![(__CFString *)*(&v6 + v4 * 8) isEqualToString:a3, v6, v7, v8, v9])
+  while (![(__CFString *)*(&v6 + v4 * 8) isEqualToString:property, v6, v7, v8, v9])
   {
     if (++v4 == 3)
     {
@@ -414,7 +414,7 @@ LABEL_27:
   return off_1E84B0C30[v4];
 }
 
-- (id)_restoreKeyForDownloadProperty:(id)a3
+- (id)_restoreKeyForDownloadProperty:(id)property
 {
   v4 = 0;
   v6[6] = *MEMORY[0x1E69E9840];
@@ -424,7 +424,7 @@ LABEL_27:
   v6[3] = @"4";
   v6[4] = @"T";
   v6[5] = @"R";
-  while (![v6[v4] isEqualToString:a3])
+  while (![v6[v4] isEqualToString:property])
   {
     if (++v4 == 6)
     {
@@ -435,23 +435,23 @@ LABEL_27:
   return off_1E84B0C48[v4];
 }
 
-- (void)_setValue:(id)a3 forProperty:(id)a4
+- (void)_setValue:(id)value forProperty:(id)property
 {
-  if (a4)
+  if (property)
   {
-    if (a3)
+    if (value)
     {
-      if ([a3 conformsToProtocol:&unk_1F507D4B0])
+      if ([value conformsToProtocol:&unk_1F507D4B0])
       {
-        v9 = [a3 copy];
-        [(NSMutableDictionary *)self->_properties setObject:v9 forKey:a4];
+        v9 = [value copy];
+        [(NSMutableDictionary *)self->_properties setObject:v9 forKey:property];
       }
 
       else
       {
         properties = self->_properties;
 
-        [(NSMutableDictionary *)properties setObject:a3 forKey:a4];
+        [(NSMutableDictionary *)properties setObject:value forKey:property];
       }
     }
 
@@ -459,7 +459,7 @@ LABEL_27:
     {
       v7 = self->_properties;
 
-      [(NSMutableDictionary *)v7 removeObjectForKey:a4];
+      [(NSMutableDictionary *)v7 removeObjectForKey:property];
     }
   }
 }

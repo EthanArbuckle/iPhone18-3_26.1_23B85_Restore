@@ -1,12 +1,12 @@
 @interface VCCaptionsManagerStreamTokenClientList
-- (VCCaptionsManagerStreamTokenClientList)initWithStreamToken:(int64_t)a3 captionsSource:(id)a4;
+- (VCCaptionsManagerStreamTokenClientList)initWithStreamToken:(int64_t)token captionsSource:(id)source;
 - (id)newContext;
 - (void)dealloc;
 @end
 
 @implementation VCCaptionsManagerStreamTokenClientList
 
-- (VCCaptionsManagerStreamTokenClientList)initWithStreamToken:(int64_t)a3 captionsSource:(id)a4
+- (VCCaptionsManagerStreamTokenClientList)initWithStreamToken:(int64_t)token captionsSource:(id)source
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -15,8 +15,8 @@
   if (v6)
   {
     v6->_clientContextList = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6->_streamToken = a3;
-    v6->_captionsSource = a4;
+    v6->_streamToken = token;
+    v6->_captionsSource = source;
     *&v6->_sourceLocaleEligibleToBeModified = 1;
   }
 

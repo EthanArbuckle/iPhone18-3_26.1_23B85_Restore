@@ -1,22 +1,22 @@
 @interface SFCollaborationFileMetadataLoader
-- (SFCollaborationFileMetadataLoader)initWithFileURL:(id)a3;
-- (void)_loadCompletedWithCollaborationMetadata:(id)a3 error:(id)a4;
+- (SFCollaborationFileMetadataLoader)initWithFileURL:(id)l;
+- (void)_loadCompletedWithCollaborationMetadata:(id)metadata error:(id)error;
 - (void)_loadMetadata;
-- (void)loadMetadataWithCompletionHandler:(id)a3;
+- (void)loadMetadataWithCompletionHandler:(id)handler;
 - (void)presentedItemUbiquityDidChange;
 @end
 
 @implementation SFCollaborationFileMetadataLoader
 
-- (SFCollaborationFileMetadataLoader)initWithFileURL:(id)a3
+- (SFCollaborationFileMetadataLoader)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = SFCollaborationFileMetadataLoader;
   v5 = [(SFCollaborationFileMetadataLoader *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     presentedItemURL = v5->_presentedItemURL;
     v5->_presentedItemURL = v6;
 
@@ -31,21 +31,21 @@
   return v5;
 }
 
-- (void)loadMetadataWithCompletionHandler:(id)a3
+- (void)loadMetadataWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [getFPItemManagerClass() defaultManager];
-  v6 = [(SFCollaborationFileMetadataLoader *)self presentedItemURL];
+  handlerCopy = handler;
+  defaultManager = [getFPItemManagerClass() defaultManager];
+  presentedItemURL = [(SFCollaborationFileMetadataLoader *)self presentedItemURL];
   v15 = 0;
-  v7 = [v5 itemForURL:v6 error:&v15];
+  v7 = [defaultManager itemForURL:presentedItemURL error:&v15];
   v8 = v15;
 
   if (v7)
   {
     if (SharedWithYouCoreLibrary() && (v9 = SharedWithYouCoreLibrary(), dlsym(v9, "SWCollaborationMetadataForDocumentURL")))
     {
-      [(SFCollaborationFileMetadataLoader *)self setLoadCompletionHandler:v4];
+      [(SFCollaborationFileMetadataLoader *)self setLoadCompletionHandler:handlerCopy];
       if ([v7 isKnownByTheProvider])
       {
         [(SFCollaborationFileMetadataLoader *)self _loadMetadata];
@@ -57,9 +57,9 @@
         v13 = share_sheet_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [(SFCollaborationFileMetadataLoader *)self presentedItemURL];
+          presentedItemURL2 = [(SFCollaborationFileMetadataLoader *)self presentedItemURL];
           *buf = 138412290;
-          v17 = v14;
+          v17 = presentedItemURL2;
           _os_log_impl(&dword_1A9662000, v13, OS_LOG_TYPE_DEFAULT, "Collaboration: waiting to load metadata until document is synced with iCloud for documentURL:%@", buf, 0xCu);
         }
       }
@@ -73,7 +73,7 @@
         [SFCollaborationFileMetadataLoader loadMetadataWithCompletionHandler:];
       }
 
-      (*(v4 + 2))(v4, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -85,7 +85,7 @@
       [SFCollaborationFileMetadataLoader loadMetadataWithCompletionHandler:];
     }
 
-    (*(v4 + 2))(v4, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -94,7 +94,7 @@
 - (void)presentedItemUbiquityDidChange
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 presentedItemURL];
+  presentedItemURL = [self presentedItemURL];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -105,13 +105,13 @@
 - (void)_loadMetadata
 {
   objc_initWeak(location, self);
-  v3 = [(SFCollaborationFileMetadataLoader *)self presentedItemURL];
+  presentedItemURL = [(SFCollaborationFileMetadataLoader *)self presentedItemURL];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __50__SFCollaborationFileMetadataLoader__loadMetadata__block_invoke;
   v14 = &unk_1E788E2D8;
   objc_copyWeak(&v15, location);
-  v4 = v3;
+  v4 = presentedItemURL;
   v5 = &v11;
   v18 = 0;
   v19 = &v18;
@@ -143,9 +143,9 @@
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void soft_SWCollaborationMetadataForDocumentURL(NSURL *__strong, void (^__strong)(_SWCollaborationMetadata * _Nullable __strong, NSError * _Nullable __strong))"}];
-    [v9 handleFailureInFunction:v10 file:@"SFCollaborationUtilities.m" lineNumber:143 description:{@"%s", dlerror(), v11, v12, v13, v14}];
+    [currentHandler handleFailureInFunction:v10 file:@"SFCollaborationUtilities.m" lineNumber:143 description:{@"%s", dlerror(), v11, v12, v13, v14}];
 
     __break(1u);
   }
@@ -159,11 +159,11 @@ void __50__SFCollaborationFileMetadataLoader__loadMetadata__block_invoke(uint64_
   [WeakRetained _loadCompletedWithCollaborationMetadata:v6 error:v5];
 }
 
-- (void)_loadCompletedWithCollaborationMetadata:(id)a3 error:(id)a4
+- (void)_loadCompletedWithCollaborationMetadata:(id)metadata error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  metadataCopy = metadata;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = share_sheet_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -172,9 +172,9 @@ void __50__SFCollaborationFileMetadataLoader__loadMetadata__block_invoke(uint64_
     }
   }
 
-  v9 = [(SFCollaborationFileMetadataLoader *)self loadCompletionHandler];
+  loadCompletionHandler = [(SFCollaborationFileMetadataLoader *)self loadCompletionHandler];
   [(SFCollaborationFileMetadataLoader *)self setLoadCompletionHandler:0];
-  (v9)[2](v9, v6, v7);
+  (loadCompletionHandler)[2](loadCompletionHandler, metadataCopy, errorCopy);
 }
 
 - (void)loadMetadataWithCompletionHandler:.cold.1()

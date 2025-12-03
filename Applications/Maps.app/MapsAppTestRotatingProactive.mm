@@ -18,10 +18,10 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 _mapstest_isUsingSampleProactiveData];
+  options = [(MapsAppTest *)self options];
+  _mapstest_isUsingSampleProactiveData = [options _mapstest_isUsingSampleProactiveData];
 
-  if (v4)
+  if (_mapstest_isUsingSampleProactiveData)
   {
     v5 = 6000000000;
   }

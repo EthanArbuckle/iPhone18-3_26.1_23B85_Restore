@@ -1,14 +1,14 @@
 @interface ARCoachingDeviceController
-- (ARCoachingDeviceController)initWithDeviceMaskImage:(id)a3 solidColor:(id)a4 geoTrackingMode:(BOOL)a5;
+- (ARCoachingDeviceController)initWithDeviceMaskImage:(id)image solidColor:(id)color geoTrackingMode:(BOOL)mode;
 - (CATransform3D)transform;
 - (CGPoint)position;
 - (CGRect)bounds;
-- (void)setBounds:(CGRect)a3;
-- (void)setLayerParent:(id)a3;
-- (void)setOpacity:(float)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setTransform:(CATransform3D *)a3;
-- (void)update:(double)a3 visibility:(double)a4 layer:(id)a5 renderParams:(id *)a6;
+- (void)setBounds:(CGRect)bounds;
+- (void)setLayerParent:(id)parent;
+- (void)setOpacity:(float)opacity;
+- (void)setPosition:(CGPoint)position;
+- (void)setTransform:(CATransform3D *)transform;
+- (void)update:(double)update visibility:(double)visibility layer:(id)layer renderParams:(id *)params;
 @end
 
 @implementation ARCoachingDeviceController
@@ -23,12 +23,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CALayer *)self->_deviceLayer setBounds:?];
   [(CALayer *)self->_holeLayer setBounds:x, y, width, height];
   deviceMaskLayer = self->_deviceMaskLayer;
@@ -59,10 +59,10 @@
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(CALayer *)self->_deviceLayer setPosition:?];
   holeLayer = self->_holeLayer;
 
@@ -88,37 +88,37 @@
   return result;
 }
 
-- (void)setTransform:(CATransform3D *)a3
+- (void)setTransform:(CATransform3D *)transform
 {
-  v5 = *&a3->m33;
-  v17 = *&a3->m31;
+  v5 = *&transform->m33;
+  v17 = *&transform->m31;
   v18 = v5;
-  v6 = *&a3->m43;
-  v19 = *&a3->m41;
+  v6 = *&transform->m43;
+  v19 = *&transform->m41;
   v20 = v6;
-  v7 = *&a3->m13;
-  v13 = *&a3->m11;
+  v7 = *&transform->m13;
+  v13 = *&transform->m11;
   v14 = v7;
-  v8 = *&a3->m23;
-  v15 = *&a3->m21;
+  v8 = *&transform->m23;
+  v15 = *&transform->m21;
   v16 = v8;
   [(CALayer *)self->_deviceLayer setTransform:&v13];
-  v9 = *&a3->m33;
-  v17 = *&a3->m31;
+  v9 = *&transform->m33;
+  v17 = *&transform->m31;
   v18 = v9;
-  v10 = *&a3->m43;
-  v19 = *&a3->m41;
+  v10 = *&transform->m43;
+  v19 = *&transform->m41;
   v20 = v10;
-  v11 = *&a3->m13;
-  v13 = *&a3->m11;
+  v11 = *&transform->m13;
+  v13 = *&transform->m11;
   v14 = v11;
-  v12 = *&a3->m23;
-  v15 = *&a3->m21;
+  v12 = *&transform->m23;
+  v15 = *&transform->m21;
   v16 = v12;
   [(CALayer *)self->_holeLayer setTransform:&v13];
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
   [(CALayer *)self->_deviceLayer setOpacity:?];
   holeLayer = self->_holeLayer;
@@ -129,56 +129,56 @@
     holeLayer = self->_holeLayer;
   }
 
-  *&v5 = a3;
+  *&v5 = opacity;
 
   [(CALayer *)holeLayer setOpacity:v5];
 }
 
-- (ARCoachingDeviceController)initWithDeviceMaskImage:(id)a3 solidColor:(id)a4 geoTrackingMode:(BOOL)a5
+- (ARCoachingDeviceController)initWithDeviceMaskImage:(id)image solidColor:(id)color geoTrackingMode:(BOOL)mode
 {
-  v8 = a3;
-  v9 = a4;
+  imageCopy = image;
+  colorCopy = color;
   v25.receiver = self;
   v25.super_class = ARCoachingDeviceController;
   v10 = [(ARCoachingDeviceController *)&v25 init];
   if (v10)
   {
-    v11 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     holeLayer = v10->_holeLayer;
-    v10->_holeLayer = v11;
+    v10->_holeLayer = layer;
 
     [(CALayer *)v10->_holeLayer setCompositingFilter:*MEMORY[0x277CDA598]];
-    -[CALayer setBackgroundColor:](v10->_holeLayer, "setBackgroundColor:", [v9 CGColor]);
+    -[CALayer setBackgroundColor:](v10->_holeLayer, "setBackgroundColor:", [colorCopy CGColor]);
     [(CALayer *)v10->_holeLayer setCornerRadius:8.0];
     v13 = *MEMORY[0x277CDA138];
     [(CALayer *)v10->_holeLayer setCornerCurve:*MEMORY[0x277CDA138]];
-    v14 = [MEMORY[0x277CD9ED0] layer];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
     deviceLayer = v10->_deviceLayer;
-    v10->_deviceLayer = v14;
+    v10->_deviceLayer = layer2;
 
-    v10->_geoTrackingMode = a5;
-    if (v8)
+    v10->_geoTrackingMode = mode;
+    if (imageCopy)
     {
-      v16 = [MEMORY[0x277CD9ED0] layer];
+      layer3 = [MEMORY[0x277CD9ED0] layer];
       deviceMaskLayer = v10->_deviceMaskLayer;
-      v10->_deviceMaskLayer = v16;
+      v10->_deviceMaskLayer = layer3;
 
-      -[CALayer setContents:](v10->_deviceMaskLayer, "setContents:", [v8 CGImage]);
+      -[CALayer setContents:](v10->_deviceMaskLayer, "setContents:", [imageCopy CGImage]);
       [(CALayer *)v10->_deviceMaskLayer setAllowsEdgeAntialiasing:1];
       [(CALayer *)v10->_deviceLayer setMask:v10->_deviceMaskLayer];
-      v18 = [MEMORY[0x277D75348] whiteColor];
-      -[CALayer setBackgroundColor:](v10->_deviceLayer, "setBackgroundColor:", [v18 CGColor]);
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      -[CALayer setBackgroundColor:](v10->_deviceLayer, "setBackgroundColor:", [whiteColor CGColor]);
 
-      [v8 size];
+      [imageCopy size];
       v20 = v19;
-      [v8 size];
+      [imageCopy size];
       v22 = v20 / v21;
     }
 
     else
     {
-      v23 = [MEMORY[0x277D75348] whiteColor];
-      -[CALayer setBorderColor:](v10->_deviceLayer, "setBorderColor:", [v23 CGColor]);
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      -[CALayer setBorderColor:](v10->_deviceLayer, "setBorderColor:", [whiteColor2 CGColor]);
 
       [(CALayer *)v10->_deviceLayer setBorderWidth:2.0];
       [(CALayer *)v10->_deviceLayer setCornerRadius:8.0];
@@ -192,19 +192,19 @@
   return v10;
 }
 
-- (void)update:(double)a3 visibility:(double)a4 layer:(id)a5 renderParams:(id *)a6
+- (void)update:(double)update visibility:(double)visibility layer:(id)layer renderParams:(id *)params
 {
-  v10 = a5;
-  [v10 bounds];
+  layerCopy = layer;
+  [layerCopy bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  *&v11 = a3;
+  *&v11 = update;
   v19 = cosf(*&v11);
   if (self->_geoTrackingMode)
   {
-    v20 = a3 * 0.25 * 3.14159265 + a3 * 0.25 * 3.14159265;
+    v20 = update * 0.25 * 3.14159265 + update * 0.25 * 3.14159265;
     v19 = sinf(v20);
   }
 
@@ -236,21 +236,21 @@
   v61.m34 = -1.0 / (v18 * 0.615763547);
   [(ARCoachingDeviceController *)self setTransform:&v61];
   [(ARCoachingDeviceController *)self transform];
-  CATransform3DRotate(&v60, &v61, a6->var0 * 3.14159265 / 180.0, 0.0, 1.0, 0.0);
+  CATransform3DRotate(&v60, &v61, params->var0 * 3.14159265 / 180.0, 0.0, 1.0, 0.0);
   v61 = v60;
   [(ARCoachingDeviceController *)self setTransform:&v61];
-  v27 = a4 * 0.7 + 0.3;
+  v27 = visibility * 0.7 + 0.3;
   [(ARCoachingDeviceController *)self transform];
   CATransform3DScale(&v59, &v61, v27, v27, 1.0);
   v61 = v59;
   [(ARCoachingDeviceController *)self setTransform:&v61];
-  v28 = a6->var1 + (v21 * 0.25133);
+  v28 = params->var1 + (v21 * 0.25133);
   v30 = __sincosf_stret(v28);
   v31 = (1.0 - v30.__cosval) / -0.0314168334 + 1.0;
-  var2 = a6->var2;
+  var2 = params->var2;
   v33 = v18 * 0.04618 * v31 * var2 + v18 * 0.04618;
-  v34 = a4 * 0.4 + 0.6;
-  v35 = (a6->var3 * v22) + v18 * 0.15 * v34;
+  v34 = visibility * 0.4 + 0.6;
+  v35 = (params->var3 * v22) + v18 * 0.15 * v34;
   v36 = v34 * (v18 * 0.182 * (v30.__sinval / 0.24869)) * var2;
   if (self->_geoTrackingMode)
   {
@@ -318,10 +318,10 @@
   *&v61.m21 = v40;
   *&v61.m23 = v41;
   [(ARCoachingDeviceController *)self setTransform:&v61];
-  v42 = a4;
-  *&v43 = v42 * v42;
+  visibilityCopy = visibility;
+  *&v43 = visibilityCopy * visibilityCopy;
   [(ARCoachingDeviceController *)self setOpacity:v43];
-  [v10 contentsScale];
+  [layerCopy contentsScale];
   v45 = v44;
 
   [(CALayer *)self->_deviceMaskLayer setContentsScale:v45];
@@ -352,13 +352,13 @@
   [MEMORY[0x277CD9FF0] setDisableActions:0];
 }
 
-- (void)setLayerParent:(id)a3
+- (void)setLayerParent:(id)parent
 {
   holeLayer = self->_holeLayer;
-  v5 = a3;
-  [v5 addSublayer:holeLayer];
-  [v5 addSublayer:self->_shineLayer];
-  [v5 addSublayer:self->_deviceLayer];
+  parentCopy = parent;
+  [parentCopy addSublayer:holeLayer];
+  [parentCopy addSublayer:self->_shineLayer];
+  [parentCopy addSublayer:self->_deviceLayer];
 }
 
 @end

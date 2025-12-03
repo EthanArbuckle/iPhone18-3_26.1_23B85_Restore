@@ -1,22 +1,22 @@
 @interface PlaybackSpeedResolutionResult
-+ (id)confirmationRequiredWithPlaybackSpeedToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithPlaybackSpeedsToDisambiguate:(id)a3;
-+ (id)successWithResolvedPlaybackSpeed:(id)a3;
++ (id)confirmationRequiredWithPlaybackSpeedToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithPlaybackSpeedsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedPlaybackSpeed:(id)speed;
 @end
 
 @implementation PlaybackSpeedResolutionResult
 
-+ (id)successWithResolvedPlaybackSpeed:(id)a3
++ (id)successWithResolvedPlaybackSpeed:(id)speed
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B33438(v4);
+  speedCopy = speed;
+  v5 = sub_268B33438(speedCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithPlaybackSpeedsToDisambiguate:(id)a3
++ (id)disambiguationWithPlaybackSpeedsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for PlaybackSpeed();
   v3 = sub_268B37CF4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithPlaybackSpeedToConfirm:(id)a3
++ (id)confirmationRequiredWithPlaybackSpeedToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B33650(a3);
+  confirmCopy = confirm;
+  v5 = sub_268B33650(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_268B2CDF4();
   sub_268B37CF4();

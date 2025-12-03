@@ -1,20 +1,20 @@
 @interface RWIProtocolCSSGrouping
 - (NSString)sourceURL;
 - (NSString)text;
-- (RWIProtocolCSSGrouping)initWithType:(int64_t)a3;
+- (RWIProtocolCSSGrouping)initWithType:(int64_t)type;
 - (RWIProtocolCSSRuleId)ruleId;
 - (RWIProtocolCSSSourceRange)range;
 - (int64_t)type;
-- (void)setRange:(id)a3;
-- (void)setRuleId:(id)a3;
-- (void)setSourceURL:(id)a3;
-- (void)setText:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)setRange:(id)range;
+- (void)setRuleId:(id)id;
+- (void)setSourceURL:(id)l;
+- (void)setText:(id)text;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation RWIProtocolCSSGrouping
 
-- (RWIProtocolCSSGrouping)initWithType:(int64_t)a3
+- (RWIProtocolCSSGrouping)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = RWIProtocolCSSGrouping;
@@ -22,14 +22,14 @@
   v5 = v4;
   if (v4)
   {
-    [(RWIProtocolCSSGrouping *)v4 setType:a3];
+    [(RWIProtocolCSSGrouping *)v4 setType:type];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   Inspector::toProtocolString();
   if (v6)
@@ -97,11 +97,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setRuleId:(id)a3
+- (void)setRuleId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSGrouping;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"ruleId"];
+  [(RWIProtocolJSONObject *)&v3 setObject:id forKey:@"ruleId"];
 }
 
 - (RWIProtocolCSSRuleId)ruleId
@@ -159,11 +159,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSGrouping;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"text"];
+  [(RWIProtocolJSONObject *)&v3 setString:text forKey:@"text"];
 }
 
 - (NSString)text
@@ -175,11 +175,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setSourceURL:(id)a3
+- (void)setSourceURL:(id)l
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSGrouping;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"sourceURL"];
+  [(RWIProtocolJSONObject *)&v3 setString:l forKey:@"sourceURL"];
 }
 
 - (NSString)sourceURL
@@ -191,11 +191,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setRange:(id)a3
+- (void)setRange:(id)range
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSGrouping;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"range"];
+  [(RWIProtocolJSONObject *)&v3 setObject:range forKey:@"range"];
 }
 
 - (RWIProtocolCSSSourceRange)range

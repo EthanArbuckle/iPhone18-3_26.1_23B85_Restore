@@ -1,5 +1,5 @@
 @interface ISRecordResourceProvider
-- (BOOL)_findTextResourceWithIconDictionary:(id)a3;
+- (BOOL)_findTextResourceWithIconDictionary:(id)dictionary;
 - (BOOL)_isApp;
 - (BOOL)_isAppClip;
 - (BOOL)_isAppLike;
@@ -9,15 +9,15 @@
 - (BOOL)iconStackResourcesAllowed;
 - (BOOL)shouldUseFolderRecipe;
 - (BOOL)treatLikeSymbol;
-- (ISRecordResourceProvider)initWithRecord:(id)a3 fileExtension:(id)a4 options:(unint64_t)a5;
+- (ISRecordResourceProvider)initWithRecord:(id)record fileExtension:(id)extension options:(unint64_t)options;
 - (id)description;
 - (id)iconResource;
-- (id)resourceNamed:(id)a3;
+- (id)resourceNamed:(id)named;
 - (void)_determineRecipe;
 - (void)assignLayerResources;
-- (void)configureProviderFromDescriptor:(id)a3;
+- (void)configureProviderFromDescriptor:(id)descriptor;
 - (void)resolveResources;
-- (void)setPlatformWithBundle:(id)a3;
+- (void)setPlatformWithBundle:(id)bundle;
 @end
 
 @implementation ISRecordResourceProvider
@@ -26,16 +26,16 @@
 {
   v6.receiver = self;
   v6.super_class = ISRecordResourceProvider;
-  v3 = [(ISResourceProvider *)&v6 iconResource];
-  if (!v3)
+  iconResource = [(ISResourceProvider *)&v6 iconResource];
+  if (!iconResource)
   {
     [(ISRecordResourceProvider *)self resolveResources];
     v5.receiver = self;
     v5.super_class = ISRecordResourceProvider;
-    v3 = [(ISResourceProvider *)&v5 iconResource];
+    iconResource = [(ISResourceProvider *)&v5 iconResource];
   }
 
-  return v3;
+  return iconResource;
 }
 
 - (void)resolveResources
@@ -46,7 +46,7 @@
     record = self->_record;
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(LSRecord *)self->_record iconResourceBundleURL];
+      iconResourceBundleURL = [(LSRecord *)self->_record iconResourceBundleURL];
     }
 
     else
@@ -76,16 +76,16 @@ LABEL_8:
           v8 = v7;
         }
 
-        v9 = [(LSRecord *)self->_record iconDictionary];
+        iconDictionary = [(LSRecord *)self->_record iconDictionary];
         v53 = v5;
-        v10 = [ISResourceProvider resourceWithBundleURL:v5 iconDictionary:v9 options:v8];
-        v11 = [(ISResourceProvider *)self resourcesByResourceKey];
-        [v11 setObject:v10 forKeyedSubscript:?];
+        v10 = [ISResourceProvider resourceWithBundleURL:v5 iconDictionary:iconDictionary options:v8];
+        resourcesByResourceKey = [(ISResourceProvider *)self resourcesByResourceKey];
+        [resourcesByResourceKey setObject:v10 forKeyedSubscript:?];
 
         v12 = +[ISDefaults sharedInstance];
-        v13 = [v12 isSolariumEnabled];
+        isSolariumEnabled = [v12 isSolariumEnabled];
 
-        if (v13)
+        if (isSolariumEnabled)
         {
           [(ISRecordResourceProvider *)self assignLayerResources];
         }
@@ -93,17 +93,17 @@ LABEL_8:
         v14 = self->_record;
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        [(ISRecordResourceProvider *)self _findTextResourceWithIconDictionary:v9];
+        [(ISRecordResourceProvider *)self _findTextResourceWithIconDictionary:iconDictionary];
         [(ISRecordResourceProvider *)self setPlatformWithBundle:v6];
-        v16 = [(ISRecordResourceProvider *)self record];
-        v17 = [(ISResourceProvider *)self _findBadgeResourceWithIconDictionary:v9 bundle:v6 record:v16];
+        record = [(ISRecordResourceProvider *)self record];
+        v17 = [(ISResourceProvider *)self _findBadgeResourceWithIconDictionary:iconDictionary bundle:v6 record:record];
 
-        v18 = [(ISResourceProvider *)self _findBackgroundResourceWithIconDictionary:v9 bundle:v6];
+        v18 = [(ISResourceProvider *)self _findBackgroundResourceWithIconDictionary:iconDictionary bundle:v6];
         if (!v17 && !v18)
         {
-          v19 = [(ISResourceProvider *)self badgeResource];
+          badgeResource = [(ISResourceProvider *)self badgeResource];
 
-          if (!v19)
+          if (!badgeResource)
           {
             if ((isKindOfClass & 1) == 0 || (v20 = v10) == 0)
             {
@@ -111,11 +111,11 @@ LABEL_8:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v22 = [(LSRecord *)self->_record declaringBundleRecord];
+                declaringBundleRecord = [(LSRecord *)self->_record declaringBundleRecord];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v20 = [ISResourceProvider resourceWithRecord:v22 options:0];
+                  v20 = [ISResourceProvider resourceWithRecord:declaringBundleRecord options:0];
                 }
 
                 else
@@ -130,30 +130,30 @@ LABEL_8:
               }
             }
 
-            v23 = [(ISResourceProvider *)self resourcesByResourceKey];
-            [v23 setObject:v20 forKeyedSubscript:@"kISBadgeResourceKey"];
+            resourcesByResourceKey2 = [(ISResourceProvider *)self resourcesByResourceKey];
+            [resourcesByResourceKey2 setObject:v20 forKeyedSubscript:@"kISBadgeResourceKey"];
           }
         }
 
         [(ISRecordResourceProvider *)self _determineRecipe];
-        v24 = [(ISResourceProvider *)self _findCustomRecipeWithIconDictionary:v9 bundle:v6];
-        v25 = [(ISResourceProvider *)self resourcesByResourceKey];
+        v24 = [(ISResourceProvider *)self _findCustomRecipeWithIconDictionary:iconDictionary bundle:v6];
+        resourcesByResourceKey3 = [(ISResourceProvider *)self resourcesByResourceKey];
         v52 = v10;
-        if (![v25 count] && !v24)
+        if (![resourcesByResourceKey3 count] && !v24)
         {
           v26 = self->_record;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v27 = [(LSRecord *)self->_record containingBundleRecord];
+            containingBundleRecord = [(LSRecord *)self->_record containingBundleRecord];
             objc_opt_class();
             v28 = objc_opt_isKindOfClass();
 
             if ((v28 & 1) == 0)
             {
 LABEL_36:
-              v33 = [(ISResourceProvider *)self resourcesByResourceKey];
-              if ([v33 count] != 0 || v24 || (v34 = self->_record, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+              resourcesByResourceKey4 = [(ISResourceProvider *)self resourcesByResourceKey];
+              if ([resourcesByResourceKey4 count] != 0 || v24 || (v34 = self->_record, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
 
                 v36 = v53;
@@ -161,13 +161,13 @@ LABEL_36:
 
               else
               {
-                v35 = [(LSRecord *)self->_record isDeclared];
+                isDeclared = [(LSRecord *)self->_record isDeclared];
 
                 v36 = v53;
-                if (v35)
+                if (isDeclared)
                 {
-                  v37 = [(LSRecord *)self->_record iconDictionary];
-                  v38 = [v37 _IF_stringForKey:@"UTTypeSymbolName"];
+                  iconDictionary2 = [(LSRecord *)self->_record iconDictionary];
+                  v38 = [iconDictionary2 _IF_stringForKey:@"UTTypeSymbolName"];
 
                   if (v38)
                   {
@@ -178,7 +178,7 @@ LABEL_36:
                     v54[3] = &unk_1E77C6758;
                     v55 = v53;
                     v56 = v38;
-                    v57 = self;
+                    selfCopy = self;
                     [(LSRecord *)v39 enumeratePedigreeWithBlock:v54];
                   }
                 }
@@ -195,8 +195,8 @@ LABEL_36:
                 [(ISResourceProvider *)self setSuggestedRecipe:v40];
               }
 
-              v41 = [(ISResourceProvider *)self resourcesByResourceKey];
-              v42 = [v41 count] != 0 || v24;
+              resourcesByResourceKey5 = [(ISResourceProvider *)self resourcesByResourceKey];
+              v42 = [resourcesByResourceKey5 count] != 0 || v24;
 
               if (v42)
               {
@@ -209,10 +209,10 @@ LABEL_36:
               {
                 v44 = MEMORY[0x1E6982CB0];
 LABEL_57:
-                v49 = [*v44 identifier];
-                v50 = [ISResourceProvider resourceWithTypeIdentifier:v49 options:0];
-                v51 = [(ISResourceProvider *)self resourcesByResourceKey];
-                [v51 setObject:v50 forKeyedSubscript:@"kISPrimaryResourceKey"];
+                identifier = [*v44 identifier];
+                resourcesByResourceKey7 = [ISResourceProvider resourceWithTypeIdentifier:identifier options:0];
+                resourcesByResourceKey6 = [(ISResourceProvider *)self resourcesByResourceKey];
+                [resourcesByResourceKey6 setObject:resourcesByResourceKey7 forKeyedSubscript:@"kISPrimaryResourceKey"];
 
                 goto LABEL_58;
               }
@@ -228,7 +228,7 @@ LABEL_57:
               {
                 v47 = self->_record;
                 objc_opt_class();
-                if ((objc_opt_isKindOfClass() & 1) == 0 || ([v9 _IF_dictionaryForKey:0x1F1A4EC00], v48 = objc_claimAutoreleasedReturnValue(), v48, !v48))
+                if ((objc_opt_isKindOfClass() & 1) == 0 || ([iconDictionary _IF_dictionaryForKey:0x1F1A4EC00], v48 = objc_claimAutoreleasedReturnValue(), v48, !v48))
                 {
                   v44 = MEMORY[0x1E6982D60];
                   goto LABEL_57;
@@ -237,24 +237,24 @@ LABEL_57:
                 v46 = +[ISGraphicSymbolResource defaultResource];
               }
 
-              v49 = v46;
-              v50 = [(ISResourceProvider *)self resourcesByResourceKey];
-              [v50 setObject:v49 forKeyedSubscript:@"kISPrimaryResourceKey"];
+              identifier = v46;
+              resourcesByResourceKey7 = [(ISResourceProvider *)self resourcesByResourceKey];
+              [resourcesByResourceKey7 setObject:identifier forKeyedSubscript:@"kISPrimaryResourceKey"];
 LABEL_58:
 
 LABEL_59:
               return;
             }
 
-            v25 = [(LSRecord *)self->_record containingBundleRecord];
-            v29 = [v25 URL];
-            v30 = [v25 iconDictionary];
-            v31 = [ISResourceProvider resourceWithBundleURL:v29 iconDictionary:v30 options:v8];
+            resourcesByResourceKey3 = [(LSRecord *)self->_record containingBundleRecord];
+            v29 = [resourcesByResourceKey3 URL];
+            iconDictionary3 = [resourcesByResourceKey3 iconDictionary];
+            v31 = [ISResourceProvider resourceWithBundleURL:v29 iconDictionary:iconDictionary3 options:v8];
 
             if (v31)
             {
-              v32 = [(ISResourceProvider *)self resourcesByResourceKey];
-              [v32 setObject:v31 forKeyedSubscript:@"kISPrimaryResourceKey"];
+              resourcesByResourceKey8 = [(ISResourceProvider *)self resourcesByResourceKey];
+              [resourcesByResourceKey8 setObject:v31 forKeyedSubscript:@"kISPrimaryResourceKey"];
             }
           }
         }
@@ -262,10 +262,10 @@ LABEL_59:
         goto LABEL_36;
       }
 
-      v4 = [(LSRecord *)self->_record URL];
+      iconResourceBundleURL = [(LSRecord *)self->_record URL];
     }
 
-    v5 = v4;
+    v5 = iconResourceBundleURL;
     goto LABEL_8;
   }
 }
@@ -282,7 +282,7 @@ LABEL_59:
 
 - (BOOL)_isApp
 {
-  v2 = [(ISRecordResourceProvider *)self record];
+  record = [(ISRecordResourceProvider *)self record];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -291,12 +291,12 @@ LABEL_59:
 
 - (BOOL)_isAppLike
 {
-  v3 = [(ISRecordResourceProvider *)self record];
+  record = [(ISRecordResourceProvider *)self record];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(ISRecordResourceProvider *)self record];
-    v5 = [v4 conformsToTypeIdentifier:@"com.apple.application-icon"];
+    record2 = [(ISRecordResourceProvider *)self record];
+    v5 = [record2 conformsToTypeIdentifier:@"com.apple.application-icon"];
   }
 
   else
@@ -310,28 +310,28 @@ LABEL_59:
 - (void)assignLayerResources
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v3 = [(ISRecordResourceProvider *)self record];
+  record = [(ISRecordResourceProvider *)self record];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(ISRecordResourceProvider *)self record];
+    record2 = [(ISRecordResourceProvider *)self record];
 
-    if (v4 && [(ISRecordResourceProvider *)self _isFolder])
+    if (record2 && [(ISRecordResourceProvider *)self _isFolder])
     {
-      v28 = v4;
+      v28 = record2;
       v5 = MEMORY[0x1E69636B0];
-      v6 = [*MEMORY[0x1E6982DC8] identifier];
-      v7 = [v5 typeRecordWithIdentifier:v6];
+      identifier = [*MEMORY[0x1E6982DC8] identifier];
+      v7 = [v5 typeRecordWithIdentifier:identifier];
 
       v27 = v7;
-      v8 = [v7 iconDictionary];
-      v9 = [v8 _IF_dictionaryForKey:@"ISLayers"];
+      iconDictionary = [v7 iconDictionary];
+      v9 = [iconDictionary _IF_dictionaryForKey:@"ISLayers"];
       v10 = [v9 _IF_arrayForKey:@"ISTypeIdentifiers"];
 
       if (v10 && [v10 count])
       {
-        v11 = [(ISResourceProvider *)self resourcesByResourceKey];
-        [v11 setObject:0 forKeyedSubscript:@"kISPrimaryResourceKey"];
+        resourcesByResourceKey = [(ISResourceProvider *)self resourcesByResourceKey];
+        [resourcesByResourceKey setObject:0 forKeyedSubscript:@"kISPrimaryResourceKey"];
       }
 
       v29[0] = @"kISPrimaryResourceKey";
@@ -352,17 +352,17 @@ LABEL_59:
             break;
           }
 
-          v17 = [(ISResourceProvider *)self iconConfig];
+          iconConfig = [(ISResourceProvider *)self iconConfig];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             goto LABEL_15;
           }
 
-          v18 = [(ISResourceProvider *)self iconConfig];
-          v19 = [v18 folderEmpty];
+          iconConfig2 = [(ISResourceProvider *)self iconConfig];
+          folderEmpty = [iconConfig2 folderEmpty];
 
-          if ((v19 & 1) == 0)
+          if ((folderEmpty & 1) == 0)
           {
             break;
           }
@@ -375,9 +375,9 @@ LABEL_16:
           }
         }
 
-        v20 = [v16 iconResourceBundleURL];
-        v21 = [v16 iconDictionary];
-        v17 = [ISResourceProvider resourceWithBundleURL:v20 iconDictionary:v21 options:0];
+        iconResourceBundleURL = [v16 iconResourceBundleURL];
+        iconDictionary2 = [v16 iconDictionary];
+        iconConfig = [ISResourceProvider resourceWithBundleURL:iconResourceBundleURL iconDictionary:iconDictionary2 options:0];
 
         v22 = [v12 count];
         v23 = v13;
@@ -387,8 +387,8 @@ LABEL_16:
         }
 
         v24 = [v12 objectAtIndexedSubscript:v23];
-        v25 = [(ISResourceProvider *)self resourcesByResourceKey];
-        [v25 setObject:v17 forKeyedSubscript:v24];
+        resourcesByResourceKey2 = [(ISResourceProvider *)self resourcesByResourceKey];
+        [resourcesByResourceKey2 setObject:iconConfig forKeyedSubscript:v24];
 
 LABEL_15:
         goto LABEL_16;
@@ -396,14 +396,14 @@ LABEL_15:
 
 LABEL_17:
 
-      v4 = v28;
+      record2 = v28;
     }
   }
 
   else
   {
 
-    v4 = 0;
+    record2 = 0;
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -412,14 +412,14 @@ LABEL_17:
 - (void)_determineRecipe
 {
   v3 = +[ISDefaults sharedInstance];
-  v4 = [v3 isSolariumEnabled];
+  isSolariumEnabled = [v3 isSolariumEnabled];
 
-  if (!v4)
+  if (!isSolariumEnabled)
   {
     return;
   }
 
-  v5 = [(ISRecordResourceProvider *)self record];
+  record = [(ISRecordResourceProvider *)self record];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -428,20 +428,20 @@ LABEL_17:
     return;
   }
 
-  v18 = [(ISRecordResourceProvider *)self record];
+  record2 = [(ISRecordResourceProvider *)self record];
   if ([(ISRecordResourceProvider *)self shouldUseFolderRecipe])
   {
     v7 = objc_opt_new();
-    v8 = [(ISResourceProvider *)self resourcesByResourceKey];
-    v9 = [v8 objectForKey:@"kISSecondaryResourceKey"];
+    resourcesByResourceKey = [(ISResourceProvider *)self resourcesByResourceKey];
+    v9 = [resourcesByResourceKey objectForKey:@"kISSecondaryResourceKey"];
     if (v9)
     {
     }
 
     else
     {
-      v10 = [(ISResourceProvider *)self resourcesByResourceKey];
-      v11 = [v10 objectForKey:@"kISTertiaryResourceKey"];
+      resourcesByResourceKey2 = [(ISResourceProvider *)self resourcesByResourceKey];
+      v11 = [resourcesByResourceKey2 objectForKey:@"kISTertiaryResourceKey"];
 
       if (!v11)
       {
@@ -449,7 +449,7 @@ LABEL_17:
       }
     }
 
-    v12 = [(ISResourceProvider *)self iconConfig];
+    iconConfig = [(ISResourceProvider *)self iconConfig];
     objc_opt_class();
     v13 = objc_opt_isKindOfClass();
 
@@ -458,21 +458,21 @@ LABEL_17:
       goto LABEL_16;
     }
 
-    v14 = [(ISResourceProvider *)self iconConfig];
-    if ([v14 hasTint])
+    iconConfig2 = [(ISResourceProvider *)self iconConfig];
+    if ([iconConfig2 hasTint])
     {
-      v15 = [*MEMORY[0x1E6982DC8] identifier];
-      if ([v18 conformsToTypeIdentifier:v15])
+      identifier = [*MEMORY[0x1E6982DC8] identifier];
+      if ([record2 conformsToTypeIdentifier:identifier])
       {
 
 LABEL_14:
-        v17 = [v14 resolvedTintColorForAppearance:0];
+        v17 = [iconConfig2 resolvedTintColorForAppearance:0];
         [v7 setTintColor:v17];
 
         goto LABEL_15;
       }
 
-      v16 = [v18 conformsToTypeIdentifier:@"com.apple.icon-package-attribute.tintable"];
+      v16 = [record2 conformsToTypeIdentifier:@"com.apple.icon-package-attribute.tintable"];
 
       if (v16)
       {
@@ -490,21 +490,21 @@ LABEL_16:
 - (BOOL)iconStackResourcesAllowed
 {
   v3 = +[ISDefaults sharedInstance];
-  v4 = [v3 iconStackAppIconsAllowed];
+  iconStackAppIconsAllowed = [v3 iconStackAppIconsAllowed];
 
-  if (!v4)
+  if (!iconStackAppIconsAllowed)
   {
     return 0;
   }
 
-  v5 = [(ISRecordResourceProvider *)self record];
+  record = [(ISRecordResourceProvider *)self record];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(ISRecordResourceProvider *)self record];
-    v7 = [v6 _IS_isMessagesExtension];
+    record2 = [(ISRecordResourceProvider *)self record];
+    _IS_isMessagesExtension = [record2 _IS_isMessagesExtension];
 
-    if (v7)
+    if (_IS_isMessagesExtension)
     {
       return 0;
     }
@@ -517,12 +517,12 @@ LABEL_16:
   return [(ISRecordResourceProvider *)self _shouldTreatLikeApp];
 }
 
-- (ISRecordResourceProvider)initWithRecord:(id)a3 fileExtension:(id)a4 options:(unint64_t)a5
+- (ISRecordResourceProvider)initWithRecord:(id)record fileExtension:(id)extension options:(unint64_t)options
 {
   v40[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if ([v9 _is_canProvideIconResources])
+  recordCopy = record;
+  extensionCopy = extension;
+  if ([recordCopy _is_canProvideIconResources])
   {
     v37.receiver = self;
     v37.super_class = ISRecordResourceProvider;
@@ -530,26 +530,26 @@ LABEL_16:
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_record, a3);
-      v13 = [v9 iconDictionary];
+      objc_storeStrong(&v11->_record, record);
+      iconDictionary = [recordCopy iconDictionary];
       v40[0] = @"UTTypeIconBadgeName";
       v40[1] = @"UTTypeIconText";
       v40[2] = @"UTTypeIconBackgroundName";
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:3];
-      v15 = [v13 _IF_stringForKeys:v14];
+      v15 = [iconDictionary _IF_stringForKeys:v14];
 
       if (v15)
       {
-        v16 = a5 | 2;
+        optionsCopy = options | 2;
       }
 
       else
       {
-        v16 = a5;
+        optionsCopy = options;
       }
 
-      v34 = v13;
-      v17 = [v13 _IF_dictionaryForKey:@"ISDocumentIconConfiguration"];
+      v34 = iconDictionary;
+      v17 = [iconDictionary _IF_dictionaryForKey:@"ISDocumentIconConfiguration"];
       v18 = v17;
       if (v17)
       {
@@ -558,17 +558,17 @@ LABEL_16:
         {
           v20 = v19;
           v21 = +[ISDefaults sharedInstance];
-          v22 = [v21 isSolariumEnabled];
+          isSolariumEnabled = [v21 isSolariumEnabled];
 
-          if (v22)
+          if (isSolariumEnabled)
           {
-            v16 |= 0xAuLL;
+            optionsCopy |= 0xAuLL;
           }
         }
       }
 
       v23 = MEMORY[0x1E6963688];
-      v39 = v9;
+      v39 = recordCopy;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
       v25 = [v23 _is_resourceTokenForRecords:v24];
 
@@ -579,26 +579,26 @@ LABEL_16:
       [(ISResourceProvider *)v12 setLsDatabaseSequenceNumber:v36];
       [(ISResourceProvider *)v12 setLsDatabaseUUID:v26];
       [(ISResourceProvider *)v12 setResourceToken:v25];
-      v27 = [v9 persistentIdentifier];
-      v38 = v27;
+      persistentIdentifier = [recordCopy persistentIdentifier];
+      v38 = persistentIdentifier;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
       [(ISResourceProvider *)v12 setSourceRecordIdentifiers:v28];
 
-      [(ISResourceProvider *)v12 setOptions:v16];
+      [(ISResourceProvider *)v12 setOptions:optionsCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v29 = [v9 _IS_platformToIFPlatform];
-        if (v29)
+        _IS_platformToIFPlatform = [recordCopy _IS_platformToIFPlatform];
+        if (_IS_platformToIFPlatform)
         {
-          [(ISResourceProvider *)v12 setPlatform:v29];
+          [(ISResourceProvider *)v12 setPlatform:_IS_platformToIFPlatform];
         }
       }
 
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && ([v9 _IS_allowsArbitraryExtensionAsText] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && objc_msgSend(v9, "isCoreType") && (+[ISDefaults sharedInstance](ISDefaults, "sharedInstance"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isSolariumEnabled"), v30, v31))
+      if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && ([recordCopy _IS_allowsArbitraryExtensionAsText] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && objc_msgSend(recordCopy, "isCoreType") && (+[ISDefaults sharedInstance](ISDefaults, "sharedInstance"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isSolariumEnabled"), v30, v31))
       {
-        objc_storeStrong(&v12->_fileExtension, a4);
+        objc_storeStrong(&v12->_fileExtension, extension);
       }
     }
   }
@@ -642,9 +642,9 @@ uint64_t __44__ISRecordResourceProvider_resolveResources__block_invoke(uint64_t 
     return 0;
   }
 
-  v3 = [(ISRecordResourceProvider *)self record];
-  v4 = [v3 appClipMetadata];
-  v5 = v4 != 0;
+  record = [(ISRecordResourceProvider *)self record];
+  appClipMetadata = [record appClipMetadata];
+  v5 = appClipMetadata != 0;
 
   return v5;
 }
@@ -656,7 +656,7 @@ uint64_t __44__ISRecordResourceProvider_resolveResources__block_invoke(uint64_t 
     return 1;
   }
 
-  v4 = [(ISRecordResourceProvider *)self record];
+  record = [(ISRecordResourceProvider *)self record];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -665,15 +665,15 @@ uint64_t __44__ISRecordResourceProvider_resolveResources__block_invoke(uint64_t 
     return 0;
   }
 
-  v6 = [(ISRecordResourceProvider *)self record];
-  v7 = [v6 conformsToTypeIdentifier:@"com.apple.icon-package.folder"];
+  record2 = [(ISRecordResourceProvider *)self record];
+  v7 = [record2 conformsToTypeIdentifier:@"com.apple.icon-package.folder"];
 
   return v7;
 }
 
 - (BOOL)_isFolder
 {
-  v3 = [(ISRecordResourceProvider *)self record];
+  record = [(ISRecordResourceProvider *)self record];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -682,16 +682,16 @@ uint64_t __44__ISRecordResourceProvider_resolveResources__block_invoke(uint64_t 
     return 0;
   }
 
-  v5 = [(ISRecordResourceProvider *)self record];
+  record2 = [(ISRecordResourceProvider *)self record];
   v6 = *MEMORY[0x1E6982DC8];
-  v7 = [*MEMORY[0x1E6982DC8] identifier];
-  v8 = [v5 conformsToTypeIdentifier:v7];
+  identifier = [*MEMORY[0x1E6982DC8] identifier];
+  v8 = [record2 conformsToTypeIdentifier:identifier];
 
   if (v8)
   {
-    v9 = [v5 identifier];
-    v10 = [v6 identifier];
-    v11 = [v9 isEqualToString:v10];
+    identifier2 = [record2 identifier];
+    identifier3 = [v6 identifier];
+    v11 = [identifier2 isEqualToString:identifier3];
 
     if (v11)
     {
@@ -700,8 +700,8 @@ uint64_t __44__ISRecordResourceProvider_resolveResources__block_invoke(uint64_t 
 
     else
     {
-      v13 = [v5 iconDictionary];
-      v14 = [v13 objectForKey:@"ISFolderIconConfiguration"];
+      iconDictionary = [record2 iconDictionary];
+      v14 = [iconDictionary objectForKey:@"ISFolderIconConfiguration"];
       v12 = v14 != 0;
     }
   }
@@ -714,12 +714,12 @@ uint64_t __44__ISRecordResourceProvider_resolveResources__block_invoke(uint64_t 
   return v12;
 }
 
-- (void)configureProviderFromDescriptor:(id)a3
+- (void)configureProviderFromDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   if (![(ISRecordResourceProvider *)self _shouldTreatLikeApp])
   {
-    v5 = [(ISResourceProvider *)self suggestedRecipe];
+    suggestedRecipe = [(ISResourceProvider *)self suggestedRecipe];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -727,15 +727,15 @@ uint64_t __44__ISRecordResourceProvider_resolveResources__block_invoke(uint64_t 
       goto LABEL_11;
     }
 
-    if ([v4 appearance] == 1)
+    if ([descriptorCopy appearance] == 1)
     {
     }
 
     else
     {
-      v6 = [v4 appearance];
+      appearance = [descriptorCopy appearance];
 
-      if (v6 != 2)
+      if (appearance != 2)
       {
         goto LABEL_11;
       }
@@ -747,7 +747,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v4 appearance] == 1 || objc_msgSend(v4, "appearance") == 2)
+  if ([descriptorCopy appearance] == 1 || objc_msgSend(descriptorCopy, "appearance") == 2)
   {
     goto LABEL_10;
   }
@@ -755,21 +755,21 @@ LABEL_10:
 LABEL_11:
   v7.receiver = self;
   v7.super_class = ISRecordResourceProvider;
-  [(ISResourceProvider *)&v7 configureProviderFromDescriptor:v4];
+  [(ISResourceProvider *)&v7 configureProviderFromDescriptor:descriptorCopy];
 }
 
-- (id)resourceNamed:(id)a3
+- (id)resourceNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v8.receiver = self;
   v8.super_class = ISRecordResourceProvider;
-  v5 = [(ISResourceProvider *)&v8 resourceNamed:v4];
+  v5 = [(ISResourceProvider *)&v8 resourceNamed:namedCopy];
   if (!v5)
   {
     [(ISRecordResourceProvider *)self resolveResources];
     v7.receiver = self;
     v7.super_class = ISRecordResourceProvider;
-    v5 = [(ISResourceProvider *)&v7 resourceNamed:v4];
+    v5 = [(ISResourceProvider *)&v7 resourceNamed:namedCopy];
   }
 
   return v5;
@@ -827,11 +827,11 @@ LABEL_9:
   return (objc_opt_isKindOfClass() & 1) != 0 && [(LSRecord *)self->_record developerType]== 1;
 }
 
-- (void)setPlatformWithBundle:(id)a3
+- (void)setPlatformWithBundle:(id)bundle
 {
   v3.receiver = self;
   v3.super_class = ISRecordResourceProvider;
-  [(ISResourceProvider *)&v3 setPlatformWithBundle:a3];
+  [(ISResourceProvider *)&v3 setPlatformWithBundle:bundle];
 }
 
 - (id)description
@@ -840,29 +840,29 @@ LABEL_9:
   v10.receiver = self;
   v10.super_class = ISRecordResourceProvider;
   v4 = [(ISRecordResourceProvider *)&v10 description];
-  v5 = [(ISRecordResourceProvider *)self record];
-  v6 = [(ISRecordResourceProvider *)self record];
-  v7 = [v6 iconDictionary];
-  v8 = [v3 stringWithFormat:@"%@ - %@ %@", v4, v5, v7];
+  record = [(ISRecordResourceProvider *)self record];
+  record2 = [(ISRecordResourceProvider *)self record];
+  iconDictionary = [record2 iconDictionary];
+  v8 = [v3 stringWithFormat:@"%@ - %@ %@", v4, record, iconDictionary];
 
   return v8;
 }
 
-- (BOOL)_findTextResourceWithIconDictionary:(id)a3
+- (BOOL)_findTextResourceWithIconDictionary:(id)dictionary
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[ISFolderIconConfiguration alloc] initWithIconDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[ISFolderIconConfiguration alloc] initWithIconDictionary:dictionaryCopy];
   v6 = +[ISDefaults sharedInstance];
-  v7 = [v6 isSolariumEnabled];
+  isSolariumEnabled = [v6 isSolariumEnabled];
 
-  if (v7 && ([(ISFolderIconConfiguration *)v5 emoji], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if (isSolariumEnabled && ([(ISFolderIconConfiguration *)v5 emoji], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v10 = [(ISFolderIconConfiguration *)v5 emoji];
-    v9 = [(ISResourceProvider *)self resourcesByResourceKey];
-    [v9 setObject:v10 forKeyedSubscript:@"kISTextResourceKey"];
+    emoji = [(ISFolderIconConfiguration *)v5 emoji];
+    resourcesByResourceKey = [(ISResourceProvider *)self resourcesByResourceKey];
+    [resourcesByResourceKey setObject:emoji forKeyedSubscript:@"kISTextResourceKey"];
 
-    LOBYTE(v10) = 1;
+    LOBYTE(emoji) = 1;
   }
 
   else
@@ -871,64 +871,64 @@ LABEL_9:
     v26[0] = @"UTTypeIconText";
     v26[1] = @"CFBundleIconText";
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
-    v12 = [v4 _IF_stringForKeys:v11];
-    v13 = [v12 uppercaseString];
+    v12 = [dictionaryCopy _IF_stringForKeys:v11];
+    uppercaseString = [v12 uppercaseString];
 
-    if (v13 && ![v13 isEqual:@"*"] || (-[ISRecordResourceProvider fileExtension](self, "fileExtension"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "uppercaseString"), v15 = objc_claimAutoreleasedReturnValue(), v13, v14, (v13 = v15) != 0))
+    if (uppercaseString && ![uppercaseString isEqual:@"*"] || (-[ISRecordResourceProvider fileExtension](self, "fileExtension"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "uppercaseString"), v15 = objc_claimAutoreleasedReturnValue(), uppercaseString, v14, (uppercaseString = v15) != 0))
     {
       if (![(ISRecordResourceProvider *)self _isFolder])
       {
-        v16 = [(ISResourceProvider *)self resourcesByResourceKey];
-        [v16 setObject:v13 forKeyedSubscript:@"kISTextResourceKey"];
+        resourcesByResourceKey2 = [(ISResourceProvider *)self resourcesByResourceKey];
+        [resourcesByResourceKey2 setObject:uppercaseString forKeyedSubscript:@"kISTextResourceKey"];
       }
     }
 
-    v17 = [(ISResourceProvider *)self iconConfig];
+    iconConfig = [(ISResourceProvider *)self iconConfig];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v19 = [(ISResourceProvider *)self iconConfig];
-      v20 = [v19 emoji];
+      iconConfig2 = [(ISResourceProvider *)self iconConfig];
+      emoji2 = [iconConfig2 emoji];
 
       v21 = +[ISDefaults sharedInstance];
-      v22 = [v21 isSolariumEnabled];
+      isSolariumEnabled2 = [v21 isSolariumEnabled];
 
-      if (v20)
+      if (emoji2)
       {
-        LODWORD(v10) = v22;
+        LODWORD(emoji) = isSolariumEnabled2;
       }
 
       else
       {
-        LODWORD(v10) = 0;
+        LODWORD(emoji) = 0;
       }
 
-      if (v10 == 1)
+      if (emoji == 1)
       {
-        v23 = [(ISResourceProvider *)self resourcesByResourceKey];
-        [v23 setObject:v20 forKeyedSubscript:@"kISTextResourceKey"];
+        resourcesByResourceKey3 = [(ISResourceProvider *)self resourcesByResourceKey];
+        [resourcesByResourceKey3 setObject:emoji2 forKeyedSubscript:@"kISTextResourceKey"];
       }
     }
 
     else
     {
-      LOBYTE(v10) = 0;
+      LOBYTE(emoji) = 0;
     }
   }
 
   v24 = *MEMORY[0x1E69E9840];
-  return v10;
+  return emoji;
 }
 
 - (BOOL)treatLikeSymbol
 {
-  v2 = [(ISRecordResourceProvider *)self record];
-  v3 = [v2 iconDictionary];
+  record = [(ISRecordResourceProvider *)self record];
+  iconDictionary = [record iconDictionary];
 
-  LOBYTE(v2) = [v3 _IF_BOOLForKey:@"ISSymbolTreatment"];
-  return v2;
+  LOBYTE(record) = [iconDictionary _IF_BOOLForKey:@"ISSymbolTreatment"];
+  return record;
 }
 
 @end

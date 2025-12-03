@@ -1,11 +1,11 @@
 @interface THNoteCardShapeLayout
 - (CGRect)frameForCulling;
-- (unsigned)textLayoutShouldIgnoreEquationAlignment:(id)a3;
+- (unsigned)textLayoutShouldIgnoreEquationAlignment:(id)alignment;
 @end
 
 @implementation THNoteCardShapeLayout
 
-- (unsigned)textLayoutShouldIgnoreEquationAlignment:(id)a3
+- (unsigned)textLayoutShouldIgnoreEquationAlignment:(id)alignment
 {
   objc_opt_class();
   [(THNoteCardShapeLayout *)self info];

@@ -9,27 +9,27 @@
   itemProvider = self->_itemProvider;
   if (!itemProvider)
   {
-    v4 = [(ICAttachmentActivityItemSource *)self attachment];
-    v5 = [v4 ic_permanentObjectID];
+    attachment = [(ICAttachmentActivityItemSource *)self attachment];
+    ic_permanentObjectID = [attachment ic_permanentObjectID];
 
-    v6 = [MEMORY[0x1E69B7800] sharedContext];
-    v7 = [v6 workerManagedObjectContext];
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__ICAttachmentImageActivityItemSource__resolveItemProvider__block_invoke;
     aBlock[3] = &unk_1E846D1B0;
-    v8 = v7;
+    v8 = workerManagedObjectContext;
     v36 = v8;
-    v9 = v5;
+    v9 = ic_permanentObjectID;
     v37 = v9;
     v10 = _Block_copy(aBlock);
-    v11 = [(ICAttachmentActivityItemSource *)self attachmentTypeUTI];
+    attachmentTypeUTI = [(ICAttachmentActivityItemSource *)self attachmentTypeUTI];
     v12 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-    v13 = [(ICAttachmentActivityItemSource *)self attachment];
-    v14 = [v13 isPasswordProtected];
+    attachment2 = [(ICAttachmentActivityItemSource *)self attachment];
+    isPasswordProtected = [attachment2 isPasswordProtected];
 
-    if (v14)
+    if (isPasswordProtected)
     {
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
@@ -37,7 +37,7 @@
       v33[3] = &unk_1E846D200;
       v15 = &v34;
       v34 = v10;
-      [(NSItemProvider *)v12 registerDataRepresentationForTypeIdentifier:v11 visibility:0 loadHandler:v33];
+      [(NSItemProvider *)v12 registerDataRepresentationForTypeIdentifier:attachmentTypeUTI visibility:0 loadHandler:v33];
     }
 
     else
@@ -49,24 +49,24 @@
       v15 = &v32;
       v16 = v10;
       v32 = v16;
-      [(NSItemProvider *)v12 registerFileRepresentationForTypeIdentifier:v11 fileOptions:0 visibility:0 loadHandler:v31];
-      v17 = [*MEMORY[0x1E6982DB8] identifier];
+      [(NSItemProvider *)v12 registerFileRepresentationForTypeIdentifier:attachmentTypeUTI fileOptions:0 visibility:0 loadHandler:v31];
+      identifier = [*MEMORY[0x1E6982DB8] identifier];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __59__ICAttachmentImageActivityItemSource__resolveItemProvider__block_invoke_7;
       v29[3] = &unk_1E846D250;
       v30 = v16;
-      [(NSItemProvider *)v12 registerItemForTypeIdentifier:v17 loadHandler:v29];
+      [(NSItemProvider *)v12 registerItemForTypeIdentifier:identifier loadHandler:v29];
     }
 
-    v18 = [*MEMORY[0x1E6982D60] identifier];
+    identifier2 = [*MEMORY[0x1E6982D60] identifier];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __59__ICAttachmentImageActivityItemSource__resolveItemProvider__block_invoke_9;
     v27[3] = &unk_1E846D250;
     v19 = v10;
     v28 = v19;
-    [(NSItemProvider *)v12 registerItemForTypeIdentifier:v18 loadHandler:v27];
+    [(NSItemProvider *)v12 registerItemForTypeIdentifier:identifier2 loadHandler:v27];
 
     v20 = objc_opt_class();
     v25[0] = MEMORY[0x1E69E9820];

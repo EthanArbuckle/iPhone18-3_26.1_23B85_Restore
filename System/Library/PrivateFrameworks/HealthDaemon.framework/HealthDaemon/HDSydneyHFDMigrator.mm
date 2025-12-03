@@ -1,27 +1,27 @@
 @interface HDSydneyHFDMigrator
-- (BOOL)migrateDataForHFDataStore:(id)a3 from:(const void *)a4 to:(void *)a5 recoveryAnalytics:(id)a6 error:(id *)a7;
-- (BOOL)migrateDataForHFDataStore:(id)a3 toSQLiteFrom:(const void *)a4 error:(id *)a5;
-- (HDSydneyHFDMigrator)initWithMigrationTransaction:(id)a3;
-- (id)allSeriesEntityClassesForDataStore:(id)a3;
-- (int64_t)migrateHFD:(id *)a3;
-- (void)HFDataStore:(id)a3 detectedCorruptionOfType:(int64_t)a4 code:(int)a5 error:(id)a6 shouldPromptUser:(BOOL)a7 initialRebuildState:(int64_t)a8 updatedRebuildState:(int64_t)a9;
-- (void)HFDataStoreDetectedOutOfSpace:(id)a3;
-- (void)didMigrateHFDataStore:(id)a3 fromState:(int64_t)a4 toState:(int64_t)a5 success:(BOOL)a6 error:(id)a7;
-- (void)requestRebuildTransactionForHFDataStore:(id)a3;
+- (BOOL)migrateDataForHFDataStore:(id)store from:(const void *)from to:(void *)to recoveryAnalytics:(id)analytics error:(id *)error;
+- (BOOL)migrateDataForHFDataStore:(id)store toSQLiteFrom:(const void *)from error:(id *)error;
+- (HDSydneyHFDMigrator)initWithMigrationTransaction:(id)transaction;
+- (id)allSeriesEntityClassesForDataStore:(id)store;
+- (int64_t)migrateHFD:(id *)d;
+- (void)HFDataStore:(id)store detectedCorruptionOfType:(int64_t)type code:(int)code error:(id)error shouldPromptUser:(BOOL)user initialRebuildState:(int64_t)state updatedRebuildState:(int64_t)rebuildState;
+- (void)HFDataStoreDetectedOutOfSpace:(id)space;
+- (void)didMigrateHFDataStore:(id)store fromState:(int64_t)state toState:(int64_t)toState success:(BOOL)success error:(id)error;
+- (void)requestRebuildTransactionForHFDataStore:(id)store;
 @end
 
 @implementation HDSydneyHFDMigrator
 
-- (HDSydneyHFDMigrator)initWithMigrationTransaction:(id)a3
+- (HDSydneyHFDMigrator)initWithMigrationTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v11.receiver = self;
   v11.super_class = HDSydneyHFDMigrator;
   v6 = [(HDSydneyHFDMigrator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transaction, a3);
+    objc_storeStrong(&v6->_transaction, transaction);
     v7->_corruptionRebuildCompleted = 0;
     verificationError = v7->_verificationError;
     v7->_verificationError = 0;
@@ -33,7 +33,7 @@
   return v7;
 }
 
-- (id)allSeriesEntityClassesForDataStore:(id)a3
+- (id)allSeriesEntityClassesForDataStore:(id)store
 {
   v6[2] = *MEMORY[0x277D85DE8];
   v6[0] = objc_opt_class();
@@ -44,25 +44,25 @@
   return v3;
 }
 
-- (void)HFDataStore:(id)a3 detectedCorruptionOfType:(int64_t)a4 code:(int)a5 error:(id)a6 shouldPromptUser:(BOOL)a7 initialRebuildState:(int64_t)a8 updatedRebuildState:(int64_t)a9
+- (void)HFDataStore:(id)store detectedCorruptionOfType:(int64_t)type code:(int)code error:(id)error shouldPromptUser:(BOOL)user initialRebuildState:(int64_t)state updatedRebuildState:(int64_t)rebuildState
 {
   v17 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  errorCopy = error;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC2A0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_INFO))
   {
     v13 = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v10;
+    v16 = errorCopy;
     _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_INFO, "%{public}@: Saw HFD corruption during migration to SQLite - %@", &v13, 0x16u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)HFDataStoreDetectedOutOfSpace:(id)a3
+- (void)HFDataStoreDetectedOutOfSpace:(id)space
 {
   _HKInitializeLogging();
   v3 = *MEMORY[0x277CCC2A0];
@@ -73,22 +73,22 @@
   }
 }
 
-- (void)didMigrateHFDataStore:(id)a3 fromState:(int64_t)a4 toState:(int64_t)a5 success:(BOOL)a6 error:(id)a7
+- (void)didMigrateHFDataStore:(id)store fromState:(int64_t)state toState:(int64_t)toState success:(BOOL)success error:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a7;
-  v13 = v12;
-  if (!a6)
+  storeCopy = store;
+  errorCopy = error;
+  v13 = errorCopy;
+  if (!success)
   {
-    if (v12)
+    if (errorCopy)
     {
-      v14 = v12;
+      v14 = errorCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CCA9B8] hk_error:122 format:{@"Migration failed at rebuild stage %ld without reporting an error.", a5}];
+      v14 = [MEMORY[0x277CCA9B8] hk_error:122 format:{@"Migration failed at rebuild stage %ld without reporting an error.", toState}];
     }
 
     migrationError = self->_migrationError;
@@ -96,8 +96,8 @@
   }
 
   v16 = self->_migrationError;
-  v17 = [(HDDatabaseMigrationTransaction *)self->_transaction delegate];
-  [v17 migrationTransaction:self->_transaction reportHFDMigrationStatus:v16 != 0 schemaVersion:a5 error:self->_migrationError];
+  delegate = [(HDDatabaseMigrationTransaction *)self->_transaction delegate];
+  [delegate migrationTransaction:self->_transaction reportHFDMigrationStatus:v16 != 0 schemaVersion:toState error:self->_migrationError];
 
   if (self->_migrationError)
   {
@@ -107,9 +107,9 @@
     {
       v19 = self->_migrationError;
       *buf = 138543874;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2048;
-      v26 = a5;
+      toStateCopy2 = toState;
       v27 = 2114;
       v28 = v19;
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "%{public}@: HFD reported migration to %ld with error: %{public}@", buf, 0x20u);
@@ -124,9 +124,9 @@
     {
       v21 = self->_migrationError;
       *buf = 138543874;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2048;
-      v26 = a5;
+      toStateCopy2 = toState;
       v27 = 2114;
       v28 = v21;
       _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: HFD reported migration to %ld with error: %{public}@", buf, 0x20u);
@@ -136,7 +136,7 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestRebuildTransactionForHFDataStore:(id)a3
+- (void)requestRebuildTransactionForHFDataStore:(id)store
 {
   v8 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -144,22 +144,22 @@
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_228986000, v4, OS_LOG_TYPE_ERROR, "%{public}@: HFD unexpectedly requested a rebuild transaction while rebuilding", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)migrateDataForHFDataStore:(id)a3 from:(const void *)a4 to:(void *)a5 recoveryAnalytics:(id)a6 error:(id *)a7
+- (BOOL)migrateDataForHFDataStore:(id)store from:(const void *)from to:(void *)to recoveryAnalytics:(id)analytics error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a6;
+  analyticsCopy = analytics;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [(HDSydneyHFDMigrator *)self allSeriesEntityClassesForDataStore:a3];
+  v10 = [(HDSydneyHFDMigrator *)self allSeriesEntityClassesForDataStore:store];
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -174,7 +174,7 @@
         }
 
         v19 = *(*(&v20 + 1) + 8 * i);
-        v18 = v9;
+        v18 = analyticsCopy;
         v14 = HKWithAutoreleasePool();
 
         if (!v14)
@@ -218,14 +218,14 @@ uint64_t __81__HDSydneyHFDMigrator_migrateDataForHFDataStore_from_to_recoveryAna
   return v8;
 }
 
-- (BOOL)migrateDataForHFDataStore:(id)a3 toSQLiteFrom:(const void *)a4 error:(id *)a5
+- (BOOL)migrateDataForHFDataStore:(id)store toSQLiteFrom:(const void *)from error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(HDSydneyHFDMigrator *)self allSeriesEntityClassesForDataStore:a3];
+  v5 = [(HDSydneyHFDMigrator *)self allSeriesEntityClassesForDataStore:store];
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -274,7 +274,7 @@ uint64_t __68__HDSydneyHFDMigrator_migrateDataForHFDataStore_toSQLiteFrom_error_
   return v6;
 }
 
-- (int64_t)migrateHFD:(id *)a3
+- (int64_t)migrateHFD:(id *)d
 {
   transaction = self->_transaction;
   v5[0] = MEMORY[0x277D85DD0];
@@ -282,7 +282,7 @@ uint64_t __68__HDSydneyHFDMigrator_migrateDataForHFDataStore_toSQLiteFrom_error_
   v5[2] = __34__HDSydneyHFDMigrator_migrateHFD___block_invoke;
   v5[3] = &unk_278625B40;
   v5[4] = self;
-  return [(HDDatabaseMigrationTransaction *)transaction accessHistoricHFDWithError:a3 block:v5];
+  return [(HDDatabaseMigrationTransaction *)transaction accessHistoricHFDWithError:d block:v5];
 }
 
 uint64_t __34__HDSydneyHFDMigrator_migrateHFD___block_invoke(uint64_t a1, void *a2, void *a3)

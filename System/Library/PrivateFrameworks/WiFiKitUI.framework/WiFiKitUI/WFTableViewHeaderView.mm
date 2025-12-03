@@ -1,21 +1,21 @@
 @interface WFTableViewHeaderView
 - (NSString)title;
-- (WFTableViewHeaderView)initWithReuseIdentifier:(id)a3;
+- (WFTableViewHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)_configureContents;
-- (void)setAnimating:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setTitle:(id)title;
 @end
 
 @implementation WFTableViewHeaderView
 
-- (WFTableViewHeaderView)initWithReuseIdentifier:(id)a3
+- (WFTableViewHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = WFTableViewHeaderView;
-  v3 = [(WFTableViewHeaderView *)&v8 initWithReuseIdentifier:a3];
-  v4 = [MEMORY[0x277D756E0] groupedHeaderConfiguration];
-  [v4 setText:&stru_288308678];
-  v5 = [objc_alloc(MEMORY[0x277D756E8]) initWithConfiguration:v4];
+  v3 = [(WFTableViewHeaderView *)&v8 initWithReuseIdentifier:identifier];
+  groupedHeaderConfiguration = [MEMORY[0x277D756E0] groupedHeaderConfiguration];
+  [groupedHeaderConfiguration setText:&stru_288308678];
+  v5 = [objc_alloc(MEMORY[0x277D756E8]) initWithConfiguration:groupedHeaderConfiguration];
   [(WFTableViewHeaderView *)v3 setListContentView:v5];
 
   v6 = objc_alloc_init(MEMORY[0x277D750E8]);
@@ -25,15 +25,15 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(WFTableViewHeaderView *)self listContentView];
-  v8 = [v5 configuration];
+  titleCopy = title;
+  listContentView = [(WFTableViewHeaderView *)self listContentView];
+  configuration = [listContentView configuration];
 
-  if (v4)
+  if (titleCopy)
   {
-    v6 = v4;
+    v6 = titleCopy;
   }
 
   else
@@ -41,110 +41,110 @@
     v6 = &stru_288308678;
   }
 
-  [v8 setText:v6];
+  [configuration setText:v6];
 
-  v7 = [(WFTableViewHeaderView *)self listContentView];
-  [v7 setConfiguration:v8];
+  listContentView2 = [(WFTableViewHeaderView *)self listContentView];
+  [listContentView2 setConfiguration:configuration];
 }
 
 - (NSString)title
 {
-  v2 = [(WFTableViewHeaderView *)self contentConfiguration];
-  v3 = [v2 text];
+  contentConfiguration = [(WFTableViewHeaderView *)self contentConfiguration];
+  text = [contentConfiguration text];
 
-  return v3;
+  return text;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  v3 = a3;
-  self->_animating = a3;
-  v4 = [(WFTableViewHeaderView *)self activityIndicatorView];
-  v5 = v4;
-  if (v3)
+  animatingCopy = animating;
+  self->_animating = animating;
+  activityIndicatorView = [(WFTableViewHeaderView *)self activityIndicatorView];
+  v5 = activityIndicatorView;
+  if (animatingCopy)
   {
-    [v4 startAnimating];
+    [activityIndicatorView startAnimating];
   }
 
   else
   {
-    [v4 stopAnimating];
+    [activityIndicatorView stopAnimating];
   }
 }
 
 - (void)_configureContents
 {
   v47[6] = *MEMORY[0x277D85DE8];
-  v3 = [(WFTableViewHeaderView *)self listContentView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  listContentView = [(WFTableViewHeaderView *)self listContentView];
+  [listContentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(WFTableViewHeaderView *)self activityIndicatorView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  activityIndicatorView = [(WFTableViewHeaderView *)self activityIndicatorView];
+  [activityIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(WFTableViewHeaderView *)self contentView];
-  v6 = [(WFTableViewHeaderView *)self listContentView];
-  [v5 addSubview:v6];
+  contentView = [(WFTableViewHeaderView *)self contentView];
+  listContentView2 = [(WFTableViewHeaderView *)self listContentView];
+  [contentView addSubview:listContentView2];
 
-  v7 = [(WFTableViewHeaderView *)self contentView];
-  v8 = [(WFTableViewHeaderView *)self activityIndicatorView];
-  [v7 addSubview:v8];
+  contentView2 = [(WFTableViewHeaderView *)self contentView];
+  activityIndicatorView2 = [(WFTableViewHeaderView *)self activityIndicatorView];
+  [contentView2 addSubview:activityIndicatorView2];
 
   v32 = MEMORY[0x277CCAAD0];
-  v46 = [(WFTableViewHeaderView *)self listContentView];
-  v44 = [v46 leadingAnchor];
-  v45 = [(WFTableViewHeaderView *)self contentView];
-  v43 = [v45 leadingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  listContentView3 = [(WFTableViewHeaderView *)self listContentView];
+  leadingAnchor = [listContentView3 leadingAnchor];
+  contentView3 = [(WFTableViewHeaderView *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[0] = v42;
-  v41 = [(WFTableViewHeaderView *)self listContentView];
-  v39 = [v41 topAnchor];
-  v40 = [(WFTableViewHeaderView *)self contentView];
-  v38 = [v40 topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  listContentView4 = [(WFTableViewHeaderView *)self listContentView];
+  topAnchor = [listContentView4 topAnchor];
+  contentView4 = [(WFTableViewHeaderView *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v47[1] = v37;
-  v36 = [(WFTableViewHeaderView *)self listContentView];
-  v34 = [v36 trailingAnchor];
-  v35 = [(WFTableViewHeaderView *)self contentView];
-  v33 = [v35 trailingAnchor];
-  v31 = [v34 constraintEqualToAnchor:v33];
+  listContentView5 = [(WFTableViewHeaderView *)self listContentView];
+  trailingAnchor = [listContentView5 trailingAnchor];
+  contentView5 = [(WFTableViewHeaderView *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v47[2] = v31;
-  v30 = [(WFTableViewHeaderView *)self listContentView];
-  v28 = [v30 bottomAnchor];
-  v29 = [(WFTableViewHeaderView *)self contentView];
-  v27 = [v29 bottomAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  listContentView6 = [(WFTableViewHeaderView *)self listContentView];
+  bottomAnchor = [listContentView6 bottomAnchor];
+  contentView6 = [(WFTableViewHeaderView *)self contentView];
+  bottomAnchor2 = [contentView6 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v47[3] = v26;
-  v25 = [(WFTableViewHeaderView *)self activityIndicatorView];
-  v23 = [v25 leadingAnchor];
-  v24 = [(WFTableViewHeaderView *)self listContentView];
-  v22 = [v24 textLayoutGuide];
-  v9 = [v22 trailingAnchor];
-  v10 = [v23 constraintEqualToAnchor:v9 constant:7.5];
+  activityIndicatorView3 = [(WFTableViewHeaderView *)self activityIndicatorView];
+  leadingAnchor3 = [activityIndicatorView3 leadingAnchor];
+  listContentView7 = [(WFTableViewHeaderView *)self listContentView];
+  textLayoutGuide = [listContentView7 textLayoutGuide];
+  trailingAnchor3 = [textLayoutGuide trailingAnchor];
+  v10 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:7.5];
   v47[4] = v10;
-  v11 = [(WFTableViewHeaderView *)self activityIndicatorView];
-  v12 = [v11 centerYAnchor];
-  v13 = [(WFTableViewHeaderView *)self listContentView];
-  v14 = [v13 textLayoutGuide];
-  v15 = [v14 centerYAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15];
+  activityIndicatorView4 = [(WFTableViewHeaderView *)self activityIndicatorView];
+  centerYAnchor = [activityIndicatorView4 centerYAnchor];
+  listContentView8 = [(WFTableViewHeaderView *)self listContentView];
+  textLayoutGuide2 = [listContentView8 textLayoutGuide];
+  centerYAnchor2 = [textLayoutGuide2 centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v47[5] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:6];
   [v32 activateConstraints:v17];
 
-  v18 = [(WFTableViewHeaderView *)self activityIndicatorView];
-  [v18 setActivityIndicatorViewStyle:100];
+  activityIndicatorView5 = [(WFTableViewHeaderView *)self activityIndicatorView];
+  [activityIndicatorView5 setActivityIndicatorViewStyle:100];
 
-  LODWORD(v18) = [(WFTableViewHeaderView *)self animating];
-  v19 = [(WFTableViewHeaderView *)self activityIndicatorView];
-  v20 = v19;
-  if (v18)
+  LODWORD(activityIndicatorView5) = [(WFTableViewHeaderView *)self animating];
+  activityIndicatorView6 = [(WFTableViewHeaderView *)self activityIndicatorView];
+  v20 = activityIndicatorView6;
+  if (activityIndicatorView5)
   {
-    [v19 startAnimating];
+    [activityIndicatorView6 startAnimating];
   }
 
   else
   {
-    [v19 stopAnimating];
+    [activityIndicatorView6 stopAnimating];
   }
 
   v21 = *MEMORY[0x277D85DE8];

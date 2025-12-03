@@ -1,18 +1,18 @@
 @interface RTMapItemExtendedAttributesMO
-+ (id)managedObjectWithExtendedAttributes:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithExtendedAttributes:(id)attributes managedObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation RTMapItemExtendedAttributesMO
 
-+ (id)managedObjectWithExtendedAttributes:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithExtendedAttributes:(id)attributes managedObject:(id)object inManagedObjectContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  attributesCopy = attributes;
+  objectCopy = object;
+  contextCopy = context;
+  if (contextCopy)
   {
-    if (v7)
+    if (attributesCopy)
     {
       *buf = 0;
       *&buf[8] = buf;
@@ -25,9 +25,9 @@
       v13[2] = __106__RTMapItemExtendedAttributesMO_managedObjectWithExtendedAttributes_managedObject_inManagedObjectContext___block_invoke;
       v13[3] = &unk_2788C5DA0;
       v17 = buf;
-      v14 = v8;
-      v15 = v9;
-      v16 = v7;
+      v14 = objectCopy;
+      v15 = contextCopy;
+      v16 = attributesCopy;
       [v15 performBlockAndWait:v13];
       v10 = *(*&buf[8] + 40);
 

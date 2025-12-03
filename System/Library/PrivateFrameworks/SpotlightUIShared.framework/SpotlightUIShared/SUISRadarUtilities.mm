@@ -1,79 +1,79 @@
 @interface SUISRadarUtilities
 + (id)filePathForCapturedPhotosIndexInfo;
 + (id)filePathForCapturedScreenshot;
-+ (id)filePathForWrittenData:(id)a3 to:(id)a4;
++ (id)filePathForWrittenData:(id)data to:(id)to;
 + (id)pathToSpotlightFiles;
 + (id)rankingDiagnosticsFilePath;
 + (id)resultSectionsFilePath;
 + (id)searchResultCategoriesFilePath;
-+ (void)fileRadarWithCommand:(id)a3;
-+ (void)logRankingDiagnosticsWithSections:(id)a3;
-+ (void)logResultSectionsWithSections:(id)a3 rankingManager:(id)a4;
++ (void)fileRadarWithCommand:(id)command;
++ (void)logRankingDiagnosticsWithSections:(id)sections;
++ (void)logResultSectionsWithSections:(id)sections rankingManager:(id)manager;
 @end
 
 @implementation SUISRadarUtilities
 
-+ (void)fileRadarWithCommand:(id)a3
++ (void)fileRadarWithCommand:(id)command
 {
   v51[7] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAD18];
-  v4 = a3;
-  v49 = [v4 componentName];
-  v48 = [v3 queryItemWithName:@"ComponentName" value:v49];
+  commandCopy = command;
+  componentName = [commandCopy componentName];
+  v48 = [v3 queryItemWithName:@"ComponentName" value:componentName];
   v51[0] = v48;
   v5 = MEMORY[0x277CCAD18];
-  v47 = [v4 componentVersion];
-  v46 = [v5 queryItemWithName:@"ComponentVersion" value:v47];
+  componentVersion = [commandCopy componentVersion];
+  v46 = [v5 queryItemWithName:@"ComponentVersion" value:componentVersion];
   v51[1] = v46;
   v6 = MEMORY[0x277CCAD18];
-  v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "componentID")}];
-  v44 = [v45 stringValue];
-  v43 = [v6 queryItemWithName:@"ComponentID" value:v44];
+  v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(commandCopy, "componentID")}];
+  stringValue = [v45 stringValue];
+  v43 = [v6 queryItemWithName:@"ComponentID" value:stringValue];
   v51[2] = v43;
   v7 = MEMORY[0x277CCAD18];
-  v42 = [v4 classification];
-  v8 = [v7 queryItemWithName:@"Classification" value:v42];
+  classification = [commandCopy classification];
+  v8 = [v7 queryItemWithName:@"Classification" value:classification];
   v51[3] = v8;
   v9 = MEMORY[0x277CCAD18];
-  v10 = [v4 reproducibility];
-  v11 = [v9 queryItemWithName:@"Reproducibility" value:v10];
+  reproducibility = [commandCopy reproducibility];
+  v11 = [v9 queryItemWithName:@"Reproducibility" value:reproducibility];
   v51[4] = v11;
   v12 = MEMORY[0x277CCAD18];
-  v13 = [v4 title];
-  v14 = [v12 queryItemWithName:@"Title" value:v13];
+  title = [commandCopy title];
+  v14 = [v12 queryItemWithName:@"Title" value:title];
   v51[5] = v14;
   v15 = MEMORY[0x277CCAD18];
-  v16 = [v4 problemDescription];
-  v17 = [v15 queryItemWithName:@"Description" value:v16];
+  problemDescription = [commandCopy problemDescription];
+  v17 = [v15 queryItemWithName:@"Description" value:problemDescription];
   v51[6] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:7];
   v19 = [v18 mutableCopy];
 
-  v20 = [v4 extensionIdentifiers];
-  v21 = [v20 componentsJoinedByString:{@", "}];
+  extensionIdentifiers = [commandCopy extensionIdentifiers];
+  v21 = [extensionIdentifiers componentsJoinedByString:{@", "}];
 
   v22 = [MEMORY[0x277CCAD18] queryItemWithName:@"ExtensionIdentifiers" value:v21];
   [v19 addObject:v22];
 
-  v23 = [v4 sections];
-  v24 = [v4 rankingManager];
-  [a1 logResultSectionsWithSections:v23 rankingManager:v24];
+  sections = [commandCopy sections];
+  rankingManager = [commandCopy rankingManager];
+  [self logResultSectionsWithSections:sections rankingManager:rankingManager];
 
-  v25 = [v4 sections];
+  sections2 = [commandCopy sections];
 
-  [a1 logRankingDiagnosticsWithSections:v25];
+  [self logRankingDiagnosticsWithSections:sections2];
   v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
-  v27 = [a1 resultSectionsFilePath];
-  v28 = [v27 path];
-  [v26 addObject:v28];
+  resultSectionsFilePath = [self resultSectionsFilePath];
+  path = [resultSectionsFilePath path];
+  [v26 addObject:path];
 
-  v29 = [a1 rankingDiagnosticsFilePath];
-  v30 = [v29 path];
-  [v26 addObject:v30];
+  rankingDiagnosticsFilePath = [self rankingDiagnosticsFilePath];
+  path2 = [rankingDiagnosticsFilePath path];
+  [v26 addObject:path2];
 
-  v31 = [a1 searchResultCategoriesFilePath];
-  v32 = [v31 path];
-  [v26 addObject:v32];
+  searchResultCategoriesFilePath = [self searchResultCategoriesFilePath];
+  path3 = [searchResultCategoriesFilePath path];
+  [v26 addObject:path3];
 
   v33 = +[SUISRadarUtilities filePathForCapturedScreenshot];
   if (v33)
@@ -98,18 +98,18 @@
   v41 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logResultSectionsWithSections:(id)a3 rankingManager:(id)a4
++ (void)logResultSectionsWithSections:(id)sections rankingManager:(id)manager
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
-  v6 = [MEMORY[0x277CCAB68] string];
-  [v6 appendString:@"Results:\n"];
+  sectionsCopy = sections;
+  managerCopy = manager;
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:@"Results:\n"];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v5;
+  obj = sectionsCopy;
   v7 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v7)
   {
@@ -125,17 +125,17 @@
         }
 
         v10 = *(*(&v34 + 1) + 8 * i);
-        [v6 appendString:@"\n"];
-        v11 = [v10 title];
-        v12 = [v10 bundleIdentifier];
-        [v6 appendFormat:@"%@ <%@> maxInitiallyVisibleResults: %lu, isInitiallyHidden; %d\n", v11, v12, objc_msgSend(v10, "maxInitiallyVisibleResults"), objc_msgSend(v10, "isInitiallyHidden")];
+        [string appendString:@"\n"];
+        title = [v10 title];
+        bundleIdentifier = [v10 bundleIdentifier];
+        [string appendFormat:@"%@ <%@> maxInitiallyVisibleResults: %lu, isInitiallyHidden; %d\n", title, bundleIdentifier, objc_msgSend(v10, "maxInitiallyVisibleResults"), objc_msgSend(v10, "isInitiallyHidden")];
 
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v13 = [v10 results];
-        v14 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        results = [v10 results];
+        v14 = [results countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v14)
         {
           v15 = v14;
@@ -146,16 +146,16 @@
             {
               if (*v31 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(results);
               }
 
-              v18 = [*(*(&v30 + 1) + 8 * j) ttrDescription];
-              [v6 appendFormat:@"\t%@", v18];
+              ttrDescription = [*(*(&v30 + 1) + 8 * j) ttrDescription];
+              [string appendFormat:@"\t%@", ttrDescription];
 
-              [v6 appendString:@"\n"];
+              [string appendString:@"\n"];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+            v15 = [results countByEnumeratingWithState:&v30 objects:v38 count:16];
           }
 
           while (v15);
@@ -168,16 +168,16 @@
     while (v8);
   }
 
-  v19 = [v26 CEPValuesForTTR];
-  [v6 appendString:v19];
+  cEPValuesForTTR = [managerCopy CEPValuesForTTR];
+  [string appendString:cEPValuesForTTR];
 
   v20 = SSDefaultsGetResources();
-  v21 = [v20 getTTRLogs];
-  [v6 appendString:v21];
+  getTTRLogs = [v20 getTTRLogs];
+  [string appendString:getTTRLogs];
 
-  v22 = [a1 resultSectionsFilePath];
+  resultSectionsFilePath = [self resultSectionsFilePath];
   v29 = 0;
-  [v6 writeToURL:v22 atomically:1 encoding:10 error:&v29];
+  [string writeToURL:resultSectionsFilePath atomically:1 encoding:10 error:&v29];
   v23 = v29;
 
   if (v23)
@@ -188,16 +188,16 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logRankingDiagnosticsWithSections:(id)a3
++ (void)logRankingDiagnosticsWithSections:(id)sections
 {
   v71 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sectionsCopy = sections;
   v4 = objc_opt_new();
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = v3;
+  obj = sectionsCopy;
   v5 = [obj countByEnumeratingWithState:&v63 objects:v70 count:16];
   if (v5)
   {
@@ -217,8 +217,8 @@
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v9 = [v8 results];
-        v10 = [v9 countByEnumeratingWithState:&v59 objects:v69 count:16];
+        results = [v8 results];
+        v10 = [results countByEnumeratingWithState:&v59 objects:v69 count:16];
         if (v10)
         {
           v11 = v10;
@@ -229,16 +229,16 @@
             {
               if (*v60 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(results);
               }
 
               v14 = *(*(&v59 + 1) + 8 * j);
-              v15 = [v14 rankingItem];
+              rankingItem = [v14 rankingItem];
 
-              if (v15)
+              if (rankingItem)
               {
-                v16 = [v14 rankingItem];
-                [v4 addObject:v16];
+                rankingItem2 = [v14 rankingItem];
+                [v4 addObject:rankingItem2];
               }
 
               else
@@ -247,7 +247,7 @@
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v59 objects:v69 count:16];
+            v11 = [results countByEnumeratingWithState:&v59 objects:v69 count:16];
           }
 
           while (v11);
@@ -260,12 +260,12 @@
     while (v6);
   }
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
-  v18 = [a1 pathToSpotlightFiles];
-  v19 = [v18 path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  pathToSpotlightFiles = [self pathToSpotlightFiles];
+  path = [pathToSpotlightFiles path];
 
-  v45 = v19;
-  [v17 contentsOfDirectoryAtPath:v19 error:0];
+  v45 = path;
+  [defaultManager contentsOfDirectoryAtPath:path error:0];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
@@ -285,15 +285,15 @@
         }
 
         v24 = *(*(&v55 + 1) + 8 * k);
-        v25 = [a1 rankingDiagnosticsFilePath];
-        v26 = [v25 pathComponents];
-        v27 = [v26 lastObject];
-        v28 = [v24 isEqualToString:v27];
+        rankingDiagnosticsFilePath = [self rankingDiagnosticsFilePath];
+        pathComponents = [rankingDiagnosticsFilePath pathComponents];
+        lastObject = [pathComponents lastObject];
+        v28 = [v24 isEqualToString:lastObject];
 
         if (v28)
         {
           v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v45, v24];
-          [v17 removeItemAtPath:v29 error:0];
+          [defaultManager removeItemAtPath:v29 error:0];
         }
       }
 
@@ -303,20 +303,20 @@
     while (v21);
   }
 
-  v30 = [a1 rankingDiagnosticsFilePath];
-  v31 = [v30 path];
+  rankingDiagnosticsFilePath2 = [self rankingDiagnosticsFilePath];
+  path2 = [rankingDiagnosticsFilePath2 path];
 
   if ([v4 count])
   {
-    if ([v31 length])
+    if ([path2 length])
     {
-      [v31 UTF8String];
+      [path2 UTF8String];
       v32 = json_writer_create_with_path();
       if (v32)
       {
         v33 = v32;
-        v50 = v31;
-        v34 = v17;
+        v50 = path2;
+        v34 = defaultManager;
         json_writer_begin_array();
         v53 = 0u;
         v54 = 0u;
@@ -338,11 +338,11 @@
               }
 
               v40 = *(*(&v51 + 1) + 8 * m);
-              v41 = [v40 identifier];
-              v42 = [v40 L2FeatureVector];
-              if ([v41 length])
+              identifier = [v40 identifier];
+              l2FeatureVector = [v40 L2FeatureVector];
+              if ([identifier length])
               {
-                v43 = v42 == 0;
+                v43 = l2FeatureVector == 0;
               }
 
               else
@@ -354,9 +354,9 @@
               {
                 json_writer_begin_dictionary();
                 json_writer_add_key();
-                [v41 UTF8String];
+                [identifier UTF8String];
                 json_writer_add_string();
-                [v42 serializeToJSON:v33 options:2];
+                [l2FeatureVector serializeToJSON:v33 options:2];
                 json_writer_end_dictionary();
               }
             }
@@ -369,8 +369,8 @@
 
         json_writer_end_array();
         json_writer_dispose();
-        v17 = v34;
-        v31 = v50;
+        defaultManager = v34;
+        path2 = v50;
       }
     }
   }
@@ -405,7 +405,7 @@ void __42__SUISRadarUtilities_pathToSpotlightFiles__block_invoke()
   block[1] = 3221225472;
   block[2] = __48__SUISRadarUtilities_rankingDiagnosticsFilePath__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (rankingDiagnosticsFilePath_onceToken != -1)
   {
     dispatch_once(&rankingDiagnosticsFilePath_onceToken, block);
@@ -430,7 +430,7 @@ void __48__SUISRadarUtilities_rankingDiagnosticsFilePath__block_invoke(uint64_t 
   block[1] = 3221225472;
   block[2] = __44__SUISRadarUtilities_resultSectionsFilePath__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (resultSectionsFilePath_onceToken != -1)
   {
     dispatch_once(&resultSectionsFilePath_onceToken, block);
@@ -455,7 +455,7 @@ void __44__SUISRadarUtilities_resultSectionsFilePath__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __52__SUISRadarUtilities_searchResultCategoriesFilePath__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (searchResultCategoriesFilePath_onceToken != -1)
   {
     dispatch_once(&searchResultCategoriesFilePath_onceToken, block);
@@ -474,23 +474,23 @@ void __52__SUISRadarUtilities_searchResultCategoriesFilePath__block_invoke(uint6
   searchResultCategoriesFilePath_searchResultCategoriesFilePath = v1;
 }
 
-+ (id)filePathForWrittenData:(id)a3 to:(id)a4
++ (id)filePathForWrittenData:(id)data to:(id)to
 {
-  v5 = a4;
-  v6 = a3;
+  toCopy = to;
+  dataCopy = data;
   v7 = NSTemporaryDirectory();
-  v8 = [v7 stringByAppendingPathComponent:v5];
+  v8 = [v7 stringByAppendingPathComponent:toCopy];
 
   v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
   v15 = 0;
-  v10 = [v6 writeToURL:v9 options:1 error:&v15];
+  v10 = [dataCopy writeToURL:v9 options:1 error:&v15];
 
   v11 = v15;
-  v12 = [v9 path];
-  v13 = v12;
+  path = [v9 path];
+  v13 = path;
   if ((v10 & 1) == 0)
   {
-    NSLog(&cfstr_FailedToWriteD.isa, v12, v11);
+    NSLog(&cfstr_FailedToWriteD.isa, path, v11);
 
     v13 = 0;
   }
@@ -500,8 +500,8 @@ void __52__SUISRadarUtilities_searchResultCategoriesFilePath__block_invoke(uint6
 
 + (id)filePathForCapturedScreenshot
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v3 snapshotViewAfterScreenUpdates:0];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v4 = [mainScreen snapshotViewAfterScreenUpdates:0];
 
   [v4 frame];
   v12.width = v5;
@@ -512,7 +512,7 @@ void __52__SUISRadarUtilities_searchResultCategoriesFilePath__block_invoke(uint6
   v7 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v8 = UIImagePNGRepresentation(v7);
-  v9 = [a1 filePathForWrittenData:v8 to:@"Spotlight-Tap-To-Radar-Screenshot.png"];
+  v9 = [self filePathForWrittenData:v8 to:@"Spotlight-Tap-To-Radar-Screenshot.png"];
 
   return v9;
 }
@@ -522,14 +522,14 @@ void __52__SUISRadarUtilities_searchResultCategoriesFilePath__block_invoke(uint6
   v3 = objc_alloc_init(MEMORY[0x277CCACB0]);
   [v3 setLaunchPath:@"/bin/bash"];
   [v3 setArguments:&unk_287C64E78];
-  v4 = [MEMORY[0x277CCAC10] pipe];
-  [v3 setStandardOutput:v4];
+  pipe = [MEMORY[0x277CCAC10] pipe];
+  [v3 setStandardOutput:pipe];
   [v3 launch];
   [v3 waitUntilExit];
-  v5 = [v4 fileHandleForReading];
-  v6 = [v5 readDataToEndOfFile];
+  fileHandleForReading = [pipe fileHandleForReading];
+  readDataToEndOfFile = [fileHandleForReading readDataToEndOfFile];
 
-  v7 = [a1 filePathForWrittenData:v6 to:@"search_photos_index_status.txt"];
+  v7 = [self filePathForWrittenData:readDataToEndOfFile to:@"search_photos_index_status.txt"];
 
   return v7;
 }

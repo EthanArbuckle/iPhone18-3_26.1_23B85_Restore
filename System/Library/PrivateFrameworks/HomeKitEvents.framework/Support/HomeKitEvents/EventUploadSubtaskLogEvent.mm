@@ -2,7 +2,7 @@
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
 - (_TtC11homeeventsd26EventUploadSubtaskLogEvent)init;
-- (_TtC11homeeventsd26EventUploadSubtaskLogEvent)initWithStartTime:(double)a3;
+- (_TtC11homeeventsd26EventUploadSubtaskLogEvent)initWithStartTime:(double)time;
 @end
 
 @implementation EventUploadSubtaskLogEvent
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (_TtC11homeeventsd26EventUploadSubtaskLogEvent)initWithStartTime:(double)a3
+- (_TtC11homeeventsd26EventUploadSubtaskLogEvent)initWithStartTime:(double)time
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -30,7 +30,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003240C();
 
   sub_1000123CC();

@@ -1,14 +1,14 @@
 @interface BCSAnalyticsLogger
 + (id)sharedLogger;
-- (id)_eventPayloadForAction:(id)a3;
-- (id)_initWithQueue:(id)a3;
-- (id)_stringForCodeType:(int64_t)a3;
-- (id)_stringForDataType:(int64_t)a3;
-- (void)_sendEventLazyWithName:(id)a3 payload:(id)a4;
-- (void)didScanNFCTagOfType:(int64_t)a3;
-- (void)logBarcodeActivatedEventForAction:(id)a3;
-- (void)logBarcodeDetectedEventForAction:(id)a3 fromBundleID:(id)a4;
-- (void)logBarcodePreviewedEventForContentType:(int64_t)a3;
+- (id)_eventPayloadForAction:(id)action;
+- (id)_initWithQueue:(id)queue;
+- (id)_stringForCodeType:(int64_t)type;
+- (id)_stringForDataType:(int64_t)type;
+- (void)_sendEventLazyWithName:(id)name payload:(id)payload;
+- (void)didScanNFCTagOfType:(int64_t)type;
+- (void)logBarcodeActivatedEventForAction:(id)action;
+- (void)logBarcodeDetectedEventForAction:(id)action fromBundleID:(id)d;
+- (void)logBarcodePreviewedEventForContentType:(int64_t)type;
 @end
 
 @implementation BCSAnalyticsLogger
@@ -35,26 +35,26 @@ void __34__BCSAnalyticsLogger_sharedLogger__block_invoke()
   sharedLogger_sharedLogger = v1;
 }
 
-- (id)_initWithQueue:(id)a3
+- (id)_initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = BCSAnalyticsLogger;
   v6 = [(BCSAnalyticsLogger *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)didScanNFCTagOfType:(int64_t)a3
+- (void)didScanNFCTagOfType:(int64_t)type
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (type)
   {
     v4 = @"appclip";
   }
@@ -74,19 +74,19 @@ void __34__BCSAnalyticsLogger_sharedLogger__block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendEventLazyWithName:(id)a3 payload:(id)a4
+- (void)_sendEventLazyWithName:(id)name payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  payloadCopy = payload;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__BCSAnalyticsLogger__sendEventLazyWithName_payload___block_invoke;
   v11[3] = &unk_278CFEE40;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = nameCopy;
+  v13 = payloadCopy;
+  v9 = payloadCopy;
+  v10 = nameCopy;
   dispatch_async(queue, v11);
 }
 
@@ -97,15 +97,15 @@ void __53__BCSAnalyticsLogger__sendEventLazyWithName_payload___block_invoke(uint
   AnalyticsSendEventLazy();
 }
 
-- (id)_stringForCodeType:(int64_t)a3
+- (id)_stringForCodeType:(int64_t)type
 {
   v3 = @"QR";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"NFC";
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return @"Appclip";
   }
@@ -116,87 +116,87 @@ void __53__BCSAnalyticsLogger__sendEventLazyWithName_payload___block_invoke(uint
   }
 }
 
-- (id)_stringForDataType:(int64_t)a3
+- (id)_stringForDataType:(int64_t)type
 {
-  if (a3 > 0x11)
+  if (type > 0x11)
   {
     return @"Other";
   }
 
   else
   {
-    return *(&off_278CFEE60 + a3);
+    return *(&off_278CFEE60 + type);
   }
 }
 
-- (id)_eventPayloadForAction:(id)a3
+- (id)_eventPayloadForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 bundleIdentifier];
-    [v5 setObject:v7 forKeyedSubscript:@"client"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [dictionary setObject:bundleIdentifier forKeyedSubscript:@"client"];
 
-    v8 = -[BCSAnalyticsLogger _stringForCodeType:](self, "_stringForCodeType:", [v4 codeType]);
-    [v5 setObject:v8 forKeyedSubscript:@"codeType"];
+    v8 = -[BCSAnalyticsLogger _stringForCodeType:](self, "_stringForCodeType:", [actionCopy codeType]);
+    [dictionary setObject:v8 forKeyedSubscript:@"codeType"];
 
-    v9 = [v4 data];
-    v10 = -[BCSAnalyticsLogger _stringForDataType:](self, "_stringForDataType:", [v9 type]);
-    [v5 setObject:v10 forKeyedSubscript:@"dataType"];
+    data = [actionCopy data];
+    v10 = -[BCSAnalyticsLogger _stringForDataType:](self, "_stringForDataType:", [data type]);
+    [dictionary setObject:v10 forKeyedSubscript:@"dataType"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v11 = MEMORY[0x277CCABB0];
-      v12 = v4;
-      v13 = [v12 appLinks];
-      v14 = [v11 numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
-      [v5 setObject:v14 forKeyedSubscript:@"applinks"];
+      v12 = actionCopy;
+      appLinks = [v12 appLinks];
+      v14 = [v11 numberWithUnsignedInteger:{objc_msgSend(appLinks, "count")}];
+      [dictionary setObject:v14 forKeyedSubscript:@"applinks"];
 
       v15 = MEMORY[0x277CCABB0];
-      v16 = [v12 mustOpenAppLinkInApp];
+      mustOpenAppLinkInApp = [v12 mustOpenAppLinkInApp];
 
-      v17 = [v15 numberWithBool:v16];
-      [v5 setObject:v17 forKeyedSubscript:@"openInApp"];
+      v17 = [v15 numberWithBool:mustOpenAppLinkInApp];
+      [dictionary setObject:v17 forKeyedSubscript:@"openInApp"];
     }
   }
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (void)logBarcodeDetectedEventForAction:(id)a3 fromBundleID:(id)a4
+- (void)logBarcodeDetectedEventForAction:(id)action fromBundleID:(id)d
 {
-  v8 = a4;
-  v6 = [(BCSAnalyticsLogger *)self _eventPayloadForAction:a3];
+  dCopy = d;
+  v6 = [(BCSAnalyticsLogger *)self _eventPayloadForAction:action];
   v7 = [v6 mutableCopy];
 
-  if (v8)
+  if (dCopy)
   {
-    [v7 setObject:v8 forKeyedSubscript:@"client"];
+    [v7 setObject:dCopy forKeyedSubscript:@"client"];
   }
 
   [(BCSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.BarcodeSupport.DidDetectBarcode" payload:v7];
 }
 
-- (void)logBarcodeActivatedEventForAction:(id)a3
+- (void)logBarcodeActivatedEventForAction:(id)action
 {
-  v4 = [(BCSAnalyticsLogger *)self _eventPayloadForAction:a3];
+  v4 = [(BCSAnalyticsLogger *)self _eventPayloadForAction:action];
   [(BCSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.BarcodeSupport.DidActivateBarcode" payload:v4];
 }
 
-- (void)logBarcodePreviewedEventForContentType:(int64_t)a3
+- (void)logBarcodePreviewedEventForContentType:(int64_t)type
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"contentType";
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   [(BCSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.BarcodeSupport.DidPreviewContent" payload:v5];

@@ -1,28 +1,28 @@
 @interface UIURLDragPreviewView
 + (id)_titleFont;
 + (id)_urlFont;
-+ (id)viewWithTitle:(id)a3 URL:(id)a4;
-+ (id)viewWithTitle:(id)a3 URLText:(id)a4;
-+ (id)viewWithURL:(id)a3;
-+ (id)viewWithURLText:(id)a3;
++ (id)viewWithTitle:(id)title URL:(id)l;
++ (id)viewWithTitle:(id)title URLText:(id)text;
++ (id)viewWithURL:(id)l;
++ (id)viewWithURLText:(id)text;
 + (void)initialize;
-- (UIURLDragPreviewView)initWithFrame:(CGRect)a3;
-- (void)setTitle:(id)a3;
-- (void)setUrl:(id)a3;
-- (void)setUrlText:(id)a3;
+- (UIURLDragPreviewView)initWithFrame:(CGRect)frame;
+- (void)setTitle:(id)title;
+- (void)setUrl:(id)url;
+- (void)setUrlText:(id)text;
 - (void)updateConstraints;
 @end
 
 @implementation UIURLDragPreviewView
 
-+ (id)viewWithTitle:(id)a3 URL:(id)a4
++ (id)viewWithTitle:(id)title URL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
+  lCopy = l;
+  titleCopy = title;
   v7 = objc_opt_new();
-  [v7 setTitle:v6];
+  [v7 setTitle:titleCopy];
 
-  [v7 setUrl:v5];
+  [v7 setUrl:lCopy];
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
   [v7 systemLayoutSizeFittingSize:{10000.0, 10000.0}];
@@ -31,11 +31,11 @@
   return v7;
 }
 
-+ (id)viewWithURL:(id)a3
++ (id)viewWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_opt_new();
-  [v4 setUrl:v3];
+  [v4 setUrl:lCopy];
 
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
@@ -45,14 +45,14 @@
   return v4;
 }
 
-+ (id)viewWithTitle:(id)a3 URLText:(id)a4
++ (id)viewWithTitle:(id)title URLText:(id)text
 {
-  v5 = a4;
-  v6 = a3;
+  textCopy = text;
+  titleCopy = title;
   v7 = objc_opt_new();
-  [v7 setTitle:v6];
+  [v7 setTitle:titleCopy];
 
-  [v7 setUrlText:v5];
+  [v7 setUrlText:textCopy];
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
   [v7 systemLayoutSizeFittingSize:{10000.0, 10000.0}];
@@ -61,11 +61,11 @@
   return v7;
 }
 
-+ (id)viewWithURLText:(id)a3
++ (id)viewWithURLText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = objc_opt_new();
-  [v4 setUrlText:v3];
+  [v4 setUrlText:textCopy];
 
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
@@ -109,9 +109,9 @@
 
   if (!URLFormattingLibraryCore_frameworkLibrary)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void *URLFormattingLibrary(void)"];
-    [v3 handleFailureInFunction:v4 file:@"UIURLDragPreviewView.m" lineNumber:18 description:{@"%s", v5[0]}];
+    [currentHandler handleFailureInFunction:v4 file:@"UIURLDragPreviewView.m" lineNumber:18 description:{@"%s", v5[0]}];
 
     __break(1u);
     goto LABEL_7;
@@ -125,12 +125,12 @@ LABEL_7:
   }
 }
 
-- (UIURLDragPreviewView)initWithFrame:(CGRect)a3
+- (UIURLDragPreviewView)initWithFrame:(CGRect)frame
 {
   v48[2] = *MEMORY[0x1E69E9840];
   v46.receiver = self;
   v46.super_class = UIURLDragPreviewView;
-  v3 = [(UIView *)&v46 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v46 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -151,19 +151,19 @@ LABEL_7:
 
     [(UIView *)v4 addSubview:v4->_titleLabel];
     [(UIView *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(UIView *)v4->_titleLabel topAnchor];
-    v10 = [(UIView *)v4 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(UIView *)v4->_titleLabel topAnchor];
+    topAnchor2 = [(UIView *)v4 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v11 setActive:1];
 
-    v12 = [(UIView *)v4->_titleLabel leadingAnchor];
-    v13 = [(UIView *)v4 leadingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    leadingAnchor = [(UIView *)v4->_titleLabel leadingAnchor];
+    leadingAnchor2 = [(UIView *)v4 leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v14 setActive:1];
 
-    v15 = [(UIView *)v4->_titleLabel trailingAnchor];
-    v16 = [(UIView *)v4 trailingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    trailingAnchor = [(UIView *)v4->_titleLabel trailingAnchor];
+    trailingAnchor2 = [(UIView *)v4 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v17 setActive:1];
 
     v18 = objc_opt_new();
@@ -182,42 +182,42 @@ LABEL_7:
 
     [(UIView *)v4 addSubview:v4->_urlLabel];
     [(UIView *)v4->_urlLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v22 = [(UIView *)v4->_urlLabel bottomAnchor];
-    v23 = [(UIView *)v4 bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    bottomAnchor = [(UIView *)v4->_urlLabel bottomAnchor];
+    bottomAnchor2 = [(UIView *)v4 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v24 setActive:1];
 
-    v25 = [(UIView *)v4->_urlLabel leadingAnchor];
-    v26 = [(UIView *)v4 leadingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    leadingAnchor3 = [(UIView *)v4->_urlLabel leadingAnchor];
+    leadingAnchor4 = [(UIView *)v4 leadingAnchor];
+    v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v27 setActive:1];
 
-    v28 = [(UIView *)v4->_urlLabel trailingAnchor];
-    v29 = [(UIView *)v4 trailingAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    trailingAnchor3 = [(UIView *)v4->_urlLabel trailingAnchor];
+    trailingAnchor4 = [(UIView *)v4 trailingAnchor];
+    v30 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v30 setActive:1];
 
-    v31 = [(UIView *)v4->_urlLabel topAnchor];
-    v32 = [(UIView *)v4 topAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    topAnchor3 = [(UIView *)v4->_urlLabel topAnchor];
+    topAnchor4 = [(UIView *)v4 topAnchor];
+    v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v48[0] = v33;
-    v34 = [(UIView *)v4->_titleLabel heightAnchor];
-    v35 = [v34 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)v4->_titleLabel heightAnchor];
+    v35 = [heightAnchor constraintEqualToConstant:0.0];
     v48[1] = v35;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
     urlOnlyConstraints = v4->_urlOnlyConstraints;
     v4->_urlOnlyConstraints = v36;
 
-    v38 = [(UIView *)v4->_urlLabel firstBaselineAnchor];
-    v39 = [(UIView *)v4->_titleLabel lastBaselineAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:17.0];
+    firstBaselineAnchor = [(UIView *)v4->_urlLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UIView *)v4->_titleLabel lastBaselineAnchor];
+    v40 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:17.0];
     v47 = v40;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
     titleAndUrlConstraints = v4->_titleAndUrlConstraints;
     v4->_titleAndUrlConstraints = v41;
 
-    v43 = [(UIView *)v4 widthAnchor];
-    v44 = [v43 constraintLessThanOrEqualToConstant:400.0];
+    widthAnchor = [(UIView *)v4 widthAnchor];
+    v44 = [widthAnchor constraintLessThanOrEqualToConstant:400.0];
     [v44 setActive:1];
 
     [(UIView *)v4 setNeedsUpdateConstraints];
@@ -226,33 +226,33 @@ LABEL_7:
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  titleCopy = title;
+  v5 = [titleCopy copy];
   title = self->_title;
   self->_title = v5;
 
-  [(UILabel *)self->_titleLabel setText:v4];
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(UIView *)self setNeedsUpdateConstraints];
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  urlCopy = url;
+  v5 = [urlCopy copy];
   url = self->_url;
   self->_url = v5;
 
   urlText = self->_urlText;
   self->_urlText = 0;
 
-  v8 = [v4 _lp_simplifiedDisplayString];
+  _lp_simplifiedDisplayString = [urlCopy _lp_simplifiedDisplayString];
 
-  [(UILabel *)self->_urlLabel setText:v8];
-  v9 = [(UILabel *)self->_urlLabel text];
-  v10 = [v9 length];
+  [(UILabel *)self->_urlLabel setText:_lp_simplifiedDisplayString];
+  text = [(UILabel *)self->_urlLabel text];
+  v10 = [text length];
 
   if (!v10)
   {
@@ -262,19 +262,19 @@ LABEL_7:
   [(UIView *)self setNeedsUpdateConstraints];
 }
 
-- (void)setUrlText:(id)a3
+- (void)setUrlText:(id)text
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  textCopy = text;
+  v5 = [textCopy copy];
   urlText = self->_urlText;
   self->_urlText = v5;
 
   url = self->_url;
   self->_url = 0;
 
-  [(UILabel *)self->_urlLabel setText:v4];
-  v8 = [(UILabel *)self->_urlLabel text];
-  v9 = [v8 length];
+  [(UILabel *)self->_urlLabel setText:textCopy];
+  text = [(UILabel *)self->_urlLabel text];
+  v9 = [text length];
 
   if (!v9)
   {
@@ -289,17 +289,17 @@ LABEL_7:
   v12.receiver = self;
   v12.super_class = UIURLDragPreviewView;
   [(UIView *)&v12 updateConstraints];
-  v3 = [(UILabel *)self->_titleLabel text];
-  v4 = [(UILabel *)self->_urlLabel text];
-  if ([v3 isEqualToString:v4])
+  text = [(UILabel *)self->_titleLabel text];
+  text2 = [(UILabel *)self->_urlLabel text];
+  if ([text isEqualToString:text2])
   {
   }
 
   else
   {
-    v5 = [(UILabel *)self->_titleLabel text];
-    v6 = [(NSURL *)self->_url absoluteString];
-    v7 = [v5 isEqualToString:v6];
+    text3 = [(UILabel *)self->_titleLabel text];
+    absoluteString = [(NSURL *)self->_url absoluteString];
+    v7 = [text3 isEqualToString:absoluteString];
 
     if (!v7)
     {
@@ -309,8 +309,8 @@ LABEL_7:
 
   [(UILabel *)self->_titleLabel setText:0];
 LABEL_5:
-  v8 = [(UILabel *)self->_titleLabel text];
-  v9 = [v8 length];
+  text4 = [(UILabel *)self->_titleLabel text];
+  v9 = [text4 length];
 
   if (v9)
   {

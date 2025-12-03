@@ -1,12 +1,12 @@
 @interface CHUISControlToggleViewModel
-- (CHUISControlToggleViewModel)initWithIconView:(id)a3;
+- (CHUISControlToggleViewModel)initWithIconView:(id)view;
 @end
 
 @implementation CHUISControlToggleViewModel
 
-- (CHUISControlToggleViewModel)initWithIconView:(id)a3
+- (CHUISControlToggleViewModel)initWithIconView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = CHUISControlToggleViewModel;
   v6 = [(CHUISControlToggleViewModel *)&v13 init];
@@ -14,7 +14,7 @@
   if (v6)
   {
     v6->_state = 0;
-    objc_storeStrong(&v6->_iconView, a3);
+    objc_storeStrong(&v6->_iconView, view);
     v8 = objc_alloc_init(CHUISControlToggleOption);
     onOption = v7->_onOption;
     v7->_onOption = v8;

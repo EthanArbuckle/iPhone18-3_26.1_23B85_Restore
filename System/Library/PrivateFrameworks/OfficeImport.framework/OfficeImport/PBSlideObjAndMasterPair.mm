@@ -1,15 +1,15 @@
 @interface PBSlideObjAndMasterPair
-+ (id)createPair:(id)a3 masterId:(int)a4;
++ (id)createPair:(id)pair masterId:(int)id;
 @end
 
 @implementation PBSlideObjAndMasterPair
 
-+ (id)createPair:(id)a3 masterId:(int)a4
++ (id)createPair:(id)pair masterId:(int)id
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&id;
+  pairCopy = pair;
   v6 = objc_alloc_init(PBSlideObjAndMasterPair);
-  [(PBSlideObjAndMasterPair *)v6 setSlide:v5 masterId:v4];
+  [(PBSlideObjAndMasterPair *)v6 setSlide:pairCopy masterId:v4];
 
   return v6;
 }

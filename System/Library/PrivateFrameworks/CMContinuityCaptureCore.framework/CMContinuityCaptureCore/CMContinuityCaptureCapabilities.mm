@@ -1,8 +1,8 @@
 @interface CMContinuityCaptureCapabilities
 + (id)capabilitiesForCurrentDevice;
 + (void)capabilitiesForCurrentDevice;
-- (CMContinuityCaptureCapabilities)initWithCapabilitiesVersion:(id *)a3 devicesCapabilities:(id)a4 userDisabled:(BOOL)a5;
-- (CMContinuityCaptureCapabilities)initWithDictionaryRepresentation:(id)a3;
+- (CMContinuityCaptureCapabilities)initWithCapabilitiesVersion:(id *)version devicesCapabilities:(id)capabilities userDisabled:(BOOL)disabled;
+- (CMContinuityCaptureCapabilities)initWithDictionaryRepresentation:(id)representation;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)dictionaryRepresentation;
@@ -91,61 +91,61 @@ LABEL_13:
   return v12;
 }
 
-- (CMContinuityCaptureCapabilities)initWithCapabilitiesVersion:(id *)a3 devicesCapabilities:(id)a4 userDisabled:(BOOL)a5
+- (CMContinuityCaptureCapabilities)initWithCapabilitiesVersion:(id *)version devicesCapabilities:(id)capabilities userDisabled:(BOOL)disabled
 {
-  v8 = a4;
+  capabilitiesCopy = capabilities;
   v15.receiver = self;
   v15.super_class = CMContinuityCaptureCapabilities;
   v9 = [(CMContinuityCaptureCapabilities *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    v11 = *&a3->var0;
-    *(v9 + 3) = a3->var2;
+    v11 = *&version->var0;
+    *(v9 + 3) = version->var2;
     *(v9 + 8) = v11;
-    v12 = [v8 copy];
+    v12 = [capabilitiesCopy copy];
     devicesCapabilities = v10->_devicesCapabilities;
     v10->_devicesCapabilities = v12;
 
-    v10->_userDisabled = a5;
+    v10->_userDisabled = disabled;
   }
 
   return v10;
 }
 
-- (CMContinuityCaptureCapabilities)initWithDictionaryRepresentation:(id)a3
+- (CMContinuityCaptureCapabilities)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v4 objectForKeyedSubscript:@"CapabilitiesVersion"];
-  v7 = [v4 objectForKeyedSubscript:@"CapabiltiesMinorVersion"];
-  v8 = [v4 objectForKeyedSubscript:@"CapabiltiesPatchVersion"];
+  v6 = [representationCopy objectForKeyedSubscript:@"CapabilitiesVersion"];
+  v7 = [representationCopy objectForKeyedSubscript:@"CapabiltiesMinorVersion"];
+  v8 = [representationCopy objectForKeyedSubscript:@"CapabiltiesPatchVersion"];
   v31 = v8;
   if (v6)
   {
     v9 = v8;
-    v32 = [v6 integerValue];
-    v10 = 0;
+    integerValue = [v6 integerValue];
+    integerValue3 = 0;
     if (v7)
     {
-      v35 = 0;
+      integerValue2 = 0;
       if (v9)
       {
-        v35 = [v7 integerValue];
-        v10 = [v9 integerValue];
+        integerValue2 = [v7 integerValue];
+        integerValue3 = [v9 integerValue];
       }
     }
 
     else
     {
-      v35 = 0;
+      integerValue2 = 0;
     }
 
     v11 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"[%ld.%ld.%ld]", v32, v35, v10];
-      v12 = v33 = v10;
+      [MEMORY[0x277CCACA8] stringWithFormat:@"[%ld.%ld.%ld]", integerValue, integerValue2, integerValue3];
+      v12 = v33 = integerValue3;
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%ld.%ld.%ld]", 3, 304, 1];
       *buf = 138412546;
       *&buf[4] = v12;
@@ -153,28 +153,28 @@ LABEL_13:
       *&buf[14] = v13;
       _os_log_impl(&dword_242545000, v11, OS_LOG_TYPE_INFO, "Remote Device Version %@, Current Device version %@", buf, 0x16u);
 
-      v10 = v33;
+      integerValue3 = v33;
     }
   }
 
   else
   {
-    v10 = 0;
-    v35 = 0;
-    v32 = 0;
+    integerValue3 = 0;
+    integerValue2 = 0;
+    integerValue = 0;
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"UserDisabled"];
-  v15 = [v14 BOOLValue];
+  v14 = [representationCopy objectForKeyedSubscript:@"UserDisabled"];
+  bOOLValue = [v14 BOOLValue];
 
-  v16 = [v4 objectForKeyedSubscript:@"Devices"];
+  v16 = [representationCopy objectForKeyedSubscript:@"Devices"];
   v17 = v16;
   if (v16)
   {
-    v34 = v10;
+    v34 = integerValue3;
     v28 = v7;
     v29 = v6;
-    v30 = self;
+    selfCopy = self;
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -199,8 +199,8 @@ LABEL_13:
           if (!v24)
           {
             [(CMContinuityCaptureCapabilities *)v23 initWithDictionaryRepresentation:v18];
-            v26 = 0;
-            self = v30;
+            selfCopy2 = 0;
+            self = selfCopy;
             goto LABEL_21;
           }
 
@@ -218,11 +218,11 @@ LABEL_13:
       }
     }
 
-    *buf = v32;
-    *&buf[8] = v35;
+    *buf = integerValue;
+    *&buf[8] = integerValue2;
     *&buf[16] = v34;
-    self = [(CMContinuityCaptureCapabilities *)v30 initWithCapabilitiesVersion:buf devicesCapabilities:v5 userDisabled:v15];
-    v26 = self;
+    self = [(CMContinuityCaptureCapabilities *)selfCopy initWithCapabilitiesVersion:buf devicesCapabilities:v5 userDisabled:bOOLValue];
+    selfCopy2 = self;
 LABEL_21:
     v7 = v28;
     v6 = v29;
@@ -231,28 +231,28 @@ LABEL_21:
   else
   {
     [CMContinuityCaptureCapabilities initWithDictionaryRepresentation:];
-    v26 = 0;
+    selfCopy2 = 0;
   }
 
-  return v26;
+  return selfCopy2;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:self->_capabilitiesVersion.major];
-  [v3 setObject:v4 forKeyedSubscript:@"CapabilitiesVersion"];
+  [dictionary setObject:v4 forKeyedSubscript:@"CapabilitiesVersion"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_capabilitiesVersion.minor];
-  [v3 setObject:v5 forKeyedSubscript:@"CapabiltiesMinorVersion"];
+  [dictionary setObject:v5 forKeyedSubscript:@"CapabiltiesMinorVersion"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_capabilitiesVersion.patch];
-  [v3 setObject:v6 forKeyedSubscript:@"CapabiltiesPatchVersion"];
+  [dictionary setObject:v6 forKeyedSubscript:@"CapabiltiesPatchVersion"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_userDisabled];
-  [v3 setObject:v7 forKeyedSubscript:@"UserDisabled"];
+  [dictionary setObject:v7 forKeyedSubscript:@"UserDisabled"];
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -272,8 +272,8 @@ LABEL_21:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-        [v8 addObject:v14];
+        dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+        [array addObject:dictionaryRepresentation];
       }
 
       v11 = [(NSArray *)v9 countByEnumeratingWithState:&v17 objects:v16 count:16];
@@ -282,9 +282,9 @@ LABEL_21:
     while (v11);
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"Devices"];
+  [dictionary setObject:array forKeyedSubscript:@"Devices"];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSString)debugDescription

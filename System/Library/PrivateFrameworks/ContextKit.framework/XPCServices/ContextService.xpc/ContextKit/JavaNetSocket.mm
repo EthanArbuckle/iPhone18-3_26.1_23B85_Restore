@@ -19,19 +19,19 @@
 - (int)getSoTimeout;
 - (int)getTrafficClass;
 - (void)accepted;
-- (void)bindWithJavaNetSocketAddress:(id)a3;
+- (void)bindWithJavaNetSocketAddress:(id)address;
 - (void)close;
 - (void)dealloc;
 - (void)onClose;
-- (void)setKeepAliveWithBoolean:(BOOL)a3;
-- (void)setOOBInlineWithBoolean:(BOOL)a3;
-- (void)setReceiveBufferSizeWithInt:(int)a3;
-- (void)setReuseAddressWithBoolean:(BOOL)a3;
-- (void)setSendBufferSizeWithInt:(int)a3;
-- (void)setSoLingerWithBoolean:(BOOL)a3 withInt:(int)a4;
-- (void)setSoTimeoutWithInt:(int)a3;
-- (void)setTcpNoDelayWithBoolean:(BOOL)a3;
-- (void)setTrafficClassWithInt:(int)a3;
+- (void)setKeepAliveWithBoolean:(BOOL)boolean;
+- (void)setOOBInlineWithBoolean:(BOOL)boolean;
+- (void)setReceiveBufferSizeWithInt:(int)int;
+- (void)setReuseAddressWithBoolean:(BOOL)boolean;
+- (void)setSendBufferSizeWithInt:(int)int;
+- (void)setSoLingerWithBoolean:(BOOL)boolean withInt:(int)int;
+- (void)setSoTimeoutWithInt:(int)int;
+- (void)setTcpNoDelayWithBoolean:(BOOL)boolean;
+- (void)setTrafficClassWithInt:(int)int;
 - (void)shutdownInput;
 - (void)shutdownOutput;
 @end
@@ -225,9 +225,9 @@ LABEL_9:
     JreThrowClassCastException();
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
   objc_sync_exit(self);
-  return v5;
+  return intValue;
 }
 
 - (int)getSendBufferSize
@@ -245,9 +245,9 @@ LABEL_9:
     JreThrowClassCastException();
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
   objc_sync_exit(self);
-  return v5;
+  return intValue;
 }
 
 - (int)getSoTimeout
@@ -265,9 +265,9 @@ LABEL_9:
     JreThrowClassCastException();
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
   objc_sync_exit(self);
-  return v5;
+  return intValue;
 }
 
 - (BOOL)getTcpNoDelay
@@ -287,24 +287,24 @@ LABEL_9:
   return [v4 BOOLeanValue];
 }
 
-- (void)setKeepAliveWithBoolean:(BOOL)a3
+- (void)setKeepAliveWithBoolean:(BOOL)boolean
 {
   if (self->impl_)
   {
-    v3 = a3;
+    booleanCopy = boolean;
     sub_10015092C(self, 1);
     impl = self->impl_;
-    v6 = JavaLangBoolean_valueOfWithBoolean_(v3);
+    v6 = JavaLangBoolean_valueOfWithBoolean_(booleanCopy);
 
     [(JavaNetSocketImpl *)impl setOptionWithInt:8 withId:v6];
   }
 }
 
-- (void)setSendBufferSizeWithInt:(int)a3
+- (void)setSendBufferSizeWithInt:(int)int
 {
   objc_sync_enter(self);
   sub_10015092C(self, 1);
-  if (a3 <= 0)
+  if (int <= 0)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"size < 1");
     objc_exception_throw(v6);
@@ -316,16 +316,16 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetSocketImpl *)impl setOptionWithInt:4097 withId:JavaLangInteger_valueOfWithInt_(a3)];
+  [(JavaNetSocketImpl *)impl setOptionWithInt:4097 withId:JavaLangInteger_valueOfWithInt_(int)];
 
   objc_sync_exit(self);
 }
 
-- (void)setReceiveBufferSizeWithInt:(int)a3
+- (void)setReceiveBufferSizeWithInt:(int)int
 {
   objc_sync_enter(self);
   sub_10015092C(self, 1);
-  if (a3 <= 0)
+  if (int <= 0)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"size < 1");
     objc_exception_throw(v6);
@@ -337,27 +337,27 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetSocketImpl *)impl setOptionWithInt:4098 withId:JavaLangInteger_valueOfWithInt_(a3)];
+  [(JavaNetSocketImpl *)impl setOptionWithInt:4098 withId:JavaLangInteger_valueOfWithInt_(int)];
 
   objc_sync_exit(self);
 }
 
-- (void)setSoLingerWithBoolean:(BOOL)a3 withInt:(int)a4
+- (void)setSoLingerWithBoolean:(BOOL)boolean withInt:(int)int
 {
-  v5 = a3;
+  booleanCopy = boolean;
   sub_10015092C(self, 1);
-  if (a4 < 0 && v5)
+  if (int < 0 && booleanCopy)
   {
     v9 = new_JavaLangIllegalArgumentException_initWithNSString_(@"timeout < 0");
     objc_exception_throw(v9);
   }
 
   impl = self->impl_;
-  if (v5)
+  if (booleanCopy)
   {
     if (impl)
     {
-      v8 = JavaLangInteger_valueOfWithInt_(a4);
+      v8 = JavaLangInteger_valueOfWithInt_(int);
       goto LABEL_10;
     }
 
@@ -381,11 +381,11 @@ LABEL_10:
   [(JavaNetSocketImpl *)impl setOptionWithInt:128 withId:v8];
 }
 
-- (void)setSoTimeoutWithInt:(int)a3
+- (void)setSoTimeoutWithInt:(int)int
 {
   objc_sync_enter(self);
   sub_10015092C(self, 1);
-  if (a3 < 0)
+  if (int < 0)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"timeout < 0");
     objc_exception_throw(v6);
@@ -397,14 +397,14 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetSocketImpl *)impl setOptionWithInt:4102 withId:JavaLangInteger_valueOfWithInt_(a3)];
+  [(JavaNetSocketImpl *)impl setOptionWithInt:4102 withId:JavaLangInteger_valueOfWithInt_(int)];
 
   objc_sync_exit(self);
 }
 
-- (void)setTcpNoDelayWithBoolean:(BOOL)a3
+- (void)setTcpNoDelayWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   sub_10015092C(self, 1);
   impl = self->impl_;
   if (!impl)
@@ -412,7 +412,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangBoolean_valueOfWithBoolean_(v3);
+  v6 = JavaLangBoolean_valueOfWithBoolean_(booleanCopy);
 
   [(JavaNetSocketImpl *)impl setOptionWithInt:1 withId:v6];
 }
@@ -495,7 +495,7 @@ LABEL_10:
   return v3;
 }
 
-- (void)bindWithJavaNetSocketAddress:(id)a3
+- (void)bindWithJavaNetSocketAddress:(id)address
 {
   sub_10015092C(self, 1);
   if ([(JavaNetSocket *)self isBound])
@@ -504,7 +504,7 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  if (a3)
+  if (address)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -515,22 +515,22 @@ LABEL_10:
         JreThrowClassCastException();
       }
 
-      v5 = [a3 getAddress];
-      if (v5)
+      getAddress = [address getAddress];
+      if (getAddress)
       {
-        v6 = v5;
-        v7 = [a3 getPort];
+        v6 = getAddress;
+        getPort = [address getPort];
         goto LABEL_10;
       }
 
-      [a3 getHostName];
+      [address getHostName];
       v25 = JreStrcat("$$", v18, v19, v20, v21, v22, v23, v24, @"Host is unresolved: ");
       v9 = new_JavaNetUnknownHostException_initWithNSString_(v25);
     }
 
     else
     {
-      [a3 getClass];
+      [address getClass];
       v17 = JreStrcat("$@", v10, v11, v12, v13, v14, v15, v16, @"Local address not an InetSocketAddress: ");
       v9 = new_JavaLangIllegalArgumentException_initWithNSString_(v17);
     }
@@ -544,7 +544,7 @@ LABEL_19:
     sub_1001520E0();
   }
 
-  v7 = 0;
+  getPort = 0;
   v6 = JavaNetInet4Address_ANY_;
 LABEL_10:
   objc_sync_enter(self);
@@ -554,7 +554,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetSocketImpl *)impl bindWithJavaNetInetAddress:v6 withInt:v7];
+  [(JavaNetSocketImpl *)impl bindWithJavaNetInetAddress:v6 withInt:getPort];
   self->isBound_ = 1;
   [JavaNetSocket cacheLocalAddress]_0(self);
 
@@ -563,7 +563,7 @@ LABEL_10:
 
 - (id)cacheLocalAddress
 {
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   if (!v1)
   {
     JreThrowNullPointerException();
@@ -571,12 +571,12 @@ LABEL_10:
 
   SocketLocalAddressWithJavaIoFileDescriptor = LibcoreIoIoBridge_getSocketLocalAddressWithJavaIoFileDescriptor_(*(v1 + 24));
 
-  return JreStrongAssign((a1 + 40), SocketLocalAddressWithJavaIoFileDescriptor);
+  return JreStrongAssign((self + 40), SocketLocalAddressWithJavaIoFileDescriptor);
 }
 
-- (void)setReuseAddressWithBoolean:(BOOL)a3
+- (void)setReuseAddressWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   sub_10015092C(self, 1);
   impl = self->impl_;
   if (!impl)
@@ -584,7 +584,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangBoolean_valueOfWithBoolean_(v3);
+  v6 = JavaLangBoolean_valueOfWithBoolean_(booleanCopy);
 
   [(JavaNetSocketImpl *)impl setOptionWithInt:4 withId:v6];
 }
@@ -606,9 +606,9 @@ LABEL_10:
   return [v4 BOOLeanValue];
 }
 
-- (void)setOOBInlineWithBoolean:(BOOL)a3
+- (void)setOOBInlineWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   sub_10015092C(self, 1);
   impl = self->impl_;
   if (!impl)
@@ -616,7 +616,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangBoolean_valueOfWithBoolean_(v3);
+  v6 = JavaLangBoolean_valueOfWithBoolean_(booleanCopy);
 
   [(JavaNetSocketImpl *)impl setOptionWithInt:4099 withId:v6];
 }
@@ -638,10 +638,10 @@ LABEL_10:
   return [v4 BOOLeanValue];
 }
 
-- (void)setTrafficClassWithInt:(int)a3
+- (void)setTrafficClassWithInt:(int)int
 {
   sub_10015092C(self, 1);
-  if (a3 >= 0x100)
+  if (int >= 0x100)
   {
     v14 = JreStrcat("$I", v5, v6, v7, v8, v9, v10, v11, @"Value doesn't fit in an unsigned byte: ");
     v15 = new_JavaLangIllegalArgumentException_initWithNSString_(v14);
@@ -654,7 +654,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v13 = JavaLangInteger_valueOfWithInt_(a3);
+  v13 = JavaLangInteger_valueOfWithInt_(int);
 
   [(JavaNetSocketImpl *)impl setOptionWithInt:3 withId:v13];
 }

@@ -1,47 +1,47 @@
 @interface CSProudLockViewController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (BOOL)hasPasscodeSet;
 - (BOOL)isBiometricLockedOut;
-- (BOOL)proudLockContainerViewControllerIsCoverSheetVisible:(id)a3;
-- (CSProudLockViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)proudLockContainerViewControllerIsCoverSheetVisible:(id)visible;
+- (CSProudLockViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CSProudLockViewControllerDelegate)delegate;
 - (UIView)cameraCoveredView;
 - (UIView)proudLockView;
 - (id)transientSubtitleText;
 - (void)_clearFaceDetectAssertion;
 - (void)_createFaceDetectAssertion;
-- (void)_updateForAuthenticated:(BOOL)a3;
-- (void)_updateForProudLockStateChangeAnimated:(BOOL)a3;
-- (void)_updateForProudLockStateChangeDuration:(double)a3 completion:(id)a4;
+- (void)_updateForAuthenticated:(BOOL)authenticated;
+- (void)_updateForProudLockStateChangeAnimated:(BOOL)animated;
+- (void)_updateForProudLockStateChangeDuration:(double)duration completion:(id)completion;
 - (void)_updateProudLockViewControllerConfiguration;
-- (void)aggregateAppearance:(id)a3;
-- (void)proudLockContainerViewController:(id)a3 guidanceTextVisibilityDidChange:(id)a4 animated:(BOOL)a5;
-- (void)setSuspendLockUpdates:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)aggregateAppearance:(id)appearance;
+- (void)proudLockContainerViewController:(id)controller guidanceTextVisibilityDidChange:(id)change animated:(BOOL)animated;
+- (void)setSuspendLockUpdates:(BOOL)updates;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)updateLockForBiometricMatchFailure;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CSProudLockViewController
 
 - (UIView)proudLockView
 {
-  v2 = [(CSProudLockViewController *)self proudLockContainerViewController];
-  v3 = [v2 view];
+  proudLockContainerViewController = [(CSProudLockViewController *)self proudLockContainerViewController];
+  view = [proudLockContainerViewController view];
 
-  return v3;
+  return view;
 }
 
 - (BOOL)hasPasscodeSet
 {
-  v2 = [(CSProudLockViewController *)self authenticationStatusProvider];
-  v3 = [v2 hasPasscodeSet];
+  authenticationStatusProvider = [(CSProudLockViewController *)self authenticationStatusProvider];
+  hasPasscodeSet = [authenticationStatusProvider hasPasscodeSet];
 
-  return v3;
+  return hasPasscodeSet;
 }
 
 - (void)_updateProudLockViewControllerConfiguration
@@ -57,21 +57,21 @@
     [(CSLockScreenPearlSettings *)pearlSettings proudLockControllerViewControllerConfiguration];
   }
 
-  v4 = [(CSProudLockViewController *)self proudLockContainerViewController];
+  proudLockContainerViewController = [(CSProudLockViewController *)self proudLockContainerViewController];
   v5[2] = v8;
   v5[3] = v9;
   v5[4] = v10;
   v5[0] = v6;
   v5[1] = v7;
-  [v4 setConfiguration:v5];
+  [proudLockContainerViewController setConfiguration:v5];
 }
 
 - (id)transientSubtitleText
 {
-  v2 = [(CSProudLockViewController *)self delegate];
-  v3 = [v2 transientSubtitleText];
+  delegate = [(CSProudLockViewController *)self delegate];
+  transientSubtitleText = [delegate transientSubtitleText];
 
-  return v3;
+  return transientSubtitleText;
 }
 
 - (CSProudLockViewControllerDelegate)delegate
@@ -94,17 +94,17 @@
 
 - (BOOL)isBiometricLockedOut
 {
-  v2 = [(CSProudLockViewController *)self biometricResource];
-  v3 = [v2 biometricLockoutState] != 0;
+  biometricResource = [(CSProudLockViewController *)self biometricResource];
+  v3 = [biometricResource biometricLockoutState] != 0;
 
   return v3;
 }
 
-- (CSProudLockViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CSProudLockViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = CSProudLockViewController;
-  result = [(CSCoverSheetViewControllerBase *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(CSCoverSheetViewControllerBase *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_deferredAuthenticationState = 0x7FFFFFFFFFFFFFFFLL;
@@ -124,9 +124,9 @@
   [(CSProudLockViewController *)self bs_addChildViewController:v3];
   [(CSProudLockViewController *)self setProudLockContainerViewController:v3];
   v4 = +[CSLockScreenDomain rootSettings];
-  v5 = [v4 pearlSettings];
+  pearlSettings = [v4 pearlSettings];
   pearlSettings = self->_pearlSettings;
-  self->_pearlSettings = v5;
+  self->_pearlSettings = pearlSettings;
 
   [(PTSettings *)self->_pearlSettings addKeyObserver:self];
   [(CSProudLockViewController *)self _updateProudLockViewControllerConfiguration];
@@ -137,38 +137,38 @@
   v13.receiver = self;
   v13.super_class = CSProudLockViewController;
   [(CSCoverSheetViewControllerBase *)&v13 viewDidLayoutSubviews];
-  v3 = [(CSProudLockViewController *)self view];
-  [v3 bounds];
+  view = [(CSProudLockViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSProudLockViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   [(CSProudLockViewController *)self _createFaceDetectAssertion];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSProudLockViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:appear];
   [(CSProudLockViewController *)self _clearFaceDetectAssertion];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CSProudLockViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:disappear];
   [(CSProudLockViewController *)self _clearFaceDetectAssertion];
 }
 
@@ -176,17 +176,17 @@
 {
   if (!self->_suspendLockUpdates)
   {
-    v3 = [(CSProudLockViewController *)self proudLockContainerViewController];
-    [v3 updateLockForBiometricMatchFailure];
+    proudLockContainerViewController = [(CSProudLockViewController *)self proudLockContainerViewController];
+    [proudLockContainerViewController updateLockForBiometricMatchFailure];
   }
 }
 
-- (void)setSuspendLockUpdates:(BOOL)a3
+- (void)setSuspendLockUpdates:(BOOL)updates
 {
-  if (self->_suspendLockUpdates != a3)
+  if (self->_suspendLockUpdates != updates)
   {
-    self->_suspendLockUpdates = a3;
-    if (!a3)
+    self->_suspendLockUpdates = updates;
+    if (!updates)
     {
       [(CSProudLockViewController *)self _updateProudLockViewControllerConfiguration];
       if (self->_deferredAuthenticationState != 0x7FFFFFFFFFFFFFFFLL)
@@ -200,17 +200,17 @@
 
 - (UIView)cameraCoveredView
 {
-  v2 = [(CSProudLockViewController *)self proudLockContainerViewController];
-  v3 = [v2 cameraCoveredView];
+  proudLockContainerViewController = [(CSProudLockViewController *)self proudLockContainerViewController];
+  cameraCoveredView = [proudLockContainerViewController cameraCoveredView];
 
-  return v3;
+  return cameraCoveredView;
 }
 
-- (void)proudLockContainerViewController:(id)a3 guidanceTextVisibilityDidChange:(id)a4 animated:(BOOL)a5
+- (void)proudLockContainerViewController:(id)controller guidanceTextVisibilityDidChange:(id)change animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = a4;
-  if (v5)
+  animatedCopy = animated;
+  changeCopy = change;
+  if (animatedCopy)
   {
     v7 = [MEMORY[0x277CF0B70] settingsWithDuration:0.3];
   }
@@ -220,65 +220,65 @@
     v7 = 0;
   }
 
-  v8 = [(CSProudLockViewController *)self delegate];
-  [v8 proudLockDidChangeToCoachingText:v9];
+  delegate = [(CSProudLockViewController *)self delegate];
+  [delegate proudLockDidChangeToCoachingText:changeCopy];
 
   [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self withAnimationSettings:v7 completion:0];
 }
 
-- (BOOL)proudLockContainerViewControllerIsCoverSheetVisible:(id)a3
+- (BOOL)proudLockContainerViewControllerIsCoverSheetVisible:(id)visible
 {
-  v3 = [(CSProudLockViewController *)self delegate];
-  v4 = [v3 proudLockViewControllerIsCoverSheetVisible];
+  delegate = [(CSProudLockViewController *)self delegate];
+  proudLockViewControllerIsCoverSheetVisible = [delegate proudLockViewControllerIsCoverSheetVisible];
 
-  return v4;
+  return proudLockViewControllerIsCoverSheetVisible;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v22.receiver = self;
   v22.super_class = CSProudLockViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v22, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v22, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    v5 = 0;
-    if (v6 <= 15)
+    type = [eventCopy type];
+    isConsumable = 0;
+    if (type <= 15)
     {
-      switch(v6)
+      switch(type)
       {
         case 1:
-          v11 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-          v12 = [v11 legibilitySettings];
+          activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+          legibilitySettings = [activeAppearance legibilitySettings];
 
-          v13 = [(CSProudLockViewController *)self proudLockContainerViewController];
-          [v13 setLegibilitySettings:v12];
+          proudLockContainerViewController = [(CSProudLockViewController *)self proudLockContainerViewController];
+          [proudLockContainerViewController setLegibilitySettings:legibilitySettings];
 
           break;
         case 13:
-          v17 = [v4 value];
-          v18 = [v17 BOOLValue];
+          value = [eventCopy value];
+          bOOLValue = [value BOOLValue];
 
           if (self->_suspendLockUpdates)
           {
-            v5 = 0;
+            isConsumable = 0;
             self->_deferredAuthenticationState = BSSettingFlagForBool();
             goto LABEL_28;
           }
 
-          [(CSProudLockViewController *)self _updateForAuthenticated:v18];
+          [(CSProudLockViewController *)self _updateForAuthenticated:bOOLValue];
           break;
         case 15:
-          v7 = [v4 value];
-          v8 = [v7 integerValue];
+          value2 = [eventCopy value];
+          integerValue = [value2 integerValue];
 
           if (!self->_suspendLockUpdates)
           {
-            v9 = [(CSProudLockViewController *)self proudLockContainerViewController];
-            [v9 handleBiometricEvent:v8];
+            proudLockContainerViewController2 = [(CSProudLockViewController *)self proudLockContainerViewController];
+            [proudLockContainerViewController2 handleBiometricEvent:integerValue];
           }
 
-          if (v8 == 27 && [(CSProudLockViewController *)self isBiometricLockedOut])
+          if (integerValue == 27 && [(CSProudLockViewController *)self isBiometricLockedOut])
           {
             [(CSProudLockViewController *)self _createFaceDetectAssertion];
           }
@@ -289,15 +289,15 @@
       }
 
 LABEL_27:
-      v5 = 0;
+      isConsumable = 0;
       goto LABEL_28;
     }
 
-    switch(v6)
+    switch(type)
     {
       case 16:
-        v14 = [v4 value];
-        [v14 floatValue];
+        value3 = [eventCopy value];
+        [value3 floatValue];
         v16 = v15;
 
         if (v16 > 0.0)
@@ -305,8 +305,8 @@ LABEL_27:
           goto LABEL_27;
         }
 
-        v10 = [(CSProudLockViewController *)self proudLockContainerViewController];
-        [v10 updateForScreenWillTurnOff];
+        proudLockContainerViewController3 = [(CSProudLockViewController *)self proudLockContainerViewController];
+        [proudLockContainerViewController3 updateForScreenWillTurnOff];
         break;
       case 24:
         if (self->_suspendLockUpdates)
@@ -314,11 +314,11 @@ LABEL_27:
           goto LABEL_27;
         }
 
-        v19 = [v4 value];
-        v20 = [v19 integerValue];
+        value4 = [eventCopy value];
+        integerValue2 = [value4 integerValue];
 
-        v10 = [(CSProudLockViewController *)self proudLockContainerViewController];
-        [v10 setScreenOn:1 fromUnlockSource:v20];
+        proudLockContainerViewController3 = [(CSProudLockViewController *)self proudLockContainerViewController];
+        [proudLockContainerViewController3 setScreenOn:1 fromUnlockSource:integerValue2];
         break;
       case 25:
         if (self->_suspendLockUpdates)
@@ -326,8 +326,8 @@ LABEL_27:
           goto LABEL_27;
         }
 
-        v10 = [(CSProudLockViewController *)self proudLockContainerViewController];
-        [v10 setScreenOn:0];
+        proudLockContainerViewController3 = [(CSProudLockViewController *)self proudLockContainerViewController];
+        [proudLockContainerViewController3 setScreenOn:0];
         break;
       default:
         goto LABEL_28;
@@ -336,42 +336,42 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_28:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v29.receiver = self;
   v29.super_class = CSProudLockViewController;
-  [(CSCoverSheetViewControllerBase *)&v29 aggregateAppearance:v4];
-  v5 = [(CSProudLockViewController *)self proudLockContainerViewController];
-  v6 = [v5 isGuidanceTextVisible];
+  [(CSCoverSheetViewControllerBase *)&v29 aggregateAppearance:appearanceCopy];
+  proudLockContainerViewController = [(CSProudLockViewController *)self proudLockContainerViewController];
+  isGuidanceTextVisible = [proudLockContainerViewController isGuidanceTextVisible];
 
-  if (v6)
+  if (isGuidanceTextVisible)
   {
     v7 = +[CSComponent footerCallToActionLabel];
     v8 = [v7 priority:60];
-    v9 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
-    v10 = [v8 identifier:v9];
+    coverSheetIdentifier = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
+    v10 = [v8 identifier:coverSheetIdentifier];
     v11 = [v10 hidden:1];
-    [v4 addComponent:v11];
+    [appearanceCopy addComponent:v11];
 
     v12 = objc_opt_new();
     v13 = [v12 priority:60];
-    v14 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
-    v15 = [v13 identifier:v14];
+    coverSheetIdentifier2 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
+    v15 = [v13 identifier:coverSheetIdentifier2];
     v16 = [v15 suppressTeachableMomentsAnimation:1];
-    [v4 addComponent:v16];
+    [appearanceCopy addComponent:v16];
   }
 
-  v17 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  v18 = [v17 stringByAppendingString:@"BlurRadius"];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  v18 = [appearanceIdentifier stringByAppendingString:@"BlurRadius"];
 
-  [v4 removeAllComponentsWithIdentifier:v18];
+  [appearanceCopy removeAllComponentsWithIdentifier:v18];
   if ([(CSProudLockViewController *)self _shouldApplyScaleAndBlurForAuthenticated])
   {
     v27 = 0u;
@@ -387,7 +387,7 @@ LABEL_28:
     v25[2] = v28;
     v23 = [v22 transitionInputs:v25];
     v24 = [v23 hidden:1];
-    [v4 addComponent:v24];
+    [appearanceCopy addComponent:v24];
 
 LABEL_5:
     goto LABEL_9;
@@ -399,36 +399,36 @@ LABEL_5:
     v20 = [v19 identifier:v18];
     v21 = [v20 priority:20];
     v22 = [v21 hidden:1];
-    [v4 addComponent:v22];
+    [appearanceCopy addComponent:v22];
     goto LABEL_5;
   }
 
 LABEL_9:
 }
 
-- (void)_updateForAuthenticated:(BOOL)a3
+- (void)_updateForAuthenticated:(BOOL)authenticated
 {
-  v3 = a3;
+  authenticatedCopy = authenticated;
   isAuthenticated = self->_isAuthenticated;
-  self->_isAuthenticated = a3;
-  if (!a3)
+  self->_isAuthenticated = authenticated;
+  if (!authenticated)
   {
     self->_shouldReactToAuthentication = 0;
     self->_hasReactedToAuthentication = 0;
   }
 
   objc_initWeak(&location, self);
-  v6 = [(CSProudLockViewController *)self proudLockContainerViewController];
+  proudLockContainerViewController = [(CSProudLockViewController *)self proudLockContainerViewController];
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __53__CSProudLockViewController__updateForAuthenticated___block_invoke;
   v10 = &unk_27838B9E0;
   objc_copyWeak(&v12, &location);
-  v11 = self;
+  selfCopy = self;
   v13 = isAuthenticated;
-  [v6 setAuthenticated:v3 completion:&v7];
+  [proudLockContainerViewController setAuthenticated:authenticatedCopy completion:&v7];
 
-  if (v3)
+  if (authenticatedCopy)
   {
     [(CSProudLockViewController *)self _clearFaceDetectAssertion:v7];
   }
@@ -511,10 +511,10 @@ uint64_t __53__CSProudLockViewController__updateForAuthenticated___block_invoke_
   return result;
 }
 
-- (void)_updateForProudLockStateChangeAnimated:(BOOL)a3
+- (void)_updateForProudLockStateChangeAnimated:(BOOL)animated
 {
   v3 = 0.3;
-  if (!a3)
+  if (!animated)
   {
     v3 = 0.0;
   }
@@ -522,9 +522,9 @@ uint64_t __53__CSProudLockViewController__updateForAuthenticated___block_invoke_
   [(CSProudLockViewController *)self _updateForProudLockStateChangeDuration:0 completion:v3];
 }
 
-- (void)_updateForProudLockStateChangeDuration:(double)a3 completion:(id)a4
+- (void)_updateForProudLockStateChangeDuration:(double)duration completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   if (BSFloatIsZero())
   {
     v6 = 0;
@@ -532,10 +532,10 @@ uint64_t __53__CSProudLockViewController__updateForAuthenticated___block_invoke_
 
   else
   {
-    v6 = [MEMORY[0x277CF0B70] settingsWithDuration:a3];
+    v6 = [MEMORY[0x277CF0B70] settingsWithDuration:duration];
   }
 
-  [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self withAnimationSettings:v6 completion:v7];
+  [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self withAnimationSettings:v6 completion:completionCopy];
 }
 
 - (void)_createFaceDetectAssertion
@@ -544,13 +544,13 @@ uint64_t __53__CSProudLockViewController__updateForAuthenticated___block_invoke_
   {
     if ([(CSProudLockViewController *)self isBiometricLockedOut])
     {
-      v3 = [(CSProudLockViewController *)self biometricResource];
-      v4 = [v3 hasBiometricAuthenticationCapabilityEnabled];
+      biometricResource = [(CSProudLockViewController *)self biometricResource];
+      hasBiometricAuthenticationCapabilityEnabled = [biometricResource hasBiometricAuthenticationCapabilityEnabled];
 
-      if (v4)
+      if (hasBiometricAuthenticationCapabilityEnabled)
       {
-        v7 = [(CSProudLockViewController *)self biometricResource];
-        v5 = [v7 acquireFaceDetectionWantedAssertionForReason:@"FaceDetectForProudLock"];
+        biometricResource2 = [(CSProudLockViewController *)self biometricResource];
+        v5 = [biometricResource2 acquireFaceDetectionWantedAssertionForReason:@"FaceDetectForProudLock"];
         faceDetectWantedAssertion = self->_faceDetectWantedAssertion;
         self->_faceDetectWantedAssertion = v5;
       }
@@ -558,23 +558,23 @@ uint64_t __53__CSProudLockViewController__updateForAuthenticated___block_invoke_
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   pearlSettings = self->_pearlSettings;
-  if (pearlSettings == a3)
+  if (pearlSettings == settings)
   {
     if ([(CSLockScreenPearlSettings *)pearlSettings overrideCoachingConditionEnabled])
     {
-      v6 = [(CSLockScreenPearlSettings *)self->_pearlSettings overrideCoachingBiometricEvent];
+      overrideCoachingBiometricEvent = [(CSLockScreenPearlSettings *)self->_pearlSettings overrideCoachingBiometricEvent];
     }
 
     else
     {
-      v6 = 16;
+      overrideCoachingBiometricEvent = 16;
     }
 
-    v7 = [(CSProudLockViewController *)self proudLockContainerViewController];
-    [v7 handleBiometricEvent:v6];
+    proudLockContainerViewController = [(CSProudLockViewController *)self proudLockContainerViewController];
+    [proudLockContainerViewController handleBiometricEvent:overrideCoachingBiometricEvent];
 
     [(CSProudLockViewController *)self _updateProudLockViewControllerConfiguration];
   }

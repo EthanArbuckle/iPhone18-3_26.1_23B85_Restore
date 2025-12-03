@@ -1,12 +1,12 @@
 @interface GVUIntegerMap
 - (GVUIntegerMap)init;
 - (id)debugDescription;
-- (id)objectForKeyedSubscript:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)decrementValueForKey:(id)a3;
-- (unint64_t)incrementValueForKey:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)decrementValueForKey:(id)key;
+- (unint64_t)incrementValueForKey:(id)key;
 - (void)dealloc;
-- (void)setInteger:(unint64_t)a3 forKey:(id)a4;
+- (void)setInteger:(unint64_t)integer forKey:(id)key;
 @end
 
 @implementation GVUIntegerMap
@@ -31,43 +31,43 @@
   [(GVUIntegerMap *)&v3 dealloc];
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(GVUIntegerMap *)self integerForKey:a3];
+  v4 = [(GVUIntegerMap *)self integerForKey:subscript];
 
   return [v3 numberWithUnsignedInteger:v4];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(GVUIntegerMap *)self allKeys];
+  allKeys = [(GVUIntegerMap *)self allKeys];
 
-  return [(NSArray *)v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  return [(NSArray *)allKeys countByEnumeratingWithState:state objects:objects count:count];
 }
 
-- (void)setInteger:(unint64_t)a3 forKey:(id)a4
+- (void)setInteger:(unint64_t)integer forKey:(id)key
 {
   map = self->_map;
-  if (a3)
+  if (integer)
   {
-    [(NSMapTable *)map setObject:a3 forKey:a4];
+    [(NSMapTable *)map setObject:integer forKey:key];
   }
 
   else
   {
-    [(NSMapTable *)map removeObjectForKey:a4];
+    [(NSMapTable *)map removeObjectForKey:key];
   }
 }
 
-- (unint64_t)incrementValueForKey:(id)a3
+- (unint64_t)incrementValueForKey:(id)key
 {
   v5 = [(NSMapTable *)self->_map objectForKey:?];
-  [(GVUIntegerMap *)self setInteger:v5 + 1 forKey:a3];
+  [(GVUIntegerMap *)self setInteger:v5 + 1 forKey:key];
   return (v5 + 1);
 }
 
-- (unint64_t)decrementValueForKey:(id)a3
+- (unint64_t)decrementValueForKey:(id)key
 {
   v5 = [(NSMapTable *)self->_map objectForKey:?];
   if (!v5)
@@ -76,7 +76,7 @@
   }
 
   v6 = (v5 - 1);
-  [(GVUIntegerMap *)self setInteger:v5 - 1 forKey:a3];
+  [(GVUIntegerMap *)self setInteger:v5 - 1 forKey:key];
   return v6;
 }
 

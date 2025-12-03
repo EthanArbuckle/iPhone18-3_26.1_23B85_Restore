@@ -1,33 +1,33 @@
 @interface CDRichComplicationSegmentedView
-- (double)_arcAngleWithOuterRadius:(double)a3 segmentGapAngle:(double)a4 numberOfSegments:(unint64_t)a5;
-- (id)_colorForSegment:(id)a3;
-- (int64_t)_segmentShapeStyleForIndex:(unint64_t)a3 angle:(double)a4;
-- (void)_addSegmentsToLayer:(id)a3;
-- (void)_updateSegmentsWithColors:(id)a3;
-- (void)setProgress:(double)a3;
+- (double)_arcAngleWithOuterRadius:(double)radius segmentGapAngle:(double)angle numberOfSegments:(unint64_t)segments;
+- (id)_colorForSegment:(id)segment;
+- (int64_t)_segmentShapeStyleForIndex:(unint64_t)index angle:(double)angle;
+- (void)_addSegmentsToLayer:(id)layer;
+- (void)_updateSegmentsWithColors:(id)colors;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation CDRichComplicationSegmentedView
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   v4.receiver = self;
   v4.super_class = CDRichComplicationSegmentedView;
-  [(CDRichComplicationShapeView *)&v4 setProgress:a3];
+  [(CDRichComplicationShapeView *)&v4 setProgress:progress];
   [(CDRichComplicationSegmentedView *)self _updateSegmentsWithColors:0];
 }
 
-- (void)_updateSegmentsWithColors:(id)a3
+- (void)_updateSegmentsWithColors:(id)colors
 {
-  v4 = a3;
-  v5 = v4;
+  colorsCopy = colors;
+  v5 = colorsCopy;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  if (v4)
+  if (colorsCopy)
   {
-    if (![v4 count])
+    if (![colorsCopy count])
     {
       goto LABEL_6;
     }
@@ -57,8 +57,8 @@
   [(NSMutableArray *)v10 enumerateObjectsUsingBlock:v12];
   if (*(v15 + 24) == 1)
   {
-    v11 = [(CDRichComplicationShapeView *)self shapeLayer];
-    [(CDRichComplicationSegmentedView *)self _addSegmentsToLayer:v11];
+    shapeLayer = [(CDRichComplicationShapeView *)self shapeLayer];
+    [(CDRichComplicationSegmentedView *)self _addSegmentsToLayer:shapeLayer];
   }
 
 LABEL_6:
@@ -94,10 +94,10 @@ void __61__CDRichComplicationSegmentedView__updateSegmentsWithColors___block_inv
   }
 }
 
-- (void)_addSegmentsToLayer:(id)a3
+- (void)_addSegmentsToLayer:(id)layer
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layerCopy = layer;
   if (![(NSMutableArray *)self->_segments count])
   {
     v11 = _CDLoggingObjectForDomain(1, "CDLoggingDomainView");
@@ -113,7 +113,7 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!layerCopy)
   {
     v11 = _CDLoggingObjectForDomain(1, "CDLoggingDomainView");
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -127,11 +127,11 @@ LABEL_9:
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [MEMORY[0x277CBBAE8] currentDevice];
-  v7 = [objc_opt_class() isXL];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  isXL = [objc_opt_class() isXL];
   _LayoutConstants___constants_0 = 0x3FFC000000000000;
   _LayoutConstants___constants_1 = 0x3FF4000000000000;
-  if (v7)
+  if (isXL)
   {
     CLKComplicationGraphicExtraLargeCircularScalingFactor();
     v9 = v8 * *&_LayoutConstants___constants_0;
@@ -167,7 +167,7 @@ LABEL_9:
   v20 = v5;
   v31 = v20;
   [(NSMutableArray *)segments enumerateObjectsUsingBlock:v30];
-  [v4 setSublayers:0];
+  [layerCopy setSublayers:0];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -187,7 +187,7 @@ LABEL_9:
           objc_enumerationMutation(v11);
         }
 
-        [v4 addSublayer:{*(*(&v26 + 1) + 8 * i), v26}];
+        [layerCopy addSublayer:{*(*(&v26 + 1) + 8 * i), v26}];
       }
 
       v22 = [v11 countByEnumeratingWithState:&v26 objects:v39 count:16];
@@ -221,42 +221,42 @@ void __55__CDRichComplicationSegmentedView__addSegmentsToLayer___block_invoke(ui
   [*(a1 + 40) addObject:v12];
 }
 
-- (id)_colorForSegment:(id)a3
+- (id)_colorForSegment:(id)segment
 {
-  v3 = a3;
-  v4 = [v3 color];
-  v5 = [v3 state];
+  segmentCopy = segment;
+  color = [segmentCopy color];
+  state = [segmentCopy state];
 
-  if (v5 == 1)
+  if (state == 1)
   {
-    v6 = [v4 colorWithAlphaComponent:0.3];
+    v6 = [color colorWithAlphaComponent:0.3];
 
-    v4 = v6;
+    color = v6;
   }
 
-  return v4;
+  return color;
 }
 
-- (int64_t)_segmentShapeStyleForIndex:(unint64_t)a3 angle:(double)a4
+- (int64_t)_segmentShapeStyleForIndex:(unint64_t)index angle:(double)angle
 {
   if ([(NSMutableArray *)self->_segments count]== 1)
   {
     return 3;
   }
 
-  if (a3)
+  if (index)
   {
-    return 2 * ([(NSMutableArray *)self->_segments count]- 1 == a3);
+    return 2 * ([(NSMutableArray *)self->_segments count]- 1 == index);
   }
 
   return 1;
 }
 
-- (double)_arcAngleWithOuterRadius:(double)a3 segmentGapAngle:(double)a4 numberOfSegments:(unint64_t)a5
+- (double)_arcAngleWithOuterRadius:(double)radius segmentGapAngle:(double)angle numberOfSegments:(unint64_t)segments
 {
-  v6 = (a5 - 1) * a4;
+  v6 = (segments - 1) * angle;
   [(CDRichComplicationCurveView *)self _totalDrawableAngle];
-  return (fabs(v7) - v6) / a5;
+  return (fabs(v7) - v6) / segments;
 }
 
 @end

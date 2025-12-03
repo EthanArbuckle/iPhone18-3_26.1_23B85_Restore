@@ -1,34 +1,34 @@
 @interface AAFlowPresenter
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_callCompletionBlockWithError:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_callCompletionBlockWithError:(id)error;
 - (void)dealloc;
-- (void)flowFinishedWithError:(id)a3 completion:(id)a4;
-- (void)launchProcessWithUserInfo:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)flowFinishedWithError:(id)error completion:(id)completion;
+- (void)launchProcessWithUserInfo:(id)info;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation AAFlowPresenter
 
-- (void)launchProcessWithUserInfo:(id)a3
+- (void)launchProcessWithUserInfo:(id)info
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696B0D8];
-  v5 = a3;
-  v6 = [v4 anonymousListener];
+  infoCopy = info;
+  anonymousListener = [v4 anonymousListener];
   remoteListener = self->_remoteListener;
-  self->_remoteListener = v6;
+  self->_remoteListener = anonymousListener;
 
   [(NSXPCListener *)self->_remoteListener setDelegate:self];
   [(NSXPCListener *)self->_remoteListener resume];
   v8 = [objc_alloc(MEMORY[0x1E69D42A0]) initWithServiceName:@"com.apple.AAUIViewService" viewControllerClassName:@"AAUIRemoteViewController"];
   v9 = objc_opt_new();
-  v10 = [(NSXPCListener *)self->_remoteListener endpoint];
-  v11 = [v10 _endpoint];
-  [v9 setXpcEndpoint:v11];
+  endpoint = [(NSXPCListener *)self->_remoteListener endpoint];
+  _endpoint = [endpoint _endpoint];
+  [v9 setXpcEndpoint:_endpoint];
 
-  [v9 setUserInfo:v5];
+  [v9 setUserInfo:infoCopy];
   v12 = objc_opt_new();
   v13 = [MEMORY[0x1E69D42B8] newHandleWithDefinition:v8 configurationContext:v9];
   remoteAlertHandle = self->_remoteAlertHandle;
@@ -38,9 +38,9 @@
   v15 = _AALogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(AAFlowPresenter *)self remoteAlertHandle];
+    remoteAlertHandle = [(AAFlowPresenter *)self remoteAlertHandle];
     v18 = 138412290;
-    v19 = v16;
+    v19 = remoteAlertHandle;
     _os_log_impl(&dword_1B6F6A000, v15, OS_LOG_TYPE_DEFAULT, "Activating handle: %@", &v18, 0xCu);
   }
 
@@ -48,53 +48,53 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)flowFinishedWithError:(id)a3 completion:(id)a4
+- (void)flowFinishedWithError:(id)error completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  [(AAFlowPresenter *)self _callCompletionBlockWithError:v7];
-  if (v6)
+  errorCopy = error;
+  completionCopy = completion;
+  [(AAFlowPresenter *)self _callCompletionBlockWithError:errorCopy];
+  if (completionCopy)
   {
-    v6[2](v6, v7);
+    completionCopy[2](completionCopy, errorCopy);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[AAFlowPresenterHostInterface XPCInterface];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  activateCopy = activate;
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = activateCopy;
     _os_log_impl(&dword_1B6F6A000, v4, OS_LOG_TYPE_DEFAULT, "Alert handle (%@) activated.", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = deactivateCopy;
     _os_log_impl(&dword_1B6F6A000, v5, OS_LOG_TYPE_DEFAULT, "Alert handle (%@) deactivated.", &v8, 0xCu);
   }
 
@@ -104,15 +104,15 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 domain];
-  if ([v8 isEqualToString:*MEMORY[0x1E69D4468]])
+  handleCopy = handle;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E69D4468]])
   {
-    if ([v7 code] == 4)
+    if ([errorCopy code] == 4)
     {
 
 LABEL_9:
@@ -120,7 +120,7 @@ LABEL_9:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412290;
-        v16 = v6;
+        v16 = handleCopy;
         _os_log_impl(&dword_1B6F6A000, v12, OS_LOG_TYPE_DEFAULT, "Alert handle (%@) deactivated by request.", &v15, 0xCu);
       }
 
@@ -128,9 +128,9 @@ LABEL_9:
       goto LABEL_12;
     }
 
-    v11 = [v7 code];
+    code = [errorCopy code];
 
-    if (v11 == 5)
+    if (code == 5)
     {
       goto LABEL_9;
     }
@@ -144,13 +144,13 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v6;
+    v16 = handleCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = errorCopy;
     _os_log_impl(&dword_1B6F6A000, v9, OS_LOG_TYPE_DEFAULT, "Alert handle (%@) interrupted with error: %@", &v15, 0x16u);
   }
 
-  v10 = [MEMORY[0x1E696ABC0] aa_errorWithCode:0 underlyingError:v7];
+  v10 = [MEMORY[0x1E696ABC0] aa_errorWithCode:0 underlyingError:errorCopy];
 LABEL_12:
   v13 = v10;
   [(AAFlowPresenter *)self _callCompletionBlockWithError:v10];
@@ -158,15 +158,15 @@ LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callCompletionBlockWithError:(id)a3
+- (void)_callCompletionBlockWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(AAFlowPresenter *)self presentationCompletion];
+  errorCopy = error;
+  presentationCompletion = [(AAFlowPresenter *)self presentationCompletion];
 
-  if (v4)
+  if (presentationCompletion)
   {
-    v5 = [(AAFlowPresenter *)self presentationCompletion];
-    (v5)[2](v5, v6);
+    presentationCompletion2 = [(AAFlowPresenter *)self presentationCompletion];
+    (presentationCompletion2)[2](presentationCompletion2, errorCopy);
   }
 
   [(AAFlowPresenter *)self setPresentationCompletion:0];

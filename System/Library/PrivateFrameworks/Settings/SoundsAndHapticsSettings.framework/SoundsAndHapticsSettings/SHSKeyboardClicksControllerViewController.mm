@@ -1,9 +1,9 @@
 @interface SHSKeyboardClicksControllerViewController
 + (NSString)combinedDescription;
-- (id)_hapticValue:(id)a3;
+- (id)_hapticValue:(id)value;
 - (id)specifiers;
-- (void)_setHapticValue:(id)a3 specifier:(id)a4;
-- (void)_setSoundValue:(id)a3 specifier:(id)a4;
+- (void)_setHapticValue:(id)value specifier:(id)specifier;
+- (void)_setSoundValue:(id)value specifier:(id)specifier;
 - (void)_updateReloadSpecifierInParentController;
 - (void)loadView;
 @end
@@ -24,17 +24,17 @@
   }
 
   v3 = v2;
-  v4 = [MEMORY[0x277D756A0] sharedPreferencesController];
-  v5 = [v4 visceral];
+  mEMORY[0x277D756A0] = [MEMORY[0x277D756A0] sharedPreferencesController];
+  visceral = [mEMORY[0x277D756A0] visceral];
 
   v6 = @"SOUND";
   v7 = @"NONE";
-  if (v5)
+  if (visceral)
   {
     v7 = @"HAPTIC";
   }
 
-  if ((v3 & (v5 != 0)) != 0)
+  if ((v3 & (visceral != 0)) != 0)
   {
     v6 = @"SOUND_AND_HAPTIC";
   }
@@ -96,13 +96,13 @@
   return v4;
 }
 
-- (void)_setSoundValue:(id)a3 specifier:(id)a4
+- (void)_setSoundValue:(id)value specifier:(id)specifier
 {
-  [(SHSKeyboardClicksControllerViewController *)self setPreferenceValue:a3 specifier:a4];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [(SHSKeyboardClicksControllerViewController *)self setPreferenceValue:value specifier:specifier];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277CCA858];
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 postNotificationName:v6 object:v7];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [defaultCenter postNotificationName:v6 object:standardUserDefaults];
 
   [(SHSKeyboardClicksControllerViewController *)self _updateReloadSpecifierInParentController];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -110,18 +110,18 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.preferences.sounds.keyboard-audio.changed", 0, 0, 1u);
 }
 
-- (id)_hapticValue:(id)a3
+- (id)_hapticValue:(id)value
 {
-  v3 = [MEMORY[0x277D756A0] sharedPreferencesController];
-  v4 = [v3 visceral] != 0;
+  mEMORY[0x277D756A0] = [MEMORY[0x277D756A0] sharedPreferencesController];
+  v4 = [mEMORY[0x277D756A0] visceral] != 0;
   v5 = [MEMORY[0x277CCABB0] numberWithInt:v4];
 
   return v5;
 }
 
-- (void)_setHapticValue:(id)a3 specifier:(id)a4
+- (void)_setHapticValue:(id)value specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([value BOOLValue])
   {
     v5 = 2;
   }
@@ -131,8 +131,8 @@
     v5 = 0;
   }
 
-  v7 = [MEMORY[0x277D756A0] sharedPreferencesController];
-  [v7 setVisceral:v5];
+  mEMORY[0x277D756A0] = [MEMORY[0x277D756A0] sharedPreferencesController];
+  [mEMORY[0x277D756A0] setVisceral:v5];
   [(SHSKeyboardClicksControllerViewController *)self _updateReloadSpecifierInParentController];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.keyboard.preferences.haptic-feedback.changed", 0, 0, 1u);
@@ -140,13 +140,13 @@
 
 - (void)_updateReloadSpecifierInParentController
 {
-  v5 = [(SHSKeyboardClicksControllerViewController *)self parentController];
+  parentController = [(SHSKeyboardClicksControllerViewController *)self parentController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v5;
-    v4 = [(SHSKeyboardClicksControllerViewController *)self specifier];
-    [v3 reloadSpecifier:v4];
+    v3 = parentController;
+    specifier = [(SHSKeyboardClicksControllerViewController *)self specifier];
+    [v3 reloadSpecifier:specifier];
   }
 }
 

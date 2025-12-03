@@ -1,19 +1,19 @@
 @interface PTMetalTextureUtil
-+ (unint64_t)macroBlockSizeForPixelFormat:(unint64_t)a3 device:(id)a4;
-- (PTMetalTextureUtil)initWithMetalContext:(id)a3;
-- (id)createWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unint64_t)a5 mipmapLevelCount:(unint64_t)a6;
-- (id)mipmapLevelsUsingTextureView:(id)a3;
-- (int)copy:(id)a3 inTex:(id)a4 outTex:(id)a5;
-- (int)mix:(id)a3 inTexX:(id)a4 inTexY:(id)a5 outTex:(id)a6 alpha:(float)a7;
-- (int)multiply:(id)a3 inTex:(id)a4 outTex:(id)a5 multiplier:(float)a6;
-- (int)resample420To444:(id)a3 inLuma:(id)a4 inChroma:(id)a5 outYUV:(id)a6;
++ (unint64_t)macroBlockSizeForPixelFormat:(unint64_t)format device:(id)device;
+- (PTMetalTextureUtil)initWithMetalContext:(id)context;
+- (id)createWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unint64_t)format mipmapLevelCount:(unint64_t)count;
+- (id)mipmapLevelsUsingTextureView:(id)view;
+- (int)copy:(id)copy inTex:(id)tex outTex:(id)outTex;
+- (int)mix:(id)mix inTexX:(id)x inTexY:(id)y outTex:(id)tex alpha:(float)alpha;
+- (int)multiply:(id)multiply inTex:(id)tex outTex:(id)outTex multiplier:(float)multiplier;
+- (int)resample420To444:(id)to444 inLuma:(id)luma inChroma:(id)chroma outYUV:(id)v;
 @end
 
 @implementation PTMetalTextureUtil
 
-- (PTMetalTextureUtil)initWithMetalContext:(id)a3
+- (PTMetalTextureUtil)initWithMetalContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v50.receiver = self;
   v50.super_class = PTMetalTextureUtil;
   v5 = [(PTMetalTextureUtil *)&v50 init];
@@ -22,16 +22,16 @@
     goto LABEL_20;
   }
 
-  v6 = [v4 device];
+  device = [contextCopy device];
   device = v5->_device;
-  v5->_device = v6;
+  v5->_device = device;
 
-  v5->_supportGPUFamilyApple7 = [v4 supportsFamily:1007];
-  v8 = [v4 imageblocksSupported];
-  v5->_imageblocksSupported = v8;
-  if (v8)
+  v5->_supportGPUFamilyApple7 = [contextCopy supportsFamily:1007];
+  imageblocksSupported = [contextCopy imageblocksSupported];
+  v5->_imageblocksSupported = imageblocksSupported;
+  if (imageblocksSupported)
   {
-    v9 = [v4 computePipelineStateFor:@"copy" withConstants:0];
+    v9 = [contextCopy computePipelineStateFor:@"copy" withConstants:0];
     copy = v5->_copy;
     v5->_copy = v9;
 
@@ -55,7 +55,7 @@ LABEL_5:
 
   else
   {
-    v19 = [v4 computePipelineStateFor:@"copyNoImageblocks" withConstants:0];
+    v19 = [contextCopy computePipelineStateFor:@"copyNoImageblocks" withConstants:0];
     v20 = v5->_copy;
     v5->_copy = v19;
 
@@ -71,7 +71,7 @@ LABEL_5:
     }
   }
 
-  v21 = [v4 computePipelineStateFor:@"multiply" withConstants:0];
+  v21 = [contextCopy computePipelineStateFor:@"multiply" withConstants:0];
   multiply = v5->_multiply;
   v5->_multiply = v21;
 
@@ -86,7 +86,7 @@ LABEL_5:
     goto LABEL_19;
   }
 
-  v23 = [v4 computePipelineStateFor:@"mix" withConstants:0];
+  v23 = [contextCopy computePipelineStateFor:@"mix" withConstants:0];
   mix = v5->_mix;
   v5->_mix = v23;
 
@@ -101,7 +101,7 @@ LABEL_5:
     goto LABEL_19;
   }
 
-  v25 = [v4 computePipelineStateFor:@"resample420To444" withConstants:0];
+  v25 = [contextCopy computePipelineStateFor:@"resample420To444" withConstants:0];
   resample420To444 = v5->_resample420To444;
   v5->_resample420To444 = v25;
 
@@ -122,9 +122,9 @@ LABEL_21:
   return v27;
 }
 
-- (id)createWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unint64_t)a5 mipmapLevelCount:(unint64_t)a6
+- (id)createWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unint64_t)format mipmapLevelCount:(unint64_t)count
 {
-  v8 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:a5 width:a3 height:a4 mipmapped:a6 != 0];
+  v8 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:format width:width height:height mipmapped:count != 0];
   [v8 setUsage:19];
   if (self->_supportGPUFamilyApple7)
   {
@@ -137,19 +137,19 @@ LABEL_21:
   }
 
   [v8 setResourceOptions:v9];
-  if (a6 != -1)
+  if (count != -1)
   {
-    if (a6 <= 1)
+    if (count <= 1)
     {
-      v10 = 1;
+      countCopy = 1;
     }
 
     else
     {
-      v10 = a6;
+      countCopy = count;
     }
 
-    [v8 setMipmapLevelCount:v10];
+    [v8 setMipmapLevelCount:countCopy];
   }
 
   v11 = [(MTLDevice *)self->_device newTextureWithDescriptor:v8];
@@ -157,22 +157,22 @@ LABEL_21:
   return v11;
 }
 
-- (id)mipmapLevelsUsingTextureView:(id)a3
+- (id)mipmapLevelsUsingTextureView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_new();
-  if ([v3 mipmapLevelCount])
+  if ([viewCopy mipmapLevelCount])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 newTextureViewWithPixelFormat:objc_msgSend(v3 textureType:"pixelFormat") levels:objc_msgSend(v3 slices:"textureType"), v5, 1, 0, 1];
+      v6 = [viewCopy newTextureViewWithPixelFormat:objc_msgSend(viewCopy textureType:"pixelFormat") levels:objc_msgSend(viewCopy slices:"textureType"), v5, 1, 0, 1];
       [v4 addObject:v6];
 
       ++v5;
     }
 
-    while ([v3 mipmapLevelCount] > v5);
+    while ([viewCopy mipmapLevelCount] > v5);
   }
 
   v7 = [v4 copy];
@@ -180,15 +180,15 @@ LABEL_21:
   return v7;
 }
 
-- (int)copy:(id)a3 inTex:(id)a4 outTex:(id)a5
+- (int)copy:(id)copy inTex:(id)tex outTex:(id)outTex
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PTImageblockConfig alloc] initWithTexture:v8];
-  v12 = [v10 computeCommandEncoder];
+  outTexCopy = outTex;
+  texCopy = tex;
+  copyCopy = copy;
+  v11 = [[PTImageblockConfig alloc] initWithTexture:outTexCopy];
+  computeCommandEncoder = [copyCopy computeCommandEncoder];
 
-  if (!v12)
+  if (!computeCommandEncoder)
   {
     v13 = _PTLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -199,13 +199,13 @@ LABEL_21:
 
   if (self->_imageblocksSupported)
   {
-    [v12 setImageblockWidth:-[PTImageblockConfig imageblockSize](v11 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v11, "imageblockSize")}];
+    [computeCommandEncoder setImageblockWidth:-[PTImageblockConfig imageblockSize](v11 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v11, "imageblockSize")}];
   }
 
-  [v12 setComputePipelineState:self->_copy];
-  [v12 setTexture:v9 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_copy];
+  [computeCommandEncoder setTexture:texCopy atIndex:0];
 
-  [v12 setTexture:v8 atIndex:1];
+  [computeCommandEncoder setTexture:outTexCopy atIndex:1];
   if (v11)
   {
     [(PTImageblockConfig *)v11 threads];
@@ -218,19 +218,19 @@ LABEL_21:
     memset(v22, 0, sizeof(v22));
   }
 
-  [v12 dispatchThreads:v23 threadsPerThreadgroup:v22];
-  [v12 endEncoding];
+  [computeCommandEncoder dispatchThreads:v23 threadsPerThreadgroup:v22];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)multiply:(id)a3 inTex:(id)a4 outTex:(id)a5 multiplier:(float)a6
+- (int)multiply:(id)multiply inTex:(id)tex outTex:(id)outTex multiplier:(float)multiplier
 {
-  v26 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [a3 computeCommandEncoder];
-  if (!v11)
+  multiplierCopy = multiplier;
+  outTexCopy = outTex;
+  texCopy = tex;
+  computeCommandEncoder = [multiply computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v12 = _PTLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -239,33 +239,33 @@ LABEL_21:
     }
   }
 
-  [v11 setComputePipelineState:self->_multiply];
-  [v11 setTexture:v10 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_multiply];
+  [computeCommandEncoder setTexture:texCopy atIndex:0];
 
-  [v11 setTexture:v9 atIndex:1];
-  [v11 setBytes:&v26 length:4 atIndex:0];
-  v20 = [v9 width];
-  v21 = [v9 height];
+  [computeCommandEncoder setTexture:outTexCopy atIndex:1];
+  [computeCommandEncoder setBytes:&multiplierCopy length:4 atIndex:0];
+  width = [outTexCopy width];
+  height = [outTexCopy height];
 
-  v25[0] = v20;
-  v25[1] = v21;
+  v25[0] = width;
+  v25[1] = height;
   v25[2] = 1;
   v23 = xmmword_2244A5230;
   v24 = 1;
-  [v11 dispatchThreads:v25 threadsPerThreadgroup:&v23];
-  [v11 endEncoding];
+  [computeCommandEncoder dispatchThreads:v25 threadsPerThreadgroup:&v23];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)mix:(id)a3 inTexX:(id)a4 inTexY:(id)a5 outTex:(id)a6 alpha:(float)a7
+- (int)mix:(id)mix inTexX:(id)x inTexY:(id)y outTex:(id)tex alpha:(float)alpha
 {
-  v29 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [a3 computeCommandEncoder];
-  if (!v14)
+  alphaCopy = alpha;
+  texCopy = tex;
+  yCopy = y;
+  xCopy = x;
+  computeCommandEncoder = [mix computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v15 = _PTLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -274,61 +274,61 @@ LABEL_21:
     }
   }
 
-  [v14 setComputePipelineState:self->_mix];
-  [v14 setTexture:v13 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_mix];
+  [computeCommandEncoder setTexture:xCopy atIndex:0];
 
-  [v14 setTexture:v12 atIndex:1];
-  [v14 setTexture:v11 atIndex:2];
-  [v14 setBytes:&v29 length:4 atIndex:0];
-  v23 = [v11 width];
-  v24 = [v11 height];
+  [computeCommandEncoder setTexture:yCopy atIndex:1];
+  [computeCommandEncoder setTexture:texCopy atIndex:2];
+  [computeCommandEncoder setBytes:&alphaCopy length:4 atIndex:0];
+  width = [texCopy width];
+  height = [texCopy height];
 
-  v28[0] = v23;
-  v28[1] = v24;
+  v28[0] = width;
+  v28[1] = height;
   v28[2] = 1;
   v26 = xmmword_2244A5230;
   v27 = 1;
-  [v14 dispatchThreads:v28 threadsPerThreadgroup:&v26];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreads:v28 threadsPerThreadgroup:&v26];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)resample420To444:(id)a3 inLuma:(id)a4 inChroma:(id)a5 outYUV:(id)a6
+- (int)resample420To444:(id)to444 inLuma:(id)luma inChroma:(id)chroma outYUV:(id)v
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [PTColorConversion getChromaOffsetFromLuma:v12 texChroma:v11];
+  vCopy = v;
+  chromaCopy = chroma;
+  lumaCopy = luma;
+  to444Copy = to444;
+  [PTColorConversion getChromaOffsetFromLuma:lumaCopy texChroma:chromaCopy];
   v22 = v14;
-  v15 = [v13 computeCommandEncoder];
+  computeCommandEncoder = [to444Copy computeCommandEncoder];
 
-  [v15 setComputePipelineState:self->_resample420To444];
-  [v15 setTexture:v12 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_resample420To444];
+  [computeCommandEncoder setTexture:lumaCopy atIndex:0];
 
-  [v15 setTexture:v11 atIndex:1];
-  [v15 setTexture:v10 atIndex:2];
-  [v15 setBytes:&v22 length:8 atIndex:0];
-  v16 = [v10 width];
-  v17 = [v10 height];
+  [computeCommandEncoder setTexture:chromaCopy atIndex:1];
+  [computeCommandEncoder setTexture:vCopy atIndex:2];
+  [computeCommandEncoder setBytes:&v22 length:8 atIndex:0];
+  width = [vCopy width];
+  height = [vCopy height];
 
-  v21[0] = v16;
-  v21[1] = v17;
+  v21[0] = width;
+  v21[1] = height;
   v21[2] = 1;
   v19 = xmmword_2244A5230;
   v20 = 1;
-  [v15 dispatchThreads:v21 threadsPerThreadgroup:&v19];
-  [v15 endEncoding];
+  [computeCommandEncoder dispatchThreads:v21 threadsPerThreadgroup:&v19];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-+ (unint64_t)macroBlockSizeForPixelFormat:(unint64_t)a3 device:(id)a4
++ (unint64_t)macroBlockSizeForPixelFormat:(unint64_t)format device:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = 32;
-  if (a3 != 500 && a3 != 520)
+  if (format != 500 && format != 520)
   {
     MTLPixelFormatGetInfoForDevice();
     v6 = 16;

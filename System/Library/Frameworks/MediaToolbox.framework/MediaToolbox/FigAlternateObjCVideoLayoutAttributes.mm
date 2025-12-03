@@ -1,5 +1,5 @@
 @interface FigAlternateObjCVideoLayoutAttributes
-- (FigAlternateObjCVideoLayoutAttributes)initWithTagCollection:(OpaqueCMTagCollection *)a3;
+- (FigAlternateObjCVideoLayoutAttributes)initWithTagCollection:(OpaqueCMTagCollection *)collection;
 - (unint64_t)packingType;
 - (unint64_t)projectionType;
 - (unint64_t)stereoViewComponents;
@@ -8,16 +8,16 @@
 
 @implementation FigAlternateObjCVideoLayoutAttributes
 
-- (FigAlternateObjCVideoLayoutAttributes)initWithTagCollection:(OpaqueCMTagCollection *)a3
+- (FigAlternateObjCVideoLayoutAttributes)initWithTagCollection:(OpaqueCMTagCollection *)collection
 {
   v7.receiver = self;
   v7.super_class = FigAlternateObjCVideoLayoutAttributes;
   v4 = [(FigAlternateObjCVideoLayoutAttributes *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (collection)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(collection);
     }
 
     else

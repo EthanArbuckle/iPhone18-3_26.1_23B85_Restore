@@ -1,28 +1,28 @@
 @interface ICCloudSchemaCatchUpSyncContext
-- (ICCloudSchemaCatchUpSyncContext)initWithAccountIdentifier:(id)a3 syncReason:(id)a4 schedulingStateStorage:(id)a5 managedObjectContext:(id)a6;
+- (ICCloudSchemaCatchUpSyncContext)initWithAccountIdentifier:(id)identifier syncReason:(id)reason schedulingStateStorage:(id)storage managedObjectContext:(id)context;
 - (id)description;
-- (void)_computeShouldPerformCloudSchemaCatchUpSyncFrom:(id)a3 storeController:(id)a4;
+- (void)_computeShouldPerformCloudSchemaCatchUpSyncFrom:(id)from storeController:(id)controller;
 @end
 
 @implementation ICCloudSchemaCatchUpSyncContext
 
-- (ICCloudSchemaCatchUpSyncContext)initWithAccountIdentifier:(id)a3 syncReason:(id)a4 schedulingStateStorage:(id)a5 managedObjectContext:(id)a6
+- (ICCloudSchemaCatchUpSyncContext)initWithAccountIdentifier:(id)identifier syncReason:(id)reason schedulingStateStorage:(id)storage managedObjectContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  storageCopy = storage;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = ICCloudSchemaCatchUpSyncContext;
   v14 = [(ICCloudSchemaCatchUpSyncContext *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    [(ICCloudSchemaCatchUpSyncContext *)v14 setAccountIdentifier:v10];
-    [(ICCloudSchemaCatchUpSyncContext *)v15 setSyncReason:v11];
+    [(ICCloudSchemaCatchUpSyncContext *)v14 setAccountIdentifier:identifierCopy];
+    [(ICCloudSchemaCatchUpSyncContext *)v15 setSyncReason:reasonCopy];
     v22 = 0x7FFFFFFFFFFFFFFFLL;
-    v16 = [(ICCloudSchemaCatchUpSyncContext *)v15 accountIdentifier];
-    v17 = [ICCloudSchemaCompatibilityUtils isCloudSchemaCatchUpSyncNeededForAccountIdentifier:v16 context:v13 outPersistenceCloudSchemaVersion:&v22];
+    accountIdentifier = [(ICCloudSchemaCatchUpSyncContext *)v15 accountIdentifier];
+    v17 = [ICCloudSchemaCompatibilityUtils isCloudSchemaCatchUpSyncNeededForAccountIdentifier:accountIdentifier context:contextCopy outPersistenceCloudSchemaVersion:&v22];
 
     if (v17)
     {
@@ -30,8 +30,8 @@
     }
 
     [(ICCloudSchemaCatchUpSyncContext *)v15 setIsCloudSchemaCatchUpSyncNeeded:v17];
-    v18 = [v13 storeController];
-    [(ICCloudSchemaCatchUpSyncContext *)v15 _computeShouldPerformCloudSchemaCatchUpSyncFrom:v12 storeController:v18];
+    storeController = [contextCopy storeController];
+    [(ICCloudSchemaCatchUpSyncContext *)v15 _computeShouldPerformCloudSchemaCatchUpSyncFrom:storageCopy storeController:storeController];
 
     v19 = +[REMLog cloudkit];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -46,57 +46,57 @@
   return v15;
 }
 
-- (void)_computeShouldPerformCloudSchemaCatchUpSyncFrom:(id)a3 storeController:(id)a4
+- (void)_computeShouldPerformCloudSchemaCatchUpSyncFrom:(id)from storeController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  controllerCopy = controller;
   if (![(ICCloudSchemaCatchUpSyncContext *)self isCloudSchemaCatchUpSyncNeeded])
   {
     v15 = 0;
     goto LABEL_12;
   }
 
-  v8 = [(ICCloudSchemaCatchUpSyncContext *)self syncReason];
-  v9 = isCloudContextSyncReasonUserInitiated(v8);
+  syncReason = [(ICCloudSchemaCatchUpSyncContext *)self syncReason];
+  v9 = isCloudContextSyncReasonUserInitiated(syncReason);
 
-  v10 = [v7 supportsCloudSchemaCatchUpSyncBackgroundScheduling];
-  v11 = [v6 debugForceSupportBackgroundScheduling];
-  v12 = [v6 schedulingState];
+  supportsCloudSchemaCatchUpSyncBackgroundScheduling = [controllerCopy supportsCloudSchemaCatchUpSyncBackgroundScheduling];
+  debugForceSupportBackgroundScheduling = [fromCopy debugForceSupportBackgroundScheduling];
+  schedulingState = [fromCopy schedulingState];
   v13 = +[REMLog cloudkit];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [(ICCloudSchemaCatchUpSyncContext *)self syncReason];
+    syncReason2 = [(ICCloudSchemaCatchUpSyncContext *)self syncReason];
     v17[0] = 67110146;
     v17[1] = v9;
     v18 = 1024;
-    v19 = v10;
+    v19 = supportsCloudSchemaCatchUpSyncBackgroundScheduling;
     v20 = 1024;
-    v21 = v11;
+    v21 = debugForceSupportBackgroundScheduling;
     v22 = 2048;
-    v23 = v12;
+    v23 = schedulingState;
     v24 = 2114;
-    v25 = v14;
+    v25 = syncReason2;
   }
 
-  if (((v10 & ~v9 | v11) & 1) == 0)
+  if (((supportsCloudSchemaCatchUpSyncBackgroundScheduling & ~v9 | debugForceSupportBackgroundScheduling) & 1) == 0)
   {
 LABEL_11:
     v15 = 1;
     goto LABEL_12;
   }
 
-  if (v12 >= 3)
+  if (schedulingState >= 3)
   {
     v16 = +[REMLog cloudkit];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      sub_1007668E0(v12, v16);
+      sub_1007668E0(schedulingState, v16);
     }
 
     goto LABEL_11;
   }
 
-  v15 = v12 == 2;
+  v15 = schedulingState == 2;
 LABEL_12:
   [(ICCloudSchemaCatchUpSyncContext *)self setShouldPerformCloudSchemaCatchUpSync:v15];
 }
@@ -104,9 +104,9 @@ LABEL_12:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(ICCloudSchemaCatchUpSyncContext *)self accountIdentifier];
-  v5 = [(ICCloudSchemaCatchUpSyncContext *)self syncReason];
-  v6 = [NSString stringWithFormat:@"<%@: %p, accountIdentifier: %@, syncReason: %@, persistenceCloudSchemaVersion: %ld, isCloudSchemaCatchUpSyncNeeded: %d, shouldPerformCloudSchemaCatchUpSync: %d>", v3, self, v4, v5, [(ICCloudSchemaCatchUpSyncContext *)self persistenceCloudSchemaVersion], [(ICCloudSchemaCatchUpSyncContext *)self isCloudSchemaCatchUpSyncNeeded], [(ICCloudSchemaCatchUpSyncContext *)self shouldPerformCloudSchemaCatchUpSync]];
+  accountIdentifier = [(ICCloudSchemaCatchUpSyncContext *)self accountIdentifier];
+  syncReason = [(ICCloudSchemaCatchUpSyncContext *)self syncReason];
+  v6 = [NSString stringWithFormat:@"<%@: %p, accountIdentifier: %@, syncReason: %@, persistenceCloudSchemaVersion: %ld, isCloudSchemaCatchUpSyncNeeded: %d, shouldPerformCloudSchemaCatchUpSync: %d>", v3, self, accountIdentifier, syncReason, [(ICCloudSchemaCatchUpSyncContext *)self persistenceCloudSchemaVersion], [(ICCloudSchemaCatchUpSyncContext *)self isCloudSchemaCatchUpSyncNeeded], [(ICCloudSchemaCatchUpSyncContext *)self shouldPerformCloudSchemaCatchUpSync]];
 
   return v6;
 }

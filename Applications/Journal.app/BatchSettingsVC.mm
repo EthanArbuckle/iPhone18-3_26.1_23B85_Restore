@@ -1,26 +1,26 @@
 @interface BatchSettingsVC
-- (_TtC7Journal15BatchSettingsVC)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)actionAssetTypeActivitySwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeAudioSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeBooksSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeConfettiSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeContactSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeLinkSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeMotionActivitySwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeMultiPinMapSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeMusicSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypePhotosSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypePodcastsSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeRouteSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeVideoSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeVisitSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeWorkoutIconSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetTypeWorkoutRouteSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionAssetsNeededSwitchStateDidChangeWithSender:(id)a3;
-- (void)actionBatchCountSliderValueDidChangeWithSender:(id)a3;
-- (void)actionLastRandomDaysSliderValueDidChangeWithSender:(id)a3;
-- (void)actionMaxRangeSliderValueDidChangeWithSender:(id)a3;
-- (void)actionMinRangeSliderValueDidChangeWithSender:(id)a3;
+- (_TtC7Journal15BatchSettingsVC)initWithNibName:(id)name bundle:(id)bundle;
+- (void)actionAssetTypeActivitySwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeAudioSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeBooksSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeConfettiSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeContactSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeLinkSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeMotionActivitySwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeMultiPinMapSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeMusicSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypePhotosSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypePodcastsSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeRouteSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeVideoSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeVisitSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeWorkoutIconSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetTypeWorkoutRouteSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionAssetsNeededSwitchStateDidChangeWithSender:(id)sender;
+- (void)actionBatchCountSliderValueDidChangeWithSender:(id)sender;
+- (void)actionLastRandomDaysSliderValueDidChangeWithSender:(id)sender;
+- (void)actionMaxRangeSliderValueDidChangeWithSender:(id)sender;
+- (void)actionMinRangeSliderValueDidChangeWithSender:(id)sender;
 - (void)loadView;
 @end
 
@@ -28,160 +28,160 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100406B98();
 }
 
-- (void)actionBatchCountSliderValueDidChangeWithSender:(id)a3
+- (void)actionBatchCountSliderValueDidChangeWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_100412590();
 }
 
-- (void)actionLastRandomDaysSliderValueDidChangeWithSender:(id)a3
+- (void)actionLastRandomDaysSliderValueDidChangeWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_100412890();
 }
 
-- (void)actionAssetsNeededSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetsNeededSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040E368(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040E368(sender);
 }
 
-- (void)actionAssetTypePhotosSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypePhotosSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040E5A4(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040E5A4(sender);
 }
 
-- (void)actionAssetTypeMusicSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeMusicSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040E7CC(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040E7CC(sender);
 }
 
-- (void)actionAssetTypePodcastsSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypePodcastsSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040E9F4(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040E9F4(sender);
 }
 
-- (void)actionAssetTypeBooksSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeBooksSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040EC1C(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040EC1C(sender);
 }
 
-- (void)actionAssetTypeVisitSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeVisitSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040EE44(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040EE44(sender);
 }
 
-- (void)actionAssetTypeMultiPinMapSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeMultiPinMapSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040F06C(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040F06C(sender);
 }
 
-- (void)actionAssetTypeVideoSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeVideoSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040F294(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040F294(sender);
 }
 
-- (void)actionAssetTypeAudioSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeAudioSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040F4BC(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040F4BC(sender);
 }
 
-- (void)actionAssetTypeActivitySwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeActivitySwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040F6E4(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040F6E4(sender);
 }
 
-- (void)actionAssetTypeRouteSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeRouteSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040F90C(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040F90C(sender);
 }
 
-- (void)actionAssetTypeLinkSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeLinkSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040FB34(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040FB34(sender);
 }
 
-- (void)actionAssetTypeContactSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeContactSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040FD5C(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040FD5C(sender);
 }
 
-- (void)actionAssetTypeWorkoutRouteSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeWorkoutRouteSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_10040FF84(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10040FF84(sender);
 }
 
-- (void)actionAssetTypeWorkoutIconSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeWorkoutIconSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_1004101AC(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1004101AC(sender);
 }
 
-- (void)actionAssetTypeConfettiSwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeConfettiSwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_1004103D4(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1004103D4(sender);
 }
 
-- (void)actionAssetTypeMotionActivitySwitchStateDidChangeWithSender:(id)a3
+- (void)actionAssetTypeMotionActivitySwitchStateDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_1004105FC(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1004105FC(sender);
 }
 
-- (void)actionMaxRangeSliderValueDidChangeWithSender:(id)a3
+- (void)actionMaxRangeSliderValueDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_100410824(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_100410824(sender);
 }
 
-- (void)actionMinRangeSliderValueDidChangeWithSender:(id)a3
+- (void)actionMinRangeSliderValueDidChangeWithSender:(id)sender
 {
-  v5 = a3;
-  v6 = self;
-  sub_100410DA8(a3);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_100410DA8(sender);
 }
 
-- (_TtC7Journal15BatchSettingsVC)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal15BatchSettingsVC)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -193,8 +193,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10041132C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10041132C(v5, v7, bundle);
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface PLModelMigrationActionProcessor
-- (PLModelMigrationActionProcessor)initWithUUID:(id)a3 pathManager:(id)a4 migrationActionType:(int64_t)a5 analyticsEventManager:(id)a6 logger:(id)a7 progressUnitCount:(unint64_t)a8;
+- (PLModelMigrationActionProcessor)initWithUUID:(id)d pathManager:(id)manager migrationActionType:(int64_t)type analyticsEventManager:(id)eventManager logger:(id)logger progressUnitCount:(unint64_t)count;
 - (id)_generateActionMarker;
 - (id)_generateActionMarkerBase;
 - (id)_generateActionTagMarker;
 - (id)_progressLogMessage;
-- (id)_startLogEntryWithName:(id)a3;
+- (id)_startLogEntryWithName:(id)name;
 - (void)_initialLog;
-- (void)_performActionWithName:(id)a3 ifRequired:(id)a4 recordTimedCoreAnalyticsEvent:(id)a5 coreAnalyticsEventKey:(id)a6 block:(id)a7;
-- (void)_stopLogEntryWithPerfCheck:(id)a3;
+- (void)_performActionWithName:(id)name ifRequired:(id)required recordTimedCoreAnalyticsEvent:(id)event coreAnalyticsEventKey:(id)key block:(id)block;
+- (void)_stopLogEntryWithPerfCheck:(id)check;
 - (void)dealloc;
 @end
 
 @implementation PLModelMigrationActionProcessor
 
-- (void)_performActionWithName:(id)a3 ifRequired:(id)a4 recordTimedCoreAnalyticsEvent:(id)a5 coreAnalyticsEventKey:(id)a6 block:(id)a7
+- (void)_performActionWithName:(id)name ifRequired:(id)required recordTimedCoreAnalyticsEvent:(id)event coreAnalyticsEventKey:(id)key block:(id)block
 {
   v91 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (a4.var0)
+  nameCopy = name;
+  eventCopy = event;
+  keyCopy = key;
+  blockCopy = block;
+  if (required.var0)
   {
     if ([(PLModelMigrationActionProcessor *)self isSuccess])
     {
-      v16 = [(PLModelMigrationActionProcessor *)self _startLogEntryWithName:v12];
-      [(PLModelMigrationActionProcessor *)self setSuccess:v15[2](v15)];
+      v16 = [(PLModelMigrationActionProcessor *)self _startLogEntryWithName:nameCopy];
+      [(PLModelMigrationActionProcessor *)self setSuccess:blockCopy[2](blockCopy)];
       if (![(PLModelMigrationActionProcessor *)self isSuccess])
       {
         v17 = PLMigrationGetLog();
@@ -68,8 +68,8 @@
             memset(buf, 0, sizeof(buf));
             v19 = PLMigrationGetLog();
             os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
-            v20 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
-            v21 = v20;
+            _generateActionTagMarker = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
+            v21 = _generateActionTagMarker;
             v22 = self->_type - 1;
             if (v22 > 5)
             {
@@ -82,7 +82,7 @@
             }
 
             v54 = 138543618;
-            v55 = v20;
+            v55 = _generateActionTagMarker;
             v56 = 2114;
             v57 = v23;
             LODWORD(v53) = 22;
@@ -100,8 +100,8 @@
             v36 = PLMigrationGetLog();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
             {
-              v37 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
-              v38 = v37;
+              _generateActionTagMarker2 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
+              v38 = _generateActionTagMarker2;
               v39 = self->_type - 1;
               if (v39 > 5)
               {
@@ -114,7 +114,7 @@
               }
 
               *buf = 138543618;
-              *&buf[4] = v37;
+              *&buf[4] = _generateActionTagMarker2;
               *&buf[12] = 2114;
               *&buf[14] = v40;
               _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_ERROR, "%{public}@ %{public}@ Action: failed!", buf, 0x16u);
@@ -123,24 +123,24 @@
         }
       }
 
-      v42 = self;
-      if (![(PLModelMigrationActionProcessor *)v42 ignoreProgressUpdates])
+      selfCopy = self;
+      if (![(PLModelMigrationActionProcessor *)selfCopy ignoreProgressUpdates])
       {
-        v43 = [(PLModelMigrationActionProcessor *)v42 progress];
-        v44 = v43;
-        if (v43)
+        progress = [(PLModelMigrationActionProcessor *)selfCopy progress];
+        v44 = progress;
+        if (progress)
         {
-          v45 = [v43 completedUnitCount];
-          if (v45 >= [v44 totalUnitCount])
+          completedUnitCount = [progress completedUnitCount];
+          if (completedUnitCount >= [v44 totalUnitCount])
           {
             v46 = PLMigrationGetLog();
             v47 = os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT);
 
             if (v47)
             {
-              v48 = [(PLModelMigrationActionProcessor *)v42 logger];
+              logger = [(PLModelMigrationActionProcessor *)selfCopy logger];
 
-              if (v48)
+              if (logger)
               {
                 v89 = 0u;
                 v90 = 0u;
@@ -180,7 +180,7 @@
                 LODWORD(v53) = 12;
                 v50 = _os_log_send_and_compose_impl();
 
-                v51 = [(PLModelMigrationActionProcessor *)v42 logger:&v54];
+                v51 = [(PLModelMigrationActionProcessor *)selfCopy logger:&v54];
                 [v51 logWithMessage:v50 fromCodeLocation:"PLModelMigrationActionProcessor.m" type:{86, 0}];
 
                 if (v50 != buf)
@@ -209,10 +209,10 @@
         }
       }
 
-      [(PLModelMigrationActionProcessor *)v42 _stopLogEntryWithPerfCheck:v16];
-      if (v13 && v14)
+      [(PLModelMigrationActionProcessor *)selfCopy _stopLogEntryWithPerfCheck:v16];
+      if (eventCopy && keyCopy)
       {
-        [(PLCoreAnalyticsEventManager *)v42->_analyticsEventManager stopRecordingTimedEventWithToken:v14 forKey:v13 onEventWithName:v42->_token];
+        [(PLCoreAnalyticsEventManager *)selfCopy->_analyticsEventManager stopRecordingTimedEventWithToken:keyCopy forKey:eventCopy onEventWithName:selfCopy->_token];
       }
 
 LABEL_44:
@@ -230,8 +230,8 @@ LABEL_44:
         v16 = PLMigrationGetLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          v31 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
-          v32 = v31;
+          _generateActionTagMarker3 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
+          v32 = _generateActionTagMarker3;
           v33 = self->_type - 1;
           if (v33 > 5)
           {
@@ -244,11 +244,11 @@ LABEL_44:
           }
 
           *buf = 138543874;
-          *&buf[4] = v31;
+          *&buf[4] = _generateActionTagMarker3;
           *&buf[12] = 2114;
           *&buf[14] = v34;
           *&buf[22] = 2114;
-          *&buf[24] = v12;
+          *&buf[24] = nameCopy;
           _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "%{public}@ %{public}@ Action: skipping due to previous migration action failure: %{public}@", buf, 0x20u);
         }
 
@@ -288,8 +288,8 @@ LABEL_44:
       memset(buf, 0, sizeof(buf));
       v26 = PLMigrationGetLog();
       os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
-      v27 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
-      v28 = v27;
+      _generateActionTagMarker4 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
+      v28 = _generateActionTagMarker4;
       v29 = self->_type - 1;
       if (v29 > 5)
       {
@@ -302,11 +302,11 @@ LABEL_44:
       }
 
       v54 = 138543874;
-      v55 = v27;
+      v55 = _generateActionTagMarker4;
       v56 = 2114;
       v57 = v30;
       v58 = 2114;
-      v59 = v12;
+      v59 = nameCopy;
       LODWORD(v53) = 32;
       v35 = _os_log_send_and_compose_impl();
 
@@ -338,10 +338,10 @@ LABEL_45:
   return v4;
 }
 
-- (void)_stopLogEntryWithPerfCheck:(id)a3
+- (void)_stopLogEntryWithPerfCheck:(id)check
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  checkCopy = check;
   token = self->_token;
   v6 = CFAbsoluteTimeGetCurrent() - token;
   if (token <= 0.0)
@@ -354,7 +354,7 @@ LABEL_45:
     v7 = v6;
   }
 
-  v8 = [v4 stop];
+  stop = [checkCopy stop];
   v9 = PLMigrationGetLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -373,12 +373,12 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v17 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
+    _generateActionTagMarker = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
     v18 = self->_type - 1;
     if (v18 > 5)
     {
       v19 = @"pre schema";
-      if (v4)
+      if (checkCopy)
       {
         goto LABEL_12;
       }
@@ -387,14 +387,14 @@ LABEL_20:
     else
     {
       v19 = off_1E7569918[v18];
-      if (v4)
+      if (checkCopy)
       {
 LABEL_12:
-        v20 = [v4 perfCheckLogStringWithPerfCheckInfo:v8];
+        v20 = [checkCopy perfCheckLogStringWithPerfCheckInfo:stop];
 LABEL_19:
-        v23 = [(PLModelMigrationActionProcessor *)self _progressLogMessage];
+        _progressLogMessage = [(PLModelMigrationActionProcessor *)self _progressLogMessage];
         *buf = 138544386;
-        *&buf[4] = v17;
+        *&buf[4] = _generateActionTagMarker;
         *&buf[12] = 2114;
         *&buf[14] = v19;
         *&buf[22] = 2048;
@@ -402,7 +402,7 @@ LABEL_19:
         *&buf[32] = 2114;
         *&buf[34] = v20;
         *&buf[42] = 2114;
-        *&buf[44] = v23;
+        *&buf[44] = _progressLogMessage;
         _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Finished %{public}@ action: %.2lfs%{public}@%{public}@", buf, 0x34u);
 
         goto LABEL_20;
@@ -444,12 +444,12 @@ LABEL_19:
   memset(buf, 0, sizeof(buf));
   v11 = PLMigrationGetLog();
   os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  v12 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
+  _generateActionTagMarker2 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
   v13 = self->_type - 1;
   if (v13 > 5)
   {
     v14 = @"pre schema";
-    if (v4)
+    if (checkCopy)
     {
       goto LABEL_8;
     }
@@ -458,19 +458,19 @@ LABEL_19:
   else
   {
     v14 = off_1E7569918[v13];
-    if (v4)
+    if (checkCopy)
     {
 LABEL_8:
-      v15 = [v4 perfCheckLogStringWithPerfCheckInfo:v8];
+      v15 = [checkCopy perfCheckLogStringWithPerfCheckInfo:stop];
       goto LABEL_15;
     }
   }
 
   v15 = @", <perf check disabled>";
 LABEL_15:
-  v21 = [(PLModelMigrationActionProcessor *)self _progressLogMessage];
+  _progressLogMessage2 = [(PLModelMigrationActionProcessor *)self _progressLogMessage];
   v25 = 138544386;
-  v26 = v12;
+  v26 = _generateActionTagMarker2;
   v27 = 2114;
   v28 = v14;
   v29 = 2048;
@@ -478,7 +478,7 @@ LABEL_15:
   v31 = 2114;
   v32 = v15;
   v33 = 2114;
-  v34 = v21;
+  v34 = _progressLogMessage2;
   LODWORD(v24) = 52;
   v22 = _os_log_send_and_compose_impl();
 
@@ -491,12 +491,12 @@ LABEL_15:
 LABEL_21:
 }
 
-- (id)_startLogEntryWithName:(id)a3
+- (id)_startLogEntryWithName:(id)name
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   self->_token = CFAbsoluteTimeGetCurrent();
-  v5 = [MEMORY[0x1E69BF318] start];
+  start = [MEMORY[0x1E69BF318] start];
   v6 = PLMigrationGetLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -537,7 +537,7 @@ LABEL_21:
       memset(buf, 0, sizeof(buf));
       v8 = PLMigrationGetLog();
       os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-      v9 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
+      _generateActionTagMarker = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
       v10 = self->_type - 1;
       if (v10 > 5)
       {
@@ -552,11 +552,11 @@ LABEL_21:
       qos_class_self();
       v16 = PLShortStringFromQoSClass();
       v21 = 138544130;
-      v22 = v9;
+      v22 = _generateActionTagMarker;
       v23 = 2114;
       v24 = v11;
       v25 = 2114;
-      v26 = v4;
+      v26 = nameCopy;
       v27 = 2114;
       v28 = v16;
       LODWORD(v20) = 42;
@@ -574,7 +574,7 @@ LABEL_21:
       v12 = PLMigrationGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
+        _generateActionTagMarker2 = [(PLModelMigrationActionProcessor *)self _generateActionTagMarker];
         v14 = self->_type - 1;
         if (v14 > 5)
         {
@@ -589,11 +589,11 @@ LABEL_21:
         qos_class_self();
         v18 = PLShortStringFromQoSClass();
         *buf = 138544130;
-        *&buf[4] = v13;
+        *&buf[4] = _generateActionTagMarker2;
         *&buf[12] = 2114;
         *&buf[14] = v15;
         *&buf[22] = 2114;
-        *&buf[24] = v4;
+        *&buf[24] = nameCopy;
         LOWORD(v30) = 2114;
         *(&v30 + 2) = v18;
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Start of %{public}@ action: %{public}@ at %{public}@ QoS", buf, 0x2Au);
@@ -601,14 +601,14 @@ LABEL_21:
     }
   }
 
-  return v5;
+  return start;
 }
 
 - (id)_generateActionTagMarker
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLModelMigrationActionProcessor *)self _generateActionMarkerBase];
-  v5 = [v3 stringWithFormat:@"tag:%@:%04d", v4, self->_tag];
+  _generateActionMarkerBase = [(PLModelMigrationActionProcessor *)self _generateActionMarkerBase];
+  v5 = [v3 stringWithFormat:@"tag:%@:%04d", _generateActionMarkerBase, self->_tag];
 
   return v5;
 }
@@ -616,8 +616,8 @@ LABEL_21:
 - (id)_generateActionMarker
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PLModelMigrationActionProcessor *)self _generateActionMarkerBase];
-  v4 = [v2 stringWithFormat:@"tag:%@     ", v3];
+  _generateActionMarkerBase = [(PLModelMigrationActionProcessor *)self _generateActionMarkerBase];
+  v4 = [v2 stringWithFormat:@"tag:%@     ", _generateActionMarkerBase];
 
   return v4;
 }
@@ -646,7 +646,7 @@ LABEL_21:
 - (void)dealloc
 {
   v72 = *MEMORY[0x1E69E9840];
-  v3 = [(PLTimedPerfCheck *)self->_lifetimePerfCheck stop];
+  stop = [(PLTimedPerfCheck *)self->_lifetimePerfCheck stop];
   [(NSProgress *)self->_progress setCompletedUnitCount:[(NSProgress *)self->_progress totalUnitCount]];
   v4 = PLMigrationGetLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -686,7 +686,7 @@ LABEL_21:
       memset(buf, 0, sizeof(buf));
       v6 = PLMigrationGetLog();
       os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-      v7 = [(PLModelMigrationActionProcessor *)self _generateActionMarker];
+      _generateActionMarker = [(PLModelMigrationActionProcessor *)self _generateActionMarker];
       type = self->_type;
       if ((type - 1) > 5)
       {
@@ -714,7 +714,7 @@ LABEL_21:
       lifetimePerfCheck = self->_lifetimePerfCheck;
       if (lifetimePerfCheck)
       {
-        v19 = [(PLTimedPerfCheck *)lifetimePerfCheck perfCheckLogStringWithPerfCheckInfo:v3];
+        v19 = [(PLTimedPerfCheck *)lifetimePerfCheck perfCheckLogStringWithPerfCheckInfo:stop];
       }
 
       else
@@ -722,9 +722,9 @@ LABEL_21:
         v19 = @", <perf check disabled>";
       }
 
-      v20 = [(PLModelMigrationActionProcessor *)self _progressLogMessage];
+      _progressLogMessage = [(PLModelMigrationActionProcessor *)self _progressLogMessage];
       v31 = 138544642;
-      v32 = v7;
+      v32 = _generateActionMarker;
       v33 = 2114;
       v34 = v9;
       v35 = 2114;
@@ -734,7 +734,7 @@ LABEL_21:
       v39 = 2114;
       v40 = v19;
       v41 = 2114;
-      v42 = v20;
+      v42 = _progressLogMessage;
       LODWORD(v29) = 62;
       v21 = _os_log_send_and_compose_impl();
 
@@ -750,7 +750,7 @@ LABEL_21:
       v10 = PLMigrationGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(PLModelMigrationActionProcessor *)self _generateActionMarker];
+        _generateActionMarker2 = [(PLModelMigrationActionProcessor *)self _generateActionMarker];
         v12 = self->_type;
         if ((v12 - 1) > 5)
         {
@@ -778,7 +778,7 @@ LABEL_21:
         v26 = self->_lifetimePerfCheck;
         if (v26)
         {
-          v27 = [(PLTimedPerfCheck *)v26 perfCheckLogStringWithPerfCheckInfo:v3];
+          v27 = [(PLTimedPerfCheck *)v26 perfCheckLogStringWithPerfCheckInfo:stop];
         }
 
         else
@@ -786,9 +786,9 @@ LABEL_21:
           v27 = @", <perf check disabled>";
         }
 
-        v28 = [(PLModelMigrationActionProcessor *)self _progressLogMessage];
+        _progressLogMessage2 = [(PLModelMigrationActionProcessor *)self _progressLogMessage];
         *buf = 138544642;
-        *&buf[4] = v11;
+        *&buf[4] = _generateActionMarker2;
         *&buf[12] = 2114;
         *&buf[14] = v13;
         *&buf[22] = 2114;
@@ -798,7 +798,7 @@ LABEL_21:
         *&buf[42] = 2114;
         *&buf[44] = v27;
         *&buf[52] = 2114;
-        *&buf[54] = v28;
+        *&buf[54] = _progressLogMessage2;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Completed %{public}@ actions (type: %{public}@) %.2lfs%{public}@%{public}@", buf, 0x3Eu);
       }
     }
@@ -818,11 +818,11 @@ LABEL_21:
 {
   v95 = *MEMORY[0x1E69E9840];
   self->_lifetimeToken = CFAbsoluteTimeGetCurrent();
-  v3 = [MEMORY[0x1E69BF318] start];
+  start = [MEMORY[0x1E69BF318] start];
   lifetimePerfCheck = self->_lifetimePerfCheck;
-  self->_lifetimePerfCheck = v3;
+  self->_lifetimePerfCheck = start;
 
-  v5 = [(PLModelMigrationActionProcessor *)self _generateActionMarker];
+  _generateActionMarker = [(PLModelMigrationActionProcessor *)self _generateActionMarker];
   v6 = PLMigrationGetLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -869,24 +869,24 @@ LABEL_21:
         v10 = off_1E7569918[v9];
       }
 
-      v14 = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
+      currentBuildVersionString = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
       v15 = PLStringFromPLMigrationActionTypeShort(self->_type);
       qos_class_self();
       v16 = PLShortStringFromQoSClass();
-      v17 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-      v18 = [v17 lastPathComponent];
+      libraryURL = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+      lastPathComponent = [libraryURL lastPathComponent];
       v68.st_dev = 138544642;
-      *&v68.st_mode = v5;
+      *&v68.st_mode = _generateActionMarker;
       WORD2(v68.st_ino) = 2114;
       *(&v68.st_ino + 6) = v10;
       HIWORD(v68.st_gid) = 2114;
-      *&v68.st_rdev = v14;
+      *&v68.st_rdev = currentBuildVersionString;
       LOWORD(v68.st_atimespec.tv_sec) = 2114;
       *(&v68.st_atimespec.tv_sec + 2) = v15;
       WORD1(v68.st_atimespec.tv_nsec) = 2114;
       *(&v68.st_atimespec.tv_nsec + 4) = v16;
       WORD2(v68.st_mtimespec.tv_sec) = 2114;
-      *(&v68.st_mtimespec.tv_sec + 6) = v18;
+      *(&v68.st_mtimespec.tv_sec + 6) = lastPathComponent;
       LODWORD(v32) = 62;
       v19 = _os_log_send_and_compose_impl();
 
@@ -913,24 +913,24 @@ LABEL_21:
           v13 = off_1E7569918[v12];
         }
 
-        v20 = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
+        currentBuildVersionString2 = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
         v21 = PLStringFromPLMigrationActionTypeShort(self->_type);
         qos_class_self();
         v22 = PLShortStringFromQoSClass();
-        v23 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-        v24 = [v23 lastPathComponent];
+        libraryURL2 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+        lastPathComponent2 = [libraryURL2 lastPathComponent];
         *buf = 138544642;
-        *&buf[4] = v5;
+        *&buf[4] = _generateActionMarker;
         *&buf[12] = 2114;
         *&buf[14] = v13;
         *&buf[22] = 2114;
-        *&buf[24] = v20;
+        *&buf[24] = currentBuildVersionString2;
         *&buf[32] = 2114;
         *&buf[34] = v21;
         *&buf[42] = 2114;
         *&buf[44] = v22;
         *&buf[52] = 2114;
-        *&buf[54] = v24;
+        *&buf[54] = lastPathComponent2;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Start of %{public}@ actions (OS Build: %{public}@) (type: %{public}@) (QoS: %{public}@): %{public}@", buf, 0x3Eu);
       }
     }
@@ -939,8 +939,8 @@ LABEL_21:
   memset(&v68, 0, sizeof(v68));
   if (self->_type == 1)
   {
-    v25 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-    v26 = stat([v25 fileSystemRepresentation], &v68);
+    libraryURL3 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+    v26 = stat([libraryURL3 fileSystemRepresentation], &v68);
 
     if (!v26)
     {
@@ -984,7 +984,7 @@ LABEL_21:
           v29 = PLMigrationGetLog();
           os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
           v33 = 138547458;
-          v34 = v5;
+          v34 = _generateActionMarker;
           v35 = 1024;
           st_dev = v68.st_dev;
           v37 = 2048;
@@ -1033,7 +1033,7 @@ LABEL_21:
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138547458;
-            *&buf[4] = v5;
+            *&buf[4] = _generateActionMarker;
             *&buf[12] = 1024;
             *&buf[14] = v68.st_dev;
             *&buf[18] = 2048;
@@ -1074,12 +1074,12 @@ LABEL_21:
   }
 }
 
-- (PLModelMigrationActionProcessor)initWithUUID:(id)a3 pathManager:(id)a4 migrationActionType:(int64_t)a5 analyticsEventManager:(id)a6 logger:(id)a7 progressUnitCount:(unint64_t)a8
+- (PLModelMigrationActionProcessor)initWithUUID:(id)d pathManager:(id)manager migrationActionType:(int64_t)type analyticsEventManager:(id)eventManager logger:(id)logger progressUnitCount:(unint64_t)count
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
+  dCopy = d;
+  managerCopy = manager;
+  eventManagerCopy = eventManager;
+  loggerCopy = logger;
   v30.receiver = self;
   v30.super_class = PLModelMigrationActionProcessor;
   v19 = [(PLModelMigrationActionProcessor *)&v30 init];
@@ -1087,20 +1087,20 @@ LABEL_21:
   if (v19)
   {
     v19->_success = 1;
-    objc_storeStrong(&v19->_uuid, a3);
-    v21 = [v15 substringToIndex:8];
+    objc_storeStrong(&v19->_uuid, d);
+    v21 = [dCopy substringToIndex:8];
     v22 = [v21 copy];
     uuidTruncated = v20->_uuidTruncated;
     v20->_uuidTruncated = v22;
 
-    objc_storeStrong(&v20->_pathManager, a4);
-    v20->_type = a5;
-    objc_storeStrong(&v20->_analyticsEventManager, a6);
+    objc_storeStrong(&v20->_pathManager, manager);
+    v20->_type = type;
+    objc_storeStrong(&v20->_analyticsEventManager, eventManager);
     v20->_tag = 1;
     v20->_pid = getpid();
-    if (a8)
+    if (count)
     {
-      v24 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:a8];
+      v24 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:count];
     }
 
     else
@@ -1114,10 +1114,10 @@ LABEL_21:
     lifetimePerfCheck = v20->_lifetimePerfCheck;
     v20->_lifetimePerfCheck = 0;
 
-    v20->_loggerCloseRequired = v18 == 0;
-    if (v18)
+    v20->_loggerCloseRequired = loggerCopy == 0;
+    if (loggerCopy)
     {
-      v27 = v18;
+      v27 = loggerCopy;
     }
 
     else

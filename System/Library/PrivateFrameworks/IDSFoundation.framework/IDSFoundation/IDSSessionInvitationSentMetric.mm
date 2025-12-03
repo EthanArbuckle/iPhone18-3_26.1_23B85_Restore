@@ -1,5 +1,5 @@
 @interface IDSSessionInvitationSentMetric
-- (IDSSessionInvitationSentMetric)initWithGuid:(id)a3 numberOfRecipients:(id)a4;
+- (IDSSessionInvitationSentMetric)initWithGuid:(id)guid numberOfRecipients:(id)recipients;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,33 +8,33 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSSessionInvitationSentMetric *)self guid];
-  if (v4)
+  guid = [(IDSSessionInvitationSentMetric *)self guid];
+  if (guid)
   {
-    CFDictionarySetValue(v3, @"guid", v4);
+    CFDictionarySetValue(v3, @"guid", guid);
   }
 
-  v5 = [(IDSSessionInvitationSentMetric *)self numberOfRecipients];
-  if (v5)
+  numberOfRecipients = [(IDSSessionInvitationSentMetric *)self numberOfRecipients];
+  if (numberOfRecipients)
   {
-    CFDictionarySetValue(v3, @"numberOfRecipients", v5);
+    CFDictionarySetValue(v3, @"numberOfRecipients", numberOfRecipients);
   }
 
   return v3;
 }
 
-- (IDSSessionInvitationSentMetric)initWithGuid:(id)a3 numberOfRecipients:(id)a4
+- (IDSSessionInvitationSentMetric)initWithGuid:(id)guid numberOfRecipients:(id)recipients
 {
-  v7 = a3;
-  v8 = a4;
+  guidCopy = guid;
+  recipientsCopy = recipients;
   v12.receiver = self;
   v12.super_class = IDSSessionInvitationSentMetric;
   v9 = [(IDSSessionInvitationSentMetric *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_guid, a3);
-    objc_storeStrong(&v10->_numberOfRecipients, a4);
+    objc_storeStrong(&v9->_guid, guid);
+    objc_storeStrong(&v10->_numberOfRecipients, recipients);
   }
 
   return v10;

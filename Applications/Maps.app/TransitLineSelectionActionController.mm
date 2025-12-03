@@ -1,22 +1,22 @@
 @interface TransitLineSelectionActionController
 - (ActionCoordination)coordinator;
-- (BOOL)_shouldRestoreDisplayedViewModeForContext:(id)a3;
+- (BOOL)_shouldRestoreDisplayedViewModeForContext:(id)context;
 - (BOOL)isActive;
-- (BOOL)isShowingLineForLabelMarker:(id)a3;
-- (BOOL)isShowingLineForLineItem:(id)a3;
-- (BOOL)isShowingLineWithIdentifier:(id)a3;
+- (BOOL)isShowingLineForLabelMarker:(id)marker;
+- (BOOL)isShowingLineForLineItem:(id)item;
+- (BOOL)isShowingLineWithIdentifier:(id)identifier;
 - (ControlContainerViewController)containerViewController;
-- (TransitLineSelectionActionController)initWithContainerViewController:(id)a3 actionCoordinator:(id)a4;
+- (TransitLineSelectionActionController)initWithContainerViewController:(id)controller actionCoordinator:(id)coordinator;
 - (_TtC4Maps48TransitLineDisambiguationContaineeViewController)disambiguationVC;
 - (id)_traits;
 - (id)mapView;
-- (void)_clearTransitLineSelectionDeactivate:(BOOL)a3 context:(id)a4;
-- (void)_disambiguateSelectedLineForLabelMarker:(id)a3 onActivation:(id)a4;
-- (void)_showTransitLineWithName:(id)a3 identifier:(id)a4 mapRegion:(id)a5;
-- (void)_zoomToRegionForLineIfNecessary:(id)a3 region:(id)a4 withStartingRegion:(id)a5 startedShowingLineDate:(id)a6;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)selectLine:(id)a3 zoomToMapRegion:(BOOL)a4 onActivation:(id)a5;
-- (void)selectLineForLabelMarker:(id)a3 zoomToMapRegion:(BOOL)a4 onActivation:(id)a5;
+- (void)_clearTransitLineSelectionDeactivate:(BOOL)deactivate context:(id)context;
+- (void)_disambiguateSelectedLineForLabelMarker:(id)marker onActivation:(id)activation;
+- (void)_showTransitLineWithName:(id)name identifier:(id)identifier mapRegion:(id)region;
+- (void)_zoomToRegionForLineIfNecessary:(id)necessary region:(id)region withStartingRegion:(id)startingRegion startedShowingLineDate:(id)date;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)selectLine:(id)line zoomToMapRegion:(BOOL)region onActivation:(id)activation;
+- (void)selectLineForLabelMarker:(id)marker zoomToMapRegion:(BOOL)region onActivation:(id)activation;
 @end
 
 @implementation TransitLineSelectionActionController
@@ -35,82 +35,82 @@
   return WeakRetained;
 }
 
-- (BOOL)_shouldRestoreDisplayedViewModeForContext:(id)a3
+- (BOOL)_shouldRestoreDisplayedViewModeForContext:(id)context
 {
-  v3 = [a3 objectForKeyedSubscript:@"ActionControllerDeactivationItemKey"];
+  v3 = [context objectForKeyedSubscript:@"ActionControllerDeactivationItemKey"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)_clearTransitLineSelectionDeactivate:(BOOL)a3 context:(id)a4
+- (void)_clearTransitLineSelectionDeactivate:(BOOL)deactivate context:(id)context
 {
-  v4 = a3;
-  v14 = a4;
-  v6 = [(TransitLineSelectionActionController *)self mapView];
-  [v6 _deselectTransitLineMarker];
-  v7 = [(TransitLineSelectionActionController *)self coordinator];
-  [v7 updateMapApplicationState:0];
+  deactivateCopy = deactivate;
+  contextCopy = context;
+  mapView = [(TransitLineSelectionActionController *)self mapView];
+  [mapView _deselectTransitLineMarker];
+  coordinator = [(TransitLineSelectionActionController *)self coordinator];
+  [coordinator updateMapApplicationState:0];
 
-  if (v4)
+  if (deactivateCopy)
   {
-    v8 = [(TransitLineSelectionActionController *)self coordinator];
-    v9 = [v8 displayedViewMode];
+    coordinator2 = [(TransitLineSelectionActionController *)self coordinator];
+    displayedViewMode = [coordinator2 displayedViewMode];
 
-    if ([(TransitLineSelectionActionController *)self _shouldRestoreDisplayedViewModeForContext:v14]&& v9 == 3 && self->_viewModeToRestore != 3)
+    if ([(TransitLineSelectionActionController *)self _shouldRestoreDisplayedViewModeForContext:contextCopy]&& displayedViewMode == 3 && self->_viewModeToRestore != 3)
     {
-      v10 = [(TransitLineSelectionActionController *)self coordinator];
-      [v10 updateViewMode:self->_viewModeToRestore animated:1];
+      coordinator3 = [(TransitLineSelectionActionController *)self coordinator];
+      [coordinator3 updateViewMode:self->_viewModeToRestore animated:1];
     }
 
-    v11 = [(TransitLineSelectionActionController *)self coordinator];
-    [v11 actionControlDidDeactivate:self];
+    coordinator4 = [(TransitLineSelectionActionController *)self coordinator];
+    [coordinator4 actionControlDidDeactivate:self];
   }
 
-  v12 = [(TransitLineSelectionActionController *)self coordinator];
-  v13 = [v12 appCoordinator];
-  [v13 setNeedsUserActivityUpdate];
+  coordinator5 = [(TransitLineSelectionActionController *)self coordinator];
+  appCoordinator = [coordinator5 appCoordinator];
+  [appCoordinator setNeedsUserActivityUpdate];
 }
 
-- (void)_showTransitLineWithName:(id)a3 identifier:(id)a4 mapRegion:(id)a5
+- (void)_showTransitLineWithName:(id)name identifier:(id)identifier mapRegion:(id)region
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [(TransitLineSelectionActionController *)self mapView];
-  v9 = [(TransitLineSelectionActionController *)self coordinator];
-  self->_viewModeToRestore = [v9 displayedViewMode];
+  identifierCopy = identifier;
+  regionCopy = region;
+  mapView = [(TransitLineSelectionActionController *)self mapView];
+  coordinator = [(TransitLineSelectionActionController *)self coordinator];
+  self->_viewModeToRestore = [coordinator displayedViewMode];
 
   if (self->_viewModeToRestore != 3)
   {
-    v10 = [(TransitLineSelectionActionController *)self coordinator];
-    [v10 updateViewMode:3 animated:1];
+    coordinator2 = [(TransitLineSelectionActionController *)self coordinator];
+    [coordinator2 updateViewMode:3 animated:1];
   }
 
-  [v8 _selectTransitLineMarkerWithIdentifier:v14];
-  v11 = [(TransitLineSelectionActionController *)self coordinator];
-  [v11 updateMapApplicationState:4];
+  [mapView _selectTransitLineMarkerWithIdentifier:identifierCopy];
+  coordinator3 = [(TransitLineSelectionActionController *)self coordinator];
+  [coordinator3 updateMapApplicationState:4];
 
-  if (v7)
+  if (regionCopy)
   {
     GEOMapRectForMapRegion();
-    [v8 setVisibleMapRect:1 animated:?];
+    [mapView setVisibleMapRect:1 animated:?];
   }
 
-  v12 = [(TransitLineSelectionActionController *)self coordinator];
-  v13 = [v12 appCoordinator];
-  [v13 setNeedsUserActivityUpdate];
+  coordinator4 = [(TransitLineSelectionActionController *)self coordinator];
+  appCoordinator = [coordinator4 appCoordinator];
+  [appCoordinator setNeedsUserActivityUpdate];
 }
 
-- (void)_zoomToRegionForLineIfNecessary:(id)a3 region:(id)a4 withStartingRegion:(id)a5 startedShowingLineDate:(id)a6
+- (void)_zoomToRegionForLineIfNecessary:(id)necessary region:(id)region withStartingRegion:(id)startingRegion startedShowingLineDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [v13 timeIntervalSinceNow];
+  necessaryCopy = necessary;
+  regionCopy = region;
+  startingRegionCopy = startingRegion;
+  dateCopy = date;
+  [dateCopy timeIntervalSinceNow];
   v15 = v14;
-  [v13 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v17 = v16;
 
   v18 = -v17;
@@ -121,32 +121,32 @@
 
   if (v18 < 30.0)
   {
-    v19 = [(TransitLineSelectionActionController *)self mapView];
+    mapView = [(TransitLineSelectionActionController *)self mapView];
     if ([(TransitLineSelectionActionController *)self isActive])
     {
-      v20 = [v19 _selectedTransitLineIDs];
+      _selectedTransitLineIDs = [mapView _selectedTransitLineIDs];
       v21 = MKMapItemIdentifierFromGEOTransitLine();
       v26 = v21;
       v22 = [NSArray arrayWithObjects:&v26 count:1];
-      v23 = [v20 isEqualToArray:v22];
+      v23 = [_selectedTransitLineIDs isEqualToArray:v22];
 
       if (v23)
       {
-        if (!v12 || ([v19 mapRegion], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v12, "isEqual:", v24), v24, v25))
+        if (!startingRegionCopy || ([mapView mapRegion], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(startingRegionCopy, "isEqual:", v24), v24, v25))
         {
           GEOMapRectForMapRegion();
-          [v19 setVisibleMapRect:1 animated:?];
+          [mapView setVisibleMapRect:1 animated:?];
         }
       }
     }
   }
 }
 
-- (void)_disambiguateSelectedLineForLabelMarker:(id)a3 onActivation:(id)a4
+- (void)_disambiguateSelectedLineForLabelMarker:(id)marker onActivation:(id)activation
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 _maps_numLines];
+  markerCopy = marker;
+  activationCopy = activation;
+  [markerCopy _maps_numLines];
   [(TransitLineSelectionActionController *)self _clearTransitLineSelectionDeactivate:0 context:0];
   objc_initWeak(&location, self);
   v22[0] = _NSConcreteStackBlock;
@@ -154,21 +154,21 @@
   v22[2] = sub_100E1F920;
   v22[3] = &unk_101655B20;
   objc_copyWeak(&v24, &location);
-  v8 = v7;
+  v8 = activationCopy;
   v23 = v8;
-  v9 = [(TransitLineSelectionActionController *)self disambiguationVC];
-  [v9 setOnLineSelection:v22];
+  disambiguationVC = [(TransitLineSelectionActionController *)self disambiguationVC];
+  [disambiguationVC setOnLineSelection:v22];
 
   v10 = v8;
   v21 = v10;
   v11 = [(TransitLineSelectionActionController *)self disambiguationVC:_NSConcreteStackBlock];
   [v11 setOnRefinementError:&v20];
 
-  v12 = [(TransitLineSelectionActionController *)self disambiguationVC];
-  [v12 setLabelMarker:v6];
+  disambiguationVC2 = [(TransitLineSelectionActionController *)self disambiguationVC];
+  [disambiguationVC2 setLabelMarker:markerCopy];
 
-  v13 = [(TransitLineSelectionActionController *)self containerViewController];
-  v14 = [v13 currentViewController];
+  containerViewController = [(TransitLineSelectionActionController *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -176,23 +176,23 @@
 
   else
   {
-    v15 = [(TransitLineSelectionActionController *)self containerViewController];
-    v16 = [v15 currentViewController];
+    containerViewController2 = [(TransitLineSelectionActionController *)self containerViewController];
+    currentViewController2 = [containerViewController2 currentViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v18 = [(TransitLineSelectionActionController *)self containerViewController];
-      v19 = [(TransitLineSelectionActionController *)self disambiguationVC];
-      [v18 presentController:v19];
+      containerViewController3 = [(TransitLineSelectionActionController *)self containerViewController];
+      disambiguationVC3 = [(TransitLineSelectionActionController *)self disambiguationVC];
+      [containerViewController3 presentController:disambiguationVC3];
       goto LABEL_6;
     }
   }
 
-  v18 = [(TransitLineSelectionActionController *)self containerViewController];
-  v19 = [(TransitLineSelectionActionController *)self disambiguationVC];
-  [v18 replaceCurrentWithController:v19];
+  containerViewController3 = [(TransitLineSelectionActionController *)self containerViewController];
+  disambiguationVC3 = [(TransitLineSelectionActionController *)self disambiguationVC];
+  [containerViewController3 replaceCurrentWithController:disambiguationVC3];
 LABEL_6:
 
   objc_destroyWeak(&v24);
@@ -215,40 +215,40 @@ LABEL_6:
   return disambiguationVC;
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  v5 = a3;
-  v6 = [(TransitLineSelectionActionController *)self coordinator];
-  [v6 viewControllerClosed:v5 animated:1];
+  stateCopy = state;
+  coordinator = [(TransitLineSelectionActionController *)self coordinator];
+  [coordinator viewControllerClosed:stateCopy animated:1];
 }
 
 - (id)mapView
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v3 = [WeakRetained chromeViewController];
-  v4 = [v3 mapView];
+  chromeViewController = [WeakRetained chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v4;
+  return mapView;
 }
 
-- (BOOL)isShowingLineWithIdentifier:(id)a3
+- (BOOL)isShowingLineWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TransitLineSelectionActionController *)self isActive];
+  identifierCopy = identifier;
+  isActive = [(TransitLineSelectionActionController *)self isActive];
   v6 = 0;
-  if (v4 && v5)
+  if (identifierCopy && isActive)
   {
-    v7 = [(TransitLineSelectionActionController *)self mapView];
-    v8 = [v7 _selectedTransitLineIDs];
-    v11 = v4;
+    mapView = [(TransitLineSelectionActionController *)self mapView];
+    _selectedTransitLineIDs = [mapView _selectedTransitLineIDs];
+    v11 = identifierCopy;
     v9 = [NSArray arrayWithObjects:&v11 count:1];
-    v6 = [v8 isEqualToArray:v9];
+    v6 = [_selectedTransitLineIDs isEqualToArray:v9];
   }
 
   return v6;
 }
 
-- (BOOL)isShowingLineForLineItem:(id)a3
+- (BOOL)isShowingLineForLineItem:(id)item
 {
   v4 = MKMapItemIdentifierFromGEOTransitLine();
   LOBYTE(self) = [(TransitLineSelectionActionController *)self isShowingLineWithIdentifier:v4];
@@ -256,15 +256,15 @@ LABEL_6:
   return self;
 }
 
-- (BOOL)isShowingLineForLabelMarker:(id)a3
+- (BOOL)isShowingLineForLabelMarker:(id)marker
 {
-  v4 = a3;
-  if (-[TransitLineSelectionActionController isActive](self, "isActive") && [v4 _maps_numLines] == 1)
+  markerCopy = marker;
+  if (-[TransitLineSelectionActionController isActive](self, "isActive") && [markerCopy _maps_numLines] == 1)
   {
-    v5 = [(TransitLineSelectionActionController *)self mapView];
-    v6 = [v5 _selectedTransitLineIDs];
-    v7 = [v4 _maps_lineIdentifiers];
-    v8 = [v6 isEqualToArray:v7];
+    mapView = [(TransitLineSelectionActionController *)self mapView];
+    _selectedTransitLineIDs = [mapView _selectedTransitLineIDs];
+    _maps_lineIdentifiers = [markerCopy _maps_lineIdentifiers];
+    v8 = [_selectedTransitLineIDs isEqualToArray:_maps_lineIdentifiers];
   }
 
   else
@@ -277,106 +277,106 @@ LABEL_6:
 
 - (BOOL)isActive
 {
-  v2 = [(TransitLineSelectionActionController *)self mapView];
-  v3 = [v2 _applicationState] == 4;
+  mapView = [(TransitLineSelectionActionController *)self mapView];
+  v3 = [mapView _applicationState] == 4;
 
   return v3;
 }
 
-- (void)selectLine:(id)a3 zoomToMapRegion:(BOOL)a4 onActivation:(id)a5
+- (void)selectLine:(id)line zoomToMapRegion:(BOOL)region onActivation:(id)activation
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(TransitLineSelectionActionController *)self mapView];
+  lineCopy = line;
+  activationCopy = activation;
+  mapView = [(TransitLineSelectionActionController *)self mapView];
   v11 = +[NSDate date];
-  v12 = [v10 mapRegion];
+  mapRegion = [mapView mapRegion];
   v13 = MKMapItemIdentifierFromGEOTransitLine();
-  v14 = [v8 name];
-  if (a4)
+  name = [lineCopy name];
+  if (region)
   {
-    v15 = [v8 mapRegion];
-    [(TransitLineSelectionActionController *)self _showTransitLineWithName:v14 identifier:v13 mapRegion:v15];
+    mapRegion2 = [lineCopy mapRegion];
+    [(TransitLineSelectionActionController *)self _showTransitLineWithName:name identifier:v13 mapRegion:mapRegion2];
   }
 
   else
   {
-    [(TransitLineSelectionActionController *)self _showTransitLineWithName:v14 identifier:v13 mapRegion:0];
+    [(TransitLineSelectionActionController *)self _showTransitLineWithName:name identifier:v13 mapRegion:0];
   }
 
-  if (sub_1005B1B14(v8))
+  if (sub_1005B1B14(lineCopy))
   {
     v16 = +[MKMapService sharedService];
     v30 = v13;
     [NSArray arrayWithObjects:&v30 count:1];
-    v23 = a4;
-    v17 = v10;
+    regionCopy = region;
+    v17 = mapView;
     v19 = v18 = v11;
     [(TransitLineSelectionActionController *)self _traits];
-    v20 = v9;
-    v22 = v21 = v12;
+    v20 = activationCopy;
+    v22 = v21 = mapRegion;
     v24 = [v16 ticketForTransitLines:v19 traits:v22];
 
-    v12 = v21;
-    v9 = v20;
+    mapRegion = v21;
+    activationCopy = v20;
 
     v11 = v18;
-    v10 = v17;
+    mapView = v17;
 
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100E1FFEC;
     v25[3] = &unk_101655AF8;
-    v29 = v23;
+    v29 = regionCopy;
     v28 = v20;
     v25[4] = self;
-    v26 = v12;
+    v26 = mapRegion;
     v27 = v11;
     [v24 submitWithHandler:v25 networkActivity:0];
   }
 
-  else if (v9)
+  else if (activationCopy)
   {
-    (*(v9 + 2))(v9, v8, 0);
+    (*(activationCopy + 2))(activationCopy, lineCopy, 0);
   }
 }
 
-- (void)selectLineForLabelMarker:(id)a3 zoomToMapRegion:(BOOL)a4 onActivation:(id)a5
+- (void)selectLineForLabelMarker:(id)marker zoomToMapRegion:(BOOL)region onActivation:(id)activation
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 countFeatureIDs];
-  v11 = [(TransitLineSelectionActionController *)self mapView];
-  v12 = [v11 mapRegion];
+  markerCopy = marker;
+  activationCopy = activation;
+  countFeatureIDs = [markerCopy countFeatureIDs];
+  mapView = [(TransitLineSelectionActionController *)self mapView];
+  mapRegion = [mapView mapRegion];
   v13 = +[NSDate date];
-  if ([v8 _maps_numLines] < 2)
+  if ([markerCopy _maps_numLines] < 2)
   {
-    if (v10 == 1)
+    if (countFeatureIDs == 1)
     {
-      v14 = [v8 _maps_lineIdentifiers];
-      v15 = [v14 firstObject];
+      _maps_lineIdentifiers = [markerCopy _maps_lineIdentifiers];
+      firstObject = [_maps_lineIdentifiers firstObject];
 
-      [v11 _deselectLabelMarkerAnimated:1];
-      v16 = [v8 title];
-      [(TransitLineSelectionActionController *)self _showTransitLineWithName:v16 identifier:v15 mapRegion:0];
+      [mapView _deselectLabelMarkerAnimated:1];
+      title = [markerCopy title];
+      [(TransitLineSelectionActionController *)self _showTransitLineWithName:title identifier:firstObject mapRegion:0];
 
-      v17 = [(TransitLineSelectionActionController *)self _traits];
+      _traits = [(TransitLineSelectionActionController *)self _traits];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_100E20448;
       v19[3] = &unk_101655AD0;
-      v25 = a4;
-      v20 = v15;
-      v21 = self;
-      v22 = v12;
+      regionCopy = region;
+      v20 = firstObject;
+      selfCopy = self;
+      v22 = mapRegion;
       v23 = v13;
-      v24 = v9;
-      v18 = v15;
-      [v8 _maps_loadLineInfoUsingTraits:v17 withCompletion:v19];
+      v24 = activationCopy;
+      v18 = firstObject;
+      [markerCopy _maps_loadLineInfoUsingTraits:_traits withCompletion:v19];
     }
 
     else
     {
-      [v11 _deselectLabelMarkerAnimated:1];
+      [mapView _deselectLabelMarkerAnimated:1];
     }
   }
 
@@ -386,36 +386,36 @@ LABEL_6:
     v26[1] = 3221225472;
     v26[2] = sub_100E2035C;
     v26[3] = &unk_101655AA8;
-    v29 = a4;
-    v28 = v9;
+    regionCopy2 = region;
+    v28 = activationCopy;
     v26[4] = self;
     v27 = v13;
-    [(TransitLineSelectionActionController *)self _disambiguateSelectedLineForLabelMarker:v8 onActivation:v26];
+    [(TransitLineSelectionActionController *)self _disambiguateSelectedLineForLabelMarker:markerCopy onActivation:v26];
   }
 }
 
 - (id)_traits
 {
   v3 = +[MKMapService sharedService];
-  v4 = [(TransitLineSelectionActionController *)self mapView];
-  v5 = [v4 mapRegion];
-  v6 = [v3 mapsDefaultTraitsForMapRegion:v5 source:20];
+  mapView = [(TransitLineSelectionActionController *)self mapView];
+  mapRegion = [mapView mapRegion];
+  v6 = [v3 mapsDefaultTraitsForMapRegion:mapRegion source:20];
 
   return v6;
 }
 
-- (TransitLineSelectionActionController)initWithContainerViewController:(id)a3 actionCoordinator:(id)a4
+- (TransitLineSelectionActionController)initWithContainerViewController:(id)controller actionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = TransitLineSelectionActionController;
   v8 = [(TransitLineSelectionActionController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(TransitLineSelectionActionController *)v8 setContainerViewController:v6];
-    [(TransitLineSelectionActionController *)v9 setCoordinator:v7];
+    [(TransitLineSelectionActionController *)v8 setContainerViewController:controllerCopy];
+    [(TransitLineSelectionActionController *)v9 setCoordinator:coordinatorCopy];
   }
 
   return v9;

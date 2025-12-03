@@ -1,12 +1,12 @@
 @interface SetRoomDimmingStateIntentResponse
-- (SetRoomDimmingStateIntentResponse)initWithPropertiesByName:(id)a3;
+- (SetRoomDimmingStateIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation SetRoomDimmingStateIntentResponse
 
-- (SetRoomDimmingStateIntentResponse)initWithPropertiesByName:(id)a3
+- (SetRoomDimmingStateIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

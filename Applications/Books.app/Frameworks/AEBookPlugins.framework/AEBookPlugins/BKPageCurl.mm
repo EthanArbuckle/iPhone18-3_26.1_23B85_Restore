@@ -14,20 +14,20 @@
 - (CGPoint)lastPoint;
 - (CGPoint)manualStartPoint;
 - (UIView)extraView;
-- (id)_backColor0AtPosition:(double)a3;
-- (id)_backColor1AtPosition:(double)a3;
-- (void)_animationDidStop:(BOOL)a3;
+- (id)_backColor0AtPosition:(double)position;
+- (id)_backColor1AtPosition:(double)position;
+- (void)_animationDidStop:(BOOL)stop;
 - (void)_beginAnimation;
 - (void)_finishManualCurl;
 - (void)_setupViews;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)beginManualCurlAtLocation:(CGPoint)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)beginManualCurlAtLocation:(CGPoint)location;
 - (void)cleanup;
-- (void)ensureCurlFilterOnLayer:(id)a3;
+- (void)ensureCurlFilterOnLayer:(id)layer;
 - (void)fullCleanup;
 - (void)killCurl;
 - (void)startAutoCurl;
-- (void)updateManualCurlToLocation:(CGPoint)a3;
+- (void)updateManualCurlToLocation:(CGPoint)location;
 @end
 
 @implementation BKPageCurl
@@ -81,8 +81,8 @@
   uncurlAnimationTime = self->_uncurlAnimationTime;
   if (!uncurlAnimationTime)
   {
-    v4 = [(BKPageCurl *)self curlAnimationTime];
-    v5 = [v4 copy];
+    curlAnimationTime = [(BKPageCurl *)self curlAnimationTime];
+    v5 = [curlAnimationTime copy];
     v6 = self->_uncurlAnimationTime;
     self->_uncurlAnimationTime = v5;
 
@@ -110,10 +110,10 @@
     [(CABasicAnimation *)self->_curlAnimationRadius setDuration:?];
     [(CABasicAnimation *)self->_curlAnimationRadius setFillMode:kCAFillModeBoth];
     [(CABasicAnimation *)self->_curlAnimationRadius setRemovedOnCompletion:0];
-    v7 = [(BKPageCurl *)self container];
-    v8 = [v7 im_isCompactWidth];
+    container = [(BKPageCurl *)self container];
+    im_isCompactWidth = [container im_isCompactWidth];
     LODWORD(v9) = 1125515264;
-    if (v8)
+    if (im_isCompactWidth)
     {
       *&v9 = 40.0;
     }
@@ -121,10 +121,10 @@
     v10 = [NSNumber numberWithFloat:v9];
     [(CABasicAnimation *)self->_curlAnimationRadius setFromValue:v10];
 
-    v11 = [(BKPageCurl *)self container];
-    v12 = [v11 im_isCompactWidth];
+    container2 = [(BKPageCurl *)self container];
+    im_isCompactWidth2 = [container2 im_isCompactWidth];
     LODWORD(v13) = 1120403456;
-    if (v12)
+    if (im_isCompactWidth2)
     {
       *&v13 = 300.0;
     }
@@ -143,8 +143,8 @@
   uncurlAnimationRadius = self->_uncurlAnimationRadius;
   if (!uncurlAnimationRadius)
   {
-    v4 = [(BKPageCurl *)self curlAnimationRadius];
-    v5 = [v4 copy];
+    curlAnimationRadius = [(BKPageCurl *)self curlAnimationRadius];
+    v5 = [curlAnimationRadius copy];
     v6 = self->_uncurlAnimationRadius;
     self->_uncurlAnimationRadius = v5;
 
@@ -171,10 +171,10 @@
     [(CABasicAnimation *)self->_curlAnimationAngle setDuration:?];
     [(CABasicAnimation *)self->_curlAnimationAngle setFillMode:kCAFillModeBoth];
     [(CABasicAnimation *)self->_curlAnimationAngle setRemovedOnCompletion:0];
-    v6 = [(BKPageCurl *)self spineLocation];
-    if (v6 >= 3)
+    spineLocation = [(BKPageCurl *)self spineLocation];
+    if (spineLocation >= 3)
     {
-      if (v6 != 3)
+      if (spineLocation != 3)
       {
         goto LABEL_7;
       }
@@ -211,8 +211,8 @@ LABEL_7:
   uncurlAnimationAngle = self->_uncurlAnimationAngle;
   if (!uncurlAnimationAngle)
   {
-    v4 = [(BKPageCurl *)self curlAnimationAngle];
-    v5 = [v4 copy];
+    curlAnimationAngle = [(BKPageCurl *)self curlAnimationAngle];
+    v5 = [curlAnimationAngle copy];
     v6 = self->_uncurlAnimationAngle;
     self->_uncurlAnimationAngle = v5;
 
@@ -276,8 +276,8 @@ LABEL_7:
   uncurlAnimationShadowColor = self->_uncurlAnimationShadowColor;
   if (!uncurlAnimationShadowColor)
   {
-    v4 = [(BKPageCurl *)self curlAnimationShadowColor];
-    v5 = [v4 copy];
+    curlAnimationShadowColor = [(BKPageCurl *)self curlAnimationShadowColor];
+    v5 = [curlAnimationShadowColor copy];
     v6 = self->_uncurlAnimationShadowColor;
     self->_uncurlAnimationShadowColor = v5;
 
@@ -355,9 +355,9 @@ LABEL_7:
   return curlAnimationBackColor1;
 }
 
-- (void)ensureCurlFilterOnLayer:(id)a3
+- (void)ensureCurlFilterOnLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   if (!self->_curlFilter)
   {
     v5 = [CAFilter alloc];
@@ -380,9 +380,9 @@ LABEL_7:
       v10 = 0.25;
     }
 
-    v11 = [(BKPageCurl *)self nightMode];
+    nightMode = [(BKPageCurl *)self nightMode];
     v12 = 0.15;
-    if (v11)
+    if (nightMode)
     {
       v12 = 0.0;
     }
@@ -395,46 +395,46 @@ LABEL_7:
     -[CAFilter setValue:forKeyPath:](self->_curlFilter, "setValue:forKeyPath:", [v13 CGColor], @"inputShadowColor");
   }
 
-  v16 = [v4 filters];
-  v17 = [v16 count];
+  filters = [layerCopy filters];
+  v17 = [filters count];
 
   if (!v17)
   {
     v18 = [(CAFilter *)self->_curlFilter copy];
     v20 = v18;
     v19 = [NSArray arrayWithObjects:&v20 count:1];
-    [v4 setFilters:v19];
+    [layerCopy setFilters:v19];
   }
 }
 
 - (void)_setupViews
 {
-  v3 = [(BKPageCurl *)self spineLocation];
-  v4 = [(BKPageCurl *)self backPage];
+  spineLocation = [(BKPageCurl *)self spineLocation];
+  backPage = [(BKPageCurl *)self backPage];
   if (![(BKPageCurl *)self type])
   {
-    v5 = [(BKPageCurl *)self existingPages];
-    v6 = [v5 lastObject];
+    existingPages = [(BKPageCurl *)self existingPages];
+    lastObject = [existingPages lastObject];
     goto LABEL_5;
   }
 
-  if (v3 == 2)
+  if (spineLocation == 2)
   {
-    v5 = [(BKPageCurl *)self existingPages];
-    v6 = [v5 objectAtIndex:0];
+    existingPages = [(BKPageCurl *)self existingPages];
+    lastObject = [existingPages objectAtIndex:0];
 LABEL_5:
-    v7 = v6;
+    v7 = lastObject;
 
-    v8 = v4;
-    v4 = v7;
+    v8 = backPage;
+    backPage = v7;
     goto LABEL_7;
   }
 
   v8 = 0;
 LABEL_7:
-  v18 = v3;
+  v18 = spineLocation;
   v9 = [[NSMutableArray alloc] initWithCapacity:2];
-  [v9 addObject:v4];
+  [v9 addObject:backPage];
   if (v8)
   {
     [v9 addObject:v8];
@@ -445,8 +445,8 @@ LABEL_7:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(BKPageCurl *)self existingPages];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  existingPages2 = [(BKPageCurl *)self existingPages];
+  v11 = [existingPages2 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -458,18 +458,18 @@ LABEL_7:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(existingPages2);
         }
 
         v15 = *(*(&v19 + 1) + 8 * v14);
-        v16 = [(BKPageCurl *)self container];
-        [v16 insertSubview:v15 atIndex:0];
+        container = [(BKPageCurl *)self container];
+        [container insertSubview:v15 atIndex:0];
 
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [existingPages2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
@@ -477,30 +477,30 @@ LABEL_7:
 
   if ([(BKPageCurl *)self type]== 1 && v18 != 2)
   {
-    v17 = [(BKPageCurl *)self container];
-    [v17 addSubview:v4];
+    container2 = [(BKPageCurl *)self container];
+    [container2 addSubview:backPage];
   }
 }
 
-- (id)_backColor0AtPosition:(double)a3
+- (id)_backColor0AtPosition:(double)position
 {
-  v5 = [(BKPageCurl *)self spineLocation];
+  spineLocation = [(BKPageCurl *)self spineLocation];
   if ([(BKPageCurl *)self nightMode])
   {
-    if (v5 == 2)
+    if (spineLocation == 2)
     {
       v6 = 0.125;
       v7 = 0.65;
-      if (a3 > 0.75)
+      if (position > 0.75)
       {
-        v6 = (1.0 - a3) * 4.0 * 0.125;
+        v6 = (1.0 - position) * 4.0 * 0.125;
       }
     }
 
     else
     {
-      v8 = [(BKPageCurl *)self type];
-      if (v8 && [(BKPageCurl *)self type]!= 1)
+      type = [(BKPageCurl *)self type];
+      if (type && [(BKPageCurl *)self type]!= 1)
       {
         v6 = 0.6;
         v7 = 0.15;
@@ -516,10 +516,10 @@ LABEL_7:
 
   else
   {
-    if (v5 != 2)
+    if (spineLocation != 2)
     {
-      v9 = [(BKPageCurl *)self pageColor];
-      v10 = [v9 colorWithAlphaComponent:0.8];
+      pageColor = [(BKPageCurl *)self pageColor];
+      v10 = [pageColor colorWithAlphaComponent:0.8];
 
       goto LABEL_14;
     }
@@ -534,7 +534,7 @@ LABEL_14:
   return v10;
 }
 
-- (id)_backColor1AtPosition:(double)a3
+- (id)_backColor1AtPosition:(double)position
 {
   if ([(BKPageCurl *)self nightMode])
   {
@@ -546,8 +546,8 @@ LABEL_14:
     v4 = 0.55;
   }
 
-  v5 = [(BKPageCurl *)self backColor];
-  v6 = [v5 colorWithAlphaComponent:v4];
+  backColor = [(BKPageCurl *)self backColor];
+  v6 = [backColor colorWithAlphaComponent:v4];
 
   return v6;
 }
@@ -572,12 +572,12 @@ LABEL_14:
 
 - (void)_beginAnimation
 {
-  v3 = [(BKPageCurl *)self spineLocation];
-  v4 = [(BKPageCurl *)self curlPages];
-  if ([v4 count])
+  spineLocation = [(BKPageCurl *)self spineLocation];
+  curlPages = [(BKPageCurl *)self curlPages];
+  if ([curlPages count])
   {
-    v5 = [(BKPageCurl *)self curlPages];
-    v6 = [v5 objectAtIndex:0];
+    curlPages2 = [(BKPageCurl *)self curlPages];
+    v6 = [curlPages2 objectAtIndex:0];
   }
 
   else
@@ -585,29 +585,29 @@ LABEL_14:
     v6 = 0;
   }
 
-  v7 = [(BKPageCurl *)self curlPages];
-  if ([v7 count] < 2)
+  curlPages3 = [(BKPageCurl *)self curlPages];
+  if ([curlPages3 count] < 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [(BKPageCurl *)self curlPages];
-    v9 = [v8 objectAtIndex:1];
+    curlPages4 = [(BKPageCurl *)self curlPages];
+    v9 = [curlPages4 objectAtIndex:1];
   }
 
   v10 = [[NSMutableArray alloc] initWithCapacity:2];
   if (v6)
   {
-    v11 = [v6 layer];
-    [v10 addObject:v11];
+    layer = [v6 layer];
+    [v10 addObject:layer];
   }
 
   if (v9 && v9 != v6)
   {
-    v12 = [v9 layer];
-    [v10 addObject:v12];
+    layer2 = [v9 layer];
+    [v10 addObject:layer2];
   }
 
   v90 = 0u;
@@ -640,65 +640,65 @@ LABEL_14:
 
   v68 = v6;
 
-  v73 = self;
-  if ([(BKPageCurl *)self type]!= 1 || v3 == 2)
+  selfCopy = self;
+  if ([(BKPageCurl *)self type]!= 1 || spineLocation == 2)
   {
-    v18 = [(BKPageCurl *)self curlAnimationTime];
-    v19 = [(BKPageCurl *)self curlAnimationRadius];
-    v20 = [(BKPageCurl *)self curlAnimationAngle];
-    v21 = [(BKPageCurl *)self curlAnimationShadowColor];
+    curlAnimationTime = [(BKPageCurl *)self curlAnimationTime];
+    curlAnimationRadius = [(BKPageCurl *)self curlAnimationRadius];
+    curlAnimationAngle = [(BKPageCurl *)self curlAnimationAngle];
+    curlAnimationShadowColor = [(BKPageCurl *)self curlAnimationShadowColor];
     if ([(BKPageCurl *)self nightMode])
     {
-      v23 = [(BKPageCurl *)self curlAnimationBackColor0];
-      v22 = [(BKPageCurl *)self curlAnimationBackColor1];
+      curlAnimationBackColor0 = [(BKPageCurl *)self curlAnimationBackColor0];
+      curlAnimationBackColor1 = [(BKPageCurl *)self curlAnimationBackColor1];
     }
 
     else
     {
-      v23 = 0;
-      v22 = 0;
+      curlAnimationBackColor0 = 0;
+      curlAnimationBackColor1 = 0;
     }
 
-    if (v3 == 2)
+    if (spineLocation == 2)
     {
-      v74 = [(BKPageCurl *)v73 type];
+      type = [(BKPageCurl *)selfCopy type];
       LODWORD(v24) = 1125515264;
       v25 = [NSNumber numberWithFloat:v24];
-      [v19 setFromValue:v25];
+      [curlAnimationRadius setFromValue:v25];
 
       LODWORD(v26) = 1.0;
       v27 = [NSNumber numberWithFloat:v26];
-      [v19 setToValue:v27];
+      [curlAnimationRadius setToValue:v27];
 
-      if (v74)
+      if (type)
       {
         LODWORD(v28) = -1095583550;
         v29 = [NSNumber numberWithFloat:v28];
-        [v20 setFromValue:v29];
+        [curlAnimationAngle setFromValue:v29];
 
-        v30 = 0.0 - v73->_stabilization;
+        v30 = 0.0 - selfCopy->_stabilization;
         *&v30 = v30;
         v31 = [NSNumber numberWithFloat:v30];
-        [v20 setToValue:v31];
+        [curlAnimationAngle setToValue:v31];
       }
 
-      v32 = [(BKPageCurl *)v73 container];
-      [v32 insertSubview:v68 atIndex:1];
+      container = [(BKPageCurl *)selfCopy container];
+      [container insertSubview:v68 atIndex:1];
 
-      v33 = [(BKPageCurl *)v73 container];
-      [v33 addSubview:v67];
+      container2 = [(BKPageCurl *)selfCopy container];
+      [container2 addSubview:v67];
 
-      v34 = [v67 layer];
+      layer3 = [v67 layer];
       CATransform3DMakeScale(&v87, -1.0, 1.0, 1.0);
       v86 = v87;
-      [v34 setSublayerTransform:&v86];
-      v35 = [v68 layer];
-      v75 = [v35 valueForKeyPath:@"filters.curl"];
+      [layer3 setSublayerTransform:&v86];
+      layer4 = [v68 layer];
+      v75 = [layer4 valueForKeyPath:@"filters.curl"];
 
       v36 = [NSNumber numberWithBool:0];
       [v75 setValue:v36 forKey:@"inputBackEnabled"];
 
-      v37 = [v34 valueForKeyPath:@"filters.curl"];
+      v37 = [layer3 valueForKeyPath:@"filters.curl"];
       v38 = [NSNumber numberWithBool:0];
       [v37 setValue:v38 forKey:@"inputFrontEnabled"];
     }
@@ -706,12 +706,12 @@ LABEL_14:
 
   else
   {
-    v18 = [(BKPageCurl *)self uncurlAnimationTime];
-    v19 = [(BKPageCurl *)self uncurlAnimationRadius];
-    v20 = [(BKPageCurl *)self uncurlAnimationAngle];
-    v21 = [(BKPageCurl *)self uncurlAnimationShadowColor];
-    v22 = 0;
-    v23 = 0;
+    curlAnimationTime = [(BKPageCurl *)self uncurlAnimationTime];
+    curlAnimationRadius = [(BKPageCurl *)self uncurlAnimationRadius];
+    curlAnimationAngle = [(BKPageCurl *)self uncurlAnimationAngle];
+    curlAnimationShadowColor = [(BKPageCurl *)self uncurlAnimationShadowColor];
+    curlAnimationBackColor1 = 0;
+    curlAnimationBackColor0 = 0;
   }
 
   v84 = 0u;
@@ -733,34 +733,34 @@ LABEL_14:
         }
 
         v40 = *(*(&v82 + 1) + 8 * j);
-        v41 = [v18 fromValue];
-        v42 = [v18 keyPath];
-        [v40 setValue:v41 forKeyPath:v42];
+        fromValue = [curlAnimationTime fromValue];
+        keyPath = [curlAnimationTime keyPath];
+        [v40 setValue:fromValue forKeyPath:keyPath];
 
-        v43 = [v19 fromValue];
-        v44 = [v19 keyPath];
-        [v40 setValue:v43 forKeyPath:v44];
+        fromValue2 = [curlAnimationRadius fromValue];
+        keyPath2 = [curlAnimationRadius keyPath];
+        [v40 setValue:fromValue2 forKeyPath:keyPath2];
 
-        v45 = [v20 fromValue];
-        v46 = [v20 keyPath];
-        [v40 setValue:v45 forKeyPath:v46];
+        fromValue3 = [curlAnimationAngle fromValue];
+        keyPath3 = [curlAnimationAngle keyPath];
+        [v40 setValue:fromValue3 forKeyPath:keyPath3];
 
-        v47 = [v21 fromValue];
-        v48 = [v21 keyPath];
-        [v40 setValue:v47 forKeyPath:v48];
+        fromValue4 = [curlAnimationShadowColor fromValue];
+        keyPath4 = [curlAnimationShadowColor keyPath];
+        [v40 setValue:fromValue4 forKeyPath:keyPath4];
 
-        if (v23)
+        if (curlAnimationBackColor0)
         {
-          v49 = [v23 fromValue];
-          v50 = [v23 keyPath];
-          [v40 setValue:v49 forKeyPath:v50];
+          fromValue5 = [curlAnimationBackColor0 fromValue];
+          keyPath5 = [curlAnimationBackColor0 keyPath];
+          [v40 setValue:fromValue5 forKeyPath:keyPath5];
         }
 
-        if (v22)
+        if (curlAnimationBackColor1)
         {
-          v51 = [v22 fromValue];
-          v52 = [v22 keyPath];
-          [v40 setValue:v51 forKeyPath:v52];
+          fromValue6 = [curlAnimationBackColor1 fromValue];
+          keyPath6 = [curlAnimationBackColor1 keyPath];
+          [v40 setValue:fromValue6 forKeyPath:keyPath6];
         }
       }
 
@@ -790,49 +790,49 @@ LABEL_14:
         }
 
         v54 = *(*(&v78 + 1) + 8 * k);
-        ++v73->_didEndCount;
-        [v54 addAnimation:v18 forKey:@"curlTime"];
-        [v54 addAnimation:v19 forKey:@"curlRadius"];
-        [v54 addAnimation:v20 forKey:@"curlAngle"];
-        [v54 addAnimation:v21 forKey:@"curlShadowColor"];
-        if (v23)
+        ++selfCopy->_didEndCount;
+        [v54 addAnimation:curlAnimationTime forKey:@"curlTime"];
+        [v54 addAnimation:curlAnimationRadius forKey:@"curlRadius"];
+        [v54 addAnimation:curlAnimationAngle forKey:@"curlAngle"];
+        [v54 addAnimation:curlAnimationShadowColor forKey:@"curlShadowColor"];
+        if (curlAnimationBackColor0)
         {
-          [v54 addAnimation:v23 forKey:@"curlBackColor0"];
+          [v54 addAnimation:curlAnimationBackColor0 forKey:@"curlBackColor0"];
         }
 
-        if (v22)
+        if (curlAnimationBackColor1)
         {
-          [v54 addAnimation:v22 forKey:@"curlBackColor1"];
+          [v54 addAnimation:curlAnimationBackColor1 forKey:@"curlBackColor1"];
         }
 
-        v55 = [v18 toValue];
-        v56 = [v18 keyPath];
-        [v54 setValue:v55 forKeyPath:v56];
+        toValue = [curlAnimationTime toValue];
+        keyPath7 = [curlAnimationTime keyPath];
+        [v54 setValue:toValue forKeyPath:keyPath7];
 
-        v57 = [v19 toValue];
-        v58 = [v19 keyPath];
-        [v54 setValue:v57 forKeyPath:v58];
+        toValue2 = [curlAnimationRadius toValue];
+        keyPath8 = [curlAnimationRadius keyPath];
+        [v54 setValue:toValue2 forKeyPath:keyPath8];
 
-        v59 = [v20 toValue];
-        v60 = [v20 keyPath];
-        [v54 setValue:v59 forKeyPath:v60];
+        toValue3 = [curlAnimationAngle toValue];
+        keyPath9 = [curlAnimationAngle keyPath];
+        [v54 setValue:toValue3 forKeyPath:keyPath9];
 
-        v61 = [v21 toValue];
-        v62 = [v21 keyPath];
-        [v54 setValue:v61 forKeyPath:v62];
+        toValue4 = [curlAnimationShadowColor toValue];
+        keyPath10 = [curlAnimationShadowColor keyPath];
+        [v54 setValue:toValue4 forKeyPath:keyPath10];
 
-        if (v23)
+        if (curlAnimationBackColor0)
         {
-          v63 = [v23 toValue];
-          v64 = [v23 keyPath];
-          [v54 setValue:v63 forKeyPath:v64];
+          toValue5 = [curlAnimationBackColor0 toValue];
+          keyPath11 = [curlAnimationBackColor0 keyPath];
+          [v54 setValue:toValue5 forKeyPath:keyPath11];
         }
 
-        if (v22)
+        if (curlAnimationBackColor1)
         {
-          v65 = [v22 toValue];
-          v66 = [v22 keyPath];
-          [v54 setValue:v65 forKeyPath:v66];
+          toValue6 = [curlAnimationBackColor1 toValue];
+          keyPath12 = [curlAnimationBackColor1 keyPath];
+          [v54 setValue:toValue6 forKeyPath:keyPath12];
         }
       }
 
@@ -843,39 +843,39 @@ LABEL_14:
   }
 
   +[CATransaction commit];
-  v73->_state = 1;
+  selfCopy->_state = 1;
 }
 
-- (void)beginManualCurlAtLocation:(CGPoint)a3
+- (void)beginManualCurlAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(BKPageCurl *)self spineLocation];
-  v7 = [(BKPageCurl *)self spineLocation];
-  v8 = [(BKPageCurl *)self curlPages];
-  v9 = [v8 lastObject];
+  y = location.y;
+  x = location.x;
+  spineLocation = [(BKPageCurl *)self spineLocation];
+  spineLocation2 = [(BKPageCurl *)self spineLocation];
+  curlPages = [(BKPageCurl *)self curlPages];
+  lastObject = [curlPages lastObject];
 
-  v10 = [(BKPageCurl *)self backPage];
-  v89 = v6;
-  if (v6 == 2)
+  backPage = [(BKPageCurl *)self backPage];
+  v89 = spineLocation;
+  if (spineLocation == 2)
   {
     v11 = [[NSMutableArray alloc] initWithCapacity:2];
-    [v11 addObject:v9];
-    if (v10)
+    [v11 addObject:lastObject];
+    if (backPage)
     {
-      [v11 addObject:v10];
+      [v11 addObject:backPage];
     }
 
     [(BKPageCurl *)self setCurlPages:v11];
   }
 
-  v88 = v10;
+  v88 = backPage;
   v108 = 0u;
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v12 = [(BKPageCurl *)self existingPages];
-  v13 = [v12 countByEnumeratingWithState:&v106 objects:v113 count:16];
+  existingPages = [(BKPageCurl *)self existingPages];
+  v13 = [existingPages countByEnumeratingWithState:&v106 objects:v113 count:16];
   if (v13)
   {
     v14 = v13;
@@ -886,15 +886,15 @@ LABEL_14:
       {
         if (*v107 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(existingPages);
         }
 
         v17 = *(*(&v106 + 1) + 8 * i);
-        v18 = [(BKPageCurl *)self container];
-        [v18 insertSubview:v17 atIndex:0];
+        container = [(BKPageCurl *)self container];
+        [container insertSubview:v17 atIndex:0];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v106 objects:v113 count:16];
+      v14 = [existingPages countByEnumeratingWithState:&v106 objects:v113 count:16];
     }
 
     while (v14);
@@ -902,12 +902,12 @@ LABEL_14:
 
   if (v89 == &dword_0 + 2)
   {
-    v19 = [(BKPageCurl *)self container];
-    [v19 insertSubview:v9 atIndex:1];
+    container2 = [(BKPageCurl *)self container];
+    [container2 insertSubview:lastObject atIndex:1];
 
-    v20 = [(BKPageCurl *)self container];
+    container3 = [(BKPageCurl *)self container];
     v21 = v88;
-    [v20 addSubview:v88];
+    [container3 addSubview:v88];
 LABEL_21:
 
     goto LABEL_22;
@@ -916,31 +916,31 @@ LABEL_21:
   v21 = v88;
   if ([(BKPageCurl *)self type]== 3)
   {
-    v22 = [(BKPageCurl *)self existingPages];
-    v20 = [v22 lastObject];
+    existingPages2 = [(BKPageCurl *)self existingPages];
+    container3 = [existingPages2 lastObject];
 
-    v23 = [(BKPageCurl *)self container];
-    [v23 insertSubview:v9 aboveSubview:v20];
+    container4 = [(BKPageCurl *)self container];
+    [container4 insertSubview:lastObject aboveSubview:container3];
 
     goto LABEL_21;
   }
 
-  v24 = [(BKPageCurl *)self type];
-  if (v24 == 2 && v88 && v88 != v9)
+  type = [(BKPageCurl *)self type];
+  if (type == 2 && v88 && v88 != lastObject)
   {
-    v20 = [(BKPageCurl *)self container];
-    [v20 insertSubview:v88 belowSubview:v9];
+    container3 = [(BKPageCurl *)self container];
+    [container3 insertSubview:v88 belowSubview:lastObject];
     goto LABEL_21;
   }
 
 LABEL_22:
   v25 = [[NSMutableArray alloc] initWithCapacity:2];
-  v26 = [v9 layer];
-  [v25 addObject:v26];
-  if (v21 && v21 != v9 && v89 == &dword_0 + 2)
+  layer = [lastObject layer];
+  [v25 addObject:layer];
+  if (v21 && v21 != lastObject && v89 == &dword_0 + 2)
   {
-    v27 = [v21 layer];
-    [v25 addObject:v27];
+    layer2 = [v21 layer];
+    [v25 addObject:layer2];
   }
 
   v104 = 0u;
@@ -974,22 +974,22 @@ LABEL_22:
   v33 = 1.0;
   if (v89 == &dword_0 + 2)
   {
-    v34 = [v21 layer];
+    layer3 = [v21 layer];
     CATransform3DMakeScale(&v101, -1.0, 1.0, 1.0);
     v100 = v101;
-    [v34 setSublayerTransform:&v100];
-    v35 = [v26 valueForKeyPath:@"filters.curl"];
+    [layer3 setSublayerTransform:&v100];
+    v35 = [layer valueForKeyPath:@"filters.curl"];
     v36 = [NSNumber numberWithBool:0];
     [v35 setValue:v36 forKey:@"inputBackEnabled"];
 
-    v37 = [v34 valueForKeyPath:@"filters.curl"];
+    v37 = [layer3 valueForKeyPath:@"filters.curl"];
     v38 = [NSNumber numberWithBool:0];
     [v37 setValue:v38 forKey:@"inputFrontEnabled"];
 
     v33 = 2.0;
   }
 
-  [v9 bounds];
+  [lastObject bounds];
   v39 = v114.origin.x;
   v40 = v114.origin.y;
   width = v114.size.width;
@@ -1002,7 +1002,7 @@ LABEL_22:
     self->_manualStartPoint.x = x;
     self->_manualStartPoint.y = y;
     v44 = width;
-    if (v7 != 3)
+    if (spineLocation2 != 3)
     {
       goto LABEL_41;
     }
@@ -1010,7 +1010,7 @@ LABEL_22:
     goto LABEL_39;
   }
 
-  if (v7 == 3)
+  if (spineLocation2 == 3)
   {
     self->_manualStartPoint.x = 0.0;
     self->_manualStartPoint.y = y;
@@ -1023,8 +1023,8 @@ LABEL_39:
   self->_manualStartPoint.y = y;
   v44 = width;
 LABEL_41:
-  v86 = v9;
-  v87 = v26;
+  v86 = lastObject;
+  v87 = layer;
   self->_diagonalAngle = atan2(height, v44);
   self->_diagonalLengthPixels = hypot(width, height);
   v115.origin.x = v39;
@@ -1044,9 +1044,9 @@ LABEL_41:
 
   self->_initialCurlRadius = v45;
   self->_k = (150.0 - v45) / 20.0;
-  v46 = [(BKPageCurl *)self curlAnimationTime];
-  v47 = [(BKPageCurl *)self curlAnimationRadius];
-  v48 = [(BKPageCurl *)self curlAnimationAngle];
+  curlAnimationTime = [(BKPageCurl *)self curlAnimationTime];
+  curlAnimationRadius = [(BKPageCurl *)self curlAnimationRadius];
+  curlAnimationAngle = [(BKPageCurl *)self curlAnimationAngle];
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
@@ -1067,17 +1067,17 @@ LABEL_41:
         }
 
         v53 = *(*(&v96 + 1) + 8 * k);
-        v54 = [v46 fromValue];
-        v55 = [v46 keyPath];
-        [v53 setValue:v54 forKeyPath:v55];
+        fromValue = [curlAnimationTime fromValue];
+        keyPath = [curlAnimationTime keyPath];
+        [v53 setValue:fromValue forKeyPath:keyPath];
 
-        v56 = [v47 fromValue];
-        v57 = [v47 keyPath];
-        [v53 setValue:v56 forKeyPath:v57];
+        fromValue2 = [curlAnimationRadius fromValue];
+        keyPath2 = [curlAnimationRadius keyPath];
+        [v53 setValue:fromValue2 forKeyPath:keyPath2];
 
-        v58 = [v48 fromValue];
-        v59 = [v48 keyPath];
-        [v53 setValue:v58 forKeyPath:v59];
+        fromValue3 = [curlAnimationAngle fromValue];
+        keyPath3 = [curlAnimationAngle keyPath];
+        [v53 setValue:fromValue3 forKeyPath:keyPath3];
       }
 
       v50 = [obj countByEnumeratingWithState:&v96 objects:v111 count:16];
@@ -1088,9 +1088,9 @@ LABEL_41:
 
   if ([(BKPageCurl *)self type]!= 3 || v89 == &dword_0 + 2)
   {
-    v61 = v46;
-    v63 = v47;
-    v65 = v48;
+    v61 = curlAnimationTime;
+    v63 = curlAnimationRadius;
+    v65 = curlAnimationAngle;
   }
 
   else
@@ -1098,14 +1098,14 @@ LABEL_41:
     self->_inUncurl = 1;
     [(BKPageCurl *)self updateManualCurlToLocation:x, y];
     self->_ignoreManualUpdates = 1;
-    v60 = [(BKPageCurl *)self uncurlAnimationTime];
-    v61 = [v60 copy];
+    uncurlAnimationTime = [(BKPageCurl *)self uncurlAnimationTime];
+    v61 = [uncurlAnimationTime copy];
 
-    v62 = [(BKPageCurl *)self uncurlAnimationRadius];
-    v63 = [v62 copy];
+    uncurlAnimationRadius = [(BKPageCurl *)self uncurlAnimationRadius];
+    v63 = [uncurlAnimationRadius copy];
 
-    v64 = [(BKPageCurl *)self uncurlAnimationAngle];
-    v65 = [v64 copy];
+    uncurlAnimationAngle = [(BKPageCurl *)self uncurlAnimationAngle];
+    v65 = [uncurlAnimationAngle copy];
 
     [(BKPageCurl *)self duration];
     [v61 setDuration:v66 * 0.5];
@@ -1113,16 +1113,16 @@ LABEL_41:
     [v63 setDuration:v67 * 0.5];
     [(BKPageCurl *)self duration];
     [v65 setDuration:v68 * 0.5];
-    v69 = [v61 keyPath];
-    v70 = [v87 valueForKeyPath:v69];
+    keyPath4 = [v61 keyPath];
+    v70 = [v87 valueForKeyPath:keyPath4];
     [v61 setToValue:v70];
 
-    v71 = [v63 keyPath];
-    v72 = [v87 valueForKeyPath:v71];
+    keyPath5 = [v63 keyPath];
+    v72 = [v87 valueForKeyPath:keyPath5];
     [v63 setToValue:v72];
 
-    v73 = [v65 keyPath];
-    v74 = [v87 valueForKeyPath:v73];
+    keyPath6 = [v65 keyPath];
+    v74 = [v87 valueForKeyPath:keyPath6];
     [v65 setToValue:v74];
 
     +[CATransaction begin];
@@ -1150,17 +1150,17 @@ LABEL_41:
           [v79 addAnimation:v61 forKey:@"curlTime"];
           [v79 addAnimation:v63 forKey:@"curlRadius"];
           [v79 addAnimation:v65 forKey:@"curlAngle"];
-          v80 = [v61 fromValue];
-          v81 = [v61 keyPath];
-          [v79 setValue:v80 forKeyPath:v81];
+          fromValue4 = [v61 fromValue];
+          keyPath7 = [v61 keyPath];
+          [v79 setValue:fromValue4 forKeyPath:keyPath7];
 
-          v82 = [v63 fromValue];
-          v83 = [v63 keyPath];
-          [v79 setValue:v82 forKeyPath:v83];
+          fromValue5 = [v63 fromValue];
+          keyPath8 = [v63 keyPath];
+          [v79 setValue:fromValue5 forKeyPath:keyPath8];
 
-          v84 = [v65 fromValue];
-          v85 = [v65 keyPath];
-          [v79 setValue:v84 forKeyPath:v85];
+          fromValue6 = [v65 fromValue];
+          keyPath9 = [v65 keyPath];
+          [v79 setValue:fromValue6 forKeyPath:keyPath9];
         }
 
         v76 = [v90 countByEnumeratingWithState:&v92 objects:v110 count:16];
@@ -1174,7 +1174,7 @@ LABEL_41:
   }
 }
 
-- (void)updateManualCurlToLocation:(CGPoint)a3
+- (void)updateManualCurlToLocation:(CGPoint)location
 {
   [(UIView *)self->_container bounds];
   CGPointClipToRect();
@@ -1184,8 +1184,8 @@ LABEL_41:
   {
     v6 = v4;
     v7 = v5;
-    v8 = [(BKPageCurl *)self spineLocation];
-    if (v8 == 2)
+    spineLocation = [(BKPageCurl *)self spineLocation];
+    if (spineLocation == 2)
     {
       v9 = [(BKPageCurl *)self type]== 3;
       v10 = 2.0;
@@ -1197,9 +1197,9 @@ LABEL_41:
       v10 = 1.0;
     }
 
-    v11 = [(BKPageCurl *)self spineLocation];
-    v12 = [(BKPageCurl *)self curlPages];
-    v13 = [v12 objectAtIndex:0];
+    spineLocation2 = [(BKPageCurl *)self spineLocation];
+    curlPages = [(BKPageCurl *)self curlPages];
+    v13 = [curlPages objectAtIndex:0];
 
     [v13 bounds];
     v15 = v10 * v14;
@@ -1213,8 +1213,8 @@ LABEL_41:
     y = self->_manualStartPoint.y;
     __x = self->_manualStartPoint.x - v6;
     v19 = atan2(y - v7, __x) + 3.14159265;
-    v20 = v11 == 3;
-    v21 = v11 == 3;
+    v20 = spineLocation2 == 3;
+    v21 = spineLocation2 == 3;
     v22 = v15 - v6;
     if (v20)
     {
@@ -1246,14 +1246,14 @@ LABEL_41:
     v27 = cos(v23 * 3.14159265);
     v28 = v27 * 0.5 + 0.5;
     v29 = v27 * 0.25 + 0.75;
-    if (v8 == 2)
+    if (spineLocation == 2)
     {
       v29 = v28;
     }
 
     v30 = v26 * v29;
     v31 = 1.0 - v23;
-    if (v8 != 2)
+    if (spineLocation != 2)
     {
       v31 = 1.0;
     }
@@ -1283,12 +1283,12 @@ LABEL_41:
       }
     }
 
-    v38 = [(BKPageCurl *)self configuration];
-    [v38 heightAllowanceScalar];
+    configuration = [(BKPageCurl *)self configuration];
+    [configuration heightAllowanceScalar];
     v40 = v39;
 
     v41 = 0.333333333;
-    if (v8 != 2)
+    if (spineLocation != 2)
     {
       v41 = 0.5;
     }
@@ -1393,25 +1393,25 @@ LABEL_41:
           }
 
           v68 = *(*(&v88 + 1) + 8 * i);
-          v69 = [v68 layer];
+          layer = [v68 layer];
           *&v70 = v64;
           v71 = [NSNumber numberWithFloat:v70];
-          v72 = [(BKPageCurl *)self curlAnimationAngle];
-          v73 = [v72 keyPath];
-          [v69 setValue:v71 forKeyPath:v73];
+          curlAnimationAngle = [(BKPageCurl *)self curlAnimationAngle];
+          keyPath = [curlAnimationAngle keyPath];
+          [layer setValue:v71 forKeyPath:keyPath];
 
           *&v74 = v65;
           v75 = [NSNumber numberWithFloat:v74];
-          v76 = [(BKPageCurl *)self curlAnimationTime];
-          v77 = [v76 keyPath];
-          [v69 setValue:v75 forKeyPath:v77];
+          curlAnimationTime = [(BKPageCurl *)self curlAnimationTime];
+          keyPath2 = [curlAnimationTime keyPath];
+          [layer setValue:v75 forKeyPath:keyPath2];
 
           v66 = v59;
           *&v78 = v66;
           v79 = [NSNumber numberWithFloat:v78];
-          v80 = [(BKPageCurl *)self curlAnimationRadius];
-          v81 = [v80 keyPath];
-          [v69 setValue:v79 forKeyPath:v81];
+          curlAnimationRadius = [(BKPageCurl *)self curlAnimationRadius];
+          keyPath3 = [curlAnimationRadius keyPath];
+          [layer setValue:v79 forKeyPath:keyPath3];
 
           [v68 updateCurlPercent:v23];
         }
@@ -1440,14 +1440,14 @@ LABEL_41:
 
 - (void)_finishManualCurl
 {
-  v2 = self;
+  selfCopy = self;
   cancelledManualCurl = self->_cancelledManualCurl;
-  v4 = [(BKPageCurl *)self spineLocation];
-  v68 = v4;
-  if ([(BKPageCurl *)v2 type]== 3)
+  spineLocation = [(BKPageCurl *)self spineLocation];
+  v68 = spineLocation;
+  if ([(BKPageCurl *)selfCopy type]== 3)
   {
     v5 = !cancelledManualCurl;
-    if (v4 != 2)
+    if (spineLocation != 2)
     {
       v5 = cancelledManualCurl;
     }
@@ -1461,88 +1461,88 @@ LABEL_41:
   else if (cancelledManualCurl)
   {
 LABEL_5:
-    v6 = [(BKPageCurl *)v2 uncurlAnimationTime];
-    v71 = [v6 copy];
+    uncurlAnimationTime = [(BKPageCurl *)selfCopy uncurlAnimationTime];
+    v71 = [uncurlAnimationTime copy];
 
-    v7 = [(BKPageCurl *)v2 uncurlAnimationRadius];
-    v73 = [v7 copy];
+    uncurlAnimationRadius = [(BKPageCurl *)selfCopy uncurlAnimationRadius];
+    v73 = [uncurlAnimationRadius copy];
 
-    v8 = [(BKPageCurl *)v2 uncurlAnimationAngle];
-    v72 = [v8 copy];
+    uncurlAnimationAngle = [(BKPageCurl *)selfCopy uncurlAnimationAngle];
+    v72 = [uncurlAnimationAngle copy];
 
-    v9 = [(BKPageCurl *)v2 uncurlAnimationShadowColor];
-    v10 = [v9 copy];
+    uncurlAnimationShadowColor = [(BKPageCurl *)selfCopy uncurlAnimationShadowColor];
+    v10 = [uncurlAnimationShadowColor copy];
     v70 = 0;
     v11 = 0;
     v12 = 0;
     goto LABEL_8;
   }
 
-  v13 = [(BKPageCurl *)v2 curlAnimationTime];
-  v71 = [v13 copy];
+  curlAnimationTime = [(BKPageCurl *)selfCopy curlAnimationTime];
+  v71 = [curlAnimationTime copy];
 
-  v14 = [(BKPageCurl *)v2 curlAnimationRadius];
-  v73 = [v14 copy];
+  curlAnimationRadius = [(BKPageCurl *)selfCopy curlAnimationRadius];
+  v73 = [curlAnimationRadius copy];
 
-  v15 = [(BKPageCurl *)v2 curlAnimationAngle];
-  v72 = [v15 copy];
+  curlAnimationAngle = [(BKPageCurl *)selfCopy curlAnimationAngle];
+  v72 = [curlAnimationAngle copy];
 
-  v16 = [(BKPageCurl *)v2 curlAnimationShadowColor];
-  v10 = [v16 copy];
+  curlAnimationShadowColor = [(BKPageCurl *)selfCopy curlAnimationShadowColor];
+  v10 = [curlAnimationShadowColor copy];
 
-  v17 = [(BKPageCurl *)v2 curlAnimationBackColor0];
-  v12 = [v17 copy];
+  curlAnimationBackColor0 = [(BKPageCurl *)selfCopy curlAnimationBackColor0];
+  v12 = [curlAnimationBackColor0 copy];
 
-  v9 = [(BKPageCurl *)v2 curlAnimationBackColor1];
-  v11 = [v9 copy];
+  uncurlAnimationShadowColor = [(BKPageCurl *)selfCopy curlAnimationBackColor1];
+  v11 = [uncurlAnimationShadowColor copy];
   v70 = 1;
 LABEL_8:
 
   objc_opt_class();
-  v18 = [(BKPageCurl *)v2 curlPages];
-  v19 = [v18 objectAtIndex:0];
+  curlPages = [(BKPageCurl *)selfCopy curlPages];
+  v19 = [curlPages objectAtIndex:0];
   v20 = BUDynamicCast();
-  v21 = [v20 layer];
+  layer = [v20 layer];
 
   +[CATransaction flush];
-  v22 = [v21 presentationLayer];
+  presentationLayer = [layer presentationLayer];
 
-  if (v22)
+  if (presentationLayer)
   {
-    v23 = [v21 presentationLayer];
-    v24 = [v71 keyPath];
-    v25 = [v23 valueForKeyPath:v24];
+    presentationLayer2 = [layer presentationLayer];
+    keyPath = [v71 keyPath];
+    v25 = [presentationLayer2 valueForKeyPath:keyPath];
     [v71 setFromValue:v25];
 
-    v26 = [v21 presentationLayer];
-    v27 = [v73 keyPath];
-    v28 = [v26 valueForKeyPath:v27];
+    presentationLayer3 = [layer presentationLayer];
+    keyPath2 = [v73 keyPath];
+    v28 = [presentationLayer3 valueForKeyPath:keyPath2];
     [v73 setFromValue:v28];
 
-    v29 = [v21 presentationLayer];
-    v30 = [v72 keyPath];
-    v31 = [v29 valueForKeyPath:v30];
+    presentationLayer4 = [layer presentationLayer];
+    keyPath3 = [v72 keyPath];
+    v31 = [presentationLayer4 valueForKeyPath:keyPath3];
     [v72 setFromValue:v31];
 
     if (v12)
     {
-      v32 = [v21 presentationLayer];
-      v33 = [v12 keyPath];
-      v34 = [v32 valueForKeyPath:v33];
+      presentationLayer5 = [layer presentationLayer];
+      keyPath4 = [v12 keyPath];
+      v34 = [presentationLayer5 valueForKeyPath:keyPath4];
       [v12 setFromValue:v34];
     }
 
     if (v11)
     {
-      v35 = [v21 presentationLayer];
-      v36 = [v11 keyPath];
-      v37 = [v35 valueForKeyPath:v36];
+      presentationLayer6 = [layer presentationLayer];
+      keyPath5 = [v11 keyPath];
+      v37 = [presentationLayer6 valueForKeyPath:keyPath5];
       [v11 setFromValue:v37];
     }
   }
 
-  v66 = v21;
-  [(BKPageCurl *)v2 duration];
+  v66 = layer;
+  [(BKPageCurl *)selfCopy duration];
   v39 = v38;
   [v71 setDuration:?];
   [v73 setDuration:v39];
@@ -1554,10 +1554,10 @@ LABEL_8:
     v41 = [NSNumber numberWithFloat:v40];
     [v73 setToValue:v41];
 
-    if ([(BKPageCurl *)v2 type]== 3)
+    if ([(BKPageCurl *)selfCopy type]== 3)
     {
       objc_opt_class();
-      v42 = [v72 fromValue];
+      fromValue = [v72 fromValue];
       v43 = BUDynamicCast();
       [v43 floatValue];
       v45 = v44 <= 3.14159265;
@@ -1578,7 +1578,7 @@ LABEL_8:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = [(BKPageCurl *)v2 curlPages];
+  obj = [(BKPageCurl *)selfCopy curlPages];
   v48 = [obj countByEnumeratingWithState:&v74 objects:v78 count:16];
   if (v48)
   {
@@ -1594,51 +1594,51 @@ LABEL_8:
         }
 
         v51 = *(*(&v74 + 1) + 8 * i);
-        v52 = [v51 layer];
-        ++v2->_didEndCount;
-        [v52 addAnimation:v71 forKey:@"curlTime"];
-        [v52 addAnimation:v73 forKey:@"curlRadius"];
-        [v52 addAnimation:v72 forKey:@"curlAngle"];
-        [v52 addAnimation:v10 forKey:@"curlShadowColor"];
+        layer2 = [v51 layer];
+        ++selfCopy->_didEndCount;
+        [layer2 addAnimation:v71 forKey:@"curlTime"];
+        [layer2 addAnimation:v73 forKey:@"curlRadius"];
+        [layer2 addAnimation:v72 forKey:@"curlAngle"];
+        [layer2 addAnimation:v10 forKey:@"curlShadowColor"];
         if (v12)
         {
-          [v52 addAnimation:v12 forKey:@"curlBackColor0"];
+          [layer2 addAnimation:v12 forKey:@"curlBackColor0"];
         }
 
-        v53 = v2;
+        v53 = selfCopy;
         if (v11)
         {
-          [v52 addAnimation:v11 forKey:@"curlBackColor1"];
+          [layer2 addAnimation:v11 forKey:@"curlBackColor1"];
         }
 
-        v54 = [v71 toValue];
-        v55 = [v71 keyPath];
-        [v52 setValue:v54 forKeyPath:v55];
+        toValue = [v71 toValue];
+        keyPath6 = [v71 keyPath];
+        [layer2 setValue:toValue forKeyPath:keyPath6];
 
-        v56 = [v73 toValue];
-        v57 = [v73 keyPath];
-        [v52 setValue:v56 forKeyPath:v57];
+        toValue2 = [v73 toValue];
+        keyPath7 = [v73 keyPath];
+        [layer2 setValue:toValue2 forKeyPath:keyPath7];
 
-        v58 = [v72 toValue];
-        v59 = [v72 keyPath];
-        [v52 setValue:v58 forKeyPath:v59];
+        toValue3 = [v72 toValue];
+        keyPath8 = [v72 keyPath];
+        [layer2 setValue:toValue3 forKeyPath:keyPath8];
 
-        v60 = [v10 toValue];
-        v61 = [v10 keyPath];
-        [v52 setValue:v60 forKeyPath:v61];
+        toValue4 = [v10 toValue];
+        keyPath9 = [v10 keyPath];
+        [layer2 setValue:toValue4 forKeyPath:keyPath9];
 
         if (v12)
         {
-          v62 = [v12 toValue];
-          v63 = [v12 keyPath];
-          [v52 setValue:v62 forKey:v63];
+          toValue5 = [v12 toValue];
+          keyPath10 = [v12 keyPath];
+          [layer2 setValue:toValue5 forKey:keyPath10];
         }
 
         if (v11)
         {
-          v64 = [v11 toValue];
-          v65 = [v11 keyPath];
-          [v52 setValue:v64 forKey:v65];
+          toValue6 = [v11 toValue];
+          keyPath11 = [v11 keyPath];
+          [layer2 setValue:toValue6 forKey:keyPath11];
         }
 
         if ((v70 & 1) == 0)
@@ -1646,7 +1646,7 @@ LABEL_8:
           [v51 pageCurlWillCancelWithDuration:v39];
         }
 
-        v2 = v53;
+        selfCopy = v53;
       }
 
       v49 = [obj countByEnumeratingWithState:&v74 objects:v78 count:16];
@@ -1656,36 +1656,36 @@ LABEL_8:
   }
 
   +[CATransaction commit];
-  v2->_state = 1;
+  selfCopy->_state = 1;
 }
 
 - (void)killCurl
 {
   self->_state = 4;
-  v3 = [(BKPageCurl *)self delegate];
-  [v3 pageCurl:self finished:0];
+  delegate = [(BKPageCurl *)self delegate];
+  [delegate pageCurl:self finished:0];
 
   [(BKPageCurl *)self fullCleanup];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  self->_finished = v4;
+  finishedCopy = finished;
+  stopCopy = stop;
+  self->_finished = finishedCopy;
   v7 = self->_didEndCount - 1;
   self->_didEndCount = v7;
   if (self->_inUncurl)
   {
     self->_ignoreManualUpdates = 0;
-    if (v4)
+    if (finishedCopy)
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v8 = [(BKPageCurl *)self curlPages];
-      v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      curlPages = [(BKPageCurl *)self curlPages];
+      v9 = [curlPages countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         v10 = v9;
@@ -1696,14 +1696,14 @@ LABEL_8:
           {
             if (*v15 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(curlPages);
             }
 
-            v13 = [*(*(&v14 + 1) + 8 * i) layer];
-            [v13 removeAllAnimations];
+            layer = [*(*(&v14 + 1) + 8 * i) layer];
+            [layer removeAllAnimations];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v10 = [curlPages countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v10);
@@ -1718,14 +1718,14 @@ LABEL_8:
 
   else if (!v7 && [(BKPageCurl *)self state]!= &dword_4)
   {
-    [(BKPageCurl *)self _animationDidStop:v4];
+    [(BKPageCurl *)self _animationDidStop:finishedCopy];
   }
 }
 
-- (void)_animationDidStop:(BOOL)a3
+- (void)_animationDidStop:(BOOL)stop
 {
-  v3 = a3;
-  if (a3)
+  stopCopy = stop;
+  if (stop)
   {
     if (([(BKPageCurl *)self type]== 2 || [(BKPageCurl *)self type]== 3) && self->_cancelledManualCurl)
     {
@@ -1751,20 +1751,20 @@ LABEL_8:
     [(BKPageCurl *)self fullCleanup];
   }
 
-  v7 = [(BKPageCurl *)self delegate];
-  [v7 pageCurl:self finished:v3];
+  delegate = [(BKPageCurl *)self delegate];
+  [delegate pageCurl:self finished:stopCopy];
 }
 
 - (void)fullCleanup
 {
-  v3 = [(BKPageCurl *)self existingPages];
-  [v3 makeObjectsPerformSelector:"removeFromSuperview"];
+  existingPages = [(BKPageCurl *)self existingPages];
+  [existingPages makeObjectsPerformSelector:"removeFromSuperview"];
 
-  v4 = [(BKPageCurl *)self curlPages];
-  [v4 makeObjectsPerformSelector:"removeFromSuperview"];
+  curlPages = [(BKPageCurl *)self curlPages];
+  [curlPages makeObjectsPerformSelector:"removeFromSuperview"];
 
-  v5 = [(BKPageCurl *)self backPage];
-  [v5 removeFromSuperview];
+  backPage = [(BKPageCurl *)self backPage];
+  [backPage removeFromSuperview];
 
   [(BKPageCurl *)self cleanup];
 }

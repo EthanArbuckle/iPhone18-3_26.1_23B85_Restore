@@ -1,7 +1,7 @@
 @interface PFCloudKitThrottledNotificationObserver
-- (PFCloudKitThrottledNotificationObserver)initWithLabel:(id)a3 handlerBlock:(id)a4;
+- (PFCloudKitThrottledNotificationObserver)initWithLabel:(id)label handlerBlock:(id)block;
 - (void)dealloc;
-- (void)noteRecievedNotification:(uint64_t)a1;
+- (void)noteRecievedNotification:(uint64_t)notification;
 @end
 
 @implementation PFCloudKitThrottledNotificationObserver
@@ -16,7 +16,7 @@
   [(PFCloudKitThrottledNotificationObserver *)&v3 dealloc];
 }
 
-- (PFCloudKitThrottledNotificationObserver)initWithLabel:(id)a3 handlerBlock:(id)a4
+- (PFCloudKitThrottledNotificationObserver)initWithLabel:(id)label handlerBlock:(id)block
 {
   v9.receiver = self;
   v9.super_class = PFCloudKitThrottledNotificationObserver;
@@ -26,20 +26,20 @@
   {
     v6->_notificationStalenessInterval = 10;
     atomic_store(0, &v6->_notificationIteration);
-    v6->_label = a3;
+    v6->_label = label;
     v7->_assertionLabel = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CoreData: %@", v7->_label];
-    v7->_notificationHandlerBlock = [a4 copy];
+    v7->_notificationHandlerBlock = [block copy];
   }
 
   return v7;
 }
 
-- (void)noteRecievedNotification:(uint64_t)a1
+- (void)noteRecievedNotification:(uint64_t)notification
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (notification)
   {
-    v3 = [a2 name];
+    name = [a2 name];
     v4 = objc_autoreleasePoolPush();
     Stream = __PFCloudKitLoggingGetStream();
     v6 = Stream;
@@ -85,22 +85,22 @@
 
     if (os_log_type_enabled(Stream, v9))
     {
-      v10 = atomic_load((a1 + 8));
+      v10 = atomic_load((notification + 8));
       *buf = 136316162;
       v23 = "[PFCloudKitThrottledNotificationObserver noteRecievedNotification:]";
       v24 = 1024;
       v25 = 50;
       v26 = 2112;
-      v27 = a1;
+      notificationCopy2 = notification;
       v28 = 2112;
-      v29 = v3;
+      v29 = name;
       v30 = 1024;
       v31 = v10;
       _os_log_impl(&dword_18565F000, v6, v9, "CoreData+CloudKit: %s(%d): %@: Got: %@ - %d", buf, 0x2Cu);
     }
 
     objc_autoreleasePoolPop(v4);
-    if (atomic_fetch_add((a1 + 8), 1u))
+    if (atomic_fetch_add((notification + 8), 1u))
     {
       v11 = objc_autoreleasePoolPush();
       v12 = __PFCloudKitLoggingGetStream();
@@ -132,15 +132,15 @@
 
       if (os_log_type_enabled(v12, v15))
       {
-        v16 = atomic_load((a1 + 8));
+        v16 = atomic_load((notification + 8));
         *buf = 136316162;
         v23 = "[PFCloudKitThrottledNotificationObserver noteRecievedNotification:]";
         v24 = 1024;
         v25 = 68;
         v26 = 2112;
-        v27 = a1;
+        notificationCopy2 = notification;
         v28 = 2112;
-        v29 = v3;
+        v29 = name;
         v30 = 1024;
         v31 = v16;
         _os_log_impl(&dword_18565F000, v13, v15, "CoreData+CloudKit: %s(%d): %@ - Already scheduled a block to respond to '%@', %d notifications since.", buf, 0x2Cu);
@@ -151,15 +151,15 @@
 
     else
     {
-      v17 = [_PFClassicBackgroundRuntimeVoucher _beginPowerAssertionNamed:*(a1 + 16)];
-      v18 = dispatch_time(0, 1000000000 * *(a1 + 32));
+      v17 = [_PFClassicBackgroundRuntimeVoucher _beginPowerAssertionNamed:*(notification + 16)];
+      v18 = dispatch_time(0, 1000000000 * *(notification + 32));
       global_queue = dispatch_get_global_queue(21, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __68__PFCloudKitThrottledNotificationObserver_noteRecievedNotification___block_invoke;
       block[3] = &unk_1E6EC19D8;
-      block[4] = a1;
-      block[5] = v3;
+      block[4] = notification;
+      block[5] = name;
       block[6] = v17;
       dispatch_after(v18, global_queue, block);
     }

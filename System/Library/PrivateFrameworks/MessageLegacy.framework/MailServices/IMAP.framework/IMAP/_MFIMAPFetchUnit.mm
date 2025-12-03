@@ -1,5 +1,5 @@
 @interface _MFIMAPFetchUnit
-- (BOOL)matchesFetchResponse:(id)a3;
+- (BOOL)matchesFetchResponse:(id)response;
 - (id)copyFailedFetchResponse;
 - (void)_setupExpectedFetchResult;
 - (void)dealloc;
@@ -59,10 +59,10 @@
                 v23 = [(NSString *)self->_fetchItem rangeOfString:@"." options:0 range:v22, v3 - v22];
                 if (v23 != 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  v24 = [[(NSString *)self->_fetchItem substringWithRange:v22 intValue];
+                  intValue = [[(NSString *)self->_fetchItem substringWithRange:v22 intValue];
                   expectedFetchResult = self->_expectedFetchResult;
 
-                  [(MFIMAPFetchResult *)expectedFetchResult setStartOffset:v24];
+                  [(MFIMAPFetchResult *)expectedFetchResult setStartOffset:intValue];
                 }
               }
             }
@@ -78,7 +78,7 @@
   }
 }
 
-- (BOOL)matchesFetchResponse:(id)a3
+- (BOOL)matchesFetchResponse:(id)response
 {
   v21 = *MEMORY[0x277D85DE8];
   if (!self->_expectedFetchResult)
@@ -90,12 +90,12 @@
     }
   }
 
-  v5 = [a3 fetchResults];
+  fetchResults = [response fetchResults];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [fetchResults countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -106,17 +106,17 @@ LABEL_4:
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(fetchResults);
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
-      v11 = [v10 type];
-      if ((v11 - 4) < 2)
+      type = [v10 type];
+      if ((type - 4) < 2)
       {
         break;
       }
 
-      if (v11 == 6)
+      if (type == 6)
       {
         if ([(MFIMAPFetchResult *)self->_expectedFetchResult type]== 6)
         {
@@ -124,7 +124,7 @@ LABEL_4:
         }
       }
 
-      else if (v11 == 7)
+      else if (type == 7)
       {
         break;
       }
@@ -132,7 +132,7 @@ LABEL_4:
 LABEL_17:
       if (v7 == ++v9)
       {
-        v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [fetchResults countByEnumeratingWithState:&v16 objects:v20 count:16];
         v7 = v6;
         if (v6)
         {
@@ -143,8 +143,8 @@ LABEL_17:
       }
     }
 
-    v12 = [(MFIMAPFetchResult *)self->_expectedFetchResult type];
-    v13 = v12 > 7 || ((1 << v12) & 0xB0) == 0;
+    type2 = [(MFIMAPFetchResult *)self->_expectedFetchResult type];
+    v13 = type2 > 7 || ((1 << type2) & 0xB0) == 0;
     if (!v13 && ![objc_msgSend(v10 "section")])
     {
 LABEL_20:

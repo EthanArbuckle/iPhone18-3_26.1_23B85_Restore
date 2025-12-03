@@ -1,84 +1,84 @@
 @interface LNSubstitutionValue
-- (LNSubstitutionValue)initWithCoder:(id)a3;
-- (LNSubstitutionValue)initWithParameterIdentifier:(id)a3 title:(id)a4 titleKey:(id)a5 value:(id)a6 optionsCollectionTitle:(id)a7 systemImageName:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (LNSubstitutionValue)initWithCoder:(id)coder;
+- (LNSubstitutionValue)initWithParameterIdentifier:(id)identifier title:(id)title titleKey:(id)key value:(id)value optionsCollectionTitle:(id)collectionTitle systemImageName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSubstitutionValue
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNSubstitutionValue *)self parameterIdentifier];
-  [v4 encodeObject:v5 forKey:@"parameterIdentifier"];
+  coderCopy = coder;
+  parameterIdentifier = [(LNSubstitutionValue *)self parameterIdentifier];
+  [coderCopy encodeObject:parameterIdentifier forKey:@"parameterIdentifier"];
 
-  v6 = [(LNSubstitutionValue *)self title];
-  [v4 encodeObject:v6 forKey:@"title"];
+  title = [(LNSubstitutionValue *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v7 = [(LNSubstitutionValue *)self titleKey];
-  [v4 encodeObject:v7 forKey:@"titleKey"];
+  titleKey = [(LNSubstitutionValue *)self titleKey];
+  [coderCopy encodeObject:titleKey forKey:@"titleKey"];
 
-  v8 = [(LNSubstitutionValue *)self value];
-  [v4 encodeObject:v8 forKey:@"value"];
+  value = [(LNSubstitutionValue *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v9 = [(LNSubstitutionValue *)self optionsCollectionTitle];
-  [v4 encodeObject:v9 forKey:@"optionsCollectionTitle"];
+  optionsCollectionTitle = [(LNSubstitutionValue *)self optionsCollectionTitle];
+  [coderCopy encodeObject:optionsCollectionTitle forKey:@"optionsCollectionTitle"];
 
-  v10 = [(LNSubstitutionValue *)self systemImageName];
-  [v4 encodeObject:v10 forKey:@"systemImageName"];
+  systemImageName = [(LNSubstitutionValue *)self systemImageName];
+  [coderCopy encodeObject:systemImageName forKey:@"systemImageName"];
 }
 
-- (LNSubstitutionValue)initWithCoder:(id)a3
+- (LNSubstitutionValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
       if (v7)
       {
-        v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"optionsCollectionTitle"];
-        v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
+        v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optionsCollectionTitle"];
+        v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
         self = [(LNSubstitutionValue *)self initWithParameterIdentifier:v5 title:v6 titleKey:v7 value:v8 optionsCollectionTitle:v9 systemImageName:v10];
 
-        v11 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v11 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (LNSubstitutionValue)initWithParameterIdentifier:(id)a3 title:(id)a4 titleKey:(id)a5 value:(id)a6 optionsCollectionTitle:(id)a7 systemImageName:(id)a8
+- (LNSubstitutionValue)initWithParameterIdentifier:(id)identifier title:(id)title titleKey:(id)key value:(id)value optionsCollectionTitle:(id)collectionTitle systemImageName:(id)name
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v14)
+  identifierCopy = identifier;
+  titleCopy = title;
+  keyCopy = key;
+  valueCopy = value;
+  collectionTitleCopy = collectionTitle;
+  nameCopy = name;
+  if (identifierCopy)
   {
-    if (v15)
+    if (titleCopy)
     {
       goto LABEL_3;
     }
@@ -86,17 +86,17 @@
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"LNSubstitutionValue.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"parameterIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSubstitutionValue.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"parameterIdentifier"}];
 
-    if (v15)
+    if (titleCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"LNSubstitutionValue.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNSubstitutionValue.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
 LABEL_3:
   v32.receiver = self;
@@ -104,21 +104,21 @@ LABEL_3:
   v20 = [(LNSubstitutionValue *)&v32 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [identifierCopy copy];
     parameterIdentifier = v20->_parameterIdentifier;
     v20->_parameterIdentifier = v21;
 
-    v23 = [v15 copy];
+    v23 = [titleCopy copy];
     title = v20->_title;
     v20->_title = v23;
 
-    v25 = [v16 copy];
+    v25 = [keyCopy copy];
     titleKey = v20->_titleKey;
     v20->_titleKey = v25;
 
-    objc_storeStrong(&v20->_value, a6);
-    objc_storeStrong(&v20->_optionsCollectionTitle, a7);
-    objc_storeStrong(&v20->_systemImageName, a8);
+    objc_storeStrong(&v20->_value, value);
+    objc_storeStrong(&v20->_optionsCollectionTitle, collectionTitle);
+    objc_storeStrong(&v20->_systemImageName, name);
     v27 = v20;
   }
 

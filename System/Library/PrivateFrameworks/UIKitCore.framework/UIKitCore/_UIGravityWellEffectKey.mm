@@ -1,8 +1,8 @@
 @interface _UIGravityWellEffectKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)point;
 - (UIView)view;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -10,8 +10,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_UIGravityWellEffectKey *)self view];
-  v4 = [v3 hash];
+  view = [(_UIGravityWellEffectKey *)self view];
+  v4 = [view hash];
   [(_UIGravityWellEffectKey *)self point];
   v6 = v4 ^ v5;
   [(_UIGravityWellEffectKey *)self point];
@@ -36,22 +36,22 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(_UIGravityWellEffectKey *)self view];
-  [v4 setView:v5];
+  view = [(_UIGravityWellEffectKey *)self view];
+  [v4 setView:view];
 
   [(_UIGravityWellEffectKey *)self point];
   [v4 setPoint:?];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -61,10 +61,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_UIGravityWellEffectKey *)v5 view];
-      v7 = [(_UIGravityWellEffectKey *)self view];
-      if (v6 == v7)
+      v5 = equalCopy;
+      view = [(_UIGravityWellEffectKey *)v5 view];
+      view2 = [(_UIGravityWellEffectKey *)self view];
+      if (view == view2)
       {
         [(_UIGravityWellEffectKey *)v5 point];
         v10 = v9;

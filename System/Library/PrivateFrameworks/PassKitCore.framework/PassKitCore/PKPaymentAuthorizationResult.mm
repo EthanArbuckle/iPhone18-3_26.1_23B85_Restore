@@ -1,8 +1,8 @@
 @interface PKPaymentAuthorizationResult
-+ (id)sanitizedErrors:(id)a3;
-- (PKPaymentAuthorizationResult)initWithCoder:(id)a3;
++ (id)sanitizedErrors:(id)errors;
+- (PKPaymentAuthorizationResult)initWithCoder:(id)coder;
 - (PKPaymentAuthorizationResult)initWithStatus:(PKPaymentAuthorizationStatus)status errors:(NSArray *)errors;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setErrors:(NSArray *)errors;
 @end
 
@@ -35,31 +35,31 @@
   return v8;
 }
 
-- (PKPaymentAuthorizationResult)initWithCoder:(id)a3
+- (PKPaymentAuthorizationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = PKPaymentAuthorizationResult;
   v5 = [(PKPaymentAuthorizationResult *)&v18 init];
   if (v5)
   {
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"errors"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"errors"];
     errors = v5->_errors;
     v5->_errors = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentTransactionMetadata"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentTransactionMetadata"];
     peerPaymentTransactionMetadata = v5->_peerPaymentTransactionMetadata;
     v5->_peerPaymentTransactionMetadata = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedErrorMessageOverride"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedErrorMessageOverride"];
     localizedErrorMessageOverride = v5->_localizedErrorMessageOverride;
     v5->_localizedErrorMessageOverride = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderDetails"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderDetails"];
     orderDetails = v5->_orderDetails;
     v5->_orderDetails = v15;
   }
@@ -67,15 +67,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   status = self->_status;
-  v5 = a3;
-  [v5 encodeInteger:status forKey:@"status"];
-  [v5 encodeObject:self->_errors forKey:@"errors"];
-  [v5 encodeObject:self->_peerPaymentTransactionMetadata forKey:@"peerPaymentTransactionMetadata"];
-  [v5 encodeObject:self->_localizedErrorMessageOverride forKey:@"localizedErrorMessageOverride"];
-  [v5 encodeObject:self->_orderDetails forKey:@"orderDetails"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:status forKey:@"status"];
+  [coderCopy encodeObject:self->_errors forKey:@"errors"];
+  [coderCopy encodeObject:self->_peerPaymentTransactionMetadata forKey:@"peerPaymentTransactionMetadata"];
+  [coderCopy encodeObject:self->_localizedErrorMessageOverride forKey:@"localizedErrorMessageOverride"];
+  [coderCopy encodeObject:self->_orderDetails forKey:@"orderDetails"];
 }
 
 - (void)setErrors:(NSArray *)errors
@@ -103,16 +103,16 @@
   }
 }
 
-+ (id)sanitizedErrors:(id)a3
++ (id)sanitizedErrors:(id)errors
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  errorsCopy = errors;
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = errorsCopy;
   v21 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v21)
   {
@@ -128,23 +128,23 @@
         }
 
         v6 = *(*(&v22 + 1) + 8 * i);
-        v7 = [v6 userInfo];
+        userInfo = [v6 userInfo];
         v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v9 = [v7 objectForKeyedSubscript:@"PKPaymentErrorContactField"];
+        v9 = [userInfo objectForKeyedSubscript:@"PKPaymentErrorContactField"];
         [v8 setObject:v9 forKeyedSubscript:@"PKPaymentErrorContactField"];
 
-        v10 = [v7 objectForKeyedSubscript:@"PKDisbursementErrorContactField"];
+        v10 = [userInfo objectForKeyedSubscript:@"PKDisbursementErrorContactField"];
         [v8 setObject:v10 forKeyedSubscript:@"PKDisbursementErrorContactField"];
 
-        v11 = [v7 objectForKeyedSubscript:@"PKPaymentErrorPostalAddress"];
+        v11 = [userInfo objectForKeyedSubscript:@"PKPaymentErrorPostalAddress"];
         [v8 setObject:v11 forKeyedSubscript:@"PKPaymentErrorPostalAddress"];
 
-        v12 = [v7 objectForKeyedSubscript:v4];
+        v12 = [userInfo objectForKeyedSubscript:v4];
         [v8 setObject:v12 forKeyedSubscript:v4];
 
         v13 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v14 = [v6 domain];
-        v15 = [v13 initWithDomain:v14 code:objc_msgSend(v6 userInfo:{"code"), v8}];
+        domain = [v6 domain];
+        v15 = [v13 initWithDomain:domain code:objc_msgSend(v6 userInfo:{"code"), v8}];
 
         [v20 addObject:v15];
       }

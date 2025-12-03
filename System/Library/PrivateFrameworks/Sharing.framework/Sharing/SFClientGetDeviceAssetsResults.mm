@@ -1,19 +1,19 @@
 @interface SFClientGetDeviceAssetsResults
-- (SFClientGetDeviceAssetsResults)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFClientGetDeviceAssetsResults)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFClientGetDeviceAssetsResults
 
-- (SFClientGetDeviceAssetsResults)initWithCoder:(id)a3
+- (SFClientGetDeviceAssetsResults)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SFClientGetDeviceAssetsResults;
   v5 = [(SFClientGetDeviceAssetsResults *)&v9 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -23,12 +23,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   assetBundlePath = self->_assetBundlePath;
   if (assetBundlePath)
   {
-    [a3 encodeObject:assetBundlePath forKey:@"abp"];
+    [coder encodeObject:assetBundlePath forKey:@"abp"];
   }
 }
 

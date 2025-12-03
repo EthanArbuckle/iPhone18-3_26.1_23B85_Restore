@@ -1,6 +1,6 @@
 @interface MCChaperonePayload
 + (id)typeStrings;
-- (MCChaperonePayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCChaperonePayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 - (id)subtitle1Label;
@@ -20,20 +20,20 @@
   return v2;
 }
 
-- (MCChaperonePayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCChaperonePayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v47.receiver = self;
   v47.super_class = MCChaperonePayload;
-  v10 = [(MCPayload *)&v47 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v47 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (v10)
   {
-    if ([v9 isStub])
+    if ([profileCopy isStub])
     {
       v46 = 0;
-      v11 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowNonChaperonePairing" isRequired:0 outError:&v46];
+      v11 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowNonChaperonePairing" isRequired:0 outError:&v46];
       v12 = v46;
       v13 = *(v10 + 13);
       *(v10 + 13) = v11;
@@ -42,7 +42,7 @@
       {
         *(v10 + 96) = [*(v10 + 13) BOOLValue];
         v45 = 0;
-        v14 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"PairingCertificate" isRequired:0 outError:&v45];
+        v14 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"PairingCertificate" isRequired:0 outError:&v45];
         v12 = v45;
         v15 = *(v10 + 11);
         *(v10 + 11) = v14;
@@ -56,13 +56,13 @@
 
     else
     {
-      v16 = [v10 organization];
-      v17 = [v16 length];
+      organization = [v10 organization];
+      v17 = [organization length];
 
       if (v17)
       {
         v44 = 0;
-        v18 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowNonChaperonePairing" isRequired:0 outError:&v44];
+        v18 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowNonChaperonePairing" isRequired:0 outError:&v44];
         v12 = v44;
         v19 = *(v10 + 13);
         *(v10 + 13) = v18;
@@ -71,7 +71,7 @@
         {
           *(v10 + 96) = [*(v10 + 13) BOOLValue];
           v43 = 0;
-          v20 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"PairingCertificate" isRequired:1 outError:&v43];
+          v20 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"PairingCertificate" isRequired:1 outError:&v43];
           v12 = v43;
           v21 = *(v10 + 11);
           *(v10 + 11) = v20;
@@ -86,8 +86,8 @@
             }
 
             v33 = MEMORY[0x1E696ABC0];
-            v34 = [v10 friendlyName];
-            v42 = MCErrorArray(@"CHAPERONE_BAD_CERT_DATA_P_PAYLOAD", v35, v36, v37, v38, v39, v40, v41, v34);
+            friendlyName = [v10 friendlyName];
+            v42 = MCErrorArray(@"CHAPERONE_BAD_CERT_DATA_P_PAYLOAD", v35, v36, v37, v38, v39, v40, v41, friendlyName);
             v12 = [v33 MCErrorWithDomain:@"MCSupervisedErrorDomain" code:29003 descriptionArray:v42 errorType:@"MCFatalError"];
 
             if (!v12)
@@ -110,10 +110,10 @@
 
     v23 = [v10 malformedPayloadErrorWithError:v12];
     v24 = v23;
-    if (a5)
+    if (error)
     {
       v25 = v23;
-      *a5 = v24;
+      *error = v24;
     }
 
     v26 = _MCLogObjects;
@@ -122,11 +122,11 @@
       v27 = v26;
       v28 = objc_opt_class();
       v29 = v28;
-      v30 = [v24 MCVerboseDescription];
+      mCVerboseDescription = [v24 MCVerboseDescription];
       *buf = 138543618;
       v49 = v28;
       v50 = 2114;
-      v51 = v30;
+      v51 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v27, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
@@ -143,12 +143,12 @@ LABEL_17:
 {
   v8.receiver = self;
   v8.super_class = MCChaperonePayload;
-  v3 = [(MCPayload *)&v8 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCPayload *)&v8 stubDictionary];
+  v4 = stubDictionary;
   pairingCertificateData = self->_pairingCertificateData;
   if (pairingCertificateData)
   {
-    [v3 setObject:pairingCertificateData forKey:@"PairingCertificate"];
+    [stubDictionary setObject:pairingCertificateData forKey:@"PairingCertificate"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_nonChaperonePairingAllowed];
@@ -159,8 +159,8 @@ LABEL_17:
 
 - (id)subtitle1Label
 {
-  v2 = [(MCPayload *)self organization];
-  if (v2)
+  organization = [(MCPayload *)self organization];
+  if (organization)
   {
     v3 = MCLocalizedString(@"CHAPERONE_DETAIL_ORG_COLON");
   }
@@ -194,8 +194,8 @@ LABEL_17:
 {
   v8.receiver = self;
   v8.super_class = MCChaperonePayload;
-  v3 = [(MCPayload *)&v8 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v8 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   v5 = MCStringForBool(self->_pairingCertificateData != 0);
   [v4 appendFormat:@"Pairing Cert present          : %@\n", v5];
@@ -210,15 +210,15 @@ LABEL_17:
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(MCPayload *)self organization];
-  v5 = [v4 length];
+  organization = [(MCPayload *)self organization];
+  v5 = [organization length];
 
   if (v5)
   {
     v6 = [MCKeyValue alloc];
-    v7 = [(MCPayload *)self organization];
+    organization2 = [(MCPayload *)self organization];
     v8 = MCLocalizedString(@"ORGANIZATION");
-    v9 = [(MCKeyValue *)v6 initWithLocalizedString:v7 localizedKey:v8];
+    v9 = [(MCKeyValue *)v6 initWithLocalizedString:organization2 localizedKey:v8];
 
     [v3 addObject:v9];
   }

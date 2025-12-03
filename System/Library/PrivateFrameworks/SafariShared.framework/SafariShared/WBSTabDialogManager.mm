@@ -1,22 +1,22 @@
 @interface WBSTabDialogManager
 - (WBSTabDialogManager)init;
-- (id)_dialogBlockingSlot:(id)a3;
-- (id)_dialogBlockingWebProcessID:(int)a3;
-- (id)_queueForTabID:(unint64_t)a3 createIfNeeded:(BOOL)a4;
-- (id)_setForWebProcessID:(int)a3 createIfNeeded:(BOOL)a4;
+- (id)_dialogBlockingSlot:(id)slot;
+- (id)_dialogBlockingWebProcessID:(int)d;
+- (id)_queueForTabID:(unint64_t)d createIfNeeded:(BOOL)needed;
+- (id)_setForWebProcessID:(int)d createIfNeeded:(BOOL)needed;
 - (id)description;
-- (int64_t)_enqueueDialog:(id)a3;
-- (void)_cancelDialogsInQueue:(id)a3 tabID:(unint64_t)a4 context:(id)a5;
-- (void)_dismissDialog:(id)a3 withResponse:(id)a4;
-- (void)cancelAllDialogsBlockingSlot:(id)a3;
-- (void)cancelAllDialogsBlockingWebProcessID:(int)a3;
-- (void)cancelAllDialogsForTabID:(unint64_t)a3 context:(id)a4;
-- (void)cancelAllDialogsForTabID:(unint64_t)a3 reason:(id)a4;
-- (void)cancelAllDialogsWithContext:(id)a3;
-- (void)dismissCurrentDialogForTabID:(unint64_t)a3 withResponse:(id)a4;
-- (void)enqueueOrPresentDialog:(id)a3 inSlot:(id)a4;
-- (void)enqueueOrPresentDialogInSlot:(id)a3 presentationBlock:(id)a4 dismissalBlock:(id)a5 blocksWebProcessUntilDismissed:(BOOL)a6;
-- (void)presentNextDialogForSlot:(id)a3;
+- (int64_t)_enqueueDialog:(id)dialog;
+- (void)_cancelDialogsInQueue:(id)queue tabID:(unint64_t)d context:(id)context;
+- (void)_dismissDialog:(id)dialog withResponse:(id)response;
+- (void)cancelAllDialogsBlockingSlot:(id)slot;
+- (void)cancelAllDialogsBlockingWebProcessID:(int)d;
+- (void)cancelAllDialogsForTabID:(unint64_t)d context:(id)context;
+- (void)cancelAllDialogsForTabID:(unint64_t)d reason:(id)reason;
+- (void)cancelAllDialogsWithContext:(id)context;
+- (void)dismissCurrentDialogForTabID:(unint64_t)d withResponse:(id)response;
+- (void)enqueueOrPresentDialog:(id)dialog inSlot:(id)slot;
+- (void)enqueueOrPresentDialogInSlot:(id)slot presentationBlock:(id)block dismissalBlock:(id)dismissalBlock blocksWebProcessUntilDismissed:(BOOL)dismissed;
+- (void)presentNextDialogForSlot:(id)slot;
 @end
 
 @implementation WBSTabDialogManager
@@ -28,13 +28,13 @@
   v2 = [(WBSTabDialogManager *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     webProcessIDToDialogSetMapping = v2->_webProcessIDToDialogSetMapping;
-    v2->_webProcessIDToDialogSetMapping = v3;
+    v2->_webProcessIDToDialogSetMapping = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     tabIDToDialogQueueMapping = v2->_tabIDToDialogQueueMapping;
-    v2->_tabIDToDialogQueueMapping = v5;
+    v2->_tabIDToDialogQueueMapping = dictionary2;
 
     v2->_queueCapacity = 10;
     v7 = v2;
@@ -53,15 +53,15 @@
   return v6;
 }
 
-- (void)enqueueOrPresentDialog:(id)a3 inSlot:(id)a4
+- (void)enqueueOrPresentDialog:(id)dialog inSlot:(id)slot
 {
-  var1 = a4.var1;
-  v5 = *&a4.var0;
-  v7 = [a3 createInfo];
-  v8 = v7;
+  var1 = slot.var1;
+  v5 = *&slot.var0;
+  createInfo = [dialog createInfo];
+  v8 = createInfo;
   if (v5 >= 1 && var1)
   {
-    [v7 setSlot:{v5, var1}];
+    [createInfo setSlot:{v5, var1}];
     v9 = [(WBSTabDialogManager *)self _enqueueDialog:v8];
     if (v9 == 1)
     {
@@ -88,40 +88,40 @@
 LABEL_9:
 }
 
-- (void)enqueueOrPresentDialogInSlot:(id)a3 presentationBlock:(id)a4 dismissalBlock:(id)a5 blocksWebProcessUntilDismissed:(BOOL)a6
+- (void)enqueueOrPresentDialogInSlot:(id)slot presentationBlock:(id)block dismissalBlock:(id)dismissalBlock blocksWebProcessUntilDismissed:(BOOL)dismissed
 {
-  v6 = a6;
-  var1 = a3.var1;
-  v8 = *&a3.var0;
-  v10 = [WBSTabDialog tabDialogWithPresentationBlock:a4 dismissalBlock:a5];
-  [v10 setBlocksWebProcessUntilDismissed:v6];
+  dismissedCopy = dismissed;
+  var1 = slot.var1;
+  v8 = *&slot.var0;
+  v10 = [WBSTabDialog tabDialogWithPresentationBlock:block dismissalBlock:dismissalBlock];
+  [v10 setBlocksWebProcessUntilDismissed:dismissedCopy];
   [(WBSTabDialogManager *)self enqueueOrPresentDialog:v10 inSlot:v8, var1];
 }
 
-- (void)presentNextDialogForSlot:(id)a3
+- (void)presentNextDialogForSlot:(id)slot
 {
-  var1 = a3.var1;
-  [(WBSTabDialogManager *)self cancelAllDialogsBlockingSlot:*&a3.var0];
+  var1 = slot.var1;
+  [(WBSTabDialogManager *)self cancelAllDialogsBlockingSlot:*&slot.var0];
   v6 = [(WBSTabDialogManager *)self _queueForTabID:var1 createIfNeeded:0];
-  v5 = [v6 firstObject];
-  [v5 presentIfNeeded];
+  firstObject = [v6 firstObject];
+  [firstObject presentIfNeeded];
 }
 
-- (void)dismissCurrentDialogForTabID:(unint64_t)a3 withResponse:(id)a4
+- (void)dismissCurrentDialogForTabID:(unint64_t)d withResponse:(id)response
 {
-  v8 = a4;
-  v6 = [(WBSTabDialogManager *)self _queueForTabID:a3 createIfNeeded:0];
-  v7 = [v6 firstObject];
+  responseCopy = response;
+  v6 = [(WBSTabDialogManager *)self _queueForTabID:d createIfNeeded:0];
+  firstObject = [v6 firstObject];
 
-  if ([v7 isPresented])
+  if ([firstObject isPresented])
   {
-    [(WBSTabDialogManager *)self _dismissDialog:v7 withResponse:v8];
+    [(WBSTabDialogManager *)self _dismissDialog:firstObject withResponse:responseCopy];
   }
 }
 
-- (void)cancelAllDialogsBlockingSlot:(id)a3
+- (void)cancelAllDialogsBlockingSlot:(id)slot
 {
-  v4 = [(WBSTabDialogManager *)self _dialogBlockingSlot:*&a3.var0, a3.var1];
+  v4 = [(WBSTabDialogManager *)self _dialogBlockingSlot:*&slot.var0, slot.var1];
   if (v4)
   {
     v5 = v4;
@@ -130,9 +130,9 @@ LABEL_9:
   }
 }
 
-- (void)cancelAllDialogsBlockingWebProcessID:(int)a3
+- (void)cancelAllDialogsBlockingWebProcessID:(int)d
 {
-  v4 = [(WBSTabDialogManager *)self _dialogBlockingWebProcessID:*&a3];
+  v4 = [(WBSTabDialogManager *)self _dialogBlockingWebProcessID:*&d];
   if (v4)
   {
     v5 = v4;
@@ -141,34 +141,34 @@ LABEL_9:
   }
 }
 
-- (void)cancelAllDialogsForTabID:(unint64_t)a3 reason:(id)a4
+- (void)cancelAllDialogsForTabID:(unint64_t)d reason:(id)reason
 {
-  v6 = [WBSTabDialogCancellationContext cancellationContextWithReason:a4 userInfo:0];
-  [(WBSTabDialogManager *)self cancelAllDialogsForTabID:a3 context:v6];
+  v6 = [WBSTabDialogCancellationContext cancellationContextWithReason:reason userInfo:0];
+  [(WBSTabDialogManager *)self cancelAllDialogsForTabID:d context:v6];
 }
 
-- (void)cancelAllDialogsForTabID:(unint64_t)a3 context:(id)a4
+- (void)cancelAllDialogsForTabID:(unint64_t)d context:(id)context
 {
-  v7 = a4;
-  v6 = [(WBSTabDialogManager *)self _queueForTabID:a3 createIfNeeded:0];
+  contextCopy = context;
+  v6 = [(WBSTabDialogManager *)self _queueForTabID:d createIfNeeded:0];
   if (v6)
   {
-    [(WBSTabDialogManager *)self _cancelDialogsInQueue:v6 tabID:a3 context:v7];
+    [(WBSTabDialogManager *)self _cancelDialogsInQueue:v6 tabID:d context:contextCopy];
   }
 }
 
-- (void)_cancelDialogsInQueue:(id)a3 tabID:(unint64_t)a4 context:(id)a5
+- (void)_cancelDialogsInQueue:(id)queue tabID:(unint64_t)d context:(id)context
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E695DF70] array];
+  queueCopy = queue;
+  contextCopy = context;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v12 = v8;
+  v12 = queueCopy;
   v13 = [v12 countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v13)
   {
@@ -184,14 +184,14 @@ LABEL_9:
         }
 
         v17 = *(*(&v47 + 1) + 8 * i);
-        if ([v17 isExemptFromCancellationInContext:v9])
+        if ([v17 isExemptFromCancellationInContext:contextCopy])
         {
-          v18 = v10;
+          v18 = array;
         }
 
         else
         {
-          v18 = v11;
+          v18 = array2;
         }
 
         [v18 addObject:v17];
@@ -203,11 +203,11 @@ LABEL_9:
     while (v14);
   }
 
-  if ([v11 count])
+  if ([array2 count])
   {
-    if ([v10 count])
+    if ([array count])
     {
-      v19 = v10;
+      v19 = array;
     }
 
     else
@@ -216,25 +216,25 @@ LABEL_9:
     }
 
     tabIDToDialogQueueMapping = self->_tabIDToDialogQueueMapping;
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a4];
+    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:d];
     [(NSMutableDictionary *)tabIDToDialogQueueMapping setObject:v19 forKeyedSubscript:v21];
 
-    v22 = [v11 objectAtIndexedSubscript:0];
-    v23 = [v22 slot];
+    v22 = [array2 objectAtIndexedSubscript:0];
+    slot = [v22 slot];
 
-    v24 = [(WBSTabDialogManager *)self _setForWebProcessID:v23 createIfNeeded:0];
+    v24 = [(WBSTabDialogManager *)self _setForWebProcessID:slot createIfNeeded:0];
     v25 = [v24 count];
-    if (v25 == [v11 count])
+    if (v25 == [array2 count])
     {
       goto LABEL_24;
     }
 
-    v38 = self;
+    selfCopy = self;
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v26 = v11;
+    v26 = array2;
     v27 = [v26 countByEnumeratingWithState:&v43 objects:v52 count:16];
     if (v27)
     {
@@ -258,12 +258,12 @@ LABEL_9:
       while (v28);
     }
 
-    self = v38;
+    self = selfCopy;
     if (![v24 count])
     {
 LABEL_24:
       webProcessIDToDialogSetMapping = self->_webProcessIDToDialogSetMapping;
-      v32 = [MEMORY[0x1E696AD98] numberWithInt:v23];
+      v32 = [MEMORY[0x1E696AD98] numberWithInt:slot];
       [(NSMutableDictionary *)webProcessIDToDialogSetMapping removeObjectForKey:v32];
     }
 
@@ -271,7 +271,7 @@ LABEL_24:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v33 = v11;
+    v33 = array2;
     v34 = [v33 countByEnumeratingWithState:&v39 objects:v51 count:16];
     if (v34)
     {
@@ -297,17 +297,17 @@ LABEL_24:
   }
 }
 
-- (void)cancelAllDialogsWithContext:(id)a3
+- (void)cancelAllDialogsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(NSMutableDictionary *)self->_tabIDToDialogQueueMapping copy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__WBSTabDialogManager_cancelAllDialogsWithContext___block_invoke;
   v7[3] = &unk_1E7FCADA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -318,38 +318,38 @@ void __51__WBSTabDialogManager_cancelAllDialogsWithContext___block_invoke(uint64
   [v5 _cancelDialogsInQueue:v6 tabID:objc_msgSend(a2 context:{"unsignedLongValue"), *(a1 + 40)}];
 }
 
-- (id)_queueForTabID:(unint64_t)a3 createIfNeeded:(BOOL)a4
+- (id)_queueForTabID:(unint64_t)d createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   tabIDToDialogQueueMapping = self->_tabIDToDialogQueueMapping;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:?];
-  v9 = [(NSMutableDictionary *)tabIDToDialogQueueMapping objectForKeyedSubscript:v8];
+  array = [(NSMutableDictionary *)tabIDToDialogQueueMapping objectForKeyedSubscript:v8];
 
-  if (v9)
+  if (array)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = !v4;
+    v10 = !neededCopy;
   }
 
   if (!v10)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = self->_tabIDToDialogQueueMapping;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
-    [(NSMutableDictionary *)v11 setObject:v9 forKeyedSubscript:v12];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:d];
+    [(NSMutableDictionary *)v11 setObject:array forKeyedSubscript:v12];
   }
 
-  return v9;
+  return array;
 }
 
-- (id)_setForWebProcessID:(int)a3 createIfNeeded:(BOOL)a4
+- (id)_setForWebProcessID:(int)d createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = *&a3;
+  neededCopy = needed;
+  v5 = *&d;
   webProcessIDToDialogSetMapping = self->_webProcessIDToDialogSetMapping;
   v8 = [MEMORY[0x1E696AD98] numberWithInt:?];
   v9 = [(NSMutableDictionary *)webProcessIDToDialogSetMapping objectForKeyedSubscript:v8];
@@ -361,7 +361,7 @@ void __51__WBSTabDialogManager_cancelAllDialogsWithContext___block_invoke(uint64
 
   else
   {
-    v10 = !v4;
+    v10 = !neededCopy;
   }
 
   if (!v10)
@@ -375,16 +375,16 @@ void __51__WBSTabDialogManager_cancelAllDialogsWithContext___block_invoke(uint64
   return v9;
 }
 
-- (int64_t)_enqueueDialog:(id)a3
+- (int64_t)_enqueueDialog:(id)dialog
 {
-  v4 = a3;
-  v5 = [v4 slot];
+  dialogCopy = dialog;
+  slot = [dialogCopy slot];
   v7 = [(WBSTabDialogManager *)self _queueForTabID:v6 createIfNeeded:1];
-  if ([v7 count] < self->_queueCapacity || objc_msgSend(v4, "isBlockingWebProcess"))
+  if ([v7 count] < self->_queueCapacity || objc_msgSend(dialogCopy, "isBlockingWebProcess"))
   {
-    [v7 addObject:v4];
-    v8 = [(WBSTabDialogManager *)self _setForWebProcessID:v5 createIfNeeded:1];
-    [v8 addObject:v4];
+    [v7 addObject:dialogCopy];
+    v8 = [(WBSTabDialogManager *)self _setForWebProcessID:slot createIfNeeded:1];
+    [v8 addObject:dialogCopy];
     if ([v7 count] == 1)
     {
       v9 = 1;
@@ -404,23 +404,23 @@ void __51__WBSTabDialogManager_cancelAllDialogsWithContext___block_invoke(uint64
   return v9;
 }
 
-- (void)_dismissDialog:(id)a3 withResponse:(id)a4
+- (void)_dismissDialog:(id)dialog withResponse:(id)response
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v16 slot];
+  dialogCopy = dialog;
+  responseCopy = response;
+  slot = [dialogCopy slot];
   v9 = v8;
-  v10 = [(WBSTabDialogManager *)self _setForWebProcessID:v7 createIfNeeded:0];
-  [v10 removeObject:v16];
+  v10 = [(WBSTabDialogManager *)self _setForWebProcessID:slot createIfNeeded:0];
+  [v10 removeObject:dialogCopy];
   if (![v10 count])
   {
     webProcessIDToDialogSetMapping = self->_webProcessIDToDialogSetMapping;
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:v7];
+    v12 = [MEMORY[0x1E696AD98] numberWithInt:slot];
     [(NSMutableDictionary *)webProcessIDToDialogSetMapping removeObjectForKey:v12];
   }
 
   v13 = [(WBSTabDialogManager *)self _queueForTabID:v9 createIfNeeded:0];
-  [v13 removeObject:v16];
+  [v13 removeObject:dialogCopy];
   if (![v13 count])
   {
     tabIDToDialogQueueMapping = self->_tabIDToDialogQueueMapping;
@@ -428,13 +428,13 @@ void __51__WBSTabDialogManager_cancelAllDialogsWithContext___block_invoke(uint64
     [(NSMutableDictionary *)tabIDToDialogQueueMapping removeObjectForKey:v15];
   }
 
-  [v16 dismissWithResponse:v6];
+  [dialogCopy dismissWithResponse:responseCopy];
 }
 
-- (id)_dialogBlockingSlot:(id)a3
+- (id)_dialogBlockingSlot:(id)slot
 {
-  var1 = a3.var1;
-  v4 = [(WBSTabDialogManager *)self _dialogBlockingWebProcessID:*&a3.var0];
+  var1 = slot.var1;
+  v4 = [(WBSTabDialogManager *)self _dialogBlockingWebProcessID:*&slot.var0];
   [v4 slot];
   if (v5 == var1)
   {
@@ -451,10 +451,10 @@ void __51__WBSTabDialogManager_cancelAllDialogsWithContext___block_invoke(uint64
   return v6;
 }
 
-- (id)_dialogBlockingWebProcessID:(int)a3
+- (id)_dialogBlockingWebProcessID:(int)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  [(WBSTabDialogManager *)self _setForWebProcessID:*&a3 createIfNeeded:0];
+  [(WBSTabDialogManager *)self _setForWebProcessID:*&d createIfNeeded:0];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;

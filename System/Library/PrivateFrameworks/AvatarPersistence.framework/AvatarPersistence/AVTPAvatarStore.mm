@@ -1,38 +1,38 @@
 @interface AVTPAvatarStore
-+ (id)defaultBackendWithWorkQueue:(id)a3 environment:(id)a4;
++ (id)defaultBackendWithWorkQueue:(id)queue environment:(id)environment;
 + (unint64_t)maximumNumberOfSavableAvatars;
 - (AVTPAvatarStore)init;
-- (AVTPAvatarStore)initWithBackend:(id)a3 backendAccessQueue:(id)a4 puppetStore:(id)a5 stickerBackend:(id)a6 environment:(id)a7;
-- (AVTPAvatarStore)initWithEnvironment:(id)a3;
+- (AVTPAvatarStore)initWithBackend:(id)backend backendAccessQueue:(id)queue puppetStore:(id)store stickerBackend:(id)stickerBackend environment:(id)environment;
+- (AVTPAvatarStore)initWithEnvironment:(id)environment;
 - (AVTPBackendImageHandlingDelegate)imageHandlingDelegate;
-- (BOOL)canCreateAvatarWithError:(id *)a3;
-- (id)avatarsForFetchRequest:(id)a3 error:(id *)a4;
-- (id)recentStickersForFetchRequest:(id)a3 error:(id *)a4;
-- (void)backend:(id)a3 didChangeRecordsWithIdentifiers:(id)a4;
-- (void)deleteAvatar:(id)a3 completionHandler:(id)a4;
-- (void)deleteAvatarWithIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)deleteRecentStickersForChangeTracker:(id)a3 completionHandler:(id)a4;
-- (void)deleteRecentStickersWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)didUseStickerWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)duplicateAvatar:(id)a3 completionBlock:(id)a4;
-- (void)fetchAvatarsForFetchRequest:(id)a3 completionHandler:(id)a4;
-- (void)performAsynchronousWork:(id)a3;
-- (void)performBackendWork:(id)a3;
-- (void)performPuppetStoreWork:(id)a3;
-- (void)postChangeNotificationForRecordWithIdentifiers:(id)a3 remote:(BOOL)a4;
-- (void)saveAvatarRecord:(id)a3 thumbnailAvatar:(id)a4 completionBlock:(id)a5 thumbnailGenerationCompletionBlock:(id)a6;
-- (void)setStickerBackendDelegate:(id)a3;
+- (BOOL)canCreateAvatarWithError:(id *)error;
+- (id)avatarsForFetchRequest:(id)request error:(id *)error;
+- (id)recentStickersForFetchRequest:(id)request error:(id *)error;
+- (void)backend:(id)backend didChangeRecordsWithIdentifiers:(id)identifiers;
+- (void)deleteAvatar:(id)avatar completionHandler:(id)handler;
+- (void)deleteAvatarWithIdentifier:(id)identifier completionBlock:(id)block;
+- (void)deleteRecentStickersForChangeTracker:(id)tracker completionHandler:(id)handler;
+- (void)deleteRecentStickersWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier completionHandler:(id)handler;
+- (void)didUseStickerWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier completionHandler:(id)handler;
+- (void)duplicateAvatar:(id)avatar completionBlock:(id)block;
+- (void)fetchAvatarsForFetchRequest:(id)request completionHandler:(id)handler;
+- (void)performAsynchronousWork:(id)work;
+- (void)performBackendWork:(id)work;
+- (void)performPuppetStoreWork:(id)work;
+- (void)postChangeNotificationForRecordWithIdentifiers:(id)identifiers remote:(BOOL)remote;
+- (void)saveAvatarRecord:(id)record thumbnailAvatar:(id)avatar completionBlock:(id)block thumbnailGenerationCompletionBlock:(id)completionBlock;
+- (void)setStickerBackendDelegate:(id)delegate;
 @end
 
 @implementation AVTPAvatarStore
 
-+ (id)defaultBackendWithWorkQueue:(id)a3 environment:(id)a4
++ (id)defaultBackendWithWorkQueue:(id)queue environment:(id)environment
 {
-  v4 = a4;
+  environmentCopy = environment;
   if (AVTUIIsAvatarUIEnabled_once())
   {
-    v5 = [AVTCoreDataPersistentStoreConfiguration remoteConfigurationWithEnvironment:v4];
-    v6 = [[AVTCoreDataStoreBackend alloc] initWithConfiguration:v5 environment:v4];
+    v5 = [AVTCoreDataPersistentStoreConfiguration remoteConfigurationWithEnvironment:environmentCopy];
+    v6 = [[AVTCoreDataStoreBackend alloc] initWithConfiguration:v5 environment:environmentCopy];
   }
 
   else
@@ -51,70 +51,70 @@
   return v4;
 }
 
-- (AVTPAvatarStore)initWithEnvironment:(id)a3
+- (AVTPAvatarStore)initWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 lockProvider];
-  v6 = (v5)[2](v5, "com.apple.AvatarUI.AVTAvatarStore.backendAcccessQueue");
+  environmentCopy = environment;
+  lockProvider = [environmentCopy lockProvider];
+  v6 = (lockProvider)[2](lockProvider, "com.apple.AvatarUI.AVTAvatarStore.backendAcccessQueue");
 
-  v7 = [objc_opt_class() defaultBackendWithWorkQueue:v6 environment:v4];
-  v8 = [[AVTPuppetStore alloc] initWithEnvironment:v4];
+  v7 = [objc_opt_class() defaultBackendWithWorkQueue:v6 environment:environmentCopy];
+  v8 = [[AVTPuppetStore alloc] initWithEnvironment:environmentCopy];
   v9 = [AVTStickerUserDefaultsBackend alloc];
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [(AVTStickerUserDefaultsBackend *)v9 initWithWorkQueue:v6 environment:v4 userDefaults:v10];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [(AVTStickerUserDefaultsBackend *)v9 initWithWorkQueue:v6 environment:environmentCopy userDefaults:standardUserDefaults];
 
-  v12 = [(AVTPAvatarStore *)self initWithBackend:v7 backendAccessQueue:v6 puppetStore:v8 stickerBackend:v11 environment:v4];
+  v12 = [(AVTPAvatarStore *)self initWithBackend:v7 backendAccessQueue:v6 puppetStore:v8 stickerBackend:v11 environment:environmentCopy];
   return v12;
 }
 
-- (AVTPAvatarStore)initWithBackend:(id)a3 backendAccessQueue:(id)a4 puppetStore:(id)a5 stickerBackend:(id)a6 environment:(id)a7
+- (AVTPAvatarStore)initWithBackend:(id)backend backendAccessQueue:(id)queue puppetStore:(id)store stickerBackend:(id)stickerBackend environment:(id)environment
 {
-  v30 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  backendCopy = backend;
+  queueCopy = queue;
+  storeCopy = store;
+  stickerBackendCopy = stickerBackend;
+  environmentCopy = environment;
   v31.receiver = self;
   v31.super_class = AVTPAvatarStore;
   v17 = [(AVTPAvatarStore *)&v31 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_environment, a7);
-    objc_storeStrong(&v18->_backend, a3);
+    objc_storeStrong(&v17->_environment, environment);
+    objc_storeStrong(&v18->_backend, backend);
     [(AVTStoreBackend *)v18->_backend setBackendDelegate:v18];
-    objc_storeStrong(&v18->_puppetStore, a5);
-    v19 = [v16 serialQueueProvider];
-    v20 = (v19)[2](v19, "com.apple.AvatarUI.AVTAvatarStore.workQueue");
+    objc_storeStrong(&v18->_puppetStore, store);
+    serialQueueProvider = [environmentCopy serialQueueProvider];
+    v20 = (serialQueueProvider)[2](serialQueueProvider, "com.apple.AvatarUI.AVTAvatarStore.workQueue");
     workQueue = v18->_workQueue;
     v18->_workQueue = v20;
 
-    objc_storeStrong(&v18->_backendAccessQueue, a4);
-    v22 = [v16 lockProvider];
-    v23 = (v22)[2](v22, "com.apple.AvatarUI.AVTAvatarStore.puppetStoreAccessQueue");
+    objc_storeStrong(&v18->_backendAccessQueue, queue);
+    lockProvider = [environmentCopy lockProvider];
+    v23 = (lockProvider)[2](lockProvider, "com.apple.AvatarUI.AVTAvatarStore.puppetStoreAccessQueue");
     puppetStoreAccessQueue = v18->_puppetStoreAccessQueue;
     v18->_puppetStoreAccessQueue = v23;
 
-    v25 = [v16 logger];
+    logger = [environmentCopy logger];
     logger = v18->_logger;
-    v18->_logger = v25;
+    v18->_logger = logger;
 
     v27 = v18->_logger;
     v28 = [(AVTPAvatarStore *)v18 description];
     [(AVTUILogger *)v27 logCreatingStore:v28];
 
-    objc_storeStrong(&v18->_stickerBackend, a6);
+    objc_storeStrong(&v18->_stickerBackend, stickerBackend);
   }
 
   return v18;
 }
 
-- (BOOL)canCreateAvatarWithError:(id *)a3
+- (BOOL)canCreateAvatarWithError:(id *)error
 {
   if (AVTIsRunningAsSetupUser())
   {
-    v5 = [(AVTPAvatarStore *)self logger];
-    [v5 logSkippedFetchingRecordsWithReason:@"Running as setup user"];
+    logger = [(AVTPAvatarStore *)self logger];
+    [logger logSkippedFetchingRecordsWithReason:@"Running as setup user"];
 
     return 0;
   }
@@ -139,9 +139,9 @@
     v8[5] = &v9;
     [(AVTPAvatarStore *)self performBackendWork:v8];
     v6 = *(v16 + 24);
-    if (a3 && (v16[3] & 1) == 0)
+    if (error && (v16[3] & 1) == 0)
     {
-      *a3 = v10[5];
+      *error = v10[5];
     }
 
     _Block_object_dispose(&v9, 8);
@@ -161,10 +161,10 @@ void __44__AVTPAvatarStore_canCreateAvatarWithError___block_invoke(uint64_t a1, 
   *(*(*(a1 + 32) + 8) + 24) = v4;
 }
 
-- (id)avatarsForFetchRequest:(id)a3 error:(id *)a4
+- (id)avatarsForFetchRequest:(id)request error:(id *)error
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   v55 = 0;
   v56[0] = &v55;
   v56[1] = 0x3032000000;
@@ -191,22 +191,22 @@ void __44__AVTPAvatarStore_canCreateAvatarWithError___block_invoke(uint64_t a1, 
   v45 = 0;
   if (AVTIsRunningAsSetupUser())
   {
-    v7 = [(AVTPAvatarStore *)self logger];
-    [v7 logSkippedFetchingRecordsWithReason:@"Running as setup user"];
+    logger = [(AVTPAvatarStore *)self logger];
+    [logger logSkippedFetchingRecordsWithReason:@"Running as setup user"];
   }
 
   else
   {
-    v8 = [(AVTPAvatarStore *)self logger];
+    logger2 = [(AVTPAvatarStore *)self logger];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __48__AVTPAvatarStore_avatarsForFetchRequest_error___block_invoke;
     v36[3] = &unk_278CFAC28;
     v36[4] = self;
     v38 = &v55;
-    v37 = v6;
+    v37 = requestCopy;
     v39 = &v46;
-    [v8 fetchingRecords:v36];
+    [logger2 fetchingRecords:v36];
   }
 
   v29 = MEMORY[0x277D85DD0];
@@ -214,7 +214,7 @@ void __44__AVTPAvatarStore_canCreateAvatarWithError___block_invoke(uint64_t a1, 
   v31 = __48__AVTPAvatarStore_avatarsForFetchRequest_error___block_invoke_3;
   v32 = &unk_278CFAC50;
   v34 = &v52;
-  v9 = v6;
+  v9 = requestCopy;
   v33 = v9;
   v35 = &v40;
   [(AVTPAvatarStore *)self performPuppetStoreWork:&v29];
@@ -228,17 +228,17 @@ void __44__AVTPAvatarStore_canCreateAvatarWithError___block_invoke(uint64_t a1, 
       goto LABEL_24;
     }
 
-    v18 = [v41[5] domain];
+    domain = [v41[5] domain];
     v14 = v56;
-    if ([v18 isEqual:@"AVTAvatarUIErrorDomain"])
+    if ([domain isEqual:@"AVTAvatarUIErrorDomain"])
     {
       v19 = [v41[5] code] == 404;
 
       if (v19)
       {
-        v16 = [(AVTPAvatarStore *)self logger];
+        logger3 = [(AVTPAvatarStore *)self logger];
         v17 = [v41[5] description];
-        [v16 logRecordsNotFoundInPuppetStore:v17];
+        [logger3 logRecordsNotFoundInPuppetStore:v17];
         goto LABEL_23;
       }
     }
@@ -247,25 +247,25 @@ void __44__AVTPAvatarStore_canCreateAvatarWithError___block_invoke(uint64_t a1, 
     {
     }
 
-    v16 = [(AVTPAvatarStore *)self logger];
+    logger3 = [(AVTPAvatarStore *)self logger];
     v17 = [v41[5] description];
-    [v16 logReadingError:v17];
+    [logger3 logReadingError:v17];
     goto LABEL_23;
   }
 
   if (v11)
   {
-    v13 = [v47[5] domain];
+    domain2 = [v47[5] domain];
     v14 = v53;
-    if ([v13 isEqual:@"AVTAvatarUIErrorDomain"])
+    if ([domain2 isEqual:@"AVTAvatarUIErrorDomain"])
     {
       v15 = [v47[5] code] == 404;
 
       if (v15)
       {
-        v16 = [(AVTPAvatarStore *)self logger];
+        logger3 = [(AVTPAvatarStore *)self logger];
         v17 = [v47[5] description];
-        [v16 logRecordsNotFoundInRecordStore:v17];
+        [logger3 logRecordsNotFoundInRecordStore:v17];
 LABEL_23:
 
         v12 = *(*v14 + 40);
@@ -285,17 +285,17 @@ LABEL_24:
     {
     }
 
-    v16 = [(AVTPAvatarStore *)self logger];
+    logger3 = [(AVTPAvatarStore *)self logger];
     v17 = [v47[5] description];
-    [v16 logReadingError:v17];
+    [logger3 logReadingError:v17];
     goto LABEL_23;
   }
 
-  v20 = [MEMORY[0x277CBEB18] array];
-  v21 = v20;
+  array = [MEMORY[0x277CBEB18] array];
+  v21 = array;
   if (v47[5])
   {
-    [v20 addObject:?];
+    [array addObject:?];
   }
 
   if (v41[5])
@@ -310,11 +310,11 @@ LABEL_24:
   v24 = [AVTError errorWithCode:666 userInfo:v23];
 
 LABEL_25:
-  if (a4)
+  if (error)
   {
     v26 = v24;
     v25 = 0;
-    *a4 = v24;
+    *error = v24;
   }
 
   else
@@ -375,18 +375,18 @@ void __48__AVTPAvatarStore_avatarsForFetchRequest_error___block_invoke_3(void *a
   *(v6 + 40) = v5;
 }
 
-- (void)performBackendWork:(id)a3
+- (void)performBackendWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTPAvatarStore *)self backendAccessQueue];
+  workCopy = work;
+  backendAccessQueue = [(AVTPAvatarStore *)self backendAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__AVTPAvatarStore_performBackendWork___block_invoke;
   v7[3] = &unk_278CF9F78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = workCopy;
+  v6 = workCopy;
+  dispatch_sync(backendAccessQueue, v7);
 }
 
 void __38__AVTPAvatarStore_performBackendWork___block_invoke(uint64_t a1)
@@ -396,18 +396,18 @@ void __38__AVTPAvatarStore_performBackendWork___block_invoke(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)performPuppetStoreWork:(id)a3
+- (void)performPuppetStoreWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTPAvatarStore *)self puppetStoreAccessQueue];
+  workCopy = work;
+  puppetStoreAccessQueue = [(AVTPAvatarStore *)self puppetStoreAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__AVTPAvatarStore_performPuppetStoreWork___block_invoke;
   v7[3] = &unk_278CF9F78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = workCopy;
+  v6 = workCopy;
+  dispatch_sync(puppetStoreAccessQueue, v7);
 }
 
 void __42__AVTPAvatarStore_performPuppetStoreWork___block_invoke(uint64_t a1)
@@ -417,26 +417,26 @@ void __42__AVTPAvatarStore_performPuppetStoreWork___block_invoke(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)performAsynchronousWork:(id)a3
+- (void)performAsynchronousWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTPAvatarStore *)self workQueue];
-  dispatch_async(v5, v4);
+  workCopy = work;
+  workQueue = [(AVTPAvatarStore *)self workQueue];
+  dispatch_async(workQueue, workCopy);
 }
 
-- (void)fetchAvatarsForFetchRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchAvatarsForFetchRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__AVTPAvatarStore_fetchAvatarsForFetchRequest_completionHandler___block_invoke;
   v10[3] = &unk_278CFA5D0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = requestCopy;
   [(AVTPAvatarStore *)self performAsynchronousWork:v10];
 }
 
@@ -454,34 +454,34 @@ void __65__AVTPAvatarStore_fetchAvatarsForFetchRequest_completionHandler___block
   }
 }
 
-- (void)saveAvatarRecord:(id)a3 thumbnailAvatar:(id)a4 completionBlock:(id)a5 thumbnailGenerationCompletionBlock:(id)a6
+- (void)saveAvatarRecord:(id)record thumbnailAvatar:(id)avatar completionBlock:(id)block thumbnailGenerationCompletionBlock:(id)completionBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recordCopy = record;
+  avatarCopy = avatar;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v10}];
+    [MEMORY[0x277CBEAD8] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", recordCopy}];
   }
 
-  v14 = v10;
-  v15 = [(AVTPAvatarStore *)self logger];
+  v14 = recordCopy;
+  logger = [(AVTPAvatarStore *)self logger];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __103__AVTPAvatarStore_saveAvatarRecord_thumbnailAvatar_completionBlock_thumbnailGenerationCompletionBlock___block_invoke;
   v20[3] = &unk_278CFACA0;
   v20[4] = self;
   v21 = v14;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v16 = v13;
-  v17 = v11;
-  v18 = v12;
+  v22 = avatarCopy;
+  v23 = blockCopy;
+  v24 = completionBlockCopy;
+  v16 = completionBlockCopy;
+  v17 = avatarCopy;
+  v18 = blockCopy;
   v19 = v14;
-  [v15 savingRecords:v20];
+  [logger savingRecords:v20];
 }
 
 void __103__AVTPAvatarStore_saveAvatarRecord_thumbnailAvatar_completionBlock_thumbnailGenerationCompletionBlock___block_invoke(uint64_t a1)
@@ -619,38 +619,38 @@ void __103__AVTPAvatarStore_saveAvatarRecord_thumbnailAvatar_completionBlock_thu
   *(*(a1[5] + 8) + 24) = v5;
 }
 
-- (void)deleteAvatar:(id)a3 completionHandler:(id)a4
+- (void)deleteAvatar:(id)avatar completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 isEditable])
+  avatarCopy = avatar;
+  handlerCopy = handler;
+  if ([avatarCopy isEditable])
   {
-    v7 = [v8 identifier];
-    [(AVTPAvatarStore *)self deleteAvatarWithIdentifier:v7 completionBlock:v6];
+    identifier = [avatarCopy identifier];
+    [(AVTPAvatarStore *)self deleteAvatarWithIdentifier:identifier completionBlock:handlerCopy];
   }
 
   else
   {
-    v7 = [AVTError errorWithCode:577 userInfo:0];
-    v6[2](v6, 0, v7);
+    identifier = [AVTError errorWithCode:577 userInfo:0];
+    handlerCopy[2](handlerCopy, 0, identifier);
   }
 }
 
-- (void)deleteAvatarWithIdentifier:(id)a3 completionBlock:(id)a4
+- (void)deleteAvatarWithIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTPAvatarStore *)self logger];
+  identifierCopy = identifier;
+  blockCopy = block;
+  logger = [(AVTPAvatarStore *)self logger];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__AVTPAvatarStore_deleteAvatarWithIdentifier_completionBlock___block_invoke;
   v11[3] = &unk_278CFA7B0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 deletingRecords:v11];
+  v12 = identifierCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = identifierCopy;
+  [logger deletingRecords:v11];
 }
 
 void __62__AVTPAvatarStore_deleteAvatarWithIdentifier_completionBlock___block_invoke(uint64_t a1)
@@ -748,34 +748,34 @@ void __62__AVTPAvatarStore_deleteAvatarWithIdentifier_completionBlock___block_in
   *(*(a1[5] + 8) + 24) = v5;
 }
 
-- (void)duplicateAvatar:(id)a3 completionBlock:(id)a4
+- (void)duplicateAvatar:(id)avatar completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  avatarCopy = avatar;
+  blockCopy = block;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v6}];
+    [MEMORY[0x277CBEAD8] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", avatarCopy}];
   }
 
-  v8 = v6;
+  v8 = avatarCopy;
   if ([v8 isEditable])
   {
-    v9 = [(AVTPAvatarStore *)self logger];
+    logger = [(AVTPAvatarStore *)self logger];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __51__AVTPAvatarStore_duplicateAvatar_completionBlock___block_invoke;
     v11[3] = &unk_278CFA7B0;
     v11[4] = self;
     v12 = v8;
-    v13 = v7;
-    [v9 duplicatingRecords:v11];
+    v13 = blockCopy;
+    [logger duplicatingRecords:v11];
   }
 
   else
   {
     v10 = [AVTError errorWithCode:577 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v10);
+    (*(blockCopy + 2))(blockCopy, 0, 0, v10);
   }
 }
 
@@ -873,16 +873,16 @@ void __51__AVTPAvatarStore_duplicateAvatar_completionBlock___block_invoke_3(void
   *(v6 + 40) = v5;
 }
 
-- (void)postChangeNotificationForRecordWithIdentifiers:(id)a3 remote:(BOOL)a4
+- (void)postChangeNotificationForRecordWithIdentifiers:(id)identifiers remote:(BOOL)remote
 {
-  v4 = a4;
+  remoteCopy = remote;
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  identifiersCopy = identifiers;
+  v7 = identifiersCopy;
+  if (identifiersCopy)
   {
     v15 = @"changedRecordIDs";
-    v16[0] = v6;
+    v16[0] = identifiersCopy;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   }
 
@@ -891,23 +891,23 @@ void __51__AVTPAvatarStore_duplicateAvatar_completionBlock___block_invoke_3(void
     v8 = 0;
   }
 
-  v9 = [(AVTPAvatarStore *)self logger];
-  [v9 logPostingChangeNotificationForIdentifiers:v7];
+  logger = [(AVTPAvatarStore *)self logger];
+  [logger logPostingChangeNotificationForIdentifiers:v7];
 
-  v10 = [(AVTPAvatarStore *)self environment];
-  v11 = [v10 notificationCenter];
-  v12 = v11;
-  if (v4)
+  environment = [(AVTPAvatarStore *)self environment];
+  notificationCenter = [environment notificationCenter];
+  v12 = notificationCenter;
+  if (remoteCopy)
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v13 = self;
+    selfCopy = self;
   }
 
-  [v11 postNotificationName:@"AVTAvatarStoreDidChangeNotification" object:v13 userInfo:v8];
+  [notificationCenter postNotificationName:@"AVTAvatarStoreDidChangeNotification" object:selfCopy userInfo:v8];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -925,19 +925,19 @@ void __51__AVTPAvatarStore_duplicateAvatar_completionBlock___block_invoke_3(void
   }
 }
 
-- (void)backend:(id)a3 didChangeRecordsWithIdentifiers:(id)a4
+- (void)backend:(id)backend didChangeRecordsWithIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  backendCopy = backend;
+  identifiersCopy = identifiers;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__AVTPAvatarStore_backend_didChangeRecordsWithIdentifiers___block_invoke;
   v10[3] = &unk_278CFA738;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = backendCopy;
+  v12 = identifiersCopy;
+  v8 = identifiersCopy;
+  v9 = backendCopy;
   [(AVTPAvatarStore *)self performAsynchronousWork:v10];
 }
 
@@ -976,46 +976,46 @@ id __59__AVTPAvatarStore_backend_didChangeRecordsWithIdentifiers___block_invoke_
   return v5;
 }
 
-- (void)setStickerBackendDelegate:(id)a3
+- (void)setStickerBackendDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(AVTPAvatarStore *)self stickerBackend];
-  [v5 setStickerBackendDelegate:v4];
+  delegateCopy = delegate;
+  stickerBackend = [(AVTPAvatarStore *)self stickerBackend];
+  [stickerBackend setStickerBackendDelegate:delegateCopy];
 }
 
-- (id)recentStickersForFetchRequest:(id)a3 error:(id *)a4
+- (id)recentStickersForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AVTPAvatarStore *)self stickerBackend];
-  v8 = [v7 recentStickersForFetchRequest:v6 error:a4];
+  requestCopy = request;
+  stickerBackend = [(AVTPAvatarStore *)self stickerBackend];
+  v8 = [stickerBackend recentStickersForFetchRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (void)didUseStickerWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4 completionHandler:(id)a5
+- (void)didUseStickerWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AVTPAvatarStore *)self stickerBackend];
-  [v11 didUseStickerWithAvatarIdentifier:v10 stickerIdentifier:v9 completionHandler:v8];
+  handlerCopy = handler;
+  stickerIdentifierCopy = stickerIdentifier;
+  identifierCopy = identifier;
+  stickerBackend = [(AVTPAvatarStore *)self stickerBackend];
+  [stickerBackend didUseStickerWithAvatarIdentifier:identifierCopy stickerIdentifier:stickerIdentifierCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteRecentStickersWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4 completionHandler:(id)a5
+- (void)deleteRecentStickersWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AVTPAvatarStore *)self stickerBackend];
-  [v11 deleteRecentStickersWithAvatarIdentifier:v10 stickerIdentifier:v9 completionHandler:v8];
+  handlerCopy = handler;
+  stickerIdentifierCopy = stickerIdentifier;
+  identifierCopy = identifier;
+  stickerBackend = [(AVTPAvatarStore *)self stickerBackend];
+  [stickerBackend deleteRecentStickersWithAvatarIdentifier:identifierCopy stickerIdentifier:stickerIdentifierCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteRecentStickersForChangeTracker:(id)a3 completionHandler:(id)a4
+- (void)deleteRecentStickersForChangeTracker:(id)tracker completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTPAvatarStore *)self stickerBackend];
-  [v8 deleteRecentStickersForChangeTracker:v7 completionHandler:v6];
+  handlerCopy = handler;
+  trackerCopy = tracker;
+  stickerBackend = [(AVTPAvatarStore *)self stickerBackend];
+  [stickerBackend deleteRecentStickersForChangeTracker:trackerCopy completionHandler:handlerCopy];
 }
 
 - (AVTPBackendImageHandlingDelegate)imageHandlingDelegate

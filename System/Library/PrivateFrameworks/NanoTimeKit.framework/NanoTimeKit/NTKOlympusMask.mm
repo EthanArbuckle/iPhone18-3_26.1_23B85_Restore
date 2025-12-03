@@ -1,19 +1,19 @@
 @interface NTKOlympusMask
-+ (CGPoint)convertPoint:(CGPoint)a3 translantedFromFirstToQuadrantIndex:(unint64_t)a4;
-+ (CGPoint)convertPoint:(CGPoint)result translantedQuadrantIndex:(unint64_t)a4;
-+ (CGPoint)convertPointFromCartesianCoordiatesToViewCoordiates:(CGPoint)a3 centerFromViewCoordinates:(CGPoint)a4;
-+ (CGPoint)convertPointFromViewCoordinatesToCartesianCoordiates:(CGPoint)a3 centerFromViewCoordinates:(CGPoint)a4;
-+ (CGPoint)nextPointFromStartPoint:(CGPoint)result endPoint:(CGPoint)a4 radius:(double)a5;
-+ (CGPoint)pointForAngle:(double)a3 radius:(double)a4 centerPoint:(CGPoint)a5;
-+ (CGPoint)roundPoint:(CGPoint)a3;
++ (CGPoint)convertPoint:(CGPoint)point translantedFromFirstToQuadrantIndex:(unint64_t)index;
++ (CGPoint)convertPoint:(CGPoint)result translantedQuadrantIndex:(unint64_t)index;
++ (CGPoint)convertPointFromCartesianCoordiatesToViewCoordiates:(CGPoint)coordiates centerFromViewCoordinates:(CGPoint)coordinates;
++ (CGPoint)convertPointFromViewCoordinatesToCartesianCoordiates:(CGPoint)coordiates centerFromViewCoordinates:(CGPoint)coordinates;
++ (CGPoint)nextPointFromStartPoint:(CGPoint)result endPoint:(CGPoint)point radius:(double)radius;
++ (CGPoint)pointForAngle:(double)angle radius:(double)radius centerPoint:(CGPoint)point;
++ (CGPoint)roundPoint:(CGPoint)point;
 + (double)convertAngleForFirstQuadrant:(double)result;
-+ (double)hourHandAngleWithDate:(id)a3;
-+ (double)minuteHandAngleWithDate:(id)a3;
++ (double)hourHandAngleWithDate:(id)date;
++ (double)minuteHandAngleWithDate:(id)date;
 + (double)normalizeAngle:(double)result;
-+ (id)clippingPathFromCenterPoint:(CGPoint)a3 startAngle:(double)a4 endAngle:(double)a5 radius:(double)a6;
-+ (unint64_t)nextQuadrantIndex:(unint64_t)a3;
-+ (unint64_t)quadrantForAngle:(double)a3;
-+ (unint64_t)quadrantForPoint:(CGPoint)a3;
++ (id)clippingPathFromCenterPoint:(CGPoint)point startAngle:(double)angle endAngle:(double)endAngle radius:(double)radius;
++ (unint64_t)nextQuadrantIndex:(unint64_t)index;
++ (unint64_t)quadrantForAngle:(double)angle;
++ (unint64_t)quadrantForPoint:(CGPoint)point;
 @end
 
 @implementation NTKOlympusMask
@@ -38,10 +38,10 @@
   return result;
 }
 
-+ (id)clippingPathFromCenterPoint:(CGPoint)a3 startAngle:(double)a4 endAngle:(double)a5 radius:(double)a6
++ (id)clippingPathFromCenterPoint:(CGPoint)point startAngle:(double)angle endAngle:(double)endAngle radius:(double)radius
 {
   v9 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-  v10 = [v9 device];
+  device = [v9 device];
 
   CLKRoundForDevice();
   v12 = v11;
@@ -49,9 +49,9 @@
   v14 = v13;
   CLKRoundForDevice();
   v16 = v15;
-  [a1 normalizeAngle:a4];
+  [self normalizeAngle:angle];
   v18 = v17;
-  [a1 normalizeAngle:a5];
+  [self normalizeAngle:endAngle];
   v20 = v19;
   [NTKOlympusMask pointForAngle:v18 radius:v16 centerPoint:v12, v14];
   v22 = v21;
@@ -61,21 +61,21 @@
   [NTKOlympusMask pointForAngle:v20 radius:v16 centerPoint:v12, v14];
   v26 = v25;
   v28 = v27;
-  [a1 convertPointFromViewCoordinatesToCartesianCoordiates:v22 centerFromViewCoordinates:{v24, v12, v14}];
+  [self convertPointFromViewCoordinatesToCartesianCoordiates:v22 centerFromViewCoordinates:{v24, v12, v14}];
   v30 = v29;
   v32 = v31;
-  [a1 convertPointFromViewCoordinatesToCartesianCoordiates:v26 centerFromViewCoordinates:{v28, v12, v14}];
+  [self convertPointFromViewCoordinatesToCartesianCoordiates:v26 centerFromViewCoordinates:{v28, v12, v14}];
   v34 = v33;
   v36 = v35;
-  v37 = [a1 quadrantForPoint:{v30, v32}];
-  v38 = [a1 quadrantForPoint:{v34, v36}];
-  v39 = [MEMORY[0x277D75208] bezierPath];
+  v37 = [self quadrantForPoint:{v30, v32}];
+  v38 = [self quadrantForPoint:{v34, v36}];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   v40 = v12;
   v61 = v14;
-  [a1 roundPoint:{v12, v14}];
-  [v39 moveToPoint:?];
-  [a1 roundPoint:{v60, v59}];
-  [v39 addLineToPoint:?];
+  [self roundPoint:{v12, v14}];
+  [bezierPath moveToPoint:?];
+  [self roundPoint:{v60, v59}];
+  [bezierPath addLineToPoint:?];
   if (v34 != v16)
   {
     v41 = v36 == -v16 || v36 == v16;
@@ -87,10 +87,10 @@
 
   while (v30 != v34 || v32 != v36)
   {
-    [a1 convertPoint:v37 translantedQuadrantIndex:{v30, v32}];
+    [self convertPoint:v37 translantedQuadrantIndex:{v30, v32}];
     v44 = v43;
     v46 = v45;
-    [a1 convertPoint:v37 translantedQuadrantIndex:{v34, v36}];
+    [self convertPoint:v37 translantedQuadrantIndex:{v34, v36}];
     if (v38 == v37)
     {
       v49 = v47;
@@ -111,33 +111,33 @@
       v50 = 0.0;
     }
 
-    [a1 nextPointFromStartPoint:v44 endPoint:v46 radius:{v49, v50, v16}];
+    [self nextPointFromStartPoint:v44 endPoint:v46 radius:{v49, v50, v16}];
     v52 = v51;
     v54 = v53;
-    [a1 convertPoint:v37 translantedFromFirstToQuadrantIndex:?];
+    [self convertPoint:v37 translantedFromFirstToQuadrantIndex:?];
     v30 = v55;
     v32 = v56;
     if (v52 == v16 && v54 == 0.0)
     {
-      v37 = [a1 nextQuadrantIndex:v37];
+      v37 = [self nextQuadrantIndex:v37];
     }
 
-    [a1 convertPointFromCartesianCoordiatesToViewCoordiates:v30 centerFromViewCoordinates:{v32, v40, v61}];
-    [a1 roundPoint:?];
-    [v39 addLineToPoint:?];
+    [self convertPointFromCartesianCoordiatesToViewCoordiates:v30 centerFromViewCoordinates:{v32, v40, v61}];
+    [self roundPoint:?];
+    [bezierPath addLineToPoint:?];
   }
 
-  [a1 roundPoint:{v40, v61}];
-  [v39 addLineToPoint:?];
-  [v39 closePath];
+  [self roundPoint:{v40, v61}];
+  [bezierPath addLineToPoint:?];
+  [bezierPath closePath];
 
-  return v39;
+  return bezierPath;
 }
 
-+ (CGPoint)roundPoint:(CGPoint)a3
++ (CGPoint)roundPoint:(CGPoint)point
 {
   v3 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-  v4 = [v3 device];
+  device = [v3 device];
 
   CLKRoundForDevice();
   v6 = v5;
@@ -151,38 +151,38 @@
   return result;
 }
 
-+ (double)hourHandAngleWithDate:(id)a3
++ (double)hourHandAngleWithDate:(id)date
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 component:32 fromDate:v5] % 12;
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar component:32 fromDate:dateCopy] % 12;
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 component:64 fromDate:v5];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar2 component:64 fromDate:dateCopy];
 
-  [a1 angleForHour:v7 minutes:v9];
+  [self angleForHour:v7 minutes:v9];
   return result;
 }
 
-+ (double)minuteHandAngleWithDate:(id)a3
++ (double)minuteHandAngleWithDate:(id)date
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 component:64 fromDate:v5];
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar component:64 fromDate:dateCopy];
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 component:128 fromDate:v5];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar2 component:128 fromDate:dateCopy];
 
-  [a1 angleForMinute:v7 seconds:v9];
+  [self angleForMinute:v7 seconds:v9];
   return result;
 }
 
-+ (CGPoint)pointForAngle:(double)a3 radius:(double)a4 centerPoint:(CGPoint)a5
++ (CGPoint)pointForAngle:(double)angle radius:(double)radius centerPoint:(CGPoint)point
 {
-  v8 = [a1 quadrantForAngle:?];
-  [a1 convertAngleForFirstQuadrant:a3];
+  v8 = [self quadrantForAngle:?];
+  [self convertAngleForFirstQuadrant:angle];
   v10 = v9;
   v11 = 90.0 - v9;
   if (v10 <= 45.0)
@@ -192,53 +192,53 @@
 
   v12 = v11 * 3.14159265 / 180.0;
   v13 = tanf(v12);
-  v14 = v13 * a4;
+  radiusCopy2 = v13 * radius;
   if (v10 > 45.0)
   {
-    v15 = a4;
+    radiusCopy = radius;
   }
 
   else
   {
-    v15 = v13 * a4;
+    radiusCopy = v13 * radius;
   }
 
   if (v10 <= 45.0)
   {
-    v14 = a4;
+    radiusCopy2 = radius;
   }
 
-  [a1 convertPoint:v8 translantedFromFirstToQuadrantIndex:{v15, v14}];
+  [self convertPoint:v8 translantedFromFirstToQuadrantIndex:{radiusCopy, radiusCopy2}];
 
-  [a1 convertPointFromCartesianCoordiatesToViewCoordiates:? centerFromViewCoordinates:?];
+  [self convertPointFromCartesianCoordiatesToViewCoordiates:? centerFromViewCoordinates:?];
   result.y = v17;
   result.x = v16;
   return result;
 }
 
-+ (CGPoint)convertPointFromViewCoordinatesToCartesianCoordiates:(CGPoint)a3 centerFromViewCoordinates:(CGPoint)a4
++ (CGPoint)convertPointFromViewCoordinatesToCartesianCoordiates:(CGPoint)coordiates centerFromViewCoordinates:(CGPoint)coordinates
 {
-  v4 = a3.x - a4.x;
-  v5 = a4.y - a3.y;
+  v4 = coordiates.x - coordinates.x;
+  v5 = coordinates.y - coordiates.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (CGPoint)convertPointFromCartesianCoordiatesToViewCoordiates:(CGPoint)a3 centerFromViewCoordinates:(CGPoint)a4
++ (CGPoint)convertPointFromCartesianCoordiatesToViewCoordiates:(CGPoint)coordiates centerFromViewCoordinates:(CGPoint)coordinates
 {
-  v4 = a3.x + a4.x;
-  v5 = a4.y - a3.y;
+  v4 = coordiates.x + coordinates.x;
+  v5 = coordinates.y - coordiates.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (CGPoint)convertPoint:(CGPoint)result translantedQuadrantIndex:(unint64_t)a4
++ (CGPoint)convertPoint:(CGPoint)result translantedQuadrantIndex:(unint64_t)index
 {
   v4 = -result.x;
   v5 = -result.y;
-  if (a4 == 2)
+  if (index == 2)
   {
     x = result.x;
   }
@@ -248,12 +248,12 @@
     x = result.y;
   }
 
-  if (a4 == 2)
+  if (index == 2)
   {
     result.x = -result.y;
   }
 
-  if (a4 == 3)
+  if (index == 3)
   {
     result.x = v4;
   }
@@ -263,7 +263,7 @@
     v5 = x;
   }
 
-  if (a4 == 4)
+  if (index == 4)
   {
     result.x = result.y;
   }
@@ -288,33 +288,33 @@
   return result;
 }
 
-+ (CGPoint)convertPoint:(CGPoint)a3 translantedFromFirstToQuadrantIndex:(unint64_t)a4
++ (CGPoint)convertPoint:(CGPoint)point translantedFromFirstToQuadrantIndex:(unint64_t)index
 {
-  v4 = -a3.y;
-  if (a4 == 2)
+  v4 = -point.y;
+  if (index == 2)
   {
-    y = -a3.x;
+    y = -point.x;
   }
 
   else
   {
-    y = a3.y;
+    y = point.y;
   }
 
-  if (a4 != 2)
+  if (index != 2)
   {
-    a3.y = a3.x;
+    point.y = point.x;
   }
 
-  if (a4 == 3)
+  if (index == 3)
   {
     y = v4;
-    a3.y = -a3.x;
+    point.y = -point.x;
   }
 
-  if (a4 == 4)
+  if (index == 4)
   {
-    x = a3.x;
+    x = point.x;
   }
 
   else
@@ -322,14 +322,14 @@
     x = y;
   }
 
-  if (a4 == 4)
+  if (index == 4)
   {
     v7 = v4;
   }
 
   else
   {
-    v7 = a3.y;
+    v7 = point.y;
   }
 
   v8 = 0.0;
@@ -348,11 +348,11 @@
   return result;
 }
 
-+ (unint64_t)nextQuadrantIndex:(unint64_t)a3
++ (unint64_t)nextQuadrantIndex:(unint64_t)index
 {
-  if (a3 + 1 <= 4)
+  if (index + 1 <= 4)
   {
-    return a3 + 1;
+    return index + 1;
   }
 
   else
@@ -361,35 +361,35 @@
   }
 }
 
-+ (CGPoint)nextPointFromStartPoint:(CGPoint)result endPoint:(CGPoint)a4 radius:(double)a5
++ (CGPoint)nextPointFromStartPoint:(CGPoint)result endPoint:(CGPoint)point radius:(double)radius
 {
-  if (a4.x > a5 || (a4.x >= 0.0 ? (v5 = a4.y <= a5) : (v5 = 0), !v5 || a4.y < 0.0))
+  if (point.x > radius || (point.x >= 0.0 ? (v5 = point.y <= radius) : (v5 = 0), !v5 || point.y < 0.0))
   {
-    a4.y = 0.0;
-    a4.x = a5;
+    point.y = 0.0;
+    point.x = radius;
   }
 
-  if (result.y >= a5 && result.x < a5)
+  if (result.y >= radius && result.x < radius)
   {
-    if (result.y != a4.y || result.x > a4.x)
+    if (result.y != point.y || result.x > point.x)
     {
-      result.x = a5;
+      result.x = radius;
     }
 
-    else if (a4.x <= a5)
+    else if (point.x <= radius)
     {
-      result.x = a4.x;
+      result.x = point.x;
     }
 
     else
     {
-      result.x = a5;
+      result.x = radius;
     }
   }
 
-  else if (result.x == a4.x && result.y >= a4.y)
+  else if (result.x == point.x && result.y >= point.y)
   {
-    result.y = fmax(a4.y, 0.0);
+    result.y = fmax(point.y, 0.0);
   }
 
   else
@@ -408,24 +408,24 @@
   return result;
 }
 
-+ (unint64_t)quadrantForAngle:(double)a3
++ (unint64_t)quadrantForAngle:(double)angle
 {
-  if (a3 >= 0.0 && a3 <= 90.0)
+  if (angle >= 0.0 && angle <= 90.0)
   {
     return 1;
   }
 
-  if (a3 > 90.0 && a3 <= 180.0)
+  if (angle > 90.0 && angle <= 180.0)
   {
     return 2;
   }
 
-  if (a3 > 180.0 && a3 <= 270.0)
+  if (angle > 180.0 && angle <= 270.0)
   {
     return 3;
   }
 
-  if (a3 > 360.0 || a3 <= 270.0)
+  if (angle > 360.0 || angle <= 270.0)
   {
     return 1;
   }
@@ -436,19 +436,19 @@
   }
 }
 
-+ (unint64_t)quadrantForPoint:(CGPoint)a3
++ (unint64_t)quadrantForPoint:(CGPoint)point
 {
-  if (a3.x >= 0.0 && a3.y < 0.0)
+  if (point.x >= 0.0 && point.y < 0.0)
   {
     return 2;
   }
 
-  if (a3.x < 0.0 && a3.y < 0.0)
+  if (point.x < 0.0 && point.y < 0.0)
   {
     return 3;
   }
 
-  if (a3.y >= 0.0 && a3.x < 0.0)
+  if (point.y >= 0.0 && point.x < 0.0)
   {
     return 4;
   }

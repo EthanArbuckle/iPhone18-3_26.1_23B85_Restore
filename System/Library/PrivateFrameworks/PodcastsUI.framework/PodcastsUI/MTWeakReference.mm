@@ -1,20 +1,20 @@
 @interface MTWeakReference
-- (MTWeakReference)initWithObject:(id)a3;
+- (MTWeakReference)initWithObject:(id)object;
 - (id)object;
 @end
 
 @implementation MTWeakReference
 
-- (MTWeakReference)initWithObject:(id)a3
+- (MTWeakReference)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = MTWeakReference;
   v5 = [(MTWeakReference *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MTWeakReference *)v5 setObject:v4];
+    [(MTWeakReference *)v5 setObject:objectCopy];
   }
 
   return v6;

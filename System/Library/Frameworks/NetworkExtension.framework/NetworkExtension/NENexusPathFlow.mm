@@ -1,7 +1,7 @@
 @interface NENexusPathFlow
 - (id)clientIdentifier;
 - (id)endpoint;
-- (id)initWithPath:(id *)a1;
+- (id)initWithPath:(id *)path;
 - (id)parameters;
 @end
 
@@ -40,36 +40,36 @@
   return [(NENexusPathFlow *)self endpoint];
 }
 
-- (id)initWithPath:(id *)a1
+- (id)initWithPath:(id *)path
 {
   v4 = a2;
-  if (a1)
+  if (path)
   {
-    v9.receiver = a1;
+    v9.receiver = path;
     v9.super_class = NENexusPathFlow;
     v5 = objc_msgSendSuper2(&v9, sel_init);
     if (v5)
     {
-      a1 = v5;
+      path = v5;
       objc_storeStrong(v5 + 5, a2);
-      v6 = [v4 clientID];
-      [(NENexusFlow *)a1 setupFlowProtocolWithUUID:v6];
+      clientID = [v4 clientID];
+      [(NENexusFlow *)path setupFlowProtocolWithUUID:clientID];
     }
 
     else
     {
-      v6 = ne_log_obj();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+      clientID = ne_log_obj();
+      if (os_log_type_enabled(clientID, OS_LOG_TYPE_FAULT))
       {
         v8[0] = 0;
-        _os_log_fault_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_FAULT, "[super init] failed", v8, 2u);
+        _os_log_fault_impl(&dword_1BA83C000, clientID, OS_LOG_TYPE_FAULT, "[super init] failed", v8, 2u);
       }
 
-      a1 = 0;
+      path = 0;
     }
   }
 
-  return a1;
+  return path;
 }
 
 @end

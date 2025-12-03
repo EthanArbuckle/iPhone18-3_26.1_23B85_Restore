@@ -6,14 +6,14 @@
 - (UIView)sourceView;
 - (UIViewControllerContextTransitioning)transitionContext;
 - (_UISheetAnimationController)init;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (void)addNoninteractiveAnimations:(id)a3;
-- (void)addNoninteractiveCompletion:(id)a3;
-- (void)animateTransition:(id)a3;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (void)addNoninteractiveAnimations:(id)animations;
+- (void)addNoninteractiveCompletion:(id)completion;
+- (void)animateTransition:(id)transition;
 - (void)layoutTransitionViews;
 - (void)runNoninteractiveAnimationsIfPossible;
-- (void)setNoninteractiveAnimations:(id)a3;
-- (void)setNoninteractiveCompletion:(id)a3;
+- (void)setNoninteractiveAnimations:(id)animations;
+- (void)setNoninteractiveCompletion:(id)completion;
 @end
 
 @implementation _UISheetAnimationController
@@ -49,9 +49,9 @@
   return v3;
 }
 
-- (void)setNoninteractiveAnimations:(id)a3
+- (void)setNoninteractiveAnimations:(id)animations
 {
-  aBlock = a3;
+  aBlock = animations;
   [(NSMutableArray *)self->_allNoninteractiveAnimations removeAllObjects];
   v4 = aBlock;
   if (aBlock)
@@ -64,9 +64,9 @@
   }
 }
 
-- (void)setNoninteractiveCompletion:(id)a3
+- (void)setNoninteractiveCompletion:(id)completion
 {
-  aBlock = a3;
+  aBlock = completion;
   [(NSMutableArray *)self->_allNoninteractiveCompletions removeAllObjects];
   v4 = aBlock;
   if (aBlock)
@@ -79,37 +79,37 @@
   }
 }
 
-- (void)addNoninteractiveAnimations:(id)a3
+- (void)addNoninteractiveAnimations:(id)animations
 {
   allNoninteractiveAnimations = self->_allNoninteractiveAnimations;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(animations);
   [(NSMutableArray *)allNoninteractiveAnimations addObject:v4];
 }
 
-- (void)addNoninteractiveCompletion:(id)a3
+- (void)addNoninteractiveCompletion:(id)completion
 {
   allNoninteractiveCompletions = self->_allNoninteractiveCompletions;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   [(NSMutableArray *)allNoninteractiveCompletions addObject:v4];
 }
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
-  v6 = a3;
-  v7 = [(_UISheetAnimationController *)self propertyAnimator];
+  transitionCopy = transition;
+  propertyAnimator = [(_UISheetAnimationController *)self propertyAnimator];
 
-  if (!v7)
+  if (!propertyAnimator)
   {
     v8 = [UIViewPropertyAnimator alloc];
-    [(_UISheetAnimationController *)self transitionDuration:v6];
+    [(_UISheetAnimationController *)self transitionDuration:transitionCopy];
     v10 = v9;
     v11 = _UISheetTransitionTimingCurve();
     v12 = [(UIViewPropertyAnimator *)v8 initWithDuration:v11 timingParameters:v10];
     [(_UISheetAnimationController *)self setPropertyAnimator:v12];
 
-    [(_UISheetAnimationController *)self setTransitionContext:v6];
-    v13 = [v6 viewForKey:@"UITransitionContextToView"];
-    v14 = [v6 viewForKey:@"UITransitionContextFromView"];
+    [(_UISheetAnimationController *)self setTransitionContext:transitionCopy];
+    v13 = [transitionCopy viewForKey:@"UITransitionContextToView"];
+    v14 = [transitionCopy viewForKey:@"UITransitionContextFromView"];
     if ([(_UISheetAnimationController *)self isForward])
     {
       v15 = v13;
@@ -121,20 +121,20 @@
     }
 
     [(_UISheetAnimationController *)self setForwardView:v15];
-    v16 = [v6 viewControllerForKey:@"UITransitionContextFromViewController"];
-    v17 = [v6 viewControllerForKey:@"UITransitionContextToViewController"];
-    [v6 finalFrameForViewController:v17];
+    v16 = [transitionCopy viewControllerForKey:@"UITransitionContextFromViewController"];
+    v17 = [transitionCopy viewControllerForKey:@"UITransitionContextToViewController"];
+    [transitionCopy finalFrameForViewController:v17];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    [v6 initialFrameForViewController:v16];
+    [transitionCopy initialFrameForViewController:v16];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [(_UISheetAnimationController *)self isForward];
-    if (v34)
+    isForward = [(_UISheetAnimationController *)self isForward];
+    if (isForward)
     {
       v35 = v19;
     }
@@ -144,7 +144,7 @@
       v35 = v27;
     }
 
-    if (v34)
+    if (isForward)
     {
       v36 = v21;
     }
@@ -154,7 +154,7 @@
       v36 = v29;
     }
 
-    if (v34)
+    if (isForward)
     {
       v37 = v23;
     }
@@ -164,7 +164,7 @@
       v37 = v31;
     }
 
-    if (v34)
+    if (isForward)
     {
       v38 = v25;
     }
@@ -175,17 +175,17 @@
     }
 
     [(_UISheetAnimationController *)self setForwardViewFullFrame:v35, v36, v37, v38];
-    v39 = [(_UISheetAnimationController *)self sourceView];
+    sourceView = [(_UISheetAnimationController *)self sourceView];
     [(_UISheetAnimationController *)self sourceFrame];
     if (CGRectIsNull(v85))
     {
-      if (!v39)
+      if (!sourceView)
       {
-        v41 = [(_UISheetAnimationController *)self defaultSourceFrameProvider];
-        if (v41)
+        defaultSourceFrameProvider = [(_UISheetAnimationController *)self defaultSourceFrameProvider];
+        if (defaultSourceFrameProvider)
         {
-          v3 = [(_UISheetAnimationController *)self defaultSourceFrameProvider];
-          v3[2]();
+          defaultSourceFrameProvider2 = [(_UISheetAnimationController *)self defaultSourceFrameProvider];
+          defaultSourceFrameProvider2[2]();
         }
 
         else
@@ -194,38 +194,38 @@
         }
 
         [(_UISheetAnimationController *)self setSourceFrame:?];
-        if (v41)
+        if (defaultSourceFrameProvider)
         {
         }
 
         goto LABEL_22;
       }
 
-      [v39 bounds];
+      [sourceView bounds];
       [(_UISheetAnimationController *)self setSourceFrame:?];
     }
 
-    else if (!v39)
+    else if (!sourceView)
     {
       goto LABEL_23;
     }
 
-    v40 = [v39 _viewControllerForAncestor];
-    v41 = [v40 _existingPresentationControllerImmediate:0 effective:1 includesRoot:1];
+    _viewControllerForAncestor = [sourceView _viewControllerForAncestor];
+    defaultSourceFrameProvider = [_viewControllerForAncestor _existingPresentationControllerImmediate:0 effective:1 includesRoot:1];
 
     [(_UISheetAnimationController *)self sourceFrame];
     v43 = v42;
     v45 = v44;
     v47 = v46;
     v49 = v48;
-    v50 = [v41 presentedView];
-    [v39 convertRect:v50 toView:{v43, v45, v47, v49}];
+    presentedView = [defaultSourceFrameProvider presentedView];
+    [sourceView convertRect:presentedView toView:{v43, v45, v47, v49}];
     v52 = v51;
     v54 = v53;
     v56 = v55;
     v58 = v57;
 
-    [v41 frameOfPresentedViewInContainerView];
+    [defaultSourceFrameProvider frameOfPresentedViewInContainerView];
     v60 = v59;
     v62 = v61;
     v86.origin.x = v52;
@@ -237,9 +237,9 @@
 LABEL_22:
 
 LABEL_23:
-    v63 = [(_UISheetAnimationController *)self forwardView];
+    forwardView = [(_UISheetAnimationController *)self forwardView];
 
-    if (v63)
+    if (forwardView)
     {
       if (!v13)
       {
@@ -251,43 +251,43 @@ LABEL_26:
         v83[4] = self;
         [UIView performWithoutAnimation:v83];
         [(_UISheetAnimationController *)self setIsInInitialLayout:0];
-        v65 = [(_UISheetAnimationController *)self metrics];
-        v66 = [(_UISheetAnimationController *)self propertyAnimator];
-        [v65 addAlongsideAnimations:v66 forSheetTransition:self context:v6];
+        metrics = [(_UISheetAnimationController *)self metrics];
+        propertyAnimator2 = [(_UISheetAnimationController *)self propertyAnimator];
+        [metrics addAlongsideAnimations:propertyAnimator2 forSheetTransition:self context:transitionCopy];
 
-        if ([v6 isInteractive])
+        if ([transitionCopy isInteractive])
         {
-          v67 = [(_UISheetAnimationController *)self propertyAnimator];
+          propertyAnimator3 = [(_UISheetAnimationController *)self propertyAnimator];
           v81[0] = MEMORY[0x1E69E9820];
           v81[1] = 3221225472;
           v81[2] = __66___UISheetAnimationController_interruptibleAnimatorForTransition___block_invoke_2;
           v81[3] = &unk_1E70F3590;
-          v82 = v6;
-          [v67 addAnimations:v81];
+          v82 = transitionCopy;
+          [propertyAnimator3 addAnimations:v81];
         }
 
         else
         {
           objc_initWeak(&location, self);
-          v68 = [(_UISheetAnimationController *)self propertyAnimator];
+          propertyAnimator4 = [(_UISheetAnimationController *)self propertyAnimator];
           v78[0] = MEMORY[0x1E69E9820];
           v78[1] = 3221225472;
           v78[2] = __66___UISheetAnimationController_interruptibleAnimatorForTransition___block_invoke_3;
           v78[3] = &unk_1E70F5A28;
           objc_copyWeak(&v79, &location);
-          [v68 addAnimations:v78];
+          [propertyAnimator4 addAnimations:v78];
 
           objc_destroyWeak(&v79);
           objc_destroyWeak(&location);
         }
 
-        v69 = [(_UISheetAnimationController *)self propertyAnimator];
+        propertyAnimator5 = [(_UISheetAnimationController *)self propertyAnimator];
         v73 = MEMORY[0x1E69E9820];
         v74 = 3221225472;
         v75 = __66___UISheetAnimationController_interruptibleAnimatorForTransition___block_invoke_5;
         v76 = &unk_1E70F5DB8;
-        v77 = v6;
-        [v69 addCompletion:&v73];
+        v77 = transitionCopy;
+        [propertyAnimator5 addCompletion:&v73];
 
         goto LABEL_30;
       }
@@ -295,8 +295,8 @@ LABEL_26:
 
     else
     {
-      v72 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v72 handleFailureInMethod:a2 object:self file:@"_UISheetTransitioning.m" lineNumber:144 description:@"Attempted to run _UISheetAnimationController without a forwardView."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UISheetTransitioning.m" lineNumber:144 description:@"Attempted to run _UISheetAnimationController without a forwardView."];
 
       if (!v13)
       {
@@ -305,8 +305,8 @@ LABEL_26:
     }
 
     [v13 _setFrameIgnoringLayerTransform:{v19, v21, v23, v25}];
-    v64 = [v6 containerView];
-    [v64 addSubview:v13];
+    containerView = [transitionCopy containerView];
+    [containerView addSubview:v13];
 
     goto LABEL_26;
   }
@@ -317,19 +317,19 @@ LABEL_30:
   return v70;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = [(_UISheetAnimationController *)self interruptibleAnimatorForTransition:a3];
+  v3 = [(_UISheetAnimationController *)self interruptibleAnimatorForTransition:transition];
   [v3 startAnimation];
 }
 
 - (void)layoutTransitionViews
 {
-  v3 = [(_UISheetAnimationController *)self transitionContext];
-  if (v3)
+  transitionContext = [(_UISheetAnimationController *)self transitionContext];
+  if (transitionContext)
   {
-    v38 = v3;
-    v4 = [(_UISheetAnimationController *)self forwardView];
+    v38 = transitionContext;
+    forwardView = [(_UISheetAnimationController *)self forwardView];
     [(_UISheetAnimationController *)self forwardViewFullFrame];
     v6 = v5;
     v8 = v7;
@@ -340,7 +340,7 @@ LABEL_30:
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [v38 isInteractive];
+    isInteractive = [v38 isInteractive];
     v40.origin.x = v14;
     v40.origin.y = v16;
     v40.size.width = v18;
@@ -394,12 +394,12 @@ LABEL_30:
     v35 = ([v38 transitionWasCancelled] & 1) != 0 || -[_UISheetAnimationController isInInitialLayout](self, "isInInitialLayout");
     if ([(_UISheetAnimationController *)self isForward])
     {
-      v36 = v21 | ~v35;
+      v36 = isInteractive | ~v35;
     }
 
     else
     {
-      v36 = v21 | v35;
+      v36 = isInteractive | v35;
     }
 
     if ((v36 | v22))
@@ -410,9 +410,9 @@ LABEL_30:
       v28 = v37;
     }
 
-    [v4 _setFrameIgnoringLayerTransform:{v28, v30, v32, v34}];
+    [forwardView _setFrameIgnoringLayerTransform:{v28, v30, v32, v34}];
 
-    v3 = v38;
+    transitionContext = v38;
   }
 }
 

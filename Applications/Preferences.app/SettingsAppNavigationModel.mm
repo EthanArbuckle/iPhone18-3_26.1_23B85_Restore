@@ -1,10 +1,10 @@
 @interface SettingsAppNavigationModel
-- (BOOL)shouldContinueActiveURLRoutingForURLResourceDictionary:(id)a3;
+- (BOOL)shouldContinueActiveURLRoutingForURLResourceDictionary:(id)dictionary;
 @end
 
 @implementation SettingsAppNavigationModel
 
-- (BOOL)shouldContinueActiveURLRoutingForURLResourceDictionary:(id)a3
+- (BOOL)shouldContinueActiveURLRoutingForURLResourceDictionary:(id)dictionary
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 

@@ -4,7 +4,7 @@
 - (id)hrefsAsFullURLs;
 - (id)hrefsAsOriginalURLs;
 - (id)hrefsAsStrings;
-- (void)addHref:(id)a3;
+- (void)addHref:(id)href;
 @end
 
 @implementation CoreDAVItemWithHrefChildren
@@ -17,11 +17,11 @@
   v4 = [(CoreDAVItem *)&v8 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVItemWithHrefChildren *)self hrefs];
-  [v3 appendFormat:@"\n  Number of HREFs: [%lu]", objc_msgSend(v5, "count")];
+  hrefs = [(CoreDAVItemWithHrefChildren *)self hrefs];
+  [v3 appendFormat:@"\n  Number of HREFs: [%lu]", objc_msgSend(hrefs, "count")];
 
-  v6 = [(CoreDAVItemWithHrefChildren *)self unauthenticated];
-  [v3 appendFormat:@"\n  Unauthenticated: [%@]", v6];
+  unauthenticated = [(CoreDAVItemWithHrefChildren *)self unauthenticated];
+  [v3 appendFormat:@"\n  Unauthenticated: [%@]", unauthenticated];
 
   return v3;
 }
@@ -29,7 +29,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -42,45 +42,45 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, v9, v10, 0}];
 
     v11 = +[CoreDAVItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
   return v5;
 }
 
-- (void)addHref:(id)a3
+- (void)addHref:(id)href
 {
-  v4 = a3;
-  v5 = [(CoreDAVItemWithHrefChildren *)self hrefs];
+  hrefCopy = href;
+  hrefs = [(CoreDAVItemWithHrefChildren *)self hrefs];
 
-  if (!v5)
+  if (!hrefs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(CoreDAVItemWithHrefChildren *)self setHrefs:v6];
   }
 
-  v7 = [(CoreDAVItemWithHrefChildren *)self hrefs];
-  [v7 addObject:v4];
+  hrefs2 = [(CoreDAVItemWithHrefChildren *)self hrefs];
+  [hrefs2 addObject:hrefCopy];
 }
 
 - (id)hrefsAsFullURLs
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(CoreDAVItemWithHrefChildren *)self hrefs];
+  hrefs = [(CoreDAVItemWithHrefChildren *)self hrefs];
 
-  if (v3)
+  if (hrefs)
   {
     v4 = objc_alloc(MEMORY[0x277CBEB58]);
-    v5 = [(CoreDAVItemWithHrefChildren *)self hrefs];
-    v3 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+    hrefs2 = [(CoreDAVItemWithHrefChildren *)self hrefs];
+    hrefs = [v4 initWithCapacity:{objc_msgSend(hrefs2, "count")}];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [(CoreDAVItemWithHrefChildren *)self hrefs];
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    hrefs3 = [(CoreDAVItemWithHrefChildren *)self hrefs];
+    v7 = [hrefs3 countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v7)
     {
       v9 = v7;
@@ -93,14 +93,14 @@
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(hrefs3);
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v12 payloadAsFullURL];
-          if (v13)
+          payloadAsFullURL = [v12 payloadAsFullURL];
+          if (payloadAsFullURL)
           {
-            [v3 addObject:v13];
+            [hrefs addObject:payloadAsFullURL];
           }
 
           else
@@ -117,7 +117,7 @@
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v9 = [hrefs3 countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v9);
@@ -126,22 +126,22 @@
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return hrefs;
 }
 
 - (id)hrefsAsOriginalURLs
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [(CoreDAVItemWithHrefChildren *)self hrefs];
-  if (v2)
+  hrefs = [(CoreDAVItemWithHrefChildren *)self hrefs];
+  if (hrefs)
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v2, "count")}];
+    v3 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(hrefs, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v16 = v2;
-    v4 = v2;
+    v16 = hrefs;
+    v4 = hrefs;
     v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v5)
     {
@@ -157,10 +157,10 @@
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
-          v10 = [v9 payloadAsOriginalURL];
-          if (v10)
+          payloadAsOriginalURL = [v9 payloadAsOriginalURL];
+          if (payloadAsOriginalURL)
           {
-            [v3 addObject:v10];
+            [v3 addObject:payloadAsOriginalURL];
           }
 
           else
@@ -183,7 +183,7 @@
       while (v6);
     }
 
-    v2 = v16;
+    hrefs = v16;
   }
 
   else
@@ -199,16 +199,16 @@
 - (id)hrefsAsStrings
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [(CoreDAVItemWithHrefChildren *)self hrefs];
-  if (v2)
+  hrefs = [(CoreDAVItemWithHrefChildren *)self hrefs];
+  if (hrefs)
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v2, "count")}];
+    v3 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(hrefs, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v16 = v2;
-    v4 = v2;
+    v16 = hrefs;
+    v4 = hrefs;
     v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v5)
     {
@@ -224,10 +224,10 @@
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
-          v10 = [v9 payloadAsString];
-          if (v10)
+          payloadAsString = [v9 payloadAsString];
+          if (payloadAsString)
           {
-            [v3 addObject:v10];
+            [v3 addObject:payloadAsString];
           }
 
           else
@@ -250,7 +250,7 @@
       while (v6);
     }
 
-    v2 = v16;
+    hrefs = v16;
   }
 
   else

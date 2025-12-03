@@ -1,6 +1,6 @@
 @interface CLDaemonSettingsManager
 - (CLDaemonSettingsManager)init;
-- (id)syncgetSetValue:(id)a3 forKey:(id)a4 withoutNotifying:(id)a5;
+- (id)syncgetSetValue:(id)value forKey:(id)key withoutNotifying:(id)notifying;
 - (void)beginService;
 - (void)endService;
 - (void)refresh;
@@ -65,10 +65,10 @@
   [(CLDaemonSettingsManager *)self updateClientsWithDictionary:[NSDictionary dictionaryWithDictionary:[(CLDaemonSettingsManager *)self settingsDictionary]]];
 }
 
-- (id)syncgetSetValue:(id)a3 forKey:(id)a4 withoutNotifying:(id)a5
+- (id)syncgetSetValue:(id)value forKey:(id)key withoutNotifying:(id)notifying
 {
   sub_10001CAF4(&v11);
-  sub_1000433CC(v11, [a4 UTF8String], a3);
+  sub_1000433CC(v11, [key UTF8String], value);
   if (v12)
   {
     sub_100008080(v12);
@@ -76,7 +76,7 @@
 
   v10.receiver = self;
   v10.super_class = CLDaemonSettingsManager;
-  return [(CLDaemonSettingsManager *)&v10 syncgetSetValue:a3 forKey:a4 withoutNotifying:a5];
+  return [(CLDaemonSettingsManager *)&v10 syncgetSetValue:value forKey:key withoutNotifying:notifying];
 }
 
 @end

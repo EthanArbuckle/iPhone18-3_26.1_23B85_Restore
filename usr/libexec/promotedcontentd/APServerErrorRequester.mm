@@ -1,20 +1,20 @@
 @interface APServerErrorRequester
-- (APServerErrorRequester)initWithMetric:(id)a3 internalContent:(id)a4 context:(id)a5 idAccount:(id)a6 error:(id)a7;
+- (APServerErrorRequester)initWithMetric:(id)metric internalContent:(id)content context:(id)context idAccount:(id)account error:(id)error;
 - (id)protoBuffer;
 @end
 
 @implementation APServerErrorRequester
 
-- (APServerErrorRequester)initWithMetric:(id)a3 internalContent:(id)a4 context:(id)a5 idAccount:(id)a6 error:(id)a7
+- (APServerErrorRequester)initWithMetric:(id)metric internalContent:(id)content context:(id)context idAccount:(id)account error:(id)error
 {
-  v12 = a7;
+  errorCopy = error;
   v21.receiver = self;
   v21.super_class = APServerErrorRequester;
-  v13 = [(APLegacyMetricRequester *)&v21 initWithMetric:a3 internalContent:a4 andContext:a5 clientInfo:0 idAccount:a6];
+  v13 = [(APLegacyMetricRequester *)&v21 initWithMetric:metric internalContent:content andContext:context clientInfo:0 idAccount:account];
   if (v13)
   {
-    v14 = [v12 domain];
-    v15 = [v14 isEqualToString:@"com.apple.ap.AdValidationErrorDomain"];
+    domain = [errorCopy domain];
+    v15 = [domain isEqualToString:@"com.apple.ap.AdValidationErrorDomain"];
 
     if (!v15)
     {
@@ -22,7 +22,7 @@
       goto LABEL_9;
     }
 
-    if ([v12 code] == 4512)
+    if ([errorCopy code] == 4512)
     {
       v16 = 3;
     }
@@ -33,9 +33,9 @@
     }
 
     v13->_legacyServerErrorCode = v16;
-    v17 = [v12 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     errorDetails = v13->_errorDetails;
-    v13->_errorDetails = v17;
+    v13->_errorDetails = localizedDescription;
   }
 
   v19 = v13;
@@ -47,12 +47,12 @@ LABEL_9:
 - (id)protoBuffer
 {
   v3 = objc_alloc_init(APPBServerErrorRequest);
-  v4 = [(APLegacyMetricRequester *)self logMetadata];
-  [(APPBServerErrorRequest *)v3 setMetaData:v4];
+  logMetadata = [(APLegacyMetricRequester *)self logMetadata];
+  [(APPBServerErrorRequest *)v3 setMetaData:logMetadata];
 
   [(APPBServerErrorRequest *)v3 setErrorCode:[(APServerErrorRequester *)self legacyServerErrorCode]];
-  v5 = [(APServerErrorRequester *)self errorDetails];
-  [(APPBServerErrorRequest *)v3 setErrorDetails:v5];
+  errorDetails = [(APServerErrorRequester *)self errorDetails];
+  [(APPBServerErrorRequest *)v3 setErrorDetails:errorDetails];
 
   return v3;
 }

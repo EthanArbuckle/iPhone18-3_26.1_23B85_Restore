@@ -1,17 +1,17 @@
 @interface MAFileStoreManager
 + (id)defaultManager;
-- (BOOL)cleanupPendingUpdatesFor:(id)a3 dir:(id)a4 error:(id *)a5;
-- (BOOL)commitFile:(id)a3 topGroup:(id)a4 profile:(id)a5 attributes:(id)a6 committed:(BOOL *)a7 error:(id *)a8;
-- (BOOL)copyFileFrom:(const char *)a3 to:(id)a4 error:(id *)a5;
-- (BOOL)deleteFile:(id)a3 topGroup:(id)a4 profile:(id)a5 attributes:(id)a6 error:(id *)a7;
-- (BOOL)deleteProfile:(id)a3 error:(id *)a4;
+- (BOOL)cleanupPendingUpdatesFor:(id)for dir:(id)dir error:(id *)error;
+- (BOOL)commitFile:(id)file topGroup:(id)group profile:(id)profile attributes:(id)attributes committed:(BOOL *)committed error:(id *)error;
+- (BOOL)copyFileFrom:(const char *)from to:(id)to error:(id *)error;
+- (BOOL)deleteFile:(id)file topGroup:(id)group profile:(id)profile attributes:(id)attributes error:(id *)error;
+- (BOOL)deleteProfile:(id)profile error:(id *)error;
 - (MAFileStoreManager)init;
-- (id)filePreProcess:(id)a3 topGroup:(id)a4 profile:(id)a5 mode:(unint64_t)a6 isOpenFile:(BOOL)a7 isDirectory:(BOOL)a8 attributes:(id)a9 attributesOut:(id)a10 error:(id *)a11;
-- (id)getFilePathWithSbExtension:(id)a3 topGroup:(id)a4 profile:(id)a5 mode:(unint64_t)a6 attributes:(id)a7 clientConn:(id)a8 realpath:(id *)a9 isDirectory:(BOOL)a10 attributesOut:(id)a11 error:(id *)a12;
-- (id)getPathByTopGroup:(id)a3 topGroup:(id)a4 profile:(id)a5;
-- (id)openFile:(id)a3 topGroup:(id)a4 profile:(id)a5 mode:(unint64_t)a6 attributes:(id)a7 attributesOut:(id)a8 error:(id *)a9;
-- (id)parseFileProtectionClassAttribute:(id)a3 isDir:(BOOL)a4;
-- (id)queryFile:(id)a3 topGroup:(id)a4 profile:(id)a5 attributes:(id)a6 pathPrefix:(id)a7 error:(id *)a8;
+- (id)filePreProcess:(id)process topGroup:(id)group profile:(id)profile mode:(unint64_t)mode isOpenFile:(BOOL)file isDirectory:(BOOL)directory attributes:(id)attributes attributesOut:(id)self0 error:(id *)self1;
+- (id)getFilePathWithSbExtension:(id)extension topGroup:(id)group profile:(id)profile mode:(unint64_t)mode attributes:(id)attributes clientConn:(id)conn realpath:(id *)realpath isDirectory:(BOOL)self0 attributesOut:(id)self1 error:(id *)self2;
+- (id)getPathByTopGroup:(id)group topGroup:(id)topGroup profile:(id)profile;
+- (id)openFile:(id)file topGroup:(id)group profile:(id)profile mode:(unint64_t)mode attributes:(id)attributes attributesOut:(id)out error:(id *)error;
+- (id)parseFileProtectionClassAttribute:(id)attribute isDir:(BOOL)dir;
+- (id)queryFile:(id)file topGroup:(id)group profile:(id)profile attributes:(id)attributes pathPrefix:(id)prefix error:(id *)error;
 - (void)close;
 - (void)deleteAllFiles;
 @end
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_100019E54;
   block[3] = &unk_100115D08;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001293E8 != -1)
   {
     dispatch_once(&qword_1001293E8, block);
@@ -44,13 +44,13 @@
   {
     v3 = +[NSFileManager defaultManager];
     v4 = +[MAStorage defaultManager];
-    v5 = [v4 marootPath];
+    marootPath = [v4 marootPath];
     marootPath = v2->_marootPath;
-    v2->_marootPath = v5;
+    v2->_marootPath = marootPath;
 
-    v7 = [v4 maUsersPath];
+    maUsersPath = [v4 maUsersPath];
     maUsersPath = v2->_maUsersPath;
-    v2->_maUsersPath = v7;
+    v2->_maUsersPath = maUsersPath;
 
     v9 = v2->_marootPath;
     v24 = 0;
@@ -120,29 +120,29 @@ LABEL_10:
   }
 }
 
-- (BOOL)deleteProfile:(id)a3 error:(id *)a4
+- (BOOL)deleteProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v7 = off_100127CE0;
   if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = profileCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "deleting profile %@", buf, 0xCu);
   }
 
-  v8 = [(NSString *)self->_maUsersPath stringByAppendingString:v6];
-  v9 = sub_10001A260(v8, self->_fileMgr, a4);
+  v8 = [(NSString *)self->_maUsersPath stringByAppendingString:profileCopy];
+  v9 = sub_10001A260(v8, self->_fileMgr, error);
 
-  v10 = [(NSString *)self->_maNoDVFileAssetPath stringByAppendingFormat:@"users/%@", v6];
-  v11 = sub_10001A260(v10, self->_fileMgr, a4);
+  profileCopy = [(NSString *)self->_maNoDVFileAssetPath stringByAppendingFormat:@"users/%@", profileCopy];
+  v11 = sub_10001A260(profileCopy, self->_fileMgr, error);
 
   return v9 & v11;
 }
 
-- (id)parseFileProtectionClassAttribute:(id)a3 isDir:(BOOL)a4
+- (id)parseFileProtectionClassAttribute:(id)attribute isDir:(BOOL)dir
 {
-  if (a4)
+  if (dir)
   {
     v5 = NSFileProtectionCompleteUntilFirstUserAuthentication;
   }
@@ -153,7 +153,7 @@ LABEL_10:
   }
 
   v6 = v5;
-  v7 = [a3 objectForKey:NSFileProtectionKey];
+  v7 = [attribute objectForKey:NSFileProtectionKey];
   if (v7)
   {
     objc_opt_class();
@@ -176,19 +176,19 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)cleanupPendingUpdatesFor:(id)a3 dir:(id)a4 error:(id *)a5
+- (BOOL)cleanupPendingUpdatesFor:(id)for dir:(id)dir error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 length];
-  v11 = [(NSFileManager *)self->_fileMgr contentsOfDirectoryAtPath:v9 error:a5];
+  forCopy = for;
+  dirCopy = dir;
+  v10 = [forCopy length];
+  v11 = [(NSFileManager *)self->_fileMgr contentsOfDirectoryAtPath:dirCopy error:error];
   v12 = v11;
-  if (*a5)
+  if (*error)
   {
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
     if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
     {
-      sub_10001C87C(v9, a5);
+      sub_10001C87C(dirCopy, error);
     }
 
     v13 = 0;
@@ -196,7 +196,7 @@ LABEL_10:
 
   else
   {
-    v29 = a5;
+    errorCopy = error;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
@@ -216,9 +216,9 @@ LABEL_10:
           }
 
           v18 = *(*(&v30 + 1) + 8 * i);
-          if (v10 + 43 == [v18 length] && objc_msgSend(v18, "hasPrefix:", v8) && objc_msgSend(v18, "hasSuffix:", @".masdtrans"))
+          if (v10 + 43 == [v18 length] && objc_msgSend(v18, "hasPrefix:", forCopy) && objc_msgSend(v18, "hasSuffix:", @".masdtrans"))
           {
-            v19 = [v9 stringByAppendingPathComponent:v18];
+            v19 = [dirCopy stringByAppendingPathComponent:v18];
             v20 = off_100127CE0;
             if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_INFO))
             {
@@ -229,7 +229,7 @@ LABEL_10:
 
             if (unlink([v19 fileSystemRepresentation]) && *__error() != 2)
             {
-              if (*v29)
+              if (*errorCopy)
               {
                 v21 = off_100127CE0;
                 if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
@@ -248,11 +248,11 @@ LABEL_10:
               {
                 v27 = v19;
                 v28 = *__error();
-                *v29 = createManagedAssetError();
+                *errorCopy = createManagedAssetError();
                 v24 = off_100127CE0;
                 if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
                 {
-                  v25 = *v29;
+                  v25 = *errorCopy;
                   *buf = 138412546;
                   v35 = v19;
                   v36 = 2112;
@@ -270,33 +270,33 @@ LABEL_10:
       while (v15);
     }
 
-    v13 = *v29 == 0;
+    v13 = *errorCopy == 0;
   }
 
   return v13;
 }
 
-- (id)getPathByTopGroup:(id)a3 topGroup:(id)a4 profile:(id)a5
+- (id)getPathByTopGroup:(id)group topGroup:(id)topGroup profile:(id)profile
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [@"private" isEqualToString:v9];
-  if (v10)
+  groupCopy = group;
+  topGroupCopy = topGroup;
+  profileCopy = profile;
+  v11 = [@"private" isEqualToString:topGroupCopy];
+  if (profileCopy)
   {
     if (v11)
     {
-      [NSString stringWithFormat:@"%@%@/private/%@", self->_maUsersPath, v10, v8];
+      [NSString stringWithFormat:@"%@%@/private/%@", self->_maUsersPath, profileCopy, groupCopy];
     }
 
-    else if ([qword_1001293F8 containsObject:v9])
+    else if ([qword_1001293F8 containsObject:topGroupCopy])
     {
-      [NSString stringWithFormat:@"%@users/%@/share/%@", self->_maNoDVFileAssetPath, v10, v8];
+      [NSString stringWithFormat:@"%@users/%@/share/%@", self->_maNoDVFileAssetPath, profileCopy, groupCopy];
     }
 
     else
     {
-      [NSString stringWithFormat:@"%@%@/share/%@", self->_maUsersPath, v10, v8];
+      [NSString stringWithFormat:@"%@%@/share/%@", self->_maUsersPath, profileCopy, groupCopy];
     }
     v13 = ;
   }
@@ -308,7 +308,7 @@ LABEL_10:
       maPrivateFileAssetPath = self->_maPrivateFileAssetPath;
     }
 
-    else if ([qword_1001293F8 containsObject:v9])
+    else if ([qword_1001293F8 containsObject:topGroupCopy])
     {
       maPrivateFileAssetPath = self->_maNoDVFileAssetPath;
     }
@@ -318,7 +318,7 @@ LABEL_10:
       maPrivateFileAssetPath = self->_maShareFileAssetPath;
     }
 
-    v13 = [(NSString *)maPrivateFileAssetPath stringByAppendingString:v8];
+    v13 = [(NSString *)maPrivateFileAssetPath stringByAppendingString:groupCopy];
   }
 
   v14 = v13;
@@ -326,29 +326,29 @@ LABEL_10:
   return v14;
 }
 
-- (id)filePreProcess:(id)a3 topGroup:(id)a4 profile:(id)a5 mode:(unint64_t)a6 isOpenFile:(BOOL)a7 isDirectory:(BOOL)a8 attributes:(id)a9 attributesOut:(id)a10 error:(id *)a11
+- (id)filePreProcess:(id)process topGroup:(id)group profile:(id)profile mode:(unint64_t)mode isOpenFile:(BOOL)file isDirectory:(BOOL)directory attributes:(id)attributes attributesOut:(id)self0 error:(id *)self1
 {
-  v66 = a8;
-  v11 = a7;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a9;
-  v67 = a10;
-  v20 = [v19 objectForKeyedSubscript:kMAFileOptionsKey];
-  v21 = sub_10001B298(v20, a11);
+  directoryCopy = directory;
+  fileCopy = file;
+  processCopy = process;
+  groupCopy = group;
+  profileCopy = profile;
+  attributesCopy = attributes;
+  outCopy = out;
+  v20 = [attributesCopy objectForKeyedSubscript:kMAFileOptionsKey];
+  v21 = sub_10001B298(v20, error);
 
-  if (!*a11)
+  if (!*error)
   {
-    v62 = v17;
-    v63 = v16;
-    v61 = v18;
-    v26 = [(MAFileStoreManager *)self getPathByTopGroup:v16 topGroup:v17 profile:v18];
-    v65 = [v26 stringByDeletingLastPathComponent];
+    v62 = groupCopy;
+    v63 = processCopy;
+    v61 = profileCopy;
+    v26 = [(MAFileStoreManager *)self getPathByTopGroup:processCopy topGroup:groupCopy profile:profileCopy];
+    stringByDeletingLastPathComponent = [v26 stringByDeletingLastPathComponent];
     v27 = v26;
     v68 = 0;
     v28 = @"file";
-    if (v66)
+    if (directoryCopy)
     {
       v28 = @"directory";
     }
@@ -357,22 +357,22 @@ LABEL_10:
     v29 = [(NSFileManager *)self->_fileMgr fileExistsAtPath:v27 isDirectory:&v68];
     if (v29)
     {
-      [MAUtilityHelper validatePathMatchingRealpath:v27 error:a11];
-      if (!*a11)
+      [MAUtilityHelper validatePathMatchingRealpath:v27 error:error];
+      if (!*error)
       {
-        v30 = self;
-        v60 = [(NSFileManager *)self->_fileMgr attributesOfItemAtPath:v27 error:a11];
-        if (*a11)
+        selfCopy3 = self;
+        v60 = [(NSFileManager *)self->_fileMgr attributesOfItemAtPath:v27 error:error];
+        if (*error)
         {
           v31 = v27;
           v32 = off_100127CE0;
-          v24 = v67;
-          v17 = v62;
-          v25 = v16;
+          v24 = outCopy;
+          groupCopy = v62;
+          v25 = processCopy;
           v22 = v61;
           if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
           {
-            v44 = *a11;
+            v44 = *error;
             *buf = 138412802;
             v70 = v64;
             v71 = 2112;
@@ -392,37 +392,37 @@ LABEL_10:
             v34 = v64;
           }
 
-          v35 = v65;
+          v35 = stringByDeletingLastPathComponent;
           v36 = v60;
           goto LABEL_21;
         }
 
-        if (v68 != v66)
+        if (v68 != directoryCopy)
         {
           v43 = createManagedAssetError();
           v34 = v64;
           v23 = 0;
-          *a11 = v43;
+          *error = v43;
           v33 = v27;
-          v24 = v67;
+          v24 = outCopy;
           v31 = v27;
-          v17 = v62;
-          v25 = v16;
+          groupCopy = v62;
+          v25 = processCopy;
           goto LABEL_48;
         }
 
-        if (a6 == 1 || (v21 & 1) == 0 || (v66 & 1) != 0)
+        if (mode == 1 || (v21 & 1) == 0 || (directoryCopy & 1) != 0)
         {
           v39 = v27;
           if (v29)
           {
 LABEL_67:
             v31 = v27;
-            v24 = v67;
+            v24 = outCopy;
             v36 = v60;
             if ((v21 & 8) != 0 && v60)
             {
-              v55 = sub_10001B34C(v60, v67);
+              v55 = sub_10001B34C(v60, outCopy);
             }
 
             v33 = v39;
@@ -431,7 +431,7 @@ LABEL_67:
           }
 
 LABEL_59:
-          v51 = [(MAFileStoreManager *)v30 parseFileProtectionClassAttribute:v19 isDir:v66];
+          v51 = [(MAFileStoreManager *)selfCopy3 parseFileProtectionClassAttribute:attributesCopy isDir:directoryCopy];
           v52 = off_100127CE0;
           if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_DEBUG))
           {
@@ -444,15 +444,15 @@ LABEL_59:
             _os_log_debug_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEBUG, "create %@ to write %@ fileAttrs=%@", buf, 0x20u);
           }
 
-          fileMgr = v30->_fileMgr;
-          if (v66)
+          fileMgr = selfCopy3->_fileMgr;
+          if (directoryCopy)
           {
-            if ([(NSFileManager *)fileMgr createDirectoryAtPath:v39 withIntermediateDirectories:1 attributes:v51 error:a11])
+            if ([(NSFileManager *)fileMgr createDirectoryAtPath:v39 withIntermediateDirectories:1 attributes:v51 error:error])
             {
               [_TtC6server14MAPurgeUtility enableFastDirectory:v39];
 LABEL_65:
-              [MAUtilityHelper validatePathMatchingRealpath:v39 error:a11];
-              v54 = *a11;
+              [MAUtilityHelper validatePathMatchingRealpath:v39 error:error];
+              v54 = *error;
 
               if (!v54)
               {
@@ -460,12 +460,12 @@ LABEL_65:
               }
 
               v23 = 0;
-              v24 = v67;
+              v24 = outCopy;
               v31 = v27;
-              v17 = v62;
+              groupCopy = v62;
               v25 = v63;
               v33 = v39;
-              v35 = v65;
+              v35 = stringByDeletingLastPathComponent;
               v36 = v60;
               v22 = v61;
 LABEL_74:
@@ -490,11 +490,11 @@ LABEL_74:
           }
 
           createManagedAssetError();
-          v24 = v67;
-          v17 = v62;
+          v24 = outCopy;
+          groupCopy = v62;
           v25 = v63;
-          v35 = v65;
-          *a11 = v22 = v61;
+          v35 = stringByDeletingLastPathComponent;
+          *error = v22 = v61;
 
           v23 = 0;
           v36 = v60;
@@ -517,18 +517,18 @@ LABEL_34:
           goto LABEL_42;
         }
 
-        v40 = [v63 lastPathComponent];
-        v41 = v30;
-        v42 = v40;
+        lastPathComponent = [v63 lastPathComponent];
+        v41 = selfCopy3;
+        v42 = lastPathComponent;
         [MAFileStoreManager cleanupPendingUpdatesFor:v41 dir:"cleanupPendingUpdatesFor:dir:error:" error:?];
 
-        if (*a11)
+        if (*error)
         {
           v23 = 0;
           v33 = v27;
-          v24 = v67;
+          v24 = outCopy;
           v31 = v27;
-          v17 = v62;
+          groupCopy = v62;
           v25 = v63;
           v34 = v64;
           goto LABEL_48;
@@ -538,7 +538,7 @@ LABEL_42:
         v59 = [MACryptoHelper randomDataInHex:16];
         v39 = [NSString stringWithFormat:@"%@-%@.masdtrans", v27, v59];
 
-        if (a6 == 3)
+        if (mode == 3)
         {
           v45 = v29;
         }
@@ -551,29 +551,29 @@ LABEL_42:
         if (v45 != 1 || !clonefile([v27 fileSystemRepresentation], objc_msgSend(v39, "fileSystemRepresentation"), 0))
         {
           v57 = v45;
-          [v67 setObject:v59 forKeyedSubscript:kMASessionIdKey];
+          [outCopy setObject:v59 forKeyedSubscript:kMASessionIdKey];
           v46 = &kMAFileApiTypeOpenFile;
-          if (!v11)
+          if (!fileCopy)
           {
             v46 = &kMAFileApiTypeRequestFile;
           }
 
-          [v67 setObject:*v46 forKeyedSubscript:kMAFileApiTypeKey];
+          [outCopy setObject:*v46 forKeyedSubscript:kMAFileApiTypeKey];
           v47 = kMAGroupKey;
-          v48 = [v19 objectForKeyedSubscript:kMAGroupKey];
+          v48 = [attributesCopy objectForKeyedSubscript:kMAGroupKey];
           if (v48)
           {
-            [v67 setObject:v48 forKeyedSubscript:v47];
+            [outCopy setObject:v48 forKeyedSubscript:v47];
           }
 
           v49 = kMAGroupTypeKey;
-          v50 = [v19 objectForKeyedSubscript:kMAGroupTypeKey];
+          v50 = [attributesCopy objectForKeyedSubscript:kMAGroupTypeKey];
           if (v50)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v67 setObject:v50 forKeyedSubscript:v49];
+              [outCopy setObject:v50 forKeyedSubscript:v49];
             }
           }
 
@@ -582,7 +582,7 @@ LABEL_42:
             sub_10001C9C4();
           }
 
-          v30 = self;
+          selfCopy3 = self;
           if (v57)
           {
             goto LABEL_67;
@@ -592,17 +592,17 @@ LABEL_42:
         }
 
         v56 = *__error();
-        *a11 = createManagedAssetError();
+        *error = createManagedAssetError();
 
         v23 = 0;
-        v24 = v67;
+        v24 = outCopy;
         v31 = v27;
-        v17 = v62;
+        groupCopy = v62;
         v25 = v63;
         v34 = v64;
         v33 = v39;
 LABEL_48:
-        v35 = v65;
+        v35 = stringByDeletingLastPathComponent;
         v36 = v60;
         v22 = v61;
         goto LABEL_21;
@@ -611,20 +611,20 @@ LABEL_48:
 
     else
     {
-      if (a6 == 1)
+      if (mode == 1)
       {
         v37 = createManagedAssetError();
         v34 = v64;
         v36 = 0;
         v23 = 0;
-        v24 = v67;
-        *a11 = v37;
+        v24 = outCopy;
+        *error = v37;
         v33 = v27;
         v31 = v27;
-        v17 = v62;
-        v25 = v16;
+        groupCopy = v62;
+        v25 = processCopy;
 LABEL_19:
-        v35 = v65;
+        v35 = stringByDeletingLastPathComponent;
 LABEL_20:
         v22 = v61;
 LABEL_21:
@@ -632,28 +632,28 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v30 = self;
-      v35 = v65;
-      if (![(NSFileManager *)self->_fileMgr fileExistsAtPath:v65]&& ![(NSFileManager *)self->_fileMgr createDirectoryAtPath:v65 withIntermediateDirectories:1 attributes:0 error:a11])
+      selfCopy3 = self;
+      v35 = stringByDeletingLastPathComponent;
+      if (![(NSFileManager *)self->_fileMgr fileExistsAtPath:stringByDeletingLastPathComponent]&& ![(NSFileManager *)self->_fileMgr createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error])
       {
         createManagedAssetError();
         v36 = 0;
         v23 = 0;
-        *a11 = v24 = v67;
+        *error = v24 = outCopy;
         v33 = v27;
         v31 = v27;
-        v17 = v62;
+        groupCopy = v62;
         v25 = v63;
         v34 = v64;
         goto LABEL_20;
       }
 
-      [MAUtilityHelper validatePathMatchingRealpath:v65 error:a11];
-      if (!*a11)
+      [MAUtilityHelper validatePathMatchingRealpath:stringByDeletingLastPathComponent error:error];
+      if (!*error)
       {
         v60 = 0;
         v39 = v27;
-        if (v21 & 1) == 0 || (v66)
+        if (v21 & 1) == 0 || (directoryCopy)
         {
           goto LABEL_59;
         }
@@ -665,29 +665,29 @@ LABEL_21:
     v36 = 0;
     v23 = 0;
     v33 = v27;
-    v24 = v67;
+    v24 = outCopy;
     v31 = v27;
 LABEL_18:
-    v17 = v62;
+    groupCopy = v62;
     v25 = v63;
     v34 = v64;
     goto LABEL_19;
   }
 
-  v22 = v18;
+  v22 = profileCopy;
   if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
   {
-    v25 = v16;
-    sub_10001C8E4(v16, a11);
+    v25 = processCopy;
+    sub_10001C8E4(processCopy, error);
     v23 = 0;
-    v24 = v67;
+    v24 = outCopy;
   }
 
   else
   {
     v23 = 0;
-    v24 = v67;
-    v25 = v16;
+    v24 = outCopy;
+    v25 = processCopy;
   }
 
 LABEL_22:
@@ -695,43 +695,43 @@ LABEL_22:
   return v23;
 }
 
-- (id)openFile:(id)a3 topGroup:(id)a4 profile:(id)a5 mode:(unint64_t)a6 attributes:(id)a7 attributesOut:(id)a8 error:(id *)a9
+- (id)openFile:(id)file topGroup:(id)group profile:(id)profile mode:(unint64_t)mode attributes:(id)attributes attributesOut:(id)out error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
+  fileCopy = file;
+  groupCopy = group;
+  profileCopy = profile;
+  attributesCopy = attributes;
+  outCopy = out;
   v20 = off_100127CE0;
   if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    v27 = v15;
+    v27 = fileCopy;
     v28 = 2112;
-    v29 = v16;
+    v29 = groupCopy;
     v30 = 2112;
-    v31 = v17;
+    v31 = profileCopy;
     v32 = 2048;
-    v33 = a6;
+    modeCopy = mode;
     v34 = 2112;
-    v35 = v18;
+    v35 = attributesCopy;
     _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "openFile name=%@ topGroup=%@ profile=%@ mode=%lu attributes=%@", buf, 0x34u);
   }
 
-  v21 = [(MAFileStoreManager *)self filePreProcess:v15 topGroup:v16 profile:v17 mode:a6 isOpenFile:1 isDirectory:0 attributes:v18 attributesOut:v19 error:a9];
+  v21 = [(MAFileStoreManager *)self filePreProcess:fileCopy topGroup:groupCopy profile:profileCopy mode:mode isOpenFile:1 isDirectory:0 attributes:attributesCopy attributesOut:outCopy error:error];
   if (v21)
   {
     v22 = [NSURL fileURLWithPath:v21 isDirectory:0];
-    switch(a6)
+    switch(mode)
     {
       case 3uLL:
-        v23 = [NSFileHandle fileHandleForUpdatingURL:v22 error:a9];
+        v23 = [NSFileHandle fileHandleForUpdatingURL:v22 error:error];
         break;
       case 2uLL:
-        v23 = [NSFileHandle fileHandleForWritingToURL:v22 error:a9];
+        v23 = [NSFileHandle fileHandleForWritingToURL:v22 error:error];
         break;
       case 1uLL:
-        v23 = [NSFileHandle fileHandleForReadingFromURL:v22 error:a9];
+        v23 = [NSFileHandle fileHandleForReadingFromURL:v22 error:error];
         break;
       default:
         v23 = 0;
@@ -749,17 +749,17 @@ LABEL_22:
   return v24;
 }
 
-- (id)getFilePathWithSbExtension:(id)a3 topGroup:(id)a4 profile:(id)a5 mode:(unint64_t)a6 attributes:(id)a7 clientConn:(id)a8 realpath:(id *)a9 isDirectory:(BOOL)a10 attributesOut:(id)a11 error:(id *)a12
+- (id)getFilePathWithSbExtension:(id)extension topGroup:(id)group profile:(id)profile mode:(unint64_t)mode attributes:(id)attributes clientConn:(id)conn realpath:(id *)realpath isDirectory:(BOOL)self0 attributesOut:(id)self1 error:(id *)self2
 {
-  v18 = a8;
-  v19 = [(MAFileStoreManager *)self filePreProcess:a3 topGroup:a4 profile:a5 mode:a6 isOpenFile:0 isDirectory:a10 attributes:a7 attributesOut:a11 error:a12];
+  connCopy = conn;
+  v19 = [(MAFileStoreManager *)self filePreProcess:extension topGroup:group profile:profile mode:mode isOpenFile:0 isDirectory:directory attributes:attributes attributesOut:out error:error];
   v20 = v19;
   if (v19)
   {
     [v19 fileSystemRepresentation];
-    if (v18)
+    if (connCopy)
     {
-      [v18 auditToken];
+      [connCopy auditToken];
     }
 
     v22 = sandbox_extension_issue_file_to_process();
@@ -769,13 +769,13 @@ LABEL_22:
       v21 = [NSString stringWithUTF8String:v22];
       free(v23);
       v24 = v20;
-      *a9 = v20;
+      *realpath = v20;
     }
 
     else
     {
       createManagedAssetError();
-      *a12 = v21 = 0;
+      *error = v21 = 0;
     }
   }
 
@@ -787,18 +787,18 @@ LABEL_22:
   return v21;
 }
 
-- (BOOL)commitFile:(id)a3 topGroup:(id)a4 profile:(id)a5 attributes:(id)a6 committed:(BOOL *)a7 error:(id *)a8
+- (BOOL)commitFile:(id)file topGroup:(id)group profile:(id)profile attributes:(id)attributes committed:(BOOL *)committed error:(id *)error
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = [(MAFileStoreManager *)self getPathByTopGroup:v14 topGroup:a4 profile:a5];
-  v17 = [v15 objectForKeyedSubscript:kMAFileOptionsKey];
-  v18 = sub_10001B298(v17, a8);
+  fileCopy = file;
+  attributesCopy = attributes;
+  v16 = [(MAFileStoreManager *)self getPathByTopGroup:fileCopy topGroup:group profile:profile];
+  v17 = [attributesCopy objectForKeyedSubscript:kMAFileOptionsKey];
+  v18 = sub_10001B298(v17, error);
 
-  if (!*a8)
+  if (!*error)
   {
-    v20 = [v16 stringByDeletingLastPathComponent];
-    if (![(NSFileManager *)self->_fileMgr fileExistsAtPath:v20])
+    stringByDeletingLastPathComponent = [v16 stringByDeletingLastPathComponent];
+    if (![(NSFileManager *)self->_fileMgr fileExistsAtPath:stringByDeletingLastPathComponent])
     {
       if ((v18 & 4) != 0)
       {
@@ -808,14 +808,14 @@ LABEL_22:
       else
       {
         createManagedAssetError();
-        *a8 = v19 = 0;
+        *error = v19 = 0;
       }
 
       goto LABEL_24;
     }
 
-    [MAUtilityHelper validatePathMatchingRealpath:v20 error:a8];
-    if (*a8)
+    [MAUtilityHelper validatePathMatchingRealpath:stringByDeletingLastPathComponent error:error];
+    if (*error)
     {
       v19 = 0;
 LABEL_24:
@@ -825,27 +825,27 @@ LABEL_24:
 
     if ((~v18 & 6) == 0)
     {
-      v21 = [v14 lastPathComponent];
-      v19 = [(MAFileStoreManager *)self cleanupPendingUpdatesFor:v21 dir:v20 error:a8];
+      lastPathComponent = [fileCopy lastPathComponent];
+      v19 = [(MAFileStoreManager *)self cleanupPendingUpdatesFor:lastPathComponent dir:stringByDeletingLastPathComponent error:error];
 LABEL_23:
 
       goto LABEL_24;
     }
 
-    v21 = [v15 objectForKeyedSubscript:kMASessionIdKey];
-    if ((MAValidHexString(v21, 0x20, a8) & 1) == 0)
+    lastPathComponent = [attributesCopy objectForKeyedSubscript:kMASessionIdKey];
+    if ((MAValidHexString(lastPathComponent, 0x20, error) & 1) == 0)
     {
       if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
       {
-        sub_10001CA2C(v16, a8);
+        sub_10001CA2C(v16, error);
       }
 
       v19 = 0;
       goto LABEL_23;
     }
 
-    v35 = v21;
-    v22 = [NSString stringWithFormat:@"%@-%@.masdtrans", v16, v21];
+    v35 = lastPathComponent;
+    v22 = [NSString stringWithFormat:@"%@-%@.masdtrans", v16, lastPathComponent];
     if (![(NSFileManager *)self->_fileMgr fileExistsAtPath:v22])
     {
       if ((v18 & 4) != 0)
@@ -858,25 +858,25 @@ LABEL_23:
       {
         v23 = v22;
         createManagedAssetError();
-        *a8 = v19 = 0;
+        *error = v19 = 0;
       }
 
       goto LABEL_21;
     }
 
-    [MAUtilityHelper validatePathMatchingRealpath:v22 error:a8];
+    [MAUtilityHelper validatePathMatchingRealpath:v22 error:error];
     v23 = v22;
-    if (*a8)
+    if (*error)
     {
       v19 = 0;
 LABEL_21:
-      v21 = v35;
+      lastPathComponent = v35;
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v21 = v35;
+    lastPathComponent = v35;
     if ((v18 & 4) != 0)
     {
       v28 = off_100127CE0;
@@ -890,10 +890,10 @@ LABEL_22:
       if (unlink([v23 fileSystemRepresentation]) && *__error() != 2)
       {
         v32 = *__error();
-        *a8 = createManagedAssetError();
+        *error = createManagedAssetError();
         if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
         {
-          sub_10001CA94(v23, a8);
+          sub_10001CA94(v23, error);
         }
 
         goto LABEL_46;
@@ -908,15 +908,15 @@ LABEL_22:
     else
     {
       __from = [v23 fileSystemRepresentation];
-      v25 = [v16 fileSystemRepresentation];
-      rename(__from, v25, v26);
+      fileSystemRepresentation = [v16 fileSystemRepresentation];
+      rename(__from, fileSystemRepresentation, v26);
       if (v27)
       {
         v33 = *__error();
-        *a8 = createManagedAssetError();
+        *error = createManagedAssetError();
         if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
         {
-          sub_10001CB64(v16, a8);
+          sub_10001CB64(v16, error);
         }
 
 LABEL_46:
@@ -924,12 +924,12 @@ LABEL_46:
         goto LABEL_22;
       }
 
-      *a7 = 1;
+      *committed = 1;
       if ((v18 & 2) != 0)
       {
-        v29 = [v14 lastPathComponent];
+        lastPathComponent2 = [fileCopy lastPathComponent];
         v36 = 0;
-        [(MAFileStoreManager *)self cleanupPendingUpdatesFor:v29 dir:v20 error:&v36];
+        [(MAFileStoreManager *)self cleanupPendingUpdatesFor:lastPathComponent2 dir:stringByDeletingLastPathComponent error:&v36];
         v30 = v36;
 
         if (v30 && os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
@@ -955,39 +955,39 @@ LABEL_25:
   return v19;
 }
 
-- (BOOL)deleteFile:(id)a3 topGroup:(id)a4 profile:(id)a5 attributes:(id)a6 error:(id *)a7
+- (BOOL)deleteFile:(id)file topGroup:(id)group profile:(id)profile attributes:(id)attributes error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if ([v12 length] >= 2 && objc_msgSend(v12, "hasSuffix:", @"/"))
+  fileCopy = file;
+  groupCopy = group;
+  profileCopy = profile;
+  attributesCopy = attributes;
+  if ([fileCopy length] >= 2 && objc_msgSend(fileCopy, "hasSuffix:", @"/"))
   {
-    v16 = [v12 substringToIndex:{objc_msgSend(v12, "length") - 1}];
+    v16 = [fileCopy substringToIndex:{objc_msgSend(fileCopy, "length") - 1}];
 
-    v12 = v16;
+    fileCopy = v16;
   }
 
-  v17 = [(MAFileStoreManager *)self getPathByTopGroup:v12 topGroup:v13 profile:v14];
-  v18 = [v15 objectForKeyedSubscript:kMAFileOptionsKey];
+  v17 = [(MAFileStoreManager *)self getPathByTopGroup:fileCopy topGroup:groupCopy profile:profileCopy];
+  v18 = [attributesCopy objectForKeyedSubscript:kMAFileOptionsKey];
 
   v19 = sub_10001B298(v18, 0);
   if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:v17])
   {
-    [MAUtilityHelper validatePathMatchingRealpath:v17 error:a7];
-    if (*a7)
+    [MAUtilityHelper validatePathMatchingRealpath:v17 error:error];
+    if (*error)
     {
       LOBYTE(v20) = 0;
     }
 
     else
     {
-      v20 = [(NSFileManager *)self->_fileMgr removeItemAtPath:v17 error:a7];
+      v20 = [(NSFileManager *)self->_fileMgr removeItemAtPath:v17 error:error];
       v21 = off_100127CE0;
       if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_DEBUG))
       {
         v23 = "failure";
-        v24 = *a7;
+        v24 = *error;
         *buf = 138412802;
         if (v20)
         {
@@ -1012,36 +1012,36 @@ LABEL_25:
   else
   {
     createManagedAssetError();
-    *a7 = LOBYTE(v20) = 0;
+    *error = LOBYTE(v20) = 0;
   }
 
   return v20;
 }
 
-- (id)queryFile:(id)a3 topGroup:(id)a4 profile:(id)a5 attributes:(id)a6 pathPrefix:(id)a7 error:(id *)a8
+- (id)queryFile:(id)file topGroup:(id)group profile:(id)profile attributes:(id)attributes pathPrefix:(id)prefix error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if ([v13 length] >= 2 && objc_msgSend(v13, "hasSuffix:", @"/"))
+  fileCopy = file;
+  groupCopy = group;
+  profileCopy = profile;
+  prefixCopy = prefix;
+  if ([fileCopy length] >= 2 && objc_msgSend(fileCopy, "hasSuffix:", @"/"))
   {
-    v17 = [v13 substringToIndex:{objc_msgSend(v13, "length") - 1}];
+    v17 = [fileCopy substringToIndex:{objc_msgSend(fileCopy, "length") - 1}];
 
-    v13 = v17;
+    fileCopy = v17;
   }
 
-  v18 = [(MAFileStoreManager *)self getPathByTopGroup:v13 topGroup:v14 profile:v15];
+  v18 = [(MAFileStoreManager *)self getPathByTopGroup:fileCopy topGroup:groupCopy profile:profileCopy];
   v48 = 0;
   if (![(NSFileManager *)self->_fileMgr fileExistsAtPath:v18 isDirectory:&v48])
   {
     createManagedAssetError();
-    *a8 = v19 = 0;
+    *error = v19 = 0;
     goto LABEL_8;
   }
 
-  [MAUtilityHelper validatePathMatchingRealpath:v18 error:a8];
-  if (*a8)
+  [MAUtilityHelper validatePathMatchingRealpath:v18 error:error];
+  if (*error)
   {
     v19 = 0;
     goto LABEL_8;
@@ -1050,16 +1050,16 @@ LABEL_25:
   fileMgr = self->_fileMgr;
   if ((v48 & 1) == 0)
   {
-    v23 = [(NSFileManager *)fileMgr attributesOfItemAtPath:v18 error:a8];
+    v23 = [(NSFileManager *)fileMgr attributesOfItemAtPath:v18 error:error];
     v24 = v23;
-    if (*a8)
+    if (*error)
     {
       v19 = 0;
     }
 
     else
     {
-      v50 = v16;
+      v50 = prefixCopy;
       v26 = sub_10001B34C(v23, 0);
       v51 = v26;
       v19 = [NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1];
@@ -1068,16 +1068,16 @@ LABEL_25:
     goto LABEL_8;
   }
 
-  v22 = [(NSFileManager *)fileMgr contentsOfDirectoryAtPath:v18 error:a8];
-  if (!*a8)
+  v22 = [(NSFileManager *)fileMgr contentsOfDirectoryAtPath:v18 error:error];
+  if (!*error)
   {
-    if (([(__CFString *)v16 hasSuffix:@"/"]& 1) != 0)
+    if (([(__CFString *)prefixCopy hasSuffix:@"/"]& 1) != 0)
     {
-      if (![(__CFString *)v16 isEqualToString:@"/"])
+      if (![(__CFString *)prefixCopy isEqualToString:@"/"])
       {
 LABEL_25:
-        v38 = v15;
-        v39 = v14;
+        v38 = profileCopy;
+        v39 = groupCopy;
         if (([v18 hasSuffix:@"/"] & 1) == 0)
         {
           v27 = [v18 stringByAppendingString:@"/"];
@@ -1106,19 +1106,19 @@ LABEL_25:
               }
 
               v29 = *(*(&v44 + 1) + 8 * i);
-              v30 = v16;
-              v31 = [(__CFString *)v16 stringByAppendingString:v29];
+              v30 = prefixCopy;
+              v31 = [(__CFString *)prefixCopy stringByAppendingString:v29];
               v32 = self->_fileMgr;
               v33 = [v18 stringByAppendingString:v29];
-              v34 = [(NSFileManager *)v32 attributesOfItemAtPath:v33 error:a8];
+              v34 = [(NSFileManager *)v32 attributesOfItemAtPath:v33 error:error];
 
-              if (*a8)
+              if (*error)
               {
 
                 v19 = 0;
-                v15 = v38;
-                v14 = v39;
-                v16 = v30;
+                profileCopy = v38;
+                groupCopy = v39;
+                prefixCopy = v30;
                 v22 = v37;
                 v36 = v43;
                 goto LABEL_39;
@@ -1127,7 +1127,7 @@ LABEL_25:
               v35 = sub_10001B34C(v34, 0);
               [v43 setObject:v35 forKeyedSubscript:v31];
 
-              v16 = v30;
+              prefixCopy = v30;
             }
 
             v42 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -1147,8 +1147,8 @@ LABEL_25:
         }
 
         v19 = v43;
-        v15 = v38;
-        v14 = v39;
+        profileCopy = v38;
+        groupCopy = v39;
         v22 = v37;
 LABEL_39:
 
@@ -1160,16 +1160,16 @@ LABEL_39:
 
     else
     {
-      v25 = [(__CFString *)v16 stringByAppendingString:@"/"];
+      v25 = [(__CFString *)prefixCopy stringByAppendingString:@"/"];
     }
 
-    v16 = v25;
+    prefixCopy = v25;
     goto LABEL_25;
   }
 
   if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
   {
-    sub_10001CCAC(v18, a8);
+    sub_10001CCAC(v18, error);
   }
 
   v19 = 0;
@@ -1180,34 +1180,34 @@ LABEL_8:
   return v19;
 }
 
-- (BOOL)copyFileFrom:(const char *)a3 to:(id)a4 error:(id *)a5
+- (BOOL)copyFileFrom:(const char *)from to:(id)to error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 stringByDeletingLastPathComponent];
-  if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:v8])
+  toCopy = to;
+  stringByDeletingLastPathComponent = [toCopy stringByDeletingLastPathComponent];
+  if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:toCopy])
   {
-    [MAUtilityHelper validatePathMatchingRealpath:v8 error:a5];
-    if (!*a5)
+    [MAUtilityHelper validatePathMatchingRealpath:toCopy error:error];
+    if (!*error)
     {
-      v10 = [v8 fileSystemRepresentation];
-      unlink(v10);
+      fileSystemRepresentation = [toCopy fileSystemRepresentation];
+      unlink(fileSystemRepresentation);
       goto LABEL_8;
     }
 
     goto LABEL_16;
   }
 
-  if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:v9]|| [(NSFileManager *)self->_fileMgr createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:a5])
+  if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:stringByDeletingLastPathComponent]|| [(NSFileManager *)self->_fileMgr createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error])
   {
-    [MAUtilityHelper validatePathMatchingRealpath:v9 error:a5];
-    if (!*a5)
+    [MAUtilityHelper validatePathMatchingRealpath:stringByDeletingLastPathComponent error:error];
+    if (!*error)
     {
-      v10 = [v8 fileSystemRepresentation];
+      fileSystemRepresentation = [toCopy fileSystemRepresentation];
 LABEL_8:
       v11 = 3;
       do
       {
-        if (!clonefile(a3, v10, 0))
+        if (!clonefile(from, fileSystemRepresentation, 0))
         {
           v14 = 1;
           goto LABEL_17;
@@ -1222,21 +1222,21 @@ LABEL_8:
         if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_INFO))
         {
           *buf = 136315138;
-          v18 = v10;
+          v18 = fileSystemRepresentation;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "dest file %s exists, delete and retry cloning", buf, 0xCu);
         }
 
-        unlink(v10);
+        unlink(fileSystemRepresentation);
         --v11;
       }
 
       while (v11);
       v16 = *__error();
-      *a5 = createManagedAssetError();
+      *error = createManagedAssetError();
       v13 = off_100127CE0;
       if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
       {
-        sub_10001CDE4(a3, v10, v13);
+        sub_10001CDE4(from, fileSystemRepresentation, v13);
       }
     }
 
@@ -1247,11 +1247,11 @@ LABEL_16:
 
   if (os_log_type_enabled(off_100127CE0, OS_LOG_TYPE_ERROR))
   {
-    sub_10001CD7C(v9, a5);
+    sub_10001CD7C(stringByDeletingLastPathComponent, error);
   }
 
   createManagedAssetError();
-  *a5 = v14 = 0;
+  *error = v14 = 0;
 LABEL_17:
 
   return v14;

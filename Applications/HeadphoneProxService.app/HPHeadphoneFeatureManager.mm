@@ -1,12 +1,12 @@
 @interface HPHeadphoneFeatureManager
-- (HPHeadphoneFeatureManager)initWithBluetoothAddress:(id)a3 productID:(unsigned int)a4;
-- (id)getFeatureName:(int)a3;
+- (HPHeadphoneFeatureManager)initWithBluetoothAddress:(id)address productID:(unsigned int)d;
+- (id)getFeatureName:(int)name;
 - (unsigned)getColorCode;
-- (void)setAdaptiveControlsAdaptiveMode:(BOOL)a3;
+- (void)setAdaptiveControlsAdaptiveMode:(BOOL)mode;
 - (void)setAdaptiveControlsConfigDisabled;
 - (void)setAdaptiveControlsConfigEnabled;
-- (void)setAdaptiveControlsConversationAwareness:(BOOL)a3;
-- (void)setAdaptiveControlsPersonalizedVolume:(BOOL)a3;
+- (void)setAdaptiveControlsConversationAwareness:(BOOL)awareness;
+- (void)setAdaptiveControlsPersonalizedVolume:(BOOL)volume;
 - (void)setAdaptiveControlsStatus;
 - (void)setMuteCallConfig;
 - (void)setMuteCallStatus;
@@ -15,18 +15,18 @@
 
 @implementation HPHeadphoneFeatureManager
 
-- (HPHeadphoneFeatureManager)initWithBluetoothAddress:(id)a3 productID:(unsigned int)a4
+- (HPHeadphoneFeatureManager)initWithBluetoothAddress:(id)address productID:(unsigned int)d
 {
   v12.receiver = self;
   v12.super_class = HPHeadphoneFeatureManager;
-  v5 = a3;
+  addressCopy = address;
   v6 = [(HPHeadphoneFeatureManager *)&v12 init];
-  v7 = [v5 copy];
+  v7 = [addressCopy copy];
 
   v8 = *(v6 + 2);
   *(v6 + 2) = v7;
 
-  *(v6 + 2) = a4;
+  *(v6 + 2) = d;
   if (dword_10011C2C0 <= 30 && (dword_10011C2C0 != -1 || _LogCategory_Initialize()))
   {
     sub_1000CF4A0(v6 + 2);
@@ -39,15 +39,15 @@
   return v6;
 }
 
-- (id)getFeatureName:(int)a3
+- (id)getFeatureName:(int)name
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (name == 1)
   {
     v3 = @"Adaptive Controls";
   }
 
-  if (a3)
+  if (name)
   {
     return v3;
   }
@@ -131,19 +131,19 @@
   [(BluetoothDevice *)bluetoothDevice setProxCardShowedForFeature:2 showed:1];
 }
 
-- (void)setAdaptiveControlsAdaptiveMode:(BOOL)a3
+- (void)setAdaptiveControlsAdaptiveMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if (dword_10011C2C0 <= 50 && (dword_10011C2C0 != -1 || _LogCategory_Initialize()))
   {
     sub_1000CF5B0();
-    if (!v3)
+    if (!modeCopy)
     {
       return;
     }
   }
 
-  else if (!v3)
+  else if (!modeCopy)
   {
     return;
   }
@@ -154,9 +154,9 @@
   [(BluetoothDevice *)bluetoothDevice setListeningModeConfigs:10];
 }
 
-- (void)setAdaptiveControlsPersonalizedVolume:(BOOL)a3
+- (void)setAdaptiveControlsPersonalizedVolume:(BOOL)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   if (dword_10011C2C0 <= 50 && (dword_10011C2C0 != -1 || _LogCategory_Initialize()))
   {
     sub_1000CF600();
@@ -169,7 +169,7 @@
     bluetoothDevice = self->_bluetoothDevice;
   }
 
-  if (v3)
+  if (volumeCopy)
   {
     v6 = 1;
   }
@@ -182,9 +182,9 @@
   [(BluetoothDevice *)bluetoothDevice setAdaptiveVolumeMode:v6];
 }
 
-- (void)setAdaptiveControlsConversationAwareness:(BOOL)a3
+- (void)setAdaptiveControlsConversationAwareness:(BOOL)awareness
 {
-  v3 = a3;
+  awarenessCopy = awareness;
   if (dword_10011C2C0 <= 50 && (dword_10011C2C0 != -1 || _LogCategory_Initialize()))
   {
     sub_1000CF650();
@@ -197,7 +197,7 @@
     bluetoothDevice = self->_bluetoothDevice;
   }
 
-  if (v3)
+  if (awarenessCopy)
   {
     v6 = 1;
   }
@@ -232,8 +232,8 @@
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 address];
-        v10 = [v9 isEqualToString:self->_bluetoothAddressString];
+        address = [v8 address];
+        v10 = [address isEqualToString:self->_bluetoothAddressString];
 
         if (v10)
         {

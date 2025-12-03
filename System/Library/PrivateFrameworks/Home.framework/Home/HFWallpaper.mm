@@ -1,15 +1,15 @@
 @interface HFWallpaper
 + (CGSize)contentSizeForWallpaper;
 + (CGSize)size;
-+ (id)customWallpaperWithAssetIdentifier:(id)a3;
++ (id)customWallpaperWithAssetIdentifier:(id)identifier;
 - (BOOL)isCustomType;
-- (BOOL)isEqual:(id)a3;
-- (HFWallpaper)initWithDictionary:(id)a3;
-- (HFWallpaper)initWithType:(int64_t)a3 assetIdentifier:(id)a4 cropInfo:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HFWallpaper)initWithDictionary:(id)dictionary;
+- (HFWallpaper)initWithType:(int64_t)type assetIdentifier:(id)identifier cropInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)sliceIdentifierForVariant:(int64_t)a3;
+- (id)sliceIdentifierForVariant:(int64_t)variant;
 - (id)wallpaperIdentifier;
 @end
 
@@ -17,8 +17,8 @@
 
 + (CGSize)size
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -31,13 +31,13 @@
 
 + (CGSize)contentSizeForWallpaper
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  if ([v7 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v8 = +[HFUtilities isAMac];
 
@@ -69,18 +69,18 @@
   return result;
 }
 
-- (HFWallpaper)initWithType:(int64_t)a3 assetIdentifier:(id)a4 cropInfo:(id)a5
+- (HFWallpaper)initWithType:(int64_t)type assetIdentifier:(id)identifier cropInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = HFWallpaper;
   v10 = [(HFWallpaper *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v9 copy];
+    v10->_type = type;
+    v12 = [infoCopy copy];
     cropInfo = v11->_cropInfo;
     v11->_cropInfo = v12;
 
@@ -89,7 +89,7 @@
       dispatch_once(&qword_280E039A0, &__block_literal_global_185);
     }
 
-    v14 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:_MergedGlobals_296];
+    v14 = [identifierCopy stringByAddingPercentEncodingWithAllowedCharacters:_MergedGlobals_296];
     assetIdentifier = v11->_assetIdentifier;
     v11->_assetIdentifier = v14;
   }
@@ -105,10 +105,10 @@ void __53__HFWallpaper_initWithType_assetIdentifier_cropInfo___block_invoke()
   _MergedGlobals_296 = v0;
 }
 
-- (HFWallpaper)initWithDictionary:(id)a3
+- (HFWallpaper)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Type"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"Type"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -116,20 +116,20 @@ void __53__HFWallpaper_initWithType_assetIdentifier_cropInfo___block_invoke()
     goto LABEL_10;
   }
 
-  v6 = [v5 integerValue];
-  if (v6 > 6)
+  integerValue = [v5 integerValue];
+  if (integerValue > 6)
   {
 LABEL_10:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
-  v7 = v6;
-  v8 = [v4 objectForKeyedSubscript:@"Identifier"];
+  v7 = integerValue;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"Identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 objectForKeyedSubscript:@"AllCropInfo"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"AllCropInfo"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       NSLog(&cfstr_WallpaperCropI.isa, v9);
@@ -153,7 +153,7 @@ LABEL_10:
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"LastUserSelectedWallpaper"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"LastUserSelectedWallpaper"];
     if (v14)
     {
       v15 = [[HFWallpaper alloc] initWithDictionary:v14];
@@ -163,54 +163,54 @@ LABEL_10:
 
     self = [(HFWallpaper *)self initWithType:v7 assetIdentifier:v8 cropInfo:v12];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     NSLog(&cfstr_WallpaperIdent.isa, v8);
-    v13 = 0;
+    selfCopy = 0;
   }
 
 LABEL_19:
-  return v13;
+  return selfCopy;
 }
 
-+ (id)customWallpaperWithAssetIdentifier:(id)a3
++ (id)customWallpaperWithAssetIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HFWallpaper alloc] initWithType:1 assetIdentifier:v3 cropInfo:0];
+  identifierCopy = identifier;
+  v4 = [[HFWallpaper alloc] initWithType:1 assetIdentifier:identifierCopy cropInfo:0];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(HFWallpaper *)self type];
-  if (v3 > 6)
+  type = [(HFWallpaper *)self type];
+  if (type > 6)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_277DFF4F8[v3];
+    v4 = off_277DFF4F8[type];
   }
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(HFWallpaper *)self assetIdentifier];
-  v9 = [(HFWallpaper *)self cropInfo];
-  v10 = [v5 stringWithFormat:@"<%@: %p, type = %@, assetIdentifier = %@, crop info = [ %@ ]>", v7, self, v4, v8, v9];
+  assetIdentifier = [(HFWallpaper *)self assetIdentifier];
+  cropInfo = [(HFWallpaper *)self cropInfo];
+  v10 = [v5 stringWithFormat:@"<%@: %p, type = %@, assetIdentifier = %@, crop info = [ %@ ]>", v7, self, v4, assetIdentifier, cropInfo];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -218,11 +218,11 @@ LABEL_19:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(HFWallpaper *)self type], v5 == [(HFWallpaper *)v4 type]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(HFWallpaper *)self type], v5 == [(HFWallpaper *)equalCopy type]))
     {
-      v6 = [(HFWallpaper *)self wallpaperIdentifier];
-      v7 = [(HFWallpaper *)v4 wallpaperIdentifier];
-      v8 = [v6 isEqual:v7];
+      wallpaperIdentifier = [(HFWallpaper *)self wallpaperIdentifier];
+      wallpaperIdentifier2 = [(HFWallpaper *)equalCopy wallpaperIdentifier];
+      v8 = [wallpaperIdentifier isEqual:wallpaperIdentifier2];
     }
 
     else
@@ -234,13 +234,13 @@ LABEL_19:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HFWallpaper alloc];
-  v5 = [(HFWallpaper *)self type];
-  v6 = [(HFWallpaper *)self assetIdentifier];
-  v7 = [(HFWallpaper *)self cropInfo];
-  v8 = [(HFWallpaper *)v4 initWithType:v5 assetIdentifier:v6 cropInfo:v7];
+  type = [(HFWallpaper *)self type];
+  assetIdentifier = [(HFWallpaper *)self assetIdentifier];
+  cropInfo = [(HFWallpaper *)self cropInfo];
+  v8 = [(HFWallpaper *)v4 initWithType:type assetIdentifier:assetIdentifier cropInfo:cropInfo];
 
   return v8;
 }
@@ -253,32 +253,32 @@ LABEL_19:
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HFWallpaper type](self, "type")}];
   v20[1] = @"Identifier";
   v21[0] = v4;
-  v5 = [(HFWallpaper *)self assetIdentifier];
-  v21[1] = v5;
+  assetIdentifier = [(HFWallpaper *)self assetIdentifier];
+  v21[1] = assetIdentifier;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v7 = [v3 dictionaryWithDictionary:v6];
 
-  v8 = [(HFWallpaper *)self cropInfo];
+  cropInfo = [(HFWallpaper *)self cropInfo];
 
-  if (v8)
+  if (cropInfo)
   {
     +[HFWallpaper size];
     v9 = NSStringFromCGSize(v23);
     v18 = v9;
-    v10 = [(HFWallpaper *)self cropInfo];
-    v11 = [v10 dictionaryRepresentation];
-    v19 = v11;
+    cropInfo2 = [(HFWallpaper *)self cropInfo];
+    dictionaryRepresentation = [cropInfo2 dictionaryRepresentation];
+    v19 = dictionaryRepresentation;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     [v7 setObject:v12 forKeyedSubscript:@"AllCropInfo"];
   }
 
-  v13 = [(HFWallpaper *)self lastUserSelectedWallpaper];
+  lastUserSelectedWallpaper = [(HFWallpaper *)self lastUserSelectedWallpaper];
 
-  if (v13)
+  if (lastUserSelectedWallpaper)
   {
-    v14 = [(HFWallpaper *)self lastUserSelectedWallpaper];
-    v15 = [v14 dictionaryRepresentation];
-    [v7 setObject:v15 forKeyedSubscript:@"LastUserSelectedWallpaper"];
+    lastUserSelectedWallpaper2 = [(HFWallpaper *)self lastUserSelectedWallpaper];
+    dictionaryRepresentation2 = [lastUserSelectedWallpaper2 dictionaryRepresentation];
+    [v7 setObject:dictionaryRepresentation2 forKeyedSubscript:@"LastUserSelectedWallpaper"];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -288,50 +288,50 @@ LABEL_19:
 
 - (id)wallpaperIdentifier
 {
-  v3 = [(HFWallpaper *)self cropInfo];
+  cropInfo = [(HFWallpaper *)self cropInfo];
 
-  if (v3)
+  if (cropInfo)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(HFWallpaper *)self assetIdentifier];
-    v6 = [(HFWallpaper *)self cropInfo];
-    [v6 center];
+    assetIdentifier = [(HFWallpaper *)self assetIdentifier];
+    cropInfo2 = [(HFWallpaper *)self cropInfo];
+    [cropInfo2 center];
     v7 = NSStringFromCGPoint(v15);
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(HFWallpaper *)self cropInfo];
-    [v9 scale];
+    cropInfo3 = [(HFWallpaper *)self cropInfo];
+    [cropInfo3 scale];
     v10 = [v8 numberWithDouble:?];
-    v11 = [v10 stringValue];
-    v12 = [v4 stringWithFormat:@"%@_%@_%@", v5, v7, v11];
+    stringValue = [v10 stringValue];
+    assetIdentifier2 = [v4 stringWithFormat:@"%@_%@_%@", assetIdentifier, v7, stringValue];
   }
 
   else
   {
-    v12 = [(HFWallpaper *)self assetIdentifier];
+    assetIdentifier2 = [(HFWallpaper *)self assetIdentifier];
   }
 
-  return v12;
+  return assetIdentifier2;
 }
 
-- (id)sliceIdentifierForVariant:(int64_t)a3
+- (id)sliceIdentifierForVariant:(int64_t)variant
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HFWallpaper *)self wallpaperIdentifier];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v7 = [v4 stringWithFormat:@"%@_%@", v5, v6];
+  wallpaperIdentifier = [(HFWallpaper *)self wallpaperIdentifier];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:variant];
+  v7 = [v4 stringWithFormat:@"%@_%@", wallpaperIdentifier, v6];
 
   return v7;
 }
 
 - (BOOL)isCustomType
 {
-  v3 = [(HFWallpaper *)self type];
-  if (v3 != 1)
+  type = [(HFWallpaper *)self type];
+  if (type != 1)
   {
-    LOBYTE(v3) = [(HFWallpaper *)self type]== 6;
+    LOBYTE(type) = [(HFWallpaper *)self type]== 6;
   }
 
-  return v3;
+  return type;
 }
 
 @end

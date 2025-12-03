@@ -1,5 +1,5 @@
 @interface HVQueueGuardedData
-- (char)initWithBiomeStream:(__int16)a3 memoryLimit:(void *)a4 memoryStorageFlushCallback:;
+- (char)initWithBiomeStream:(__int16)stream memoryLimit:(void *)limit memoryStorageFlushCallback:;
 - (void)dealloc;
 @end
 
@@ -49,41 +49,41 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (char)initWithBiomeStream:(__int16)a3 memoryLimit:(void *)a4 memoryStorageFlushCallback:
+- (char)initWithBiomeStream:(__int16)stream memoryLimit:(void *)limit memoryStorageFlushCallback:
 {
   v8 = a2;
-  v9 = a4;
-  if (a1)
+  limitCopy = limit;
+  if (self)
   {
-    v24.receiver = a1;
+    v24.receiver = self;
     v24.super_class = HVQueueGuardedData;
-    a1 = objc_msgSendSuper2(&v24, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v24, sel_init);
+    if (self)
     {
       v10 = objc_opt_new();
-      v11 = *(a1 + 5);
-      *(a1 + 5) = v10;
+      v11 = *(self + 5);
+      *(self + 5) = v10;
 
       v12 = objc_opt_new();
-      v13 = *(a1 + 6);
-      *(a1 + 6) = v12;
+      v13 = *(self + 6);
+      *(self + 6) = v12;
 
-      *(a1 + 5) = a3;
-      objc_storeStrong(a1 + 10, a2);
+      *(self + 5) = stream;
+      objc_storeStrong(self + 10, a2);
       v14 = objc_opt_new();
-      v15 = *(a1 + 12);
-      *(a1 + 12) = v14;
+      v15 = *(self + 12);
+      *(self + 12) = v14;
 
-      a1[8] = 0;
-      *(a1 + 12) = 0;
-      *(a1 + 28) = 0;
-      *(a1 + 20) = 0;
+      self[8] = 0;
+      *(self + 12) = 0;
+      *(self + 28) = 0;
+      *(self + 20) = 0;
       if (v8)
       {
-        if (!v9)
+        if (!limitCopy)
         {
-          v23 = [MEMORY[0x277CCA890] currentHandler];
-          [v23 handleFailureInMethod:sel_initWithBiomeStream_memoryLimit_memoryStorageFlushCallback_ object:a1 file:@"HVQueue.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"memoryStorageFlushCallback != nil"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:sel_initWithBiomeStream_memoryLimit_memoryStorageFlushCallback_ object:self file:@"HVQueue.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"memoryStorageFlushCallback != nil"}];
         }
 
         if (initWithBiomeStream_memoryLimit_memoryStorageFlushCallback___pasOnceToken2 != -1)
@@ -93,27 +93,27 @@
 
         v16 = initWithBiomeStream_memoryLimit_memoryStorageFlushCallback___pasExprOnceResult;
         v17 = dispatch_source_create(MEMORY[0x277D85D30], 0xFuLL, 0, v16);
-        v18 = *(a1 + 8);
-        *(a1 + 8) = v17;
+        v18 = *(self + 8);
+        *(self + 8) = v17;
 
         v19 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v16);
-        v20 = *(a1 + 9);
-        *(a1 + 9) = v19;
+        v20 = *(self + 9);
+        *(self + 9) = v19;
 
-        v21 = [v9 copy];
-        dispatch_source_set_event_handler(*(a1 + 8), v21);
-        dispatch_source_set_event_handler(*(a1 + 9), v21);
-        dispatch_activate(*(a1 + 8));
-        dispatch_activate(*(a1 + 9));
-        dispatch_suspend(*(a1 + 8));
-        dispatch_suspend(*(a1 + 9));
+        v21 = [limitCopy copy];
+        dispatch_source_set_event_handler(*(self + 8), v21);
+        dispatch_source_set_event_handler(*(self + 9), v21);
+        dispatch_activate(*(self + 8));
+        dispatch_activate(*(self + 9));
+        dispatch_suspend(*(self + 8));
+        dispatch_suspend(*(self + 9));
 
-        v9 = v21;
+        limitCopy = v21;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __81__HVQueueGuardedData_initWithBiomeStream_memoryLimit_memoryStorageFlushCallback___block_invoke()

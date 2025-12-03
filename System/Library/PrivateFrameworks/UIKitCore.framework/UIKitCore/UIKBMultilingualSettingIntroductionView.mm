@@ -1,9 +1,9 @@
 @interface UIKBMultilingualSettingIntroductionView
-+ (BOOL)shouldShowIntroductionForInputMode:(id)a3;
-+ (id)displayArtwork:(id)a3;
-+ (id)displayDescription:(id)a3;
-+ (id)displayTitle:(id)a3;
-- (UIKBMultilingualSettingIntroductionView)initWithInputMode:(id)a3 frame:(CGRect)a4;
++ (BOOL)shouldShowIntroductionForInputMode:(id)mode;
++ (id)displayArtwork:(id)artwork;
++ (id)displayDescription:(id)description;
++ (id)displayTitle:(id)title;
+- (UIKBMultilingualSettingIntroductionView)initWithInputMode:(id)mode frame:(CGRect)frame;
 - (void)_updateContainer;
 - (void)continueButtonTapped;
 - (void)layoutSubviews;
@@ -12,23 +12,23 @@
 
 @implementation UIKBMultilingualSettingIntroductionView
 
-+ (BOOL)shouldShowIntroductionForInputMode:(id)a3
++ (BOOL)shouldShowIntroductionForInputMode:(id)mode
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![objc_msgSend(a1 "superclass")])
+  modeCopy = mode;
+  if (![objc_msgSend(self "superclass")])
   {
     goto LABEL_28;
   }
 
-  v5 = [v4 languageWithRegion];
-  v6 = [v5 isEqualToString:@"en_IN"];
+  languageWithRegion = [modeCopy languageWithRegion];
+  v6 = [languageWithRegion isEqualToString:@"en_IN"];
 
   if (v6)
   {
     if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
     {
-      v7 = [v4 isMultiscript] ^ 1;
+      v7 = [modeCopy isMultiscript] ^ 1;
       goto LABEL_29;
     }
 
@@ -38,13 +38,13 @@ LABEL_28:
   }
 
   v8 = +[UIKeyboardInputModeController sharedInputModeController];
-  v9 = [v8 activeInputModeIdentifiers];
+  activeInputModeIdentifiers = [v8 activeInputModeIdentifiers];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v9;
+  v10 = activeInputModeIdentifiers;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -79,12 +79,12 @@ LABEL_8:
       }
     }
 
-    v17 = [v4 languageWithRegion];
-    v18 = [v17 isEqualToString:@"ko_KR"];
+    languageWithRegion2 = [modeCopy languageWithRegion];
+    v18 = [languageWithRegion2 isEqualToString:@"ko_KR"];
 
     if (v18)
     {
-      if (_os_feature_enabled_impl() && _os_feature_enabled_impl() && (UIKeyboardInputModeIsKoreanEnglishBilingual(v4) & 1) == 0)
+      if (_os_feature_enabled_impl() && _os_feature_enabled_impl() && (UIKeyboardInputModeIsKoreanEnglishBilingual(modeCopy) & 1) == 0)
       {
         LOBYTE(v7) = (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1;
         goto LABEL_26;
@@ -93,8 +93,8 @@ LABEL_8:
 
     else
     {
-      v19 = [v4 languageWithRegion];
-      v20 = [v19 isEqualToString:@"ar"];
+      languageWithRegion3 = [modeCopy languageWithRegion];
+      v20 = [languageWithRegion3 isEqualToString:@"ar"];
 
       if (!v20)
       {
@@ -104,8 +104,8 @@ LABEL_8:
 
       if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
       {
-        v21 = [v4 softwareLayout];
-        LOBYTE(v7) = ([v21 isEqualToString:@"Arabic-With-QWERTY"] & 1) == 0 && (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1;
+        softwareLayout = [modeCopy softwareLayout];
+        LOBYTE(v7) = ([softwareLayout isEqualToString:@"Arabic-With-QWERTY"] & 1) == 0 && (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1;
 
         goto LABEL_26;
       }
@@ -124,11 +124,11 @@ LABEL_29:
   return v7;
 }
 
-+ (id)displayTitle:(id)a3
++ (id)displayTitle:(id)title
 {
-  v3 = a3;
-  v4 = [v3 languageWithRegion];
-  v5 = [v4 isEqualToString:@"ko_KR"];
+  titleCopy = title;
+  languageWithRegion = [titleCopy languageWithRegion];
+  v5 = [languageWithRegion isEqualToString:@"ko_KR"];
 
   if (v5)
   {
@@ -137,8 +137,8 @@ LABEL_29:
 
   else
   {
-    v7 = [v3 languageWithRegion];
-    v8 = [v7 isEqualToString:@"ar"];
+    languageWithRegion2 = [titleCopy languageWithRegion];
+    v8 = [languageWithRegion2 isEqualToString:@"ar"];
 
     if (v8)
     {
@@ -156,11 +156,11 @@ LABEL_29:
   return v9;
 }
 
-+ (id)displayDescription:(id)a3
++ (id)displayDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 languageWithRegion];
-  v5 = [v4 isEqualToString:@"ko_KR"];
+  descriptionCopy = description;
+  languageWithRegion = [descriptionCopy languageWithRegion];
+  v5 = [languageWithRegion isEqualToString:@"ko_KR"];
 
   if (v5)
   {
@@ -169,8 +169,8 @@ LABEL_29:
 
   else
   {
-    v7 = [v3 languageWithRegion];
-    v8 = [v7 isEqualToString:@"ar"];
+    languageWithRegion2 = [descriptionCopy languageWithRegion];
+    v8 = [languageWithRegion2 isEqualToString:@"ar"];
 
     if (v8)
     {
@@ -188,35 +188,35 @@ LABEL_29:
   return v9;
 }
 
-- (UIKBMultilingualSettingIntroductionView)initWithInputMode:(id)a3 frame:(CGRect)a4
+- (UIKBMultilingualSettingIntroductionView)initWithInputMode:(id)mode frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v149[19] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  modeCopy = mode;
   v148.receiver = self;
   v148.super_class = UIKBMultilingualSettingIntroductionView;
-  v10 = [(UIView *)&v148 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIView *)&v148 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(UIKBMultilingualSettingIntroductionView *)v10 setInputMode:v9];
+    [(UIKBMultilingualSettingIntroductionView *)height setInputMode:modeCopy];
     [(UIView *)v11 setAutoresizingMask:18];
-    v12 = [(UIView *)v11 _inheritedRenderConfig];
-    v13 = -[_UIBackdropView initWithStyle:]([_UIBackdropView alloc], "initWithStyle:", [v12 backdropStyle]);
+    _inheritedRenderConfig = [(UIView *)v11 _inheritedRenderConfig];
+    v13 = -[_UIBackdropView initWithStyle:]([_UIBackdropView alloc], "initWithStyle:", [_inheritedRenderConfig backdropStyle]);
     [(UIKBMultilingualSettingIntroductionView *)v11 setBackdropView:v13];
 
-    v14 = [(UIKBMultilingualSettingIntroductionView *)v11 backdropView];
-    [(UIView *)v11 addSubview:v14];
+    backdropView = [(UIKBMultilingualSettingIntroductionView *)v11 backdropView];
+    [(UIView *)v11 addSubview:backdropView];
 
-    v15 = [objc_opt_class() displayTitle:v9];
-    v16 = [objc_opt_class() displayDescription:v9];
+    v15 = [objc_opt_class() displayTitle:modeCopy];
+    v16 = [objc_opt_class() displayDescription:modeCopy];
     v17 = _UILocalizedStringInSystemLanguage(@"Set Up in Settings", @"Set Up in Settings");
     v18 = _UILocalizedStringInSystemLanguage(@"Continue without Setting Up", @"Continue without Setting Up");
-    v146 = v12;
-    if ([v12 lightKeyboard])
+    v146 = _inheritedRenderConfig;
+    if ([_inheritedRenderConfig lightKeyboard])
     {
       +[UIColor blackColor];
     }
@@ -226,14 +226,14 @@ LABEL_29:
       +[UIColor whiteColor];
     }
     v96 = ;
-    v19 = [objc_opt_class() displayArtwork:v9];
+    v19 = [objc_opt_class() displayArtwork:modeCopy];
     [(UIKBMultilingualSettingIntroductionView *)v11 setArtworkView:v19];
 
-    v20 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    artworkView = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
+    [artworkView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
-    [(UIView *)v11 addSubview:v21];
+    artworkView2 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
+    [(UIView *)v11 addSubview:artworkView2];
 
     v22 = [UILabel alloc];
     v23 = *MEMORY[0x1E695F058];
@@ -243,51 +243,51 @@ LABEL_29:
     v27 = [(UILabel *)v22 initWithFrame:*MEMORY[0x1E695F058], v24, v25, v26];
     [(UIKBMultilingualSettingIntroductionView *)v11 setTitleLabel:v27];
 
-    v28 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
+    [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v29 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    [v29 setTextColor:v96];
+    titleLabel2 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
+    [titleLabel2 setTextColor:v96];
 
-    v30 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    [v30 setTextAlignment:1];
+    titleLabel3 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v31 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    [v31 setText:v15];
+    titleLabel4 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
+    [titleLabel4 setText:v15];
 
-    v32 = [(UIKBMultilingualIntroductionView *)v11 titleLabelFont];
+    titleLabelFont = [(UIKBMultilingualIntroductionView *)v11 titleLabelFont];
     [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    v33 = v147 = v9;
-    [v33 setFont:v32];
+    v33 = v147 = modeCopy;
+    [v33 setFont:titleLabelFont];
 
-    v34 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    [(UIView *)v11 addSubview:v34];
+    titleLabel5 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
+    [(UIView *)v11 addSubview:titleLabel5];
 
     v35 = [[UILabel alloc] initWithFrame:v23, v24, v25, v26];
     [(UIKBMultilingualSettingIntroductionView *)v11 setDescriptionLabel:v35];
 
-    v36 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
+    descriptionLabel = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v37 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    [v37 setTextColor:v96];
+    descriptionLabel2 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel2 setTextColor:v96];
 
-    v38 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    [v38 setTextAlignment:1];
+    descriptionLabel3 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel3 setTextAlignment:1];
 
-    v39 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    [v39 setText:v16];
+    descriptionLabel4 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel4 setText:v16];
 
-    v40 = [(UIKBMultilingualIntroductionView *)v11 descriptionLabelFont];
-    v41 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    [v41 setFont:v40];
+    descriptionLabelFont = [(UIKBMultilingualIntroductionView *)v11 descriptionLabelFont];
+    descriptionLabel5 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel5 setFont:descriptionLabelFont];
 
-    v42 = [(UIKBMultilingualIntroductionView *)v11 descriptionLabelNumberOfLines];
-    v43 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    [v43 setNumberOfLines:v42];
+    descriptionLabelNumberOfLines = [(UIKBMultilingualIntroductionView *)v11 descriptionLabelNumberOfLines];
+    descriptionLabel6 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    [descriptionLabel6 setNumberOfLines:descriptionLabelNumberOfLines];
 
-    v44 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    [(UIView *)v11 addSubview:v44];
+    descriptionLabel7 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    [(UIView *)v11 addSubview:descriptionLabel7];
 
     v45 = +[UIButtonConfiguration filledButtonConfiguration];
     [v45 setCornerStyle:3];
@@ -296,128 +296,128 @@ LABEL_29:
     v46 = [UIButton buttonWithType:1];
     [(UIKBMultilingualSettingIntroductionView *)v11 setSettingButton:v46];
 
-    v47 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
-    [v47 setTranslatesAutoresizingMaskIntoConstraints:0];
+    settingButton = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
+    [settingButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v48 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
-    [v48 setConfiguration:v45];
+    settingButton2 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
+    [settingButton2 setConfiguration:v45];
 
-    v49 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
-    [v49 addTarget:v11 action:sel_settingButtonTapped forControlEvents:64];
+    settingButton3 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
+    [settingButton3 addTarget:v11 action:sel_settingButtonTapped forControlEvents:64];
 
-    v50 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
-    [(UIView *)v11 addSubview:v50];
+    settingButton4 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
+    [(UIView *)v11 addSubview:settingButton4];
 
     v51 = [[UIButton alloc] initWithFrame:v23, v24, v25, v26];
     [(UIKBMultilingualSettingIntroductionView *)v11 setContinueButton:v51];
 
-    v52 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
-    [v52 setTranslatesAutoresizingMaskIntoConstraints:0];
+    continueButton = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
+    [continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v53 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
-    [v53 setTitle:v18 forState:0];
+    continueButton2 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
+    [continueButton2 setTitle:v18 forState:0];
 
-    v54 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
+    continueButton3 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
     v55 = +[UIColor linkColor];
-    [v54 setTitleColor:v55 forState:0];
+    [continueButton3 setTitleColor:v55 forState:0];
 
-    v56 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
+    continueButton4 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
     v57 = +[UIColor linkColor];
-    [v56 setTitleColor:v57 forState:0];
+    [continueButton4 setTitleColor:v57 forState:0];
 
-    v58 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
-    [v58 addTarget:v11 action:sel_continueButtonTapped forControlEvents:64];
+    continueButton5 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
+    [continueButton5 addTarget:v11 action:sel_continueButtonTapped forControlEvents:64];
 
-    v59 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
-    [(UIView *)v11 addSubview:v59];
+    continueButton6 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
+    [(UIView *)v11 addSubview:continueButton6];
 
     v113 = MEMORY[0x1E69977A0];
-    v144 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
-    v143 = [v144 topAnchor];
-    v142 = [(UIView *)v11 topAnchor];
-    v141 = [v143 constraintGreaterThanOrEqualToAnchor:v142 constant:15.0];
+    artworkView3 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
+    topAnchor = [artworkView3 topAnchor];
+    topAnchor2 = [(UIView *)v11 topAnchor];
+    v141 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:15.0];
     v149[0] = v141;
-    v140 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
-    v139 = [v140 heightAnchor];
-    v138 = [v139 constraintEqualToConstant:150.0];
+    artworkView4 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
+    heightAnchor = [artworkView4 heightAnchor];
+    v138 = [heightAnchor constraintEqualToConstant:150.0];
     v149[1] = v138;
-    v137 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
-    v136 = [v137 centerXAnchor];
-    v135 = [(UIView *)v11 centerXAnchor];
-    v134 = [v136 constraintEqualToAnchor:v135];
+    artworkView5 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
+    centerXAnchor = [artworkView5 centerXAnchor];
+    centerXAnchor2 = [(UIView *)v11 centerXAnchor];
+    v134 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v149[2] = v134;
-    v133 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
-    v132 = [v133 widthAnchor];
-    v131 = [(UIView *)v11 widthAnchor];
-    v130 = [v132 constraintEqualToAnchor:v131 multiplier:0.7];
+    artworkView6 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
+    widthAnchor = [artworkView6 widthAnchor];
+    widthAnchor2 = [(UIView *)v11 widthAnchor];
+    v130 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.7];
     v149[3] = v130;
-    v129 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    v127 = [v129 topAnchor];
-    v128 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
-    v126 = [v128 bottomAnchor];
-    v125 = [v127 constraintEqualToAnchor:v126 constant:15.0];
+    titleLabel6 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
+    topAnchor3 = [titleLabel6 topAnchor];
+    artworkView7 = [(UIKBMultilingualSettingIntroductionView *)v11 artworkView];
+    bottomAnchor = [artworkView7 bottomAnchor];
+    v125 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:15.0];
     v149[4] = v125;
-    v124 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    v123 = [v124 centerXAnchor];
-    v122 = [(UIView *)v11 centerXAnchor];
-    v121 = [v123 constraintEqualToAnchor:v122];
+    titleLabel7 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
+    centerXAnchor3 = [titleLabel7 centerXAnchor];
+    centerXAnchor4 = [(UIView *)v11 centerXAnchor];
+    v121 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v149[5] = v121;
-    v120 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    v119 = [v120 widthAnchor];
-    v118 = [(UIView *)v11 widthAnchor];
-    v117 = [v119 constraintEqualToAnchor:v118 multiplier:0.7];
+    titleLabel8 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
+    widthAnchor3 = [titleLabel8 widthAnchor];
+    widthAnchor4 = [(UIView *)v11 widthAnchor];
+    v117 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.7];
     v149[6] = v117;
-    v116 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    v114 = [v116 topAnchor];
-    v115 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
-    v112 = [v115 bottomAnchor];
-    v111 = [v114 constraintEqualToAnchor:v112 constant:12.0];
+    descriptionLabel8 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    topAnchor4 = [descriptionLabel8 topAnchor];
+    titleLabel9 = [(UIKBMultilingualSettingIntroductionView *)v11 titleLabel];
+    bottomAnchor2 = [titleLabel9 bottomAnchor];
+    v111 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:12.0];
     v149[7] = v111;
-    v110 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    v109 = [v110 centerXAnchor];
-    v108 = [(UIView *)v11 centerXAnchor];
-    v107 = [v109 constraintEqualToAnchor:v108];
+    descriptionLabel9 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    centerXAnchor5 = [descriptionLabel9 centerXAnchor];
+    centerXAnchor6 = [(UIView *)v11 centerXAnchor];
+    v107 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v149[8] = v107;
-    v106 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    v105 = [v106 widthAnchor];
-    v103 = [(UIView *)v11 widthAnchor];
-    v101 = [v105 constraintEqualToAnchor:v103 multiplier:0.7];
+    descriptionLabel10 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    widthAnchor5 = [descriptionLabel10 widthAnchor];
+    widthAnchor6 = [(UIView *)v11 widthAnchor];
+    v101 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:0.7];
     v149[9] = v101;
-    v100 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
-    v95 = [v100 topAnchor];
-    v97 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
-    v94 = [v97 bottomAnchor];
-    v93 = [v95 constraintEqualToAnchor:v94 constant:12.0];
+    settingButton5 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
+    topAnchor5 = [settingButton5 topAnchor];
+    descriptionLabel11 = [(UIKBMultilingualSettingIntroductionView *)v11 descriptionLabel];
+    bottomAnchor3 = [descriptionLabel11 bottomAnchor];
+    v93 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:12.0];
     v149[10] = v93;
-    v92 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
-    v91 = [v92 centerXAnchor];
-    v90 = [(UIView *)v11 centerXAnchor];
-    v89 = [v91 constraintEqualToAnchor:v90];
+    settingButton6 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
+    centerXAnchor7 = [settingButton6 centerXAnchor];
+    centerXAnchor8 = [(UIView *)v11 centerXAnchor];
+    v89 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v149[11] = v89;
-    v88 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
-    v87 = [v88 widthAnchor];
-    v86 = [(UIView *)v11 widthAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86 multiplier:0.7];
+    settingButton7 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
+    widthAnchor7 = [settingButton7 widthAnchor];
+    widthAnchor8 = [(UIView *)v11 widthAnchor];
+    v85 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 multiplier:0.7];
     v149[12] = v85;
-    v84 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
-    v83 = [v84 heightAnchor];
-    v82 = [v83 constraintEqualToConstant:42.0];
+    settingButton8 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
+    heightAnchor2 = [settingButton8 heightAnchor];
+    v82 = [heightAnchor2 constraintEqualToConstant:42.0];
     v149[13] = v82;
-    v81 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
-    v79 = [v81 topAnchor];
-    v80 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
-    v78 = [v80 bottomAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78 constant:12.0];
+    continueButton7 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
+    topAnchor6 = [continueButton7 topAnchor];
+    settingButton9 = [(UIKBMultilingualSettingIntroductionView *)v11 settingButton];
+    bottomAnchor4 = [settingButton9 bottomAnchor];
+    v77 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:12.0];
     v149[14] = v77;
-    v76 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
-    v75 = [v76 centerXAnchor];
-    v74 = [(UIView *)v11 centerXAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74];
+    continueButton8 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
+    centerXAnchor9 = [continueButton8 centerXAnchor];
+    centerXAnchor10 = [(UIView *)v11 centerXAnchor];
+    v73 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
     v149[15] = v73;
-    v72 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
-    v71 = [v72 widthAnchor];
-    v70 = [(UIView *)v11 widthAnchor];
-    v60 = [v71 constraintEqualToAnchor:v70 multiplier:0.7];
+    continueButton9 = [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
+    widthAnchor9 = [continueButton9 widthAnchor];
+    widthAnchor10 = [(UIView *)v11 widthAnchor];
+    v60 = [widthAnchor9 constraintEqualToAnchor:widthAnchor10 multiplier:0.7];
     v149[16] = v60;
     [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
     v61 = v104 = v15;
@@ -426,37 +426,37 @@ LABEL_29:
     [v62 constraintEqualToConstant:21.0];
     v63 = v99 = v18;
     v149[17] = v63;
-    v64 = [(UIView *)v11 bottomAnchor];
+    bottomAnchor5 = [(UIView *)v11 bottomAnchor];
     [(UIKBMultilingualSettingIntroductionView *)v11 continueButton];
     v65 = v98 = v17;
-    v66 = [v65 bottomAnchor];
-    v67 = [v64 constraintEqualToAnchor:v66 constant:40.0];
+    bottomAnchor6 = [v65 bottomAnchor];
+    v67 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:40.0];
     v149[18] = v67;
     v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:v149 count:19];
     [v113 activateConstraints:v68];
 
-    v9 = v147;
+    modeCopy = v147;
   }
 
   return v11;
 }
 
-+ (id)displayArtwork:(id)a3
++ (id)displayArtwork:(id)artwork
 {
-  v3 = a3;
-  v4 = [v3 languageWithRegion];
-  if ([v4 isEqualToString:@"ko_KR"])
+  artworkCopy = artwork;
+  languageWithRegion = [artworkCopy languageWithRegion];
+  if ([languageWithRegion isEqualToString:@"ko_KR"])
   {
 
 LABEL_4:
-    v7 = [v3 languageWithRegion];
-    v8 = [[UIKBMultilingualKeyboardArtworkView alloc] initWithLanguage1:v7 andLanguage2:@"en"];
+    languageWithRegion2 = [artworkCopy languageWithRegion];
+    v8 = [[UIKBMultilingualKeyboardArtworkView alloc] initWithLanguage1:languageWithRegion2 andLanguage2:@"en"];
 
     goto LABEL_6;
   }
 
-  v5 = [v3 languageWithRegion];
-  v6 = [v5 isEqualToString:@"ar"];
+  languageWithRegion3 = [artworkCopy languageWithRegion];
+  v6 = [languageWithRegion3 isEqualToString:@"ar"];
 
   if (v6)
   {
@@ -497,29 +497,29 @@ LABEL_6:
 - (void)_updateContainer
 {
   [(UIView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(UIView *)self _rootInputWindowController];
-  v4 = [v3 _inputAccessoryView];
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  _inputAccessoryView = [_rootInputWindowController _inputAccessoryView];
 
-  v5 = [(UIView *)self _rootInputWindowController];
-  v6 = v5;
-  if (v4)
+  _rootInputWindowController2 = [(UIView *)self _rootInputWindowController];
+  _rootInputWindowController3 = _rootInputWindowController2;
+  if (_inputAccessoryView)
   {
-    v7 = [v5 _inputAccessoryView];
+    _inputAccessoryView2 = [_rootInputWindowController2 _inputAccessoryView];
     goto LABEL_11;
   }
 
-  v8 = [v5 _inputAssistantView];
-  v9 = [v8 superview];
-  if (v9)
+  _inputAssistantView = [_rootInputWindowController2 _inputAssistantView];
+  superview = [_inputAssistantView superview];
+  if (superview)
   {
-    v10 = v9;
+    v10 = superview;
     v11 = +[UIKeyboardImpl activeInstance];
-    v12 = [v11 _showsScribbleIconsInAssistantView];
+    _showsScribbleIconsInAssistantView = [v11 _showsScribbleIconsInAssistantView];
 
-    if ((v12 & 1) == 0)
+    if ((_showsScribbleIconsInAssistantView & 1) == 0)
     {
-      v6 = [(UIView *)self _rootInputWindowController];
-      v7 = [v6 _inputAssistantView];
+      _rootInputWindowController3 = [(UIView *)self _rootInputWindowController];
+      _inputAccessoryView2 = [_rootInputWindowController3 _inputAssistantView];
       goto LABEL_11;
     }
   }
@@ -528,31 +528,31 @@ LABEL_6:
   {
   }
 
-  v13 = [(UIView *)self _rootInputWindowController];
-  v14 = [v13 _inputView];
+  _rootInputWindowController4 = [(UIView *)self _rootInputWindowController];
+  _inputView = [_rootInputWindowController4 _inputView];
 
-  v15 = [(UIView *)self _rootInputWindowController];
-  v6 = v15;
-  if (v14)
+  _rootInputWindowController5 = [(UIView *)self _rootInputWindowController];
+  _rootInputWindowController3 = _rootInputWindowController5;
+  if (_inputView)
   {
-    [v15 _inputView];
+    [_rootInputWindowController5 _inputView];
   }
 
   else
   {
-    [v15 view];
+    [_rootInputWindowController5 view];
   }
-  v7 = ;
+  _inputAccessoryView2 = ;
 LABEL_11:
-  v16 = v7;
-  v40 = [v7 topAnchor];
+  v16 = _inputAccessoryView2;
+  topAnchor = [_inputAccessoryView2 topAnchor];
 
   v17 = +[UIKeyboardImpl isFloating];
-  v18 = [(UIView *)self _rootInputWindowController];
-  v19 = v18;
+  _rootInputWindowController6 = [(UIView *)self _rootInputWindowController];
+  v19 = _rootInputWindowController6;
   if (v17)
   {
-    v20 = [v18 _inputView];
+    _inputView2 = [_rootInputWindowController6 _inputView];
 
     +[UIKeyboardPopoverContainer contentInsets];
     v22 = -fabs(v21);
@@ -566,7 +566,7 @@ LABEL_11:
 
   else
   {
-    v20 = [v18 view];
+    _inputView2 = [_rootInputWindowController6 view];
 
     v26 = 0.0;
     v22 = 0.0;
@@ -574,23 +574,23 @@ LABEL_11:
     v28 = 0.0;
   }
 
-  v29 = [(UIView *)self topAnchor];
-  v30 = [v29 constraintEqualToAnchor:v40 constant:v22];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v30 = [topAnchor2 constraintEqualToAnchor:topAnchor constant:v22];
   [v30 setActive:1];
 
-  v31 = [(UIView *)self bottomAnchor];
-  v32 = [v20 bottomAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32 constant:v24];
+  bottomAnchor = [(UIView *)self bottomAnchor];
+  bottomAnchor2 = [_inputView2 bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v24];
   [v33 setActive:1];
 
-  v34 = [(UIView *)self leftAnchor];
-  v35 = [v20 leftAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35 constant:v26];
+  leftAnchor = [(UIView *)self leftAnchor];
+  leftAnchor2 = [_inputView2 leftAnchor];
+  v36 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v26];
   [v36 setActive:1];
 
-  v37 = [(UIView *)self rightAnchor];
-  v38 = [v20 rightAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38 constant:v28];
+  rightAnchor = [(UIView *)self rightAnchor];
+  rightAnchor2 = [_inputView2 rightAnchor];
+  v39 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v28];
   [v39 setActive:1];
 }
 

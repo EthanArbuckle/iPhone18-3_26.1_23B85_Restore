@@ -1,140 +1,140 @@
 @interface PSIDatabase
-+ (BOOL)_integrityCheckDatabase:(sqlite3 *)a3;
++ (BOOL)_integrityCheckDatabase:(sqlite3 *)database;
 + (id)searchDatabaseLog;
-+ (sqlite3)_openDatabaseAtPath:(id)a3 options:(int64_t)a4;
-+ (void)_dropDatabase:(sqlite3 *)a3 withCompletion:(id)a4;
-+ (void)dropDatabaseAtPath:(id)a3 withCompletion:(id)a4;
++ (sqlite3)_openDatabaseAtPath:(id)path options:(int64_t)options;
++ (void)_dropDatabase:(sqlite3 *)database withCompletion:(id)completion;
++ (void)dropDatabaseAtPath:(id)path withCompletion:(id)completion;
 - (BOOL)_inqVerifyTablesExistInDatabase;
-- (BOOL)_prepareSearchIndexAtPath:(id)a3 options:(int64_t)a4;
-- (BOOL)assetExistsWithUUID:(id)a3;
-- (PSIDatabase)initWithPathManager:(id)a3 options:(int64_t)a4;
-- (__CFArray)_inqNewAssetIdsForGroupId:(unint64_t)a3 dateFilter:(id)a4;
-- (__CFArray)_inqNewAssetIdsWithDateFilter:(id)a3;
-- (__CFArray)_inqNewCollectionIdsForGroupId:(unint64_t)a3 dateFilter:(id)a4;
-- (__CFArray)assetIdsWithDateFilter:(id)a3;
-- (__CFArray)mostRecentSortedAssetIdsWithLimit:(unint64_t)a3;
-- (__CFDictionary)_inqPrepareStatementsForOptions:(int64_t)a3 tokenizerName:(id)a4;
-- (__CFSet)_inqAssetIdsForGroupIds:(__CFSet *)a3;
-- (__CFSet)_inqNewGroupIdsForAssetId:(unint64_t)a3;
-- (__CFSet)_inqNewGroupIdsForAssetIds:(__CFSet *)a3;
-- (__CFSet)_inqNewGroupIdsForCollectionId:(unint64_t)a3;
-- (__CFSet)_inqNewGroupIdsForCollectionIds:(__CFSet *)a3;
-- (__CFSet)_inqNewGroupIdsMatchingFTSString:(id)a3 categories:(id)a4 textIsSearchable:(BOOL)a5;
-- (__CFSet)_inqNewGroupIdsWithCategories:(id)a3;
-- (__CFSet)groupIdsForNormalizedText:(id)a3 wildcardSearch:(BOOL)a4 leadingAnchored:(BOOL)a5 searchIndexCategories:(id)a6;
-- (__CFSet)groupIdsMatchingFTSString:(id)a3 categories:(id)a4 textIsSearchable:(BOOL)a5;
-- (double)_inqScoreForGroupID:(unint64_t)a3;
-- (id)_inqAssetIdsByGroupIdForAssetIds:(id)a3;
-- (id)_inqAssetUUIDsForAssetIds:(__CFArray *)a3 range:(_NSRange)a4 creationDateSorted:(BOOL)a5;
-- (id)_inqAssetUUIDsForAssetIds:(__CFSet *)a3;
-- (id)_inqAssetUUIDsForGroupID:(unint64_t)a3;
-- (id)_inqCollectionIdsByGroupIdForCollectionIds:(id)a3;
-- (id)_inqCollectionUUIDsForCollectionIds:(__CFArray *)a3 range:(_NSRange)a4;
-- (id)_inqCollectionUUIDsForGroupID:(unint64_t)a3;
-- (id)_inqContentStringForGroupId:(unint64_t)a3;
-- (id)_inqDequeueGroupObjectWithId:(unint64_t)a3 isCachedGroup:(BOOL *)a4;
-- (id)_inqFilenameGroupsWithMatchingGroupIds:(__CFSet *)a3 dateFilter:(id)a4 searchResultTypes:(unint64_t)a5 matchingPredicateBlock:(id)a6;
-- (id)_inqGenerateGroupsInfoDictionaryFromContentString:(const char *)a3 normalizedString:(const char *)a4 identifier:(const char *)a5 category:(signed __int16)a6 score:(double)a7 groupId:(unint64_t)a8 owningGroupId:(unint64_t)a9 includeUUIDs:(BOOL)a10;
-- (id)_inqGroupArraysFromGroupIdSets:(id)a3 dateFilter:(id)a4 searchResultTypes:(unint64_t)a5 progressBlock:(id)a6;
-- (id)_inqGroupForLookupIdentifier:(id)a3 searchResultTypes:(unint64_t)a4;
-- (id)_inqGroupWithMatchingGroupId:(unint64_t)a3 dateFilter:(id)a4 searchResultTypes:(unint64_t)a5;
-- (id)_inqGroupWithStatement:(sqlite3_stmt *)a3 dateFilter:(id)a4 includeObjects:(BOOL)a5 isFilenameStatement:(BOOL)a6 excludingGroupId:(unint64_t)a7 searchResultTypes:(unint64_t)a8;
-- (id)_inqGroupsWithMatchingGroupIds:(__CFSet *)a3 dateFilter:(id)a4 includeObjects:(BOOL)a5 searchResultTypes:(unint64_t)a6 matchingPredicateBlock:(id)a7;
-- (id)_inqNewSynonymTextsByOwningGroupIdWithGroupIds:(__CFSet *)a3;
-- (id)_inqNonFilenameGroupsWithMatchingGroupIds:(__CFSet *)a3 dateFilter:(id)a4 includeObjects:(BOOL)a5 searchResultTypes:(unint64_t)a6 matchingPredicateBlock:(id)a7;
-- (id)_inqNumberOfAssetsByGroupIdMatchingGroupsWithIds:(id)a3;
-- (id)_inqNumberOfCollectionsByGroupIdMatchingGroupsWithIds:(id)a3;
+- (BOOL)_prepareSearchIndexAtPath:(id)path options:(int64_t)options;
+- (BOOL)assetExistsWithUUID:(id)d;
+- (PSIDatabase)initWithPathManager:(id)manager options:(int64_t)options;
+- (__CFArray)_inqNewAssetIdsForGroupId:(unint64_t)id dateFilter:(id)filter;
+- (__CFArray)_inqNewAssetIdsWithDateFilter:(id)filter;
+- (__CFArray)_inqNewCollectionIdsForGroupId:(unint64_t)id dateFilter:(id)filter;
+- (__CFArray)assetIdsWithDateFilter:(id)filter;
+- (__CFArray)mostRecentSortedAssetIdsWithLimit:(unint64_t)limit;
+- (__CFDictionary)_inqPrepareStatementsForOptions:(int64_t)options tokenizerName:(id)name;
+- (__CFSet)_inqAssetIdsForGroupIds:(__CFSet *)ids;
+- (__CFSet)_inqNewGroupIdsForAssetId:(unint64_t)id;
+- (__CFSet)_inqNewGroupIdsForAssetIds:(__CFSet *)ids;
+- (__CFSet)_inqNewGroupIdsForCollectionId:(unint64_t)id;
+- (__CFSet)_inqNewGroupIdsForCollectionIds:(__CFSet *)ids;
+- (__CFSet)_inqNewGroupIdsMatchingFTSString:(id)string categories:(id)categories textIsSearchable:(BOOL)searchable;
+- (__CFSet)_inqNewGroupIdsWithCategories:(id)categories;
+- (__CFSet)groupIdsForNormalizedText:(id)text wildcardSearch:(BOOL)search leadingAnchored:(BOOL)anchored searchIndexCategories:(id)categories;
+- (__CFSet)groupIdsMatchingFTSString:(id)string categories:(id)categories textIsSearchable:(BOOL)searchable;
+- (double)_inqScoreForGroupID:(unint64_t)d;
+- (id)_inqAssetIdsByGroupIdForAssetIds:(id)ids;
+- (id)_inqAssetUUIDsForAssetIds:(__CFArray *)ids range:(_NSRange)range creationDateSorted:(BOOL)sorted;
+- (id)_inqAssetUUIDsForAssetIds:(__CFSet *)ids;
+- (id)_inqAssetUUIDsForGroupID:(unint64_t)d;
+- (id)_inqCollectionIdsByGroupIdForCollectionIds:(id)ids;
+- (id)_inqCollectionUUIDsForCollectionIds:(__CFArray *)ids range:(_NSRange)range;
+- (id)_inqCollectionUUIDsForGroupID:(unint64_t)d;
+- (id)_inqContentStringForGroupId:(unint64_t)id;
+- (id)_inqDequeueGroupObjectWithId:(unint64_t)id isCachedGroup:(BOOL *)group;
+- (id)_inqFilenameGroupsWithMatchingGroupIds:(__CFSet *)ids dateFilter:(id)filter searchResultTypes:(unint64_t)types matchingPredicateBlock:(id)block;
+- (id)_inqGenerateGroupsInfoDictionaryFromContentString:(const char *)string normalizedString:(const char *)normalizedString identifier:(const char *)identifier category:(signed __int16)category score:(double)score groupId:(unint64_t)id owningGroupId:(unint64_t)groupId includeUUIDs:(BOOL)self0;
+- (id)_inqGroupArraysFromGroupIdSets:(id)sets dateFilter:(id)filter searchResultTypes:(unint64_t)types progressBlock:(id)block;
+- (id)_inqGroupForLookupIdentifier:(id)identifier searchResultTypes:(unint64_t)types;
+- (id)_inqGroupWithMatchingGroupId:(unint64_t)id dateFilter:(id)filter searchResultTypes:(unint64_t)types;
+- (id)_inqGroupWithStatement:(sqlite3_stmt *)statement dateFilter:(id)filter includeObjects:(BOOL)objects isFilenameStatement:(BOOL)filenameStatement excludingGroupId:(unint64_t)id searchResultTypes:(unint64_t)types;
+- (id)_inqGroupsWithMatchingGroupIds:(__CFSet *)ids dateFilter:(id)filter includeObjects:(BOOL)objects searchResultTypes:(unint64_t)types matchingPredicateBlock:(id)block;
+- (id)_inqNewSynonymTextsByOwningGroupIdWithGroupIds:(__CFSet *)ids;
+- (id)_inqNonFilenameGroupsWithMatchingGroupIds:(__CFSet *)ids dateFilter:(id)filter includeObjects:(BOOL)objects searchResultTypes:(unint64_t)types matchingPredicateBlock:(id)block;
+- (id)_inqNumberOfAssetsByGroupIdMatchingGroupsWithIds:(id)ids;
+- (id)_inqNumberOfCollectionsByGroupIdMatchingGroupsWithIds:(id)ids;
 - (id)_inqSelectInitialSuggestions;
 - (id)allGroupIds;
-- (id)assetUUIDsForAssetIds:(__CFSet *)a3;
-- (id)assetUUIDsForAssetIdsArray:(__CFArray *)a3;
-- (id)assetUUIDsForGroupIDs:(__CFSet *)a3;
-- (id)dumpGroupsInfoForAssetUUID:(id)a3 indexCategories:(id)a4 includeUUIDs:(BOOL)a5;
-- (id)dumpGroupsInfoWithIndexCategories:(id)a3 includeUUIDs:(BOOL)a4;
-- (id)dumpLookupStringsWithIndexCategories:(id)a3;
+- (id)assetUUIDsForAssetIds:(__CFSet *)ids;
+- (id)assetUUIDsForAssetIdsArray:(__CFArray *)array;
+- (id)assetUUIDsForGroupIDs:(__CFSet *)ds;
+- (id)dumpGroupsInfoForAssetUUID:(id)d indexCategories:(id)categories includeUUIDs:(BOOL)ds;
+- (id)dumpGroupsInfoWithIndexCategories:(id)categories includeUUIDs:(BOOL)ds;
+- (id)dumpLookupStringsWithIndexCategories:(id)categories;
 - (id)fetchInitialSuggestions;
-- (id)groupArraysFromGroupIdSets:(id)a3 dateFilter:(id)a4 searchResultTypes:(unint64_t)a5 progressBlock:(id)a6;
-- (id)groupForLookupIdentifier:(id)a3 searchResultTypes:(unint64_t)a4;
-- (id)groupForText:(id)a3 identifier:(id)a4 category:(unint64_t)a5 resultTypes:(unint64_t)a6;
+- (id)groupArraysFromGroupIdSets:(id)sets dateFilter:(id)filter searchResultTypes:(unint64_t)types progressBlock:(id)block;
+- (id)groupForLookupIdentifier:(id)identifier searchResultTypes:(unint64_t)types;
+- (id)groupForText:(id)text identifier:(id)identifier category:(unint64_t)category resultTypes:(unint64_t)types;
 - (id)groupIdsInPrefixTable;
-- (id)groupsForAssetIds:(__CFArray *)a3 indexCategories:(id)a4 includeObjects:(BOOL)a5;
-- (id)groupsForGroupIds:(__CFSet *)a3 includeObjectIds:(BOOL)a4 searchResultTypes:(unint64_t)a5;
-- (id)groupsForSearchIndexCategories:(id)a3 searchResultTypes:(unint64_t)a4 dateFilter:(id)a5;
-- (id)initForTestingWithOptions:(int64_t)a3;
-- (id)statementFromString:(id)a3;
-- (id)uuidsForLookupIdentifier:(id)a3 resultTypes:(unint64_t)a4;
-- (int64_t)insertAsset:(id)a3;
-- (int64_t)insertCollection:(id)a3;
-- (int64_t)insertGroup:(id)a3;
-- (sqlite3_stmt)_inqPrepareStatement:(const char *)a3;
-- (unint64_t)_inqAssetIdForUUID:(id)a3 uuid_0:(unint64_t *)a4 uuid_1:(unint64_t *)a5;
-- (unint64_t)_inqAssetIdWithAsset:(id)a3;
-- (unint64_t)_inqCollectionIdForUUID:(id)a3 uuid_0:(unint64_t *)a4 uuid_1:(unint64_t *)a5;
-- (unint64_t)_inqCollectionIdWithCollection:(id)a3;
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 contentString:(id)a4;
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 contentString:(id)a4 identifier:(id)a5 outOwningGroupId:(unint64_t *)a6 outScore:(double *)a7;
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 identifier:(id)a4 outOwningGroupId:(unint64_t *)a5 outScore:(double *)a6;
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 normalizedString:(id)a4 identifier:(id)a5 outOwningGroupId:(unint64_t *)a6 outScore:(double *)a7;
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 owningGroupId:(unint64_t)a4 contentString:(id)a5 normalizedString:(id)a6 identifier:(id)a7 rankingScore:(double)a8 insertIfNeeded:(BOOL)a9 tokenOutput:(const tokenOutput_t *)a10 shouldUpdateOwningGroupId:(BOOL)a11 shouldUpdateRankingScore:(BOOL)a12;
-- (unint64_t)_inqNumberOfAssetsMatchingGroupWithId:(unint64_t)a3;
-- (unint64_t)_inqNumberOfCollectionsMatchingGroupWithId:(unint64_t)a3;
-- (unint64_t)_inqUpdateGroupForText:(id)a3 identifier:(id)a4 category:(signed __int16)a5 owningGroupId:(unint64_t)a6;
+- (id)groupsForAssetIds:(__CFArray *)ids indexCategories:(id)categories includeObjects:(BOOL)objects;
+- (id)groupsForGroupIds:(__CFSet *)ids includeObjectIds:(BOOL)objectIds searchResultTypes:(unint64_t)types;
+- (id)groupsForSearchIndexCategories:(id)categories searchResultTypes:(unint64_t)types dateFilter:(id)filter;
+- (id)initForTestingWithOptions:(int64_t)options;
+- (id)statementFromString:(id)string;
+- (id)uuidsForLookupIdentifier:(id)identifier resultTypes:(unint64_t)types;
+- (int64_t)insertAsset:(id)asset;
+- (int64_t)insertCollection:(id)collection;
+- (int64_t)insertGroup:(id)group;
+- (sqlite3_stmt)_inqPrepareStatement:(const char *)statement;
+- (unint64_t)_inqAssetIdForUUID:(id)d uuid_0:(unint64_t *)uuid_0 uuid_1:(unint64_t *)uuid_1;
+- (unint64_t)_inqAssetIdWithAsset:(id)asset;
+- (unint64_t)_inqCollectionIdForUUID:(id)d uuid_0:(unint64_t *)uuid_0 uuid_1:(unint64_t *)uuid_1;
+- (unint64_t)_inqCollectionIdWithCollection:(id)collection;
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category contentString:(id)string;
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category contentString:(id)string identifier:(id)identifier outOwningGroupId:(unint64_t *)id outScore:(double *)score;
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category identifier:(id)identifier outOwningGroupId:(unint64_t *)id outScore:(double *)score;
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category normalizedString:(id)string identifier:(id)identifier outOwningGroupId:(unint64_t *)id outScore:(double *)score;
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category owningGroupId:(unint64_t)id contentString:(id)string normalizedString:(id)normalizedString identifier:(id)identifier rankingScore:(double)score insertIfNeeded:(BOOL)needed tokenOutput:(const tokenOutput_t *)self0 shouldUpdateOwningGroupId:(BOOL)self1 shouldUpdateRankingScore:(BOOL)self2;
+- (unint64_t)_inqNumberOfAssetsMatchingGroupWithId:(unint64_t)id;
+- (unint64_t)_inqNumberOfCollectionsMatchingGroupWithId:(unint64_t)id;
+- (unint64_t)_inqUpdateGroupForText:(id)text identifier:(id)identifier category:(signed __int16)category owningGroupId:(unint64_t)id;
 - (unint64_t)countOfAssets;
 - (void)_finalizeEverything;
 - (void)_ingRebuildPrefixTableIfNeeded;
-- (void)_inqDeleteGroupsWithGraphCollectionsForPersonUUID:(id)a3;
-- (void)_inqExecutePreparedStatement:(sqlite3_stmt *)a3 allowError:(int)a4 withStatementBlock:(id)a5;
-- (void)_inqExecutePreparedStatement:(sqlite3_stmt *)a3 withStatementBlock:(id)a4;
-- (void)_inqGetTokensFromString:(id)a3 category:(signed __int16)a4 tokenOutput:(tokenOutput_t *)a5;
-- (void)_inqGroupIdsForAssetOrCollectionIds:(__CFArray *)a3 resultType:(unint64_t)a4 completion:(id)a5;
-- (void)_inqInsertInitialSuggestion:(id)a3;
-- (void)_inqPerformBatch:(id)a3;
-- (void)_inqPrepareAndExecuteStatement:(const char *)a3;
-- (void)_inqRemoveUUID:(id)a3 categories:(id)a4 objectType:(unint64_t)a5 isInBatch:(BOOL)a6;
-- (void)_inqRemoveUUID:(id)a3 objectType:(unint64_t)a4 isInBatch:(BOOL)a5;
+- (void)_inqDeleteGroupsWithGraphCollectionsForPersonUUID:(id)d;
+- (void)_inqExecutePreparedStatement:(sqlite3_stmt *)statement allowError:(int)error withStatementBlock:(id)block;
+- (void)_inqExecutePreparedStatement:(sqlite3_stmt *)statement withStatementBlock:(id)block;
+- (void)_inqGetTokensFromString:(id)string category:(signed __int16)category tokenOutput:(tokenOutput_t *)output;
+- (void)_inqGroupIdsForAssetOrCollectionIds:(__CFArray *)ids resultType:(unint64_t)type completion:(id)completion;
+- (void)_inqInsertInitialSuggestion:(id)suggestion;
+- (void)_inqPerformBatch:(id)batch;
+- (void)_inqPrepareAndExecuteStatement:(const char *)statement;
+- (void)_inqRemoveUUID:(id)d categories:(id)categories objectType:(unint64_t)type isInBatch:(BOOL)batch;
+- (void)_inqRemoveUUID:(id)d objectType:(unint64_t)type isInBatch:(BOOL)batch;
 - (void)_inqRemoveUnusedGroups;
-- (void)_inqUpdateGATableWithGroupId:(unint64_t)a3 assetId:(unint64_t)a4;
-- (void)_inqUpdateGCTableWithGroupId:(unint64_t)a3 collectionId:(unint64_t)a4;
-- (void)_inqUpdateInitialSuggestionWithTemplateKey:(id)a3 firstGroupId:(unint64_t)a4 secondGroupId:(unint64_t)a5 dateLastUsed:(id)a6;
-- (void)_prepareTokenOutput:(tokenOutput_t *)a3 forIndexing:(BOOL)a4;
-- (void)_removeUUID:(id)a3 categories:(id)a4 objectType:(unint64_t)a5 completion:(id)a6;
-- (void)_removeUUIDs:(id)a3 objectType:(unint64_t)a4 deferRemovingUnusedGroups:(BOOL)a5 completion:(id)a6;
-- (void)_runWithMatchingIDs:(id)a3 block:(id)a4;
-- (void)_sortedSearchIndexRowIdsFromUUIDs:(id)a3 searchResultType:(unint64_t)a4 completion:(id)a5;
-- (void)addAsset:(id)a3 withCompletion:(id)a4;
-- (void)addAssets:(id)a3 deferRemovingUnusedGroups:(BOOL)a4 withCompletion:(id)a5;
-- (void)addCollection:(id)a3 withCompletion:(id)a4;
-- (void)addCollections:(id)a3 deferRemovingUnusedGroups:(BOOL)a4 withCompletion:(id)a5;
+- (void)_inqUpdateGATableWithGroupId:(unint64_t)id assetId:(unint64_t)assetId;
+- (void)_inqUpdateGCTableWithGroupId:(unint64_t)id collectionId:(unint64_t)collectionId;
+- (void)_inqUpdateInitialSuggestionWithTemplateKey:(id)key firstGroupId:(unint64_t)id secondGroupId:(unint64_t)groupId dateLastUsed:(id)used;
+- (void)_prepareTokenOutput:(tokenOutput_t *)output forIndexing:(BOOL)indexing;
+- (void)_removeUUID:(id)d categories:(id)categories objectType:(unint64_t)type completion:(id)completion;
+- (void)_removeUUIDs:(id)ds objectType:(unint64_t)type deferRemovingUnusedGroups:(BOOL)groups completion:(id)completion;
+- (void)_runWithMatchingIDs:(id)ds block:(id)block;
+- (void)_sortedSearchIndexRowIdsFromUUIDs:(id)ds searchResultType:(unint64_t)type completion:(id)completion;
+- (void)addAsset:(id)asset withCompletion:(id)completion;
+- (void)addAssets:(id)assets deferRemovingUnusedGroups:(BOOL)groups withCompletion:(id)completion;
+- (void)addCollection:(id)collection withCompletion:(id)completion;
+- (void)addCollections:(id)collections deferRemovingUnusedGroups:(BOOL)groups withCompletion:(id)completion;
 - (void)dealloc;
 - (void)deleteAllInitialSuggestions;
-- (void)dropDatabaseWithCompletion:(id)a3;
-- (void)executeStatement:(id)a3 withResultEnumerationBlock:(id)a4;
-- (void)executeStatementFromString:(id)a3;
-- (void)executeStatementFromString:(id)a3 withResultEnumerationBlock:(id)a4;
-- (void)exqExecuteStatementFromString:(id)a3 withResultEnumerationBlock:(id)a4;
-- (void)groupsForAssetIds:(__CFArray *)a3 completion:(id)a4;
-- (void)groupsForCollectionIds:(__CFArray *)a3 completion:(id)a4;
-- (void)linkAssetWithId:(int64_t)a3 toGroupWithId:(int64_t)a4;
-- (void)linkCollectionWithId:(int64_t)a3 toGroupWithId:(int64_t)a4;
-- (void)removeAssetWithUUID:(id)a3 completion:(id)a4;
-- (void)removeCollectionWithUUID:(id)a3 completion:(id)a4;
+- (void)dropDatabaseWithCompletion:(id)completion;
+- (void)executeStatement:(id)statement withResultEnumerationBlock:(id)block;
+- (void)executeStatementFromString:(id)string;
+- (void)executeStatementFromString:(id)string withResultEnumerationBlock:(id)block;
+- (void)exqExecuteStatementFromString:(id)string withResultEnumerationBlock:(id)block;
+- (void)groupsForAssetIds:(__CFArray *)ids completion:(id)completion;
+- (void)groupsForCollectionIds:(__CFArray *)ids completion:(id)completion;
+- (void)linkAssetWithId:(int64_t)id toGroupWithId:(int64_t)withId;
+- (void)linkCollectionWithId:(int64_t)id toGroupWithId:(int64_t)withId;
+- (void)removeAssetWithUUID:(id)d completion:(id)completion;
+- (void)removeCollectionWithUUID:(id)d completion:(id)completion;
 - (void)removeUnusedGroups;
 - (void)resetGroupsCache;
-- (void)saveInitialSuggestions:(id)a3;
-- (void)updateInitialSuggestionsWithIdentifiers:(id)a3 dateLastUsed:(id)a4;
-- (void)updateRankingScoreForGroups:(id)a3 withCompletion:(id)a4;
+- (void)saveInitialSuggestions:(id)suggestions;
+- (void)updateInitialSuggestionsWithIdentifiers:(id)identifiers dateLastUsed:(id)used;
+- (void)updateRankingScoreForGroups:(id)groups withCompletion:(id)completion;
 @end
 
 @implementation PSIDatabase
 
-- (id)groupsForAssetIds:(__CFArray *)a3 indexCategories:(id)a4 includeObjects:(BOOL)a5
+- (id)groupsForAssetIds:(__CFArray *)ids indexCategories:(id)categories includeObjects:(BOOL)objects
 {
-  v8 = a4;
-  if ([v8 count])
+  categoriesCopy = categories;
+  if ([categoriesCopy count])
   {
-    if (a3)
+    if (ids)
     {
-      Count = CFArrayGetCount(a3);
+      Count = CFArrayGetCount(ids);
       if (Count)
       {
         v10 = Count;
@@ -148,11 +148,11 @@
         v16 = 3221225472;
         v17 = __64__PSIDatabase_groupsForAssetIds_indexCategories_includeObjects___block_invoke;
         v18 = &unk_1E7576630;
-        v19 = self;
-        v22 = a3;
+        selfCopy = self;
+        idsCopy = ids;
         v23 = v10;
-        v24 = a5;
-        v20 = v8;
+        objectsCopy = objects;
+        v20 = categoriesCopy;
         v21 = buf;
         [(PSIDatabase *)self _inqSync:&v15];
         v11 = [*(v26 + 5) copy];
@@ -252,13 +252,13 @@ void __64__PSIDatabase_groupsForAssetIds_indexCategories_includeObjects___block_
   [*(*(*(a1 + 40) + 8) + 40) addObject:v3];
 }
 
-- (id)groupForText:(id)a3 identifier:(id)a4 category:(unint64_t)a5 resultTypes:(unint64_t)a6
+- (id)groupForText:(id)text identifier:(id)identifier category:(unint64_t)category resultTypes:(unint64_t)types
 {
-  v10 = a3;
-  v11 = a4;
-  if ([v10 length])
+  textCopy = text;
+  identifierCopy = identifier;
+  if ([textCopy length])
   {
-    if (!a5)
+    if (!category)
     {
       v12 = 0;
       goto LABEL_7;
@@ -267,9 +267,9 @@ void __64__PSIDatabase_groupsForAssetIds_indexCategories_includeObjects___block_
     goto LABEL_6;
   }
 
-  v13 = [v11 length];
+  v13 = [identifierCopy length];
   v12 = 0;
-  if (a5 && v13)
+  if (category && v13)
   {
 LABEL_6:
     v22 = 0;
@@ -282,12 +282,12 @@ LABEL_6:
     v15[1] = 3221225472;
     v15[2] = __60__PSIDatabase_groupForText_identifier_category_resultTypes___block_invoke;
     v15[3] = &unk_1E7576DD0;
-    v16 = v11;
-    v17 = v10;
-    v18 = self;
+    v16 = identifierCopy;
+    v17 = textCopy;
+    selfCopy = self;
     v19 = &v22;
-    v20 = a5;
-    v21 = a6;
+    categoryCopy = category;
+    typesCopy = types;
     [(PSIDatabase *)self _inqSync:v15];
     v12 = v23[5];
 
@@ -334,7 +334,7 @@ void __60__PSIDatabase_groupForText_identifier_category_resultTypes___block_invo
   CFRelease(Mutable);
 }
 
-- (id)groupsForGroupIds:(__CFSet *)a3 includeObjectIds:(BOOL)a4 searchResultTypes:(unint64_t)a5
+- (id)groupsForGroupIds:(__CFSet *)ids includeObjectIds:(BOOL)objectIds searchResultTypes:(unint64_t)types
 {
   v9 = 0;
   v10 = &v9;
@@ -348,9 +348,9 @@ void __60__PSIDatabase_groupForText_identifier_category_resultTypes___block_invo
   v7[3] = &unk_1E75765E0;
   v7[4] = self;
   v7[5] = &v9;
-  v8 = a4;
-  v7[6] = a3;
-  v7[7] = a5;
+  objectIdsCopy = objectIds;
+  v7[6] = ids;
+  v7[7] = types;
   [(PSIDatabase *)self _inqSync:v7];
   v5 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -366,21 +366,21 @@ void __68__PSIDatabase_groupsForGroupIds_includeObjectIds_searchResultTypes___bl
   *(v3 + 40) = v2;
 }
 
-- (__CFSet)groupIdsForNormalizedText:(id)a3 wildcardSearch:(BOOL)a4 leadingAnchored:(BOOL)a5 searchIndexCategories:(id)a6
+- (__CFSet)groupIdsForNormalizedText:(id)text wildcardSearch:(BOOL)search leadingAnchored:(BOOL)anchored searchIndexCategories:(id)categories
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  v11 = [PSITokenizer fts5StringFromString:a3 useWildcard:v7 leadingAnchored:v6 orderInsensitive:0];
-  v12 = [(PSIDatabase *)self groupIdsMatchingFTSString:v11 categories:v10 textIsSearchable:1];
+  anchoredCopy = anchored;
+  searchCopy = search;
+  categoriesCopy = categories;
+  v11 = [PSITokenizer fts5StringFromString:text useWildcard:searchCopy leadingAnchored:anchoredCopy orderInsensitive:0];
+  v12 = [(PSIDatabase *)self groupIdsMatchingFTSString:v11 categories:categoriesCopy textIsSearchable:1];
 
   return v12;
 }
 
-- (__CFSet)groupIdsMatchingFTSString:(id)a3 categories:(id)a4 textIsSearchable:(BOOL)a5
+- (__CFSet)groupIdsMatchingFTSString:(id)string categories:(id)categories textIsSearchable:(BOOL)searchable
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  categoriesCopy = categories;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -391,11 +391,11 @@ void __68__PSIDatabase_groupsForGroupIds_includeObjectIds_searchResultTypes___bl
   v14[3] = &unk_1E75765B8;
   v17 = &v19;
   v14[4] = self;
-  v10 = v8;
+  v10 = stringCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = categoriesCopy;
   v16 = v11;
-  v18 = a5;
+  searchableCopy = searchable;
   [(PSIDatabase *)self _inqSync:v14];
   v12 = CFAutorelease(v20[3]);
 
@@ -410,10 +410,10 @@ uint64_t __69__PSIDatabase_groupIdsMatchingFTSString_categories_textIsSearchable
   return result;
 }
 
-- (id)groupsForSearchIndexCategories:(id)a3 searchResultTypes:(unint64_t)a4 dateFilter:(id)a5
+- (id)groupsForSearchIndexCategories:(id)categories searchResultTypes:(unint64_t)types dateFilter:(id)filter
 {
-  v8 = a3;
-  v9 = a5;
+  categoriesCopy = categories;
+  filterCopy = filter;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -425,12 +425,12 @@ uint64_t __69__PSIDatabase_groupIdsMatchingFTSString_categories_textIsSearchable
   v14[2] = __75__PSIDatabase_groupsForSearchIndexCategories_searchResultTypes_dateFilter___block_invoke;
   v14[3] = &unk_1E7576B70;
   v14[4] = self;
-  v10 = v8;
+  v10 = categoriesCopy;
   v15 = v10;
   v17 = &v19;
-  v11 = v9;
+  v11 = filterCopy;
   v16 = v11;
-  v18 = a4;
+  typesCopy = types;
   [(PSIDatabase *)self _inqSync:v14];
   v12 = v20[5];
 
@@ -450,11 +450,11 @@ void __75__PSIDatabase_groupsForSearchIndexCategories_searchResultTypes_dateFilt
   CFRelease(v2);
 }
 
-- (__CFArray)mostRecentSortedAssetIdsWithLimit:(unint64_t)a3
+- (__CFArray)mostRecentSortedAssetIdsWithLimit:(unint64_t)limit
 {
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
   v6 = Mutable;
-  if (a3)
+  if (limit)
   {
     v9 = 0;
     v10 = &v9;
@@ -464,7 +464,7 @@ void __75__PSIDatabase_groupsForSearchIndexCategories_searchResultTypes_dateFilt
     v8[1] = 3221225472;
     v8[2] = __49__PSIDatabase_mostRecentSortedAssetIdsWithLimit___block_invoke;
     v8[3] = &unk_1E7576590;
-    v8[6] = a3;
+    v8[6] = limit;
     v8[7] = Mutable;
     v8[4] = self;
     v8[5] = &v9;
@@ -510,27 +510,27 @@ void __49__PSIDatabase_mostRecentSortedAssetIdsWithLimit___block_invoke_619(uint
   CFArrayAppendValue(v4, v3);
 }
 
-- (id)_inqCollectionUUIDsForGroupID:(unint64_t)a3
+- (id)_inqCollectionUUIDsForGroupID:(unint64_t)d
 {
-  v4 = [(PSIDatabase *)self _inqNewCollectionIdsForGroupId:a3 dateFilter:0];
+  v4 = [(PSIDatabase *)self _inqNewCollectionIdsForGroupId:d dateFilter:0];
   v5 = [(PSIDatabase *)self _inqCollectionUUIDsForCollectionIds:v4 range:0, CFArrayGetCount(v4)];
   CFRelease(v4);
 
   return v5;
 }
 
-- (id)_inqAssetUUIDsForGroupID:(unint64_t)a3
+- (id)_inqAssetUUIDsForGroupID:(unint64_t)d
 {
-  v4 = [(PSIDatabase *)self _inqNewAssetIdsForGroupId:a3 dateFilter:0];
+  v4 = [(PSIDatabase *)self _inqNewAssetIdsForGroupId:d dateFilter:0];
   v5 = [(PSIDatabase *)self _inqAssetUUIDsForAssetIds:v4 range:0 creationDateSorted:CFArrayGetCount(v4), 0];
   CFRelease(v4);
 
   return v5;
 }
 
-- (__CFArray)assetIdsWithDateFilter:(id)a3
+- (__CFArray)assetIdsWithDateFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -541,7 +541,7 @@ void __49__PSIDatabase_mostRecentSortedAssetIdsWithLimit___block_invoke_619(uint
   v9[3] = &unk_1E7578820;
   v11 = &v12;
   v9[4] = self;
-  v5 = v4;
+  v5 = filterCopy;
   v10 = v5;
   [(PSIDatabase *)self _inqSync:v9];
   v6 = v13[3];
@@ -613,11 +613,11 @@ uint64_t __28__PSIDatabase_countOfAssets__block_invoke_2(uint64_t a1, sqlite3_st
   return result;
 }
 
-- (void)_runWithMatchingIDs:(id)a3 block:(id)a4
+- (void)_runWithMatchingIDs:(id)ds block:(id)block
 {
   v6 = *MEMORY[0x1E695E480];
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  dsCopy = ds;
   Mutable = CFSetCreateMutable(v6, 0, 0);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -625,24 +625,24 @@ uint64_t __28__PSIDatabase_countOfAssets__block_invoke_2(uint64_t a1, sqlite3_st
   v11[3] = &unk_1E7576338;
   v12 = Mutable;
   v10 = Mutable;
-  [v8 enumerateIndexesUsingBlock:v11];
+  [dsCopy enumerateIndexesUsingBlock:v11];
 
   [(PSIIntArray *)self->_matchingIds bindElements:v10];
-  v7[2](v7);
+  blockCopy[2](blockCopy);
 
   [(PSIIntArray *)self->_matchingIds unbind];
 }
 
-- (void)_inqPerformBatch:(id)a3
+- (void)_inqPerformBatch:(id)batch
 {
-  v4 = a3;
+  batchCopy = batch;
   [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"BEGIN TRANSACTION"];
-  v4[2](v4);
+  batchCopy[2](batchCopy);
 
   [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"END TRANSACTION"];
 }
 
-- (void)_inqPrepareAndExecuteStatement:(const char *)a3
+- (void)_inqPrepareAndExecuteStatement:(const char *)statement
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = [(PSIDatabase *)self _inqPrepareStatement:?];
@@ -655,7 +655,7 @@ uint64_t __28__PSIDatabase_countOfAssets__block_invoke_2(uint64_t a1, sqlite3_st
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v9 = 136315650;
-      v10 = a3;
+      statementCopy2 = statement;
       v11 = 2080;
       v12 = v7;
       v13 = 1024;
@@ -669,7 +669,7 @@ uint64_t __28__PSIDatabase_countOfAssets__block_invoke_2(uint64_t a1, sqlite3_st
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v9 = 136315650;
-        v10 = a3;
+        statementCopy2 = statement;
         v11 = 2080;
         v12 = v7;
         v13 = 1026;
@@ -682,52 +682,52 @@ uint64_t __28__PSIDatabase_countOfAssets__block_invoke_2(uint64_t a1, sqlite3_st
   if (v5 && sqlite3_finalize(v5) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = @"Failed to finalize statement";
+    statementCopy2 = @"Failed to finalize statement";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v9, 0xCu);
   }
 }
 
-- (void)_inqExecutePreparedStatement:(sqlite3_stmt *)a3 withStatementBlock:(id)a4
+- (void)_inqExecutePreparedStatement:(sqlite3_stmt *)statement withStatementBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__PSIDatabase__inqExecutePreparedStatement_withStatementBlock___block_invoke;
   v8[3] = &unk_1E7576568;
-  v9 = v6;
-  v7 = v6;
-  [(PSIDatabase *)self _inqExecutePreparedStatement:a3 allowError:0 withStatementBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(PSIDatabase *)self _inqExecutePreparedStatement:statement allowError:0 withStatementBlock:v8];
 }
 
-- (void)_inqExecutePreparedStatement:(sqlite3_stmt *)a3 allowError:(int)a4 withStatementBlock:(id)a5
+- (void)_inqExecutePreparedStatement:(sqlite3_stmt *)statement allowError:(int)error withStatementBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  blockCopy = block;
+  if (!statement && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = 138412290;
-    v14 = @"Statement is nil";
+    statementCopy2 = @"Statement is nil";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", &v13, 0xCu);
   }
 
   v9 = 100;
   while (v9 == 100)
   {
-    v10 = sqlite3_step(a3);
+    v10 = sqlite3_step(statement);
     v9 = v10;
-    if (v8 && v10 == 100 && (v8[2](v8, a3) & 1) == 0)
+    if (blockCopy && v10 == 100 && (blockCopy[2](blockCopy, statement) & 1) == 0)
     {
       goto LABEL_19;
     }
   }
 
-  if (v9 != 101 && (!a4 || (v9 & a4) != a4))
+  if (v9 != 101 && (!error || (v9 & error) != error))
   {
     v11 = sqlite3_errmsg(self->_inqDatabase);
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v13 = 134218498;
-      v14 = a3;
+      statementCopy2 = statement;
       v15 = 2080;
       v16 = v11;
       v17 = 1024;
@@ -741,7 +741,7 @@ uint64_t __28__PSIDatabase_countOfAssets__block_invoke_2(uint64_t a1, sqlite3_st
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v13 = 134218498;
-        v14 = a3;
+        statementCopy2 = statement;
         v15 = 2080;
         v16 = v11;
         v17 = 1026;
@@ -752,14 +752,14 @@ uint64_t __28__PSIDatabase_countOfAssets__block_invoke_2(uint64_t a1, sqlite3_st
   }
 
 LABEL_19:
-  sqlite3_reset(a3);
+  sqlite3_reset(statement);
 }
 
-- (sqlite3_stmt)_inqPrepareStatement:(const char *)a3
+- (sqlite3_stmt)_inqPrepareStatement:(const char *)statement
 {
   v17 = *MEMORY[0x1E69E9840];
   ppStmt = 0;
-  v5 = sqlite3_prepare_v2(self->_inqDatabase, a3, -1, &ppStmt, 0);
+  v5 = sqlite3_prepare_v2(self->_inqDatabase, statement, -1, &ppStmt, 0);
   if (v5)
   {
     v6 = v5;
@@ -770,7 +770,7 @@ LABEL_19:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v12 = a3;
+        statementCopy = statement;
         v13 = 2080;
         v14 = v8;
         v15 = 1024;
@@ -783,20 +783,20 @@ LABEL_19:
   return ppStmt;
 }
 
-- (void)_inqUpdateInitialSuggestionWithTemplateKey:(id)a3 firstGroupId:(unint64_t)a4 secondGroupId:(unint64_t)a5 dateLastUsed:(id)a6
+- (void)_inqUpdateInitialSuggestionWithTemplateKey:(id)key firstGroupId:(unint64_t)id secondGroupId:(unint64_t)groupId dateLastUsed:(id)used
 {
   v22 = *MEMORY[0x1E69E9840];
   inqPreparedStatements = self->_inqPreparedStatements;
-  v11 = a6;
-  v12 = a3;
+  usedCopy = used;
+  keyCopy = key;
   Value = CFDictionaryGetValue(inqPreparedStatements, @"updateTimestampForInitialSuggestionStatement");
-  [v11 timeIntervalSinceReferenceDate];
+  [usedCopy timeIntervalSinceReferenceDate];
   v15 = v14;
 
   v16 = &stru_1F0F06D80;
-  if (v12)
+  if (keyCopy)
   {
-    v16 = v12;
+    v16 = keyCopy;
   }
 
   v17 = v16;
@@ -832,14 +832,14 @@ LABEL_9:
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v20, 0xCu);
   }
 
-  if (sqlite3_bind_int64(Value, 3, a4) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 3, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v20 = 138412290;
     v21 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v20, 0xCu);
   }
 
-  if (sqlite3_bind_int64(Value, 4, a5) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 4, groupId) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v20 = 138412290;
     v21 = @"Failed to bind parameter";
@@ -989,55 +989,55 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)_inqInsertInitialSuggestion:(id)a3
+- (void)_inqInsertInitialSuggestion:(id)suggestion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 dateLastUsed];
+  suggestionCopy = suggestion;
+  [suggestionCopy dateLastUsed];
   v6 = v5;
-  v7 = [v4 firstGroup];
-  v8 = [v4 secondGroup];
-  v9 = [v4 suggestionTemplate];
+  firstGroup = [suggestionCopy firstGroup];
+  secondGroup = [suggestionCopy secondGroup];
+  suggestionTemplate = [suggestionCopy suggestionTemplate];
 
-  if ([v9 templateStyleType])
+  if ([suggestionTemplate templateStyleType])
   {
-    v10 = &stru_1F0F06D80;
-    if (v7)
+    suggestionTemplateKey = &stru_1F0F06D80;
+    if (firstGroup)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v11 = 0;
-    if (v8)
+    groupId = 0;
+    if (secondGroup)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v12 = 0;
+    groupId2 = 0;
     goto LABEL_8;
   }
 
-  v10 = [v9 suggestionTemplateKey];
-  if (!v7)
+  suggestionTemplateKey = [suggestionTemplate suggestionTemplateKey];
+  if (!firstGroup)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v11 = [v7 groupId];
-  if (!v8)
+  groupId = [firstGroup groupId];
+  if (!secondGroup)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v12 = [v8 groupId];
+  groupId2 = [secondGroup groupId];
 LABEL_8:
-  v13 = [(__CFString *)v10 cStringUsingEncoding:4];
-  v14 = [v9 identifier];
-  v15 = [v14 cStringUsingEncoding:4];
+  v13 = [(__CFString *)suggestionTemplateKey cStringUsingEncoding:4];
+  identifier = [suggestionTemplate identifier];
+  v15 = [identifier cStringUsingEncoding:4];
 
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"insertInitialSuggestionStatement");
   if (sqlite3_bind_double(Value, 1, v6) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1047,14 +1047,14 @@ LABEL_8:
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v19, 0xCu);
   }
 
-  if (sqlite3_bind_int64(Value, 2, v11) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 2, groupId) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = 138412290;
     v20 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v19, 0xCu);
   }
 
-  if (sqlite3_bind_int64(Value, 3, v12) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 3, groupId2) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = 138412290;
     v20 = @"Failed to bind parameter";
@@ -1084,42 +1084,42 @@ LABEL_20:
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v19, 0xCu);
   }
 
-  if (sqlite3_bind_int(Value, 5, [v9 firstIndexCategory]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 5, [suggestionTemplate firstIndexCategory]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = 138412290;
     v20 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v19, 0xCu);
   }
 
-  if (sqlite3_bind_int(Value, 6, [v9 secondIndexCategory]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 6, [suggestionTemplate secondIndexCategory]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = 138412290;
     v20 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v19, 0xCu);
   }
 
-  if (sqlite3_bind_int(Value, 7, [v9 templateType]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 7, [suggestionTemplate templateType]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = 138412290;
     v20 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v19, 0xCu);
   }
 
-  if (sqlite3_bind_int(Value, 8, [v9 templateContentType]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 8, [suggestionTemplate templateContentType]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = 138412290;
     v20 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v19, 0xCu);
   }
 
-  if (sqlite3_bind_int(Value, 9, [v9 templateDateType]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 9, [suggestionTemplate templateDateType]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = 138412290;
     v20 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v19, 0xCu);
   }
 
-  if (sqlite3_bind_int(Value, 10, [v9 templateStyleType]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 10, [suggestionTemplate templateStyleType]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = 138412290;
     v20 = @"Failed to bind parameter";
@@ -1152,19 +1152,19 @@ LABEL_44:
   [(PSIDatabase *)self _inqExecutePreparedStatement:Value withStatementBlock:0];
 }
 
-- (id)_inqCollectionIdsByGroupIdForCollectionIds:(id)a3
+- (id)_inqCollectionIdsByGroupIdForCollectionIds:(id)ids
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  [(PSIIntArray *)self->_matchingIds bindElements:v5];
+  idsCopy = ids;
+  dictionary = [v4 dictionary];
+  [(PSIIntArray *)self->_matchingIds bindElements:idsCopy];
 
   inqCollectionIdsByGroupIdForCollectionIdsStatement = self->_inqCollectionIdsByGroupIdForCollectionIdsStatement;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__PSIDatabase__inqCollectionIdsByGroupIdForCollectionIds___block_invoke;
   v10[3] = &unk_1E75762C0;
-  v8 = v6;
+  v8 = dictionary;
   v11 = v8;
   [(PSIDatabase *)self executeStatement:inqCollectionIdsByGroupIdForCollectionIdsStatement withResultEnumerationBlock:v10];
   [(PSIIntArray *)self->_matchingIds unbind];
@@ -1188,10 +1188,10 @@ void __58__PSIDatabase__inqCollectionIdsByGroupIdForCollectionIds___block_invoke
   [Mutable addObject:v4];
 }
 
-- (__CFSet)_inqNewGroupIdsForCollectionIds:(__CFSet *)a3
+- (__CFSet)_inqNewGroupIdsForCollectionIds:(__CFSet *)ids
 {
   Mutable = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-  [(PSIIntArray *)self->_matchingIds bindElements:a3];
+  [(PSIIntArray *)self->_matchingIds bindElements:ids];
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGroupIdsInGCWithCollectionIds");
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1211,12 +1211,12 @@ void __47__PSIDatabase__inqNewGroupIdsForCollectionIds___block_invoke(uint64_t a
   CFSetAddValue(v4, v3);
 }
 
-- (__CFSet)_inqNewGroupIdsForCollectionId:(unint64_t)a3
+- (__CFSet)_inqNewGroupIdsForCollectionId:(unint64_t)id
 {
   v11 = *MEMORY[0x1E69E9840];
   Mutable = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGCInv");
-  if (sqlite3_bind_int64(Value, 1, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 1, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v10 = @"Failed to bind parameter";
@@ -1240,19 +1240,19 @@ void __46__PSIDatabase__inqNewGroupIdsForCollectionId___block_invoke(uint64_t a1
   CFSetAddValue(v4, v3);
 }
 
-- (id)_inqAssetIdsByGroupIdForAssetIds:(id)a3
+- (id)_inqAssetIdsByGroupIdForAssetIds:(id)ids
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  [(PSIIntArray *)self->_matchingIds bindElements:v5];
+  idsCopy = ids;
+  dictionary = [v4 dictionary];
+  [(PSIIntArray *)self->_matchingIds bindElements:idsCopy];
 
   inqAssetIdsByGroupIdForAssetIdsStatement = self->_inqAssetIdsByGroupIdForAssetIdsStatement;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__PSIDatabase__inqAssetIdsByGroupIdForAssetIds___block_invoke;
   v10[3] = &unk_1E75762C0;
-  v8 = v6;
+  v8 = dictionary;
   v11 = v8;
   [(PSIDatabase *)self executeStatement:inqAssetIdsByGroupIdForAssetIdsStatement withResultEnumerationBlock:v10];
   [(PSIIntArray *)self->_matchingIds unbind];
@@ -1276,10 +1276,10 @@ void __48__PSIDatabase__inqAssetIdsByGroupIdForAssetIds___block_invoke(uint64_t 
   [Mutable addObject:v4];
 }
 
-- (__CFSet)_inqNewGroupIdsForAssetIds:(__CFSet *)a3
+- (__CFSet)_inqNewGroupIdsForAssetIds:(__CFSet *)ids
 {
   Mutable = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-  [(PSIIntArray *)self->_matchingIds bindElements:a3];
+  [(PSIIntArray *)self->_matchingIds bindElements:ids];
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGroupIdsInGAWithAssetIds");
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1299,12 +1299,12 @@ void __42__PSIDatabase__inqNewGroupIdsForAssetIds___block_invoke(uint64_t a1, sq
   CFSetAddValue(v4, v3);
 }
 
-- (__CFSet)_inqNewGroupIdsForAssetId:(unint64_t)a3
+- (__CFSet)_inqNewGroupIdsForAssetId:(unint64_t)id
 {
   v11 = *MEMORY[0x1E69E9840];
   Mutable = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGAInv");
-  if (sqlite3_bind_int64(Value, 1, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 1, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v10 = @"Failed to bind parameter";
@@ -1328,20 +1328,20 @@ void __41__PSIDatabase__inqNewGroupIdsForAssetId___block_invoke(uint64_t a1, sql
   CFSetAddValue(v4, v3);
 }
 
-- (__CFArray)_inqNewCollectionIdsForGroupId:(unint64_t)a3 dateFilter:(id)a4
+- (__CFArray)_inqNewCollectionIdsForGroupId:(unint64_t)id dateFilter:(id)filter
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  filterCopy = filter;
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-  if (v6)
+  if (filterCopy)
   {
-    v8 = [v6 singleDate];
+    singleDate = [filterCopy singleDate];
 
-    if (v8)
+    if (singleDate)
     {
       Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectWithSingleDateGC");
-      v10 = [v6 singleDate];
-      v11 = sqlite3_bind_int64(Value, 1, [v10 int64RepresentationMask]);
+      singleDate2 = [filterCopy singleDate];
+      v11 = sqlite3_bind_int64(Value, 1, [singleDate2 int64RepresentationMask]);
 
       if (v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -1350,8 +1350,8 @@ void __41__PSIDatabase__inqNewGroupIdsForAssetId___block_invoke(uint64_t a1, sql
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
       }
 
-      v12 = [v6 singleDate];
-      v13 = sqlite3_bind_int64(Value, 2, [v12 int64Representation]);
+      singleDate3 = [filterCopy singleDate];
+      v13 = sqlite3_bind_int64(Value, 2, [singleDate3 int64Representation]);
 
       if (v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -1360,8 +1360,8 @@ void __41__PSIDatabase__inqNewGroupIdsForAssetId___block_invoke(uint64_t a1, sql
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
       }
 
-      v14 = [v6 singleDate];
-      v15 = sqlite3_bind_int64(Value, 3, [v14 int64RepresentationMask]);
+      singleDate4 = [filterCopy singleDate];
+      v15 = sqlite3_bind_int64(Value, 3, [singleDate4 int64RepresentationMask]);
 
       if (v15 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -1370,8 +1370,8 @@ void __41__PSIDatabase__inqNewGroupIdsForAssetId___block_invoke(uint64_t a1, sql
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
       }
 
-      v16 = [v6 singleDate];
-      v17 = sqlite3_bind_int64(Value, 4, [v16 int64Representation]);
+      singleDate5 = [filterCopy singleDate];
+      v17 = sqlite3_bind_int64(Value, 4, [singleDate5 int64Representation]);
 
       if (v17 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -1380,7 +1380,7 @@ void __41__PSIDatabase__inqNewGroupIdsForAssetId___block_invoke(uint64_t a1, sql
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
       }
 
-      if (sqlite3_bind_int64(Value, 5, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (sqlite3_bind_int64(Value, 5, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v41 = @"Failed to bind parameter";
@@ -1392,18 +1392,18 @@ LABEL_57:
 
     else
     {
-      v20 = [v6 startDate];
+      startDate = [filterCopy startDate];
 
-      if (v20)
+      if (startDate)
       {
-        v21 = [v6 endDate];
+        endDate = [filterCopy endDate];
 
         inqPreparedStatements = self->_inqPreparedStatements;
-        if (v21)
+        if (endDate)
         {
           Value = CFDictionaryGetValue(inqPreparedStatements, @"selectWithStartEndDatesGC");
-          v23 = [v6 startDate];
-          v24 = sqlite3_bind_int64(Value, 1, [v23 int64RepresentationMask]);
+          startDate2 = [filterCopy startDate];
+          v24 = sqlite3_bind_int64(Value, 1, [startDate2 int64RepresentationMask]);
 
           if (v24 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1412,8 +1412,8 @@ LABEL_57:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v25 = [v6 startDate];
-          v26 = sqlite3_bind_int64(Value, 2, [v25 int64Representation]);
+          startDate3 = [filterCopy startDate];
+          v26 = sqlite3_bind_int64(Value, 2, [startDate3 int64Representation]);
 
           if (v26 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1422,8 +1422,8 @@ LABEL_57:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v27 = [v6 endDate];
-          v28 = sqlite3_bind_int64(Value, 3, [v27 int64RepresentationMask]);
+          endDate2 = [filterCopy endDate];
+          v28 = sqlite3_bind_int64(Value, 3, [endDate2 int64RepresentationMask]);
 
           if (v28 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1432,8 +1432,8 @@ LABEL_57:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v29 = [v6 endDate];
-          v30 = sqlite3_bind_int64(Value, 4, [v29 int64Representation]);
+          endDate3 = [filterCopy endDate];
+          v30 = sqlite3_bind_int64(Value, 4, [endDate3 int64Representation]);
 
           if (v30 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1442,7 +1442,7 @@ LABEL_57:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          if (sqlite3_bind_int64(Value, 5, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+          if (sqlite3_bind_int64(Value, 5, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v41 = @"Failed to bind parameter";
@@ -1454,8 +1454,8 @@ LABEL_57:
         else
         {
           Value = CFDictionaryGetValue(inqPreparedStatements, @"selectWithStartDateGC");
-          v35 = [v6 startDate];
-          v36 = sqlite3_bind_int64(Value, 1, [v35 int64RepresentationMask]);
+          startDate4 = [filterCopy startDate];
+          v36 = sqlite3_bind_int64(Value, 1, [startDate4 int64RepresentationMask]);
 
           if (v36 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1464,8 +1464,8 @@ LABEL_57:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v37 = [v6 startDate];
-          v38 = sqlite3_bind_int64(Value, 2, [v37 int64Representation]);
+          startDate5 = [filterCopy startDate];
+          v38 = sqlite3_bind_int64(Value, 2, [startDate5 int64Representation]);
 
           if (v38 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1474,7 +1474,7 @@ LABEL_57:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          if (sqlite3_bind_int64(Value, 3, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+          if (sqlite3_bind_int64(Value, 3, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v41 = @"Failed to bind parameter";
@@ -1487,8 +1487,8 @@ LABEL_57:
       else
       {
         Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectWithEndDateGC");
-        v31 = [v6 endDate];
-        v32 = sqlite3_bind_int64(Value, 1, [v31 int64RepresentationMask]);
+        endDate4 = [filterCopy endDate];
+        v32 = sqlite3_bind_int64(Value, 1, [endDate4 int64RepresentationMask]);
 
         if (v32 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -1497,8 +1497,8 @@ LABEL_57:
           _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
         }
 
-        v33 = [v6 endDate];
-        v34 = sqlite3_bind_int64(Value, 2, [v33 int64Representation]);
+        endDate5 = [filterCopy endDate];
+        v34 = sqlite3_bind_int64(Value, 2, [endDate5 int64Representation]);
 
         if (v34 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -1507,7 +1507,7 @@ LABEL_57:
           _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
         }
 
-        if (sqlite3_bind_int64(Value, 3, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+        if (sqlite3_bind_int64(Value, 3, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v41 = @"Failed to bind parameter";
@@ -1521,7 +1521,7 @@ LABEL_57:
   else
   {
     Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGC");
-    if (sqlite3_bind_int64(Value, 1, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (sqlite3_bind_int64(Value, 1, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v41 = @"Failed to bind parameter";
@@ -1548,20 +1548,20 @@ void __57__PSIDatabase__inqNewCollectionIdsForGroupId_dateFilter___block_invoke(
   CFArrayAppendValue(v4, v3);
 }
 
-- (__CFArray)_inqNewAssetIdsForGroupId:(unint64_t)a3 dateFilter:(id)a4
+- (__CFArray)_inqNewAssetIdsForGroupId:(unint64_t)id dateFilter:(id)filter
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  filterCopy = filter;
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-  if (v6)
+  if (filterCopy)
   {
-    v8 = [v6 singleDate];
+    singleDate = [filterCopy singleDate];
 
-    if (v8)
+    if (singleDate)
     {
       Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectWithSingleDateGA");
-      v10 = [v6 singleDate];
-      v11 = sqlite3_bind_int64(Value, 1, [v10 int64RepresentationMask]);
+      singleDate2 = [filterCopy singleDate];
+      v11 = sqlite3_bind_int64(Value, 1, [singleDate2 int64RepresentationMask]);
 
       if (v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -1570,8 +1570,8 @@ void __57__PSIDatabase__inqNewCollectionIdsForGroupId_dateFilter___block_invoke(
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
       }
 
-      v12 = [v6 singleDate];
-      v13 = sqlite3_bind_int64(Value, 2, [v12 int64Representation]);
+      singleDate3 = [filterCopy singleDate];
+      v13 = sqlite3_bind_int64(Value, 2, [singleDate3 int64Representation]);
 
       if (v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -1580,7 +1580,7 @@ void __57__PSIDatabase__inqNewCollectionIdsForGroupId_dateFilter___block_invoke(
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
       }
 
-      if (sqlite3_bind_int64(Value, 3, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (sqlite3_bind_int64(Value, 3, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v37 = @"Failed to bind parameter";
@@ -1592,18 +1592,18 @@ LABEL_51:
 
     else
     {
-      v16 = [v6 startDate];
+      startDate = [filterCopy startDate];
 
-      if (v16)
+      if (startDate)
       {
-        v17 = [v6 endDate];
+        endDate = [filterCopy endDate];
 
         inqPreparedStatements = self->_inqPreparedStatements;
-        if (v17)
+        if (endDate)
         {
           Value = CFDictionaryGetValue(inqPreparedStatements, @"selectWithStartEndDatesGA");
-          v19 = [v6 startDate];
-          v20 = sqlite3_bind_int64(Value, 1, [v19 int64RepresentationMask]);
+          startDate2 = [filterCopy startDate];
+          v20 = sqlite3_bind_int64(Value, 1, [startDate2 int64RepresentationMask]);
 
           if (v20 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1612,8 +1612,8 @@ LABEL_51:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v21 = [v6 startDate];
-          v22 = sqlite3_bind_int64(Value, 2, [v21 int64Representation]);
+          startDate3 = [filterCopy startDate];
+          v22 = sqlite3_bind_int64(Value, 2, [startDate3 int64Representation]);
 
           if (v22 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1622,8 +1622,8 @@ LABEL_51:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v23 = [v6 endDate];
-          v24 = sqlite3_bind_int64(Value, 3, [v23 int64RepresentationMask]);
+          endDate2 = [filterCopy endDate];
+          v24 = sqlite3_bind_int64(Value, 3, [endDate2 int64RepresentationMask]);
 
           if (v24 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1632,8 +1632,8 @@ LABEL_51:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v25 = [v6 endDate];
-          v26 = sqlite3_bind_int64(Value, 4, [v25 int64Representation]);
+          endDate3 = [filterCopy endDate];
+          v26 = sqlite3_bind_int64(Value, 4, [endDate3 int64Representation]);
 
           if (v26 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1642,7 +1642,7 @@ LABEL_51:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          if (sqlite3_bind_int64(Value, 5, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+          if (sqlite3_bind_int64(Value, 5, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v37 = @"Failed to bind parameter";
@@ -1654,8 +1654,8 @@ LABEL_51:
         else
         {
           Value = CFDictionaryGetValue(inqPreparedStatements, @"selectWithStartDateGA");
-          v31 = [v6 startDate];
-          v32 = sqlite3_bind_int64(Value, 1, [v31 int64RepresentationMask]);
+          startDate4 = [filterCopy startDate];
+          v32 = sqlite3_bind_int64(Value, 1, [startDate4 int64RepresentationMask]);
 
           if (v32 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1664,8 +1664,8 @@ LABEL_51:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v33 = [v6 startDate];
-          v34 = sqlite3_bind_int64(Value, 2, [v33 int64Representation]);
+          startDate5 = [filterCopy startDate];
+          v34 = sqlite3_bind_int64(Value, 2, [startDate5 int64Representation]);
 
           if (v34 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1674,7 +1674,7 @@ LABEL_51:
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          if (sqlite3_bind_int64(Value, 3, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+          if (sqlite3_bind_int64(Value, 3, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v37 = @"Failed to bind parameter";
@@ -1687,8 +1687,8 @@ LABEL_51:
       else
       {
         Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectWithEndDateGA");
-        v27 = [v6 endDate];
-        v28 = sqlite3_bind_int64(Value, 1, [v27 int64RepresentationMask]);
+        endDate4 = [filterCopy endDate];
+        v28 = sqlite3_bind_int64(Value, 1, [endDate4 int64RepresentationMask]);
 
         if (v28 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -1697,8 +1697,8 @@ LABEL_51:
           _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
         }
 
-        v29 = [v6 endDate];
-        v30 = sqlite3_bind_int64(Value, 2, [v29 int64Representation]);
+        endDate5 = [filterCopy endDate];
+        v30 = sqlite3_bind_int64(Value, 2, [endDate5 int64Representation]);
 
         if (v30 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -1707,7 +1707,7 @@ LABEL_51:
           _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
         }
 
-        if (sqlite3_bind_int64(Value, 3, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+        if (sqlite3_bind_int64(Value, 3, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v37 = @"Failed to bind parameter";
@@ -1721,7 +1721,7 @@ LABEL_51:
   else
   {
     Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGA");
-    if (sqlite3_bind_int64(Value, 1, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (sqlite3_bind_int64(Value, 1, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v37 = @"Failed to bind parameter";
@@ -1748,20 +1748,20 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
   CFArrayAppendValue(v4, v3);
 }
 
-- (__CFArray)_inqNewAssetIdsWithDateFilter:(id)a3
+- (__CFArray)_inqNewAssetIdsWithDateFilter:(id)filter
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  filterCopy = filter;
+  if (filterCopy)
   {
     Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-    v6 = [v4 singleDate];
+    singleDate = [filterCopy singleDate];
 
-    if (v6)
+    if (singleDate)
     {
       Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectWithSingleDateAsset");
-      v8 = [v4 singleDate];
-      v9 = sqlite3_bind_int64(Value, 1, [v8 int64RepresentationMask]);
+      singleDate2 = [filterCopy singleDate];
+      v9 = sqlite3_bind_int64(Value, 1, [singleDate2 int64RepresentationMask]);
 
       if (v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -1770,8 +1770,8 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
       }
 
-      v10 = [v4 singleDate];
-      v11 = sqlite3_bind_int64(Value, 2, [v10 int64Representation]);
+      singleDate3 = [filterCopy singleDate];
+      v11 = sqlite3_bind_int64(Value, 2, [singleDate3 int64Representation]);
 
       if (!v11 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -1785,18 +1785,18 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
 
     else
     {
-      v14 = [v4 startDate];
+      startDate = [filterCopy startDate];
 
-      if (v14)
+      if (startDate)
       {
-        v15 = [v4 endDate];
+        endDate = [filterCopy endDate];
 
         inqPreparedStatements = self->_inqPreparedStatements;
-        if (v15)
+        if (endDate)
         {
           Value = CFDictionaryGetValue(inqPreparedStatements, @"selectWithStartEndDatesAsset");
-          v17 = [v4 startDate];
-          v18 = sqlite3_bind_int64(Value, 1, [v17 int64RepresentationMask]);
+          startDate2 = [filterCopy startDate];
+          v18 = sqlite3_bind_int64(Value, 1, [startDate2 int64RepresentationMask]);
 
           if (v18 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1805,8 +1805,8 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v19 = [v4 startDate];
-          v20 = sqlite3_bind_int64(Value, 2, [v19 int64Representation]);
+          startDate3 = [filterCopy startDate];
+          v20 = sqlite3_bind_int64(Value, 2, [startDate3 int64Representation]);
 
           if (v20 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1815,8 +1815,8 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v21 = [v4 endDate];
-          v22 = sqlite3_bind_int64(Value, 3, [v21 int64RepresentationMask]);
+          endDate2 = [filterCopy endDate];
+          v22 = sqlite3_bind_int64(Value, 3, [endDate2 int64RepresentationMask]);
 
           if (v22 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1825,8 +1825,8 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v23 = [v4 endDate];
-          v24 = sqlite3_bind_int64(Value, 4, [v23 int64Representation]);
+          endDate3 = [filterCopy endDate];
+          v24 = sqlite3_bind_int64(Value, 4, [endDate3 int64Representation]);
 
           if (!v24 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1841,8 +1841,8 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
         else
         {
           Value = CFDictionaryGetValue(inqPreparedStatements, @"selectWithStartDateAsset");
-          v30 = [v4 startDate];
-          v31 = sqlite3_bind_int64(Value, 1, [v30 int64RepresentationMask]);
+          startDate4 = [filterCopy startDate];
+          v31 = sqlite3_bind_int64(Value, 1, [startDate4 int64RepresentationMask]);
 
           if (v31 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1851,8 +1851,8 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
           }
 
-          v32 = [v4 startDate];
-          v33 = sqlite3_bind_int64(Value, 2, [v32 int64Representation]);
+          startDate5 = [filterCopy startDate];
+          v33 = sqlite3_bind_int64(Value, 2, [startDate5 int64Representation]);
 
           if (!v33 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1868,8 +1868,8 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
       else
       {
         Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectWithEndDateAsset");
-        v26 = [v4 endDate];
-        v27 = sqlite3_bind_int64(Value, 1, [v26 int64RepresentationMask]);
+        endDate4 = [filterCopy endDate];
+        v27 = sqlite3_bind_int64(Value, 1, [endDate4 int64RepresentationMask]);
 
         if (v27 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -1878,8 +1878,8 @@ void __52__PSIDatabase__inqNewAssetIdsForGroupId_dateFilter___block_invoke(uint6
           _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
         }
 
-        v28 = [v4 endDate];
-        v29 = sqlite3_bind_int64(Value, 2, [v28 int64Representation]);
+        endDate5 = [filterCopy endDate];
+        v29 = sqlite3_bind_int64(Value, 2, [endDate5 int64Representation]);
 
         if (!v29 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -1924,10 +1924,10 @@ void __45__PSIDatabase__inqNewAssetIdsWithDateFilter___block_invoke(uint64_t a1,
   CFArrayAppendValue(v4, v3);
 }
 
-- (id)_inqNewSynonymTextsByOwningGroupIdWithGroupIds:(__CFSet *)a3
+- (id)_inqNewSynonymTextsByOwningGroupIdWithGroupIds:(__CFSet *)ids
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:CFSetGetCount(a3)];
-  [(PSIIntArray *)self->_matchingIds bindElements:a3];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:CFSetGetCount(ids)];
+  [(PSIIntArray *)self->_matchingIds bindElements:ids];
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectSynonymInfoWithOwningGroupIds");
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1960,20 +1960,20 @@ void __62__PSIDatabase__inqNewSynonymTextsByOwningGroupIdWithGroupIds___block_in
   }
 }
 
-- (id)_inqGroupsWithMatchingGroupIds:(__CFSet *)a3 dateFilter:(id)a4 includeObjects:(BOOL)a5 searchResultTypes:(unint64_t)a6 matchingPredicateBlock:(id)a7
+- (id)_inqGroupsWithMatchingGroupIds:(__CFSet *)ids dateFilter:(id)filter includeObjects:(BOOL)objects searchResultTypes:(unint64_t)types matchingPredicateBlock:(id)block
 {
-  v9 = a5;
+  objectsCopy = objects;
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a7;
-  Count = CFSetGetCount(a3);
+  filterCopy = filter;
+  blockCopy = block;
+  Count = CFSetGetCount(ids);
   if (Count)
   {
     v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:Count];
-    v27 = v9;
+    v27 = objectsCopy;
     if (+[PLSearchIndexConfiguration shouldIndexFilenames])
     {
-      v16 = [(PSIDatabase *)self _inqFilenameGroupsWithMatchingGroupIds:a3 dateFilter:v12 searchResultTypes:a6 matchingPredicateBlock:v13];
+      v16 = [(PSIDatabase *)self _inqFilenameGroupsWithMatchingGroupIds:ids dateFilter:filterCopy searchResultTypes:types matchingPredicateBlock:blockCopy];
     }
 
     else
@@ -1982,8 +1982,8 @@ void __62__PSIDatabase__inqNewSynonymTextsByOwningGroupIdWithGroupIds___block_in
     }
 
     v17 = *MEMORY[0x1E695E480];
-    v18 = CFSetGetCount(a3);
-    MutableCopy = CFSetCreateMutableCopy(v17, v18, a3);
+    v18 = CFSetGetCount(ids);
+    MutableCopy = CFSetCreateMutableCopy(v17, v18, ids);
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -2012,7 +2012,7 @@ void __62__PSIDatabase__inqNewSynonymTextsByOwningGroupIdWithGroupIds___block_in
       while (v22);
     }
 
-    v25 = [(PSIDatabase *)self _inqNonFilenameGroupsWithMatchingGroupIds:MutableCopy dateFilter:v12 includeObjects:v27 searchResultTypes:a6 matchingPredicateBlock:v13];
+    v25 = [(PSIDatabase *)self _inqNonFilenameGroupsWithMatchingGroupIds:MutableCopy dateFilter:filterCopy includeObjects:v27 searchResultTypes:types matchingPredicateBlock:blockCopy];
     CFRelease(MutableCopy);
     [v15 addObjectsFromArray:v25];
     [v15 addObjectsFromArray:v20];
@@ -2026,25 +2026,25 @@ void __62__PSIDatabase__inqNewSynonymTextsByOwningGroupIdWithGroupIds___block_in
   return v15;
 }
 
-- (id)_inqNonFilenameGroupsWithMatchingGroupIds:(__CFSet *)a3 dateFilter:(id)a4 includeObjects:(BOOL)a5 searchResultTypes:(unint64_t)a6 matchingPredicateBlock:(id)a7
+- (id)_inqNonFilenameGroupsWithMatchingGroupIds:(__CFSet *)ids dateFilter:(id)filter includeObjects:(BOOL)objects searchResultTypes:(unint64_t)types matchingPredicateBlock:(id)block
 {
-  v12 = a4;
-  v13 = a7;
-  Count = CFSetGetCount(a3);
+  filterCopy = filter;
+  blockCopy = block;
+  Count = CFSetGetCount(ids);
   if (Count)
   {
     v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:Count];
-    [(PSIIntArray *)self->_matchingIds bindElements:a3];
+    [(PSIIntArray *)self->_matchingIds bindElements:ids];
     Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"fetchNonFilenameGroupsForGroupIds");
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_includeObjects_searchResultTypes_matchingPredicateBlock___block_invoke;
     v24 = &unk_1E7576518;
-    v25 = self;
-    v30 = a5;
-    v26 = v12;
-    v29 = a6;
-    v28 = v13;
+    selfCopy = self;
+    objectsCopy = objects;
+    v26 = filterCopy;
+    typesCopy = types;
+    v28 = blockCopy;
     v17 = v15;
     v27 = v17;
     [(PSIDatabase *)self _inqExecutePreparedStatement:Value withStatementBlock:&v21];
@@ -2073,12 +2073,12 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
   }
 }
 
-- (id)_inqFilenameGroupsWithMatchingGroupIds:(__CFSet *)a3 dateFilter:(id)a4 searchResultTypes:(unint64_t)a5 matchingPredicateBlock:(id)a6
+- (id)_inqFilenameGroupsWithMatchingGroupIds:(__CFSet *)ids dateFilter:(id)filter searchResultTypes:(unint64_t)types matchingPredicateBlock:(id)block
 {
   v69 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  Count = CFSetGetCount(a3);
+  filterCopy = filter;
+  blockCopy = block;
+  Count = CFSetGetCount(ids);
   if (!Count)
   {
     v26 = MEMORY[0x1E695E0F0];
@@ -2086,15 +2086,15 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
   }
 
   v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:Count];
-  [(PSIIntArray *)self->_matchingIds bindElements:a3];
-  if (v10)
+  [(PSIIntArray *)self->_matchingIds bindElements:ids];
+  if (filterCopy)
   {
-    v14 = [v10 startDate];
-    if (v14 && ([v10 endDate], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+    startDate = [filterCopy startDate];
+    if (startDate && ([filterCopy endDate], v15 = objc_claimAutoreleasedReturnValue(), v15, startDate, v15))
     {
       Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"fetchFilenameGroupsForGroupIdsWithStartEndDates");
-      v17 = [v10 startDate];
-      v18 = sqlite3_bind_int64(Value, 1, [v17 int64RepresentationMask]);
+      startDate2 = [filterCopy startDate];
+      v18 = sqlite3_bind_int64(Value, 1, [startDate2 int64RepresentationMask]);
 
       if (v18 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -2103,8 +2103,8 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &buf, 0xCu);
       }
 
-      v19 = [v10 startDate];
-      v20 = sqlite3_bind_int64(Value, 2, [v19 int64Representation]);
+      startDate3 = [filterCopy startDate];
+      v20 = sqlite3_bind_int64(Value, 2, [startDate3 int64Representation]);
 
       if (v20 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -2113,8 +2113,8 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &buf, 0xCu);
       }
 
-      v21 = [v10 endDate];
-      v22 = sqlite3_bind_int64(Value, 3, [v21 int64RepresentationMask]);
+      endDate = [filterCopy endDate];
+      v22 = sqlite3_bind_int64(Value, 3, [endDate int64RepresentationMask]);
 
       if (v22 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -2123,8 +2123,8 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &buf, 0xCu);
       }
 
-      v23 = [v10 endDate];
-      v24 = sqlite3_bind_int64(Value, 4, [v23 int64Representation]);
+      endDate2 = [filterCopy endDate];
+      v24 = sqlite3_bind_int64(Value, 4, [endDate2 int64Representation]);
 
       if (!v24 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -2138,13 +2138,13 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
 
     else
     {
-      v27 = [v10 startDate];
+      startDate4 = [filterCopy startDate];
 
-      if (v27)
+      if (startDate4)
       {
         Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"fetchFilenameGroupsForGroupIdsWithStartDate");
-        v28 = [v10 startDate];
-        v29 = sqlite3_bind_int64(Value, 1, [v28 int64RepresentationMask]);
+        startDate5 = [filterCopy startDate];
+        v29 = sqlite3_bind_int64(Value, 1, [startDate5 int64RepresentationMask]);
 
         if (v29 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -2153,8 +2153,8 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
           _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &buf, 0xCu);
         }
 
-        v30 = [v10 startDate];
-        v31 = sqlite3_bind_int64(Value, 2, [v30 int64Representation]);
+        startDate6 = [filterCopy startDate];
+        v31 = sqlite3_bind_int64(Value, 2, [startDate6 int64Representation]);
 
         if (!v31 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -2168,13 +2168,13 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
 
       else
       {
-        v38 = [v10 endDate];
+        endDate3 = [filterCopy endDate];
 
-        if (v38)
+        if (endDate3)
         {
           Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"fetchFilenameGroupsForGroupIdsWithEndDate");
-          v39 = [v10 endDate];
-          v40 = sqlite3_bind_int64(Value, 1, [v39 int64RepresentationMask]);
+          endDate4 = [filterCopy endDate];
+          v40 = sqlite3_bind_int64(Value, 1, [endDate4 int64RepresentationMask]);
 
           if (v40 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -2183,8 +2183,8 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &buf, 0xCu);
           }
 
-          v41 = [v10 endDate];
-          v42 = sqlite3_bind_int64(Value, 2, [v41 int64Representation]);
+          endDate5 = [filterCopy endDate];
+          v42 = sqlite3_bind_int64(Value, 2, [endDate5 int64Representation]);
 
           if (!v42 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -2198,7 +2198,7 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
 
         else
         {
-          Value = [v10 singleDate];
+          Value = [filterCopy singleDate];
 
           if (!Value)
           {
@@ -2206,8 +2206,8 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
           }
 
           Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"fetchFilenameGroupsForGroupIdsWithSingleDate");
-          v43 = [v10 singleDate];
-          v44 = sqlite3_bind_int64(Value, 1, [v43 int64RepresentationMask]);
+          singleDate = [filterCopy singleDate];
+          v44 = sqlite3_bind_int64(Value, 1, [singleDate int64RepresentationMask]);
 
           if (v44 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -2216,8 +2216,8 @@ void __124__PSIDatabase__inqNonFilenameGroupsWithMatchingGroupIds_dateFilter_inc
             _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &buf, 0xCu);
           }
 
-          v45 = [v10 singleDate];
-          v46 = sqlite3_bind_int64(Value, 2, [v45 int64Representation]);
+          singleDate2 = [filterCopy singleDate];
+          v46 = sqlite3_bind_int64(Value, 2, [singleDate2 int64Representation]);
 
           if (!v46 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -2244,7 +2244,7 @@ LABEL_26:
   aBlock[1] = 3221225472;
   aBlock[2] = __106__PSIDatabase__inqFilenameGroupsWithMatchingGroupIds_dateFilter_searchResultTypes_matchingPredicateBlock___block_invoke;
   aBlock[3] = &unk_1E75764C8;
-  v63 = v11;
+  v63 = blockCopy;
   v32 = v13;
   v62 = v32;
   v33 = _Block_copy(aBlock);
@@ -2262,10 +2262,10 @@ LABEL_26:
   v48 = 3221225472;
   v49 = __106__PSIDatabase__inqFilenameGroupsWithMatchingGroupIds_dateFilter_searchResultTypes_matchingPredicateBlock___block_invoke_2;
   v50 = &unk_1E75764F0;
-  v51 = self;
-  v52 = v10;
+  selfCopy = self;
+  v52 = filterCopy;
   p_buf = &buf;
-  v56 = a5;
+  typesCopy = types;
   v34 = v33;
   v53 = v34;
   v55 = &v57;
@@ -2324,10 +2324,10 @@ void __106__PSIDatabase__inqFilenameGroupsWithMatchingGroupIds_dateFilter_search
   CFArrayAppendValue(*(*(*(a1 + 64) + 8) + 24), v5);
 }
 
-- (id)_inqGroupWithMatchingGroupId:(unint64_t)a3 dateFilter:(id)a4 searchResultTypes:(unint64_t)a5
+- (id)_inqGroupWithMatchingGroupId:(unint64_t)id dateFilter:(id)filter searchResultTypes:(unint64_t)types
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  filterCopy = filter;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -2335,7 +2335,7 @@ void __106__PSIDatabase__inqFilenameGroupsWithMatchingGroupIds_dateFilter_search
   v21 = __Block_byref_object_dispose__107329;
   v22 = 0;
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"fetchGroupForGroupId");
-  if (sqlite3_bind_int64(Value, 1, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 1, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v24 = @"Failed to bind parameter";
@@ -2348,9 +2348,9 @@ void __106__PSIDatabase__inqFilenameGroupsWithMatchingGroupIds_dateFilter_search
   v13[3] = &unk_1E75764A0;
   v15 = &v17;
   v13[4] = self;
-  v10 = v8;
+  v10 = filterCopy;
   v14 = v10;
-  v16 = a5;
+  typesCopy = types;
   [(PSIDatabase *)self _inqExecutePreparedStatement:Value withStatementBlock:v13];
   v11 = v18[5];
 
@@ -2367,21 +2367,21 @@ void __73__PSIDatabase__inqGroupWithMatchingGroupId_dateFilter_searchResultTypes
   *(v4 + 40) = v3;
 }
 
-- (void)_inqUpdateGCTableWithGroupId:(unint64_t)a3 collectionId:(unint64_t)a4
+- (void)_inqUpdateGCTableWithGroupId:(unint64_t)id collectionId:(unint64_t)collectionId
 {
   v13 = *MEMORY[0x1E69E9840];
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"insertGC");
-  if (sqlite3_bind_int64(Value, 1, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 1, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = @"Failed to bind parameter";
+    collectionIdCopy = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v9, 0xCu);
   }
 
-  if (sqlite3_bind_int64(Value, 2, a4) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 2, collectionId) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = @"Failed to bind parameter";
+    collectionIdCopy = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v9, 0xCu);
   }
 
@@ -2390,28 +2390,28 @@ void __73__PSIDatabase__inqGroupWithMatchingGroupId_dateFilter_searchResultTypes
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = 134349312;
-    v10 = a4;
+    collectionIdCopy = collectionId;
     v11 = 2050;
-    v12 = a3;
+    idCopy = id;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEBUG, "Inserted collectionId %{public}lld in GC table for groupId %{public}lld", &v9, 0x16u);
   }
 }
 
-- (void)_inqUpdateGATableWithGroupId:(unint64_t)a3 assetId:(unint64_t)a4
+- (void)_inqUpdateGATableWithGroupId:(unint64_t)id assetId:(unint64_t)assetId
 {
   v13 = *MEMORY[0x1E69E9840];
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"insertGA");
-  if (sqlite3_bind_int64(Value, 1, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 1, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = @"Failed to bind parameter";
+    assetIdCopy = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v9, 0xCu);
   }
 
-  if (sqlite3_bind_int64(Value, 2, a4) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 2, assetId) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = @"Failed to bind parameter";
+    assetIdCopy = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &v9, 0xCu);
   }
 
@@ -2420,33 +2420,33 @@ void __73__PSIDatabase__inqGroupWithMatchingGroupId_dateFilter_searchResultTypes
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = 134349312;
-    v10 = a4;
+    assetIdCopy = assetId;
     v11 = 2050;
-    v12 = a3;
+    idCopy = id;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEBUG, "Inserted assetId %{public}lld in GA table for groupId %{public}lld", &v9, 0x16u);
   }
 }
 
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 owningGroupId:(unint64_t)a4 contentString:(id)a5 normalizedString:(id)a6 identifier:(id)a7 rankingScore:(double)a8 insertIfNeeded:(BOOL)a9 tokenOutput:(const tokenOutput_t *)a10 shouldUpdateOwningGroupId:(BOOL)a11 shouldUpdateRankingScore:(BOOL)a12
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category owningGroupId:(unint64_t)id contentString:(id)string normalizedString:(id)normalizedString identifier:(id)identifier rankingScore:(double)score insertIfNeeded:(BOOL)needed tokenOutput:(const tokenOutput_t *)self0 shouldUpdateOwningGroupId:(BOOL)self1 shouldUpdateRankingScore:(BOOL)self2
 {
-  v12 = a9;
-  v17 = a3;
+  neededCopy = needed;
+  categoryCopy = category;
   v47 = *MEMORY[0x1E69E9840];
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
+  stringCopy = string;
+  normalizedStringCopy = normalizedString;
+  identifierCopy = identifier;
   v42 = 0.0;
   v43 = 0;
-  if (a12)
+  if (rankingScore)
   {
-    insert_rowid = [(PSIDatabase *)self _inqGroupIdForCategory:v17 contentString:v19 identifier:v21 outOwningGroupId:&v43 outScore:&v42];
+    insert_rowid = [(PSIDatabase *)self _inqGroupIdForCategory:categoryCopy contentString:stringCopy identifier:identifierCopy outOwningGroupId:&v43 outScore:&v42];
     if (!insert_rowid)
     {
-      insert_rowid = [(PSIDatabase *)self _inqGroupIdForCategory:v17 identifier:v21 outOwningGroupId:&v43 outScore:&v42];
+      insert_rowid = [(PSIDatabase *)self _inqGroupIdForCategory:categoryCopy identifier:identifierCopy outOwningGroupId:&v43 outScore:&v42];
     }
 
     v23 = insert_rowid == 0;
-    if (insert_rowid && v42 != a8)
+    if (insert_rowid && v42 != score)
     {
       v24 = PLSearchBackendPSIDatabaseGetLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -2454,12 +2454,12 @@ void __73__PSIDatabase__inqGroupWithMatchingGroupId_dateFilter_searchResultTypes
         *buf = 134218240;
         *&buf[4] = insert_rowid;
         *&buf[12] = 2048;
-        *&buf[14] = a8;
+        *&buf[14] = score;
         _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEBUG, "Setting ranking score for group id: %llu to score: %f", buf, 0x16u);
       }
 
       Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"updateGroupRankingScore");
-      if (sqlite3_bind_double(Value, 1, a8) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (sqlite3_bind_double(Value, 1, score) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         *&buf[4] = @"Failed to bind parameter";
@@ -2480,53 +2480,53 @@ void __73__PSIDatabase__inqGroupWithMatchingGroupId_dateFilter_searchResultTypes
 
   else
   {
-    if ((v17 - 1203) > 1u)
+    if ((categoryCopy - 1203) > 1u)
     {
-      v26 = [(PSIDatabase *)self _inqGroupIdForCategory:v17 contentString:v19 identifier:v21 outOwningGroupId:&v43 outScore:&v42];
+      v26 = [(PSIDatabase *)self _inqGroupIdForCategory:categoryCopy contentString:stringCopy identifier:identifierCopy outOwningGroupId:&v43 outScore:&v42];
     }
 
     else
     {
-      v26 = [(PSIDatabase *)self _inqGroupIdForCategory:v17 normalizedString:v20 identifier:v21 outOwningGroupId:&v43 outScore:&v42];
+      v26 = [(PSIDatabase *)self _inqGroupIdForCategory:categoryCopy normalizedString:normalizedStringCopy identifier:identifierCopy outOwningGroupId:&v43 outScore:&v42];
     }
 
     insert_rowid = v26;
     v23 = v26 == 0;
   }
 
-  if (v23 || v43 == a4)
+  if (v23 || v43 == id)
   {
-    if (v23 && v12)
+    if (v23 && neededCopy)
     {
       v40 = 0;
-      v29 = _newUTF8String(v19, &v40);
+      v29 = _newUTF8String(stringCopy, &v40);
       v39 = 0;
-      v30 = _newUTF8String(v20, &v39);
+      v30 = _newUTF8String(normalizedStringCopy, &v39);
       v38 = 0;
-      v31 = _newUTF8String(v21, &v38);
-      var6 = a10->var6;
-      if (a10->var8 >= a10->var7)
+      v31 = _newUTF8String(identifierCopy, &v38);
+      var6 = output->var6;
+      if (output->var8 >= output->var7)
       {
-        var7 = a10->var7;
+        var7 = output->var7;
       }
 
       else
       {
-        var7 = a10->var8;
+        var7 = output->var8;
       }
 
       *buf = 0;
       *&buf[8] = 0;
       [PSIGroup getCompressedRanges:buf fromTokenRanges:var6 count:var7];
       v34 = CFDictionaryGetValue(self->_inqPreparedStatements, @"insertGroup");
-      if (sqlite3_bind_int(v34, 1, v17) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (sqlite3_bind_int(v34, 1, categoryCopy) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *v44 = 138412290;
         v45 = @"Failed to bind parameter";
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", v44, 0xCu);
       }
 
-      if (sqlite3_bind_int64(v34, 2, a4) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (sqlite3_bind_int64(v34, 2, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *v44 = 138412290;
         v45 = @"Failed to bind parameter";
@@ -2554,7 +2554,7 @@ void __73__PSIDatabase__inqGroupWithMatchingGroupId_dateFilter_searchResultTypes
         _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", v44, 0xCu);
       }
 
-      if (sqlite3_bind_double(v34, 6, a8) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (sqlite3_bind_double(v34, 6, score) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *v44 = 138412290;
         v45 = @"Failed to bind parameter";
@@ -2611,9 +2611,9 @@ void __73__PSIDatabase__inqGroupWithMatchingGroupId_dateFilter_searchResultTypes
     aBlock[4] = self;
     v27 = _Block_copy(aBlock);
     v28 = v27;
-    if (a11)
+    if (groupId)
     {
-      (*(v27 + 2))(v27, insert_rowid, a4);
+      (*(v27 + 2))(v27, insert_rowid, id);
     }
 
     else if (v43)
@@ -2625,7 +2625,7 @@ void __73__PSIDatabase__inqGroupWithMatchingGroupId_dateFilter_searchResultTypes
         *buf = 134349314;
         *&buf[4] = v43;
         *&buf[12] = 2112;
-        *&buf[14] = v19;
+        *&buf[14] = stringCopy;
         _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_INFO, "Dropping previous owningGroupId (%{public}llu) for keyword with different owning categories. ContentString: %@", buf, 0x16u);
       }
     }
@@ -2667,13 +2667,13 @@ uint64_t __185__PSIDatabase__inqGroupIdForCategory_owningGroupId_contentString_n
   return [*(a1 + 32) _inqExecutePreparedStatement:Value withStatementBlock:0];
 }
 
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 identifier:(id)a4 outOwningGroupId:(unint64_t *)a5 outScore:(double *)a6
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category identifier:(id)identifier outOwningGroupId:(unint64_t *)id outScore:(double *)score
 {
-  v8 = a3;
+  categoryCopy = category;
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  identifierCopy = identifier;
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGroupWithLookupId");
-  if (sqlite3_bind_int(Value, 1, v8) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 1, categoryCopy) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
     *(&buf + 4) = @"Failed to bind parameter";
@@ -2681,7 +2681,7 @@ uint64_t __185__PSIDatabase__inqGroupIdForCategory_owningGroupId_contentString_n
   }
 
   v24 = 0;
-  v12 = _newUTF8String(v10, &v24);
+  v12 = _newUTF8String(identifierCopy, &v24);
   if (sqlite3_bind_text(Value, 2, v12, v24, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
@@ -2709,14 +2709,14 @@ uint64_t __185__PSIDatabase__inqGroupIdForCategory_owningGroupId_contentString_n
   v15[5] = &v20;
   v15[6] = &v16;
   [(PSIDatabase *)self _inqExecutePreparedStatement:Value withStatementBlock:v15];
-  if (a5)
+  if (id)
   {
-    *a5 = v21[3];
+    *id = v21[3];
   }
 
-  if (a6)
+  if (score)
   {
-    *a6 = v17[3];
+    *score = v17[3];
   }
 
   if (v12)
@@ -2739,14 +2739,14 @@ void __75__PSIDatabase__inqGroupIdForCategory_identifier_outOwningGroupId_outSco
   *(*(a1[6] + 8) + 24) = sqlite3_column_double(a2, 2);
 }
 
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 normalizedString:(id)a4 identifier:(id)a5 outOwningGroupId:(unint64_t *)a6 outScore:(double *)a7
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category normalizedString:(id)string identifier:(id)identifier outOwningGroupId:(unint64_t *)id outScore:(double *)score
 {
-  v10 = a3;
+  categoryCopy = category;
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
+  stringCopy = string;
+  identifierCopy = identifier;
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGroupWithNormalizedStr");
-  if (sqlite3_bind_int(Value, 1, v10) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 1, categoryCopy) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
     *(&buf + 4) = @"Failed to bind parameter";
@@ -2754,7 +2754,7 @@ void __75__PSIDatabase__inqGroupIdForCategory_identifier_outOwningGroupId_outSco
   }
 
   v29 = 0;
-  v15 = _newUTF8String(v12, &v29);
+  v15 = _newUTF8String(stringCopy, &v29);
   if (sqlite3_bind_text(Value, 2, v15, v29, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
@@ -2763,7 +2763,7 @@ void __75__PSIDatabase__inqGroupIdForCategory_identifier_outOwningGroupId_outSco
   }
 
   v28 = 0;
-  v16 = _newUTF8String(v13, &v28);
+  v16 = _newUTF8String(identifierCopy, &v28);
   if (sqlite3_bind_text(Value, 3, v16, v28, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
@@ -2791,14 +2791,14 @@ void __75__PSIDatabase__inqGroupIdForCategory_identifier_outOwningGroupId_outSco
   v19[5] = &v24;
   v19[6] = &v20;
   [(PSIDatabase *)self _inqExecutePreparedStatement:Value withStatementBlock:v19];
-  if (a6)
+  if (id)
   {
-    *a6 = v25[3];
+    *id = v25[3];
   }
 
-  if (a7)
+  if (score)
   {
-    *a7 = v21[3];
+    *score = v21[3];
   }
 
   if (v15)
@@ -2826,14 +2826,14 @@ void __92__PSIDatabase__inqGroupIdForCategory_normalizedString_identifier_outOwn
   *(*(a1[6] + 8) + 24) = sqlite3_column_double(a2, 2);
 }
 
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 contentString:(id)a4 identifier:(id)a5 outOwningGroupId:(unint64_t *)a6 outScore:(double *)a7
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category contentString:(id)string identifier:(id)identifier outOwningGroupId:(unint64_t *)id outScore:(double *)score
 {
-  v10 = a3;
+  categoryCopy = category;
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
+  stringCopy = string;
+  identifierCopy = identifier;
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGroup");
-  if (sqlite3_bind_int(Value, 1, v10) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 1, categoryCopy) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
     *(&buf + 4) = @"Failed to bind parameter";
@@ -2841,7 +2841,7 @@ void __92__PSIDatabase__inqGroupIdForCategory_normalizedString_identifier_outOwn
   }
 
   v29 = 0;
-  v15 = _newUTF8String(v12, &v29);
+  v15 = _newUTF8String(stringCopy, &v29);
   if (sqlite3_bind_text(Value, 2, v15, v29, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
@@ -2850,7 +2850,7 @@ void __92__PSIDatabase__inqGroupIdForCategory_normalizedString_identifier_outOwn
   }
 
   v28 = 0;
-  v16 = _newUTF8String(v13, &v28);
+  v16 = _newUTF8String(identifierCopy, &v28);
   if (sqlite3_bind_text(Value, 3, v16, v28, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
@@ -2878,14 +2878,14 @@ void __92__PSIDatabase__inqGroupIdForCategory_normalizedString_identifier_outOwn
   v19[5] = &v24;
   v19[6] = &v20;
   [(PSIDatabase *)self _inqExecutePreparedStatement:Value withStatementBlock:v19];
-  if (a6)
+  if (id)
   {
-    *a6 = v25[3];
+    *id = v25[3];
   }
 
-  if (a7)
+  if (score)
   {
-    *a7 = v21[3];
+    *score = v21[3];
   }
 
   if (v15)
@@ -2913,14 +2913,14 @@ void __89__PSIDatabase__inqGroupIdForCategory_contentString_identifier_outOwning
   *(*(a1[6] + 8) + 24) = sqlite3_column_double(a2, 2);
 }
 
-- (unint64_t)_inqGroupIdForCategory:(signed __int16)a3 contentString:(id)a4
+- (unint64_t)_inqGroupIdForCategory:(signed __int16)category contentString:(id)string
 {
-  v4 = a3;
+  categoryCopy = category;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  stringCopy = string;
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"fetchGroupsForTextAndCategory");
   v12 = 0;
-  v8 = _newUTF8String(v6, &v12);
+  v8 = _newUTF8String(stringCopy, &v12);
   if (sqlite3_bind_text(Value, 1, v8, v12, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
@@ -2928,7 +2928,7 @@ void __89__PSIDatabase__inqGroupIdForCategory_contentString_identifier_outOwning
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", &buf, 0xCu);
   }
 
-  if (sqlite3_bind_int64(Value, 2, v4) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 2, categoryCopy) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
     *(&buf + 4) = @"Failed to bind parameter";
@@ -2963,14 +2963,14 @@ sqlite3_int64 __52__PSIDatabase__inqGroupIdForCategory_contentString___block_inv
   return result;
 }
 
-- (unint64_t)_inqCollectionIdWithCollection:(id)a3
+- (unint64_t)_inqCollectionIdWithCollection:(id)collection
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 uuid];
+  collectionCopy = collection;
+  uuid = [collectionCopy uuid];
   v24 = 0;
   v25 = 0;
-  insert_rowid = [(PSIDatabase *)self _inqCollectionIdForUUID:v5 uuid_0:&v25 uuid_1:&v24];
+  insert_rowid = [(PSIDatabase *)self _inqCollectionIdForUUID:uuid uuid_0:&v25 uuid_1:&v24];
   if (insert_rowid)
   {
     goto LABEL_40;
@@ -2991,8 +2991,8 @@ sqlite3_int64 __52__PSIDatabase__inqGroupIdForCategory_contentString___block_inv
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
   }
 
-  v8 = [v4 startDate];
-  v9 = sqlite3_bind_int64(Value, 3, [v8 int64Representation]);
+  startDate = [collectionCopy startDate];
+  v9 = sqlite3_bind_int64(Value, 3, [startDate int64Representation]);
 
   if (v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -3001,8 +3001,8 @@ sqlite3_int64 __52__PSIDatabase__inqGroupIdForCategory_contentString___block_inv
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
   }
 
-  v10 = [v4 endDate];
-  v11 = sqlite3_bind_int64(Value, 4, [v10 int64Representation]);
+  endDate = [collectionCopy endDate];
+  v11 = sqlite3_bind_int64(Value, 4, [endDate int64Representation]);
 
   if (v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -3011,10 +3011,10 @@ sqlite3_int64 __52__PSIDatabase__inqGroupIdForCategory_contentString___block_inv
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
   }
 
-  v12 = [v4 title];
+  title = [collectionCopy title];
   v23 = 0;
-  v13 = [v4 title];
-  v14 = _newUTF8String(v13, &v23);
+  title2 = [collectionCopy title];
+  v14 = _newUTF8String(title2, &v23);
 
   if (sqlite3_bind_text(Value, 5, v14, v23, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -3023,9 +3023,9 @@ sqlite3_int64 __52__PSIDatabase__inqGroupIdForCategory_contentString___block_inv
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
   }
 
-  v15 = [v4 subtitle];
-  v16 = v15;
-  if (!v15)
+  subtitle = [collectionCopy subtitle];
+  v16 = subtitle;
+  if (!subtitle)
   {
     v17 = 0;
     if (!sqlite3_bind_null(Value, 6))
@@ -3044,36 +3044,36 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  v17 = _newUTF8String(v15, &v23);
+  v17 = _newUTF8String(subtitle, &v23);
   if (sqlite3_bind_text(Value, 6, v17, v23, 0))
   {
     goto LABEL_21;
   }
 
 LABEL_23:
-  if (sqlite3_bind_int(Value, 7, [v4 type]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 7, [collectionCopy type]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v27 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
   }
 
-  if (sqlite3_bind_int(Value, 8, [v4 assetsCountPrivate]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 8, [collectionCopy assetsCountPrivate]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v27 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
   }
 
-  if (sqlite3_bind_int(Value, 9, [v4 assetsCountShared]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int(Value, 9, [collectionCopy assetsCountShared]) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v27 = @"Failed to bind parameter";
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
   }
 
-  v18 = [v4 sortDate];
-  [v18 timeIntervalSinceReferenceDate];
+  sortDate = [collectionCopy sortDate];
+  [sortDate timeIntervalSinceReferenceDate];
   v20 = v19;
 
   if (sqlite3_bind_double(Value, 10, v20) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -3095,9 +3095,9 @@ LABEL_23:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543874;
-    v27 = v5;
+    v27 = uuid;
     v28 = 2112;
-    v29 = v12;
+    v29 = title;
     v30 = 2050;
     v31 = insert_rowid;
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEBUG, "Inserted collection with UUID %{public}@, title %@, at collectionId: %{public}lld", buf, 0x20u);
@@ -3107,17 +3107,17 @@ LABEL_40:
   return insert_rowid;
 }
 
-- (unint64_t)_inqCollectionIdForUUID:(id)a3 uuid_0:(unint64_t *)a4 uuid_1:(unint64_t *)a5
+- (unint64_t)_inqCollectionIdForUUID:(id)d uuid_0:(unint64_t *)uuid_0 uuid_1:(unint64_t *)uuid_1
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   v14 = 0;
   v15 = 0;
-  if (PLStringUUIDComponents(v8, &v15, &v14))
+  if (PLStringUUIDComponents(dCopy, &v15, &v14))
   {
     Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectCollectionForUUID");
     if (sqlite3_bind_int64(Value, 1, v15) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -3148,19 +3148,19 @@ LABEL_40:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v21 = v8;
+      v21 = dCopy;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Collection has an invalid UUID: %{public}@", buf, 0xCu);
     }
   }
 
-  if (a4)
+  if (uuid_0)
   {
-    *a4 = v15;
+    *uuid_0 = v15;
   }
 
-  if (a5)
+  if (uuid_1)
   {
-    *a5 = v14;
+    *uuid_1 = v14;
   }
 
   v11 = v17[3];
@@ -3176,14 +3176,14 @@ sqlite3_int64 __53__PSIDatabase__inqCollectionIdForUUID_uuid_0_uuid_1___block_in
   return result;
 }
 
-- (unint64_t)_inqAssetIdWithAsset:(id)a3
+- (unint64_t)_inqAssetIdWithAsset:(id)asset
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 uuid];
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
   v12 = 0;
   v13 = 0;
-  insert_rowid = [(PSIDatabase *)self _inqAssetIdForUUID:v5 uuid_0:&v13 uuid_1:&v12];
+  insert_rowid = [(PSIDatabase *)self _inqAssetIdForUUID:uuid uuid_0:&v13 uuid_1:&v12];
   if (!insert_rowid)
   {
     Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"insertAsset");
@@ -3201,8 +3201,8 @@ sqlite3_int64 __53__PSIDatabase__inqCollectionIdForUUID_uuid_0_uuid_1___block_in
       _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed statement check: %@", buf, 0xCu);
     }
 
-    v8 = [v4 creationDate];
-    v9 = sqlite3_bind_int64(Value, 3, [v8 int64Representation]);
+    creationDate = [assetCopy creationDate];
+    v9 = sqlite3_bind_int64(Value, 3, [creationDate int64Representation]);
 
     if (v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -3217,7 +3217,7 @@ sqlite3_int64 __53__PSIDatabase__inqCollectionIdForUUID_uuid_0_uuid_1___block_in
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543618;
-      v15 = v5;
+      v15 = uuid;
       v16 = 2050;
       v17 = insert_rowid;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "Inserted asset with UUID %{public}@ at assetId: %{public}lld", buf, 0x16u);
@@ -3227,17 +3227,17 @@ sqlite3_int64 __53__PSIDatabase__inqCollectionIdForUUID_uuid_0_uuid_1___block_in
   return insert_rowid;
 }
 
-- (unint64_t)_inqAssetIdForUUID:(id)a3 uuid_0:(unint64_t *)a4 uuid_1:(unint64_t *)a5
+- (unint64_t)_inqAssetIdForUUID:(id)d uuid_0:(unint64_t *)uuid_0 uuid_1:(unint64_t *)uuid_1
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   v14 = 0;
   v15 = 0;
-  if (PLStringUUIDComponents(v8, &v15, &v14))
+  if (PLStringUUIDComponents(dCopy, &v15, &v14))
   {
     Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectAsset");
     if (sqlite3_bind_int64(Value, 1, v15) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -3268,19 +3268,19 @@ sqlite3_int64 __53__PSIDatabase__inqCollectionIdForUUID_uuid_0_uuid_1___block_in
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v21 = v8;
+      v21 = dCopy;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Asset has an invalid UUID: %{public}@", buf, 0xCu);
     }
   }
 
-  if (a4)
+  if (uuid_0)
   {
-    *a4 = v15;
+    *uuid_0 = v15;
   }
 
-  if (a5)
+  if (uuid_1)
   {
-    *a5 = v14;
+    *uuid_1 = v14;
   }
 
   v11 = v17[3];
@@ -3296,14 +3296,14 @@ sqlite3_int64 __48__PSIDatabase__inqAssetIdForUUID_uuid_0_uuid_1___block_invoke(
   return result;
 }
 
-- (void)_inqDeleteGroupsWithGraphCollectionsForPersonUUID:(id)a3
+- (void)_inqDeleteGroupsWithGraphCollectionsForPersonUUID:(id)d
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PSIDatabase.m" lineNumber:2153 description:{@"Invalid parameter not satisfying: %@", @"personUUID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSIDatabase.m" lineNumber:2153 description:{@"Invalid parameter not satisfying: %@", @"personUUID"}];
   }
 
   v23 = 0;
@@ -3311,7 +3311,7 @@ sqlite3_int64 __48__PSIDatabase__inqAssetIdForUUID_uuid_0_uuid_1___block_invoke(
   Mutable = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
   v8 = CFSetCreateMutable(v6, 0, 0);
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGroupsForLookupId");
-  v10 = _newUTF8String(v5, &v23);
+  v10 = _newUTF8String(dCopy, &v23);
   if (sqlite3_bind_text(Value, 1, v10, v23, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
@@ -3336,7 +3336,7 @@ sqlite3_int64 __48__PSIDatabase__inqAssetIdForUUID_uuid_0_uuid_1___block_invoke(
     }
 
     *buf = 138543362;
-    v25 = v5;
+    v25 = dCopy;
     v17 = "Search Indexing: Failed to find groups corresponding to person with UUID: %{public}@. Unable to remove any stale groups for rename.";
     v18 = v13;
     v19 = OS_LOG_TYPE_ERROR;
@@ -3348,7 +3348,7 @@ sqlite3_int64 __48__PSIDatabase__inqAssetIdForUUID_uuid_0_uuid_1___block_invoke(
     *buf = 134349314;
     v25 = Count;
     v26 = 2114;
-    v27 = v5;
+    v27 = dCopy;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Search Indexing: Found %{public}lu groups corresponding to person with UUID: %{public}@", buf, 0x16u);
   }
 
@@ -3372,7 +3372,7 @@ sqlite3_int64 __48__PSIDatabase__inqAssetIdForUUID_uuid_0_uuid_1___block_invoke(
     }
 
     *buf = 138543362;
-    v25 = v5;
+    v25 = dCopy;
     v17 = "Search Indexing: did not find groups in the GC table corresponding to person with UUID: %{public}@";
     v18 = v13;
     v19 = OS_LOG_TYPE_DEFAULT;
@@ -3395,7 +3395,7 @@ LABEL_20:
     *buf = 134349314;
     v25 = v15;
     v26 = 2114;
-    v27 = v5;
+    v27 = dCopy;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Search Indexing: Found %{public}lu groups for person with UUID: %{public}@ to remove in GC table.", buf, 0x16u);
   }
 
@@ -3428,25 +3428,25 @@ void __65__PSIDatabase__inqDeleteGroupsWithGraphCollectionsForPersonUUID___block
   CFSetAddValue(v4, v3);
 }
 
-- (void)_inqRemoveUUID:(id)a3 categories:(id)a4 objectType:(unint64_t)a5 isInBatch:(BOOL)a6
+- (void)_inqRemoveUUID:(id)d categories:(id)categories objectType:(unint64_t)type isInBatch:(BOOL)batch
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
+  batchCopy = batch;
+  dCopy = d;
+  categoriesCopy = categories;
   if (self->_inqDatabase)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __62__PSIDatabase__inqRemoveUUID_categories_objectType_isInBatch___block_invoke;
     aBlock[3] = &unk_1E7576428;
-    v18 = a5;
+    typeCopy = type;
     aBlock[4] = self;
-    v16 = v11;
+    v16 = dCopy;
     v19 = a2;
-    v17 = v12;
+    v17 = categoriesCopy;
     v13 = _Block_copy(aBlock);
     v14 = v13;
-    if (v6)
+    if (batchCopy)
     {
       (*(v13 + 2))(v13);
     }
@@ -3540,9 +3540,9 @@ uint64_t __62__PSIDatabase__inqRemoveUUID_categories_objectType_isInBatch___bloc
 
   if (self->_inqDatabase)
   {
-    v4 = [objc_opt_class() searchDatabaseLog];
-    v5 = os_signpost_id_generate(v4);
-    v6 = v4;
+    searchDatabaseLog = [objc_opt_class() searchDatabaseLog];
+    v5 = os_signpost_id_generate(searchDatabaseLog);
+    v6 = searchDatabaseLog;
     v7 = v6;
     if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
     {
@@ -3575,18 +3575,18 @@ uint64_t __62__PSIDatabase__inqRemoveUUID_categories_objectType_isInBatch___bloc
   }
 }
 
-- (void)_inqRemoveUUID:(id)a3 objectType:(unint64_t)a4 isInBatch:(BOOL)a5
+- (void)_inqRemoveUUID:(id)d objectType:(unint64_t)type isInBatch:(BOOL)batch
 {
-  v5 = a5;
+  batchCopy = batch;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  dCopy = d;
   if (self->_inqDatabase)
   {
     v10 = PLSearchBackendPSIDatabaseGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = @"collection";
-      if (!a4)
+      if (!type)
       {
         v11 = @"asset";
       }
@@ -3594,7 +3594,7 @@ uint64_t __62__PSIDatabase__inqRemoveUUID_categories_objectType_isInBatch___bloc
       *buf = 138543618;
       v23 = v11;
       v24 = 2114;
-      v25 = v9;
+      v25 = dCopy;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "Removing %{public}@ with UUID: %{public}@", buf, 0x16u);
     }
 
@@ -3602,20 +3602,20 @@ uint64_t __62__PSIDatabase__inqRemoveUUID_categories_objectType_isInBatch___bloc
     v15 = 3221225472;
     v16 = __51__PSIDatabase__inqRemoveUUID_objectType_isInBatch___block_invoke;
     v17 = &unk_1E7576400;
-    v20 = a4;
-    v18 = self;
-    v19 = v9;
+    typeCopy = type;
+    selfCopy = self;
+    v19 = dCopy;
     v21 = a2;
     v12 = _Block_copy(&v14);
     v13 = v12;
-    if (v5)
+    if (batchCopy)
     {
       (*(v12 + 2))(v12);
     }
 
     else
     {
-      [(PSIDatabase *)self _inqPerformBatch:v12, v14, v15, v16, v17, v18];
+      [(PSIDatabase *)self _inqPerformBatch:v12, v14, v15, v16, v17, selfCopy];
     }
   }
 }
@@ -3731,14 +3731,14 @@ void __51__PSIDatabase__inqRemoveUUID_objectType_isInBatch___block_invoke(uint64
   }
 }
 
-- (unint64_t)_inqUpdateGroupForText:(id)a3 identifier:(id)a4 category:(signed __int16)a5 owningGroupId:(unint64_t)a6
+- (unint64_t)_inqUpdateGroupForText:(id)text identifier:(id)identifier category:(signed __int16)category owningGroupId:(unint64_t)id
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  categoryCopy = category;
+  textCopy = text;
+  identifierCopy = identifier;
+  if (textCopy)
   {
-    v12 = [(PSITokenizer *)self->_tokenizer normalizeString:v10];
+    v12 = [(PSITokenizer *)self->_tokenizer normalizeString:textCopy];
   }
 
   else
@@ -3750,18 +3750,18 @@ void __51__PSIDatabase__inqRemoveUUID_objectType_isInBatch___block_invoke(uint64
   memset(v16, 0, sizeof(v16));
   if ([v12 length])
   {
-    [(PSIDatabase *)self _inqGetTokensFromString:v12 category:v7 tokenOutput:v16];
+    [(PSIDatabase *)self _inqGetTokensFromString:v12 category:categoryCopy tokenOutput:v16];
   }
 
-  LOWORD(v15) = PLSearchIndexCategoryIsSynonym(v7);
-  v13 = [(PSIDatabase *)self _inqGroupIdForCategory:v7 owningGroupId:a6 contentString:v10 normalizedString:v12 identifier:v11 rankingScore:1 insertIfNeeded:0.0 tokenOutput:v16 shouldUpdateOwningGroupId:v15 shouldUpdateRankingScore:?];
+  LOWORD(v15) = PLSearchIndexCategoryIsSynonym(categoryCopy);
+  v13 = [(PSIDatabase *)self _inqGroupIdForCategory:categoryCopy owningGroupId:id contentString:textCopy normalizedString:v12 identifier:identifierCopy rankingScore:1 insertIfNeeded:0.0 tokenOutput:v16 shouldUpdateOwningGroupId:v15 shouldUpdateRankingScore:?];
 
   return v13;
 }
 
-- (void)_inqGetTokensFromString:(id)a3 category:(signed __int16)a4 tokenOutput:(tokenOutput_t *)a5
+- (void)_inqGetTokensFromString:(id)string category:(signed __int16)category tokenOutput:(tokenOutput_t *)output
 {
-  if (a4 == 2100)
+  if (category == 2100)
   {
     v7 = 12;
   }
@@ -3771,14 +3771,14 @@ void __51__PSIDatabase__inqRemoveUUID_objectType_isInBatch___block_invoke(uint64
     v7 = 0;
   }
 
-  v8 = a3;
-  [(PSIDatabase *)self _prepareTokenOutput:a5 forIndexing:1];
-  [(PSITokenizer *)self->_tokenizer tokenizeString:v8 withOptions:v7 tokenOutput:a5];
+  stringCopy = string;
+  [(PSIDatabase *)self _prepareTokenOutput:output forIndexing:1];
+  [(PSITokenizer *)self->_tokenizer tokenizeString:stringCopy withOptions:v7 tokenOutput:output];
 }
 
-- (void)_prepareTokenOutput:(tokenOutput_t *)a3 forIndexing:(BOOL)a4
+- (void)_prepareTokenOutput:(tokenOutput_t *)output forIndexing:(BOOL)indexing
 {
-  if (a4)
+  if (indexing)
   {
     tokenizerOutputString = self->_tokenizerOutputString;
     if (tokenizerOutputString)
@@ -3795,11 +3795,11 @@ void __51__PSIDatabase__inqRemoveUUID_objectType_isInBatch___block_invoke(uint64
     self->_tokenizerOutputString = v7;
 
     [(NSMutableString *)self->_tokenizerOutputString deleteCharactersInRange:0, [(NSMutableString *)self->_tokenizerOutputString length]];
-    a3->var0 = self->_tokenizerOutputString;
-    *&a3->var1 = 0u;
-    *&a3->var3 = 0u;
-    a3->var5 = 0;
-    a3->var6 = self->_tokenizerOutputRanges;
+    output->var0 = self->_tokenizerOutputString;
+    *&output->var1 = 0u;
+    *&output->var3 = 0u;
+    output->var5 = 0;
+    output->var6 = self->_tokenizerOutputRanges;
   }
 
   else
@@ -3835,26 +3835,26 @@ void __51__PSIDatabase__inqRemoveUUID_objectType_isInBatch___block_invoke(uint64
 
     [(NSMutableArray *)self->_tokenizerOutputNormalizedTokens removeAllObjects];
     v15 = *&self->_tokenizerOutputTokens;
-    a3->var0 = 0;
-    *&a3->var1 = vextq_s8(v15, v15, 8uLL);
-    a3->var3 = 0;
-    a3->var4 = 0;
-    a3->var5 = 0;
-    a3->var6 = self->_tokenizerOutputRanges;
+    output->var0 = 0;
+    *&output->var1 = vextq_s8(v15, v15, 8uLL);
+    output->var3 = 0;
+    output->var4 = 0;
+    output->var5 = 0;
+    output->var6 = self->_tokenizerOutputRanges;
   }
 
-  *&a3->var7 = xmmword_19C60B070;
+  *&output->var7 = xmmword_19C60B070;
 }
 
-- (id)_inqDequeueGroupObjectWithId:(unint64_t)a3 isCachedGroup:(BOOL *)a4
+- (id)_inqDequeueGroupObjectWithId:(unint64_t)id isCachedGroup:(BOOL *)group
 {
-  v7 = CFDictionaryGetValue(self->_inqGroupObjectsById, a3);
+  v7 = CFDictionaryGetValue(self->_inqGroupObjectsById, id);
   v8 = v7;
   if (v7)
   {
     [(PSIGroup *)v7 resetIntersectedIds];
     v9 = v8;
-    if (!a4)
+    if (!group)
     {
       goto LABEL_4;
     }
@@ -3863,12 +3863,12 @@ void __51__PSIDatabase__inqRemoveUUID_objectType_isInBatch___block_invoke(uint64
   }
 
   v9 = objc_alloc_init(PSIGroup);
-  [(PSIGroup *)v9 setGroupId:a3];
-  CFDictionarySetValue(self->_inqGroupObjectsById, a3, v9);
-  if (a4)
+  [(PSIGroup *)v9 setGroupId:id];
+  CFDictionarySetValue(self->_inqGroupObjectsById, id, v9);
+  if (group)
   {
 LABEL_3:
-    *a4 = v8 != 0;
+    *group = v8 != 0;
   }
 
 LABEL_4:
@@ -3876,9 +3876,9 @@ LABEL_4:
   return v9;
 }
 
-- (BOOL)assetExistsWithUUID:(id)a3
+- (BOOL)assetExistsWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -3889,7 +3889,7 @@ LABEL_4:
   v7[3] = &unk_1E7578820;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v8 = v5;
   [(PSIDatabase *)self _inqSync:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -3905,19 +3905,19 @@ uint64_t __35__PSIDatabase_assetExistsWithUUID___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_sortedSearchIndexRowIdsFromUUIDs:(id)a3 searchResultType:(unint64_t)a4 completion:(id)a5
+- (void)_sortedSearchIndexRowIdsFromUUIDs:(id)ds searchResultType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v9 = ~a4;
-  v10 = a3;
-  v11 = a5;
+  typeCopy = type;
+  v9 = ~type;
+  dsCopy = ds;
+  completionCopy = completion;
   if ((v9 & 3) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PSIDatabase.m" lineNumber:1930 description:{@"Invalid parameter not satisfying: %@", @"!wantsAssetsAndCollections"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSIDatabase.m" lineNumber:1930 description:{@"Invalid parameter not satisfying: %@", @"!wantsAssetsAndCollections"}];
   }
 
-  v12 = v6 & 1;
+  v12 = typeCopy & 1;
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18[0] = MEMORY[0x1E69E9820];
@@ -3926,13 +3926,13 @@ uint64_t __35__PSIDatabase_assetExistsWithUUID___block_invoke(uint64_t a1)
   v18[3] = &unk_1E7576B98;
   v22 = v12;
   v18[4] = self;
-  v19 = v10;
+  v19 = dsCopy;
   v20 = v14;
   v21 = Mutable;
   v15 = v14;
-  v16 = v10;
+  v16 = dsCopy;
   [(PSIDatabase *)self _inqSync:v18];
-  v11[2](v11, Mutable, v15);
+  completionCopy[2](completionCopy, Mutable, v15);
 }
 
 void __77__PSIDatabase__sortedSearchIndexRowIdsFromUUIDs_searchResultType_completion___block_invoke(uint64_t a1)
@@ -4009,28 +4009,28 @@ void __77__PSIDatabase__sortedSearchIndexRowIdsFromUUIDs_searchResultType_comple
   }
 }
 
-- (id)_inqGenerateGroupsInfoDictionaryFromContentString:(const char *)a3 normalizedString:(const char *)a4 identifier:(const char *)a5 category:(signed __int16)a6 score:(double)a7 groupId:(unint64_t)a8 owningGroupId:(unint64_t)a9 includeUUIDs:(BOOL)a10
+- (id)_inqGenerateGroupsInfoDictionaryFromContentString:(const char *)string normalizedString:(const char *)normalizedString identifier:(const char *)identifier category:(signed __int16)category score:(double)score groupId:(unint64_t)id owningGroupId:(unint64_t)groupId includeUUIDs:(BOOL)self0
 {
-  v13 = a6;
+  categoryCopy = category;
   v46[12] = *MEMORY[0x1E69E9840];
-  v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:a3 encoding:4];
-  v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:a4 encoding:4];
-  v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:a5 encoding:4];
-  v44 = PLDebugStringForSearchIndexCategory(v13);
-  if (a10)
+  v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:string encoding:4];
+  v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:normalizedString encoding:4];
+  v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:identifier encoding:4];
+  v44 = PLDebugStringForSearchIndexCategory(categoryCopy);
+  if (ds)
   {
-    if (a9)
+    if (groupId)
     {
-      v20 = a9;
+      idCopy = groupId;
     }
 
     else
     {
-      v20 = a8;
+      idCopy = id;
     }
 
-    v21 = [(PSIDatabase *)self _inqAssetUUIDsForGroupID:v20];
-    v22 = [(PSIDatabase *)self _inqCollectionUUIDsForGroupID:v20];
+    v21 = [(PSIDatabase *)self _inqAssetUUIDsForGroupID:idCopy];
+    v22 = [(PSIDatabase *)self _inqCollectionUUIDsForGroupID:idCopy];
   }
 
   else
@@ -4040,72 +4040,72 @@ void __77__PSIDatabase__sortedSearchIndexRowIdsFromUUIDs_searchResultType_comple
   }
 
   v45[0] = @"content_string";
-  v23 = v17;
+  null = v17;
   if (!v17)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39 = v23;
-  v46[0] = v23;
+  v39 = null;
+  v46[0] = null;
   v45[1] = @"normalized_string";
-  v24 = v18;
+  null2 = v18;
   if (!v18)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v43 = v17;
-  v38 = v24;
-  v46[1] = v24;
+  v38 = null2;
+  v46[1] = null2;
   v45[2] = @"lookup_identifier";
-  v25 = v19;
+  null3 = v19;
   if (!v19)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v42 = v18;
-  v37 = v25;
-  v46[2] = v25;
+  v37 = null3;
+  v46[2] = null3;
   v45[3] = @"category";
-  v40 = [MEMORY[0x1E696AD98] numberWithShort:v13];
+  v40 = [MEMORY[0x1E696AD98] numberWithShort:categoryCopy];
   v46[3] = v40;
   v45[4] = @"category_humanReadable";
-  v26 = v44;
+  null4 = v44;
   if (!v44)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v41 = v19;
-  v36 = v26;
-  v46[4] = v26;
+  v36 = null4;
+  v46[4] = null4;
   v45[5] = @"score";
-  v27 = [MEMORY[0x1E696AD98] numberWithDouble:a7];
+  v27 = [MEMORY[0x1E696AD98] numberWithDouble:score];
   v46[5] = v27;
   v45[6] = @"group_id";
-  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a8];
+  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:id];
   v46[6] = v28;
   v45[7] = @"owning_group_id";
-  v29 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a9];
+  v29 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:groupId];
   v46[7] = v29;
   v45[8] = @"assetUUIDs";
-  v30 = v21;
+  null5 = v21;
   if (!v21)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46[8] = v30;
+  v46[8] = null5;
   v45[9] = @"collectionUUIDs";
-  v31 = v22;
+  null6 = v22;
   if (!v22)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46[9] = v31;
+  v46[9] = null6;
   v45[10] = @"assetCount";
   v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v21, "count")}];
   v46[10] = v32;
@@ -4161,22 +4161,22 @@ LABEL_28:
   return v34;
 }
 
-- (id)dumpLookupStringsWithIndexCategories:(id)a3
+- (id)dumpLookupStringsWithIndexCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__PSIDatabase_dumpLookupStringsWithIndexCategories___block_invoke;
   v11[3] = &unk_1E75761B8;
-  v12 = v4;
-  v13 = self;
+  v12 = categoriesCopy;
+  selfCopy = self;
   v14 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = categoriesCopy;
   [(PSIDatabase *)self _inqSync:v11];
-  v8 = [v6 allObjects];
-  v9 = [v8 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+  allObjects = [v6 allObjects];
+  v9 = [allObjects sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
   return v9;
 }
@@ -4268,29 +4268,29 @@ void __52__PSIDatabase_dumpLookupStringsWithIndexCategories___block_invoke_541(u
   }
 }
 
-- (id)dumpGroupsInfoForAssetUUID:(id)a3 indexCategories:(id)a4 includeUUIDs:(BOOL)a5
+- (id)dumpGroupsInfoForAssetUUID:(id)d indexCategories:(id)categories includeUUIDs:(BOOL)ds
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  categoriesCopy = categories;
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v25 = 0;
   v26 = 0;
-  if (PLStringUUIDComponents(v8, &v26, &v25))
+  if (PLStringUUIDComponents(dCopy, &v26, &v25))
   {
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __71__PSIDatabase_dumpGroupsInfoForAssetUUID_indexCategories_includeUUIDs___block_invoke;
     v18 = &unk_1E75763B0;
-    v19 = self;
+    selfCopy = self;
     v22 = v26;
     v23 = v25;
-    v20 = v9;
-    v24 = a5;
+    v20 = categoriesCopy;
+    dsCopy = ds;
     v11 = v10;
     v21 = v11;
     [(PSIDatabase *)self _inqSync:&v15];
-    v12 = [v11 allObjects];
+    allObjects = [v11 allObjects];
   }
 
   else
@@ -4299,14 +4299,14 @@ void __52__PSIDatabase_dumpLookupStringsWithIndexCategories___block_invoke_541(u
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v28 = v8;
+      v28 = dCopy;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Invalid asset UUID %{public}@", buf, 0xCu);
     }
 
-    v12 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
-  return v12;
+  return allObjects;
 }
 
 void __71__PSIDatabase_dumpGroupsInfoForAssetUUID_indexCategories_includeUUIDs___block_invoke(uint64_t a1)
@@ -4554,20 +4554,20 @@ void __71__PSIDatabase_dumpGroupsInfoForAssetUUID_indexCategories_includeUUIDs__
   [*(a1 + 40) addObject:v12];
 }
 
-- (id)dumpGroupsInfoWithIndexCategories:(id)a3 includeUUIDs:(BOOL)a4
+- (id)dumpGroupsInfoWithIndexCategories:(id)categories includeUUIDs:(BOOL)ds
 {
-  v6 = a3;
+  categoriesCopy = categories;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__PSIDatabase_dumpGroupsInfoWithIndexCategories_includeUUIDs___block_invoke;
   v13[3] = &unk_1E7576310;
-  v14 = v6;
-  v15 = self;
-  v17 = a4;
+  v14 = categoriesCopy;
+  selfCopy = self;
+  dsCopy = ds;
   v8 = v7;
   v16 = v8;
-  v9 = v6;
+  v9 = categoriesCopy;
   [(PSIDatabase *)self _inqSync:v13];
   v10 = v16;
   v11 = v8;
@@ -4666,19 +4666,19 @@ void __62__PSIDatabase_dumpGroupsInfoWithIndexCategories_includeUUIDs___block_in
   [*(a1 + 40) addObject:v12];
 }
 
-- (id)_inqNumberOfCollectionsByGroupIdMatchingGroupsWithIds:(id)a3
+- (id)_inqNumberOfCollectionsByGroupIdMatchingGroupsWithIds:(id)ids
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  [(PSIIntArray *)self->_matchingIds bindElements:v5];
+  idsCopy = ids;
+  dictionary = [v4 dictionary];
+  [(PSIIntArray *)self->_matchingIds bindElements:idsCopy];
 
   inqNumberOfCollectionsByGroupIdMatchingGroupsWithIdsStatement = self->_inqNumberOfCollectionsByGroupIdMatchingGroupsWithIdsStatement;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__PSIDatabase__inqNumberOfCollectionsByGroupIdMatchingGroupsWithIds___block_invoke;
   v10[3] = &unk_1E75762C0;
-  v8 = v6;
+  v8 = dictionary;
   v11 = v8;
   [(PSIDatabase *)self executeStatement:inqNumberOfCollectionsByGroupIdMatchingGroupsWithIdsStatement withResultEnumerationBlock:v10];
   [(PSIIntArray *)self->_matchingIds unbind];
@@ -4698,13 +4698,13 @@ void __69__PSIDatabase__inqNumberOfCollectionsByGroupIdMatchingGroupsWithIds___b
   [v6 setObject:v8 forKeyedSubscript:v7];
 }
 
-- (unint64_t)_inqNumberOfCollectionsMatchingGroupWithId:(unint64_t)a3
+- (unint64_t)_inqNumberOfCollectionsMatchingGroupWithId:(unint64_t)id
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  [(PSIStatement *)self->_inqNumberOfCollectionsMatchingGroupWithIdStatement bindInt64:a3 atIndex:1];
+  [(PSIStatement *)self->_inqNumberOfCollectionsMatchingGroupWithIdStatement bindInt64:id atIndex:1];
   inqNumberOfCollectionsMatchingGroupWithIdStatement = self->_inqNumberOfCollectionsMatchingGroupWithIdStatement;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -4724,19 +4724,19 @@ uint64_t __58__PSIDatabase__inqNumberOfCollectionsMatchingGroupWithId___block_in
   return result;
 }
 
-- (id)_inqNumberOfAssetsByGroupIdMatchingGroupsWithIds:(id)a3
+- (id)_inqNumberOfAssetsByGroupIdMatchingGroupsWithIds:(id)ids
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  [(PSIIntArray *)self->_matchingIds bindElements:v5];
+  idsCopy = ids;
+  dictionary = [v4 dictionary];
+  [(PSIIntArray *)self->_matchingIds bindElements:idsCopy];
 
   inqNumberOfAssetsByGroupIdMatchingGroupsWithIdsStatement = self->_inqNumberOfAssetsByGroupIdMatchingGroupsWithIdsStatement;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__PSIDatabase__inqNumberOfAssetsByGroupIdMatchingGroupsWithIds___block_invoke;
   v10[3] = &unk_1E75762C0;
-  v8 = v6;
+  v8 = dictionary;
   v11 = v8;
   [(PSIDatabase *)self executeStatement:inqNumberOfAssetsByGroupIdMatchingGroupsWithIdsStatement withResultEnumerationBlock:v10];
   [(PSIIntArray *)self->_matchingIds unbind];
@@ -4756,13 +4756,13 @@ void __64__PSIDatabase__inqNumberOfAssetsByGroupIdMatchingGroupsWithIds___block_
   [v6 setObject:v8 forKeyedSubscript:v7];
 }
 
-- (unint64_t)_inqNumberOfAssetsMatchingGroupWithId:(unint64_t)a3
+- (unint64_t)_inqNumberOfAssetsMatchingGroupWithId:(unint64_t)id
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  [(PSIStatement *)self->_inqNumberOfAssetsMatchingGroupWithIdStatement bindInt64:a3 atIndex:1];
+  [(PSIStatement *)self->_inqNumberOfAssetsMatchingGroupWithIdStatement bindInt64:id atIndex:1];
   inqNumberOfAssetsMatchingGroupWithIdStatement = self->_inqNumberOfAssetsMatchingGroupWithIdStatement;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -4782,9 +4782,9 @@ uint64_t __53__PSIDatabase__inqNumberOfAssetsMatchingGroupWithId___block_invoke(
   return result;
 }
 
-- (id)uuidsForLookupIdentifier:(id)a3 resultTypes:(unint64_t)a4
+- (id)uuidsForLookupIdentifier:(id)identifier resultTypes:(unint64_t)types
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -4796,9 +4796,9 @@ uint64_t __53__PSIDatabase__inqNumberOfAssetsMatchingGroupWithId___block_invoke(
   v10[2] = __52__PSIDatabase_uuidsForLookupIdentifier_resultTypes___block_invoke;
   v10[3] = &unk_1E7576680;
   v10[4] = self;
-  v7 = v6;
+  v7 = identifierCopy;
   v12 = &v14;
-  v13 = a4;
+  typesCopy = types;
   v11 = v7;
   [(PSIDatabase *)self _inqSync:v10];
   v8 = v15[5];
@@ -4823,18 +4823,18 @@ void __52__PSIDatabase_uuidsForLookupIdentifier_resultTypes___block_invoke(uint6
   }
 }
 
-- (id)_inqGroupForLookupIdentifier:(id)a3 searchResultTypes:(unint64_t)a4
+- (id)_inqGroupForLookupIdentifier:(id)identifier searchResultTypes:(unint64_t)types
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (![v7 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PSIDatabase.m" lineNumber:1565 description:{@"Invalid parameter not satisfying: %@", @"lookupIdentifier.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSIDatabase.m" lineNumber:1565 description:{@"Invalid parameter not satisfying: %@", @"lookupIdentifier.length > 0"}];
   }
 
   v15 = 0;
-  v8 = _newUTF8String(v7, &v15);
+  v8 = _newUTF8String(identifierCopy, &v15);
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectLookupGroupIdLimit1");
   if (sqlite3_bind_text(Value, 1, v8, v15, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -4856,7 +4856,7 @@ void __52__PSIDatabase_uuidsForLookupIdentifier_resultTypes___block_invoke(uint6
   v10 = *(*(&buf + 1) + 24);
   if (v10)
   {
-    v11 = [(PSIDatabase *)self _inqGroupWithMatchingGroupId:v10 dateFilter:0 searchResultTypes:a4];
+    v11 = [(PSIDatabase *)self _inqGroupWithMatchingGroupId:v10 dateFilter:0 searchResultTypes:types];
     if (!v8)
     {
       goto LABEL_9;
@@ -4885,18 +4885,18 @@ sqlite3_int64 __62__PSIDatabase__inqGroupForLookupIdentifier_searchResultTypes__
   return result;
 }
 
-- (id)_inqGroupArraysFromGroupIdSets:(id)a3 dateFilter:(id)a4 searchResultTypes:(unint64_t)a5 progressBlock:(id)a6
+- (id)_inqGroupArraysFromGroupIdSets:(id)sets dateFilter:(id)filter searchResultTypes:(unint64_t)types progressBlock:(id)block
 {
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v30 = a4;
-  v10 = a6;
-  v11 = [MEMORY[0x1E695DF70] array];
+  setsCopy = sets;
+  filterCopy = filter;
+  blockCopy = block;
+  array = [MEMORY[0x1E695DF70] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v12 = v9;
+  v12 = setsCopy;
   v13 = [v12 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v13)
   {
@@ -4952,10 +4952,10 @@ sqlite3_int64 __62__PSIDatabase__inqGroupForLookupIdentifier_searchResultTypes__
 
         v24 = *(*(&v32 + 1) + 8 * j);
         v25 = objc_autoreleasePoolPush();
-        if (v10)
+        if (blockCopy)
         {
           v31 = 0;
-          v10[2](v10, &v31, 0.5);
+          blockCopy[2](blockCopy, &v31, 0.5);
           if (v31)
           {
             objc_autoreleasePoolPop(v25);
@@ -4963,8 +4963,8 @@ sqlite3_int64 __62__PSIDatabase__inqGroupForLookupIdentifier_searchResultTypes__
           }
         }
 
-        v26 = [(PSIDatabase *)self _inqGroupsWithMatchingGroupIds:v24 dateFilter:v30 includeObjects:1 searchResultTypes:a5 matchingPredicateBlock:0];
-        [v11 addObject:v26];
+        v26 = [(PSIDatabase *)self _inqGroupsWithMatchingGroupIds:v24 dateFilter:filterCopy includeObjects:1 searchResultTypes:types matchingPredicateBlock:0];
+        [array addObject:v26];
 
         objc_autoreleasePoolPop(v25);
       }
@@ -4982,12 +4982,12 @@ sqlite3_int64 __62__PSIDatabase__inqGroupForLookupIdentifier_searchResultTypes__
 LABEL_23:
 
   [(PSIIntArray *)self->_matchingIds unprepare];
-  v27 = [v11 copy];
+  v27 = [array copy];
 
   return v27;
 }
 
-- (double)_inqScoreForGroupID:(unint64_t)a3
+- (double)_inqScoreForGroupID:(unint64_t)d
 {
   v15 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -4995,7 +4995,7 @@ LABEL_23:
   v11 = 0x2020000000;
   v12 = 0;
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectRankingScoreForGroupId");
-  if (sqlite3_bind_int64(Value, 1, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 1, d) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v14 = @"Failed to bind parameter";
@@ -5013,14 +5013,14 @@ LABEL_23:
   return v6;
 }
 
-- (id)_inqGroupWithStatement:(sqlite3_stmt *)a3 dateFilter:(id)a4 includeObjects:(BOOL)a5 isFilenameStatement:(BOOL)a6 excludingGroupId:(unint64_t)a7 searchResultTypes:(unint64_t)a8
+- (id)_inqGroupWithStatement:(sqlite3_stmt *)statement dateFilter:(id)filter includeObjects:(BOOL)objects isFilenameStatement:(BOOL)filenameStatement excludingGroupId:(unint64_t)id searchResultTypes:(unint64_t)types
 {
-  v8 = a8;
-  v10 = a6;
-  v11 = a5;
-  v14 = a4;
-  v15 = sqlite3_column_int64(a3, 0);
-  if (v15 == a7)
+  typesCopy = types;
+  filenameStatementCopy = filenameStatement;
+  objectsCopy = objects;
+  filterCopy = filter;
+  v15 = sqlite3_column_int64(statement, 0);
+  if (v15 == id)
   {
     v16 = 0;
     goto LABEL_18;
@@ -5028,7 +5028,7 @@ LABEL_23:
 
   v17 = v15;
   v22 = 0;
-  if (v14 || !v11)
+  if (filterCopy || !objectsCopy)
   {
     v16 = objc_alloc_init(PSIGroup);
     [(PSIGroup *)v16 setGroupId:v17];
@@ -5043,35 +5043,35 @@ LABEL_23:
     }
   }
 
-  if (v10)
+  if (filenameStatementCopy)
   {
-    [(PSIGroup *)v16 prepareFromFilenameStatement:a3];
+    [(PSIGroup *)v16 prepareFromFilenameStatement:statement];
   }
 
   else
   {
-    [(PSIGroup *)v16 prepareFromStatement:a3];
+    [(PSIGroup *)v16 prepareFromStatement:statement];
   }
 
-  v18 = [(PSIGroup *)v16 groupIdForObjectLookup];
+  groupIdForObjectLookup = [(PSIGroup *)v16 groupIdForObjectLookup];
   if (PLSearchIndexCategoryIsSynonym([(PSIGroup *)v16 category]))
   {
-    [(PSIDatabase *)self _inqScoreForGroupID:v18];
+    [(PSIDatabase *)self _inqScoreForGroupID:groupIdForObjectLookup];
     [(PSIGroup *)v16 setScore:?];
   }
 
-  if (v11)
+  if (objectsCopy)
   {
-    if (v8)
+    if (typesCopy)
     {
-      v19 = [(PSIDatabase *)self _inqNewAssetIdsForGroupId:v18 dateFilter:v14];
+      v19 = [(PSIDatabase *)self _inqNewAssetIdsForGroupId:groupIdForObjectLookup dateFilter:filterCopy];
       [(PSIGroup *)v16 setAssetIds:v19];
       CFRelease(v19);
     }
 
-    if ((v8 & 2) != 0)
+    if ((typesCopy & 2) != 0)
     {
-      v20 = [(PSIDatabase *)self _inqNewCollectionIdsForGroupId:v18 dateFilter:v14];
+      v20 = [(PSIDatabase *)self _inqNewCollectionIdsForGroupId:groupIdForObjectLookup dateFilter:filterCopy];
       [(PSIGroup *)v16 setCollectionIds:v20];
       CFRelease(v20);
     }
@@ -5082,19 +5082,19 @@ LABEL_18:
   return v16;
 }
 
-- (__CFSet)_inqNewGroupIdsWithCategories:(id)a3
+- (__CFSet)_inqNewGroupIdsWithCategories:(id)categories
 {
   v4 = *MEMORY[0x1E695E480];
-  v5 = a3;
+  categoriesCopy = categories;
   Mutable = CFSetCreateMutable(v4, 0, 0);
-  v7 = [v5 count];
+  v7 = [categoriesCopy count];
   v8 = CFArrayCreateMutable(v4, v7, 0);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __45__PSIDatabase__inqNewGroupIdsWithCategories___block_invoke;
   v12[3] = &__block_descriptor_40_e12_v24__0Q8_B16l;
   v12[4] = v8;
-  [v5 enumerateIndexesUsingBlock:v12];
+  [categoriesCopy enumerateIndexesUsingBlock:v12];
 
   [(PSIIntArray *)self->_matchingIds bindElements:v8 range:0, v7];
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGroupsWithCategories");
@@ -5117,22 +5117,22 @@ void __45__PSIDatabase__inqNewGroupIdsWithCategories___block_invoke_2(uint64_t a
   CFSetAddValue(v4, v3);
 }
 
-- (__CFSet)_inqNewGroupIdsMatchingFTSString:(id)a3 categories:(id)a4 textIsSearchable:(BOOL)a5
+- (__CFSet)_inqNewGroupIdsMatchingFTSString:(id)string categories:(id)categories textIsSearchable:(BOOL)searchable
 {
-  v5 = a5;
+  searchableCopy = searchable;
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  categoriesCopy = categories;
   v30 = 0;
-  v10 = _newUTF8String(v8, &v30);
+  v10 = _newUTF8String(stringCopy, &v30);
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
   Mutable = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-  if (v9)
+  if (categoriesCopy)
   {
-    if (v5)
+    if (searchableCopy)
     {
       v12 = CFSTR("SELECT rowid FROM prefix WHERE normalized_string MATCH ? AND category IN (?");
     }
@@ -5143,7 +5143,7 @@ void __45__PSIDatabase__inqNewGroupIdsWithCategories___block_invoke_2(uint64_t a
     }
 
     v13 = [MEMORY[0x1E696AD60] stringWithFormat:v12];
-    for (i = 1; i < [v9 count]; ++i)
+    for (i = 1; i < [categoriesCopy count]; ++i)
     {
       [v13 appendString:{@", ?"}];
     }
@@ -5162,7 +5162,7 @@ void __45__PSIDatabase__inqNewGroupIdsWithCategories___block_invoke_2(uint64_t a
     v24[5] = &v33;
     v24[6] = v16;
     v24[4] = &v26;
-    [v9 enumerateIndexesUsingBlock:v24];
+    [categoriesCopy enumerateIndexesUsingBlock:v24];
     v17 = sqlite3_bind_text(v16, 1, v10, v30, 0);
     *(v27 + 6) = v17;
     if (v17 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -5192,7 +5192,7 @@ void __45__PSIDatabase__inqNewGroupIdsWithCategories___block_invoke_2(uint64_t a
 
   else
   {
-    if (v5)
+    if (searchableCopy)
     {
       v19 = @"selectPrefix";
     }
@@ -5260,7 +5260,7 @@ void __76__PSIDatabase__inqNewGroupIdsMatchingFTSString_categories_textIsSearcha
   CFSetAddValue(v4, v3);
 }
 
-- (id)_inqContentStringForGroupId:(unint64_t)a3
+- (id)_inqContentStringForGroupId:(unint64_t)id
 {
   v17 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -5270,7 +5270,7 @@ void __76__PSIDatabase__inqNewGroupIdsMatchingFTSString_categories_textIsSearcha
   v13 = __Block_byref_object_dispose__107329;
   v14 = 0;
   Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectGroupAlt");
-  if (sqlite3_bind_int64(Value, 1, a3) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (sqlite3_bind_int64(Value, 1, id) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v16 = @"Failed to bind parameter";
@@ -5301,12 +5301,12 @@ void __43__PSIDatabase__inqContentStringForGroupId___block_invoke(uint64_t a1, s
   }
 }
 
-- (__CFSet)_inqAssetIdsForGroupIds:(__CFSet *)a3
+- (__CFSet)_inqAssetIdsForGroupIds:(__CFSet *)ids
 {
-  if (CFSetGetCount(a3))
+  if (CFSetGetCount(ids))
   {
     Mutable = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-    [(PSIIntArray *)self->_matchingIds bindElements:a3];
+    [(PSIIntArray *)self->_matchingIds bindElements:ids];
     Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"kSelectAssetIDsForGroupIDsStatement");
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -5334,7 +5334,7 @@ void __39__PSIDatabase__inqAssetIdsForGroupIds___block_invoke(uint64_t a1, sqlit
   CFSetAddValue(v4, v3);
 }
 
-- (id)assetUUIDsForGroupIDs:(__CFSet *)a3
+- (id)assetUUIDsForGroupIDs:(__CFSet *)ds
 {
   v7 = 0;
   v8 = &v7;
@@ -5347,7 +5347,7 @@ void __39__PSIDatabase__inqAssetIdsForGroupIds___block_invoke(uint64_t a1, sqlit
   v6[2] = __37__PSIDatabase_assetUUIDsForGroupIDs___block_invoke;
   v6[3] = &unk_1E7576208;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = ds;
   v6[4] = self;
   [(PSIDatabase *)self _inqSync:v6];
   v3 = v8[5];
@@ -5370,13 +5370,13 @@ void __37__PSIDatabase_assetUUIDsForGroupIDs___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)_inqAssetUUIDsForAssetIds:(__CFSet *)a3
+- (id)_inqAssetUUIDsForAssetIds:(__CFSet *)ids
 {
-  Count = CFSetGetCount(a3);
+  Count = CFSetGetCount(ids);
   if (Count)
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:Count];
-    [(PSIIntArray *)self->_matchingIds bindElements:a3];
+    [(PSIIntArray *)self->_matchingIds bindElements:ids];
     Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectAssetIdsIn");
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -5404,12 +5404,12 @@ void __41__PSIDatabase__inqAssetUUIDsForAssetIds___block_invoke(uint64_t a1, sql
   [*(a1 + 32) addObject:v6];
 }
 
-- (id)assetUUIDsForAssetIdsArray:(__CFArray *)a3
+- (id)assetUUIDsForAssetIdsArray:(__CFArray *)array
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (array)
   {
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(array);
     if (Count)
     {
       v6 = Count;
@@ -5429,7 +5429,7 @@ void __41__PSIDatabase__inqAssetUUIDsForAssetIds___block_invoke(uint64_t a1, sql
           v12[3] = &unk_1E7576590;
           v12[4] = self;
           v12[5] = buf;
-          v12[6] = a3;
+          v12[6] = array;
           v12[7] = v6;
           [(PSIDatabase *)self _inqSync:v12];
           v7 = *(*&buf[8] + 40);
@@ -5481,10 +5481,10 @@ void __42__PSIDatabase_assetUUIDsForAssetIdsArray___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)assetUUIDsForAssetIds:(__CFSet *)a3
+- (id)assetUUIDsForAssetIds:(__CFSet *)ids
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (ids)
   {
     if (self->_options & 1) != 0 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*buf = 138412290, *&buf[4] = @"expect searchable", _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu), (self->_options))
     {
@@ -5502,7 +5502,7 @@ void __42__PSIDatabase_assetUUIDsForAssetIdsArray___block_invoke(uint64_t a1)
         v10[3] = &unk_1E7576208;
         v10[4] = self;
         v10[5] = buf;
-        v10[6] = a3;
+        v10[6] = ids;
         [(PSIDatabase *)self _inqSync:v10];
         v5 = *(*&buf[8] + 40);
         _Block_object_dispose(buf, 8);
@@ -5552,14 +5552,14 @@ void __37__PSIDatabase_assetUUIDsForAssetIds___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)_inqCollectionUUIDsForCollectionIds:(__CFArray *)a3 range:(_NSRange)a4
+- (id)_inqCollectionUUIDsForCollectionIds:(__CFArray *)ids range:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4.length];
-    [(PSIIntArray *)self->_matchingIds bindElements:a3 range:location, length];
+    length = range.length;
+    location = range.location;
+    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:range.length];
+    [(PSIIntArray *)self->_matchingIds bindElements:ids range:location, length];
     Value = CFDictionaryGetValue(self->_inqPreparedStatements, @"selectCollectionIdsIn");
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -5588,16 +5588,16 @@ void __57__PSIDatabase__inqCollectionUUIDsForCollectionIds_range___block_invoke(
   [*(a1 + 32) addObject:v6];
 }
 
-- (id)_inqAssetUUIDsForAssetIds:(__CFArray *)a3 range:(_NSRange)a4 creationDateSorted:(BOOL)a5
+- (id)_inqAssetUUIDsForAssetIds:(__CFArray *)ids range:(_NSRange)range creationDateSorted:(BOOL)sorted
 {
-  if (a4.length)
+  if (range.length)
   {
-    v5 = a5;
-    length = a4.length;
-    location = a4.location;
-    v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4.length];
-    [(PSIIntArray *)self->_matchingIds bindElements:a3 range:location, length];
-    if (v5)
+    sortedCopy = sorted;
+    length = range.length;
+    location = range.location;
+    v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:range.length];
+    [(PSIIntArray *)self->_matchingIds bindElements:ids range:location, length];
+    if (sortedCopy)
     {
       v11 = @"selectAssetIdsInDateSorted";
     }
@@ -5664,19 +5664,19 @@ uint64_t __42__PSIDatabase_deleteAllInitialSuggestions__block_invoke_2(uint64_t 
   return [v3 _inqExecutePreparedStatement:Value withStatementBlock:0];
 }
 
-- (void)updateInitialSuggestionsWithIdentifiers:(id)a3 dateLastUsed:(id)a4
+- (void)updateInitialSuggestionsWithIdentifiers:(id)identifiers dateLastUsed:(id)used
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  usedCopy = used;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__PSIDatabase_updateInitialSuggestionsWithIdentifiers_dateLastUsed___block_invoke;
   v10[3] = &unk_1E75761B8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifiersCopy;
+  v12 = usedCopy;
+  v8 = usedCopy;
+  v9 = identifiersCopy;
   [(PSIDatabase *)self _inqSync:v10];
 }
 
@@ -5768,16 +5768,16 @@ void __38__PSIDatabase_fetchInitialSuggestions__block_invoke_2(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)saveInitialSuggestions:(id)a3
+- (void)saveInitialSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__PSIDatabase_saveInitialSuggestions___block_invoke;
   v6[3] = &unk_1E7578848;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = suggestionsCopy;
+  v5 = suggestionsCopy;
   [(PSIDatabase *)self _inqSync:v6];
 }
 
@@ -5850,12 +5850,12 @@ uint64_t __33__PSIDatabase_removeUnusedGroups__block_invoke(uint64_t a1)
   return [v1 _inqPerformBatch:v3];
 }
 
-- (void)_removeUUID:(id)a3 categories:(id)a4 objectType:(unint64_t)a5 completion:(id)a6
+- (void)_removeUUID:(id)d categories:(id)categories objectType:(unint64_t)type completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  categoriesCopy = categories;
+  completionCopy = completion;
   if (((self->_options & 2) != 0 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*buf = 138412290, v19 = @"expect writable", _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu), (self->_options & 2) != 0)) && self->_databaseIsValid)
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -5863,16 +5863,16 @@ uint64_t __33__PSIDatabase_removeUnusedGroups__block_invoke(uint64_t a1)
     v13[2] = __60__PSIDatabase__removeUUID_categories_objectType_completion___block_invoke;
     v13[3] = &unk_1E7576190;
     v13[4] = self;
-    v14 = v10;
-    v15 = v11;
-    v17 = a5;
-    v16 = v12;
+    v14 = dCopy;
+    v15 = categoriesCopy;
+    typeCopy = type;
+    v16 = completionCopy;
     [(PSIDatabase *)self _inqAsync:v13];
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -5905,11 +5905,11 @@ uint64_t __60__PSIDatabase__removeUUID_categories_objectType_completion___block_
   return [v2 _inqRemoveUnusedGroups];
 }
 
-- (void)_removeUUIDs:(id)a3 objectType:(unint64_t)a4 deferRemovingUnusedGroups:(BOOL)a5 completion:(id)a6
+- (void)_removeUUIDs:(id)ds objectType:(unint64_t)type deferRemovingUnusedGroups:(BOOL)groups completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  dsCopy = ds;
+  completionCopy = completion;
   if ((self->_options & 2) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
@@ -5917,7 +5917,7 @@ uint64_t __60__PSIDatabase__removeUUID_categories_objectType_completion___block_
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
-  v12 = [v10 count];
+  v12 = [dsCopy count];
   if ((self->_options & 2) != 0 && self->_databaseIsValid && v12)
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -5925,16 +5925,16 @@ uint64_t __60__PSIDatabase__removeUUID_categories_objectType_completion___block_
     v13[2] = __76__PSIDatabase__removeUUIDs_objectType_deferRemovingUnusedGroups_completion___block_invoke;
     v13[3] = &unk_1E7576140;
     v13[4] = self;
-    v15 = v11;
-    v14 = v10;
-    v16 = a4;
-    v17 = a5;
+    v15 = completionCopy;
+    v14 = dsCopy;
+    typeCopy = type;
+    groupsCopy = groups;
     [(PSIDatabase *)self _inqAsync:v13];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    v11[2](v11);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -6019,40 +6019,40 @@ void __76__PSIDatabase__removeUUIDs_objectType_deferRemovingUnusedGroups_complet
   }
 }
 
-- (void)removeCollectionWithUUID:(id)a3 completion:(id)a4
+- (void)removeCollectionWithUUID:(id)d completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  dCopy = d;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  completionCopy = completion;
+  dCopy2 = d;
+  v9 = [v6 arrayWithObjects:&dCopy count:1];
 
-  [(PSIDatabase *)self removeCollectionsWithUUIDs:v9 completion:v7, v10, v11];
+  [(PSIDatabase *)self removeCollectionsWithUUIDs:v9 completion:completionCopy, dCopy, v11];
 }
 
-- (void)removeAssetWithUUID:(id)a3 completion:(id)a4
+- (void)removeAssetWithUUID:(id)d completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  dCopy = d;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  completionCopy = completion;
+  dCopy2 = d;
+  v9 = [v6 arrayWithObjects:&dCopy count:1];
 
-  [(PSIDatabase *)self removeAssetsWithUUIDs:v9 completion:v7, v10, v11];
+  [(PSIDatabase *)self removeAssetsWithUUIDs:v9 completion:completionCopy, dCopy, v11];
 }
 
-- (void)addCollections:(id)a3 deferRemovingUnusedGroups:(BOOL)a4 withCompletion:(id)a5
+- (void)addCollections:(id)collections deferRemovingUnusedGroups:(BOOL)groups withCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  collectionsCopy = collections;
+  completionCopy = completion;
   v10 = PLSearchBackendPSIDatabaseGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v17 = v8;
+    v17 = collectionsCopy;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "Adding collections: %@", buf, 0xCu);
   }
 
@@ -6063,7 +6063,7 @@ void __76__PSIDatabase__removeUUIDs_objectType_deferRemovingUnusedGroups_complet
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
-  v11 = [(__CFString *)v8 count];
+  v11 = [(__CFString *)collectionsCopy count];
   if ((self->_options & 2) != 0 && self->_databaseIsValid && v11)
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -6071,15 +6071,15 @@ void __76__PSIDatabase__removeUUIDs_objectType_deferRemovingUnusedGroups_complet
     v12[2] = __71__PSIDatabase_addCollections_deferRemovingUnusedGroups_withCompletion___block_invoke;
     v12[3] = &unk_1E75760C8;
     v12[4] = self;
-    v14 = v9;
-    v13 = v8;
-    v15 = a4;
+    v14 = completionCopy;
+    v13 = collectionsCopy;
+    groupsCopy = groups;
     [(PSIDatabase *)self _inqAsync:v12];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -6344,28 +6344,28 @@ void __71__PSIDatabase_addCollections_deferRemovingUnusedGroups_withCompletion__
   }
 }
 
-- (void)addCollection:(id)a3 withCompletion:(id)a4
+- (void)addCollection:(id)collection withCompletion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  collectionCopy = collection;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  completionCopy = completion;
+  collectionCopy2 = collection;
+  v9 = [v6 arrayWithObjects:&collectionCopy count:1];
 
-  [(PSIDatabase *)self addCollections:v9 withCompletion:v7, v10, v11];
+  [(PSIDatabase *)self addCollections:v9 withCompletion:completionCopy, collectionCopy, v11];
 }
 
-- (void)addAssets:(id)a3 deferRemovingUnusedGroups:(BOOL)a4 withCompletion:(id)a5
+- (void)addAssets:(id)assets deferRemovingUnusedGroups:(BOOL)groups withCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  assetsCopy = assets;
+  completionCopy = completion;
   v10 = PLSearchBackendPSIDatabaseGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v20 = v8;
+    v20 = assetsCopy;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "Adding assets: %@", buf, 0xCu);
   }
 
@@ -6376,7 +6376,7 @@ void __71__PSIDatabase_addCollections_deferRemovingUnusedGroups_withCompletion__
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
-  v11 = [(__CFString *)v8 count];
+  v11 = [(__CFString *)assetsCopy count];
   if ((self->_options & 2) == 0)
   {
     goto LABEL_7;
@@ -6390,9 +6390,9 @@ void __71__PSIDatabase_addCollections_deferRemovingUnusedGroups_withCompletion__
     v15[2] = __66__PSIDatabase_addAssets_deferRemovingUnusedGroups_withCompletion___block_invoke;
     v15[3] = &unk_1E75760C8;
     v15[4] = self;
-    v17 = v9;
-    v16 = v8;
-    v18 = a4;
+    v17 = completionCopy;
+    v16 = assetsCopy;
+    groupsCopy = groups;
     [(PSIDatabase *)self _inqAsync:v15];
 
     goto LABEL_18;
@@ -6420,9 +6420,9 @@ LABEL_7:
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_18:
@@ -6701,23 +6701,23 @@ void __66__PSIDatabase_addAssets_deferRemovingUnusedGroups_withCompletion___bloc
   }
 }
 
-- (void)addAsset:(id)a3 withCompletion:(id)a4
+- (void)addAsset:(id)asset withCompletion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  assetCopy = asset;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  completionCopy = completion;
+  assetCopy2 = asset;
+  v9 = [v6 arrayWithObjects:&assetCopy count:1];
 
-  [(PSIDatabase *)self addAssets:v9 withCompletion:v7, v10, v11];
+  [(PSIDatabase *)self addAssets:v9 withCompletion:completionCopy, assetCopy, v11];
 }
 
-- (void)updateRankingScoreForGroups:(id)a3 withCompletion:(id)a4
+- (void)updateRankingScoreForGroups:(id)groups withCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  groupsCopy = groups;
+  completionCopy = completion;
   if ((self->_options & 2) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
@@ -6725,7 +6725,7 @@ void __66__PSIDatabase_addAssets_deferRemovingUnusedGroups_withCompletion___bloc
     _os_log_error_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
-  v8 = [v6 count];
+  v8 = [groupsCopy count];
   if ((self->_options & 2) != 0 && self->_databaseIsValid && (v9 = v8) != 0)
   {
     v10 = PLSearchBackendPSIDatabaseGetLog();
@@ -6734,7 +6734,7 @@ void __66__PSIDatabase_addAssets_deferRemovingUnusedGroups_withCompletion___bloc
       *buf = 134218242;
       v16 = v9;
       v17 = 2112;
-      v18 = v6;
+      v18 = groupsCopy;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "PSI Ranking Update: Updating group rankings for %ld groups. Groups: %@", buf, 0x16u);
     }
 
@@ -6743,15 +6743,15 @@ void __66__PSIDatabase_addAssets_deferRemovingUnusedGroups_withCompletion___bloc
     v11[2] = __58__PSIDatabase_updateRankingScoreForGroups_withCompletion___block_invoke;
     v11[3] = &unk_1E7576078;
     v11[4] = self;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = groupsCopy;
     v14 = v9;
     [(PSIDatabase *)self _inqAsync:v11];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -6929,9 +6929,9 @@ LABEL_12:
   }
 }
 
-- (void)dropDatabaseWithCompletion:(id)a3
+- (void)dropDatabaseWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PLSearchBackendPSIDatabaseGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -6944,8 +6944,8 @@ LABEL_12:
   aBlock[2] = __42__PSIDatabase_dropDatabaseWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7576050;
   aBlock[4] = self;
-  v12 = v4;
-  v6 = v4;
+  v12 = completionCopy;
+  v6 = completionCopy;
   v7 = _Block_copy(aBlock);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -7052,12 +7052,12 @@ uint64_t __42__PSIDatabase_dropDatabaseWithCompletion___block_invoke_2(uint64_t 
   }
 }
 
-- (__CFDictionary)_inqPrepareStatementsForOptions:(int64_t)a3 tokenizerName:(id)a4
+- (__CFDictionary)_inqPrepareStatementsForOptions:(int64_t)options tokenizerName:(id)name
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  nameCopy = name;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], 0);
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE TABLE IF NOT EXISTS groups(category INT2, owning_groupid INT, content_string TEXT, normalized_string TEXT, lookup_identifier TEXT, score REAL, token_ranges_0 INT8, token_ranges_1 INT8, UNIQUE(category, owning_groupid, content_string, lookup_identifier, token_ranges_0, token_ranges_1))"];
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE TABLE IF NOT EXISTS assets(uuid_0 INT, uuid_1 INT, creationDate INT, UNIQUE(uuid_0, uuid_1))"];
@@ -7066,15 +7066,15 @@ uint64_t __42__PSIDatabase_dropDatabaseWithCompletion___block_invoke_2(uint64_t 
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE TABLE IF NOT EXISTS gc(groupid INT, collectionid INT, PRIMARY KEY(groupid, collectionid))"];
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE TABLE IF NOT EXISTS tmp_used_groupids (groupid INTEGER PRIMARY KEY);"];
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE TABLE IF NOT EXISTS initial_suggestions (date_last_used REAL, first_group_id INT, second_group_id INT, template_key TEXT, first_category INT, second_category INT, template_type INT, template_content_type INT, template_date_type INT, template_style_type INT, lookup_identifier TEXT, UNIQUE (first_group_id, second_group_id, template_key))"];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE VIRTUAL TABLE IF NOT EXISTS prefix USING fts5(content='groups', normalized_string, category UNINDEXED, tokenize = '%@')", v6];
-    -[PSIDatabase _inqPrepareAndExecuteStatement:](self, "_inqPrepareAndExecuteStatement:", [v8 UTF8String]);
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE VIRTUAL TABLE IF NOT EXISTS prefix USING fts5(content='groups', normalized_string, category UNINDEXED, tokenize = '%@')", nameCopy];
+    -[PSIDatabase _inqPrepareAndExecuteStatement:](self, "_inqPrepareAndExecuteStatement:", [nameCopy UTF8String]);
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE TRIGGER IF NOT EXISTS trigger_groups_insert AFTER INSERT ON groups BEGIN INSERT INTO prefix(rowid, normalized_string, category) VALUES (new.rowid, new.normalized_string, new.category); END;"];
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE TRIGGER IF NOT EXISTS trigger_groups_delete AFTER DELETE ON groups BEGIN INSERT INTO prefix(prefix, rowid, normalized_string, category) VALUES('delete', old.rowid, old.normalized_string, old.category); END;"];
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"DROP INDEX IF EXISTS group_pk"];
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"DROP TABLE IF EXISTS lookup"];
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE INDEX IF NOT EXISTS groupid_by_contentstring_category_lookupid_owner ON groups(content_string, category, lookup_identifier, owning_groupid)"];
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS groupid_by_normalized_string_category_lookupid_owner ON groups(normalized_string, category, lookup_identifier, owning_groupid) WHERE category = %lu OR category = %lu", 1203, 1204];
-    -[PSIDatabase _inqPrepareAndExecuteStatement:](self, "_inqPrepareAndExecuteStatement:", [v9 UTF8String]);
+    1204 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS groupid_by_normalized_string_category_lookupid_owner ON groups(normalized_string, category, lookup_identifier, owning_groupid) WHERE category = %lu OR category = %lu", 1203, 1204];
+    -[PSIDatabase _inqPrepareAndExecuteStatement:](self, "_inqPrepareAndExecuteStatement:", [1204 UTF8String]);
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE INDEX IF NOT EXISTS asset_pk ON assets(uuid_0, uuid_1)"];
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE INDEX IF NOT EXISTS ga_assetid ON ga(assetid, groupid)"];
     [(PSIDatabase *)self _inqPrepareAndExecuteStatement:"CREATE INDEX IF NOT EXISTS ga_groupid ON ga(groupid);"];
@@ -7270,7 +7270,7 @@ uint64_t __42__PSIDatabase_dropDatabaseWithCompletion___block_invoke_2(uint64_t 
     }
   }
 
-  if (v4)
+  if (optionsCopy)
   {
     v44 = [(PSIDatabase *)self _inqPrepareStatement:"SELECT rowid FROM prefix WHERE normalized_string MATCH ?"];
     if (v44)
@@ -7344,8 +7344,8 @@ uint64_t __42__PSIDatabase_dropDatabaseWithCompletion___block_invoke_2(uint64_t 
       CFDictionarySetValue(Mutable, @"fetchGroupsForTextAndCategory", v55);
     }
 
-    v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT rowid, category, owning_groupid, content_string, normalized_string, lookup_identifier, score, token_ranges_0, token_ranges_1 FROM groups WHERE rowid IN matchingIds AND category != %lu", 2100];
-    v57 = -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [v56 UTF8String]);
+    2100 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT rowid, category, owning_groupid, content_string, normalized_string, lookup_identifier, score, token_ranges_0, token_ranges_1 FROM groups WHERE rowid IN matchingIds AND category != %lu", 2100];
+    v57 = -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [2100 UTF8String]);
     if (v57)
     {
       CFDictionarySetValue(Mutable, @"fetchNonFilenameGroupsForGroupIds", v57);
@@ -7357,36 +7357,36 @@ uint64_t __42__PSIDatabase_dropDatabaseWithCompletion___block_invoke_2(uint64_t 
       CFDictionarySetValue(Mutable, @"selectCollection", v58);
     }
 
-    v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT groups.rowid, content_string, normalized_string, token_ranges_0, token_ranges_1, assetid FROM groups                                                 JOIN ga ON groups.rowid == ga.groupid                                                 WHERE groups.rowid IN matchingIds AND groups.category == %lu", 2100];
-    v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT groups.rowid, content_string, normalized_string, token_ranges_0, token_ranges_1, assetid FROM groups                                                               JOIN ga ON groups.rowid == ga.groupid                                                               JOIN assets ON ga.assetid == assets.rowid                                                               WHERE groups.rowid IN matchingIds AND groups.category == %lu", 2100];
-    v61 = -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [v59 UTF8String]);
+    21002 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT groups.rowid, content_string, normalized_string, token_ranges_0, token_ranges_1, assetid FROM groups                                                 JOIN ga ON groups.rowid == ga.groupid                                                 WHERE groups.rowid IN matchingIds AND groups.category == %lu", 2100];
+    21003 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT groups.rowid, content_string, normalized_string, token_ranges_0, token_ranges_1, assetid FROM groups                                                               JOIN ga ON groups.rowid == ga.groupid                                                               JOIN assets ON ga.assetid == assets.rowid                                                               WHERE groups.rowid IN matchingIds AND groups.category == %lu", 2100];
+    v61 = -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [21002 UTF8String]);
     if (v61)
     {
       CFDictionarySetValue(Mutable, @"fetchFilenameGroupsForGroupIds", v61);
     }
 
-    v62 = [v60 stringByAppendingString:@" AND creationDate & ? == ?"];
+    v62 = [21003 stringByAppendingString:@" AND creationDate & ? == ?"];
     v63 = -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [v62 UTF8String]);
     if (v63)
     {
       CFDictionarySetValue(Mutable, @"fetchFilenameGroupsForGroupIdsWithSingleDate", v63);
     }
 
-    v64 = [v60 stringByAppendingString:@" AND creationDate & ? >= ?"];
+    v64 = [21003 stringByAppendingString:@" AND creationDate & ? >= ?"];
     v65 = -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [v64 UTF8String]);
     if (v65)
     {
       CFDictionarySetValue(Mutable, @"fetchFilenameGroupsForGroupIdsWithStartDate", v65);
     }
 
-    v66 = [v60 stringByAppendingString:@" AND creationDate & ? <= ?"];
+    v66 = [21003 stringByAppendingString:@" AND creationDate & ? <= ?"];
     v67 = -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [v66 UTF8String]);
     if (v67)
     {
       CFDictionarySetValue(Mutable, @"fetchFilenameGroupsForGroupIdsWithEndDate", v67);
     }
 
-    v68 = [v60 stringByAppendingString:@" AND creationDate & ? >= ? AND creationDate & ? <= ?"];
+    v68 = [21003 stringByAppendingString:@" AND creationDate & ? >= ? AND creationDate & ? <= ?"];
     v69 = -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [v68 UTF8String]);
     if (v69)
     {
@@ -7609,17 +7609,17 @@ uint64_t __42__PSIDatabase_dropDatabaseWithCompletion___block_invoke_2(uint64_t 
   return Mutable;
 }
 
-- (BOOL)_prepareSearchIndexAtPath:(id)a3 options:(int64_t)a4
+- (BOOL)_prepareSearchIndexAtPath:(id)path options:(int64_t)options
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  self->_options = a4;
+  pathCopy = path;
+  self->_options = options;
   v7 = +[PLSearchIndexConfiguration locale];
-  v8 = [[PSITokenizer alloc] initWithLocale:v7 useCache:a4 & 1];
+  v8 = [[PSITokenizer alloc] initWithLocale:v7 useCache:options & 1];
   tokenizer = self->_tokenizer;
   self->_tokenizer = v8;
 
-  v10 = [objc_opt_class() _openDatabaseAtPath:self->_path options:a4];
+  v10 = [objc_opt_class() _openDatabaseAtPath:self->_path options:options];
   self->_inqDatabase = v10;
   if (!v10)
   {
@@ -7649,7 +7649,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if ((a4 & 3) == 1 && ![(PSIDatabase *)self _inqVerifyTablesExistInDatabase])
+  if ((options & 3) == 1 && ![(PSIDatabase *)self _inqVerifyTablesExistInDatabase])
   {
     v21 = PLSearchBackendPSIDatabaseGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -7671,10 +7671,10 @@ LABEL_7:
     v22[3] = &unk_1E7576208;
     v22[4] = self;
     v22[5] = &buf;
-    v22[6] = a4;
+    v22[6] = options;
     [(PSIDatabase *)self _inqPerformBatch:v22];
     self->_inqPreparedStatements = *(*(&buf + 1) + 24);
-    if ((a4 & 2) != 0)
+    if ((options & 2) != 0)
     {
       v16 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
       v17 = dispatch_queue_create("PSIDatabase.serial", v16);
@@ -7689,7 +7689,7 @@ LABEL_7:
       self->_serialQueue = v15;
     }
 
-    if (a4)
+    if (options)
     {
       v19 = dispatch_queue_create("PSIDatabase.search", 0);
       searchQueue = self->_searchQueue;
@@ -7740,13 +7740,13 @@ void __49__PSIDatabase__prepareSearchIndexAtPath_options___block_invoke(uint64_t
   *(*(*(a1 + 40) + 8) + 24) = [*(a1 + 32) _inqPrepareStatementsForOptions:*(a1 + 48) tokenizerName:v2];
 }
 
-- (PSIDatabase)initWithPathManager:(id)a3 options:(int64_t)a4
+- (PSIDatabase)initWithPathManager:(id)manager options:(int64_t)options
 {
-  v7 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = PSIDatabase;
   v8 = [(PSIDatabase *)&v17 init];
-  if (v8 && (([v7 searchIndexDatabaseFilePath], v9 = objc_claimAutoreleasedReturnValue(), path = v8->_path, v8->_path = v9, path, objc_storeStrong(&v8->_pathManager, a3), a4 <= 1) ? (v11 = 1) : (v11 = a4), v12 = -[PSIDatabase _prepareSearchIndexAtPath:options:](v8, "_prepareSearchIndexAtPath:options:", v8->_path, v11), !(v8->_databaseIsValid = v12)))
+  if (v8 && (([managerCopy searchIndexDatabaseFilePath], v9 = objc_claimAutoreleasedReturnValue(), path = v8->_path, v8->_path = v9, path, objc_storeStrong(&v8->_pathManager, manager), options <= 1) ? (v11 = 1) : (v11 = options), v12 = -[PSIDatabase _prepareSearchIndexAtPath:options:](v8, "_prepareSearchIndexAtPath:options:", v8->_path, v11), !(v8->_databaseIsValid = v12)))
   {
     v14 = PLSearchBackendPSIDatabaseGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -7809,17 +7809,17 @@ void __32__PSIDatabase_searchDatabaseLog__block_invoke()
   searchDatabaseLog_searchDatabaseLog = v0;
 }
 
-+ (sqlite3)_openDatabaseAtPath:(id)a3 options:(int64_t)a4
++ (sqlite3)_openDatabaseAtPath:(id)path options:(int64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ((v4 & 2) != 0)
+  pathCopy = path;
+  if ((optionsCopy & 2) != 0)
   {
-    v6 = [MEMORY[0x1E69BF2D8] dataProtectionOpenFlagForPath:v5] | 0x8002;
+    v6 = [MEMORY[0x1E69BF2D8] dataProtectionOpenFlagForPath:pathCopy] | 0x8002;
   }
 
-  else if (v4)
+  else if (optionsCopy)
   {
     v6 = 32769;
   }
@@ -7830,8 +7830,8 @@ void __32__PSIDatabase_searchDatabaseLog__block_invoke()
   }
 
   ppDb = 0;
-  v7 = [v5 fileSystemRepresentation];
-  v8 = sqlite3_open_v2(v7, &ppDb, v6, 0);
+  fileSystemRepresentation = [pathCopy fileSystemRepresentation];
+  v8 = sqlite3_open_v2(fileSystemRepresentation, &ppDb, v6, 0);
   v9 = ppDb;
   if (!v8)
   {
@@ -7868,9 +7868,9 @@ LABEL_17:
     ppDb = 0;
   }
 
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
-    if (sqlite3_open_v2(v7, &ppDb, v6 | 4, 0))
+    if (sqlite3_open_v2(fileSystemRepresentation, &ppDb, v6 | 4, 0))
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -7892,10 +7892,10 @@ LABEL_22:
   return v11;
 }
 
-+ (BOOL)_integrityCheckDatabase:(sqlite3 *)a3
++ (BOOL)_integrityCheckDatabase:(sqlite3 *)database
 {
   ppStmt = 0;
-  if (sqlite3_prepare_v2(a3, "pragma quick_check", -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(database, "pragma quick_check", -1, &ppStmt, 0))
   {
     return 0;
   }
@@ -7923,11 +7923,11 @@ LABEL_22:
   return v3;
 }
 
-+ (void)_dropDatabase:(sqlite3 *)a3 withCompletion:(id)a4
++ (void)_dropDatabase:(sqlite3 *)database withCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (!a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!database && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v17 = @"expect db connection";
@@ -7943,13 +7943,13 @@ LABEL_22:
 
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   *buf = 129;
-  v8 = sqlite3_file_control(a3, 0, 101, buf);
+  v8 = sqlite3_file_control(database, 0, 101, buf);
   if (v8)
   {
-    [v7 appendFormat:@"Failed to truncate database: %s (%d). ", sqlite3_errmsg(a3), v8];
+    [v7 appendFormat:@"Failed to truncate database: %s (%d). ", sqlite3_errmsg(database), v8];
   }
 
-  v9 = sqlite3_close(a3);
+  v9 = sqlite3_close(database);
   v10 = v9;
   if (v9)
   {
@@ -7959,7 +7959,7 @@ LABEL_22:
   if (!(v10 | v8))
   {
     v13 = 0;
-    if (!v5)
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -7973,27 +7973,27 @@ LABEL_22:
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v13 = [v11 errorWithDomain:@"com.apple.photos.search" code:-1 userInfo:v12];
 
-  if (v5)
+  if (completionCopy)
   {
 LABEL_12:
-    v5[2](v5, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
 LABEL_13:
 }
 
-+ (void)dropDatabaseAtPath:(id)a3 withCompletion:(id)a4
++ (void)dropDatabaseAtPath:(id)path withCompletion:(id)completion
 {
-  v7 = a4;
-  v6 = [a1 _openDatabaseAtPath:a3 options:2];
+  completionCopy = completion;
+  v6 = [self _openDatabaseAtPath:path options:2];
   if (v6)
   {
-    [a1 _dropDatabase:v6 withCompletion:v7];
+    [self _dropDatabase:v6 withCompletion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -8032,19 +8032,19 @@ void __49__PSIDatabase_UnitTesting__groupIdsInPrefixTable__block_invoke_2(uint64
   [*(a1 + 32) addObject:{objc_msgSend(v3, "int64AtColumn:", 0)}];
 }
 
-- (void)exqExecuteStatementFromString:(id)a3 withResultEnumerationBlock:(id)a4
+- (void)exqExecuteStatementFromString:(id)string withResultEnumerationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__PSIDatabase_UnitTesting__exqExecuteStatementFromString_withResultEnumerationBlock___block_invoke;
   v10[3] = &unk_1E7576F38;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = stringCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = stringCopy;
   [(PSIDatabase *)self _inqSync:v10];
 }
 
@@ -8083,33 +8083,33 @@ void __39__PSIDatabase_UnitTesting__allGroupIds__block_invoke_2(uint64_t a1, voi
   [*(a1 + 32) addObject:{objc_msgSend(v3, "int64AtColumn:", 0)}];
 }
 
-- (void)linkCollectionWithId:(int64_t)a3 toGroupWithId:(int64_t)a4
+- (void)linkCollectionWithId:(int64_t)id toGroupWithId:(int64_t)withId
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__PSIDatabase_UnitTesting__linkCollectionWithId_toGroupWithId___block_invoke;
   v4[3] = &unk_1E7578320;
   v4[4] = self;
-  v4[5] = a4;
-  v4[6] = a3;
+  v4[5] = withId;
+  v4[6] = id;
   [(PSIDatabase *)self _inqSync:v4];
 }
 
-- (void)linkAssetWithId:(int64_t)a3 toGroupWithId:(int64_t)a4
+- (void)linkAssetWithId:(int64_t)id toGroupWithId:(int64_t)withId
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58__PSIDatabase_UnitTesting__linkAssetWithId_toGroupWithId___block_invoke;
   v4[3] = &unk_1E7578320;
   v4[4] = self;
-  v4[5] = a4;
-  v4[6] = a3;
+  v4[5] = withId;
+  v4[6] = id;
   [(PSIDatabase *)self _inqSync:v4];
 }
 
-- (int64_t)insertGroup:(id)a3
+- (int64_t)insertGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -8118,9 +8118,9 @@ void __39__PSIDatabase_UnitTesting__allGroupIds__block_invoke_2(uint64_t a1, voi
   v8[1] = 3221225472;
   v8[2] = __40__PSIDatabase_UnitTesting__insertGroup___block_invoke;
   v8[3] = &unk_1E7578820;
-  v5 = v4;
+  v5 = groupCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(PSIDatabase *)self _inqSync:v8];
   v6 = v13[3];
@@ -8225,9 +8225,9 @@ void __40__PSIDatabase_UnitTesting__insertGroup___block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)insertCollection:(id)a3
+- (int64_t)insertCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -8238,7 +8238,7 @@ void __40__PSIDatabase_UnitTesting__insertGroup___block_invoke(uint64_t a1)
   v8[3] = &unk_1E7578820;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = collectionCopy;
   v9 = v5;
   [(PSIDatabase *)self _inqSync:v8];
   v6 = v12[3];
@@ -8254,9 +8254,9 @@ uint64_t __45__PSIDatabase_UnitTesting__insertCollection___block_invoke(uint64_t
   return result;
 }
 
-- (int64_t)insertAsset:(id)a3
+- (int64_t)insertAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -8267,7 +8267,7 @@ uint64_t __45__PSIDatabase_UnitTesting__insertCollection___block_invoke(uint64_t
   v8[3] = &unk_1E7578820;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = assetCopy;
   v9 = v5;
   [(PSIDatabase *)self _inqSync:v8];
   v6 = v12[3];
@@ -8283,13 +8283,13 @@ uint64_t __40__PSIDatabase_UnitTesting__insertAsset___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)initForTestingWithOptions:(int64_t)a3
+- (id)initForTestingWithOptions:(int64_t)options
 {
   v11.receiver = self;
   v11.super_class = PSIDatabase;
   v4 = [(PSIDatabase *)&v11 init];
   v5 = v4;
-  if (v4 && ((path = v4->_path, v4->_path = @":memory:", path, a3 <= 1) ? (v7 = 1) : (v7 = a3), v8 = [(PSIDatabase *)v5 _prepareSearchIndexAtPath:v5->_path options:v7], v5->_databaseIsValid = v8, !v8))
+  if (v4 && ((path = v4->_path, v4->_path = @":memory:", path, options <= 1) ? (v7 = 1) : (v7 = options), v8 = [(PSIDatabase *)v5 _prepareSearchIndexAtPath:v5->_path options:v7], v5->_databaseIsValid = v8, !v8))
   {
     v9 = 0;
   }
@@ -8302,13 +8302,13 @@ uint64_t __40__PSIDatabase_UnitTesting__insertAsset___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)executeStatement:(id)a3 withResultEnumerationBlock:(id)a4
+- (void)executeStatement:(id)statement withResultEnumerationBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(__CFString *)v6 stmt];
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  statementCopy = statement;
+  blockCopy = block;
+  stmt = [(__CFString *)statementCopy stmt];
+  if (!stmt && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v15 = @"Statement is nil";
@@ -8319,14 +8319,14 @@ uint64_t __40__PSIDatabase_UnitTesting__insertAsset___block_invoke(uint64_t a1)
   {
     while (1)
     {
-      v9 = sqlite3_step(v8);
-      if (!v7 || v9 != 100)
+      v9 = sqlite3_step(stmt);
+      if (!blockCopy || v9 != 100)
       {
         break;
       }
 
       buf[0] = 0;
-      v7[2](v7, v6, buf);
+      blockCopy[2](blockCopy, statementCopy, buf);
       if (buf[0])
       {
         goto LABEL_9;
@@ -8336,7 +8336,7 @@ uint64_t __40__PSIDatabase_UnitTesting__insertAsset___block_invoke(uint64_t a1)
 
   while (v9 == 100);
 LABEL_9:
-  v10 = sqlite3_reset(v8);
+  v10 = sqlite3_reset(stmt);
   if (v10)
   {
     v11 = v10;
@@ -8354,7 +8354,7 @@ LABEL_9:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v15 = v6;
+        v15 = statementCopy;
         v16 = 2112;
         v17 = v12;
         v18 = 1026;
@@ -8365,34 +8365,34 @@ LABEL_9:
   }
 }
 
-- (void)executeStatementFromString:(id)a3 withResultEnumerationBlock:(id)a4
+- (void)executeStatementFromString:(id)string withResultEnumerationBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PSIDatabase *)self statementFromString:a3];
-  [(PSIDatabase *)self executeStatement:v7 withResultEnumerationBlock:v6];
+  blockCopy = block;
+  v7 = [(PSIDatabase *)self statementFromString:string];
+  [(PSIDatabase *)self executeStatement:v7 withResultEnumerationBlock:blockCopy];
 
   [v7 finalizze];
 }
 
-- (void)executeStatementFromString:(id)a3
+- (void)executeStatementFromString:(id)string
 {
-  v4 = [(PSIDatabase *)self statementFromString:a3];
+  v4 = [(PSIDatabase *)self statementFromString:string];
   [(PSIDatabase *)self executeStatement:v4];
   [v4 finalizze];
 }
 
-- (id)statementFromString:(id)a3
+- (id)statementFromString:(id)string
 {
-  v5 = a3;
-  v6 = -[PSIStatement initWithSQLite3Stmt:]([PSIStatement alloc], "initWithSQLite3Stmt:", -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [a3 UTF8String]));
+  stringCopy = string;
+  v6 = -[PSIStatement initWithSQLite3Stmt:]([PSIStatement alloc], "initWithSQLite3Stmt:", -[PSIDatabase _inqPrepareStatement:](self, "_inqPrepareStatement:", [string UTF8String]));
 
   return v6;
 }
 
-- (void)_inqGroupIdsForAssetOrCollectionIds:(__CFArray *)a3 resultType:(unint64_t)a4 completion:(id)a5
+- (void)_inqGroupIdsForAssetOrCollectionIds:(__CFArray *)ids resultType:(unint64_t)type completion:(id)completion
 {
-  v8 = a5;
-  if (!a3)
+  completionCopy = completion;
+  if (!ids)
   {
     v19 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -8405,11 +8405,11 @@ LABEL_10:
 
 LABEL_11:
 
-    (*(v8 + 2))(v8, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!type)
   {
     v19 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -8422,14 +8422,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  Count = CFArrayGetCount(a3);
+  Count = CFArrayGetCount(ids);
   v10 = objc_alloc_init(MEMORY[0x1E696AB50]);
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  [(PSIIntArray *)self->_matchingIds bindElements:a3 range:0, Count];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(PSIIntArray *)self->_matchingIds bindElements:ids range:0, Count];
   Mutable = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
   v13 = Mutable;
   v14 = 72;
-  if (a4 == 1)
+  if (type == 1)
   {
     v14 = 64;
   }
@@ -8441,13 +8441,13 @@ LABEL_11:
   v21[3] = &unk_1E75766F8;
   v23 = v10;
   v24 = Mutable;
-  v22 = v11;
+  v22 = dictionary;
   v16 = v10;
-  v17 = v11;
+  v17 = dictionary;
   v18 = v15;
   [(PSIDatabase *)self executeStatement:v18 withResultEnumerationBlock:v21];
   [(PSIIntArray *)self->_matchingIds unbind];
-  (*(v8 + 2))(v8, v13, v16, v17);
+  (*(completionCopy + 2))(completionCopy, v13, v16, v17);
 
 LABEL_12:
 }
@@ -8472,10 +8472,10 @@ void __91__PSIDatabase_PSIQueryDelegate___inqGroupIdsForAssetOrCollectionIds_res
   [v7 addObject:v8];
 }
 
-- (void)groupsForCollectionIds:(__CFArray *)a3 completion:(id)a4
+- (void)groupsForCollectionIds:(__CFArray *)ids completion:(id)completion
 {
-  v6 = a4;
-  if (!a3)
+  completionCopy = completion;
+  if (!ids)
   {
     v8 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -8487,10 +8487,10 @@ void __91__PSIDatabase_PSIQueryDelegate___inqGroupIdsForAssetOrCollectionIds_res
     goto LABEL_10;
   }
 
-  if (!CFArrayGetCount(a3))
+  if (!CFArrayGetCount(ids))
   {
 LABEL_10:
-    (*(v6 + 2))(v6, MEMORY[0x1E695E0F0], 0);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0], 0);
     goto LABEL_11;
   }
 
@@ -8513,7 +8513,7 @@ LABEL_10:
   v9[4] = self;
   v9[5] = buf;
   v9[6] = &v10;
-  v9[7] = a3;
+  v9[7] = ids;
   [(PSIDatabase *)self _inqSync:v9];
   if (*(v17 + 5))
   {
@@ -8525,7 +8525,7 @@ LABEL_10:
     v7 = MEMORY[0x1E695E0F0];
   }
 
-  (*(v6 + 2))(v6, v7, v11[5]);
+  (*(completionCopy + 2))(completionCopy, v7, v11[5]);
   _Block_object_dispose(&v10, 8);
 
   _Block_object_dispose(buf, 8);
@@ -8607,10 +8607,10 @@ void __67__PSIDatabase_PSIQueryDelegate__groupsForCollectionIds_completion___blo
   }
 }
 
-- (void)groupsForAssetIds:(__CFArray *)a3 completion:(id)a4
+- (void)groupsForAssetIds:(__CFArray *)ids completion:(id)completion
 {
-  v6 = a4;
-  if (!a3)
+  completionCopy = completion;
+  if (!ids)
   {
     v7 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -8619,12 +8619,12 @@ void __67__PSIDatabase_PSIQueryDelegate__groupsForCollectionIds_completion___blo
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Unexpected NULL assetIds passed to groupsForAssetIds", buf, 2u);
     }
 
-    (*(v6 + 2))(v6, MEMORY[0x1E695E0F0], 0);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0], 0);
   }
 
-  if (!CFArrayGetCount(a3))
+  if (!CFArrayGetCount(ids))
   {
-    (*(v6 + 2))(v6, MEMORY[0x1E695E0F0], 0);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0], 0);
   }
 
   *buf = 0;
@@ -8646,7 +8646,7 @@ void __67__PSIDatabase_PSIQueryDelegate__groupsForCollectionIds_completion___blo
   v9[4] = self;
   v9[5] = buf;
   v9[6] = &v10;
-  v9[7] = a3;
+  v9[7] = ids;
   [(PSIDatabase *)self _inqSync:v9];
   if (*(v17 + 5))
   {
@@ -8658,7 +8658,7 @@ void __67__PSIDatabase_PSIQueryDelegate__groupsForCollectionIds_completion___blo
     v8 = MEMORY[0x1E695E0F0];
   }
 
-  (*(v6 + 2))(v6, v8, v11[5]);
+  (*(completionCopy + 2))(completionCopy, v8, v11[5]);
   _Block_object_dispose(&v10, 8);
 
   _Block_object_dispose(buf, 8);
@@ -8739,13 +8739,13 @@ void __62__PSIDatabase_PSIQueryDelegate__groupsForAssetIds_completion___block_in
   }
 }
 
-- (id)groupForLookupIdentifier:(id)a3 searchResultTypes:(unint64_t)a4
+- (id)groupForLookupIdentifier:(id)identifier searchResultTypes:(unint64_t)types
 {
-  v7 = a3;
-  if (![v7 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PSIDatabase.m" lineNumber:3795 description:{@"Invalid parameter not satisfying: %@", @"lookupIdentifier.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSIDatabase.m" lineNumber:3795 description:{@"Invalid parameter not satisfying: %@", @"lookupIdentifier.length > 0"}];
   }
 
   v16 = 0;
@@ -8760,9 +8760,9 @@ void __62__PSIDatabase_PSIQueryDelegate__groupsForAssetIds_completion___block_in
   v12[3] = &unk_1E7576680;
   v14 = &v16;
   v12[4] = self;
-  v8 = v7;
+  v8 = identifierCopy;
   v13 = v8;
-  v15 = a4;
+  typesCopy = types;
   [(PSIDatabase *)self _inqSync:v12];
   v9 = v17[5];
 
@@ -8779,11 +8779,11 @@ void __76__PSIDatabase_PSIQueryDelegate__groupForLookupIdentifier_searchResultTy
   *(v3 + 40) = v2;
 }
 
-- (id)groupArraysFromGroupIdSets:(id)a3 dateFilter:(id)a4 searchResultTypes:(unint64_t)a5 progressBlock:(id)a6
+- (id)groupArraysFromGroupIdSets:(id)sets dateFilter:(id)filter searchResultTypes:(unint64_t)types progressBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  setsCopy = sets;
+  filterCopy = filter;
+  blockCopy = block;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -8796,12 +8796,12 @@ void __76__PSIDatabase_PSIQueryDelegate__groupForLookupIdentifier_searchResultTy
   v18[3] = &unk_1E7576658;
   v22 = &v24;
   v18[4] = self;
-  v13 = v10;
+  v13 = setsCopy;
   v19 = v13;
-  v14 = v11;
+  v14 = filterCopy;
   v20 = v14;
-  v23 = a5;
-  v15 = v12;
+  typesCopy = types;
+  v15 = blockCopy;
   v21 = v15;
   [(PSIDatabase *)self _inqSync:v18];
   v16 = v25[5];

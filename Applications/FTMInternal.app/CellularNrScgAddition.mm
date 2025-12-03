@@ -1,28 +1,28 @@
 @interface CellularNrScgAddition
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDrbConfig:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFreqBandInd:(BOOL)a3;
-- (void)setHasFreqRange:(BOOL)a3;
-- (void)setHasIsSrb3Configured:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDrbConfig:(id)config;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFreqBandInd:(BOOL)ind;
+- (void)setHasFreqRange:(BOOL)range;
+- (void)setHasIsSrb3Configured:(BOOL)configured;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularNrScgAddition
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 32;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 64;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsSrb3Configured:(BOOL)a3
+- (void)setHasIsSrb3Configured:(BOOL)configured
 {
-  if (a3)
+  if (configured)
   {
     v3 = 256;
   }
@@ -65,27 +65,27 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)addDrbConfig:(id)a3
+- (void)addDrbConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   drbConfigs = self->_drbConfigs;
-  v8 = v4;
+  v8 = configCopy;
   if (!drbConfigs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_drbConfigs;
     self->_drbConfigs = v6;
 
-    v4 = v8;
+    configCopy = v8;
     drbConfigs = self->_drbConfigs;
   }
 
-  [(NSMutableArray *)drbConfigs addObject:v4];
+  [(NSMutableArray *)drbConfigs addObject:configCopy];
 }
 
-- (void)setHasFreqRange:(BOOL)a3
+- (void)setHasFreqRange:(BOOL)range
 {
-  if (a3)
+  if (range)
   {
     v3 = 4;
   }
@@ -98,9 +98,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasFreqBandInd:(BOOL)a3
+- (void)setHasFreqBandInd:(BOOL)ind
 {
-  if (a3)
+  if (ind)
   {
     v3 = 2;
   }
@@ -113,9 +113,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 128;
   }
@@ -128,9 +128,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 8;
   }
@@ -143,9 +143,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 16;
   }
@@ -163,8 +163,8 @@
   v7.receiver = self;
   v7.super_class = CellularNrScgAddition;
   v3 = [(CellularNrScgAddition *)&v7 description];
-  v4 = [(CellularNrScgAddition *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularNrScgAddition *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -245,8 +245,8 @@ LABEL_6:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -334,9 +334,9 @@ LABEL_21:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -477,14 +477,14 @@ LABEL_18:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 34) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 34) |= 1u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -495,8 +495,8 @@ LABEL_3:
       }
 
 LABEL_24:
-      *(v4 + 14) = self->_result;
-      *(v4 + 34) |= 0x40u;
+      *(toCopy + 14) = self->_result;
+      *(toCopy + 34) |= 0x40u;
       if ((*&self->_has & 0x100) == 0)
       {
         goto LABEL_6;
@@ -511,8 +511,8 @@ LABEL_24:
     goto LABEL_3;
   }
 
-  *(v4 + 13) = self->_reason;
-  *(v4 + 34) |= 0x20u;
+  *(toCopy + 13) = self->_reason;
+  *(toCopy + 34) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -523,19 +523,19 @@ LABEL_4:
   if ((has & 0x100) != 0)
   {
 LABEL_5:
-    *(v4 + 64) = self->_isSrb3Configured;
-    *(v4 + 34) |= 0x100u;
+    *(toCopy + 64) = self->_isSrb3Configured;
+    *(toCopy + 34) |= 0x100u;
   }
 
 LABEL_6:
-  v12 = v4;
+  v12 = toCopy;
   if ([(CellularNrScgAddition *)self drbConfigsCount])
   {
     [v12 clearDrbConfigs];
-    v6 = [(CellularNrScgAddition *)self drbConfigsCount];
-    if (v6)
+    drbConfigsCount = [(CellularNrScgAddition *)self drbConfigsCount];
+    if (drbConfigsCount)
     {
-      v7 = v6;
+      v7 = drbConfigsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularNrScgAddition *)self drbConfigAtIndex:i];
@@ -606,9 +606,9 @@ LABEL_15:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -678,7 +678,7 @@ LABEL_6:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{zone, v18}];
         [v6 addDrbConfig:v13];
 
         v12 = v12 + 1;
@@ -739,7 +739,7 @@ LABEL_17:
   }
 
 LABEL_18:
-  v15 = [(NSData *)self->_plmn copyWithZone:a3, v18];
+  v15 = [(NSData *)self->_plmn copyWithZone:zone, v18];
   v16 = *(v6 + 5);
   *(v6 + 5) = v15;
 
@@ -752,19 +752,19 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
 
   has = self->_has;
-  v6 = *(v4 + 34);
+  v6 = *(equalCopy + 34);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_56;
     }
@@ -777,7 +777,7 @@ LABEL_18:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_reason != *(v4 + 13))
+    if ((v6 & 0x20) == 0 || self->_reason != *(equalCopy + 13))
     {
       goto LABEL_56;
     }
@@ -790,7 +790,7 @@ LABEL_18:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_result != *(v4 + 14))
+    if ((v6 & 0x40) == 0 || self->_result != *(equalCopy + 14))
     {
       goto LABEL_56;
     }
@@ -803,33 +803,33 @@ LABEL_18:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 34) & 0x100) == 0)
+    if ((*(equalCopy + 34) & 0x100) == 0)
     {
       goto LABEL_56;
     }
 
-    v9 = *(v4 + 64);
+    v9 = *(equalCopy + 64);
     if (self->_isSrb3Configured)
     {
-      if ((*(v4 + 64) & 1) == 0)
+      if ((*(equalCopy + 64) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 64))
+    else if (*(equalCopy + 64))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 34) & 0x100) != 0)
+  else if ((*(equalCopy + 34) & 0x100) != 0)
   {
     goto LABEL_56;
   }
 
   drbConfigs = self->_drbConfigs;
-  if (drbConfigs | *(v4 + 2))
+  if (drbConfigs | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)drbConfigs isEqual:?])
     {
@@ -839,10 +839,10 @@ LABEL_18:
     has = self->_has;
   }
 
-  v8 = *(v4 + 34);
+  v8 = *(equalCopy + 34);
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_freqRange != *(v4 + 7))
+    if ((v8 & 4) == 0 || self->_freqRange != *(equalCopy + 7))
     {
       goto LABEL_56;
     }
@@ -855,7 +855,7 @@ LABEL_18:
 
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_freqBandInd != *(v4 + 6))
+    if ((v8 & 2) == 0 || self->_freqBandInd != *(equalCopy + 6))
     {
       goto LABEL_56;
     }
@@ -868,7 +868,7 @@ LABEL_18:
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_numSubs != *(v4 + 8))
+    if ((v8 & 8) == 0 || self->_numSubs != *(equalCopy + 8))
     {
       goto LABEL_56;
     }
@@ -881,7 +881,7 @@ LABEL_18:
 
   if ((has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_psPref != *(v4 + 12))
+    if ((v8 & 0x10) == 0 || self->_psPref != *(equalCopy + 12))
     {
       goto LABEL_56;
     }
@@ -893,7 +893,7 @@ LABEL_18:
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 5))
+  if (plmn | *(equalCopy + 5))
   {
     if ([(NSData *)plmn isEqual:?])
     {
@@ -907,10 +907,10 @@ LABEL_56:
   }
 
 LABEL_51:
-  v11 = *(v4 + 34);
+  v11 = *(equalCopy + 34);
   if ((has & 0x80) != 0)
   {
-    if ((v11 & 0x80) == 0 || self->_subsId != *(v4 + 15))
+    if ((v11 & 0x80) == 0 || self->_subsId != *(equalCopy + 15))
     {
       goto LABEL_56;
     }
@@ -1047,16 +1047,16 @@ LABEL_19:
   return v16 ^ v17 ^ v4 ^ v5 ^ v8 ^ v9 ^ v10 ^ v11 ^ v6 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 34);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 34);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 34);
+    v6 = *(fromCopy + 34);
     if ((v6 & 0x20) == 0)
     {
 LABEL_3:
@@ -1074,9 +1074,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_reason = *(v4 + 13);
+  self->_reason = *(fromCopy + 13);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 34);
+  v6 = *(fromCopy + 34);
   if ((v6 & 0x40) == 0)
   {
 LABEL_4:
@@ -1089,12 +1089,12 @@ LABEL_4:
   }
 
 LABEL_25:
-  self->_result = *(v4 + 14);
+  self->_result = *(fromCopy + 14);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 34) & 0x100) != 0)
+  if ((*(fromCopy + 34) & 0x100) != 0)
   {
 LABEL_5:
-    self->_isSrb3Configured = *(v4 + 64);
+    self->_isSrb3Configured = *(fromCopy + 64);
     *&self->_has |= 0x100u;
   }
 
@@ -1103,7 +1103,7 @@ LABEL_6:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

@@ -1,25 +1,25 @@
 @interface GestureNodeCoordinatorShim
-- (BOOL)hasUnresolvedFailureDependenciesForNode:(id)a3;
+- (BOOL)hasUnresolvedFailureDependenciesForNode:(id)node;
 - (NSArray)nodes;
 - (_TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim)init;
-- (id)failureDependentsForNode:(id)a3;
-- (void)enqueueUpdatesForNodes:(id)a3 inBlock:(id)a4 reason:(id)a5;
-- (void)processUpdatesWithReason:(id)a3;
-- (void)setDidUpdateHandler:(id)a3;
-- (void)setWillProcessUpdateQueueHandler:(id)a3;
-- (void)setWillUpdateHandler:(id)a3;
-- (void)updateWithNodes:(id)a3 reason:(id)a4 updateHandler:(id)a5;
+- (id)failureDependentsForNode:(id)node;
+- (void)enqueueUpdatesForNodes:(id)nodes inBlock:(id)block reason:(id)reason;
+- (void)processUpdatesWithReason:(id)reason;
+- (void)setDidUpdateHandler:(id)handler;
+- (void)setWillProcessUpdateQueueHandler:(id)handler;
+- (void)setWillUpdateHandler:(id)handler;
+- (void)updateWithNodes:(id)nodes reason:(id)reason updateHandler:(id)handler;
 @end
 
 @implementation GestureNodeCoordinatorShim
 
-- (BOOL)hasUnresolvedFailureDependenciesForNode:(id)a3
+- (BOOL)hasUnresolvedFailureDependenciesForNode:(id)node
 {
   v4 = *(self + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
-  v5 = (*((*MEMORY[0x1E69E7D40] & *a3) + 0x78))();
+  v5 = (*((*MEMORY[0x1E69E7D40] & *node) + 0x78))();
   v6 = *(v4 + 112);
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_18E68B020(v5);
 
   swift_unknownObjectRelease();
@@ -53,9 +53,9 @@
   return [(GestureNodeCoordinatorShim *)&v9 init];
 }
 
-- (void)setWillProcessUpdateQueueHandler:(id)a3
+- (void)setWillProcessUpdateQueueHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -73,10 +73,10 @@
   v8 = *(self + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_willProcessUpdateQueueHandler + 8);
   *v6 = v4;
   v6[1] = v5;
-  v12 = self;
+  selfCopy = self;
   sub_18E68CB70(v4);
   sub_18E6826D0(v7);
-  v9 = *(v12 + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
+  v9 = *(selfCopy + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
   v10 = *(v9 + 32);
   v11 = *(v9 + 40);
   *(v9 + 32) = v4;
@@ -84,31 +84,31 @@
   sub_18E6826D0(v10);
 }
 
-- (void)updateWithNodes:(id)a3 reason:(id)a4 updateHandler:(id)a5
+- (void)updateWithNodes:(id)nodes reason:(id)reason updateHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAC8FA78, &qword_18E731688);
   v7 = sub_18E72B178();
   v8 = sub_18E72AFD8();
   v10 = v9;
   _Block_copy(v6);
-  v11 = self;
-  sub_18E694C5C(v7, v11, v6);
+  selfCopy = self;
+  sub_18E694C5C(v7, selfCopy, v6);
   _Block_release(v6);
 
-  v12 = *(v11 + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
+  v12 = *(selfCopy + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
   sub_18E688698(v8, v10, 1);
   _Block_release(v6);
 }
 
-- (void)enqueueUpdatesForNodes:(id)a3 inBlock:(id)a4 reason:(id)a5
+- (void)enqueueUpdatesForNodes:(id)nodes inBlock:(id)block reason:(id)reason
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAC8FA78, &qword_18E731688);
   v7 = sub_18E72B178();
   _Block_copy(v6);
-  v8 = self;
-  sub_18E694C5C(v7, v8, v6);
+  selfCopy = self;
+  sub_18E694C5C(v7, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
@@ -116,7 +116,7 @@
 - (NSArray)nodes
 {
   v2 = *(*(self + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator) + 64);
-  v3 = self;
+  selfCopy = self;
 
   sub_18E718364(v4);
 
@@ -126,9 +126,9 @@
   return v5;
 }
 
-- (void)setWillUpdateHandler:(id)a3
+- (void)setWillUpdateHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -146,10 +146,10 @@
   v8 = *(self + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_willUpdateHandler + 8);
   *v6 = v4;
   v6[1] = v5;
-  v12 = self;
+  selfCopy = self;
   sub_18E68CB70(v4);
   sub_18E6826D0(v7);
-  v9 = *(v12 + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
+  v9 = *(selfCopy + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
   v10 = *(v9 + 16);
   v11 = *(v9 + 24);
   *(v9 + 16) = v4;
@@ -157,9 +157,9 @@
   sub_18E6826D0(v10);
 }
 
-- (void)setDidUpdateHandler:(id)a3
+- (void)setDidUpdateHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -177,10 +177,10 @@
   v8 = *(self + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_didUpdateHandler + 8);
   *v6 = v4;
   v6[1] = v5;
-  v12 = self;
+  selfCopy = self;
   sub_18E68CB70(v4);
   sub_18E6826D0(v7);
-  v9 = *(v12 + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
+  v9 = *(selfCopy + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
   v10 = *(v9 + 48);
   v11 = *(v9 + 56);
   *(v9 + 48) = v4;
@@ -188,20 +188,20 @@
   sub_18E6826D0(v10);
 }
 
-- (void)processUpdatesWithReason:(id)a3
+- (void)processUpdatesWithReason:(id)reason
 {
   v4 = sub_18E72AFD8();
   v6 = v5;
   v7 = *(self + OBJC_IVAR____TtC8GesturesP33_A53607C86F339F8E27637A5709BD2DC526GestureNodeCoordinatorShim_coordinator);
-  v8 = self;
+  selfCopy = self;
   sub_18E688698(v4, v6, 1);
 }
 
-- (id)failureDependentsForNode:(id)a3
+- (id)failureDependentsForNode:(id)node
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_18E71897C(a3);
+  selfCopy = self;
+  sub_18E71897C(node);
   swift_unknownObjectRelease();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAC8FA78, &qword_18E731688);

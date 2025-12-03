@@ -1,9 +1,9 @@
 @interface PXExportContainer
-+ (id)containersForRootCollection:(id)a3 destinationURL:(id)a4 uniquifier:(id)a5 includeRootName:(BOOL)a6;
-+ (void)_traverseStartingAt:(id)a3 prefix:(id)a4 storeIn:(id)a5 uniquifier:(id)a6;
++ (id)containersForRootCollection:(id)collection destinationURL:(id)l uniquifier:(id)uniquifier includeRootName:(BOOL)name;
++ (void)_traverseStartingAt:(id)at prefix:(id)prefix storeIn:(id)in uniquifier:(id)uniquifier;
 - (PHFetchResult)assets;
 - (PXExportContainer)init;
-- (id)_initWithCollection:(id)a3;
+- (id)_initWithCollection:(id)collection;
 @end
 
 @implementation PXExportContainer
@@ -25,45 +25,45 @@
 
 - (PXExportContainer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = NSStringFromSelector(sel_containersForRootCollection_destinationURL_);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXExportContainer.m" lineNumber:98 description:{@"Use class factory method %@", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXExportContainer.m" lineNumber:98 description:{@"Use class factory method %@", v5}];
 
   return 0;
 }
 
-- (id)_initWithCollection:(id)a3
+- (id)_initWithCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = PXExportContainer;
   v6 = [(PXExportContainer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collection, a3);
+    objc_storeStrong(&v6->_collection, collection);
   }
 
   return v7;
 }
 
-+ (void)_traverseStartingAt:(id)a3 prefix:(id)a4 storeIn:(id)a5 uniquifier:(id)a6
++ (void)_traverseStartingAt:(id)at prefix:(id)prefix storeIn:(id)in uniquifier:(id)uniquifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[PXExportContainer alloc] _initWithCollection:v9];
-  [v13 setUrl:v10];
+  atCopy = at;
+  prefixCopy = prefix;
+  inCopy = in;
+  uniquifierCopy = uniquifier;
+  v13 = [[PXExportContainer alloc] _initWithCollection:atCopy];
+  [v13 setUrl:prefixCopy];
   v27 = v13;
-  [v11 addObject:v13];
+  [inCopy addObject:v13];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v28 = v9;
-  obj = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v9 options:0];
+  v28 = atCopy;
+  obj = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:atCopy options:0];
   v14 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v14)
   {
@@ -86,38 +86,38 @@
             continue;
           }
 
-          v19 = [v18 localizedTitle];
-          v20 = [PXDragAndDropUtilities sanitizedFileNameForString:v19];
+          localizedTitle = [v18 localizedTitle];
+          v20 = [PXDragAndDropUtilities sanitizedFileNameForString:localizedTitle];
 
-          v21 = [v10 copy];
+          v21 = [prefixCopy copy];
           v22 = [v21 URLByAppendingPathComponent:v20];
 
-          if (v12)
+          if (uniquifierCopy)
           {
-            v23 = [v12 ensureUniqueFileURL:v22];
+            v23 = [uniquifierCopy ensureUniqueFileURL:v22];
 
             v22 = v23;
           }
 
-          [a1 _traverseStartingAt:v18 prefix:v22 storeIn:v11 uniquifier:v12];
+          [self _traverseStartingAt:v18 prefix:v22 storeIn:inCopy uniquifier:uniquifierCopy];
         }
 
         else
         {
           v20 = [[PXExportContainer alloc] _initWithCollection:v18];
-          v24 = [v18 localizedTitle];
-          v22 = [PXDragAndDropUtilities sanitizedFileNameForString:v24];
+          localizedTitle2 = [v18 localizedTitle];
+          v22 = [PXDragAndDropUtilities sanitizedFileNameForString:localizedTitle2];
 
-          v25 = [v10 URLByAppendingPathComponent:v22];
-          if (v12)
+          v25 = [prefixCopy URLByAppendingPathComponent:v22];
+          if (uniquifierCopy)
           {
-            v26 = [v12 ensureUniqueFileURL:v25];
+            v26 = [uniquifierCopy ensureUniqueFileURL:v25];
 
             v25 = v26;
           }
 
           [v20 setUrl:v25];
-          [v11 addObject:v20];
+          [inCopy addObject:v20];
         }
       }
 
@@ -128,28 +128,28 @@
   }
 }
 
-+ (id)containersForRootCollection:(id)a3 destinationURL:(id)a4 uniquifier:(id)a5 includeRootName:(BOOL)a6
++ (id)containersForRootCollection:(id)collection destinationURL:(id)l uniquifier:(id)uniquifier includeRootName:(BOOL)name
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  collectionCopy = collection;
+  lCopy = l;
+  uniquifierCopy = uniquifier;
   v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if ([v10 canContainAssets])
+  if ([collectionCopy canContainAssets])
   {
-    v14 = [[PXExportContainer alloc] _initWithCollection:v10];
-    v11 = v11;
-    v15 = v11;
-    if (v6)
+    v14 = [[PXExportContainer alloc] _initWithCollection:collectionCopy];
+    lCopy = lCopy;
+    v15 = lCopy;
+    if (nameCopy)
     {
-      v16 = [v10 localizedTitle];
-      v17 = [PXDragAndDropUtilities sanitizedFileNameForString:v16];
+      localizedTitle = [collectionCopy localizedTitle];
+      v17 = [PXDragAndDropUtilities sanitizedFileNameForString:localizedTitle];
 
-      v15 = [v11 URLByAppendingPathComponent:v17];
+      v15 = [lCopy URLByAppendingPathComponent:v17];
 
-      if (v12)
+      if (uniquifierCopy)
       {
-        v18 = [v12 ensureUniqueFileURL:v15];
+        v18 = [uniquifierCopy ensureUniqueFileURL:v15];
 
         v15 = v18;
       }
@@ -161,24 +161,24 @@
 
   else
   {
-    if (v6)
+    if (nameCopy)
     {
-      v19 = [v10 localizedTitle];
-      v20 = [PXDragAndDropUtilities sanitizedFileNameForString:v19];
+      localizedTitle2 = [collectionCopy localizedTitle];
+      v20 = [PXDragAndDropUtilities sanitizedFileNameForString:localizedTitle2];
 
-      v21 = [v11 URLByAppendingPathComponent:v20];
+      v21 = [lCopy URLByAppendingPathComponent:v20];
 
-      if (v12)
+      if (uniquifierCopy)
       {
-        v22 = [v12 ensureUniqueFileURL:v21];
+        v22 = [uniquifierCopy ensureUniqueFileURL:v21];
 
         v21 = v22;
       }
 
-      v11 = v21;
+      lCopy = v21;
     }
 
-    [a1 _traverseStartingAt:v10 prefix:v11 storeIn:v13 uniquifier:v12];
+    [self _traverseStartingAt:collectionCopy prefix:lCopy storeIn:v13 uniquifier:uniquifierCopy];
   }
 
   return v13;

@@ -1,5 +1,5 @@
 @interface CNVCardParameterDecoder
-+ (id)decodeParameterValue:(id)a3;
++ (id)decodeParameterValue:(id)value;
 + (id)substitutions;
 @end
 
@@ -31,11 +31,11 @@ uint64_t __40__CNVCardParameterDecoder_substitutions__block_invoke()
   return [v2 setObject:@" forKey:@"^'""];
 }
 
-+ (id)decodeParameterValue:(id)a3
++ (id)decodeParameterValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 substitutions];
-  v6 = [v4 _cn_stringByReplacingStrings:v5];
+  valueCopy = value;
+  substitutions = [self substitutions];
+  v6 = [valueCopy _cn_stringByReplacingStrings:substitutions];
 
   return v6;
 }

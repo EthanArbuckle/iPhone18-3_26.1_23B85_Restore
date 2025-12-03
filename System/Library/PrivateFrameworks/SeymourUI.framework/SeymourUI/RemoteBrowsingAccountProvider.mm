@@ -1,10 +1,10 @@
 @interface RemoteBrowsingAccountProvider
-- (void)handleSelectedUserProfileChanged:(id)a3;
+- (void)handleSelectedUserProfileChanged:(id)changed;
 @end
 
 @implementation RemoteBrowsingAccountProvider
 
-- (void)handleSelectedUserProfileChanged:(id)a3
+- (void)handleSelectedUserProfileChanged:(id)changed
 {
   v3 = sub_20C132614();
   v4 = *(v3 - 8);

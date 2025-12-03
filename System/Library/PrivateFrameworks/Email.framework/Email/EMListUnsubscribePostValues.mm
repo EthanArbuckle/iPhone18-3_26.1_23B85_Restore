@@ -1,26 +1,26 @@
 @interface EMListUnsubscribePostValues
-- (BOOL)isEqual:(id)a3;
-- (EMListUnsubscribePostValues)initWithCoder:(id)a3;
-- (EMListUnsubscribePostValues)initWithURL:(id)a3 postContent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EMListUnsubscribePostValues)initWithCoder:(id)coder;
+- (EMListUnsubscribePostValues)initWithURL:(id)l postContent:(id)content;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMListUnsubscribePostValues
 
-- (EMListUnsubscribePostValues)initWithURL:(id)a3 postContent:(id)a4
+- (EMListUnsubscribePostValues)initWithURL:(id)l postContent:(id)content
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  contentCopy = content;
   v14.receiver = self;
   v14.super_class = EMListUnsubscribePostValues;
   v8 = [(EMListUnsubscribePostValues *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     oneClickURL = v8->_oneClickURL;
     v8->_oneClickURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [contentCopy copy];
     postContent = v8->_postContent;
     v8->_postContent = v11;
   }
@@ -28,19 +28,19 @@
   return v8;
 }
 
-- (EMListUnsubscribePostValues)initWithCoder:(id)a3
+- (EMListUnsubscribePostValues)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = EMListUnsubscribePostValues;
   v5 = [(EMListUnsubscribePostValues *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_oneClickURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_oneClickURL"];
     oneClickURL = v5->_oneClickURL;
     v5->_oneClickURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_postContent"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_postContent"];
     postContent = v5->_postContent;
     v5->_postContent = v8;
   }
@@ -48,29 +48,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(EMListUnsubscribePostValues *)self oneClickURL];
-  [v6 encodeObject:v4 forKey:@"EFPropertyKey_oneClickURL"];
+  coderCopy = coder;
+  oneClickURL = [(EMListUnsubscribePostValues *)self oneClickURL];
+  [coderCopy encodeObject:oneClickURL forKey:@"EFPropertyKey_oneClickURL"];
 
-  v5 = [(EMListUnsubscribePostValues *)self postContent];
-  [v6 encodeObject:v5 forKey:@"EFPropertyKey_postContent"];
+  postContent = [(EMListUnsubscribePostValues *)self postContent];
+  [coderCopy encodeObject:postContent forKey:@"EFPropertyKey_postContent"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     oneClickURL = self->_oneClickURL;
-    v7 = [v5 oneClickURL];
+    oneClickURL = [v5 oneClickURL];
     if (EFObjectsAreEqual())
     {
       postContent = self->_postContent;
-      v9 = [v5 postContent];
+      postContent = [v5 postContent];
       EFObjectsAreEqual();
     }
   }

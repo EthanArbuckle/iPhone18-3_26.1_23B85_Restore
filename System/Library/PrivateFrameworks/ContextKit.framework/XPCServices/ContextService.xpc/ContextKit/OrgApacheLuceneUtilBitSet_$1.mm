@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneUtilBitSet_$1
-- (OrgApacheLuceneUtilBitSet_$1)initWithOrgApacheLuceneUtilBitSet:(id)a3;
+- (OrgApacheLuceneUtilBitSet_$1)initWithOrgApacheLuceneUtilBitSet:(id)set;
 - (void)dealloc;
 - (void)finish;
 @end
@@ -19,9 +19,9 @@
   }
 }
 
-- (OrgApacheLuceneUtilBitSet_$1)initWithOrgApacheLuceneUtilBitSet:(id)a3
+- (OrgApacheLuceneUtilBitSet_$1)initWithOrgApacheLuceneUtilBitSet:(id)set
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, set);
   self->previous_ = -1;
   return self;
 }

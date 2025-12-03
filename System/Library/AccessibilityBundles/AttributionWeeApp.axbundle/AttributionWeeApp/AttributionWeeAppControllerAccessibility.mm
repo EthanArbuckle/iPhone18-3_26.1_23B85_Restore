@@ -9,10 +9,10 @@
   AXCaptureImageAttachmentSetYahooLogo = 1;
   v4.receiver = self;
   v4.super_class = AttributionWeeAppControllerAccessibility;
-  v2 = [(AttributionWeeAppControllerAccessibility *)&v4 _stocksAttributionAttributionString];
+  _stocksAttributionAttributionString = [(AttributionWeeAppControllerAccessibility *)&v4 _stocksAttributionAttributionString];
   AXCaptureImageAttachmentSetYahooLogo = 0;
 
-  return v2;
+  return _stocksAttributionAttributionString;
 }
 
 @end

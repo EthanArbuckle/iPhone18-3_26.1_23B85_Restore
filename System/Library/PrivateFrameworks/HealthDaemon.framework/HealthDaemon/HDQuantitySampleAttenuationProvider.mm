@@ -1,22 +1,22 @@
 @interface HDQuantitySampleAttenuationProvider
-- (HDQuantitySampleAttenuationProvider)initWithQuantityType:(id)a3 profile:(id)a4;
-- (int64_t)loadAttenuationSamples:(id *)a3 anchorTime:(double)a4 errorOut:(id *)a5;
+- (HDQuantitySampleAttenuationProvider)initWithQuantityType:(id)type profile:(id)profile;
+- (int64_t)loadAttenuationSamples:(id *)samples anchorTime:(double)time errorOut:(id *)out;
 @end
 
 @implementation HDQuantitySampleAttenuationProvider
 
-- (HDQuantitySampleAttenuationProvider)initWithQuantityType:(id)a3 profile:(id)a4
+- (HDQuantitySampleAttenuationProvider)initWithQuantityType:(id)type profile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  profileCopy = profile;
   v14.receiver = self;
   v14.super_class = HDQuantitySampleAttenuationProvider;
   v9 = [(HDQuantitySampleAttenuationProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_quantityType, a3);
-    objc_storeWeak(&v10->_profile, v8);
+    objc_storeStrong(&v9->_quantityType, type);
+    objc_storeWeak(&v10->_profile, profileCopy);
     v11 = [[HDQuantitySampleOverlapProcessor alloc] initWithOverlapFunction:0];
     overlapProcessor = v10->_overlapProcessor;
     v10->_overlapProcessor = v11;
@@ -25,11 +25,11 @@
   return v10;
 }
 
-- (int64_t)loadAttenuationSamples:(id *)a3 anchorTime:(double)a4 errorOut:(id *)a5
+- (int64_t)loadAttenuationSamples:(id *)samples anchorTime:(double)time errorOut:(id *)out
 {
   v50[3] = *MEMORY[0x277D85DE8];
   [(HDQuantitySampleOverlapProcessor *)self->_overlapProcessor resetAnchorTime:?];
-  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a4];
+  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:time];
   v37 = HDSampleEntityPredicateForDataType(self->_quantityType);
   v36 = HDSampleEntityPredicateForEndDate(5);
   v38 = [(HKQuantityType *)self->_quantityType _earliestAllowedStartDateForSampleOverlappingDate:v8];
@@ -46,13 +46,13 @@
   v44 = 0x2020000000;
   v45 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v40[7] = a3;
+  v40[7] = samples;
   v41 = 0;
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __82__HDQuantitySampleAttenuationProvider_loadAttenuationSamples_anchorTime_errorOut___block_invoke;
   v40[3] = &unk_27861AA80;
-  *&v40[6] = a4;
+  *&v40[6] = time;
   v40[4] = self;
   v40[5] = &v42;
   LOBYTE(v11) = [HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v12 profile:WeakRetained options:4 error:&v41 handler:v40];
@@ -64,10 +64,10 @@
     v26 = v25;
     if (v25)
     {
-      if (a5)
+      if (out)
       {
         v27 = v25;
-        *a5 = v26;
+        *out = v26;
       }
 
       else
@@ -123,7 +123,7 @@ LABEL_26:
         {
           if (v21 <= 1023)
           {
-            v23 = &a3[v21];
+            v23 = &samples[v21];
             v24 = *(v22 + 1);
             *&v23->var0 = *v22;
             *&v23->var2 = v24;
@@ -145,10 +145,10 @@ LABEL_26:
     v29 = v28;
     if (v28)
     {
-      if (a5)
+      if (out)
       {
         v30 = v28;
-        *a5 = v29;
+        *out = v29;
       }
 
       else

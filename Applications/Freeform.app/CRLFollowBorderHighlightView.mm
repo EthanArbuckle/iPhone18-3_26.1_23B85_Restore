@@ -1,13 +1,13 @@
 @interface CRLFollowBorderHighlightView
-- (_TtC8Freeform28CRLFollowBorderHighlightView)initWithCoder:(id)a3;
-- (_TtC8Freeform28CRLFollowBorderHighlightView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC8Freeform28CRLFollowBorderHighlightView)initWithCoder:(id)coder;
+- (_TtC8Freeform28CRLFollowBorderHighlightView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
 @implementation CRLFollowBorderHighlightView
 
-- (_TtC8Freeform28CRLFollowBorderHighlightView)initWithCoder:(id)a3
+- (_TtC8Freeform28CRLFollowBorderHighlightView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform28CRLFollowBorderHighlightView_defaultCornerRadius) = 0x4030000000000000;
@@ -25,13 +25,13 @@
   [v2 setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_100BEA14C();
 }
 
-- (_TtC8Freeform28CRLFollowBorderHighlightView)initWithFrame:(CGRect)a3
+- (_TtC8Freeform28CRLFollowBorderHighlightView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

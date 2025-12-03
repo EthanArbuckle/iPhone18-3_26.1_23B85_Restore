@@ -8,18 +8,18 @@
 - (void)_updateBalanceContent;
 - (void)_updatePreferredContentSize;
 - (void)dealloc;
-- (void)expressLabelViewDidChangeSize:(id)a3;
-- (void)expressTrailingView:(id)a3 revealingCheckmarkAnimated:(BOOL)a4;
+- (void)expressLabelViewDidChangeSize:(id)size;
+- (void)expressTrailingView:(id)view revealingCheckmarkAnimated:(BOOL)animated;
 - (void)loadView;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setBannerDetached:(BOOL)a3;
-- (void)setPresentable:(id)a3;
-- (void)setState:(id)a3;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setBannerDetached:(BOOL)detached;
+- (void)setPresentable:(id)presentable;
+- (void)setState:(id)state;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKExpressTransactionBannerViewController
@@ -61,35 +61,35 @@ void __58__PKExpressTransactionBannerViewController__initWithPass___block_invoke
 
 - (void)_updateBalanceContent
 {
-  if (!a1 || ![a1 isViewLoaded])
+  if (!self || ![self isViewLoaded])
   {
     return;
   }
 
-  v2 = a1[129];
-  v3 = a1[125];
+  v2 = self[129];
+  v3 = self[125];
   if (v3)
   {
-    v4 = [v3 displayableBalances];
-    v5 = v4;
-    if (v4 && [v4 count])
+    displayableBalances = [v3 displayableBalances];
+    v5 = displayableBalances;
+    if (displayableBalances && [displayableBalances count])
     {
       v6 = [v5 objectAtIndexedSubscript:0];
-      v7 = [v6 formattedValue];
+      formattedValue = [v6 formattedValue];
     }
 
     else
     {
-      v7 = 0;
+      formattedValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    formattedValue = 0;
   }
 
-  v14 = v7;
+  v14 = formattedValue;
   if (v2)
   {
     v8 = *(v2 + 416);
@@ -152,11 +152,11 @@ LABEL_20:
   v92.receiver = self;
   v92.super_class = PKExpressTransactionBannerViewController;
   [(PKExpressTransactionBannerViewController *)&v92 loadView];
-  v3 = [(PKExpressTransactionBannerViewController *)self view];
-  [v3 setOpaque:0];
-  [v3 setAutoresizingMask:0];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKExpressTransactionBannerViewController *)self view];
+  [view setOpaque:0];
+  [view setAutoresizingMask:0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
   containerView = self->_containerView;
@@ -164,8 +164,8 @@ LABEL_20:
 
   [(UIView *)self->_containerView setOpaque:0];
   v7 = self->_containerView;
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)v7 setBackgroundColor:v8];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)v7 setBackgroundColor:clearColor2];
 
   v9 = [PKExpressBannerLeadingView alloc];
   pass = self->_pass;
@@ -203,23 +203,23 @@ LABEL_20:
   v17 = v93.receiver;
   if (!v16)
   {
-    v18 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    rootLayer = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(rootLayer, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(v96.receiver) = 138412290;
       *(&v96.receiver + 4) = v17;
-      _os_log_impl(&dword_1BD026000, v18, OS_LOG_TYPE_DEFAULT, "PKExpressBannerLeadingView: could not load archive - %@.", &v96, 0xCu);
+      _os_log_impl(&dword_1BD026000, rootLayer, OS_LOG_TYPE_DEFAULT, "PKExpressBannerLeadingView: could not load archive - %@.", &v96, 0xCu);
     }
 
     v46 = 0;
     goto LABEL_29;
   }
 
-  v18 = [v16 rootLayer];
-  if (v18)
+  rootLayer = [v16 rootLayer];
+  if (rootLayer)
   {
-    v90 = [v16 isGeometryFlipped];
-    [v18 setGeometryFlipped:?];
+    isGeometryFlipped = [v16 isGeometryFlipped];
+    [rootLayer setGeometryFlipped:?];
     v19 = [v16 publishedObjectWithName:@"cardfront"];
     if (v19)
     {
@@ -234,8 +234,8 @@ LABEL_20:
         v22 = v21;
         if (v21)
         {
-          v88 = v18;
-          objc_storeStrong(&v21->super._accessibilityHUD, v18);
+          v88 = rootLayer;
+          objc_storeStrong(&v21->super._accessibilityHUD, rootLayer);
           v86 = *(v22 + 432);
           v23 = PKLayerNullActions();
           [v86 setActions:v23];
@@ -263,16 +263,16 @@ LABEL_20:
           [(PKPassThumbnailView *)*(v22 + 416) setBrighten:?];
           [(PKPassThumbnailView *)*(v22 + 416) setShadowVisibility:?];
           [v22 addSubview:*(v22 + 416)];
-          v28 = [v22 layer];
-          [v28 addSublayer:*(v22 + 432)];
-          v87 = [*(v22 + 416) layer];
-          v29 = [MEMORY[0x1E6979408] layer];
+          layer = [v22 layer];
+          [layer addSublayer:*(v22 + 432)];
+          layer2 = [*(v22 + 416) layer];
+          layer3 = [MEMORY[0x1E6979408] layer];
           v30 = *(v22 + 424);
-          *(v22 + 424) = v29;
+          *(v22 + 424) = layer3;
 
-          [*(v22 + 424) setSourceLayer:v87];
+          [*(v22 + 424) setSourceLayer:layer2];
           [*(v22 + 424) setHidesSourceLayer:1];
-          [*(v22 + 424) setGeometryFlipped:v90];
+          [*(v22 + 424) setGeometryFlipped:isGeometryFlipped];
           [*(v22 + 440) addSublayer:*(v22 + 424)];
           [*(v22 + 440) bounds];
           [*(v22 + 416) sizeThatFits:{v31, 1.79769313e308}];
@@ -298,12 +298,12 @@ LABEL_20:
           *(v22 + 528) = *(v22 + 496);
           *(v22 + 544) = ArchiveAlignmentInsets;
           *(v22 + 560) = unk_1BE117000;
-          [v28 anchorPoint];
+          [layer anchorPoint];
           v45.f64[1] = v44;
           [*(v22 + 432) setAnchorPoint:{vdivq_f64(vmlaq_f64(xmmword_1BE116FD0, *(v22 + 496), v45), *(v22 + 480))}];
           [(PKExpressBannerLeadingView *)v22 _updateSizeWithAnimationFactory:?];
 
-          v18 = v88;
+          rootLayer = v88;
         }
 
         v9 = v22;
@@ -347,7 +347,7 @@ LABEL_30:
     self->_leadingView = v46;
 
     v50 = [PKExpressBannerTrailingView alloc];
-    v91 = v3;
+    v91 = view;
     if (v50)
     {
       v93.receiver = v50;
@@ -399,7 +399,7 @@ LABEL_30:
         }
 
         [(PKExpressBannerTrailingView *)v56 _updateStateAnimated:0.0 withDelay:?];
-        v64 = [(PKExpressBannerTrailingView *)v56 layer];
+        layer4 = [(PKExpressBannerTrailingView *)v56 layer];
         v65 = *(MEMORY[0x1E69792E8] + 48);
         v98 = *(MEMORY[0x1E69792E8] + 32);
         v99 = v65;
@@ -413,7 +413,7 @@ LABEL_30:
         v68 = *(MEMORY[0x1E69792E8] + 112);
         v103 = *(MEMORY[0x1E69792E8] + 96);
         v104 = v68;
-        [v64 setSublayerTransform:&v96];
+        [layer4 setSublayerTransform:&v96];
       }
     }
 
@@ -422,18 +422,18 @@ LABEL_30:
       v56 = 0;
     }
 
-    v3 = &OBJC_IVAR___PKExpressTransactionBannerViewController__trailingView;
+    view = &OBJC_IVAR___PKExpressTransactionBannerViewController__trailingView;
     trailingView = self->_trailingView;
     self->_trailingView = v56;
 
-    v70 = [(PKExpressBannerTrailingView *)self->_trailingView layer];
+    layer5 = [(PKExpressBannerTrailingView *)self->_trailingView layer];
     v71 = objc_alloc(MEMORY[0x1E6979378]);
     v12 = *MEMORY[0x1E6979928];
     v72 = [v71 initWithType:*MEMORY[0x1E6979928]];
     [v72 setName:@"blur"];
     v95 = v72;
     v73 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v95 count:1];
-    [v70 setFilters:v73];
+    [layer5 setFilters:v73];
 
     self->_trailingBlur = 0.0;
     v74 = [PKExpressBannerLabelView alloc];
@@ -470,18 +470,18 @@ LABEL_43:
   trailingLabel = self->_trailingLabel;
   self->_trailingLabel = v76;
 
-  v79 = [(PKExpressBannerLabelView *)self->_trailingLabel layer];
+  layer6 = [(PKExpressBannerLabelView *)self->_trailingLabel layer];
   v80 = [objc_alloc(MEMORY[0x1E6979378]) initWithType:v12];
   [v80 setName:@"blur"];
   v94 = v80;
   v81 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v94 count:1];
-  [v79 setFilters:v81];
+  [layer6 setFilters:v81];
 
   self->_trailingLabelBlur = 0.0;
   [(PKExpressBannerLabelView *)self->_trailingLabel setHidden:1];
   [(PKExpressBannerLabelView *)self->_trailingLabel setAlpha:0.0];
-  v82 = [(UIView *)self->_containerView layer];
-  [v82 setAllowsHitTesting:0];
+  layer7 = [(UIView *)self->_containerView layer];
+  [layer7 setAllowsHitTesting:0];
 
   [(UIView *)self->_containerView setUserInteractionEnabled:0];
   v83 = self->_leadingView;
@@ -518,15 +518,15 @@ LABEL_43:
   activeLayoutMode = self->_activeLayoutMode;
   if (activeLayoutMode == 4 || activeLayoutMode == 1)
   {
-    v5 = [(PKExpressTransactionBannerViewController *)self view];
-    v94 = [v5 _shouldReverseLayoutDirection];
-    [v5 bounds];
+    view = [(PKExpressTransactionBannerViewController *)self view];
+    _shouldReverseLayoutDirection = [view _shouldReverseLayoutDirection];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v5 SBUISA_systemApertureObstructedAreaLayoutGuide];
-    [v14 layoutFrame];
+    sBUISA_systemApertureObstructedAreaLayoutGuide = [view SBUISA_systemApertureObstructedAreaLayoutGuide];
+    [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -535,12 +535,12 @@ LABEL_43:
     containerView = self->_containerView;
     PKSizeAlignedInRect();
     [(UIView *)containerView setFrame:?];
-    [(UIView *)self->_containerView convertRect:v5 fromView:v7, v9, v11, v13];
+    [(UIView *)self->_containerView convertRect:view fromView:v7, v9, v11, v13];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    [(UIView *)self->_containerView convertRect:v5 fromView:v16, v18, v20, v22];
+    [(UIView *)self->_containerView convertRect:view fromView:v16, v18, v20, v22];
     v91 = v33;
     v92 = v32;
     v35 = v34;
@@ -557,16 +557,16 @@ LABEL_43:
 
     if (self->_transitioning)
     {
-      v42 = 1;
+      _isInAnimationBlockWithAnimationsEnabled = 1;
     }
 
     else
     {
-      v42 = [MEMORY[0x1E69DD250] _isInAnimationBlockWithAnimationsEnabled];
+      _isInAnimationBlockWithAnimationsEnabled = [MEMORY[0x1E69DD250] _isInAnimationBlockWithAnimationsEnabled];
     }
 
     v43 = 2;
-    if (!v94)
+    if (!_shouldReverseLayoutDirection)
     {
       v43 = 0x200000000;
     }
@@ -575,7 +575,7 @@ LABEL_43:
     v45 = v44 - v25;
     v46 = fmax(v35 + v37, v44);
     v47 = fmax(v25 + v29, v46) - v46;
-    if (v94)
+    if (_shouldReverseLayoutDirection)
     {
       v48 = v46;
     }
@@ -585,7 +585,7 @@ LABEL_43:
       v48 = v25;
     }
 
-    if (v94)
+    if (_shouldReverseLayoutDirection)
     {
       v49 = v47;
     }
@@ -597,7 +597,7 @@ LABEL_43:
 
     v87 = v48;
     v88 = v49;
-    if (v94)
+    if (_shouldReverseLayoutDirection)
     {
       v50 = v25;
     }
@@ -607,7 +607,7 @@ LABEL_43:
       v50 = v46;
     }
 
-    if (v94)
+    if (_shouldReverseLayoutDirection)
     {
       v51 = v45;
     }
@@ -626,8 +626,8 @@ LABEL_43:
       LODWORD(v83) = state == 9;
       HIDWORD(v83) = state != 0;
       v84 = self->_activeLayoutMode > 1uLL;
-      v85 = v42;
-      if (v42)
+      v85 = _isInAnimationBlockWithAnimationsEnabled;
+      if (_isInAnimationBlockWithAnimationsEnabled)
       {
         v93 = [objc_alloc(MEMORY[0x1E69BC7A0]) initWithMass:2.0 stiffness:300.0 damping:50.0];
         v56 = self->_state;
@@ -700,7 +700,7 @@ LABEL_43:
       }
 
       trailingLabel = self->_trailingLabel;
-      if (v94)
+      if (_shouldReverseLayoutDirection)
       {
         v66 = 0;
       }
@@ -800,7 +800,7 @@ LABEL_43:
       v122 = v84;
       v123 = (0x3F8u >> state) & 1;
       v97 = v80;
-      v98 = self;
+      selfCopy = self;
       v124 = v83;
       v102 = v35;
       v103 = v92;
@@ -810,7 +810,7 @@ LABEL_43:
       v107 = v27;
       v108 = v29;
       v109 = v31;
-      v125 = v94;
+      v125 = _shouldReverseLayoutDirection;
       v110 = v87;
       v111 = v27;
       v112 = v88;
@@ -1673,13 +1673,13 @@ void __77__PKExpressTransactionBannerViewController__appearWithTransitionCoordin
     {
       val[1176] = 1;
       objc_initWeak(&location, val);
-      v2 = [val systemApertureElementContext];
+      systemApertureElementContext = [val systemApertureElementContext];
       v3[0] = MEMORY[0x1E69E9820];
       v3[1] = 3221225472;
       v3[2] = __71__PKExpressTransactionBannerViewController__updatePreferredContentSize__block_invoke;
       v3[3] = &unk_1E8010998;
       objc_copyWeak(&v4, &location);
-      [v2 setElementNeedsUpdateWithCoordinatedAnimations:v3];
+      [systemApertureElementContext setElementNeedsUpdateWithCoordinatedAnimations:v3];
 
       objc_destroyWeak(&v4);
       objc_destroyWeak(&location);
@@ -1749,23 +1749,23 @@ LABEL_5:
 - (void)_displayResolution
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!a1 || (*(a1 + 1088) & 1) != 0 || !*(a1 + 1072))
+  if (!self || (*(self + 1088) & 1) != 0 || !*(self + 1072))
   {
     return;
   }
 
-  v2 = *(a1 + 1152);
+  v2 = *(self + 1152);
   if (v2)
   {
-    v3 = [v2 status];
-    if (*(a1 + 1136))
+    status = [v2 status];
+    if (*(self + 1136))
     {
-      if (v3 == 1 && (*(a1 + 1137) & 1) == 0)
+      if (status == 1 && (*(self + 1137) & 1) == 0)
       {
-        *(a1 + 1137) = 1;
-        if ((*(a1 + 1136) & 1) == 0)
+        *(self + 1137) = 1;
+        if ((*(self + 1136) & 1) == 0)
         {
-          *(a1 + 1136) = 1;
+          *(self + 1136) = 1;
           goto LABEL_22;
         }
 
@@ -1774,7 +1774,7 @@ LABEL_16:
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v43 = a1;
+          selfCopy4 = self;
           v5 = "PKExpressTransactionBVC (%p): displaying override success resolution.";
 LABEL_24:
           _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, v5, buf, 0xCu);
@@ -1786,7 +1786,7 @@ LABEL_25:
         v9 = 1;
 LABEL_31:
 
-        v11 = *(a1 + 1024);
+        v11 = *(self + 1024);
         if (v11)
         {
           v12 = *(v11 + 456);
@@ -1805,9 +1805,9 @@ LABEL_31:
           }
         }
 
-        objc_initWeak(&location, a1);
-        *(a1 + 1138) = 1;
-        [(PKExpressTransactionBannerViewController *)a1 _cancelRevokeTimer];
+        objc_initWeak(&location, self);
+        *(self + 1138) = 1;
+        [(PKExpressTransactionBannerViewController *)self _cancelRevokeTimer];
         v14 = objc_alloc(MEMORY[0x1E69B8798]);
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
@@ -1815,7 +1815,7 @@ LABEL_31:
         v35[3] = &unk_1E8010998;
         objc_copyWeak(&v36, &location);
         v15 = [v14 initWithBlock:v35];
-        v16 = *(a1 + 1048);
+        v16 = *(self + 1048);
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
         v30 = __62__PKExpressTransactionBannerViewController__displayResolution__block_invoke_2;
@@ -1903,10 +1903,10 @@ LABEL_54:
       goto LABEL_11;
     }
 
-    *(a1 + 1137) = v3 == 1;
-    if (*(a1 + 1136))
+    *(self + 1137) = status == 1;
+    if (*(self + 1136))
     {
-      if (v3 == 1)
+      if (status == 1)
       {
         goto LABEL_16;
       }
@@ -1916,7 +1916,7 @@ LABEL_19:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v43 = a1;
+        selfCopy4 = self;
         v6 = "PKExpressTransactionBVC (%p): displaying override failure resolution.";
 LABEL_29:
         _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, v6, buf, 0xCu);
@@ -1926,15 +1926,15 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    *(a1 + 1136) = 1;
-    if (v3 == 1)
+    *(self + 1136) = 1;
+    if (status == 1)
     {
 LABEL_22:
       v4 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v43 = a1;
+        selfCopy4 = self;
         v5 = "PKExpressTransactionBVC (%p): displaying success resolution.";
         goto LABEL_24;
       }
@@ -1947,7 +1947,7 @@ LABEL_27:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v43 = a1;
+      selfCopy4 = self;
       v6 = "PKExpressTransactionBVC (%p): displaying failure resolution.";
       goto LABEL_29;
     }
@@ -1959,21 +1959,21 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if ((*(a1 + 1136) & 1) == 0)
+  if ((*(self + 1136) & 1) == 0)
   {
-    *(a1 + 1137) = 0;
-    if (*(a1 + 1136))
+    *(self + 1137) = 0;
+    if (*(self + 1136))
     {
       goto LABEL_19;
     }
 
-    *(a1 + 1136) = 1;
+    *(self + 1136) = 1;
     goto LABEL_27;
   }
 
 LABEL_11:
 
-  [(PKExpressTransactionBannerViewController *)a1 _startRevokeTimer];
+  [(PKExpressTransactionBannerViewController *)self _startRevokeTimer];
 }
 
 void __77__PKExpressTransactionBannerViewController__appearWithTransitionCoordinator___block_invoke_4(uint64_t a1)
@@ -2127,12 +2127,12 @@ void __77__PKExpressTransactionBannerViewController__shrinkWithTransitionCoordin
 
 - (void)_cancelRevokeTimer
 {
-  v2 = *(a1 + 1144);
+  v2 = *(self + 1144);
   if (v2)
   {
     dispatch_source_cancel(v2);
-    v3 = *(a1 + 1144);
-    *(a1 + 1144) = 0;
+    v3 = *(self + 1144);
+    *(self + 1144) = 0;
   }
 }
 
@@ -2179,16 +2179,16 @@ void __77__PKExpressTransactionBannerViewController__expandWithTransitionCoordin
 - (void)_startRevokeTimer
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 1088) & 1) == 0)
+  if (self && (*(self + 1088) & 1) == 0)
   {
-    [(PKExpressTransactionBannerViewController *)a1 _cancelRevokeTimer];
-    if (*(a1 + 1138) == 1)
+    [(PKExpressTransactionBannerViewController *)self _cancelRevokeTimer];
+    if (*(self + 1138) == 1)
     {
       v2 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v15 = a1;
+        selfCopy5 = self;
         v3 = "PKExpressTransactionBVC (%p): preventing revoke timer - glyph state animating.";
 LABEL_15:
         _os_log_debug_impl(&dword_1BD026000, v2, OS_LOG_TYPE_DEBUG, v3, buf, 0xCu);
@@ -2198,13 +2198,13 @@ LABEL_15:
       goto LABEL_19;
     }
 
-    if ((*(a1 + 1090) & 1) == 0)
+    if ((*(self + 1090) & 1) == 0)
     {
       v2 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v15 = a1;
+        selfCopy5 = self;
         v3 = "PKExpressTransactionBVC (%p): preventing revoke timer - leading view shrinking.";
         goto LABEL_15;
       }
@@ -2212,13 +2212,13 @@ LABEL_15:
       goto LABEL_19;
     }
 
-    if ((*(a1 + 1091) & 1) == 0)
+    if ((*(self + 1091) & 1) == 0)
     {
       v2 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v15 = a1;
+        selfCopy5 = self;
         v3 = "PKExpressTransactionBVC (%p): preventing revoke timer - waiting for shrink.";
         goto LABEL_15;
       }
@@ -2226,13 +2226,13 @@ LABEL_15:
       goto LABEL_19;
     }
 
-    if (*(a1 + 1092) == 1)
+    if (*(self + 1092) == 1)
     {
       v2 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v15 = a1;
+        selfCopy5 = self;
         v3 = "PKExpressTransactionBVC (%p): preventing revoke timer - expanding.";
         goto LABEL_15;
       }
@@ -2242,7 +2242,7 @@ LABEL_19:
       return;
     }
 
-    v4 = *(a1 + 1152);
+    v4 = *(self + 1152);
     if (v4 && [v4 isProcessing])
     {
       v2 = PKLogFacilityTypeGetObject();
@@ -2252,17 +2252,17 @@ LABEL_19:
       }
 
       *buf = 134217984;
-      v15 = a1;
+      selfCopy5 = self;
       v3 = "PKExpressTransactionBVC (%p): preventing revoke timer - express transaction ongoing.";
       goto LABEL_15;
     }
 
-    v5 = *(a1 + 1160);
+    v5 = *(self + 1160);
     v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
-    v7 = *(a1 + 1144);
-    *(a1 + 1144) = v6;
+    v7 = *(self + 1144);
+    *(self + 1144) = v6;
 
-    v8 = *(a1 + 1144);
+    v8 = *(self + 1144);
     if (v5)
     {
       v9 = 1000000000;
@@ -2275,15 +2275,15 @@ LABEL_19:
 
     v10 = dispatch_time(0, v9);
     dispatch_source_set_timer(v8, v10, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
-    objc_initWeak(buf, a1);
-    v11 = *(a1 + 1144);
+    objc_initWeak(buf, self);
+    v11 = *(self + 1144);
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __61__PKExpressTransactionBannerViewController__startRevokeTimer__block_invoke;
     handler[3] = &unk_1E8010998;
     objc_copyWeak(&v13, buf);
     dispatch_source_set_event_handler(v11, handler);
-    dispatch_resume(*(a1 + 1144));
+    dispatch_resume(*(self + 1144));
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
   }
@@ -2649,26 +2649,26 @@ void __61__PKExpressTransactionBannerViewController__startRevokeTimer__block_inv
 
 - (void)_revoked
 {
-  if (a1 && (*(a1 + 1088) & 1) == 0)
+  if (self && (*(self + 1088) & 1) == 0)
   {
-    *(a1 + 1088) = 1;
-    v2 = *(a1 + 1144);
+    *(self + 1088) = 1;
+    v2 = *(self + 1144);
     if (v2)
     {
       dispatch_source_cancel(v2);
-      v3 = *(a1 + 1144);
-      *(a1 + 1144) = 0;
+      v3 = *(self + 1144);
+      *(self + 1144) = 0;
     }
 
-    v4 = *(a1 + 1096);
+    v4 = *(self + 1096);
     if (v4)
     {
       v5 = v4;
-      v6 = *(a1 + 1096);
-      *(a1 + 1096) = 0;
+      v6 = *(self + 1096);
+      *(self + 1096) = 0;
 
-      v7 = [MEMORY[0x1E69DC668] sharedApplication];
-      if (v7)
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      if (mEMORY[0x1E69DC668])
       {
         v16 = 0;
         v17 = &v16;
@@ -2680,7 +2680,7 @@ void __61__PKExpressTransactionBannerViewController__startRevokeTimer__block_inv
         aBlock[3] = &unk_1E8021F48;
         v13 = v5;
         v15 = &v16;
-        v8 = v7;
+        v8 = mEMORY[0x1E69DC668];
         v14 = v8;
         v9 = _Block_copy(aBlock);
         v10 = [v8 beginBackgroundTaskWithName:@"Wallet Banner - CL In Use Grace Period" expirationHandler:v9];
@@ -2714,24 +2714,24 @@ uint64_t __52__PKExpressTransactionBannerViewController__revoked__block_invoke(u
   return result;
 }
 
-- (void)setPresentable:(id)a3
+- (void)setPresentable:(id)presentable
 {
-  v5 = a3;
-  objc_storeWeak(&self->_presentable, v5);
-  v4 = v5;
-  if (v5 && self->_revoked)
+  presentableCopy = presentable;
+  objc_storeWeak(&self->_presentable, presentableCopy);
+  v4 = presentableCopy;
+  if (presentableCopy && self->_revoked)
   {
-    [v5 revoke];
-    v4 = v5;
+    [presentableCopy revoke];
+    v4 = presentableCopy;
   }
 }
 
-- (void)setBannerDetached:(BOOL)a3
+- (void)setBannerDetached:(BOOL)detached
 {
-  if (self->_bannerDetached != a3)
+  if (self->_bannerDetached != detached)
   {
-    self->_bannerDetached = a3;
-    if (a3)
+    self->_bannerDetached = detached;
+    if (detached)
     {
       if ([(PKExpressTransactionState *)self->_expressState isProcessing])
       {
@@ -2743,33 +2743,33 @@ uint64_t __52__PKExpressTransactionBannerViewController__revoked__block_invoke(u
   }
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v5 = a3;
-  if (v5)
+  stateCopy = state;
+  if (stateCopy)
   {
-    v11 = v5;
-    if ([(PKExpressTransactionBannerHandleState *)v5 type])
+    v11 = stateCopy;
+    if ([(PKExpressTransactionBannerHandleState *)stateCopy type])
     {
       goto LABEL_13;
     }
 
-    v5 = v11;
+    stateCopy = v11;
     if (self->_bannerState != v11)
     {
-      v6 = [(PKExpressTransactionBannerHandleState *)v11 transactionState];
+      transactionState = [(PKExpressTransactionBannerHandleState *)v11 transactionState];
       bannerState = self->_bannerState;
-      if (!bannerState || (-[PKExpressTransactionBannerHandleState transactionState](bannerState, "transactionState"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v6 isRelatedToState:v8], v8, (v9 & 1) != 0))
+      if (!bannerState || (-[PKExpressTransactionBannerHandleState transactionState](bannerState, "transactionState"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [transactionState isRelatedToState:v8], v8, (v9 & 1) != 0))
       {
-        objc_storeStrong(&self->_bannerState, a3);
-        objc_storeStrong(&self->_expressState, v6);
+        objc_storeStrong(&self->_bannerState, state);
+        objc_storeStrong(&self->_expressState, transactionState);
         expressState = self->_expressState;
         if (!expressState || [(PKExpressTransactionState *)expressState status])
         {
           [(PKExpressTransactionBannerViewController *)self _displayResolution];
         }
 
-        v5 = v11;
+        stateCopy = v11;
         goto LABEL_10;
       }
 
@@ -2782,7 +2782,7 @@ LABEL_13:
 LABEL_10:
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   if (!self->_revoked)
   {
@@ -2807,37 +2807,37 @@ LABEL_10:
   }
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  if (self->_activeLayoutMode != a3)
+  if (self->_activeLayoutMode != mode)
   {
-    v5 = [(PKExpressTransactionBannerViewController *)self viewIfLoaded];
-    v10 = v5;
-    if (v5)
+    viewIfLoaded = [(PKExpressTransactionBannerViewController *)self viewIfLoaded];
+    v10 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v5 layoutIfNeeded];
-      self->_activeLayoutMode = a3;
-      v6 = [(PKExpressTransactionBannerViewController *)self systemApertureElementContext];
-      v7 = [v6 requestAlertingAssertion];
-      [v7 setAutomaticallyInvalidatable:0];
+      [viewIfLoaded layoutIfNeeded];
+      self->_activeLayoutMode = mode;
+      systemApertureElementContext = [(PKExpressTransactionBannerViewController *)self systemApertureElementContext];
+      requestAlertingAssertion = [systemApertureElementContext requestAlertingAssertion];
+      [requestAlertingAssertion setAutomaticallyInvalidatable:0];
 
       [v10 setNeedsLayout];
     }
 
     else
     {
-      self->_activeLayoutMode = a3;
-      v8 = [(PKExpressTransactionBannerViewController *)self systemApertureElementContext];
-      v9 = [v8 requestAlertingAssertion];
-      [v9 setAutomaticallyInvalidatable:0];
+      self->_activeLayoutMode = mode;
+      systemApertureElementContext2 = [(PKExpressTransactionBannerViewController *)self systemApertureElementContext];
+      requestAlertingAssertion2 = [systemApertureElementContext2 requestAlertingAssertion];
+      [requestAlertingAssertion2 setAutomaticallyInvalidatable:0];
     }
   }
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  coordinatorCopy = coordinator;
   if (self->_revoked)
   {
     goto LABEL_2;
@@ -2846,7 +2846,7 @@ LABEL_10:
   state = self->_state;
   if (state == 8)
   {
-    v19 = v24;
+    v19 = coordinatorCopy;
     if (self->_state != 8)
     {
       goto LABEL_27;
@@ -2869,14 +2869,14 @@ LABEL_10:
     self->_expanding = 1;
     [(PKExpressTransactionBannerViewController *)self _cancelRevokeTimer];
     objc_initWeak(aBlock, self);
-    v22 = [(PKExpressTransactionBannerViewController *)self view];
+    view = [(PKExpressTransactionBannerViewController *)self view];
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
     *&buf[16] = __77__PKExpressTransactionBannerViewController__expandWithTransitionCoordinator___block_invoke;
     v36 = &unk_1E8020758;
-    v37 = self;
-    v23 = v22;
-    v38 = v23;
+    selfCopy3 = self;
+    v23 = view;
+    selfCopy2 = v23;
     v25 = MEMORY[0x1E69E9820];
     v26 = 3221225472;
     v27 = __77__PKExpressTransactionBannerViewController__expandWithTransitionCoordinator___block_invoke_2;
@@ -2897,7 +2897,7 @@ LABEL_10:
         goto LABEL_2;
       }
 
-      v5 = v24;
+      v5 = coordinatorCopy;
       if (!self->_state)
       {
         v6 = v5;
@@ -2915,7 +2915,7 @@ LABEL_10:
               _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKExpressTransactionBVC (%p): appearing...", buf, 0xCu);
             }
 
-            v10 = [(PKExpressTransactionBannerViewController *)self view];
+            view2 = [(PKExpressTransactionBannerViewController *)self view];
             objc_initWeak(&location, self);
             v32[0] = 0;
             v32[1] = v32;
@@ -2931,9 +2931,9 @@ LABEL_10:
             *&buf[8] = 3221225472;
             *&buf[16] = __77__PKExpressTransactionBannerViewController__appearWithTransitionCoordinator___block_invoke_2;
             v36 = &unk_1E8025CB8;
-            v8 = v10;
-            v37 = v8;
-            v38 = self;
+            v8 = view2;
+            selfCopy3 = v8;
+            selfCopy2 = self;
             objc_copyWeak(v40, &location);
             v12 = v11;
             v39 = v12;
@@ -2970,7 +2970,7 @@ LABEL_27:
       __break(1u);
     }
 
-    v14 = v24;
+    v14 = coordinatorCopy;
     if (self->_state != 5)
     {
       goto LABEL_27;
@@ -2990,15 +2990,15 @@ LABEL_27:
       _os_log_impl(&dword_1BD026000, v16, OS_LOG_TYPE_DEFAULT, "PKExpressTransactionBVC (%p): shrinking...", buf, 0xCu);
     }
 
-    v17 = [(PKExpressTransactionBannerViewController *)self view];
+    view3 = [(PKExpressTransactionBannerViewController *)self view];
     objc_initWeak(aBlock, self);
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
     *&buf[16] = __77__PKExpressTransactionBannerViewController__shrinkWithTransitionCoordinator___block_invoke;
     v36 = &unk_1E8020758;
-    v37 = self;
-    v18 = v17;
-    v38 = v18;
+    selfCopy3 = self;
+    v18 = view3;
+    selfCopy2 = v18;
     v25 = MEMORY[0x1E69E9820];
     v26 = 3221225472;
     v27 = __77__PKExpressTransactionBannerViewController__shrinkWithTransitionCoordinator___block_invoke_3;
@@ -3013,10 +3013,10 @@ LABEL_27:
 LABEL_2:
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   if (self->_transitBalanceModel)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -3024,8 +3024,8 @@ LABEL_2:
     block[2] = __111__PKExpressTransactionBannerViewController_paymentPassWithUniqueIdentifier_didUpdateWithTransitPassProperties___block_invoke;
     block[3] = &unk_1E8010A88;
     block[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = identifierCopy;
+    v10 = propertiesCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -3044,10 +3044,10 @@ void __111__PKExpressTransactionBannerViewController_paymentPassWithUniqueIdenti
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  updateCopy = update;
   if (self->_transitBalanceModel)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -3055,8 +3055,8 @@ void __111__PKExpressTransactionBannerViewController_paymentPassWithUniqueIdenti
     block[2] = __100__PKExpressTransactionBannerViewController_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdate___block_invoke;
     block[3] = &unk_1E8010A88;
     block[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = identifierCopy;
+    v10 = updateCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -3075,7 +3075,7 @@ void __100__PKExpressTransactionBannerViewController_paymentPassWithUniqueIdenti
   }
 }
 
-- (void)expressTrailingView:(id)a3 revealingCheckmarkAnimated:(BOOL)a4
+- (void)expressTrailingView:(id)view revealingCheckmarkAnimated:(BOOL)animated
 {
   if (self && !self->_revoked && !self->_successPlayed)
   {
@@ -3124,15 +3124,15 @@ void __100__PKExpressTransactionBannerViewController_paymentPassWithUniqueIdenti
   }
 }
 
-- (void)expressLabelViewDidChangeSize:(id)a3
+- (void)expressLabelViewDidChangeSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   state = self->_state;
   v6 = state >= 8;
   v7 = state - 8;
   if (v6)
   {
-    v8 = v4;
+    v8 = sizeCopy;
     if (v7 > 1)
     {
       __break(1u);
@@ -3140,7 +3140,7 @@ void __100__PKExpressTransactionBannerViewController_paymentPassWithUniqueIdenti
     }
 
     [(PKExpressTransactionBannerViewController *)self _updatePreferredContentSize];
-    v4 = v8;
+    sizeCopy = v8;
   }
 }
 

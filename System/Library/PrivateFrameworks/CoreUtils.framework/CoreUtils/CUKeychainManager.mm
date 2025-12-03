@@ -1,41 +1,41 @@
 @interface CUKeychainManager
-- (BOOL)addItem:(id)a3 flags:(unsigned int)a4 error:(id *)a5;
-- (BOOL)addOrUpdateOrReAddItem:(id)a3 flags:(unsigned int)a4 logCategory:(LogCategory *)a5 logLabel:(id)a6 error:(id *)a7;
-- (BOOL)removeItemMatchingItem:(id)a3 flags:(unsigned int)a4 error:(id *)a5;
-- (BOOL)updateItem:(id)a3 matchingItem:(id)a4 flags:(unsigned int)a5 error:(id *)a6;
-- (id)_copyItemsMatchingItem:(id)a3 flags:(unsigned int)a4 error:(id *)a5;
-- (id)_copyItemsMatchingItemSeparate:(id)a3 flags:(unsigned int)a4 error:(id *)a5;
-- (id)addItem:(id)a3 returnFlags:(unsigned int)a4 error:(id *)a5;
-- (id)copyItemMatchingItem:(id)a3 flags:(unsigned int)a4 error:(id *)a5;
+- (BOOL)addItem:(id)item flags:(unsigned int)flags error:(id *)error;
+- (BOOL)addOrUpdateOrReAddItem:(id)item flags:(unsigned int)flags logCategory:(LogCategory *)category logLabel:(id)label error:(id *)error;
+- (BOOL)removeItemMatchingItem:(id)item flags:(unsigned int)flags error:(id *)error;
+- (BOOL)updateItem:(id)item matchingItem:(id)matchingItem flags:(unsigned int)flags error:(id *)error;
+- (id)_copyItemsMatchingItem:(id)item flags:(unsigned int)flags error:(id *)error;
+- (id)_copyItemsMatchingItemSeparate:(id)separate flags:(unsigned int)flags error:(id *)error;
+- (id)addItem:(id)item returnFlags:(unsigned int)flags error:(id *)error;
+- (id)copyItemMatchingItem:(id)item flags:(unsigned int)flags error:(id *)error;
 @end
 
 @implementation CUKeychainManager
 
-- (BOOL)updateItem:(id)a3 matchingItem:(id)a4 flags:(unsigned int)a5 error:(id *)a6
+- (BOOL)updateItem:(id)item matchingItem:(id)matchingItem flags:(unsigned int)flags error:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 secrets];
+  v7 = *&flags;
+  itemCopy = item;
+  matchingItemCopy = matchingItem;
+  secrets = [itemCopy secrets];
 
-  v13 = [(CUKeychainManager *)self copyItemMatchingItem:v11 flags:(v12 != 0) | v7 error:a6];
+  v13 = [(CUKeychainManager *)self copyItemMatchingItem:matchingItemCopy flags:(secrets != 0) | v7 error:error];
   v14 = v13;
   if (v13)
   {
-    [v13 _mergeItem:v10];
-    v15 = [v14 _attributesDictionaryWithFlags:v7 | 0x80000 error:a6];
+    [v13 _mergeItem:itemCopy];
+    v15 = [v14 _attributesDictionaryWithFlags:v7 | 0x80000 error:error];
     if (v15)
     {
-      v16 = [v11 _attributesDictionaryWithFlags:v7 error:a6];
+      v16 = [matchingItemCopy _attributesDictionaryWithFlags:v7 error:error];
       v17 = v16;
       if (v16)
       {
         v18 = SecItemUpdate(v16, v15);
         v25 = v18 == 0;
-        if (a6 && v18)
+        if (error && v18)
         {
           NSErrorWithOSStatusF(v18, "SecItemUpdate failed", v19, v20, v21, v22, v23, v24, v27);
-          *a6 = v25 = 0;
+          *error = v25 = 0;
         }
       }
 
@@ -59,21 +59,21 @@
   return v25;
 }
 
-- (BOOL)removeItemMatchingItem:(id)a3 flags:(unsigned int)a4 error:(id *)a5
+- (BOOL)removeItemMatchingItem:(id)item flags:(unsigned int)flags error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&flags;
   v40[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 persistentRef];
-  v9 = v8;
-  if (v8)
+  itemCopy = item;
+  persistentRef = [itemCopy persistentRef];
+  v9 = persistentRef;
+  if (persistentRef)
   {
     v39 = *MEMORY[0x1E697B3C8];
-    v40[0] = v8;
+    v40[0] = persistentRef;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
     v11 = SecItemDelete(v10);
     v18 = v11 == 0;
-    if (!a5 || !v11)
+    if (!error || !v11)
     {
       goto LABEL_6;
     }
@@ -82,15 +82,15 @@
     goto LABEL_5;
   }
 
-  v21 = [v7 identifier];
-  if (v21)
+  identifier = [itemCopy identifier];
+  if (identifier)
   {
-    v28 = v21;
-    v29 = [v7 type];
+    v28 = identifier;
+    type = [itemCopy type];
 
-    if (v29)
+    if (type)
     {
-      v30 = [v7 _attributesDictionaryWithFlags:v6 error:a5];
+      v30 = [itemCopy _attributesDictionaryWithFlags:v6 error:error];
       v10 = v30;
       if (!v30)
       {
@@ -100,7 +100,7 @@
 
       v31 = SecItemDelete(v30);
       v18 = v31 == 0;
-      if (!a5 || !v31)
+      if (!error || !v31)
       {
         goto LABEL_6;
       }
@@ -108,17 +108,17 @@
       v19 = NSErrorWithOSStatusF(v31, "SecItemDelete failed", v32, v33, v34, v35, v36, v37, v38);
       v18 = 0;
 LABEL_5:
-      *a5 = v19;
+      *error = v19;
 LABEL_6:
 
       goto LABEL_7;
     }
   }
 
-  if (a5)
+  if (error)
   {
     NSErrorWithOSStatusF(4294960591, "No type and ID or persistent ref", v22, v23, v24, v25, v26, v27, v38);
-    *a5 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -131,59 +131,59 @@ LABEL_7:
   return v18;
 }
 
-- (BOOL)addOrUpdateOrReAddItem:(id)a3 flags:(unsigned int)a4 logCategory:(LogCategory *)a5 logLabel:(id)a6 error:(id *)a7
+- (BOOL)addOrUpdateOrReAddItem:(id)item flags:(unsigned int)flags logCategory:(LogCategory *)category logLabel:(id)label error:(id *)error
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a6;
+  v10 = *&flags;
+  itemCopy = item;
+  labelCopy = label;
   v54 = 0;
-  v14 = [(CUKeychainManager *)self addItem:v12 flags:v10 error:&v54];
+  v14 = [(CUKeychainManager *)self addItem:itemCopy flags:v10 error:&v54];
   v19 = v54;
   if (!v14)
   {
     v20 = objc_alloc_init(CUKeychainItem);
-    v21 = [v12 accessGroup];
-    [(CUKeychainItem *)v20 setAccessGroup:v21];
+    accessGroup = [itemCopy accessGroup];
+    [(CUKeychainItem *)v20 setAccessGroup:accessGroup];
 
-    v22 = [v12 identifier];
-    [(CUKeychainItem *)v20 setIdentifier:v22];
+    identifier = [itemCopy identifier];
+    [(CUKeychainItem *)v20 setIdentifier:identifier];
 
-    -[CUKeychainItem setLegacy:](v20, "setLegacy:", [v12 legacy]);
-    -[CUKeychainItem setSyncType:](v20, "setSyncType:", [v12 syncType]);
-    v23 = [v12 type];
-    [(CUKeychainItem *)v20 setType:v23];
+    -[CUKeychainItem setLegacy:](v20, "setLegacy:", [itemCopy legacy]);
+    -[CUKeychainItem setSyncType:](v20, "setSyncType:", [itemCopy syncType]);
+    type = [itemCopy type];
+    [(CUKeychainItem *)v20 setType:type];
 
-    v24 = [v12 viewHint];
-    [(CUKeychainItem *)v20 setViewHint:v24];
+    viewHint = [itemCopy viewHint];
+    [(CUKeychainItem *)v20 setViewHint:viewHint];
 
     if ([v19 code] == -25299)
     {
       v53 = v19;
-      v29 = [(CUKeychainManager *)self updateItem:v12 matchingItem:v20 flags:v10 error:&v53];
+      v29 = [(CUKeychainManager *)self updateItem:itemCopy matchingItem:v20 flags:v10 error:&v53];
       v30 = v53;
 
-      var0 = a5->var0;
+      var0 = category->var0;
       if (v29)
       {
-        if (var0 <= 30 && (var0 != -1 || _LogCategory_Initialize(a5, 0x1Eu)))
+        if (var0 <= 30 && (var0 != -1 || _LogCategory_Initialize(category, 0x1Eu)))
         {
-          LogPrintF(a5, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x1Eu, "%@ updated: %@\n", v31, v32, v33, v34, v13);
+          LogPrintF(category, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x1Eu, "%@ updated: %@\n", v31, v32, v33, v34, labelCopy);
         }
 
         goto LABEL_40;
       }
 
-      if (var0 <= 90 && (var0 != -1 || _LogCategory_Initialize(a5, 0x5Au)))
+      if (var0 <= 90 && (var0 != -1 || _LogCategory_Initialize(category, 0x5Au)))
       {
-        LogPrintF(a5, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x5Au, "### %@ update failed: %@, %{error}\n", v31, v32, v33, v34, v13);
+        LogPrintF(category, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x5Au, "### %@ update failed: %@, %{error}\n", v31, v32, v33, v34, labelCopy);
       }
     }
 
     else
     {
-      if (a5->var0 <= 90 && (a5->var0 != -1 || _LogCategory_Initialize(a5, 0x5Au)))
+      if (category->var0 <= 90 && (category->var0 != -1 || _LogCategory_Initialize(category, 0x5Au)))
       {
-        LogPrintF(a5, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x5Au, "### %@ add failed: %@, %{error}\n", v25, v26, v27, v28, v13);
+        LogPrintF(category, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x5Au, "### %@ add failed: %@, %{error}\n", v25, v26, v27, v28, labelCopy);
       }
 
       v30 = v19;
@@ -193,28 +193,28 @@ LABEL_7:
     v37 = [(CUKeychainManager *)self removeItemMatchingItem:v20 flags:v10 error:&v52];
     v38 = v52;
 
-    if (!v37 && a5->var0 <= 90 && (a5->var0 != -1 || _LogCategory_Initialize(a5, 0x5Au)))
+    if (!v37 && category->var0 <= 90 && (category->var0 != -1 || _LogCategory_Initialize(category, 0x5Au)))
     {
-      LogPrintF(a5, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x5Au, "### %@ delete to re-add failed: %@, %{error}\n", v39, v40, v41, v42, v13);
+      LogPrintF(category, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x5Au, "### %@ delete to re-add failed: %@, %{error}\n", v39, v40, v41, v42, labelCopy);
     }
 
     v51 = v38;
-    v43 = [(CUKeychainManager *)self addItem:v12 flags:v10 error:&v51];
+    v43 = [(CUKeychainManager *)self addItem:itemCopy flags:v10 error:&v51];
     v30 = v51;
 
-    v48 = a5->var0;
+    v48 = category->var0;
     if (!v43)
     {
-      if (v48 <= 90 && (v48 != -1 || _LogCategory_Initialize(a5, 0x5Au)))
+      if (v48 <= 90 && (v48 != -1 || _LogCategory_Initialize(category, 0x5Au)))
       {
-        LogPrintF(a5, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x5Au, "### %@ re-add failed: %@, %{error}\n", v44, v45, v46, v47, v13);
+        LogPrintF(category, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x5Au, "### %@ re-add failed: %@, %{error}\n", v44, v45, v46, v47, labelCopy);
       }
 
-      if (a7)
+      if (error)
       {
         v49 = v30;
         v36 = 0;
-        *a7 = v30;
+        *error = v30;
       }
 
       else
@@ -225,9 +225,9 @@ LABEL_7:
       goto LABEL_41;
     }
 
-    if (v48 <= 30 && (v48 != -1 || _LogCategory_Initialize(a5, 0x1Eu)))
+    if (v48 <= 30 && (v48 != -1 || _LogCategory_Initialize(category, 0x1Eu)))
     {
-      LogPrintF(a5, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x1Eu, "%@ deleted and re-added: %@\n", v44, v45, v46, v47, v13);
+      LogPrintF(category, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x1Eu, "%@ deleted and re-added: %@\n", v44, v45, v46, v47, labelCopy);
     }
 
 LABEL_40:
@@ -238,9 +238,9 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (a5->var0 <= 30 && (a5->var0 != -1 || _LogCategory_Initialize(a5, 0x1Eu)))
+  if (category->var0 <= 30 && (category->var0 != -1 || _LogCategory_Initialize(category, 0x1Eu)))
   {
-    LogPrintF(a5, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x1Eu, "%@ added: %@\n", v15, v16, v17, v18, v13);
+    LogPrintF(category, "[CUKeychainManager addOrUpdateOrReAddItem:flags:logCategory:logLabel:error:]", 0x1Eu, "%@ added: %@\n", v15, v16, v17, v18, labelCopy);
   }
 
   v36 = 1;
@@ -249,20 +249,20 @@ LABEL_42:
   return v36;
 }
 
-- (id)addItem:(id)a3 returnFlags:(unsigned int)a4 error:(id *)a5
+- (id)addItem:(id)item returnFlags:(unsigned int)flags error:(id *)error
 {
-  v6 = *&a4;
-  v7 = a3;
-  v8 = [v7 identifier];
+  v6 = *&flags;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
 
-  if (!v8)
+  if (!identifier)
   {
-    if (a5)
+    if (error)
     {
       v28 = "No identifier";
 LABEL_14:
       NSErrorWithOSStatusF(4294960591, v28, v9, v10, v11, v12, v13, v14, v50);
-      *a5 = v27 = 0;
+      *error = v27 = 0;
       goto LABEL_31;
     }
 
@@ -271,11 +271,11 @@ LABEL_15:
     goto LABEL_31;
   }
 
-  v15 = [v7 type];
+  type = [itemCopy type];
 
-  if (!v15)
+  if (!type)
   {
-    if (a5)
+    if (error)
     {
       v28 = "No type";
       goto LABEL_14;
@@ -294,7 +294,7 @@ LABEL_15:
     v16 = 0x10000;
   }
 
-  v17 = [v7 _attributesDictionaryWithFlags:v16 | v6 error:a5];
+  v17 = [itemCopy _attributesDictionaryWithFlags:v16 | v6 error:error];
   v18 = v17;
   if (v17)
   {
@@ -303,10 +303,10 @@ LABEL_15:
     v26 = result;
     if (v19)
     {
-      if (a5)
+      if (error)
       {
         NSErrorWithOSStatusF(v19, "SecItemAdd failed", v20, v21, v22, v23, v24, v25, v50);
-        *a5 = v27 = 0;
+        *error = v27 = 0;
 LABEL_29:
 
         goto LABEL_30;
@@ -320,11 +320,11 @@ LABEL_22:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v39 = objc_opt_class();
         v40 = NSStringFromClass(v39);
-        *a5 = NSErrorWithOSStatusF(4294960540, "SecItemAdd returned non-dictionary (%@)", v41, v42, v43, v44, v45, v46, v40);
+        *error = NSErrorWithOSStatusF(4294960540, "SecItemAdd returned non-dictionary (%@)", v41, v42, v43, v44, v45, v46, v40);
       }
 
       goto LABEL_22;
@@ -343,18 +343,18 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (a5)
+    if (error)
     {
       if (v31)
       {
         v47 = v31;
         v27 = 0;
-        *a5 = v38;
+        *error = v38;
         goto LABEL_28;
       }
 
       v48 = NSErrorWithOSStatusF(4294960534, "Update item failed", v32, v33, v34, v35, v36, v37, v50);
-      *a5 = v48;
+      *error = v48;
     }
 
     v27 = 0;
@@ -369,20 +369,20 @@ LABEL_31:
   return v27;
 }
 
-- (BOOL)addItem:(id)a3 flags:(unsigned int)a4 error:(id *)a5
+- (BOOL)addItem:(id)item flags:(unsigned int)flags error:(id *)error
 {
-  v6 = *&a4;
-  v7 = a3;
-  v8 = [v7 identifier];
+  v6 = *&flags;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
 
-  if (!v8)
+  if (!identifier)
   {
-    if (a5)
+    if (error)
     {
       v26 = "No identifier";
 LABEL_11:
       NSErrorWithOSStatusF(4294960591, v26, v9, v10, v11, v12, v13, v14, v28);
-      *a5 = v25 = 0;
+      *error = v25 = 0;
       goto LABEL_15;
     }
 
@@ -391,11 +391,11 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v15 = [v7 type];
+  type = [itemCopy type];
 
-  if (!v15)
+  if (!type)
   {
-    if (a5)
+    if (error)
     {
       v26 = "No type";
       goto LABEL_11;
@@ -404,16 +404,16 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v16 = [v7 _attributesDictionaryWithFlags:v6 error:a5];
+  v16 = [itemCopy _attributesDictionaryWithFlags:v6 error:error];
   v17 = v16;
   if (v16)
   {
     v18 = SecItemAdd(v16, 0);
     v25 = v18 == 0;
-    if (a5 && v18)
+    if (error && v18)
     {
       NSErrorWithOSStatusF(v18, "SecItemAdd failed", v19, v20, v21, v22, v23, v24, v28);
-      *a5 = v25 = 0;
+      *error = v25 = 0;
     }
   }
 
@@ -426,32 +426,32 @@ LABEL_15:
   return v25;
 }
 
-- (id)_copyItemsMatchingItemSeparate:(id)a3 flags:(unsigned int)a4 error:(id *)a5
+- (id)_copyItemsMatchingItemSeparate:(id)separate flags:(unsigned int)flags error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&flags;
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(CUKeychainManager *)self _copyItemsMatchingItem:v8 flags:v6 & 0xFFFFFFFE error:a5];
+  separateCopy = separate;
+  v9 = [(CUKeychainManager *)self _copyItemsMatchingItem:separateCopy flags:v6 & 0xFFFFFFFE error:error];
   v10 = v9;
   if (v9)
   {
     if ([v9 count])
     {
-      v40 = a5;
+      errorCopy = error;
       v11 = objc_alloc_init(CUKeychainItem);
-      v12 = [v8 accessGroup];
-      [(CUKeychainItem *)v11 setAccessGroup:v12];
+      accessGroup = [separateCopy accessGroup];
+      [(CUKeychainItem *)v11 setAccessGroup:accessGroup];
 
-      -[CUKeychainItem setLegacy:](v11, "setLegacy:", [v8 legacy]);
-      -[CUKeychainItem setSyncType:](v11, "setSyncType:", [v8 syncType]);
-      v13 = [v8 type];
-      [(CUKeychainItem *)v11 setType:v13];
+      -[CUKeychainItem setLegacy:](v11, "setLegacy:", [separateCopy legacy]);
+      -[CUKeychainItem setSyncType:](v11, "setSyncType:", [separateCopy syncType]);
+      type = [separateCopy type];
+      [(CUKeychainItem *)v11 setType:type];
 
-      v14 = [v8 viewHint];
-      [(CUKeychainItem *)v11 setViewHint:v14];
+      viewHint = [separateCopy viewHint];
+      [(CUKeychainItem *)v11 setViewHint:viewHint];
 
-      v42 = v8;
-      v15 = [v8 type];
+      v42 = separateCopy;
+      type2 = [separateCopy type];
 
       v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v46 = 0u;
@@ -476,21 +476,21 @@ LABEL_15:
             }
 
             v21 = *(*(&v46 + 1) + 8 * i);
-            v22 = [v21 identifier];
+            identifier = [v21 identifier];
 
-            if (v22)
+            if (identifier)
             {
-              v23 = [v21 identifier];
-              [(CUKeychainItem *)v11 setIdentifier:v23];
+              identifier2 = [v21 identifier];
+              [(CUKeychainItem *)v11 setIdentifier:identifier2];
 
-              if (!v15)
+              if (!type2)
               {
-                v24 = [v21 type];
-                [(CUKeychainItem *)v11 setType:v24];
+                type3 = [v21 type];
+                [(CUKeychainItem *)v11 setType:type3];
               }
 
-              v25 = [v21 viewHint];
-              [(CUKeychainItem *)v11 setViewHint:v25];
+              viewHint2 = [v21 viewHint];
+              [(CUKeychainItem *)v11 setViewHint:viewHint2];
 
               v45 = 0;
               v26 = [(CUKeychainManager *)self copyItemMatchingItem:v11 flags:v6 error:&v45];
@@ -523,7 +523,7 @@ LABEL_15:
       {
         v29 = [v44 copy];
         v10 = v41;
-        v8 = v42;
+        separateCopy = v42;
         v35 = v43;
 LABEL_29:
 
@@ -531,20 +531,20 @@ LABEL_29:
       }
 
       v10 = v41;
-      v8 = v42;
-      v36 = v40;
+      separateCopy = v42;
+      v36 = errorCopy;
       v35 = v43;
-      if (v40)
+      if (errorCopy)
       {
         if (v43)
         {
           v37 = v43;
           v29 = 0;
-          *v40 = v43;
+          *errorCopy = v43;
           goto LABEL_29;
         }
 
-        v38 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "No data-accessible items", v30, v31, v32, v33, v34, v40);
+        v38 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "No data-accessible items", v30, v31, v32, v33, v34, errorCopy);
         *v36 = v38;
       }
 
@@ -565,16 +565,16 @@ LABEL_30:
   return v29;
 }
 
-- (id)_copyItemsMatchingItem:(id)a3 flags:(unsigned int)a4 error:(id *)a5
+- (id)_copyItemsMatchingItem:(id)item flags:(unsigned int)flags error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&flags;
   v67 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 persistentRef];
-  if (v8)
+  itemCopy = item;
+  persistentRef = [itemCopy persistentRef];
+  if (persistentRef)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x1E697B3C8]];
+    [v9 setObject:persistentRef forKeyedSubscript:*MEMORY[0x1E697B3C8]];
     [v9 setObject:*MEMORY[0x1E697B268] forKeyedSubscript:*MEMORY[0x1E697B260]];
     [v9 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B310]];
     if ((v6 & 8) != 0)
@@ -597,8 +597,8 @@ LABEL_10:
       if (objc_opt_isKindOfClass())
       {
         v56 = v9;
-        v57 = v8;
-        v58 = v7;
+        v57 = persistentRef;
+        v58 = itemCopy;
         v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v61 = 0u;
         v62 = 0u;
@@ -635,21 +635,21 @@ LABEL_14:
 
               else if ((v6 & 2) == 0)
               {
-                v8 = v57;
-                v7 = v58;
+                persistentRef = v57;
+                itemCopy = v58;
                 v9 = v56;
-                if (a5)
+                if (error)
                 {
                   if (v27)
                   {
                     v52 = v27;
-                    *a5 = v34;
+                    *error = v34;
                   }
 
                   else
                   {
                     v53 = NSErrorWithOSStatusF(4294960534, "Update item failed", v28, v29, v30, v31, v32, v33, v55);
-                    *a5 = v53;
+                    *error = v53;
                   }
                 }
 
@@ -660,14 +660,14 @@ LABEL_43:
 
             else if ((v6 & 2) == 0)
             {
-              v8 = v57;
-              v7 = v58;
+              persistentRef = v57;
+              itemCopy = v58;
               v9 = v56;
-              if (a5)
+              if (error)
               {
                 v45 = objc_opt_class();
                 v25 = NSStringFromClass(v45);
-                *a5 = NSErrorWithOSStatusF(4294960540, "SecItemCopyMatching array contained non-dictionary (%@)", v46, v47, v48, v49, v50, v51, v25);
+                *error = NSErrorWithOSStatusF(4294960540, "SecItemCopyMatching array contained non-dictionary (%@)", v46, v47, v48, v49, v50, v51, v25);
                 goto LABEL_43;
               }
 
@@ -693,23 +693,23 @@ LABEL_44:
 
         v35 = v59;
         v36 = [v59 copy];
-        v8 = v57;
-        v7 = v58;
+        persistentRef = v57;
+        itemCopy = v58;
         v9 = v56;
 LABEL_45:
 
         goto LABEL_46;
       }
 
-      if (a5)
+      if (error)
       {
         v37 = objc_opt_class();
         v38 = NSStringFromClass(v37);
-        *a5 = NSErrorWithOSStatusF(4294960540, "SecItemCopyMatching returned non-array (%@)", v39, v40, v41, v42, v43, v44, v38);
+        *error = NSErrorWithOSStatusF(4294960540, "SecItemCopyMatching returned non-array (%@)", v39, v40, v41, v42, v43, v44, v38);
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       if (v11)
       {
@@ -722,7 +722,7 @@ LABEL_45:
       }
 
       NSErrorWithOSStatusF(v11, "SecItemCopyMatching failed", v12, v13, v14, v15, v16, v17, v55);
-      *a5 = v36 = 0;
+      *error = v36 = 0;
       goto LABEL_46;
     }
 
@@ -742,7 +742,7 @@ LABEL_46:
     v10 = 327680;
   }
 
-  v9 = [v7 _attributesDictionaryWithFlags:v10 | (v6 & 8) error:a5];
+  v9 = [itemCopy _attributesDictionaryWithFlags:v10 | (v6 & 8) error:error];
   if (v9)
   {
     goto LABEL_10;
@@ -754,15 +754,15 @@ LABEL_47:
   return v36;
 }
 
-- (id)copyItemMatchingItem:(id)a3 flags:(unsigned int)a4 error:(id *)a5
+- (id)copyItemMatchingItem:(id)item flags:(unsigned int)flags error:(id *)error
 {
-  v6 = *&a4;
-  v7 = a3;
-  v8 = [v7 persistentRef];
-  if (v8)
+  v6 = *&flags;
+  itemCopy = item;
+  persistentRef = [itemCopy persistentRef];
+  if (persistentRef)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x1E697B3C8]];
+    [v9 setObject:persistentRef forKeyedSubscript:*MEMORY[0x1E697B3C8]];
     [v9 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B310]];
     if ((v6 & 8) != 0)
     {
@@ -796,33 +796,33 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        if (a5)
+        if (error)
         {
           if (v21)
           {
             v38 = v21;
             v29 = 0;
-            *a5 = v28;
+            *error = v28;
             goto LABEL_28;
           }
 
           v39 = NSErrorWithOSStatusF(4294960534, "Update item failed", v22, v23, v24, v25, v26, v27, v41);
-          *a5 = v39;
+          *error = v39;
         }
 
         v29 = 0;
         goto LABEL_28;
       }
 
-      if (a5)
+      if (error)
       {
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
-        *a5 = NSErrorWithOSStatusF(4294960540, "SecItemCopyMatching returned non-dictionary (%@)", v32, v33, v34, v35, v36, v37, v31);
+        *error = NSErrorWithOSStatusF(4294960540, "SecItemCopyMatching returned non-dictionary (%@)", v32, v33, v34, v35, v36, v37, v31);
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       if (v11)
       {
@@ -835,7 +835,7 @@ LABEL_28:
       }
 
       NSErrorWithOSStatusF(v11, "SecItemCopyMatching failed", v12, v13, v14, v15, v16, v17, v41);
-      *a5 = v29 = 0;
+      *error = v29 = 0;
       goto LABEL_29;
     }
 
@@ -855,7 +855,7 @@ LABEL_29:
     v10 = 0x10000;
   }
 
-  v9 = [v7 _attributesDictionaryWithFlags:v10 | (v6 & 8) error:a5];
+  v9 = [itemCopy _attributesDictionaryWithFlags:v10 | (v6 & 8) error:error];
   if (v9)
   {
     goto LABEL_10;

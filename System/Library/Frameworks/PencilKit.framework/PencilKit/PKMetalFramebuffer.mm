@@ -1,6 +1,6 @@
 @interface PKMetalFramebuffer
 - (double)size;
-- (id)initWithSize:(void *)a3 pixelFormat:(char)a4 device:(char)a5 memoryless:(void *)a6 backedByIOSurface:(int)a7 sampleCount:(double)a8 purgeable:(double)a9;
+- (id)initWithSize:(void *)size pixelFormat:(char)format device:(char)device memoryless:(void *)memoryless backedByIOSurface:(int)surface sampleCount:(double)count purgeable:(double)purgeable;
 - (uint64_t)incrementNonPurgeableCount;
 - (void)dealloc;
 - (void)decrementNonPurgeableCount;
@@ -8,36 +8,36 @@
 
 @implementation PKMetalFramebuffer
 
-- (id)initWithSize:(void *)a3 pixelFormat:(char)a4 device:(char)a5 memoryless:(void *)a6 backedByIOSurface:(int)a7 sampleCount:(double)a8 purgeable:(double)a9
+- (id)initWithSize:(void *)size pixelFormat:(char)format device:(char)device memoryless:(void *)memoryless backedByIOSurface:(int)surface sampleCount:(double)count purgeable:(double)purgeable
 {
   v63 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  if (a1)
+  sizeCopy = size;
+  if (self)
   {
-    v54.receiver = a1;
+    v54.receiver = self;
     v54.super_class = PKMetalFramebuffer;
     v19 = objc_msgSendSuper2(&v54, sel_init);
-    a1 = v19;
+    self = v19;
     if (v19)
     {
-      *(v19 + 9) = ceil(a8);
-      *(v19 + 10) = ceil(a9);
-      objc_storeStrong(v19 + 4, a3);
-      *(a1 + 18) = a4;
-      *(a1 + 19) = a5;
-      a1[5] = a2;
-      a1[6] = a6;
-      if (a1[3])
+      *(v19 + 9) = ceil(count);
+      *(v19 + 10) = ceil(purgeable);
+      objc_storeStrong(v19 + 4, size);
+      *(self + 18) = format;
+      *(self + 19) = device;
+      self[5] = a2;
+      self[6] = memoryless;
+      if (self[3])
       {
-        if (a7)
+        if (surface)
         {
 LABEL_5:
-          v20 = *(a1 + 18) ^ 1;
+          v20 = *(self + 18) ^ 1;
 LABEL_37:
-          *(a1 + 17) = v20 & 1;
-          *(a1 + 11) = 0u;
-          *(a1 + 13) = 0u;
-          a1[8] = 8;
+          *(self + 17) = v20 & 1;
+          *(self + 11) = 0u;
+          *(self + 13) = 0u;
+          self[8] = 8;
           goto LABEL_38;
         }
 
@@ -46,12 +46,12 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v21 = [a1[4] supportsFamily:1001];
-      v22 = [PKMetalUtility deviceSupportsFramebufferFetch:a1[4]];
-      v23 = [PKMetalUtility deviceSupportsMemorylessFramebuffers:a1[4]];
-      v24 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:a1[5] width:*(a1 + 9) height:*(a1 + 10) mipmapped:0];
+      v21 = [self[4] supportsFamily:1001];
+      v22 = [PKMetalUtility deviceSupportsFramebufferFetch:self[4]];
+      v23 = [PKMetalUtility deviceSupportsMemorylessFramebuffers:self[4]];
+      v24 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:self[5] width:*(self + 9) height:*(self + 10) mipmapped:0];
       v25 = v24;
-      if (a1[6] >= 2)
+      if (self[6] >= 2)
       {
         v26 = 4;
       }
@@ -62,31 +62,31 @@ LABEL_36:
       }
 
       [v24 setTextureType:v26];
-      [v25 setSampleCount:a1[6]];
+      [v25 setSampleCount:self[6]];
       [v25 setUsage:4];
       if (!v21 || !v22)
       {
         [v25 setUsage:{objc_msgSend(v25, "usage") | 1}];
       }
 
-      if ((*(a1 + 18) & 1) == 0)
+      if ((*(self + 18) & 1) == 0)
       {
         [v25 setUsage:{objc_msgSend(v25, "usage") | 1}];
       }
 
       [v25 setStorageMode:2];
-      if (v21 && (*(a1 + 18) & v23 & 1) != 0)
+      if (v21 && (*(self + 18) & v23 & 1) != 0)
       {
         [v25 setStorageMode:3];
       }
 
-      if (*(a1 + 19) == 1)
+      if (*(self + 19) == 1)
       {
-        v27 = [v25 storageMode];
+        storageMode = [v25 storageMode];
         [v25 setStorageMode:0];
-        v28 = floor(*(a1 + 9));
-        v29 = floor(*(a1 + 10));
-        v30 = a1[5];
+        v28 = floor(*(self + 9));
+        v29 = floor(*(self + 10));
+        v30 = self[5];
         v31 = 8;
         if (v30 == 115)
         {
@@ -98,7 +98,7 @@ LABEL_36:
           v32 = &unk_1F47C1598;
         }
 
-        v50 = v27;
+        v50 = storageMode;
         if (v30 != 115 && v30 != 552)
         {
           if (v30 == 554)
@@ -142,7 +142,7 @@ LABEL_36:
         v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:v55 count:7];
 
         v43 = IOSurfaceCreate(v42);
-        if (a1[5] == 115)
+        if (self[5] == 115)
         {
           IOSurfaceSetValue(v43, *MEMORY[0x1E696CEF0], [MEMORY[0x1E696AD98] numberWithDouble:4.0]);
         }
@@ -152,7 +152,7 @@ LABEL_36:
           CGColorSpaceAttachToIOSurface();
         }
 
-        a1[7] = v43;
+        self[7] = v43;
         if (!v43)
         {
           v47 = os_log_create("com.apple.pencilkit", "");
@@ -163,14 +163,14 @@ LABEL_36:
           }
 
           [v25 setStorageMode:v51];
-          v48 = [a1[4] newTextureWithDescriptor:v25];
-          v49 = a1[3];
-          a1[3] = v48;
+          v48 = [self[4] newTextureWithDescriptor:v25];
+          v49 = self[3];
+          self[3] = v48;
 
-          *(a1 + 19) = 0;
+          *(self + 19) = 0;
 LABEL_35:
 
-          if (a7)
+          if (surface)
           {
             goto LABEL_5;
           }
@@ -178,16 +178,16 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v44 = [a1[4] newTextureWithDescriptor:v25 iosurface:v43 plane:0];
+        v44 = [self[4] newTextureWithDescriptor:v25 iosurface:v43 plane:0];
       }
 
       else
       {
-        v44 = [a1[4] newTextureWithDescriptor:v25];
+        v44 = [self[4] newTextureWithDescriptor:v25];
       }
 
-      v45 = a1[3];
-      a1[3] = v44;
+      v45 = self[3];
+      self[3] = v44;
 
       goto LABEL_35;
     }
@@ -195,7 +195,7 @@ LABEL_35:
 
 LABEL_38:
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -214,42 +214,42 @@ LABEL_38:
 
 - (uint64_t)incrementNonPurgeableCount
 {
-  if (!a1)
+  if (!self)
   {
     v3 = 0;
     return v3 & 1;
   }
 
-  if (a1[17] == 1)
+  if (self[17] == 1)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    ++*(v1 + 1);
-    if (v1[16] == 1)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    ++*(selfCopy + 1);
+    if (selfCopy[16] == 1)
     {
-      v2 = *(v1 + 7);
+      v2 = *(selfCopy + 7);
       if (v2)
       {
         oldState = 0;
         IOSurfaceSetPurgeable(v2, 0, &oldState);
         if (oldState == 2)
         {
-          IOSurfaceSetPurgeable(*(v1 + 7), 1u, 0);
+          IOSurfaceSetPurgeable(*(selfCopy + 7), 1u, 0);
           goto LABEL_10;
         }
       }
 
-      else if ([*(v1 + 3) setPurgeableState:2] == 4)
+      else if ([*(selfCopy + 3) setPurgeableState:2] == 4)
       {
         goto LABEL_10;
       }
 
-      v1[16] = 0;
+      selfCopy[16] = 0;
     }
 
 LABEL_10:
-    v3 = v1[16] ^ 1;
-    objc_sync_exit(v1);
+    v3 = selfCopy[16] ^ 1;
+    objc_sync_exit(selfCopy);
 
     return v3 & 1;
   }
@@ -260,9 +260,9 @@ LABEL_10:
 
 - (void)decrementNonPurgeableCount
 {
-  if (a1 && a1[17] == 1)
+  if (self && self[17] == 1)
   {
-    obj = a1;
+    obj = self;
     objc_sync_enter(obj);
     v1 = *(obj + 1) - 1;
     *(obj + 1) = v1;
@@ -287,9 +287,9 @@ LABEL_10:
 
 - (double)size
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 72);
+    return *(self + 72);
   }
 
   else

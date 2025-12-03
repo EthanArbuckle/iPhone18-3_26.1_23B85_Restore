@@ -1,25 +1,25 @@
 @interface CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolContentItemClassDescriptor)contentItemClass;
-- (CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues)initWithContentItemClass:(id)a3 propertyName:(id)a4 error:(id *)a5;
-- (CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues)initWithContentItemClass:(id)class propertyName:(id)name error:(id *)error;
+- (CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)propertyName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues
 
-- (CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v16[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"contentItemClass"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"contentItemClass"];
     if (v9)
     {
       v10 = v9;
@@ -41,8 +41,8 @@
       v11 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"propertyName"];
-    v14 = [[CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues alloc] initWithContentItemClass:v11 propertyName:v13 error:a4];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"propertyName"];
+    v14 = [[CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues alloc] initWithContentItemClass:v11 propertyName:v13 error:error];
     v10 = v11;
 LABEL_10:
 
@@ -61,15 +61,15 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_contentItemClass)
   {
-    v4 = [(CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues *)self contentItemClass];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"contentItemClass"];
+    contentItemClass = [(CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues *)self contentItemClass];
+    jsonDictionary = [contentItemClass jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"contentItemClass"];
   }
 
   if (self->_propertyName)
   {
-    v6 = [(CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues *)self propertyName];
-    [v3 setObject:v6 forKeyedSubscript:@"propertyName"];
+    propertyName = [(CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues *)self propertyName];
+    [v3 setObject:propertyName forKeyedSubscript:@"propertyName"];
   }
 
   v7 = [v3 copy];
@@ -77,20 +77,20 @@ LABEL_11:
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_contentItemClass)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_contentItemClass];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_propertyName)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 stringValue:self->_propertyName];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
@@ -108,10 +108,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -261,15 +261,15 @@ LABEL_36:
   return v34;
 }
 
-- (CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues)initWithContentItemClass:(id)a3 propertyName:(id)a4 error:(id *)a5
+- (CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues)initWithContentItemClass:(id)class propertyName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  classCopy = class;
+  nameCopy = name;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!classCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!nameCopy)
     {
       goto LABEL_8;
     }
@@ -283,7 +283,7 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v17 = 0;
+      selfCopy = 0;
       v12 = v15;
       goto LABEL_11;
     }
@@ -299,26 +299,26 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  v13 = [v8 data];
+  data = [classCopy data];
   CCPBDataWriterWriteDataField();
 
-  if (v9)
+  if (nameCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v16 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v16 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v17 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v17;
+  return selfCopy;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface MapsSuggestionsSimpleStrategy
-- (BOOL)postFiltersKept:(id)a3;
-- (BOOL)preFiltersKept:(id)a3;
+- (BOOL)postFiltersKept:(id)kept;
+- (BOOL)preFiltersKept:(id)kept;
 - (MapsSuggestionsManager)manager;
 - (MapsSuggestionsSimpleStrategy)init;
-- (NSObject)_filteredPreviousResultsCrosscheckingStorage:(id *)a1;
+- (NSObject)_filteredPreviousResultsCrosscheckingStorage:(id *)storage;
 - (NSString)uniqueName;
-- (id)topSuggestionsWithSourceEntries:(id)a3 error:(id *)a4;
-- (uint64_t)_dedupeByEnrichingEntries:(void *)a3 withEntry:;
-- (uint64_t)_entry:(void *)a3 existsInStorage:;
-- (uint64_t)_improveEntry:(id *)a1;
-- (void)_addFilter:(uint64_t)a3 processingType:;
-- (void)_filtersForprocessingType:(void *)a1;
-- (void)addDeduper:(id)a3;
-- (void)addImprover:(id)a3;
+- (id)topSuggestionsWithSourceEntries:(id)entries error:(id *)error;
+- (uint64_t)_dedupeByEnrichingEntries:(void *)entries withEntry:;
+- (uint64_t)_entry:(void *)_entry existsInStorage:;
+- (uint64_t)_improveEntry:(id *)entry;
+- (void)_addFilter:(uint64_t)filter processingType:;
+- (void)_filtersForprocessingType:(void *)type;
+- (void)addDeduper:(id)deduper;
+- (void)addImprover:(id)improver;
 - (void)clearData;
 - (void)removeAllDedupers;
 - (void)removeAllFilters;
 - (void)removeAllImprovers;
-- (void)removeFilter:(id)a3;
+- (void)removeFilter:(id)filter;
 @end
 
 @implementation MapsSuggestionsSimpleStrategy
@@ -61,16 +61,16 @@
   self->_previousResults = 0;
 }
 
-- (BOOL)preFiltersKept:(id)a3
+- (BOOL)preFiltersKept:(id)kept
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keptCopy = kept;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+    uniqueName = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
     *buf = 138412546;
-    v30 = v6;
+    v30 = uniqueName;
     v31 = 2080;
     v32 = "pre-filtering";
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -103,31 +103,31 @@
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        if (([v13 shouldKeepEntry:{v4, v25}] & 1) == 0)
+        if (([v13 shouldKeepEntry:{keptCopy, v25}] & 1) == 0)
         {
           v17 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
-            v18 = [v13 uniqueName];
+            uniqueName2 = [v13 uniqueName];
             IsVerbose = MapsSuggestionsLoggingIsVerbose();
             if (IsVerbose)
             {
-              v20 = [v4 serializedBase64String];
+              serializedBase64String = [keptCopy serializedBase64String];
             }
 
             else
             {
-              v20 = &stru_1F444C108;
+              serializedBase64String = &stru_1F444C108;
             }
 
             *buf = 138413058;
-            v30 = v18;
+            v30 = uniqueName2;
             v31 = 2048;
-            v32 = v4;
+            v32 = keptCopy;
             v33 = 2112;
-            v34 = v20;
+            v34 = serializedBase64String;
             v35 = 2112;
-            v36 = v4;
+            v36 = keptCopy;
             _os_log_impl(&dword_1C5126000, v17, OS_LOG_TYPE_DEBUG, "{MSgDebug} FILTERED by FILTER{%@} {%p:%@}:\n%@", buf, 0x2Au);
             if (IsVerbose)
             {
@@ -137,9 +137,9 @@
           v21 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
-            v22 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+            uniqueName3 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
             *buf = 138412546;
-            v30 = v22;
+            v30 = uniqueName3;
             v31 = 2080;
             v32 = "pre-filtering";
             _os_log_impl(&dword_1C5126000, v21, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -170,9 +170,9 @@
   v14 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+    uniqueName4 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
     *buf = 138412546;
-    v30 = v15;
+    v30 = uniqueName4;
     v31 = 2080;
     v32 = "pre-filtering";
     _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -191,16 +191,16 @@ LABEL_30:
   return v16;
 }
 
-- (BOOL)postFiltersKept:(id)a3
+- (BOOL)postFiltersKept:(id)kept
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keptCopy = kept;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+    uniqueName = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
     *buf = 138412546;
-    v30 = v6;
+    v30 = uniqueName;
     v31 = 2080;
     v32 = "post-filtering";
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -233,31 +233,31 @@ LABEL_30:
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        if (([v13 shouldKeepEntry:{v4, v25}] & 1) == 0)
+        if (([v13 shouldKeepEntry:{keptCopy, v25}] & 1) == 0)
         {
           v17 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
-            v18 = [v13 uniqueName];
+            uniqueName2 = [v13 uniqueName];
             IsVerbose = MapsSuggestionsLoggingIsVerbose();
             if (IsVerbose)
             {
-              v20 = [v4 serializedBase64String];
+              serializedBase64String = [keptCopy serializedBase64String];
             }
 
             else
             {
-              v20 = &stru_1F444C108;
+              serializedBase64String = &stru_1F444C108;
             }
 
             *buf = 138413058;
-            v30 = v18;
+            v30 = uniqueName2;
             v31 = 2048;
-            v32 = v4;
+            v32 = keptCopy;
             v33 = 2112;
-            v34 = v20;
+            v34 = serializedBase64String;
             v35 = 2112;
-            v36 = v4;
+            v36 = keptCopy;
             _os_log_impl(&dword_1C5126000, v17, OS_LOG_TYPE_DEBUG, "{MSgDebug} FILTERED by FILTER{%@} {%p:%@}:\n%@", buf, 0x2Au);
             if (IsVerbose)
             {
@@ -267,9 +267,9 @@ LABEL_30:
           v21 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
-            v22 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+            uniqueName3 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
             *buf = 138412546;
-            v30 = v22;
+            v30 = uniqueName3;
             v31 = 2080;
             v32 = "post-filtering";
             _os_log_impl(&dword_1C5126000, v21, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -300,9 +300,9 @@ LABEL_30:
   v14 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+    uniqueName4 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
     *buf = 138412546;
-    v30 = v15;
+    v30 = uniqueName4;
     v31 = 2080;
     v32 = "post-filtering";
     _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -321,16 +321,16 @@ LABEL_30:
   return v16;
 }
 
-- (id)topSuggestionsWithSourceEntries:(id)a3 error:(id *)a4
+- (id)topSuggestionsWithSourceEntries:(id)entries error:(id *)error
 {
   v85 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  entriesCopy = entries;
+  if (!entriesCopy)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] GEOErrorWithCode:-12 reason:@"Requires sourceEntries."];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -344,9 +344,9 @@ LABEL_30:
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+    uniqueName = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
     *buf = 138412546;
-    v74 = v10;
+    v74 = uniqueName;
     v75 = 2080;
     v76 = "topSuggestionsWithSourceEntries";
     _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -359,14 +359,14 @@ LABEL_30:
     _os_signpost_emit_with_name_impl(&dword_1C5126000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "topSuggestionsWithSourceEntries", "", buf, 2u);
   }
 
-  v12 = [(MapsSuggestionsSimpleStrategy *)&self->super.isa _filteredPreviousResultsCrosscheckingStorage:v6];
+  v12 = [(MapsSuggestionsSimpleStrategy *)&self->super.isa _filteredPreviousResultsCrosscheckingStorage:entriesCopy];
   WeakRetained = objc_loadWeakRetained(&self->_manager);
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v50 = v6;
-  obj = v6;
+  v50 = entriesCopy;
+  obj = entriesCopy;
   v54 = [obj countByEnumeratingWithState:&v68 objects:v84 count:16];
   if (v54)
   {
@@ -436,9 +436,9 @@ LABEL_30:
                     {
                       if (v25)
                       {
-                        v26 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+                        uniqueName2 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
                         *buf = 138412546;
-                        v74 = v26;
+                        v74 = uniqueName2;
                         v75 = 2080;
                         v76 = "deduping";
                         _os_log_impl(&dword_1C5126000, log, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -456,9 +456,9 @@ LABEL_30:
                     {
                       if (v25)
                       {
-                        v28 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+                        uniqueName3 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
                         *buf = 138412546;
-                        v74 = v28;
+                        v74 = uniqueName3;
                         v75 = 2080;
                         v76 = "deduping";
                         _os_log_impl(&dword_1C5126000, log, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -480,8 +480,8 @@ LABEL_30:
                         v52 = IsVerbose;
                         if (IsVerbose)
                         {
-                          v51 = [v21 serializedBase64String];
-                          v32 = v51;
+                          serializedBase64String = [v21 serializedBase64String];
+                          v32 = serializedBase64String;
                         }
 
                         *buf = 136316162;
@@ -560,8 +560,8 @@ LABEL_30:
             continue;
           }
 
-          v40 = [v39 originatingSourceName];
-          [(MapsSuggestionsManager *)WeakRetained removeEntry:v39 sourceName:v40];
+          originatingSourceName = [v39 originatingSourceName];
+          [(MapsSuggestionsManager *)WeakRetained removeEntry:v39 sourceName:originatingSourceName];
         }
 
         [v34 addObject:v39];
@@ -577,9 +577,9 @@ LABEL_30:
   v41 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
   {
-    v42 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+    uniqueName4 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
     *buf = 138412546;
-    v74 = v42;
+    v74 = uniqueName4;
     v75 = 2080;
     v76 = "sorting";
     _os_log_impl(&dword_1C5126000, v41, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -596,9 +596,9 @@ LABEL_30:
   v44 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
   {
-    v45 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+    uniqueName5 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
     *buf = 138412546;
-    v74 = v45;
+    v74 = uniqueName5;
     v75 = 2080;
     v76 = "sorting";
     _os_log_impl(&dword_1C5126000, v44, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -615,9 +615,9 @@ LABEL_30:
   v47 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
   {
-    v48 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
+    uniqueName6 = [(MapsSuggestionsSimpleStrategy *)self uniqueName];
     *buf = 138412546;
-    v74 = v48;
+    v74 = uniqueName6;
     v75 = 2080;
     v76 = "topSuggestionsWithSourceEntries";
     _os_log_impl(&dword_1C5126000, v47, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -630,7 +630,7 @@ LABEL_30:
     _os_signpost_emit_with_name_impl(&dword_1C5126000, v49, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "topSuggestionsWithSourceEntries", "", buf, 2u);
   }
 
-  v6 = v50;
+  entriesCopy = v50;
 LABEL_5:
 
   return v7;
@@ -685,13 +685,13 @@ uint64_t __71__MapsSuggestionsSimpleStrategy_topSuggestionsWithSourceEntries_err
   return v9;
 }
 
-- (void)removeFilter:(id)a3
+- (void)removeFilter:(id)filter
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  filterCopy = filter;
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (!v4)
+  if (!filterCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -841,12 +841,12 @@ LABEL_35:
   [(NSMutableSet *)postFilters removeAllObjects];
 }
 
-- (void)addImprover:(id)a3
+- (void)addImprover:(id)improver
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  improverCopy = improver;
+  v5 = improverCopy;
+  if (!improverCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -872,7 +872,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (([v4 conformsToProtocol:&unk_1F44729D8] & 1) == 0)
+  if (([improverCopy conformsToProtocol:&unk_1F44729D8] & 1) == 0)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -948,12 +948,12 @@ LABEL_20:
   self->_improvers = 0;
 }
 
-- (void)addDeduper:(id)a3
+- (void)addDeduper:(id)deduper
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  deduperCopy = deduper;
+  v5 = deduperCopy;
+  if (!deduperCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -979,7 +979,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (([v4 conformsToProtocol:&unk_1F4472FC8] & 1) == 0)
+  if (([deduperCopy conformsToProtocol:&unk_1F4472FC8] & 1) == 0)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1062,22 +1062,22 @@ LABEL_20:
   return WeakRetained;
 }
 
-- (void)_filtersForprocessingType:(void *)a1
+- (void)_filtersForprocessingType:(void *)type
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (type)
   {
     if (a2 == 2)
     {
-      v2 = a1[4];
+      v2 = type[4];
       goto LABEL_6;
     }
 
     if (a2 == 1)
     {
-      v2 = a1[1];
+      v2 = type[1];
 LABEL_6:
-      a1 = v2;
+      type = v2;
       goto LABEL_10;
     }
 
@@ -1092,24 +1092,24 @@ LABEL_6:
       _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Detected an unsupported _ProcessingType!", v5, 0x26u);
     }
 
-    a1 = 0;
+    type = 0;
   }
 
 LABEL_10:
 
-  return a1;
+  return type;
 }
 
-- (uint64_t)_improveEntry:(id *)a1
+- (uint64_t)_improveEntry:(id *)entry
 {
   v62 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (entry)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [a1 uniqueName];
+      uniqueName = [entry uniqueName];
       OUTLINED_FUNCTION_9_3();
       v56 = "improving";
       OUTLINED_FUNCTION_12_1(&dword_1C5126000, v7, v8, "{MSgDebug} OBJECT{%@} %s BEGIN", v9, v10, v11, v12, v45, v46, v48, *(&v48 + 1), v49[0], v49[1], v50, *(&v50 + 1), v51[0], v51[1], v52, *(&v52 + 1), buf[0]);
@@ -1127,8 +1127,8 @@ LABEL_10:
     v52 = 0u;
     *v49 = 0u;
     v50 = 0u;
-    v47 = a1;
-    v18 = a1[2];
+    entryCopy = entry;
+    v18 = entry[2];
     v19 = [v18 countByEnumeratingWithState:v49 objects:v61 count:16];
     if (v19)
     {
@@ -1153,17 +1153,17 @@ LABEL_10:
             v27 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
-              v28 = [v26 uniqueName];
+              uniqueName2 = [v26 uniqueName];
               IsVerbose = MapsSuggestionsLoggingIsVerbose();
               v30 = &stru_1F444C108;
               if (IsVerbose)
               {
-                v2 = [v4 serializedBase64String];
-                v30 = v2;
+                serializedBase64String = [v4 serializedBase64String];
+                v30 = serializedBase64String;
               }
 
               *buf = v48;
-              v54 = v28;
+              v54 = uniqueName2;
               v55 = 2048;
               v56 = v4;
               v57 = 2112;
@@ -1194,10 +1194,10 @@ LABEL_10:
     v31 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
-      v32 = [v47 uniqueName];
+      uniqueName3 = [entryCopy uniqueName];
       OUTLINED_FUNCTION_9_3();
       v56 = "improving";
-      OUTLINED_FUNCTION_12_1(&dword_1C5126000, v33, v34, "{MSgDebug} OBJECT{%@} %s END", v35, v36, v37, v38, v45, v47, v48, *(&v48 + 1), v49[0], v49[1], v50, *(&v50 + 1), v51[0], v51[1], v52, *(&v52 + 1), buf[0]);
+      OUTLINED_FUNCTION_12_1(&dword_1C5126000, v33, v34, "{MSgDebug} OBJECT{%@} %s END", v35, v36, v37, v38, v45, entryCopy, v48, *(&v48 + 1), v49[0], v49[1], v50, *(&v50 + 1), v51[0], v51[1], v52, *(&v52 + 1), buf[0]);
     }
 
     v39 = GEOFindOrCreateLog();
@@ -1217,12 +1217,12 @@ LABEL_10:
   return v22 & 1;
 }
 
-- (uint64_t)_dedupeByEnrichingEntries:(void *)a3 withEntry:
+- (uint64_t)_dedupeByEnrichingEntries:(void *)entries withEntry:
 {
   v87 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  entriesCopy = entries;
+  if (self)
   {
     *v77 = 0u;
     v78 = 0u;
@@ -1236,7 +1236,7 @@ LABEL_10:
       v11 = *v78;
       v70 = v5;
       v71 = v7;
-      v72 = a1;
+      selfCopy = self;
       do
       {
         v12 = 0;
@@ -1248,17 +1248,17 @@ LABEL_10:
           }
 
           v13 = *(v77[1] + 8 * v12);
-          if (v13 != v6)
+          if (v13 != entriesCopy)
           {
             *v75 = 0u;
             v76 = 0u;
             *v73 = 0u;
             v74 = 0u;
-            v14 = *(a1 + 24);
+            v14 = *(self + 24);
             v15 = [v14 countByEnumeratingWithState:v73 objects:v85 count:16];
             if (v15)
             {
-              a3 = v15;
+              entries = v15;
               v16 = *v74;
               while (2)
               {
@@ -1272,31 +1272,31 @@ LABEL_10:
                   }
 
                   v19 = *(v73[1] + 8 * v17);
-                  v20 = [v19 dedupeByEnrichingEntry:v13 withEntry:v6];
+                  v20 = [v19 dedupeByEnrichingEntry:v13 withEntry:entriesCopy];
                   if (v20)
                   {
                     v30 = GEOFindOrCreateLog();
                     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
                     {
-                      v31 = [v19 uniqueName];
+                      uniqueName = [v19 uniqueName];
                       IsVerbose = MapsSuggestionsLoggingIsVerbose();
                       if (IsVerbose)
                       {
-                        v33 = [v6 serializedBase64String];
+                        serializedBase64String = [entriesCopy serializedBase64String];
                       }
 
                       else
                       {
-                        v33 = &stru_1F444C108;
+                        serializedBase64String = &stru_1F444C108;
                       }
 
                       *buf = 138413058;
-                      v82 = v31;
+                      v82 = uniqueName;
                       v83 = 2048;
-                      v84 = v6;
+                      v84 = entriesCopy;
                       OUTLINED_FUNCTION_7_3();
-                      *(v34 + 34) = v6;
-                      OUTLINED_FUNCTION_11_3(&dword_1C5126000, v35, v36, "{MSgDebug} DUPED by DEDUPER{%@} {%p:%@}:\n%@", v37, v38, v39, v40, v69, v70, v71, v72, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), buf[0]);
+                      *(v34 + 34) = entriesCopy;
+                      OUTLINED_FUNCTION_11_3(&dword_1C5126000, v35, v36, "{MSgDebug} DUPED by DEDUPER{%@} {%p:%@}:\n%@", v37, v38, v39, v40, v69, v70, v71, selfCopy, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), buf[0]);
                       if (IsVerbose)
                       {
                       }
@@ -1305,42 +1305,42 @@ LABEL_10:
                     v41 = GEOFindOrCreateLog();
                     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
                     {
-                      v42 = [v19 uniqueName];
+                      uniqueName2 = [v19 uniqueName];
                       v43 = MapsSuggestionsLoggingIsVerbose();
                       if (v43)
                       {
-                        v44 = [v13 serializedBase64String];
+                        serializedBase64String2 = [v13 serializedBase64String];
                       }
 
                       else
                       {
-                        v44 = &stru_1F444C108;
+                        serializedBase64String2 = &stru_1F444C108;
                       }
 
                       *buf = 138413058;
-                      v82 = v42;
+                      v82 = uniqueName2;
                       v83 = 2048;
                       v84 = v13;
                       OUTLINED_FUNCTION_7_3();
                       *(v45 + 34) = v13;
-                      OUTLINED_FUNCTION_11_3(&dword_1C5126000, v46, v47, "{MSgDebug} ENRICHED by DEDUPER{%@} {%p:%@}:\n%@", v48, v49, v50, v51, v69, v70, v71, v72, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), buf[0]);
+                      OUTLINED_FUNCTION_11_3(&dword_1C5126000, v46, v47, "{MSgDebug} ENRICHED by DEDUPER{%@} {%p:%@}:\n%@", v48, v49, v50, v51, v69, v70, v71, selfCopy, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), buf[0]);
                       if (v43)
                       {
                       }
                     }
 
-                    v52 = v72;
-                    WeakRetained = objc_loadWeakRetained((v72 + 48));
-                    [WeakRetained removeEntry:v6];
+                    v52 = selfCopy;
+                    WeakRetained = objc_loadWeakRetained((selfCopy + 48));
+                    [WeakRetained removeEntry:entriesCopy];
 
                     v5 = v70;
-                    [v70 removeObjectIdenticalTo:v6];
+                    [v70 removeObjectIdenticalTo:entriesCopy];
                     if ([v70 count] >= 2)
                     {
                       v62 = GEOFindOrCreateLog();
                       if (OUTLINED_FUNCTION_6_4(v62))
                       {
-                        OUTLINED_FUNCTION_2_6(&dword_1C5126000, v63, v64, "Calling recursive _dedupeByEnrichingEntries", v65, v66, v67, v68, v69, v70, v71, v72, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), 0);
+                        OUTLINED_FUNCTION_2_6(&dword_1C5126000, v63, v64, "Calling recursive _dedupeByEnrichingEntries", v65, v66, v67, v68, v69, v70, v71, selfCopy, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), 0);
                       }
 
                       [(MapsSuggestionsSimpleStrategy *)v52 _dedupeByEnrichingEntries:v5 withEntry:v13];
@@ -1349,21 +1349,21 @@ LABEL_10:
                     v54 = GEOFindOrCreateLog();
                     if (OUTLINED_FUNCTION_6_4(v54))
                     {
-                      OUTLINED_FUNCTION_2_6(&dword_1C5126000, v55, v56, "Returning YES from Deduping", v57, v58, v59, v60, v69, v70, v71, v72, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), 0);
+                      OUTLINED_FUNCTION_2_6(&dword_1C5126000, v55, v56, "Returning YES from Deduping", v57, v58, v59, v60, v69, v70, v71, selfCopy, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), 0);
                     }
 
                     v29 = 1;
                     v7 = v71;
-                    a3 = v71;
+                    entries = v71;
                     goto LABEL_40;
                   }
 
                   v17 = v17 + 1;
                 }
 
-                while (a3 != v17);
-                a3 = OUTLINED_FUNCTION_13_1(v20, v21, v73, v85);
-                if (a3)
+                while (entries != v17);
+                entries = OUTLINED_FUNCTION_13_1(v20, v21, v73, v85);
+                if (entries)
                 {
                   continue;
                 }
@@ -1373,7 +1373,7 @@ LABEL_10:
             }
 
             v7 = v71;
-            a1 = v72;
+            self = selfCopy;
           }
 
           ++v12;
@@ -1391,7 +1391,7 @@ LABEL_10:
     v22 = GEOFindOrCreateLog();
     if (OUTLINED_FUNCTION_6_4(v22))
     {
-      OUTLINED_FUNCTION_2_6(&dword_1C5126000, v23, v24, "Returning NO from Deduping", v25, v26, v27, v28, v69, v70, v71, v72, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), 0);
+      OUTLINED_FUNCTION_2_6(&dword_1C5126000, v23, v24, "Returning NO from Deduping", v25, v26, v27, v28, v69, v70, v71, selfCopy, v73[0], v73[1], v74, *(&v74 + 1), v75[0], v75[1], v76, *(&v76 + 1), v77[0], v77[1], v78, *(&v78 + 1), v79[0], v79[1], v80, *(&v80 + 1), 0);
     }
 
     v29 = 0;
@@ -1406,13 +1406,13 @@ LABEL_40:
   return v29;
 }
 
-- (uint64_t)_entry:(void *)a3 existsInStorage:
+- (uint64_t)_entry:(void *)_entry existsInStorage:
 {
   v48 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (!a1)
+  _entryCopy = _entry;
+  v7 = _entryCopy;
+  if (!self)
   {
     v24 = 0;
     goto LABEL_29;
@@ -1440,7 +1440,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v6)
+  if (!_entryCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1464,7 +1464,7 @@ LABEL_26:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = v6;
+  v8 = _entryCopy;
   v29 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v29)
   {
@@ -1502,9 +1502,9 @@ LABEL_26:
               }
 
               v18 = *(*(&v30 + 1) + 8 * j);
-              v19 = [v5 uniqueIdentifier];
-              v20 = [v18 uniqueIdentifier];
-              v21 = [v19 isEqualToString:v20];
+              uniqueIdentifier = [v5 uniqueIdentifier];
+              uniqueIdentifier2 = [v18 uniqueIdentifier];
+              v21 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
 
               if (v21)
               {
@@ -1545,17 +1545,17 @@ LABEL_29:
   return v24;
 }
 
-- (NSObject)_filteredPreviousResultsCrosscheckingStorage:(id *)a1
+- (NSObject)_filteredPreviousResultsCrosscheckingStorage:(id *)storage
 {
   v76 = *MEMORY[0x1E69E9840];
   v69 = a2;
-  if (a1)
+  if (storage)
   {
     v3 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v4 = [a1 uniqueName];
-      OUTLINED_FUNCTION_5_5(v4, 5.778e-34);
+      uniqueName = [storage uniqueName];
+      OUTLINED_FUNCTION_5_5(uniqueName, 5.778e-34);
       *(v5 + 14) = "_filteredPreviousResults";
       OUTLINED_FUNCTION_10_2(&dword_1C5126000, v6, v7, "{MSgDebug} OBJECT{%@} %s BEGIN");
     }
@@ -1569,12 +1569,12 @@ LABEL_29:
     }
 
     v13 = objc_alloc(MEMORY[0x1E695DF70]);
-    v68 = -[NSObject initWithCapacity:](v13, "initWithCapacity:", [a1[5] count]);
+    v68 = -[NSObject initWithCapacity:](v13, "initWithCapacity:", [storage[5] count]);
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v14 = a1[5];
+    v14 = storage[5];
     v15 = [v14 countByEnumeratingWithState:&v70 objects:v74 count:16];
     if (v15)
     {
@@ -1592,7 +1592,7 @@ LABEL_29:
           }
 
           v20 = *(*(&v70 + 1) + 8 * v18);
-          if (([a1 preFiltersKept:{v20, v68}] & 1) == 0)
+          if (([storage preFiltersKept:{v20, v68}] & 1) == 0)
           {
             v34 = GEOFindOrCreateLog();
             v35 = OUTLINED_FUNCTION_6_4(v34);
@@ -1609,7 +1609,7 @@ LABEL_18:
             goto LABEL_19;
           }
 
-          if (([a1 postFiltersKept:v20] & 1) == 0)
+          if (([storage postFiltersKept:v20] & 1) == 0)
           {
             v21 = GEOFindOrCreateLog();
             v22 = OUTLINED_FUNCTION_6_4(v21);
@@ -1624,7 +1624,7 @@ LABEL_18:
             goto LABEL_18;
           }
 
-          if (([(MapsSuggestionsSimpleStrategy *)a1 _entry:v20 existsInStorage:v69]& 1) == 0)
+          if (([(MapsSuggestionsSimpleStrategy *)storage _entry:v20 existsInStorage:v69]& 1) == 0)
           {
             v46 = GEOFindOrCreateLog();
             v47 = OUTLINED_FUNCTION_6_4(v46);
@@ -1656,8 +1656,8 @@ LABEL_19:
     v57 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
     {
-      v58 = [a1 uniqueName];
-      OUTLINED_FUNCTION_5_5(v58, 5.778e-34);
+      uniqueName2 = [storage uniqueName];
+      OUTLINED_FUNCTION_5_5(uniqueName2, 5.778e-34);
       *(v59 + 14) = "_filteredPreviousResults";
       OUTLINED_FUNCTION_10_2(&dword_1C5126000, v60, v61, "{MSgDebug} OBJECT{%@} %s END");
     }
@@ -1679,12 +1679,12 @@ LABEL_19:
   return v68;
 }
 
-- (void)_addFilter:(uint64_t)a3 processingType:
+- (void)_addFilter:(uint64_t)filter processingType:
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (v5)
     {
@@ -1695,7 +1695,7 @@ LABEL_19:
         {
           if ([objc_opt_class() isEnabled])
           {
-            v7 = [(MapsSuggestionsSimpleStrategy *)a1 _filtersForprocessingType:a3];
+            v7 = [(MapsSuggestionsSimpleStrategy *)self _filtersForprocessingType:filter];
             [v7 addObject:v6];
             goto LABEL_17;
           }

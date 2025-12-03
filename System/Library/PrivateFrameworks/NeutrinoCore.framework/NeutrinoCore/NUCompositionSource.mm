@@ -1,45 +1,45 @@
 @interface NUCompositionSource
 - (NUCompositionSource)init;
-- (NUCompositionSource)initWithComposition:(id)a3;
-- (NUCompositionSource)initWithSourceSchema:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NUCompositionSource)initWithComposition:(id)composition;
+- (NUCompositionSource)initWithSourceSchema:(id)schema;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NUCompositionSource
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(NUCompositionSourceDefinition *)self->_sourceDefinition composition];
-  v5 = [v4 copyWithZone:a3];
+  composition = [(NUCompositionSourceDefinition *)self->_sourceDefinition composition];
+  v5 = [composition copyWithZone:zone];
 
-  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithComposition:", v5}];
+  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithComposition:", v5}];
   return v6;
 }
 
-- (NUCompositionSource)initWithComposition:(id)a3
+- (NUCompositionSource)initWithComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   v5 = +[NUSourceSchema sharedSourceSchema];
   v12.receiver = self;
   v12.super_class = NUCompositionSource;
   v6 = [(NUSource *)&v12 initWithSourceSchema:v5];
 
-  v7 = [[NUCompositionSourceDefinition alloc] initWithComposition:v4];
+  v7 = [[NUCompositionSourceDefinition alloc] initWithComposition:compositionCopy];
   sourceDefinition = v6->_sourceDefinition;
   v6->_sourceDefinition = v7;
 
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  [(NUSource *)v6 setAssetIdentifier:v10];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(NUSource *)v6 setAssetIdentifier:uUIDString];
 
   [(NUSource *)v6 setDefinition:v6->_sourceDefinition];
   return v6;
 }
 
-- (NUCompositionSource)initWithSourceSchema:(id)a3
+- (NUCompositionSource)initWithSourceSchema:(id)schema
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  schemaCopy = schema;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_9329);
@@ -83,8 +83,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -100,8 +100,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -163,8 +163,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -180,8 +180,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

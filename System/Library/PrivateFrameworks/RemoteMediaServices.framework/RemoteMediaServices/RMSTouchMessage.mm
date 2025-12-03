@@ -1,21 +1,21 @@
 @interface RMSTouchMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRepeatCount:(BOOL)a3;
-- (void)setHasSessionIdentifier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRepeatCount:(BOOL)count;
+- (void)setHasSessionIdentifier:(BOOL)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSTouchMessage
 
-- (void)setHasRepeatCount:(BOOL)a3
+- (void)setHasRepeatCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSessionIdentifier:(BOOL)a3
+- (void)setHasSessionIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = RMSTouchMessage;
   v4 = [(RMSTouchMessage *)&v8 description];
-  v5 = [(RMSTouchMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSTouchMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:self->_direction];
-    [v3 setObject:v7 forKey:@"direction"];
+    [dictionary setObject:v7 forKey:@"direction"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -83,29 +83,29 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_repeatCount];
-  [v3 setObject:v8 forKey:@"repeatCount"];
+  [dictionary setObject:v8 forKey:@"repeatCount"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_sessionIdentifier];
-    [v3 setObject:v5 forKey:@"sessionIdentifier"];
+    [dictionary setObject:v5 forKey:@"sessionIdentifier"];
   }
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -125,25 +125,25 @@ LABEL_3:
   }
 
   PBDataWriterWriteUint32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_direction;
-    *(v4 + 20) |= 1u;
+    toCopy[2] = self->_direction;
+    *(toCopy + 20) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -162,21 +162,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_repeatCount;
-  *(v4 + 20) |= 2u;
+  toCopy[3] = self->_repeatCount;
+  *(toCopy + 20) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[4] = self->_sessionIdentifier;
-    *(v4 + 20) |= 4u;
+    toCopy[4] = self->_sessionIdentifier;
+    *(toCopy + 20) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -213,23 +213,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_direction != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_direction != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_16:
     v5 = 0;
@@ -238,21 +238,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_repeatCount != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_repeatCount != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 20) & 4) == 0;
+  v5 = (*(equalCopy + 20) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0 || self->_sessionIdentifier != *(v4 + 4))
+    if ((*(equalCopy + 20) & 4) == 0 || self->_sessionIdentifier != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
@@ -305,15 +305,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if (v5)
   {
-    self->_direction = *(v4 + 2);
+    self->_direction = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -326,17 +326,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 2) == 0)
+  else if ((*(fromCopy + 20) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_repeatCount = *(v4 + 3);
+  self->_repeatCount = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 20) & 4) != 0)
+  if ((*(fromCopy + 20) & 4) != 0)
   {
 LABEL_4:
-    self->_sessionIdentifier = *(v4 + 4);
+    self->_sessionIdentifier = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 

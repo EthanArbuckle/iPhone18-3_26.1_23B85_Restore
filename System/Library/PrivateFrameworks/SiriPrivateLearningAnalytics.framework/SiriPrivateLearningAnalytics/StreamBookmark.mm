@@ -1,21 +1,21 @@
 @interface StreamBookmark
 - (NSString)debugDescription;
 - (_TtC28SiriPrivateLearningAnalytics14StreamBookmark)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation StreamBookmark
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_222A78524(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_222A78524(coderCopy);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_222A78FC4();
 
   v3 = _sSS28SiriPrivateLearningAnalyticsE10toNSObjectSo0F0CyF_0();

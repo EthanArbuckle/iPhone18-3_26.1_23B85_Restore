@@ -1,41 +1,41 @@
 @interface FRRingBuffer
-- (FRRingBuffer)initWithCapacity:(unint64_t)a3;
-- (FRRingBuffer)initWithCapacity:(unint64_t)a3 dictionary:(id)a4;
+- (FRRingBuffer)initWithCapacity:(unint64_t)capacity;
+- (FRRingBuffer)initWithCapacity:(unint64_t)capacity dictionary:(id)dictionary;
 - (NSDictionary)dictionary;
 - (NSMutableArray)values;
 - (id)description;
-- (void)insertValue:(double)a3;
+- (void)insertValue:(double)value;
 @end
 
 @implementation FRRingBuffer
 
-- (FRRingBuffer)initWithCapacity:(unint64_t)a3
+- (FRRingBuffer)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = FRRingBuffer;
   v4 = [(FRRingBuffer *)&v6 init];
   if (v4)
   {
-    if (!a3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    if (!capacity && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100073E94();
     }
 
-    [(FRRingBuffer *)v4 setCapacity:a3];
+    [(FRRingBuffer *)v4 setCapacity:capacity];
   }
 
   return v4;
 }
 
-- (FRRingBuffer)initWithCapacity:(unint64_t)a3 dictionary:(id)a4
+- (FRRingBuffer)initWithCapacity:(unint64_t)capacity dictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = [(FRRingBuffer *)self initWithCapacity:a3];
+  dictionaryCopy = dictionary;
+  v7 = [(FRRingBuffer *)self initWithCapacity:capacity];
   v8 = v7;
-  if (v6 && v7)
+  if (dictionaryCopy && v7)
   {
     objc_opt_class();
-    v9 = [v6 objectForKeyedSubscript:@"Values"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"Values"];
     v10 = FCDynamicCast();
 
     if (!v10 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -47,7 +47,7 @@
     [(FRRingBuffer *)v8 setValues:v11];
 
     objc_opt_class();
-    v12 = [v6 objectForKeyedSubscript:@"Position"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"Position"];
     v13 = FCDynamicCast();
 
     if (!v13 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -57,7 +57,7 @@
 
     -[FRRingBuffer setPosition:](v8, "setPosition:", [v13 integerValue]);
     objc_opt_class();
-    v14 = [v6 objectForKeyedSubscript:@"Min"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"Min"];
     v15 = FCDynamicCast();
 
     if (!v15 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -68,7 +68,7 @@
     [v15 doubleValue];
     [(FRRingBuffer *)v8 setMin:?];
     objc_opt_class();
-    v16 = [v6 objectForKeyedSubscript:@"Max"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"Max"];
     v17 = FCDynamicCast();
 
     if (!v17 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -111,27 +111,27 @@
   return values;
 }
 
-- (void)insertValue:(double)a3
+- (void)insertValue:(double)value
 {
-  v5 = [(FRRingBuffer *)self values];
-  v6 = [v5 objectAtIndexedSubscript:{-[FRRingBuffer position](self, "position")}];
+  values = [(FRRingBuffer *)self values];
+  v6 = [values objectAtIndexedSubscript:{-[FRRingBuffer position](self, "position")}];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [NSNumber numberWithDouble:a3];
-  v10 = [(FRRingBuffer *)self values];
-  [v10 setObject:v9 atIndexedSubscript:{-[FRRingBuffer position](self, "position")}];
+  v9 = [NSNumber numberWithDouble:value];
+  values2 = [(FRRingBuffer *)self values];
+  [values2 setObject:v9 atIndexedSubscript:{-[FRRingBuffer position](self, "position")}];
 
   v11 = [(FRRingBuffer *)self position]+ 1;
-  v12 = [(FRRingBuffer *)self capacity];
-  if (v12 <= 1)
+  capacity = [(FRRingBuffer *)self capacity];
+  if (capacity <= 1)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = v12;
+    v13 = capacity;
   }
 
   [(FRRingBuffer *)self setPosition:v11 % v13];
@@ -148,16 +148,16 @@
     {
       [(FRRingBuffer *)self min];
 LABEL_5:
-      if (v14 > a3)
+      if (v14 > value)
       {
-        [(FRRingBuffer *)self setMin:a3];
+        [(FRRingBuffer *)self setMin:value];
       }
 
       [(FRRingBuffer *)self max];
-      if (v15 < a3)
+      if (v15 < value)
       {
 
-        [(FRRingBuffer *)self setMax:a3];
+        [(FRRingBuffer *)self setMax:value];
       }
 
       return;
@@ -169,8 +169,8 @@ LABEL_5:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v17 = [(FRRingBuffer *)self values];
-  v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  values3 = [(FRRingBuffer *)self values];
+  v18 = [values3 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v18)
   {
     v19 = v18;
@@ -181,7 +181,7 @@ LABEL_5:
       {
         if (*v26 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(values3);
         }
 
         [*(*(&v25 + 1) + 8 * i) doubleValue];
@@ -191,7 +191,7 @@ LABEL_5:
         self->_max = v24;
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v19 = [values3 countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v19);
@@ -201,8 +201,8 @@ LABEL_5:
 - (NSDictionary)dictionary
 {
   v9[0] = @"Values";
-  v3 = [(FRRingBuffer *)self values];
-  v10[0] = v3;
+  values = [(FRRingBuffer *)self values];
+  v10[0] = values;
   v9[1] = @"Position";
   v4 = [NSNumber numberWithUnsignedInteger:[(FRRingBuffer *)self position]];
   v10[1] = v4;
@@ -221,13 +221,13 @@ LABEL_5:
 
 - (id)description
 {
-  v3 = [(FRRingBuffer *)self values];
+  values = [(FRRingBuffer *)self values];
   v4 = [NSNumber numberWithUnsignedInteger:[(FRRingBuffer *)self position]];
   [(FRRingBuffer *)self min];
   v5 = [NSNumber numberWithDouble:?];
   [(FRRingBuffer *)self max];
   v6 = [NSNumber numberWithDouble:?];
-  v7 = [NSString stringWithFormat:@"Ring Buffer with Values : %@\nPosition : %@\nMin : %@\nMax : %@\n", v3, v4, v5, v6];
+  v7 = [NSString stringWithFormat:@"Ring Buffer with Values : %@\nPosition : %@\nMin : %@\nMax : %@\n", values, v4, v5, v6];
 
   return v7;
 }

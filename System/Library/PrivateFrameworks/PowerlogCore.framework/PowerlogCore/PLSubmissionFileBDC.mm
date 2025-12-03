@@ -1,6 +1,6 @@
 @interface PLSubmissionFileBDC
 - (BOOL)copyAndPrepareLog;
-- (PLSubmissionFileBDC)initWithConfig:(id)a3;
+- (PLSubmissionFileBDC)initWithConfig:(id)config;
 - (id)getBDCPlistFile;
 - (id)getEPSQLFile;
 - (id)getListOfRequiredBDCFiles;
@@ -13,21 +13,21 @@
 
 @implementation PLSubmissionFileBDC
 
-- (PLSubmissionFileBDC)initWithConfig:(id)a3
+- (PLSubmissionFileBDC)initWithConfig:(id)config
 {
-  v4 = a3;
-  if (![v4 submitBDC] || +[PLPlatform isTVOS](PLPlatform, "isTVOS") || (v8.receiver = self, v8.super_class = PLSubmissionFileBDC, v5 = -[PLSubmissionFile initWithConfig:](&v8, sel_initWithConfig_, v4), (self = v5) != 0) && !-[PLSubmissionFileBDC copyAndPrepareLog](v5, "copyAndPrepareLog"))
+  configCopy = config;
+  if (![configCopy submitBDC] || +[PLPlatform isTVOS](PLPlatform, "isTVOS") || (v8.receiver = self, v8.super_class = PLSubmissionFileBDC, v5 = -[PLSubmissionFile initWithConfig:](&v8, sel_initWithConfig_, configCopy), (self = v5) != 0) && !-[PLSubmissionFileBDC copyAndPrepareLog](v5, "copyAndPrepareLog"))
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = self;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)submit
@@ -42,14 +42,14 @@
 - (BOOL)copyAndPrepareLog
 {
   v85 = *MEMORY[0x1E69E9840];
-  v3 = [(PLSubmissionFileBDC *)self getListOfRequiredBDCFiles];
-  if ([v3 count])
+  getListOfRequiredBDCFiles = [(PLSubmissionFileBDC *)self getListOfRequiredBDCFiles];
+  if ([getListOfRequiredBDCFiles count])
   {
-    v4 = [(PLSubmissionFile *)self filePath];
-    v5 = [v4 stringByReplacingOccurrencesOfString:@".bdc.anon" withString:&stru_1F539D228];
+    filePath = [(PLSubmissionFile *)self filePath];
+    v5 = [filePath stringByReplacingOccurrencesOfString:@".bdc.anon" withString:&stru_1F539D228];
 
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v6 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v7 = [defaultManager fileExistsAtPath:v5];
 
     if (v7)
     {
@@ -63,9 +63,9 @@
       goto LABEL_54;
     }
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v75 = 0;
-    v11 = [v10 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v75];
+    v11 = [defaultManager2 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v75];
     v8 = v75;
 
     if ((v11 & 1) == 0)
@@ -80,14 +80,14 @@
       goto LABEL_53;
     }
 
-    v62 = self;
-    v63 = v3;
+    selfCopy = self;
+    v63 = getListOfRequiredBDCFiles;
     v12 = v5;
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    obj = v3;
+    obj = getListOfRequiredBDCFiles;
     v13 = [obj countByEnumeratingWithState:&v71 objects:v84 count:16];
     if (v13)
     {
@@ -107,9 +107,9 @@
           v18 = *(*(&v71 + 1) + 8 * v16);
           v19 = [@"/var/db/Battery/BDC" stringByAppendingPathComponent:v18];
           v20 = [v12 stringByAppendingPathComponent:v18];
-          v21 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
           v70 = v17;
-          v22 = [v21 copyItemAtPath:v19 toPath:v20 error:&v70];
+          v22 = [defaultManager3 copyItemAtPath:v19 toPath:v20 error:&v70];
           v8 = v70;
 
           if ((v22 & 1) == 0)
@@ -138,16 +138,16 @@
       while (v14);
     }
 
-    v24 = [(PLSubmissionFileBDC *)v62 getEPSQLFile];
+    getEPSQLFile = [(PLSubmissionFileBDC *)selfCopy getEPSQLFile];
     v5 = v12;
-    v25 = [v12 stringByAppendingPathComponent:v24];
+    v25 = [v12 stringByAppendingPathComponent:getEPSQLFile];
 
     v26 = [v25 stringByAppendingFormat:@".gz"];
     v27 = +[PPSCoreStorage sharedSQLStorage];
-    v28 = [v27 EPSQLConnection];
+    ePSQLConnection = [v27 EPSQLConnection];
 
-    v65 = v28;
-    if ([v28 copyDatabaseToPath:v25 fromDate:0 toDate:0 withTableFilters:0 vacuumDB:0])
+    v65 = ePSQLConnection;
+    if ([ePSQLConnection copyDatabaseToPath:v25 fromDate:0 toDate:0 withTableFilters:0 vacuumDB:0])
     {
       if (![PLUtilities compressWithSource:v25 withDestination:v26 withLevel:4])
       {
@@ -158,35 +158,35 @@
         }
       }
 
-      v30 = [MEMORY[0x1E696AC08] defaultManager];
-      [v30 removeItemAtPath:v25 error:0];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager4 removeItemAtPath:v25 error:0];
 
-      v31 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager5 = [MEMORY[0x1E696AC08] defaultManager];
       v32 = [v25 stringByAppendingString:@"-shm"];
-      [v31 removeItemAtPath:v32 error:0];
+      [defaultManager5 removeItemAtPath:v32 error:0];
     }
 
     else
     {
-      v31 = PLLogSubmission();
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+      defaultManager5 = PLLogSubmission();
+      if (os_log_type_enabled(defaultManager5, OS_LOG_TYPE_ERROR))
       {
         [PLSubmissionFileBDC copyAndPrepareLog];
       }
     }
 
-    v3 = v63;
+    getListOfRequiredBDCFiles = v63;
 
     v33 = [v5 stringByAppendingPathComponent:@"tag.json"];
     v34 = [MEMORY[0x1E695DF70] arrayWithArray:obj];
-    v35 = [v26 lastPathComponent];
-    [v34 addObject:v35];
+    lastPathComponent = [v26 lastPathComponent];
+    [v34 addObject:lastPathComponent];
 
     v76 = @"LogFiles";
     v77 = v34;
     v61 = v34;
     v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
-    if (![(PLSubmissionFile *)v62 createTagFileWithPath:v33 withInfo:?])
+    if (![(PLSubmissionFile *)selfCopy createTagFileWithPath:v33 withInfo:?])
     {
       v36 = PLLogSubmission();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -196,12 +196,12 @@
     }
 
     obja = v26;
-    v37 = [(PLSubmissionFileBDC *)v62 getBDCPlistFile];
+    getBDCPlistFile = [(PLSubmissionFileBDC *)selfCopy getBDCPlistFile];
     v64 = v33;
-    v59 = v37;
-    if (v37)
+    v59 = getBDCPlistFile;
+    if (getBDCPlistFile)
     {
-      v38 = v37;
+      v38 = getBDCPlistFile;
       v39 = [v5 stringByAppendingPathComponent:@"com.apple.powerd.bdc.plist"];
       v40 = [MEMORY[0x1E695DFF8] fileURLWithPath:v39];
       v69 = v8;
@@ -235,16 +235,16 @@
 
     if (v46)
     {
-      v47 = [MEMORY[0x1E696AC08] defaultManager];
-      v48 = [v46 path];
-      v49 = [(PLSubmissionFile *)v62 filePath];
+      defaultManager6 = [MEMORY[0x1E696AC08] defaultManager];
+      path = [v46 path];
+      filePath2 = [(PLSubmissionFile *)selfCopy filePath];
       v68 = v42;
-      v50 = [v47 moveItemAtPath:v48 toPath:v49 error:&v68];
+      v50 = [defaultManager6 moveItemAtPath:path toPath:filePath2 error:&v68];
       v8 = v68;
 
       if (v50)
       {
-        [(PLSubmissionFile *)v62 decorateFile];
+        [(PLSubmissionFile *)selfCopy decorateFile];
         v9 = 1;
         v51 = v59;
         v52 = obja;
@@ -263,9 +263,9 @@ LABEL_54:
         [PLSubmissionFileBDC copyAndPrepareLog];
       }
 
-      v54 = [MEMORY[0x1E696AC08] defaultManager];
-      v55 = [v46 path];
-      [v54 removeItemAtPath:v55 error:0];
+      defaultManager7 = [MEMORY[0x1E696AC08] defaultManager];
+      path2 = [v46 path];
+      [defaultManager7 removeItemAtPath:path2 error:0];
     }
 
     else
@@ -295,12 +295,12 @@ LABEL_55:
 - (id)getListOfRequiredBDCFiles
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v21 = 0;
-  v3 = [v2 contentsOfDirectoryAtPath:@"/var/db/Battery/BDC" error:&v21];
+  v3 = [defaultManager contentsOfDirectoryAtPath:@"/var/db/Battery/BDC" error:&v21];
   v4 = v21;
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v4)
   {
     v6 = PLLogSubmission();
@@ -334,7 +334,7 @@ LABEL_4:
           objc_enumerationMutation(v8);
         }
 
-        [v5 addObject:{*(*(&v17 + 1) + 8 * i), v17}];
+        [array addObject:{*(*(&v17 + 1) + 8 * i), v17}];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
@@ -343,7 +343,7 @@ LABEL_4:
     while (v10);
   }
 
-  v13 = [v5 count];
+  v13 = [array count];
   v14 = PLLogSubmission();
   v6 = v14;
   if (!v13)
@@ -361,7 +361,7 @@ LABEL_4:
     [PLSubmissionFileBDC getListOfRequiredBDCFiles];
   }
 
-  v7 = v5;
+  v7 = array;
 LABEL_16:
 
   v15 = *MEMORY[0x1E69E9840];
@@ -371,21 +371,21 @@ LABEL_16:
 
 - (id)getEPSQLFile
 {
-  v3 = [(PLSubmissionFile *)self taskingConfig];
-  v4 = [v3 startDate];
-  v5 = [v4 convertFromMonotonicToSystem];
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  startDate = [taskingConfig startDate];
+  convertFromMonotonicToSystem = [startDate convertFromMonotonicToSystem];
 
-  v6 = [(PLSubmissionFile *)self taskingConfig];
-  v7 = [v6 endDate];
-  v8 = [v7 convertFromMonotonicToSystem];
+  taskingConfig2 = [(PLSubmissionFile *)self taskingConfig];
+  endDate = [taskingConfig2 endDate];
+  convertFromMonotonicToSystem2 = [endDate convertFromMonotonicToSystem];
 
-  v9 = [MEMORY[0x1E695DF00] filenameDateStringWithStartDate:v5 endDate:v8];
+  v9 = [MEMORY[0x1E695DF00] filenameDateStringWithStartDate:convertFromMonotonicToSystem endDate:convertFromMonotonicToSystem2];
   if (![v9 length])
   {
-    v10 = [(PLSubmissionFile *)self taskingConfig];
-    v11 = [v10 tagUUID];
+    taskingConfig3 = [(PLSubmissionFile *)self taskingConfig];
+    tagUUID = [taskingConfig3 tagUUID];
 
-    v9 = v11;
+    v9 = tagUUID;
   }
 
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"log_%@.EPSQL", v9];
@@ -490,9 +490,9 @@ LABEL_17:
   if (v18)
   {
     v20 = [v18 objectForKeyedSubscript:@"returnCode"];
-    v21 = [v20 intValue];
+    intValue = [v20 intValue];
 
-    if (!v21)
+    if (!intValue)
     {
       v16 = [v18 objectForKeyedSubscript:@"BDCXPCCopyDefaults"];
 

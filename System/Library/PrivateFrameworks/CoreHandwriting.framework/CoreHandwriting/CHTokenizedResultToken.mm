@@ -1,13 +1,13 @@
 @interface CHTokenizedResultToken
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTokenizedResultToken:(id)a3;
-- (BOOL)isEquivalentToToken:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTokenizedResultToken:(id)token;
+- (BOOL)isEquivalentToToken:(id)token;
 - (CGRect)bounds;
 - (CHTokenizedResultToken)init;
-- (CHTokenizedResultToken)initWithCoder:(id)a3;
-- (CHTokenizedResultToken)initWithString:(id)a3 strokeIndexes:(id)a4 bounds:(CGRect)a5;
+- (CHTokenizedResultToken)initWithCoder:(id)coder;
+- (CHTokenizedResultToken)initWithString:(id)string strokeIndexes:(id)indexes bounds:(CGRect)bounds;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHTokenizedResultToken
@@ -20,17 +20,17 @@
   return v11;
 }
 
-- (CHTokenizedResultToken)initWithString:(id)a3 strokeIndexes:(id)a4 bounds:(CGRect)a5
+- (CHTokenizedResultToken)initWithString:(id)string strokeIndexes:(id)indexes bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v52 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  stringCopy = string;
+  indexesCopy = indexes;
   v16 = objc_msgSend_characterSetWithRange_(MEMORY[0x1E696AB08], v13, 57440, 1024, v14, v15);
-  v21 = objc_msgSend_rangeOfCharacterFromSet_(v11, v17, v16, v18, v19, v20);
+  v21 = objc_msgSend_rangeOfCharacterFromSet_(stringCopy, v17, v16, v18, v19, v20);
 
   if (v21 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -56,14 +56,14 @@ LABEL_5:
     }
 
     *buf = 138412290;
-    v51 = v11;
+    v51 = stringCopy;
     _os_log_impl(&dword_18366B000, v25, OS_LOG_TYPE_ERROR, "The input string (%@) contains one or more ligature private code points", buf, 0xCu);
     goto LABEL_5;
   }
 
 LABEL_6:
   v26 = objc_msgSend_characterSetWithRange_(MEMORY[0x1E696AB08], v22, 57440, 1024, v23, v24);
-  v31 = objc_msgSend_rangeOfCharacterFromSet_(v11, v27, v26, v28, v29, v30);
+  v31 = objc_msgSend_rangeOfCharacterFromSet_(stringCopy, v27, v26, v28, v29, v30);
 
   if (v31 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -87,7 +87,7 @@ LABEL_6:
   {
 LABEL_9:
     *buf = 138412290;
-    v51 = v11;
+    v51 = stringCopy;
     _os_log_impl(&dword_18366B000, v32, OS_LOG_TYPE_FAULT, "The input string (%@) contains one or more ligature private code points", buf, 0xCu);
   }
 
@@ -99,11 +99,11 @@ LABEL_11:
   v38 = [(CHTokenizedResultToken *)&v49 init];
   if (v38)
   {
-    v39 = objc_msgSend_copy(v11, v33, v34, v35, v36, v37);
+    v39 = objc_msgSend_copy(stringCopy, v33, v34, v35, v36, v37);
     string = v38->_string;
     v38->_string = v39;
 
-    v46 = objc_msgSend_copy(v12, v41, v42, v43, v44, v45);
+    v46 = objc_msgSend_copy(indexesCopy, v41, v42, v43, v44, v45);
     strokeIndexes = v38->_strokeIndexes;
     v38->_strokeIndexes = v46;
 
@@ -116,14 +116,14 @@ LABEL_11:
   return v38;
 }
 
-- (CHTokenizedResultToken)initWithCoder:(id)a3
+- (CHTokenizedResultToken)initWithCoder:(id)coder
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"string", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"string", v7, v8);
   v10 = objc_opt_class();
-  v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"strokeIndexes", v12, v13);
+  v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"strokeIndexes", v12, v13);
   v15 = v14;
   if (v9)
   {
@@ -166,7 +166,7 @@ LABEL_11:
     *(v19 + 24) = *MEMORY[0x1E695F050];
     *(v19 + 40) = v29;
     v20 = objc_opt_class();
-    self = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"bounds", v22, v23);
+    self = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"bounds", v22, v23);
     objc_msgSend_getValue_size_(self, v24, (v19 + 24), 32, v25, v26);
     if (CGRectEqualToRect(*(v19 + 24), *MEMORY[0x1E695F058]))
     {
@@ -178,14 +178,14 @@ LABEL_11:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   string = self->_string;
-  v5 = a3;
-  objc_msgSend_encodeObject_forKey_(v5, v6, string, @"string", v7, v8);
-  objc_msgSend_encodeObject_forKey_(v5, v9, self->_strokeIndexes, @"strokeIndexes", v10, v11);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, string, @"string", v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_strokeIndexes, @"strokeIndexes", v10, v11);
   v18 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v12, &self->_bounds, "{CGRect={CGPoint=dd}{CGSize=dd}}", v13, v14);
-  objc_msgSend_encodeObject_forKey_(v5, v15, v18, @"bounds", v16, v17);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, v18, @"bounds", v16, v17);
 }
 
 - (id)description
@@ -198,14 +198,14 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isEqualToTokenizedResultToken:(id)a3
+- (BOOL)isEqualToTokenizedResultToken:(id)token
 {
-  v4 = a3;
-  v10 = v4;
-  if (self != v4)
+  tokenCopy = token;
+  v10 = tokenCopy;
+  if (self != tokenCopy)
   {
     string = self->_string;
-    v12 = objc_msgSend_string(v4, v5, v6, v7, v8, v9);
+    v12 = objc_msgSend_string(tokenCopy, v5, v6, v7, v8, v9);
     v18 = v12;
     if (string == v12)
     {
@@ -259,13 +259,13 @@ LABEL_12:
   return v30;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToTokenizedResultToken = objc_msgSend_isEqualToTokenizedResultToken_(self, v5, v4, v6, v7, v8);
+    isEqualToTokenizedResultToken = objc_msgSend_isEqualToTokenizedResultToken_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToTokenizedResultToken;
   }
@@ -277,11 +277,11 @@ LABEL_12:
   }
 }
 
-- (BOOL)isEquivalentToToken:(id)a3
+- (BOOL)isEquivalentToToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   string = self->_string;
-  v11 = objc_msgSend_string(v4, v6, v7, v8, v9, v10);
+  v11 = objc_msgSend_string(tokenCopy, v6, v7, v8, v9, v10);
   v17 = v11;
   if (string == v11)
   {
@@ -290,7 +290,7 @@ LABEL_12:
   else
   {
     v18 = self->_string;
-    v19 = objc_msgSend_string(v4, v12, v13, v14, v15, v16);
+    v19 = objc_msgSend_string(tokenCopy, v12, v13, v14, v15, v16);
     LODWORD(v18) = objc_msgSend_isEqualToString_(v18, v20, v19, v21, v22, v23);
 
     if (!v18)
@@ -301,7 +301,7 @@ LABEL_12:
   }
 
   strokeIndexes = self->_strokeIndexes;
-  v36 = objc_msgSend_strokeIndexes(v4, v24, v25, v26, v27, v28);
+  v36 = objc_msgSend_strokeIndexes(tokenCopy, v24, v25, v26, v27, v28);
   if (strokeIndexes == v36)
   {
     isEqualToIndexSet = 1;
@@ -310,7 +310,7 @@ LABEL_12:
   else
   {
     v37 = self->_strokeIndexes;
-    v38 = objc_msgSend_strokeIndexes(v4, v31, v32, v33, v34, v35);
+    v38 = objc_msgSend_strokeIndexes(tokenCopy, v31, v32, v33, v34, v35);
     isEqualToIndexSet = objc_msgSend_isEqualToIndexSet_(v37, v39, v38, v40, v41, v42);
   }
 

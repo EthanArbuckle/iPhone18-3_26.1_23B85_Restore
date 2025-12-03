@@ -1,6 +1,6 @@
 @interface FCUIFocusEnablementIndicatorSystemApertureElement
-- (FCUIFocusEnablementIndicatorSystemApertureElement)initWithActivityDescription:(id)a3 enabled:(BOOL)a4;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)a5;
+- (FCUIFocusEnablementIndicatorSystemApertureElement)initWithActivityDescription:(id)description enabled:(BOOL)enabled;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)outsets;
 - (SAAlertHosting)alertHost;
 - (SAUILayoutHosting)layoutHost;
 - (UIView)leadingView;
@@ -8,45 +8,45 @@
 - (UIView)trailingView;
 - (id)_customLayoutFont;
 - (id)_enablementText;
-- (id)initForPickerWithActivityDescription:(id)a3 enabled:(BOOL)a4;
+- (id)initForPickerWithActivityDescription:(id)description enabled:(BOOL)enabled;
 - (id)keyColor;
 - (void)_configureCustomViewsIfNecessary;
-- (void)_layoutCustomActivityButtonInContainerView:(id)a3;
-- (void)_layoutCustomTextViewsInContainerView:(id)a3;
-- (void)_layoutHuggingObstructionForLabel:(id)a3 x:(double)a4 width:(double)a5 maxLabelHeight:(double)a6;
-- (void)_updateOnOffTrailingLabelAnimated:(BOOL)a3;
+- (void)_layoutCustomActivityButtonInContainerView:(id)view;
+- (void)_layoutCustomTextViewsInContainerView:(id)view;
+- (void)_layoutHuggingObstructionForLabel:(id)label x:(double)x width:(double)width maxLabelHeight:(double)height;
+- (void)_updateOnOffTrailingLabelAnimated:(BOOL)animated;
 - (void)_updateTrailingLabel;
-- (void)_updateVisualStylingAnimated:(BOOL)a3;
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5;
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3;
-- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)a3;
-- (void)setActivityEnabled:(BOOL)a3;
+- (void)_updateVisualStylingAnimated:(BOOL)animated;
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator;
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews;
+- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)provider;
+- (void)setActivityEnabled:(BOOL)enabled;
 @end
 
 @implementation FCUIFocusEnablementIndicatorSystemApertureElement
 
-- (FCUIFocusEnablementIndicatorSystemApertureElement)initWithActivityDescription:(id)a3 enabled:(BOOL)a4
+- (FCUIFocusEnablementIndicatorSystemApertureElement)initWithActivityDescription:(id)description enabled:(BOOL)enabled
 {
-  v6 = a3;
+  descriptionCopy = description;
   v16.receiver = self;
   v16.super_class = FCUIFocusEnablementIndicatorSystemApertureElement;
   v7 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)&v16 init];
   if (v7)
   {
-    v8 = [v6 copyWithZone:0];
+    v8 = [descriptionCopy copyWithZone:0];
     activityDescription = v7->_activityDescription;
     v7->_activityDescription = v8;
 
-    v7->_activityEnabled = a4;
+    v7->_activityEnabled = enabled;
     v7->_preferredLayoutMode = 2;
-    v10 = [MEMORY[0x277D0A9E8] sharedActivityManager];
+    mEMORY[0x277D0A9E8] = [MEMORY[0x277D0A9E8] sharedActivityManager];
     activityManager = v7->_activityManager;
-    v7->_activityManager = v10;
+    v7->_activityManager = mEMORY[0x277D0A9E8];
 
-    v12 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
-    [v12 sensorRegionSize];
+    mEMORY[0x277D67E28] = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
+    [mEMORY[0x277D67E28] sensorRegionSize];
     v7->_sensorObstructionHeight = v13;
-    [v12 minimumExpandedSize];
+    [mEMORY[0x277D67E28] minimumExpandedSize];
     v7->_expandedHeight = v14;
     v7->_isForPickerPresentation = 0;
   }
@@ -54,9 +54,9 @@
   return v7;
 }
 
-- (id)initForPickerWithActivityDescription:(id)a3 enabled:(BOOL)a4
+- (id)initForPickerWithActivityDescription:(id)description enabled:(BOOL)enabled
 {
-  result = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self initWithActivityDescription:a3 enabled:a4];
+  result = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self initWithActivityDescription:description enabled:enabled];
   if (result)
   {
     *(result + 80) = 1;
@@ -65,20 +65,20 @@
   return result;
 }
 
-- (void)setActivityEnabled:(BOOL)a3
+- (void)setActivityEnabled:(BOOL)enabled
 {
-  if (self->_activityEnabled != a3)
+  if (self->_activityEnabled != enabled)
   {
-    self->_activityEnabled = a3;
+    self->_activityEnabled = enabled;
     [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _updateOnOffTrailingLabelAnimated:1];
     WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
     [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
 
     [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _updateVisualStylingAnimated:1];
-    v6 = [(UILabel *)self->_activityTitleLabel superview];
-    if (v6)
+    superview = [(UILabel *)self->_activityTitleLabel superview];
+    if (superview)
     {
-      [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _layoutCustomTextViewsInContainerView:v6];
+      [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _layoutCustomTextViewsInContainerView:superview];
     }
 
     MEMORY[0x2821F96F8]();
@@ -110,8 +110,8 @@
     v11 = [v7 configurationByApplyingConfiguration:v10];
 
     v12 = MEMORY[0x277D755B8];
-    v13 = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
-    v14 = [v12 _systemImageNamed:v13 withConfiguration:v11];
+    activitySymbolImageName = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
+    v14 = [v12 _systemImageNamed:activitySymbolImageName withConfiguration:v11];
 
     v15 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v14];
     v16 = self->_leadingView;
@@ -136,8 +136,8 @@
       v6 = [v4 configurationWithFont:v5 scale:2];
 
       v7 = MEMORY[0x277D755D0];
-      v8 = [MEMORY[0x277D75348] systemWhiteColor];
-      v20[0] = v8;
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      v20[0] = systemWhiteColor;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
       v10 = [v7 configurationWithPaletteColors:v9];
       v11 = [v6 configurationByApplyingConfiguration:v10];
@@ -150,7 +150,7 @@
       pickerTrailingView = self->_pickerTrailingView;
     }
 
-    v15 = pickerTrailingView;
+    providedView = pickerTrailingView;
   }
 
   else
@@ -168,10 +168,10 @@
       onOffTrailingTextProvider = self->_onOffTrailingTextProvider;
     }
 
-    v15 = [(SBUISystemApertureTextContentProvider *)onOffTrailingTextProvider providedView];
+    providedView = [(SBUISystemApertureTextContentProvider *)onOffTrailingTextProvider providedView];
   }
 
-  return v15;
+  return providedView;
 }
 
 - (UIView)minimalView
@@ -190,13 +190,13 @@
   return v2;
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)a5
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)outsets
 {
   top = result.top;
-  if (a3 == 3)
+  if (mode == 3)
   {
-    trailing = a5.trailing;
-    leading = a5.leading;
+    trailing = outsets.trailing;
+    leading = outsets.leading;
     WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
     [WeakRetained edgeOutsetsForSize:{1.79769313e308, self->_expandedHeight}];
     bottom = v10;
@@ -217,22 +217,22 @@
   return result;
 }
 
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews
 {
-  v12 = a3;
+  subviewsCopy = subviews;
   if (self->_layoutMode == 3)
   {
-    v4 = [(UILabel *)self->_activityTitleLabel superview];
+    superview = [(UILabel *)self->_activityTitleLabel superview];
 
-    if (v4)
+    if (superview)
     {
-      [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _layoutCustomActivityButtonInContainerView:v12];
-      [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _layoutCustomTextViewsInContainerView:v12];
+      [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _layoutCustomActivityButtonInContainerView:subviewsCopy];
+      [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _layoutCustomTextViewsInContainerView:subviewsCopy];
     }
   }
 
-  v5 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self leadingView];
-  v6 = v5;
+  leadingView = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self leadingView];
+  v6 = leadingView;
   if (self->_layoutMode == 3)
   {
     v7 = 0.0;
@@ -243,10 +243,10 @@
     v7 = 1.0;
   }
 
-  [v5 setAlpha:v7];
+  [leadingView setAlpha:v7];
 
-  v8 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self trailingView];
-  v9 = v8;
+  trailingView = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self trailingView];
+  v9 = trailingView;
   if (self->_layoutMode == 3)
   {
     v10 = 0.0;
@@ -257,10 +257,10 @@
     v10 = 1.0;
   }
 
-  [v8 setAlpha:v10];
+  [trailingView setAlpha:v10];
 
   v11 = [FCUIFocusEnablementIndicatorBannerPresentable accessibilityIdentifierForActivityDescription:self->_activityDescription];
-  [v12 setAccessibilityIdentifier:v11];
+  [subviewsCopy setAccessibilityIdentifier:v11];
 }
 
 - (id)keyColor
@@ -279,16 +279,16 @@
   return v2;
 }
 
-- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)a3
+- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
 }
 
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator
 {
-  v7 = a4;
-  v8 = a5;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   if (self->_layoutMode == 3)
   {
     [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _configureCustomViewsIfNecessary];
@@ -298,8 +298,8 @@
     v17[1] = 3221225472;
     v17[2] = __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke;
     v17[3] = &unk_27901A380;
-    v18 = v7;
-    v19 = self;
+    v18 = viewCopy;
+    selfCopy = self;
     [v9 performWithoutAnimation:v17];
   }
 
@@ -309,14 +309,14 @@
   v13[2] = __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke_2;
   v13[3] = &unk_27901AA90;
   objc_copyWeak(&v15, &location);
-  v10 = v7;
+  v10 = viewCopy;
   v14 = v10;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke_3;
   v11[3] = &unk_27901AAB8;
   objc_copyWeak(&v12, &location);
-  [v8 animateAlongsideTransition:v13 completion:v11];
+  [coordinatorCopy animateAlongsideTransition:v13 completion:v11];
   objc_destroyWeak(&v12);
 
   objc_destroyWeak(&v15);
@@ -381,14 +381,14 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_layoutCustomActivityButtonInContainerView:(id)a3
+- (void)_layoutCustomActivityButtonInContainerView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 effectiveUserInterfaceLayoutDirection];
-  [v4 bounds];
+  viewCopy = view;
+  effectiveUserInterfaceLayoutDirection = [viewCopy effectiveUserInterfaceLayoutDirection];
+  [viewCopy bounds];
   v7 = v6;
 
-  if (v5 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v8 = v7 + -56.0 + -14.0;
   }
@@ -408,18 +408,18 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
   [(UIButton *)activityIconButton _setCornerRadius:28.0];
 }
 
-- (void)_layoutCustomTextViewsInContainerView:(id)a3
+- (void)_layoutCustomTextViewsInContainerView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 effectiveUserInterfaceLayoutDirection];
-  [v4 bounds];
+  viewCopy = view;
+  effectiveUserInterfaceLayoutDirection = [viewCopy effectiveUserInterfaceLayoutDirection];
+  [viewCopy bounds];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 traitCollection];
+  traitCollection = [viewCopy traitCollection];
 
-  [v10 displayScale];
-  v11 = [(UILabel *)self->_activityOnOffLabel font];
-  [v11 lineHeight];
+  [traitCollection displayScale];
+  font = [(UILabel *)self->_activityOnOffLabel font];
+  [font lineHeight];
   UIFloorToScale();
   v13 = v12;
 
@@ -447,7 +447,7 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
     v18 = v7 + -12.0 - v13 + -84.0 - v15;
   }
 
-  if (v5 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v19 = v17 + v13 + 12.0;
   }
@@ -463,33 +463,33 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
   [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _layoutHuggingObstructionForLabel:activityTitleLabel x:v19 width:v18 maxLabelHeight:v14];
 }
 
-- (void)_layoutHuggingObstructionForLabel:(id)a3 x:(double)a4 width:(double)a5 maxLabelHeight:(double)a6
+- (void)_layoutHuggingObstructionForLabel:(id)label x:(double)x width:(double)width maxLabelHeight:(double)height
 {
   v9 = *(MEMORY[0x277CBF3A0] + 8);
-  v11 = a3;
-  [v11 setFrame:{a4, v9, a5, a6}];
-  v10 = [v11 traitCollection];
-  [v10 displayScale];
+  labelCopy = label;
+  [labelCopy setFrame:{x, v9, width, height}];
+  traitCollection = [labelCopy traitCollection];
+  [traitCollection displayScale];
 
-  [v11 _tightBoundingRectOfFirstLine];
+  [labelCopy _tightBoundingRectOfFirstLine];
   UICeilToScale();
   BSRectRoundForScale();
-  [v11 setFrame:?];
+  [labelCopy setFrame:?];
 }
 
-- (void)_updateVisualStylingAnimated:(BOOL)a3
+- (void)_updateVisualStylingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   activityEnabled = self->_activityEnabled;
   if (activityEnabled)
   {
-    v23 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _primaryColor];
+    _primaryColor = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _primaryColor];
     v6 = 1;
   }
 
   else
   {
-    v23 = [MEMORY[0x277D75348] sbui_inactiveColor];
+    _primaryColor = [MEMORY[0x277D75348] sbui_inactiveColor];
     v6 = 2;
   }
 
@@ -498,13 +498,13 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
   v9 = [v7 configurationWithFont:v8 scale:2];
 
   v10 = MEMORY[0x277D755D0];
-  v11 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v23, 0}];
+  v11 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{_primaryColor, 0}];
   v12 = [v10 configurationWithPaletteColors:v11];
   v13 = [v9 configurationByApplyingConfiguration:v12];
 
   v14 = MEMORY[0x277D755B8];
-  v15 = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
-  v16 = [v14 _systemImageNamed:v15 withConfiguration:v13];
+  activitySymbolImageName = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
+  v16 = [v14 _systemImageNamed:activitySymbolImageName withConfiguration:v13];
 
   [(UIView *)self->_leadingView setImage:v16];
   v17 = kFCUIPackageViewStateOn;
@@ -513,27 +513,27 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
     v17 = &kFCUIPackageViewStateOff;
   }
 
-  [(FCUICAPackageView *)self->_activityIconPackageView setState:*v17 animated:activityEnabled & v3];
-  v18 = [(FCUICAPackageView *)self->_activityIconPackageView superview];
-  [v18 setOverrideUserInterfaceStyle:v6];
+  [(FCUICAPackageView *)self->_activityIconPackageView setState:*v17 animated:activityEnabled & animatedCopy];
+  superview = [(FCUICAPackageView *)self->_activityIconPackageView superview];
+  [superview setOverrideUserInterfaceStyle:v6];
 
-  [(UIImageView *)self->_activityIconImageView setTintColor:v23];
+  [(UIImageView *)self->_activityIconImageView setTintColor:_primaryColor];
   if (activityEnabled)
   {
-    v19 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
   else
   {
-    v20 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _primaryColor];
-    v19 = [v20 colorWithAlphaComponent:0.25];
+    _primaryColor2 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _primaryColor];
+    whiteColor = [_primaryColor2 colorWithAlphaComponent:0.25];
   }
 
-  [(FCUICAPackageView *)self->_activityIconPackageView setBackgroundColor:v19];
-  [(UIImageView *)self->_activityIconImageView setBackgroundColor:v19];
+  [(FCUICAPackageView *)self->_activityIconPackageView setBackgroundColor:whiteColor];
+  [(UIImageView *)self->_activityIconImageView setBackgroundColor:whiteColor];
   activityIconButton = self->_activityIconButton;
-  v22 = [MEMORY[0x277D75348] clearColor];
-  [(UIButton *)activityIconButton setBackgroundColor:v22];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIButton *)activityIconButton setBackgroundColor:clearColor];
 
   [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _updateTrailingLabel];
 }
@@ -551,21 +551,21 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
   }
   v7 = ;
   activityOnOffLabel = self->_activityOnOffLabel;
-  v4 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _enablementText];
-  [(UILabel *)activityOnOffLabel setText:v4];
+  _enablementText = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _enablementText];
+  [(UILabel *)activityOnOffLabel setText:_enablementText];
 
   v5 = self->_activityOnOffLabel;
-  v6 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _customLayoutFont];
-  [(UILabel *)v5 setFont:v6];
+  _customLayoutFont = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _customLayoutFont];
+  [(UILabel *)v5 setFont:_customLayoutFont];
 
   [(UILabel *)self->_activityOnOffLabel setTextColor:v7];
 }
 
-- (void)_updateOnOffTrailingLabelAnimated:(BOOL)a3
+- (void)_updateOnOffTrailingLabelAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SBUISystemApertureTextContentProvider *)self->_onOffTrailingTextProvider providedView];
-  v6 = [v5 _shouldReverseLayoutDirection];
+  animatedCopy = animated;
+  providedView = [(SBUISystemApertureTextContentProvider *)self->_onOffTrailingTextProvider providedView];
+  _shouldReverseLayoutDirection = [providedView _shouldReverseLayoutDirection];
 
   if (self->_activityEnabled)
   {
@@ -578,10 +578,10 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
   }
   v14 = ;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _enablementText];
-  v9 = v8;
+  _enablementText = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _enablementText];
+  v9 = _enablementText;
   v10 = &stru_285ECE868;
-  if (v6)
+  if (_shouldReverseLayoutDirection)
   {
     v11 = @" ";
   }
@@ -591,15 +591,15 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
     v11 = &stru_285ECE868;
   }
 
-  if (!v6)
+  if (!_shouldReverseLayoutDirection)
   {
     v10 = @" ";
   }
 
-  v12 = [v7 stringWithFormat:@"%@%@%@", v8, v11, v10];
+  v12 = [v7 stringWithFormat:@"%@%@%@", _enablementText, v11, v10];
 
   onOffTrailingTextProvider = self->_onOffTrailingTextProvider;
-  if (v3)
+  if (animatedCopy)
   {
     [(SBUISystemApertureTextContentProvider *)onOffTrailingTextProvider swapInText:v12 textColor:v14];
   }
@@ -621,16 +621,16 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
     self->_activityTitleLabel = v4;
 
     v6 = self->_activityTitleLabel;
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v6 setTextColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v6 setTextColor:whiteColor];
 
     v8 = self->_activityTitleLabel;
-    v9 = [(FCActivityDescribing *)v3 activityDisplayName];
-    [(UILabel *)v8 setText:v9];
+    activityDisplayName = [(FCActivityDescribing *)v3 activityDisplayName];
+    [(UILabel *)v8 setText:activityDisplayName];
 
     v10 = self->_activityTitleLabel;
-    v11 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _customLayoutFont];
-    [(UILabel *)v10 setFont:v11];
+    _customLayoutFont = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self _customLayoutFont];
+    [(UILabel *)v10 setFont:_customLayoutFont];
   }
 
   if (!self->_activityOnOffLabel)
@@ -660,8 +660,8 @@ uint64_t __127__FCUIFocusEnablementIndicatorSystemApertureElement_contentProvide
       [(UIImageView *)self->_activityIconImageView setUserInteractionEnabled:0];
       v18 = [MEMORY[0x277D755D0] configurationWithPointSize:24.0];
       v19 = MEMORY[0x277D755B8];
-      v20 = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
-      v21 = [v19 _systemImageNamed:v20 withConfiguration:v18];
+      activitySymbolImageName = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
+      v21 = [v19 _systemImageNamed:activitySymbolImageName withConfiguration:v18];
 
       [(UIImageView *)self->_activityIconImageView setImage:v21];
     }

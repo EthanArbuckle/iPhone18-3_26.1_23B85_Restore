@@ -1,19 +1,19 @@
 @interface GEORPFeedbackImageUploadResult
-- (id)_photoForClientImageIdentifier:(id)a3 inPhotoList:(id)a4;
-- (void)enumerateAndMatchPhotosWithMetadata:(id)a3 withBlock:(id)a4;
+- (id)_photoForClientImageIdentifier:(id)identifier inPhotoList:(id)list;
+- (void)enumerateAndMatchPhotosWithMetadata:(id)metadata withBlock:(id)block;
 @end
 
 @implementation GEORPFeedbackImageUploadResult
 
-- (id)_photoForClientImageIdentifier:(id)a3 inPhotoList:(id)a4
+- (id)_photoForClientImageIdentifier:(id)identifier inPhotoList:(id)list
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  listCopy = list;
+  v7 = [listCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -23,13 +23,13 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(listCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 photoMetadata];
-        v12 = [v11 clientImageUuid];
-        v13 = [v12 caseInsensitiveCompare:v5];
+        photoMetadata = [v10 photoMetadata];
+        clientImageUuid = [photoMetadata clientImageUuid];
+        v13 = [clientImageUuid caseInsensitiveCompare:identifierCopy];
 
         if (!v13)
         {
@@ -38,7 +38,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [listCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -53,11 +53,11 @@ LABEL_11:
   return v7;
 }
 
-- (void)enumerateAndMatchPhotosWithMetadata:(id)a3 withBlock:(id)a4
+- (void)enumerateAndMatchPhotosWithMetadata:(id)metadata withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  metadataCopy = metadata;
+  blockCopy = block;
+  if (blockCopy)
   {
     v18 = 0u;
     v19 = 0u;
@@ -79,10 +79,10 @@ LABEL_11:
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 clientImageUuid];
-          v14 = [(GEORPFeedbackImageUploadResult *)self _photoForClientImageIdentifier:v13 inPhotoList:v6];
+          clientImageUuid = [v12 clientImageUuid];
+          v14 = [(GEORPFeedbackImageUploadResult *)self _photoForClientImageIdentifier:clientImageUuid inPhotoList:metadataCopy];
 
-          v7[2](v7, v12, v14);
+          blockCopy[2](blockCopy, v12, v14);
         }
 
         v9 = [obj countByEnumeratingWithState:&v16 objects:v21 count:16];

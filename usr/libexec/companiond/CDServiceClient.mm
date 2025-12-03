@@ -1,21 +1,21 @@
 @interface CDServiceClient
 + (CDServiceClient)currentClient;
 - (BOOL)shouldReceiveDeviceEvents;
-- (CDServiceClient)initWithAuditToken:(id)a3;
-- (CDServiceClient)initWithConnection:(id)a3;
+- (CDServiceClient)initWithAuditToken:(id)token;
+- (CDServiceClient)initWithConnection:(id)connection;
 @end
 
 @implementation CDServiceClient
 
-- (CDServiceClient)initWithAuditToken:(id)a3
+- (CDServiceClient)initWithAuditToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = CDServiceClient;
   v5 = [(CDServiceClient *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [tokenCopy copy];
     auditToken = v5->_auditToken;
     v5->_auditToken = v6;
   }
@@ -23,9 +23,9 @@
   return v5;
 }
 
-- (CDServiceClient)initWithConnection:(id)a3
+- (CDServiceClient)initWithConnection:(id)connection
 {
-  v4 = [BSAuditToken tokenFromNSXPCConnection:a3];
+  v4 = [BSAuditToken tokenFromNSXPCConnection:connection];
   v5 = [(CDServiceClient *)self initWithAuditToken:v4];
 
   return v5;

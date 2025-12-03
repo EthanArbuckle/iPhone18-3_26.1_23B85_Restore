@@ -1,8 +1,8 @@
 @interface FigPurgeAndRenewPurgeOperator
-+ (id)operatorForClientPID:(int)a3 notificationQueue:(id)a4 withPurgeBlock:(id)a5;
-- (BOOL)setPurgeSuspended:(BOOL)a3;
-- (id)_initWithClientPID:(int)a3 withPurgeBlock:(id)a4 notificationQueue:(id)a5;
-- (void)checkAppStateAndPurgeObjectsBasedOnSuspensionTime:(int64_t)a3;
++ (id)operatorForClientPID:(int)d notificationQueue:(id)queue withPurgeBlock:(id)block;
+- (BOOL)setPurgeSuspended:(BOOL)suspended;
+- (id)_initWithClientPID:(int)d withPurgeBlock:(id)block notificationQueue:(id)queue;
+- (void)checkAppStateAndPurgeObjectsBasedOnSuspensionTime:(int64_t)time;
 - (void)dealloc;
 - (void)handleProcessIsNoLongerSuspendedOnQueue;
 - (void)handleprocessDidSuspendOnQueue;
@@ -15,14 +15,14 @@
 
 @implementation FigPurgeAndRenewPurgeOperator
 
-+ (id)operatorForClientPID:(int)a3 notificationQueue:(id)a4 withPurgeBlock:(id)a5
++ (id)operatorForClientPID:(int)d notificationQueue:(id)queue withPurgeBlock:(id)block
 {
-  v5 = [[a1 alloc] _initWithClientPID:*&a3 withPurgeBlock:a5 notificationQueue:a4];
+  v5 = [[self alloc] _initWithClientPID:*&d withPurgeBlock:block notificationQueue:queue];
 
   return v5;
 }
 
-- (id)_initWithClientPID:(int)a3 withPurgeBlock:(id)a4 notificationQueue:(id)a5
+- (id)_initWithClientPID:(int)d withPurgeBlock:(id)block notificationQueue:(id)queue
 {
   v9 = FigNote_AllowInternalDefaultLogs() != 0;
   fig_note_initialize_category_with_default_work_cf(&gFigPurgeAndRenewProcessStateTracker[1], @"processtatetracker_trace", @"com.apple.coremedia", ", "com.apple.coremedia"", v9, 0, gFigPurgeAndRenewProcessStateTracker);
@@ -33,10 +33,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_clientPID = a3;
-    v10->_queue = a5;
-    dispatch_retain(a5);
-    v11->_purgeBlock = [a4 copy];
+    v10->_clientPID = d;
+    v10->_queue = queue;
+    dispatch_retain(queue);
+    v11->_purgeBlock = [block copy];
     v11->_isSuspended = 0;
     v11->_lastSuspensionTimeNs = 0;
     v11->_purgeTimeoutSeconds = FigGetCFPreferenceNumberWithDefault(@"purge_timeout_seconds", @"com.apple.coremedia", 600);
@@ -81,7 +81,7 @@
       v24 = 1024;
       v25 = clientPID;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       v8 = _os_log_send_and_compose_impl();
       LOBYTE(v4) = v21;
     }
@@ -120,7 +120,7 @@
         v24 = 1024;
         v25 = v13;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         v14 = _os_log_send_and_compose_impl();
         LOBYTE(v10) = v21;
       }
@@ -316,21 +316,21 @@ id __61__FigPurgeAndRenewPurgeOperator_restartPurgeTimerIfNecessary__block_invok
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
 }
 
-- (BOOL)setPurgeSuspended:(BOOL)a3
+- (BOOL)setPurgeSuspended:(BOOL)suspended
 {
   v27 = *MEMORY[0x1E69E9840];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  self->_purgeSuspended = a3;
+  self->_purgeSuspended = suspended;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__FigPurgeAndRenewPurgeOperator_setPurgeSuspended___block_invoke;
   block[3] = &unk_1E749CE40;
   block[4] = self;
   block[5] = &v20;
-  v19 = a3;
+  suspendedCopy = suspended;
   queue = self->_queue;
   if (queue == dispatch_get_current_queue())
   {
@@ -353,7 +353,7 @@ id __61__FigPurgeAndRenewPurgeOperator_restartPurgeTimerIfNecessary__block_invok
     }
   }
 
-  if (!a3)
+  if (!suspended)
   {
     if (dword_1EAF1CC68)
     {
@@ -417,9 +417,9 @@ uint64_t __51__FigPurgeAndRenewPurgeOperator_setPurgeSuspended___block_invoke(ui
   dispatch_async(queue, block);
 }
 
-- (void)checkAppStateAndPurgeObjectsBasedOnSuspensionTime:(int64_t)a3
+- (void)checkAppStateAndPurgeObjectsBasedOnSuspensionTime:(int64_t)time
 {
-  if (self->_isSuspended && !self->_purgeSuspended && self->_lastSuspensionTimeNs == a3)
+  if (self->_isSuspended && !self->_purgeSuspended && self->_lastSuspensionTimeNs == time)
   {
     dispatch_assert_queue_V2(self->_queue);
     (*(self->_purgeBlock + 2))();

@@ -1,15 +1,15 @@
 @interface CNContainerLastSyncDateDescription
-- (void)setCNValue:(id)a3 onContainer:(id)a4;
+- (void)setCNValue:(id)value onContainer:(id)container;
 @end
 
 @implementation CNContainerLastSyncDateDescription
 
-- (void)setCNValue:(id)a3 onContainer:(id)a4
+- (void)setCNValue:(id)value onContainer:(id)container
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  containerCopy = container;
   objc_opt_class();
-  v9 = v5;
+  v9 = valueCopy;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -30,7 +30,7 @@
     v8 = 0;
   }
 
-  [v6 setLastSyncDate:v8];
+  [containerCopy setLastSyncDate:v8];
 }
 
 @end

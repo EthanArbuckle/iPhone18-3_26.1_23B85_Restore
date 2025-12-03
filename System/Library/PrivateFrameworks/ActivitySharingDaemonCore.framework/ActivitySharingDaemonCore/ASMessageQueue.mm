@@ -1,17 +1,17 @@
 @interface ASMessageQueue
-- (ASMessageQueue)initWithQueueName:(id)a3;
+- (ASMessageQueue)initWithQueueName:(id)name;
 - (void)_synchronizePreferences;
 - (void)dealloc;
-- (void)enumerateQueuedMessagesUsingBlock:(id)a3;
-- (void)removeMessageWithIdentifier:(id)a3;
-- (void)setMessage:(id)a3 identifier:(id)a4;
+- (void)enumerateQueuedMessagesUsingBlock:(id)block;
+- (void)removeMessageWithIdentifier:(id)identifier;
+- (void)setMessage:(id)message identifier:(id)identifier;
 @end
 
 @implementation ASMessageQueue
 
-- (ASMessageQueue)initWithQueueName:(id)a3
+- (ASMessageQueue)initWithQueueName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = ASMessageQueue;
   v5 = [(ASMessageQueue *)&v14 init];
@@ -19,10 +19,10 @@
   if (v5)
   {
     v5->_domainName = *MEMORY[0x277CE91F8];
-    v5->_queueName = [v4 copy];
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    v5->_queueName = [nameCopy copy];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     identifierToMessageDictionary = v6->_identifierToMessageDictionary;
-    v6->_identifierToMessageDictionary = v7;
+    v6->_identifierToMessageDictionary = dictionary;
 
     CFPreferencesAppSynchronize(v6->_domainName);
     v9 = CFPreferencesCopyAppValue(v6->_queueName, v6->_domainName);
@@ -43,7 +43,7 @@
       v10 = *MEMORY[0x277CE9008];
       if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_ERROR))
       {
-        [(ASMessageQueue *)v4 initWithQueueName:v10];
+        [(ASMessageQueue *)nameCopy initWithQueueName:v10];
       }
     }
   }
@@ -68,43 +68,43 @@ void __36__ASMessageQueue_initWithQueueName___block_invoke(uint64_t a1, void *a2
   [(ASMessageQueue *)&v3 dealloc];
 }
 
-- (void)enumerateQueuedMessagesUsingBlock:(id)a3
+- (void)enumerateQueuedMessagesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_identifierToMessageDictionary copy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__ASMessageQueue_enumerateQueuedMessagesUsingBlock___block_invoke;
   v7[3] = &unk_278C4C098;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)setMessage:(id)a3 identifier:(id)a4
+- (void)setMessage:(id)message identifier:(id)identifier
 {
-  [(NSMutableDictionary *)self->_identifierToMessageDictionary setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)self->_identifierToMessageDictionary setObject:message forKey:identifier];
 
   [(ASMessageQueue *)self _synchronizePreferences];
 }
 
-- (void)removeMessageWithIdentifier:(id)a3
+- (void)removeMessageWithIdentifier:(id)identifier
 {
-  [(NSMutableDictionary *)self->_identifierToMessageDictionary removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_identifierToMessageDictionary removeObjectForKey:identifier];
 
   [(ASMessageQueue *)self _synchronizePreferences];
 }
 
 - (void)_synchronizePreferences
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   identifierToMessageDictionary = self->_identifierToMessageDictionary;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__ASMessageQueue__synchronizePreferences__block_invoke;
   v6[3] = &unk_278C4C0C0;
-  v7 = v3;
-  v5 = v3;
+  v7 = dictionary;
+  v5 = dictionary;
   [(NSMutableDictionary *)identifierToMessageDictionary enumerateKeysAndObjectsUsingBlock:v6];
   CFPreferencesSetAppValue(self->_queueName, v5, self->_domainName);
   CFPreferencesAppSynchronize(self->_domainName);

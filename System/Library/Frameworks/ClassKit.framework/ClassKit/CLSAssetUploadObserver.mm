@@ -1,6 +1,6 @@
 @interface CLSAssetUploadObserver
 - (BOOL)isUploaded;
-- (CLSAssetUploadObserver)initWithAsset:(id)a3;
+- (CLSAssetUploadObserver)initWithAsset:(id)asset;
 - (NSError)uploadError;
 - (double)uploadProgress;
 - (void)startObserving;
@@ -9,16 +9,16 @@
 
 @implementation CLSAssetUploadObserver
 
-- (CLSAssetUploadObserver)initWithAsset:(id)a3
+- (CLSAssetUploadObserver)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = CLSAssetUploadObserver;
   v6 = [(CLSAssetUploadObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
+    objc_storeStrong(&v6->_asset, asset);
   }
 
   return v7;

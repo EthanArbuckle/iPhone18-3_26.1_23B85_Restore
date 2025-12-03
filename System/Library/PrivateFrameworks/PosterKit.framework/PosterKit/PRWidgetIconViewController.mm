@@ -2,47 +2,47 @@
 - (CGRect)visibleBounds;
 - (CHUISWidgetHostViewController)widgetHostViewController;
 - (NSString)description;
-- (PRWidgetIconViewController)initWithComplicationDescriptor:(id)a3 contentType:(unint64_t)a4 presentationMode:(unint64_t)a5;
-- (PRWidgetIconViewController)initWithComplicationDescriptor:(id)a3 contentType:(unint64_t)a4 presentationMode:(unint64_t)a5 delegate:(id)a6;
+- (PRWidgetIconViewController)initWithComplicationDescriptor:(id)descriptor contentType:(unint64_t)type presentationMode:(unint64_t)mode;
+- (PRWidgetIconViewController)initWithComplicationDescriptor:(id)descriptor contentType:(unint64_t)type presentationMode:(unint64_t)mode delegate:(id)delegate;
 - (PRWidgetIconViewControllerDelegate)delegate;
 - (id)_platterVisualStylingProvider;
 - (id)createPreviewView;
 - (void)_recreateBackgroundView;
-- (void)_tapRecognized:(id)a3;
+- (void)_tapRecognized:(id)recognized;
 - (void)_updateBackgroundViewAlpha;
 - (void)_updatePlatterStylingIfNeeded;
 - (void)_updateWidgetHostViewController;
 - (void)beginCancellingTouches;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setBackgroundHidden:(BOOL)a3;
-- (void)setConfigureForSnapshotting:(BOOL)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setUseMaterialBackground:(BOOL)a3;
-- (void)setVibrancyConfiguration:(id)a3;
-- (void)setWidgetInteractionDisabled:(BOOL)a3;
-- (void)setWidgetPresentationMode:(unint64_t)a3;
-- (void)updateIntent:(id)a3;
+- (void)setBackgroundHidden:(BOOL)hidden;
+- (void)setConfigureForSnapshotting:(BOOL)snapshotting;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setUseMaterialBackground:(BOOL)background;
+- (void)setVibrancyConfiguration:(id)configuration;
+- (void)setWidgetInteractionDisabled:(BOOL)disabled;
+- (void)setWidgetPresentationMode:(unint64_t)mode;
+- (void)updateIntent:(id)intent;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)widgetHostViewController:(id)a3 requestsLaunch:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)widgetHostViewController:(id)controller requestsLaunch:(id)launch;
 @end
 
 @implementation PRWidgetIconViewController
 
-- (PRWidgetIconViewController)initWithComplicationDescriptor:(id)a3 contentType:(unint64_t)a4 presentationMode:(unint64_t)a5
+- (PRWidgetIconViewController)initWithComplicationDescriptor:(id)descriptor contentType:(unint64_t)type presentationMode:(unint64_t)mode
 {
-  v9 = a3;
+  descriptorCopy = descriptor;
   v13.receiver = self;
   v13.super_class = PRWidgetIconViewController;
   v10 = [(PRWidgetIconViewController *)&v13 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_complicationDescriptor, a3);
-    v11->_contentType = a4;
-    v11->_widgetPresentationMode = a5;
+    objc_storeStrong(&v10->_complicationDescriptor, descriptor);
+    v11->_contentType = type;
+    v11->_widgetPresentationMode = mode;
     v11->_backgroundHidden = 1;
     v11->_useMaterialBackground = 1;
   }
@@ -50,14 +50,14 @@
   return v11;
 }
 
-- (PRWidgetIconViewController)initWithComplicationDescriptor:(id)a3 contentType:(unint64_t)a4 presentationMode:(unint64_t)a5 delegate:(id)a6
+- (PRWidgetIconViewController)initWithComplicationDescriptor:(id)descriptor contentType:(unint64_t)type presentationMode:(unint64_t)mode delegate:(id)delegate
 {
-  v10 = a6;
-  v11 = [(PRWidgetIconViewController *)self initWithComplicationDescriptor:a3 contentType:a4 presentationMode:a5];
+  delegateCopy = delegate;
+  v11 = [(PRWidgetIconViewController *)self initWithComplicationDescriptor:descriptor contentType:type presentationMode:mode];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
   }
 
   return v12;
@@ -111,8 +111,8 @@
 
   if (self->_backgroundView)
   {
-    v7 = [(PRWidgetIconViewController *)self view];
-    [v7 addSubview:self->_backgroundView];
+    view = [(PRWidgetIconViewController *)self view];
+    [view addSubview:self->_backgroundView];
   }
 
   v8 = objc_alloc(MEMORY[0x1E6994530]);
@@ -130,26 +130,26 @@
   [(CHUISWidgetHostViewController *)self->_widgetHostViewController setPrefersUnredactedContentInLowLuminanceEnvironment:1];
   [(PRWidgetIconViewController *)self _updateWidgetHostViewController];
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(PRComplicationDescriptor *)self->_complicationDescriptor widget];
-  v13 = [v12 extensionBundleIdentifier];
-  v14 = [(PRComplicationDescriptor *)self->_complicationDescriptor widget];
-  v15 = [v14 kind];
-  v16 = [v11 stringWithFormat:@"%@:%@", v13, v15, v27, v28, v29, v30];
+  widget = [(PRComplicationDescriptor *)self->_complicationDescriptor widget];
+  extensionBundleIdentifier = [widget extensionBundleIdentifier];
+  widget2 = [(PRComplicationDescriptor *)self->_complicationDescriptor widget];
+  kind = [widget2 kind];
+  v16 = [v11 stringWithFormat:@"%@:%@", extensionBundleIdentifier, kind, v27, v28, v29, v30];
 
-  v17 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
-  [v17 setAccessibilityIdentifier:v16];
+  view2 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
+  [view2 setAccessibilityIdentifier:v16];
 
-  v18 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
-  [v18 setAccessibilityValue:@"Widget"];
+  view3 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
+  [view3 setAccessibilityValue:@"Widget"];
 
   v19 = objc_alloc(MEMORY[0x1E6994428]);
-  v20 = [MEMORY[0x1E698E650] blackColor];
-  v21 = [v19 initWithPrimaryTintColor:0 secondaryTintColor:v20 filterStyle:1 fallbackFilterStyle:1 fraction:1.0];
+  blackColor = [MEMORY[0x1E698E650] blackColor];
+  v21 = [v19 initWithPrimaryTintColor:0 secondaryTintColor:blackColor filterStyle:1 fallbackFilterStyle:1 fraction:1.0];
 
   [(CHUISWidgetHostViewController *)self->_widgetHostViewController setTintParameters:v21];
   v22 = self->_widgetHostViewController;
-  v23 = [(PRWidgetIconViewController *)self vibrancyConfiguration];
-  [(CHUISWidgetHostViewController *)v22 setVibrancyConfiguration:v23];
+  vibrancyConfiguration = [(PRWidgetIconViewController *)self vibrancyConfiguration];
+  [(CHUISWidgetHostViewController *)v22 setVibrancyConfiguration:vibrancyConfiguration];
 
   v24 = [objc_alloc(MEMORY[0x1E6994420]) initWithRenderingMode:1 backgroundViewPolicy:1];
   [(CHUISWidgetHostViewController *)self->_widgetHostViewController setRenderScheme:v24];
@@ -158,8 +158,8 @@
   [(CHUISWidgetHostViewController *)self->_widgetHostViewController setShouldShareTouchesWithHost:1];
   [(CHUISWidgetHostViewController *)self->_widgetHostViewController setPresentationMode:self->_widgetPresentationMode];
   v25 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__tapRecognized_];
-  v26 = [(PRWidgetIconViewController *)self view];
-  [v26 addGestureRecognizer:v25];
+  view4 = [(PRWidgetIconViewController *)self view];
+  [view4 addGestureRecognizer:v25];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(&location);
@@ -191,8 +191,8 @@ void __41__PRWidgetIconViewController_viewDidLoad__block_invoke(uint64_t a1)
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PRWidgetIconViewController *)self complicationDescriptor];
-  v5 = [v3 appendObject:v4 withName:@"complicationDescriptor"];
+  complicationDescriptor = [(PRWidgetIconViewController *)self complicationDescriptor];
+  v5 = [v3 appendObject:complicationDescriptor withName:@"complicationDescriptor"];
 
   if ([(CHUISWidgetHostViewController *)self->_widgetHostViewController isViewLoaded])
   {
@@ -202,17 +202,17 @@ void __41__PRWidgetIconViewController_viewDidLoad__block_invoke(uint64_t a1)
   }
 
   v8 = [v3 appendObject:self->_widgetHostViewController withName:@"widgetHostViewController" skipIfNil:1];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PRWidgetIconViewController;
-  [(PRWidgetIconViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(PRWidgetIconViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     [(PRWidgetIconViewController *)self _updatePlatterStylingIfNeeded];
   }
@@ -224,17 +224,17 @@ void __41__PRWidgetIconViewController_viewDidLoad__block_invoke(uint64_t a1)
   v11.super_class = PRWidgetIconViewController;
   [(PRWidgetIconViewController *)&v11 viewDidLayoutSubviews];
   backgroundView = self->_backgroundView;
-  v4 = [(PRWidgetIconViewController *)self view];
-  [v4 bounds];
+  view = [(PRWidgetIconViewController *)self view];
+  [view bounds];
   [(UIView *)backgroundView setFrame:?];
 
-  v5 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController metrics];
-  [v5 size];
+  metrics = [(CHUISWidgetHostViewController *)self->_widgetHostViewController metrics];
+  [metrics size];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
-  [v10 setFrame:{0.0, 0.0, v7, v9}];
+  view2 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
+  [view2 setFrame:{0.0, 0.0, v7, v9}];
 }
 
 - (CHUISWidgetHostViewController)widgetHostViewController
@@ -245,16 +245,16 @@ void __41__PRWidgetIconViewController_viewDidLoad__block_invoke(uint64_t a1)
   return widgetHostViewController;
 }
 
-- (void)setUseMaterialBackground:(BOOL)a3
+- (void)setUseMaterialBackground:(BOOL)background
 {
-  if (self->_useMaterialBackground != a3)
+  if (self->_useMaterialBackground != background)
   {
-    self->_useMaterialBackground = a3;
+    self->_useMaterialBackground = background;
     [(PRWidgetIconViewController *)self _recreateBackgroundView];
-    v7 = [(PRWidgetIconViewController *)self viewIfLoaded];
+    viewIfLoaded = [(PRWidgetIconViewController *)self viewIfLoaded];
     backgroundView = self->_backgroundView;
-    v6 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
-    [v7 insertSubview:backgroundView belowSubview:v6];
+    view = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
+    [viewIfLoaded insertSubview:backgroundView belowSubview:view];
   }
 }
 
@@ -288,10 +288,10 @@ void __41__PRWidgetIconViewController_viewDidLoad__block_invoke(uint64_t a1)
   platterVisualStylingProvider = self->_platterVisualStylingProvider;
   if (!platterVisualStylingProvider)
   {
-    v4 = [(PRWidgetIconViewController *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(PRWidgetIconViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v6 = @"widgetGalleryPlatterLight";
-    if (v5 == 2)
+    if (userInterfaceStyle == 2)
     {
       v6 = @"widgetGalleryPlatterDark";
     }
@@ -317,53 +317,53 @@ void __41__PRWidgetIconViewController_viewDidLoad__block_invoke(uint64_t a1)
   {
     [(UIView *)self->_backgroundView mt_removeAllVisualStyling];
     backgroundView = self->_backgroundView;
-    v6 = [(PRWidgetIconViewController *)self _platterVisualStylingProvider];
-    v5 = [v6 _visualStylingForStyle:0];
+    _platterVisualStylingProvider = [(PRWidgetIconViewController *)self _platterVisualStylingProvider];
+    v5 = [_platterVisualStylingProvider _visualStylingForStyle:0];
     [(UIView *)backgroundView mt_replaceVisualStyling:v5];
   }
 }
 
-- (void)setBackgroundHidden:(BOOL)a3
+- (void)setBackgroundHidden:(BOOL)hidden
 {
-  if (self->_backgroundHidden != a3)
+  if (self->_backgroundHidden != hidden)
   {
-    self->_backgroundHidden = a3;
+    self->_backgroundHidden = hidden;
     if (!self->_backgroundView)
     {
       [(PRWidgetIconViewController *)self _recreateBackgroundView];
-      v5 = [(PRWidgetIconViewController *)self viewIfLoaded];
+      viewIfLoaded = [(PRWidgetIconViewController *)self viewIfLoaded];
       backgroundView = self->_backgroundView;
-      v7 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
-      [v5 insertSubview:backgroundView belowSubview:v7];
+      view = [(CHUISWidgetHostViewController *)self->_widgetHostViewController view];
+      [viewIfLoaded insertSubview:backgroundView belowSubview:view];
     }
 
     [(PRWidgetIconViewController *)self _updateBackgroundViewAlpha];
   }
 }
 
-- (void)setWidgetInteractionDisabled:(BOOL)a3
+- (void)setWidgetInteractionDisabled:(BOOL)disabled
 {
-  if (self->_widgetInteractionDisabled != a3)
+  if (self->_widgetInteractionDisabled != disabled)
   {
-    self->_widgetInteractionDisabled = a3;
+    self->_widgetInteractionDisabled = disabled;
     [(CHUISWidgetHostViewController *)self->_widgetHostViewController setInteractionDisabled:?];
   }
 }
 
-- (void)setConfigureForSnapshotting:(BOOL)a3
+- (void)setConfigureForSnapshotting:(BOOL)snapshotting
 {
-  if (self->_configureForSnapshotting != a3)
+  if (self->_configureForSnapshotting != snapshotting)
   {
-    self->_configureForSnapshotting = a3;
+    self->_configureForSnapshotting = snapshotting;
     [(PRWidgetIconViewController *)self _updateWidgetHostViewController];
   }
 }
 
 - (void)_updateBackgroundViewAlpha
 {
-  v3 = [(PRWidgetIconViewController *)self isBackgroundHidden];
+  isBackgroundHidden = [(PRWidgetIconViewController *)self isBackgroundHidden];
   v4 = 1.0;
-  if (v3)
+  if (isBackgroundHidden)
   {
     v4 = 0.0;
   }
@@ -373,23 +373,23 @@ void __41__PRWidgetIconViewController_viewDidLoad__block_invoke(uint64_t a1)
   [(UIView *)backgroundView setAlpha:v4];
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
-  v9 = a3;
+  configurationCopy = configuration;
   if (([(BSUIVibrancyConfiguration *)self->_vibrancyConfiguration isEqual:?]& 1) == 0)
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [v9 copyWithGroupName:v5];
+    v6 = [configurationCopy copyWithGroupName:v5];
     vibrancyConfiguration = self->_vibrancyConfiguration;
     self->_vibrancyConfiguration = v6;
 
-    v8 = [(PRWidgetIconViewController *)self widgetHostViewController];
-    [v8 setVibrancyConfiguration:self->_vibrancyConfiguration];
+    widgetHostViewController = [(PRWidgetIconViewController *)self widgetHostViewController];
+    [widgetHostViewController setVibrancyConfiguration:self->_vibrancyConfiguration];
   }
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -408,42 +408,42 @@ void __41__PRWidgetIconViewController_viewDidLoad__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
-  v4 = [(PRWidgetIconViewController *)self delegate];
+  delegate = [(PRWidgetIconViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PRWidgetIconViewController *)self delegate];
-    [v6 widgetIconViewControllerDidReceiveTap:self];
+    delegate2 = [(PRWidgetIconViewController *)self delegate];
+    [delegate2 widgetIconViewControllerDidReceiveTap:self];
   }
 }
 
-- (void)setWidgetPresentationMode:(unint64_t)a3
+- (void)setWidgetPresentationMode:(unint64_t)mode
 {
-  if (self->_widgetPresentationMode != a3)
+  if (self->_widgetPresentationMode != mode)
   {
-    self->_widgetPresentationMode = a3;
+    self->_widgetPresentationMode = mode;
     [(CHUISWidgetHostViewController *)self->_widgetHostViewController setPresentationMode:?];
   }
 }
 
-- (void)updateIntent:(id)a3
+- (void)updateIntent:(id)intent
 {
-  v11 = a3;
-  v4 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController widget];
-  v5 = [v4 intentReference];
-  v6 = [v5 intent];
+  intentCopy = intent;
+  widget = [(CHUISWidgetHostViewController *)self->_widgetHostViewController widget];
+  intentReference = [widget intentReference];
+  intent = [intentReference intent];
 
   if ((BSEqualObjects() & 1) == 0)
   {
-    v7 = [(PRComplicationDescriptor *)self->_complicationDescriptor copyWithIntent:v11];
+    v7 = [(PRComplicationDescriptor *)self->_complicationDescriptor copyWithIntent:intentCopy];
     complicationDescriptor = self->_complicationDescriptor;
     self->_complicationDescriptor = v7;
     v9 = v7;
 
-    v10 = [v4 widgetByReplacingIntent:v6];
+    v10 = [widget widgetByReplacingIntent:intent];
     [(CHUISWidgetHostViewController *)self->_widgetHostViewController setWidget:v10];
   }
 }
@@ -457,27 +457,27 @@ void __41__PRWidgetIconViewController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (void)beginCancellingTouches
 {
-  v3 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController cancelTouchesForCurrentEventInHostedContent];
-  if (v3)
+  cancelTouchesForCurrentEventInHostedContent = [(CHUISWidgetHostViewController *)self->_widgetHostViewController cancelTouchesForCurrentEventInHostedContent];
+  if (cancelTouchesForCurrentEventInHostedContent)
   {
-    obj = v3;
+    obj = cancelTouchesForCurrentEventInHostedContent;
     [(BSInvalidatable *)self->_cancelTouchesAssertion invalidate];
     objc_storeStrong(&self->_cancelTouchesAssertion, obj);
-    v3 = obj;
+    cancelTouchesForCurrentEventInHostedContent = obj;
   }
 }
 
-- (void)widgetHostViewController:(id)a3 requestsLaunch:(id)a4
+- (void)widgetHostViewController:(id)controller requestsLaunch:(id)launch
 {
-  v9 = a4;
-  v5 = [(PRWidgetIconViewController *)self delegate];
+  launchCopy = launch;
+  delegate = [(PRWidgetIconViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PRWidgetIconViewController *)self delegate];
-    v8 = [v9 launchAction];
-    [v7 widgetIconViewController:self requestsLaunchWithAction:v8];
+    delegate2 = [(PRWidgetIconViewController *)self delegate];
+    launchAction = [launchCopy launchAction];
+    [delegate2 widgetIconViewController:self requestsLaunchWithAction:launchAction];
   }
 }
 

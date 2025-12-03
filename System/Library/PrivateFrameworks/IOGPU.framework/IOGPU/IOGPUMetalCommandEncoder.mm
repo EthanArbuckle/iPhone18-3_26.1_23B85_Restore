@@ -1,10 +1,10 @@
 @interface IOGPUMetalCommandEncoder
-- (IOGPUMetalCommandEncoder)initWithCommandBuffer:(id)a3;
+- (IOGPUMetalCommandEncoder)initWithCommandBuffer:(id)buffer;
 - (unint64_t)globalTraceObjectID;
 - (void)endEncoding;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)setLabel:(id)label;
 @end
 
 @implementation IOGPUMetalCommandEncoder
@@ -52,7 +52,7 @@
   [(_MTLCommandEncoder *)&v3 popDebugGroup];
 }
 
-- (IOGPUMetalCommandEncoder)initWithCommandBuffer:(id)a3
+- (IOGPUMetalCommandEncoder)initWithCommandBuffer:(id)buffer
 {
   v7.receiver = self;
   v7.super_class = IOGPUMetalCommandEncoder;
@@ -61,7 +61,7 @@
   if (*__globalGPUCommPage)
   {
     [*(&v4->super.super.super.isa + *MEMORY[0x1E69742C8]) deviceRef];
-    [a3 globalTraceObjectID];
+    [buffer globalTraceObjectID];
     [(IOGPUMetalCommandEncoder *)v5 globalTraceObjectID];
     [(_MTLCommandEncoder *)v5 getType];
     IOGPUDeviceTraceEvent();
@@ -70,35 +70,35 @@
   return v5;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v9.receiver = self;
   v9.super_class = IOGPUMetalCommandEncoder;
   [(_MTLObjectWithLabel *)&v9 setLabel:?];
   if (*__globalGPUCommPage)
   {
-    v5 = [*(&self->super.super.super.isa + *MEMORY[0x1E69742C8]) deviceRef];
-    v6 = [(IOGPUMetalCommandEncoder *)self globalTraceObjectID];
+    deviceRef = [*(&self->super.super.super.isa + *MEMORY[0x1E69742C8]) deviceRef];
+    globalTraceObjectID = [(IOGPUMetalCommandEncoder *)self globalTraceObjectID];
     v7 = *MEMORY[0x1E69742D8];
     v8 = *(&self->super.super.super.isa + v7);
-    [a3 cStringUsingEncoding:1];
-    *(&self->super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(v5, 8, 0, v6, v8);
+    [label cStringUsingEncoding:1];
+    *(&self->super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(deviceRef, 8, 0, globalTraceObjectID, v8);
   }
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
   if (*__globalGPUCommPage)
   {
-    v5 = [*(&self->super.super.super.isa + *MEMORY[0x1E69742C8]) deviceRef];
-    v6 = [(IOGPUMetalCommandEncoder *)self globalTraceObjectID];
-    [a3 cStringUsingEncoding:1];
-    IOGPUDeviceTraceObjectLabel(v5, 8, 12, v6, 0);
+    deviceRef = [*(&self->super.super.super.isa + *MEMORY[0x1E69742C8]) deviceRef];
+    globalTraceObjectID = [(IOGPUMetalCommandEncoder *)self globalTraceObjectID];
+    [group cStringUsingEncoding:1];
+    IOGPUDeviceTraceObjectLabel(deviceRef, 8, 12, globalTraceObjectID, 0);
   }
 
   v7.receiver = self;
   v7.super_class = IOGPUMetalCommandEncoder;
-  [(_MTLCommandEncoder *)&v7 pushDebugGroup:a3];
+  [(_MTLCommandEncoder *)&v7 pushDebugGroup:group];
 }
 
 @end

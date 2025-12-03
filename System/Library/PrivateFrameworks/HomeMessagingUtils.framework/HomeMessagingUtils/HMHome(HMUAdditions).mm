@@ -29,9 +29,9 @@
 
 - (id)hmu_allUsersIncludingCurrentUser
 {
-  v2 = [a1 users];
-  v3 = [a1 currentUser];
-  v4 = [v2 arrayByAddingObject:v3];
+  users = [self users];
+  currentUser = [self currentUser];
+  v4 = [users arrayByAddingObject:currentUser];
 
   return v4;
 }
@@ -39,14 +39,14 @@
 - (id)hmu_userWithUniqueIdentifier:()HMUAdditions
 {
   v4 = a3;
-  v5 = [a1 communalUsers];
+  communalUsers = [self communalUsers];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__HMHome_HMUAdditions__hmu_userWithUniqueIdentifier___block_invoke;
   v9[3] = &unk_279772560;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [communalUsers na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -59,7 +59,7 @@
 
   if (v6)
   {
-    v7 = [a1 hmu_userWithUniqueIdentifier:v6];
+    v7 = [self hmu_userWithUniqueIdentifier:v6];
   }
 
   else
@@ -72,63 +72,63 @@
 
 - (uint64_t)hmu_isRemoteAccessAllowedForCurrentUser
 {
-  v2 = [a1 currentUser];
-  v3 = [a1 hmu_isRemoteAccessAllowedForUser:v2];
+  currentUser = [self currentUser];
+  v3 = [self hmu_isRemoteAccessAllowedForUser:currentUser];
 
   return v3;
 }
 
 - (uint64_t)hmu_isCurrentUserAdministrator
 {
-  v2 = [a1 currentUser];
-  v3 = [a1 hmu_isAdministrator:v2];
+  currentUser = [self currentUser];
+  v3 = [self hmu_isAdministrator:currentUser];
 
   return v3;
 }
 
 - (uint64_t)hmu_isCurrentUserOwner
 {
-  v2 = [a1 currentUser];
-  v3 = [a1 hmu_isOwner:v2];
+  currentUser = [self currentUser];
+  v3 = [self hmu_isOwner:currentUser];
 
   return v3;
 }
 
 - (uint64_t)hmu_isRemoteAccessAllowedForUser:()HMUAdditions
 {
-  v1 = [a1 homeAccessControlForUser:?];
-  v2 = [v1 isRemoteAccessAllowed];
+  v1 = [self homeAccessControlForUser:?];
+  isRemoteAccessAllowed = [v1 isRemoteAccessAllowed];
 
-  return v2;
+  return isRemoteAccessAllowed;
 }
 
 - (uint64_t)hmu_isAdministrator:()HMUAdditions
 {
-  v1 = [a1 homeAccessControlForUser:?];
-  v2 = [v1 isAdministrator];
+  v1 = [self homeAccessControlForUser:?];
+  isAdministrator = [v1 isAdministrator];
 
-  return v2;
+  return isAdministrator;
 }
 
 - (uint64_t)hmu_isOwner:()HMUAdditions
 {
-  v1 = [a1 homeAccessControlForUser:?];
-  v2 = [v1 isOwner];
+  v1 = [self homeAccessControlForUser:?];
+  isOwner = [v1 isOwner];
 
-  return v2;
+  return isOwner;
 }
 
 - (id)hmu_userWithSenderCorrelationIdentifier:()HMUAdditions
 {
   v4 = a3;
-  v5 = [a1 hmu_allUsersIncludingCurrentUser];
+  hmu_allUsersIncludingCurrentUser = [self hmu_allUsersIncludingCurrentUser];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__HMHome_HMUAdditions__hmu_userWithSenderCorrelationIdentifier___block_invoke;
   v9[3] = &unk_279772560;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [hmu_allUsersIncludingCurrentUser na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -166,8 +166,8 @@
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v11 = [v10 rooms];
-          v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          rooms = [v10 rooms];
+          v12 = [rooms countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v12)
           {
             v13 = v12;
@@ -178,11 +178,11 @@
               {
                 if (*v25 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(rooms);
                 }
 
-                v16 = [*(*(&v24 + 1) + 8 * j) name];
-                v17 = [v6 containsObject:v16];
+                name = [*(*(&v24 + 1) + 8 * j) name];
+                v17 = [v6 containsObject:name];
 
                 if (v17)
                 {
@@ -191,7 +191,7 @@
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v13 = [rooms countByEnumeratingWithState:&v24 objects:v32 count:16];
               if (v13)
               {
                 continue;
@@ -256,8 +256,8 @@ LABEL_17:
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v11 = [v10 zones];
-          v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          zones = [v10 zones];
+          v12 = [zones countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v12)
           {
             v13 = v12;
@@ -268,11 +268,11 @@ LABEL_17:
               {
                 if (*v25 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(zones);
                 }
 
-                v16 = [*(*(&v24 + 1) + 8 * j) name];
-                v17 = [v6 containsObject:v16];
+                name = [*(*(&v24 + 1) + 8 * j) name];
+                v17 = [v6 containsObject:name];
 
                 if (v17)
                 {
@@ -281,7 +281,7 @@ LABEL_17:
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v13 = [zones countByEnumeratingWithState:&v24 objects:v32 count:16];
               if (v13)
               {
                 continue;
@@ -327,9 +327,9 @@ LABEL_17:
 
 - (id)hmu_allRoomsIncludingRoomForEntireHome
 {
-  v2 = [a1 rooms];
-  v3 = [a1 roomForEntireHome];
-  v4 = [v2 arrayByAddingObject:v3];
+  rooms = [self rooms];
+  roomForEntireHome = [self roomForEntireHome];
+  v4 = [rooms arrayByAddingObject:roomForEntireHome];
 
   return v4;
 }
@@ -337,14 +337,14 @@ LABEL_17:
 - (id)hmu_roomWithUniqueIdentifier:()HMUAdditions
 {
   v4 = a3;
-  v5 = [a1 rooms];
+  rooms = [self rooms];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__HMHome_HMUAdditions__hmu_roomWithUniqueIdentifier___block_invoke;
   v9[3] = &unk_2797724F0;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [rooms na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -355,13 +355,13 @@ LABEL_17:
   v5 = v4;
   if (v4 && [v4 count])
   {
-    v6 = [a1 rooms];
+    rooms = [self rooms];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __55__HMHome_HMUAdditions__hmu_roomsWithUniqueIdentifiers___block_invoke;
     v9[3] = &unk_2797724F0;
     v10 = v5;
-    v7 = [v6 na_filter:v9];
+    v7 = [rooms na_filter:v9];
   }
 
   else
@@ -375,14 +375,14 @@ LABEL_17:
 - (id)hmu_roomWithName:()HMUAdditions
 {
   v4 = a3;
-  v5 = [a1 rooms];
+  rooms = [self rooms];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__HMHome_HMUAdditions__hmu_roomWithName___block_invoke;
   v9[3] = &unk_2797724F0;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [rooms na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -390,14 +390,14 @@ LABEL_17:
 - (id)hmu_zoneWithUniqueIdentifier:()HMUAdditions
 {
   v4 = a3;
-  v5 = [a1 zones];
+  zones = [self zones];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__HMHome_HMUAdditions__hmu_zoneWithUniqueIdentifier___block_invoke;
   v9[3] = &unk_279772518;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [zones na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -408,13 +408,13 @@ LABEL_17:
   v5 = v4;
   if (v4 && [v4 count])
   {
-    v6 = [a1 zones];
+    zones = [self zones];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __55__HMHome_HMUAdditions__hmu_zonesWithUniqueIdentifiers___block_invoke;
     v9[3] = &unk_279772518;
     v10 = v5;
-    v7 = [v6 na_filter:v9];
+    v7 = [zones na_filter:v9];
   }
 
   else
@@ -428,14 +428,14 @@ LABEL_17:
 - (id)hmu_zoneWithName:()HMUAdditions
 {
   v4 = a3;
-  v5 = [a1 zones];
+  zones = [self zones];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__HMHome_HMUAdditions__hmu_zoneWithName___block_invoke;
   v9[3] = &unk_279772518;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [zones na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -448,7 +448,7 @@ LABEL_17:
 
   if (v6)
   {
-    v7 = [a1 accessoryWithUniqueIdentifier:v6];
+    v7 = [self accessoryWithUniqueIdentifier:v6];
   }
 
   else
@@ -467,8 +467,8 @@ LABEL_17:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a1 accessories];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  accessories = [self accessories];
+  v4 = [accessories countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -479,18 +479,18 @@ LABEL_17:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accessories);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 hmu_isHomePod] && (objc_msgSend(v8, "isCurrentAccessory") & 1) == 0)
         {
-          v9 = [v8 uniqueIdentifier];
-          [v2 setObject:v8 forKey:v9];
+          uniqueIdentifier = [v8 uniqueIdentifier];
+          [v2 setObject:v8 forKey:uniqueIdentifier];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [accessories countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -505,15 +505,15 @@ LABEL_17:
 {
   v19 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEB38];
-  v3 = [a1 hmu_homePodsDictionary];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  hmu_homePodsDictionary = [self hmu_homePodsDictionary];
+  v4 = [v2 dictionaryWithDictionary:hmu_homePodsDictionary];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 accessories];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  accessories = [self accessories];
+  v6 = [accessories countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -524,18 +524,18 @@ LABEL_17:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessories);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 hmu_isHomePod])
         {
-          v11 = [v10 uniqueIdentifier];
-          [v4 setObject:v10 forKey:v11];
+          uniqueIdentifier = [v10 uniqueIdentifier];
+          [v4 setObject:v10 forKey:uniqueIdentifier];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [accessories countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -548,8 +548,8 @@ LABEL_17:
 
 - (id)hmu_endpointAccessories
 {
-  v1 = [a1 accessories];
-  v2 = [v1 na_filter:&__block_literal_global_1];
+  accessories = [self accessories];
+  v2 = [accessories na_filter:&__block_literal_global_1];
 
   return v2;
 }

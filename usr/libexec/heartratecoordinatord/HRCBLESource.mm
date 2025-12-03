@@ -1,18 +1,18 @@
 @interface HRCBLESource
 - (BOOL)available;
 - (HRCBLESource)init;
-- (void)_setStreamingMode:(unint64_t)a3 discoveryEnabled:(BOOL)a4;
+- (void)_setStreamingMode:(unint64_t)mode discoveryEnabled:(BOOL)enabled;
 - (void)activate;
-- (void)connectedDevicesDidChange:(id)a3;
+- (void)connectedDevicesDidChange:(id)change;
 - (void)dealloc;
-- (void)heartRateSampleWasCollected:(id)a3 device:(id)a4;
-- (void)setAvailabilityHandler:(id)a3;
-- (void)setBluetoothLeSourcesUpdateHandler:(id)a3;
-- (void)setDiscoveryEnabled:(BOOL)a3;
-- (void)setHeartRateHandler:(id)a3;
-- (void)setOpportunisticMode:(BOOL)a3;
-- (void)setSourceUpdateHandler:(id)a3;
-- (void)setStreamingMode:(unint64_t)a3;
+- (void)heartRateSampleWasCollected:(id)collected device:(id)device;
+- (void)setAvailabilityHandler:(id)handler;
+- (void)setBluetoothLeSourcesUpdateHandler:(id)handler;
+- (void)setDiscoveryEnabled:(BOOL)enabled;
+- (void)setHeartRateHandler:(id)handler;
+- (void)setOpportunisticMode:(BOOL)mode;
+- (void)setSourceUpdateHandler:(id)handler;
+- (void)setStreamingMode:(unint64_t)mode;
 @end
 
 @implementation HRCBLESource
@@ -111,63 +111,63 @@
   }
 }
 
-- (void)setAvailabilityHandler:(id)a3
+- (void)setAvailabilityHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006B8C;
   v7[3] = &unk_100040818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setHeartRateHandler:(id)a3
+- (void)setHeartRateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006C68;
   v7[3] = &unk_100040818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setSourceUpdateHandler:(id)a3
+- (void)setSourceUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006D44;
   v7[3] = &unk_100040818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setBluetoothLeSourcesUpdateHandler:(id)a3
+- (void)setBluetoothLeSourcesUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006E20;
   v7[3] = &unk_100040818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setOpportunisticMode:(BOOL)a3
+- (void)setOpportunisticMode:(BOOL)mode
 {
   v3 = sub_10000132C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -177,7 +177,7 @@
   }
 }
 
-- (void)setStreamingMode:(unint64_t)a3
+- (void)setStreamingMode:(unint64_t)mode
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -185,26 +185,26 @@
   v4[2] = sub_100006F40;
   v4[3] = &unk_100040840;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = mode;
   dispatch_async(queue, v4);
 }
 
-- (void)_setStreamingMode:(unint64_t)a3 discoveryEnabled:(BOOL)a4
+- (void)_setStreamingMode:(unint64_t)mode discoveryEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 - 1 < 2)
+  if (mode - 1 < 2)
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(enabledCopy) = 0;
     v7 = 2;
 LABEL_5:
-    self->_discoveryEnabled = v4;
+    self->_discoveryEnabled = enabledCopy;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!mode)
   {
-    v7 = v4;
+    v7 = enabledCopy;
     goto LABEL_5;
   }
 
@@ -215,7 +215,7 @@ LABEL_7:
   {
     discoveryEnabled = self->_discoveryEnabled;
     v10[0] = 67109632;
-    v10[1] = a3;
+    v10[1] = mode;
     v11 = 1024;
     v12 = discoveryEnabled;
     v13 = 1024;
@@ -226,24 +226,24 @@ LABEL_7:
   [(HLEHeartRateRequestor *)self->_bleHeartRate setHeartRateState:v7];
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
-  v32 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_queue);
   available = self->_available;
-  self->_available = [v32 count] != 0;
+  self->_available = [changeCopy count] != 0;
   v5 = sub_10000132C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 134349056;
-    *(&buf + 4) = [v32 count];
+    *(&buf + 4) = [changeCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "received updated bluetooth le source list with count : %{public}lu", &buf, 0xCu);
   }
 
   bleSourcesUpdateHandler = self->_bleSourcesUpdateHandler;
   if (bleSourcesUpdateHandler)
   {
-    v7 = sub_1000018EC(v32);
+    v7 = sub_1000018EC(changeCopy);
     bleSourcesUpdateHandler[2](bleSourcesUpdateHandler, v7);
   }
 
@@ -301,7 +301,7 @@ LABEL_15:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v15 = v32;
+    v15 = changeCopy;
     v16 = [v15 countByEnumeratingWithState:&v37 objects:v48 count:16];
     if (v16)
     {
@@ -317,8 +317,8 @@ LABEL_15:
 
           v19 = *(*(&v37 + 1) + 8 * i);
           v20 = [NSUUID alloc];
-          v21 = [v19 localIdentifier];
-          v22 = [v20 initWithUUIDString:v21];
+          localIdentifier = [v19 localIdentifier];
+          v22 = [v20 initWithUUIDString:localIdentifier];
 
           if (v22)
           {
@@ -340,8 +340,8 @@ LABEL_15:
             v24 = sub_10000132C();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
             {
-              v25 = [v19 localIdentifier];
-              sub_100007CC8(v25, v46, &v47, v24);
+              localIdentifier2 = [v19 localIdentifier];
+              sub_100007CC8(localIdentifier2, v46, &v47, v24);
             }
           }
         }
@@ -393,17 +393,17 @@ LABEL_15:
   }
 }
 
-- (void)heartRateSampleWasCollected:(id)a3 device:(id)a4
+- (void)heartRateSampleWasCollected:(id)collected device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  collectedCopy = collected;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v6 UUID];
-  v9 = [v6 dateInterval];
-  v10 = [v9 startDate];
+  uUID = [collectedCopy UUID];
+  dateInterval = [collectedCopy dateInterval];
+  startDate = [dateInterval startDate];
 
-  v11 = [v6 quantity];
-  [v11 _beatsPerMinute];
+  quantity = [collectedCopy quantity];
+  [quantity _beatsPerMinute];
   v13 = v12;
 
   v14 = sub_10000132C();
@@ -412,25 +412,25 @@ LABEL_15:
     *buf = 134546179;
     v26 = v13;
     v27 = 2114;
-    v28 = v8;
+    v28 = uUID;
     v29 = 2114;
-    v30 = v10;
+    v30 = startDate;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "BLE HR %{sensitive}f %{public}@ TS: %{public}@", buf, 0x20u);
   }
 
-  if (v7)
+  if (deviceCopy)
   {
     v15 = [NSUUID alloc];
-    v16 = [v7 localIdentifier];
-    v17 = [v15 initWithUUIDString:v16];
+    localIdentifier = [deviceCopy localIdentifier];
+    v17 = [v15 initWithUUIDString:localIdentifier];
 
     if (v17)
     {
       v18 = [HRCHeartRateData alloc];
-      v19 = [HRCUtilities translateToHRCDevice:v7];
+      v19 = [HRCUtilities translateToHRCDevice:deviceCopy];
       LOBYTE(v24) = 0;
       LOWORD(v23) = 3;
-      v20 = [v18 initWithHeartRate:0 confidence:0 confidenceLevel:0 arbitrationStatus:0 context:0 hrContext:v10 timestamp:v13 sampleUuid:v8 sourceType:v23 streamingThrottleStatus:v17 deviceUuid:v19 device:v24 sensorLocation:? flags:?];
+      v20 = [v18 initWithHeartRate:0 confidence:0 confidenceLevel:0 arbitrationStatus:0 context:0 hrContext:startDate timestamp:v13 sampleUuid:uUID sourceType:v23 streamingThrottleStatus:v17 deviceUuid:v19 device:v24 sensorLocation:? flags:?];
 
       heartRateHandler = self->_heartRateHandler;
       if (heartRateHandler)
@@ -444,8 +444,8 @@ LABEL_15:
       v20 = sub_10000132C();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        v22 = [v7 localIdentifier];
-        sub_100007D24(v22, buf, v20);
+        localIdentifier2 = [deviceCopy localIdentifier];
+        sub_100007D24(localIdentifier2, buf, v20);
       }
     }
   }
@@ -460,7 +460,7 @@ LABEL_15:
   }
 }
 
-- (void)setDiscoveryEnabled:(BOOL)a3
+- (void)setDiscoveryEnabled:(BOOL)enabled
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -468,7 +468,7 @@ LABEL_15:
   v4[2] = sub_100007A14;
   v4[3] = &unk_100040868;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(queue, v4);
 }
 

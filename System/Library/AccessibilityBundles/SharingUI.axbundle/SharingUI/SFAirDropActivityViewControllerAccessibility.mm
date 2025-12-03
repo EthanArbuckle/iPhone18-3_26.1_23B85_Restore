@@ -1,34 +1,34 @@
 @interface SFAirDropActivityViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAddIfVisible:(id)a3 toArray:(id)a4;
+- (void)_axAddIfVisible:(id)visible toArray:(id)array;
 - (void)_axAnnotateCollectionViewCellIfNeeded;
-- (void)updateContentAreaAnimated:(BOOL)a3;
+- (void)updateContentAreaAnimated:(BOOL)animated;
 @end
 
 @implementation SFAirDropActivityViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_collectionView" withType:"UICollectionView"];
-  [v3 validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_airDropIconView" withType:"SFAirDropIconView"];
-  [v3 validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_airDropActiveIconView" withType:"SFAirDropActiveIconView"];
-  [v3 validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_noWifiTextView" withType:"UITextView"];
-  [v3 validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_instructionsTextView" withType:"UITextView"];
-  [v3 validateClass:@"SFAirDropActivityViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SFAirDropActivityViewController" hasInstanceMethod:@"updateContentAreaAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SFAirDropActivityViewController" hasInstanceMethod:@"setSharedItemsAvailable:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_collectionView" withType:"UICollectionView"];
+  [validationsCopy validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_airDropIconView" withType:"SFAirDropIconView"];
+  [validationsCopy validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_airDropActiveIconView" withType:"SFAirDropActiveIconView"];
+  [validationsCopy validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_noWifiTextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"SFAirDropActivityViewController" hasInstanceVariable:@"_instructionsTextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"SFAirDropActivityViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SFAirDropActivityViewController" hasInstanceMethod:@"updateContentAreaAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SFAirDropActivityViewController" hasInstanceMethod:@"setSharedItemsAvailable:" withFullSignature:{"v", "B", 0}];
 }
 
-- (void)_axAddIfVisible:(id)a3 toArray:(id)a4
+- (void)_axAddIfVisible:(id)visible toArray:(id)array
 {
-  v6 = a3;
-  v5 = a4;
-  if ([v6 _accessibilityViewIsVisible])
+  visibleCopy = visible;
+  arrayCopy = array;
+  if ([visibleCopy _accessibilityViewIsVisible])
   {
-    [v5 addObject:v6];
+    [arrayCopy addObject:visibleCopy];
   }
 }
 
@@ -40,26 +40,26 @@
   v4 = v14;
   if (v14)
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v6 = [(SFAirDropActivityViewControllerAccessibility *)self safeValueForKey:@"_titleLabel"];
-    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v6 toArray:v5];
+    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v6 toArray:array];
 
     v7 = [(SFAirDropActivityViewControllerAccessibility *)self safeValueForKey:@"_collectionView"];
-    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v7 toArray:v5];
+    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v7 toArray:array];
 
     v8 = [(SFAirDropActivityViewControllerAccessibility *)self safeValueForKey:@"_airDropIconView"];
-    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v8 toArray:v5];
+    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v8 toArray:array];
 
     v9 = [(SFAirDropActivityViewControllerAccessibility *)self safeValueForKey:@"_noWifiTextView"];
-    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v9 toArray:v5];
+    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v9 toArray:array];
 
     v10 = [(SFAirDropActivityViewControllerAccessibility *)self safeValueForKey:@"_airDropActiveIconView"];
-    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v10 toArray:v5];
+    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v10 toArray:array];
 
     v11 = [(SFAirDropActivityViewControllerAccessibility *)self safeValueForKey:@"_instructionsTextView"];
-    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v11 toArray:v5];
+    [(SFAirDropActivityViewControllerAccessibility *)self _axAddIfVisible:v11 toArray:array];
 
-    [v14 setAccessibilityElements:v5];
+    [v14 setAccessibilityElements:array];
     if ([(SFAirDropActivityViewControllerAccessibility *)self _axDidPostScreenChangeAfterAppearance])
     {
       v12 = *MEMORY[0x29EDC7ED8];
@@ -87,13 +87,13 @@
   [(SFAirDropActivityViewControllerAccessibility *)self _axAnnotateCollectionViewCellIfNeeded];
 }
 
-- (void)updateContentAreaAnimated:(BOOL)a3
+- (void)updateContentAreaAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5.receiver = self;
   v5.super_class = SFAirDropActivityViewControllerAccessibility;
   [(SFAirDropActivityViewControllerAccessibility *)&v5 updateContentAreaAnimated:?];
-  if (v3)
+  if (animatedCopy)
   {
     AXPerformBlockOnMainThreadAfterDelay();
   }

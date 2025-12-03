@@ -1,6 +1,6 @@
 @interface AssistantAssetDelegateInterface
 + (_TtC22localspeechrecognition31AssistantAssetDelegateInterface)sharedInstance;
-- (void)setStatusForLanguage:(id)a3;
+- (void)setStatusForLanguage:(id)language;
 @end
 
 @implementation AssistantAssetDelegateInterface
@@ -12,10 +12,10 @@
   return v2;
 }
 
-- (void)setStatusForLanguage:(id)a3
+- (void)setStatusForLanguage:(id)language
 {
   v4 = sub_100046D7C();
-  v5 = self;
+  selfCopy = self;
   sub_1000035C8(v4);
 }
 

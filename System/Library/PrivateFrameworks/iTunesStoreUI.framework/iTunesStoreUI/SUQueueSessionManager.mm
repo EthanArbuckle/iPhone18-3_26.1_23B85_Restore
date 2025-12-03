@@ -1,16 +1,16 @@
 @interface SUQueueSessionManager
 - (SUQueueSessionManager)init;
-- (id)_queueSessionWithDownloadKinds:(id)a3 fromArray:(id)a4;
-- (id)_queueSessionWithManagerOptions:(id)a3 fromArray:(id)a4;
-- (id)_queueSessionWithQueue:(id)a3 fromArray:(id)a4;
-- (id)beginDownloadManagerSessionForDownloadKind:(id)a3;
-- (id)beginDownloadManagerSessionWithDownloadKinds:(id)a3;
-- (id)beginDownloadManagerSessionWithManagerOptions:(id)a3;
-- (id)beginPreorderManagerSessionWithItemKinds:(id)a3;
-- (void)_endQueueSession:(id)a3 fromArray:(id)a4;
+- (id)_queueSessionWithDownloadKinds:(id)kinds fromArray:(id)array;
+- (id)_queueSessionWithManagerOptions:(id)options fromArray:(id)array;
+- (id)_queueSessionWithQueue:(id)queue fromArray:(id)array;
+- (id)beginDownloadManagerSessionForDownloadKind:(id)kind;
+- (id)beginDownloadManagerSessionWithDownloadKinds:(id)kinds;
+- (id)beginDownloadManagerSessionWithManagerOptions:(id)options;
+- (id)beginPreorderManagerSessionWithItemKinds:(id)kinds;
+- (void)_endQueueSession:(id)session fromArray:(id)array;
 - (void)dealloc;
-- (void)endDownloadManagerSessionForManager:(id)a3;
-- (void)endPreorderManagerSessionWithManager:(id)a3;
+- (void)endDownloadManagerSessionForManager:(id)manager;
+- (void)endPreorderManagerSessionWithManager:(id)manager;
 @end
 
 @implementation SUQueueSessionManager
@@ -42,7 +42,7 @@
   [(SUQueueSessionManager *)&v4 dealloc];
 }
 
-- (id)beginDownloadManagerSessionForDownloadKind:(id)a3
+- (id)beginDownloadManagerSessionForDownloadKind:(id)kind
 {
   v7 = 0;
   v8 = &v7;
@@ -56,7 +56,7 @@
   block[2] = __68__SUQueueSessionManager_beginDownloadManagerSessionForDownloadKind___block_invoke;
   block[3] = &unk_1E8165CA0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = kind;
   block[6] = &v7;
   dispatch_sync(dispatchQueue, block);
   v4 = v8[5];
@@ -120,10 +120,10 @@ id __68__SUQueueSessionManager_beginDownloadManagerSessionForDownloadKind___bloc
   return result;
 }
 
-- (id)beginDownloadManagerSessionWithDownloadKinds:(id)a3
+- (id)beginDownloadManagerSessionWithDownloadKinds:(id)kinds
 {
   v5 = objc_alloc_init(MEMORY[0x1E69D48D8]);
-  [v5 setDownloadKinds:a3];
+  [v5 setDownloadKinds:kinds];
   [v5 setPrefetchedDownloadProperties:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", *MEMORY[0x1E69D4B88], *MEMORY[0x1E69D4BF0], 0)}];
   [v5 setPrefetchedDownloadExternalProperties:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", *MEMORY[0x1E69D4AC8], 0)}];
   v6 = [(SUQueueSessionManager *)self beginDownloadManagerSessionWithManagerOptions:v5];
@@ -131,7 +131,7 @@ id __68__SUQueueSessionManager_beginDownloadManagerSessionForDownloadKind___bloc
   return v6;
 }
 
-- (id)beginDownloadManagerSessionWithManagerOptions:(id)a3
+- (id)beginDownloadManagerSessionWithManagerOptions:(id)options
 {
   v7 = 0;
   v8 = &v7;
@@ -145,7 +145,7 @@ id __68__SUQueueSessionManager_beginDownloadManagerSessionForDownloadKind___bloc
   block[2] = __71__SUQueueSessionManager_beginDownloadManagerSessionWithManagerOptions___block_invoke;
   block[3] = &unk_1E8165CA0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = options;
   block[6] = &v7;
   dispatch_sync(dispatchQueue, block);
   v4 = v8[5];
@@ -192,7 +192,7 @@ id __71__SUQueueSessionManager_beginDownloadManagerSessionWithManagerOptions___b
   return v8;
 }
 
-- (id)beginPreorderManagerSessionWithItemKinds:(id)a3
+- (id)beginPreorderManagerSessionWithItemKinds:(id)kinds
 {
   v7 = 0;
   v8 = &v7;
@@ -206,7 +206,7 @@ id __71__SUQueueSessionManager_beginDownloadManagerSessionWithManagerOptions___b
   block[2] = __66__SUQueueSessionManager_beginPreorderManagerSessionWithItemKinds___block_invoke;
   block[3] = &unk_1E8165CA0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = kinds;
   block[6] = &v7;
   dispatch_sync(dispatchQueue, block);
   v4 = v8[5];
@@ -245,7 +245,7 @@ void __66__SUQueueSessionManager_beginPreorderManagerSessionWithItemKinds___bloc
   }
 }
 
-- (void)endDownloadManagerSessionForManager:(id)a3
+- (void)endDownloadManagerSessionForManager:(id)manager
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -253,7 +253,7 @@ void __66__SUQueueSessionManager_beginPreorderManagerSessionWithItemKinds___bloc
   v4[2] = __61__SUQueueSessionManager_endDownloadManagerSessionForManager___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = manager;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -272,7 +272,7 @@ uint64_t __61__SUQueueSessionManager_endDownloadManagerSessionForManager___block
   return result;
 }
 
-- (void)endPreorderManagerSessionWithManager:(id)a3
+- (void)endPreorderManagerSessionWithManager:(id)manager
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -280,7 +280,7 @@ uint64_t __61__SUQueueSessionManager_endDownloadManagerSessionForManager___block
   v4[2] = __62__SUQueueSessionManager_endPreorderManagerSessionWithManager___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = manager;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -299,30 +299,30 @@ uint64_t __62__SUQueueSessionManager_endPreorderManagerSessionWithManager___bloc
   return result;
 }
 
-- (void)_endQueueSession:(id)a3 fromArray:(id)a4
+- (void)_endQueueSession:(id)session fromArray:(id)array
 {
-  v6 = [a3 count];
+  v6 = [session count];
   if (v6 < 2)
   {
 
-    [a4 removeObject:a3];
+    [array removeObject:session];
   }
 
   else
   {
 
-    [a3 setCount:v6 - 1];
+    [session setCount:v6 - 1];
   }
 }
 
-- (id)_queueSessionWithDownloadKinds:(id)a3 fromArray:(id)a4
+- (id)_queueSessionWithDownloadKinds:(id)kinds fromArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -336,7 +336,7 @@ LABEL_3:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(array);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
@@ -347,7 +347,7 @@ LABEL_3:
 
     if (v7 == ++v9)
     {
-      v7 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -358,14 +358,14 @@ LABEL_3:
   }
 }
 
-- (id)_queueSessionWithManagerOptions:(id)a3 fromArray:(id)a4
+- (id)_queueSessionWithManagerOptions:(id)options fromArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -379,7 +379,7 @@ LABEL_3:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(array);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
@@ -390,7 +390,7 @@ LABEL_3:
 
     if (v7 == ++v9)
     {
-      v7 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -401,14 +401,14 @@ LABEL_3:
   }
 }
 
-- (id)_queueSessionWithQueue:(id)a3 fromArray:(id)a4
+- (id)_queueSessionWithQueue:(id)queue fromArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -422,18 +422,18 @@ LABEL_3:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(array);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([v10 queue] == a3)
+    if ([v10 queue] == queue)
     {
       return v10;
     }
 
     if (v7 == ++v9)
     {
-      v7 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [array countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         goto LABEL_3;

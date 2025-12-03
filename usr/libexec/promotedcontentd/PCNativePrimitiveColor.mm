@@ -1,14 +1,14 @@
 @interface PCNativePrimitiveColor
-- (id)initWithString:(id)a3;
+- (id)initWithString:(id)string;
 @end
 
 @implementation PCNativePrimitiveColor
 
-- (id)initWithString:(id)a3
+- (id)initWithString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 length] == 6 || objc_msgSend(v5, "length") == 8))
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy && ([stringCopy length] == 6 || objc_msgSend(v5, "length") == 8))
   {
     v6 = strtol([v5 cStringUsingEncoding:4], 0, 16);
     if ([v5 length] == 6)

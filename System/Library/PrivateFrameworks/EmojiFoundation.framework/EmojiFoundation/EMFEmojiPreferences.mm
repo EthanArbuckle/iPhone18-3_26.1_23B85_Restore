@@ -1,53 +1,53 @@
 @interface EMFEmojiPreferences
-+ (id)_cachedFlagCategoryEmoji:(id)a3;
++ (id)_cachedFlagCategoryEmoji:(id)emoji;
 + (id)_recentEmojiStrings;
-+ (id)_recentStringsInCharacterSet:(id)a3;
++ (id)_recentStringsInCharacterSet:(id)set;
 - (BOOL)hasDisplayedSkinToneHelp;
-- (BOOL)hasLastUsedVariantForEmoji:(id)a3;
-- (BOOL)recordEmojiEngagement:(id)a3 keyword:(id)a4 localeIdentifier:(id)a5;
-- (BOOL)shouldCountEmojiStringForUsageHistory:(id)a3;
+- (BOOL)hasLastUsedVariantForEmoji:(id)emoji;
+- (BOOL)recordEmojiEngagement:(id)engagement keyword:(id)keyword localeIdentifier:(id)identifier;
+- (BOOL)shouldCountEmojiStringForUsageHistory:(id)history;
 - (EMFEmojiPreferences)init;
 - (NSArray)recentEmojis;
 - (NSString)previouslyUsedCategory;
-- (double)scoreForEmojiString:(id)a3;
-- (double)scoreForEmojiStringUnsafe:(id)a3;
-- (double)scoreForSequence:(int64_t)a3;
-- (double)scoreForSequenceUnsafe:(int64_t)a3;
-- (id)copySortedEmojis:(id)a3 keyword:(id)a4 localeIdentifier:(id)a5;
-- (id)lastUsedVariantEmojiForEmoji:(id)a3;
-- (id)recentEmojisByFillingWithPrepopulatedEmojisUpTo:(unint64_t)a3;
-- (id)recentVariantEmojiForEmoji:(id)a3;
-- (id)recentsInCharacterSet:(id)a3;
-- (id)typingNameForEmoji:(id)a3;
-- (id)valueForKeyInLocalCachedDefaultsThreadsafe:(id)a3;
-- (unint64_t)previouslyUsedIndexInCategory:(id)a3;
+- (double)scoreForEmojiString:(id)string;
+- (double)scoreForEmojiStringUnsafe:(id)unsafe;
+- (double)scoreForSequence:(int64_t)sequence;
+- (double)scoreForSequenceUnsafe:(int64_t)unsafe;
+- (id)copySortedEmojis:(id)emojis keyword:(id)keyword localeIdentifier:(id)identifier;
+- (id)lastUsedVariantEmojiForEmoji:(id)emoji;
+- (id)recentEmojisByFillingWithPrepopulatedEmojisUpTo:(unint64_t)to;
+- (id)recentVariantEmojiForEmoji:(id)emoji;
+- (id)recentsInCharacterSet:(id)set;
+- (id)typingNameForEmoji:(id)emoji;
+- (id)valueForKeyInLocalCachedDefaultsThreadsafe:(id)threadsafe;
+- (unint64_t)previouslyUsedIndexInCategory:(id)category;
 - (void)_checkForDingbatDuplicates;
 - (void)_cleanUpOldFlagsCaches;
 - (void)_forceReadEmojiDefaults;
 - (void)_pruneInvalidEmojiFromHistory;
 - (void)_pruneOldestEmojiUsageFromHistory;
 - (void)_readPreferencesFromDefaults;
-- (void)_setRecentStrings:(id)a3;
-- (void)adaptationControllerForLocaleIdentifier:(id)a3;
+- (void)_setRecentStrings:(id)strings;
+- (void)adaptationControllerForLocaleIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)didDisplaySkinToneHelp;
-- (void)didUseEmoji:(id)a3 usageMode:(id)a4 typingName:(id)a5;
-- (void)didUseEmoji:(id)a3 usageMode:(id)a4 typingName:(id)a5 replacementContext:(id)a6;
-- (void)didUseEmoji:(id)a3 usageSource:(unint64_t)a4 replacementContext:(id)a5 searchQuery:(id)a6 resultPosition:(id)a7 numberSearchQueriesRun:(id)a8 wasPositiveEngagement:(BOOL)a9;
-- (void)didUseEmojiInEmojiKeyboardPalette:(id)a3 wasFromRecentsSection:(BOOL)a4;
-- (void)didViewEmojiIndex:(int64_t)a3 forCategory:(id)a4;
+- (void)didUseEmoji:(id)emoji usageMode:(id)mode typingName:(id)name;
+- (void)didUseEmoji:(id)emoji usageMode:(id)mode typingName:(id)name replacementContext:(id)context;
+- (void)didUseEmoji:(id)emoji usageSource:(unint64_t)source replacementContext:(id)context searchQuery:(id)query resultPosition:(id)position numberSearchQueriesRun:(id)run wasPositiveEngagement:(BOOL)engagement;
+- (void)didUseEmojiInEmojiKeyboardPalette:(id)palette wasFromRecentsSection:(BOOL)section;
+- (void)didViewEmojiIndex:(int64_t)index forCategory:(id)category;
 - (void)loadDefaultsIfNecessaryThreadSafe;
-- (void)migrateFromMajorOSVersion:(int64_t)a3;
-- (void)migrateInDidDisplaySkinToneHelp:(BOOL)a3;
-- (void)migrateInPreviouslyUsedCategory:(id)a3;
-- (void)migrateInPreviouslyUsedCategoryIndexes:(id)a3;
-- (void)migrateInRecentEmoji:(id)a3 usages:(id)a4 typingNames:(id)a5;
-- (void)migrateInSkinTonePreferences:(id)a3;
+- (void)migrateFromMajorOSVersion:(int64_t)version;
+- (void)migrateInDidDisplaySkinToneHelp:(BOOL)help;
+- (void)migrateInPreviouslyUsedCategory:(id)category;
+- (void)migrateInPreviouslyUsedCategoryIndexes:(id)indexes;
+- (void)migrateInRecentEmoji:(id)emoji usages:(id)usages typingNames:(id)names;
+- (void)migrateInSkinTonePreferences:(id)preferences;
 - (void)readEmojiDefaults;
 - (void)resetEmojiDefaults;
-- (void)signalEngagementToUnifiedRecencyServiceForEmoji:(id)a3;
-- (void)sortedEmojis:(id)a3 keyword:(id)a4 localeIdentifier:(id)a5 handler:(id)a6;
-- (void)writeEmojiDefaultsThreadSafeAndNotify:(BOOL)a3;
+- (void)signalEngagementToUnifiedRecencyServiceForEmoji:(id)emoji;
+- (void)sortedEmojis:(id)emojis keyword:(id)keyword localeIdentifier:(id)identifier handler:(id)handler;
+- (void)writeEmojiDefaultsThreadSafeAndNotify:(BOOL)notify;
 @end
 
 @implementation EMFEmojiPreferences
@@ -77,8 +77,8 @@
 
 + (id)_recentEmojiStrings
 {
-  v3 = [MEMORY[0x1E696AB08] _emojiCharacterSet];
-  v4 = [a1 _recentStringsInCharacterSet:v3];
+  _emojiCharacterSet = [MEMORY[0x1E696AB08] _emojiCharacterSet];
+  v4 = [self _recentStringsInCharacterSet:_emojiCharacterSet];
 
   return v4;
 }
@@ -261,11 +261,11 @@ void __52__EMFEmojiPreferences__pruneInvalidEmojiFromHistory__block_invoke(uint6
   }
 }
 
-+ (id)_recentStringsInCharacterSet:(id)a3
++ (id)_recentStringsInCharacterSet:(id)set
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([a1 deviceStateIsLocked])
+  setCopy = set;
+  if ([self deviceStateIsLocked])
   {
     v5 = [EMFEmojiCategory _emojiSetForIdentifier:@"EMFEmojiCategoryPrepopulated"];
   }
@@ -274,7 +274,7 @@ void __52__EMFEmojiPreferences__pruneInvalidEmojiFromHistory__block_invoke(uint6
   {
     v6 = objc_alloc_init(EMFEmojiPreferences);
     [(EMFEmojiPreferences *)v6 loadDefaultsIfNecessaryThreadSafe];
-    if (v4)
+    if (setCopy)
     {
       v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableArray count](v6->_recents, "count")}];
       v15 = 0u;
@@ -296,7 +296,7 @@ void __52__EMFEmojiPreferences__pruneInvalidEmojiFromHistory__block_invoke(uint6
             }
 
             v11 = *(*(&v13 + 1) + 8 * i);
-            if ([v11 rangeOfCharacterFromSet:v4] != 0x7FFFFFFFFFFFFFFFLL)
+            if ([v11 rangeOfCharacterFromSet:setCopy] != 0x7FFFFFFFFFFFFFFFLL)
             {
               [(NSMutableArray *)v5 addObject:v11];
             }
@@ -318,41 +318,41 @@ void __52__EMFEmojiPreferences__pruneInvalidEmojiFromHistory__block_invoke(uint6
   return v5;
 }
 
-- (id)recentEmojisByFillingWithPrepopulatedEmojisUpTo:(unint64_t)a3
+- (id)recentEmojisByFillingWithPrepopulatedEmojisUpTo:(unint64_t)to
 {
-  if (a3)
+  if (to)
   {
-    v3 = a3;
+    toCopy = to;
   }
 
   else
   {
-    v3 = 500;
+    toCopy = 500;
   }
 
-  v4 = [(EMFEmojiPreferences *)self recentEmojis];
-  v5 = [v4 copy];
+  recentEmojis = [(EMFEmojiPreferences *)self recentEmojis];
+  v5 = [recentEmojis copy];
 
-  if (v3 <= [v5 count])
+  if (toCopy <= [v5 count])
   {
-    v13 = [v5 subarrayWithRange:{0, v3}];
+    v13 = [v5 subarrayWithRange:{0, toCopy}];
   }
 
   else
   {
     v6 = [EMFEmojiCategory _emojiSetForIdentifier:@"EMFEmojiCategoryPrepopulated"];
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v3];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:toCopy];
     [v7 addObjectsFromArray:v5];
     v8 = [v6 count];
     v9 = [v7 count];
-    if (v3 >= v8)
+    if (toCopy >= v8)
     {
       v10 = v8;
     }
 
     else
     {
-      v10 = v3;
+      v10 = toCopy;
     }
 
     v11 = v10 - v9;
@@ -386,15 +386,15 @@ void __52__EMFEmojiPreferences__pruneInvalidEmojiFromHistory__block_invoke(uint6
 
 - (NSArray)recentEmojis
 {
-  v3 = [MEMORY[0x1E696AB08] _emojiCharacterSet];
-  v4 = [(EMFEmojiPreferences *)self recentsInCharacterSet:v3];
+  _emojiCharacterSet = [MEMORY[0x1E696AB08] _emojiCharacterSet];
+  v4 = [(EMFEmojiPreferences *)self recentsInCharacterSet:_emojiCharacterSet];
 
   return v4;
 }
 
-- (id)recentsInCharacterSet:(id)a3
+- (id)recentsInCharacterSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   [(EMFEmojiPreferences *)self loadDefaultsIfNecessaryThreadSafe];
   v13 = 0;
   v14 = &v13;
@@ -407,10 +407,10 @@ void __52__EMFEmojiPreferences__pruneInvalidEmojiFromHistory__block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __45__EMFEmojiPreferences_recentsInCharacterSet___block_invoke;
   block[3] = &unk_1E7A5F940;
-  v11 = v4;
+  v11 = setCopy;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = setCopy;
   dispatch_sync(v5, block);
 
   v7 = v14[5];
@@ -483,9 +483,9 @@ void __45__EMFEmojiPreferences_recentsInCharacterSet___block_invoke(void *a1)
   }
 }
 
-- (id)valueForKeyInLocalCachedDefaultsThreadsafe:(id)a3
+- (id)valueForKeyInLocalCachedDefaultsThreadsafe:(id)threadsafe
 {
-  v4 = a3;
+  threadsafeCopy = threadsafe;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -497,10 +497,10 @@ void __45__EMFEmojiPreferences_recentsInCharacterSet___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___block_invoke;
   block[3] = &unk_1E7A5F968;
-  v10 = v4;
+  v10 = threadsafeCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = threadsafeCopy;
   dispatch_sync(v5, block);
 
   v7 = v13[5];
@@ -529,16 +529,16 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
 {
   [(EMFEmojiPreferences *)self loadDefaultsIfNecessaryThreadSafe];
   v3 = [(EMFEmojiPreferences *)self valueForKeyInLocalCachedDefaultsThreadsafe:@"EMFDidDisplaySkinToneHelpKey"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)adaptationControllerForLocaleIdentifier:(id)a3
+- (void)adaptationControllerForLocaleIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:a3];
-  v5 = [v4 languageCode];
-  std::string::basic_string[abi:ne200100]<0>(v14, [v5 UTF8String]);
+  v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:identifier];
+  languageCode = [v4 languageCode];
+  std::string::basic_string[abi:ne200100]<0>(v14, [languageCode UTF8String]);
 
   ptr = self->_adaptationController.__ptr_;
   p_adaptationController = &self->_adaptationController;
@@ -579,17 +579,17 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
   return v11;
 }
 
-- (BOOL)recordEmojiEngagement:(id)a3 keyword:(id)a4 localeIdentifier:(id)a5
+- (BOOL)recordEmojiEngagement:(id)engagement keyword:(id)keyword localeIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  engagementCopy = engagement;
+  keywordCopy = keyword;
+  identifierCopy = identifier;
+  if (keywordCopy)
   {
-    v11 = [(EMFEmojiPreferences *)self adaptationControllerForLocaleIdentifier:v10];
-    std::string::basic_string[abi:ne200100]<0>(v22, [v8 UTF8String]);
-    v12 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v10];
-    v13 = [v9 lowercaseStringWithLocale:v12];
+    v11 = [(EMFEmojiPreferences *)self adaptationControllerForLocaleIdentifier:identifierCopy];
+    std::string::basic_string[abi:ne200100]<0>(v22, [engagementCopy UTF8String]);
+    v12 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:identifierCopy];
+    v13 = [keywordCopy lowercaseStringWithLocale:v12];
     std::string::basic_string[abi:ne200100]<0>(__p, [v13 UTF8String]);
 
     if ((v21 & 0x80u) == 0)
@@ -652,14 +652,14 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
   return v18;
 }
 
-- (id)copySortedEmojis:(id)a3 keyword:(id)a4 localeIdentifier:(id)a5
+- (id)copySortedEmojis:(id)emojis keyword:(id)keyword localeIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(EMFEmojiPreferences *)self adaptationControllerForLocaleIdentifier:v10];
-  v12 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v10];
-  v13 = [v9 lowercaseStringWithLocale:v12];
+  emojisCopy = emojis;
+  keywordCopy = keyword;
+  identifierCopy = identifier;
+  v11 = [(EMFEmojiPreferences *)self adaptationControllerForLocaleIdentifier:identifierCopy];
+  v12 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:identifierCopy];
+  v13 = [keywordCopy lowercaseStringWithLocale:v12];
   std::string::basic_string[abi:ne200100]<0>(v36, [v13 UTF8String]);
 
   if ((v37 & 0x80u) == 0)
@@ -685,7 +685,7 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
   CEM::AdaptationDatabaseController::getRecentEmojisForString(v11, v14, v15, &v34);
   if (v34 == v35)
   {
-    v19 = [v8 copy];
+    v19 = [emojisCopy copy];
   }
 
   else
@@ -696,14 +696,14 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
     while (1)
     {
       v31 = v16;
-      if (v16 >= [v8 count])
+      if (v16 >= [emojisCopy count])
       {
         break;
       }
 
-      v17 = [v8 objectAtIndexedSubscript:v31];
-      v18 = [v17 string];
-      std::string::basic_string[abi:ne200100]<0>(__p, [v18 UTF8String]);
+      v17 = [emojisCopy objectAtIndexedSubscript:v31];
+      string = [v17 string];
+      std::string::basic_string[abi:ne200100]<0>(__p, [string UTF8String]);
 
       std::__hash_table<std::__hash_value_type<std::string,unsigned long>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,unsigned long>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,unsigned long>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,unsigned long>>>::__emplace_unique_key_args<std::string,std::string&,long &>(v32, __p);
       if (v30 < 0)
@@ -714,7 +714,7 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
       v16 = v31 + 1;
     }
 
-    v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(emojisCopy, "count")}];
     v20 = v34;
     v21 = v35;
     while (v20 != v21)
@@ -723,7 +723,7 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
       v23 = v22;
       if (v22)
       {
-        v24 = [v8 objectAtIndexedSubscript:v22[5]];
+        v24 = [emojisCopy objectAtIndexedSubscript:v22[5]];
         [v19 addObject:v24];
 
         std::__hash_table<std::__hash_value_type<std::string,unsigned long>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,unsigned long>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,unsigned long>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,unsigned long>>>::erase(v32, v23);
@@ -732,11 +732,11 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
       v20 += 3;
     }
 
-    for (i = 0; i < [v8 count]; ++i)
+    for (i = 0; i < [emojisCopy count]; ++i)
     {
-      v26 = [v8 objectAtIndexedSubscript:i];
-      v27 = [v26 string];
-      std::string::basic_string[abi:ne200100]<0>(__p, [v27 UTF8String]);
+      v26 = [emojisCopy objectAtIndexedSubscript:i];
+      string2 = [v26 string];
+      std::string::basic_string[abi:ne200100]<0>(__p, [string2 UTF8String]);
 
       if (std::__hash_table<std::__hash_value_type<std::string,std::weak_ptr<CEM::AdaptationDatabase>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::weak_ptr<CEM::AdaptationDatabase>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::weak_ptr<CEM::AdaptationDatabase>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::weak_ptr<CEM::AdaptationDatabase>>>>::find<std::string>(v32, __p))
       {
@@ -762,14 +762,14 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
   return v19;
 }
 
-- (void)sortedEmojis:(id)a3 keyword:(id)a4 localeIdentifier:(id)a5 handler:(id)a6
+- (void)sortedEmojis:(id)emojis keyword:(id)keyword localeIdentifier:(id)identifier handler:(id)handler
 {
-  v11 = a6;
-  v10 = [(EMFEmojiPreferences *)self copySortedEmojis:a3 keyword:a4 localeIdentifier:a5];
-  v11[2](v11, v10);
+  handlerCopy = handler;
+  v10 = [(EMFEmojiPreferences *)self copySortedEmojis:emojis keyword:keyword localeIdentifier:identifier];
+  handlerCopy[2](handlerCopy, v10);
 }
 
-- (void)writeEmojiDefaultsThreadSafeAndNotify:(BOOL)a3
+- (void)writeEmojiDefaultsThreadSafeAndNotify:(BOOL)notify
 {
   if (!+[EMFEmojiPreferences deviceStateIsLocked])
   {
@@ -803,7 +803,7 @@ void __66__EMFEmojiPreferences_valueForKeyInLocalCachedDefaultsThreadsafe___bloc
       v8[2] = __61__EMFEmojiPreferences_writeEmojiDefaultsThreadSafeAndNotify___block_invoke_3;
       v8[3] = &unk_1E7A5F9E0;
       v8[4] = self;
-      v9 = a3;
+      notifyCopy = notify;
       dispatch_sync(v7, v8);
     }
 
@@ -927,7 +927,7 @@ uint64_t __41__EMFEmojiPreferences_resetEmojiDefaults__block_invoke(uint64_t a1)
   [(EMFEmojiPreferences *)self readEmojiDefaults];
 }
 
-- (void)migrateFromMajorOSVersion:(int64_t)a3
+- (void)migrateFromMajorOSVersion:(int64_t)version
 {
   [(EMFEmojiPreferences *)self _checkForDingbatDuplicates];
   [(EMFEmojiPreferences *)self _cleanUpOldFlagsCaches];
@@ -1225,23 +1225,23 @@ void __45__EMFEmojiPreferences__cleanUpOldFlagsCaches__block_invoke()
   [v16 synchronize];
 }
 
-- (void)migrateInRecentEmoji:(id)a3 usages:(id)a4 typingNames:(id)a5
+- (void)migrateInRecentEmoji:(id)emoji usages:(id)usages typingNames:(id)names
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  emojiCopy = emoji;
+  usagesCopy = usages;
+  namesCopy = names;
   v11 = _getSharedSerialOperationQueue();
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__EMFEmojiPreferences_migrateInRecentEmoji_usages_typingNames___block_invoke;
   v15[3] = &unk_1E7A5FA08;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = usagesCopy;
+  selfCopy = self;
+  v18 = emojiCopy;
+  v19 = namesCopy;
+  v12 = namesCopy;
+  v13 = emojiCopy;
+  v14 = usagesCopy;
   dispatch_sync(v11, v15);
 }
 
@@ -1395,17 +1395,17 @@ LABEL_37:
   [*(a1 + 40) setIsDefaultDirty:1];
 }
 
-- (void)migrateInSkinTonePreferences:(id)a3
+- (void)migrateInSkinTonePreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = _getSharedSerialOperationQueue();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__EMFEmojiPreferences_migrateInSkinTonePreferences___block_invoke;
   v7[3] = &unk_1E7A5FA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = preferencesCopy;
+  v6 = preferencesCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -1435,17 +1435,17 @@ uint64_t __52__EMFEmojiPreferences_migrateInSkinTonePreferences___block_invoke(u
   return [v9 setIsDefaultDirty:1];
 }
 
-- (void)migrateInPreviouslyUsedCategory:(id)a3
+- (void)migrateInPreviouslyUsedCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = _getSharedSerialOperationQueue();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__EMFEmojiPreferences_migrateInPreviouslyUsedCategory___block_invoke;
   v7[3] = &unk_1E7A5FA30;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = categoryCopy;
+  selfCopy = self;
+  v6 = categoryCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -1469,17 +1469,17 @@ uint64_t __55__EMFEmojiPreferences_migrateInPreviouslyUsedCategory___block_invok
   return [v5 setIsDefaultDirty:1];
 }
 
-- (void)migrateInPreviouslyUsedCategoryIndexes:(id)a3
+- (void)migrateInPreviouslyUsedCategoryIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v5 = _getSharedSerialOperationQueue();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__EMFEmojiPreferences_migrateInPreviouslyUsedCategoryIndexes___block_invoke;
   v7[3] = &unk_1E7A5FA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = indexesCopy;
+  v6 = indexesCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -1509,7 +1509,7 @@ uint64_t __62__EMFEmojiPreferences_migrateInPreviouslyUsedCategoryIndexes___bloc
   return [v9 setIsDefaultDirty:1];
 }
 
-- (void)migrateInDidDisplaySkinToneHelp:(BOOL)a3
+- (void)migrateInDidDisplaySkinToneHelp:(BOOL)help
 {
   v5 = _getSharedSerialOperationQueue();
   v6[0] = MEMORY[0x1E69E9820];
@@ -1517,7 +1517,7 @@ uint64_t __62__EMFEmojiPreferences_migrateInPreviouslyUsedCategoryIndexes___bloc
   v6[2] = __55__EMFEmojiPreferences_migrateInDidDisplaySkinToneHelp___block_invoke;
   v6[3] = &unk_1E7A5F9E0;
   v6[4] = self;
-  v7 = a3;
+  helpCopy = help;
   dispatch_sync(v5, v6);
 }
 
@@ -1532,9 +1532,9 @@ uint64_t __55__EMFEmojiPreferences_migrateInDidDisplaySkinToneHelp___block_invok
   return [v4 setIsDefaultDirty:1];
 }
 
-- (double)scoreForSequenceUnsafe:(int64_t)a3
+- (double)scoreForSequenceUnsafe:(int64_t)unsafe
 {
-  v3 = self->_currentSequence - a3;
+  v3 = self->_currentSequence - unsafe;
   if (v3 < 1)
   {
     return 0.0;
@@ -1546,7 +1546,7 @@ uint64_t __55__EMFEmojiPreferences_migrateInDidDisplaySkinToneHelp___block_invok
   }
 }
 
-- (double)scoreForSequence:(int64_t)a3
+- (double)scoreForSequence:(int64_t)sequence
 {
   v9 = 0;
   v10 = &v9;
@@ -1558,7 +1558,7 @@ uint64_t __55__EMFEmojiPreferences_migrateInDidDisplaySkinToneHelp___block_invok
   block[2] = __40__EMFEmojiPreferences_scoreForSequence___block_invoke;
   block[3] = &unk_1E7A5FA58;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = sequence;
   block[4] = self;
   dispatch_sync(v5, block);
 
@@ -1584,10 +1584,10 @@ void *__40__EMFEmojiPreferences_scoreForSequence___block_invoke(void *result)
   return result;
 }
 
-- (double)scoreForEmojiStringUnsafe:(id)a3
+- (double)scoreForEmojiStringUnsafe:(id)unsafe
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_usageHistory objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_usageHistory objectForKey:unsafe];
   v5 = v4;
   if (v4)
   {
@@ -1634,10 +1634,10 @@ void *__40__EMFEmojiPreferences_scoreForSequence___block_invoke(void *result)
   return v9;
 }
 
-- (double)scoreForEmojiString:(id)a3
+- (double)scoreForEmojiString:(id)string
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1651,7 +1651,7 @@ void *__40__EMFEmojiPreferences_scoreForSequence___block_invoke(void *result)
   block[3] = &unk_1E7A5F968;
   v21 = &v22;
   block[4] = self;
-  v6 = v4;
+  v6 = stringCopy;
   v20 = v6;
   dispatch_sync(v5, block);
 
@@ -1709,10 +1709,10 @@ uint64_t __43__EMFEmojiPreferences_scoreForEmojiString___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)signalEngagementToUnifiedRecencyServiceForEmoji:(id)a3
+- (void)signalEngagementToUnifiedRecencyServiceForEmoji:(id)emoji
 {
-  v3 = a3;
-  v4 = StickersLibraryCore(v3);
+  emojiCopy = emoji;
+  v4 = StickersLibraryCore(emojiCopy);
   if (v4)
   {
     v17 = 0;
@@ -1738,13 +1738,13 @@ uint64_t __43__EMFEmojiPreferences_scoreForEmojiString___block_invoke(void *a1)
     v7 = objc_alloc_init(v5);
     if (v7)
     {
-      v8 = [v3 string];
+      string = [emojiCopy string];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __71__EMFEmojiPreferences_signalEngagementToUnifiedRecencyServiceForEmoji___block_invoke;
       v10[3] = &unk_1E7A5FA80;
-      v11 = v3;
-      [v7 didUseEmoji:v8 completionHandler:v10];
+      v11 = emojiCopy;
+      [v7 didUseEmoji:string completionHandler:v10];
 
       v9 = v11;
     }
@@ -1796,41 +1796,41 @@ void __71__EMFEmojiPreferences_signalEngagementToUnifiedRecencyServiceForEmoji__
   }
 }
 
-- (void)didUseEmoji:(id)a3 usageSource:(unint64_t)a4 replacementContext:(id)a5 searchQuery:(id)a6 resultPosition:(id)a7 numberSearchQueriesRun:(id)a8 wasPositiveEngagement:(BOOL)a9
+- (void)didUseEmoji:(id)emoji usageSource:(unint64_t)source replacementContext:(id)context searchQuery:(id)query resultPosition:(id)position numberSearchQueriesRun:(id)run wasPositiveEngagement:(BOOL)engagement
 {
-  v25 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  emojiCopy = emoji;
+  contextCopy = context;
+  queryCopy = query;
+  positionCopy = position;
+  runCopy = run;
   v19 = objc_alloc_init(EMFDPEventDispatcher);
-  LOBYTE(v24) = a9;
-  [(EMFDPEventDispatcher *)v19 didUseEmoji:v25 usageSource:a4 replacementContext:v15 searchQuery:v16 resultPosition:v17 numberSearchQueriesRun:v18 wasPositiveEngagement:v24];
-  if (v15)
+  LOBYTE(v24) = engagement;
+  [(EMFDPEventDispatcher *)v19 didUseEmoji:emojiCopy usageSource:source replacementContext:contextCopy searchQuery:queryCopy resultPosition:positionCopy numberSearchQueriesRun:runCopy wasPositiveEngagement:v24];
+  if (contextCopy)
   {
-    v20 = v15;
+    v20 = contextCopy;
   }
 
   else
   {
-    v20 = v16;
+    v20 = queryCopy;
   }
 
   v21 = v20;
   if (v21)
   {
-    v22 = [v25 string];
-    v23 = [v25 localeIdentifier];
-    [(EMFEmojiPreferences *)self recordEmojiEngagement:v22 keyword:v21 localeIdentifier:v23];
+    string = [emojiCopy string];
+    localeIdentifier = [emojiCopy localeIdentifier];
+    [(EMFEmojiPreferences *)self recordEmojiEngagement:string keyword:v21 localeIdentifier:localeIdentifier];
   }
 
-  [(EMFEmojiPreferences *)self didUseEmoji:v25 usageMode:0];
-  [(EMFEmojiPreferences *)self signalEngagementToUnifiedRecencyServiceForEmoji:v25];
+  [(EMFEmojiPreferences *)self didUseEmoji:emojiCopy usageMode:0];
+  [(EMFEmojiPreferences *)self signalEngagementToUnifiedRecencyServiceForEmoji:emojiCopy];
 }
 
-- (void)didUseEmojiInEmojiKeyboardPalette:(id)a3 wasFromRecentsSection:(BOOL)a4
+- (void)didUseEmojiInEmojiKeyboardPalette:(id)palette wasFromRecentsSection:(BOOL)section
 {
-  if (a4)
+  if (section)
   {
     v4 = 2;
   }
@@ -1841,29 +1841,29 @@ void __71__EMFEmojiPreferences_signalEngagementToUnifiedRecencyServiceForEmoji__
   }
 
   LOBYTE(v5) = 1;
-  [(EMFEmojiPreferences *)self didUseEmoji:a3 usageSource:v4 replacementContext:0 searchQuery:0 resultPosition:0 numberSearchQueriesRun:0 wasPositiveEngagement:v5];
+  [(EMFEmojiPreferences *)self didUseEmoji:palette usageSource:v4 replacementContext:0 searchQuery:0 resultPosition:0 numberSearchQueriesRun:0 wasPositiveEngagement:v5];
 }
 
-- (void)didUseEmoji:(id)a3 usageMode:(id)a4 typingName:(id)a5 replacementContext:(id)a6
+- (void)didUseEmoji:(id)emoji usageMode:(id)mode typingName:(id)name replacementContext:(id)context
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  emojiCopy = emoji;
+  modeCopy = mode;
+  nameCopy = name;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v13 = [v15 string];
-    v14 = [v15 localeIdentifier];
-    [(EMFEmojiPreferences *)self recordEmojiEngagement:v13 keyword:v12 localeIdentifier:v14];
+    string = [emojiCopy string];
+    localeIdentifier = [emojiCopy localeIdentifier];
+    [(EMFEmojiPreferences *)self recordEmojiEngagement:string keyword:contextCopy localeIdentifier:localeIdentifier];
   }
 
-  [(EMFEmojiPreferences *)self didUseEmoji:v15 usageMode:v10 typingName:v11];
+  [(EMFEmojiPreferences *)self didUseEmoji:emojiCopy usageMode:modeCopy typingName:nameCopy];
 }
 
-- (void)didUseEmoji:(id)a3 usageMode:(id)a4 typingName:(id)a5
+- (void)didUseEmoji:(id)emoji usageMode:(id)mode typingName:(id)name
 {
-  v7 = a3;
-  v8 = a5;
+  emojiCopy = emoji;
+  nameCopy = name;
   if (!+[EMFEmojiPreferences deviceStateIsLocked])
   {
     [(EMFEmojiPreferences *)self loadDefaultsIfNecessaryThreadSafe];
@@ -1879,9 +1879,9 @@ void __71__EMFEmojiPreferences_signalEngagementToUnifiedRecencyServiceForEmoji__
     v10[2] = __56__EMFEmojiPreferences_didUseEmoji_usageMode_typingName___block_invoke;
     v10[3] = &unk_1E7A5FAA8;
     v10[4] = self;
-    v11 = v8;
+    v11 = nameCopy;
     v13 = v14;
-    v12 = v7;
+    v12 = emojiCopy;
     dispatch_sync(v9, v10);
 
     _Block_object_dispose(v14, 8);
@@ -2063,20 +2063,20 @@ void __56__EMFEmojiPreferences_didUseEmoji_usageMode_typingName___block_invoke(u
   }
 }
 
-- (BOOL)shouldCountEmojiStringForUsageHistory:(id)a3
+- (BOOL)shouldCountEmojiStringForUsageHistory:(id)history
 {
-  v3 = a3;
+  historyCopy = history;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [v3 length];
+  v4 = [historyCopy length];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__EMFEmojiPreferences_shouldCountEmojiStringForUsageHistory___block_invoke;
   v7[3] = &unk_1E7A5FAD0;
   v7[4] = &v8;
-  [v3 _enumerateEmojiTokensInRange:0 block:{v4, v7}];
+  [historyCopy _enumerateEmojiTokensInRange:0 block:{v4, v7}];
   v5 = v9[3] == 1;
   _Block_object_dispose(&v8, 8);
 
@@ -2093,19 +2093,19 @@ uint64_t __61__EMFEmojiPreferences_shouldCountEmojiStringForUsageHistory___block
   return result;
 }
 
-- (void)didViewEmojiIndex:(int64_t)a3 forCategory:(id)a4
+- (void)didViewEmojiIndex:(int64_t)index forCategory:(id)category
 {
-  v6 = a4;
+  categoryCopy = category;
   [(EMFEmojiPreferences *)self loadDefaultsIfNecessaryThreadSafe];
   v7 = _getSharedSerialOperationQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__EMFEmojiPreferences_didViewEmojiIndex_forCategory___block_invoke;
   block[3] = &unk_1E7A5FAF8;
-  v10 = v6;
-  v11 = a3;
+  v10 = categoryCopy;
+  indexCopy = index;
   block[4] = self;
-  v8 = v6;
+  v8 = categoryCopy;
   dispatch_sync(v7, block);
 }
 
@@ -2158,9 +2158,9 @@ uint64_t __45__EMFEmojiPreferences_didDisplaySkinToneHelp__block_invoke(uint64_t
   return [v3 setIsDefaultDirty:1];
 }
 
-- (BOOL)hasLastUsedVariantForEmoji:(id)a3
+- (BOOL)hasLastUsedVariantForEmoji:(id)emoji
 {
-  v4 = a3;
+  emojiCopy = emoji;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -2170,15 +2170,15 @@ uint64_t __45__EMFEmojiPreferences_didDisplaySkinToneHelp__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __50__EMFEmojiPreferences_hasLastUsedVariantForEmoji___block_invoke;
   block[3] = &unk_1E7A5F940;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  v9 = v4;
-  v6 = v4;
+  v9 = emojiCopy;
+  v6 = emojiCopy;
   dispatch_sync(v5, block);
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(emojiCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return emojiCopy;
 }
 
 void __50__EMFEmojiPreferences_hasLastUsedVariantForEmoji___block_invoke(uint64_t a1)
@@ -2210,24 +2210,24 @@ void __50__EMFEmojiPreferences_hasLastUsedVariantForEmoji___block_invoke(uint64_
   }
 }
 
-- (id)recentVariantEmojiForEmoji:(id)a3
+- (id)recentVariantEmojiForEmoji:(id)emoji
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__5;
   v16 = __Block_byref_object_dispose__5;
-  v4 = a3;
-  v17 = v4;
+  emojiCopy = emoji;
+  v17 = emojiCopy;
   v5 = _getSharedSerialOperationQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__EMFEmojiPreferences_recentVariantEmojiForEmoji___block_invoke;
   block[3] = &unk_1E7A5FB20;
   block[4] = self;
-  v10 = v4;
+  v10 = emojiCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = emojiCopy;
   dispatch_sync(v5, block);
 
   v7 = v13[5];
@@ -2278,18 +2278,18 @@ void __50__EMFEmojiPreferences_recentVariantEmojiForEmoji___block_invoke(uint64_
 LABEL_11:
 }
 
-- (id)lastUsedVariantEmojiForEmoji:(id)a3
+- (id)lastUsedVariantEmojiForEmoji:(id)emoji
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 supportsSkinToneVariants];
-  v6 = v4;
+  emojiCopy = emoji;
+  supportsSkinToneVariants = [emojiCopy supportsSkinToneVariants];
+  v6 = emojiCopy;
   v7 = v6;
   v8 = v6;
-  if (v5)
+  if (supportsSkinToneVariants)
   {
-    v9 = [v6 string];
-    v10 = [EMFStringUtilities _baseStringForEmojiString:v9];
+    string = [v6 string];
+    v10 = [EMFStringUtilities _baseStringForEmojiString:string];
 
     if ([EMFEmojiCategory _isCoupleMultiSkinToneEmoji:v10])
     {
@@ -2320,7 +2320,7 @@ LABEL_11:
     v20 = __52__EMFEmojiPreferences_lastUsedVariantEmojiForEmoji___block_invoke;
     v21 = &unk_1E7A5F968;
     v24 = &v25;
-    v22 = self;
+    selfCopy = self;
     v14 = v12;
     v23 = v14;
     dispatch_sync(v13, &v18);
@@ -2328,8 +2328,8 @@ LABEL_11:
     v15 = v26[5];
     if (v15)
     {
-      v16 = [v7 localeData];
-      v8 = [EMFEmojiToken emojiTokenWithString:v15 localeData:v16];
+      localeData = [v7 localeData];
+      v8 = [EMFEmojiToken emojiTokenWithString:v15 localeData:localeData];
     }
 
     else
@@ -2353,9 +2353,9 @@ void __52__EMFEmojiPreferences_lastUsedVariantEmojiForEmoji___block_invoke(uint6
   *(v4 + 40) = v3;
 }
 
-- (unint64_t)previouslyUsedIndexInCategory:(id)a3
+- (unint64_t)previouslyUsedIndexInCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   [(EMFEmojiPreferences *)self loadDefaultsIfNecessaryThreadSafe];
   v12 = 0;
   v13 = &v12;
@@ -2367,9 +2367,9 @@ void __52__EMFEmojiPreferences_lastUsedVariantEmojiForEmoji___block_invoke(uint6
   block[2] = __53__EMFEmojiPreferences_previouslyUsedIndexInCategory___block_invoke;
   block[3] = &unk_1E7A5FB20;
   block[4] = self;
-  v10 = v4;
+  v10 = categoryCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = categoryCopy;
   dispatch_sync(v5, block);
 
   v7 = v13[3];
@@ -2388,12 +2388,12 @@ void __53__EMFEmojiPreferences_previouslyUsedIndexInCategory___block_invoke(void
   }
 }
 
-- (id)typingNameForEmoji:(id)a3
+- (id)typingNameForEmoji:(id)emoji
 {
-  v4 = a3;
+  emojiCopy = emoji;
   [(EMFEmojiPreferences *)self loadDefaultsIfNecessaryThreadSafe];
-  v5 = [v4 string];
-  v6 = [EMFStringUtilities _preferenceIndexString:v5];
+  string = [emojiCopy string];
+  v6 = [EMFStringUtilities _preferenceIndexString:string];
 
   v18 = 0;
   v19 = &v18;
@@ -2412,17 +2412,17 @@ void __53__EMFEmojiPreferences_previouslyUsedIndexInCategory___block_invoke(void
   v16 = v8;
   dispatch_sync(v7, block);
 
-  v9 = [v4 localeIdentifier];
+  localeIdentifier = [emojiCopy localeIdentifier];
 
-  if (!v9 || (v10 = v19[5], [v4 localeIdentifier], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKey:", v11), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
+  if (!localeIdentifier || (v10 = v19[5], [emojiCopy localeIdentifier], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKey:", v11), firstObject = objc_claimAutoreleasedReturnValue(), v11, !firstObject))
   {
-    v13 = [v19[5] allValues];
-    v12 = [v13 firstObject];
+    allValues = [v19[5] allValues];
+    firstObject = [allValues firstObject];
   }
 
   _Block_object_dispose(&v18, 8);
 
-  return v12;
+  return firstObject;
 }
 
 uint64_t __42__EMFEmojiPreferences_typingNameForEmoji___block_invoke(void *a1)
@@ -2432,26 +2432,26 @@ uint64_t __42__EMFEmojiPreferences_typingNameForEmoji___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_cachedFlagCategoryEmoji:(id)a3
++ (id)_cachedFlagCategoryEmoji:(id)emoji
 {
-  v4 = a3;
+  emojiCopy = emoji;
   v5 = MEMORY[0x1E696AEC0];
   v6 = EMFGetDeviceBuildVersion();
-  v7 = [MEMORY[0x1E695DF58] currentLocale];
-  v8 = [v7 objectForKey:*MEMORY[0x1E695D970]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v8 = [currentLocale objectForKey:*MEMORY[0x1E695D970]];
   v9 = [v5 stringWithFormat:@"%@_%@", v6, v8];
 
-  v10 = CFPreferencesCopyAppValue(v9, [a1 _cacheDomain]);
+  v10 = CFPreferencesCopyAppValue(v9, [self _cacheDomain]);
   v11 = v10;
-  if (v4)
+  if (emojiCopy)
   {
     if (!v10)
     {
-      v11 = v4[2](v4);
+      v11 = emojiCopy[2](emojiCopy);
       if (v11)
       {
-        CFPreferencesSetAppValue(v9, v11, [a1 _cacheDomain]);
-        CFPreferencesAppSynchronize([a1 _cacheDomain]);
+        CFPreferencesSetAppValue(v9, v11, [self _cacheDomain]);
+        CFPreferencesAppSynchronize([self _cacheDomain]);
       }
     }
   }
@@ -2459,9 +2459,9 @@ uint64_t __42__EMFEmojiPreferences_typingNameForEmoji___block_invoke(void *a1)
   return v11;
 }
 
-- (void)_setRecentStrings:(id)a3
+- (void)_setRecentStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   if (!+[EMFEmojiPreferences deviceStateIsLocked])
   {
     [(EMFEmojiPreferences *)self loadDefaultsIfNecessaryThreadSafe];
@@ -2471,7 +2471,7 @@ uint64_t __42__EMFEmojiPreferences_typingNameForEmoji___block_invoke(void *a1)
     v6[2] = __50__EMFEmojiPreferences_Testing___setRecentStrings___block_invoke;
     v6[3] = &unk_1E7A5FA30;
     v6[4] = self;
-    v7 = v4;
+    v7 = stringsCopy;
     dispatch_sync(v5, v6);
   }
 }

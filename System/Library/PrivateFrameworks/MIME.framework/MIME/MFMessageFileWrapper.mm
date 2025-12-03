@@ -2,7 +2,7 @@
 - (BOOL)isImageFile;
 - (BOOL)isPDFFile;
 - (BOOL)isUnzippableFile;
-- (MFMessageFileWrapper)initWithPath:(id)a3;
+- (MFMessageFileWrapper)initWithPath:(id)path;
 - (id)contentID;
 - (id)description;
 - (id)eventUniqueID;
@@ -10,8 +10,8 @@
 - (id)filename;
 - (id)icsRepresentation;
 - (id)inferredMimeType;
-- (id)initRegularFileWithContents:(id)a3;
-- (id)initSymbolicLinkWithDestination:(id)a3;
+- (id)initRegularFileWithContents:(id)contents;
+- (id)initSymbolicLinkWithDestination:(id)destination;
 - (id)meetingStorePersistentID;
 - (id)messageID;
 - (id)mimeType;
@@ -19,22 +19,22 @@
 - (unsigned)creator;
 - (unsigned)finderFlags;
 - (unsigned)type;
-- (void)_isImage:(BOOL *)a3 orPDFFile:(BOOL *)a4;
+- (void)_isImage:(BOOL *)image orPDFFile:(BOOL *)file;
 - (void)dealloc;
-- (void)setCreator:(unsigned int)a3;
-- (void)setFileAttributes:(id)a3;
-- (void)setFilename:(id)a3;
-- (void)setFinderFlags:(unsigned __int16)a3;
-- (void)setPreferredFilename:(id)a3;
-- (void)setType:(unsigned int)a3;
-- (void)setURL:(id)a3;
+- (void)setCreator:(unsigned int)creator;
+- (void)setFileAttributes:(id)attributes;
+- (void)setFilename:(id)filename;
+- (void)setFinderFlags:(unsigned __int16)flags;
+- (void)setPreferredFilename:(id)filename;
+- (void)setType:(unsigned int)type;
+- (void)setURL:(id)l;
 @end
 
 @implementation MFMessageFileWrapper
 
-- (void)setType:(unsigned int)a3
+- (void)setType:(unsigned int)type
 {
-  if (a3)
+  if (type)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   }
@@ -50,15 +50,15 @@
 
 - (unsigned)type
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 fileHFSTypeCode];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  fileHFSTypeCode = [fileAttributes fileHFSTypeCode];
 
-  return v3;
+  return fileHFSTypeCode;
 }
 
-- (void)setCreator:(unsigned int)a3
+- (void)setCreator:(unsigned int)creator
 {
-  if (a3)
+  if (creator)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   }
@@ -74,15 +74,15 @@
 
 - (unsigned)creator
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 fileHFSCreatorCode];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  fileHFSCreatorCode = [fileAttributes fileHFSCreatorCode];
 
-  return v3;
+  return fileHFSCreatorCode;
 }
 
-- (void)setFinderFlags:(unsigned __int16)a3
+- (void)setFinderFlags:(unsigned __int16)flags
 {
-  if (a3)
+  if (flags)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   }
@@ -98,132 +98,132 @@
 
 - (unsigned)finderFlags
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 objectForKey:@"_MFFinderFlags"];
-  v4 = [v3 unsignedShortValue];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  v3 = [fileAttributes objectForKey:@"_MFFinderFlags"];
+  unsignedShortValue = [v3 unsignedShortValue];
 
-  return v4;
+  return unsignedShortValue;
 }
 
 - (id)mimeType
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 objectForKey:@"_MFMimeType"];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  v3 = [fileAttributes objectForKey:@"_MFMimeType"];
 
   return v3;
 }
 
 - (id)inferredMimeType
 {
-  v2 = [(MFMessageFileWrapper *)self preferredFilename];
-  v3 = _mimeTypeFromFileName(v2);
+  preferredFilename = [(MFMessageFileWrapper *)self preferredFilename];
+  v3 = _mimeTypeFromFileName(preferredFilename);
 
   return v3;
 }
 
 - (id)contentID
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 objectForKey:@"_MFContentID"];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  v3 = [fileAttributes objectForKey:@"_MFContentID"];
 
   return v3;
 }
 
 - (id)messageID
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 objectForKey:@"_MFMessageID"];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  v3 = [fileAttributes objectForKey:@"_MFMessageID"];
 
   return v3;
 }
 
 - (id)eventUniqueID
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 objectForKey:@"_MFEventUniqueID"];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  v3 = [fileAttributes objectForKey:@"_MFEventUniqueID"];
 
   return v3;
 }
 
 - (id)meetingStorePersistentID
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 objectForKey:@"_MFMeetingStorePersistentID"];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  v3 = [fileAttributes objectForKey:@"_MFMeetingStorePersistentID"];
 
   return v3;
 }
 
 - (id)icsRepresentation
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 objectForKey:@"_MFICSRepresentation"];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  v3 = [fileAttributes objectForKey:@"_MFICSRepresentation"];
 
   return v3;
 }
 
 - (id)fileProtection
 {
-  v2 = [(MFMessageFileWrapper *)self fileAttributes];
-  v3 = [v2 objectForKey:*MEMORY[0x1E696A3A0]];
+  fileAttributes = [(MFMessageFileWrapper *)self fileAttributes];
+  v3 = [fileAttributes objectForKey:*MEMORY[0x1E696A3A0]];
 
   return v3;
 }
 
-- (void)_isImage:(BOOL *)a3 orPDFFile:(BOOL *)a4
+- (void)_isImage:(BOOL *)image orPDFFile:(BOOL *)file
 {
-  v4 = a4;
-  if (a3)
+  imageCopy = file;
+  if (image)
   {
-    *a3 = 0;
+    *image = 0;
   }
 
-  if (a4)
+  if (file)
   {
-    *a4 = 0;
+    *file = 0;
   }
 
-  v15 = [(MFMessageFileWrapper *)self mimeType];
-  if ([@"application/pdf" caseInsensitiveCompare:?] && objc_msgSend(@"image/pdf", "caseInsensitiveCompare:", v15))
+  mimeType = [(MFMessageFileWrapper *)self mimeType];
+  if ([@"application/pdf" caseInsensitiveCompare:?] && objc_msgSend(@"image/pdf", "caseInsensitiveCompare:", mimeType))
   {
-    if ([v15 hasPrefix:@"image/"])
+    if ([mimeType hasPrefix:@"image/"])
     {
-      if (a3)
+      if (image)
       {
-        *a3 = 1;
+        *image = 1;
       }
 
       goto LABEL_24;
     }
 
     v7 = objc_alloc_init(MFTypeInfo);
-    v8 = [(MFMessageFileWrapper *)self preferredFilename];
-    v9 = [v8 pathExtension];
-    [(MFTypeInfo *)v7 setPathExtension:v9];
+    preferredFilename = [(MFMessageFileWrapper *)self preferredFilename];
+    pathExtension = [preferredFilename pathExtension];
+    [(MFTypeInfo *)v7 setPathExtension:pathExtension];
 
-    v10 = [(MFMessageFileWrapper *)self filename];
-    [(MFTypeInfo *)v7 setFilename:v10];
+    filename = [(MFMessageFileWrapper *)self filename];
+    [(MFTypeInfo *)v7 setFilename:filename];
 
     if (MFGetTypeInfo(v7, 1))
     {
-      v11 = [(MFTypeInfo *)v7 mimeType];
-      v12 = [v11 rangeOfString:@"image/" options:9];
+      mimeType2 = [(MFTypeInfo *)v7 mimeType];
+      v12 = [mimeType2 rangeOfString:@"image/" options:9];
 
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v13 = [(MFTypeInfo *)v7 mimeType];
-        v14 = [v13 caseInsensitiveCompare:@"application/pdf"];
+        mimeType3 = [(MFTypeInfo *)v7 mimeType];
+        v14 = [mimeType3 caseInsensitiveCompare:@"application/pdf"];
 
         if (v14)
         {
           goto LABEL_23;
         }
 
-        if (a3)
+        if (image)
         {
-          *a3 = 0;
+          *image = 0;
         }
 
-        if (!v4)
+        if (!imageCopy)
         {
           goto LABEL_23;
         }
@@ -231,11 +231,11 @@
         goto LABEL_22;
       }
 
-      v4 = a3;
-      if (a3)
+      imageCopy = image;
+      if (image)
       {
 LABEL_22:
-        *v4 = 1;
+        *imageCopy = 1;
       }
     }
 
@@ -244,14 +244,14 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (a3)
+  if (image)
   {
-    *a3 = 0;
+    *image = 0;
   }
 
-  if (v4)
+  if (imageCopy)
   {
-    *v4 = 1;
+    *imageCopy = 1;
   }
 
 LABEL_24:
@@ -273,35 +273,35 @@ LABEL_24:
 
 - (BOOL)isUnzippableFile
 {
-  v2 = [(MFMessageFileWrapper *)self preferredFilename];
-  v3 = [v2 pathExtension];
-  if ([v3 caseInsensitiveCompare:@"zip"])
+  preferredFilename = [(MFMessageFileWrapper *)self preferredFilename];
+  pathExtension = [preferredFilename pathExtension];
+  if ([pathExtension caseInsensitiveCompare:@"zip"])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v2 stringByDeletingPathExtension];
-    v6 = [v5 pathExtension];
-    v4 = [v6 length] != 0;
+    stringByDeletingPathExtension = [preferredFilename stringByDeletingPathExtension];
+    pathExtension2 = [stringByDeletingPathExtension pathExtension];
+    v4 = [pathExtension2 length] != 0;
   }
 
   return v4;
 }
 
-- (MFMessageFileWrapper)initWithPath:(id)a3
+- (MFMessageFileWrapper)initWithPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   memset(__b, 170, sizeof(__b));
   v16.receiver = self;
   v16.super_class = MFMessageFileWrapper;
   v6 = [(MFMessageFileWrapper *)&v16 init];
-  if (v6 && [v5 getFileSystemRepresentation:__b maxLength:1023])
+  if (v6 && [pathCopy getFileSystemRepresentation:__b maxLength:1023])
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 attributesOfItemAtPath:v5 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager attributesOfItemAtPath:pathCopy error:0];
 
     if (v8)
     {
@@ -309,11 +309,11 @@ LABEL_24:
       if ([v9 isEqualToString:*MEMORY[0x1E696A3E8]])
       {
         [(MFMessageFileWrapper *)v6 setType:0];
-        v10 = [[MFData alloc] initWithContentsOfFile:v5 options:1 error:0];
+        v10 = [[MFData alloc] initWithContentsOfFile:pathCopy options:1 error:0];
         data = v6->_data;
         v6->_data = &v10->super;
 
-        v12 = _mimeTypeFromFileName(v5);
+        v12 = _mimeTypeFromFileName(pathCopy);
         [(MFMessageFileWrapper *)v6 setMimeType:v12];
       }
 
@@ -322,9 +322,9 @@ LABEL_24:
         [(MFMessageFileWrapper *)v6 setType:1];
       }
 
-      objc_storeStrong(&v6->_path, a3);
-      v13 = [v5 lastPathComponent];
-      [(MFMessageFileWrapper *)v6 setPreferredFilename:v13];
+      objc_storeStrong(&v6->_path, path);
+      lastPathComponent = [pathCopy lastPathComponent];
+      [(MFMessageFileWrapper *)v6 setPreferredFilename:lastPathComponent];
 
       __b[1023] = 0;
       _fixSubwrappersAtPath(v6, __b);
@@ -341,17 +341,17 @@ LABEL_24:
   return v6;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   _MFLockGlobalLock();
-  objc_storeStrong(&self->_url, a3);
+  objc_storeStrong(&self->_url, l);
   _MFUnlockGlobalLock();
 }
 
-- (id)initRegularFileWithContents:(id)a3
+- (id)initRegularFileWithContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v13.receiver = self;
   v13.super_class = MFMessageFileWrapper;
   v5 = [(MFMessageFileWrapper *)&v13 init];
@@ -370,12 +370,12 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v4;
+      v9 = contentsCopy;
     }
 
     else
     {
-      v9 = [[MFData alloc] initWithImmutableData:v4];
+      v9 = [[MFData alloc] initWithImmutableData:contentsCopy];
     }
 
     data = v6->_data;
@@ -387,23 +387,23 @@ LABEL_24:
   return v6;
 }
 
-- (id)initSymbolicLinkWithDestination:(id)a3
+- (id)initSymbolicLinkWithDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v8.receiver = self;
   v8.super_class = MFMessageFileWrapper;
   v5 = [(MFMessageFileWrapper *)&v8 init];
   v5->_type = 0;
   linkDestination = v5->_linkDestination;
-  v5->_linkDestination = v4;
+  v5->_linkDestination = destinationCopy;
 
   return v5;
 }
 
-- (void)setPreferredFilename:(id)a3
+- (void)setPreferredFilename:(id)filename
 {
-  v4 = a3;
-  v7 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+  filenameCopy = filename;
+  v7 = [filenameCopy stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
 
   [self mf_lock];
   v5 = [v7 copy];
@@ -422,11 +422,11 @@ LABEL_24:
   return v3;
 }
 
-- (void)setFilename:(id)a3
+- (void)setFilename:(id)filename
 {
-  v6 = a3;
+  filenameCopy = filename;
   [self mf_lock];
-  v4 = [v6 copy];
+  v4 = [filenameCopy copy];
   filename = self->_filename;
   self->_filename = v4;
 
@@ -442,10 +442,10 @@ LABEL_24:
   return v3;
 }
 
-- (void)setFileAttributes:(id)a3
+- (void)setFileAttributes:(id)attributes
 {
-  v6 = a3;
-  v4 = [v6 mutableCopy];
+  attributesCopy = attributes;
+  v4 = [attributesCopy mutableCopy];
   attributes = self->_attributes;
   self->_attributes = v4;
 }
@@ -469,9 +469,9 @@ LABEL_24:
   preferredFilename = self->_preferredFilename;
   v8 = [(NSData *)self->_data length];
   url = self->_url;
-  v10 = [(MFMessageFileWrapper *)self isPlaceholder];
+  isPlaceholder = [(MFMessageFileWrapper *)self isPlaceholder];
   v11 = "NO";
-  if (v10)
+  if (isPlaceholder)
   {
     v11 = "YES";
   }

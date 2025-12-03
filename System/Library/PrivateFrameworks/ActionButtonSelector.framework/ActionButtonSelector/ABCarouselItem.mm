@@ -1,17 +1,17 @@
 @interface ABCarouselItem
-- (BOOL)isEqual:(id)a3;
-- (id)initWithImage:(char)a3 canBeHighlighted:(void *)a4 identifier:;
+- (BOOL)isEqual:(id)equal;
+- (id)initWithImage:(char)image canBeHighlighted:(void *)highlighted identifier:;
 @end
 
 @implementation ABCarouselItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self)
     {
@@ -69,27 +69,27 @@ LABEL_15:
   return v10;
 }
 
-- (id)initWithImage:(char)a3 canBeHighlighted:(void *)a4 identifier:
+- (id)initWithImage:(char)image canBeHighlighted:(void *)highlighted identifier:
 {
   v8 = a2;
-  v9 = a4;
-  if (a1)
+  highlightedCopy = highlighted;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = ABCarouselItem;
     v10 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 3, a2);
-      *(a1 + 8) = a3;
-      v11 = [v9 copy];
-      v12 = a1[2];
-      a1[2] = v11;
+      *(self + 8) = image;
+      v11 = [highlightedCopy copy];
+      v12 = self[2];
+      self[2] = v11;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

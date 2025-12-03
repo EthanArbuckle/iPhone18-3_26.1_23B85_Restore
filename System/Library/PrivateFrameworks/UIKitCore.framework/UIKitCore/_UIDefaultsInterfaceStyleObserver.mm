@@ -1,30 +1,30 @@
 @interface _UIDefaultsInterfaceStyleObserver
-- (_UIDefaultsInterfaceStyleObserver)initWithNotificationName:(id)a3 darwinNotification:(const char *)a4;
+- (_UIDefaultsInterfaceStyleObserver)initWithNotificationName:(id)name darwinNotification:(const char *)notification;
 - (void)_didChange;
 - (void)dealloc;
 @end
 
 @implementation _UIDefaultsInterfaceStyleObserver
 
-- (_UIDefaultsInterfaceStyleObserver)initWithNotificationName:(id)a3 darwinNotification:(const char *)a4
+- (_UIDefaultsInterfaceStyleObserver)initWithNotificationName:(id)name darwinNotification:(const char *)notification
 {
-  v7 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = _UIDefaultsInterfaceStyleObserver;
   v8 = [(_UIDefaultsInterfaceStyleObserver *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_notificationName, a3);
+    objc_storeStrong(&v8->_notificationName, name);
     v9->_notifyToken = -1;
-    if (a4)
+    if (notification)
     {
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __81___UIDefaultsInterfaceStyleObserver_initWithNotificationName_darwinNotification___block_invoke;
       handler[3] = &unk_1E70FFAF8;
       v12 = v9;
-      notify_register_dispatch(a4, &v9->_notifyToken, MEMORY[0x1E69E96A0], handler);
+      notify_register_dispatch(notification, &v9->_notifyToken, MEMORY[0x1E69E96A0], handler);
     }
   }
 
@@ -46,8 +46,8 @@
 
 - (void)_didChange
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:self->_notificationName object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:self->_notificationName object:0];
 }
 
 @end

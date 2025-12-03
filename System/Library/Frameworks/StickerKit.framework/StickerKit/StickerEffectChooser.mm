@@ -1,27 +1,27 @@
 @interface StickerEffectChooser
 - (CGSize)intrinsicContentSize;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
 @end
 
 @implementation StickerEffectChooser
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_19A72E9A0(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_19A72E9A0(tapCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A72ED1C();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A72F484();
   v4 = v3;
   v6 = v5;

@@ -1,13 +1,13 @@
 @interface PersonType
-- (PersonType)initWithCoder:(id)a3;
-- (PersonType)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (PersonType)initWithCoder:(id)coder;
+- (PersonType)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation PersonType
 
-- (PersonType)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (PersonType)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_22F0D0CAC();
     v8 = v7;
@@ -21,7 +21,7 @@
 
   v9 = sub_22F0D0CAC();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = sub_22F0D0CAC();
     v14 = v13;
@@ -36,12 +36,12 @@
   return PersonType.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (PersonType)initWithCoder:(id)a3
+- (PersonType)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PersonType();
-  v4 = a3;
-  v5 = [(PersonType *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PersonType *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

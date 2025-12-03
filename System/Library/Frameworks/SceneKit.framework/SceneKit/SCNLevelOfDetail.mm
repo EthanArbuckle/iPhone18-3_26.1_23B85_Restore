@@ -3,16 +3,16 @@
 + (SCNLevelOfDetail)levelOfDetailWithGeometry:(SCNGeometry *)geometry worldSpaceDistance:(CGFloat)distance;
 - (CGFloat)screenSpaceRadius;
 - (CGFloat)worldSpaceDistance;
-- (SCNLevelOfDetail)initWithCoder:(id)a3;
-- (SCNLevelOfDetail)initWithGeometry:(id)a3 thresholdMode:(int64_t)a4 lod:(__C3DLOD *)a5;
-- (SCNLevelOfDetail)initWithGeometry:(id)a3 thresholdMode:(int64_t)a4 thresholdValue:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNLevelOfDetail)initWithCoder:(id)coder;
+- (SCNLevelOfDetail)initWithGeometry:(id)geometry thresholdMode:(int64_t)mode lod:(__C3DLOD *)lod;
+- (SCNLevelOfDetail)initWithGeometry:(id)geometry thresholdMode:(int64_t)mode thresholdValue:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)thresholdValue;
-- (void)_customEncodingOfSCNLevelOfDetail:(id)a3;
-- (void)_didDecodeSCNLevelOfDetail:(id)a3;
-- (void)_setupWithGeometry:(id)a3 thresholdMode:(int64_t)a4 value:(double)a5;
+- (void)_customEncodingOfSCNLevelOfDetail:(id)detail;
+- (void)_didDecodeSCNLevelOfDetail:(id)detail;
+- (void)_setupWithGeometry:(id)geometry thresholdMode:(int64_t)mode value:(double)value;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNLevelOfDetail
@@ -31,22 +31,22 @@
   [(SCNLevelOfDetail *)&v4 dealloc];
 }
 
-- (void)_setupWithGeometry:(id)a3 thresholdMode:(int64_t)a4 value:(double)a5
+- (void)_setupWithGeometry:(id)geometry thresholdMode:(int64_t)mode value:(double)value
 {
   geometry = self->_geometry;
-  if (geometry != a3)
+  if (geometry != geometry)
   {
 
-    self->_geometry = a3;
+    self->_geometry = geometry;
   }
 
-  self->_mode = a4;
-  v10 = [a3 __CFObject];
-  v11 = a5;
-  self->_lod = C3DLODCreate(v10, a4, v11);
+  self->_mode = mode;
+  __CFObject = [geometry __CFObject];
+  valueCopy = value;
+  self->_lod = C3DLODCreate(__CFObject, mode, valueCopy);
 }
 
-- (SCNLevelOfDetail)initWithGeometry:(id)a3 thresholdMode:(int64_t)a4 lod:(__C3DLOD *)a5
+- (SCNLevelOfDetail)initWithGeometry:(id)geometry thresholdMode:(int64_t)mode lod:(__C3DLOD *)lod
 {
   v10.receiver = self;
   v10.super_class = SCNLevelOfDetail;
@@ -54,27 +54,27 @@
   v8 = v7;
   if (v7)
   {
-    v7->_mode = a4;
-    if (a5)
+    v7->_mode = mode;
+    if (lod)
     {
-      v7->_lod = CFRetain(a5);
+      v7->_lod = CFRetain(lod);
     }
 
-    v8->_mode = a4;
+    v8->_mode = mode;
   }
 
   return v8;
 }
 
-- (SCNLevelOfDetail)initWithGeometry:(id)a3 thresholdMode:(int64_t)a4 thresholdValue:(id)a5
+- (SCNLevelOfDetail)initWithGeometry:(id)geometry thresholdMode:(int64_t)mode thresholdValue:(id)value
 {
   v10.receiver = self;
   v10.super_class = SCNLevelOfDetail;
   v8 = [(SCNLevelOfDetail *)&v10 init];
   if (v8)
   {
-    [a5 doubleValue];
-    [(SCNLevelOfDetail *)v8 _setupWithGeometry:a3 thresholdMode:a4 value:?];
+    [value doubleValue];
+    [(SCNLevelOfDetail *)v8 _setupWithGeometry:geometry thresholdMode:mode value:?];
   }
 
   return v8;
@@ -104,7 +104,7 @@
   return [v3 numberWithDouble:v2];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mode = self->_mode;
@@ -136,34 +136,34 @@
   return result;
 }
 
-- (void)_customEncodingOfSCNLevelOfDetail:(id)a3
+- (void)_customEncodingOfSCNLevelOfDetail:(id)detail
 {
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:C3DLODGetThreshold(self->_lod)];
 
-  [a3 encodeObject:v4 forKey:@"threshold"];
+  [detail encodeObject:v4 forKey:@"threshold"];
 }
 
-- (void)_didDecodeSCNLevelOfDetail:(id)a3
+- (void)_didDecodeSCNLevelOfDetail:(id)detail
 {
-  [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"threshold", "doubleValue"}];
+  [objc_msgSend(detail decodeObjectOfClass:objc_opt_class() forKey:{@"threshold", "doubleValue"}];
   mode = self->_mode;
   geometry = self->_geometry;
 
   [(SCNLevelOfDetail *)self _setupWithGeometry:geometry thresholdMode:mode value:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(SCNLevelOfDetail *)self _customEncodingOfSCNLevelOfDetail:?];
-  [a3 encodeInteger:self->_mode forKey:@"mode"];
+  [coder encodeInteger:self->_mode forKey:@"mode"];
   if (self->_geometry)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (SCNLevelOfDetail)initWithCoder:(id)a3
+- (SCNLevelOfDetail)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNLevelOfDetail;
@@ -172,9 +172,9 @@
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    v4->_mode = [a3 decodeIntegerForKey:@"mode"];
-    v4->_geometry = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
-    [(SCNLevelOfDetail *)v4 _didDecodeSCNLevelOfDetail:a3];
+    v4->_mode = [coder decodeIntegerForKey:@"mode"];
+    v4->_geometry = [coder decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
+    [(SCNLevelOfDetail *)v4 _didDecodeSCNLevelOfDetail:coder];
     [SCNTransaction setImmediateMode:v5];
   }
 

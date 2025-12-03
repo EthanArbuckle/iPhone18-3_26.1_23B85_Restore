@@ -6,7 +6,7 @@
 
 - (FSFileHandle)fsFileHandle
 {
-  v1 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:a1 options:0];
+  v1 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:self options:0];
   v2 = v1;
   if (v1)
   {

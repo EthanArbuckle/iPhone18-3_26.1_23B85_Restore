@@ -2,7 +2,7 @@
 - (BOOL)credit;
 - (BOOL)debited;
 - (NSString)description;
-- (_CDMultiLevelRateLimiter)initWithPeriodToCountMap:(id)a3;
+- (_CDMultiLevelRateLimiter)initWithPeriodToCountMap:(id)map;
 - (void)recordTimeAndRefillIfNeededRaw;
 @end
 
@@ -10,14 +10,14 @@
 
 - (void)recordTimeAndRefillIfNeededRaw
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   if (self->_numberOfRateLimitPolicies >= 1)
   {
     v4 = 0;
     do
     {
       v5 = [(NSMutableArray *)self->_periodStart objectAtIndexedSubscript:v4];
-      [(NSDate *)v3 timeIntervalSinceDate:v5];
+      [(NSDate *)date timeIntervalSinceDate:v5];
       v7 = v6;
       v8 = [(NSArray *)self->_periods objectAtIndexedSubscript:v4];
       [v8 doubleValue];
@@ -25,7 +25,7 @@
 
       if (v7 > v10)
       {
-        [(NSMutableArray *)self->_periodStart setObject:v3 atIndexedSubscript:v4];
+        [(NSMutableArray *)self->_periodStart setObject:date atIndexedSubscript:v4];
         [(NSMutableArray *)self->_balances setObject:&unk_1F05EE8C8 atIndexedSubscript:v4];
       }
 
@@ -36,7 +36,7 @@
   }
 
   lastRecorded = self->_lastRecorded;
-  self->_lastRecorded = v3;
+  self->_lastRecorded = date;
 }
 
 - (BOOL)debited
@@ -58,17 +58,17 @@
   return v3;
 }
 
-- (_CDMultiLevelRateLimiter)initWithPeriodToCountMap:(id)a3
+- (_CDMultiLevelRateLimiter)initWithPeriodToCountMap:(id)map
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mapCopy = map;
   v44.receiver = self;
   v44.super_class = _CDMultiLevelRateLimiter;
   v5 = [(_CDMultiLevelRateLimiter *)&v44 init];
   if (v5)
   {
-    v6 = [v4 allKeys];
-    v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_39];
+    allKeys = [mapCopy allKeys];
+    v7 = [allKeys sortedArrayUsingComparator:&__block_literal_global_39];
     v8 = [v7 mutableCopy];
 
     v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5->_numberOfRateLimitPolicies];
@@ -91,7 +91,7 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [v4 objectForKeyedSubscript:*(*(&v40 + 1) + 8 * i)];
+          v15 = [mapCopy objectForKeyedSubscript:*(*(&v40 + 1) + 8 * i)];
           if (v15)
           {
             [v9 addObject:v15];
@@ -106,35 +106,35 @@
 
     v39 = v5;
 
-    v16 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v17 = [v9 count] - 1;
     if (v17 >= 1)
     {
       do
       {
         v18 = [v9 objectAtIndexedSubscript:v17];
-        v19 = [v18 integerValue];
+        integerValue = [v18 integerValue];
 
         v20 = v17 + 1;
         do
         {
           v21 = [v9 objectAtIndexedSubscript:v20 - 2];
-          v22 = [v21 integerValue];
+          integerValue2 = [v21 integerValue];
 
-          if (v22 >= v19)
+          if (integerValue2 >= integerValue)
           {
-            [v16 addIndex:v20 - 2];
+            [indexSet addIndex:v20 - 2];
           }
 
           --v20;
         }
 
         while (v20 > 1);
-        if ([v16 count])
+        if ([indexSet count])
         {
-          [v9 removeObjectsAtIndexes:v16];
-          [v10 removeObjectsAtIndexes:v16];
-          [v16 removeAllIndexes];
+          [v9 removeObjectsAtIndexes:indexSet];
+          [v10 removeObjectsAtIndexes:indexSet];
+          [indexSet removeAllIndexes];
         }
 
         v23 = [v9 count];
@@ -172,15 +172,15 @@
     balances = v39->_balances;
     v39->_balances = v31;
 
-    v33 = [MEMORY[0x1E695DF00] distantPast];
-    objc_storeStrong(&v39->_lastRecorded, v33);
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    objc_storeStrong(&v39->_lastRecorded, distantPast);
     if (v39->_numberOfRateLimitPolicies >= 1)
     {
       v34 = 0;
       do
       {
         [(NSMutableArray *)v39->_balances setObject:&unk_1F05EE8C8 atIndexedSubscript:v34];
-        [(NSMutableArray *)v39->_periodStart setObject:v33 atIndexedSubscript:v34++];
+        [(NSMutableArray *)v39->_periodStart setObject:distantPast atIndexedSubscript:v34++];
       }
 
       while (v34 < v39->_numberOfRateLimitPolicies);

@@ -1,31 +1,31 @@
 @interface AVTAvatarPose
 + (id)friendlyPose;
 + (id)neutralPose;
-+ (id)posesForAnimojiNamed:(id)a3 inPosePack:(id)a4;
-+ (id)posesInPosePack:(id)a3 avatarSelectionBlock:(id)a4;
-- (AVTAvatarPose)initWithDictionaryRepresentation:(id)a3;
-- (AVTAvatarPose)initWithScene:(id)a3;
-- (AVTAvatarPose)initWithWeights:(id)a3 neckPosition:neckOrientation:bakedAnimationBlendFactor:;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPose:(id)a3;
++ (id)posesForAnimojiNamed:(id)named inPosePack:(id)pack;
++ (id)posesInPosePack:(id)pack avatarSelectionBlock:(id)block;
+- (AVTAvatarPose)initWithDictionaryRepresentation:(id)representation;
+- (AVTAvatarPose)initWithScene:(id)scene;
+- (AVTAvatarPose)initWithWeights:(id)weights neckPosition:neckOrientation:bakedAnimationBlendFactor:;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPose:(id)pose;
 - (BOOL)isFriendlyPose;
 - (BOOL)isNeutralPose;
-- (double)weightForBlendShapeNamed:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)weightForBlendShapeNamed:(id)named;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)hashString;
-- (id)poseByMergingPose:(id)a3;
-- (int8x16_t)setNeckOrientation:(int32x4_t)a3;
+- (id)poseByMergingPose:(id)pose;
+- (int8x16_t)setNeckOrientation:(int32x4_t)orientation;
 - (void)setNeckPosition:(AVTAvatarPose *)self;
-- (void)setNeckPositionAndOrientationFromHierarchy:(id)a3;
-- (void)setWeight:(double)a3 forBlendShapeNamed:(id)a4;
-- (void)setWeights:(id)a3;
+- (void)setNeckPositionAndOrientationFromHierarchy:(id)hierarchy;
+- (void)setWeight:(double)weight forBlendShapeNamed:(id)named;
+- (void)setWeights:(id)weights;
 @end
 
 @implementation AVTAvatarPose
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   weights = self->_weights;
@@ -54,32 +54,32 @@
   return [v4 initWithWeights:weights neckPosition:neckPosition neckOrientation:v7 bakedAnimationBlendFactor:bakedAnimationBlendFactor];
 }
 
-- (void)setWeights:(id)a3
+- (void)setWeights:(id)weights
 {
-  v4 = [a3 mutableCopy];
+  v4 = [weights mutableCopy];
   weights = self->_weights;
   self->_weights = v4;
 
   MEMORY[0x1EEE66BB8](v4, weights);
 }
 
-- (double)weightForBlendShapeNamed:(id)a3
+- (double)weightForBlendShapeNamed:(id)named
 {
-  v3 = [(NSMutableDictionary *)self->_weights objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_weights objectForKeyedSubscript:named];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setWeight:(double)a3 forBlendShapeNamed:(id)a4
+- (void)setWeight:(double)weight forBlendShapeNamed:(id)named
 {
-  v6 = a4;
+  namedCopy = named;
   weights = self->_weights;
-  v12 = v6;
-  if (a3 == 0.0)
+  v12 = namedCopy;
+  if (weight == 0.0)
   {
-    [(NSMutableDictionary *)weights removeObjectForKey:v6];
+    [(NSMutableDictionary *)weights removeObjectForKey:namedCopy];
   }
 
   else
@@ -93,7 +93,7 @@
       weights = self->_weights;
     }
 
-    *&v7 = a3;
+    *&v7 = weight;
     v11 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
     [(NSMutableDictionary *)weights setValue:v11 forKey:v12];
   }
@@ -111,16 +111,16 @@
   *self->_neckPosition = vbslq_s8(vdupq_lane_s32(*&vcgtq_s32(v3, v5), 0), v2, 0);
 }
 
-- (int8x16_t)setNeckOrientation:(int32x4_t)a3
+- (int8x16_t)setNeckOrientation:(int32x4_t)orientation
 {
-  a3.i32[0] = 0;
+  orientation.i32[0] = 0;
   v3.i64[0] = 0x3400000034000000;
   v3.i64[1] = 0x3400000034000000;
   v4 = vcgtq_f32(vabsq_f32(vaddq_f32(a2, xmmword_1BB4F0EB0)), v3);
   v4.i32[0] = vmaxvq_u32(v4);
-  result = vbslq_s8(vdupq_lane_s32(*&vcgtq_s32(a3, v4), 0), a2, xmmword_1BB4F06F0);
-  a1->i8[9] = v4.i32[0] < 0;
-  a1[3] = result;
+  result = vbslq_s8(vdupq_lane_s32(*&vcgtq_s32(orientation, v4), 0), a2, xmmword_1BB4F06F0);
+  self->i8[9] = v4.i32[0] < 0;
+  self[3] = result;
   return result;
 }
 
@@ -168,18 +168,18 @@ void __41__AVTAvatarPose_dictionaryRepresentation__block_invoke(uint64_t a1, voi
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (AVTAvatarPose)initWithWeights:(id)a3 neckPosition:neckOrientation:bakedAnimationBlendFactor:
+- (AVTAvatarPose)initWithWeights:(id)weights neckPosition:neckOrientation:bakedAnimationBlendFactor:
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
-  v10 = a3;
+  weightsCopy = weights;
   v22.receiver = self;
   v22.super_class = AVTAvatarPose;
   v11 = [(AVTAvatarPose *)&v22 init];
   if (v11)
   {
-    v12 = [v10 mutableCopy];
+    v12 = [weightsCopy mutableCopy];
     weights = v11->_weights;
     v11->_weights = v12;
 
@@ -235,40 +235,40 @@ LABEL_12:
   return v11;
 }
 
-- (AVTAvatarPose)initWithScene:(id)a3
+- (AVTAvatarPose)initWithScene:(id)scene
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  sceneCopy = scene;
   v6 = objc_alloc_init(v4);
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __31__AVTAvatarPose_initWithScene___block_invoke;
   v24[3] = &unk_1E7F49F68;
   v25 = v6;
-  v26 = v7;
-  v8 = v7;
+  v26 = dictionary;
+  v8 = dictionary;
   v9 = v6;
-  v10 = [v5 rootNode];
-  v11 = [v10 childNodeWithName:@"head_GES" recursively:1];
+  rootNode = [sceneCopy rootNode];
+  v11 = [rootNode childNodeWithName:@"head_GES" recursively:1];
 
   __31__AVTAvatarPose_initWithScene___block_invoke(v24, v11);
-  v12 = [v5 rootNode];
+  rootNode2 = [sceneCopy rootNode];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __31__AVTAvatarPose_initWithScene___block_invoke_2;
   v23[3] = &__block_descriptor_40_e21_v24__0__SCNNode_8_B16lu32l8;
   v23[4] = v24;
-  [v12 enumerateHierarchyUsingBlock:v23];
+  [rootNode2 enumerateHierarchyUsingBlock:v23];
 
-  v13 = [v5 rootNode];
-  v14 = [v13 childNodeWithName:@"root_JNT" recursively:1];
+  rootNode3 = [sceneCopy rootNode];
+  v14 = [rootNode3 childNodeWithName:@"root_JNT" recursively:1];
 
   [v14 simdPosition];
   v22 = v15;
-  v16 = [v5 rootNode];
+  rootNode4 = [sceneCopy rootNode];
 
-  v17 = [v16 childNodeWithName:@"head_JNT" recursively:1];
+  v17 = [rootNode4 childNodeWithName:@"head_JNT" recursively:1];
 
   [v17 simdOrientation];
   v21 = v18;
@@ -314,24 +314,24 @@ void __31__AVTAvatarPose_initWithScene___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setNeckPositionAndOrientationFromHierarchy:(id)a3
+- (void)setNeckPositionAndOrientationFromHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  v6 = [v4 childNodeWithName:@"root_JNT" recursively:1];
+  hierarchyCopy = hierarchy;
+  v6 = [hierarchyCopy childNodeWithName:@"root_JNT" recursively:1];
   [v6 simdPosition];
   [(AVTAvatarPose *)self setNeckPosition:?];
-  v5 = [v4 childNodeWithName:@"head_JNT" recursively:1];
+  v5 = [hierarchyCopy childNodeWithName:@"head_JNT" recursively:1];
 
   [v5 simdOrientation];
   [(AVTAvatarPose *)self setNeckOrientation:?];
 }
 
-- (AVTAvatarPose)initWithDictionaryRepresentation:(id)a3
+- (AVTAvatarPose)initWithDictionaryRepresentation:(id)representation
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v21 = 0uLL;
-  v5 = [v4 objectForKeyedSubscript:@"neckPosition"];
+  v5 = [representationCopy objectForKeyedSubscript:@"neckPosition"];
   v6 = v5;
   if (v5)
   {
@@ -339,7 +339,7 @@ void __31__AVTAvatarPose_initWithScene___block_invoke(uint64_t a1, void *a2)
     v21 = v7;
   }
 
-  v8 = [v4 objectForKeyedSubscript:{@"neckOrientation", 0, 0x3F80000000000000, v21}];
+  v8 = [representationCopy objectForKeyedSubscript:{@"neckOrientation", 0, 0x3F80000000000000, v21}];
 
   if (v8)
   {
@@ -353,11 +353,11 @@ void __31__AVTAvatarPose_initWithScene___block_invoke(uint64_t a1, void *a2)
     v10 = 0;
   }
 
-  v11 = [v4 objectForKeyedSubscript:{@"bakedAnimationBlendFactor", v20}];
+  v11 = [representationCopy objectForKeyedSubscript:{@"bakedAnimationBlendFactor", v20}];
   [v11 doubleValue];
   v13 = v12;
 
-  v14 = [v4 mutableCopy];
+  v14 = [representationCopy mutableCopy];
   v22[0] = @"neckPosition";
   v22[1] = @"neckOrientation";
   v22[2] = @"bakedAnimationBlendFactor";
@@ -440,16 +440,16 @@ uint64_t __29__AVTAvatarPose_friendlyPose__block_invoke()
   return self;
 }
 
-- (BOOL)isEqualToPose:(id)a3
+- (BOOL)isEqualToPose:(id)pose
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (v4 == self)
+  poseCopy = pose;
+  p_isa = &poseCopy->super.isa;
+  if (poseCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && self->_bakedAnimationBlendFactor == v4->_bakedAnimationBlendFactor && (v8 = vmvnq_s8(vceqq_f32(*self->_neckPosition, *v4->_neckPosition)), v8.i32[3] = v8.i32[2], (vmaxvq_u32(v8) & 0x80000000) == 0) && (vmaxvq_u32(vmvnq_s8(vceqq_f32(*&self[1].super.isa, *&v4[1].super.isa))) & 0x80000000) == 0 && (v9 = -[NSMutableDictionary count](self->_weights, "count"), v9 == [p_isa[3] count]))
+  else if (poseCopy && self->_bakedAnimationBlendFactor == poseCopy->_bakedAnimationBlendFactor && (v8 = vmvnq_s8(vceqq_f32(*self->_neckPosition, *poseCopy->_neckPosition)), v8.i32[3] = v8.i32[2], (vmaxvq_u32(v8) & 0x80000000) == 0) && (vmaxvq_u32(vmvnq_s8(vceqq_f32(*&self[1].super.isa, *&poseCopy[1].super.isa))) & 0x80000000) == 0 && (v9 = -[NSMutableDictionary count](self->_weights, "count"), v9 == [p_isa[3] count]))
   {
     v16 = 0;
     v17 = &v16;
@@ -527,62 +527,62 @@ void __31__AVTAvatarPose_isEqualToPose___block_invoke_2(uint64_t a1, uint64_t a2
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(AVTAvatarPose *)self isEqualToPose:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(AVTAvatarPose *)self isEqualToPose:v5];
   }
 
   return v6;
 }
 
-- (id)poseByMergingPose:(id)a3
+- (id)poseByMergingPose:(id)pose
 {
-  v4 = a3;
+  poseCopy = pose;
   weights = self->_weights;
   if (weights)
   {
     v6 = [(NSMutableDictionary *)weights mutableCopy];
-    [v6 addEntriesFromDictionary:*(v4 + 3)];
+    [v6 addEntriesFromDictionary:*(poseCopy + 3)];
   }
 
   else
   {
-    v6 = [*(v4 + 3) copy];
+    v6 = [*(poseCopy + 3) copy];
   }
 
   hasNeckPosition = self->_hasNeckPosition;
   v16 = *self->_neckPosition;
-  if (*(v4 + 8) == 1)
+  if (*(poseCopy + 8) == 1)
   {
-    v16 = *(v4 + 2);
+    v16 = *(poseCopy + 2);
     hasNeckPosition = 1;
   }
 
   hasNeckOrientation = self->_hasNeckOrientation;
   v15 = *&self[1].super.isa;
-  if (*(v4 + 9) == 1)
+  if (*(poseCopy + 9) == 1)
   {
-    v15 = *(v4 + 3);
+    v15 = *(poseCopy + 3);
     hasNeckOrientation = 1;
   }
 
-  if (self->_bakedAnimationBlendFactor >= *(v4 + 2))
+  if (self->_bakedAnimationBlendFactor >= *(poseCopy + 2))
   {
     bakedAnimationBlendFactor = self->_bakedAnimationBlendFactor;
   }
 
   else
   {
-    bakedAnimationBlendFactor = *(v4 + 2);
+    bakedAnimationBlendFactor = *(poseCopy + 2);
   }
 
   v10 = objc_alloc(objc_opt_class());
@@ -614,8 +614,8 @@ void __31__AVTAvatarPose_isEqualToPose___block_invoke_2(uint64_t a1, uint64_t a2
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:&stru_1F39AEE78];
-  v4 = [(NSMutableDictionary *)self->_weights allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSMutableDictionary *)self->_weights allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
@@ -623,7 +623,7 @@ void __31__AVTAvatarPose_isEqualToPose___block_invoke_2(uint64_t a1, uint64_t a2
   v16 = &unk_1E7F49FD8;
   v6 = v3;
   v17 = v6;
-  v18 = self;
+  selfCopy = self;
   [v5 enumerateObjectsUsingBlock:&v13];
   if (self->_hasNeckPosition)
   {
@@ -736,16 +736,16 @@ void __28__AVTAvatarPose_description__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-+ (id)posesForAnimojiNamed:(id)a3 inPosePack:(id)a4
++ (id)posesForAnimojiNamed:(id)named inPosePack:(id)pack
 {
-  v6 = a3;
+  namedCopy = named;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__AVTAvatarPose_posesForAnimojiNamed_inPosePack___block_invoke;
   v10[3] = &unk_1E7F4A020;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a1 posesInPosePack:a4 avatarSelectionBlock:v10];
+  v11 = namedCopy;
+  v7 = namedCopy;
+  v8 = [self posesInPosePack:pack avatarSelectionBlock:v10];
 
   return v8;
 }
@@ -770,15 +770,15 @@ id __49__AVTAvatarPose_posesForAnimojiNamed_inPosePack___block_invoke(uint64_t a
   return v7;
 }
 
-+ (id)posesInPosePack:(id)a3 avatarSelectionBlock:(id)a4
++ (id)posesInPosePack:(id)pack avatarSelectionBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"watchFaceToybox"] && (+[AVTResourceLocator sharedResourceLocator](), v7 = objc_claimAutoreleasedReturnValue(), -[AVTResourceLocator pathForPoseResource:ofType:isDirectory:](v7), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+  packCopy = pack;
+  blockCopy = block;
+  if ([packCopy isEqualToString:@"watchFaceToybox"] && (+[AVTResourceLocator sharedResourceLocator](), v7 = objc_claimAutoreleasedReturnValue(), -[AVTResourceLocator pathForPoseResource:ofType:isDirectory:](v7), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
   {
     v19 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v8];
-    v9 = v6[2](v6);
+    v9 = blockCopy[2](blockCopy);
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
     v20 = 0u;
     v21 = 0u;
@@ -815,7 +815,7 @@ id __49__AVTAvatarPose_posesForAnimojiNamed_inPosePack___block_invoke(uint64_t a
     v8 = avt_default_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(AVTAvatarBodyPose *)v5 posesInPosePack:v8];
+      [(AVTAvatarBodyPose *)packCopy posesInPosePack:v8];
     }
 
     v10 = MEMORY[0x1E695E0F0];

@@ -1,19 +1,19 @@
 @interface HashOverlay
-- (void)loadTileAtPath:(id *)a3 result:(id)a4;
+- (void)loadTileAtPath:(id *)path result:(id)result;
 @end
 
 @implementation HashOverlay
 
-- (void)loadTileAtPath:(id *)a3 result:(id)a4
+- (void)loadTileAtPath:(id *)path result:(id)result
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
-  var2 = a3->var2;
-  var3 = a3->var3;
-  v9 = _Block_copy(a4);
+  var0 = path->var0;
+  var1 = path->var1;
+  var2 = path->var2;
+  var3 = path->var3;
+  v9 = _Block_copy(result);
   _Block_copy(v9);
-  v10 = self;
-  sub_220E82E40(var0, var1, var2, var3, v10, v9);
+  selfCopy = self;
+  sub_220E82E40(var0, var1, var2, var3, selfCopy, v9);
   _Block_release(v9);
 }
 

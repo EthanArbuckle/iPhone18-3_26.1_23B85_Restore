@@ -1,8 +1,8 @@
 @interface NearFieldManager
 - (id)secureElementInfo;
-- (void)getSecureElementWithReason:(id)a3 callback:(id)a4;
-- (void)getSecureElementWithReason:(id)a3 handoffToken:(id)a4 completion:(id)a5;
-- (void)setHandoffToken:(id)a3;
+- (void)getSecureElementWithReason:(id)reason callback:(id)callback;
+- (void)getSecureElementWithReason:(id)reason handoffToken:(id)token completion:(id)completion;
+- (void)setHandoffToken:(id)token;
 @end
 
 @implementation NearFieldManager
@@ -18,9 +18,9 @@
   v34 = 0;
   v4 = [NFSecureElement embeddedSecureElementWithError:&v34];
   v5 = v34;
-  v6 = [v4 info];
+  info = [v4 info];
 
-  if (v6)
+  if (info)
   {
     v7 = v5 == 0;
   }
@@ -32,37 +32,37 @@
 
   if (v7)
   {
-    v10 = [v6 sequenceCounter];
-    v11 = [v10 unsignedIntValue];
+    sequenceCounter = [info sequenceCounter];
+    unsignedIntValue = [sequenceCounter unsignedIntValue];
 
-    v12 = [v6 deviceType];
-    v33 = v11;
-    if (v12 > 114)
+    deviceType = [info deviceType];
+    v33 = unsignedIntValue;
+    if (deviceType > 114)
     {
-      if (v12 != 210 && v12 != 200)
+      if (deviceType != 210 && deviceType != 200)
       {
-        if (v12 != 115)
+        if (deviceType != 115)
         {
           goto LABEL_20;
         }
 
-        v32 = v11 > 0x90B;
+        v32 = unsignedIntValue > 0x90B;
         v13 = 2;
 LABEL_24:
         v31 = v13;
-        v28 = [v6 signingKeyType] == 2;
+        v28 = [info signingKeyType] == 2;
 LABEL_25:
-        v30 = [v6 serialNumber];
-        v17 = [v30 hexStringAsData];
-        v29 = [v6 ecdsaCertificate];
-        v18 = [v29 hexStringAsData];
-        v19 = [SESTLV TLVWithTag:32545 value:v18];
-        v20 = [v19 asData];
-        v21 = [v6 rsaCertificate];
-        v22 = [v21 hexStringAsData];
-        v23 = [SESTLV TLVWithTag:32545 value:v22];
-        v24 = [v23 asData];
-        v25 = +[SecureElementInfo withSEID:casdCertificate:casdCertificateRSA:isProd:isSkyOrLater:secureElementType:csn:chipID:](SecureElementInfo, "withSEID:casdCertificate:casdCertificateRSA:isProd:isSkyOrLater:secureElementType:csn:chipID:", v17, v20, v24, v28, v32, v31, v33, [v6 deviceType]);
+        serialNumber = [info serialNumber];
+        hexStringAsData = [serialNumber hexStringAsData];
+        ecdsaCertificate = [info ecdsaCertificate];
+        hexStringAsData2 = [ecdsaCertificate hexStringAsData];
+        v19 = [SESTLV TLVWithTag:32545 value:hexStringAsData2];
+        asData = [v19 asData];
+        rsaCertificate = [info rsaCertificate];
+        hexStringAsData3 = [rsaCertificate hexStringAsData];
+        v23 = [SESTLV TLVWithTag:32545 value:hexStringAsData3];
+        asData2 = [v23 asData];
+        v25 = +[SecureElementInfo withSEID:casdCertificate:casdCertificateRSA:isProd:isSkyOrLater:secureElementType:csn:chipID:](SecureElementInfo, "withSEID:casdCertificate:casdCertificateRSA:isProd:isSkyOrLater:secureElementType:csn:chipID:", hexStringAsData, asData, asData2, v28, v32, v31, v33, [info deviceType]);
         v26 = self->_secureElementInfo;
         self->_secureElementInfo = v25;
 
@@ -75,30 +75,30 @@ LABEL_26:
 
     else
     {
-      if (v12 == 44)
+      if (deviceType == 44)
       {
         v32 = 1;
         v13 = 4;
         goto LABEL_24;
       }
 
-      if (v12 == 55)
+      if (deviceType == 55)
       {
         v32 = 1;
         v13 = 5;
         goto LABEL_24;
       }
 
-      if (v12 != 100)
+      if (deviceType != 100)
       {
 LABEL_20:
-        v14 = [v6 signingKeyType];
-        if (v14 == 2)
+        signingKeyType = [info signingKeyType];
+        if (signingKeyType == 2)
         {
-          v15 = [v6 persistentConfigID];
-          v16 = [v15 unsignedIntValue];
+          persistentConfigID = [info persistentConfigID];
+          unsignedIntValue2 = [persistentConfigID unsignedIntValue];
 
-          v28 = HIBYTE(v16) != 80;
+          v28 = HIBYTE(unsignedIntValue2) != 80;
           v32 = 1;
           v31 = 6;
         }
@@ -107,14 +107,14 @@ LABEL_20:
         {
           v32 = 1;
           v31 = 6;
-          v28 = v14 == 2;
+          v28 = signingKeyType == 2;
         }
 
         goto LABEL_25;
       }
     }
 
-    v32 = v11 > 0xA17;
+    v32 = unsignedIntValue > 0xA17;
     v13 = 3;
     goto LABEL_24;
   }
@@ -133,10 +133,10 @@ LABEL_27:
   return v9;
 }
 
-- (void)getSecureElementWithReason:(id)a3 callback:(id)a4
+- (void)getSecureElementWithReason:(id)reason callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  reasonCopy = reason;
+  callbackCopy = callback;
   dispatch_assert_queue_V2(self->_queue);
   v9 = sub_1000554DC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -158,18 +158,18 @@ LABEL_27:
       if (v12 == 4)
       {
         self->_internalState = 3;
-        objc_storeStrong(&self->_reasonForInUseSession, a3);
+        objc_storeStrong(&self->_reasonForInUseSession, reason);
         v19 = sub_1000554DC();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           v21 = 138543362;
-          v22[0] = v7;
+          v22[0] = reasonCopy;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Free session claimed for reason %{public}@", &v21, 0xCu);
         }
 
         sub_1003AE754(self->_timer);
         v20 = sub_1003AFF44(&self->super.isa);
-        v8[2](v8, v20, 0);
+        callbackCopy[2](callbackCopy, v20, 0);
       }
 
       goto LABEL_11;
@@ -177,7 +177,7 @@ LABEL_27:
 
 LABEL_10:
     queuedWaiters = self->_queuedWaiters;
-    v16 = sub_100056548(SERequest, v7, v8);
+    v16 = sub_100056548(SERequest, reasonCopy, callbackCopy);
     [(NSMutableArray *)queuedWaiters pushLast:v16];
 
     goto LABEL_11;
@@ -200,7 +200,7 @@ LABEL_10:
       goto LABEL_10;
     case 1:
       v17 = self->_queuedWaiters;
-      v18 = sub_100056548(SERequest, v7, v8);
+      v18 = sub_100056548(SERequest, reasonCopy, callbackCopy);
       [(NSMutableArray *)v17 pushLast:v18];
 
       sub_1003AFD48(self);
@@ -210,46 +210,46 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setHandoffToken:(id)a3
+- (void)setHandoffToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005666C;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getSecureElementWithReason:(id)a3 handoffToken:(id)a4 completion:(id)a5
+- (void)getSecureElementWithReason:(id)reason handoffToken:(id)token completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  tokenCopy = token;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(NearFieldManager *)self secureElementInfo];
-  v12 = [v11 seid];
+  secureElementInfo = [(NearFieldManager *)self secureElementInfo];
+  seid = [secureElementInfo seid];
 
-  if (v12)
+  if (seid)
   {
     v13 = sub_1000554DC();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v9 asHexString];
+      asHexString = [tokenCopy asHexString];
       *buf = 138543618;
-      v27 = v8;
+      v27 = reasonCopy;
       v28 = 2114;
-      v29 = v14;
+      v29 = asHexString;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Getting SE for reason %{public}@ with token %{public}@", buf, 0x16u);
     }
 
     v15 = +[NFHardwareManager sharedHardwareManager];
     v24[0] = @"session.handofftoken";
     v24[1] = @"session.handofftoken.failurebehaviour";
-    v25[0] = v9;
+    v25[0] = tokenCopy;
     v25[1] = @"fail";
     v16 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
     v20[0] = _NSConcreteStackBlock;
@@ -257,9 +257,9 @@ LABEL_11:
     v20[2] = sub_100056954;
     v20[3] = &unk_1004C2E58;
     v20[4] = self;
-    v21 = v8;
-    v23 = v10;
-    v22 = v12;
+    v21 = reasonCopy;
+    v23 = completionCopy;
+    v22 = seid;
     v17 = [v15 startSecureElementManagerSessionWithAttributes:v16 completion:v20];
   }
 
@@ -267,7 +267,7 @@ LABEL_11:
   {
     v18 = sub_1000554DC();
     v19 = SESCreateAndLogError();
-    (*(v10 + 2))(v10, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
   }
 }
 

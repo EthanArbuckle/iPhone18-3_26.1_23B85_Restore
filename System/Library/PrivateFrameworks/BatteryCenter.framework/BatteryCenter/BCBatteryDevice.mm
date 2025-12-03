@@ -1,11 +1,11 @@
 @interface BCBatteryDevice
-+ (id)batteryDeviceWithIdentifier:(id)a3 vendor:(int64_t)a4 productIdentifier:(int64_t)a5 parts:(unint64_t)a6 matchIdentifier:(id)a7;
-- (BCBatteryDevice)initWithCoder:(id)a3;
-- (BCBatteryDevice)initWithIdentifier:(id)a3 vendor:(int64_t)a4 productIdentifier:(int64_t)a5 parts:(unint64_t)a6 matchIdentifier:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)batteryDeviceWithIdentifier:(id)identifier vendor:(int64_t)vendor productIdentifier:(int64_t)productIdentifier parts:(unint64_t)parts matchIdentifier:(id)matchIdentifier;
+- (BCBatteryDevice)initWithCoder:(id)coder;
+- (BCBatteryDevice)initWithIdentifier:(id)identifier vendor:(int64_t)vendor productIdentifier:(int64_t)productIdentifier parts:(unint64_t)parts matchIdentifier:(id)matchIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)synthesizedRepresentativeDevice;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCBatteryDevice
@@ -97,32 +97,32 @@
   return v31;
 }
 
-+ (id)batteryDeviceWithIdentifier:(id)a3 vendor:(int64_t)a4 productIdentifier:(int64_t)a5 parts:(unint64_t)a6 matchIdentifier:(id)a7
++ (id)batteryDeviceWithIdentifier:(id)identifier vendor:(int64_t)vendor productIdentifier:(int64_t)productIdentifier parts:(unint64_t)parts matchIdentifier:(id)matchIdentifier
 {
-  v12 = a7;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithIdentifier:v13 vendor:a4 productIdentifier:a5 parts:a6 matchIdentifier:v12];
+  matchIdentifierCopy = matchIdentifier;
+  identifierCopy = identifier;
+  v14 = [[self alloc] initWithIdentifier:identifierCopy vendor:vendor productIdentifier:productIdentifier parts:parts matchIdentifier:matchIdentifierCopy];
 
   return v14;
 }
 
-- (BCBatteryDevice)initWithIdentifier:(id)a3 vendor:(int64_t)a4 productIdentifier:(int64_t)a5 parts:(unint64_t)a6 matchIdentifier:(id)a7
+- (BCBatteryDevice)initWithIdentifier:(id)identifier vendor:(int64_t)vendor productIdentifier:(int64_t)productIdentifier parts:(unint64_t)parts matchIdentifier:(id)matchIdentifier
 {
-  v12 = a3;
-  v13 = a7;
+  identifierCopy = identifier;
+  matchIdentifierCopy = matchIdentifier;
   v20.receiver = self;
   v20.super_class = BCBatteryDevice;
   v14 = [(BCBatteryDevice *)&v20 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v14->_vendor = a4;
-    v14->_productIdentifier = a5;
-    v14->_parts = a6;
-    v17 = [v13 copy];
+    v14->_vendor = vendor;
+    v14->_productIdentifier = productIdentifier;
+    v14->_parts = parts;
+    v17 = [matchIdentifierCopy copy];
     matchIdentifier = v14->_matchIdentifier;
     v14->_matchIdentifier = v17;
   }
@@ -130,53 +130,53 @@
   return v14;
 }
 
-- (BCBatteryDevice)initWithCoder:(id)a3
+- (BCBatteryDevice)initWithCoder:(id)coder
 {
   v23.receiver = self;
   v23.super_class = BCBatteryDevice;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BCBatteryDevice *)&v23 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"identifier", v23.receiver, v23.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"identifier", v23.receiver, v23.super_class}];
   v6 = [v5 copy];
   identifier = v4->_identifier;
   v4->_identifier = v6;
 
-  v4->_vendor = [v3 decodeIntegerForKey:@"vendor"];
-  v4->_productIdentifier = [v3 decodeIntegerForKey:@"productIdentifier"];
-  v4->_parts = [v3 decodeIntegerForKey:@"parts"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"matchIdentifier"];
+  v4->_vendor = [coderCopy decodeIntegerForKey:@"vendor"];
+  v4->_productIdentifier = [coderCopy decodeIntegerForKey:@"productIdentifier"];
+  v4->_parts = [coderCopy decodeIntegerForKey:@"parts"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchIdentifier"];
   v9 = [v8 copy];
   matchIdentifier = v4->_matchIdentifier;
   v4->_matchIdentifier = v9;
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   v12 = [v11 copy];
   name = v4->_name;
   v4->_name = v12;
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
   v15 = [v14 copy];
   groupName = v4->_groupName;
   v4->_groupName = v15;
 
-  v4->_percentCharge = [v3 decodeIntegerForKey:@"percentCharge"];
-  v4->_connected = [v3 decodeBoolForKey:@"connected"];
-  v4->_charging = [v3 decodeBoolForKey:@"charging"];
-  v4->_paused = [v3 decodeBoolForKey:@"paused"];
-  v4->_internal = [v3 decodeBoolForKey:@"internal"];
-  v4->_powerSource = [v3 decodeBoolForKey:@"powerSource"];
-  v4->_powerSourceState = [v3 decodeIntegerForKey:@"powerSourceState"];
-  v4->_approximatesPercentCharge = [v3 decodeBoolForKey:@"approximatesPercentCharge"];
-  v4->_transportType = [v3 decodeIntegerForKey:@"transportType"];
-  v4->_fake = [v3 decodeBoolForKey:@"fake"];
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryIdentifier"];
+  v4->_percentCharge = [coderCopy decodeIntegerForKey:@"percentCharge"];
+  v4->_connected = [coderCopy decodeBoolForKey:@"connected"];
+  v4->_charging = [coderCopy decodeBoolForKey:@"charging"];
+  v4->_paused = [coderCopy decodeBoolForKey:@"paused"];
+  v4->_internal = [coderCopy decodeBoolForKey:@"internal"];
+  v4->_powerSource = [coderCopy decodeBoolForKey:@"powerSource"];
+  v4->_powerSourceState = [coderCopy decodeIntegerForKey:@"powerSourceState"];
+  v4->_approximatesPercentCharge = [coderCopy decodeBoolForKey:@"approximatesPercentCharge"];
+  v4->_transportType = [coderCopy decodeIntegerForKey:@"transportType"];
+  v4->_fake = [coderCopy decodeBoolForKey:@"fake"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryIdentifier"];
   v18 = [v17 copy];
   accessoryIdentifier = v4->_accessoryIdentifier;
   v4->_accessoryIdentifier = v18;
 
-  v4->_accessoryCategory = [v3 decodeIntegerForKey:@"accessoryCategory"];
-  v4->_wirelesslyCharging = [v3 decodeBoolForKey:@"wirelesslyCharging"];
-  v20 = [v3 decodeObjectForKey:@"modelNumber"];
+  v4->_accessoryCategory = [coderCopy decodeIntegerForKey:@"accessoryCategory"];
+  v4->_wirelesslyCharging = [coderCopy decodeBoolForKey:@"wirelesslyCharging"];
+  v20 = [coderCopy decodeObjectForKey:@"modelNumber"];
 
   modelNumber = v4->_modelNumber;
   v4->_modelNumber = v20;
@@ -184,125 +184,125 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   if ([(NSString *)self->_identifier length])
   {
-    [v11 encodeObject:self->_identifier forKey:@"identifier"];
+    [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
   }
 
   vendor = self->_vendor;
   if (vendor)
   {
-    [v11 encodeInteger:vendor forKey:@"vendor"];
+    [coderCopy encodeInteger:vendor forKey:@"vendor"];
   }
 
   productIdentifier = self->_productIdentifier;
   if (productIdentifier)
   {
-    [v11 encodeInteger:productIdentifier forKey:@"productIdentifier"];
+    [coderCopy encodeInteger:productIdentifier forKey:@"productIdentifier"];
   }
 
   parts = self->_parts;
   if (parts)
   {
-    [v11 encodeInteger:parts forKey:@"parts"];
+    [coderCopy encodeInteger:parts forKey:@"parts"];
   }
 
   if ([(NSString *)self->_matchIdentifier length])
   {
-    [v11 encodeObject:self->_matchIdentifier forKey:@"matchIdentifier"];
+    [coderCopy encodeObject:self->_matchIdentifier forKey:@"matchIdentifier"];
   }
 
   if ([(NSString *)self->_name length])
   {
-    [v11 encodeObject:self->_name forKey:@"name"];
+    [coderCopy encodeObject:self->_name forKey:@"name"];
   }
 
   if ([(NSString *)self->_groupName length])
   {
-    [v11 encodeObject:self->_groupName forKey:@"groupName"];
+    [coderCopy encodeObject:self->_groupName forKey:@"groupName"];
   }
 
   percentCharge = self->_percentCharge;
   if (percentCharge)
   {
-    [v11 encodeInteger:percentCharge forKey:@"percentCharge"];
+    [coderCopy encodeInteger:percentCharge forKey:@"percentCharge"];
   }
 
   if (self->_connected)
   {
-    [v11 encodeBool:1 forKey:@"connected"];
+    [coderCopy encodeBool:1 forKey:@"connected"];
   }
 
   if (self->_charging)
   {
-    [v11 encodeBool:1 forKey:@"charging"];
+    [coderCopy encodeBool:1 forKey:@"charging"];
   }
 
   if (self->_paused)
   {
-    [v11 encodeBool:1 forKey:@"paused"];
+    [coderCopy encodeBool:1 forKey:@"paused"];
   }
 
   if (self->_internal)
   {
-    [v11 encodeBool:1 forKey:@"internal"];
+    [coderCopy encodeBool:1 forKey:@"internal"];
   }
 
   if (self->_powerSource)
   {
-    [v11 encodeBool:1 forKey:@"powerSource"];
+    [coderCopy encodeBool:1 forKey:@"powerSource"];
   }
 
   powerSourceState = self->_powerSourceState;
   if (powerSourceState)
   {
-    [v11 encodeInteger:powerSourceState forKey:@"powerSourceState"];
+    [coderCopy encodeInteger:powerSourceState forKey:@"powerSourceState"];
   }
 
   if (self->_approximatesPercentCharge)
   {
-    [v11 encodeBool:1 forKey:@"approximatesPercentCharge"];
+    [coderCopy encodeBool:1 forKey:@"approximatesPercentCharge"];
   }
 
   transportType = self->_transportType;
   if (transportType)
   {
-    [v11 encodeInteger:transportType forKey:@"transportType"];
+    [coderCopy encodeInteger:transportType forKey:@"transportType"];
   }
 
   if (self->_fake)
   {
-    [v11 encodeBool:1 forKey:@"fake"];
+    [coderCopy encodeBool:1 forKey:@"fake"];
   }
 
   if ([(NSString *)self->_accessoryIdentifier length])
   {
-    [v11 encodeObject:self->_accessoryIdentifier forKey:@"accessoryIdentifier"];
+    [coderCopy encodeObject:self->_accessoryIdentifier forKey:@"accessoryIdentifier"];
   }
 
   accessoryCategory = self->_accessoryCategory;
   if (accessoryCategory)
   {
-    [v11 encodeInteger:accessoryCategory forKey:@"accessoryCategory"];
+    [coderCopy encodeInteger:accessoryCategory forKey:@"accessoryCategory"];
   }
 
   if (self->_wirelesslyCharging)
   {
-    [v11 encodeBool:1 forKey:@"wirelesslyCharging"];
+    [coderCopy encodeBool:1 forKey:@"wirelesslyCharging"];
   }
 
   if ([(NSString *)self->_modelNumber length])
   {
-    [v11 encodeObject:self->_modelNumber forKey:@"modelNumber"];
+    [coderCopy encodeObject:self->_modelNumber forKey:@"modelNumber"];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[BCBatteryDevice allocWithZone:?]vendor:"initWithIdentifier:vendor:productIdentifier:parts:matchIdentifier:" productIdentifier:self->_identifier parts:self->_vendor matchIdentifier:self->_productIdentifier, self->_parts, self->_matchIdentifier];
   [(BCBatteryDevice *)v4 setIdentifier:self->_identifier];
@@ -332,13 +332,13 @@
   v3 = [(BCBatteryDevice *)self copy];
   if ([(BCBatteryDevice *)self parts]== 1 || [(BCBatteryDevice *)self parts]== 2)
   {
-    v4 = [v3 groupName];
-    [v3 setName:v4];
+    groupName = [v3 groupName];
+    [v3 setName:groupName];
 
     [v3 setParts:3];
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(BCBatteryDevice *)self identifier];
-    v7 = [v5 stringWithFormat:@"%@-synthesized", v6];
+    identifier = [(BCBatteryDevice *)self identifier];
+    v7 = [v5 stringWithFormat:@"%@-synthesized", identifier];
     [v3 setIdentifier:v7];
   }
 

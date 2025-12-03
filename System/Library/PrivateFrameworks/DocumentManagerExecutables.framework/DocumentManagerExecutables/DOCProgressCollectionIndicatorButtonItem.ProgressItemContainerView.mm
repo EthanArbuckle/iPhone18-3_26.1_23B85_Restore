@@ -1,6 +1,6 @@
 @interface DOCProgressCollectionIndicatorButtonItem.ProgressItemContainerView
 - (CGSize)intrinsicContentSize;
-- (_TtCC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItemP33_B63CAF900B351F60B6673B49E171E6A025ProgressItemContainerView)initWithFrame:(CGRect)a3;
+- (_TtCC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItemP33_B63CAF900B351F60B6673B49E171E6A025ProgressItemContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DOCProgressCollectionIndicatorButtonItem.ProgressItemContainerView
@@ -19,12 +19,12 @@
   return result;
 }
 
-- (_TtCC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItemP33_B63CAF900B351F60B6673B49E171E6A025ProgressItemContainerView)initWithFrame:(CGRect)a3
+- (_TtCC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItemP33_B63CAF900B351F60B6673B49E171E6A025ProgressItemContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtCC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItemP33_B63CAF900B351F60B6673B49E171E6A025ProgressItemContainerView_isActivePopoverSource) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCProgressCollectionIndicatorButtonItem.ProgressItemContainerView();

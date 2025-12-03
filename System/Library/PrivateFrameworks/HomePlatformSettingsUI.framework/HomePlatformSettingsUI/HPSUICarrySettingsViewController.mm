@@ -1,24 +1,24 @@
 @interface HPSUICarrySettingsViewController
-- (HPSUICarrySettingsViewController)initWithCoder:(id)a3;
-- (HPSUICarrySettingsViewController)initWithHomeID:(id)a3;
-- (HPSUICarrySettingsViewController)initWithHomeID:(id)a3 homeKitIdentifiers:(id)a4;
+- (HPSUICarrySettingsViewController)initWithCoder:(id)coder;
+- (HPSUICarrySettingsViewController)initWithHomeID:(id)d;
+- (HPSUICarrySettingsViewController)initWithHomeID:(id)d homeKitIdentifiers:(id)identifiers;
 - (void)configureInternalVC;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setBackgroundColorIfNeeded;
 - (void)viewDidLoad;
 @end
 
 @implementation HPSUICarrySettingsViewController
 
-- (HPSUICarrySettingsViewController)initWithHomeID:(id)a3
+- (HPSUICarrySettingsViewController)initWithHomeID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = HPSUICarrySettingsViewController;
   v5 = [(HPSUICarrySettingsViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [[_HPSUICarrySettingsViewController alloc] initWithHomeID:v4];
+    v6 = [[_HPSUICarrySettingsViewController alloc] initWithHomeID:dCopy];
     [(HPSUICarrySettingsViewController *)v5 setInternalVC:v6];
 
     v7 = v5;
@@ -27,16 +27,16 @@
   return v5;
 }
 
-- (HPSUICarrySettingsViewController)initWithHomeID:(id)a3 homeKitIdentifiers:(id)a4
+- (HPSUICarrySettingsViewController)initWithHomeID:(id)d homeKitIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifiersCopy = identifiers;
   v12.receiver = self;
   v12.super_class = HPSUICarrySettingsViewController;
   v8 = [(HPSUICarrySettingsViewController *)&v12 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [[_HPSUICarrySettingsViewController alloc] initWithHomeID:v6 homeKitIdentifiers:v7];
+    v9 = [[_HPSUICarrySettingsViewController alloc] initWithHomeID:dCopy homeKitIdentifiers:identifiersCopy];
     [(HPSUICarrySettingsViewController *)v8 setInternalVC:v9];
 
     v10 = v8;
@@ -45,40 +45,40 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(HPSUICarrySettingsViewController *)self homeID];
-  if (v4)
+  coderCopy = coder;
+  homeID = [(HPSUICarrySettingsViewController *)self homeID];
+  if (homeID)
   {
-    [v5 encodeObject:v4 forKey:@"hid"];
+    [coderCopy encodeObject:homeID forKey:@"hid"];
   }
 }
 
-- (HPSUICarrySettingsViewController)initWithCoder:(id)a3
+- (HPSUICarrySettingsViewController)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"hid"];
+  v4 = [coder decodeObjectForKey:@"hid"];
   if (v4)
   {
     self = [(HPSUICarrySettingsViewController *)self initWithHomeID:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)configureInternalVC
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(HPSUICarrySettingsViewController *)self internalVC];
-  if (v3)
+  internalVC = [(HPSUICarrySettingsViewController *)self internalVC];
+  if (internalVC)
   {
-    [(UIViewController *)self wrapWithSubViewController:v3];
+    [(UIViewController *)self wrapWithSubViewController:internalVC];
   }
 
   MEMORY[0x2821F96F8]();
@@ -86,30 +86,30 @@
 
 - (void)setBackgroundColorIfNeeded
 {
-  v3 = [(HPSUICarrySettingsViewController *)self parentViewController];
-  if (v3)
+  parentViewController = [(HPSUICarrySettingsViewController *)self parentViewController];
+  if (parentViewController)
   {
-    v13 = v3;
+    v13 = parentViewController;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4 = v13;
-      v5 = [v4 viewControllers];
-      v6 = [v5 count];
+      viewControllers = [v4 viewControllers];
+      v6 = [viewControllers count];
 
       v7 = v6 - 2;
       if (v6 >= 2)
       {
-        v8 = [v4 viewControllers];
-        v9 = [v8 objectAtIndexedSubscript:v7];
+        viewControllers2 = [v4 viewControllers];
+        v9 = [viewControllers2 objectAtIndexedSubscript:v7];
 
-        v10 = [v9 view];
-        v11 = [v10 backgroundColor];
+        view = [v9 view];
+        backgroundColor = [view backgroundColor];
 
-        if (v11)
+        if (backgroundColor)
         {
-          v12 = [(HPSUICarrySettingsViewController *)self view];
-          [v12 setBackgroundColor:v11];
+          view2 = [(HPSUICarrySettingsViewController *)self view];
+          [view2 setBackgroundColor:backgroundColor];
         }
       }
     }

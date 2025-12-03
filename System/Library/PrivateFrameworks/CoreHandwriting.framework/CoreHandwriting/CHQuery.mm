@@ -1,12 +1,12 @@
 @interface CHQuery
 - (CHQuery)init;
-- (CHQuery)initWithRecognitionSession:(id)a3;
+- (CHQuery)initWithRecognitionSession:(id)session;
 - (CHQueryDelegate)delegate;
 - (void)dealloc;
 - (void)pause;
 - (void)q_queryResultDidChange;
 - (void)q_setNeedsQueryResultUpdating;
-- (void)recognitionSessionDidUpdateRecognitionResult:(id)a3;
+- (void)recognitionSessionDidUpdateRecognitionResult:(id)result;
 - (void)start;
 - (void)waitForPendingUpdates;
 @end
@@ -52,9 +52,9 @@ LABEL_8:
   return 0;
 }
 
-- (CHQuery)initWithRecognitionSession:(id)a3
+- (CHQuery)initWithRecognitionSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v38.receiver = self;
   v38.super_class = CHQuery;
   v6 = [(CHQuery *)&v38 init];
@@ -72,7 +72,7 @@ LABEL_8:
     processingQueue = v6->_processingQueue;
     v6->_processingQueue = v23;
 
-    objc_storeStrong(&v6->_recognitionSession, a3);
+    objc_storeStrong(&v6->_recognitionSession, session);
     v6->_preferredUpdatesInterval = 1.0;
     v30 = objc_msgSend_distantPast(MEMORY[0x1E695DF00], v25, v26, v27, v28, v29);
     objc_msgSend_timeIntervalSinceReferenceDate(v30, v31, v32, v33, v34, v35);
@@ -103,7 +103,7 @@ LABEL_8:
     v14 = 2112;
     v15 = recognitionSession;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18366B000, v3, OS_LOG_TYPE_DEBUG, "Query %p {class %@} attached to session %p: dealloc", buf, 0x20u);
   }
 
@@ -166,12 +166,12 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)recognitionSessionDidUpdateRecognitionResult:(id)a3
+- (void)recognitionSessionDidUpdateRecognitionResult:(id)result
 {
   if (!self->_isTearingDown)
   {
     lastProcessedTime = self->_lastProcessedTime;
-    v8 = objc_msgSend_processingQueue(self, a2, a3, v3, v4, v5);
+    v8 = objc_msgSend_processingQueue(self, a2, result, v3, v4, v5);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1838BFA50;

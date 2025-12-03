@@ -1,27 +1,27 @@
 @interface HDClinicalIngestionStoreServer
-- (HDClinicalIngestionStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)ingestionManagerUnavailableErrorWithActionDescription:(id)a3;
-- (void)clinicalIngestionManager:(id)a3 willChangeIngestionState:(int64_t)a4;
+- (HDClinicalIngestionStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)ingestionManagerUnavailableErrorWithActionDescription:(id)description;
+- (void)clinicalIngestionManager:(id)manager willChangeIngestionState:(int64_t)state;
 - (void)registerForIngestionStateChanges;
-- (void)remote_abortIngestionWithCompletion:(id)a3;
-- (void)remote_ingestHealthRecordsWithFHIRDocumentHandle:(id)a3 accountIdentifier:(id)a4 options:(unint64_t)a5 completion:(id)a6;
-- (void)remote_ingestHealthRecordsWithOptions:(unint64_t)a3 reason:(id)a4 accountIdentifiers:(id)a5 completion:(id)a6;
-- (void)remote_ingestionStateWithCompletion:(id)a3;
-- (void)remote_resetHealthRecordsLastExtractedRowIDWithCompletion:(id)a3;
+- (void)remote_abortIngestionWithCompletion:(id)completion;
+- (void)remote_ingestHealthRecordsWithFHIRDocumentHandle:(id)handle accountIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion;
+- (void)remote_ingestHealthRecordsWithOptions:(unint64_t)options reason:(id)reason accountIdentifiers:(id)identifiers completion:(id)completion;
+- (void)remote_ingestionStateWithCompletion:(id)completion;
+- (void)remote_resetHealthRecordsLastExtractedRowIDWithCompletion:(id)completion;
 @end
 
 @implementation HDClinicalIngestionStoreServer
 
-- (HDClinicalIngestionStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDClinicalIngestionStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v16.receiver = self;
   v16.super_class = HDClinicalIngestionStoreServer;
-  v11 = [(HDClinicalIngestionStoreServer *)&v16 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDClinicalIngestionStoreServer *)&v16 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v11)
   {
-    v12 = [v10 profile];
-    v13 = [v12 profileExtensionWithIdentifier:HKHealthRecordsPluginIdentifier];
+    profile = [clientCopy profile];
+    v13 = [profile profileExtensionWithIdentifier:HKHealthRecordsPluginIdentifier];
     profileExtension = v11->_profileExtension;
     v11->_profileExtension = v13;
   }
@@ -29,23 +29,23 @@
   return v11;
 }
 
-- (id)ingestionManagerUnavailableErrorWithActionDescription:(id)a3
+- (id)ingestionManagerUnavailableErrorWithActionDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(HDClinicalIngestionStoreServer *)self profile];
-  v6 = [NSError hk_error:100 format:@"Cannot %@ on profile without ingestion manager: %@", v4, v5];
+  descriptionCopy = description;
+  profile = [(HDClinicalIngestionStoreServer *)self profile];
+  v6 = [NSError hk_error:100 format:@"Cannot %@ on profile without ingestion manager: %@", descriptionCopy, profile];
 
   return v6;
 }
 
 - (void)registerForIngestionStateChanges
 {
-  v3 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
+  ingestionManager = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
 
-  if (v3)
+  if (ingestionManager)
   {
-    v5 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
-    [v5 registerIngestionStateChangeObserver:self];
+    ingestionManager2 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
+    [ingestionManager2 registerIngestionStateChangeObserver:self];
   }
 
   else
@@ -59,7 +59,7 @@
   }
 }
 
-- (void)clinicalIngestionManager:(id)a3 willChangeIngestionState:(int64_t)a4
+- (void)clinicalIngestionManager:(id)manager willChangeIngestionState:(int64_t)state
 {
   _HKInitializeLogging();
   v6 = HKLogHealthRecords;
@@ -68,75 +68,75 @@
     v7 = v6;
     v8 = HKStringFromHKClinicalIngestionState();
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = v8;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: ingestion manager will change ingestion state to %{public}@", buf, 0x16u);
   }
 
-  v9 = [(HDClinicalIngestionStoreServer *)self client];
-  v10 = [v9 connection];
+  client = [(HDClinicalIngestionStoreServer *)self client];
+  connection = [client connection];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_2479C;
   v12[3] = &unk_105C38;
   v12[4] = self;
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v12];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v12];
 
-  [v11 clientRemote_updateIngestionState:a4];
+  [v11 clientRemote_updateIngestionState:state];
 }
 
-- (void)remote_ingestionStateWithCompletion:(id)a3
+- (void)remote_ingestionStateWithCompletion:(id)completion
 {
   profileExtension = self->_profileExtension;
-  v6 = a3;
-  v4 = [(HDHealthRecordsProfileExtension *)profileExtension ingestionManager];
-  v5 = [v4 currentIngestionState];
+  completionCopy = completion;
+  ingestionManager = [(HDHealthRecordsProfileExtension *)profileExtension ingestionManager];
+  currentIngestionState = [ingestionManager currentIngestionState];
 
-  v6[2](v6, v5);
+  completionCopy[2](completionCopy, currentIngestionState);
 }
 
-- (void)remote_ingestHealthRecordsWithOptions:(unint64_t)a3 reason:(id)a4 accountIdentifiers:(id)a5 completion:(id)a6
+- (void)remote_ingestHealthRecordsWithOptions:(unint64_t)options reason:(id)reason accountIdentifiers:(id)identifiers completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
+  reasonCopy = reason;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  ingestionManager = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
 
-  if (v13)
+  if (ingestionManager)
   {
-    v14 = [[HDClinicalIngestionTaskContext alloc] initWithOptions:a3 reason:v10];
-    v15 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
+    v14 = [[HDClinicalIngestionTaskContext alloc] initWithOptions:options reason:reasonCopy];
+    ingestionManager2 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_249E4;
     v17[3] = &unk_106960;
-    v18 = v12;
-    [v15 performIngestionWithContext:v14 accountIdentifiers:v11 completion:v17];
+    v18 = completionCopy;
+    [ingestionManager2 performIngestionWithContext:v14 accountIdentifiers:identifiersCopy completion:v17];
   }
 
   else
   {
     v16 = [(HDClinicalIngestionStoreServer *)self ingestionManagerUnavailableErrorWithActionDescription:@"trigger ingestion"];
-    (*(v12 + 2))(v12, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
-- (void)remote_ingestHealthRecordsWithFHIRDocumentHandle:(id)a3 accountIdentifier:(id)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)remote_ingestHealthRecordsWithFHIRDocumentHandle:(id)handle accountIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
+  handleCopy = handle;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  ingestionManager = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
 
-  if (v13)
+  if (ingestionManager)
   {
-    v14 = [(HDClinicalIngestionTaskContext *)[HDClinicalIngestionTaskMutableContext alloc] initWithOptions:a5 reason:@"client request, file ingestion"];
-    [(HDClinicalIngestionTaskMutableContext *)v14 setInputFileHandle:v10];
+    v14 = [(HDClinicalIngestionTaskContext *)[HDClinicalIngestionTaskMutableContext alloc] initWithOptions:options reason:@"client request, file ingestion"];
+    [(HDClinicalIngestionTaskMutableContext *)v14 setInputFileHandle:handleCopy];
     [(HDClinicalIngestionTaskMutableContext *)v14 setOptions:14];
-    if (v11)
+    if (identifierCopy)
     {
-      v20 = v11;
+      v20 = identifierCopy;
       v15 = [NSArray arrayWithObjects:&v20 count:1];
     }
 
@@ -145,58 +145,58 @@
       v15 = 0;
     }
 
-    v17 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
+    ingestionManager2 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_24BD8;
     v18[3] = &unk_106960;
-    v19 = v12;
-    [v17 performIngestionWithContext:v14 accountIdentifiers:v15 completion:v18];
+    v19 = completionCopy;
+    [ingestionManager2 performIngestionWithContext:v14 accountIdentifiers:v15 completion:v18];
   }
 
   else
   {
     v16 = [(HDClinicalIngestionStoreServer *)self ingestionManagerUnavailableErrorWithActionDescription:@"ingest FHIR document"];
-    (*(v12 + 2))(v12, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
-- (void)remote_abortIngestionWithCompletion:(id)a3
+- (void)remote_abortIngestionWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
+  completionCopy = completion;
+  ingestionManager = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
 
-  if (v4)
+  if (ingestionManager)
   {
-    v5 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
-    [v5 cancelAllIngestionTasks];
+    ingestionManager2 = [(HDHealthRecordsProfileExtension *)self->_profileExtension ingestionManager];
+    [ingestionManager2 cancelAllIngestionTasks];
   }
 
   else
   {
-    v5 = [(HDClinicalIngestionStoreServer *)self ingestionManagerUnavailableErrorWithActionDescription:@"abort ingestion"];
-    v6[2](v6, v5);
+    ingestionManager2 = [(HDClinicalIngestionStoreServer *)self ingestionManagerUnavailableErrorWithActionDescription:@"abort ingestion"];
+    completionCopy[2](completionCopy, ingestionManager2);
   }
 }
 
-- (void)remote_resetHealthRecordsLastExtractedRowIDWithCompletion:(id)a3
+- (void)remote_resetHealthRecordsLastExtractedRowIDWithCompletion:(id)completion
 {
   profileExtension = self->_profileExtension;
-  v5 = a3;
-  v6 = [(HDHealthRecordsProfileExtension *)profileExtension accountManager];
+  completionCopy = completion;
+  accountManager = [(HDHealthRecordsProfileExtension *)profileExtension accountManager];
 
-  if (v6)
+  if (accountManager)
   {
-    v8 = [(HDHealthRecordsProfileExtension *)self->_profileExtension accountManager];
-    [v8 resetLastExtractedRowIDWithCompletion:v5];
+    accountManager2 = [(HDHealthRecordsProfileExtension *)self->_profileExtension accountManager];
+    [accountManager2 resetLastExtractedRowIDWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(HDClinicalIngestionStoreServer *)self profile];
-    v8 = [NSError hk_error:100 format:@"Cannot reset last extracted row ID on profile without account manager: %@", v7];
+    profile = [(HDClinicalIngestionStoreServer *)self profile];
+    accountManager2 = [NSError hk_error:100 format:@"Cannot reset last extracted row ID on profile without account manager: %@", profile];
 
-    v5[2](v5, 0, v8);
+    completionCopy[2](completionCopy, 0, accountManager2);
   }
 }
 

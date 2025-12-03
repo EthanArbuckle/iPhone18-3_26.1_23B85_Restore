@@ -1,8 +1,8 @@
 @interface OADTableCell
-- (BOOL)merge:(int)a3;
+- (BOOL)merge:(int)merge;
 - (OADTableCell)init;
 - (id)description;
-- (int)spanAlongDir:(int)a3;
+- (int)spanAlongDir:(int)dir;
 @end
 
 @implementation OADTableCell
@@ -22,9 +22,9 @@
   return result;
 }
 
-- (int)spanAlongDir:(int)a3
+- (int)spanAlongDir:(int)dir
 {
-  if (a3)
+  if (dir)
   {
     return [(OADTableCell *)self gridSpan];
   }
@@ -35,9 +35,9 @@
   }
 }
 
-- (BOOL)merge:(int)a3
+- (BOOL)merge:(int)merge
 {
-  if (a3)
+  if (merge)
   {
     return [(OADTableCell *)self horzMerge];
   }

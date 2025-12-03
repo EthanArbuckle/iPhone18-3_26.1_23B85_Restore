@@ -4,10 +4,10 @@
 - (int64_t)bottomRightFeature;
 - (unint64_t)bottomLeftTouchTypes;
 - (unint64_t)bottomRightTouchTypes;
-- (void)setBottomLeftFeature:(int64_t)a3;
-- (void)setBottomLeftTouchTypes:(unint64_t)a3;
-- (void)setBottomRightFeature:(int64_t)a3;
-- (void)setBottomRightTouchTypes:(unint64_t)a3;
+- (void)setBottomLeftFeature:(int64_t)feature;
+- (void)setBottomLeftTouchTypes:(unint64_t)types;
+- (void)setBottomRightFeature:(int64_t)feature;
+- (void)setBottomRightTouchTypes:(unint64_t)types;
 @end
 
 @implementation ICSettingsGesturesDefaults
@@ -29,11 +29,11 @@
 
 - (int64_t)bottomLeftFeature
 {
-  v3 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  v4 = [v3 objectForKey:@"SBBottomLeftCornerGestureFeature"];
+  springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  v4 = [springboardDefaults objectForKey:@"SBBottomLeftCornerGestureFeature"];
 
-  v5 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  v6 = [v5 objectForKey:@"SBBottomLeftCornerGestureTouchTypes"];
+  springboardDefaults2 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  v6 = [springboardDefaults2 objectForKey:@"SBBottomLeftCornerGestureTouchTypes"];
 
   if (!v6)
   {
@@ -42,47 +42,47 @@
 
   if (![v6 integerValue])
   {
-    v7 = -1;
+    integerValue = -1;
     goto LABEL_7;
   }
 
   if (v4)
   {
-    v7 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
 LABEL_5:
-    v7 = 0;
+    integerValue = 0;
   }
 
 LABEL_7:
 
-  return v7;
+  return integerValue;
 }
 
-- (void)setBottomLeftFeature:(int64_t)a3
+- (void)setBottomLeftFeature:(int64_t)feature
 {
-  v5 = [(ICSettingsGesturesDefaults *)self bottomLeftTouchTypes];
-  v6 = [(ICSettingsGesturesDefaults *)self anyCornerGestureAllowsDirectTouches];
-  if (a3 == -1)
+  bottomLeftTouchTypes = [(ICSettingsGesturesDefaults *)self bottomLeftTouchTypes];
+  anyCornerGestureAllowsDirectTouches = [(ICSettingsGesturesDefaults *)self anyCornerGestureAllowsDirectTouches];
+  if (feature == -1)
   {
-    v10 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-    [v10 removeObjectForKey:@"SBBottomLeftCornerGestureFeature"];
+    springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+    [springboardDefaults removeObjectForKey:@"SBBottomLeftCornerGestureFeature"];
     v9 = 0;
   }
 
   else
   {
-    v7 = v5 | v6;
+    v7 = bottomLeftTouchTypes | anyCornerGestureAllowsDirectTouches;
     v8 = v7 | 2;
-    if (a3 == 1)
+    if (feature == 1)
     {
       v7 |= 2uLL;
     }
 
-    if (a3)
+    if (feature)
     {
       v9 = v7;
     }
@@ -92,45 +92,45 @@ LABEL_7:
       v9 = v8;
     }
 
-    v10 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-    [v10 setInteger:a3 forKey:@"SBBottomLeftCornerGestureFeature"];
+    springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+    [springboardDefaults setInteger:feature forKey:@"SBBottomLeftCornerGestureFeature"];
   }
 
-  v11 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  [v11 setInteger:v9 forKey:@"SBBottomLeftCornerGestureTouchTypes"];
+  springboardDefaults2 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  [springboardDefaults2 setInteger:v9 forKey:@"SBBottomLeftCornerGestureTouchTypes"];
 }
 
 - (unint64_t)bottomLeftTouchTypes
 {
-  v2 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  v3 = [v2 objectForKey:@"SBBottomLeftCornerGestureTouchTypes"];
+  springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  v3 = [springboardDefaults objectForKey:@"SBBottomLeftCornerGestureTouchTypes"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = &dword_0 + 2;
+    integerValue = &dword_0 + 2;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setBottomLeftTouchTypes:(unint64_t)a3
+- (void)setBottomLeftTouchTypes:(unint64_t)types
 {
-  v4 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  [v4 setInteger:a3 forKey:@"SBBottomLeftCornerGestureTouchTypes"];
+  springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  [springboardDefaults setInteger:types forKey:@"SBBottomLeftCornerGestureTouchTypes"];
 }
 
 - (int64_t)bottomRightFeature
 {
-  v3 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  v4 = [v3 objectForKey:@"SBBottomRightCornerGestureFeature"];
+  springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  v4 = [springboardDefaults objectForKey:@"SBBottomRightCornerGestureFeature"];
 
-  v5 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  v6 = [v5 objectForKey:@"SBBottomRightCornerGestureTouchTypes"];
+  springboardDefaults2 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  v6 = [springboardDefaults2 objectForKey:@"SBBottomRightCornerGestureTouchTypes"];
 
   if (!v6)
   {
@@ -139,13 +139,13 @@ LABEL_7:
 
   if (![v6 integerValue])
   {
-    v7 = -1;
+    integerValue = -1;
     goto LABEL_9;
   }
 
   if (v4)
   {
-    v7 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -153,41 +153,41 @@ LABEL_7:
 LABEL_12:
     if (+[ICDeviceSupport deviceSupportsSystemPaper])
     {
-      v7 = 1;
+      integerValue = 1;
     }
 
     else
     {
-      v7 = -1;
+      integerValue = -1;
     }
   }
 
 LABEL_9:
 
-  return v7;
+  return integerValue;
 }
 
-- (void)setBottomRightFeature:(int64_t)a3
+- (void)setBottomRightFeature:(int64_t)feature
 {
-  v5 = [(ICSettingsGesturesDefaults *)self bottomRightTouchTypes];
-  v6 = [(ICSettingsGesturesDefaults *)self anyCornerGestureAllowsDirectTouches];
-  if (a3 == -1)
+  bottomRightTouchTypes = [(ICSettingsGesturesDefaults *)self bottomRightTouchTypes];
+  anyCornerGestureAllowsDirectTouches = [(ICSettingsGesturesDefaults *)self anyCornerGestureAllowsDirectTouches];
+  if (feature == -1)
   {
-    v10 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-    [v10 removeObjectForKey:@"SBBottomRightCornerGestureFeature"];
+    springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+    [springboardDefaults removeObjectForKey:@"SBBottomRightCornerGestureFeature"];
     v9 = 0;
   }
 
   else
   {
-    v7 = v5 | v6;
+    v7 = bottomRightTouchTypes | anyCornerGestureAllowsDirectTouches;
     v8 = v7 | 2;
-    if (a3 == 1)
+    if (feature == 1)
     {
       v7 |= 2uLL;
     }
 
-    if (a3)
+    if (feature)
     {
       v9 = v7;
     }
@@ -197,41 +197,41 @@ LABEL_9:
       v9 = v8;
     }
 
-    v10 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-    [v10 setInteger:a3 forKey:@"SBBottomRightCornerGestureFeature"];
+    springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+    [springboardDefaults setInteger:feature forKey:@"SBBottomRightCornerGestureFeature"];
   }
 
-  v11 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  [v11 setInteger:v9 forKey:@"SBBottomRightCornerGestureTouchTypes"];
+  springboardDefaults2 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  [springboardDefaults2 setInteger:v9 forKey:@"SBBottomRightCornerGestureTouchTypes"];
 }
 
 - (unint64_t)bottomRightTouchTypes
 {
-  v2 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  v3 = [v2 objectForKey:@"SBBottomRightCornerGestureTouchTypes"];
+  springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  v3 = [springboardDefaults objectForKey:@"SBBottomRightCornerGestureTouchTypes"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else if (+[ICDeviceSupport deviceSupportsSystemPaper])
   {
-    v4 = &dword_0 + 3;
+    integerValue = &dword_0 + 3;
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setBottomRightTouchTypes:(unint64_t)a3
+- (void)setBottomRightTouchTypes:(unint64_t)types
 {
-  v4 = [(ICSettingsGesturesDefaults *)self springboardDefaults];
-  [v4 setInteger:a3 forKey:@"SBBottomRightCornerGestureTouchTypes"];
+  springboardDefaults = [(ICSettingsGesturesDefaults *)self springboardDefaults];
+  [springboardDefaults setInteger:types forKey:@"SBBottomRightCornerGestureTouchTypes"];
 }
 
 @end

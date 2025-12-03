@@ -1,9 +1,9 @@
 @interface MPSCNNCrossChannelNormalizationGradient
 - (MPSCNNCrossChannelNormalizationGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
-- (MPSCNNCrossChannelNormalizationGradient)initWithDevice:(id)a3;
+- (MPSCNNCrossChannelNormalizationGradient)initWithDevice:(id)device;
 - (MPSCNNCrossChannelNormalizationGradient)initWithDevice:(id)device kernelSize:(NSUInteger)kernelSize;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNCrossChannelNormalizationGradient
@@ -63,22 +63,22 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v31.receiver = self;
   v31.super_class = MPSCNNCrossChannelNormalizationGradient;
   [(MPSCNNGradientKernel *)&v31 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_kernelSize, @"MPSCNNCrossChannelNormalizationGradient.kernelSize", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_kernelSize, @"MPSCNNCrossChannelNormalizationGradient.kernelSize", v6, v7, v8, v9);
   *&v10 = self->_alpha;
-  objc_msgSend_encodeFloat_forKey_(a3, v11, @"MPSCNNCrossChannelNormalizationGradient.alpha", v12, v13, v14, v15, v16, v10);
+  objc_msgSend_encodeFloat_forKey_(coder, v11, @"MPSCNNCrossChannelNormalizationGradient.alpha", v12, v13, v14, v15, v16, v10);
   *&v17 = self->_beta;
-  objc_msgSend_encodeFloat_forKey_(a3, v18, @"MPSCNNCrossChannelNormalizationGradient.beta", v19, v20, v21, v22, v23, v17);
+  objc_msgSend_encodeFloat_forKey_(coder, v18, @"MPSCNNCrossChannelNormalizationGradient.beta", v19, v20, v21, v22, v23, v17);
   *&v24 = self->_delta;
-  objc_msgSend_encodeFloat_forKey_(a3, v25, @"MPSCNNCrossChannelNormalizationGradient.delta", v26, v27, v28, v29, v30, v24);
+  objc_msgSend_encodeFloat_forKey_(coder, v25, @"MPSCNNCrossChannelNormalizationGradient.delta", v26, v27, v28, v29, v30, v24);
 }
 
-- (MPSCNNCrossChannelNormalizationGradient)initWithDevice:(id)a3
+- (MPSCNNCrossChannelNormalizationGradient)initWithDevice:(id)device
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -90,11 +90,11 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSCNNCrossChannelNormalizationGradient;
-  result = [(MPSCNNGradientKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNGradientKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 54) = self->_kernelSize;

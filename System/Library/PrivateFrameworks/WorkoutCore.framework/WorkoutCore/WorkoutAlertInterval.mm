@@ -1,28 +1,28 @@
 @interface WorkoutAlertInterval
 - (_TtC11WorkoutCore20WorkoutAlertInterval)init;
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4;
-- (id)spokenDescriptionWithFormattingManager:(id)a3;
-- (id)spokenUserDataWithFormattingManager:(id)a3;
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager;
+- (id)spokenDescriptionWithFormattingManager:(id)manager;
+- (id)spokenUserDataWithFormattingManager:(id)manager;
 @end
 
 @implementation WorkoutAlertInterval
 
-- (id)spokenUserDataWithFormattingManager:(id)a3
+- (id)spokenUserDataWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  WorkoutAlertInterval.spokenUserData(with:)(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  WorkoutAlertInterval.spokenUserData(with:)(managerCopy);
 
   v6.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
   return v6.super.isa;
 }
 
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager
 {
-  v5 = a4;
-  v6 = self;
-  specialized WorkoutAlertInterval.localizedProgressDescription(with:formattingManager:)(v5);
+  managerCopy = manager;
+  selfCopy = self;
+  specialized WorkoutAlertInterval.localizedProgressDescription(with:formattingManager:)(managerCopy);
 
   type metadata accessor for NLWorkoutAlertUnitAnnotatedString();
   v7.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -30,10 +30,10 @@
   return v7.super.isa;
 }
 
-- (id)spokenDescriptionWithFormattingManager:(id)a3
+- (id)spokenDescriptionWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   if (WorkoutAlertInterval.internalType.getter())
   {
     v6 = specialized WorkoutAlertInterval.endSpokenDescription()();
@@ -41,7 +41,7 @@
 
   else
   {
-    v6 = WorkoutAlertInterval.upcomingSpokenDescription(formattingManager:)(v4);
+    v6 = WorkoutAlertInterval.upcomingSpokenDescription(formattingManager:)(managerCopy);
   }
 
   v8 = v6;

@@ -3,9 +3,9 @@
 - (BOOL)discardWhenPresent;
 - (BOOL)onlyOnce;
 - (BOOL)unique;
-- (void)setDiscardWhenPresent:(BOOL)a3;
-- (void)setOnlyOnce:(BOOL)a3;
-- (void)setUnique:(BOOL)a3;
+- (void)setDiscardWhenPresent:(BOOL)present;
+- (void)setOnlyOnce:(BOOL)once;
+- (void)setUnique:(BOOL)unique;
 @end
 
 @implementation AADataEventTraits
@@ -17,11 +17,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setOnlyOnce:(BOOL)a3
+- (void)setOnlyOnce:(BOOL)once
 {
   v5 = OBJC_IVAR___AADataEventTraits_onlyOnce;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = once;
 }
 
 - (BOOL)unique
@@ -31,11 +31,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setUnique:(BOOL)a3
+- (void)setUnique:(BOOL)unique
 {
   v5 = OBJC_IVAR___AADataEventTraits_unique;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = unique;
 }
 
 - (BOOL)discardWhenPresent
@@ -45,11 +45,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDiscardWhenPresent:(BOOL)a3
+- (void)setDiscardWhenPresent:(BOOL)present
 {
   v5 = OBJC_IVAR___AADataEventTraits_discardWhenPresent;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = present;
 }
 
 - (AADataEventTraits)init

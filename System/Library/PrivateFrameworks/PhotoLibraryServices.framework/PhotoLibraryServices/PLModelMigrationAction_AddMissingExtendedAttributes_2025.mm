@@ -1,10 +1,10 @@
 @interface PLModelMigrationAction_AddMissingExtendedAttributes_2025
 - (id)predicateForMigrationAction;
-- (id)requestWithManagedObjectContext:(id)a3;
+- (id)requestWithManagedObjectContext:(id)context;
 - (id)startDate;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 - (void)setup;
-- (void)updateVideoProResPropertiesForAsset:(id)a3 metadata:(id)a4;
+- (void)updateVideoProResPropertiesForAsset:(id)asset metadata:(id)metadata;
 @end
 
 @implementation PLModelMigrationAction_AddMissingExtendedAttributes_2025
@@ -36,15 +36,15 @@
   return v7;
 }
 
-- (id)requestWithManagedObjectContext:(id)a3
+- (id)requestWithManagedObjectContext:(id)context
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLModelMigrationActionBackground *)self resumeMarker];
-  v6 = v4;
-  if (v5)
+  contextCopy = context;
+  resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
+  v6 = contextCopy;
+  if (resumeMarker)
   {
-    v7 = [MEMORY[0x1E695DFF8] URLWithString:v5];
+    v7 = [MEMORY[0x1E695DFF8] URLWithString:resumeMarker];
   }
 
   else
@@ -52,8 +52,8 @@
     v7 = 0;
   }
 
-  v8 = [v6 persistentStoreCoordinator];
-  v9 = [v8 managedObjectIDForURIRepresentation:v7];
+  persistentStoreCoordinator = [v6 persistentStoreCoordinator];
+  v9 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v7];
 
   v10 = MEMORY[0x1E695D5E0];
   v11 = +[PLManagedAsset entityName];
@@ -61,11 +61,11 @@
 
   v13 = MEMORY[0x1E696AB28];
   v14 = MEMORY[0x1E696AE18];
-  v15 = [(PLModelMigrationAction_AddMissingExtendedAttributes_2025 *)self startDate];
-  v16 = [v14 predicateWithFormat:@"%K >= %@", @"dateCreated", v15];
+  startDate = [(PLModelMigrationAction_AddMissingExtendedAttributes_2025 *)self startDate];
+  v16 = [v14 predicateWithFormat:@"%K >= %@", @"dateCreated", startDate];
   v27[0] = v16;
-  v17 = [(PLModelMigrationAction_AddMissingExtendedAttributes_2025 *)self predicateForMigrationAction];
-  v27[1] = v17;
+  predicateForMigrationAction = [(PLModelMigrationAction_AddMissingExtendedAttributes_2025 *)self predicateForMigrationAction];
+  v27[1] = predicateForMigrationAction;
   if (v9)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"self >= %@", v9];
@@ -96,14 +96,14 @@
   return v12;
 }
 
-- (void)updateVideoProResPropertiesForAsset:(id)a3 metadata:(id)a4
+- (void)updateVideoProResPropertiesForAsset:(id)asset metadata:(id)metadata
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 kind] == 1)
+  assetCopy = asset;
+  metadataCopy = metadata;
+  if ([assetCopy kind] == 1)
   {
-    v8 = [v6 extendedAttributes];
+    extendedAttributes = [assetCopy extendedAttributes];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -124,12 +124,12 @@
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
-          v15 = [v8 codec];
-          LODWORD(v14) = [v15 isEqualToString:v14];
+          codec = [extendedAttributes codec];
+          LODWORD(v14) = [codec isEqualToString:v14];
 
           if (v14)
           {
-            [v6 updateVideoAttributesFromMetadata:v7 overwriteOriginalProperties:0];
+            [assetCopy updateVideoAttributesFromMetadata:metadataCopy overwriteOriginalProperties:0];
             goto LABEL_12;
           }
         }
@@ -148,26 +148,26 @@ LABEL_12:
   }
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLModelMigrationAction_AddMissingExtendedAttributes_2025 *)self requestWithManagedObjectContext:v6];
+  contextCopy = context;
+  v7 = [(PLModelMigrationAction_AddMissingExtendedAttributes_2025 *)self requestWithManagedObjectContext:contextCopy];
   v15[4] = self;
   v16 = 0;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __104__PLModelMigrationAction_AddMissingExtendedAttributes_2025_performActionWithManagedObjectContext_error___block_invoke;
   v15[3] = &unk_1E756C850;
-  v8 = [PLModelMigrationActionUtility processManagedObjectWithAction:self managedObjectContext:v6 fetchRequest:v7 useObjectIDResumeMarker:1 error:&v16 processingBlock:v15];
+  v8 = [PLModelMigrationActionUtility processManagedObjectWithAction:self managedObjectContext:contextCopy fetchRequest:v7 useObjectIDResumeMarker:1 error:&v16 processingBlock:v15];
 
   v9 = v16;
   [(PLModelMigrationActionBackground *)self finalizeProgress];
   v10 = v9;
   v11 = v10;
-  if (v8 != 1 && a4 != 0)
+  if (v8 != 1 && error != 0)
   {
     v13 = v10;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v8;

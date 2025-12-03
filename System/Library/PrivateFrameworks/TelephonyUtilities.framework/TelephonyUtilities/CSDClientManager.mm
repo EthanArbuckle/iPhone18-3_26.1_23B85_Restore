@@ -1,53 +1,53 @@
 @interface CSDClientManager
-- (BOOL)isClientAllowed:(id)a3;
+- (BOOL)isClientAllowed:(id)allowed;
 - (BOOL)isLocalClientActive;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CSDClient)currentClient;
-- (CSDClientManager)initWithSerialQueue:(id)a3;
+- (CSDClientManager)initWithSerialQueue:(id)queue;
 - (NSArray)clients;
 - (NSXPCInterface)exportedInterface;
 - (NSXPCInterface)remoteObjectInterface;
-- (id)_connectionEndedHandlerForXPCClient:(id)a3 withCustomBlock:(id)a4;
-- (id)_updatedQOSBlockForBlock:(id)a3;
-- (id)_xpcClientForConnection:(id)a3;
+- (id)_connectionEndedHandlerForXPCClient:(id)client withCustomBlock:(id)block;
+- (id)_updatedQOSBlockForBlock:(id)block;
+- (id)_xpcClientForConnection:(id)connection;
 - (id)asynchronousExportedObjectProxy;
-- (id)clientsEntitledForCapability:(id)a3;
-- (id)clientsPassingTest:(id)a3;
+- (id)clientsEntitledForCapability:(id)capability;
+- (id)clientsPassingTest:(id)test;
 - (id)exportedObject;
 - (id)interruptionHandler;
 - (id)invalidationHandler;
 - (id)synchronousExportedObjectProxy;
-- (void)_performBlock:(id)a3 onClients:(id)a4;
-- (void)_performBlock:(id)a3 onClients:(id)a4 coalescedByIdentifier:(id)a5;
-- (void)addClient:(id)a3;
-- (void)addLocalClientObject:(id)a3;
+- (void)_performBlock:(id)block onClients:(id)clients;
+- (void)_performBlock:(id)block onClients:(id)clients coalescedByIdentifier:(id)identifier;
+- (void)addClient:(id)client;
+- (void)addLocalClientObject:(id)object;
 - (void)dealloc;
-- (void)filterClientsEntitledForCapability:(id)a3 andPerformBlock:(id)a4;
-- (void)filterClientsUsingPredicate:(id)a3 andPerformBlock:(id)a4;
-- (void)filterClientsUsingPredicate:(id)a3 andPerformBlock:(id)a4 coalescedByIdentifier:(id)a5;
+- (void)filterClientsEntitledForCapability:(id)capability andPerformBlock:(id)block;
+- (void)filterClientsUsingPredicate:(id)predicate andPerformBlock:(id)block;
+- (void)filterClientsUsingPredicate:(id)predicate andPerformBlock:(id)block coalescedByIdentifier:(id)identifier;
 - (void)invalidate;
-- (void)performBlockOnClients:(id)a3;
-- (void)performBlockOnClients:(id)a3 coalescedByIdentifier:(id)a4;
-- (void)performBlockOnQueue:(id)a3 andWait:(BOOL)a4;
-- (void)removeClient:(id)a3;
-- (void)removeLocalClientObject:(id)a3;
-- (void)setAsynchronousExportedObjectProxy:(id)a3;
-- (void)setExportedInterface:(id)a3;
-- (void)setExportedObject:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setLocalClientActive:(BOOL)a3;
-- (void)setRemoteObjectInterface:(id)a3;
-- (void)setSynchronousExportedObjectProxy:(id)a3;
-- (void)startListeningOnMachServiceWithName:(id)a3;
+- (void)performBlockOnClients:(id)clients;
+- (void)performBlockOnClients:(id)clients coalescedByIdentifier:(id)identifier;
+- (void)performBlockOnQueue:(id)queue andWait:(BOOL)wait;
+- (void)removeClient:(id)client;
+- (void)removeLocalClientObject:(id)object;
+- (void)setAsynchronousExportedObjectProxy:(id)proxy;
+- (void)setExportedInterface:(id)interface;
+- (void)setExportedObject:(id)object;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setLocalClientActive:(BOOL)active;
+- (void)setRemoteObjectInterface:(id)interface;
+- (void)setSynchronousExportedObjectProxy:(id)proxy;
+- (void)startListeningOnMachServiceWithName:(id)name;
 @end
 
 @implementation CSDClientManager
 
 - (NSXPCInterface)remoteObjectInterface
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   remoteObjectInterface = self->_remoteObjectInterface;
 
@@ -56,24 +56,24 @@
 
 - (BOOL)isLocalClientActive
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return self->_localClientActive;
 }
 
 - (CSDClient)currentClient
 {
-  v4 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(CSDClientManager *)self isLocalClientActive])
   {
     v13 = +[NSXPCConnection currentConnection];
     if (v13)
     {
-      v14 = [(CSDClientManager *)self clientsByObject];
-      v12 = [v14 objectForKey:v13];
+      clientsByObject = [(CSDClientManager *)self clientsByObject];
+      v12 = [clientsByObject objectForKey:v13];
 
       if (v12)
       {
@@ -100,8 +100,8 @@ LABEL_17:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(CSDClientManager *)self clientsByObject];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  clientsByObject2 = [(CSDClientManager *)self clientsByObject];
+  v6 = [clientsByObject2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -112,12 +112,12 @@ LABEL_4:
     {
       if (*v19 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(clientsByObject2);
       }
 
       v10 = *(*(&v18 + 1) + 8 * v9);
-      v11 = [(CSDClientManager *)self clientsByObject];
-      v12 = [v11 objectForKey:v10];
+      clientsByObject3 = [(CSDClientManager *)self clientsByObject];
+      v12 = [clientsByObject3 objectForKey:v10];
 
       if (![v12 isRemote])
       {
@@ -126,7 +126,7 @@ LABEL_4:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [clientsByObject2 countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v7)
         {
           goto LABEL_4;
@@ -150,8 +150,8 @@ LABEL_18:
 
 - (NSXPCInterface)exportedInterface
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   exportedInterface = self->_exportedInterface;
 
@@ -160,8 +160,8 @@ LABEL_18:
 
 - (id)exportedObject
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   exportedObject = self->_exportedObject;
 
@@ -170,8 +170,8 @@ LABEL_18:
 
 - (id)interruptionHandler
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = objc_retainBlock(self->_interruptionHandler);
 
@@ -180,8 +180,8 @@ LABEL_18:
 
 - (id)invalidationHandler
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = objc_retainBlock(self->_invalidationHandler);
 
@@ -190,25 +190,25 @@ LABEL_18:
 
 - (NSArray)clients
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDClientManager *)self clientsByObject];
-  v5 = NSAllMapTableValues(v4);
+  clientsByObject = [(CSDClientManager *)self clientsByObject];
+  v5 = NSAllMapTableValues(clientsByObject);
 
   return v5;
 }
 
-- (CSDClientManager)initWithSerialQueue:(id)a3
+- (CSDClientManager)initWithSerialQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = CSDClientManager;
   v6 = [(CSDClientManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     dispatch_queue_set_specific(v7->_queue, [(CSDClientManager *)v7 queueContext], [(CSDClientManager *)v7 queueContext], 0);
     v8 = +[NSMapTable strongToStrongObjectsMapTable];
     clientsByObject = v7->_clientsByObject;
@@ -226,109 +226,109 @@ LABEL_18:
   [(CSDClientManager *)&v3 dealloc];
 }
 
-- (void)setLocalClientActive:(BOOL)a3
+- (void)setLocalClientActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  activeCopy = active;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_localClientActive != v3)
+  if (self->_localClientActive != activeCopy)
   {
-    self->_localClientActive = v3;
+    self->_localClientActive = activeCopy;
   }
 }
 
-- (void)setRemoteObjectInterface:(id)a3
+- (void)setRemoteObjectInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  interfaceCopy = interface;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   remoteObjectInterface = self->_remoteObjectInterface;
-  self->_remoteObjectInterface = v4;
+  self->_remoteObjectInterface = interfaceCopy;
 }
 
-- (void)setExportedInterface:(id)a3
+- (void)setExportedInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  interfaceCopy = interface;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   exportedInterface = self->_exportedInterface;
-  self->_exportedInterface = v4;
+  self->_exportedInterface = interfaceCopy;
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(handlerCopy);
   interruptionHandler = self->_interruptionHandler;
   self->_interruptionHandler = v6;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(handlerCopy);
   invalidationHandler = self->_invalidationHandler;
   self->_invalidationHandler = v6;
 }
 
 - (id)asynchronousExportedObjectProxy
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   asynchronousExportedObjectProxy = self->_asynchronousExportedObjectProxy;
 
   return asynchronousExportedObjectProxy;
 }
 
-- (void)setAsynchronousExportedObjectProxy:(id)a3
+- (void)setAsynchronousExportedObjectProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  proxyCopy = proxy;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   asynchronousExportedObjectProxy = self->_asynchronousExportedObjectProxy;
-  self->_asynchronousExportedObjectProxy = v4;
+  self->_asynchronousExportedObjectProxy = proxyCopy;
 }
 
 - (id)synchronousExportedObjectProxy
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   synchronousExportedObjectProxy = self->_synchronousExportedObjectProxy;
 
   return synchronousExportedObjectProxy;
 }
 
-- (void)setSynchronousExportedObjectProxy:(id)a3
+- (void)setSynchronousExportedObjectProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  proxyCopy = proxy;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   synchronousExportedObjectProxy = self->_synchronousExportedObjectProxy;
-  self->_synchronousExportedObjectProxy = v4;
+  self->_synchronousExportedObjectProxy = proxyCopy;
 }
 
-- (void)setExportedObject:(id)a3
+- (void)setExportedObject:(id)object
 {
-  v11 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  objectCopy = object;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_exportedObject != v11)
+  if (self->_exportedObject != objectCopy)
   {
-    objc_storeStrong(&self->_exportedObject, a3);
+    objc_storeStrong(&self->_exportedObject, object);
     if (self->_exportedObject)
     {
       v6 = [[CSDClientManagerExportedObjectProxy alloc] initWithExportedObject:self->_exportedObject];
@@ -346,17 +346,17 @@ LABEL_18:
   }
 }
 
-- (BOOL)isClientAllowed:(id)a3
+- (BOOL)isClientAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  allowedCopy = allowed;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDClientManager *)self requiredConnectionCapability];
-  if (v6)
+  requiredConnectionCapability = [(CSDClientManager *)self requiredConnectionCapability];
+  if (requiredConnectionCapability)
   {
-    v7 = [(CSDClientManager *)self requiredConnectionCapability];
-    v8 = [v4 isEntitledForCapability:v7];
+    requiredConnectionCapability2 = [(CSDClientManager *)self requiredConnectionCapability];
+    v8 = [allowedCopy isEntitledForCapability:requiredConnectionCapability2];
   }
 
   else
@@ -367,30 +367,30 @@ LABEL_18:
   return v8;
 }
 
-- (void)startListeningOnMachServiceWithName:(id)a3
+- (void)startListeningOnMachServiceWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CSDClientManager *)self setMachServiceName:v4];
-  v6 = [[NSXPCListener alloc] initWithMachServiceName:v4];
+  [(CSDClientManager *)self setMachServiceName:nameCopy];
+  v6 = [[NSXPCListener alloc] initWithMachServiceName:nameCopy];
 
   [(CSDClientManager *)self setXpcListener:v6];
-  v7 = [(CSDClientManager *)self xpcListener];
-  [v7 setDelegate:self];
+  xpcListener = [(CSDClientManager *)self xpcListener];
+  [xpcListener setDelegate:self];
 
-  v8 = [(CSDClientManager *)self xpcListener];
-  [v8 resume];
+  xpcListener2 = [(CSDClientManager *)self xpcListener];
+  [xpcListener2 resume];
 }
 
 - (void)invalidate
 {
-  v3 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDClientManager *)self xpcListener];
-  [v4 invalidate];
+  xpcListener = [(CSDClientManager *)self xpcListener];
+  [xpcListener invalidate];
 
   [(CSDClientManager *)self setExportedObject:0];
   [(CSDClientManager *)self setAsynchronousExportedObjectProxy:0];
@@ -398,152 +398,152 @@ LABEL_18:
   [(CSDClientManager *)self setSynchronousExportedObjectProxy:0];
 }
 
-- (void)addLocalClientObject:(id)a3
+- (void)addLocalClientObject:(id)object
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  objectCopy = object;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = [CSDClient alloc];
-  v7 = [(CSDClientManager *)self queue];
-  v8 = [(CSDClient *)v6 initWithObject:v4 queue:v7];
+  queue2 = [(CSDClientManager *)self queue];
+  v8 = [(CSDClient *)v6 initWithObject:objectCopy queue:queue2];
 
   [(CSDClientManager *)self addClient:v8];
 }
 
-- (void)removeLocalClientObject:(id)a3
+- (void)removeLocalClientObject:(id)object
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  objectCopy = object;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDClientManager *)self clientsByObject];
-  v7 = [v6 objectForKey:v4];
+  clientsByObject = [(CSDClientManager *)self clientsByObject];
+  v7 = [clientsByObject objectForKey:objectCopy];
 
   [(CSDClientManager *)self removeClient:v7];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  clientCopy = client;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDClientManager *)self clientsByObject];
-  v6 = [v4 object];
-  [v7 setObject:v4 forKey:v6];
+  clientsByObject = [(CSDClientManager *)self clientsByObject];
+  object = [clientCopy object];
+  [clientsByObject setObject:clientCopy forKey:object];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  clientCopy = client;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDClientManager *)self clientsByObject];
-  v6 = [v4 object];
+  clientsByObject = [(CSDClientManager *)self clientsByObject];
+  object = [clientCopy object];
 
-  [v7 removeObjectForKey:v6];
+  [clientsByObject removeObjectForKey:object];
 }
 
-- (id)clientsPassingTest:(id)a3
+- (id)clientsPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  testCopy = test;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDClientManager *)self clients];
-  if (v4)
+  clients = [(CSDClientManager *)self clients];
+  if (testCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100260448;
     v10[3] = &unk_10061FDB0;
-    v11 = v4;
+    v11 = testCopy;
     v7 = [NSPredicate predicateWithBlock:v10];
-    v8 = [v6 filteredArrayUsingPredicate:v7];
+    v8 = [clients filteredArrayUsingPredicate:v7];
 
-    v6 = v8;
+    clients = v8;
   }
 
-  return v6;
+  return clients;
 }
 
-- (id)clientsEntitledForCapability:(id)a3
+- (id)clientsEntitledForCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  capabilityCopy = capability;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = sub_10020A620(v4);
+  v6 = sub_10020A620(capabilityCopy);
 
   v7 = [(CSDClientManager *)self clientsPassingTest:v6];
 
   return v7;
 }
 
-- (void)performBlockOnClients:(id)a3
+- (void)performBlockOnClients:(id)clients
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  clientsCopy = clients;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDClientManager *)self clients];
-  [(CSDClientManager *)self _performBlock:v4 onClients:v6 coalescedByIdentifier:0];
+  clients = [(CSDClientManager *)self clients];
+  [(CSDClientManager *)self _performBlock:clientsCopy onClients:clients coalescedByIdentifier:0];
 }
 
-- (void)filterClientsUsingPredicate:(id)a3 andPerformBlock:(id)a4
+- (void)filterClientsUsingPredicate:(id)predicate andPerformBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  blockCopy = block;
+  predicateCopy = predicate;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDClientManager *)self clientsPassingTest:v7];
+  v9 = [(CSDClientManager *)self clientsPassingTest:predicateCopy];
 
-  [(CSDClientManager *)self _performBlock:v6 onClients:v9 coalescedByIdentifier:0];
+  [(CSDClientManager *)self _performBlock:blockCopy onClients:v9 coalescedByIdentifier:0];
 }
 
-- (void)filterClientsEntitledForCapability:(id)a3 andPerformBlock:(id)a4
+- (void)filterClientsEntitledForCapability:(id)capability andPerformBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  blockCopy = block;
+  capabilityCopy = capability;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = sub_10020A620(v7);
+  v9 = sub_10020A620(capabilityCopy);
 
-  [(CSDClientManager *)self filterClientsUsingPredicate:v9 andPerformBlock:v6];
+  [(CSDClientManager *)self filterClientsUsingPredicate:v9 andPerformBlock:blockCopy];
 }
 
-- (void)performBlockOnClients:(id)a3 coalescedByIdentifier:(id)a4
+- (void)performBlockOnClients:(id)clients coalescedByIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  clientsCopy = clients;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDClientManager *)self clients];
-  [(CSDClientManager *)self _performBlock:v7 onClients:v9 coalescedByIdentifier:v6];
+  clients = [(CSDClientManager *)self clients];
+  [(CSDClientManager *)self _performBlock:clientsCopy onClients:clients coalescedByIdentifier:identifierCopy];
 }
 
-- (void)filterClientsUsingPredicate:(id)a3 andPerformBlock:(id)a4 coalescedByIdentifier:(id)a5
+- (void)filterClientsUsingPredicate:(id)predicate andPerformBlock:(id)block coalescedByIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v11);
+  identifierCopy = identifier;
+  blockCopy = block;
+  predicateCopy = predicate;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(CSDClientManager *)self clientsPassingTest:v10];
+  v12 = [(CSDClientManager *)self clientsPassingTest:predicateCopy];
 
-  [(CSDClientManager *)self _performBlock:v9 onClients:v12 coalescedByIdentifier:v8];
+  [(CSDClientManager *)self _performBlock:blockCopy onClients:v12 coalescedByIdentifier:identifierCopy];
 }
 
-- (void)performBlockOnQueue:(id)a3 andWait:(BOOL)a4
+- (void)performBlockOnQueue:(id)queue andWait:(BOOL)wait
 {
-  v4 = a4;
-  block = a3;
+  waitCopy = wait;
+  block = queue;
   specific = dispatch_get_specific([(CSDClientManager *)self queueContext]);
   if (specific == [(CSDClientManager *)self queueContext])
   {
@@ -552,32 +552,32 @@ LABEL_18:
 
   else
   {
-    v7 = [(CSDClientManager *)self queue];
-    v8 = v7;
-    if (v4)
+    queue = [(CSDClientManager *)self queue];
+    v8 = queue;
+    if (waitCopy)
     {
-      dispatch_sync(v7, block);
+      dispatch_sync(queue, block);
     }
 
     else
     {
-      dispatch_async(v7, block);
+      dispatch_async(queue, block);
     }
   }
 }
 
-- (void)_performBlock:(id)a3 onClients:(id)a4
+- (void)_performBlock:(id)block onClients:(id)clients
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  blockCopy = block;
+  clientsCopy = clients;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = v7;
+  v9 = clientsCopy;
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -593,7 +593,7 @@ LABEL_18:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) performBlock:{v6, v14}];
+        [*(*(&v14 + 1) + 8 * v13) performBlock:{blockCopy, v14}];
         v13 = v13 + 1;
       }
 
@@ -605,19 +605,19 @@ LABEL_18:
   }
 }
 
-- (void)_performBlock:(id)a3 onClients:(id)a4 coalescedByIdentifier:(id)a5
+- (void)_performBlock:(id)block onClients:(id)clients coalescedByIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v11);
+  blockCopy = block;
+  clientsCopy = clients;
+  identifierCopy = identifier;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = v9;
+  v12 = clientsCopy;
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
@@ -633,14 +633,14 @@ LABEL_18:
         }
 
         v17 = *(*(&v18 + 1) + 8 * i);
-        if (v10)
+        if (identifierCopy)
         {
-          [v17 performBlock:v8 coalescedByIdentifier:v10];
+          [v17 performBlock:blockCopy coalescedByIdentifier:identifierCopy];
         }
 
         else
         {
-          [v17 performBlock:{v8, v18}];
+          [v17 performBlock:{blockCopy, v18}];
         }
       }
 
@@ -651,56 +651,56 @@ LABEL_18:
   }
 }
 
-- (id)_xpcClientForConnection:(id)a3
+- (id)_xpcClientForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = [CSDXPCClient alloc];
-  v7 = [(CSDClientManager *)self queue];
-  v8 = [(CSDXPCClient *)v6 initWithConnection:v4 queue:v7];
+  queue2 = [(CSDClientManager *)self queue];
+  v8 = [(CSDXPCClient *)v6 initWithConnection:connectionCopy queue:queue2];
 
   [(CSDXPCClient *)v8 setSupportsClientAssertions:[(CSDClientManager *)self supportsClientAssertions]];
-  v9 = [(CSDClientManager *)self remoteObjectInterface];
-  [v4 setRemoteObjectInterface:v9];
+  remoteObjectInterface = [(CSDClientManager *)self remoteObjectInterface];
+  [connectionCopy setRemoteObjectInterface:remoteObjectInterface];
 
-  v10 = [(CSDClientManager *)self exportedInterface];
-  [v4 setExportedInterface:v10];
+  exportedInterface = [(CSDClientManager *)self exportedInterface];
+  [connectionCopy setExportedInterface:exportedInterface];
 
-  v11 = [(CSDClientManager *)self exportedObject];
-  [v4 setExportedObject:v11];
+  exportedObject = [(CSDClientManager *)self exportedObject];
+  [connectionCopy setExportedObject:exportedObject];
 
-  v12 = [(CSDClientManager *)self interruptionHandler];
-  v13 = [(CSDClientManager *)self _connectionEndedHandlerForXPCClient:v8 withCustomBlock:v12];
-  [v4 setInterruptionHandler:v13];
+  interruptionHandler = [(CSDClientManager *)self interruptionHandler];
+  v13 = [(CSDClientManager *)self _connectionEndedHandlerForXPCClient:v8 withCustomBlock:interruptionHandler];
+  [connectionCopy setInterruptionHandler:v13];
 
-  v14 = [(CSDClientManager *)self invalidationHandler];
-  v15 = [(CSDClientManager *)self _connectionEndedHandlerForXPCClient:v8 withCustomBlock:v14];
-  [v4 setInvalidationHandler:v15];
+  invalidationHandler = [(CSDClientManager *)self invalidationHandler];
+  v15 = [(CSDClientManager *)self _connectionEndedHandlerForXPCClient:v8 withCustomBlock:invalidationHandler];
+  [connectionCopy setInvalidationHandler:v15];
 
-  v16 = [(CSDClientManager *)self queue];
-  [v4 _setQueue:v16];
+  queue3 = [(CSDClientManager *)self queue];
+  [connectionCopy _setQueue:queue3];
 
   return v8;
 }
 
-- (id)_connectionEndedHandlerForXPCClient:(id)a3 withCustomBlock:(id)a4
+- (id)_connectionEndedHandlerForXPCClient:(id)client withCustomBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDClientManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  blockCopy = block;
+  clientCopy = client;
+  queue = [(CSDClientManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, clientCopy);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100260DD4;
   v12[3] = &unk_10061FE00;
   v12[4] = self;
   objc_copyWeak(&v14, &location);
-  v13 = v6;
-  v9 = v6;
+  v13 = blockCopy;
+  v9 = blockCopy;
   v10 = objc_retainBlock(v12);
 
   objc_destroyWeak(&v14);
@@ -709,9 +709,9 @@ LABEL_18:
   return v10;
 }
 
-- (id)_updatedQOSBlockForBlock:(id)a3
+- (id)_updatedQOSBlockForBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   if (qos_class_self() >= QOS_CLASS_DEFAULT)
   {
     v4 = qos_class_self();
@@ -722,23 +722,23 @@ LABEL_18:
     v4 = QOS_CLASS_DEFAULT;
   }
 
-  v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v4, 0, v3);
+  v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v4, 0, blockCopy);
 
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CSDClientManager *)self machServiceName];
+    machServiceName = [(CSDClientManager *)self machServiceName];
     *buf = 138412546;
-    *&buf[4] = v9;
+    *&buf[4] = machServiceName;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "machServiceName: %@ newConnection: %@", buf, 0x16u);
   }
 
@@ -746,16 +746,16 @@ LABEL_18:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v18 = 0;
-  v10 = [(CSDClientManager *)self queue];
+  queue = [(CSDClientManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100261280;
   block[3] = &unk_10061AE20;
   block[4] = self;
-  v15 = v7;
+  v15 = connectionCopy;
   v16 = buf;
-  v11 = v7;
-  dispatch_sync(v10, block);
+  v11 = connectionCopy;
+  dispatch_sync(queue, block);
 
   v12 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);

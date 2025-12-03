@@ -1,20 +1,20 @@
 @interface HFAssociatedServiceTypeFactory
-+ (id)associatedServiceTypesArrayFor:(id)a3;
-+ (id)associatedServiceTypesSetFor:(id)a3;
++ (id)associatedServiceTypesArrayFor:(id)for;
++ (id)associatedServiceTypesSetFor:(id)for;
 @end
 
 @implementation HFAssociatedServiceTypeFactory
 
-+ (id)associatedServiceTypesSetFor:(id)a3
++ (id)associatedServiceTypesSetFor:(id)for
 {
   v3 = qword_280E02C58;
-  v4 = a3;
+  forCopy = for;
   if (v3 != -1)
   {
     dispatch_once(&qword_280E02C58, &__block_literal_global_25);
   }
 
-  v5 = [_MergedGlobals_220 objectForKeyedSubscript:v4];
+  v5 = [_MergedGlobals_220 objectForKeyedSubscript:forCopy];
 
   return v5;
 }
@@ -55,11 +55,11 @@ void __63__HFAssociatedServiceTypeFactory_associatedServiceTypesSetFor___block_i
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)associatedServiceTypesArrayFor:(id)a3
++ (id)associatedServiceTypesArrayFor:(id)for
 {
-  v3 = [a1 associatedServiceTypesSetFor:a3];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_5];
+  v3 = [self associatedServiceTypesSetFor:for];
+  allObjects = [v3 allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_5];
 
   return v5;
 }

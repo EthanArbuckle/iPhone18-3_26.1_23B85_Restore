@@ -1,30 +1,30 @@
 @interface CSHybridEndpointAnalyzer
-- (BOOL)_isTaskStringAccessible:(id)a3;
+- (BOOL)_isTaskStringAccessible:(id)accessible;
 - (BOOL)_updateAccessibleEndpointerThresholdIfNeeded;
 - (CSHybridEndpointAnalyzer)init;
 - (id)delegate;
 - (id)endpointerModelVersion;
 - (int64_t)fetchCurrentEndpointerOperationMode;
-- (void)_generateEndpointerFeaturesWithEffectiveClientProcessedAudioMs:(double)a3 osdFeatures:(id)a4 completion:(id)a5;
-- (void)_processEnhancedEndpointerTaskString:(id)a3;
-- (void)_readParametersFromHEPAsset:(id)a3;
-- (void)_swapEnhancedEndpointerModelForTaskString:(id)a3;
-- (void)_updateCurrentAsset:(id)a3;
-- (void)_updateEndpointerDelayedTrigger:(BOOL)a3;
-- (void)_updateEndpointerDelayedTriggerByMhId:(id)a3;
-- (void)_updateEndpointerThreshold:(float)a3;
-- (void)_updateEnhancedEndpointerDefaultThresholdPartial:(float)a3 defaultThresholdRC:(float)a4 relaxedThresholdPartial:(float)a5 relaxedThresholdRC:(float)a6;
-- (void)endpointerAssetManagerDidUpdateAsset:(id)a3;
-- (void)logAnchorMachAbsTime:(unint64_t)a3 numSamplesProcessedBeforeAnchorTime:(unint64_t)a4 isAnchorTimeBuffered:(BOOL)a5 audioDeliveryHostTimeDelta:(unint64_t)a6;
-- (void)processFirstAudioPacketTimestamp:(id)a3 firstAudioSampleSensorTimestamp:(unint64_t)a4;
-- (void)processOSDFeatures:(id)a3 withFrameDurationMs:(double)a4 withMHID:(id)a5;
-- (void)processRCFeatures:(id)a3;
-- (void)processTaskString:(id)a3;
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3 recordContext:(id)a4 recordOption:(id)a5 voiceTriggerInfo:(id)a6;
-- (void)setEndpointerOperationMode:(int64_t)a3;
-- (void)setMhId:(id)a3;
+- (void)_generateEndpointerFeaturesWithEffectiveClientProcessedAudioMs:(double)ms osdFeatures:(id)features completion:(id)completion;
+- (void)_processEnhancedEndpointerTaskString:(id)string;
+- (void)_readParametersFromHEPAsset:(id)asset;
+- (void)_swapEnhancedEndpointerModelForTaskString:(id)string;
+- (void)_updateCurrentAsset:(id)asset;
+- (void)_updateEndpointerDelayedTrigger:(BOOL)trigger;
+- (void)_updateEndpointerDelayedTriggerByMhId:(id)id;
+- (void)_updateEndpointerThreshold:(float)threshold;
+- (void)_updateEnhancedEndpointerDefaultThresholdPartial:(float)partial defaultThresholdRC:(float)c relaxedThresholdPartial:(float)thresholdPartial relaxedThresholdRC:(float)rC;
+- (void)endpointerAssetManagerDidUpdateAsset:(id)asset;
+- (void)logAnchorMachAbsTime:(unint64_t)time numSamplesProcessedBeforeAnchorTime:(unint64_t)anchorTime isAnchorTimeBuffered:(BOOL)buffered audioDeliveryHostTimeDelta:(unint64_t)delta;
+- (void)processFirstAudioPacketTimestamp:(id)timestamp firstAudioSampleSensorTimestamp:(unint64_t)sensorTimestamp;
+- (void)processOSDFeatures:(id)features withFrameDurationMs:(double)ms withMHID:(id)d;
+- (void)processRCFeatures:(id)features;
+- (void)processTaskString:(id)string;
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate recordContext:(id)context recordOption:(id)option voiceTriggerInfo:(id)info;
+- (void)setEndpointerOperationMode:(int64_t)mode;
+- (void)setMhId:(id)id;
 - (void)terminateProcessing;
-- (void)updateEndpointerThreshold:(float)a3;
+- (void)updateEndpointerThreshold:(float)threshold;
 @end
 
 @implementation CSHybridEndpointAnalyzer
@@ -39,15 +39,15 @@
 - (BOOL)_updateAccessibleEndpointerThresholdIfNeeded
 {
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 accessibleEndpointerThreshold];
+  accessibleEndpointerThreshold = [v3 accessibleEndpointerThreshold];
 
-  if (v4 == 2)
+  if (accessibleEndpointerThreshold == 2)
   {
     v5 = @"accessible-extended";
     goto LABEL_5;
   }
 
-  if (v4 == 3)
+  if (accessibleEndpointerThreshold == 3)
   {
     v5 = @"accessible-maximum";
 LABEL_5:
@@ -58,37 +58,37 @@ LABEL_5:
   return 0;
 }
 
-- (void)processRCFeatures:(id)a3
+- (void)processRCFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   hybridClassifierQueue = self->super._hybridClassifierQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DE4BC;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = featuresCopy;
+  v6 = featuresCopy;
   dispatch_async(hybridClassifierQueue, v7);
 }
 
-- (void)endpointerAssetManagerDidUpdateAsset:(id)a3
+- (void)endpointerAssetManagerDidUpdateAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   stateSerialQueue = self->super._stateSerialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DE684;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(stateSerialQueue, v7);
 }
 
-- (void)_readParametersFromHEPAsset:(id)a3
+- (void)_readParametersFromHEPAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   dispatch_assert_queue_V2(self->super._stateSerialQueue);
   asrFeaturesQueue = self->super._asrFeaturesQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -96,16 +96,16 @@ LABEL_5:
   v7[2] = sub_1000DE73C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(asrFeaturesQueue, v7);
 }
 
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3 recordContext:(id)a4 recordOption:(id)a5 voiceTriggerInfo:(id)a6
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate recordContext:(id)context recordOption:(id)option voiceTriggerInfo:(id)info
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  optionCopy = option;
+  infoCopy = info;
   kdebug_trace();
   self->super._recordingDidStop = 0;
   v13 = CSLogCategoryEP;
@@ -115,11 +115,11 @@ LABEL_5:
     *buf = 136315906;
     *&buf[4] = "[CSHybridEndpointAnalyzer resetForNewRequestWithSampleRate:recordContext:recordOption:voiceTriggerInfo:]";
     *&buf[12] = 2050;
-    *&buf[14] = a3;
+    *&buf[14] = rate;
     *&buf[22] = 2114;
-    v42 = v10;
+    v42 = contextCopy;
     LOWORD(v43) = 1024;
-    *(&v43 + 2) = [v11 disableRCSelection];
+    *(&v43 + 2) = [optionCopy disableRCSelection];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s sampleRate=%{public}lu, recordContext=%{public}@, disableRCSelection=%d", buf, 0x26u);
   }
 
@@ -135,7 +135,7 @@ LABEL_5:
   block[2] = sub_1000DEFB8;
   block[3] = &unk_100252228;
   block[4] = self;
-  v16 = v10;
+  v16 = contextCopy;
   v35 = v16;
   v36 = buf;
   dispatch_async_and_wait(stateSerialQueue, block);
@@ -164,11 +164,11 @@ LABEL_5:
     v29[2] = sub_1000DF014;
     v29[3] = &unk_1002514C8;
     v29[4] = self;
-    v20 = v11;
+    v20 = optionCopy;
     v30 = v20;
     v31 = buf;
     v32 = v37;
-    v33 = a3;
+    rateCopy = rate;
     dispatch_async_and_wait(hybridClassifierQueue, v29);
     asrFeaturesQueue = self->super._asrFeaturesQueue;
     v28[0] = _NSConcreteStackBlock;
@@ -184,11 +184,11 @@ LABEL_5:
     v27[2] = sub_1000DFA14;
     v27[3] = &unk_100253C98;
     v27[4] = self;
-    v27[5] = a3;
+    v27[5] = rate;
     dispatch_async_and_wait(v22, v27);
     if ([v16 isVoiceTriggered])
     {
-      [(CSEndpointAnalyzerBase *)self handleVoiceTriggerWithActivationInfo:v12];
+      [(CSEndpointAnalyzerBase *)self handleVoiceTriggerWithActivationInfo:infoCopy];
     }
 
     if ([v20 enforceAutomaticEndpointing])
@@ -196,8 +196,8 @@ LABEL_5:
       [(CSHybridEndpointAnalyzer *)self setEndpointerOperationMode:3];
     }
 
-    v23 = [v20 requestMHUUID];
-    [(CSHybridEndpointAnalyzer *)self setMhId:v23];
+    requestMHUUID = [v20 requestMHUUID];
+    [(CSHybridEndpointAnalyzer *)self setMhId:requestMHUUID];
 
     self->_accessibleEndpointerEnabled = [(CSHybridEndpointAnalyzer *)self _updateAccessibleEndpointerThresholdIfNeeded];
     kdebug_trace();
@@ -211,11 +211,11 @@ LABEL_5:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v25 = +[CSAssetManager sharedManager];
-      v26 = [v25 currentLanguageCode];
+      currentLanguageCode = [v25 currentLanguageCode];
       *v37 = 136315394;
       *&v37[4] = "[CSHybridEndpointAnalyzer resetForNewRequestWithSampleRate:recordContext:recordOption:voiceTriggerInfo:]";
       *&v37[12] = 2114;
-      *&v37[14] = v26;
+      *&v37[14] = currentLanguageCode;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "KeyLog - %s No asset for CSHybridEndpointer for currentLanguage: %{public}@.", v37, 0x16u);
     }
   }
@@ -237,37 +237,37 @@ LABEL_5:
   dispatch_async(hybridClassifierQueue, block);
 }
 
-- (void)setMhId:(id)a3
+- (void)setMhId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   hybridClassifierQueue = self->super._hybridClassifierQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DFF3C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(hybridClassifierQueue, v7);
 }
 
-- (void)_generateEndpointerFeaturesWithEffectiveClientProcessedAudioMs:(double)a3 osdFeatures:(id)a4 completion:(id)a5
+- (void)_generateEndpointerFeaturesWithEffectiveClientProcessedAudioMs:(double)ms osdFeatures:(id)features completion:(id)completion
 {
-  v8 = a4;
+  featuresCopy = features;
   v112 = _NSConcreteStackBlock;
   v113 = 3221225472;
   v114 = sub_1000E06EC;
   v115 = &unk_100251478;
-  v9 = a5;
-  v116 = v9;
+  completionCopy = completion;
+  v116 = completionCopy;
   v10 = objc_retainBlock(&v112);
-  v11 = [(CSASRFeatures *)self->super._lastKnownASRFeatures processedAudioDurationInMilliseconds];
-  if (v11 <= a3)
+  processedAudioDurationInMilliseconds = [(CSASRFeatures *)self->super._lastKnownASRFeatures processedAudioDurationInMilliseconds];
+  if (processedAudioDurationInMilliseconds <= ms)
   {
-    [v8 processedAudioMs];
+    [featuresCopy processedAudioMs];
     if (self->super._didReceiveASRFeatures)
     {
-      v42 = a3 - [(CSASRFeatures *)self->super._lastKnownASRFeatures processedAudioDurationInMilliseconds];
+      v42 = ms - [(CSASRFeatures *)self->super._lastKnownASRFeatures processedAudioDurationInMilliseconds];
     }
 
     else
@@ -277,7 +277,7 @@ LABEL_5:
 
     if ([(CSHybridEndpointAnalyzer *)self _useEnhancedEndpointer])
     {
-      v49 = [(CSASRFeatures *)self->_lastKnownRCFeatures processedAudioDurationInMilliseconds];
+      processedAudioDurationInMilliseconds2 = [(CSASRFeatures *)self->_lastKnownRCFeatures processedAudioDurationInMilliseconds];
       if (self->_didReceiveRCFeatures)
       {
         lastKnownRCFeatureLatency = self->_lastKnownRCFeatureLatency;
@@ -285,57 +285,57 @@ LABEL_5:
 
       else
       {
-        lastKnownRCFeatureLatency = v49;
+        lastKnownRCFeatureLatency = processedAudioDurationInMilliseconds2;
       }
 
       v93 = [CSEnhancedEndpointerFeatures alloc];
-      v94 = [(CSASRFeatures *)self->super._lastKnownASRFeatures trailingSilenceDuration];
-      [v8 silenceFramesCountMs];
+      trailingSilenceDuration = [(CSASRFeatures *)self->super._lastKnownASRFeatures trailingSilenceDuration];
+      [featuresCopy silenceFramesCountMs];
       v96 = v95;
       [(CSASRFeatures *)self->super._lastKnownASRFeatures eosLikelihood];
       v98 = exp(-v97);
-      v99 = [(CSASRFeatures *)self->super._lastKnownASRFeatures wordCount];
-      [v8 silenceProbability];
+      wordCount = [(CSASRFeatures *)self->super._lastKnownASRFeatures wordCount];
+      [featuresCopy silenceProbability];
       v101 = v100;
-      v102 = [(CSASRFeatures *)self->_lastKnownRCFeatures trailingSilenceDuration];
+      trailingSilenceDuration2 = [(CSASRFeatures *)self->_lastKnownRCFeatures trailingSilenceDuration];
       [(CSASRFeatures *)self->_lastKnownRCFeatures eosLikelihood];
       v104 = exp(-v103);
-      v105 = [(CSASRFeatures *)self->_lastKnownRCFeatures wordCount];
+      wordCount2 = [(CSASRFeatures *)self->_lastKnownRCFeatures wordCount];
       [(CSASRFeatures *)self->super._lastKnownASRFeatures silencePosterior];
       v107 = v106;
       [(CSASRFeatures *)self->super._lastKnownASRFeatures acousticEndpointerScore];
       v109 = v108;
-      [v8 silenceDurationMs];
+      [featuresCopy silenceDurationMs];
       *&v110 = v110;
       LODWORD(v111) = LODWORD(v110);
-      v92 = [v93 initWithTrailingSilenceDuration:v94 clientSilenceFramesCount:v99 endOfSentenceLikelihood:v102 wordCount:v105 serverFeaturesLatency:v96 clientSilenceProbability:v98 rcTrailingSilenceDuration:v42 rcEndOfSentenceLikelihood:v101 rcWordCount:v104 rcServerFeaturesLatency:lastKnownRCFeatureLatency silencePosterior:v107 acousticEndpointerScore:v109 silencePosteriorNF:{v111, v112, v113, v114, v115}];
+      v92 = [v93 initWithTrailingSilenceDuration:trailingSilenceDuration clientSilenceFramesCount:wordCount endOfSentenceLikelihood:trailingSilenceDuration2 wordCount:wordCount2 serverFeaturesLatency:v96 clientSilenceProbability:v98 rcTrailingSilenceDuration:v42 rcEndOfSentenceLikelihood:v101 rcWordCount:v104 rcServerFeaturesLatency:lastKnownRCFeatureLatency silencePosterior:v107 acousticEndpointerScore:v109 silencePosteriorNF:{v111, v112, v113, v114, v115}];
       v40 = 0;
       goto LABEL_26;
     }
 
     v51 = [_EAREndpointFeatures alloc];
-    v52 = [(CSASRFeatures *)self->super._lastKnownASRFeatures wordCount];
-    v53 = [(CSASRFeatures *)self->super._lastKnownASRFeatures trailingSilenceDuration];
+    wordCount3 = [(CSASRFeatures *)self->super._lastKnownASRFeatures wordCount];
+    trailingSilenceDuration3 = [(CSASRFeatures *)self->super._lastKnownASRFeatures trailingSilenceDuration];
     [(CSASRFeatures *)self->super._lastKnownASRFeatures eosLikelihood];
     v55 = v54;
     [(CSASRFeatures *)self->super._lastKnownASRFeatures acousticEndpointerScore];
     v57 = v56;
-    v58 = [(CSASRFeatures *)self->super._lastKnownASRFeatures pauseCounts];
+    pauseCounts = [(CSASRFeatures *)self->super._lastKnownASRFeatures pauseCounts];
     [(CSASRFeatures *)self->super._lastKnownASRFeatures silencePosterior];
     v60 = v59;
-    [v8 silenceFramesCountMs];
+    [featuresCopy silenceFramesCountMs];
     v62 = v61;
-    [v8 silenceProbability];
+    [featuresCopy silenceProbability];
     v64 = v63;
-    [v8 silenceDurationMs];
+    [featuresCopy silenceDurationMs];
     *&v66 = v65;
     *&v67 = v42;
     v68 = v51;
-    v69 = v52;
-    v70 = v53;
+    v69 = wordCount3;
+    v70 = trailingSilenceDuration3;
     v71 = v55;
     v72 = v57;
-    v73 = v58;
+    v73 = pauseCounts;
     v74 = v60;
     v75 = v62;
     v76 = v64;
@@ -351,13 +351,13 @@ LABEL_5:
     *buf = 136315650;
     v120 = "[CSHybridEndpointAnalyzer _generateEndpointerFeaturesWithEffectiveClientProcessedAudioMs:osdFeatures:completion:]";
     v121 = 2050;
-    v122 = v15;
+    msCopy2 = v15;
     v123 = 2050;
-    v124 = a3;
+    msCopy = ms;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s ClientLag: asrProcessedAudioMs(%{public}ld) > effectiveClientProcessedAudioMs(%{public}f)", buf, 0x20u);
   }
 
-  v16 = a3 - [(CSASRFeatures *)self->super._lastKnownASRFeatures processedAudioDurationInMilliseconds];
+  v16 = ms - [(CSASRFeatures *)self->super._lastKnownASRFeatures processedAudioDurationInMilliseconds];
   clientLagThresholdMs = self->super._clientLagThresholdMs;
   if (v16 <= clientLagThresholdMs)
   {
@@ -371,30 +371,30 @@ LABEL_5:
         *buf = 136315394;
         v120 = "[CSHybridEndpointAnalyzer _generateEndpointerFeaturesWithEffectiveClientProcessedAudioMs:osdFeatures:completion:]";
         v121 = 2050;
-        v122 = a3;
+        msCopy2 = ms;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%s ClientLag: Using DefaultServerFeatures with disconnected-state sfLatency: %{public}f", buf, 0x16u);
       }
 
-      v21 = [(_EAREndpointer *)self->super._hybridClassifier defaultServerEndpointFeatures];
+      defaultServerEndpointFeatures = [(_EAREndpointer *)self->super._hybridClassifier defaultServerEndpointFeatures];
       v22 = [_EAREndpointFeatures alloc];
-      v23 = [v21 wordCount];
-      v24 = [v21 trailingSilenceDuration];
-      [v21 endOfSentenceLikelihood];
+      wordCount4 = [defaultServerEndpointFeatures wordCount];
+      trailingSilenceDuration4 = [defaultServerEndpointFeatures trailingSilenceDuration];
+      [defaultServerEndpointFeatures endOfSentenceLikelihood];
       v26 = v25;
-      [v21 acousticEndpointerScore];
+      [defaultServerEndpointFeatures acousticEndpointerScore];
       v28 = v27;
-      [v21 silencePosterior];
+      [defaultServerEndpointFeatures silencePosterior];
       v30 = v29;
-      [v8 silenceFramesCountMs];
+      [featuresCopy silenceFramesCountMs];
       v32 = v31;
-      [v8 silenceProbability];
+      [featuresCopy silenceProbability];
       v34 = v33;
-      [v8 silenceDurationMs];
+      [featuresCopy silenceDurationMs];
       v36 = v35;
-      [v8 processedAudioMs];
+      [featuresCopy processedAudioMs];
       *&v38 = v37;
       *&v39 = v36;
-      v40 = [v22 initWithWordCount:v23 trailingSilenceDuration:v24 endOfSentenceLikelihood:&__NSArray0__struct acousticEndpointerScore:0 pauseCounts:v26 silencePosterior:v28 clientSilenceFramesCountMs:v30 clientSilenceProbability:v32 silencePosteriorNF:v34 serverFeaturesLatency:v39 eagerResultEndTime:v38];
+      v40 = [v22 initWithWordCount:wordCount4 trailingSilenceDuration:trailingSilenceDuration4 endOfSentenceLikelihood:&__NSArray0__struct acousticEndpointerScore:0 pauseCounts:v26 silencePosterior:v28 clientSilenceFramesCountMs:v30 clientSilenceProbability:v32 silencePosteriorNF:v34 serverFeaturesLatency:v39 eagerResultEndTime:v38];
 
       goto LABEL_23;
     }
@@ -405,33 +405,33 @@ LABEL_5:
       *buf = 136315394;
       v120 = "[CSHybridEndpointAnalyzer _generateEndpointerFeaturesWithEffectiveClientProcessedAudioMs:osdFeatures:completion:]";
       v121 = 2050;
-      v122 = clampedASRFeatureLatencyMsForClientLag;
+      msCopy2 = clampedASRFeatureLatencyMsForClientLag;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%s ClientLag: Using ServerFeatures with ClampedSFLatency: %{public}f", buf, 0x16u);
     }
 
     v78 = [_EAREndpointFeatures alloc];
-    v79 = [(CSASRFeatures *)self->super._lastKnownASRFeatures wordCount];
-    v80 = [(CSASRFeatures *)self->super._lastKnownASRFeatures trailingSilenceDuration];
+    wordCount5 = [(CSASRFeatures *)self->super._lastKnownASRFeatures wordCount];
+    trailingSilenceDuration5 = [(CSASRFeatures *)self->super._lastKnownASRFeatures trailingSilenceDuration];
     [(CSASRFeatures *)self->super._lastKnownASRFeatures eosLikelihood];
     v82 = v81;
     [(CSASRFeatures *)self->super._lastKnownASRFeatures acousticEndpointerScore];
     v84 = v83;
-    v58 = [(CSASRFeatures *)self->super._lastKnownASRFeatures pauseCounts];
+    pauseCounts = [(CSASRFeatures *)self->super._lastKnownASRFeatures pauseCounts];
     [(CSASRFeatures *)self->super._lastKnownASRFeatures silencePosterior];
     v86 = v85;
-    [v8 silenceFramesCountMs];
+    [featuresCopy silenceFramesCountMs];
     v88 = v87;
-    [v8 silenceProbability];
+    [featuresCopy silenceProbability];
     v90 = v89;
-    [v8 silenceDurationMs];
+    [featuresCopy silenceDurationMs];
     *&v66 = v91;
     *&v67 = self->super._clampedASRFeatureLatencyMsForClientLag;
     v68 = v78;
-    v69 = v79;
-    v70 = v80;
+    v69 = wordCount5;
+    v70 = trailingSilenceDuration5;
     v71 = v82;
     v72 = v84;
-    v73 = v58;
+    v73 = pauseCounts;
     v74 = v86;
     v75 = v88;
     v76 = v90;
@@ -452,9 +452,9 @@ LABEL_26:
     *buf = 136315650;
     v120 = "[CSHybridEndpointAnalyzer _generateEndpointerFeaturesWithEffectiveClientProcessedAudioMs:osdFeatures:completion:]";
     v121 = 2050;
-    v122 = v16;
+    msCopy2 = v16;
     v123 = 2050;
-    v124 = clientLagThresholdMs;
+    msCopy = clientLagThresholdMs;
     _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "%s ClientLag: Not invoking HybridClassifier: sfLatency > clientLagThreshold: %{public}f > %{public}f", buf, 0x20u);
   }
 
@@ -473,10 +473,10 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)processOSDFeatures:(id)a3 withFrameDurationMs:(double)a4 withMHID:(id)a5
+- (void)processOSDFeatures:(id)features withFrameDurationMs:(double)ms withMHID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  featuresCopy = features;
+  dCopy = d;
   if (self->super._recordingDidStop)
   {
     v10 = CSLogCategoryEP;
@@ -506,7 +506,7 @@ LABEL_27:
     block[5] = buf;
     block[4] = self;
     dispatch_async_and_wait(hybridClassifierQueue, block);
-    if ([v9 length] && (objc_msgSend(v9, "isEqualToString:", *(*&buf[8] + 40)) & 1) == 0)
+    if ([dCopy length] && (objc_msgSend(dCopy, "isEqualToString:", *(*&buf[8] + 40)) & 1) == 0)
     {
       v24 = CSLogCategoryEP;
       if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_ERROR))
@@ -517,16 +517,16 @@ LABEL_27:
         *&v68[12] = 2112;
         *&v68[14] = v25;
         *&v68[22] = 2112;
-        v69 = v9;
+        v69 = dCopy;
         _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%s MHID mismatch: Endpointer = %@, OSD = %@, don't process OSD features", v68, 0x20u);
       }
     }
 
     else
     {
-      [v8 processedAudioMs];
+      [featuresCopy processedAudioMs];
       v13 = v12;
-      [v8 silenceDurationMs];
+      [featuresCopy silenceDurationMs];
       v15 = v14;
       v16 = qword_10029E328;
       if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * qword_10029E328, 1) <= 0x888888888888888uLL)
@@ -643,7 +643,7 @@ LABEL_27:
 
       else
       {
-        v27 = [(CSEndpointAnalyzerBase *)self multimodalEndpointerEnabled];
+        multimodalEndpointerEnabled = [(CSEndpointAnalyzerBase *)self multimodalEndpointerEnabled];
         v28 = self->super._hybridClassifierQueue;
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
@@ -652,14 +652,14 @@ LABEL_27:
         v29[4] = self;
         v31 = &v53;
         v39 = v15;
-        v30 = v8;
+        v30 = featuresCopy;
         v32 = v57;
-        v40 = v27;
+        v40 = multimodalEndpointerEnabled;
         v33 = v51;
         v34 = v68;
         v35 = v62;
         v36 = v59;
-        v38 = a4;
+        msCopy = ms;
         v37 = v61;
         dispatch_async(v28, v29);
       }
@@ -678,22 +678,22 @@ LABEL_27:
   }
 }
 
-- (void)processFirstAudioPacketTimestamp:(id)a3 firstAudioSampleSensorTimestamp:(unint64_t)a4
+- (void)processFirstAudioPacketTimestamp:(id)timestamp firstAudioSampleSensorTimestamp:(unint64_t)sensorTimestamp
 {
-  v6 = a3;
+  timestampCopy = timestamp;
   stateSerialQueue = self->super._stateSerialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E2F38;
   block[3] = &unk_1002533C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = timestampCopy;
+  sensorTimestampCopy = sensorTimestamp;
+  v8 = timestampCopy;
   dispatch_async_and_wait(stateSerialQueue, block);
 }
 
-- (void)logAnchorMachAbsTime:(unint64_t)a3 numSamplesProcessedBeforeAnchorTime:(unint64_t)a4 isAnchorTimeBuffered:(BOOL)a5 audioDeliveryHostTimeDelta:(unint64_t)a6
+- (void)logAnchorMachAbsTime:(unint64_t)time numSamplesProcessedBeforeAnchorTime:(unint64_t)anchorTime isAnchorTimeBuffered:(BOOL)buffered audioDeliveryHostTimeDelta:(unint64_t)delta
 {
   hybridClassifierQueue = self->super._hybridClassifierQueue;
   block[0] = _NSConcreteStackBlock;
@@ -701,16 +701,16 @@ LABEL_27:
   block[2] = sub_1000E309C;
   block[3] = &unk_100251310;
   block[4] = self;
-  block[5] = a3;
-  v8 = a5;
-  block[6] = a4;
-  block[7] = a6;
+  block[5] = time;
+  bufferedCopy = buffered;
+  block[6] = anchorTime;
+  block[7] = delta;
   dispatch_async(hybridClassifierQueue, block);
 }
 
-- (void)_swapEnhancedEndpointerModelForTaskString:(id)a3
+- (void)_swapEnhancedEndpointerModelForTaskString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (self->super._recordingDidStop)
   {
     v5 = CSLogCategoryEP;
@@ -746,7 +746,7 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  v7 = [(NSDictionary *)taskEnhancedEndpointerMap objectForKey:v4];
+  v7 = [(NSDictionary *)taskEnhancedEndpointerMap objectForKey:stringCopy];
   if (!v7)
   {
     v7 = [(NSDictionary *)self->_taskEnhancedEndpointerMap objectForKey:@"SearchOrMessaging"];
@@ -756,7 +756,7 @@ LABEL_17:
       v15 = 136315650;
       v16 = "[CSHybridEndpointAnalyzer _swapEnhancedEndpointerModelForTaskString:]";
       v17 = 2114;
-      v18 = v4;
+      v18 = stringCopy;
       v19 = 2114;
       v20 = @"SearchOrMessaging";
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s No enhanced endpointer model for task %{public}@, falling back to default task %{public}@", &v15, 0x20u);
@@ -773,7 +773,7 @@ LABEL_17:
       v15 = 136315650;
       v16 = "[CSHybridEndpointAnalyzer _swapEnhancedEndpointerModelForTaskString:]";
       v17 = 2114;
-      v18 = v4;
+      v18 = stringCopy;
       v19 = 2114;
       v20 = @"SearchOrMessaging";
       v12 = "%s Unable to find enhanced endpointer model for task %{public}@ or default task %{public}@";
@@ -790,16 +790,16 @@ LABEL_17:
     v15 = 136315394;
     v16 = "[CSHybridEndpointAnalyzer _swapEnhancedEndpointerModelForTaskString:]";
     v17 = 2114;
-    v18 = v4;
+    v18 = stringCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s Swapping enhanced endpointer model to model for %{public}@ (or default)", &v15, 0x16u);
   }
 
 LABEL_13:
 }
 
-- (void)_processEnhancedEndpointerTaskString:(id)a3
+- (void)_processEnhancedEndpointerTaskString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   dispatch_assert_queue_V2(self->super._hybridClassifierQueue);
   v38 = 0;
   v39 = &v38;
@@ -822,8 +822,8 @@ LABEL_13:
   v17 = 3221225472;
   v18 = sub_1000E366C;
   v19 = &unk_1002512E8;
-  v20 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = stringCopy;
   v21 = v6;
   v22 = &v38;
   v23 = &v34;
@@ -832,7 +832,7 @@ LABEL_13:
   dispatch_async_and_wait(asrFeaturesQueue, &v16);
   if (*(v39 + 6) > 0.0 && *(v35 + 6) > 0.0)
   {
-    [(CSHybridEndpointAnalyzer *)self _swapEnhancedEndpointerModelForTaskString:v6, v16, v17, v18, v19, v20];
+    [(CSHybridEndpointAnalyzer *)self _swapEnhancedEndpointerModelForTaskString:v6, v16, v17, v18, v19, selfCopy];
     LODWORD(v7) = *(v39 + 6);
     LODWORD(v8) = *(v35 + 6);
     LODWORD(v9) = *(v31 + 6);
@@ -867,33 +867,33 @@ LABEL_13:
   _Block_object_dispose(&v38, 8);
 }
 
-- (BOOL)_isTaskStringAccessible:(id)a3
+- (BOOL)_isTaskStringAccessible:(id)accessible
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"accessible-maximum"])
+  accessibleCopy = accessible;
+  if ([accessibleCopy isEqualToString:@"accessible-maximum"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"accessible-extended"];
+    v4 = [accessibleCopy isEqualToString:@"accessible-extended"];
   }
 
   return v4;
 }
 
-- (void)processTaskString:(id)a3
+- (void)processTaskString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   hybridClassifierQueue = self->super._hybridClassifierQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E3974;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = stringCopy;
+  selfCopy = self;
+  v6 = stringCopy;
   dispatch_async(hybridClassifierQueue, v7);
 }
 
@@ -916,7 +916,7 @@ LABEL_13:
   return v3;
 }
 
-- (void)setEndpointerOperationMode:(int64_t)a3
+- (void)setEndpointerOperationMode:(int64_t)mode
 {
   v5 = CSLogCategoryEP;
   if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEBUG))
@@ -932,11 +932,11 @@ LABEL_13:
   v7[2] = sub_1000E40DC;
   v7[3] = &unk_100253C98;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = mode;
   dispatch_async(stateSerialQueue, v7);
 }
 
-- (void)_updateEndpointerDelayedTrigger:(BOOL)a3
+- (void)_updateEndpointerDelayedTrigger:(BOOL)trigger
 {
   if (self->super._recordingDidStop)
   {
@@ -959,14 +959,14 @@ LABEL_13:
     v5[2] = sub_1000E4354;
     v5[3] = &unk_100253BF8;
     v5[4] = self;
-    v6 = a3;
+    triggerCopy = trigger;
     dispatch_async(hybridClassifierQueue, v5);
   }
 }
 
-- (void)_updateEndpointerDelayedTriggerByMhId:(id)a3
+- (void)_updateEndpointerDelayedTriggerByMhId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(self->super._hybridClassifierQueue);
   v8 = 0;
   v9 = &v8;
@@ -980,7 +980,7 @@ LABEL_13:
   v7[4] = self;
   v7[5] = &v8;
   dispatch_async_and_wait(asrFeaturesQueue, v7);
-  v6 = [v4 hash];
+  v6 = [idCopy hash];
   if (v6 % v9[3] == 1)
   {
     [(CSHybridEndpointAnalyzer *)self _updateEndpointerDelayedTrigger:1];
@@ -989,7 +989,7 @@ LABEL_13:
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_updateEnhancedEndpointerDefaultThresholdPartial:(float)a3 defaultThresholdRC:(float)a4 relaxedThresholdPartial:(float)a5 relaxedThresholdRC:(float)a6
+- (void)_updateEnhancedEndpointerDefaultThresholdPartial:(float)partial defaultThresholdRC:(float)c relaxedThresholdPartial:(float)thresholdPartial relaxedThresholdRC:(float)rC
 {
   if (self->super._recordingDidStop)
   {
@@ -1033,14 +1033,14 @@ LABEL_7:
   block[2] = sub_1000E46F0;
   block[3] = &unk_1002512C0;
   block[4] = self;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  partialCopy = partial;
+  cCopy = c;
+  thresholdPartialCopy = thresholdPartial;
+  rCCopy = rC;
   dispatch_async(hybridClassifierQueue, block);
 }
 
-- (void)_updateEndpointerThreshold:(float)a3
+- (void)_updateEndpointerThreshold:(float)threshold
 {
   if (self->_accessibleEndpointerEnabled)
   {
@@ -1061,12 +1061,12 @@ LABEL_7:
     v5[2] = sub_1000E490C;
     v5[3] = &unk_1002534E8;
     v5[4] = self;
-    v6 = a3;
+    thresholdCopy = threshold;
     dispatch_async(hybridClassifierQueue, v5);
   }
 }
 
-- (void)updateEndpointerThreshold:(float)a3
+- (void)updateEndpointerThreshold:(float)threshold
 {
   v5 = CSLogCategoryEP;
   if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEBUG))
@@ -1076,18 +1076,18 @@ LABEL_7:
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s ", &v7, 0xCu);
   }
 
-  *&v6 = a3;
+  *&v6 = threshold;
   [(CSHybridEndpointAnalyzer *)self _updateEndpointerThreshold:v6];
 }
 
-- (void)_updateCurrentAsset:(id)a3
+- (void)_updateCurrentAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   dispatch_assert_queue_V2(self->super._stateSerialQueue);
   currentAsset = self->super._currentAsset;
   v7 = CSLogCategoryEP;
   v8 = os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT);
-  if (currentAsset == v5)
+  if (currentAsset == assetCopy)
   {
     if (v8)
     {
@@ -1106,7 +1106,7 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Updating current asset.", &v9, 0xCu);
     }
 
-    objc_storeStrong(&self->super._currentAsset, a3);
+    objc_storeStrong(&self->super._currentAsset, asset);
     [(CSHybridEndpointAnalyzer *)self _readParametersFromHEPAsset:self->super._currentAsset];
   }
 }

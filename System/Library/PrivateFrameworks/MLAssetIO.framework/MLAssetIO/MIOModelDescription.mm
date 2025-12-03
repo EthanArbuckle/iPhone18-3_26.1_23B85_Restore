@@ -1,6 +1,6 @@
 @interface MIOModelDescription
-- (BOOL)isEqual:(id)a3;
-- (MIOModelDescription)initWithSpecification:(const void *)a3 isUpdatable:(BOOL)a4 modelParameters:(id)a5 classLabelsPerFunction:(id)a6 error:(id *)a7;
+- (BOOL)isEqual:(id)equal;
+- (MIOModelDescription)initWithSpecification:(const void *)specification isUpdatable:(BOOL)updatable modelParameters:(id)parameters classLabelsPerFunction:(id)function error:(id *)error;
 - (NSArray)functionDescriptions;
 - (NSArray)inputDescriptions;
 - (NSArray)outputDescriptions;
@@ -10,22 +10,22 @@
 - (NSString)predictedFeatureName;
 - (NSString)predictedProbabilitiesName;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setShortDescription:(id)a3 forInputFeatureWithName:(id)a4 functionName:(id)a5;
-- (void)_setShortDescription:(id)a3 forOutputFeatureWithName:(id)a4 functionName:(id)a5;
-- (void)_setShortDescription:(id)a3 forStateFeatureWithName:(id)a4 functionName:(id)a5;
-- (void)_setShortDescription:(id)a3 forTrainingInputFeatureWithName:(id)a4;
-- (void)setMetadata:(id)a3;
+- (void)_setShortDescription:(id)description forInputFeatureWithName:(id)name functionName:(id)functionName;
+- (void)_setShortDescription:(id)description forOutputFeatureWithName:(id)name functionName:(id)functionName;
+- (void)_setShortDescription:(id)description forStateFeatureWithName:(id)name functionName:(id)functionName;
+- (void)_setShortDescription:(id)description forTrainingInputFeatureWithName:(id)name;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation MIOModelDescription
 
-- (MIOModelDescription)initWithSpecification:(const void *)a3 isUpdatable:(BOOL)a4 modelParameters:(id)a5 classLabelsPerFunction:(id)a6 error:(id *)a7
+- (MIOModelDescription)initWithSpecification:(const void *)specification isUpdatable:(BOOL)updatable modelParameters:(id)parameters classLabelsPerFunction:(id)function error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v52 = a5;
-  v53 = a6;
+  parametersCopy = parameters;
+  functionCopy = function;
   v58.receiver = self;
   v58.super_class = MIOModelDescription;
   v11 = [(MIOModelDescription *)&v58 init];
@@ -37,29 +37,29 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if (*(a3 + 24))
+  if (*(specification + 24))
   {
-    if ([v53 count] != *(a3 + 24))
+    if ([functionCopy count] != *(specification + 24))
     {
       v13 = MEMORY[0x1E695DF30];
-      v14 = [v53 count];
+      v14 = [functionCopy count];
     }
   }
 
-  else if ([v53 count] != 1)
+  else if ([functionCopy count] != 1)
   {
     v15 = MEMORY[0x1E695DF30];
-    v16 = [v53 count];
+    v16 = [functionCopy count];
   }
 
-  CoreML::Specification::ModelDescription::CopyFrom(v11 + 1, a3);
-  *(v11 + 192) = a4;
+  CoreML::Specification::ModelDescription::CopyFrom(v11 + 1, specification);
+  *(v11 + 192) = updatable;
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v18 = v52;
+  v18 = parametersCopy;
   v19 = [v18 countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v19)
   {
@@ -85,18 +85,18 @@ LABEL_45:
   }
 
   objc_storeStrong(v11 + 25, v17);
-  v24 = [v53 copy];
+  v24 = [functionCopy copy];
   v25 = *(v11 + 23);
   *(v11 + 23) = v24;
 
-  v26 = *(a3 + 24);
+  v26 = *(specification + 24);
   if (!v26)
   {
     v27 = 0;
 LABEL_42:
     v44 = [v12[23] objectAtIndexedSubscript:v27];
-    v45 = [MEMORY[0x1E695DFB0] null];
-    v46 = v44 == v45;
+    null = [MEMORY[0x1E695DFB0] null];
+    v46 = v44 == null;
 
     if (!v46)
     {
@@ -109,8 +109,8 @@ LABEL_42:
   }
 
   v27 = 0;
-  v28 = *(a3 + 19) & 0xFFFFFFFFFFFFFFFELL;
-  v29 = *(a3 + 13);
+  v28 = *(specification + 19) & 0xFFFFFFFFFFFFFFFELL;
+  v29 = *(specification + 13);
   if (v29)
   {
     v30 = v29 + 8;
@@ -173,14 +173,14 @@ LABEL_42:
     [MIOModelDescription initWithSpecification:isUpdatable:modelParameters:classLabelsPerFunction:error:];
   }
 
-  if (a7)
+  if (error)
   {
     v40 = MEMORY[0x1E696ABC0];
     v59 = *MEMORY[0x1E696A578];
     v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The default function was not found."];
     v60 = v41;
     v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-    *a7 = [v40 errorWithDomain:@"com.apple.mlassetio" code:1 userInfo:v42];
+    *error = [v40 errorWithDomain:@"com.apple.mlassetio" code:1 userInfo:v42];
   }
 
   v43 = 0;
@@ -190,13 +190,13 @@ LABEL_46:
   return v43;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [MIOMutableModelDescription alloc];
-  v5 = [(MIOModelDescription *)self updatable];
-  v6 = [(MIOModelDescription *)self parameterDescriptionsByKey];
-  v7 = [v6 allValues];
-  v8 = [(MIOModelDescription *)v4 initWithSpecification:&self->_modelDescriptionParams isUpdatable:v5 modelParameters:v7 classLabelsPerFunction:self->_classLabelsPerFunction error:0];
+  updatable = [(MIOModelDescription *)self updatable];
+  parameterDescriptionsByKey = [(MIOModelDescription *)self parameterDescriptionsByKey];
+  allValues = [parameterDescriptionsByKey allValues];
+  v8 = [(MIOModelDescription *)v4 initWithSpecification:&self->_modelDescriptionParams isUpdatable:updatable modelParameters:allValues classLabelsPerFunction:self->_classLabelsPerFunction error:0];
 
   return v8;
 }
@@ -205,16 +205,16 @@ LABEL_46:
 {
   v53 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"MIOModelDescription (%p)\n", self];
-  v4 = [(MIOModelDescription *)self inputDescriptions];
-  v5 = [v4 componentsJoinedByString:@"\n    "];
+  inputDescriptions = [(MIOModelDescription *)self inputDescriptions];
+  v5 = [inputDescriptions componentsJoinedByString:@"\n    "];
   [v3 appendFormat:@"  inputDescriptions:\n    %@\n", v5];
 
-  v6 = [(MIOModelDescription *)self outputDescriptions];
-  v7 = [v6 componentsJoinedByString:@"\n    "];
+  outputDescriptions = [(MIOModelDescription *)self outputDescriptions];
+  v7 = [outputDescriptions componentsJoinedByString:@"\n    "];
   [v3 appendFormat:@"  outputDescriptions:\n    %@\n", v7];
 
-  v8 = [(MIOModelDescription *)self metadata];
-  v9 = [v8 count];
+  metadata = [(MIOModelDescription *)self metadata];
+  v9 = [metadata count];
 
   if (v9)
   {
@@ -223,8 +223,8 @@ LABEL_46:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v10 = [(MIOModelDescription *)self metadata];
-    v11 = [v10 countByEnumeratingWithState:&v47 objects:v52 count:16];
+    metadata2 = [(MIOModelDescription *)self metadata];
+    v11 = [metadata2 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v11)
     {
       v12 = *v48;
@@ -234,43 +234,43 @@ LABEL_46:
         {
           if (*v48 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(metadata2);
           }
 
           v14 = *(*(&v47 + 1) + 8 * i);
-          v15 = [(MIOModelDescription *)self metadata];
-          v16 = [v15 objectForKeyedSubscript:v14];
+          metadata3 = [(MIOModelDescription *)self metadata];
+          v16 = [metadata3 objectForKeyedSubscript:v14];
           [v3 appendFormat:@"    %@ -> %@\n", v14, v16];
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v47 objects:v52 count:16];
+        v11 = [metadata2 countByEnumeratingWithState:&v47 objects:v52 count:16];
       }
 
       while (v11);
     }
   }
 
-  v17 = [(MIOModelDescription *)self predictedFeatureName];
-  v18 = v17 == 0;
+  predictedFeatureName = [(MIOModelDescription *)self predictedFeatureName];
+  v18 = predictedFeatureName == 0;
 
   if (!v18)
   {
-    v19 = [(MIOModelDescription *)self predictedFeatureName];
-    [v3 appendFormat:@"  predictedFeatureName: %@\n", v19];
+    predictedFeatureName2 = [(MIOModelDescription *)self predictedFeatureName];
+    [v3 appendFormat:@"  predictedFeatureName: %@\n", predictedFeatureName2];
   }
 
-  v20 = [(MIOModelDescription *)self predictedProbabilitiesName];
-  v21 = v20 == 0;
+  predictedProbabilitiesName = [(MIOModelDescription *)self predictedProbabilitiesName];
+  v21 = predictedProbabilitiesName == 0;
 
   if (!v21)
   {
-    v22 = [(MIOModelDescription *)self predictedProbabilitiesName];
-    [v3 appendFormat:@"  predictedProbabilitiesName: %@\n", v22];
+    predictedProbabilitiesName2 = [(MIOModelDescription *)self predictedProbabilitiesName];
+    [v3 appendFormat:@"  predictedProbabilitiesName: %@\n", predictedProbabilitiesName2];
   }
 
-  v23 = [(MIOModelDescription *)self updatable];
+  updatable = [(MIOModelDescription *)self updatable];
   v24 = "NO";
-  if (v23)
+  if (updatable)
   {
     v24 = "YES";
   }
@@ -278,13 +278,13 @@ LABEL_46:
   [v3 appendFormat:@"  updatable: %s\n", v24];
   if ([(MIOModelDescription *)self updatable])
   {
-    v25 = [(MIOModelDescription *)self trainingInputDescriptions];
-    v26 = [v25 componentsJoinedByString:@"\n    "];
+    trainingInputDescriptions = [(MIOModelDescription *)self trainingInputDescriptions];
+    v26 = [trainingInputDescriptions componentsJoinedByString:@"\n    "];
     [v3 appendFormat:@"  trainingInputDescriptions:\n    %@\n", v26];
   }
 
-  v27 = [(MIOModelDescription *)self parameterDescriptionsByKey];
-  v28 = [v27 count] == 0;
+  parameterDescriptionsByKey = [(MIOModelDescription *)self parameterDescriptionsByKey];
+  v28 = [parameterDescriptionsByKey count] == 0;
 
   if (!v28)
   {
@@ -293,8 +293,8 @@ LABEL_46:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v29 = [(MIOModelDescription *)self parameterDescriptionsByKey];
-    v30 = [v29 countByEnumeratingWithState:&v43 objects:v51 count:16];
+    parameterDescriptionsByKey2 = [(MIOModelDescription *)self parameterDescriptionsByKey];
+    v30 = [parameterDescriptionsByKey2 countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (v30)
     {
       v31 = *v44;
@@ -304,32 +304,32 @@ LABEL_46:
         {
           if (*v44 != v31)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(parameterDescriptionsByKey2);
           }
 
           v33 = *(*(&v43 + 1) + 8 * j);
-          v34 = [(MIOModelDescription *)self parameterDescriptionsByKey];
-          v35 = [v34 objectForKeyedSubscript:v33];
+          parameterDescriptionsByKey3 = [(MIOModelDescription *)self parameterDescriptionsByKey];
+          v35 = [parameterDescriptionsByKey3 objectForKeyedSubscript:v33];
           [v3 appendFormat:@"    %@ -> %@\n", v33, v35];
         }
 
-        v30 = [v29 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        v30 = [parameterDescriptionsByKey2 countByEnumeratingWithState:&v43 objects:v51 count:16];
       }
 
       while (v30);
     }
   }
 
-  v36 = [(MIOModelDescription *)self defaultFunctionName];
-  v37 = v36 == 0;
+  defaultFunctionName = [(MIOModelDescription *)self defaultFunctionName];
+  v37 = defaultFunctionName == 0;
 
   if (!v37)
   {
-    v38 = [(MIOModelDescription *)self defaultFunctionName];
-    [v3 appendFormat:@"  defaultFunctionName: %@\n", v38];
+    defaultFunctionName2 = [(MIOModelDescription *)self defaultFunctionName];
+    [v3 appendFormat:@"  defaultFunctionName: %@\n", defaultFunctionName2];
 
-    v39 = [(MIOModelDescription *)self functionDescriptions];
-    v40 = [v39 componentsJoinedByString:@"\n    "];
+    functionDescriptions = [(MIOModelDescription *)self functionDescriptions];
+    v40 = [functionDescriptions componentsJoinedByString:@"\n    "];
     [v3 appendFormat:@"  functions:\n    %@\n", v40];
   }
 
@@ -338,10 +338,10 @@ LABEL_46:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -351,61 +351,61 @@ LABEL_46:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOModelDescription *)self inputDescriptions];
-      v7 = [(MIOModelDescription *)v5 inputDescriptions];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      inputDescriptions = [(MIOModelDescription *)self inputDescriptions];
+      inputDescriptions2 = [(MIOModelDescription *)v5 inputDescriptions];
+      v8 = [inputDescriptions isEqual:inputDescriptions2];
 
       if ((v8 & 1) == 0)
       {
         goto LABEL_22;
       }
 
-      v9 = [(MIOModelDescription *)self outputDescriptions];
-      v10 = [(MIOModelDescription *)v5 outputDescriptions];
-      v11 = [v9 isEqual:v10];
+      outputDescriptions = [(MIOModelDescription *)self outputDescriptions];
+      outputDescriptions2 = [(MIOModelDescription *)v5 outputDescriptions];
+      v11 = [outputDescriptions isEqual:outputDescriptions2];
 
       if ((v11 & 1) == 0)
       {
         goto LABEL_22;
       }
 
-      v12 = [(MIOModelDescription *)self stateDescriptions];
-      v13 = [(MIOModelDescription *)v5 stateDescriptions];
-      v14 = [v12 isEqual:v13];
+      stateDescriptions = [(MIOModelDescription *)self stateDescriptions];
+      stateDescriptions2 = [(MIOModelDescription *)v5 stateDescriptions];
+      v14 = [stateDescriptions isEqual:stateDescriptions2];
 
       if ((v14 & 1) == 0)
       {
         goto LABEL_22;
       }
 
-      v15 = [(MIOModelDescription *)self metadata];
-      v16 = [(MIOModelDescription *)v5 metadata];
-      v17 = [v15 isEqual:v16];
+      metadata = [(MIOModelDescription *)self metadata];
+      metadata2 = [(MIOModelDescription *)v5 metadata];
+      v17 = [metadata isEqual:metadata2];
 
       if ((v17 & 1) == 0)
       {
         goto LABEL_22;
       }
 
-      v18 = [(MIOModelDescription *)self predictedFeatureName];
-      if (v18)
+      predictedFeatureName = [(MIOModelDescription *)self predictedFeatureName];
+      if (predictedFeatureName)
       {
       }
 
       else
       {
-        v20 = [(MIOModelDescription *)v5 predictedFeatureName];
+        predictedFeatureName2 = [(MIOModelDescription *)v5 predictedFeatureName];
 
-        if (!v20)
+        if (!predictedFeatureName2)
         {
           goto LABEL_13;
         }
       }
 
-      v21 = [(MIOModelDescription *)self predictedFeatureName];
-      v22 = [(MIOModelDescription *)v5 predictedFeatureName];
-      v23 = [v21 isEqual:v22];
+      predictedFeatureName3 = [(MIOModelDescription *)self predictedFeatureName];
+      predictedFeatureName4 = [(MIOModelDescription *)v5 predictedFeatureName];
+      v23 = [predictedFeatureName3 isEqual:predictedFeatureName4];
 
       if ((v23 & 1) == 0)
       {
@@ -413,24 +413,24 @@ LABEL_46:
       }
 
 LABEL_13:
-      v24 = [(MIOModelDescription *)self predictedProbabilitiesName];
-      if (v24)
+      predictedProbabilitiesName = [(MIOModelDescription *)self predictedProbabilitiesName];
+      if (predictedProbabilitiesName)
       {
       }
 
       else
       {
-        v25 = [(MIOModelDescription *)v5 predictedProbabilitiesName];
+        predictedProbabilitiesName2 = [(MIOModelDescription *)v5 predictedProbabilitiesName];
 
-        if (!v25)
+        if (!predictedProbabilitiesName2)
         {
           goto LABEL_17;
         }
       }
 
-      v26 = [(MIOModelDescription *)self predictedProbabilitiesName];
-      v27 = [(MIOModelDescription *)v5 predictedProbabilitiesName];
-      v28 = [v26 isEqual:v27];
+      predictedProbabilitiesName3 = [(MIOModelDescription *)self predictedProbabilitiesName];
+      predictedProbabilitiesName4 = [(MIOModelDescription *)v5 predictedProbabilitiesName];
+      v28 = [predictedProbabilitiesName3 isEqual:predictedProbabilitiesName4];
 
       if ((v28 & 1) == 0)
       {
@@ -438,26 +438,26 @@ LABEL_13:
       }
 
 LABEL_17:
-      v29 = [(MIOModelDescription *)self classLabels];
-      if (v29)
+      classLabels = [(MIOModelDescription *)self classLabels];
+      if (classLabels)
       {
       }
 
       else
       {
-        v30 = [(MIOModelDescription *)v5 classLabels];
+        classLabels2 = [(MIOModelDescription *)v5 classLabels];
 
-        if (!v30)
+        if (!classLabels2)
         {
 LABEL_21:
-          v34 = [(MIOModelDescription *)self updatable];
-          if (v34 == [(MIOModelDescription *)v5 updatable])
+          updatable = [(MIOModelDescription *)self updatable];
+          if (updatable == [(MIOModelDescription *)v5 updatable])
           {
             if (!-[MIOModelDescription updatable](self, "updatable") || (-[MIOModelDescription trainingInputDescriptions](self, "trainingInputDescriptions"), v36 = objc_claimAutoreleasedReturnValue(), -[MIOModelDescription trainingInputDescriptions](v5, "trainingInputDescriptions"), v37 = objc_claimAutoreleasedReturnValue(), v38 = [v36 isEqual:v37], v37, v36, (v38 & 1) != 0))
             {
-              v39 = [(MIOModelDescription *)self parameterDescriptionsByKey];
-              v40 = [(MIOModelDescription *)v5 parameterDescriptionsByKey];
-              v19 = [v39 isEqual:v40];
+              parameterDescriptionsByKey = [(MIOModelDescription *)self parameterDescriptionsByKey];
+              parameterDescriptionsByKey2 = [(MIOModelDescription *)v5 parameterDescriptionsByKey];
+              v19 = [parameterDescriptionsByKey isEqual:parameterDescriptionsByKey2];
 
               goto LABEL_23;
             }
@@ -471,9 +471,9 @@ LABEL_23:
         }
       }
 
-      v31 = [(MIOModelDescription *)self classLabels];
-      v32 = [(MIOModelDescription *)v5 classLabels];
-      v33 = [v31 isEqual:v32];
+      classLabels3 = [(MIOModelDescription *)self classLabels];
+      classLabels4 = [(MIOModelDescription *)v5 classLabels];
+      v33 = [classLabels3 isEqual:classLabels4];
 
       if ((v33 & 1) == 0)
       {
@@ -493,23 +493,23 @@ LABEL_24:
 
 - (unint64_t)hash
 {
-  v18 = [(MIOModelDescription *)self inputDescriptions];
-  v15 = [v18 hash];
-  v17 = [(MIOModelDescription *)self outputDescriptions];
-  v3 = [v17 hash];
-  v16 = [(MIOModelDescription *)self metadata];
-  v4 = [v16 hash];
-  v5 = [(MIOModelDescription *)self predictedFeatureName];
-  v6 = [v5 hash];
-  v7 = [(MIOModelDescription *)self predictedProbabilitiesName];
-  v8 = [v7 hash];
-  v9 = [(MIOModelDescription *)self updatable];
-  v10 = [(MIOModelDescription *)self trainingInputDescriptions];
-  v11 = [v10 hash];
-  v12 = [(MIOModelDescription *)self parameterDescriptionsByKey];
-  v13 = v11 ^ [v12 hash];
+  inputDescriptions = [(MIOModelDescription *)self inputDescriptions];
+  v15 = [inputDescriptions hash];
+  outputDescriptions = [(MIOModelDescription *)self outputDescriptions];
+  v3 = [outputDescriptions hash];
+  metadata = [(MIOModelDescription *)self metadata];
+  v4 = [metadata hash];
+  predictedFeatureName = [(MIOModelDescription *)self predictedFeatureName];
+  v6 = [predictedFeatureName hash];
+  predictedProbabilitiesName = [(MIOModelDescription *)self predictedProbabilitiesName];
+  v8 = [predictedProbabilitiesName hash];
+  updatable = [(MIOModelDescription *)self updatable];
+  trainingInputDescriptions = [(MIOModelDescription *)self trainingInputDescriptions];
+  v11 = [trainingInputDescriptions hash];
+  parameterDescriptionsByKey = [(MIOModelDescription *)self parameterDescriptionsByKey];
+  v13 = v11 ^ [parameterDescriptionsByKey hash];
 
-  return v3 ^ v15 ^ v4 ^ v6 ^ v8 ^ v9 ^ v13;
+  return v3 ^ v15 ^ v4 ^ v6 ^ v8 ^ updatable ^ v13;
 }
 
 - (NSString)defaultFunctionName
@@ -560,9 +560,9 @@ LABEL_24:
       {
         v11 = *&v7[8 * v9];
         v12 = [(NSArray *)v3 objectAtIndexedSubscript:v9];
-        v13 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v12 == v13)
+        if (v12 == null)
         {
 
           v12 = 0;
@@ -664,15 +664,15 @@ LABEL_24:
   return [MEMORY[0x1E696AEC0] stringWithUTF8String:v2];
 }
 
-- (void)_setShortDescription:(id)a3 forInputFeatureWithName:(id)a4 functionName:(id)a5
+- (void)_setShortDescription:(id)description forInputFeatureWithName:(id)name functionName:(id)functionName
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  descriptionCopy = description;
+  nameCopy = name;
+  functionNameCopy = functionName;
+  v11 = functionNameCopy;
+  if (functionNameCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(v31, [v10 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v31, [functionNameCopy UTF8String]);
     rep = self->_modelDescriptionParams.functions_.rep_;
     if (rep)
     {
@@ -743,13 +743,13 @@ LABEL_24:
     {
 LABEL_25:
       v24 = MEMORY[0x1E695DF30];
-      v25 = [v11 UTF8String];
-      [v24 raise:*MEMORY[0x1E695D940] format:{@"No input feature named: %s was found.", v25}];
+      uTF8String = [v11 UTF8String];
+      [v24 raise:*MEMORY[0x1E695D940] format:{@"No input feature named: %s was found.", uTF8String}];
     }
 
     v26 = *v15;
-    std::string::basic_string[abi:ne200100]<0>(v29, [v9 UTF8String]);
-    std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v29, [nameCopy UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [descriptionCopy UTF8String]);
     setShortDescription(v26 + 16, v29, __p);
     if (v28 < 0)
     {
@@ -759,8 +759,8 @@ LABEL_25:
 
   else
   {
-    std::string::basic_string[abi:ne200100]<0>(v31, [v9 UTF8String]);
-    std::string::basic_string[abi:ne200100]<0>(v29, [v8 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v31, [nameCopy UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v29, [descriptionCopy UTF8String]);
     setShortDescription(&self->_modelDescriptionParams.input_, v31, v29);
   }
 
@@ -775,15 +775,15 @@ LABEL_25:
   }
 }
 
-- (void)_setShortDescription:(id)a3 forOutputFeatureWithName:(id)a4 functionName:(id)a5
+- (void)_setShortDescription:(id)description forOutputFeatureWithName:(id)name functionName:(id)functionName
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  descriptionCopy = description;
+  nameCopy = name;
+  functionNameCopy = functionName;
+  v11 = functionNameCopy;
+  if (functionNameCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(v31, [v10 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v31, [functionNameCopy UTF8String]);
     rep = self->_modelDescriptionParams.functions_.rep_;
     if (rep)
     {
@@ -854,13 +854,13 @@ LABEL_25:
     {
 LABEL_25:
       v24 = MEMORY[0x1E695DF30];
-      v25 = [v11 UTF8String];
-      [v24 raise:*MEMORY[0x1E695D940] format:{@"No output feature named: %s was found.", v25}];
+      uTF8String = [v11 UTF8String];
+      [v24 raise:*MEMORY[0x1E695D940] format:{@"No output feature named: %s was found.", uTF8String}];
     }
 
     v26 = *v15;
-    std::string::basic_string[abi:ne200100]<0>(v29, [v9 UTF8String]);
-    std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v29, [nameCopy UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [descriptionCopy UTF8String]);
     setShortDescription(v26 + 40, v29, __p);
     if (v28 < 0)
     {
@@ -870,8 +870,8 @@ LABEL_25:
 
   else
   {
-    std::string::basic_string[abi:ne200100]<0>(v31, [v9 UTF8String]);
-    std::string::basic_string[abi:ne200100]<0>(v29, [v8 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v31, [nameCopy UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v29, [descriptionCopy UTF8String]);
     setShortDescription(&self->_modelDescriptionParams.output_, v31, v29);
   }
 
@@ -886,15 +886,15 @@ LABEL_25:
   }
 }
 
-- (void)_setShortDescription:(id)a3 forStateFeatureWithName:(id)a4 functionName:(id)a5
+- (void)_setShortDescription:(id)description forStateFeatureWithName:(id)name functionName:(id)functionName
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  descriptionCopy = description;
+  nameCopy = name;
+  functionNameCopy = functionName;
+  v11 = functionNameCopy;
+  if (functionNameCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(v31, [v10 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v31, [functionNameCopy UTF8String]);
     rep = self->_modelDescriptionParams.functions_.rep_;
     if (rep)
     {
@@ -965,13 +965,13 @@ LABEL_25:
     {
 LABEL_25:
       v24 = MEMORY[0x1E695DF30];
-      v25 = [v11 UTF8String];
-      [v24 raise:*MEMORY[0x1E695D940] format:{@"No output feature named: %s was found.", v25}];
+      uTF8String = [v11 UTF8String];
+      [v24 raise:*MEMORY[0x1E695D940] format:{@"No output feature named: %s was found.", uTF8String}];
     }
 
     v26 = *v15;
-    std::string::basic_string[abi:ne200100]<0>(v29, [v9 UTF8String]);
-    std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v29, [nameCopy UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [descriptionCopy UTF8String]);
     setShortDescription(v26 + 64, v29, __p);
     if (v28 < 0)
     {
@@ -981,8 +981,8 @@ LABEL_25:
 
   else
   {
-    std::string::basic_string[abi:ne200100]<0>(v31, [v9 UTF8String]);
-    std::string::basic_string[abi:ne200100]<0>(v29, [v8 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v31, [nameCopy UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v29, [descriptionCopy UTF8String]);
     setShortDescription(&self->_modelDescriptionParams.state_, v31, v29);
   }
 
@@ -997,12 +997,12 @@ LABEL_25:
   }
 }
 
-- (void)_setShortDescription:(id)a3 forTrainingInputFeatureWithName:(id)a4
+- (void)_setShortDescription:(id)description forTrainingInputFeatureWithName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  std::string::basic_string[abi:ne200100]<0>(v10, [v7 UTF8String]);
-  std::string::basic_string[abi:ne200100]<0>(__p, [v6 UTF8String]);
+  descriptionCopy = description;
+  nameCopy = name;
+  std::string::basic_string[abi:ne200100]<0>(v10, [nameCopy UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [descriptionCopy UTF8String]);
   setShortDescription(&self->_modelDescriptionParams.traininginput_, v10, __p);
   if (v9 < 0)
   {
@@ -1015,79 +1015,79 @@ LABEL_25:
   }
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v61 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:{@"MLModelDescriptionKey", CoreML::Specification::Metadata::Metadata(v47, 0, 0)}];
+  metadataCopy = metadata;
+  v4 = [metadataCopy objectForKeyedSubscript:{@"MLModelDescriptionKey", CoreML::Specification::Metadata::Metadata(v47, 0, 0)}];
   v5 = v4 == 0;
 
   if (!v5)
   {
-    v6 = [v3 objectForKeyedSubscript:@"MLModelDescriptionKey"];
+    v6 = [metadataCopy objectForKeyedSubscript:@"MLModelDescriptionKey"];
     v7 = v6;
-    v8 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v9 = (v48 & 0xFFFFFFFFFFFFFFFCLL);
     if (v48)
     {
       v9 = *v9;
     }
 
-    google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&v50, v8, v9);
+    google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&v50, uTF8String, v9);
   }
 
-  v10 = [v3 objectForKeyedSubscript:@"MLModelVersionStringKey"];
+  v10 = [metadataCopy objectForKeyedSubscript:@"MLModelVersionStringKey"];
   v11 = v10 == 0;
 
   if (!v11)
   {
-    v12 = [v3 objectForKeyedSubscript:@"MLModelVersionStringKey"];
+    v12 = [metadataCopy objectForKeyedSubscript:@"MLModelVersionStringKey"];
     v13 = v12;
-    v14 = [v12 UTF8String];
+    uTF8String2 = [v12 UTF8String];
     v15 = (v48 & 0xFFFFFFFFFFFFFFFCLL);
     if (v48)
     {
       v15 = *v15;
     }
 
-    google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&v51, v14, v15);
+    google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&v51, uTF8String2, v15);
   }
 
-  v16 = [v3 objectForKeyedSubscript:@"MLModelAuthorKey"];
+  v16 = [metadataCopy objectForKeyedSubscript:@"MLModelAuthorKey"];
   v17 = v16 == 0;
 
   if (!v17)
   {
-    v18 = [v3 objectForKeyedSubscript:@"MLModelAuthorKey"];
+    v18 = [metadataCopy objectForKeyedSubscript:@"MLModelAuthorKey"];
     v19 = v18;
-    v20 = [v18 UTF8String];
+    uTF8String3 = [v18 UTF8String];
     v21 = (v48 & 0xFFFFFFFFFFFFFFFCLL);
     if (v48)
     {
       v21 = *v21;
     }
 
-    google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&v52, v20, v21);
+    google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&v52, uTF8String3, v21);
   }
 
-  v22 = [v3 objectForKeyedSubscript:@"MLModelLicenseKey"];
+  v22 = [metadataCopy objectForKeyedSubscript:@"MLModelLicenseKey"];
   v23 = v22 == 0;
 
   if (!v23)
   {
-    v24 = [v3 objectForKeyedSubscript:@"MLModelLicenseKey"];
+    v24 = [metadataCopy objectForKeyedSubscript:@"MLModelLicenseKey"];
     v25 = v24;
-    v26 = [v24 UTF8String];
+    uTF8String4 = [v24 UTF8String];
     v27 = (v48 & 0xFFFFFFFFFFFFFFFCLL);
     if (v48)
     {
       v27 = *v27;
     }
 
-    google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&v53, v26, v27);
+    google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&v53, uTF8String4, v27);
   }
 
-  v28 = [v3 objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
+  v28 = [metadataCopy objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
   v29 = v28;
   if (v28)
   {
@@ -1112,11 +1112,11 @@ LABEL_25:
           v34 = *(*(&v55 + 1) + 8 * i);
           v35 = [v30 objectForKeyedSubscript:v34];
           v36 = v35;
-          v37 = [v35 UTF8String];
+          uTF8String5 = [v35 UTF8String];
           v38 = v34;
-          v54 = [v34 UTF8String];
-          google::protobuf::Map<std::string,std::string>::InnerMap::insert<char const*>(v49, &v54, v59);
-          MEMORY[0x1C6908830](v59[0] + 24, v37);
+          uTF8String6 = [v34 UTF8String];
+          google::protobuf::Map<std::string,std::string>::InnerMap::insert<char const*>(v49, &uTF8String6, v59);
+          MEMORY[0x1C6908830](v59[0] + 24, uTF8String5);
         }
 
         v31 = [v30 countByEnumeratingWithState:&v55 objects:v60 count:16];

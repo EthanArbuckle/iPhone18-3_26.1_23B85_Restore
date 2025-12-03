@@ -1,87 +1,87 @@
 @interface ATXAVRouteInfo
-- (ATXAVRouteInfo)initWithCoder:(id)a3;
-- (ATXAVRouteInfo)initWithDeviceName:(id)a3 deviceID:(id)a4 isExternalRoute:(BOOL)a5;
-- (ATXAVRouteInfo)initWithProto:(id)a3;
-- (ATXAVRouteInfo)initWithProtoData:(id)a3;
+- (ATXAVRouteInfo)initWithCoder:(id)coder;
+- (ATXAVRouteInfo)initWithDeviceName:(id)name deviceID:(id)d isExternalRoute:(BOOL)route;
+- (ATXAVRouteInfo)initWithProto:(id)proto;
+- (ATXAVRouteInfo)initWithProtoData:(id)data;
 - (id)encodeAsProto;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXAVRouteInfo
 
-- (ATXAVRouteInfo)initWithDeviceName:(id)a3 deviceID:(id)a4 isExternalRoute:(BOOL)a5
+- (ATXAVRouteInfo)initWithDeviceName:(id)name deviceID:(id)d isExternalRoute:(BOOL)route
 {
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = ATXAVRouteInfo;
   v11 = [(ATXAVRouteInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_deviceName, a3);
-    objc_storeStrong(&v12->_deviceID, a4);
-    v12->_isExternalRoute = a5;
+    objc_storeStrong(&v11->_deviceName, name);
+    objc_storeStrong(&v12->_deviceID, d);
+    v12->_isExternalRoute = route;
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceName = self->_deviceName;
-  v5 = a3;
-  [v5 encodeObject:deviceName forKey:@"deviceName"];
-  [v5 encodeObject:self->_deviceID forKey:@"deviceID"];
-  [v5 encodeBool:self->_isExternalRoute forKey:@"isExternalRoute"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceName forKey:@"deviceName"];
+  [coderCopy encodeObject:self->_deviceID forKey:@"deviceID"];
+  [coderCopy encodeBool:self->_isExternalRoute forKey:@"isExternalRoute"];
 }
 
-- (ATXAVRouteInfo)initWithCoder:(id)a3
+- (ATXAVRouteInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
-  v7 = [v4 decodeBoolForKey:@"isExternalRoute"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+  v7 = [coderCopy decodeBoolForKey:@"isExternalRoute"];
 
   v8 = [(ATXAVRouteInfo *)self initWithDeviceName:v5 deviceID:v6 isExternalRoute:v7];
   return v8;
 }
 
-- (ATXAVRouteInfo)initWithProtoData:(id)a3
+- (ATXAVRouteInfo)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBAVRouteInfo alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBAVRouteInfo alloc] initWithData:dataCopy];
 
     self = [(ATXAVRouteInfo *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXAVRouteInfo *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXAVRouteInfo *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXAVRouteInfo)initWithProto:(id)a3
+- (ATXAVRouteInfo)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -97,16 +97,16 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 deviceName];
-  v7 = [v5 deviceID];
-  v8 = [v5 isExternalRoute];
+  v5 = protoCopy;
+  deviceName = [v5 deviceName];
+  deviceID = [v5 deviceID];
+  isExternalRoute = [v5 isExternalRoute];
 
-  self = [(ATXAVRouteInfo *)self initWithDeviceName:v6 deviceID:v7 isExternalRoute:v8];
-  v9 = self;
+  self = [(ATXAVRouteInfo *)self initWithDeviceName:deviceName deviceID:deviceID isExternalRoute:isExternalRoute];
+  selfCopy = self;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)proto

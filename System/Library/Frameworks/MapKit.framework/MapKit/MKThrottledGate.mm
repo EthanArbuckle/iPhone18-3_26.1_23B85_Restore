@@ -1,12 +1,12 @@
 @interface MKThrottledGate
 - (BOOL)_dispatchWaitingJobsIfNecessary;
 - (BOOL)_replenishAvailableJobsIfNecessary;
-- (MKThrottledGate)initWithMax:(int)a3 refreshRate:(double)a4 queue:(id)a5;
+- (MKThrottledGate)initWithMax:(int)max refreshRate:(double)rate queue:(id)queue;
 - (id)description;
 - (void)_ensureTimer;
-- (void)_timerFired:(id)a3;
+- (void)_timerFired:(id)fired;
 - (void)dealloc;
-- (void)dispatch:(id)a3;
+- (void)dispatch:(id)dispatch;
 @end
 
 @implementation MKThrottledGate
@@ -53,20 +53,20 @@
   return availableTickets < maxAvailableTickets;
 }
 
-- (void)_timerFired:(id)a3
+- (void)_timerFired:(id)fired
 {
-  v4 = [(MKThrottledGate *)self _replenishAvailableJobsIfNecessary];
-  v5 = [(MKThrottledGate *)self _dispatchWaitingJobsIfNecessary];
-  if (v4 || v5)
+  _replenishAvailableJobsIfNecessary = [(MKThrottledGate *)self _replenishAvailableJobsIfNecessary];
+  _dispatchWaitingJobsIfNecessary = [(MKThrottledGate *)self _dispatchWaitingJobsIfNecessary];
+  if (_replenishAvailableJobsIfNecessary || _dispatchWaitingJobsIfNecessary)
   {
 
     [(MKThrottledGate *)self _ensureTimer];
   }
 }
 
-- (void)dispatch:(id)a3
+- (void)dispatch:(id)dispatch
 {
-  v4 = [a3 copy];
+  v4 = [dispatch copy];
   waitingJobs = self->_waitingJobs;
   v7 = v4;
   v6 = MEMORY[0x1A58E9F30]();
@@ -107,19 +107,19 @@
   [(MKThrottledGate *)&v3 dealloc];
 }
 
-- (MKThrottledGate)initWithMax:(int)a3 refreshRate:(double)a4 queue:(id)a5
+- (MKThrottledGate)initWithMax:(int)max refreshRate:(double)rate queue:(id)queue
 {
-  v9 = a5;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = MKThrottledGate;
   v10 = [(MKThrottledGate *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queue, a5);
-    v11->_maxAvailableTickets = a3;
-    v11->_availableTickets = a3;
-    v11->_refreshRate = a4;
+    objc_storeStrong(&v10->_queue, queue);
+    v11->_maxAvailableTickets = max;
+    v11->_availableTickets = max;
+    v11->_refreshRate = rate;
     v12 = [objc_alloc(MEMORY[0x1E69DF4A8]) initWithTarget:v11 selector:sel__timerFired_ queue:v11->_queue];
     timer = v11->_timer;
     v11->_timer = v12;

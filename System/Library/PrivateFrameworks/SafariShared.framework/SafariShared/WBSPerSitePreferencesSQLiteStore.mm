@@ -1,23 +1,23 @@
 @interface WBSPerSitePreferencesSQLiteStore
-+ (BOOL)isPreferenceSyncable:(id)a3;
++ (BOOL)isPreferenceSyncable:(id)syncable;
 + (id)defaultDatabaseURL;
 + (id)sharedStore;
 + (id)staticSyncablePerSiteSettings;
-- (BOOL)_migrateToSchemaVersion:(int)a3;
-- (BOOL)_tryToPerformTransactionInBlock:(id)a3;
-- (WBSPerSitePreferencesSQLiteStore)initWithDatabaseURL:(id)a3;
-- (id)_defaultValueForPreference:(id)a3;
-- (id)_queryListForPreferences:(id)a3;
-- (id)_valueOfPreferences:(id)a3 forDomain:(id)a4;
-- (id)defaultValueForPreference:(id)a3;
-- (id)valueOfPreference:(id)a3 forDomain:(id)a4;
+- (BOOL)_migrateToSchemaVersion:(int)version;
+- (BOOL)_tryToPerformTransactionInBlock:(id)block;
+- (WBSPerSitePreferencesSQLiteStore)initWithDatabaseURL:(id)l;
+- (id)_defaultValueForPreference:(id)preference;
+- (id)_queryListForPreferences:(id)preferences;
+- (id)_valueOfPreferences:(id)preferences forDomain:(id)domain;
+- (id)defaultValueForPreference:(id)preference;
+- (id)valueOfPreference:(id)preference forDomain:(id)domain;
 - (int)_createFreshDatabaseSchema;
 - (int)_migrateToCurrentSchemaVersionIfNecessary;
 - (int)_migrateToSchemaVersion_2;
 - (int)_migrateToSchemaVersion_3;
 - (int)_migrateToSchemaVersion_4;
 - (int)_migrateToSchemaVersion_6;
-- (int)_setDatabaseSchemaVersion:(int)a3;
+- (int)_setDatabaseSchemaVersion:(int)version;
 - (void)_closeDatabase;
 - (void)_createFreshDatabaseSchema;
 - (void)_migrateToSchemaVersion_2;
@@ -25,34 +25,34 @@
 - (void)_migrateToSchemaVersion_4;
 - (void)_openDatabase;
 - (void)_openDatabaseIfNecessary;
-- (void)_setDeletedCloudKitSyncData:(id)a3 forRecordName:(id)a4 completionHandler:(id)a5;
-- (void)_setSyncData:(id)a3 forPreference:(id)a4 completionHandler:(id)a5;
-- (void)_setSyncData:(id)a3 forPreference:(id)a4 domain:(id)a5 recordName:(id)a6 completionHandler:(id)a7;
+- (void)_setDeletedCloudKitSyncData:(id)data forRecordName:(id)name completionHandler:(id)handler;
+- (void)_setSyncData:(id)data forPreference:(id)preference completionHandler:(id)handler;
+- (void)_setSyncData:(id)data forPreference:(id)preference domain:(id)domain recordName:(id)name completionHandler:(id)handler;
 - (void)closeDatabase;
 - (void)dealloc;
-- (void)getAllDomainsConfiguredForPreference:(id)a3 completionHandler:(id)a4;
-- (void)getAllPreferenceInformationForPreference:(id)a3 completionHandler:(id)a4;
-- (void)getDefaultValueForPreference:(id)a3 completionHandler:(id)a4;
-- (void)getDeletedCloudKitSyncDataForRecordName:(id)a3 completionHandler:(id)a4;
-- (void)getSyncDataForPreference:(id)a3 completionHandler:(id)a4;
-- (void)getSyncDataForPreference:(id)a3 domain:(id)a4 completionHandler:(id)a5;
-- (void)getTimestampAndValueOfPreference:(id)a3 forDomain:(id)a4 completionHandler:(id)a5;
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeoutInterval:(double)a5 completionHandler:(id)a6;
-- (void)getValuesOfPreference:(id)a3 forDomains:(id)a4 withTimeoutInterval:(double)a5 completionHandler:(id)a6;
-- (void)getValuesOfPreferences:(id)a3 forDomain:(id)a4 withTimeoutInterval:(double)a5 completionHandler:(id)a6;
-- (void)removeAllCloudKitRecordsWithCompletionHandler:(id)a3;
-- (void)removeAllPreferenceValues:(id)a3;
-- (void)removeAllPreferenceValuesFromPreference:(id)a3 completionHandler:(id)a4;
-- (void)removeAllPreferenceValuesFromPreferences:(id)a3 completionHandler:(id)a4;
+- (void)getAllDomainsConfiguredForPreference:(id)preference completionHandler:(id)handler;
+- (void)getAllPreferenceInformationForPreference:(id)preference completionHandler:(id)handler;
+- (void)getDefaultValueForPreference:(id)preference completionHandler:(id)handler;
+- (void)getDeletedCloudKitSyncDataForRecordName:(id)name completionHandler:(id)handler;
+- (void)getSyncDataForPreference:(id)preference completionHandler:(id)handler;
+- (void)getSyncDataForPreference:(id)preference domain:(id)domain completionHandler:(id)handler;
+- (void)getTimestampAndValueOfPreference:(id)preference forDomain:(id)domain completionHandler:(id)handler;
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeoutInterval:(double)interval completionHandler:(id)handler;
+- (void)getValuesOfPreference:(id)preference forDomains:(id)domains withTimeoutInterval:(double)interval completionHandler:(id)handler;
+- (void)getValuesOfPreferences:(id)preferences forDomain:(id)domain withTimeoutInterval:(double)interval completionHandler:(id)handler;
+- (void)removeAllCloudKitRecordsWithCompletionHandler:(id)handler;
+- (void)removeAllPreferenceValues:(id)values;
+- (void)removeAllPreferenceValuesFromPreference:(id)preference completionHandler:(id)handler;
+- (void)removeAllPreferenceValuesFromPreferences:(id)preferences completionHandler:(id)handler;
 - (void)removeAllSyncData;
-- (void)removePreferenceValueWithRecordName:(id)a3 completionHandler:(id)a4;
-- (void)removePreferenceValuesForDomainPrefixes:(id)a3 fromPreferences:(id)a4 completionHandler:(id)a5;
-- (void)removePreferenceValuesForDomains:(id)a3 fromPreference:(id)a4 completionHandler:(id)a5;
-- (void)removeTombstoneWithRecordName:(id)a3 completionHandler:(id)a4;
-- (void)savePerSiteSettingCloudKitRecordToDisk:(id)a3 completionHandler:(id)a4;
-- (void)setDefaultValue:(id)a3 forPreference:(id)a4 completionHandler:(id)a5;
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 includeTimestamp:(BOOL)a6 completionHandler:(id)a7;
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 withTimestamp:(id)a6 completionHandler:(id)a7;
+- (void)removePreferenceValueWithRecordName:(id)name completionHandler:(id)handler;
+- (void)removePreferenceValuesForDomainPrefixes:(id)prefixes fromPreferences:(id)preferences completionHandler:(id)handler;
+- (void)removePreferenceValuesForDomains:(id)domains fromPreference:(id)preference completionHandler:(id)handler;
+- (void)removeTombstoneWithRecordName:(id)name completionHandler:(id)handler;
+- (void)savePerSiteSettingCloudKitRecordToDisk:(id)disk completionHandler:(id)handler;
+- (void)setDefaultValue:(id)value forPreference:(id)preference completionHandler:(id)handler;
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain includeTimestamp:(BOOL)timestamp completionHandler:(id)handler;
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain withTimestamp:(id)timestamp completionHandler:(id)handler;
 @end
 
 @implementation WBSPerSitePreferencesSQLiteStore
@@ -63,7 +63,7 @@
   block[1] = 3221225472;
   block[2] = __47__WBSPerSitePreferencesSQLiteStore_sharedStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[WBSPerSitePreferencesSQLiteStore sharedStore]::onceToken != -1)
   {
     dispatch_once(&+[WBSPerSitePreferencesSQLiteStore sharedStore]::onceToken, block);
@@ -88,9 +88,9 @@ void __47__WBSPerSitePreferencesSQLiteStore_sharedStore__block_invoke(uint64_t a
 
 + (id)defaultDatabaseURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 safari_mobileSafariGroupContainerDirectoryURL];
-  v4 = [v3 URLByAppendingPathComponent:@"Library/Safari/PerSitePreferences.db" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_mobileSafariGroupContainerDirectoryURL = [defaultManager safari_mobileSafariGroupContainerDirectoryURL];
+  v4 = [safari_mobileSafariGroupContainerDirectoryURL URLByAppendingPathComponent:@"Library/Safari/PerSitePreferences.db" isDirectory:0];
 
   return v4;
 }
@@ -126,35 +126,35 @@ void __47__WBSPerSitePreferencesSQLiteStore_sharedStore__block_invoke(uint64_t a
   return v4;
 }
 
-+ (BOOL)isPreferenceSyncable:(id)a3
++ (BOOL)isPreferenceSyncable:(id)syncable
 {
-  v3 = a3;
-  v4 = [objc_opt_class() staticSyncablePerSiteSettings];
-  v5 = [v4 containsObject:v3];
+  syncableCopy = syncable;
+  staticSyncablePerSiteSettings = [objc_opt_class() staticSyncablePerSiteSettings];
+  v5 = [staticSyncablePerSiteSettings containsObject:syncableCopy];
 
   return v5;
 }
 
-- (WBSPerSitePreferencesSQLiteStore)initWithDatabaseURL:(id)a3
+- (WBSPerSitePreferencesSQLiteStore)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = WBSPerSitePreferencesSQLiteStore;
   v5 = [(WBSPerSitePreferencesSQLiteStore *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (lCopy)
     {
-      v6 = v4;
+      inMemoryDatabaseURL = lCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
+      inMemoryDatabaseURL = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
     }
 
     databaseURL = v5->_databaseURL;
-    v5->_databaseURL = v6;
+    v5->_databaseURL = inMemoryDatabaseURL;
 
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v9 = dispatch_queue_create("com.apple.SafariShared.WBSPerSitePreferencesSQLiteStore", v8);
@@ -185,14 +185,14 @@ void __47__WBSPerSitePreferencesSQLiteStore_sharedStore__block_invoke(uint64_t a
   dispatch_sync(databaseQueue, block);
 }
 
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 includeTimestamp:(BOOL)a6 completionHandler:(id)a7
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain includeTimestamp:(BOOL)timestamp completionHandler:(id)handler
 {
-  v8 = a6;
-  v16 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (v8)
+  timestampCopy = timestamp;
+  valueCopy = value;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  handlerCopy = handler;
+  if (timestampCopy)
   {
     v15 = [MEMORY[0x1E695DF00] now];
   }
@@ -202,32 +202,32 @@ void __47__WBSPerSitePreferencesSQLiteStore_sharedStore__block_invoke(uint64_t a
     v15 = 0;
   }
 
-  [(WBSPerSitePreferencesSQLiteStore *)self setValue:v16 ofPreference:v12 forDomain:v13 withTimestamp:v15 completionHandler:v14];
+  [(WBSPerSitePreferencesSQLiteStore *)self setValue:valueCopy ofPreference:preferenceCopy forDomain:domainCopy withTimestamp:v15 completionHandler:handlerCopy];
 }
 
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 withTimestamp:(id)a6 completionHandler:(id)a7
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain withTimestamp:(id)timestamp completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  valueCopy = value;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  timestampCopy = timestamp;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __100__WBSPerSitePreferencesSQLiteStore_setValue_ofPreference_forDomain_withTimestamp_completionHandler___block_invoke;
   v23[3] = &unk_1E7FC9508;
   v23[4] = self;
-  v24 = v15;
-  v25 = v12;
-  v26 = v14;
-  v27 = v13;
-  v28 = v16;
-  v18 = v13;
-  v19 = v14;
-  v20 = v12;
-  v21 = v15;
-  v22 = v16;
+  v24 = timestampCopy;
+  v25 = valueCopy;
+  v26 = domainCopy;
+  v27 = preferenceCopy;
+  v28 = handlerCopy;
+  v18 = preferenceCopy;
+  v19 = domainCopy;
+  v20 = valueCopy;
+  v21 = timestampCopy;
+  v22 = handlerCopy;
   dispatch_async(databaseQueue, v23);
 }
 
@@ -355,23 +355,23 @@ void __100__WBSPerSitePreferencesSQLiteStore_setValue_ofPreference_forDomain_wit
   }
 }
 
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeoutInterval:(double)a5 completionHandler:(id)a6
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeoutInterval:(double)interval completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v19[0] = v10;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  handlerCopy = handler;
+  v19[0] = preferenceCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __105__WBSPerSitePreferencesSQLiteStore_getValueOfPreference_forDomain_withTimeoutInterval_completionHandler___block_invoke;
   v16[3] = &unk_1E7FC9530;
-  v14 = v12;
+  v14 = handlerCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = preferenceCopy;
   v17 = v15;
-  [(WBSPerSitePreferencesSQLiteStore *)self getValuesOfPreferences:v13 forDomain:v11 withTimeoutInterval:v16 completionHandler:a5];
+  [(WBSPerSitePreferencesSQLiteStore *)self getValuesOfPreferences:v13 forDomain:domainCopy withTimeoutInterval:v16 completionHandler:interval];
 }
 
 void __105__WBSPerSitePreferencesSQLiteStore_getValueOfPreference_forDomain_withTimeoutInterval_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -381,12 +381,12 @@ void __105__WBSPerSitePreferencesSQLiteStore_getValueOfPreference_forDomain_with
   (*(v2 + 16))(v2);
 }
 
-- (id)_valueOfPreferences:(id)a3 forDomain:(id)a4
+- (id)_valueOfPreferences:(id)preferences forDomain:(id)domain
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  preferencesCopy = preferences;
+  domainCopy = domain;
+  if (!domainCopy)
   {
     v25 = WBS_LOG_CHANNEL_PREFIXPerSitePreferences();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -405,19 +405,19 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v30 = [MEMORY[0x1E696AD60] string];
-  v36[0] = v7;
+  string = [MEMORY[0x1E696AD60] string];
+  v36[0] = domainCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
-  v29 = [v8 arrayByAddingObjectsFromArray:v6];
+  v29 = [v8 arrayByAddingObjectsFromArray:preferencesCopy];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [@"?" safari_stringByRepeatingWithCount:objc_msgSend(v6 joinedByString:{"count"), @", "}];
+  v10 = [@"?" safari_stringByRepeatingWithCount:objc_msgSend(preferencesCopy joinedByString:{"count"), @", "}];
   v11 = [v9 stringWithFormat:@"preference IN (%@)", v10];
-  [v30 appendString:v11];
+  [string appendString:v11];
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT preference_value, preference FROM preference_values WHERE domain = ? AND (%@)", v30];
+  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT preference_value, preference FROM preference_values WHERE domain = ? AND (%@)", string];
   v28 = [(WBSSQLiteDatabase *)self->_database fetchQuery:v12 stringArguments:v29];
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -441,7 +441,7 @@ LABEL_16:
         if (v19)
         {
           v20 = [v18 objectAtIndex:0];
-          [v13 setObject:v20 forKeyedSubscript:v19];
+          [dictionary setObject:v20 forKeyedSubscript:v19];
         }
       }
 
@@ -451,14 +451,14 @@ LABEL_16:
     while (v15);
   }
 
-  v21 = [v14 statement];
-  [v21 invalidate];
+  statement = [v14 statement];
+  [statement invalidate];
 
   if ([v14 lastResultCode] == 101)
   {
     v22 = objc_alloc(MEMORY[0x1E69C88F0]);
     v23 = &unk_1F3A9AF88;
-    v24 = v13;
+    v24 = dictionary;
   }
 
   else
@@ -475,10 +475,10 @@ LABEL_19:
   return v26;
 }
 
-- (id)valueOfPreference:(id)a3 forDomain:(id)a4
+- (id)valueOfPreference:(id)preference forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  domainCopy = domain;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -491,11 +491,11 @@ LABEL_19:
   v13[2] = __64__WBSPerSitePreferencesSQLiteStore_valueOfPreference_forDomain___block_invoke;
   v13[3] = &unk_1E7FC9558;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = preferenceCopy;
+  v15 = domainCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = domainCopy;
+  v10 = preferenceCopy;
   dispatch_sync(databaseQueue, v13);
   v11 = v18[5];
 
@@ -519,11 +519,11 @@ void __64__WBSPerSitePreferencesSQLiteStore_valueOfPreference_forDomain___block_
   *(v7 + 40) = v6;
 }
 
-- (void)getValuesOfPreferences:(id)a3 forDomain:(id)a4 withTimeoutInterval:(double)a5 completionHandler:(id)a6
+- (void)getValuesOfPreferences:(id)preferences forDomain:(id)domain withTimeoutInterval:(double)interval completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  preferencesCopy = preferences;
+  domainCopy = domain;
+  handlerCopy = handler;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -534,7 +534,7 @@ void __64__WBSPerSitePreferencesSQLiteStore_valueOfPreference_forDomain___block_
   v43[3] = &unk_1E7FC9580;
   v43[4] = self;
   v45 = &v37;
-  v13 = v12;
+  v13 = handlerCopy;
   v44 = v13;
   v14 = MEMORY[0x1BFB13CE0](v43);
 
@@ -558,15 +558,15 @@ void __64__WBSPerSitePreferencesSQLiteStore_valueOfPreference_forDomain___block_
   v29 = &v37;
   v30 = &v31;
   block[4] = self;
-  v15 = v10;
+  v15 = preferencesCopy;
   v26 = v15;
-  v16 = v11;
+  v16 = domainCopy;
   v27 = v16;
   v17 = v14;
   v28 = v17;
   v18 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
   objc_storeWeak(v32 + 5, v18);
-  if (a5 != 1.79769313e308)
+  if (interval != 1.79769313e308)
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -576,7 +576,7 @@ void __64__WBSPerSitePreferencesSQLiteStore_valueOfPreference_forDomain___block_
     v23 = v17;
     v19 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, v22);
     objc_storeWeak(v38 + 5, v19);
-    v20 = dispatch_time(0, (a5 * 1000000000.0));
+    v20 = dispatch_time(0, (interval * 1000000000.0));
     v21 = dispatch_get_global_queue(21, 0);
     dispatch_after(v20, v21, v19);
   }
@@ -647,11 +647,11 @@ void __107__WBSPerSitePreferencesSQLiteStore_getValuesOfPreferences_forDomain_wi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getValuesOfPreference:(id)a3 forDomains:(id)a4 withTimeoutInterval:(double)a5 completionHandler:(id)a6
+- (void)getValuesOfPreference:(id)preference forDomains:(id)domains withTimeoutInterval:(double)interval completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  preferenceCopy = preference;
+  domainsCopy = domains;
+  handlerCopy = handler;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -662,7 +662,7 @@ void __107__WBSPerSitePreferencesSQLiteStore_getValuesOfPreferences_forDomain_wi
   v43[3] = &unk_1E7FC9580;
   v43[4] = self;
   v45 = &v37;
-  v13 = v12;
+  v13 = handlerCopy;
   v44 = v13;
   v14 = MEMORY[0x1BFB13CE0](v43);
 
@@ -688,13 +688,13 @@ void __107__WBSPerSitePreferencesSQLiteStore_getValuesOfPreferences_forDomain_wi
   block[4] = self;
   v15 = v14;
   v28 = v15;
-  v16 = v10;
+  v16 = preferenceCopy;
   v26 = v16;
-  v17 = v11;
+  v17 = domainsCopy;
   v27 = v17;
   v18 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
   objc_storeWeak(v32 + 5, v18);
-  if (a5 != 1.79769313e308)
+  if (interval != 1.79769313e308)
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -704,7 +704,7 @@ void __107__WBSPerSitePreferencesSQLiteStore_getValuesOfPreferences_forDomain_wi
     v23 = v15;
     v19 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, v22);
     objc_storeWeak(v38 + 5, v19);
-    v20 = dispatch_time(0, (a5 * 1000000000.0));
+    v20 = dispatch_time(0, (interval * 1000000000.0));
     v21 = dispatch_get_global_queue(21, 0);
     dispatch_after(v20, v21, v19);
   }
@@ -853,20 +853,20 @@ void __107__WBSPerSitePreferencesSQLiteStore_getValuesOfPreference_forDomains_wi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getAllDomainsConfiguredForPreference:(id)a3 completionHandler:(id)a4
+- (void)getAllDomainsConfiguredForPreference:(id)preference completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__WBSPerSitePreferencesSQLiteStore_getAllDomainsConfiguredForPreference_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = preferenceCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = preferenceCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -938,19 +938,19 @@ void __91__WBSPerSitePreferencesSQLiteStore_getAllDomainsConfiguredForPreference
   }
 }
 
-- (void)removePreferenceValuesForDomains:(id)a3 fromPreference:(id)a4 completionHandler:(id)a5
+- (void)removePreferenceValuesForDomains:(id)domains fromPreference:(id)preference completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  domainsCopy = domains;
+  preferenceCopy = preference;
+  handlerCopy = handler;
+  if ([domainsCopy count])
   {
     operator new();
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2](v9, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
@@ -1108,19 +1108,19 @@ void __102__WBSPerSitePreferencesSQLiteStore_removePreferenceValuesForDomains_fr
   }
 }
 
-- (void)removePreferenceValuesForDomainPrefixes:(id)a3 fromPreferences:(id)a4 completionHandler:(id)a5
+- (void)removePreferenceValuesForDomainPrefixes:(id)prefixes fromPreferences:(id)preferences completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count] && objc_msgSend(v8, "count"))
+  prefixesCopy = prefixes;
+  preferencesCopy = preferences;
+  handlerCopy = handler;
+  if ([prefixesCopy count] && objc_msgSend(preferencesCopy, "count"))
   {
     operator new();
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2](v9, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
@@ -1218,19 +1218,19 @@ LABEL_13:
   return v9;
 }
 
-- (id)_defaultValueForPreference:(id)a3
+- (id)_defaultValueForPreference:(id)preference
 {
   v25 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  preferenceCopy = preference;
   [(WBSPerSitePreferencesSQLiteStore *)self _openDatabaseIfNecessary];
   if ([(WBSPerSitePreferencesSQLiteStore *)self _isDatabaseOpen])
   {
-    v4 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(self->_database, @"SELECT default_value FROM default_preferences WHERE preference = ?", &v18);
-    v5 = [v4 nextObject];
-    v6 = v5;
-    if (v5)
+    v4 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(self->_database, @"SELECT default_value FROM default_preferences WHERE preference = ?", &preferenceCopy);
+    nextObject = [v4 nextObject];
+    v6 = nextObject;
+    if (nextObject)
     {
-      v7 = [v5 objectAtIndex:0];
+      v7 = [nextObject objectAtIndex:0];
     }
 
     else
@@ -1238,29 +1238,29 @@ LABEL_13:
       v7 = 0;
     }
 
-    v10 = [v4 statement];
-    [v10 invalidate];
+    statement = [v4 statement];
+    [statement invalidate];
 
-    v11 = [v4 lastResultCode];
-    if ((v11 & 0xFFFFFFFE) != 0x64)
+    lastResultCode = [v4 lastResultCode];
+    if ((lastResultCode & 0xFFFFFFFE) != 0x64)
     {
       v12 = WBS_LOG_CHANNEL_PREFIXPerSitePreferences();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v16 = v18;
-        v17 = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
+        v16 = preferenceCopy;
+        lastErrorMessage = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
         *buf = 138412802;
         v20 = v16;
         v21 = 2114;
-        v22 = v17;
+        v22 = lastErrorMessage;
         v23 = 1024;
-        v24 = v11;
+        v24 = lastResultCode;
         _os_log_error_impl(&dword_1BB6F3000, v12, OS_LOG_TYPE_ERROR, "Failed to fetch default value for preference: %@: %{public}@ (%d)", buf, 0x1Cu);
       }
     }
 
     v13 = objc_alloc(MEMORY[0x1E69C88F0]);
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:(v11 & 0xFFFFFFFE) == 100];
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:(lastResultCode & 0xFFFFFFFE) == 100];
     v9 = [v13 initWithFirst:v14 second:v7];
   }
 
@@ -1273,9 +1273,9 @@ LABEL_13:
   return v9;
 }
 
-- (id)defaultValueForPreference:(id)a3
+- (id)defaultValueForPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1287,10 +1287,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __62__WBSPerSitePreferencesSQLiteStore_defaultValueForPreference___block_invoke;
   block[3] = &unk_1E7FC4D50;
-  v10 = v4;
+  v10 = preferenceCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = preferenceCopy;
   dispatch_sync(databaseQueue, block);
   v7 = v13[5];
 
@@ -1308,20 +1308,20 @@ void __62__WBSPerSitePreferencesSQLiteStore_defaultValueForPreference___block_in
   *(v3 + 40) = v2;
 }
 
-- (void)getDefaultValueForPreference:(id)a3 completionHandler:(id)a4
+- (void)getDefaultValueForPreference:(id)preference completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__WBSPerSitePreferencesSQLiteStore_getDefaultValueForPreference_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = preferenceCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = preferenceCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -1335,23 +1335,23 @@ void __83__WBSPerSitePreferencesSQLiteStore_getDefaultValueForPreference_complet
   (*(v3 + 16))(v3, v4, [v5 BOOLValue]);
 }
 
-- (void)setDefaultValue:(id)a3 forPreference:(id)a4 completionHandler:(id)a5
+- (void)setDefaultValue:(id)value forPreference:(id)preference completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__WBSPerSitePreferencesSQLiteStore_setDefaultValue_forPreference_completionHandler___block_invoke;
   v15[3] = &unk_1E7FB6F58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = valueCopy;
+  v17 = preferenceCopy;
+  v18 = handlerCopy;
+  v12 = preferenceCopy;
+  v13 = valueCopy;
+  v14 = handlerCopy;
   dispatch_async(databaseQueue, v15);
 }
 
@@ -1451,23 +1451,23 @@ void __84__WBSPerSitePreferencesSQLiteStore_setDefaultValue_forPreference_comple
   }
 }
 
-- (void)getTimestampAndValueOfPreference:(id)a3 forDomain:(id)a4 completionHandler:(id)a5
+- (void)getTimestampAndValueOfPreference:(id)preference forDomain:(id)domain completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __97__WBSPerSitePreferencesSQLiteStore_getTimestampAndValueOfPreference_forDomain_completionHandler___block_invoke;
   v15[3] = &unk_1E7FB6F58;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = domainCopy;
+  v17 = preferenceCopy;
+  v18 = handlerCopy;
+  v12 = preferenceCopy;
+  v13 = domainCopy;
+  v14 = handlerCopy;
   dispatch_async(databaseQueue, v15);
 }
 
@@ -1505,20 +1505,20 @@ void __97__WBSPerSitePreferencesSQLiteStore_getTimestampAndValueOfPreference_for
   }
 }
 
-- (void)getAllPreferenceInformationForPreference:(id)a3 completionHandler:(id)a4
+- (void)getAllPreferenceInformationForPreference:(id)preference completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__WBSPerSitePreferencesSQLiteStore_getAllPreferenceInformationForPreference_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = preferenceCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = preferenceCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -1604,20 +1604,20 @@ void __95__WBSPerSitePreferencesSQLiteStore_getAllPreferenceInformationForPrefer
   }
 }
 
-- (void)removeAllPreferenceValuesFromPreference:(id)a3 completionHandler:(id)a4
+- (void)removeAllPreferenceValuesFromPreference:(id)preference completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__WBSPerSitePreferencesSQLiteStore_removeAllPreferenceValuesFromPreference_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = preferenceCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = preferenceCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -1666,20 +1666,20 @@ uint64_t __94__WBSPerSitePreferencesSQLiteStore_removeAllPreferenceValuesFromPre
   return result;
 }
 
-- (void)removeAllPreferenceValuesFromPreferences:(id)a3 completionHandler:(id)a4
+- (void)removeAllPreferenceValuesFromPreferences:(id)preferences completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  preferencesCopy = preferences;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__WBSPerSitePreferencesSQLiteStore_removeAllPreferenceValuesFromPreferences_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = preferencesCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = preferencesCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -1729,17 +1729,17 @@ void __95__WBSPerSitePreferencesSQLiteStore_removeAllPreferenceValuesFromPrefere
   }
 }
 
-- (void)removeAllPreferenceValues:(id)a3
+- (void)removeAllPreferenceValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__WBSPerSitePreferencesSQLiteStore_removeAllPreferenceValues___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = valuesCopy;
+  v6 = valuesCopy;
   dispatch_async(databaseQueue, v7);
 }
 
@@ -1781,73 +1781,73 @@ uint64_t __62__WBSPerSitePreferencesSQLiteStore_removeAllPreferenceValues___bloc
   return result;
 }
 
-- (void)savePerSiteSettingCloudKitRecordToDisk:(id)a3 completionHandler:(id)a4
+- (void)savePerSiteSettingCloudKitRecordToDisk:(id)disk completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"UseDefaultValue"];
+  diskCopy = disk;
+  handlerCopy = handler;
+  v8 = [diskCopy objectForKeyedSubscript:@"UseDefaultValue"];
 
   if (v8)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXCloudSettings();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 safari_encodedRecordData];
-      v11 = [v6 recordID];
-      v12 = [v11 recordName];
+      safari_encodedRecordData = [diskCopy safari_encodedRecordData];
+      recordID = [diskCopy recordID];
+      recordName = [recordID recordName];
       v28 = 141558531;
       v29 = 1752392040;
       v30 = 2117;
-      v31 = v10;
+      v31 = safari_encodedRecordData;
       v32 = 2114;
-      v33 = v12;
+      v33 = recordName;
       _os_log_impl(&dword_1BB6F3000, v9, OS_LOG_TYPE_INFO, "Saving deleted CloudKit sync data: %{sensitive, mask.hash}@ with record name: %{public}@.", &v28, 0x20u);
     }
 
-    v13 = [v6 safari_encodedRecordData];
-    v14 = [v6 recordID];
-    v15 = [v14 recordName];
-    [(WBSPerSitePreferencesSQLiteStore *)self _setDeletedCloudKitSyncData:v13 forRecordName:v15 completionHandler:v7];
+    safari_encodedRecordData2 = [diskCopy safari_encodedRecordData];
+    recordID2 = [diskCopy recordID];
+    recordName2 = [recordID2 recordName];
+    [(WBSPerSitePreferencesSQLiteStore *)self _setDeletedCloudKitSyncData:safari_encodedRecordData2 forRecordName:recordName2 completionHandler:handlerCopy];
   }
 
   else
   {
-    v16 = [v6 safari_encryptedValues];
-    v13 = [v16 objectForKeyedSubscript:@"Domain"];
+    safari_encryptedValues = [diskCopy safari_encryptedValues];
+    safari_encodedRecordData2 = [safari_encryptedValues objectForKeyedSubscript:@"Domain"];
 
-    v17 = [v6 safari_encryptedValues];
-    v14 = [v17 objectForKeyedSubscript:@"PerSiteSettingName"];
+    safari_encryptedValues2 = [diskCopy safari_encryptedValues];
+    recordID2 = [safari_encryptedValues2 objectForKeyedSubscript:@"PerSiteSettingName"];
 
-    if (v13)
+    if (safari_encodedRecordData2)
     {
       v18 = WBS_LOG_CHANNEL_PREFIXCloudSettings();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v6 recordID];
-        v20 = [v19 recordName];
-        v21 = [v6 safari_encodedRecordData];
+        recordID3 = [diskCopy recordID];
+        recordName3 = [recordID3 recordName];
+        safari_encodedRecordData3 = [diskCopy safari_encodedRecordData];
         v28 = 141559555;
         v29 = 1752392040;
         v30 = 2117;
-        v31 = v20;
+        v31 = recordName3;
         v32 = 2114;
-        v33 = v21;
+        v33 = safari_encodedRecordData3;
         v34 = 2160;
         v35 = 1752392040;
         v36 = 2117;
-        v37 = v14;
+        v37 = recordID2;
         v38 = 2160;
         v39 = 1752392040;
         v40 = 2117;
-        v41 = v13;
+        v41 = safari_encodedRecordData2;
         _os_log_impl(&dword_1BB6F3000, v18, OS_LOG_TYPE_INFO, "Saving sync data: %{sensitive, mask.hash}@ and record name: %{public}@ for preference: %{sensitive, mask.hash}@ and domain: %{sensitive, mask.hash}@.", &v28, 0x48u);
       }
 
-      v15 = [v6 safari_encodedRecordData];
-      v22 = [v6 recordID];
-      v23 = [v22 recordName];
-      [(WBSPerSitePreferencesSQLiteStore *)self _setSyncData:v15 forPreference:v14 domain:v13 recordName:v23 completionHandler:v7];
+      recordName2 = [diskCopy safari_encodedRecordData];
+      recordID4 = [diskCopy recordID];
+      recordName4 = [recordID4 recordName];
+      [(WBSPerSitePreferencesSQLiteStore *)self _setSyncData:recordName2 forPreference:recordID2 domain:safari_encodedRecordData2 recordName:recordName4 completionHandler:handlerCopy];
     }
 
     else
@@ -1855,42 +1855,42 @@ uint64_t __62__WBSPerSitePreferencesSQLiteStore_removeAllPreferenceValues___bloc
       v24 = WBS_LOG_CHANNEL_PREFIXCloudSettings();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
-        v25 = [v6 recordID];
-        v26 = [v25 recordName];
-        v27 = [v6 safari_encodedRecordData];
+        recordID5 = [diskCopy recordID];
+        recordName5 = [recordID5 recordName];
+        safari_encodedRecordData4 = [diskCopy safari_encodedRecordData];
         v28 = 141559043;
         v29 = 1752392040;
         v30 = 2117;
-        v31 = v26;
+        v31 = recordName5;
         v32 = 2114;
-        v33 = v27;
+        v33 = safari_encodedRecordData4;
         v34 = 2160;
         v35 = 1752392040;
         v36 = 2117;
-        v37 = v14;
+        v37 = recordID2;
         _os_log_impl(&dword_1BB6F3000, v24, OS_LOG_TYPE_INFO, "Saving sync data: %{sensitive, mask.hash}@ and record name: %{public}@ for preference: %{sensitive, mask.hash}@.", &v28, 0x34u);
       }
 
-      v15 = [v6 safari_encodedRecordData];
-      [(WBSPerSitePreferencesSQLiteStore *)self _setSyncData:v15 forPreference:v14 completionHandler:v7];
+      recordName2 = [diskCopy safari_encodedRecordData];
+      [(WBSPerSitePreferencesSQLiteStore *)self _setSyncData:recordName2 forPreference:recordID2 completionHandler:handlerCopy];
     }
   }
 }
 
-- (void)getSyncDataForPreference:(id)a3 completionHandler:(id)a4
+- (void)getSyncDataForPreference:(id)preference completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__WBSPerSitePreferencesSQLiteStore_getSyncDataForPreference_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = preferenceCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = preferenceCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -1940,23 +1940,23 @@ void __79__WBSPerSitePreferencesSQLiteStore_getSyncDataForPreference_completionH
   }
 }
 
-- (void)getSyncDataForPreference:(id)a3 domain:(id)a4 completionHandler:(id)a5
+- (void)getSyncDataForPreference:(id)preference domain:(id)domain completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__WBSPerSitePreferencesSQLiteStore_getSyncDataForPreference_domain_completionHandler___block_invoke;
   v15[3] = &unk_1E7FB6F58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = preferenceCopy;
+  v17 = domainCopy;
+  v18 = handlerCopy;
+  v12 = domainCopy;
+  v13 = preferenceCopy;
+  v14 = handlerCopy;
   dispatch_async(databaseQueue, v15);
 }
 
@@ -2006,20 +2006,20 @@ void __86__WBSPerSitePreferencesSQLiteStore_getSyncDataForPreference_domain_comp
   }
 }
 
-- (void)getDeletedCloudKitSyncDataForRecordName:(id)a3 completionHandler:(id)a4
+- (void)getDeletedCloudKitSyncDataForRecordName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__WBSPerSitePreferencesSQLiteStore_getDeletedCloudKitSyncDataForRecordName_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = nameCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = nameCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -2069,20 +2069,20 @@ void __94__WBSPerSitePreferencesSQLiteStore_getDeletedCloudKitSyncDataForRecordN
   }
 }
 
-- (void)removePreferenceValueWithRecordName:(id)a3 completionHandler:(id)a4
+- (void)removePreferenceValueWithRecordName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__WBSPerSitePreferencesSQLiteStore_removePreferenceValueWithRecordName_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = nameCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = nameCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -2122,17 +2122,17 @@ uint64_t __90__WBSPerSitePreferencesSQLiteStore_removePreferenceValueWithRecordN
   return result;
 }
 
-- (void)removeAllCloudKitRecordsWithCompletionHandler:(id)a3
+- (void)removeAllCloudKitRecordsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__WBSPerSitePreferencesSQLiteStore_removeAllCloudKitRecordsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 
@@ -2190,20 +2190,20 @@ uint64_t __82__WBSPerSitePreferencesSQLiteStore_removeAllCloudKitRecordsWithComp
   return result;
 }
 
-- (void)removeTombstoneWithRecordName:(id)a3 completionHandler:(id)a4
+- (void)removeTombstoneWithRecordName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__WBSPerSitePreferencesSQLiteStore_removeTombstoneWithRecordName_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = nameCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = nameCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -2234,9 +2234,9 @@ uint64_t __84__WBSPerSitePreferencesSQLiteStore_removeTombstoneWithRecordName_co
 
 - (void)removeAllSyncData
 {
-  v3 = [objc_opt_class() staticSyncablePerSiteSettings];
-  v4 = [v3 allObjects];
-  [(WBSPerSitePreferencesSQLiteStore *)self removeAllPreferenceValuesFromPreferences:v4 completionHandler:&__block_literal_global_124_0];
+  staticSyncablePerSiteSettings = [objc_opt_class() staticSyncablePerSiteSettings];
+  allObjects = [staticSyncablePerSiteSettings allObjects];
+  [(WBSPerSitePreferencesSQLiteStore *)self removeAllPreferenceValuesFromPreferences:allObjects completionHandler:&__block_literal_global_124_0];
 
   [(WBSPerSitePreferencesSQLiteStore *)self removeAllCloudKitRecordsWithCompletionHandler:&__block_literal_global_127_1];
 }
@@ -2265,23 +2265,23 @@ void __53__WBSPerSitePreferencesSQLiteStore_removeAllSyncData__block_invoke_125(
   }
 }
 
-- (void)_setSyncData:(id)a3 forPreference:(id)a4 completionHandler:(id)a5
+- (void)_setSyncData:(id)data forPreference:(id)preference completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__WBSPerSitePreferencesSQLiteStore__setSyncData_forPreference_completionHandler___block_invoke;
   v15[3] = &unk_1E7FB6F58;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = preferenceCopy;
+  v17 = dataCopy;
+  v18 = handlerCopy;
+  v12 = dataCopy;
+  v13 = preferenceCopy;
+  v14 = handlerCopy;
   dispatch_async(databaseQueue, v15);
 }
 
@@ -2328,29 +2328,29 @@ void __81__WBSPerSitePreferencesSQLiteStore__setSyncData_forPreference_completio
   }
 }
 
-- (void)_setSyncData:(id)a3 forPreference:(id)a4 domain:(id)a5 recordName:(id)a6 completionHandler:(id)a7
+- (void)_setSyncData:(id)data forPreference:(id)preference domain:(id)domain recordName:(id)name completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  nameCopy = name;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __99__WBSPerSitePreferencesSQLiteStore__setSyncData_forPreference_domain_recordName_completionHandler___block_invoke;
   v23[3] = &unk_1E7FC9508;
   v23[4] = self;
-  v24 = v14;
-  v25 = v13;
-  v26 = v12;
-  v27 = v15;
-  v28 = v16;
-  v18 = v15;
-  v19 = v12;
-  v20 = v13;
-  v21 = v14;
-  v22 = v16;
+  v24 = domainCopy;
+  v25 = preferenceCopy;
+  v26 = dataCopy;
+  v27 = nameCopy;
+  v28 = handlerCopy;
+  v18 = nameCopy;
+  v19 = dataCopy;
+  v20 = preferenceCopy;
+  v21 = domainCopy;
+  v22 = handlerCopy;
   dispatch_async(databaseQueue, v23);
 }
 
@@ -2391,23 +2391,23 @@ void __99__WBSPerSitePreferencesSQLiteStore__setSyncData_forPreference_domain_re
   }
 }
 
-- (void)_setDeletedCloudKitSyncData:(id)a3 forRecordName:(id)a4 completionHandler:(id)a5
+- (void)_setDeletedCloudKitSyncData:(id)data forRecordName:(id)name completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  nameCopy = name;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __96__WBSPerSitePreferencesSQLiteStore__setDeletedCloudKitSyncData_forRecordName_completionHandler___block_invoke;
   v15[3] = &unk_1E7FB6F58;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = nameCopy;
+  v17 = dataCopy;
+  v18 = handlerCopy;
+  v12 = dataCopy;
+  v13 = nameCopy;
+  v14 = handlerCopy;
   dispatch_async(databaseQueue, v15);
 }
 
@@ -2449,9 +2449,9 @@ void __96__WBSPerSitePreferencesSQLiteStore__setDeletedCloudKitSyncData_forRecor
   }
 }
 
-- (id)_queryListForPreferences:(id)a3
+- (id)_queryListForPreferences:(id)preferences
 {
-  v3 = [a3 safari_mapObjectsUsingBlock:&__block_literal_global_139_0];
+  v3 = [preferences safari_mapObjectsUsingBlock:&__block_literal_global_139_0];
   v4 = [v3 componentsJoinedByString:{@", "}];
 
   return v4;
@@ -2467,11 +2467,11 @@ id __61__WBSPerSitePreferencesSQLiteStore__queryListForPreferences___block_invok
 - (int)_migrateToCurrentSchemaVersionIfNecessary
 {
   v3 = SafariShared::WBSSQLiteDatabaseFetch<>(self->_database, @"PRAGMA user_version");
-  v4 = [v3 nextObject];
-  v5 = [v4 intAtIndex:0];
+  nextObject = [v3 nextObject];
+  v5 = [nextObject intAtIndex:0];
 
-  v6 = [v3 statement];
-  [v6 invalidate];
+  statement = [v3 statement];
+  [statement invalidate];
 
   if (v5 <= 5)
   {
@@ -2508,9 +2508,9 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)_migrateToSchemaVersion:(int)a3
+- (BOOL)_migrateToSchemaVersion:(int)version
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_migrateToSchemaVersion_%d", *&a3];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_migrateToSchemaVersion_%d", *&version];
   v6 = NSSelectorFromString(v5);
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -2519,7 +2519,7 @@ LABEL_11:
   v8[3] = &unk_1E7FC9620;
   v8[4] = self;
   v8[5] = v6;
-  v9 = a3;
+  versionCopy = version;
   return [(WBSPerSitePreferencesSQLiteStore *)self _tryToPerformTransactionInBlock:v8];
 }
 
@@ -2536,11 +2536,11 @@ BOOL __60__WBSPerSitePreferencesSQLiteStore__migrateToSchemaVersion___block_invo
   return v4;
 }
 
-- (int)_setDatabaseSchemaVersion:(int)a3
+- (int)_setDatabaseSchemaVersion:(int)version
 {
   v17 = *MEMORY[0x1E69E9840];
   database = self->_database;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version = %d", *&a3];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version = %d", *&version];
   v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database, 0, v6);
 
   if (v7 != 101)
@@ -2548,11 +2548,11 @@ BOOL __60__WBSPerSitePreferencesSQLiteStore__migrateToSchemaVersion___block_invo
     v8 = WBS_LOG_CHANNEL_PREFIXPerSitePreferences();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
       *buf = 67109634;
-      v12 = a3;
+      versionCopy = version;
       v13 = 2114;
-      v14 = v10;
+      v14 = lastErrorMessage;
       v15 = 1024;
       v16 = v7;
       _os_log_error_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_ERROR, "Failed to set the Per Site Preferences store database schema version to %d: %{public}@ (%d)", buf, 0x18u);
@@ -2703,9 +2703,9 @@ LABEL_7:
   self->_database = 0;
 }
 
-- (BOOL)_tryToPerformTransactionInBlock:(id)a3
+- (BOOL)_tryToPerformTransactionInBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (![(WBSPerSitePreferencesSQLiteStore *)self _isDatabaseOpen])
   {
     goto LABEL_15;
@@ -2724,7 +2724,7 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  if (!v4[2](v4))
+  if (!blockCopy[2](blockCopy))
   {
 LABEL_11:
     if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_database, 0, @"ROLLBACK TRANSACTION") == 101)

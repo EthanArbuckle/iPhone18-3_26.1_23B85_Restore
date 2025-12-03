@@ -1,48 +1,48 @@
 @interface PKPaymentTransactionForeignExchangeInformation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToForeignExchangeInformation:(id)a3;
-- (PKPaymentTransactionForeignExchangeInformation)initWithCloudStoreCoder:(id)a3;
-- (PKPaymentTransactionForeignExchangeInformation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToForeignExchangeInformation:(id)information;
+- (PKPaymentTransactionForeignExchangeInformation)initWithCloudStoreCoder:(id)coder;
+- (PKPaymentTransactionForeignExchangeInformation)initWithCoder:(id)coder;
 - (id)fkForeignAmount;
 - (id)jsonDictionaryRepresentation;
 - (id)jsonString;
 - (unint64_t)hash;
-- (void)_encodeServerDataWithCloudStoreCoder:(id)a3;
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_encodeServerDataWithCloudStoreCoder:(id)coder;
+- (void)applyPropertiesFromCloudStoreRecord:(id)record;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentTransactionForeignExchangeInformation
 
 - (id)jsonDictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PKCurrencyAmount *)self->_destinationCurrencyAmount currency];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  currency = [(PKCurrencyAmount *)self->_destinationCurrencyAmount currency];
 
-  if (v4)
+  if (currency)
   {
-    v5 = [(PKCurrencyAmount *)self->_destinationCurrencyAmount currency];
-    [v3 setObject:v5 forKey:@"destinationCurrencyCode"];
+    currency2 = [(PKCurrencyAmount *)self->_destinationCurrencyAmount currency];
+    [dictionary setObject:currency2 forKey:@"destinationCurrencyCode"];
   }
 
-  v6 = [(PKCurrencyAmount *)self->_destinationCurrencyAmount amount];
+  amount = [(PKCurrencyAmount *)self->_destinationCurrencyAmount amount];
 
-  if (v6)
+  if (amount)
   {
-    v7 = [(PKCurrencyAmount *)self->_destinationCurrencyAmount amount];
-    v8 = [v7 stringValue];
-    [v3 setObject:v8 forKey:@"destinationAmount"];
+    amount2 = [(PKCurrencyAmount *)self->_destinationCurrencyAmount amount];
+    stringValue = [amount2 stringValue];
+    [dictionary setObject:stringValue forKey:@"destinationAmount"];
   }
 
   exchangeRate = self->_exchangeRate;
   if (exchangeRate)
   {
-    v10 = [(NSDecimalNumber *)exchangeRate stringValue];
-    [v3 setObject:v10 forKey:@"exchangeRate"];
+    stringValue2 = [(NSDecimalNumber *)exchangeRate stringValue];
+    [dictionary setObject:stringValue2 forKey:@"exchangeRate"];
   }
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
@@ -50,9 +50,9 @@
 - (id)jsonString
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(PKPaymentTransactionForeignExchangeInformation *)self jsonDictionaryRepresentation];
+  jsonDictionaryRepresentation = [(PKPaymentTransactionForeignExchangeInformation *)self jsonDictionaryRepresentation];
   v8 = 0;
-  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:2 error:&v8];
+  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:jsonDictionaryRepresentation options:2 error:&v8];
   v4 = v8;
   if (v4)
   {
@@ -80,12 +80,12 @@ LABEL_8:
   return v6;
 }
 
-- (PKPaymentTransactionForeignExchangeInformation)initWithCloudStoreCoder:(id)a3
+- (PKPaymentTransactionForeignExchangeInformation)initWithCloudStoreCoder:(id)coder
 {
-  v4 = [a3 recordsWithRecordType:@"Transaction"];
-  v5 = [v4 firstObject];
+  v4 = [coder recordsWithRecordType:@"Transaction"];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 pk_encryptedDictionaryForKey:@"foreignExchangeInformation"];
+  v6 = [firstObject pk_encryptedDictionaryForKey:@"foreignExchangeInformation"];
   if (v6)
   {
     v18.receiver = self;
@@ -97,8 +97,8 @@ LABEL_8:
       v9 = [v6 PKDecimalNumberFromStringForKey:@"destinationAmount"];
       if (v9)
       {
-        v10 = [MEMORY[0x1E696AB90] notANumber];
-        v11 = [v9 isEqualToNumber:v10];
+        notANumber = [MEMORY[0x1E696AB90] notANumber];
+        v11 = [v9 isEqualToNumber:notANumber];
 
         if ((v11 & 1) == 0)
         {
@@ -123,24 +123,24 @@ LABEL_8:
     }
 
     self = v7;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3
+- (void)applyPropertiesFromCloudStoreRecord:(id)record
 {
-  v4 = [a3 recordsWithRecordType:@"Transaction"];
-  v15 = [v4 firstObject];
+  v4 = [record recordsWithRecordType:@"Transaction"];
+  firstObject = [v4 firstObject];
 
-  v5 = [v15 pk_encryptedDictionaryForKey:@"foreignExchangeInformation"];
-  if (v15)
+  v5 = [firstObject pk_encryptedDictionaryForKey:@"foreignExchangeInformation"];
+  if (firstObject)
   {
     v6 = v5 == 0;
   }
@@ -156,8 +156,8 @@ LABEL_8:
     v8 = [v5 PKDecimalNumberFromStringForKey:@"destinationAmount"];
     if (v8)
     {
-      v9 = [MEMORY[0x1E696AB90] notANumber];
-      v10 = [v8 isEqualToNumber:v9];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      v10 = [v8 isEqualToNumber:notANumber];
 
       if ((v10 & 1) == 0)
       {
@@ -176,37 +176,37 @@ LABEL_8:
   }
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  if (a4 - 1 <= 1)
+  if (type - 1 <= 1)
   {
-    [(PKPaymentTransactionForeignExchangeInformation *)self _encodeServerDataWithCloudStoreCoder:a3];
+    [(PKPaymentTransactionForeignExchangeInformation *)self _encodeServerDataWithCloudStoreCoder:coder];
   }
 }
 
-- (void)_encodeServerDataWithCloudStoreCoder:(id)a3
+- (void)_encodeServerDataWithCloudStoreCoder:(id)coder
 {
-  v4 = [a3 recordsWithRecordType:@"Transaction"];
-  v7 = [v4 firstObject];
+  v4 = [coder recordsWithRecordType:@"Transaction"];
+  firstObject = [v4 firstObject];
 
-  v5 = [v7 encryptedValues];
-  v6 = [(PKPaymentTransactionForeignExchangeInformation *)self jsonString];
-  [v5 setObject:v6 forKey:@"foreignExchangeInformation"];
+  encryptedValues = [firstObject encryptedValues];
+  jsonString = [(PKPaymentTransactionForeignExchangeInformation *)self jsonString];
+  [encryptedValues setObject:jsonString forKey:@"foreignExchangeInformation"];
 }
 
-- (PKPaymentTransactionForeignExchangeInformation)initWithCoder:(id)a3
+- (PKPaymentTransactionForeignExchangeInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentTransactionForeignExchangeInformation;
   v5 = [(PKPaymentTransactionForeignExchangeInformation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationCurrencyAmount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationCurrencyAmount"];
     destinationCurrencyAmount = v5->_destinationCurrencyAmount;
     v5->_destinationCurrencyAmount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"exchangeRate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"exchangeRate"];
     exchangeRate = v5->_exchangeRate;
     v5->_exchangeRate = v8;
   }
@@ -214,46 +214,46 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   destinationCurrencyAmount = self->_destinationCurrencyAmount;
-  v5 = a3;
-  [v5 encodeObject:destinationCurrencyAmount forKey:@"destinationCurrencyAmount"];
-  [v5 encodeObject:self->_exchangeRate forKey:@"exchangeRate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:destinationCurrencyAmount forKey:@"destinationCurrencyAmount"];
+  [coderCopy encodeObject:self->_exchangeRate forKey:@"exchangeRate"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_destinationCurrencyAmount];
-  [v3 safelyAddObject:self->_exchangeRate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_destinationCurrencyAmount];
+  [array safelyAddObject:self->_exchangeRate];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionForeignExchangeInformation *)self isEqualToForeignExchangeInformation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionForeignExchangeInformation *)self isEqualToForeignExchangeInformation:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToForeignExchangeInformation:(id)a3
+- (BOOL)isEqualToForeignExchangeInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   destinationCurrencyAmount = self->_destinationCurrencyAmount;
-  v6 = v4[1];
+  v6 = informationCopy[1];
   if (destinationCurrencyAmount)
   {
     v7 = v6 == 0;
@@ -283,7 +283,7 @@ LABEL_7:
 
 LABEL_9:
   exchangeRate = self->_exchangeRate;
-  v10 = v4[2];
+  v10 = informationCopy[2];
   if (exchangeRate && v10)
   {
     v8 = [(NSDecimalNumber *)exchangeRate isEqual:?];
@@ -301,17 +301,17 @@ LABEL_13:
 
 - (id)fkForeignAmount
 {
-  v3 = [(PKPaymentTransactionForeignExchangeInformation *)self destinationCurrencyAmount];
+  destinationCurrencyAmount = [(PKPaymentTransactionForeignExchangeInformation *)self destinationCurrencyAmount];
 
-  if (v3)
+  if (destinationCurrencyAmount)
   {
     v4 = objc_alloc(MEMORY[0x1E6967D88]);
-    v5 = [(PKPaymentTransactionForeignExchangeInformation *)self destinationCurrencyAmount];
-    v6 = [v5 amount];
-    v7 = [v6 pk_absoluteValue];
-    v8 = [(PKPaymentTransactionForeignExchangeInformation *)self destinationCurrencyAmount];
-    v9 = [v8 currency];
-    v10 = [v4 initWithDecimalNumber:v7 currency:v9];
+    destinationCurrencyAmount2 = [(PKPaymentTransactionForeignExchangeInformation *)self destinationCurrencyAmount];
+    amount = [destinationCurrencyAmount2 amount];
+    pk_absoluteValue = [amount pk_absoluteValue];
+    destinationCurrencyAmount3 = [(PKPaymentTransactionForeignExchangeInformation *)self destinationCurrencyAmount];
+    currency = [destinationCurrencyAmount3 currency];
+    v10 = [v4 initWithDecimalNumber:pk_absoluteValue currency:currency];
   }
 
   else

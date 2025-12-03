@@ -1,27 +1,27 @@
 @interface HFControlPanelItemProvider
 - (HFControlPanelItemProvider)init;
-- (HFControlPanelItemProvider)initWithItem:(id)a3 valueSource:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFControlPanelItemProvider)initWithItem:(id)item valueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFControlPanelItemProvider
 
-- (HFControlPanelItemProvider)initWithItem:(id)a3 valueSource:(id)a4
+- (HFControlPanelItemProvider)initWithItem:(id)item valueSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = HFControlPanelItemProvider;
   v8 = [(HFItemProvider *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [itemCopy copy];
     item = v8->_item;
     v8->_item = v9;
 
-    objc_storeStrong(&v8->_valueSource, a4);
+    objc_storeStrong(&v8->_valueSource, source);
     v11 = [MEMORY[0x277CBEB98] set];
     controlPanelItems = v8->_controlPanelItems;
     v8->_controlPanelItems = v11;
@@ -32,36 +32,36 @@
 
 - (HFControlPanelItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithItem_valueSource_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFControlPanelItemProvider.m" lineNumber:51 description:{@"%s is unavailable; use %@ instead", "-[HFControlPanelItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFControlPanelItemProvider.m" lineNumber:51 description:{@"%s is unavailable; use %@ instead", "-[HFControlPanelItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFControlPanelItemProvider *)self item];
-  v6 = [(HFControlPanelItemProvider *)self valueSource];
-  v7 = [v4 initWithItem:v5 valueSource:v6];
+  item = [(HFControlPanelItemProvider *)self item];
+  valueSource = [(HFControlPanelItemProvider *)self valueSource];
+  v7 = [v4 initWithItem:item valueSource:valueSource];
 
   return v7;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFControlPanelItemProvider *)self valueSource];
+  valueSource = [(HFControlPanelItemProvider *)self valueSource];
   v4 = [HFStaticReadPolicy policyWithDecision:0];
-  [v3 beginTransactionWithReason:@"disableControlPanelReads" readPolicy:v4 logger:0];
+  [valueSource beginTransactionWithReason:@"disableControlPanelReads" readPolicy:v4 logger:0];
 
   v5 = objc_opt_new();
-  v6 = [(HFControlPanelItemProvider *)self item];
-  v7 = [v6 latestResults];
-  [v5 na_safeSetObject:v7 forKey:HFItemUpdateOptionPreviousResults];
+  item = [(HFControlPanelItemProvider *)self item];
+  latestResults = [item latestResults];
+  [v5 na_safeSetObject:latestResults forKey:HFItemUpdateOptionPreviousResults];
 
-  v8 = [(HFControlPanelItemProvider *)self item];
-  v9 = [v8 updateWithOptions:v5];
+  item2 = [(HFControlPanelItemProvider *)self item];
+  v9 = [item2 updateWithOptions:v5];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __41__HFControlPanelItemProvider_reloadItems__block_invoke;
@@ -69,8 +69,8 @@
   v13[4] = self;
   v10 = [v9 flatMap:v13];
 
-  v11 = [(HFControlPanelItemProvider *)self valueSource];
-  [v11 commitTransactionWithReason:@"disableControlPanelReads"];
+  valueSource2 = [(HFControlPanelItemProvider *)self valueSource];
+  [valueSource2 commitTransactionWithReason:@"disableControlPanelReads"];
 
   return v10;
 }
@@ -135,11 +135,11 @@ uint64_t __41__HFControlPanelItemProvider_reloadItems__block_invoke_2(uint64_t a
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFControlPanelItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"service";
   v8[1] = @"serviceGroup";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 

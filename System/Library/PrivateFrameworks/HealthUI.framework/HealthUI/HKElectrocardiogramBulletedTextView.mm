@@ -5,9 +5,9 @@
 - (void)_setUpUI;
 - (void)_setupConstraints;
 - (void)_updateLeadingDetailAttributedTextSize;
-- (void)setDetailTextWithBullets:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDetailTextWithBullets:(id)bullets;
+- (void)setTitleText:(id)text;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
@@ -40,37 +40,37 @@
 
 - (NSString)titleText
 {
-  v2 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  titleLabel = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  [titleLabel setText:textCopy];
 }
 
 - (NSString)detailText
 {
-  v2 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  v3 = [v2 text];
+  detailLabel = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  text = [detailLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setDetailTextWithBullets:(id)a3
+- (void)setDetailTextWithBullets:(id)bullets
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bulletsCopy = bullets;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = bulletsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -102,8 +102,8 @@
   if ([v5 count])
   {
     v12 = [v5 componentsJoinedByString:@"\n"];
-    v13 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-    [v13 setText:v12];
+    detailLabel = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+    [detailLabel setText:v12];
   }
 
   [(HKElectrocardiogramBulletedTextView *)self _updateLeadingDetailAttributedTextSize];
@@ -117,8 +117,8 @@
   v5 = [v3 initForTextStyle:*MEMORY[0x1E69DDD80]];
   [v5 scaledValueForValue:12.0];
   v7 = v6;
-  v8 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v9 = [v8 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v9 = [defaultParagraphStyle mutableCopy];
 
   v10 = objc_alloc(MEMORY[0x1E69DB858]);
   v11 = [v10 initWithTextAlignment:4 location:MEMORY[0x1E695E0F8] options:v7];
@@ -138,82 +138,82 @@
   v23[0] = v9;
   v23[1] = v13;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
-  v16 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  [v16 setFont:v13];
+  detailLabel = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  [detailLabel setFont:v13];
 
-  v17 = [(HKElectrocardiogramBulletedTextView *)self detailText];
+  detailText = [(HKElectrocardiogramBulletedTextView *)self detailText];
 
-  if (v17)
+  if (detailText)
   {
     v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v19 = [(HKElectrocardiogramBulletedTextView *)self detailText];
-    v20 = [v18 initWithString:v19 attributes:v15];
-    v21 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-    [v21 setAttributedText:v20];
+    detailText2 = [(HKElectrocardiogramBulletedTextView *)self detailText];
+    v20 = [v18 initWithString:detailText2 attributes:v15];
+    detailLabel2 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+    [detailLabel2 setAttributedText:v20];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v9 = a3;
-  if (!v9 || ([v9 preferredContentSizeCategory], v4 = objc_claimAutoreleasedReturnValue(), -[HKElectrocardiogramBulletedTextView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "preferredContentSizeCategory"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "isEqualToString:", v6), v6, v5, v4, v8 = v9, (v7 & 1) == 0))
+  changeCopy = change;
+  if (!changeCopy || ([changeCopy preferredContentSizeCategory], v4 = objc_claimAutoreleasedReturnValue(), -[HKElectrocardiogramBulletedTextView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "preferredContentSizeCategory"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "isEqualToString:", v6), v6, v5, v4, v8 = changeCopy, (v7 & 1) == 0))
   {
     [(HKElectrocardiogramBulletedTextView *)self _updateLeadingDetailAttributedTextSize];
     [(HKElectrocardiogramBulletedTextView *)self setNeedsUpdateConstraints];
-    v8 = v9;
+    v8 = changeCopy;
   }
 }
 
 - (void)_setUpUI
 {
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(HKElectrocardiogramBulletedTextView *)self setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(HKElectrocardiogramBulletedTextView *)self setBackgroundColor:systemBackgroundColor];
 
-  v4 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  [v5 setAdjustsFontForContentSizeCategory:1];
+  titleLabel2 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v6 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  [v6 setNumberOfLines:0];
+  titleLabel3 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  [titleLabel3 setNumberOfLines:0];
 
-  v7 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  [v7 setTextAlignment:4];
+  titleLabel4 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  [titleLabel4 setTextAlignment:4];
 
   v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v9 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  [v9 setFont:v8];
+  titleLabel5 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  [titleLabel5 setFont:v8];
 
-  v10 = [MEMORY[0x1E69DC888] labelColor];
-  v11 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  [v11 setTextColor:v10];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  titleLabel6 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  [titleLabel6 setTextColor:labelColor];
 
-  v12 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  [(HKElectrocardiogramBulletedTextView *)self addSubview:v12];
+  titleLabel7 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  [(HKElectrocardiogramBulletedTextView *)self addSubview:titleLabel7];
 
-  v13 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailLabel = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  [detailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  [v14 setAdjustsFontForContentSizeCategory:1];
+  detailLabel2 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  [detailLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v15 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  [v15 setNumberOfLines:0];
+  detailLabel3 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  [detailLabel3 setNumberOfLines:0];
 
-  v16 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  [v16 setTextAlignment:4];
+  detailLabel4 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  [detailLabel4 setTextAlignment:4];
 
   v17 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-  v18 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  [v18 setFont:v17];
+  detailLabel5 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  [detailLabel5 setFont:v17];
 
-  v19 = [MEMORY[0x1E69DC888] labelColor];
-  v20 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  [v20 setTextColor:v19];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  detailLabel6 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  [detailLabel6 setTextColor:labelColor2];
 
-  v21 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  [(HKElectrocardiogramBulletedTextView *)self addSubview:v21];
+  detailLabel7 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  [(HKElectrocardiogramBulletedTextView *)self addSubview:detailLabel7];
 
   [(HKElectrocardiogramBulletedTextView *)self _setupConstraints];
 }
@@ -221,56 +221,56 @@
 - (void)_setupConstraints
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v3 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  v4 = [v3 topAnchor];
-  v5 = [(HKElectrocardiogramBulletedTextView *)self topAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:10.0];
+  titleLabel = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  topAnchor = [titleLabel topAnchor];
+  topAnchor2 = [(HKElectrocardiogramBulletedTextView *)self topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   [v6 setActive:1];
 
-  v7 = [(HKElectrocardiogramBulletedTextView *)self bodyFirstBaselineConstraints];
-  v8 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  v9 = [v8 firstBaselineAnchor];
-  v10 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  v11 = [v10 lastBaselineAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  bodyFirstBaselineConstraints = [(HKElectrocardiogramBulletedTextView *)self bodyFirstBaselineConstraints];
+  detailLabel = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  firstBaselineAnchor = [detailLabel firstBaselineAnchor];
+  titleLabel2 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel2 lastBaselineAnchor];
+  v12 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor];
   v43[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:1];
-  [v7 addObjectsFromArray:v13];
+  [bodyFirstBaselineConstraints addObjectsFromArray:v13];
 
   v14 = MEMORY[0x1E696ACD8];
-  v15 = [(HKElectrocardiogramBulletedTextView *)self bodyFirstBaselineConstraints];
-  [v14 activateConstraints:v15];
+  bodyFirstBaselineConstraints2 = [(HKElectrocardiogramBulletedTextView *)self bodyFirstBaselineConstraints];
+  [v14 activateConstraints:bodyFirstBaselineConstraints2];
 
-  v16 = [(HKElectrocardiogramBulletedTextView *)self bottomAnchor];
-  v17 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  v18 = [v17 bottomAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:10.0];
+  bottomAnchor = [(HKElectrocardiogramBulletedTextView *)self bottomAnchor];
+  detailLabel2 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  bottomAnchor2 = [detailLabel2 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:10.0];
   [v19 setActive:1];
 
   v32 = MEMORY[0x1E696ACD8];
-  v41 = [(HKElectrocardiogramBulletedTextView *)self layoutMarginsGuide];
-  v39 = [v41 leadingAnchor];
-  v40 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  v38 = [v40 leadingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  layoutMarginsGuide = [(HKElectrocardiogramBulletedTextView *)self layoutMarginsGuide];
+  leadingAnchor = [layoutMarginsGuide leadingAnchor];
+  titleLabel3 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  leadingAnchor2 = [titleLabel3 leadingAnchor];
+  v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[0] = v37;
-  v36 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
-  v34 = [v36 trailingAnchor];
-  v35 = [(HKElectrocardiogramBulletedTextView *)self layoutMarginsGuide];
-  v33 = [v35 trailingAnchor];
-  v31 = [v34 constraintGreaterThanOrEqualToAnchor:v33];
+  titleLabel4 = [(HKElectrocardiogramBulletedTextView *)self titleLabel];
+  trailingAnchor = [titleLabel4 trailingAnchor];
+  layoutMarginsGuide2 = [(HKElectrocardiogramBulletedTextView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v31 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   v42[1] = v31;
-  v30 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  v20 = [v30 leadingAnchor];
-  v21 = [(HKElectrocardiogramBulletedTextView *)self layoutMarginsGuide];
-  v22 = [v21 leadingAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  detailLabel3 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  leadingAnchor3 = [detailLabel3 leadingAnchor];
+  layoutMarginsGuide3 = [(HKElectrocardiogramBulletedTextView *)self layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+  v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v42[2] = v23;
-  v24 = [(HKElectrocardiogramBulletedTextView *)self layoutMarginsGuide];
-  v25 = [v24 trailingAnchor];
-  v26 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
-  v27 = [v26 trailingAnchor];
-  v28 = [v25 constraintGreaterThanOrEqualToAnchor:v27];
+  layoutMarginsGuide4 = [(HKElectrocardiogramBulletedTextView *)self layoutMarginsGuide];
+  trailingAnchor3 = [layoutMarginsGuide4 trailingAnchor];
+  detailLabel4 = [(HKElectrocardiogramBulletedTextView *)self detailLabel];
+  trailingAnchor4 = [detailLabel4 trailingAnchor];
+  v28 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
   v42[3] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:4];
   [v32 activateConstraints:v29];
@@ -285,8 +285,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(HKElectrocardiogramBulletedTextView *)self bodyFirstBaselineConstraints];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  bodyFirstBaselineConstraints = [(HKElectrocardiogramBulletedTextView *)self bodyFirstBaselineConstraints];
+  v6 = [bodyFirstBaselineConstraints countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -298,7 +298,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bodyFirstBaselineConstraints);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -308,7 +308,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [bodyFirstBaselineConstraints countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

@@ -1,18 +1,18 @@
 @interface AMSUIWebMetricsAction
-- (AMSUIWebMetricsAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebMetricsAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebMetricsAction
 
-- (AMSUIWebMetricsAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebMetricsAction)initWithJSObject:(id)object context:(id)context
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v46.receiver = self;
   v46.super_class = AMSUIWebMetricsAction;
-  v41 = a4;
-  v38 = [(AMSUIWebAction *)&v46 initWithJSObject:v6 context:?];
+  contextCopy = context;
+  v38 = [(AMSUIWebAction *)&v46 initWithJSObject:objectCopy context:?];
   if (v38)
   {
     v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -20,7 +20,7 @@
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v7 = [v6 objectForKeyedSubscript:@"events"];
+    v7 = [objectCopy objectForKeyedSubscript:@"events"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
     }
 
     v9 = [v8 countByEnumeratingWithState:&v42 objects:v53 count:16];
-    v37 = v6;
+    v37 = objectCopy;
     if (v9)
     {
       v10 = v9;
@@ -62,41 +62,41 @@
 
           if (v14)
           {
-            v15 = [[AMSUIWebMetricsEvent alloc] initWithJSObject:v14 context:v41];
-            v16 = v15;
+            v15 = [[AMSUIWebMetricsEvent alloc] initWithJSObject:v14 context:contextCopy];
+            mEMORY[0x1E698C968]2 = v15;
             if (v15)
             {
-              v17 = [(AMSUIWebMetricsEvent *)v15 account];
+              account = [(AMSUIWebMetricsEvent *)v15 account];
 
-              if (!v17)
+              if (!account)
               {
-                v18 = [v6 objectForKeyedSubscript:@"account"];
-                v19 = [v41 iTunesAccountFromJSAccount:v18];
-                [v16 setAccount:v19];
+                v18 = [objectCopy objectForKeyedSubscript:@"account"];
+                v19 = [contextCopy iTunesAccountFromJSAccount:v18];
+                [mEMORY[0x1E698C968]2 setAccount:v19];
 
-                v20 = [v16 account];
+                account2 = [mEMORY[0x1E698C968]2 account];
 
-                if (!v20)
+                if (!account2)
                 {
-                  v21 = [v6 objectForKeyedSubscript:@"dsid"];
-                  v22 = [v41 iTunesAccountFromJSDSID:v21];
-                  [v16 setAccount:v22];
+                  v21 = [objectCopy objectForKeyedSubscript:@"dsid"];
+                  v22 = [contextCopy iTunesAccountFromJSDSID:v21];
+                  [mEMORY[0x1E698C968]2 setAccount:v22];
                 }
               }
 
-              [(NSArray *)v39 addObject:v16];
+              [(NSArray *)v39 addObject:mEMORY[0x1E698C968]2];
             }
 
             else
             {
-              v26 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-              if (!v26)
+              mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+              if (!mEMORY[0x1E698C968])
               {
-                v26 = [MEMORY[0x1E698C968] sharedConfig];
+                mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
               }
 
-              v27 = [v26 OSLogObject];
-              if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+              oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+              if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
               {
                 v28 = objc_opt_class();
                 v29 = AMSLogKey();
@@ -106,9 +106,9 @@
                 v50 = v29;
                 v51 = 2112;
                 v52 = v13;
-                _os_log_impl(&dword_1BB036000, v27, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create metrics event from definition: %@", buf, 0x20u);
+                _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create metrics event from definition: %@", buf, 0x20u);
 
-                v6 = v37;
+                objectCopy = v37;
               }
 
               v8 = v40;
@@ -117,14 +117,14 @@
 
           else
           {
-            v16 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-            if (!v16)
+            mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+            if (!mEMORY[0x1E698C968]2)
             {
-              v16 = [MEMORY[0x1E698C968] sharedConfig];
+              mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
             }
 
-            v23 = [v16 OSLogObject];
-            if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+            oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
             {
               v24 = objc_opt_class();
               v25 = AMSLogKey();
@@ -135,7 +135,7 @@
               v50 = v25;
               v51 = 2112;
               v52 = v13;
-              _os_log_impl(&dword_1BB036000, v23, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid metrics event: %@", buf, 0x20u);
+              _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid metrics event: %@", buf, 0x20u);
             }
           }
         }
@@ -150,22 +150,22 @@
     v38->_events = v39;
     v31 = v39;
 
-    v32 = [v6 objectForKeyedSubscript:@"flush"];
+    v32 = [objectCopy objectForKeyedSubscript:@"flush"];
     v33 = objc_opt_respondsToSelector();
 
     if (v33)
     {
-      v34 = [v32 BOOLValue];
+      bOOLValue = [v32 BOOLValue];
     }
 
     else
     {
-      v34 = 0;
+      bOOLValue = 0;
     }
 
-    v38->_shouldFlush = v34;
+    v38->_shouldFlush = bOOLValue;
 
-    v6 = v37;
+    objectCopy = v37;
   }
 
   v35 = *MEMORY[0x1E69E9840];
@@ -177,13 +177,13 @@
   v24 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = AMSUIWebMetricsAction;
-  v3 = [(AMSUIWebAction *)&v22 runAction];
+  runAction = [(AMSUIWebAction *)&v22 runAction];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(AMSUIWebMetricsAction *)self events];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  events = [(AMSUIWebMetricsAction *)self events];
+  v5 = [events countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -195,19 +195,19 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(events);
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
-        v10 = [(AMSUIWebAction *)self context];
-        v11 = [v10 metrics];
-        [v11 enqueueEvent:v9];
+        context = [(AMSUIWebAction *)self context];
+        metrics = [context metrics];
+        [metrics enqueueEvent:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v6 = [events countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v6);
@@ -215,9 +215,9 @@
 
   if ([(AMSUIWebMetricsAction *)self shouldFlush])
   {
-    v12 = [(AMSUIWebAction *)self context];
-    v13 = [v12 metrics];
-    v14 = [v13 flush];
+    context2 = [(AMSUIWebAction *)self context];
+    metrics2 = [context2 metrics];
+    flush = [metrics2 flush];
   }
 
   v15 = [MEMORY[0x1E698CAD0] promiseWithResult:MEMORY[0x1E695E118]];

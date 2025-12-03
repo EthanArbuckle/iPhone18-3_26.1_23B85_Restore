@@ -3,29 +3,29 @@
 - (id)allItems;
 - (void)dealloc;
 - (void)incidentsSourceManagerDidUpdate;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
 @end
 
 @implementation TrafficIncidentItemSource
 
 - (id)allItems
 {
-  v2 = [(PlatformController *)self->_platformController currentSession];
+  currentSession = [(PlatformController *)self->_platformController currentSession];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = &__NSArray0__struct;
+    cachedIncidentsPersonalizedItems = &__NSArray0__struct;
   }
 
   else
   {
     v5 = +[TrafficIncidentsSourceManager sharedInstance];
-    v4 = [v5 cachedIncidentsPersonalizedItems];
+    cachedIncidentsPersonalizedItems = [v5 cachedIncidentsPersonalizedItems];
   }
 
-  return v4;
+  return cachedIncidentsPersonalizedItems;
 }
 
 - (TrafficIncidentItemSource)init
@@ -39,10 +39,10 @@
     [v3 addObserver:v2];
 
     v4 = +[UIApplication sharedMapsDelegate];
-    v5 = [v4 appSessionController];
-    v6 = [v5 primaryPlatformController];
+    appSessionController = [v4 appSessionController];
+    primaryPlatformController = [appSessionController primaryPlatformController];
     platformController = v2->_platformController;
-    v2->_platformController = v6;
+    v2->_platformController = primaryPlatformController;
 
     [(PlatformController *)v2->_platformController registerObserver:v2];
     v8 = v2;
@@ -51,10 +51,10 @@
   return v2;
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v7 = a5;
-  v8 = a4;
+  toSessionCopy = toSession;
+  sessionCopy = session;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

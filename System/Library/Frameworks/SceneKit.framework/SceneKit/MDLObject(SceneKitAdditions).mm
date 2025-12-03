@@ -7,14 +7,14 @@
 - (uint64_t)_updateAssociatedSCNNodeWithGeometrySetter:()SceneKitAdditions texturePathProvider:vertexAttributeNamed:materialPropertyNamed:
 {
   v76 = *MEMORY[0x277D85DE8];
-  AssociatedObject = objc_getAssociatedObject(a1, @"SCNSceneKitAssociatedObject");
+  AssociatedObject = objc_getAssociatedObject(self, @"SCNSceneKitAssociatedObject");
   if (AssociatedObject)
   {
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    obj = [a1 children];
+    obj = [self children];
     v7 = [obj countByEnumeratingWithState:&v68 objects:v75 count:16];
     if (v7)
     {
@@ -51,14 +51,14 @@
 
             v15 = [objc_msgSend(AssociatedObject "geometry")];
             v16 = [SCNGeometry geometryWithMDLMesh:v13];
-            v17 = [*(v11 + 2840) array];
+            array = [*(v11 + 2840) array];
             v18 = [*(v11 + 2840) arrayWithCapacity:{objc_msgSend(v15, "count")}];
             v62 = 0u;
             v63 = 0u;
             v64 = 0u;
             v65 = 0u;
-            v19 = [v13 submeshes];
-            v20 = [v19 countByEnumeratingWithState:&v62 objects:v74 count:16];
+            submeshes = [v13 submeshes];
+            v20 = [submeshes countByEnumeratingWithState:&v62 objects:v74 count:16];
             if (v20)
             {
               v21 = v20;
@@ -69,7 +69,7 @@
                 {
                   if (*v63 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(submeshes);
                   }
 
                   v24 = *(*(&v62 + 1) + 8 * i);
@@ -79,7 +79,7 @@
                   }
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v62 objects:v74 count:16];
+                v21 = [submeshes countByEnumeratingWithState:&v62 objects:v74 count:16];
               }
 
               while (v21);
@@ -114,7 +114,7 @@
                     v34 = [v33 _integrateModelKitComputedMaps:v31 withGeometry:v16 node:AssociatedObject texturePathProvider:a4 vertexAttributeNamed:a5 materialPropertyNamed:a6 filePath:v26];
                     if (v34)
                     {
-                      [v17 addObject:v34];
+                      [array addObject:v34];
                     }
 
                     [v25 addObject:v33];
@@ -140,7 +140,7 @@
             a3 = v43;
             if (v43)
             {
-              (*(v43 + 16))(v43, AssociatedObject, v16, v17);
+              (*(v43 + 16))(v43, AssociatedObject, v16, array);
             }
 
             else
@@ -171,8 +171,8 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v36 = [a1 children];
-  result = [v36 countByEnumeratingWithState:&v52 objects:v72 count:16];
+  children = [self children];
+  result = [children countByEnumeratingWithState:&v52 objects:v72 count:16];
   if (result)
   {
     v38 = result;
@@ -184,14 +184,14 @@
       {
         if (*v53 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v52 + 1) + 8 * v40++) _updateAssociatedSCNNodeWithGeometrySetter:a3 texturePathProvider:a4 vertexAttributeNamed:a5 materialPropertyNamed:a6];
       }
 
       while (v38 != v40);
-      result = [v36 countByEnumeratingWithState:&v52 objects:v72 count:16];
+      result = [children countByEnumeratingWithState:&v52 objects:v72 count:16];
       v38 = result;
     }
 

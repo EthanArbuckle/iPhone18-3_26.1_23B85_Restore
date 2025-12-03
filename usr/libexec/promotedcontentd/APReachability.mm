@@ -1,9 +1,9 @@
 @interface APReachability
-- (APReachability)initWithDelegate:(id)a3;
+- (APReachability)initWithDelegate:(id)delegate;
 - (APReachabilityMonitoring)delegate;
 - (APUnfairRecursiveLock)lock;
 - (int64_t)currentStatus;
-- (void)_updateNetwork:(id)a3;
+- (void)_updateNetwork:(id)network;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
@@ -12,8 +12,8 @@
 
 - (void)startMonitoring
 {
-  v3 = [(APReachability *)self lock];
-  [v3 lock];
+  lock = [(APReachability *)self lock];
+  [lock lock];
 
   if (!self->_monitorQueue)
   {
@@ -37,9 +37,9 @@
     monitor = self->_monitor;
     self->_monitor = v8;
 
-    v10 = [(APReachability *)self monitor];
-    v11 = [(APReachability *)self monitorQueue];
-    nw_path_monitor_set_queue(v10, v11);
+    monitor = [(APReachability *)self monitor];
+    monitorQueue = [(APReachability *)self monitorQueue];
+    nw_path_monitor_set_queue(monitor, monitorQueue);
 
     v12 = self->_monitor;
     update_handler[0] = _NSConcreteStackBlock;
@@ -48,12 +48,12 @@
     update_handler[3] = &unk_10047C908;
     update_handler[4] = self;
     nw_path_monitor_set_update_handler(v12, update_handler);
-    v13 = [(APReachability *)self monitor];
-    nw_path_monitor_start(v13);
+    monitor2 = [(APReachability *)self monitor];
+    nw_path_monitor_start(monitor2);
   }
 
-  v14 = [(APReachability *)self lock];
-  [v14 unlock];
+  lock2 = [(APReachability *)self lock];
+  [lock2 unlock];
 }
 
 - (APUnfairRecursiveLock)lock
@@ -73,26 +73,26 @@
 
 - (int64_t)currentStatus
 {
-  v3 = [(APReachability *)self lock];
-  [v3 lock];
+  lock = [(APReachability *)self lock];
+  [lock lock];
 
   currentStatus = self->_currentStatus;
-  v5 = [(APReachability *)self lock];
-  [v5 unlock];
+  lock2 = [(APReachability *)self lock];
+  [lock2 unlock];
 
   return currentStatus;
 }
 
-- (APReachability)initWithDelegate:(id)a3
+- (APReachability)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = APReachability;
   v5 = [(APReachability *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -107,11 +107,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Tearing down reachability", v9, 2u);
   }
 
-  v4 = [(APReachability *)self lock];
-  [v4 lock];
+  lock = [(APReachability *)self lock];
+  [lock lock];
 
-  v5 = [(APReachability *)self monitor];
-  nw_path_monitor_cancel(v5);
+  monitor = [(APReachability *)self monitor];
+  nw_path_monitor_cancel(monitor);
 
   monitor = self->_monitor;
   self->_monitor = 0;
@@ -120,13 +120,13 @@
   self->_currentStatus = 0;
   self->_currentPath = 0;
 
-  v8 = [(APReachability *)self lock];
-  [v8 unlock];
+  lock2 = [(APReachability *)self lock];
+  [lock2 unlock];
 }
 
-- (void)_updateNetwork:(id)a3
+- (void)_updateNetwork:(id)network
 {
-  v5 = a3;
+  networkCopy = network;
   v6 = APLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -134,13 +134,13 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Received network update from nw_path_monitor", &v21, 2u);
   }
 
-  v7 = [(APReachability *)self lock];
-  [v7 lock];
+  lock = [(APReachability *)self lock];
+  [lock lock];
 
   p_currentPath = &self->_currentPath;
-  if (!nw_path_is_equal(v5, self->_currentPath))
+  if (!nw_path_is_equal(networkCopy, self->_currentPath))
   {
-    objc_storeStrong(&self->_currentPath, a3);
+    objc_storeStrong(&self->_currentPath, network);
     status = nw_path_get_status(*p_currentPath);
     v10 = status;
     v11 = 0;
@@ -227,18 +227,18 @@ LABEL_19:
       }
 
       self->_currentStatus = v14;
-      v18 = [(APReachability *)self delegate];
+      delegate = [(APReachability *)self delegate];
 
-      if (v18)
+      if (delegate)
       {
-        v19 = [(APReachability *)self delegate];
-        [v19 reachabilityChanged:{-[APReachability currentStatus](self, "currentStatus")}];
+        delegate2 = [(APReachability *)self delegate];
+        [delegate2 reachabilityChanged:{-[APReachability currentStatus](self, "currentStatus")}];
       }
     }
   }
 
-  v20 = [(APReachability *)self lock];
-  [v20 unlock];
+  lock2 = [(APReachability *)self lock];
+  [lock2 unlock];
 }
 
 - (APReachabilityMonitoring)delegate

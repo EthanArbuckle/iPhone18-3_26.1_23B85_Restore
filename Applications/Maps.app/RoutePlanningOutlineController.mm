@@ -1,67 +1,67 @@
 @interface RoutePlanningOutlineController
 + (UICollectionViewLayout)defaultCollectionViewLayout;
-+ (id)defaultLayoutSectionInLayoutEnvironment:(id)a3;
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (RoutePlanningOutlineController)initWithCollectionView:(id)a3;
++ (id)defaultLayoutSectionInLayoutEnvironment:(id)environment;
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (RoutePlanningOutlineController)initWithCollectionView:(id)view;
 - (id)_blurredBackgroundView;
 - (id)_findVisualEffectView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)outlineSectionAtIndex:(int64_t)a3;
-- (int64_t)_localSectionForGlobalSectionIndex:(int64_t)a3 forSection:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)outlineSectionAtIndex:(int64_t)index;
+- (int64_t)_localSectionForGlobalSectionIndex:(int64_t)index forSection:(id)section;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)indexOfFirstPopulatedSection;
-- (int64_t)sectionIndexForOutlineSection:(id)a3;
+- (int64_t)sectionIndexForOutlineSection:(id)section;
 - (void)_recalculateSectionCounts;
 - (void)_reloadHeaderLayoutItem;
 - (void)_removeHeaderLayoutItem;
 - (void)_resetElevationGraphs;
 - (void)_updateVisibleOutlineSections;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performBatchSectionUpdates:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performBatchSectionUpdates:(id)updates;
 - (void)prepareOutlineSections;
-- (void)setCollectionView:(id)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setHideContent:(BOOL)a3;
+- (void)setCollectionView:(id)view;
+- (void)setHeaderView:(id)view;
+- (void)setHideContent:(BOOL)content;
 @end
 
 @implementation RoutePlanningOutlineController
 
-- (int64_t)sectionIndexForOutlineSection:(id)a3
+- (int64_t)sectionIndexForOutlineSection:(id)section
 {
   sectionStartIndexByIdentifier = self->_sectionStartIndexByIdentifier;
-  v4 = [a3 sectionIdentifier];
-  v5 = [(NSMutableDictionary *)sectionStartIndexByIdentifier objectForKeyedSubscript:v4];
+  sectionIdentifier = [section sectionIdentifier];
+  v5 = [(NSMutableDictionary *)sectionStartIndexByIdentifier objectForKeyedSubscript:sectionIdentifier];
 
   if (v5)
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v10 isEqualToString:UICollectionElementKindSectionFooter])
+  viewCopy = view;
+  pathCopy = path;
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:UICollectionElementKindSectionFooter])
   {
     v11 = +[_TtC4Maps29RoutingAdvisoryInfoFooterView reuseIdentifier];
-    v12 = [v8 dequeueReusableSupplementaryViewOfKind:v10 withReuseIdentifier:v11 forIndexPath:v9];
+    v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v11 forIndexPath:pathCopy];
 
     [v12 frame];
     [v12 setFrame:?];
@@ -70,23 +70,23 @@
 
   else
   {
-    v12 = [v8 dequeueReusableSupplementaryViewOfKind:v10 withReuseIdentifier:v10 forIndexPath:v9];
-    v13 = [v10 isEqualToString:@"RoutePlanningOutlineHeaderView"];
+    v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:kindCopy forIndexPath:pathCopy];
+    v13 = [kindCopy isEqualToString:@"RoutePlanningOutlineHeaderView"];
 
     if (v13)
     {
-      v14 = [(RoutePlanningOutlineController *)self headerView];
+      headerView = [(RoutePlanningOutlineController *)self headerView];
 
-      if (v14)
+      if (headerView)
       {
-        v15 = [(RoutePlanningOutlineController *)self headerView];
-        [v12 addSubview:v15];
+        headerView2 = [(RoutePlanningOutlineController *)self headerView];
+        [v12 addSubview:headerView2];
 
-        v16 = [(RoutePlanningOutlineController *)self headerView];
+        headerView3 = [(RoutePlanningOutlineController *)self headerView];
         LODWORD(v17) = 1148846080;
-        v18 = [v16 _maps_constraintsEqualToEdgesOfView:v12 priority:v17];
-        v19 = [v18 allConstraints];
-        [NSLayoutConstraint activateConstraints:v19];
+        v18 = [headerView3 _maps_constraintsEqualToEdgesOfView:v12 priority:v17];
+        allConstraints = [v18 allConstraints];
+        [NSLayoutConstraint activateConstraints:allConstraints];
       }
     }
   }
@@ -94,75 +94,75 @@
   return v12;
 }
 
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [v5 section]);
-  v7 = [v6 selectionFollowsFocusForItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [pathCopy section]);
+  v7 = [v6 selectionFollowsFocusForItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [v7 section]);
-  [v9 willDisplayCell:v8 forIndexPath:v7];
+  pathCopy = path;
+  cellCopy = cell;
+  v9 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [pathCopy section]);
+  [v9 willDisplayCell:cellCopy forIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [v5 section]);
-  [v6 didSelectItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [pathCopy section]);
+  [v6 didSelectItemAtIndexPath:pathCopy];
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [v5 section]);
-  v7 = [v6 shouldSelectItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [pathCopy section]);
+  v7 = [v6 shouldSelectItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [v5 section]);
-  [v6 didUnhighlightItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [pathCopy section]);
+  [v6 didUnhighlightItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [v5 section]);
-  [v6 didHighlightItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [pathCopy section]);
+  [v6 didHighlightItemAtIndexPath:pathCopy];
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [v5 section]);
-  v7 = [v6 shouldHighlightItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [pathCopy section]);
+  v7 = [v6 shouldHighlightItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(RoutePlanningOutlineController *)self outlineSectionAtIndex:a4];
-  v7 = [v6 numberOfItemsInSection:{-[RoutePlanningOutlineController _localSectionForGlobalSectionIndex:forSection:](self, "_localSectionForGlobalSectionIndex:forSection:", a4, v6)}];
+  v6 = [(RoutePlanningOutlineController *)self outlineSectionAtIndex:section];
+  v7 = [v6 numberOfItemsInSection:{-[RoutePlanningOutlineController _localSectionForGlobalSectionIndex:forSection:](self, "_localSectionForGlobalSectionIndex:forSection:", section, v6)}];
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [pathCopy section]);
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -175,7 +175,7 @@
   v12[3] = &unk_101660778;
   v8 = v15 = &v16;
   v13 = v8;
-  v9 = v7;
+  v9 = pathCopy;
   v14 = v9;
   [UIView performWithoutAnimation:v12];
   v10 = v17[5];
@@ -185,14 +185,14 @@
   return v10;
 }
 
-- (int64_t)_localSectionForGlobalSectionIndex:(int64_t)a3 forSection:(id)a4
+- (int64_t)_localSectionForGlobalSectionIndex:(int64_t)index forSection:(id)section
 {
   sectionStartIndexByIdentifier = self->_sectionStartIndexByIdentifier;
-  v6 = [a4 sectionIdentifier];
-  v7 = [(NSMutableDictionary *)sectionStartIndexByIdentifier objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  sectionIdentifier = [section sectionIdentifier];
+  v7 = [(NSMutableDictionary *)sectionStartIndexByIdentifier objectForKeyedSubscript:sectionIdentifier];
+  integerValue = [v7 integerValue];
 
-  return a3 - v8;
+  return index - integerValue;
 }
 
 - (int64_t)indexOfFirstPopulatedSection
@@ -205,8 +205,8 @@
   v3 = 0;
   while (1)
   {
-    v4 = [(RoutePlanningOutlineController *)self collectionView];
-    v5 = [(RoutePlanningOutlineController *)self collectionView:v4 numberOfItemsInSection:v3];
+    collectionView = [(RoutePlanningOutlineController *)self collectionView];
+    v5 = [(RoutePlanningOutlineController *)self collectionView:collectionView numberOfItemsInSection:v3];
 
     if (v5 > 0)
     {
@@ -222,10 +222,10 @@
   return v3;
 }
 
-- (id)outlineSectionAtIndex:(int64_t)a3
+- (id)outlineSectionAtIndex:(int64_t)index
 {
-  v5 = [(NSMutableDictionary *)self->_sectionIdentifiersByStartIndex allKeys];
-  v6 = [v5 sortedArrayUsingSelector:"compare:"];
+  allKeys = [(NSMutableDictionary *)self->_sectionIdentifiersByStartIndex allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v27 = 0u;
   v28 = 0u;
@@ -248,12 +248,12 @@ LABEL_3:
       }
 
       v12 = *(*(&v25 + 1) + 8 * v11);
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
       v14 = [(NSMutableDictionary *)self->_sectionIdentifiersByStartIndex objectForKeyedSubscript:v12];
       v15 = [(NSMutableDictionary *)self->_sectionCountByIdentifier objectForKeyedSubscript:v14];
-      v16 = [v15 integerValue];
+      integerValue2 = [v15 integerValue];
 
-      if (v13 <= a3 && v13 + v16 > a3)
+      if (integerValue <= index && integerValue + integerValue2 > index)
       {
         break;
       }
@@ -288,7 +288,7 @@ LABEL_14:
     v18 = sub_10006D178();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [NSString stringWithFormat:@"Invalid index passed to outlineSectionAtIndex: %ld", a3];
+      index = [NSString stringWithFormat:@"Invalid index passed to outlineSectionAtIndex: %ld", index];
       *buf = 136316162;
       v30 = "[RoutePlanningOutlineController outlineSectionAtIndex:]";
       v31 = 2080;
@@ -298,7 +298,7 @@ LABEL_14:
       v35 = 2080;
       v36 = "section";
       v37 = 2112;
-      v38 = v19;
+      v38 = index;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion: (%s) '%@'", buf, 0x30u);
     }
 
@@ -320,10 +320,10 @@ LABEL_14:
   return v22;
 }
 
-- (void)performBatchSectionUpdates:(id)a3
+- (void)performBatchSectionUpdates:(id)updates
 {
   ++self->_batchUpdateCounter;
-  v4 = a3;
+  updatesCopy = updates;
   v5 = sub_1007995B8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -333,7 +333,7 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Incrementing batch update counter to %lu", &v13, 0xCu);
   }
 
-  v4[2](v4);
+  updatesCopy[2](updatesCopy);
   --self->_batchUpdateCounter;
   v7 = sub_1007995B8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -354,15 +354,15 @@ LABEL_14:
     }
 
     [(RoutePlanningOutlineController *)self _updateVisibleOutlineSections];
-    v10 = [(RoutePlanningOutlineController *)self collectionView];
-    [v10 _maps_reloadDataWithoutFocus];
+    collectionView = [(RoutePlanningOutlineController *)self collectionView];
+    [collectionView _maps_reloadDataWithoutFocus];
 
-    v11 = [(RoutePlanningOutlineController *)self postReloadHandler];
+    postReloadHandler = [(RoutePlanningOutlineController *)self postReloadHandler];
 
-    if (v11)
+    if (postReloadHandler)
     {
-      v12 = [(RoutePlanningOutlineController *)self postReloadHandler];
-      v12[2]();
+      postReloadHandler2 = [(RoutePlanningOutlineController *)self postReloadHandler];
+      postReloadHandler2[2]();
     }
   }
 }
@@ -497,17 +497,17 @@ LABEL_14:
   [(RoutePlanningOutlineController *)self performBatchSectionUpdates:&stru_10164D0E8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &off_10164D0E0)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &off_10164D0E0)
   {
     [(RoutePlanningOutlineController *)self _resetElevationGraphs];
   }
 
-  else if (a6 == &off_10164D0B8)
+  else if (context == &off_10164D0B8)
   {
     [(RoutePlanningOutlineController *)self _reloadHeaderLayoutItem];
   }
@@ -516,7 +516,7 @@ LABEL_14:
   {
     v13.receiver = self;
     v13.super_class = RoutePlanningOutlineController;
-    [(RoutePlanningOutlineController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(RoutePlanningOutlineController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -535,12 +535,12 @@ LABEL_14:
           break;
         }
 
-        v4 = [(UICollectionView *)v3 superview];
+        superview = [(UICollectionView *)v3 superview];
 
-        v3 = v4;
+        v3 = superview;
       }
 
-      while (v4);
+      while (superview);
     }
   }
 
@@ -554,24 +554,24 @@ LABEL_14:
 
 - (id)_blurredBackgroundView
 {
-  v3 = [(UICollectionView *)self->_collectionView backgroundView];
+  backgroundView = [(UICollectionView *)self->_collectionView backgroundView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(UICollectionView *)self->_collectionView backgroundView];
+    backgroundView2 = [(UICollectionView *)self->_collectionView backgroundView];
   }
 
   else
   {
-    v4 = 0;
+    backgroundView2 = 0;
   }
 
-  return v4;
+  return backgroundView2;
 }
 
-- (void)setHideContent:(BOOL)a3
+- (void)setHideContent:(BOOL)content
 {
-  if (self->_hideContent != a3)
+  if (self->_hideContent != content)
   {
     v7 = v3;
     v8 = v4;
@@ -579,7 +579,7 @@ LABEL_14:
     v5[1] = 3221225472;
     v5[2] = sub_100BDFA20;
     v5[3] = &unk_101661AE0;
-    v6 = a3;
+    contentCopy = content;
     v5[4] = self;
     [(RoutePlanningOutlineController *)self performBatchSectionUpdates:v5];
   }
@@ -587,10 +587,10 @@ LABEL_14:
 
 - (void)_removeHeaderLayoutItem
 {
-  v3 = [(RoutePlanningOutlineController *)self collectionViewLayout];
-  v2 = [v3 configuration];
-  [v2 setBoundarySupplementaryItems:&__NSArray0__struct];
-  [v3 setConfiguration:v2];
+  collectionViewLayout = [(RoutePlanningOutlineController *)self collectionViewLayout];
+  configuration = [collectionViewLayout configuration];
+  [configuration setBoundarySupplementaryItems:&__NSArray0__struct];
+  [collectionViewLayout setConfiguration:configuration];
 }
 
 - (void)_reloadHeaderLayoutItem
@@ -602,8 +602,8 @@ LABEL_14:
     if (v4 == UIViewNoIntrinsicMetric)
     {
       v5 = self->_headerView;
-      v6 = [(RoutePlanningOutlineController *)self collectionView];
-      [v6 bounds];
+      collectionView = [(RoutePlanningOutlineController *)self collectionView];
+      [collectionView bounds];
       [(UIView *)v5 _maps_compressedSizeForWidth:0 withBlock:CGRectGetWidth(v23)];
       v8 = v7;
     }
@@ -613,12 +613,12 @@ LABEL_14:
       v8 = v4;
     }
 
-    v9 = [(RoutePlanningOutlineController *)self collectionViewLayout];
-    v10 = [v9 configuration];
-    v11 = [v10 boundarySupplementaryItems];
-    v12 = [v11 firstObject];
+    collectionViewLayout = [(RoutePlanningOutlineController *)self collectionViewLayout];
+    configuration = [collectionViewLayout configuration];
+    boundarySupplementaryItems = [configuration boundarySupplementaryItems];
+    firstObject = [boundarySupplementaryItems firstObject];
 
-    if (!v12 || ([v12 layoutSize], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "heightDimension"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "dimension"), v16 = vabdd_f64(v15, v8), v14, v13, v16 > 2.22044605e-16))
+    if (!firstObject || ([firstObject layoutSize], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "heightDimension"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "dimension"), v16 = vabdd_f64(v15, v8), v14, v13, v16 > 2.22044605e-16))
     {
       v17 = [NSCollectionLayoutDimension estimatedDimension:v8];
       v18 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
@@ -627,18 +627,18 @@ LABEL_14:
       v20 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v19 elementKind:@"RoutePlanningOutlineHeaderView" alignment:1 absoluteOffset:0.0, -16.0];
       v22 = v20;
       v21 = [NSArray arrayWithObjects:&v22 count:1];
-      [v10 setBoundarySupplementaryItems:v21];
+      [configuration setBoundarySupplementaryItems:v21];
 
-      [v9 setConfiguration:v10];
+      [collectionViewLayout setConfiguration:configuration];
     }
   }
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  if (headerView == v7)
+  if (headerView == viewCopy)
   {
     [(RoutePlanningOutlineController *)self _reloadHeaderLayoutItem];
   }
@@ -650,12 +650,12 @@ LABEL_14:
       [(UIView *)self->_headerView removeObserver:self forKeyPath:@"bounds" context:&off_10164D0B8];
     }
 
-    objc_storeStrong(&self->_headerView, a3);
-    v6 = v7;
-    if (v7)
+    objc_storeStrong(&self->_headerView, view);
+    v6 = viewCopy;
+    if (viewCopy)
     {
       [(RoutePlanningOutlineController *)self _reloadHeaderLayoutItem];
-      [(UIView *)v7 addObserver:self forKeyPath:@"bounds" options:0 context:&off_10164D0B8];
+      [(UIView *)viewCopy addObserver:self forKeyPath:@"bounds" options:0 context:&off_10164D0B8];
     }
 
     else
@@ -669,28 +669,28 @@ LABEL_14:
     }
   }
 
-  v6 = v7;
+  v6 = viewCopy;
 LABEL_10:
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_collectionView == v5)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (self->_collectionView == viewCopy)
   {
-    if (!v5)
+    if (!viewCopy)
     {
       goto LABEL_7;
     }
 
-    v11 = [(UICollectionView *)v5 dataSource];
-    v12 = v11;
-    if (v11 == self)
+    dataSource = [(UICollectionView *)viewCopy dataSource];
+    v12 = dataSource;
+    if (dataSource == self)
     {
-      v13 = [(UICollectionView *)v6 delegate];
+      delegate = [(UICollectionView *)v6 delegate];
 
-      if (v13 == self)
+      if (delegate == self)
       {
         goto LABEL_7;
       }
@@ -701,7 +701,7 @@ LABEL_10:
     }
   }
 
-  objc_storeStrong(&self->_collectionView, a3);
+  objc_storeStrong(&self->_collectionView, view);
   if (self->_collectionView)
   {
     v7 = sub_1007995B8();
@@ -734,9 +734,9 @@ LABEL_7:
   [(RoutePlanningOutlineController *)&v3 dealloc];
 }
 
-- (RoutePlanningOutlineController)initWithCollectionView:(id)a3
+- (RoutePlanningOutlineController)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = RoutePlanningOutlineController;
   v5 = [(RoutePlanningOutlineController *)&v15 init];
@@ -758,7 +758,7 @@ LABEL_7:
     sectionIdentifiersByStartIndex = v5->_sectionIdentifiersByStartIndex;
     v5->_sectionIdentifiersByStartIndex = v12;
 
-    [(RoutePlanningOutlineController *)v5 setCollectionView:v4];
+    [(RoutePlanningOutlineController *)v5 setCollectionView:viewCopy];
   }
 
   return v5;
@@ -770,7 +770,7 @@ LABEL_7:
   v5[1] = 3221225472;
   v5[2] = sub_100BE0214;
   v5[3] = &unk_10164D0C0;
-  v5[4] = a1;
+  v5[4] = self;
   v2 = [[UICollectionViewCompositionalLayout alloc] initWithSectionProvider:v5];
   v3 = objc_opt_class();
   objc_setAssociatedObject(v3, "defaultCollectionViewLayout", v2, 1);
@@ -778,13 +778,13 @@ LABEL_7:
   return v2;
 }
 
-+ (id)defaultLayoutSectionInLayoutEnvironment:(id)a3
++ (id)defaultLayoutSectionInLayoutEnvironment:(id)environment
 {
-  v3 = a3;
-  v4 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:v3];
+  environmentCopy = environment;
+  v4 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:environmentCopy];
   [v4 setEstimatedRowHeight:_UICollectionViewListLayoutSectionAutomaticDimension];
   [v4 setSeparatorStyle:0];
-  v5 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v4 layoutEnvironment:v3];
+  v5 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v4 layoutEnvironment:environmentCopy];
 
   return v5;
 }

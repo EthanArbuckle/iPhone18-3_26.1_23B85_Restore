@@ -1,37 +1,37 @@
 @interface HFActionSetItem
-+ (BOOL)_value:(id)a3 isApproximatelyEqualToValue:(id)a4 forMinimumValue:(id)a5 maximumValue:(id)a6;
-+ (id)_primaryStateForActionSet:(id)a3 valueSource:(id)a4 logger:(id)a5 fastInitialUpdate:(BOOL)a6;
-+ (id)_valuesAtTargetStateForCharacteristics:(id)a3 targetValuesKeyedByCharacteristicIdentifier:(id)a4 valueSource:(id)a5 actionSet:(id)a6 logger:(id)a7;
-+ (id)_valuesAtTargetStateForMediaActions:(id)a3 targetValuesKeyedByCharacteristicIdentifier:(id)a4 valueSource:(id)a5 actionSet:(id)a6 logger:(id)a7;
-+ (id)_valuesAtTargetStateForNaturalLightActions:(id)a3 valueSource:(id)a4;
++ (BOOL)_value:(id)_value isApproximatelyEqualToValue:(id)value forMinimumValue:(id)minimumValue maximumValue:(id)maximumValue;
++ (id)_primaryStateForActionSet:(id)set valueSource:(id)source logger:(id)logger fastInitialUpdate:(BOOL)update;
++ (id)_valuesAtTargetStateForCharacteristics:(id)characteristics targetValuesKeyedByCharacteristicIdentifier:(id)identifier valueSource:(id)source actionSet:(id)set logger:(id)logger;
++ (id)_valuesAtTargetStateForMediaActions:(id)actions targetValuesKeyedByCharacteristicIdentifier:(id)identifier valueSource:(id)source actionSet:(id)set logger:(id)logger;
++ (id)_valuesAtTargetStateForNaturalLightActions:(id)actions valueSource:(id)source;
 - (HFActionSetItem)init;
-- (HFActionSetItem)initWithActionSet:(id)a3 actionSetItemStyle:(unint64_t)a4 valueSource:(id)a5;
+- (HFActionSetItem)initWithActionSet:(id)set actionSetItemStyle:(unint64_t)style valueSource:(id)source;
 - (NSString)description;
-- (id)_mostCommonRoomForActionSet:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)actionSetOperation:(id)a3 errorFromError:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_mostCommonRoomForActionSet:(id)set;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)actionSetOperation:(id)operation errorFromError:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)executeActionSet;
 - (id)rooms;
 - (id)turnOffActionSet;
-- (void)setServiceLikeItem:(id)a3;
+- (void)setServiceLikeItem:(id)item;
 @end
 
 @implementation HFActionSetItem
 
-- (HFActionSetItem)initWithActionSet:(id)a3 actionSetItemStyle:(unint64_t)a4 valueSource:(id)a5
+- (HFActionSetItem)initWithActionSet:(id)set actionSetItemStyle:(unint64_t)style valueSource:(id)source
 {
-  v9 = a3;
-  v10 = a5;
+  setCopy = set;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = HFActionSetItem;
   v11 = [(HFActionSetItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_actionSet, a3);
-    v12->_actionSetItemStyle = a4;
-    objc_storeStrong(&v12->_valueSource, a5);
+    objc_storeStrong(&v11->_actionSet, set);
+    v12->_actionSetItemStyle = style;
+    objc_storeStrong(&v12->_valueSource, source);
   }
 
   return v12;
@@ -39,23 +39,23 @@
 
 - (HFActionSetItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithActionSet_actionSetItemStyle_valueSource_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFActionSetItem.m" lineNumber:70 description:{@"%s is unavailable; use %@ instead", "-[HFActionSetItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFActionSetItem.m" lineNumber:70 description:{@"%s is unavailable; use %@ instead", "-[HFActionSetItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFActionSetItem *)self actionSet];
-  v6 = [(HFActionSetItem *)self actionSetItemStyle];
-  v7 = [(HFActionSetItem *)self valueSource];
-  v8 = [v4 initWithActionSet:v5 actionSetItemStyle:v6 valueSource:v7];
+  actionSet = [(HFActionSetItem *)self actionSet];
+  actionSetItemStyle = [(HFActionSetItem *)self actionSetItemStyle];
+  valueSource = [(HFActionSetItem *)self valueSource];
+  v8 = [v4 initWithActionSet:actionSet actionSetItemStyle:actionSetItemStyle valueSource:valueSource];
 
-  v9 = [(HFActionSetItem *)self serviceLikeItem];
-  [v8 setServiceLikeItem:v9];
+  serviceLikeItem = [(HFActionSetItem *)self serviceLikeItem];
+  [v8 setServiceLikeItem:serviceLikeItem];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
@@ -66,50 +66,50 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HFActionSetItem *)self actionSet];
-  v7 = [v6 hf_prettyDescription];
-  v8 = [(HFItem *)self latestResults];
-  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, v7, v8];
+  actionSet = [(HFActionSetItem *)self actionSet];
+  hf_prettyDescription = [actionSet hf_prettyDescription];
+  latestResults = [(HFItem *)self latestResults];
+  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, hf_prettyDescription, latestResults];
 
   return v9;
 }
 
-- (void)setServiceLikeItem:(id)a3
+- (void)setServiceLikeItem:(id)item
 {
-  if (self->_serviceLikeItem != a3)
+  if (self->_serviceLikeItem != item)
   {
-    v4 = a3;
+    itemCopy = item;
     v5 = [HFActionSetValueSource alloc];
-    v6 = [(HFActionSetItem *)self actionSet];
-    v9 = [(HFActionSetValueSource *)v5 initWithActionSet:v6];
+    actionSet = [(HFActionSetItem *)self actionSet];
+    v9 = [(HFActionSetValueSource *)v5 initWithActionSet:actionSet];
 
-    v7 = [v4 copyWithValueSource:v9];
+    v7 = [itemCopy copyWithValueSource:v9];
     serviceLikeItem = self->_serviceLikeItem;
     self->_serviceLikeItem = v7;
   }
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFActionSetItem *)self actionSet];
-  v6 = [v4 objectForKeyedSubscript:HFItemUpdateOptionLogger];
-  v7 = [v4 objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
-  v8 = [v7 BOOLValue];
+  optionsCopy = options;
+  actionSet = [(HFActionSetItem *)self actionSet];
+  v6 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionLogger];
+  v7 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v5)
+  if (actionSet)
   {
-    v39 = v8;
+    v39 = bOOLValue;
     v40 = v6;
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
     v10 = objc_alloc_init(HFMutableItemUpdateOutcome);
     [(HFMutableItemUpdateOutcome *)v10 setObject:&unk_282525128 forKeyedSubscript:@"controlSummaryStyle"];
-    v11 = [v5 name];
+    name = [actionSet name];
 
-    if (v11)
+    if (name)
     {
-      v12 = [v5 name];
-      [(HFMutableItemUpdateOutcome *)v10 setObject:v12 forKeyedSubscript:@"title"];
+      name2 = [actionSet name];
+      [(HFMutableItemUpdateOutcome *)v10 setObject:name2 forKeyedSubscript:@"title"];
     }
 
     else
@@ -117,32 +117,32 @@
       [(HFMutableItemUpdateOutcome *)v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
     }
 
-    v16 = [(HFActionSetItem *)self actionSet];
-    v17 = [v16 hf_iconDescriptor];
+    actionSet2 = [(HFActionSetItem *)self actionSet];
+    hf_iconDescriptor = [actionSet2 hf_iconDescriptor];
 
-    if (v17)
+    if (hf_iconDescriptor)
     {
-      [(HFMutableItemUpdateOutcome *)v10 setObject:v17 forKeyedSubscript:@"icon"];
+      [(HFMutableItemUpdateOutcome *)v10 setObject:hf_iconDescriptor forKeyedSubscript:@"icon"];
     }
 
-    v18 = [(HFActionSetItem *)self actionSet];
-    v19 = [v18 hf_iconTintColor];
+    actionSet3 = [(HFActionSetItem *)self actionSet];
+    hf_iconTintColor = [actionSet3 hf_iconTintColor];
 
-    if (v19)
+    if (hf_iconTintColor)
     {
-      [(HFMutableItemUpdateOutcome *)v10 setObject:v19 forKeyedSubscript:@"tintColor"];
+      [(HFMutableItemUpdateOutcome *)v10 setObject:hf_iconTintColor forKeyedSubscript:@"tintColor"];
     }
 
-    v20 = [(HFActionSetItem *)self _mostCommonRoomForActionSet:v5];
+    v20 = [(HFActionSetItem *)self _mostCommonRoomForActionSet:actionSet];
     v21 = v20;
     if (v20)
     {
-      v22 = [v20 uniqueIdentifier];
-      [(HFMutableItemUpdateOutcome *)v10 setObject:v22 forKeyedSubscript:@"roomIdentifier"];
+      uniqueIdentifier = [v20 uniqueIdentifier];
+      [(HFMutableItemUpdateOutcome *)v10 setObject:uniqueIdentifier forKeyedSubscript:@"roomIdentifier"];
     }
 
-    v23 = [v5 actions];
-    v24 = [v23 count];
+    actions = [actionSet actions];
+    v24 = [actions count];
 
     if (!v24)
     {
@@ -150,15 +150,15 @@
     }
 
     v25 = MEMORY[0x277CCABB0];
-    v26 = [v5 actions];
-    v27 = [v25 numberWithBool:{objc_msgSend(v26, "na_any:", &__block_literal_global_225)}];
+    actions2 = [actionSet actions];
+    v27 = [v25 numberWithBool:{objc_msgSend(actions2, "na_any:", &__block_literal_global_225)}];
     [(HFMutableItemUpdateOutcome *)v10 setObject:v27 forKeyedSubscript:@"actionRequiresDeviceUnlock"];
 
-    v28 = [(HFActionSetItem *)self actionSetItemStyle];
+    actionSetItemStyle = [(HFActionSetItem *)self actionSetItemStyle];
     v29 = &qword_20DD97000;
-    if (v28 - 1 >= 2)
+    if (actionSetItemStyle - 1 >= 2)
     {
-      if (!v28)
+      if (!actionSetItemStyle)
       {
         [(HFMutableItemUpdateOutcome *)v10 setObject:&unk_282525140 forKeyedSubscript:@"state"];
         [v9 finishWithResult:v10];
@@ -168,15 +168,15 @@
     else
     {
       v30 = objc_opt_class();
-      v31 = [(HFActionSetItem *)self valueSource];
-      v32 = [v30 _primaryStateForActionSet:v5 valueSource:v31 logger:v40 fastInitialUpdate:v39];
+      valueSource = [(HFActionSetItem *)self valueSource];
+      v32 = [v30 _primaryStateForActionSet:actionSet valueSource:valueSource logger:v40 fastInitialUpdate:v39];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_27;
       v50[3] = &unk_277E019B8;
       v51 = v10;
-      v52 = self;
-      v53 = v5;
+      selfCopy = self;
+      v53 = actionSet;
       v54 = v9;
       v33 = [v32 addCompletionBlock:v50];
 
@@ -188,8 +188,8 @@
     v34 = v45;
     v46 = __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_2;
     v47 = &unk_277DF9660;
-    v48 = self;
-    v49 = v4;
+    selfCopy2 = self;
+    v49 = optionsCopy;
     v35 = __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_2(&v44);
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = v34;
@@ -350,16 +350,16 @@ id __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_4(uint64_t a
   return v6;
 }
 
-- (id)_mostCommonRoomForActionSet:(id)a3
+- (id)_mostCommonRoomForActionSet:(id)set
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFActionSetItem *)self rooms];
+  setCopy = set;
+  rooms = [(HFActionSetItem *)self rooms];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [rooms countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -372,11 +372,11 @@ id __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_4(uint64_t a
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(rooms);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v5 countForObject:v12];
+        v13 = [rooms countForObject:v12];
         if (v13 > v8)
         {
           v14 = v13;
@@ -387,7 +387,7 @@ id __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_4(uint64_t a
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [rooms countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -403,14 +403,14 @@ id __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_4(uint64_t a
   return v9;
 }
 
-+ (BOOL)_value:(id)a3 isApproximatelyEqualToValue:(id)a4 forMinimumValue:(id)a5 maximumValue:(id)a6
++ (BOOL)_value:(id)_value isApproximatelyEqualToValue:(id)value forMinimumValue:(id)minimumValue maximumValue:(id)maximumValue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  _valueCopy = _value;
+  valueCopy = value;
+  minimumValueCopy = minimumValue;
+  maximumValueCopy = maximumValue;
   objc_opt_class();
-  v13 = v11;
+  v13 = minimumValueCopy;
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -424,7 +424,7 @@ id __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_4(uint64_t a
   v15 = v14;
 
   objc_opt_class();
-  v16 = v12;
+  v16 = maximumValueCopy;
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -453,7 +453,7 @@ id __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_4(uint64_t a
   }
 
   objc_opt_class();
-  v20 = v9;
+  v20 = _valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v21 = v20;
@@ -467,7 +467,7 @@ id __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_4(uint64_t a
   v22 = v21;
 
   objc_opt_class();
-  v23 = v10;
+  v23 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v24 = v23;
@@ -484,7 +484,7 @@ id __47__HFActionSetItem__subclass_updateWithOptions___block_invoke_4(uint64_t a
   {
 
 LABEL_21:
-    v33 = [v9 isEqual:v10];
+    v33 = [_valueCopy isEqual:valueCopy];
     goto LABEL_22;
   }
 
@@ -501,34 +501,34 @@ LABEL_22:
   return v33;
 }
 
-+ (id)_valuesAtTargetStateForCharacteristics:(id)a3 targetValuesKeyedByCharacteristicIdentifier:(id)a4 valueSource:(id)a5 actionSet:(id)a6 logger:(id)a7
++ (id)_valuesAtTargetStateForCharacteristics:(id)characteristics targetValuesKeyedByCharacteristicIdentifier:(id)identifier valueSource:(id)source actionSet:(id)set logger:(id)logger
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  setCopy = set;
+  loggerCopy = logger;
   v16 = MEMORY[0x277CBEAA8];
-  v17 = a3;
-  v18 = [v16 date];
-  v19 = [v14 lastExecutionDate];
-  [v18 timeIntervalSinceDate:v19];
+  characteristicsCopy = characteristics;
+  date = [v16 date];
+  lastExecutionDate = [setCopy lastExecutionDate];
+  [date timeIntervalSinceDate:lastExecutionDate];
   v21 = v20 < 60.0;
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __131__HFActionSetItem__valuesAtTargetStateForCharacteristics_targetValuesKeyedByCharacteristicIdentifier_valueSource_actionSet_logger___block_invoke;
   v28[3] = &unk_277E01A08;
-  v29 = v13;
-  v30 = v12;
-  v32 = v14;
-  v33 = a1;
+  v29 = sourceCopy;
+  v30 = identifierCopy;
+  v32 = setCopy;
+  selfCopy = self;
   v34 = v21;
-  v31 = v15;
-  v22 = v14;
-  v23 = v15;
-  v24 = v12;
-  v25 = v13;
-  v26 = [v17 na_map:v28];
+  v31 = loggerCopy;
+  v22 = setCopy;
+  v23 = loggerCopy;
+  v24 = identifierCopy;
+  v25 = sourceCopy;
+  v26 = [characteristicsCopy na_map:v28];
 
   return v26;
 }
@@ -696,20 +696,20 @@ LABEL_25:
   return v28;
 }
 
-+ (id)_valuesAtTargetStateForMediaActions:(id)a3 targetValuesKeyedByCharacteristicIdentifier:(id)a4 valueSource:(id)a5 actionSet:(id)a6 logger:(id)a7
++ (id)_valuesAtTargetStateForMediaActions:(id)actions targetValuesKeyedByCharacteristicIdentifier:(id)identifier valueSource:(id)source actionSet:(id)set logger:(id)logger
 {
-  v10 = a6;
-  v11 = a7;
+  setCopy = set;
+  loggerCopy = logger;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __128__HFActionSetItem__valuesAtTargetStateForMediaActions_targetValuesKeyedByCharacteristicIdentifier_valueSource_actionSet_logger___block_invoke;
   v16[3] = &unk_277E01A80;
-  v17 = v11;
-  v18 = v10;
-  v19 = a1;
-  v12 = v10;
-  v13 = v11;
-  v14 = [a3 na_flatMap:v16];
+  v17 = loggerCopy;
+  v18 = setCopy;
+  selfCopy = self;
+  v12 = setCopy;
+  v13 = loggerCopy;
+  v14 = [actions na_flatMap:v16];
 
   return v14;
 }
@@ -1176,16 +1176,16 @@ LABEL_33:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_valuesAtTargetStateForNaturalLightActions:(id)a3 valueSource:(id)a4
++ (id)_valuesAtTargetStateForNaturalLightActions:(id)actions valueSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__HFActionSetItem__valuesAtTargetStateForNaturalLightActions_valueSource___block_invoke;
   v9[3] = &unk_277E01AA8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 na_map:v9];
+  v10 = sourceCopy;
+  v6 = sourceCopy;
+  v7 = [actions na_map:v9];
 
   return v7;
 }
@@ -1272,14 +1272,14 @@ id __56__HFActionSetItem__valuesAtTargetStateForMatterActions___block_invoke(uin
   return v10;
 }
 
-+ (id)_primaryStateForActionSet:(id)a3 valueSource:(id)a4 logger:(id)a5 fastInitialUpdate:(BOOL)a6
++ (id)_primaryStateForActionSet:(id)set valueSource:(id)source logger:(id)logger fastInitialUpdate:(BOOL)update
 {
-  v6 = a6;
+  updateCopy = update;
   v84 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v6)
+  setCopy = set;
+  sourceCopy = source;
+  loggerCopy = logger;
+  if (updateCopy)
   {
     v13 = MEMORY[0x277D2C900];
     v14 = &unk_282525158;
@@ -1288,8 +1288,8 @@ LABEL_41:
     goto LABEL_44;
   }
 
-  v15 = [v10 actions];
-  v16 = [v15 count];
+  actions = [setCopy actions];
+  v16 = [actions count];
 
   if (!v16)
   {
@@ -1298,21 +1298,21 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v68 = a1;
-  v69 = v12;
-  v70 = v11;
-  v75 = [MEMORY[0x277CBEB38] dictionary];
-  v74 = [MEMORY[0x277CBEB38] dictionary];
-  v76 = [MEMORY[0x277CBEB18] array];
-  v73 = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  v69 = loggerCopy;
+  v70 = sourceCopy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   [MEMORY[0x277CBEB18] array];
-  v72 = v71 = v10;
+  v72 = v71 = setCopy;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v17 = [v10 actions];
-  v18 = [v17 countByEnumeratingWithState:&v79 objects:v83 count:16];
+  actions2 = [setCopy actions];
+  v18 = [actions2 countByEnumeratingWithState:&v79 objects:v83 count:16];
   if (!v18)
   {
     v20 = 0;
@@ -1332,7 +1332,7 @@ LABEL_41:
     {
       if (*v80 != v21)
       {
-        objc_enumerationMutation(v17);
+        objc_enumerationMutation(actions2);
       }
 
       v27 = *(*(&v79 + 1) + 8 * i);
@@ -1341,13 +1341,13 @@ LABEL_41:
       if (objc_opt_isKindOfClass())
       {
         v29 = v27;
-        v30 = [v29 characteristic];
-        v31 = [v30 service];
-        v32 = [v31 uniqueIdentifier];
+        characteristic = [v29 characteristic];
+        service = [characteristic service];
+        uniqueIdentifier = [service uniqueIdentifier];
 
-        if (v30)
+        if (characteristic)
         {
-          v33 = v32 == 0;
+          v33 = uniqueIdentifier == 0;
         }
 
         else
@@ -1357,21 +1357,21 @@ LABEL_41:
 
         if (!v33)
         {
-          v34 = [v29 targetValue];
+          targetValue = [v29 targetValue];
 
-          if (v34)
+          if (targetValue)
           {
-            v77 = [v75 na_objectForKey:v32 withDefaultValue:&__block_literal_global_114_2];
-            [v77 addObject:v30];
-            v35 = [v29 targetValue];
-            [v30 uniqueIdentifier];
+            v77 = [dictionary na_objectForKey:uniqueIdentifier withDefaultValue:&__block_literal_global_114_2];
+            [v77 addObject:characteristic];
+            targetValue2 = [v29 targetValue];
+            [characteristic uniqueIdentifier];
             v36 = v19;
             v37 = v21;
             v38 = v20 + 1;
-            v40 = v39 = v17;
-            [v74 setObject:v35 forKeyedSubscript:v40];
+            v40 = v39 = actions2;
+            [dictionary2 setObject:targetValue2 forKeyedSubscript:v40];
 
-            v17 = v39;
+            actions2 = v39;
             v20 = v38;
             v21 = v37;
             v19 = v36;
@@ -1409,11 +1409,11 @@ LABEL_41:
 
           if ([v29 state] || (objc_msgSend(v29, "volume"), v45 = objc_claimAutoreleasedReturnValue(), v45, v45))
           {
-            v46 = [v29 mediaProfiles];
-            v20 += [v46 count];
+            mediaProfiles = [v29 mediaProfiles];
+            v20 += [mediaProfiles count];
           }
 
-          [v76 addObject:v29];
+          [array addObject:v29];
           v24 = 0x277CD1000;
           v25 = 0x277CD1000;
         }
@@ -1442,7 +1442,7 @@ LABEL_41:
 
             v25 = 0x277CD1000;
             ++v20;
-            v51 = v73;
+            v51 = array2;
           }
 
           else
@@ -1480,32 +1480,32 @@ LABEL_41:
       }
     }
 
-    v19 = [v17 countByEnumeratingWithState:&v79 objects:v83 count:16];
+    v19 = [actions2 countByEnumeratingWithState:&v79 objects:v83 count:16];
   }
 
   while (v19);
 LABEL_43:
 
-  v57 = [MEMORY[0x277CBEB18] array];
-  v58 = [v75 allValues];
-  v12 = v69;
-  v11 = v70;
-  v10 = v71;
-  v59 = [v68 _valuesAtTargetStateForCharacteristics:v58 targetValuesKeyedByCharacteristicIdentifier:v74 valueSource:v70 actionSet:v71 logger:v69];
-  [v57 addObjectsFromArray:v59];
+  array3 = [MEMORY[0x277CBEB18] array];
+  allValues = [dictionary allValues];
+  loggerCopy = v69;
+  sourceCopy = v70;
+  setCopy = v71;
+  v59 = [selfCopy _valuesAtTargetStateForCharacteristics:allValues targetValuesKeyedByCharacteristicIdentifier:dictionary2 valueSource:v70 actionSet:v71 logger:v69];
+  [array3 addObjectsFromArray:v59];
 
-  v60 = [v68 _valuesAtTargetStateForMediaActions:v76 targetValuesKeyedByCharacteristicIdentifier:v74 valueSource:v70 actionSet:v71 logger:v69];
-  [v57 addObjectsFromArray:v60];
+  v60 = [selfCopy _valuesAtTargetStateForMediaActions:array targetValuesKeyedByCharacteristicIdentifier:dictionary2 valueSource:v70 actionSet:v71 logger:v69];
+  [array3 addObjectsFromArray:v60];
 
-  v61 = [v68 _valuesAtTargetStateForNaturalLightActions:v73 valueSource:v70];
-  [v57 addObjectsFromArray:v61];
+  v61 = [selfCopy _valuesAtTargetStateForNaturalLightActions:array2 valueSource:v70];
+  [array3 addObjectsFromArray:v61];
 
-  v62 = [v68 _valuesAtTargetStateForMatterActions:v72];
-  [v57 addObjectsFromArray:v62];
+  v62 = [selfCopy _valuesAtTargetStateForMatterActions:v72];
+  [array3 addObjectsFromArray:v62];
 
   v63 = MEMORY[0x277D2C900];
-  v64 = [MEMORY[0x277D2C938] immediateScheduler];
-  v65 = [v63 combineAllFutures:v57 ignoringErrors:1 scheduler:v64];
+  immediateScheduler = [MEMORY[0x277D2C938] immediateScheduler];
+  v65 = [v63 combineAllFutures:array3 ignoringErrors:1 scheduler:immediateScheduler];
   v78[0] = MEMORY[0x277D85DD0];
   v78[1] = 3221225472;
   v78[2] = __82__HFActionSetItem__primaryStateForActionSet_valueSource_logger_fastInitialUpdate___block_invoke_2;
@@ -1601,11 +1601,11 @@ id __82__HFActionSetItem__primaryStateForActionSet_valueSource_logger_fastInitia
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v4 = [(HFActionSetItem *)self actionSet];
-  v5 = [v4 actions];
+  actionSet = [(HFActionSetItem *)self actionSet];
+  actions = [actionSet actions];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v45 objects:v51 count:16];
+  obj = actions;
+  v6 = [actions countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1629,11 +1629,11 @@ id __82__HFActionSetItem__primaryStateForActionSet_valueSource_logger_fastInitia
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v12 characteristic];
-          v15 = [v14 service];
-          v16 = [v15 accessory];
-          v17 = [v16 room];
-          [v3 na_safeAddObject:v17];
+          characteristic = [v12 characteristic];
+          service = [characteristic service];
+          accessory = [service accessory];
+          room = [accessory room];
+          [v3 na_safeAddObject:room];
         }
 
         else
@@ -1645,17 +1645,17 @@ id __82__HFActionSetItem__primaryStateForActionSet_valueSource_logger_fastInitia
             goto LABEL_25;
           }
 
-          v14 = v12;
+          characteristic = v12;
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v15 = [v14 mediaProfiles];
-          v19 = [v15 countByEnumeratingWithState:&v41 objects:v50 count:16];
+          service = [characteristic mediaProfiles];
+          v19 = [service countByEnumeratingWithState:&v41 objects:v50 count:16];
           if (v19)
           {
             v20 = v19;
-            v34 = v14;
+            v34 = characteristic;
             v35 = v11;
             v21 = *v42;
             do
@@ -1664,7 +1664,7 @@ id __82__HFActionSetItem__primaryStateForActionSet_valueSource_logger_fastInitia
               {
                 if (*v42 != v21)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(service);
                 }
 
                 v23 = *(*(&v41 + 1) + 8 * i);
@@ -1672,8 +1672,8 @@ id __82__HFActionSetItem__primaryStateForActionSet_valueSource_logger_fastInitia
                 v38 = 0u;
                 v39 = 0u;
                 v40 = 0u;
-                v24 = [v23 accessories];
-                v25 = [v24 countByEnumeratingWithState:&v37 objects:v49 count:16];
+                accessories = [v23 accessories];
+                v25 = [accessories countByEnumeratingWithState:&v37 objects:v49 count:16];
                 if (v25)
                 {
                   v26 = v25;
@@ -1684,21 +1684,21 @@ id __82__HFActionSetItem__primaryStateForActionSet_valueSource_logger_fastInitia
                     {
                       if (*v38 != v27)
                       {
-                        objc_enumerationMutation(v24);
+                        objc_enumerationMutation(accessories);
                       }
 
-                      v29 = [*(*(&v37 + 1) + 8 * j) room];
-                      [v3 na_safeAddObject:v29];
+                      room2 = [*(*(&v37 + 1) + 8 * j) room];
+                      [v3 na_safeAddObject:room2];
                     }
 
-                    v26 = [v24 countByEnumeratingWithState:&v37 objects:v49 count:16];
+                    v26 = [accessories countByEnumeratingWithState:&v37 objects:v49 count:16];
                   }
 
                   while (v26);
                 }
               }
 
-              v20 = [v15 countByEnumeratingWithState:&v41 objects:v50 count:16];
+              v20 = [service countByEnumeratingWithState:&v41 objects:v50 count:16];
             }
 
             while (v20);
@@ -1706,7 +1706,7 @@ id __82__HFActionSetItem__primaryStateForActionSet_valueSource_logger_fastInitia
             v7 = v33;
             v9 = 0x277CD1000;
             v10 = 0x277CD1000;
-            v14 = v34;
+            characteristic = v34;
             v11 = v35;
           }
         }
@@ -1729,7 +1729,7 @@ LABEL_25:
 
 - (id)executeActionSet
 {
-  v3 = [(HFActionSetItem *)self valueSource];
+  valueSource = [(HFActionSetItem *)self valueSource];
   v4 = objc_opt_respondsToSelector();
 
   v5 = MEMORY[0x277D2C900];
@@ -1737,8 +1737,8 @@ LABEL_25:
   {
     v6 = objc_alloc_init(MEMORY[0x277D2C900]);
     objc_initWeak(&location, self);
-    v7 = [(HFActionSetItem *)self valueSource];
-    v8 = [(HFActionSetItem *)self actionSet];
+    valueSource2 = [(HFActionSetItem *)self valueSource];
+    actionSet = [(HFActionSetItem *)self actionSet];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __35__HFActionSetItem_executeActionSet__block_invoke;
@@ -1746,7 +1746,7 @@ LABEL_25:
     objc_copyWeak(&v14, &location);
     v9 = v6;
     v13 = v9;
-    [v7 executeActionSet:v8 completionHandler:v12];
+    [valueSource2 executeActionSet:actionSet completionHandler:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -1789,11 +1789,11 @@ void __35__HFActionSetItem_executeActionSet__block_invoke(uint64_t a1, void *a2)
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v3 = [(HFActionSetItem *)self actionSet];
-  v4 = [v3 actions];
+  actionSet = [(HFActionSetItem *)self actionSet];
+  actions = [actionSet actions];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  obj = actions;
+  v5 = [actions countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1812,17 +1812,17 @@ void __35__HFActionSetItem_executeActionSet__block_invoke(uint64_t a1, void *a2)
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
-          v11 = [v10 characteristic];
-          v12 = [v10 targetValue];
-          v13 = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
-          v14 = [v11 characteristicType];
-          if ([v13 containsObject:v14])
+          characteristic = [v10 characteristic];
+          targetValue = [v10 targetValue];
+          hf_powerStateCharacteristicTypes = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
+          characteristicType = [characteristic characteristicType];
+          if ([hf_powerStateCharacteristicTypes containsObject:characteristicType])
           {
-            v15 = [v12 isEqual:MEMORY[0x277CBEC38]];
+            v15 = [targetValue isEqual:MEMORY[0x277CBEC38]];
 
             if (v15)
             {
-              [v30 addObject:v11];
+              [v30 addObject:characteristic];
             }
           }
 
@@ -1855,8 +1855,8 @@ void __35__HFActionSetItem_executeActionSet__block_invoke(uint64_t a1, void *a2)
 
         if ([v10 state] == 1)
         {
-          v11 = [v10 mediaProfiles];
-          [v29 unionSet:v11];
+          characteristic = [v10 mediaProfiles];
+          [v29 unionSet:characteristic];
 LABEL_18:
         }
       }
@@ -1867,9 +1867,9 @@ LABEL_18:
     while (v6);
   }
 
-  v18 = [(HFActionSetItem *)v28 actionSet];
-  v19 = [v18 home];
-  v20 = [v19 hf_characteristicValueManager];
+  actionSet2 = [(HFActionSetItem *)v28 actionSet];
+  home = [actionSet2 home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
 
   v21 = MEMORY[0x277D2C900];
   v32[0] = MEMORY[0x277D85DD0];
@@ -1878,9 +1878,9 @@ LABEL_18:
   v32[3] = &unk_277DFD1F8;
   v33 = v30;
   v34 = v29;
-  v35 = v20;
+  v35 = hf_characteristicValueManager;
   v36 = v28;
-  v22 = v20;
+  v22 = hf_characteristicValueManager;
   v23 = v29;
   v24 = v30;
   v25 = [v21 futureWithBlock:v32];
@@ -1947,30 +1947,30 @@ void __35__HFActionSetItem_turnOffActionSet__block_invoke_3(uint64_t a1, void *a
   [v7 finishWithResult:v6 error:v8];
 }
 
-- (id)actionSetOperation:(id)a3 errorFromError:(id)a4
+- (id)actionSetOperation:(id)operation errorFromError:(id)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v7 = v6;
+    v7 = errorCopy;
     v8 = MEMORY[0x277CBEB38];
-    v9 = a3;
-    v10 = [v8 dictionary];
-    [v10 setObject:v9 forKeyedSubscript:@"HFErrorUserInfoOperationKey"];
+    operationCopy = operation;
+    dictionary = [v8 dictionary];
+    [dictionary setObject:operationCopy forKeyedSubscript:@"HFErrorUserInfoOperationKey"];
 
-    v11 = [(HFItem *)self latestResults];
-    v12 = [v11 objectForKeyedSubscript:@"title"];
+    latestResults = [(HFItem *)self latestResults];
+    v12 = [latestResults objectForKeyedSubscript:@"title"];
 
     if (v12)
     {
       v17 = @"HFErrorHandlerOptionFailedItemName";
       v18[0] = v12;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-      [v10 setObject:v13 forKeyedSubscript:@"HFErrorUserInfoOptionsKey"];
+      [dictionary setObject:v13 forKeyedSubscript:@"HFErrorUserInfoOptionsKey"];
     }
 
-    v14 = [v7 hf_errorWithAddedUserInfo:v10];
+    v14 = [v7 hf_errorWithAddedUserInfo:dictionary];
   }
 
   else

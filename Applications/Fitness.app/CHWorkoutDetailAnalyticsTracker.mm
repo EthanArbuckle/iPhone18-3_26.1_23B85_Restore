@@ -1,11 +1,11 @@
 @interface CHWorkoutDetailAnalyticsTracker
 + (CHWorkoutDetailAnalyticsTracker)sharedInstance;
 - (CHWorkoutDetailAnalyticsTracker)init;
-- (id)workoutAnalyticsHandlerFor:(id)a3 workoutActivity:(id)a4;
-- (void)applicationWillTerminateWithNotification:(id)a3;
-- (void)sendEventWith:(id)a3;
-- (void)startTrackingWorkout:(id)a3 workoutActivity:(id)a4;
-- (void)stopTrackingWorkout:(id)a3 workoutActivity:(id)a4;
+- (id)workoutAnalyticsHandlerFor:(id)for workoutActivity:(id)activity;
+- (void)applicationWillTerminateWithNotification:(id)notification;
+- (void)sendEventWith:(id)with;
+- (void)startTrackingWorkout:(id)workout workoutActivity:(id)activity;
+- (void)stopTrackingWorkout:(id)workout workoutActivity:(id)activity;
 @end
 
 @implementation CHWorkoutDetailAnalyticsTracker
@@ -30,54 +30,54 @@
   v2 = [(CHWorkoutDetailAnalyticsTracker *)&v7 init];
   v3 = objc_opt_self();
   v4 = v2;
-  v5 = [v3 defaultCenter];
-  [v5 addObserver:v4 selector:"applicationWillTerminateWithNotification:" name:UIApplicationWillTerminateNotification object:0];
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter addObserver:v4 selector:"applicationWillTerminateWithNotification:" name:UIApplicationWillTerminateNotification object:0];
 
   return v4;
 }
 
-- (void)applicationWillTerminateWithNotification:(id)a3
+- (void)applicationWillTerminateWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100674BC4();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)sendEventWith:(id)a3
+- (void)sendEventWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
+  withCopy = with;
+  selfCopy = self;
   sub_10067572C();
 }
 
-- (void)startTrackingWorkout:(id)a3 workoutActivity:(id)a4
+- (void)startTrackingWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100674FB4(v6, a4);
+  workoutCopy = workout;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_100674FB4(workoutCopy, activity);
 }
 
-- (void)stopTrackingWorkout:(id)a3 workoutActivity:(id)a4
+- (void)stopTrackingWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100675220(v6, a4);
+  workoutCopy = workout;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_100675220(workoutCopy, activity);
 }
 
-- (id)workoutAnalyticsHandlerFor:(id)a3 workoutActivity:(id)a4
+- (id)workoutAnalyticsHandlerFor:(id)for workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1006754A8(v6, a4);
+  forCopy = for;
+  activityCopy = activity;
+  selfCopy = self;
+  v9 = sub_1006754A8(forCopy, activity);
 
   return v9;
 }

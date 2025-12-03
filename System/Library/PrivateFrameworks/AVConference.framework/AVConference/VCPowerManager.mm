@@ -1,19 +1,19 @@
 @interface VCPowerManager
-- (BOOL)isFeatureEnabled:(unsigned int)a3;
+- (BOOL)isFeatureEnabled:(unsigned int)enabled;
 - (VCPowerManager)init;
-- (id)featureName:(unsigned int)a3;
+- (id)featureName:(unsigned int)name;
 - (unsigned)mode;
 - (void)dealloc;
-- (void)didChangeThermalLevel:(int)a3;
-- (void)dispatchedSetFeature:(unsigned int)a3 enable:(BOOL)a4;
+- (void)didChangeThermalLevel:(int)level;
+- (void)dispatchedSetFeature:(unsigned int)feature enable:(BOOL)enable;
 - (void)init;
 - (void)mode;
-- (void)notifyDelegatesDidChangeThermalLevel:(int)a3;
-- (void)notifyDelegatesDidEnableLowPowerMode:(BOOL)a3;
-- (void)registerForThermalEvents:(id)a3;
+- (void)notifyDelegatesDidChangeThermalLevel:(int)level;
+- (void)notifyDelegatesDidEnableLowPowerMode:(BOOL)mode;
+- (void)registerForThermalEvents:(id)events;
 - (void)registerForThermalNotifications;
-- (void)setFeature:(unsigned int)a3 enable:(BOOL)a4;
-- (void)unregisterForThermalEvents:(id)a3;
+- (void)setFeature:(unsigned int)feature enable:(BOOL)enable;
+- (void)unregisterForThermalEvents:(id)events;
 - (void)updateLowPowerMode;
 - (void)updateThermalMitigationEnablement;
 @end
@@ -128,7 +128,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = "VCPowerManager [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -146,10 +146,10 @@ LABEL_11:
   [(VCPowerManager *)&v11 dealloc];
 }
 
-- (void)registerForThermalEvents:(id)a3
+- (void)registerForThermalEvents:(id)events
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (events)
   {
     powerManagerQueue = self->_powerManagerQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -157,7 +157,7 @@ LABEL_11:
     block[2] = __43__VCPowerManager_registerForThermalEvents___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = events;
     dispatch_async(powerManagerQueue, block);
   }
 }
@@ -200,10 +200,10 @@ uint64_t __43__VCPowerManager_registerForThermalEvents___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)unregisterForThermalEvents:(id)a3
+- (void)unregisterForThermalEvents:(id)events
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (events)
   {
     delegateQueue = self->_delegateQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -211,7 +211,7 @@ uint64_t __43__VCPowerManager_registerForThermalEvents___block_invoke_2(uint64_t
     block[2] = __45__VCPowerManager_unregisterForThermalEvents___block_invoke;
     block[3] = &unk_1E85F40E0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = events;
     dispatch_async(delegateQueue, block);
   }
 }
@@ -297,7 +297,7 @@ LABEL_13:
   return result;
 }
 
-- (void)notifyDelegatesDidChangeThermalLevel:(int)a3
+- (void)notifyDelegatesDidChangeThermalLevel:(int)level
 {
   v6 = *MEMORY[0x1E69E9840];
   delegateQueue = self->_delegateQueue;
@@ -306,7 +306,7 @@ LABEL_13:
   block[2] = __55__VCPowerManager_notifyDelegatesDidChangeThermalLevel___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  levelCopy = level;
   dispatch_async(delegateQueue, block);
 }
 
@@ -353,7 +353,7 @@ uint64_t __55__VCPowerManager_notifyDelegatesDidChangeThermalLevel___block_invok
   return result;
 }
 
-- (void)notifyDelegatesDidEnableLowPowerMode:(BOOL)a3
+- (void)notifyDelegatesDidEnableLowPowerMode:(BOOL)mode
 {
   v6 = *MEMORY[0x1E69E9840];
   delegateQueue = self->_delegateQueue;
@@ -362,7 +362,7 @@ uint64_t __55__VCPowerManager_notifyDelegatesDidChangeThermalLevel___block_invok
   block[2] = __55__VCPowerManager_notifyDelegatesDidEnableLowPowerMode___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  modeCopy = mode;
   dispatch_async(delegateQueue, block);
 }
 
@@ -528,7 +528,7 @@ LABEL_13:
           v23 = 2112;
           v24 = v3;
           v25 = 2048;
-          v26 = self;
+          selfCopy2 = self;
           v27 = 1024;
           v28 = v14;
           v8 = "VCPowerManager [%s] %s:%d %@(%p) _mode=%d";
@@ -550,7 +550,7 @@ LABEL_13:
         v23 = 2112;
         v24 = v3;
         v25 = 2048;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 1024;
         v28 = v15;
         _os_log_debug_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEBUG, "VCPowerManager [%s] %s:%d %@(%p) _mode=%d", &v17, 0x36u);
@@ -575,16 +575,16 @@ LABEL_13:
   }
 }
 
-- (id)featureName:(unsigned int)a3
+- (id)featureName:(unsigned int)name
 {
-  if (a3 <= 3)
+  if (name <= 3)
   {
-    if (a3 == 1)
+    if (name == 1)
     {
       return @"Captions";
     }
 
-    if (a3 == 2)
+    if (name == 2)
     {
       return @"Translation";
     }
@@ -592,7 +592,7 @@ LABEL_13:
 
   else
   {
-    switch(a3)
+    switch(name)
     {
       case 4u:
         return @"ThermalLight";
@@ -606,18 +606,18 @@ LABEL_13:
   return @"Invalid";
 }
 
-- (void)dispatchedSetFeature:(unsigned int)a3 enable:(BOOL)a4
+- (void)dispatchedSetFeature:(unsigned int)feature enable:(BOOL)enable
 {
-  v4 = a4;
-  v5 = *&a3;
+  enableCopy = enable;
+  v5 = *&feature;
   v30 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_powerManagerQueue);
   currentFeatures = self->_currentFeatures;
-  if (((currentFeatures & v5) == 0) == v4)
+  if (((currentFeatures & v5) == 0) == enableCopy)
   {
     v9 = currentFeatures & ~v5;
     v10 = currentFeatures | v5;
-    if (!v4)
+    if (!enableCopy)
     {
       v10 = v9;
     }
@@ -646,7 +646,7 @@ LABEL_13:
       WORD2(v27) = 2112;
       *(&v27 + 6) = [(VCPowerManager *)self featureName:v5];
       HIWORD(v27) = 1024;
-      LODWORD(v28) = v4;
+      LODWORD(selfCopy2) = enableCopy;
       v19 = "VCPowerManager [%s] %s:%d Feature=%@ enabled=%d";
       v20 = v18;
       v21 = 44;
@@ -685,11 +685,11 @@ LABEL_13:
       WORD2(v27) = 2112;
       *(&v27 + 6) = v11;
       HIWORD(v27) = 2048;
-      v28 = self;
+      selfCopy2 = self;
       LOWORD(v29) = 2112;
       *(&v29 + 2) = [(VCPowerManager *)self featureName:v5];
       WORD5(v29) = 1024;
-      HIDWORD(v29) = v4;
+      HIDWORD(v29) = enableCopy;
       v19 = "VCPowerManager [%s] %s:%d %@(%p) Feature=%@ enabled=%d";
       v20 = v25;
       v21 = 64;
@@ -718,7 +718,7 @@ LABEL_26:
         WORD2(v27) = 2112;
         *(&v27 + 6) = [(VCPowerManager *)self featureName:v5];
         HIWORD(v27) = 1024;
-        LODWORD(v28) = v4;
+        LODWORD(selfCopy2) = enableCopy;
         v14 = "VCPowerManager [%s] %s:%d Feature=%@ already set to enabled=%d";
         v15 = v13;
         v16 = 44;
@@ -755,11 +755,11 @@ LABEL_20:
         WORD2(v27) = 2112;
         *(&v27 + 6) = v8;
         HIWORD(v27) = 2048;
-        v28 = self;
+        selfCopy2 = self;
         LOWORD(v29) = 2112;
         *(&v29 + 2) = [(VCPowerManager *)self featureName:v5];
         WORD5(v29) = 1024;
-        HIDWORD(v29) = v4;
+        HIDWORD(v29) = enableCopy;
         v14 = "VCPowerManager [%s] %s:%d %@(%p) Feature=%@ already set to enabled=%d";
         v15 = v23;
         v16 = 64;
@@ -769,7 +769,7 @@ LABEL_20:
   }
 }
 
-- (void)setFeature:(unsigned int)a3 enable:(BOOL)a4
+- (void)setFeature:(unsigned int)feature enable:(BOOL)enable
 {
   v8 = *MEMORY[0x1E69E9840];
   powerManagerQueue = self->_powerManagerQueue;
@@ -778,12 +778,12 @@ LABEL_20:
   block[2] = __36__VCPowerManager_setFeature_enable___block_invoke;
   block[3] = &unk_1E85F7418;
   block[4] = self;
-  v6 = a3;
-  v7 = a4;
+  featureCopy = feature;
+  enableCopy = enable;
   dispatch_async(powerManagerQueue, block);
 }
 
-- (BOOL)isFeatureEnabled:(unsigned int)a3
+- (BOOL)isFeatureEnabled:(unsigned int)enabled
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -797,18 +797,18 @@ LABEL_20:
   v6[3] = &unk_1E85F61A8;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a3;
+  enabledCopy = enabled;
   dispatch_sync(powerManagerQueue, v6);
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   return v4;
 }
 
-- (void)didChangeThermalLevel:(int)a3
+- (void)didChangeThermalLevel:(int)level
 {
   v26 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_powerManagerQueue);
-  if (self->_thermalLevel != a3)
+  if (self->_thermalLevel != level)
   {
     if (objc_opt_class() == self)
     {
@@ -832,7 +832,7 @@ LABEL_20:
       v19 = v8;
       *v20 = v9;
       *&v20[4] = v8;
-      *&v20[6] = a3;
+      *&v20[6] = level;
       v10 = "VCPowerManager [%s] %s:%d Thermal level changed from prevThermalLevel=%d to newThermalLevel=%d";
       v11 = v7;
       v12 = 40;
@@ -870,11 +870,11 @@ LABEL_20:
       v19 = 2112;
       *v20 = v5;
       *&v20[8] = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = v15;
       v23 = v16;
       v24 = v15;
-      v25 = a3;
+      levelCopy = level;
       v10 = "VCPowerManager [%s] %s:%d %@(%p) Thermal level changed from prevThermalLevel=%d to newThermalLevel=%d";
       v11 = v14;
       v12 = 60;
@@ -882,7 +882,7 @@ LABEL_20:
 
     _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, v10, &v17, v12);
 LABEL_13:
-    self->_thermalLevel = a3;
+    self->_thermalLevel = level;
     [(VCPowerManager *)self updateThermalMitigationEnablement];
     [(VCPowerManager *)self notifyDelegatesDidChangeThermalLevel:self->_thermalLevel];
   }
@@ -907,7 +907,7 @@ LABEL_13:
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = 136315906;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2080;
   OUTLINED_FUNCTION_7();
   v7 = 247;

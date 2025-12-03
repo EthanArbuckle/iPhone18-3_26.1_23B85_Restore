@@ -1,16 +1,16 @@
 @interface IAPNavigationAccessory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requestedSourceNameForAnyComponent;
 - (BOOL)requestedSourceSupportsRouteGuidanceForAnyComponent;
-- (IAPNavigationAccessory)initWithDict:(id)a3;
+- (IAPNavigationAccessory)initWithDict:(id)dict;
 @end
 
 @implementation IAPNavigationAccessory
 
-- (IAPNavigationAccessory)initWithDict:(id)a3
+- (IAPNavigationAccessory)initWithDict:(id)dict
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictCopy = dict;
   v26.receiver = self;
   v26.super_class = IAPNavigationAccessory;
   v5 = [(IAPNavigationAccessory *)&v26 init];
@@ -22,15 +22,15 @@
     components = v6->_components;
     v6->_components = v7;
 
-    v9 = [v4 objectForKey:@"identifier"];
-    v10 = [v9 unsignedIntegerValue];
+    v9 = [dictCopy objectForKey:@"identifier"];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    if (v10)
+    if (unsignedIntegerValue)
     {
-      v6->_identifier = v10;
+      v6->_identifier = unsignedIntegerValue;
     }
 
-    v11 = [v4 objectForKey:@"components"];
+    v11 = [dictCopy objectForKey:@"components"];
     if (v11)
     {
       objc_opt_class();
@@ -81,14 +81,14 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = identifier == [v4 identifier];
+    v6 = identifier == [equalCopy identifier];
   }
 
   else

@@ -1,9 +1,9 @@
 @interface ML3MusicLibrary
 + (BOOL)deviceSupportsASTC;
-+ (BOOL)dropIndexesUsingConnection:(id)a3 tableNames:(const char *)a4;
-+ (BOOL)orderingLanguageMatchesSystemUsingConnection:(id)a3;
++ (BOOL)dropIndexesUsingConnection:(id)connection tableNames:(const char *)names;
++ (BOOL)orderingLanguageMatchesSystemUsingConnection:(id)connection;
 + (BOOL)shouldOptimizeStorage;
-+ (BOOL)userVersionMatchesSystemUsingConnection:(id)a3;
++ (BOOL)userVersionMatchesSystemUsingConnection:(id)connection;
 + (ML3MusicLibrary)autoupdatingSharedLibrary;
 + (NSArray)allLibraries;
 + (NSArray)registeredLibraries;
@@ -11,117 +11,117 @@
 + (NSMutableDictionary)musicLibraryPerUserDSID;
 + (NSString)autoupdatingSharedLibraryPath;
 + (OS_dispatch_queue)globalSerialQueue;
-+ (id)_onGlobalQueue_shareableMusicLibraryWithResourcesManager:(id)a3 libraryFilePath:(id)a4;
++ (id)_onGlobalQueue_shareableMusicLibraryWithResourcesManager:(id)manager libraryFilePath:(id)path;
 + (id)allLibraryContainerPaths;
 + (id)allSchemaSQL;
 + (id)allTables;
 + (id)allTriggersSQL;
-+ (id)artworkRelativePathFromToken:(id)a3 variantType:(int64_t)a4;
++ (id)artworkRelativePathFromToken:(id)token variantType:(int64_t)type;
 + (id)cloudAssetsSharedCacheFolderPath;
-+ (id)databasePathForUnitTest:(id)a3 withBasePath:(id)a4;
++ (id)databasePathForUnitTest:(id)test withBasePath:(id)path;
 + (id)indexSchemaSQL;
 + (id)itemIndexSchemaSQL;
 + (id)itemNewSchemaSQL;
 + (id)itemSchemaSQL;
 + (id)libraryContainerPath;
-+ (id)libraryContainerPathByAppendingPathComponent:(id)a3;
-+ (id)libraryContainerRelativePath:(id)a3;
-+ (id)libraryPathForContainerPath:(id)a3;
-+ (id)localizedSectionHeaderForSectionHeader:(id)a3;
-+ (id)localizedSectionIndexTitleForSectionHeader:(id)a3;
++ (id)libraryContainerPathByAppendingPathComponent:(id)component;
++ (id)libraryContainerRelativePath:(id)path;
++ (id)libraryPathForContainerPath:(id)path;
++ (id)localizedSectionHeaderForSectionHeader:(id)header;
++ (id)localizedSectionIndexTitleForSectionHeader:(id)header;
 + (id)mediaFolderPath;
-+ (id)mediaFolderPathByAppendingPathComponent:(id)a3;
-+ (id)musicLibraryForUserAccount:(id)a3;
-+ (id)pathForBaseLocationPath:(int64_t)a3;
-+ (id)pathForResourceFileOrFolder:(int)a3;
-+ (id)pathForResourceFileOrFolder:(int)a3 basePath:(id)a4 relativeToBase:(BOOL)a5 createParentFolderIfNecessary:(BOOL)a6;
-+ (id)sectionIndexTitleForSectionHeader:(id)a3;
++ (id)mediaFolderPathByAppendingPathComponent:(id)component;
++ (id)musicLibraryForUserAccount:(id)account;
++ (id)pathForBaseLocationPath:(int64_t)path;
++ (id)pathForResourceFileOrFolder:(int)folder;
++ (id)pathForResourceFileOrFolder:(int)folder basePath:(id)path relativeToBase:(BOOL)base createParentFolderIfNecessary:(BOOL)necessary;
++ (id)sectionIndexTitleForSectionHeader:(id)header;
 + (id)sectionIndexTitles;
-+ (id)unitTestableLibraryForTest:(id)a3 basePath:(id)a4 setupSQLFilenames:(id)a5;
++ (id)unitTestableLibraryForTest:(id)test basePath:(id)path setupSQLFilenames:(id)filenames;
 + (id)widthLimitedSetValuesQueue;
-+ (int)userVersionUsingConnection:(id)a3;
-+ (int64_t)artworkSourceTypeForTrackSource:(int)a3;
++ (int)userVersionUsingConnection:(id)connection;
++ (int64_t)artworkSourceTypeForTrackSource:(int)source;
 + (int64_t)devicePreferredImageFormat;
 + (int64_t)minimumPurgeableStorage;
 + (void)clearCloudAssetSharedCache;
-+ (void)enumerateSortMapTablesUsingBlock:(id)a3;
++ (void)enumerateSortMapTablesUsingBlock:(id)block;
 + (void)removeOrphanedTracks;
-+ (void)setAutoFilledTracksArePurgeable:(BOOL)a3;
-+ (void)setAutoupdatingSharedLibraryPath:(id)a3;
-+ (void)setGlobalPrivacyContextWithAuditToken:(id *)a3;
-+ (void)setMinimumPurgeableStorage:(int64_t)a3;
-+ (void)setShouldOptimizeStorage:(BOOL)a3;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)nameOrderForString:(id)a3;
-- (BOOL)_canConfigureMediaLibraryDatabaseConnection:(id)a3;
-- (BOOL)_clearAllRowsFromTables:(id)a3;
-- (BOOL)_coalesceMismatchedCollectionClass:(Class)a3 usingConnection:(id)a4;
-- (BOOL)_determineAndUpdateBestArtworkTokensForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 retrievalTime:(double)a6 preserveExistingAvailableToken:(BOOL)a7 variantType:(int64_t)a8 usingConnection:(id)a9;
-- (BOOL)_insertArtworkRowWithArtworkToken:(id)a3 artworkType:(int64_t)a4 sourceType:(int64_t)a5 variantType:(int64_t)a6 relativePath:(id)a7;
-- (BOOL)_insertArtworkRowWithArtworkToken:(id)a3 artworkType:(int64_t)a4 sourceType:(int64_t)a5 variantType:(int64_t)a6 relativePath:(id)a7 usingConnection:(id)a8;
-- (BOOL)_prepareForAccountChange:(id *)a3;
-- (BOOL)_removeInvalidAvailableArtworkTokensUsingConnection:(id)a3;
-- (BOOL)_removeOrphanedArtworkAssetsUsingConnection:(id)a3;
-- (BOOL)_removeOrphanedArtworkMetadataUsingConnection:(id)a3;
-- (BOOL)_removeOrphanedArtworkTokensUsingConnection:(id)a3;
-- (BOOL)_removeSource:(int)a3 fromPersistentIDS:(id)a4 forImportOperation:(id)a5 canonocalizeCollections:(BOOL)a6 usingConnection:(id)a7 postNotifications:(BOOL)a8;
++ (void)setAutoFilledTracksArePurgeable:(BOOL)purgeable;
++ (void)setAutoupdatingSharedLibraryPath:(id)path;
++ (void)setGlobalPrivacyContextWithAuditToken:(id *)token;
++ (void)setMinimumPurgeableStorage:(int64_t)storage;
++ (void)setShouldOptimizeStorage:(BOOL)storage;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)nameOrderForString:(id)string;
+- (BOOL)_canConfigureMediaLibraryDatabaseConnection:(id)connection;
+- (BOOL)_clearAllRowsFromTables:(id)tables;
+- (BOOL)_coalesceMismatchedCollectionClass:(Class)class usingConnection:(id)connection;
+- (BOOL)_determineAndUpdateBestArtworkTokensForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType retrievalTime:(double)time preserveExistingAvailableToken:(BOOL)token variantType:(int64_t)variantType usingConnection:(id)connection;
+- (BOOL)_insertArtworkRowWithArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType variantType:(int64_t)variantType relativePath:(id)path;
+- (BOOL)_insertArtworkRowWithArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType variantType:(int64_t)variantType relativePath:(id)path usingConnection:(id)connection;
+- (BOOL)_prepareForAccountChange:(id *)change;
+- (BOOL)_removeInvalidAvailableArtworkTokensUsingConnection:(id)connection;
+- (BOOL)_removeOrphanedArtworkAssetsUsingConnection:(id)connection;
+- (BOOL)_removeOrphanedArtworkMetadataUsingConnection:(id)connection;
+- (BOOL)_removeOrphanedArtworkTokensUsingConnection:(id)connection;
+- (BOOL)_removeSource:(int)source fromPersistentIDS:(id)s forImportOperation:(id)operation canonocalizeCollections:(BOOL)collections usingConnection:(id)connection postNotifications:(BOOL)notifications;
 - (BOOL)_shouldProcessAccountChanges;
-- (BOOL)_unmanagedPurgeShouldPurgeKeepLocalTracksForUrgency:(unint64_t)a3;
-- (BOOL)_updateBestArtworkTokensForArtworkToken:(id)a3 artworkType:(int64_t)a4 sourceType:(int64_t)a5 variantType:(int64_t)a6 preserveExistingAvailableToken:(BOOL)a7 usingConnection:(id)a8;
-- (BOOL)_validateDatabaseUsingConnection:(id)a3 error:(id *)a4;
-- (BOOL)cleanupArtworkWithOptions:(unint64_t)a3;
-- (BOOL)cleanupArtworkWithOptions:(unint64_t)a3 usingConnection:(id)a4;
+- (BOOL)_unmanagedPurgeShouldPurgeKeepLocalTracksForUrgency:(unint64_t)urgency;
+- (BOOL)_updateBestArtworkTokensForArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType variantType:(int64_t)variantType preserveExistingAvailableToken:(BOOL)availableToken usingConnection:(id)connection;
+- (BOOL)_validateDatabaseUsingConnection:(id)connection error:(id *)error;
+- (BOOL)cleanupArtworkWithOptions:(unint64_t)options;
+- (BOOL)cleanupArtworkWithOptions:(unint64_t)options usingConnection:(id)connection;
 - (BOOL)clearAllGeniusData;
-- (BOOL)coalesceMismatchedCollectionsUsingConnection:(id)a3;
-- (BOOL)coerceValidDatabaseWithError:(id *)a3;
+- (BOOL)coalesceMismatchedCollectionsUsingConnection:(id)connection;
+- (BOOL)coerceValidDatabaseWithError:(id *)error;
 - (BOOL)createIndexes;
-- (BOOL)deleteArtworkToken:(id)a3;
-- (BOOL)deleteDatabaseProperty:(id)a3;
+- (BOOL)deleteArtworkToken:(id)token;
+- (BOOL)deleteDatabaseProperty:(id)property;
 - (BOOL)downloadOnAddToLibrary;
 - (BOOL)emptyAllTables;
 - (BOOL)hasAddedToLibraryAppleMusicContent;
-- (BOOL)hasOriginalArtworkForRelativePath:(id)a3;
+- (BOOL)hasOriginalArtworkForRelativePath:(id)path;
 - (BOOL)hasPresignedValidity;
 - (BOOL)hasUserPinnedLibraryEntity;
 - (BOOL)hasUserPlaylists;
 - (BOOL)hasUserPlaylistsContainingAppleMusicContent;
-- (BOOL)importExistingOriginalArtworkWithArtworkToken:(id)a3 artworkType:(int64_t)a4 sourceType:(int64_t)a5 mediaType:(unsigned int)a6 variantType:(int64_t)a7;
-- (BOOL)importOriginalArtworkFromFileURL:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unsigned int)a7 variantType:(int64_t)a8 shouldPerformColorAnalysis:(BOOL)a9;
-- (BOOL)importOriginalArtworkFromImageData:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unsigned int)a7 variantType:(int64_t)a8 shouldPerformColorAnalysis:(BOOL)a9;
-- (BOOL)inTransactionUpdateSearchMapOnConnection:(id)a3;
-- (BOOL)inTransactionUpdateSortMapOnConnection:(id)a3 forceRebuild:(BOOL)a4 forceUpdateOriginals:(BOOL)a5;
-- (BOOL)isArtworkFetchableForPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 artworkSourceType:(int64_t)a6;
-- (BOOL)isArtworkTokenAvailable:(id)a3 forVariantType:(int64_t)a4;
+- (BOOL)importExistingOriginalArtworkWithArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType;
+- (BOOL)importOriginalArtworkFromFileURL:(id)l withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType shouldPerformColorAnalysis:(BOOL)analysis;
+- (BOOL)importOriginalArtworkFromImageData:(id)data withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType shouldPerformColorAnalysis:(BOOL)analysis;
+- (BOOL)inTransactionUpdateSearchMapOnConnection:(id)connection;
+- (BOOL)inTransactionUpdateSortMapOnConnection:(id)connection forceRebuild:(BOOL)rebuild forceUpdateOriginals:(BOOL)originals;
+- (BOOL)isArtworkFetchableForPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType artworkSourceType:(int64_t)sourceType;
+- (BOOL)isArtworkTokenAvailable:(id)available forVariantType:(int64_t)type;
 - (BOOL)isCurrentThreadInTransaction;
 - (BOOL)isHomeSharingLibrary;
 - (BOOL)isLibraryEmpty;
 - (BOOL)jaliscoHasCloudGeniusData;
 - (BOOL)jaliscoIsMusicGeniusUserEnabled;
 - (BOOL)jaliscoNeedsUpdateForTokens;
-- (BOOL)markSystemPurgeableMusicPath:(id)a3 forUrgency:(unint64_t)a4;
+- (BOOL)markSystemPurgeableMusicPath:(id)path forUrgency:(unint64_t)urgency;
 - (BOOL)mediaRestrictionEnabled;
-- (BOOL)performMainentanceTasksUsingActivity:(id)a3;
-- (BOOL)persistentID:(int64_t)a3 changedAfterRevision:(int64_t)a4 revisionTrackingCode:(int64_t)a5;
-- (BOOL)prepareUnitTestDatabaseWithSQLFromContentsOfFile:(id)a3 error:(id *)a4;
-- (BOOL)removeArtworkAssetWithToken:(id)a3;
-- (BOOL)removeSource:(int)a3 forImportOperation:(id)a4 usingConnection:(id)a5 postNotifications:(BOOL)a6;
-- (BOOL)repairAlbumArtistRelationshipsWithConnection:(id)a3;
-- (BOOL)requiresNonSchemaUpdatesOnConnection:(id)a3;
-- (BOOL)requiresSchemaOnlyUpdatesOnConnection:(id)a3;
+- (BOOL)performMainentanceTasksUsingActivity:(id)activity;
+- (BOOL)persistentID:(int64_t)d changedAfterRevision:(int64_t)revision revisionTrackingCode:(int64_t)code;
+- (BOOL)prepareUnitTestDatabaseWithSQLFromContentsOfFile:(id)file error:(id *)error;
+- (BOOL)removeArtworkAssetWithToken:(id)token;
+- (BOOL)removeSource:(int)source forImportOperation:(id)operation usingConnection:(id)connection postNotifications:(BOOL)notifications;
+- (BOOL)repairAlbumArtistRelationshipsWithConnection:(id)connection;
+- (BOOL)requiresNonSchemaUpdatesOnConnection:(id)connection;
+- (BOOL)requiresSchemaOnlyUpdatesOnConnection:(id)connection;
 - (BOOL)sagaForcePerformDeltaSync;
 - (BOOL)sagaInitiateClientResetSync;
 - (BOOL)sagaNeedsFullUpdate;
 - (BOOL)sagaPrefersToMergeWithCloudLibrary;
-- (BOOL)sanitizeSortMapContentsUsingConnection:(id)a3 didSortMapEntries:(BOOL *)a4;
-- (BOOL)setValue:(id)a3 forDatabaseProperty:(id)a4;
+- (BOOL)sanitizeSortMapContentsUsingConnection:(id)connection didSortMapEntries:(BOOL *)entries;
+- (BOOL)setValue:(id)value forDatabaseProperty:(id)property;
 - (BOOL)supportsUbiquitousPlaybackPositions;
 - (BOOL)updateSortMap;
-- (BOOL)updateSortMapOnConnection:(id)a3 forceUpdateOriginals:(BOOL)a4;
-- (BOOL)updateSystemPlaylistNamesForCurrentLanguageUsingConnection:(id)a3;
+- (BOOL)updateSortMapOnConnection:(id)connection forceUpdateOriginals:(BOOL)originals;
+- (BOOL)updateSystemPlaylistNamesForCurrentLanguageUsingConnection:(id)connection;
 - (BOOL)validateDatabase;
-- (BOOL)validateItemTablesEntriesUsingConnection:(id)a3;
-- (BOOL)validateSortMapUnicodeVersionOnConnection:(id)a3;
+- (BOOL)validateItemTablesEntriesUsingConnection:(id)connection;
+- (BOOL)validateSortMapUnicodeVersionOnConnection:(id)connection;
 - (BOOL)verifyPresignedValidity;
-- (CGSize)_sizeForColorAnalysisForMediaType:(unsigned int)a3 artworkType:(int64_t)a4;
+- (CGSize)_sizeForColorAnalysisForMediaType:(unsigned int)type artworkType:(int64_t)artworkType;
 - (ML3Container)currentDeviceFavoriteSongsPlaylist;
 - (ML3Container)currentDevicePhotosMemoriesPlaylist;
 - (ML3Container)currentDevicePlaybackHistoryPlaylist;
@@ -129,11 +129,11 @@
 - (ML3DatabaseConnectionPool)connectionPool;
 - (ML3DatabasePrivacyContext)privacyContext;
 - (ML3LibraryNotificationManager)notificationManager;
-- (ML3MusicLibrary)initWithClientIdentity:(id)a3 forUserAccount:(id)a4;
-- (ML3MusicLibrary)initWithClientIdentity:(id)a3 path:(id)a4 readOnly:(BOOL)a5 populateUnitTestTablesBlock:(id)a6;
-- (ML3MusicLibrary)initWithCoder:(id)a3;
-- (ML3MusicLibrary)initWithPath:(id)a3 readOnly:(BOOL)a4 populateUnitTestTablesBlock:(id)a5;
-- (ML3MusicLibrary)initWithResourcesManager:(id)a3;
+- (ML3MusicLibrary)initWithClientIdentity:(id)identity forUserAccount:(id)account;
+- (ML3MusicLibrary)initWithClientIdentity:(id)identity path:(id)path readOnly:(BOOL)only populateUnitTestTablesBlock:(id)block;
+- (ML3MusicLibrary)initWithCoder:(id)coder;
+- (ML3MusicLibrary)initWithPath:(id)path readOnly:(BOOL)only populateUnitTestTablesBlock:(id)block;
+- (ML3MusicLibrary)initWithResourcesManager:(id)manager;
 - (ML3MusicLibraryDelegate)delegate;
 - (ML3MusicLibraryResourcesManager)resourcesManager;
 - (NSArray)jaliscoLastExcludedMediaKinds;
@@ -157,187 +157,187 @@
 - (iPhoneSortKeyBuilder)sortKeyBuilder;
 - (id)_allArtworkVariantDirectories;
 - (id)_allKeepLocalPlaylistTracks;
-- (id)_getPlaylistContentTasteChangesSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4;
-- (id)_newGeniusDBConnectionAtPath:(id)a3;
-- (id)_nonPurgeableAlbumsQuerySQLWithUrgency:(unint64_t)a3;
+- (id)_getPlaylistContentTasteChangesSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d;
+- (id)_newGeniusDBConnectionAtPath:(id)path;
+- (id)_nonPurgeableAlbumsQuerySQLWithUrgency:(unint64_t)urgency;
 - (id)_notInKeepLocalCollectionPredicate;
-- (id)_purgeableAlbumsQuerySQLWithUrgency:(unint64_t)a3;
-- (id)_purgeableTrackPredicateWithUrgency:(unint64_t)a3 includeAutoFilledTracks:(BOOL)a4 includeCloudAssets:(BOOL)a5;
+- (id)_purgeableAlbumsQuerySQLWithUrgency:(unint64_t)urgency;
+- (id)_purgeableTrackPredicateWithUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks includeCloudAssets:(BOOL)assets;
 - (id)_systemUnicodeVersionData;
 - (id)accountCacheDatabase;
-- (id)albumArtistForEffectiveAlbumArtistName:(id)a3;
-- (id)albumForAlbumArtistPersistentID:(int64_t)a3 albumName:(id)a4 feedURL:(id)a5 seasonNumber:(id)a6 compilation:(BOOL)a7;
-- (id)artistForArtistName:(id)a3 seriesName:(id)a4;
-- (id)artistGroupingKeyForArtistName:(id)a3 seriesName:(id)a4;
-- (id)artworkCacheDirectoryForEffect:(id)a3;
-- (id)artworkCacheDirectoryForSize:(CGSize)a3;
+- (id)albumArtistForEffectiveAlbumArtistName:(id)name;
+- (id)albumForAlbumArtistPersistentID:(int64_t)d albumName:(id)name feedURL:(id)l seasonNumber:(id)number compilation:(BOOL)compilation;
+- (id)artistForArtistName:(id)name seriesName:(id)seriesName;
+- (id)artistGroupingKeyForArtistName:(id)name seriesName:(id)seriesName;
+- (id)artworkCacheDirectoryForEffect:(id)effect;
+- (id)artworkCacheDirectoryForSize:(CGSize)size;
 - (id)checkoutReaderConnection;
 - (id)checkoutWriterConnection;
-- (id)composerForComposerName:(id)a3;
-- (id)genreForGenre:(id)a3;
-- (id)getAlbumArtistChangesSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4;
-- (id)getAlbumChangesSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4;
-- (id)groupingKeyForString:(id)a3;
-- (id)groupingKeysForStrings:(id)a3;
-- (id)insertStringsIntoSortMap:(id)a3 didReSortMap:(BOOL *)a4;
+- (id)composerForComposerName:(id)name;
+- (id)genreForGenre:(id)genre;
+- (id)getAlbumArtistChangesSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d;
+- (id)getAlbumChangesSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d;
+- (id)groupingKeyForString:(id)string;
+- (id)groupingKeysForStrings:(id)strings;
+- (id)insertStringsIntoSortMap:(id)map didReSortMap:(BOOL *)sortMap;
 - (id)libraryContainerPath;
-- (id)libraryContainerPathByAppendingPathComponent:(id)a3;
-- (id)libraryContainerRelativePath:(id)a3;
-- (id)libraryEntityFilterPredicatesForContainerClass:(Class)a3;
-- (id)libraryEntityFilterPredicatesForEntityClass:(Class)a3;
-- (id)localizedSectionHeaderForSectionIndex:(unint64_t)a3;
-- (id)mediaFolderRelativePath:(id)a3;
-- (id)pathForBaseLocationPath:(int64_t)a3;
-- (id)pathForResourceFileOrFolder:(int)a3;
-- (id)pathForResourceFileOrFolder:(int)a3 basePath:(id)a4 relativeToBase:(BOOL)a5 createParentFolderIfNecessary:(BOOL)a6;
-- (id)securityScopedFileURLForItemPID:(unint64_t)a3;
-- (id)valueForDatabaseProperty:(id)a3;
+- (id)libraryContainerPathByAppendingPathComponent:(id)component;
+- (id)libraryContainerRelativePath:(id)path;
+- (id)libraryEntityFilterPredicatesForContainerClass:(Class)class;
+- (id)libraryEntityFilterPredicatesForEntityClass:(Class)class;
+- (id)localizedSectionHeaderForSectionIndex:(unint64_t)index;
+- (id)mediaFolderRelativePath:(id)path;
+- (id)pathForBaseLocationPath:(int64_t)path;
+- (id)pathForResourceFileOrFolder:(int)folder;
+- (id)pathForResourceFileOrFolder:(int)folder basePath:(id)path relativeToBase:(BOOL)base createParentFolderIfNecessary:(BOOL)necessary;
+- (id)securityScopedFileURLForItemPID:(unint64_t)d;
+- (id)valueForDatabaseProperty:(id)property;
 - (int)currentDatabaseVersion;
 - (int64_t)_clearAllCloudAssets;
 - (int64_t)_clearDatabaseFileFreeSpace;
-- (int64_t)_clearOrphanedAssetsOfAmount:(int64_t)a3 withUrgency:(unint64_t)a4;
-- (int64_t)_clearPurgeableTracksOfAmount:(int64_t)a3 withUrgency:(unint64_t)a4 includeCloudAssets:(BOOL)a5 includeAutoFilledTracks:(BOOL)a6;
+- (int64_t)_clearOrphanedAssetsOfAmount:(int64_t)amount withUrgency:(unint64_t)urgency;
+- (int64_t)_clearPurgeableTracksOfAmount:(int64_t)amount withUrgency:(unint64_t)urgency includeCloudAssets:(BOOL)assets includeAutoFilledTracks:(BOOL)tracks;
 - (int64_t)_cloudAssetsTotalSize;
 - (int64_t)_databaseFileFreeSpace;
-- (int64_t)_purgeableTracksTotalSizeWithUrgency:(unint64_t)a3 includeAutoFilledTracks:(BOOL)a4;
+- (int64_t)_purgeableTracksTotalSizeWithUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks;
 - (int64_t)clearAllRemovedTracks;
-- (int64_t)clearPurgeableStorageAmount:(int64_t)a3 withUrgency:(unint64_t)a4;
-- (int64_t)clearPurgeableStorageAmount:(int64_t)a3 withUrgency:(unint64_t)a4 includeAutoFilledTracks:(BOOL)a5;
+- (int64_t)clearPurgeableStorageAmount:(int64_t)amount withUrgency:(unint64_t)urgency;
+- (int64_t)clearPurgeableStorageAmount:(int64_t)amount withUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks;
 - (int64_t)currentContentRevision;
 - (int64_t)currentRevision;
-- (int64_t)insertStringIntoSortMapNoTransaction:(id)a3;
+- (int64_t)insertStringIntoSortMapNoTransaction:(id)transaction;
 - (int64_t)jaliscoOnDiskDatabaseRevision;
 - (int64_t)preferredVideoQuality;
-- (int64_t)purgeableStorageSizeWithUrgency:(unint64_t)a3;
-- (int64_t)purgeableStorageSizeWithUrgency:(unint64_t)a3 includeAutoFilledTracks:(BOOL)a4;
+- (int64_t)purgeableStorageSizeWithUrgency:(unint64_t)urgency;
+- (int64_t)purgeableStorageSizeWithUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks;
 - (int64_t)sagaCloudAddToPlaylistBehavior;
 - (int64_t)sagaCloudFavoriteSongAddToLibraryBehavior;
 - (int64_t)sagaDatabaseUserVersion;
 - (int64_t)sagaMaximumLibraryPinCount;
 - (int64_t)sagaOnDiskDatabaseRevision;
 - (int64_t)syncGenerationID;
-- (int64_t)syncIdFromMultiverseId:(id)a3;
-- (unint64_t)_managedClearPurgeableTracksOfAmount:(unint64_t)a3 urgency:(unint64_t)a4;
-- (unint64_t)_managedPurgeableTracksTotalSizeWithUrgency:(unint64_t)a3;
-- (unint64_t)_minimumPurgeableStorageForUrgency:(unint64_t)a3;
-- (unint64_t)_totalSizeForTracksPredicate:(id)a3;
-- (unint64_t)countOfChangedPersistentIdsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 maximumRevisionType:(int)a5;
-- (unint64_t)sectionIndexTitleIndexForSectionIndex:(unint64_t)a3;
+- (int64_t)syncIdFromMultiverseId:(id)id;
+- (unint64_t)_managedClearPurgeableTracksOfAmount:(unint64_t)amount urgency:(unint64_t)urgency;
+- (unint64_t)_managedPurgeableTracksTotalSizeWithUrgency:(unint64_t)urgency;
+- (unint64_t)_minimumPurgeableStorageForUrgency:(unint64_t)urgency;
+- (unint64_t)_totalSizeForTracksPredicate:(id)predicate;
+- (unint64_t)countOfChangedPersistentIdsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code maximumRevisionType:(int)type;
+- (unint64_t)sectionIndexTitleIndexForSectionIndex:(unint64_t)index;
 - (unint64_t)totalSizeForAllNonCacheTracks;
 - (unint64_t)totalSizeForAllNonRedownloadableTracks;
 - (unint64_t)totalSizeForAllRedownloadableNonCacheTracks;
 - (unint64_t)totalSizeForAllSyncedTracks;
 - (unint64_t)totalSizeForArtwork;
 - (unint64_t)unknownSectionIndex;
-- (void)_autogenerateArtworkForRelativePath:(id)a3 artworkType:(int64_t)a4 mediaType:(unsigned int)a5 variantType:(int64_t)a6 completionHandler:(id)a7;
+- (void)_autogenerateArtworkForRelativePath:(id)path artworkType:(int64_t)type mediaType:(unsigned int)mediaType variantType:(int64_t)variantType completionHandler:(id)handler;
 - (void)_closeAndLockCurrentDatabaseConnections;
-- (void)_completeAccountChangeWithPath:(id)a3;
-- (void)_configureMediaLibraryDatabaseConnection:(id)a3;
-- (void)_convertOriginalArtworkToDevicePreferredFormatFromSourceURL:(id)a3 toDestinationURL:(id)a4 completionHandler:(id)a5;
-- (void)_createColorAnalysisForRelativePath:(id)a3 artworkType:(int64_t)a4 artworkToken:(id)a5 preferredImageSize:(CGSize)a6 completionHandler:(id)a7;
-- (void)_deleteAllArtworkVariantsAtRelativePaths:(id)a3;
-- (void)_effectiveSettingsDidChangeNotification:(id)a3;
-- (void)_enumeratePurgeableAlbumTracksForUrgency:(unint64_t)a3 usingBlock:(id)a4;
-- (void)_enumeratePurgeableStreamedTracksForUrgency:(unint64_t)a3 usingBlock:(id)a4;
-- (void)_enumeratePurgeableTracksForUrgency:(unint64_t)a3 includeAutoFilledTracks:(BOOL)a4 includeCloudAssets:(BOOL)a5 usingBlock:(id)a6;
-- (void)_libraryPathDidChangeNotification:(id)a3;
+- (void)_completeAccountChangeWithPath:(id)path;
+- (void)_configureMediaLibraryDatabaseConnection:(id)connection;
+- (void)_convertOriginalArtworkToDevicePreferredFormatFromSourceURL:(id)l toDestinationURL:(id)rL completionHandler:(id)handler;
+- (void)_createColorAnalysisForRelativePath:(id)path artworkType:(int64_t)type artworkToken:(id)token preferredImageSize:(CGSize)size completionHandler:(id)handler;
+- (void)_deleteAllArtworkVariantsAtRelativePaths:(id)paths;
+- (void)_effectiveSettingsDidChangeNotification:(id)notification;
+- (void)_enumeratePurgeableAlbumTracksForUrgency:(unint64_t)urgency usingBlock:(id)block;
+- (void)_enumeratePurgeableStreamedTracksForUrgency:(unint64_t)urgency usingBlock:(id)block;
+- (void)_enumeratePurgeableTracksForUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks includeCloudAssets:(BOOL)assets usingBlock:(id)block;
+- (void)_libraryPathDidChangeNotification:(id)notification;
 - (void)_logDatabaseAccess;
-- (void)_postClientNotificationWithDistributedName:(id)a3 localName:(id)a4;
-- (void)_removeLibraryPinsForDeletedTracksUsingConnection:(id)a3;
+- (void)_postClientNotificationWithDistributedName:(id)name localName:(id)localName;
+- (void)_removeLibraryPinsForDeletedTracksUsingConnection:(id)connection;
 - (void)_setupNotificationManager;
 - (void)_tearDownNotificationManager;
-- (void)_teardownMediaLibraryDatabaseConnection:(id)a3;
-- (void)_updateSystemPlaylist:(id)a3 withName:(id)a4 usingConnection:(id)a5;
-- (void)accessSortKeyBuilder:(id)a3;
-- (void)autogenerateSupportedSizesForAllOriginalArtworkWithConnection:(id)a3 completionHandler:(id)a4;
-- (void)checkInDatabaseConnection:(id)a3;
-- (void)clearCachedCloudLibraryVersionsUsingConnection:(id)a3;
-- (void)clearCachedPurchaseHistoryVersionsUsingConnection:(id)a3;
-- (void)connection:(id)a3 didEndDatabaseTransactionAndCommit:(BOOL)a4;
-- (void)connectionDidAccessDatabase:(id)a3;
-- (void)connectionDidBeginDatabaseTransaction:(id)a3;
-- (void)connectionDidClose:(id)a3;
-- (void)connectionDidOpenDatabase:(id)a3;
-- (void)connectionWillCloseDatabase:(id)a3;
-- (void)connectionWillOpenDatabase:(id)a3;
-- (void)databaseConnectionAllowingWrites:(BOOL)a3 withBlock:(id)a4;
+- (void)_teardownMediaLibraryDatabaseConnection:(id)connection;
+- (void)_updateSystemPlaylist:(id)playlist withName:(id)name usingConnection:(id)connection;
+- (void)accessSortKeyBuilder:(id)builder;
+- (void)autogenerateSupportedSizesForAllOriginalArtworkWithConnection:(id)connection completionHandler:(id)handler;
+- (void)checkInDatabaseConnection:(id)connection;
+- (void)clearCachedCloudLibraryVersionsUsingConnection:(id)connection;
+- (void)clearCachedPurchaseHistoryVersionsUsingConnection:(id)connection;
+- (void)connection:(id)connection didEndDatabaseTransactionAndCommit:(BOOL)commit;
+- (void)connectionDidAccessDatabase:(id)database;
+- (void)connectionDidBeginDatabaseTransaction:(id)transaction;
+- (void)connectionDidClose:(id)close;
+- (void)connectionDidOpenDatabase:(id)database;
+- (void)connectionWillCloseDatabase:(id)database;
+- (void)connectionWillOpenDatabase:(id)database;
+- (void)databaseConnectionAllowingWrites:(BOOL)writes withBlock:(id)block;
 - (void)dealloc;
 - (void)deletePresignedValidity;
-- (void)emergencyDisconnectWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAlbumArtistPersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateAlbumPersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateArtworkRelativePathsWithConnection:(id)a3 matchingRelativePathContainer:(id)a4 block:(id)a5;
-- (void)enumerateArtworkTokensForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 variantType:(int64_t)a6 usingBlock:(id)a7;
-- (void)enumerateLibraryPinsPersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumeratePersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 maximumRevisionType:(int)a5 forMediaTypes:(id)a6 inUsersLibrary:(BOOL)a7 usingBlock:(id)a8;
-- (void)enumeratePersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 maximumRevisionType:(int)a5 usingBlock:(id)a6;
-- (void)enumeratePurgeableAlbumTracksForUrgency:(unint64_t)a3 usingBlock:(id)a4;
-- (void)generateArtworkForRelativePath:(id)a3 sizes:(id)a4 completionHandler:(id)a5;
-- (void)getChangedPersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(int64_t)a4 maximumRevisionType:(int)a5 usingBlock:(id)a6;
-- (void)importArtworkTokenForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkToken:(id)a5 artworkType:(int64_t)a6 sourceType:(int64_t)a7;
-- (void)importArtworkTokenForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkToken:(id)a5 artworkType:(int64_t)a6 sourceType:(int64_t)a7 variantType:(int64_t)a8;
-- (void)importOriginalArtworkFromFileURL:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unsigned int)a7 variantType:(int64_t)a8 shouldPerformColorAnalysis:(BOOL)a9 completion:(id)a10;
-- (void)importOriginalArtworkFromImageData:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unsigned int)a7 variantType:(int64_t)a8 shouldPerformColorAnalysis:(BOOL)a9 completion:(id)a10;
-- (void)migrateExistingArtworkToken:(id)a3 newArtworkToken:(id)a4 newSourceType:(int64_t)a5;
+- (void)emergencyDisconnectWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAlbumArtistPersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code usingBlock:(id)block;
+- (void)enumerateAlbumPersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code usingBlock:(id)block;
+- (void)enumerateArtworkRelativePathsWithConnection:(id)connection matchingRelativePathContainer:(id)container block:(id)block;
+- (void)enumerateArtworkTokensForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType variantType:(int64_t)variantType usingBlock:(id)block;
+- (void)enumerateLibraryPinsPersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code usingBlock:(id)block;
+- (void)enumeratePersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code maximumRevisionType:(int)type forMediaTypes:(id)types inUsersLibrary:(BOOL)library usingBlock:(id)block;
+- (void)enumeratePersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code maximumRevisionType:(int)type usingBlock:(id)block;
+- (void)enumeratePurgeableAlbumTracksForUrgency:(unint64_t)urgency usingBlock:(id)block;
+- (void)generateArtworkForRelativePath:(id)path sizes:(id)sizes completionHandler:(id)handler;
+- (void)getChangedPersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(int64_t)code maximumRevisionType:(int)type usingBlock:(id)block;
+- (void)importArtworkTokenForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkToken:(id)token artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType;
+- (void)importArtworkTokenForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkToken:(id)token artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType variantType:(int64_t)variantType;
+- (void)importOriginalArtworkFromFileURL:(id)l withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType shouldPerformColorAnalysis:(BOOL)analysis completion:(id)self0;
+- (void)importOriginalArtworkFromImageData:(id)data withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType shouldPerformColorAnalysis:(BOOL)analysis completion:(id)self0;
+- (void)migrateExistingArtworkToken:(id)token newArtworkToken:(id)artworkToken newSourceType:(int64_t)type;
 - (void)migratePresignedValidity;
 - (void)notifyAssistantContentsDidChange;
-- (void)performAsyncDatabaseWriteTransactionWithBlock:(id)a3 completionBlock:(id)a4;
-- (void)performColorAnalysisForArtworkWithConnection:(id)a3 shouldRegenerateColorAnalysis:(BOOL)a4;
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4;
-- (void)performDatabaseTransactionWithBlock:(id)a3;
-- (void)performReadOnlyDatabaseTransactionWithBlock:(id)a3;
+- (void)performAsyncDatabaseWriteTransactionWithBlock:(id)block completionBlock:(id)completionBlock;
+- (void)performColorAnalysisForArtworkWithConnection:(id)connection shouldRegenerateColorAnalysis:(BOOL)analysis;
+- (void)performDatabasePathChange:(id)change completion:(id)completion;
+- (void)performDatabaseTransactionWithBlock:(id)block;
+- (void)performReadOnlyDatabaseTransactionWithBlock:(id)block;
 - (void)reconnectToDatabase;
-- (void)removeArtworkTokenForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6;
-- (void)removeCloudSourcesWithAttributes:(id)a3 completionHandler:(id)a4;
-- (void)removeItemsWithFamilyAccountID:(unint64_t)a3 purchaserAccountID:(unint64_t)a4 downloaderAccountID:(unint64_t)a5;
-- (void)removeOrphanedTracksOnlyInCaches:(BOOL)a3;
-- (void)removePlaylistsWithPersistentIDs:(id)a3 fromSource:(int)a4 usingConnection:(id)a5 withCompletionHandler:(id)a6;
-- (void)removeTracksWithPersistentIDs:(id)a3 fromSource:(int)a4 usingConnection:(id)a5 withCompletionHandler:(id)a6;
-- (void)retrieveBestArtworkTokensForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 variantType:(int64_t)a6 retrievalTime:(double)a7 completionHandler:(id)a8;
-- (void)sanitizeDatabaseContentsUsingConnection:(id)a3 removeOrphanedAssets:(BOOL *)a4;
-- (void)savePlaylistsSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4;
-- (void)saveTrackMetadataSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4;
-- (void)setClientIdentity:(id)a3;
-- (void)setIsHomeSharingLibrary:(BOOL)a3;
-- (void)setJaliscoHasCloudGeniusData:(BOOL)a3;
-- (void)setJaliscoIsMusicGeniusUserEnabled:(BOOL)a3;
-- (void)setJaliscoLastGeniusUpdateDate:(id)a3;
-- (void)setJaliscoLastLibraryUpdateTime:(id)a3;
-- (void)setJaliscoNeedsUpdateForTokens:(BOOL)a3;
-- (void)setJaliscoOnDiskDatabaseRevision:(int64_t)a3;
-- (void)setLibraryContainerFilterPredicates:(id)a3;
-- (void)setLibraryEntityFilterPredicates:(id)a3;
-- (void)setLibraryPublicContainerFilterPredicates:(id)a3;
-- (void)setLibraryPublicEntityFilterPredicates:(id)a3;
-- (void)setLibraryUID:(id)a3;
-- (void)setPreferredVideoQuality:(int64_t)a3;
-- (void)setSagaCloudAddToPlaylistBehavior:(int64_t)a3;
-- (void)setSagaCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3;
-- (void)setSagaDatabaseUserVersion:(int64_t)a3;
-- (void)setSagaForcePerformDeltaSync:(BOOL)a3;
-- (void)setSagaInitiateClientResetSync:(BOOL)a3;
-- (void)setSagaLastGeniusUpdateDate:(id)a3;
-- (void)setSagaLastItemPlayDataUploadDate:(id)a3;
-- (void)setSagaLastKnownActiveLockerAccountDSID:(id)a3;
-- (void)setSagaLastLibraryUpdateTime:(id)a3;
-- (void)setSagaLastPlaylistPlayDataUploadDate:(id)a3;
-- (void)setSagaLastSubscribedContainersUpdateTime:(id)a3;
-- (void)setSagaMaximumLibraryPinCount:(int64_t)a3;
-- (void)setSagaNeedsFullUpdate:(BOOL)a3;
-- (void)setSagaOnDiskDatabaseRevision:(int64_t)a3;
-- (void)setSagaPrefersToMergeWithCloudLibrary:(BOOL)a3;
-- (void)setStorefrontIdentifier:(id)a3;
-- (void)setSyncGenerationID:(int64_t)a3;
-- (void)setSyncLibraryID:(id)a3;
+- (void)removeArtworkTokenForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType;
+- (void)removeCloudSourcesWithAttributes:(id)attributes completionHandler:(id)handler;
+- (void)removeItemsWithFamilyAccountID:(unint64_t)d purchaserAccountID:(unint64_t)iD downloaderAccountID:(unint64_t)accountID;
+- (void)removeOrphanedTracksOnlyInCaches:(BOOL)caches;
+- (void)removePlaylistsWithPersistentIDs:(id)ds fromSource:(int)source usingConnection:(id)connection withCompletionHandler:(id)handler;
+- (void)removeTracksWithPersistentIDs:(id)ds fromSource:(int)source usingConnection:(id)connection withCompletionHandler:(id)handler;
+- (void)retrieveBestArtworkTokensForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType variantType:(int64_t)variantType retrievalTime:(double)time completionHandler:(id)handler;
+- (void)sanitizeDatabaseContentsUsingConnection:(id)connection removeOrphanedAssets:(BOOL *)assets;
+- (void)savePlaylistsSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d;
+- (void)saveTrackMetadataSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d;
+- (void)setClientIdentity:(id)identity;
+- (void)setIsHomeSharingLibrary:(BOOL)library;
+- (void)setJaliscoHasCloudGeniusData:(BOOL)data;
+- (void)setJaliscoIsMusicGeniusUserEnabled:(BOOL)enabled;
+- (void)setJaliscoLastGeniusUpdateDate:(id)date;
+- (void)setJaliscoLastLibraryUpdateTime:(id)time;
+- (void)setJaliscoNeedsUpdateForTokens:(BOOL)tokens;
+- (void)setJaliscoOnDiskDatabaseRevision:(int64_t)revision;
+- (void)setLibraryContainerFilterPredicates:(id)predicates;
+- (void)setLibraryEntityFilterPredicates:(id)predicates;
+- (void)setLibraryPublicContainerFilterPredicates:(id)predicates;
+- (void)setLibraryPublicEntityFilterPredicates:(id)predicates;
+- (void)setLibraryUID:(id)d;
+- (void)setPreferredVideoQuality:(int64_t)quality;
+- (void)setSagaCloudAddToPlaylistBehavior:(int64_t)behavior;
+- (void)setSagaCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior;
+- (void)setSagaDatabaseUserVersion:(int64_t)version;
+- (void)setSagaForcePerformDeltaSync:(BOOL)sync;
+- (void)setSagaInitiateClientResetSync:(BOOL)sync;
+- (void)setSagaLastGeniusUpdateDate:(id)date;
+- (void)setSagaLastItemPlayDataUploadDate:(id)date;
+- (void)setSagaLastKnownActiveLockerAccountDSID:(id)d;
+- (void)setSagaLastLibraryUpdateTime:(id)time;
+- (void)setSagaLastPlaylistPlayDataUploadDate:(id)date;
+- (void)setSagaLastSubscribedContainersUpdateTime:(id)time;
+- (void)setSagaMaximumLibraryPinCount:(int64_t)count;
+- (void)setSagaNeedsFullUpdate:(BOOL)update;
+- (void)setSagaOnDiskDatabaseRevision:(int64_t)revision;
+- (void)setSagaPrefersToMergeWithCloudLibrary:(BOOL)library;
+- (void)setStorefrontIdentifier:(id)identifier;
+- (void)setSyncGenerationID:(int64_t)d;
+- (void)setSyncLibraryID:(id)d;
 - (void)sortJaliscoLastSupportedMediaKinds;
 - (void)terminateForFailureToPerformDatabasePathChange;
-- (void)updateJaliscoExcludedMediaKindsWith:(id)a3 excludingMediaKindsInSet:(BOOL)a4;
+- (void)updateJaliscoExcludedMediaKindsWith:(id)with excludingMediaKindsInSet:(BOOL)set;
 - (void)updateOrderingLanguagesForCurrentLanguage;
-- (void)updatePurgeabilityForCachedArtworkWithAbsolutePath:(id)a3;
-- (void)updatePurgeabilityForOriginalArtworkWithRelativePath:(id)a3;
+- (void)updatePurgeabilityForCachedArtworkWithAbsolutePath:(id)path;
+- (void)updatePurgeabilityForOriginalArtworkWithRelativePath:(id)path;
 - (void)updateRootArtworkPurgeability;
-- (void)updateUbiquitousDatabaseByRemovingUbiquitousMetadataFromTrackWithPersistentID:(int64_t)a3;
+- (void)updateUbiquitousDatabaseByRemovingUbiquitousMetadataFromTrackWithPersistentID:(int64_t)d;
 @end
 
 @implementation ML3MusicLibrary
@@ -346,8 +346,8 @@
 {
   if (__disableSharedLibrary == 1)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"ML3MusicLibrary.m" lineNumber:338 description:@"sharedLibrary use is disabled. use initWithPath: in this process"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3MusicLibrary.m" lineNumber:338 description:@"sharedLibrary use is disabled. use initWithPath: in this process"];
   }
 
   v3 = +[ML3MusicLibrary autoupdatingSharedLibraryPath];
@@ -358,7 +358,7 @@
   v12[2] = __44__ML3MusicLibrary_autoupdatingSharedLibrary__block_invoke;
   v12[3] = &unk_278760290;
   v13 = v4;
-  v14 = a1;
+  selfCopy = self;
   v5 = autoupdatingSharedLibrary_onceToken;
   v6 = v4;
   if (v5 != -1)
@@ -380,14 +380,14 @@
   v10 = __Block_byref_object_copy__2504;
   v11 = __Block_byref_object_dispose__2505;
   v12 = 0;
-  v3 = [a1 globalSerialQueue];
+  globalSerialQueue = [self globalSerialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__ML3MusicLibrary_autoupdatingSharedLibraryPath__block_invoke;
   v6[3] = &unk_27875D418;
   v6[4] = &v7;
-  v6[5] = a1;
-  dispatch_sync(v3, v6);
+  v6[5] = self;
+  dispatch_sync(globalSerialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -462,11 +462,11 @@ void __44__ML3MusicLibrary_autoupdatingSharedLibrary__block_invoke_2(uint64_t a1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ - _setupNotificationManager", &v5, 0xCu);
   }
 
-  v4 = [(ML3MusicLibrary *)self notificationManager];
+  notificationManager = [(ML3MusicLibrary *)self notificationManager];
 }
 
 - (ML3LibraryNotificationManager)notificationManager
@@ -614,12 +614,12 @@ void __35__ML3MusicLibrary_resourcesManager__block_invoke(uint64_t a1)
 
     if (!self->_libraryUID)
     {
-      v5 = [MEMORY[0x277CCAD78] UUID];
-      v6 = [v5 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      if ([(ML3MusicLibrary *)self setValue:v6 forDatabaseProperty:@"_UUID"])
+      if ([(ML3MusicLibrary *)self setValue:uUIDString forDatabaseProperty:@"_UUID"])
       {
-        objc_storeStrong(&self->_libraryUID, v6);
+        objc_storeStrong(&self->_libraryUID, uUIDString);
       }
     }
   }
@@ -698,16 +698,16 @@ void __33__ML3MusicLibrary_connectionPool__block_invoke(uint64_t a1)
   v14 = __Block_byref_object_copy__2504;
   v15 = __Block_byref_object_dispose__2505;
   v16 = 0;
-  v3 = [(ML3MusicLibrary *)self databasePath];
+  databasePath = [(ML3MusicLibrary *)self databasePath];
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__ML3MusicLibrary_connectionPool__block_invoke;
   block[3] = &unk_278765F28;
   block[4] = self;
-  v9 = v3;
+  v9 = databasePath;
   v10 = &v11;
-  v5 = v3;
+  v5 = databasePath;
   dispatch_sync(serialQueue, block);
   v6 = v12[5];
 
@@ -727,10 +727,10 @@ void __33__ML3MusicLibrary_connectionPool__block_invoke(uint64_t a1)
 - (id)checkoutReaderConnection
 {
   dispatch_assert_queue_not_V2(self->_serialQueue);
-  v3 = [(ML3MusicLibrary *)self connectionPool];
-  v4 = [v3 readerConnection];
+  connectionPool = [(ML3MusicLibrary *)self connectionPool];
+  readerConnection = [connectionPool readerConnection];
 
-  return v4;
+  return readerConnection;
 }
 
 - (BOOL)isHomeSharingLibrary
@@ -739,16 +739,16 @@ void __33__ML3MusicLibrary_connectionPool__block_invoke(uint64_t a1)
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(ML3MusicLibrary *)self databasePath];
+  databasePath = [(ML3MusicLibrary *)self databasePath];
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__ML3MusicLibrary_isHomeSharingLibrary__block_invoke;
   block[3] = &unk_278765F28;
   block[4] = self;
-  v8 = v3;
+  v8 = databasePath;
   v9 = &v10;
-  v5 = v3;
+  v5 = databasePath;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v11 + 24);
 
@@ -886,9 +886,9 @@ void *__33__ML3MusicLibrary_sortKeyBuilder__block_invoke(void *result)
 - (int64_t)sagaOnDiskDatabaseRevision
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLCloudDatabaseRevision"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 void __41__ML3MusicLibrary_currentContentRevision__block_invoke(uint64_t a1, void *a2)
@@ -944,10 +944,10 @@ void __41__ML3MusicLibrary_currentContentRevision__block_invoke(uint64_t a1, voi
 - (id)checkoutWriterConnection
 {
   dispatch_assert_queue_not_V2(self->_serialQueue);
-  v3 = [(ML3MusicLibrary *)self connectionPool];
-  v4 = [v3 writerConnection];
+  connectionPool = [(ML3MusicLibrary *)self connectionPool];
+  writerConnection = [connectionPool writerConnection];
 
-  return v4;
+  return writerConnection;
 }
 
 void __34__ML3MusicLibrary_currentRevision__block_invoke(uint64_t a1, void *a2)
@@ -959,9 +959,9 @@ void __34__ML3MusicLibrary_currentRevision__block_invoke(uint64_t a1, void *a2)
 - (BOOL)jaliscoNeedsUpdateForTokens
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLJaliscoNeedsUpdateForTokens"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSArray)localizedSectionIndexTitles
@@ -1053,26 +1053,26 @@ void __46__ML3MusicLibrary_localizedSectionIndexTitles__block_invoke()
 - (int64_t)jaliscoOnDiskDatabaseRevision
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLJaliscoDatabaseRevision"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 + (NSArray)allLibraries
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = +[ML3MusicLibrary autoupdatingSharedLibraryPath];
-  v5 = [a1 globalSerialQueue];
+  globalSerialQueue = [self globalSerialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__ML3MusicLibrary_allLibraries__block_invoke;
   block[3] = &unk_278765770;
   v12 = v4;
-  v13 = a1;
-  v11 = v3;
+  selfCopy = self;
+  v11 = array;
   v6 = v4;
-  v7 = v3;
-  dispatch_sync(v5, block);
+  v7 = array;
+  dispatch_sync(globalSerialQueue, block);
 
   v8 = [v7 copy];
 
@@ -1141,12 +1141,12 @@ void __31__ML3MusicLibrary_allLibraries__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (CGSize)_sizeForColorAnalysisForMediaType:(unsigned int)a3 artworkType:(int64_t)a4
+- (CGSize)_sizeForColorAnalysisForMediaType:(unsigned int)type artworkType:(int64_t)artworkType
 {
-  v5 = *&a3;
+  v5 = *&type;
   v20 = *MEMORY[0x277D85DE8];
   v6 = +[ML3ArtworkConfiguration systemConfiguration];
-  v7 = [v6 sizesToAutogenerateForMediaType:v5 artworkType:a4];
+  v7 = [v6 sizesToAutogenerateForMediaType:v5 artworkType:artworkType];
 
   v14 = 0;
   v15 = &v14;
@@ -1193,17 +1193,17 @@ float __65__ML3MusicLibrary__sizeForColorAnalysisForMediaType_artworkType___bloc
   return result;
 }
 
-- (void)_postClientNotificationWithDistributedName:(id)a3 localName:(id)a4
+- (void)_postClientNotificationWithDistributedName:(id)name localName:(id)localName
 {
   serialQueue = self->_serialQueue;
-  v7 = a4;
-  v8 = a3;
+  localNameCopy = localName;
+  nameCopy = name;
   dispatch_assert_queue_not_V2(serialQueue);
-  v9 = [(ML3MusicLibrary *)self notificationManager];
-  [v9 enqueueLocalNotificationNamed:v7];
+  notificationManager = [(ML3MusicLibrary *)self notificationManager];
+  [notificationManager enqueueLocalNotificationNamed:localNameCopy];
 
-  v10 = [(ML3MusicLibrary *)self notificationManager];
-  [v10 enqueueDistributedNotificationNamed:v8];
+  notificationManager2 = [(ML3MusicLibrary *)self notificationManager];
+  [notificationManager2 enqueueDistributedNotificationNamed:nameCopy];
 }
 
 - (void)_tearDownNotificationManager
@@ -1214,17 +1214,17 @@ float __65__ML3MusicLibrary__sizeForColorAnalysisForMediaType_artworkType___bloc
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ - _tearDownNotificationManager", buf, 0xCu);
   }
 
-  v4 = [objc_opt_class() distributedToLocalNotificationMapping];
+  distributedToLocalNotificationMapping = [objc_opt_class() distributedToLocalNotificationMapping];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__ML3MusicLibrary__tearDownNotificationManager__block_invoke;
   v7[3] = &unk_2787655E8;
   v7[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [distributedToLocalNotificationMapping enumerateKeysAndObjectsUsingBlock:v7];
 
   serialQueue = self->_serialQueue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -1268,8 +1268,8 @@ void __47__ML3MusicLibrary__tearDownNotificationManager__block_invoke_2(uint64_t
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(serialQueue, block);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"ML3MusicLibraryWillInvalidateDatabaseConnectionNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ML3MusicLibraryWillInvalidateDatabaseConnectionNotification" object:self];
 
   [v11[5] lockAndCloseAllConnectionsForTermination];
   v5 = self->_serialQueue;
@@ -1285,7 +1285,7 @@ void __47__ML3MusicLibrary__tearDownNotificationManager__block_invoke_2(uint64_t
   {
     v7 = v11[5];
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = v7;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ - connection pool %{public}@ locked and closed", buf, 0x16u);
@@ -1414,29 +1414,29 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
   return result;
 }
 
-- (void)_completeAccountChangeWithPath:(id)a3
+- (void)_completeAccountChangeWithPath:(id)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v4;
+    v18 = pathCopy;
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - _completeAccountChangeWithPath - New database path: %{public}@", buf, 0x16u);
   }
 
-  [ML3MusicLibrary setAutoupdatingSharedLibraryPath:v4];
+  [ML3MusicLibrary setAutoupdatingSharedLibraryPath:pathCopy];
   serialQueue = self->_serialQueue;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __50__ML3MusicLibrary__completeAccountChangeWithPath___block_invoke;
   v12 = &unk_2787660F0;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
+  selfCopy2 = self;
+  v14 = pathCopy;
+  v7 = pathCopy;
   dispatch_sync(serialQueue, &v9);
   [(NSLock *)self->_libraryUIDLock lock:v9];
   libraryUID = self->_libraryUID;
@@ -1445,14 +1445,14 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
   [(NSLock *)self->_libraryUIDLock unlock];
 }
 
-- (BOOL)_prepareForAccountChange:(id *)a3
+- (BOOL)_prepareForAccountChange:(id *)change
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - _prepareForAccountChange", buf, 0xCu);
   }
 
@@ -1466,12 +1466,12 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
   v7 = *MEMORY[0x277D85DE8];
   if ([(ML3MusicLibrary *)self _shouldProcessAccountChanges])
   {
-    v4 = self;
+    selfCopy = self;
     v3 = _ML3LogCategoryMultiUser();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v6 = v4;
+      v6 = selfCopy;
       _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_ERROR, "%{public}@ - terminateForFailureToPerformDatabasePathChange [unresponsive process]", buf, 0xCu);
     }
 
@@ -1479,25 +1479,25 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
   }
 }
 
-- (void)emergencyDisconnectWithCompletion:(id)a3
+- (void)emergencyDisconnectWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   v6 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ - emergencyDisconnectWithCompletion:", buf, 0xCu);
   }
 
-  v7 = [(ML3MusicLibrary *)self _shouldProcessAccountChanges];
-  if (v7)
+  _shouldProcessAccountChanges = [(ML3MusicLibrary *)self _shouldProcessAccountChanges];
+  if (_shouldProcessAccountChanges)
   {
     if (![(ML3MusicLibrary *)self _prepareForAccountChange:0])
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"ML3MusicLibrary.m" lineNumber:4521 description:{@"ML3MusicLibrary %p - Unable to prepare for account changes during emergency disconnect", self}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ML3MusicLibrary.m" lineNumber:4521 description:{@"ML3MusicLibrary %p - Unable to prepare for account changes during emergency disconnect", self}];
     }
 
     [(ML3MusicLibrary *)self _completeAccountChangeWithPath:0];
@@ -1509,28 +1509,28 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - emergencyDisconnectWithCompletion: - No action to take [returning early]", buf, 0xCu);
     }
   }
 
-  v5[2](v5, v7, 0);
+  completionCopy[2](completionCopy, _shouldProcessAccountChanges, 0);
 }
 
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4
+- (void)performDatabasePathChange:(id)change completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(ML3MusicLibrary *)self _shouldProcessAccountChanges];
+  changeCopy = change;
+  completionCopy = completion;
+  _shouldProcessAccountChanges = [(ML3MusicLibrary *)self _shouldProcessAccountChanges];
   v10 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (_shouldProcessAccountChanges)
   {
     if (v11)
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - performDatabasePathChange: - Process started", buf, 0xCu);
     }
 
@@ -1539,14 +1539,14 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
     v13 = v15;
     if (!v12)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"ML3MusicLibrary.m" lineNumber:4507 description:{@"ML3MusicLibrary %p - Database path change failure [unable to close connection pools] - error=%@", self, v13}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ML3MusicLibrary.m" lineNumber:4507 description:{@"ML3MusicLibrary %p - Database path change failure [unable to close connection pools] - error=%@", self, v13}];
     }
 
-    [(ML3MusicLibrary *)self _completeAccountChangeWithPath:v7];
-    v8[2](v8, 1, v13);
+    [(ML3MusicLibrary *)self _completeAccountChangeWithPath:changeCopy];
+    completionCopy[2](completionCopy, 1, v13);
 
-    v8 = v13;
+    completionCopy = v13;
   }
 
   else
@@ -1554,15 +1554,15 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
     if (v11)
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - performDatabasePathChange: - No action to take [returning early]", buf, 0xCu);
     }
 
-    v8[2](v8, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (void)_libraryPathDidChangeNotification:(id)a3
+- (void)_libraryPathDidChangeNotification:(id)notification
 {
   v9 = *MEMORY[0x277D85DE8];
   if (__daemonProcessInfo)
@@ -1571,7 +1571,7 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_ERROR, "%{public}@ - Received MLUserDatabasePathDidChangeNotification in medialibraryd which is unexpected", buf, 0xCu);
     }
   }
@@ -1579,28 +1579,28 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
   else
   {
     [(ML3MusicLibrary *)self _setupNotificationManager];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"ML3MusicLibraryPathDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ML3MusicLibraryPathDidChangeNotification" object:self];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"ML3MusicLibraryContentsDidChangeNotification" object:self];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"ML3MusicLibraryContentsDidChangeNotification" object:self];
   }
 }
 
-- (void)_effectiveSettingsDidChangeNotification:(id)a3
+- (void)_effectiveSettingsDidChangeNotification:(id)notification
 {
   dispatch_assert_queue_not_V2(self->_serialQueue);
   pthread_mutex_lock(&sRestrictionSettingsLock);
   sRestrictionSettingsInfo = 0;
   pthread_mutex_unlock(&sRestrictionSettingsLock);
-  v4 = [(ML3MusicLibrary *)self notificationManager];
-  [v4 enqueueLocalNotificationNamed:@"ML3MusicLibraryContentsDidChangeNotification"];
+  notificationManager = [(ML3MusicLibrary *)self notificationManager];
+  [notificationManager enqueueLocalNotificationNamed:@"ML3MusicLibraryContentsDidChangeNotification"];
 }
 
-- (BOOL)_clearAllRowsFromTables:(id)a3
+- (BOOL)_clearAllRowsFromTables:(id)tables
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tablesCopy = tables;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1615,7 +1615,7 @@ uint64_t __47__ML3MusicLibrary__shouldProcessAccountChanges__block_invoke(uint64
   v15[1] = 3221225472;
   v15[2] = __43__ML3MusicLibrary__clearAllRowsFromTables___block_invoke;
   v15[3] = &unk_278763710;
-  v5 = v4;
+  v5 = tablesCopy;
   v16 = v5;
   v17 = &v25;
   v18 = &v19;
@@ -1709,45 +1709,45 @@ LABEL_3:
   return v12;
 }
 
-- (void)_teardownMediaLibraryDatabaseConnection:(id)a3
+- (void)_teardownMediaLibraryDatabaseConnection:(id)connection
 {
   serialQueue = self->_serialQueue;
-  v5 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_not_V2(serialQueue);
-  v6 = [v5 _sqliteHandle];
+  _sqliteHandle = [connectionCopy _sqliteHandle];
 
-  if (v6)
+  if (_sqliteHandle)
   {
-    v7 = [(ML3MusicLibrary *)self sortKeyBuilder];
+    sortKeyBuilder = [(ML3MusicLibrary *)self sortKeyBuilder];
 
-    iPhoneSortKeyBuilderUninstallSqlite3(v7, v6);
+    iPhoneSortKeyBuilderUninstallSqlite3(sortKeyBuilder, _sqliteHandle);
   }
 }
 
-- (void)_configureMediaLibraryDatabaseConnection:(id)a3
+- (void)_configureMediaLibraryDatabaseConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_not_V2(self->_serialQueue);
-  if (([v4 isOpen] & 1) == 0)
+  if (([connectionCopy isOpen] & 1) == 0)
   {
-    [v4 open];
+    [connectionCopy open];
   }
 
-  if ([v4 isOpen])
+  if ([connectionCopy isOpen])
   {
-    [v4 registerFunctionName:@"ML3SearchStringMatch" argumentCount:2 functionPointer:ML3SearchStringMatch];
-    [v4 registerFunctionName:@"ML3SeasonDisplayName" argumentCount:1 functionPointer:ML3SeasonDisplayName];
-    [v4 registerFunctionName:@"ML3IsCurrentlyRestrictedMedia" argumentCount:4 functionPointer:ML3IsCurrentlyRestrictedMedia];
-    [v4 registerFunctionName:@"ML3TrackIntegrityCompute" argumentCount:0xFFFFFFFFLL functionPointer:ML3TrackIntegrityCompute];
-    [v4 registerFunctionName:@"ML3TrackIntegrityVerify" argumentCount:0xFFFFFFFFLL functionPointer:ML3TrackIntegrityVerify];
-    [v4 registerFunctionName:@"ML3TrackDigestCompute" argumentCount:0xFFFFFFFFLL functionPointer:ML3TrackDigestCompute];
-    [v4 registerFunctionName:@"ML3CompoundSortKey" argumentCount:0xFFFFFFFFLL functionPointer:ML3CompoundSortKey];
-    [v4 registerFunctionName:@"ML3SpotlightMatch" argumentCount:0xFFFFFFFFLL functionPointer:ML3SpotlightMatch];
-    [v4 registerFunctionName:@"ML3SortString" argumentCount:0xFFFFFFFFLL functionPointer:ML3SortString];
-    [v4 registerFunctionName:@"ML3SortStringWithPrefix" argumentCount:0xFFFFFFFFLL functionPointer:ML3SortStringWithPrefix];
-    [v4 registerFunctionName:@"ML3StandardizedMediaType" argumentCount:1 block:&__block_literal_global_985];
-    [ML3Track registerBookmarkMetadataIdentifierFunctionOnConnection:v4];
-    iPhoneSortKeyBuilderInstallSqlite3_v2(-[ML3MusicLibrary sortKeyBuilder](self, "sortKeyBuilder"), [v4 _sqliteHandle]);
+    [connectionCopy registerFunctionName:@"ML3SearchStringMatch" argumentCount:2 functionPointer:ML3SearchStringMatch];
+    [connectionCopy registerFunctionName:@"ML3SeasonDisplayName" argumentCount:1 functionPointer:ML3SeasonDisplayName];
+    [connectionCopy registerFunctionName:@"ML3IsCurrentlyRestrictedMedia" argumentCount:4 functionPointer:ML3IsCurrentlyRestrictedMedia];
+    [connectionCopy registerFunctionName:@"ML3TrackIntegrityCompute" argumentCount:0xFFFFFFFFLL functionPointer:ML3TrackIntegrityCompute];
+    [connectionCopy registerFunctionName:@"ML3TrackIntegrityVerify" argumentCount:0xFFFFFFFFLL functionPointer:ML3TrackIntegrityVerify];
+    [connectionCopy registerFunctionName:@"ML3TrackDigestCompute" argumentCount:0xFFFFFFFFLL functionPointer:ML3TrackDigestCompute];
+    [connectionCopy registerFunctionName:@"ML3CompoundSortKey" argumentCount:0xFFFFFFFFLL functionPointer:ML3CompoundSortKey];
+    [connectionCopy registerFunctionName:@"ML3SpotlightMatch" argumentCount:0xFFFFFFFFLL functionPointer:ML3SpotlightMatch];
+    [connectionCopy registerFunctionName:@"ML3SortString" argumentCount:0xFFFFFFFFLL functionPointer:ML3SortString];
+    [connectionCopy registerFunctionName:@"ML3SortStringWithPrefix" argumentCount:0xFFFFFFFFLL functionPointer:ML3SortStringWithPrefix];
+    [connectionCopy registerFunctionName:@"ML3StandardizedMediaType" argumentCount:1 block:&__block_literal_global_985];
+    [ML3Track registerBookmarkMetadataIdentifierFunctionOnConnection:connectionCopy];
+    iPhoneSortKeyBuilderInstallSqlite3_v2(-[ML3MusicLibrary sortKeyBuilder](self, "sortKeyBuilder"), [connectionCopy _sqliteHandle]);
   }
 }
 
@@ -1759,9 +1759,9 @@ void __60__ML3MusicLibrary__configureMediaLibraryDatabaseConnection___block_invo
   sqlite3_result_int(a2, v6);
 }
 
-- (BOOL)_canConfigureMediaLibraryDatabaseConnection:(id)a3
+- (BOOL)_canConfigureMediaLibraryDatabaseConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1770,19 +1770,19 @@ void __60__ML3MusicLibrary__configureMediaLibraryDatabaseConnection___block_invo
 
   else
   {
-    v5 = ([v4 isReadOnly] & 1) != 0 || __daemonProcessInfo && !objc_msgSend(v4, "isReadOnly") || -[ML3MusicLibrary isHomeSharingLibrary](self, "isHomeSharingLibrary") || -[ML3MusicLibrary isUnitTesting](self, "isUnitTesting");
+    v5 = ([connectionCopy isReadOnly] & 1) != 0 || __daemonProcessInfo && !objc_msgSend(connectionCopy, "isReadOnly") || -[ML3MusicLibrary isHomeSharingLibrary](self, "isHomeSharingLibrary") || -[ML3MusicLibrary isUnitTesting](self, "isUnitTesting");
   }
 
   return v5;
 }
 
-- (id)_newGeniusDBConnectionAtPath:(id)a3
+- (id)_newGeniusDBConnectionAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy])
   {
-    v5 = [[ML3DatabaseConnection alloc] initWithDatabasePath:v3];
+    v5 = [[ML3DatabaseConnection alloc] initWithDatabasePath:pathCopy];
   }
 
   else
@@ -1793,29 +1793,29 @@ void __60__ML3MusicLibrary__configureMediaLibraryDatabaseConnection___block_invo
   return v5;
 }
 
-- (void)_createColorAnalysisForRelativePath:(id)a3 artworkType:(int64_t)a4 artworkToken:(id)a5 preferredImageSize:(CGSize)a6 completionHandler:(id)a7
+- (void)_createColorAnalysisForRelativePath:(id)path artworkType:(int64_t)type artworkToken:(id)token preferredImageSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v28 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  if (v13)
+  pathCopy = path;
+  tokenCopy = token;
+  handlerCopy = handler;
+  if (pathCopy)
   {
-    v16 = [MEMORY[0x277CBEBC0] URLWithString:v13];
+    v16 = [MEMORY[0x277CBEBC0] URLWithString:pathCopy];
     v17 = [objc_alloc(MEMORY[0x277D27ED8]) initWithSourceURL:v16 preferredImageSize:{width, height}];
-    v18 = [MEMORY[0x277D27ED0] sharedService];
+    mEMORY[0x277D27ED0] = [MEMORY[0x277D27ED0] sharedService];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __117__ML3MusicLibrary__createColorAnalysisForRelativePath_artworkType_artworkToken_preferredImageSize_completionHandler___block_invoke;
     v20[3] = &unk_27875DC00;
-    v21 = v13;
-    v25 = a4;
-    v22 = v14;
-    v23 = self;
-    v24 = v15;
-    [v18 sendRequest:v17 completion:v20];
+    v21 = pathCopy;
+    typeCopy = type;
+    v22 = tokenCopy;
+    selfCopy = self;
+    v24 = handlerCopy;
+    [mEMORY[0x277D27ED0] sendRequest:v17 completion:v20];
   }
 
   else
@@ -1824,14 +1824,14 @@ void __60__ML3MusicLibrary__configureMediaLibraryDatabaseConnection___block_invo
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v27 = v14;
+      v27 = tokenCopy;
       _os_log_impl(&dword_22D2FA000, v19, OS_LOG_TYPE_ERROR, "Failed to create color analysis for artwork: %{public}@. Relative path is nil.", buf, 0xCu);
     }
 
     v16 = [MEMORY[0x277CCA9B8] ml_errorWithCode:6];
-    if (v15)
+    if (handlerCopy)
     {
-      (*(v15 + 2))(v15, v16);
+      (*(handlerCopy + 2))(handlerCopy, v16);
     }
   }
 }
@@ -1884,50 +1884,50 @@ void __117__ML3MusicLibrary__createColorAnalysisForRelativePath_artworkType_artw
   }
 }
 
-- (void)_autogenerateArtworkForRelativePath:(id)a3 artworkType:(int64_t)a4 mediaType:(unsigned int)a5 variantType:(int64_t)a6 completionHandler:(id)a7
+- (void)_autogenerateArtworkForRelativePath:(id)path artworkType:(int64_t)type mediaType:(unsigned int)mediaType variantType:(int64_t)variantType completionHandler:(id)handler
 {
-  v9 = *&a5;
-  v15 = a3;
-  v12 = a7;
+  v9 = *&mediaType;
+  pathCopy = path;
+  handlerCopy = handler;
   v13 = +[ML3ArtworkConfiguration systemConfiguration];
-  v14 = [v13 sizesToAutogenerateForMediaType:v9 artworkType:a4 artworkVariantType:a6];
+  v14 = [v13 sizesToAutogenerateForMediaType:v9 artworkType:type artworkVariantType:variantType];
 
   if ([v14 count])
   {
-    [(ML3MusicLibrary *)self generateArtworkForRelativePath:v15 sizes:v14 completionHandler:v12];
+    [(ML3MusicLibrary *)self generateArtworkForRelativePath:pathCopy sizes:v14 completionHandler:handlerCopy];
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
-    (*(v12 + 2))(v12, 0, 0, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
   }
 }
 
-- (void)_convertOriginalArtworkToDevicePreferredFormatFromSourceURL:(id)a3 toDestinationURL:(id)a4 completionHandler:(id)a5
+- (void)_convertOriginalArtworkToDevicePreferredFormatFromSourceURL:(id)l toDestinationURL:(id)rL completionHandler:(id)handler
 {
   v7 = MEMORY[0x277D27EE0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [[v7 alloc] initWithSourceURL:v10 destinationURL:v9 destinationFormat:0];
+  handlerCopy = handler;
+  rLCopy = rL;
+  lCopy = l;
+  v12 = [[v7 alloc] initWithSourceURL:lCopy destinationURL:rLCopy destinationFormat:0];
 
   [v12 setDestinationCompressionQuality:0.9];
-  v11 = [MEMORY[0x277D27ED0] sharedService];
-  [v11 sendRequest:v12 completionHandler:v8];
+  mEMORY[0x277D27ED0] = [MEMORY[0x277D27ED0] sharedService];
+  [mEMORY[0x277D27ED0] sendRequest:v12 completionHandler:handlerCopy];
 }
 
-- (BOOL)_removeInvalidAvailableArtworkTokensUsingConnection:(id)a3
+- (BOOL)_removeInvalidAvailableArtworkTokensUsingConnection:(id)connection
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  connectionCopy = connection;
+  array = [MEMORY[0x277CBEB18] array];
   v5 = objc_autoreleasePoolPush();
-  v6 = [v3 executeQuery:{@"SELECT entity_pid, entity_type, best_artwork_token.artwork_type, available_artwork_token, best_artwork_token.artwork_variant_type FROM best_artwork_token LEFT OUTER JOIN artwork ON (available_artwork_token = artwork_token AND best_artwork_token.artwork_variant_type = artwork.artwork_variant_type) WHERE available_artwork_token != '' AND artwork_token IS NULL"}];
+  v6 = [connectionCopy executeQuery:{@"SELECT entity_pid, entity_type, best_artwork_token.artwork_type, available_artwork_token, best_artwork_token.artwork_variant_type FROM best_artwork_token LEFT OUTER JOIN artwork ON (available_artwork_token = artwork_token AND best_artwork_token.artwork_variant_type = artwork.artwork_variant_type) WHERE available_artwork_token != '' AND artwork_token IS NULL"}];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection___block_invoke;
   v38[3] = &unk_278766118;
-  v7 = v4;
+  v7 = array;
   v39 = v7;
   [v6 enumerateRowsWithBlock:v38];
 
@@ -1956,38 +1956,38 @@ void __117__ML3MusicLibrary__createColorAnalysisForRelativePath_artworkType_artw
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v29 = [v9 objectAtIndexedSubscript:0];
-          v27 = [v29 longLongValue];
+          longLongValue = [v29 longLongValue];
           v28 = [v9 objectAtIndexedSubscript:1];
-          v11 = [v28 intValue];
+          intValue = [v28 intValue];
           v12 = [v9 objectAtIndexedSubscript:2];
-          v13 = [v12 intValue];
+          intValue2 = [v12 intValue];
           v14 = [v9 objectAtIndexedSubscript:4];
-          v15 = [v14 intValue];
+          intValue3 = [v14 intValue];
           [v9 objectAtIndexedSubscript:3];
-          v17 = v16 = v3;
+          v17 = v16 = connectionCopy;
           *buf = 134219010;
-          v41 = v27;
+          v41 = longLongValue;
           v42 = 1024;
-          v43 = v11;
+          v43 = intValue;
           v44 = 1024;
-          v45 = v13;
+          v45 = intValue2;
           v46 = 1024;
-          v47 = v15;
+          v47 = intValue3;
           v48 = 2114;
           v49 = v17;
           _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "Updating best tokens for entity_pid = %lld entity_type = %d artwork_type = %d artwork_variant_type = %d with invalid available token %{public}@", buf, 0x28u);
 
-          v3 = v16;
+          connectionCopy = v16;
         }
 
         v18 = [v9 objectAtIndexedSubscript:0];
-        v19 = [v18 longLongValue];
+        longLongValue2 = [v18 longLongValue];
         v20 = [v9 objectAtIndexedSubscript:1];
-        v21 = [v20 intValue];
+        intValue4 = [v20 intValue];
         v22 = [v9 objectAtIndexedSubscript:2];
-        v23 = [v22 intValue];
+        intValue5 = [v22 intValue];
         v24 = [v9 objectAtIndexedSubscript:4];
-        -[ML3MusicLibrary updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:variantType:retrievalTime:preserveExistingAvailableToken:usingConnection:](self, "updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:variantType:retrievalTime:preserveExistingAvailableToken:usingConnection:", v19, v21, v23, [v24 intValue], 0, v3, 0.0);
+        -[ML3MusicLibrary updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:variantType:retrievalTime:preserveExistingAvailableToken:usingConnection:](self, "updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:variantType:retrievalTime:preserveExistingAvailableToken:usingConnection:", longLongValue2, intValue4, intValue5, [v24 intValue], 0, connectionCopy, 0.0);
 
         objc_autoreleasePoolPop(context);
       }
@@ -2020,14 +2020,14 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
   [v2 addObject:v9];
 }
 
-- (BOOL)_removeOrphanedArtworkAssetsUsingConnection:(id)a3
+- (BOOL)_removeOrphanedArtworkAssetsUsingConnection:(id)connection
 {
   v140[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [MEMORY[0x277CBEB58] set];
   v6 = objc_autoreleasePoolPush();
-  v99 = v4;
-  v7 = [v4 executeQuery:@"SELECT distinct(relative_path) FROM artwork"];
+  v99 = connectionCopy;
+  v7 = [connectionCopy executeQuery:@"SELECT distinct(relative_path) FROM artwork"];
   v127[0] = MEMORY[0x277D85DD0];
   v127[1] = 3221225472;
   v127[2] = __63__ML3MusicLibrary__removeOrphanedArtworkAssetsUsingConnection___block_invoke;
@@ -2037,19 +2037,19 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
   [v7 enumerateRowsWithBlock:v127];
 
   objc_autoreleasePoolPop(v6);
-  v87 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEB18] array];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = MEMORY[0x277CBEBC0];
-  v95 = self;
-  v11 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-  v12 = [v10 fileURLWithPath:v11 isDirectory:1];
+  selfCopy = self;
+  originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+  v12 = [v10 fileURLWithPath:originalArtworkDirectory isDirectory:1];
 
   v13 = *MEMORY[0x277CBE868];
   v140[0] = *MEMORY[0x277CBE868];
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v140 count:1];
   v85 = v12;
-  v86 = v9;
-  v15 = [v9 enumeratorAtURL:v12 includingPropertiesForKeys:v14 options:4 errorHandler:0];
+  v86 = defaultManager;
+  v15 = [defaultManager enumeratorAtURL:v12 includingPropertiesForKeys:v14 options:4 errorHandler:0];
 
   v125 = 0u;
   v126 = 0u;
@@ -2081,13 +2081,13 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
         v22 = v122;
         if (([v22 BOOLValue] & 1) == 0)
         {
-          v23 = [v20 pathComponents];
-          v24 = [v23 count];
+          pathComponents = [v20 pathComponents];
+          v24 = [pathComponents count];
           v25 = v24 - 1;
           v26 = MEMORY[0x277CCACA8];
-          v27 = [v23 objectAtIndexedSubscript:v24 - 2];
+          v27 = [pathComponents objectAtIndexedSubscript:v24 - 2];
           v138[0] = v27;
-          v28 = [v23 objectAtIndexedSubscript:v25];
+          v28 = [pathComponents objectAtIndexedSubscript:v25];
           v138[1] = v28;
           v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v138 count:2];
           v30 = [v26 pathWithComponents:v29];
@@ -2099,7 +2099,7 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
 
           else
           {
-            [v87 addObject:v30];
+            [array addObject:v30];
             v31 = os_log_create("com.apple.amp.medialibrary", "Library");
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
@@ -2126,7 +2126,7 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
     while (v17);
   }
 
-  if ([v8 count] || objc_msgSend(v87, "count"))
+  if ([v8 count] || objc_msgSend(array, "count"))
   {
     v32 = os_log_create("com.apple.amp.medialibrary", "Library");
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -2140,7 +2140,7 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
     v34 = os_log_create("com.apple.amp.medialibrary", "Library");
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [v87 count];
+      v35 = [array count];
       *buf = 134217984;
       v137 = v35;
       _os_log_impl(&dword_22D2FA000, v34, OS_LOG_TYPE_DEFAULT, "Found %lu artwork asset without metadata in database", buf, 0xCu);
@@ -2189,7 +2189,7 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
       while (v38);
     }
 
-    v98 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v112 = 0u;
     v113 = 0u;
     v114 = 0u;
@@ -2223,7 +2223,7 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
           v109[1] = 3221225472;
           v109[2] = __63__ML3MusicLibrary__removeOrphanedArtworkAssetsUsingConnection___block_invoke_2;
           v109[3] = &unk_278763E40;
-          v110 = v98;
+          v110 = array2;
           v111 = v53;
           v56 = v53;
           [v55 enumerateRowsWithBlock:v109];
@@ -2294,7 +2294,7 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
       v103 = 0u;
       v100 = 0u;
       v101 = 0u;
-      v88 = v98;
+      v88 = array2;
       v69 = [v88 countByEnumeratingWithState:&v100 objects:v129 count:16];
       if (v69)
       {
@@ -2312,13 +2312,13 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
             v72 = *(*(&v100 + 1) + 8 * m);
             v73 = objc_autoreleasePoolPush();
             v74 = [v72 objectAtIndexedSubscript:0];
-            v75 = [v74 longLongValue];
+            longLongValue = [v74 longLongValue];
             v76 = [v72 objectAtIndexedSubscript:1];
-            v77 = [v76 intValue];
+            intValue = [v76 intValue];
             v78 = [v72 objectAtIndexedSubscript:2];
-            v79 = [v78 intValue];
+            intValue2 = [v78 intValue];
             v80 = [v72 objectAtIndexedSubscript:3];
-            -[ML3MusicLibrary updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:variantType:retrievalTime:preserveExistingAvailableToken:usingConnection:](v95, "updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:variantType:retrievalTime:preserveExistingAvailableToken:usingConnection:", v75, v77, v79, [v80 intValue], 0, v99, 0.0);
+            -[ML3MusicLibrary updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:variantType:retrievalTime:preserveExistingAvailableToken:usingConnection:](selfCopy, "updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:variantType:retrievalTime:preserveExistingAvailableToken:usingConnection:", longLongValue, intValue, intValue2, [v80 intValue], 0, v99, 0.0);
 
             objc_autoreleasePoolPop(v73);
           }
@@ -2338,13 +2338,13 @@ void __71__ML3MusicLibrary__removeInvalidAvailableArtworkTokensUsingConnection__
   v81 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
   {
-    v82 = [v87 count];
+    v82 = [array count];
     *buf = 134217984;
     v137 = v82;
     _os_log_impl(&dword_22D2FA000, v81, OS_LOG_TYPE_ERROR, "Deleting %ld orphaned artwork assets.", buf, 0xCu);
   }
 
-  [(ML3MusicLibrary *)v95 _deleteAllArtworkVariantsAtRelativePaths:v87];
+  [(ML3MusicLibrary *)selfCopy _deleteAllArtworkVariantsAtRelativePaths:array];
   return 1;
 }
 
@@ -2386,29 +2386,29 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkAssetsUsingConnection___block_i
   [v3 addObject:v9];
 }
 
-- (BOOL)_removeOrphanedArtworkMetadataUsingConnection:(id)a3
+- (BOOL)_removeOrphanedArtworkMetadataUsingConnection:(id)connection
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
+  connectionCopy = connection;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v8 = objc_autoreleasePoolPush();
-  v9 = [v4 executeQuery:@"SELECT artwork_token withParameters:{artwork_source_type, relative_path, artwork.artwork_type, artwork.artwork_variant_type FROM artwork LEFT OUTER JOIN best_artwork_token ON (artwork_token = available_artwork_token) WHERE artwork.artwork_type != ? AND artwork.artwork_variant_type = best_artwork_token.artwork_variant_type AND available_artwork_token IS NULL", &unk_2840C6860}];
+  v9 = [connectionCopy executeQuery:@"SELECT artwork_token withParameters:{artwork_source_type, relative_path, artwork.artwork_type, artwork.artwork_variant_type FROM artwork LEFT OUTER JOIN best_artwork_token ON (artwork_token = available_artwork_token) WHERE artwork.artwork_type != ? AND artwork.artwork_variant_type = best_artwork_token.artwork_variant_type AND available_artwork_token IS NULL", &unk_2840C6860}];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __65__ML3MusicLibrary__removeOrphanedArtworkMetadataUsingConnection___block_invoke;
   v40[3] = &unk_278763E40;
-  v10 = v5;
+  v10 = dictionary;
   v41 = v10;
-  v11 = v6;
+  v11 = array;
   v42 = v11;
   [v9 enumerateRowsWithBlock:v40];
 
   objc_autoreleasePoolPop(v8);
   v12 = [MEMORY[0x277CBEB58] set];
   v13 = objc_autoreleasePoolPush();
-  v14 = [v4 executeQuery:{@"SELECT item_pid, chapter_data FROM chapter JOIN item USING (item_pid) WHERE chapter_data IS NOT NULL"}];
+  v14 = [connectionCopy executeQuery:{@"SELECT item_pid, chapter_data FROM chapter JOIN item USING (item_pid) WHERE chapter_data IS NOT NULL"}];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __65__ML3MusicLibrary__removeOrphanedArtworkMetadataUsingConnection___block_invoke_941;
@@ -2418,7 +2418,7 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkAssetsUsingConnection___block_i
   [v14 enumerateRowsWithBlock:v38];
 
   objc_autoreleasePoolPop(v13);
-  v16 = [v4 executeQuery:@"SELECT artwork_token withParameters:{relative_path FROM artwork WHERE artwork_type = ?", &unk_2840C6878}];
+  v16 = [connectionCopy executeQuery:@"SELECT artwork_token withParameters:{relative_path FROM artwork WHERE artwork_type = ?", &unk_2840C6878}];
   v17 = objc_autoreleasePoolPush();
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -2426,7 +2426,7 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkAssetsUsingConnection___block_i
   v34[3] = &unk_278764618;
   v18 = v15;
   v35 = v18;
-  v19 = v7;
+  v19 = array2;
   v36 = v19;
   v20 = v11;
   v37 = v20;
@@ -2435,7 +2435,7 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkAssetsUsingConnection___block_i
   objc_autoreleasePoolPop(v17);
   if ([v19 count])
   {
-    v21 = self;
+    selfCopy = self;
     context = objc_autoreleasePoolPush();
     v22 = os_log_create("com.apple.amp.medialibrary", "Library");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -2449,9 +2449,9 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkAssetsUsingConnection___block_i
     v24 = +[ML3DatabaseStatementRenderer defaultRenderer];
     v25 = [v24 statementWithPrefix:@"DELETE FROM artwork WHERE artwork_token" inParameterCount:{objc_msgSend(v19, "count")}];
     v33 = 0;
-    v26 = [v4 executeUpdate:v25 withParameters:v19 error:&v33];
+    v26 = [connectionCopy executeUpdate:v25 withParameters:v19 error:&v33];
 
-    self = v21;
+    self = selfCopy;
     if (v26)
     {
       v27 = os_log_create("com.apple.amp.medialibrary", "Library");
@@ -2472,7 +2472,7 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkAssetsUsingConnection___block_i
     v30[2] = __65__ML3MusicLibrary__removeOrphanedArtworkMetadataUsingConnection___block_invoke_954;
     v30[3] = &unk_27875DBD8;
     v31 = v20;
-    v32 = v4;
+    v32 = connectionCopy;
     [v10 enumerateKeysAndObjectsUsingBlock:v30];
   }
 
@@ -2601,10 +2601,10 @@ void __65__ML3MusicLibrary__removeOrphanedArtworkMetadataUsingConnection___block
   [*(a1 + 32) addObject:v2];
 }
 
-- (BOOL)_removeOrphanedArtworkTokensUsingConnection:(id)a3
+- (BOOL)_removeOrphanedArtworkTokensUsingConnection:(id)connection
 {
   v16[7] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2629,7 +2629,7 @@ void __65__ML3MusicLibrary__removeOrphanedArtworkMetadataUsingConnection___block
   v8[2] = __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_invoke;
   v8[3] = &unk_27875DB88;
   v10 = &v11;
-  v5 = v3;
+  v5 = connectionCopy;
   v9 = v5;
   [v4 enumerateKeysAndObjectsUsingBlock:v8];
   v6 = *(v12 + 24);
@@ -2694,11 +2694,11 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
   *a4 = v20 & 1;
 }
 
-- (void)_deleteAllArtworkVariantsAtRelativePaths:(id)a3
+- (void)_deleteAllArtworkVariantsAtRelativePaths:(id)paths
 {
   v41 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathsCopy = paths;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   [(ML3MusicLibrary *)self _allArtworkVariantDirectories];
   v31 = 0u;
   v32 = 0u;
@@ -2725,7 +2725,7 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v7 = v22;
+        v7 = pathsCopy;
         v8 = [v7 countByEnumeratingWithState:&v27 objects:v39 count:16];
         if (v8)
         {
@@ -2743,8 +2743,8 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
               v12 = *(*(&v27 + 1) + 8 * i);
               v13 = objc_autoreleasePoolPush();
               v14 = [v6 URLByAppendingPathComponent:v12];
-              v15 = [v14 path];
-              v16 = [v4 fileExistsAtPath:v15];
+              path = [v14 path];
+              v16 = [defaultManager fileExistsAtPath:path];
 
               if (v16)
               {
@@ -2757,7 +2757,7 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
                 }
 
                 v26 = 0;
-                [v4 removeItemAtURL:v14 error:&v26];
+                [defaultManager removeItemAtURL:v14 error:&v26];
                 v18 = v26;
                 if (v18)
                 {
@@ -2797,20 +2797,20 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
 - (id)_allArtworkVariantDirectories
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [MEMORY[0x277CBEB18] array];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = MEMORY[0x277CBEBC0];
-  v6 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-  v7 = [v5 fileURLWithPath:v6 isDirectory:1];
-  [v4 addObject:v7];
+  originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+  v7 = [v5 fileURLWithPath:originalArtworkDirectory isDirectory:1];
+  [array addObject:v7];
 
-  v8 = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
-  v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8 isDirectory:1];
+  rootArtworkCacheDirectory = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
+  v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:rootArtworkCacheDirectory isDirectory:1];
   v10 = *MEMORY[0x277CBE868];
   v30[0] = *MEMORY[0x277CBE868];
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-  v23 = v3;
-  v12 = [v3 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:v11 options:4 error:0];
+  v23 = defaultManager;
+  v12 = [defaultManager contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:v11 options:4 error:0];
 
   v27 = 0u;
   v28 = 0u;
@@ -2838,7 +2838,7 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
         v21 = v20;
         if (v19 && [v20 BOOLValue])
         {
-          [v4 addObject:v18];
+          [array addObject:v18];
         }
       }
 
@@ -2848,14 +2848,14 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
     while (v15);
   }
 
-  return v4;
+  return array;
 }
 
-- (BOOL)_determineAndUpdateBestArtworkTokensForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 retrievalTime:(double)a6 preserveExistingAvailableToken:(BOOL)a7 variantType:(int64_t)a8 usingConnection:(id)a9
+- (BOOL)_determineAndUpdateBestArtworkTokensForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType retrievalTime:(double)time preserveExistingAvailableToken:(BOOL)token variantType:(int64_t)variantType usingConnection:(id)connection
 {
-  v56 = a7;
+  tokenCopy = token;
   v93[4] = *MEMORY[0x277D85DE8];
-  v12 = a9;
+  connectionCopy = connection;
   v75 = 0;
   v76 = &v75;
   v77 = 0x3032000000;
@@ -2876,16 +2876,16 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
   v65 = &v64;
   v66 = 0x2020000000;
   v67 = 0;
-  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v83[0] = v13;
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v83[1] = v14;
-  v15 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v15 = [MEMORY[0x277CCABB0] numberWithInteger:artworkType];
   v83[2] = v15;
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:a8];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:variantType];
   v83[3] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:4];
-  v57 = [v12 executeQuery:@"SELECT artwork_token.artwork_token withParameters:{artwork_token.artwork_source_type, (artwork.relative_path != '') AS has_artwork_on_disk FROM artwork_token LEFT OUTER JOIN artwork USING (artwork_token) WHERE artwork_token.entity_pid = ? AND artwork_token.entity_type = ? AND artwork_token.artwork_type = ? AND artwork_token.artwork_variant_type = ? ORDER BY artwork_token.artwork_source_type ASC", v17}];
+  v57 = [connectionCopy executeQuery:@"SELECT artwork_token.artwork_token withParameters:{artwork_token.artwork_source_type, (artwork.relative_path != '') AS has_artwork_on_disk FROM artwork_token LEFT OUTER JOIN artwork USING (artwork_token) WHERE artwork_token.entity_pid = ? AND artwork_token.entity_type = ? AND artwork_token.artwork_type = ? AND artwork_token.artwork_variant_type = ? ORDER BY artwork_token.artwork_source_type ASC", v17}];
 
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
@@ -2895,24 +2895,24 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
   v63[7] = &v64;
   v63[4] = self;
   v63[5] = v74;
-  v63[10] = a4;
-  v63[11] = a5;
+  v63[10] = type;
+  v63[11] = artworkType;
   v63[8] = &v68;
-  v63[9] = a3;
+  v63[9] = d;
   [v57 enumerateRowsWithBlock:v63];
   v18 = v76[5];
   v19 = v69[5];
   v54 = v65[3];
-  v61 = v12;
+  v61 = connectionCopy;
   v20 = v18;
   v21 = v19;
   v60 = v20;
   if (!v20)
   {
     v49 = v21;
-    v50 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"BOOL UpdateBestArtworkToken(ML3DatabaseConnection *__strong, int64_t, ML3EntityType, ML3ArtworkType, ML3ArtworkVariantType, NSString *__strong, NSString *__strong, ML3ArtworkSourceType, BOOL)"}];
-    [v50 handleFailureInFunction:v51 file:@"ML3MusicLibrary.m" lineNumber:4796 description:@"Available artwork token cannot be nil"];
+    [currentHandler handleFailureInFunction:v51 file:@"ML3MusicLibrary.m" lineNumber:4796 description:@"Available artwork token cannot be nil"];
 
     v21 = v49;
   }
@@ -2920,15 +2920,15 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
   v59 = v21;
   if (!v21)
   {
-    v52 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"BOOL UpdateBestArtworkToken(ML3DatabaseConnection *__strong, int64_t, ML3EntityType, ML3ArtworkType, ML3ArtworkVariantType, NSString *__strong, NSString *__strong, ML3ArtworkSourceType, BOOL)"}];
-    [v52 handleFailureInFunction:v53 file:@"ML3MusicLibrary.m" lineNumber:4797 description:@"Fetchable artwork token cannot be nil"];
+    [currentHandler2 handleFailureInFunction:v53 file:@"ML3MusicLibrary.m" lineNumber:4797 description:@"Fetchable artwork token cannot be nil"];
   }
 
   v22 = [v60 length];
   v23 = [v59 length];
   v24 = v23 != 0;
-  if (!v56 || v22)
+  if (!tokenCopy || v22)
   {
     if (!(v22 | v23))
     {
@@ -2938,13 +2938,13 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
 
   else
   {
-    v25 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v25 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
     v93[0] = v25;
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v26 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v93[1] = v26;
-    v27 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v27 = [MEMORY[0x277CCABB0] numberWithInteger:artworkType];
     v93[2] = v27;
-    v28 = [MEMORY[0x277CCABB0] numberWithInteger:a8];
+    v28 = [MEMORY[0x277CCABB0] numberWithInteger:variantType];
     v93[3] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v93 count:4];
     v30 = [v61 executeQuery:@"SELECT available_artwork_token FROM best_artwork_token WHERE entity_pid = ? AND entity_type = ? AND artwork_type = ? AND artwork_variant_type = ?" withParameters:v29];
@@ -2974,11 +2974,11 @@ void __63__ML3MusicLibrary__removeOrphanedArtworkTokensUsingConnection___block_i
     if (!v24)
     {
 LABEL_10:
-      v32 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+      v32 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
       v86 = v32;
-      v33 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v33 = [MEMORY[0x277CCABB0] numberWithInteger:type];
       v87 = v33;
-      v34 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+      v34 = [MEMORY[0x277CCABB0] numberWithInteger:artworkType];
       v88 = v34;
       v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:3];
       v81 = 0;
@@ -3005,17 +3005,17 @@ LABEL_18:
     }
   }
 
-  v40 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v40 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v86 = v40;
-  v41 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v41 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v87 = v41;
-  v42 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v42 = [MEMORY[0x277CCABB0] numberWithInteger:artworkType];
   v88 = v42;
   v89 = v60;
   v90 = v59;
   v43 = [MEMORY[0x277CCABB0] numberWithInteger:v55];
   v91 = v43;
-  v44 = [MEMORY[0x277CCABB0] numberWithInteger:a8];
+  v44 = [MEMORY[0x277CCABB0] numberWithInteger:variantType];
   v92 = v44;
   v45 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:7];
   v81 = 0;
@@ -3105,35 +3105,35 @@ LABEL_13:
 LABEL_14:
 }
 
-- (BOOL)_updateBestArtworkTokensForArtworkToken:(id)a3 artworkType:(int64_t)a4 sourceType:(int64_t)a5 variantType:(int64_t)a6 preserveExistingAvailableToken:(BOOL)a7 usingConnection:(id)a8
+- (BOOL)_updateBestArtworkTokensForArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType variantType:(int64_t)variantType preserveExistingAvailableToken:(BOOL)availableToken usingConnection:(id)connection
 {
-  v39 = a7;
+  availableTokenCopy = availableToken;
   v50[4] = *MEMORY[0x277D85DE8];
-  obja = a3;
-  v13 = a8;
-  v35 = [MEMORY[0x277CBEB18] array];
+  obja = token;
+  connectionCopy = connection;
+  array = [MEMORY[0x277CBEB18] array];
   v50[0] = obja;
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v50[1] = v14;
-  v15 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v15 = [MEMORY[0x277CCABB0] numberWithInteger:sourceType];
   v50[2] = v15;
-  v16 = a6;
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+  variantTypeCopy = variantType;
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:variantType];
   v50[3] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:4];
-  v19 = [v13 executeQuery:@"SELECT entity_pid withParameters:{entity_type FROM artwork_token WHERE artwork_token = ? AND artwork_type = ? AND artwork_source_type = ? AND artwork_variant_type = ?", v18}];
+  v19 = [connectionCopy executeQuery:@"SELECT entity_pid withParameters:{entity_type FROM artwork_token WHERE artwork_token = ? AND artwork_type = ? AND artwork_source_type = ? AND artwork_variant_type = ?", v18}];
 
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __141__ML3MusicLibrary__updateBestArtworkTokensForArtworkToken_artworkType_sourceType_variantType_preserveExistingAvailableToken_usingConnection___block_invoke;
   v44[3] = &unk_27875DB38;
-  v20 = v35;
+  v20 = array;
   v45 = v20;
   v36 = obja;
   v46 = v36;
-  v47 = a4;
-  v21 = a4;
-  v48 = a5;
+  typeCopy = type;
+  typeCopy2 = type;
+  sourceTypeCopy = sourceType;
   [v19 enumerateRowsWithBlock:v44];
   v42 = 0u;
   v43 = 0u;
@@ -3157,18 +3157,18 @@ LABEL_14:
 
         v26 = *(*(&v40 + 1) + 8 * i);
         v27 = [v26 objectAtIndexedSubscript:{0, v34}];
-        v28 = [v27 longLongValue];
+        longLongValue = [v27 longLongValue];
 
         v29 = [v26 objectAtIndexedSubscript:1];
-        v30 = [v29 intValue];
+        intValue = [v29 intValue];
 
-        if (![(ML3MusicLibrary *)self _determineAndUpdateBestArtworkTokensForEntityPersistentID:v28 entityType:v30 artworkType:v21 retrievalTime:v39 preserveExistingAvailableToken:v16 variantType:v13 usingConnection:0.0])
+        if (![(ML3MusicLibrary *)self _determineAndUpdateBestArtworkTokensForEntityPersistentID:longLongValue entityType:intValue artworkType:typeCopy2 retrievalTime:availableTokenCopy preserveExistingAvailableToken:variantTypeCopy variantType:connectionCopy usingConnection:0.0])
         {
           v31 = 0;
           goto LABEL_11;
         }
 
-        [MLEntityClassForType(v30) incrementRevisionWithLibrary:self persistentID:v28 deletionType:0 revisionType:1 usingConnection:v13];
+        [MLEntityClassForType(intValue) incrementRevisionWithLibrary:self persistentID:longLongValue deletionType:0 revisionType:1 usingConnection:connectionCopy];
       }
 
       v23 = [obj countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -3231,44 +3231,44 @@ void __141__ML3MusicLibrary__updateBestArtworkTokensForArtworkToken_artworkType_
   }
 }
 
-- (BOOL)_insertArtworkRowWithArtworkToken:(id)a3 artworkType:(int64_t)a4 sourceType:(int64_t)a5 variantType:(int64_t)a6 relativePath:(id)a7 usingConnection:(id)a8
+- (BOOL)_insertArtworkRowWithArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType variantType:(int64_t)variantType relativePath:(id)path usingConnection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
-  if (![v15 length])
+  tokenCopy = token;
+  pathCopy = path;
+  connectionCopy = connection;
+  if (![pathCopy length])
   {
     v22 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = v14;
+      v32 = tokenCopy;
       _os_log_impl(&dword_22D2FA000, v22, OS_LOG_TYPE_DEFAULT, "_insertArtworkRowWithArtworkToken passed empty path for artwork with token %{public}@", buf, 0xCu);
     }
 
     goto LABEL_9;
   }
 
-  v27 = self;
-  v28 = v14;
-  v30[0] = v14;
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  selfCopy = self;
+  v28 = tokenCopy;
+  v30[0] = tokenCopy;
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v30[1] = v17;
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:sourceType];
   v30[2] = v18;
-  v30[3] = v15;
-  v26 = a6;
-  v19 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+  v30[3] = pathCopy;
+  variantTypeCopy = variantType;
+  v19 = [MEMORY[0x277CCABB0] numberWithInteger:variantType];
   v30[4] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:5];
   v29 = 0;
-  v21 = [v16 executeUpdate:@"INSERT OR REPLACE INTO artwork (artwork_token withParameters:artwork_type error:{artwork_source_type, relative_path, artwork_variant_type) VALUES (?, ?, ?, ?, ?)", v20, &v29}];
+  v21 = [connectionCopy executeUpdate:@"INSERT OR REPLACE INTO artwork (artwork_token withParameters:artwork_type error:{artwork_source_type, relative_path, artwork_variant_type) VALUES (?, ?, ?, ?, ?)", v20, &v29}];
   v22 = v29;
 
   if (!v21)
   {
-    v14 = v28;
+    tokenCopy = v28;
     v24 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -3283,18 +3283,18 @@ LABEL_9:
   }
 
   v23 = 1;
-  [(ML3MusicLibrary *)v27 _updateBestArtworkTokensForArtworkToken:v28 artworkType:a4 sourceType:a5 variantType:v26 preserveExistingAvailableToken:1 usingConnection:v16];
-  [(ML3MusicLibrary *)v27 updatePurgeabilityForOriginalArtworkWithRelativePath:v15];
-  v14 = v28;
+  [(ML3MusicLibrary *)selfCopy _updateBestArtworkTokensForArtworkToken:v28 artworkType:type sourceType:sourceType variantType:variantTypeCopy preserveExistingAvailableToken:1 usingConnection:connectionCopy];
+  [(ML3MusicLibrary *)selfCopy updatePurgeabilityForOriginalArtworkWithRelativePath:pathCopy];
+  tokenCopy = v28;
 LABEL_10:
 
   return v23;
 }
 
-- (BOOL)_insertArtworkRowWithArtworkToken:(id)a3 artworkType:(int64_t)a4 sourceType:(int64_t)a5 variantType:(int64_t)a6 relativePath:(id)a7
+- (BOOL)_insertArtworkRowWithArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType variantType:(int64_t)variantType relativePath:(id)path
 {
-  v12 = a3;
-  v13 = a7;
+  tokenCopy = token;
+  pathCopy = path;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -3305,12 +3305,12 @@ LABEL_10:
   v17[3] = &unk_27875DB10;
   v20 = &v24;
   v17[4] = self;
-  v14 = v12;
+  v14 = tokenCopy;
   v18 = v14;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v15 = v13;
+  typeCopy = type;
+  sourceTypeCopy = sourceType;
+  variantTypeCopy = variantType;
+  v15 = pathCopy;
   v19 = v15;
   [(ML3MusicLibrary *)self performDatabaseTransactionWithBlock:v17];
   LOBYTE(self) = *(v25 + 24);
@@ -3323,30 +3323,30 @@ LABEL_10:
 {
   if (!__daemonProcessInfo)
   {
-    v3 = [(ML3MusicLibrary *)self privacyContext];
-    [v3 logDatabasePrivacyAccess];
+    privacyContext = [(ML3MusicLibrary *)self privacyContext];
+    [privacyContext logDatabasePrivacyAccess];
   }
 }
 
-- (id)securityScopedFileURLForItemPID:(unint64_t)a3
+- (id)securityScopedFileURLForItemPID:(unint64_t)d
 {
   v5 = +[MLMediaLibraryService sharedMediaLibraryService];
-  v6 = [(ML3MusicLibrary *)self databasePath];
-  v7 = [v5 securityScopedURLForItemPID:a3 withDatabasePath:v6];
+  databasePath = [(ML3MusicLibrary *)self databasePath];
+  v7 = [v5 securityScopedURLForItemPID:d withDatabasePath:databasePath];
 
   return v7;
 }
 
-- (BOOL)sanitizeSortMapContentsUsingConnection:(id)a3 didSortMapEntries:(BOOL *)a4
+- (BOOL)sanitizeSortMapContentsUsingConnection:(id)connection didSortMapEntries:(BOOL *)entries
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  connectionCopy = connection;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
   v53 = 0;
   v6 = [MEMORY[0x277CBEB58] set];
-  v7 = [v5 executeQuery:{@"SELECT DISTINCT title, sort_title FROM item_extra JOIN item USING(item_pid) WHERE title_order = 0 AND LENGTH(title)"}];
+  v7 = [connectionCopy executeQuery:{@"SELECT DISTINCT title, sort_title FROM item_extra JOIN item USING(item_pid) WHERE title_order = 0 AND LENGTH(title)"}];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __76__ML3MusicLibrary_sanitizeSortMapContentsUsingConnection_didSortMapEntries___block_invoke;
@@ -3355,7 +3355,7 @@ LABEL_10:
   v49 = v8;
   [v7 enumerateRowsWithBlock:v48];
 
-  v9 = [v5 executeQuery:{@"SELECT DISTINCT item_artist, sort_item_artist, series_name, sort_series_name FROM item_artist JOIN item USING(item_artist_pid) WHERE item_artist_order = 0 AND LENGTH(item_artist)"}];
+  v9 = [connectionCopy executeQuery:{@"SELECT DISTINCT item_artist, sort_item_artist, series_name, sort_series_name FROM item_artist JOIN item USING(item_artist_pid) WHERE item_artist_order = 0 AND LENGTH(item_artist)"}];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __76__ML3MusicLibrary_sanitizeSortMapContentsUsingConnection_didSortMapEntries___block_invoke_2;
@@ -3364,7 +3364,7 @@ LABEL_10:
   v47 = v10;
   [v9 enumerateRowsWithBlock:v46];
 
-  v11 = [v5 executeQuery:{@"SELECT DISTINCT album_artist, sort_album_artist FROM album_artist WHERE sort_order = 0 AND LENGTH(album_artist)"}];
+  v11 = [connectionCopy executeQuery:{@"SELECT DISTINCT album_artist, sort_album_artist FROM album_artist WHERE sort_order = 0 AND LENGTH(album_artist)"}];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __76__ML3MusicLibrary_sanitizeSortMapContentsUsingConnection_didSortMapEntries___block_invoke_3;
@@ -3373,7 +3373,7 @@ LABEL_10:
   v45 = v12;
   [v11 enumerateRowsWithBlock:v44];
 
-  v13 = [v5 executeQuery:{@"SELECT DISTINCT album, sort_album FROM album JOIN item USING(album_pid) WHERE album_order = 0 AND LENGTH(album)"}];
+  v13 = [connectionCopy executeQuery:{@"SELECT DISTINCT album, sort_album FROM album JOIN item USING(album_pid) WHERE album_order = 0 AND LENGTH(album)"}];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __76__ML3MusicLibrary_sanitizeSortMapContentsUsingConnection_didSortMapEntries___block_invoke_4;
@@ -3382,7 +3382,7 @@ LABEL_10:
   v43 = v14;
   [v13 enumerateRowsWithBlock:v42];
 
-  v15 = [v5 executeQuery:{@"SELECT DISTINCT composer, sort_composer FROM composer JOIN item USING(composer_pid) WHERE composer_order = 0 AND LENGTH(composer)"}];
+  v15 = [connectionCopy executeQuery:{@"SELECT DISTINCT composer, sort_composer FROM composer JOIN item USING(composer_pid) WHERE composer_order = 0 AND LENGTH(composer)"}];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __76__ML3MusicLibrary_sanitizeSortMapContentsUsingConnection_didSortMapEntries___block_invoke_5;
@@ -3391,7 +3391,7 @@ LABEL_10:
   v41 = v16;
   [v15 enumerateRowsWithBlock:v40];
 
-  v17 = [v5 executeQuery:@"SELECT DISTINCT genre FROM genre JOIN item USING(genre_id) WHERE genre_order = 0 AND LENGTH(genre)"];
+  v17 = [connectionCopy executeQuery:@"SELECT DISTINCT genre FROM genre JOIN item USING(genre_id) WHERE genre_order = 0 AND LENGTH(genre)"];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __76__ML3MusicLibrary_sanitizeSortMapContentsUsingConnection_didSortMapEntries___block_invoke_6;
@@ -3430,7 +3430,7 @@ LABEL_10:
 
           v57 = *(*(&v34 + 1) + 8 * i);
           v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
-          [v5 executeUpdate:@"INSERT OR REPLACE INTO sort_map (name withParameters:sort_key) VALUES (? error:{'')", v24, 0}];
+          [connectionCopy executeUpdate:@"INSERT OR REPLACE INTO sort_map (name withParameters:sort_key) VALUES (? error:{'')", v24, 0}];
         }
 
         v21 = [v20 countByEnumeratingWithState:&v34 objects:v58 count:16];
@@ -3450,7 +3450,7 @@ LABEL_10:
   v33[1] = v33;
   v33[2] = 0x2020000000;
   v33[3] = 0;
-  v25 = [v5 executeQuery:{@"SELECT name_order, name_section FROM sort_map ORDER BY sort_key ASC"}];
+  v25 = [connectionCopy executeQuery:{@"SELECT name_order, name_section FROM sort_map ORDER BY sort_key ASC"}];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __76__ML3MusicLibrary_sanitizeSortMapContentsUsingConnection_didSortMapEntries___block_invoke_907;
@@ -3461,9 +3461,9 @@ LABEL_10:
   [v25 enumerateRowsWithBlock:v32];
 
   v26 = *(v51 + 24);
-  if (a4)
+  if (entries)
   {
-    *a4 = v26;
+    *entries = v26;
   }
 
   if ((v26 & 1) == 0)
@@ -3478,7 +3478,7 @@ LABEL_10:
     _os_log_impl(&dword_22D2FA000, v27, OS_LOG_TYPE_DEFAULT, "Sanity check recoverable condition: Sort map is inconsistent", v31, 2u);
   }
 
-  if ([(ML3MusicLibrary *)self inTransactionUpdateSortMapOnConnection:v5 forceUpdateOriginals:1]&& [(ML3MusicLibrary *)self inTransactionUpdateSearchMapOnConnection:v5])
+  if ([(ML3MusicLibrary *)self inTransactionUpdateSortMapOnConnection:connectionCopy forceUpdateOriginals:1]&& [(ML3MusicLibrary *)self inTransactionUpdateSearchMapOnConnection:connectionCopy])
   {
 LABEL_19:
     v28 = 1;
@@ -3719,29 +3719,29 @@ void __76__ML3MusicLibrary_sanitizeSortMapContentsUsingConnection_didSortMapEntr
   }
 }
 
-- (void)sanitizeDatabaseContentsUsingConnection:(id)a3 removeOrphanedAssets:(BOOL *)a4
+- (void)sanitizeDatabaseContentsUsingConnection:(id)connection removeOrphanedAssets:(BOOL *)assets
 {
-  v57 = self;
+  selfCopy = self;
   v81 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 executeQuery:@"SELECT COUNT() FROM item"];
-  v7 = [v6 int64ValueForFirstRowAndColumn];
+  connectionCopy = connection;
+  v6 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item"];
+  int64ValueForFirstRowAndColumn = [v6 int64ValueForFirstRowAndColumn];
 
-  v8 = [v5 executeQuery:@"SELECT COUNT() FROM item_extra"];
-  v9 = [v8 int64ValueForFirstRowAndColumn];
+  v8 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item_extra"];
+  int64ValueForFirstRowAndColumn2 = [v8 int64ValueForFirstRowAndColumn];
 
-  v10 = [v5 executeQuery:@"SELECT COUNT() FROM item_stats"];
-  v11 = [v10 int64ValueForFirstRowAndColumn];
+  v10 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item_stats"];
+  int64ValueForFirstRowAndColumn3 = [v10 int64ValueForFirstRowAndColumn];
 
-  v12 = [v5 executeQuery:@"SELECT COUNT() FROM item_store"];
-  v13 = [v12 int64ValueForFirstRowAndColumn];
+  v12 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item_store"];
+  int64ValueForFirstRowAndColumn4 = [v12 int64ValueForFirstRowAndColumn];
 
-  v14 = [v5 executeQuery:@"SELECT COUNT() FROM item_video"];
-  v15 = [v14 int64ValueForFirstRowAndColumn];
+  v14 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item_video"];
+  int64ValueForFirstRowAndColumn5 = [v14 int64ValueForFirstRowAndColumn];
 
-  v16 = v13 == (v11 == (v7 == v9));
-  v56 = v7;
-  if (v15 == v16)
+  v16 = int64ValueForFirstRowAndColumn4 == (int64ValueForFirstRowAndColumn3 == (int64ValueForFirstRowAndColumn == int64ValueForFirstRowAndColumn2));
+  v56 = int64ValueForFirstRowAndColumn;
+  if (int64ValueForFirstRowAndColumn5 == v16)
   {
     goto LABEL_21;
   }
@@ -3750,71 +3750,71 @@ void __76__ML3MusicLibrary_sanitizeSortMapContentsUsingConnection_didSortMapEntr
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134219008;
-    v72 = v7;
+    v72 = int64ValueForFirstRowAndColumn;
     v73 = 2048;
-    v74 = v9;
+    v74 = int64ValueForFirstRowAndColumn2;
     v75 = 2048;
-    v76 = v11;
+    v76 = int64ValueForFirstRowAndColumn3;
     v77 = 2048;
-    v78 = v13;
+    v78 = int64ValueForFirstRowAndColumn4;
     v79 = 2048;
-    v80 = v15;
+    v80 = int64ValueForFirstRowAndColumn5;
     _os_log_impl(&dword_22D2FA000, v17, OS_LOG_TYPE_DEFAULT, "Sanity check recoverable condition for inconsistent counts: item(%lli), item_extra(%lli), item_stats(%lli), item_store(%lli), item_video(%lli) ", buf, 0x34u);
   }
 
-  v18 = [MEMORY[0x277CBEB18] array];
-  if (v7 > v9)
+  array = [MEMORY[0x277CBEB18] array];
+  if (int64ValueForFirstRowAndColumn > int64ValueForFirstRowAndColumn2)
   {
-    v19 = v13 == (v11 == (v7 == v9));
-    v20 = [v5 executeQuery:@"SELECT ROWID FROM item WHERE item_pid IN (SELECT item.item_pid FROM item LEFT OUTER JOIN item_extra ON item.item_pid=item_extra.item_pid WHERE item_extra.item_pid ISNULL)"];
+    v19 = int64ValueForFirstRowAndColumn4 == (int64ValueForFirstRowAndColumn3 == (int64ValueForFirstRowAndColumn == int64ValueForFirstRowAndColumn2));
+    v20 = [connectionCopy executeQuery:@"SELECT ROWID FROM item WHERE item_pid IN (SELECT item.item_pid FROM item LEFT OUTER JOIN item_extra ON item.item_pid=item_extra.item_pid WHERE item_extra.item_pid ISNULL)"];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __80__ML3MusicLibrary_sanitizeDatabaseContentsUsingConnection_removeOrphanedAssets___block_invoke;
     v66[3] = &unk_278766118;
     v21 = &v67;
-    v67 = v18;
+    v67 = array;
     [v20 enumerateRowsWithBlock:v66];
     v22 = @"DELETE FROM item WHERE item_pid IN (SELECT item.item_pid FROM item LEFT OUTER JOIN item_extra ON item.item_pid=item_extra.item_pid WHERE item_extra.item_pid ISNULL)";
 LABEL_8:
 
-    [v5 executeUpdate:v22];
+    [connectionCopy executeUpdate:v22];
     v16 = v19;
-    v7 = v56;
+    int64ValueForFirstRowAndColumn = v56;
     goto LABEL_9;
   }
 
-  if (v7 < v9)
+  if (int64ValueForFirstRowAndColumn < int64ValueForFirstRowAndColumn2)
   {
-    v19 = v13 == (v11 == (v7 == v9));
-    v20 = [v5 executeQuery:@"SELECT ROWID FROM item_extra WHERE item_pid IN (SELECT item_extra.item_pid FROM item_extra LEFT OUTER JOIN item ON item_extra.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
+    v19 = int64ValueForFirstRowAndColumn4 == (int64ValueForFirstRowAndColumn3 == (int64ValueForFirstRowAndColumn == int64ValueForFirstRowAndColumn2));
+    v20 = [connectionCopy executeQuery:@"SELECT ROWID FROM item_extra WHERE item_pid IN (SELECT item_extra.item_pid FROM item_extra LEFT OUTER JOIN item ON item_extra.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
     v64[2] = __80__ML3MusicLibrary_sanitizeDatabaseContentsUsingConnection_removeOrphanedAssets___block_invoke_2;
     v64[3] = &unk_278766118;
     v21 = &v65;
-    v65 = v18;
+    v65 = array;
     [v20 enumerateRowsWithBlock:v64];
     v22 = @"DELETE FROM item_extra WHERE item_pid IN (SELECT item_extra.item_pid FROM item_extra LEFT OUTER JOIN item ON item_extra.item_pid=item.item_pid WHERE item.item_pid ISNULL)";
     goto LABEL_8;
   }
 
 LABEL_9:
-  [v5 executeUpdate:@"DELETE FROM item_stats WHERE item_pid IN (SELECT item_stats.item_pid FROM item_stats LEFT OUTER JOIN item ON item_stats.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
-  [v5 executeUpdate:@"DELETE FROM item_search WHERE item_pid IN (SELECT item_search.item_pid FROM item_search LEFT OUTER JOIN item ON item_search.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
-  [v5 executeUpdate:@"DELETE FROM item_store WHERE item_pid IN (SELECT item_store.item_pid FROM item_store LEFT OUTER JOIN item ON item_store.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
-  [v5 executeUpdate:@"DELETE FROM item_playback WHERE item_pid IN (SELECT item_playback.item_pid FROM item_playback LEFT OUTER JOIN item ON item_playback.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
-  [v5 executeUpdate:@"DELETE FROM item_video WHERE Item_pid IN (SELECT item_video.item_pid FROM item_video LEFT OUTER JOIN item ON item_video.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
-  if ([v18 count])
+  [connectionCopy executeUpdate:@"DELETE FROM item_stats WHERE item_pid IN (SELECT item_stats.item_pid FROM item_stats LEFT OUTER JOIN item ON item_stats.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
+  [connectionCopy executeUpdate:@"DELETE FROM item_search WHERE item_pid IN (SELECT item_search.item_pid FROM item_search LEFT OUTER JOIN item ON item_search.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
+  [connectionCopy executeUpdate:@"DELETE FROM item_store WHERE item_pid IN (SELECT item_store.item_pid FROM item_store LEFT OUTER JOIN item ON item_store.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
+  [connectionCopy executeUpdate:@"DELETE FROM item_playback WHERE item_pid IN (SELECT item_playback.item_pid FROM item_playback LEFT OUTER JOIN item ON item_playback.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
+  [connectionCopy executeUpdate:@"DELETE FROM item_video WHERE Item_pid IN (SELECT item_video.item_pid FROM item_video LEFT OUTER JOIN item ON item_video.item_pid=item.item_pid WHERE item.item_pid ISNULL)"];
+  if ([array count])
   {
     v53 = v16;
-    v54 = v15;
-    v59 = v5;
-    v55 = a4;
+    v54 = int64ValueForFirstRowAndColumn5;
+    v59 = connectionCopy;
+    assetsCopy = assets;
     v23 = os_log_create("com.apple.amp.medialibrary", "Library");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v72 = v18;
+      v72 = array;
       _os_log_impl(&dword_22D2FA000, v23, OS_LOG_TYPE_DEFAULT, "Sanity check: Incrementing revision for removed tracks: %{public}@", buf, 0xCu);
     }
 
@@ -3823,8 +3823,8 @@ LABEL_9:
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v52 = v18;
-    v58 = v18;
+    v52 = array;
+    v58 = array;
     v25 = [v58 countByEnumeratingWithState:&v60 objects:v70 count:16];
     if (v25)
     {
@@ -3860,16 +3860,16 @@ LABEL_9:
       while (v26);
     }
 
-    v15 = v54;
-    a4 = v55;
-    v5 = v59;
-    v18 = v52;
+    int64ValueForFirstRowAndColumn5 = v54;
+    assets = assetsCopy;
+    connectionCopy = v59;
+    array = v52;
     v16 = v53;
-    v7 = v56;
+    int64ValueForFirstRowAndColumn = v56;
   }
 
 LABEL_21:
-  v32 = [v5 executeQuery:{@"SELECT item_pid FROM item JOIN item_store USING(item_pid) WHERE media_type = 8 AND title_order = 0 AND album_order = 0 AND album_artist_order = 0 AND subscription_store_item_id = 0 AND is_ota_purchased = 0 AND store_saga_id = 0 AND store_item_id = 0 AND sync_id = 0 AND purchase_history_id = 0 AND base_location_id = 0 AND remote_location_id = 0 AND disc_number = 0 AND track_number = 0 AND needs_reporting = 1", v52}];
+  v32 = [connectionCopy executeQuery:{@"SELECT item_pid FROM item JOIN item_store USING(item_pid) WHERE media_type = 8 AND title_order = 0 AND album_order = 0 AND album_artist_order = 0 AND subscription_store_item_id = 0 AND is_ota_purchased = 0 AND store_saga_id = 0 AND store_item_id = 0 AND sync_id = 0 AND purchase_history_id = 0 AND base_location_id = 0 AND remote_location_id = 0 AND disc_number = 0 AND track_number = 0 AND needs_reporting = 1", v52}];
   v33 = [v32 objectsInColumn:0];
 
   if ([v33 count])
@@ -3892,8 +3892,8 @@ LABEL_21:
     }
 
     v38 = [v33 count];
-    v39 = [ML3Track deleteFromLibrary:v57 deletionType:2 persistentIDs:v35 count:v38 usingConnection:v5];
-    v7 = v56;
+    v39 = [ML3Track deleteFromLibrary:selfCopy deletionType:2 persistentIDs:v35 count:v38 usingConnection:connectionCopy];
+    int64ValueForFirstRowAndColumn = v56;
     if (v39)
     {
       v40 = os_log_create("com.apple.amp.medialibrary", "Library");
@@ -3906,39 +3906,39 @@ LABEL_21:
     }
   }
 
-  v41 = v57;
-  [ML3Collection removeOrphanedCollectionsInLibrary:v57 usingConnection:v5];
-  [(ML3MusicLibrary *)v41 coalesceMismatchedCollectionsUsingConnection:v5];
-  [(ML3MusicLibrary *)v41 repairAlbumArtistRelationshipsWithConnection:v5];
-  [(ML3Collection *)ML3Album canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:v5];
-  [(ML3Collection *)ML3AlbumArtist canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:v5];
-  [(ML3Collection *)ML3Artist canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:v5];
-  [(ML3Collection *)ML3Composer canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:v5];
-  [(ML3Collection *)ML3Genre canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:v5];
-  v42 = [v5 executeQuery:@"SELECT COUNT() FROM lyrics"];
-  v43 = [v42 int64ValueForFirstRowAndColumn];
+  v41 = selfCopy;
+  [ML3Collection removeOrphanedCollectionsInLibrary:selfCopy usingConnection:connectionCopy];
+  [(ML3MusicLibrary *)v41 coalesceMismatchedCollectionsUsingConnection:connectionCopy];
+  [(ML3MusicLibrary *)v41 repairAlbumArtistRelationshipsWithConnection:connectionCopy];
+  [(ML3Collection *)ML3Album canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:connectionCopy];
+  [(ML3Collection *)ML3AlbumArtist canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:connectionCopy];
+  [(ML3Collection *)ML3Artist canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:connectionCopy];
+  [(ML3Collection *)ML3Composer canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:connectionCopy];
+  [(ML3Collection *)ML3Genre canonicalizeCollectionRepresentativeItemsInLibrary:v41 usingConnection:connectionCopy];
+  v42 = [connectionCopy executeQuery:@"SELECT COUNT() FROM lyrics"];
+  int64ValueForFirstRowAndColumn6 = [v42 int64ValueForFirstRowAndColumn];
 
-  if (v43 != v7)
+  if (int64ValueForFirstRowAndColumn6 != int64ValueForFirstRowAndColumn)
   {
     v44 = os_log_create("com.apple.amp.medialibrary", "Library");
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v72 = v7;
+      v72 = int64ValueForFirstRowAndColumn;
       v73 = 2048;
-      v74 = v43;
+      v74 = int64ValueForFirstRowAndColumn6;
       _os_log_impl(&dword_22D2FA000, v44, OS_LOG_TYPE_DEFAULT, "Sanity check recoverable condition: %lli rows in item and %lli rows in lyrics", buf, 0x16u);
     }
 
-    [v5 executeUpdate:@"INSERT INTO lyrics (item_pid) SELECT item.item_pid FROM item LEFT OUTER JOIN lyrics USING (item_pid) WHERE lyrics.item_pid ISNULL;"];
+    [connectionCopy executeUpdate:@"INSERT INTO lyrics (item_pid) SELECT item.item_pid FROM item LEFT OUTER JOIN lyrics USING (item_pid) WHERE lyrics.item_pid ISNULL;"];
   }
 
-  if (v15 != v16)
+  if (int64ValueForFirstRowAndColumn5 != v16)
   {
-    v45 = [v5 executeQuery:@"SELECT value FROM _MLDatabaseProperties WHERE key = 'MLCloudDatabaseRevision'"];
-    v46 = [v45 int64ValueForFirstRowAndColumn];
+    v45 = [connectionCopy executeQuery:@"SELECT value FROM _MLDatabaseProperties WHERE key = 'MLCloudDatabaseRevision'"];
+    int64ValueForFirstRowAndColumn7 = [v45 int64ValueForFirstRowAndColumn];
 
-    if (v46 >= 1)
+    if (int64ValueForFirstRowAndColumn7 >= 1)
     {
       v47 = os_log_create("com.apple.amp.medialibrary", "Library");
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -3947,13 +3947,13 @@ LABEL_21:
         _os_log_impl(&dword_22D2FA000, v47, OS_LOG_TYPE_DEFAULT, "Sanity check: flagging cloud library for full refresh after next update", buf, 2u);
       }
 
-      [v5 executeUpdate:@"INSERT OR REPLACE INTO _MLDatabaseProperties (value withParameters:key) VALUES (? error:{?)", &unk_2840C6830, 0}];
+      [connectionCopy executeUpdate:@"INSERT OR REPLACE INTO _MLDatabaseProperties (value withParameters:key) VALUES (? error:{?)", &unk_2840C6830, 0}];
     }
 
-    v48 = [v5 executeQuery:@"SELECT value FROM _MLDatabaseProperties WHERE key = 'MLJaliscoDatabaseRevision'"];
-    v49 = [v48 int64ValueForFirstRowAndColumn];
+    v48 = [connectionCopy executeQuery:@"SELECT value FROM _MLDatabaseProperties WHERE key = 'MLJaliscoDatabaseRevision'"];
+    int64ValueForFirstRowAndColumn8 = [v48 int64ValueForFirstRowAndColumn];
 
-    if (v49 >= 1)
+    if (int64ValueForFirstRowAndColumn8 >= 1)
     {
       v50 = os_log_create("com.apple.amp.medialibrary", "Library");
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
@@ -3962,7 +3962,7 @@ LABEL_21:
         _os_log_impl(&dword_22D2FA000, v50, OS_LOG_TYPE_DEFAULT, "Sanity check: flagging purchase history for next update to include all tokens", buf, 2u);
       }
 
-      [v5 executeUpdate:@"INSERT OR REPLACE INTO _MLDatabaseProperties (value withParameters:key) VALUES (? error:{?)", &unk_2840C6848, 0}];
+      [connectionCopy executeUpdate:@"INSERT OR REPLACE INTO _MLDatabaseProperties (value withParameters:key) VALUES (? error:{?)", &unk_2840C6848, 0}];
     }
 
     v51 = os_log_create("com.apple.amp.medialibrary", "Library");
@@ -3972,15 +3972,15 @@ LABEL_21:
       _os_log_impl(&dword_22D2FA000, v51, OS_LOG_TYPE_DEFAULT, "Sanity check: resetting sync anchors", buf, 2u);
     }
 
-    [v5 executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key = 'MLSyncClientLastSyncedRevision'"];
-    [v5 executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key = 'MLSyncClientSyncAnchor'"];
-    [v5 executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key = 'MLSyncClientGenerationID'"];
-    [v5 executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key = 'MLSyncClientHasPendingAssets'"];
+    [connectionCopy executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key = 'MLSyncClientLastSyncedRevision'"];
+    [connectionCopy executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key = 'MLSyncClientSyncAnchor'"];
+    [connectionCopy executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key = 'MLSyncClientGenerationID'"];
+    [connectionCopy executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key = 'MLSyncClientHasPendingAssets'"];
   }
 
-  if (a4)
+  if (assets)
   {
-    *a4 = v15 != v16;
+    *assets = int64ValueForFirstRowAndColumn5 != v16;
   }
 }
 
@@ -3998,26 +3998,26 @@ void __80__ML3MusicLibrary_sanitizeDatabaseContentsUsingConnection_removeOrphane
   [v2 addObject:v3];
 }
 
-- (BOOL)validateItemTablesEntriesUsingConnection:(id)a3
+- (BOOL)validateItemTablesEntriesUsingConnection:(id)connection
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 executeQuery:@"SELECT COUNT() FROM item"];
-  v5 = [v4 int64ValueForFirstRowAndColumn];
+  connectionCopy = connection;
+  v4 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item"];
+  int64ValueForFirstRowAndColumn = [v4 int64ValueForFirstRowAndColumn];
 
-  v6 = [v3 executeQuery:@"SELECT COUNT() FROM item_extra"];
-  v7 = [v6 int64ValueForFirstRowAndColumn];
+  v6 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item_extra"];
+  int64ValueForFirstRowAndColumn2 = [v6 int64ValueForFirstRowAndColumn];
 
-  v8 = [v3 executeQuery:@"SELECT COUNT() FROM item_stats"];
-  v9 = [v8 int64ValueForFirstRowAndColumn];
+  v8 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item_stats"];
+  int64ValueForFirstRowAndColumn3 = [v8 int64ValueForFirstRowAndColumn];
 
-  v10 = [v3 executeQuery:@"SELECT COUNT() FROM item_store"];
-  v11 = [v10 int64ValueForFirstRowAndColumn];
+  v10 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item_store"];
+  int64ValueForFirstRowAndColumn4 = [v10 int64ValueForFirstRowAndColumn];
 
-  v12 = [v3 executeQuery:@"SELECT COUNT() FROM item_video"];
+  v12 = [connectionCopy executeQuery:@"SELECT COUNT() FROM item_video"];
 
-  v13 = [v12 int64ValueForFirstRowAndColumn];
-  v16 = v5 == v7 && v5 == v9 && v5 == v11 && v5 == v13;
+  int64ValueForFirstRowAndColumn5 = [v12 int64ValueForFirstRowAndColumn];
+  v16 = int64ValueForFirstRowAndColumn == int64ValueForFirstRowAndColumn2 && int64ValueForFirstRowAndColumn == int64ValueForFirstRowAndColumn3 && int64ValueForFirstRowAndColumn == int64ValueForFirstRowAndColumn4 && int64ValueForFirstRowAndColumn == int64ValueForFirstRowAndColumn5;
   v17 = v16;
   if (!v16)
   {
@@ -4025,15 +4025,15 @@ void __80__ML3MusicLibrary_sanitizeDatabaseContentsUsingConnection_removeOrphane
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 134219008;
-      v21 = v5;
+      v21 = int64ValueForFirstRowAndColumn;
       v22 = 2048;
-      v23 = v7;
+      v23 = int64ValueForFirstRowAndColumn2;
       v24 = 2048;
-      v25 = v9;
+      v25 = int64ValueForFirstRowAndColumn3;
       v26 = 2048;
-      v27 = v11;
+      v27 = int64ValueForFirstRowAndColumn4;
       v28 = 2048;
-      v29 = v13;
+      v29 = int64ValueForFirstRowAndColumn5;
       _os_log_impl(&dword_22D2FA000, v18, OS_LOG_TYPE_DEFAULT, "Counts in item table(s) are inconsistent: item(%lli), item_extra(%lli), item_stats(%lli), item_store(%lli), item_video(%lli) ", &v20, 0x34u);
     }
   }
@@ -4061,12 +4061,12 @@ void __80__ML3MusicLibrary_sanitizeDatabaseContentsUsingConnection_removeOrphane
   v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3];
   if ([v4 length])
   {
-    v5 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __42__ML3MusicLibrary_verifyPresignedValidity__block_invoke;
     v13[3] = &unk_278766140;
-    v6 = v5;
+    v6 = data;
     v14 = v6;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v13];
     memset(&v12, 0, sizeof(v12));
@@ -4178,8 +4178,8 @@ uint64_t __42__ML3MusicLibrary_verifyPresignedValidity__block_invoke_2(uint64_t 
 - (BOOL)hasPresignedValidity
 {
   v2 = GetP7BPath();
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:v2];
 
   return v4;
 }
@@ -4197,22 +4197,22 @@ uint64_t __42__ML3MusicLibrary_verifyPresignedValidity__block_invoke_2(uint64_t 
   }
 }
 
-- (BOOL)deleteDatabaseProperty:(id)a3
+- (BOOL)deleteDatabaseProperty:(id)property
 {
-  v4 = a3;
-  v5 = v4;
+  propertyCopy = property;
+  v5 = propertyCopy;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (v4)
+  if (propertyCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __42__ML3MusicLibrary_deleteDatabaseProperty___block_invoke;
     v8[3] = &unk_2787651A8;
     v10 = &v11;
-    v9 = v4;
+    v9 = propertyCopy;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v8];
 
     v6 = *(v12 + 24);
@@ -4240,15 +4240,15 @@ void __42__ML3MusicLibrary_deleteDatabaseProperty___block_invoke(uint64_t a1, vo
   *(*(*(a1 + 40) + 8) + 24) = v6;
 }
 
-- (BOOL)setValue:(id)a3 forDatabaseProperty:(id)a4
+- (BOOL)setValue:(id)value forDatabaseProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  valueCopy = value;
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    if (!v6)
+    if (!valueCopy)
     {
-      v6 = [MEMORY[0x277CBEB68] null];
+      valueCopy = [MEMORY[0x277CBEB68] null];
     }
 
     v14 = 0;
@@ -4260,9 +4260,9 @@ void __42__ML3MusicLibrary_deleteDatabaseProperty___block_invoke(uint64_t a1, vo
     v10[2] = __48__ML3MusicLibrary_setValue_forDatabaseProperty___block_invoke;
     v10[3] = &unk_278763398;
     v13 = &v14;
-    v6 = v6;
-    v11 = v6;
-    v12 = v7;
+    valueCopy = valueCopy;
+    v11 = valueCopy;
+    v12 = propertyCopy;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v10];
     v8 = *(v15 + 24);
 
@@ -4291,23 +4291,23 @@ void __48__ML3MusicLibrary_setValue_forDatabaseProperty___block_invoke(void *a1,
   *(*(a1[6] + 8) + 24) = v7;
 }
 
-- (id)valueForDatabaseProperty:(id)a3
+- (id)valueForDatabaseProperty:(id)property
 {
-  v4 = a3;
-  v5 = v4;
+  propertyCopy = property;
+  v5 = propertyCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__2504;
   v16 = __Block_byref_object_dispose__2505;
   v17 = 0;
-  if (v4)
+  if (propertyCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __44__ML3MusicLibrary_valueForDatabaseProperty___block_invoke;
     v9[3] = &unk_2787651A8;
-    v10 = v4;
+    v10 = propertyCopy;
     v11 = &v12;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v9];
 
@@ -4340,13 +4340,13 @@ void __44__ML3MusicLibrary_valueForDatabaseProperty___block_invoke(uint64_t a1, 
   *(v8 + 40) = v7;
 }
 
-- (void)removeItemsWithFamilyAccountID:(unint64_t)a3 purchaserAccountID:(unint64_t)a4 downloaderAccountID:(unint64_t)a5
+- (void)removeItemsWithFamilyAccountID:(unint64_t)d purchaserAccountID:(unint64_t)iD downloaderAccountID:(unint64_t)accountID
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:iD];
   v9 = [ML3ComparisonPredicate predicateWithProperty:@"item_store.account_id" value:v8 comparison:1];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:accountID];
   v11 = [ML3ComparisonPredicate predicateWithProperty:@"item_store.downloader_account_id" value:v10 comparison:1];
 
   v34[0] = v9;
@@ -4354,8 +4354,8 @@ void __44__ML3MusicLibrary_valueForDatabaseProperty___block_invoke(uint64_t a1, 
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
   v13 = [(ML3CompoundPredicate *)ML3AnyCompoundPredicate predicateMatchingPredicates:v12];
 
-  v24 = a3;
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  dCopy = d;
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   v15 = [ML3ComparisonPredicate predicateWithProperty:@"item_store.family_account_id" value:v14 comparison:1];
 
   v16 = [ML3ComparisonPredicate predicateWithProperty:@"item_store.is_protected" value:&unk_2840C8AE0 comparison:1];
@@ -4366,12 +4366,12 @@ void __44__ML3MusicLibrary_valueForDatabaseProperty___block_invoke(uint64_t a1, 
   v18 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v17];
 
   v19 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:self predicate:v18 orderingTerms:0];
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __89__ML3MusicLibrary_removeItemsWithFamilyAccountID_purchaserAccountID_downloaderAccountID___block_invoke;
   v25[3] = &unk_278765BD8;
-  v21 = v20;
+  v21 = array;
   v26 = v21;
   [v19 enumeratePersistentIDsUsingBlock:v25];
   v22 = os_log_create("com.apple.amp.medialibrary", "Library");
@@ -4381,7 +4381,7 @@ void __44__ML3MusicLibrary_valueForDatabaseProperty___block_invoke(uint64_t a1, 
     *buf = 134218498;
     v28 = v23;
     v29 = 2048;
-    v30 = v24;
+    v30 = dCopy;
     v31 = 2114;
     v32 = v21;
     _os_log_impl(&dword_22D2FA000, v22, OS_LOG_TYPE_ERROR, "Removing %llu tracks due to family account removal (family account id = %lld)\npersistent_ids = %{public}@", buf, 0x20u);
@@ -4397,11 +4397,11 @@ void __89__ML3MusicLibrary_removeItemsWithFamilyAccountID_purchaserAccountID_dow
   [v2 addObject:v3];
 }
 
-- (void)removeOrphanedTracksOnlyInCaches:(BOOL)a3
+- (void)removeOrphanedTracksOnlyInCaches:(BOOL)caches
 {
   v73[2] = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v8 = v7;
 
   if (![(ML3MusicLibrary *)self isHomeSharingLibrary])
@@ -4410,9 +4410,9 @@ void __89__ML3MusicLibrary_removeItemsWithFamilyAccountID_purchaserAccountID_dow
     v73[0] = @"item_extra.location";
     v73[1] = @"base_location_id";
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:2];
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v12 fileExistsAtPath:self->_databasePath];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:self->_databasePath];
 
     if (v13)
     {
@@ -4432,7 +4432,7 @@ void __89__ML3MusicLibrary_removeItemsWithFamilyAccountID_purchaserAccountID_dow
       v70[1] = 3221225472;
       v70[2] = __52__ML3MusicLibrary_removeOrphanedTracksOnlyInCaches___block_invoke;
       v70[3] = &unk_278762DC0;
-      v71 = v11;
+      v71 = dictionary;
       [v9 enumeratePersistentIDsAndProperties:v10 usingBlock:v70];
       v14 = v71;
     }
@@ -4452,7 +4452,7 @@ void __89__ML3MusicLibrary_removeItemsWithFamilyAccountID_purchaserAccountID_dow
     v58 = v16;
     v59 = v10;
     v57 = a2;
-    if (a3 || (v17 = v16, [MEMORY[0x277CCAA00] defaultManager], v18 = objc_claimAutoreleasedReturnValue(), v19 = v17, LODWORD(v17) = objc_msgSend(v18, "fileExistsAtPath:", v17), v18, !v17))
+    if (caches || (v17 = v16, [MEMORY[0x277CCAA00] defaultManager], v18 = objc_claimAutoreleasedReturnValue(), v19 = v17, LODWORD(v17) = objc_msgSend(v18, "fileExistsAtPath:", v17), v18, !v17))
     {
       v34 = 1;
       v35 = v8;
@@ -4465,23 +4465,23 @@ LABEL_33:
       v60[4] = self;
       v43 = v42;
       v61 = v43;
-      v62 = v11;
+      v62 = dictionary;
       v63 = v35;
       v44 = MEMORY[0x2318CDB10](v60);
-      if (!a3)
+      if (!caches)
       {
         v45 = v9;
         v46 = v15;
-        v47 = [(ML3MusicLibrary *)self libraryContainerPath];
+        libraryContainerPath = [(ML3MusicLibrary *)self libraryContainerPath];
         v48 = +[ML3MusicLibrary mediaFolderPath];
-        v49 = self;
-        v50 = [v47 isEqualToString:v48];
+        selfCopy = self;
+        v50 = [libraryContainerPath isEqualToString:v48];
 
         if ((v50 & 1) == 0)
         {
-          v52 = [MEMORY[0x277CCA890] currentHandler];
-          v53 = [(ML3MusicLibrary *)v49 libraryContainerPath];
-          [v52 handleFailureInMethod:v57 object:v49 file:@"ML3MusicLibrary.m" lineNumber:3518 description:{@"Attempting to de-orphan shared resources in a MU library! %@", v53}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          libraryContainerPath2 = [(ML3MusicLibrary *)selfCopy libraryContainerPath];
+          [currentHandler handleFailureInMethod:v57 object:selfCopy file:@"ML3MusicLibrary.m" lineNumber:3518 description:{@"Attempting to de-orphan shared resources in a MU library! %@", libraryContainerPath2}];
         }
 
         for (i = 3840; i != 3890; ++i)
@@ -4515,16 +4515,16 @@ LABEL_42:
     v56 = v20;
     if (v20)
     {
-      v54 = self;
+      selfCopy2 = self;
       v55 = v9;
       v68 = 0u;
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
       v21 = [v20 objectForKey:@"Ringtones"];
-      v22 = [v21 allKeys];
+      allKeys = [v21 allKeys];
 
-      v23 = [v22 countByEnumeratingWithState:&v66 objects:v72 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v66 objects:v72 count:16];
       if (v23)
       {
         v24 = v23;
@@ -4535,33 +4535,33 @@ LABEL_42:
           {
             if (*v67 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(allKeys);
             }
 
             v27 = *(*(&v66 + 1) + 8 * j);
             v28 = [MEMORY[0x277CCABB0] numberWithLongLong:300];
-            v29 = [v11 objectForKeyedSubscript:v28];
+            v29 = [dictionary objectForKeyedSubscript:v28];
 
             if (!v29)
             {
               v30 = [MEMORY[0x277CBEB58] set];
               v31 = [MEMORY[0x277CCABB0] numberWithLongLong:300];
-              [v11 setObject:v30 forKeyedSubscript:v31];
+              [dictionary setObject:v30 forKeyedSubscript:v31];
             }
 
             v32 = [MEMORY[0x277CCABB0] numberWithLongLong:300];
-            v33 = [v11 objectForKeyedSubscript:v32];
+            v33 = [dictionary objectForKeyedSubscript:v32];
             [v33 addObject:v27];
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v66 objects:v72 count:16];
+          v24 = [allKeys countByEnumeratingWithState:&v66 objects:v72 count:16];
         }
 
         while (v24);
       }
 
       v34 = 1;
-      self = v54;
+      self = selfCopy2;
       v9 = v55;
       v35 = v8;
       goto LABEL_32;
@@ -4795,10 +4795,10 @@ void __50__ML3MusicLibrary_removeTombstonesForDeletedItems__block_invoke(uint64_
   [v2 executeUpdate:@"DELETE FROM item_stats WHERE item_pid NOT IN (SELECT item_pid FROM item)"];
 }
 
-- (BOOL)cleanupArtworkWithOptions:(unint64_t)a3 usingConnection:(id)a4
+- (BOOL)cleanupArtworkWithOptions:(unint64_t)options usingConnection:(id)connection
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  connectionCopy = connection;
   dispatch_assert_queue_not_V2(self->_serialQueue);
   if ([(ML3MusicLibrary *)self isHomeSharingLibrary])
   {
@@ -4806,10 +4806,10 @@ void __50__ML3MusicLibrary_removeTombstonesForDeletedItems__block_invoke(uint64_
     goto LABEL_15;
   }
 
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
-    v7 = [(ML3MusicLibrary *)self _removeOrphanedArtworkTokensUsingConnection:v6];
-    if ((v4 & 4) == 0)
+    v7 = [(ML3MusicLibrary *)self _removeOrphanedArtworkTokensUsingConnection:connectionCopy];
+    if ((optionsCopy & 4) == 0)
     {
       goto LABEL_9;
     }
@@ -4817,27 +4817,27 @@ void __50__ML3MusicLibrary_removeTombstonesForDeletedItems__block_invoke(uint64_
 LABEL_7:
     if (v7)
     {
-      v7 = [(ML3MusicLibrary *)self _removeOrphanedArtworkMetadataUsingConnection:v6];
+      v7 = [(ML3MusicLibrary *)self _removeOrphanedArtworkMetadataUsingConnection:connectionCopy];
     }
 
     goto LABEL_9;
   }
 
   v7 = 1;
-  if ((v4 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     goto LABEL_7;
   }
 
 LABEL_9:
-  if ((v4 & 8) != 0 && v7)
+  if ((optionsCopy & 8) != 0 && v7)
   {
-    v7 = [(ML3MusicLibrary *)self _removeOrphanedArtworkAssetsUsingConnection:v6];
+    v7 = [(ML3MusicLibrary *)self _removeOrphanedArtworkAssetsUsingConnection:connectionCopy];
   }
 
-  if ((v4 & 0x10) != 0 && v7)
+  if ((optionsCopy & 0x10) != 0 && v7)
   {
-    LOBYTE(v7) = [(ML3MusicLibrary *)self _removeInvalidAvailableArtworkTokensUsingConnection:v6];
+    LOBYTE(v7) = [(ML3MusicLibrary *)self _removeInvalidAvailableArtworkTokensUsingConnection:connectionCopy];
   }
 
 LABEL_15:
@@ -4845,7 +4845,7 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)cleanupArtworkWithOptions:(unint64_t)a3
+- (BOOL)cleanupArtworkWithOptions:(unint64_t)options
 {
   v26 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_not_V2(self->_serialQueue);
@@ -4855,13 +4855,13 @@ LABEL_15:
   v17 = 1;
   if (![(ML3MusicLibrary *)self isHomeSharingLibrary])
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 fileExistsAtPath:self->_databasePath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:self->_databasePath];
 
     if (v6)
     {
-      v7 = [(ML3MusicLibrary *)self currentDatabaseVersion];
-      if (v7 == 2310000)
+      currentDatabaseVersion = [(ML3MusicLibrary *)self currentDatabaseVersion];
+      if (currentDatabaseVersion == 2310000)
       {
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
@@ -4869,7 +4869,7 @@ LABEL_15:
         v13[3] = &unk_27875DAC0;
         v13[4] = self;
         v13[5] = &v14;
-        v13[6] = a3;
+        v13[6] = options;
         [(ML3MusicLibrary *)self performDatabaseTransactionWithBlock:v13];
         goto LABEL_11;
       }
@@ -4879,11 +4879,11 @@ LABEL_15:
       {
         databasePath = self->_databasePath;
         *buf = 67109890;
-        v19 = a3;
+        optionsCopy2 = options;
         v20 = 2114;
         v21 = databasePath;
         v22 = 1024;
-        v23 = v7;
+        v23 = currentDatabaseVersion;
         v24 = 1024;
         v25 = 2310000;
         _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_ERROR, "not cleaning up artwork with options (%d) with database at %{public}@ as current version (%d) is not (%d)", buf, 0x1Eu);
@@ -4897,7 +4897,7 @@ LABEL_15:
       {
         v9 = self->_databasePath;
         *buf = 67109378;
-        v19 = a3;
+        optionsCopy2 = options;
         v20 = 2114;
         v21 = v9;
         _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_ERROR, "not cleaning up artwork with options (%d) with database at %{public}@ as file does not exist at this location", buf, 0x12u);
@@ -5011,19 +5011,19 @@ void __35__ML3MusicLibrary_hasUserPlaylists__block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 32) + 8) + 24) = [v3 hasAtLeastOneRow];
 }
 
-- (void)enumerateArtworkTokensForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 variantType:(int64_t)a6 usingBlock:(id)a7
+- (void)enumerateArtworkTokensForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType variantType:(int64_t)variantType usingBlock:(id)block
 {
-  v12 = a7;
+  blockCopy = block;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __109__ML3MusicLibrary_enumerateArtworkTokensForEntityPersistentID_entityType_artworkType_variantType_usingBlock___block_invoke;
   v14[3] = &unk_27875DA98;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v15 = v12;
-  v16 = a3;
-  v13 = v12;
+  typeCopy = type;
+  artworkTypeCopy = artworkType;
+  variantTypeCopy = variantType;
+  v15 = blockCopy;
+  dCopy = d;
+  v13 = blockCopy;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v14];
 }
 
@@ -5061,9 +5061,9 @@ void __109__ML3MusicLibrary_enumerateArtworkTokensForEntityPersistentID_entityTy
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)retrieveBestArtworkTokensForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 variantType:(int64_t)a6 retrievalTime:(double)a7 completionHandler:(id)a8
+- (void)retrieveBestArtworkTokensForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType variantType:(int64_t)variantType retrievalTime:(double)time completionHandler:(id)handler
 {
-  v14 = a8;
+  handlerCopy = handler;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -5080,9 +5080,9 @@ void __109__ML3MusicLibrary_enumerateArtworkTokensForEntityPersistentID_entityTy
   v21 = __Block_byref_object_copy__2504;
   v22 = __Block_byref_object_dispose__2505;
   v23 = 0;
-  if (a5 == 3)
+  if (artworkType == 3)
   {
-    v15 = [ML3MusicLibrary artworkTokenForChapterWithItemPID:a3 retrievalTime:a7];
+    v15 = [ML3MusicLibrary artworkTokenForChapterWithItemPID:d retrievalTime:time];
     v16 = v29[5];
     v29[5] = v15;
   }
@@ -5093,17 +5093,17 @@ void __109__ML3MusicLibrary_enumerateArtworkTokensForEntityPersistentID_entityTy
     v17[1] = 3221225472;
     v17[2] = __133__ML3MusicLibrary_retrieveBestArtworkTokensForEntityPersistentID_entityType_artworkType_variantType_retrievalTime_completionHandler___block_invoke;
     v17[3] = &unk_27875DA70;
-    v17[8] = a4;
-    v17[9] = a5;
-    v17[10] = a6;
+    v17[8] = type;
+    v17[9] = artworkType;
+    v17[10] = variantType;
     v17[4] = &v28;
     v17[5] = &v18;
     v17[6] = &v24;
-    v17[7] = a3;
+    v17[7] = d;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v17];
   }
 
-  v14[2](v14, v29[5], v19[5], v25[3]);
+  handlerCopy[2](handlerCopy, v29[5], v19[5], v25[3]);
   _Block_object_dispose(&v18, 8);
 
   _Block_object_dispose(&v24, 8);
@@ -5155,10 +5155,10 @@ void __133__ML3MusicLibrary_retrieveBestArtworkTokensForEntityPersistentID_entit
   *a4 = 1;
 }
 
-- (BOOL)isArtworkTokenAvailable:(id)a3 forVariantType:(int64_t)a4
+- (BOOL)isArtworkTokenAvailable:(id)available forVariantType:(int64_t)type
 {
-  v6 = a3;
-  if ([v6 length])
+  availableCopy = available;
+  if ([availableCopy length])
   {
     v13 = 0;
     v14 = &v13;
@@ -5169,8 +5169,8 @@ void __133__ML3MusicLibrary_retrieveBestArtworkTokensForEntityPersistentID_entit
     v9[2] = __58__ML3MusicLibrary_isArtworkTokenAvailable_forVariantType___block_invoke;
     v9[3] = &unk_278765748;
     v11 = &v13;
-    v12 = a4;
-    v10 = v6;
+    typeCopy = type;
+    v10 = availableCopy;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v9];
     v7 = *(v14 + 24);
 
@@ -5212,62 +5212,62 @@ uint64_t __58__ML3MusicLibrary_isArtworkTokenAvailable_forVariantType___block_in
   return result;
 }
 
-- (void)removeArtworkTokenForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6
+- (void)removeArtworkTokenForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __93__ML3MusicLibrary_removeArtworkTokenForEntityPersistentID_entityType_artworkType_sourceType___block_invoke;
   v6[3] = &unk_27875DA48;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
-  v6[8] = a6;
+  v6[5] = d;
+  v6[6] = type;
+  v6[7] = artworkType;
+  v6[8] = sourceType;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v6];
 }
 
-- (void)importArtworkTokenForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkToken:(id)a5 artworkType:(int64_t)a6 sourceType:(int64_t)a7 variantType:(int64_t)a8
+- (void)importArtworkTokenForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkToken:(id)token artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType variantType:(int64_t)variantType
 {
-  v14 = a5;
+  tokenCopy = token;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __118__ML3MusicLibrary_importArtworkTokenForEntityPersistentID_entityType_artworkToken_artworkType_sourceType_variantType___block_invoke;
   v16[3] = &unk_27875DA20;
-  v18 = a3;
-  v19 = a4;
+  dCopy = d;
+  typeCopy = type;
   v16[4] = self;
-  v17 = v14;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v15 = v14;
+  v17 = tokenCopy;
+  artworkTypeCopy = artworkType;
+  sourceTypeCopy = sourceType;
+  variantTypeCopy = variantType;
+  v15 = tokenCopy;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v16];
 }
 
-- (void)importArtworkTokenForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkToken:(id)a5 artworkType:(int64_t)a6 sourceType:(int64_t)a7
+- (void)importArtworkTokenForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkToken:(id)token artworkType:(int64_t)artworkType sourceType:(int64_t)sourceType
 {
-  v12 = a5;
+  tokenCopy = token;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __106__ML3MusicLibrary_importArtworkTokenForEntityPersistentID_entityType_artworkToken_artworkType_sourceType___block_invoke;
   v14[3] = &unk_27875D9F8;
-  v16 = a3;
-  v17 = a4;
+  dCopy = d;
+  typeCopy = type;
   v14[4] = self;
-  v15 = v12;
-  v18 = a6;
-  v19 = a7;
-  v13 = v12;
+  v15 = tokenCopy;
+  artworkTypeCopy = artworkType;
+  sourceTypeCopy = sourceType;
+  v13 = tokenCopy;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v14];
 }
 
-- (void)migrateExistingArtworkToken:(id)a3 newArtworkToken:(id)a4 newSourceType:(int64_t)a5
+- (void)migrateExistingArtworkToken:(id)token newArtworkToken:(id)artworkToken newSourceType:(int64_t)type
 {
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v27 = a4;
-  v28 = v7;
-  if ([v7 length])
+  tokenCopy = token;
+  artworkTokenCopy = artworkToken;
+  v28 = tokenCopy;
+  if ([tokenCopy length])
   {
     v51 = 0;
     v52 = &v51;
@@ -5279,7 +5279,7 @@ uint64_t __58__ML3MusicLibrary_isArtworkTokenAvailable_forVariantType___block_in
     v50[1] = v50;
     v50[2] = 0x2020000000;
     v50[3] = 0;
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __77__ML3MusicLibrary_migrateExistingArtworkToken_newArtworkToken_newSourceType___block_invoke;
@@ -5288,12 +5288,12 @@ uint64_t __58__ML3MusicLibrary_isArtworkTokenAvailable_forVariantType___block_in
     v46 = v9;
     v48 = &v51;
     v49 = v50;
-    v26 = v8;
+    v26 = array;
     v47 = v26;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v45];
     if ([v52[5] length])
     {
-      v10 = [ML3MusicLibrary artworkRelativePathFromToken:v27];
+      v10 = [ML3MusicLibrary artworkRelativePathFromToken:artworkTokenCopy];
       *&v64 = 0;
       *(&v64 + 1) = &v64;
       v65 = 0x2020000000;
@@ -5304,17 +5304,17 @@ uint64_t __58__ML3MusicLibrary_isArtworkTokenAvailable_forVariantType___block_in
       v36[3] = &unk_27875D9D0;
       v37 = v26;
       v42 = &v64;
-      v38 = v27;
-      v44 = a5;
+      v38 = artworkTokenCopy;
+      typeCopy = type;
       v39 = v9;
-      v40 = self;
+      selfCopy = self;
       v43 = v50;
       v11 = v10;
       v41 = v11;
       [(ML3MusicLibrary *)self performDatabaseTransactionWithBlock:v36];
       if (*(*(&v64 + 1) + 24) == 1)
       {
-        v12 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         [(ML3MusicLibrary *)self _allArtworkVariantDirectories];
         v34 = 0u;
         v35 = 0u;
@@ -5336,27 +5336,27 @@ uint64_t __58__ML3MusicLibrary_isArtworkTokenAvailable_forVariantType___block_in
               v16 = *(*(&v32 + 1) + 8 * i);
               v17 = [v16 URLByAppendingPathComponent:v52[5]];
               v18 = [v16 URLByAppendingPathComponent:v11];
-              v19 = [v18 URLByDeletingLastPathComponent];
-              v20 = [v19 path];
-              v21 = [v12 fileExistsAtPath:v20];
+              uRLByDeletingLastPathComponent = [v18 URLByDeletingLastPathComponent];
+              path = [uRLByDeletingLastPathComponent path];
+              v21 = [defaultManager fileExistsAtPath:path];
 
               if ((v21 & 1) == 0)
               {
-                [v12 createDirectoryAtURL:v19 withIntermediateDirectories:1 attributes:0 error:0];
+                [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
               }
 
-              v22 = [v17 path];
-              v23 = [v12 fileExistsAtPath:v22];
+              path2 = [v17 path];
+              v23 = [defaultManager fileExistsAtPath:path2];
 
               if (v23)
               {
                 v31 = 0;
-                [v12 moveItemAtURL:v17 toURL:v18 error:&v31];
+                [defaultManager moveItemAtURL:v17 toURL:v18 error:&v31];
                 v24 = v31;
                 if (v24)
                 {
-                  v25 = os_log_create("com.apple.amp.medialibrary", "Default");
-                  if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+                  path3 = os_log_create("com.apple.amp.medialibrary", "Default");
+                  if (os_log_type_enabled(path3, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138543874;
                     v58 = v17;
@@ -5364,14 +5364,14 @@ uint64_t __58__ML3MusicLibrary_isArtworkTokenAvailable_forVariantType___block_in
                     v60 = v18;
                     v61 = 2114;
                     v62 = v24;
-                    _os_log_impl(&dword_22D2FA000, v25, OS_LOG_TYPE_ERROR, "Failed to move artwork from '%{public}@' to '%{public}@' with error: %{public}@", buf, 0x20u);
+                    _os_log_impl(&dword_22D2FA000, path3, OS_LOG_TYPE_ERROR, "Failed to move artwork from '%{public}@' to '%{public}@' with error: %{public}@", buf, 0x20u);
                   }
                 }
 
                 else
                 {
-                  v25 = [v18 path];
-                  [(ML3MusicLibrary *)self updatePurgeabilityForCachedArtworkWithAbsolutePath:v25];
+                  path3 = [v18 path];
+                  [(ML3MusicLibrary *)self updatePurgeabilityForCachedArtworkWithAbsolutePath:path3];
                 }
               }
             }
@@ -5548,10 +5548,10 @@ void __77__ML3MusicLibrary_migrateExistingArtworkToken_newArtworkToken_newSource
   [v2 addObject:v7];
 }
 
-- (BOOL)deleteArtworkToken:(id)a3
+- (BOOL)deleteArtworkToken:(id)token
 {
-  v4 = a3;
-  if ([v4 length])
+  tokenCopy = token;
+  if ([tokenCopy length])
   {
     v11 = 0;
     v12 = &v11;
@@ -5561,9 +5561,9 @@ void __77__ML3MusicLibrary_migrateExistingArtworkToken_newArtworkToken_newSource
     v7[1] = 3221225472;
     v7[2] = __38__ML3MusicLibrary_deleteArtworkToken___block_invoke;
     v7[3] = &unk_278763398;
-    v9 = self;
+    selfCopy = self;
     v10 = &v11;
-    v8 = v4;
+    v8 = tokenCopy;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v7];
     v5 = *(v12 + 24);
 
@@ -5707,10 +5707,10 @@ void __38__ML3MusicLibrary_deleteArtworkToken___block_invoke_2(uint64_t a1, void
   [v2 addObject:v7];
 }
 
-- (BOOL)removeArtworkAssetWithToken:(id)a3
+- (BOOL)removeArtworkAssetWithToken:(id)token
 {
-  v4 = a3;
-  if ([v4 length])
+  tokenCopy = token;
+  if ([tokenCopy length])
   {
     v28 = 0;
     v29 = &v28;
@@ -5734,7 +5734,7 @@ void __38__ML3MusicLibrary_deleteArtworkToken___block_invoke_2(uint64_t a1, void
     v15[1] = 3221225472;
     v15[2] = __47__ML3MusicLibrary_removeArtworkAssetWithToken___block_invoke;
     v15[3] = &unk_27875D958;
-    v5 = v4;
+    v5 = tokenCopy;
     v16 = v5;
     v17 = v27;
     v18 = &v21;
@@ -5748,7 +5748,7 @@ void __38__ML3MusicLibrary_deleteArtworkToken___block_invoke_2(uint64_t a1, void
       v8[3] = &unk_27875D980;
       v11 = &v28;
       v9 = v5;
-      v10 = self;
+      selfCopy = self;
       v12 = v20;
       v13 = v27;
       v14 = &v21;
@@ -5851,24 +5851,24 @@ void __47__ML3MusicLibrary_removeArtworkAssetWithToken___block_invoke_2(void *a1
   *a4 = 1;
 }
 
-- (void)importOriginalArtworkFromImageData:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unsigned int)a7 variantType:(int64_t)a8 shouldPerformColorAnalysis:(BOOL)a9 completion:(id)a10
+- (void)importOriginalArtworkFromImageData:(id)data withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType shouldPerformColorAnalysis:(BOOL)analysis completion:(id)self0
 {
-  v11 = *&a7;
+  v11 = *&mediaType;
   v37 = *MEMORY[0x277D85DE8];
-  v16 = a4;
-  v17 = a10;
-  v18 = a3;
+  tokenCopy = token;
+  completionCopy = completion;
+  dataCopy = data;
   v19 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v34 = self;
+    selfCopy = self;
     v35 = 2114;
-    v36 = v16;
+    v36 = tokenCopy;
     _os_log_impl(&dword_22D2FA000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: import original artwork from image data, artwork token: %{public}@, completion handler", buf, 0x16u);
   }
 
-  v28 = self;
+  selfCopy2 = self;
 
   v20 = NSTemporaryDirectory();
   v21 = [v20 stringByAppendingPathComponent:@"imagedata.XXXXXX"];
@@ -5877,7 +5877,7 @@ void __47__ML3MusicLibrary_removeArtworkAssetWithToken___block_invoke_2(void *a1
   v22 = MSVCreateTemporaryFileHandle();
   v23 = 0;
   v32[0] = 0;
-  [v22 writeData:v18 error:v32];
+  [v22 writeData:dataCopy error:v32];
 
   v24 = v32[0];
   [v22 closeFile];
@@ -5888,13 +5888,13 @@ void __47__ML3MusicLibrary_removeArtworkAssetWithToken___block_invoke_2(void *a1
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v34 = v24;
+      selfCopy = v24;
       _os_log_impl(&dword_22D2FA000, v25, OS_LOG_TYPE_ERROR, "Failed to write original artwork to temporary path with error: %{public}@", buf, 0xCu);
     }
 
-    if (v17)
+    if (completionCopy)
     {
-      v17[2](v17, v24);
+      completionCopy[2](completionCopy, v24);
     }
   }
 
@@ -5906,9 +5906,9 @@ void __47__ML3MusicLibrary_removeArtworkAssetWithToken___block_invoke_2(void *a1
     v29[2] = __154__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_artworkType_sourceType_mediaType_variantType_shouldPerformColorAnalysis_completion___block_invoke;
     v29[3] = &unk_2787658A0;
     v30 = v23;
-    v31 = v17;
-    LOBYTE(v27) = a9;
-    [(ML3MusicLibrary *)v28 importOriginalArtworkFromFileURL:v26 withArtworkToken:v16 artworkType:a5 sourceType:a6 mediaType:v11 variantType:a8 shouldPerformColorAnalysis:v27 completion:v29];
+    v31 = completionCopy;
+    LOBYTE(v27) = analysis;
+    [(ML3MusicLibrary *)selfCopy2 importOriginalArtworkFromFileURL:v26 withArtworkToken:tokenCopy artworkType:type sourceType:sourceType mediaType:v11 variantType:variantType shouldPerformColorAnalysis:v27 completion:v29];
   }
 }
 
@@ -5942,52 +5942,52 @@ void __154__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_
   }
 }
 
-- (BOOL)importOriginalArtworkFromImageData:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unsigned int)a7 variantType:(int64_t)a8 shouldPerformColorAnalysis:(BOOL)a9
+- (BOOL)importOriginalArtworkFromImageData:(id)data withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType shouldPerformColorAnalysis:(BOOL)analysis
 {
   v58 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v11 = a4;
+  dataCopy = data;
+  tokenCopy = token;
   v12 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v11;
+    *&buf[14] = tokenCopy;
     _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: import original artwork from image data, artwork token: %{public}@", buf, 0x16u);
   }
 
-  if ([v11 length])
+  if ([tokenCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v57 = 0;
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
-    v14 = [ML3MusicLibrary artworkRelativePathFromToken:v11];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v14 = [ML3MusicLibrary artworkRelativePathFromToken:tokenCopy];
     v15 = MEMORY[0x277CBEBC0];
     v16 = MEMORY[0x277CCACA8];
-    v17 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-    v55[0] = v17;
+    originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+    v55[0] = originalArtworkDirectory;
     v55[1] = v14;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:2];
     v19 = [v16 pathWithComponents:v18];
     v20 = [v15 fileURLWithPath:v19 isDirectory:0];
 
-    v21 = [v20 path];
-    LODWORD(v17) = [v13 fileExistsAtPath:v21];
+    path = [v20 path];
+    LODWORD(originalArtworkDirectory) = [defaultManager fileExistsAtPath:path];
 
-    if (v17)
+    if (originalArtworkDirectory)
     {
       v22 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
         *v51 = 138543362;
-        v52 = v11;
+        v52 = tokenCopy;
         _os_log_impl(&dword_22D2FA000, v22, OS_LOG_TYPE_DEBUG, "Artwork already exists on disk for artwork token %{public}@, ensuring artwork table is consistent", v51, 0xCu);
       }
 
-      v23 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:v11 artworkType:a5 sourceType:a6 relativePath:v14];
+      v23 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:tokenCopy artworkType:type sourceType:sourceType relativePath:v14];
       *(*&buf[8] + 24) = v23;
     }
 
@@ -6000,7 +6000,7 @@ void __154__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_
       v25 = MSVCreateTemporaryFileHandle();
       v34 = 0;
       v50[0] = 0;
-      [v25 writeData:v40 error:v50];
+      [v25 writeData:dataCopy error:v50];
       v26 = v50[0];
       [v25 closeFile];
 
@@ -6032,7 +6032,7 @@ void __154__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_
 
         dispatch_semaphore_wait(v27, 0xFFFFFFFFFFFFFFFFLL);
         v46 = 0;
-        LOBYTE(v29) = [v13 removeItemAtPath:v34 error:&v46];
+        LOBYTE(v29) = [defaultManager removeItemAtPath:v34 error:&v46];
         v30 = v46;
         if ((v29 & 1) == 0)
         {
@@ -6047,18 +6047,18 @@ void __154__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_
           }
         }
 
-        if (*(*&buf[8] + 24) == 1 && (v32 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:v11 artworkType:a5 sourceType:a6 relativePath:v14], *(*&buf[8] + 24) = v32, v32))
+        if (*(*&buf[8] + 24) == 1 && (v32 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:tokenCopy artworkType:type sourceType:sourceType relativePath:v14], *(*&buf[8] + 24) = v32, v32))
         {
           v41[0] = MEMORY[0x277D85DD0];
           v41[1] = 3221225472;
           v41[2] = __143__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_artworkType_sourceType_mediaType_variantType_shouldPerformColorAnalysis___block_invoke_698;
           v41[3] = &unk_27875D930;
-          v45 = a9;
+          analysisCopy = analysis;
           v41[4] = self;
           v42 = v20;
-          v44 = a5;
-          v43 = v11;
-          [(ML3MusicLibrary *)self _autogenerateArtworkForRelativePath:v14 artworkType:a5 mediaType:a7 variantType:a8 completionHandler:v41];
+          typeCopy = type;
+          v43 = tokenCopy;
+          [(ML3MusicLibrary *)self _autogenerateArtworkForRelativePath:v14 artworkType:type mediaType:mediaType variantType:variantType completionHandler:v41];
 
           v23 = *(*&buf[8] + 24);
         }
@@ -6110,43 +6110,43 @@ void __143__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_
   }
 }
 
-- (void)importOriginalArtworkFromFileURL:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unsigned int)a7 variantType:(int64_t)a8 shouldPerformColorAnalysis:(BOOL)a9 completion:(id)a10
+- (void)importOriginalArtworkFromFileURL:(id)l withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType shouldPerformColorAnalysis:(BOOL)analysis completion:(id)self0
 {
   v53 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a10;
+  lCopy = l;
+  tokenCopy = token;
+  completionCopy = completion;
   v19 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v48 = self;
+    selfCopy = self;
     v49 = 2114;
-    v50 = v16;
+    v50 = lCopy;
     v51 = 2114;
-    v52 = v17;
+    v52 = tokenCopy;
     _os_log_impl(&dword_22D2FA000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: import original artwork from file url: %{public}@, artwork token: %{public}@, completion handler", buf, 0x20u);
   }
 
-  if ([(ML3MusicLibrary *)v17 length])
+  if ([(ML3MusicLibrary *)tokenCopy length])
   {
-    v33 = a7;
-    v34 = a5;
-    v35 = a6;
-    v36 = v16;
-    v20 = [ML3MusicLibrary artworkRelativePathFromToken:v17 variantType:a8];
+    mediaTypeCopy = mediaType;
+    typeCopy = type;
+    sourceTypeCopy = sourceType;
+    v36 = lCopy;
+    v20 = [ML3MusicLibrary artworkRelativePathFromToken:tokenCopy variantType:variantType];
     v21 = MEMORY[0x277CBEBC0];
     v22 = MEMORY[0x277CCACA8];
-    v23 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-    v46[0] = v23;
+    originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+    v46[0] = originalArtworkDirectory;
     v46[1] = v20;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:2];
     v25 = [v22 pathWithComponents:v24];
     v26 = [v21 fileURLWithPath:v25 isDirectory:0];
 
-    v27 = [MEMORY[0x277CCAA00] defaultManager];
-    v28 = [v26 path];
-    LODWORD(v21) = [v27 fileExistsAtPath:v28];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v26 path];
+    LODWORD(v21) = [defaultManager fileExistsAtPath:path];
 
     if (v21)
     {
@@ -6154,17 +6154,17 @@ void __143__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v48 = v17;
+        selfCopy = tokenCopy;
         _os_log_impl(&dword_22D2FA000, v29, OS_LOG_TYPE_DEFAULT, "Artwork already exists on disk for artwork token %{public}@, ensuring artwork table is consistent", buf, 0xCu);
       }
 
-      v30 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:v17 artworkType:v34 sourceType:v35 variantType:a8 relativePath:v20];
-      v16 = v36;
-      if (v18)
+      v30 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:tokenCopy artworkType:typeCopy sourceType:sourceTypeCopy variantType:variantType relativePath:v20];
+      lCopy = v36;
+      if (completionCopy)
       {
         if (v30)
         {
-          v18[2](v18, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         else
@@ -6177,7 +6177,7 @@ void __143__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_
           }
 
           v32 = [MEMORY[0x277CCA9B8] msv_errorWithDomain:@"ML3DatabaseErrorDomain" code:0 debugDescription:@"Failed to insert row for artwork"];
-          (v18)[2](v18, v32);
+          (completionCopy)[2](completionCopy, v32);
         }
       }
     }
@@ -6188,26 +6188,26 @@ void __143__ML3MusicLibrary_importOriginalArtworkFromImageData_withArtworkToken_
       v37[1] = 3221225472;
       v37[2] = __152__ML3MusicLibrary_importOriginalArtworkFromFileURL_withArtworkToken_artworkType_sourceType_mediaType_variantType_shouldPerformColorAnalysis_completion___block_invoke;
       v37[3] = &unk_27875D908;
-      v40 = v18;
+      v40 = completionCopy;
       v37[4] = self;
-      v38 = v17;
-      v41 = v34;
-      v42 = v35;
-      v43 = a8;
+      v38 = tokenCopy;
+      v41 = typeCopy;
+      v42 = sourceTypeCopy;
+      variantTypeCopy = variantType;
       v39 = v20;
-      v44 = v33;
-      v45 = a9;
-      v16 = v36;
+      v44 = mediaTypeCopy;
+      analysisCopy = analysis;
+      lCopy = v36;
       [(ML3MusicLibrary *)self _convertOriginalArtworkToDevicePreferredFormatFromSourceURL:v36 toDestinationURL:v26 completionHandler:v37];
     }
 
     goto LABEL_17;
   }
 
-  if (v18)
+  if (completionCopy)
   {
     v20 = [MEMORY[0x277CCA9B8] msv_errorWithDomain:@"ML3DatabaseErrorDomain" code:700 debugDescription:@"Cannot import artwork without a valid artwork token"];
-    (v18)[2](v18, v20);
+    (completionCopy)[2](completionCopy, v20);
 LABEL_17:
   }
 }
@@ -6306,54 +6306,54 @@ void __152__ML3MusicLibrary_importOriginalArtworkFromFileURL_withArtworkToken_ar
   }
 }
 
-- (BOOL)importOriginalArtworkFromFileURL:(id)a3 withArtworkToken:(id)a4 artworkType:(int64_t)a5 sourceType:(int64_t)a6 mediaType:(unsigned int)a7 variantType:(int64_t)a8 shouldPerformColorAnalysis:(BOOL)a9
+- (BOOL)importOriginalArtworkFromFileURL:(id)l withArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType shouldPerformColorAnalysis:(BOOL)analysis
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  lCopy = l;
+  tokenCopy = token;
   v14 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v12;
+    *&buf[14] = lCopy;
     *&buf[22] = 2114;
-    v44 = v13;
+    v44 = tokenCopy;
     _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: import original artwork from file url: %{public}@, artwork token: %{public}@", buf, 0x20u);
   }
 
-  if ([v13 length])
+  if ([tokenCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     LOBYTE(v44) = 0;
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    v16 = [ML3MusicLibrary artworkRelativePathFromToken:v13];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v16 = [ML3MusicLibrary artworkRelativePathFromToken:tokenCopy];
     v17 = MEMORY[0x277CBEBC0];
     v18 = MEMORY[0x277CCACA8];
-    v19 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-    v42[0] = v19;
+    originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+    v42[0] = originalArtworkDirectory;
     v42[1] = v16;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
     v21 = [v18 pathWithComponents:v20];
     v22 = [v17 fileURLWithPath:v21 isDirectory:0];
 
-    v23 = [v22 path];
-    LODWORD(v19) = [v15 fileExistsAtPath:v23];
+    path = [v22 path];
+    LODWORD(originalArtworkDirectory) = [defaultManager fileExistsAtPath:path];
 
-    if (v19)
+    if (originalArtworkDirectory)
     {
       v24 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *v40 = 138543362;
-        v41 = v13;
+        v41 = tokenCopy;
         _os_log_impl(&dword_22D2FA000, v24, OS_LOG_TYPE_DEFAULT, "Artwork already exists on disk for artwork token %{public}@, ensuring artwork table is consistent", v40, 0xCu);
       }
 
-      v25 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:v13 artworkType:a5 sourceType:a6 relativePath:v16];
+      v25 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:tokenCopy artworkType:type sourceType:sourceType relativePath:v16];
       *(*&buf[8] + 24) = v25;
     }
 
@@ -6367,19 +6367,19 @@ void __152__ML3MusicLibrary_importOriginalArtworkFromFileURL_withArtworkToken_ar
       v39 = buf;
       v27 = v26;
       v38 = v27;
-      [(ML3MusicLibrary *)self _convertOriginalArtworkToDevicePreferredFormatFromSourceURL:v12 toDestinationURL:v22 completionHandler:v37];
+      [(ML3MusicLibrary *)self _convertOriginalArtworkToDevicePreferredFormatFromSourceURL:lCopy toDestinationURL:v22 completionHandler:v37];
       dispatch_semaphore_wait(v27, 0xFFFFFFFFFFFFFFFFLL);
-      if (*(*&buf[8] + 24) == 1 && (v28 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:v13 artworkType:a5 sourceType:a6 relativePath:v16], (*(*&buf[8] + 24) = v28) != 0))
+      if (*(*&buf[8] + 24) == 1 && (v28 = [(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:tokenCopy artworkType:type sourceType:sourceType relativePath:v16], (*(*&buf[8] + 24) = v28) != 0))
       {
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __141__ML3MusicLibrary_importOriginalArtworkFromFileURL_withArtworkToken_artworkType_sourceType_mediaType_variantType_shouldPerformColorAnalysis___block_invoke_687;
         v33[3] = &unk_27875D8B8;
-        v36 = a9;
+        analysisCopy = analysis;
         v33[4] = self;
-        v35 = a5;
-        v34 = v13;
-        [(ML3MusicLibrary *)self _autogenerateArtworkForRelativePath:v16 artworkType:a5 mediaType:a7 variantType:a8 completionHandler:v33];
+        typeCopy = type;
+        v34 = tokenCopy;
+        [(ML3MusicLibrary *)self _autogenerateArtworkForRelativePath:v16 artworkType:type mediaType:mediaType variantType:variantType completionHandler:v33];
 
         v25 = *(*&buf[8] + 24);
       }
@@ -6430,44 +6430,44 @@ void __141__ML3MusicLibrary_importOriginalArtworkFromFileURL_withArtworkToken_ar
   }
 }
 
-- (BOOL)importExistingOriginalArtworkWithArtworkToken:(id)a3 artworkType:(int64_t)a4 sourceType:(int64_t)a5 mediaType:(unsigned int)a6 variantType:(int64_t)a7
+- (BOOL)importExistingOriginalArtworkWithArtworkToken:(id)token artworkType:(int64_t)type sourceType:(int64_t)sourceType mediaType:(unsigned int)mediaType variantType:(int64_t)variantType
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  tokenCopy = token;
   v13 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v29 = self;
+    selfCopy = self;
     v30 = 2114;
-    v31 = v12;
+    v31 = tokenCopy;
     _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: import existing original artwork with token: %{public}@", buf, 0x16u);
   }
 
-  if ([v12 length])
+  if ([tokenCopy length])
   {
-    v23 = a6;
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
-    v15 = [ML3MusicLibrary artworkRelativePathFromToken:v12 variantType:a7];
+    mediaTypeCopy = mediaType;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v15 = [ML3MusicLibrary artworkRelativePathFromToken:tokenCopy variantType:variantType];
     v16 = MEMORY[0x277CCACA8];
-    v17 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-    v27[0] = v17;
+    originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+    v27[0] = originalArtworkDirectory;
     v27[1] = v15;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
     v19 = [v16 pathWithComponents:v18];
 
-    if ([v14 fileExistsAtPath:v19])
+    if ([defaultManager fileExistsAtPath:v19])
     {
-      if ([(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:v12 artworkType:a4 sourceType:a5 variantType:a7 relativePath:v15])
+      if ([(ML3MusicLibrary *)self _insertArtworkRowWithArtworkToken:tokenCopy artworkType:type sourceType:sourceType variantType:variantType relativePath:v15])
       {
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __110__ML3MusicLibrary_importExistingOriginalArtworkWithArtworkToken_artworkType_sourceType_mediaType_variantType___block_invoke;
         v24[3] = &unk_27875D890;
         v24[4] = self;
-        v26 = a4;
-        v25 = v12;
-        [(ML3MusicLibrary *)self _autogenerateArtworkForRelativePath:v15 artworkType:a4 mediaType:v23 variantType:a7 completionHandler:v24];
+        typeCopy = type;
+        v25 = tokenCopy;
+        [(ML3MusicLibrary *)self _autogenerateArtworkForRelativePath:v15 artworkType:type mediaType:mediaTypeCopy variantType:variantType completionHandler:v24];
 
         v20 = 1;
 LABEL_12:
@@ -6482,7 +6482,7 @@ LABEL_12:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v29 = v19;
+        selfCopy = v19;
         _os_log_impl(&dword_22D2FA000, v21, OS_LOG_TYPE_ERROR, "Original artwork not found at '%{public}@'", buf, 0xCu);
       }
     }
@@ -6507,9 +6507,9 @@ void __110__ML3MusicLibrary_importExistingOriginalArtworkWithArtworkToken_artwor
   }
 }
 
-- (void)performColorAnalysisForArtworkWithConnection:(id)a3 shouldRegenerateColorAnalysis:(BOOL)a4
+- (void)performColorAnalysisForArtworkWithConnection:(id)connection shouldRegenerateColorAnalysis:(BOOL)analysis
 {
-  if (a4)
+  if (analysis)
   {
     v6 = @"SELECT DISTINCT(relative_path), artwork.artwork_type, item.media_type, artwork.artwork_token FROM artwork JOIN artwork_token ON artwork.artwork_token = artwork_token.artwork_token JOIN item ON item_pid = entity_pid";
   }
@@ -6519,7 +6519,7 @@ void __110__ML3MusicLibrary_importExistingOriginalArtworkWithArtworkToken_artwor
     v6 = @"SELECT DISTINCT(relative_path), artwork.artwork_type, item.media_type, artwork.artwork_token FROM artwork JOIN artwork_token ON artwork.artwork_token = artwork_token.artwork_token JOIN item ON item_pid = entity_pid WHERE artwork.interest_data IS NULL";
   }
 
-  v7 = [a3 executeQuery:v6];
+  v7 = [connection executeQuery:v6];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __94__ML3MusicLibrary_performColorAnalysisForArtworkWithConnection_shouldRegenerateColorAnalysis___block_invoke;
@@ -6589,21 +6589,21 @@ void __94__ML3MusicLibrary_performColorAnalysisForArtworkWithConnection_shouldRe
   }
 }
 
-- (void)generateArtworkForRelativePath:(id)a3 sizes:(id)a4 completionHandler:(id)a5
+- (void)generateArtworkForRelativePath:(id)path sizes:(id)sizes completionHandler:(id)handler
 {
   v61[2] = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v7 && [v7 count])
+  pathCopy = path;
+  sizesCopy = sizes;
+  handlerCopy = handler;
+  if (sizesCopy && [sizesCopy count])
   {
-    v42 = v8;
+    v42 = handlerCopy;
     v9 = +[ML3MusicLibrary devicePreferredImageFormat];
     v10 = MEMORY[0x277CBEBC0];
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-    v61[0] = v12;
-    v61[1] = v46;
+    originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+    v61[0] = originalArtworkDirectory;
+    v61[1] = pathCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:2];
     v14 = [v11 pathWithComponents:v13];
     v15 = [v10 fileURLWithPath:v14 isDirectory:0];
@@ -6615,7 +6615,7 @@ void __94__ML3MusicLibrary_performColorAnalysisForArtworkWithConnection_shouldRe
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      *&buf[4] = [v7 count];
+      *&buf[4] = [sizesCopy count];
       _os_log_impl(&dword_22D2FA000, v18, OS_LOG_TYPE_DEFAULT, "Generating artwork for sizes: %lu", buf, 0xCu);
     }
 
@@ -6626,8 +6626,8 @@ void __94__ML3MusicLibrary_performColorAnalysisForArtworkWithConnection_shouldRe
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v43 = v7;
-    obj = v7;
+    v43 = sizesCopy;
+    obj = sizesCopy;
     v21 = [obj countByEnumeratingWithState:&v54 objects:v60 count:16];
     if (v21)
     {
@@ -6651,7 +6651,7 @@ void __94__ML3MusicLibrary_performColorAnalysisForArtworkWithConnection_shouldRe
           v28 = MEMORY[0x277CCACA8];
           v29 = [(ML3MusicLibrary *)self artworkCacheDirectoryForSize:*buf, *&buf[8]];
           v59[0] = v29;
-          v59[1] = v46;
+          v59[1] = pathCopy;
           v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:2];
           v31 = [v28 pathWithComponents:v30];
           v32 = [v27 fileURLWithPath:v31 isDirectory:0];
@@ -6704,29 +6704,29 @@ void __94__ML3MusicLibrary_performColorAnalysisForArtworkWithConnection_shouldRe
       _os_log_impl(&dword_22D2FA000, v37, OS_LOG_TYPE_DEFAULT, "Preferred for color analysis: %{public}@ of size %lu", buf, 0x16u);
     }
 
-    v38 = [MEMORY[0x277D27ED0] sharedService];
+    mEMORY[0x277D27ED0] = [MEMORY[0x277D27ED0] sharedService];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __74__ML3MusicLibrary_generateArtworkForRelativePath_sizes_completionHandler___block_invoke;
     v47[3] = &unk_27875D868;
     v48 = v16;
-    v49 = self;
-    v8 = v42;
+    selfCopy = self;
+    handlerCopy = v42;
     v52 = v20;
     v53 = v19;
     v50 = v23;
     v51 = v42;
     v39 = v23;
     v40 = v16;
-    [v38 sendRequest:v40 completionHandler:v47];
+    [mEMORY[0x277D27ED0] sendRequest:v40 completionHandler:v47];
 
-    v7 = v43;
+    sizesCopy = v43;
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v36 = [MEMORY[0x277CCA9B8] ml_errorWithCode:1 description:0];
-    (*(v8 + 2))(v8, v36, 0, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
+    (*(handlerCopy + 2))(handlerCopy, v36, 0, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
   }
 }
 
@@ -6757,14 +6757,14 @@ void __74__ML3MusicLibrary_generateArtworkForRelativePath_sizes_completionHandle
   }
 }
 
-- (void)enumerateArtworkRelativePathsWithConnection:(id)a3 matchingRelativePathContainer:(id)a4 block:(id)a5
+- (void)enumerateArtworkRelativePathsWithConnection:(id)connection matchingRelativePathContainer:(id)container block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  connectionCopy = connection;
+  containerCopy = container;
+  blockCopy = block;
+  if (containerCopy)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@" WHERE relative_path LIKE %@%%", v9];
+    containerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@" WHERE relative_path LIKE %@%%", containerCopy];
     v12 = [@"SELECT DISTINCT(relative_path) best:media_type FROM item JOIN best_artwork_token ON item_pid = entity_pid AND entity_type = 0 JOIN artwork ON available_artwork_token = artwork_token" artwork:"stringByAppendingString:" token.artwork:v11type];
   }
 
@@ -6773,20 +6773,20 @@ void __74__ML3MusicLibrary_generateArtworkForRelativePath_sizes_completionHandle
     v12 = @"SELECT DISTINCT(relative_path), best_artwork_token.artwork_type, media_type FROM item JOIN best_artwork_token ON item_pid = entity_pid AND entity_type = 0 JOIN artwork ON available_artwork_token = artwork_token";
   }
 
-  v13 = [v8 executeQuery:v12];
+  v13 = [connectionCopy executeQuery:v12];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __99__ML3MusicLibrary_enumerateArtworkRelativePathsWithConnection_matchingRelativePathContainer_block___block_invoke;
   v21[3] = &unk_278764078;
   v21[4] = self;
-  v14 = v10;
+  v14 = blockCopy;
   v22 = v14;
   [v13 enumerateRowsWithBlock:v21];
 
-  if (v9)
+  if (containerCopy)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@" AND relative_path LIKE %@%%", v9];
-    v16 = [@"SELECT DISTINCT(relative_path) best:7") artwork:"stringByAppendingString:" token.artwork:v15 type FROM best:? artwork:? token JOIN artwork ON available:? artwork:? token = artwork:? token WHERE entity:?type IN (2];
+    containerCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@" AND relative_path LIKE %@%%", containerCopy];
+    v16 = [@"SELECT DISTINCT(relative_path) best:7") artwork:"stringByAppendingString:" token.artwork:containerCopy2 type FROM best:? artwork:? token JOIN artwork ON available:? artwork:? token = artwork:? token WHERE entity:?type IN (2];
   }
 
   else
@@ -6794,7 +6794,7 @@ void __74__ML3MusicLibrary_generateArtworkForRelativePath_sizes_completionHandle
     v16 = @"SELECT DISTINCT(relative_path), best_artwork_token.artwork_type FROM best_artwork_token JOIN artwork ON available_artwork_token = artwork_token WHERE entity_type IN (2,7)";
   }
 
-  v17 = [v8 executeQuery:v16];
+  v17 = [connectionCopy executeQuery:v16];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __99__ML3MusicLibrary_enumerateArtworkRelativePathsWithConnection_matchingRelativePathContainer_block___block_invoke_671;
@@ -6870,10 +6870,10 @@ void __99__ML3MusicLibrary_enumerateArtworkRelativePathsWithConnection_matchingR
   }
 }
 
-- (void)autogenerateSupportedSizesForAllOriginalArtworkWithConnection:(id)a3 completionHandler:(id)a4
+- (void)autogenerateSupportedSizesForAllOriginalArtworkWithConnection:(id)connection completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v8 = dispatch_group_create();
   v19[0] = 0;
   v19[1] = v19;
@@ -6887,17 +6887,17 @@ void __99__ML3MusicLibrary_enumerateArtworkRelativePathsWithConnection_matchingR
   v15[3] = &unk_27875D7F0;
   v9 = v8;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v18 = v19;
-  [(ML3MusicLibrary *)self enumerateArtworkRelativePathsWithConnection:v6 matchingRelativePathContainer:0 block:v15];
+  [(ML3MusicLibrary *)self enumerateArtworkRelativePathsWithConnection:connectionCopy matchingRelativePathContainer:0 block:v15];
   v10 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__ML3MusicLibrary_autogenerateSupportedSizesForAllOriginalArtworkWithConnection_completionHandler___block_invoke_3;
   block[3] = &unk_27875D818;
-  v13 = v7;
+  v13 = handlerCopy;
   v14 = v19;
-  v11 = v7;
+  v11 = handlerCopy;
   dispatch_group_notify(v9, v10, block);
 
   _Block_object_dispose(v19, 8);
@@ -6941,33 +6941,33 @@ void __99__ML3MusicLibrary_autogenerateSupportedSizesForAllOriginalArtworkWithCo
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)removePlaylistsWithPersistentIDs:(id)a3 fromSource:(int)a4 usingConnection:(id)a5 withCompletionHandler:(id)a6
+- (void)removePlaylistsWithPersistentIDs:(id)ds fromSource:(int)source usingConnection:(id)connection withCompletionHandler:(id)handler
 {
-  v8 = *&a4;
+  v8 = *&source;
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  dsCopy = ds;
+  connectionCopy = connection;
   serialQueue = self->_serialQueue;
-  v13 = a6;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(serialQueue);
   v14 = +[MLMediaLibraryService sharedMediaLibraryService];
   v15 = MEMORY[0x277CBEB38];
   v16 = [MEMORY[0x277CCABB0] numberWithInt:v8];
   v17 = [v15 dictionaryWithObject:v16 forKey:@"MLDatabaseOperationAttributeTrackSourceKey"];
 
-  if (v10)
+  if (dsCopy)
   {
-    [v17 setObject:v10 forKey:@"MLDatabaseOperationAttributePersistentIDsArrayKey"];
+    [v17 setObject:dsCopy forKey:@"MLDatabaseOperationAttributePersistentIDsArrayKey"];
   }
 
   v18 = MEMORY[0x277CBEB38];
-  v19 = [(ML3MusicLibrary *)self databasePath];
-  v20 = [v18 dictionaryWithObject:v19 forKey:@"MLDatabaseOperationOptionDatabasePathKey"];
+  databasePath = [(ML3MusicLibrary *)self databasePath];
+  v20 = [v18 dictionaryWithObject:databasePath forKey:@"MLDatabaseOperationOptionDatabasePathKey"];
 
-  if (v11 && [v11 isInTransaction])
+  if (connectionCopy && [connectionCopy isInTransaction])
   {
-    v21 = [v11 currentTransactionID];
-    [v20 setObject:v21 forKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
+    currentTransactionID = [connectionCopy currentTransactionID];
+    [v20 setObject:currentTransactionID forKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
   }
 
   v22 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -6982,20 +6982,20 @@ void __99__ML3MusicLibrary_autogenerateSupportedSizesForAllOriginalArtworkWithCo
     _os_log_impl(&dword_22D2FA000, v22, OS_LOG_TYPE_DEFAULT, "Sending remove playlists request to %{public}@. Attributes: %{public}@, options: %{public}@", &v23, 0x20u);
   }
 
-  [v14 performDatabaseOperation:6 withAttributes:v17 options:v20 completionHandler:v13];
+  [v14 performDatabaseOperation:6 withAttributes:v17 options:v20 completionHandler:handlerCopy];
 }
 
-- (void)removeCloudSourcesWithAttributes:(id)a3 completionHandler:(id)a4
+- (void)removeCloudSourcesWithAttributes:(id)attributes completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  attributesCopy = attributes;
   serialQueue = self->_serialQueue;
-  v8 = a4;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(serialQueue);
   v9 = +[MLMediaLibraryService sharedMediaLibraryService];
   v10 = MEMORY[0x277CBEB38];
-  v11 = [(ML3MusicLibrary *)self databasePath];
-  v12 = [v10 dictionaryWithObject:v11 forKey:@"MLDatabaseOperationOptionDatabasePathKey"];
+  databasePath = [(ML3MusicLibrary *)self databasePath];
+  v12 = [v10 dictionaryWithObject:databasePath forKey:@"MLDatabaseOperationOptionDatabasePathKey"];
 
   v13 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -7003,42 +7003,42 @@ void __99__ML3MusicLibrary_autogenerateSupportedSizesForAllOriginalArtworkWithCo
     v14 = 138543874;
     v15 = v9;
     v16 = 2114;
-    v17 = v6;
+    v17 = attributesCopy;
     v18 = 2114;
     v19 = v12;
     _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_DEFAULT, "Sending remove tracks request to %{public}@. Attributes: %{public}@, options: %{public}@", &v14, 0x20u);
   }
 
-  [v9 performDatabaseOperation:9 withAttributes:v6 options:v12 completionHandler:v8];
+  [v9 performDatabaseOperation:9 withAttributes:attributesCopy options:v12 completionHandler:handlerCopy];
 }
 
-- (void)removeTracksWithPersistentIDs:(id)a3 fromSource:(int)a4 usingConnection:(id)a5 withCompletionHandler:(id)a6
+- (void)removeTracksWithPersistentIDs:(id)ds fromSource:(int)source usingConnection:(id)connection withCompletionHandler:(id)handler
 {
-  v8 = *&a4;
+  v8 = *&source;
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  dsCopy = ds;
+  connectionCopy = connection;
   serialQueue = self->_serialQueue;
-  v13 = a6;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(serialQueue);
   v14 = +[MLMediaLibraryService sharedMediaLibraryService];
   v15 = MEMORY[0x277CBEB38];
   v16 = [MEMORY[0x277CCABB0] numberWithInt:v8];
   v17 = [v15 dictionaryWithObject:v16 forKey:@"MLDatabaseOperationAttributeTrackSourceKey"];
 
-  if (v10)
+  if (dsCopy)
   {
-    [v17 setObject:v10 forKey:@"MLDatabaseOperationAttributePersistentIDsArrayKey"];
+    [v17 setObject:dsCopy forKey:@"MLDatabaseOperationAttributePersistentIDsArrayKey"];
   }
 
   v18 = MEMORY[0x277CBEB38];
-  v19 = [(ML3MusicLibrary *)self databasePath];
-  v20 = [v18 dictionaryWithObject:v19 forKey:@"MLDatabaseOperationOptionDatabasePathKey"];
+  databasePath = [(ML3MusicLibrary *)self databasePath];
+  v20 = [v18 dictionaryWithObject:databasePath forKey:@"MLDatabaseOperationOptionDatabasePathKey"];
 
-  if (v11 && [v11 isInTransaction])
+  if (connectionCopy && [connectionCopy isInTransaction])
   {
-    v21 = [v11 currentTransactionID];
-    [v20 setObject:v21 forKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
+    currentTransactionID = [connectionCopy currentTransactionID];
+    [v20 setObject:currentTransactionID forKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
   }
 
   v22 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -7053,18 +7053,18 @@ void __99__ML3MusicLibrary_autogenerateSupportedSizesForAllOriginalArtworkWithCo
     _os_log_impl(&dword_22D2FA000, v22, OS_LOG_TYPE_DEFAULT, "Sending remove tracks request to %{public}@. Attributes: %{public}@, options: %{public}@", &v23, 0x20u);
   }
 
-  [v14 performDatabaseOperation:3 withAttributes:v17 options:v20 completionHandler:v13];
+  [v14 performDatabaseOperation:3 withAttributes:v17 options:v20 completionHandler:handlerCopy];
 }
 
-- (unint64_t)countOfChangedPersistentIdsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 maximumRevisionType:(int)a5
+- (unint64_t)countOfChangedPersistentIdsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code maximumRevisionType:(int)type
 {
-  v5 = *&a5;
+  v5 = *&type;
   v29[1] = *MEMORY[0x277D85DE8];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (code == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = @"SELECT COUNT() FROM entity_revision WHERE revision > ? ";
   }
@@ -7083,14 +7083,14 @@ void __99__ML3MusicLibrary_autogenerateSupportedSizesForAllOriginalArtworkWithCo
 
   v11 = [(__CFString *)v9 stringByAppendingString:@""];;
 
-  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:revision];
   v29[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
   v14 = [v13 mutableCopy];
 
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (code != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:code];
     [v14 addObject:v15];
   }
 
@@ -7122,7 +7122,7 @@ void __101__ML3MusicLibrary_countOfChangedPersistentIdsAfterRevision_revisionTra
   *(*(a1[6] + 8) + 24) = [v3 int64ValueForFirstRowAndColumn];
 }
 
-- (BOOL)persistentID:(int64_t)a3 changedAfterRevision:(int64_t)a4 revisionTrackingCode:(int64_t)a5
+- (BOOL)persistentID:(int64_t)d changedAfterRevision:(int64_t)revision revisionTrackingCode:(int64_t)code
 {
   v8 = 0;
   v9 = &v8;
@@ -7132,10 +7132,10 @@ void __101__ML3MusicLibrary_countOfChangedPersistentIdsAfterRevision_revisionTra
   v7[1] = 3221225472;
   v7[2] = __74__ML3MusicLibrary_persistentID_changedAfterRevision_revisionTrackingCode___block_invoke;
   v7[3] = &unk_27875D7A0;
-  v7[6] = a5;
-  v7[7] = a4;
+  v7[6] = code;
+  v7[7] = revision;
   v7[4] = &v8;
-  v7[5] = a3;
+  v7[5] = d;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -7159,9 +7159,9 @@ void __74__ML3MusicLibrary_persistentID_changedAfterRevision_revisionTrackingCod
   *(*(a1[4] + 8) + 24) = [v10 hasAtLeastOneRow];
 }
 
-- (void)getChangedPersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(int64_t)a4 maximumRevisionType:(int)a5 usingBlock:(id)a6
+- (void)getChangedPersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(int64_t)code maximumRevisionType:(int)type usingBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -7179,14 +7179,14 @@ void __74__ML3MusicLibrary_persistentID_changedAfterRevision_revisionTrackingCod
   v11[1] = 3221225472;
   v11[2] = __108__ML3MusicLibrary_getChangedPersistentIDsAfterRevision_revisionTrackingCode_maximumRevisionType_usingBlock___block_invoke;
   v11[3] = &unk_27875D778;
-  v12 = a5;
-  v11[7] = a3;
-  v11[8] = a4;
+  typeCopy = type;
+  v11[7] = revision;
+  v11[8] = code;
   v11[4] = v21;
   v11[5] = &v13;
   v11[6] = &v17;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v11];
-  v10[2](v10, v18[3], v14[3]);
+  blockCopy[2](blockCopy, v18[3], v14[3]);
   free(v18[3]);
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v17, 8);
@@ -7255,11 +7255,11 @@ void __108__ML3MusicLibrary_getChangedPersistentIDsAfterRevision_revisionTrackin
   }
 }
 
-- (void)enumerateLibraryPinsPersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateLibraryPinsPersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code usingBlock:(id)block
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  blockCopy = block;
+  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:revision];
   v16[0] = v8;
   v16[1] = &unk_2840C8B70;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
@@ -7270,8 +7270,8 @@ void __108__ML3MusicLibrary_getChangedPersistentIDsAfterRevision_revisionTrackin
   v12[3] = &unk_2787640A0;
   v13 = @"SELECT entity_pid, revision, revision_type, deleted FROM entity_revision WHERE revision > ? AND class = ?;";
   v14 = v9;
-  v15 = v7;
-  v10 = v7;
+  v15 = blockCopy;
+  v10 = blockCopy;
   v11 = v9;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v12];
 }
@@ -7300,11 +7300,11 @@ uint64_t __98__ML3MusicLibrary_enumerateLibraryPinsPersistentIDsAfterRevision_re
   return v4();
 }
 
-- (void)enumerateAlbumPersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateAlbumPersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code usingBlock:(id)block
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  blockCopy = block;
+  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:revision];
   v17[0] = v8;
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{+[ML3Album revisionTrackingCode](ML3Album, "revisionTrackingCode")}];
   v17[1] = v9;
@@ -7316,8 +7316,8 @@ uint64_t __98__ML3MusicLibrary_enumerateLibraryPinsPersistentIDsAfterRevision_re
   v13[3] = &unk_2787640A0;
   v14 = @"SELECT entity_pid, revision, revision_type, deleted, representative_item_pid, liked_state FROM entity_revision LEFT JOIN album ON album.album_pid=entity_revision.entity_pid WHERE revision > ? AND class = ?;";
   v15 = v10;
-  v16 = v7;
-  v11 = v7;
+  v16 = blockCopy;
+  v11 = blockCopy;
   v12 = v10;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v13];
 }
@@ -7346,11 +7346,11 @@ uint64_t __92__ML3MusicLibrary_enumerateAlbumPersistentIDsAfterRevision_revision
   return v4();
 }
 
-- (void)enumerateAlbumArtistPersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateAlbumArtistPersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code usingBlock:(id)block
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  blockCopy = block;
+  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:revision];
   v17[0] = v8;
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{+[ML3AlbumArtist revisionTrackingCode](ML3AlbumArtist, "revisionTrackingCode")}];
   v17[1] = v9;
@@ -7362,8 +7362,8 @@ uint64_t __92__ML3MusicLibrary_enumerateAlbumPersistentIDsAfterRevision_revision
   v13[3] = &unk_2787640A0;
   v14 = @"SELECT entity_pid, revision, revision_type, deleted, representative_item_pid, liked_state FROM entity_revision LEFT JOIN album_artist ON album_artist.album_artist_pid=entity_revision.entity_pid WHERE revision > ? AND class = ?;";
   v15 = v10;
-  v16 = v7;
-  v11 = v7;
+  v16 = blockCopy;
+  v11 = blockCopy;
   v12 = v10;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v13];
 }
@@ -7394,38 +7394,38 @@ uint64_t __98__ML3MusicLibrary_enumerateAlbumArtistPersistentIDsAfterRevision_re
   return v4();
 }
 
-- (void)enumeratePersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 maximumRevisionType:(int)a5 usingBlock:(id)a6
+- (void)enumeratePersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code maximumRevisionType:(int)type usingBlock:(id)block
 {
-  v6 = *&a5;
+  v6 = *&type;
   v26[1] = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  blockCopy = block;
+  if (code == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = @"SELECT entity_pid, revision, deleted, class FROM entity_revision WHERE revision > ? ";
+    revision = @"SELECT entity_pid, revision, deleted, class FROM entity_revision WHERE revision > ? ";
   }
 
   else
   {
-    v11 = [CFSTR(""SELECT entity_pid revision];
+    revision = [CFSTR(""SELECT entity_pid revision];
   }
 
   if (v6 <= 2)
   {
-    v12 = [(__CFString *)v11 stringByAppendingString:@" AND revision_type <= ? "];
+    v12 = [(__CFString *)revision stringByAppendingString:@" AND revision_type <= ? "];
 
-    v11 = v12;
+    revision = v12;
   }
 
-  v13 = [(__CFString *)v11 stringByAppendingString:@""];;
+  v13 = [(__CFString *)revision stringByAppendingString:@""];;
 
-  v14 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithLongLong:revision];
   v26[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
   v16 = [v15 mutableCopy];
 
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (code != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:code];
     [v16 addObject:v17];
   }
 
@@ -7441,8 +7441,8 @@ uint64_t __98__ML3MusicLibrary_enumerateAlbumArtistPersistentIDsAfterRevision_re
   v22[3] = &unk_2787640A0;
   v23 = v13;
   v24 = v16;
-  v25 = v10;
-  v19 = v10;
+  v25 = blockCopy;
+  v19 = blockCopy;
   v20 = v16;
   v21 = v13;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v22];
@@ -7472,49 +7472,49 @@ uint64_t __107__ML3MusicLibrary_enumeratePersistentIDsAfterRevision_revisionTrac
   return v4();
 }
 
-- (void)enumeratePersistentIDsAfterRevision:(int64_t)a3 revisionTrackingCode:(unint64_t)a4 maximumRevisionType:(int)a5 forMediaTypes:(id)a6 inUsersLibrary:(BOOL)a7 usingBlock:(id)a8
+- (void)enumeratePersistentIDsAfterRevision:(int64_t)revision revisionTrackingCode:(unint64_t)code maximumRevisionType:(int)type forMediaTypes:(id)types inUsersLibrary:(BOOL)library usingBlock:(id)block
 {
-  v9 = a7;
-  v10 = *&a5;
+  libraryCopy = library;
+  v10 = *&type;
   v45[1] = *MEMORY[0x277D85DE8];
-  v13 = a6;
-  v14 = a8;
+  typesCopy = types;
+  blockCopy = block;
   if (enumeratePersistentIDsAfterRevision_revisionTrackingCode_maximumRevisionType_forMediaTypes_inUsersLibrary_usingBlock__onceToken != -1)
   {
     dispatch_once(&enumeratePersistentIDsAfterRevision_revisionTrackingCode_maximumRevisionType_forMediaTypes_inUsersLibrary_usingBlock__onceToken, &__block_literal_global_555);
   }
 
-  v15 = [CFSTR(""SELECT entity_pid revision];
-  v16 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  revision = [CFSTR(""SELECT entity_pid revision];
+  v16 = [MEMORY[0x277CCABB0] numberWithLongLong:revision];
   v45[0] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
   v18 = [v17 mutableCopy];
 
-  if (v13)
+  if (typesCopy)
   {
-    [v15 appendString:@" LEFT OUTER JOIN item AS mediaType_item ON (mediaType_item.item_pid = entity_pid) "];
+    [revision appendString:@" LEFT OUTER JOIN item AS mediaType_item ON (mediaType_item.item_pid = entity_pid) "];
   }
 
-  [v15 appendString:@" WHERE revision > ? "];
+  [revision appendString:@" WHERE revision > ? "];
   if (v10 <= 2)
   {
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v10];
     [v18 addObject:v19];
 
-    [v15 appendString:@" AND revision_type <= ? "];
+    [revision appendString:@" AND revision_type <= ? "];
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (code == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v9)
+    if (libraryCopy)
     {
-      [v15 appendString:@" AND CASE "];
+      [revision appendString:@" AND CASE "];
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v20 = [enumeratePersistentIDsAfterRevision_revisionTrackingCode_maximumRevisionType_forMediaTypes_inUsersLibrary_usingBlock____existsInLibraryClauses allValues];
-      v21 = [v20 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      allValues = [enumeratePersistentIDsAfterRevision_revisionTrackingCode_maximumRevisionType_forMediaTypes_inUsersLibrary_usingBlock____existsInLibraryClauses allValues];
+      v21 = [allValues countByEnumeratingWithState:&v40 objects:v44 count:16];
       if (v21)
       {
         v22 = v21;
@@ -7525,13 +7525,13 @@ uint64_t __107__ML3MusicLibrary_enumeratePersistentIDsAfterRevision_revisionTrac
           {
             if (*v41 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(allValues);
             }
 
-            [v15 appendString:*(*(&v40 + 1) + 8 * i)];
+            [revision appendString:*(*(&v40 + 1) + 8 * i)];
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v40 objects:v44 count:16];
+          v22 = [allValues countByEnumeratingWithState:&v40 objects:v44 count:16];
         }
 
         while (v22);
@@ -7544,56 +7544,56 @@ uint64_t __107__ML3MusicLibrary_enumeratePersistentIDsAfterRevision_revisionTrac
 
   else
   {
-    if (!v9)
+    if (!libraryCopy)
     {
-      v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+      v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:code];
       [v18 addObject:v29];
 
       v25 = @" AND class = ? ";
 LABEL_20:
-      [v15 appendString:v25];
+      [revision appendString:v25];
       goto LABEL_21;
     }
 
     v26 = enumeratePersistentIDsAfterRevision_revisionTrackingCode_maximumRevisionType_forMediaTypes_inUsersLibrary_usingBlock____existsInLibraryClauses;
-    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:code];
     v28 = [v26 objectForKeyedSubscript:v27];
-    [v15 appendFormat:@" AND CASE %@ ELSE 0 END", v28];
+    [revision appendFormat:@" AND CASE %@ ELSE 0 END", v28];
   }
 
 LABEL_21:
-  if (v13 && [v13 count])
+  if (typesCopy && [typesCopy count])
   {
-    objc_msgSend(v15, "appendFormat:", @" AND (deleted != 0");
-    if ([v13 count])
+    objc_msgSend(revision, "appendFormat:", @" AND (deleted != 0");
+    if ([typesCopy count])
     {
       v30 = 0;
       do
       {
-        [v15 appendString:@" OR"];
-        v31 = [v13 objectAtIndex:v30];
-        [v15 appendFormat:@" ((media_type & %lu) != 0)", objc_msgSend(v31, "unsignedIntegerValue")];
+        [revision appendString:@" OR"];
+        v31 = [typesCopy objectAtIndex:v30];
+        [revision appendFormat:@" ((media_type & %lu) != 0)", objc_msgSend(v31, "unsignedIntegerValue")];
 
         ++v30;
       }
 
-      while ([v13 count] > v30);
+      while ([typesCopy count] > v30);
     }
 
-    [v15 appendString:@""]);
+    [revision appendString:@""]);
   }
 
-  [v15 appendString:@";"];
+  [revision appendString:@";"];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __136__ML3MusicLibrary_enumeratePersistentIDsAfterRevision_revisionTrackingCode_maximumRevisionType_forMediaTypes_inUsersLibrary_usingBlock___block_invoke_631;
   v36[3] = &unk_2787640A0;
-  v37 = v15;
+  v37 = revision;
   v38 = v18;
-  v39 = v14;
-  v32 = v14;
+  v39 = blockCopy;
+  v32 = blockCopy;
   v33 = v18;
-  v34 = v15;
+  v34 = revision;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v36];
 }
 
@@ -7669,18 +7669,18 @@ uint64_t __32__ML3MusicLibrary_updateSortMap__block_invoke(uint64_t a1, uint64_t
   return result;
 }
 
-- (BOOL)requiresNonSchemaUpdatesOnConnection:(id)a3
+- (BOOL)requiresNonSchemaUpdatesOnConnection:(id)connection
 {
-  v3 = a3;
-  if ([v3 databasePathExists])
+  connectionCopy = connection;
+  if ([connectionCopy databasePathExists])
   {
-    if ([v3 tableExists:@"_MLDatabaseProperties"])
+    if ([connectionCopy tableExists:@"_MLDatabaseProperties"])
     {
-      if ([ML3MusicLibrary orderingLanguageMatchesSystemUsingConnection:v3])
+      if ([ML3MusicLibrary orderingLanguageMatchesSystemUsingConnection:connectionCopy])
       {
-        v4 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v5 = GetP7BPath();
-        v6 = [v4 fileExistsAtPath:v5];
+        v6 = [defaultManager fileExistsAtPath:v5];
 
         if (v6)
         {
@@ -7697,12 +7697,12 @@ LABEL_13:
 
         else
         {
-          if ([v3 tableExists:@"sort_map"])
+          if ([connectionCopy tableExists:@"sort_map"])
           {
-            v12 = [v3 executeQuery:@"SELECT rowid FROM sort_map WHERE name='' AND name_order != 0"];
-            v13 = [v12 hasAtLeastOneRow];
+            v12 = [connectionCopy executeQuery:@"SELECT rowid FROM sort_map WHERE name='' AND name_order != 0"];
+            hasAtLeastOneRow = [v12 hasAtLeastOneRow];
 
-            if (v13)
+            if (hasAtLeastOneRow)
             {
               v7 = _ML3LogCategoryDefault();
               if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -7718,10 +7718,10 @@ LABEL_13:
           }
 
           v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT value FROM _MLDatabaseProperties WHERE key = '%@'", @"_UUID"];
-          v15 = [v3 executeQuery:v14];
-          v16 = [v15 hasAtLeastOneRow];
+          v15 = [connectionCopy executeQuery:v14];
+          hasAtLeastOneRow2 = [v15 hasAtLeastOneRow];
 
-          if (v16)
+          if (hasAtLeastOneRow2)
           {
             v10 = 0;
             goto LABEL_15;
@@ -7784,11 +7784,11 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)requiresSchemaOnlyUpdatesOnConnection:(id)a3
+- (BOOL)requiresSchemaOnlyUpdatesOnConnection:(id)connection
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([ML3MusicLibrary userVersionMatchesSystemUsingConnection:v3])
+  connectionCopy = connection;
+  if ([ML3MusicLibrary userVersionMatchesSystemUsingConnection:connectionCopy])
   {
     v19 = 0u;
     v20 = 0u;
@@ -7812,10 +7812,10 @@ LABEL_15:
 
           v9 = *(*(&v17 + 1) + 8 * i);
           v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name = '%@'", v9];;
-          v11 = [v3 executeQuery:v10];
-          v12 = [v11 int64ValueForFirstRowAndColumn];
+          v11 = [connectionCopy executeQuery:v10];
+          int64ValueForFirstRowAndColumn = [v11 int64ValueForFirstRowAndColumn];
 
-          if (!v12)
+          if (!int64ValueForFirstRowAndColumn)
           {
             v14 = os_log_create("com.apple.amp.medialibrary", "Default");
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -7862,9 +7862,9 @@ LABEL_17:
   return v13;
 }
 
-- (id)_getPlaylistContentTasteChangesSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4
+- (id)_getPlaylistContentTasteChangesSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d
 {
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
@@ -7882,9 +7882,9 @@ LABEL_17:
   v12[3] = &unk_27875D6B8;
   v14 = v16;
   v12[4] = self;
-  v8 = v6;
+  v8 = dictionary;
   v13 = v8;
-  [(ML3MusicLibrary *)self enumeratePersistentIDsAfterRevision:a3 revisionTrackingCode:v7 maximumRevisionType:3 forMediaTypes:0 inUsersLibrary:1 usingBlock:v12];
+  [(ML3MusicLibrary *)self enumeratePersistentIDsAfterRevision:revision revisionTrackingCode:v7 maximumRevisionType:3 forMediaTypes:0 inUsersLibrary:1 usingBlock:v12];
   v9 = v13;
   v10 = v8;
 
@@ -7980,14 +7980,14 @@ LABEL_12:
   }
 }
 
-- (id)getAlbumChangesSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4
+- (id)getAlbumChangesSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__2504;
   v14 = __Block_byref_object_dispose__2505;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = +[ML3Album revisionTrackingCode];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -7995,7 +7995,7 @@ LABEL_12:
   v9[3] = &unk_27875D690;
   v9[4] = self;
   v9[5] = &v10;
-  [(ML3MusicLibrary *)self enumeratePersistentIDsAfterRevision:a3 revisionTrackingCode:v6 maximumRevisionType:3 forMediaTypes:0 inUsersLibrary:1 usingBlock:v9];
+  [(ML3MusicLibrary *)self enumeratePersistentIDsAfterRevision:revision revisionTrackingCode:v6 maximumRevisionType:3 forMediaTypes:0 inUsersLibrary:1 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -8075,14 +8075,14 @@ void __61__ML3MusicLibrary_getAlbumChangesSinceRevision_withGrappaID___block_inv
   }
 }
 
-- (id)getAlbumArtistChangesSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4
+- (id)getAlbumArtistChangesSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__2504;
   v14 = __Block_byref_object_dispose__2505;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = +[ML3AlbumArtist revisionTrackingCode];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -8090,7 +8090,7 @@ void __61__ML3MusicLibrary_getAlbumChangesSinceRevision_withGrappaID___block_inv
   v9[3] = &unk_27875D690;
   v9[4] = self;
   v9[5] = &v10;
-  [(ML3MusicLibrary *)self enumeratePersistentIDsAfterRevision:a3 revisionTrackingCode:v6 maximumRevisionType:3 forMediaTypes:0 inUsersLibrary:1 usingBlock:v9];
+  [(ML3MusicLibrary *)self enumeratePersistentIDsAfterRevision:revision revisionTrackingCode:v6 maximumRevisionType:3 forMediaTypes:0 inUsersLibrary:1 usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -8170,7 +8170,7 @@ void __67__ML3MusicLibrary_getAlbumArtistChangesSinceRevision_withGrappaID___blo
   }
 }
 
-- (void)savePlaylistsSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4
+- (void)savePlaylistsSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d
 {
   v24[0] = 0;
   v24[1] = v24;
@@ -8200,14 +8200,14 @@ void __67__ML3MusicLibrary_getAlbumArtistChangesSinceRevision_withGrappaID___blo
   v13[4] = self;
   v13[5] = v24;
   v13[6] = &v19;
-  v14 = a4;
-  [(ML3MusicLibrary *)self enumeratePersistentIDsAfterRevision:a3 revisionTrackingCode:v8 maximumRevisionType:3 forMediaTypes:0 inUsersLibrary:1 usingBlock:v13];
+  dCopy = d;
+  [(ML3MusicLibrary *)self enumeratePersistentIDsAfterRevision:revision revisionTrackingCode:v8 maximumRevisionType:3 forMediaTypes:0 inUsersLibrary:1 usingBlock:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__ML3MusicLibrary_savePlaylistsSinceRevision_withGrappaID___block_invoke_523;
   v11[3] = &unk_27875D668;
   v11[4] = self;
-  v12 = a4;
+  dCopy2 = d;
   v9 = MEMORY[0x2318CDB10](v11);
   v10 = v9;
   if ((v20[3] & 1) != 0 || *(v16 + 24) == 1)
@@ -8653,14 +8653,14 @@ void __59__ML3MusicLibrary_savePlaylistsSinceRevision_withGrappaID___block_invok
   [*(a1 + 32) addObject:v6];
 }
 
-- (void)saveTrackMetadataSinceRevision:(int64_t)a3 withGrappaID:(unsigned int)a4
+- (void)saveTrackMetadataSinceRevision:(int64_t)revision withGrappaID:(unsigned int)d
 {
   v55 = *MEMORY[0x277D85DE8];
   v7 = +[ML3MusicLibrary autoupdatingSharedLibrary];
 
   if (v7 == self)
   {
-    v37 = a4;
+    dCopy = d;
     context = objc_autoreleasePoolPush();
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v9 = MEMORY[0x277CCABB0];
@@ -8671,14 +8671,14 @@ void __59__ML3MusicLibrary_savePlaylistsSinceRevision_withGrappaID___block_invok
     v39 = v8;
     [v8 setObject:v11 forKey:@"version"];
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __63__ML3MusicLibrary_saveTrackMetadataSinceRevision_withGrappaID___block_invoke;
     v46[3] = &unk_27875D5F0;
     v47 = @"SELECT item_store.sync_id, item_video.audio_track_id, item_stats.bookmark_time_ms, entity_revision.deleted, item_stats.play_count_recent, item_stats.date_played, item_stats.has_been_played, item_stats.skip_count_recent, item_stats.date_skipped, item_stats.user_rating, item_stats.liked_state, item_store.item_pid, store_saga_id, album.liked_state, item.in_my_library FROM item JOIN item_stats USING(item_pid) LEFT OUTER JOIN entity_revision ON (item.item_pid = entity_pid) JOIN item_video USING (item_pid) JOIN item_store using (item_pid) LEFT OUTER JOIN album USING (album_pid) WHERE revision > ? AND class = 0 ORDER BY entity_revision.revision DESC;";
-    v49 = a3;
-    v13 = v12;
+    revisionCopy = revision;
+    v13 = dictionary;
     v48 = v13;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v46];
     v41 = [ML3MusicLibrary pathForResourceFileOrFolder:1 basePath:0 relativeToBase:0 createParentFolderIfNecessary:0];
@@ -8686,15 +8686,15 @@ void __59__ML3MusicLibrary_savePlaylistsSinceRevision_withGrappaID___block_invok
     v15 = v14;
     if (v14)
     {
-      v16 = v14;
+      array = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
-    v17 = v16;
+    v17 = array;
 
     v44 = 0u;
     v45 = 0u;
@@ -8731,25 +8731,25 @@ void __59__ML3MusicLibrary_savePlaylistsSinceRevision_withGrappaID___block_invok
       while (v20);
     }
 
-    v26 = [(ML3MusicLibrary *)self getAlbumArtistChangesSinceRevision:a3 withGrappaID:v37];
-    v27 = [(ML3MusicLibrary *)self getAlbumChangesSinceRevision:a3 withGrappaID:v37];
-    v28 = [(ML3MusicLibrary *)self _getPlaylistContentTasteChangesSinceRevision:a3 withGrappaID:v37];
+    v26 = [(ML3MusicLibrary *)self getAlbumArtistChangesSinceRevision:revision withGrappaID:dCopy];
+    v27 = [(ML3MusicLibrary *)self getAlbumChangesSinceRevision:revision withGrappaID:dCopy];
+    v28 = [(ML3MusicLibrary *)self _getPlaylistContentTasteChangesSinceRevision:revision withGrappaID:dCopy];
     if ([v26 count])
     {
-      v29 = [v26 allValues];
-      [v39 setObject:v29 forKey:@"artists"];
+      allValues = [v26 allValues];
+      [v39 setObject:allValues forKey:@"artists"];
     }
 
     if ([v27 count])
     {
-      v30 = [v27 allValues];
-      [v39 setObject:v30 forKey:@"albums"];
+      allValues2 = [v27 allValues];
+      [v39 setObject:allValues2 forKey:@"albums"];
     }
 
     if ([v28 count])
     {
-      v31 = [v28 allValues];
-      [v39 setObject:v31 forKey:@"playlists"];
+      allValues3 = [v28 allValues];
+      [v39 setObject:allValues3 forKey:@"playlists"];
     }
 
     if ([v26 count] || objc_msgSend(v27, "count") || objc_msgSend(v28, "count"))
@@ -8763,14 +8763,14 @@ void __59__ML3MusicLibrary_savePlaylistsSinceRevision_withGrappaID___block_invok
       }
     }
 
-    v33 = [MEMORY[0x277CBEAC0] dictionary];
-    [v33 writeToFile:v41 atomically:1];
+    dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
+    [dictionary2 writeToFile:v41 atomically:1];
 
-    v34 = [v13 allValues];
-    [v39 setObject:v34 forKey:@"tracks"];
+    allValues4 = [v13 allValues];
+    [v39 setObject:allValues4 forKey:@"tracks"];
 
     v35 = [ML3MusicLibrary pathForResourceFileOrFolder:2 basePath:0 relativeToBase:0 createParentFolderIfNecessary:1];
-    if ((WriteDictionaryToPathWithGrappaID(v39, v35, v37) & 1) == 0)
+    if ((WriteDictionaryToPathWithGrappaID(v39, v35, dCopy) & 1) == 0)
     {
       v36 = os_log_create("com.apple.amp.medialibrary", "Library");
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -8894,9 +8894,9 @@ void __63__ML3MusicLibrary_saveTrackMetadataSinceRevision_withGrappaID___block_i
   if ([(ML3MusicLibrary *)self isAutoUpdatingSharedLibrary])
   {
     dispatch_assert_queue_not_V2(self->_serialQueue);
-    v4 = [(ML3MusicLibrary *)self notificationManager];
-    v3 = [objc_opt_class() assistantSyncDataChangedNotificationName];
-    [v4 enqueueDistributedNotificationNamed:v3];
+    notificationManager = [(ML3MusicLibrary *)self notificationManager];
+    assistantSyncDataChangedNotificationName = [objc_opt_class() assistantSyncDataChangedNotificationName];
+    [notificationManager enqueueDistributedNotificationNamed:assistantSyncDataChangedNotificationName];
   }
 }
 
@@ -8926,7 +8926,7 @@ CFIndex __38__ML3MusicLibrary_unknownSectionIndex__block_invoke(uint64_t a1, uin
   return result;
 }
 
-- (unint64_t)sectionIndexTitleIndexForSectionIndex:(unint64_t)a3
+- (unint64_t)sectionIndexTitleIndexForSectionIndex:(unint64_t)index
 {
   v10 = 0;
   v11 = &v10;
@@ -8939,16 +8939,16 @@ CFIndex __38__ML3MusicLibrary_unknownSectionIndex__block_invoke(uint64_t a1, uin
   v9[2] = __57__ML3MusicLibrary_sectionIndexTitleIndexForSectionIndex___block_invoke;
   v9[3] = &unk_27875D5A0;
   v9[4] = &v10;
-  v9[5] = a3;
+  v9[5] = index;
   [(ML3MusicLibrary *)self accessSortKeyBuilder:v9];
   if ([v11[5] isEqualToString:@"NUMERIC_SECTION_HEADER"])
   {
-    v4 = [(ML3MusicLibrary *)self unknownSectionIndex]- 1;
+    unknownSectionIndex = [(ML3MusicLibrary *)self unknownSectionIndex]- 1;
   }
 
   else if ([v11[5] isEqualToString:@"UNKNOWN_SECTION_HEADER"])
   {
-    v4 = [(ML3MusicLibrary *)self unknownSectionIndex];
+    unknownSectionIndex = [(ML3MusicLibrary *)self unknownSectionIndex];
   }
 
   else
@@ -8960,12 +8960,12 @@ CFIndex __38__ML3MusicLibrary_unknownSectionIndex__block_invoke(uint64_t a1, uin
     v8[2] = __57__ML3MusicLibrary_sectionIndexTitleIndexForSectionIndex___block_invoke_2;
     v8[3] = &unk_27875D5C8;
     v8[4] = &v10;
-    v4 = [v6 indexOfObjectPassingTest:v8];
+    unknownSectionIndex = [v6 indexOfObjectPassingTest:v8];
   }
 
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return unknownSectionIndex;
 }
 
 uint64_t __57__ML3MusicLibrary_sectionIndexTitleIndexForSectionIndex___block_invoke(uint64_t a1, uint64_t a2)
@@ -8975,7 +8975,7 @@ uint64_t __57__ML3MusicLibrary_sectionIndexTitleIndexForSectionIndex___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)localizedSectionHeaderForSectionIndex:(unint64_t)a3
+- (id)localizedSectionHeaderForSectionIndex:(unint64_t)index
 {
   v11 = 0;
   v12 = &v11;
@@ -8988,7 +8988,7 @@ uint64_t __57__ML3MusicLibrary_sectionIndexTitleIndexForSectionIndex___block_inv
   v10[2] = __57__ML3MusicLibrary_localizedSectionHeaderForSectionIndex___block_invoke;
   v10[3] = &unk_27875D5A0;
   v10[4] = &v11;
-  v10[5] = a3;
+  v10[5] = index;
   [(ML3MusicLibrary *)self accessSortKeyBuilder:v10];
   v3 = ML3LocalizedSectionDictionary();
   v4 = [v3 objectForKey:@"LocalizedSectionHeaders"];
@@ -9018,20 +9018,20 @@ uint64_t __57__ML3MusicLibrary_localizedSectionHeaderForSectionIndex___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)groupingKeysForStrings:(id)a3
+- (id)groupingKeysForStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__2504;
   v15 = __Block_byref_object_dispose__2505;
-  v16 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v16 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(stringsCopy, "count")}];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__ML3MusicLibrary_groupingKeysForStrings___block_invoke;
   v8[3] = &unk_27875D578;
-  v5 = v4;
+  v5 = stringsCopy;
   v9 = v5;
   v10 = &v11;
   [(ML3MusicLibrary *)self accessSortKeyBuilder:v8];
@@ -9086,10 +9086,10 @@ void __42__ML3MusicLibrary_groupingKeysForStrings___block_invoke(uint64_t a1, ui
   }
 }
 
-- (id)groupingKeyForString:(id)a3
+- (id)groupingKeyForString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v10 = 0;
     v11 = &v10;
@@ -9102,19 +9102,19 @@ void __42__ML3MusicLibrary_groupingKeysForStrings___block_invoke(uint64_t a1, ui
     v7[2] = __40__ML3MusicLibrary_groupingKeyForString___block_invoke;
     v7[3] = &unk_27875D578;
     v9 = &v10;
-    v8 = v4;
+    v8 = stringCopy;
     [(ML3MusicLibrary *)self accessSortKeyBuilder:v7];
-    v5 = v11[5];
+    data = v11[5];
 
     _Block_object_dispose(&v10, 8);
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
-  return v5;
+  return data;
 }
 
 uint64_t __40__ML3MusicLibrary_groupingKeyForString___block_invoke(uint64_t a1, uint64_t a2)
@@ -9124,12 +9124,12 @@ uint64_t __40__ML3MusicLibrary_groupingKeyForString___block_invoke(uint64_t a1, 
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)accessSortKeyBuilder:(id)a3
+- (void)accessSortKeyBuilder:(id)builder
 {
   serialQueue = self->_serialQueue;
-  v5 = a3;
+  builderCopy = builder;
   dispatch_assert_queue_not_V2(serialQueue);
-  v5[2](v5, [(ML3MusicLibrary *)self sortKeyBuilder]);
+  builderCopy[2](builderCopy, [(ML3MusicLibrary *)self sortKeyBuilder]);
 }
 
 - (id)accountCacheDatabase
@@ -9293,45 +9293,45 @@ LABEL_3:
 
 - (int)currentDatabaseVersion
 {
-  v2 = [(ML3MusicLibrary *)self databasePath];
-  v3 = [[ML3DatabaseConnection alloc] initWithDatabasePath:v2];
+  databasePath = [(ML3MusicLibrary *)self databasePath];
+  v3 = [[ML3DatabaseConnection alloc] initWithDatabasePath:databasePath];
   if ([(ML3DatabaseConnection *)v3 databasePathExists])
   {
     v4 = [(ML3DatabaseConnection *)v3 executeQuery:@"PRAGMA user_version"];
-    v5 = [v4 int64ValueForFirstRowAndColumn];
+    int64ValueForFirstRowAndColumn = [v4 int64ValueForFirstRowAndColumn];
   }
 
   else
   {
-    v5 = 0;
+    int64ValueForFirstRowAndColumn = 0;
   }
 
-  return v5;
+  return int64ValueForFirstRowAndColumn;
 }
 
 - (BOOL)isCurrentThreadInTransaction
 {
-  v2 = [(ML3MusicLibrary *)self connectionPool];
-  v3 = [v2 isCurrentThreadConnectionInTransaction];
+  connectionPool = [(ML3MusicLibrary *)self connectionPool];
+  isCurrentThreadConnectionInTransaction = [connectionPool isCurrentThreadConnectionInTransaction];
 
-  return v3;
+  return isCurrentThreadConnectionInTransaction;
 }
 
-- (void)performAsyncDatabaseWriteTransactionWithBlock:(id)a3 completionBlock:(id)a4
+- (void)performAsyncDatabaseWriteTransactionWithBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() widthLimitedSetValuesQueue];
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  widthLimitedSetValuesQueue = [objc_opt_class() widthLimitedSetValuesQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__ML3MusicLibrary_performAsyncDatabaseWriteTransactionWithBlock_completionBlock___block_invoke;
   v11[3] = &unk_27875D528;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 addOperationWithBlock:v11];
+  v12 = blockCopy;
+  v13 = completionBlockCopy;
+  v9 = completionBlockCopy;
+  v10 = blockCopy;
+  [widthLimitedSetValuesQueue addOperationWithBlock:v11];
 }
 
 void __81__ML3MusicLibrary_performAsyncDatabaseWriteTransactionWithBlock_completionBlock___block_invoke(uint64_t a1)
@@ -9357,29 +9357,29 @@ void __81__ML3MusicLibrary_performAsyncDatabaseWriteTransactionWithBlock_complet
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)performReadOnlyDatabaseTransactionWithBlock:(id)a3
+- (void)performReadOnlyDatabaseTransactionWithBlock:(id)block
 {
-  v5 = a3;
-  v4 = [(ML3MusicLibrary *)self checkoutReaderConnection];
-  [v4 pushTransactionUsingBehaviorType:3];
-  [v4 popTransactionAndCommit:{v5[2](v5, v4)}];
-  [(ML3MusicLibrary *)self checkInDatabaseConnection:v4];
+  blockCopy = block;
+  checkoutReaderConnection = [(ML3MusicLibrary *)self checkoutReaderConnection];
+  [checkoutReaderConnection pushTransactionUsingBehaviorType:3];
+  [checkoutReaderConnection popTransactionAndCommit:{blockCopy[2](blockCopy, checkoutReaderConnection)}];
+  [(ML3MusicLibrary *)self checkInDatabaseConnection:checkoutReaderConnection];
 }
 
-- (void)performDatabaseTransactionWithBlock:(id)a3
+- (void)performDatabaseTransactionWithBlock:(id)block
 {
-  v5 = a3;
-  v4 = [(ML3MusicLibrary *)self checkoutWriterConnection];
-  [v4 pushTransaction];
-  [v4 popTransactionAndCommit:{v5[2](v5, v4)}];
-  [(ML3MusicLibrary *)self checkInDatabaseConnection:v4];
+  blockCopy = block;
+  checkoutWriterConnection = [(ML3MusicLibrary *)self checkoutWriterConnection];
+  [checkoutWriterConnection pushTransaction];
+  [checkoutWriterConnection popTransactionAndCommit:{blockCopy[2](blockCopy, checkoutWriterConnection)}];
+  [(ML3MusicLibrary *)self checkInDatabaseConnection:checkoutWriterConnection];
 }
 
-- (void)databaseConnectionAllowingWrites:(BOOL)a3 withBlock:(id)a4
+- (void)databaseConnectionAllowingWrites:(BOOL)writes withBlock:(id)block
 {
-  v4 = a3;
-  v7 = a4;
-  if (v4)
+  writesCopy = writes;
+  blockCopy = block;
+  if (writesCopy)
   {
     [(ML3MusicLibrary *)self checkoutWriterConnection];
   }
@@ -9389,24 +9389,24 @@ void __81__ML3MusicLibrary_performAsyncDatabaseWriteTransactionWithBlock_complet
     [(ML3MusicLibrary *)self checkoutReaderConnection];
   }
   v6 = ;
-  v7[2](v7, v6);
+  blockCopy[2](blockCopy, v6);
   [(ML3MusicLibrary *)self checkInDatabaseConnection:v6];
 }
 
 - (void)reconnectToDatabase
 {
   dispatch_assert_queue_not_V2(self->_serialQueue);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"ML3MusicLibraryWillInvalidateDatabaseConnectionNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ML3MusicLibraryWillInvalidateDatabaseConnectionNotification" object:self];
 
-  v4 = [(ML3MusicLibrary *)self connectionPool];
-  [v4 _closeAllConnectionsAndWaitForBusyConnections:0];
+  connectionPool = [(ML3MusicLibrary *)self connectionPool];
+  [connectionPool _closeAllConnectionsAndWaitForBusyConnections:0];
 }
 
-- (void)checkInDatabaseConnection:(id)a3
+- (void)checkInDatabaseConnection:(id)connection
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_not_V2(self->_serialQueue);
   v25 = 0;
   v26 = &v25;
@@ -9429,9 +9429,9 @@ void __81__ML3MusicLibrary_performAsyncDatabaseWriteTransactionWithBlock_complet
   block[5] = &v25;
   block[6] = &v19;
   dispatch_sync(serialQueue, block);
-  if ([v26[5] ownsConnection:v4])
+  if ([v26[5] ownsConnection:connectionCopy])
   {
-    [v26[5] checkInConnection:v4];
+    [v26[5] checkInConnection:connectionCopy];
   }
 
   else
@@ -9445,7 +9445,7 @@ void __81__ML3MusicLibrary_performAsyncDatabaseWriteTransactionWithBlock_complet
     v11[1] = 3221225472;
     v11[2] = __45__ML3MusicLibrary_checkInDatabaseConnection___block_invoke_2;
     v11[3] = &unk_27875D4D8;
-    v7 = v4;
+    v7 = connectionCopy;
     v12 = v7;
     v13 = &v14;
     [v6 enumerateObjectsUsingBlock:v11];
@@ -9497,17 +9497,17 @@ void __45__ML3MusicLibrary_checkInDatabaseConnection___block_invoke_2(uint64_t a
   }
 }
 
-- (void)connectionDidClose:(id)a3
+- (void)connectionDidClose:(id)close
 {
-  v4 = a3;
+  closeCopy = close;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ML3MusicLibrary_connectionDidClose___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = closeCopy;
+  v6 = closeCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -9578,15 +9578,15 @@ void __38__ML3MusicLibrary_connectionDidClose___block_invoke_218(uint64_t a1, vo
   }
 }
 
-- (void)connectionDidAccessDatabase:(id)a3
+- (void)connectionDidAccessDatabase:(id)database
 {
-  v6 = a3;
-  v4 = [v6 privacyContext];
+  databaseCopy = database;
+  privacyContext = [databaseCopy privacyContext];
 
-  if (v4)
+  if (privacyContext)
   {
-    v5 = [v6 privacyContext];
-    [v5 logDatabasePrivacyAccess];
+    privacyContext2 = [databaseCopy privacyContext];
+    [privacyContext2 logDatabasePrivacyAccess];
   }
 
   else
@@ -9595,61 +9595,61 @@ void __38__ML3MusicLibrary_connectionDidClose___block_invoke_218(uint64_t a1, vo
   }
 }
 
-- (void)connection:(id)a3 didEndDatabaseTransactionAndCommit:(BOOL)a4
+- (void)connection:(id)connection didEndDatabaseTransactionAndCommit:(BOOL)commit
 {
-  v4 = a4;
-  v7 = a3;
+  commitCopy = commit;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (commitCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained library:self didCommitDatabaseTransactionWithConnection:v7];
+    [WeakRetained library:self didCommitDatabaseTransactionWithConnection:connectionCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [WeakRetained library:self didRollbackDatabaseTransactionWithConnection:v7];
+    [WeakRetained library:self didRollbackDatabaseTransactionWithConnection:connectionCopy];
   }
 }
 
-- (void)connectionDidBeginDatabaseTransaction:(id)a3
+- (void)connectionDidBeginDatabaseTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained library:self didBeginDatabaseTransactionWithConnection:v5];
+    [WeakRetained library:self didBeginDatabaseTransactionWithConnection:transactionCopy];
   }
 }
 
-- (void)connectionWillCloseDatabase:(id)a3
+- (void)connectionWillCloseDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   if ([(ML3MusicLibrary *)self _canConfigureMediaLibraryDatabaseConnection:?])
   {
-    [(ML3MusicLibrary *)self _teardownMediaLibraryDatabaseConnection:v4];
+    [(ML3MusicLibrary *)self _teardownMediaLibraryDatabaseConnection:databaseCopy];
   }
 }
 
-- (void)connectionDidOpenDatabase:(id)a3
+- (void)connectionDidOpenDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   if ([(ML3MusicLibrary *)self _canConfigureMediaLibraryDatabaseConnection:?])
   {
-    [(ML3MusicLibrary *)self _configureMediaLibraryDatabaseConnection:v4];
+    [(ML3MusicLibrary *)self _configureMediaLibraryDatabaseConnection:databaseCopy];
   }
 }
 
-- (void)connectionWillOpenDatabase:(id)a3
+- (void)connectionWillOpenDatabase:(id)database
 {
-  v9 = a3;
+  databaseCopy = database;
   if (MSVDeviceOSIsInternalInstall())
   {
     if (!__daemonProcessInfo)
     {
       v4 = +[ML3TerminationCoordinator sharedCoordinator];
-      v5 = [v4 isSigned];
+      isSigned = [v4 isSigned];
 
-      if ((v5 & 1) == 0)
+      if ((isSigned & 1) == 0)
       {
         v6 = +[ML3TerminationCoordinator sharedCoordinator];
         [v6 signForReason:1];
@@ -9662,20 +9662,20 @@ void __38__ML3MusicLibrary_connectionDidClose___block_invoke_218(uint64_t a1, vo
     [(ML3MusicLibrary *)self validateDatabase];
   }
 
-  v7 = [v9 privacyContext];
+  privacyContext = [databaseCopy privacyContext];
 
-  if (!v7)
+  if (!privacyContext)
   {
-    v8 = [(ML3MusicLibrary *)self privacyContext];
-    [v9 setPrivacyContext:v8];
+    privacyContext2 = [(ML3MusicLibrary *)self privacyContext];
+    [databaseCopy setPrivacyContext:privacyContext2];
   }
 }
 
-- (void)setClientIdentity:(id)a3
+- (void)setClientIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&__privacyContextLock);
-  v5 = [[ML3DatabasePrivacyContext alloc] initWithClientIdentity:v4];
+  v5 = [[ML3DatabasePrivacyContext alloc] initWithClientIdentity:identityCopy];
 
   privacyContext = self->_privacyContext;
   self->_privacyContext = v5;
@@ -9683,7 +9683,7 @@ void __38__ML3MusicLibrary_connectionDidClose___block_invoke_218(uint64_t a1, vo
   os_unfair_lock_unlock(&__privacyContextLock);
 }
 
-- (id)libraryEntityFilterPredicatesForContainerClass:(Class)a3
+- (id)libraryEntityFilterPredicatesForContainerClass:(Class)class
 {
   v7 = 0;
   v8 = &v7;
@@ -9698,7 +9698,7 @@ void __38__ML3MusicLibrary_connectionDidClose___block_invoke_218(uint64_t a1, vo
   block[3] = &unk_27875D4B0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = class;
   dispatch_sync(serialQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -9725,7 +9725,7 @@ void __66__ML3MusicLibrary_libraryEntityFilterPredicatesForContainerClass___bloc
   }
 }
 
-- (id)libraryEntityFilterPredicatesForEntityClass:(Class)a3
+- (id)libraryEntityFilterPredicatesForEntityClass:(Class)class
 {
   v7 = 0;
   v8 = &v7;
@@ -9740,7 +9740,7 @@ void __66__ML3MusicLibrary_libraryEntityFilterPredicatesForContainerClass___bloc
   block[3] = &unk_27875D4B0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = class;
   dispatch_sync(serialQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -9767,17 +9767,17 @@ void __63__ML3MusicLibrary_libraryEntityFilterPredicatesForEntityClass___block_i
   }
 }
 
-- (void)setLibraryPublicContainerFilterPredicates:(id)a3
+- (void)setLibraryPublicContainerFilterPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__ML3MusicLibrary_setLibraryPublicContainerFilterPredicates___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = predicatesCopy;
+  v6 = predicatesCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -9802,17 +9802,17 @@ void __61__ML3MusicLibrary_setLibraryPublicContainerFilterPredicates___block_inv
   }
 }
 
-- (void)setLibraryPublicEntityFilterPredicates:(id)a3
+- (void)setLibraryPublicEntityFilterPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__ML3MusicLibrary_setLibraryPublicEntityFilterPredicates___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = predicatesCopy;
+  v6 = predicatesCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -9837,17 +9837,17 @@ void __58__ML3MusicLibrary_setLibraryPublicEntityFilterPredicates___block_invoke
   }
 }
 
-- (void)setLibraryContainerFilterPredicates:(id)a3
+- (void)setLibraryContainerFilterPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ML3MusicLibrary_setLibraryContainerFilterPredicates___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = predicatesCopy;
+  v6 = predicatesCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -9872,17 +9872,17 @@ void __55__ML3MusicLibrary_setLibraryContainerFilterPredicates___block_invoke(ui
   }
 }
 
-- (void)setLibraryEntityFilterPredicates:(id)a3
+- (void)setLibraryEntityFilterPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__ML3MusicLibrary_setLibraryEntityFilterPredicates___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = predicatesCopy;
+  v6 = predicatesCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -9922,8 +9922,8 @@ void __52__ML3MusicLibrary_setLibraryEntityFilterPredicates___block_invoke(uint6
     goto LABEL_7;
   }
 
-  v5 = [(ML3MusicLibrary *)self databaseInfo];
-  v3 = [v5 valueForProperty:@"subtitle_language"];
+  databaseInfo = [(ML3MusicLibrary *)self databaseInfo];
+  v3 = [databaseInfo valueForProperty:@"subtitle_language"];
 
   [(ML3MusicLibrary *)self _logDatabaseAccess];
   if (v3)
@@ -9955,8 +9955,8 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v5 = [(ML3MusicLibrary *)self databaseInfo];
-  v3 = [v5 valueForProperty:@"audio_language"];
+  databaseInfo = [(ML3MusicLibrary *)self databaseInfo];
+  v3 = [databaseInfo valueForProperty:@"audio_language"];
 
   [(ML3MusicLibrary *)self _logDatabaseAccess];
   if (v3)
@@ -10096,14 +10096,14 @@ void __33__ML3MusicLibrary_isLibraryEmpty__block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 32) + 8) + 24) = ((v5 | v3) & 1) == 0;
 }
 
-- (void)setLibraryUID:(id)a3
+- (void)setLibraryUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSLock *)self->_libraryUIDLock lock];
   libraryUID = self->_libraryUID;
-  if (libraryUID && ![(NSString *)libraryUID isEqualToString:v4])
+  if (libraryUID && ![(NSString *)libraryUID isEqualToString:dCopy])
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     v7 = self->_libraryUID;
     self->_libraryUID = v6;
 
@@ -10114,7 +10114,7 @@ void __33__ML3MusicLibrary_isLibraryEmpty__block_invoke(uint64_t a1, void *a2)
     v9[2] = __33__ML3MusicLibrary_setLibraryUID___block_invoke;
     v9[3] = &unk_2787660F0;
     v9[4] = self;
-    v10 = v4;
+    v10 = dCopy;
     dispatch_async(v8, v9);
   }
 
@@ -10188,37 +10188,37 @@ uint64_t __32__ML3MusicLibrary_syncLibraryID__block_invoke_3(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setSyncLibraryID:(id)a3
+- (void)setSyncLibraryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   serialQueue = self->_serialQueue;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __36__ML3MusicLibrary_setSyncLibraryID___block_invoke;
   v10 = &unk_2787660F0;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = dCopy;
+  v6 = dCopy;
   dispatch_sync(serialQueue, &v7);
-  [(ML3MusicLibrary *)self setValue:v6 forDatabaseProperty:@"MLSyncLibraryID", v7, v8, v9, v10, v11];
+  [(ML3MusicLibrary *)self setValue:v6 forDatabaseProperty:@"MLSyncLibraryID", v7, v8, v9, v10, selfCopy];
 }
 
 - (int64_t)syncGenerationID
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLSyncClientGenerationID"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
-- (void)setSyncGenerationID:(int64_t)a3
+- (void)setSyncGenerationID:(int64_t)d
 {
   dispatch_assert_queue_not_V2(self->_serialQueue);
-  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   [(ML3MusicLibrary *)self setValue:v5 forDatabaseProperty:@"MLSyncClientGenerationID"];
 
-  v6 = [(ML3MusicLibrary *)self notificationManager];
-  [v6 enqueueDistributedNotificationNamed:@"com.apple.mobileipod.syncgenerationchanged"];
+  notificationManager = [(ML3MusicLibrary *)self notificationManager];
+  [notificationManager enqueueDistributedNotificationNamed:@"com.apple.mobileipod.syncgenerationchanged"];
 }
 
 - (BOOL)downloadOnAddToLibrary
@@ -10227,15 +10227,15 @@ uint64_t __32__ML3MusicLibrary_syncLibraryID__block_invoke_3(uint64_t a1)
   if (MSVDeviceSupportsSideLoadedMediaContent())
   {
     v2 = +[ML3AccountStore defaultStore];
-    v3 = [v2 activeAccount];
+    activeAccount = [v2 activeAccount];
 
-    if (v3)
+    if (activeAccount)
     {
       objc_opt_class();
-      v4 = [v3 ams_automaticDownloadKinds];
-      if ([v4 containsObject:@"song"])
+      ams_automaticDownloadKinds = [activeAccount ams_automaticDownloadKinds];
+      if ([ams_automaticDownloadKinds containsObject:@"song"])
       {
-        v5 = [v4 containsObject:@"music-video"];
+        v5 = [ams_automaticDownloadKinds containsObject:@"music-video"];
       }
 
       else
@@ -10249,18 +10249,18 @@ uint64_t __32__ML3MusicLibrary_syncLibraryID__block_invoke_3(uint64_t a1)
         v8[0] = 67109378;
         v8[1] = v5;
         v9 = 2114;
-        v10 = v4;
+        v10 = ams_automaticDownloadKinds;
         _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "Automatic Downloads are %{BOOL}u. enabledKinds=%{public}@", v8, 0x12u);
       }
     }
 
     else
     {
-      v4 = os_log_create("com.apple.amp.medialibrary", "Default");
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+      ams_automaticDownloadKinds = os_log_create("com.apple.amp.medialibrary", "Default");
+      if (os_log_type_enabled(ams_automaticDownloadKinds, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v8[0]) = 0;
-        _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_DEFAULT, "Could not get active account. Treating automatic Downloads as disabled", v8, 2u);
+        _os_log_impl(&dword_22D2FA000, ams_automaticDownloadKinds, OS_LOG_TYPE_DEFAULT, "Could not get active account. Treating automatic Downloads as disabled", v8, 2u);
       }
 
       LOBYTE(v5) = 0;
@@ -10275,18 +10275,18 @@ uint64_t __32__ML3MusicLibrary_syncLibraryID__block_invoke_3(uint64_t a1)
   return v5;
 }
 
-- (void)setIsHomeSharingLibrary:(BOOL)a3
+- (void)setIsHomeSharingLibrary:(BOOL)library
 {
-  v3 = a3;
+  libraryCopy = library;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ML3MusicLibrary_setIsHomeSharingLibrary___block_invoke;
   v7[3] = &unk_278765E08;
   v7[4] = self;
-  v8 = a3;
+  libraryCopy2 = library;
   dispatch_sync(serialQueue, v7);
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:libraryCopy];
   [(ML3MusicLibrary *)self setValue:v6 forDatabaseProperty:@"MLIsHomeSharingLibrary"];
 }
 
@@ -10299,8 +10299,8 @@ uint64_t __43__ML3MusicLibrary_setIsHomeSharingLibrary___block_invoke(uint64_t r
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
   iPhoneSortKeyBuilderRelease(self->_sortKeyBuilder);
   self->_sortKeyBuilder = 0;
   accountCacheDatabase = self->_accountCacheDatabase;
@@ -10311,28 +10311,28 @@ uint64_t __43__ML3MusicLibrary_setIsHomeSharingLibrary___block_invoke(uint64_t r
   [(ML3MusicLibrary *)&v5 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   dispatch_assert_queue_not_V2(self->_serialQueue);
-  [v5 encodeBool:-[ML3MusicLibrary isAutoUpdatingSharedLibrary](self forKey:{"isAutoUpdatingSharedLibrary"), @"isAutoupdatingSharedLibraryKey"}];
+  [coderCopy encodeBool:-[ML3MusicLibrary isAutoUpdatingSharedLibrary](self forKey:{"isAutoUpdatingSharedLibrary"), @"isAutoupdatingSharedLibraryKey"}];
   if (![(ML3MusicLibrary *)self isAutoUpdatingSharedLibrary])
   {
-    v4 = [(ML3MusicLibrary *)self resourcesManager];
-    [v5 encodeObject:v4 forKey:@"resourceManagerKey"];
+    resourcesManager = [(ML3MusicLibrary *)self resourcesManager];
+    [coderCopy encodeObject:resourcesManager forKey:@"resourceManagerKey"];
   }
 }
 
-- (ML3MusicLibrary)initWithCoder:(id)a3
+- (ML3MusicLibrary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__2504;
   v20 = __Block_byref_object_dispose__2505;
   v21 = 0;
-  if ([v4 decodeBoolForKey:@"isAutoupdatingSharedLibraryKey"])
+  if ([coderCopy decodeBoolForKey:@"isAutoupdatingSharedLibraryKey"])
   {
     v5 = +[ML3MusicLibrary autoupdatingSharedLibrary];
     v6 = 0;
@@ -10342,7 +10342,7 @@ uint64_t __43__ML3MusicLibrary_setIsHomeSharingLibrary___block_invoke(uint64_t r
 
   else
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resourceManagerKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resourceManagerKey"];
     v9 = +[ML3MusicLibrary globalSerialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -10370,38 +10370,38 @@ uint64_t __33__ML3MusicLibrary_initWithCoder___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (ML3MusicLibrary)initWithClientIdentity:(id)a3 path:(id)a4 readOnly:(BOOL)a5 populateUnitTestTablesBlock:(id)a6
+- (ML3MusicLibrary)initWithClientIdentity:(id)identity path:(id)path readOnly:(BOOL)only populateUnitTestTablesBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identityCopy = identity;
+  pathCopy = path;
+  blockCopy = block;
   v37.receiver = self;
   v37.super_class = ML3MusicLibrary;
   v13 = [(ML3MusicLibrary *)&v37 init];
   v14 = v13;
   if (v13)
   {
-    v13->_readOnly = a5;
-    if (v11)
+    v13->_readOnly = only;
+    if (pathCopy)
     {
-      v15 = [v11 msv_stringByResolvingRealPath];
+      msv_stringByResolvingRealPath = [pathCopy msv_stringByResolvingRealPath];
     }
 
     else
     {
-      v15 = 0;
+      msv_stringByResolvingRealPath = 0;
     }
 
     databasePath = v14->_databasePath;
-    v14->_databasePath = v15;
+    v14->_databasePath = msv_stringByResolvingRealPath;
 
     v17 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     libraryUIDLock = v14->_libraryUIDLock;
     v14->_libraryUIDLock = v17;
 
     v19 = [ML3DatabasePrivacyContext alloc];
-    v20 = v10;
-    if (!v10)
+    v20 = identityCopy;
+    if (!identityCopy)
     {
       v20 = MSVTCCIdentityForCurrentProcess();
     }
@@ -10410,7 +10410,7 @@ uint64_t __33__ML3MusicLibrary_initWithCoder___block_invoke(void *a1)
     privacyContext = v14->_privacyContext;
     v14->_privacyContext = v21;
 
-    if (!v10)
+    if (!identityCopy)
     {
     }
 
@@ -10423,24 +10423,24 @@ uint64_t __33__ML3MusicLibrary_initWithCoder___block_invoke(void *a1)
     v14->_serialQueue = v25;
 
     [(ML3MusicLibrary *)v14 _setupNotificationManager];
-    if (v12 && !a5)
+    if (blockCopy && !only)
     {
       v31 = MEMORY[0x277D85DD0];
       v32 = 3221225472;
       v33 = __84__ML3MusicLibrary_initWithClientIdentity_path_readOnly_populateUnitTestTablesBlock___block_invoke;
       v34 = &unk_27875D440;
-      v36 = v12;
+      v36 = blockCopy;
       v35 = v14;
       [(ML3MusicLibrary *)v35 databaseConnectionAllowingWrites:1 withBlock:&v31];
     }
 
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v14 selector:sel__effectiveSettingsDidChangeNotification_ name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__effectiveSettingsDidChangeNotification_ name:*MEMORY[0x277D25CA0] object:0];
     if (!__daemonProcessInfo)
     {
-      [v27 addObserver:v14 selector:sel__libraryPathDidChangeNotification_ name:@"MLUserDatabasePathDidChangeNotification" object:0];
-      v28 = [v27 addObserverForName:*MEMORY[0x277CBE620] object:0 queue:0 usingBlock:&__block_literal_global_126];
-      v29 = [v27 addObserverForName:@"SBFinishedLanguageChangeStartup" object:0 queue:0 usingBlock:&__block_literal_global_132];
+      [defaultCenter addObserver:v14 selector:sel__libraryPathDidChangeNotification_ name:@"MLUserDatabasePathDidChangeNotification" object:0];
+      v28 = [defaultCenter addObserverForName:*MEMORY[0x277CBE620] object:0 queue:0 usingBlock:&__block_literal_global_126];
+      v29 = [defaultCenter addObserverForName:@"SBFinishedLanguageChangeStartup" object:0 queue:0 usingBlock:&__block_literal_global_132];
     }
 
     ML3RestrictionInfoInitializeIfNecessary();
@@ -10472,64 +10472,64 @@ void __84__ML3MusicLibrary_initWithClientIdentity_path_readOnly_populateUnitTest
   [v0 invalidateCachedResources];
 }
 
-- (ML3MusicLibrary)initWithPath:(id)a3 readOnly:(BOOL)a4 populateUnitTestTablesBlock:(id)a5
+- (ML3MusicLibrary)initWithPath:(id)path readOnly:(BOOL)only populateUnitTestTablesBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  onlyCopy = only;
+  blockCopy = block;
+  pathCopy = path;
   v10 = MSVTCCIdentityForCurrentProcess();
-  v11 = [(ML3MusicLibrary *)self initWithClientIdentity:v10 path:v9 readOnly:v5 populateUnitTestTablesBlock:v8];
+  v11 = [(ML3MusicLibrary *)self initWithClientIdentity:v10 path:pathCopy readOnly:onlyCopy populateUnitTestTablesBlock:blockCopy];
 
   return v11;
 }
 
-- (ML3MusicLibrary)initWithResourcesManager:(id)a3
+- (ML3MusicLibrary)initWithResourcesManager:(id)manager
 {
-  v5 = a3;
-  v6 = [v5 pathForResourceFileOrFolder:15];
+  managerCopy = manager;
+  v6 = [managerCopy pathForResourceFileOrFolder:15];
   v7 = [(ML3MusicLibrary *)self initWithPath:v6];
   v8 = v7;
   if (v7)
   {
     v7->_autoUpdatingSharedLibrary = 0;
-    objc_storeStrong(&v7->_resourcesManager, a3);
-    v9 = [v5 context];
-    v10 = [v9 accountInfo];
-    v11 = [v10 accountDSID];
+    objc_storeStrong(&v7->_resourcesManager, manager);
+    context = [managerCopy context];
+    accountInfo = [context accountInfo];
+    accountDSID = [accountInfo accountDSID];
     accountDSID = v8->_accountDSID;
-    v8->_accountDSID = v11;
+    v8->_accountDSID = accountDSID;
   }
 
   return v8;
 }
 
-- (ML3MusicLibrary)initWithClientIdentity:(id)a3 forUserAccount:(id)a4
+- (ML3MusicLibrary)initWithClientIdentity:(id)identity forUserAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  accountCopy = account;
   v8 = +[ML3MusicLibrary deviceSupportsMultipleLibraries];
-  if (v7 && v8 && ([v7 accountDSID], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  if (accountCopy && v8 && ([accountCopy accountDSID], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [ML3MusicLibraryResourcesManagerContext contextForSingleUserLibraryWithAccountInfo:v7];
+    v10 = [ML3MusicLibraryResourcesManagerContext contextForSingleUserLibraryWithAccountInfo:accountCopy];
     v11 = [[ML3MusicLibraryResourcesManager alloc] initWithContext:v10];
     v12 = [(ML3MusicLibraryResourcesManager *)v11 pathForResourceFileOrFolder:15];
-    v13 = [(ML3MusicLibrary *)self initWithClientIdentity:v6 path:v12 readOnly:0 populateUnitTestTablesBlock:0];
+    v13 = [(ML3MusicLibrary *)self initWithClientIdentity:identityCopy path:v12 readOnly:0 populateUnitTestTablesBlock:0];
     v14 = v13;
     if (v13)
     {
       v13->_autoUpdatingSharedLibrary = 0;
       objc_storeStrong(&v13->_resourcesManager, v11);
-      v15 = [(ML3MusicLibraryResourcesManager *)v11 context];
-      v16 = [v15 accountInfo];
-      v17 = [v16 accountDSID];
+      context = [(ML3MusicLibraryResourcesManager *)v11 context];
+      accountInfo = [context accountInfo];
+      accountDSID = [accountInfo accountDSID];
       accountDSID = v14->_accountDSID;
-      v14->_accountDSID = v17;
+      v14->_accountDSID = accountDSID;
     }
   }
 
   else
   {
-    v14 = [(ML3MusicLibrary *)self initWithClientIdentity:v6 path:0 readOnly:0 populateUnitTestTablesBlock:0];
+    v14 = [(ML3MusicLibrary *)self initWithClientIdentity:identityCopy path:0 readOnly:0 populateUnitTestTablesBlock:0];
   }
 
   return v14;
@@ -10592,15 +10592,15 @@ uint64_t __45__ML3MusicLibrary_widthLimitedSetValuesQueue__block_invoke()
   }
 }
 
-+ (void)enumerateSortMapTablesUsingBlock:(id)a3
++ (void)enumerateSortMapTablesUsingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__ML3MusicLibrary_enumerateSortMapTablesUsingBlock___block_invoke;
   block[3] = &__block_descriptor_48_e5_v8__0l;
   block[4] = a2;
-  block[5] = a1;
+  block[5] = self;
   if (enumerateSortMapTablesUsingBlock____once != -1)
   {
     dispatch_once(&enumerateSortMapTablesUsingBlock____once, block);
@@ -10611,8 +10611,8 @@ uint64_t __45__ML3MusicLibrary_widthLimitedSetValuesQueue__block_invoke()
   v8[1] = 3221225472;
   v8[2] = __52__ML3MusicLibrary_enumerateSortMapTablesUsingBlock___block_invoke_2;
   v8[3] = &unk_27875D728;
-  v9 = v5;
-  v7 = v5;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [v6 enumerateKeysAndObjectsUsingBlock:v8];
 }
 
@@ -10666,17 +10666,17 @@ void __52__ML3MusicLibrary_enumerateSortMapTablesUsingBlock___block_invoke_3(uin
   (*(v8 + 16))(v8, v7, v5, v10, v6);
 }
 
-+ (id)sectionIndexTitleForSectionHeader:(id)a3
++ (id)sectionIndexTitleForSectionHeader:(id)header
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  headerCopy = header;
   v5 = sectionIndexTitleForSectionHeader__sectionHeaderToSectionIndex;
   if (!sectionIndexTitleForSectionHeader__sectionHeaderToSectionIndex)
   {
-    v36 = v4;
+    v36 = headerCopy;
     context = objc_autoreleasePoolPush();
-    v37 = [a1 sectionIndexTitles];
-    v6 = [MEMORY[0x277CBEB18] array];
+    sectionIndexTitles = [self sectionIndexTitles];
+    array = [MEMORY[0x277CBEB18] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -10718,7 +10718,7 @@ void __52__ML3MusicLibrary_enumerateSortMapTablesUsingBlock___block_invoke_3(uin
                   objc_enumerationMutation(v14);
                 }
 
-                [v6 addObject:*(*(&v38 + 1) + 8 * j)];
+                [array addObject:*(*(&v38 + 1) + 8 * j)];
               }
 
               v16 = [v14 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -10738,8 +10738,8 @@ void __52__ML3MusicLibrary_enumerateSortMapTablesUsingBlock___block_invoke_3(uin
     v20 = sectionIndexTitleForSectionHeader__sectionHeaderToSectionIndex;
     sectionIndexTitleForSectionHeader__sectionHeaderToSectionIndex = v19;
 
-    v21 = v37;
-    if ([v37 count])
+    v21 = sectionIndexTitles;
+    if ([sectionIndexTitles count])
     {
       v22 = 0;
       v23 = 0;
@@ -10765,11 +10765,11 @@ void __52__ML3MusicLibrary_enumerateSortMapTablesUsingBlock___block_invoke_3(uin
 
           v28 = v26;
 LABEL_24:
-          if (v22 < [v6 count])
+          if (v22 < [array count])
           {
             while (1)
             {
-              v29 = [v6 objectAtIndex:v22];
+              v29 = [array objectAtIndex:v22];
               if ([v28 isEqualToString:v29])
               {
                 break;
@@ -10777,7 +10777,7 @@ LABEL_24:
 
               [sectionIndexTitleForSectionHeader__sectionHeaderToSectionIndex setObject:v25 forKey:v29];
 
-              if (++v22 >= [v6 count])
+              if (++v22 >= [array count])
               {
                 goto LABEL_29;
               }
@@ -10786,7 +10786,7 @@ LABEL_24:
 
 LABEL_29:
 
-          v21 = v37;
+          v21 = sectionIndexTitles;
         }
 
         ++v23;
@@ -10798,10 +10798,10 @@ LABEL_29:
 
     objc_autoreleasePoolPop(context);
     v5 = sectionIndexTitleForSectionHeader__sectionHeaderToSectionIndex;
-    v4 = v36;
+    headerCopy = v36;
   }
 
-  v30 = [v5 objectForKey:v4];
+  v30 = [v5 objectForKey:headerCopy];
   v31 = v30;
   if (v30)
   {
@@ -10828,13 +10828,13 @@ LABEL_29:
   return v6;
 }
 
-+ (id)localizedSectionIndexTitleForSectionHeader:(id)a3
++ (id)localizedSectionIndexTitleForSectionHeader:(id)header
 {
-  v3 = a3;
+  headerCopy = header;
   v4 = ML3LocalizedSectionDictionary();
   v5 = [v4 objectForKey:@"LocalizedSectionIndices"];
 
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:headerCopy];
   v7 = v6;
   if (v6)
   {
@@ -10843,7 +10843,7 @@ LABEL_29:
 
   else
   {
-    v8 = v3;
+    v8 = headerCopy;
   }
 
   v9 = v8;
@@ -10851,13 +10851,13 @@ LABEL_29:
   return v8;
 }
 
-+ (id)localizedSectionHeaderForSectionHeader:(id)a3
++ (id)localizedSectionHeaderForSectionHeader:(id)header
 {
-  v3 = a3;
+  headerCopy = header;
   v4 = ML3LocalizedSectionDictionary();
   v5 = [v4 objectForKey:@"LocalizedSectionHeaders"];
 
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:headerCopy];
   v7 = v6;
   if (v6)
   {
@@ -10866,7 +10866,7 @@ LABEL_29:
 
   else
   {
-    v8 = v3;
+    v8 = headerCopy;
   }
 
   v9 = v8;
@@ -10874,12 +10874,12 @@ LABEL_29:
   return v8;
 }
 
-+ (void)setGlobalPrivacyContextWithAuditToken:(id *)a3
++ (void)setGlobalPrivacyContextWithAuditToken:(id *)token
 {
   os_unfair_lock_lock(&__privacyContextLock);
   v4 = [ML3DatabasePrivacyContext alloc];
-  v5 = *&a3->var0[4];
-  v8[0] = *a3->var0;
+  v5 = *&token->var0[4];
+  v8[0] = *token->var0;
   v8[1] = v5;
   v6 = [(ML3DatabasePrivacyContext *)v4 initWithAuditToken:v8];
   v7 = __privacyContextOverride;
@@ -10907,17 +10907,17 @@ uint64_t __42__ML3MusicLibrary_musicLibraryPerUserDSID__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)setAutoupdatingSharedLibraryPath:(id)a3
++ (void)setAutoupdatingSharedLibraryPath:(id)path
 {
-  v4 = a3;
-  v5 = [a1 globalSerialQueue];
+  pathCopy = path;
+  globalSerialQueue = [self globalSerialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__ML3MusicLibrary_setAutoupdatingSharedLibraryPath___block_invoke;
   block[3] = &unk_278765FB8;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = pathCopy;
+  v6 = pathCopy;
+  dispatch_sync(globalSerialQueue, block);
 }
 
 uint64_t __52__ML3MusicLibrary_setAutoupdatingSharedLibraryPath___block_invoke(uint64_t a1)
@@ -10938,14 +10938,14 @@ uint64_t __52__ML3MusicLibrary_setAutoupdatingSharedLibraryPath___block_invoke(u
     v11 = __Block_byref_object_copy__2504;
     v12 = __Block_byref_object_dispose__2505;
     v13 = 0;
-    v3 = [a1 globalSerialQueue];
+    globalSerialQueue = [self globalSerialQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__ML3MusicLibrary_registeredLibraries__block_invoke;
     v7[3] = &unk_27875D418;
     v7[4] = &v8;
-    v7[5] = a1;
-    dispatch_sync(v3, v7);
+    v7[5] = self;
+    dispatch_sync(globalSerialQueue, v7);
 
     v4 = v9[5];
     _Block_object_dispose(&v8, 8);
@@ -10953,8 +10953,8 @@ uint64_t __52__ML3MusicLibrary_setAutoupdatingSharedLibraryPath___block_invoke(u
 
   else
   {
-    v5 = [a1 autoupdatingSharedLibrary];
-    v14[0] = v5;
+    autoupdatingSharedLibrary = [self autoupdatingSharedLibrary];
+    v14[0] = autoupdatingSharedLibrary;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   }
 
@@ -10970,13 +10970,13 @@ void __38__ML3MusicLibrary_registeredLibraries__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-+ (id)musicLibraryForUserAccount:(id)a3
++ (id)musicLibraryForUserAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 accountDSID];
+  accountCopy = account;
+  accountDSID = [accountCopy accountDSID];
   if (+[ML3MusicLibrary deviceSupportsMultipleLibraries])
   {
-    v6 = v5 == 0;
+    v6 = accountDSID == 0;
   }
 
   else
@@ -10986,7 +10986,7 @@ void __38__ML3MusicLibrary_registeredLibraries__block_invoke(uint64_t a1)
 
   if (v6)
   {
-    v8 = [a1 autoupdatingSharedLibrary];
+    autoupdatingSharedLibrary = [self autoupdatingSharedLibrary];
   }
 
   else
@@ -10997,22 +10997,22 @@ void __38__ML3MusicLibrary_registeredLibraries__block_invoke(uint64_t a1)
     v18 = __Block_byref_object_copy__2504;
     v19 = __Block_byref_object_dispose__2505;
     v20 = 0;
-    v7 = [a1 globalSerialQueue];
+    globalSerialQueue = [self globalSerialQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __46__ML3MusicLibrary_musicLibraryForUserAccount___block_invoke;
     v10[3] = &unk_278765C68;
     v13 = &v15;
-    v14 = a1;
-    v11 = v5;
-    v12 = v4;
-    dispatch_sync(v7, v10);
+    selfCopy = self;
+    v11 = accountDSID;
+    v12 = accountCopy;
+    dispatch_sync(globalSerialQueue, v10);
 
-    v8 = v16[5];
+    autoupdatingSharedLibrary = v16[5];
     _Block_object_dispose(&v15, 8);
   }
 
-  return v8;
+  return autoupdatingSharedLibrary;
 }
 
 void __46__ML3MusicLibrary_musicLibraryForUserAccount___block_invoke(uint64_t a1)
@@ -11038,17 +11038,17 @@ void __46__ML3MusicLibrary_musicLibraryForUserAccount___block_invoke(uint64_t a1
   }
 }
 
-+ (id)_onGlobalQueue_shareableMusicLibraryWithResourcesManager:(id)a3 libraryFilePath:(id)a4
++ (id)_onGlobalQueue_shareableMusicLibraryWithResourcesManager:(id)manager libraryFilePath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a1 globalSerialQueue];
-  dispatch_assert_queue_V2(v9);
+  managerCopy = manager;
+  pathCopy = path;
+  globalSerialQueue = [self globalSerialQueue];
+  dispatch_assert_queue_V2(globalSerialQueue);
 
-  if (!v7 && ![v8 length])
+  if (!managerCopy && ![pathCopy length])
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"ML3MusicLibrary.m" lineNumber:258 description:@"Must have a resource mananger or valid file path to create the library"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3MusicLibrary.m" lineNumber:258 description:@"Must have a resource mananger or valid file path to create the library"];
   }
 
   if (!_onGlobalQueue_shareableMusicLibraryWithResourcesManager_libraryFilePath___cachedLibraries)
@@ -11058,7 +11058,7 @@ void __46__ML3MusicLibrary_musicLibraryForUserAccount___block_invoke(uint64_t a1
     _onGlobalQueue_shareableMusicLibraryWithResourcesManager_libraryFilePath___cachedLibraries = v10;
   }
 
-  v12 = [v7 pathForResourceFileOrFolder:15];
+  v12 = [managerCopy pathForResourceFileOrFolder:15];
   v13 = v12;
   if (v12)
   {
@@ -11067,7 +11067,7 @@ void __46__ML3MusicLibrary_musicLibraryForUserAccount___block_invoke(uint64_t a1
 
   else
   {
-    v14 = v8;
+    v14 = pathCopy;
   }
 
   v15 = v14;
@@ -11076,9 +11076,9 @@ void __46__ML3MusicLibrary_musicLibraryForUserAccount___block_invoke(uint64_t a1
   if (!v16)
   {
     v17 = [ML3MusicLibrary alloc];
-    if (v7)
+    if (managerCopy)
     {
-      v18 = [(ML3MusicLibrary *)v17 initWithResourcesManager:v7];
+      v18 = [(ML3MusicLibrary *)v17 initWithResourcesManager:managerCopy];
     }
 
     else
@@ -11093,17 +11093,17 @@ void __46__ML3MusicLibrary_musicLibraryForUserAccount___block_invoke(uint64_t a1
   return v16;
 }
 
-- (id)artistForArtistName:(id)a3 seriesName:(id)a4
+- (id)artistForArtistName:(id)name seriesName:(id)seriesName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  seriesNameCopy = seriesName;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__5398;
   v20 = __Block_byref_object_dispose__5399;
   v21 = 0;
-  v8 = [(ML3MusicLibrary *)self artistGroupingKeyForArtistName:v6 seriesName:v7];
+  v8 = [(ML3MusicLibrary *)self artistGroupingKeyForArtistName:nameCopy seriesName:seriesNameCopy];
   v9 = v8;
   if (v8)
   {
@@ -11111,7 +11111,7 @@ void __46__ML3MusicLibrary_musicLibraryForUserAccount___block_invoke(uint64_t a1
     v12[1] = 3221225472;
     v12[2] = __70__ML3MusicLibrary_ML3ArtistAdditions__artistForArtistName_seriesName___block_invoke;
     v12[3] = &unk_278763398;
-    v14 = self;
+    selfCopy = self;
     v15 = &v16;
     v13 = v8;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v12];
@@ -11150,18 +11150,18 @@ void __70__ML3MusicLibrary_ML3ArtistAdditions__artistForArtistName_seriesName___
   }
 }
 
-- (id)artistGroupingKeyForArtistName:(id)a3 seriesName:(id)a4
+- (id)artistGroupingKeyForArtistName:(id)name seriesName:(id)seriesName
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 length])
+  seriesNameCopy = seriesName;
+  nameCopy = name;
+  if ([seriesNameCopy length])
   {
-    v8 = v6;
+    v8 = seriesNameCopy;
   }
 
   else
   {
-    v8 = v7;
+    v8 = nameCopy;
   }
 
   v9 = [(ML3MusicLibrary *)self groupingKeyForString:v8];
@@ -11169,11 +11169,11 @@ void __70__ML3MusicLibrary_ML3ArtistAdditions__artistForArtistName_seriesName___
   return v9;
 }
 
-- (BOOL)repairAlbumArtistRelationshipsWithConnection:(id)a3
+- (BOOL)repairAlbumArtistRelationshipsWithConnection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 executeQuery:@"SELECT album_pid FROM album LEFT OUTER JOIN album_artist USING(album_artist_pid) WHERE album_artist IS NULL AND album_artist_pid != 0"];
+  connectionCopy = connection;
+  v4 = [connectionCopy executeQuery:@"SELECT album_pid FROM album LEFT OUTER JOIN album_artist USING(album_artist_pid) WHERE album_artist IS NULL AND album_artist_pid != 0"];
   v5 = [v4 objectsInColumn:0];
 
   v6 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -11211,15 +11211,15 @@ void __70__ML3MusicLibrary_ML3ArtistAdditions__artistForArtistName_seriesName___
         v12 = *(*(&v22 + 1) + 8 * i);
         v27 = v12;
         v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:{1, v19}];
-        v14 = [v3 executeQuery:@"SELECT album_artist_pid FROM item WHERE album_artist_pid != 0 AND album_pid = ? LIMIT 1" withParameters:v13];
-        v15 = [v14 objectForFirstRowAndColumn];
+        v14 = [connectionCopy executeQuery:@"SELECT album_artist_pid FROM item WHERE album_artist_pid != 0 AND album_pid = ? LIMIT 1" withParameters:v13];
+        objectForFirstRowAndColumn = [v14 objectForFirstRowAndColumn];
 
-        if ([v15 longLongValue])
+        if ([objectForFirstRowAndColumn longLongValue])
         {
-          v26[0] = v15;
+          v26[0] = objectForFirstRowAndColumn;
           v26[1] = v12;
           v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
-          [v3 executeUpdate:@"UPDATE album SET album_artist_pid = ? WHERE album_pid = ?" withParameters:v16 error:0];
+          [connectionCopy executeUpdate:@"UPDATE album SET album_artist_pid = ? WHERE album_pid = ?" withParameters:v16 error:0];
 
           v17 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -11227,7 +11227,7 @@ void __70__ML3MusicLibrary_ML3ArtistAdditions__artistForArtistName_seriesName___
             *buf = 138543618;
             v30 = v12;
             v31 = 2114;
-            v32 = v15;
+            v32 = objectForFirstRowAndColumn;
             _os_log_impl(&dword_22D2FA000, v17, OS_LOG_TYPE_DEBUG, "Updated album %{public}@ with album artist %{public}@", buf, 0x16u);
           }
         }
@@ -11260,52 +11260,52 @@ void __70__ML3MusicLibrary_ML3ArtistAdditions__artistForArtistName_seriesName___
   return v20 & 1;
 }
 
-- (id)albumForAlbumArtistPersistentID:(int64_t)a3 albumName:(id)a4 feedURL:(id)a5 seasonNumber:(id)a6 compilation:(BOOL)a7
+- (id)albumForAlbumArtistPersistentID:(int64_t)d albumName:(id)name feedURL:(id)l seasonNumber:(id)number compilation:(BOOL)compilation
 {
-  v7 = a7;
+  compilationCopy = compilation;
   v30[1] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(ML3MusicLibrary *)self checkoutReaderConnection];
-  if ([v13 length])
+  nameCopy = name;
+  lCopy = l;
+  numberCopy = number;
+  checkoutReaderConnection = [(ML3MusicLibrary *)self checkoutReaderConnection];
+  if ([lCopy length])
   {
-    v30[0] = v13;
+    v30[0] = lCopy;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-    v17 = [v15 executeQuery:@"SELECT ROWID FROM album WHERE feed_url = ?" withParameters:v16];
+    v17 = [checkoutReaderConnection executeQuery:@"SELECT ROWID FROM album WHERE feed_url = ?" withParameters:v16];
 
-    v18 = [v17 int64ValueForFirstRowAndColumn];
+    int64ValueForFirstRowAndColumn = [v17 int64ValueForFirstRowAndColumn];
   }
 
   else
   {
-    v19 = [(ML3MusicLibrary *)self groupingKeyForString:v12];
+    v19 = [(ML3MusicLibrary *)self groupingKeyForString:nameCopy];
     v17 = v19;
     v20 = @"SELECT ROWID FROM album WHERE (grouping_key = ?) AND (all_compilations = ?) AND (album_artist_pid = ?) AND (season_number = ?)";
-    if (!v14)
+    if (!numberCopy)
     {
       v20 = @"SELECT ROWID FROM album WHERE (grouping_key = ?) AND (all_compilations = ?) AND (album_artist_pid = ?)";
     }
 
-    v21 = [MEMORY[0x277CCABB0] numberWithInt:{v7, v20, v19}];
+    v21 = [MEMORY[0x277CCABB0] numberWithInt:{compilationCopy, v20, v19}];
     v29[1] = v21;
-    v22 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v22 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
     v29[2] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
     v24 = [v23 mutableCopy];
 
-    if (v14)
+    if (numberCopy)
     {
-      [v24 addObject:v14];
+      [v24 addObject:numberCopy];
     }
 
-    v25 = [v15 executeQuery:v28 withParameters:v24];
-    v18 = [v25 int64ValueForFirstRowAndColumn];
+    v25 = [checkoutReaderConnection executeQuery:v28 withParameters:v24];
+    int64ValueForFirstRowAndColumn = [v25 int64ValueForFirstRowAndColumn];
   }
 
-  if (v18)
+  if (int64ValueForFirstRowAndColumn)
   {
-    v26 = [(ML3Entity *)ML3Album newWithPersistentID:v18 inLibrary:self];
+    v26 = [(ML3Entity *)ML3Album newWithPersistentID:int64ValueForFirstRowAndColumn inLibrary:self];
   }
 
   else
@@ -11313,16 +11313,16 @@ void __70__ML3MusicLibrary_ML3ArtistAdditions__artistForArtistName_seriesName___
     v26 = 0;
   }
 
-  [(ML3MusicLibrary *)self checkInDatabaseConnection:v15];
+  [(ML3MusicLibrary *)self checkInDatabaseConnection:checkoutReaderConnection];
 
   return v26;
 }
 
-- (BOOL)_validateDatabaseUsingConnection:(id)a3 error:(id *)a4
+- (BOOL)_validateDatabaseUsingConnection:(id)connection error:(id *)error
 {
   *&v41[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [ML3MusicLibrary userVersionUsingConnection:v6];
+  connectionCopy = connection;
+  v7 = [ML3MusicLibrary userVersionUsingConnection:connectionCopy];
   v8 = v7;
   if (v7 > 2310000)
   {
@@ -11360,7 +11360,7 @@ LABEL_4:
     }
 
     v38 = 0;
-    v15 = ML3MigrationMigrateLibraryToCurrentVersion(self, v6, &v38);
+    v15 = ML3MigrationMigrateLibraryToCurrentVersion(self, connectionCopy, &v38);
     v16 = v38;
     v9 = 0;
     if (v15)
@@ -11380,9 +11380,9 @@ LABEL_17:
     v26 = os_log_create("com.apple.amp.medialibrary", "Validation");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 138543362;
-      *v41 = v27;
+      *v41 = localizedDescription;
       _os_log_impl(&dword_22D2FA000, v26, OS_LOG_TYPE_ERROR, "Migration error: %{public}@", buf, 0xCu);
     }
 
@@ -11393,7 +11393,7 @@ LABEL_17:
       _os_log_impl(&dword_22D2FA000, v28, OS_LOG_TYPE_ERROR, "Recreating un-migratable database...", buf, 2u);
     }
 
-    v29 = v6;
+    v29 = connectionCopy;
     v30 = v29;
     if (__daemonProcessInfo)
     {
@@ -11442,9 +11442,9 @@ LABEL_50:
     _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_ERROR, "User version is 0, building tables for newly created DB", buf, 2u);
   }
 
-  if ((_ML3ValidationBuildDatabaseTables(v6) & 1) == 0)
+  if ((_ML3ValidationBuildDatabaseTables(connectionCopy) & 1) == 0)
   {
-    [MEMORY[0x277CCA9B8] ml_errorWithCode:4 description:{@"Could not build database tables using connection %@.", v6, v36}];
+    [MEMORY[0x277CCA9B8] ml_errorWithCode:4 description:{@"Could not build database tables using connection %@.", connectionCopy, v36}];
     goto LABEL_3;
   }
 
@@ -11454,24 +11454,24 @@ LABEL_18:
   v13 = v9;
 LABEL_19:
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT value FROM _MLDatabaseProperties WHERE key = '%@'", @"_UUID"];
-  v18 = [v6 executeQuery:v17];
-  v19 = [v18 objectForFirstRowAndColumn];
+  v18 = [connectionCopy executeQuery:v17];
+  objectForFirstRowAndColumn = [v18 objectForFirstRowAndColumn];
 
-  if (v19)
+  if (objectForFirstRowAndColumn)
   {
     v9 = v13;
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v19 = [v20 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    objectForFirstRowAndColumn = [uUID UUIDString];
 
-    v39[0] = v19;
+    v39[0] = objectForFirstRowAndColumn;
     v39[1] = @"_UUID";
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
     v37 = v13;
-    v22 = [v6 executeUpdate:@"INSERT OR REPLACE INTO _MLDatabaseProperties (value withParameters:key) VALUES (? error:{?);", v21, &v37}];
+    v22 = [connectionCopy executeUpdate:@"INSERT OR REPLACE INTO _MLDatabaseProperties (value withParameters:key) VALUES (? error:{?);", v21, &v37}];
     v9 = v37;
 
     if ((v22 & 1) == 0)
@@ -11514,16 +11514,16 @@ LABEL_19:
   v11 = 1;
 LABEL_29:
 
-  if (a4)
+  if (error)
   {
     v24 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v11;
 }
 
-- (BOOL)coerceValidDatabaseWithError:(id *)a3
+- (BOOL)coerceValidDatabaseWithError:(id *)error
 {
   [(ML3MusicLibrary *)self migratePresignedValidity];
   v7 = 0;
@@ -11536,11 +11536,11 @@ LABEL_29:
   v6[3] = &unk_278765748;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = error;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v6];
-  LOBYTE(a3) = *(v8 + 24);
+  LOBYTE(error) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return a3;
+  return error;
 }
 
 uint64_t __60__ML3MusicLibrary_Validation__coerceValidDatabaseWithError___block_invoke(uint64_t a1, uint64_t a2)
@@ -11550,26 +11550,26 @@ uint64_t __60__ML3MusicLibrary_Validation__coerceValidDatabaseWithError___block_
   return result;
 }
 
-- (BOOL)_coalesceMismatchedCollectionClass:(Class)a3 usingConnection:(id)a4
+- (BOOL)_coalesceMismatchedCollectionClass:(Class)class usingConnection:(id)connection
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(objc_class *)a3 databaseTable];
-  v47 = [(objc_class *)a3 trackForeignPersistentID];
-  v57 = a3;
-  v8 = [(objc_class *)a3 propertiesForGroupingUniqueCollections];
-  if (![v8 count])
+  connectionCopy = connection;
+  databaseTable = [(objc_class *)class databaseTable];
+  trackForeignPersistentID = [(objc_class *)class trackForeignPersistentID];
+  classCopy = class;
+  propertiesForGroupingUniqueCollections = [(objc_class *)class propertiesForGroupingUniqueCollections];
+  if (![propertiesForGroupingUniqueCollections count])
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"ML3SortMap.m" lineNumber:511 description:{@"Collection %@ has no properties for grouping unique collections. This should be impossible!", v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3SortMap.m" lineNumber:511 description:{@"Collection %@ has no properties for grouping unique collections. This should be impossible!", databaseTable}];
   }
 
   v9 = 0x277CBE000uLL;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [v8 componentsJoinedByString:{@", "}];
-  v46 = v48 = v7;
-  v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@ FROM %@ GROUP BY %@ HAVING COUNT(*) > 1", v46, v7, v46];
-  v11 = [v6 executeQuery:?];
+  [propertiesForGroupingUniqueCollections componentsJoinedByString:{@", "}];
+  v46 = v48 = databaseTable;
+  v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@ FROM %@ GROUP BY %@ HAVING COUNT(*) > 1", v46, databaseTable, v46];
+  v11 = [connectionCopy executeQuery:?];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __79__ML3MusicLibrary_SortMap___coalesceMismatchedCollectionClass_usingConnection___block_invoke;
@@ -11578,12 +11578,12 @@ uint64_t __60__ML3MusicLibrary_Validation__coerceValidDatabaseWithError___block_
   v69 = v12;
   v44 = v11;
   [v11 enumerateRowsWithBlock:v68];
-  v54 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v54 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(propertiesForGroupingUniqueCollections, "count")}];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v8;
+  obj = propertiesForGroupingUniqueCollections;
   v13 = [obj countByEnumeratingWithState:&v64 objects:v77 count:16];
   if (v13)
   {
@@ -11610,7 +11610,7 @@ uint64_t __60__ML3MusicLibrary_Validation__coerceValidDatabaseWithError___block_
 
   v43 = [v54 componentsJoinedByString:@" AND "];
   v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT ROWID FROM %@ WHERE %@", v48, v43];
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"UPDATE item SET %@ = ? WHERE %@ = ?", v47, v47];
+  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"UPDATE item SET %@ = ? WHERE %@ = ?", trackForeignPersistentID, trackForeignPersistentID];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
@@ -11633,7 +11633,7 @@ uint64_t __60__ML3MusicLibrary_Validation__coerceValidDatabaseWithError___block_
 
         v22 = *(*(&v60 + 1) + 8 * j);
         v23 = objc_alloc_init(*(v9 + 2840));
-        v24 = [v6 executeQuery:v18 withParameters:v22];
+        v24 = [connectionCopy executeQuery:v18 withParameters:v22];
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
         v58[2] = __79__ML3MusicLibrary_SortMap___coalesceMismatchedCollectionClass_usingConnection___block_invoke_2;
@@ -11655,7 +11655,7 @@ uint64_t __60__ML3MusicLibrary_Validation__coerceValidDatabaseWithError___block_
             v75[0] = v28;
             v75[1] = v31;
             v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:2];
-            v33 = [v6 executeUpdate:v19 withParameters:v32 error:0];
+            v33 = [connectionCopy executeUpdate:v19 withParameters:v32 error:0];
 
             v34 = os_log_create("com.apple.amp.medialibrary", "SortMap");
             v35 = os_log_type_enabled(v34, OS_LOG_TYPE_ERROR);
@@ -11666,24 +11666,24 @@ uint64_t __60__ML3MusicLibrary_Validation__coerceValidDatabaseWithError___block_
 
             if (v35)
             {
-              v36 = [v31 longLongValue];
+              longLongValue = [v31 longLongValue];
               *buf = 138543618;
-              v72 = v57;
+              v72 = classCopy;
               v73 = 2048;
-              v74 = v36;
+              v74 = longLongValue;
               _os_log_impl(&dword_22D2FA000, v34, OS_LOG_TYPE_ERROR, "Deleting duplicate %{public}@ %lld", buf, 0x16u);
             }
 
-            v70 = [v31 longLongValue];
-            if (([(objc_class *)v57 deleteFromLibrary:self deletionType:2 persistentIDs:&v70 count:1 usingConnection:v6]& 1) == 0)
+            longLongValue2 = [v31 longLongValue];
+            if (([(objc_class *)classCopy deleteFromLibrary:self deletionType:2 persistentIDs:&longLongValue2 count:1 usingConnection:connectionCopy]& 1) == 0)
             {
               v39 = os_log_create("com.apple.amp.medialibrary", "SortMap");
               v9 = 0x277CBE000;
               if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
               {
-                v40 = [v31 longLongValue];
+                longLongValue3 = [v31 longLongValue];
                 *buf = 134217984;
-                v72 = v40;
+                v72 = longLongValue3;
                 _os_log_impl(&dword_22D2FA000, v39, OS_LOG_TYPE_ERROR, "Failed to delete duplicate collection with pid %lld", buf, 0xCu);
               }
 
@@ -11702,9 +11702,9 @@ uint64_t __60__ML3MusicLibrary_Validation__coerceValidDatabaseWithError___block_
 
           if (v35)
           {
-            v38 = [v28 longLongValue];
+            longLongValue4 = [v28 longLongValue];
             *buf = 134217984;
-            v72 = v38;
+            v72 = longLongValue4;
             _os_log_impl(&dword_22D2FA000, v34, OS_LOG_TYPE_ERROR, "Failed to repair entities converging on PID %lld", buf, 0xCu);
           }
 
@@ -11774,10 +11774,10 @@ void __79__ML3MusicLibrary_SortMap___coalesceMismatchedCollectionClass_usingConn
   [*(a1 + 32) addObject:v3];
 }
 
-- (BOOL)coalesceMismatchedCollectionsUsingConnection:(id)a3
+- (BOOL)coalesceMismatchedCollectionsUsingConnection:(id)connection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   +[ML3Collection collectionEntityClasses];
   v15 = 0u;
   v16 = 0u;
@@ -11801,7 +11801,7 @@ void __79__ML3MusicLibrary_SortMap___coalesceMismatchedCollectionClass_usingConn
         v11 = *(*(&v15 + 1) + 8 * i);
         if ([(objc_class *)v11 isSubclassOfClass:objc_opt_class(), v15])
         {
-          if (![(ML3MusicLibrary *)self _coalesceMismatchedCollectionClass:v11 usingConnection:v4])
+          if (![(ML3MusicLibrary *)self _coalesceMismatchedCollectionClass:v11 usingConnection:connectionCopy])
           {
             v12 = os_log_create("com.apple.amp.medialibrary", "SortMap");
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -11865,22 +11865,22 @@ uint64_t __53__ML3MusicLibrary_SortMap___systemUnicodeVersionData__block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)insertStringIntoSortMapNoTransaction:(id)a3
+- (int64_t)insertStringIntoSortMapNoTransaction:(id)transaction
 {
   v62[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 length])
+  transactionCopy = transaction;
+  if (![transactionCopy length])
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"ML3SortMap.m" lineNumber:426 description:@"blank string cannot be inserted into sort map"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3SortMap.m" lineNumber:426 description:@"blank string cannot be inserted into sort map"];
   }
 
-  v6 = [(ML3MusicLibrary *)self checkoutWriterConnection];
-  v62[0] = v5;
-  v62[1] = v5;
-  v62[2] = v5;
+  checkoutWriterConnection = [(ML3MusicLibrary *)self checkoutWriterConnection];
+  v62[0] = transactionCopy;
+  v62[1] = transactionCopy;
+  v62[2] = transactionCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:3];
-  [v6 executeUpdate:@"INSERT INTO sort_map (name withParameters:sort_key error:{name_section) VALUES (?, iPhoneSortKey(?), iPhoneSortSection(iPhoneSortKey(?)))", v7, 0}];
+  [checkoutWriterConnection executeUpdate:@"INSERT INTO sort_map (name withParameters:sort_key error:{name_section) VALUES (?, iPhoneSortKey(?), iPhoneSortSection(iPhoneSortKey(?)))", v7, 0}];
 
   v43 = 0;
   v44 = &v43;
@@ -11892,9 +11892,9 @@ uint64_t __53__ML3MusicLibrary_SortMap___systemUnicodeVersionData__block_invoke(
   v40 = __Block_byref_object_copy__6467;
   v41 = __Block_byref_object_dispose__6468;
   v42 = 0;
-  v61 = v5;
+  v61 = transactionCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
-  v9 = [v6 executeQuery:@"SELECT sort_map1.name_order withParameters:{sort_map1.name FROM sort_map AS sort_map1 WHERE sort_map1.sort_key < (SELECT sort_map2.sort_key FROM sort_map AS sort_map2 WHERE name = ?) ORDER BY sort_map1.sort_key DESC, sort_map1.name_order DESC LIMIT 1", v8}];;
+  v9 = [checkoutWriterConnection executeQuery:@"SELECT sort_map1.name_order withParameters:{sort_map1.name FROM sort_map AS sort_map1 WHERE sort_map1.sort_key < (SELECT sort_map2.sort_key FROM sort_map AS sort_map2 WHERE name = ?) ORDER BY sort_map1.sort_key DESC, sort_map1.name_order DESC LIMIT 1", v8}];;
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -11913,10 +11913,10 @@ uint64_t __53__ML3MusicLibrary_SortMap___systemUnicodeVersionData__block_invoke(
   v29 = __Block_byref_object_copy__6467;
   v30 = __Block_byref_object_dispose__6468;
   v31 = 0;
-  v60[0] = v5;
-  v60[1] = v5;
+  v60[0] = transactionCopy;
+  v60[1] = transactionCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:2];
-  v11 = [v6 executeQuery:@"SELECT sort_map1.name_order withParameters:{sort_map1.name FROM sort_map AS sort_map1 WHERE sort_map1.sort_key >= (SELECT sort_map2.sort_key FROM sort_map AS sort_map2 WHERE name = ?) AND sort_map1.name != ? ORDER BY sort_map1.sort_key ASC, sort_map1.name_order ASC LIMIT 1", v10}];;
+  v11 = [checkoutWriterConnection executeQuery:@"SELECT sort_map1.name_order withParameters:{sort_map1.name FROM sort_map AS sort_map1 WHERE sort_map1.sort_key >= (SELECT sort_map2.sort_key FROM sort_map AS sort_map2 WHERE name = ?) AND sort_map1.name != ? ORDER BY sort_map1.sort_key ASC, sort_map1.name_order ASC LIMIT 1", v10}];;
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -11935,9 +11935,9 @@ uint64_t __53__ML3MusicLibrary_SortMap___systemUnicodeVersionData__block_invoke(
 
   v15 = [MEMORY[0x277CCABB0] numberWithLongLong:v14];
   v59[0] = v15;
-  v59[1] = v5;
+  v59[1] = transactionCopy;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:2];
-  v17 = [v6 executeUpdate:@"UPDATE sort_map SET name_order = ? WHERE name = ?;" withParameters:v16 error:0];
+  v17 = [checkoutWriterConnection executeUpdate:@"UPDATE sort_map SET name_order = ? WHERE name = ?;" withParameters:v16 error:0];
 
   if ((v17 & 1) == 0)
   {
@@ -11959,16 +11959,16 @@ uint64_t __53__ML3MusicLibrary_SortMap___systemUnicodeVersionData__block_invoke(
       v55 = 2114;
       v56 = v22;
       v57 = 2114;
-      v58 = v5;
+      v58 = transactionCopy;
       _os_log_impl(&dword_22D2FA000, v18, OS_LOG_TYPE_ERROR, "Could not not insert name_order = %lld (between %lld/%{public}@ and %lld/%{public}@) for %{public}@", buf, 0x3Eu);
     }
 
 LABEL_9:
     [(ML3MusicLibrary *)self updateSortMap];
-    v14 = [(ML3MusicLibrary *)self nameOrderForString:v5];
+    v14 = [(ML3MusicLibrary *)self nameOrderForString:transactionCopy];
   }
 
-  [(ML3MusicLibrary *)self checkInDatabaseConnection:v6];
+  [(ML3MusicLibrary *)self checkInDatabaseConnection:checkoutWriterConnection];
   _Block_object_dispose(&v26, 8);
 
   _Block_object_dispose(&v32, 8);
@@ -12000,9 +12000,9 @@ void __65__ML3MusicLibrary_SortMap__insertStringIntoSortMapNoTransaction___block
   *(v5 + 40) = v4;
 }
 
-- (id)insertStringsIntoSortMap:(id)a3 didReSortMap:(BOOL *)a4
+- (id)insertStringsIntoSortMap:(id)map didReSortMap:(BOOL *)sortMap
 {
-  v6 = a3;
+  mapCopy = map;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -12014,9 +12014,9 @@ void __65__ML3MusicLibrary_SortMap__insertStringIntoSortMapNoTransaction___block
   v10[2] = __66__ML3MusicLibrary_SortMap__insertStringsIntoSortMap_didReSortMap___block_invoke;
   v10[3] = &unk_278761E20;
   v10[4] = self;
-  v7 = v6;
+  v7 = mapCopy;
   v12 = &v14;
-  v13 = a4;
+  sortMapCopy = sortMap;
   v11 = v7;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v10];
   v8 = v15[5];
@@ -12040,10 +12040,10 @@ void __66__ML3MusicLibrary_SortMap__insertStringsIntoSortMap_didReSortMap___bloc
   }
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)nameOrderForString:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)nameOrderForString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v12 = 0;
     v13 = &v12;
@@ -12054,23 +12054,23 @@ void __66__ML3MusicLibrary_SortMap__insertStringsIntoSortMap_didReSortMap___bloc
     v9[1] = 3221225472;
     v9[2] = __47__ML3MusicLibrary_SortMap__nameOrderForString___block_invoke;
     v9[3] = &unk_2787651A8;
-    v10 = v4;
+    v10 = stringCopy;
     v11 = &v12;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v9];
     v6 = v13[4];
-    v5 = v13[5];
+    unknownSectionIndex = v13[5];
 
     _Block_object_dispose(&v12, 8);
   }
 
   else
   {
-    v5 = [(ML3MusicLibrary *)self unknownSectionIndex];
+    unknownSectionIndex = [(ML3MusicLibrary *)self unknownSectionIndex];
     v6 = 0;
   }
 
   v7 = v6;
-  v8 = v5;
+  v8 = unknownSectionIndex;
   result.var1 = v8;
   result.var0 = v7;
   return result;
@@ -12105,12 +12105,12 @@ void __47__ML3MusicLibrary_SortMap__nameOrderForString___block_invoke_2(uint64_t
   *a4 = 1;
 }
 
-- (BOOL)validateSortMapUnicodeVersionOnConnection:(id)a3
+- (BOOL)validateSortMapUnicodeVersionOnConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLSortMapUnicodeVersion"];
-  v6 = [(ML3MusicLibrary *)self _systemUnicodeVersionData];
-  if (v5 && ([v5 isEqualToData:v6] & 1) != 0)
+  _systemUnicodeVersionData = [(ML3MusicLibrary *)self _systemUnicodeVersionData];
+  if (v5 && ([v5 isEqualToData:_systemUnicodeVersionData] & 1) != 0)
   {
     v7 = 1;
   }
@@ -12124,16 +12124,16 @@ void __47__ML3MusicLibrary_SortMap__nameOrderForString___block_invoke_2(uint64_t
       _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_ERROR, "System unicode version does not match version stored in the library -- upgrading sort map", v10, 2u);
     }
 
-    v7 = [(ML3MusicLibrary *)self updateSortMapOnConnection:v4 forceUpdateOriginals:1];
+    v7 = [(ML3MusicLibrary *)self updateSortMapOnConnection:connectionCopy forceUpdateOriginals:1];
   }
 
   return v7;
 }
 
-- (BOOL)inTransactionUpdateSearchMapOnConnection:(id)a3
+- (BOOL)inTransactionUpdateSearchMapOnConnection:(id)connection
 {
-  v3 = a3;
-  if ([v3 executeUpdate:{@"INSERT OR REPLACE INTO item_search (item_pid, search_title) SELECT item_extra.item_pid, sort_map.name_order from sort_map JOIN item_extra ON item_extra.title = sort_map.name"}] && objc_msgSend(v3, "executeUpdate:", @"UPDATE item_search SET search_album = IFNULL((SELECT sort_map.name_order FROM sort_map JOIN album ON album.album = sort_map.name JOIN item ON item.album_pid = album.album_pid WHERE item.item_pid = item_search.item_pid), 0)") && objc_msgSend(v3, "executeUpdate:", @"UPDATE item_search SET search_artist = IFNULL((SELECT sort_map.name_order FROM sort_map JOIN item_artist ON item_artist.item_artist = sort_map.name JOIN item ON item.item_artist_pid = item_artist.item_artist_pid WHERE item.item_pid = item_search.item_pid), 0)") && objc_msgSend(v3, "executeUpdate:", @"UPDATE item_search SET search_composer = IFNULL((SELECT sort_map.name_order FROM sort_map JOIN composer ON composer.composer = sort_map.name JOIN item ON item.composer_pid = composer.composer_pid WHERE item.item_pid = item_search.item_pid), 0)") && (objc_msgSend(v3, "executeUpdate:", @"UPDATE item_search SET search_album_artist = IFNULL((SELECT sort_map.name_order FROM sort_map JOIN album_artist ON album_artist.album_artist = sort_map.name JOIN item ON item.album_artist_pid = album_artist.album_artist_pid WHERE item.item_pid = item_search.item_pid), 0)") & 1) != 0)
+  connectionCopy = connection;
+  if ([connectionCopy executeUpdate:{@"INSERT OR REPLACE INTO item_search (item_pid, search_title) SELECT item_extra.item_pid, sort_map.name_order from sort_map JOIN item_extra ON item_extra.title = sort_map.name"}] && objc_msgSend(connectionCopy, "executeUpdate:", @"UPDATE item_search SET search_album = IFNULL((SELECT sort_map.name_order FROM sort_map JOIN album ON album.album = sort_map.name JOIN item ON item.album_pid = album.album_pid WHERE item.item_pid = item_search.item_pid), 0)") && objc_msgSend(connectionCopy, "executeUpdate:", @"UPDATE item_search SET search_artist = IFNULL((SELECT sort_map.name_order FROM sort_map JOIN item_artist ON item_artist.item_artist = sort_map.name JOIN item ON item.item_artist_pid = item_artist.item_artist_pid WHERE item.item_pid = item_search.item_pid), 0)") && objc_msgSend(connectionCopy, "executeUpdate:", @"UPDATE item_search SET search_composer = IFNULL((SELECT sort_map.name_order FROM sort_map JOIN composer ON composer.composer = sort_map.name JOIN item ON item.composer_pid = composer.composer_pid WHERE item.item_pid = item_search.item_pid), 0)") && (objc_msgSend(connectionCopy, "executeUpdate:", @"UPDATE item_search SET search_album_artist = IFNULL((SELECT sort_map.name_order FROM sort_map JOIN album_artist ON album_artist.album_artist = sort_map.name JOIN item ON item.album_artist_pid = album_artist.album_artist_pid WHERE item.item_pid = item_search.item_pid), 0)") & 1) != 0)
   {
     v4 = 1;
   }
@@ -12153,12 +12153,12 @@ void __47__ML3MusicLibrary_SortMap__nameOrderForString___block_invoke_2(uint64_t
   return v4;
 }
 
-- (BOOL)inTransactionUpdateSortMapOnConnection:(id)a3 forceRebuild:(BOOL)a4 forceUpdateOriginals:(BOOL)a5
+- (BOOL)inTransactionUpdateSortMapOnConnection:(id)connection forceRebuild:(BOOL)rebuild forceUpdateOriginals:(BOOL)originals
 {
-  v5 = a5;
-  v6 = a4;
+  originalsCopy = originals;
+  rebuildCopy = rebuild;
   v152 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  connectionCopy = connection;
   v143 = 0;
   v144 = &v143;
   v145 = 0x2020000000;
@@ -12170,15 +12170,15 @@ void __47__ML3MusicLibrary_SortMap__nameOrderForString___block_invoke_2(uint64_t
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "Rebuilding the sort_map table", buf, 2u);
   }
 
-  v9 = [v7 executeQuery:@"SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name = 'sort_map'"];;
+  v9 = [connectionCopy executeQuery:@"SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name = 'sort_map'"];;
   v10 = [v9 int64ValueForFirstRowAndColumn] == 1;
 
   if (v10)
   {
-    v11 = [v7 executeQuery:@"SELECT ROWID FROM sort_map LIMIT 1"];;
-    v12 = [v11 hasAtLeastOneRow];
+    v11 = [connectionCopy executeQuery:@"SELECT ROWID FROM sort_map LIMIT 1"];;
+    hasAtLeastOneRow = [v11 hasAtLeastOneRow];
 
-    v13 = v12 ^ 1;
+    v13 = hasAtLeastOneRow ^ 1;
   }
 
   else
@@ -12186,7 +12186,7 @@ void __47__ML3MusicLibrary_SortMap__nameOrderForString___block_invoke_2(uint64_t
     v13 = 1;
   }
 
-  v14 = [v7 executeUpdate:@"DROP TABLE IF EXISTS sort_map_new"];
+  v14 = [connectionCopy executeUpdate:@"DROP TABLE IF EXISTS sort_map_new"];
   *(v144 + 24) = v14;
   if ((v14 & 1) == 0)
   {
@@ -12199,7 +12199,7 @@ void __47__ML3MusicLibrary_SortMap__nameOrderForString___block_invoke_2(uint64_t
   }
 
   v16 = +[ML3MusicLibrary sortMapNewSchemaSQL];
-  v17 = [v7 executeUpdate:v16];
+  v17 = [connectionCopy executeUpdate:v16];
   *(v144 + 24) = v17;
 
   if ((v17 & 1) == 0)
@@ -12215,58 +12215,58 @@ void __47__ML3MusicLibrary_SortMap__nameOrderForString___block_invoke_2(uint64_t
     goto LABEL_19;
   }
 
-  if ((v13 | v6))
+  if ((v13 | rebuildCopy))
   {
-    v18 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT title, iPhoneSortKey(title) FROM item_extra;"}];
+    v18 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT title, iPhoneSortKey(title) FROM item_extra;"}];
     *(v144 + 24) &= v18;
-    v19 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(title), iPhoneSortKey(ML3SortString(title)) FROM item_extra;"}];
+    v19 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(title), iPhoneSortKey(ML3SortString(title)) FROM item_extra;"}];
     *(v144 + 24) &= v19;
-    v20 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_title, iPhoneSortKey(sort_title) FROM item_extra;"}];
+    v20 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_title, iPhoneSortKey(sort_title) FROM item_extra;"}];
     *(v144 + 24) &= v20;
-    v21 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT item_artist, iPhoneSortKey(item_artist) FROM item_artist;"}];
+    v21 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT item_artist, iPhoneSortKey(item_artist) FROM item_artist;"}];
     *(v144 + 24) &= v21;
-    v22 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(item_artist), iPhoneSortKey(ML3SortString(item_artist)) FROM item_artist;"}];
+    v22 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(item_artist), iPhoneSortKey(ML3SortString(item_artist)) FROM item_artist;"}];
     *(v144 + 24) &= v22;
-    v23 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_item_artist, iPhoneSortKey(sort_item_artist) FROM item_artist;"}];
+    v23 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_item_artist, iPhoneSortKey(sort_item_artist) FROM item_artist;"}];
     *(v144 + 24) &= v23;
-    v24 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT series_name, iPhoneSortKey(series_name) FROM item_artist;"}];
+    v24 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT series_name, iPhoneSortKey(series_name) FROM item_artist;"}];
     *(v144 + 24) &= v24;
-    v25 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(series_name), iPhoneSortKey(ML3SortString(series_name)) FROM item_artist;"}];
+    v25 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(series_name), iPhoneSortKey(ML3SortString(series_name)) FROM item_artist;"}];
     *(v144 + 24) &= v25;
-    v26 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_series_name, iPhoneSortKey(sort_series_name) FROM item_artist;"}];
+    v26 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_series_name, iPhoneSortKey(sort_series_name) FROM item_artist;"}];
     *(v144 + 24) &= v26;
-    v27 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT album_artist, iPhoneSortKey(album_artist) FROM album_artist;"}];
+    v27 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT album_artist, iPhoneSortKey(album_artist) FROM album_artist;"}];
     *(v144 + 24) &= v27;
-    v28 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(album_artist), iPhoneSortKey(ML3SortString(album_artist)) FROM album_artist;"}];
+    v28 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(album_artist), iPhoneSortKey(ML3SortString(album_artist)) FROM album_artist;"}];
     *(v144 + 24) &= v28;
-    v29 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_album_artist, iPhoneSortKey(sort_album_artist) FROM album_artist;"}];
+    v29 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_album_artist, iPhoneSortKey(sort_album_artist) FROM album_artist;"}];
     *(v144 + 24) &= v29;
-    v30 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT album, iPhoneSortKey(album) FROM album;"}];
+    v30 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT album, iPhoneSortKey(album) FROM album;"}];
     *(v144 + 24) &= v30;
-    v31 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(album), iPhoneSortKey(ML3SortString(album)) FROM album;"}];
+    v31 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(album), iPhoneSortKey(ML3SortString(album)) FROM album;"}];
     *(v144 + 24) &= v31;
-    v32 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_album, iPhoneSortKey(sort_album) FROM album;"}];
+    v32 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_album, iPhoneSortKey(sort_album) FROM album;"}];
     *(v144 + 24) &= v32;
-    v33 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT season_number, iPhoneSortKey(season_number) FROM album;"}];
+    v33 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT season_number, iPhoneSortKey(season_number) FROM album;"}];
     *(v144 + 24) &= v33;
-    v34 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT composer, iPhoneSortKey(composer) FROM composer;"}];
+    v34 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT composer, iPhoneSortKey(composer) FROM composer;"}];
     *(v144 + 24) &= v34;
-    v35 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(composer), iPhoneSortKey(ML3SortString(composer)) FROM composer;"}];
+    v35 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(composer), iPhoneSortKey(ML3SortString(composer)) FROM composer;"}];
     *(v144 + 24) &= v35;
-    v36 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_composer, iPhoneSortKey(sort_composer) FROM composer;"}];
+    v36 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_composer, iPhoneSortKey(sort_composer) FROM composer;"}];
     *(v144 + 24) &= v36;
-    v37 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT genre, iPhoneSortKey(genre) FROM genre;"}];
+    v37 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT genre, iPhoneSortKey(genre) FROM genre;"}];
     *(v144 + 24) &= v37;
-    v38 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT name, iPhoneSortKey(name) FROM container;"}];
+    v38 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT name, iPhoneSortKey(name) FROM container;"}];
   }
 
   else
   {
-    v41 = [v7 executeUpdate:{@"INSERT INTO sort_map_new (name, sort_key) SELECT name, iPhoneSortKey(name) FROM sort_map;"}];
+    v41 = [connectionCopy executeUpdate:{@"INSERT INTO sort_map_new (name, sort_key) SELECT name, iPhoneSortKey(name) FROM sort_map;"}];
     *(v144 + 24) = v41;
-    v42 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(name), iPhoneSortKey(ML3SortString(name)) FROM sort_map;"}];
+    v42 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT ML3SortString(name), iPhoneSortKey(ML3SortString(name)) FROM sort_map;"}];
     *(v144 + 24) &= v42;
-    v38 = [v7 executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_composer, iPhoneSortKey(sort_composer) FROM composer WHERE sort_composer IS NOT NULL;"}];
+    v38 = [connectionCopy executeUpdate:{@"INSERT OR IGNORE INTO sort_map_new (name, sort_key) SELECT sort_composer, iPhoneSortKey(sort_composer) FROM composer WHERE sort_composer IS NOT NULL;"}];
   }
 
   v43 = v38 & v144[3];
@@ -12293,8 +12293,8 @@ LABEL_20:
   }
 
 LABEL_21:
-  v44 = [v7 executeUpdate:@"UPDATE sort_map_new SET name_section = iPhoneSortSection(sort_key);"];
-  if (!v44 || (v45 = [v7 executeUpdate:{@"CREATE TEMPORARY TABLE sort_map_new_in_order (ROWID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, UNIQUE (name))"}], *(v144 + 24) = v45, !v45) || (v46 = objc_msgSend(v7, "executeUpdate:", @"INSERT INTO sort_map_new_in_order (name) SELECT name FROM sort_map_new ORDER BY sort_key;"), *(v144 + 24) = v46, !v46) || (v47 = objc_msgSend(v7, "executeUpdate:", @"UPDATE sort_map_new SET name_order = (SELECT sort_map_new_in_order.ROWID << 32 FROM sort_map_new_in_order WHERE sort_map_new.name = sort_map_new_in_order.name);"), *(v144 + 24) = v47, !v47) || (objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"INSERT OR REPLACE INTO sort_map_new (name, name_order, name_section, sort_key) VALUES ('', 0, %u, '')", -[ML3MusicLibrary unknownSectionIndex](self, "unknownSectionIndex")), v48 = *(v144 + 24) = v44;
+  v44 = [connectionCopy executeUpdate:@"UPDATE sort_map_new SET name_section = iPhoneSortSection(sort_key);"];
+  if (!v44 || (v45 = [connectionCopy executeUpdate:{@"CREATE TEMPORARY TABLE sort_map_new_in_order (ROWID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, UNIQUE (name))"}], *(v144 + 24) = v45, !v45) || (v46 = objc_msgSend(connectionCopy, "executeUpdate:", @"INSERT INTO sort_map_new_in_order (name) SELECT name FROM sort_map_new ORDER BY sort_key;"), *(v144 + 24) = v46, !v46) || (v47 = objc_msgSend(connectionCopy, "executeUpdate:", @"UPDATE sort_map_new SET name_order = (SELECT sort_map_new_in_order.ROWID << 32 FROM sort_map_new_in_order WHERE sort_map_new.name = sort_map_new_in_order.name);"), *(v144 + 24) = v47, !v47) || (objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"INSERT OR REPLACE INTO sort_map_new (name, name_order, name_section, sort_key) VALUES ('', 0, %u, '')", -[ML3MusicLibrary unknownSectionIndex](self, "unknownSectionIndex")), v48 = *(v144 + 24) = v44;
   {
     v51 = os_log_create("com.apple.amp.medialibrary", "SortMap");
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -12309,9 +12309,9 @@ LABEL_21:
     }
   }
 
-  if (((v13 | v6) & 1) == 0)
+  if (((v13 | rebuildCopy) & 1) == 0)
   {
-    v52 = [v7 executeQuery:@"SELECT sort_map.name FROM sort_map JOIN sort_map_new ON sort_map.name = sort_map_new.name WHERE (sort_map_new.name_order != sort_map.name_order) OR (sort_map_new.name_section != sort_map.name_section) LIMIT 1"];;
+    v52 = [connectionCopy executeQuery:@"SELECT sort_map.name FROM sort_map JOIN sort_map_new ON sort_map.name = sort_map_new.name WHERE (sort_map_new.name_order != sort_map.name_order) OR (sort_map_new.name_section != sort_map.name_section) LIMIT 1"];;
     if ([v52 hasAtLeastOneRow])
     {
       v53 = os_log_create("com.apple.amp.medialibrary", "SortMap");
@@ -12325,45 +12325,45 @@ LABEL_21:
     else
     {
 
-      if (!v5)
+      if (!originalsCopy)
       {
         goto LABEL_60;
       }
     }
   }
 
-  v54 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v139[0] = MEMORY[0x277D85DD0];
   v139[1] = 3221225472;
   v139[2] = __101__ML3MusicLibrary_SortMap__inTransactionUpdateSortMapOnConnection_forceRebuild_forceUpdateOriginals___block_invoke;
   v139[3] = &unk_278761DD0;
   v142 = &v143;
-  v123 = v54;
+  v123 = dictionary;
   v140 = v123;
-  v55 = v7;
+  v55 = connectionCopy;
   v141 = v55;
   [ML3MusicLibrary enumerateSortMapTablesUsingBlock:v139];
-  v56 = [MEMORY[0x277CBEB18] array];
-  v57 = [MEMORY[0x277CBEB18] array];
-  v58 = [MEMORY[0x277CBEB18] array];
-  v59 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v133[0] = MEMORY[0x277D85DD0];
   v133[1] = 3221225472;
   v133[2] = __101__ML3MusicLibrary_SortMap__inTransactionUpdateSortMapOnConnection_forceRebuild_forceUpdateOriginals___block_invoke_2;
   v133[3] = &unk_278761DF8;
-  v121 = v56;
+  v121 = array;
   v134 = v121;
-  v135 = self;
-  v60 = v57;
+  selfCopy = self;
+  v60 = array2;
   v136 = v60;
-  v61 = v58;
+  v61 = array3;
   v137 = v61;
-  v122 = v59;
+  v122 = array4;
   v138 = v122;
   [v123 enumerateKeysAndObjectsUsingBlock:v133];
   v62 = objc_alloc_init(ML3ItemTable);
-  v63 = [(ML3ItemTable *)v62 columns];
-  v64 = [v63 valueForKey:@"name"];
+  columns = [(ML3ItemTable *)v62 columns];
+  v64 = [columns valueForKey:@"name"];
 
   v131 = 0u;
   v132 = 0u;
@@ -12493,15 +12493,15 @@ LABEL_60:
   if (v144[3])
   {
 LABEL_100:
-    v88 = [v7 executeUpdate:@"DROP TABLE IF EXISTS sort_map;"];
+    v88 = [connectionCopy executeUpdate:@"DROP TABLE IF EXISTS sort_map;"];
     *(v144 + 24) = v88;
     if (v88)
     {
-      v89 = [v7 executeUpdate:@"ALTER TABLE sort_map_new RENAME TO sort_map;"];
+      v89 = [connectionCopy executeUpdate:@"ALTER TABLE sort_map_new RENAME TO sort_map;"];
       *(v144 + 24) = v89;
       if (v89)
       {
-        v90 = [v7 executeUpdate:@"CREATE INDEX IF NOT EXISTS SortMapSortKeys ON sort_map (sort_key ASC);"];
+        v90 = [connectionCopy executeUpdate:@"CREATE INDEX IF NOT EXISTS SortMapSortKeys ON sort_map (sort_key ASC);"];
         *(v144 + 24) = v90;
         if (v90)
         {
@@ -12524,9 +12524,9 @@ LABEL_101:
       v93 = ML3LocalizationLanguageCanonicalIdentifier();
       v94 = [v92 stringWithFormat:@"INSERT OR REPLACE INTO _MLDatabaseProperties (key, value) VALUES ('OrderingLanguage', '%@')", v93];
 
-      v95 = [v7 executeUpdate:v94];
+      v95 = [connectionCopy executeUpdate:v94];
       *(v144 + 24) = v95;
-      if (!v95 || (v96 = [v7 executeUpdate:@"UPDATE item_artist SET grouping_key = iPhoneGroupingKey((CASE LENGTH(series_name) WHEN 0 THEN item_artist ELSE series_name END))"], *(v144 + 24) = v96, !v96) || (v97 = objc_msgSend(v7, "executeUpdate:", @"UPDATE album_artist SET grouping_key = iPhoneGroupingKey(album_artist), sort_order = IFNULL((SELECT name_order FROM sort_map WHERE name = IFNULL(album_artist.sort_album_artist, ML3SortString(album_artist.album_artist))), 0), sort_order_section = IFNULL((SELECT name_section FROM sort_map WHERE name = IFNULL(album_artist.sort_album_artist, ML3SortString(album_artist.album_artist))), 0), name_order = IFNULL((SELECT name_order FROM sort_map WHERE name = IFNULL(album_artist.album_artist, '')), 0)"), *(v144 + 24) = v97, !v97) || (v98 = objc_msgSend(v7, "executeUpdate:", @"UPDATE album SET grouping_key = iPhoneGroupingKey(album)"), *(v144 + 24) = v98, !v98) || (v99 = objc_msgSend(v7, "executeUpdate:", @"UPDATE composer SET grouping_key = iPhoneGroupingKey(composer)"), *(v144 + 24) = v99, !v99) || (v100 = objc_msgSend(v7, "executeUpdate:", @"UPDATE genre SET grouping_key = iPhoneGroupingKey(genre)"), *(v144 + 24) = v100, (v100 & 1) == 0))
+      if (!v95 || (v96 = [connectionCopy executeUpdate:@"UPDATE item_artist SET grouping_key = iPhoneGroupingKey((CASE LENGTH(series_name) WHEN 0 THEN item_artist ELSE series_name END))"], *(v144 + 24) = v96, !v96) || (v97 = objc_msgSend(connectionCopy, "executeUpdate:", @"UPDATE album_artist SET grouping_key = iPhoneGroupingKey(album_artist), sort_order = IFNULL((SELECT name_order FROM sort_map WHERE name = IFNULL(album_artist.sort_album_artist, ML3SortString(album_artist.album_artist))), 0), sort_order_section = IFNULL((SELECT name_section FROM sort_map WHERE name = IFNULL(album_artist.sort_album_artist, ML3SortString(album_artist.album_artist))), 0), name_order = IFNULL((SELECT name_order FROM sort_map WHERE name = IFNULL(album_artist.album_artist, '')), 0)"), *(v144 + 24) = v97, !v97) || (v98 = objc_msgSend(connectionCopy, "executeUpdate:", @"UPDATE album SET grouping_key = iPhoneGroupingKey(album)"), *(v144 + 24) = v98, !v98) || (v99 = objc_msgSend(connectionCopy, "executeUpdate:", @"UPDATE composer SET grouping_key = iPhoneGroupingKey(composer)"), *(v144 + 24) = v99, !v99) || (v100 = objc_msgSend(connectionCopy, "executeUpdate:", @"UPDATE genre SET grouping_key = iPhoneGroupingKey(genre)"), *(v144 + 24) = v100, (v100 & 1) == 0))
       {
         v101 = os_log_create("com.apple.amp.medialibrary", "SortMap");
         if (os_log_type_enabled(v101, OS_LOG_TYPE_ERROR))
@@ -12538,19 +12538,19 @@ LABEL_101:
 
       if (v144[3])
       {
-        v102 = [(ML3MusicLibrary *)self _systemUnicodeVersionData];
+        _systemUnicodeVersionData = [(ML3MusicLibrary *)self _systemUnicodeVersionData];
         v103 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT value FROM _MLDatabaseProperties WHERE key = '%@'", @"MLSortMapUnicodeVersion"];
-        v104 = [v7 executeQuery:v103];
-        v105 = [v104 objectForFirstRowAndColumn];
+        v104 = [connectionCopy executeQuery:v103];
+        objectForFirstRowAndColumn = [v104 objectForFirstRowAndColumn];
 
-        if ([v102 isEqualToData:v105])
+        if ([_systemUnicodeVersionData isEqualToData:objectForFirstRowAndColumn])
         {
 LABEL_90:
           v113 = [MEMORY[0x277CCACA8] stringWithFormat:@"INSERT OR REPLACE INTO _MLDatabaseProperties (key, value) VALUES (?, ?)"];
           v149[0] = @"MLSortMapUnicodeVersion";
-          v149[1] = v102;
+          v149[1] = _systemUnicodeVersionData;
           v114 = [MEMORY[0x277CBEA60] arrayWithObjects:v149 count:2];
-          v115 = [v7 executeUpdate:v113 withParameters:v114 error:0];
+          v115 = [connectionCopy executeUpdate:v113 withParameters:v114 error:0];
           *(v144 + 24) = v115;
 
           if ((v144[3] & 1) == 0)
@@ -12573,8 +12573,8 @@ LABEL_90:
           _os_log_impl(&dword_22D2FA000, v106, OS_LOG_TYPE_ERROR, "Unicode version has changed after sort map update. Coalescing mismatched collections...", buf, 2u);
         }
 
-        [ML3Collection removeOrphanedCollectionsInLibrary:self usingConnection:v7];
-        v107 = [(ML3MusicLibrary *)self coalesceMismatchedCollectionsUsingConnection:v7];
+        [ML3Collection removeOrphanedCollectionsInLibrary:self usingConnection:connectionCopy];
+        v107 = [(ML3MusicLibrary *)self coalesceMismatchedCollectionsUsingConnection:connectionCopy];
         v108 = _ML3LogCategorySortMap();
         v109 = v108;
         if (v107)
@@ -12683,9 +12683,9 @@ void __101__ML3MusicLibrary_SortMap__inTransactionUpdateSortMapOnConnection_forc
   [v21 addObject:v22];
 }
 
-- (BOOL)updateSortMapOnConnection:(id)a3 forceUpdateOriginals:(BOOL)a4
+- (BOOL)updateSortMapOnConnection:(id)connection forceUpdateOriginals:(BOOL)originals
 {
-  v6 = a3;
+  connectionCopy = connection;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -12695,8 +12695,8 @@ void __101__ML3MusicLibrary_SortMap__inTransactionUpdateSortMapOnConnection_forc
   v10[2] = __75__ML3MusicLibrary_SortMap__updateSortMapOnConnection_forceUpdateOriginals___block_invoke;
   v10[3] = &unk_278761DA8;
   v10[4] = self;
-  v7 = v6;
-  v13 = a4;
+  v7 = connectionCopy;
+  originalsCopy = originals;
   v11 = v7;
   v12 = &v14;
   [v7 performTransactionWithBlock:v10];
@@ -12721,16 +12721,16 @@ uint64_t __75__ML3MusicLibrary_SortMap__updateSortMapOnConnection_forceUpdateOri
   return *(*(*(a1 + 48) + 8) + 24);
 }
 
-- (id)genreForGenre:(id)a3
+- (id)genreForGenre:(id)genre
 {
-  v4 = a3;
+  genreCopy = genre;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7680;
   v17 = __Block_byref_object_dispose__7681;
   v18 = 0;
-  v5 = [(ML3MusicLibrary *)self groupingKeyForString:v4];
+  v5 = [(ML3MusicLibrary *)self groupingKeyForString:genreCopy];
   v6 = v5;
   if (v5)
   {
@@ -12738,7 +12738,7 @@ uint64_t __75__ML3MusicLibrary_SortMap__updateSortMapOnConnection_forceUpdateOri
     v9[1] = 3221225472;
     v9[2] = __52__ML3MusicLibrary_ML3GenreAdditions__genreForGenre___block_invoke;
     v9[3] = &unk_278763398;
-    v11 = self;
+    selfCopy = self;
     v12 = &v13;
     v10 = v5;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v9];
@@ -12777,16 +12777,16 @@ void __52__ML3MusicLibrary_ML3GenreAdditions__genreForGenre___block_invoke(void 
   }
 }
 
-- (id)composerForComposerName:(id)a3
+- (id)composerForComposerName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__9512;
   v17 = __Block_byref_object_dispose__9513;
   v18 = 0;
-  v5 = [(ML3MusicLibrary *)self groupingKeyForString:v4];
+  v5 = [(ML3MusicLibrary *)self groupingKeyForString:nameCopy];
   v6 = v5;
   if (v5)
   {
@@ -12794,7 +12794,7 @@ void __52__ML3MusicLibrary_ML3GenreAdditions__genreForGenre___block_invoke(void 
     v9[1] = 3221225472;
     v9[2] = __65__ML3MusicLibrary_ML3ComposerAdditions__composerForComposerName___block_invoke;
     v9[3] = &unk_278763398;
-    v11 = self;
+    selfCopy = self;
     v12 = &v13;
     v10 = v5;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v9];
@@ -12833,16 +12833,16 @@ void __65__ML3MusicLibrary_ML3ComposerAdditions__composerForComposerName___block
   }
 }
 
-- (id)albumArtistForEffectiveAlbumArtistName:(id)a3
+- (id)albumArtistForEffectiveAlbumArtistName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__9635;
   v17 = __Block_byref_object_dispose__9636;
   v18 = 0;
-  v5 = [(ML3MusicLibrary *)self groupingKeyForString:v4];
+  v5 = [(ML3MusicLibrary *)self groupingKeyForString:nameCopy];
   v6 = v5;
   if (v5)
   {
@@ -12850,7 +12850,7 @@ void __65__ML3MusicLibrary_ML3ComposerAdditions__composerForComposerName___block
     v9[1] = 3221225472;
     v9[2] = __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbumArtistName___block_invoke;
     v9[3] = &unk_278763398;
-    v11 = self;
+    selfCopy = self;
     v12 = &v13;
     v10 = v5;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v9];
@@ -12889,22 +12889,22 @@ void __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbum
   }
 }
 
-- (void)_updateSystemPlaylist:(id)a3 withName:(id)a4 usingConnection:(id)a5
+- (void)_updateSystemPlaylist:(id)playlist withName:(id)name usingConnection:(id)connection
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && v8)
+  playlistCopy = playlist;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (playlistCopy && nameCopy)
   {
-    v23[0] = v8;
+    v23[0] = nameCopy;
     v10 = MEMORY[0x277CCABB0];
-    v11 = a5;
-    v12 = [v10 numberWithLongLong:{objc_msgSend(v7, "persistentID")}];
+    connectionCopy = connection;
+    v12 = [v10 numberWithLongLong:{objc_msgSend(playlistCopy, "persistentID")}];
     v23[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v18 = 0;
-    v14 = [v11 executeUpdate:@"UPDATE container SET name = ? WHERE container_pid = ?" withParameters:v13 error:&v18];
+    v14 = [connectionCopy executeUpdate:@"UPDATE container SET name = ? WHERE container_pid = ?" withParameters:v13 error:&v18];
 
     v15 = v18;
     if ((v14 & 1) == 0)
@@ -12912,9 +12912,9 @@ void __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbum
       v16 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [v7 persistentID];
+        persistentID = [playlistCopy persistentID];
         *buf = 134218242;
-        v20 = v17;
+        v20 = persistentID;
         v21 = 2114;
         v22 = v9;
         _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_ERROR, "Failed to update name of container %lld (%{public}@)", buf, 0x16u);
@@ -12935,9 +12935,9 @@ void __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbum
   [(ML3MusicLibrary *)self setValue:v3 forDatabaseProperty:@"OrderingLanguage"];
 }
 
-- (BOOL)updateSystemPlaylistNamesForCurrentLanguageUsingConnection:(id)a3
+- (BOOL)updateSystemPlaylistNamesForCurrentLanguageUsingConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"GENIUS_PLAYLIST_NAME" value:&stru_28408B690 table:@"MLLocalizable"];
   v7 = v6;
@@ -12956,7 +12956,7 @@ void __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbum
   v10 = [ML3ComparisonPredicate predicateWithProperty:@"(container.is_container_type_active_target AND container.smart_is_genius)" equalToInteger:1];
   v11 = [(ML3Entity *)ML3Container anyInLibrary:self predicate:v10];
 
-  [(ML3MusicLibrary *)self _updateSystemPlaylist:v11 withName:v9 usingConnection:v4];
+  [(ML3MusicLibrary *)self _updateSystemPlaylist:v11 withName:v9 usingConnection:connectionCopy];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"ON_THE_GO_PLAYLIST_NAME" value:&stru_28408B690 table:@"MLLocalizable"];
   v14 = v13;
@@ -12975,7 +12975,7 @@ void __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbum
   v17 = [ML3ComparisonPredicate predicateWithProperty:@"(container.is_container_type_active_target AND (container.container_type = 2))" equalToInteger:1];
   v18 = [(ML3Entity *)ML3Container anyInLibrary:self predicate:v17];
 
-  [(ML3MusicLibrary *)self _updateSystemPlaylist:v18 withName:v16 usingConnection:v4];
+  [(ML3MusicLibrary *)self _updateSystemPlaylist:v18 withName:v16 usingConnection:connectionCopy];
   v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v20 = [v19 localizedStringForKey:@"PLAYBACK_HISTORY_PLAYLIST_NAME" value:&stru_28408B690 table:@"MLLocalizable"];
   v21 = v20;
@@ -12991,18 +12991,18 @@ void __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbum
 
   v23 = v22;
 
-  v24 = [(ML3MusicLibrary *)self currentDevicePlaybackHistoryPlaylist];
+  currentDevicePlaybackHistoryPlaylist = [(ML3MusicLibrary *)self currentDevicePlaybackHistoryPlaylist];
 
-  [(ML3MusicLibrary *)self _updateSystemPlaylist:v24 withName:v23 usingConnection:v4];
+  [(ML3MusicLibrary *)self _updateSystemPlaylist:currentDevicePlaybackHistoryPlaylist withName:v23 usingConnection:connectionCopy];
   [ML3Container updateBuiltInSmartPlaylistNamesForCurrentLanguageInLibrary:self];
 
   return 1;
 }
 
-- (int64_t)_clearPurgeableTracksOfAmount:(int64_t)a3 withUrgency:(unint64_t)a4 includeCloudAssets:(BOOL)a5 includeAutoFilledTracks:(BOOL)a6
+- (int64_t)_clearPurgeableTracksOfAmount:(int64_t)amount withUrgency:(unint64_t)urgency includeCloudAssets:(BOOL)assets includeAutoFilledTracks:(BOOL)tracks
 {
-  v6 = a6;
-  v7 = a5;
+  tracksCopy = tracks;
+  assetsCopy = assets;
   v36 = *MEMORY[0x277D85DE8];
   v30 = 0;
   v31 = &v30;
@@ -13017,8 +13017,8 @@ void __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbum
   v26[4] = self;
   v12 = v11;
   v27 = v12;
-  v29 = a3;
-  [(ML3MusicLibrary *)self _enumeratePurgeableTracksForUrgency:a4 includeAutoFilledTracks:v6 includeCloudAssets:v7 usingBlock:v26];
+  amountCopy = amount;
+  [(ML3MusicLibrary *)self _enumeratePurgeableTracksForUrgency:urgency includeAutoFilledTracks:tracksCopy includeCloudAssets:assetsCopy usingBlock:v26];
   if ([v12 count] && !+[ML3Track unlinkRedownloadableAssetsFromLibrary:persistentIDs:](ML3Track, "unlinkRedownloadableAssetsFromLibrary:persistentIDs:", self, v12))
   {
     v14 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
@@ -13028,8 +13028,8 @@ void __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbum
       _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_ERROR, "Failed to purge redownloadable assets", buf, 2u);
     }
 
-    v15 = [(ML3MusicLibrary *)self _clearAllCloudAssets];
-    v31[3] += v15;
+    _clearAllCloudAssets = [(ML3MusicLibrary *)self _clearAllCloudAssets];
+    v31[3] += _clearAllCloudAssets;
     v13 = [ML3Track unlinkRedownloadableAssetsFromLibrary:self persistentIDs:v12];
   }
 
@@ -13038,7 +13038,7 @@ void __83__ML3MusicLibrary_ML3AlbumArtistAdditions__albumArtistForEffectiveAlbum
     v13 = 1;
   }
 
-  if (a4 == 3 && v13 && [v12 count])
+  if (urgency == 3 && v13 && [v12 count])
   {
     v16 = [&stru_28408B690 stringByPaddingToLength:2 * objc_msgSend(v12 withString:"count") - 1 startingAtIndex:{@", ?", 1}];
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"UPDATE item SET keep_local=%d WHERE item_pid IN (%@)", 0, v16];
@@ -13118,27 +13118,27 @@ void __121__ML3MusicLibrary_CacheManagement___clearPurgeableTracksOfAmount_withU
   }
 }
 
-- (int64_t)_clearOrphanedAssetsOfAmount:(int64_t)a3 withUrgency:(unint64_t)a4
+- (int64_t)_clearOrphanedAssetsOfAmount:(int64_t)amount withUrgency:(unint64_t)urgency
 {
   v18 = *MEMORY[0x277D85DE8];
   v7 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 67109120;
-    LODWORD(v17) = a4;
+    LODWORD(v17) = urgency;
     _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "Clearing orphaned assets with urgency %d", &v16, 8u);
   }
 
-  if (a4 < 2)
+  if (urgency < 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [(ML3MusicLibrary *)self _cloudAssetsTotalSize];
+    _cloudAssetsTotalSize = [(ML3MusicLibrary *)self _cloudAssetsTotalSize];
     [(ML3MusicLibrary *)self removeOrphanedTracksOnlyInCaches:1];
-    v9 = v8 - [(ML3MusicLibrary *)self _cloudAssetsTotalSize];
+    v9 = _cloudAssetsTotalSize - [(ML3MusicLibrary *)self _cloudAssetsTotalSize];
     v10 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -13147,11 +13147,11 @@ void __121__ML3MusicLibrary_CacheManagement___clearPurgeableTracksOfAmount_withU
       _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "Removed %lld bytes of orphaned tracks", &v16, 0xCu);
     }
 
-    if (v9 < a3)
+    if (v9 < amount)
     {
-      v11 = [(ML3MusicLibrary *)self totalSizeForArtwork];
+      totalSizeForArtwork = [(ML3MusicLibrary *)self totalSizeForArtwork];
       [(ML3MusicLibrary *)self cleanupArtworkWithOptions:30];
-      v12 = v11 - [(ML3MusicLibrary *)self totalSizeForArtwork];
+      v12 = totalSizeForArtwork - [(ML3MusicLibrary *)self totalSizeForArtwork];
       v9 += v12;
       v13 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -13184,8 +13184,8 @@ void __121__ML3MusicLibrary_CacheManagement___clearPurgeableTracksOfAmount_withU
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEFAULT, "Purging all cloud assets", buf, 2u);
   }
 
-  v4 = [(ML3MusicLibrary *)self _cloudAssetsTotalSize];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  _cloudAssetsTotalSize = [(ML3MusicLibrary *)self _cloudAssetsTotalSize];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = [(ML3MusicLibrary *)self pathForBaseLocationPath:200];
   v23[0] = v6;
   v7 = [(ML3MusicLibrary *)self pathForBaseLocationPath:100];
@@ -13212,7 +13212,7 @@ void __121__ML3MusicLibrary_CacheManagement___clearPurgeableTracksOfAmount_withU
           objc_enumerationMutation(v9);
         }
 
-        [v5 removeItemAtPath:*(*(&v16 + 1) + 8 * v13++) error:{0, v16}];
+        [defaultManager removeItemAtPath:*(*(&v16 + 1) + 8 * v13++) error:{0, v16}];
       }
 
       while (v11 != v13);
@@ -13226,11 +13226,11 @@ void __121__ML3MusicLibrary_CacheManagement___clearPurgeableTracksOfAmount_withU
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = v4;
+    v21 = _cloudAssetsTotalSize;
     _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_DEFAULT, "Removed %lld bytes clearing cloud assets", buf, 0xCu);
   }
 
-  return v4;
+  return _cloudAssetsTotalSize;
 }
 
 - (int64_t)_clearDatabaseFileFreeSpace
@@ -13354,14 +13354,14 @@ void __63__ML3MusicLibrary_CacheManagement___allKeepLocalPlaylistTracks__block_i
   [v2 addObject:v3];
 }
 
-- (id)_purgeableTrackPredicateWithUrgency:(unint64_t)a3 includeAutoFilledTracks:(BOOL)a4 includeCloudAssets:(BOOL)a5
+- (id)_purgeableTrackPredicateWithUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks includeCloudAssets:(BOOL)assets
 {
-  v5 = a5;
+  assetsCopy = assets;
   v59 = *MEMORY[0x277D85DE8];
   v48 = [ML3ComparisonPredicate predicateWithProperty:@"item_stats.chosen_by_auto_fill" equalToInteger:1];
-  v9 = [(ML3MusicLibrary *)self _notInKeepLocalCollectionPredicate];
+  _notInKeepLocalCollectionPredicate = [(ML3MusicLibrary *)self _notInKeepLocalCollectionPredicate];
   v10 = [ML3ComparisonPredicate predicateWithProperty:@"(item.remote_location_id >= 50 AND item.remote_location_id < 300)" equalToInteger:1];
-  if (v5)
+  if (assetsCopy)
   {
     v11 = 6;
   }
@@ -13375,12 +13375,12 @@ void __63__ML3MusicLibrary_CacheManagement___allKeepLocalPlaylistTracks__block_i
   [ML3ComparisonPredicate predicateWithProperty:@"keep_local" value:&unk_2840C93E0 comparison:6];
   v57[0] = v10;
   v57[1] = v12;
-  v58 = v57[2] = v9;
+  v58 = v57[2] = _notInKeepLocalCollectionPredicate;
   v47 = v58;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:4];
   v14 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v13];
 
-  if (a4)
+  if (tracks)
   {
     v56[0] = v48;
     v56[1] = v14;
@@ -13396,9 +13396,9 @@ void __63__ML3MusicLibrary_CacheManagement___allKeepLocalPlaylistTracks__block_i
   v17 = 0x27875C000uLL;
   v45 = v16;
   v46 = v14;
-  if (a3 - 1 >= 2)
+  if (urgency - 1 >= 2)
   {
-    if (a3 == 3)
+    if (urgency == 3)
     {
       if (MSVDeviceIsWatch())
       {
@@ -13416,11 +13416,11 @@ void __63__ML3MusicLibrary_CacheManagement___allKeepLocalPlaylistTracks__block_i
       v31 = v12;
       v32 = [ML3ComparisonPredicate predicateWithProperty:@"keep_local" equalToInt64:3];
       v52[0] = v32;
-      v52[1] = v9;
+      v52[1] = _notInKeepLocalCollectionPredicate;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:2];
       v34 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v33];
 
-      if (a4)
+      if (tracks)
       {
         v51[0] = v48;
         v51[1] = v34;
@@ -13440,7 +13440,7 @@ void __63__ML3MusicLibrary_CacheManagement___allKeepLocalPlaylistTracks__block_i
   else
   {
     v18 = v16;
-    if (a3 == 1)
+    if (urgency == 1)
     {
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       v20 = [MEMORY[0x277CCABB0] numberWithDouble:v19 + -3600.0];
@@ -13503,13 +13503,13 @@ void __63__ML3MusicLibrary_CacheManagement___allKeepLocalPlaylistTracks__block_i
   return v41;
 }
 
-- (void)_enumeratePurgeableTracksForUrgency:(unint64_t)a3 includeAutoFilledTracks:(BOOL)a4 includeCloudAssets:(BOOL)a5 usingBlock:(id)a6
+- (void)_enumeratePurgeableTracksForUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks includeCloudAssets:(BOOL)assets usingBlock:(id)block
 {
-  v6 = a5;
-  v7 = a4;
+  assetsCopy = assets;
+  tracksCopy = tracks;
   v27[2] = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = [(ML3MusicLibrary *)self _purgeableTrackPredicateWithUrgency:a3 includeAutoFilledTracks:v7 includeCloudAssets:v6];
+  blockCopy = block;
+  v11 = [(ML3MusicLibrary *)self _purgeableTrackPredicateWithUrgency:urgency includeAutoFilledTracks:tracksCopy includeCloudAssets:assetsCopy];
   if (v11)
   {
     v12 = [MEMORY[0x277CBEA60] arrayWithObject:@"item_extra.file_size"];
@@ -13521,11 +13521,11 @@ void __63__ML3MusicLibrary_CacheManagement___allKeepLocalPlaylistTracks__block_i
     v16 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:self predicate:v11 orderingTerms:v15];
 
     v17 = [MEMORY[0x277CBEB98] set];
-    if (![(ML3MusicLibrary *)self _unmanagedPurgeShouldPurgeKeepLocalTracksForUrgency:a3])
+    if (![(ML3MusicLibrary *)self _unmanagedPurgeShouldPurgeKeepLocalTracksForUrgency:urgency])
     {
-      v18 = [(ML3MusicLibrary *)self _allKeepLocalPlaylistTracks];
+      _allKeepLocalPlaylistTracks = [(ML3MusicLibrary *)self _allKeepLocalPlaylistTracks];
 
-      v17 = v18;
+      v17 = _allKeepLocalPlaylistTracks;
     }
 
     v22[0] = MEMORY[0x277D85DD0];
@@ -13535,7 +13535,7 @@ void __63__ML3MusicLibrary_CacheManagement___allKeepLocalPlaylistTracks__block_i
     v23 = v16;
     v24 = v12;
     v25 = v17;
-    v26 = v10;
+    v26 = blockCopy;
     v19 = v17;
     v20 = v12;
     v21 = v16;
@@ -13590,7 +13590,7 @@ void __126__ML3MusicLibrary_CacheManagement___enumeratePurgeableTracksForUrgency
   }
 }
 
-- (int64_t)_purgeableTracksTotalSizeWithUrgency:(unint64_t)a3 includeAutoFilledTracks:(BOOL)a4
+- (int64_t)_purgeableTracksTotalSizeWithUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks
 {
   v15 = *MEMORY[0x277D85DE8];
   v9 = 0;
@@ -13602,7 +13602,7 @@ void __126__ML3MusicLibrary_CacheManagement___enumeratePurgeableTracksForUrgency
   v8[2] = __97__ML3MusicLibrary_CacheManagement___purgeableTracksTotalSizeWithUrgency_includeAutoFilledTracks___block_invoke;
   v8[3] = &unk_278763610;
   v8[4] = &v9;
-  [(ML3MusicLibrary *)self _enumeratePurgeableTracksForUrgency:a3 includeAutoFilledTracks:a4 includeCloudAssets:1 usingBlock:v8];
+  [(ML3MusicLibrary *)self _enumeratePurgeableTracksForUrgency:urgency includeAutoFilledTracks:tracks includeCloudAssets:1 usingBlock:v8];
   v4 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -13617,30 +13617,30 @@ void __126__ML3MusicLibrary_CacheManagement___enumeratePurgeableTracksForUrgency
   return v6;
 }
 
-- (void)_enumeratePurgeableAlbumTracksForUrgency:(unint64_t)a3 usingBlock:(id)a4
+- (void)_enumeratePurgeableAlbumTracksForUrgency:(unint64_t)urgency usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
-  v18[3] = [(ML3MusicLibrary *)self _minimumPurgeableStorageForUrgency:a3];
+  v18[3] = [(ML3MusicLibrary *)self _minimumPurgeableStorageForUrgency:urgency];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
   v17[3] = [(ML3MusicLibrary *)self totalSizeForAllNonCacheTracks];
-  v7 = [(ML3MusicLibrary *)self _purgeableNonCachedItemsPredicateSQL];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT item_pid, item_extra.file_size FROM item JOIN item_stats USING (item_pid) JOIN item_extra USING (item_pid) WHERE album_pid = ? AND (%@)", v7];
+  _purgeableNonCachedItemsPredicateSQL = [(ML3MusicLibrary *)self _purgeableNonCachedItemsPredicateSQL];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT item_pid, item_extra.file_size FROM item JOIN item_stats USING (item_pid) JOIN item_extra USING (item_pid) WHERE album_pid = ? AND (%@)", _purgeableNonCachedItemsPredicateSQL];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__ML3MusicLibrary_CacheManagement___enumeratePurgeableAlbumTracksForUrgency_usingBlock___block_invoke;
   v11[3] = &unk_2787637E8;
   v11[4] = self;
-  v16 = a3;
+  urgencyCopy = urgency;
   v9 = v8;
   v12 = v9;
   v14 = v17;
   v15 = v18;
-  v10 = v6;
+  v10 = blockCopy;
   v13 = v10;
   [(ML3MusicLibrary *)self performReadOnlyDatabaseTransactionWithBlock:v11];
 
@@ -13748,12 +13748,12 @@ void __88__ML3MusicLibrary_CacheManagement___enumeratePurgeableAlbumTracksForUrg
   *(*(*(a1 + 40) + 8) + 24) += v5;
 }
 
-- (void)_enumeratePurgeableStreamedTracksForUrgency:(unint64_t)a3 usingBlock:(id)a4
+- (void)_enumeratePurgeableStreamedTracksForUrgency:(unint64_t)urgency usingBlock:(id)block
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v7 = [ML3ComparisonPredicate predicateWithProperty:@"(item.base_location_id BETWEEN 100 AND 200)" equalToInteger:1];
-  if (a3 <= 1)
+  if (urgency <= 1)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:v8 + -3600.0];
@@ -13781,8 +13781,8 @@ void __88__ML3MusicLibrary_CacheManagement___enumeratePurgeableAlbumTracksForUrg
   v21[3] = &unk_278763798;
   v22 = v17;
   v23 = v16;
-  v24 = v6;
-  v18 = v6;
+  v24 = blockCopy;
+  v18 = blockCopy;
   v19 = v16;
   v20 = v17;
   [(ML3MusicLibrary *)self performReadOnlyDatabaseTransactionWithBlock:v21];
@@ -13828,18 +13828,18 @@ uint64_t __91__ML3MusicLibrary_CacheManagement___enumeratePurgeableStreamedTrack
   return result;
 }
 
-- (id)_purgeableAlbumsQuerySQLWithUrgency:(unint64_t)a3
+- (id)_purgeableAlbumsQuerySQLWithUrgency:(unint64_t)urgency
 {
   v5 = [(ML3MusicLibrary *)self _nonPurgeableAlbumsQuerySQLWithUrgency:?];
-  v6 = [(ML3MusicLibrary *)self _purgeableItemsPredicateSQLWithUrgency:a3];
+  v6 = [(ML3MusicLibrary *)self _purgeableItemsPredicateSQLWithUrgency:urgency];
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT album_pid, max(max(date_accessed), max(date_added), max(date_played)) AS date_accessed, max(liked_state = 2) AS liked_state FROM item JOIN item_stats USING (item_pid) JOIN item_extra USING (item_pid) WHERE album_pid NOT IN (%@) AND (%@) GROUP BY album_pid ORDER BY liked_state, date_accessed", v5, v6];
 
   return v7;
 }
 
-- (id)_nonPurgeableAlbumsQuerySQLWithUrgency:(unint64_t)a3
+- (id)_nonPurgeableAlbumsQuerySQLWithUrgency:(unint64_t)urgency
 {
-  if (a3 >= 2)
+  if (urgency >= 2)
   {
     return @"SELECT DISTINCT album_pid FROM item JOIN item_store USING (item_pid) JOIN item_extra USING (item_pid) JOIN item_stats USING (item_pid) WHERE (item.base_location_id > 0 AND item.remote_location_id < 200) OR (item.base_location_id = 0 AND item.keep_local_status = 1)";
   }
@@ -13850,23 +13850,23 @@ uint64_t __91__ML3MusicLibrary_CacheManagement___enumeratePurgeableStreamedTrack
   }
 }
 
-- (unint64_t)_managedClearPurgeableTracksOfAmount:(unint64_t)a3 urgency:(unint64_t)a4
+- (unint64_t)_managedClearPurgeableTracksOfAmount:(unint64_t)amount urgency:(unint64_t)urgency
 {
   v45 = *MEMORY[0x277D85DE8];
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount_urgency___block_invoke;
   v29[3] = &unk_278763660;
-  v8 = v7;
+  v8 = array;
   v30 = v8;
   v31 = &v33;
-  v32 = a3;
-  [(ML3MusicLibrary *)self _enumeratePurgeableStreamedTracksForUrgency:a4 usingBlock:v29];
+  amountCopy = amount;
+  [(ML3MusicLibrary *)self _enumeratePurgeableStreamedTracksForUrgency:urgency usingBlock:v29];
   v9 = [ML3Track unlinkRedownloadableAssetsFromLibrary:self persistentIDs:v8];
   v10 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
   v11 = v10;
@@ -13898,26 +13898,26 @@ uint64_t __91__ML3MusicLibrary_CacheManagement___enumeratePurgeableStreamedTrack
     v34[3] = 0;
   }
 
-  if (v13 < a3)
+  if (v13 < amount)
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v42 = __Block_byref_object_copy__13882;
     v43 = __Block_byref_object_dispose__13883;
-    v44 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v23 = 0;
     v24 = &v23;
     v25 = 0x3032000000;
     v26 = __Block_byref_object_copy__13882;
     v27 = __Block_byref_object_dispose__13883;
-    v28 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v21[0] = 0;
     v21[1] = v21;
     v21[2] = 0x3032000000;
     v21[3] = __Block_byref_object_copy__13882;
     v21[4] = __Block_byref_object_dispose__13883;
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount_urgency___block_invoke_38;
@@ -13926,17 +13926,17 @@ uint64_t __91__ML3MusicLibrary_CacheManagement___enumeratePurgeableStreamedTrack
     v20[5] = v21;
     v20[6] = &v23;
     v20[7] = buf;
-    v20[8] = a4;
-    [(ML3MusicLibrary *)self _enumeratePurgeableAlbumTracksForUrgency:a4 usingBlock:v20];
-    v14 = [v24[5] allKeys];
+    v20[8] = urgency;
+    [(ML3MusicLibrary *)self _enumeratePurgeableAlbumTracksForUrgency:urgency usingBlock:v20];
+    allKeys = [v24[5] allKeys];
     v15 = os_log_create("com.apple.amp.medialibrary", "CacheManagement_Oversize");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v14 count];
+      v16 = [allKeys count];
       *v37 = 134218242;
       v38 = v16;
       v39 = 2114;
-      v40 = v14;
+      v40 = allKeys;
       _os_log_impl(&dword_22D2FA000, v15, OS_LOG_TYPE_DEFAULT, "Found %lu albums to purge %{public}@", v37, 0x16u);
     }
 
@@ -13949,8 +13949,8 @@ uint64_t __91__ML3MusicLibrary_CacheManagement___enumeratePurgeableStreamedTrack
     v19[5] = v21;
     v19[6] = &v33;
     v19[7] = buf;
-    v19[8] = a4;
-    v19[9] = a3;
+    v19[8] = urgency;
+    v19[9] = amount;
     [v17 enumerateKeysAndObjectsUsingBlock:v19];
     v13 = v34[3];
 
@@ -14168,7 +14168,7 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
   }
 }
 
-- (unint64_t)_managedPurgeableTracksTotalSizeWithUrgency:(unint64_t)a3
+- (unint64_t)_managedPurgeableTracksTotalSizeWithUrgency:(unint64_t)urgency
 {
   v19 = *MEMORY[0x277D85DE8];
   v13 = 0;
@@ -14180,7 +14180,7 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
   v12[2] = __80__ML3MusicLibrary_CacheManagement___managedPurgeableTracksTotalSizeWithUrgency___block_invoke;
   v12[3] = &unk_278763610;
   v12[4] = &v13;
-  [(ML3MusicLibrary *)self _enumeratePurgeableStreamedTracksForUrgency:a3 usingBlock:v12];
+  [(ML3MusicLibrary *)self _enumeratePurgeableStreamedTracksForUrgency:urgency usingBlock:v12];
   v5 = v14[3];
   v6 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -14195,7 +14195,7 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
   v11[2] = __80__ML3MusicLibrary_CacheManagement___managedPurgeableTracksTotalSizeWithUrgency___block_invoke_34;
   v11[3] = &unk_278763638;
   v11[4] = &v13;
-  [(ML3MusicLibrary *)self _enumeratePurgeableAlbumTracksForUrgency:a3 usingBlock:v11];
+  [(ML3MusicLibrary *)self _enumeratePurgeableAlbumTracksForUrgency:urgency usingBlock:v11];
   v7 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -14212,8 +14212,8 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
 
 - (unint64_t)totalSizeForArtwork
 {
-  v2 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-  DiskUsageForPath = ML3GetDiskUsageForPath(v2);
+  originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+  DiskUsageForPath = ML3GetDiskUsageForPath(originalArtworkDirectory);
 
   return DiskUsageForPath;
 }
@@ -14278,9 +14278,9 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
   return 0;
 }
 
-- (BOOL)_unmanagedPurgeShouldPurgeKeepLocalTracksForUrgency:(unint64_t)a3
+- (BOOL)_unmanagedPurgeShouldPurgeKeepLocalTracksForUrgency:(unint64_t)urgency
 {
-  if (a3 == 3)
+  if (urgency == 3)
   {
     if (MSVDeviceIsWatch())
     {
@@ -14288,7 +14288,7 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
     }
   }
 
-  else if (a3 < 2)
+  else if (urgency < 2)
   {
     return 0;
   }
@@ -14296,18 +14296,18 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
   return +[ML3MusicLibrary shouldOptimizeStorage];
 }
 
-- (unint64_t)_totalSizeForTracksPredicate:(id)a3
+- (unint64_t)_totalSizeForTracksPredicate:(id)predicate
 {
-  v3 = [(ML3Entity *)ML3Track queryWithLibrary:self predicate:a3];
+  v3 = [(ML3Entity *)ML3Track queryWithLibrary:self predicate:predicate];
   v4 = [v3 valueForAggregateFunction:@"TOTAL" onEntitiesForProperty:@"item_extra.file_size"];
-  v5 = [v4 unsignedLongLongValue];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
-  return v5;
+  return unsignedLongLongValue;
 }
 
-- (unint64_t)_minimumPurgeableStorageForUrgency:(unint64_t)a3
+- (unint64_t)_minimumPurgeableStorageForUrgency:(unint64_t)urgency
 {
-  if (a3 == 3)
+  if (urgency == 3)
   {
     return 0;
   }
@@ -14323,11 +14323,11 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
   v17 = *MEMORY[0x277D85DE8];
   if (MSVDeviceSupportsMultipleLibraries())
   {
-    v3 = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
-    v4 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-    v5 = [(ML3MusicLibrary *)self databasePath];
+    rootArtworkCacheDirectory = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
+    originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+    databasePath = [(ML3MusicLibrary *)self databasePath];
     v6 = +[ML3MusicLibrary autoupdatingSharedLibraryPath];
-    v7 = [v5 isEqualToString:v6];
+    v7 = [databasePath isEqualToString:v6];
 
     v8 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -14335,69 +14335,69 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
     {
       if (v9)
       {
-        v10 = [(ML3MusicLibrary *)self databasePath];
+        databasePath2 = [(ML3MusicLibrary *)self databasePath];
         v13 = 138543619;
-        v14 = self;
+        selfCopy3 = self;
         v15 = 2113;
-        v16 = v10;
+        v16 = databasePath2;
         _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating multi-user artwork purgeability for primary user. path=%{private}@", &v13, 0x16u);
       }
 
       v11 = 4;
-      [(ML3MusicLibrary *)self markSystemPurgeableMusicPath:v3 forUrgency:4];
+      [(ML3MusicLibrary *)self markSystemPurgeableMusicPath:rootArtworkCacheDirectory forUrgency:4];
     }
 
     else
     {
       if (v9)
       {
-        v12 = [(ML3MusicLibrary *)self databasePath];
+        databasePath3 = [(ML3MusicLibrary *)self databasePath];
         v13 = 138543619;
-        v14 = self;
+        selfCopy3 = self;
         v15 = 2113;
-        v16 = v12;
+        v16 = databasePath3;
         _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating multi-user artwork purgeability for non-primary user. path=%{private}@", &v13, 0x16u);
       }
 
       MSVEnableDirStatsForDirectory();
-      [(ML3MusicLibrary *)self markSystemPurgeableMusicPath:v3 forUrgency:0];
+      [(ML3MusicLibrary *)self markSystemPurgeableMusicPath:rootArtworkCacheDirectory forUrgency:0];
       MSVEnableDirStatsForDirectory();
       v11 = 1;
     }
 
-    [(ML3MusicLibrary *)self markSystemPurgeableMusicPath:v4 forUrgency:v11];
+    [(ML3MusicLibrary *)self markSystemPurgeableMusicPath:originalArtworkDirectory forUrgency:v11];
   }
 
   else
   {
-    v3 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    rootArtworkCacheDirectory = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
+    if (os_log_type_enabled(rootArtworkCacheDirectory, OS_LOG_TYPE_ERROR))
     {
       v13 = 138543362;
-      v14 = self;
-      _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_ERROR, "%{public}@ Root artwork purgeability not supported on single-user devices.", &v13, 0xCu);
+      selfCopy3 = self;
+      _os_log_impl(&dword_22D2FA000, rootArtworkCacheDirectory, OS_LOG_TYPE_ERROR, "%{public}@ Root artwork purgeability not supported on single-user devices.", &v13, 0xCu);
     }
   }
 }
 
-- (BOOL)markSystemPurgeableMusicPath:(id)a3 forUrgency:(unint64_t)a4
+- (BOOL)markSystemPurgeableMusicPath:(id)path forUrgency:(unint64_t)urgency
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  pathCopy = path;
+  v7 = pathCopy;
   v21 = 65538;
-  if (a4 <= 2)
+  if (urgency <= 2)
   {
-    if (a4)
+    if (urgency)
     {
-      if (a4 == 1)
+      if (urgency == 1)
       {
         v8 = 66562;
       }
 
       else
       {
-        if (a4 != 2)
+        if (urgency != 2)
         {
           goto LABEL_15;
         }
@@ -14414,7 +14414,7 @@ void __81__ML3MusicLibrary_CacheManagement___managedClearPurgeableTracksOfAmount
     goto LABEL_14;
   }
 
-  switch(a4)
+  switch(urgency)
   {
     case 3uLL:
       v8 = 98306;
@@ -14429,7 +14429,7 @@ LABEL_14:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v23 = self;
+        selfCopy3 = self;
         v10 = "%{public}@ Not marking purgeability for undefined urgency.";
         v11 = v9;
         v12 = 12;
@@ -14443,7 +14443,7 @@ LABEL_19:
   }
 
 LABEL_15:
-  v13 = fsctl([(__CFString *)v6 UTF8String], 0xC0084A44uLL, &v21, 0);
+  v13 = fsctl([(__CFString *)pathCopy UTF8String], 0xC0084A44uLL, &v21, 0);
   v14 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
   v9 = v14;
   if (v13)
@@ -14454,7 +14454,7 @@ LABEL_15:
       v16 = __error();
       v17 = strerror(*v16);
       *buf = 138544131;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2113;
       v25 = v7;
       v26 = 2048;
@@ -14474,31 +14474,31 @@ LABEL_15:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v20 = @"low";
-    if (a4 <= 2)
+    if (urgency <= 2)
     {
-      if (a4 == 1)
+      if (urgency == 1)
       {
         v20 = @"medium";
       }
 
-      else if (a4 == 2)
+      else if (urgency == 2)
       {
         v20 = @"high";
       }
     }
 
-    else if (a4 == 3)
+    else if (urgency == 3)
     {
       v20 = @"special";
     }
 
-    else if (a4 == 4)
+    else if (urgency == 4)
     {
       v20 = @"none";
     }
 
     *buf = 138544131;
-    v23 = self;
+    selfCopy3 = self;
     v24 = 2114;
     v25 = v20;
     v26 = 2113;
@@ -14545,17 +14545,17 @@ LABEL_20:
   return v4;
 }
 
-- (void)enumeratePurgeableAlbumTracksForUrgency:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumeratePurgeableAlbumTracksForUrgency:(unint64_t)urgency usingBlock:(id)block
 {
-  v6 = a4;
-  if ([(ML3MusicLibrary *)self _shouldPurgeManagedAlbumsTracksForUrgency:a3])
+  blockCopy = block;
+  if ([(ML3MusicLibrary *)self _shouldPurgeManagedAlbumsTracksForUrgency:urgency])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __87__ML3MusicLibrary_CacheManagement__enumeratePurgeableAlbumTracksForUrgency_usingBlock___block_invoke;
     v7[3] = &unk_2787635E0;
-    v8 = v6;
-    [(ML3MusicLibrary *)self _enumeratePurgeableAlbumTracksForUrgency:a3 usingBlock:v7];
+    v8 = blockCopy;
+    [(ML3MusicLibrary *)self _enumeratePurgeableAlbumTracksForUrgency:urgency usingBlock:v7];
   }
 }
 
@@ -14571,21 +14571,21 @@ LABEL_20:
   return [(ML3MusicLibrary *)self _clearPurgeableTracksOfAmount:0x7FFFFFFFFFFFFFFFLL withUrgency:2 includeCloudAssets:0 includeAutoFilledTracks:0];
 }
 
-- (int64_t)clearPurgeableStorageAmount:(int64_t)a3 withUrgency:(unint64_t)a4 includeAutoFilledTracks:(BOOL)a5
+- (int64_t)clearPurgeableStorageAmount:(int64_t)amount withUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks
 {
-  v5 = a5;
+  tracksCopy = tracks;
   v27 = *MEMORY[0x277D85DE8];
-  v9 = [(ML3MusicLibrary *)self _shouldPurgeManagedAlbumsTracksForUrgency:a4];
-  v10 = [(ML3MusicLibrary *)self _minimumPurgeableStorageForUrgency:a4];
+  v9 = [(ML3MusicLibrary *)self _shouldPurgeManagedAlbumsTracksForUrgency:urgency];
+  v10 = [(ML3MusicLibrary *)self _minimumPurgeableStorageForUrgency:urgency];
   v11 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 134219008;
-    *v21 = a3;
+    *v21 = amount;
     *&v21[8] = 1024;
-    v22 = a4;
+    urgencyCopy2 = urgency;
     v23 = 1024;
-    *v24 = v5;
+    *v24 = tracksCopy;
     *&v24[4] = 1024;
     *&v24[6] = v9;
     v25 = 2048;
@@ -14594,7 +14594,7 @@ LABEL_20:
   }
 
   IsWatch = MSVDeviceIsWatch();
-  if (a3 < 1)
+  if (amount < 1)
   {
     v13 = 1;
   }
@@ -14611,22 +14611,22 @@ LABEL_20:
 
   else
   {
-    v14 = [(ML3MusicLibrary *)self _clearOrphanedAssetsOfAmount:a3 withUrgency:a4];
+    v14 = [(ML3MusicLibrary *)self _clearOrphanedAssetsOfAmount:amount withUrgency:urgency];
   }
 
   if ([(ML3MusicLibrary *)self currentDatabaseVersion]== 2310000)
   {
     v14 += [(ML3MusicLibrary *)self _clearDatabaseFileFreeSpace];
-    if (v14 < a3)
+    if (v14 < amount)
     {
       if (v9)
       {
-        v15 = [(ML3MusicLibrary *)self _managedClearPurgeableTracksOfAmount:a3 urgency:a4];
+        v15 = [(ML3MusicLibrary *)self _managedClearPurgeableTracksOfAmount:amount urgency:urgency];
       }
 
       else
       {
-        v15 = [(ML3MusicLibrary *)self _clearPurgeableTracksOfAmount:a3 withUrgency:a4 includeAutoFilledTracks:v5];
+        v15 = [(ML3MusicLibrary *)self _clearPurgeableTracksOfAmount:amount withUrgency:urgency includeAutoFilledTracks:tracksCopy];
       }
 
       v14 += v15;
@@ -14638,9 +14638,9 @@ LABEL_20:
     v16 = os_log_create("com.apple.amp.medialibrary", "CacheManagement");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(ML3MusicLibrary *)self currentDatabaseVersion];
+      currentDatabaseVersion = [(ML3MusicLibrary *)self currentDatabaseVersion];
       v20 = 67109376;
-      *v21 = v17;
+      *v21 = currentDatabaseVersion;
       *&v21[4] = 1024;
       strcpy(&v21[6], "p?#");
       _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_ERROR, "Skipping purge for tracks because DB is not present or invalid (db version=%d, current version=%d)", &v20, 0xEu);
@@ -14653,40 +14653,40 @@ LABEL_20:
     v20 = 134218496;
     *v21 = v14;
     *&v21[8] = 1024;
-    v22 = a4;
+    urgencyCopy2 = urgency;
     v23 = 2048;
-    *v24 = a3;
+    *v24 = amount;
     _os_log_impl(&dword_22D2FA000, v18, OS_LOG_TYPE_DEFAULT, "Purged %lld bytes of media data for urgency %d (%lld bytes requested)", &v20, 0x1Cu);
   }
 
   return v14;
 }
 
-- (int64_t)clearPurgeableStorageAmount:(int64_t)a3 withUrgency:(unint64_t)a4
+- (int64_t)clearPurgeableStorageAmount:(int64_t)amount withUrgency:(unint64_t)urgency
 {
   v7 = +[ML3MusicLibrary autoFilledTracksArePurgeable];
 
-  return [(ML3MusicLibrary *)self clearPurgeableStorageAmount:a3 withUrgency:a4 includeAutoFilledTracks:v7];
+  return [(ML3MusicLibrary *)self clearPurgeableStorageAmount:amount withUrgency:urgency includeAutoFilledTracks:v7];
 }
 
-- (int64_t)purgeableStorageSizeWithUrgency:(unint64_t)a3 includeAutoFilledTracks:(BOOL)a4
+- (int64_t)purgeableStorageSizeWithUrgency:(unint64_t)urgency includeAutoFilledTracks:(BOOL)tracks
 {
-  v4 = a4;
+  tracksCopy = tracks;
   v18 = *MEMORY[0x277D85DE8];
   if ([(ML3MusicLibrary *)self currentDatabaseVersion]== 2310000)
   {
-    v7 = [(ML3MusicLibrary *)self _databaseFileFreeSpace];
-    if ([(ML3MusicLibrary *)self _shouldPurgeManagedAlbumsTracksForUrgency:a3])
+    _databaseFileFreeSpace = [(ML3MusicLibrary *)self _databaseFileFreeSpace];
+    if ([(ML3MusicLibrary *)self _shouldPurgeManagedAlbumsTracksForUrgency:urgency])
     {
-      v8 = [(ML3MusicLibrary *)self _managedPurgeableTracksTotalSizeWithUrgency:a3];
+      v8 = [(ML3MusicLibrary *)self _managedPurgeableTracksTotalSizeWithUrgency:urgency];
     }
 
     else
     {
-      v8 = [(ML3MusicLibrary *)self _purgeableTracksTotalSizeWithUrgency:a3 includeAutoFilledTracks:v4];
+      v8 = [(ML3MusicLibrary *)self _purgeableTracksTotalSizeWithUrgency:urgency includeAutoFilledTracks:tracksCopy];
     }
 
-    v10 = v8 + v7;
+    v10 = v8 + _databaseFileFreeSpace;
   }
 
   else
@@ -14710,41 +14710,41 @@ LABEL_20:
     v13 = 134218496;
     *v14 = v10;
     *&v14[8] = 1024;
-    v15 = a3;
+    urgencyCopy = urgency;
     v16 = 1024;
-    v17 = v4;
+    v17 = tracksCopy;
     _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_DEFAULT, "Purgeable size of %lld bytes for urgency %d, includeAutoFilledTracks=%d", &v13, 0x18u);
   }
 
   return v10;
 }
 
-- (int64_t)purgeableStorageSizeWithUrgency:(unint64_t)a3
+- (int64_t)purgeableStorageSizeWithUrgency:(unint64_t)urgency
 {
   v5 = +[ML3MusicLibrary autoFilledTracksArePurgeable];
 
-  return [(ML3MusicLibrary *)self purgeableStorageSizeWithUrgency:a3 includeAutoFilledTracks:v5];
+  return [(ML3MusicLibrary *)self purgeableStorageSizeWithUrgency:urgency includeAutoFilledTracks:v5];
 }
 
 + (void)clearCloudAssetSharedCache
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [a1 cloudAssetsSharedCacheFolderPath];
-  if (v2)
+  cloudAssetsSharedCacheFolderPath = [self cloudAssetsSharedCacheFolderPath];
+  if (cloudAssetsSharedCacheFolderPath)
   {
     v3 = objc_alloc_init(MEMORY[0x277CCAA00]);
-    v4 = [v3 enumeratorAtPath:v2];
-    v5 = [v4 nextObject];
-    if (v5)
+    v4 = [v3 enumeratorAtPath:cloudAssetsSharedCacheFolderPath];
+    nextObject = [v4 nextObject];
+    if (nextObject)
     {
-      v7 = v5;
+      v7 = nextObject;
       v8 = 0;
       *&v6 = 138543618;
       v14 = v6;
       do
       {
         v9 = v8;
-        v10 = [v2 stringByAppendingPathComponent:{v7, v14}];
+        v10 = [cloudAssetsSharedCacheFolderPath stringByAppendingPathComponent:{v7, v14}];
         v15 = v8;
         v11 = [v3 removeItemAtPath:v10 error:&v15];
         v8 = v15;
@@ -14762,12 +14762,12 @@ LABEL_20:
           }
         }
 
-        v13 = [v4 nextObject];
+        nextObject2 = [v4 nextObject];
 
-        v7 = v13;
+        v7 = nextObject2;
       }
 
-      while (v13);
+      while (nextObject2);
     }
   }
 }
@@ -14792,9 +14792,9 @@ LABEL_20:
   return result;
 }
 
-+ (void)setMinimumPurgeableStorage:(int64_t)a3
++ (void)setMinimumPurgeableStorage:(int64_t)storage
 {
-  valuePtr = a3;
+  valuePtr = storage;
   v3 = CFNumberCreate(0, kCFNumberSInt64Type, &valuePtr);
   CFPreferencesSetAppValue(@"MinimumStorageSize", v3, @"com.apple.Music");
   CFRelease(v3);
@@ -14816,10 +14816,10 @@ LABEL_20:
   return !v2;
 }
 
-+ (void)setShouldOptimizeStorage:(BOOL)a3
++ (void)setShouldOptimizeStorage:(BOOL)storage
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!storage)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -14827,10 +14827,10 @@ LABEL_20:
   CFPreferencesSetAppValue(@"OptimizeStorage", *v3, @"com.apple.Music");
 }
 
-+ (void)setAutoFilledTracksArePurgeable:(BOOL)a3
++ (void)setAutoFilledTracksArePurgeable:(BOOL)purgeable
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!purgeable)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -14838,16 +14838,16 @@ LABEL_20:
   CFPreferencesSetAppValue(@"_ML3AutofilledTracksArePurgeableKey", *v3, @"com.apple.medialibrary");
 }
 
-- (void)updatePurgeabilityForCachedArtworkWithAbsolutePath:(id)a3
+- (void)updatePurgeabilityForCachedArtworkWithAbsolutePath:(id)path
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
-  v6 = [v4 containsString:v5];
+  pathCopy = path;
+  rootArtworkCacheDirectory = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
+  v6 = [pathCopy containsString:rootArtworkCacheDirectory];
 
   if (v6)
   {
-    v7 = [v4 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
     if (MSVDeviceIsAppleTV())
     {
       v8 = 1;
@@ -14858,31 +14858,31 @@ LABEL_20:
       v8 = 2;
     }
 
-    [(ML3MusicLibrary *)self markSystemPurgeableMusicPath:v7 forUrgency:v8];
+    [(ML3MusicLibrary *)self markSystemPurgeableMusicPath:stringByDeletingLastPathComponent forUrgency:v8];
   }
 
   else
   {
-    v7 = os_log_create("com.apple.amp.medialibrary", "Default");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    stringByDeletingLastPathComponent = os_log_create("com.apple.amp.medialibrary", "Default");
+    if (os_log_type_enabled(stringByDeletingLastPathComponent, OS_LOG_TYPE_ERROR))
     {
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v4;
-      _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_ERROR, "%{public}@ Unexpected path for cached artwork %{public}@", &v9, 0x16u);
+      v12 = pathCopy;
+      _os_log_impl(&dword_22D2FA000, stringByDeletingLastPathComponent, OS_LOG_TYPE_ERROR, "%{public}@ Unexpected path for cached artwork %{public}@", &v9, 0x16u);
     }
   }
 }
 
-- (void)updatePurgeabilityForOriginalArtworkWithRelativePath:(id)a3
+- (void)updatePurgeabilityForOriginalArtworkWithRelativePath:(id)path
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-  v15[0] = v6;
-  v15[1] = v4;
+  originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+  v15[0] = originalArtworkDirectory;
+  v15[1] = pathCopy;
   v7 = 2;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
   v9 = [v5 pathWithComponents:v8];
@@ -14904,37 +14904,37 @@ LABEL_4:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = pathCopy;
     _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ Not marking purgeability for original artwork. relativePath=%{public}@", &v11, 0x16u);
   }
 
 LABEL_8:
 }
 
-- (BOOL)isArtworkFetchableForPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 artworkSourceType:(int64_t)a6
+- (BOOL)isArtworkFetchableForPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType artworkSourceType:(int64_t)sourceType
 {
   v6 = 0;
-  if (a4 > 1)
+  if (type > 1)
   {
-    if (a4 == 2 || a4 == 7)
+    if (type == 2 || type == 7)
     {
-      return a6 == 500;
+      return sourceType == 500;
     }
   }
 
   else
   {
-    if (!a4)
+    if (!type)
     {
-      if (a6 != 600)
+      if (sourceType != 600)
       {
-        if (a6 == 400)
+        if (sourceType == 400)
         {
-          if ((a5 - 1) <= 1)
+          if ((artworkType - 1) <= 1)
           {
-            v7 = [(ML3Entity *)ML3Track newWithPersistentID:a3 inLibrary:self];
+            v7 = [(ML3Entity *)ML3Track newWithPersistentID:d inLibrary:self];
             if ([v7 existsInLibrary])
             {
               v8 = @"item_store.purchase_history_id";
@@ -14947,9 +14947,9 @@ LABEL_25:
           }
         }
 
-        else if (a6 == 200 && (a5 - 1) <= 1)
+        else if (sourceType == 200 && (artworkType - 1) <= 1)
         {
-          v7 = [(ML3Entity *)ML3Track newWithPersistentID:a3 inLibrary:self];
+          v7 = [(ML3Entity *)ML3Track newWithPersistentID:d inLibrary:self];
           if ([v7 existsInLibrary])
           {
             v9 = [v7 valueForProperty:@"item_store.store_saga_id"];
@@ -14969,13 +14969,13 @@ LABEL_26:
       return 1;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
-      if (a6 != 600)
+      if (sourceType != 600)
       {
-        if (a6 == 200 && a5 == 5)
+        if (sourceType == 200 && artworkType == 5)
         {
-          v7 = [(ML3Entity *)ML3Container newWithPersistentID:a3 inLibrary:self];
+          v7 = [(ML3Entity *)ML3Container newWithPersistentID:d inLibrary:self];
           if ([v7 existsInLibrary])
           {
             v8 = @"store_cloud_id";
@@ -14998,39 +14998,39 @@ LABEL_22:
   return v6;
 }
 
-- (BOOL)hasOriginalArtworkForRelativePath:(id)a3
+- (BOOL)hasOriginalArtworkForRelativePath:(id)path
 {
-  v4 = a3;
-  v5 = [(ML3MusicLibrary *)self originalArtworkDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  pathCopy = path;
+  originalArtworkDirectory = [(ML3MusicLibrary *)self originalArtworkDirectory];
+  v6 = [originalArtworkDirectory stringByAppendingPathComponent:pathCopy];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  LOBYTE(v4) = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LOBYTE(pathCopy) = [defaultManager fileExistsAtPath:v6];
 
-  return v4;
+  return pathCopy;
 }
 
-- (id)artworkCacheDirectoryForEffect:(id)a3
+- (id)artworkCacheDirectoryForEffect:(id)effect
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
-  v10[0] = v6;
-  v10[1] = v5;
+  effectCopy = effect;
+  rootArtworkCacheDirectory = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
+  v10[0] = rootArtworkCacheDirectory;
+  v10[1] = effectCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v8 = [v4 pathWithComponents:v7];
 
   return v8;
 }
 
-- (id)artworkCacheDirectoryForSize:(CGSize)a3
+- (id)artworkCacheDirectoryForSize:(CGSize)size
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.0fx%.0f", *&a3.width, *&a3.height];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.0fx%.0f", *&size.width, *&size.height];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
-  v10[0] = v6;
+  rootArtworkCacheDirectory = [(ML3MusicLibrary *)self rootArtworkCacheDirectory];
+  v10[0] = rootArtworkCacheDirectory;
   v10[1] = v4;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v8 = [v5 pathWithComponents:v7];
@@ -15038,26 +15038,26 @@ LABEL_22:
   return v8;
 }
 
-+ (int64_t)artworkSourceTypeForTrackSource:(int)a3
++ (int64_t)artworkSourceTypeForTrackSource:(int)source
 {
-  if ((a3 - 1) > 5)
+  if ((source - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_22D5C9528[a3 - 1];
+    return qword_22D5C9528[source - 1];
   }
 }
 
-+ (id)artworkRelativePathFromToken:(id)a3 variantType:(int64_t)a4
++ (id)artworkRelativePathFromToken:(id)token variantType:(int64_t)type
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  tokenCopy = token;
   memset(v60, 0, sizeof(v60));
   CC_SHA1_Init(v60);
-  v6 = v5;
+  v6 = tokenCopy;
   CC_SHA1_Update(v60, [v6 UTF8String], objc_msgSend(v6, "length"));
 
   memset(&v61[8], 0, 64);
@@ -15255,9 +15255,9 @@ LABEL_47:
   if (*v61 != 2000)
   {
 LABEL_54:
-    v58 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v59 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-    [v58 handleFailureInFunction:v59 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+    [currentHandler handleFailureInFunction:v59 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
     v54 = &stru_28408B690;
     goto LABEL_49;
@@ -15301,9 +15301,9 @@ LABEL_49:
 
   v55 = [(__CFString *)v54 mutableCopy];
   [v55 insertString:@"/" atIndex:2];
-  if (a4)
+  if (type)
   {
-    [v55 appendFormat:@"-%d", a4];
+    [v55 appendFormat:@"-%d", type];
   }
 
   v56 = [v55 copy];
@@ -15313,7 +15313,7 @@ LABEL_49:
 
 + (int64_t)devicePreferredImageFormat
 {
-  if ([a1 deviceSupportsASTC])
+  if ([self deviceSupportsASTC])
   {
     return 2;
   }
@@ -15369,18 +15369,18 @@ uint64_t __46__ML3MusicLibrary_Artwork__deviceSupportsASTC__block_invoke()
   return result;
 }
 
-+ (BOOL)dropIndexesUsingConnection:(id)a3 tableNames:(const char *)a4
++ (BOOL)dropIndexesUsingConnection:(id)connection tableNames:(const char *)names
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT name FROM sqlite_master WHERE type='index' AND tbl_name IN (%s)", a4];;
-  v8 = [v5 executeQuery:v7];
+  connectionCopy = connection;
+  array = [MEMORY[0x277CBEB18] array];
+  names = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT name FROM sqlite_master WHERE type='index' AND tbl_name IN (%s)", names];;
+  v8 = [connectionCopy executeQuery:names];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __65__ML3MusicLibrary_Schema__dropIndexesUsingConnection_tableNames___block_invoke;
   v26[3] = &unk_278766118;
-  v9 = v6;
+  v9 = array;
   v27 = v9;
   [v8 enumerateRowsWithBlock:v26];
   v24 = 0u;
@@ -15393,7 +15393,7 @@ uint64_t __46__ML3MusicLibrary_Artwork__deviceSupportsASTC__block_invoke()
   {
     v12 = v11;
     v20 = v8;
-    v21 = v7;
+    v21 = names;
     v13 = *v23;
     while (2)
     {
@@ -15408,7 +15408,7 @@ uint64_t __46__ML3MusicLibrary_Artwork__deviceSupportsASTC__block_invoke()
         if (([v15 hasPrefix:@"sqlite_autoindex_"] & 1) == 0)
         {
           v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"DROP INDEX %@", v15];;
-          v17 = [v5 executeUpdate:v16];
+          v17 = [connectionCopy executeUpdate:v16];
 
           if (!v17)
           {
@@ -15430,7 +15430,7 @@ uint64_t __46__ML3MusicLibrary_Artwork__deviceSupportsASTC__block_invoke()
     v18 = 1;
 LABEL_12:
     v8 = v20;
-    v7 = v21;
+    names = v21;
   }
 
   else
@@ -15448,21 +15448,21 @@ void __65__ML3MusicLibrary_Schema__dropIndexesUsingConnection_tableNames___block
   [v2 addObject:v3];
 }
 
-+ (BOOL)orderingLanguageMatchesSystemUsingConnection:(id)a3
++ (BOOL)orderingLanguageMatchesSystemUsingConnection:(id)connection
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [a3 executeQuery:@"SELECT value FROM _MLDatabaseProperties WHERE key = 'OrderingLanguage'"];;
-  v4 = [v3 stringValueForFirstRowAndColumn];
+  v3 = [connection executeQuery:@"SELECT value FROM _MLDatabaseProperties WHERE key = 'OrderingLanguage'"];;
+  stringValueForFirstRowAndColumn = [v3 stringValueForFirstRowAndColumn];
 
   v5 = ML3LocalizationLanguageCanonicalIdentifier();
-  v6 = [v5 isEqualToString:v4];
+  v6 = [v5 isEqualToString:stringValueForFirstRowAndColumn];
   if ((v6 & 1) == 0)
   {
     v7 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = v4;
+      v10 = stringValueForFirstRowAndColumn;
       v11 = 2114;
       v12 = v5;
       _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "[Schema] Device language changed from %{public}@ to %{public}@", &v9, 0x16u);
@@ -15472,10 +15472,10 @@ void __65__ML3MusicLibrary_Schema__dropIndexesUsingConnection_tableNames___block
   return v6;
 }
 
-+ (BOOL)userVersionMatchesSystemUsingConnection:(id)a3
++ (BOOL)userVersionMatchesSystemUsingConnection:(id)connection
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -15483,7 +15483,7 @@ void __65__ML3MusicLibrary_Schema__dropIndexesUsingConnection_tableNames___block
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "[Schema] Checking if the current database version is up-to-date...", v9, 2u);
   }
 
-  v6 = [a1 userVersionUsingConnection:v4];
+  v6 = [self userVersionUsingConnection:connectionCopy];
   if (v6 != 2310000)
   {
     v7 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -15500,21 +15500,21 @@ void __65__ML3MusicLibrary_Schema__dropIndexesUsingConnection_tableNames___block
   return v6 == 2310000;
 }
 
-+ (int)userVersionUsingConnection:(id)a3
++ (int)userVersionUsingConnection:(id)connection
 {
-  v3 = a3;
-  if ([v3 databasePathExists])
+  connectionCopy = connection;
+  if ([connectionCopy databasePathExists])
   {
-    v4 = [v3 executeQuery:@"PRAGMA user_version"];;
-    v5 = [v4 int64ValueForFirstRowAndColumn];
+    v4 = [connectionCopy executeQuery:@"PRAGMA user_version"];;
+    int64ValueForFirstRowAndColumn = [v4 int64ValueForFirstRowAndColumn];
   }
 
   else
   {
-    v5 = 0;
+    int64ValueForFirstRowAndColumn = 0;
   }
 
-  return v5;
+  return int64ValueForFirstRowAndColumn;
 }
 
 + (id)itemIndexSchemaSQL
@@ -15544,7 +15544,7 @@ uint64_t __45__ML3MusicLibrary_Schema__itemIndexSchemaSQL__block_invoke()
   block[1] = 3221225472;
   block[2] = __41__ML3MusicLibrary_Schema__indexSchemaSQL__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (indexSchemaSQL_onceToken != -1)
   {
     dispatch_once(&indexSchemaSQL_onceToken, block);
@@ -15720,9 +15720,9 @@ void __39__ML3MusicLibrary_Schema__allSchemaSQL__block_invoke()
   return v3;
 }
 
-- (void)updateUbiquitousDatabaseByRemovingUbiquitousMetadataFromTrackWithPersistentID:(int64_t)a3
+- (void)updateUbiquitousDatabaseByRemovingUbiquitousMetadataFromTrackWithPersistentID:(int64_t)d
 {
-  v4 = [(ML3Entity *)[ML3Track alloc] initWithPersistentID:a3 inLibrary:self];
+  v4 = [(ML3Entity *)[ML3Track alloc] initWithPersistentID:d inLibrary:self];
   v5 = [(ML3Entity *)v4 valueForProperty:@"item_kvs.key"];
   if ([v5 length])
   {
@@ -15731,7 +15731,7 @@ void __39__ML3MusicLibrary_Schema__allSchemaSQL__block_invoke()
     v6[2] = __117__ML3MusicLibrary_UbiquitousDatabase__updateUbiquitousDatabaseByRemovingUbiquitousMetadataFromTrackWithPersistentID___block_invoke;
     v6[3] = &unk_278764670;
     v7 = v5;
-    v8 = self;
+    selfCopy = self;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v6];
   }
 }
@@ -15772,75 +15772,75 @@ void __117__ML3MusicLibrary_UbiquitousDatabase__updateUbiquitousDatabaseByRemovi
     return 0;
   }
 
-  v4 = [(ML3MusicLibrary *)self databasePath];
+  databasePath = [(ML3MusicLibrary *)self databasePath];
   v5 = +[ML3MusicLibrary autoupdatingSharedLibraryPath];
-  v3 = ([v4 isEqualToString:v5] & 1) != 0 || NSClassFromString(&cfstr_Sentestcase.isa) != 0;
+  v3 = ([databasePath isEqualToString:v5] & 1) != 0 || NSClassFromString(&cfstr_Sentestcase.isa) != 0;
 
   return v3;
 }
 
-- (id)mediaFolderRelativePath:(id)a3
+- (id)mediaFolderRelativePath:(id)path
 {
-  v4 = a3;
-  v5 = [(ML3MusicLibrary *)self resourcesManager];
-  v6 = [v5 mediaFolderRelativePath:v4];
+  pathCopy = path;
+  resourcesManager = [(ML3MusicLibrary *)self resourcesManager];
+  v6 = [resourcesManager mediaFolderRelativePath:pathCopy];
 
   return v6;
 }
 
-- (id)pathForBaseLocationPath:(int64_t)a3
+- (id)pathForBaseLocationPath:(int64_t)path
 {
-  v4 = [(ML3MusicLibrary *)self resourcesManager];
-  v5 = [v4 pathForBaseLocationPath:a3];
+  resourcesManager = [(ML3MusicLibrary *)self resourcesManager];
+  v5 = [resourcesManager pathForBaseLocationPath:path];
 
   return v5;
 }
 
-- (id)pathForResourceFileOrFolder:(int)a3 basePath:(id)a4 relativeToBase:(BOOL)a5 createParentFolderIfNecessary:(BOOL)a6
+- (id)pathForResourceFileOrFolder:(int)folder basePath:(id)path relativeToBase:(BOOL)base createParentFolderIfNecessary:(BOOL)necessary
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = *&a3;
-  v10 = a4;
-  v11 = [(ML3MusicLibrary *)self resourcesManager];
-  v12 = [v11 pathForResourceFileOrFolder:v8 basePath:v10 relativeToBase:v7 createParentFolderIfNecessary:v6];
+  necessaryCopy = necessary;
+  baseCopy = base;
+  v8 = *&folder;
+  pathCopy = path;
+  resourcesManager = [(ML3MusicLibrary *)self resourcesManager];
+  v12 = [resourcesManager pathForResourceFileOrFolder:v8 basePath:pathCopy relativeToBase:baseCopy createParentFolderIfNecessary:necessaryCopy];
 
   return v12;
 }
 
-- (id)pathForResourceFileOrFolder:(int)a3
+- (id)pathForResourceFileOrFolder:(int)folder
 {
-  v3 = *&a3;
-  v4 = [(ML3MusicLibrary *)self resourcesManager];
-  v5 = [v4 pathForResourceFileOrFolder:v3];
+  v3 = *&folder;
+  resourcesManager = [(ML3MusicLibrary *)self resourcesManager];
+  v5 = [resourcesManager pathForResourceFileOrFolder:v3];
 
   return v5;
 }
 
-- (id)libraryContainerRelativePath:(id)a3
+- (id)libraryContainerRelativePath:(id)path
 {
-  v4 = a3;
-  v5 = [(ML3MusicLibrary *)self resourcesManager];
-  v6 = [v5 libraryContainerRelativePath:v4];
+  pathCopy = path;
+  resourcesManager = [(ML3MusicLibrary *)self resourcesManager];
+  v6 = [resourcesManager libraryContainerRelativePath:pathCopy];
 
   return v6;
 }
 
-- (id)libraryContainerPathByAppendingPathComponent:(id)a3
+- (id)libraryContainerPathByAppendingPathComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(ML3MusicLibrary *)self resourcesManager];
-  v6 = [v5 libraryContainerPathByAppendingPathComponent:v4];
+  componentCopy = component;
+  resourcesManager = [(ML3MusicLibrary *)self resourcesManager];
+  v6 = [resourcesManager libraryContainerPathByAppendingPathComponent:componentCopy];
 
   return v6;
 }
 
 - (id)libraryContainerPath
 {
-  v2 = [(ML3MusicLibrary *)self resourcesManager];
-  v3 = [v2 libraryContainerPath];
+  resourcesManager = [(ML3MusicLibrary *)self resourcesManager];
+  libraryContainerPath = [resourcesManager libraryContainerPath];
 
-  return v3;
+  return libraryContainerPath;
 }
 
 + (id)cloudAssetsSharedCacheFolderPath
@@ -16006,49 +16006,49 @@ LABEL_26:
   }
 }
 
-+ (id)pathForBaseLocationPath:(int64_t)a3
++ (id)pathForBaseLocationPath:(int64_t)path
 {
   v4 = +[ML3MusicLibraryResourcesManager sharedManager];
-  v5 = [v4 pathForBaseLocationPath:a3];
+  v5 = [v4 pathForBaseLocationPath:path];
 
   return v5;
 }
 
-+ (id)pathForResourceFileOrFolder:(int)a3 basePath:(id)a4 relativeToBase:(BOOL)a5 createParentFolderIfNecessary:(BOOL)a6
++ (id)pathForResourceFileOrFolder:(int)folder basePath:(id)path relativeToBase:(BOOL)base createParentFolderIfNecessary:(BOOL)necessary
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = *&a3;
-  v9 = a4;
+  necessaryCopy = necessary;
+  baseCopy = base;
+  v8 = *&folder;
+  pathCopy = path;
   v10 = +[ML3MusicLibraryResourcesManager sharedManager];
-  v11 = [v10 pathForResourceFileOrFolder:v8 basePath:v9 relativeToBase:v7 createParentFolderIfNecessary:v6];
+  v11 = [v10 pathForResourceFileOrFolder:v8 basePath:pathCopy relativeToBase:baseCopy createParentFolderIfNecessary:necessaryCopy];
 
   return v11;
 }
 
-+ (id)pathForResourceFileOrFolder:(int)a3
++ (id)pathForResourceFileOrFolder:(int)folder
 {
-  v3 = *&a3;
+  v3 = *&folder;
   v4 = +[ML3MusicLibraryResourcesManager sharedManager];
   v5 = [v4 pathForResourceFileOrFolder:v3];
 
   return v5;
 }
 
-+ (id)libraryContainerRelativePath:(id)a3
++ (id)libraryContainerRelativePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[ML3MusicLibraryResourcesManager sharedManager];
-  v5 = [v4 libraryContainerRelativePath:v3];
+  v5 = [v4 libraryContainerRelativePath:pathCopy];
 
   return v5;
 }
 
-+ (id)libraryContainerPathByAppendingPathComponent:(id)a3
++ (id)libraryContainerPathByAppendingPathComponent:(id)component
 {
-  v3 = a3;
+  componentCopy = component;
   v4 = +[ML3MusicLibraryResourcesManager sharedManager];
-  v5 = [v4 libraryContainerPathByAppendingPathComponent:v3];
+  v5 = [v4 libraryContainerPathByAppendingPathComponent:componentCopy];
 
   return v5;
 }
@@ -16056,15 +16056,15 @@ LABEL_26:
 + (id)libraryContainerPath
 {
   v2 = +[ML3MusicLibraryResourcesManager sharedManager];
-  v3 = [v2 libraryContainerPath];
+  libraryContainerPath = [v2 libraryContainerPath];
 
-  return v3;
+  return libraryContainerPath;
 }
 
-+ (id)libraryPathForContainerPath:(id)a3
++ (id)libraryPathForContainerPath:(id)path
 {
-  v3 = [a3 msv_stringByResolvingRealPath];
-  v4 = [v3 stringByAppendingPathComponent:@"iTunes_Control/iTunes/MediaLibrary.sqlitedb"];
+  msv_stringByResolvingRealPath = [path msv_stringByResolvingRealPath];
+  v4 = [msv_stringByResolvingRealPath stringByAppendingPathComponent:@"iTunes_Control/iTunes/MediaLibrary.sqlitedb"];
 
   return v4;
 }
@@ -16077,10 +16077,10 @@ LABEL_26:
     dispatch_once(&allLibraryContainerPaths_onceToken, &__block_literal_global_16944);
   }
 
-  v17 = [MEMORY[0x277CBEB18] array];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEB18] array];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = +[ML3MusicLibrary mediaFolderPath];
-  v4 = [v2 contentsOfDirectoryAtPath:v3 error:0];
+  v4 = [defaultManager contentsOfDirectoryAtPath:v3 error:0];
 
   v20 = 0u;
   v21 = 0u;
@@ -16107,13 +16107,13 @@ LABEL_26:
 
         if (([allLibraryContainerPaths___potentialContainerDenylist containsObject:v10] & 1) == 0)
         {
-          v13 = [MEMORY[0x277CCAA00] defaultManager];
-          v14 = [v13 contentsOfDirectoryAtPath:v12 error:0];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          v14 = [defaultManager2 contentsOfDirectoryAtPath:v12 error:0];
           v15 = [v14 containsObject:@"iTunes_Control"];
 
           if (v15)
           {
-            [v17 addObject:v12];
+            [array addObject:v12];
           }
         }
       }
@@ -16124,7 +16124,7 @@ LABEL_26:
     while (v7);
   }
 
-  return v17;
+  return array;
 }
 
 void __57__ML3MusicLibrary_ML3Resources__allLibraryContainerPaths__block_invoke()
@@ -16133,18 +16133,18 @@ void __57__ML3MusicLibrary_ML3Resources__allLibraryContainerPaths__block_invoke(
   allLibraryContainerPaths___potentialContainerDenylist = &unk_2840C8600;
 }
 
-+ (id)mediaFolderPathByAppendingPathComponent:(id)a3
++ (id)mediaFolderPathByAppendingPathComponent:(id)component
 {
-  v3 = a3;
+  componentCopy = component;
   v4 = +[ML3MusicLibrary mediaFolderPath];
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  v5 = [v4 stringByAppendingPathComponent:componentCopy];
 
   return v5;
 }
 
-- (void)_removeLibraryPinsForDeletedTracksUsingConnection:(id)a3
+- (void)_removeLibraryPinsForDeletedTracksUsingConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
@@ -16156,20 +16156,20 @@ void __57__ML3MusicLibrary_ML3Resources__allLibraryContainerPaths__block_invoke(
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__18595;
   v21 = __Block_byref_object_dispose__18596;
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__18595;
   v15[4] = __Block_byref_object_dispose__18596;
   v16 = 0;
-  v4 = [v3 executeQuery:{@"SELECT pin_pid, entity_pid, entity_type from library_pins"}];
+  v4 = [connectionCopy executeQuery:{@"SELECT pin_pid, entity_pid, entity_type from library_pins"}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __91__ML3MusicLibrary_RemoveSourceOrTracks___removeLibraryPinsForDeletedTracksUsingConnection___block_invoke;
   v11[3] = &unk_278763E68;
   v13 = v15;
-  v5 = v3;
+  v5 = connectionCopy;
   v12 = v5;
   v14 = &v17;
   [v4 enumerateRowsWithBlock:v11];
@@ -16332,28 +16332,28 @@ void __91__ML3MusicLibrary_RemoveSourceOrTracks___removeLibraryPinsForDeletedTra
   }
 }
 
-- (BOOL)_removeSource:(int)a3 fromPersistentIDS:(id)a4 forImportOperation:(id)a5 canonocalizeCollections:(BOOL)a6 usingConnection:(id)a7 postNotifications:(BOOL)a8
+- (BOOL)_removeSource:(int)source fromPersistentIDS:(id)s forImportOperation:(id)operation canonocalizeCollections:(BOOL)collections usingConnection:(id)connection postNotifications:(BOOL)notifications
 {
-  v9 = a6;
+  collectionsCopy = collections;
   v139 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v85 = a5;
-  v84 = a7;
+  sCopy = s;
+  operationCopy = operation;
+  connectionCopy = connection;
   v13 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    *v130 = a3;
+    *v130 = source;
     *&v130[4] = 2048;
-    *&v130[6] = [v12 count];
+    *&v130[6] = [sCopy count];
     v131 = 1024;
-    v132 = v9;
+    v132 = collectionsCopy;
     _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks removing source %d from %lu tracks, canonocalizeCollections=%{BOOL}u", buf, 0x18u);
   }
 
-  v86 = v12;
+  v86 = sCopy;
 
-  if (v12 && [v12 count])
+  if (sCopy && [sCopy count])
   {
     v125 = 0;
     v126 = &v125;
@@ -16361,8 +16361,8 @@ void __91__ML3MusicLibrary_RemoveSourceOrTracks___removeLibraryPinsForDeletedTra
     v128 = 0;
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v15 = v14;
-    v16 = [MEMORY[0x277CBEB38] dictionary];
-    v17 = malloc_type_malloc(8 * [v12 count], 0x100004000313F17uLL);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v17 = malloc_type_malloc(8 * [sCopy count], 0x100004000313F17uLL);
     v121 = 0;
     v122 = &v121;
     v123 = 0x2020000000;
@@ -16371,18 +16371,18 @@ void __91__ML3MusicLibrary_RemoveSourceOrTracks___removeLibraryPinsForDeletedTra
     v114[1] = 3221225472;
     v114[2] = __150__ML3MusicLibrary_RemoveSourceOrTracks___removeSource_fromPersistentIDS_forImportOperation_canonocalizeCollections_usingConnection_postNotifications___block_invoke;
     v114[3] = &unk_278763E18;
-    v120 = a3;
+    sourceCopy = source;
     v114[4] = self;
     v117 = &v125;
     v81 = v17;
     v119 = v17;
     v118 = &v121;
-    v18 = v84;
+    v18 = connectionCopy;
     v115 = v18;
-    v95 = v16;
+    v95 = dictionary;
     v116 = v95;
-    [ML3Track enumeratePathsToDeleteFromLibrary:self persistentIDs:v12 usingConnection:v18 usingBlock:v114];
-    if ([v85 isCancelled])
+    [ML3Track enumeratePathsToDeleteFromLibrary:self persistentIDs:sCopy usingConnection:v18 usingBlock:v114];
+    if ([operationCopy isCancelled])
     {
       goto LABEL_37;
     }
@@ -16399,25 +16399,25 @@ void __91__ML3MusicLibrary_RemoveSourceOrTracks___removeLibraryPinsForDeletedTra
     v21 = v122[3];
     if (v21)
     {
-      if (![ML3Track deleteFromLibrary:self deletionType:2 canonicalizeCollections:v9 persistentIDs:v81 count:v21 usingConnection:v18])
+      if (![ML3Track deleteFromLibrary:self deletionType:2 canonicalizeCollections:collectionsCopy persistentIDs:v81 count:v21 usingConnection:v18])
       {
-        v38 = os_log_create("com.apple.amp.medialibrary", "Default");
-        if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+        allValues = os_log_create("com.apple.amp.medialibrary", "Default");
+        if (os_log_type_enabled(allValues, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
           v40 = "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks failed to delete purged tracks";
 LABEL_34:
-          _os_log_impl(&dword_22D2FA000, v38, OS_LOG_TYPE_DEFAULT, v40, buf, 2u);
+          _os_log_impl(&dword_22D2FA000, allValues, OS_LOG_TYPE_DEFAULT, v40, buf, 2u);
         }
 
 LABEL_35:
         v82 = 0;
 LABEL_36:
 
-        if (([v85 isCancelled] & 1) == 0)
+        if (([operationCopy isCancelled] & 1) == 0)
         {
-          v89 = [MEMORY[0x277CBEB18] array];
-          v42 = [ML3MusicLibrary artworkSourceTypeForTrackSource:a3];
+          array = [MEMORY[0x277CBEB18] array];
+          v42 = [ML3MusicLibrary artworkSourceTypeForTrackSource:source];
           v43 = MEMORY[0x277CBEB18];
           v44 = [MEMORY[0x277CCABB0] numberWithInteger:v42];
           v90 = [v43 arrayWithObjects:{v44, &unk_2840C9C08, &unk_2840C9C38, 0}];
@@ -16460,7 +16460,7 @@ LABEL_36:
                 v103[1] = 3221225472;
                 v103[2] = __150__ML3MusicLibrary_RemoveSourceOrTracks___removeSource_fromPersistentIDS_forImportOperation_canonocalizeCollections_usingConnection_postNotifications___block_invoke_146;
                 v103[3] = &unk_278763E40;
-                v51 = v89;
+                v51 = array;
                 v104 = v51;
                 v105 = v49;
                 [v50 enumerateRowsWithBlock:v103];
@@ -16485,9 +16485,9 @@ LABEL_36:
 
                       v56 = *(*(&v99 + 1) + 8 * j);
                       v57 = [v56 objectAtIndexedSubscript:0];
-                      v58 = [v57 longLongValue];
+                      longLongValue = [v57 longLongValue];
                       v59 = [v56 objectAtIndexedSubscript:1];
-                      -[ML3MusicLibrary updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:retrievalTime:usingConnection:](self, "updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:retrievalTime:usingConnection:", v58, 0, [v59 intValue], v18, 0.0);
+                      -[ML3MusicLibrary updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:retrievalTime:usingConnection:](self, "updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:retrievalTime:usingConnection:", longLongValue, 0, [v59 intValue], v18, 0.0);
                     }
 
                     v53 = [v52 countByEnumeratingWithState:&v99 objects:v135 count:16];
@@ -16503,7 +16503,7 @@ LABEL_36:
             while (v47);
           }
 
-          if (a3 == 3 && *(v126 + 24) == 1)
+          if (source == 3 && *(v126 + 24) == 1)
           {
             v60 = _ML3LogCategoryDefault();
             if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
@@ -16516,7 +16516,7 @@ LABEL_36:
             [(ML3MusicLibrary *)self cleanupArtworkWithOptions:6 usingConnection:v18];
           }
 
-          v94 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           v61 = [obj count];
           if (v61 >= 1)
           {
@@ -16540,7 +16540,7 @@ LABEL_36:
               v97[1] = 3221225472;
               v97[2] = __150__ML3MusicLibrary_RemoveSourceOrTracks___removeSource_fromPersistentIDS_forImportOperation_canonocalizeCollections_usingConnection_postNotifications___block_invoke_151;
               v97[3] = &unk_278766118;
-              v98 = v94;
+              v98 = array2;
               [v66 enumerateRowsWithBlock:v97];
 
               v67 = v61 <= v62;
@@ -16553,18 +16553,18 @@ LABEL_36:
           v68 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
           {
-            v69 = [v94 count];
+            v69 = [array2 count];
             *buf = 134217984;
             *v130 = v69;
             _os_log_impl(&dword_22D2FA000, v68, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks removing liked_state from=%lu presistentIDs", buf, 0xCu);
           }
 
-          v70 = [v94 count];
+          v70 = [array2 count];
           if (v70 >= 1)
           {
             do
             {
-              v71 = [MEMORY[0x277CBEAA8] date];
+              date = [MEMORY[0x277CBEAA8] date];
               if (v70 >= 0xFA)
               {
                 v72 = 250;
@@ -16577,8 +16577,8 @@ LABEL_36:
 
               v73 = +[ML3DatabaseStatementRenderer defaultRenderer];
               v74 = [v73 statementWithPrefix:@"UPDATE item_stats SET liked_state=0 inParameterCount:{liked_state_changed_date=? WHERE item_pid", v72}];
-              v75 = [MEMORY[0x277CBEB18] arrayWithObject:v71];
-              v76 = [v94 subarrayWithRange:{objc_msgSend(v94, "count") - v70, v72}];
+              v75 = [MEMORY[0x277CBEB18] arrayWithObject:date];
+              v76 = [array2 subarrayWithRange:{objc_msgSend(array2, "count") - v70, v72}];
               [v75 addObjectsFromArray:v76];
 
               v96 = 0;
@@ -16602,7 +16602,7 @@ LABEL_36:
             while (!v67);
           }
 
-          if (a3 == 2)
+          if (source == 2)
           {
             [(ML3MusicLibrary *)self _removeLibraryPinsForDeletedTracksUsingConnection:v18];
           }
@@ -16613,7 +16613,7 @@ LABEL_36:
             v79 = [obj count];
             [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
             *buf = 67109888;
-            *v130 = a3;
+            *v130 = source;
             *&v130[4] = 2048;
             *&v130[6] = v79;
             v131 = 1024;
@@ -16646,17 +16646,17 @@ LABEL_38:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *v130 = v12;
+      *v130 = sCopy;
       _os_log_impl(&dword_22D2FA000, v22, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks Removing potential non-library tracks from all containers: %{public}@", buf, 0xCu);
     }
 
-    [ML3Container removeAnyNonLibraryItemsInPersistentIDs:v12 fromContainersInLibrary:self usingConnection:v18];
+    [ML3Container removeAnyNonLibraryItemsInPersistentIDs:sCopy fromContainersInLibrary:self usingConnection:v18];
     v112 = 0u;
     v113 = 0u;
     v110 = 0u;
     v111 = 0u;
-    v23 = [v95 allKeys];
-    v24 = [v23 countByEnumeratingWithState:&v110 objects:v138 count:16];
+    allKeys = [v95 allKeys];
+    v24 = [allKeys countByEnumeratingWithState:&v110 objects:v138 count:16];
     if (v24)
     {
       v25 = *v111;
@@ -16666,23 +16666,23 @@ LABEL_38:
         {
           if (*v111 != v25)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(allKeys);
           }
 
           v27 = *(*(&v110 + 1) + 8 * k);
           v137 = v27;
           v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v137 count:1];
           v29 = [v18 executeQuery:@"SELECT 1 FROM container_item JOIN container USING(container_pid) WHERE is_hidden = 0 AND item_pid = ?" withParameters:v28];
-          v30 = [v29 hasAtLeastOneRow];
+          hasAtLeastOneRow = [v29 hasAtLeastOneRow];
 
-          if (v30)
+          if (hasAtLeastOneRow)
           {
             v31 = os_log_create("com.apple.amp.medialibrary", "Default");
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
-              v32 = [v27 longLongValue];
+              longLongValue2 = [v27 longLongValue];
               *buf = 134217984;
-              *v130 = v32;
+              *v130 = longLongValue2;
               _os_log_impl(&dword_22D2FA000, v31, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks Keeping asset for track %llu because it is ATPWATL", buf, 0xCu);
             }
 
@@ -16690,7 +16690,7 @@ LABEL_38:
           }
         }
 
-        v24 = [v23 countByEnumeratingWithState:&v110 objects:v138 count:16];
+        v24 = [allKeys countByEnumeratingWithState:&v110 objects:v138 count:16];
       }
 
       while (v24);
@@ -16708,16 +16708,16 @@ LABEL_38:
     if (![v95 count] || (objc_msgSend(v95, "allKeys"), v35 = objc_claimAutoreleasedReturnValue(), v36 = +[ML3Track clearLocationFromLibrary:persistentIDs:usingConnection:](ML3Track, "clearLocationFromLibrary:persistentIDs:usingConnection:", self, v35, v18), v35, v36))
     {
       v37 = MEMORY[0x277CBEB98];
-      v38 = [v95 allValues];
-      v39 = [v37 setWithArray:v38];
+      allValues = [v95 allValues];
+      v39 = [v37 setWithArray:allValues];
       ML3DeleteAssetsAtPaths(v39);
 
       v82 = 1;
       goto LABEL_36;
     }
 
-    v38 = os_log_create("com.apple.amp.medialibrary", "Default");
-    if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+    allValues = os_log_create("com.apple.amp.medialibrary", "Default");
+    if (os_log_type_enabled(allValues, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v40 = "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks failed to clear location for purged tracks";
@@ -16859,30 +16859,30 @@ void __150__ML3MusicLibrary_RemoveSourceOrTracks___removeSource_fromPersistentID
   [v2 addObject:v3];
 }
 
-- (BOOL)removeSource:(int)a3 forImportOperation:(id)a4 usingConnection:(id)a5 postNotifications:(BOOL)a6
+- (BOOL)removeSource:(int)source forImportOperation:(id)operation usingConnection:(id)connection postNotifications:(BOOL)notifications
 {
-  v93 = a6;
+  notificationsCopy = notifications;
   v150 = *MEMORY[0x277D85DE8];
-  v108 = a4;
-  v113 = a5;
+  operationCopy = operation;
+  connectionCopy = connection;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v9 = v8;
   v10 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = source;
     _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks Removing source: %d from entire library", buf, 8u);
   }
 
-  v109 = a3;
+  sourceCopy = source;
 
-  v110 = ML3TrackRulesRemovalPropertiesForSource(a3);
-  v107 = ML3TrackRulesRemovalSourceIdentityPropertyForSource(a3);
+  v110 = ML3TrackRulesRemovalPropertiesForSource(source);
+  v107 = ML3TrackRulesRemovalSourceIdentityPropertyForSource(source);
   v106 = [ML3ComparisonPredicate predicateWithProperty:v107 value:&unk_2840C9C08 comparison:2];
-  if (a3 != 3)
+  if (source != 3)
   {
-    if (a3 != 2)
+    if (source != 2)
     {
       v97 = 0;
       v23 = 0;
@@ -16897,12 +16897,12 @@ void __150__ML3MusicLibrary_RemoveSourceOrTracks___removeSource_fromPersistentID
     v13 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v12];
 
     v14 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:self predicate:v13 orderingTerms:MEMORY[0x277CBEBF8]];
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v139[0] = MEMORY[0x277D85DD0];
     v139[1] = 3221225472;
     v139[2] = __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOperation_usingConnection_postNotifications___block_invoke;
     v139[3] = &unk_278765BD8;
-    v16 = v15;
+    v16 = array;
     v140 = v16;
     [v14 enumeratePersistentIDsUsingBlock:v139];
     if ([v16 count])
@@ -16935,7 +16935,7 @@ void __150__ML3MusicLibrary_RemoveSourceOrTracks___removeSource_fromPersistentID
       }
 
       ML3DeleteAssetsAtPaths(v20);
-      if (![ML3Track clearLocationFromLibrary:self persistentIDs:v16 usingConnection:v113])
+      if (![ML3Track clearLocationFromLibrary:self persistentIDs:v16 usingConnection:connectionCopy])
       {
         v22 = os_log_create("com.apple.amp.medialibrary", "Default");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -16962,7 +16962,7 @@ void __150__ML3MusicLibrary_RemoveSourceOrTracks___removeSource_fromPersistentID
 
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"UPDATE item_stats SET %@=%@", v13, v14];
   v141 = 0;
-  v26 = [v113 executeUpdate:v16 withParameters:0 error:&v141];
+  v26 = [connectionCopy executeUpdate:v16 withParameters:0 error:&v141];
   v23 = v141;
   if ((v26 & 1) == 0)
   {
@@ -16992,7 +16992,7 @@ LABEL_23:
 
   v110 = v25;
 LABEL_24:
-  if ([v108 isCancelled])
+  if ([operationCopy isCancelled])
   {
     LOBYTE(v103) = 0;
   }
@@ -17001,8 +17001,8 @@ LABEL_24:
   {
     v105 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:self predicate:v106 orderingTerms:MEMORY[0x277CBEBF8]];
     [v105 setIgnoreRestrictionsPredicates:1];
-    v99 = [v105 selectPersistentIDsSQL];
-    v102 = [v105 persistentIDParameters];
+    selectPersistentIDsSQL = [v105 selectPersistentIDsSQL];
+    persistentIDParameters = [v105 persistentIDParameters];
     v101 = [MEMORY[0x277CCAB68] stringWithString:@"UPDATE item_store SET "];
     v27 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v110, "count")}];
     v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v110, "count")}];
@@ -17038,12 +17038,12 @@ LABEL_24:
     }
 
     v98 = [v27 componentsJoinedByString:{@"=?, "}];
-    [v101 appendFormat:@"%@=? WHERE item_pid IN (%@)", v98, v99];
-    v104 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v28, "count") + objc_msgSend(v102, "count")}];
+    [v101 appendFormat:@"%@=? WHERE item_pid IN (%@)", v98, selectPersistentIDsSQL];
+    v104 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v28, "count") + objc_msgSend(persistentIDParameters, "count")}];
     [v104 addObjectsFromArray:v28];
-    [v104 addObjectsFromArray:v102];
+    [v104 addObjectsFromArray:persistentIDParameters];
     v132 = v23;
-    v36 = [v113 executeUpdate:v101 withParameters:v104 error:&v132];
+    v36 = [connectionCopy executeUpdate:v101 withParameters:v104 error:&v132];
     v94 = v132;
 
     if ((v36 & 1) == 0)
@@ -17051,79 +17051,79 @@ LABEL_24:
       v37 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [v29 allKeys];
+        allKeys = [v29 allKeys];
         *buf = 67109634;
-        *&buf[4] = v109;
+        *&buf[4] = sourceCopy;
         *&buf[8] = 2114;
-        *&buf[10] = v38;
+        *&buf[10] = allKeys;
         *&buf[18] = 2112;
         *&buf[20] = v94;
         _os_log_impl(&dword_22D2FA000, v37, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks Removing source: %d, failed to remove source properties: %{public}@\nwith error: %@", buf, 0x1Cu);
       }
     }
 
-    if ([v108 isCancelled])
+    if ([operationCopy isCancelled])
     {
       LOBYTE(v103) = 0;
     }
 
     else
     {
-      v39 = [MEMORY[0x277CBEB18] array];
-      v83 = [MEMORY[0x277CBEB18] array];
-      v40 = [MEMORY[0x277CBEB18] array];
-      v100 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
+      array3 = [MEMORY[0x277CBEB18] array];
+      array4 = [MEMORY[0x277CBEB18] array];
+      array5 = [MEMORY[0x277CBEB18] array];
       v41 = [ML3ComparisonPredicate predicateWithProperty:@"remote_location_id" equalToInt64:0];
-      [v100 addObject:v41];
+      [array5 addObject:v41];
 
       v42 = [ML3ComparisonPredicate predicateWithProperty:@"item_store.is_ota_purchased" equalToInteger:0];
-      [v100 addObject:v42];
+      [array5 addObject:v42];
 
       v43 = [ML3ComparisonPredicate predicateWithProperty:@"item_stats.needs_restore" equalToInt64:0];
-      [v100 addObject:v43];
+      [array5 addObject:v43];
 
-      v44 = v109;
-      if (v109 > 3 || v109 == 1)
+      v44 = sourceCopy;
+      if (sourceCopy > 3 || sourceCopy == 1)
       {
         v45 = [ML3ComparisonPredicate predicateWithProperty:@"item_store.sync_id" equalToInt64:0];
-        [v100 addObject:v45];
+        [array5 addObject:v45];
 
-        v44 = v109;
+        v44 = sourceCopy;
       }
 
       if ((ML3TrackRulesRemoveLocalAssetForSource(v44) & 1) == 0)
       {
         v46 = [ML3ComparisonPredicate predicateWithProperty:@"base_location_id" value:&unk_2840C9C20 comparison:5];
-        [v100 addObject:v46];
+        [array5 addObject:v46];
       }
 
-      v92 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v100];
+      v92 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:array5];
       v96 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:self predicate:v92 orderingTerms:0];
       [v96 setIgnoreRestrictionsPredicates:1];
-      v90 = [v96 selectPersistentIDsSQL];
-      v89 = [v96 persistentIDParameters];
-      v88 = [v113 executeQuery:v90 withParameters:v89];
+      selectPersistentIDsSQL2 = [v96 selectPersistentIDsSQL];
+      persistentIDParameters2 = [v96 persistentIDParameters];
+      v88 = [connectionCopy executeQuery:selectPersistentIDsSQL2 withParameters:persistentIDParameters2];
       v130[0] = MEMORY[0x277D85DD0];
       v130[1] = 3221225472;
       v130[2] = __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOperation_usingConnection_postNotifications___block_invoke_109;
       v130[3] = &unk_278766118;
-      v91 = v39;
+      v91 = array2;
       v131 = v91;
       [v88 enumerateRowsWithBlock:v130];
       v87 = [(ML3UnaryPredicate *)ML3NegationPredicate predicateWithPredicate:v92];
       v95 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:self predicate:v87 orderingTerms:0];
       [v95 setIgnoreRestrictionsPredicates:1];
-      v86 = [v95 selectPersistentIDsSQL];
-      v85 = [v95 persistentIDParameters];
-      v84 = [v113 executeQuery:v86 withParameters:v85];
+      selectPersistentIDsSQL3 = [v95 selectPersistentIDsSQL];
+      persistentIDParameters3 = [v95 persistentIDParameters];
+      v84 = [connectionCopy executeQuery:selectPersistentIDsSQL3 withParameters:persistentIDParameters3];
       v128[0] = MEMORY[0x277D85DD0];
       v128[1] = 3221225472;
       v128[2] = __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOperation_usingConnection_postNotifications___block_invoke_2;
       v128[3] = &unk_278766118;
-      v82 = v40;
+      v82 = array4;
       v129 = v82;
       [v84 enumerateRowsWithBlock:v128];
-      if ([v108 isCancelled])
+      if ([operationCopy isCancelled])
       {
         goto LABEL_67;
       }
@@ -17132,9 +17132,9 @@ LABEL_24:
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
         v48 = [v91 count];
-        v49 = [v83 count];
+        v49 = [array3 count];
         *buf = 67109632;
-        *&buf[4] = v109;
+        *&buf[4] = sourceCopy;
         *&buf[8] = 2048;
         *&buf[10] = v48;
         *&buf[18] = 2048;
@@ -17170,30 +17170,30 @@ LABEL_24:
           _os_log_impl(&dword_22D2FA000, v52, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks deleting %lu tracks", v145, 0xCu);
         }
 
-        if (![ML3Track deleteFromLibrary:self deletionType:2 persistentIDs:v125[3] count:v51 usingConnection:v113])
+        if (![ML3Track deleteFromLibrary:self deletionType:2 persistentIDs:v125[3] count:v51 usingConnection:connectionCopy])
         {
           v53 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
           {
             *v145 = 67109120;
-            LODWORD(v146) = v109;
+            LODWORD(v146) = sourceCopy;
             _os_log_impl(&dword_22D2FA000, v53, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks Removing source: %d, failed to delete purged tracks", v145, 8u);
           }
         }
 
         free(v125[3]);
-        [v113 executeUpdate:@"UPDATE album SET user_rating=IFNULL((SELECT AVG(user_rating) FROM item_stats JOIN item USING (item_pid) WHERE album.album_pid=item.album_pid) withParameters:album.user_rating) WHERE album.user_rating_is_derived=1" error:{0, 0}];
+        [connectionCopy executeUpdate:@"UPDATE album SET user_rating=IFNULL((SELECT AVG(user_rating) FROM item_stats JOIN item USING (item_pid) WHERE album.album_pid=item.album_pid) withParameters:album.user_rating) WHERE album.user_rating_is_derived=1" error:{0, 0}];
         _Block_object_dispose(&v124, 8);
         _Block_object_dispose(buf, 8);
         objc_autoreleasePoolPop(v50);
       }
 
-      if ([v108 isCancelled])
+      if ([operationCopy isCancelled])
       {
         goto LABEL_67;
       }
 
-      if ([v83 count])
+      if ([array3 count])
       {
         v54 = objc_autoreleasePoolPush();
         v55 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -17203,7 +17203,7 @@ LABEL_24:
           _os_log_impl(&dword_22D2FA000, v55, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks Deleting assets due to remove source:", buf, 2u);
         }
 
-        v56 = [v83 count];
+        v56 = [array3 count];
         v57 = [MEMORY[0x277CBEB58] set];
         v121[0] = MEMORY[0x277D85DD0];
         v121[1] = 3221225472;
@@ -17211,7 +17211,7 @@ LABEL_24:
         v121[3] = &unk_278763DA8;
         v58 = v57;
         v122 = v58;
-        [ML3Track enumeratePathsToDeleteFromLibrary:self persistentIDs:v83 usingBlock:v121];
+        [ML3Track enumeratePathsToDeleteFromLibrary:self persistentIDs:array3 usingBlock:v121];
         ML3DeleteAssetsAtPaths(v58);
         v59 = os_log_create("com.apple.amp.medialibrary", "Default");
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -17221,13 +17221,13 @@ LABEL_24:
           _os_log_impl(&dword_22D2FA000, v59, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks clearing location from %lu tracks", buf, 0xCu);
         }
 
-        if (![ML3Track clearLocationFromLibrary:self persistentIDs:v83 usingConnection:v113])
+        if (![ML3Track clearLocationFromLibrary:self persistentIDs:array3 usingConnection:connectionCopy])
         {
           v60 = _ML3LogCategoryDefault();
           if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109120;
-            *&buf[4] = v109;
+            *&buf[4] = sourceCopy;
             _os_log_impl(&dword_22D2FA000, v60, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks Removing source: %d, failed to clear location for purged tracks", buf, 8u);
           }
         }
@@ -17235,7 +17235,7 @@ LABEL_24:
         objc_autoreleasePoolPop(v54);
       }
 
-      if ([v108 isCancelled])
+      if ([operationCopy isCancelled])
       {
 LABEL_67:
         LOBYTE(v103) = 0;
@@ -17245,26 +17245,26 @@ LABEL_67:
       {
         if ([v82 count])
         {
-          [(ML3Entity *)ML3Track incrementRevisionForRevisionTypeContentWithConnection:v113 deletionType:0 persistentIDs:v82];
+          [(ML3Entity *)ML3Track incrementRevisionForRevisionTypeContentWithConnection:connectionCopy deletionType:0 persistentIDs:v82];
         }
 
-        v62 = [ML3MusicLibrary artworkSourceTypeForTrackSource:v109];
+        v62 = [ML3MusicLibrary artworkSourceTypeForTrackSource:sourceCopy];
         v63 = [MEMORY[0x277CCABB0] numberWithInteger:v62];
         v144 = v63;
         v64 = [MEMORY[0x277CBEA60] arrayWithObjects:&v144 count:1];
-        v103 = [v113 executeUpdate:@"DELETE FROM artwork_token WHERE artwork_source_type = ?" withParameters:v64 error:0];
+        v103 = [connectionCopy executeUpdate:@"DELETE FROM artwork_token WHERE artwork_source_type = ?" withParameters:v64 error:0];
 
-        v65 = [MEMORY[0x277CBEB18] array];
+        array6 = [MEMORY[0x277CBEB18] array];
         v66 = [MEMORY[0x277CCABB0] numberWithInteger:v62];
         v143 = v66;
         v67 = [MEMORY[0x277CBEA60] arrayWithObjects:&v143 count:1];
-        v81 = [v113 executeQuery:@"SELECT entity_pid withParameters:{entity_type, artwork_type FROM best_artwork_token WHERE fetchable_artwork_source_type = ?", v67}];
+        v81 = [connectionCopy executeQuery:@"SELECT entity_pid withParameters:{entity_type, artwork_type FROM best_artwork_token WHERE fetchable_artwork_source_type = ?", v67}];
 
         v119[0] = MEMORY[0x277D85DD0];
         v119[1] = 3221225472;
         v119[2] = __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOperation_usingConnection_postNotifications___block_invoke_125;
         v119[3] = &unk_278766118;
-        v68 = v65;
+        v68 = array6;
         v120 = v68;
         [v81 enumerateRowsWithBlock:v119];
         v117 = 0u;
@@ -17287,11 +17287,11 @@ LABEL_67:
 
               v72 = *(*(&v115 + 1) + 8 * j);
               v73 = [v72 objectAtIndexedSubscript:0];
-              v74 = [v73 longLongValue];
+              longLongValue = [v73 longLongValue];
               v75 = [v72 objectAtIndexedSubscript:1];
-              v76 = [v75 intValue];
+              intValue = [v75 intValue];
               v77 = [v72 objectAtIndexedSubscript:2];
-              -[ML3MusicLibrary updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:retrievalTime:usingConnection:](self, "updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:retrievalTime:usingConnection:", v74, v76, [v77 intValue], v113, 0.0);
+              -[ML3MusicLibrary updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:retrievalTime:usingConnection:](self, "updateBestArtworkTokenForEntityPersistentID:entityType:artworkType:retrievalTime:usingConnection:", longLongValue, intValue, [v77 intValue], connectionCopy, 0.0);
             }
 
             v69 = [obj countByEnumeratingWithState:&v115 objects:v142 count:16];
@@ -17300,9 +17300,9 @@ LABEL_67:
           while (v69);
         }
 
-        if (v109 == 3)
+        if (sourceCopy == 3)
         {
-          [(ML3MusicLibrary *)self cleanupArtworkWithOptions:6 usingConnection:v113];
+          [(ML3MusicLibrary *)self cleanupArtworkWithOptions:6 usingConnection:connectionCopy];
         }
 
         if (v97)
@@ -17314,8 +17314,8 @@ LABEL_67:
             _os_log_impl(&dword_22D2FA000, v78, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks Deleting all non-library tracks from playlists (removing source match)", buf, 2u);
           }
 
-          [ML3Container removeNonLibraryItemsFromContainersInLibrary:self usingConnection:v113];
-          [(ML3MusicLibrary *)self _removeLibraryPinsForDeletedTracksUsingConnection:v113];
+          [ML3Container removeNonLibraryItemsFromContainersInLibrary:self usingConnection:connectionCopy];
+          [(ML3MusicLibrary *)self _removeLibraryPinsForDeletedTracksUsingConnection:connectionCopy];
         }
 
         v79 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -17323,7 +17323,7 @@ LABEL_67:
         {
           [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
           *buf = 67109632;
-          *&buf[4] = v109;
+          *&buf[4] = sourceCopy;
           *&buf[8] = 1024;
           *&buf[10] = v103;
           *&buf[14] = 2048;
@@ -17331,14 +17331,14 @@ LABEL_67:
           _os_log_impl(&dword_22D2FA000, v79, OS_LOG_TYPE_DEFAULT, "[ML3MusicLibrary+RemoveSourceOrTracks] ML3MusicLibrary+RemoveSourceOrTracks Removing source: %d from entire library finished with success=%d in %.3f seconds", buf, 0x18u);
         }
 
-        if ((v103 & v93) == 1)
+        if ((v103 & notificationsCopy) == 1)
         {
           v114[0] = MEMORY[0x277D85DD0];
           v114[1] = 3221225472;
           v114[2] = __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOperation_usingConnection_postNotifications___block_invoke_127;
           v114[3] = &unk_278765158;
           v114[4] = self;
-          [v113 enqueueBlockForTransactionCommit:v114];
+          [connectionCopy enqueueBlockForTransactionCommit:v114];
         }
       }
     }
@@ -17443,11 +17443,11 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   return [v2 notifyContentsDidChange];
 }
 
-- (void)clearCachedPurchaseHistoryVersionsUsingConnection:(id)a3
+- (void)clearCachedPurchaseHistoryVersionsUsingConnection:(id)connection
 {
   v9 = *MEMORY[0x277D85DE8];
   v6 = 0;
-  v3 = [a3 executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key IN (? withParameters:? error:{?, ?)", &unk_2840C8630, &v6}];
+  v3 = [connection executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key IN (? withParameters:? error:{?, ?)", &unk_2840C8630, &v6}];
   v4 = v6;
   if ((v3 & 1) == 0)
   {
@@ -17461,11 +17461,11 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   }
 }
 
-- (void)clearCachedCloudLibraryVersionsUsingConnection:(id)a3
+- (void)clearCachedCloudLibraryVersionsUsingConnection:(id)connection
 {
   v9 = *MEMORY[0x277D85DE8];
   v6 = 0;
-  v3 = [a3 executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key IN (? withParameters:? error:{?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", &unk_2840C8618, &v6}];
+  v3 = [connection executeUpdate:@"DELETE FROM _MLDatabaseProperties WHERE key IN (? withParameters:? error:{?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", &unk_2840C8618, &v6}];
   v4 = v6;
   if ((v3 & 1) == 0)
   {
@@ -17479,24 +17479,24 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   }
 }
 
-- (void)setSagaMaximumLibraryPinCount:(int64_t)a3
+- (void)setSagaMaximumLibraryPinCount:(int64_t)count
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudLibraryMaxPinCount"];
 }
 
 - (int64_t)sagaMaximumLibraryPinCount
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLCloudLibraryMaxPinCount"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setPreferredVideoQuality:(int64_t)a3
+- (void)setPreferredVideoQuality:(int64_t)quality
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%li", a3];
-  [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudDatabasePreferredVideoQuality"];
+  quality = [MEMORY[0x277CCACA8] stringWithFormat:@"%li", quality];
+  [(ML3MusicLibrary *)self setValue:quality forDatabaseProperty:@"MLCloudDatabasePreferredVideoQuality"];
 }
 
 - (int64_t)preferredVideoQuality
@@ -17505,20 +17505,20 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   v3 = v2;
   if (v2 && [v2 length])
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = -1;
+    intValue = -1;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)setSagaLastSubscribedContainersUpdateTime:(id)a3
+- (void)setSagaLastSubscribedContainersUpdateTime:(id)time
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [time timeIntervalSinceReferenceDate];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudLastSubscribedContainersUpdate"];
 }
@@ -17533,9 +17533,9 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   return v4;
 }
 
-- (void)setSagaLastLibraryUpdateTime:(id)a3
+- (void)setSagaLastLibraryUpdateTime:(id)time
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [time timeIntervalSinceReferenceDate];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudLastLibraryUpdate"];
 }
@@ -17550,17 +17550,17 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   return v4;
 }
 
-- (void)setSagaOnDiskDatabaseRevision:(int64_t)a3
+- (void)setSagaOnDiskDatabaseRevision:(int64_t)revision
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:revision];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudDatabaseRevision"];
 }
 
-- (void)setStorefrontIdentifier:(id)a3
+- (void)setStorefrontIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    [(ML3MusicLibrary *)self setValue:a3 forDatabaseProperty:@"MLStorefrontID"];
+    [(ML3MusicLibrary *)self setValue:identifier forDatabaseProperty:@"MLStorefrontID"];
   }
 
   else
@@ -17569,90 +17569,90 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   }
 }
 
-- (void)setSagaForcePerformDeltaSync:(BOOL)a3
+- (void)setSagaForcePerformDeltaSync:(BOOL)sync
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:sync];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudLibraryForcePerformDeltaSync"];
 }
 
-- (void)setSagaPrefersToMergeWithCloudLibrary:(BOOL)a3
+- (void)setSagaPrefersToMergeWithCloudLibrary:(BOOL)library
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:library];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudLibraryPrefersToMerge"];
 }
 
 - (BOOL)sagaInitiateClientResetSync
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLSagaInitiateClientResetSync"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSagaInitiateClientResetSync:(BOOL)a3
+- (void)setSagaInitiateClientResetSync:(BOOL)sync
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:sync];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLSagaInitiateClientResetSync"];
 }
 
 - (BOOL)sagaForcePerformDeltaSync
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLCloudLibraryForcePerformDeltaSync"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)sagaPrefersToMergeWithCloudLibrary
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLCloudLibraryPrefersToMerge"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSagaNeedsFullUpdate:(BOOL)a3
+- (void)setSagaNeedsFullUpdate:(BOOL)update
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:update];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLSagaNeedsFullUpdate"];
 }
 
 - (BOOL)sagaNeedsFullUpdate
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLSagaNeedsFullUpdate"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSagaCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3
+- (void)setSagaCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:behavior];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudAccountFavoriteSongAddToLibraryBehavior"];
 }
 
 - (int64_t)sagaCloudFavoriteSongAddToLibraryBehavior
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLCloudAccountFavoriteSongAddToLibraryBehavior"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setSagaCloudAddToPlaylistBehavior:(int64_t)a3
+- (void)setSagaCloudAddToPlaylistBehavior:(int64_t)behavior
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:behavior];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudAccountAddToPlaylistBehavior"];
 }
 
 - (int64_t)sagaCloudAddToPlaylistBehavior
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLCloudAccountAddToPlaylistBehavior"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (v3)
+  if (integerValue)
   {
-    return v3;
+    return integerValue;
   }
 
   else
@@ -17661,23 +17661,23 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   }
 }
 
-- (void)setSagaDatabaseUserVersion:(int64_t)a3
+- (void)setSagaDatabaseUserVersion:(int64_t)version
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", a3];
-  [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudDatabaseUserVersion"];
+  version = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", version];
+  [(ML3MusicLibrary *)self setValue:version forDatabaseProperty:@"MLCloudDatabaseUserVersion"];
 }
 
 - (int64_t)sagaDatabaseUserVersion
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLCloudDatabaseUserVersion"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setSagaLastPlaylistPlayDataUploadDate:(id)a3
+- (void)setSagaLastPlaylistPlayDataUploadDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudLastPlaylistPlayDataUpdate"];
 }
@@ -17690,8 +17690,8 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
 
   if (v4 == 0.0)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [v5 dateByAddingTimeInterval:-86400.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [date dateByAddingTimeInterval:-86400.0];
   }
 
   else
@@ -17702,9 +17702,9 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   return v6;
 }
 
-- (void)setSagaLastItemPlayDataUploadDate:(id)a3
+- (void)setSagaLastItemPlayDataUploadDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLCloudLastPlayDataUpdate"];
 }
@@ -17717,8 +17717,8 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
 
   if (v4 == 0.0)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [v5 dateByAddingTimeInterval:-86400.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [date dateByAddingTimeInterval:-86400.0];
   }
 
   else
@@ -17729,9 +17729,9 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   return v6;
 }
 
-- (void)setSagaLastGeniusUpdateDate:(id)a3
+- (void)setSagaLastGeniusUpdateDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLSagaLastGeniusUpdate"];
 }
@@ -17746,9 +17746,9 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   return v4;
 }
 
-- (void)setSagaLastKnownActiveLockerAccountDSID:(id)a3
+- (void)setSagaLastKnownActiveLockerAccountDSID:(id)d
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(a3, "longLongValue")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(d, "longLongValue")}];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLLastKnownActiveLockerAccountDSID"];
 }
 
@@ -17786,42 +17786,42 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
   return v4;
 }
 
-- (int64_t)syncIdFromMultiverseId:(id)a3
+- (int64_t)syncIdFromMultiverseId:(id)id
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ML3MusicLibrary *)self syncLibraryID];
+  idCopy = id;
+  syncLibraryID = [(ML3MusicLibrary *)self syncLibraryID];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 libraryIdentifiers];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v7)
+  libraryIdentifiers = [idCopy libraryIdentifiers];
+  libraryId = [libraryIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (libraryId)
   {
     v8 = *v15;
     while (2)
     {
-      for (i = 0; i != v7; ++i)
+      for (i = 0; i != libraryId; ++i)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(libraryIdentifiers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 libraryName];
-        v12 = [v11 isEqualToString:v5];
+        libraryName = [v10 libraryName];
+        v12 = [libraryName isEqualToString:syncLibraryID];
 
         if (v12)
         {
-          v7 = [v10 libraryId];
+          libraryId = [v10 libraryId];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v7)
+      libraryId = [libraryIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (libraryId)
       {
         continue;
       }
@@ -17832,42 +17832,42 @@ uint64_t __107__ML3MusicLibrary_RemoveSourceOrTracks__removeSource_forImportOper
 
 LABEL_11:
 
-  return v7;
+  return libraryId;
 }
 
-- (BOOL)prepareUnitTestDatabaseWithSQLFromContentsOfFile:(id)a3 error:(id *)a4
+- (BOOL)prepareUnitTestDatabaseWithSQLFromContentsOfFile:(id)file error:(id *)error
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 length])
+  fileCopy = file;
+  if ([fileCopy length])
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfFile:v6 encoding:4 error:a4];
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfFile:fileCopy encoding:4 error:error];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 componentsSeparatedByString:@""];;
-      if ([v9 count])
+      fileCopy = [v7 componentsSeparatedByString:@""];;
+      if ([fileCopy count])
       {
-        v10 = [(ML3MusicLibrary *)self checkoutWriterConnection];
+        checkoutWriterConnection = [(ML3MusicLibrary *)self checkoutWriterConnection];
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v9 = v9;
-        v11 = [v9 countByEnumeratingWithState:&v44 objects:v50 count:16];
+        fileCopy = fileCopy;
+        v11 = [fileCopy countByEnumeratingWithState:&v44 objects:v50 count:16];
         if (v11)
         {
           v12 = v11;
-          v39 = self;
+          selfCopy = self;
           v40 = v8;
-          v43 = a4;
-          v41 = v6;
-          obj = v9;
+          errorCopy = error;
+          v41 = fileCopy;
+          obj = fileCopy;
           v13 = *v45;
           while (2)
           {
@@ -17879,8 +17879,8 @@ LABEL_11:
               }
 
               v15 = *(*(&v44 + 1) + 8 * i);
-              v16 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-              v17 = [v15 stringByTrimmingCharactersInSet:v16];
+              whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+              v17 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
               v18 = [v17 mutableCopy];
 
               v19 = 1;
@@ -17902,24 +17902,24 @@ LABEL_11:
               if (v24)
               {
                 v27 = v23;
-                v28 = [MEMORY[0x277CCA890] currentHandler];
+                currentHandler = [MEMORY[0x277CCA890] currentHandler];
                 v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *executableSQLFromUnitTestFileForString(NSString *__strong)"];
                 v30 = [v18 substringFromIndex:v27];
-                [v28 handleFailureInFunction:v29 file:@"ML3MusicLibrary+MLUnitTestingAdditions.m" lineNumber:27 description:{@"sql contains invalid text at '%@'", v30}];
+                [currentHandler handleFailureInFunction:v29 file:@"ML3MusicLibrary+MLUnitTestingAdditions.m" lineNumber:27 description:{@"sql contains invalid text at '%@'", v30}];
               }
 
               if ([v18 length])
               {
-                v25 = [v10 executeUpdate:v18];
+                v25 = [checkoutWriterConnection executeUpdate:v18];
                 v26 = v25;
-                if (v43 && (v25 & 1) == 0)
+                if (errorCopy && (v25 & 1) == 0)
                 {
                   v35 = MEMORY[0x277CCA9B8];
                   v48 = *MEMORY[0x277CCA450];
                   v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error executing '%@'", v18];
                   v49 = v36;
                   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-                  *v43 = [v35 errorWithDomain:&stru_28408B690 code:-1 userInfo:v37];
+                  *errorCopy = [v35 errorWithDomain:&stru_28408B690 code:-1 userInfo:v37];
 
 LABEL_35:
                   v31 = 0;
@@ -17949,9 +17949,9 @@ LABEL_35:
           v31 = 1;
 LABEL_36:
           v8 = v40;
-          v6 = v41;
-          v9 = obj;
-          self = v39;
+          fileCopy = v41;
+          fileCopy = obj;
+          self = selfCopy;
         }
 
         else
@@ -17959,14 +17959,14 @@ LABEL_36:
           v31 = 1;
         }
 
-        [v10 executeUpdate:@"DROP TABLE sort_map"];
-        [(ML3MusicLibrary *)self updateSortMapOnConnection:v10 forceUpdateOriginals:1];
-        [(ML3MusicLibrary *)self checkInDatabaseConnection:v10];
+        [checkoutWriterConnection executeUpdate:@"DROP TABLE sort_map"];
+        [(ML3MusicLibrary *)self updateSortMapOnConnection:checkoutWriterConnection forceUpdateOriginals:1];
+        [(ML3MusicLibrary *)self checkInDatabaseConnection:checkoutWriterConnection];
       }
 
       else
       {
-        if (!a4)
+        if (!error)
         {
           v31 = 0;
           goto LABEL_39;
@@ -17974,10 +17974,10 @@ LABEL_36:
 
         v33 = MEMORY[0x277CCA9B8];
         v51 = *MEMORY[0x277CCA450];
-        v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"No SQL statements found in %@", v6];
-        v52 = v10;
+        checkoutWriterConnection = [MEMORY[0x277CCACA8] stringWithFormat:@"No SQL statements found in %@", fileCopy];
+        v52 = checkoutWriterConnection;
         v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-        *a4 = [v33 errorWithDomain:&stru_28408B690 code:-1 userInfo:v34];
+        *error = [v33 errorWithDomain:&stru_28408B690 code:-1 userInfo:v34];
 
         v31 = 0;
       }
@@ -17985,7 +17985,7 @@ LABEL_36:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v31 = 0;
 LABEL_40:
@@ -17995,11 +17995,11 @@ LABEL_40:
 
       v32 = MEMORY[0x277CCA9B8];
       v53 = *MEMORY[0x277CCA450];
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to open file '%@'", v6];
-      v54[0] = v9;
-      v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:&v53 count:1];
-      [v32 errorWithDomain:&stru_28408B690 code:-1 userInfo:v10];
-      *a4 = v31 = 0;
+      fileCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to open file '%@'", fileCopy];
+      v54[0] = fileCopy;
+      checkoutWriterConnection = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:&v53 count:1];
+      [v32 errorWithDomain:&stru_28408B690 code:-1 userInfo:checkoutWriterConnection];
+      *error = v31 = 0;
     }
 
 LABEL_39:
@@ -18012,23 +18012,23 @@ LABEL_41:
   return v31;
 }
 
-+ (id)unitTestableLibraryForTest:(id)a3 basePath:(id)a4 setupSQLFilenames:(id)a5
++ (id)unitTestableLibraryForTest:(id)test basePath:(id)path setupSQLFilenames:(id)filenames
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v30 = a4;
-  v8 = a5;
-  v34 = v7;
+  testCopy = test;
+  pathCopy = path;
+  filenamesCopy = filenames;
+  v34 = testCopy;
   v9 = objc_opt_class();
   v33 = NSStringFromClass(v9);
-  v32 = NSStringFromSelector([v7 selector]);
+  v32 = NSStringFromSelector([testCopy selector]);
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v12 = v8;
+  v12 = filenamesCopy;
   v13 = [v12 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v13)
   {
@@ -18043,21 +18043,21 @@ LABEL_41:
         }
 
         v16 = *(*(&v46 + 1) + 8 * i);
-        v17 = [v16 stringByDeletingPathExtension];
-        v18 = [v16 pathExtension];
-        v19 = [v10 pathForResource:v17 ofType:v18];
+        stringByDeletingPathExtension = [v16 stringByDeletingPathExtension];
+        pathExtension = [v16 pathExtension];
+        v19 = [v10 pathForResource:stringByDeletingPathExtension ofType:pathExtension];
 
         if ([v16 length] && !objc_msgSend(v19, "length"))
         {
-          v27 = [MEMORY[0x277CCA890] currentHandler];
-          [v27 handleFailureInMethod:a2 object:a1 file:@"ML3MusicLibrary+MLUnitTestingAdditions.m" lineNumber:99 description:{@"Could not prepare for test '%@/%@' database, unable to load setupSQLFilename = '%@' - no such file in bundle %@", v33, v32, v16, v10}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"ML3MusicLibrary+MLUnitTestingAdditions.m" lineNumber:99 description:{@"Could not prepare for test '%@/%@' database, unable to load setupSQLFilename = '%@' - no such file in bundle %@", v33, v32, v16, v10}];
 
           v26 = 0;
           v24 = v12;
           goto LABEL_15;
         }
 
-        [v11 addObject:v19];
+        [array addObject:v19];
       }
 
       v13 = [v12 countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -18070,10 +18070,10 @@ LABEL_41:
     }
   }
 
-  v19 = [a1 databasePathForUnitTest:v34 withBasePath:v30];
-  v20 = [MEMORY[0x277CCAA00] defaultManager];
-  v21 = [v19 stringByDeletingLastPathComponent];
-  [v20 removeItemAtPath:v21 error:0];
+  v19 = [self databasePathForUnitTest:v34 withBasePath:pathCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  stringByDeletingLastPathComponent = [v19 stringByDeletingLastPathComponent];
+  [defaultManager removeItemAtPath:stringByDeletingLastPathComponent error:0];
 
   v42 = 0;
   v43 = &v42;
@@ -18084,9 +18084,9 @@ LABEL_41:
   v35[1] = 3221225472;
   v35[2] = __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_basePath_setupSQLFilenames___block_invoke;
   v35[3] = &unk_278764D58;
-  v36 = v11;
+  v36 = array;
   v40 = a2;
-  v41 = a1;
+  selfCopy = self;
   v37 = v33;
   v38 = v32;
   v39 = &v42;
@@ -18166,31 +18166,31 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
   }
 }
 
-+ (id)databasePathForUnitTest:(id)a3 withBasePath:(id)a4
++ (id)databasePathForUnitTest:(id)test withBasePath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(__CFString *)v5 length];
+  pathCopy = path;
+  testCopy = test;
+  v7 = [(__CFString *)pathCopy length];
   v8 = @"/tmp/ML3UnitTests";
   if (v7)
   {
-    v8 = v5;
+    v8 = pathCopy;
   }
 
   v9 = v8;
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v6 selector];
+  selector = [testCopy selector];
 
-  v13 = NSStringFromSelector(v12);
+  v13 = NSStringFromSelector(selector);
   if ([(__CFString *)v9 length])
   {
     v14 = [(__CFString *)v9 stringByAppendingPathComponent:v11];
     v15 = [v14 stringByAppendingPathComponent:v13];
 
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
-    [v16 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:0];
 
     [v15 stringByAppendingPathComponent:@"library.sqlitedb"];
   }
@@ -18205,12 +18205,12 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
   return v17;
 }
 
-- (BOOL)performMainentanceTasksUsingActivity:(id)a3
+- (BOOL)performMainentanceTasksUsingActivity:(id)activity
 {
   v221[4] = *MEMORY[0x277D85DE8];
-  v153 = a3;
-  v152 = [(ML3MusicLibrary *)self currentDatabaseVersion];
-  if (v152 == 2310000)
+  activityCopy = activity;
+  currentDatabaseVersion = [(ML3MusicLibrary *)self currentDatabaseVersion];
+  if (currentDatabaseVersion == 2310000)
   {
     v4 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLMaintenanceTaskOperationDate"];
     [v4 doubleValue];
@@ -18225,12 +18225,12 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
       _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "[Maintenance] %{pubic}@ Cleaning up missing foreign keys", buf, 0xCu);
     }
 
-    v9 = self;
+    selfCopy = self;
     v10 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v9;
+      *&buf[4] = selfCopy;
       _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "ML3MaintenanceUtilitiesPerformForeignKeyConstraintCheck: Checking library %{public}@", buf, 0xCu);
     }
 
@@ -18238,7 +18238,7 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
     *&buf[8] = 3221225472;
     *&buf[16] = __ML3MaintenanceUtilitiesPerformForeignKeyConstraintCheck_block_invoke;
     v198 = &unk_278762160;
-    v11 = v9;
+    v11 = selfCopy;
     v199 = v11;
     LOBYTE(v200) = 1;
     [(ML3MusicLibrary *)v11 performDatabaseTransactionWithBlock:buf];
@@ -18396,21 +18396,21 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
     v146 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v51];
 
     activity = [(ML3Entity *)ML3Track allItemsQueryWithLibrary:v154 predicate:v146 orderingTerms:MEMORY[0x277CBEBF8] usingSections:0];
-    v52 = [(_xpc_activity_s *)activity countOfEntities];
+    countOfEntities = [(_xpc_activity_s *)activity countOfEntities];
     loga = os_log_create("com.apple.amp.medialibrary", "Default");
     v53 = os_log_type_enabled(loga, OS_LOG_TYPE_DEFAULT);
-    if (v52)
+    if (countOfEntities)
     {
       if (v53)
       {
         *buf = 134218242;
-        *&buf[4] = v52;
+        *&buf[4] = countOfEntities;
         *&buf[12] = 2114;
         *&buf[14] = activity;
         _os_log_impl(&dword_22D2FA000, loga, OS_LOG_TYPE_DEFAULT, "Found %lu potential orphan tracks to evaluate using query: %{public}@", buf, 0x16u);
       }
 
-      v54 = [MEMORY[0x277CBEB58] setWithCapacity:v52];
+      v54 = [MEMORY[0x277CBEB58] setWithCapacity:countOfEntities];
       *v217 = MEMORY[0x277D85DD0];
       *&v217[8] = 3221225472;
       *&v217[16] = __ML3MaintenanceUtilitiesRemoveOrphanTracksAddedBeforeDate_block_invoke;
@@ -18444,8 +18444,8 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
       v60 = v55;
       v215 = v60;
       [v141 enumeratePersistentIDsUsingBlock:&v209];
-      v140 = [(ML3MusicLibrary *)v166 currentDevicePlaybackHistoryPlaylist];
-      v139 = [ML3Track containerQueryWithContainer:v140 predicate:v157];
+      currentDevicePlaybackHistoryPlaylist = [(ML3MusicLibrary *)v166 currentDevicePlaybackHistoryPlaylist];
+      v139 = [ML3Track containerQueryWithContainer:currentDevicePlaybackHistoryPlaylist predicate:v157];
       v61 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
       {
@@ -18490,10 +18490,10 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
               v69 = os_log_create("com.apple.amp.medialibrary", "Default");
               if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
               {
-                v70 = [v66 persistentID];
+                persistentID = [v66 persistentID];
                 v71 = [v66 valueForProperty:@"item_extra.title"];
                 *v181 = 134218242;
-                *&v181[4] = v70;
+                *&v181[4] = persistentID;
                 *&v181[12] = 2114;
                 *&v181[14] = v71;
                 _os_log_impl(&dword_22D2FA000, v69, OS_LOG_TYPE_DEFAULT, "Removing assets for track: %lld - %{public}@", v181, 0x16u);
@@ -18586,15 +18586,15 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
               objc_enumerationMutation(loga);
             }
 
-            v88 = [*(*(&v184 + 1) + 8 * j) longLongValue];
-            v83[v85] = v88;
+            longLongValue = [*(*(&v184 + 1) + 8 * j) longLongValue];
+            v83[v85] = longLongValue;
             v89 = os_log_create("com.apple.amp.medialibrary", "Default");
             if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
             {
-              v90 = [(ML3Entity *)ML3Track newWithPersistentID:v88 inLibrary:v166];
+              v90 = [(ML3Entity *)ML3Track newWithPersistentID:longLongValue inLibrary:v166];
               v91 = [v90 valueForProperty:@"item_extra.title"];
               *v177 = 134218242;
-              v178 = v88;
+              v178 = longLongValue;
               v179 = 2114;
               v180 = v91;
               _os_log_impl(&dword_22D2FA000, v89, OS_LOG_TYPE_DEFAULT, "Deleting track: %lld - %{public}@", v177, 0x16u);
@@ -18641,7 +18641,7 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
     v169[2] = __69__ML3MusicLibrary_Maintenance__performMainentanceTasksUsingActivity___block_invoke;
     v169[3] = &unk_278764E80;
     v169[4] = v154;
-    activitya = v153;
+    activitya = activityCopy;
     v170 = activitya;
     [(ML3MusicLibrary *)v154 performDatabaseTransactionWithBlock:v169];
     v95 = os_log_create("com.apple.amp.medialibrary", "Service");
@@ -18666,7 +18666,7 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
       _os_log_impl(&dword_22D2FA000, v97, OS_LOG_TYPE_DEFAULT, "ML3MaintenanceUtilitiesReconcileHLSAssetSize: Starting reconcile. reconcileStartInterval=%f", buf, 0xCu);
     }
 
-    v155 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v98 = @"base_location.path";
     *&v184 = @"base_location.path";
     v99 = @"item_extra.location";
@@ -18712,7 +18712,7 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
     v198 = &unk_278762198;
     v167 = v96;
     v199 = v167;
-    v113 = v155;
+    v113 = defaultManager;
     v200 = v113;
     v201 = v181;
     v202 = &v173;
@@ -18752,13 +18752,13 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
     v121 = [ML3MusicLibrary mediaFolderPathByAppendingPathComponent:@"CloudAssets"];
     v122 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v123 = [v122 enumeratorAtPath:v121];
-    v124 = [v123 nextObject];
-    if (v124)
+    nextObject = [v123 nextObject];
+    if (nextObject)
     {
       v125 = 0;
       do
       {
-        v126 = [v121 stringByAppendingPathComponent:{v124, v135}];
+        v126 = [v121 stringByAppendingPathComponent:{nextObject, v135}];
         v168 = v125;
         v127 = [v122 removeItemAtPath:v126 error:&v168];
         v128 = v168;
@@ -18771,20 +18771,20 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
             *buf = 138543874;
             *&buf[4] = v167;
             *&buf[12] = 2114;
-            *&buf[14] = v124;
+            *&buf[14] = nextObject;
             *&buf[22] = 2114;
             v198 = v128;
             _os_log_impl(&dword_22D2FA000, v129, OS_LOG_TYPE_ERROR, "%{public}@ Failed to remove cached asset %{public}@ error %{public}@", buf, 0x20u);
           }
         }
 
-        v130 = [v123 nextObject];
+        nextObject2 = [v123 nextObject];
 
-        v124 = v130;
+        nextObject = nextObject2;
         v125 = v128;
       }
 
-      while (v130);
+      while (nextObject2);
     }
 
     else
@@ -18831,14 +18831,14 @@ void __97__ML3MusicLibrary_MLUnitTestingAdditions__unitTestableLibraryForTest_ba
       *buf = 138543874;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v152;
+      *&buf[14] = currentDatabaseVersion;
       *&buf[18] = 1024;
       strcpy(&buf[20], "p?#");
       _os_log_impl(&dword_22D2FA000, v92, OS_LOG_TYPE_DEFAULT, "[Maintenance] %{public}@ Skipping maintenance because database is not validated, currentDatabaseVersion=%d, latestDatabaseVersion=%d ", buf, 0x18u);
     }
   }
 
-  return v152 == 2310000;
+  return currentDatabaseVersion == 2310000;
 }
 
 uint64_t __69__ML3MusicLibrary_Maintenance__performMainentanceTasksUsingActivity___block_invoke(uint64_t a1, void *a2)
@@ -19213,39 +19213,39 @@ LABEL_78:
   return v60;
 }
 
-- (void)updateJaliscoExcludedMediaKindsWith:(id)a3 excludingMediaKindsInSet:(BOOL)a4
+- (void)updateJaliscoExcludedMediaKindsWith:(id)with excludingMediaKindsInSet:(BOOL)set
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(ML3MusicLibrary *)self jaliscoLastExcludedMediaKinds];
-  if (!v6)
+  setCopy = set;
+  withCopy = with;
+  jaliscoLastExcludedMediaKinds = [(ML3MusicLibrary *)self jaliscoLastExcludedMediaKinds];
+  if (!jaliscoLastExcludedMediaKinds)
   {
-    if (!v4)
+    if (!setCopy)
     {
       goto LABEL_14;
     }
 
-    v7 = [v12 allObjects];
-    v9 = [ML3MusicLibrary jaliscoGetSortedMediaKinds:v7];
+    allObjects = [withCopy allObjects];
+    v9 = [ML3MusicLibrary jaliscoGetSortedMediaKinds:allObjects];
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x277CBEB58] setWithArray:v6];
-  v8 = [v7 count];
-  if (v4)
+  allObjects = [MEMORY[0x277CBEB58] setWithArray:jaliscoLastExcludedMediaKinds];
+  v8 = [allObjects count];
+  if (setCopy)
   {
-    [v7 unionSet:v12];
+    [allObjects unionSet:withCopy];
   }
 
   else
   {
-    [v7 minusSet:v12];
+    [allObjects minusSet:withCopy];
   }
 
-  if (v8 != [v7 count])
+  if (v8 != [allObjects count])
   {
-    v10 = [v7 allObjects];
-    v9 = [ML3MusicLibrary jaliscoGetSortedMediaKinds:v10];
+    v7AllObjects = [allObjects allObjects];
+    v9 = [ML3MusicLibrary jaliscoGetSortedMediaKinds:v7AllObjects];
 
 LABEL_10:
     if ([v9 count])
@@ -19262,7 +19262,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v9 = v7;
+  v9 = allObjects;
 LABEL_13:
 
 LABEL_14:
@@ -19270,8 +19270,8 @@ LABEL_14:
 
 - (void)sortJaliscoLastSupportedMediaKinds
 {
-  v8 = [(ML3MusicLibrary *)self jaliscoLastSupportedMediaKinds];
-  v3 = [v8 componentsSeparatedByString:{@", "}];
+  jaliscoLastSupportedMediaKinds = [(ML3MusicLibrary *)self jaliscoLastSupportedMediaKinds];
+  v3 = [jaliscoLastSupportedMediaKinds componentsSeparatedByString:{@", "}];
   v4 = NSStringFromSelector(sel_longLongValue);
   v5 = [v3 valueForKey:v4];
 
@@ -19281,9 +19281,9 @@ LABEL_14:
   [(ML3MusicLibrary *)self setJaliscoLastSupportedMediaKinds:v7];
 }
 
-- (void)setJaliscoLastLibraryUpdateTime:(id)a3
+- (void)setJaliscoLastLibraryUpdateTime:(id)time
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [time timeIntervalSinceReferenceDate];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLJaliscoLastLibraryUpdate"];
 }
@@ -19298,21 +19298,21 @@ LABEL_14:
   return v4;
 }
 
-- (void)setJaliscoOnDiskDatabaseRevision:(int64_t)a3
+- (void)setJaliscoOnDiskDatabaseRevision:(int64_t)revision
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:revision];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLJaliscoDatabaseRevision"];
 }
 
-- (void)setJaliscoNeedsUpdateForTokens:(BOOL)a3
+- (void)setJaliscoNeedsUpdateForTokens:(BOOL)tokens
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:tokens];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLJaliscoNeedsUpdateForTokens"];
 }
 
-- (void)setJaliscoIsMusicGeniusUserEnabled:(BOOL)a3
+- (void)setJaliscoIsMusicGeniusUserEnabled:(BOOL)enabled
 {
-  v3 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:enabled];
 
   CFPreferencesSetAppValue(@"GeniusUserEnabled", v3, @"com.apple.mobileipod");
 }
@@ -19333,23 +19333,23 @@ LABEL_14:
   return !v2;
 }
 
-- (void)setJaliscoHasCloudGeniusData:(BOOL)a3
+- (void)setJaliscoHasCloudGeniusData:(BOOL)data
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:data];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLJaliscoHasCloudGeniusData"];
 }
 
 - (BOOL)jaliscoHasCloudGeniusData
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLJaliscoHasCloudGeniusData"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setJaliscoLastGeniusUpdateDate:(id)a3
+- (void)setJaliscoLastGeniusUpdateDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLJaliscoLastGeniusUpdate"];
 }

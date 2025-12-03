@@ -1,16 +1,16 @@
 @interface HKScreenHeightSizeClassUtilities
 + (int64_t)screenHeightSizeClassForCurrentDevice;
-+ (int64_t)screenHeightSizeClassForHeight:(double)a3 scale:(double)a4;
++ (int64_t)screenHeightSizeClassForHeight:(double)height scale:(double)scale;
 @end
 
 @implementation HKScreenHeightSizeClassUtilities
 
-+ (int64_t)screenHeightSizeClassForHeight:(double)a3 scale:(double)a4
++ (int64_t)screenHeightSizeClassForHeight:(double)height scale:(double)scale
 {
   result = 3;
-  if (a3 > 0.0 && a4 > 0.0)
+  if (height > 0.0 && scale > 0.0)
   {
-    v5 = a3 / a4;
+    v5 = height / scale;
     v6 = 2;
     if (v5 <= 670.0)
     {

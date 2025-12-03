@@ -38,7 +38,7 @@
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    stringValue = v5;
   }
 
   else
@@ -48,27 +48,27 @@
     v10 = v9;
     if (v9)
     {
-      v7 = [v9 stringValue];
+      stringValue = [v9 stringValue];
     }
 
     else
     {
-      v7 = 0;
+      stringValue = 0;
     }
   }
 
-  return v7;
+  return stringValue;
 }
 
 - (id)rc_numberFollowingString:()RCAdditions
 {
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@(\\d*)", a3];
   v5 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v4 options:1 error:0];
-  v6 = [v5 firstMatchInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}];
+  v6 = [v5 firstMatchInString:self options:0 range:{0, objc_msgSend(self, "length")}];
   if ([v6 numberOfRanges])
   {
     v7 = [v6 rangeAtIndex:1];
-    v9 = [a1 substringWithRange:{v7, v8}];
+    v9 = [self substringWithRange:{v7, v8}];
     v10 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v10 setNumberStyle:1];
     v11 = [v10 numberFromString:v9];

@@ -1,14 +1,14 @@
 @interface StoredMobileDocumentReaderAttestationCertificate
-- (StoredMobileDocumentReaderAttestationCertificate)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (StoredMobileDocumentReaderAttestationCertificate)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation StoredMobileDocumentReaderAttestationCertificate
 
-- (StoredMobileDocumentReaderAttestationCertificate)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (StoredMobileDocumentReaderAttestationCertificate)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for StoredMobileDocumentReaderAttestationCertificate();
-  return [(StoredMobileDocumentReaderAttestationCertificate *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(StoredMobileDocumentReaderAttestationCertificate *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

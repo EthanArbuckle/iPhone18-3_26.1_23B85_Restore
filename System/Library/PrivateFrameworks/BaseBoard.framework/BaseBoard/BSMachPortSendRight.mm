@@ -1,32 +1,32 @@
 @interface BSMachPortSendRight
-+ (id)bootstrapLookUpPortWithName:(id)a3;
-+ (id)bootstrapLookUpWithName:(id)a3;
-+ (id)wrapSendRight:(unsigned int)a3;
-- (BSMachPortSendRight)initWithCopyOfPort:(unsigned int)a3;
-- (BSMachPortSendRight)initWithCopyOfRight:(id)a3;
-- (BSMachPortSendRight)initWithNonRetainingPort:(unsigned int)a3;
-- (BSMachPortSendRight)initWithPort:(unsigned int)a3;
-- (BSMachPortSendRight)initWithSendRight:(unsigned int)a3 assumeOwnership:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromReceiveRight:(id)a3;
++ (id)bootstrapLookUpPortWithName:(id)name;
++ (id)bootstrapLookUpWithName:(id)name;
++ (id)wrapSendRight:(unsigned int)right;
+- (BSMachPortSendRight)initWithCopyOfPort:(unsigned int)port;
+- (BSMachPortSendRight)initWithCopyOfRight:(id)right;
+- (BSMachPortSendRight)initWithNonRetainingPort:(unsigned int)port;
+- (BSMachPortSendRight)initWithPort:(unsigned int)port;
+- (BSMachPortSendRight)initWithSendRight:(unsigned int)right assumeOwnership:(BOOL)ownership;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromReceiveRight:(id)right;
 @end
 
 @implementation BSMachPortSendRight
 
-+ (id)wrapSendRight:(unsigned int)a3
++ (id)wrapSendRight:(unsigned int)right
 {
-  v3 = [[a1 alloc] initWithSendRight:*&a3];
+  v3 = [[self alloc] initWithSendRight:*&right];
 
   return v3;
 }
 
-- (BSMachPortSendRight)initWithPort:(unsigned int)a3
+- (BSMachPortSendRight)initWithPort:(unsigned int)port
 {
-  v3 = *&a3;
-  if (a3 - 1 <= 0xFFFFFFFD && !BSMachPortIsType(a3, 1114112))
+  v3 = *&port;
+  if (port - 1 <= 0xFFFFFFFD && !BSMachPortIsType(port, 1114112))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:486 description:@"you must pass in a send (or dead) right or NULL"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:486 description:@"you must pass in a send (or dead) right or NULL"];
   }
 
   v6 = _BSMachPortRightDescription(3u, 0, @"take", v3, 0);
@@ -35,13 +35,13 @@
   return v7;
 }
 
-- (BSMachPortSendRight)initWithCopyOfPort:(unsigned int)a3
+- (BSMachPortSendRight)initWithCopyOfPort:(unsigned int)port
 {
-  LODWORD(v3) = a3;
-  if (a3 - 1 <= 0xFFFFFFFD && !BSMachPortIsType(a3, 1114112))
+  LODWORD(v3) = port;
+  if (port - 1 <= 0xFFFFFFFD && !BSMachPortIsType(port, 1114112))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:493 description:@"you must pass in a send (or dead) right or NULL"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:493 description:@"you must pass in a send (or dead) right or NULL"];
   }
 
   if (BSMachPortIsType(v3, 0x10000))
@@ -68,7 +68,7 @@
   return v7;
 }
 
-- (BSMachPortSendRight)initWithCopyOfRight:(id)a3
+- (BSMachPortSendRight)initWithCopyOfRight:(id)right
 {
   v11 = 0;
   v12 = &v11;
@@ -79,10 +79,10 @@
   v10[2] = __43__BSMachPortSendRight_initWithCopyOfRight___block_invoke;
   v10[3] = &unk_1E72CB728;
   v10[4] = &v11;
-  [a3 accessPort:v10];
+  [right accessPort:v10];
   v5 = *(v12 + 6);
-  v6 = [a3 trace];
-  v7 = _BSMachPortRightDescription(3u, 0, @"copy", v5, v6);
+  trace = [right trace];
+  v7 = _BSMachPortRightDescription(3u, 0, @"copy", v5, trace);
 
   v8 = [(BSMachPortRight *)self _initWithPort:3 type:0 owner:v7 trace:?];
   _Block_object_dispose(&v11, 8);
@@ -104,7 +104,7 @@ BOOL __43__BSMachPortSendRight_initWithCopyOfRight___block_invoke(_BOOL8 result,
   return result;
 }
 
-- (id)initFromReceiveRight:(id)a3
+- (id)initFromReceiveRight:(id)right
 {
   v11 = 0;
   v12 = &v11;
@@ -115,10 +115,10 @@ BOOL __43__BSMachPortSendRight_initWithCopyOfRight___block_invoke(_BOOL8 result,
   v10[2] = __44__BSMachPortSendRight_initFromReceiveRight___block_invoke;
   v10[3] = &unk_1E72CB728;
   v10[4] = &v11;
-  [a3 accessPort:v10];
+  [right accessPort:v10];
   v5 = *(v12 + 6);
-  v6 = [a3 trace];
-  v7 = _BSMachPortRightDescription(3u, 0, @"make", v5, v6);
+  trace = [right trace];
+  v7 = _BSMachPortRightDescription(3u, 0, @"make", v5, trace);
 
   v8 = [(BSMachPortRight *)self _initWithPort:3 type:0 owner:v7 trace:?];
   _Block_object_dispose(&v11, 8);
@@ -140,20 +140,20 @@ BOOL __44__BSMachPortSendRight_initFromReceiveRight___block_invoke(_BOOL8 result
   return result;
 }
 
-+ (id)bootstrapLookUpWithName:(id)a3
++ (id)bootstrapLookUpWithName:(id)name
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
     sp = 0;
-    v5 = bootstrap_look_up(*MEMORY[0x1E69E99F8], [a3 UTF8String], &sp);
+    v5 = bootstrap_look_up(*MEMORY[0x1E69E99F8], [name UTF8String], &sp);
     v6 = v5;
     if (sp + 1 >= 2 && v5 == 0)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bootstrap_look_up:%@", a3];
-      v8 = _BSMachPortRightDescription(3u, 0, v10, sp, 0);
+      name = [MEMORY[0x1E696AEC0] stringWithFormat:@"bootstrap_look_up:%@", name];
+      v8 = _BSMachPortRightDescription(3u, 0, name, sp, 0);
 
-      v11 = [a1 alloc];
+      v11 = [self alloc];
       v9 = [(BSMachPortRight *)v11 _initWithPort:3 type:0 owner:v8 trace:?];
     }
 
@@ -164,7 +164,7 @@ BOOL __44__BSMachPortSendRight_initFromReceiveRight___block_invoke(_BOOL8 result
       {
         v13 = mach_error_string(v6);
         *buf = 138543874;
-        v16 = a3;
+        nameCopy = name;
         v17 = 2082;
         v18 = v13;
         v19 = 1024;
@@ -184,13 +184,13 @@ BOOL __44__BSMachPortSendRight_initFromReceiveRight___block_invoke(_BOOL8 result
   return v9;
 }
 
-- (BSMachPortSendRight)initWithNonRetainingPort:(unsigned int)a3
+- (BSMachPortSendRight)initWithNonRetainingPort:(unsigned int)port
 {
-  v3 = *&a3;
-  if (a3 + 1 <= 1)
+  v3 = *&port;
+  if (port + 1 <= 1)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:557 description:@"you must pass in a valid send right"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:557 description:@"you must pass in a valid send right"];
   }
 
   v5 = _BSMachPortRightDescription(3u, 1, @"wrap", v3, 0);
@@ -199,30 +199,30 @@ BOOL __44__BSMachPortSendRight_initFromReceiveRight___block_invoke(_BOOL8 result
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithCopyOfRight:self];
 }
 
-+ (id)bootstrapLookUpPortWithName:(id)a3
++ (id)bootstrapLookUpPortWithName:(id)name
 {
-  v3 = [a1 bootstrapLookUpWithName:a3];
+  v3 = [self bootstrapLookUpWithName:name];
 
   return v3;
 }
 
-- (BSMachPortSendRight)initWithSendRight:(unsigned int)a3 assumeOwnership:(BOOL)a4
+- (BSMachPortSendRight)initWithSendRight:(unsigned int)right assumeOwnership:(BOOL)ownership
 {
-  if (a4)
+  if (ownership)
   {
-    v4 = [(BSMachPortSendRight *)self initWithPort:*&a3];
+    v4 = [(BSMachPortSendRight *)self initWithPort:*&right];
   }
 
   else
   {
-    v4 = [(BSMachPortSendRight *)self initWithNonRetainingPort:*&a3];
+    v4 = [(BSMachPortSendRight *)self initWithNonRetainingPort:*&right];
   }
 
   v5 = v4;

@@ -1,49 +1,49 @@
 @interface SLShareableContentLoadResult
-+ (SLShareableContentLoadResult)resultWithError:(id)a3;
++ (SLShareableContentLoadResult)resultWithError:(id)error;
 - (Class)archivedObjectClass;
-- (SLShareableContentLoadResult)initWithBSXPCCoder:(id)a3;
-- (SLShareableContentLoadResult)initWithCoder:(id)a3;
-- (SLShareableContentLoadResult)initWithWithData:(id)a3 archivedObjectClassName:(id)a4 urlWrapper:(id)a5 wasOpenedInPlace:(BOOL)a6 error:(id)a7;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SLShareableContentLoadResult)initWithBSXPCCoder:(id)coder;
+- (SLShareableContentLoadResult)initWithCoder:(id)coder;
+- (SLShareableContentLoadResult)initWithWithData:(id)data archivedObjectClassName:(id)name urlWrapper:(id)wrapper wasOpenedInPlace:(BOOL)place error:(id)error;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SLShareableContentLoadResult
 
-- (SLShareableContentLoadResult)initWithWithData:(id)a3 archivedObjectClassName:(id)a4 urlWrapper:(id)a5 wasOpenedInPlace:(BOOL)a6 error:(id)a7
+- (SLShareableContentLoadResult)initWithWithData:(id)data archivedObjectClassName:(id)name urlWrapper:(id)wrapper wasOpenedInPlace:(BOOL)place error:(id)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  dataCopy = data;
+  nameCopy = name;
+  wrapperCopy = wrapper;
+  errorCopy = error;
   v20.receiver = self;
   v20.super_class = SLShareableContentLoadResult;
   v17 = [(SLShareableContentLoadResult *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_data, a3);
-    objc_storeStrong(&v18->_archivedObjectClassName, a4);
-    objc_storeStrong(&v18->_urlWrapper, a5);
-    v18->_wasOpenedInPlace = a6;
-    objc_storeStrong(&v18->_error, a7);
+    objc_storeStrong(&v17->_data, data);
+    objc_storeStrong(&v18->_archivedObjectClassName, name);
+    objc_storeStrong(&v18->_urlWrapper, wrapper);
+    v18->_wasOpenedInPlace = place;
+    objc_storeStrong(&v18->_error, error);
   }
 
   return v18;
 }
 
-+ (SLShareableContentLoadResult)resultWithError:(id)a3
++ (SLShareableContentLoadResult)resultWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithWithData:0 archivedObjectClassName:0 urlWrapper:0 wasOpenedInPlace:0 error:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithWithData:0 archivedObjectClassName:0 urlWrapper:0 wasOpenedInPlace:0 error:errorCopy];
 
   return v5;
 }
 
 - (Class)archivedObjectClass
 {
-  v2 = [(SLShareableContentLoadResult *)self archivedObjectClassName];
-  if (!v2)
+  archivedObjectClassName = [(SLShareableContentLoadResult *)self archivedObjectClassName];
+  if (!archivedObjectClassName)
   {
     goto LABEL_6;
   }
@@ -53,9 +53,9 @@
     [SLShareableContentLoadResult archivedObjectClass];
   }
 
-  if ([SLShareableContentIsArchivedObjectClassNameAllowed_allowedArchivedObjectClassNames containsObject:v2])
+  if ([SLShareableContentIsArchivedObjectClassNameAllowed_allowedArchivedObjectClassNames containsObject:archivedObjectClassName])
   {
-    v3 = NSClassFromString(v2);
+    v3 = NSClassFromString(archivedObjectClassName);
   }
 
   else
@@ -69,104 +69,104 @@ LABEL_6:
   return v3;
 }
 
-- (SLShareableContentLoadResult)initWithBSXPCCoder:(id)a3
+- (SLShareableContentLoadResult)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_data);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_archivedObjectClass);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_urlWrapper);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = NSStringFromSelector(sel_wasOpenedInPlace);
-  v15 = [v4 decodeBoolForKey:v14];
+  v15 = [coderCopy decodeBoolForKey:v14];
 
   v16 = objc_opt_class();
   v17 = NSStringFromSelector(sel_error);
-  v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+  v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
 
   v19 = [(SLShareableContentLoadResult *)self initWithWithData:v7 archivedObjectClassName:v10 urlWrapper:v13 wasOpenedInPlace:v15 error:v18];
   return v19;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLShareableContentLoadResult *)self data];
+  coderCopy = coder;
+  data = [(SLShareableContentLoadResult *)self data];
   v6 = NSStringFromSelector(sel_data);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:data forKey:v6];
 
-  v7 = [(SLShareableContentLoadResult *)self archivedObjectClassName];
+  archivedObjectClassName = [(SLShareableContentLoadResult *)self archivedObjectClassName];
   v8 = NSStringFromSelector(sel_archivedObjectClassName);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:archivedObjectClassName forKey:v8];
 
-  v9 = [(SLShareableContentLoadResult *)self urlWrapper];
+  urlWrapper = [(SLShareableContentLoadResult *)self urlWrapper];
   v10 = NSStringFromSelector(sel_urlWrapper);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:urlWrapper forKey:v10];
 
-  v11 = [(SLShareableContentLoadResult *)self wasOpenedInPlace];
+  wasOpenedInPlace = [(SLShareableContentLoadResult *)self wasOpenedInPlace];
   v12 = NSStringFromSelector(sel_wasOpenedInPlace);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:wasOpenedInPlace forKey:v12];
 
-  v14 = [(SLShareableContentLoadResult *)self error];
+  error = [(SLShareableContentLoadResult *)self error];
   v13 = NSStringFromSelector(sel_error);
-  [v4 encodeObject:v14 forKey:v13];
+  [coderCopy encodeObject:error forKey:v13];
 }
 
-- (SLShareableContentLoadResult)initWithCoder:(id)a3
+- (SLShareableContentLoadResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_data);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_archivedObjectClass);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_urlWrapper);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = NSStringFromSelector(sel_wasOpenedInPlace);
-  v15 = [v4 decodeBoolForKey:v14];
+  v15 = [coderCopy decodeBoolForKey:v14];
 
   v16 = objc_opt_class();
   v17 = NSStringFromSelector(sel_error);
-  v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+  v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
 
   v19 = [(SLShareableContentLoadResult *)self initWithWithData:v7 archivedObjectClassName:v10 urlWrapper:v13 wasOpenedInPlace:v15 error:v18];
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLShareableContentLoadResult *)self data];
+  coderCopy = coder;
+  data = [(SLShareableContentLoadResult *)self data];
   v6 = NSStringFromSelector(sel_data);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:data forKey:v6];
 
-  v7 = [(SLShareableContentLoadResult *)self archivedObjectClassName];
+  archivedObjectClassName = [(SLShareableContentLoadResult *)self archivedObjectClassName];
   v8 = NSStringFromSelector(sel_archivedObjectClassName);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:archivedObjectClassName forKey:v8];
 
-  v9 = [(SLShareableContentLoadResult *)self urlWrapper];
+  urlWrapper = [(SLShareableContentLoadResult *)self urlWrapper];
   v10 = NSStringFromSelector(sel_urlWrapper);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:urlWrapper forKey:v10];
 
-  v11 = [(SLShareableContentLoadResult *)self wasOpenedInPlace];
+  wasOpenedInPlace = [(SLShareableContentLoadResult *)self wasOpenedInPlace];
   v12 = NSStringFromSelector(sel_wasOpenedInPlace);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:wasOpenedInPlace forKey:v12];
 
-  v14 = [(SLShareableContentLoadResult *)self error];
+  error = [(SLShareableContentLoadResult *)self error];
   v13 = NSStringFromSelector(sel_error);
-  [v4 encodeObject:v14 forKey:v13];
+  [coderCopy encodeObject:error forKey:v13];
 }
 
 @end

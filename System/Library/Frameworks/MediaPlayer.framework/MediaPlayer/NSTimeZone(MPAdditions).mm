@@ -6,7 +6,7 @@
 
 - (id)ISO8601TimeZoneOffsetFromUTC
 {
-  v2 = [a1 secondsFromGMT] / 3600.0;
+  v2 = [self secondsFromGMT] / 3600.0;
   v3 = fabs(v2);
   LODWORD(v1) = vcvtmd_s64_f64(v3);
   v4 = ((v3 - trunc(v3)) * 60.0);

@@ -1,6 +1,6 @@
 @interface BaseProcessor
-- (BOOL)matchBufferResolution:(id)a3;
-- (BOOL)matchPixelFormat:(id)a3;
+- (BOOL)matchBufferResolution:(id)resolution;
+- (BOOL)matchPixelFormat:(id)format;
 - (BaseProcessor)init;
 @end
 
@@ -17,9 +17,9 @@
   return result;
 }
 
-- (BOOL)matchPixelFormat:(id)a3
+- (BOOL)matchPixelFormat:(id)format
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType([a3 buffer]);
+  PixelFormatType = CVPixelBufferGetPixelFormatType([format buffer]);
   pixelFormat = self->_pixelFormat;
   if (pixelFormat != PixelFormatType)
   {
@@ -34,13 +34,13 @@
   return 1;
 }
 
-- (BOOL)matchBufferResolution:(id)a3
+- (BOOL)matchBufferResolution:(id)resolution
 {
-  v4 = a3;
-  Width = CVPixelBufferGetWidth([v4 buffer]);
-  v6 = [v4 buffer];
+  resolutionCopy = resolution;
+  Width = CVPixelBufferGetWidth([resolutionCopy buffer]);
+  buffer = [resolutionCopy buffer];
 
-  Height = CVPixelBufferGetHeight(v6);
+  Height = CVPixelBufferGetHeight(buffer);
   if (*&self->_bufferWidth != __PAIR128__(Height, Width))
   {
     if (self->_bufferWidth || self->_bufferHeight)

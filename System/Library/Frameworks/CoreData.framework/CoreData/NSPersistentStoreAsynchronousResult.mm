@@ -1,5 +1,5 @@
 @interface NSPersistentStoreAsynchronousResult
-- (NSPersistentStoreAsynchronousResult)initWithContext:(id)a3 andProgress:(id)a4 completetionBlock:(id)a5;
+- (NSPersistentStoreAsynchronousResult)initWithContext:(id)context andProgress:(id)progress completetionBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
 @end
@@ -24,18 +24,18 @@
   [(NSPersistentStoreAsynchronousResult *)&v4 dealloc];
 }
 
-- (NSPersistentStoreAsynchronousResult)initWithContext:(id)a3 andProgress:(id)a4 completetionBlock:(id)a5
+- (NSPersistentStoreAsynchronousResult)initWithContext:(id)context andProgress:(id)progress completetionBlock:(id)block
 {
   v11.receiver = self;
   v11.super_class = NSPersistentStoreAsynchronousResult;
   v8 = [(NSPersistentStoreAsynchronousResult *)&v11 init];
   if (v8)
   {
-    v8->_requestProgress = a4;
-    v8->_requestContext = a3;
-    if (a5)
+    v8->_requestProgress = progress;
+    v8->_requestContext = context;
+    if (block)
     {
-      v9 = _Block_copy(a5);
+      v9 = _Block_copy(block);
     }
 
     else
@@ -53,9 +53,9 @@
 - (void)cancel
 {
   atomic_fetch_add(&self->_flags, 1u);
-  v2 = [(NSPersistentStoreAsynchronousResult *)self progress];
+  progress = [(NSPersistentStoreAsynchronousResult *)self progress];
 
-  [(NSProgress *)v2 cancel];
+  [(NSProgress *)progress cancel];
 }
 
 @end

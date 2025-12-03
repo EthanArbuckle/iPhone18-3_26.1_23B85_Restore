@@ -1,28 +1,28 @@
 @interface AnalyticsWorkspace
 + (void)initialize;
-+ (void)retrieveWorkspaceWithName:(id)a3 atPath:(id)a4 queue:(id)a5 resultCallback:(id)a6;
-- (BOOL)_primePath:(id)a3;
-- (BOOL)canCloneObjectsOfType:(id)a3;
++ (void)retrieveWorkspaceWithName:(id)name atPath:(id)path queue:(id)queue resultCallback:(id)callback;
+- (BOOL)_primePath:(id)path;
+- (BOOL)canCloneObjectsOfType:(id)type;
 - (BOOL)save;
-- (BOOL)setCustomPersistenceProperties:(id)a3;
+- (BOOL)setCustomPersistenceProperties:(id)properties;
 - (NSManagedObjectContext)mainObjectContext;
 - (NSManagedObjectModel)objectModel;
 - (NSPersistentStoreCoordinator)persistentStoreCoordinator;
-- (id)_cloneInternal:(id)a3 intoWorkspace:(id)a4 ancestry:(id)a5 iteration:(unint64_t)a6 mustFail:(BOOL *)a7;
-- (id)_initWithName:(id)a3 inMemory:(BOOL)a4 useReadOnly:(BOOL)a5 customModelName:(id)a6 loadModelFromBundle:(id)a7;
-- (id)cloneObject:(id)a3 intoWorkspace:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_cloneInternal:(id)internal intoWorkspace:(id)workspace ancestry:(id)ancestry iteration:(unint64_t)iteration mustFail:(BOOL *)fail;
+- (id)_initWithName:(id)name inMemory:(BOOL)memory useReadOnly:(BOOL)only customModelName:(id)modelName loadModelFromBundle:(id)bundle;
+- (id)cloneObject:(id)object intoWorkspace:(id)workspace;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createNewContext;
-- (id)initInMemoryWorkspaceWithName:(id)a3 customModelName:(id)a4 objectModelBundle:(id)a5;
-- (id)initWorkspaceWithService:(id)a3;
+- (id)initInMemoryWorkspaceWithName:(id)name customModelName:(id)modelName objectModelBundle:(id)bundle;
+- (id)initWorkspaceWithService:(id)service;
 - (id)resetCompletionBlock;
 - (unint64_t)currentDBSizeInBytes;
 - (unint64_t)fileSystemSizeInBytes;
-- (void)_migrateDBFile:(id)a3;
+- (void)_migrateDBFile:(id)file;
 - (void)dealloc;
-- (void)enumerateResidentObjectsOfType:(id)a3 usingBlock:(id)a4;
+- (void)enumerateResidentObjectsOfType:(id)type usingBlock:(id)block;
 - (void)reset;
-- (void)setResetCompletionBlock:(id)a3;
+- (void)setResetCompletionBlock:(id)block;
 @end
 
 @implementation AnalyticsWorkspace
@@ -39,9 +39,9 @@
 
     else
     {
-      v5 = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
+      persistentStoreCoordinator = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
       v6 = self->__mainObjectContext;
-      if (v5 && !v6)
+      if (persistentStoreCoordinator && !v6)
       {
         v7 = objc_alloc(MEMORY[0x277CBE440]);
         v8 = [v7 initWithConcurrencyType:*MEMORY[0x277CBE518]];
@@ -49,7 +49,7 @@
         self->__mainObjectContext = v8;
 
         [(NSManagedObjectContext *)self->__mainObjectContext setMergePolicy:*MEMORY[0x277CBE1D0]];
-        [(NSManagedObjectContext *)self->__mainObjectContext setPersistentStoreCoordinator:v5];
+        [(NSManagedObjectContext *)self->__mainObjectContext setPersistentStoreCoordinator:persistentStoreCoordinator];
         [(NSManagedObjectContext *)self->__mainObjectContext setUndoManager:0];
         v6 = self->__mainObjectContext;
       }
@@ -82,37 +82,37 @@
   v22 = *MEMORY[0x277D85DE8];
   if (self->__persistent && ([(AnalyticsWorkspace *)self persistentStoreCoordinator], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(AnalyticsWorkspace *)self mainObjectContext];
-    v5 = [v4 hasChanges];
+    mainObjectContext = [(AnalyticsWorkspace *)self mainObjectContext];
+    hasChanges = [mainObjectContext hasChanges];
 
-    if (v5)
+    if (hasChanges)
     {
-      v6 = [(AnalyticsWorkspace *)self mainObjectContext];
+      mainObjectContext2 = [(AnalyticsWorkspace *)self mainObjectContext];
       v17 = 0;
-      v7 = [v6 save:&v17];
+      v7 = [mainObjectContext2 save:&v17];
       v8 = v17;
 
       if (v7)
       {
-        v9 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v9 postNotificationName:@"SymptomAnalyticsFrameworkDidSaveNotification" object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"SymptomAnalyticsFrameworkDidSaveNotification" object:0];
       }
 
       else
       {
-        v9 = objectanalyticsHandle();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        defaultCenter = objectanalyticsHandle();
+        if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
         {
-          v11 = [v8 localizedDescription];
-          v12 = [v11 UTF8String];
-          v13 = [v8 userInfo];
-          v14 = [v13 description];
-          v15 = [v14 UTF8String];
+          localizedDescription = [v8 localizedDescription];
+          uTF8String = [localizedDescription UTF8String];
+          userInfo = [v8 userInfo];
+          v14 = [userInfo description];
+          uTF8String2 = [v14 UTF8String];
           *buf = 136315394;
-          v19 = v12;
+          v19 = uTF8String;
           v20 = 2080;
-          v21 = v15;
-          _os_log_impl(&dword_2324AD000, v9, OS_LOG_TYPE_ERROR, "Error while saving: %s\n%s", buf, 0x16u);
+          v21 = uTF8String2;
+          _os_log_impl(&dword_2324AD000, defaultCenter, OS_LOG_TYPE_ERROR, "Error while saving: %s\n%s", buf, 0x16u);
         }
       }
     }
@@ -157,7 +157,7 @@ LABEL_81:
     goto LABEL_82;
   }
 
-  v77 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (self->__connection)
   {
     v5 = 0;
@@ -184,7 +184,7 @@ LABEL_81:
     }
 
     v76 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->backingStore];
-    [v77 addEntriesFromDictionary:&unk_28478CA10];
+    [dictionary addEntriesFromDictionary:&unk_28478CA10];
     v10 = MEMORY[0x277CBEAC0];
     storeProt = self->storeProt;
     v12 = [MEMORY[0x277CCABB0] numberWithBool:1];
@@ -202,27 +202,27 @@ LABEL_81:
     readOnly = self->readOnly;
     if (readOnly)
     {
-      v16 = *MEMORY[0x277CBE2B0];
+      null = *MEMORY[0x277CBE2B0];
     }
 
     else
     {
-      v16 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v5 = [v10 dictionaryWithObjectsAndKeys:{v77, *MEMORY[0x277CBE2E0], storeProt, *MEMORY[0x277CBE240], v12, *MEMORY[0x277CBE1D8], v13, *MEMORY[0x277CBE178], v14, v16, 0}];
+    v5 = [v10 dictionaryWithObjectsAndKeys:{dictionary, *MEMORY[0x277CBE2E0], storeProt, *MEMORY[0x277CBE240], v12, *MEMORY[0x277CBE1D8], v13, *MEMORY[0x277CBE178], v14, null, 0}];
     if (!readOnly)
     {
     }
   }
 
-  v17 = [(AnalyticsWorkspace *)self objectModel];
-  if (v17)
+  objectModel = [(AnalyticsWorkspace *)self objectModel];
+  if (objectModel)
   {
     self->_integrityCheckFailed = 0;
     v18 = objc_alloc(MEMORY[0x277CBE4D8]);
-    v19 = [(AnalyticsWorkspace *)self objectModel];
-    v6 = [v18 initWithManagedObjectModel:v19];
+    objectModel2 = [(AnalyticsWorkspace *)self objectModel];
+    v6 = [v18 initWithManagedObjectModel:objectModel2];
 
     if (v6)
     {
@@ -323,9 +323,9 @@ LABEL_46:
             _os_log_impl(&dword_2324AD000, v32, OS_LOG_TYPE_ERROR, "DATA LOSS: Have been instructed to delete persistent store.", buf, 2u);
           }
 
-          v33 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
           v80 = v28;
-          v34 = [v33 removeItemAtURL:v76 error:&v80];
+          v34 = [defaultManager removeItemAtURL:v76 error:&v80];
           v27 = v80;
 
           healthDelegate = self->_healthDelegate;
@@ -433,7 +433,7 @@ LABEL_61:
             [(AnalyticsWorkspaceHealthDelegate *)self->_healthDelegate integrityCheckStarted];
           }
 
-          [v77 setObject:@"YES" forKeyedSubscript:@"integrity_check"];
+          [dictionary setObject:@"YES" forKeyedSubscript:@"integrity_check"];
           v49 = self->storeKind;
           v82 = v28;
           v50 = [v6 addPersistentStoreWithType:v49 configuration:0 URL:v76 options:v5 error:&v82];
@@ -465,9 +465,9 @@ LABEL_77:
           }
 
           self->_integrityCheckFailed = 1;
-          v62 = [(NSError *)v27 code];
+          code = [(NSError *)v27 code];
           v63 = isDBFileCorrupted(v27, 0);
-          if ((v62 - 134000) >= 0x15 && (v62 - 134100) >= 0x47)
+          if ((code - 134000) >= 0x15 && (code - 134100) >= 0x47)
           {
             v65 = v63;
           }
@@ -492,8 +492,8 @@ LABEL_77:
 
           else
           {
-            v66 = [(NSError *)v27 domain];
-            if ([v66 isEqualToString:*MEMORY[0x277CBE2C8]])
+            domain = [(NSError *)v27 domain];
+            if ([domain isEqualToString:*MEMORY[0x277CBE2C8]])
             {
               v67 = [(NSError *)v27 code]== 13;
 
@@ -530,8 +530,8 @@ LABEL_77:
 
             if (v51)
             {
-              v71 = [(AnalyticsWorkspace *)self objectModel];
-              v72 = [v71 isConfiguration:0 compatibleWithStoreMetadata:v51];
+              objectModel3 = [(AnalyticsWorkspace *)self objectModel];
+              v72 = [objectModel3 isConfiguration:0 compatibleWithStoreMetadata:v51];
 
               v73 = objectanalyticsHandle();
               if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
@@ -595,7 +595,7 @@ LABEL_122:
   self->_persistentStoreError = v25;
 LABEL_80:
 
-  if (v17)
+  if (objectModel)
   {
     goto LABEL_81;
   }
@@ -625,24 +625,24 @@ LABEL_85:
   [(AnalyticsWorkspace *)&v5 dealloc];
 }
 
-- (id)_initWithName:(id)a3 inMemory:(BOOL)a4 useReadOnly:(BOOL)a5 customModelName:(id)a6 loadModelFromBundle:(id)a7
+- (id)_initWithName:(id)name inMemory:(BOOL)memory useReadOnly:(BOOL)only customModelName:(id)modelName loadModelFromBundle:(id)bundle
 {
-  v10 = a4;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  memoryCopy = memory;
+  nameCopy = name;
+  modelNameCopy = modelName;
+  bundleCopy = bundle;
   v29.receiver = self;
   v29.super_class = AnalyticsWorkspace;
   v16 = [(AnalyticsWorkspace *)&v29 init];
   if (v16)
   {
-    v26 = v13;
-    v17 = [(__CFString *)v14 length];
+    v26 = nameCopy;
+    v17 = [(__CFString *)modelNameCopy length];
     v27 = 0;
     v28 = 0;
     if (v17)
     {
-      v18 = v14;
+      v18 = modelNameCopy;
     }
 
     else
@@ -650,23 +650,23 @@ LABEL_85:
       v18 = @"SymptomAnalyticsLegacy";
     }
 
-    createPolicy(v10, v17 != 0, &v28, &v27);
+    createPolicy(memoryCopy, v17 != 0, &v28, &v27);
     v19 = v28;
     v20 = v28;
     v21 = v27;
     v22 = v27;
     objc_storeStrong(&v16->storeKind, v19);
     objc_storeStrong(&v16->storeProt, v21);
-    objc_storeStrong(&v16->backingStore, a3);
-    v16->readOnly = a5;
+    objc_storeStrong(&v16->backingStore, name);
+    v16->readOnly = only;
     v16->pathKnownToFail = 0;
     v16->_lastDBSizeUpdateTimestamp = 0.0;
     v16->_fileSystemSizeInBytes = 0;
     v16->_currentDBSizeInBytes = 0;
     objc_storeStrong(&v16->_objectModelName, v18);
-    if (v15)
+    if (bundleCopy)
     {
-      v23 = v15;
+      v23 = bundleCopy;
     }
 
     else
@@ -678,34 +678,34 @@ LABEL_85:
     v16->_objectModelResidentBundle = v23;
 
     v16->__persistent = 1;
-    v13 = v26;
+    nameCopy = v26;
   }
 
   return v16;
 }
 
-- (id)initInMemoryWorkspaceWithName:(id)a3 customModelName:(id)a4 objectModelBundle:(id)a5
+- (id)initInMemoryWorkspaceWithName:(id)name customModelName:(id)modelName objectModelBundle:(id)bundle
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[AnalyticsWorkspace alloc] _initWithName:v10 inMemory:1 useReadOnly:0 customModelName:v9 loadModelFromBundle:v8];
+  bundleCopy = bundle;
+  modelNameCopy = modelName;
+  nameCopy = name;
+  v11 = [[AnalyticsWorkspace alloc] _initWithName:nameCopy inMemory:1 useReadOnly:0 customModelName:modelNameCopy loadModelFromBundle:bundleCopy];
 
   return v11;
 }
 
-+ (void)retrieveWorkspaceWithName:(id)a3 atPath:(id)a4 queue:(id)a5 resultCallback:(id)a6
++ (void)retrieveWorkspaceWithName:(id)name atPath:(id)path queue:(id)queue resultCallback:(id)callback
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v11 && v12)
+  nameCopy = name;
+  pathCopy = path;
+  queueCopy = queue;
+  callbackCopy = callback;
+  v13 = callbackCopy;
+  if (queueCopy && callbackCopy)
   {
     v28 = 0;
-    v14 = assembleFullName(v9, v10, &v28);
+    v14 = assembleFullName(nameCopy, pathCopy, &v28);
     v15 = v28;
     if (v14)
     {
@@ -728,7 +728,7 @@ LABEL_85:
         block[3] = &unk_278987440;
         v27 = v13;
         v26 = v17;
-        dispatch_async(v11, block);
+        dispatch_async(queueCopy, block);
 
         v19 = v27;
       }
@@ -746,7 +746,7 @@ LABEL_85:
         v19 = [registryCallbackBlocks objectForKey:v15];
         v21 = objc_alloc_init(AnalyticsWorkspaceRetrievalCallback);
         [(AnalyticsWorkspaceRetrievalCallback *)v21 setWorkspaceCallback:v13];
-        [(AnalyticsWorkspaceRetrievalCallback *)v21 setCallbackQueue:v11];
+        [(AnalyticsWorkspaceRetrievalCallback *)v21 setCallbackQueue:queueCopy];
         if (v19)
         {
           [v19 addObject:v21];
@@ -792,10 +792,10 @@ void __124__AnalyticsWorkspace_workspaceWithName_atPath_objectModelName_objectMo
   v2[2](v2, *(a1 + 40));
 }
 
-- (id)initWorkspaceWithService:(id)a3
+- (id)initWorkspaceWithService:(id)service
 {
-  v4 = a3;
-  if (!v4)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
     goto LABEL_7;
   }
@@ -814,7 +814,7 @@ void __124__AnalyticsWorkspace_workspaceWithName_atPath_objectModelName_objectMo
     v8 = v14;
     objc_storeStrong(&self->storeKind, v5);
     objc_storeStrong(&self->storeProt, v7);
-    v9 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:v4 options:4096];
+    v9 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:serviceCopy options:4096];
     connection = self->__connection;
     self->__connection = v9;
 
@@ -828,21 +828,21 @@ void __124__AnalyticsWorkspace_workspaceWithName_atPath_objectModelName_objectMo
     }
 
 LABEL_7:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
 LABEL_5:
   self = self;
-  v12 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)setCustomPersistenceProperties:(id)a3
+- (BOOL)setCustomPersistenceProperties:(id)properties
 {
-  v4 = [a3 objectForKeyedSubscript:@"PersistentWorkspace"];
+  v4 = [properties objectForKeyedSubscript:@"PersistentWorkspace"];
   if (!v4)
   {
     goto LABEL_13;
@@ -868,8 +868,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v5 = [v4 BOOLValue];
-  if ((v5 & 1) == 0 && (self->__persistentStoreCoordinator || self->__mainObjectContext))
+  bOOLValue = [v4 BOOLValue];
+  if ((bOOLValue & 1) == 0 && (self->__persistentStoreCoordinator || self->__mainObjectContext))
   {
     v7 = objectanalyticsHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -883,7 +883,7 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  self->__persistent = v5;
+  self->__persistent = bOOLValue;
   v6 = 1;
 LABEL_14:
 
@@ -906,20 +906,20 @@ LABEL_14:
       v5 = objectanalyticsHandle();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(AnalyticsWorkspace *)self objectModelName];
-        v7 = [v6 UTF8String];
-        v8 = [(AnalyticsWorkspace *)self objectModelResidentBundle];
-        v9 = [v8 bundlePath];
+        objectModelName = [(AnalyticsWorkspace *)self objectModelName];
+        uTF8String = [objectModelName UTF8String];
+        objectModelResidentBundle = [(AnalyticsWorkspace *)self objectModelResidentBundle];
+        bundlePath = [objectModelResidentBundle bundlePath];
         v23 = 136315394;
-        v24 = v7;
+        v24 = uTF8String;
         v25 = 2080;
-        v26 = [v9 UTF8String];
+        uTF8String2 = [bundlePath UTF8String];
         _os_log_impl(&dword_2324AD000, v5, OS_LOG_TYPE_DEFAULT, "Loading object model %s.momd from bundle at %s", &v23, 0x16u);
       }
 
-      v10 = [(AnalyticsWorkspace *)self objectModelResidentBundle];
-      v11 = [(AnalyticsWorkspace *)self objectModelName];
-      v12 = [v10 pathForResource:v11 ofType:@"momd"];
+      objectModelResidentBundle2 = [(AnalyticsWorkspace *)self objectModelResidentBundle];
+      objectModelName2 = [(AnalyticsWorkspace *)self objectModelName];
+      v12 = [objectModelResidentBundle2 pathForResource:objectModelName2 ofType:@"momd"];
 
       if (v12)
       {
@@ -942,9 +942,9 @@ LABEL_14:
         v13 = objectanalyticsHandle();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v17 = [(AnalyticsWorkspace *)self objectModelName];
+          objectModelName3 = [(AnalyticsWorkspace *)self objectModelName];
           v23 = 138412290;
-          v24 = v17;
+          v24 = objectModelName3;
           _os_log_impl(&dword_2324AD000, v13, OS_LOG_TYPE_ERROR, "Did not find path for object model %@", &v23, 0xCu);
         }
 
@@ -957,9 +957,9 @@ LABEL_14:
         v19 = objectanalyticsHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          v20 = [(AnalyticsWorkspace *)self objectModelName];
+          objectModelName4 = [(AnalyticsWorkspace *)self objectModelName];
           v23 = 138412290;
-          v24 = v20;
+          v24 = objectModelName4;
           _os_log_impl(&dword_2324AD000, v19, OS_LOG_TYPE_ERROR, "Couldn't match expected object model %@", &v23, 0xCu);
         }
 
@@ -984,8 +984,8 @@ LABEL_14:
 {
   if (self->__persistent)
   {
-    v2 = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
-    if (v2)
+    persistentStoreCoordinator = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
+    if (persistentStoreCoordinator)
     {
       v3 = objc_alloc(MEMORY[0x277CBE440]);
       v4 = [v3 initWithConcurrencyType:*MEMORY[0x277CBE518]];
@@ -993,7 +993,7 @@ LABEL_14:
       if (v4)
       {
         [v4 setMergePolicy:*MEMORY[0x277CBE1D0]];
-        [v5 setPersistentStoreCoordinator:v2];
+        [v5 setPersistentStoreCoordinator:persistentStoreCoordinator];
         [v5 setUndoManager:0];
       }
     }
@@ -1012,10 +1012,10 @@ LABEL_14:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(AnalyticsWorkspace *)self createNewContext];
-  if (v4 || !self->__persistent)
+  createNewContext = [(AnalyticsWorkspace *)self createNewContext];
+  if (createNewContext || !self->__persistent)
   {
     v5 = objc_alloc_init(AnalyticsWorkspace);
     objc_storeStrong(&v5->backingStore, self->backingStore);
@@ -1023,18 +1023,18 @@ LABEL_14:
     objc_storeStrong(&v5->_objectModelName, self->_objectModelName);
     objc_storeStrong(&v5->_objectModelResidentBundle, self->_objectModelResidentBundle);
     objc_storeStrong(&v5->storeProt, self->storeProt);
-    v6 = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
+    persistentStoreCoordinator = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
     persistentStoreCoordinator = v5->__persistentStoreCoordinator;
-    v5->__persistentStoreCoordinator = v6;
+    v5->__persistentStoreCoordinator = persistentStoreCoordinator;
 
-    objc_storeStrong(&v5->__mainObjectContext, v4);
-    v8 = [(AnalyticsWorkspace *)self objectModel];
+    objc_storeStrong(&v5->__mainObjectContext, createNewContext);
+    objectModel = [(AnalyticsWorkspace *)self objectModel];
     objectModel = v5->__objectModel;
-    v5->__objectModel = v8;
+    v5->__objectModel = objectModel;
 
-    v10 = [(AnalyticsWorkspace *)self connection];
+    connection = [(AnalyticsWorkspace *)self connection];
     connection = v5->__connection;
-    v5->__connection = v10;
+    v5->__connection = connection;
 
     v5->__persistent = [(AnalyticsWorkspace *)self persistent];
   }
@@ -1054,10 +1054,10 @@ LABEL_14:
   return v2;
 }
 
-- (void)setResetCompletionBlock:(id)a3
+- (void)setResetCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = MEMORY[0x2383849E0](self->__resetCompletionBlock);
     v9[0] = MEMORY[0x277D85DD0];
@@ -1065,7 +1065,7 @@ LABEL_14:
     v9[2] = __46__AnalyticsWorkspace_setResetCompletionBlock___block_invoke;
     v9[3] = &unk_2789874B8;
     v10 = v5;
-    v11 = v4;
+    v11 = blockCopy;
     v6 = v5;
     v7 = MEMORY[0x2383849E0](v9);
     resetCompletionBlock = self->__resetCompletionBlock;
@@ -1090,31 +1090,31 @@ uint64_t __46__AnalyticsWorkspace_setResetCompletionBlock___block_invoke(uint64_
 {
   if (self->__persistent)
   {
-    v3 = [(AnalyticsWorkspace *)self mainObjectContext];
-    [v3 reset];
+    mainObjectContext = [(AnalyticsWorkspace *)self mainObjectContext];
+    [mainObjectContext reset];
   }
 
-  v4 = [(AnalyticsWorkspace *)self resetCompletionBlock];
-  if (v4)
+  resetCompletionBlock = [(AnalyticsWorkspace *)self resetCompletionBlock];
+  if (resetCompletionBlock)
   {
-    v5 = v4;
-    v4[2]();
-    v4 = v5;
+    v5 = resetCompletionBlock;
+    resetCompletionBlock[2]();
+    resetCompletionBlock = v5;
   }
 }
 
-- (BOOL)canCloneObjectsOfType:(id)a3
+- (BOOL)canCloneObjectsOfType:(id)type
 {
   v17 = *MEMORY[0x277D85DE8];
   if (self->__persistent)
   {
-    v3 = [a3 relationshipsByName];
+    relationshipsByName = [type relationshipsByName];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v3 allValues];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allValues = [relationshipsByName allValues];
+    v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1125,7 +1125,7 @@ uint64_t __46__AnalyticsWorkspace_setResetCompletionBlock___block_invoke(uint64_
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           if ([*(*(&v12 + 1) + 8 * i) isToMany])
@@ -1135,7 +1135,7 @@ uint64_t __46__AnalyticsWorkspace_setResetCompletionBlock___block_invoke(uint64_
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -1158,22 +1158,22 @@ LABEL_13:
   return v9;
 }
 
-- (void)enumerateResidentObjectsOfType:(id)a3 usingBlock:(id)a4
+- (void)enumerateResidentObjectsOfType:(id)type usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AnalyticsWorkspace *)self mainObjectContext];
-  v9 = [v8 registeredObjects];
+  typeCopy = type;
+  blockCopy = block;
+  mainObjectContext = [(AnalyticsWorkspace *)self mainObjectContext];
+  registeredObjects = [mainObjectContext registeredObjects];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __64__AnalyticsWorkspace_enumerateResidentObjectsOfType_usingBlock___block_invoke;
   v12[3] = &unk_2789874E0;
-  v13 = v6;
-  v14 = v7;
-  v10 = v6;
-  v11 = v7;
-  [v9 enumerateObjectsUsingBlock:v12];
+  v13 = typeCopy;
+  v14 = blockCopy;
+  v10 = typeCopy;
+  v11 = blockCopy;
+  [registeredObjects enumerateObjectsUsingBlock:v12];
 }
 
 void __64__AnalyticsWorkspace_enumerateResidentObjectsOfType_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -1191,28 +1191,28 @@ void __64__AnalyticsWorkspace_enumerateResidentObjectsOfType_usingBlock___block_
   }
 }
 
-- (id)cloneObject:(id)a3 intoWorkspace:(id)a4
+- (id)cloneObject:(id)object intoWorkspace:(id)workspace
 {
   v12 = 0;
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  workspaceCopy = workspace;
+  objectCopy = object;
   v9 = [[v6 alloc] initWithCapacity:5];
-  v10 = [(AnalyticsWorkspace *)self _cloneInternal:v8 intoWorkspace:v7 ancestry:v9 iteration:0 mustFail:&v12];
+  v10 = [(AnalyticsWorkspace *)self _cloneInternal:objectCopy intoWorkspace:workspaceCopy ancestry:v9 iteration:0 mustFail:&v12];
 
   return v10;
 }
 
-- (id)_cloneInternal:(id)a3 intoWorkspace:(id)a4 ancestry:(id)a5 iteration:(unint64_t)a6 mustFail:(BOOL *)a7
+- (id)_cloneInternal:(id)internal intoWorkspace:(id)workspace ancestry:(id)ancestry iteration:(unint64_t)iteration mustFail:(BOOL *)fail
 {
   v66 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 mainObjectContext];
-  v14 = [v10 entity];
-  v55 = [v14 name];
-  if (!v55)
+  internalCopy = internal;
+  workspaceCopy = workspace;
+  ancestryCopy = ancestry;
+  mainObjectContext = [workspaceCopy mainObjectContext];
+  entity = [internalCopy entity];
+  name = [entity name];
+  if (!name)
   {
     v15 = objectanalyticsHandle();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1224,95 +1224,95 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v51 = v14;
-    v22 = v13;
-    v23 = v12;
-    if (v10)
+    v51 = entity;
+    v22 = mainObjectContext;
+    v23 = ancestryCopy;
+    if (internalCopy)
     {
-      v12 = [v10 objectID];
-      v13 = [v12 URIRepresentation];
-      a6 = [v13 description];
-      v24 = [a6 UTF8String];
+      ancestryCopy = [internalCopy objectID];
+      mainObjectContext = [ancestryCopy URIRepresentation];
+      iteration = [mainObjectContext description];
+      uTF8String = [iteration UTF8String];
     }
 
     else
     {
-      v24 = "(no nmo)";
+      uTF8String = "(no nmo)";
     }
 
     *buf = 136315138;
-    v65 = v24;
+    uTF8String2 = uTF8String;
     _os_log_impl(&dword_2324AD000, v15, OS_LOG_TYPE_ERROR, "Nil entity name for nmo: %s", buf, 0xCu);
-    if (v10)
+    if (internalCopy)
     {
     }
 
     v25 = 0;
-    v12 = v23;
-    v13 = v22;
+    ancestryCopy = v23;
+    mainObjectContext = v22;
 LABEL_32:
-    v14 = v51;
+    entity = v51;
     goto LABEL_33;
   }
 
-  if (a6 >= 6)
+  if (iteration >= 6)
   {
     v15 = objectanalyticsHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [v10 objectID];
-      v17 = v16 = v14;
+      [internalCopy objectID];
+      v17 = v16 = entity;
       [v17 URIRepresentation];
-      v19 = v18 = v12;
+      v19 = v18 = ancestryCopy;
       [v19 description];
-      v21 = v20 = v13;
+      v21 = v20 = mainObjectContext;
       *buf = 136315138;
-      v65 = [v21 UTF8String];
+      uTF8String2 = [v21 UTF8String];
       _os_log_impl(&dword_2324AD000, v15, OS_LOG_TYPE_ERROR, "Too long a chain sequence leading to: %s", buf, 0xCu);
 
-      v13 = v20;
-      v12 = v18;
+      mainObjectContext = v20;
+      ancestryCopy = v18;
 
-      v14 = v16;
+      entity = v16;
     }
 
     goto LABEL_8;
   }
 
-  [v10 objectID];
-  v26 = v51 = v14;
-  v25 = [v12 objectForKeyedSubscript:v26];
+  [internalCopy objectID];
+  v26 = v51 = entity;
+  v25 = [ancestryCopy objectForKeyedSubscript:v26];
 
-  v14 = v51;
+  entity = v51;
   if (!v25)
   {
-    v25 = [MEMORY[0x277CBE408] insertNewObjectForEntityForName:v55 inManagedObjectContext:v13];
+    v25 = [MEMORY[0x277CBE408] insertNewObjectForEntityForName:name inManagedObjectContext:mainObjectContext];
     if (v25)
     {
-      v58 = a6;
-      v50 = v13;
-      v54 = v11;
-      v27 = [v10 objectID];
-      v53 = v12;
-      [v12 setObject:v25 forKey:v27];
+      iterationCopy = iteration;
+      v50 = mainObjectContext;
+      v54 = workspaceCopy;
+      objectID = [internalCopy objectID];
+      v53 = ancestryCopy;
+      [ancestryCopy setObject:v25 forKey:objectID];
 
-      v28 = [v10 entity];
-      v29 = [v28 attributesByName];
-      v30 = [v29 allKeys];
+      entity2 = [internalCopy entity];
+      attributesByName = [entity2 attributesByName];
+      allKeys = [attributesByName allKeys];
 
-      v49 = v30;
-      [v10 dictionaryWithValuesForKeys:v30];
+      v49 = allKeys;
+      [internalCopy dictionaryWithValuesForKeys:allKeys];
       v48 = v52 = v25;
       [v25 setValuesForKeysWithDictionary:?];
-      v31 = [v10 entity];
-      v32 = [v31 relationshipsByName];
+      entity3 = [internalCopy entity];
+      relationshipsByName = [entity3 relationshipsByName];
 
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v33 = [v32 allKeys];
-      v34 = [v33 countByEnumeratingWithState:&v59 objects:v63 count:16];
+      allKeys2 = [relationshipsByName allKeys];
+      v34 = [allKeys2 countByEnumeratingWithState:&v59 objects:v63 count:16];
       if (v34)
       {
         v35 = v34;
@@ -1323,24 +1323,24 @@ LABEL_32:
           {
             if (*v60 != v36)
             {
-              objc_enumerationMutation(v33);
+              objc_enumerationMutation(allKeys2);
             }
 
             v38 = *(*(&v59 + 1) + 8 * i);
-            v39 = [v32 objectForKeyedSubscript:v38];
+            v39 = [relationshipsByName objectForKeyedSubscript:v38];
             if (([v39 isToMany] & 1) == 0 && (objc_msgSend(v39, "isTransient") & 1) == 0)
             {
-              v40 = v33;
-              v41 = v10;
-              v42 = [v10 valueForKey:v38];
-              ++v58;
+              v40 = allKeys2;
+              v41 = internalCopy;
+              v42 = [internalCopy valueForKey:v38];
+              ++iterationCopy;
               v43 = [AnalyticsWorkspace _cloneInternal:"_cloneInternal:intoWorkspace:ancestry:iteration:mustFail:" intoWorkspace:v42 ancestry:v54 iteration:v53 mustFail:?];
               if (!v43)
               {
-                *a7 = 1;
+                *fail = 1;
 
                 v25 = 0;
-                v10 = v41;
+                internalCopy = v41;
                 v15 = v52;
                 goto LABEL_31;
               }
@@ -1348,12 +1348,12 @@ LABEL_32:
               v44 = v43;
               [v52 setValue:v43 forKey:v38];
 
-              v10 = v41;
-              v33 = v40;
+              internalCopy = v41;
+              allKeys2 = v40;
             }
           }
 
-          v35 = [v33 countByEnumeratingWithState:&v59 objects:v63 count:16];
+          v35 = [allKeys2 countByEnumeratingWithState:&v59 objects:v63 count:16];
           if (v35)
           {
             continue;
@@ -1364,7 +1364,7 @@ LABEL_32:
       }
 
       v15 = v52;
-      if (*a7)
+      if (*fail)
       {
         v45 = 0;
       }
@@ -1377,9 +1377,9 @@ LABEL_32:
       v25 = v45;
 LABEL_31:
 
-      v12 = v53;
-      v11 = v54;
-      v13 = v50;
+      ancestryCopy = v53;
+      workspaceCopy = v54;
+      mainObjectContext = v50;
       goto LABEL_32;
     }
   }
@@ -1391,7 +1391,7 @@ LABEL_34:
   return v25;
 }
 
-- (BOOL)_primePath:(id)a3
+- (BOOL)_primePath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
   if (self->pathKnownToFail)
@@ -1401,10 +1401,10 @@ LABEL_34:
 
   else
   {
-    v5 = [a3 stringByDeletingLastPathComponent];
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v17 = 0;
-    if ([v6 fileExistsAtPath:v5 isDirectory:&v17] && (v17 & 1) != 0)
+    if ([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:&v17] && (v17 & 1) != 0)
     {
       v3 = 1;
     }
@@ -1413,7 +1413,7 @@ LABEL_34:
     {
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObject:self->storeProt forKey:*MEMORY[0x277CCA1B0]];
       v16 = 0;
-      [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:v7 error:&v16];
+      [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v7 error:&v16];
       v8 = v16;
       v3 = v8 == 0;
       if (v8)
@@ -1421,10 +1421,10 @@ LABEL_34:
         v9 = objectanalyticsHandle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          v10 = [v8 localizedDescription];
-          v11 = [v10 UTF8String];
+          localizedDescription = [v8 localizedDescription];
+          uTF8String = [localizedDescription UTF8String];
           *buf = 136315138;
-          v19 = v11;
+          v19 = uTF8String;
           _os_log_impl(&dword_2324AD000, v9, OS_LOG_TYPE_ERROR, "Error creating directory path: %s", buf, 0xCu);
         }
 
@@ -1441,27 +1441,27 @@ LABEL_34:
   return v3;
 }
 
-- (void)_migrateDBFile:(id)a3
+- (void)_migrateDBFile:(id)file
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v37 = 0;
-  v6 = [(NSString *)self->backingStore stringByDeletingLastPathComponent];
-  if (([v5 fileExistsAtPath:v6 isDirectory:&v37] & 1) == 0)
+  stringByDeletingLastPathComponent = [(NSString *)self->backingStore stringByDeletingLastPathComponent];
+  if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:&v37] & 1) == 0)
   {
     p_super = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{@"_networkd", *MEMORY[0x277CCA160], @"wheel", *MEMORY[0x277CCA120], 0}];
     v8 = objectanalyticsHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v6;
+      v39 = stringByDeletingLastPathComponent;
       _os_log_impl(&dword_2324AD000, v8, OS_LOG_TYPE_DEFAULT, "DB Container (%@) doesn't exist. Will create it", buf, 0xCu);
     }
 
     [p_super setObject:self->storeProt forKeyedSubscript:*MEMORY[0x277CCA1B0]];
     v36 = 0;
-    [v5 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:p_super error:&v36];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:p_super error:&v36];
     v9 = v36;
     if (v9)
     {
@@ -1470,7 +1470,7 @@ LABEL_34:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v39 = v6;
+        v39 = stringByDeletingLastPathComponent;
         v40 = 2112;
         v41 = v10;
         _os_log_impl(&dword_2324AD000, v11, OS_LOG_TYPE_ERROR, "Couldn't create DB Container: %@ because %@", buf, 0x16u);
@@ -1484,7 +1484,7 @@ LABEL_34:
     }
   }
 
-  if (!-[NSObject length](v4, "length") || ![v5 fileExistsAtPath:v4 isDirectory:&v37] || (v37 & 1) != 0)
+  if (!-[NSObject length](fileCopy, "length") || ![defaultManager fileExistsAtPath:fileCopy isDirectory:&v37] || (v37 & 1) != 0)
   {
     p_super = objectanalyticsHandle();
     if (!os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG))
@@ -1512,7 +1512,7 @@ LABEL_14:
     _os_log_impl(&dword_2324AD000, v18, OS_LOG_TYPE_DEFAULT, "Legacy path netusage exists. backingstore %@", buf, 0xCu);
   }
 
-  if (!-[NSString length](self->backingStore, "length") || ([v5 fileExistsAtPath:self->backingStore isDirectory:&v37] & 1) != 0 || (v37 & 1) != 0)
+  if (!-[NSString length](self->backingStore, "length") || ([defaultManager fileExistsAtPath:self->backingStore isDirectory:&v37] & 1) != 0 || (v37 & 1) != 0)
   {
     p_super = objectanalyticsHandle();
     if (!os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -1536,7 +1536,7 @@ LABEL_14:
 
   v21 = self->backingStore;
   v35 = 0;
-  v22 = [v5 moveItemAtPath:v4 toPath:v21 error:&v35];
+  v22 = [defaultManager moveItemAtPath:fileCopy toPath:v21 error:&v35];
   v10 = v35;
   v23 = objectanalyticsHandle();
   v24 = v23;
@@ -1548,11 +1548,11 @@ LABEL_14:
       _os_log_impl(&dword_2324AD000, v24, OS_LOG_TYPE_DEFAULT, "Successfully moved over netusage to new location", buf, 2u);
     }
 
-    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-shm", v4];
-    if ([v5 fileExistsAtPath:v25 isDirectory:&v37] && (v37 & 1) == 0)
+    fileCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-shm", fileCopy];
+    if ([defaultManager fileExistsAtPath:fileCopy isDirectory:&v37] && (v37 & 1) == 0)
     {
       v34 = v10;
-      v29 = [v5 removeItemAtPath:v25 error:&v34];
+      v29 = [defaultManager removeItemAtPath:fileCopy error:&v34];
       v26 = v34;
 
       if ((v29 & 1) == 0)
@@ -1561,7 +1561,7 @@ LABEL_14:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v39 = v25;
+          v39 = fileCopy;
           v40 = 2112;
           v41 = v26;
           _os_log_impl(&dword_2324AD000, v30, OS_LOG_TYPE_ERROR, "Failed to remove %@ because %@", buf, 0x16u);
@@ -1574,12 +1574,12 @@ LABEL_14:
       v26 = v10;
     }
 
-    p_super = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-wal", v4];
+    p_super = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-wal", fileCopy];
 
-    if ([v5 fileExistsAtPath:p_super isDirectory:&v37] && (v37 & 1) == 0)
+    if ([defaultManager fileExistsAtPath:p_super isDirectory:&v37] && (v37 & 1) == 0)
     {
       v33 = v26;
-      v31 = [v5 removeItemAtPath:p_super error:&v33];
+      v31 = [defaultManager removeItemAtPath:p_super error:&v33];
       v10 = v33;
 
       if ((v31 & 1) == 0)
@@ -1608,7 +1608,7 @@ LABEL_14:
     {
       v27 = self->backingStore;
       *buf = 138412802;
-      v39 = v4;
+      v39 = fileCopy;
       v40 = 2112;
       v41 = v27;
       v42 = 2112;
@@ -1633,19 +1633,19 @@ LABEL_16:
   v4 = v3;
   if (v3 - self->_lastDBSizeUpdateTimestamp >= 300.0)
   {
-    v6 = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
-    v7 = [v6 persistentStores];
+    persistentStoreCoordinator = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
 
-    if (v7)
+    if (persistentStores)
     {
-      v32 = self;
-      v8 = [MEMORY[0x277CCAA00] defaultManager];
+      selfCopy = self;
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v31 = v7;
-      v9 = v7;
+      v31 = persistentStores;
+      v9 = persistentStores;
       v10 = [v9 countByEnumeratingWithState:&v36 objects:v44 count:16];
       if (v10)
       {
@@ -1666,9 +1666,9 @@ LABEL_16:
             v14 = [*(*(&v36 + 1) + 8 * v13) URL];
             if ([v14 isFileURL])
             {
-              v15 = [v14 path];
-              v16 = v15;
-              if (!v15 || ![v15 length])
+              path = [v14 path];
+              v16 = path;
+              if (!path || ![path length])
               {
                 v24 = objectanalyticsHandle();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1682,7 +1682,7 @@ LABEL_16:
               }
 
               v35 = 0;
-              v17 = [v8 attributesOfItemAtPath:v16 error:&v35];
+              v17 = [defaultManager attributesOfItemAtPath:v16 error:&v35];
               v18 = v35;
               if (v18)
               {
@@ -1699,20 +1699,20 @@ LABEL_16:
               {
                 v20 = v12;
                 v21 = v9;
-                v22 = v8;
-                v23 = [v17 fileSize];
-                v34 += v23;
+                v22 = defaultManager;
+                fileSize = [v17 fileSize];
+                v34 += fileSize;
                 v19 = objectanalyticsHandle();
                 if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
                   v41 = v16;
                   v42 = 2048;
-                  v43 = *&v23;
+                  v43 = *&fileSize;
                   _os_log_impl(&dword_2324AD000, v19, OS_LOG_TYPE_DEFAULT, "Analytics Workspace path = %@, file size = %llu", buf, 0x16u);
                 }
 
-                v8 = v22;
+                defaultManager = v22;
                 v9 = v21;
                 v12 = v20;
                 v11 = v33;
@@ -1740,8 +1740,8 @@ LABEL_16:
 
 LABEL_27:
 
-      v7 = v31;
-      self = v32;
+      persistentStores = v31;
+      self = selfCopy;
       v25 = v34;
     }
 
@@ -1782,17 +1782,17 @@ LABEL_27:
   result = self->_fileSystemSizeInBytes;
   if (!result)
   {
-    v4 = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
-    v5 = [v4 persistentStores];
+    persistentStoreCoordinator = [(AnalyticsWorkspace *)self persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
 
-    if (v5)
+    if (persistentStores)
     {
-      v24 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v6 = v5;
+      v6 = persistentStores;
       v7 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
       if (v7)
       {
@@ -1813,9 +1813,9 @@ LABEL_27:
             v12 = [*(*(&v26 + 1) + 8 * i) URL];
             if ([v12 isFileURL])
             {
-              v13 = [v12 path];
-              v14 = v13;
-              if (!v13 || ![v13 length])
+              path = [v12 path];
+              v14 = path;
+              if (!path || ![path length])
               {
                 v15 = objectanalyticsHandle();
                 if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1831,7 +1831,7 @@ LABEL_28:
               }
 
               v25 = 0;
-              v15 = [v24 attributesOfFileSystemForPath:v14 error:&v25];
+              v15 = [defaultManager attributesOfFileSystemForPath:v14 error:&v25];
               v16 = v25;
               if (v16 || !v15)
               {

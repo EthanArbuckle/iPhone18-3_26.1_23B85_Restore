@@ -1,33 +1,33 @@
 @interface MRPlaybackSessionMigratePostMessage
-- (MRPlaybackSessionMigratePostMessage)initWithRequest:(id)a3 playerPath:(id)a4 setPlaybackSessionCommandID:(id)a5;
+- (MRPlaybackSessionMigratePostMessage)initWithRequest:(id)request playerPath:(id)path setPlaybackSessionCommandID:(id)d;
 - (MRPlaybackSessionMigrateRequest)request;
 - (MRPlayerPath)playerPath;
 - (NSDictionary)metrics;
 - (NSError)error;
 - (NSString)setPlaybackSessionCommandID;
-- (void)setMetrics:(id)a3;
+- (void)setMetrics:(id)metrics;
 @end
 
 @implementation MRPlaybackSessionMigratePostMessage
 
-- (MRPlaybackSessionMigratePostMessage)initWithRequest:(id)a3 playerPath:(id)a4 setPlaybackSessionCommandID:(id)a5
+- (MRPlaybackSessionMigratePostMessage)initWithRequest:(id)request playerPath:(id)path setPlaybackSessionCommandID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  pathCopy = path;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = MRPlaybackSessionMigratePostMessage;
   v11 = [(MRProtocolMessage *)&v16 init];
   if (v11)
   {
     v12 = objc_alloc_init(_MRPlaybackSessionMigratePostMessageProtobuf);
-    v13 = [v8 protobuf];
-    [(_MRPlaybackSessionMigratePostMessageProtobuf *)v12 setRequest:v13];
+    protobuf = [requestCopy protobuf];
+    [(_MRPlaybackSessionMigratePostMessageProtobuf *)v12 setRequest:protobuf];
 
-    v14 = [v9 protobuf];
-    [(_MRPlaybackSessionMigratePostMessageProtobuf *)v12 setPlayerPath:v14];
+    protobuf2 = [pathCopy protobuf];
+    [(_MRPlaybackSessionMigratePostMessageProtobuf *)v12 setPlayerPath:protobuf2];
 
-    [(_MRPlaybackSessionMigratePostMessageProtobuf *)v12 setSetPlaybackSessionCommandID:v10];
+    [(_MRPlaybackSessionMigratePostMessageProtobuf *)v12 setSetPlaybackSessionCommandID:dCopy];
     [(MRProtocolMessage *)v11 setUnderlyingCodableMessage:v12];
   }
 
@@ -37,9 +37,9 @@
 - (MRPlaybackSessionMigrateRequest)request
 {
   v3 = [MRPlaybackSessionMigrateRequest alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 request];
-  v6 = [(MRPlaybackSessionMigrateRequest *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  request = [underlyingCodableMessage request];
+  v6 = [(MRPlaybackSessionMigrateRequest *)v3 initWithProtobuf:request];
 
   return v6;
 }
@@ -47,48 +47,48 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPath];
-  v6 = [(MRPlayerPath *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPath = [underlyingCodableMessage playerPath];
+  v6 = [(MRPlayerPath *)v3 initWithProtobuf:playerPath];
 
   return v6;
 }
 
 - (NSString)setPlaybackSessionCommandID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 setPlaybackSessionCommandID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  setPlaybackSessionCommandID = [underlyingCodableMessage setPlaybackSessionCommandID];
 
-  return v3;
+  return setPlaybackSessionCommandID;
 }
 
 - (NSDictionary)metrics
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 metrics];
-  v4 = _MRProtoUtilsNSDictionaryFromProtoDictionary(v3);
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  metrics = [underlyingCodableMessage metrics];
+  v4 = _MRProtoUtilsNSDictionaryFromProtoDictionary(metrics);
 
   return v4;
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  v5 = _MRProtoUtilsProtoDictionaryFromNSDictionary(a3);
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  [v4 setMetrics:v5];
+  v5 = _MRProtoUtilsProtoDictionaryFromNSDictionary(metrics);
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  [underlyingCodableMessage setMetrics:v5];
 }
 
 - (NSError)error
 {
-  v3 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v4 = [v3 error];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  error = [underlyingCodableMessage error];
 
-  if (v4)
+  if (error)
   {
     v5 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v6 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v7 = [v6 error];
-    v8 = [v5 mr_initWithProtobuf:v7];
+    underlyingCodableMessage2 = [(MRProtocolMessage *)self underlyingCodableMessage];
+    error2 = [underlyingCodableMessage2 error];
+    v8 = [v5 mr_initWithProtobuf:error2];
   }
 
   else

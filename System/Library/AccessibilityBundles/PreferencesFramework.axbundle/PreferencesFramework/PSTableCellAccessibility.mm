@@ -1,47 +1,47 @@
 @interface PSTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-+ (void)_setAccessibilityData:(id)a3 onCell:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
++ (void)_setAccessibilityData:(id)data onCell:(id)cell;
 - (BOOL)_accessibilityLanguageOverriddesUser;
 - (BOOL)accessibilityRespondsToUserInteraction;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)_accessibilityMaxScrubberPosition;
 - (CGPoint)_accessibilityMinScrubberPosition;
 - (CGPoint)accessibilityActivationPoint;
-- (PSTableCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (PSTableCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (id)automationElements;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityLoadAccessibilityInformationWithSpecifier:(id)a3;
+- (void)_accessibilityLoadAccessibilityInformationWithSpecifier:(id)specifier;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PSTableCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"PSTableCell" hasInstanceMethod:@"refreshCellContentsWithSpecifier:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"_accessibilityClearChildren" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PSControlTableCell" hasInstanceMethod:@"control" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITableViewCellAccessibility" hasInstanceMethod:@"_accessibilityPerformableActions" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PSTableCell" hasInstanceMethod:@"canPerformAction:withSender:" withFullSignature:{"B", ":", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PSTableCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"PSTableCell" hasInstanceMethod:@"refreshCellContentsWithSpecifier:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"_accessibilityClearChildren" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PSControlTableCell" hasInstanceMethod:@"control" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITableViewCellAccessibility" hasInstanceMethod:@"_accessibilityPerformableActions" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PSTableCell" hasInstanceMethod:@"canPerformAction:withSender:" withFullSignature:{"B", ":", "@", 0}];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = PSTableCellAccessibility;
-  [(PSTableCellAccessibility *)&v5 refreshCellContentsWithSpecifier:a3];
+  [(PSTableCellAccessibility *)&v5 refreshCellContentsWithSpecifier:specifier];
   NSSelectorFromString(&cfstr_Accessibilitys.isa);
   if ((objc_opt_respondsToSelector() & 1) == 0 || [(PSTableCellAccessibility *)self safeBoolForKey:@"_accessibilityShouldClearChildren"])
   {
@@ -49,77 +49,77 @@
   }
 }
 
-+ (void)_setAccessibilityData:(id)a3 onCell:(id)a4
++ (void)_setAccessibilityData:(id)data onCell:(id)cell
 {
-  v23 = a3;
-  v5 = a4;
-  v6 = [v23 accessibilityLabel];
-  v7 = v23;
-  if (!v6)
+  dataCopy = data;
+  cellCopy = cell;
+  accessibilityLabel = [dataCopy accessibilityLabel];
+  v7 = dataCopy;
+  if (!accessibilityLabel)
   {
-    v6 = [v23 propertyForKey:@"accessibilityLabel"];
-    if (v6)
+    accessibilityLabel = [dataCopy propertyForKey:@"accessibilityLabel"];
+    if (accessibilityLabel)
     {
-      v8 = [v23 propertyForKey:@"axBundle"];
-      v9 = [v23 propertyForKey:@"axStringsFileName"];
-      v10 = [v8 localizedStringForKey:v6 value:&stru_2A22A8370 table:v9];
+      v8 = [dataCopy propertyForKey:@"axBundle"];
+      v9 = [dataCopy propertyForKey:@"axStringsFileName"];
+      v10 = [v8 localizedStringForKey:accessibilityLabel value:&stru_2A22A8370 table:v9];
       if ([v10 length])
       {
-        [v5 setAccessibilityLabel:v10];
+        [cellCopy setAccessibilityLabel:v10];
       }
     }
 
-    v7 = v23;
+    v7 = dataCopy;
   }
 
   v11 = [v7 propertyForKey:@"accessibilityHint"];
   if (v11)
   {
-    v12 = [v23 propertyForKey:@"axBundle"];
-    v13 = [v23 propertyForKey:@"axStringsFileName"];
+    v12 = [dataCopy propertyForKey:@"axBundle"];
+    v13 = [dataCopy propertyForKey:@"axStringsFileName"];
     v14 = [v12 localizedStringForKey:v11 value:&stru_2A22A8370 table:v13];
     if ([v14 length])
     {
-      [v5 setAccessibilityHint:v14];
+      [cellCopy setAccessibilityHint:v14];
     }
   }
 
-  v15 = [v23 accessibilityIdentification];
+  accessibilityIdentification = [dataCopy accessibilityIdentification];
 
-  if (v15)
+  if (accessibilityIdentification)
   {
-    v16 = [v23 accessibilityIdentification];
-    [v5 accessibilitySetIdentification:v16];
+    accessibilityIdentification2 = [dataCopy accessibilityIdentification];
+    [cellCopy accessibilitySetIdentification:accessibilityIdentification2];
   }
 
-  v17 = [v23 accessibilityLanguage];
+  accessibilityLanguage = [dataCopy accessibilityLanguage];
 
-  if (v17)
+  if (accessibilityLanguage)
   {
-    v18 = [v23 accessibilityLanguage];
-    [v5 setAccessibilityLanguage:v18];
+    accessibilityLanguage2 = [dataCopy accessibilityLanguage];
+    [cellCopy setAccessibilityLanguage:accessibilityLanguage2];
   }
 
-  v19 = [v23 propertyForKey:@"accessibilityGet"];
+  v19 = [dataCopy propertyForKey:@"accessibilityGet"];
   if (v19)
   {
-    [v5 _accessibilitySetRetainedValue:v19 forKey:@"accessibilityStatusGetter"];
-    v20 = [v23 target];
-    [v5 _accessibilitySetRetainedValue:v20 forKey:@"accessibilityStatusTarget"];
+    [cellCopy _accessibilitySetRetainedValue:v19 forKey:@"accessibilityStatusGetter"];
+    target = [dataCopy target];
+    [cellCopy _accessibilitySetRetainedValue:target forKey:@"accessibilityStatusTarget"];
   }
 
-  v21 = [v23 propertyForKey:@"isAccessibilityElement"];
+  v21 = [dataCopy propertyForKey:@"isAccessibilityElement"];
   v22 = v21;
   if (v21 && ([v21 BOOLValue] & 1) == 0)
   {
-    [v5 setAccessibilityTraits:*MEMORY[0x29EDC7578]];
+    [cellCopy setAccessibilityTraits:*MEMORY[0x29EDC7578]];
   }
 }
 
 - (BOOL)_accessibilityLanguageOverriddesUser
 {
-  v3 = [(PSTableCellAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"LanguageCell"];
+  accessibilityIdentification = [(PSTableCellAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"LanguageCell"];
 
   if (v4)
   {
@@ -131,13 +131,13 @@
   return [(PSTableCellAccessibility *)&v6 _accessibilityLanguageOverriddesUser];
 }
 
-- (PSTableCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PSTableCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v10.receiver = self;
   v10.super_class = PSTableCellAccessibility;
-  v7 = a5;
-  v8 = [(PSTableCellAccessibility *)&v10 initWithStyle:a3 reuseIdentifier:a4 specifier:v7];
-  [(PSTableCellAccessibility *)v8 _accessibilityLoadAccessibilityInformationWithSpecifier:v7, v10.receiver, v10.super_class];
+  specifierCopy = specifier;
+  v8 = [(PSTableCellAccessibility *)&v10 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
+  [(PSTableCellAccessibility *)v8 _accessibilityLoadAccessibilityInformationWithSpecifier:specifierCopy, v10.receiver, v10.super_class];
 
   return v8;
 }
@@ -159,23 +159,23 @@
   [(PSTableCellAccessibility *)self _accessibilityLoadAccessibilityInformationWithSpecifier:v3];
 }
 
-- (void)_accessibilityLoadAccessibilityInformationWithSpecifier:(id)a3
+- (void)_accessibilityLoadAccessibilityInformationWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  [objc_opt_class() _setAccessibilityData:v4 onCell:self];
+  specifierCopy = specifier;
+  [objc_opt_class() _setAccessibilityData:specifierCopy onCell:self];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PSTableCellAccessibility *)self type];
-  if ([v7 _accessibilityAutomationHitTest] && (v8 - 5) <= 1)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  type = [(PSTableCellAccessibility *)self type];
+  if ([eventCopy _accessibilityAutomationHitTest] && (type - 5) <= 1)
   {
     v9 = [(PSTableCellAccessibility *)self safeValueForKey:@"control"];
     [v9 convertPoint:self fromView:{x, y}];
-    if ([v9 pointInside:v7 withEvent:?])
+    if ([v9 pointInside:eventCopy withEvent:?])
     {
       if ([v9 isAccessibilityElement])
       {
@@ -185,7 +185,7 @@
       else
       {
         [v9 convertPoint:self fromView:{x, y}];
-        v10 = [v9 _accessibilityHitTest:v7 withEvent:?];
+        v10 = [v9 _accessibilityHitTest:eventCopy withEvent:?];
       }
 
       v11 = v10;
@@ -196,7 +196,7 @@
 
   v13.receiver = self;
   v13.super_class = PSTableCellAccessibility;
-  v11 = [(PSTableCellAccessibility *)&v13 _accessibilityHitTest:v7 withEvent:x, y];
+  v11 = [(PSTableCellAccessibility *)&v13 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_10:
 
   return v11;
@@ -208,7 +208,7 @@ LABEL_10:
   {
     v9.receiver = self;
     v9.super_class = PSTableCellAccessibility;
-    v7 = [(PSTableCellAccessibility *)&v9 automationElements];
+    automationElements = [(PSTableCellAccessibility *)&v9 automationElements];
   }
 
   else
@@ -216,25 +216,25 @@ LABEL_10:
     v3 = [(PSTableCellAccessibility *)self safeValueForKey:@"control"];
     v4 = [(PSTableCellAccessibility *)self safeValueForKey:@"titleLabel"];
     v5 = [(PSTableCellAccessibility *)self safeValueForKey:@"valueLabel"];
-    v6 = [MEMORY[0x29EDB8DE8] array];
-    v7 = v6;
+    array = [MEMORY[0x29EDB8DE8] array];
+    automationElements = array;
     if (v4)
     {
-      [v6 addObject:v4];
+      [array addObject:v4];
     }
 
     if (v5)
     {
-      [v7 addObject:v5];
+      [automationElements addObject:v5];
     }
 
     if (v3)
     {
-      [v7 addObject:v3];
+      [automationElements addObject:v3];
     }
   }
 
-  return v7;
+  return automationElements;
 }
 
 - (BOOL)isAccessibilityElement
@@ -242,9 +242,9 @@ LABEL_10:
   if ([(PSTableCellAccessibility *)self type]== 5)
   {
     v3 = [(PSTableCellAccessibility *)self safeValueForKey:@"control"];
-    v4 = [v3 isAccessibilityElement];
+    isAccessibilityElement = [v3 isAccessibilityElement];
 
-    return v4;
+    return isAccessibilityElement;
   }
 
   else
@@ -259,14 +259,14 @@ LABEL_10:
 {
   v16.receiver = self;
   v16.super_class = PSTableCellAccessibility;
-  v3 = [(PSTableCellAccessibility *)&v16 accessibilityTraits];
+  accessibilityTraits = [(PSTableCellAccessibility *)&v16 accessibilityTraits];
   if (([(PSTableCellAccessibility *)self type]- 5) <= 1)
   {
     v4 = [(PSTableCellAccessibility *)self safeUIViewForKey:@"control"];
     if (![v4 isHidden])
     {
       v13 = [(PSTableCellAccessibility *)self safeValueForKey:@"control"];
-      v14 = [v13 accessibilityTraits] | v3;
+      v14 = [v13 accessibilityTraits] | accessibilityTraits;
 
       v12 = v14 & ~*MEMORY[0x29EDC7578];
       return v12;
@@ -275,7 +275,7 @@ LABEL_10:
 
   if (([(PSTableCellAccessibility *)self safeBoolForKey:@"_checked"]& 1) != 0 || [(PSTableCellAccessibility *)self safeBoolForKey:@"isSelected"])
   {
-    v3 |= *MEMORY[0x29EDC7FC0];
+    accessibilityTraits |= *MEMORY[0x29EDC7FC0];
   }
 
   v5 = [(PSTableCellAccessibility *)self safeBoolForKey:@"cellEnabled"];
@@ -285,22 +285,22 @@ LABEL_10:
     v6 = 0;
   }
 
-  v7 = v6 | v3;
+  v7 = v6 | accessibilityTraits;
   v8 = [(PSTableCellAccessibility *)self safeValueForKey:@"tag"];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   v10 = *MEMORY[0x29EDC7F70] | v7;
-  if (((1 << v9) & 0x2006) == 0)
+  if (((1 << intValue) & 0x2006) == 0)
   {
     v10 = v7;
   }
 
-  if (v9 > 0xD)
+  if (intValue > 0xD)
   {
     v10 = v7;
   }
 
-  if ((*MEMORY[0x29EDC7F70] & v7) != 0 && v9 == 4)
+  if ((*MEMORY[0x29EDC7F70] & v7) != 0 && intValue == 4)
   {
     return *MEMORY[0x29EDC7F70] ^ v7;
   }
@@ -313,8 +313,8 @@ LABEL_10:
 
 - (id)accessibilityLabel
 {
-  v3 = [(PSTableCellAccessibility *)self accessibilityIdentification];
-  if ([v3 isEqualToString:@"appleid"])
+  accessibilityIdentification = [(PSTableCellAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"appleid"])
   {
     v4 = @"mail.appleid.text";
 LABEL_19:
@@ -322,78 +322,78 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v3 isEqualToString:@"mobileme"])
+  if ([accessibilityIdentification isEqualToString:@"mobileme"])
   {
     v4 = @"mail.mobileme.text";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"mail-gmail"])
+  if ([accessibilityIdentification isEqualToString:@"mail-gmail"])
   {
     v4 = @"mail.gmail.text";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"mail-yahoo"])
+  if ([accessibilityIdentification isEqualToString:@"mail-yahoo"])
   {
     v4 = @"mail.yahoo.text";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"mail-aol"])
+  if ([accessibilityIdentification isEqualToString:@"mail-aol"])
   {
     v4 = @"mail.aol.text";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"mail-hotmail"])
+  if ([accessibilityIdentification isEqualToString:@"mail-hotmail"])
   {
     v4 = @"mail.outlook.text";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"mail-exchange"])
+  if ([accessibilityIdentification isEqualToString:@"mail-exchange"])
   {
     v4 = @"mail.exchange.text";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"KeyboardPeriodShortcut"])
+  if ([accessibilityIdentification isEqualToString:@"KeyboardPeriodShortcut"])
   {
     v4 = @"keyboard.period.shortcut";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"ShakeToShuffle"])
+  if ([accessibilityIdentification isEqualToString:@"ShakeToShuffle"])
   {
     v4 = @"shake.to.shuffle";
     goto LABEL_19;
   }
 
-  v7 = [(PSTableCellAccessibility *)self type];
-  if (v7 == 5)
+  type = [(PSTableCellAccessibility *)self type];
+  if (type == 5)
   {
-    v8 = [(PSTableCellAccessibility *)self safeValueForKey:@"control"];
-    v9 = [v8 accessibilityLabel];
+    accessibilityLabel2 = [(PSTableCellAccessibility *)self safeValueForKey:@"control"];
+    accessibilityLabel = [accessibilityLabel2 accessibilityLabel];
     goto LABEL_25;
   }
 
-  v10 = v7;
+  v10 = type;
   v11 = [(PSTableCellAccessibility *)self safeValueForKey:@"titleLabel"];
-  v8 = [v11 accessibilityLabel];
+  accessibilityLabel2 = [v11 accessibilityLabel];
 
-  if (![v8 length])
+  if (![accessibilityLabel2 length])
   {
-    v14 = [(PSTableCellAccessibility *)self specifier];
-    v15 = [v14 propertyForKey:*MEMORY[0x29EDC6330]];
+    specifier = [(PSTableCellAccessibility *)self specifier];
+    v15 = [specifier propertyForKey:*MEMORY[0x29EDC6330]];
     v16 = [v15 isEqualToString:@"AccountPSDetailController"];
 
     if (v16)
     {
-      v17 = [v14 propertyForKey:*MEMORY[0x29EDC6310]];
-      v18 = [v17 accessibilityIdentifier];
+      v17 = [specifier propertyForKey:*MEMORY[0x29EDC6310]];
+      accessibilityIdentifier = [v17 accessibilityIdentifier];
 
-      if ([v18 hasPrefix:@"126"])
+      if ([accessibilityIdentifier hasPrefix:@"126"])
       {
         v19 = @"chinese.126.mail.account";
 LABEL_41:
@@ -403,66 +403,66 @@ LABEL_47:
         goto LABEL_48;
       }
 
-      if ([v18 hasPrefix:@"163"])
+      if ([accessibilityIdentifier hasPrefix:@"163"])
       {
         v19 = @"chinese.163.mail.account";
         goto LABEL_41;
       }
 
-      if ([v18 hasPrefix:@"qq"])
+      if ([accessibilityIdentifier hasPrefix:@"qq"])
       {
         v19 = @"chinese.qq.mail.account";
         goto LABEL_41;
       }
     }
 
-    v21 = [v14 accessibilityLabel];
-    v22 = [v21 length];
+    accessibilityLabel3 = [specifier accessibilityLabel];
+    v22 = [accessibilityLabel3 length];
 
     if (v22)
     {
-      v23 = [v14 accessibilityLabel];
+      accessibilityLabel4 = [specifier accessibilityLabel];
     }
 
     else
     {
       v25.receiver = self;
       v25.super_class = PSTableCellAccessibility;
-      v23 = [(PSTableCellAccessibility *)&v25 accessibilityLabel];
+      accessibilityLabel4 = [(PSTableCellAccessibility *)&v25 accessibilityLabel];
     }
 
-    v5 = v23;
+    v5 = accessibilityLabel4;
     goto LABEL_47;
   }
 
-  v12 = [(PSTableCellAccessibility *)self accessibilityIdentification];
-  v13 = [v12 isEqualToString:@"LanguageCell"];
+  accessibilityIdentification2 = [(PSTableCellAccessibility *)self accessibilityIdentification];
+  v13 = [accessibilityIdentification2 isEqualToString:@"LanguageCell"];
 
   if (v13)
   {
-    v5 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v8];
-    v14 = [(PSTableCellAccessibility *)self accessibilityLanguage];
-    if (!v14)
+    v5 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:accessibilityLabel2];
+    specifier = [(PSTableCellAccessibility *)self accessibilityLanguage];
+    if (!specifier)
     {
-      v14 = [(PSTableCellAccessibility *)self _accessibilityValueForKey:@"axLanguage"];
+      specifier = [(PSTableCellAccessibility *)self _accessibilityValueForKey:@"axLanguage"];
     }
 
-    [v5 setAttribute:v14 forKey:*MEMORY[0x29EDBD950]];
+    [v5 setAttribute:specifier forKey:*MEMORY[0x29EDBD950]];
     goto LABEL_47;
   }
 
   if (v10 == 6)
   {
     v20 = [(PSTableCellAccessibility *)self safeValueForKey:@"detailTextLabel"];
-    v24 = [v20 accessibilityLabel];
+    accessibilityLabel5 = [v20 accessibilityLabel];
     v5 = __UIAXStringForVariables();
 
     goto LABEL_48;
   }
 
-  v9 = v8;
+  accessibilityLabel = accessibilityLabel2;
 LABEL_25:
-  v5 = v9;
+  v5 = accessibilityLabel;
 LABEL_48:
 
 LABEL_20:
@@ -504,8 +504,8 @@ LABEL_6:
     v8 = [(PSTableCellAccessibility *)self _accessibilityValueForKey:@"accessibilityStatusTarget"];
     if (v8 && v7 && (NSSelectorFromString(v7), (objc_opt_respondsToSelector() & 1) != 0))
     {
-      v9 = [v8 performSelector:NSSelectorFromString(v7) withObject:0];
-      if (!v9)
+      accessibilityLabel = [v8 performSelector:NSSelectorFromString(v7) withObject:0];
+      if (!accessibilityLabel)
       {
         goto LABEL_13;
       }
@@ -514,42 +514,42 @@ LABEL_6:
     else
     {
       v10 = [(PSTableCellAccessibility *)self safeValueForKey:@"detailTextLabel"];
-      v9 = [v10 accessibilityLabel];
+      accessibilityLabel = [v10 accessibilityLabel];
 
-      if (!v9)
+      if (!accessibilityLabel)
       {
         goto LABEL_13;
       }
     }
 
     v11 = [(PSTableCellAccessibility *)self safeValueForKey:@"detailTextLabel"];
-    v12 = [v11 _accessibilityViewIsVisible];
+    _accessibilityViewIsVisible = [v11 _accessibilityViewIsVisible];
 
-    if (v12)
+    if (_accessibilityViewIsVisible)
     {
 LABEL_14:
-      if ([v9 length])
+      if ([accessibilityLabel length])
       {
-        v15 = v9;
+        accessibilityValue = accessibilityLabel;
       }
 
       else
       {
         v17.receiver = self;
         v17.super_class = PSTableCellAccessibility;
-        v15 = [(PSTableCellAccessibility *)&v17 accessibilityValue];
+        accessibilityValue = [(PSTableCellAccessibility *)&v17 accessibilityValue];
       }
 
-      v6 = v15;
+      accessibilityValue2 = accessibilityValue;
 
       goto LABEL_18;
     }
 
 LABEL_13:
     v13 = [(PSTableCellAccessibility *)self safeValueForKey:@"valueLabel"];
-    v14 = [v13 accessibilityLabel];
+    accessibilityLabel2 = [v13 accessibilityLabel];
 
-    v9 = v14;
+    accessibilityLabel = accessibilityLabel2;
     goto LABEL_14;
   }
 
@@ -562,11 +562,11 @@ LABEL_13:
   }
 
   v5 = [(PSTableCellAccessibility *)self safeValueForKey:@"control"];
-  v6 = [v5 accessibilityValue];
+  accessibilityValue2 = [v5 accessibilityValue];
 
 LABEL_18:
 
-  return v6;
+  return accessibilityValue2;
 }
 
 - (void)accessibilityIncrement
@@ -603,14 +603,14 @@ LABEL_18:
 
 - (id)accessibilityHint
 {
-  if ((-[PSTableCellAccessibility type](self, "type") - 5) > 1 || (-[PSTableCellAccessibility safeValueForKey:](self, "safeValueForKey:", @"control"), v3 = objc_claimAutoreleasedReturnValue(), [v3 accessibilityHint], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+  if ((-[PSTableCellAccessibility type](self, "type") - 5) > 1 || (-[PSTableCellAccessibility safeValueForKey:](self, "safeValueForKey:", @"control"), v3 = objc_claimAutoreleasedReturnValue(), [v3 accessibilityHint], accessibilityHint = objc_claimAutoreleasedReturnValue(), v3, !accessibilityHint))
   {
     v6.receiver = self;
     v6.super_class = PSTableCellAccessibility;
-    v4 = [(PSTableCellAccessibility *)&v6 accessibilityHint];
+    accessibilityHint = [(PSTableCellAccessibility *)&v6 accessibilityHint];
   }
 
-  return v4;
+  return accessibilityHint;
 }
 
 - (CGPoint)_accessibilityMinScrubberPosition
@@ -678,11 +678,11 @@ LABEL_18:
   return v3;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v10.receiver = self;
   v10.super_class = PSTableCellAccessibility;
-  if ([(PSTableCellAccessibility *)&v10 canPerformAction:a3 withSender:a4])
+  if ([(PSTableCellAccessibility *)&v10 canPerformAction:action withSender:sender])
   {
     return 1;
   }
@@ -693,7 +693,7 @@ LABEL_18:
   }
 
   v7 = [(PSTableCellAccessibility *)self safeArrayForKey:@"_accessibilityPerformableActions"];
-  v8 = NSStringFromSelector(a3);
+  v8 = NSStringFromSelector(action);
   v6 = [v7 containsObject:v8];
 
   return v6;

@@ -1,13 +1,13 @@
 @interface CLSCompressorObjC
-+ (BOOL)isAppleArchiveWithFileURL:(id)a3;
-+ (id)compressWithDirectoryURL:(id)a3 destinationURL:(id)a4 error:(id *)a5;
-+ (id)uncompressWithArchiveAt:(id)a3 error:(id *)a4;
++ (BOOL)isAppleArchiveWithFileURL:(id)l;
++ (id)compressWithDirectoryURL:(id)l destinationURL:(id)rL error:(id *)error;
++ (id)uncompressWithArchiveAt:(id)at error:(id *)error;
 - (CLSCompressorObjC)init;
 @end
 
 @implementation CLSCompressorObjC
 
-+ (id)compressWithDirectoryURL:(id)a3 destinationURL:(id)a4 error:(id *)a5
++ (id)compressWithDirectoryURL:(id)l destinationURL:(id)rL error:(id *)error
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);
@@ -31,7 +31,7 @@
   return v19;
 }
 
-+ (id)uncompressWithArchiveAt:(id)a3 error:(id *)a4
++ (id)uncompressWithArchiveAt:(id)at error:(id *)error
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -51,7 +51,7 @@
   return v15;
 }
 
-+ (BOOL)isAppleArchiveWithFileURL:(id)a3
++ (BOOL)isAppleArchiveWithFileURL:(id)l
 {
   v3 = type metadata accessor for URL();
   v4 = *(v3 - 8);

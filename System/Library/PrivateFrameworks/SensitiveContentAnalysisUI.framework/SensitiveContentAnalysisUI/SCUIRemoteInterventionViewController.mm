@@ -1,22 +1,22 @@
 @interface SCUIRemoteInterventionViewController
-+ (id)contextDictionaryFromTypeErasedConfig:(id)a3;
-+ (id)typeErasedConfigWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 type:(int64_t)a5 options:(int64_t)a6;
-- (SCUIRemoteInterventionViewController)initWithCoder:(id)a3;
-- (SCUIRemoteInterventionViewController)initWithFacade:(id)a3 typeErasedConfig:(id)a4;
-- (SCUIRemoteInterventionViewController)initWithFacade:(id)a3 workflow:(int64_t)a4 type:(int64_t)a5 contextDictionary:(id)a6;
-- (SCUIRemoteInterventionViewController)initWithNibName:(id)a3 bundle:(id)a4;
++ (id)contextDictionaryFromTypeErasedConfig:(id)config;
++ (id)typeErasedConfigWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary type:(int64_t)type options:(int64_t)options;
+- (SCUIRemoteInterventionViewController)initWithCoder:(id)coder;
+- (SCUIRemoteInterventionViewController)initWithFacade:(id)facade typeErasedConfig:(id)config;
+- (SCUIRemoteInterventionViewController)initWithFacade:(id)facade workflow:(int64_t)workflow type:(int64_t)type contextDictionary:(id)dictionary;
+- (SCUIRemoteInterventionViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation SCUIRemoteInterventionViewController
 
-- (SCUIRemoteInterventionViewController)initWithCoder:(id)a3
+- (SCUIRemoteInterventionViewController)initWithCoder:(id)coder
 {
   result = sub_1BC75C3D0();
   __break(1u);
   return result;
 }
 
-- (SCUIRemoteInterventionViewController)initWithFacade:(id)a3 workflow:(int64_t)a4 type:(int64_t)a5 contextDictionary:(id)a6
+- (SCUIRemoteInterventionViewController)initWithFacade:(id)facade workflow:(int64_t)workflow type:(int64_t)type contextDictionary:(id)dictionary
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDBC50, &qword_1BC762D70);
   v11 = *(*(v10 - 8) + 64);
@@ -32,41 +32,41 @@
   v22 = &v29 - ((v21 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v20);
   v24 = &v29 - v23;
-  if (a6)
+  if (dictionary)
   {
-    a6 = sub_1BC75BA40();
+    dictionary = sub_1BC75BA40();
   }
 
   swift_unknownObjectRetain();
-  sub_1BC6E53B4(a5);
+  sub_1BC6E53B4(type);
   v25 = type metadata accessor for AnalyticsUIContext(0);
   (*(*(v25 - 8) + 56))(v13, 1, 1, v25);
-  sub_1BC6E3EAC(a4, a6, v17, 1, v13, v24);
+  sub_1BC6E3EAC(workflow, dictionary, v17, 1, v13, v24);
   ObjectType = swift_getObjectType();
   sub_1BC6E86E8(v24, v22);
-  v27 = (*(ObjectType + 96))(a3, v22);
+  v27 = (*(ObjectType + 96))(facade, v22);
   sub_1BC6980C0(v24);
   swift_deallocPartialClassInstance();
   return v27;
 }
 
-- (SCUIRemoteInterventionViewController)initWithFacade:(id)a3 typeErasedConfig:(id)a4
+- (SCUIRemoteInterventionViewController)initWithFacade:(id)facade typeErasedConfig:(id)config
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   sub_1BC75C160();
   swift_unknownObjectRelease();
-  return RemoteInterventionViewController.init(facade:typeErasedConfig:)(a3, v6);
+  return RemoteInterventionViewController.init(facade:typeErasedConfig:)(facade, v6);
 }
 
-- (SCUIRemoteInterventionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SCUIRemoteInterventionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-+ (id)typeErasedConfigWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 type:(int64_t)a5 options:(int64_t)a6
++ (id)typeErasedConfigWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary type:(int64_t)type options:(int64_t)options
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDBC50, &qword_1BC762D70);
   v10 = *(*(v9 - 8) + 64);
@@ -82,15 +82,15 @@
   v21 = &v27 - ((v20 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v19);
   v23 = &v27 - v22;
-  if (a4)
+  if (dictionary)
   {
-    a4 = sub_1BC75BA40();
+    dictionary = sub_1BC75BA40();
   }
 
-  sub_1BC6E53B4(a5);
+  sub_1BC6E53B4(type);
   v24 = type metadata accessor for AnalyticsUIContext(0);
   (*(*(v24 - 8) + 56))(v12, 1, 1, v24);
-  sub_1BC6E3EAC(a3, a4, v16, 1, v12, v23);
+  sub_1BC6E3EAC(workflow, dictionary, v16, 1, v12, v23);
   sub_1BC6E86E8(v23, v21);
   v25 = sub_1BC75C620();
   sub_1BC6980C0(v23);
@@ -98,7 +98,7 @@
   return v25;
 }
 
-+ (id)contextDictionaryFromTypeErasedConfig:(id)a3
++ (id)contextDictionaryFromTypeErasedConfig:(id)config
 {
   swift_unknownObjectRetain();
   sub_1BC75C160();

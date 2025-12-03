@@ -1,41 +1,41 @@
 @interface MTIDScheme
-- (BOOL)isEqual:(id)a3;
-- (MTIDScheme)initWithCoder:(id)a3;
-- (MTIDScheme)initWithNamespace:(id)a3 options:(id)a4;
-- (MTIDScheme)initWithNamespace:(id)a3 type:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTIDScheme)initWithCoder:(id)coder;
+- (MTIDScheme)initWithNamespace:(id)namespace options:(id)options;
+- (MTIDScheme)initWithNamespace:(id)namespace type:(int64_t)type;
 - (NSString)containerIdentifier;
 - (double)maxFutureTimeInterval;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)calculateHash;
 - (unint64_t)storagePoolSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)overrideLifespanMaybe;
 @end
 
 @implementation MTIDScheme
 
-- (MTIDScheme)initWithNamespace:(id)a3 options:(id)a4
+- (MTIDScheme)initWithNamespace:(id)namespace options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  namespaceCopy = namespace;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = MTIDScheme;
   v8 = [(MTIDScheme *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    [(MTIDScheme *)v8 setIdNamespace:v6];
+    [(MTIDScheme *)v8 setIdNamespace:namespaceCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v7 objectForKeyedSubscript:@"rotation"];
+      v10 = [optionsCopy objectForKeyedSubscript:@"rotation"];
       v11 = [@"daily" compare:v10 options:1];
 
       if (v11)
       {
         [(MTIDScheme *)v9 setRotationSchedule:0];
-        v12 = [v7 objectForKeyedSubscript:@"lifespan"];
+        v12 = [optionsCopy objectForKeyedSubscript:@"lifespan"];
         -[MTIDScheme setLifespan:](v9, "setLifespan:", [v12 longLongValue]);
       }
 
@@ -45,14 +45,14 @@
         [(MTIDScheme *)v9 setLifespan:86400];
       }
 
-      v13 = [v7 objectForKeyedSubscript:@"correlations"];
+      v13 = [optionsCopy objectForKeyedSubscript:@"correlations"];
       v14 = [v13 copy];
       [(MTIDScheme *)v9 setCorrelations:v14];
 
-      v15 = [v7 objectForKeyedSubscript:@"version"];
+      v15 = [optionsCopy objectForKeyedSubscript:@"version"];
       [(MTIDScheme *)v9 setVersion:v15];
 
-      v16 = [v7 objectForKeyedSubscript:@"type"];
+      v16 = [optionsCopy objectForKeyedSubscript:@"type"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -81,7 +81,7 @@
       }
 
       [(MTIDScheme *)v9 setIdType:v17];
-      v18 = [v7 objectForKeyedSubscript:@"container"];
+      v18 = [optionsCopy objectForKeyedSubscript:@"container"];
       [(MTIDScheme *)v9 setContainerIdentifier:v18];
     }
 
@@ -97,17 +97,17 @@
   return v9;
 }
 
-- (MTIDScheme)initWithNamespace:(id)a3 type:(int64_t)a4
+- (MTIDScheme)initWithNamespace:(id)namespace type:(int64_t)type
 {
-  v6 = a3;
+  namespaceCopy = namespace;
   v10.receiver = self;
   v10.super_class = MTIDScheme;
   v7 = [(MTIDScheme *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(MTIDScheme *)v7 setIdNamespace:v6];
-    [(MTIDScheme *)v8 setIdType:a4];
+    [(MTIDScheme *)v7 setIdNamespace:namespaceCopy];
+    [(MTIDScheme *)v8 setIdType:type];
     [(MTIDScheme *)v8 overrideLifespanMaybe];
     [(MTIDScheme *)v8 setLocalHash:[(MTIDScheme *)v8 calculateHash]];
   }
@@ -118,13 +118,13 @@
 - (void)overrideLifespanMaybe
 {
   v3 = +[MTFrameworkEnvironment sharedEnvironment];
-  v4 = [v3 isInternalBuild];
+  isInternalBuild = [v3 isInternalBuild];
 
-  if (v4)
+  if (isInternalBuild)
   {
     v8 = +[NSUserDefaults standardUserDefaults];
-    v5 = [(MTIDScheme *)self idNamespace];
-    v6 = [NSString stringWithFormat:@"MTIDServiceLifespanOverride~%@", v5];
+    idNamespace = [(MTIDScheme *)self idNamespace];
+    v6 = [NSString stringWithFormat:@"MTIDServiceLifespanOverride~%@", idNamespace];
 
     v7 = [v8 integerForKey:v6];
     if (!v7)
@@ -145,21 +145,21 @@
   containerIdentifier = self->_containerIdentifier;
   if (containerIdentifier)
   {
-    v3 = containerIdentifier;
+    hostProcessBundleIdentifier = containerIdentifier;
   }
 
   else if ([(MTIDScheme *)self idType]== 2)
   {
-    v3 = @"com.apple.amp-ae.metricskit.identifiers";
+    hostProcessBundleIdentifier = @"com.apple.amp-ae.metricskit.identifiers";
   }
 
   else
   {
     v4 = +[MTFrameworkEnvironment sharedEnvironment];
-    v3 = [v4 hostProcessBundleIdentifier];
+    hostProcessBundleIdentifier = [v4 hostProcessBundleIdentifier];
   }
 
-  return v3;
+  return hostProcessBundleIdentifier;
 }
 
 - (unint64_t)storagePoolSize
@@ -193,8 +193,8 @@
     return 1.79769313e308;
   }
 
-  v3 = [(MTIDScheme *)self storagePoolSize];
-  v4 = ([(MTIDScheme *)self lifespan]* v3);
+  storagePoolSize = [(MTIDScheme *)self storagePoolSize];
+  v4 = ([(MTIDScheme *)self lifespan]* storagePoolSize);
   [(MTIDScheme *)self maxPastTimeInterval];
   return v4 - v5;
 }
@@ -203,33 +203,33 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MTIDScheme *)self idNamespace];
-  v6 = [(MTIDScheme *)self lifespan];
-  v7 = [(MTIDScheme *)self correlations];
-  v8 = [NSString stringWithFormat:@"<%@: %p, namespace: %@, lifespan: %lld correlations: %@ >", v4, self, v5, v6, v7];
+  idNamespace = [(MTIDScheme *)self idNamespace];
+  lifespan = [(MTIDScheme *)self lifespan];
+  correlations = [(MTIDScheme *)self correlations];
+  v8 = [NSString stringWithFormat:@"<%@: %p, namespace: %@, lifespan: %lld correlations: %@ >", v4, self, idNamespace, lifespan, correlations];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(MTIDScheme *)self hash];
     if (v6 == [v5 hash])
     {
-      v7 = [(MTIDScheme *)self idNamespace];
-      v8 = [v5 idNamespace];
-      if ([v7 isEqual:v8] && (v9 = -[MTIDScheme lifespan](self, "lifespan"), v9 == objc_msgSend(v5, "lifespan")) && (v10 = -[MTIDScheme idType](self, "idType"), v10 == objc_msgSend(v5, "idType")))
+      idNamespace = [(MTIDScheme *)self idNamespace];
+      idNamespace2 = [v5 idNamespace];
+      if ([idNamespace isEqual:idNamespace2] && (v9 = -[MTIDScheme lifespan](self, "lifespan"), v9 == objc_msgSend(v5, "lifespan")) && (v10 = -[MTIDScheme idType](self, "idType"), v10 == objc_msgSend(v5, "idType")))
       {
-        v11 = [(MTIDScheme *)self correlations];
-        v12 = v11;
-        if (v11)
+        correlations = [(MTIDScheme *)self correlations];
+        v12 = correlations;
+        if (correlations)
         {
-          v13 = v11;
+          v13 = correlations;
         }
 
         else
@@ -237,11 +237,11 @@
           v13 = &__NSArray0__struct;
         }
 
-        v14 = [v5 correlations];
-        v15 = v14;
-        if (v14)
+        correlations2 = [v5 correlations];
+        v15 = correlations2;
+        if (correlations2)
         {
-          v16 = v14;
+          v16 = correlations2;
         }
 
         else
@@ -251,11 +251,11 @@
 
         if ([v13 isEqual:v16])
         {
-          v17 = [(MTIDScheme *)self version];
-          v30 = v17;
-          if (v17)
+          version = [(MTIDScheme *)self version];
+          v30 = version;
+          if (version)
           {
-            v18 = v17;
+            v18 = version;
           }
 
           else
@@ -263,11 +263,11 @@
             v18 = &stru_100021530;
           }
 
-          v19 = [v5 version];
-          v20 = v19;
-          if (v19)
+          version2 = [v5 version];
+          v20 = version2;
+          if (version2)
           {
-            v21 = v19;
+            v21 = version2;
           }
 
           else
@@ -277,10 +277,10 @@
 
           if ([(__CFString *)v18 isEqual:v21])
           {
-            v22 = [(MTIDScheme *)self containerIdentifier];
-            if (v22)
+            containerIdentifier = [(MTIDScheme *)self containerIdentifier];
+            if (containerIdentifier)
             {
-              v23 = v22;
+              v23 = containerIdentifier;
             }
 
             else
@@ -288,11 +288,11 @@
               v23 = &stru_100021530;
             }
 
-            v24 = [v5 containerIdentifier];
-            v25 = v24;
-            if (v24)
+            containerIdentifier2 = [v5 containerIdentifier];
+            v25 = containerIdentifier2;
+            if (containerIdentifier2)
             {
-              v26 = v24;
+              v26 = containerIdentifier2;
             }
 
             else
@@ -337,24 +337,24 @@
 
 - (unint64_t)calculateHash
 {
-  v3 = [(MTIDScheme *)self idNamespace];
-  v4 = [v3 hash];
+  idNamespace = [(MTIDScheme *)self idNamespace];
+  v4 = [idNamespace hash];
 
-  v5 = [(MTIDScheme *)self lifespan];
-  v6 = v5 ^ [(MTIDScheme *)self rotationSchedule]^ v4;
-  v7 = [(MTIDScheme *)self version];
-  v8 = [v7 hash];
+  lifespan = [(MTIDScheme *)self lifespan];
+  v6 = lifespan ^ [(MTIDScheme *)self rotationSchedule]^ v4;
+  version = [(MTIDScheme *)self version];
+  v8 = [version hash];
 
   v9 = v6 ^ v8 ^ [(MTIDScheme *)self idType];
-  v10 = [(MTIDScheme *)self containerIdentifier];
-  v11 = v9 ^ [v10 hash];
+  containerIdentifier = [(MTIDScheme *)self containerIdentifier];
+  v11 = v9 ^ [containerIdentifier hash];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [(MTIDScheme *)self correlations];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  correlations = [(MTIDScheme *)self correlations];
+  v13 = [correlations countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = v13;
@@ -366,7 +366,7 @@
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(correlations);
         }
 
         v11 ^= [*(*(&v18 + 1) + 8 * v16) hash];
@@ -374,7 +374,7 @@
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v14 = [correlations countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v14);
@@ -386,8 +386,8 @@
 - (id)dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(MTIDScheme *)self idNamespace];
-  [v3 setObject:v4 forKeyedSubscript:@"namespace"];
+  idNamespace = [(MTIDScheme *)self idNamespace];
+  [v3 setObject:idNamespace forKeyedSubscript:@"namespace"];
 
   if ([(MTIDScheme *)self idType]== 2)
   {
@@ -411,28 +411,28 @@
     [v3 setObject:v6 forKeyedSubscript:@"lifespan"];
   }
 
-  v7 = [(MTIDScheme *)self correlations];
-  v8 = [v7 count];
+  correlations = [(MTIDScheme *)self correlations];
+  v8 = [correlations count];
 
   if (v8)
   {
-    v9 = [(MTIDScheme *)self correlations];
-    [v3 setObject:v9 forKeyedSubscript:@"correlations"];
+    correlations2 = [(MTIDScheme *)self correlations];
+    [v3 setObject:correlations2 forKeyedSubscript:@"correlations"];
   }
 
-  v10 = [(MTIDScheme *)self version];
-  [v3 setObject:v10 forKeyedSubscript:@"version"];
+  version = [(MTIDScheme *)self version];
+  [v3 setObject:version forKeyedSubscript:@"version"];
 
-  v11 = [(MTIDScheme *)self containerIdentifier];
-  [v3 setObject:v11 forKeyedSubscript:@"container"];
+  containerIdentifier = [(MTIDScheme *)self containerIdentifier];
+  [v3 setObject:containerIdentifier forKeyedSubscript:@"container"];
 
-  v12 = [(MTIDScheme *)self topics];
-  v13 = [v12 count];
+  topics = [(MTIDScheme *)self topics];
+  v13 = [topics count];
 
   if (v13)
   {
-    v14 = [(MTIDScheme *)self topics];
-    [v3 setObject:v14 forKeyedSubscript:@"topics"];
+    topics2 = [(MTIDScheme *)self topics];
+    [v3 setObject:topics2 forKeyedSubscript:@"topics"];
   }
 
   if ([(MTIDScheme *)self isDefault])
@@ -446,61 +446,61 @@
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(MTIDScheme *)self idNamespace];
-  [v9 encodeObject:v4 forKey:@"namespace"];
+  coderCopy = coder;
+  idNamespace = [(MTIDScheme *)self idNamespace];
+  [coderCopy encodeObject:idNamespace forKey:@"namespace"];
 
-  [v9 encodeInt:-[MTIDScheme idType](self forKey:{"idType"), @"type"}];
-  [v9 encodeInt:-[MTIDScheme rotationSchedule](self forKey:{"rotationSchedule"), @"rotation"}];
-  [v9 encodeInt64:-[MTIDScheme lifespan](self forKey:{"lifespan"), @"lifespan"}];
-  v5 = [(MTIDScheme *)self correlations];
-  [v9 encodeObject:v5 forKey:@"correlations"];
+  [coderCopy encodeInt:-[MTIDScheme idType](self forKey:{"idType"), @"type"}];
+  [coderCopy encodeInt:-[MTIDScheme rotationSchedule](self forKey:{"rotationSchedule"), @"rotation"}];
+  [coderCopy encodeInt64:-[MTIDScheme lifespan](self forKey:{"lifespan"), @"lifespan"}];
+  correlations = [(MTIDScheme *)self correlations];
+  [coderCopy encodeObject:correlations forKey:@"correlations"];
 
-  v6 = [(MTIDScheme *)self version];
-  [v9 encodeObject:v6 forKey:@"version"];
+  version = [(MTIDScheme *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 
-  v7 = [(MTIDScheme *)self containerIdentifier];
-  [v9 encodeObject:v7 forKey:@"container"];
+  containerIdentifier = [(MTIDScheme *)self containerIdentifier];
+  [coderCopy encodeObject:containerIdentifier forKey:@"container"];
 
-  v8 = [(MTIDScheme *)self topics];
-  [v9 encodeObject:v8 forKey:@"topics"];
+  topics = [(MTIDScheme *)self topics];
+  [coderCopy encodeObject:topics forKey:@"topics"];
 
-  [v9 encodeBool:-[MTIDScheme isDefault](self forKey:{"isDefault"), @"default"}];
-  [v9 encodeInt:-[MTIDScheme localHash](self forKey:{"localHash"), @"localHash"}];
-  [v9 encodeInt:-[MTIDScheme correlationHash](self forKey:{"correlationHash"), @"correlationHash"}];
+  [coderCopy encodeBool:-[MTIDScheme isDefault](self forKey:{"isDefault"), @"default"}];
+  [coderCopy encodeInt:-[MTIDScheme localHash](self forKey:{"localHash"), @"localHash"}];
+  [coderCopy encodeInt:-[MTIDScheme correlationHash](self forKey:{"correlationHash"), @"correlationHash"}];
 }
 
-- (MTIDScheme)initWithCoder:(id)a3
+- (MTIDScheme)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MTIDScheme;
   v5 = [(MTIDScheme *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"namespace"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"namespace"];
     [(MTIDScheme *)v5 setIdNamespace:v6];
 
-    -[MTIDScheme setIdType:](v5, "setIdType:", [v4 decodeIntForKey:@"type"]);
-    -[MTIDScheme setRotationSchedule:](v5, "setRotationSchedule:", [v4 decodeIntForKey:@"rotation"]);
-    -[MTIDScheme setLifespan:](v5, "setLifespan:", [v4 decodeInt64ForKey:@"lifespan"]);
-    v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correlations"];
+    -[MTIDScheme setIdType:](v5, "setIdType:", [coderCopy decodeIntForKey:@"type"]);
+    -[MTIDScheme setRotationSchedule:](v5, "setRotationSchedule:", [coderCopy decodeIntForKey:@"rotation"]);
+    -[MTIDScheme setLifespan:](v5, "setLifespan:", [coderCopy decodeInt64ForKey:@"lifespan"]);
+    v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correlations"];
     [(MTIDScheme *)v5 setCorrelations:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     [(MTIDScheme *)v5 setVersion:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"container"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"container"];
     [(MTIDScheme *)v5 setContainerIdentifier:v9];
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"topics"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"topics"];
     [(MTIDScheme *)v5 setTopics:v10];
 
-    -[MTIDScheme setIsDefault:](v5, "setIsDefault:", [v4 decodeBoolForKey:@"default"]);
-    -[MTIDScheme setLocalHash:](v5, "setLocalHash:", [v4 decodeIntForKey:@"localHash"]);
-    -[MTIDScheme setCorrelationHash:](v5, "setCorrelationHash:", [v4 decodeIntForKey:@"correlationHash"]);
+    -[MTIDScheme setIsDefault:](v5, "setIsDefault:", [coderCopy decodeBoolForKey:@"default"]);
+    -[MTIDScheme setLocalHash:](v5, "setLocalHash:", [coderCopy decodeIntForKey:@"localHash"]);
+    -[MTIDScheme setCorrelationHash:](v5, "setCorrelationHash:", [coderCopy decodeIntForKey:@"correlationHash"]);
   }
 
   return v5;

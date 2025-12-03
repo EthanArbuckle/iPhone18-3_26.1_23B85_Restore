@@ -1,31 +1,31 @@
 @interface BRCServerItem
 - (BOOL)aliasTargetIsShared;
-- (BOOL)canPathMatchMergeWithLocalItem:(id)a3;
+- (BOOL)canPathMatchMergeWithLocalItem:(id)item;
 - (BOOL)hasShareIDAndIsOwnedByMe;
 - (BOOL)isDocument;
 - (BOOL)isSharedByMe;
 - (BOOL)isSharedToMeChildItem;
 - (BOOL)isSharedToMeTopLevelItem;
-- (BOOL)validateLoggingToFile:(__sFILE *)a3;
+- (BOOL)validateLoggingToFile:(__sFILE *)file;
 - (BRCItemGlobalID)itemGlobalID;
-- (BRCServerItem)initWithServerItem:(id)a3;
+- (BRCServerItem)initWithServerItem:(id)item;
 - (BRCSharedServerItem)asSharedItem;
 - (id)aliasTargetAppLibrary;
 - (id)aliasTargetClientZone;
 - (id)appLibraryForRootItem;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithContext:(id)a3;
-- (id)initFromPQLResultSet:(id)a3 serverZone:(id)a4 error:(id *)a5;
-- (id)newLocalItemWithDBRowID:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithContext:(id)context;
+- (id)initFromPQLResultSet:(id)set serverZone:(id)zone error:(id *)error;
+- (id)newLocalItemWithDBRowID:(unint64_t)d;
 - (id)parentItemIDOnServer;
 - (id)parentItemOnFS;
 - (id)parentLocalItemOnFS;
 - (id)predictedAppLibrary;
 - (id)sideCarInfo;
-- (unint64_t)diffAgainstServerItem:(id)a3;
+- (unint64_t)diffAgainstServerItem:(id)item;
 - (void)appLibraryForRootItem;
 - (void)asSharedItem;
-- (void)overrideCKInfoIfNecessaryForOutOfBandSyncOpWithLocalItem:(id)a3;
+- (void)overrideCKInfoIfNecessaryForOutOfBandSyncOpWithLocalItem:(id)item;
 - (void)parentLocalItemOnFS;
 @end
 
@@ -33,28 +33,28 @@
 
 - (BOOL)isDocument
 {
-  v3 = [(BRCStatInfo *)self->_st type];
-  if (v3 != 1)
+  type = [(BRCStatInfo *)self->_st type];
+  if (type != 1)
   {
-    LOBYTE(v3) = [(BRCStatInfo *)self->_st type]== 6;
+    LOBYTE(type) = [(BRCStatInfo *)self->_st type]== 6;
   }
 
-  return v3;
+  return type;
 }
 
 - (id)parentItemIDOnServer
 {
-  v3 = [(BRCServerItem *)self itemID];
-  if ([v3 isDocumentsFolder])
+  itemID = [(BRCServerItem *)self itemID];
+  if ([itemID isDocumentsFolder])
   {
-    v4 = [(BRCServerItem *)self clientZone];
-    v5 = [v4 isCloudDocsZone];
+    clientZone = [(BRCServerItem *)self clientZone];
+    isCloudDocsZone = [clientZone isCloudDocsZone];
 
-    if (v5)
+    if (isCloudDocsZone)
     {
-      v6 = [(BRCServerItem *)self clientZone];
-      v7 = [v6 asPrivateClientZone];
-      v8 = [v7 rootItemID];
+      clientZone2 = [(BRCServerItem *)self clientZone];
+      asPrivateClientZone = [clientZone2 asPrivateClientZone];
+      rootItemID = [asPrivateClientZone rootItemID];
 
       goto LABEL_6;
     }
@@ -64,18 +64,18 @@
   {
   }
 
-  v8 = [(BRCStatInfo *)self->_st parentID];
+  rootItemID = [(BRCStatInfo *)self->_st parentID];
 LABEL_6:
 
-  return v8;
+  return rootItemID;
 }
 
 - (BOOL)isSharedToMeTopLevelItem
 {
-  v2 = [(BRCServerItem *)self parentItemIDOnServer];
-  v3 = [v2 isSharedZoneRoot];
+  parentItemIDOnServer = [(BRCServerItem *)self parentItemIDOnServer];
+  isSharedZoneRoot = [parentItemIDOnServer isSharedZoneRoot];
 
-  return v3;
+  return isSharedZoneRoot;
 }
 
 - (id)parentLocalItemOnFS
@@ -88,8 +88,8 @@ LABEL_6:
   }
 
   clientZone = self->_clientZone;
-  v5 = [(BRCStatInfo *)self->_st parentID];
-  v6 = [(BRCClientZone *)clientZone itemByItemID:v5 dbFacade:self->_dbFacade];
+  parentID = [(BRCStatInfo *)self->_st parentID];
+  v6 = [(BRCClientZone *)clientZone itemByItemID:parentID dbFacade:self->_dbFacade];
 
   return v6;
 }
@@ -99,8 +99,8 @@ LABEL_6:
   v3 = objc_alloc_init(BRCSideCarInfo);
   [(BRCSideCarInfo *)v3 setFavoriteRank:[(BRCStatInfo *)self->_st favoriteRank]];
   [(BRCSideCarInfo *)v3 setLastUsedTime:[(BRCStatInfo *)self->_st lastUsedTime]];
-  v4 = [(BRCStatInfo *)self->_st finderTags];
-  [(BRCSideCarInfo *)v3 setFinderTags:v4];
+  finderTags = [(BRCStatInfo *)self->_st finderTags];
+  [(BRCSideCarInfo *)v3 setFinderTags:finderTags];
 
   [(BRCSideCarInfo *)v3 setCkInfo:self->_sideCarCKInfo];
 
@@ -110,15 +110,15 @@ LABEL_6:
 - (id)predictedAppLibrary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(BRCServerItem *)self clientZone];
-  v4 = [v3 db];
+  clientZone = [(BRCServerItem *)self clientZone];
+  v4 = [clientZone db];
   [v4 assertOnQueue];
 
-  v5 = [(BRCServerItem *)self parentLocalItemOnFS];
-  v6 = [v5 appLibrary];
-  v7 = [v6 dbRowID];
+  parentLocalItemOnFS = [(BRCServerItem *)self parentLocalItemOnFS];
+  appLibrary = [parentLocalItemOnFS appLibrary];
+  dbRowID = [appLibrary dbRowID];
 
-  if (!v7)
+  if (!dbRowID)
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
@@ -129,12 +129,12 @@ LABEL_6:
       _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEFAULT, "[WARNING] Couldn't figure out the expected app library; falling back to clouddocs%@", &v15, 0xCu);
     }
 
-    v10 = [(BRCAccountSession *)self->_session cloudDocsClientZone];
-    v11 = [v10 defaultAppLibrary];
-    v7 = [v11 dbRowID];
+    cloudDocsClientZone = [(BRCAccountSession *)self->_session cloudDocsClientZone];
+    defaultAppLibrary = [cloudDocsClientZone defaultAppLibrary];
+    dbRowID = [defaultAppLibrary dbRowID];
   }
 
-  v12 = [(BRCAccountSession *)self->_session appLibraryByRowID:v7];
+  v12 = [(BRCAccountSession *)self->_session appLibraryByRowID:dbRowID];
 
   v13 = *MEMORY[0x277D85DE8];
 
@@ -143,42 +143,42 @@ LABEL_6:
 
 - (BOOL)isSharedByMe
 {
-  v3 = [(BRCServerItem *)self isShared];
-  if (v3)
+  isShared = [(BRCServerItem *)self isShared];
+  if (isShared)
   {
-    LOBYTE(v3) = ![(BRCClientZone *)self->_clientZone isSharedZone];
+    LOBYTE(isShared) = ![(BRCClientZone *)self->_clientZone isSharedZone];
   }
 
-  return v3;
+  return isShared;
 }
 
 - (BOOL)hasShareIDAndIsOwnedByMe
 {
-  v3 = [(BRCServerItem *)self isOwnedByMe];
-  if (v3)
+  isOwnedByMe = [(BRCServerItem *)self isOwnedByMe];
+  if (isOwnedByMe)
   {
     return (LOBYTE(self->_sharingOptions) >> 2) & 1;
   }
 
-  return v3;
+  return isOwnedByMe;
 }
 
 - (BOOL)isSharedToMeChildItem
 {
-  v3 = [(BRCServerItem *)self isSharedToMe];
-  if (v3)
+  isSharedToMe = [(BRCServerItem *)self isSharedToMe];
+  if (isSharedToMe)
   {
-    LOBYTE(v3) = ![(BRCServerItem *)self isSharedToMeTopLevelItem];
+    LOBYTE(isSharedToMe) = ![(BRCServerItem *)self isSharedToMeTopLevelItem];
   }
 
-  return v3;
+  return isSharedToMe;
 }
 
 - (BRCItemGlobalID)itemGlobalID
 {
   v3 = [BRCItemGlobalID alloc];
-  v4 = [(BRCClientZone *)self->_clientZone dbRowID];
-  v5 = [(BRCItemGlobalID *)v3 initWithZoneRowID:v4 itemID:self->_itemID];
+  dbRowID = [(BRCClientZone *)self->_clientZone dbRowID];
+  v5 = [(BRCItemGlobalID *)v3 initWithZoneRowID:dbRowID itemID:self->_itemID];
 
   return v5;
 }
@@ -195,58 +195,58 @@ LABEL_6:
   return 0;
 }
 
-- (BRCServerItem)initWithServerItem:(id)a3
+- (BRCServerItem)initWithServerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = BRCServerItem;
   v5 = [(BRCServerItem *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_itemID, *(v4 + 10));
-    objc_storeStrong(&v6->_ownerKey, *(v4 + 9));
-    objc_storeStrong(&v6->_sideCarCKInfo, *(v4 + 6));
-    v7 = [*(v4 + 13) copy];
+    objc_storeStrong(&v5->_itemID, *(itemCopy + 10));
+    objc_storeStrong(&v6->_ownerKey, *(itemCopy + 9));
+    objc_storeStrong(&v6->_sideCarCKInfo, *(itemCopy + 6));
+    v7 = [*(itemCopy + 13) copy];
     st = v6->_st;
     v6->_st = v7;
 
-    v9 = [*(v4 + 14) copy];
+    v9 = [*(itemCopy + 14) copy];
     latestVersion = v6->_latestVersion;
     v6->_latestVersion = v9;
 
-    v11 = [*(v4 + 15) copy];
+    v11 = [*(itemCopy + 15) copy];
     serverMetrics = v6->_serverMetrics;
     v6->_serverMetrics = v11;
 
-    objc_storeStrong(&v6->_serverZone, *(v4 + 16));
-    objc_storeStrong(&v6->_clientZone, *(v4 + 17));
-    v6->_session = *(v4 + 1);
-    v6->_sharingOptions = *(v4 + 3);
-    v6->_pcsChainState = *(v4 + 15);
+    objc_storeStrong(&v6->_serverZone, *(itemCopy + 16));
+    objc_storeStrong(&v6->_clientZone, *(itemCopy + 17));
+    v6->_session = *(itemCopy + 1);
+    v6->_sharingOptions = *(itemCopy + 3);
+    v6->_pcsChainState = *(itemCopy + 15);
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithServerItem:self];
 }
 
-- (id)initFromPQLResultSet:(id)a3 serverZone:(id)a4 error:(id *)a5
+- (id)initFromPQLResultSet:(id)set serverZone:(id)zone error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  zoneCopy = zone;
   v35.receiver = self;
   v35.super_class = BRCServerItem;
   v9 = [(BRCServerItem *)&v35 init];
   if (v9)
   {
-    v9->_session = [v8 session];
-    v10 = [v7 db];
+    v9->_session = [zoneCopy session];
+    v10 = [setCopy db];
     db = v9->_db;
     v9->_db = v10;
 
@@ -254,31 +254,31 @@ LABEL_6:
     dbFacade = v9->_dbFacade;
     v9->_dbFacade = v12;
 
-    objc_storeStrong(&v9->_serverZone, a4);
-    v14 = [(BRCServerZone *)v9->_serverZone clientZone];
+    objc_storeStrong(&v9->_serverZone, zone);
+    clientZone = [(BRCServerZone *)v9->_serverZone clientZone];
     clientZone = v9->_clientZone;
-    v9->_clientZone = v14;
+    v9->_clientZone = clientZone;
 
-    v9->_rank = [v7 longLongAtIndex:1];
-    v16 = [v7 stringAtIndex:2];
+    v9->_rank = [setCopy longLongAtIndex:1];
+    v16 = [setCopy stringAtIndex:2];
     originalName = v9->_originalName;
     v9->_originalName = v16;
 
-    v9->_pcsChainState = [v7 intAtIndex:3];
-    v18 = [v7 objectOfClass:objc_opt_class() atIndex:4];
+    v9->_pcsChainState = [setCopy intAtIndex:3];
+    v18 = [setCopy objectOfClass:objc_opt_class() atIndex:4];
     itemID = v9->_itemID;
     v9->_itemID = v18;
 
-    v20 = [v7 numberAtIndex:5];
+    v20 = [setCopy numberAtIndex:5];
     ownerKey = v9->_ownerKey;
     v9->_ownerKey = v20;
 
-    v9->_sharingOptions = [v7 integerAtIndex:6];
-    v22 = [v7 objectOfClass:objc_opt_class() atIndex:7];
+    v9->_sharingOptions = [setCopy integerAtIndex:6];
+    v22 = [setCopy objectOfClass:objc_opt_class() atIndex:7];
     sideCarCKInfo = v9->_sideCarCKInfo;
     v9->_sideCarCKInfo = v22;
 
-    v24 = [(BRCStatInfo *)[BRCServerStatInfo alloc] initFromResultSet:v7 pos:8];
+    v24 = [(BRCStatInfo *)[BRCServerStatInfo alloc] initFromResultSet:setCopy pos:8];
     st = v9->_st;
     v9->_st = v24;
 
@@ -289,7 +289,7 @@ LABEL_6:
 
     if ([(BRCServerItem *)v9 isDocument])
     {
-      v26 = [[BRCVersion alloc] initFromResultSet:v7 pos:24];
+      v26 = [[BRCVersion alloc] initFromResultSet:setCopy pos:24];
       latestVersion = v9->_latestVersion;
       v9->_latestVersion = v26;
 
@@ -301,21 +301,21 @@ LABEL_6:
 
     else if ([(BRCServerItem *)v9 isDirectory])
     {
-      v9->_directoryMtime = [v7 longLongAtIndex:26];
+      v9->_directoryMtime = [setCopy longLongAtIndex:26];
     }
 
     else if ([(BRCServerItem *)v9 isSymLink])
     {
-      v28 = [v7 objectOfClass:objc_opt_class() atIndex:24];
+      v28 = [setCopy objectOfClass:objc_opt_class() atIndex:24];
       symlinkTarget = v9->_symlinkTarget;
       v9->_symlinkTarget = v28;
     }
 
-    v30 = [[BRCBasehashSaltInfo alloc] initFromResultSet:v7 pos:36];
+    v30 = [[BRCBasehashSaltInfo alloc] initFromResultSet:setCopy pos:36];
     basehashSaltInfo = v9->_basehashSaltInfo;
     v9->_basehashSaltInfo = v30;
 
-    v32 = [objc_alloc(MEMORY[0x277CFAEC0]) initFromResultSet:v7 pos:39];
+    v32 = [objc_alloc(MEMORY[0x277CFAEC0]) initFromResultSet:setCopy pos:39];
     serverMetrics = v9->_serverMetrics;
     v9->_serverMetrics = v32;
   }
@@ -323,22 +323,22 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)validateLoggingToFile:(__sFILE *)a3
+- (BOOL)validateLoggingToFile:(__sFILE *)file
 {
-  LODWORD(v5) = [(BRCStatInfo *)self->_st check:self->_itemID logToFile:a3];
+  LODWORD(v5) = [(BRCStatInfo *)self->_st check:self->_itemID logToFile:file];
   latestVersion = self->_latestVersion;
   if (latestVersion)
   {
     if (v5)
     {
-      LOBYTE(v5) = [(BRCVersion *)latestVersion check:self->_itemID logToFile:a3];
+      LOBYTE(v5) = [(BRCVersion *)latestVersion check:self->_itemID logToFile:file];
     }
 
     if ([(BRCServerItem *)self isDirectory])
     {
       v5 = "item %s is a directory with a version\n";
 LABEL_9:
-      fprintf(a3, v5, [(BRCItemID *)self->_itemID UTF8String]);
+      fprintf(file, v5, [(BRCItemID *)self->_itemID UTF8String]);
       LOBYTE(v5) = 0;
     }
   }
@@ -352,10 +352,10 @@ LABEL_9:
   return v5;
 }
 
-- (unint64_t)diffAgainstServerItem:(id)a3
+- (unint64_t)diffAgainstServerItem:(id)item
 {
-  v4 = a3;
-  v5 = v4[10];
+  itemCopy = item;
+  v5 = itemCopy[10];
   v6 = self->_itemID;
   v7 = v5;
   v8 = v7;
@@ -382,7 +382,7 @@ LABEL_6:
 LABEL_8:
   v10 = 0x80000000;
 LABEL_9:
-  v11 = v4[9];
+  v11 = itemCopy[9];
   v12 = self->_ownerKey;
   v13 = v11;
   v14 = v13;
@@ -407,12 +407,12 @@ LABEL_15:
   }
 
 LABEL_16:
-  if (self->_sharingOptions != v4[3])
+  if (self->_sharingOptions != itemCopy[3])
   {
     v10 |= 0x40000000uLL;
   }
 
-  v16 = v4[6];
+  v16 = itemCopy[6];
   v17 = self->_sideCarCKInfo;
   v18 = v16;
   v19 = v18;
@@ -440,30 +440,30 @@ LABEL_16:
   }
 
 LABEL_25:
-  v21 = [(BRCStatInfo *)self->_st diffAgainst:v4[13]]| v10;
-  if (-[BRCServerItem isDocument](self, "isDocument") && [v4 isDocument])
+  v21 = [(BRCStatInfo *)self->_st diffAgainst:itemCopy[13]]| v10;
+  if (-[BRCServerItem isDocument](self, "isDocument") && [itemCopy isDocument])
   {
-    v21 |= [(BRCVersion *)self->_latestVersion diffAgainst:v4[14]];
+    v21 |= [(BRCVersion *)self->_latestVersion diffAgainst:itemCopy[14]];
   }
 
   return v21;
 }
 
-- (id)descriptionWithContext:(id)a3
+- (id)descriptionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:128];
-  if (v4)
+  if (contextCopy)
   {
-    v6 = [BRCDumpContext stringFromItemID:self->_itemID context:v4];
-    [v5 appendFormat:@"i:%@ ", v6];
+    mangledID = [BRCDumpContext stringFromItemID:self->_itemID context:contextCopy];
+    [v5 appendFormat:@"i:%@ ", mangledID];
   }
 
   else
   {
-    v6 = [(BRCClientZone *)self->_clientZone mangledID];
-    v7 = [(BRCItemID *)self->_itemID debugItemIDString];
-    [v5 appendFormat:@"i:%@:%@ ", v6, v7];
+    mangledID = [(BRCClientZone *)self->_clientZone mangledID];
+    debugItemIDString = [(BRCItemID *)self->_itemID debugItemIDString];
+    [v5 appendFormat:@"i:%@:%@ ", mangledID, debugItemIDString];
   }
 
   if ([(BRCUserRowID *)self->_ownerKey BOOLValue])
@@ -486,25 +486,25 @@ LABEL_25:
   sideCarCKInfo = self->_sideCarCKInfo;
   if (sideCarCKInfo)
   {
-    v10 = [(BRFieldCKInfo *)sideCarCKInfo etag];
-    [v5 appendFormat:@"ppm:%@ ", v10];
+    etag = [(BRFieldCKInfo *)sideCarCKInfo etag];
+    [v5 appendFormat:@"ppm:%@ ", etag];
   }
 
-  v11 = [(BRCStatInfo *)self->_st descriptionWithContext:v4 origName:self->_originalName];
+  v11 = [(BRCStatInfo *)self->_st descriptionWithContext:contextCopy origName:self->_originalName];
   [v5 appendFormat:@"st{%@}", v11];
 
   if ([(BRCServerItem *)self isSharedToMeTopLevelItem])
   {
-    v12 = [(BRCServerItem *)self asSharedItem];
-    v13 = [v12 aliasDerivedStructureForDescription];
-    v14 = [v13 descriptionWithContext:v4 origName:self->_originalName];
+    asSharedItem = [(BRCServerItem *)self asSharedItem];
+    aliasDerivedStructureForDescription = [asSharedItem aliasDerivedStructureForDescription];
+    v14 = [aliasDerivedStructureForDescription descriptionWithContext:contextCopy origName:self->_originalName];
     [v5 appendFormat:@" alias-st{%@}", v14];
   }
 
   latestVersion = self->_latestVersion;
   if (latestVersion)
   {
-    v16 = [(BRCVersion *)latestVersion descriptionWithContext:v4];
+    v16 = [(BRCVersion *)latestVersion descriptionWithContext:contextCopy];
     [v5 appendFormat:@" ct{%@}", v16];
   }
 
@@ -523,56 +523,56 @@ LABEL_25:
 
   if ([(BRCServerItem *)self isSymLink])
   {
-    v20 = [(NSString *)self->_symlinkTarget fp_obfuscatedPath];
-    [v5 appendFormat:@" target:%@", v20];
+    fp_obfuscatedPath = [(NSString *)self->_symlinkTarget fp_obfuscatedPath];
+    [v5 appendFormat:@" target:%@", fp_obfuscatedPath];
   }
 
   v21 = [BRCUserDefaults defaultsForMangledID:0];
-  v22 = [v21 supportsEnhancedDrivePrivacy];
+  supportsEnhancedDrivePrivacy = [v21 supportsEnhancedDrivePrivacy];
 
-  if (v22)
+  if (supportsEnhancedDrivePrivacy)
   {
     if ([(BRCServerItem *)self isDirectory])
     {
-      v23 = [(BRCBasehashSaltInfo *)self->_basehashSaltInfo saltingState];
-      if (v23 > 3)
+      saltingState = [(BRCBasehashSaltInfo *)self->_basehashSaltInfo saltingState];
+      if (saltingState > 3)
       {
         v24 = @"no server item";
       }
 
       else
       {
-        v24 = off_278504608[v23];
+        v24 = off_278504608[saltingState];
       }
 
       [v5 appendFormat:@" salt-st{%@}", v24];
-      v25 = [(BRCBasehashSaltInfo *)self->_basehashSaltInfo childBasehashSalt];
-      if (v25)
+      childBasehashSalt = [(BRCBasehashSaltInfo *)self->_basehashSaltInfo childBasehashSalt];
+      if (childBasehashSalt)
       {
-        v26 = [MEMORY[0x277CBEA90] brc_generateBogusKey];
-        v27 = [v25 isEqualToData:v26];
+        brc_generateBogusKey = [MEMORY[0x277CBEA90] brc_generateBogusKey];
+        v27 = [childBasehashSalt isEqualToData:brc_generateBogusKey];
 
         if (v27)
         {
-          v28 = @"bogus-salt";
+          brc_hexadecimalString = @"bogus-salt";
         }
 
         else
         {
-          v29 = [v25 brc_truncatedSHA256];
-          v28 = [v29 brc_hexadecimalString];
+          brc_truncatedSHA256 = [childBasehashSalt brc_truncatedSHA256];
+          brc_hexadecimalString = [brc_truncatedSHA256 brc_hexadecimalString];
         }
 
-        [v5 appendFormat:@" child-valid{%@}", v28];
+        [v5 appendFormat:@" child-valid{%@}", brc_hexadecimalString];
       }
     }
 
-    v30 = [(BRCBasehashSaltInfo *)self->_basehashSaltInfo basehashSaltValidation];
-    v31 = v30;
-    if (v30)
+    basehashSaltValidation = [(BRCBasehashSaltInfo *)self->_basehashSaltInfo basehashSaltValidation];
+    v31 = basehashSaltValidation;
+    if (basehashSaltValidation)
     {
-      v32 = [v30 brc_hexadecimalString];
-      [v5 appendFormat:@" base-valid{%@}", v32];
+      brc_hexadecimalString2 = [basehashSaltValidation brc_hexadecimalString];
+      [v5 appendFormat:@" base-valid{%@}", brc_hexadecimalString2];
     }
   }
 
@@ -590,13 +590,13 @@ LABEL_25:
   if (-[BRCItemID isNonDesktopRoot](self->_itemID, "isNonDesktopRoot") || [*p_itemID isDocumentsFolder])
   {
     session = self->_session;
-    v5 = [(BRCItemID *)self->_itemID appLibraryRowID];
-    v6 = [(BRCAccountSession *)session appLibraryByRowID:v5];
+    appLibraryRowID = [(BRCItemID *)self->_itemID appLibraryRowID];
+    v6 = [(BRCAccountSession *)session appLibraryByRowID:appLibraryRowID];
   }
 
   else
   {
-    v5 = brc_bread_crumbs();
+    appLibraryRowID = brc_bread_crumbs();
     v7 = brc_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
@@ -609,7 +609,7 @@ LABEL_25:
   return v6;
 }
 
-- (id)newLocalItemWithDBRowID:(unint64_t)a3
+- (id)newLocalItemWithDBRowID:(unint64_t)d
 {
   p_st = &self->_st;
   type = self->_st->super._type;
@@ -699,31 +699,31 @@ LABEL_26:
 LABEL_29:
   v14 = [v7 alloc];
 
-  return [v14 _initWithServerItem:self dbRowID:a3];
+  return [v14 _initWithServerItem:self dbRowID:d];
 }
 
 - (id)parentItemOnFS
 {
   serverZone = self->_serverZone;
-  v4 = [(BRCStatInfo *)self->_st parentID];
-  v5 = [(BRCServerZone *)serverZone itemByItemID:v4 db:self->_db];
+  parentID = [(BRCStatInfo *)self->_st parentID];
+  v5 = [(BRCServerZone *)serverZone itemByItemID:parentID db:self->_db];
 
   return v5;
 }
 
 - (BOOL)aliasTargetIsShared
 {
-  v2 = [(BRCStatInfo *)self->_st _aliasTargetMangledID];
-  v3 = [v2 isShared];
+  _aliasTargetMangledID = [(BRCStatInfo *)self->_st _aliasTargetMangledID];
+  isShared = [_aliasTargetMangledID isShared];
 
-  return v3;
+  return isShared;
 }
 
 - (id)aliasTargetClientZone
 {
   session = self->_session;
-  v3 = [(BRCStatInfo *)self->_st _aliasTargetMangledID];
-  v4 = [(BRCAccountSession *)session clientZoneByMangledID:v3];
+  _aliasTargetMangledID = [(BRCStatInfo *)self->_st _aliasTargetMangledID];
+  v4 = [(BRCAccountSession *)session clientZoneByMangledID:_aliasTargetMangledID];
 
   return v4;
 }
@@ -731,60 +731,60 @@ LABEL_29:
 - (id)aliasTargetAppLibrary
 {
   session = self->_session;
-  v3 = [(BRCStatInfo *)self->_st _aliasTargetMangledID];
-  v4 = [(BRCAccountSession *)session appLibraryByMangledID:v3];
+  _aliasTargetMangledID = [(BRCStatInfo *)self->_st _aliasTargetMangledID];
+  v4 = [(BRCAccountSession *)session appLibraryByMangledID:_aliasTargetMangledID];
 
   return v4;
 }
 
-- (BOOL)canPathMatchMergeWithLocalItem:(id)a3
+- (BOOL)canPathMatchMergeWithLocalItem:(id)item
 {
   st = self->_st;
-  v4 = a3;
+  itemCopy = item;
   v5 = [BRCItemID structureRecordPrefixForItemType:[(BRCStatInfo *)st type] targetZoneShared:1];
-  v6 = [v4 st];
+  v6 = [itemCopy st];
 
   v7 = +[BRCItemID structureRecordPrefixForItemType:targetZoneShared:](BRCItemID, "structureRecordPrefixForItemType:targetZoneShared:", [v6 type], 1);
 
-  LOBYTE(v4) = [v5 isEqualToString:v7];
-  return v4;
+  LOBYTE(itemCopy) = [v5 isEqualToString:v7];
+  return itemCopy;
 }
 
-- (void)overrideCKInfoIfNecessaryForOutOfBandSyncOpWithLocalItem:(id)a3
+- (void)overrideCKInfoIfNecessaryForOutOfBandSyncOpWithLocalItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 localDiffs] & 0x1000000000000000) != 0)
+  itemCopy = item;
+  if (([itemCopy localDiffs] & 0x1000000000000000) != 0)
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [(BRCItemID *)self->_itemID debugItemIDString];
-      v14 = [v4 st];
-      v15 = [v14 ckInfo];
-      v16 = [(BRCStatInfo *)self->_st ckInfo];
+      debugItemIDString = [(BRCItemID *)self->_itemID debugItemIDString];
+      v14 = [itemCopy st];
+      ckInfo = [v14 ckInfo];
+      ckInfo2 = [(BRCStatInfo *)self->_st ckInfo];
       v17 = 138413058;
-      v18 = v13;
+      v18 = debugItemIDString;
       v19 = 2112;
-      v20 = v15;
+      v20 = ckInfo;
       v21 = 2112;
-      v22 = v16;
+      v22 = ckInfo2;
       v23 = 2112;
       v24 = v5;
       _os_log_debug_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ has an out of band sync ack -- using client truth ckinfo %@ rather than server info %@%@", &v17, 0x2Au);
     }
 
-    v7 = [v4 st];
-    v8 = [v7 ckInfo];
-    [(BRCStatInfo *)self->_st setCkInfo:v8];
+    v7 = [itemCopy st];
+    ckInfo3 = [v7 ckInfo];
+    [(BRCStatInfo *)self->_st setCkInfo:ckInfo3];
 
-    if ([v4 isDocument])
+    if ([itemCopy isDocument])
     {
-      v9 = [v4 asDocument];
-      v10 = [v9 currentVersion];
-      v11 = [v10 ckInfo];
-      [(BRCVersion *)self->_latestVersion setCkInfo:v11];
+      asDocument = [itemCopy asDocument];
+      currentVersion = [asDocument currentVersion];
+      ckInfo4 = [currentVersion ckInfo];
+      [(BRCVersion *)self->_latestVersion setCkInfo:ckInfo4];
     }
   }
 
@@ -795,7 +795,7 @@ LABEL_29:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_223E7A000, a2, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Called -asSharedItem on a private item%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -818,7 +818,7 @@ LABEL_29:
 - (void)appLibraryForRootItem
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_6_0();
   _os_log_fault_impl(v1, v2, v3, v4, v5, 0x16u);
   v6 = *MEMORY[0x277D85DE8];

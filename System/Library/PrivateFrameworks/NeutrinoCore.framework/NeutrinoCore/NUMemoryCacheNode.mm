@@ -1,18 +1,18 @@
 @interface NUMemoryCacheNode
-- (id)evaluateSettings:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (id)evaluateSettings:(id)settings pipelineState:(id)state error:(id *)error;
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 - (id)persistentURL;
-- (void)resolveSourceWithResponse:(id)a3;
+- (void)resolveSourceWithResponse:(id)response;
 @end
 
 @implementation NUMemoryCacheNode
 
-- (void)resolveSourceWithResponse:(id)a3
+- (void)resolveSourceWithResponse:(id)response
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  responseCopy = response;
+  if (!responseCopy)
   {
     v14 = NUAssertLogger_15823();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -33,8 +33,8 @@
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v21;
         v33 = 2114;
@@ -45,8 +45,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -55,21 +55,21 @@
     _NUAssertFailHandler("[NUMemoryCacheNode resolveSourceWithResponse:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUCacheNode.m", 1096, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "response != nil");
   }
 
-  v5 = v4;
+  v5 = responseCopy;
   v30 = 0;
-  v6 = [v4 result:&v30];
+  v6 = [responseCopy result:&v30];
   v7 = v30;
   if (v6)
   {
-    v8 = [v6 image];
-    v9 = [NUImageFactory newCIImageFromBufferImage:v8];
-    v10 = [(NUMemoryCacheNode *)self persistentURL];
-    v11 = [v10 absoluteString];
+    image = [v6 image];
+    v9 = [NUImageFactory newCIImageFromBufferImage:image];
+    persistentURL = [(NUMemoryCacheNode *)self persistentURL];
+    absoluteString = [persistentURL absoluteString];
 
-    v12 = [[NUCISourceNode alloc] initWithImage:v9 identifier:v11 orientation:1];
+    v12 = [[NUCISourceNode alloc] initWithImage:v9 identifier:absoluteString orientation:1];
     [(NUCacheNode *)self resolveWithSourceNode:v12 error:0];
     cachedImage = self->_cachedImage;
-    self->_cachedImage = v8;
+    self->_cachedImage = image;
   }
 
   else
@@ -78,11 +78,11 @@
   }
 }
 
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
     v22 = NUAssertLogger_15823();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -103,8 +103,8 @@
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v29;
         v41 = 2114;
@@ -115,8 +115,8 @@
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -125,25 +125,25 @@
     _NUAssertFailHandler("[NUMemoryCacheNode newRenderRequestWithOriginalRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUCacheNode.m", 1074, @"Invalid parameter not satisfying: %s", v34, v35, v36, v37, "originalRequest != nil");
   }
 
-  v6 = v5;
-  v7 = [(NUCacheNode *)self auxiliaryImageType];
-  v8 = [(NURenderNode *)self settings];
-  v9 = [v8 objectForKeyedSubscript:@"pixelFormat"];
+  v6 = requestCopy;
+  auxiliaryImageType = [(NUCacheNode *)self auxiliaryImageType];
+  settings = [(NURenderNode *)self settings];
+  v9 = [settings objectForKeyedSubscript:@"pixelFormat"];
 
-  v10 = [(NURenderNode *)self settings];
-  v11 = [v10 objectForKeyedSubscript:@"colorSpace"];
+  settings2 = [(NURenderNode *)self settings];
+  v11 = [settings2 objectForKeyedSubscript:@"colorSpace"];
 
   v12 = [NUBufferRenderRequest alloc];
-  v13 = [v6 composition];
-  v14 = [(NURenderRequest *)v12 initWithComposition:v13];
+  composition = [v6 composition];
+  v14 = [(NURenderRequest *)v12 initWithComposition:composition];
 
   [(NUImageRenderRequest *)v14 setColorSpace:v11];
   [(NUImageRenderRequest *)v14 setPixelFormat:v9];
-  [(NUImageRenderRequest *)v14 setAuxiliaryImageType:v7];
+  [(NUImageRenderRequest *)v14 setAuxiliaryImageType:auxiliaryImageType];
   v15 = MEMORY[0x1E696AEC0];
   v16 = objc_opt_class();
-  v17 = [v6 name];
-  v18 = [v15 stringWithFormat:@"%@:%p-%@", v16, self, v17];
+  name = [v6 name];
+  v18 = [v15 stringWithFormat:@"%@:%p-%@", v16, self, name];
   [(NURenderRequest *)v14 setName:v18];
 
   v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -160,12 +160,12 @@
   return v14;
 }
 
-- (id)evaluateSettings:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)evaluateSettings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  settingsCopy = settings;
+  stateCopy = state;
+  if (!error)
   {
     v28 = NUAssertLogger_15823();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -186,8 +186,8 @@
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v35;
         v48 = 2114;
@@ -198,8 +198,8 @@
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -208,10 +208,10 @@
     _NUAssertFailHandler("[NUMemoryCacheNode evaluateSettings:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUCacheNode.m", 1010, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "error != NULL");
   }
 
-  v10 = v9;
+  v10 = stateCopy;
   v45.receiver = self;
   v45.super_class = NUMemoryCacheNode;
-  v11 = [(NUCacheNode *)&v45 evaluateSettings:v8 pipelineState:v9 error:a5];
+  v11 = [(NUCacheNode *)&v45 evaluateSettings:settingsCopy pipelineState:stateCopy error:error];
   v12 = [v11 mutableCopy];
 
   if (!v12)
@@ -220,18 +220,18 @@
     goto LABEL_22;
   }
 
-  v13 = [v10 auxiliaryImageType];
+  auxiliaryImageType = [v10 auxiliaryImageType];
   v14 = [v12 objectForKeyedSubscript:@"pixelFormat"];
   v15 = [v12 objectForKeyedSubscript:@"colorSpace"];
   v16 = v15;
-  if (v13 > 9)
+  if (auxiliaryImageType > 9)
   {
     goto LABEL_29;
   }
 
-  if (((1 << v13) & 0x378) == 0)
+  if (((1 << auxiliaryImageType) & 0x378) == 0)
   {
-    if (v13 == 2)
+    if (auxiliaryImageType == 2)
     {
       if (!v14)
       {
@@ -247,27 +247,27 @@
       goto LABEL_19;
     }
 
-    if (v13 == 7)
+    if (auxiliaryImageType == 7)
     {
-      v18 = [(NUCacheNode *)self inputNode];
+      inputNode = [(NUCacheNode *)self inputNode];
       v44 = 0;
-      v19 = [v18 imageProperties:&v44];
+      v19 = [inputNode imageProperties:&v44];
       v20 = v44;
 
       if (!v19)
       {
-        v27 = [(NUCacheNode *)self inputNode];
-        *a5 = [NUError errorWithCode:1 reason:@"Failed to get image properties" object:v27 underlyingError:v20];
+        inputNode2 = [(NUCacheNode *)self inputNode];
+        *error = [NUError errorWithCode:1 reason:@"Failed to get image properties" object:inputNode2 underlyingError:v20];
 
         v17 = 0;
         goto LABEL_21;
       }
 
       v21 = [v19 auxiliaryImagePropertiesForType:7];
-      v22 = [v21 pixelFormat];
-      v23 = [v22 numberOfComponents];
+      pixelFormat = [v21 pixelFormat];
+      numberOfComponents = [pixelFormat numberOfComponents];
 
-      if (v23 == 1)
+      if (numberOfComponents == 1)
       {
         if (!v14)
         {
@@ -353,19 +353,19 @@ LABEL_22:
 {
   v3 = objc_alloc(MEMORY[0x1E695DFF8]);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NUCacheNode *)self cacheIdentifier];
-  v6 = [v4 stringWithFormat:@"x-memory-cache-node://%@", v5];
+  cacheIdentifier = [(NUCacheNode *)self cacheIdentifier];
+  v6 = [v4 stringWithFormat:@"x-memory-cache-node://%@", cacheIdentifier];
   v7 = [v3 initWithString:v6];
 
   return v7;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v31 = NUAssertLogger_15823();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -386,8 +386,8 @@ LABEL_22:
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v42 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v38;
         v51 = 2114;
@@ -398,8 +398,8 @@ LABEL_22:
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v37;
       _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -408,37 +408,37 @@ LABEL_22:
     _NUAssertFailHandler("[NUMemoryCacheNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUCacheNode.m", 952, @"Invalid parameter not satisfying: %s", v43, v44, v45, v46, "error != NULL");
   }
 
-  v10 = v9;
-  if ([v9 evaluationMode] == 2 || objc_msgSend(v10, "evaluationMode") == 3)
+  v10 = stateCopy;
+  if ([stateCopy evaluationMode] == 2 || objc_msgSend(v10, "evaluationMode") == 3)
   {
     goto LABEL_4;
   }
 
   if ([v10 evaluationMode] == 1 || !objc_msgSend(v10, "evaluationMode"))
   {
-    v14 = [(NUCacheNode *)self auxiliaryImageType];
-    if (!v14 || [v10 auxiliaryImageType] == v14)
+    auxiliaryImageType = [(NUCacheNode *)self auxiliaryImageType];
+    if (!auxiliaryImageType || [v10 auxiliaryImageType] == auxiliaryImageType)
     {
       v48.receiver = self;
       v48.super_class = NUMemoryCacheNode;
-      v11 = [(NUCacheNode *)&v48 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
-      if (v11)
+      inputNode = [(NUCacheNode *)&v48 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
+      if (inputNode)
       {
         v47 = 0;
         v15 = [(NUCacheNode *)self inputGeometryForPipelineState:v10 error:&v47];
         v16 = v47;
         if (v15)
         {
-          v17 = [v15 renderScale];
-          v19 = NUScaleMultiply(v17, v18, 1, [v11 subsampleFactor]);
+          renderScale = [v15 renderScale];
+          v19 = NUScaleMultiply(renderScale, v18, 1, [inputNode subsampleFactor]);
           v21 = v20;
-          v22 = [v10 scale];
-          v24 = NUScaleDivide(v22, v23, v19, v21);
+          scale = [v10 scale];
+          v24 = NUScaleDivide(scale, v23, v19, v21);
           v26 = v25;
           v27 = [NUScaleNode alloc];
-          v28 = [v10 scale];
-          v30 = -[NUScaleNode initWithTargetScale:effectiveScale:sampleMode:input:](v27, "initWithTargetScale:effectiveScale:sampleMode:input:", v28, v29, v24, v26, [v10 sampleMode], v11);
-          v12 = [NURenderNode nodeFromCache:v30 cache:v8];
+          scale2 = [v10 scale];
+          v30 = -[NUScaleNode initWithTargetScale:effectiveScale:sampleMode:input:](v27, "initWithTargetScale:effectiveScale:sampleMode:input:", scale2, v29, v24, v26, [v10 sampleMode], inputNode);
+          v12 = [NURenderNode nodeFromCache:v30 cache:cacheCopy];
 
           [v12 setEvaluatedForMode:{objc_msgSend(v10, "evaluationMode")}];
         }
@@ -446,7 +446,7 @@ LABEL_22:
         else
         {
           [NUError errorWithCode:1 reason:@"failed to get input geometry" object:self underlyingError:v16];
-          *a5 = v12 = 0;
+          *error = v12 = 0;
         }
       }
 
@@ -459,15 +459,15 @@ LABEL_22:
     }
 
 LABEL_4:
-    v11 = [(NUCacheNode *)self inputNode];
-    v12 = [v11 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    inputNode = [(NUCacheNode *)self inputNode];
+    v12 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
 LABEL_5:
 
     goto LABEL_6;
   }
 
   [NUError invalidError:@"Cannot evaluate cache node" object:self];
-  *a5 = v12 = 0;
+  *error = v12 = 0;
 LABEL_6:
 
   return v12;

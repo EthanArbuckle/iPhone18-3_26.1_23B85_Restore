@@ -1,20 +1,20 @@
 @interface TUICandidateCollectionView
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation TUICandidateCollectionView
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 _authenticationMessage];
-  v9 = [MEMORY[0x1E69DCBE0] activeInstance];
-  [v9 _attemptAuthenticationWithMessage:v8];
+  eventCopy = event;
+  endedCopy = ended;
+  _authenticationMessage = [eventCopy _authenticationMessage];
+  activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+  [activeInstance _attemptAuthenticationWithMessage:_authenticationMessage];
 
   v10.receiver = self;
   v10.super_class = TUICandidateCollectionView;
-  [(TUICandidateCollectionView *)&v10 touchesEnded:v7 withEvent:v6];
+  [(TUICandidateCollectionView *)&v10 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
 @end

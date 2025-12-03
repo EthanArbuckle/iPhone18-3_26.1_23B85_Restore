@@ -6,8 +6,8 @@
 
 - (BOOL)fcui_containsExcessiveLineHeightCharacters
 {
-  v2 = [MEMORY[0x277D74300] fcui_excessiveLineHeightChars];
-  v3 = [a1 rangeOfCharacterFromSet:v2] != 0x7FFFFFFFFFFFFFFFLL;
+  fcui_excessiveLineHeightChars = [MEMORY[0x277D74300] fcui_excessiveLineHeightChars];
+  v3 = [self rangeOfCharacterFromSet:fcui_excessiveLineHeightChars] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }

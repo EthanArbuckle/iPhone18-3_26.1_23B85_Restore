@@ -2,9 +2,9 @@
 - (PUParallaxLayerLayoutInfo)currentLayoutInfo;
 - (UIView)primaryContentView;
 - (id)parallaxSpatialPhotoOcclusionLayer;
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3;
-- (void)layoutWithInfo:(id)a3;
-- (void)setParallaxSpatialPhotoOcclusionLayer:(id)a3;
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates;
+- (void)layoutWithInfo:(id)info;
+- (void)setParallaxSpatialPhotoOcclusionLayer:(id)layer;
 @end
 
 @implementation PUParallaxSpatialPhotoOcclusionLayerView
@@ -16,24 +16,24 @@
   return v0;
 }
 
-- (void)setParallaxSpatialPhotoOcclusionLayer:(id)a3
+- (void)setParallaxSpatialPhotoOcclusionLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B38ADDA0(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_1B38ADDA0(layerCopy);
 }
 
-- (void)layoutWithInfo:(id)a3
+- (void)layoutWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B38ADEA8(v4);
+  infoCopy = info;
+  selfCopy = self;
+  sub_1B38ADEA8(infoCopy);
 }
 
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates
 {
-  v4 = self;
-  v5 = sub_1B38ADF64(a3);
+  selfCopy = self;
+  v5 = sub_1B38ADF64(updates);
 
   return v5;
 }

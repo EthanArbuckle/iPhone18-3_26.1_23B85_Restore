@@ -1,14 +1,14 @@
 @interface PulseAnimator
-- (void)displayLinkFired:(id)a3;
+- (void)displayLinkFired:(id)fired;
 @end
 
 @implementation PulseAnimator
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v3 = a3;
+  firedCopy = fired;
 
-  sub_20BC16B50(v3);
+  sub_20BC16B50(firedCopy);
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface SIMovReader
-- (__CVBuffer)getCurrentReadBufferForTrack:(id)a3;
-- (__CVBuffer)readFrame:(id *)a3;
+- (__CVBuffer)getCurrentReadBufferForTrack:(id)track;
+- (__CVBuffer)readFrame:(id *)frame;
 - (id).cxx_construct;
-- (id)initReaderWithVideoURL:(id)a3 andTrackName:(id)a4;
-- (id)initReaderWithVideoURL:(id)a3 trackList:(id)a4;
-- (int64_t)readNextAvaliableFrame:(id *)a3;
+- (id)initReaderWithVideoURL:(id)l andTrackName:(id)name;
+- (id)initReaderWithVideoURL:(id)l trackList:(id)list;
+- (int64_t)readNextAvaliableFrame:(id *)frame;
 - (void)dealloc;
 @end
 
 @implementation SIMovReader
 
-- (id)initReaderWithVideoURL:(id)a3 trackList:(id)a4
+- (id)initReaderWithVideoURL:(id)l trackList:(id)list
 {
   v71 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v6 = a4;
+  lCopy = l;
+  listCopy = list;
   v62.receiver = self;
   v62.super_class = SIMovReader;
   v7 = [(SIMovReader *)&v62 init];
   if (v7)
   {
-    v49 = v6;
+    v49 = listCopy;
     v61 = 0;
-    v8 = [objc_alloc(MEMORY[0x277D256C0]) initWithURL:v51 error:&v61];
+    v8 = [objc_alloc(MEMORY[0x277D256C0]) initWithURL:lCopy error:&v61];
     v50 = v61;
     [(SIMovReader *)v7 setReader:v8];
 
-    v9 = [(SIMovReader *)v7 reader];
-    LODWORD(v8) = v9 == 0;
+    reader = [(SIMovReader *)v7 reader];
+    LODWORD(v8) = reader == 0;
 
     if (v8)
     {
@@ -75,8 +75,8 @@ LABEL_31:
             }
 
             v15 = *(*(&v57 + 1) + 8 * i);
-            v16 = [(SIMovReader *)v7 reader];
-            v17 = [v16 containsStream:v15];
+            reader2 = [(SIMovReader *)v7 reader];
+            v17 = [reader2 containsStream:v15];
 
             if (!v17)
             {
@@ -95,19 +95,19 @@ LABEL_31:
               goto LABEL_31;
             }
 
-            v18 = [(SIMovReader *)v7 reader];
-            [v18 getFrameRateForStream:v15];
+            reader3 = [(SIMovReader *)v7 reader];
+            [reader3 getFrameRateForStream:v15];
             v20 = v19;
 
-            v21 = [(SIMovReader *)v7 reader];
-            [v21 getSizeForStream:v15];
+            reader4 = [(SIMovReader *)v7 reader];
+            [reader4 getSizeForStream:v15];
             v23 = v22;
             v25 = v24;
 
             v26 = [SIMovStreamInfo alloc];
-            v27 = [(SIMovReader *)v7 reader];
+            reader5 = [(SIMovReader *)v7 reader];
             v28 = llround(v20);
-            v29 = -[SIMovStreamInfo initInfoWithTrackName:frameRate:pixelBufferFormat:resolution:](v26, "initInfoWithTrackName:frameRate:pixelBufferFormat:resolution:", v15, [v27 getOutputPixelFormatForStream:v15], v28, v23, v25);
+            v29 = -[SIMovStreamInfo initInfoWithTrackName:frameRate:pixelBufferFormat:resolution:](v26, "initInfoWithTrackName:frameRate:pixelBufferFormat:resolution:", v15, [reader5 getOutputPixelFormatForStream:v15], v28, v23, v25);
             [(NSMutableDictionary *)v7->trackInfos setObject:v29 forKeyedSubscript:v15];
 
             LOBYTE(v30) = 0;
@@ -164,9 +164,9 @@ LABEL_31:
             v39 = *(*(&v53 + 1) + 8 * j);
             v40 = v7->_lcmfps;
             v41 = [(NSMutableDictionary *)v7->trackInfos objectForKeyedSubscript:v39];
-            v42 = [v41 frameRate];
+            frameRate = [v41 frameRate];
             v43 = [(NSMutableDictionary *)v7->trackInfos objectForKeyedSubscript:v39];
-            [v43 setReadCycle:v40 / v42];
+            [v43 setReadCycle:v40 / frameRate];
           }
 
           v36 = [(NSMutableDictionary *)v35 countByEnumeratingWithState:&v53 objects:v63 count:16];
@@ -178,7 +178,7 @@ LABEL_31:
       v44 = v7;
     }
 
-    v6 = v49;
+    listCopy = v49;
   }
 
   else
@@ -190,14 +190,14 @@ LABEL_31:
   return v44;
 }
 
-- (id)initReaderWithVideoURL:(id)a3 andTrackName:(id)a4
+- (id)initReaderWithVideoURL:(id)l andTrackName:(id)name
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v12[0] = v7;
+  lCopy = l;
+  nameCopy = name;
+  v12[0] = nameCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v9 = [(SIMovReader *)self initReaderWithVideoURL:v6 trackList:v8];
+  v9 = [(SIMovReader *)self initReaderWithVideoURL:lCopy trackList:v8];
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;
@@ -219,21 +219,21 @@ LABEL_31:
   [(SIMovReader *)&v4 dealloc];
 }
 
-- (__CVBuffer)readFrame:(id *)a3
+- (__CVBuffer)readFrame:(id *)frame
 {
-  v5 = [(SIMovReader *)self reader];
-  v6 = [(NSMutableDictionary *)self->trackInfos allKeys];
-  v7 = [v6 firstObject];
+  reader = [(SIMovReader *)self reader];
+  allKeys = [(NSMutableDictionary *)self->trackInfos allKeys];
+  firstObject = [allKeys firstObject];
   v10 = 0;
-  v8 = [v5 copyNextFrameForStream:v7 timestamp:a3 error:&v10];
+  v8 = [reader copyNextFrameForStream:firstObject timestamp:frame error:&v10];
 
   return v8;
 }
 
-- (__CVBuffer)getCurrentReadBufferForTrack:(id)a3
+- (__CVBuffer)getCurrentReadBufferForTrack:(id)track
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  trackCopy = track;
+  std::string::basic_string[abi:nn200100]<0>(__p, [trackCopy UTF8String]);
   v9 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_pixelBufferMap.__table_.__bucket_list_.__ptr_, __p)[5];
   if (v8 < 0)
@@ -244,7 +244,7 @@ LABEL_31:
   return v5;
 }
 
-- (int64_t)readNextAvaliableFrame:(id *)a3
+- (int64_t)readNextAvaliableFrame:(id *)frame
 {
   v44 = *MEMORY[0x277D85DE8];
   v34 = 0u;
@@ -287,11 +287,11 @@ LABEL_31:
             operator delete(*__p);
           }
 
-          v15 = [(SIMovReader *)self reader];
+          reader = [(SIMovReader *)self reader];
           v16 = [(NSMutableDictionary *)self->trackInfos objectForKeyedSubscript:v9];
-          v17 = [v16 name];
+          name = [v16 name];
           v33 = v4;
-          v18 = [v15 copyNextFrameForStream:v17 timestamp:a3 error:&v33];
+          v18 = [reader copyNextFrameForStream:name timestamp:frame error:&v33];
           v19 = v33;
 
           v20 = v9;

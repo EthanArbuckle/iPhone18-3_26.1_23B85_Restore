@@ -1,14 +1,14 @@
 @interface MTDownloadsCollectionView
-- (MTDownloadsCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (MTDownloadsCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 @end
 
 @implementation MTDownloadsCollectionView
 
-- (MTDownloadsCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (MTDownloadsCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = MTDownloadsCollectionView;
-  v4 = [(MTDownloadsCollectionView *)&v7 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(MTDownloadsCollectionView *)&v7 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = +[UIColor backgroundColor];

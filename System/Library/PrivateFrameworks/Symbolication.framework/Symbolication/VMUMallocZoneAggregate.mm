@@ -1,30 +1,30 @@
 @interface VMUMallocZoneAggregate
-- (VMUMallocZoneAggregate)initWithZoneName:(id)a3 options:(id)a4;
-- (id)_classDisplayName:(id)a3;
+- (VMUMallocZoneAggregate)initWithZoneName:(id)name options:(id)options;
+- (id)_classDisplayName:(id)name;
 - (id)classInfosSortedByName;
-- (id)classInfosSortedBySizeOrCount:(unsigned int)a3;
+- (id)classInfosSortedBySizeOrCount:(unsigned int)count;
 - (id)classInfosSortedByTotalInternalFragmentation;
 - (void)dealloc;
-- (void)enumerateAllocationSizesWithBlock:(id)a3;
-- (void)enumerateBinaryCountDataSortedBy:(unsigned int)a3 withBlock:(id)a4;
-- (void)incrementAllocationCountForClassInfo:(id)a3 size:(unint64_t)a4;
-- (void)modifySize:(int64_t)a3 count:(int64_t)a4 forClassInfo:(id)a5;
+- (void)enumerateAllocationSizesWithBlock:(id)block;
+- (void)enumerateBinaryCountDataSortedBy:(unsigned int)by withBlock:(id)block;
+- (void)incrementAllocationCountForClassInfo:(id)info size:(unint64_t)size;
+- (void)modifySize:(int64_t)size count:(int64_t)count forClassInfo:(id)info;
 @end
 
 @implementation VMUMallocZoneAggregate
 
-- (VMUMallocZoneAggregate)initWithZoneName:(id)a3 options:(id)a4
+- (VMUMallocZoneAggregate)initWithZoneName:(id)name options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = VMUMallocZoneAggregate;
   v9 = [(VMUMallocZoneAggregate *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_heapAndVMOptions, a4);
-    objc_storeStrong(&v10->_zoneName, a3);
+    objc_storeStrong(&v9->_heapAndVMOptions, options);
+    objc_storeStrong(&v10->_zoneName, name);
     v11 = objc_opt_new();
     quantaCounter = v10->_quantaCounter;
     v10->_quantaCounter = v11;
@@ -62,31 +62,31 @@
   [(VMUMallocZoneAggregate *)&v4 dealloc];
 }
 
-- (void)incrementAllocationCountForClassInfo:(id)a3 size:(unint64_t)a4
+- (void)incrementAllocationCountForClassInfo:(id)info size:(unint64_t)size
 {
-  self->_allocatedSize += a4;
+  self->_allocatedSize += size;
   ++self->_blockCount;
   quantaCounter = self->_quantaCounter;
   v7 = MEMORY[0x1E696AD98];
-  v9 = a3;
-  v8 = [v7 numberWithUnsignedLongLong:a4];
+  infoCopy = info;
+  v8 = [v7 numberWithUnsignedLongLong:size];
   [(NSCountedSet *)quantaCounter addObject:v8];
 
-  [(VMUMallocZoneAggregate *)self modifySize:a4 count:1 forClassInfo:v9];
+  [(VMUMallocZoneAggregate *)self modifySize:size count:1 forClassInfo:infoCopy];
 }
 
-- (void)modifySize:(int64_t)a3 count:(int64_t)a4 forClassInfo:(id)a5
+- (void)modifySize:(int64_t)size count:(int64_t)count forClassInfo:(id)info
 {
-  key = a5;
+  key = info;
   v8 = objc_autoreleasePoolPush();
-  if (a3 >= 0)
+  if (size >= 0)
   {
-    v9 = a3;
+    sizeCopy = size;
   }
 
   else
   {
-    v9 = -a3;
+    sizeCopy = -size;
   }
 
   v10 = NSMapGet(self->_classInfoToClassCountDataMap, key);
@@ -102,27 +102,27 @@
     NSMapInsert(self->_classInfoToClassCountDataMap, key, v10);
   }
 
-  v11 = [key binaryName];
-  if (![(__CFString *)v11 length])
+  binaryName = [key binaryName];
+  if (![(__CFString *)binaryName length])
   {
 
-    v11 = @"non-object";
+    binaryName = @"non-object";
   }
 
-  v12 = NSMapGet(self->_binaryNameToBinaryCountDataMap, v11);
+  v12 = NSMapGet(self->_binaryNameToBinaryCountDataMap, binaryName);
   if (!v12)
   {
     v12 = malloc_type_malloc(0x18uLL, 0x108004098BBCF0FuLL);
     *v12 = 0;
     v12[1] = 0;
-    NSMapInsert(self->_binaryNameToBinaryCountDataMap, v11, v12);
+    NSMapInsert(self->_binaryNameToBinaryCountDataMap, binaryName, v12);
   }
 
-  v13 = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions showSizes];
+  showSizes = [(VMUHeapAndVMAggregatorOptions *)self->_heapAndVMOptions showSizes];
   v14 = *v10;
-  if (v13 && v14)
+  if (showSizes && v14)
   {
-    if (!v10[3] && v10[1] / v14 != v9)
+    if (!v10[3] && v10[1] / v14 != sizeCopy)
     {
       v10[3] = 4;
       v15 = malloc_type_malloc(0x40uLL, 0x1000040451B5BE8uLL);
@@ -142,14 +142,14 @@
       while (v16 != v17)
       {
         v20 = v18[2 * v17];
-        if (v9 < v20)
+        if (sizeCopy < v20)
         {
           goto LABEL_23;
         }
 
-        if (v9 == v20)
+        if (sizeCopy == v20)
         {
-          v18[2 * v17 + 1] += a4;
+          v18[2 * v17 + 1] += count;
           goto LABEL_29;
         }
 
@@ -178,43 +178,43 @@ LABEL_23:
       }
 
       v22 = &v18[2 * v17];
-      *v22 = v9;
-      v22[1] = a4;
+      *v22 = sizeCopy;
+      v22[1] = count;
       v10[2] = v16 + 1;
       v14 = *v10;
     }
   }
 
 LABEL_29:
-  v23 = v10[1] + a3;
-  *v10 = v14 + a4;
+  v23 = v10[1] + size;
+  *v10 = v14 + count;
   v10[1] = v23;
-  v24 = v12[1] + a3;
-  *v12 += a4;
+  v24 = v12[1] + size;
+  *v12 += count;
   v12[1] = v24;
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (id)_classDisplayName:(id)a3
+- (id)_classDisplayName:(id)name
 {
   heapAndVMOptions = self->_heapAndVMOptions;
-  v4 = a3;
+  nameCopy = name;
   if ([(VMUHeapAndVMAggregatorOptions *)heapAndVMOptions showRawClassNames])
   {
-    [v4 className];
+    [nameCopy className];
   }
 
   else
   {
-    [v4 displayName];
+    [nameCopy displayName];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)classInfosSortedBySizeOrCount:(unsigned int)a3
+- (id)classInfosSortedBySizeOrCount:(unsigned int)count
 {
   v5 = NSAllMapTableKeys(self->_classInfoToClassCountDataMap);
   v8[0] = MEMORY[0x1E69E9820];
@@ -222,7 +222,7 @@ LABEL_29:
   v8[2] = __56__VMUMallocZoneAggregate_classInfosSortedBySizeOrCount___block_invoke;
   v8[3] = &unk_1E8279E08;
   v8[4] = self;
-  v9 = a3;
+  countCopy = count;
   v6 = [v5 sortedArrayUsingComparator:v8];
 
   return v6;
@@ -314,17 +314,17 @@ uint64_t __70__VMUMallocZoneAggregate_classInfosSortedByTotalInternalFragmentati
   return v10;
 }
 
-- (void)enumerateBinaryCountDataSortedBy:(unsigned int)a3 withBlock:(id)a4
+- (void)enumerateBinaryCountDataSortedBy:(unsigned int)by withBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v7 = NSAllMapTableKeys(self->_binaryNameToBinaryCountDataMap);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __69__VMUMallocZoneAggregate_enumerateBinaryCountDataSortedBy_withBlock___block_invoke;
   v20[3] = &unk_1E8279E58;
   v20[4] = self;
-  v21 = a3;
+  byCopy = by;
   v8 = [v7 sortedArrayUsingComparator:v20];
   v16 = 0u;
   v17 = 0u;
@@ -346,7 +346,7 @@ uint64_t __70__VMUMallocZoneAggregate_classInfosSortedByTotalInternalFragmentati
 
         v13 = *(*(&v16 + 1) + 8 * i);
         v14 = [(NSMapTable *)self->_binaryNameToBinaryCountDataMap objectForKey:v13];
-        (*(v6 + 2))(v6, v13, *v14, v14[1]);
+        (*(blockCopy + 2))(blockCopy, v13, *v14, v14[1]);
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v22 count:16];
@@ -370,12 +370,12 @@ uint64_t __69__VMUMallocZoneAggregate_enumerateBinaryCountDataSortedBy_withBlock
   return v10;
 }
 
-- (void)enumerateAllocationSizesWithBlock:(id)a3
+- (void)enumerateAllocationSizesWithBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSCountedSet *)self->_quantaCounter allObjects];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_19];
+  blockCopy = block;
+  allObjects = [(NSCountedSet *)self->_quantaCounter allObjects];
+  v6 = [allObjects sortedArrayUsingComparator:&__block_literal_global_19];
 
   v15 = 0u;
   v16 = 0u;
@@ -397,7 +397,7 @@ uint64_t __69__VMUMallocZoneAggregate_enumerateBinaryCountDataSortedBy_withBlock
           objc_enumerationMutation(v7);
         }
 
-        v4[2](v4, [*(*(&v13 + 1) + 8 * v11) unsignedLongLongValue], -[NSCountedSet countForObject:](self->_quantaCounter, "countForObject:", *(*(&v13 + 1) + 8 * v11)));
+        blockCopy[2](blockCopy, [*(*(&v13 + 1) + 8 * v11) unsignedLongLongValue], -[NSCountedSet countForObject:](self->_quantaCounter, "countForObject:", *(*(&v13 + 1) + 8 * v11)));
         ++v11;
       }
 

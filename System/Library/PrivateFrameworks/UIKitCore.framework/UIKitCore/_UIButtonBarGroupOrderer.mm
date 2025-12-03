@@ -1,66 +1,66 @@
 @interface _UIButtonBarGroupOrderer
-+ (id)groupOrdererForCustomizationIdentifier:(id)a3;
-- (id)_initWithCustomizationIdentifier:(id)a3 data:(id)a4;
++ (id)groupOrdererForCustomizationIdentifier:(id)identifier;
+- (id)_initWithCustomizationIdentifier:(id)identifier data:(id)data;
 - (id)groups;
 - (id)setOwner:(id *)result;
 - (void)_orderGroups;
-- (void)enumerateOrderedGroupsPartitionedIntoSections:(void *)a1;
-- (void)enumerateSourceGroups:(id *)a1;
+- (void)enumerateOrderedGroupsPartitionedIntoSections:(void *)sections;
+- (void)enumerateSourceGroups:(id *)groups;
 - (void)invalidate;
 - (void)orderedGroups;
 - (void)reset;
 - (void)save;
-- (void)setIncludedIdentifiers:(void *)a3 excludedIdentifiers:;
+- (void)setIncludedIdentifiers:(void *)identifiers excludedIdentifiers:;
 @end
 
 @implementation _UIButtonBarGroupOrderer
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v2 = *(self + 24);
+    *(self + 24) = 0;
 
-    v3 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v3 = *(self + 32);
+    *(self + 32) = 0;
   }
 }
 
-+ (id)groupOrdererForCustomizationIdentifier:(id)a3
++ (id)groupOrdererForCustomizationIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"_UIButtonBarGroupOrderer.m" lineNumber:42 description:@"Cannot instantiate a _UIButtonBarGroupOrderer with a nil customizationIdentifier"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarGroupOrderer.m" lineNumber:42 description:@"Cannot instantiate a _UIButtonBarGroupOrderer with a nil customizationIdentifier"];
   }
 
   v6 = [_UIButtonBarGroupOrderer alloc];
-  v7 = __customizationDataForIdentifier(v5);
-  v8 = [(_UIButtonBarGroupOrderer *)v6 _initWithCustomizationIdentifier:v5 data:v7];
+  v7 = __customizationDataForIdentifier(identifierCopy);
+  v8 = [(_UIButtonBarGroupOrderer *)v6 _initWithCustomizationIdentifier:identifierCopy data:v7];
 
   return v8;
 }
 
-- (id)_initWithCustomizationIdentifier:(id)a3 data:(id)a4
+- (id)_initWithCustomizationIdentifier:(id)identifier data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dataCopy = data;
   v31.receiver = self;
   v31.super_class = _UIButtonBarGroupOrderer;
   v8 = [(_UIButtonBarGroupOrderer *)&v31 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     customizationIdentifier = v8->_customizationIdentifier;
     v8->_customizationIdentifier = v9;
 
-    v11 = [v7 objectForKeyedSubscript:@"version"];
+    v11 = [dataCopy objectForKeyedSubscript:@"version"];
     v12 = v11;
     if (v11 == &unk_1EFE33F70 || v11 && (v13 = [v11 isEqual:&unk_1EFE33F70], v12, v13))
     {
-      v14 = [v7 objectForKey:@"includedItems"];
+      v14 = [dataCopy objectForKey:@"includedItems"];
       v15 = v14;
       v16 = MEMORY[0x1E695E0F0];
       if (v14)
@@ -79,7 +79,7 @@
       includedItems = v8->_includedItems;
       v8->_includedItems = v19;
 
-      v21 = [v7 objectForKey:@"excludedItems"];
+      v21 = [dataCopy objectForKey:@"excludedItems"];
       v22 = v21;
       if (v21)
       {
@@ -100,9 +100,9 @@
 
     else
     {
-      v27 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
       v28 = v8->_includedItems;
-      v8->_includedItems = v27;
+      v8->_includedItems = orderedSet;
 
       v29 = [MEMORY[0x1E695DFA8] set];
       v18 = v8->_excludedItems;
@@ -116,19 +116,19 @@
 - (void)save
 {
   v7[3] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ([a1 _hasCustomization])
+    if ([self _hasCustomization])
     {
       v7[0] = &unk_1EFE33F70;
       v6[0] = @"version";
       v6[1] = @"includedItems";
-      v2 = [*(a1 + 8) array];
-      v3 = [v2 copy];
+      array = [*(self + 8) array];
+      v3 = [array copy];
       v7[1] = v3;
       v6[2] = @"excludedItems";
-      v4 = [*(a1 + 16) allObjects];
-      v7[2] = v4;
+      allObjects = [*(self + 16) allObjects];
+      v7[2] = allObjects;
       v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:3];
     }
 
@@ -137,38 +137,38 @@
       v5 = 0;
     }
 
-    __setCustomizationDataForIdentifier(v5, *(a1 + 40));
+    __setCustomizationDataForIdentifier(v5, *(self + 40));
   }
 }
 
 - (void)reset
 {
-  if (a1)
+  if (self)
   {
-    __setCustomizationDataForIdentifier(0, *(a1 + 40));
-    [*(a1 + 8) removeAllObjects];
-    [*(a1 + 16) removeAllObjects];
-    v2 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    __setCustomizationDataForIdentifier(0, *(self + 40));
+    [*(self + 8) removeAllObjects];
+    [*(self + 16) removeAllObjects];
+    v2 = *(self + 24);
+    *(self + 24) = 0;
 
-    v3 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v3 = *(self + 32);
+    *(self + 32) = 0;
 
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    [WeakRetained _groupOrdererDidUpdate:a1];
+    WeakRetained = objc_loadWeakRetained((self + 48));
+    [WeakRetained _groupOrdererDidUpdate:self];
   }
 }
 
 - (id)groups
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 6);
+    WeakRetained = objc_loadWeakRetained(self + 6);
     v3 = WeakRetained;
     if (WeakRetained)
     {
-      v4 = [WeakRetained _groupOrdererGroups:v1];
+      v4 = [WeakRetained _groupOrdererGroups:selfCopy];
       v5 = v4;
       v6 = MEMORY[0x1E695E0F0];
       if (v4)
@@ -176,31 +176,31 @@
         v6 = v4;
       }
 
-      v1 = v6;
+      selfCopy = v6;
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)enumerateSourceGroups:(id *)a1
+- (void)enumerateSourceGroups:(id *)groups
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (groups)
   {
-    v4 = [(_UIButtonBarGroupOrderer *)a1 orderedGroups];
+    orderedGroups = [(_UIButtonBarGroupOrderer *)groups orderedGroups];
     v5 = [MEMORY[0x1E695DFA8] set];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = v4;
+    v6 = orderedGroups;
     v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v7)
     {
@@ -226,12 +226,12 @@
       while (v8);
     }
 
-    v12 = [(_UIButtonBarGroupOrderer *)a1 groups];
+    groups = [(_UIButtonBarGroupOrderer *)groups groups];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v13 = [groups countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -242,7 +242,7 @@
         {
           if (*v19 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(groups);
           }
 
           v17 = *(*(&v18 + 1) + 8 * j);
@@ -252,7 +252,7 @@
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v14 = [groups countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v14);
@@ -262,40 +262,40 @@
 
 - (void)orderedGroups
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[3];
+    selfCopy = self;
+    v3 = self[3];
     if (!v3)
     {
-      [a1 _orderGroups];
-      v3 = v2[3];
+      [self _orderGroups];
+      v3 = selfCopy[3];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)enumerateOrderedGroupsPartitionedIntoSections:(void *)a1
+- (void)enumerateOrderedGroupsPartitionedIntoSections:(void *)sections
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (sections)
   {
     if (!v3)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel_enumerateOrderedGroupsPartitionedIntoSections_ object:a1 file:@"_UIButtonBarGroupOrderer.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"sectionHandler != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_enumerateOrderedGroupsPartitionedIntoSections_ object:sections file:@"_UIButtonBarGroupOrderer.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"sectionHandler != nil"}];
     }
 
-    v5 = a1[4];
+    v5 = sections[4];
     if (!v5)
     {
-      [a1 _orderGroups];
-      v5 = a1[4];
+      [sections _orderGroups];
+      v5 = sections[4];
     }
 
     v8[0] = MEMORY[0x1E69E9820];
@@ -308,20 +308,20 @@
   }
 }
 
-- (void)setIncludedIdentifiers:(void *)a3 excludedIdentifiers:
+- (void)setIncludedIdentifiers:(void *)identifiers excludedIdentifiers:
 {
   v47 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifiersCopy = identifiers;
+  if (self)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v8 = [(_UIButtonBarGroupOrderer *)a1 groups];
-    v9 = [v8 countByEnumeratingWithState:&v40 objects:v46 count:16];
+    groups = [(_UIButtonBarGroupOrderer *)self groups];
+    v9 = [groups countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v9)
     {
       v10 = v9;
@@ -332,30 +332,30 @@
         {
           if (*v41 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(groups);
           }
 
           v13 = *(*(&v40 + 1) + 8 * i);
-          v14 = [v13 _customizationIdentifier];
-          if (v14)
+          _customizationIdentifier = [v13 _customizationIdentifier];
+          if (_customizationIdentifier)
           {
-            [v7 setObject:v13 forKeyedSubscript:v14];
+            [dictionary setObject:v13 forKeyedSubscript:_customizationIdentifier];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v40 objects:v46 count:16];
+        v10 = [groups countByEnumeratingWithState:&v40 objects:v46 count:16];
       }
 
       while (v10);
     }
 
-    [*(a1 + 8) removeAllObjects];
-    [*(a1 + 16) removeAllObjects];
+    [*(self + 8) removeAllObjects];
+    [*(self + 16) removeAllObjects];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v15 = v6;
+    v15 = identifiersCopy;
     v16 = [v15 countByEnumeratingWithState:&v36 objects:v45 count:16];
     if (v16)
     {
@@ -371,11 +371,11 @@
           }
 
           v20 = *(*(&v36 + 1) + 8 * j);
-          v21 = [v7 objectForKeyedSubscript:v20];
+          v21 = [dictionary objectForKeyedSubscript:v20];
 
           if (v21)
           {
-            [*(a1 + 16) addObject:v20];
+            [*(self + 16) addObject:v20];
           }
         }
 
@@ -405,12 +405,12 @@
           }
 
           v27 = *(*(&v32 + 1) + 8 * k);
-          v28 = [v7 objectForKeyedSubscript:{v27, v32}];
+          v28 = [dictionary objectForKeyedSubscript:{v27, v32}];
 
           if (v28)
           {
-            [*(a1 + 8) addObject:v27];
-            [*(a1 + 16) removeObject:v27];
+            [*(self + 8) addObject:v27];
+            [*(self + 16) removeObject:v27];
           }
         }
 
@@ -420,31 +420,31 @@
       while (v24);
     }
 
-    v29 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v29 = *(self + 24);
+    *(self + 24) = 0;
 
-    v30 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v30 = *(self + 32);
+    *(self + 32) = 0;
 
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    [WeakRetained _groupOrdererDidUpdate:a1];
+    WeakRetained = objc_loadWeakRetained((self + 48));
+    [WeakRetained _groupOrdererDidUpdate:self];
   }
 }
 
 - (void)_orderGroups
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIButtonBarGroupOrderer *)&self->super.isa groups];
-  if (v3)
+  groups = [(_UIButtonBarGroupOrderer *)&self->super.isa groups];
+  if (groups)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(groups, "count")}];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v27 = v3;
-    v6 = v3;
+    v27 = groups;
+    v6 = groups;
     v7 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v7)
     {
@@ -461,15 +461,15 @@
           }
 
           v12 = *(*(&v34 + 1) + 8 * i);
-          v13 = [v12 _customizationIdentifier];
-          if (v13)
+          _customizationIdentifier = [v12 _customizationIdentifier];
+          if (_customizationIdentifier)
           {
-            if ([(NSMutableOrderedSet *)self->_includedItems containsObject:v13])
+            if ([(NSMutableOrderedSet *)self->_includedItems containsObject:_customizationIdentifier])
             {
-              [v4 setObject:v12 forKeyedSubscript:v13];
+              [dictionary setObject:v12 forKeyedSubscript:_customizationIdentifier];
             }
 
-            else if ([v12 _isDefaultItem] && (-[NSMutableSet containsObject:](self->_excludedItems, "containsObject:", v13) & 1) == 0)
+            else if ([v12 _isDefaultItem] && (-[NSMutableSet containsObject:](self->_excludedItems, "containsObject:", _customizationIdentifier) & 1) == 0)
             {
               [v5 addObject:v12];
             }
@@ -511,7 +511,7 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [v4 objectForKeyedSubscript:{*(*(&v30 + 1) + 8 * j), v27}];
+          v19 = [dictionary objectForKeyedSubscript:{*(*(&v30 + 1) + 8 * j), v27}];
           if (v19)
           {
             [v5 insertObject:v19 atIndex:v9++];
@@ -541,7 +541,7 @@
     self->_orderedGroupsPartitionedIntoSections = v24;
     v26 = v24;
 
-    v3 = v27;
+    groups = v27;
   }
 }
 

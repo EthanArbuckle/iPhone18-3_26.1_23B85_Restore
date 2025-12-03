@@ -1,8 +1,8 @@
 @interface CCSiriLearnedMediaContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCSiriLearnedMediaContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCSiriLearnedMediaContent)initWithUserPhrasedSongName:(id)a3 userPhrasedArtistName:(id)a4 userPhrasedAlbumName:(id)a5 userPhrasedEntityName:(id)a6 userPhrasedVersion:(id)a7 suggestedAdamId:(id)a8 error:(id *)a9;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCSiriLearnedMediaContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCSiriLearnedMediaContent)initWithUserPhrasedSongName:(id)name userPhrasedArtistName:(id)artistName userPhrasedAlbumName:(id)albumName userPhrasedEntityName:(id)entityName userPhrasedVersion:(id)version suggestedAdamId:(id)id error:(id *)error;
 - (NSString)suggestedAdamId;
 - (NSString)userPhrasedAlbumName;
 - (NSString)userPhrasedArtistName;
@@ -10,26 +10,26 @@
 - (NSString)userPhrasedSongName;
 - (NSString)userPhrasedVersion;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCSiriLearnedMediaContent
 
-- (CCSiriLearnedMediaContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCSiriLearnedMediaContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"userPhrasedSongName"];
-    v10 = [v6 objectForKeyedSubscript:@"userPhrasedArtistName"];
-    v11 = [v6 objectForKeyedSubscript:@"userPhrasedAlbumName"];
-    v12 = [v6 objectForKeyedSubscript:@"userPhrasedEntityName"];
-    v13 = [v6 objectForKeyedSubscript:@"userPhrasedVersion"];
-    v14 = [v6 objectForKeyedSubscript:@"suggestedAdamId"];
-    v15 = [[CCSiriLearnedMediaContent alloc] initWithUserPhrasedSongName:v9 userPhrasedArtistName:v10 userPhrasedAlbumName:v11 userPhrasedEntityName:v12 userPhrasedVersion:v13 suggestedAdamId:v14 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"userPhrasedSongName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"userPhrasedArtistName"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"userPhrasedAlbumName"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"userPhrasedEntityName"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"userPhrasedVersion"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"suggestedAdamId"];
+    v15 = [[CCSiriLearnedMediaContent alloc] initWithUserPhrasedSongName:v9 userPhrasedArtistName:v10 userPhrasedAlbumName:v11 userPhrasedEntityName:v12 userPhrasedVersion:v13 suggestedAdamId:v14 error:error];
   }
 
   else
@@ -46,38 +46,38 @@
   v3 = objc_opt_new();
   if (self->_userPhrasedSongName)
   {
-    v4 = [(CCSiriLearnedMediaContent *)self userPhrasedSongName];
-    [v3 setObject:v4 forKeyedSubscript:@"userPhrasedSongName"];
+    userPhrasedSongName = [(CCSiriLearnedMediaContent *)self userPhrasedSongName];
+    [v3 setObject:userPhrasedSongName forKeyedSubscript:@"userPhrasedSongName"];
   }
 
   if (self->_userPhrasedArtistName)
   {
-    v5 = [(CCSiriLearnedMediaContent *)self userPhrasedArtistName];
-    [v3 setObject:v5 forKeyedSubscript:@"userPhrasedArtistName"];
+    userPhrasedArtistName = [(CCSiriLearnedMediaContent *)self userPhrasedArtistName];
+    [v3 setObject:userPhrasedArtistName forKeyedSubscript:@"userPhrasedArtistName"];
   }
 
   if (self->_userPhrasedAlbumName)
   {
-    v6 = [(CCSiriLearnedMediaContent *)self userPhrasedAlbumName];
-    [v3 setObject:v6 forKeyedSubscript:@"userPhrasedAlbumName"];
+    userPhrasedAlbumName = [(CCSiriLearnedMediaContent *)self userPhrasedAlbumName];
+    [v3 setObject:userPhrasedAlbumName forKeyedSubscript:@"userPhrasedAlbumName"];
   }
 
   if (self->_userPhrasedEntityName)
   {
-    v7 = [(CCSiriLearnedMediaContent *)self userPhrasedEntityName];
-    [v3 setObject:v7 forKeyedSubscript:@"userPhrasedEntityName"];
+    userPhrasedEntityName = [(CCSiriLearnedMediaContent *)self userPhrasedEntityName];
+    [v3 setObject:userPhrasedEntityName forKeyedSubscript:@"userPhrasedEntityName"];
   }
 
   if (self->_userPhrasedVersion)
   {
-    v8 = [(CCSiriLearnedMediaContent *)self userPhrasedVersion];
-    [v3 setObject:v8 forKeyedSubscript:@"userPhrasedVersion"];
+    userPhrasedVersion = [(CCSiriLearnedMediaContent *)self userPhrasedVersion];
+    [v3 setObject:userPhrasedVersion forKeyedSubscript:@"userPhrasedVersion"];
   }
 
   if (self->_suggestedAdamId)
   {
-    v9 = [(CCSiriLearnedMediaContent *)self suggestedAdamId];
-    [v3 setObject:v9 forKeyedSubscript:@"suggestedAdamId"];
+    suggestedAdamId = [(CCSiriLearnedMediaContent *)self suggestedAdamId];
+    [v3 setObject:suggestedAdamId forKeyedSubscript:@"suggestedAdamId"];
   }
 
   v10 = [v3 copy];
@@ -85,46 +85,46 @@
   return v10;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v12 = a3;
+  blockCopy = block;
   if (self->_userPhrasedSongName)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:62159 stringValue:self->_userPhrasedSongName];
-    v12[2](v12, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_userPhrasedArtistName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:62160 stringValue:self->_userPhrasedArtistName];
-    v12[2](v12, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_userPhrasedAlbumName)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:62161 stringValue:self->_userPhrasedAlbumName];
-    v12[2](v12, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_userPhrasedEntityName)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:62162 stringValue:self->_userPhrasedEntityName];
-    v12[2](v12, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_userPhrasedVersion)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:62163 stringValue:self->_userPhrasedVersion];
-    v12[2](v12, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
-  v10 = v12;
+  v10 = blockCopy;
   if (self->_suggestedAdamId)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:62164 stringValue:self->_suggestedAdamId];
-    v12[2](v12, v11);
+    blockCopy[2](blockCopy, v11);
 
-    v10 = v12;
+    v10 = blockCopy;
   }
 }
 
@@ -170,10 +170,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -347,22 +347,22 @@ LABEL_47:
   return v31;
 }
 
-- (CCSiriLearnedMediaContent)initWithUserPhrasedSongName:(id)a3 userPhrasedArtistName:(id)a4 userPhrasedAlbumName:(id)a5 userPhrasedEntityName:(id)a6 userPhrasedVersion:(id)a7 suggestedAdamId:(id)a8 error:(id *)a9
+- (CCSiriLearnedMediaContent)initWithUserPhrasedSongName:(id)name userPhrasedArtistName:(id)artistName userPhrasedAlbumName:(id)albumName userPhrasedEntityName:(id)entityName userPhrasedVersion:(id)version suggestedAdamId:(id)id error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v40 = a8;
+  nameCopy = name;
+  artistNameCopy = artistName;
+  albumNameCopy = albumName;
+  entityNameCopy = entityName;
+  versionCopy = version;
+  idCopy = id;
   v20 = objc_opt_new();
   v21 = 0x1E696A000uLL;
-  if (!v15)
+  if (!nameCopy)
   {
     v23 = 0;
 LABEL_5:
-    v38 = self;
-    if (v16)
+    selfCopy = self;
+    if (artistNameCopy)
     {
       v24 = *(v21 + 3776);
       objc_opt_class();
@@ -376,11 +376,11 @@ LABEL_5:
 
       CCPBDataWriterWriteStringField();
       v21 = 0x1E696A000uLL;
-      if (!v17)
+      if (!albumNameCopy)
       {
 LABEL_8:
         v23 = v26;
-        if (v18)
+        if (entityNameCopy)
         {
           goto LABEL_9;
         }
@@ -392,7 +392,7 @@ LABEL_8:
     else
     {
       v26 = v23;
-      if (!v17)
+      if (!albumNameCopy)
       {
         goto LABEL_8;
       }
@@ -410,7 +410,7 @@ LABEL_8:
 
     CCPBDataWriterWriteStringField();
     v21 = 0x1E696A000uLL;
-    if (v18)
+    if (entityNameCopy)
     {
 LABEL_9:
       v27 = *(v21 + 3776);
@@ -422,16 +422,16 @@ LABEL_9:
       {
         CCPBDataWriterWriteStringField();
         v21 = 0x1E696A000;
-        if (!v19)
+        if (!versionCopy)
         {
 LABEL_11:
           v23 = v26;
 LABEL_19:
-          if (!v40)
+          if (!idCopy)
           {
 LABEL_22:
-            v36 = [v20 immutableData];
-            v29 = [v39 initWithData:v36 error:a9];
+            immutableData = [v20 immutableData];
+            v29 = [v39 initWithData:immutableData error:error];
 
             self = v29;
             goto LABEL_26;
@@ -460,13 +460,13 @@ LABEL_23:
       v29 = 0;
       v23 = v26;
 LABEL_25:
-      self = v38;
+      self = selfCopy;
       goto LABEL_26;
     }
 
 LABEL_16:
     v26 = v23;
-    if (!v19)
+    if (!versionCopy)
     {
       goto LABEL_11;
     }
@@ -507,16 +507,16 @@ LABEL_26:
   return v29;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 + 3378) > 6u)
+  if ((identifier + 3378) > 6u)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E7B10[(a3 + 3378)];
+    return off_1E73E7B10[(identifier + 3378)];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface DKScreenTimePasscodeViewController
-- (BOOL)passcodeViewController:(id)a3 shouldEnableCompletionButtonForPasscode:(id)a4;
-- (DKScreenTimePasscodeViewController)initWithDeviceName:(id)a3;
-- (void)passcodeViewController:(id)a3 didEnterPasscode:(id)a4;
+- (BOOL)passcodeViewController:(id)controller shouldEnableCompletionButtonForPasscode:(id)passcode;
+- (DKScreenTimePasscodeViewController)initWithDeviceName:(id)name;
+- (void)passcodeViewController:(id)controller didEnterPasscode:(id)passcode;
 @end
 
 @implementation DKScreenTimePasscodeViewController
 
-- (DKScreenTimePasscodeViewController)initWithDeviceName:(id)a3
+- (DKScreenTimePasscodeViewController)initWithDeviceName:(id)name
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SCREEN_TIME_PASSCODE_TITLE" value:&stru_285BC2A70 table:@"Localizable"];
 
   v8 = MEMORY[0x277CCACA8];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"SCREEN_TIME_PASSCODE_DETAIL" value:&stru_285BC2A70 table:@"Localizable"];
-  v11 = [v8 stringWithFormat:v10, v5];
+  nameCopy = [v8 stringWithFormat:v10, nameCopy];
 
   v15.receiver = self;
   v15.super_class = DKScreenTimePasscodeViewController;
-  v12 = [(DKScreenTimePasscodeViewController *)&v15 initWithTitle:v7 detailText:v11 icon:0 contentLayout:2];
+  v12 = [(DKScreenTimePasscodeViewController *)&v15 initWithTitle:v7 detailText:nameCopy icon:0 contentLayout:2];
   v13 = v12;
   if (v12)
   {
@@ -31,16 +31,16 @@
   return v13;
 }
 
-- (void)passcodeViewController:(id)a3 didEnterPasscode:(id)a4
+- (void)passcodeViewController:(id)controller didEnterPasscode:(id)passcode
 {
-  v5 = a4;
-  v6 = [(DKScreenTimePasscodeViewController *)self verifyPasscode];
-  v7 = (v6)[2](v6, v5);
+  passcodeCopy = passcode;
+  verifyPasscode = [(DKScreenTimePasscodeViewController *)self verifyPasscode];
+  v7 = (verifyPasscode)[2](verifyPasscode, passcodeCopy);
 
   if (v7)
   {
-    v8 = [(DKScreenTimePasscodeViewController *)self passcodeVerified];
-    v8[2]();
+    passcodeVerified = [(DKScreenTimePasscodeViewController *)self passcodeVerified];
+    passcodeVerified[2]();
   }
 
   else
@@ -51,10 +51,10 @@
   }
 }
 
-- (BOOL)passcodeViewController:(id)a3 shouldEnableCompletionButtonForPasscode:(id)a4
+- (BOOL)passcodeViewController:(id)controller shouldEnableCompletionButtonForPasscode:(id)passcode
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  passcodeCopy = passcode;
   __assert_rtn("[DKScreenTimePasscodeViewController passcodeViewController:shouldEnableCompletionButtonForPasscode:]", "DKScreenTimePasscodeViewController.m", 53, "0");
 }
 

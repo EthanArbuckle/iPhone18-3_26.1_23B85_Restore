@@ -1,6 +1,6 @@
 @interface FIMoveOperation
-- (FIMoveOperation)initWithSourceItems:(id)a3 destinationItem:(id)a4;
-- (FIMoveOperation)initWithSourceNodes:(id)a3 destinationFolder:(id)a4;
+- (FIMoveOperation)initWithSourceItems:(id)items destinationItem:(id)item;
+- (FIMoveOperation)initWithSourceNodes:(id)nodes destinationFolder:(id)folder;
 - (id)createFPOperation;
 - (id)initWithSourceItems:destinationItem:;
 - (id)makeProgress;
@@ -10,35 +10,35 @@
 
 @implementation FIMoveOperation
 
-- (FIMoveOperation)initWithSourceNodes:(id)a3 destinationFolder:(id)a4
+- (FIMoveOperation)initWithSourceNodes:(id)nodes destinationFolder:(id)folder
 {
-  v6 = a3;
-  v7 = a4;
+  nodesCopy = nodes;
+  folderCopy = folder;
   v11.receiver = self;
   v11.super_class = FIMoveOperation;
   v8 = [(FIOperation *)&v11 init];
   [(FIOperation *)v8 setOperationType:1];
-  [(FIOperation *)v8 setSourceNodes:v6];
-  v9 = [v7 fileOpNode];
-  [(FIOperation *)v8 setDestinationNode:v9];
+  [(FIOperation *)v8 setSourceNodes:nodesCopy];
+  fileOpNode = [folderCopy fileOpNode];
+  [(FIOperation *)v8 setDestinationNode:fileOpNode];
 
   return v8;
 }
 
-- (FIMoveOperation)initWithSourceItems:(id)a3 destinationItem:(id)a4
+- (FIMoveOperation)initWithSourceItems:(id)items destinationItem:(id)item
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = FIMoveOperation;
   v8 = [(FIOperation *)&v11 init];
-  MutableCopy<NSDictionary<NSString *,objc_object *>>(v6);
-  [objc_claimAutoreleasedReturnValue() addObject:v7];
+  MutableCopy<NSDictionary<NSString *,objc_object *>>(itemsCopy);
+  [objc_claimAutoreleasedReturnValue() addObject:itemCopy];
   [(FIOperation *)v8 setOperationType:1];
   make_nsweak<FIRenameOperation>(v8, v10);
-  v10[1] = v6;
-  v10[2] = v7;
+  v10[1] = itemsCopy;
+  v10[2] = itemCopy;
   v12 = 0;
   operator new();
 }
@@ -47,9 +47,9 @@
 {
   [(FIOperation *)self setExecutedAsFPAction:1];
   v3 = objc_alloc(MEMORY[0x1E69673C0]);
-  v4 = [(FIOperation *)self sourceFPItems];
-  v5 = [(FIOperation *)self destinationFPItem];
-  v6 = [v3 initWithItems:v4 destinationFolder:v5];
+  sourceFPItems = [(FIOperation *)self sourceFPItems];
+  destinationFPItem = [(FIOperation *)self destinationFPItem];
+  v6 = [v3 initWithItems:sourceFPItems destinationFolder:destinationFPItem];
 
   return v6;
 }
@@ -58,19 +58,19 @@
 {
   v7.receiver = self;
   v7.super_class = FIMoveOperation;
-  v3 = [(FIOperation *)&v7 makeProgress];
-  [v3 setKind:*MEMORY[0x1E696A888]];
-  [v3 setFileOperationKind:*MEMORY[0x1E696A840]];
-  v4 = [(FIOperation *)self destinationNode];
-  v5 = [v4 fileURL];
-  [v3 setFileURL:v5];
+  makeProgress = [(FIOperation *)&v7 makeProgress];
+  [makeProgress setKind:*MEMORY[0x1E696A888]];
+  [makeProgress setFileOperationKind:*MEMORY[0x1E696A840]];
+  destinationNode = [(FIOperation *)self destinationNode];
+  fileURL = [destinationNode fileURL];
+  [makeProgress setFileURL:fileURL];
 
-  return v3;
+  return makeProgress;
 }
 
 - (void)initWithSourceItems:destinationItem:
 {
-  v4 = TNSWeakPtr<FIMoveOperation>::Lock((a1 + 8));
+  v4 = TNSWeakPtr<FIMoveOperation>::Lock((self + 8));
   if (v4)
   {
     v5 = a2[1];
@@ -85,10 +85,10 @@
     }
 
     v7 = v6;
-    v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(a1 + 16), "count")}];
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(a1 + 16), "count")}];
+    v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(self + 16), "count")}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(self + 16), "count")}];
     v27[0] = a2;
-    v27[1] = (a1 + 16);
+    v27[1] = (self + 16);
     iterator_extras::make_zip_iter_details::ZippedRange<std::tuple<std::vector<std::optional<FINode * {__strong}>> const&,NSArray<FPItem *> * const {__strong}&>,0ul,1ul>::begin(v27, &v20);
     iterator_extras::make_zip_iter_details::ZippedRange<std::tuple<std::vector<std::optional<FINode * {__strong}>> const&,NSArray<FPItem *> * const {__strong}&>,0ul,1ul>::end(v27, &v17);
     for (i = v20; v20 != v17; ++v26)
@@ -134,14 +134,14 @@
     if ([v8 count])
     {
       [v4 setSourceNodes:v8];
-      v16 = [v7 fileOpNode];
-      [v4 setDestinationNode:v16];
+      fileOpNode = [v7 fileOpNode];
+      [v4 setDestinationNode:fileOpNode];
     }
 
     if ([v9 count])
     {
       [v4 setSourceFPItems:v9];
-      [v4 setDestinationFPItem:*(a1 + 24)];
+      [v4 setDestinationFPItem:*(self + 24)];
     }
   }
 }
@@ -149,9 +149,9 @@
 - (id)initWithSourceItems:destinationItem:
 {
   *a2 = &unk_1F5F41EC0;
-  objc_copyWeak((a2 + 8), a1 + 1);
-  *(a2 + 16) = a1[2];
-  result = a1[3];
+  objc_copyWeak((a2 + 8), self + 1);
+  *(a2 + 16) = self[2];
+  result = self[3];
   *(a2 + 24) = result;
   return result;
 }
@@ -159,7 +159,7 @@
 - (uint64_t)initWithSourceItems:destinationItem:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

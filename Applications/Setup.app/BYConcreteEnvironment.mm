@@ -44,7 +44,7 @@
 - (id)showModalWiFiSettingsBlock;
 - (id)startDeviceMigrationBlock;
 - (id)writeGreenInformedDefaultPlistIfNecessaryBlock;
-- (void)_faultForNilPropertyWithDescription:(char *)a3;
+- (void)_faultForNilPropertyWithDescription:(char *)description;
 @end
 
 @implementation BYConcreteEnvironment
@@ -577,15 +577,15 @@
   return safetySettingsUIProvider;
 }
 
-- (void)_faultForNilPropertyWithDescription:(char *)a3
+- (void)_faultForNilPropertyWithDescription:(char *)description
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  descriptionCopy = description;
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
   {
-    sub_10018AC1C(buf, v4);
+    sub_10018AC1C(buf, descriptionCopy);
     _os_log_fault_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_FAULT, "Environment has nil %{public}s", buf, 0xCu);
   }
 

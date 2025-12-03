@@ -1,6 +1,6 @@
 @interface FCKeyValueStoreWriter
-- (BOOL)_moveTempFileToPath:(id)a3;
-- (BOOL)writeKVS:(id)a3 codables:(id)a4 toFile:(id)a5 size:(unint64_t *)a6;
+- (BOOL)_moveTempFileToPath:(id)path;
+- (BOOL)writeKVS:(id)s codables:(id)codables toFile:(id)file size:(unint64_t *)size;
 - (FCKeyValueStoreWriter)init;
 - (unint64_t)_flushToDisk;
 - (unint64_t)_flushToDiskIfNeeded;
@@ -48,25 +48,25 @@ void __29__FCKeyValueStoreWriter_init__block_invoke()
 
 - (unint64_t)_flushToDisk
 {
-  v3 = [(FCKeyValueStoreWriter *)self dataWriter];
-  v4 = [v3 data];
+  dataWriter = [(FCKeyValueStoreWriter *)self dataWriter];
+  data = [dataWriter data];
 
-  v5 = [v4 length];
-  v6 = [(FCKeyValueStoreWriter *)self tempFileOutputStream];
-  [v6 write:objc_msgSend(v4 maxLength:{"bytes"), v5}];
+  v5 = [data length];
+  tempFileOutputStream = [(FCKeyValueStoreWriter *)self tempFileOutputStream];
+  [tempFileOutputStream write:objc_msgSend(data maxLength:{"bytes"), v5}];
 
-  v7 = [(FCKeyValueStoreWriter *)self dataWriter];
-  v8 = [v7 data];
-  [v8 setLength:0];
+  dataWriter2 = [(FCKeyValueStoreWriter *)self dataWriter];
+  data2 = [dataWriter2 data];
+  [data2 setLength:0];
 
   return v5;
 }
 
 - (unint64_t)_flushToDiskIfNeeded
 {
-  v3 = [(FCKeyValueStoreWriter *)self dataWriter];
-  v4 = [v3 data];
-  v5 = [v4 length];
+  dataWriter = [(FCKeyValueStoreWriter *)self dataWriter];
+  data = [dataWriter data];
+  v5 = [data length];
   if (qword_1EDB277B0 != -1)
   {
     dispatch_once(&qword_1EDB277B0, &__block_literal_global_38_2);
@@ -82,11 +82,11 @@ void __29__FCKeyValueStoreWriter_init__block_invoke()
   return [(FCKeyValueStoreWriter *)self _flushToDisk];
 }
 
-- (BOOL)writeKVS:(id)a3 codables:(id)a4 toFile:(id)a5 size:(unint64_t *)a6
+- (BOOL)writeKVS:(id)s codables:(id)codables toFile:(id)file size:(unint64_t *)size
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  sCopy = s;
+  codablesCopy = codables;
+  fileCopy = file;
   v13 = FCPersistenceQueue();
   dispatch_assert_queue_V2(v13);
 
@@ -94,15 +94,15 @@ void __29__FCKeyValueStoreWriter_init__block_invoke()
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v14 = [(FCKeyValueStoreWriter *)self tempFileOutputStream];
-  [v14 open];
+  tempFileOutputStream = [(FCKeyValueStoreWriter *)self tempFileOutputStream];
+  [tempFileOutputStream open];
 
-  v15 = [(FCKeyValueStoreWriter *)self dataWriter];
-  [v10 version];
+  dataWriter = [(FCKeyValueStoreWriter *)self dataWriter];
+  [sCopy version];
   PBDataWriterWriteInt64Field();
 
-  v16 = [(FCKeyValueStoreWriter *)self dataWriter];
-  [v10 clientVersion];
+  dataWriter2 = [(FCKeyValueStoreWriter *)self dataWriter];
+  [sCopy clientVersion];
   PBDataWriterWriteInt64Field();
 
   v25[0] = MEMORY[0x1E69E9820];
@@ -111,31 +111,31 @@ void __29__FCKeyValueStoreWriter_init__block_invoke()
   v25[3] = &unk_1E7C44AB0;
   v25[4] = self;
   v25[5] = &v26;
-  [v11 enumerateKeysAndObjectsUsingBlock:v25];
-  v17 = [v10 plistSidecar];
+  [codablesCopy enumerateKeysAndObjectsUsingBlock:v25];
+  plistSidecar = [sCopy plistSidecar];
 
-  if (v17)
+  if (plistSidecar)
   {
-    v18 = [(FCKeyValueStoreWriter *)self dataWriter];
-    v19 = [v10 plistSidecar];
+    dataWriter3 = [(FCKeyValueStoreWriter *)self dataWriter];
+    plistSidecar2 = [sCopy plistSidecar];
     PBDataWriterWriteDataField();
   }
 
-  v20 = [(FCKeyValueStoreWriter *)self _flushToDisk];
-  v27[3] += v20;
-  v21 = [(FCKeyValueStoreWriter *)self tempFileOutputStream];
-  [v21 close];
+  _flushToDisk = [(FCKeyValueStoreWriter *)self _flushToDisk];
+  v27[3] += _flushToDisk;
+  tempFileOutputStream2 = [(FCKeyValueStoreWriter *)self tempFileOutputStream];
+  [tempFileOutputStream2 close];
 
-  v22 = [(FCKeyValueStoreWriter *)self _moveTempFileToPath:v12];
+  v22 = [(FCKeyValueStoreWriter *)self _moveTempFileToPath:fileCopy];
   v23 = !v22;
-  if (!a6)
+  if (!size)
   {
     v23 = 1;
   }
 
   if ((v23 & 1) == 0)
   {
-    *a6 = v27[3];
+    *size = v27[3];
   }
 
   _Block_object_dispose(&v26, 8);
@@ -181,17 +181,17 @@ void __55__FCKeyValueStoreWriter_writeKVS_codables_toFile_size___block_invoke(ui
   *(*(*(a1 + 40) + 8) + 24) += [*(a1 + 32) _flushToDiskIfNeeded];
 }
 
-- (BOOL)_moveTempFileToPath:(id)a3
+- (BOOL)_moveTempFileToPath:(id)path
 {
-  v4 = a3;
-  v5 = [(FCKeyValueStoreWriter *)self tempFilePath];
-  v6 = [v5 fileSystemRepresentation];
-  v7 = [v4 fileSystemRepresentation];
+  pathCopy = path;
+  tempFilePath = [(FCKeyValueStoreWriter *)self tempFilePath];
+  fileSystemRepresentation = [tempFilePath fileSystemRepresentation];
+  fileSystemRepresentation2 = [pathCopy fileSystemRepresentation];
 
-  rename(v6, v7, v8);
-  LODWORD(v4) = v9;
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v8);
+  LODWORD(pathCopy) = v9;
 
-  return v4 == 0;
+  return pathCopy == 0;
 }
 
 @end

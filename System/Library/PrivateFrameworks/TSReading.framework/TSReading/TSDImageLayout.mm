@@ -14,16 +14,16 @@
 - (CGAffineTransform)imageDataToVisualSizeTransform;
 - (CGAffineTransform)layoutToImageTransform;
 - (CGAffineTransform)layoutToMaskTransform;
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3;
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space;
 - (CGPoint)centerForConnecting;
 - (CGPoint)centerForRotation;
 - (CGPoint)centerForRotationInMaskMode;
 - (CGRect)alignmentFrameForProvidingGuidesInRoot;
 - (CGRect)boundsInfluencingExteriorWrap;
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
 - (CGRect)pathBoundsWithoutStroke;
 - (CGSize)sizeOfFrameRectIncludingCoverage;
-- (TSDImageLayout)initWithInfo:(id)a3;
+- (TSDImageLayout)initWithInfo:(id)info;
 - (id)computeLayoutGeometry;
 - (id)currentInfoGeometry;
 - (id)geometryForTransforming;
@@ -46,37 +46,37 @@
 - (void)beginInstantAlphaMode;
 - (void)beginResize;
 - (void)dealloc;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)dynamicImageAdjustmentsChangeDidEnd;
 - (void)endDrag;
 - (void)endDynamicOperation;
 - (void)endMaskEditMode;
 - (void)maskWasApplied;
 - (void)maskWasReset;
-- (void)offsetGeometryBy:(CGPoint)a3;
+- (void)offsetGeometryBy:(CGPoint)by;
 - (void)p_createDynamicCopies;
 - (void)p_destroyDynamicCopies;
-- (void)p_setDynamicInfoGeometry:(id)a3;
-- (void)processChangedProperty:(int)a3;
-- (void)resizeWithTransform:(CGAffineTransform *)a3 asChild:(BOOL)a4;
-- (void)takeRotationFromTracker:(id)a3;
+- (void)p_setDynamicInfoGeometry:(id)geometry;
+- (void)processChangedProperty:(int)property;
+- (void)resizeWithTransform:(CGAffineTransform *)transform asChild:(BOOL)child;
+- (void)takeRotationFromTracker:(id)tracker;
 - (void)updateChildrenFromInfo;
 @end
 
 @implementation TSDImageLayout
 
-- (TSDImageLayout)initWithInfo:(id)a3
+- (TSDImageLayout)initWithInfo:(id)info
 {
   v7.receiver = self;
   v7.super_class = TSDImageLayout;
-  v3 = [(TSDMediaLayout *)&v7 initWithInfo:a3];
+  v3 = [(TSDMediaLayout *)&v7 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
-    v5 = [(TSDImageLayout *)v3 imageInfo];
-    if (v5)
+    imageInfo = [(TSDImageLayout *)v3 imageInfo];
+    if (imageInfo)
     {
-      if ([v5 maskInfo])
+      if ([imageInfo maskInfo])
       {
         v4->mMaskEditMode = 1;
       }
@@ -126,11 +126,11 @@
 - (id)visibleGeometries
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [(TSDImageLayout *)self isInMaskEditMode];
-  v4 = [(TSDAbstractLayout *)self geometry];
-  if (v3)
+  isInMaskEditMode = [(TSDImageLayout *)self isInMaskEditMode];
+  geometry = [(TSDAbstractLayout *)self geometry];
+  if (isInMaskEditMode)
   {
-    v10[0] = v4;
+    v10[0] = geometry;
     v10[1] = [(TSDImageLayout *)self imageGeometry];
     v5 = MEMORY[0x277CBEA60];
     v6 = v10;
@@ -139,7 +139,7 @@
 
   else
   {
-    v9 = v4;
+    v9 = geometry;
     v5 = MEMORY[0x277CBEA60];
     v6 = &v9;
     v7 = 1;
@@ -155,21 +155,21 @@
     return self->mDynamicInfoGeometry;
   }
 
-  v5 = [(TSDLayout *)self info];
+  info = [(TSDLayout *)self info];
 
-  return [(TSDInfo *)v5 geometry];
+  return [(TSDInfo *)info geometry];
 }
 
 - (id)layoutGeometryFromInfo
 {
-  v2 = [(TSDImageLayout *)self currentInfoGeometry];
+  currentInfoGeometry = [(TSDImageLayout *)self currentInfoGeometry];
   v3 = [TSDLayoutGeometry alloc];
-  [v2 size];
+  [currentInfoGeometry size];
   v5 = v4;
   v7 = v6;
-  if (v2)
+  if (currentInfoGeometry)
   {
-    [v2 transform];
+    [currentInfoGeometry transform];
   }
 
   else
@@ -182,20 +182,20 @@
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(TSDImageLayout *)self maskLayout];
-  if (v3)
+  maskLayout = [(TSDImageLayout *)self maskLayout];
+  if (maskLayout)
   {
-    v4 = [(TSDLayout *)self layoutGeometryFromProvider];
+    layoutGeometryFromProvider = [(TSDLayout *)self layoutGeometryFromProvider];
   }
 
   else
   {
     v110.receiver = self;
     v110.super_class = TSDImageLayout;
-    v4 = [(TSDLayout *)&v110 computeLayoutGeometry];
+    layoutGeometryFromProvider = [(TSDLayout *)&v110 computeLayoutGeometry];
   }
 
-  v5 = v4;
+  v5 = layoutGeometryFromProvider;
 
   self->mImageGeometry = v5;
   objc_opt_class();
@@ -204,18 +204,18 @@
   CGPathRelease(self->mPathToStroke);
   self->mPathToStroke = 0;
   [(TSDMediaLayout *)self setShouldRenderFrameStroke:0];
-  v7 = [(TSDImageLayout *)self imageInfo];
-  v8 = v7;
-  if (v3)
+  imageInfo = [(TSDImageLayout *)self imageInfo];
+  v8 = imageInfo;
+  if (maskLayout)
   {
-    v9 = [v3 computeLayoutGeometry];
+    computeLayoutGeometry = [maskLayout computeLayoutGeometry];
     if ([(TSDLayout *)self layoutState]!= 3)
     {
-      [(TSDLayoutGeometry *)v9 size];
+      [(TSDLayoutGeometry *)computeLayoutGeometry size];
       [(TSDLayout *)self scaleForInlineClampingUnrotatedSize:[(TSDAbstractLayout *)self geometry] withGeometry:v10, v11];
       v13 = v12;
       CGAffineTransformMakeScale(&v109, v12, v12);
-      v9 = [(TSDLayoutGeometry *)v9 geometryByTransformingBy:&v109];
+      computeLayoutGeometry = [(TSDLayoutGeometry *)computeLayoutGeometry geometryByTransformingBy:&v109];
       CGAffineTransformMakeScale(&v109, v13, v13);
       v5 = [(TSDLayoutGeometry *)v5 geometryByTransformingBy:&v109];
       [-[TSDImageLayout maskLayout](self "maskLayout")];
@@ -224,8 +224,8 @@
       self->mImageGeometry = v5;
     }
 
-    v14 = +[TSDBezierPath bezierPathWithCGPath:](TSDBezierPath, "bezierPathWithCGPath:", [v3 path]);
-    [v3 pathBounds];
+    v14 = +[TSDBezierPath bezierPathWithCGPath:](TSDBezierPath, "bezierPathWithCGPath:", [maskLayout path]);
+    [maskLayout pathBounds];
     CGAffineTransformMakeTranslation(&v109, -v15, -v16);
     [(TSDBezierPath *)v14 transformUsingAffineTransform:&v109];
 LABEL_10:
@@ -242,10 +242,10 @@ LABEL_10:
       v26 = v25;
       v28 = v27;
       v19 = v20;
-      if (v9)
+      if (computeLayoutGeometry)
       {
 LABEL_12:
-        [(TSDLayoutGeometry *)v9 transform];
+        [(TSDLayoutGeometry *)computeLayoutGeometry transform];
         goto LABEL_15;
       }
     }
@@ -256,7 +256,7 @@ LABEL_12:
       v24 = *(MEMORY[0x277CBF3A0] + 8);
       v26 = *(MEMORY[0x277CBF3A0] + 16);
       v28 = *(MEMORY[0x277CBF3A0] + 24);
-      if (v9)
+      if (computeLayoutGeometry)
       {
         goto LABEL_12;
       }
@@ -273,9 +273,9 @@ LABEL_15:
 
     if (v19)
     {
-      v29 = [(TSDBezierPath *)v19 elementCount];
-      self->mMaskIntersectsImage = v29 > 1;
-      if (v29 > 1)
+      elementCount = [(TSDBezierPath *)v19 elementCount];
+      self->mMaskIntersectsImage = elementCount > 1;
+      if (elementCount > 1)
       {
         goto LABEL_22;
       }
@@ -298,8 +298,8 @@ LABEL_15:
         memset(&v109, 0, sizeof(v109));
       }
 
-      v46 = [(TSDLayoutGeometry *)v9 geometryByTransformingBy:&v109];
-      [(TSDLayoutGeometry *)v9 size];
+      v46 = [(TSDLayoutGeometry *)computeLayoutGeometry geometryByTransformingBy:&v109];
+      [(TSDLayoutGeometry *)computeLayoutGeometry size];
       [(TSDMediaLayout *)self setBoundsForStandardKnobs:TSDRectWithSize()];
       v77 = MEMORY[0x277CBF2C0];
       v78 = *(MEMORY[0x277CBF2C0] + 16);
@@ -307,9 +307,9 @@ LABEL_15:
       *&self->mLayoutToMaskTransform.c = v78;
       *&self->mLayoutToMaskTransform.tx = *(v77 + 32);
 LABEL_48:
-      if (v9)
+      if (computeLayoutGeometry)
       {
-        [(TSDLayoutGeometry *)v9 transform];
+        [(TSDLayoutGeometry *)computeLayoutGeometry transform];
       }
 
       else
@@ -331,10 +331,10 @@ LABEL_48:
     }
 
 LABEL_22:
-    v30 = [v6 isFrame];
+    isFrame = [v6 isFrame];
     v104 = v22;
     v102 = v24;
-    if (v14 && v30)
+    if (v14 && isFrame)
     {
       v31 = v14;
     }
@@ -351,7 +351,7 @@ LABEL_22:
     v36 = v35;
     v38 = v37;
     v40 = v39;
-    [(TSDLayoutGeometry *)v9 size];
+    [(TSDLayoutGeometry *)computeLayoutGeometry size];
     v111.origin.x = TSDRectWithSize();
     width = v111.size.width;
     height = v111.size.height;
@@ -363,9 +363,9 @@ LABEL_22:
     x = v112.origin.x;
     y = v112.origin.y;
     v45 = [(TSDLayoutGeometry *)[TSDMutableLayoutGeometry alloc] initWithFrame:v112.origin.x, v112.origin.y, v112.size.width, v112.size.height];
-    if (v9)
+    if (computeLayoutGeometry)
     {
-      [(TSDLayoutGeometry *)v9 transform];
+      [(TSDLayoutGeometry *)computeLayoutGeometry transform];
     }
 
     else
@@ -388,7 +388,7 @@ LABEL_22:
     v46 = v45;
     v47 = -x;
     v48 = -y;
-    if (v3)
+    if (maskLayout)
     {
       v49 = v47;
       v50 = v48;
@@ -428,7 +428,7 @@ LABEL_22:
     goto LABEL_48;
   }
 
-  if ([v7 instantAlphaPath])
+  if ([imageInfo instantAlphaPath])
   {
     v17 = [TSDLayoutGeometry alloc];
     [(TSDLayoutGeometry *)self->mImageGeometry size];
@@ -436,7 +436,7 @@ LABEL_22:
     *&v109.a = *MEMORY[0x277CBF2C0];
     *&v109.c = v18;
     *&v109.tx = *(MEMORY[0x277CBF2C0] + 32);
-    v9 = [(TSDLayoutGeometry *)v17 initWithSize:&v109 transform:?];
+    computeLayoutGeometry = [(TSDLayoutGeometry *)v17 initWithSize:&v109 transform:?];
     v14 = 0;
     goto LABEL_10;
   }
@@ -542,13 +542,13 @@ LABEL_52:
     -[TSDMediaLayout setShouldRenderFrameStroke:](self, "setShouldRenderFrameStroke:", [v6 shouldRenderForSizeIncludingCoverage:{v82, v83}]);
   }
 
-  v84 = [(TSDLayout *)self i_layoutGeometryProvider];
-  if (!v84)
+  i_layoutGeometryProvider = [(TSDLayout *)self i_layoutGeometryProvider];
+  if (!i_layoutGeometryProvider)
   {
     return v46;
   }
 
-  v85 = v84;
+  v85 = i_layoutGeometryProvider;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return v46;
@@ -564,12 +564,12 @@ LABEL_52:
   return v86;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v7.receiver = self;
   v7.super_class = TSDImageLayout;
   [(TSDMediaLayout *)&v7 processChangedProperty:?];
-  if (a3 == 517)
+  if (property == 517)
   {
     [(TSDLayout *)self invalidateFrame];
 LABEL_7:
@@ -578,14 +578,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ((a3 & 0xFFFFFFFE) == 0x200)
+  if ((property & 0xFFFFFFFE) == 0x200)
   {
     goto LABEL_7;
   }
 
-  if ((a3 & 0xFFFFFFFE) != 0x210)
+  if ((property & 0xFFFFFFFE) != 0x210)
   {
-    if (a3 == 521)
+    if (property == 521)
     {
       [(TSDDrawableLayout *)self invalidateExteriorWrap];
 
@@ -599,7 +599,7 @@ LABEL_7:
   [(TSDMediaLayout *)self invalidateAlignmentFrame];
   [(TSDLayout *)self invalidateChildren];
   [(TSDDrawableLayout *)self invalidateExteriorWrap];
-  if (a3 != 529)
+  if (property != 529)
   {
 
     self->mTracedPath = 0;
@@ -610,20 +610,20 @@ LABEL_7:
 LABEL_8:
   if (([(TSDInfo *)[(TSDLayout *)self info] isInlineWithText]& 1) != 0 || [(TSDInfo *)[(TSDLayout *)self info] isAnchoredToText])
   {
-    v5 = [(TSDAbstractLayout *)self parent];
-    if (v5)
+    parent = [(TSDAbstractLayout *)self parent];
+    if (parent)
     {
-      v6 = v5;
+      parent2 = parent;
       while ((objc_opt_respondsToSelector() & 1) == 0)
       {
-        v6 = [(TSDAbstractLayout *)v6 parent];
-        if (!v6)
+        parent2 = [(TSDAbstractLayout *)parent2 parent];
+        if (!parent2)
         {
           return;
         }
       }
 
-      [(TSDAbstractLayout *)v6 wrappableChildInvalidated:self];
+      [(TSDAbstractLayout *)parent2 wrappableChildInvalidated:self];
     }
   }
 }
@@ -660,22 +660,22 @@ LABEL_8:
     [(TSDDrawableLayout *)self invalidate];
   }
 
-  v8 = [(TSDAbstractLayout *)self children];
+  children = [(TSDAbstractLayout *)self children];
 
-  [(NSArray *)v8 makeObjectsPerformSelector:sel_updateChildrenFromInfo];
+  [(NSArray *)children makeObjectsPerformSelector:sel_updateChildrenFromInfo];
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = a3;
+  rootCopy = root;
   if (!self->mMaskLayout && ![-[TSDImageLayout imageInfo](self "imageInfo")] || !self->mPathToStroke)
   {
     memset(&v20, 0, sizeof(v20));
-    v7 = [(TSDAbstractLayout *)self geometry];
-    if (v7)
+    geometry = [(TSDAbstractLayout *)self geometry];
+    if (geometry)
     {
-      [(TSDLayoutGeometry *)v7 fullTransform];
-      if (!v3)
+      [(TSDLayoutGeometry *)geometry fullTransform];
+      if (!rootCopy)
       {
         goto LABEL_23;
       }
@@ -684,7 +684,7 @@ LABEL_8:
     else
     {
       memset(&v20, 0, sizeof(v20));
-      if (!v3)
+      if (!rootCopy)
       {
 LABEL_23:
         t1 = v20;
@@ -698,10 +698,10 @@ LABEL_23:
 
     if ([(TSDAbstractLayout *)self parent])
     {
-      v16 = [(TSDAbstractLayout *)self parent];
-      if (v16)
+      parent = [(TSDAbstractLayout *)self parent];
+      if (parent)
       {
-        [(TSDAbstractLayout *)v16 transformInRoot];
+        [(TSDAbstractLayout *)parent transformInRoot];
       }
 
       else
@@ -723,7 +723,7 @@ LABEL_23:
   v6 = [TSDBezierPath bezierPathWithCGPath:self->mPathToStroke];
   memset(&v20, 0, sizeof(v20));
   [(TSDImageLayout *)self layoutToMaskTransform];
-  if (v3)
+  if (rootCopy)
   {
     [(TSDAbstractLayout *)self transformInRoot];
   }
@@ -837,13 +837,13 @@ LABEL_10:
   return result;
 }
 
-- (void)offsetGeometryBy:(CGPoint)a3
+- (void)offsetGeometryBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v7 = [(TSDLayoutGeometry *)self->mImageGeometry geometryByTranslatingBy:a3.x, a3.y];
+    v7 = [(TSDLayoutGeometry *)self->mImageGeometry geometryByTranslatingBy:by.x, by.y];
 
     self->mImageGeometry = v7;
   }
@@ -875,10 +875,10 @@ LABEL_10:
 
 - (BOOL)isInvisible
 {
-  v3 = [(TSDImageLayout *)self pathToStroke];
-  if (v3)
+  pathToStroke = [(TSDImageLayout *)self pathToStroke];
+  if (pathToStroke)
   {
-    BoundingBox = CGPathGetBoundingBox(v3);
+    BoundingBox = CGPathGetBoundingBox(pathToStroke);
   }
 
   else
@@ -976,11 +976,11 @@ LABEL_10:
   [(TSDLayout *)&v3 beginDrag];
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
     if ([(TSDImageLayout *)self maskEditModeForDragging]== 3)
     {
@@ -1001,9 +1001,9 @@ LABEL_10:
 
     else if ([(TSDImageLayout *)self maskEditModeForDragging]== 2)
     {
-      v10 = [(TSDImageLayout *)self maskLayout];
+      maskLayout = [(TSDImageLayout *)self maskLayout];
 
-      [v10 dragBy:{x, y}];
+      [maskLayout dragBy:{x, y}];
     }
 
     else
@@ -1013,9 +1013,9 @@ LABEL_10:
       [(TSDDrawableLayout *)&v14 dragBy:x, y];
       if (!self->mBaseImageLayoutGeometry)
       {
-        v11 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout dragBy:]"];
-        [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 744, @"invalid nil value for '%s'", "mBaseImageLayoutGeometry"}];
+        [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 744, @"invalid nil value for '%s'", "mBaseImageLayoutGeometry"}];
       }
 
       v13 = [(TSDLayoutGeometry *)self->mImageGeometry geometryByTranslatingBy:x, y];
@@ -1045,7 +1045,7 @@ LABEL_10:
   [(TSDLayout *)&v3 endDrag];
 }
 
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space
 {
   memset(&v14, 0, sizeof(v14));
   mBaseImageLayoutGeometry = self->mBaseImageLayoutGeometry;
@@ -1060,10 +1060,10 @@ LABEL_10:
   }
 
   CGAffineTransformInvert(&t1, &t2);
-  v8 = [(TSDInfo *)[(TSDLayout *)self info] geometry];
-  if (v8)
+  geometry = [(TSDInfo *)[(TSDLayout *)self info] geometry];
+  if (geometry)
   {
-    [v8 fullTransform];
+    [geometry fullTransform];
   }
 
   else
@@ -1083,9 +1083,9 @@ LABEL_10:
   return CGAffineTransformConcat(retstr, &t1, &t2);
 }
 
-- (void)takeRotationFromTracker:(id)a3
+- (void)takeRotationFromTracker:(id)tracker
 {
-  if (!a3)
+  if (!tracker)
   {
     v6 = 0u;
     v7 = 0u;
@@ -1102,7 +1102,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [a3 rotateTransform];
+  [tracker rotateTransform];
   if (!self)
   {
     goto LABEL_5;
@@ -1111,7 +1111,7 @@ LABEL_5:
 LABEL_3:
   [(TSDImageLayout *)self layoutTransformInInfoSpace:&v5];
 LABEL_6:
-  -[TSDImageLayout resizeWithTransform:asChild:](self, "resizeWithTransform:asChild:", &v8, [objc_msgSend(a3 rep] != self);
+  -[TSDImageLayout resizeWithTransform:asChild:](self, "resizeWithTransform:asChild:", &v8, [objc_msgSend(tracker rep] != self);
 }
 
 - (CGPoint)centerForRotation
@@ -1142,9 +1142,9 @@ LABEL_6:
     {
       v24 = *MEMORY[0x277CBF348];
       v25 = *(MEMORY[0x277CBF348] + 8);
-      v33 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout centerForRotationInMaskMode]"];
-      [v33 handleFailureInFunction:v34 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 817, @"asking for mask mode center of rotation when not in mask edit mode"}];
+      [currentHandler handleFailureInFunction:v34 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 817, @"asking for mask mode center of rotation when not in mask edit mode"}];
       goto LABEL_17;
     }
 
@@ -1257,10 +1257,10 @@ LABEL_17:
     v7 = TSDCenterOfRect(v3, v4, v5, v6);
     v15 = v8;
     v16 = v7;
-    v9 = [(TSDAbstractLayout *)self geometry];
-    if (v9)
+    geometry = [(TSDAbstractLayout *)self geometry];
+    if (geometry)
     {
-      [(TSDLayoutGeometry *)v9 transform];
+      [(TSDLayoutGeometry *)geometry transform];
       v10 = v18;
       v11 = v19;
       v12 = v20;
@@ -1370,9 +1370,9 @@ LABEL_8:
   return [(TSDAbstractLayout *)&v4 shouldSnapWhileResizing];
 }
 
-- (void)resizeWithTransform:(CGAffineTransform *)a3 asChild:(BOOL)a4
+- (void)resizeWithTransform:(CGAffineTransform *)transform asChild:(BOOL)child
 {
-  v4 = a4;
+  childCopy = child;
   if ([(TSDImageLayout *)self isInMaskEditMode]&& [(TSDImageLayout *)self maskEditModeForLayoutState]!= 3)
   {
     if ([(TSDImageLayout *)self maskEditModeForLayoutState]!= 2)
@@ -1380,26 +1380,26 @@ LABEL_8:
       return;
     }
 
-    v10 = [(TSDImageLayout *)self maskLayout];
-    v13 = *&a3->c;
-    *&v19.a = *&a3->a;
+    maskLayout = [(TSDImageLayout *)self maskLayout];
+    v13 = *&transform->c;
+    *&v19.a = *&transform->a;
     *&v19.c = v13;
-    *&v19.tx = *&a3->tx;
+    *&v19.tx = *&transform->tx;
     p_t2 = &v19;
     goto LABEL_21;
   }
 
-  if (v4)
+  if (childCopy)
   {
-    a3->tx = 0.0;
-    a3->ty = 0.0;
+    transform->tx = 0.0;
+    transform->ty = 0.0;
   }
 
   memset(&v19, 0, sizeof(v19));
-  v7 = [(TSDInfo *)[(TSDLayout *)self info] geometry];
-  if (v7)
+  geometry = [(TSDInfo *)[(TSDLayout *)self info] geometry];
+  if (geometry)
   {
-    [v7 fullTransform];
+    [geometry fullTransform];
   }
 
   else
@@ -1407,10 +1407,10 @@ LABEL_8:
     memset(&t1, 0, sizeof(t1));
   }
 
-  v8 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v8 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v8;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   CGAffineTransformConcat(&v19, &t1, &t2);
   t1 = v19;
   [(TSDImageLayout *)self p_setDynamicInfoGeometry:[TSDInfoGeometry geometryFromFullTransform:&t1]];
@@ -1441,24 +1441,24 @@ LABEL_8:
     }
 
     CGAffineTransformConcat(&t1, &t2, &v16);
-    v15 = [(TSDImageLayout *)self maskLayout];
+    maskLayout2 = [(TSDImageLayout *)self maskLayout];
     v16 = t1;
     CGAffineTransformInvert(&t2, &v16);
     p_t2 = &t2;
-    v10 = v15;
+    maskLayout = maskLayout2;
     goto LABEL_21;
   }
 
   if (![(TSDImageLayout *)self isInMaskEditMode]&& [(TSDLayout *)self layoutState]== 4)
   {
-    v10 = [(TSDImageLayout *)self maskLayout];
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    maskLayout = [(TSDImageLayout *)self maskLayout];
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     p_t2 = &t1;
 LABEL_21:
-    [v10 resizeWithTransform:p_t2 asChild:0];
+    [maskLayout resizeWithTransform:p_t2 asChild:0];
   }
 }
 
@@ -1485,9 +1485,9 @@ LABEL_21:
 {
   if ([(TSDImageLayout *)self isInMaskEditMode])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout maskWasReset]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 952, @"Mask should never be reset in mask edit mode"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 952, @"Mask should never be reset in mask edit mode"}];
   }
 
   self->mMaskEditMode = 0;
@@ -1497,9 +1497,9 @@ LABEL_21:
 {
   if ([(TSDImageLayout *)self isInMaskEditMode])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout maskWasApplied]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 958, @"maskWasApplied should not be called in mask edit mode"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 958, @"maskWasApplied should not be called in mask edit mode"}];
   }
 
   self->mMaskEditMode = 1;
@@ -1509,85 +1509,85 @@ LABEL_21:
 {
   if ([(TSDImageLayout *)self maskEditMode]== 3)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout beginEditingImageInMaskEditMode]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 964, @"already editing image in mask edit mode"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 964, @"already editing image in mask edit mode"}];
   }
 
   self->mMaskEditMode = 3;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v5 postNotificationName:@"TSDImageLayoutMaskEditModeDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"TSDImageLayoutMaskEditModeDidChangeNotification" object:self];
 }
 
 - (void)beginEditingMaskInMaskEditMode
 {
   if ([(TSDImageLayout *)self maskEditMode]== 2)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout beginEditingMaskInMaskEditMode]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 971, @"already editing mask in mask edit mode"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 971, @"already editing mask in mask edit mode"}];
   }
 
   self->mMaskEditMode = 2;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v5 postNotificationName:@"TSDImageLayoutMaskEditModeDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"TSDImageLayoutMaskEditModeDidChangeNotification" object:self];
 }
 
 - (void)endMaskEditMode
 {
   if ([(TSDImageLayout *)self isInInstantAlphaMode])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout endMaskEditMode]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 978, @"Cannot end mask edit mode while still editing instant alpha"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 978, @"Cannot end mask edit mode while still editing instant alpha"}];
   }
 
   if ([(TSDImageLayout *)self maskEditMode]!= 3 && [(TSDImageLayout *)self maskEditMode]!= 2)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout endMaskEditMode]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 979, @"not in mask edit mode"}];
+    [currentHandler2 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 979, @"not in mask edit mode"}];
   }
 
   self->mMaskEditMode = 1;
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v7 postNotificationName:@"TSDImageLayoutMaskEditModeDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"TSDImageLayoutMaskEditModeDidChangeNotification" object:self];
 }
 
 - (BOOL)isDraggingInMaskEditMode
 {
-  v3 = [(TSDImageLayout *)self isInMaskEditMode];
-  if (v3)
+  isInMaskEditMode = [(TSDImageLayout *)self isInMaskEditMode];
+  if (isInMaskEditMode)
   {
-    LOBYTE(v3) = [(TSDLayout *)self layoutState]== 2;
+    LOBYTE(isInMaskEditMode) = [(TSDLayout *)self layoutState]== 2;
   }
 
-  return v3;
+  return isInMaskEditMode;
 }
 
 - (BOOL)isRotatingInMaskEditMode
 {
-  v3 = [(TSDImageLayout *)self isInMaskEditMode];
-  if (v3)
+  isInMaskEditMode = [(TSDImageLayout *)self isInMaskEditMode];
+  if (isInMaskEditMode)
   {
-    LOBYTE(v3) = [(TSDLayout *)self layoutState]== 3;
+    LOBYTE(isInMaskEditMode) = [(TSDLayout *)self layoutState]== 3;
   }
 
-  return v3;
+  return isInMaskEditMode;
 }
 
 - (BOOL)isResizingInMaskEditMode
 {
-  v3 = [(TSDImageLayout *)self isInMaskEditMode];
-  if (v3)
+  isInMaskEditMode = [(TSDImageLayout *)self isInMaskEditMode];
+  if (isInMaskEditMode)
   {
-    LOBYTE(v3) = [(TSDLayout *)self layoutState]== 4;
+    LOBYTE(isInMaskEditMode) = [(TSDLayout *)self layoutState]== 4;
   }
 
-  return v3;
+  return isInMaskEditMode;
 }
 
 - (int)maskEditModeForDragging
@@ -1625,14 +1625,14 @@ LABEL_21:
 
 - (int)maskEditModeForLayoutState
 {
-  v3 = [(TSDLayout *)self layoutState];
-  if (v3 == 3)
+  layoutState = [(TSDLayout *)self layoutState];
+  if (layoutState == 3)
   {
 
     return [(TSDImageLayout *)self maskEditModeForRotating];
   }
 
-  else if (v3 == 2)
+  else if (layoutState == 2)
   {
 
     return [(TSDImageLayout *)self maskEditModeForDragging];
@@ -1649,9 +1649,9 @@ LABEL_21:
 {
   if (![(TSDImageLayout *)self isInMaskEditMode])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout beginInstantAlphaMode]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 1073, @"must be editing the mask when editing instant alpha"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 1073, @"must be editing the mask when editing instant alpha"}];
   }
 
   self->mInInstantAlphaMode = 1;
@@ -1668,13 +1668,13 @@ LABEL_21:
 - (id)imageGeometryInRoot
 {
   v3 = [(TSDLayoutGeometry *)self->mImageGeometry mutableCopy];
-  v4 = [(TSDAbstractLayout *)self parent];
-  if (v4)
+  parent = [(TSDAbstractLayout *)self parent];
+  if (parent)
   {
-    v5 = v4;
+    parent2 = parent;
     do
     {
-      v6 = [(TSDAbstractLayout *)v5 geometry:v8];
+      v6 = [(TSDAbstractLayout *)parent2 geometry:v8];
       if (v6)
       {
         [(TSDLayoutGeometry *)v6 transform];
@@ -1688,10 +1688,10 @@ LABEL_21:
       }
 
       [v3 transformBy:&v8];
-      v5 = [(TSDAbstractLayout *)v5 parent];
+      parent2 = [(TSDAbstractLayout *)parent2 parent];
     }
 
-    while (v5);
+    while (parent2);
   }
 
   return v3;
@@ -1701,29 +1701,29 @@ LABEL_21:
 {
   if ([(TSDImageLayout *)self maskEditMode]== 3)
   {
-    v3 = [(TSDImageLayout *)self imageGeometry];
+    imageGeometry = [(TSDImageLayout *)self imageGeometry];
     v4 = *(MEMORY[0x277CBF2C0] + 16);
     v14 = *MEMORY[0x277CBF2C0];
     v15 = v4;
     v16 = *(MEMORY[0x277CBF2C0] + 32);
-    v5 = [(TSDAbstractLayout *)self parent];
-    if (v5)
+    parent = [(TSDAbstractLayout *)self parent];
+    if (parent)
     {
-      v6 = v5;
+      parent2 = parent;
       do
       {
-        if ([(TSDAbstractLayout *)v6 isRootLayoutForInspectorGeometry])
+        if ([(TSDAbstractLayout *)parent2 isRootLayoutForInspectorGeometry])
         {
           break;
         }
 
-        v7 = [(TSDAbstractLayout *)v6 geometry];
-        if (v7)
+        geometry = [(TSDAbstractLayout *)parent2 geometry];
+        if (geometry)
         {
           v10[0] = v14;
           v10[1] = v15;
           v10[2] = v16;
-          [(TSDLayoutGeometry *)v7 transformByConcatenatingTransformTo:v10];
+          [(TSDLayoutGeometry *)geometry transformByConcatenatingTransformTo:v10];
         }
 
         else
@@ -1736,16 +1736,16 @@ LABEL_21:
         v14 = v11;
         v15 = v12;
         v16 = v13;
-        v6 = [(TSDAbstractLayout *)v6 parent];
+        parent2 = [(TSDAbstractLayout *)parent2 parent];
       }
 
-      while (v6);
+      while (parent2);
     }
 
     v11 = v14;
     v12 = v15;
     v13 = v16;
-    return [v3 geometryByTransformingBy:&v11];
+    return [imageGeometry geometryByTransformingBy:&v11];
   }
 
   else
@@ -1762,9 +1762,9 @@ LABEL_21:
   {
     if (!self->mPathToStroke)
     {
-      v4 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout hasMaskingPath]"];
-      [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 1135, @"If image has masking path it must specify a path to stroke"}];
+      [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 1135, @"If image has masking path it must specify a path to stroke"}];
     }
 
     LOBYTE(v3) = 1;
@@ -1785,9 +1785,9 @@ LABEL_21:
 
   else
   {
-    v7 = [(TSDAbstractLayout *)self geometry];
+    geometry = [(TSDAbstractLayout *)self geometry];
 
-    [(TSDLayoutGeometry *)v7 size];
+    [(TSDLayoutGeometry *)geometry size];
   }
 
   result.height = v6;
@@ -1849,9 +1849,9 @@ LABEL_21:
     return self->mDynamicImageAdjustments;
   }
 
-  v5 = [(TSDImageLayout *)self imageInfo];
+  imageInfo = [(TSDImageLayout *)self imageInfo];
 
-  return [v5 imageAdjustments];
+  return [imageInfo imageAdjustments];
 }
 
 - (void)dynamicImageAdjustmentsChangeDidEnd
@@ -1877,10 +1877,10 @@ LABEL_21:
     height = v14;
   }
 
-  v15 = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
-  if (v15)
+  exteriorTextWrap = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
+  if (exteriorTextWrap)
   {
-    [v15 margin];
+    [exteriorTextWrap margin];
     if (v16 > 0.0)
     {
       v17 = -v16;
@@ -1909,28 +1909,28 @@ LABEL_21:
 
 - (id)i_computeWrapPath
 {
-  v3 = [(TSDImageLayout *)self imageInfo];
+  imageInfo = [(TSDImageLayout *)self imageInfo];
   objc_opt_class();
   [(TSDMediaLayout *)self stroke];
   v4 = TSUDynamicCast();
   v5 = v4;
   if (v4 && [v4 shouldRender])
   {
-    v6 = [v5 isFrame];
+    isFrame = [v5 isFrame];
     v7 = 1;
   }
 
   else
   {
     v7 = 0;
-    v6 = 0;
+    isFrame = 0;
   }
 
-  v8 = [v3 instantAlphaPath];
-  v9 = [(TSDImageLayout *)self maskLayout];
+  instantAlphaPath = [imageInfo instantAlphaPath];
+  maskLayout = [(TSDImageLayout *)self maskLayout];
   v10 = [-[TSDImageLayout maskLayout](self "maskLayout")];
   memset(&v38, 0, sizeof(v38));
-  if (v9)
+  if (maskLayout)
   {
     if (v10)
     {
@@ -1943,10 +1943,10 @@ LABEL_21:
     }
 
     CGAffineTransformInvert(&v38, &v37);
-    if (v8)
+    if (instantAlphaPath)
     {
 LABEL_22:
-      v12 = [objc_msgSend(v3 "instantAlphaPath")];
+      v12 = [objc_msgSend(imageInfo "instantAlphaPath")];
       if (self)
       {
         [(TSDImageLayout *)self imageDataToVisualSizeTransform];
@@ -1960,7 +1960,7 @@ LABEL_22:
       [v12 transformUsingAffineTransform:&v37];
       v37 = v38;
       [v12 transformUsingAffineTransform:&v37];
-      if (v6)
+      if (isFrame)
       {
         goto LABEL_26;
       }
@@ -1975,19 +1975,19 @@ LABEL_22:
     *&v38.a = *MEMORY[0x277CBF2C0];
     *&v38.c = v11;
     *&v38.tx = *(MEMORY[0x277CBF2C0] + 32);
-    if (v8)
+    if (instantAlphaPath)
     {
       goto LABEL_22;
     }
   }
 
   v12 = 0;
-  if (v6)
+  if (isFrame)
   {
 LABEL_26:
     [(TSDLayoutGeometry *)[(TSDAbstractLayout *)self geometry] size];
     v28 = TSDRectWithSize();
-    if (v8 && !v9)
+    if (instantAlphaPath && !maskLayout)
     {
       [v5 boundsForPath:{v12, v28}];
     }
@@ -1999,7 +1999,7 @@ LABEL_26:
 LABEL_10:
   if (v7 && [(TSDImageLayout *)self hasAlpha])
   {
-    [v3 naturalSize];
+    [imageInfo naturalSize];
     v13 = [TSDBezierPath bezierPathWithRect:TSDRectWithSize()];
   }
 
@@ -2008,7 +2008,7 @@ LABEL_10:
     mTracedPath = self->mTracedPath;
     if (!mTracedPath)
     {
-      mTracedPath = [v3 tracedPath];
+      mTracedPath = [imageInfo tracedPath];
       self->mTracedPath = mTracedPath;
     }
 
@@ -2028,18 +2028,18 @@ LABEL_10:
     [-[TSDImageLayout imageGeometry](self "imageGeometry")];
     v18 = v17;
     v20 = v19;
-    [v3 naturalSize];
+    [imageInfo naturalSize];
     memset(&v37, 0, sizeof(v37));
     CGAffineTransformMakeScale(&v37, v18 / v21, v20 / v22);
     v36 = v37;
     [(TSDBezierPath *)v15 transformUsingAffineTransform:&v36];
-    if (v9)
+    if (maskLayout)
     {
-      v23 = [(TSDImageLayout *)self maskLayout];
+      maskLayout2 = [(TSDImageLayout *)self maskLayout];
       v36 = v38;
       [(TSDBezierPath *)v15 transformUsingAffineTransform:&v36];
-      v24 = +[TSDBezierPath bezierPathWithCGPath:](TSDBezierPath, "bezierPathWithCGPath:", [v23 path]);
-      [v23 pathBounds];
+      v24 = +[TSDBezierPath bezierPathWithCGPath:](TSDBezierPath, "bezierPathWithCGPath:", [maskLayout2 path]);
+      [maskLayout2 pathBounds];
       CGAffineTransformMakeTranslation(&v36, -v25, -v26);
       [(TSDBezierPath *)v24 transformUsingAffineTransform:&v36];
       v27 = [(TSDBezierPath *)v15 intersectBezierPath:v24];
@@ -2051,7 +2051,7 @@ LABEL_10:
     }
 
     v16 = v27;
-    if (v8)
+    if (instantAlphaPath)
     {
       v16 = [(TSDBezierPath *)v27 intersectBezierPath:v12];
     }
@@ -2091,17 +2091,17 @@ LABEL_38:
 {
   if (self->mDynamicInfoGeometry)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout p_createDynamicCopies]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 1356, @"expected nil value for '%s'", "mDynamicInfoGeometry"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 1356, @"expected nil value for '%s'", "mDynamicInfoGeometry"}];
   }
 
   self->mDynamicInfoGeometry = [-[TSDInfo geometry](-[TSDLayout info](self "info")];
 }
 
-- (void)p_setDynamicInfoGeometry:(id)a3
+- (void)p_setDynamicInfoGeometry:(id)geometry
 {
-  self->mDynamicInfoGeometry = [a3 copy];
+  self->mDynamicInfoGeometry = [geometry copy];
   [(TSDLayout *)self invalidateFrame];
 
   [(TSDMediaLayout *)self invalidateAlignmentFrame];
@@ -2112,9 +2112,9 @@ LABEL_38:
   mDynamicInfoGeometry = self->mDynamicInfoGeometry;
   if (!mDynamicInfoGeometry)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageLayout p_destroyDynamicCopies]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 1372, @"invalid nil value for '%s'", "mDynamicInfoGeometry"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageLayout.m"), 1372, @"invalid nil value for '%s'", "mDynamicInfoGeometry"}];
     mDynamicInfoGeometry = self->mDynamicInfoGeometry;
   }
 

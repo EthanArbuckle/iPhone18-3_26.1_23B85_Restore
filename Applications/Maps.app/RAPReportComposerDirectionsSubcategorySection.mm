@@ -1,16 +1,16 @@
 @interface RAPReportComposerDirectionsSubcategorySection
-- (RAPReportComposerDirectionsSubcategorySection)initWithQuestion:(id)a3 selection:(id)a4;
-- (id)cellForRowAtIndex:(int64_t)a3;
+- (RAPReportComposerDirectionsSubcategorySection)initWithQuestion:(id)question selection:(id)selection;
+- (id)cellForRowAtIndex:(int64_t)index;
 - (int64_t)rowsCount;
-- (void)didSelectCellForRowAtIndex:(int64_t)a3 tableIndexPath:(id)a4;
+- (void)didSelectCellForRowAtIndex:(int64_t)index tableIndexPath:(id)path;
 @end
 
 @implementation RAPReportComposerDirectionsSubcategorySection
 
-- (void)didSelectCellForRowAtIndex:(int64_t)a3 tableIndexPath:(id)a4
+- (void)didSelectCellForRowAtIndex:(int64_t)index tableIndexPath:(id)path
 {
-  v6 = [(RAPMenu *)self->_question allMenuItems:a3];
-  v8 = [v6 objectAtIndexedSubscript:a3];
+  v6 = [(RAPMenu *)self->_question allMenuItems:index];
+  v8 = [v6 objectAtIndexedSubscript:index];
 
   [(RAPMenu *)self->_question setSelectedMenuItem:v8];
   selection = self->_selection;
@@ -20,41 +20,41 @@
   }
 }
 
-- (id)cellForRowAtIndex:(int64_t)a3
+- (id)cellForRowAtIndex:(int64_t)index
 {
-  v5 = [(RAPTablePartSection *)self dequeueDefaultSingleLineTableViewCell];
-  v6 = [(RAPMenu *)self->_question allMenuItems];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  dequeueDefaultSingleLineTableViewCell = [(RAPTablePartSection *)self dequeueDefaultSingleLineTableViewCell];
+  allMenuItems = [(RAPMenu *)self->_question allMenuItems];
+  v7 = [allMenuItems objectAtIndexedSubscript:index];
 
-  v8 = [v7 localizedTitle];
-  v9 = [v5 textLabel];
-  [v9 setText:v8];
+  localizedTitle = [v7 localizedTitle];
+  textLabel = [dequeueDefaultSingleLineTableViewCell textLabel];
+  [textLabel setText:localizedTitle];
 
-  [v5 setAccessoryType:1];
+  [dequeueDefaultSingleLineTableViewCell setAccessoryType:1];
 
-  return v5;
+  return dequeueDefaultSingleLineTableViewCell;
 }
 
 - (int64_t)rowsCount
 {
-  v2 = [(RAPMenu *)self->_question allMenuItems];
-  v3 = [v2 count];
+  allMenuItems = [(RAPMenu *)self->_question allMenuItems];
+  v3 = [allMenuItems count];
 
   return v3;
 }
 
-- (RAPReportComposerDirectionsSubcategorySection)initWithQuestion:(id)a3 selection:(id)a4
+- (RAPReportComposerDirectionsSubcategorySection)initWithQuestion:(id)question selection:(id)selection
 {
-  v7 = a3;
-  v8 = a4;
+  questionCopy = question;
+  selectionCopy = selection;
   v14.receiver = self;
   v14.super_class = RAPReportComposerDirectionsSubcategorySection;
   v9 = [(RAPTablePartSection *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_question, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_question, question);
+    v11 = objc_retainBlock(selectionCopy);
     selection = v10->_selection;
     v10->_selection = v11;
 

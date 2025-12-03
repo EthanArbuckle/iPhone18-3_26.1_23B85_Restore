@@ -1,9 +1,9 @@
 @interface CKDZoneGatekeeper
-+ (id)gatekeeperForContainerID:(id)a3 accountID:(id)a4;
++ (id)gatekeeperForContainerID:(id)d accountID:(id)iD;
 - (BOOL)hasStatusToReport;
 - (id)CKStatusReportArray;
 - (id)initInternal;
-- (void)registerWaiter:(id)a3 forZoneIDs:(id)a4 expectDelayBeforeRequestBegins:(BOOL)a5 completionHandler:(id)a6;
+- (void)registerWaiter:(id)waiter forZoneIDs:(id)ds expectDelayBeforeRequestBegins:(BOOL)begins completionHandler:(id)handler;
 @end
 
 @implementation CKDZoneGatekeeper
@@ -27,19 +27,19 @@
   return v2;
 }
 
-+ (id)gatekeeperForContainerID:(id)a3 accountID:(id)a4
++ (id)gatekeeperForContainerID:(id)d accountID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (qword_280D586C0 != -1)
   {
     dispatch_once(&qword_280D586C0, &unk_28385EB20);
   }
 
   v8 = objc_alloc(MEMORY[0x277CBC7A0]);
-  v10 = objc_msgSend_initWithObject1_object2_(v8, v9, v6, v7);
-  v11 = a1;
-  objc_sync_enter(v11);
+  v10 = objc_msgSend_initWithObject1_object2_(v8, v9, dCopy, iDCopy);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   inited = objc_msgSend_objectForKey_(qword_280D586C8, v12, v10);
   if (!inited)
   {
@@ -48,26 +48,26 @@
     objc_msgSend_setObject_forKey_(qword_280D586C8, v17, inited, v10);
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
   return inited;
 }
 
-- (void)registerWaiter:(id)a3 forZoneIDs:(id)a4 expectDelayBeforeRequestBegins:(BOOL)a5 completionHandler:(id)a6
+- (void)registerWaiter:(id)waiter forZoneIDs:(id)ds expectDelayBeforeRequestBegins:(BOOL)begins completionHandler:(id)handler
 {
-  v7 = a5;
-  v18 = a3;
-  v10 = a4;
-  v11 = a6;
+  beginsCopy = begins;
+  waiterCopy = waiter;
+  dsCopy = ds;
+  handlerCopy = handler;
   v16 = objc_msgSend_foreground(self, v12, v13);
-  if (v7)
+  if (beginsCopy)
   {
     v17 = objc_msgSend_background(self, v14, v15);
 
     v16 = v17;
   }
 
-  objc_msgSend_registerWaiter_forZoneIDs_completionHandler_(v16, v14, v18, v10, v11);
+  objc_msgSend_registerWaiter_forZoneIDs_completionHandler_(v16, v14, waiterCopy, dsCopy, handlerCopy);
 }
 
 - (BOOL)hasStatusToReport

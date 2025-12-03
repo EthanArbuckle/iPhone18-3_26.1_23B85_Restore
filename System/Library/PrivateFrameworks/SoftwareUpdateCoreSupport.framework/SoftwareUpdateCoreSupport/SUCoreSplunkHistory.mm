@@ -1,11 +1,11 @@
 @interface SUCoreSplunkHistory
 + (id)sharedHistory;
-+ (void)logEventUUID:(id)a3;
++ (void)logEventUUID:(id)d;
 - (SUCoreSplunkHistory)init;
 - (int)setupLogFile;
 - (void)dealloc;
 - (void)init;
-- (void)safeWriteEventUUID:(id)a3;
+- (void)safeWriteEventUUID:(id)d;
 @end
 
 @implementation SUCoreSplunkHistory
@@ -28,11 +28,11 @@
 
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
   v6 = +[SUCore sharedCore];
-  v7 = [v6 commonDomain];
-  v8 = [v5 initWithFormat:@"%@.%@", v7, @"core.splunk.history"];
-  v9 = [v8 UTF8String];
+  commonDomain = [v6 commonDomain];
+  v8 = [v5 initWithFormat:@"%@.%@", commonDomain, @"core.splunk.history"];
+  uTF8String = [v8 UTF8String];
   v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v11 = dispatch_queue_create(v9, v10);
+  v11 = dispatch_queue_create(uTF8String, v10);
   splunkHistoryQueue = v3->_splunkHistoryQueue;
   v3->_splunkHistoryQueue = v11;
 
@@ -41,8 +41,8 @@
     v20 = +[SUCoreDiag sharedDiag];
     v25 = objc_alloc(MEMORY[0x1E696AEC0]);
     v26 = +[SUCore sharedCore];
-    v27 = [v26 commonDomain];
-    v28 = [v25 initWithFormat:@"unable to create dispatch queue domain(%@.%@)", v27, @"core.splunk.history"];
+    commonDomain2 = [v26 commonDomain];
+    v28 = [v25 initWithFormat:@"unable to create dispatch queue domain(%@.%@)", commonDomain2, @"core.splunk.history"];
     [v20 trackError:@"[SPLUNK_HISTORY] INIT" forReason:v28 withResult:8100 withError:0];
 
 LABEL_22:
@@ -51,21 +51,21 @@ LABEL_22:
   }
 
   v13 = +[SUCoreLog sharedLogger];
-  v14 = [v13 oslog];
+  oslog = [v13 oslog];
 
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v15 = +[SUCore sharedCore];
-    v16 = [v15 commonDomain];
+    commonDomain3 = [v15 commonDomain];
     *buf = 138543618;
-    v45 = v16;
+    v45 = commonDomain3;
     v46 = 2114;
     v47 = @"core.splunk.history";
-    _os_log_impl(&dword_1E0F71000, v14, OS_LOG_TYPE_DEFAULT, "[SPLUNK_HISTORY] DISPATCH | created dispatch queue domain(%{public}@.%{public}@)", buf, 0x16u);
+    _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[SPLUNK_HISTORY] DISPATCH | created dispatch queue domain(%{public}@.%{public}@)", buf, 0x16u);
   }
 
-  v17 = [MEMORY[0x1E696AC08] defaultManager];
-  v18 = [v17 fileExistsAtPath:@"/private/var/MobileSoftwareUpdate/Controller/SplunkHistory/"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v18 = [defaultManager fileExistsAtPath:@"/private/var/MobileSoftwareUpdate/Controller/SplunkHistory/"];
 
   if ((v18 & 1) == 0)
   {
@@ -77,19 +77,19 @@ LABEL_22:
     v42[2] = *MEMORY[0x1E696A3A0];
     v43[2] = *MEMORY[0x1E696A3A8];
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:3];
-    v21 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v40 = 0;
-    [v21 createDirectoryAtPath:@"/private/var/MobileSoftwareUpdate/Controller/SplunkHistory/" withIntermediateDirectories:1 attributes:v20 error:&v40];
-    v22 = v40;
+    [defaultManager2 createDirectoryAtPath:@"/private/var/MobileSoftwareUpdate/Controller/SplunkHistory/" withIntermediateDirectories:1 attributes:v20 error:&v40];
+    oslog3 = v40;
 
-    if (v22)
+    if (oslog3)
     {
       v23 = +[SUCoreLog sharedLogger];
-      v24 = [v23 oslog];
+      oslog2 = [v23 oslog];
 
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
       {
-        [(SUCoreSplunkHistory *)v22 init];
+        [(SUCoreSplunkHistory *)oslog3 init];
       }
 
       goto LABEL_21;
@@ -101,13 +101,13 @@ LABEL_22:
   if (!v29)
   {
     v32 = +[SUCoreLog sharedLogger];
-    v22 = [v32 oslog];
+    oslog3 = [v32 oslog];
 
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v33 = "[SPLUNK_HISTORY] INIT | failed creating file lock";
-      v34 = v22;
+      v34 = oslog3;
       v35 = 2;
 LABEL_20:
       _os_log_impl(&dword_1E0F71000, v34, OS_LOG_TYPE_DEFAULT, v33, buf, v35);
@@ -123,15 +123,15 @@ LABEL_21:
   if (v30 == -1)
   {
     v36 = +[SUCoreLog sharedLogger];
-    v22 = [v36 oslog];
+    oslog3 = [v36 oslog];
 
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
       v37 = *__error();
       *buf = 67109120;
       LODWORD(v45) = v37;
       v33 = "[SPLUNK_HISTORY] INIT | failed opening lock file, errno:%d";
-      v34 = v22;
+      v34 = oslog3;
       v35 = 8;
       goto LABEL_20;
     }
@@ -181,11 +181,11 @@ uint64_t __36__SUCoreSplunkHistory_sharedHistory__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)logEventUUID:(id)a3
++ (void)logEventUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[SUCoreSplunkHistory sharedHistory];
-  [v4 safeWriteEventUUID:v3];
+  [v4 safeWriteEventUUID:dCopy];
 }
 
 - (int)setupLogFile
@@ -196,13 +196,13 @@ uint64_t __36__SUCoreSplunkHistory_sharedHistory__block_invoke()
   if (!v3)
   {
     v10 = +[SUCoreLog sharedLogger];
-    v11 = [v10 oslog];
+    oslog = [v10 oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v12 = "[SPLUNK_HISTORY] SETUP | failed creating file name";
-      v13 = v11;
+      v13 = oslog;
       v14 = 2;
 LABEL_10:
       _os_log_impl(&dword_1E0F71000, v13, OS_LOG_TYPE_DEFAULT, v12, buf, v14);
@@ -220,15 +220,15 @@ LABEL_22:
   if (v5 == -1)
   {
     v15 = +[SUCoreLog sharedLogger];
-    v11 = [v15 oslog];
+    oslog = [v15 oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v16 = *__error();
       *buf = 67109120;
       v36 = v16;
       v12 = "[SPLUNK_HISTORY] SETUP | failed opening log file, errno:%d";
-      v13 = v11;
+      v13 = oslog;
       v14 = 8;
       goto LABEL_10;
     }
@@ -241,14 +241,14 @@ LABEL_22:
   if (fstat(v5, &v34))
   {
     v7 = +[SUCoreLog sharedLogger];
-    v8 = [v7 oslog];
+    oslog2 = [v7 oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       v9 = *__error();
       *buf = 67109120;
       v36 = v9;
-      _os_log_impl(&dword_1E0F71000, v8, OS_LOG_TYPE_DEFAULT, "[SPLUNK_HISTORY] SETUP | failed to get file stats, errno:%d", buf, 8u);
+      _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[SPLUNK_HISTORY] SETUP | failed to get file stats, errno:%d", buf, 8u);
     }
 
     goto LABEL_21;
@@ -256,8 +256,8 @@ LABEL_22:
 
   if (v34.st_size >= 0x40000)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v2, @".1"];
-    v17 = [v8 cStringUsingEncoding:4];
+    oslog2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v2, @".1"];
+    v17 = [oslog2 cStringUsingEncoding:4];
     if (v17)
     {
       v18 = v17;
@@ -274,23 +274,23 @@ LABEL_22:
         }
 
         v31 = +[SUCoreLog sharedLogger];
-        v32 = [v31 oslog];
+        oslog3 = [v31 oslog];
 
-        if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
         {
           v33 = *__error();
           *buf = 67109120;
           v36 = v33;
-          _os_log_impl(&dword_1E0F71000, v32, OS_LOG_TYPE_DEFAULT, "[SPLUNK_HISTORY] SETUP | failed opening new log file, errno:%d", buf, 8u);
+          _os_log_impl(&dword_1E0F71000, oslog3, OS_LOG_TYPE_DEFAULT, "[SPLUNK_HISTORY] SETUP | failed opening new log file, errno:%d", buf, 8u);
         }
 
         goto LABEL_22;
       }
 
       v21 = +[SUCoreLog sharedLogger];
-      v22 = [v21 oslog];
+      oslog4 = [v21 oslog];
 
-      if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_20;
       }
@@ -299,16 +299,16 @@ LABEL_22:
       *buf = 67109120;
       v36 = v23;
       v24 = "[SPLUNK_HISTORY] SETUP | failed moving old file, errno:%d";
-      v25 = v22;
+      v25 = oslog4;
       v26 = 8;
     }
 
     else
     {
       v27 = +[SUCoreLog sharedLogger];
-      v22 = [v27 oslog];
+      oslog4 = [v27 oslog];
 
-      if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_20:
 
@@ -319,7 +319,7 @@ LABEL_21:
 
       *buf = 0;
       v24 = "[SPLUNK_HISTORY] SETUP | failed creating file name";
-      v25 = v22;
+      v25 = oslog4;
       v26 = 2;
     }
 
@@ -333,34 +333,34 @@ LABEL_23:
   return v6;
 }
 
-- (void)safeWriteEventUUID:(id)a3
+- (void)safeWriteEventUUID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v4];
+  dCopy = d;
+  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:dCopy];
   v6 = v5;
-  if (!v4 || !v5)
+  if (!dCopy || !v5)
   {
     v7 = +[SUCoreLog sharedLogger];
-    v8 = [v7 oslog];
+    oslog = [v7 oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
-      _os_log_impl(&dword_1E0F71000, v8, OS_LOG_TYPE_DEFAULT, "[SPLUNK_HISTORY] WRITE | wrong format for event UUID %@", buf, 0xCu);
+      v15 = dCopy;
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[SPLUNK_HISTORY] WRITE | wrong format for event UUID %@", buf, 0xCu);
     }
   }
 
-  v9 = [(SUCoreSplunkHistory *)self splunkHistoryQueue];
+  splunkHistoryQueue = [(SUCoreSplunkHistory *)self splunkHistoryQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __42__SUCoreSplunkHistory_safeWriteEventUUID___block_invoke;
   v12[3] = &unk_1E86FC150;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
-  dispatch_async(v9, v12);
+  v13 = dCopy;
+  v10 = dCopy;
+  dispatch_async(splunkHistoryQueue, v12);
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -457,7 +457,7 @@ LABEL_16:
   v3 = 138412546;
   v4 = @"/private/var/MobileSoftwareUpdate/Controller/SplunkHistory/";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1E0F71000, a2, OS_LOG_TYPE_ERROR, "[SPLUNK_HISTORY] INIT | failed to create history directory at path: %@, error: %@", &v3, 0x16u);
   v2 = *MEMORY[0x1E69E9840];
 }

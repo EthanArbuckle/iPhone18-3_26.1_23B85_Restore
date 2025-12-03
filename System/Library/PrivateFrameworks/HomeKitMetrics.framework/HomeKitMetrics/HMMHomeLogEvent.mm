@@ -1,6 +1,6 @@
 @interface HMMHomeLogEvent
-- (HMMHomeLogEvent)initWithHomeUUID:(id)a3;
-- (HMMHomeLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4;
+- (HMMHomeLogEvent)initWithHomeUUID:(id)d;
+- (HMMHomeLogEvent)initWithStartTime:(double)time homeUUID:(id)d;
 - (NSString)homeUUIDString;
 @end
 
@@ -8,37 +8,37 @@
 
 - (NSString)homeUUIDString
 {
-  v2 = [(HMMHomeLogEvent *)self homeUUID];
-  v3 = [v2 UUIDString];
+  homeUUID = [(HMMHomeLogEvent *)self homeUUID];
+  uUIDString = [homeUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMMHomeLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4
+- (HMMHomeLogEvent)initWithStartTime:(double)time homeUUID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = HMMHomeLogEvent;
-  v8 = [(HMMLogEvent *)&v11 initWithStartTime:a3];
+  v8 = [(HMMLogEvent *)&v11 initWithStartTime:time];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_homeUUID, a4);
+    objc_storeStrong(&v8->_homeUUID, d);
   }
 
   return v9;
 }
 
-- (HMMHomeLogEvent)initWithHomeUUID:(id)a3
+- (HMMHomeLogEvent)initWithHomeUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = HMMHomeLogEvent;
   v6 = [(HMMLogEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_homeUUID, a3);
+    objc_storeStrong(&v6->_homeUUID, d);
   }
 
   return v7;

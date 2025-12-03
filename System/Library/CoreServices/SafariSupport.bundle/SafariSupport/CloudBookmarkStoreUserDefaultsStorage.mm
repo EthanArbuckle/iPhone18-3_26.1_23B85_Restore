@@ -1,23 +1,23 @@
 @interface CloudBookmarkStoreUserDefaultsStorage
-- (CloudBookmarkStoreUserDefaultsStorage)initWithUserDefaults:(id)a3 type:(int64_t)a4;
+- (CloudBookmarkStoreUserDefaultsStorage)initWithUserDefaults:(id)defaults type:(int64_t)type;
 - (NSData)migrationStateEncodedRecordData;
 - (id)migrationStateKey;
-- (void)setMigrationStateEncodedRecordData:(id)a3;
+- (void)setMigrationStateEncodedRecordData:(id)data;
 @end
 
 @implementation CloudBookmarkStoreUserDefaultsStorage
 
-- (CloudBookmarkStoreUserDefaultsStorage)initWithUserDefaults:(id)a3 type:(int64_t)a4
+- (CloudBookmarkStoreUserDefaultsStorage)initWithUserDefaults:(id)defaults type:(int64_t)type
 {
-  v7 = a3;
+  defaultsCopy = defaults;
   v12.receiver = self;
   v12.super_class = CloudBookmarkStoreUserDefaultsStorage;
   v8 = [(CloudBookmarkStoreUserDefaultsStorage *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_defaults, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_defaults, defaults);
+    v9->_type = type;
     v10 = v9;
   }
 
@@ -40,18 +40,18 @@
 - (NSData)migrationStateEncodedRecordData
 {
   defaults = self->_defaults;
-  v3 = [(CloudBookmarkStoreUserDefaultsStorage *)self migrationStateKey];
-  v4 = [(NSUserDefaults *)defaults dataForKey:v3];
+  migrationStateKey = [(CloudBookmarkStoreUserDefaultsStorage *)self migrationStateKey];
+  v4 = [(NSUserDefaults *)defaults dataForKey:migrationStateKey];
 
   return v4;
 }
 
-- (void)setMigrationStateEncodedRecordData:(id)a3
+- (void)setMigrationStateEncodedRecordData:(id)data
 {
   defaults = self->_defaults;
-  v5 = a3;
-  v6 = [(CloudBookmarkStoreUserDefaultsStorage *)self migrationStateKey];
-  [(NSUserDefaults *)defaults setObject:v5 forKey:v6];
+  dataCopy = data;
+  migrationStateKey = [(CloudBookmarkStoreUserDefaultsStorage *)self migrationStateKey];
+  [(NSUserDefaults *)defaults setObject:dataCopy forKey:migrationStateKey];
 }
 
 @end

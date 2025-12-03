@@ -1,142 +1,142 @@
 @interface PFAssetBundle
-+ (BOOL)fileName:(id)a3 matchesRegex:(id)a4;
-+ (BOOL)isValidDCFFileName:(id)a3;
++ (BOOL)fileName:(id)name matchesRegex:(id)regex;
++ (BOOL)isValidDCFFileName:(id)name;
 + (UTType)contentType;
-+ (id)insertAuxiliaryResourceTypeMarker:(id)a3 intoFileName:(id)a4;
++ (id)insertAuxiliaryResourceTypeMarker:(id)marker intoFileName:(id)name;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)livePhotoImageDisplayTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)livePhotoOriginalImageDisplayTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)livePhotoOriginalVideoDuration;
-- (BOOL)_pathExtension:(id)a3 matchesType:(id)a4 error:(id *)a5;
-- (BOOL)_verifyFileSourceExistsAtURL:(id)a3 error:(id *)a4;
-- (BOOL)_writeFileAtURL:(id)a3 toDirectory:(id)a4 withUpdatedFilename:(id)a5 updateManifest:(id)a6 bundlePathKey:(id)a7 verifyUTIType:(__CFString *)a8 error:(id *)a9;
-- (BOOL)_writeFileAtURL:(id)a3 toDirectory:(id)a4 withUpdatedFilename:(id)a5 writtenFileURL:(id *)a6 error:(id *)a7;
-- (BOOL)linkOrCopyURL:(id)a3 toURL:(id)a4 forceCopy:(BOOL)a5 error:(id *)a6;
+- (BOOL)_pathExtension:(id)extension matchesType:(id)type error:(id *)error;
+- (BOOL)_verifyFileSourceExistsAtURL:(id)l error:(id *)error;
+- (BOOL)_writeFileAtURL:(id)l toDirectory:(id)directory withUpdatedFilename:(id)filename updateManifest:(id)manifest bundlePathKey:(id)key verifyUTIType:(__CFString *)type error:(id *)error;
+- (BOOL)_writeFileAtURL:(id)l toDirectory:(id)directory withUpdatedFilename:(id)filename writtenFileURL:(id *)rL error:(id *)error;
+- (BOOL)linkOrCopyURL:(id)l toURL:(id)rL forceCopy:(BOOL)copy error:(id *)error;
 - (BOOL)spatialOvercaptureResourcesPurgeable;
-- (BOOL)writeAllResourceURLsToDirectoryAtURL:(id)a3 updatingManifest:(id)a4 error:(id *)a5;
-- (BOOL)writeToBundleAtURL:(id)a3 error:(id *)a4;
+- (BOOL)writeAllResourceURLsToDirectoryAtURL:(id)l updatingManifest:(id)manifest error:(id *)error;
+- (BOOL)writeToBundleAtURL:(id)l error:(id *)error;
 - (NSSet)keywordTitles;
 - (NSString)livePhotoOriginalPairingIdentifier;
 - (NSString)livePhotoPairingIdentifier;
 - (NSTimeZone)libraryCreationDateTimeZone;
 - (PFAssetBundle)init;
-- (PFAssetBundle)initWithAssetBundleAtURL:(id)a3;
-- (PFAssetBundle)initWithOriginalPhotoURL:(id)a3 alternatePhotoURL:(id)a4 fullSizePhotoURL:(id)a5 adjustmentBaseFullSizePhotoURL:(id)a6 spatialOvercapturePhotoURL:(id)a7 originalPairedVideoURL:(id)a8 fullSizePairedVideoURL:(id)a9 adjustmentBaseFullSizePairedVideoURL:(id)a10 spatialOvercapturePairedVideoURL:(id)a11 fullSizeVideoURL:(id)a12 adjustmentsURL:(id)a13 originalAdjustmentsURL:(id)a14 adjustmentsSecondaryDataURL:(id)a15 mediaSubtypes:(unint64_t)a16 playbackStyle:(int64_t)a17 playbackVariation:(unint64_t)a18 videoComplementVisibilityState:(unsigned __int16)a19;
-- (PFAssetBundle)initWithOriginalVideoURL:(id)a3 fullSizeRenderedVideoURL:(id)a4 adjustmentBaseVideoURL:(id)a5 spatialOvercaptureVideoURL:(id)a6 adjustmentsURL:(id)a7 originalAdjustmentsURL:(id)a8 mediaSubtypes:(unint64_t)a9 playbackStyle:(int64_t)a10 playbackVariation:(unint64_t)a11;
-- (PFAssetBundle)initWithPropertyList:(id)a3;
-- (id)createAssetBundleWritingErrorWithDescription:(id)a3;
+- (PFAssetBundle)initWithAssetBundleAtURL:(id)l;
+- (PFAssetBundle)initWithOriginalPhotoURL:(id)l alternatePhotoURL:(id)rL fullSizePhotoURL:(id)uRL adjustmentBaseFullSizePhotoURL:(id)photoURL spatialOvercapturePhotoURL:(id)overcapturePhotoURL originalPairedVideoURL:(id)videoURL fullSizePairedVideoURL:(id)pairedVideoURL adjustmentBaseFullSizePairedVideoURL:(id)self0 spatialOvercapturePairedVideoURL:(id)self1 fullSizeVideoURL:(id)self2 adjustmentsURL:(id)self3 originalAdjustmentsURL:(id)self4 adjustmentsSecondaryDataURL:(id)self5 mediaSubtypes:(unint64_t)self6 playbackStyle:(int64_t)self7 playbackVariation:(unint64_t)self8 videoComplementVisibilityState:(unsigned __int16)self9;
+- (PFAssetBundle)initWithOriginalVideoURL:(id)l fullSizeRenderedVideoURL:(id)rL adjustmentBaseVideoURL:(id)uRL spatialOvercaptureVideoURL:(id)videoURL adjustmentsURL:(id)adjustmentsURL originalAdjustmentsURL:(id)originalAdjustmentsURL mediaSubtypes:(unint64_t)subtypes playbackStyle:(int64_t)self0 playbackVariation:(unint64_t)self1;
+- (PFAssetBundle)initWithPropertyList:(id)list;
+- (id)createAssetBundleWritingErrorWithDescription:(id)description;
 - (id)dcfCompliantFilenameBaseForWritingResourceFiles;
 - (id)generateCustomFilenamesByPathKey;
 - (id)libraryLocation;
 - (id)urlsByPathKey;
-- (id)writeDowngradedRepresentationToDirectory:(id)a3 error:(id *)a4;
-- (id)writeFolderRepresentationToDirectory:(id)a3 error:(id *)a4;
+- (id)writeDowngradedRepresentationToDirectory:(id)directory error:(id *)error;
+- (id)writeFolderRepresentationToDirectory:(id)directory error:(id *)error;
 - (int64_t)mediaType;
 - (int64_t)playbackStyle;
 - (unint64_t)mediaSubtypes;
 - (unint64_t)playbackVariation;
 - (unsigned)videoComplementVisibilityState;
 - (void)_readLivePhotoVideoMetadataIfNeeded;
-- (void)setAccessibilityDescription:(id)a3;
-- (void)setAssetDescription:(id)a3;
-- (void)setAssetTitle:(id)a3;
-- (void)setKeywordTitles:(id)a3;
-- (void)setLibraryCreationDate:(id)a3 inTimeZone:(id)a4;
-- (void)setLibraryLocation:(id)a3;
-- (void)setLivePhotoOriginalImageDisplayTime:(id *)a3;
-- (void)setLivePhotoOriginalVideoDuration:(id *)a3;
-- (void)setOriginalFilename:(id)a3;
-- (void)setSpatialOvercaptureResourcesPurgeable:(BOOL)a3;
+- (void)setAccessibilityDescription:(id)description;
+- (void)setAssetDescription:(id)description;
+- (void)setAssetTitle:(id)title;
+- (void)setKeywordTitles:(id)titles;
+- (void)setLibraryCreationDate:(id)date inTimeZone:(id)zone;
+- (void)setLibraryLocation:(id)location;
+- (void)setLivePhotoOriginalImageDisplayTime:(id *)time;
+- (void)setLivePhotoOriginalVideoDuration:(id *)duration;
+- (void)setOriginalFilename:(id)filename;
+- (void)setSpatialOvercaptureResourcesPurgeable:(BOOL)purgeable;
 @end
 
 @implementation PFAssetBundle
 
-- (void)setLivePhotoOriginalVideoDuration:(id *)a3
+- (void)setLivePhotoOriginalVideoDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_livePhotoOriginalVideoDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_livePhotoOriginalVideoDuration.epoch = duration->var3;
   *&self->_livePhotoOriginalVideoDuration.value = v3;
 }
 
-- (void)setLivePhotoOriginalImageDisplayTime:(id *)a3
+- (void)setLivePhotoOriginalImageDisplayTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_livePhotoOriginalImageDisplayTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_livePhotoOriginalImageDisplayTime.epoch = time->var3;
   *&self->_livePhotoOriginalImageDisplayTime.value = v3;
 }
 
-- (id)writeFolderRepresentationToDirectory:(id)a3 error:(id *)a4
+- (id)writeFolderRepresentationToDirectory:(id)directory error:(id *)error
 {
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PFAssetBundle *)self photoURL];
-  v8 = v7;
-  v67 = a4;
-  v63 = self;
-  if (v7)
+  directoryCopy = directory;
+  photoURL = [(PFAssetBundle *)self photoURL];
+  v8 = photoURL;
+  errorCopy = error;
+  selfCopy = self;
+  if (photoURL)
   {
-    v9 = v7;
+    videoURL = photoURL;
   }
 
   else
   {
-    v9 = [(PFAssetBundle *)self videoURL];
+    videoURL = [(PFAssetBundle *)self videoURL];
   }
 
-  v10 = v9;
+  v10 = videoURL;
 
   v66 = v10;
-  v65 = [v10 URLByDeletingLastPathComponent];
-  v11 = [v65 URLByDeletingPathExtension];
-  v12 = [v11 lastPathComponent];
+  uRLByDeletingLastPathComponent = [v10 URLByDeletingLastPathComponent];
+  uRLByDeletingPathExtension = [uRLByDeletingLastPathComponent URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-  v68 = v6;
-  v64 = v12;
-  v13 = [v6 URLByAppendingPathComponent:v12];
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
+  v68 = directoryCopy;
+  v64 = lastPathComponent;
+  v13 = [directoryCopy URLByAppendingPathComponent:lastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v15 = v13;
-  v16 = [v15 path];
-  v70 = v14;
-  LODWORD(v14) = [v14 fileExistsAtPath:v16];
+  path = [v15 path];
+  v70 = defaultManager;
+  LODWORD(defaultManager) = [defaultManager fileExistsAtPath:path];
 
   v69 = v15;
-  if (v14)
+  if (defaultManager)
   {
     v17 = v15;
     do
     {
-      v18 = [v17 lastPathComponent];
+      lastPathComponent2 = [v17 lastPathComponent];
       v19 = objc_opt_new();
-      v71 = v18;
-      v20 = [v18 copy];
-      v21 = [v20 pathExtension];
-      if (([v21 isEqualToString:&stru_1F2A8EB68] & 1) == 0)
+      v71 = lastPathComponent2;
+      v20 = [lastPathComponent2 copy];
+      pathExtension = [v20 pathExtension];
+      if (([pathExtension isEqualToString:&stru_1F2A8EB68] & 1) == 0)
       {
         while (1)
         {
-          v22 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v21];
+          v22 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
           if (([v22 isDeclared] & 1) == 0)
           {
             break;
           }
 
-          [v19 addObject:v21];
-          v23 = [v20 stringByDeletingPathExtension];
+          [v19 addObject:pathExtension];
+          stringByDeletingPathExtension = [v20 stringByDeletingPathExtension];
 
-          v21 = [v23 pathExtension];
-          v20 = v23;
-          if ([v21 isEqualToString:&stru_1F2A8EB68])
+          pathExtension = [stringByDeletingPathExtension pathExtension];
+          v20 = stringByDeletingPathExtension;
+          if ([pathExtension isEqualToString:&stru_1F2A8EB68])
           {
             goto LABEL_12;
           }
         }
       }
 
-      v23 = v20;
+      stringByDeletingPathExtension = v20;
 LABEL_12:
 
-      v24 = [v23 mutableCopy];
-      v25 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v26 = [v24 rangeOfCharacterFromSet:v25 options:4];
+      v24 = [stringByDeletingPathExtension mutableCopy];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v26 = [v24 rangeOfCharacterFromSet:whitespaceCharacterSet options:4];
       v28 = v27;
 
       if (v28)
@@ -169,8 +169,8 @@ LABEL_12:
         v77 = 0u;
         v74 = 0u;
         v75 = 0u;
-        v37 = [v19 reverseObjectEnumerator];
-        v38 = [v37 countByEnumeratingWithState:&v74 objects:buf count:16];
+        reverseObjectEnumerator = [v19 reverseObjectEnumerator];
+        v38 = [reverseObjectEnumerator countByEnumeratingWithState:&v74 objects:buf count:16];
         if (v38)
         {
           v39 = v38;
@@ -181,7 +181,7 @@ LABEL_12:
             {
               if (*v75 != v40)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
               v42 = *(*(&v74 + 1) + 8 * i);
@@ -189,18 +189,18 @@ LABEL_12:
               [v24 appendString:v42];
             }
 
-            v39 = [v37 countByEnumeratingWithState:&v74 objects:buf count:16];
+            v39 = [reverseObjectEnumerator countByEnumeratingWithState:&v74 objects:buf count:16];
           }
 
           while (v39);
         }
       }
 
-      v43 = [v17 URLByDeletingLastPathComponent];
-      v15 = [v43 URLByAppendingPathComponent:v24];
+      uRLByDeletingLastPathComponent2 = [v17 URLByDeletingLastPathComponent];
+      v15 = [uRLByDeletingLastPathComponent2 URLByAppendingPathComponent:v24];
 
-      v44 = [v15 path];
-      v45 = [v70 fileExistsAtPath:v44];
+      path2 = [v15 path];
+      v45 = [v70 fileExistsAtPath:path2];
 
       v17 = v15;
     }
@@ -210,29 +210,29 @@ LABEL_12:
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v47 = [v68 path];
-    v48 = [v15 lastPathComponent];
+    path3 = [v68 path];
+    lastPathComponent3 = [v15 lastPathComponent];
     *buf = 138543618;
-    v79 = v47;
+    v79 = path3;
     v80 = 2114;
-    v81 = v48;
+    v81 = lastPathComponent3;
     _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Generating folder representation at: %{public}@ with folder name: %{public}@", buf, 0x16u);
   }
 
-  v49 = [MEMORY[0x1E696AC08] defaultManager];
-  v50 = [v15 path];
-  v51 = [v49 fileExistsAtPath:v50];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  path4 = [v15 path];
+  v51 = [defaultManager2 fileExistsAtPath:path4];
 
   if ((v51 & 1) == 0)
   {
-    v52 = [v15 path];
+    path5 = [v15 path];
     v73 = 0;
-    v53 = [v49 createDirectoryAtPath:v52 withIntermediateDirectories:1 attributes:0 error:&v73];
+    v53 = [defaultManager2 createDirectoryAtPath:path5 withIntermediateDirectories:1 attributes:0 error:&v73];
     v54 = v73;
 
     if (!v53)
     {
-      v58 = v67;
+      v58 = errorCopy;
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
@@ -247,12 +247,12 @@ LABEL_12:
   }
 
   v72 = 0;
-  v55 = [(PFAssetBundle *)v63 writeAllResourceURLsToDirectoryAtURL:v15 updatingManifest:0 error:&v72];
+  v55 = [(PFAssetBundle *)selfCopy writeAllResourceURLsToDirectoryAtURL:v15 updatingManifest:0 error:&v72];
   v54 = v72;
   if (((v51 | v55) & 1) == 0)
   {
-    [v49 removeItemAtURL:v15 error:0];
-    v58 = v67;
+    [defaultManager2 removeItemAtURL:v15 error:0];
+    v58 = errorCopy;
 LABEL_48:
     v56 = v66;
     goto LABEL_50;
@@ -262,8 +262,8 @@ LABEL_48:
   if (v55)
   {
     v57 = 1;
-    v58 = v67;
-    if (!v67)
+    v58 = errorCopy;
+    if (!errorCopy)
     {
       goto LABEL_54;
     }
@@ -274,7 +274,7 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  v58 = v67;
+  v58 = errorCopy;
 LABEL_50:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -307,19 +307,19 @@ LABEL_54:
   return v60;
 }
 
-- (id)writeDowngradedRepresentationToDirectory:(id)a3 error:(id *)a4
+- (id)writeDowngradedRepresentationToDirectory:(id)directory error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [directoryCopy path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v6 path];
+    path2 = [directoryCopy path];
     v50 = 0;
-    v11 = [v7 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v50];
+    v11 = [defaultManager createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v50];
     v12 = v50;
 
     if (!v11)
@@ -327,7 +327,7 @@ LABEL_54:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 138543618;
-        v52 = v6;
+        v52 = directoryCopy;
         v53 = 2114;
         v54 = v12;
         _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Could not create directory at: %{public}@. Error: %{public}@", buf, 0x16u);
@@ -347,19 +347,19 @@ LABEL_54:
         _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Creating downgraded representation from an auto-loop", buf, 2u);
       }
 
-      v13 = [(PFAssetBundle *)self pairedVideoURL];
+      pairedVideoURL = [(PFAssetBundle *)self pairedVideoURL];
       v48 = 0;
       v49 = 0;
-      [(PFAssetBundle *)self _writeFileAtURL:v13 toDirectory:v6 writtenFileURL:&v49 error:&v48];
+      [(PFAssetBundle *)self _writeFileAtURL:pairedVideoURL toDirectory:directoryCopy writtenFileURL:&v49 error:&v48];
       v14 = v49;
       v15 = v48;
     }
 
     else
     {
-      v19 = [(PFAssetBundle *)self mediaSubtypes];
+      mediaSubtypes = [(PFAssetBundle *)self mediaSubtypes];
       v20 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO);
-      if ((v19 & 8) != 0)
+      if ((mediaSubtypes & 8) != 0)
       {
         if (v20)
         {
@@ -367,45 +367,45 @@ LABEL_54:
           _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Creating downgraded representation from a Live Photo", buf, 2u);
         }
 
-        v24 = [(PFAssetBundle *)self fullSizePhotoURL];
-        v25 = v24;
-        if (v24)
+        fullSizePhotoURL = [(PFAssetBundle *)self fullSizePhotoURL];
+        v25 = fullSizePhotoURL;
+        if (fullSizePhotoURL)
         {
-          v26 = v24;
+          photoURL = fullSizePhotoURL;
         }
 
         else
         {
-          v26 = [(PFAssetBundle *)self photoURL];
+          photoURL = [(PFAssetBundle *)self photoURL];
         }
 
-        v13 = v26;
+        pairedVideoURL = photoURL;
 
-        v30 = [(PFAssetBundle *)self fullSizePairedVideoURL];
-        v31 = v30;
-        if (v30)
+        fullSizePairedVideoURL = [(PFAssetBundle *)self fullSizePairedVideoURL];
+        v31 = fullSizePairedVideoURL;
+        if (fullSizePairedVideoURL)
         {
-          v32 = v30;
+          pairedVideoURL2 = fullSizePairedVideoURL;
         }
 
         else
         {
-          v32 = [(PFAssetBundle *)self pairedVideoURL];
+          pairedVideoURL2 = [(PFAssetBundle *)self pairedVideoURL];
         }
 
-        v33 = v32;
+        v33 = pairedVideoURL2;
 
-        v34 = [MEMORY[0x1E696AFB0] UUID];
-        v35 = [v34 UUIDString];
-        v36 = [v35 stringByAppendingPathExtension:@"pvt"];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        v36 = [uUIDString stringByAppendingPathExtension:@"pvt"];
 
         v37 = [PFVideoComplement alloc];
         v42 = v33;
-        v38 = [v33 path];
-        v39 = [v13 path];
-        v40 = [(PFVideoComplement *)v37 initWithPathToVideo:v38 pathToImage:v39];
+        path3 = [v33 path];
+        path4 = [pairedVideoURL path];
+        v40 = [(PFVideoComplement *)v37 initWithPathToVideo:path3 pathToImage:path4];
 
-        v41 = [v6 URLByAppendingPathComponent:v36];
+        v41 = [directoryCopy URLByAppendingPathComponent:v36];
         v47 = 0;
         LODWORD(v33) = [(PFVideoComplement *)v40 writeToBundleAtURL:v41 error:&v47];
         v12 = v47;
@@ -430,23 +430,23 @@ LABEL_31:
         _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Creating downgraded representation from a photo", buf, 2u);
       }
 
-      v21 = [(PFAssetBundle *)self fullSizePhotoURL];
-      v22 = v21;
-      if (v21)
+      fullSizePhotoURL2 = [(PFAssetBundle *)self fullSizePhotoURL];
+      v22 = fullSizePhotoURL2;
+      if (fullSizePhotoURL2)
       {
-        v23 = v21;
+        photoURL2 = fullSizePhotoURL2;
       }
 
       else
       {
-        v23 = [(PFAssetBundle *)self photoURL];
+        photoURL2 = [(PFAssetBundle *)self photoURL];
       }
 
-      v13 = v23;
+      pairedVideoURL = photoURL2;
 
       v45 = 0;
       v46 = 0;
-      [(PFAssetBundle *)self _writeFileAtURL:v13 toDirectory:v6 writtenFileURL:&v46 error:&v45];
+      [(PFAssetBundle *)self _writeFileAtURL:pairedVideoURL toDirectory:directoryCopy writtenFileURL:&v46 error:&v45];
       v14 = v46;
       v15 = v45;
     }
@@ -464,23 +464,23 @@ LABEL_30:
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Creating downgraded representation from a video", buf, 2u);
     }
 
-    v16 = [(PFAssetBundle *)self fullSizeVideoURL];
-    v17 = v16;
-    if (v16)
+    fullSizeVideoURL = [(PFAssetBundle *)self fullSizeVideoURL];
+    v17 = fullSizeVideoURL;
+    if (fullSizeVideoURL)
     {
-      v18 = v16;
+      videoURL = fullSizeVideoURL;
     }
 
     else
     {
-      v18 = [(PFAssetBundle *)self videoURL];
+      videoURL = [(PFAssetBundle *)self videoURL];
     }
 
-    v13 = v18;
+    pairedVideoURL = videoURL;
 
     v43 = 0;
     v44 = 0;
-    [(PFAssetBundle *)self _writeFileAtURL:v13 toDirectory:v6 writtenFileURL:&v44 error:&v43];
+    [(PFAssetBundle *)self _writeFileAtURL:pairedVideoURL toDirectory:directoryCopy writtenFileURL:&v44 error:&v43];
     v14 = v44;
     v15 = v43;
     goto LABEL_30;
@@ -491,7 +491,7 @@ LABEL_32:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v52 = v6;
+    v52 = directoryCopy;
     v53 = 2112;
     v54 = v12;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PFAssetBundle] Could not create downgraded representation in directory: %@. Error: %@.", buf, 0x16u);
@@ -499,10 +499,10 @@ LABEL_32:
 
   v14 = 0;
 LABEL_35:
-  if (a4)
+  if (error)
   {
     v27 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   v28 = v14;
@@ -510,225 +510,225 @@ LABEL_35:
   return v14;
 }
 
-- (PFAssetBundle)initWithOriginalVideoURL:(id)a3 fullSizeRenderedVideoURL:(id)a4 adjustmentBaseVideoURL:(id)a5 spatialOvercaptureVideoURL:(id)a6 adjustmentsURL:(id)a7 originalAdjustmentsURL:(id)a8 mediaSubtypes:(unint64_t)a9 playbackStyle:(int64_t)a10 playbackVariation:(unint64_t)a11
+- (PFAssetBundle)initWithOriginalVideoURL:(id)l fullSizeRenderedVideoURL:(id)rL adjustmentBaseVideoURL:(id)uRL spatialOvercaptureVideoURL:(id)videoURL adjustmentsURL:(id)adjustmentsURL originalAdjustmentsURL:(id)originalAdjustmentsURL mediaSubtypes:(unint64_t)subtypes playbackStyle:(int64_t)self0 playbackVariation:(unint64_t)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = [MEMORY[0x1E695DF90] dictionary];
-  if (v16)
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  videoURLCopy = videoURL;
+  adjustmentsURLCopy = adjustmentsURL;
+  originalAdjustmentsURLCopy = originalAdjustmentsURL;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (lCopy)
   {
-    v23 = [v16 path];
-    [v22 setObject:v23 forKeyedSubscript:@"PFAssetBundlePathVideoKey"];
+    path = [lCopy path];
+    [dictionary setObject:path forKeyedSubscript:@"PFAssetBundlePathVideoKey"];
   }
 
-  if (v17)
+  if (rLCopy)
   {
-    v24 = [v17 path];
-    [v22 setObject:v24 forKeyedSubscript:@"PFAssetBundlePathFullSizeVideoKey"];
+    path2 = [rLCopy path];
+    [dictionary setObject:path2 forKeyedSubscript:@"PFAssetBundlePathFullSizeVideoKey"];
   }
 
-  if (v18)
+  if (uRLCopy)
   {
-    v25 = [v18 path];
-    [v22 setObject:v25 forKeyedSubscript:@"PFAssetBundlePathAdjustmentBaseVideoKey"];
+    path3 = [uRLCopy path];
+    [dictionary setObject:path3 forKeyedSubscript:@"PFAssetBundlePathAdjustmentBaseVideoKey"];
   }
 
-  if (v19)
+  if (videoURLCopy)
   {
-    v26 = [v19 path];
-    [v22 setObject:v26 forKeyedSubscript:@"PFAssetBundlePathSpatialOvercaptureVideoKey"];
+    path4 = [videoURLCopy path];
+    [dictionary setObject:path4 forKeyedSubscript:@"PFAssetBundlePathSpatialOvercaptureVideoKey"];
   }
 
-  if (v20)
+  if (adjustmentsURLCopy)
   {
-    v27 = [v20 path];
-    [v22 setObject:v27 forKeyedSubscript:@"PFAssetBundlePathAdjustmentDataKey"];
+    path5 = [adjustmentsURLCopy path];
+    [dictionary setObject:path5 forKeyedSubscript:@"PFAssetBundlePathAdjustmentDataKey"];
   }
 
-  if (v21)
+  if (originalAdjustmentsURLCopy)
   {
-    v28 = [v21 path];
-    [v22 setObject:v28 forKeyedSubscript:@"PFAssetBundlePathOriginalAdjustmentDataKey"];
+    path6 = [originalAdjustmentsURLCopy path];
+    [dictionary setObject:path6 forKeyedSubscript:@"PFAssetBundlePathOriginalAdjustmentDataKey"];
   }
 
-  v29 = [MEMORY[0x1E695DF90] dictionary];
-  [v29 setObject:@"1" forKeyedSubscript:@"PFAssetBundleMetadataVersionKey"];
-  [v29 setObject:&unk_1F2AAB668 forKeyedSubscript:@"PFAssetBundleMetadataMediaTypeKey"];
-  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a9];
-  [v29 setObject:v30 forKeyedSubscript:@"PFAssetBundleMetadataMediaSubtypesKey"];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary2 setObject:@"1" forKeyedSubscript:@"PFAssetBundleMetadataVersionKey"];
+  [dictionary2 setObject:&unk_1F2AAB668 forKeyedSubscript:@"PFAssetBundleMetadataMediaTypeKey"];
+  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:subtypes];
+  [dictionary2 setObject:v30 forKeyedSubscript:@"PFAssetBundleMetadataMediaSubtypesKey"];
 
-  v31 = [MEMORY[0x1E696AD98] numberWithInteger:a10];
-  [v29 setObject:v31 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackStyleKey"];
+  v31 = [MEMORY[0x1E696AD98] numberWithInteger:style];
+  [dictionary2 setObject:v31 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackStyleKey"];
 
-  v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a11];
-  [v29 setObject:v32 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackVariationKey"];
+  v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:variation];
+  [dictionary2 setObject:v32 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackVariationKey"];
 
-  [v29 setObject:&unk_1F2AAB680 forKeyedSubscript:@"PFAssetBundleMetadataVideoComplementVisibilityStateKey"];
-  [v22 setObject:v29 forKeyedSubscript:@"PFAssetBundlePathMetadataKey"];
-  v33 = [(PFAssetBundle *)self initWithPropertyList:v22];
+  [dictionary2 setObject:&unk_1F2AAB680 forKeyedSubscript:@"PFAssetBundleMetadataVideoComplementVisibilityStateKey"];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"PFAssetBundlePathMetadataKey"];
+  v33 = [(PFAssetBundle *)self initWithPropertyList:dictionary];
 
   return v33;
 }
 
-- (PFAssetBundle)initWithOriginalPhotoURL:(id)a3 alternatePhotoURL:(id)a4 fullSizePhotoURL:(id)a5 adjustmentBaseFullSizePhotoURL:(id)a6 spatialOvercapturePhotoURL:(id)a7 originalPairedVideoURL:(id)a8 fullSizePairedVideoURL:(id)a9 adjustmentBaseFullSizePairedVideoURL:(id)a10 spatialOvercapturePairedVideoURL:(id)a11 fullSizeVideoURL:(id)a12 adjustmentsURL:(id)a13 originalAdjustmentsURL:(id)a14 adjustmentsSecondaryDataURL:(id)a15 mediaSubtypes:(unint64_t)a16 playbackStyle:(int64_t)a17 playbackVariation:(unint64_t)a18 videoComplementVisibilityState:(unsigned __int16)a19
+- (PFAssetBundle)initWithOriginalPhotoURL:(id)l alternatePhotoURL:(id)rL fullSizePhotoURL:(id)uRL adjustmentBaseFullSizePhotoURL:(id)photoURL spatialOvercapturePhotoURL:(id)overcapturePhotoURL originalPairedVideoURL:(id)videoURL fullSizePairedVideoURL:(id)pairedVideoURL adjustmentBaseFullSizePairedVideoURL:(id)self0 spatialOvercapturePairedVideoURL:(id)self1 fullSizeVideoURL:(id)self2 adjustmentsURL:(id)self3 originalAdjustmentsURL:(id)self4 adjustmentsSecondaryDataURL:(id)self5 mediaSubtypes:(unint64_t)self6 playbackStyle:(int64_t)self7 playbackVariation:(unint64_t)self8 videoComplementVisibilityState:(unsigned __int16)self9
 {
-  v24 = a3;
-  v63 = a4;
-  v62 = a5;
-  v61 = a6;
-  v60 = a7;
-  v59 = a8;
-  v25 = a9;
-  v26 = a10;
-  v27 = a11;
-  v28 = a12;
-  v29 = a13;
-  v30 = a14;
-  v31 = a15;
-  v32 = [MEMORY[0x1E695DF90] dictionary];
-  if (v24)
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  photoURLCopy = photoURL;
+  overcapturePhotoURLCopy = overcapturePhotoURL;
+  videoURLCopy = videoURL;
+  pairedVideoURLCopy = pairedVideoURL;
+  sizePairedVideoURLCopy = sizePairedVideoURL;
+  overcapturePairedVideoURLCopy = overcapturePairedVideoURL;
+  sizeVideoURLCopy = sizeVideoURL;
+  adjustmentsURLCopy = adjustmentsURL;
+  originalAdjustmentsURLCopy = originalAdjustmentsURL;
+  dataURLCopy = dataURL;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (lCopy)
   {
-    v33 = [v24 path];
-    [v32 setObject:v33 forKeyedSubscript:@"PFAssetBundlePathPhotoKey"];
+    path = [lCopy path];
+    [dictionary setObject:path forKeyedSubscript:@"PFAssetBundlePathPhotoKey"];
   }
 
-  if (v63)
+  if (rLCopy)
   {
-    v34 = [v63 path];
-    [v32 setObject:v34 forKeyedSubscript:@"PFAssetBundlePathAlternatePhotoKey"];
+    path2 = [rLCopy path];
+    [dictionary setObject:path2 forKeyedSubscript:@"PFAssetBundlePathAlternatePhotoKey"];
   }
 
-  if (v62)
+  if (uRLCopy)
   {
-    v35 = [v62 path];
-    [v32 setObject:v35 forKeyedSubscript:@"PFAssetBundlePathFullSizePhotoKey"];
+    path3 = [uRLCopy path];
+    [dictionary setObject:path3 forKeyedSubscript:@"PFAssetBundlePathFullSizePhotoKey"];
   }
 
-  if (v61)
+  if (photoURLCopy)
   {
-    v36 = [v61 path];
-    [v32 setObject:v36 forKeyedSubscript:@"PFAssetBundlePathAdjustmentBasePhotoKey"];
+    path4 = [photoURLCopy path];
+    [dictionary setObject:path4 forKeyedSubscript:@"PFAssetBundlePathAdjustmentBasePhotoKey"];
   }
 
-  if (v60)
+  if (overcapturePhotoURLCopy)
   {
-    v37 = [v60 path];
-    [v32 setObject:v37 forKeyedSubscript:@"PFAssetBundlePathSpatialOvercapturePhotoKey"];
+    path5 = [overcapturePhotoURLCopy path];
+    [dictionary setObject:path5 forKeyedSubscript:@"PFAssetBundlePathSpatialOvercapturePhotoKey"];
   }
 
-  if (v59)
+  if (videoURLCopy)
   {
-    v38 = [v59 path];
-    [v32 setObject:v38 forKeyedSubscript:@"PFAssetBundlePathPairedVideoKey"];
+    path6 = [videoURLCopy path];
+    [dictionary setObject:path6 forKeyedSubscript:@"PFAssetBundlePathPairedVideoKey"];
   }
 
-  if (v25)
+  if (pairedVideoURLCopy)
   {
-    v39 = [v25 path];
-    [v32 setObject:v39 forKeyedSubscript:@"PFAssetBundlePathFullSizePairedVideoKey"];
+    path7 = [pairedVideoURLCopy path];
+    [dictionary setObject:path7 forKeyedSubscript:@"PFAssetBundlePathFullSizePairedVideoKey"];
   }
 
-  if (v26)
+  if (sizePairedVideoURLCopy)
   {
-    v40 = [v26 path];
-    [v32 setObject:v40 forKeyedSubscript:@"PFAssetBundlePathAdjustmentBasePairedVideoKey"];
+    path8 = [sizePairedVideoURLCopy path];
+    [dictionary setObject:path8 forKeyedSubscript:@"PFAssetBundlePathAdjustmentBasePairedVideoKey"];
   }
 
-  if (v27)
+  if (overcapturePairedVideoURLCopy)
   {
-    v41 = [v27 path];
-    [v32 setObject:v41 forKeyedSubscript:@"PFAssetBundlePathSpatialOvercapturePairedVideoKey"];
+    path9 = [overcapturePairedVideoURLCopy path];
+    [dictionary setObject:path9 forKeyedSubscript:@"PFAssetBundlePathSpatialOvercapturePairedVideoKey"];
   }
 
-  v56 = v26;
-  if (v28)
+  v56 = sizePairedVideoURLCopy;
+  if (sizeVideoURLCopy)
   {
-    v42 = [v28 path];
-    [v32 setObject:v42 forKeyedSubscript:@"PFAssetBundlePathFullSizeVideoKey"];
+    path10 = [sizeVideoURLCopy path];
+    [dictionary setObject:path10 forKeyedSubscript:@"PFAssetBundlePathFullSizeVideoKey"];
   }
 
-  v54 = v27;
-  v55 = v25;
-  v58 = v24;
-  if (v29)
+  v54 = overcapturePairedVideoURLCopy;
+  v55 = pairedVideoURLCopy;
+  v58 = lCopy;
+  if (adjustmentsURLCopy)
   {
-    v43 = [v29 path];
-    [v32 setObject:v43 forKeyedSubscript:@"PFAssetBundlePathAdjustmentDataKey"];
+    path11 = [adjustmentsURLCopy path];
+    [dictionary setObject:path11 forKeyedSubscript:@"PFAssetBundlePathAdjustmentDataKey"];
   }
 
-  v44 = v29;
-  if (v30)
+  v44 = adjustmentsURLCopy;
+  if (originalAdjustmentsURLCopy)
   {
-    v45 = [v30 path];
-    [v32 setObject:v45 forKeyedSubscript:@"PFAssetBundlePathOriginalAdjustmentDataKey"];
+    path12 = [originalAdjustmentsURLCopy path];
+    [dictionary setObject:path12 forKeyedSubscript:@"PFAssetBundlePathOriginalAdjustmentDataKey"];
   }
 
-  if (v31)
+  if (dataURLCopy)
   {
-    v46 = [v31 path];
-    [v32 setObject:v46 forKeyedSubscript:@"PFAssetBundlePathAdjustmentSecondaryDataKey"];
+    path13 = [dataURLCopy path];
+    [dictionary setObject:path13 forKeyedSubscript:@"PFAssetBundlePathAdjustmentSecondaryDataKey"];
   }
 
-  v47 = [MEMORY[0x1E695DF90] dictionary];
-  [v47 setObject:@"1" forKeyedSubscript:@"PFAssetBundleMetadataVersionKey"];
-  [v47 setObject:&unk_1F2AAB650 forKeyedSubscript:@"PFAssetBundleMetadataMediaTypeKey"];
-  v48 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a16];
-  [v47 setObject:v48 forKeyedSubscript:@"PFAssetBundleMetadataMediaSubtypesKey"];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary2 setObject:@"1" forKeyedSubscript:@"PFAssetBundleMetadataVersionKey"];
+  [dictionary2 setObject:&unk_1F2AAB650 forKeyedSubscript:@"PFAssetBundleMetadataMediaTypeKey"];
+  v48 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:subtypes];
+  [dictionary2 setObject:v48 forKeyedSubscript:@"PFAssetBundleMetadataMediaSubtypesKey"];
 
-  v49 = [MEMORY[0x1E696AD98] numberWithInteger:a17];
-  [v47 setObject:v49 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackStyleKey"];
+  v49 = [MEMORY[0x1E696AD98] numberWithInteger:style];
+  [dictionary2 setObject:v49 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackStyleKey"];
 
-  v50 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a18];
-  [v47 setObject:v50 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackVariationKey"];
+  v50 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:variation];
+  [dictionary2 setObject:v50 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackVariationKey"];
 
-  v51 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:a19];
-  [v47 setObject:v51 forKeyedSubscript:@"PFAssetBundleMetadataVideoComplementVisibilityStateKey"];
+  v51 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:state];
+  [dictionary2 setObject:v51 forKeyedSubscript:@"PFAssetBundleMetadataVideoComplementVisibilityStateKey"];
 
-  [v32 setObject:v47 forKeyedSubscript:@"PFAssetBundlePathMetadataKey"];
-  v52 = [(PFAssetBundle *)self initWithPropertyList:v32];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"PFAssetBundlePathMetadataKey"];
+  v52 = [(PFAssetBundle *)self initWithPropertyList:dictionary];
 
   return v52;
 }
 
-- (BOOL)_writeFileAtURL:(id)a3 toDirectory:(id)a4 withUpdatedFilename:(id)a5 writtenFileURL:(id *)a6 error:(id *)a7
+- (BOOL)_writeFileAtURL:(id)l toDirectory:(id)directory withUpdatedFilename:(id)filename writtenFileURL:(id *)rL error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = v14;
-  if (v14)
+  lCopy = l;
+  directoryCopy = directory;
+  filenameCopy = filename;
+  v15 = filenameCopy;
+  if (filenameCopy)
   {
-    v16 = v14;
+    lastPathComponent = filenameCopy;
   }
 
   else
   {
-    v16 = [v12 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
   }
 
-  v17 = v16;
-  v18 = [v13 URLByAppendingPathComponent:v16];
-  v19 = [(PFAssetBundle *)self linkOrCopyURL:v12 toURL:v18 forceCopy:0 error:a7];
+  v17 = lastPathComponent;
+  v18 = [directoryCopy URLByAppendingPathComponent:lastPathComponent];
+  v19 = [(PFAssetBundle *)self linkOrCopyURL:lCopy toURL:v18 forceCopy:0 error:error];
   v20 = v19;
-  if (a6 && v19)
+  if (rL && v19)
   {
     v21 = v18;
-    *a6 = v18;
+    *rL = v18;
   }
 
   return v20;
 }
 
-- (id)createAssetBundleWritingErrorWithDescription:(id)a3
+- (id)createAssetBundleWritingErrorWithDescription:(id)description
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithFormat:v4 arguments:&v15];
+  descriptionCopy = description;
+  v5 = [[v3 alloc] initWithFormat:descriptionCopy arguments:&v15];
 
   v6 = @"Unknown reason";
   if (v5)
@@ -747,30 +747,30 @@ LABEL_35:
   return v10;
 }
 
-- (BOOL)_verifyFileSourceExistsAtURL:(id)a3 error:(id *)a4
+- (BOOL)_verifyFileSourceExistsAtURL:(id)l error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = 1;
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:&v13];
+  path = [lCopy path];
+  v9 = [defaultManager fileExistsAtPath:path isDirectory:&v13];
 
   if (v9)
   {
     if (v13 != 1)
     {
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_12;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"Directory exists at '%@'", v6];
+      *error = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"Directory exists at '%@'", lCopy];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v15 = v6;
+        v15 = lCopy;
         v10 = MEMORY[0x1E69E9C10];
         v11 = "[PFAssetBundle] Source file is not a file, but a directory at URL: %@.";
 LABEL_9:
@@ -782,36 +782,36 @@ LABEL_9:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"No file exists at '%@'", v6];
+    *error = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"No file exists at '%@'", lCopy];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = lCopy;
       v10 = MEMORY[0x1E69E9C10];
       v11 = "[PFAssetBundle] Source file does not exist at URL: %@.";
       goto LABEL_9;
     }
 
 LABEL_10:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_12:
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_pathExtension:(id)a3 matchesType:(id)a4 error:(id *)a5
+- (BOOL)_pathExtension:(id)extension matchesType:(id)type error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [PFUniformTypeUtilities typeWithFilenameExtension:v8];
-  v11 = [v8 uppercaseString];
-  v12 = [@"aae" uppercaseString];
-  v13 = [v11 isEqualToString:v12];
+  extensionCopy = extension;
+  typeCopy = type;
+  v10 = [PFUniformTypeUtilities typeWithFilenameExtension:extensionCopy];
+  uppercaseString = [extensionCopy uppercaseString];
+  uppercaseString2 = [@"aae" uppercaseString];
+  v13 = [uppercaseString isEqualToString:uppercaseString2];
 
   if (v13)
   {
@@ -820,85 +820,85 @@ LABEL_12:
     v10 = v14;
   }
 
-  if (v10 && ([v10 conformsToType:v9] & 1) != 0)
+  if (v10 && ([v10 conformsToType:typeCopy] & 1) != 0)
   {
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"UTType is not %@ for path extension '%@'", v9, v8];
+    *error = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"UTType is not %@ for path extension '%@'", typeCopy, extensionCopy];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = v8;
+      v17 = extensionCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = typeCopy;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Path extension: %@ does not conform to expected UTI: %@.", buf, 0x16u);
     }
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_writeFileAtURL:(id)a3 toDirectory:(id)a4 withUpdatedFilename:(id)a5 updateManifest:(id)a6 bundlePathKey:(id)a7 verifyUTIType:(__CFString *)a8 error:(id *)a9
+- (BOOL)_writeFileAtURL:(id)l toDirectory:(id)directory withUpdatedFilename:(id)filename updateManifest:(id)manifest bundlePathKey:(id)key verifyUTIType:(__CFString *)type error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = [v15 lastPathComponent];
-  if ([v17 isEqualToString:v20])
+  lCopy = l;
+  directoryCopy = directory;
+  filenameCopy = filename;
+  manifestCopy = manifest;
+  keyCopy = key;
+  lastPathComponent = [lCopy lastPathComponent];
+  if ([filenameCopy isEqualToString:lastPathComponent])
   {
 
-    if (!a8)
+    if (!type)
     {
-      v17 = 0;
+      filenameCopy = 0;
       goto LABEL_12;
     }
 
 LABEL_7:
-    v38 = v20;
-    v39 = v16;
-    v21 = v18;
-    v22 = [v15 pathExtension];
-    v17 = 0;
+    v38 = lastPathComponent;
+    v39 = directoryCopy;
+    v21 = manifestCopy;
+    pathExtension = [lCopy pathExtension];
+    filenameCopy = 0;
     v23 = 1;
     goto LABEL_8;
   }
 
-  if (!a8)
+  if (!type)
   {
 LABEL_12:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v42 = v15;
+      v42 = lCopy;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Could not write source file at URL %@ to disk. Expected uti type was not supplied.", buf, 0xCu);
     }
 
     goto LABEL_20;
   }
 
-  if (!v17)
+  if (!filenameCopy)
   {
     goto LABEL_7;
   }
 
-  v38 = v20;
-  v39 = v16;
-  v21 = v18;
-  v22 = [v17 pathExtension];
+  v38 = lastPathComponent;
+  v39 = directoryCopy;
+  v21 = manifestCopy;
+  pathExtension = [filenameCopy pathExtension];
   v23 = 0;
 LABEL_8:
-  v24 = [MEMORY[0x1E6982C40] typeWithIdentifier:a8];
-  v25 = [(PFAssetBundle *)self _pathExtension:v22 matchesType:v24 error:a9];
+  v24 = [MEMORY[0x1E6982C40] typeWithIdentifier:type];
+  v25 = [(PFAssetBundle *)self _pathExtension:pathExtension matchesType:v24 error:error];
 
-  if (*a9)
+  if (*error)
   {
     v26 = MEMORY[0x1E69E9C10];
     v27 = MEMORY[0x1E69E9C10];
@@ -906,19 +906,19 @@ LABEL_8:
     {
       if (v23)
       {
-        v28 = &stru_1F2A8EB68;
+        filenameCopy = &stru_1F2A8EB68;
       }
 
       else
       {
-        v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(updated filename: %@)", v17];
+        filenameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"(updated filename: %@)", filenameCopy];
       }
 
-      v29 = *a9;
+      v29 = *error;
       *buf = 138543874;
-      v42 = v15;
+      v42 = lCopy;
       v43 = 2114;
-      v44 = v28;
+      v44 = filenameCopy;
       v45 = 2114;
       v46 = v29;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Could not write source file at URL %{public}@ %{public}@ to disk. Error: %{public}@", buf, 0x20u);
@@ -931,45 +931,45 @@ LABEL_8:
   if (!v25)
   {
     LOBYTE(v30) = 0;
-    v18 = v21;
-    v20 = v38;
-    v16 = v39;
+    manifestCopy = v21;
+    lastPathComponent = v38;
+    directoryCopy = v39;
     goto LABEL_30;
   }
 
-  v18 = v21;
-  v20 = v38;
-  v16 = v39;
+  manifestCopy = v21;
+  lastPathComponent = v38;
+  directoryCopy = v39;
 LABEL_20:
-  if ([(PFAssetBundle *)self _verifyFileSourceExistsAtURL:v15 error:a9])
+  if ([(PFAssetBundle *)self _verifyFileSourceExistsAtURL:lCopy error:error])
   {
     v40 = 0;
-    v30 = [(PFAssetBundle *)self _writeFileAtURL:v15 toDirectory:v16 withUpdatedFilename:v17 writtenFileURL:&v40 error:a9];
+    v30 = [(PFAssetBundle *)self _writeFileAtURL:lCopy toDirectory:directoryCopy withUpdatedFilename:filenameCopy writtenFileURL:&v40 error:error];
     v31 = v40;
     v32 = v31;
     if (v30 && v31)
     {
       [v31 lastPathComponent];
-      v34 = v33 = v20;
-      [v18 setObject:v34 forKeyedSubscript:v19];
+      v34 = v33 = lastPathComponent;
+      [manifestCopy setObject:v34 forKeyedSubscript:keyCopy];
 
-      v20 = v33;
+      lastPathComponent = v33;
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v35 = [v32 path];
+        path = [v32 path];
         *buf = 138412290;
-        v42 = v35;
+        v42 = path;
         _os_log_debug_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PFAssetBundle] wrote file at path: %@", buf, 0xCu);
 
-        v20 = v33;
+        lastPathComponent = v33;
       }
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v36 = *a9;
+      v36 = *error;
       *buf = 138412546;
-      v42 = v15;
+      v42 = lCopy;
       v43 = 2114;
       v44 = v36;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Could not write source file at URL %@ to disk. Error: %{public}@", buf, 0x16u);
@@ -989,12 +989,12 @@ LABEL_30:
 - (id)urlsByPathKey
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   photoURL = self->_photoURL;
   if (photoURL)
   {
-    [v3 setObject:photoURL forKeyedSubscript:@"PFAssetBundlePathPhotoKey"];
+    [dictionary setObject:photoURL forKeyedSubscript:@"PFAssetBundlePathPhotoKey"];
   }
 
   videoURL = self->_videoURL;
@@ -1131,14 +1131,14 @@ LABEL_30:
   return v29;
 }
 
-- (BOOL)writeToBundleAtURL:(id)a3 error:(id *)a4
+- (BOOL)writeToBundleAtURL:(id)l error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v6 isFileURL] & 1) == 0)
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    v12 = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"Destination URL for asset bundle is not a file URL: '%@'", v6];
+    lCopy = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"Destination URL for asset bundle is not a file URL: '%@'", lCopy];
     v13 = 1;
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -1146,23 +1146,23 @@ LABEL_30:
     }
 
     *buf = 138412290;
-    v34 = v6;
+    v34 = lCopy;
     v14 = MEMORY[0x1E69E9C10];
     v15 = "[PFAssetBundle] Destination URL for asset bundle is not a file URL: %@";
     goto LABEL_8;
   }
 
-  v8 = [v6 pathExtension];
-  v9 = [v8 isEqualToString:@"photosasset"];
+  pathExtension = [lCopy pathExtension];
+  v9 = [pathExtension isEqualToString:@"photosasset"];
 
   if (v9)
   {
-    v10 = [v6 path];
-    v11 = [v7 fileExistsAtPath:v10];
+    path = [lCopy path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     if (v11)
     {
-      v12 = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"Destination for asset bundle already exists: '%@'", v6];
+      lCopy = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"Destination for asset bundle already exists: '%@'", lCopy];
       v13 = 1;
       if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
@@ -1170,7 +1170,7 @@ LABEL_30:
       }
 
       *buf = 138412290;
-      v34 = v6;
+      v34 = lCopy;
       v14 = MEMORY[0x1E69E9C10];
       v15 = "[PFAssetBundle] Destination for asset bundle already exists: '%@'";
 LABEL_8:
@@ -1179,22 +1179,22 @@ LABEL_8:
     }
 
     v32 = 0;
-    v18 = [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v32];
-    v12 = v32;
+    v18 = [defaultManager createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:&v32];
+    lCopy = v32;
     v13 = v18 ^ 1;
   }
 
   else
   {
-    v16 = [v6 pathExtension];
-    v12 = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"Destination has extension '%@' but requires '%@'", v16, @"photosasset"];
+    pathExtension2 = [lCopy pathExtension];
+    lCopy = [(PFAssetBundle *)self createAssetBundleWritingErrorWithDescription:@"Destination has extension '%@' but requires '%@'", pathExtension2, @"photosasset"];
 
     v13 = 1;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v17 = [v6 pathExtension];
+      pathExtension3 = [lCopy pathExtension];
       *buf = 138412546;
-      v34 = v17;
+      v34 = pathExtension3;
       v35 = 2112;
       v36 = @"photosasset";
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] Destination has extension '%@' but requires '%@'", buf, 0x16u);
@@ -1202,16 +1202,16 @@ LABEL_8:
   }
 
 LABEL_12:
-  v19 = [MEMORY[0x1E695DF90] dictionary];
-  v31 = v12;
-  v20 = [(PFAssetBundle *)self writeAllResourceURLsToDirectoryAtURL:v6 updatingManifest:v19 error:&v31];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v31 = lCopy;
+  v20 = [(PFAssetBundle *)self writeAllResourceURLsToDirectoryAtURL:lCopy updatingManifest:dictionary error:&v31];
   v21 = v31;
 
-  v22 = [v6 URLByAppendingPathComponent:@"manifest.plist"];
+  v22 = [lCopy URLByAppendingPathComponent:@"manifest.plist"];
   if (v20)
   {
-    v23 = [v19 writeToURL:v22 atomically:1];
-    v24 = [v6 URLByAppendingPathComponent:@"metadata.plist"];
+    v23 = [dictionary writeToURL:v22 atomically:1];
+    v24 = [lCopy URLByAppendingPathComponent:@"metadata.plist"];
     if (v23)
     {
       v25 = [(NSMutableDictionary *)self->_metadata writeToURL:v24 atomically:1];
@@ -1221,7 +1221,7 @@ LABEL_12:
 
   else
   {
-    v24 = [v6 URLByAppendingPathComponent:@"metadata.plist"];
+    v24 = [lCopy URLByAppendingPathComponent:@"metadata.plist"];
   }
 
   v25 = 0;
@@ -1236,11 +1236,11 @@ LABEL_17:
 LABEL_22:
     v26 = *MEMORY[0x1E695DBA0];
     v30 = v21;
-    [v6 setResourceValue:MEMORY[0x1E695E118] forKey:v26 error:&v30];
+    [lCopy setResourceValue:MEMORY[0x1E695E118] forKey:v26 error:&v30];
     v27 = v30;
 
     v21 = v27;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -1248,14 +1248,14 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  [v7 removeItemAtURL:v6 error:0];
+  [defaultManager removeItemAtURL:lCopy error:0];
   if (v25)
   {
     goto LABEL_22;
   }
 
 LABEL_19:
-  if (!a4)
+  if (!error)
   {
     goto LABEL_25;
   }
@@ -1264,7 +1264,7 @@ LABEL_23:
   if (v21)
   {
     v28 = v21;
-    *a4 = v21;
+    *error = v21;
   }
 
 LABEL_25:
@@ -1272,19 +1272,19 @@ LABEL_25:
   return v25;
 }
 
-- (BOOL)writeAllResourceURLsToDirectoryAtURL:(id)a3 updatingManifest:(id)a4 error:(id *)a5
+- (BOOL)writeAllResourceURLsToDirectoryAtURL:(id)l updatingManifest:(id)manifest error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v21 = a4;
-  v7 = [(PFAssetBundle *)self generateCustomFilenamesByPathKey];
-  v19 = self;
-  v8 = [(PFAssetBundle *)self urlsByPathKey];
+  lCopy = l;
+  manifestCopy = manifest;
+  generateCustomFilenamesByPathKey = [(PFAssetBundle *)self generateCustomFilenamesByPathKey];
+  selfCopy = self;
+  urlsByPathKey = [(PFAssetBundle *)self urlsByPathKey];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v9 = [urlsByPathKey countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1296,16 +1296,16 @@ LABEL_25:
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(urlsByPathKey);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v8 objectForKeyedSubscript:v14];
+        v15 = [urlsByPathKey objectForKeyedSubscript:v14];
         v16 = UTTypeForBundlePathKey(v14);
-        v17 = [v7 objectForKeyedSubscript:v14];
+        v17 = [generateCustomFilenamesByPathKey objectForKeyedSubscript:v14];
         if (v12)
         {
-          v12 = [(PFAssetBundle *)v19 _writeFileAtURL:v15 toDirectory:v22 withUpdatedFilename:v17 updateManifest:v21 bundlePathKey:v14 verifyUTIType:v16 error:a5];
+          v12 = [(PFAssetBundle *)selfCopy _writeFileAtURL:v15 toDirectory:lCopy withUpdatedFilename:v17 updateManifest:manifestCopy bundlePathKey:v14 verifyUTIType:v16 error:error];
         }
 
         else
@@ -1314,7 +1314,7 @@ LABEL_25:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [urlsByPathKey countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
@@ -1331,64 +1331,64 @@ LABEL_25:
 - (id)generateCustomFilenamesByPathKey
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-  v4 = [(PFAssetBundle *)self dcfCompliantFilenameBaseForWritingResourceFiles];
+  dcfCompliantFilenameBaseForWritingResourceFiles = [(PFAssetBundle *)self dcfCompliantFilenameBaseForWritingResourceFiles];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __49__PFAssetBundle_generateCustomFilenamesByPathKey__block_invoke;
   v27[3] = &unk_1E7B66AE0;
   v27[4] = self;
   v5 = MEMORY[0x1B8C64C40](v27);
-  v6 = (v5)[2](v5, self->_photoURL, v4, 0);
+  v6 = (v5)[2](v5, self->_photoURL, dcfCompliantFilenameBaseForWritingResourceFiles, 0);
   [v3 setObject:v6 forKeyedSubscript:@"PFAssetBundlePathPhotoKey"];
 
-  v7 = (v5)[2](v5, self->_videoURL, v4, 0);
+  v7 = (v5)[2](v5, self->_videoURL, dcfCompliantFilenameBaseForWritingResourceFiles, 0);
   [v3 setObject:v7 forKeyedSubscript:@"PFAssetBundlePathVideoKey"];
 
-  v8 = (v5)[2](v5, self->_audioURL, v4, 0);
+  v8 = (v5)[2](v5, self->_audioURL, dcfCompliantFilenameBaseForWritingResourceFiles, 0);
   [v3 setObject:v8 forKeyedSubscript:@"PFAssetBundlePathAudioKey"];
 
-  v9 = (v5)[2](v5, self->_alternatePhotoURL, v4, 0);
+  v9 = (v5)[2](v5, self->_alternatePhotoURL, dcfCompliantFilenameBaseForWritingResourceFiles, 0);
   [v3 setObject:v9 forKeyedSubscript:@"PFAssetBundlePathAlternatePhotoKey"];
 
-  v10 = (v5)[2](v5, self->_fullSizePhotoURL, v4, @"E");
+  v10 = (v5)[2](v5, self->_fullSizePhotoURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"E");
   [v3 setObject:v10 forKeyedSubscript:@"PFAssetBundlePathFullSizePhotoKey"];
 
-  v11 = (v5)[2](v5, self->_fullSizeVideoURL, v4, @"E");
+  v11 = (v5)[2](v5, self->_fullSizeVideoURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"E");
   [v3 setObject:v11 forKeyedSubscript:@"PFAssetBundlePathFullSizeVideoKey"];
 
-  v12 = (v5)[2](v5, self->_adjustmentBasePhotoURL, v4, @"B");
+  v12 = (v5)[2](v5, self->_adjustmentBasePhotoURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"B");
   [v3 setObject:v12 forKeyedSubscript:@"PFAssetBundlePathAdjustmentBasePhotoKey"];
 
-  v13 = (v5)[2](v5, self->_pairedVideoURL, v4, 0);
+  v13 = (v5)[2](v5, self->_pairedVideoURL, dcfCompliantFilenameBaseForWritingResourceFiles, 0);
   [v3 setObject:v13 forKeyedSubscript:@"PFAssetBundlePathPairedVideoKey"];
 
-  v14 = (v5)[2](v5, self->_fullSizePairedVideoURL, v4, @"E");
+  v14 = (v5)[2](v5, self->_fullSizePairedVideoURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"E");
   [v3 setObject:v14 forKeyedSubscript:@"PFAssetBundlePathFullSizePairedVideoKey"];
 
-  v15 = (v5)[2](v5, self->_adjustmentBasePairedVideoURL, v4, @"B");
+  v15 = (v5)[2](v5, self->_adjustmentBasePairedVideoURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"B");
   [v3 setObject:v15 forKeyedSubscript:@"PFAssetBundlePathAdjustmentBasePairedVideoKey"];
 
-  v16 = (v5)[2](v5, self->_spatialOvercapturePhotoURL, v4, @"S");
+  v16 = (v5)[2](v5, self->_spatialOvercapturePhotoURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"S");
   [v3 setObject:v16 forKeyedSubscript:@"PFAssetBundlePathSpatialOvercapturePhotoKey"];
 
-  v17 = (v5)[2](v5, self->_spatialOvercapturePairedVideoURL, v4, @"S");
+  v17 = (v5)[2](v5, self->_spatialOvercapturePairedVideoURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"S");
   [v3 setObject:v17 forKeyedSubscript:@"PFAssetBundlePathSpatialOvercapturePairedVideoKey"];
 
-  v18 = (v5)[2](v5, self->_spatialOvercaptureVideoURL, v4, @"S");
+  v18 = (v5)[2](v5, self->_spatialOvercaptureVideoURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"S");
   [v3 setObject:v18 forKeyedSubscript:@"PFAssetBundlePathSpatialOvercaptureVideoKey"];
 
-  v19 = (v5)[2](v5, self->_adjustmentBaseVideoURL, v4, @"B");
+  v19 = (v5)[2](v5, self->_adjustmentBaseVideoURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"B");
   [v3 setObject:v19 forKeyedSubscript:@"PFAssetBundlePathAdjustmentBaseVideoKey"];
 
-  v20 = [@"aae" uppercaseString];
-  v21 = [v4 stringByAppendingPathExtension:v20];
+  uppercaseString = [@"aae" uppercaseString];
+  v21 = [dcfCompliantFilenameBaseForWritingResourceFiles stringByAppendingPathExtension:uppercaseString];
 
   [v3 setObject:v21 forKeyedSubscript:@"PFAssetBundlePathAdjustmentDataKey"];
   v22 = [objc_opt_class() insertAuxiliaryResourceTypeMarker:@"O" intoFileName:v21];
   [v3 setObject:v22 forKeyedSubscript:@"PFAssetBundlePathOriginalAdjustmentDataKey"];
-  v23 = (v5)[2](v5, self->_adjustmentSecondaryDataURL, v4, @"A");
-  v24 = [v23 stringByDeletingPathExtension];
-  v25 = [v24 stringByAppendingPathExtension:@"DAT"];
+  v23 = (v5)[2](v5, self->_adjustmentSecondaryDataURL, dcfCompliantFilenameBaseForWritingResourceFiles, @"A");
+  stringByDeletingPathExtension = [v23 stringByDeletingPathExtension];
+  v25 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"DAT"];
   [v3 setObject:v25 forKeyedSubscript:@"PFAssetBundlePathAdjustmentSecondaryDataKey"];
 
   return v3;
@@ -1423,115 +1423,115 @@ id __49__PFAssetBundle_generateCustomFilenamesByPathKey__block_invoke(uint64_t a
 - (id)dcfCompliantFilenameBaseForWritingResourceFiles
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(PFAssetBundle *)self originalFilename];
-  if ([objc_opt_class() isValidDCFFileName:v3])
+  originalFilename = [(PFAssetBundle *)self originalFilename];
+  if ([objc_opt_class() isValidDCFFileName:originalFilename])
   {
-    v4 = [v3 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [originalFilename stringByDeletingPathExtension];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v21 = v4;
+      v21 = stringByDeletingPathExtension;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] DCF compliant name generation: Using original filename from metadata as base: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v4 = 0;
+    stringByDeletingPathExtension = 0;
   }
 
-  v5 = [(PFAssetBundle *)self photoURL];
-  v6 = v5;
-  if (v5)
+  photoURL = [(PFAssetBundle *)self photoURL];
+  v6 = photoURL;
+  if (photoURL)
   {
-    v7 = v5;
+    videoURL = photoURL;
   }
 
   else
   {
-    v7 = [(PFAssetBundle *)self videoURL];
+    videoURL = [(PFAssetBundle *)self videoURL];
   }
 
-  v8 = v7;
+  v8 = videoURL;
 
-  if (![v4 length])
+  if (![stringByDeletingPathExtension length])
   {
-    v9 = [v8 URLByDeletingLastPathComponent];
-    v10 = [v9 pathExtension];
-    v11 = [v10 isEqualToString:@"photosasset"];
+    uRLByDeletingLastPathComponent = [v8 URLByDeletingLastPathComponent];
+    pathExtension = [uRLByDeletingLastPathComponent pathExtension];
+    v11 = [pathExtension isEqualToString:@"photosasset"];
 
     if (v11)
     {
-      v12 = [v9 URLByDeletingPathExtension];
-      v13 = [v12 lastPathComponent];
+      uRLByDeletingPathExtension = [uRLByDeletingLastPathComponent URLByDeletingPathExtension];
+      lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-      if ([objc_opt_class() isValidDCFFileName:v13])
+      if ([objc_opt_class() isValidDCFFileName:lastPathComponent])
       {
-        v14 = [v13 stringByDeletingPathExtension];
+        stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v21 = v14;
+          v21 = stringByDeletingPathExtension2;
           _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] DCF compliant name generation: Using bundle URL filename as base: %@", buf, 0xCu);
         }
       }
 
       else
       {
-        v14 = v4;
+        stringByDeletingPathExtension2 = stringByDeletingPathExtension;
       }
 
-      v4 = v14;
+      stringByDeletingPathExtension = stringByDeletingPathExtension2;
     }
   }
 
-  v15 = [v8 lastPathComponent];
-  if ([v4 length] || !objc_msgSend(objc_opt_class(), "isValidDCFFileName:", v15))
+  lastPathComponent2 = [v8 lastPathComponent];
+  if ([stringByDeletingPathExtension length] || !objc_msgSend(objc_opt_class(), "isValidDCFFileName:", lastPathComponent2))
   {
-    v16 = v4;
+    stringByDeletingPathExtension3 = stringByDeletingPathExtension;
   }
 
   else
   {
-    v16 = [v15 stringByDeletingPathExtension];
+    stringByDeletingPathExtension3 = [lastPathComponent2 stringByDeletingPathExtension];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v21 = v16;
+      v21 = stringByDeletingPathExtension3;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] DCF compliant name generation: Using primary resource filename as base: %@", buf, 0xCu);
     }
   }
 
-  if ([v16 length])
+  if ([stringByDeletingPathExtension3 length])
   {
-    v17 = v16;
+    0x2710 = stringByDeletingPathExtension3;
   }
 
   else
   {
-    v18 = [v15 hash];
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IMG_%04u", v18 % 0x2710];
+    v18 = [lastPathComponent2 hash];
+    0x2710 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IMG_%04u", v18 % 0x2710];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v21 = v17;
+      v21 = 0x2710;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFAssetBundle] DCF compliant name generation: Generated name from hash. Result: %@", buf, 0xCu);
     }
   }
 
-  return v17;
+  return 0x2710;
 }
 
-- (BOOL)linkOrCopyURL:(id)a3 toURL:(id)a4 forceCopy:(BOOL)a5 error:(id *)a6
+- (BOOL)linkOrCopyURL:(id)l toURL:(id)rL forceCopy:(BOOL)copy error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = v11;
-  if (a5)
+  lCopy = l;
+  rLCopy = rL;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v12 = defaultManager;
+  if (copy)
   {
     v13 = 0;
   }
@@ -1539,7 +1539,7 @@ id __49__PFAssetBundle_generateCustomFilenamesByPathKey__block_invoke(uint64_t a
   else
   {
     v20 = 0;
-    v14 = [v11 linkItemAtURL:v9 toURL:v10 error:&v20];
+    v14 = [defaultManager linkItemAtURL:lCopy toURL:rLCopy error:&v20];
     v13 = v20;
     if (v14)
     {
@@ -1550,14 +1550,14 @@ id __49__PFAssetBundle_generateCustomFilenamesByPathKey__block_invoke(uint64_t a
 
   v16 = v13;
   v19 = v13;
-  v15 = [v12 copyItemAtURL:v9 toURL:v10 error:&v19];
+  v15 = [v12 copyItemAtURL:lCopy toURL:rLCopy error:&v19];
   v13 = v19;
 
-  if (a6 && (v15 & 1) == 0)
+  if (error && (v15 & 1) == 0)
   {
     v17 = v13;
     v15 = 0;
-    *a6 = v13;
+    *error = v13;
   }
 
 LABEL_8:
@@ -1565,9 +1565,9 @@ LABEL_8:
   return v15;
 }
 
-- (void)setSpatialOvercaptureResourcesPurgeable:(BOOL)a3
+- (void)setSpatialOvercaptureResourcesPurgeable:(BOOL)purgeable
 {
-  if (a3)
+  if (purgeable)
   {
     v3 = MEMORY[0x1E695E118];
   }
@@ -1580,10 +1580,10 @@ LABEL_8:
   [(NSMutableDictionary *)self->_metadata setObject:v3 forKeyedSubscript:@"PFAssetBundleMetadataSpatialOvercaptureResourcesPurgeableKey"];
 }
 
-- (void)setLibraryLocation:(id)a3
+- (void)setLibraryLocation:(id)location
 {
-  v23 = a3;
-  if (v23)
+  locationCopy = location;
+  if (locationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1597,7 +1597,7 @@ LABEL_8:
       if (objc_opt_isKindOfClass())
       {
         v4 = MEMORY[0x1E695DF90];
-        v5 = v23;
+        v5 = locationCopy;
         v6 = [v4 dictionaryWithCapacity:8];
         v7 = MEMORY[0x1E696AD98];
         [v5 coordinate];
@@ -1634,9 +1634,9 @@ LABEL_8:
         v21 = [v20 numberWithDouble:?];
         [v6 setObject:v21 forKeyedSubscript:@"PFAssetBundleMetadataLibraryLocationSpeedKey"];
 
-        v22 = [v5 timestamp];
+        timestamp = [v5 timestamp];
 
-        [v6 setObject:v22 forKeyedSubscript:@"PFAssetBundleMetadataLibraryLocationTimestampKey"];
+        [v6 setObject:timestamp forKeyedSubscript:@"PFAssetBundleMetadataLibraryLocationTimestampKey"];
         [(NSMutableDictionary *)self->_metadata setObject:v6 forKeyedSubscript:@"PFAssetBundleMetadataLibraryLocationKey"];
       }
     }
@@ -1648,16 +1648,16 @@ LABEL_8:
   }
 }
 
-- (void)setLibraryCreationDate:(id)a3 inTimeZone:(id)a4
+- (void)setLibraryCreationDate:(id)date inTimeZone:(id)zone
 {
-  v10 = a3;
-  v6 = a4;
-  [(NSMutableDictionary *)self->_metadata setObject:v10 forKeyedSubscript:@"PFAssetBundleMetadataLibraryCreationDateKey"];
-  if (v10 && v6)
+  dateCopy = date;
+  zoneCopy = zone;
+  [(NSMutableDictionary *)self->_metadata setObject:dateCopy forKeyedSubscript:@"PFAssetBundleMetadataLibraryCreationDateKey"];
+  if (dateCopy && zoneCopy)
   {
-    v7 = [v6 name];
-    v8 = [v6 secondsFromGMTForDate:v10];
-    [(NSMutableDictionary *)self->_metadata setObject:v7 forKeyedSubscript:@"PFAssetBundleMetadataLibraryCreationDateTimeZoneNameKey"];
+    name = [zoneCopy name];
+    v8 = [zoneCopy secondsFromGMTForDate:dateCopy];
+    [(NSMutableDictionary *)self->_metadata setObject:name forKeyedSubscript:@"PFAssetBundleMetadataLibraryCreationDateTimeZoneNameKey"];
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
     [(NSMutableDictionary *)self->_metadata setObject:v9 forKeyedSubscript:@"PFAssetBundleMetadataLibraryCreationDateTimeZoneOffsetSecondsKey"];
   }
@@ -1669,44 +1669,44 @@ LABEL_8:
   }
 }
 
-- (void)setOriginalFilename:(id)a3
+- (void)setOriginalFilename:(id)filename
 {
-  v4 = [a3 copy];
+  v4 = [filename copy];
   [(NSMutableDictionary *)self->_metadata setObject:v4 forKeyedSubscript:@"PFAssetBundleMetadataOriginalFilenameKey"];
 }
 
-- (void)setAssetTitle:(id)a3
+- (void)setAssetTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   [(NSMutableDictionary *)self->_metadata setObject:v4 forKeyedSubscript:@"PFAssetBundleMetadataAssetTitleKey"];
 }
 
-- (void)setAccessibilityDescription:(id)a3
+- (void)setAccessibilityDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   [(NSMutableDictionary *)self->_metadata setObject:v4 forKeyedSubscript:@"PFAssetBundleMetadataAccessibilityDescriptionKey"];
 }
 
-- (void)setAssetDescription:(id)a3
+- (void)setAssetDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   [(NSMutableDictionary *)self->_metadata setObject:v4 forKeyedSubscript:@"PFAssetBundleMetadataAssetDescriptionKey"];
 }
 
-- (void)setKeywordTitles:(id)a3
+- (void)setKeywordTitles:(id)titles
 {
-  if (a3)
+  if (titles)
   {
-    v4 = [a3 allObjects];
+    allObjects = [titles allObjects];
   }
 
   else
   {
-    v4 = 0;
+    allObjects = 0;
   }
 
-  v5 = v4;
-  [(NSMutableDictionary *)self->_metadata setObject:v4 forKeyedSubscript:@"PFAssetBundleMetadataKeywordTitlesKey"];
+  v5 = allObjects;
+  [(NSMutableDictionary *)self->_metadata setObject:allObjects forKeyedSubscript:@"PFAssetBundleMetadataKeywordTitlesKey"];
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)livePhotoOriginalImageDisplayTime
@@ -1736,11 +1736,11 @@ LABEL_8:
   if (!self->_didReadOriginalPairedVideoMetadata && [(PFAssetBundle *)self isMediaSubtype:8])
   {
     self->_didReadOriginalPairedVideoMetadata = 1;
-    v3 = [(NSURL *)self->_pairedVideoURL path];
-    v4 = PFVideoComplementMetadataForVideoAtPath(v3, 0);
-    v5 = [v4 pairingIdentifier];
+    path = [(NSURL *)self->_pairedVideoURL path];
+    v4 = PFVideoComplementMetadataForVideoAtPath(path, 0);
+    pairingIdentifier = [v4 pairingIdentifier];
     livePhotoOriginalPairingIdentifier = self->_livePhotoOriginalPairingIdentifier;
-    self->_livePhotoOriginalPairingIdentifier = v5;
+    self->_livePhotoOriginalPairingIdentifier = pairingIdentifier;
 
     if (v4)
     {
@@ -1792,19 +1792,19 @@ LABEL_8:
 {
   if ([(PFAssetBundle *)self isMediaSubtype:8])
   {
-    v3 = [(NSMutableDictionary *)self->_metadata objectForKeyedSubscript:@"PFAssetBundleMetadataPairingIdentifierKey"];
-    if (!v3)
+    livePhotoOriginalPairingIdentifier = [(NSMutableDictionary *)self->_metadata objectForKeyedSubscript:@"PFAssetBundleMetadataPairingIdentifierKey"];
+    if (!livePhotoOriginalPairingIdentifier)
     {
-      v3 = [(PFAssetBundle *)self livePhotoOriginalPairingIdentifier];
+      livePhotoOriginalPairingIdentifier = [(PFAssetBundle *)self livePhotoOriginalPairingIdentifier];
     }
   }
 
   else
   {
-    v3 = 0;
+    livePhotoOriginalPairingIdentifier = 0;
   }
 
-  return v3;
+  return livePhotoOriginalPairingIdentifier;
 }
 
 - (BOOL)spatialOvercaptureResourcesPurgeable
@@ -1817,9 +1817,9 @@ LABEL_8:
   }
 
   v4 = [(NSMutableDictionary *)self->_metadata objectForKeyedSubscript:@"PFAssetBundleMetadataSpatialOvercaptureResourcesPurgeableKey"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)libraryLocation
@@ -1828,7 +1828,7 @@ LABEL_8:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ![v2 length])
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   else
@@ -1840,9 +1840,9 @@ LABEL_8:
     }
 
     v4 = v3;
-    v5 = [v2 objectForKeyedSubscript:@"PFAssetBundleMetadataLibraryLocationLongitudeKey"];
+    null = [v2 objectForKeyedSubscript:@"PFAssetBundleMetadataLibraryLocationLongitudeKey"];
 
-    if (!v5)
+    if (!null)
     {
       goto LABEL_23;
     }
@@ -1928,19 +1928,19 @@ LABEL_8:
         [MEMORY[0x1E695DF00] date];
       }
       v36 = ;
-      v5 = [objc_alloc(MEMORY[0x1E6985C40]) initWithCoordinate:v36 altitude:latitude horizontalAccuracy:longitude verticalAccuracy:v17 course:v20 speed:v19 timestamp:{v28, v27}];
+      null = [objc_alloc(MEMORY[0x1E6985C40]) initWithCoordinate:v36 altitude:latitude horizontalAccuracy:longitude verticalAccuracy:v17 course:v20 speed:v19 timestamp:{v28, v27}];
     }
 
     else
     {
 LABEL_8:
-      v5 = 0;
+      null = 0;
     }
   }
 
 LABEL_23:
 
-  return v5;
+  return null;
 }
 
 - (NSTimeZone)libraryCreationDateTimeZone
@@ -1952,8 +1952,8 @@ LABEL_23:
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 integerValue];
-      v4 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:v7];
+      integerValue = [v5 integerValue];
+      v4 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:integerValue];
     }
 
     else
@@ -1997,9 +1997,9 @@ LABEL_23:
   }
 
   v4 = [(NSMutableDictionary *)self->_metadata objectForKeyedSubscript:@"PFAssetBundleMetadataVideoComplementVisibilityStateKey"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (unint64_t)playbackVariation
@@ -2012,9 +2012,9 @@ LABEL_23:
   }
 
   v4 = [(NSMutableDictionary *)self->_metadata objectForKeyedSubscript:@"PFAssetBundleMetadataPlaybackVariationKey"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (unint64_t)mediaSubtypes
@@ -2027,9 +2027,9 @@ LABEL_23:
   }
 
   v4 = [(NSMutableDictionary *)self->_metadata objectForKeyedSubscript:@"PFAssetBundleMetadataMediaSubtypesKey"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)mediaType
@@ -2042,9 +2042,9 @@ LABEL_23:
   }
 
   v4 = [(NSMutableDictionary *)self->_metadata objectForKeyedSubscript:@"PFAssetBundleMetadataMediaTypeKey"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)playbackStyle
@@ -2057,35 +2057,35 @@ LABEL_23:
   }
 
   v4 = [(NSMutableDictionary *)self->_metadata objectForKeyedSubscript:@"PFAssetBundleMetadataPlaybackStyleKey"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
-- (PFAssetBundle)initWithAssetBundleAtURL:(id)a3
+- (PFAssetBundle)initWithAssetBundleAtURL:(id)l
 {
   v52[19] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 pathExtension];
-  v6 = [v5 isEqualToString:@"photosasset"];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  v6 = [pathExtension isEqualToString:@"photosasset"];
 
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v4 path];
+    [lCopy path];
     v37 = v42 = 1;
     v8 = [v37 stringByAppendingPathComponent:@"manifest.plist"];
-    v36 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v36 fileExistsAtPath:v8 isDirectory:&v42] && (v42 & 1) == 0)
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:v8 isDirectory:&v42] && (v42 & 1) == 0)
     {
       v11 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v8];
       v9 = v11 != 0;
       if (v11)
       {
         v33 = v8;
-        v34 = v4;
+        v34 = lCopy;
         v12 = v7;
-        v35 = self;
+        selfCopy = self;
         v52[0] = @"PFAssetBundlePathPhotoKey";
         v52[1] = @"PFAssetBundlePathVideoKey";
         v52[2] = @"PFAssetBundlePathAudioKey";
@@ -2130,7 +2130,7 @@ LABEL_23:
               if (v20)
               {
                 v21 = [v37 stringByAppendingPathComponent:v20];
-                if (([v36 fileExistsAtPath:v21] & 1) == 0 && os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+                if (([defaultManager fileExistsAtPath:v21] & 1) == 0 && os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138543618;
                   v44 = v19;
@@ -2149,8 +2149,8 @@ LABEL_23:
           while (v15);
         }
 
-        v4 = v34;
-        self = v35;
+        lCopy = v34;
+        self = selfCopy;
         v7 = v12;
         v8 = v33;
         v9 = 1;
@@ -2163,8 +2163,8 @@ LABEL_23:
     }
 
     v22 = [v37 stringByAppendingPathComponent:@"metadata.plist"];
-    v23 = [MEMORY[0x1E696AC08] defaultManager];
-    v24 = [v23 fileExistsAtPath:v22 isDirectory:&v42];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v24 = [defaultManager2 fileExistsAtPath:v22 isDirectory:&v42];
 
     if (v24)
     {
@@ -2187,7 +2187,7 @@ LABEL_23:
             if (v9)
             {
               self = [(PFAssetBundle *)self initWithPropertyList:v7];
-              v10 = self;
+              selfCopy2 = self;
 LABEL_34:
 
               goto LABEL_35;
@@ -2210,7 +2210,7 @@ LABEL_32:
               }
 
               *buf = 138413058;
-              v44 = v4;
+              v44 = lCopy;
               if (v24)
               {
                 v32 = @"Y";
@@ -2235,7 +2235,7 @@ LABEL_32:
               _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Error trying to read asset bundle at %@ (manifestFound: %@, metadataFound: %@, validMetadataVersion: %@", buf, 0x2Au);
             }
 
-            v10 = 0;
+            selfCopy2 = 0;
             goto LABEL_34;
           }
 
@@ -2253,26 +2253,26 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v10 = 0;
+  selfCopy2 = 0;
 LABEL_35:
 
-  return v10;
+  return selfCopy2;
 }
 
-- (PFAssetBundle)initWithPropertyList:(id)a3
+- (PFAssetBundle)initWithPropertyList:(id)list
 {
   v90 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   v88.receiver = self;
   v88.super_class = PFAssetBundle;
   v5 = [(PFAssetBundle *)&v88 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [listCopy copy];
     propertyList = v5->_propertyList;
     v5->_propertyList = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"PFAssetBundlePathMetadataKey"];
+    v8 = [listCopy objectForKeyedSubscript:@"PFAssetBundlePathMetadataKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2285,22 +2285,22 @@ LABEL_35:
       }
 
       v10 = [v8 objectForKeyedSubscript:@"PFAssetBundleMetadataPlaybackStyleKey"];
-      v11 = [v10 integerValue];
+      integerValue = [v10 integerValue];
 
       v12 = [v8 objectForKeyedSubscript:@"PFAssetBundleMetadataMediaTypeKey"];
-      v13 = [v12 integerValue];
+      integerValue2 = [v12 integerValue];
 
       v14 = [v8 objectForKeyedSubscript:@"PFAssetBundleMetadataMediaSubtypesKey"];
-      v15 = [v14 integerValue];
+      integerValue3 = [v14 integerValue];
 
       v16 = [v8 objectForKeyedSubscript:@"PFAssetBundleMetadataPlaybackVariationKey"];
-      v17 = [v16 integerValue];
+      integerValue4 = [v16 integerValue];
 
       v18 = [v8 objectForKeyedSubscript:@"PFAssetBundleMetadataVideoComplementVisibilityStateKey"];
-      v79 = [v18 integerValue];
+      integerValue5 = [v18 integerValue];
 
       v19 = [v8 objectForKeyedSubscript:@"PFAssetBundleMetadataSpatialOvercaptureResourcesPurgeableKey"];
-      v80 = [v19 BOOLValue];
+      bOOLValue = [v19 BOOLValue];
 
       v20 = [v8 objectForKeyedSubscript:@"PFAssetBundleMetadataPairingIdentifierKey"];
       objc_opt_class();
@@ -2326,14 +2326,14 @@ LABEL_35:
 
     else
     {
-      v15 = 0;
-      v17 = 0;
-      v79 = 0;
-      v80 = 0;
+      integerValue3 = 0;
+      integerValue4 = 0;
+      integerValue5 = 0;
+      bOOLValue = 0;
       v20 = 0;
       v82 = 0;
-      v13 = 0;
-      v11 = 0;
+      integerValue2 = 0;
+      integerValue = 0;
       v9 = 0;
     }
 
@@ -2362,22 +2362,22 @@ LABEL_35:
     v26 = [(__CFString *)v23 copy];
     [v25 setObject:v26 forKeyedSubscript:@"PFAssetBundleMetadataVersionKey"];
 
-    v27 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
+    v27 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
     [v25 setObject:v27 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackStyleKey"];
 
-    v28 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
+    v28 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue2];
     [v25 setObject:v28 forKeyedSubscript:@"PFAssetBundleMetadataMediaTypeKey"];
 
-    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
+    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:integerValue3];
     [v25 setObject:v29 forKeyedSubscript:@"PFAssetBundleMetadataMediaSubtypesKey"];
 
-    v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17];
+    v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:integerValue4];
     [v25 setObject:v30 forKeyedSubscript:@"PFAssetBundleMetadataPlaybackVariationKey"];
 
-    v31 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v79];
+    v31 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:integerValue5];
     [v25 setObject:v31 forKeyedSubscript:@"PFAssetBundleMetadataVideoComplementVisibilityStateKey"];
 
-    v32 = [MEMORY[0x1E696AD98] numberWithBool:v80];
+    v32 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
     [v25 setObject:v32 forKeyedSubscript:@"PFAssetBundleMetadataSpatialOvercaptureResourcesPurgeableKey"];
 
     [v25 setObject:v83 forKeyedSubscript:@"PFAssetBundleMetadataPairingIdentifierKey"];
@@ -2386,71 +2386,71 @@ LABEL_35:
     metadata = v5->_metadata;
     v5->_metadata = v33;
 
-    v35 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathPhotoKey", v4);
+    v35 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathPhotoKey", listCopy);
     photoURL = v5->_photoURL;
     v5->_photoURL = v35;
 
-    v37 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathVideoKey", v4);
+    v37 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathVideoKey", listCopy);
     videoURL = v5->_videoURL;
     v5->_videoURL = v37;
 
-    v39 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAudioKey", v4);
+    v39 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAudioKey", listCopy);
     audioURL = v5->_audioURL;
     v5->_audioURL = v39;
 
-    v41 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAlternatePhotoKey", v4);
+    v41 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAlternatePhotoKey", listCopy);
     alternatePhotoURL = v5->_alternatePhotoURL;
     v5->_alternatePhotoURL = v41;
 
-    v43 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathFullSizePhotoKey", v4);
+    v43 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathFullSizePhotoKey", listCopy);
     fullSizePhotoURL = v5->_fullSizePhotoURL;
     v5->_fullSizePhotoURL = v43;
 
-    v45 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathFullSizeVideoKey", v4);
+    v45 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathFullSizeVideoKey", listCopy);
     fullSizeVideoURL = v5->_fullSizeVideoURL;
     v5->_fullSizeVideoURL = v45;
 
-    v47 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentDataKey", v4);
+    v47 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentDataKey", listCopy);
     adjustmentDataURL = v5->_adjustmentDataURL;
     v5->_adjustmentDataURL = v47;
 
-    v49 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentBasePhotoKey", v4);
+    v49 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentBasePhotoKey", listCopy);
     adjustmentBasePhotoURL = v5->_adjustmentBasePhotoURL;
     v5->_adjustmentBasePhotoURL = v49;
 
-    v51 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathPairedVideoKey", v4);
+    v51 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathPairedVideoKey", listCopy);
     pairedVideoURL = v5->_pairedVideoURL;
     v5->_pairedVideoURL = v51;
 
-    v53 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathFullSizePairedVideoKey", v4);
+    v53 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathFullSizePairedVideoKey", listCopy);
     fullSizePairedVideoURL = v5->_fullSizePairedVideoURL;
     v5->_fullSizePairedVideoURL = v53;
 
-    v55 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentBasePairedVideoKey", v4);
+    v55 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentBasePairedVideoKey", listCopy);
     adjustmentBasePairedVideoURL = v5->_adjustmentBasePairedVideoURL;
     v5->_adjustmentBasePairedVideoURL = v55;
 
-    v57 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathSpatialOvercapturePhotoKey", v4);
+    v57 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathSpatialOvercapturePhotoKey", listCopy);
     spatialOvercapturePhotoURL = v5->_spatialOvercapturePhotoURL;
     v5->_spatialOvercapturePhotoURL = v57;
 
-    v59 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathSpatialOvercapturePairedVideoKey", v4);
+    v59 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathSpatialOvercapturePairedVideoKey", listCopy);
     spatialOvercapturePairedVideoURL = v5->_spatialOvercapturePairedVideoURL;
     v5->_spatialOvercapturePairedVideoURL = v59;
 
-    v61 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathSpatialOvercaptureVideoKey", v4);
+    v61 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathSpatialOvercaptureVideoKey", listCopy);
     spatialOvercaptureVideoURL = v5->_spatialOvercaptureVideoURL;
     v5->_spatialOvercaptureVideoURL = v61;
 
-    v63 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentBaseVideoKey", v4);
+    v63 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentBaseVideoKey", listCopy);
     adjustmentBaseVideoURL = v5->_adjustmentBaseVideoURL;
     v5->_adjustmentBaseVideoURL = v63;
 
-    v65 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathOriginalAdjustmentDataKey", v4);
+    v65 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathOriginalAdjustmentDataKey", listCopy);
     originalAdjustmentDataURL = v5->_originalAdjustmentDataURL;
     v5->_originalAdjustmentDataURL = v65;
 
-    v67 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentSecondaryDataKey", v4);
+    v67 = createURLForAbsolutePathKeyInDictionary(@"PFAssetBundlePathAdjustmentSecondaryDataKey", listCopy);
     adjustmentSecondaryDataURL = v5->_adjustmentSecondaryDataURL;
     v5->_adjustmentSecondaryDataURL = v67;
 
@@ -2478,7 +2478,7 @@ LABEL_35:
           }
 
           v76 = *(*(&v84 + 1) + 8 * i);
-          v77 = createURLForAbsolutePathKeyInDictionary(v76, v4);
+          v77 = createURLForAbsolutePathKeyInDictionary(v76, listCopy);
           if (v77)
           {
             [(NSMutableDictionary *)v5->_auxiliaryResourceURLsByKey setObject:v77 forKeyedSubscript:v76];
@@ -2505,16 +2505,16 @@ LABEL_35:
   return 0;
 }
 
-+ (BOOL)isValidDCFFileName:(id)a3
++ (BOOL)isValidDCFFileName:(id)name
 {
   v4 = isValidDCFFileName__onceToken;
-  v5 = a3;
+  nameCopy = name;
   if (v4 != -1)
   {
     dispatch_once(&isValidDCFFileName__onceToken, &__block_literal_global_199);
   }
 
-  v6 = [a1 fileName:v5 matchesRegex:isValidDCFFileName__dcfRegex];
+  v6 = [self fileName:nameCopy matchesRegex:isValidDCFFileName__dcfRegex];
 
   return v6;
 }
@@ -2528,28 +2528,28 @@ uint64_t __36__PFAssetBundle_isValidDCFFileName___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (BOOL)fileName:(id)a3 matchesRegex:(id)a4
++ (BOOL)fileName:(id)name matchesRegex:(id)regex
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 numberOfMatchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  regexCopy = regex;
+  nameCopy = name;
+  v7 = [regexCopy numberOfMatchesInString:nameCopy options:0 range:{0, objc_msgSend(nameCopy, "length")}];
 
   return v7 == 1;
 }
 
-+ (id)insertAuxiliaryResourceTypeMarker:(id)a3 intoFileName:(id)a4
++ (id)insertAuxiliaryResourceTypeMarker:(id)marker intoFileName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 substringToIndex:4];
-  v8 = [v5 substringFromIndex:4];
+  nameCopy = name;
+  markerCopy = marker;
+  v7 = [nameCopy substringToIndex:4];
+  v8 = [nameCopy substringFromIndex:4];
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v7, v6, v8];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v7, markerCopy, v8];
 
   return v9;
 }

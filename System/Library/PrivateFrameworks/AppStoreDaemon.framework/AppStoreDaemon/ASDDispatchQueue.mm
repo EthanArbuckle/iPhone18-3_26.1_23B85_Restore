@@ -1,8 +1,8 @@
 @interface ASDDispatchQueue
 + (ASDDispatchQueue)defaultQueue;
 - (ASDDispatchQueue)init;
-- (ASDDispatchQueue)initWithName:(id)a3;
-- (ASDDispatchQueue)initWithQueue:(id)a3;
+- (ASDDispatchQueue)initWithName:(id)name;
+- (ASDDispatchQueue)initWithQueue:(id)queue;
 @end
 
 @implementation ASDDispatchQueue
@@ -17,30 +17,30 @@
   return v6;
 }
 
-- (ASDDispatchQueue)initWithName:(id)a3
+- (ASDDispatchQueue)initWithName:(id)name
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v12];
+  nameCopy = name;
+  v6 = [[v4 alloc] initWithFormat:nameCopy arguments:&v12];
 
-  v7 = [v6 UTF8String];
+  uTF8String = [v6 UTF8String];
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v9 = dispatch_queue_create(v7, v8);
+  v9 = dispatch_queue_create(uTF8String, v8);
   v10 = [(ASDDispatchQueue *)self initWithQueue:v9];
 
   return v10;
 }
 
-- (ASDDispatchQueue)initWithQueue:(id)a3
+- (ASDDispatchQueue)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ASDDispatchQueue;
   v6 = [(ASDDispatchQueue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

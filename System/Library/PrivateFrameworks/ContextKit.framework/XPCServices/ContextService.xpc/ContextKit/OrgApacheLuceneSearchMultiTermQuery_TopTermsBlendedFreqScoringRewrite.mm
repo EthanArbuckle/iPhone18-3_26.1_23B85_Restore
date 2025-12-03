@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneSearchMultiTermQuery_TopTermsBlendedFreqScoringRewrite
-- (id)buildWithId:(id)a3;
+- (id)buildWithId:(id)id;
 - (id)getTopLevelBuilder;
 @end
 
@@ -17,14 +17,14 @@
   return v2;
 }
 
-- (id)buildWithId:(id)a3
+- (id)buildWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 build];
+  return [id build];
 }
 
 @end

@@ -1,74 +1,74 @@
 @interface HDCloudSyncCachedStoreEpochs
-- (BOOL)isEqual:(id)a3;
-- (HDCloudSyncCachedStoreEpochs)initWithActiveEpoch:(id)a3 pendingEpoch:(id)a4 tombstoneEpoch:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDCloudSyncCachedStoreEpochs)initWithActiveEpoch:(id)epoch pendingEpoch:(id)pendingEpoch tombstoneEpoch:(id)tombstoneEpoch;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HDCloudSyncCachedStoreEpochs
 
-- (HDCloudSyncCachedStoreEpochs)initWithActiveEpoch:(id)a3 pendingEpoch:(id)a4 tombstoneEpoch:(id)a5
+- (HDCloudSyncCachedStoreEpochs)initWithActiveEpoch:(id)epoch pendingEpoch:(id)pendingEpoch tombstoneEpoch:(id)tombstoneEpoch
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  epochCopy = epoch;
+  pendingEpochCopy = pendingEpoch;
+  tombstoneEpochCopy = tombstoneEpoch;
   v15.receiver = self;
   v15.super_class = HDCloudSyncCachedStoreEpochs;
   v12 = [(HDCloudSyncCachedStoreEpochs *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activeEpoch, a3);
-    objc_storeStrong(&v13->_pendingEpoch, a4);
-    objc_storeStrong(&v13->_tombstoneEpoch, a5);
+    objc_storeStrong(&v12->_activeEpoch, epoch);
+    objc_storeStrong(&v13->_pendingEpoch, pendingEpoch);
+    objc_storeStrong(&v13->_tombstoneEpoch, tombstoneEpoch);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HDCloudSyncCachedStoreEpochs *)self activeEpoch];
-  v6 = [v5 copy];
-  v7 = [(HDCloudSyncCachedStoreEpochs *)self pendingEpoch];
-  v8 = [v7 copy];
-  v9 = [(HDCloudSyncCachedStoreEpochs *)self tombstoneEpoch];
-  v10 = [v9 copy];
+  activeEpoch = [(HDCloudSyncCachedStoreEpochs *)self activeEpoch];
+  v6 = [activeEpoch copy];
+  pendingEpoch = [(HDCloudSyncCachedStoreEpochs *)self pendingEpoch];
+  v8 = [pendingEpoch copy];
+  tombstoneEpoch = [(HDCloudSyncCachedStoreEpochs *)self tombstoneEpoch];
+  v10 = [tombstoneEpoch copy];
   v11 = [v4 initWithActiveEpoch:v6 pendingEpoch:v8 tombstoneEpoch:v10];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v13 = 1;
       goto LABEL_31;
     }
 
-    if ([(HDCloudSyncCachedStoreEpochs *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(HDCloudSyncCachedStoreEpochs *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v6 = v5;
-      v7 = [(HDCloudSyncCachedStoreEpochs *)self activeEpoch];
-      v8 = [(HDCloudSyncCachedStoreEpochs *)v6 activeEpoch];
-      if (v7 != v8)
+      activeEpoch = [(HDCloudSyncCachedStoreEpochs *)self activeEpoch];
+      activeEpoch2 = [(HDCloudSyncCachedStoreEpochs *)v6 activeEpoch];
+      if (activeEpoch != activeEpoch2)
       {
-        v9 = [(HDCloudSyncCachedStoreEpochs *)v6 activeEpoch];
-        if (!v9)
+        activeEpoch3 = [(HDCloudSyncCachedStoreEpochs *)v6 activeEpoch];
+        if (!activeEpoch3)
         {
           v13 = 0;
           goto LABEL_30;
         }
 
-        v10 = v9;
-        v11 = [(HDCloudSyncCachedStoreEpochs *)self activeEpoch];
-        v12 = [(HDCloudSyncCachedStoreEpochs *)v6 activeEpoch];
-        if (![v11 isEqual:v12])
+        v10 = activeEpoch3;
+        activeEpoch4 = [(HDCloudSyncCachedStoreEpochs *)self activeEpoch];
+        activeEpoch5 = [(HDCloudSyncCachedStoreEpochs *)v6 activeEpoch];
+        if (![activeEpoch4 isEqual:activeEpoch5])
         {
           v13 = 0;
 LABEL_29:
@@ -76,65 +76,65 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v32 = v12;
-        v33 = v11;
+        v32 = activeEpoch5;
+        v33 = activeEpoch4;
         v34 = v10;
       }
 
-      v14 = [(HDCloudSyncCachedStoreEpochs *)self pendingEpoch];
-      v15 = [(HDCloudSyncCachedStoreEpochs *)v6 pendingEpoch];
-      if (v14 != v15)
+      pendingEpoch = [(HDCloudSyncCachedStoreEpochs *)self pendingEpoch];
+      pendingEpoch2 = [(HDCloudSyncCachedStoreEpochs *)v6 pendingEpoch];
+      if (pendingEpoch != pendingEpoch2)
       {
-        v16 = [(HDCloudSyncCachedStoreEpochs *)v6 pendingEpoch];
-        if (!v16)
+        pendingEpoch3 = [(HDCloudSyncCachedStoreEpochs *)v6 pendingEpoch];
+        if (!pendingEpoch3)
         {
           v13 = 0;
           goto LABEL_27;
         }
 
-        v17 = v16;
-        v18 = [(HDCloudSyncCachedStoreEpochs *)self pendingEpoch];
-        v19 = [(HDCloudSyncCachedStoreEpochs *)v6 pendingEpoch];
-        if (([v18 isEqual:v19] & 1) == 0)
+        v17 = pendingEpoch3;
+        pendingEpoch4 = [(HDCloudSyncCachedStoreEpochs *)self pendingEpoch];
+        pendingEpoch5 = [(HDCloudSyncCachedStoreEpochs *)v6 pendingEpoch];
+        if (([pendingEpoch4 isEqual:pendingEpoch5] & 1) == 0)
         {
 
           v13 = 0;
           goto LABEL_28;
         }
 
-        v28 = v19;
-        v29 = v18;
+        v28 = pendingEpoch5;
+        v29 = pendingEpoch4;
         v30 = v17;
       }
 
-      v20 = [(HDCloudSyncCachedStoreEpochs *)self tombstoneEpoch];
-      v21 = [(HDCloudSyncCachedStoreEpochs *)v6 tombstoneEpoch];
-      v22 = v21;
-      v13 = v20 == v21;
-      if (v20 == v21)
+      tombstoneEpoch = [(HDCloudSyncCachedStoreEpochs *)self tombstoneEpoch];
+      tombstoneEpoch2 = [(HDCloudSyncCachedStoreEpochs *)v6 tombstoneEpoch];
+      v22 = tombstoneEpoch2;
+      v13 = tombstoneEpoch == tombstoneEpoch2;
+      if (tombstoneEpoch == tombstoneEpoch2)
       {
       }
 
       else
       {
-        v31 = v14;
-        v23 = [(HDCloudSyncCachedStoreEpochs *)v6 tombstoneEpoch];
-        if (v23)
+        v31 = pendingEpoch;
+        tombstoneEpoch3 = [(HDCloudSyncCachedStoreEpochs *)v6 tombstoneEpoch];
+        if (tombstoneEpoch3)
         {
-          v24 = v23;
-          v27 = [(HDCloudSyncCachedStoreEpochs *)self tombstoneEpoch];
-          v25 = [(HDCloudSyncCachedStoreEpochs *)v6 tombstoneEpoch];
-          v13 = [v27 isEqual:v25];
+          v24 = tombstoneEpoch3;
+          tombstoneEpoch4 = [(HDCloudSyncCachedStoreEpochs *)self tombstoneEpoch];
+          tombstoneEpoch5 = [(HDCloudSyncCachedStoreEpochs *)v6 tombstoneEpoch];
+          v13 = [tombstoneEpoch4 isEqual:tombstoneEpoch5];
 
-          if (v31 != v15)
+          if (v31 != pendingEpoch2)
           {
           }
 
 LABEL_28:
-          v11 = v33;
+          activeEpoch4 = v33;
           v10 = v34;
-          v12 = v32;
-          if (v7 != v8)
+          activeEpoch5 = v32;
+          if (activeEpoch != activeEpoch2)
           {
             goto LABEL_29;
           }
@@ -145,7 +145,7 @@ LABEL_30:
         }
       }
 
-      if (v14 != v15)
+      if (pendingEpoch != pendingEpoch2)
       {
       }
 

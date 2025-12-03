@@ -1,17 +1,17 @@
 @interface OBPrivacySplashController
-+ (id)splashPageWithBundleIdentifier:(id)a3;
-- (OBPrivacySplashController)initWithFlow:(id)a3;
-- (OBPrivacySplashController)initWithPrivacyIdentifier:(id)a3;
++ (id)splashPageWithBundleIdentifier:(id)identifier;
+- (OBPrivacySplashController)initWithFlow:(id)flow;
+- (OBPrivacySplashController)initWithPrivacyIdentifier:(id)identifier;
 - (id)_defaultButtonTitle;
 - (void)_initializeFromBundle;
 - (void)_languageToggleTapped;
-- (void)defaultButtonPressed:(id)a3;
+- (void)defaultButtonPressed:(id)pressed;
 - (void)loadView;
-- (void)setCustomTintColor:(id)a3;
-- (void)setDismissHandlerForDefaultButton:(id)a3;
-- (void)showPrivacyGateway:(id)a3;
-- (void)showUnifiedAbout:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCustomTintColor:(id)color;
+- (void)setDismissHandlerForDefaultButton:(id)button;
+- (void)showPrivacyGateway:(id)gateway;
+- (void)showUnifiedAbout:(id)about;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateFontForPrivacyGateway;
 - (void)updateFontForUnifiedAboutButton;
 - (void)viewDidLoad;
@@ -19,21 +19,21 @@
 
 @implementation OBPrivacySplashController
 
-+ (id)splashPageWithBundleIdentifier:(id)a3
++ (id)splashPageWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[OBPrivacySplashController alloc] initWithPrivacyIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[OBPrivacySplashController alloc] initWithPrivacyIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (OBPrivacySplashController)initWithPrivacyIdentifier:(id)a3
+- (OBPrivacySplashController)initWithPrivacyIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [OBBundle bundleWithIdentifier:?];
-    v5 = [v4 privacyFlow];
-    v6 = [(OBPrivacySplashController *)self initWithFlow:v5];
+    privacyFlow = [v4 privacyFlow];
+    v6 = [(OBPrivacySplashController *)self initWithFlow:privacyFlow];
   }
 
   else
@@ -47,33 +47,33 @@
 - (id)_defaultButtonTitle
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v4 = [(OBPrivacySplashController *)self displayLanguage];
-  v5 = [OBUtilities localizedString:@"SPLASH_CONTINUE" forTable:@"Localizable" inBundle:v3 forLanguage:v4];
+  displayLanguage = [(OBPrivacySplashController *)self displayLanguage];
+  v5 = [OBUtilities localizedString:@"SPLASH_CONTINUE" forTable:@"Localizable" inBundle:v3 forLanguage:displayLanguage];
 
   return v5;
 }
 
-- (OBPrivacySplashController)initWithFlow:(id)a3
+- (OBPrivacySplashController)initWithFlow:(id)flow
 {
-  v5 = a3;
+  flowCopy = flow;
   v11.receiver = self;
   v11.super_class = OBPrivacySplashController;
   v6 = [(OBWelcomeController *)&v11 initWithTitle:&stru_1F2CE9518 detailText:0 icon:0 contentLayout:2];
   if (v6)
   {
-    if (![v5 platformSupported])
+    if (![flowCopy platformSupported])
     {
       v9 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_flow, a3);
+    objc_storeStrong(&v6->_flow, flow);
     v7 = +[OBCapabilities sharedCapabilities];
     -[OBPrivacySplashController setAllowsOpeningSafari:](v6, "setAllowsOpeningSafari:", [v7 preventOpeningSafari] ^ 1);
 
     [(OBPrivacySplashController *)v6 setDisplayDeviceType:0];
-    v8 = [(OBWelcomeController *)v6 buttonTray];
-    [v8 setHidden:1];
+    buttonTray = [(OBWelcomeController *)v6 buttonTray];
+    [buttonTray setHidden:1];
   }
 
   v9 = v6;
@@ -92,50 +92,50 @@ LABEL_6:
   v6.receiver = self;
   v6.super_class = OBPrivacySplashController;
   [(OBWelcomeController *)&v6 loadView];
-  v3 = [(OBPrivacySplashController *)self customTintColor];
+  customTintColor = [(OBPrivacySplashController *)self customTintColor];
 
-  if (v3)
+  if (customTintColor)
   {
-    v4 = [(OBPrivacySplashController *)self customTintColor];
-    v5 = [(OBPrivacySplashController *)self view];
-    [v5 setTintColor:v4];
+    customTintColor2 = [(OBPrivacySplashController *)self customTintColor];
+    view = [(OBPrivacySplashController *)self view];
+    [view setTintColor:customTintColor2];
   }
 }
 
-- (void)showUnifiedAbout:(id)a3
+- (void)showUnifiedAbout:(id)about
 {
   v13 = +[OBPrivacyPresenter presenterForPrivacyUnifiedAbout];
-  v4 = [(OBPrivacySplashController *)self displayLanguage];
-  v5 = [v13 combinedController];
-  [v5 setDisplayLanguage:v4];
+  displayLanguage = [(OBPrivacySplashController *)self displayLanguage];
+  combinedController = [v13 combinedController];
+  [combinedController setDisplayLanguage:displayLanguage];
 
-  v6 = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
-  v7 = [v13 combinedController];
-  [v7 setAdditionalDisplayLanguageManager:v6];
+  additionalDisplayLanguageManager = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
+  combinedController2 = [v13 combinedController];
+  [combinedController2 setAdditionalDisplayLanguageManager:additionalDisplayLanguageManager];
 
-  v8 = [(OBPrivacySplashController *)self underlineLinks];
-  v9 = [v13 combinedController];
-  [v9 setUnderlineLinks:v8];
+  underlineLinks = [(OBPrivacySplashController *)self underlineLinks];
+  combinedController3 = [v13 combinedController];
+  [combinedController3 setUnderlineLinks:underlineLinks];
 
-  v10 = [(OBPrivacySplashController *)self customTintColor];
-  v11 = [v13 combinedController];
-  [v11 setCustomTintColor:v10];
+  customTintColor = [(OBPrivacySplashController *)self customTintColor];
+  combinedController4 = [v13 combinedController];
+  [combinedController4 setCustomTintColor:customTintColor];
 
   [v13 setDarkMode:{-[OBWelcomeController darkMode](self, "darkMode")}];
   [v13 setPresentingViewController:self];
-  v12 = [(OBPrivacySplashController *)self navigationController];
-  [v13 presentInNavigationStack:v12 animated:1];
+  navigationController = [(OBPrivacySplashController *)self navigationController];
+  [v13 presentInNavigationStack:navigationController animated:1];
 }
 
-- (void)showPrivacyGateway:(id)a3
+- (void)showPrivacyGateway:(id)gateway
 {
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v4 = MEMORY[0x1E695DFF8];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v6 = [(OBPrivacySplashController *)self displayLanguage];
-  v7 = [OBUtilities localizedString:@"PRIVACY_HTTP_WEB_LINK" forTable:@"Localizable" inBundle:v5 forLanguage:v6];
+  displayLanguage = [(OBPrivacySplashController *)self displayLanguage];
+  v7 = [OBUtilities localizedString:@"PRIVACY_HTTP_WEB_LINK" forTable:@"Localizable" inBundle:v5 forLanguage:displayLanguage];
   v8 = [v4 URLWithString:v7];
-  [v9 openURL:v8 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  [mEMORY[0x1E69DC668] openURL:v8 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
 - (void)viewDidLoad
@@ -145,24 +145,24 @@ LABEL_6:
   v16.super_class = OBPrivacySplashController;
   [(OBWelcomeController *)&v16 viewDidLoad];
   [(OBPrivacySplashController *)self _initializeFromBundle];
-  v3 = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
+  additionalDisplayLanguageManager = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
 
-  if (!v3)
+  if (!additionalDisplayLanguageManager)
   {
     v4 = [OBAdditionalDisplayLanguageManager alloc];
-    v5 = [(OBPrivacySplashController *)self displayLanguage];
-    v6 = [(OBAdditionalDisplayLanguageManager *)v4 initWithDisplayLanguage:v5];
+    displayLanguage = [(OBPrivacySplashController *)self displayLanguage];
+    v6 = [(OBAdditionalDisplayLanguageManager *)v4 initWithDisplayLanguage:displayLanguage];
     [(OBPrivacySplashController *)self setAdditionalDisplayLanguageManager:v6];
 
     v7 = _OBLoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(OBPrivacySplashController *)self displayLanguage];
-      v9 = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
+      displayLanguage2 = [(OBPrivacySplashController *)self displayLanguage];
+      additionalDisplayLanguageManager2 = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
       *buf = 138412546;
-      v18 = v8;
+      v18 = displayLanguage2;
       v19 = 2112;
-      v20 = v9;
+      v20 = additionalDisplayLanguageManager2;
       _os_log_impl(&dword_1B4FB6000, v7, OS_LOG_TYPE_DEFAULT, "splash controller with displayLanguage %@ created %@", buf, 0x16u);
     }
   }
@@ -170,14 +170,14 @@ LABEL_6:
   v10 = _OBLoggingFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
+    additionalDisplayLanguageManager3 = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
     *buf = 138412290;
-    v18 = v11;
+    v18 = additionalDisplayLanguageManager3;
     _os_log_impl(&dword_1B4FB6000, v10, OS_LOG_TYPE_DEFAULT, "splash controller using %@", buf, 0xCu);
   }
 
-  v12 = [(OBPrivacyFlow *)self->_flow identifier];
-  v13 = [v12 isEqualToString:@"com.apple.onboarding.privacypane"];
+  identifier = [(OBPrivacyFlow *)self->_flow identifier];
+  v13 = [identifier isEqualToString:@"com.apple.onboarding.privacypane"];
 
   if (v13)
   {
@@ -193,12 +193,12 @@ LABEL_6:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCustomTintColor:(id)a3
+- (void)setCustomTintColor:(id)color
 {
-  objc_storeStrong(&self->_customTintColor, a3);
-  v5 = a3;
-  v6 = [(OBPrivacySplashController *)self view];
-  [v6 setTintColor:v5];
+  objc_storeStrong(&self->_customTintColor, color);
+  colorCopy = color;
+  view = [(OBPrivacySplashController *)self view];
+  [view setTintColor:colorCopy];
 }
 
 - (void)_initializeFromBundle
@@ -215,17 +215,17 @@ LABEL_6:
     v4 = 2;
   }
 
-  v5 = [(OBPrivacyFlow *)self->_flow identifier];
-  v6 = [v5 isEqualToString:@"com.apple.onboarding.privacypane"];
+  identifier = [(OBPrivacyFlow *)self->_flow identifier];
+  v6 = [identifier isEqualToString:@"com.apple.onboarding.privacypane"];
 
   flow = self->_flow;
-  v8 = [(OBPrivacySplashController *)self displayLanguage];
-  v9 = [(OBPrivacyFlow *)flow localizedContentListForLanguage:v8 preferredDeviceType:[(OBPrivacySplashController *)self displayDeviceType]];
+  displayLanguage = [(OBPrivacySplashController *)self displayLanguage];
+  v9 = [(OBPrivacyFlow *)flow localizedContentListForLanguage:displayLanguage preferredDeviceType:[(OBPrivacySplashController *)self displayDeviceType]];
 
   v10 = [OBPrivacySplashListView alloc];
-  v11 = [(OBWelcomeController *)self scrollView];
+  scrollView = [(OBWelcomeController *)self scrollView];
   v124 = v9;
-  v12 = [(OBPrivacySplashListView *)v10 initWithContentList:v9 dataDetectorTypes:v4 displayingPrivacyPane:v6 scrollView:v11];
+  v12 = [(OBPrivacySplashListView *)v10 initWithContentList:v9 dataDetectorTypes:v4 displayingPrivacyPane:v6 scrollView:scrollView];
 
   [(OBPrivacySplashListView *)v12 setUnderlineLinks:[(OBPrivacySplashController *)self underlineLinks]];
   [(OBPrivacySplashListView *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -237,22 +237,22 @@ LABEL_6:
       v13 = [OBPrivacyButton buttonWithType:1];
       [(OBPrivacySplashController *)self setLinkToPrivacyGatewayButton:v13];
 
-      v14 = [(OBPrivacySplashController *)self underlineLinks];
-      v15 = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
-      [v15 setUnderlineLinks:v14];
+      underlineLinks = [(OBPrivacySplashController *)self underlineLinks];
+      linkToPrivacyGatewayButton = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
+      [linkToPrivacyGatewayButton setUnderlineLinks:underlineLinks];
 
-      v16 = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
+      linkToPrivacyGatewayButton2 = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
       v17 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v18 = [(OBPrivacySplashController *)self displayLanguage];
-      v19 = [OBUtilities localizedString:@"MANAGE_YOUR_DATA" forTable:@"Localizable" inBundle:v17 forLanguage:v18];
-      [v16 setTitle:v19 forState:0];
+      displayLanguage2 = [(OBPrivacySplashController *)self displayLanguage];
+      v19 = [OBUtilities localizedString:@"MANAGE_YOUR_DATA" forTable:@"Localizable" inBundle:v17 forLanguage:displayLanguage2];
+      [linkToPrivacyGatewayButton2 setTitle:v19 forState:0];
 
-      v20 = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
-      [v20 addTarget:self action:sel_showPrivacyGateway_ forControlEvents:0x2000];
+      linkToPrivacyGatewayButton3 = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
+      [linkToPrivacyGatewayButton3 addTarget:self action:sel_showPrivacyGateway_ forControlEvents:0x2000];
 
-      v21 = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
-      v22 = [v21 titleLabel];
-      [v22 setAdjustsFontSizeToFitWidth:1];
+      linkToPrivacyGatewayButton4 = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
+      titleLabel = [linkToPrivacyGatewayButton4 titleLabel];
+      [titleLabel setAdjustsFontSizeToFitWidth:1];
 
       [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
     }
@@ -267,38 +267,38 @@ LABEL_6:
       v28 = [v23 initWithFrame:{*MEMORY[0x1E695F058], v25, v26, v27}];
       [(OBPrivacySplashController *)self setPrivacyGatewayDescription:v28];
 
-      v29 = [(OBPrivacySplashController *)self privacyGatewayDescription];
+      privacyGatewayDescription = [(OBPrivacySplashController *)self privacyGatewayDescription];
       v30 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v31 = [(OBPrivacySplashController *)self displayLanguage];
-      v32 = [OBUtilities localizedString:@"PRIVACY_WEB_DESCRIPTION" forTable:@"Localizable" inBundle:v30 forLanguage:v31];
-      [v29 setText:v32];
+      displayLanguage3 = [(OBPrivacySplashController *)self displayLanguage];
+      v32 = [OBUtilities localizedString:@"PRIVACY_WEB_DESCRIPTION" forTable:@"Localizable" inBundle:v30 forLanguage:displayLanguage3];
+      [privacyGatewayDescription setText:v32];
 
-      v33 = [(OBPrivacySplashController *)self privacyGatewayDescription];
-      [v33 setNumberOfLines:0];
+      privacyGatewayDescription2 = [(OBPrivacySplashController *)self privacyGatewayDescription];
+      [privacyGatewayDescription2 setNumberOfLines:0];
 
-      v34 = [(OBPrivacySplashController *)self privacyGatewayDescription];
-      [v34 setAdjustsFontSizeToFitWidth:1];
+      privacyGatewayDescription3 = [(OBPrivacySplashController *)self privacyGatewayDescription];
+      [privacyGatewayDescription3 setAdjustsFontSizeToFitWidth:1];
 
-      v35 = [(OBPrivacySplashController *)self privacyGatewayDescription];
-      [v35 setTextAlignment:1];
+      privacyGatewayDescription4 = [(OBPrivacySplashController *)self privacyGatewayDescription];
+      [privacyGatewayDescription4 setTextAlignment:1];
 
-      v36 = [(OBPrivacySplashController *)self privacyGatewayDescription];
-      [(OBPrivacySplashListView *)v12 addArrangedSubview:v36];
+      privacyGatewayDescription5 = [(OBPrivacySplashController *)self privacyGatewayDescription];
+      [(OBPrivacySplashListView *)v12 addArrangedSubview:privacyGatewayDescription5];
 
       v37 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v24, v25, v26, v27}];
       [(OBPrivacySplashController *)self setLinkToPrivacyGateway:v37];
 
-      v38 = [(OBPrivacySplashController *)self linkToPrivacyGateway];
+      linkToPrivacyGateway = [(OBPrivacySplashController *)self linkToPrivacyGateway];
       v39 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v40 = [(OBPrivacySplashController *)self displayLanguage];
-      v41 = [OBUtilities localizedString:@"PRIVACY_WEB_LINK" forTable:@"Localizable" inBundle:v39 forLanguage:v40];
-      [v38 setText:v41];
+      displayLanguage4 = [(OBPrivacySplashController *)self displayLanguage];
+      v41 = [OBUtilities localizedString:@"PRIVACY_WEB_LINK" forTable:@"Localizable" inBundle:v39 forLanguage:displayLanguage4];
+      [linkToPrivacyGateway setText:v41];
 
-      v42 = [(OBPrivacySplashController *)self linkToPrivacyGateway];
-      [v42 setAdjustsFontSizeToFitWidth:1];
+      linkToPrivacyGateway2 = [(OBPrivacySplashController *)self linkToPrivacyGateway];
+      [linkToPrivacyGateway2 setAdjustsFontSizeToFitWidth:1];
 
-      v43 = [(OBPrivacySplashController *)self linkToPrivacyGateway];
-      [v43 setTextAlignment:1];
+      linkToPrivacyGateway3 = [(OBPrivacySplashController *)self linkToPrivacyGateway];
+      [linkToPrivacyGateway3 setTextAlignment:1];
 
       [(OBPrivacySplashController *)self linkToPrivacyGateway];
     }
@@ -312,75 +312,75 @@ LABEL_6:
     v46 = [OBPrivacyButton buttonWithType:1];
     [(OBPrivacySplashController *)self setUnifiedAboutButton:v46];
 
-    v47 = [(OBPrivacySplashController *)self underlineLinks];
-    v48 = [(OBPrivacySplashController *)self unifiedAboutButton];
-    [v48 setUnderlineLinks:v47];
+    underlineLinks2 = [(OBPrivacySplashController *)self underlineLinks];
+    unifiedAboutButton = [(OBPrivacySplashController *)self unifiedAboutButton];
+    [unifiedAboutButton setUnderlineLinks:underlineLinks2];
 
-    v49 = [(OBPrivacySplashController *)self unifiedAboutButton];
+    unifiedAboutButton2 = [(OBPrivacySplashController *)self unifiedAboutButton];
     v50 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v51 = [(OBPrivacySplashController *)self displayLanguage];
-    v52 = [OBUtilities localizedString:@"LEARN_MORE_FOOTER" forTable:@"Localizable" inBundle:v50 forLanguage:v51];
-    [v49 setTitle:v52 forState:0];
+    displayLanguage5 = [(OBPrivacySplashController *)self displayLanguage];
+    v52 = [OBUtilities localizedString:@"LEARN_MORE_FOOTER" forTable:@"Localizable" inBundle:v50 forLanguage:displayLanguage5];
+    [unifiedAboutButton2 setTitle:v52 forState:0];
 
-    v53 = [(OBPrivacySplashController *)self unifiedAboutButton];
-    [v53 addTarget:self action:sel_showUnifiedAbout_ forControlEvents:0x2000];
+    unifiedAboutButton3 = [(OBPrivacySplashController *)self unifiedAboutButton];
+    [unifiedAboutButton3 addTarget:self action:sel_showUnifiedAbout_ forControlEvents:0x2000];
 
-    v54 = [(OBPrivacySplashController *)self unifiedAboutButton];
-    v55 = [v54 titleLabel];
-    [v55 setAdjustsFontSizeToFitWidth:1];
+    unifiedAboutButton4 = [(OBPrivacySplashController *)self unifiedAboutButton];
+    titleLabel2 = [unifiedAboutButton4 titleLabel];
+    [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
     v56 = objc_alloc(MEMORY[0x1E69DD250]);
     v57 = [v56 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v58 = [(OBPrivacySplashController *)self unifiedAboutButton];
-    [v57 addSubview:v58];
+    unifiedAboutButton5 = [(OBPrivacySplashController *)self unifiedAboutButton];
+    [v57 addSubview:unifiedAboutButton5];
 
-    v59 = [(OBPrivacySplashController *)self unifiedAboutButton];
-    [v59 setTranslatesAutoresizingMaskIntoConstraints:0];
+    unifiedAboutButton6 = [(OBPrivacySplashController *)self unifiedAboutButton];
+    [unifiedAboutButton6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    LODWORD(v59) = +[OBFeatureFlags isNaturalUIEnabled];
-    v60 = [(OBPrivacySplashController *)self unifiedAboutButton];
-    v61 = v60;
-    if (v59)
+    LODWORD(unifiedAboutButton6) = +[OBFeatureFlags isNaturalUIEnabled];
+    unifiedAboutButton7 = [(OBPrivacySplashController *)self unifiedAboutButton];
+    unifiedAboutButton8 = unifiedAboutButton7;
+    if (unifiedAboutButton6)
     {
-      [v60 addInfoIcon];
+      [unifiedAboutButton7 addInfoIcon];
 
-      v61 = [(OBPrivacySplashController *)self unifiedAboutButton];
-      v62 = [v61 leadingAnchor];
+      unifiedAboutButton8 = [(OBPrivacySplashController *)self unifiedAboutButton];
+      leadingAnchor = [unifiedAboutButton8 leadingAnchor];
       [v57 leadingAnchor];
     }
 
     else
     {
-      v62 = [v60 centerXAnchor];
+      leadingAnchor = [unifiedAboutButton7 centerXAnchor];
       [v57 centerXAnchor];
     }
     v63 = ;
-    v64 = [v62 constraintEqualToAnchor:v63];
+    v64 = [leadingAnchor constraintEqualToAnchor:v63];
 
     v120 = MEMORY[0x1E696ACD8];
-    v65 = [(OBPrivacySplashController *)self unifiedAboutButton];
-    v66 = [v65 topAnchor];
-    v67 = [v57 topAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67];
+    unifiedAboutButton9 = [(OBPrivacySplashController *)self unifiedAboutButton];
+    topAnchor = [unifiedAboutButton9 topAnchor];
+    topAnchor2 = [v57 topAnchor];
+    v68 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v128[0] = v68;
-    v69 = [(OBPrivacySplashController *)self unifiedAboutButton];
-    v70 = [v69 bottomAnchor];
+    unifiedAboutButton10 = [(OBPrivacySplashController *)self unifiedAboutButton];
+    bottomAnchor = [unifiedAboutButton10 bottomAnchor];
     v122 = v57;
-    v71 = [v57 bottomAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71];
+    bottomAnchor2 = [v57 bottomAnchor];
+    v72 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v128[1] = v72;
     v128[2] = v64;
     v121 = v64;
     v73 = [MEMORY[0x1E695DEC8] arrayWithObjects:v128 count:3];
     [v120 activateConstraints:v73];
 
-    v74 = [(OBPrivacySplashController *)self customTintColor];
+    customTintColor = [(OBPrivacySplashController *)self customTintColor];
 
-    if (v74)
+    if (customTintColor)
     {
-      v75 = [(OBPrivacySplashController *)self customTintColor];
-      v76 = [(OBWelcomeController *)self headerView];
-      [v76 setTintColor:v75];
+      customTintColor2 = [(OBPrivacySplashController *)self customTintColor];
+      headerView = [(OBWelcomeController *)self headerView];
+      [headerView setTintColor:customTintColor2];
     }
 
     v12 = v125;
@@ -389,67 +389,67 @@ LABEL_6:
     v45 = 0x1E695D000uLL;
   }
 
-  v77 = [(OBWelcomeController *)self contentView];
-  [v77 addSubview:v12];
+  contentView = [(OBWelcomeController *)self contentView];
+  [contentView addSubview:v12];
 
-  v78 = [MEMORY[0x1E695DF70] array];
-  v79 = [(OBWelcomeController *)self contentView];
-  v80 = [v79 topAnchor];
-  v81 = [(OBPrivacySplashListView *)v12 topAnchor];
-  v82 = [v80 constraintEqualToAnchor:v81];
+  array = [MEMORY[0x1E695DF70] array];
+  contentView2 = [(OBWelcomeController *)self contentView];
+  topAnchor3 = [contentView2 topAnchor];
+  topAnchor4 = [(OBPrivacySplashListView *)v12 topAnchor];
+  v82 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v127 = v82;
   v83 = [*(v45 + 3784) arrayWithObjects:&v127 count:1];
-  [v78 addObjectsFromArray:v83];
+  [array addObjectsFromArray:v83];
 
-  v84 = [(OBWelcomeController *)self contentView];
-  v85 = [v84 bottomAnchor];
-  v86 = [(OBPrivacySplashListView *)v12 bottomAnchor];
-  v87 = [v85 constraintEqualToAnchor:v86];
-  [v78 addObject:v87];
+  contentView3 = [(OBWelcomeController *)self contentView];
+  bottomAnchor3 = [contentView3 bottomAnchor];
+  bottomAnchor4 = [(OBPrivacySplashListView *)v12 bottomAnchor];
+  v87 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+  [array addObject:v87];
 
-  v123 = [(OBWelcomeController *)self contentView];
-  v88 = [v123 leadingAnchor];
-  v89 = [(OBPrivacySplashListView *)v12 leadingAnchor];
-  v90 = [v88 constraintEqualToAnchor:v89];
+  contentView4 = [(OBWelcomeController *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  leadingAnchor3 = [(OBPrivacySplashListView *)v12 leadingAnchor];
+  v90 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   v126[0] = v90;
-  v91 = [(OBWelcomeController *)self contentView];
-  v92 = [v91 trailingAnchor];
-  v93 = [(OBPrivacySplashListView *)v12 trailingAnchor];
-  v94 = [v92 constraintEqualToAnchor:v93];
+  contentView5 = [(OBWelcomeController *)self contentView];
+  trailingAnchor = [contentView5 trailingAnchor];
+  trailingAnchor2 = [(OBPrivacySplashListView *)v12 trailingAnchor];
+  v94 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v126[1] = v94;
   v95 = [*(v45 + 3784) arrayWithObjects:v126 count:2];
-  [v78 addObjectsFromArray:v95];
+  [array addObjectsFromArray:v95];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v78];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
   [(OBPrivacySplashController *)self updateFontForPrivacyGateway];
   [(OBPrivacySplashController *)self updateFontForUnifiedAboutButton];
   v96 = self->_flow;
-  v97 = [(OBPrivacySplashController *)self displayLanguage];
-  v98 = [(OBPrivacyFlow *)v96 localizedTitleForLanguage:v97 preferredDeviceType:[(OBPrivacySplashController *)self displayDeviceType]];
+  displayLanguage6 = [(OBPrivacySplashController *)self displayLanguage];
+  v98 = [(OBPrivacyFlow *)v96 localizedTitleForLanguage:displayLanguage6 preferredDeviceType:[(OBPrivacySplashController *)self displayDeviceType]];
   [(OBPrivacySplashController *)self setTitle:v98];
 
-  v99 = [(OBWelcomeController *)self headerView];
-  v100 = [(OBPrivacySplashController *)self title];
-  [v99 setTitle:v100];
+  headerView2 = [(OBWelcomeController *)self headerView];
+  title = [(OBPrivacySplashController *)self title];
+  [headerView2 setTitle:title];
 
-  v101 = [(OBPrivacyFlow *)self->_flow identifier];
-  if ([v101 isEqualToString:@"com.apple.onboarding.privacypane"])
+  identifier2 = [(OBPrivacyFlow *)self->_flow identifier];
+  if ([identifier2 isEqualToString:@"com.apple.onboarding.privacypane"])
   {
-    v102 = [(OBWelcomeController *)self templateType];
+    templateType = [(OBWelcomeController *)self templateType];
 
     v103 = v125;
-    if (v102 == 2)
+    if (templateType == 2)
     {
       v104 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v105 = [(OBPrivacySplashController *)self displayLanguage];
-      v106 = [OBUtilities localizedString:@"PRIVACY_ICON_DESCRIPTION" forTable:@"Localizable" inBundle:v104 forLanguage:v105];
-      v107 = [(OBWelcomeController *)self headerView];
-      v108 = [v107 animationView];
-      [v108 setAccessibilityLabel:v106];
+      displayLanguage7 = [(OBPrivacySplashController *)self displayLanguage];
+      v106 = [OBUtilities localizedString:@"PRIVACY_ICON_DESCRIPTION" forTable:@"Localizable" inBundle:v104 forLanguage:displayLanguage7];
+      headerView3 = [(OBWelcomeController *)self headerView];
+      animationView = [headerView3 animationView];
+      [animationView setAccessibilityLabel:v106];
 
-      v109 = [(OBWelcomeController *)self headerView];
-      v110 = [v109 animationView];
-      [v110 setIsAccessibilityElement:1];
+      headerView4 = [(OBWelcomeController *)self headerView];
+      animationView2 = [headerView4 animationView];
+      [animationView2 setIsAccessibilityElement:1];
 LABEL_23:
 
       goto LABEL_24;
@@ -462,27 +462,27 @@ LABEL_23:
     v103 = v125;
   }
 
-  v111 = [(OBPrivacyFlow *)self->_flow _iconSymbolName];
+  _iconSymbolName = [(OBPrivacyFlow *)self->_flow _iconSymbolName];
 
-  if (v111)
+  if (_iconSymbolName)
   {
-    v112 = [(OBWelcomeController *)self headerView];
-    v113 = [(OBPrivacyFlow *)self->_flow _iconSymbolName];
+    headerView5 = [(OBWelcomeController *)self headerView];
+    _iconSymbolName2 = [(OBPrivacyFlow *)self->_flow _iconSymbolName];
     v114 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v115 = [(OBPrivacySplashController *)self displayLanguage];
-    v116 = [OBUtilities localizedString:@"PRIVACY_ICON_DESCRIPTION" forTable:@"Localizable" inBundle:v114 forLanguage:v115];
-    [v112 setSymbol:v113 accessibilityLabel:v116];
+    displayLanguage8 = [(OBPrivacySplashController *)self displayLanguage];
+    v116 = [OBUtilities localizedString:@"PRIVACY_ICON_DESCRIPTION" forTable:@"Localizable" inBundle:v114 forLanguage:displayLanguage8];
+    [headerView5 setSymbol:_iconSymbolName2 accessibilityLabel:v116];
 
-    v117 = [(OBWelcomeController *)self headerView];
-    [v117 setIconInheritsTint:1];
+    headerView6 = [(OBWelcomeController *)self headerView];
+    [headerView6 setIconInheritsTint:1];
 
-    v118 = [(OBPrivacySplashController *)self customTintColor];
+    customTintColor3 = [(OBPrivacySplashController *)self customTintColor];
 
-    if (v118)
+    if (customTintColor3)
     {
-      v109 = [(OBPrivacySplashController *)self customTintColor];
-      v110 = [(OBWelcomeController *)self headerView];
-      [v110 setTintColor:v109];
+      headerView4 = [(OBPrivacySplashController *)self customTintColor];
+      animationView2 = [(OBWelcomeController *)self headerView];
+      [animationView2 setTintColor:headerView4];
       goto LABEL_23;
     }
   }
@@ -492,86 +492,86 @@ LABEL_24:
   v119 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDismissHandlerForDefaultButton:(id)a3
+- (void)setDismissHandlerForDefaultButton:(id)button
 {
-  [(OBPrivacySplashController *)self setDefaultButtonHandler:a3];
+  [(OBPrivacySplashController *)self setDefaultButtonHandler:button];
   v7 = +[OBBoldTrayButton boldButton];
-  v4 = [(OBPrivacySplashController *)self _defaultButtonTitle];
-  [v7 setTitle:v4 forState:0];
+  _defaultButtonTitle = [(OBPrivacySplashController *)self _defaultButtonTitle];
+  [v7 setTitle:_defaultButtonTitle forState:0];
 
   [v7 addTarget:self action:sel_defaultButtonPressed_ forControlEvents:0x2000];
-  v5 = [(OBWelcomeController *)self buttonTray];
-  [v5 addButton:v7];
+  buttonTray = [(OBWelcomeController *)self buttonTray];
+  [buttonTray addButton:v7];
 
-  v6 = [(OBWelcomeController *)self buttonTray];
-  [v6 setHidden:0];
+  buttonTray2 = [(OBWelcomeController *)self buttonTray];
+  [buttonTray2 setHidden:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = OBPrivacySplashController;
-  [(OBWelcomeController *)&v4 traitCollectionDidChange:a3];
+  [(OBWelcomeController *)&v4 traitCollectionDidChange:change];
   [(OBPrivacySplashController *)self updateFontForPrivacyGateway];
   [(OBPrivacySplashController *)self updateFontForUnifiedAboutButton];
 }
 
 - (void)updateFontForPrivacyGateway
 {
-  v3 = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
-  v4 = [v3 titleLabel];
+  linkToPrivacyGatewayButton = [(OBPrivacySplashController *)self linkToPrivacyGatewayButton];
+  titleLabel = [linkToPrivacyGatewayButton titleLabel];
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  [v4 setFont:v5];
+  [titleLabel setFont:v5];
 
-  v6 = [(OBPrivacySplashController *)self privacyGatewayDescription];
+  privacyGatewayDescription = [(OBPrivacySplashController *)self privacyGatewayDescription];
   v7 = *MEMORY[0x1E69DDD80];
   v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-  [v6 setFont:v8];
+  [privacyGatewayDescription setFont:v8];
 
-  v10 = [(OBPrivacySplashController *)self linkToPrivacyGateway];
+  linkToPrivacyGateway = [(OBPrivacySplashController *)self linkToPrivacyGateway];
   v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v7];
-  [v10 setFont:v9];
+  [linkToPrivacyGateway setFont:v9];
 }
 
 - (void)updateFontForUnifiedAboutButton
 {
-  v4 = [(OBPrivacySplashController *)self unifiedAboutButton];
-  v2 = [v4 titleLabel];
+  unifiedAboutButton = [(OBPrivacySplashController *)self unifiedAboutButton];
+  titleLabel = [unifiedAboutButton titleLabel];
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  [v2 setFont:v3];
+  [titleLabel setFont:v3];
 }
 
-- (void)defaultButtonPressed:(id)a3
+- (void)defaultButtonPressed:(id)pressed
 {
-  v4 = [(OBPrivacySplashController *)self defaultButtonHandler];
+  defaultButtonHandler = [(OBPrivacySplashController *)self defaultButtonHandler];
 
-  if (v4)
+  if (defaultButtonHandler)
   {
-    v5 = [(OBPrivacySplashController *)self defaultButtonHandler];
-    v5[2]();
+    defaultButtonHandler2 = [(OBPrivacySplashController *)self defaultButtonHandler];
+    defaultButtonHandler2[2]();
   }
 }
 
 - (void)_languageToggleTapped
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
-  v4 = [(OBPrivacySplashController *)self displayLanguage];
-  v5 = [v3 didTapRightBarButtonItemForWelcomeController:self currentDisplayLanguage:v4];
+  additionalDisplayLanguageManager = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
+  displayLanguage = [(OBPrivacySplashController *)self displayLanguage];
+  v5 = [additionalDisplayLanguageManager didTapRightBarButtonItemForWelcomeController:self currentDisplayLanguage:displayLanguage];
   [(OBPrivacySplashController *)self setDisplayLanguage:v5];
 
-  v6 = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
-  v7 = [(OBPrivacySplashController *)self displayLanguage];
-  [v6 configureNavigationItemRightBarButtonItemForWelcomeController:self currentDisplayLanguage:v7 action:sel__languageToggleTapped];
+  additionalDisplayLanguageManager2 = [(OBPrivacySplashController *)self additionalDisplayLanguageManager];
+  displayLanguage2 = [(OBPrivacySplashController *)self displayLanguage];
+  [additionalDisplayLanguageManager2 configureNavigationItemRightBarButtonItemForWelcomeController:self currentDisplayLanguage:displayLanguage2 action:sel__languageToggleTapped];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(OBWelcomeController *)self contentView];
-  v9 = [v8 _allSubviews];
+  contentView = [(OBWelcomeController *)self contentView];
+  _allSubviews = [contentView _allSubviews];
 
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = [_allSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -583,22 +583,22 @@ LABEL_24:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_allSubviews);
         }
 
         [*(*(&v16 + 1) + 8 * v13++) removeFromSuperview];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [_allSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 
   [(OBPrivacySplashController *)self _initializeFromBundle];
-  v14 = [(OBBaseWelcomeController *)self navigationItem];
-  [v14 setTitle:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setTitle:0];
 
   v15 = *MEMORY[0x1E69E9840];
 }

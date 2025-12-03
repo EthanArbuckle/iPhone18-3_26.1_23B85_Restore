@@ -1,31 +1,31 @@
 @interface PLRebuildableDirectory
-+ (id)rebuildableDirectoryWithURL:(id)a3 isCPLAssets:(BOOL)a4 isPhotoStream:(BOOL)a5 photoLibrary:(id)a6 startTime:(double)a7;
-+ (void)collectFileURLs:(id)a3 urlsToSkip:(id)a4 forAddingToAlbum:(id)a5 intoAssetsArray:(id)a6 assetsKind:(int)a7 testCreationDates:(BOOL)a8 startTime:(double)a9 pathManager:(id)a10;
++ (id)rebuildableDirectoryWithURL:(id)l isCPLAssets:(BOOL)assets isPhotoStream:(BOOL)stream photoLibrary:(id)library startTime:(double)time;
++ (void)collectFileURLs:(id)ls urlsToSkip:(id)skip forAddingToAlbum:(id)album intoAssetsArray:(id)array assetsKind:(int)kind testCreationDates:(BOOL)dates startTime:(double)time pathManager:(id)self0;
 - (id)debugDescription;
 - (id)description;
-- (void)_collectContentsOfDirectoryURL:(id)a3 urlsToSkip:(id)a4 forAddingToAlbum:(id)a5 intoAssetsArray:(id)a6 assetsKind:(int)a7 startTime:(double)a8;
-- (void)gatherAssetsToImport:(id)a3 pendingAssetsCount:(unint64_t *)a4 onDiskURLsToSkip:(id)a5 cameraRollOnly:(BOOL)a6;
+- (void)_collectContentsOfDirectoryURL:(id)l urlsToSkip:(id)skip forAddingToAlbum:(id)album intoAssetsArray:(id)array assetsKind:(int)kind startTime:(double)time;
+- (void)gatherAssetsToImport:(id)import pendingAssetsCount:(unint64_t *)count onDiskURLsToSkip:(id)skip cameraRollOnly:(BOOL)only;
 @end
 
 @implementation PLRebuildableDirectory
 
-- (void)_collectContentsOfDirectoryURL:(id)a3 urlsToSkip:(id)a4 forAddingToAlbum:(id)a5 intoAssetsArray:(id)a6 assetsKind:(int)a7 startTime:(double)a8
+- (void)_collectContentsOfDirectoryURL:(id)l urlsToSkip:(id)skip forAddingToAlbum:(id)album intoAssetsArray:(id)array assetsKind:(int)kind startTime:(double)time
 {
-  v9 = *&a7;
+  v9 = *&kind;
   v14 = MEMORY[0x1E695DEC8];
   v15 = *MEMORY[0x1E695DC30];
   v16 = *MEMORY[0x1E695DAA8];
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  arrayCopy = array;
+  albumCopy = album;
+  skipCopy = skip;
+  lCopy = l;
   v25 = [v14 arrayWithObjects:{v15, v16, 0}];
-  v21 = [(NSFileManager *)self->_fm enumeratorAtURL:v20 includingPropertiesForKeys:v25 options:1 errorHandler:&__block_literal_global_36];
+  v21 = [(NSFileManager *)self->_fm enumeratorAtURL:lCopy includingPropertiesForKeys:v25 options:1 errorHandler:&__block_literal_global_36];
 
   v22 = objc_opt_class();
-  v23 = [(PLRebuildableDirectory *)self photoLibrary];
-  v24 = [v23 pathManager];
-  [v22 collectFileURLs:v21 urlsToSkip:v19 forAddingToAlbum:v18 intoAssetsArray:v17 assetsKind:v9 testCreationDates:1 startTime:a8 pathManager:v24];
+  photoLibrary = [(PLRebuildableDirectory *)self photoLibrary];
+  pathManager = [photoLibrary pathManager];
+  [v22 collectFileURLs:v21 urlsToSkip:skipCopy forAddingToAlbum:albumCopy intoAssetsArray:arrayCopy assetsKind:v9 testCreationDates:1 startTime:time pathManager:pathManager];
 }
 
 uint64_t __122__PLRebuildableDirectory__collectContentsOfDirectoryURL_urlsToSkip_forAddingToAlbum_intoAssetsArray_assetsKind_startTime___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -47,13 +47,13 @@ uint64_t __122__PLRebuildableDirectory__collectContentsOfDirectoryURL_urlsToSkip
   return 1;
 }
 
-- (void)gatherAssetsToImport:(id)a3 pendingAssetsCount:(unint64_t *)a4 onDiskURLsToSkip:(id)a5 cameraRollOnly:(BOOL)a6
+- (void)gatherAssetsToImport:(id)import pendingAssetsCount:(unint64_t *)count onDiskURLsToSkip:(id)skip cameraRollOnly:(BOOL)only
 {
-  v6 = a6;
-  v36 = a4;
+  onlyCopy = only;
+  countCopy = count;
   v52 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v39 = a5;
+  importCopy = import;
+  skipCopy = skip;
   fm = self->_fm;
   v11 = [(PLRebuildableDirectory *)self url];
   v12 = *MEMORY[0x1E695DC30];
@@ -151,7 +151,7 @@ LABEL_11:
             goto LABEL_37;
           }
 
-          if (v6 && v41 == 1)
+          if (onlyCopy && v41 == 1)
           {
             v30 = PLMigrationGetLog();
             if (!os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -160,9 +160,9 @@ LABEL_11:
             }
 
 LABEL_37:
-            v35 = [v25 path];
+            path = [v25 path];
             *buf = 138412290;
-            v49 = v35;
+            v49 = path;
             _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEBUG, "Skipping sub level '%@'.", buf, 0xCu);
 
             goto LABEL_38;
@@ -172,13 +172,13 @@ LABEL_37:
         v28 = PLMigrationGetLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
         {
-          v29 = [v25 path];
+          path2 = [v25 path];
           *buf = 138412290;
-          v49 = v29;
+          v49 = path2;
           _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEBUG, "Searching sub level '%@'.", buf, 0xCu);
         }
 
-        if (v6)
+        if (onlyCopy)
         {
           v30 = 0;
         }
@@ -189,19 +189,19 @@ LABEL_37:
           if ([(PLRebuildableDirectory *)self isPhotoStream]&& v37)
           {
             [(PLRebuildableDirectory *)self photoLibrary];
-            v32 = v31 = v6;
+            v32 = v31 = onlyCopy;
             v30 = [PLPhotoStreamAlbum photoStreamAlbumWithStreamID:v37 inPhotoLibrary:v32 createIfNeeded:1];
 
-            v6 = v31;
+            onlyCopy = v31;
           }
         }
 
-        v33 = [v9 count];
-        [(PLRebuildableDirectory *)self _collectContentsOfDirectoryURL:v25 urlsToSkip:v39 forAddingToAlbum:v30 intoAssetsArray:v9 assetsKind:v41 startTime:self->_startTime];
-        v34 = [v9 count];
-        if (!v6 && v34 != v33)
+        v33 = [importCopy count];
+        [(PLRebuildableDirectory *)self _collectContentsOfDirectoryURL:v25 urlsToSkip:skipCopy forAddingToAlbum:v30 intoAssetsArray:importCopy assetsKind:v41 startTime:self->_startTime];
+        v34 = [importCopy count];
+        if (!onlyCopy && v34 != v33)
         {
-          *v36 = [v9 count];
+          *countCopy = [importCopy count];
         }
 
 LABEL_38:
@@ -238,9 +238,9 @@ uint64_t __98__PLRebuildableDirectory_gatherAssetsToImport_pendingAssetsCount_on
 - (id)description
 {
   v2 = [(PLRebuildableDirectory *)self url];
-  v3 = [v2 path];
+  path = [v2 path];
 
-  return v3;
+  return path;
 }
 
 - (id)debugDescription
@@ -248,37 +248,37 @@ uint64_t __98__PLRebuildableDirectory_gatherAssetsToImport_pendingAssetsCount_on
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [(PLRebuildableDirectory *)self url];
-  v6 = [v5 path];
-  v7 = [v3 stringWithFormat:@"<%@ %p> %@", v4, self, v6];
+  path = [v5 path];
+  v7 = [v3 stringWithFormat:@"<%@ %p> %@", v4, self, path];
 
   return v7;
 }
 
-+ (void)collectFileURLs:(id)a3 urlsToSkip:(id)a4 forAddingToAlbum:(id)a5 intoAssetsArray:(id)a6 assetsKind:(int)a7 testCreationDates:(BOOL)a8 startTime:(double)a9 pathManager:(id)a10
++ (void)collectFileURLs:(id)ls urlsToSkip:(id)skip forAddingToAlbum:(id)album intoAssetsArray:(id)array assetsKind:(int)kind testCreationDates:(BOOL)dates startTime:(double)time pathManager:(id)self0
 {
   v68 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v47 = a4;
-  v44 = a5;
-  v40 = a6;
-  v16 = a10;
+  lsCopy = ls;
+  skipCopy = skip;
+  albumCopy = album;
+  arrayCopy = array;
+  managerCopy = manager;
   v45 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (!a8)
+  if (!dates)
   {
-    v17 = [MEMORY[0x1E695DF00] distantFuture];
-    [v17 timeIntervalSinceReferenceDate];
-    a9 = v18;
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [distantFuture timeIntervalSinceReferenceDate];
+    time = v18;
   }
 
-  v42 = v16;
-  v19 = [v16 isUBF];
+  v42 = managerCopy;
+  isUBF = [managerCopy isUBF];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v20 = v15;
+  v20 = lsCopy;
   v21 = [v20 countByEnumeratingWithState:&v57 objects:v67 count:16];
-  v22 = v47;
+  v22 = skipCopy;
   v48 = v20;
   if (v21)
   {
@@ -296,7 +296,7 @@ uint64_t __98__PLRebuildableDirectory_gatherAssetsToImport_pendingAssetsCount_on
         }
 
         v27 = *(*(&v57 + 1) + 8 * i);
-        if (v19)
+        if (isUBF)
         {
           v56 = 0;
           [v27 getResourceValue:&v56 forKey:v25 error:0];
@@ -311,9 +311,9 @@ uint64_t __98__PLRebuildableDirectory_gatherAssetsToImport_pendingAssetsCount_on
             v33 = PLMigrationGetLog();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
             {
-              v34 = [v27 lastPathComponent];
+              lastPathComponent = [v27 lastPathComponent];
               *buf = 138412290;
-              v62 = v34;
+              v62 = lastPathComponent;
               _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "Skipping URL with invalid filename: %@", buf, 0xCu);
 
               v20 = v48;
@@ -347,39 +347,39 @@ LABEL_23:
         [v27 getResourceValue:&v55 forKey:v46 error:0];
         v30 = v55;
         [v30 timeIntervalSinceReferenceDate];
-        if (a9 < v31)
+        if (time < v31)
         {
-          v32 = PLMigrationGetLog();
-          if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+          stringByDeletingPathExtension = PLMigrationGetLog();
+          if (os_log_type_enabled(stringByDeletingPathExtension, OS_LOG_TYPE_ERROR))
           {
-            v35 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a9];
+            v35 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
             *buf = 138412802;
             v62 = v27;
             v63 = 2112;
             v64 = v30;
             v65 = 2112;
             v66 = v35;
-            _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "File import will skip %@ because it was created on %@, after we started import on %@", buf, 0x20u);
+            _os_log_impl(&dword_19BF1F000, stringByDeletingPathExtension, OS_LOG_TYPE_ERROR, "File import will skip %@ because it was created on %@, after we started import on %@", buf, 0x20u);
             goto LABEL_30;
           }
         }
 
         else
         {
-          if (v19)
+          if (isUBF)
           {
-            v32 = [MEMORY[0x1E69BF298] uuidFromURL:v27];
-            if (!v32)
+            stringByDeletingPathExtension = [MEMORY[0x1E69BF298] uuidFromURL:v27];
+            if (!stringByDeletingPathExtension)
             {
               goto LABEL_31;
             }
 
 LABEL_27:
-            v35 = [v45 objectForKeyedSubscript:v32];
+            v35 = [v45 objectForKeyedSubscript:stringByDeletingPathExtension];
             if (!v35)
             {
-              v35 = [[PLFileSystemImportAsset alloc] initWithDestinationAlbum:v44 assetKind:a7];
-              [v45 setObject:v35 forKeyedSubscript:v32];
+              v35 = [[PLFileSystemImportAsset alloc] initWithDestinationAlbum:albumCopy assetKind:kind];
+              [v45 setObject:v35 forKeyedSubscript:stringByDeletingPathExtension];
             }
 
             [(PLFileSystemImportAsset *)v35 addURL:v27];
@@ -389,11 +389,11 @@ LABEL_30:
             goto LABEL_31;
           }
 
-          v36 = [v27 lastPathComponent];
-          v32 = [v36 stringByDeletingPathExtension];
+          lastPathComponent2 = [v27 lastPathComponent];
+          stringByDeletingPathExtension = [lastPathComponent2 stringByDeletingPathExtension];
 
           v20 = v48;
-          if (v32)
+          if (stringByDeletingPathExtension)
           {
             goto LABEL_27;
           }
@@ -401,7 +401,7 @@ LABEL_30:
 
 LABEL_31:
 
-        v22 = v47;
+        v22 = skipCopy;
 LABEL_32:
 
         objc_autoreleasePoolPop(v29);
@@ -414,7 +414,7 @@ LABEL_32:
   }
 
   v37 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if ((v19 & 1) == 0)
+  if ((isUBF & 1) == 0)
   {
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
@@ -480,18 +480,18 @@ void __137__PLRebuildableDirectory_collectFileURLs_urlsToSkip_forAddingToAlbum_i
   }
 }
 
-+ (id)rebuildableDirectoryWithURL:(id)a3 isCPLAssets:(BOOL)a4 isPhotoStream:(BOOL)a5 photoLibrary:(id)a6 startTime:(double)a7
++ (id)rebuildableDirectoryWithURL:(id)l isCPLAssets:(BOOL)assets isPhotoStream:(BOOL)stream photoLibrary:(id)library startTime:(double)time
 {
-  v9 = a5;
+  streamCopy = stream;
   v27 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
+  lCopy = l;
+  libraryCopy = library;
   v14 = objc_alloc_init(PLRebuildableDirectory);
-  if (v9)
+  if (streamCopy)
   {
     v15 = MEMORY[0x1E696AE88];
-    v16 = [v12 lastPathComponent];
-    v17 = [v15 scannerWithString:v16];
+    lastPathComponent = [lCopy lastPathComponent];
+    v17 = [v15 scannerWithString:lastPathComponent];
 
     [v17 setCharactersToBeSkipped:0];
     if ([v17 scanLongLong:0] && objc_msgSend(v17, "isAtEnd"))
@@ -499,9 +499,9 @@ void __137__PLRebuildableDirectory_collectFileURLs_urlsToSkip_forAddingToAlbum_i
       p_super = PLMigrationGetLog();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v12 path];
+        path = [lCopy path];
         v25 = 138412290;
-        v26 = v19;
+        v26 = path;
         _os_log_impl(&dword_19BF1F000, p_super, OS_LOG_TYPE_DEFAULT, "Found valid PhotoStream directory at %@", &v25, 0xCu);
       }
     }
@@ -511,9 +511,9 @@ void __137__PLRebuildableDirectory_collectFileURLs_urlsToSkip_forAddingToAlbum_i
       v20 = PLMigrationGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v12 path];
+        path2 = [lCopy path];
         v25 = 138412290;
-        v26 = v21;
+        v26 = path2;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Invalid PhotoStream directory at %@", &v25, 0xCu);
       }
 
@@ -524,17 +524,17 @@ void __137__PLRebuildableDirectory_collectFileURLs_urlsToSkip_forAddingToAlbum_i
 
   if (v14)
   {
-    if ([v12 checkResourceIsReachableAndReturnError:0])
+    if ([lCopy checkResourceIsReachableAndReturnError:0])
     {
-      objc_storeStrong(&v14->_url, a3);
-      v14->_isCPLAssets = a4;
-      v14->_isPhotoStream = v9;
-      objc_storeStrong(&v14->_photoLibrary, a6);
+      objc_storeStrong(&v14->_url, l);
+      v14->_isCPLAssets = assets;
+      v14->_isPhotoStream = streamCopy;
+      objc_storeStrong(&v14->_photoLibrary, library);
       v22 = objc_alloc_init(MEMORY[0x1E696AC08]);
       fm = v14->_fm;
       v14->_fm = v22;
 
-      v14->_startTime = a7;
+      v14->_startTime = time;
     }
 
     else

@@ -1,18 +1,18 @@
 @interface SWPresentationStateScript
 - (NSString)executableScript;
-- (SWPresentationStateScript)initWithPresentationState:(unint64_t)a3;
+- (SWPresentationStateScript)initWithPresentationState:(unint64_t)state;
 @end
 
 @implementation SWPresentationStateScript
 
-- (SWPresentationStateScript)initWithPresentationState:(unint64_t)a3
+- (SWPresentationStateScript)initWithPresentationState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = SWPresentationStateScript;
   result = [(SWPresentationStateScript *)&v5 init];
   if (result)
   {
-    result->_presentationState = a3;
+    result->_presentationState = state;
   }
 
   return result;
@@ -20,14 +20,14 @@
 
 - (NSString)executableScript
 {
-  v2 = [(SWPresentationStateScript *)self presentationState];
+  presentationState = [(SWPresentationStateScript *)self presentationState];
   v3 = @"unknown";
-  if (v2 == 1)
+  if (presentationState == 1)
   {
     v3 = @"presented";
   }
 
-  if (v2 == 2)
+  if (presentationState == 2)
   {
     v3 = @"notpresented";
   }

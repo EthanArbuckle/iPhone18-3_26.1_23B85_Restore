@@ -1,6 +1,6 @@
 @interface _UIWindowSceneDisplaySettingsDiffAction
 - (UIApplicationSceneSettingsDiffInspector)sceneSettingsDisplayDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UIWindowSceneDisplaySettingsDiffAction
@@ -22,32 +22,32 @@
   return sceneSettingsDisplayDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"_UIWindowSceneDisplaySettingsDiffAction.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowSceneDisplaySettingsDiffAction.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
   }
 
-  v16 = v13;
+  v16 = sceneCopy;
   v28 = 0;
-  v17 = [(_UIWindowSceneDisplaySettingsDiffAction *)self sceneSettingsDisplayDiffInspector];
-  [v17 inspectDiff:v15 withContext:&v28];
+  sceneSettingsDisplayDiffInspector = [(_UIWindowSceneDisplaySettingsDiffAction *)self sceneSettingsDisplayDiffInspector];
+  [sceneSettingsDisplayDiffInspector inspectDiff:diffCopy withContext:&v28];
 
-  if (a6)
+  if (settings)
   {
     v18 = v28;
   }
 
   else
   {
-    v19 = [v14 uiSettings];
-    v20 = [v19 _containsSetting:38];
+    uiSettings = [sSceneCopy uiSettings];
+    v20 = [uiSettings _containsSetting:38];
 
     v18 = v28;
     if (v20)
@@ -59,21 +59,21 @@
 
   if (v18 & 2) != 0 || (v18)
   {
-    v21 = [v14 settings];
-    v22 = [v21 displayConfiguration];
+    settings = [sSceneCopy settings];
+    displayConfiguration = [settings displayConfiguration];
 
-    v23 = [v22 identity];
-    v24 = [UIScreen _screenWithFBSDisplayIdentity:v23];
+    identity = [displayConfiguration identity];
+    v24 = [UIScreen _screenWithFBSDisplayIdentity:identity];
 
     if (v24)
     {
       if ((v28 & 1) != 0 && ([UIApp isFrontBoard] & 1) == 0)
       {
-        [v24 _updateDisplayConfiguration:v22];
+        [v24 _updateDisplayConfiguration:displayConfiguration];
       }
 
-      v25 = [v14 uiSettings];
-      [v24 _setReferenceDisplayModeStatus:{objc_msgSend(v25, "screenReferenceDisplayModeStatus")}];
+      uiSettings2 = [sSceneCopy uiSettings];
+      [v24 _setReferenceDisplayModeStatus:{objc_msgSend(uiSettings2, "screenReferenceDisplayModeStatus")}];
     }
 
     if (v28)

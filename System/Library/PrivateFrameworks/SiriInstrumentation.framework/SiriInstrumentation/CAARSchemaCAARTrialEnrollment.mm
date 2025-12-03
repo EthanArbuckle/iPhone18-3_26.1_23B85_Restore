@@ -1,25 +1,25 @@
 @interface CAARSchemaCAARTrialEnrollment
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARTrialEnrollment)initWithDictionary:(id)a3;
-- (CAARSchemaCAARTrialEnrollment)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARTrialEnrollment)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARTrialEnrollment)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARTrialEnrollment
 
-- (CAARSchemaCAARTrialEnrollment)initWithDictionary:(id)a3
+- (CAARSchemaCAARTrialEnrollment)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CAARSchemaCAARTrialEnrollment;
   v5 = [(CAARSchemaCAARTrialEnrollment *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"experimentId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"experimentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(CAARSchemaCAARTrialEnrollment *)v5 setExperimentId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"treatmentId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"treatmentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(CAARSchemaCAARTrialEnrollment *)v5 setTreatmentId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"deploymentId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deploymentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(CAARSchemaCAARTrialEnrollment *)v5 setDeploymentId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"rolloutId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"rolloutId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARTrialEnrollment)initWithJSON:(id)a3
+- (CAARSchemaCAARTrialEnrollment)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARTrialEnrollment *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARTrialEnrollment *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARTrialEnrollment *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,38 +93,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_deploymentId)
   {
-    v4 = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"deploymentId"];
+    deploymentId = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
+    v5 = [deploymentId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"deploymentId"];
   }
 
   if (self->_experimentId)
   {
-    v6 = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"experimentId"];
+    experimentId = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
+    v7 = [experimentId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"experimentId"];
   }
 
   if (self->_rolloutId)
   {
-    v8 = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"rolloutId"];
+    rolloutId = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
+    v9 = [rolloutId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"rolloutId"];
   }
 
   if (self->_treatmentId)
   {
-    v10 = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"treatmentId"];
+    treatmentId = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
+    v11 = [treatmentId copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"treatmentId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -135,28 +135,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_rolloutId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
-  v6 = [v4 experimentId];
-  if ((v5 != 0) == (v6 == 0))
+  experimentId = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
+  experimentId2 = [equalCopy experimentId];
+  if ((experimentId != 0) == (experimentId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
-  if (v7)
+  experimentId3 = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
+  if (experimentId3)
   {
-    v8 = v7;
-    v9 = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
-    v10 = [v4 experimentId];
-    v11 = [v9 isEqual:v10];
+    v8 = experimentId3;
+    experimentId4 = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
+    experimentId5 = [equalCopy experimentId];
+    v11 = [experimentId4 isEqual:experimentId5];
 
     if (!v11)
     {
@@ -168,20 +168,20 @@
   {
   }
 
-  v5 = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
-  v6 = [v4 treatmentId];
-  if ((v5 != 0) == (v6 == 0))
+  experimentId = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
+  experimentId2 = [equalCopy treatmentId];
+  if ((experimentId != 0) == (experimentId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
-  if (v12)
+  treatmentId = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
+  if (treatmentId)
   {
-    v13 = v12;
-    v14 = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
-    v15 = [v4 treatmentId];
-    v16 = [v14 isEqual:v15];
+    v13 = treatmentId;
+    treatmentId2 = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
+    treatmentId3 = [equalCopy treatmentId];
+    v16 = [treatmentId2 isEqual:treatmentId3];
 
     if (!v16)
     {
@@ -193,20 +193,20 @@
   {
   }
 
-  v5 = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
-  v6 = [v4 deploymentId];
-  if ((v5 != 0) == (v6 == 0))
+  experimentId = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
+  experimentId2 = [equalCopy deploymentId];
+  if ((experimentId != 0) == (experimentId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
-  if (v17)
+  deploymentId = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
+  if (deploymentId)
   {
-    v18 = v17;
-    v19 = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
-    v20 = [v4 deploymentId];
-    v21 = [v19 isEqual:v20];
+    v18 = deploymentId;
+    deploymentId2 = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
+    deploymentId3 = [equalCopy deploymentId];
+    v21 = [deploymentId2 isEqual:deploymentId3];
 
     if (!v21)
     {
@@ -218,12 +218,12 @@
   {
   }
 
-  v5 = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
-  v6 = [v4 rolloutId];
-  if ((v5 != 0) != (v6 == 0))
+  experimentId = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
+  experimentId2 = [equalCopy rolloutId];
+  if ((experimentId != 0) != (experimentId2 == 0))
   {
-    v22 = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
-    if (!v22)
+    rolloutId = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
+    if (!rolloutId)
     {
 
 LABEL_25:
@@ -231,10 +231,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
-    v25 = [v4 rolloutId];
-    v26 = [v24 isEqual:v25];
+    v23 = rolloutId;
+    rolloutId2 = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
+    rolloutId3 = [equalCopy rolloutId];
+    v26 = [rolloutId2 isEqual:rolloutId3];
 
     if (v26)
     {
@@ -254,37 +254,37 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
+  toCopy = to;
+  experimentId = [(CAARSchemaCAARTrialEnrollment *)self experimentId];
 
-  if (v4)
+  if (experimentId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
+  treatmentId = [(CAARSchemaCAARTrialEnrollment *)self treatmentId];
 
-  if (v5)
+  if (treatmentId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
+  deploymentId = [(CAARSchemaCAARTrialEnrollment *)self deploymentId];
 
-  if (v6)
+  if (deploymentId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
+  rolloutId = [(CAARSchemaCAARTrialEnrollment *)self rolloutId];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (rolloutId)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 

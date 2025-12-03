@@ -2,34 +2,34 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)hasText;
 - (KeychainSyncPasscodeFieldDelegate)delegate;
-- (PasscodeFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)passcodeField:(id)a3 shouldInsertText:(id)a4;
+- (PasscodeFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)passcodeField:(id)field shouldInsertText:(id)text;
 - (void)layoutSubviews;
-- (void)passcodeField:(id)a3 enteredPasscode:(id)a4;
+- (void)passcodeField:(id)field enteredPasscode:(id)passcode;
 @end
 
 @implementation PasscodeFieldCell
 
-- (PasscodeFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PasscodeFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v18.receiver = self;
   v18.super_class = PasscodeFieldCell;
-  v9 = [(PSTableCell *)&v18 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v18 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
     [(PasscodeFieldCell *)v9 setSelectionStyle:0];
-    v11 = [v8 propertyForKey:@"numberOfPasscodeFields"];
-    v12 = [v11 unsignedIntegerValue];
+    v11 = [specifierCopy propertyForKey:@"numberOfPasscodeFields"];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-    v13 = [[PSPasscodeField alloc] initWithNumberOfEntryFields:v12];
+    v13 = [[PSPasscodeField alloc] initWithNumberOfEntryFields:unsignedIntegerValue];
     passcodeField = v10->_passcodeField;
     v10->_passcodeField = v13;
 
     [(PSPasscodeField *)v10->_passcodeField setDelegate:v10];
-    v15 = [(PasscodeFieldCell *)v10 contentView];
-    [v15 addSubview:v10->_passcodeField];
+    contentView = [(PasscodeFieldCell *)v10 contentView];
+    [contentView addSubview:v10->_passcodeField];
 
     v16 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v10 action:sel_cellTapped_];
     [(PasscodeFieldCell *)v10 addGestureRecognizer:v16];
@@ -38,11 +38,11 @@
   return v10;
 }
 
-- (void)passcodeField:(id)a3 enteredPasscode:(id)a4
+- (void)passcodeField:(id)field enteredPasscode:(id)passcode
 {
-  v5 = a4;
-  v6 = [(PasscodeFieldCell *)self delegate];
-  [v6 passcodeField:self didUpdateEnteredPasscode:v5];
+  passcodeCopy = passcode;
+  delegate = [(PasscodeFieldCell *)self delegate];
+  [delegate passcodeField:self didUpdateEnteredPasscode:passcodeCopy];
 }
 
 - (BOOL)becomeFirstResponder
@@ -59,15 +59,15 @@
 
 - (BOOL)hasText
 {
-  v2 = [(PSPasscodeField *)self->_passcodeField stringValue];
-  v3 = [v2 length] != 0;
+  stringValue = [(PSPasscodeField *)self->_passcodeField stringValue];
+  v3 = [stringValue length] != 0;
 
   return v3;
 }
 
-- (id)passcodeField:(id)a3 shouldInsertText:(id)a4
+- (id)passcodeField:(id)field shouldInsertText:(id)text
 {
-  v5 = a4;
+  textCopy = text;
   if ([(PasscodeFieldCell *)self convertsNumeralsToASCII])
   {
     if (!passcodeField_shouldInsertText__asciiMaker)
@@ -77,19 +77,19 @@
       passcodeField_shouldInsertText__asciiMaker = v6;
     }
 
-    v8 = [MEMORY[0x1E696AD60] stringWithCapacity:{objc_msgSend(v5, "length")}];
-    if ([v5 length])
+    v8 = [MEMORY[0x1E696AD60] stringWithCapacity:{objc_msgSend(textCopy, "length")}];
+    if ([textCopy length])
     {
       v9 = 0;
       do
       {
-        v10 = [v5 substringWithRange:{v9, 1}];
+        v10 = [textCopy substringWithRange:{v9, 1}];
         v11 = [passcodeField_shouldInsertText__asciiMaker numberFromString:v10];
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 stringValue];
-          [v8 appendString:v13];
+          stringValue = [v11 stringValue];
+          [v8 appendString:stringValue];
         }
 
         else
@@ -100,13 +100,13 @@
         ++v9;
       }
 
-      while (v9 < [v5 length]);
+      while (v9 < [textCopy length]);
     }
   }
 
   else
   {
-    v8 = v5;
+    v8 = textCopy;
   }
 
   return v8;
@@ -114,15 +114,15 @@
 
 - (void)layoutSubviews
 {
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(PasscodeFieldCell *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(PasscodeFieldCell *)self setBackgroundColor:clearColor];
 
   [(PasscodeFieldCell *)self setBackgroundView:0];
   v9.receiver = self;
   v9.super_class = PasscodeFieldCell;
   [(PSTableCell *)&v9 layoutSubviews];
-  v4 = [(PasscodeFieldCell *)self contentView];
-  [v4 bounds];
+  contentView = [(PasscodeFieldCell *)self contentView];
+  [contentView bounds];
   v6 = v5;
 
   [(PSPasscodeField *)self->_passcodeField frame];

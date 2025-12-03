@@ -1,18 +1,18 @@
 @interface PLDelayedSaveActionsDetail
-+ (id)_decodeAssetIDsByPersonUUIDNeedingContainmentUpdates:(id)a3 urlToObjectID:(id)a4;
-+ (id)_decodeAssetsForWallpaperUserAlbumRemoval:(id)a3 urlToObjectID:(id)a4;
-+ (id)_decodeAssetsForWidgetUserAlbumRemoval:(id)a3 urlToObjectID:(id)a4;
-+ (id)_decodeMomentDeletes:(id)a3 urlToObjectID:(id)a4;
-+ (id)_decodeSharedAssetContainerIncrementalChanges:(id)a3 urlToObjectID:(id)a4;
++ (id)_decodeAssetIDsByPersonUUIDNeedingContainmentUpdates:(id)updates urlToObjectID:(id)d;
++ (id)_decodeAssetsForWallpaperUserAlbumRemoval:(id)removal urlToObjectID:(id)d;
++ (id)_decodeAssetsForWidgetUserAlbumRemoval:(id)removal urlToObjectID:(id)d;
++ (id)_decodeMomentDeletes:(id)deletes urlToObjectID:(id)d;
++ (id)_decodeSharedAssetContainerIncrementalChanges:(id)changes urlToObjectID:(id)d;
 - (BOOL)shouldHandleMoments;
 - (PLDelayedSaveActionsDetail)init;
-- (PLDelayedSaveActionsDetail)initWithCoder:(id)a3;
+- (PLDelayedSaveActionsDetail)initWithCoder:(id)coder;
 - (id)_encodableAssetIDsByPersonUUIDNeedingContainmentUpdates;
 - (id)_encodableAssetsForWallpaperUserAlbumRemoval;
 - (id)_encodableAssetsForWidgetUserAlbumRemoval;
 - (id)_encodableMomentDeletes;
 - (id)_encodableSharedAssetContainerIncrementalChanges;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLDelayedSaveActionsDetail
@@ -35,28 +35,28 @@
   return v3;
 }
 
-- (PLDelayedSaveActionsDetail)initWithCoder:(id)a3
+- (PLDelayedSaveActionsDetail)initWithCoder:(id)coder
 {
   v176 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coderCopy = coder;
   v170.receiver = self;
   v170.super_class = PLDelayedSaveActionsDetail;
   v6 = [(PLDelayedSaveActionsDetail *)&v170 init];
   if (v6)
   {
-    v166 = [PLXPCCoder userInfoForCoder:v5];
-    v7 = [v166 persistentStoreCoordinator];
-    if (!v7)
+    v166 = [PLXPCCoder userInfoForCoder:coderCopy];
+    persistentStoreCoordinator = [v166 persistentStoreCoordinator];
+    if (!persistentStoreCoordinator)
     {
-      v153 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v153 handleFailureInMethod:a2 object:v6 file:@"PLDelayedSaveActionsDetail.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"coordinator != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"PLDelayedSaveActionsDetail.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"coordinator != nil"}];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __44__PLDelayedSaveActionsDetail_initWithCoder___block_invoke;
     aBlock[3] = &unk_1E75784F0;
-    v154 = v7;
+    v154 = persistentStoreCoordinator;
     v169 = v154;
     v8 = _Block_copy(aBlock);
     v171 = objc_opt_class();
@@ -66,12 +66,12 @@
     {
     }
 
-    v10 = [v5 decodeObjectOfClasses:v167 forKey:@"key_cloudFeedAlbumUpdates"];
+    v10 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_cloudFeedAlbumUpdates"];
     v11 = [v10 _pl_map:v8];
     cloudFeedAlbumUpdates = v6->_cloudFeedAlbumUpdates;
     v6->_cloudFeedAlbumUpdates = v11;
 
-    v13 = [v5 decodeObjectOfClasses:v167 forKey:@"key_cloudFeedCollectionShareUpdates"];
+    v13 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_cloudFeedCollectionShareUpdates"];
     v14 = [v13 _pl_map:v8];
     cloudFeedCollectionShareUpdates = v6->_cloudFeedCollectionShareUpdates;
     v6->_cloudFeedCollectionShareUpdates = v14;
@@ -83,31 +83,31 @@
     {
     }
 
-    v18 = [v5 decodeObjectOfClasses:v16 forKey:@"key_cloudFeedCollectionShareDeletes"];
+    v18 = [coderCopy decodeObjectOfClasses:v16 forKey:@"key_cloudFeedCollectionShareDeletes"];
     cloudFeedCollectionShareDeletes = v6->_cloudFeedCollectionShareDeletes;
     v6->_cloudFeedCollectionShareDeletes = v18;
 
-    v20 = [v5 decodeObjectOfClasses:v167 forKey:@"key_cloudFeedAssetInserts"];
+    v20 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_cloudFeedAssetInserts"];
     v21 = [v20 _pl_map:v8];
     cloudFeedAssetInserts = v6->_cloudFeedAssetInserts;
     v6->_cloudFeedAssetInserts = v21;
 
-    v23 = [v5 decodeObjectOfClasses:v167 forKey:@"key_cloudFeedAssetUpdates"];
+    v23 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_cloudFeedAssetUpdates"];
     v24 = [v23 _pl_map:v8];
     cloudFeedAssetUpdates = v6->_cloudFeedAssetUpdates;
     v6->_cloudFeedAssetUpdates = v24;
 
-    v26 = [v5 decodeObjectOfClasses:v167 forKey:@"key_cloudFeedCommentInserts"];
+    v26 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_cloudFeedCommentInserts"];
     v27 = [v26 _pl_map:v8];
     cloudFeedCommentInserts = v6->_cloudFeedCommentInserts;
     v6->_cloudFeedCommentInserts = v27;
 
-    v29 = [v5 decodeObjectOfClasses:v167 forKey:@"key_cloudFeedInvitationRecordUpdates"];
+    v29 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_cloudFeedInvitationRecordUpdates"];
     v30 = [v29 _pl_map:v8];
     cloudFeedInvitationRecordUpdates = v6->_cloudFeedInvitationRecordUpdates;
     v6->_cloudFeedInvitationRecordUpdates = v30;
 
-    v32 = [v5 decodeObjectOfClasses:v167 forKey:@"key_cloudFeedShareParticipantUpdates"];
+    v32 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_cloudFeedShareParticipantUpdates"];
     v33 = [v32 _pl_map:v8];
     cloudFeedShareParticipantUpdates = v6->_cloudFeedShareParticipantUpdates;
     v6->_cloudFeedShareParticipantUpdates = v33;
@@ -119,16 +119,16 @@
     {
     }
 
-    v37 = [v5 decodeObjectOfClasses:v35 forKey:@"key_cloudFeedShareParticipantDeletes"];
+    v37 = [coderCopy decodeObjectOfClasses:v35 forKey:@"key_cloudFeedShareParticipantDeletes"];
     cloudFeedShareParticipantDeletes = v6->_cloudFeedShareParticipantDeletes;
     v6->_cloudFeedShareParticipantDeletes = v37;
 
-    v39 = [v5 decodeObjectOfClasses:v167 forKey:@"key_cloudFeedDeletionEntries"];
+    v39 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_cloudFeedDeletionEntries"];
     v40 = [v39 _pl_map:v8];
     cloudFeedDeletionEntries = v6->_cloudFeedDeletionEntries;
     v6->_cloudFeedDeletionEntries = v40;
 
-    v42 = [v5 decodeObjectOfClasses:v167 forKey:@"key_momentInsertsAndUpdates"];
+    v42 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_momentInsertsAndUpdates"];
     v43 = [v42 _pl_map:v8];
     momentInsertsAndUpdates = v6->_momentInsertsAndUpdates;
     v6->_momentInsertsAndUpdates = v43;
@@ -143,18 +143,18 @@
     {
     }
 
-    v165 = [v5 decodeObjectOfClasses:v45 forKey:@"key_momentDeletes"];
+    v165 = [coderCopy decodeObjectOfClasses:v45 forKey:@"key_momentDeletes"];
 
     v47 = [objc_opt_class() _decodeMomentDeletes:v165 urlToObjectID:v8];
     momentDeletes = v6->_momentDeletes;
     v6->_momentDeletes = v47;
 
-    v49 = [v5 decodeObjectOfClasses:v167 forKey:@"key_updatedAssetIDsForHighlights"];
+    v49 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_updatedAssetIDsForHighlights"];
     v50 = [v49 _pl_map:v8];
     updatedAssetIDsForHighlights = v6->_updatedAssetIDsForHighlights;
     v6->_updatedAssetIDsForHighlights = v50;
 
-    v52 = [v5 decodeObjectOfClasses:v167 forKey:@"key_updatedMomentIDsForHighlights"];
+    v52 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_updatedMomentIDsForHighlights"];
     v53 = [v52 _pl_map:v8];
     updatedMomentIDsForHighlights = v6->_updatedMomentIDsForHighlights;
     v6->_updatedMomentIDsForHighlights = v53;
@@ -168,13 +168,13 @@
     {
     }
 
-    v164 = [v5 decodeObjectOfClasses:v55 forKey:@"key_sharedAssetContainerIncrementalChangesByAssetID"];
+    v164 = [coderCopy decodeObjectOfClasses:v55 forKey:@"key_sharedAssetContainerIncrementalChangesByAssetID"];
 
     v57 = [objc_opt_class() _decodeSharedAssetContainerIncrementalChanges:v164 urlToObjectID:v8];
     sharedAssetContainerIncrementalChangesByAssetID = v6->_sharedAssetContainerIncrementalChangesByAssetID;
     v6->_sharedAssetContainerIncrementalChangesByAssetID = v57;
 
-    v59 = [v5 decodeObjectOfClasses:v167 forKey:@"key_assetsForFilesystemPersistency"];
+    v59 = [coderCopy decodeObjectOfClasses:v167 forKey:@"key_assetsForFilesystemPersistency"];
     v60 = [v59 _pl_map:v8];
     assetsForFilesystemPersistency = v6->_assetsForFilesystemPersistency;
     v6->_assetsForFilesystemPersistency = v60;
@@ -186,7 +186,7 @@
     {
     }
 
-    v163 = [v5 decodeObjectOfClasses:v62 forKey:@"key_albumCountsAndDateRangeUpdates"];
+    v163 = [coderCopy decodeObjectOfClasses:v62 forKey:@"key_albumCountsAndDateRangeUpdates"];
 
     v64 = [v163 _pl_map:v8];
     albumCountsAndDateRangeUpdates = v6->_albumCountsAndDateRangeUpdates;
@@ -199,7 +199,7 @@
     {
     }
 
-    v162 = [v5 decodeObjectOfClasses:v66 forKey:@"key_albumKeyAssetsUpdates"];
+    v162 = [coderCopy decodeObjectOfClasses:v66 forKey:@"key_albumKeyAssetsUpdates"];
 
     v68 = [v162 _pl_map:v8];
     albumKeyAssetsUpdates = v6->_albumKeyAssetsUpdates;
@@ -212,7 +212,7 @@
     {
     }
 
-    v161 = [v5 decodeObjectOfClasses:v70 forKey:@"key_importSessionCountsAndDateRangeUpdates"];
+    v161 = [coderCopy decodeObjectOfClasses:v70 forKey:@"key_importSessionCountsAndDateRangeUpdates"];
 
     v72 = [v161 _pl_map:v8];
     importSessionCountsAndDateRangeUpdates = v6->_importSessionCountsAndDateRangeUpdates;
@@ -225,7 +225,7 @@
     {
     }
 
-    v160 = [v5 decodeObjectOfClasses:v74 forKey:@"key_albumTrashCycleUpdates"];
+    v160 = [coderCopy decodeObjectOfClasses:v74 forKey:@"key_albumTrashCycleUpdates"];
 
     v76 = [v160 _pl_map:v8];
     albumTrashCycleUpdates = v6->_albumTrashCycleUpdates;
@@ -238,7 +238,7 @@
     {
     }
 
-    v80 = [v5 decodeObjectOfClasses:v78 forKey:@"key_assetsForDuetDelete"];
+    v80 = [coderCopy decodeObjectOfClasses:v78 forKey:@"key_assetsForDuetDelete"];
     assetsForDuetDelete = v6->_assetsForDuetDelete;
     v6->_assetsForDuetDelete = v80;
 
@@ -249,7 +249,7 @@
     {
     }
 
-    v84 = [v5 decodeObjectOfClasses:v82 forKey:@"key_memoriesForDuetDelete"];
+    v84 = [coderCopy decodeObjectOfClasses:v82 forKey:@"key_memoriesForDuetDelete"];
     memoriesForDuetDelete = v6->_memoriesForDuetDelete;
     v6->_memoriesForDuetDelete = v84;
 
@@ -260,7 +260,7 @@
     {
     }
 
-    v88 = [v5 decodeObjectOfClasses:v86 forKey:@"key_widgetTimelineReloadTypesNeeded"];
+    v88 = [coderCopy decodeObjectOfClasses:v86 forKey:@"key_widgetTimelineReloadTypesNeeded"];
     widgetTimelineReloadTypesNeeded = v6->_widgetTimelineReloadTypesNeeded;
     v6->_widgetTimelineReloadTypesNeeded = v88;
 
@@ -273,7 +273,7 @@
     {
     }
 
-    v159 = [v5 decodeObjectOfClasses:v90 forKey:@"key_assetsForWidgetUserAlbumRemoval"];
+    v159 = [coderCopy decodeObjectOfClasses:v90 forKey:@"key_assetsForWidgetUserAlbumRemoval"];
 
     v92 = [objc_opt_class() _decodeAssetsForWidgetUserAlbumRemoval:v159 urlToObjectID:v8];
     assetsForWidgetUserAlbumRemoval = v6->_assetsForWidgetUserAlbumRemoval;
@@ -286,7 +286,7 @@
     {
     }
 
-    v158 = [v5 decodeObjectOfClasses:v94 forKey:@"key_assetsForWidgetFavoriteAlbumRemoval"];
+    v158 = [coderCopy decodeObjectOfClasses:v94 forKey:@"key_assetsForWidgetFavoriteAlbumRemoval"];
 
     v96 = [v158 _pl_map:v8];
     assetsForWidgetFavoriteAlbumRemoval = v6->_assetsForWidgetFavoriteAlbumRemoval;
@@ -301,7 +301,7 @@
     {
     }
 
-    v157 = [v5 decodeObjectOfClasses:v98 forKey:@"key_assetsForWallpaperUserAlbumRemoval"];
+    v157 = [coderCopy decodeObjectOfClasses:v98 forKey:@"key_assetsForWallpaperUserAlbumRemoval"];
 
     v100 = [objc_opt_class() _decodeAssetsForWallpaperUserAlbumRemoval:v157 urlToObjectID:v8];
     assetsForWallpaperUserAlbumRemoval = v6->_assetsForWallpaperUserAlbumRemoval;
@@ -314,7 +314,7 @@
     {
     }
 
-    v156 = [v5 decodeObjectOfClasses:v102 forKey:@"key_assetsForWallpaperFavoriteAlbumRemoval"];
+    v156 = [coderCopy decodeObjectOfClasses:v102 forKey:@"key_assetsForWallpaperFavoriteAlbumRemoval"];
 
     v104 = [v156 _pl_map:v8];
     assetsForWallpaperFavoriteAlbumRemoval = v6->_assetsForWallpaperFavoriteAlbumRemoval;
@@ -327,11 +327,11 @@
     {
     }
 
-    v108 = [v5 decodeObjectOfClasses:v106 forKey:@"key_wallpaperSuggestionReloadUUIDs"];
+    v108 = [coderCopy decodeObjectOfClasses:v106 forKey:@"key_wallpaperSuggestionReloadUUIDs"];
     wallpaperSuggestionReloadUUIDs = v6->_wallpaperSuggestionReloadUUIDs;
     v6->_wallpaperSuggestionReloadUUIDs = v108;
 
-    v6->_shouldUpdateFeaturedContent = [v5 decodeBoolForKey:@"key_shouldUpdateFeaturedContent"];
+    v6->_shouldUpdateFeaturedContent = [coderCopy decodeBoolForKey:@"key_shouldUpdateFeaturedContent"];
     v171 = objc_opt_class();
     v172 = objc_opt_class();
     v110 = [MEMORY[0x1E695DFD8] setWithObjects:&v171 count:2];
@@ -339,7 +339,7 @@
     {
     }
 
-    v112 = [v5 decodeObjectOfClasses:v110 forKey:@"key_personsToUpdateForFeaturedContent"];
+    v112 = [coderCopy decodeObjectOfClasses:v110 forKey:@"key_personsToUpdateForFeaturedContent"];
     personsToUpdateForFeaturedContent = v6->_personsToUpdateForFeaturedContent;
     v6->_personsToUpdateForFeaturedContent = v112;
 
@@ -350,7 +350,7 @@
     {
     }
 
-    v116 = [v5 decodeObjectOfClasses:v114 forKey:@"key_memoriesForAssetUpdate"];
+    v116 = [coderCopy decodeObjectOfClasses:v114 forKey:@"key_memoriesForAssetUpdate"];
     memoriesForAssetUpdate = v6->_memoriesForAssetUpdate;
     v6->_memoriesForAssetUpdate = v116;
 
@@ -361,11 +361,11 @@
     {
     }
 
-    v120 = [v5 decodeObjectOfClasses:v118 forKey:@"key_libraryScopeParticipantsForUpdate"];
+    v120 = [coderCopy decodeObjectOfClasses:v118 forKey:@"key_libraryScopeParticipantsForUpdate"];
     libraryScopeParticipantsForUpdate = v6->_libraryScopeParticipantsForUpdate;
     v6->_libraryScopeParticipantsForUpdate = v120;
 
-    v6->_libraryScopeRulesUpdated = [v5 decodeBoolForKey:@"key_libraryScopeRulesUpdated"];
+    v6->_libraryScopeRulesUpdated = [coderCopy decodeBoolForKey:@"key_libraryScopeRulesUpdated"];
     v171 = objc_opt_class();
     v172 = objc_opt_class();
     v122 = [MEMORY[0x1E695DFD8] setWithObjects:&v171 count:2];
@@ -373,7 +373,7 @@
     {
     }
 
-    v155 = [v5 decodeObjectOfClasses:v122 forKey:@"key_assetIDsNeedingContainmentUpdates"];
+    v155 = [coderCopy decodeObjectOfClasses:v122 forKey:@"key_assetIDsNeedingContainmentUpdates"];
 
     v124 = [v155 _pl_map:v8];
     assetIDsNeedingContainmentUpdates = v6->_assetIDsNeedingContainmentUpdates;
@@ -386,7 +386,7 @@
     {
     }
 
-    v128 = [v5 decodeObjectOfClasses:v126 forKey:@"key_memberIDsOfSocialGroupsNeedingContainmentUpdates"];
+    v128 = [coderCopy decodeObjectOfClasses:v126 forKey:@"key_memberIDsOfSocialGroupsNeedingContainmentUpdates"];
 
     v129 = [v128 _pl_map:v8];
     memberIDsOfSocialGroupsNeedingContainmentUpdates = v6->_memberIDsOfSocialGroupsNeedingContainmentUpdates;
@@ -401,7 +401,7 @@
     {
     }
 
-    v133 = [v5 decodeObjectOfClasses:v131 forKey:@"key_assetIDsByPersonUUIDNeedingContainmentUpdates"];
+    v133 = [coderCopy decodeObjectOfClasses:v131 forKey:@"key_assetIDsByPersonUUIDNeedingContainmentUpdates"];
 
     v134 = [objc_opt_class() _decodeAssetIDsByPersonUUIDNeedingContainmentUpdates:v133 urlToObjectID:v8];
     assetIDsByPersonUUIDNeedingContainmentUpdates = v6->_assetIDsByPersonUUIDNeedingContainmentUpdates;
@@ -414,7 +414,7 @@
     {
     }
 
-    v138 = [v5 decodeObjectOfClasses:v136 forKey:@"key_socialGroupNodeIDsNeedingDeduplication"];
+    v138 = [coderCopy decodeObjectOfClasses:v136 forKey:@"key_socialGroupNodeIDsNeedingDeduplication"];
 
     v139 = [v138 _pl_map:v8];
     socialGroupNodeIDsNeedingDeduplication = v6->_socialGroupNodeIDsNeedingDeduplication;
@@ -427,7 +427,7 @@
     {
     }
 
-    v143 = [v5 decodeObjectOfClasses:v141 forKey:@"key_memberIDsOfSocialGroupsNeedingDeduplication"];
+    v143 = [coderCopy decodeObjectOfClasses:v141 forKey:@"key_memberIDsOfSocialGroupsNeedingDeduplication"];
 
     v144 = [v143 _pl_map:v8];
     memberIDsOfSocialGroupsNeedingDeduplication = v6->_memberIDsOfSocialGroupsNeedingDeduplication;
@@ -440,13 +440,13 @@
     {
     }
 
-    v148 = [v5 decodeObjectOfClasses:v146 forKey:@"key_assetIDsNeedingAssetPersonEdgeUpdates"];
+    v148 = [coderCopy decodeObjectOfClasses:v146 forKey:@"key_assetIDsNeedingAssetPersonEdgeUpdates"];
 
     v149 = [v148 _pl_map:v8];
     assetIDsNeedingAssetPersonEdgeUpdates = v6->_assetIDsNeedingAssetPersonEdgeUpdates;
     v6->_assetIDsNeedingAssetPersonEdgeUpdates = v149;
 
-    v6->_backgroundUploadEventUpdated = [v5 decodeBoolForKey:@"key_backgroundUploadEventUpdated"];
+    v6->_backgroundUploadEventUpdated = [coderCopy decodeBoolForKey:@"key_backgroundUploadEventUpdated"];
     v151 = v6;
   }
 
@@ -455,13 +455,13 @@
 
 - (id)_encodableAssetIDsByPersonUUIDNeedingContainmentUpdates
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   assetIDsByPersonUUIDNeedingContainmentUpdates = self->_assetIDsByPersonUUIDNeedingContainmentUpdates;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__PLDelayedSaveActionsDetail__encodableAssetIDsByPersonUUIDNeedingContainmentUpdates__block_invoke;
   v7[3] = &unk_1E75784C8;
-  v5 = v3;
+  v5 = dictionary;
   v8 = v5;
   [(NSDictionary *)assetIDsByPersonUUIDNeedingContainmentUpdates enumerateKeysAndObjectsUsingBlock:v7];
 
@@ -493,13 +493,13 @@ void __85__PLDelayedSaveActionsDetail__encodableAssetIDsByPersonUUIDNeedingConta
 
 - (id)_encodableSharedAssetContainerIncrementalChanges
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   sharedAssetContainerIncrementalChangesByAssetID = self->_sharedAssetContainerIncrementalChangesByAssetID;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__PLDelayedSaveActionsDetail__encodableSharedAssetContainerIncrementalChanges__block_invoke;
   v7[3] = &unk_1E7578478;
-  v5 = v3;
+  v5 = dictionary;
   v8 = v5;
   [(NSDictionary *)sharedAssetContainerIncrementalChangesByAssetID enumerateKeysAndObjectsUsingBlock:v7];
 
@@ -515,13 +515,13 @@ void __78__PLDelayedSaveActionsDetail__encodableSharedAssetContainerIncrementalC
 
 - (id)_encodableAssetsForWallpaperUserAlbumRemoval
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   assetsForWallpaperUserAlbumRemoval = self->_assetsForWallpaperUserAlbumRemoval;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__PLDelayedSaveActionsDetail__encodableAssetsForWallpaperUserAlbumRemoval__block_invoke;
   v7[3] = &unk_1E7578450;
-  v5 = v3;
+  v5 = dictionary;
   v8 = v5;
   [(NSDictionary *)assetsForWallpaperUserAlbumRemoval enumerateKeysAndObjectsUsingBlock:v7];
 
@@ -537,13 +537,13 @@ void __74__PLDelayedSaveActionsDetail__encodableAssetsForWallpaperUserAlbumRemov
 
 - (id)_encodableAssetsForWidgetUserAlbumRemoval
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   assetsForWidgetUserAlbumRemoval = self->_assetsForWidgetUserAlbumRemoval;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__PLDelayedSaveActionsDetail__encodableAssetsForWidgetUserAlbumRemoval__block_invoke;
   v7[3] = &unk_1E7578450;
-  v5 = v3;
+  v5 = dictionary;
   v8 = v5;
   [(NSDictionary *)assetsForWidgetUserAlbumRemoval enumerateKeysAndObjectsUsingBlock:v7];
 
@@ -559,13 +559,13 @@ void __71__PLDelayedSaveActionsDetail__encodableAssetsForWidgetUserAlbumRemoval_
 
 - (id)_encodableMomentDeletes
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   momentDeletes = self->_momentDeletes;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PLDelayedSaveActionsDetail__encodableMomentDeletes__block_invoke;
   v7[3] = &unk_1E7578428;
-  v5 = v3;
+  v5 = dictionary;
   v8 = v5;
   [(NSDictionary *)momentDeletes enumerateKeysAndObjectsUsingBlock:v7];
 
@@ -579,123 +579,123 @@ void __53__PLDelayedSaveActionsDetail__encodableMomentDeletes__block_invoke(uint
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cloudFeedAlbumUpdates = self->_cloudFeedAlbumUpdates;
-  v33 = a3;
+  coderCopy = coder;
   v5 = [(NSArray *)cloudFeedAlbumUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v5 forKey:@"key_cloudFeedAlbumUpdates"];
+  [coderCopy encodeObject:v5 forKey:@"key_cloudFeedAlbumUpdates"];
 
   v6 = [(NSArray *)self->_cloudFeedCollectionShareUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v6 forKey:@"key_cloudFeedCollectionShareUpdates"];
+  [coderCopy encodeObject:v6 forKey:@"key_cloudFeedCollectionShareUpdates"];
 
-  [v33 encodeObject:self->_cloudFeedCollectionShareDeletes forKey:@"key_cloudFeedCollectionShareDeletes"];
+  [coderCopy encodeObject:self->_cloudFeedCollectionShareDeletes forKey:@"key_cloudFeedCollectionShareDeletes"];
   v7 = [(NSArray *)self->_cloudFeedAssetInserts _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v7 forKey:@"key_cloudFeedAssetInserts"];
+  [coderCopy encodeObject:v7 forKey:@"key_cloudFeedAssetInserts"];
 
   v8 = [(NSArray *)self->_cloudFeedAssetUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v8 forKey:@"key_cloudFeedAssetUpdates"];
+  [coderCopy encodeObject:v8 forKey:@"key_cloudFeedAssetUpdates"];
 
   v9 = [(NSArray *)self->_cloudFeedCommentInserts _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v9 forKey:@"key_cloudFeedCommentInserts"];
+  [coderCopy encodeObject:v9 forKey:@"key_cloudFeedCommentInserts"];
 
   v10 = [(NSArray *)self->_cloudFeedInvitationRecordUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v10 forKey:@"key_cloudFeedInvitationRecordUpdates"];
+  [coderCopy encodeObject:v10 forKey:@"key_cloudFeedInvitationRecordUpdates"];
 
   v11 = [(NSArray *)self->_cloudFeedShareParticipantUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v11 forKey:@"key_cloudFeedShareParticipantUpdates"];
+  [coderCopy encodeObject:v11 forKey:@"key_cloudFeedShareParticipantUpdates"];
 
-  [v33 encodeObject:self->_cloudFeedShareParticipantDeletes forKey:@"key_cloudFeedShareParticipantDeletes"];
+  [coderCopy encodeObject:self->_cloudFeedShareParticipantDeletes forKey:@"key_cloudFeedShareParticipantDeletes"];
   v12 = [(NSArray *)self->_cloudFeedDeletionEntries _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v12 forKey:@"key_cloudFeedDeletionEntries"];
+  [coderCopy encodeObject:v12 forKey:@"key_cloudFeedDeletionEntries"];
 
   v13 = [(NSArray *)self->_momentInsertsAndUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v13 forKey:@"key_momentInsertsAndUpdates"];
+  [coderCopy encodeObject:v13 forKey:@"key_momentInsertsAndUpdates"];
 
-  v14 = [(PLDelayedSaveActionsDetail *)self _encodableMomentDeletes];
-  [v33 encodeObject:v14 forKey:@"key_momentDeletes"];
+  _encodableMomentDeletes = [(PLDelayedSaveActionsDetail *)self _encodableMomentDeletes];
+  [coderCopy encodeObject:_encodableMomentDeletes forKey:@"key_momentDeletes"];
 
   v15 = [(NSArray *)self->_updatedAssetIDsForHighlights _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v15 forKey:@"key_updatedAssetIDsForHighlights"];
+  [coderCopy encodeObject:v15 forKey:@"key_updatedAssetIDsForHighlights"];
 
   v16 = [(NSArray *)self->_updatedMomentIDsForHighlights _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v16 forKey:@"key_updatedMomentIDsForHighlights"];
+  [coderCopy encodeObject:v16 forKey:@"key_updatedMomentIDsForHighlights"];
 
-  v17 = [(PLDelayedSaveActionsDetail *)self _encodableSharedAssetContainerIncrementalChanges];
-  [v33 encodeObject:v17 forKey:@"key_sharedAssetContainerIncrementalChangesByAssetID"];
+  _encodableSharedAssetContainerIncrementalChanges = [(PLDelayedSaveActionsDetail *)self _encodableSharedAssetContainerIncrementalChanges];
+  [coderCopy encodeObject:_encodableSharedAssetContainerIncrementalChanges forKey:@"key_sharedAssetContainerIncrementalChangesByAssetID"];
 
   v18 = [(NSArray *)self->_assetsForFilesystemPersistency _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v18 forKey:@"key_assetsForFilesystemPersistency"];
+  [coderCopy encodeObject:v18 forKey:@"key_assetsForFilesystemPersistency"];
 
   v19 = [(NSSet *)self->_albumCountsAndDateRangeUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v19 forKey:@"key_albumCountsAndDateRangeUpdates"];
+  [coderCopy encodeObject:v19 forKey:@"key_albumCountsAndDateRangeUpdates"];
 
   v20 = [(NSSet *)self->_albumKeyAssetsUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v20 forKey:@"key_albumKeyAssetsUpdates"];
+  [coderCopy encodeObject:v20 forKey:@"key_albumKeyAssetsUpdates"];
 
   v21 = [(NSSet *)self->_importSessionCountsAndDateRangeUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v21 forKey:@"key_importSessionCountsAndDateRangeUpdates"];
+  [coderCopy encodeObject:v21 forKey:@"key_importSessionCountsAndDateRangeUpdates"];
 
   v22 = [(NSSet *)self->_albumTrashCycleUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v22 forKey:@"key_albumTrashCycleUpdates"];
+  [coderCopy encodeObject:v22 forKey:@"key_albumTrashCycleUpdates"];
 
-  [v33 encodeObject:self->_assetsForDuetDelete forKey:@"key_assetsForDuetDelete"];
-  [v33 encodeObject:self->_memoriesForDuetDelete forKey:@"key_memoriesForDuetDelete"];
-  [v33 encodeObject:self->_widgetTimelineReloadTypesNeeded forKey:@"key_widgetTimelineReloadTypesNeeded"];
-  v23 = [(PLDelayedSaveActionsDetail *)self _encodableAssetsForWidgetUserAlbumRemoval];
-  [v33 encodeObject:v23 forKey:@"key_assetsForWidgetUserAlbumRemoval"];
+  [coderCopy encodeObject:self->_assetsForDuetDelete forKey:@"key_assetsForDuetDelete"];
+  [coderCopy encodeObject:self->_memoriesForDuetDelete forKey:@"key_memoriesForDuetDelete"];
+  [coderCopy encodeObject:self->_widgetTimelineReloadTypesNeeded forKey:@"key_widgetTimelineReloadTypesNeeded"];
+  _encodableAssetsForWidgetUserAlbumRemoval = [(PLDelayedSaveActionsDetail *)self _encodableAssetsForWidgetUserAlbumRemoval];
+  [coderCopy encodeObject:_encodableAssetsForWidgetUserAlbumRemoval forKey:@"key_assetsForWidgetUserAlbumRemoval"];
 
   v24 = [(NSSet *)self->_assetsForWidgetFavoriteAlbumRemoval _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v24 forKey:@"key_assetsForWidgetFavoriteAlbumRemoval"];
+  [coderCopy encodeObject:v24 forKey:@"key_assetsForWidgetFavoriteAlbumRemoval"];
 
-  v25 = [(PLDelayedSaveActionsDetail *)self _encodableAssetsForWallpaperUserAlbumRemoval];
-  [v33 encodeObject:v25 forKey:@"key_assetsForWallpaperUserAlbumRemoval"];
+  _encodableAssetsForWallpaperUserAlbumRemoval = [(PLDelayedSaveActionsDetail *)self _encodableAssetsForWallpaperUserAlbumRemoval];
+  [coderCopy encodeObject:_encodableAssetsForWallpaperUserAlbumRemoval forKey:@"key_assetsForWallpaperUserAlbumRemoval"];
 
   v26 = [(NSSet *)self->_assetsForWallpaperFavoriteAlbumRemoval _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v26 forKey:@"key_assetsForWallpaperFavoriteAlbumRemoval"];
+  [coderCopy encodeObject:v26 forKey:@"key_assetsForWallpaperFavoriteAlbumRemoval"];
 
-  [v33 encodeObject:self->_wallpaperSuggestionReloadUUIDs forKey:@"key_wallpaperSuggestionReloadUUIDs"];
-  [v33 encodeBool:self->_shouldUpdateFeaturedContent forKey:@"key_shouldUpdateFeaturedContent"];
-  [v33 encodeObject:self->_personsToUpdateForFeaturedContent forKey:@"key_personsToUpdateForFeaturedContent"];
-  [v33 encodeObject:self->_memoriesForAssetUpdate forKey:@"key_memoriesForAssetUpdate"];
-  [v33 encodeObject:self->_libraryScopeParticipantsForUpdate forKey:@"key_libraryScopeParticipantsForUpdate"];
-  [v33 encodeBool:self->_libraryScopeRulesUpdated forKey:@"key_libraryScopeRulesUpdated"];
+  [coderCopy encodeObject:self->_wallpaperSuggestionReloadUUIDs forKey:@"key_wallpaperSuggestionReloadUUIDs"];
+  [coderCopy encodeBool:self->_shouldUpdateFeaturedContent forKey:@"key_shouldUpdateFeaturedContent"];
+  [coderCopy encodeObject:self->_personsToUpdateForFeaturedContent forKey:@"key_personsToUpdateForFeaturedContent"];
+  [coderCopy encodeObject:self->_memoriesForAssetUpdate forKey:@"key_memoriesForAssetUpdate"];
+  [coderCopy encodeObject:self->_libraryScopeParticipantsForUpdate forKey:@"key_libraryScopeParticipantsForUpdate"];
+  [coderCopy encodeBool:self->_libraryScopeRulesUpdated forKey:@"key_libraryScopeRulesUpdated"];
   v27 = [(NSSet *)self->_memberIDsOfSocialGroupsNeedingContainmentUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v27 forKey:@"key_memberIDsOfSocialGroupsNeedingContainmentUpdates"];
+  [coderCopy encodeObject:v27 forKey:@"key_memberIDsOfSocialGroupsNeedingContainmentUpdates"];
 
   v28 = [(NSSet *)self->_assetIDsNeedingContainmentUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v28 forKey:@"key_assetIDsNeedingContainmentUpdates"];
+  [coderCopy encodeObject:v28 forKey:@"key_assetIDsNeedingContainmentUpdates"];
 
-  v29 = [(PLDelayedSaveActionsDetail *)self _encodableAssetIDsByPersonUUIDNeedingContainmentUpdates];
-  [v33 encodeObject:v29 forKey:@"key_assetIDsByPersonUUIDNeedingContainmentUpdates"];
+  _encodableAssetIDsByPersonUUIDNeedingContainmentUpdates = [(PLDelayedSaveActionsDetail *)self _encodableAssetIDsByPersonUUIDNeedingContainmentUpdates];
+  [coderCopy encodeObject:_encodableAssetIDsByPersonUUIDNeedingContainmentUpdates forKey:@"key_assetIDsByPersonUUIDNeedingContainmentUpdates"];
 
   v30 = [(NSSet *)self->_socialGroupNodeIDsNeedingDeduplication _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v30 forKey:@"key_socialGroupNodeIDsNeedingDeduplication"];
+  [coderCopy encodeObject:v30 forKey:@"key_socialGroupNodeIDsNeedingDeduplication"];
 
   v31 = [(NSSet *)self->_memberIDsOfSocialGroupsNeedingDeduplication _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v31 forKey:@"key_memberIDsOfSocialGroupsNeedingDeduplication"];
+  [coderCopy encodeObject:v31 forKey:@"key_memberIDsOfSocialGroupsNeedingDeduplication"];
 
   v32 = [(NSSet *)self->_assetIDsNeedingAssetPersonEdgeUpdates _pl_map:&__block_literal_global_116535];
-  [v33 encodeObject:v32 forKey:@"key_assetIDsNeedingAssetPersonEdgeUpdates"];
+  [coderCopy encodeObject:v32 forKey:@"key_assetIDsNeedingAssetPersonEdgeUpdates"];
 
-  [v33 encodeBool:self->_backgroundUploadEventUpdated forKey:@"key_backgroundUploadEventUpdated"];
+  [coderCopy encodeBool:self->_backgroundUploadEventUpdated forKey:@"key_backgroundUploadEventUpdated"];
 }
 
-+ (id)_decodeAssetIDsByPersonUUIDNeedingContainmentUpdates:(id)a3 urlToObjectID:(id)a4
++ (id)_decodeAssetIDsByPersonUUIDNeedingContainmentUpdates:(id)updates urlToObjectID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  updatesCopy = updates;
+  dictionary = [v6 dictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __97__PLDelayedSaveActionsDetail__decodeAssetIDsByPersonUUIDNeedingContainmentUpdates_urlToObjectID___block_invoke;
   v14[3] = &unk_1E75785B8;
-  v16 = v5;
-  v9 = v8;
+  v16 = dCopy;
+  v9 = dictionary;
   v15 = v9;
-  v10 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:v14];
+  v10 = dCopy;
+  [updatesCopy enumerateKeysAndObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v9;
@@ -728,21 +728,21 @@ void __97__PLDelayedSaveActionsDetail__decodeAssetIDsByPersonUUIDNeedingContainm
   [v1 addObject:v2];
 }
 
-+ (id)_decodeSharedAssetContainerIncrementalChanges:(id)a3 urlToObjectID:(id)a4
++ (id)_decodeSharedAssetContainerIncrementalChanges:(id)changes urlToObjectID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  changesCopy = changes;
+  dictionary = [v6 dictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __90__PLDelayedSaveActionsDetail__decodeSharedAssetContainerIncrementalChanges_urlToObjectID___block_invoke;
   v14[3] = &unk_1E7578568;
-  v16 = v5;
-  v9 = v8;
+  v16 = dCopy;
+  v9 = dictionary;
   v15 = v9;
-  v10 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:v14];
+  v10 = dCopy;
+  [changesCopy enumerateKeysAndObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v9;
@@ -759,21 +759,21 @@ void __90__PLDelayedSaveActionsDetail__decodeSharedAssetContainerIncrementalChan
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v8];
 }
 
-+ (id)_decodeAssetsForWallpaperUserAlbumRemoval:(id)a3 urlToObjectID:(id)a4
++ (id)_decodeAssetsForWallpaperUserAlbumRemoval:(id)removal urlToObjectID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  removalCopy = removal;
+  dictionary = [v6 dictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__PLDelayedSaveActionsDetail__decodeAssetsForWallpaperUserAlbumRemoval_urlToObjectID___block_invoke;
   v14[3] = &unk_1E7578540;
-  v16 = v5;
-  v9 = v8;
+  v16 = dCopy;
+  v9 = dictionary;
   v15 = v9;
-  v10 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:v14];
+  v10 = dCopy;
+  [removalCopy enumerateKeysAndObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v9;
@@ -790,21 +790,21 @@ void __86__PLDelayedSaveActionsDetail__decodeAssetsForWallpaperUserAlbumRemoval_
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v8];
 }
 
-+ (id)_decodeAssetsForWidgetUserAlbumRemoval:(id)a3 urlToObjectID:(id)a4
++ (id)_decodeAssetsForWidgetUserAlbumRemoval:(id)removal urlToObjectID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  removalCopy = removal;
+  dictionary = [v6 dictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __83__PLDelayedSaveActionsDetail__decodeAssetsForWidgetUserAlbumRemoval_urlToObjectID___block_invoke;
   v14[3] = &unk_1E7578540;
-  v16 = v5;
-  v9 = v8;
+  v16 = dCopy;
+  v9 = dictionary;
   v15 = v9;
-  v10 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:v14];
+  v10 = dCopy;
+  [removalCopy enumerateKeysAndObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v9;
@@ -821,21 +821,21 @@ void __83__PLDelayedSaveActionsDetail__decodeAssetsForWidgetUserAlbumRemoval_url
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v8];
 }
 
-+ (id)_decodeMomentDeletes:(id)a3 urlToObjectID:(id)a4
++ (id)_decodeMomentDeletes:(id)deletes urlToObjectID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  deletesCopy = deletes;
+  dictionary = [v6 dictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__PLDelayedSaveActionsDetail__decodeMomentDeletes_urlToObjectID___block_invoke;
   v14[3] = &unk_1E7578518;
-  v16 = v5;
-  v9 = v8;
+  v16 = dCopy;
+  v9 = dictionary;
   v15 = v9;
-  v10 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:v14];
+  v10 = dCopy;
+  [deletesCopy enumerateKeysAndObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v9;

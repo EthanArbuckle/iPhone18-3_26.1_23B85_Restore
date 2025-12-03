@@ -1,25 +1,25 @@
 @interface PURootSettings
-+ (id)_debugRowsForViewControllerStack:(id)a3;
-+ (id)_saveScreenshot:(id)a3;
++ (id)_debugRowsForViewControllerStack:(id)stack;
++ (id)_saveScreenshot:(id)screenshot;
 + (id)photosUITesterRootViewController;
 + (id)settingsControllerModule;
 + (id)sharedInstance;
 + (void)_deleteAllDiagnosticFiles;
 + (void)_presentTapToRadar;
-+ (void)_setDebugRows:(id)a3;
-+ (void)configureToastForReminderToQuitAfterLaunch:(id)a3 target:(id)a4;
++ (void)_setDebugRows:(id)rows;
++ (void)configureToastForReminderToQuitAfterLaunch:(id)launch target:(id)target;
 + (void)dismissSettingsController;
-+ (void)dismissSettingsController:(id)a3;
++ (void)dismissSettingsController:(id)controller;
 + (void)presentSettingsController;
 + (void)setupStatusBarInternalSettingsGestureOnInternalDevices;
 - (BOOL)irisUIEnabled;
-- (id)archiveValueForKey:(id)a3;
+- (id)archiveValueForKey:(id)key;
 - (id)reparentedRootSettings;
-- (void)_setObservationEnabled:(BOOL)a3;
-- (void)applyArchiveValue:(id)a3 forKey:(id)a4;
+- (void)_setObservationEnabled:(BOOL)enabled;
+- (void)applyArchiveValue:(id)value forKey:(id)key;
 - (void)createChildren;
-- (void)favoritesSettings:(id)a3 loadAccessorySettingsWithCompletionHandler:(id)a4;
-- (void)favoritesSettingsDidChangeFavorites:(id)a3;
+- (void)favoritesSettings:(id)settings loadAccessorySettingsWithCompletionHandler:(id)handler;
+- (void)favoritesSettingsDidChangeFavorites:(id)favorites;
 - (void)restoreDefaultValues;
 - (void)setDefaultValues;
 @end
@@ -31,9 +31,9 @@
   os_unfair_lock_lock(MEMORY[0x1E69C4148]);
   if (!sharedInstance_sharedInstance_76010)
   {
-    v3 = [a1 createSharedInstance];
+    createSharedInstance = [self createSharedInstance];
     v4 = sharedInstance_sharedInstance_76010;
-    sharedInstance_sharedInstance_76010 = v3;
+    sharedInstance_sharedInstance_76010 = createSharedInstance;
   }
 
   os_unfair_lock_unlock(MEMORY[0x1E69C4148]);
@@ -44,85 +44,85 @@
 
 - (void)createChildren
 {
-  v3 = [(PTSettings *)[PUPhotoEditProtoSettings alloc] initWithDefaultValues];
+  initWithDefaultValues = [(PTSettings *)[PUPhotoEditProtoSettings alloc] initWithDefaultValues];
   photoEditingSettings = self->_photoEditingSettings;
-  self->_photoEditingSettings = v3;
+  self->_photoEditingSettings = initWithDefaultValues;
 
-  v5 = [(PTSettings *)[PUAudioClassificationSettings alloc] initWithDefaultValues];
+  initWithDefaultValues2 = [(PTSettings *)[PUAudioClassificationSettings alloc] initWithDefaultValues];
   audioClassificationSettings = self->_audioClassificationSettings;
-  self->_audioClassificationSettings = v5;
+  self->_audioClassificationSettings = initWithDefaultValues2;
 
-  v7 = [(PTSettings *)[PUAirPlaySettings alloc] initWithDefaultValues];
+  initWithDefaultValues3 = [(PTSettings *)[PUAirPlaySettings alloc] initWithDefaultValues];
   airPlaySettings = self->_airPlaySettings;
-  self->_airPlaySettings = v7;
+  self->_airPlaySettings = initWithDefaultValues3;
 
-  v9 = [(PTSettings *)[PUWelcomeSettings alloc] initWithDefaultValues];
+  initWithDefaultValues4 = [(PTSettings *)[PUWelcomeSettings alloc] initWithDefaultValues];
   welcomeSettings = self->_welcomeSettings;
-  self->_welcomeSettings = v9;
+  self->_welcomeSettings = initWithDefaultValues4;
 
-  v11 = [(PTSettings *)[PUSceneSettings alloc] initWithDefaultValues];
+  initWithDefaultValues5 = [(PTSettings *)[PUSceneSettings alloc] initWithDefaultValues];
   sceneSettings = self->_sceneSettings;
-  self->_sceneSettings = v11;
+  self->_sceneSettings = initWithDefaultValues5;
 
-  v13 = [(PTSettings *)[PUPerformanceDiagnosticsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues6 = [(PTSettings *)[PUPerformanceDiagnosticsSettings alloc] initWithDefaultValues];
   performanceDiagnosticsSettings = self->_performanceDiagnosticsSettings;
-  self->_performanceDiagnosticsSettings = v13;
+  self->_performanceDiagnosticsSettings = initWithDefaultValues6;
 
-  v15 = [(PTSettings *)[PUMedusaSettings alloc] initWithDefaultValues];
+  initWithDefaultValues7 = [(PTSettings *)[PUMedusaSettings alloc] initWithDefaultValues];
   medusaSettings = self->_medusaSettings;
-  self->_medusaSettings = v15;
+  self->_medusaSettings = initWithDefaultValues7;
 
-  v17 = [(PTSettings *)[PUSlideshowSettings alloc] initWithDefaultValues];
+  initWithDefaultValues8 = [(PTSettings *)[PUSlideshowSettings alloc] initWithDefaultValues];
   slideshowSettings = self->_slideshowSettings;
-  self->_slideshowSettings = v17;
+  self->_slideshowSettings = initWithDefaultValues8;
 
-  v19 = [(PTSettings *)[PUCurationSettings alloc] initWithDefaultValues];
+  initWithDefaultValues9 = [(PTSettings *)[PUCurationSettings alloc] initWithDefaultValues];
   curation = self->_curation;
-  self->_curation = v19;
+  self->_curation = initWithDefaultValues9;
 
-  v21 = [(PTSettings *)[PUCompositeVideoSettings alloc] initWithDefaultValues];
+  initWithDefaultValues10 = [(PTSettings *)[PUCompositeVideoSettings alloc] initWithDefaultValues];
   compositeVideoSettings = self->_compositeVideoSettings;
-  self->_compositeVideoSettings = v21;
+  self->_compositeVideoSettings = initWithDefaultValues10;
 
-  v23 = [(PTSettings *)[PUAmbientPhotoFrameSettings alloc] initWithDefaultValues];
+  initWithDefaultValues11 = [(PTSettings *)[PUAmbientPhotoFrameSettings alloc] initWithDefaultValues];
   ambientPhotoFrameSettings = self->_ambientPhotoFrameSettings;
-  self->_ambientPhotoFrameSettings = v23;
+  self->_ambientPhotoFrameSettings = initWithDefaultValues11;
 
-  v25 = [objc_alloc(MEMORY[0x1E69C3620]) initWithDefaultValues];
+  initWithDefaultValues12 = [objc_alloc(MEMORY[0x1E69C3620]) initWithDefaultValues];
   importSettings = self->_importSettings;
-  self->_importSettings = v25;
+  self->_importSettings = initWithDefaultValues12;
 
-  v27 = [(PTSettings *)[PUTabbedLibrarySettings alloc] initWithDefaultValues];
+  initWithDefaultValues13 = [(PTSettings *)[PUTabbedLibrarySettings alloc] initWithDefaultValues];
   tabbedLibrarySettings = self->_tabbedLibrarySettings;
-  self->_tabbedLibrarySettings = v27;
+  self->_tabbedLibrarySettings = initWithDefaultValues13;
 
-  v29 = [(PTSettings *)[PUSuggestionsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues14 = [(PTSettings *)[PUSuggestionsSettings alloc] initWithDefaultValues];
   suggestions = self->_suggestions;
-  self->_suggestions = v29;
+  self->_suggestions = initWithDefaultValues14;
 
-  v31 = [(PTSettings *)[PUIrisSettings alloc] initWithDefaultValues];
+  initWithDefaultValues15 = [(PTSettings *)[PUIrisSettings alloc] initWithDefaultValues];
   irisSettings = self->_irisSettings;
-  self->_irisSettings = v31;
+  self->_irisSettings = initWithDefaultValues15;
 
-  v33 = [(PTSettings *)[PUOneUpSettings alloc] initWithDefaultValues];
+  initWithDefaultValues16 = [(PTSettings *)[PUOneUpSettings alloc] initWithDefaultValues];
   oneUpSettings = self->_oneUpSettings;
-  self->_oneUpSettings = v33;
+  self->_oneUpSettings = initWithDefaultValues16;
 
-  v35 = [(PTSettings *)[PUPhotosGridSettings alloc] initWithDefaultValues];
+  initWithDefaultValues17 = [(PTSettings *)[PUPhotosGridSettings alloc] initWithDefaultValues];
   photosGridSettings = self->_photosGridSettings;
-  self->_photosGridSettings = v35;
+  self->_photosGridSettings = initWithDefaultValues17;
 
-  v37 = [objc_alloc(MEMORY[0x1E69C3A18]) initWithDefaultValues];
+  initWithDefaultValues18 = [objc_alloc(MEMORY[0x1E69C3A18]) initWithDefaultValues];
   sharingSettings = self->_sharingSettings;
-  self->_sharingSettings = v37;
+  self->_sharingSettings = initWithDefaultValues18;
 
-  v39 = [objc_alloc(MEMORY[0x1E69C35B0]) initWithDefaultValues];
+  initWithDefaultValues19 = [objc_alloc(MEMORY[0x1E69C35B0]) initWithDefaultValues];
   generativeStorySettings = self->_generativeStorySettings;
-  self->_generativeStorySettings = v39;
+  self->_generativeStorySettings = initWithDefaultValues19;
 
-  v41 = [(PTSettings *)[PUTilingViewSettings alloc] initWithDefaultValues];
+  initWithDefaultValues20 = [(PTSettings *)[PUTilingViewSettings alloc] initWithDefaultValues];
   tilingViewSettings = self->_tilingViewSettings;
-  self->_tilingViewSettings = v41;
+  self->_tilingViewSettings = initWithDefaultValues20;
 
   self->_workaroundSettings = [(PTSettings *)[PUWorkaroundSettings alloc] initWithDefaultValues];
 
@@ -139,15 +139,15 @@
   [(PURootSettings *)self setInterfaceThemeClass:objc_opt_class()];
 }
 
-- (void)favoritesSettings:(id)a3 loadAccessorySettingsWithCompletionHandler:(id)a4
+- (void)favoritesSettings:(id)settings loadAccessorySettingsWithCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v4 = PUTesterRootSettingsLoadIfNecessary(1);
   v5 = PXSoftLinkedProtoRootSettingsLoadIfNecessary();
-  v6[2]();
+  handlerCopy[2]();
 }
 
-- (void)favoritesSettingsDidChangeFavorites:(id)a3
+- (void)favoritesSettingsDidChangeFavorites:(id)favorites
 {
   v4 = [(PURootSettings *)self valueForKey:@"_internal_libraryStateBriefDescription"];
   v5 = MEMORY[0x1E696AD98];
@@ -170,15 +170,15 @@
 
 - (BOOL)irisUIEnabled
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 launchedToTest];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  launchedToTest = [mEMORY[0x1E69DC668] launchedToTest];
 
-  return ([(PURootSettings *)self allowIrisUI]| v4) & 1;
+  return ([(PURootSettings *)self allowIrisUI]| launchedToTest) & 1;
 }
 
-- (void)_setObservationEnabled:(BOOL)a3
+- (void)_setObservationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = PURootSettings;
@@ -187,8 +187,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(PURootSettings *)self reparentedRootSettings];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  reparentedRootSettings = [(PURootSettings *)self reparentedRootSettings];
+  v6 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -200,14 +200,14 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reparentedRootSettings);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _setObservationEnabled:v3];
+        [*(*(&v10 + 1) + 8 * v9++) _setObservationEnabled:enabledCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
@@ -217,17 +217,17 @@
 - (id)reparentedRootSettings
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _photosUICoreSettings];
-  v5[0] = v2;
+  _photosUICoreSettings = [objc_opt_class() _photosUICoreSettings];
+  v5[0] = _photosUICoreSettings;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (id)archiveValueForKey:(id)a3
+- (id)archiveValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"interfaceThemeClass"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"interfaceThemeClass"])
   {
     v5 = NSStringFromClass([(PURootSettings *)self interfaceThemeClass]);
   }
@@ -236,7 +236,7 @@
   {
     v8.receiver = self;
     v8.super_class = PURootSettings;
-    v5 = [(PXSettings *)&v8 archiveValueForKey:v4];
+    v5 = [(PXSettings *)&v8 archiveValueForKey:keyCopy];
   }
 
   v6 = v5;
@@ -244,13 +244,13 @@
   return v6;
 }
 
-- (void)applyArchiveValue:(id)a3 forKey:(id)a4
+- (void)applyArchiveValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 isEqualToString:@"interfaceThemeClass"])
+  keyCopy = key;
+  valueCopy = value;
+  if ([keyCopy isEqualToString:@"interfaceThemeClass"])
   {
-    v8 = NSClassFromString(v7);
+    v8 = NSClassFromString(valueCopy);
 
     [(PURootSettings *)self setInterfaceThemeClass:v8];
   }
@@ -259,7 +259,7 @@
   {
     v9.receiver = self;
     v9.super_class = PURootSettings;
-    [(PXSettings *)&v9 applyArchiveValue:v7 forKey:v6];
+    [(PXSettings *)&v9 applyArchiveValue:valueCopy forKey:keyCopy];
   }
 }
 
@@ -268,18 +268,18 @@
   v3.receiver = self;
   v3.super_class = PURootSettings;
   [(PXSettings *)&v3 restoreDefaultValues];
-  v2 = [objc_opt_class() _photoKitSettings];
-  [v2 restoreDefaultValues];
+  _photoKitSettings = [objc_opt_class() _photoKitSettings];
+  [_photoKitSettings restoreDefaultValues];
 }
 
-+ (void)configureToastForReminderToQuitAfterLaunch:(id)a3 target:(id)a4
++ (void)configureToastForReminderToQuitAfterLaunch:(id)launch target:(id)target
 {
-  v5 = a3;
-  v6 = a4;
+  launchCopy = launch;
+  targetCopy = target;
   v7 = objc_alloc(MEMORY[0x1E69C3BC8]);
   v8 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v8 setMessage:@"Photos usually needs to be quit and relaunched for changes to take effect."];
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, targetCopy);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PURootSettings_configureToastForReminderToQuitAfterLaunch_target___block_invoke;
@@ -292,10 +292,10 @@
   v9[3] = &unk_1E7B80638;
   objc_copyWeak(&v10, &location);
   [v8 addActionWithTitle:@"Hide" action:v9];
-  [v5 setContentView:v8];
-  [v5 setAutoDismissalDelay:5.0];
-  [v5 setCanSwipeToDismiss:1];
-  [v5 setBottomMargin:30.0];
+  [launchCopy setContentView:v8];
+  [launchCopy setAutoDismissalDelay:5.0];
+  [launchCopy setCanSwipeToDismiss:1];
+  [launchCopy setBottomMargin:30.0];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -324,9 +324,9 @@ void __68__PURootSettings_configureToastForReminderToQuitAfterLaunch_target___bl
   v3 = [MEMORY[0x1E69DC648] actionWithTitle:@"Delete" style:2 handler:&__block_literal_global_655];
   [v6 addAction:v3];
 
-  v4 = [MEMORY[0x1E69DD258] pu_currentViewControllerStack];
-  v5 = [v4 firstObject];
-  [v5 presentViewController:v6 animated:1 completion:0];
+  pu_currentViewControllerStack = [MEMORY[0x1E69DD258] pu_currentViewControllerStack];
+  firstObject = [pu_currentViewControllerStack firstObject];
+  [firstObject presentViewController:v6 animated:1 completion:0];
 }
 
 void __43__PURootSettings__deleteAllDiagnosticFiles__block_invoke(uint64_t a1, void *a2)
@@ -444,25 +444,25 @@ void __43__PURootSettings__deleteAllDiagnosticFiles__block_invoke_4(uint64_t a1)
   return v4;
 }
 
-+ (void)_setDebugRows:(id)a3
++ (void)_setDebugRows:(id)rows
 {
-  v3 = [a3 copy];
+  v3 = [rows copy];
   v4 = sDebugRows;
   sDebugRows = v3;
 
   MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (id)_debugRowsForViewControllerStack:(id)a3
++ (id)_debugRowsForViewControllerStack:(id)stack
 {
   v128 = *MEMORY[0x1E69E9840];
-  v62 = a3;
-  v69 = [MEMORY[0x1E695DF70] array];
+  stackCopy = stack;
+  array = [MEMORY[0x1E695DF70] array];
   v122 = 0u;
   v123 = 0u;
   v120 = 0u;
   v121 = 0u;
-  obj = [v62 reverseObjectEnumerator];
+  obj = [stackCopy reverseObjectEnumerator];
   v66 = [obj countByEnumeratingWithState:&v120 objects:v127 count:16];
   if (v66)
   {
@@ -487,7 +487,7 @@ void __43__PURootSettings__deleteAllDiagnosticFiles__block_invoke_4(uint64_t a1)
         v5 = v76[2]();
         if (v5)
         {
-          [a1 _setCurrentAsset:v5];
+          [self _setCurrentAsset:v5];
           v67 = v4;
           v68 = i;
           v6 = MEMORY[0x1E69C65E8];
@@ -616,14 +616,14 @@ void __43__PURootSettings__deleteAllDiagnosticFiles__block_invoke_4(uint64_t a1)
           v126[13] = v39;
           v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v126 count:14];
 
-          [v69 addObjectsFromArray:v40];
+          [array addObjectsFromArray:v40];
           v4 = v67;
           i = v68;
         }
 
-        v41 = [v4 pu_debugCurrentViewModel];
+        pu_debugCurrentViewModel = [v4 pu_debugCurrentViewModel];
 
-        if (v41)
+        if (pu_debugCurrentViewModel)
         {
           v87[0] = MEMORY[0x1E69E9820];
           v87[1] = 3221225472;
@@ -653,14 +653,14 @@ void __43__PURootSettings__deleteAllDiagnosticFiles__block_invoke_4(uint64_t a1)
           v125[1] = v50;
           v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:2];
 
-          [v69 addObjectsFromArray:v51];
+          [array addObjectsFromArray:v51];
           objc_destroyWeak(&v88);
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v52 = [v4 pu_debugRows];
-          [v69 addObjectsFromArray:v52];
+          pu_debugRows = [v4 pu_debugRows];
+          [array addObjectsFromArray:pu_debugRows];
         }
 
         objc_destroyWeak(&v118);
@@ -673,13 +673,13 @@ void __43__PURootSettings__deleteAllDiagnosticFiles__block_invoke_4(uint64_t a1)
     while (v66);
   }
 
-  v53 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v54 = [v62 reverseObjectEnumerator];
-  v55 = [v54 countByEnumeratingWithState:&v79 objects:v124 count:16];
+  reverseObjectEnumerator = [stackCopy reverseObjectEnumerator];
+  v55 = [reverseObjectEnumerator countByEnumeratingWithState:&v79 objects:v124 count:16];
   if (v55)
   {
     v56 = *v80;
@@ -689,13 +689,13 @@ void __43__PURootSettings__deleteAllDiagnosticFiles__block_invoke_4(uint64_t a1)
       {
         if (*v80 != v56)
         {
-          objc_enumerationMutation(v54);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        [v53 addObject:*(*(&v79 + 1) + 8 * j)];
+        [weakObjectsHashTable addObject:*(*(&v79 + 1) + 8 * j)];
       }
 
-      v55 = [v54 countByEnumeratingWithState:&v79 objects:v124 count:16];
+      v55 = [reverseObjectEnumerator countByEnumeratingWithState:&v79 objects:v124 count:16];
     }
 
     while (v55);
@@ -706,12 +706,12 @@ void __43__PURootSettings__deleteAllDiagnosticFiles__block_invoke_4(uint64_t a1)
   v77[1] = 3221225472;
   v77[2] = __51__PURootSettings__debugRowsForViewControllerStack___block_invoke_3_603;
   v77[3] = &unk_1E7B7E038;
-  v78 = v53;
-  v59 = v53;
+  v78 = weakObjectsHashTable;
+  v59 = weakObjectsHashTable;
   v60 = [v58 pu_rowWithTitle:@"View Controller Stack" output:v77];
-  [v69 addObject:v60];
+  [array addObject:v60];
 
-  return v69;
+  return array;
 }
 
 void *__51__PURootSettings__debugRowsForViewControllerStack___block_invoke(uint64_t a1)
@@ -1150,13 +1150,13 @@ void __51__PURootSettings__debugRowsForViewControllerStack___block_invoke_13(uin
   }
 }
 
-+ (void)dismissSettingsController:(id)a3
++ (void)dismissSettingsController:(id)controller
 {
   v3 = settingsWindow;
-  v4 = [settingsWindow rootViewController];
-  [v4 setToast:0];
-  v5 = [v4 view];
-  [v5 frame];
+  rootViewController = [settingsWindow rootViewController];
+  [rootViewController setToast:0];
+  view = [rootViewController view];
+  [view frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1166,7 +1166,7 @@ void __51__PURootSettings__debugRowsForViewControllerStack___block_invoke_13(uin
   v26[1] = 3221225472;
   v26[2] = __44__PURootSettings_dismissSettingsController___block_invoke;
   v26[3] = &unk_1E7B7FF20;
-  v27 = v5;
+  v27 = view;
   v28 = v7;
   v29 = v9;
   v30 = v11;
@@ -1181,8 +1181,8 @@ void __51__PURootSettings__debugRowsForViewControllerStack___block_invoke_13(uin
   v23 = v9;
   v24 = v11;
   v25 = v13;
-  v21 = v4;
-  v15 = v4;
+  v21 = rootViewController;
+  v15 = rootViewController;
   v16 = v27;
   v17 = v3;
   [v14 _animateUsingDefaultTimingWithOptions:4 animations:v26 completion:v18];
@@ -1217,7 +1217,7 @@ uint64_t __44__PURootSettings_dismissSettingsController___block_invoke_2(uint64_
   if (settingsWindow && ([settingsWindow isHidden] & 1) == 0)
   {
 
-    [a1 dismissSettingsController:0];
+    [self dismissSettingsController:0];
   }
 }
 
@@ -1228,31 +1228,31 @@ uint64_t __44__PURootSettings_dismissSettingsController___block_invoke_2(uint64_
   SBSGetScreenLockStatus();
   if (!settingsWindow || [settingsWindow isHidden])
   {
-    v4 = [MEMORY[0x1E69DD258] pu_currentViewControllerStack];
-    v45 = [v4 firstObject];
-    if (!v45)
+    pu_currentViewControllerStack = [MEMORY[0x1E69DD258] pu_currentViewControllerStack];
+    firstObject = [pu_currentViewControllerStack firstObject];
+    if (!firstObject)
     {
 LABEL_20:
 
       return;
     }
 
-    v44 = [a1 _debugRowsForViewControllerStack:v4];
+    v44 = [self _debugRowsForViewControllerStack:pu_currentViewControllerStack];
     [PURootSettings _setDebugRows:v44];
-    v5 = [a1 sharedInstance];
-    [v5 _setObservationEnabled:1];
+    sharedInstance = [self sharedInstance];
+    [sharedInstance _setObservationEnabled:1];
     v66 = 0;
     v67 = &v66;
     v68 = 0x3032000000;
     v69 = __Block_byref_object_copy__75537;
     v70 = __Block_byref_object_dispose__75538;
     v71 = 0;
-    v6 = [v4 hash];
+    v6 = [pu_currentViewControllerStack hash];
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v7 = v4;
+    v7 = pu_currentViewControllerStack;
     v8 = [v7 countByEnumeratingWithState:&v62 objects:v73 count:16];
     if (v8)
     {
@@ -1278,14 +1278,14 @@ LABEL_20:
     if (v6 == presentSettingsController_lastHash)
     {
       objc_storeStrong(v67 + 5, presentSettingsController_lastSettingsViewController);
-      v11 = [v67[5] viewControllers];
-      v12 = [v11 copy];
+      viewControllers = [v67[5] viewControllers];
+      v12 = [viewControllers copy];
       v59[0] = MEMORY[0x1E69E9820];
       v59[1] = 3221225472;
       v59[2] = __43__PURootSettings_presentSettingsController__block_invoke_467;
       v59[3] = &unk_1E7B7D998;
       v61 = &v66;
-      v13 = v11;
+      v13 = viewControllers;
       v60 = v13;
       [v12 enumerateObjectsUsingBlock:v59];
     }
@@ -1293,7 +1293,7 @@ LABEL_20:
     v14 = v67[5];
     if (!v14)
     {
-      v15 = [[_PUSettingsController alloc] initWithRootSettings:v5];
+      v15 = [[_PUSettingsController alloc] initWithRootSettings:sharedInstance];
       v16 = v67[5];
       v67[5] = v15;
 
@@ -1301,10 +1301,10 @@ LABEL_20:
       v58[1] = 3221225472;
       v58[2] = __43__PURootSettings_presentSettingsController__block_invoke_2;
       v58[3] = &__block_descriptor_40_e22___UIBarButtonItem_8__0l;
-      v58[4] = a1;
+      v58[4] = self;
       [v67[5] setDismissButtonFactory:v58];
-      v17 = [v67[5] dismissButtonFactory];
-      v18 = v17[2]();
+      dismissButtonFactory = [v67[5] dismissButtonFactory];
+      v18 = dismissButtonFactory[2]();
       [v67[5] setDismissButton:v18];
 
       objc_initWeak(&location, v67[5]);
@@ -1326,9 +1326,9 @@ LABEL_20:
     v52[1] = 3221225472;
     v52[2] = __43__PURootSettings_presentSettingsController__block_invoke_4;
     v52[3] = &unk_1E7B7FF70;
-    v20 = v5;
+    v20 = sharedInstance;
     v53 = v20;
-    v54 = a1;
+    selfCopy = self;
     [v19 setOnViewDidDisappearBlock:v52];
     v21 = settingsWindow;
     if (settingsWindow)
@@ -1337,10 +1337,10 @@ LABEL_19:
       [v21 setHidden:0];
       [settingsWindow setRootViewController:v67[5]];
       [settingsWindow makeKeyAndVisible];
-      v30 = [settingsWindow rootViewController];
-      v31 = [v30 view];
+      rootViewController = [settingsWindow rootViewController];
+      view = [rootViewController view];
 
-      [v31 frame];
+      [view frame];
       x = v75.origin.x;
       y = v75.origin.y;
       width = v75.size.width;
@@ -1351,13 +1351,13 @@ LABEL_19:
       v76.size.width = width;
       v76.size.height = height;
       v77 = CGRectOffset(v76, 0.0, v36);
-      [v31 setFrame:{v77.origin.x, v77.origin.y, v77.size.width, v77.size.height}];
+      [view setFrame:{v77.origin.x, v77.origin.y, v77.size.width, v77.size.height}];
       v37 = MEMORY[0x1E69DD250];
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __43__PURootSettings_presentSettingsController__block_invoke_5;
       v46[3] = &unk_1E7B7FF20;
-      v38 = v31;
+      v38 = view;
       v47 = v38;
       v48 = x;
       v49 = y;
@@ -1370,17 +1370,17 @@ LABEL_19:
     }
 
     v22 = objc_alloc(MEMORY[0x1E69DD2E8]);
-    v23 = [MEMORY[0x1E69DC668] sharedApplication];
-    v24 = [v23 connectedScenes];
-    v25 = [v24 anyObject];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
+    anyObject = [connectedScenes anyObject];
 
-    if (v25)
+    if (anyObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_18:
-        v26 = [v22 initWithWindowScene:v25];
+        v26 = [v22 initWithWindowScene:anyObject];
         v27 = settingsWindow;
         settingsWindow = v26;
 
@@ -1393,19 +1393,19 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v41 = objc_opt_class();
       v40 = NSStringFromClass(v41);
-      v42 = [v25 px_descriptionForAssertionMessage];
-      [v43 handleFailureInMethod:a2 object:a1 file:@"PURootSettings.m" lineNumber:460 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"UIApplication.sharedApplication.connectedScenes.anyObject", v40, v42}];
+      px_descriptionForAssertionMessage = [anyObject px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PURootSettings.m" lineNumber:460 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"UIApplication.sharedApplication.connectedScenes.anyObject", v40, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v39 = objc_opt_class();
       v40 = NSStringFromClass(v39);
-      [v43 handleFailureInMethod:a2 object:a1 file:@"PURootSettings.m" lineNumber:460 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"UIApplication.sharedApplication.connectedScenes.anyObject", v40}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PURootSettings.m" lineNumber:460 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"UIApplication.sharedApplication.connectedScenes.anyObject", v40}];
     }
 
     goto LABEL_18;
@@ -1478,35 +1478,35 @@ void __43__PURootSettings_presentSettingsController__block_invoke_4(uint64_t a1)
 + (void)_presentTapToRadar
 {
   v50 = *MEMORY[0x1E69E9840];
-  v39 = [MEMORY[0x1E69C3578] defaultDescription];
-  v2 = [MEMORY[0x1E69DD258] pu_currentViewControllerStack];
-  v38 = [v2 lastObject];
-  v3 = [v38 view];
-  v4 = [v3 window];
+  defaultDescription = [MEMORY[0x1E69C3578] defaultDescription];
+  pu_currentViewControllerStack = [MEMORY[0x1E69DD258] pu_currentViewControllerStack];
+  lastObject = [pu_currentViewControllerStack lastObject];
+  view = [lastObject view];
+  window = [view window];
 
-  [v4 frame];
+  [window frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 frame];
+  [window frame];
   v51.width = v13;
   v51.height = v14;
   UIGraphicsBeginImageContextWithOptions(v51, 0, 0.0);
-  [v4 drawViewHierarchyInRect:{v6, v8, v10, v12}];
+  [window drawViewHierarchyInRect:{v6, v8, v10, v12}];
   v15 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v37 = v15;
   v36 = [objc_opt_class() _saveScreenshot:v15];
   v16 = [MEMORY[0x1E695DFF8] URLWithString:?];
-  v17 = [MEMORY[0x1E69DC668] pu_debugCurrentAsset];
-  if (v17)
+  pu_debugCurrentAsset = [MEMORY[0x1E69DC668] pu_debugCurrentAsset];
+  if (pu_debugCurrentAsset)
   {
     v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = v17;
+      v19 = pu_debugCurrentAsset;
     }
 
     else
@@ -1527,7 +1527,7 @@ void __43__PURootSettings_presentSettingsController__block_invoke_4(uint64_t a1)
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v23 = v2;
+  v23 = pu_currentViewControllerStack;
   v24 = [v23 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v24)
   {
@@ -1543,8 +1543,8 @@ void __43__PURootSettings_presentSettingsController__block_invoke_4(uint64_t a1)
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v43 + 1) + 8 * v27) debugURLsForDiagnostics];
-        [v22 addObjectsFromArray:v28];
+        debugURLsForDiagnostics = [*(*(&v43 + 1) + 8 * v27) debugURLsForDiagnostics];
+        [v22 addObjectsFromArray:debugURLsForDiagnostics];
 
         ++v27;
       }
@@ -1556,7 +1556,7 @@ void __43__PURootSettings_presentSettingsController__block_invoke_4(uint64_t a1)
     while (v25);
   }
 
-  v29 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v30 = MEMORY[0x1E69C3578];
   v48 = v16;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
@@ -1566,18 +1566,18 @@ void __43__PURootSettings_presentSettingsController__block_invoke_4(uint64_t a1)
   v40[1] = 3221225472;
   v40[2] = __36__PURootSettings__presentTapToRadar__block_invoke;
   v40[3] = &unk_1E7B80088;
-  v41 = v29;
+  v41 = defaultManager;
   v42 = v16;
   v33 = v16;
-  v34 = v29;
+  v34 = defaultManager;
   LOWORD(v35) = 1;
-  [v30 fileRadarWithTitle:@"Photos - [TTR] <Insert Bug Title>" description:v39 classification:@"Other Bug" componentID:@"630529" componentName:@"Photos (New Bugs) | iOS" componentVersion:@"all" keyword:0 screenshotURLs:v31 attachmentURLs:v22 includeSysDiagnose:v35 includeInternalRelease:v32 additionalExtensionIdentifiers:v40 completionHandler:?];
+  [v30 fileRadarWithTitle:@"Photos - [TTR] <Insert Bug Title>" description:defaultDescription classification:@"Other Bug" componentID:@"630529" componentName:@"Photos (New Bugs) | iOS" componentVersion:@"all" keyword:0 screenshotURLs:v31 attachmentURLs:v22 includeSysDiagnose:v35 includeInternalRelease:v32 additionalExtensionIdentifiers:v40 completionHandler:?];
 }
 
-+ (id)_saveScreenshot:(id)a3
++ (id)_saveScreenshot:(id)screenshot
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = UIImageJPEGRepresentation(a3, 1.0);
+  v3 = UIImageJPEGRepresentation(screenshot, 1.0);
   v4 = NSTemporaryDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"tapToRadar.jpg"];
 
@@ -1605,14 +1605,14 @@ void __43__PURootSettings_presentSettingsController__block_invoke_4(uint64_t a1)
   {
     if (MEMORY[0x1B8C6C170]())
     {
-      v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
       v8 = @"PUEnableDoubleTapSettings";
       v9[0] = MEMORY[0x1E695E118];
       v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-      [v3 registerDefaults:v4];
+      [standardUserDefaults registerDefaults:v4];
 
-      v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v6 = [v5 BOOLForKey:@"PUEnableDoubleTapSettings"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v6 = [standardUserDefaults2 BOOLForKey:@"PUEnableDoubleTapSettings"];
 
       if (v6)
       {
@@ -1620,7 +1620,7 @@ void __43__PURootSettings_presentSettingsController__block_invoke_4(uint64_t a1)
         v7[1] = 3221225472;
         v7[2] = __72__PURootSettings_setupStatusBarInternalSettingsGestureOnInternalDevices__block_invoke;
         v7[3] = &__block_descriptor_40_e5_v8__0l;
-        v7[4] = a1;
+        v7[4] = self;
         if (setupStatusBarInternalSettingsGestureOnInternalDevices_onceToken != -1)
         {
           dispatch_once(&setupStatusBarInternalSettingsGestureOnInternalDevices_onceToken, v7);
@@ -1691,51 +1691,51 @@ void __72__PURootSettings_setupStatusBarInternalSettingsGestureOnInternalDevices
 {
   v139[30] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69C3868]);
-  v4 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
   v5 = NSStringFromSelector(sel__internal_libraryStateBriefDescription);
   v6 = NSStringFromSelector(sel__internal_libraryStateImage);
-  v132 = [v3 initWithPhotoLibrary:v4 titleKeyPath:v5 imageKeyPath:v6];
+  v132 = [v3 initWithPhotoLibrary:px_deprecated_appPhotoLibrary titleKeyPath:v5 imageKeyPath:v6];
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  [v7 addObject:v132];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:v132];
   v8 = objc_alloc(MEMORY[0x1E69C35A8]);
-  v9 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  px_deprecated_appPhotoLibrary2 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
   v10 = NSStringFromSelector(sel__memory_creationStateTitle);
   v11 = NSStringFromSelector(sel__memory_creationStateImage);
-  v131 = [v8 initWithPhotoLibrary:v9 titleKeyPath:v10 imageKeyPath:v11];
+  v131 = [v8 initWithPhotoLibrary:px_deprecated_appPhotoLibrary2 titleKeyPath:v10 imageKeyPath:v11];
 
-  v130 = v7;
-  [v7 addObject:v131];
-  v129 = [MEMORY[0x1E69C6638] sectionWithRows:v7 title:@"Processing Progress"];
+  v130 = array;
+  [array addObject:v131];
+  v129 = [MEMORY[0x1E69C6638] sectionWithRows:array title:@"Processing Progress"];
   v12 = MEMORY[0x1E69C3558];
   v13 = NSStringFromSelector(sel_favoritesSettings);
   v14 = +[PURootSettings sharedInstance];
   v128 = [v12 favoritesSubmoduleWithFavoritesSettingsKeyPath:v13 delegate:v14];
 
-  v133 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v15 = MEMORY[0x1E69C6610];
-  v127 = [MEMORY[0x1E69C3970] sharedInstance];
-  v126 = [v127 lemonadeSettings];
-  v125 = [v15 pu_rowWithTitle:@"🍋 Lemonade" settings:v126];
+  mEMORY[0x1E69C3970] = [MEMORY[0x1E69C3970] sharedInstance];
+  lemonadeSettings = [mEMORY[0x1E69C3970] lemonadeSettings];
+  v125 = [v15 pu_rowWithTitle:@"🍋 Lemonade" settings:lemonadeSettings];
   v139[0] = v125;
   v16 = MEMORY[0x1E69C6610];
   v124 = NSStringFromSelector(sel_tabbedLibrarySettings);
   v123 = [v16 rowWithTitle:@"Tabs & Sidebar" childSettingsKeyPath:v124];
   v139[1] = v123;
   v17 = MEMORY[0x1E69C6610];
-  v122 = [a1 _photosUICoreSettings];
-  v121 = [v17 pu_rowWithTitle:@"PhotosUICore" settings:v122];
+  _photosUICoreSettings = [self _photosUICoreSettings];
+  v121 = [v17 pu_rowWithTitle:@"PhotosUICore" settings:_photosUICoreSettings];
   v139[2] = v121;
   v120 = [MEMORY[0x1E69C6610] pu_rowWithTitle:@"Tutorials" settingsProvider:&__block_literal_global_75853];
   v139[3] = v120;
   v18 = MEMORY[0x1E69C6610];
-  v119 = [a1 _photosUICoreSettings];
-  v118 = [v119 diagnostics];
-  v117 = [v18 pu_rowWithTitle:@"Diagnostics" settings:v118];
+  _photosUICoreSettings2 = [self _photosUICoreSettings];
+  diagnostics = [_photosUICoreSettings2 diagnostics];
+  v117 = [v18 pu_rowWithTitle:@"Diagnostics" settings:diagnostics];
   v139[4] = v117;
   v19 = MEMORY[0x1E69C6610];
-  v116 = [a1 _photoKitSettings];
-  v115 = [v19 pu_rowWithTitle:@"PhotoKit" settings:v116];
+  _photoKitSettings = [self _photoKitSettings];
+  v115 = [v19 pu_rowWithTitle:@"PhotoKit" settings:_photoKitSettings];
   v139[5] = v115;
   v20 = MEMORY[0x1E69C6610];
   v114 = NSStringFromSelector(sel_curation);
@@ -1794,9 +1794,9 @@ void __72__PURootSettings_setupStatusBarInternalSettingsGestureOnInternalDevices
   v86 = [v33 rowWithTitle:@"Suggestions" childSettingsKeyPath:v87];
   v139[19] = v86;
   v34 = MEMORY[0x1E69C6610];
-  v85 = [a1 _photosUICoreSettings];
-  v84 = [v85 sharingSettings];
-  v83 = [v34 pu_rowWithTitle:@"Sharing" settings:v84];
+  _photosUICoreSettings3 = [self _photosUICoreSettings];
+  sharingSettings = [_photosUICoreSettings3 sharingSettings];
+  v83 = [v34 pu_rowWithTitle:@"Sharing" settings:sharingSettings];
   v139[20] = v83;
   v35 = MEMORY[0x1E69C65F8];
   v82 = NSStringFromSelector(sel_interfaceThemeClass);
@@ -1816,10 +1816,10 @@ void __72__PURootSettings_setupStatusBarInternalSettingsGestureOnInternalDevices
   v75 = [v37 rowWithTitle:@"Performance Diagnostics" childSettingsKeyPath:v76];
   v139[23] = v75;
   v38 = MEMORY[0x1E69C6610];
-  v95 = a1;
-  v74 = [a1 _photosUICoreSettings];
-  v73 = [v74 importSettings];
-  v72 = [v38 pu_rowWithTitle:@"Import" settings:v73];
+  selfCopy = self;
+  _photosUICoreSettings4 = [self _photosUICoreSettings];
+  importSettings = [_photosUICoreSettings4 importSettings];
+  v72 = [v38 pu_rowWithTitle:@"Import" settings:importSettings];
   v139[24] = v72;
   v39 = MEMORY[0x1E69C6610];
   v71 = NSStringFromSelector(sel_compositeVideoSettings);
@@ -1834,27 +1834,27 @@ void __72__PURootSettings_setupStatusBarInternalSettingsGestureOnInternalDevices
   v45 = [v43 rowWithTitle:@"Guided Access Restrictions" valueKeyPath:v44];
   v139[27] = v45;
   v46 = MEMORY[0x1E69C6610];
-  v47 = [a1 _photosUICoreSettings];
-  v48 = [v47 generativeStorySettings];
-  v49 = [v46 pu_rowWithTitle:@"Memory Creation" settings:v48];
+  _photosUICoreSettings5 = [self _photosUICoreSettings];
+  generativeStorySettings = [_photosUICoreSettings5 generativeStorySettings];
+  v49 = [v46 pu_rowWithTitle:@"Memory Creation" settings:generativeStorySettings];
   v139[28] = v49;
   v50 = MEMORY[0x1E69C65E8];
   v51 = [MEMORY[0x1E69C6640] actionWithSettingsKeyPath:0];
   v52 = [v50 rowWithTitle:@"Restore All Defaults" action:v51];
   v139[29] = v52;
   v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v139 count:30];
-  [v133 addObjectsFromArray:v53];
+  [array2 addObjectsFromArray:v53];
 
-  v54 = [MEMORY[0x1E69C6638] sectionWithRows:v133];
-  v55 = [MEMORY[0x1E695DF70] array];
+  v54 = [MEMORY[0x1E69C6638] sectionWithRows:array2];
+  array3 = [MEMORY[0x1E695DF70] array];
   v56 = [MEMORY[0x1E69C6610] pu_rowWithTitle:@"PhotosUI Tester" settingsProvider:&__block_literal_global_385];
   v137[0] = v56;
   v57 = [MEMORY[0x1E69C6610] pu_rowWithTitle:@"PhotosUICore Proto" settingsProvider:&__block_literal_global_390];
   v137[1] = v57;
   v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:v137 count:2];
-  [v55 addObjectsFromArray:v58];
+  [array3 addObjectsFromArray:v58];
 
-  [v55 addObjectsFromArray:sDebugRows];
+  [array3 addObjectsFromArray:sDebugRows];
   v59 = [MEMORY[0x1E69C65E8] pu_rowWithTitle:@"Print UI State" asynchronousOutputProducer:&__block_literal_global_396];
   v136[0] = v59;
   v60 = [MEMORY[0x1E69C65E8] pu_rowWithTitle:@"Print iCloud Photo Library Status" asynchronousOutputProducer:&__block_literal_global_403_75910];
@@ -1867,13 +1867,13 @@ void __72__PURootSettings_setupStatusBarInternalSettingsGestureOnInternalDevices
   v134[1] = 3221225472;
   v134[2] = __42__PURootSettings_settingsControllerModule__block_invoke_12;
   v134[3] = &__block_descriptor_40_e30_v16__0__PTUIModuleController_8l;
-  v134[4] = v95;
+  v134[4] = selfCopy;
   v63 = [MEMORY[0x1E69C65E8] pu_rowWithTitle:@"Delete All Diagnostic Files" action:v134];
   v136[4] = v63;
   v64 = [MEMORY[0x1E695DEC8] arrayWithObjects:v136 count:5];
-  [v55 addObjectsFromArray:v64];
+  [array3 addObjectsFromArray:v64];
 
-  v65 = [MEMORY[0x1E69C6638] sectionWithRows:v55 title:@"Debug"];
+  v65 = [MEMORY[0x1E69C6638] sectionWithRows:array3 title:@"Debug"];
   v66 = MEMORY[0x1E69C6638];
   v135[0] = v128;
   v135[1] = v129;

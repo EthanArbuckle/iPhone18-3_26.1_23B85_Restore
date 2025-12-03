@@ -1,9 +1,9 @@
 @interface SCNAccelerationConstraint
 + (SCNAccelerationConstraint)accelerationConstraint;
 - (SCNAccelerationConstraint)init;
-- (SCNAccelerationConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SCNAccelerationConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)setDamping:(CGFloat)damping;
 - (void)setDecelerationDistance:(CGFloat)decelerationDistance;
 - (void)setMaximumLinearAcceleration:(CGFloat)maximumLinearAcceleration;
@@ -36,7 +36,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(SCNAccelerationConstraint *)self maximumLinearVelocity];
@@ -55,14 +55,14 @@
 {
   v5 = maximumLinearVelocity;
   self->_maximumLinearVelocity = v5;
-  v6 = [(SCNConstraint *)self sceneRef];
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SCNAccelerationConstraint_setMaximumLinearVelocity___block_invoke;
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = maximumLinearVelocity;
-  [SCNTransaction postCommandWithContext:v6 object:self key:@"maximumLinearVelocity" applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:self key:@"maximumLinearVelocity" applyBlock:v7];
 }
 
 float __54__SCNAccelerationConstraint_setMaximumLinearVelocity___block_invoke(uint64_t a1)
@@ -76,14 +76,14 @@ float __54__SCNAccelerationConstraint_setMaximumLinearVelocity___block_invoke(ui
 {
   v5 = maximumLinearAcceleration;
   self->_maximumLinearAcceleration = v5;
-  v6 = [(SCNConstraint *)self sceneRef];
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__SCNAccelerationConstraint_setMaximumLinearAcceleration___block_invoke;
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = maximumLinearAcceleration;
-  [SCNTransaction postCommandWithContext:v6 object:self key:@"maximumLinearAcceleration" applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:self key:@"maximumLinearAcceleration" applyBlock:v7];
 }
 
 float __58__SCNAccelerationConstraint_setMaximumLinearAcceleration___block_invoke(uint64_t a1)
@@ -97,14 +97,14 @@ float __58__SCNAccelerationConstraint_setMaximumLinearAcceleration___block_invok
 {
   v5 = decelerationDistance;
   self->_decelerationDistance = v5;
-  v6 = [(SCNConstraint *)self sceneRef];
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SCNAccelerationConstraint_setDecelerationDistance___block_invoke;
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = decelerationDistance;
-  [SCNTransaction postCommandWithContext:v6 object:self key:@"decelerationDistance" applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:self key:@"decelerationDistance" applyBlock:v7];
 }
 
 float __53__SCNAccelerationConstraint_setDecelerationDistance___block_invoke(uint64_t a1)
@@ -118,14 +118,14 @@ float __53__SCNAccelerationConstraint_setDecelerationDistance___block_invoke(uin
 {
   v5 = damping;
   self->_damping = v5;
-  v6 = [(SCNConstraint *)self sceneRef];
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SCNAccelerationConstraint_setDamping___block_invoke;
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = damping;
-  [SCNTransaction postCommandWithContext:v6 object:self key:@"damping" applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:self key:@"damping" applyBlock:v7];
 }
 
 float __40__SCNAccelerationConstraint_setDamping___block_invoke(uint64_t a1)
@@ -135,22 +135,22 @@ float __40__SCNAccelerationConstraint_setDamping___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = SCNAccelerationConstraint;
   [(SCNConstraint *)&v9 encodeWithCoder:?];
   *&v5 = self->_maximumLinearVelocity;
-  [a3 encodeFloat:@"maximumLinearVelocity" forKey:v5];
+  [coder encodeFloat:@"maximumLinearVelocity" forKey:v5];
   *&v6 = self->_maximumLinearAcceleration;
-  [a3 encodeFloat:@"maximumLinearAcceleration" forKey:v6];
+  [coder encodeFloat:@"maximumLinearAcceleration" forKey:v6];
   *&v7 = self->_decelerationDistance;
-  [a3 encodeFloat:@"decelerationDistance" forKey:v7];
+  [coder encodeFloat:@"decelerationDistance" forKey:v7];
   *&v8 = self->_damping;
-  [a3 encodeFloat:@"damping" forKey:v8];
+  [coder encodeFloat:@"damping" forKey:v8];
 }
 
-- (SCNAccelerationConstraint)initWithCoder:(id)a3
+- (SCNAccelerationConstraint)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = SCNAccelerationConstraint;
@@ -160,14 +160,14 @@ float __40__SCNAccelerationConstraint_setDamping___block_invoke(uint64_t a1)
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
     v4->super._constraintRef = C3DConstraintCreateAcceleration();
-    [(SCNConstraint *)v4 finalizeDecodeConstraint:a3];
-    [a3 decodeFloatForKey:@"maximumLinearVelocity"];
+    [(SCNConstraint *)v4 finalizeDecodeConstraint:coder];
+    [coder decodeFloatForKey:@"maximumLinearVelocity"];
     [(SCNAccelerationConstraint *)v4 setMaximumLinearVelocity:v6];
-    [a3 decodeFloatForKey:@"maximumLinearAcceleration"];
+    [coder decodeFloatForKey:@"maximumLinearAcceleration"];
     [(SCNAccelerationConstraint *)v4 setMaximumLinearAcceleration:v7];
-    [a3 decodeFloatForKey:@"decelerationDistance"];
+    [coder decodeFloatForKey:@"decelerationDistance"];
     [(SCNAccelerationConstraint *)v4 setDecelerationDistance:v8];
-    [a3 decodeFloatForKey:@"damping"];
+    [coder decodeFloatForKey:@"damping"];
     [(SCNAccelerationConstraint *)v4 setDamping:v9];
     [SCNTransaction setImmediateMode:v5];
   }

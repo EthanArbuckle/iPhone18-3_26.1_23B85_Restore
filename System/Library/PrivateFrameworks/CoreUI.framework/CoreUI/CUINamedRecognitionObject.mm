@@ -1,5 +1,5 @@
 @interface CUINamedRecognitionObject
-- (CUINamedRecognitionObject)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedRecognitionObject)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (NSData)objectData;
 - (id)description;
 - (id)referenceOriginTransformation;
@@ -7,11 +7,11 @@
 
 @implementation CUINamedRecognitionObject
 
-- (CUINamedRecognitionObject)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedRecognitionObject)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v7.receiver = self;
   v7.super_class = CUINamedRecognitionObject;
-  v5 = [(CUINamedLookup *)&v7 initWithName:a3 usingRenditionKey:a4 fromTheme:a5];
+  v5 = [(CUINamedLookup *)&v7 initWithName:name usingRenditionKey:key fromTheme:theme];
   if ([(CUIThemeRendition *)[(CUINamedLookup *)v5 _rendition] type]!= 1014)
   {
 
@@ -23,16 +23,16 @@
 
 - (NSData)objectData
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 data];
+  return [(CUIThemeRendition *)_rendition data];
 }
 
 - (id)referenceOriginTransformation
 {
-  v1 = [a1 _rendition];
+  _rendition = [self _rendition];
 
-  return [v1 transformation];
+  return [_rendition transformation];
 }
 
 - (id)description

@@ -1,42 +1,42 @@
 @interface _WKWebPushDaemonConnection
 - (Ref<API::WebPushDaemonConnection,)_protectedConnection;
-- (_WKWebPushDaemonConnection)initWithConfiguration:(id)a3;
-- (uint64_t)getNextPendingPushMessage:(const void *)a1;
-- (uint64_t)getNextPendingPushMessage:(uint64_t)a1;
-- (uint64_t)getNotifications:(const void *)a1 tag:completionHandler:;
-- (uint64_t)getNotifications:(uint64_t)a1 tag:(uint64_t)a2 completionHandler:;
-- (uint64_t)getNotifications:(uint64_t)a1 tag:completionHandler:;
-- (uint64_t)getPushPermissionStateForOrigin:(const void *)a1 completionHandler:;
-- (uint64_t)getPushPermissionStateForOrigin:(uint64_t)a1 completionHandler:;
-- (uint64_t)getSubscriptionForScope:(const void *)a1 completionHandler:;
-- (uint64_t)getSubscriptionForScope:(uint64_t)a1 completionHandler:;
-- (uint64_t)getSubscriptionForScope:(uint64_t)a1 completionHandler:(uint64_t)a2;
-- (uint64_t)requestPushPermissionForOrigin:(const void *)a1 completionHandler:;
-- (uint64_t)requestPushPermissionForOrigin:(uint64_t)a1 completionHandler:;
-- (uint64_t)showNotification:(const void *)a1 completionHandler:;
-- (uint64_t)showNotification:(uint64_t)a1 completionHandler:;
-- (uint64_t)subscribeToPushServiceForScope:(const void *)a1 applicationServerKey:completionHandler:;
-- (uint64_t)subscribeToPushServiceForScope:(uint64_t)a1 applicationServerKey:(uint64_t)a2 completionHandler:;
-- (uint64_t)subscribeToPushServiceForScope:(uint64_t)a1 applicationServerKey:completionHandler:;
-- (uint64_t)unsubscribeFromPushServiceForScope:(const void *)a1 completionHandler:;
-- (uint64_t)unsubscribeFromPushServiceForScope:(uint64_t)a1 completionHandler:;
-- (uint64_t)unsubscribeFromPushServiceForScope:(uint64_t)a1 completionHandler:(char *)a2;
-- (void)cancelNotification:(id)a3 uuid:(id)a4;
-- (void)getNextPendingPushMessage:(id)a3;
-- (void)getNextPendingPushMessage:(uint64_t)a1;
-- (void)getNotifications:(id)a3 tag:(id)a4 completionHandler:(id)a5;
-- (void)getPushPermissionStateForOrigin:(id)a3 completionHandler:(id)a4;
-- (void)getSubscriptionForScope:(id)a3 completionHandler:(id)a4;
-- (void)requestPushPermissionForOrigin:(id)a3 completionHandler:(id)a4;
-- (void)setAppBadge:(unint64_t *)a3 origin:(id)a4;
-- (void)showNotification:(id)a3 completionHandler:(id)a4;
-- (void)subscribeToPushServiceForScope:(id)a3 applicationServerKey:(id)a4 completionHandler:(id)a5;
-- (void)unsubscribeFromPushServiceForScope:(id)a3 completionHandler:(id)a4;
+- (_WKWebPushDaemonConnection)initWithConfiguration:(id)configuration;
+- (uint64_t)getNextPendingPushMessage:(const void *)message;
+- (uint64_t)getNextPendingPushMessage:(uint64_t)message;
+- (uint64_t)getNotifications:(const void *)notifications tag:completionHandler:;
+- (uint64_t)getNotifications:(uint64_t)notifications tag:(uint64_t)tag completionHandler:;
+- (uint64_t)getNotifications:(uint64_t)notifications tag:completionHandler:;
+- (uint64_t)getPushPermissionStateForOrigin:(const void *)origin completionHandler:;
+- (uint64_t)getPushPermissionStateForOrigin:(uint64_t)origin completionHandler:;
+- (uint64_t)getSubscriptionForScope:(const void *)scope completionHandler:;
+- (uint64_t)getSubscriptionForScope:(uint64_t)scope completionHandler:;
+- (uint64_t)getSubscriptionForScope:(uint64_t)scope completionHandler:(uint64_t)handler;
+- (uint64_t)requestPushPermissionForOrigin:(const void *)origin completionHandler:;
+- (uint64_t)requestPushPermissionForOrigin:(uint64_t)origin completionHandler:;
+- (uint64_t)showNotification:(const void *)notification completionHandler:;
+- (uint64_t)showNotification:(uint64_t)notification completionHandler:;
+- (uint64_t)subscribeToPushServiceForScope:(const void *)scope applicationServerKey:completionHandler:;
+- (uint64_t)subscribeToPushServiceForScope:(uint64_t)scope applicationServerKey:(uint64_t)key completionHandler:;
+- (uint64_t)subscribeToPushServiceForScope:(uint64_t)scope applicationServerKey:completionHandler:;
+- (uint64_t)unsubscribeFromPushServiceForScope:(const void *)scope completionHandler:;
+- (uint64_t)unsubscribeFromPushServiceForScope:(uint64_t)scope completionHandler:;
+- (uint64_t)unsubscribeFromPushServiceForScope:(uint64_t)scope completionHandler:(char *)handler;
+- (void)cancelNotification:(id)notification uuid:(id)uuid;
+- (void)getNextPendingPushMessage:(id)message;
+- (void)getNextPendingPushMessage:(uint64_t)message;
+- (void)getNotifications:(id)notifications tag:(id)tag completionHandler:(id)handler;
+- (void)getPushPermissionStateForOrigin:(id)origin completionHandler:(id)handler;
+- (void)getSubscriptionForScope:(id)scope completionHandler:(id)handler;
+- (void)requestPushPermissionForOrigin:(id)origin completionHandler:(id)handler;
+- (void)setAppBadge:(unint64_t *)badge origin:(id)origin;
+- (void)showNotification:(id)notification completionHandler:(id)handler;
+- (void)subscribeToPushServiceForScope:(id)scope applicationServerKey:(id)key completionHandler:(id)handler;
+- (void)unsubscribeFromPushServiceForScope:(id)scope completionHandler:(id)handler;
 @end
 
 @implementation _WKWebPushDaemonConnection
 
-- (_WKWebPushDaemonConnection)initWithConfiguration:(id)a3
+- (_WKWebPushDaemonConnection)initWithConfiguration:(id)configuration
 {
   v26 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -46,20 +46,20 @@
   {
     v19 = 0;
     v20 = 0;
-    MEMORY[0x19EB02040](&v21, [a3 bundleIdentifierOverrideForTesting]);
-    MEMORY[0x19EB02040](&v22, [a3 partition]);
+    MEMORY[0x19EB02040](&v21, [configuration bundleIdentifierOverrideForTesting]);
+    MEMORY[0x19EB02040](&v22, [configuration partition]);
     v23 = 0;
     v24 = 0;
     v25 = 0;
-    v5 = [a3 machServiceName];
-    v6 = API::Object::apiObjectsUnderConstruction(v5);
-    v7 = [(_WKWebPushDaemonConnection *)v4 _apiObject];
+    machServiceName = [configuration machServiceName];
+    v6 = API::Object::apiObjectsUnderConstruction(machServiceName);
+    _apiObject = [(_WKWebPushDaemonConnection *)v4 _apiObject];
     v17 = v4;
-    v18 = v7;
+    v18 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v6, &v18, &v17, v16);
-    v8 = [(_WKWebPushDaemonConnection *)v4 _apiObject];
-    MEMORY[0x19EB02040](v16, v5);
-    API::WebPushDaemonConnection::WebPushDaemonConnection(v8, v16, &v19);
+    _apiObject2 = [(_WKWebPushDaemonConnection *)v4 _apiObject];
+    MEMORY[0x19EB02040](v16, machServiceName);
+    API::WebPushDaemonConnection::WebPushDaemonConnection(_apiObject2, v16, &v19);
     v10 = v16[0];
     v16[0] = 0;
     if (v10 && atomic_fetch_add_explicit(v10, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -93,7 +93,7 @@
   return v4;
 }
 
-- (void)getPushPermissionStateForOrigin:(id)a3 completionHandler:(id)a4
+- (void)getPushPermissionStateForOrigin:(id)origin completionHandler:(id)handler
 {
   if (self)
   {
@@ -107,8 +107,8 @@
     v15 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v14, a3);
-  v7 = _Block_copy(a4);
+  MEMORY[0x19EB01DE0](v14, origin);
+  v7 = _Block_copy(handler);
   v8 = WTF::fastMalloc(0x10);
   *v8 = &unk_1F10FC3E0;
   v8[1] = v7;
@@ -137,7 +137,7 @@
   }
 }
 
-- (void)requestPushPermissionForOrigin:(id)a3 completionHandler:(id)a4
+- (void)requestPushPermissionForOrigin:(id)origin completionHandler:(id)handler
 {
   if (self)
   {
@@ -151,8 +151,8 @@
     v15 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v14, a3);
-  v7 = _Block_copy(a4);
+  MEMORY[0x19EB01DE0](v14, origin);
+  v7 = _Block_copy(handler);
   v8 = WTF::fastMalloc(0x10);
   *v8 = &unk_1F10FC408;
   v8[1] = v7;
@@ -181,9 +181,9 @@
   }
 }
 
-- (void)setAppBadge:(unint64_t *)a3 origin:(id)a4
+- (void)setAppBadge:(unint64_t *)badge origin:(id)origin
 {
-  v6 = a3 != 0;
+  v6 = badge != 0;
   if (self)
   {
     [(_WKWebPushDaemonConnection *)self _protectedConnection];
@@ -196,8 +196,8 @@
     v12 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v11, a4);
-  API::WebPushDaemonConnection::setAppBadge(v7, v11, a3, v6);
+  MEMORY[0x19EB01DE0](v11, origin);
+  API::WebPushDaemonConnection::setAppBadge(v7, v11, badge, v6);
   v9 = v11[0];
   v11[0] = 0;
   if (v9 && atomic_fetch_add_explicit(v9, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -213,12 +213,12 @@
   }
 }
 
-- (void)subscribeToPushServiceForScope:(id)a3 applicationServerKey:(id)a4 completionHandler:(id)a5
+- (void)subscribeToPushServiceForScope:(id)scope applicationServerKey:(id)key completionHandler:(id)handler
 {
-  if (a4)
+  if (key)
   {
-    v9 = [a4 bytes];
-    v10 = [a4 length];
+    bytes = [key bytes];
+    v10 = [key length];
     v11 = v10;
     v25 = 0;
     LODWORD(v26) = 0;
@@ -237,7 +237,7 @@
       v25 = v12;
       do
       {
-        *(v12 + v13) = *(v9 + v13);
+        *(v12 + v13) = *(bytes + v13);
         ++v13;
       }
 
@@ -262,8 +262,8 @@
     v24 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v23, a3);
-  v14 = _Block_copy(a5);
+  MEMORY[0x19EB01DE0](v23, scope);
+  v14 = _Block_copy(handler);
   v15 = WTF::fastMalloc(0x10);
   *v15 = &unk_1F10FC430;
   v15[1] = v14;
@@ -303,7 +303,7 @@
   }
 }
 
-- (void)unsubscribeFromPushServiceForScope:(id)a3 completionHandler:(id)a4
+- (void)unsubscribeFromPushServiceForScope:(id)scope completionHandler:(id)handler
 {
   if (self)
   {
@@ -317,8 +317,8 @@
     v16 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v15, a3);
-  v7 = _Block_copy(a4);
+  MEMORY[0x19EB01DE0](v15, scope);
+  v7 = _Block_copy(handler);
   v8 = WTF::fastMalloc(0x10);
   *v8 = &unk_1F10FC480;
   v8[1] = v7;
@@ -352,7 +352,7 @@
   }
 }
 
-- (void)getSubscriptionForScope:(id)a3 completionHandler:(id)a4
+- (void)getSubscriptionForScope:(id)scope completionHandler:(id)handler
 {
   if (self)
   {
@@ -366,8 +366,8 @@
     v16 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v15, a3);
-  v7 = _Block_copy(a4);
+  MEMORY[0x19EB01DE0](v15, scope);
+  v7 = _Block_copy(handler);
   v8 = WTF::fastMalloc(0x10);
   *v8 = &unk_1F10FC4A8;
   v8[1] = v7;
@@ -398,7 +398,7 @@
   }
 }
 
-- (void)getNextPendingPushMessage:(id)a3
+- (void)getNextPendingPushMessage:(id)message
 {
   if (self)
   {
@@ -412,7 +412,7 @@
     v10 = 0;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(message);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10FC4D0;
   v6[1] = v5;
@@ -434,7 +434,7 @@
   }
 }
 
-- (void)showNotification:(id)a3 completionHandler:(id)a4
+- (void)showNotification:(id)notification completionHandler:(id)handler
 {
   if (self)
   {
@@ -448,13 +448,13 @@
     v13 = 0;
   }
 
-  v7 = [a3 _getCoreData];
-  v8 = _Block_copy(a4);
+  _getCoreData = [notification _getCoreData];
+  v8 = _Block_copy(handler);
   v9 = WTF::fastMalloc(0x10);
   *v9 = &unk_1F10FC520;
   v9[1] = v8;
   v12 = v9;
-  API::WebPushDaemonConnection::showNotification(v6, v7, &v12);
+  API::WebPushDaemonConnection::showNotification(v6, _getCoreData, &v12);
   v10 = v12;
   v12 = 0;
   if (v10)
@@ -471,7 +471,7 @@
   }
 }
 
-- (void)getNotifications:(id)a3 tag:(id)a4 completionHandler:(id)a5
+- (void)getNotifications:(id)notifications tag:(id)tag completionHandler:(id)handler
 {
   if (self)
   {
@@ -485,9 +485,9 @@
     v20 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v19, a3);
-  MEMORY[0x19EB02040](&v18, a4);
-  v9 = _Block_copy(a5);
+  MEMORY[0x19EB01DE0](v19, notifications);
+  MEMORY[0x19EB02040](&v18, tag);
+  v9 = _Block_copy(handler);
   v10 = WTF::fastMalloc(0x10);
   *v10 = &unk_1F10FC548;
   v10[1] = v9;
@@ -526,7 +526,7 @@
   }
 }
 
-- (void)cancelNotification:(id)a3 uuid:(id)a4
+- (void)cancelNotification:(id)notification uuid:(id)uuid
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self)
@@ -541,8 +541,8 @@
     v12 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v11, a3);
-  WTF::UUID::fromNSUUID(v13, a4, v7);
+  MEMORY[0x19EB01DE0](v11, notification);
+  WTF::UUID::fromNSUUID(v13, uuid, v7);
   if ((v14 & 1) == 0)
   {
     __break(1u);
@@ -573,59 +573,59 @@
   return v5;
 }
 
-- (uint64_t)getPushPermissionStateForOrigin:(uint64_t)a1 completionHandler:
+- (uint64_t)getPushPermissionStateForOrigin:(uint64_t)origin completionHandler:
 {
-  *a1 = &unk_1F10FC3E0;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *origin = &unk_1F10FC3E0;
+  _Block_release(*(origin + 8));
+  return origin;
 }
 
-- (uint64_t)getPushPermissionStateForOrigin:(const void *)a1 completionHandler:
+- (uint64_t)getPushPermissionStateForOrigin:(const void *)origin completionHandler:
 {
-  *a1 = &unk_1F10FC3E0;
-  _Block_release(a1[1]);
+  *origin = &unk_1F10FC3E0;
+  _Block_release(origin[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(origin, v2);
 }
 
-- (uint64_t)requestPushPermissionForOrigin:(uint64_t)a1 completionHandler:
+- (uint64_t)requestPushPermissionForOrigin:(uint64_t)origin completionHandler:
 {
-  *a1 = &unk_1F10FC408;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *origin = &unk_1F10FC408;
+  _Block_release(*(origin + 8));
+  return origin;
 }
 
-- (uint64_t)requestPushPermissionForOrigin:(const void *)a1 completionHandler:
+- (uint64_t)requestPushPermissionForOrigin:(const void *)origin completionHandler:
 {
-  *a1 = &unk_1F10FC408;
-  _Block_release(a1[1]);
+  *origin = &unk_1F10FC408;
+  _Block_release(origin[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(origin, v2);
 }
 
-- (uint64_t)subscribeToPushServiceForScope:(uint64_t)a1 applicationServerKey:completionHandler:
+- (uint64_t)subscribeToPushServiceForScope:(uint64_t)scope applicationServerKey:completionHandler:
 {
-  *a1 = &unk_1F10FC430;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *scope = &unk_1F10FC430;
+  _Block_release(*(scope + 8));
+  return scope;
 }
 
-- (uint64_t)subscribeToPushServiceForScope:(const void *)a1 applicationServerKey:completionHandler:
+- (uint64_t)subscribeToPushServiceForScope:(const void *)scope applicationServerKey:completionHandler:
 {
-  *a1 = &unk_1F10FC430;
-  _Block_release(a1[1]);
+  *scope = &unk_1F10FC430;
+  _Block_release(scope[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(scope, v2);
 }
 
-- (uint64_t)subscribeToPushServiceForScope:(uint64_t)a1 applicationServerKey:(uint64_t)a2 completionHandler:
+- (uint64_t)subscribeToPushServiceForScope:(uint64_t)scope applicationServerKey:(uint64_t)key completionHandler:
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v17[0] = 0;
   v19 = -1;
-  if (*(a2 + 80))
+  if (*(key + 80))
   {
-    if (*(a2 + 80) == 255)
+    if (*(key + 80) == 255)
     {
 LABEL_8:
       v5 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -661,7 +661,7 @@ LABEL_8:
       {
       }
 
-      (*(*(a1 + 8) + 16))();
+      (*(*(scope + 8) + 16))();
       if (v14)
       {
       }
@@ -669,8 +669,8 @@ LABEL_8:
       return std::experimental::fundamentals_v3::expected<WebCore::PushSubscriptionData,WebCore::ExceptionData>::~expected(v17, v12);
     }
 
-    v17[0] = *a2;
-    v4 = *(a2 + 8);
+    v17[0] = *key;
+    v4 = *(key + 8);
     if (v4)
     {
       atomic_fetch_add_explicit(v4, 2u, memory_order_relaxed);
@@ -681,10 +681,10 @@ LABEL_8:
 
   else
   {
-    WebCore::PushSubscriptionData::PushSubscriptionData(v17, a2);
+    WebCore::PushSubscriptionData::PushSubscriptionData(v17, key);
   }
 
-  v19 = *(a2 + 80);
+  v19 = *(key + 80);
   if (v19)
   {
     goto LABEL_8;
@@ -696,7 +696,7 @@ LABEL_8:
   if (!info)
   {
 LABEL_15:
-    (*(*(a1 + 8) + 16))();
+    (*(*(scope + 8) + 16))();
     if (info)
     {
     }
@@ -717,44 +717,44 @@ LABEL_15:
   return result;
 }
 
-- (uint64_t)unsubscribeFromPushServiceForScope:(uint64_t)a1 completionHandler:
+- (uint64_t)unsubscribeFromPushServiceForScope:(uint64_t)scope completionHandler:
 {
-  *a1 = &unk_1F10FC480;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *scope = &unk_1F10FC480;
+  _Block_release(*(scope + 8));
+  return scope;
 }
 
-- (uint64_t)unsubscribeFromPushServiceForScope:(const void *)a1 completionHandler:
+- (uint64_t)unsubscribeFromPushServiceForScope:(const void *)scope completionHandler:
 {
-  *a1 = &unk_1F10FC480;
-  _Block_release(a1[1]);
+  *scope = &unk_1F10FC480;
+  _Block_release(scope[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(scope, v2);
 }
 
-- (uint64_t)unsubscribeFromPushServiceForScope:(uint64_t)a1 completionHandler:(char *)a2
+- (uint64_t)unsubscribeFromPushServiceForScope:(uint64_t)scope completionHandler:(char *)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v14[0] = 0;
   v16 = -1;
-  v3 = a2[16];
-  if (!a2[16])
+  v3 = handler[16];
+  if (!handler[16])
   {
-    v14[0] = *a2;
+    v14[0] = *handler;
     v16 = 0;
 LABEL_7:
-    (*(*(a1 + 8) + 16))();
+    (*(*(scope + 8) + 16))();
     return mpark::detail::move_constructor<mpark::detail::traits<BOOL,WebCore::ExceptionData>,(mpark::detail::Trait)1>::~move_constructor(v14, v6);
   }
 
   if (v3 != 255)
   {
-    v14[0] = *a2;
-    v4 = *(a2 + 1);
+    v14[0] = *handler;
+    v4 = *(handler + 1);
     if (v4)
     {
       atomic_fetch_add_explicit(v4, 2u, memory_order_relaxed);
-      v5 = a2[16];
+      v5 = handler[16];
       v15 = v4;
       v16 = v5;
       if (!v5)
@@ -802,7 +802,7 @@ LABEL_7:
   {
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(scope + 8) + 16))();
   if (v11)
   {
   }
@@ -810,29 +810,29 @@ LABEL_7:
   return mpark::detail::move_constructor<mpark::detail::traits<BOOL,WebCore::ExceptionData>,(mpark::detail::Trait)1>::~move_constructor(v14, v6);
 }
 
-- (uint64_t)getSubscriptionForScope:(uint64_t)a1 completionHandler:
+- (uint64_t)getSubscriptionForScope:(uint64_t)scope completionHandler:
 {
-  *a1 = &unk_1F10FC4A8;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *scope = &unk_1F10FC4A8;
+  _Block_release(*(scope + 8));
+  return scope;
 }
 
-- (uint64_t)getSubscriptionForScope:(const void *)a1 completionHandler:
+- (uint64_t)getSubscriptionForScope:(const void *)scope completionHandler:
 {
-  *a1 = &unk_1F10FC4A8;
-  _Block_release(a1[1]);
+  *scope = &unk_1F10FC4A8;
+  _Block_release(scope[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(scope, v2);
 }
 
-- (uint64_t)getSubscriptionForScope:(uint64_t)a1 completionHandler:(uint64_t)a2
+- (uint64_t)getSubscriptionForScope:(uint64_t)scope completionHandler:(uint64_t)handler
 {
   v35[1] = *MEMORY[0x1E69E9840];
   v31[0] = 0;
   v33 = -1;
-  if (*(a2 + 88))
+  if (*(handler + 88))
   {
-    if (*(a2 + 88) == 255)
+    if (*(handler + 88) == 255)
     {
 LABEL_8:
       v5 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -868,7 +868,7 @@ LABEL_8:
       {
       }
 
-      (*(*(a1 + 8) + 16))();
+      (*(*(scope + 8) + 16))();
       if (v18)
       {
       }
@@ -876,8 +876,8 @@ LABEL_8:
       return std::experimental::fundamentals_v3::expected<std::optional<WebCore::PushSubscriptionData>,WebCore::ExceptionData>::~expected(v31, v12);
     }
 
-    v31[0] = *a2;
-    v4 = *(a2 + 8);
+    v31[0] = *handler;
+    v4 = *(handler + 8);
     if (v4)
     {
       atomic_fetch_add_explicit(v4, 2u, memory_order_relaxed);
@@ -888,10 +888,10 @@ LABEL_8:
 
   else
   {
-    std::__optional_copy_base<WebCore::PushSubscriptionData,false>::__optional_copy_base[abi:sn200100](v31, a2);
+    std::__optional_copy_base<WebCore::PushSubscriptionData,false>::__optional_copy_base[abi:sn200100](v31, handler);
   }
 
-  v33 = *(a2 + 88);
+  v33 = *(handler + 88);
   if (v33)
   {
     goto LABEL_8;
@@ -900,7 +900,7 @@ LABEL_8:
   std::__optional_copy_base<WebCore::PushSubscriptionData,false>::__optional_copy_base[abi:sn200100](&v22, v31);
   if (v30 != 1)
   {
-    (*(*(a1 + 8) + 16))();
+    (*(*(scope + 8) + 16))();
     return std::experimental::fundamentals_v3::expected<std::optional<WebCore::PushSubscriptionData>,WebCore::ExceptionData>::~expected(v31, v12);
   }
 
@@ -910,7 +910,7 @@ LABEL_8:
   if (!v10)
   {
 LABEL_16:
-    (*(*(a1 + 8) + 16))();
+    (*(*(scope + 8) + 16))();
     if (v10)
     {
     }
@@ -965,22 +965,22 @@ LABEL_16:
   return result;
 }
 
-- (uint64_t)getNextPendingPushMessage:(uint64_t)a1
+- (uint64_t)getNextPendingPushMessage:(uint64_t)message
 {
-  *a1 = &unk_1F10FC4D0;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *message = &unk_1F10FC4D0;
+  _Block_release(*(message + 8));
+  return message;
 }
 
-- (uint64_t)getNextPendingPushMessage:(const void *)a1
+- (uint64_t)getNextPendingPushMessage:(const void *)message
 {
-  *a1 = &unk_1F10FC4D0;
-  _Block_release(a1[1]);
+  *message = &unk_1F10FC4D0;
+  _Block_release(message[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(message, v2);
 }
 
-- (void)getNextPendingPushMessage:(uint64_t)a1
+- (void)getNextPendingPushMessage:(uint64_t)message
 {
   v12[0] = 0;
   v18 = 0;
@@ -1027,7 +1027,7 @@ LABEL_16:
       v10 = v9;
     }
 
-    (*(*(a1 + 8) + 16))(*(a1 + 8));
+    (*(*(message + 8) + 16))(*(message + 8));
     if (v9)
     {
     }
@@ -1037,7 +1037,7 @@ LABEL_16:
 
   else
   {
-    (*(*(a1 + 8) + 16))(*(a1 + 8));
+    (*(*(message + 8) + 16))(*(message + 8));
   }
 
   if (v18 == 1)
@@ -1046,50 +1046,50 @@ LABEL_16:
   }
 }
 
-- (uint64_t)showNotification:(uint64_t)a1 completionHandler:
+- (uint64_t)showNotification:(uint64_t)notification completionHandler:
 {
-  *a1 = &unk_1F10FC520;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *notification = &unk_1F10FC520;
+  _Block_release(*(notification + 8));
+  return notification;
 }
 
-- (uint64_t)showNotification:(const void *)a1 completionHandler:
+- (uint64_t)showNotification:(const void *)notification completionHandler:
 {
-  *a1 = &unk_1F10FC520;
-  _Block_release(a1[1]);
+  *notification = &unk_1F10FC520;
+  _Block_release(notification[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(notification, v2);
 }
 
-- (uint64_t)getNotifications:(uint64_t)a1 tag:completionHandler:
+- (uint64_t)getNotifications:(uint64_t)notifications tag:completionHandler:
 {
-  *a1 = &unk_1F10FC548;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *notifications = &unk_1F10FC548;
+  _Block_release(*(notifications + 8));
+  return notifications;
 }
 
-- (uint64_t)getNotifications:(const void *)a1 tag:completionHandler:
+- (uint64_t)getNotifications:(const void *)notifications tag:completionHandler:
 {
-  *a1 = &unk_1F10FC548;
-  _Block_release(a1[1]);
+  *notifications = &unk_1F10FC548;
+  _Block_release(notifications[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(notifications, v2);
 }
 
-- (uint64_t)getNotifications:(uint64_t)a1 tag:(uint64_t)a2 completionHandler:
+- (uint64_t)getNotifications:(uint64_t)notifications tag:(uint64_t)tag completionHandler:
 {
   v22[1] = *MEMORY[0x1E69E9840];
   LOBYTE(v17) = 0;
   v19 = -1;
-  if (*(a2 + 16))
+  if (*(tag + 16))
   {
-    if (*(a2 + 16) == 255)
+    if (*(tag + 16) == 255)
     {
       goto LABEL_8;
     }
 
-    LOBYTE(v17) = *a2;
-    v4 = *(a2 + 8);
+    LOBYTE(v17) = *tag;
+    v4 = *(tag + 8);
     if (v4)
     {
       atomic_fetch_add_explicit(v4, 2u, memory_order_relaxed);
@@ -1100,10 +1100,10 @@ LABEL_16:
 
   else
   {
-    WTF::Vector<WebCore::NotificationData,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v17, a2);
+    WTF::Vector<WebCore::NotificationData,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v17, tag);
   }
 
-  v19 = *(a2 + 16);
+  v19 = *(tag + 16);
   if (v19)
   {
 LABEL_8:
@@ -1137,7 +1137,7 @@ LABEL_8:
       {
       }
 
-      (*(*(a1 + 8) + 16))();
+      (*(*(notifications + 8) + 16))();
       if (v14)
       {
       }
@@ -1170,7 +1170,7 @@ LABEL_23:
     while (v11);
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(notifications + 8) + 16))();
   return mpark::detail::copy_constructor<mpark::detail::traits<WTF::Vector<WebCore::NotificationData,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>,WebCore::ExceptionData>,(mpark::detail::Trait)1>::~copy_constructor(&v17, v12);
 }
 

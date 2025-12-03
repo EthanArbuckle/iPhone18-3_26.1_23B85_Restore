@@ -1,35 +1,35 @@
 @interface MKAnnotationManager
-- (BOOL)annotationIsInternal:(id)a3;
+- (BOOL)annotationIsInternal:(id)internal;
 - (MKAnnotation)draggedAnnotation;
 - (MKAnnotationManager)init;
 - (MKAnnotationManagerDelegate)delegate;
 - (MKAnnotationMarkerContainer)container;
 - (MKAnnotationRepresentation)selectedAnnotationRepresentation;
 - (NSArray)annotations;
-- (id)_addRepresentationForAnnotation:(id)a3;
-- (id)addRepresentationForAnnotation:(id)a3;
-- (id)dequeueReusableAnnotationRepresentationWithIdentifier:(id)a3;
-- (id)newInternalAnnotationRepresentationForInternalAnnotation:(id)a3;
-- (void)_addAnnotation:(id)a3 updateVisible:(BOOL)a4;
-- (void)_annotationDidChangeState:(id)a3 animated:(BOOL)a4;
-- (void)_removeAnnotation:(id)a3 updateVisible:(BOOL)a4 removeFromContainer:(BOOL)a5;
-- (void)_removeRepresentationForAnnotation:(id)a3 fromCull:(BOOL)a4;
+- (id)_addRepresentationForAnnotation:(id)annotation;
+- (id)addRepresentationForAnnotation:(id)annotation;
+- (id)dequeueReusableAnnotationRepresentationWithIdentifier:(id)identifier;
+- (id)newInternalAnnotationRepresentationForInternalAnnotation:(id)annotation;
+- (void)_addAnnotation:(id)annotation updateVisible:(BOOL)visible;
+- (void)_annotationDidChangeState:(id)state animated:(BOOL)animated;
+- (void)_removeAnnotation:(id)annotation updateVisible:(BOOL)visible removeFromContainer:(BOOL)container;
+- (void)_removeRepresentationForAnnotation:(id)annotation fromCull:(BOOL)cull;
 - (void)_setupUpdateVisibleAnnotationsTimer;
-- (void)addAnnotation:(id)a3 allowAnimation:(BOOL)a4;
-- (void)addAnnotations:(id)a3;
-- (void)addRepresentationsForAnnotations:(id)a3;
-- (void)cleanUpAnnotationRepresentationForRemoval:(id)a3;
-- (void)configureAnnotationRepresentation:(id)a3 forAnnotation:(id)a4;
-- (void)configureDefaultAnnotationRepresentation:(id)a3 forAnnotation:(id)a4;
+- (void)addAnnotation:(id)annotation allowAnimation:(BOOL)animation;
+- (void)addAnnotations:(id)annotations;
+- (void)addRepresentationsForAnnotations:(id)annotations;
+- (void)cleanUpAnnotationRepresentationForRemoval:(id)removal;
+- (void)configureAnnotationRepresentation:(id)representation forAnnotation:(id)annotation;
+- (void)configureDefaultAnnotationRepresentation:(id)representation forAnnotation:(id)annotation;
 - (void)dealloc;
-- (void)deselectAnnotation:(id)a3 animated:(BOOL)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerClass:(Class)a3 forRepresentationReuseIdentifier:(id)a4;
-- (void)removeAnnotations:(id)a3;
-- (void)replaceAnnotation:(id)a3 withAnnotation:(id)a4;
-- (void)selectAnnotation:(id)a3 animated:(BOOL)a4;
-- (void)setContainer:(id)a3;
-- (void)showAnnotationsInMapRect:(id)a3;
+- (void)deselectAnnotation:(id)annotation animated:(BOOL)animated;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerClass:(Class)class forRepresentationReuseIdentifier:(id)identifier;
+- (void)removeAnnotations:(id)annotations;
+- (void)replaceAnnotation:(id)annotation withAnnotation:(id)withAnnotation;
+- (void)selectAnnotation:(id)annotation animated:(BOOL)animated;
+- (void)setContainer:(id)container;
+- (void)showAnnotationsInMapRect:(id)rect;
 - (void)updateVisibleAnnotations;
 @end
 
@@ -73,14 +73,14 @@
     }
 
     v6 = objc_loadWeakRetained(&self->_container);
-    v7 = [v6 annotationRectTest];
+    annotationRectTest = [v6 annotationRectTest];
 
     v8 = objc_loadWeakRetained(&self->_container);
-    v9 = [v8 annotationCoordinateTest];
+    annotationCoordinateTest = [v8 annotationCoordinateTest];
 
-    if (v7 && v9)
+    if (annotationRectTest && annotationCoordinateTest)
     {
-      v10 = [(MKQuadTrie *)self->_annotations itemsPassingRectTest:v7 coordinateTest:v9];
+      v10 = [(MKQuadTrie *)self->_annotations itemsPassingRectTest:annotationRectTest coordinateTest:annotationCoordinateTest];
       v11 = objc_loadWeakRetained(&self->_draggedAnnotation);
 
       if (v11)
@@ -120,7 +120,7 @@
           [v17 removeObject:?];
         }
 
-        v36 = v7;
+        v36 = annotationRectTest;
         v43 = 0u;
         v44 = 0u;
         v41 = 0u;
@@ -196,8 +196,8 @@
         [(NSMutableSet *)self->_pendingAnnotations removeAllObjects];
         [(NSMutableSet *)self->_disallowAnimationAnnotations removeAllObjects];
 
-        v9 = v35;
-        v7 = v36;
+        annotationCoordinateTest = v35;
+        annotationRectTest = v36;
       }
 
       else
@@ -219,8 +219,8 @@
         if ([(NSMutableSet *)self->_pendingRemovalAnnotationRepresentations count])
         {
           v33 = objc_loadWeakRetained(&self->_delegate);
-          v34 = [(NSMutableSet *)self->_pendingRemovalAnnotationRepresentations allObjects];
-          [v33 annotationManager:self didRemoveAnnotationRepresentations:v34];
+          allObjects = [(NSMutableSet *)self->_pendingRemovalAnnotationRepresentations allObjects];
+          [v33 annotationManager:self didRemoveAnnotationRepresentations:allObjects];
 
           [(NSMutableSet *)self->_pendingRemovalAnnotationRepresentations removeAllObjects];
         }
@@ -231,18 +231,18 @@
 
 - (NSArray)annotations
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MKQuadTrie *)self->_annotations allItems];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  allItems = [(MKQuadTrie *)self->_annotations allItems];
+  [array addObjectsFromArray:allItems];
 
   invalidCoordinateAnnotations = self->_invalidCoordinateAnnotations;
   if (invalidCoordinateAnnotations)
   {
-    v6 = [(NSMutableSet *)invalidCoordinateAnnotations allObjects];
-    [v3 addObjectsFromArray:v6];
+    allObjects = [(NSMutableSet *)invalidCoordinateAnnotations allObjects];
+    [array addObjectsFromArray:allObjects];
   }
 
-  return v3;
+  return array;
 }
 
 - (void)_setupUpdateVisibleAnnotationsTimer
@@ -259,8 +259,8 @@
     updateVisibleTimer = self->_updateVisibleTimer;
     self->_updateVisibleTimer = v3;
 
-    v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v5 addTimer:self->_updateVisibleTimer forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop addTimer:self->_updateVisibleTimer forMode:*MEMORY[0x1E695DA28]];
   }
 }
 
@@ -300,27 +300,27 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 conformsToProtocol:&unk_1F1640D78] && objc_msgSend(v9, "isEqualToString:", @"coordinate"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([objectCopy conformsToProtocol:&unk_1F1640D78] && objc_msgSend(pathCopy, "isEqualToString:", @"coordinate"))
   {
-    v12 = [v11 objectForKey:*MEMORY[0x1E696A4F8]];
-    v13 = [v12 BOOLValue];
+    v12 = [changeCopy objectForKey:*MEMORY[0x1E696A4F8]];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       self->_isChangingCoordinate = 1;
-      [(MKQuadTrie *)self->_annotations remove:v10];
-      [(NSMutableSet *)self->_invalidCoordinateAnnotations removeObject:v10];
+      [(MKQuadTrie *)self->_annotations remove:objectCopy];
+      [(NSMutableSet *)self->_invalidCoordinateAnnotations removeObject:objectCopy];
     }
 
     else
     {
-      [v10 coordinate];
+      [objectCopy coordinate];
       if (fabs(v15) > 180.0 || fabs(v14) > 90.0)
       {
         invalidCoordinateAnnotations = self->_invalidCoordinateAnnotations;
@@ -333,28 +333,28 @@
           invalidCoordinateAnnotations = self->_invalidCoordinateAnnotations;
         }
 
-        [(NSMutableSet *)invalidCoordinateAnnotations addObject:v10];
+        [(NSMutableSet *)invalidCoordinateAnnotations addObject:objectCopy];
       }
 
       else
       {
-        [(MKQuadTrie *)self->_annotations insert:v10];
+        [(MKQuadTrie *)self->_annotations insert:objectCopy];
       }
 
       self->_isChangingCoordinate = 0;
-      v19 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+      v19 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
       [v19 MKCoordinateValue];
       v21 = v20;
       v23 = v22;
 
-      [v10 coordinate];
+      [objectCopy coordinate];
       if (vabdd_f64(v21, v25) >= 0.00000000999999994 || vabdd_f64(v23, v24) >= 0.00000000999999994)
       {
         v43 = 0u;
         v44 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v40 = self;
+        selfCopy = self;
         v26 = self->_allClusterAnnotations;
         v27 = [(NSHashTable *)v26 countByEnumeratingWithState:&v41 objects:v45 count:16];
         if (v27)
@@ -371,8 +371,8 @@
               }
 
               v31 = *(*(&v41 + 1) + 8 * i);
-              v32 = [v31 memberAnnotations];
-              v33 = [v32 containsObject:v10];
+              memberAnnotations = [v31 memberAnnotations];
+              v33 = [memberAnnotations containsObject:objectCopy];
 
               if (v33)
               {
@@ -386,70 +386,70 @@
           while (v28);
         }
 
-        v34 = [(NSMapTable *)v40->_annotationsToRepresentations objectForKey:v10];
+        v34 = [(NSMapTable *)selfCopy->_annotationsToRepresentations objectForKey:objectCopy];
         v35 = v34;
         if (v34)
         {
           [v34 _invalidateCachedCoordinate];
-          v36 = [MEMORY[0x1E69DD250] _mapkit_shouldAdoptImplicitAnimationParameters];
+          _mapkit_shouldAdoptImplicitAnimationParameters = [MEMORY[0x1E69DD250] _mapkit_shouldAdoptImplicitAnimationParameters];
           v37 = 0.0;
-          if (v36)
+          if (_mapkit_shouldAdoptImplicitAnimationParameters)
           {
             [MEMORY[0x1E69DD250] _currentAnimationDuration];
             v37 = v38;
           }
 
-          WeakRetained = objc_loadWeakRetained(&v40->_container);
-          [WeakRetained moveAnnotationRepresentation:v35 fromCoordinate:v36 animated:v21 duration:{v23, v37}];
+          WeakRetained = objc_loadWeakRetained(&selfCopy->_container);
+          [WeakRetained moveAnnotationRepresentation:v35 fromCoordinate:_mapkit_shouldAdoptImplicitAnimationParameters animated:v21 duration:{v23, v37}];
         }
 
         else
         {
-          [(MKAnnotationManager *)v40 updateVisibleAnnotations];
+          [(MKAnnotationManager *)selfCopy updateVisibleAnnotations];
         }
       }
     }
   }
 }
 
-- (void)_removeRepresentationForAnnotation:(id)a3 fromCull:(BOOL)a4
+- (void)_removeRepresentationForAnnotation:(id)annotation fromCull:(BOOL)cull
 {
-  v4 = a4;
-  v17 = a3;
+  cullCopy = cull;
+  annotationCopy = annotation;
   v6 = [(NSMapTable *)self->_annotationsToRepresentations objectForKey:?];
   v7 = v6;
-  if (v6 && (!v4 || ([v6 isPersistent] & 1) == 0))
+  if (v6 && (!cullCopy || ([v6 isPersistent] & 1) == 0))
   {
     WeakRetained = objc_loadWeakRetained(&self->_container);
     [WeakRetained removeAnnotationRepresentation:v7];
 
     [(MKAnnotationManager *)self cleanUpAnnotationRepresentationForRemoval:v7];
-    v9 = [v7 reuseIdentifier];
-    if ([v9 length])
+    reuseIdentifier = [v7 reuseIdentifier];
+    if ([reuseIdentifier length])
     {
       reusableAnnotationRepresentations = self->_reusableAnnotationRepresentations;
       if (!reusableAnnotationRepresentations)
       {
-        v11 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+        strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
         v12 = self->_reusableAnnotationRepresentations;
-        self->_reusableAnnotationRepresentations = v11;
+        self->_reusableAnnotationRepresentations = strongToStrongObjectsMapTable;
 
         reusableAnnotationRepresentations = self->_reusableAnnotationRepresentations;
       }
 
-      v13 = [(NSMapTable *)reusableAnnotationRepresentations objectForKey:v9];
+      v13 = [(NSMapTable *)reusableAnnotationRepresentations objectForKey:reuseIdentifier];
       if (!v13)
       {
         v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        [(NSMapTable *)self->_reusableAnnotationRepresentations setObject:v13 forKey:v9];
+        [(NSMapTable *)self->_reusableAnnotationRepresentations setObject:v13 forKey:reuseIdentifier];
       }
 
       [v13 addObject:v7];
     }
 
-    [(NSMapTable *)self->_annotationsToRepresentations removeObjectForKey:v17];
+    [(NSMapTable *)self->_annotationsToRepresentations removeObjectForKey:annotationCopy];
     [(NSMutableSet *)self->_annotationRepresentations removeObject:v7];
-    [(NSHashTable *)self->_visibleAnnotations removeObject:v17];
+    [(NSHashTable *)self->_visibleAnnotations removeObject:annotationCopy];
     pendingRemovalAnnotationRepresentations = self->_pendingRemovalAnnotationRepresentations;
     if (!pendingRemovalAnnotationRepresentations)
     {
@@ -464,20 +464,20 @@
   }
 }
 
-- (void)cleanUpAnnotationRepresentationForRemoval:(id)a3
+- (void)cleanUpAnnotationRepresentationForRemoval:(id)removal
 {
-  v3 = [a3 viewRepresentation];
-  if (v3)
+  viewRepresentation = [removal viewRepresentation];
+  if (viewRepresentation)
   {
-    v4 = v3;
-    [v3 setAnnotation:0];
-    v3 = v4;
+    v4 = viewRepresentation;
+    [viewRepresentation setAnnotation:0];
+    viewRepresentation = v4;
   }
 }
 
-- (id)_addRepresentationForAnnotation:(id)a3
+- (id)_addRepresentationForAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   if (!self->_annotationsToRepresentations)
   {
     v5 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:512 valueOptions:512 capacity:100];
@@ -492,17 +492,17 @@
     self->_annotationRepresentations = v7;
   }
 
-  v9 = [(NSMapTable *)self->_annotationsToRepresentations objectForKey:v4];
+  v9 = [(NSMapTable *)self->_annotationsToRepresentations objectForKey:annotationCopy];
 
   if (v9)
   {
-    v10 = [(NSMapTable *)self->_annotationsToRepresentations objectForKey:v4];
+    v10 = [(NSMapTable *)self->_annotationsToRepresentations objectForKey:annotationCopy];
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 shouldRepresentSelf] && (v11 = v4) != 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [annotationCopy shouldRepresentSelf] && (v11 = annotationCopy) != 0)
     {
       v10 = v11;
       [(MKAnnotationManager *)self annotationIsInternal:v11];
@@ -511,12 +511,12 @@
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [WeakRetained annotationManager:self representationForAnnotation:v4];
+      v10 = [WeakRetained annotationManager:self representationForAnnotation:annotationCopy];
 
-      v13 = [(MKAnnotationManager *)self annotationIsInternal:v4];
+      v13 = [(MKAnnotationManager *)self annotationIsInternal:annotationCopy];
       if (!v10 && v13)
       {
-        v10 = [(MKAnnotationManager *)self newInternalAnnotationRepresentationForInternalAnnotation:v4];
+        v10 = [(MKAnnotationManager *)self newInternalAnnotationRepresentationForInternalAnnotation:annotationCopy];
       }
 
       if (!v10)
@@ -533,17 +533,17 @@
         }
 
         v10 = [(MKAnnotationManager *)self dequeueReusableAnnotationRepresentationWithIdentifier:v14];
-        [(MKAnnotationManager *)self configureDefaultAnnotationRepresentation:v10 forAnnotation:v4];
+        [(MKAnnotationManager *)self configureDefaultAnnotationRepresentation:v10 forAnnotation:annotationCopy];
       }
     }
 
-    [(MKAnnotationManager *)self configureAnnotationRepresentation:v10 forAnnotation:v4];
-    [(NSMapTable *)self->_annotationsToRepresentations setObject:v10 forKey:v4];
+    [(MKAnnotationManager *)self configureAnnotationRepresentation:v10 forAnnotation:annotationCopy];
+    [(NSMapTable *)self->_annotationsToRepresentations setObject:v10 forKey:annotationCopy];
     [(NSMutableSet *)self->_annotationRepresentations addObject:v10];
-    [(NSHashTable *)self->_visibleAnnotations addObject:v4];
-    if ([(NSMutableSet *)self->_pendingAnnotations containsObject:v4])
+    [(NSHashTable *)self->_visibleAnnotations addObject:annotationCopy];
+    if ([(NSMutableSet *)self->_pendingAnnotations containsObject:annotationCopy])
     {
-      v15 = [(NSMutableSet *)self->_disallowAnimationAnnotations containsObject:v4]^ 1;
+      v15 = [(NSMutableSet *)self->_disallowAnimationAnnotations containsObject:annotationCopy]^ 1;
     }
 
     else
@@ -558,11 +558,11 @@
   return v10;
 }
 
-- (void)configureDefaultAnnotationRepresentation:(id)a3 forAnnotation:(id)a4
+- (void)configureDefaultAnnotationRepresentation:(id)representation forAnnotation:(id)annotation
 {
-  v15 = a4;
-  v5 = [a3 viewRepresentation];
-  if (!v5)
+  annotationCopy = annotation;
+  viewRepresentation = [representation viewRepresentation];
+  if (!viewRepresentation)
   {
     goto LABEL_18;
   }
@@ -573,14 +573,14 @@
   {
     if (v7)
     {
-      v8 = [v15 title];
-      v10 = [v8 length] != 0;
-      v9 = v5;
+      title = [annotationCopy title];
+      v10 = [title length] != 0;
+      v9 = viewRepresentation;
       goto LABEL_8;
     }
 
 LABEL_10:
-    [v5 setCanShowCallout:0];
+    [viewRepresentation setCanShowCallout:0];
     goto LABEL_11;
   }
 
@@ -589,16 +589,16 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [v15 title];
-  if (![v8 length])
+  title = [annotationCopy title];
+  if (![title length])
   {
-    v14 = [v5 detailCalloutAccessoryView];
-    [v5 setCanShowCallout:v14 != 0];
+    detailCalloutAccessoryView = [viewRepresentation detailCalloutAccessoryView];
+    [viewRepresentation setCanShowCallout:detailCalloutAccessoryView != 0];
 
     goto LABEL_9;
   }
 
-  v9 = v5;
+  v9 = viewRepresentation;
   v10 = 1;
 LABEL_8:
   [v9 setCanShowCallout:v10];
@@ -608,8 +608,8 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v15 clusteringIdentifier];
-    [v5 setClusteringIdentifier:v11];
+    clusteringIdentifier = [annotationCopy clusteringIdentifier];
+    [viewRepresentation setClusteringIdentifier:clusteringIdentifier];
 LABEL_13:
 
     goto LABEL_18;
@@ -617,15 +617,15 @@ LABEL_13:
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v15 _representedMapItem];
-    if (v11)
+    clusteringIdentifier = [annotationCopy _representedMapItem];
+    if (clusteringIdentifier)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v5;
-        v13 = [v11 _styleAttributes];
-        [v12 _setStyleAttributes:v13];
+        v12 = viewRepresentation;
+        _styleAttributes = [clusteringIdentifier _styleAttributes];
+        [v12 _setStyleAttributes:_styleAttributes];
       }
     }
 
@@ -635,27 +635,27 @@ LABEL_13:
 LABEL_18:
 }
 
-- (void)configureAnnotationRepresentation:(id)a3 forAnnotation:(id)a4
+- (void)configureAnnotationRepresentation:(id)representation forAnnotation:(id)annotation
 {
-  v7 = a4;
-  v5 = [a3 viewRepresentation];
-  v6 = v5;
-  if (v5)
+  annotationCopy = annotation;
+  viewRepresentation = [representation viewRepresentation];
+  v6 = viewRepresentation;
+  if (viewRepresentation)
   {
-    [v5 setAnnotation:v7];
+    [viewRepresentation setAnnotation:annotationCopy];
   }
 }
 
-- (id)newInternalAnnotationRepresentationForInternalAnnotation:(id)a3
+- (id)newInternalAnnotationRepresentationForInternalAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     userLocationView = self->_userLocationView;
     if (!userLocationView)
     {
-      v6 = [[_MKUserLocationView alloc] initWithAnnotation:v4 reuseIdentifier:0];
+      v6 = [[_MKUserLocationView alloc] initWithAnnotation:annotationCopy reuseIdentifier:0];
       v7 = self->_userLocationView;
       self->_userLocationView = &v6->super.super;
 
@@ -673,24 +673,24 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)annotationIsInternal:(id)a3
+- (BOOL)annotationIsInternal:(id)internal
 {
-  v3 = a3;
+  internalCopy = internal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)deselectAnnotation:(id)a3 animated:(BOOL)a4
+- (void)deselectAnnotation:(id)annotation animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  annotationCopy = annotation;
   selectedAnnotation = self->_selectedAnnotation;
-  if (v6)
+  if (annotationCopy)
   {
-    v8 = v6;
-    if (selectedAnnotation != v6)
+    v8 = annotationCopy;
+    if (selectedAnnotation != annotationCopy)
     {
       goto LABEL_10;
     }
@@ -720,7 +720,7 @@ LABEL_18:
 
   self->_isDeferringContainerSelection = 0;
   v13 = objc_loadWeakRetained(&self->_container);
-  [v13 deselectAnnotationRepresentation:v9 animated:v4];
+  [v13 deselectAnnotationRepresentation:v9 animated:animatedCopy];
 
   [v9 _setHiddenForOffscreen:0];
   v14 = self->_selectedAnnotation;
@@ -734,14 +734,14 @@ LABEL_18:
 LABEL_10:
 }
 
-- (void)_annotationDidChangeState:(id)a3 animated:(BOOL)a4
+- (void)_annotationDidChangeState:(id)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (self->_isDeferringContainerSelection && self->_selectedAnnotation == v6)
+  animatedCopy = animated;
+  stateCopy = state;
+  v7 = stateCopy;
+  if (self->_isDeferringContainerSelection && self->_selectedAnnotation == stateCopy)
   {
-    if ([(MKQuadTrie *)self->_annotations contains:v6])
+    if ([(MKQuadTrie *)self->_annotations contains:stateCopy])
     {
       v8 = [(NSMapTable *)self->_annotationsToRepresentations objectForKey:v7];
       if (v8)
@@ -756,7 +756,7 @@ LABEL_10:
           v14 = objc_loadWeakRetained(&self->_container);
           v15 = v14;
           deferredContainerSelectionAnimated = 0;
-          if (v4)
+          if (animatedCopy)
           {
             deferredContainerSelectionAnimated = self->_deferredContainerSelectionAnimated;
           }
@@ -778,17 +778,17 @@ LABEL_10:
   }
 }
 
-- (void)selectAnnotation:(id)a3 animated:(BOOL)a4
+- (void)selectAnnotation:(id)annotation animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = v7;
+  animatedCopy = animated;
+  annotationCopy = annotation;
+  v8 = annotationCopy;
   selectedAnnotation = self->_selectedAnnotation;
-  if (!v7 || selectedAnnotation != v7)
+  if (!annotationCopy || selectedAnnotation != annotationCopy)
   {
     if (selectedAnnotation)
     {
-      if (v4 && (v10 = objc_loadWeakRetained(&self->_delegate), v11 = objc_opt_respondsToSelector(), v10, (v11 & 1) != 0))
+      if (animatedCopy && (v10 = objc_loadWeakRetained(&self->_delegate), v11 = objc_opt_respondsToSelector(), v10, (v11 & 1) != 0))
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v13 = [WeakRetained annotationManager:self shouldAnimateDeselectionOfAnnotation:self->_selectedAnnotation forSelectionOfAnnotation:v8];
@@ -818,20 +818,20 @@ LABEL_10:
           [v16 annotationManager:self didAddAnnotationRepresentations:v17];
         }
 
-        objc_storeStrong(&self->_selectedAnnotation, a3);
+        objc_storeStrong(&self->_selectedAnnotation, annotation);
         v18 = objc_loadWeakRetained(&self->_delegate);
         v19 = objc_opt_respondsToSelector();
 
         if ((v19 & 1) != 0 && (v20 = objc_loadWeakRetained(&self->_delegate), v21 = [v20 annotationManager:self canSelectAnnotationRepresentation:v14], v20, !v21))
         {
           self->_isDeferringContainerSelection = 1;
-          self->_deferredContainerSelectionAnimated = v4;
+          self->_deferredContainerSelectionAnimated = animatedCopy;
         }
 
         else
         {
           v22 = objc_loadWeakRetained(&self->_container);
-          [v22 selectAnnotationRepresentation:v14 animated:v4];
+          [v22 selectAnnotationRepresentation:v14 animated:animatedCopy];
         }
 
         v24 = objc_loadWeakRetained(&self->_delegate);
@@ -851,21 +851,21 @@ LABEL_10:
   }
 }
 
-- (void)showAnnotationsInMapRect:(id)a3
+- (void)showAnnotationsInMapRect:(id)rect
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v5 = a3.var0.var1;
-  v6 = a3.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v5 = rect.var0.var1;
+  v6 = rect.var0.var0;
   v40 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_container);
 
   if (WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_container);
-    v10 = [v9 annotationRectTest];
+    annotationRectTest = [v9 annotationRectTest];
 
-    if (v10 && v10[2](v10, v6, v5, var0, var1) != 1)
+    if (annotationRectTest && annotationRectTest[2](annotationRectTest, v6, v5, var0, var1) != 1)
     {
       updateVisibleTimer = self->_updateVisibleTimer;
       if (updateVisibleTimer)
@@ -875,10 +875,10 @@ LABEL_10:
         self->_updateVisibleTimer = 0;
       }
 
-      v13 = [(MKQuadTrie *)self->_annotations itemsInMapRect:v6, v5, var0, var1];
-      if ([v13 containsObject:self->_selectedAnnotation])
+      var1 = [(MKQuadTrie *)self->_annotations itemsInMapRect:v6, v5, var0, var1];
+      if ([var1 containsObject:self->_selectedAnnotation])
       {
-        [v13 removeObject:self->_selectedAnnotation];
+        [var1 removeObject:self->_selectedAnnotation];
       }
 
       v36 = 0u;
@@ -900,7 +900,7 @@ LABEL_10:
               objc_enumerationMutation(v14);
             }
 
-            [v13 removeObject:*(*(&v34 + 1) + 8 * i)];
+            [var1 removeObject:*(*(&v34 + 1) + 8 * i)];
           }
 
           v16 = [(NSHashTable *)v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -909,15 +909,15 @@ LABEL_10:
         while (v16);
       }
 
-      [(NSMutableSet *)self->_pendingAnnotations minusSet:v13];
-      [(NSMutableSet *)self->_disallowAnimationAnnotations minusSet:v13];
-      if ([v13 count])
+      [(NSMutableSet *)self->_pendingAnnotations minusSet:var1];
+      [(NSMutableSet *)self->_disallowAnimationAnnotations minusSet:var1];
+      if ([var1 count])
       {
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v19 = v13;
+        v19 = var1;
         v20 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v20)
         {
@@ -968,17 +968,17 @@ LABEL_10:
   }
 }
 
-- (void)registerClass:(Class)a3 forRepresentationReuseIdentifier:(id)a4
+- (void)registerClass:(Class)class forRepresentationReuseIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = v6;
-  v12 = v6;
-  if (a3)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  v12 = identifierCopy;
+  if (class)
   {
     goto LABEL_7;
   }
 
-  if (([v6 isEqualToString:@"MKMapViewDefaultAnnotationViewReuseIdentifier"] & 1) == 0)
+  if (([identifierCopy isEqualToString:@"MKMapViewDefaultAnnotationViewReuseIdentifier"] & 1) == 0)
   {
     v8 = [v12 isEqualToString:@"MKMapViewDefaultClusterAnnotationViewReuseIdentifier"];
     v7 = v12;
@@ -988,28 +988,28 @@ LABEL_10:
     }
   }
 
-  a3 = objc_opt_class();
+  class = objc_opt_class();
   if (_MKLinkedOnOrAfterReleaseSet(1540))
   {
-    a3 = objc_opt_class();
+    class = objc_opt_class();
   }
 
   v7 = v12;
-  if (a3)
+  if (class)
   {
 LABEL_7:
     registeredIdentifierToRepresentationClasses = self->_registeredIdentifierToRepresentationClasses;
     if (!registeredIdentifierToRepresentationClasses)
     {
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = self->_registeredIdentifierToRepresentationClasses;
-      self->_registeredIdentifierToRepresentationClasses = v10;
+      self->_registeredIdentifierToRepresentationClasses = dictionary;
 
       v7 = v12;
       registeredIdentifierToRepresentationClasses = self->_registeredIdentifierToRepresentationClasses;
     }
 
-    [(NSMutableDictionary *)registeredIdentifierToRepresentationClasses setObject:a3 forKey:v7];
+    [(NSMutableDictionary *)registeredIdentifierToRepresentationClasses setObject:class forKey:v7];
   }
 
   else
@@ -1019,40 +1019,40 @@ LABEL_13:
   }
 }
 
-- (id)dequeueReusableAnnotationRepresentationWithIdentifier:(id)a3
+- (id)dequeueReusableAnnotationRepresentationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_reusableAnnotationRepresentations objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMapTable *)self->_reusableAnnotationRepresentations objectForKey:identifierCopy];
   if ([v5 count])
   {
-    v6 = [v5 lastObject];
-    if ([(NSMutableSet *)self->_annotationRepresentations containsObject:v6])
+    lastObject = [v5 lastObject];
+    if ([(NSMutableSet *)self->_annotationRepresentations containsObject:lastObject])
     {
       do
       {
         if ([v5 count])
         {
           [v5 removeLastObject];
-          v7 = [v5 lastObject];
+          lastObject2 = [v5 lastObject];
         }
 
         else
         {
-          v7 = 0;
+          lastObject2 = 0;
         }
 
-        v6 = v7;
+        lastObject = lastObject2;
       }
 
-      while (([(NSMutableSet *)self->_annotationRepresentations containsObject:v7]& 1) != 0);
+      while (([(NSMutableSet *)self->_annotationRepresentations containsObject:lastObject2]& 1) != 0);
     }
 
     else
     {
-      v7 = v6;
+      lastObject2 = lastObject;
     }
 
-    [v7 prepareForReuse];
+    [lastObject2 prepareForReuse];
     if ([v5 count])
     {
       [v5 removeLastObject];
@@ -1060,29 +1060,29 @@ LABEL_13:
 
     else
     {
-      [(NSMapTable *)self->_reusableAnnotationRepresentations removeObjectForKey:v4];
+      [(NSMapTable *)self->_reusableAnnotationRepresentations removeObjectForKey:identifierCopy];
     }
   }
 
   else
   {
-    v8 = [(NSMutableDictionary *)self->_registeredIdentifierToRepresentationClasses objectForKey:v4];
-    v7 = [objc_msgSend(v8 "alloc")];
+    v8 = [(NSMutableDictionary *)self->_registeredIdentifierToRepresentationClasses objectForKey:identifierCopy];
+    lastObject2 = [objc_msgSend(v8 "alloc")];
   }
 
-  return v7;
+  return lastObject2;
 }
 
-- (void)addRepresentationsForAnnotations:(id)a3
+- (void)addRepresentationsForAnnotations:(id)annotations
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  annotationsCopy = annotations;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(annotationsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = annotationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -1125,56 +1125,56 @@ LABEL_13:
   [v15 annotationManager:self didAddAnnotationRepresentations:v5];
 }
 
-- (void)replaceAnnotation:(id)a3 withAnnotation:(id)a4
+- (void)replaceAnnotation:(id)annotation withAnnotation:(id)withAnnotation
 {
-  v9 = a3;
-  v6 = a4;
-  if (![(MKQuadTrie *)self->_annotations contains:v6])
+  annotationCopy = annotation;
+  withAnnotationCopy = withAnnotation;
+  if (![(MKQuadTrie *)self->_annotations contains:withAnnotationCopy])
   {
-    v7 = [(MKQuadTrie *)self->_annotations contains:v9];
-    if (v9)
+    v7 = [(MKQuadTrie *)self->_annotations contains:annotationCopy];
+    if (annotationCopy)
     {
       if (v7)
       {
-        if (v6)
+        if (withAnnotationCopy)
         {
-          if (self->_selectedAnnotation == v9)
+          if (self->_selectedAnnotation == annotationCopy)
           {
-            v8 = [(NSMapTable *)self->_annotationsToRepresentations objectForKey:v9];
-            objc_storeStrong(&self->_selectedAnnotation, a4);
-            [(NSMapTable *)self->_annotationsToRepresentations removeObjectForKey:v9];
-            [(MKAnnotationManager *)self _removeAnnotation:v9 updateVisible:0 removeFromContainer:0];
-            [(MKAnnotationManager *)self _addAnnotation:v6 updateVisible:0];
-            [(MKAnnotationManager *)self configureAnnotationRepresentation:v8 forAnnotation:v6];
-            [(NSMapTable *)self->_annotationsToRepresentations setObject:v8 forKey:v6];
-            [(NSHashTable *)self->_visibleAnnotations addObject:v6];
+            v8 = [(NSMapTable *)self->_annotationsToRepresentations objectForKey:annotationCopy];
+            objc_storeStrong(&self->_selectedAnnotation, withAnnotation);
+            [(NSMapTable *)self->_annotationsToRepresentations removeObjectForKey:annotationCopy];
+            [(MKAnnotationManager *)self _removeAnnotation:annotationCopy updateVisible:0 removeFromContainer:0];
+            [(MKAnnotationManager *)self _addAnnotation:withAnnotationCopy updateVisible:0];
+            [(MKAnnotationManager *)self configureAnnotationRepresentation:v8 forAnnotation:withAnnotationCopy];
+            [(NSMapTable *)self->_annotationsToRepresentations setObject:v8 forKey:withAnnotationCopy];
+            [(NSHashTable *)self->_visibleAnnotations addObject:withAnnotationCopy];
           }
 
           else
           {
-            [(MKAnnotationManager *)self removeAnnotation:v9];
-            [(MKAnnotationManager *)self addAnnotation:v6];
+            [(MKAnnotationManager *)self removeAnnotation:annotationCopy];
+            [(MKAnnotationManager *)self addAnnotation:withAnnotationCopy];
           }
         }
 
         else
         {
-          [(MKAnnotationManager *)self removeAnnotation:v9];
+          [(MKAnnotationManager *)self removeAnnotation:annotationCopy];
         }
       }
     }
   }
 }
 
-- (void)removeAnnotations:(id)a3
+- (void)removeAnnotations:(id)annotations
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  annotationsCopy = annotations;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [annotationsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1186,14 +1186,14 @@ LABEL_13:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(annotationsCopy);
         }
 
         [(MKAnnotationManager *)self _removeAnnotation:*(*(&v9 + 1) + 8 * v8++) updateVisible:0 removeFromContainer:1];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [annotationsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -1202,40 +1202,40 @@ LABEL_13:
   [(MKAnnotationManager *)self updateVisibleAnnotations];
 }
 
-- (void)_removeAnnotation:(id)a3 updateVisible:(BOOL)a4 removeFromContainer:(BOOL)a5
+- (void)_removeAnnotation:(id)annotation updateVisible:(BOOL)visible removeFromContainer:(BOOL)container
 {
-  v5 = a5;
-  v6 = a4;
-  v11 = a3;
-  v8 = [(MKQuadTrie *)self->_annotations contains:v11];
-  v9 = v11;
-  if (v8 || (v10 = [(NSMutableSet *)self->_invalidCoordinateAnnotations containsObject:v11], v9 = v11, v10))
+  containerCopy = container;
+  visibleCopy = visible;
+  annotationCopy = annotation;
+  v8 = [(MKQuadTrie *)self->_annotations contains:annotationCopy];
+  v9 = annotationCopy;
+  if (v8 || (v10 = [(NSMutableSet *)self->_invalidCoordinateAnnotations containsObject:annotationCopy], v9 = annotationCopy, v10))
   {
-    if ([(MKQuadTrie *)self->_annotations contains:v9]|| [(NSMutableSet *)self->_invalidCoordinateAnnotations containsObject:v11])
+    if ([(MKQuadTrie *)self->_annotations contains:v9]|| [(NSMutableSet *)self->_invalidCoordinateAnnotations containsObject:annotationCopy])
     {
-      [(MKAnnotation *)v11 removeObserver:self forKeyPath:@"coordinate"];
+      [(MKAnnotation *)annotationCopy removeObserver:self forKeyPath:@"coordinate"];
     }
 
-    [(MKQuadTrie *)self->_annotations remove:v11];
-    [(NSMutableSet *)self->_invalidCoordinateAnnotations removeObject:v11];
-    [(NSMutableSet *)self->_pendingAnnotations removeObject:v11];
-    [(NSHashTable *)self->_visibleAnnotations removeObject:v11];
-    [(NSMutableSet *)self->_disallowAnimationAnnotations removeObject:v11];
+    [(MKQuadTrie *)self->_annotations remove:annotationCopy];
+    [(NSMutableSet *)self->_invalidCoordinateAnnotations removeObject:annotationCopy];
+    [(NSMutableSet *)self->_pendingAnnotations removeObject:annotationCopy];
+    [(NSHashTable *)self->_visibleAnnotations removeObject:annotationCopy];
+    [(NSMutableSet *)self->_disallowAnimationAnnotations removeObject:annotationCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NSHashTable *)self->_allClusterAnnotations removeObject:v11];
+      [(NSHashTable *)self->_allClusterAnnotations removeObject:annotationCopy];
     }
 
-    v9 = v11;
-    if (self->_selectedAnnotation == v11)
+    v9 = annotationCopy;
+    if (self->_selectedAnnotation == annotationCopy)
     {
-      [(MKAnnotationManager *)self deselectAnnotation:v11 animated:0];
-      v9 = v11;
-      if (!v5)
+      [(MKAnnotationManager *)self deselectAnnotation:annotationCopy animated:0];
+      v9 = annotationCopy;
+      if (!containerCopy)
       {
 LABEL_10:
-        if (!v6)
+        if (!visibleCopy)
         {
           goto LABEL_12;
         }
@@ -1244,34 +1244,34 @@ LABEL_10:
       }
     }
 
-    else if (!v5)
+    else if (!containerCopy)
     {
       goto LABEL_10;
     }
 
-    [(MKAnnotationManager *)self _removeRepresentationForAnnotation:v11 fromCull:0];
-    v9 = v11;
-    if (v6)
+    [(MKAnnotationManager *)self _removeRepresentationForAnnotation:annotationCopy fromCull:0];
+    v9 = annotationCopy;
+    if (visibleCopy)
     {
 LABEL_11:
       [(MKAnnotationManager *)self _setupUpdateVisibleAnnotationsTimer];
-      v9 = v11;
+      v9 = annotationCopy;
     }
   }
 
 LABEL_12:
 }
 
-- (id)addRepresentationForAnnotation:(id)a3
+- (id)addRepresentationForAnnotation:(id)annotation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(MKAnnotationManager *)self _addAnnotation:v4 updateVisible:0];
-  v5 = [(MKAnnotationManager *)self _addRepresentationForAnnotation:v4];
+  annotationCopy = annotation;
+  [(MKAnnotationManager *)self _addAnnotation:annotationCopy updateVisible:0];
+  v5 = [(MKAnnotationManager *)self _addRepresentationForAnnotation:annotationCopy];
   if (v5)
   {
-    [(NSMutableSet *)self->_pendingAnnotations removeObject:v4];
-    [(NSMutableSet *)self->_disallowAnimationAnnotations removeObject:v4];
+    [(NSMutableSet *)self->_pendingAnnotations removeObject:annotationCopy];
+    [(NSMutableSet *)self->_disallowAnimationAnnotations removeObject:annotationCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained annotationManagerDidChangeVisibleAnnotationRepresentations:self];
 
@@ -1287,26 +1287,26 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v13 = v4;
+      v13 = annotationCopy;
       _os_log_impl(&dword_1A2EA0000, v9, OS_LOG_TYPE_DEFAULT, "Failed to create cluster annotation view for annotation %{private}@", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_pendingAnnotations removeObject:v4];
-    [(NSMutableSet *)self->_disallowAnimationAnnotations removeObject:v4];
+    [(NSMutableSet *)self->_pendingAnnotations removeObject:annotationCopy];
+    [(NSMutableSet *)self->_disallowAnimationAnnotations removeObject:annotationCopy];
   }
 
   return v5;
 }
 
-- (void)addAnnotations:(id)a3
+- (void)addAnnotations:(id)annotations
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  annotationsCopy = annotations;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [annotationsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1318,14 +1318,14 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(annotationsCopy);
         }
 
         [(MKAnnotationManager *)self _addAnnotation:*(*(&v9 + 1) + 8 * v8++) updateVisible:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [annotationsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -1334,11 +1334,11 @@ LABEL_12:
   [(MKAnnotationManager *)self _setupUpdateVisibleAnnotationsTimer];
 }
 
-- (void)addAnnotation:(id)a3 allowAnimation:(BOOL)a4
+- (void)addAnnotation:(id)annotation allowAnimation:(BOOL)animation
 {
-  v6 = a3;
-  v10 = v6;
-  if (v6 && !a4)
+  annotationCopy = annotation;
+  v10 = annotationCopy;
+  if (annotationCopy && !animation)
   {
     disallowAnimationAnnotations = self->_disallowAnimationAnnotations;
     if (!disallowAnimationAnnotations)
@@ -1351,25 +1351,25 @@ LABEL_12:
     }
 
     [(NSMutableSet *)disallowAnimationAnnotations addObject:v10];
-    v6 = v10;
+    annotationCopy = v10;
   }
 
-  [(MKAnnotationManager *)self _addAnnotation:v6 updateVisible:1];
+  [(MKAnnotationManager *)self _addAnnotation:annotationCopy updateVisible:1];
 }
 
-- (void)_addAnnotation:(id)a3 updateVisible:(BOOL)a4
+- (void)_addAnnotation:(id)annotation updateVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  visibleCopy = visible;
+  annotationCopy = annotation;
+  if (annotationCopy)
   {
-    v20 = v6;
-    v7 = [(MKQuadTrie *)self->_annotations contains:v6];
-    v6 = v20;
+    v20 = annotationCopy;
+    v7 = [(MKQuadTrie *)self->_annotations contains:annotationCopy];
+    annotationCopy = v20;
     if (!v7)
     {
       v8 = [(NSMutableSet *)self->_invalidCoordinateAnnotations containsObject:v20];
-      v6 = v20;
+      annotationCopy = v20;
       if ((v8 & 1) == 0)
       {
         [v20 addObserver:self forKeyPath:@"coordinate" options:10 context:0];
@@ -1421,24 +1421,24 @@ LABEL_12:
           [(NSHashTable *)allClusterAnnotations addObject:v20];
         }
 
-        v6 = v20;
-        if (v4)
+        annotationCopy = v20;
+        if (visibleCopy)
         {
           [(MKAnnotationManager *)self _setupUpdateVisibleAnnotationsTimer];
-          v6 = v20;
+          annotationCopy = v20;
         }
       }
     }
   }
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   WeakRetained = objc_loadWeakRetained(&self->_container);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != containerCopy)
   {
     v6 = self->_selectedAnnotation;
     [(MKAnnotationManager *)self deselectAnnotation:v6 animated:0];
@@ -1479,7 +1479,7 @@ LABEL_12:
     [(NSMutableSet *)self->_annotationRepresentations removeAllObjects];
     [(NSMapTable *)self->_annotationsToRepresentations removeAllObjects];
     [(NSHashTable *)self->_visibleAnnotations removeAllObjects];
-    objc_storeWeak(&self->_container, v4);
+    objc_storeWeak(&self->_container, containerCopy);
     [(MKAnnotationManager *)self updateVisibleAnnotations];
     [(MKAnnotationManager *)self selectAnnotation:v6 animated:0];
   }

@@ -1,10 +1,10 @@
 @interface PKPaymentShippingContactDataItem
-- (BOOL)isValidWithError:(id *)a3;
+- (BOOL)isValidWithError:(id *)error;
 - (NSString)email;
 - (NSString)name;
 - (NSString)phone;
 - (id)errors;
-- (id)errorsForContactFields:(id)a3;
+- (id)errorsForContactFields:(id)fields;
 - (id)paymentContactFormatErrors;
 - (id)requiredContactFields;
 @end
@@ -13,8 +13,8 @@
 
 - (id)errors
 {
-  v3 = [(PKPaymentShippingContactDataItem *)self requiredContactFields];
-  v4 = [v3 arrayByAddingObject:@"contactInfo"];
+  requiredContactFields = [(PKPaymentShippingContactDataItem *)self requiredContactFields];
+  v4 = [requiredContactFields arrayByAddingObject:@"contactInfo"];
 
   v5 = [(PKPaymentShippingContactDataItem *)self errorsForContactFields:v4];
 
@@ -24,19 +24,19 @@
 - (id)requiredContactFields
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentDataItem *)self model];
-  v4 = [v3 paymentRequest];
-  v5 = [v4 requiredShippingContactFields];
-  v6 = [v5 allObjects];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
+  requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
+  allObjects = [requiredShippingContactFields allObjects];
 
-  v7 = [(PKPaymentDataItem *)self model];
-  v8 = [v7 paymentRequest];
-  v9 = [v8 isShippingEditable];
+  model2 = [(PKPaymentDataItem *)self model];
+  paymentRequest2 = [model2 paymentRequest];
+  isShippingEditable = [paymentRequest2 isShippingEditable];
 
-  if ([v6 containsObject:@"post"])
+  if ([allObjects containsObject:@"post"])
   {
     v10 = [MEMORY[0x1E695DF70] arrayWithObject:@"post"];
-    if (v9)
+    if (isShippingEditable)
     {
       v14[0] = @"name";
       v14[1] = @"phoneticName";
@@ -50,18 +50,18 @@
     v10 = 0;
   }
 
-  v12 = [v6 pk_arrayByRemovingObjectsInArray:v10];
+  v12 = [allObjects pk_arrayByRemovingObjectsInArray:v10];
 
   return v12;
 }
 
-- (id)errorsForContactFields:(id)a3
+- (id)errorsForContactFields:(id)fields
 {
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [(PKPaymentDataItem *)self model];
-  v7 = [v6 paymentErrors];
-  v8 = [v4 pk_FilteredShippingErrorsForContactFields:v5 errors:v7];
+  fieldsCopy = fields;
+  model = [(PKPaymentDataItem *)self model];
+  paymentErrors = [model paymentErrors];
+  v8 = [v4 pk_FilteredShippingErrorsForContactFields:fieldsCopy errors:paymentErrors];
 
   return v8;
 }
@@ -73,69 +73,69 @@
   v9[0] = @"phone";
   v9[1] = @"email";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
-  v5 = [(PKPaymentDataItem *)self model];
-  v6 = [v5 paymentContactFormatErrors];
-  v7 = [v3 pk_FilteredShippingErrorsForContactFields:v4 errors:v6];
+  model = [(PKPaymentDataItem *)self model];
+  paymentContactFormatErrors = [model paymentContactFormatErrors];
+  v7 = [v3 pk_FilteredShippingErrorsForContactFields:v4 errors:paymentContactFormatErrors];
 
   return v7;
 }
 
 - (NSString)email
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 shippingEmail];
-  v4 = [v3 emailAddresses];
-  v5 = [v4 firstObject];
+  model = [(PKPaymentDataItem *)self model];
+  shippingEmail = [model shippingEmail];
+  emailAddresses = [shippingEmail emailAddresses];
+  firstObject = [emailAddresses firstObject];
 
-  v6 = [v5 value];
+  value = [firstObject value];
 
-  return v6;
+  return value;
 }
 
 - (NSString)phone
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 shippingPhone];
-  v4 = [v3 phoneNumbers];
-  v5 = [v4 firstObject];
+  model = [(PKPaymentDataItem *)self model];
+  shippingPhone = [model shippingPhone];
+  phoneNumbers = [shippingPhone phoneNumbers];
+  firstObject = [phoneNumbers firstObject];
 
-  v6 = [v5 value];
-  v7 = [v6 pkFormattedStringValue];
+  value = [firstObject value];
+  pkFormattedStringValue = [value pkFormattedStringValue];
 
-  return v7;
+  return pkFormattedStringValue;
 }
 
 - (NSString)name
 {
-  v3 = [(PKPaymentDataItem *)self model];
-  v4 = [(PKPaymentDataItem *)self model];
-  v5 = [v4 paymentRequest];
-  v6 = [v5 isShippingEditable];
+  model = [(PKPaymentDataItem *)self model];
+  model2 = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model2 paymentRequest];
+  isShippingEditable = [paymentRequest isShippingEditable];
 
-  v7 = [v3 paymentRequest];
-  v8 = [v7 requiredShippingContactFields];
-  v9 = [v8 containsObject:@"post"];
+  paymentRequest2 = [model paymentRequest];
+  requiredShippingContactFields = [paymentRequest2 requiredShippingContactFields];
+  v9 = [requiredShippingContactFields containsObject:@"post"];
 
-  if (v9 && (v6 & 1) != 0)
+  if (v9 && (isShippingEditable & 1) != 0)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [v3 shippingName];
-    v12 = [v3 paymentRequest];
-    v13 = [v12 requiredShippingContactFields];
-    v14 = [v13 containsObject:@"phoneticName"];
+    shippingName = [model shippingName];
+    paymentRequest3 = [model paymentRequest];
+    requiredShippingContactFields2 = [paymentRequest3 requiredShippingContactFields];
+    v14 = [requiredShippingContactFields2 containsObject:@"phoneticName"];
 
     if (v14)
     {
-      [v11 pkFullAndPhoneticName];
+      [shippingName pkFullAndPhoneticName];
     }
 
     else
     {
-      [v11 pkFullName];
+      [shippingName pkFullName];
     }
     v10 = ;
   }
@@ -143,21 +143,21 @@
   return v10;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
   v69[3] = *MEMORY[0x1E69E9840];
-  v5 = [(PKPaymentDataItem *)self model];
-  v6 = [v5 paymentRequest];
-  v66 = [v6 requiredShippingContactFields];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
+  requiredShippingContactFields = [paymentRequest requiredShippingContactFields];
 
-  v7 = [(PKPaymentShippingContactDataItem *)self errors];
-  v64 = a3;
-  if ([v7 count])
+  errors = [(PKPaymentShippingContactDataItem *)self errors];
+  errorCopy = error;
+  if ([errors count])
   {
-    v8 = [(PKPaymentShippingContactDataItem *)self errors];
-    v9 = [v8 firstObject];
+    errors2 = [(PKPaymentShippingContactDataItem *)self errors];
+    firstObject = [errors2 firstObject];
 
-    if (v9)
+    if (firstObject)
     {
       goto LABEL_6;
     }
@@ -167,31 +167,31 @@
   {
   }
 
-  v10 = [(PKPaymentShippingContactDataItem *)self paymentContactFormatErrors];
-  v9 = [v10 firstObject];
+  paymentContactFormatErrors = [(PKPaymentShippingContactDataItem *)self paymentContactFormatErrors];
+  firstObject = [paymentContactFormatErrors firstObject];
 
 LABEL_6:
-  v11 = [(PKPaymentDataItem *)self model];
-  v12 = [v11 paymentRequest];
-  v13 = [v12 requestType];
+  model2 = [(PKPaymentDataItem *)self model];
+  paymentRequest2 = [model2 paymentRequest];
+  requestType = [paymentRequest2 requestType];
 
-  v14 = [v9 userInfo];
-  v15 = v14;
+  userInfo = [firstObject userInfo];
+  v15 = userInfo;
   v16 = &PKDisbursementErrorContactFieldUserInfoKey;
-  if (v13 != 10)
+  if (requestType != 10)
   {
     v16 = &PKPaymentErrorContactFieldUserInfoKey;
   }
 
-  v67 = [v14 objectForKey:*v16];
+  v67 = [userInfo objectForKey:*v16];
 
-  v17 = [(PKPaymentDataItem *)self model];
-  v18 = [v17 shippingPhone];
+  model3 = [(PKPaymentDataItem *)self model];
+  shippingPhone = [model3 shippingPhone];
 
-  if (v18)
+  if (shippingPhone)
   {
-    v19 = [v18 phoneNumbers];
-    v20 = [v19 count] != 0;
+    phoneNumbers = [shippingPhone phoneNumbers];
+    v20 = [phoneNumbers count] != 0;
   }
 
   else
@@ -199,16 +199,16 @@ LABEL_6:
     v20 = 0;
   }
 
-  v21 = [(PKPaymentDataItem *)self model];
-  v22 = [v21 shippingEmail];
+  model4 = [(PKPaymentDataItem *)self model];
+  shippingEmail = [model4 shippingEmail];
 
-  v65 = v9;
-  v62 = v22;
-  v63 = v18;
-  if (v22)
+  v65 = firstObject;
+  v62 = shippingEmail;
+  v63 = shippingPhone;
+  if (shippingEmail)
   {
-    v23 = [v22 emailAddresses];
-    v60 = [v23 count] != 0;
+    emailAddresses = [shippingEmail emailAddresses];
+    v60 = [emailAddresses count] != 0;
   }
 
   else
@@ -216,29 +216,29 @@ LABEL_6:
     v60 = 0;
   }
 
-  v24 = [(PKPaymentDataItem *)self model];
-  v25 = [v24 shippingName];
+  model5 = [(PKPaymentDataItem *)self model];
+  shippingName = [model5 shippingName];
 
-  v26 = [v25 pkFullName];
-  v57 = [v26 length];
+  pkFullName = [shippingName pkFullName];
+  v57 = [pkFullName length];
 
-  v61 = v25;
-  v27 = [v25 pkPhoneticName];
-  v55 = [v27 length];
+  v61 = shippingName;
+  pkPhoneticName = [shippingName pkPhoneticName];
+  v55 = [pkPhoneticName length];
 
-  v28 = [(PKPaymentDataItem *)self model];
-  v29 = [v28 paymentRequest];
-  v58 = [v29 isShippingEditable];
+  model6 = [(PKPaymentDataItem *)self model];
+  paymentRequest3 = [model6 paymentRequest];
+  isShippingEditable = [paymentRequest3 isShippingEditable];
 
   v30 = [v67 isEqualToString:@"phone"];
-  v31 = [v66 containsObject:@"phone"];
+  v31 = [requiredShippingContactFields containsObject:@"phone"];
   v32 = [v67 isEqualToString:@"email"];
-  v59 = [v66 containsObject:@"email"];
+  v59 = [requiredShippingContactFields containsObject:@"email"];
   v33 = [v67 isEqualToString:@"name"];
-  v56 = [v66 containsObject:@"name"];
+  v56 = [requiredShippingContactFields containsObject:@"name"];
   v34 = [v67 isEqualToString:@"phoneticName"];
-  v35 = [v66 containsObject:@"phoneticName"];
-  v36 = [v66 containsObject:@"post"];
+  v35 = [requiredShippingContactFields containsObject:@"phoneticName"];
+  v36 = [requiredShippingContactFields containsObject:@"post"];
   if (v30 || ((v31 ^ 1 | v20) & 1) == 0)
   {
     v39 = !v20;
@@ -264,8 +264,8 @@ LABEL_6:
 
     v40 = -3004;
 LABEL_36:
-    v38 = v64;
-    if (!v64)
+    v38 = errorCopy;
+    if (!errorCopy)
     {
 LABEL_38:
       v48 = 0;
@@ -316,11 +316,11 @@ LABEL_37:
     goto LABEL_36;
   }
 
-  v37 = v36 & v58;
+  v37 = v36 & isShippingEditable;
   if (v33)
   {
-    v38 = v64;
-    if ((v36 & v58 & 1) == 0)
+    v38 = errorCopy;
+    if ((v36 & isShippingEditable & 1) == 0)
     {
       if (v57)
       {
@@ -347,7 +347,7 @@ LABEL_51:
     goto LABEL_44;
   }
 
-  v38 = v64;
+  v38 = errorCopy;
   if (!((v57 != 0 || (v56 & 1) == 0) | v37 & 1))
   {
     goto LABEL_51;
@@ -360,11 +360,11 @@ LABEL_51:
 
   if ((v37 & 1) == 0)
   {
-    v52 = [(PKPaymentDataItem *)self model];
-    v53 = [v52 shippingName];
-    v54 = [v53 pkPhoneticName];
+    model7 = [(PKPaymentDataItem *)self model];
+    shippingName2 = [model7 shippingName];
+    pkPhoneticName2 = [shippingName2 pkPhoneticName];
 
-    if (v54 && [v54 length])
+    if (pkPhoneticName2 && [pkPhoneticName2 length])
     {
       v39 = 0;
       v41 = @"IN_APP_PAYMENT_SHIPPING_CONTACT_PHONETIC_NAME_INCOMPLETE";
@@ -379,7 +379,7 @@ LABEL_51:
     }
 
     v40 = -3007;
-    if (!v64)
+    if (!errorCopy)
     {
       goto LABEL_38;
     }
@@ -390,8 +390,8 @@ LABEL_51:
 LABEL_44:
   if (-[PKPaymentDataItem isRejected](self, "isRejected", v55) || ([v67 isEqualToString:@"contactInfo"] & 1) != 0 || (v41 = 0, v48 = 1, v65) && !v67)
   {
-    v50 = [(PKPaymentShippingContactDataItem *)self requiredContactFields];
-    v51 = [v50 count];
+    requiredContactFields = [(PKPaymentShippingContactDataItem *)self requiredContactFields];
+    v51 = [requiredContactFields count];
 
     if (v51 != 1)
     {

@@ -1,11 +1,11 @@
 @interface GDXPCCoordinationService
-- (BOOL)graphUpdatedWithSource:(id)a3 error:(id *)a4;
-- (BOOL)migrateViewDatabasesWithError:(id *)a3;
-- (BOOL)sourceUpdatedWithSourceType:(id)a3 sourceIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)streamsChangedWithUpdated:(id)a3 deletes:(id)a4 error:(id *)a5;
+- (BOOL)graphUpdatedWithSource:(id)source error:(id *)error;
+- (BOOL)migrateViewDatabasesWithError:(id *)error;
+- (BOOL)sourceUpdatedWithSourceType:(id)type sourceIdentifier:(id)identifier error:(id *)error;
+- (BOOL)streamsChangedWithUpdated:(id)updated deletes:(id)deletes error:(id *)error;
 - (GDXPCCoordinationService)init;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)sysdiagnoseInfoWithError:(id *)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)sysdiagnoseInfoWithError:(id *)error;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
@@ -27,7 +27,7 @@
   return v2;
 }
 
-- (id)sysdiagnoseInfoWithError:(id *)a3
+- (id)sysdiagnoseInfoWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -63,9 +63,9 @@
   [v6 sysdiagnoseInfoWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -77,7 +77,7 @@
   return v8;
 }
 
-- (BOOL)migrateViewDatabasesWithError:(id *)a3
+- (BOOL)migrateViewDatabasesWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -112,9 +112,9 @@
   [v6 migrateViewDatabasesWithCompletion:v9];
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -124,11 +124,11 @@
   return v7 & 1;
 }
 
-- (BOOL)streamsChangedWithUpdated:(id)a3 deletes:(id)a4 error:(id *)a5
+- (BOOL)streamsChangedWithUpdated:(id)updated deletes:(id)deletes error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  updatedCopy = updated;
+  deletesCopy = deletes;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -142,8 +142,8 @@
   v10 = GDXPCLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 count];
-    v12 = [v9 count];
+    v11 = [updatedCopy count];
+    v12 = [deletesCopy count];
     *buf = 134218240;
     v30 = v11;
     v31 = 2048;
@@ -164,12 +164,12 @@
   v17[3] = &unk_1E79628A0;
   v17[4] = &v25;
   v17[5] = &v19;
-  [v13 streamsChangedWithUpdated:v8 deletes:v9 completion:v17];
+  [v13 streamsChangedWithUpdated:updatedCopy deletes:deletesCopy completion:v17];
 
   v14 = *(v26 + 24);
-  if (a5 && (v26[3] & 1) == 0)
+  if (error && (v26[3] & 1) == 0)
   {
-    *a5 = v20[5];
+    *error = v20[5];
     v14 = *(v26 + 24);
   }
 
@@ -180,11 +180,11 @@
   return v14 & 1;
 }
 
-- (BOOL)sourceUpdatedWithSourceType:(id)a3 sourceIdentifier:(id)a4 error:(id *)a5
+- (BOOL)sourceUpdatedWithSourceType:(id)type sourceIdentifier:(id)identifier error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -199,9 +199,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v34 = v8;
+    v34 = typeCopy;
     v35 = 2112;
-    v36 = v9;
+    v36 = identifierCopy;
     _os_log_impl(&dword_1ABA78000, v10, OS_LOG_TYPE_DEFAULT, "GDXPCCoordinationService: sourceUpdatedWithError called. %@ %@", buf, 0x16u);
   }
 
@@ -209,9 +209,9 @@
   v18[1] = 3221225472;
   v18[2] = sub_1ABF0E350;
   v18[3] = &unk_1E7962640;
-  v11 = v8;
+  v11 = typeCopy;
   v19 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v20 = v12;
   v21 = &v23;
   v22 = &v29;
@@ -225,9 +225,9 @@
   [v13 sourceUpdatedWithSourceType:v11 sourceIdentifier:v12 completion:v17];
 
   v14 = *(v30 + 24);
-  if (a5 && (v30[3] & 1) == 0)
+  if (error && (v30[3] & 1) == 0)
   {
-    *a5 = v24[5];
+    *error = v24[5];
     v14 = *(v30 + 24);
   }
 
@@ -238,9 +238,9 @@
   return v14 & 1;
 }
 
-- (BOOL)graphUpdatedWithSource:(id)a3 error:(id *)a4
+- (BOOL)graphUpdatedWithSource:(id)source error:(id *)error
 {
-  v6 = a3;
+  sourceCopy = source;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -271,12 +271,12 @@
   v11[3] = &unk_1E79628A0;
   v11[4] = &v20;
   v11[5] = &v14;
-  [v8 graphUpdatedWithSource:v6 completion:v11];
+  [v8 graphUpdatedWithSource:sourceCopy completion:v11];
 
   v9 = *(v21 + 24);
-  if (a4 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a4 = v15[5];
+    *error = v15[5];
     v9 = *(v21 + 24);
   }
 
@@ -286,14 +286,14 @@
   return v9 & 1;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCCoordinationService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCCoordinationService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

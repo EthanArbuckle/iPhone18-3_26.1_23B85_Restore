@@ -1,28 +1,28 @@
 @interface SKUIProductInformationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation SKUIProductInformationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIProductInformationView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SKUIProductInformationView" hasInstanceVariable:@"_keyLabels" withType:"NSMutableArray"];
-  [v3 validateClass:@"SKUIProductInformationView" hasInstanceVariable:@"_valueLabels" withType:"NSMutableArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIProductInformationView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SKUIProductInformationView" hasInstanceVariable:@"_keyLabels" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"SKUIProductInformationView" hasInstanceVariable:@"_valueLabels" withType:"NSMutableArray"];
 }
 
 - (id)accessibilityElements
 {
-  v3 = [(SKUIProductInformationViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
-  if (!v3)
+  array = [(SKUIProductInformationViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
+  if (!array)
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v4 = [(SKUIProductInformationViewAccessibility *)self safeValueForKey:@"_titleLabel"];
     [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
     v17 = v4;
-    [v3 axSafelyAddObject:v4];
+    [array axSafelyAddObject:v4];
     v5 = [(SKUIProductInformationViewAccessibility *)self safeValueForKey:@"_keyLabels"];
     v6 = [(SKUIProductInformationViewAccessibility *)self safeValueForKey:@"_valueLabels"];
     v7 = [v5 count];
@@ -51,14 +51,14 @@
         v13 = [v6 objectAtIndex:i];
         v14 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{2, v12, v13}];
         v15 = [objc_alloc(MEMORY[0x29EDC7318]) initWithAccessibilityContainer:self representedElements:v14];
-        [v3 addObject:v15];
+        [array addObject:v15];
       }
     }
 
-    [(SKUIProductInformationViewAccessibility *)self _accessibilitySetRetainedValue:v3 forKey:*MEMORY[0x29EDC7620]];
+    [(SKUIProductInformationViewAccessibility *)self _accessibilitySetRetainedValue:array forKey:*MEMORY[0x29EDC7620]];
   }
 
-  return v3;
+  return array;
 }
 
 @end

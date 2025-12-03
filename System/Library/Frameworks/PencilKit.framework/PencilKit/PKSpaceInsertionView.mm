@@ -1,29 +1,29 @@
 @interface PKSpaceInsertionView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (PKSpaceInsertionView)initWithFrame:(CGRect)a3 insertionType:(unint64_t)a4 path:(CGPath *)a5 handleLocation:(CGPoint)a6 scale:(double)a7;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (PKSpaceInsertionView)initWithFrame:(CGRect)frame insertionType:(unint64_t)type path:(CGPath *)path handleLocation:(CGPoint)location scale:(double)scale;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
 @implementation PKSpaceInsertionView
 
-- (PKSpaceInsertionView)initWithFrame:(CGRect)a3 insertionType:(unint64_t)a4 path:(CGPath *)a5 handleLocation:(CGPoint)a6 scale:(double)a7
+- (PKSpaceInsertionView)initWithFrame:(CGRect)frame insertionType:(unint64_t)type path:(CGPath *)path handleLocation:(CGPoint)location scale:(double)scale
 {
-  y = a6.y;
-  x = a6.x;
+  y = location.y;
+  x = location.x;
   v17.receiver = self;
   v17.super_class = PKSpaceInsertionView;
-  v12 = [(PKSpaceInsertionView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v12 = [(PKSpaceInsertionView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v13 = v12;
   if (v12)
   {
     [(PKSpaceInsertionView *)v12 setOpaque:0];
-    v13->_insertionType = a4;
-    v13->_lassoPath = CGPathRetain(a5);
+    v13->_insertionType = type;
+    v13->_lassoPath = CGPathRetain(path);
     v13->_handleLocation.x = x;
     v13->_handleLocation.y = y;
-    v13->_scale = a7;
+    v13->_scale = scale;
     v14 = objc_alloc_init(PKDrawingAdjustmentKnob);
     knobHandle = v13->_knobHandle;
     v13->_knobHandle = v14;
@@ -43,10 +43,10 @@
   [(PKSpaceInsertionView *)&v3 dealloc];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(PKSpaceInsertionView *)self bounds];
   v12.x = x;
   v12.y = y;
@@ -79,18 +79,18 @@
   }
 
   [(PKDrawingAdjustmentKnob *)self->_knobHandle setFrame:v4, self->_handleLocation.y + 15.0 + -8.0, 15.0, 16.0];
-  v5 = [(PKSpaceInsertionView *)self tintColor];
+  tintColor = [(PKSpaceInsertionView *)self tintColor];
   [(PKDrawingAdjustmentKnob *)self->_knobHandle setTintColor:?];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v6.receiver = self;
   v6.super_class = PKSpaceInsertionView;
-  [(PKSpaceInsertionView *)&v6 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(PKSpaceInsertionView *)self tintColor];
+  [(PKSpaceInsertionView *)&v6 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  tintColor = [(PKSpaceInsertionView *)self tintColor];
   CurrentContext = UIGraphicsGetCurrentContext();
-  CGContextSetStrokeColorWithColor(CurrentContext, [v4 CGColor]);
+  CGContextSetStrokeColorWithColor(CurrentContext, [tintColor CGColor]);
   CGContextTranslateCTM(CurrentContext, 0.0, 15.0);
   CGContextBeginPath(CurrentContext);
   CGContextSetLineCap(CurrentContext, kCGLineCapRound);

@@ -6,13 +6,13 @@
 
 - (id)brc_mangledNameFromURLFragment:()BRCShareURL
 {
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   v5 = v4;
   if (a3)
   {
     [v4 replaceOccurrencesOfString:@"_" withString:@" " options:0 range:{0, objc_msgSend(v4, "length")}];
-    v6 = [v5 stringByRemovingPercentEncoding];
-    v7 = [v6 mutableCopy];
+    stringByRemovingPercentEncoding = [v5 stringByRemovingPercentEncoding];
+    v7 = [stringByRemovingPercentEncoding mutableCopy];
 
     v5 = v7;
   }

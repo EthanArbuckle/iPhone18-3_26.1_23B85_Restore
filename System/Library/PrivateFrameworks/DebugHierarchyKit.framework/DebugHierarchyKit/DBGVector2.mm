@@ -1,6 +1,6 @@
 @interface DBGVector2
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withVector2:(id)a1;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withVector2:(id)vector2;
 - (DBGVector2)initWithVector2:(DBGVector2 *)self;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -10,9 +10,9 @@
 
 @implementation DBGVector2
 
-+ (id)withVector2:(id)a1
++ (id)withVector2:(id)vector2
 {
-  v3 = [[a1 alloc] initWithVector2:v2];
+  v3 = [[vector2 alloc] initWithVector2:v2];
 
   return v3;
 }
@@ -46,8 +46,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGVector2 *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGVector2 *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -62,7 +62,7 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v7 = DBGDecodeValueFromJSONCompatibleValue();
   v8 = 0;
@@ -70,11 +70,11 @@
   if (v8)
   {
     v10 = 0.0;
-    if (a5)
+    if (error)
     {
       v11 = v8;
       v10 = 0.0;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -90,7 +90,7 @@
     v10 = v17;
   }
 
-  v15 = [a1 withVector2:{v10, *&v17}];
+  v15 = [self withVector2:{v10, *&v17}];
 
   return v15;
 }

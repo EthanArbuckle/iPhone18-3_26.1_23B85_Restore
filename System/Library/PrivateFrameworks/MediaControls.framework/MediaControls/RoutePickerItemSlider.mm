@@ -1,8 +1,8 @@
 @interface RoutePickerItemSlider
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (void)layoutSubviews;
-- (void)longGestureDidChangeWithSender:(id)a3;
-- (void)panGestureDidChangeWithSender:(id)a3;
+- (void)longGestureDidChangeWithSender:(id)sender;
+- (void)panGestureDidChangeWithSender:(id)sender;
 @end
 
 @implementation RoutePickerItemSlider
@@ -23,27 +23,27 @@
   [v3 setFrame_];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1A220B1A0(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_1A220B1A0(beginCopy);
 
   return self & 1;
 }
 
-- (void)panGestureDidChangeWithSender:(id)a3
+- (void)panGestureDidChangeWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A220B6C0(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1A220B6C0(senderCopy);
 }
 
-- (void)longGestureDidChangeWithSender:(id)a3
+- (void)longGestureDidChangeWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A220B7DC(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1A220B7DC(senderCopy);
 }
 
 @end

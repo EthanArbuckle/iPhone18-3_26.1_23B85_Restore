@@ -1,7 +1,7 @@
 @interface CERuleConfiguration
 - (CERecommendationInfo)recommendationInfo;
-- (CERuleConfiguration)initWithCoder:(id)a3;
-- (CERuleConfiguration)initWithDictionary:(id)a3;
+- (CERuleConfiguration)initWithCoder:(id)coder;
+- (CERuleConfiguration)initWithDictionary:(id)dictionary;
 - (NSArray)ruleset;
 - (NSDictionary)thresholds;
 - (NSNumber)maxRecommendationsToShow;
@@ -9,23 +9,23 @@
 - (NSURL)completedURL;
 - (NSURL)dismissURL;
 - (NSURL)displayURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)thresholdForKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActionURL:(id)a3;
-- (void)setCompletedURL:(id)a3;
-- (void)setDismissURL:(id)a3;
-- (void)setDisplayURL:(id)a3;
-- (void)setMaxRecommendationsToShow:(id)a3;
-- (void)setRecommendationInfo:(id)a3;
+- (id)thresholdForKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActionURL:(id)l;
+- (void)setCompletedURL:(id)l;
+- (void)setDismissURL:(id)l;
+- (void)setDisplayURL:(id)l;
+- (void)setMaxRecommendationsToShow:(id)show;
+- (void)setRecommendationInfo:(id)info;
 @end
 
 @implementation CERuleConfiguration
 
-- (CERuleConfiguration)initWithDictionary:(id)a3
+- (CERuleConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v40.receiver = self;
   v40.super_class = CERuleConfiguration;
   v5 = [(CERuleConfiguration *)&v40 init];
@@ -33,7 +33,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 objectForKeyedSubscript:@"displayUrl"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"displayUrl"];
     objc_opt_class();
     v36 = v7;
     if (objc_opt_isKindOfClass())
@@ -52,7 +52,7 @@
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"dismissUrl"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dismissUrl"];
     objc_opt_class();
     v35 = v10;
     if (objc_opt_isKindOfClass())
@@ -71,7 +71,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"actionUrl"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"actionUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"completedUrl"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"completedUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
       }
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"maxTipsShown"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"maxTipsShown"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -125,7 +125,7 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"thresholds"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"thresholds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -143,7 +143,7 @@
       }
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"recommendationsInfo"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"recommendationsInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -161,7 +161,7 @@
       }
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"ruleset"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"ruleset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -215,38 +215,38 @@ void __42__CERuleConfiguration_initWithDictionary___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CERuleConfiguration *)self displayURL];
-  [v4 encodeObject:v5 forKey:@"displayURL"];
+  coderCopy = coder;
+  displayURL = [(CERuleConfiguration *)self displayURL];
+  [coderCopy encodeObject:displayURL forKey:@"displayURL"];
 
-  v6 = [(CERuleConfiguration *)self dismissURL];
-  [v4 encodeObject:v6 forKey:@"dismissURL"];
+  dismissURL = [(CERuleConfiguration *)self dismissURL];
+  [coderCopy encodeObject:dismissURL forKey:@"dismissURL"];
 
-  v7 = [(CERuleConfiguration *)self completedURL];
-  [v4 encodeObject:v7 forKey:@"completedURL"];
+  completedURL = [(CERuleConfiguration *)self completedURL];
+  [coderCopy encodeObject:completedURL forKey:@"completedURL"];
 
-  v8 = [(CERuleConfiguration *)self actionURL];
-  [v4 encodeObject:v8 forKey:@"actionURL"];
+  actionURL = [(CERuleConfiguration *)self actionURL];
+  [coderCopy encodeObject:actionURL forKey:@"actionURL"];
 
-  v9 = [(CERuleConfiguration *)self maxRecommendationsToShow];
-  [v4 encodeObject:v9 forKey:@"maxRecommendationsToShow"];
+  maxRecommendationsToShow = [(CERuleConfiguration *)self maxRecommendationsToShow];
+  [coderCopy encodeObject:maxRecommendationsToShow forKey:@"maxRecommendationsToShow"];
 
-  v10 = [(CERuleConfiguration *)self thresholds];
-  [v4 encodeObject:v10 forKey:@"thresholds"];
+  thresholds = [(CERuleConfiguration *)self thresholds];
+  [coderCopy encodeObject:thresholds forKey:@"thresholds"];
 
-  v11 = [(CERuleConfiguration *)self ruleset];
-  [v4 encodeObject:v11 forKey:@"ruleset"];
+  ruleset = [(CERuleConfiguration *)self ruleset];
+  [coderCopy encodeObject:ruleset forKey:@"ruleset"];
 
-  v12 = [(CERuleConfiguration *)self recommendationInfo];
-  [v4 encodeObject:v12 forKey:@"recommendationsInfo"];
+  recommendationInfo = [(CERuleConfiguration *)self recommendationInfo];
+  [coderCopy encodeObject:recommendationInfo forKey:@"recommendationsInfo"];
 }
 
-- (CERuleConfiguration)initWithCoder:(id)a3
+- (CERuleConfiguration)initWithCoder:(id)coder
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = CERuleConfiguration;
   v5 = [(CERuleConfiguration *)&v31 init];
@@ -254,23 +254,23 @@ void __42__CERuleConfiguration_initWithDictionary___block_invoke(uint64_t a1, vo
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayURL"];
     displayURL = v6->_displayURL;
     v6->_displayURL = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dismissURL"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dismissURL"];
     dismissURL = v6->_dismissURL;
     v6->_dismissURL = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completedURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completedURL"];
     completedURL = v6->_completedURL;
     v6->_completedURL = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
     actionURL = v6->_actionURL;
     v6->_actionURL = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxRecommendationsToShow"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxRecommendationsToShow"];
     maxRecommendationsToShow = v6->_maxRecommendationsToShow;
     v6->_maxRecommendationsToShow = v15;
 
@@ -281,7 +281,7 @@ void __42__CERuleConfiguration_initWithDictionary___block_invoke(uint64_t a1, vo
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:3];
     v19 = [v17 setWithArray:v18];
 
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"thresholds"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"thresholds"];
     thresholds = v6->_thresholds;
     v6->_thresholds = v20;
 
@@ -291,11 +291,11 @@ void __42__CERuleConfiguration_initWithDictionary___block_invoke(uint64_t a1, vo
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     v24 = [v22 setWithArray:v23];
 
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"ruleset"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"ruleset"];
     ruleset = v6->_ruleset;
     v6->_ruleset = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recommendationsInfo"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recommendationsInfo"];
     recommendationInfo = v6->_recommendationInfo;
     v6->_recommendationInfo = v27;
   }
@@ -304,35 +304,35 @@ void __42__CERuleConfiguration_initWithDictionary___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[CERuleConfiguration allocWithZone:](CERuleConfiguration init];
   v5->_lock._os_unfair_lock_opaque = 0;
-  v6 = [(CERuleConfiguration *)self displayURL];
-  [(CERuleConfiguration *)v5 setDisplayURL:v6];
+  displayURL = [(CERuleConfiguration *)self displayURL];
+  [(CERuleConfiguration *)v5 setDisplayURL:displayURL];
 
-  v7 = [(CERuleConfiguration *)self dismissURL];
-  [(CERuleConfiguration *)v5 setDismissURL:v7];
+  dismissURL = [(CERuleConfiguration *)self dismissURL];
+  [(CERuleConfiguration *)v5 setDismissURL:dismissURL];
 
-  v8 = [(CERuleConfiguration *)self completedURL];
-  [(CERuleConfiguration *)v5 setCompletedURL:v8];
+  completedURL = [(CERuleConfiguration *)self completedURL];
+  [(CERuleConfiguration *)v5 setCompletedURL:completedURL];
 
-  v9 = [(CERuleConfiguration *)self actionURL];
-  [(CERuleConfiguration *)v5 setActionURL:v9];
+  actionURL = [(CERuleConfiguration *)self actionURL];
+  [(CERuleConfiguration *)v5 setActionURL:actionURL];
 
-  v10 = [(CERuleConfiguration *)self maxRecommendationsToShow];
-  [(CERuleConfiguration *)v5 setMaxRecommendationsToShow:v10];
+  maxRecommendationsToShow = [(CERuleConfiguration *)self maxRecommendationsToShow];
+  [(CERuleConfiguration *)v5 setMaxRecommendationsToShow:maxRecommendationsToShow];
 
-  v11 = [(CERuleConfiguration *)self recommendationInfo];
-  [(CERuleConfiguration *)v5 setRecommendationInfo:v11];
+  recommendationInfo = [(CERuleConfiguration *)self recommendationInfo];
+  [(CERuleConfiguration *)v5 setRecommendationInfo:recommendationInfo];
 
   os_unfair_lock_lock(&v5->_lock);
-  v12 = [(CERuleConfiguration *)self thresholds];
+  thresholds = [(CERuleConfiguration *)self thresholds];
   thresholds = v5->_thresholds;
-  v5->_thresholds = v12;
+  v5->_thresholds = thresholds;
 
-  v14 = [(CERuleConfiguration *)self ruleset];
-  v15 = [v14 copyWithZone:a3];
+  ruleset = [(CERuleConfiguration *)self ruleset];
+  v15 = [ruleset copyWithZone:zone];
   ruleset = v5->_ruleset;
   v5->_ruleset = v15;
 
@@ -343,15 +343,15 @@ void __42__CERuleConfiguration_initWithDictionary___block_invoke(uint64_t a1, vo
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CERuleConfiguration *)self displayURL];
-  v5 = [(CERuleConfiguration *)self dismissURL];
-  v6 = [(CERuleConfiguration *)self completedURL];
-  v7 = [(CERuleConfiguration *)self actionURL];
-  v8 = [(CERuleConfiguration *)self maxRecommendationsToShow];
-  v9 = [(CERuleConfiguration *)self thresholds];
-  v10 = [(CERuleConfiguration *)self ruleset];
-  v11 = [(CERuleConfiguration *)self recommendationInfo];
-  v12 = [v3 stringWithFormat:@"Rule configuration with displayURL: %@, dismissURL: %@, completedURL: %@, actionURL: %@, maxRecommendations: %@, thresholds: %@, ruleset: %@, recommendationInfo: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  displayURL = [(CERuleConfiguration *)self displayURL];
+  dismissURL = [(CERuleConfiguration *)self dismissURL];
+  completedURL = [(CERuleConfiguration *)self completedURL];
+  actionURL = [(CERuleConfiguration *)self actionURL];
+  maxRecommendationsToShow = [(CERuleConfiguration *)self maxRecommendationsToShow];
+  thresholds = [(CERuleConfiguration *)self thresholds];
+  ruleset = [(CERuleConfiguration *)self ruleset];
+  recommendationInfo = [(CERuleConfiguration *)self recommendationInfo];
+  v12 = [v3 stringWithFormat:@"Rule configuration with displayURL: %@, dismissURL: %@, completedURL: %@, actionURL: %@, maxRecommendations: %@, thresholds: %@, ruleset: %@, recommendationInfo: %@", displayURL, dismissURL, completedURL, actionURL, maxRecommendationsToShow, thresholds, ruleset, recommendationInfo];
 
   return v12;
 }
@@ -419,11 +419,11 @@ void __42__CERuleConfiguration_initWithDictionary___block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (id)thresholdForKey:(id)a3
+- (id)thresholdForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSDictionary *)self->_thresholds valueForKey:v4];
+  v5 = [(NSDictionary *)self->_thresholds valueForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -439,62 +439,62 @@ void __42__CERuleConfiguration_initWithDictionary___block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (void)setDisplayURL:(id)a3
+- (void)setDisplayURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
   displayURL = self->_displayURL;
-  self->_displayURL = v4;
+  self->_displayURL = lCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setDismissURL:(id)a3
+- (void)setDismissURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
   dismissURL = self->_dismissURL;
-  self->_dismissURL = v4;
+  self->_dismissURL = lCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCompletedURL:(id)a3
+- (void)setCompletedURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
   completedURL = self->_completedURL;
-  self->_completedURL = v4;
+  self->_completedURL = lCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setActionURL:(id)a3
+- (void)setActionURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
   actionURL = self->_actionURL;
-  self->_actionURL = v4;
+  self->_actionURL = lCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setMaxRecommendationsToShow:(id)a3
+- (void)setMaxRecommendationsToShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   os_unfair_lock_lock(&self->_lock);
   maxRecommendationsToShow = self->_maxRecommendationsToShow;
-  self->_maxRecommendationsToShow = v4;
+  self->_maxRecommendationsToShow = showCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setRecommendationInfo:(id)a3
+- (void)setRecommendationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_lock);
   recommendationInfo = self->_recommendationInfo;
-  self->_recommendationInfo = v4;
+  self->_recommendationInfo = infoCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

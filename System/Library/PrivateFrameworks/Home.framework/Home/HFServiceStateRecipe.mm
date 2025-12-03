@@ -1,56 +1,56 @@
 @interface HFServiceStateRecipe
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (HFServiceStateRecipe)initWithPredicate:(id)a3 characteristicRecipes:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HFServiceStateRecipe)initWithPredicate:(id)predicate characteristicRecipes:(id)recipes;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)matchResultForServices:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)matchResultForServices:(id)services;
 - (unint64_t)hash;
 @end
 
 @implementation HFServiceStateRecipe
 
-- (HFServiceStateRecipe)initWithPredicate:(id)a3 characteristicRecipes:(id)a4
+- (HFServiceStateRecipe)initWithPredicate:(id)predicate characteristicRecipes:(id)recipes
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  recipesCopy = recipes;
   v12.receiver = self;
   v12.super_class = HFServiceStateRecipe;
   v9 = [(HFServiceStateRecipe *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_predicate, a3);
-    objc_storeStrong(&v10->_characteristicRecipes, a4);
+    objc_storeStrong(&v9->_predicate, predicate);
+    objc_storeStrong(&v10->_characteristicRecipes, recipes);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFServiceStateRecipe *)self predicate];
-  v6 = [(HFServiceStateRecipe *)self characteristicRecipes];
-  v7 = [v4 initWithPredicate:v5 characteristicRecipes:v6];
+  predicate = [(HFServiceStateRecipe *)self predicate];
+  characteristicRecipes = [(HFServiceStateRecipe *)self characteristicRecipes];
+  v7 = [v4 initWithPredicate:predicate characteristicRecipes:characteristicRecipes];
 
   return v7;
 }
 
-- (id)matchResultForServices:(id)a3
+- (id)matchResultForServices:(id)services
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  servicesCopy = services;
   v5 = [MEMORY[0x277CBEB58] set];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = servicesCopy;
   v24 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v24)
   {
-    v22 = self;
+    selfCopy = self;
     v23 = *v31;
     do
     {
@@ -62,8 +62,8 @@
         }
 
         v7 = *(*(&v30 + 1) + 8 * i);
-        v8 = [(HFServiceStateRecipe *)self predicate];
-        v9 = [v8 matchingServicesForRootService:v7];
+        predicate = [(HFServiceStateRecipe *)self predicate];
+        v9 = [predicate matchingServicesForRootService:v7];
 
         if ([v9 count])
         {
@@ -72,8 +72,8 @@
           v29 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v10 = [(HFServiceStateRecipe *)self characteristicRecipes];
-          v11 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          characteristicRecipes = [(HFServiceStateRecipe *)self characteristicRecipes];
+          v11 = [characteristicRecipes countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v11)
           {
             v12 = v11;
@@ -84,7 +84,7 @@
               {
                 if (*v27 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(characteristicRecipes);
                 }
 
                 v15 = *(*(&v26 + 1) + 8 * j);
@@ -94,13 +94,13 @@
                 [v5 addObject:v17];
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
+              v12 = [characteristicRecipes countByEnumeratingWithState:&v26 objects:v34 count:16];
             }
 
             while (v12);
           }
 
-          self = v22;
+          self = selfCopy;
           v9 = v25;
         }
       }
@@ -121,16 +121,16 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFServiceStateRecipe *)self predicate];
-  v5 = [v3 appendObject:v4 withName:@"predicate"];
+  predicate = [(HFServiceStateRecipe *)self predicate];
+  v5 = [v3 appendObject:predicate withName:@"predicate"];
 
-  v6 = [(HFServiceStateRecipe *)self characteristicRecipes];
-  v7 = [v6 allObjects];
-  [v3 appendArraySection:v7 withName:@"characteristicRecipes" skipIfEmpty:0];
+  characteristicRecipes = [(HFServiceStateRecipe *)self characteristicRecipes];
+  allObjects = [characteristicRecipes allObjects];
+  [v3 appendArraySection:allObjects withName:@"characteristicRecipes" skipIfEmpty:0];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 + (NAIdentity)na_identity
@@ -156,19 +156,19 @@ void __35__HFServiceStateRecipe_na_identity__block_invoke_2()
   qword_280E03E80 = v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

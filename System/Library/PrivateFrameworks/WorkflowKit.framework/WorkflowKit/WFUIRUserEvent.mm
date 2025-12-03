@@ -1,41 +1,41 @@
 @interface WFUIRUserEvent
-- (WFUIRUserEvent)initWithCoder:(id)a3;
-- (WFUIRUserEvent)initWithSerializedRepresentation:(id)a3;
+- (WFUIRUserEvent)initWithCoder:(id)coder;
+- (WFUIRUserEvent)initWithSerializedRepresentation:(id)representation;
 - (id)serializedRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFUIRUserEvent
 
-- (WFUIRUserEvent)initWithCoder:(id)a3
+- (WFUIRUserEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = WFUIRUserEvent;
   v5 = [(WFUIRUserEvent *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedActionName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedActionName"];
     localizedActionName = v5->_localizedActionName;
     v5->_localizedActionName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionName"];
     actionName = v5->_actionName;
     v5->_actionName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
     processName = v5->_processName;
     v5->_processName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userDescription"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userDescription"];
     userDescription = v5->_userDescription;
     v5->_userDescription = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"delay"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"delay"];
     [v14 doubleValue];
     v5->_delay = v15;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeout"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeout"];
     [v16 doubleValue];
     v5->_timeout = v17;
 
@@ -45,46 +45,46 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFUIRUserEvent *)self localizedActionName];
-  [v4 encodeObject:v5 forKey:@"localizedActionName"];
+  coderCopy = coder;
+  localizedActionName = [(WFUIRUserEvent *)self localizedActionName];
+  [coderCopy encodeObject:localizedActionName forKey:@"localizedActionName"];
 
-  v6 = [(WFUIRUserEvent *)self actionName];
-  [v4 encodeObject:v6 forKey:@"actionName"];
+  actionName = [(WFUIRUserEvent *)self actionName];
+  [coderCopy encodeObject:actionName forKey:@"actionName"];
 
-  v7 = [(WFUIRUserEvent *)self processName];
-  [v4 encodeObject:v7 forKey:@"processName"];
+  processName = [(WFUIRUserEvent *)self processName];
+  [coderCopy encodeObject:processName forKey:@"processName"];
 
-  v8 = [(WFUIRUserEvent *)self userDescription];
-  [v4 encodeObject:v8 forKey:@"userDescription"];
+  userDescription = [(WFUIRUserEvent *)self userDescription];
+  [coderCopy encodeObject:userDescription forKey:@"userDescription"];
 
   v9 = MEMORY[0x1E696AD98];
   [(WFUIRUserEvent *)self delay];
   v10 = [v9 numberWithDouble:?];
-  [v4 encodeObject:v10 forKey:@"delay"];
+  [coderCopy encodeObject:v10 forKey:@"delay"];
 
   v11 = MEMORY[0x1E696AD98];
   [(WFUIRUserEvent *)self timeout];
   v12 = [v11 numberWithDouble:?];
-  [v4 encodeObject:v12 forKey:@"timeout"];
+  [coderCopy encodeObject:v12 forKey:@"timeout"];
 }
 
 - (id)serializedRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(WFUIRUserEvent *)self actionName];
-  [v3 setValue:v4 forKey:@"actionName"];
+  actionName = [(WFUIRUserEvent *)self actionName];
+  [v3 setValue:actionName forKey:@"actionName"];
 
-  v5 = [(WFUIRUserEvent *)self localizedActionName];
-  [v3 setValue:v5 forKey:@"localizedActionName"];
+  localizedActionName = [(WFUIRUserEvent *)self localizedActionName];
+  [v3 setValue:localizedActionName forKey:@"localizedActionName"];
 
-  v6 = [(WFUIRUserEvent *)self processName];
-  [v3 setValue:v6 forKey:@"processName"];
+  processName = [(WFUIRUserEvent *)self processName];
+  [v3 setValue:processName forKey:@"processName"];
 
-  v7 = [(WFUIRUserEvent *)self userDescription];
-  [v3 setValue:v7 forKey:@"userDescription"];
+  userDescription = [(WFUIRUserEvent *)self userDescription];
+  [v3 setValue:userDescription forKey:@"userDescription"];
 
   v8 = MEMORY[0x1E696AD98];
   [(WFUIRUserEvent *)self delay];
@@ -99,15 +99,15 @@
   return v3;
 }
 
-- (WFUIRUserEvent)initWithSerializedRepresentation:(id)a3
+- (WFUIRUserEvent)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v21.receiver = self;
   v21.super_class = WFUIRUserEvent;
   v5 = [(WFUIRUserEvent *)&v21 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = representationCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = [v6 objectForKey:@"actionName"];

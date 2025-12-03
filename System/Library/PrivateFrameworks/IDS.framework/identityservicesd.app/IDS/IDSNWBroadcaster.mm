@@ -1,15 +1,15 @@
 @interface IDSNWBroadcaster
-- (id)broadcastProxyForTargets:(id)a3;
+- (id)broadcastProxyForTargets:(id)targets;
 @end
 
 @implementation IDSNWBroadcaster
 
-- (id)broadcastProxyForTargets:(id)a3
+- (id)broadcastProxyForTargets:(id)targets
 {
-  v3 = a3;
-  if ([v3 count])
+  targetsCopy = targets;
+  if ([targetsCopy count])
   {
-    v4 = [[IDSNWBroadcastProxy alloc] initWithTargets:v3];
+    v4 = [[IDSNWBroadcastProxy alloc] initWithTargets:targetsCopy];
   }
 
   else

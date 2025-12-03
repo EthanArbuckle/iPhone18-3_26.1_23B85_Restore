@@ -1,43 +1,43 @@
 @interface ICInlineDrawingChangeCoalescer
-- (ICInlineDrawingChangeCoalescer)initWithAttachment:(id)a3;
+- (ICInlineDrawingChangeCoalescer)initWithAttachment:(id)attachment;
 - (ICSelectorDelayer)processChangesSelectorDelayer;
 - (id)retrieveAndClearLatestDrawingToMerge;
 - (void)dealloc;
-- (void)drawingDataDidChange:(id)a3;
+- (void)drawingDataDidChange:(id)change;
 - (void)mergeDrawingChanges;
-- (void)mergeDrawingWithDrawing:(id)a3;
-- (void)processIndexableContentWithCompletion:(id)a3;
+- (void)mergeDrawingWithDrawing:(id)drawing;
+- (void)processIndexableContentWithCompletion:(id)completion;
 - (void)retrieveAndClearLatestDrawingToMerge;
 - (void)updateNowIfNecessary;
-- (void)updateVersionIfNeededForAttachment:(id)a3 withDrawing:(id)a4;
+- (void)updateVersionIfNeededForAttachment:(id)attachment withDrawing:(id)drawing;
 @end
 
 @implementation ICInlineDrawingChangeCoalescer
 
-- (ICInlineDrawingChangeCoalescer)initWithAttachment:(id)a3
+- (ICInlineDrawingChangeCoalescer)initWithAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   v18.receiver = self;
   v18.super_class = ICInlineDrawingChangeCoalescer;
   v6 = [(ICInlineDrawingChangeCoalescer *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attachment, a3);
-    v8 = [MEMORY[0x1E69B7800] sharedContext];
-    v9 = [v8 workerManagedObjectContext];
+    objc_storeStrong(&v6->_attachment, attachment);
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
     workerContext = v7->_workerContext;
-    v7->_workerContext = v9;
+    v7->_workerContext = workerManagedObjectContext;
 
-    v11 = [MEMORY[0x1E69B7800] sharedContext];
-    v12 = [v11 managedObjectContext];
+    mEMORY[0x1E69B7800]2 = [MEMORY[0x1E69B7800] sharedContext];
+    managedObjectContext = [mEMORY[0x1E69B7800]2 managedObjectContext];
     mainContext = v7->_mainContext;
-    v7->_mainContext = v12;
+    v7->_mainContext = managedObjectContext;
 
-    v14 = [MEMORY[0x1E69B7800] sharedContext];
-    v15 = [v14 workerManagedObjectContext];
+    mEMORY[0x1E69B7800]3 = [MEMORY[0x1E69B7800] sharedContext];
+    workerManagedObjectContext2 = [mEMORY[0x1E69B7800]3 workerManagedObjectContext];
     handwritingRecognitionContext = v7->_handwritingRecognitionContext;
-    v7->_handwritingRecognitionContext = v15;
+    v7->_handwritingRecognitionContext = workerManagedObjectContext2;
   }
 
   return v7;
@@ -74,14 +74,14 @@
   return processChangesSelectorDelayer;
 }
 
-- (void)drawingDataDidChange:(id)a3
+- (void)drawingDataDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  changeCopy = change;
+  v5 = [changeCopy copy];
   [(ICInlineDrawingChangeCoalescer *)self setLatestDrawing:v5];
   [(ICInlineDrawingChangeCoalescer *)self setNumberOfChanges:[(ICInlineDrawingChangeCoalescer *)self numberOfChanges]+ 1];
-  v6 = [(ICInlineDrawingChangeCoalescer *)self processChangesSelectorDelayer];
-  [v6 requestFire];
+  processChangesSelectorDelayer = [(ICInlineDrawingChangeCoalescer *)self processChangesSelectorDelayer];
+  [processChangesSelectorDelayer requestFire];
 
   v17[0] = 0;
   v17[1] = v17;
@@ -89,19 +89,19 @@
   v17[3] = __Block_byref_object_copy__77;
   v17[4] = __Block_byref_object_dispose__77;
   v18 = 0;
-  v7 = [(ICInlineDrawingChangeCoalescer *)self attachment];
-  v8 = [v7 managedObjectContext];
+  attachment = [(ICInlineDrawingChangeCoalescer *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __55__ICInlineDrawingChangeCoalescer_drawingDataDidChange___block_invoke;
   v16[3] = &unk_1E8468FA8;
   v16[4] = self;
   v16[5] = v17;
-  [v8 performBlockAndWait:v16];
+  [managedObjectContext performBlockAndWait:v16];
 
-  v9 = [(ICInlineDrawingChangeCoalescer *)self attachment];
-  v10 = [v9 inlineDrawingModel];
-  v11 = [v10 handwritingRecognitionDrawingQueue];
+  attachment2 = [(ICInlineDrawingChangeCoalescer *)self attachment];
+  inlineDrawingModel = [attachment2 inlineDrawingModel];
+  handwritingRecognitionDrawingQueue = [inlineDrawingModel handwritingRecognitionDrawingQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__ICInlineDrawingChangeCoalescer_drawingDataDidChange___block_invoke_30;
@@ -109,7 +109,7 @@
   v14 = v5;
   v15 = v17;
   v12 = v5;
-  dispatch_async(v11, v13);
+  dispatch_async(handwritingRecognitionDrawingQueue, v13);
 
   _Block_object_dispose(v17, 8);
 }
@@ -133,26 +133,26 @@ void __55__ICInlineDrawingChangeCoalescer_drawingDataDidChange___block_invoke(ui
 
 - (void)updateNowIfNecessary
 {
-  v3 = [(ICInlineDrawingChangeCoalescer *)self processChangesSelectorDelayer];
-  [v3 cancelPreviousFireRequests];
+  processChangesSelectorDelayer = [(ICInlineDrawingChangeCoalescer *)self processChangesSelectorDelayer];
+  [processChangesSelectorDelayer cancelPreviousFireRequests];
 
-  v4 = [(ICInlineDrawingChangeCoalescer *)self retrieveAndClearLatestDrawingToMerge];
-  if (v4)
+  retrieveAndClearLatestDrawingToMerge = [(ICInlineDrawingChangeCoalescer *)self retrieveAndClearLatestDrawingToMerge];
+  if (retrieveAndClearLatestDrawingToMerge)
   {
-    v7 = v4;
-    v5 = [(ICInlineDrawingChangeCoalescer *)self attachment];
-    v6 = [v5 managedObjectContext];
-    [v6 ic_save];
+    v7 = retrieveAndClearLatestDrawingToMerge;
+    attachment = [(ICInlineDrawingChangeCoalescer *)self attachment];
+    managedObjectContext = [attachment managedObjectContext];
+    [managedObjectContext ic_save];
 
     [(ICInlineDrawingChangeCoalescer *)self mergeDrawingWithDrawing:v7];
-    v4 = v7;
+    retrieveAndClearLatestDrawingToMerge = v7;
   }
 }
 
 - (void)mergeDrawingChanges
 {
-  v3 = [(ICInlineDrawingChangeCoalescer *)self retrieveAndClearLatestDrawingToMerge];
-  if (v3)
+  retrieveAndClearLatestDrawingToMerge = [(ICInlineDrawingChangeCoalescer *)self retrieveAndClearLatestDrawingToMerge];
+  if (retrieveAndClearLatestDrawingToMerge)
   {
     v4 = dispatch_get_global_queue(0, 0);
     v5[0] = MEMORY[0x1E69E9820];
@@ -160,7 +160,7 @@ void __55__ICInlineDrawingChangeCoalescer_drawingDataDidChange___block_invoke(ui
     v5[2] = __53__ICInlineDrawingChangeCoalescer_mergeDrawingChanges__block_invoke;
     v5[3] = &unk_1E8468F80;
     v5[4] = self;
-    v6 = v3;
+    v6 = retrieveAndClearLatestDrawingToMerge;
     dispatch_async(v4, v5);
   }
 }
@@ -172,8 +172,8 @@ void __55__ICInlineDrawingChangeCoalescer_drawingDataDidChange___block_invoke(ui
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"-[ICInlineDrawingChangeCoalescer retrieveAndClearLatestDrawingToMerge]" simulateCrash:1 showAlert:0 format:@"Unexpected call from background thread"];
   }
 
-  v3 = [(ICInlineDrawingChangeCoalescer *)self latestDrawing];
-  if (v3)
+  latestDrawing = [(ICInlineDrawingChangeCoalescer *)self latestDrawing];
+  if (latestDrawing)
   {
     v4 = os_log_create("com.apple.notes", "PencilKit");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -185,45 +185,45 @@ void __55__ICInlineDrawingChangeCoalescer_drawingDataDidChange___block_invoke(ui
     [(ICInlineDrawingChangeCoalescer *)self setLatestDrawing:0];
   }
 
-  return v3;
+  return latestDrawing;
 }
 
-- (void)mergeDrawingWithDrawing:(id)a3
+- (void)mergeDrawingWithDrawing:(id)drawing
 {
-  v4 = a3;
-  v5 = [(ICInlineDrawingChangeCoalescer *)self attachment];
-  v6 = [v5 objectID];
+  drawingCopy = drawing;
+  attachment = [(ICInlineDrawingChangeCoalescer *)self attachment];
+  objectID = [attachment objectID];
 
-  v7 = [(ICInlineDrawingChangeCoalescer *)self mainContext];
+  mainContext = [(ICInlineDrawingChangeCoalescer *)self mainContext];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __58__ICInlineDrawingChangeCoalescer_mergeDrawingWithDrawing___block_invoke;
   v25[3] = &unk_1E8468F80;
-  v8 = v7;
+  v8 = mainContext;
   v26 = v8;
-  v9 = v6;
+  v9 = objectID;
   v27 = v9;
   [v8 performBlockAndWait:v25];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v10 = [(ICInlineDrawingChangeCoalescer *)self workerContext];
+  workerContext = [(ICInlineDrawingChangeCoalescer *)self workerContext];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __58__ICInlineDrawingChangeCoalescer_mergeDrawingWithDrawing___block_invoke_2;
   v16 = &unk_1E846E460;
   v11 = v9;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v20 = &v21;
-  v12 = v4;
+  v12 = drawingCopy;
   v19 = v12;
-  [v10 performBlockAndWait:&v13];
+  [workerContext performBlockAndWait:&v13];
 
   if (*(v22 + 24) == 1)
   {
-    [(ICInlineDrawingChangeCoalescer *)self processIndexableContentWithCompletion:0, v13, v14, v15, v16, v17, v18];
+    [(ICInlineDrawingChangeCoalescer *)self processIndexableContentWithCompletion:0, v13, v14, v15, v16, v17, selfCopy];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -263,11 +263,11 @@ void __58__ICInlineDrawingChangeCoalescer_mergeDrawingWithDrawing___block_invoke
   }
 }
 
-- (void)processIndexableContentWithCompletion:(id)a3
+- (void)processIndexableContentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICInlineDrawingChangeCoalescer *)self attachment];
-  v6 = [v5 objectID];
+  completionCopy = completion;
+  attachment = [(ICInlineDrawingChangeCoalescer *)self attachment];
+  objectID = [attachment objectID];
 
   v14 = 0;
   v15 = &v14;
@@ -275,15 +275,15 @@ void __58__ICInlineDrawingChangeCoalescer_mergeDrawingWithDrawing___block_invoke
   v17 = __Block_byref_object_copy__77;
   v18 = __Block_byref_object_dispose__77;
   v19 = 0;
-  v7 = [(ICInlineDrawingChangeCoalescer *)self attachment];
-  v8 = [v7 managedObjectContext];
+  attachment2 = [(ICInlineDrawingChangeCoalescer *)self attachment];
+  managedObjectContext = [attachment2 managedObjectContext];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__ICInlineDrawingChangeCoalescer_processIndexableContentWithCompletion___block_invoke;
   v13[3] = &unk_1E846B1D8;
   v13[4] = self;
   v13[5] = &v14;
-  [v8 performBlockAndWait:v13];
+  [managedObjectContext performBlockAndWait:v13];
 
   v9 = v15[5];
   if (v9)
@@ -293,14 +293,14 @@ void __58__ICInlineDrawingChangeCoalescer_mergeDrawingWithDrawing___block_invoke
     block[2] = __72__ICInlineDrawingChangeCoalescer_processIndexableContentWithCompletion___block_invoke_42;
     block[3] = &unk_1E846BA48;
     block[4] = self;
-    v11 = v6;
-    v12 = v4;
+    v11 = objectID;
+    v12 = completionCopy;
     dispatch_async(v9, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -517,13 +517,13 @@ LABEL_16:
   }
 }
 
-- (void)updateVersionIfNeededForAttachment:(id)a3 withDrawing:(id)a4
+- (void)updateVersionIfNeededForAttachment:(id)attachment withDrawing:(id)drawing
 {
-  v7 = a3;
-  if ([a4 _minimumSerializationVersion] >= 2)
+  attachmentCopy = attachment;
+  if ([drawing _minimumSerializationVersion] >= 2)
   {
     v5 = +[ICDrawingPencilKitConverter sharedConverter];
-    v6 = [v5 updateInlineDrawingAttachment:v7];
+    v6 = [v5 updateInlineDrawingAttachment:attachmentCopy];
   }
 }
 
@@ -539,9 +539,9 @@ void __55__ICInlineDrawingChangeCoalescer_drawingDataDidChange___block_invoke_co
 
 - (void)retrieveAndClearLatestDrawingToMerge
 {
-  [a1 numberOfChanges];
-  v2 = [a1 attachment];
-  v3 = [v2 shortLoggingDescription];
+  [self numberOfChanges];
+  attachment = [self attachment];
+  shortLoggingDescription = [attachment shortLoggingDescription];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0x16u);

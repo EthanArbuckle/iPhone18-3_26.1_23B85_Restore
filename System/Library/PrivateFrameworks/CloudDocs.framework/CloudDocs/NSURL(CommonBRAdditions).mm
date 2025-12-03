@@ -8,7 +8,7 @@
 {
   if (_CFURLIsItemPromiseAtURL())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
@@ -17,18 +17,18 @@
     v4 = v3;
     if (v3)
     {
-      v5 = v3;
+      selfCopy2 = v3;
     }
 
     else
     {
-      v5 = a1;
+      selfCopy2 = self;
     }
 
-    v2 = v5;
+    selfCopy = selfCopy2;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

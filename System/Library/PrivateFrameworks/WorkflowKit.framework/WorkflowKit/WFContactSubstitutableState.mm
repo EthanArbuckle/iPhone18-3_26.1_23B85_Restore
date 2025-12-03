@@ -1,15 +1,15 @@
 @interface WFContactSubstitutableState
 + (id)processingValueClasses;
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFContactSubstitutableState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFContactSubstitutableState)initWithValue:(id)a3;
-- (id)processedEntriesFromCoercionResult:(id)a3 allowsCustomHandles:(BOOL)a4;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFContactSubstitutableState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFContactSubstitutableState)initWithValue:(id)value;
+- (id)processedEntriesFromCoercionResult:(id)result allowsCustomHandles:(BOOL)handles;
 - (id)serializedRepresentation;
 - (id)valueItemClasses;
-- (void)processContentCollection:(id)a3 context:(id)a4 valueHandler:(id)a5;
-- (void)processIntoEntriesWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processContentCollection:(id)collection context:(id)context valueHandler:(id)handler;
+- (void)processIntoEntriesWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFContactSubstitutableState
@@ -24,18 +24,18 @@
   return v2;
 }
 
-- (void)processContentCollection:(id)a3 context:(id)a4 valueHandler:(id)a5
+- (void)processContentCollection:(id)collection context:(id)context valueHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(WFContactSubstitutableState *)self valueItemClasses];
+  contextCopy = context;
+  handlerCopy = handler;
+  collectionCopy = collection;
+  valueItemClasses = [(WFContactSubstitutableState *)self valueItemClasses];
   if ([(WFContactSubstitutableState *)self reinterpretsStringsAsContactHandlesFromVariable:1])
   {
-    v12 = [v11 arrayByAddingObject:objc_opt_class()];
+    v12 = [valueItemClasses arrayByAddingObject:objc_opt_class()];
 
-    v11 = v12;
+    valueItemClasses = v12;
   }
 
   v13 = MEMORY[0x1E6996CF0];
@@ -43,20 +43,20 @@
   v22 = 3221225472;
   v23 = __77__WFContactSubstitutableState_processContentCollection_context_valueHandler___block_invoke;
   v24 = &unk_1E837FF18;
-  v26 = v8;
-  v27 = v9;
-  v25 = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = [v13 requestForCoercingToContentClasses:v11 completionHandler:&v21];
+  v26 = contextCopy;
+  v27 = handlerCopy;
+  selfCopy = self;
+  v14 = contextCopy;
+  v15 = handlerCopy;
+  v16 = [v13 requestForCoercingToContentClasses:valueItemClasses completionHandler:&v21];
   v17 = MEMORY[0x1E6996CE8];
   v28 = *MEMORY[0x1E6997000];
   v29[0] = MEMORY[0x1E695E118];
-  v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:{1, v21, v22, v23, v24, v25}];
+  v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:{1, v21, v22, v23, v24, selfCopy}];
   v19 = [v17 optionsWithDictionary:v18];
   [v16 setOptions:v19];
 
-  [v10 performCoercion:v16];
+  [collectionCopy performCoercion:v16];
   v20 = *MEMORY[0x1E69E9840];
 }
 
@@ -122,16 +122,16 @@ LABEL_11:
 LABEL_13:
 }
 
-- (id)processedEntriesFromCoercionResult:(id)a3 allowsCustomHandles:(BOOL)a4
+- (id)processedEntriesFromCoercionResult:(id)result allowsCustomHandles:(BOOL)handles
 {
-  v6 = [a3 items];
+  items = [result items];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__WFContactSubstitutableState_processedEntriesFromCoercionResult_allowsCustomHandles___block_invoke;
   v9[3] = &unk_1E837FCD0;
   v9[4] = self;
-  v10 = a4;
-  v7 = [v6 if_map:v9];
+  handlesCopy = handles;
+  v7 = [items if_map:v9];
 
   return v7;
 }
@@ -184,55 +184,55 @@ LABEL_10:
   return v10;
 }
 
-- (void)processIntoEntriesWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processIntoEntriesWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v11)
+  if (variable)
   {
-    v12 = [(WFVariableSubstitutableParameterState *)self variable];
-    if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+    if (variable2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v13 = [v12 prompt];
-      v9[2](v9, v13, 0);
+      prompt = [variable2 prompt];
+      handlerCopy[2](handlerCopy, prompt, 0);
     }
 
     else
     {
 
-      v14 = [(WFVariableSubstitutableParameterState *)self variable];
+      variable3 = [(WFVariableSubstitutableParameterState *)self variable];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __99__WFContactSubstitutableState_processIntoEntriesWithContext_userInputRequiredHandler_valueHandler___block_invoke;
       v22[3] = &unk_1E837FF40;
-      v24 = v10;
+      v24 = valueHandlerCopy;
       v22[4] = self;
-      v23 = v8;
-      [v14 getContentWithContext:v23 completionHandler:v22];
+      v23 = contextCopy;
+      [variable3 getContentWithContext:v23 completionHandler:v22];
 
-      v12 = v24;
+      variable2 = v24;
     }
   }
 
   else
   {
-    v15 = [(WFVariableSubstitutableParameterState *)self value];
+    value = [(WFVariableSubstitutableParameterState *)self value];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __99__WFContactSubstitutableState_processIntoEntriesWithContext_userInputRequiredHandler_valueHandler___block_invoke_2;
     v20[3] = &unk_1E837FCA8;
     v20[4] = self;
-    v21 = v8;
-    v16 = [v15 if_map:v20];
+    v21 = contextCopy;
+    v16 = [value if_map:v20];
 
     v17 = objc_alloc(MEMORY[0x1E6996F20]);
-    v18 = [(WFContactSubstitutableState *)self communicationMethod];
-    v19 = [v17 initWithEntries:v16 attributionSet:0 communicationMethod:v18];
+    communicationMethod = [(WFContactSubstitutableState *)self communicationMethod];
+    v19 = [v17 initWithEntries:v16 attributionSet:0 communicationMethod:communicationMethod];
 
-    (*(v10 + 2))(v10, v19, 0);
+    (*(valueHandlerCopy + 2))(valueHandlerCopy, v19, 0);
   }
 }
 
@@ -292,19 +292,19 @@ id __99__WFContactSubstitutableState_processIntoEntriesWithContext_userInputRequ
   return v8;
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  valueHandlerCopy = valueHandler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__WFContactSubstitutableState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
   v12[3] = &unk_1E837FC80;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(WFContactSubstitutableState *)self processIntoEntriesWithContext:v11 userInputRequiredHandler:a4 valueHandler:v12];
+  v13 = contextCopy;
+  v14 = valueHandlerCopy;
+  v10 = valueHandlerCopy;
+  v11 = contextCopy;
+  [(WFContactSubstitutableState *)self processIntoEntriesWithContext:v11 userInputRequiredHandler:handler valueHandler:v12];
 }
 
 void __88__WFContactSubstitutableState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -324,9 +324,9 @@ void __88__WFContactSubstitutableState_processWithContext_userInputRequiredHandl
   (*(v8 + 16))(v8, v6, v10);
 }
 
-- (WFContactSubstitutableState)initWithValue:(id)a3
+- (WFContactSubstitutableState)initWithValue:(id)value
 {
-  v4 = [a3 if_compactMap:&__block_literal_global_189_74968];
+  v4 = [value if_compactMap:&__block_literal_global_189_74968];
   v7.receiver = self;
   v7.super_class = WFContactSubstitutableState;
   v5 = [(WFMultipleValueParameterState *)&v7 initWithValue:v4];
@@ -411,13 +411,13 @@ WFMultipleValueParameterStateEntry *__45__WFContactSubstitutableState_initWithVa
   v18[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = WFContactSubstitutableState;
-  v3 = [(WFVariableSubstitutableParameterState *)&v16 serializedRepresentation];
-  if (v3)
+  serializedRepresentation = [(WFVariableSubstitutableParameterState *)&v16 serializedRepresentation];
+  if (serializedRepresentation)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = serializedRepresentation;
     }
 
     else
@@ -435,15 +435,15 @@ WFMultipleValueParameterStateEntry *__45__WFContactSubstitutableState_initWithVa
   v6 = [v5 objectForKeyedSubscript:@"Value"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [(WFContactSubstitutableState *)self communicationMethod];
+    communicationMethod = [(WFContactSubstitutableState *)self communicationMethod];
 
-    if (v7)
+    if (communicationMethod)
     {
       v8 = [v5 mutableCopy];
       v17 = @"WFCommunicationMethodValue";
-      v9 = [(WFContactSubstitutableState *)self communicationMethod];
-      v10 = [v9 serializedRepresentation];
-      v18[0] = v10;
+      communicationMethod2 = [(WFContactSubstitutableState *)self communicationMethod];
+      serializedRepresentation2 = [communicationMethod2 serializedRepresentation];
+      v18[0] = serializedRepresentation2;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       v12 = [v6 if_dictionaryByAddingEntriesFromDictionary:v11];
       [v8 setObject:v12 forKeyedSubscript:@"Value"];
@@ -459,7 +459,7 @@ WFMultipleValueParameterStateEntry *__45__WFContactSubstitutableState_initWithVa
     v6 = 0;
   }
 
-  v13 = v3;
+  v13 = serializedRepresentation;
 LABEL_12:
 
   v14 = *MEMORY[0x1E69E9840];
@@ -467,15 +467,15 @@ LABEL_12:
   return v13;
 }
 
-- (WFContactSubstitutableState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFContactSubstitutableState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a3;
+  representationCopy = representation;
   v19.receiver = self;
   v19.super_class = WFContactSubstitutableState;
-  v9 = [(WFVariableSubstitutableParameterState *)&v19 initWithSerializedRepresentation:v8 variableProvider:a4 parameter:a5];
+  v9 = [(WFVariableSubstitutableParameterState *)&v19 initWithSerializedRepresentation:representationCopy variableProvider:provider parameter:parameter];
   if (v9)
   {
-    v10 = v8;
+    v10 = representationCopy;
     if (v10)
     {
       objc_opt_class();
@@ -520,10 +520,10 @@ LABEL_12:
   return v9;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [a3 if_compactMap:&__block_literal_global_74989];
+  v3 = [value if_compactMap:&__block_literal_global_74989];
   v9 = v3;
   v10[0] = @"WFSerializationType";
   v10[1] = @"Value";
@@ -546,13 +546,13 @@ id __65__WFContactSubstitutableState_serializedRepresentationFromValue___block_i
   return v3;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  representationCopy = representation;
   v11 = objc_opt_class();
-  v12 = WFEnforceClass_74974(v10, v11);
+  v12 = WFEnforceClass_74974(representationCopy, v11);
 
   if (v12)
   {
@@ -568,9 +568,9 @@ id __65__WFContactSubstitutableState_serializedRepresentationFromValue___block_i
 
       if (v18)
       {
-        v21.receiver = a1;
+        v21.receiver = self;
         v21.super_class = &OBJC_METACLASS___WFContactSubstitutableState;
-        v19 = objc_msgSendSuper2(&v21, sel_valueFromSerializedRepresentation_variableProvider_parameter_, v18, v8, v9);
+        v19 = objc_msgSendSuper2(&v21, sel_valueFromSerializedRepresentation_variableProvider_parameter_, v18, providerCopy, parameterCopy);
       }
 
       else

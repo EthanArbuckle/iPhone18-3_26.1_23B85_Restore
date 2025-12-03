@@ -1,12 +1,12 @@
 @interface GetVolumeLevelIntentResponse
-- (GetVolumeLevelIntentResponse)initWithPropertiesByName:(id)a3;
+- (GetVolumeLevelIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation GetVolumeLevelIntentResponse
 
-- (GetVolumeLevelIntentResponse)initWithPropertiesByName:(id)a3
+- (GetVolumeLevelIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

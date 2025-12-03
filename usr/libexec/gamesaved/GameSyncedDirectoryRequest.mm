@@ -1,22 +1,22 @@
 @interface GameSyncedDirectoryRequest
 - (GameSyncedDirectoryRequest)init;
-- (GameSyncedDirectoryRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GameSyncedDirectoryRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GameSyncedDirectoryRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000FC44(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_10000FC44(coderCopy);
 }
 
-- (GameSyncedDirectoryRequest)initWithCoder:(id)a3
+- (GameSyncedDirectoryRequest)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_100010E5C(v3);
+  coderCopy = coder;
+  v4 = sub_100010E5C(coderCopy);
 
   return v4;
 }

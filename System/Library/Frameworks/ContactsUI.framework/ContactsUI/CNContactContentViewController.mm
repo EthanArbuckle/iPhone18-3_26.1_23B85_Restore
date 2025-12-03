@@ -1,11 +1,11 @@
 @interface CNContactContentViewController
 + (Class)classForContentViewControllerImpl;
 + (id)descriptorForRequiredKeys;
-+ (id)descriptorForRequiredKeysWithDescription:(id)a3;
++ (id)descriptorForRequiredKeysWithDescription:(id)description;
 - (CNContactContentViewController)init;
-- (CNContactContentViewController)initWithContact:(id)a3;
-- (CNContactContentViewController)initWithEnvironment:(id)a3;
-- (CNContactContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CNContactContentViewController)initWithContact:(id)contact;
+- (CNContactContentViewController)initWithEnvironment:(id)environment;
+- (CNContactContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CNContactContentViewControllerDelegate)contactDelegate;
 - (CNContactViewControllerCustomHeaderViewDelegate)personHeaderViewDelegate;
 - (CNPresenterDelegate)presentingDelegate;
@@ -15,16 +15,16 @@
 
 + (id)descriptorForRequiredKeys
 {
-  v2 = [a1 classForContentViewControllerImpl];
+  classForContentViewControllerImpl = [self classForContentViewControllerImpl];
 
-  return [v2 descriptorForRequiredKeys];
+  return [classForContentViewControllerImpl descriptorForRequiredKeys];
 }
 
 + (Class)classForContentViewControllerImpl
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  [v3 isFeatureEnabled:10];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  [featureFlags isFeatureEnabled:10];
 
   v4 = objc_opt_class();
 
@@ -52,9 +52,9 @@
   return WeakRetained;
 }
 
-- (CNContactContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CNContactContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = [CNUIContactsEnvironment currentEnvironment:a3];
+  v5 = [CNUIContactsEnvironment currentEnvironment:name];
   v6 = [(CNContactContentViewController *)self initWithEnvironment:v5];
 
   return v6;
@@ -68,23 +68,23 @@
   return v4;
 }
 
-- (CNContactContentViewController)initWithContact:(id)a3
+- (CNContactContentViewController)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = +[CNUIContactsEnvironment currentEnvironment];
   v6 = [(CNContactContentViewController *)self initWithEnvironment:v5];
 
   if (v6)
   {
-    [(CNContactContentViewController *)v6 setContact:v4];
+    [(CNContactContentViewController *)v6 setContact:contactCopy];
   }
 
   return v6;
 }
 
-- (CNContactContentViewController)initWithEnvironment:(id)a3
+- (CNContactContentViewController)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   if (([(CNContactContentViewController *)self isMemberOfClass:objc_opt_class()]& 1) != 0 || [(CNContactContentViewController *)self isMemberOfClass:objc_opt_class()])
   {
     v5 = [objc_alloc(+[CNContactContentViewController classForContentViewControllerImpl](CNContactContentViewController "classForContentViewControllerImpl"))];
@@ -102,10 +102,10 @@
   return v6;
 }
 
-+ (id)descriptorForRequiredKeysWithDescription:(id)a3
++ (id)descriptorForRequiredKeysWithDescription:(id)description
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "classForContentViewControllerImpl")];
+  descriptionCopy = description;
+  v5 = [objc_msgSend(self "classForContentViewControllerImpl")];
 
   return v5;
 }

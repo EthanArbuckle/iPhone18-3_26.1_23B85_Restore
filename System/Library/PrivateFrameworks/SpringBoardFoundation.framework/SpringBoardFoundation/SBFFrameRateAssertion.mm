@@ -1,15 +1,15 @@
 @interface SBFFrameRateAssertion
-- (SBFFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4;
+- (SBFFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason;
 @end
 
 @implementation SBFFrameRateAssertion
 
-- (SBFFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4
+- (SBFFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason
 {
-  v4 = *&a4;
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
+  v4 = *&reason;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
   v19.receiver = self;
   v19.super_class = SBFFrameRateAssertion;
   v8 = [(SBFFrameRateAssertion *)&v19 init];

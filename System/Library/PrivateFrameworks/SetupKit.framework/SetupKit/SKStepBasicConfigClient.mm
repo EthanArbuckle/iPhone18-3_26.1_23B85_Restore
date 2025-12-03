@@ -3,7 +3,7 @@
 - (NSString)description;
 - (SKSetupBase)skSetupObject;
 - (SKStepBasicConfigClient)init;
-- (void)_completeWithError:(id)a3;
+- (void)_completeWithError:(id)error;
 - (void)_invalidated;
 - (void)_run;
 - (void)activate;
@@ -22,16 +22,16 @@
 - (BOOL)_runBasicConfigStart
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SKStepBasicConfigClient *)self clientConfig];
-  if (!v3)
+  clientConfig = [(SKStepBasicConfigClient *)self clientConfig];
+  if (!clientConfig)
   {
-    v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v4 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v5 = [v4 firstObject];
+    clientConfig = objc_alloc_init(MEMORY[0x277CBEB38]);
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
 
-    if (v5)
+    if (firstObject)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"_lang"];
+      [clientConfig setObject:firstObject forKeyedSubscript:@"_lang"];
     }
 
     else if (gLogCategory_SKStepBasicConfigClient <= 90 && (gLogCategory_SKStepBasicConfigClient != -1 || _LogCategory_Initialize()))
@@ -39,12 +39,12 @@
       LogPrintF_safe();
     }
 
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
-    v7 = [v6 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    if (v7)
+    if (localeIdentifier)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"_locale"];
+      [clientConfig setObject:localeIdentifier forKeyedSubscript:@"_locale"];
     }
 
     else if (gLogCategory_SKStepBasicConfigClient <= 90 && (gLogCategory_SKStepBasicConfigClient != -1 || _LogCategory_Initialize()))
@@ -70,7 +70,7 @@
     v14[2] = __47__SKStepBasicConfigClient__runBasicConfigStart__block_invoke;
     v14[3] = &unk_279BB86A0;
     v14[4] = self;
-    [(CUMessaging *)v8 sendRequestID:@"_bsCf" requestMessage:v3 options:v9 responseHandler:v14];
+    [(CUMessaging *)v8 sendRequestID:@"_bsCf" requestMessage:clientConfig options:v9 responseHandler:v14];
   }
 
   else
@@ -166,9 +166,9 @@ void __47__SKStepBasicConfigClient__runBasicConfigStart__block_invoke(uint64_t a
           return;
         }
 
-        v4 = [(SKStepBasicConfigClient *)self _runBasicConfigStart];
+        _runBasicConfigStart = [(SKStepBasicConfigClient *)self _runBasicConfigStart];
         v5 = self->_runState;
-        if (!v4)
+        if (!_runBasicConfigStart)
         {
           goto LABEL_14;
         }
@@ -216,10 +216,10 @@ LABEL_17:
   }
 }
 
-- (void)_completeWithError:(id)a3
+- (void)_completeWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = 3;
   }
@@ -230,8 +230,8 @@ LABEL_17:
   }
 
   self->_runState = v5;
-  v9 = v4;
-  if (v4)
+  v9 = errorCopy;
+  if (errorCopy)
   {
     if (gLogCategory_SKStepBasicConfigClient <= 60 && (gLogCategory_SKStepBasicConfigClient != -1 || _LogCategory_Initialize()))
     {

@@ -1,30 +1,30 @@
 @interface GAXSBAppPlatterDragPreviewOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (GAXSBAppPlatterDragPreviewOverride)initWithReferenceIconView:(id)a3 sourceView:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (GAXSBAppPlatterDragPreviewOverride)initWithReferenceIconView:(id)view sourceView:(id)sourceView;
 @end
 
 @implementation GAXSBAppPlatterDragPreviewOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBAppPlatterDragPreview" hasInstanceMethod:@"initWithReferenceIconView:sourceView:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"SBIconView" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBAppPlatterDragPreview" hasInstanceMethod:@"initWithReferenceIconView:sourceView:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
 }
 
-- (GAXSBAppPlatterDragPreviewOverride)initWithReferenceIconView:(id)a3 sourceView:(id)a4
+- (GAXSBAppPlatterDragPreviewOverride)initWithReferenceIconView:(id)view sourceView:(id)sourceView
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  sourceViewCopy = sourceView;
   v13 = 0;
   objc_opt_class();
-  v8 = [v6 safeValueForKey:@"icon"];
+  v8 = [viewCopy safeValueForKey:@"icon"];
   v9 = __UIAccessibilityCastAsSafeCategory();
 
   [v9 _gaxSetNeedsLaunchEnabledAppearance:1];
   v12.receiver = self;
   v12.super_class = GAXSBAppPlatterDragPreviewOverride;
-  v10 = [(GAXSBAppPlatterDragPreviewOverride *)&v12 initWithReferenceIconView:v6 sourceView:v7];
+  v10 = [(GAXSBAppPlatterDragPreviewOverride *)&v12 initWithReferenceIconView:viewCopy sourceView:sourceViewCopy];
   [v9 _gaxSetNeedsLaunchEnabledAppearance:0];
 
   return v10;

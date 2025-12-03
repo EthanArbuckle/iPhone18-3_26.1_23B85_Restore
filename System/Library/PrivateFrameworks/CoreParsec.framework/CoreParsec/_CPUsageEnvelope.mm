@@ -1,5 +1,5 @@
 @interface _CPUsageEnvelope
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPImagesUsagePropensity)imagesUsagePropensity;
 - (_CPNewsUsagePropensity)newsUsagePropensity;
 - (_CPSafariUsagePropensity)safariUsagePropensity;
@@ -7,12 +7,12 @@
 - (_CPUsageSinceLookback)usageSinceLookback;
 - (unint64_t)hash;
 - (void)clearKind;
-- (void)setImagesUsagePropensity:(id)a3;
-- (void)setNewsUsagePropensity:(id)a3;
-- (void)setSafariUsagePropensity:(id)a3;
-- (void)setSpotlightUsagePropensity:(id)a3;
-- (void)setUsageSinceLookback:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setImagesUsagePropensity:(id)propensity;
+- (void)setNewsUsagePropensity:(id)propensity;
+- (void)setSafariUsagePropensity:(id)propensity;
+- (void)setSpotlightUsagePropensity:(id)propensity;
+- (void)setUsageSinceLookback:(id)lookback;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPUsageEnvelope
@@ -29,28 +29,28 @@
   return v7 ^ v9 ^ [(NSData *)self->_uuidBytes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
-  v5 = [(_CPUsageEnvelope *)self usageSinceLookback];
-  v6 = [v4 usageSinceLookback];
-  if ((v5 != 0) == (v6 == 0))
+  usageSinceLookback = [(_CPUsageEnvelope *)self usageSinceLookback];
+  usageSinceLookback2 = [equalCopy usageSinceLookback];
+  if ((usageSinceLookback != 0) == (usageSinceLookback2 == 0))
   {
     goto LABEL_40;
   }
 
-  v7 = [(_CPUsageEnvelope *)self usageSinceLookback];
-  if (v7)
+  usageSinceLookback3 = [(_CPUsageEnvelope *)self usageSinceLookback];
+  if (usageSinceLookback3)
   {
-    v8 = v7;
-    v9 = [(_CPUsageEnvelope *)self usageSinceLookback];
-    v10 = [v4 usageSinceLookback];
-    v11 = [v9 isEqual:v10];
+    v8 = usageSinceLookback3;
+    usageSinceLookback4 = [(_CPUsageEnvelope *)self usageSinceLookback];
+    usageSinceLookback5 = [equalCopy usageSinceLookback];
+    v11 = [usageSinceLookback4 isEqual:usageSinceLookback5];
 
     if (!v11)
     {
@@ -62,20 +62,20 @@
   {
   }
 
-  v5 = [(_CPUsageEnvelope *)self safariUsagePropensity];
-  v6 = [v4 safariUsagePropensity];
-  if ((v5 != 0) == (v6 == 0))
+  usageSinceLookback = [(_CPUsageEnvelope *)self safariUsagePropensity];
+  usageSinceLookback2 = [equalCopy safariUsagePropensity];
+  if ((usageSinceLookback != 0) == (usageSinceLookback2 == 0))
   {
     goto LABEL_40;
   }
 
-  v12 = [(_CPUsageEnvelope *)self safariUsagePropensity];
-  if (v12)
+  safariUsagePropensity = [(_CPUsageEnvelope *)self safariUsagePropensity];
+  if (safariUsagePropensity)
   {
-    v13 = v12;
-    v14 = [(_CPUsageEnvelope *)self safariUsagePropensity];
-    v15 = [v4 safariUsagePropensity];
-    v16 = [v14 isEqual:v15];
+    v13 = safariUsagePropensity;
+    safariUsagePropensity2 = [(_CPUsageEnvelope *)self safariUsagePropensity];
+    safariUsagePropensity3 = [equalCopy safariUsagePropensity];
+    v16 = [safariUsagePropensity2 isEqual:safariUsagePropensity3];
 
     if (!v16)
     {
@@ -87,20 +87,20 @@
   {
   }
 
-  v5 = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
-  v6 = [v4 spotlightUsagePropensity];
-  if ((v5 != 0) == (v6 == 0))
+  usageSinceLookback = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
+  usageSinceLookback2 = [equalCopy spotlightUsagePropensity];
+  if ((usageSinceLookback != 0) == (usageSinceLookback2 == 0))
   {
     goto LABEL_40;
   }
 
-  v17 = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
-  if (v17)
+  spotlightUsagePropensity = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
+  if (spotlightUsagePropensity)
   {
-    v18 = v17;
-    v19 = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
-    v20 = [v4 spotlightUsagePropensity];
-    v21 = [v19 isEqual:v20];
+    v18 = spotlightUsagePropensity;
+    spotlightUsagePropensity2 = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
+    spotlightUsagePropensity3 = [equalCopy spotlightUsagePropensity];
+    v21 = [spotlightUsagePropensity2 isEqual:spotlightUsagePropensity3];
 
     if (!v21)
     {
@@ -112,20 +112,20 @@
   {
   }
 
-  v5 = [(_CPUsageEnvelope *)self imagesUsagePropensity];
-  v6 = [v4 imagesUsagePropensity];
-  if ((v5 != 0) == (v6 == 0))
+  usageSinceLookback = [(_CPUsageEnvelope *)self imagesUsagePropensity];
+  usageSinceLookback2 = [equalCopy imagesUsagePropensity];
+  if ((usageSinceLookback != 0) == (usageSinceLookback2 == 0))
   {
     goto LABEL_40;
   }
 
-  v22 = [(_CPUsageEnvelope *)self imagesUsagePropensity];
-  if (v22)
+  imagesUsagePropensity = [(_CPUsageEnvelope *)self imagesUsagePropensity];
+  if (imagesUsagePropensity)
   {
-    v23 = v22;
-    v24 = [(_CPUsageEnvelope *)self imagesUsagePropensity];
-    v25 = [v4 imagesUsagePropensity];
-    v26 = [v24 isEqual:v25];
+    v23 = imagesUsagePropensity;
+    imagesUsagePropensity2 = [(_CPUsageEnvelope *)self imagesUsagePropensity];
+    imagesUsagePropensity3 = [equalCopy imagesUsagePropensity];
+    v26 = [imagesUsagePropensity2 isEqual:imagesUsagePropensity3];
 
     if (!v26)
     {
@@ -137,20 +137,20 @@
   {
   }
 
-  v5 = [(_CPUsageEnvelope *)self newsUsagePropensity];
-  v6 = [v4 newsUsagePropensity];
-  if ((v5 != 0) == (v6 == 0))
+  usageSinceLookback = [(_CPUsageEnvelope *)self newsUsagePropensity];
+  usageSinceLookback2 = [equalCopy newsUsagePropensity];
+  if ((usageSinceLookback != 0) == (usageSinceLookback2 == 0))
   {
     goto LABEL_40;
   }
 
-  v27 = [(_CPUsageEnvelope *)self newsUsagePropensity];
-  if (v27)
+  newsUsagePropensity = [(_CPUsageEnvelope *)self newsUsagePropensity];
+  if (newsUsagePropensity)
   {
-    v28 = v27;
-    v29 = [(_CPUsageEnvelope *)self newsUsagePropensity];
-    v30 = [v4 newsUsagePropensity];
-    v31 = [v29 isEqual:v30];
+    v28 = newsUsagePropensity;
+    newsUsagePropensity2 = [(_CPUsageEnvelope *)self newsUsagePropensity];
+    newsUsagePropensity3 = [equalCopy newsUsagePropensity];
+    v31 = [newsUsagePropensity2 isEqual:newsUsagePropensity3];
 
     if (!v31)
     {
@@ -163,43 +163,43 @@
   }
 
   collectionStartTimestamp = self->_collectionStartTimestamp;
-  if (collectionStartTimestamp != [v4 collectionStartTimestamp])
+  if (collectionStartTimestamp != [equalCopy collectionStartTimestamp])
   {
     goto LABEL_41;
   }
 
   collectionEndTimestamp = self->_collectionEndTimestamp;
-  if (collectionEndTimestamp != [v4 collectionEndTimestamp])
+  if (collectionEndTimestamp != [equalCopy collectionEndTimestamp])
   {
     goto LABEL_41;
   }
 
   configuredLookbackTimeInDays = self->_configuredLookbackTimeInDays;
-  if (configuredLookbackTimeInDays != [v4 configuredLookbackTimeInDays])
+  if (configuredLookbackTimeInDays != [equalCopy configuredLookbackTimeInDays])
   {
     goto LABEL_41;
   }
 
   totalSessions = self->_totalSessions;
-  if (totalSessions != [v4 totalSessions])
+  if (totalSessions != [equalCopy totalSessions])
   {
     goto LABEL_41;
   }
 
-  v5 = [(_CPUsageEnvelope *)self context];
-  v6 = [v4 context];
-  if ((v5 != 0) == (v6 == 0))
+  usageSinceLookback = [(_CPUsageEnvelope *)self context];
+  usageSinceLookback2 = [equalCopy context];
+  if ((usageSinceLookback != 0) == (usageSinceLookback2 == 0))
   {
     goto LABEL_40;
   }
 
-  v36 = [(_CPUsageEnvelope *)self context];
-  if (v36)
+  context = [(_CPUsageEnvelope *)self context];
+  if (context)
   {
-    v37 = v36;
-    v38 = [(_CPUsageEnvelope *)self context];
-    v39 = [v4 context];
-    v40 = [v38 isEqual:v39];
+    v37 = context;
+    context2 = [(_CPUsageEnvelope *)self context];
+    context3 = [equalCopy context];
+    v40 = [context2 isEqual:context3];
 
     if (!v40)
     {
@@ -211,12 +211,12 @@
   {
   }
 
-  v5 = [(_CPUsageEnvelope *)self uuidBytes];
-  v6 = [v4 uuidBytes];
-  if ((v5 != 0) != (v6 == 0))
+  usageSinceLookback = [(_CPUsageEnvelope *)self uuidBytes];
+  usageSinceLookback2 = [equalCopy uuidBytes];
+  if ((usageSinceLookback != 0) != (usageSinceLookback2 == 0))
   {
-    v41 = [(_CPUsageEnvelope *)self uuidBytes];
-    if (!v41)
+    uuidBytes = [(_CPUsageEnvelope *)self uuidBytes];
+    if (!uuidBytes)
     {
 
 LABEL_44:
@@ -224,10 +224,10 @@ LABEL_44:
       goto LABEL_42;
     }
 
-    v42 = v41;
-    v43 = [(_CPUsageEnvelope *)self uuidBytes];
-    v44 = [v4 uuidBytes];
-    v45 = [v43 isEqual:v44];
+    v42 = uuidBytes;
+    uuidBytes2 = [(_CPUsageEnvelope *)self uuidBytes];
+    uuidBytes3 = [equalCopy uuidBytes];
+    v45 = [uuidBytes2 isEqual:uuidBytes3];
 
     if (v45)
     {
@@ -247,46 +247,46 @@ LABEL_42:
   return v46;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
-  v4 = [(_CPUsageEnvelope *)self usageSinceLookback];
+  toCopy = to;
+  usageSinceLookback = [(_CPUsageEnvelope *)self usageSinceLookback];
 
-  if (v4)
+  if (usageSinceLookback)
   {
-    v5 = [(_CPUsageEnvelope *)self usageSinceLookback];
+    usageSinceLookback2 = [(_CPUsageEnvelope *)self usageSinceLookback];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_CPUsageEnvelope *)self safariUsagePropensity];
+  safariUsagePropensity = [(_CPUsageEnvelope *)self safariUsagePropensity];
 
-  if (v6)
+  if (safariUsagePropensity)
   {
-    v7 = [(_CPUsageEnvelope *)self safariUsagePropensity];
+    safariUsagePropensity2 = [(_CPUsageEnvelope *)self safariUsagePropensity];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
+  spotlightUsagePropensity = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
 
-  if (v8)
+  if (spotlightUsagePropensity)
   {
-    v9 = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
+    spotlightUsagePropensity2 = [(_CPUsageEnvelope *)self spotlightUsagePropensity];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_CPUsageEnvelope *)self imagesUsagePropensity];
+  imagesUsagePropensity = [(_CPUsageEnvelope *)self imagesUsagePropensity];
 
-  if (v10)
+  if (imagesUsagePropensity)
   {
-    v11 = [(_CPUsageEnvelope *)self imagesUsagePropensity];
+    imagesUsagePropensity2 = [(_CPUsageEnvelope *)self imagesUsagePropensity];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_CPUsageEnvelope *)self newsUsagePropensity];
+  newsUsagePropensity = [(_CPUsageEnvelope *)self newsUsagePropensity];
 
-  if (v12)
+  if (newsUsagePropensity)
   {
-    v13 = [(_CPUsageEnvelope *)self newsUsagePropensity];
+    newsUsagePropensity2 = [(_CPUsageEnvelope *)self newsUsagePropensity];
     PBDataWriterWriteSubmessage();
   }
 
@@ -314,22 +314,22 @@ LABEL_42:
     PBDataWriterWriteInt32Field();
   }
 
-  v18 = [(_CPUsageEnvelope *)self context];
+  context = [(_CPUsageEnvelope *)self context];
 
-  if (v18)
+  if (context)
   {
-    v19 = [(_CPUsageEnvelope *)self context];
+    context2 = [(_CPUsageEnvelope *)self context];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(_CPUsageEnvelope *)self uuidBytes];
+  uuidBytes = [(_CPUsageEnvelope *)self uuidBytes];
 
-  v21 = v23;
-  if (v20)
+  v21 = toCopy;
+  if (uuidBytes)
   {
     uuidBytes = self->_uuidBytes;
     PBDataWriterWriteDataField();
-    v21 = v23;
+    v21 = toCopy;
   }
 }
 
@@ -348,19 +348,19 @@ LABEL_42:
   return v3;
 }
 
-- (void)setNewsUsagePropensity:(id)a3
+- (void)setNewsUsagePropensity:(id)propensity
 {
-  v4 = a3;
+  propensityCopy = propensity;
   [(_CPUsageEnvelope *)self clearKind];
   v5 = 5;
-  if (!v4)
+  if (!propensityCopy)
   {
     v5 = 0;
   }
 
   self->_whichKind = v5;
   newsUsagePropensity = self->_newsUsagePropensity;
-  self->_newsUsagePropensity = v4;
+  self->_newsUsagePropensity = propensityCopy;
 }
 
 - (_CPImagesUsagePropensity)imagesUsagePropensity
@@ -378,13 +378,13 @@ LABEL_42:
   return v3;
 }
 
-- (void)setImagesUsagePropensity:(id)a3
+- (void)setImagesUsagePropensity:(id)propensity
 {
-  v4 = a3;
+  propensityCopy = propensity;
   [(_CPUsageEnvelope *)self clearKind];
-  self->_whichKind = 4 * (v4 != 0);
+  self->_whichKind = 4 * (propensityCopy != 0);
   imagesUsagePropensity = self->_imagesUsagePropensity;
-  self->_imagesUsagePropensity = v4;
+  self->_imagesUsagePropensity = propensityCopy;
 }
 
 - (_CPSpotlightUsagePropensity)spotlightUsagePropensity
@@ -402,19 +402,19 @@ LABEL_42:
   return v3;
 }
 
-- (void)setSpotlightUsagePropensity:(id)a3
+- (void)setSpotlightUsagePropensity:(id)propensity
 {
-  v4 = a3;
+  propensityCopy = propensity;
   [(_CPUsageEnvelope *)self clearKind];
   v5 = 3;
-  if (!v4)
+  if (!propensityCopy)
   {
     v5 = 0;
   }
 
   self->_whichKind = v5;
   spotlightUsagePropensity = self->_spotlightUsagePropensity;
-  self->_spotlightUsagePropensity = v4;
+  self->_spotlightUsagePropensity = propensityCopy;
 }
 
 - (_CPSafariUsagePropensity)safariUsagePropensity
@@ -432,13 +432,13 @@ LABEL_42:
   return v3;
 }
 
-- (void)setSafariUsagePropensity:(id)a3
+- (void)setSafariUsagePropensity:(id)propensity
 {
-  v4 = a3;
+  propensityCopy = propensity;
   [(_CPUsageEnvelope *)self clearKind];
-  self->_whichKind = 2 * (v4 != 0);
+  self->_whichKind = 2 * (propensityCopy != 0);
   safariUsagePropensity = self->_safariUsagePropensity;
-  self->_safariUsagePropensity = v4;
+  self->_safariUsagePropensity = propensityCopy;
 }
 
 - (_CPUsageSinceLookback)usageSinceLookback
@@ -456,13 +456,13 @@ LABEL_42:
   return v3;
 }
 
-- (void)setUsageSinceLookback:(id)a3
+- (void)setUsageSinceLookback:(id)lookback
 {
-  v4 = a3;
+  lookbackCopy = lookback;
   [(_CPUsageEnvelope *)self clearKind];
-  self->_whichKind = v4 != 0;
+  self->_whichKind = lookbackCopy != 0;
   usageSinceLookback = self->_usageSinceLookback;
-  self->_usageSinceLookback = v4;
+  self->_usageSinceLookback = lookbackCopy;
 }
 
 - (void)clearKind

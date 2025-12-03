@@ -8,20 +8,20 @@
 - (double)attachmentSizeForTextContainer:()UI
 {
   v4 = a3;
-  if ([a1 effectiveAttachmentViewSizeForTextContainer:v4] == 1)
+  if ([self effectiveAttachmentViewSizeForTextContainer:v4] == 1)
   {
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v5 = [v4 textLayoutManager];
+      textLayoutManager = [v4 textLayoutManager];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v7 = [v4 textLayoutManager];
+        textLayoutManager2 = [v4 textLayoutManager];
         objc_opt_class();
-        v8 = [a1 viewIdentifier];
-        v9 = [v7 existingAttachmentViewForIdentifier:v8];
+        viewIdentifier = [self viewIdentifier];
+        v9 = [textLayoutManager2 existingAttachmentViewForIdentifier:viewIdentifier];
         v10 = ICCheckedDynamicCast();
 
         [v10 attachmentSizeForTextContainer:v4];
@@ -34,51 +34,51 @@ LABEL_16:
 
     else
     {
-      v20 = [v4 layoutManager];
+      layoutManager = [v4 layoutManager];
       objc_opt_class();
       v21 = objc_opt_isKindOfClass();
 
       if (v21)
       {
         objc_opt_class();
-        v22 = [v4 layoutManager];
-        v23 = [a1 viewForLayoutManager:v22];
-        v7 = ICCheckedDynamicCast();
+        layoutManager2 = [v4 layoutManager];
+        v23 = [self viewForLayoutManager:layoutManager2];
+        textLayoutManager2 = ICCheckedDynamicCast();
 
-        [v7 attachmentSizeForTextContainer:v4];
+        [textLayoutManager2 attachmentSizeForTextContainer:v4];
         v12 = v24;
         goto LABEL_16;
       }
     }
 
     v30 = MEMORY[0x277D366A0];
-    v31 = [a1 attachment];
-    [v30 sizeForAttachment:v31 usesSmallSize:1];
+    attachment = [self attachment];
+    [v30 sizeForAttachment:attachment usesSmallSize:1];
     v12 = v32;
   }
 
   else
   {
-    [a1 availableWidthForTextContainer:v4];
+    [self availableWidthForTextContainer:v4];
     v12 = v13;
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v14 = [v4 textLayoutManager];
+      textLayoutManager3 = [v4 textLayoutManager];
       objc_opt_class();
       v15 = objc_opt_isKindOfClass();
 
       if (v15)
       {
-        v7 = [v4 textLayoutManager];
+        textLayoutManager2 = [v4 textLayoutManager];
         objc_opt_class();
-        v16 = [a1 viewIdentifier];
-        v17 = [v7 existingAttachmentViewForIdentifier:v16];
+        viewIdentifier2 = [self viewIdentifier];
+        v17 = [textLayoutManager2 existingAttachmentViewForIdentifier:viewIdentifier2];
         v18 = ICCheckedDynamicCast();
 
-        v19 = [v18 page];
-        if (v19)
+        page = [v18 page];
+        if (page)
         {
-          CGPDFPageGetBoxRect(v19, kCGPDFCropBox);
+          CGPDFPageGetBoxRect(page, kCGPDFCropBox);
         }
 
         goto LABEL_16;
@@ -87,21 +87,21 @@ LABEL_16:
 
     else
     {
-      v25 = [v4 layoutManager];
+      layoutManager3 = [v4 layoutManager];
       objc_opt_class();
       v26 = objc_opt_isKindOfClass();
 
       if (v26)
       {
         objc_opt_class();
-        v27 = [v4 layoutManager];
-        v28 = [a1 viewForLayoutManager:v27];
-        v7 = ICCheckedDynamicCast();
+        layoutManager4 = [v4 layoutManager];
+        v28 = [self viewForLayoutManager:layoutManager4];
+        textLayoutManager2 = ICCheckedDynamicCast();
 
-        v29 = [v7 page];
-        if (v29)
+        page2 = [textLayoutManager2 page];
+        if (page2)
         {
-          CGPDFPageGetBoxRect(v29, kCGPDFCropBox);
+          CGPDFPageGetBoxRect(page2, kCGPDFCropBox);
         }
 
         goto LABEL_16;
@@ -116,7 +116,7 @@ LABEL_17:
 
 - (id)attachmentViewClassForTextContainer:()UI
 {
-  [a1 effectiveAttachmentViewSizeForTextContainer:?];
+  [self effectiveAttachmentViewSizeForTextContainer:?];
   v1 = objc_opt_class();
 
   return v1;

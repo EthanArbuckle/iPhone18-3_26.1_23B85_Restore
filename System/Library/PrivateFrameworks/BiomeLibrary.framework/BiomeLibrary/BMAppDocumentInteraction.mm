@@ -1,41 +1,41 @@
 @interface BMAppDocumentInteraction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppDocumentInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAppDocumentInteraction)initWithType:(int)a3 fileIdentity:(id)a4 contentTypeIdentifier:(id)a5 appIdentity:(id)a6 remoteUser:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMAppDocumentInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAppDocumentInteraction)initWithType:(int)type fileIdentity:(id)identity contentTypeIdentifier:(id)identifier appIdentity:(id)appIdentity remoteUser:(id)user;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppDocumentInteraction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppDocumentInteraction *)self type];
-    if (v6 == [v5 type])
+    v5 = equalCopy;
+    type = [(BMAppDocumentInteraction *)self type];
+    if (type == [v5 type])
     {
-      v7 = [(BMAppDocumentInteraction *)self fileIdentity];
-      v8 = [v5 fileIdentity];
-      v9 = v8;
-      if (v7 == v8)
+      fileIdentity = [(BMAppDocumentInteraction *)self fileIdentity];
+      fileIdentity2 = [v5 fileIdentity];
+      v9 = fileIdentity2;
+      if (fileIdentity == fileIdentity2)
       {
       }
 
       else
       {
-        v10 = [(BMAppDocumentInteraction *)self fileIdentity];
-        v11 = [v5 fileIdentity];
-        v12 = [v10 isEqual:v11];
+        fileIdentity3 = [(BMAppDocumentInteraction *)self fileIdentity];
+        fileIdentity4 = [v5 fileIdentity];
+        v12 = [fileIdentity3 isEqual:fileIdentity4];
 
         if (!v12)
         {
@@ -43,18 +43,18 @@
         }
       }
 
-      v14 = [(BMAppDocumentInteraction *)self contentTypeIdentifier];
-      v15 = [v5 contentTypeIdentifier];
-      v16 = v15;
-      if (v14 == v15)
+      contentTypeIdentifier = [(BMAppDocumentInteraction *)self contentTypeIdentifier];
+      contentTypeIdentifier2 = [v5 contentTypeIdentifier];
+      v16 = contentTypeIdentifier2;
+      if (contentTypeIdentifier == contentTypeIdentifier2)
       {
       }
 
       else
       {
-        v17 = [(BMAppDocumentInteraction *)self contentTypeIdentifier];
-        v18 = [v5 contentTypeIdentifier];
-        v19 = [v17 isEqual:v18];
+        contentTypeIdentifier3 = [(BMAppDocumentInteraction *)self contentTypeIdentifier];
+        contentTypeIdentifier4 = [v5 contentTypeIdentifier];
+        v19 = [contentTypeIdentifier3 isEqual:contentTypeIdentifier4];
 
         if (!v19)
         {
@@ -62,18 +62,18 @@
         }
       }
 
-      v20 = [(BMAppDocumentInteraction *)self appIdentity];
-      v21 = [v5 appIdentity];
-      v22 = v21;
-      if (v20 == v21)
+      appIdentity = [(BMAppDocumentInteraction *)self appIdentity];
+      appIdentity2 = [v5 appIdentity];
+      v22 = appIdentity2;
+      if (appIdentity == appIdentity2)
       {
       }
 
       else
       {
-        v23 = [(BMAppDocumentInteraction *)self appIdentity];
-        v24 = [v5 appIdentity];
-        v25 = [v23 isEqual:v24];
+        appIdentity3 = [(BMAppDocumentInteraction *)self appIdentity];
+        appIdentity4 = [v5 appIdentity];
+        v25 = [appIdentity3 isEqual:appIdentity4];
 
         if (!v25)
         {
@@ -81,18 +81,18 @@
         }
       }
 
-      v27 = [(BMAppDocumentInteraction *)self remoteUser];
-      v28 = [v5 remoteUser];
-      if (v27 == v28)
+      remoteUser = [(BMAppDocumentInteraction *)self remoteUser];
+      remoteUser2 = [v5 remoteUser];
+      if (remoteUser == remoteUser2)
       {
         v13 = 1;
       }
 
       else
       {
-        v29 = [(BMAppDocumentInteraction *)self remoteUser];
-        v30 = [v5 remoteUser];
-        v13 = [v29 isEqual:v30];
+        remoteUser3 = [(BMAppDocumentInteraction *)self remoteUser];
+        remoteUser4 = [v5 remoteUser];
+        v13 = [remoteUser3 isEqual:remoteUser4];
       }
 
       goto LABEL_15;
@@ -115,61 +115,61 @@ LABEL_16:
 {
   v26[5] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAppDocumentInteraction type](self, "type")}];
-  v4 = [(BMAppDocumentInteraction *)self fileIdentity];
-  v5 = [v4 jsonDictionary];
+  fileIdentity = [(BMAppDocumentInteraction *)self fileIdentity];
+  jsonDictionary = [fileIdentity jsonDictionary];
 
-  v6 = [(BMAppDocumentInteraction *)self contentTypeIdentifier];
-  v7 = [(BMAppDocumentInteraction *)self appIdentity];
-  v8 = [v7 jsonDictionary];
+  contentTypeIdentifier = [(BMAppDocumentInteraction *)self contentTypeIdentifier];
+  appIdentity = [(BMAppDocumentInteraction *)self appIdentity];
+  jsonDictionary2 = [appIdentity jsonDictionary];
 
-  v9 = [(BMAppDocumentInteraction *)self remoteUser];
-  v10 = [v9 jsonDictionary];
+  remoteUser = [(BMAppDocumentInteraction *)self remoteUser];
+  jsonDictionary3 = [remoteUser jsonDictionary];
 
   v21 = @"type";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v11;
-  v26[0] = v11;
+  v19 = null;
+  v26[0] = null;
   v22 = @"fileIdentity";
-  v12 = v5;
-  if (!v5)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[1] = v12;
+  v26[1] = null2;
   v23 = @"contentTypeIdentifier";
-  v13 = v6;
-  if (!v6)
+  null3 = contentTypeIdentifier;
+  if (!contentTypeIdentifier)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v13;
+  v26[2] = null3;
   v24 = @"appIdentity";
-  v14 = v8;
-  if (!v8)
+  null4 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v14;
+  v26[3] = null4;
   v25 = @"remoteUser";
-  v15 = v10;
-  if (!v10)
+  null5 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v15;
+  v26[4] = null5;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v21 count:{5, v19}];
-  if (v10)
+  if (jsonDictionary3)
   {
-    if (v8)
+    if (jsonDictionary2)
     {
       goto LABEL_13;
     }
@@ -178,10 +178,10 @@ LABEL_16:
   else
   {
 
-    if (v8)
+    if (jsonDictionary2)
     {
 LABEL_13:
-      if (v6)
+      if (contentTypeIdentifier)
       {
         goto LABEL_14;
       }
@@ -190,10 +190,10 @@ LABEL_13:
     }
   }
 
-  if (v6)
+  if (contentTypeIdentifier)
   {
 LABEL_14:
-    if (v5)
+    if (jsonDictionary)
     {
       goto LABEL_15;
     }
@@ -210,7 +210,7 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v5)
+  if (!jsonDictionary)
   {
     goto LABEL_22;
   }
@@ -229,11 +229,11 @@ LABEL_16:
   return v16;
 }
 
-- (BMAppDocumentInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppDocumentInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -247,7 +247,7 @@ LABEL_16:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
           v17 = 0;
@@ -255,7 +255,7 @@ LABEL_16:
         }
 
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v33 = a4;
+        errorCopy = error;
         v34 = *MEMORY[0x1E698F240];
         v56 = *MEMORY[0x1E696A578];
         v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"type"];
@@ -263,7 +263,7 @@ LABEL_16:
         v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:&v56 count:1];
         v8 = 0;
         v17 = 0;
-        *v33 = [v32 initWithDomain:v34 code:2 userInfo:?];
+        *errorCopy = [v32 initWithDomain:v34 code:2 userInfo:?];
         goto LABEL_57;
       }
 
@@ -278,26 +278,26 @@ LABEL_16:
     v8 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"fileIdentity"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"fileIdentity"];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v17 = 0;
         goto LABEL_58;
       }
 
       v22 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v42 = a4;
+      errorCopy2 = error;
       v23 = *MEMORY[0x1E698F240];
       v54 = *MEMORY[0x1E696A578];
       v44 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"fileIdentity"];
       v55 = v44;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-      *v42 = [v22 initWithDomain:v23 code:2 userInfo:v24];
+      *errorCopy2 = [v22 initWithDomain:v23 code:2 userInfo:v24];
 
       v17 = 0;
       goto LABEL_56;
@@ -309,10 +309,10 @@ LABEL_16:
     v19 = v47;
     if (v19)
     {
-      if (a4)
+      if (error)
       {
         v19 = v19;
-        *a4 = v19;
+        *error = v19;
       }
 
       v17 = 0;
@@ -325,15 +325,15 @@ LABEL_16:
     v44 = 0;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"contentTypeIdentifier"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"contentTypeIdentifier"];
   v40 = v8;
-  v43 = self;
+  selfCopy = self;
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v41 = 0;
         v17 = 0;
@@ -343,13 +343,13 @@ LABEL_16:
       v27 = objc_alloc(MEMORY[0x1E696ABC0]);
       v28 = *MEMORY[0x1E698F240];
       v52 = *MEMORY[0x1E696A578];
-      v29 = a4;
+      errorCopy3 = error;
       v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"contentTypeIdentifier"];
       v53 = v20;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
       v41 = 0;
       v17 = 0;
-      *v29 = [v27 initWithDomain:v28 code:2 userInfo:v14];
+      *errorCopy3 = [v27 initWithDomain:v28 code:2 userInfo:v14];
       goto LABEL_53;
     }
 
@@ -361,14 +361,14 @@ LABEL_16:
     v41 = 0;
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"appIdentity"];
-  v13 = a4;
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"appIdentity"];
+  errorCopy4 = error;
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v17 = 0;
         goto LABEL_54;
@@ -380,7 +380,7 @@ LABEL_16:
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"appIdentity"];
       v51 = v14;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
-      *a4 = [v38 initWithDomain:v30 code:2 userInfo:v31];
+      *error = [v38 initWithDomain:v30 code:2 userInfo:v31];
 
       v17 = 0;
       goto LABEL_52;
@@ -392,10 +392,10 @@ LABEL_16:
     v21 = v46;
     if (v21)
     {
-      if (v13)
+      if (errorCopy4)
       {
         v21 = v21;
-        *v13 = v21;
+        *errorCopy4 = v21;
       }
 
       v17 = 0;
@@ -408,7 +408,7 @@ LABEL_16:
     v14 = 0;
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"remoteUser"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"remoteUser"];
   if (v15)
   {
     objc_opt_class();
@@ -427,16 +427,16 @@ LABEL_16:
           goto LABEL_21;
         }
 
-        if (v13)
+        if (errorCopy4)
         {
           v26 = v26;
-          *v13 = v26;
+          *errorCopy4 = v26;
         }
       }
 
       else
       {
-        if (!v13)
+        if (!errorCopy4)
         {
           v17 = 0;
           goto LABEL_51;
@@ -448,7 +448,7 @@ LABEL_16:
         v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"remoteUser"];
         v49 = v16;
         v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-        *v13 = [v39 initWithDomain:v37 code:2 userInfo:v25];
+        *errorCopy4 = [v39 initWithDomain:v37 code:2 userInfo:v25];
       }
 
       v17 = 0;
@@ -458,8 +458,8 @@ LABEL_16:
 
   v16 = 0;
 LABEL_21:
-  v17 = -[BMAppDocumentInteraction initWithType:fileIdentity:contentTypeIdentifier:appIdentity:remoteUser:](v43, "initWithType:fileIdentity:contentTypeIdentifier:appIdentity:remoteUser:", [v40 intValue], v44, v41, v14, v16);
-  v43 = v17;
+  v17 = -[BMAppDocumentInteraction initWithType:fileIdentity:contentTypeIdentifier:appIdentity:remoteUser:](selfCopy, "initWithType:fileIdentity:contentTypeIdentifier:appIdentity:remoteUser:", [v40 intValue], v44, v41, v14, v16);
+  selfCopy = v17;
 LABEL_50:
 
 LABEL_51:
@@ -470,7 +470,7 @@ LABEL_53:
   v12 = v20;
 LABEL_54:
 
-  self = v43;
+  self = selfCopy;
   v8 = v40;
 LABEL_55:
 
@@ -490,20 +490,20 @@ LABEL_59:
 {
   v3 = objc_opt_new();
   [(BMAppDocumentInteraction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   type = self->_type;
   PBDataWriterWriteUint32Field();
   if (self->_fileIdentity)
   {
     PBDataWriterPlaceMark();
-    [(BMAppDocumentInteractionFileIdentity *)self->_fileIdentity writeTo:v4];
+    [(BMAppDocumentInteractionFileIdentity *)self->_fileIdentity writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -515,21 +515,21 @@ LABEL_59:
   if (self->_appIdentity)
   {
     PBDataWriterPlaceMark();
-    [(BMAppDocumentInteractionAppIdentity *)self->_appIdentity writeTo:v4];
+    [(BMAppDocumentInteractionAppIdentity *)self->_appIdentity writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_remoteUser)
   {
     PBDataWriterPlaceMark();
-    [(BMAppDocumentInteractionRemoteUser *)self->_remoteUser writeTo:v4];
+    [(BMAppDocumentInteractionRemoteUser *)self->_remoteUser writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMAppDocumentInteraction;
   v5 = [(BMEventBase *)&v31 init];
@@ -538,12 +538,12 @@ LABEL_59:
     goto LABEL_53;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_51;
       }
@@ -554,18 +554,18 @@ LABEL_59:
       while (1)
       {
         LOBYTE(v32) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v32 & 0x7F) << v7;
@@ -582,9 +582,9 @@ LABEL_59:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_51;
       }
@@ -606,7 +606,7 @@ LABEL_16:
             goto LABEL_52;
           }
 
-          v16 = [[BMAppDocumentInteractionAppIdentity alloc] initByReadFrom:v4];
+          v16 = [[BMAppDocumentInteractionAppIdentity alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_52;
@@ -629,7 +629,7 @@ LABEL_16:
             goto LABEL_52;
           }
 
-          v16 = [[BMAppDocumentInteractionRemoteUser alloc] initByReadFrom:v4];
+          v16 = [[BMAppDocumentInteractionRemoteUser alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_52;
@@ -651,8 +651,8 @@ LABEL_34:
       v5->_contentTypeIdentifier = v18;
 
 LABEL_50:
-      v28 = [v4 position];
-      if (v28 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_51;
       }
@@ -666,18 +666,18 @@ LABEL_50:
       while (1)
       {
         LOBYTE(v32) = 0;
-        v24 = [v4 position] + 1;
-        if (v24 >= [v4 position] && (v25 = objc_msgSend(v4, "position") + 1, v25 <= objc_msgSend(v4, "length")))
+        v24 = [fromCopy position] + 1;
+        if (v24 >= [fromCopy position] && (v25 = objc_msgSend(fromCopy, "position") + 1, v25 <= objc_msgSend(fromCopy, "length")))
         {
-          v26 = [v4 data];
-          [v26 getBytes:&v32 range:{objc_msgSend(v4, "position"), 1}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v23 |= (v32 & 0x7F) << v21;
@@ -693,7 +693,7 @@ LABEL_50:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v23 > 4)
+      if (([fromCopy hasError] & 1) != 0 || v23 > 4)
       {
 LABEL_48:
         LODWORD(v23) = 0;
@@ -721,7 +721,7 @@ LABEL_44:
       goto LABEL_52;
     }
 
-    v16 = [[BMAppDocumentInteractionFileIdentity alloc] initByReadFrom:v4];
+    v16 = [[BMAppDocumentInteractionFileIdentity alloc] initByReadFrom:fromCopy];
     if (!v16)
     {
       goto LABEL_52;
@@ -732,7 +732,7 @@ LABEL_44:
   }
 
 LABEL_51:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_52:
     v29 = 0;
@@ -751,32 +751,32 @@ LABEL_53:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMAppDocumentInteractionTypeAsString([(BMAppDocumentInteraction *)self type]);
-  v5 = [(BMAppDocumentInteraction *)self fileIdentity];
-  v6 = [(BMAppDocumentInteraction *)self contentTypeIdentifier];
-  v7 = [(BMAppDocumentInteraction *)self appIdentity];
-  v8 = [(BMAppDocumentInteraction *)self remoteUser];
-  v9 = [v3 initWithFormat:@"BMAppDocumentInteraction with type: %@, fileIdentity: %@, contentTypeIdentifier: %@, appIdentity: %@, remoteUser: %@", v4, v5, v6, v7, v8];
+  fileIdentity = [(BMAppDocumentInteraction *)self fileIdentity];
+  contentTypeIdentifier = [(BMAppDocumentInteraction *)self contentTypeIdentifier];
+  appIdentity = [(BMAppDocumentInteraction *)self appIdentity];
+  remoteUser = [(BMAppDocumentInteraction *)self remoteUser];
+  v9 = [v3 initWithFormat:@"BMAppDocumentInteraction with type: %@, fileIdentity: %@, contentTypeIdentifier: %@, appIdentity: %@, remoteUser: %@", v4, fileIdentity, contentTypeIdentifier, appIdentity, remoteUser];
 
   return v9;
 }
 
-- (BMAppDocumentInteraction)initWithType:(int)a3 fileIdentity:(id)a4 contentTypeIdentifier:(id)a5 appIdentity:(id)a6 remoteUser:(id)a7
+- (BMAppDocumentInteraction)initWithType:(int)type fileIdentity:(id)identity contentTypeIdentifier:(id)identifier appIdentity:(id)appIdentity remoteUser:(id)user
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identityCopy = identity;
+  identifierCopy = identifier;
+  appIdentityCopy = appIdentity;
+  userCopy = user;
   v19.receiver = self;
   v19.super_class = BMAppDocumentInteraction;
   v17 = [(BMEventBase *)&v19 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    v17->_type = a3;
-    objc_storeStrong(&v17->_fileIdentity, a4);
-    objc_storeStrong(&v17->_contentTypeIdentifier, a5);
-    objc_storeStrong(&v17->_appIdentity, a6);
-    objc_storeStrong(&v17->_remoteUser, a7);
+    v17->_type = type;
+    objc_storeStrong(&v17->_fileIdentity, identity);
+    objc_storeStrong(&v17->_contentTypeIdentifier, identifier);
+    objc_storeStrong(&v17->_appIdentity, appIdentity);
+    objc_storeStrong(&v17->_remoteUser, user);
   }
 
   return v17;
@@ -851,9 +851,9 @@ id __35__BMAppDocumentInteraction_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -861,8 +861,8 @@ id __35__BMAppDocumentInteraction_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppDocumentInteraction alloc] initByReadFrom:v7];
     v4 = v8;

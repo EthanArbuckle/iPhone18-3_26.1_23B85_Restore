@@ -1,18 +1,18 @@
 @interface ACHWorkoutEvaluationWorkoutProperties
-- (ACHWorkoutEvaluationWorkoutProperties)initWithWorkout:(id)a3 healthStore:(id)a4;
+- (ACHWorkoutEvaluationWorkoutProperties)initWithWorkout:(id)workout healthStore:(id)store;
 - (BOOL)_useSplitsForFastestDistance;
-- (BOOL)_workoutIsDuathlon:(id)a3;
-- (BOOL)_workoutIsTriathlon:(id)a3 swimmingDistanceInKilometers:(double)a4 cyclingDistanceInKilometers:(double)a5 runningDistanceInKilometers:(double)a6;
-- (id)_nonMetaActivitiesForWorkout:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (BOOL)_workoutIsDuathlon:(id)duathlon;
+- (BOOL)_workoutIsTriathlon:(id)triathlon swimmingDistanceInKilometers:(double)kilometers cyclingDistanceInKilometers:(double)inKilometers runningDistanceInKilometers:(double)distanceInKilometers;
+- (id)_nonMetaActivitiesForWorkout:(id)workout;
+- (id)valueForUndefinedKey:(id)key;
 @end
 
 @implementation ACHWorkoutEvaluationWorkoutProperties
 
-- (ACHWorkoutEvaluationWorkoutProperties)initWithWorkout:(id)a3 healthStore:(id)a4
+- (ACHWorkoutEvaluationWorkoutProperties)initWithWorkout:(id)workout healthStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  workoutCopy = workout;
+  storeCopy = store;
   v56.receiver = self;
   v56.super_class = ACHWorkoutEvaluationWorkoutProperties;
   v8 = [(ACHWorkoutEvaluationWorkoutProperties *)&v56 init];
@@ -21,38 +21,38 @@
     goto LABEL_16;
   }
 
-  v8->_type = [v6 workoutActivityType];
-  [v6 duration];
+  v8->_type = [workoutCopy workoutActivityType];
+  [workoutCopy duration];
   v8->_duration = v9;
   v10 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC918]];
-  v11 = [v6 statisticsForType:v10];
-  v12 = [v11 sumQuantity];
-  v13 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-  [v12 doubleValueForUnit:v13];
+  v11 = [workoutCopy statisticsForType:v10];
+  sumQuantity = [v11 sumQuantity];
+  kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  [sumQuantity doubleValueForUnit:kilocalorieUnit];
   v8->_kilocalories = v14;
 
-  v15 = [v6 totalDistance];
+  totalDistance = [workoutCopy totalDistance];
   v16 = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
-  [v15 doubleValueForUnit:v16];
+  [totalDistance doubleValueForUnit:v16];
   v8->_kilometers = v17;
 
-  v18 = [v6 totalDistance];
-  v19 = [MEMORY[0x277CCDAB0] meterUnit];
-  [v18 doubleValueForUnit:v19];
+  totalDistance2 = [workoutCopy totalDistance];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  [totalDistance2 doubleValueForUnit:meterUnit];
   v8->_meters = v20;
 
-  v21 = [v6 fi_elevationGain];
+  fi_elevationGain = [workoutCopy fi_elevationGain];
   v22 = [MEMORY[0x277CCDAB0] unitFromString:@"cm"];
-  [v21 doubleValueForUnit:v22];
+  [fi_elevationGain doubleValueForUnit:v22];
   v8->_elevationGained = v23;
 
-  v24 = [v6 fi_elevationGain];
-  v25 = [MEMORY[0x277CCDAB0] meterUnit];
-  [v24 doubleValueForUnit:v25];
+  fi_elevationGain2 = [workoutCopy fi_elevationGain];
+  meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+  [fi_elevationGain2 doubleValueForUnit:meterUnit2];
   v8->_elevationGainedInMeters = v26;
 
-  v8->_isDuathlon = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsDuathlon:v6];
-  v27 = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsTriathlon:v6 swimmingDistanceInKilometers:*MEMORY[0x277CE8B90] cyclingDistanceInKilometers:*MEMORY[0x277CE8B80] runningDistanceInKilometers:*MEMORY[0x277CE8B88]];
+  v8->_isDuathlon = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsDuathlon:workoutCopy];
+  v27 = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsTriathlon:workoutCopy swimmingDistanceInKilometers:*MEMORY[0x277CE8B90] cyclingDistanceInKilometers:*MEMORY[0x277CE8B80] runningDistanceInKilometers:*MEMORY[0x277CE8B88]];
   v8->_isFullDistanceTriathlon = v27;
   if (v27)
   {
@@ -63,7 +63,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v29 = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsTriathlon:v6 swimmingDistanceInKilometers:*MEMORY[0x277CE8BB0] cyclingDistanceInKilometers:*MEMORY[0x277CE8BA0] runningDistanceInKilometers:*MEMORY[0x277CE8BA8]];
+  v29 = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsTriathlon:workoutCopy swimmingDistanceInKilometers:*MEMORY[0x277CE8BB0] cyclingDistanceInKilometers:*MEMORY[0x277CE8BA0] runningDistanceInKilometers:*MEMORY[0x277CE8BA8]];
   v8->_isHalfDistanceTriathlon = v29;
   p_isHalfDistanceTriathlon = &v8->_isHalfDistanceTriathlon;
   if (v29 || v8->_isFullDistanceTriathlon)
@@ -71,7 +71,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v31 = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsTriathlon:v6 swimmingDistanceInKilometers:*MEMORY[0x277CE8B70] cyclingDistanceInKilometers:*MEMORY[0x277CE8B60] runningDistanceInKilometers:*MEMORY[0x277CE8B68]];
+  v31 = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsTriathlon:workoutCopy swimmingDistanceInKilometers:*MEMORY[0x277CE8B70] cyclingDistanceInKilometers:*MEMORY[0x277CE8B60] runningDistanceInKilometers:*MEMORY[0x277CE8B68]];
   v8->_isFiftyKilometerTriathlon = v31;
   if (v31)
   {
@@ -86,34 +86,34 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v30 = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsTriathlon:v6 swimmingDistanceInKilometers:*MEMORY[0x277CE8C48] cyclingDistanceInKilometers:*MEMORY[0x277CE8C38] runningDistanceInKilometers:*MEMORY[0x277CE8C40]];
+  v30 = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsTriathlon:workoutCopy swimmingDistanceInKilometers:*MEMORY[0x277CE8C48] cyclingDistanceInKilometers:*MEMORY[0x277CE8C38] runningDistanceInKilometers:*MEMORY[0x277CE8C40]];
 LABEL_12:
   v8->_isSprintTriathlon = v30;
-  v8->_isDuathlon = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsDuathlon:v6];
+  v8->_isDuathlon = [(ACHWorkoutEvaluationWorkoutProperties *)v8 _workoutIsDuathlon:workoutCopy];
   if ([(ACHWorkoutEvaluationWorkoutProperties *)v8 _useSplitsForFastestDistance])
   {
-    [v6 aad_best5KDuration];
+    [workoutCopy aad_best5KDuration];
     v8->_best5KDuration = v32;
-    [v6 aad_best10KDuration];
+    [workoutCopy aad_best10KDuration];
     v8->_best10KDuration = v33;
-    [v6 aad_bestWheelchair5KDuration];
+    [workoutCopy aad_bestWheelchair5KDuration];
     v8->_bestWheelchair5KDuration = v34;
-    [v6 aad_bestWheelchair10KDuration];
+    [workoutCopy aad_bestWheelchair10KDuration];
     v8->_bestWheelchair10KDuration = v35;
-    [v6 aad_bestHalfMarathonDuration];
+    [workoutCopy aad_bestHalfMarathonDuration];
     v8->_bestHalfMarathonDuration = v36;
-    [v6 aad_bestMarathonDuration];
+    [workoutCopy aad_bestMarathonDuration];
     v8->_bestMarathonDuration = v37;
-    [v6 aad_bestWheelchairHalfMarathonDuration];
+    [workoutCopy aad_bestWheelchairHalfMarathonDuration];
     v8->_bestWheelchairHalfMarathonDuration = v38;
-    [v6 aad_bestWheelchairMarathonDuration];
+    [workoutCopy aad_bestWheelchairMarathonDuration];
     v8->_bestWheelchairMarathonDuration = v39;
   }
 
   else
   {
-    v40 = [[ACHFastestDistanceCalculator alloc] initWithHealthStore:v7];
-    v41 = [(ACHFastestDistanceCalculator *)v40 fastestDistancesFor:v6];
+    v40 = [[ACHFastestDistanceCalculator alloc] initWithHealthStore:storeCopy];
+    v41 = [(ACHFastestDistanceCalculator *)v40 fastestDistancesFor:workoutCopy];
     [v41 best5KDuration];
     v8->_best5KDuration = v42;
     [v41 best10KDuration];
@@ -132,15 +132,15 @@ LABEL_12:
     v8->_bestWheelchairMarathonDuration = v49;
   }
 
-  v50 = [v6 sourceRevision];
-  v51 = [v50 source];
-  v8->_isFirstParty = [v51 _hasFirstPartyBundleID];
+  sourceRevision = [workoutCopy sourceRevision];
+  source = [sourceRevision source];
+  v8->_isFirstParty = [source _hasFirstPartyBundleID];
 
-  v52 = [v6 metadata];
-  v53 = [v52 objectForKeyedSubscript:*MEMORY[0x277CCC4C0]];
-  v54 = [v53 BOOLValue];
+  metadata = [workoutCopy metadata];
+  v53 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC4C0]];
+  bOOLValue = [v53 BOOLValue];
 
-  v8->_isIndoor = v54;
+  v8->_isIndoor = bOOLValue;
 LABEL_16:
 
   return v8;
@@ -155,10 +155,10 @@ LABEL_16:
   return v4;
 }
 
-- (id)_nonMetaActivitiesForWorkout:(id)a3
+- (id)_nonMetaActivitiesForWorkout:(id)workout
 {
-  v3 = [a3 workoutActivities];
-  v4 = [v3 hk_filter:&__block_literal_global_13];
+  workoutActivities = [workout workoutActivities];
+  v4 = [workoutActivities hk_filter:&__block_literal_global_13];
 
   return v4;
 }
@@ -181,12 +181,12 @@ BOOL __70__ACHWorkoutEvaluationWorkoutProperties__nonMetaActivitiesForWorkout___
   return v4;
 }
 
-- (BOOL)_workoutIsDuathlon:(id)a3
+- (BOOL)_workoutIsDuathlon:(id)duathlon
 {
-  v4 = a3;
-  if ([v4 workoutActivityType] == 82)
+  duathlonCopy = duathlon;
+  if ([duathlonCopy workoutActivityType] == 82)
   {
-    v5 = [(ACHWorkoutEvaluationWorkoutProperties *)self _nonMetaActivitiesForWorkout:v4];
+    v5 = [(ACHWorkoutEvaluationWorkoutProperties *)self _nonMetaActivitiesForWorkout:duathlonCopy];
     if ([v5 count] != 3)
     {
       LOBYTE(v18) = 0;
@@ -198,16 +198,16 @@ LABEL_26:
     v6 = [v5 objectAtIndexedSubscript:0];
     v7 = [v5 objectAtIndexedSubscript:1];
     v8 = [v5 objectAtIndexedSubscript:2];
-    v9 = [v6 workoutConfiguration];
-    if ([v9 activityType] == 37)
+    workoutConfiguration = [v6 workoutConfiguration];
+    if ([workoutConfiguration activityType] == 37)
     {
-      v10 = [v7 workoutConfiguration];
-      if ([v10 activityType] == 13)
+      workoutConfiguration2 = [v7 workoutConfiguration];
+      if ([workoutConfiguration2 activityType] == 13)
       {
-        v11 = [v8 workoutConfiguration];
-        v12 = [v11 activityType];
+        workoutConfiguration3 = [v8 workoutConfiguration];
+        activityType = [workoutConfiguration3 activityType];
 
-        if (v12 != 37)
+        if (activityType != 37)
         {
           LOBYTE(v18) = 0;
 LABEL_25:
@@ -215,25 +215,25 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v9 = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
+        workoutConfiguration = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
         v13 = *MEMORY[0x277CE8B50];
-        v10 = [MEMORY[0x277CCD7E8] quantityWithUnit:v9 doubleValue:*MEMORY[0x277CE8B50]];
-        v29 = [MEMORY[0x277CCD7E8] quantityWithUnit:v9 doubleValue:*MEMORY[0x277CE8B48]];
-        v28 = [MEMORY[0x277CCD7E8] quantityWithUnit:v9 doubleValue:v13];
+        workoutConfiguration2 = [MEMORY[0x277CCD7E8] quantityWithUnit:workoutConfiguration doubleValue:*MEMORY[0x277CE8B50]];
+        v29 = [MEMORY[0x277CCD7E8] quantityWithUnit:workoutConfiguration doubleValue:*MEMORY[0x277CE8B48]];
+        v28 = [MEMORY[0x277CCD7E8] quantityWithUnit:workoutConfiguration doubleValue:v13];
         v14 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB40]];
         v15 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB10]];
         v25 = [v6 statisticsForType:v14];
-        v16 = [v25 sumQuantity];
+        sumQuantity = [v25 sumQuantity];
         v26 = v15;
         v24 = [v7 statisticsForType:v15];
-        v30 = [v24 sumQuantity];
+        sumQuantity2 = [v24 sumQuantity];
         v27 = v14;
         v23 = [v8 statisticsForType:v14];
-        v17 = [v23 sumQuantity];
-        v22 = v16;
-        if (v16)
+        sumQuantity3 = [v23 sumQuantity];
+        v22 = sumQuantity;
+        if (sumQuantity)
         {
-          v18 = [v10 compare:v16] != 1;
+          v18 = [workoutConfiguration2 compare:sumQuantity] != 1;
         }
 
         else
@@ -241,7 +241,7 @@ LABEL_25:
           v18 = 0;
         }
 
-        if (v30)
+        if (sumQuantity2)
         {
           v19 = [v29 compare:?] != 1;
         }
@@ -251,9 +251,9 @@ LABEL_25:
           v19 = 0;
         }
 
-        if (v17)
+        if (sumQuantity3)
         {
-          v20 = [v28 compare:v17] != 1;
+          v20 = [v28 compare:sumQuantity3] != 1;
         }
 
         else
@@ -287,12 +287,12 @@ LABEL_27:
   return v18;
 }
 
-- (BOOL)_workoutIsTriathlon:(id)a3 swimmingDistanceInKilometers:(double)a4 cyclingDistanceInKilometers:(double)a5 runningDistanceInKilometers:(double)a6
+- (BOOL)_workoutIsTriathlon:(id)triathlon swimmingDistanceInKilometers:(double)kilometers cyclingDistanceInKilometers:(double)inKilometers runningDistanceInKilometers:(double)distanceInKilometers
 {
-  v10 = a3;
-  if ([v10 workoutActivityType] == 82)
+  triathlonCopy = triathlon;
+  if ([triathlonCopy workoutActivityType] == 82)
   {
-    v11 = [(ACHWorkoutEvaluationWorkoutProperties *)self _nonMetaActivitiesForWorkout:v10];
+    v11 = [(ACHWorkoutEvaluationWorkoutProperties *)self _nonMetaActivitiesForWorkout:triathlonCopy];
     if ([v11 count] != 3)
     {
       LOBYTE(v24) = 0;
@@ -304,16 +304,16 @@ LABEL_26:
     v12 = [v11 objectAtIndexedSubscript:0];
     v13 = [v11 objectAtIndexedSubscript:1];
     v14 = [v11 objectAtIndexedSubscript:2];
-    v15 = [v12 workoutConfiguration];
-    if ([v15 activityType] == 46)
+    workoutConfiguration = [v12 workoutConfiguration];
+    if ([workoutConfiguration activityType] == 46)
     {
-      v16 = [v13 workoutConfiguration];
-      if ([v16 activityType] == 13)
+      workoutConfiguration2 = [v13 workoutConfiguration];
+      if ([workoutConfiguration2 activityType] == 13)
       {
-        v17 = [v14 workoutConfiguration];
-        v18 = [v17 activityType];
+        workoutConfiguration3 = [v14 workoutConfiguration];
+        activityType = [workoutConfiguration3 activityType];
 
-        if (v18 != 37)
+        if (activityType != 37)
         {
           LOBYTE(v24) = 0;
 LABEL_25:
@@ -321,26 +321,26 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v15 = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
-        v16 = [MEMORY[0x277CCD7E8] quantityWithUnit:v15 doubleValue:a4];
-        v36 = [MEMORY[0x277CCD7E8] quantityWithUnit:v15 doubleValue:a5];
-        v35 = [MEMORY[0x277CCD7E8] quantityWithUnit:v15 doubleValue:a6];
+        workoutConfiguration = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
+        workoutConfiguration2 = [MEMORY[0x277CCD7E8] quantityWithUnit:workoutConfiguration doubleValue:kilometers];
+        v36 = [MEMORY[0x277CCD7E8] quantityWithUnit:workoutConfiguration doubleValue:inKilometers];
+        v35 = [MEMORY[0x277CCD7E8] quantityWithUnit:workoutConfiguration doubleValue:distanceInKilometers];
         v19 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB38]];
         v20 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB10]];
         v21 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB40]];
         v34 = v19;
         v31 = [v12 statisticsForType:v19];
-        v22 = [v31 sumQuantity];
+        sumQuantity = [v31 sumQuantity];
         v33 = v20;
         v30 = [v13 statisticsForType:v20];
-        v37 = [v30 sumQuantity];
+        sumQuantity2 = [v30 sumQuantity];
         v32 = v21;
         v29 = [v14 statisticsForType:v21];
-        v23 = [v29 sumQuantity];
-        v28 = v22;
-        if (v22)
+        sumQuantity3 = [v29 sumQuantity];
+        v28 = sumQuantity;
+        if (sumQuantity)
         {
-          v24 = [v16 compare:{v22, v22}] != 1;
+          v24 = [workoutConfiguration2 compare:{sumQuantity, sumQuantity}] != 1;
         }
 
         else
@@ -348,7 +348,7 @@ LABEL_25:
           v24 = 0;
         }
 
-        if (v37)
+        if (sumQuantity2)
         {
           v25 = [v36 compare:?] != 1;
         }
@@ -358,9 +358,9 @@ LABEL_25:
           v25 = 0;
         }
 
-        if (v23)
+        if (sumQuantity3)
         {
-          v26 = [v35 compare:v23] != 1;
+          v26 = [v35 compare:sumQuantity3] != 1;
         }
 
         else
@@ -394,15 +394,15 @@ LABEL_27:
   return v24;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = ACHLogWorkouts();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v3;
+    v8 = keyCopy;
     _os_log_impl(&dword_221DDC000, v4, OS_LOG_TYPE_DEFAULT, "Workout Evaluation workout properties asked for key it doesn't support: %{public}@", &v7, 0xCu);
   }
 

@@ -1,12 +1,12 @@
 @interface ClassKitDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation ClassKitDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v32 = a3;
+  parametersCopy = parameters;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -29,35 +29,35 @@
   v6 = v39[5];
   if (v6)
   {
-    v31 = [v6 stringByDeletingLastPathComponent];
-    v7 = [v31 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v6 stringByDeletingLastPathComponent];
+    v31StringByDeletingLastPathComponent = [stringByDeletingLastPathComponent stringByDeletingLastPathComponent];
     v30 = [DEAttachmentItem attachmentWithPath:@"/System/Library/CoreServices/SystemVersion.plist"];
     v44[0] = v30;
-    v29 = [NSString stringWithFormat:@"%@/%@", v7, @"db/ClassKit.db"];
+    v29 = [NSString stringWithFormat:@"%@/%@", v31StringByDeletingLastPathComponent, @"db/ClassKit.db"];
     v28 = [DEAttachmentItem attachmentWithPath:v29];
     v44[1] = v28;
-    v27 = [NSString stringWithFormat:@"%@/%@", v7, @"db/ClassKit.db-shm"];
+    v27 = [NSString stringWithFormat:@"%@/%@", v31StringByDeletingLastPathComponent, @"db/ClassKit.db-shm"];
     v26 = [DEAttachmentItem attachmentWithPath:v27];
     v44[2] = v26;
-    v25 = [NSString stringWithFormat:@"%@/%@", v7, @"db/ClassKit.db-wal"];
+    v25 = [NSString stringWithFormat:@"%@/%@", v31StringByDeletingLastPathComponent, @"db/ClassKit.db-wal"];
     v24 = [DEAttachmentItem attachmentWithPath:v25];
     v44[3] = v24;
-    v23 = [NSString stringWithFormat:@"%@/%@", v7, @"db/student.db"];
+    v23 = [NSString stringWithFormat:@"%@/%@", v31StringByDeletingLastPathComponent, @"db/student.db"];
     v22 = [DEAttachmentItem attachmentWithPath:v23];
     v44[4] = v22;
-    v21 = [NSString stringWithFormat:@"%@/%@", v7, @"db/student.db-shm"];
+    v21 = [NSString stringWithFormat:@"%@/%@", v31StringByDeletingLastPathComponent, @"db/student.db-shm"];
     v20 = [DEAttachmentItem attachmentWithPath:v21];
     v44[5] = v20;
-    v8 = [NSString stringWithFormat:@"%@/%@", v7, @"db/student.db-wal"];
+    v8 = [NSString stringWithFormat:@"%@/%@", v31StringByDeletingLastPathComponent, @"db/student.db-wal"];
     v9 = [DEAttachmentItem attachmentWithPath:v8];
     v44[6] = v9;
-    v10 = [NSString stringWithFormat:@"%@/%@", v7, @"db/teacher.db"];
+    v10 = [NSString stringWithFormat:@"%@/%@", v31StringByDeletingLastPathComponent, @"db/teacher.db"];
     v11 = [DEAttachmentItem attachmentWithPath:v10];
     v44[7] = v11;
-    v12 = [NSString stringWithFormat:@"%@/%@", v7, @"db/teacher.db-shm"];
+    v12 = [NSString stringWithFormat:@"%@/%@", v31StringByDeletingLastPathComponent, @"db/teacher.db-shm"];
     v13 = [DEAttachmentItem attachmentWithPath:v12];
     v44[8] = v13;
-    v14 = [NSString stringWithFormat:@"%@/%@", v7, @"db/teacher.db-wal"];
+    v14 = [NSString stringWithFormat:@"%@/%@", v31StringByDeletingLastPathComponent, @"db/teacher.db-wal"];
     v15 = [DEAttachmentItem attachmentWithPath:v14];
     v44[9] = v15;
     v16 = [NSArray arrayWithObjects:v44 count:10];
@@ -76,7 +76,7 @@
     v18 = [DEAttachmentItem attachmentWithPath:@"/System/Library/CoreServices/SystemVersion.plist"];
     v45 = v18;
     v16 = [NSArray arrayWithObjects:&v45 count:1];
-    v31 = v18;
+    stringByDeletingLastPathComponent = v18;
   }
 
   _Block_object_dispose(&v38, 8);

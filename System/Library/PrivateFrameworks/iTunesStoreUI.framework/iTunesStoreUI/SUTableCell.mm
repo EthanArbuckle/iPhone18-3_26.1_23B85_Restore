@@ -1,41 +1,41 @@
 @interface SUTableCell
 - ($3CC19D079FD0B010EE84973AA846B91B)position;
 - (SUItemOfferButton)itemOfferButton;
-- (SUTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SUTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)copyPurchaseAnimationView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setBottomBorderColor:(id)a3;
-- (void)setEditState:(int64_t)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPosition:(id *)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowingDeleteConfirmation:(BOOL)a3;
-- (void)setTopBorderColor:(id)a3;
+- (void)setBottomBorderColor:(id)color;
+- (void)setEditState:(int64_t)state;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setPosition:(id *)position;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setShowingDeleteConfirmation:(BOOL)confirmation;
+- (void)setTopBorderColor:(id)color;
 @end
 
 @implementation SUTableCell
 
-- (SUTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SUTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = SUTableCell;
-  v4 = [(SUTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SUTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(SUTableCell *)v4 contentView];
+    contentView = [(SUTableCell *)v4 contentView];
     v7 = [SUTableCellContentView alloc];
-    [v6 bounds];
+    [contentView bounds];
     v8 = [(SUTableCellContentView *)v7 initWithFrame:?];
     v5->_configurationView = v8;
     [(SUTableCellContentView *)v8 setContentMode:9];
     [(SUTableCellContentView *)v5->_configurationView setAutoresizingMask:18];
     -[SUTableCellContentView setBackgroundColor:](v5->_configurationView, "setBackgroundColor:", [MEMORY[0x1E69DC888] clearColor]);
-    [v6 addSubview:v5->_configurationView];
+    [contentView addSubview:v5->_configurationView];
     if (!initWithStyle_reuseIdentifier__sLayoutManager)
     {
       initWithStyle_reuseIdentifier__sLayoutManager = objc_alloc_init(SUTableCellLayoutManager);
@@ -62,19 +62,19 @@
 
 - (id)copyPurchaseAnimationView
 {
-  v2 = [(SUTableCell *)self configuration];
-  v3 = [(SUCellConfiguration *)v2 indexOfLabelForPurchaseAnimation];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  configuration = [(SUTableCell *)self configuration];
+  indexOfLabelForPurchaseAnimation = [(SUCellConfiguration *)configuration indexOfLabelForPurchaseAnimation];
+  if (indexOfLabelForPurchaseAnimation == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  return __CreateLabel(v2, v3, 0);
+  return __CreateLabel(configuration, indexOfLabelForPurchaseAnimation, 0);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(SUTableCell *)self bounds:a3.origin.x];
+  [(SUTableCell *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   topBorderColor = self->_topBorderColor;
@@ -117,13 +117,13 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v10.receiver = self;
   v10.super_class = SUTableCell;
-  v7 = [(SUTableCell *)&v10 hitTest:a4 withEvent:?];
+  v7 = [(SUTableCell *)&v10 hitTest:event withEvent:?];
   if (v7)
   {
     itemOfferButton = self->_itemOfferButton;
@@ -151,16 +151,16 @@
   v38.receiver = self;
   v38.super_class = SUTableCell;
   [(SUTableCell *)&v38 layoutSubviews];
-  v3 = [(SUTableCell *)self accessoryView];
-  if ([v3 superview] == self && (objc_msgSend(v3, "alpha"), v4 > 0.00000011920929))
+  accessoryView = [(SUTableCell *)self accessoryView];
+  if ([accessoryView superview] == self && (objc_msgSend(accessoryView, "alpha"), v4 > 0.00000011920929))
   {
     [-[SUTableCell layoutManager](self "layoutManager")];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(SUTableCell *)self contentView];
-    [v13 frame];
+    contentView = [(SUTableCell *)self contentView];
+    [contentView frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -173,15 +173,15 @@
 
   else
   {
-    v13 = [(SUTableCell *)self contentView];
-    [v13 frame];
+    contentView = [(SUTableCell *)self contentView];
+    [contentView frame];
     v15 = v21;
     v17 = v22;
     v19 = v23;
     v20 = v24 + -10.0;
   }
 
-  [v13 setFrame:{v15, v17, v20, v19}];
+  [contentView setFrame:{v15, v17, v20, v19}];
   [-[SUTableCell contentView](self "contentView")];
   v28 = v27;
   v30 = v29;
@@ -222,77 +222,77 @@
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if (editing)
   {
-    *&a3 = [(SUTableCell *)self showingDeleteConfirmation];
+    *&editing = [(SUTableCell *)self showingDeleteConfirmation];
   }
 
-  [(SUTableCellContentView *)self->_configurationView setDeleteConfirmationVisisble:a3];
-  [(SUTableCellContentView *)self->_configurationView setUsesSubviews:v5 animated:v4];
+  [(SUTableCellContentView *)self->_configurationView setDeleteConfirmationVisisble:editing];
+  [(SUTableCellContentView *)self->_configurationView setUsesSubviews:editingCopy animated:animatedCopy];
   v7.receiver = self;
   v7.super_class = SUTableCell;
-  [(SUTableCell *)&v7 setEditing:v5 animated:v4];
+  [(SUTableCell *)&v7 setEditing:editingCopy animated:animatedCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
   if ([(SUTableCell *)self highlightsOnlyContentView])
   {
     configurationView = self->_configurationView;
 
-    [(SUTableCellContentView *)configurationView setHighlighted:v5];
+    [(SUTableCellContentView *)configurationView setHighlighted:highlightedCopy];
   }
 
   else
   {
-    v8 = v5 && (*(self + 1040) & 1) == 0;
+    v8 = highlightedCopy && (*(self + 1040) & 1) == 0;
     v9.receiver = self;
     v9.super_class = SUTableCell;
-    [(SUTableCell *)&v9 setHighlighted:v8 animated:v4];
+    [(SUTableCell *)&v9 setHighlighted:v8 animated:animatedCopy];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   if ([(SUTableCell *)self highlightsOnlyContentView])
   {
     configurationView = self->_configurationView;
 
-    [(SUTableCellContentView *)configurationView setHighlighted:v5];
+    [(SUTableCellContentView *)configurationView setHighlighted:selectedCopy];
   }
 
   else
   {
-    v8 = v5 && (*(self + 1040) & 1) == 0;
+    v8 = selectedCopy && (*(self + 1040) & 1) == 0;
     v9.receiver = self;
     v9.super_class = SUTableCell;
-    [(SUTableCell *)&v9 setSelected:v8 animated:v4];
+    [(SUTableCell *)&v9 setSelected:v8 animated:animatedCopy];
   }
 }
 
-- (void)setShowingDeleteConfirmation:(BOOL)a3
+- (void)setShowingDeleteConfirmation:(BOOL)confirmation
 {
-  v3 = a3;
+  confirmationCopy = confirmation;
   [(SUTableCellContentView *)self->_configurationView setDeleteConfirmationVisisble:?];
   v5.receiver = self;
   v5.super_class = SUTableCell;
-  [(SUTableCell *)&v5 setShowingDeleteConfirmation:v3];
+  [(SUTableCell *)&v5 setShowingDeleteConfirmation:confirmationCopy];
 }
 
-- (void)setEditState:(int64_t)a3
+- (void)setEditState:(int64_t)state
 {
-  if (self->_editState != a3)
+  if (self->_editState != state)
   {
-    self->_editState = a3;
-    [(SUTableCell *)self setEditing:a3 != 0 animated:0];
+    self->_editState = state;
+    [(SUTableCell *)self setEditing:state != 0 animated:0];
     [(SUTableCell *)self setNeedsLayout];
 
     [(SUTableCell *)self setNeedsDisplay];
@@ -313,43 +313,43 @@
   return result;
 }
 
-- (void)setBottomBorderColor:(id)a3
+- (void)setBottomBorderColor:(id)color
 {
   bottomBorderColor = self->_bottomBorderColor;
-  if (bottomBorderColor != a3)
+  if (bottomBorderColor != color)
   {
 
-    self->_bottomBorderColor = a3;
+    self->_bottomBorderColor = color;
 
     [(SUTableCell *)self setNeedsDisplay];
   }
 }
 
-- (void)setPosition:(id *)a3
+- (void)setPosition:(id *)position
 {
   p_position = &self->_position;
   v6 = *&self->_position.globalIndex;
   v10[0] = *&self->_position.localIndex;
   v10[1] = v6;
-  v7 = *&a3->var2;
-  v9[0] = *&a3->var0;
+  v7 = *&position->var2;
+  v9[0] = *&position->var0;
   v9[1] = v7;
   if (!SUPositionEqualToPosition(v10, v9))
   {
-    v8 = *&a3->var2;
-    *&p_position->localIndex = *&a3->var0;
+    v8 = *&position->var2;
+    *&p_position->localIndex = *&position->var0;
     *&p_position->globalIndex = v8;
     [(SUTableCell *)self setNeedsDisplay];
   }
 }
 
-- (void)setTopBorderColor:(id)a3
+- (void)setTopBorderColor:(id)color
 {
   topBorderColor = self->_topBorderColor;
-  if (topBorderColor != a3)
+  if (topBorderColor != color)
   {
 
-    self->_topBorderColor = a3;
+    self->_topBorderColor = color;
 
     [(SUTableCell *)self setNeedsDisplay];
   }

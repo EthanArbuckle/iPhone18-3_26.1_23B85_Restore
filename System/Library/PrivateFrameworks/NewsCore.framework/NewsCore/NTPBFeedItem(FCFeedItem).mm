@@ -29,48 +29,48 @@
 
 - (uint64_t)applyConditionalScore:()FCFeedItem
 {
-  [a1 conditionalScore];
+  [self conditionalScore];
   if (v4 <= a2)
   {
     v4 = a2;
   }
 
-  return [a1 setConditionalScore:v4];
+  return [self setConditionalScore:v4];
 }
 
 - (void)applyFeedContext:()FCFeedItem
 {
   v7 = a3;
-  v4 = [v7 channelID];
-  [a1 setSurfacedByChannelID:v4];
+  channelID = [v7 channelID];
+  [self setSurfacedByChannelID:channelID];
 
-  v5 = [v7 sectionID];
-  [a1 setSurfacedBySectionID:v5];
+  sectionID = [v7 sectionID];
+  [self setSurfacedBySectionID:sectionID];
 
-  v6 = [v7 topicID];
-  [a1 setSurfacedByTopicID:v6];
+  topicID = [v7 topicID];
+  [self setSurfacedByTopicID:topicID];
 
   if ([v7 flags])
   {
-    [a1 setSurfacedByFlags:{objc_msgSend(v7, "flags")}];
+    [self setSurfacedByFlags:{objc_msgSend(v7, "flags")}];
   }
 }
 
 - (void)applyTabiScore:()FCFeedItem configurationSet:
 {
-  v7 = [a1 scoreProfiles];
-  if (!v7)
+  scoreProfiles = [self scoreProfiles];
+  if (!scoreProfiles)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69B6FC0]);
-    [a1 setScoreProfiles:v10];
-    v7 = v10;
+    [self setScoreProfiles:v10];
+    scoreProfiles = v10;
   }
 
-  v11 = v7;
+  v11 = scoreProfiles;
   if (a4 == 11)
   {
-    v8 = [v7 forYouGroupScoreProfile];
-    if (!v8)
+    forYouGroupScoreProfile = [scoreProfiles forYouGroupScoreProfile];
+    if (!forYouGroupScoreProfile)
     {
       v9 = objc_alloc_init(MEMORY[0x1E69B6FB0]);
       [v11 setForYouGroupScoreProfile:v9];
@@ -80,11 +80,11 @@
     goto LABEL_7;
   }
 
-  v8 = [v7 defaultScoreProfile];
-  if (v8)
+  forYouGroupScoreProfile = [scoreProfiles defaultScoreProfile];
+  if (forYouGroupScoreProfile)
   {
 LABEL_7:
-    v9 = v8;
+    v9 = forYouGroupScoreProfile;
     goto LABEL_9;
   }
 
@@ -251,9 +251,9 @@ LABEL_9:
   }
 
   v32 = [v7 objectForKey:@"thumbnailMetadata"];
-  v33 = [v32 unsignedLongLongValue];
+  unsignedLongLongValue = [v32 unsignedLongLongValue];
 
-  if (v33)
+  if (unsignedLongLongValue)
   {
     [v11 setHasThumbnail:1];
   }
@@ -262,25 +262,25 @@ LABEL_9:
   [v11 setThumbnailPerceptualHash:v34];
 
   v35 = [v7 objectForKey:@"isPaid"];
-  v36 = [v35 BOOLValue];
+  bOOLValue = [v35 BOOLValue];
 
-  if (v36)
+  if (bOOLValue)
   {
     [v11 setIsPaid:1];
   }
 
   v37 = [v7 objectForKey:@"isBundlePaid"];
-  v38 = [v37 BOOLValue];
+  bOOLValue2 = [v37 BOOLValue];
 
-  if (v38)
+  if (bOOLValue2)
   {
     [v11 setIsBundlePaid:1];
   }
 
   v39 = [v7 objectForKey:@"isSponsored"];
-  v40 = [v39 BOOLValue];
+  bOOLValue3 = [v39 BOOLValue];
 
-  if (v40)
+  if (bOOLValue3)
   {
     [v11 setIsSponsored:1];
   }
@@ -307,57 +307,57 @@ LABEL_9:
   }
 
   v44 = [v7 objectForKey:@"behaviorFlags"];
-  v45 = [v44 unsignedIntegerValue];
+  unsignedIntegerValue = [v44 unsignedIntegerValue];
 
-  if ((v45 & 0x20) != 0)
+  if ((unsignedIntegerValue & 0x20) != 0)
   {
     [v11 setIsHiddenFromAutoFavorites:1];
   }
 
   v46 = [v7 objectForKey:@"behaviorFlags"];
-  v47 = [v46 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v46 unsignedIntegerValue];
 
-  if ((v47 & 0x800) != 0)
+  if ((unsignedIntegerValue2 & 0x800) != 0)
   {
     [v11 setReduceVisibility:1];
   }
 
   v48 = [v7 objectForKey:@"behaviorFlags"];
-  v49 = [v48 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v48 unsignedIntegerValue];
 
-  if ((v49 & 0x2000) != 0)
+  if ((unsignedIntegerValue3 & 0x2000) != 0)
   {
     [v11 setReduceVisibilityForNonFollowers:1];
   }
 
   v50 = [v7 objectForKey:@"behaviorFlags"];
-  v51 = [v50 unsignedIntegerValue];
+  unsignedIntegerValue4 = [v50 unsignedIntegerValue];
 
-  if ((v51 & 0x1000) != 0)
+  if ((unsignedIntegerValue4 & 0x1000) != 0)
   {
     [v11 setWebConverted:1];
   }
 
   v52 = [v7 objectForKey:@"behaviorFlags"];
-  v53 = [v52 unsignedIntegerValue];
+  unsignedIntegerValue5 = [v52 unsignedIntegerValue];
 
-  if (v53 < 0)
+  if (unsignedIntegerValue5 < 0)
   {
     [v11 setIsAIGenerated:1];
   }
 
   v54 = [v7 objectForKey:@"isFeature"];
-  v55 = [v54 BOOLValue];
+  bOOLValue4 = [v54 BOOLValue];
 
-  if (v55)
+  if (bOOLValue4)
   {
     [v11 setIsFeatureCandidate:1];
   }
 
   v56 = [v7 objectForKey:@"isIssueOnly"];
-  v57 = [v56 BOOLValue];
+  bOOLValue5 = [v56 BOOLValue];
 
-  if (v57)
+  if (bOOLValue5)
   {
     [v11 setIsIssueOnly:1];
   }
@@ -369,34 +369,34 @@ LABEL_9:
   [v11 setBackendArticleVersion:{objc_msgSend(v59, "longLongValue")}];
 
   v60 = [v9 engagementFromCKRecord:v7];
-  v61 = [v60 globalCohorts];
-  [v11 setGlobalCohorts:v61];
+  globalCohorts = [v60 globalCohorts];
+  [v11 setGlobalCohorts:globalCohorts];
 
-  v62 = [v60 sourceChannelCohorts];
-  [v11 setSourceChannelCohorts:v62];
+  sourceChannelCohorts = [v60 sourceChannelCohorts];
+  [v11 setSourceChannelCohorts:sourceChannelCohorts];
 
   v63 = [v9 conversionStatsFromCKRecord:v7];
-  v64 = [v63 globalConversionStats];
-  [v11 setGlobalConversionStats:v64];
+  globalConversionStats = [v63 globalConversionStats];
+  [v11 setGlobalConversionStats:globalConversionStats];
 
-  v65 = [v63 channelConversionStats];
-  [v11 setChannelConversionStats:v65];
+  channelConversionStats = [v63 channelConversionStats];
+  [v11 setChannelConversionStats:channelConversionStats];
 
   v66 = [v9 articleTagMetadataFromCKRecord:v7];
-  v67 = [v66 channelTagMetadata];
-  [v11 setChannelTagMetadata:v67];
+  channelTagMetadata = [v66 channelTagMetadata];
+  [v11 setChannelTagMetadata:channelTagMetadata];
 
   v68 = objc_alloc(MEMORY[0x1E69B6C78]);
   v69 = [v7 objectForKey:@"expirationData"];
   v70 = [v68 initWithData:v69];
   [v11 setExpirationData:v70];
 
-  v71 = [v66 topicTagMetadatas];
-  v72 = [v9 articleTopicsFromCKRecord:v7 engagement:v60 conversionStats:v63 tagMetadata:v71];
+  topicTagMetadatas = [v66 topicTagMetadatas];
+  v72 = [v9 articleTopicsFromCKRecord:v7 engagement:v60 conversionStats:v63 tagMetadata:topicTagMetadatas];
   [v11 setTopics:v72];
 
-  v73 = [v7 recordType];
-  LODWORD(v72) = [v73 isEqualToString:@"Article"];
+  recordType = [v7 recordType];
+  LODWORD(v72) = [recordType isEqualToString:@"Article"];
 
   v102 = v10;
   if (v72)
@@ -410,8 +410,8 @@ LABEL_9:
 
   else
   {
-    v77 = [v7 recordType];
-    v78 = [v77 isEqualToString:@"FeedItemAndArticle"];
+    recordType2 = [v7 recordType];
+    v78 = [recordType2 isEqualToString:@"FeedItemAndArticle"];
 
     if (v78)
     {
@@ -555,17 +555,17 @@ LABEL_59:
   v6 = v5;
 
   v7 = MEMORY[0x1E69E58C0];
-  v8 = [a1 feedID];
-  v9 = [v6 feedID];
-  if ([v7 nf_object:v8 isEqualToObject:v9])
+  feedID = [self feedID];
+  feedID2 = [v6 feedID];
+  if ([v7 nf_object:feedID isEqualToObject:feedID2])
   {
     v10 = MEMORY[0x1E69E58C0];
-    v11 = [a1 articleID];
-    v12 = [v6 articleID];
-    if ([v10 nf_object:v11 isEqualToObject:v12])
+    articleID = [self articleID];
+    articleID2 = [v6 articleID];
+    if ([v10 nf_object:articleID isEqualToObject:articleID2])
     {
-      v13 = [a1 order];
-      v14 = v13 == [v6 order];
+      order = [self order];
+      v14 = order == [v6 order];
     }
 
     else
@@ -584,51 +584,51 @@ LABEL_59:
 
 - (uint64_t)hash
 {
-  v2 = [a1 feedID];
-  v3 = [v2 hash];
-  v4 = [a1 articleID];
-  v5 = [v4 hash] ^ v3;
-  v6 = [a1 order];
+  feedID = [self feedID];
+  v3 = [feedID hash];
+  articleID = [self articleID];
+  v5 = [articleID hash] ^ v3;
+  order = [self order];
 
-  return v5 ^ v6;
+  return v5 ^ order;
 }
 
 - (uint64_t)compareOrder:()FCFeedItem
 {
   v4 = a3;
-  v5 = [a1 order];
-  v6 = [v4 order];
+  order = [self order];
+  order2 = [v4 order];
 
-  if (v5 < v6)
+  if (order < order2)
   {
     return -1;
   }
 
   else
   {
-    return v5 > v6;
+    return order > order2;
   }
 }
 
 - (uint64_t)compareOrderDescending:()FCFeedItem
 {
-  v4 = [a3 order];
-  v5 = [a1 order];
-  if (v4 < v5)
+  order = [a3 order];
+  order2 = [self order];
+  if (order < order2)
   {
     return -1;
   }
 
   else
   {
-    return v4 > v5;
+    return order > order2;
   }
 }
 
 - (uint64_t)compareGlobalUserFeedback:()FCFeedItem
 {
   v4 = a3;
-  [a1 globalUserFeedback];
+  [self globalUserFeedback];
   v6 = v5;
   [v4 globalUserFeedback];
   v8 = v7;
@@ -648,7 +648,7 @@ LABEL_59:
 {
   [a3 globalUserFeedback];
   v5 = v4;
-  [a1 globalUserFeedback];
+  [self globalUserFeedback];
   if (v5 < v6)
   {
     return -1;
@@ -670,8 +670,8 @@ LABEL_59:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [a1 topicIDs];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    topicIDs = [self topicIDs];
+    v6 = [topicIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -683,7 +683,7 @@ LABEL_59:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(topicIDs);
           }
 
           v10 = [FCFeedItemFeature featureForTopicID:*(*(&v12 + 1) + 8 * v9)];
@@ -693,7 +693,7 @@ LABEL_59:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [topicIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -706,17 +706,17 @@ LABEL_59:
 - (uint64_t)hasFeature:()FCFeedItem
 {
   v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 2)
+  type = [v4 type];
+  if (type == 2)
   {
     v8 = 1;
   }
 
-  else if (v5 == 1)
+  else if (type == 1)
   {
-    v6 = [a1 topicIDs];
-    v7 = [v4 topicID];
-    v8 = [v6 containsObject:v7];
+    topicIDs = [self topicIDs];
+    topicID = [v4 topicID];
+    v8 = [topicIDs containsObject:topicID];
   }
 
   else
@@ -730,8 +730,8 @@ LABEL_59:
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 dictionaryRepresentation];
-  v4 = [v2 stringWithFormat:@"%p: %@", a1, v3];
+  dictionaryRepresentation = [self dictionaryRepresentation];
+  v4 = [v2 stringWithFormat:@"%p: %@", self, dictionaryRepresentation];
 
   return v4;
 }
@@ -739,17 +739,17 @@ LABEL_59:
 - (uint64_t)publishDate
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 publishDateMilliseconds];
+  publishDateMilliseconds = [self publishDateMilliseconds];
 
-  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:v2];
+  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:publishDateMilliseconds];
 }
 
 - (uint64_t)lastModifiedDate
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 lastModifiedDateMilliseconds];
+  lastModifiedDateMilliseconds = [self lastModifiedDateMilliseconds];
 
-  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:v2];
+  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:lastModifiedDateMilliseconds];
 }
 
 - (uint64_t)canBePurchased
@@ -769,14 +769,14 @@ LABEL_59:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v5, 0x26u);
   }
 
-  if ([a1 isPaid])
+  if ([self isPaid])
   {
     result = 1;
   }
 
   else
   {
-    result = [a1 isBundlePaid];
+    result = [self isBundlePaid];
   }
 
   v3 = *MEMORY[0x1E69E9840];
@@ -786,34 +786,34 @@ LABEL_59:
 - (void)enumerateTopicCohortsWithBlock:()FCFeedItem
 {
   v4 = a3;
-  v5 = [a1 topics];
+  topics = [self topics];
 
-  if (v5)
+  if (topics)
   {
-    v6 = [a1 topics];
+    topics2 = [self topics];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __59__NTPBFeedItem_FCFeedItem__enumerateTopicCohortsWithBlock___block_invoke_2;
     v7[3] = &unk_1E7C3B988;
     v8 = v4;
-    [v6 enumerateObjectsUsingBlock:v7];
+    [topics2 enumerateObjectsUsingBlock:v7];
   }
 }
 
 - (void)enumerateTopicConversionStatsWithBlock:()FCFeedItem
 {
   v4 = a3;
-  v5 = [a1 topics];
+  topics = [self topics];
 
-  if (v5)
+  if (topics)
   {
-    v6 = [a1 topics];
+    topics2 = [self topics];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __67__NTPBFeedItem_FCFeedItem__enumerateTopicConversionStatsWithBlock___block_invoke_2;
     v7[3] = &unk_1E7C3B988;
     v8 = v4;
-    [v6 enumerateObjectsUsingBlock:v7];
+    [topics2 enumerateObjectsUsingBlock:v7];
   }
 }
 
@@ -822,10 +822,10 @@ LABEL_59:
   v4 = a3;
   if ([v4 hasPrefix:@"LX"])
   {
-    [a1 setIsCoread:1];
+    [self setIsCoread:1];
   }
 
-  [a1 addSurfacedByArticleListID2:v4];
+  [self addSurfacedByArticleListID2:v4];
 }
 
 @end

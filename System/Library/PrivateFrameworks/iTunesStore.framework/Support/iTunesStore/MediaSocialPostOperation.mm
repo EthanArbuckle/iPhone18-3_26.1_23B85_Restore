@@ -1,50 +1,50 @@
 @interface MediaSocialPostOperation
-- (MediaSocialPostOperation)initWithPostDescription:(id)a3;
-- (MediaSocialPostOperation)initWithPostEntity:(id)a3;
+- (MediaSocialPostOperation)initWithPostDescription:(id)description;
+- (MediaSocialPostOperation)initWithPostEntity:(id)entity;
 - (NSString)userAgent;
-- (id)_attachmentDictionaryWithAttachment:(id)a3;
-- (id)_externalServiceDictionaryWithDestination:(id)a3;
+- (id)_attachmentDictionaryWithAttachment:(id)attachment;
+- (id)_externalServiceDictionaryWithDestination:(id)destination;
 - (id)_requestBodyDictionary;
-- (id)_targetDictionaryWithContentItem:(id)a3;
+- (id)_targetDictionaryWithContentItem:(id)item;
 - (id)resultBlock;
 - (void)run;
-- (void)setResultBlock:(id)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setResultBlock:(id)block;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation MediaSocialPostOperation
 
-- (MediaSocialPostOperation)initWithPostDescription:(id)a3
+- (MediaSocialPostOperation)initWithPostDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v20.receiver = self;
   v20.super_class = MediaSocialPostOperation;
   v5 = [(MediaSocialPostOperation *)&v20 init];
   if (v5)
   {
-    v6 = [v4 accountIdentifier];
+    accountIdentifier = [descriptionCopy accountIdentifier];
     accountID = v5->_accountID;
-    v5->_accountID = v6;
+    v5->_accountID = accountIdentifier;
 
-    v8 = [v4 authorIdentifier];
+    authorIdentifier = [descriptionCopy authorIdentifier];
     authorID = v5->_authorID;
-    v5->_authorID = v8;
+    v5->_authorID = authorIdentifier;
 
-    v10 = [v4 authorType];
+    authorType = [descriptionCopy authorType];
     authorType = v5->_authorType;
-    v5->_authorType = v10;
+    v5->_authorType = authorType;
 
-    v12 = [v4 contentItems];
+    contentItems = [descriptionCopy contentItems];
     contentItems = v5->_contentItems;
-    v5->_contentItems = v12;
+    v5->_contentItems = contentItems;
 
-    v14 = [v4 externalServiceDestinations];
+    externalServiceDestinations = [descriptionCopy externalServiceDestinations];
     externalServiceDestinations = v5->_externalServiceDestinations;
-    v5->_externalServiceDestinations = v14;
+    v5->_externalServiceDestinations = externalServiceDestinations;
 
-    v16 = [v4 text];
+    text = [descriptionCopy text];
     text = v5->_text;
-    v5->_text = v16;
+    v5->_text = text;
 
     v18 = CFUUIDCreate(0);
     v5->_postIdentifier = *&CFUUIDGetUUIDBytes(v18);
@@ -54,9 +54,9 @@
   return v5;
 }
 
-- (MediaSocialPostOperation)initWithPostEntity:(id)a3
+- (MediaSocialPostOperation)initWithPostEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v17.receiver = self;
   v17.super_class = MediaSocialPostOperation;
   v5 = [(MediaSocialPostOperation *)&v17 init];
@@ -73,26 +73,26 @@
     *v19 = 0u;
     *v20 = 0u;
     *obj = 0u;
-    [v4 getValues:obj forProperties:v22 count:7];
+    [entityCopy getValues:obj forProperties:v22 count:7];
     objc_storeStrong(&v5->_accountID, obj[0]);
     objc_storeStrong(&v5->_authorID, obj[1]);
     objc_storeStrong(&v5->_authorType, v19[0]);
     [v21 doubleValue];
     v5->_createTime = v6;
     v5->_isAttributed = [v19[1] BOOLValue];
-    v5->_postIdentifier = [v4 persistentID];
+    v5->_postIdentifier = [entityCopy persistentID];
     objc_storeStrong(&v5->_text, v20[0]);
-    v7 = [v4 uploadedAttachments];
+    uploadedAttachments = [entityCopy uploadedAttachments];
     attachments = v5->_attachments;
-    v5->_attachments = v7;
+    v5->_attachments = uploadedAttachments;
 
-    v9 = [v4 contentItems];
+    contentItems = [entityCopy contentItems];
     contentItems = v5->_contentItems;
-    v5->_contentItems = v9;
+    v5->_contentItems = contentItems;
 
-    v11 = [v4 externalServiceDestinations];
+    externalServiceDestinations = [entityCopy externalServiceDestinations];
     externalServiceDestinations = v5->_externalServiceDestinations;
-    v5->_externalServiceDestinations = v11;
+    v5->_externalServiceDestinations = externalServiceDestinations;
 
     if (v20[1])
     {
@@ -119,13 +119,13 @@
   return v4;
 }
 
-- (void)setResultBlock:(id)a3
+- (void)setResultBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(MediaSocialPostOperation *)self lock];
-  if (self->_resultBlock != v6)
+  if (self->_resultBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     resultBlock = self->_resultBlock;
     self->_resultBlock = v4;
   }
@@ -133,13 +133,13 @@
   [(MediaSocialPostOperation *)self unlock];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
-  v6 = a3;
+  agentCopy = agent;
   [(MediaSocialPostOperation *)self lock];
-  if (self->_userAgent != v6)
+  if (self->_userAgent != agentCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)agentCopy copy];
     userAgent = self->_userAgent;
     self->_userAgent = v4;
   }
@@ -159,16 +159,16 @@
 - (void)run
 {
   v65 = objc_alloc_init(MediaSocialPostResponse);
-  v3 = [(MediaSocialPostOperation *)self _requestBodyDictionary];
+  _requestBodyDictionary = [(MediaSocialPostOperation *)self _requestBodyDictionary];
   v67 = 0;
-  v4 = [NSJSONSerialization dataWithJSONObject:v3 options:0 error:&v67];
+  v4 = [NSJSONSerialization dataWithJSONObject:_requestBodyDictionary options:0 error:&v67];
   v5 = v67;
   if (v4)
   {
-    v6 = [(MediaSocialPostOperation *)self userAgent];
+    userAgent = [(MediaSocialPostOperation *)self userAgent];
     v7 = [SSURLBagContext contextWithBagType:0];
     v8 = SSHTTPHeaderUserAgent;
-    [v7 setValue:v6 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+    [v7 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
     [v7 setIgnoresCaches:1];
     v64 = [(MediaSocialPostOperation *)self loadedURLBagWithContext:v7 returningError:0];
     if (!v64)
@@ -206,7 +206,7 @@
           [v15 setHTTPMethod:@"POST"];
           [v15 setURL:v62];
           [v15 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-          [v15 setValue:v6 forHTTPHeaderField:v8];
+          [v15 setValue:userAgent forHTTPHeaderField:v8];
           SSVAddMediaSocialHeadersToURLRequestProperties();
           [v63 setRequestProperties:v15];
           v61 = v15;
@@ -216,21 +216,21 @@
             v16 = +[SSLogConfig sharedConfig];
           }
 
-          v17 = [v16 shouldLog];
-          v18 = [v16 shouldLogToDisk];
-          v19 = [v16 OSLogObject];
-          v20 = v19;
-          if (v18)
+          shouldLog = [v16 shouldLog];
+          shouldLogToDisk = [v16 shouldLogToDisk];
+          oSLogObject = [v16 OSLogObject];
+          v20 = oSLogObject;
+          if (shouldLogToDisk)
           {
-            v17 |= 2u;
+            shouldLog |= 2u;
           }
 
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+          if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
           {
-            v17 &= 2u;
+            shouldLog &= 2u;
           }
 
-          if (v17)
+          if (shouldLog)
           {
             v21 = objc_opt_class();
             postIdentifier = self->_postIdentifier;
@@ -270,8 +270,8 @@ LABEL_57:
             goto LABEL_58;
           }
 
-          v27 = [v63 dataProvider];
-          v28 = [v27 output];
+          dataProvider = [v63 dataProvider];
+          output = [dataProvider output];
 
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -281,41 +281,41 @@ LABEL_32:
             goto LABEL_33;
           }
 
-          v59 = [v28 objectForKey:@"status"];
+          v59 = [output objectForKey:@"status"];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0 || ![v59 isEqualToString:@"error"])
           {
 LABEL_31:
-            v36 = [v63 response];
-            -[MediaSocialPostResponse setStatusCode:](v65, "setStatusCode:", [v36 itunes_statusCode]);
+            response = [v63 response];
+            -[MediaSocialPostResponse setStatusCode:](v65, "setStatusCode:", [response itunes_statusCode]);
 
-            [(MediaSocialPostResponse *)v65 setValuesWithResponseDictionary:v28];
+            [(MediaSocialPostResponse *)v65 setValuesWithResponseDictionary:output];
             goto LABEL_32;
           }
 
-          v58 = [v28 objectForKey:@"error"];
+          v58 = [output objectForKey:@"error"];
           v29 = +[SSLogConfig sharedDaemonConfig];
           if (!v29)
           {
             v29 = +[SSLogConfig sharedConfig];
           }
 
-          v30 = [v29 shouldLog];
-          v55 = [v29 shouldLogToDisk];
+          shouldLog2 = [v29 shouldLog];
+          shouldLogToDisk2 = [v29 shouldLogToDisk];
           v57 = v29;
-          v31 = [v29 OSLogObject];
-          v32 = v31;
-          if (v55)
+          oSLogObject2 = [v29 OSLogObject];
+          v32 = oSLogObject2;
+          if (shouldLogToDisk2)
           {
-            v30 |= 2u;
+            shouldLog2 |= 2u;
           }
 
-          if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+          if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
           {
-            v30 &= 2u;
+            shouldLog2 &= 2u;
           }
 
-          if (v30)
+          if (shouldLog2)
           {
             v33 = objc_opt_class();
             v69 = 138412546;
@@ -353,21 +353,21 @@ LABEL_46:
           v43 = +[SSLogConfig sharedConfig];
         }
 
-        v44 = [v43 shouldLog];
-        v45 = [v43 shouldLogToDisk];
-        v46 = [v43 OSLogObject];
-        v47 = v46;
-        if (v45)
+        shouldLog3 = [v43 shouldLog];
+        shouldLogToDisk3 = [v43 shouldLogToDisk];
+        oSLogObject3 = [v43 OSLogObject];
+        v47 = oSLogObject3;
+        if (shouldLogToDisk3)
         {
-          v44 |= 2u;
+          shouldLog3 |= 2u;
         }
 
-        if (!os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
-          v44 &= 2u;
+          shouldLog3 &= 2u;
         }
 
-        if (v44)
+        if (shouldLog3)
         {
           v48 = objc_opt_class();
           v69 = 138412290;
@@ -397,27 +397,27 @@ LABEL_56:
     goto LABEL_46;
   }
 
-  v6 = +[SSLogConfig sharedDaemonConfig];
-  if (!v6)
+  userAgent = +[SSLogConfig sharedDaemonConfig];
+  if (!userAgent)
   {
-    v6 = +[SSLogConfig sharedConfig];
+    userAgent = +[SSLogConfig sharedConfig];
   }
 
-  v37 = [v6 shouldLog];
-  v38 = [v6 shouldLogToDisk];
-  v39 = [v6 OSLogObject];
-  v7 = v39;
-  if (v38)
+  shouldLog4 = [userAgent shouldLog];
+  shouldLogToDisk4 = [userAgent shouldLogToDisk];
+  oSLogObject4 = [userAgent OSLogObject];
+  v7 = oSLogObject4;
+  if (shouldLogToDisk4)
   {
-    v37 |= 2u;
+    shouldLog4 |= 2u;
   }
 
-  if (!os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
   {
-    v37 &= 2u;
+    shouldLog4 &= 2u;
   }
 
-  if (!v37)
+  if (!shouldLog4)
   {
 LABEL_43:
     v25 = 0;
@@ -449,37 +449,37 @@ LABEL_59:
   [(MediaSocialPostOperation *)self setError:v5];
   [(MediaSocialPostOperation *)self setSuccess:v25];
   [(MediaSocialPostResponse *)v65 setError:v5];
-  v51 = [(MediaSocialPostOperation *)self resultBlock];
-  v52 = v51;
-  if (v51)
+  resultBlock = [(MediaSocialPostOperation *)self resultBlock];
+  v52 = resultBlock;
+  if (resultBlock)
   {
-    (*(v51 + 16))(v51, v65);
+    (*(resultBlock + 16))(resultBlock, v65);
     [(MediaSocialPostOperation *)self setResultBlock:0];
   }
 }
 
-- (id)_attachmentDictionaryWithAttachment:(id)a3
+- (id)_attachmentDictionaryWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v4 albumIdentifier];
-  if (v6)
+  albumIdentifier = [attachmentCopy albumIdentifier];
+  if (albumIdentifier)
   {
-    [v5 setObject:v6 forKey:@"albumId"];
+    [v5 setObject:albumIdentifier forKey:@"albumId"];
   }
 
-  v7 = [v4 assetToken];
+  assetToken = [attachmentCopy assetToken];
 
-  if (v7)
+  if (assetToken)
   {
-    [v5 setObject:v7 forKey:@"contentToken"];
+    [v5 setObject:assetToken forKey:@"contentToken"];
   }
 
-  v8 = [v4 assetTokenType];
+  assetTokenType = [attachmentCopy assetTokenType];
 
-  if (v8)
+  if (assetTokenType)
   {
-    v9 = v8;
+    v9 = assetTokenType;
   }
 
   else
@@ -488,30 +488,30 @@ LABEL_59:
   }
 
   [v5 setObject:v9 forKey:@"contentTokenType"];
-  v10 = [v4 categoryName];
+  categoryName = [attachmentCopy categoryName];
 
-  if (v10)
+  if (categoryName)
   {
-    [v5 setObject:v10 forKey:@"category"];
+    [v5 setObject:categoryName forKey:@"category"];
   }
 
-  v11 = [v4 attachmentDescription];
+  attachmentDescription = [attachmentCopy attachmentDescription];
 
-  if (v11)
+  if (attachmentDescription)
   {
-    [v5 setObject:v11 forKey:@"description"];
+    [v5 setObject:attachmentDescription forKey:@"description"];
   }
 
-  if ([v4 isExplicitContent])
+  if ([attachmentCopy isExplicitContent])
   {
     [v5 setObject:@"Explicit" forKey:@"parentalAdvisoryType"];
   }
 
-  v12 = [v4 title];
+  title = [attachmentCopy title];
 
-  if (v12)
+  if (title)
   {
-    [v5 setObject:v12 forKey:@"title"];
+    [v5 setObject:title forKey:@"title"];
   }
 
   authorID = self->_authorID;
@@ -525,32 +525,32 @@ LABEL_59:
     accountID = self->_accountID;
     if (accountID)
     {
-      v15 = [(NSNumber *)accountID stringValue];
-      [v5 setObject:v15 forKey:@"artistAdamId"];
+      stringValue = [(NSNumber *)accountID stringValue];
+      [v5 setObject:stringValue forKey:@"artistAdamId"];
     }
   }
 
   v16 = objc_alloc_init(NSMutableArray);
-  v17 = [v4 artists];
+  artists = [attachmentCopy artists];
   v32 = _NSConcreteStackBlock;
   v33 = 3221225472;
   v34 = sub_1001FCBEC;
   v35 = &unk_10032C310;
   v18 = v16;
   v36 = v18;
-  [v17 enumerateObjectsUsingBlock:&v32];
+  [artists enumerateObjectsUsingBlock:&v32];
 
   if ([v18 count])
   {
     [v5 setObject:v18 forKey:@"allArtistAdamIds"];
   }
 
-  v19 = [v4 attachmentType];
-  if (v19 <= 2)
+  attachmentType = [attachmentCopy attachmentType];
+  if (attachmentType <= 2)
   {
-    if (v19 != 1)
+    if (attachmentType != 1)
     {
-      if (v19 != 2)
+      if (attachmentType != 2)
       {
         goto LABEL_33;
       }
@@ -568,16 +568,16 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if (v19 == 3)
+  if (attachmentType == 3)
   {
     v24 = @"SoundBite";
     goto LABEL_31;
   }
 
-  if (v19 == 4)
+  if (attachmentType == 4)
   {
     v21 = [NSString alloc];
-    [v4 previewFrameTimestamp];
+    [attachmentCopy previewFrameTimestamp];
     v23 = [v21 initWithFormat:@"%.0f", v22, v32, v33, v34, v35];
     [v5 setObject:v23 forKey:@"previewFrameTimeCode"];
     [v5 setObject:@"Video" forKey:@"requestType"];
@@ -585,63 +585,63 @@ LABEL_32:
   }
 
 LABEL_33:
-  v25 = [v4 childAttachmentForRelationship:SSVMediaSocialPostAttachmentRelationshipCoverImage];
+  v25 = [attachmentCopy childAttachmentForRelationship:SSVMediaSocialPostAttachmentRelationshipCoverImage];
   v26 = v25;
   if (v25)
   {
-    v27 = [v25 assetToken];
-    if (v27)
+    assetToken2 = [v25 assetToken];
+    if (assetToken2)
     {
-      [v5 setObject:v27 forKey:@"coverArtToken"];
+      [v5 setObject:assetToken2 forKey:@"coverArtToken"];
     }
 
-    v28 = [v26 assetTokenType];
+    assetTokenType2 = [v26 assetTokenType];
 
-    if (v28)
+    if (assetTokenType2)
     {
-      [v5 setObject:v28 forKey:@"coverArtTokenType"];
+      [v5 setObject:assetTokenType2 forKey:@"coverArtTokenType"];
     }
   }
 
-  [v4 uploadTime];
+  [attachmentCopy uploadTime];
   v30 = [[NSNumber alloc] initWithLongLong:1000 * v29];
   [v5 setObject:v30 forKey:@"uploadTimestamp"];
 
   return v5;
 }
 
-- (id)_externalServiceDictionaryWithDestination:(id)a3
+- (id)_externalServiceDictionaryWithDestination:(id)destination
 {
-  v3 = a3;
+  destinationCopy = destination;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 accessToken];
-  if (v5)
+  accessToken = [destinationCopy accessToken];
+  if (accessToken)
   {
-    [v4 setObject:v5 forKey:@"accessToken"];
+    [v4 setObject:accessToken forKey:@"accessToken"];
   }
 
-  v6 = [v3 serviceIdentifier];
-  if ([v6 isEqualToString:SSVMediaSocialPostExternalServiceTwitter])
+  serviceIdentifier = [destinationCopy serviceIdentifier];
+  if ([serviceIdentifier isEqualToString:SSVMediaSocialPostExternalServiceTwitter])
   {
     [v4 setObject:@"twitter" forKey:@"type"];
   }
 
   else
   {
-    v7 = [v3 pageIdentifier];
-    if (v7)
+    pageIdentifier = [destinationCopy pageIdentifier];
+    if (pageIdentifier)
     {
-      [v4 setObject:v7 forKey:@"pageId"];
+      [v4 setObject:pageIdentifier forKey:@"pageId"];
     }
 
-    v8 = [v3 pageAccessToken];
-    if (v8)
+    pageAccessToken = [destinationCopy pageAccessToken];
+    if (pageAccessToken)
     {
-      [v4 setObject:v8 forKey:@"pageToken"];
+      [v4 setObject:pageAccessToken forKey:@"pageToken"];
       v9 = @"facebook_page";
     }
 
-    else if (v7)
+    else if (pageIdentifier)
     {
       v9 = @"facebook_page";
     }
@@ -735,8 +735,8 @@ LABEL_8:
   contentItems = self->_contentItems;
   if (v18 == 1)
   {
-    v20 = [(NSArray *)contentItems firstObject];
-    v21 = [(MediaSocialPostOperation *)self _targetDictionaryWithContentItem:v20];
+    firstObject = [(NSArray *)contentItems firstObject];
+    v21 = [(MediaSocialPostOperation *)self _targetDictionaryWithContentItem:firstObject];
     [v3 setObject:v21 forKey:@"target"];
   }
 
@@ -747,7 +747,7 @@ LABEL_8:
       goto LABEL_33;
     }
 
-    v20 = objc_alloc_init(NSMutableArray);
+    firstObject = objc_alloc_init(NSMutableArray);
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -768,7 +768,7 @@ LABEL_8:
           }
 
           v27 = [(MediaSocialPostOperation *)self _targetDictionaryWithContentItem:*(*(&v40 + 1) + 8 * j)];
-          [v20 addObject:v27];
+          [firstObject addObject:v27];
         }
 
         v24 = [(NSArray *)v22 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -777,7 +777,7 @@ LABEL_8:
       while (v24);
     }
 
-    [v3 setObject:v20 forKey:@"target"];
+    [v3 setObject:firstObject forKey:@"target"];
   }
 
 LABEL_33:
@@ -819,21 +819,21 @@ LABEL_33:
   return v3;
 }
 
-- (id)_targetDictionaryWithContentItem:(id)a3
+- (id)_targetDictionaryWithContentItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 identifier];
-  if (v5)
+  identifier = [itemCopy identifier];
+  if (identifier)
   {
-    [v4 setObject:v5 forKey:@"id"];
+    [v4 setObject:identifier forKey:@"id"];
   }
 
-  v6 = [v3 type];
+  type = [itemCopy type];
 
-  if (v6)
+  if (type)
   {
-    [v4 setObject:v6 forKey:@"type"];
+    [v4 setObject:type forKey:@"type"];
   }
 
   return v4;

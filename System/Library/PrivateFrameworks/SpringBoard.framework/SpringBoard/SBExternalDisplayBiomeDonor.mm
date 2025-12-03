@@ -1,6 +1,6 @@
 @interface SBExternalDisplayBiomeDonor
 - (SBExternalDisplayBiomeDonor)init;
-- (void)_donateToBiomeIfNecessaryForDisplayInfo:(id)a3 connect:(BOOL)a4;
+- (void)_donateToBiomeIfNecessaryForDisplayInfo:(id)info connect:(BOOL)connect;
 - (void)dealloc;
 @end
 
@@ -31,44 +31,44 @@
   [(SBExternalDisplayBiomeDonor *)&v3 dealloc];
 }
 
-- (void)_donateToBiomeIfNecessaryForDisplayInfo:(id)a3 connect:(BOOL)a4
+- (void)_donateToBiomeIfNecessaryForDisplayInfo:(id)info connect:(BOOL)connect
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 identifier];
-  if (v7)
+  connectCopy = connect;
+  infoCopy = info;
+  identifier = [infoCopy identifier];
+  if (identifier)
   {
     biomeDonationTimers = self->_biomeDonationTimers;
     if (!biomeDonationTimers)
     {
-      v9 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v10 = self->_biomeDonationTimers;
-      self->_biomeDonationTimers = v9;
+      self->_biomeDonationTimers = dictionary;
 
       biomeDonationTimers = self->_biomeDonationTimers;
     }
 
-    v11 = [(NSMutableDictionary *)biomeDonationTimers objectForKey:v7];
+    v11 = [(NSMutableDictionary *)biomeDonationTimers objectForKey:identifier];
     if (!v11)
     {
       v12 = [_SBDisplayConnectionDonationTimer alloc];
-      v13 = [v6 identifier];
-      v14 = [v6 deviceName];
-      v15 = [v6 displayName];
-      v16 = [v6 isMirrored];
+      identifier2 = [infoCopy identifier];
+      deviceName = [infoCopy deviceName];
+      displayName = [infoCopy displayName];
+      isMirrored = [infoCopy isMirrored];
       v18 = MEMORY[0x277D85DD0];
       v19 = 3221225472;
       v20 = __79__SBExternalDisplayBiomeDonor__donateToBiomeIfNecessaryForDisplayInfo_connect___block_invoke;
       v21 = &unk_2783BF9B0;
-      v22 = self;
-      v17 = v7;
+      selfCopy = self;
+      v17 = identifier;
       v23 = v17;
-      v11 = [(_SBDisplayConnectionDonationTimer *)v12 initWithUniqueId:v13 deviceName:v14 productName:v15 connect:v4 mirroring:v16 handler:&v18];
+      v11 = [(_SBDisplayConnectionDonationTimer *)v12 initWithUniqueId:identifier2 deviceName:deviceName productName:displayName connect:connectCopy mirroring:isMirrored handler:&v18];
 
-      [(NSMutableDictionary *)self->_biomeDonationTimers setObject:v11 forKey:v17, v18, v19, v20, v21, v22];
+      [(NSMutableDictionary *)self->_biomeDonationTimers setObject:v11 forKey:v17, v18, v19, v20, v21, selfCopy];
     }
 
-    [(_SBDisplayConnectionDonationTimer *)v11 resetTimerOnConnect:v4];
+    [(_SBDisplayConnectionDonationTimer *)v11 resetTimerOnConnect:connectCopy];
   }
 }
 

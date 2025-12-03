@@ -1,5 +1,5 @@
 @interface MPCModelGenericAVItemTimedMetadataResponse
-- (MPCModelGenericAVItemTimedMetadataResponse)initWithRequest:(id)a3 personalizationResponse:(id)a4 firstResponse:(BOOL)a5 finalResponse:(BOOL)a6;
+- (MPCModelGenericAVItemTimedMetadataResponse)initWithRequest:(id)request personalizationResponse:(id)response firstResponse:(BOOL)firstResponse finalResponse:(BOOL)finalResponse;
 - (void)dealloc;
 @end
 
@@ -9,8 +9,8 @@
 {
   if (self->_personalizationResponse)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_personalizationResponse name:*MEMORY[0x1E6970240] object:self->_personalizationResponse];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_personalizationResponse name:*MEMORY[0x1E6970240] object:self->_personalizationResponse];
   }
 
   v4.receiver = self;
@@ -18,26 +18,26 @@
   [(MPCModelGenericAVItemTimedMetadataResponse *)&v4 dealloc];
 }
 
-- (MPCModelGenericAVItemTimedMetadataResponse)initWithRequest:(id)a3 personalizationResponse:(id)a4 firstResponse:(BOOL)a5 finalResponse:(BOOL)a6
+- (MPCModelGenericAVItemTimedMetadataResponse)initWithRequest:(id)request personalizationResponse:(id)response firstResponse:(BOOL)firstResponse finalResponse:(BOOL)finalResponse
 {
-  v11 = a4;
+  responseCopy = response;
   v18.receiver = self;
   v18.super_class = MPCModelGenericAVItemTimedMetadataResponse;
-  v12 = [(MPModelResponse *)&v18 initWithRequest:a3];
+  v12 = [(MPModelResponse *)&v18 initWithRequest:request];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_personalizationResponse, a4);
-    v13->_firstResponse = a5;
-    v13->_finalResponse = a6;
+    objc_storeStrong(&v12->_personalizationResponse, response);
+    v13->_firstResponse = firstResponse;
+    v13->_finalResponse = finalResponse;
     personalizationResponse = v13->_personalizationResponse;
     if (personalizationResponse)
     {
-      v15 = [(MPModelResponse *)personalizationResponse results];
-      [(MPModelResponse *)v13 setResults:v15];
+      results = [(MPModelResponse *)personalizationResponse results];
+      [(MPModelResponse *)v13 setResults:results];
 
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 addObserver:v13 selector:sel__personalizationResponseDidInvalidateNotification_ name:*MEMORY[0x1E6970240] object:v13->_personalizationResponse];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v13 selector:sel__personalizationResponseDidInvalidateNotification_ name:*MEMORY[0x1E6970240] object:v13->_personalizationResponse];
       if (![(MPModelResponse *)v13->_personalizationResponse isValid])
       {
         [(MPModelResponse *)v13 _invalidate];

@@ -1,5 +1,5 @@
 @interface HUIconButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation HUIconButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUIconButton" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUNameAndIconEditorCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUNameItemModuleController" hasInstanceMethod:@"supportsCustomIconEditing" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUIconButton" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUNameAndIconEditorCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUNameItemModuleController" hasInstanceMethod:@"supportsCustomIconEditing" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

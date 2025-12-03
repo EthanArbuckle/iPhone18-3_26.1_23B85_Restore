@@ -1,17 +1,17 @@
 @interface _NSUndoInvocation
-- (_NSUndoInvocation)initWithTarget:(id)a3 invocation:(id)a4;
+- (_NSUndoInvocation)initWithTarget:(id)target invocation:(id)invocation;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation _NSUndoInvocation
 
-- (_NSUndoInvocation)initWithTarget:(id)a3 invocation:(id)a4
+- (_NSUndoInvocation)initWithTarget:(id)target invocation:(id)invocation
 {
-  v5 = [(_NSUndoObject *)self initWithTarget:a3];
-  v6 = a4;
-  v5->_invocation = v6;
-  [(NSInvocation *)v6 retainArguments];
+  v5 = [(_NSUndoObject *)self initWithTarget:target];
+  invocationCopy = invocation;
+  v5->_invocation = invocationCopy;
+  [(NSInvocation *)invocationCopy retainArguments];
   return v5;
 }
 

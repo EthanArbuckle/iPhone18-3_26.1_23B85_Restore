@@ -18,9 +18,9 @@
 {
   v6.receiver = self;
   v6.super_class = SBSUIRemoteAlertSceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v6 initialSettingsDiffActions];
+  initialSettingsDiffActions = [(UIApplicationSceneSpecification *)&v6 initialSettingsDiffActions];
   v3 = objc_opt_new();
-  v4 = [v2 arrayByAddingObject:v3];
+  v4 = [initialSettingsDiffActions arrayByAddingObject:v3];
 
   return v4;
 }

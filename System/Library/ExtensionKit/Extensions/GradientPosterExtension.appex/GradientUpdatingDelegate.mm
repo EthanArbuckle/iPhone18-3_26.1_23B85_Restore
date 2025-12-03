@@ -1,26 +1,26 @@
 @interface GradientUpdatingDelegate
 - (_TtC23GradientPosterExtension24GradientUpdatingDelegate)init;
-- (void)updateConfiguration:(id)a3 completion:(id)a4;
-- (void)updateDescriptors:(id)a3 completion:(id)a4;
+- (void)updateConfiguration:(id)configuration completion:(id)completion;
+- (void)updateDescriptors:(id)descriptors completion:(id)completion;
 @end
 
 @implementation GradientUpdatingDelegate
 
-- (void)updateDescriptors:(id)a3 completion:(id)a4
+- (void)updateDescriptors:(id)descriptors completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   sub_1000041F0(0, &unk_100018F00, PRPosterDescriptor_ptr);
   v6 = sub_10000CED0();
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100003338(v6, sub_100002174, v7);
 }
 
-- (void)updateConfiguration:(id)a3 completion:(id)a4
+- (void)updateConfiguration:(id)configuration completion:(id)completion
 {
-  v5 = _Block_copy(a4);
-  v5[2](v5, a3, 0);
+  v5 = _Block_copy(completion);
+  v5[2](v5, configuration, 0);
 
   _Block_release(v5);
 }

@@ -1,25 +1,25 @@
 @interface CNQuickAction
 + (BOOL)reallyPerform;
-+ (id)actionWithTitle:(id)a3 image:(id)a4 block:(id)a5;
-+ (id)defaultTitleForActionInCategory:(id)a3 context:(int64_t)a4;
-+ (id)possibleTitlesForActionsInCategories:(id)a3 context:(int64_t)a4;
++ (id)actionWithTitle:(id)title image:(id)image block:(id)block;
++ (id)defaultTitleForActionInCategory:(id)category context:(int64_t)context;
++ (id)possibleTitlesForActionsInCategories:(id)categories context:(int64_t)context;
 - (BOOL)isBackAction;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesDuetInteraction:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesDuetInteraction:(id)interaction;
 - (CNQuickAction)init;
 - (CNQuickActionsManager)manager;
 - (NSString)globalIdentifier;
 - (UIImage)image;
 - (UIView)sourceView;
 - (id)_coreDuetInteractionMechanisms;
-- (id)defaultTitleForContext:(int64_t)a3;
+- (id)defaultTitleForContext:(int64_t)context;
 - (id)description;
-- (id)imageForContext:(int64_t)a3;
+- (id)imageForContext:(int64_t)context;
 - (id)outlinedImage;
-- (id)titleForContext:(int64_t)a3;
+- (id)titleForContext:(int64_t)context;
 - (id)userActionType;
 - (unint64_t)hash;
-- (void)performWithCompletionBlock:(id)a3;
+- (void)performWithCompletionBlock:(id)block;
 @end
 
 @implementation CNQuickAction
@@ -42,70 +42,70 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CNQuickAction *)self title];
-  v6 = [(CNQuickAction *)self globalIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@ %p> %@ - %@ - score: %lu", v4, self, v5, v6, -[CNQuickAction score](self, "score")];
+  title = [(CNQuickAction *)self title];
+  globalIdentifier = [(CNQuickAction *)self globalIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@ %p> %@ - %@ - score: %lu", v4, self, title, globalIdentifier, -[CNQuickAction score](self, "score")];
 
   return v7;
 }
 
-- (void)performWithCompletionBlock:(id)a3
+- (void)performWithCompletionBlock:(id)block
 {
-  v9 = a3;
-  v4 = [(CNQuickAction *)self performBlock];
+  blockCopy = block;
+  performBlock = [(CNQuickAction *)self performBlock];
 
-  if (v4)
+  if (performBlock)
   {
-    v5 = [(CNQuickAction *)self performBlock];
-    v5[2]();
+    performBlock2 = [(CNQuickAction *)self performBlock];
+    performBlock2[2]();
   }
 
   else
   {
-    v5 = [(CNQuickAction *)self globalIdentifier];
-    NSLog(&cfstr_PerformAction.isa, v5);
+    performBlock2 = [(CNQuickAction *)self globalIdentifier];
+    NSLog(&cfstr_PerformAction.isa, performBlock2);
   }
 
-  v6 = [(CNQuickAction *)self manager];
+  manager = [(CNQuickAction *)self manager];
 
-  if (v6)
+  if (manager)
   {
-    v7 = [(CNQuickAction *)self manager];
-    [v7 actionPerformed:self];
+    manager2 = [(CNQuickAction *)self manager];
+    [manager2 actionPerformed:self];
   }
 
-  v8 = v9;
-  if (v9)
+  v8 = blockCopy;
+  if (blockCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(blockCopy + 2))(blockCopy);
+    v8 = blockCopy;
   }
 }
 
-- (id)titleForContext:(int64_t)a3
+- (id)titleForContext:(int64_t)context
 {
-  v5 = [(CNQuickAction *)self title];
-  if (!v5)
+  title = [(CNQuickAction *)self title];
+  if (!title)
   {
-    v5 = [(CNQuickAction *)self defaultTitleForContext:a3];
+    title = [(CNQuickAction *)self defaultTitleForContext:context];
   }
 
-  return v5;
+  return title;
 }
 
-- (id)defaultTitleForContext:(int64_t)a3
+- (id)defaultTitleForContext:(int64_t)context
 {
   v5 = objc_opt_class();
-  v6 = [(CNQuickAction *)self category];
-  v7 = [v5 defaultTitleForActionInCategory:v6 context:a3];
+  category = [(CNQuickAction *)self category];
+  v7 = [v5 defaultTitleForActionInCategory:category context:context];
 
   return v7;
 }
 
-- (id)imageForContext:(int64_t)a3
+- (id)imageForContext:(int64_t)context
 {
-  v4 = [(CNQuickAction *)self category];
-  v5 = [v4 isEqualToString:CNQuickActionCategoryAudioCall];
+  category = [(CNQuickAction *)self category];
+  v5 = [category isEqualToString:CNQuickActionCategoryAudioCall];
 
   if (v5)
   {
@@ -114,8 +114,8 @@
 
   else
   {
-    v7 = [(CNQuickAction *)self category];
-    v8 = [v7 isEqualToString:CNQuickActionCategoryVideoCall];
+    category2 = [(CNQuickAction *)self category];
+    v8 = [category2 isEqualToString:CNQuickActionCategoryVideoCall];
 
     if (v8)
     {
@@ -124,8 +124,8 @@
 
     else
     {
-      v9 = [(CNQuickAction *)self category];
-      v10 = [v9 isEqualToString:CNQuickActionCategoryInstantMessage];
+      category3 = [(CNQuickAction *)self category];
+      v10 = [category3 isEqualToString:CNQuickActionCategoryInstantMessage];
 
       if (v10)
       {
@@ -134,8 +134,8 @@
 
       else
       {
-        v11 = [(CNQuickAction *)self category];
-        v12 = [v11 isEqualToString:CNQuickActionCategoryMail];
+        category4 = [(CNQuickAction *)self category];
+        v12 = [category4 isEqualToString:CNQuickActionCategoryMail];
 
         if (!v12)
         {
@@ -150,39 +150,39 @@
   v13 = *v6;
   if (v13)
   {
-    v14 = v13;
+    imageTintColor2 = v13;
     v15 = MEMORY[0x1E69DCAB8];
-    v16 = [(CNQuickAction *)self imageTintColor];
-    v17 = [v15 cnui_userActionSymbolImageForActionType:v14 scale:3 withColor:v16];
+    imageTintColor = [(CNQuickAction *)self imageTintColor];
+    v17 = [v15 cnui_userActionSymbolImageForActionType:imageTintColor2 scale:3 withColor:imageTintColor];
 
 LABEL_14:
     goto LABEL_15;
   }
 
 LABEL_11:
-  v18 = [(CNQuickAction *)self category];
-  v19 = [v18 isEqualToString:CNQuickActionCategoryInfo];
+  category5 = [(CNQuickAction *)self category];
+  v19 = [category5 isEqualToString:CNQuickActionCategoryInfo];
 
   if (v19)
   {
     v20 = MEMORY[0x1E69DCAB8];
-    v14 = [(CNQuickAction *)self imageTintColor];
+    imageTintColor2 = [(CNQuickAction *)self imageTintColor];
     v21 = @"info.circle.fill";
 LABEL_13:
-    v17 = [v20 cnui_symbolImageNamed:v21 scale:3 withColor:v14 useFixedSize:1];
+    v17 = [v20 cnui_symbolImageNamed:v21 scale:3 withColor:imageTintColor2 useFixedSize:1];
     goto LABEL_14;
   }
 
-  v23 = [(CNQuickAction *)self category];
-  v24 = [v23 isEqualToString:CNQuickActionCategoryAddToContacts];
+  category6 = [(CNQuickAction *)self category];
+  v24 = [category6 isEqualToString:CNQuickActionCategoryAddToContacts];
 
   if (v24)
   {
-    v25 = [(CNQuickAction *)self identifier];
-    v26 = [v25 isEqualToString:@"create-new"];
+    identifier = [(CNQuickAction *)self identifier];
+    v26 = [identifier isEqualToString:@"create-new"];
 
     v20 = MEMORY[0x1E69DCAB8];
-    v14 = [(CNQuickAction *)self imageTintColor];
+    imageTintColor2 = [(CNQuickAction *)self imageTintColor];
     if (v26)
     {
       v21 = @"person.crop.circle";
@@ -204,12 +204,12 @@ LABEL_15:
 
 - (id)outlinedImage
 {
-  v3 = [(CNQuickAction *)self userActionType];
+  userActionType = [(CNQuickAction *)self userActionType];
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [(CNQuickAction *)self imageTintColor];
-    v6 = [v4 cnui_userActionOutlinedSymbolImageForActionType:v3 scale:3 withColor:v5];
+    imageTintColor = [(CNQuickAction *)self imageTintColor];
+    v6 = [v4 cnui_userActionOutlinedSymbolImageForActionType:userActionType scale:3 withColor:imageTintColor];
   }
 
   else
@@ -230,12 +230,12 @@ LABEL_15:
 
   else
   {
-    v5 = [(CNQuickAction *)self userActionType];
-    if (v5)
+    userActionType = [(CNQuickAction *)self userActionType];
+    if (userActionType)
     {
       v6 = MEMORY[0x1E69DCAB8];
-      v7 = [(CNQuickAction *)self imageTintColor];
-      v3 = [v6 cnui_userActionSymbolImageForActionType:v5 scale:3 withColor:v7];
+      imageTintColor = [(CNQuickAction *)self imageTintColor];
+      v3 = [v6 cnui_userActionSymbolImageForActionType:userActionType scale:3 withColor:imageTintColor];
     }
 
     else
@@ -247,22 +247,22 @@ LABEL_15:
   return v3;
 }
 
-- (BOOL)matchesDuetInteraction:(id)a3
+- (BOOL)matchesDuetInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(CNQuickAction *)self _coreDuetInteractionMechanisms];
-  if ([v5 containsIndex:{objc_msgSend(v4, "mechanism")}])
+  interactionCopy = interaction;
+  _coreDuetInteractionMechanisms = [(CNQuickAction *)self _coreDuetInteractionMechanisms];
+  if ([_coreDuetInteractionMechanisms containsIndex:{objc_msgSend(interactionCopy, "mechanism")}])
   {
-    v6 = [v4 contact];
-    v7 = [v6 identifier];
+    contact = [interactionCopy contact];
+    identifier = [contact identifier];
 
-    v8 = [(CNQuickAction *)self _coreDuetValue];
-    if (v8)
+    _coreDuetValue = [(CNQuickAction *)self _coreDuetValue];
+    if (_coreDuetValue)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v7 compare:v8 options:385] == 0;
+        v9 = [identifier compare:_coreDuetValue options:385] == 0;
       }
 
       else
@@ -271,8 +271,8 @@ LABEL_15:
         if (objc_opt_isKindOfClass())
         {
           v10 = MEMORY[0x1E695CF50];
-          v11 = v8;
-          v12 = [v10 phoneNumberWithStringValue:v7];
+          v11 = _coreDuetValue;
+          v12 = [v10 phoneNumberWithStringValue:identifier];
           v9 = [v11 isLikePhoneNumber:v12];
         }
 
@@ -299,9 +299,9 @@ LABEL_15:
 
 - (id)_coreDuetInteractionMechanisms
 {
-  v3 = [MEMORY[0x1E696AD50] indexSet];
-  v4 = [(CNQuickAction *)self category];
-  v5 = [v4 isEqualToString:CNQuickActionCategoryAudioCall];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  category = [(CNQuickAction *)self category];
+  v5 = [category isEqualToString:CNQuickActionCategoryAudioCall];
 
   if (v5)
   {
@@ -310,8 +310,8 @@ LABEL_15:
 
   else
   {
-    v7 = [(CNQuickAction *)self category];
-    v8 = [v7 isEqualToString:CNQuickActionCategoryVideoCall];
+    category2 = [(CNQuickAction *)self category];
+    v8 = [category2 isEqualToString:CNQuickActionCategoryVideoCall];
 
     if (v8)
     {
@@ -320,20 +320,20 @@ LABEL_15:
 
     else
     {
-      v9 = [(CNQuickAction *)self category];
-      v10 = [v9 isEqualToString:CNQuickActionCategoryInstantMessage];
+      category3 = [(CNQuickAction *)self category];
+      v10 = [category3 isEqualToString:CNQuickActionCategoryInstantMessage];
 
       if (v10)
       {
-        [v3 addIndex:2];
-        [v3 addIndex:3];
+        [indexSet addIndex:2];
+        [indexSet addIndex:3];
         v6 = 4;
       }
 
       else
       {
-        v11 = [(CNQuickAction *)self category];
-        v12 = [v11 isEqualToString:CNQuickActionCategoryMail];
+        category4 = [(CNQuickAction *)self category];
+        v12 = [category4 isEqualToString:CNQuickActionCategoryMail];
 
         if (!v12)
         {
@@ -345,33 +345,33 @@ LABEL_15:
     }
   }
 
-  [v3 addIndex:v6];
+  [indexSet addIndex:v6];
 LABEL_10:
 
-  return v3;
+  return indexSet;
 }
 
 - (NSString)globalIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CNQuickAction *)self category];
-  v5 = [(CNQuickAction *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@.%@", v4, v5];
+  category = [(CNQuickAction *)self category];
+  identifier = [(CNQuickAction *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@.%@", category, identifier];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CNQuickAction *)self globalIdentifier];
-    v7 = [v5 globalIdentifier];
+    v5 = equalCopy;
+    globalIdentifier = [(CNQuickAction *)self globalIdentifier];
+    globalIdentifier2 = [v5 globalIdentifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [globalIdentifier isEqualToString:globalIdentifier2];
   }
 
   else
@@ -384,8 +384,8 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(CNQuickAction *)self globalIdentifier];
-  v3 = [v2 hash];
+  globalIdentifier = [(CNQuickAction *)self globalIdentifier];
+  v3 = [globalIdentifier hash];
 
   return v3;
 }
@@ -403,25 +403,25 @@ LABEL_10:
   return v2;
 }
 
-+ (id)actionWithTitle:(id)a3 image:(id)a4 block:(id)a5
++ (id)actionWithTitle:(id)title image:(id)image block:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
-  [v11 setImage:v9];
+  blockCopy = block;
+  imageCopy = image;
+  titleCopy = title;
+  v11 = objc_alloc_init(self);
+  [v11 setImage:imageCopy];
 
-  [v11 setTitle:v10];
-  [v11 setPerformBlock:v8];
+  [v11 setTitle:titleCopy];
+  [v11 setPerformBlock:blockCopy];
 
   return v11;
 }
 
-+ (id)defaultTitleForActionInCategory:(id)a3 context:(int64_t)a4
++ (id)defaultTitleForActionInCategory:(id)category context:(int64_t)context
 {
-  v5 = a3;
-  v6 = [v5 isEqualToString:CNQuickActionCategoryAudioCall];
-  if (a4 == 5)
+  categoryCopy = category;
+  v6 = [categoryCopy isEqualToString:CNQuickActionCategoryAudioCall];
+  if (context == 5)
   {
     if (v6)
     {
@@ -433,25 +433,25 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if ([v5 isEqualToString:CNQuickActionCategoryVideoCall])
+    if ([categoryCopy isEqualToString:CNQuickActionCategoryVideoCall])
     {
       v7 = @"ACTION_BUTTON_VIDEO_CALL";
       goto LABEL_22;
     }
 
-    if ([v5 isEqualToString:CNQuickActionCategoryInstantMessage])
+    if ([categoryCopy isEqualToString:CNQuickActionCategoryInstantMessage])
     {
       v7 = @"ACTION_BUTTON_MESSAGE";
       goto LABEL_22;
     }
 
-    if ([v5 isEqualToString:CNQuickActionCategoryMail])
+    if ([categoryCopy isEqualToString:CNQuickActionCategoryMail])
     {
       v7 = @"ACTION_BUTTON_MAIL";
       goto LABEL_22;
     }
 
-    if ([v5 isEqualToString:CNQuickActionCategoryInfo])
+    if ([categoryCopy isEqualToString:CNQuickActionCategoryInfo])
     {
       v7 = @"ACTION_BUTTON_INFO";
       goto LABEL_22;
@@ -466,25 +466,25 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    if ([v5 isEqualToString:CNQuickActionCategoryVideoCall])
+    if ([categoryCopy isEqualToString:CNQuickActionCategoryVideoCall])
     {
       v7 = @"ACTION_VIDEO_CALL";
       goto LABEL_22;
     }
 
-    if ([v5 isEqualToString:CNQuickActionCategoryInstantMessage])
+    if ([categoryCopy isEqualToString:CNQuickActionCategoryInstantMessage])
     {
       v7 = @"ACTION_MESSAGE";
       goto LABEL_22;
     }
 
-    if ([v5 isEqualToString:CNQuickActionCategoryMail])
+    if ([categoryCopy isEqualToString:CNQuickActionCategoryMail])
     {
       v7 = @"ACTION_MAIL";
       goto LABEL_22;
     }
 
-    if ([v5 isEqualToString:CNQuickActionCategoryInfo])
+    if ([categoryCopy isEqualToString:CNQuickActionCategoryInfo])
     {
       v7 = @"ACTION_INFO";
       goto LABEL_22;
@@ -497,20 +497,20 @@ LABEL_23:
   return v9;
 }
 
-+ (id)possibleTitlesForActionsInCategories:(id)a3 context:(int64_t)a4
++ (id)possibleTitlesForActionsInCategories:(id)categories context:(int64_t)context
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
-  v8 = [v6 array];
+  categoriesCopy = categories;
+  array = [v6 array];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__CNQuickAction_possibleTitlesForActionsInCategories_context___block_invoke;
   v12[3] = &unk_1E74E2288;
-  v13 = v8;
-  v14 = a1;
-  v15 = a4;
-  v9 = v8;
-  [v7 enumerateObjectsUsingBlock:v12];
+  v13 = array;
+  selfCopy = self;
+  contextCopy = context;
+  v9 = array;
+  [categoriesCopy enumerateObjectsUsingBlock:v12];
 
   v10 = [v9 copy];
 
@@ -578,8 +578,8 @@ uint64_t __30__CNQuickAction_reallyPerform__block_invoke()
 
 - (BOOL)isBackAction
 {
-  v2 = [(CNQuickAction *)self identifier];
-  v3 = [v2 isEqualToString:@"back"];
+  identifier = [(CNQuickAction *)self identifier];
+  v3 = [identifier isEqualToString:@"back"];
 
   return v3;
 }
@@ -592,11 +592,11 @@ uint64_t __30__CNQuickAction_reallyPerform__block_invoke()
   }
 
   v3 = userActionType_cn_once_object_1;
-  v4 = [(CNQuickAction *)self category];
-  v5 = v4;
-  if (v4)
+  category = [(CNQuickAction *)self category];
+  v5 = category;
+  if (category)
   {
-    v6 = v4;
+    v6 = category;
   }
 
   else

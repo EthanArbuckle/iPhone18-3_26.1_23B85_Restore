@@ -1,8 +1,8 @@
 @interface RMModelSCEPCredentialDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithURL:(id)a3;
-+ (id)buildWithURL:(id)a3 name:(id)a4 subject:(id)a5 challenge:(id)a6 keysize:(id)a7 keyType:(id)a8 keyUsage:(id)a9 caFingerprint:(id)a10 retries:(id)a11 retryDelay:(id)a12 subjectAltName:(id)a13;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)buildRequiredOnlyWithURL:(id)l;
++ (id)buildWithURL:(id)l name:(id)name subject:(id)subject challenge:(id)challenge keysize:(id)keysize keyType:(id)type keyUsage:(id)usage caFingerprint:(id)self0 retries:(id)self1 retryDelay:(id)self2 subjectAltName:(id)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RMModelSCEPCredentialDeclaration
@@ -30,29 +30,29 @@
   return v4;
 }
 
-+ (id)buildWithURL:(id)a3 name:(id)a4 subject:(id)a5 challenge:(id)a6 keysize:(id)a7 keyType:(id)a8 keyUsage:(id)a9 caFingerprint:(id)a10 retries:(id)a11 retryDelay:(id)a12 subjectAltName:(id)a13
++ (id)buildWithURL:(id)l name:(id)name subject:(id)subject challenge:(id)challenge keysize:(id)keysize keyType:(id)type keyUsage:(id)usage caFingerprint:(id)self0 retries:(id)self1 retryDelay:(id)self2 subjectAltName:(id)self3
 {
-  v36 = a13;
-  v35 = a12;
-  v18 = a11;
-  v34 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  altNameCopy = altName;
+  delayCopy = delay;
+  retriesCopy = retries;
+  fingerprintCopy = fingerprint;
+  usageCopy = usage;
+  typeCopy = type;
+  keysizeCopy = keysize;
+  challengeCopy = challenge;
+  subjectCopy = subject;
+  nameCopy = name;
+  lCopy = l;
   v26 = objc_opt_new();
-  [v26 setPayloadURL:v25];
+  [v26 setPayloadURL:lCopy];
 
-  [v26 setPayloadName:v24];
-  [v26 setPayloadSubject:v23];
+  [v26 setPayloadName:nameCopy];
+  [v26 setPayloadSubject:subjectCopy];
 
-  [v26 setPayloadChallenge:v22];
-  if (v21)
+  [v26 setPayloadChallenge:challengeCopy];
+  if (keysizeCopy)
   {
-    v27 = v21;
+    v27 = keysizeCopy;
   }
 
   else
@@ -60,11 +60,11 @@
     v27 = &unk_28746B870;
   }
 
-  [v26 setPayloadKeysize:{v27, a3}];
+  [v26 setPayloadKeysize:{v27, l}];
 
-  if (v20)
+  if (typeCopy)
   {
-    v28 = v20;
+    v28 = typeCopy;
   }
 
   else
@@ -74,9 +74,9 @@
 
   [v26 setPayloadKeyType:v28];
 
-  if (v19)
+  if (usageCopy)
   {
-    v29 = v19;
+    v29 = usageCopy;
   }
 
   else
@@ -86,10 +86,10 @@
 
   [v26 setPayloadKeyUsage:v29];
 
-  [v26 setPayloadCAFingerprint:v34];
-  if (v18)
+  [v26 setPayloadCAFingerprint:fingerprintCopy];
+  if (retriesCopy)
   {
-    v30 = v18;
+    v30 = retriesCopy;
   }
 
   else
@@ -99,9 +99,9 @@
 
   [v26 setPayloadRetries:v30];
 
-  if (v35)
+  if (delayCopy)
   {
-    v31 = v35;
+    v31 = delayCopy;
   }
 
   else
@@ -111,16 +111,16 @@
 
   [v26 setPayloadRetryDelay:v31];
 
-  [v26 setPayloadSubjectAltName:v36];
+  [v26 setPayloadSubjectAltName:altNameCopy];
 
   return v26;
 }
 
-+ (id)buildRequiredOnlyWithURL:(id)a3
++ (id)buildRequiredOnlyWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_opt_new();
-  [v4 setPayloadURL:v3];
+  [v4 setPayloadURL:lCopy];
 
   return v4;
 }
@@ -227,11 +227,11 @@ id __54__RMModelSCEPCredentialDeclaration_serializeWithType___block_invoke(uint6
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28.receiver = self;
   v28.super_class = RMModelSCEPCredentialDeclaration;
-  v4 = [(RMModelPayloadBase *)&v28 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v28 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadURL copy];
   v6 = v4[2];
   v4[2] = v5;

@@ -3,51 +3,51 @@
 + (id)JFX_faceAnchorMetadataIdentifier;
 + (id)JFX_funcamCameraPositionMetadataIdentifier;
 + (id)JFX_funcamCaptureInterfaceOrientationMetadataIdentifier;
-+ (id)META_ARMetadataTrackForAsset:(id)a3;
++ (id)META_ARMetadataTrackForAsset:(id)asset;
 + (id)META_JFXARMetadataIdentifier;
-+ (id)META_metadataAssetTrackFromAsset:(id)a3 metadataIdentifier:(id)a4;
-+ (void)META_metadataForVideo:(id)a3 completion:(id)a4;
-- (BOOL)JFX_setupAudioOutput:(id *)a3;
-- (BOOL)JFX_setupAutoExposureMetadataOutput:(id *)a3;
-- (BOOL)JFX_setupCompressedDepthOutputWithTransform:(CGAffineTransform *)a3 error:(id *)a4;
-- (BOOL)JFX_setupDepthOutputWithTransform:(CGAffineTransform *)a3 error:(id *)a4;
-- (BOOL)JFX_setupFaceMetadataOutput:(id *)a3;
-- (BOOL)JFX_setupJFXARMetadataTrack:(id *)a3;
-- (BOOL)JFX_setupMetadataWriterWithTransform:(CGAffineTransform *)a3 error:(id *)a4;
-- (BOOL)JFX_setupVideoOutput:(CGAffineTransform *)a3 error:(id *)a4;
-- (BOOL)JFX_setupVideoWriterWithTransform:(CGAffineTransform *)a3 error:(id *)a4;
-- (BOOL)JFX_writeSampleBuffer:(opaqueCMSampleBuffer *)a3 assetWriterInput:(id)a4 sampleType:(int)a5 depthAdaptor:(id)a6;
-- (BOOL)JFX_writerCanBegin:(id *)a3;
-- (BOOL)startWriterWithVideoTransform:(CGAffineTransform *)a3 error:(id *)a4;
-- (JFXVideoWriter)initWithFolderURL:(id)a3 videoOutputSettings:(id)a4 audioOutputSettings:(id)a5 audioFormatHint:(opaqueCMFormatDescription *)a6;
++ (id)META_metadataAssetTrackFromAsset:(id)asset metadataIdentifier:(id)identifier;
++ (void)META_metadataForVideo:(id)video completion:(id)completion;
+- (BOOL)JFX_setupAudioOutput:(id *)output;
+- (BOOL)JFX_setupAutoExposureMetadataOutput:(id *)output;
+- (BOOL)JFX_setupCompressedDepthOutputWithTransform:(CGAffineTransform *)transform error:(id *)error;
+- (BOOL)JFX_setupDepthOutputWithTransform:(CGAffineTransform *)transform error:(id *)error;
+- (BOOL)JFX_setupFaceMetadataOutput:(id *)output;
+- (BOOL)JFX_setupJFXARMetadataTrack:(id *)track;
+- (BOOL)JFX_setupMetadataWriterWithTransform:(CGAffineTransform *)transform error:(id *)error;
+- (BOOL)JFX_setupVideoOutput:(CGAffineTransform *)output error:(id *)error;
+- (BOOL)JFX_setupVideoWriterWithTransform:(CGAffineTransform *)transform error:(id *)error;
+- (BOOL)JFX_writeSampleBuffer:(opaqueCMSampleBuffer *)buffer assetWriterInput:(id)input sampleType:(int)type depthAdaptor:(id)adaptor;
+- (BOOL)JFX_writerCanBegin:(id *)begin;
+- (BOOL)startWriterWithVideoTransform:(CGAffineTransform *)transform error:(id *)error;
+- (JFXVideoWriter)initWithFolderURL:(id)l videoOutputSettings:(id)settings audioOutputSettings:(id)outputSettings audioFormatHint:(opaqueCMFormatDescription *)hint;
 - (JFXVideoWriterDelegate)delegate;
 - (NSURL)metadataURL;
 - (NSURL)videoURL;
-- (__CVBuffer)JFX_copyDepthBufferAsBGRA:(__CVBuffer *)a3;
+- (__CVBuffer)JFX_copyDepthBufferAsBGRA:(__CVBuffer *)a;
 - (id)JFX_fileLevelMetadata;
 - (void)JFX_drainQueuedAudioBufferBeforeSessionStart_noLock;
-- (void)JFX_queueAudioBufferBeforeSessionStart:(opaqueCMSampleBuffer *)a3;
-- (void)JFX_removeFileAtURL:(id)a3;
-- (void)JFX_startSessionAtSourceTime_noLock:(id *)a3;
-- (void)JFX_writeAutoExposureMetadata:(opaqueCMSampleBuffer *)a3;
-- (void)JFX_writeBuffer:(opaqueCMSampleBuffer *)a3 sampleType:(int)a4 arMetadata:(id)a5;
-- (void)JFX_writeDepthBufferForAVDepthData:(id)a3 withTimingInfo:(id *)a4;
-- (void)JFX_writeDepthData:(id)a3 timingInfo:(id *)a4;
-- (void)JFX_writeFaceDetectMetadata:(id)a3 pts:(id *)a4;
-- (void)JFX_writeFaceMetadata:(id)a3 withTimingInfo:(id *)a4;
-- (void)JFX_writeJFXARMetadata:(id)a3 time:(id *)a4;
-- (void)finishWritingWithCompletionHandler:(id)a3;
-- (void)setStoreDepthDataAsVideoTrack:(BOOL)a3;
-- (void)startSessionAtSourceTime:(id *)a3;
-- (void)writeCameraFrameSet:(id)a3;
+- (void)JFX_queueAudioBufferBeforeSessionStart:(opaqueCMSampleBuffer *)start;
+- (void)JFX_removeFileAtURL:(id)l;
+- (void)JFX_startSessionAtSourceTime_noLock:(id *)lock;
+- (void)JFX_writeAutoExposureMetadata:(opaqueCMSampleBuffer *)metadata;
+- (void)JFX_writeBuffer:(opaqueCMSampleBuffer *)buffer sampleType:(int)type arMetadata:(id)metadata;
+- (void)JFX_writeDepthBufferForAVDepthData:(id)data withTimingInfo:(id *)info;
+- (void)JFX_writeDepthData:(id)data timingInfo:(id *)info;
+- (void)JFX_writeFaceDetectMetadata:(id)metadata pts:(id *)pts;
+- (void)JFX_writeFaceMetadata:(id)metadata withTimingInfo:(id *)info;
+- (void)JFX_writeJFXARMetadata:(id)metadata time:(id *)time;
+- (void)finishWritingWithCompletionHandler:(id)handler;
+- (void)setStoreDepthDataAsVideoTrack:(BOOL)track;
+- (void)startSessionAtSourceTime:(id *)time;
+- (void)writeCameraFrameSet:(id)set;
 @end
 
 @implementation JFXVideoWriter
 
-- (void)setStoreDepthDataAsVideoTrack:(BOOL)a3
+- (void)setStoreDepthDataAsVideoTrack:(BOOL)track
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  if (a3 && [(JFXVideoWriter *)self depthDimensions])
+  if (track && [(JFXVideoWriter *)self depthDimensions])
   {
     if ([(JFXVideoWriter *)self depthDimensions]>> 32)
     {
@@ -71,29 +71,29 @@
 
 - (NSURL)videoURL
 {
-  v2 = [(JFXVideoWriter *)self folderURL];
-  v3 = [v2 URLByAppendingPathComponent:@"video.mov" isDirectory:0];
+  folderURL = [(JFXVideoWriter *)self folderURL];
+  v3 = [folderURL URLByAppendingPathComponent:@"video.mov" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)metadataURL
 {
-  v2 = [(JFXVideoWriter *)self folderURL];
-  v3 = [v2 URLByAppendingPathComponent:@"metadata.mov" isDirectory:0];
+  folderURL = [(JFXVideoWriter *)self folderURL];
+  v3 = [folderURL URLByAppendingPathComponent:@"metadata.mov" isDirectory:0];
 
   return v3;
 }
 
-- (JFXVideoWriter)initWithFolderURL:(id)a3 videoOutputSettings:(id)a4 audioOutputSettings:(id)a5 audioFormatHint:(opaqueCMFormatDescription *)a6
+- (JFXVideoWriter)initWithFolderURL:(id)l videoOutputSettings:(id)settings audioOutputSettings:(id)outputSettings audioFormatHint:(opaqueCMFormatDescription *)hint
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  lCopy = l;
+  settingsCopy = settings;
+  outputSettingsCopy = outputSettings;
   v49 = 0;
   v14 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v15 = [v11 path];
-  [v14 fileExistsAtPath:v15 isDirectory:&v49];
+  path = [lCopy path];
+  [v14 fileExistsAtPath:path isDirectory:&v49];
 
   v48.receiver = self;
   v48.super_class = JFXVideoWriter;
@@ -106,17 +106,17 @@
     }
 
     *(v16 + 37) = JFXSignpostIDFromObject(v16);
-    v17 = v12;
+    v17 = settingsCopy;
     v18 = v17;
     if (v17)
     {
-      v47 = a6;
+      hintCopy = hint;
       v19 = [v17 mutableCopy];
       v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277CE62C8]];
       if ([v20 isEqual:*MEMORY[0x277CE6300]])
       {
-        v45 = v13;
-        v46 = v12;
+        v45 = outputSettingsCopy;
+        v46 = settingsCopy;
         v44 = *MEMORY[0x277CE6330];
         v21 = [v19 objectForKeyedSubscript:?];
         v22 = [v21 mutableCopy];
@@ -141,23 +141,23 @@
         v30 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v19];
 
         v18 = v30;
-        v13 = v45;
-        v12 = v46;
+        outputSettingsCopy = v45;
+        settingsCopy = v46;
       }
 
-      a6 = v47;
+      hint = hintCopy;
     }
 
-    objc_storeStrong(v16 + 32, a3);
+    objc_storeStrong(v16 + 32, l);
     v31 = [v18 copy];
     v32 = *(v16 + 33);
     *(v16 + 33) = v31;
 
-    v33 = [v13 copy];
+    v33 = [outputSettingsCopy copy];
     v34 = *(v16 + 34);
     *(v16 + 34) = v33;
 
-    *(v16 + 4) = a6;
+    *(v16 + 4) = hint;
     *(v16 + 29) = 0x16800000280;
     *(v16 + 112) = 0;
     v16[120] = 0;
@@ -182,8 +182,8 @@
     v41 = *(v16 + 27);
     *(v16 + 27) = v40;
 
-    v42 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    s_enableAutoExposureFilter = [v42 BOOLForKey:@"enableAutoExposureFilter"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    s_enableAutoExposureFilter = [standardUserDefaults BOOLForKey:@"enableAutoExposureFilter"];
 
     *(v16 + 57) = 0;
   }
@@ -197,31 +197,31 @@ void __92__JFXVideoWriter_initWithFolderURL_videoOutputSettings_audioOutputSetti
   s_streamNames = &unk_28556D920;
 }
 
-- (BOOL)startWriterWithVideoTransform:(CGAffineTransform *)a3 error:(id *)a4
+- (BOOL)startWriterWithVideoTransform:(CGAffineTransform *)transform error:(id *)error
 {
   v21[2] = *MEMORY[0x277D85DE8];
   kdebug_trace();
   atomic_store(1u, &self->_sessionMetadataEndTime.epoch + 4);
-  if ([(JFXVideoWriter *)self JFX_writerCanBegin:a4])
+  if ([(JFXVideoWriter *)self JFX_writerCanBegin:error])
   {
-    v7 = *&a3->c;
-    v18 = *&a3->a;
+    v7 = *&transform->c;
+    v18 = *&transform->a;
     v19 = v7;
-    v20 = *&a3->tx;
-    v8 = [(JFXVideoWriter *)self JFX_setupVideoWriterWithTransform:&v18 error:a4];
+    v20 = *&transform->tx;
+    v8 = [(JFXVideoWriter *)self JFX_setupVideoWriterWithTransform:&v18 error:error];
     if (v8)
     {
-      v9 = *&a3->c;
-      v18 = *&a3->a;
+      v9 = *&transform->c;
+      v18 = *&transform->a;
       v19 = v9;
-      v20 = *&a3->tx;
-      v8 = [(JFXVideoWriter *)self JFX_setupMetadataWriterWithTransform:&v18 error:a4];
+      v20 = *&transform->tx;
+      v8 = [(JFXVideoWriter *)self JFX_setupMetadataWriterWithTransform:&v18 error:error];
       if (v8)
       {
-        v10 = [(JFXVideoWriter *)self videoURL];
-        v21[0] = v10;
-        v11 = [(JFXVideoWriter *)self metadataURL];
-        v21[1] = v11;
+        videoURL = [(JFXVideoWriter *)self videoURL];
+        v21[0] = videoURL;
+        metadataURL = [(JFXVideoWriter *)self metadataURL];
+        v21[1] = metadataURL;
         v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
@@ -251,7 +251,7 @@ void __92__JFXVideoWriter_initWithFolderURL_videoOutputSettings_audioOutputSetti
 
         else
         {
-          SetError(a4, @"com.apple.Clips.JFXVideoWriter", 4, @"Could not start writing");
+          SetError(error, @"com.apple.Clips.JFXVideoWriter", 4, @"Could not start writing");
           LOBYTE(v8) = 0;
         }
       }
@@ -268,36 +268,36 @@ void __92__JFXVideoWriter_initWithFolderURL_videoOutputSettings_audioOutputSetti
   return v8;
 }
 
-- (void)startSessionAtSourceTime:(id *)a3
+- (void)startSessionAtSourceTime:(id *)time
 {
   [*&self->_preparingWriter lock];
-  v5 = *a3;
+  v5 = *time;
   [(JFXVideoWriter *)self JFX_startSessionAtSourceTime_noLock:&v5];
   [*&self->_preparingWriter unlock];
 }
 
-- (void)writeCameraFrameSet:(id)a3
+- (void)writeCameraFrameSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   finishingLock = self->_finishingLock;
-  v6 = v4;
+  v6 = setCopy;
   if (finishingLock)
   {
-    v6 = [(NSLock *)finishingLock getReorderedFrameSet:v4];
+    v6 = [(NSLock *)finishingLock getReorderedFrameSet:setCopy];
   }
 
   if (v6)
   {
-    v7 = [v6 colorSampleBuffer];
-    v8 = [v7 sampleBufferRef];
+    colorSampleBuffer = [v6 colorSampleBuffer];
+    sampleBufferRef = [colorSampleBuffer sampleBufferRef];
 
     v9 = [v6 metadataObjectForKey:@"PVFrameSetMetadataARMetadataKey"];
-    [(JFXVideoWriter *)self JFX_writeBuffer:v8 sampleType:0 arMetadata:v9];
+    [(JFXVideoWriter *)self JFX_writeBuffer:sampleBufferRef sampleType:0 arMetadata:v9];
     memset(&timingInfoOut, 0, sizeof(timingInfoOut));
-    if (CMSampleBufferGetSampleTimingInfo(v8, 0, &timingInfoOut))
+    if (CMSampleBufferGetSampleTimingInfo(sampleBufferRef, 0, &timingInfoOut))
     {
-      v10 = JFXLog_DebugWriter();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      metadataDict = JFXLog_DebugWriter();
+      if (os_log_type_enabled(metadataDict, OS_LOG_TYPE_DEBUG))
       {
         [JFXVideoWriter writeCameraFrameSet:];
       }
@@ -307,10 +307,10 @@ void __92__JFXVideoWriter_initWithFolderURL_videoOutputSettings_audioOutputSetti
     {
       if ([(JFXVideoWriter *)self storeDepthDataAsVideoTrack])
       {
-        v11 = [v9 arFrame];
-        v12 = [v11 capturedDepthData];
+        arFrame = [v9 arFrame];
+        capturedDepthData = [arFrame capturedDepthData];
         v13 = timingInfoOut;
-        [(JFXVideoWriter *)self JFX_writeDepthBufferForAVDepthData:v12 withTimingInfo:&v13];
+        [(JFXVideoWriter *)self JFX_writeDepthBufferForAVDepthData:capturedDepthData withTimingInfo:&v13];
       }
 
       if (![(JFXVideoWriter *)self storeFaceMetadata])
@@ -318,38 +318,38 @@ void __92__JFXVideoWriter_initWithFolderURL_videoOutputSettings_audioOutputSetti
         goto LABEL_12;
       }
 
-      v10 = [v6 metadataDict];
+      metadataDict = [v6 metadataDict];
       v13 = timingInfoOut;
-      [(JFXVideoWriter *)self JFX_writeFaceMetadata:v10 withTimingInfo:&v13];
+      [(JFXVideoWriter *)self JFX_writeFaceMetadata:metadataDict withTimingInfo:&v13];
     }
 
 LABEL_12:
   }
 }
 
-- (void)JFX_writeDepthData:(id)a3 timingInfo:(id *)a4
+- (void)JFX_writeDepthData:(id)data timingInfo:(id *)info
 {
-  v4 = *&a4->var2.var0;
-  v6[2] = *&a4->var1.var1;
+  v4 = *&info->var2.var0;
+  v6[2] = *&info->var1.var1;
   v6[3] = v4;
-  var3 = a4->var2.var3;
-  v5 = *&a4->var0.var3;
-  v6[0] = *&a4->var0.var0;
+  var3 = info->var2.var3;
+  v5 = *&info->var0.var3;
+  v6[0] = *&info->var0.var0;
   v6[1] = v5;
-  [(JFXVideoWriter *)self JFX_writeDepthBufferForAVDepthData:a3 withTimingInfo:v6];
+  [(JFXVideoWriter *)self JFX_writeDepthBufferForAVDepthData:data withTimingInfo:v6];
 }
 
-- (void)finishWritingWithCompletionHandler:(id)a3
+- (void)finishWritingWithCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   finishingLock = self->_finishingLock;
   if (finishingLock)
   {
-    v6 = [(NSLock *)finishingLock clearQueuedFrameSet];
-    if (v6)
+    clearQueuedFrameSet = [(NSLock *)finishingLock clearQueuedFrameSet];
+    if (clearQueuedFrameSet)
     {
-      [(JFXVideoWriter *)self writeCameraFrameSet:v6];
+      [(JFXVideoWriter *)self writeCameraFrameSet:clearQueuedFrameSet];
     }
   }
 
@@ -390,7 +390,7 @@ LABEL_12:
     v25[2] = __53__JFXVideoWriter_finishWritingWithCompletionHandler___block_invoke;
     v25[3] = &unk_278D7BFC0;
     v26 = v10;
-    v27 = self;
+    selfCopy = self;
     v13 = v10;
     [v12 enumerateObjectsUsingBlock:v25];
 
@@ -400,8 +400,8 @@ LABEL_12:
     block[2] = __53__JFXVideoWriter_finishWritingWithCompletionHandler___block_invoke_3;
     block[3] = &unk_278D7A140;
     block[4] = self;
-    v24 = v4;
-    v15 = v4;
+    v24 = handlerCopy;
+    v15 = handlerCopy;
     dispatch_group_notify(v13, v14, block);
   }
 
@@ -417,8 +417,8 @@ LABEL_12:
     v21[1] = 3221225472;
     v21[2] = __53__JFXVideoWriter_finishWritingWithCompletionHandler___block_invoke_61;
     v21[3] = &unk_278D7A168;
-    v22 = v4;
-    v17 = v4;
+    v22 = handlerCopy;
+    v17 = handlerCopy;
     dispatch_async(v16, v21);
 
     v13 = v22;
@@ -499,13 +499,13 @@ void __53__JFXVideoWriter_finishWritingWithCompletionHandler___block_invoke_3(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)JFX_setupVideoWriterWithTransform:(CGAffineTransform *)a3 error:(id *)a4
+- (BOOL)JFX_setupVideoWriterWithTransform:(CGAffineTransform *)transform error:(id *)error
 {
   v7 = objc_alloc(MEMORY[0x277CE6460]);
-  v8 = [(JFXVideoWriter *)self videoURL];
+  videoURL = [(JFXVideoWriter *)self videoURL];
   v9 = *MEMORY[0x277CE5DA8];
   v22 = 0;
-  v10 = [v7 initWithURL:v8 fileType:v9 error:&v22];
+  v10 = [v7 initWithURL:videoURL fileType:v9 error:&v22];
   v11 = v22;
   videoAssetWriter = self->_videoAssetWriter;
   self->_videoAssetWriter = v10;
@@ -517,13 +517,13 @@ void __53__JFXVideoWriter_finishWritingWithCompletionHandler___block_invoke_3(ui
     v18 = *&v21.value;
     *&v19 = v21.epoch;
     [(AVAssetWriter *)v15 setMovieFragmentInterval:&v18];
-    v16 = *&a3->c;
-    v18 = *&a3->a;
+    v16 = *&transform->c;
+    v18 = *&transform->a;
     v19 = v16;
-    v20 = *&a3->tx;
-    if ([(JFXVideoWriter *)self JFX_setupVideoOutput:&v18 error:a4])
+    v20 = *&transform->tx;
+    if ([(JFXVideoWriter *)self JFX_setupVideoOutput:&v18 error:error])
     {
-      v14 = [(JFXVideoWriter *)self JFX_setupAudioOutput:a4];
+      v14 = [(JFXVideoWriter *)self JFX_setupAudioOutput:error];
       goto LABEL_7;
     }
 
@@ -532,26 +532,26 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_6;
   }
 
   v13 = v11;
   v14 = 0;
-  *a4 = v11;
+  *error = v11;
 LABEL_7:
 
   return v14;
 }
 
-- (BOOL)JFX_setupMetadataWriterWithTransform:(CGAffineTransform *)a3 error:(id *)a4
+- (BOOL)JFX_setupMetadataWriterWithTransform:(CGAffineTransform *)transform error:(id *)error
 {
   v7 = objc_alloc(MEMORY[0x277CE6460]);
-  v8 = [(JFXVideoWriter *)self metadataURL];
+  metadataURL = [(JFXVideoWriter *)self metadataURL];
   v9 = *MEMORY[0x277CE5DA8];
   v30 = 0;
-  v10 = [v7 initWithURL:v8 fileType:v9 error:&v30];
+  v10 = [v7 initWithURL:metadataURL fileType:v9 error:&v30];
   v11 = v30;
   metadataAssetWriter = self->_metadataAssetWriter;
   self->_metadataAssetWriter = v10;
@@ -563,14 +563,14 @@ LABEL_7:
     v26 = *&v29.value;
     *&v27 = v29.epoch;
     [(AVAssetWriter *)v15 setMovieFragmentInterval:&v26];
-    v16 = [(JFXVideoWriter *)self JFX_fileLevelMetadata];
-    [(AVAssetWriter *)self->_metadataAssetWriter setMetadata:v16];
+    jFX_fileLevelMetadata = [(JFXVideoWriter *)self JFX_fileLevelMetadata];
+    [(AVAssetWriter *)self->_metadataAssetWriter setMetadata:jFX_fileLevelMetadata];
     if ([(JFXVideoWriter *)self storeDepthDataAsVideoTrack])
     {
       if (![(JFXVideoWriter *)self depthCodecType])
       {
-        v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        v18 = [v17 integerForKey:@"JFXDepthCodecType"];
+        standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        v18 = [standardUserDefaults integerForKey:@"JFXDepthCodecType"];
 
         if (v18)
         {
@@ -587,11 +587,11 @@ LABEL_7:
 
       if ([(JFXVideoWriter *)self depthCodecType]== 1111970369)
       {
-        v20 = *&a3->c;
-        v26 = *&a3->a;
+        v20 = *&transform->c;
+        v26 = *&transform->a;
         v27 = v20;
-        v28 = *&a3->tx;
-        if (![(JFXVideoWriter *)self JFX_setupDepthOutputWithTransform:&v26 error:a4])
+        v28 = *&transform->tx;
+        if (![(JFXVideoWriter *)self JFX_setupDepthOutputWithTransform:&v26 error:error])
         {
           v21 = JFXLog_DebugWriter();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -605,11 +605,11 @@ LABEL_7:
 
       else
       {
-        v22 = *&a3->c;
-        v26 = *&a3->a;
+        v22 = *&transform->c;
+        v26 = *&transform->a;
         v27 = v22;
-        v28 = *&a3->tx;
-        if (![(JFXVideoWriter *)self JFX_setupCompressedDepthOutputWithTransform:&v26 error:a4])
+        v28 = *&transform->tx;
+        if (![(JFXVideoWriter *)self JFX_setupCompressedDepthOutputWithTransform:&v26 error:error])
         {
           v21 = JFXLog_DebugWriter();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -622,14 +622,14 @@ LABEL_7:
       }
     }
 
-    if (![(JFXVideoWriter *)self storeFaceMetadata]|| [(JFXVideoWriter *)self JFX_setupFaceMetadataOutput:a4])
+    if (![(JFXVideoWriter *)self storeFaceMetadata]|| [(JFXVideoWriter *)self JFX_setupFaceMetadataOutput:error])
     {
       v23 = +[JFXVideoCameraController sharedInstance];
-      v24 = [v23 cameraPosition];
+      cameraPosition = [v23 cameraPosition];
 
-      if (v24 != 2 || [(JFXVideoWriter *)self JFX_setupJFXARMetadataTrack:a4])
+      if (cameraPosition != 2 || [(JFXVideoWriter *)self JFX_setupJFXARMetadataTrack:error])
       {
-        v14 = [(JFXVideoWriter *)self JFX_setupAutoExposureMetadataOutput:a4];
+        v14 = [(JFXVideoWriter *)self JFX_setupAutoExposureMetadataOutput:error];
 LABEL_27:
 
         goto LABEL_28;
@@ -651,11 +651,11 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a4)
+  if (error)
   {
     v13 = v11;
     v14 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -668,16 +668,16 @@ LABEL_28:
   return v14;
 }
 
-- (BOOL)JFX_setupCompressedDepthOutputWithTransform:(CGAffineTransform *)a3 error:(id *)a4
+- (BOOL)JFX_setupCompressedDepthOutputWithTransform:(CGAffineTransform *)transform error:(id *)error
 {
   v7 = [[JFXDepthCompressor alloc] initWithDepthCodecType:[(JFXVideoWriter *)self depthCodecType]];
   [(JFXVideoWriter *)self setDepthCompressor:v7];
 
-  v8 = [(JFXVideoWriter *)self depthCompressor];
-  v9 = [v8 depthOutputSettingsForDepthDimensions:{-[JFXVideoWriter depthDimensions](self, "depthDimensions")}];
+  depthCompressor = [(JFXVideoWriter *)self depthCompressor];
+  v9 = [depthCompressor depthOutputSettingsForDepthDimensions:{-[JFXVideoWriter depthDimensions](self, "depthDimensions")}];
 
-  v10 = [(JFXVideoWriter *)self depthCompressor];
-  v11 = [v10 depthFormatDescriptionForDepthDimensions:{-[JFXVideoWriter depthDimensions](self, "depthDimensions")}];
+  depthCompressor2 = [(JFXVideoWriter *)self depthCompressor];
+  v11 = [depthCompressor2 depthFormatDescriptionForDepthDimensions:{-[JFXVideoWriter depthDimensions](self, "depthDimensions")}];
 
   v12 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5EA8] outputSettings:v9 sourceFormatHint:v11];
   compressedDepthAssetWriterInput = self->_compressedDepthAssetWriterInput;
@@ -689,17 +689,17 @@ LABEL_28:
   }
 
   [(AVAssetWriterInput *)self->_compressedDepthAssetWriterInput setExpectsMediaDataInRealTime:1];
-  v14 = *&a3->c;
-  v19[0] = *&a3->a;
+  v14 = *&transform->c;
+  v19[0] = *&transform->a;
   v19[1] = v14;
-  v19[2] = *&a3->tx;
+  v19[2] = *&transform->tx;
   [(AVAssetWriterInput *)self->_compressedDepthAssetWriterInput setTransform:v19];
   [(AVAssetWriterInput *)self->_compressedDepthAssetWriterInput setMediaTimeScale:600];
   if ([(AVAssetWriter *)self->_metadataAssetWriter canAddInput:self->_compressedDepthAssetWriterInput])
   {
     [(AVAssetWriter *)self->_metadataAssetWriter addInput:self->_compressedDepthAssetWriterInput];
-    v15 = [(JFXVideoWriter *)self depthCompressor];
-    v16 = v15 != 0;
+    depthCompressor3 = [(JFXVideoWriter *)self depthCompressor];
+    v16 = depthCompressor3 != 0;
   }
 
   else
@@ -710,30 +710,30 @@ LABEL_28:
       [JFXVideoWriter JFX_setupCompressedDepthOutputWithTransform:error:];
     }
 
-    SetError(a4, @"com.apple.Clips.JFXVideoWriter", 4, @"Could not add compressed depth writerInput to the writer");
+    SetError(error, @"com.apple.Clips.JFXVideoWriter", 4, @"Could not add compressed depth writerInput to the writer");
     v16 = 0;
   }
 
   return v16;
 }
 
-- (BOOL)JFX_setupDepthOutputWithTransform:(CGAffineTransform *)a3 error:(id *)a4
+- (BOOL)JFX_setupDepthOutputWithTransform:(CGAffineTransform *)transform error:(id *)error
 {
   v7 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5EA8] outputSettings:0];
   depthAssetWriterInput = self->_depthAssetWriterInput;
   self->_depthAssetWriterInput = v7;
 
   [(AVAssetWriterInput *)self->_depthAssetWriterInput setExpectsMediaDataInRealTime:1];
-  v9 = *&a3->c;
-  v17[0] = *&a3->a;
+  v9 = *&transform->c;
+  v17[0] = *&transform->a;
   v17[1] = v9;
-  v17[2] = *&a3->tx;
+  v17[2] = *&transform->tx;
   [(AVAssetWriterInput *)self->_depthAssetWriterInput setTransform:v17];
   [(AVAssetWriterInput *)self->_depthAssetWriterInput setMediaTimeScale:600];
   v10 = MEMORY[0x277CE6478];
   v11 = self->_depthAssetWriterInput;
-  v12 = [(JFXVideoWriter *)self depthBGRAPixelBufferAttributes];
-  v13 = [v10 assetWriterInputPixelBufferAdaptorWithAssetWriterInput:v11 sourcePixelBufferAttributes:v12];
+  depthBGRAPixelBufferAttributes = [(JFXVideoWriter *)self depthBGRAPixelBufferAttributes];
+  v13 = [v10 assetWriterInputPixelBufferAdaptorWithAssetWriterInput:v11 sourcePixelBufferAttributes:depthBGRAPixelBufferAttributes];
   depthAdaptor = self->_depthAdaptor;
   self->_depthAdaptor = v13;
 
@@ -753,37 +753,37 @@ LABEL_28:
     v16 = @"Could not create depth adaptor";
   }
 
-  SetError(a4, @"com.apple.Clips.JFXVideoWriter", 5, v16);
+  SetError(error, @"com.apple.Clips.JFXVideoWriter", 5, v16);
   return 0;
 }
 
-- (BOOL)JFX_setupVideoOutput:(CGAffineTransform *)a3 error:(id *)a4
+- (BOOL)JFX_setupVideoOutput:(CGAffineTransform *)output error:(id *)error
 {
-  v7 = [(JFXVideoWriter *)self videoOutputSettings];
+  videoOutputSettings = [(JFXVideoWriter *)self videoOutputSettings];
 
-  if (!v7)
+  if (!videoOutputSettings)
   {
     return 1;
   }
 
   videoAssetWriter = self->_videoAssetWriter;
-  v9 = [(JFXVideoWriter *)self videoOutputSettings];
+  videoOutputSettings2 = [(JFXVideoWriter *)self videoOutputSettings];
   v10 = *MEMORY[0x277CE5EA8];
-  LOBYTE(videoAssetWriter) = [(AVAssetWriter *)videoAssetWriter canApplyOutputSettings:v9 forMediaType:*MEMORY[0x277CE5EA8]];
+  LOBYTE(videoAssetWriter) = [(AVAssetWriter *)videoAssetWriter canApplyOutputSettings:videoOutputSettings2 forMediaType:*MEMORY[0x277CE5EA8]];
 
   if (videoAssetWriter)
   {
     v11 = MEMORY[0x277CE6468];
-    v12 = [(JFXVideoWriter *)self videoOutputSettings];
-    v13 = [v11 assetWriterInputWithMediaType:v10 outputSettings:v12];
+    videoOutputSettings3 = [(JFXVideoWriter *)self videoOutputSettings];
+    v13 = [v11 assetWriterInputWithMediaType:v10 outputSettings:videoOutputSettings3];
     videoAssetWriterInput = self->_videoAssetWriterInput;
     self->_videoAssetWriterInput = v13;
 
     [(AVAssetWriterInput *)self->_videoAssetWriterInput setExpectsMediaDataInRealTime:1];
-    v15 = *&a3->c;
-    v18[0] = *&a3->a;
+    v15 = *&output->c;
+    v18[0] = *&output->a;
     v18[1] = v15;
-    v18[2] = *&a3->tx;
+    v18[2] = *&output->tx;
     [(AVAssetWriterInput *)self->_videoAssetWriterInput setTransform:v18];
     if ([(AVAssetWriter *)self->_videoAssetWriter canAddInput:self->_videoAssetWriterInput])
     {
@@ -799,11 +799,11 @@ LABEL_28:
     v17 = @"Cannot apply videoOutputSettings to writer";
   }
 
-  SetError(a4, @"com.apple.Clips.JFXVideoWriter", 5, v17);
+  SetError(error, @"com.apple.Clips.JFXVideoWriter", 5, v17);
   return 0;
 }
 
-- (BOOL)JFX_setupAutoExposureMetadataOutput:(id *)a3
+- (BOOL)JFX_setupAutoExposureMetadataOutput:(id *)output
 {
   v30[1] = *MEMORY[0x277D85DE8];
   if (s_enableAutoExposureFilter == 1)
@@ -874,11 +874,11 @@ LABEL_13:
     if (v15)
     {
       v16 = v15;
-      if (a3)
+      if (output)
       {
         v17 = v15;
         v14 = 0;
-        *a3 = v16;
+        *output = v16;
 LABEL_20:
 
         return v14;
@@ -906,7 +906,7 @@ LABEL_16:
       goto LABEL_20;
     }
 
-    SetError(a3, @"com.apple.Clips.JFXVideoWriter", 5, @"Could not add exposure metadata input to writer");
+    SetError(output, @"com.apple.Clips.JFXVideoWriter", 5, @"Could not add exposure metadata input to writer");
     v16 = 0;
 LABEL_19:
     v14 = 0;
@@ -916,25 +916,25 @@ LABEL_19:
   return 1;
 }
 
-- (BOOL)JFX_setupFaceMetadataOutput:(id *)a3
+- (BOOL)JFX_setupFaceMetadataOutput:(id *)output
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CE6558] metadataItem];
-  [v5 setIdentifier:*MEMORY[0x277CE5F68]];
-  [v5 setDataType:@"com.apple.quicktime.detected-face"];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:*MEMORY[0x277CE5F68]];
+  [metadataItem setDataType:@"com.apple.quicktime.detected-face"];
   v6 = objc_alloc(MEMORY[0x277CE5B88]);
-  [v5 setValue:v6];
+  [metadataItem setValue:v6];
 
   v7 = objc_alloc(MEMORY[0x277CE6648]);
-  v20[0] = v5;
+  v20[0] = metadataItem;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   CMTimeMake(&duration, 20, 600);
   v17 = **&MEMORY[0x277CC08F0];
   CMTimeRangeMake(&v19, &v17, &duration);
   v9 = [v7 initWithItems:v8 timeRange:&v19];
 
-  v10 = [v9 copyFormatDescription];
-  v11 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5E70] outputSettings:0 sourceFormatHint:v10];
+  copyFormatDescription = [v9 copyFormatDescription];
+  v11 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5E70] outputSettings:0 sourceFormatHint:copyFormatDescription];
   faceMetadataAssetWriterInput = self->_faceMetadataAssetWriterInput;
   self->_faceMetadataAssetWriterInput = v11;
 
@@ -948,7 +948,7 @@ LABEL_19:
   if (v15)
   {
     [(AVAssetWriter *)self->_metadataAssetWriter addInput:self->_faceMetadataAssetWriterInput];
-    if (!v10)
+    if (!copyFormatDescription)
     {
       goto LABEL_6;
     }
@@ -956,11 +956,11 @@ LABEL_19:
     goto LABEL_5;
   }
 
-  SetError(a3, @"com.apple.Clips.JFXVideoWriter", 5, @"Could not add face metadata input to writer");
-  if (v10)
+  SetError(output, @"com.apple.Clips.JFXVideoWriter", 5, @"Could not add face metadata input to writer");
+  if (copyFormatDescription)
   {
 LABEL_5:
-    CFRelease(v10);
+    CFRelease(copyFormatDescription);
   }
 
 LABEL_6:
@@ -968,33 +968,33 @@ LABEL_6:
   return v15;
 }
 
-- (BOOL)JFX_setupAudioOutput:(id *)a3
+- (BOOL)JFX_setupAudioOutput:(id *)output
 {
-  v5 = [(JFXVideoWriter *)self audioOutputSettings];
+  audioOutputSettings = [(JFXVideoWriter *)self audioOutputSettings];
 
-  if (!v5)
+  if (!audioOutputSettings)
   {
     return 1;
   }
 
   videoAssetWriter = self->_videoAssetWriter;
-  v7 = [(JFXVideoWriter *)self audioOutputSettings];
+  audioOutputSettings2 = [(JFXVideoWriter *)self audioOutputSettings];
   v8 = *MEMORY[0x277CE5E48];
-  LOBYTE(videoAssetWriter) = [(AVAssetWriter *)videoAssetWriter canApplyOutputSettings:v7 forMediaType:*MEMORY[0x277CE5E48]];
+  LOBYTE(videoAssetWriter) = [(AVAssetWriter *)videoAssetWriter canApplyOutputSettings:audioOutputSettings2 forMediaType:*MEMORY[0x277CE5E48]];
 
   if (videoAssetWriter)
   {
     audioFormatHint = self->_audioFormatHint;
     v10 = MEMORY[0x277CE6468];
-    v11 = [(JFXVideoWriter *)self audioOutputSettings];
+    audioOutputSettings3 = [(JFXVideoWriter *)self audioOutputSettings];
     if (audioFormatHint)
     {
-      [v10 assetWriterInputWithMediaType:v8 outputSettings:v11 sourceFormatHint:self->_audioFormatHint];
+      [v10 assetWriterInputWithMediaType:v8 outputSettings:audioOutputSettings3 sourceFormatHint:self->_audioFormatHint];
     }
 
     else
     {
-      [v10 assetWriterInputWithMediaType:v8 outputSettings:v11];
+      [v10 assetWriterInputWithMediaType:v8 outputSettings:audioOutputSettings3];
     }
     v12 = ;
     audioAssetWriterInput = self->_audioAssetWriterInput;
@@ -1015,19 +1015,19 @@ LABEL_6:
     v13 = @"Cannot apply audioOutputSettings to writer";
   }
 
-  SetError(a3, @"com.apple.Clips.JFXVideoWriter", 5, v13);
+  SetError(output, @"com.apple.Clips.JFXVideoWriter", 5, v13);
   return 0;
 }
 
-- (BOOL)JFX_setupJFXARMetadataTrack:(id *)a3
+- (BOOL)JFX_setupJFXARMetadataTrack:(id *)track
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v5 = [objc_opt_class() META_JFXARMetadataIdentifier];
-  v6 = [MEMORY[0x277CE6558] metadataItem];
-  [v6 setIdentifier:v5];
-  [v6 setDataType:*MEMORY[0x277CC05B0]];
-  v7 = [MEMORY[0x277CBEA90] data];
-  [v6 setValue:v7];
+  mETA_JFXARMetadataIdentifier = [objc_opt_class() META_JFXARMetadataIdentifier];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:mETA_JFXARMetadataIdentifier];
+  [metadataItem setDataType:*MEMORY[0x277CC05B0]];
+  data = [MEMORY[0x277CBEA90] data];
+  [metadataItem setValue:data];
 
   memset(&v21, 0, sizeof(v21));
   *&v19.start.value = *MEMORY[0x277CC08F0];
@@ -1035,16 +1035,16 @@ LABEL_6:
   duration = **&MEMORY[0x277CC0898];
   CMTimeRangeMake(&v21, &v19.start, &duration);
   v8 = objc_alloc(MEMORY[0x277CE6648]);
-  v22[0] = v6;
+  v22[0] = metadataItem;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
   v19 = v21;
   v10 = [v8 initWithItems:v9 timeRange:&v19];
 
-  v11 = [v10 copyFormatDescription];
-  if (v11)
+  copyFormatDescription = [v10 copyFormatDescription];
+  if (copyFormatDescription)
   {
-    v12 = v11;
-    v13 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5E70] outputSettings:0 sourceFormatHint:v11];
+    v12 = copyFormatDescription;
+    v13 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5E70] outputSettings:0 sourceFormatHint:copyFormatDescription];
     JFXARMetadataAssetWriterInput = self->_JFXARMetadataAssetWriterInput;
     self->_JFXARMetadataAssetWriterInput = v13;
 
@@ -1061,7 +1061,7 @@ LABEL_6:
 
     else
     {
-      SetError(a3, @"com.apple.Clips.JFXVideoWriter", 5, @"Could not add face metadata input to writer");
+      SetError(track, @"com.apple.Clips.JFXVideoWriter", 5, @"Could not add face metadata input to writer");
     }
 
     CFRelease(v12);
@@ -1075,12 +1075,12 @@ LABEL_6:
   return v17;
 }
 
-- (void)JFX_startSessionAtSourceTime_noLock:(id *)a3
+- (void)JFX_startSessionAtSourceTime_noLock:(id *)lock
 {
   if (!self->_wroteSessionStartTime)
   {
-    v5 = [(JFXVideoWriter *)self audioOutputSettings];
-    if (v5 && (v6 = v5, v7 = [(WriterReorderQ *)self->_reorderQ count], v6, !v7))
+    audioOutputSettings = [(JFXVideoWriter *)self audioOutputSettings];
+    if (audioOutputSettings && (v6 = audioOutputSettings, v7 = [(WriterReorderQ *)self->_reorderQ count], v6, !v7))
     {
       v12 = JFXLog_DebugWriter();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1092,21 +1092,21 @@ LABEL_6:
     else
     {
       videoAssetWriter = self->_videoAssetWriter;
-      v13 = *&a3->var0;
-      var3 = a3->var3;
+      v13 = *&lock->var0;
+      var3 = lock->var3;
       [(AVAssetWriter *)videoAssetWriter startSessionAtSourceTime:&v13];
       metadataAssetWriter = self->_metadataAssetWriter;
-      v13 = *&a3->var0;
-      var3 = a3->var3;
+      v13 = *&lock->var0;
+      var3 = lock->var3;
       [(AVAssetWriter *)metadataAssetWriter startSessionAtSourceTime:&v13];
       self->_wroteSessionStartTime = 1;
-      v10 = *&a3->var0;
-      *&self->_sessionStartTime.flags = a3->var3;
+      v10 = *&lock->var0;
+      *&self->_sessionStartTime.flags = lock->var3;
       *(&self->_wroteFirstAudioSample + 3) = v10;
       v11 = JFXLog_DebugWriter();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        [JFXVideoWriter JFX_startSessionAtSourceTime_noLock:a3];
+        [JFXVideoWriter JFX_startSessionAtSourceTime_noLock:lock];
       }
 
       [(JFXVideoWriter *)self JFX_drainQueuedAudioBufferBeforeSessionStart_noLock];
@@ -1114,16 +1114,16 @@ LABEL_6:
   }
 }
 
-- (void)JFX_writeBuffer:(opaqueCMSampleBuffer *)a3 sampleType:(int)a4 arMetadata:(id)a5
+- (void)JFX_writeBuffer:(opaqueCMSampleBuffer *)buffer sampleType:(int)type arMetadata:(id)metadata
 {
-  v5 = *&a4;
+  v5 = *&type;
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  metadataCopy = metadata;
   v9 = atomic_load(&self->_sessionMetadataEndTime.epoch + 4);
   if ((v9 & 1) == 0)
   {
     memset(&v44, 0, sizeof(v44));
-    CMSampleBufferGetPresentationTimeStamp(&v44, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v44, buffer);
     if ((v44.flags & 1) == 0)
     {
       v11 = JFXLog_DebugWriter();
@@ -1162,9 +1162,9 @@ LABEL_6:
         _os_log_debug_impl(&dword_242A3B000, v16, OS_LOG_TYPE_DEBUG, "No Write %@. finishing (%d), video status: %@, metadata status: %@ (%@)", time1, 0x30u);
       }
 
-      v17 = [(AVAssetWriter *)self->_videoAssetWriter error];
+      error = [(AVAssetWriter *)self->_videoAssetWriter error];
 
-      if (v17)
+      if (error)
       {
         v18 = JFXLog_DebugWriter();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1173,9 +1173,9 @@ LABEL_6:
         }
       }
 
-      v19 = [(AVAssetWriter *)self->_metadataAssetWriter error];
+      error2 = [(AVAssetWriter *)self->_metadataAssetWriter error];
 
-      if (v19)
+      if (error2)
       {
         v20 = JFXLog_DebugWriter();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -1234,7 +1234,7 @@ LABEL_6:
             [JFXVideoWriter JFX_writeBuffer:sampleType:arMetadata:];
           }
 
-          [(JFXVideoWriter *)self JFX_queueAudioBufferBeforeSessionStart:a3];
+          [(JFXVideoWriter *)self JFX_queueAudioBufferBeforeSessionStart:buffer];
         }
       }
     }
@@ -1251,12 +1251,12 @@ LABEL_6:
       [(JFXVideoWriter *)self JFX_startSessionAtSourceTime_noLock:time1];
       if (self->_wroteSessionStartTime)
       {
-        v22 = [(JFXVideoWriter *)self delegate];
+        delegate = [(JFXVideoWriter *)self delegate];
 
-        if (v22)
+        if (delegate)
         {
-          v23 = [(JFXVideoWriter *)self delegate];
-          [v23 videoWriterWroteFirstFrame:self];
+          delegate2 = [(JFXVideoWriter *)self delegate];
+          [delegate2 videoWriterWroteFirstFrame:self];
         }
       }
     }
@@ -1274,7 +1274,7 @@ LABEL_33:
       if (v5 == 2)
       {
         v30 = self->_depthAssetWriterInput;
-        if (![(JFXVideoWriter *)self JFX_writeSampleBuffer:a3 assetWriterInput:v30 sampleType:2 depthAdaptor:self->_depthAdaptor])
+        if (![(JFXVideoWriter *)self JFX_writeSampleBuffer:buffer assetWriterInput:v30 sampleType:2 depthAdaptor:self->_depthAdaptor])
         {
 LABEL_65:
 
@@ -1299,11 +1299,11 @@ LABEL_64:
     }
 
     v30 = *(&self->super.isa + v24);
-    v31 = [(JFXVideoWriter *)self JFX_writeSampleBuffer:a3 assetWriterInput:v30 sampleType:v5 depthAdaptor:0];
+    v31 = [(JFXVideoWriter *)self JFX_writeSampleBuffer:buffer assetWriterInput:v30 sampleType:v5 depthAdaptor:0];
     v32 = v31;
     if (!v5)
     {
-      [(JFXVideoWriter *)self JFX_writeAutoExposureMetadata:a3];
+      [(JFXVideoWriter *)self JFX_writeAutoExposureMetadata:buffer];
       if (v32)
       {
         v34 = JFXLog_DebugWriter();
@@ -1322,10 +1322,10 @@ LABEL_64:
         *(&self->_sessionStartTime.epoch + 4) = v44;
       }
 
-      if (v8)
+      if (metadataCopy)
       {
         *time1 = v44;
-        [(JFXVideoWriter *)self JFX_writeJFXARMetadata:v8 time:time1];
+        [(JFXVideoWriter *)self JFX_writeJFXARMetadata:metadataCopy time:time1];
       }
 
       goto LABEL_65;
@@ -1366,11 +1366,11 @@ LABEL_9:
 LABEL_34:
 }
 
-- (void)JFX_writeDepthBufferForAVDepthData:(id)a3 withTimingInfo:(id *)a4
+- (void)JFX_writeDepthBufferForAVDepthData:(id)data withTimingInfo:(id *)info
 {
-  v6 = a3;
-  v7 = v6;
-  if ((a4->var1.var2 & 1) == 0)
+  dataCopy = data;
+  v7 = dataCopy;
+  if ((info->var1.var2 & 1) == 0)
   {
     v8 = JFXLog_DebugWriter();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1381,18 +1381,18 @@ LABEL_34:
     goto LABEL_52;
   }
 
-  if (v6)
+  if (dataCopy)
   {
-    v9 = [(JFXVideoWriter *)self depthCodecType];
+    depthCodecType = [(JFXVideoWriter *)self depthCodecType];
     v10 = JFXVideoWriterIntervalSignpostCategory();
-    v11 = [(JFXVideoWriter *)self signPostID];
-    v12 = v11 - 1;
-    if (v9 == 1111970369)
+    signPostID = [(JFXVideoWriter *)self signPostID];
+    v12 = signPostID - 1;
+    if (depthCodecType == 1111970369)
     {
       if (v12 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
       {
         LOWORD(formatDescription[0]) = 0;
-        _os_signpost_emit_with_name_impl(&dword_242A3B000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v11, "encode_uncompressed_depth", &unk_242B66C87, formatDescription, 2u);
+        _os_signpost_emit_with_name_impl(&dword_242A3B000, v10, OS_SIGNPOST_INTERVAL_BEGIN, signPostID, "encode_uncompressed_depth", &unk_242B66C87, formatDescription, 2u);
       }
 
       v8 = v7;
@@ -1403,10 +1403,10 @@ LABEL_34:
         v8 = v13;
       }
 
-      v14 = [v8 depthDataMap];
-      if (v14)
+      depthDataMap = [v8 depthDataMap];
+      if (depthDataMap)
       {
-        v15 = [(JFXVideoWriter *)self JFX_copyDepthBufferAsBGRA:v14];
+        v15 = [(JFXVideoWriter *)self JFX_copyDepthBufferAsBGRA:depthDataMap];
         if (v15)
         {
           v16 = v15;
@@ -1416,14 +1416,14 @@ LABEL_34:
           if (formatDescription[0])
           {
             sampleBufferOut = 0;
-            CMSampleBufferCreateReadyWithImageBuffer(v17, v16, formatDescription[0], a4, &sampleBufferOut);
+            CMSampleBufferCreateReadyWithImageBuffer(v17, v16, formatDescription[0], info, &sampleBufferOut);
             if (sampleBufferOut)
             {
               v18 = JFXVideoWriterIntervalSignpostCategory();
-              v19 = [(JFXVideoWriter *)self signPostID];
-              if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+              signPostID2 = [(JFXVideoWriter *)self signPostID];
+              if (signPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
               {
-                v20 = v19;
+                v20 = signPostID2;
                 if (os_signpost_enabled(v18))
                 {
                   *buf = 0;
@@ -1432,10 +1432,10 @@ LABEL_34:
               }
 
               v21 = JFXVideoWriterIntervalSignpostCategory();
-              v22 = [(JFXVideoWriter *)self signPostID];
-              if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+              signPostID3 = [(JFXVideoWriter *)self signPostID];
+              if (signPostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
               {
-                v23 = v22;
+                v23 = signPostID3;
                 if (os_signpost_enabled(v21))
                 {
                   *buf = 0;
@@ -1445,10 +1445,10 @@ LABEL_34:
 
               [(JFXVideoWriter *)self JFX_writeBuffer:sampleBufferOut sampleType:2];
               v24 = JFXVideoWriterIntervalSignpostCategory();
-              v25 = [(JFXVideoWriter *)self signPostID];
-              if (v25 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+              signPostID4 = [(JFXVideoWriter *)self signPostID];
+              if (signPostID4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
               {
-                v26 = v25;
+                v26 = signPostID4;
                 if (os_signpost_enabled(v24))
                 {
                   *buf = 0;
@@ -1469,8 +1469,8 @@ LABEL_34:
       }
 
       v38 = JFXVideoWriterIntervalSignpostCategory();
-      v44 = [(JFXVideoWriter *)self signPostID];
-      if (v44 - 1 > 0xFFFFFFFFFFFFFFFDLL || (v40 = v44, !os_signpost_enabled(v38)))
+      signPostID5 = [(JFXVideoWriter *)self signPostID];
+      if (signPostID5 - 1 > 0xFFFFFFFFFFFFFFFDLL || (v40 = signPostID5, !os_signpost_enabled(v38)))
       {
 LABEL_51:
 
@@ -1486,19 +1486,19 @@ LABEL_51:
       if (v12 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
       {
         LOWORD(formatDescription[0]) = 0;
-        _os_signpost_emit_with_name_impl(&dword_242A3B000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v11, "encode_compressed_depth", &unk_242B66C87, formatDescription, 2u);
+        _os_signpost_emit_with_name_impl(&dword_242A3B000, v10, OS_SIGNPOST_INTERVAL_BEGIN, signPostID, "encode_compressed_depth", &unk_242B66C87, formatDescription, 2u);
       }
 
-      v27 = [(JFXVideoWriter *)self depthCompressor];
-      v28 = *&a4->var2.var0;
-      v47 = *&a4->var1.var1;
+      depthCompressor = [(JFXVideoWriter *)self depthCompressor];
+      v28 = *&info->var2.var0;
+      v47 = *&info->var1.var1;
       v48 = v28;
-      var3 = a4->var2.var3;
+      var3 = info->var2.var3;
       v50 = 0;
-      v29 = *&a4->var0.var3;
-      *formatDescription = *&a4->var0.var0;
+      v29 = *&info->var0.var3;
+      *formatDescription = *&info->var0.var0;
       v46 = v29;
-      v8 = [v27 compressAVDepthData:v7 timingInfo:formatDescription error:&v50];
+      v8 = [depthCompressor compressAVDepthData:v7 timingInfo:formatDescription error:&v50];
       v30 = v50;
 
       if (v30 || !v8)
@@ -1510,13 +1510,13 @@ LABEL_51:
         }
 
         v38 = JFXVideoWriterIntervalSignpostCategory();
-        v43 = [(JFXVideoWriter *)self signPostID];
-        if (v43 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        signPostID6 = [(JFXVideoWriter *)self signPostID];
+        if (signPostID6 - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_51;
         }
 
-        v40 = v43;
+        v40 = signPostID6;
         if (!os_signpost_enabled(v38))
         {
           goto LABEL_51;
@@ -1528,12 +1528,12 @@ LABEL_51:
 
       else
       {
-        v31 = [v8 sampleBufferRef];
+        sampleBufferRef = [v8 sampleBufferRef];
         v32 = JFXVideoWriterIntervalSignpostCategory();
-        v33 = [(JFXVideoWriter *)self signPostID];
-        if (v33 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+        signPostID7 = [(JFXVideoWriter *)self signPostID];
+        if (signPostID7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v34 = v33;
+          v34 = signPostID7;
           if (os_signpost_enabled(v32))
           {
             LOWORD(formatDescription[0]) = 0;
@@ -1542,10 +1542,10 @@ LABEL_51:
         }
 
         v35 = JFXVideoWriterIntervalSignpostCategory();
-        v36 = [(JFXVideoWriter *)self signPostID];
-        if (v36 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+        signPostID8 = [(JFXVideoWriter *)self signPostID];
+        if (signPostID8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v37 = v36;
+          v37 = signPostID8;
           if (os_signpost_enabled(v35))
           {
             LOWORD(formatDescription[0]) = 0;
@@ -1553,15 +1553,15 @@ LABEL_51:
           }
         }
 
-        [(JFXVideoWriter *)self JFX_writeBuffer:v31 sampleType:3];
+        [(JFXVideoWriter *)self JFX_writeBuffer:sampleBufferRef sampleType:3];
         v38 = JFXVideoWriterIntervalSignpostCategory();
-        v39 = [(JFXVideoWriter *)self signPostID];
-        if (v39 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        signPostID9 = [(JFXVideoWriter *)self signPostID];
+        if (signPostID9 - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_51;
         }
 
-        v40 = v39;
+        v40 = signPostID9;
         if (!os_signpost_enabled(v38))
         {
           goto LABEL_51;
@@ -1585,14 +1585,14 @@ LABEL_51:
 LABEL_52:
 }
 
-- (BOOL)JFX_writeSampleBuffer:(opaqueCMSampleBuffer *)a3 assetWriterInput:(id)a4 sampleType:(int)a5 depthAdaptor:(id)a6
+- (BOOL)JFX_writeSampleBuffer:(opaqueCMSampleBuffer *)buffer assetWriterInput:(id)input sampleType:(int)type depthAdaptor:(id)adaptor
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
+  inputCopy = input;
+  adaptorCopy = adaptor;
   memset(&v18, 0, sizeof(v18));
-  CMSampleBufferGetPresentationTimeStamp(&v18, a3);
-  if (![v9 isReadyForMoreMediaData])
+  CMSampleBufferGetPresentationTimeStamp(&v18, buffer);
+  if (![inputCopy isReadyForMoreMediaData])
   {
     v13 = JFXLog_DebugWriter();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1603,7 +1603,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v14 = [s_streamNames objectAtIndexedSubscript:a5];
+    v14 = [s_streamNames objectAtIndexedSubscript:type];
     buf = v18;
     v15 = JFXNSStringForCMTime(&buf);
     LODWORD(buf.value) = 138412546;
@@ -1617,9 +1617,9 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (a5 != 2)
+  if (type != 2)
   {
-    if ([v9 appendSampleBuffer:a3])
+    if ([inputCopy appendSampleBuffer:buffer])
     {
       goto LABEL_4;
     }
@@ -1627,9 +1627,9 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   buf = v18;
-  if (([v10 appendPixelBuffer:ImageBuffer withPresentationTime:&buf] & 1) == 0)
+  if (([adaptorCopy appendPixelBuffer:ImageBuffer withPresentationTime:&buf] & 1) == 0)
   {
 LABEL_8:
     v13 = JFXLog_DebugWriter();
@@ -1638,7 +1638,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v14 = [s_streamNames objectAtIndexedSubscript:a5];
+    v14 = [s_streamNames objectAtIndexedSubscript:type];
     buf = v18;
     v15 = JFXNSStringForCMTime(&buf);
     LODWORD(buf.value) = 138412546;
@@ -1656,9 +1656,9 @@ LABEL_10:
   return v12;
 }
 
-- (void)JFX_queueAudioBufferBeforeSessionStart:(opaqueCMSampleBuffer *)a3
+- (void)JFX_queueAudioBufferBeforeSessionStart:(opaqueCMSampleBuffer *)start
 {
-  v4 = [objc_alloc(MEMORY[0x277D415D8]) initWithSampleBuffer:a3];
+  v4 = [objc_alloc(MEMORY[0x277D415D8]) initWithSampleBuffer:start];
   if ([(WriterReorderQ *)self->_reorderQ count]>= 6)
   {
     v5 = JFXLog_DebugWriter();
@@ -1745,45 +1745,45 @@ LABEL_10:
 {
   v23[2] = *MEMORY[0x277D85DE8];
   v3 = +[JFXVideoCameraController sharedInstance];
-  v4 = [v3 cameraPosition];
+  cameraPosition = [v3 cameraPosition];
 
-  v5 = [MEMORY[0x277CE6558] metadataItem];
-  v6 = [objc_opt_class() JFX_funcamCameraPositionMetadataIdentifier];
-  [v5 setIdentifier:v6];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  jFX_funcamCameraPositionMetadataIdentifier = [objc_opt_class() JFX_funcamCameraPositionMetadataIdentifier];
+  [metadataItem setIdentifier:jFX_funcamCameraPositionMetadataIdentifier];
 
   v7 = *MEMORY[0x277CC05E0];
-  [v5 setDataType:*MEMORY[0x277CC05E0]];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bswap64(v4)];
-  [v5 setValue:v8];
+  [metadataItem setDataType:*MEMORY[0x277CC05E0]];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bswap64(cameraPosition)];
+  [metadataItem setValue:v8];
 
   v9 = bswap64(+[JFXOrientationMonitor deviceInterfaceOrientation]);
-  v10 = [MEMORY[0x277CE6558] metadataItem];
-  v11 = [objc_opt_class() JFX_funcamCaptureInterfaceOrientationMetadataIdentifier];
-  [v10 setIdentifier:v11];
+  metadataItem2 = [MEMORY[0x277CE6558] metadataItem];
+  jFX_funcamCaptureInterfaceOrientationMetadataIdentifier = [objc_opt_class() JFX_funcamCaptureInterfaceOrientationMetadataIdentifier];
+  [metadataItem2 setIdentifier:jFX_funcamCaptureInterfaceOrientationMetadataIdentifier];
 
-  [v10 setDataType:v7];
+  [metadataItem2 setDataType:v7];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v9];
-  [v10 setValue:v12];
+  [metadataItem2 setValue:v12];
 
-  v23[0] = v5;
-  v23[1] = v10;
+  v23[0] = metadataItem;
+  v23[1] = metadataItem2;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   v14 = [v13 mutableCopy];
 
-  v15 = [(JFXVideoWriter *)self animojiMetadata];
-  v16 = [v15 length];
+  animojiMetadata = [(JFXVideoWriter *)self animojiMetadata];
+  v16 = [animojiMetadata length];
 
   if (v16)
   {
-    v17 = [MEMORY[0x277CE6558] metadataItem];
-    v18 = [objc_opt_class() JFX_animojiMetadataIdentifier];
-    [v17 setIdentifier:v18];
+    metadataItem3 = [MEMORY[0x277CE6558] metadataItem];
+    jFX_animojiMetadataIdentifier = [objc_opt_class() JFX_animojiMetadataIdentifier];
+    [metadataItem3 setIdentifier:jFX_animojiMetadataIdentifier];
 
-    [v17 setDataType:*MEMORY[0x277CC05B0]];
-    v19 = [(JFXVideoWriter *)self animojiMetadata];
-    [v17 setValue:v19];
+    [metadataItem3 setDataType:*MEMORY[0x277CC05B0]];
+    animojiMetadata2 = [(JFXVideoWriter *)self animojiMetadata];
+    [metadataItem3 setValue:animojiMetadata2];
 
-    [v14 addObject:v17];
+    [v14 addObject:metadataItem3];
   }
 
   if ([(JFXVideoWriter *)self storeDepthDataAsVideoTrack])
@@ -1800,13 +1800,13 @@ LABEL_10:
   return v14;
 }
 
-- (void)JFX_writeAutoExposureMetadata:(opaqueCMSampleBuffer *)a3
+- (void)JFX_writeAutoExposureMetadata:(opaqueCMSampleBuffer *)metadata
 {
   v22[1] = *MEMORY[0x277D85DE8];
   if (s_enableAutoExposureFilter == 1)
   {
     memset(&v21, 0, sizeof(v21));
-    CMSampleBufferGetPresentationTimeStamp(&v21, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v21, metadata);
     if (![(AVAssetWriterInput *)self->_exposureMetadataAssetWriterInput isReadyForMoreMediaData])
     {
       v6 = JFXLog_DebugWriter();
@@ -1818,22 +1818,22 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(metadata);
     v6 = exifMetadataForCVPixelBuffer(ImageBuffer);
     v7 = exifBrightnessFromEXIFMetadata(v6);
     if ((LODWORD(v7) & 0x7FFFFFFFu) <= 0x7F7FFFFF)
     {
-      v10 = [MEMORY[0x277CE6558] metadataItem];
+      metadataItem = [MEMORY[0x277CE6558] metadataItem];
       v12 = BrightnessIdentifier();
-      [v10 setIdentifier:v12];
+      [metadataItem setIdentifier:v12];
 
-      [v10 setDataType:*MEMORY[0x277CC0588]];
+      [metadataItem setDataType:*MEMORY[0x277CC0588]];
       *&v13 = v7;
       v14 = [MEMORY[0x277CCABB0] numberWithFloat:v13];
-      [v10 setValue:v14];
+      [metadataItem setValue:v14];
 
       v15 = objc_alloc(MEMORY[0x277CE6648]);
-      v22[0] = v10;
+      v22[0] = metadataItem;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
       start = v21;
       v18 = **&MEMORY[0x277CC0898];
@@ -1862,8 +1862,8 @@ LABEL_10:
       start = v21;
       v18 = **&MEMORY[0x277CC0898];
       CMTimeRangeMake(&v20, &start, &v18);
-      v10 = [v9 initWithItems:MEMORY[0x277CBEBF8] timeRange:&v20];
-      if ([(AVAssetWriterInputMetadataAdaptor *)self->_exposureMetadataAdaptor appendTimedMetadataGroup:v10])
+      metadataItem = [v9 initWithItems:MEMORY[0x277CBEBF8] timeRange:&v20];
+      if ([(AVAssetWriterInputMetadataAdaptor *)self->_exposureMetadataAdaptor appendTimedMetadataGroup:metadataItem])
       {
         goto LABEL_16;
       }
@@ -1880,52 +1880,52 @@ LABEL_17:
   }
 }
 
-- (void)JFX_writeJFXARMetadata:(id)a3 time:(id *)a4
+- (void)JFX_writeJFXARMetadata:(id)metadata time:(id *)time
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6 && [(AVAssetWriterInput *)self->_JFXARMetadataAssetWriterInput isReadyForMoreMediaData])
+  metadataCopy = metadata;
+  if (metadataCopy && [(AVAssetWriterInput *)self->_JFXARMetadataAssetWriterInput isReadyForMoreMediaData])
   {
-    v7 = [objc_opt_class() META_JFXARMetadataIdentifier];
+    mETA_JFXARMetadataIdentifier = [objc_opt_class() META_JFXARMetadataIdentifier];
     v18 = 0;
-    v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v18];
+    v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:metadataCopy requiringSecureCoding:1 error:&v18];
     v9 = v18;
     if (!v9)
     {
-      v10 = [MEMORY[0x277CE6558] metadataItem];
-      [v10 setIdentifier:v7];
-      [v10 setDataType:*MEMORY[0x277CC05B0]];
-      [v10 setValue:v8];
+      metadataItem = [MEMORY[0x277CE6558] metadataItem];
+      [metadataItem setIdentifier:mETA_JFXARMetadataIdentifier];
+      [metadataItem setDataType:*MEMORY[0x277CC05B0]];
+      [metadataItem setValue:v8];
       memset(&v17, 0, sizeof(v17));
-      *&v15.start.value = *&a4->var0;
-      v15.start.epoch = a4->var3;
+      *&v15.start.value = *&time->var0;
+      v15.start.epoch = time->var3;
       duration = **&MEMORY[0x277CC0898];
       CMTimeRangeMake(&v17, &v15.start, &duration);
       v11 = objc_alloc(MEMORY[0x277CE6648]);
-      v19[0] = v10;
+      v19[0] = metadataItem;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
       v15 = v17;
       v13 = [v11 initWithItems:v12 timeRange:&v15];
 
       if ([(AVAssetWriterInputMetadataAdaptor *)self->_JFXARMetadataMetadataAdaptor appendTimedMetadataGroup:v13])
       {
-        v14 = *&a4->var0;
-        *&self->_sessionMetadataEndTime.flags = a4->var3;
+        v14 = *&time->var0;
+        *&self->_sessionMetadataEndTime.flags = time->var3;
         *(&self->_sessionVideoEndTime.epoch + 4) = v14;
       }
     }
   }
 }
 
-- (void)JFX_writeFaceMetadata:(id)a3 withTimingInfo:(id *)a4
+- (void)JFX_writeFaceMetadata:(id)metadata withTimingInfo:(id *)info
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (metadata)
   {
-    v6 = [a3 objectForKeyedSubscript:*MEMORY[0x277D41A60]];
+    v6 = [metadata objectForKeyedSubscript:*MEMORY[0x277D41A60]];
     if (v6)
     {
-      v7 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
@@ -1946,12 +1946,12 @@ LABEL_17:
             }
 
             v12 = *(*(&v20 + 1) + 8 * i);
-            v13 = [v12 faceObject];
+            faceObject = [v12 faceObject];
 
-            if (v13)
+            if (faceObject)
             {
-              v14 = [v12 faceObject];
-              [v7 addObject:v14];
+              faceObject2 = [v12 faceObject];
+              [array addObject:faceObject2];
             }
           }
 
@@ -1961,8 +1961,8 @@ LABEL_17:
         while (v9);
       }
 
-      v18 = *&a4->var1.var0;
-      var3 = a4->var1.var3;
+      v18 = *&info->var1.var0;
+      var3 = info->var1.var3;
       v15 = JFXLog_DebugWriter();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
@@ -1971,7 +1971,7 @@ LABEL_17:
 
       v16 = v18;
       v17 = var3;
-      [(JFXVideoWriter *)self JFX_writeFaceDetectMetadata:v7 pts:&v16];
+      [(JFXVideoWriter *)self JFX_writeFaceDetectMetadata:array pts:&v16];
     }
   }
 
@@ -1985,33 +1985,33 @@ LABEL_17:
   }
 }
 
-- (void)JFX_writeFaceDetectMetadata:(id)a3 pts:(id *)a4
+- (void)JFX_writeFaceDetectMetadata:(id)metadata pts:(id *)pts
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!self->_wroteSessionStartTime || (*&time1.start.value = *&a4->var0, time1.start.epoch = a4->var3, time2 = *(&self->_wroteFirstAudioSample + 3), CMTimeCompare(&time1.start, &time2) < 0))
+  metadataCopy = metadata;
+  if (!self->_wroteSessionStartTime || (*&time1.start.value = *&pts->var0, time1.start.epoch = pts->var3, time2 = *(&self->_wroteFirstAudioSample + 3), CMTimeCompare(&time1.start, &time2) < 0))
   {
     v20 = JFXLog_DebugWriter();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      [JFXVideoWriter JFX_writeFaceDetectMetadata:a4 pts:?];
+      [JFXVideoWriter JFX_writeFaceDetectMetadata:pts pts:?];
     }
   }
 
   else
   {
-    time2 = *a4;
+    time2 = *pts;
     if ([(AVAssetWriterInput *)self->_faceMetadataAssetWriterInput isReadyForMoreMediaData])
     {
-      if (v6 && [v6 count])
+      if (metadataCopy && [metadataCopy count])
       {
-        v24 = self;
+        selfCopy = self;
         v7 = objc_opt_new();
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v8 = v6;
+        v8 = metadataCopy;
         v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v9)
         {
@@ -2029,12 +2029,12 @@ LABEL_17:
 
               v14 = MEMORY[0x277CE6558];
               v15 = *(*(&v28 + 1) + 8 * i);
-              v16 = [v14 metadataItem];
-              [v16 setIdentifier:v12];
-              [v16 setDataType:@"com.apple.quicktime.detected-face"];
-              [v16 setValue:v15];
+              metadataItem = [v14 metadataItem];
+              [metadataItem setIdentifier:v12];
+              [metadataItem setDataType:@"com.apple.quicktime.detected-face"];
+              [metadataItem setValue:v15];
 
-              [v7 addObject:v16];
+              [v7 addObject:metadataItem];
             }
 
             v10 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -2048,7 +2048,7 @@ LABEL_17:
         duration = **&MEMORY[0x277CC0898];
         CMTimeRangeMake(&time1, &start, &duration);
         v18 = [v17 initWithItems:v7 timeRange:&time1];
-        if (![(AVAssetWriterInputMetadataAdaptor *)v24->_faceMetadataAdaptor appendTimedMetadataGroup:v18])
+        if (![(AVAssetWriterInputMetadataAdaptor *)selfCopy->_faceMetadataAdaptor appendTimedMetadataGroup:v18])
         {
           v19 = JFXLog_DebugWriter();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -2093,38 +2093,38 @@ LABEL_17:
   }
 }
 
-+ (void)META_metadataForVideo:(id)a3 completion:(id)a4
++ (void)META_metadataForVideo:(id)video completion:(id)completion
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v28 = v6;
-  v8 = [MEMORY[0x277CE63D8] assetWithURL:v6];
-  v29 = [v8 metadata];
-  if (v8 && [v29 count])
+  videoCopy = video;
+  completionCopy = completion;
+  v28 = videoCopy;
+  v8 = [MEMORY[0x277CE63D8] assetWithURL:videoCopy];
+  metadata = [v8 metadata];
+  if (v8 && [metadata count])
   {
     v9 = dispatch_group_create();
-    v10 = [a1 JFX_funcamCameraPositionMetadataIdentifier];
-    v11 = [a1 JFX_funcamCaptureInterfaceOrientationMetadataIdentifier];
-    v48[0] = v10;
-    v48[1] = v11;
+    jFX_funcamCameraPositionMetadataIdentifier = [self JFX_funcamCameraPositionMetadataIdentifier];
+    jFX_funcamCaptureInterfaceOrientationMetadataIdentifier = [self JFX_funcamCaptureInterfaceOrientationMetadataIdentifier];
+    v48[0] = jFX_funcamCameraPositionMetadataIdentifier;
+    v48[1] = jFX_funcamCaptureInterfaceOrientationMetadataIdentifier;
     v49[0] = &unk_28556D3F8;
     v49[1] = &unk_28556D3F8;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
     v13 = [v12 mutableCopy];
 
-    v14 = [v13 allKeys];
+    allKeys = [v13 allKeys];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __51__JFXVideoWriter_META_metadataForVideo_completion___block_invoke_119;
     v42[3] = &unk_278D7C010;
-    v15 = v29;
+    v15 = metadata;
     v43 = v15;
     v16 = v9;
     v44 = v16;
     v17 = v13;
     v45 = v17;
-    [v14 enumerateObjectsUsingBlock:v42];
+    [allKeys enumerateObjectsUsingBlock:v42];
 
     v40[0] = 0;
     v40[1] = v40;
@@ -2132,8 +2132,8 @@ LABEL_17:
     v40[3] = __Block_byref_object_copy__18;
     v40[4] = __Block_byref_object_dispose__18;
     v41 = 0;
-    v18 = [a1 JFX_animojiMetadataIdentifier];
-    v19 = [MEMORY[0x277CE6520] metadataItemsFromArray:v15 filteredByIdentifier:v18];
+    jFX_animojiMetadataIdentifier = [self JFX_animojiMetadataIdentifier];
+    v19 = [MEMORY[0x277CE6520] metadataItemsFromArray:v15 filteredByIdentifier:jFX_animojiMetadataIdentifier];
     if ([v19 count])
     {
       v20 = [v19 objectAtIndexedSubscript:0];
@@ -2155,13 +2155,13 @@ LABEL_17:
     block[2] = __51__JFXVideoWriter_META_metadataForVideo_completion___block_invoke_2_132;
     block[3] = &unk_278D7C038;
     v31 = v17;
-    v32 = v10;
-    v33 = v11;
-    v34 = v7;
+    v32 = jFX_funcamCameraPositionMetadataIdentifier;
+    v33 = jFX_funcamCaptureInterfaceOrientationMetadataIdentifier;
+    v34 = completionCopy;
     v35 = v40;
-    v27 = v7;
-    v23 = v11;
-    v24 = v10;
+    v27 = completionCopy;
+    v23 = jFX_funcamCaptureInterfaceOrientationMetadataIdentifier;
+    v24 = jFX_funcamCameraPositionMetadataIdentifier;
     v25 = v17;
     dispatch_group_notify(v16, v22, block);
 
@@ -2175,8 +2175,8 @@ LABEL_17:
     v46[1] = 3221225472;
     v46[2] = __51__JFXVideoWriter_META_metadataForVideo_completion___block_invoke;
     v46[3] = &unk_278D7A168;
-    v47 = v7;
-    v16 = v7;
+    v47 = completionCopy;
+    v16 = completionCopy;
     dispatch_async(v26, v46);
 
     v25 = v47;
@@ -2242,19 +2242,19 @@ uint64_t __51__JFXVideoWriter_META_metadataForVideo_completion___block_invoke_2_
 + (id)META_JFXARMetadataIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v2 stringWithFormat:@"%@.%@", v4, @"JFXARMetadata"];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  bundleIdentifier = [jfxBundle bundleIdentifier];
+  v5 = [v2 stringWithFormat:@"%@.%@", bundleIdentifier, @"JFXARMetadata"];
 
   v6 = [MEMORY[0x277CE6520] identifierForKey:v5 keySpace:*MEMORY[0x277CE5FA8]];
 
   return v6;
 }
 
-+ (id)META_metadataAssetTrackFromAsset:(id)a3 metadataIdentifier:(id)a4
++ (id)META_metadataAssetTrackFromAsset:(id)asset metadataIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  identifierCopy = identifier;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2276,14 +2276,14 @@ uint64_t __51__JFXVideoWriter_META_metadataForVideo_completion___block_invoke_2_
   v19 = &v20;
   v9 = v7;
   v18 = v9;
-  [v5 loadTracksWithMediaType:v8 completionHandler:v17];
+  [assetCopy loadTracksWithMediaType:v8 completionHandler:v17];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v21[5];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__JFXVideoWriter_META_metadataAssetTrackFromAsset_metadataIdentifier___block_invoke_2;
   v14[3] = &unk_278D7C088;
-  v11 = v6;
+  v11 = identifierCopy;
   v15 = v11;
   v16 = &v26;
   [v10 enumerateObjectsUsingBlock:v14];
@@ -2333,11 +2333,11 @@ void __70__JFXVideoWriter_META_metadataAssetTrackFromAsset_metadataIdentifier___
   }
 }
 
-+ (id)META_ARMetadataTrackForAsset:(id)a3
++ (id)META_ARMetadataTrackForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [a1 META_JFXARMetadataIdentifier];
-  v6 = [a1 META_metadataAssetTrackFromAsset:v4 metadataIdentifier:v5];
+  assetCopy = asset;
+  mETA_JFXARMetadataIdentifier = [self META_JFXARMetadataIdentifier];
+  v6 = [self META_metadataAssetTrackFromAsset:assetCopy metadataIdentifier:mETA_JFXARMetadataIdentifier];
 
   return v6;
 }
@@ -2345,9 +2345,9 @@ void __70__JFXVideoWriter_META_metadataAssetTrackFromAsset_metadataIdentifier___
 + (id)JFX_funcamCameraPositionMetadataIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v2 stringWithFormat:@"%@.%@", v4, @"cameraPosition"];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  bundleIdentifier = [jfxBundle bundleIdentifier];
+  v5 = [v2 stringWithFormat:@"%@.%@", bundleIdentifier, @"cameraPosition"];
 
   v6 = [MEMORY[0x277CE6520] identifierForKey:v5 keySpace:*MEMORY[0x277CE5FA8]];
 
@@ -2357,9 +2357,9 @@ void __70__JFXVideoWriter_META_metadataAssetTrackFromAsset_metadataIdentifier___
 + (id)JFX_funcamCaptureInterfaceOrientationMetadataIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v2 stringWithFormat:@"%@.%@", v4, @"captureInterfaceOrientation"];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  bundleIdentifier = [jfxBundle bundleIdentifier];
+  v5 = [v2 stringWithFormat:@"%@.%@", bundleIdentifier, @"captureInterfaceOrientation"];
 
   v6 = [MEMORY[0x277CE6520] identifierForKey:v5 keySpace:*MEMORY[0x277CE5FA8]];
 
@@ -2369,9 +2369,9 @@ void __70__JFXVideoWriter_META_metadataAssetTrackFromAsset_metadataIdentifier___
 + (id)JFX_faceAnchorMetadataIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v2 stringWithFormat:@"%@.%@", v4, @"faceanchor"];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  bundleIdentifier = [jfxBundle bundleIdentifier];
+  v5 = [v2 stringWithFormat:@"%@.%@", bundleIdentifier, @"faceanchor"];
 
   v6 = [MEMORY[0x277CE6520] identifierForKey:v5 keySpace:*MEMORY[0x277CE5FA8]];
 
@@ -2381,65 +2381,65 @@ void __70__JFXVideoWriter_META_metadataAssetTrackFromAsset_metadataIdentifier___
 + (id)JFX_animojiMetadataIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v2 stringWithFormat:@"%@.%@", v4, @"animojiMetadata"];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  bundleIdentifier = [jfxBundle bundleIdentifier];
+  v5 = [v2 stringWithFormat:@"%@.%@", bundleIdentifier, @"animojiMetadata"];
 
   v6 = [MEMORY[0x277CE6520] identifierForKey:v5 keySpace:*MEMORY[0x277CE5FA8]];
 
   return v6;
 }
 
-- (BOOL)JFX_writerCanBegin:(id *)a3
+- (BOOL)JFX_writerCanBegin:(id *)begin
 {
-  v5 = [(JFXVideoWriter *)self folderURL];
+  folderURL = [(JFXVideoWriter *)self folderURL];
 
-  if (!v5)
+  if (!folderURL)
   {
     v7 = @"nil url";
-    v8 = a3;
+    beginCopy2 = begin;
     v9 = 1;
     goto LABEL_5;
   }
 
-  v6 = [(JFXVideoWriter *)self videoOutputSettings];
-  if (!v6)
+  videoOutputSettings = [(JFXVideoWriter *)self videoOutputSettings];
+  if (!videoOutputSettings)
   {
-    v11 = [(JFXVideoWriter *)self audioOutputSettings];
+    audioOutputSettings = [(JFXVideoWriter *)self audioOutputSettings];
 
-    if (v11)
+    if (audioOutputSettings)
     {
       return 1;
     }
 
     v7 = @"No video or audio output settings provided";
-    v8 = a3;
+    beginCopy2 = begin;
     v9 = 3;
 LABEL_5:
-    SetError(v8, @"com.apple.Clips.JFXVideoWriter", v9, v7);
+    SetError(beginCopy2, @"com.apple.Clips.JFXVideoWriter", v9, v7);
     return 0;
   }
 
   return 1;
 }
 
-- (void)JFX_removeFileAtURL:(id)a3
+- (void)JFX_removeFileAtURL:(id)l
 {
-  v6 = a3;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v6 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if (v5)
   {
-    [v3 removeItemAtURL:v6 error:0];
+    [defaultManager removeItemAtURL:lCopy error:0];
   }
 }
 
-- (__CVBuffer)JFX_copyDepthBufferAsBGRA:(__CVBuffer *)a3
+- (__CVBuffer)JFX_copyDepthBufferAsBGRA:(__CVBuffer *)a
 {
   pixelBufferOut = 0;
-  if (a3)
+  if (a)
   {
     depthAdaptor = self->_depthAdaptor;
     if (depthAdaptor)
@@ -2449,13 +2449,13 @@ LABEL_5:
       {
         if (CVPixelBufferGetPixelFormatType(pixelBufferOut) == 1111970369)
         {
-          Width = CVPixelBufferGetWidth(a3);
-          Height = CVPixelBufferGetHeight(a3);
-          BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+          Width = CVPixelBufferGetWidth(a);
+          Height = CVPixelBufferGetHeight(a);
+          BytesPerRow = CVPixelBufferGetBytesPerRow(a);
           v8 = CVPixelBufferGetBytesPerRow(pixelBufferOut);
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
+          CVPixelBufferLockBaseAddress(a, 1uLL);
           CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
-          BaseAddress = CVPixelBufferGetBaseAddress(a3);
+          BaseAddress = CVPixelBufferGetBaseAddress(a);
           v10 = CVPixelBufferGetBaseAddress(pixelBufferOut);
           if (Height)
           {
@@ -2472,7 +2472,7 @@ LABEL_5:
             while (Height);
           }
 
-          CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+          CVPixelBufferUnlockBaseAddress(a, 1uLL);
           CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
         }
       }

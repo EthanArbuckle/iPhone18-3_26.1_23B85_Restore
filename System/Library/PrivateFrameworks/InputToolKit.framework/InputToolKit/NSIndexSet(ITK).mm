@@ -33,7 +33,7 @@
   v6[3] = &unk_2797AF1A0;
   v7 = v2;
   v3 = v2;
-  [a1 enumerateRangesUsingBlock:v6];
+  [self enumerateRangesUsingBlock:v6];
   v4 = [v3 copy];
 
   return v4;
@@ -41,13 +41,13 @@
 
 - (__CFString)itk_indexString
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
     if (v2 == 1)
     {
-      v3 = [a1 firstIndex];
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%ld]", v3];
+      firstIndex = [self firstIndex];
+      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%ld]", firstIndex];
     }
 
     else
@@ -60,7 +60,7 @@
       v9[3] = &unk_2797AF1C8;
       v10 = v5;
       v6 = v5;
-      [a1 enumerateIndexesUsingBlock:v9];
+      [self enumerateIndexesUsingBlock:v9];
       v7 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:{@", "}];
       v4 = [v6 stringByTrimmingCharactersInSet:v7];
     }

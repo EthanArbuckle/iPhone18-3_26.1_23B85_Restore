@@ -1,43 +1,43 @@
 @interface HFAccessorySettingSiriHistoryAdapter
-- (BOOL)shouldShowSettingsEntity:(id)a3;
-- (HFAccessorySettingSiriHistoryAdapter)initWithHomeKitSettingsVendor:(id)a3 keyPaths:(id)a4 mode:(unint64_t)a5 updateHandler:(id)a6;
-- (HFAccessorySettingSiriHistoryAdapter)initWithHomeKitSettingsVendor:(id)a3 mode:(unint64_t)a4;
+- (BOOL)shouldShowSettingsEntity:(id)entity;
+- (HFAccessorySettingSiriHistoryAdapter)initWithHomeKitSettingsVendor:(id)vendor keyPaths:(id)paths mode:(unint64_t)mode updateHandler:(id)handler;
+- (HFAccessorySettingSiriHistoryAdapter)initWithHomeKitSettingsVendor:(id)vendor mode:(unint64_t)mode;
 @end
 
 @implementation HFAccessorySettingSiriHistoryAdapter
 
-- (HFAccessorySettingSiriHistoryAdapter)initWithHomeKitSettingsVendor:(id)a3 mode:(unint64_t)a4
+- (HFAccessorySettingSiriHistoryAdapter)initWithHomeKitSettingsVendor:(id)vendor mode:(unint64_t)mode
 {
-  v7 = a3;
-  if (a4)
+  vendorCopy = vendor;
+  if (mode)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingSiriHistoryAdapter.m" lineNumber:23 description:@"The Siri History Adapter is only used on the Controller"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingSiriHistoryAdapter.m" lineNumber:23 description:@"The Siri History Adapter is only used on the Controller"];
   }
 
   v8 = [MEMORY[0x277CBEB98] set];
   v12.receiver = self;
   v12.super_class = HFAccessorySettingSiriHistoryAdapter;
-  v9 = [(HFAccessorySettingAdapter *)&v12 initWithHomeKitSettingsVendor:v7 keyPaths:v8 mode:a4 updateHandler:0];
+  v9 = [(HFAccessorySettingAdapter *)&v12 initWithHomeKitSettingsVendor:vendorCopy keyPaths:v8 mode:mode updateHandler:0];
 
   return v9;
 }
 
-- (HFAccessorySettingSiriHistoryAdapter)initWithHomeKitSettingsVendor:(id)a3 keyPaths:(id)a4 mode:(unint64_t)a5 updateHandler:(id)a6
+- (HFAccessorySettingSiriHistoryAdapter)initWithHomeKitSettingsVendor:(id)vendor keyPaths:(id)paths mode:(unint64_t)mode updateHandler:(id)handler
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithHomeKitSettingsVendor_mode_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingSiriHistoryAdapter.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HFAccessorySettingSiriHistoryAdapter initWithHomeKitSettingsVendor:keyPaths:mode:updateHandler:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingSiriHistoryAdapter.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HFAccessorySettingSiriHistoryAdapter initWithHomeKitSettingsVendor:keyPaths:mode:updateHandler:]", v9}];
 
   return 0;
 }
 
-- (BOOL)shouldShowSettingsEntity:(id)a3
+- (BOOL)shouldShowSettingsEntity:(id)entity
 {
-  v3 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-  if ([v3 conformsToProtocol:&unk_282584A38])
+  homeKitSettingsVendor = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+  if ([homeKitSettingsVendor conformsToProtocol:&unk_282584A38])
   {
-    v4 = v3;
+    v4 = homeKitSettingsVendor;
   }
 
   else

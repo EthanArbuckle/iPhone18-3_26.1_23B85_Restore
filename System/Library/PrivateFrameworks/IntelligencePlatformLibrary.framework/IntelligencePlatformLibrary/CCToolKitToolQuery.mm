@@ -1,24 +1,24 @@
 @interface CCToolKitToolQuery
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolQuery)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolQuery)initWithPredicate:(id)a3 sort:(unsigned int)a4 limit:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolQuery)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolQuery)initWithPredicate:(id)predicate sort:(unsigned int)sort limit:(id)limit error:(id *)error;
 - (CCToolKitToolQueryAnyPredicate)predicate;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolQuery
 
-- (CCToolKitToolQuery)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolQuery)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v17[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"predicate"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"predicate"];
     if (v9)
     {
       v17[0] = 0;
@@ -37,20 +37,20 @@ LABEL_12:
       v9 = v10;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"sort"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"sort"];
     v12 = v13;
     if (v13)
     {
-      v14 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
     }
 
     else
     {
-      v14 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"limit"];
-    v15 = [[CCToolKitToolQuery alloc] initWithPredicate:v9 sort:v14 limit:v10 error:a4];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"limit"];
+    v15 = [[CCToolKitToolQuery alloc] initWithPredicate:v9 sort:unsignedIntegerValue limit:v10 error:error];
     goto LABEL_12;
   }
 
@@ -66,9 +66,9 @@ LABEL_13:
   v3 = objc_opt_new();
   if (self->_predicate)
   {
-    v4 = [(CCToolKitToolQuery *)self predicate];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"predicate"];
+    predicate = [(CCToolKitToolQuery *)self predicate];
+    jsonDictionary = [predicate jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"predicate"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CCToolKitToolQuery sort](self, "sort")}];
@@ -85,15 +85,15 @@ LABEL_13:
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v10 = a3;
+  blockCopy = block;
   if (self->_predicate)
   {
     v5 = objc_alloc(MEMORY[0x1E69939F0]);
     v6 = *MEMORY[0x1E69939A8];
     v7 = [v5 initWithFieldType:v6 subMessageValue:self->_predicate];
-    v10[2](v10, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   else
@@ -102,12 +102,12 @@ LABEL_13:
   }
 
   v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_sort];
-  v10[2](v10, v8);
+  blockCopy[2](blockCopy, v8);
 
   if (self->_hasLimit)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 int64Value:self->_limit];
-    v10[2](v10, v9);
+    blockCopy[2](blockCopy, v9);
   }
 }
 
@@ -118,10 +118,10 @@ LABEL_13:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v49 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v49];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   v8 = MEMORY[0x1E6993AA8];
@@ -358,12 +358,12 @@ LABEL_58:
   return v47;
 }
 
-- (CCToolKitToolQuery)initWithPredicate:(id)a3 sort:(unsigned int)a4 limit:(id)a5 error:(id *)a6
+- (CCToolKitToolQuery)initWithPredicate:(id)predicate sort:(unsigned int)sort limit:(id)limit error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  predicateCopy = predicate;
+  limitCopy = limit;
   v12 = objc_opt_new();
-  if (v10)
+  if (predicateCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -373,14 +373,14 @@ LABEL_58:
       goto LABEL_7;
     }
 
-    v15 = [v10 data];
+    data = [predicateCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (!a4)
+    if (!sort)
     {
 LABEL_4:
       v16 = v14;
-      if (v11)
+      if (limitCopy)
       {
         goto LABEL_5;
       }
@@ -394,7 +394,7 @@ LABEL_11:
   else
   {
     v14 = 0;
-    if (!a4)
+    if (!sort)
     {
       goto LABEL_4;
     }
@@ -406,13 +406,13 @@ LABEL_11:
   if (!v19)
   {
     CCSetError();
-    v18 = 0;
+    selfCopy = 0;
     v14 = v16;
     goto LABEL_14;
   }
 
   CCPBDataWriterWriteUint32Field();
-  if (!v11)
+  if (!limitCopy)
   {
     goto LABEL_11;
   }
@@ -424,22 +424,22 @@ LABEL_5:
 
   if (v17)
   {
-    [v11 longLongValue];
+    [limitCopy longLongValue];
     CCPBDataWriterWriteInt64Field();
 LABEL_12:
-    v20 = [v12 immutableData];
-    self = [(CCItemMessage *)self initWithData:v20 error:a6];
+    immutableData = [v12 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

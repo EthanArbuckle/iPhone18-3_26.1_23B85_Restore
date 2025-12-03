@@ -1,21 +1,21 @@
 @interface PKBillPaymentRingGradientState
-- (PKBillPaymentRingGradientState)initWithStartColor:(id)a3 endColor:(id)a4;
+- (PKBillPaymentRingGradientState)initWithStartColor:(id)color endColor:(id)endColor;
 @end
 
 @implementation PKBillPaymentRingGradientState
 
-- (PKBillPaymentRingGradientState)initWithStartColor:(id)a3 endColor:(id)a4
+- (PKBillPaymentRingGradientState)initWithStartColor:(id)color endColor:(id)endColor
 {
-  v7 = a3;
-  v8 = a4;
+  colorCopy = color;
+  endColorCopy = endColor;
   v12.receiver = self;
   v12.super_class = PKBillPaymentRingGradientState;
   v9 = [(PKBillPaymentRingGradientState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startColor, a3);
-    objc_storeStrong(&v10->_endColor, a4);
+    objc_storeStrong(&v9->_startColor, color);
+    objc_storeStrong(&v10->_endColor, endColor);
   }
 
   return v10;

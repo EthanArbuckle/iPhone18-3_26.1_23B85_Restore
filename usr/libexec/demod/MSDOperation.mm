@@ -4,31 +4,31 @@
 - (BOOL)isLeaf;
 - (BOOL)isRoot;
 - (BOOL)skipped;
-- (MSDOperation)initWithContext:(id)a3;
+- (MSDOperation)initWithContext:(id)context;
 - (MSDOperationObserver)observer;
 - (NSString)identifier;
 - (id)allDependentOperations;
 - (id)description;
-- (void)addDependency:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)addDependency:(id)dependency;
+- (void)addObserver:(id)observer;
 - (void)execute;
 - (void)main;
-- (void)produceNewDependentOperation:(id)a3 forRollback:(BOOL)a4;
-- (void)setRetryable:(BOOL)a3;
+- (void)produceNewDependentOperation:(id)operation forRollback:(BOOL)rollback;
+- (void)setRetryable:(BOOL)retryable;
 @end
 
 @implementation MSDOperation
 
-- (MSDOperation)initWithContext:(id)a3
+- (MSDOperation)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = MSDOperation;
   v5 = [(MSDOperation *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(MSDOperation *)v5 setContext:v4];
+    [(MSDOperation *)v5 setContext:contextCopy];
     [(MSDOperation *)v6 setComponent:0];
     [(MSDOperation *)v6 setFlag:0];
     [(MSDOperation *)v6 setCheckpointBarrier:0];
@@ -50,19 +50,19 @@
   return NSStringFromClass(v2);
 }
 
-- (void)setRetryable:(BOOL)a3
+- (void)setRetryable:(BOOL)retryable
 {
-  v4 = [(MSDOperation *)self flag]& 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [(MSDOperation *)self flag]& 0xFFFFFFFFFFFFFFFELL | retryable;
 
   [(MSDOperation *)self setFlag:v4];
 }
 
 - (BOOL)skipped
 {
-  v2 = [(MSDOperation *)self context];
-  v3 = [v2 skipped];
+  context = [(MSDOperation *)self context];
+  skipped = [context skipped];
 
-  return v3;
+  return skipped;
 }
 
 - (void)main
@@ -75,76 +75,76 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: entered.", buf, 0xCu);
   }
 
-  v5 = [(MSDOperation *)self observer];
+  observer = [(MSDOperation *)self observer];
 
-  if (v5)
+  if (observer)
   {
-    v6 = [(MSDOperation *)self observer];
-    [v6 operationDidStart:self];
+    observer2 = [(MSDOperation *)self observer];
+    [observer2 operationDidStart:self];
   }
 
   v7 = sub_100063BEC();
-  v8 = [(MSDOperation *)self signpostId];
-  if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(MSDOperation *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v9 = v8;
+    v9 = signpostId;
     if (os_signpost_enabled(v7))
     {
       *buf = 138412290;
-      v19 = self;
+      selfCopy4 = self;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_BEGIN, v9, "Perform Operation", "Operation name: %{xcode:string}@", buf, 0xCu);
     }
   }
 
   [(MSDOperation *)self execute];
   v10 = sub_100063BEC();
-  v11 = [(MSDOperation *)self signpostId];
-  if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId2 = [(MSDOperation *)self signpostId];
+  if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v12 = v11;
+    v12 = signpostId2;
     if (os_signpost_enabled(v10))
     {
-      v13 = [(MSDOperation *)self result];
+      result = [(MSDOperation *)self result];
       *buf = 138412546;
-      v19 = self;
+      selfCopy4 = self;
       v20 = 1024;
-      v21 = v13;
+      v21 = result;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_END, v12, "Perform Operation", "Operation name: %{xcode:string}@ result: %{xcode:BOOLean}d", buf, 0x12u);
     }
   }
 
-  v14 = [(MSDOperation *)self observer];
+  observer3 = [(MSDOperation *)self observer];
 
-  if (v14)
+  if (observer3)
   {
-    v15 = [(MSDOperation *)self observer];
-    [v15 operationWillFinish:self];
+    observer4 = [(MSDOperation *)self observer];
+    [observer4 operationWillFinish:self];
   }
 
   v16 = sub_100063A54();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: will return.", buf, 0xCu);
   }
 
   os_activity_scope_leave(&v17);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  if (([v5 conformsToProtocol:&OBJC_PROTOCOL___MSDOperationObserver] & 1) == 0)
+  observerCopy = observer;
+  if (([observerCopy conformsToProtocol:&OBJC_PROTOCOL___MSDOperationObserver] & 1) == 0)
   {
     sub_1000D7C38(a2, self);
   }
 
-  [(MSDOperation *)self setObserver:v5];
+  [(MSDOperation *)self setObserver:observerCopy];
 }
 
 - (BOOL)canPassCheckpoint
@@ -155,7 +155,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = self;
+      selfCopy5 = self;
       v4 = "%{public}@ is cancelled.";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, v4, &v17, 0xCu);
@@ -171,7 +171,7 @@ LABEL_7:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = self;
+      selfCopy5 = self;
       v4 = "%{public}@ is skipped.";
       goto LABEL_7;
     }
@@ -181,10 +181,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [(MSDOperation *)self checkpointBarrier];
-  v8 = [v7 activated];
+  checkpointBarrier = [(MSDOperation *)self checkpointBarrier];
+  activated = [checkpointBarrier activated];
 
-  if (!v8)
+  if (!activated)
   {
     return 1;
   }
@@ -193,31 +193,31 @@ LABEL_8:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ is halted by checkpoint barrier.", &v17, 0xCu);
   }
 
   v10 = sub_100063BEC();
-  v11 = [(MSDOperation *)self signpostId];
-  if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(MSDOperation *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v12 = v11;
+    v12 = signpostId;
     if (os_signpost_enabled(v10))
     {
       v17 = 138412290;
-      v18 = self;
+      selfCopy5 = self;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, v12, "Encounter Checkpoint Barrier", "Operation name: %{xcode:string}@", &v17, 0xCu);
     }
   }
 
-  v13 = [(MSDOperation *)self checkpointBarrier];
-  [v13 waitUntilClear];
+  checkpointBarrier2 = [(MSDOperation *)self checkpointBarrier];
+  [checkpointBarrier2 waitUntilClear];
 
   v14 = sub_100063BEC();
-  v15 = [(MSDOperation *)self signpostId];
-  if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId2 = [(MSDOperation *)self signpostId];
+  if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v16 = v15;
+    v16 = signpostId2;
     if (os_signpost_enabled(v14))
     {
       LOWORD(v17) = 0;
@@ -229,7 +229,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ is free of checkpoint barrier.", &v17, 0xCu);
   }
 
@@ -241,16 +241,16 @@ LABEL_9:
 
 - (BOOL)isRoot
 {
-  v2 = [(MSDOperation *)self dependencies];
-  v3 = [v2 count] == 0;
+  dependencies = [(MSDOperation *)self dependencies];
+  v3 = [dependencies count] == 0;
 
   return v3;
 }
 
 - (BOOL)isLeaf
 {
-  v2 = [(MSDOperation *)self dependents];
-  v3 = [v2 count] == 0;
+  dependents = [(MSDOperation *)self dependents];
+  v3 = [dependents count] == 0;
 
   return v3;
 }
@@ -261,8 +261,8 @@ LABEL_9:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(MSDOperation *)self dependents];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dependents = [(MSDOperation *)self dependents];
+  v4 = [dependents countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -273,21 +273,21 @@ LABEL_9:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dependents);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [(MSDOperation *)self component];
-        v10 = [v8 component];
+        component = [(MSDOperation *)self component];
+        component2 = [v8 component];
 
-        if (v9 == v10 && ![v8 isCancelled])
+        if (component == component2 && ![v8 isCancelled])
         {
           v11 = 0;
           goto LABEL_12;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [dependents countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -303,37 +303,37 @@ LABEL_12:
   return v11;
 }
 
-- (void)addDependency:(id)a3
+- (void)addDependency:(id)dependency
 {
   v6.receiver = self;
   v6.super_class = MSDOperation;
-  v4 = a3;
-  [(MSDOperation *)&v6 addDependency:v4];
-  v5 = [v4 dependents];
+  dependencyCopy = dependency;
+  [(MSDOperation *)&v6 addDependency:dependencyCopy];
+  dependents = [dependencyCopy dependents];
 
-  [v5 addObject:self];
+  [dependents addObject:self];
 }
 
-- (void)produceNewDependentOperation:(id)a3 forRollback:(BOOL)a4
+- (void)produceNewDependentOperation:(id)operation forRollback:(BOOL)rollback
 {
-  v4 = a4;
-  v6 = a3;
+  rollbackCopy = rollback;
+  operationCopy = operation;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v6;
+    v16 = operationCopy;
     v17 = 1026;
-    v18 = v4;
+    v18 = rollbackCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: New dependent operation produced: %{public}@ for rollback: %{public, BOOL}d", buf, 0x1Cu);
   }
 
-  [v6 addDependency:self];
-  v8 = [(MSDOperation *)self observer];
+  [operationCopy addDependency:self];
+  observer = [(MSDOperation *)self observer];
 
-  if (v8)
+  if (observer)
   {
     v9 = dispatch_get_global_queue(21, 0);
     block[0] = _NSConcreteStackBlock;
@@ -341,8 +341,8 @@ LABEL_12:
     block[2] = sub_10006A40C;
     block[3] = &unk_10016AF88;
     block[4] = self;
-    v11 = v6;
-    v12 = v4;
+    v11 = operationCopy;
+    v12 = rollbackCopy;
     dispatch_async(v9, block);
   }
 }
@@ -361,8 +361,8 @@ LABEL_12:
     v16 = 0u;
     v17 = 0u;
     v15 = v5;
-    v6 = [v5 dependents];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    dependents = [v5 dependents];
+    v7 = [dependents countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -373,21 +373,21 @@ LABEL_12:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(dependents);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 component];
-          v13 = [(MSDOperation *)self component];
+          component = [v11 component];
+          component2 = [(MSDOperation *)self component];
 
-          if (v12 == v13 && ([v3 containsObject:v11] & 1) == 0)
+          if (component == component2 && ([v3 containsObject:v11] & 1) == 0)
           {
             [v3 addObject:v11];
             [v4 addObject:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [dependents countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -399,19 +399,19 @@ LABEL_12:
 
 - (id)description
 {
-  v3 = [(MSDOperation *)self result];
+  result = [(MSDOperation *)self result];
   v4 = @"NO";
-  if (v3)
+  if (result)
   {
     v4 = @"YES";
   }
 
   v5 = v4;
-  v6 = [(MSDOperation *)self flag];
-  v7 = [(MSDOperation *)self identifier];
-  v8 = [(MSDOperation *)self context];
-  v9 = [v8 uniqueName];
-  v10 = [NSString stringWithFormat:@"<%@: Name=%@ Result=%@ Flag=%lx>", v7, v9, v5, v6];
+  flag = [(MSDOperation *)self flag];
+  identifier = [(MSDOperation *)self identifier];
+  context = [(MSDOperation *)self context];
+  uniqueName = [context uniqueName];
+  v10 = [NSString stringWithFormat:@"<%@: Name=%@ Result=%@ Flag=%lx>", identifier, uniqueName, v5, flag];
 
   return v10;
 }
@@ -450,14 +450,14 @@ LABEL_12:
 
           v8 = *(*(&v25 + 1) + 8 * i);
           v9 = objc_autoreleasePoolPush();
-          v10 = [v8 pointerValue];
-          v11 = NSStringFromSelector(v10);
-          v12 = [(MSDOperation *)self methodForSelector:v10];
+          pointerValue = [v8 pointerValue];
+          v11 = NSStringFromSelector(pointerValue);
+          v12 = [(MSDOperation *)self methodForSelector:pointerValue];
           v13 = sub_100063BEC();
-          v14 = [(MSDOperation *)self signpostId];
-          if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+          signpostId = [(MSDOperation *)self signpostId];
+          if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v15 = v14;
+            v15 = signpostId;
             if (os_signpost_enabled(v13))
             {
               *buf = 138412290;
@@ -466,12 +466,12 @@ LABEL_12:
             }
           }
 
-          v16 = v12(self, v10);
+          v16 = v12(self, pointerValue);
           v17 = sub_100063BEC();
-          v18 = [(MSDOperation *)self signpostId];
-          if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+          signpostId2 = [(MSDOperation *)self signpostId];
+          if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v19 = v18;
+            v19 = signpostId2;
             if (os_signpost_enabled(v17))
             {
               *buf = v23;
@@ -496,10 +496,10 @@ LABEL_21:
             goto LABEL_22;
           }
 
-          v20 = [(MSDOperation *)self canPassCheckpoint];
+          canPassCheckpoint = [(MSDOperation *)self canPassCheckpoint];
 
           objc_autoreleasePoolPop(v9);
-          if (!v20)
+          if (!canPassCheckpoint)
           {
             goto LABEL_21;
           }

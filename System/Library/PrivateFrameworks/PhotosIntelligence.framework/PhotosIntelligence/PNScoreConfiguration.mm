@@ -1,14 +1,14 @@
 @interface PNScoreConfiguration
-+ (id)plistPathForPhotoLibrary:(id)a3 dataType:(int64_t)a4;
-+ (id)scoreConfigurationNameForDataType:(int64_t)a3 withThemeType:(int64_t)a4;
-+ (id)scoreConfigurationNamePrefixForDataType:(int64_t)a3;
-+ (id)scoreConfigurationNameSuffixForThemeType:(int64_t)a3;
-- (PNScoreConfiguration)initWithScoreConfigurationDataType:(int64_t)a3 scoreConfigurationThemeType:(int64_t)a4;
++ (id)plistPathForPhotoLibrary:(id)library dataType:(int64_t)type;
++ (id)scoreConfigurationNameForDataType:(int64_t)type withThemeType:(int64_t)themeType;
++ (id)scoreConfigurationNamePrefixForDataType:(int64_t)type;
++ (id)scoreConfigurationNameSuffixForThemeType:(int64_t)type;
+- (PNScoreConfiguration)initWithScoreConfigurationDataType:(int64_t)type scoreConfigurationThemeType:(int64_t)themeType;
 @end
 
 @implementation PNScoreConfiguration
 
-- (PNScoreConfiguration)initWithScoreConfigurationDataType:(int64_t)a3 scoreConfigurationThemeType:(int64_t)a4
+- (PNScoreConfiguration)initWithScoreConfigurationDataType:(int64_t)type scoreConfigurationThemeType:(int64_t)themeType
 {
   v11.receiver = self;
   v11.super_class = PNScoreConfiguration;
@@ -16,9 +16,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_dataType = a3;
-    v6->_themeType = a4;
-    v8 = [PNScoreConfiguration scoreConfigurationNameForDataType:a3 withThemeType:a4];
+    v6->_dataType = type;
+    v6->_themeType = themeType;
+    v8 = [PNScoreConfiguration scoreConfigurationNameForDataType:type withThemeType:themeType];
     name = v7->_name;
     v7->_name = v8;
   }
@@ -26,13 +26,13 @@
   return v7;
 }
 
-+ (id)plistPathForPhotoLibrary:(id)a3 dataType:(int64_t)a4
++ (id)plistPathForPhotoLibrary:(id)library dataType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [PNScoreConfiguration scoreConfigurationNamePrefixForDataType:a4];
+  libraryCopy = library;
+  v6 = [PNScoreConfiguration scoreConfigurationNamePrefixForDataType:type];
   v13 = 0;
-  v7 = [v5 urlForApplicationDataFolderIdentifier:1 error:&v13];
+  v7 = [libraryCopy urlForApplicationDataFolderIdentifier:1 error:&v13];
 
   v8 = v13;
   if (v7)
@@ -40,7 +40,7 @@
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", v6];
     v10 = [v7 URLByAppendingPathComponent:v9];
 
-    v11 = [v10 path];
+    path = [v10 path];
   }
 
   else
@@ -52,30 +52,30 @@
       _os_log_error_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to access the graph service URL. Error: %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    path = 0;
   }
 
-  return v11;
+  return path;
 }
 
-+ (id)scoreConfigurationNameForDataType:(int64_t)a3 withThemeType:(int64_t)a4
++ (id)scoreConfigurationNameForDataType:(int64_t)type withThemeType:(int64_t)themeType
 {
-  v5 = [PNScoreConfiguration scoreConfigurationNamePrefixForDataType:a3];
-  v6 = [PNScoreConfiguration scoreConfigurationNameSuffixForThemeType:a4];
+  v5 = [PNScoreConfiguration scoreConfigurationNamePrefixForDataType:type];
+  v6 = [PNScoreConfiguration scoreConfigurationNameSuffixForThemeType:themeType];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v5, v6];
 
   return v7;
 }
 
-+ (id)scoreConfigurationNameSuffixForThemeType:(int64_t)a3
++ (id)scoreConfigurationNameSuffixForThemeType:(int64_t)type
 {
   v3 = @"??";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"Grouped By GeoHash";
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -86,15 +86,15 @@
   }
 }
 
-+ (id)scoreConfigurationNamePrefixForDataType:(int64_t)a3
++ (id)scoreConfigurationNamePrefixForDataType:(int64_t)type
 {
   v3 = @"??";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"IconicScore";
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }

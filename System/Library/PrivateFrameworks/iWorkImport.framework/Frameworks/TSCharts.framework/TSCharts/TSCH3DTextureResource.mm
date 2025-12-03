@@ -1,8 +1,8 @@
 @interface TSCH3DTextureResource
-- (BOOL)canLoadCachedFullMipmapBufferForDataCache:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DTextureResource)initWithParent:(id)a3;
-- (id)databufferForDataCache:(id)a3;
+- (BOOL)canLoadCachedFullMipmapBufferForDataCache:(id)cache;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DTextureResource)initWithParent:(id)parent;
+- (id)databufferForDataCache:(id)cache;
 - (id)get;
 - (id)optimizedMipmapBuffer;
 - (id)p_parent;
@@ -12,9 +12,9 @@
 
 @implementation TSCH3DTextureResource
 
-- (TSCH3DTextureResource)initWithParent:(id)a3
+- (TSCH3DTextureResource)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v9.receiver = self;
   v9.super_class = TSCH3DTextureResource;
   v5 = [(TSCH3DResource *)&v9 initWithCaching:0];
@@ -24,7 +24,7 @@
     cachedHashOnce = v5->_cachedHashOnce;
     v5->_cachedHashOnce = v6;
 
-    objc_storeWeak(&v5->_parent, v4);
+    objc_storeWeak(&v5->_parent, parentCopy);
   }
 
   return v5;
@@ -32,18 +32,18 @@
 
 - (id)p_parent
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  WeakRetained = objc_loadWeakRetained(&v2->_parent);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_parent);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -104,9 +104,9 @@
   return v45;
 }
 
-- (BOOL)canLoadCachedFullMipmapBufferForDataCache:(id)a3
+- (BOOL)canLoadCachedFullMipmapBufferForDataCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v10 = objc_msgSend_p_parent(self, v5, v6, v7, v8);
   if (!v10)
   {
@@ -118,7 +118,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  canLoadCachedFullMipmapBufferForDataCache = objc_msgSend_canLoadCachedFullMipmapBufferForDataCache_(v10, v9, v11, v12, v13, v4);
+  canLoadCachedFullMipmapBufferForDataCache = objc_msgSend_canLoadCachedFullMipmapBufferForDataCache_(v10, v9, v11, v12, v13, cacheCopy);
 
   return canLoadCachedFullMipmapBufferForDataCache;
 }
@@ -159,9 +159,9 @@
   return v25;
 }
 
-- (id)databufferForDataCache:(id)a3
+- (id)databufferForDataCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v10 = objc_msgSend_p_parent(self, v5, v6, v7, v8);
   if (!v10)
   {
@@ -173,7 +173,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_databufferForDataCache_(v10, v9, v11, v12, v13, v4);
+  v29 = objc_msgSend_databufferForDataCache_(v10, v9, v11, v12, v13, cacheCopy);
 
   return v29;
 }

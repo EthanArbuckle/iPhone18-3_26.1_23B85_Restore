@@ -6,10 +6,10 @@
 
 - (double)pkui_effectiveLayoutMargins
 {
-  [a1 _shouldReverseLayoutDirection];
-  v2 = [a1 contentView];
-  [a1 separatorInset];
-  [v2 layoutMargins];
+  [self _shouldReverseLayoutDirection];
+  contentView = [self contentView];
+  [self separatorInset];
+  [contentView layoutMargins];
   v4 = v3;
 
   return v4;

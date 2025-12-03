@@ -1,11 +1,11 @@
 @interface POKerberosStatus
-- (POKerberosStatus)initWithCoder:(id)a3;
-- (POKerberosStatus)initWithData:(id)a3;
-- (POKerberosStatus)initWithDictionary:(id)a3;
+- (POKerberosStatus)initWithCoder:(id)coder;
+- (POKerberosStatus)initWithData:(id)data;
+- (POKerberosStatus)initWithDictionary:(id)dictionary;
 - (id)dataRepresentation;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation POKerberosStatus
@@ -47,9 +47,9 @@
 - (id)dataRepresentation
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(POKerberosStatus *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(POKerberosStatus *)self dictionaryRepresentation];
   v11 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:11 error:&v11];
+  v4 = [v2 dataWithJSONObject:dictionaryRepresentation options:11 error:&v11];
   v5 = v11;
 
   if (v5)
@@ -84,52 +84,52 @@ id __38__POKerberosStatus_dataRepresentation__block_invoke(uint64_t a1)
   return v1;
 }
 
-- (POKerberosStatus)initWithDictionary:(id)a3
+- (POKerberosStatus)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(POKerberosStatus *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_ticketKeyPath);
-    v7 = [v4 objectForKeyedSubscript:v6];
+    v7 = [dictionaryCopy objectForKeyedSubscript:v6];
     ticketKeyPath = v5->_ticketKeyPath;
     v5->_ticketKeyPath = v7;
 
     v9 = NSStringFromSelector(sel_realm);
-    v10 = [v4 objectForKeyedSubscript:v9];
+    v10 = [dictionaryCopy objectForKeyedSubscript:v9];
     realm = v5->_realm;
     v5->_realm = v10;
 
     v12 = NSStringFromSelector(sel_cacheName);
-    v13 = [v4 objectForKeyedSubscript:v12];
+    v13 = [dictionaryCopy objectForKeyedSubscript:v12];
     cacheName = v5->_cacheName;
     v5->_cacheName = v13;
 
     v15 = NSStringFromSelector("upn");
-    v16 = [v4 objectForKeyedSubscript:v15];
+    v16 = [dictionaryCopy objectForKeyedSubscript:v15];
     upn = v5->_upn;
     v5->_upn = v16;
 
     v18 = NSStringFromSelector(sel_importSuccessful);
-    v19 = [v4 objectForKeyedSubscript:v18];
+    v19 = [dictionaryCopy objectForKeyedSubscript:v18];
     v5->_importSuccessful = [v19 BOOLValue];
 
     v20 = NSStringFromSelector(sel_exchangeRequired);
-    v21 = [v4 objectForKeyedSubscript:v20];
+    v21 = [dictionaryCopy objectForKeyedSubscript:v20];
     v5->_exchangeRequired = [v21 BOOLValue];
 
     v22 = NSStringFromSelector(sel_failedToConnect);
-    v23 = [v4 objectForKeyedSubscript:v22];
+    v23 = [dictionaryCopy objectForKeyedSubscript:v22];
     v5->_failedToConnect = [v23 BOOLValue];
   }
 
   return v5;
 }
 
-- (POKerberosStatus)initWithData:(id)a3
+- (POKerberosStatus)initWithData:(id)data
 {
   v12 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:16 error:&v12];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:16 error:&v12];
   v5 = v12;
   v6 = v5;
   if (v5)
@@ -141,16 +141,16 @@ id __38__POKerberosStatus_dataRepresentation__block_invoke(uint64_t a1)
     v11 = v5;
     v7 = __33__POKerberosStatus_initWithData___block_invoke(v10);
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POKerberosStatus *)self initWithDictionary:v4];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 id __33__POKerberosStatus_initWithData___block_invoke(uint64_t a1)
@@ -168,29 +168,29 @@ id __33__POKerberosStatus_initWithData___block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(POKerberosStatus *)self dataRepresentation];
-  v5 = [v3 initWithData:v4 encoding:4];
+  dataRepresentation = [(POKerberosStatus *)self dataRepresentation];
+  v5 = [v3 initWithData:dataRepresentation encoding:4];
 
   return v5;
 }
 
-- (POKerberosStatus)initWithCoder:(id)a3
+- (POKerberosStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_dataRepresentation);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(POKerberosStatus *)self initWithData:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(POKerberosStatus *)self dataRepresentation];
+  coderCopy = coder;
+  dataRepresentation = [(POKerberosStatus *)self dataRepresentation];
   v5 = NSStringFromSelector(sel_dataRepresentation);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:dataRepresentation forKey:v5];
 }
 
 @end

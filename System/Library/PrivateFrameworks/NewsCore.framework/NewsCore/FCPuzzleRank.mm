@@ -1,23 +1,23 @@
 @interface FCPuzzleRank
-- (FCPuzzleRank)initWithDictionary:(id)a3 index:(int64_t)a4;
+- (FCPuzzleRank)initWithDictionary:(id)dictionary index:(int64_t)index;
 @end
 
 @implementation FCPuzzleRank
 
-- (FCPuzzleRank)initWithDictionary:(id)a3 index:(int64_t)a4
+- (FCPuzzleRank)initWithDictionary:(id)dictionary index:(int64_t)index
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = FCPuzzleRank;
   v7 = [(FCPuzzleRank *)&v18 init];
   if (v7)
   {
-    v8 = FCAppConfigurationStringValue(v6, @"name", &stru_1F2DC7DC0);
-    v9 = FCAppConfigurationStringValue(v6, @"identifier", &stru_1F2DC7DC0);
-    v10 = FCAppConfigurationStringValue(v6, @"icon", 0);
-    v11 = FCAppConfigurationBoolValue(v6, @"defaultRank", 0);
-    v12 = FCAppConfigurationBoolValue(v6, @"isProdigyLevel", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"name", &stru_1F2DC7DC0);
+    v9 = FCAppConfigurationStringValue(dictionaryCopy, @"identifier", &stru_1F2DC7DC0);
+    v10 = FCAppConfigurationStringValue(dictionaryCopy, @"icon", 0);
+    v11 = FCAppConfigurationBoolValue(dictionaryCopy, @"defaultRank", 0);
+    v12 = FCAppConfigurationBoolValue(dictionaryCopy, @"isProdigyLevel", 0);
     if (v8)
     {
       if (v9)
@@ -28,7 +28,7 @@
         objc_storeStrong(&v7->_icon, v10);
         v7->_defaultRank = v11;
         v7->_isProdigyLevel = v13;
-        v7->_index = a4;
+        v7->_index = index;
 LABEL_11:
 
         goto LABEL_12;

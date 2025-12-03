@@ -2,19 +2,19 @@
 - (BOOL)allowsDescendersToClip;
 - (BOOL)isLayoutOffscreen;
 - (CGPoint)anchorPoint;
-- (CGPoint)anchoredAttachmentPositionFromLayoutPosition:(CGPoint)a3;
-- (CGPoint)calculatePointFromSearchReference:(id)a3;
+- (CGPoint)anchoredAttachmentPositionFromLayoutPosition:(CGPoint)position;
+- (CGPoint)calculatePointFromSearchReference:(id)reference;
 - (CGPoint)capturedInfoPositionForAttachment;
-- (CGPoint)layoutPositionFromAnchoredAttachmentPosition:(CGPoint)a3;
-- (CGPoint)pageOriginOfCharacterIndex:(unint64_t)a3;
+- (CGPoint)layoutPositionFromAnchoredAttachmentPosition:(CGPoint)position;
+- (CGPoint)pageOriginOfCharacterIndex:(unint64_t)index;
 - (CGPoint)position;
-- (CGRect)rectForSelection:(id)a3;
-- (CGRect)targetRectForCanvasRect:(CGRect)a3;
+- (CGRect)rectForSelection:(id)selection;
+- (CGRect)targetRectForCanvasRect:(CGRect)rect;
 - (CGSize)currentSize;
 - (CGSize)maxSize;
-- (CGSize)maximumFrameSizeForChild:(id)a3;
+- (CGSize)maximumFrameSizeForChild:(id)child;
 - (CGSize)minSize;
-- (THBodyLayout)initWithInfo:(id)a3;
+- (THBodyLayout)initWithInfo:(id)info;
 - (THPageController)pageController;
 - (TSDCanvas)canvas;
 - (TSDHint)nextTargetFirstChildHint;
@@ -24,41 +24,41 @@
 - (const)nextTargetTopicNumbers;
 - (const)previousTargetTopicNumbers;
 - (double)maxAnchorY;
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range;
 - (id)computeLayoutGeometry;
 - (id)currentAnchoredDrawableLayouts;
 - (id)firstTarget;
 - (id)lastTarget;
-- (id)nextTargetFromLayout:(id)a3 column:(id)a4;
+- (id)nextTargetFromLayout:(id)layout column:(id)column;
 - (id)nonEmptyColumns;
-- (id)p_attachedLayoutsInLayout:(id)a3 anchored:(BOOL)a4;
-- (id)p_layoutForDrawable:(id)a3 inContainingLayout:(id)a4;
-- (id)previousTargetFromLayout:(id)a3 column:(id)a4;
-- (id)validatedLayoutForAnchoredDrawable:(id)a3;
+- (id)p_attachedLayoutsInLayout:(id)layout anchored:(BOOL)anchored;
+- (id)p_layoutForDrawable:(id)drawable inContainingLayout:(id)layout;
+- (id)previousTargetFromLayout:(id)layout column:(id)column;
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable;
 - (unint64_t)bodyIndexInPageLayout;
-- (unint64_t)firstCharacterIndexOverlappingPageRect:(CGRect)a3;
+- (unint64_t)firstCharacterIndexOverlappingPageRect:(CGRect)rect;
 - (unint64_t)pageCount;
 - (unint64_t)pageNumber;
-- (void)addAttachmentLayout:(id)a3;
+- (void)addAttachmentLayout:(id)layout;
 - (void)createColumns;
 - (void)dealloc;
 - (void)invalidateSize;
 - (void)killColumns;
-- (void)layoutSearchForString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5;
-- (void)p_killDrawableLayouts:(id)a3;
+- (void)layoutSearchForString:(id)string options:(unint64_t)options hitBlock:(id)block;
+- (void)p_killDrawableLayouts:(id)layouts;
 - (void)processWidowAndInflation;
-- (void)replaceChild:(id)a3 with:(id)a4;
+- (void)replaceChild:(id)child with:(id)with;
 - (void)validate;
-- (void)willBeAddedToLayoutController:(id)a3;
+- (void)willBeAddedToLayoutController:(id)controller;
 @end
 
 @implementation THBodyLayout
 
-- (THBodyLayout)initWithInfo:(id)a3
+- (THBodyLayout)initWithInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = THBodyLayout;
-  v3 = [(THBodyLayout *)&v5 initWithInfo:a3];
+  v3 = [(THBodyLayout *)&v5 initWithInfo:info];
   if (v3)
   {
     v3->mAttachedDrawableLayouts = objc_alloc_init(NSMutableSet);
@@ -78,29 +78,29 @@
   [(THBodyLayout *)&v3 dealloc];
 }
 
-- (void)willBeAddedToLayoutController:(id)a3
+- (void)willBeAddedToLayoutController:(id)controller
 {
-  v4 = [-[THBodyLayout info](self info];
+  info = [-[THBodyLayout info](self info];
   if ([(THPageController *)[(THBodyLayout *)self pageController] needsAnnotationSourceForLayout:self])
   {
     v5 = [objc_msgSend(-[THBodyLayout sectionLayout](self "sectionLayout")];
 
-    [v4 updateAnnotationSourceWithContentNode:v5];
+    [info updateAnnotationSourceWithContentNode:v5];
   }
 }
 
 - (BOOL)allowsDescendersToClip
 {
-  v2 = [(THBodyLayout *)self pageController];
+  pageController = [(THBodyLayout *)self pageController];
 
-  return [(THPageController *)v2 allowsDescendersToClip];
+  return [(THPageController *)pageController allowsDescendersToClip];
 }
 
-- (CGRect)rectForSelection:(id)a3
+- (CGRect)rectForSelection:(id)selection
 {
-  v4 = [(THBodyLayout *)self columns];
+  columns = [(THBodyLayout *)self columns];
 
-  [TSWPColumn rectForSelection:a3 withColumns:v4];
+  [TSWPColumn rectForSelection:selection withColumns:columns];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -108,13 +108,13 @@
   return result;
 }
 
-- (void)p_killDrawableLayouts:(id)a3
+- (void)p_killDrawableLayouts:(id)layouts
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [layouts countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -125,7 +125,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(layouts);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -135,7 +135,7 @@
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [layouts countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -154,28 +154,28 @@
 {
   self->mColumns = 0;
   [(THBodyLayout *)self p_killDrawableLayouts:[(THBodyLayout *)self currentInlineDrawableLayouts]];
-  v3 = [(THBodyLayout *)self currentAnchoredDrawableLayouts];
+  currentAnchoredDrawableLayouts = [(THBodyLayout *)self currentAnchoredDrawableLayouts];
 
-  [(THBodyLayout *)self p_killDrawableLayouts:v3];
+  [(THBodyLayout *)self p_killDrawableLayouts:currentAnchoredDrawableLayouts];
 }
 
 - (void)processWidowAndInflation
 {
-  v3 = [(NSMutableArray *)[(THBodyLayout *)self columns] lastObject];
-  if (v3)
+  lastObject = [(NSMutableArray *)[(THBodyLayout *)self columns] lastObject];
+  if (lastObject)
   {
-    v4 = v3;
-    v5 = [v3 range];
-    v7 = &v5[v6];
+    v4 = lastObject;
+    range = [lastObject range];
+    v7 = &range[v6];
     v8 = [-[THPageController i_pageHintForPageIndex:](-[THBodyLayout pageController](self "pageController")];
     v9 = (v8[5] + v8[4]);
     if (v9 != v7)
     {
       v10 = [-[THBodyLayout info](self "info")];
-      v11 = [v4 range];
-      if (v9 <= &v11[v12])
+      range2 = [v4 range];
+      if (v9 <= &range2[v12])
       {
-        v13 = &v11[v12];
+        v13 = &range2[v12];
       }
 
       else
@@ -183,9 +183,9 @@
         v13 = v9;
       }
 
-      if (v9 >= &v11[v12])
+      if (v9 >= &range2[v12])
       {
-        v14 = &v11[v12];
+        v14 = &range2[v12];
       }
 
       else
@@ -209,17 +209,17 @@
 - (unint64_t)bodyIndexInPageLayout
 {
   v3 = [objc_msgSend(-[THBodyLayout parent](self "parent")];
-  v4 = [(THBodyLayout *)self info];
+  info = [(THBodyLayout *)self info];
 
-  return [v3 indexOfObject:v4];
+  return [v3 indexOfObject:info];
 }
 
-- (unint64_t)firstCharacterIndexOverlappingPageRect:(CGRect)a3
+- (unint64_t)firstCharacterIndexOverlappingPageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [-[THBodyLayout parent](self "parent")];
   v14.origin.x = x;
   v14.origin.y = y;
@@ -244,8 +244,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(THBodyLayout *)self columns];
-  v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  columns = [(THBodyLayout *)self columns];
+  v5 = [(NSMutableArray *)columns countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -257,7 +257,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(columns);
         }
 
         location = [*(*(&v15 + 1) + 8 * v8) range];
@@ -278,7 +278,7 @@
       }
 
       while (v6 != v8);
-      v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [(NSMutableArray *)columns countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -291,9 +291,9 @@
   return result;
 }
 
-- (CGPoint)pageOriginOfCharacterIndex:(unint64_t)a3
+- (CGPoint)pageOriginOfCharacterIndex:(unint64_t)index
 {
-  [(THBodyLayout *)self rectForSelection:[TSWPSelection selectionWithRange:a3, 1]];
+  [(THBodyLayout *)self rectForSelection:[TSWPSelection selectionWithRange:index, 1]];
   [-[THBodyLayout parent](self "parent")];
 
   TSDAddPoints();
@@ -302,9 +302,9 @@
   return result;
 }
 
-- (CGSize)maximumFrameSizeForChild:(id)a3
+- (CGSize)maximumFrameSizeForChild:(id)child
 {
-  v5 = [objc_msgSend(a3 "info")];
+  v5 = [objc_msgSend(child "info")];
   if (v5 && ([v5 isAnchored] & 1) == 0 && -[THBodyLayout columns](self, "columns"))
   {
     [-[NSMutableArray objectAtIndex:](-[THBodyLayout columns](self "columns")];
@@ -316,7 +316,7 @@
   {
     v10.receiver = self;
     v10.super_class = THBodyLayout;
-    [(THBodyLayout *)&v10 maximumFrameSizeForChild:a3];
+    [(THBodyLayout *)&v10 maximumFrameSizeForChild:child];
   }
 
   result.height = v9;
@@ -403,51 +403,51 @@
   }
 }
 
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  v4 = [(THBodyLayout *)self info:a3];
+  v4 = [(THBodyLayout *)self info:index];
 
   return [v4 columnStyle];
 }
 
 - (TSWPOffscreenColumn)previousTargetLastColumn
 {
-  v3 = [(THBodyLayout *)self pageController];
+  pageController = [(THBodyLayout *)self pageController];
   v4 = [-[THBodyLayout parent](self "parent")];
 
-  return [(THPageController *)v3 i_columnPriorToPageIndex:v4];
+  return [(THPageController *)pageController i_columnPriorToPageIndex:v4];
 }
 
 - (TSWPOffscreenColumn)nextTargetFirstColumn
 {
-  v3 = [(THBodyLayout *)self pageController];
+  pageController = [(THBodyLayout *)self pageController];
   v4 = [-[THBodyLayout parent](self "parent")];
 
-  return [(THPageController *)v3 i_columnAfterPageIndex:v4];
+  return [(THPageController *)pageController i_columnAfterPageIndex:v4];
 }
 
 - (TSDHint)nextTargetFirstChildHint
 {
-  v3 = [(THBodyLayout *)self pageController];
+  pageController = [(THBodyLayout *)self pageController];
   v4 = [-[THBodyLayout parent](self "parent")];
 
-  return [(THPageController *)v3 i_firstChildHintAfterPageIndex:v4];
+  return [(THPageController *)pageController i_firstChildHintAfterPageIndex:v4];
 }
 
 - (const)previousTargetTopicNumbers
 {
-  v3 = [(THBodyLayout *)self pageController];
+  pageController = [(THBodyLayout *)self pageController];
   v4 = [-[THBodyLayout parent](self "parent")];
 
-  return [(THPageController *)v3 i_topicHintsPriorToPageIndex:v4];
+  return [(THPageController *)pageController i_topicHintsPriorToPageIndex:v4];
 }
 
 - (const)nextTargetTopicNumbers
 {
-  v3 = [(THBodyLayout *)self pageController];
+  pageController = [(THBodyLayout *)self pageController];
   v4 = [-[THBodyLayout parent](self "parent")];
 
-  return [(THPageController *)v3 i_topicHintsAfterPageIndex:v4];
+  return [(THPageController *)pageController i_topicHintsAfterPageIndex:v4];
 }
 
 - (CGSize)minSize
@@ -462,10 +462,10 @@
 
 - (CGSize)maxSize
 {
-  v3 = [(THBodyLayout *)self autosizeFlags];
+  autosizeFlags = [(THBodyLayout *)self autosizeFlags];
   [-[THBodyLayout parent](self "parent")];
   v6 = 100000.0;
-  if (v3)
+  if (autosizeFlags)
   {
     v7 = 100000.0;
   }
@@ -475,7 +475,7 @@
     v7 = v5;
   }
 
-  if ((v3 & 4) == 0)
+  if ((autosizeFlags & 4) == 0)
   {
     v6 = v4;
   }
@@ -495,9 +495,9 @@
 
   else
   {
-    v5 = [(THBodyLayout *)self geometry];
+    geometry = [(THBodyLayout *)self geometry];
 
-    [v5 size];
+    [geometry size];
   }
 
   result.height = v4;
@@ -509,10 +509,10 @@
 {
   y = CGPointZero.y;
   v9 = CGPointZero;
-  v2 = [(THBodyLayout *)self geometry];
-  if (v2)
+  geometry = [(THBodyLayout *)self geometry];
+  if (geometry)
   {
-    [v2 transform];
+    [geometry transform];
     v3 = v10;
     v4 = v11;
     v5 = v12;
@@ -541,12 +541,12 @@
   return result;
 }
 
-- (CGRect)targetRectForCanvasRect:(CGRect)a3
+- (CGRect)targetRectForCanvasRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(THBodyLayout *)self frameInRoot];
   v8 = -v7;
   v10 = -v9;
@@ -560,72 +560,72 @@
 
 - (TSDCanvas)canvas
 {
-  v2 = [(THBodyLayout *)self layoutController];
+  layoutController = [(THBodyLayout *)self layoutController];
 
-  return [v2 canvas];
+  return [layoutController canvas];
 }
 
-- (void)replaceChild:(id)a3 with:(id)a4
+- (void)replaceChild:(id)child with:(id)with
 {
   v8.receiver = self;
   v8.super_class = THBodyLayout;
   [THBodyLayout replaceChild:"replaceChild:with:" with:?];
-  v7 = [(NSMutableSet *)self->mAttachedDrawableLayouts containsObject:a3];
-  if (a3 != a4)
+  v7 = [(NSMutableSet *)self->mAttachedDrawableLayouts containsObject:child];
+  if (child != with)
   {
     if (v7)
     {
-      [(NSMutableSet *)self->mAttachedDrawableLayouts removeObject:a3];
+      [(NSMutableSet *)self->mAttachedDrawableLayouts removeObject:child];
     }
   }
 }
 
-- (void)addAttachmentLayout:(id)a3
+- (void)addAttachmentLayout:(id)layout
 {
-  if (!a3)
+  if (!layout)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([a3 parent] != self)
+  if ([layout parent] != self)
   {
-    [(THBodyLayout *)self addChild:a3];
+    [(THBodyLayout *)self addChild:layout];
   }
 
-  [a3 updateChildrenFromInfo];
+  [layout updateChildrenFromInfo];
 }
 
-- (id)p_layoutForDrawable:(id)a3 inContainingLayout:(id)a4
+- (id)p_layoutForDrawable:(id)drawable inContainingLayout:(id)layout
 {
-  v7 = [objc_msgSend(a4 "layoutController")];
+  v7 = [objc_msgSend(layout "layoutController")];
   if (!v7)
   {
-    v7 = [objc_alloc(objc_msgSend(a3 "layoutClass"))];
+    v7 = [objc_alloc(objc_msgSend(drawable "layoutClass"))];
     if (v7)
     {
       [(NSMutableSet *)self->mAttachedDrawableLayouts addObject:v7];
-      [a4 addAttachmentLayout:v7];
+      [layout addAttachmentLayout:v7];
     }
   }
 
   return v7;
 }
 
-- (id)validatedLayoutForAnchoredDrawable:(id)a3
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable
 {
-  v4 = [(THBodyLayout *)self p_layoutForDrawable:a3 inContainingLayout:[(THBodyLayout *)self parent]];
+  v4 = [(THBodyLayout *)self p_layoutForDrawable:drawable inContainingLayout:[(THBodyLayout *)self parent]];
   [-[THBodyLayout layoutController](self "layoutController")];
   return v4;
 }
 
-- (id)p_attachedLayoutsInLayout:(id)a3 anchored:(BOOL)a4
+- (id)p_attachedLayoutsInLayout:(id)layout anchored:(BOOL)anchored
 {
-  v4 = a4;
+  anchoredCopy = anchored;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a3 children];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  children = [layout children];
+  v7 = [children countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v7)
   {
     return 0;
@@ -640,7 +640,7 @@
     {
       if (*v18 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(children);
       }
 
       objc_opt_class();
@@ -654,7 +654,7 @@
           v15 = v14;
           if ([v14 isDrawable])
           {
-            if ([v15 isAnchored] == v4 && -[NSMutableSet containsObject:](self->mAttachedDrawableLayouts, "containsObject:", v13))
+            if ([v15 isAnchored] == anchoredCopy && -[NSMutableSet containsObject:](self->mAttachedDrawableLayouts, "containsObject:", v13))
             {
               if (v9)
               {
@@ -671,7 +671,7 @@
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v8 = [children countByEnumeratingWithState:&v17 objects:v21 count:16];
   }
 
   while (v8);
@@ -680,9 +680,9 @@
 
 - (id)currentAnchoredDrawableLayouts
 {
-  v3 = [(THBodyLayout *)self parent];
+  parent = [(THBodyLayout *)self parent];
 
-  return [(THBodyLayout *)self p_attachedLayoutsInLayout:v3 anchored:1];
+  return [(THBodyLayout *)self p_attachedLayoutsInLayout:parent anchored:1];
 }
 
 - (double)maxAnchorY
@@ -695,20 +695,20 @@
 
 - (BOOL)isLayoutOffscreen
 {
-  v2 = [(THBodyLayout *)self layoutController];
+  layoutController = [(THBodyLayout *)self layoutController];
 
-  return [v2 isLayoutOffscreen];
+  return [layoutController isLayoutOffscreen];
 }
 
-- (CGPoint)layoutPositionFromAnchoredAttachmentPosition:(CGPoint)a3
+- (CGPoint)layoutPositionFromAnchoredAttachmentPosition:(CGPoint)position
 {
   if (self)
   {
-    y = a3.y;
-    x = a3.x;
+    y = position.y;
+    x = position.x;
     [(THBodyLayout *)self transform];
-    a3.y = y;
-    a3.x = x;
+    position.y = y;
+    position.x = x;
     v4 = v10;
     v3 = v11;
     v5 = v12;
@@ -721,17 +721,17 @@
     v3 = 0uLL;
   }
 
-  v6 = vaddq_f64(v5, vmlaq_n_f64(vmulq_n_f64(v3, a3.y), v4, a3.x));
+  v6 = vaddq_f64(v5, vmlaq_n_f64(vmulq_n_f64(v3, position.y), v4, position.x));
   v7 = v6.f64[1];
   result.x = v6.f64[0];
   result.y = v7;
   return result;
 }
 
-- (CGPoint)anchoredAttachmentPositionFromLayoutPosition:(CGPoint)a3
+- (CGPoint)anchoredAttachmentPositionFromLayoutPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   if (self)
   {
     [(THBodyLayout *)self transform];
@@ -750,23 +750,23 @@
   return result;
 }
 
-- (void)layoutSearchForString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5
+- (void)layoutSearchForString:(id)string options:(unint64_t)options hitBlock:(id)block
 {
   if ([(NSMutableArray *)[(THBodyLayout *)self columns] count])
   {
     v9 = [(NSMutableArray *)[(THBodyLayout *)self columns] objectAtIndex:0];
-    v10 = [(NSMutableArray *)[(THBodyLayout *)self columns] lastObject];
-    v11 = [v9 range];
+    lastObject = [(NSMutableArray *)[(THBodyLayout *)self columns] lastObject];
+    range = [v9 range];
     v13 = v12;
-    v21.location = [v10 range];
+    v21.location = [lastObject range];
     v21.length = v14;
-    v20.location = v11;
+    v20.location = range;
     v20.length = v13;
     v15 = NSUnionRange(v20, v21);
     v16 = [objc_msgSend(-[THBodyLayout info](self "info")] - v15.location - v15.length;
-    if ([a3 length] - 1 < v16)
+    if ([string length] - 1 < v16)
     {
-      v16 = [a3 length] - 1;
+      v16 = [string length] - 1;
     }
 
     v19[0] = _NSConcreteStackBlock;
@@ -774,7 +774,7 @@
     v19[2] = sub_43624;
     v19[3] = &unk_45B9F8;
     v19[4] = self;
-    v19[5] = a5;
+    v19[5] = block;
     v17 = [objc_msgSend(-[THBodyLayout info](self "info")];
     if (v17)
     {
@@ -792,10 +792,10 @@
   }
 }
 
-- (CGPoint)calculatePointFromSearchReference:(id)a3
+- (CGPoint)calculatePointFromSearchReference:(id)reference
 {
   objc_opt_class();
-  [a3 selection];
+  [reference selection];
   v5 = TSUDynamicCast();
   v6 = 0.0;
   if (v5)
@@ -826,23 +826,23 @@
 
 - (THPageController)pageController
 {
-  v2 = [(THBodyLayout *)self parent];
+  parent = [(THBodyLayout *)self parent];
 
-  return [v2 pageController];
+  return [parent pageController];
 }
 
 - (unint64_t)pageNumber
 {
-  v2 = [(THBodyLayout *)self parent];
+  parent = [(THBodyLayout *)self parent];
 
-  return [v2 relativePageIndex];
+  return [parent relativePageIndex];
 }
 
 - (unint64_t)pageCount
 {
-  v2 = [(THBodyLayout *)self pageController];
+  pageController = [(THBodyLayout *)self pageController];
 
-  return [(THPageController *)v2 pageCount];
+  return [(THPageController *)pageController pageCount];
 }
 
 - (id)nonEmptyColumns
@@ -852,8 +852,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(THBodyLayout *)self columns];
-  v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  columns = [(THBodyLayout *)self columns];
+  v5 = [(NSMutableArray *)columns countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -864,7 +864,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(columns);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -875,7 +875,7 @@
         }
       }
 
-      v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [(NSMutableArray *)columns countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -884,21 +884,21 @@
   return v3;
 }
 
-- (id)nextTargetFromLayout:(id)a3 column:(id)a4
+- (id)nextTargetFromLayout:(id)layout column:(id)column
 {
-  v5 = [-[THBodyLayout nonEmptyColumns](self nonEmptyColumns];
-  if (v5)
+  nonEmptyColumns = [-[THBodyLayout nonEmptyColumns](self nonEmptyColumns];
+  if (nonEmptyColumns)
   {
-    v6 = [[THGuidedPanColumnTarget alloc] initWithLayout:self column:v5];
+    v6 = [[THGuidedPanColumnTarget alloc] initWithLayout:self column:nonEmptyColumns];
 
     return v6;
   }
 
   else
   {
-    v8 = [(THBodyLayout *)self parent];
+    parent = [(THBodyLayout *)self parent];
 
-    return [v8 nextTargetFromLayout:self column:0];
+    return [parent nextTargetFromLayout:self column:0];
   }
 }
 
@@ -915,21 +915,21 @@
   return result;
 }
 
-- (id)previousTargetFromLayout:(id)a3 column:(id)a4
+- (id)previousTargetFromLayout:(id)layout column:(id)column
 {
-  v5 = [-[THBodyLayout nonEmptyColumns](self nonEmptyColumns];
-  if (v5)
+  nonEmptyColumns = [-[THBodyLayout nonEmptyColumns](self nonEmptyColumns];
+  if (nonEmptyColumns)
   {
-    v6 = [[THGuidedPanColumnTarget alloc] initWithLayout:self column:v5];
+    v6 = [[THGuidedPanColumnTarget alloc] initWithLayout:self column:nonEmptyColumns];
 
     return v6;
   }
 
   else
   {
-    v8 = [(THBodyLayout *)self parent];
+    parent = [(THBodyLayout *)self parent];
 
-    return [v8 previousTargetFromLayout:self column:0];
+    return [parent previousTargetFromLayout:self column:0];
   }
 }
 

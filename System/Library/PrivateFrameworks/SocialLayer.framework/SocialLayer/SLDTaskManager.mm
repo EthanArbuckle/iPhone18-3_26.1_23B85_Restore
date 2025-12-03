@@ -1,30 +1,30 @@
 @interface SLDTaskManager
-- (SLDTaskManager)initWithSerialQueue:(id)a3;
-- (id)startAggregateTask:(id)a3 withTimeout:(double)a4 cancellationHandler:(id)a5;
-- (void)startSubtask:(id)a3 withProgress:(id)a4 timer:(id)a5;
+- (SLDTaskManager)initWithSerialQueue:(id)queue;
+- (id)startAggregateTask:(id)task withTimeout:(double)timeout cancellationHandler:(id)handler;
+- (void)startSubtask:(id)subtask withProgress:(id)progress timer:(id)timer;
 @end
 
 @implementation SLDTaskManager
 
-- (SLDTaskManager)initWithSerialQueue:(id)a3
+- (SLDTaskManager)initWithSerialQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SLDTaskManager;
   v6 = [(SLDTaskManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serialQueue, a3);
+    objc_storeStrong(&v6->_serialQueue, queue);
   }
 
   return v7;
 }
 
-- (id)startAggregateTask:(id)a3 withTimeout:(double)a4 cancellationHandler:(id)a5
+- (id)startAggregateTask:(id)task withTimeout:(double)timeout cancellationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  taskCopy = task;
+  handlerCopy = handler;
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
@@ -34,16 +34,16 @@
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__1;
   v36 = __Block_byref_object_dispose__1;
-  v10 = [(SLDTaskManager *)self serialQueue];
+  serialQueue = [(SLDTaskManager *)self serialQueue];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __69__SLDTaskManager_startAggregateTask_withTimeout_cancellationHandler___block_invoke;
   v28[3] = &unk_278925F38;
   v30 = v38;
-  v31 = a4;
-  v11 = v9;
+  timeoutCopy = timeout;
+  v11 = handlerCopy;
   v29 = v11;
-  v37 = [SLGracePeriodTimer timerWithQueue:v10 delay:v28 action:a4];
+  v37 = [SLGracePeriodTimer timerWithQueue:serialQueue delay:v28 action:timeout];
 
   v12 = objc_opt_new();
   v24[0] = MEMORY[0x277D85DD0];
@@ -57,17 +57,17 @@
   v25 = v13;
   [v12 setCancellationHandler:v24];
   [v33[5] arm];
-  v14 = [(SLDTaskManager *)self serialQueue];
+  serialQueue2 = [(SLDTaskManager *)self serialQueue];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __69__SLDTaskManager_startAggregateTask_withTimeout_cancellationHandler___block_invoke_3;
   v20[3] = &unk_278925FD8;
-  v22 = v8;
+  v22 = taskCopy;
   v15 = v12;
   v21 = v15;
   v23 = &v32;
-  v16 = v8;
-  dispatch_async(v14, v20);
+  v16 = taskCopy;
+  dispatch_async(serialQueue2, v20);
 
   v17 = v21;
   v18 = v15;
@@ -169,28 +169,28 @@ void __69__SLDTaskManager_startAggregateTask_withTimeout_cancellationHandler___b
   }
 }
 
-- (void)startSubtask:(id)a3 withProgress:(id)a4 timer:(id)a5
+- (void)startSubtask:(id)subtask withProgress:(id)progress timer:(id)timer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v8 isFinished] & 1) != 0 || objc_msgSend(v8, "isCancelled"))
+  subtaskCopy = subtask;
+  progressCopy = progress;
+  timerCopy = timer;
+  if (([progressCopy isFinished] & 1) != 0 || objc_msgSend(progressCopy, "isCancelled"))
   {
   }
 
   else
   {
-    v10 = [v9 isValid];
+    isValid = [timerCopy isValid];
 
-    if (v10)
+    if (isValid)
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __50__SLDTaskManager_startSubtask_withProgress_timer___block_invoke;
       v11[3] = &unk_278926000;
-      v12 = v8;
-      v13 = v9;
-      v7[2](v7, v12, v13, v11);
+      v12 = progressCopy;
+      v13 = timerCopy;
+      subtaskCopy[2](subtaskCopy, v12, v13, v11);
     }
   }
 }

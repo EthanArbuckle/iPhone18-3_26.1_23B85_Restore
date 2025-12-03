@@ -1,8 +1,8 @@
 @interface _UISystemBannerRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UISystemBannerRequest)init;
-- (_UISystemBannerRequest)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (_UISystemBannerRequest)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 - (void)postBanner;
 - (void)verifyParameters;
 @end
@@ -25,15 +25,15 @@
 
 - (void)verifyParameters
 {
-  v4 = [(_UISystemBannerRequest *)self primaryTitleText];
+  primaryTitleText = [(_UISystemBannerRequest *)self primaryTitleText];
 
-  v5 = [(_UISystemBannerRequest *)self secondaryTitleText];
-  v6 = v4 | v5;
+  secondaryTitleText = [(_UISystemBannerRequest *)self secondaryTitleText];
+  v6 = primaryTitleText | secondaryTitleText;
 
   if (!v6)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UISystemBannerRequest.m" lineNumber:34 description:@"System banner request must contain some text"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISystemBannerRequest.m" lineNumber:34 description:@"System banner request must contain some text"];
   }
 }
 
@@ -53,17 +53,17 @@
   [(_UIOverlayService *)self->_overlayService sendOverlayAction:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UISystemBannerRequest *)self primaryTitleText];
-    v7 = [v5 primaryTitleText];
-    v8 = v6;
-    v9 = v7;
+    v5 = equalCopy;
+    primaryTitleText = [(_UISystemBannerRequest *)self primaryTitleText];
+    primaryTitleText2 = [v5 primaryTitleText];
+    v8 = primaryTitleText;
+    v9 = primaryTitleText2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -90,10 +90,10 @@ LABEL_16:
       }
     }
 
-    v14 = [(_UISystemBannerRequest *)self secondaryTitleText];
-    v15 = [v5 secondaryTitleText];
-    v13 = v14;
-    v16 = v15;
+    secondaryTitleText = [(_UISystemBannerRequest *)self secondaryTitleText];
+    secondaryTitleText2 = [v5 secondaryTitleText];
+    v13 = secondaryTitleText;
+    v16 = secondaryTitleText2;
     v12 = v16;
     if (v13 == v16)
     {
@@ -118,44 +118,44 @@ LABEL_17:
   return v11;
 }
 
-- (_UISystemBannerRequest)initWithBSXPCCoder:(id)a3
+- (_UISystemBannerRequest)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UISystemBannerRequest *)self init];
   if (v5)
   {
-    v6 = [v4 decodeStringForKey:@"primaryText"];
+    v6 = [coderCopy decodeStringForKey:@"primaryText"];
     [(_UISystemBannerRequest *)v5 setPrimaryTitleText:v6];
 
-    v7 = [v4 decodeStringForKey:@"secondaryText"];
+    v7 = [coderCopy decodeStringForKey:@"secondaryText"];
     [(_UISystemBannerRequest *)v5 setSecondaryTitleText:v7];
 
-    [v4 decodeDoubleForKey:@"bannerTimeoutDuration"];
+    [coderCopy decodeDoubleForKey:@"bannerTimeoutDuration"];
     [(_UISystemBannerRequest *)v5 setBannerTimeoutDuration:?];
-    [v4 decodeDoubleForKey:@"preferredMinimumBannerWidth"];
+    [coderCopy decodeDoubleForKey:@"preferredMinimumBannerWidth"];
     [(_UISystemBannerRequest *)v5 setPreferredMinimumBannerWidth:?];
-    [v4 decodeDoubleForKey:@"preferredMaximumBannerWidth"];
+    [coderCopy decodeDoubleForKey:@"preferredMaximumBannerWidth"];
     [(_UISystemBannerRequest *)v5 setPreferredMaximumBannerWidth:?];
   }
 
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(_UISystemBannerRequest *)self primaryTitleText];
-  [v6 encodeObject:v4 forKey:@"primaryText"];
+  coderCopy = coder;
+  primaryTitleText = [(_UISystemBannerRequest *)self primaryTitleText];
+  [coderCopy encodeObject:primaryTitleText forKey:@"primaryText"];
 
-  v5 = [(_UISystemBannerRequest *)self secondaryTitleText];
-  [v6 encodeObject:v5 forKey:@"secondaryText"];
+  secondaryTitleText = [(_UISystemBannerRequest *)self secondaryTitleText];
+  [coderCopy encodeObject:secondaryTitleText forKey:@"secondaryText"];
 
   [(_UISystemBannerRequest *)self bannerTimeoutDuration];
-  [v6 encodeDouble:@"bannerTimeoutDuration" forKey:?];
+  [coderCopy encodeDouble:@"bannerTimeoutDuration" forKey:?];
   [(_UISystemBannerRequest *)self preferredMinimumBannerWidth];
-  [v6 encodeDouble:@"preferredMinimumBannerWidth" forKey:?];
+  [coderCopy encodeDouble:@"preferredMinimumBannerWidth" forKey:?];
   [(_UISystemBannerRequest *)self preferredMaximumBannerWidth];
-  [v6 encodeDouble:@"preferredMaximumBannerWidth" forKey:?];
+  [coderCopy encodeDouble:@"preferredMaximumBannerWidth" forKey:?];
 }
 
 @end

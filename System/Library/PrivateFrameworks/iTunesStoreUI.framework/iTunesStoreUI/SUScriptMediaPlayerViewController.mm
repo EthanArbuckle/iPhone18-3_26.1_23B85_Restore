@@ -1,12 +1,12 @@
 @interface SUScriptMediaPlayerViewController
-- (SUScriptMediaPlayerViewController)initWithMediaPlayerItem:(id)a3;
+- (SUScriptMediaPlayerViewController)initWithMediaPlayerItem:(id)item;
 @end
 
 @implementation SUScriptMediaPlayerViewController
 
-- (SUScriptMediaPlayerViewController)initWithMediaPlayerItem:(id)a3
+- (SUScriptMediaPlayerViewController)initWithMediaPlayerItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Must provide a media item"];
   }

@@ -1,19 +1,19 @@
 @interface SVLearnMoreButton
 - (CGSize)intrinsicContentSize;
-- (SVLearnMoreButton)initWithFrame:(CGRect)a3;
+- (SVLearnMoreButton)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
-- (void)setHighlighted:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateHeight;
 @end
 
 @implementation SVLearnMoreButton
 
-- (SVLearnMoreButton)initWithFrame:(CGRect)a3
+- (SVLearnMoreButton)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = SVLearnMoreButton;
-  v3 = [(SVButton *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SVButton *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = _UISolariumFeatureFlagEnabled();
@@ -39,8 +39,8 @@
     v12 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v11];
     [v12 addAttribute:*MEMORY[0x277D740A8] value:v9 range:{0, objc_msgSend(v11, "length")}];
     v13 = *MEMORY[0x277D740C0];
-    v14 = [MEMORY[0x277D75348] whiteColor];
-    [v12 addAttribute:v13 value:v14 range:{0, objc_msgSend(v11, "length")}];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v12 addAttribute:v13 value:whiteColor range:{0, objc_msgSend(v11, "length")}];
 
     if (_UISolariumFeatureFlagEnabled())
     {
@@ -82,21 +82,21 @@
 {
   if (_UISolariumFeatureFlagEnabled())
   {
-    v3 = [(SVLearnMoreButton *)self playerState];
-    [v3 customControlHeight];
+    playerState = [(SVLearnMoreButton *)self playerState];
+    [playerState customControlHeight];
     [(SVLearnMoreButton *)self setHeight:?];
 
     [(SVLearnMoreButton *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = SVLearnMoreButton;
   [(SVLearnMoreButton *)&v7 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 0.2;
   }
@@ -106,14 +106,14 @@
     v5 = 1.0;
   }
 
-  v6 = [(SVLearnMoreButton *)self titleLabel];
-  [v6 setAlpha:v5];
+  titleLabel = [(SVLearnMoreButton *)self titleLabel];
+  [titleLabel setAlpha:v5];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(SVLearnMoreButton *)self titleLabel];
-  [v3 intrinsicContentSize];
+  titleLabel = [(SVLearnMoreButton *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v5 = v4;
 
   if (_UISolariumFeatureFlagEnabled())
@@ -125,9 +125,9 @@
 
   else
   {
-    v9 = [(SVLearnMoreButton *)self titleLabel];
-    v10 = [v9 font];
-    [v10 capHeight];
+    titleLabel2 = [(SVLearnMoreButton *)self titleLabel];
+    font = [titleLabel2 font];
+    [font capHeight];
     v7 = round(v11) + 12.0;
 
     v8 = 20.0;
@@ -140,22 +140,22 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SVLearnMoreButton *)self traitCollection];
-  v11 = [v5 preferredContentSizeCategory];
+  changeCopy = change;
+  traitCollection = [(SVLearnMoreButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v6 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (!SVContentSizeCategoryIsEqualToContentSizeCategory(v11, v6))
+  if (!SVContentSizeCategoryIsEqualToContentSizeCategory(preferredContentSizeCategory, preferredContentSizeCategory2))
   {
     v7 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76968]];
     v8 = [MEMORY[0x277D74300] systemFontOfSize:13.0 weight:*MEMORY[0x277D74420]];
     v9 = [v7 scaledFontForFont:v8];
 
-    v10 = [(SVLearnMoreButton *)self titleLabel];
-    [v10 setFont:v9];
+    titleLabel = [(SVLearnMoreButton *)self titleLabel];
+    [titleLabel setFont:v9];
 
     [(SVLearnMoreButton *)self invalidateIntrinsicContentSize];
   }

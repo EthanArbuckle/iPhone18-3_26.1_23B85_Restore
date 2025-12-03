@@ -1,12 +1,12 @@
 @interface SXVideoProvider
 - (SVVideoMetadata)metadata;
-- (SXVideoProvider)initWithURL:(id)a3;
-- (id)loadWithCompletionBlock:(id)a3;
-- (void)muteStateChanged:(BOOL)a3;
-- (void)playbackFailedWithError:(id)a3;
+- (SXVideoProvider)initWithURL:(id)l;
+- (id)loadWithCompletionBlock:(id)block;
+- (void)muteStateChanged:(BOOL)changed;
+- (void)playbackFailedWithError:(id)error;
 - (void)playbackFinished;
-- (void)playbackInitiatedWithButtonTapped:(BOOL)a3;
-- (void)playbackPassedQuartile:(unint64_t)a3;
+- (void)playbackInitiatedWithButtonTapped:(BOOL)tapped;
+- (void)playbackPassedQuartile:(unint64_t)quartile;
 - (void)playbackPaused;
 - (void)playbackResumed;
 - (void)playbackStarted;
@@ -14,22 +14,22 @@
 
 @implementation SXVideoProvider
 
-- (SXVideoProvider)initWithURL:(id)a3
+- (SXVideoProvider)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = SXVideoProvider;
   v6 = [(SXVideoProvider *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
     v8 = objc_alloc_init(MEMORY[0x1E69CE118]);
     timeline = v7->_timeline;
     v7->_timeline = v8;
 
     v10 = objc_alloc_init(SXVideoMediaIdentifierGenerator);
-    v11 = [(SXVideoMediaIdentifierGenerator *)v10 identifierForURL:v5];
+    v11 = [(SXVideoMediaIdentifierGenerator *)v10 identifierForURL:lCopy];
     mediaIdentifier = v7->_mediaIdentifier;
     v7->_mediaIdentifier = v11;
   }
@@ -37,19 +37,19 @@
   return v7;
 }
 
-- (id)loadWithCompletionBlock:(id)a3
+- (id)loadWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = [(SXVideoProvider *)self URL];
-  v7 = (*(a3 + 2))(v5, v6);
+  v7 = (*(block + 2))(blockCopy, v6);
 
   [(SXVideoProvider *)self setMetadata:v7];
   return &__block_literal_global_61;
 }
 
-- (void)playbackInitiatedWithButtonTapped:(BOOL)a3
+- (void)playbackInitiatedWithButtonTapped:(BOOL)tapped
 {
-  if (a3)
+  if (tapped)
   {
     v4 = 1;
   }
@@ -64,200 +64,200 @@
   [(SXMediaEvent *)v7 setMediaType:2];
   [(SXMediaEngageEvent *)v7 setUserAction:4];
   [(SXMediaEvent *)v7 setVideoType:1];
-  v5 = [(SXVideoProvider *)self mediaIdentifier];
-  [(SXMediaEvent *)v7 setMediaId:v5];
+  mediaIdentifier = [(SXVideoProvider *)self mediaIdentifier];
+  [(SXMediaEvent *)v7 setMediaId:mediaIdentifier];
 
   [(SXMediaEngageEvent *)v7 setMediaPlayMethod:[(SXVideoProvider *)self playMethod]];
   [(SXAnalyticsEvent *)v7 determineEndDate];
-  v6 = [(SXVideoProvider *)self analyticsReporter];
-  [v6 reportEvent:v7];
+  analyticsReporter = [(SXVideoProvider *)self analyticsReporter];
+  [analyticsReporter reportEvent:v7];
 }
 
 - (void)playbackStarted
 {
   v9 = objc_alloc_init(SXMediaEngageEvent);
   [(SXMediaEvent *)v9 setMediaType:2];
-  v3 = [(SXVideoProvider *)self metadata];
-  [v3 duration];
+  metadata = [(SXVideoProvider *)self metadata];
+  [metadata duration];
   [(SXMediaEngageEvent *)v9 setMediaDuration:?];
 
-  v4 = [(SXVideoProvider *)self metadata];
-  [v4 framerate];
+  metadata2 = [(SXVideoProvider *)self metadata];
+  [metadata2 framerate];
   [(SXMediaEngageEvent *)v9 setMediaFrameRate:?];
 
   [(SXMediaEngageEvent *)v9 setUserAction:1];
   [(SXMediaEvent *)v9 setVideoType:1];
-  v5 = [(SXVideoProvider *)self metadata];
-  -[SXMediaEngageEvent setMuted:](v9, "setMuted:", [v5 muted]);
+  metadata3 = [(SXVideoProvider *)self metadata];
+  -[SXMediaEngageEvent setMuted:](v9, "setMuted:", [metadata3 muted]);
 
-  v6 = [(SXVideoProvider *)self metadata];
-  [v6 volume];
+  metadata4 = [(SXVideoProvider *)self metadata];
+  [metadata4 volume];
   [(SXMediaEngageEvent *)v9 setVolume:?];
 
-  v7 = [(SXVideoProvider *)self mediaIdentifier];
-  [(SXMediaEvent *)v9 setMediaId:v7];
+  mediaIdentifier = [(SXVideoProvider *)self mediaIdentifier];
+  [(SXMediaEvent *)v9 setMediaId:mediaIdentifier];
 
   [(SXMediaEngageEvent *)v9 setMediaPlayMethod:[(SXVideoProvider *)self playMethod]];
   [(SXAnalyticsEvent *)v9 determineEndDate];
-  v8 = [(SXVideoProvider *)self analyticsReporter];
-  [v8 reportEvent:v9];
+  analyticsReporter = [(SXVideoProvider *)self analyticsReporter];
+  [analyticsReporter reportEvent:v9];
 }
 
 - (void)playbackPaused
 {
   v12 = objc_alloc_init(SXMediaEngageEvent);
   [(SXMediaEvent *)v12 setMediaType:2];
-  v3 = [(SXVideoProvider *)self metadata];
-  [v3 duration];
+  metadata = [(SXVideoProvider *)self metadata];
+  [metadata duration];
   [(SXMediaEngageEvent *)v12 setMediaDuration:?];
 
-  v4 = [(SXVideoProvider *)self metadata];
-  [v4 framerate];
+  metadata2 = [(SXVideoProvider *)self metadata];
+  [metadata2 framerate];
   [(SXMediaEngageEvent *)v12 setMediaFrameRate:?];
 
   [(SXMediaEngageEvent *)v12 setUserAction:2];
-  v5 = [(SXVideoProvider *)self metadata];
-  [v5 time];
+  metadata3 = [(SXVideoProvider *)self metadata];
+  [metadata3 time];
   [(SXMediaEngageEvent *)v12 setMediaPausePosition:v6];
 
-  v7 = [(SXVideoProvider *)self metadata];
-  [v7 timePlayed];
+  metadata4 = [(SXVideoProvider *)self metadata];
+  [metadata4 timePlayed];
   [(SXMediaEngageEvent *)v12 setMediaTimePlayed:?];
 
   [(SXMediaEvent *)v12 setVideoType:1];
-  v8 = [(SXVideoProvider *)self metadata];
-  -[SXMediaEngageEvent setMuted:](v12, "setMuted:", [v8 muted]);
+  metadata5 = [(SXVideoProvider *)self metadata];
+  -[SXMediaEngageEvent setMuted:](v12, "setMuted:", [metadata5 muted]);
 
-  v9 = [(SXVideoProvider *)self metadata];
-  [v9 volume];
+  metadata6 = [(SXVideoProvider *)self metadata];
+  [metadata6 volume];
   [(SXMediaEngageEvent *)v12 setVolume:?];
 
-  v10 = [(SXVideoProvider *)self mediaIdentifier];
-  [(SXMediaEvent *)v12 setMediaId:v10];
+  mediaIdentifier = [(SXVideoProvider *)self mediaIdentifier];
+  [(SXMediaEvent *)v12 setMediaId:mediaIdentifier];
 
   [(SXAnalyticsEvent *)v12 determineEndDate];
-  v11 = [(SXVideoProvider *)self analyticsReporter];
-  [v11 reportEvent:v12];
+  analyticsReporter = [(SXVideoProvider *)self analyticsReporter];
+  [analyticsReporter reportEvent:v12];
 }
 
 - (void)playbackResumed
 {
   v12 = objc_alloc_init(SXMediaEngageEvent);
   [(SXMediaEvent *)v12 setMediaType:2];
-  v3 = [(SXVideoProvider *)self metadata];
-  [v3 duration];
+  metadata = [(SXVideoProvider *)self metadata];
+  [metadata duration];
   [(SXMediaEngageEvent *)v12 setMediaDuration:?];
 
-  v4 = [(SXVideoProvider *)self metadata];
-  [v4 framerate];
+  metadata2 = [(SXVideoProvider *)self metadata];
+  [metadata2 framerate];
   [(SXMediaEngageEvent *)v12 setMediaFrameRate:?];
 
   [(SXMediaEngageEvent *)v12 setUserAction:3];
-  v5 = [(SXVideoProvider *)self metadata];
-  [v5 time];
+  metadata3 = [(SXVideoProvider *)self metadata];
+  [metadata3 time];
   [(SXMediaEngageEvent *)v12 setMediaResumePosition:v6];
 
-  v7 = [(SXVideoProvider *)self metadata];
-  [v7 timePlayed];
+  metadata4 = [(SXVideoProvider *)self metadata];
+  [metadata4 timePlayed];
   [(SXMediaEngageEvent *)v12 setMediaTimePlayed:?];
 
   [(SXMediaEvent *)v12 setVideoType:1];
-  v8 = [(SXVideoProvider *)self metadata];
-  -[SXMediaEngageEvent setMuted:](v12, "setMuted:", [v8 muted]);
+  metadata5 = [(SXVideoProvider *)self metadata];
+  -[SXMediaEngageEvent setMuted:](v12, "setMuted:", [metadata5 muted]);
 
-  v9 = [(SXVideoProvider *)self metadata];
-  [v9 volume];
+  metadata6 = [(SXVideoProvider *)self metadata];
+  [metadata6 volume];
   [(SXMediaEngageEvent *)v12 setVolume:?];
 
-  v10 = [(SXVideoProvider *)self mediaIdentifier];
-  [(SXMediaEvent *)v12 setMediaId:v10];
+  mediaIdentifier = [(SXVideoProvider *)self mediaIdentifier];
+  [(SXMediaEvent *)v12 setMediaId:mediaIdentifier];
 
   [(SXAnalyticsEvent *)v12 determineEndDate];
-  v11 = [(SXVideoProvider *)self analyticsReporter];
-  [v11 reportEvent:v12];
+  analyticsReporter = [(SXVideoProvider *)self analyticsReporter];
+  [analyticsReporter reportEvent:v12];
 }
 
 - (void)playbackFinished
 {
   v8 = objc_alloc_init(SXMediaEngageCompleteEvent);
   [(SXMediaEvent *)v8 setMediaType:2];
-  v3 = [(SXVideoProvider *)self metadata];
-  [v3 timePlayed];
+  metadata = [(SXVideoProvider *)self metadata];
+  [metadata timePlayed];
   [(SXMediaEngageCompleteEvent *)v8 setMediaTimePlayed:?];
 
-  v4 = [(SXVideoProvider *)self metadata];
-  [v4 duration];
+  metadata2 = [(SXVideoProvider *)self metadata];
+  [metadata2 duration];
   [(SXMediaEngageCompleteEvent *)v8 setMediaDuration:?];
 
-  v5 = [(SXVideoProvider *)self metadata];
-  [v5 framerate];
+  metadata3 = [(SXVideoProvider *)self metadata];
+  [metadata3 framerate];
   [(SXMediaEngageCompleteEvent *)v8 setMediaFrameRate:?];
 
   [(SXMediaEvent *)v8 setVideoType:1];
-  v6 = [(SXVideoProvider *)self mediaIdentifier];
-  [(SXMediaEvent *)v8 setMediaId:v6];
+  mediaIdentifier = [(SXVideoProvider *)self mediaIdentifier];
+  [(SXMediaEvent *)v8 setMediaId:mediaIdentifier];
 
   [(SXAnalyticsEvent *)v8 determineEndDate];
-  v7 = [(SXVideoProvider *)self analyticsReporter];
-  [v7 reportEvent:v8];
+  analyticsReporter = [(SXVideoProvider *)self analyticsReporter];
+  [analyticsReporter reportEvent:v8];
 }
 
-- (void)playbackFailedWithError:(id)a3
+- (void)playbackFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = objc_alloc_init(SXMediaEngageEvent);
   [(SXMediaEvent *)v7 setMediaType:2];
   [(SXMediaEngageEvent *)v7 setUserAction:6];
   [(SXMediaEvent *)v7 setVideoType:1];
-  [(SXMediaEngageEvent *)v7 setError:v4];
+  [(SXMediaEngageEvent *)v7 setError:errorCopy];
 
-  v5 = [(SXVideoProvider *)self mediaIdentifier];
-  [(SXMediaEvent *)v7 setMediaId:v5];
+  mediaIdentifier = [(SXVideoProvider *)self mediaIdentifier];
+  [(SXMediaEvent *)v7 setMediaId:mediaIdentifier];
 
   [(SXAnalyticsEvent *)v7 determineEndDate];
-  v6 = [(SXVideoProvider *)self analyticsReporter];
-  [v6 reportEvent:v7];
+  analyticsReporter = [(SXVideoProvider *)self analyticsReporter];
+  [analyticsReporter reportEvent:v7];
 }
 
-- (void)muteStateChanged:(BOOL)a3
+- (void)muteStateChanged:(BOOL)changed
 {
   v10 = objc_alloc_init(SXMediaEngageEvent);
   [(SXMediaEvent *)v10 setMediaType:2];
-  v4 = [(SXVideoProvider *)self metadata];
-  [v4 duration];
+  metadata = [(SXVideoProvider *)self metadata];
+  [metadata duration];
   [(SXMediaEngageEvent *)v10 setMediaDuration:?];
 
   [(SXMediaEngageEvent *)v10 setUserAction:5];
-  v5 = [(SXVideoProvider *)self metadata];
-  [v5 timePlayed];
+  metadata2 = [(SXVideoProvider *)self metadata];
+  [metadata2 timePlayed];
   [(SXMediaEngageEvent *)v10 setMediaTimePlayed:?];
 
   [(SXMediaEvent *)v10 setVideoType:1];
-  v6 = [(SXVideoProvider *)self metadata];
-  -[SXMediaEngageEvent setMuted:](v10, "setMuted:", [v6 muted]);
+  metadata3 = [(SXVideoProvider *)self metadata];
+  -[SXMediaEngageEvent setMuted:](v10, "setMuted:", [metadata3 muted]);
 
-  v7 = [(SXVideoProvider *)self metadata];
-  [v7 volume];
+  metadata4 = [(SXVideoProvider *)self metadata];
+  [metadata4 volume];
   [(SXMediaEngageEvent *)v10 setVolume:?];
 
-  v8 = [(SXVideoProvider *)self mediaIdentifier];
-  [(SXMediaEvent *)v10 setMediaId:v8];
+  mediaIdentifier = [(SXVideoProvider *)self mediaIdentifier];
+  [(SXMediaEvent *)v10 setMediaId:mediaIdentifier];
 
   [(SXAnalyticsEvent *)v10 determineEndDate];
-  v9 = [(SXVideoProvider *)self analyticsReporter];
-  [v9 reportEvent:v10];
+  analyticsReporter = [(SXVideoProvider *)self analyticsReporter];
+  [analyticsReporter reportEvent:v10];
 }
 
-- (void)playbackPassedQuartile:(unint64_t)a3
+- (void)playbackPassedQuartile:(unint64_t)quartile
 {
-  v6 = [[SXVideoQuartileEvent alloc] initWithQuartile:a3];
+  v6 = [[SXVideoQuartileEvent alloc] initWithQuartile:quartile];
   [(SXMediaEvent *)v6 setVideoType:1];
-  v4 = [(SXVideoProvider *)self mediaIdentifier];
-  [(SXMediaEvent *)v6 setMediaId:v4];
+  mediaIdentifier = [(SXVideoProvider *)self mediaIdentifier];
+  [(SXMediaEvent *)v6 setMediaId:mediaIdentifier];
 
   [(SXAnalyticsEvent *)v6 determineEndDate];
-  v5 = [(SXVideoProvider *)self analyticsReporter];
-  [v5 reportEvent:v6];
+  analyticsReporter = [(SXVideoProvider *)self analyticsReporter];
+  [analyticsReporter reportEvent:v6];
 }
 
 - (SVVideoMetadata)metadata

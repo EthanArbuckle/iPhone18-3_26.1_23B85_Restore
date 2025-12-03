@@ -1,30 +1,30 @@
 @interface ATXAppDirectoryEventMetadata
-- (ATXAppDirectoryEventMetadata)initWithBundleIdInTopAppsVisible:(id)a3 userLaunchedAppBeforeLeaving:(id)a4;
-- (ATXAppDirectoryEventMetadata)initWithCoder:(id)a3;
-- (ATXAppDirectoryEventMetadata)initWithProto:(id)a3;
-- (ATXAppDirectoryEventMetadata)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXAppDirectoryEventMetadata:(id)a3;
+- (ATXAppDirectoryEventMetadata)initWithBundleIdInTopAppsVisible:(id)visible userLaunchedAppBeforeLeaving:(id)leaving;
+- (ATXAppDirectoryEventMetadata)initWithCoder:(id)coder;
+- (ATXAppDirectoryEventMetadata)initWithProto:(id)proto;
+- (ATXAppDirectoryEventMetadata)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXAppDirectoryEventMetadata:(id)metadata;
 - (id)encodeAsProto;
 - (id)jsonDict;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXAppDirectoryEventMetadata
 
-- (ATXAppDirectoryEventMetadata)initWithBundleIdInTopAppsVisible:(id)a3 userLaunchedAppBeforeLeaving:(id)a4
+- (ATXAppDirectoryEventMetadata)initWithBundleIdInTopAppsVisible:(id)visible userLaunchedAppBeforeLeaving:(id)leaving
 {
-  v7 = a3;
-  v8 = a4;
+  visibleCopy = visible;
+  leavingCopy = leaving;
   v12.receiver = self;
   v12.super_class = ATXAppDirectoryEventMetadata;
   v9 = [(ATXAppDirectoryEventMetadata *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleIdInTopAppsVisible, a3);
-    objc_storeStrong(&v10->_userLaunchedAppBeforeLeaving, a4);
+    objc_storeStrong(&v9->_bundleIdInTopAppsVisible, visible);
+    objc_storeStrong(&v10->_userLaunchedAppBeforeLeaving, leaving);
   }
 
   return v10;
@@ -32,19 +32,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXAppDirectoryEventMetadata *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXAppDirectoryEventMetadata *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXAppDirectoryEventMetadata)initWithProto:(id)a3
+- (ATXAppDirectoryEventMetadata)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -60,7 +60,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   if ([(ATXPBAppDirectoryEventMetadata *)v5 hasBundleIdInTopAppsVisible])
   {
     v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:-[ATXPBAppDirectoryEventMetadata bundleIdInTopAppsVisible](v5)];
@@ -83,29 +83,29 @@ LABEL_8:
 
   self = [(ATXAppDirectoryEventMetadata *)self initWithBundleIdInTopAppsVisible:v6 userLaunchedAppBeforeLeaving:v9];
 
-  v8 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v8;
+  return selfCopy;
 }
 
-- (ATXAppDirectoryEventMetadata)initWithProtoData:(id)a3
+- (ATXAppDirectoryEventMetadata)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBAppDirectoryEventMetadata alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBAppDirectoryEventMetadata alloc] initWithData:dataCopy];
 
     self = [(ATXAppDirectoryEventMetadata *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -126,45 +126,45 @@ LABEL_14:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXAppDirectoryEventMetadata *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXAppDirectoryEventMetadata *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXAppDirectoryEventMetadata)initWithCoder:(id)a3
+- (ATXAppDirectoryEventMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXAppDirectoryEventMetadata *)self initWithProtoData:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppDirectoryEventMetadata *)self isEqualToATXAppDirectoryEventMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppDirectoryEventMetadata *)self isEqualToATXAppDirectoryEventMetadata:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXAppDirectoryEventMetadata:(id)a3
+- (BOOL)isEqualToATXAppDirectoryEventMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = self->_bundleIdInTopAppsVisible;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == metadataCopy[1])
   {
   }
 
@@ -181,7 +181,7 @@ LABEL_14:
 
   v9 = self->_userLaunchedAppBeforeLeaving;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == metadataCopy[2])
   {
     v8 = 1;
   }

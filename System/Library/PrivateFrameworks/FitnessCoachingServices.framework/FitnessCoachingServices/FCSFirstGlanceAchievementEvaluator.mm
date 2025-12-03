@@ -1,53 +1,53 @@
 @interface FCSFirstGlanceAchievementEvaluator
-- (FCSFirstGlanceAchievementEvaluator)initWithDataSource:(id)a3;
+- (FCSFirstGlanceAchievementEvaluator)initWithDataSource:(id)source;
 - (FCSFirstGlanceAchievementEvaluatorDataSource)dataSource;
-- (id)evaluateYesterdayAchievements:(id)a3 isStandaloneMode:(BOOL)a4;
-- (id)progressLocalizationKeyForAchievement:(id)a3 progressMilestone:(id)a4 experienceType:(unint64_t)a5;
-- (void)_firstAchievementFromAchievements:(id)a3 passingMilestoneTest:(id)a4 completion:(id)a5;
-- (void)_firstAchievementMatchingLifetimeGoalsWithNames:(id)a3 amongstAchievements:(id)a4 experienceType:(unint64_t)a5 reachedMilestoneCompletion:(id)a6;
-- (void)progressAchievementAndMilestoneWithCurrentDate:(id)a3 calendar:(id)a4 experienceType:(unint64_t)a5 isStandaloneMode:(BOOL)a6 completion:(id)a7;
-- (void)progressAchievementAndMilestoneWithMonthlyChallengeAchievement:(id)a3 achievementsMap:(id)a4 currentDate:(id)a5 calendar:(id)a6 experienceType:(unint64_t)a7 isStandaloneMode:(BOOL)a8 completion:(id)a9;
-- (void)setLocalizationKeyOverride:(id)a3;
-- (void)yesterdayLocalizationKeyForAchievement:(id)a3 experienceType:(unint64_t)a4 completion:(id)a5;
+- (id)evaluateYesterdayAchievements:(id)achievements isStandaloneMode:(BOOL)mode;
+- (id)progressLocalizationKeyForAchievement:(id)achievement progressMilestone:(id)milestone experienceType:(unint64_t)type;
+- (void)_firstAchievementFromAchievements:(id)achievements passingMilestoneTest:(id)test completion:(id)completion;
+- (void)_firstAchievementMatchingLifetimeGoalsWithNames:(id)names amongstAchievements:(id)achievements experienceType:(unint64_t)type reachedMilestoneCompletion:(id)completion;
+- (void)progressAchievementAndMilestoneWithCurrentDate:(id)date calendar:(id)calendar experienceType:(unint64_t)type isStandaloneMode:(BOOL)mode completion:(id)completion;
+- (void)progressAchievementAndMilestoneWithMonthlyChallengeAchievement:(id)achievement achievementsMap:(id)map currentDate:(id)date calendar:(id)calendar experienceType:(unint64_t)type isStandaloneMode:(BOOL)mode completion:(id)completion;
+- (void)setLocalizationKeyOverride:(id)override;
+- (void)yesterdayLocalizationKeyForAchievement:(id)achievement experienceType:(unint64_t)type completion:(id)completion;
 @end
 
 @implementation FCSFirstGlanceAchievementEvaluator
 
-- (FCSFirstGlanceAchievementEvaluator)initWithDataSource:(id)a3
+- (FCSFirstGlanceAchievementEvaluator)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = FCSFirstGlanceAchievementEvaluator;
   v5 = [(FCSFirstGlanceAchievementEvaluator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
   }
 
   return v6;
 }
 
-- (void)progressAchievementAndMilestoneWithCurrentDate:(id)a3 calendar:(id)a4 experienceType:(unint64_t)a5 isStandaloneMode:(BOOL)a6 completion:(id)a7
+- (void)progressAchievementAndMilestoneWithCurrentDate:(id)date calendar:(id)calendar experienceType:(unint64_t)type isStandaloneMode:(BOOL)mode completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(FCSFirstGlanceAchievementEvaluator *)self dataSource];
+  dateCopy = date;
+  calendarCopy = calendar;
+  completionCopy = completion;
+  dataSource = [(FCSFirstGlanceAchievementEvaluator *)self dataSource];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWithCurrentDate_calendar_experienceType_isStandaloneMode_completion___block_invoke;
   v19[3] = &unk_2785DA1C8;
   v19[4] = self;
-  v20 = v12;
-  v21 = v13;
-  v22 = v14;
-  v23 = a5;
-  v24 = a6;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
-  [v15 monthlyChallengeWithCompletion:v19];
+  v20 = dateCopy;
+  v21 = calendarCopy;
+  v22 = completionCopy;
+  typeCopy = type;
+  modeCopy = mode;
+  v16 = calendarCopy;
+  v17 = dateCopy;
+  v18 = completionCopy;
+  [dataSource monthlyChallengeWithCompletion:v19];
 }
 
 void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWithCurrentDate_calendar_experienceType_isStandaloneMode_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -114,15 +114,15 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
   (a3)[2](v5, v7, v6);
 }
 
-- (void)progressAchievementAndMilestoneWithMonthlyChallengeAchievement:(id)a3 achievementsMap:(id)a4 currentDate:(id)a5 calendar:(id)a6 experienceType:(unint64_t)a7 isStandaloneMode:(BOOL)a8 completion:(id)a9
+- (void)progressAchievementAndMilestoneWithMonthlyChallengeAchievement:(id)achievement achievementsMap:(id)map currentDate:(id)date calendar:(id)calendar experienceType:(unint64_t)type isStandaloneMode:(BOOL)mode completion:(id)completion
 {
-  v54 = a8;
+  modeCopy = mode;
   v91 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v61 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a9;
+  achievementCopy = achievement;
+  mapCopy = map;
+  dateCopy = date;
+  calendarCopy = calendar;
+  completionCopy = completion;
   v79 = 0;
   v80 = &v79;
   v81 = 0x3032000000;
@@ -135,9 +135,9 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
   v76 = __Block_byref_object_copy_;
   v77 = __Block_byref_object_dispose_;
   v78 = 0;
-  v58 = v14;
-  v59 = v15;
-  v55 = FCSFirstGlanceDaysRemainingInFitnessWeek(v14, v15);
+  v58 = dateCopy;
+  v59 = calendarCopy;
+  v55 = FCSFirstGlanceDaysRemainingInFitnessWeek(dateCopy, calendarCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWithMonthlyChallengeAchievement_achievementsMap_currentDate_calendar_experienceType_isStandaloneMode_completion___block_invoke;
@@ -145,8 +145,8 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
   aBlock[4] = &v79;
   aBlock[5] = &v73;
   v60 = _Block_copy(aBlock);
-  v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v18 = [v17 persistentDomainForName:*MEMORY[0x277CCE4C8]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v18 = [standardUserDefaults persistentDomainForName:*MEMORY[0x277CCE4C8]];
 
   v19 = [v18 objectForKey:@"progressAchievementMilestoneOverride"];
   v20 = v74[5];
@@ -179,15 +179,15 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
       _os_log_impl(&dword_2277F7000, v25, OS_LOG_TYPE_DEFAULT, "Overriding First Glance progress achievement identifier to '%@'", buf, 0xCu);
     }
 
-    v26 = [v61 objectForKeyedSubscript:v24];
+    v26 = [mapCopy objectForKeyedSubscript:v24];
     v27 = v80[5];
     v80[5] = v26;
 
     if (!v80[5])
     {
-      v28 = [v13 template];
-      v29 = [v28 uniqueName];
-      v30 = [v29 isEqualToString:v24];
+      template = [achievementCopy template];
+      uniqueName = [template uniqueName];
+      v30 = [uniqueName isEqualToString:v24];
 
       if (v30)
       {
@@ -200,23 +200,23 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
           _os_log_impl(&dword_2277F7000, v31, OS_LOG_TYPE_DEFAULT, "Overriding First Glance progress monthly achievement identifier to '%@'", buf, 0xCu);
         }
 
-        objc_storeStrong(v80 + 5, a3);
+        objc_storeStrong(v80 + 5, achievement);
       }
     }
   }
 
   v32 = v80[5];
-  if (v13 && !v32)
+  if (achievementCopy && !v32)
   {
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWithMonthlyChallengeAchievement_achievementsMap_currentDate_calendar_experienceType_isStandaloneMode_completion___block_invoke_298;
     v68[3] = &unk_2785DA218;
     v69 = v59;
-    v70 = v14;
-    v71 = a7;
+    v70 = dateCopy;
+    typeCopy = type;
     v33 = _Block_copy(v68);
-    v88 = v13;
+    v88 = achievementCopy;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v88 count:1];
     [(FCSFirstGlanceAchievementEvaluator *)self _firstAchievementFromAchievements:v34 passingMilestoneTest:v33 completion:v60];
 
@@ -225,20 +225,20 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
 
   if (!v32)
   {
-    [(FCSFirstGlanceAchievementEvaluator *)self _firstAchievementMatchingLifetimeGoalsWithNames:&unk_283AF4460 amongstAchievements:v61 experienceType:a7 reachedMilestoneCompletion:v60];
+    [(FCSFirstGlanceAchievementEvaluator *)self _firstAchievementMatchingLifetimeGoalsWithNames:&unk_283AF4460 amongstAchievements:mapCopy experienceType:type reachedMilestoneCompletion:v60];
     if (!v80[5])
     {
-      [(FCSFirstGlanceAchievementEvaluator *)self _firstAchievementMatchingLifetimeGoalsWithNames:&unk_283AF4478 amongstAchievements:v61 experienceType:a7 reachedMilestoneCompletion:v60];
+      [(FCSFirstGlanceAchievementEvaluator *)self _firstAchievementMatchingLifetimeGoalsWithNames:&unk_283AF4478 amongstAchievements:mapCopy experienceType:type reachedMilestoneCompletion:v60];
       v35 = v80[5];
-      if (a7 != 3 && !v35)
+      if (type != 3 && !v35)
       {
         v67[0] = MEMORY[0x277D85DD0];
         v67[1] = 3221225472;
         v67[2] = __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWithMonthlyChallengeAchievement_achievementsMap_currentDate_calendar_experienceType_isStandaloneMode_completion___block_invoke_400;
         v67[3] = &__block_descriptor_40_e40___NSString_32__0__ACHAchievement_8d16d24l;
-        v67[4] = a7;
+        v67[4] = type;
         v36 = _Block_copy(v67);
-        v37 = [v61 objectForKeyedSubscript:@"LongestMoveStreak"];
+        v37 = [mapCopy objectForKeyedSubscript:@"LongestMoveStreak"];
         v38 = v37;
         if (v37)
         {
@@ -250,16 +250,16 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
         v35 = v80[5];
       }
 
-      if (!v35 && !v54)
+      if (!v35 && !modeCopy)
       {
         v66[0] = MEMORY[0x277D85DD0];
         v66[1] = 3221225472;
         v66[2] = __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWithMonthlyChallengeAchievement_achievementsMap_currentDate_calendar_experienceType_isStandaloneMode_completion___block_invoke_2;
         v66[3] = &__block_descriptor_48_e40___NSString_32__0__ACHAchievement_8d16d24l;
         v66[4] = v55;
-        v66[5] = a7;
+        v66[5] = type;
         v40 = _Block_copy(v66);
-        v41 = [v61 objectForKeyedSubscript:@"PerfectWeekAll"];
+        v41 = [mapCopy objectForKeyedSubscript:@"PerfectWeekAll"];
         v42 = v41;
         if (v41)
         {
@@ -278,9 +278,9 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
         v65[2] = __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWithMonthlyChallengeAchievement_achievementsMap_currentDate_calendar_experienceType_isStandaloneMode_completion___block_invoke_3;
         v65[3] = &__block_descriptor_48_e40___NSString_32__0__ACHAchievement_8d16d24l;
         v65[4] = v55;
-        v65[5] = a7;
+        v65[5] = type;
         v44 = _Block_copy(v65);
-        v45 = [v61 objectForKeyedSubscript:@"7WorkoutWeek"];
+        v45 = [mapCopy objectForKeyedSubscript:@"7WorkoutWeek"];
         v46 = v45;
         if (v45)
         {
@@ -296,10 +296,10 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
           v64[2] = __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWithMonthlyChallengeAchievement_achievementsMap_currentDate_calendar_experienceType_isStandaloneMode_completion___block_invoke_4;
           v64[3] = &__block_descriptor_48_e40___NSString_32__0__ACHAchievement_8d16d24l;
           v64[4] = v55;
-          v64[5] = a7;
+          v64[5] = type;
           v48 = _Block_copy(v64);
           v49 = &unk_283AF44A8;
-          if (v54)
+          if (modeCopy)
           {
             v49 = &unk_283AF4490;
           }
@@ -309,7 +309,7 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
           v62[1] = 3221225472;
           v62[2] = __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWithMonthlyChallengeAchievement_achievementsMap_currentDate_calendar_experienceType_isStandaloneMode_completion___block_invoke_5;
           v62[3] = &unk_2785DA280;
-          v63 = v61;
+          v63 = mapCopy;
           v51 = [v50 hk_map:v62];
           [(FCSFirstGlanceAchievementEvaluator *)self _firstAchievementFromAchievements:v51 passingMilestoneTest:v48 completion:v60];
 
@@ -324,14 +324,14 @@ void __137__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWi
 
   if (v74[5])
   {
-    v16[2](v16);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
 LABEL_36:
     v52 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:96 userInfo:0];
-    (v16[2])(v16, 0, 0, v52);
+    (completionCopy[2])(completionCopy, 0, 0, v52);
   }
 
   _Block_object_dispose(&v73, 8);
@@ -521,7 +521,7 @@ id __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWith
   return v5;
 }
 
-- (id)progressLocalizationKeyForAchievement:(id)a3 progressMilestone:(id)a4 experienceType:(unint64_t)a5
+- (id)progressLocalizationKeyForAchievement:(id)achievement progressMilestone:(id)milestone experienceType:(unint64_t)type
 {
   progressLocalizationKeyOverride = self->_progressLocalizationKeyOverride;
   if (progressLocalizationKeyOverride)
@@ -531,9 +531,9 @@ id __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWith
 
   else
   {
-    v8 = a4;
-    v9 = FCSFirstGlanceAchievementLocalizationBundle(a3);
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"ACHIEVEMENT_UNACHIEVED_PROGRESS_%@_DESC", v8];
+    milestoneCopy = milestone;
+    v9 = FCSFirstGlanceAchievementLocalizationBundle(achievement);
+    milestoneCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ACHIEVEMENT_UNACHIEVED_PROGRESS_%@_DESC", milestoneCopy];
 
     v11 = FILocalizationTableForExperienceType();
     v6 = FIRandomKeyForPrefixWithTableName();
@@ -542,25 +542,25 @@ id __181__FCSFirstGlanceAchievementEvaluator_progressAchievementAndMilestoneWith
   return v6;
 }
 
-- (void)yesterdayLocalizationKeyForAchievement:(id)a3 experienceType:(unint64_t)a4 completion:(id)a5
+- (void)yesterdayLocalizationKeyForAchievement:(id)achievement experienceType:(unint64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  achievementCopy = achievement;
+  completionCopy = completion;
+  v10 = completionCopy;
   if (self->_yesterdayLocalizationKeyOverride)
   {
-    (*(v9 + 2))(v9);
+    (*(completionCopy + 2))(completionCopy);
   }
 
   else
   {
-    v11 = FCSFirstGlanceAchievementLocalizationBundle(v8);
+    v11 = FCSFirstGlanceAchievementLocalizationBundle(achievementCopy);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __103__FCSFirstGlanceAchievementEvaluator_yesterdayLocalizationKeyForAchievement_experienceType_completion___block_invoke;
     v13[3] = &unk_2785DA2A8;
-    v17 = a4;
-    v14 = v8;
+    typeCopy = type;
+    v14 = achievementCopy;
     v15 = v11;
     v16 = v10;
     v12 = v11;
@@ -614,25 +614,25 @@ void __103__FCSFirstGlanceAchievementEvaluator_yesterdayLocalizationKeyForAchiev
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)evaluateYesterdayAchievements:(id)a3 isStandaloneMode:(BOOL)a4
+- (id)evaluateYesterdayAchievements:(id)achievements isStandaloneMode:(BOOL)mode
 {
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__FCSFirstGlanceAchievementEvaluator_evaluateYesterdayAchievements_isStandaloneMode___block_invoke;
   v12[3] = &__block_descriptor_33_e24_B16__0__ACHAchievement_8l;
-  v13 = a4;
-  v5 = [a3 hk_filter:v12];
+  modeCopy = mode;
+  v5 = [achievements hk_filter:v12];
   v6 = [v5 hk_filter:&__block_literal_global_438];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__FCSFirstGlanceAchievementEvaluator_evaluateYesterdayAchievements_isStandaloneMode___block_invoke_3;
   v10[3] = &__block_descriptor_33_e43_q24__0__ACHAchievement_8__ACHAchievement_16l;
-  v11 = a4;
+  modeCopy2 = mode;
   v7 = [v6 sortedArrayUsingComparator:v10];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 BOOL __85__FCSFirstGlanceAchievementEvaluator_evaluateYesterdayAchievements_isStandaloneMode___block_invoke(uint64_t a1, void *a2)
@@ -664,26 +664,26 @@ uint64_t __85__FCSFirstGlanceAchievementEvaluator_evaluateYesterdayAchievements_
   return v9;
 }
 
-- (void)_firstAchievementMatchingLifetimeGoalsWithNames:(id)a3 amongstAchievements:(id)a4 experienceType:(unint64_t)a5 reachedMilestoneCompletion:(id)a6
+- (void)_firstAchievementMatchingLifetimeGoalsWithNames:(id)names amongstAchievements:(id)achievements experienceType:(unint64_t)type reachedMilestoneCompletion:(id)completion
 {
-  v10 = a4;
+  achievementsCopy = achievements;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __148__FCSFirstGlanceAchievementEvaluator__firstAchievementMatchingLifetimeGoalsWithNames_amongstAchievements_experienceType_reachedMilestoneCompletion___block_invoke;
   aBlock[3] = &__block_descriptor_40_e40___NSString_32__0__ACHAchievement_8d16d24l;
-  aBlock[4] = a5;
-  v11 = a6;
-  v12 = a3;
+  aBlock[4] = type;
+  completionCopy = completion;
+  namesCopy = names;
   v13 = _Block_copy(aBlock);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __148__FCSFirstGlanceAchievementEvaluator__firstAchievementMatchingLifetimeGoalsWithNames_amongstAchievements_experienceType_reachedMilestoneCompletion___block_invoke_2;
   v19 = &unk_2785DA280;
-  v20 = v10;
-  v14 = v10;
-  v15 = [v12 hk_map:&v16];
+  v20 = achievementsCopy;
+  v14 = achievementsCopy;
+  v15 = [namesCopy hk_map:&v16];
 
-  [(FCSFirstGlanceAchievementEvaluator *)self _firstAchievementFromAchievements:v15 passingMilestoneTest:v13 completion:v11, v16, v17, v18, v19];
+  [(FCSFirstGlanceAchievementEvaluator *)self _firstAchievementFromAchievements:v15 passingMilestoneTest:v13 completion:completionCopy, v16, v17, v18, v19];
 }
 
 id __148__FCSFirstGlanceAchievementEvaluator__firstAchievementMatchingLifetimeGoalsWithNames_amongstAchievements_experienceType_reachedMilestoneCompletion___block_invoke(uint64_t a1, double a2, double a3)
@@ -726,17 +726,17 @@ id __148__FCSFirstGlanceAchievementEvaluator__firstAchievementMatchingLifetimeGo
   return v3;
 }
 
-- (void)_firstAchievementFromAchievements:(id)a3 passingMilestoneTest:(id)a4 completion:(id)a5
+- (void)_firstAchievementFromAchievements:(id)achievements passingMilestoneTest:(id)test completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v29 = a5;
+  achievementsCopy = achievements;
+  testCopy = test;
+  completionCopy = completion;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = v7;
+  v9 = achievementsCopy;
   v10 = [v9 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v10)
   {
@@ -753,27 +753,27 @@ id __148__FCSFirstGlanceAchievementEvaluator__firstAchievementMatchingLifetimeGo
         }
 
         v15 = *(*(&v30 + 1) + 8 * i);
-        v16 = [v15 template];
-        v17 = [v16 canonicalUnit];
+        template = [v15 template];
+        canonicalUnit = [template canonicalUnit];
 
-        if (v17)
+        if (canonicalUnit)
         {
-          v18 = [v15 goal];
-          [v18 doubleValueForUnit:v17];
+          goal = [v15 goal];
+          [goal doubleValueForUnit:canonicalUnit];
           v20 = v19;
 
-          v21 = [v15 progress];
-          [v21 doubleValueForUnit:v17];
+          progress = [v15 progress];
+          [progress doubleValueForUnit:canonicalUnit];
           v23 = v22;
 
           if (FCSFirstGlanceAchievementCanCoachWithProgressAndGoal(v23, v20))
           {
-            v24 = v8[2](v8, v15, v23, v20);
+            v24 = testCopy[2](testCopy, v15, v23, v20);
             if (v24)
             {
               v26 = v24;
-              v27 = v29;
-              (*(v29 + 2))(v29, v15, v24);
+              v27 = completionCopy;
+              (*(completionCopy + 2))(completionCopy, v15, v24);
 
               goto LABEL_15;
             }
@@ -797,19 +797,19 @@ id __148__FCSFirstGlanceAchievementEvaluator__firstAchievementMatchingLifetimeGo
     while (v11);
   }
 
-  v27 = v29;
-  (*(v29 + 2))(v29, 0, 0);
+  v27 = completionCopy;
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_15:
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLocalizationKeyOverride:(id)a3
+- (void)setLocalizationKeyOverride:(id)override
 {
-  v5 = a3;
-  objc_storeStrong(&self->_progressLocalizationKeyOverride, a3);
+  overrideCopy = override;
+  objc_storeStrong(&self->_progressLocalizationKeyOverride, override);
   yesterdayLocalizationKeyOverride = self->_yesterdayLocalizationKeyOverride;
-  self->_yesterdayLocalizationKeyOverride = v5;
+  self->_yesterdayLocalizationKeyOverride = overrideCopy;
 }
 
 - (FCSFirstGlanceAchievementEvaluatorDataSource)dataSource

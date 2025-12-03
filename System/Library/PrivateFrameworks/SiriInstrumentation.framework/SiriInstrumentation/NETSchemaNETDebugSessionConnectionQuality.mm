@@ -1,49 +1,49 @@
 @interface NETSchemaNETDebugSessionConnectionQuality
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETDebugSessionConnectionQuality)initWithDictionary:(id)a3;
-- (NETSchemaNETDebugSessionConnectionQuality)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETDebugSessionConnectionQuality)initWithDictionary:(id)dictionary;
+- (NETSchemaNETDebugSessionConnectionQuality)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSymptomsCellularInstant:(BOOL)a3;
-- (void)setHasSymptomsWiFiHistorical:(BOOL)a3;
-- (void)setHasSymptomsWiFiInstant:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSymptomsCellularInstant:(BOOL)instant;
+- (void)setHasSymptomsWiFiHistorical:(BOOL)historical;
+- (void)setHasSymptomsWiFiInstant:(BOOL)instant;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETDebugSessionConnectionQuality
 
-- (NETSchemaNETDebugSessionConnectionQuality)initWithDictionary:(id)a3
+- (NETSchemaNETDebugSessionConnectionQuality)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NETSchemaNETDebugSessionConnectionQuality;
   v5 = [(NETSchemaNETDebugSessionConnectionQuality *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"symptomsCellularHistorical"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"symptomsCellularHistorical"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugSessionConnectionQuality setSymptomsCellularHistorical:](v5, "setSymptomsCellularHistorical:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"symptomsCellularInstant"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"symptomsCellularInstant"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugSessionConnectionQuality setSymptomsCellularInstant:](v5, "setSymptomsCellularInstant:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"symptomsWiFiHistorical"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"symptomsWiFiHistorical"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugSessionConnectionQuality setSymptomsWiFiHistorical:](v5, "setSymptomsWiFiHistorical:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"symptomsWiFiInstant"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"symptomsWiFiInstant"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (NETSchemaNETDebugSessionConnectionQuality)initWithJSON:(id)a3
+- (NETSchemaNETDebugSessionConnectionQuality)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETDebugSessionConnectionQuality *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETDebugSessionConnectionQuality *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETDebugSessionConnectionQuality *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,7 +92,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -107,7 +107,7 @@
       v6 = off_1E78DB138[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"symptomsCellularHistorical"];
+    [dictionary setObject:v6 forKeyedSubscript:@"symptomsCellularHistorical"];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -129,7 +129,7 @@ LABEL_14:
         v10 = off_1E78DB138[v9];
       }
 
-      [v3 setObject:v10 forKeyedSubscript:@"symptomsWiFiHistorical"];
+      [dictionary setObject:v10 forKeyedSubscript:@"symptomsWiFiHistorical"];
       if ((*&self->_has & 8) == 0)
       {
         goto LABEL_22;
@@ -155,7 +155,7 @@ LABEL_14:
     v8 = off_1E78DB138[v7];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"symptomsCellularInstant"];
+  [dictionary setObject:v8 forKeyedSubscript:@"symptomsCellularInstant"];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -177,13 +177,13 @@ LABEL_18:
       v12 = off_1E78DB138[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"symptomsWiFiInstant"];
+    [dictionary setObject:v12 forKeyedSubscript:@"symptomsWiFiInstant"];
   }
 
 LABEL_22:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -240,16 +240,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -258,13 +258,13 @@ LABEL_5:
   if (*&has)
   {
     symptomsCellularHistorical = self->_symptomsCellularHistorical;
-    if (symptomsCellularHistorical != [v4 symptomsCellularHistorical])
+    if (symptomsCellularHistorical != [equalCopy symptomsCellularHistorical])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -276,13 +276,13 @@ LABEL_5:
   if (v8)
   {
     symptomsCellularInstant = self->_symptomsCellularInstant;
-    if (symptomsCellularInstant != [v4 symptomsCellularInstant])
+    if (symptomsCellularInstant != [equalCopy symptomsCellularInstant])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -294,10 +294,10 @@ LABEL_5:
   if (v10)
   {
     symptomsWiFiHistorical = self->_symptomsWiFiHistorical;
-    if (symptomsWiFiHistorical == [v4 symptomsWiFiHistorical])
+    if (symptomsWiFiHistorical == [equalCopy symptomsWiFiHistorical])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -316,7 +316,7 @@ LABEL_14:
   if (v12)
   {
     symptomsWiFiInstant = self->_symptomsWiFiInstant;
-    if (symptomsWiFiInstant != [v4 symptomsWiFiInstant])
+    if (symptomsWiFiInstant != [equalCopy symptomsWiFiInstant])
     {
       goto LABEL_18;
     }
@@ -328,9 +328,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -377,9 +377,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasSymptomsWiFiInstant:(BOOL)a3
+- (void)setHasSymptomsWiFiInstant:(BOOL)instant
 {
-  if (a3)
+  if (instant)
   {
     v3 = 8;
   }
@@ -392,9 +392,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSymptomsWiFiHistorical:(BOOL)a3
+- (void)setHasSymptomsWiFiHistorical:(BOOL)historical
 {
-  if (a3)
+  if (historical)
   {
     v3 = 4;
   }
@@ -407,9 +407,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSymptomsCellularInstant:(BOOL)a3
+- (void)setHasSymptomsCellularInstant:(BOOL)instant
 {
-  if (a3)
+  if (instant)
   {
     v3 = 2;
   }

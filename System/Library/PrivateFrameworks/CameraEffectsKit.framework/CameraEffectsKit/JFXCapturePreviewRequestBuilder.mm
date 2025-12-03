@@ -1,24 +1,24 @@
 @interface JFXCapturePreviewRequestBuilder
-- (JFXCapturePreviewRequestBuilder)initWithPreviewProperties:(id)a3 outputColorSpace:(id)a4;
+- (JFXCapturePreviewRequestBuilder)initWithPreviewProperties:(id)properties outputColorSpace:(id)space;
 - (PVTransformAnimationInfo)requestTransformAnimation;
-- (id)JFX_getEffectsOfType:(id)a3 ofType:(int)a4;
-- (id)JFX_visibleEffects:(id)a3;
-- (id)createPVRenderRequestUsingAnimojiRenderer:(id)a3 metadataValidator:(id)a4 additionalTransform:(CGAffineTransform *)a5 effectStack:(id)a6 animojiTapPoint:(BOOL)a7 animojiUsesInterfaceOrientation:(BOOL)a8 requestHandler:(id *)a9;
-- (void)setRequestTransformAnimation:(PVTransformAnimationInfo *)a3;
+- (id)JFX_getEffectsOfType:(id)type ofType:(int)ofType;
+- (id)JFX_visibleEffects:(id)effects;
+- (id)createPVRenderRequestUsingAnimojiRenderer:(id)renderer metadataValidator:(id)validator additionalTransform:(CGAffineTransform *)transform effectStack:(id)stack animojiTapPoint:(BOOL)point animojiUsesInterfaceOrientation:(BOOL)orientation requestHandler:(id *)handler;
+- (void)setRequestTransformAnimation:(PVTransformAnimationInfo *)animation;
 @end
 
 @implementation JFXCapturePreviewRequestBuilder
 
-- (JFXCapturePreviewRequestBuilder)initWithPreviewProperties:(id)a3 outputColorSpace:(id)a4
+- (JFXCapturePreviewRequestBuilder)initWithPreviewProperties:(id)properties outputColorSpace:(id)space
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  spaceCopy = space;
   v17.receiver = self;
   v17.super_class = JFXCapturePreviewRequestBuilder;
   v8 = [(JFXCapturePreviewRequestBuilder *)&v17 init];
   v9 = *(v8 + 3);
-  *(v8 + 3) = v6;
-  v10 = v6;
+  *(v8 + 3) = propertiesCopy;
+  v10 = propertiesCopy;
 
   PVTransformAnimationInfoIdentity();
   *(v8 + 40) = v13;
@@ -27,71 +27,71 @@
   *(v8 + 11) = v16;
   *(v8 + 8) = 0;
   v11 = *(v8 + 4);
-  *(v8 + 4) = v7;
+  *(v8 + 4) = spaceCopy;
 
   return v8;
 }
 
-- (id)createPVRenderRequestUsingAnimojiRenderer:(id)a3 metadataValidator:(id)a4 additionalTransform:(CGAffineTransform *)a5 effectStack:(id)a6 animojiTapPoint:(BOOL)a7 animojiUsesInterfaceOrientation:(BOOL)a8 requestHandler:(id *)a9
+- (id)createPVRenderRequestUsingAnimojiRenderer:(id)renderer metadataValidator:(id)validator additionalTransform:(CGAffineTransform *)transform effectStack:(id)stack animojiTapPoint:(BOOL)point animojiUsesInterfaceOrientation:(BOOL)orientation requestHandler:(id *)handler
 {
-  v9 = a8;
-  v10 = a7;
+  orientationCopy = orientation;
+  pointCopy = point;
   v167[4] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = [(JFXCapturePreviewRequestBuilder *)self previewProperties];
-  v19 = [v18 cameraFrameSet];
+  rendererCopy = renderer;
+  validatorCopy = validator;
+  stackCopy = stack;
+  previewProperties = [(JFXCapturePreviewRequestBuilder *)self previewProperties];
+  cameraFrameSet = [previewProperties cameraFrameSet];
 
-  if (!v19 || ((v131 = a5, [v19 metadataDict], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectForKey:", @"PVFrameSetMetadataOriginalBufferSizeKey"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "CGSizeValue"), v23 = v22, v25 = v24, v21, v20, v23 == *MEMORY[0x277CBF3A8]) ? (v26 = v25 == *(MEMORY[0x277CBF3A8] + 8)) : (v26 = 0), v26))
+  if (!cameraFrameSet || ((v131 = transform, [cameraFrameSet metadataDict], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectForKey:", @"PVFrameSetMetadataOriginalBufferSizeKey"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "CGSizeValue"), v23 = v22, v25 = v24, v21, v20, v23 == *MEMORY[0x277CBF3A8]) ? (v26 = v25 == *(MEMORY[0x277CBF3A8] + 8)) : (v26 = 0), v26))
   {
     v51 = 0;
     goto LABEL_62;
   }
 
-  v128 = v16;
-  v132 = [v19 colorImageBuffer];
-  v27 = [v19 metadataDict];
-  v28 = [v27 objectForKey:@"PVFrameSetMetadataARMetadataKey"];
+  v128 = validatorCopy;
+  colorImageBuffer = [cameraFrameSet colorImageBuffer];
+  metadataDict = [cameraFrameSet metadataDict];
+  v28 = [metadataDict objectForKey:@"PVFrameSetMetadataARMetadataKey"];
 
-  v126 = [v28 faceAnchor];
+  faceAnchor = [v28 faceAnchor];
   v133 = v28;
-  v130 = [v28 arFrame];
-  v29 = [(JFXCapturePreviewRequestBuilder *)self previewProperties];
-  [v29 renderOutputSize];
+  arFrame = [v28 arFrame];
+  previewProperties2 = [(JFXCapturePreviewRequestBuilder *)self previewProperties];
+  [previewProperties2 renderOutputSize];
   v31 = v30;
   v33 = v32;
 
-  v34 = [v19 metadataObjectForKey:*MEMORY[0x277D41A00]];
-  v35 = self;
-  v36 = [v34 captureVideoOrientation];
+  v34 = [cameraFrameSet metadataObjectForKey:*MEMORY[0x277D41A00]];
+  selfCopy = self;
+  captureVideoOrientation = [v34 captureVideoOrientation];
   v120 = v34;
-  v37 = [v34 interfaceOrientation];
-  v121 = v19;
-  v38 = [v19 metadataObjectForKey:@"PVFrameSetMetadataDeviceOrientationkey"];
-  v39 = [v38 integerValue];
+  interfaceOrientation = [v34 interfaceOrientation];
+  v121 = cameraFrameSet;
+  v38 = [cameraFrameSet metadataObjectForKey:@"PVFrameSetMetadataDeviceOrientationkey"];
+  integerValue = [v38 integerValue];
 
   v129 = objc_opt_new();
-  v134 = v35;
-  v40 = [(JFXCapturePreviewRequestBuilder *)v35 JFX_getEffectsOfType:v17 ofType:7];
-  v41 = [v40 firstObject];
+  v134 = selfCopy;
+  v40 = [(JFXCapturePreviewRequestBuilder *)selfCopy JFX_getEffectsOfType:stackCopy ofType:7];
+  firstObject = [v40 firstObject];
 
-  v119 = v41;
-  if (v15 && v41)
+  v119 = firstObject;
+  if (rendererCopy && firstObject)
   {
-    if (v130)
+    if (arFrame)
     {
-      if (v9)
+      if (orientationCopy)
       {
-        v42 = v37;
+        v42 = interfaceOrientation;
       }
 
       else
       {
-        v42 = v39;
+        v42 = integerValue;
       }
 
-      v43 = ((v36 - 5) < 0xFFFFFFFFFFFFFFFELL) ^ ((v42 - 3) < 2);
+      v43 = ((captureVideoOrientation - 5) < 0xFFFFFFFFFFFFFFFELL) ^ ((v42 - 3) < 2);
       if (v43)
       {
         v44 = v25;
@@ -114,21 +114,21 @@
       *v155 = v23;
       *&v155[1] = v44;
       [MEMORY[0x277CCAE60] valueWithBytes:v155 objCType:"{CGSize=dd}"];
-      v122 = v39;
-      v46 = v45 = v37;
+      v122 = integerValue;
+      v46 = v45 = interfaceOrientation;
       v167[1] = v46;
       v166[2] = @"JFXAnimojiRendererMetadata_AVCaptureVideoOrientation";
-      v47 = [MEMORY[0x277CCABB0] numberWithInteger:v36];
+      v47 = [MEMORY[0x277CCABB0] numberWithInteger:captureVideoOrientation];
       v167[2] = v47;
       v166[3] = @"JFXAnimojiRendererMetadata_UIInterfaceOrientation";
       v48 = [MEMORY[0x277CCABB0] numberWithInteger:v42];
       v167[3] = v48;
       v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v167 forKeys:v166 count:4];
 
-      v37 = v45;
-      v39 = v122;
-      v50 = [JFXCustomRenderProperties newCustomRenderProperties:v15 metadata:v49];
-      [v50 setAnimojiTapPoint:v10];
+      interfaceOrientation = v45;
+      integerValue = v122;
+      v50 = [JFXCustomRenderProperties newCustomRenderProperties:rendererCopy metadata:v49];
+      [v50 setAnimojiTapPoint:pointCopy];
       [v129 setObject:v50 forKeyedSubscript:@"JFXCustomRenderingPropertiesKey_Animoji"];
       v134->_logged_render_request_failure_animoji = 0;
     }
@@ -138,22 +138,22 @@
       v52 = JFXLog_animoji();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
-        [JFXCapturePreviewRequestBuilder createPVRenderRequestUsingAnimojiRenderer:v41 metadataValidator:v52 additionalTransform:? effectStack:? animojiTapPoint:? animojiUsesInterfaceOrientation:? requestHandler:?];
+        [JFXCapturePreviewRequestBuilder createPVRenderRequestUsingAnimojiRenderer:firstObject metadataValidator:v52 additionalTransform:? effectStack:? animojiTapPoint:? animojiUsesInterfaceOrientation:? requestHandler:?];
       }
 
       v134->_logged_render_request_failure_animoji = 1;
     }
   }
 
-  v53 = [(JFXCapturePreviewRequestBuilder *)v134 JFX_getEffectsOfType:v17 ofType:2];
+  v53 = [(JFXCapturePreviewRequestBuilder *)v134 JFX_getEffectsOfType:stackCopy ofType:2];
   v127 = v53;
-  v125 = v15;
+  v125 = rendererCopy;
   if ([v53 count])
   {
     if (![v133 hasTrackedFace])
     {
-      v54 = v17;
-      v63 = 0;
+      v54 = stackCopy;
+      calculateFaceTrackingTransform = 0;
 LABEL_32:
       v147 = 0u;
       v148 = 0u;
@@ -177,7 +177,7 @@ LABEL_32:
             v72 = *(*(&v145 + 1) + 8 * i);
             if (([v72 isEditingFaceTrackingTransforms] & 1) == 0)
             {
-              [v72 setFaceTrackingTransform:v63];
+              [v72 setFaceTrackingTransform:calculateFaceTrackingTransform];
             }
           }
 
@@ -187,16 +187,16 @@ LABEL_32:
         while (v69);
       }
 
-      v17 = v54;
+      stackCopy = v54;
       goto LABEL_42;
     }
 
-    v123 = v39;
-    if (v130)
+    v123 = integerValue;
+    if (arFrame)
     {
-      v54 = v17;
-      [v128 validateFaceTrackedARFrame:v130];
-      v165[0] = v130;
+      v54 = stackCopy;
+      [v128 validateFaceTrackedARFrame:arFrame];
+      v165[0] = arFrame;
       v164[0] = @"JFXFaceTrackingRendererMetadata_ARFrame";
       v164[1] = @"JFXFaceTrackingRendererMetadata_OriginalBufferSize";
       *v154 = v31;
@@ -204,10 +204,10 @@ LABEL_32:
       v55 = [MEMORY[0x277CCAE60] valueWithBytes:v154 objCType:"{CGSize=dd}"];
       v165[1] = v55;
       v164[2] = @"JFXFaceTrackingRendererMetadata_AVCaptureVideoOrientation";
-      v56 = [MEMORY[0x277CCABB0] numberWithInteger:v36];
+      v56 = [MEMORY[0x277CCABB0] numberWithInteger:captureVideoOrientation];
       v165[2] = v56;
       v164[3] = @"JFXFaceTrackingRendererMetadata_UIInterfaceOrientation";
-      v57 = [MEMORY[0x277CCABB0] numberWithInteger:v37];
+      v57 = [MEMORY[0x277CCABB0] numberWithInteger:interfaceOrientation];
       v165[3] = v57;
       v164[4] = @"JFXFaceTrackingRendererMetadata_DeviceInterfaceOrientation";
       v58 = v123;
@@ -220,8 +220,8 @@ LABEL_32:
 
     else
     {
-      v54 = v17;
-      if (!v126)
+      v54 = stackCopy;
+      if (!faceAnchor)
       {
         v151 = 0u;
         v152 = 0u;
@@ -245,20 +245,20 @@ LABEL_32:
               }
 
               v111 = *(*(&v149 + 1) + 8 * j);
-              v112 = [v111 trackingProps];
-              v113 = [v112 currentTrackingType];
+              trackingProps = [v111 trackingProps];
+              currentTrackingType = [trackingProps currentTrackingType];
 
-              if ((v113 - 1) <= 1 && !v107->_logged_render_request_failure_facetracking)
+              if ((currentTrackingType - 1) <= 1 && !v107->_logged_render_request_failure_facetracking)
               {
                 v114 = JFXLog_facetracking();
                 if (os_log_type_enabled(v114, OS_LOG_TYPE_ERROR))
                 {
                   v115 = NSStringFromJFXEffectType([v111 type]);
-                  v116 = [v111 displayName];
+                  displayName = [v111 displayName];
                   *buf = 138543618;
                   *&buf[4] = v115;
                   *&buf[12] = 2114;
-                  *&buf[14] = v116;
+                  *&buf[14] = displayName;
                   _os_log_error_impl(&dword_242A3B000, v114, OS_LOG_TYPE_ERROR, "Unable to build render request with effect - type: %{public}@, name: %{public}@", buf, 0x16u);
 
                   v107 = v134;
@@ -277,7 +277,7 @@ LABEL_32:
         goto LABEL_31;
       }
 
-      v163[0] = v126;
+      v163[0] = faceAnchor;
       v162[0] = @"JFXFaceTrackingRendererMetadata_JFXFaceAnchor";
       v162[1] = @"JFXFaceTrackingRendererMetadata_OriginalBufferSize";
       *v153 = v31;
@@ -285,10 +285,10 @@ LABEL_32:
       v55 = [MEMORY[0x277CCAE60] valueWithBytes:v153 objCType:"{CGSize=dd}"];
       v163[1] = v55;
       v162[2] = @"JFXFaceTrackingRendererMetadata_AVCaptureVideoOrientation";
-      v56 = [MEMORY[0x277CCABB0] numberWithInteger:v36];
+      v56 = [MEMORY[0x277CCABB0] numberWithInteger:captureVideoOrientation];
       v163[2] = v56;
       v162[3] = @"JFXFaceTrackingRendererMetadata_UIInterfaceOrientation";
-      v57 = [MEMORY[0x277CCABB0] numberWithInteger:v37];
+      v57 = [MEMORY[0x277CCABB0] numberWithInteger:interfaceOrientation];
       v163[3] = v57;
       v162[4] = @"JFXFaceTrackingRendererMetadata_DeviceInterfaceOrientation";
       v58 = v123;
@@ -307,28 +307,28 @@ LABEL_32:
 
 LABEL_31:
     v66 = [[JFXFaceTrackingTransformCalculator alloc] initWithARMetaData:v133 outputSize:v58 playableInterfaceOrientation:v31, v33];
-    v63 = [(JFXFaceTrackingTransformCalculator *)v66 calculateFaceTrackingTransform];
+    calculateFaceTrackingTransform = [(JFXFaceTrackingTransformCalculator *)v66 calculateFaceTrackingTransform];
 
     v53 = v127;
     goto LABEL_32;
   }
 
 LABEL_42:
-  v73 = [(JFXCapturePreviewRequestBuilder *)v134 JFX_visibleEffects:v17, v117];
+  v117 = [(JFXCapturePreviewRequestBuilder *)v134 JFX_visibleEffects:stackCopy, v117];
   v74 = [JFXEffectsPreviewGenerationRequest alloc];
-  v75 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
-  [v75 renderOutputSize];
+  previewProperties3 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
+  [previewProperties3 renderOutputSize];
   v77 = v76;
   v79 = v78;
-  v80 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
-  [v80 frameSize];
+  previewProperties4 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
+  [previewProperties4 frameSize];
   v82 = v81;
   v84 = v83;
-  v85 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
-  v86 = v85;
-  if (v85)
+  previewProperties5 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
+  v86 = previewProperties5;
+  if (previewProperties5)
   {
-    [v85 renderTime];
+    [previewProperties5 renderTime];
   }
 
   else
@@ -336,14 +336,14 @@ LABEL_42:
     memset(buf, 0, 24);
   }
 
-  v118 = [(JFXEffectsPreviewGenerationRequest *)v74 initWithInput:v132 effectStack:v73 outputSize:buf frameSize:v77 renderTime:v79, v82, v84];
+  v118 = [(JFXEffectsPreviewGenerationRequest *)v74 initWithInput:colorImageBuffer effectStack:v117 outputSize:buf frameSize:v77 renderTime:v79, v82, v84];
 
   v143 = 0u;
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v124 = v17;
-  v87 = v17;
+  v124 = stackCopy;
+  v87 = stackCopy;
   v88 = [v87 countByEnumeratingWithState:&v141 objects:v159 count:16];
   if (v88)
   {
@@ -370,10 +370,10 @@ LABEL_42:
 
         if ([v93 type] == 1)
         {
-          v95 = [(JFXCapturePreviewRequestBuilder *)v134 outputColorSpace];
-          v96 = [v95 isHDRSpace];
+          outputColorSpace = [(JFXCapturePreviewRequestBuilder *)v134 outputColorSpace];
+          isHDRSpace = [outputColorSpace isHDRSpace];
 
-          if (v96)
+          if (isHDRSpace)
           {
             [v93 setHDR:1];
           }
@@ -398,13 +398,13 @@ LABEL_42:
   v157 = v139;
   v158 = v140;
   [(JFXEffectsPreviewGenerationRequest *)v118 setAnimationTransformInfo:buf];
-  v98 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
-  v99 = [v98 renderRequiresCrop];
+  previewProperties6 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
+  renderRequiresCrop = [previewProperties6 renderRequiresCrop];
 
-  if (v99)
+  if (renderRequiresCrop)
   {
-    v100 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
-    [v100 frameSize];
+    previewProperties7 = [(JFXCapturePreviewRequestBuilder *)v134 previewProperties];
+    [previewProperties7 frameSize];
 
     v158 = 0;
     v157 = 0u;
@@ -418,37 +418,37 @@ LABEL_42:
   }
 
   v101 = [[JFXEffectsPreviewRequestHandler alloc] initWithRequest:v118];
-  v102 = [(JFXCapturePreviewRequestBuilder *)v134 outputColorSpace];
-  v51 = [(JFXEffectsPreviewRequestHandler *)v101 buildPVRenderRequestWithOutputColorSpace:v102];
+  outputColorSpace2 = [(JFXCapturePreviewRequestBuilder *)v134 outputColorSpace];
+  v51 = [(JFXEffectsPreviewRequestHandler *)v101 buildPVRenderRequestWithOutputColorSpace:outputColorSpace2];
 
-  v19 = v121;
+  cameraFrameSet = v121;
   [v51 setUserContext:v121];
-  v15 = v125;
-  v16 = v128;
-  if (a9)
+  rendererCopy = v125;
+  validatorCopy = v128;
+  if (handler)
   {
     v103 = v101;
-    *a9 = v101;
+    *handler = v101;
   }
 
-  v17 = v124;
+  stackCopy = v124;
 LABEL_62:
 
   return v51;
 }
 
-- (id)JFX_getEffectsOfType:(id)a3 ofType:(int)a4
+- (id)JFX_getEffectsOfType:(id)type ofType:(int)ofType
 {
-  v5 = a3;
+  typeCopy = type;
   v6 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__JFXCapturePreviewRequestBuilder_JFX_getEffectsOfType_ofType___block_invoke;
   v9[3] = &unk_278D7A998;
-  v11 = a4;
+  ofTypeCopy = ofType;
   v7 = v6;
   v10 = v7;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [typeCopy enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -462,12 +462,12 @@ void __63__JFXCapturePreviewRequestBuilder_JFX_getEffectsOfType_ofType___block_i
   }
 }
 
-- (id)JFX_visibleEffects:(id)a3
+- (id)JFX_visibleEffects:(id)effects
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  effectsCopy = effects;
   v5 = [v3 predicateWithBlock:&__block_literal_global_16];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [effectsCopy filteredArrayUsingPredicate:v5];
 
   return v6;
 }
@@ -482,12 +482,12 @@ void __63__JFXCapturePreviewRequestBuilder_JFX_getEffectsOfType_ofType___block_i
   return self;
 }
 
-- (void)setRequestTransformAnimation:(PVTransformAnimationInfo *)a3
+- (void)setRequestTransformAnimation:(PVTransformAnimationInfo *)animation
 {
-  v3 = *&a3->time.value;
-  v4 = *&a3->time.epoch;
-  v5 = *&a3->translation.y;
-  self->_requestTransformAnimation.rotation = a3->rotation;
+  v3 = *&animation->time.value;
+  v4 = *&animation->time.epoch;
+  v5 = *&animation->translation.y;
+  self->_requestTransformAnimation.rotation = animation->rotation;
   *&self->_requestTransformAnimation.translation.y = v5;
   *&self->_requestTransformAnimation.time.epoch = v4;
   *&self->_requestTransformAnimation.time.value = v3;

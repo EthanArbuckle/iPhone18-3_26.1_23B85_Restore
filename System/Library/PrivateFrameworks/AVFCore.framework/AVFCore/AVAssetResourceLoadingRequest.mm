@@ -1,5 +1,5 @@
 @interface AVAssetResourceLoadingRequest
-- (AVAssetResourceLoadingRequest)initWithResourceLoader:(id)a3 URL:(id)a4 httpRequestHeaders:(id)a5 requestOffset:(id)a6 requestLength:(id)a7 allowedContentTypes:(id)a8 figCryptor:(OpaqueFigCPECryptor *)a9 cryptorKeyRequestID:(unint64_t)a10;
+- (AVAssetResourceLoadingRequest)initWithResourceLoader:(id)loader URL:(id)l httpRequestHeaders:(id)headers requestOffset:(id)offset requestLength:(id)length allowedContentTypes:(id)types figCryptor:(OpaqueFigCPECryptor *)cryptor cryptorKeyRequestID:(unint64_t)self0;
 - (AVAssetResourceLoadingRequestor)requestor;
 - (BOOL)_contentKeySessionIsAttached;
 - (BOOL)_tryToMarkAsCancelled;
@@ -10,30 +10,30 @@
 - (NSURLResponse)response;
 - (OpaqueFigCustomURLHandler)_copyContentKeySessionCustomURLHandler;
 - (id)_getAndClearCachedData;
-- (id)keyRequestDataUsingCryptorForApp:(id)a3 contentIdentifier:(id)a4 options:(id)a5 performAsync:(BOOL)a6 error:(id *)a7;
+- (id)keyRequestDataUsingCryptorForApp:(id)app contentIdentifier:(id)identifier options:(id)options performAsync:(BOOL)async error:(id *)error;
 - (id)serializableRepresentation;
-- (void)_appendToCachedData:(id)a3;
-- (void)_cacheContentInformation:(id)a3;
+- (void)_appendToCachedData:(id)data;
+- (void)_cacheContentInformation:(id)information;
 - (void)_ensureResponseInfoSentToCustomURLHandler;
 - (void)_performCancellationByClient;
-- (void)_sendDataToCustomURLHandler:(id)a3;
-- (void)_sendFinishLoadingToCustomURLHandlerWithError:(id)a3;
+- (void)_sendDataToCustomURLHandler:(id)handler;
+- (void)_sendFinishLoadingToCustomURLHandlerWithError:(id)error;
 - (void)_sendResponseInfoToCustomURLHandler;
-- (void)_setContentInformationRequest:(id)a3;
-- (void)_setDataRequest:(id)a3;
+- (void)_setContentInformationRequest:(id)request;
+- (void)_setDataRequest:(id)request;
 - (void)dealloc;
 - (void)finishLoading;
 - (void)finishLoadingWithError:(NSError *)error;
 - (void)finishLoadingWithResponse:(NSURLResponse *)response data:(NSData *)data redirect:(NSURLRequest *)redirect;
 - (void)forwardRequestToContentKeySession;
-- (void)generateStreamingContentKeyRequestDataAsynchronouslyForApp:(id)a3 contentIdentifier:(id)a4 options:(id)a5 completionHandler:(id)a6;
+- (void)generateStreamingContentKeyRequestDataAsynchronouslyForApp:(id)app contentIdentifier:(id)identifier options:(id)options completionHandler:(id)handler;
 - (void)setRedirect:(NSURLRequest *)redirect;
 - (void)setResponse:(NSURLResponse *)response;
 @end
 
 @implementation AVAssetResourceLoadingRequest
 
-- (AVAssetResourceLoadingRequest)initWithResourceLoader:(id)a3 URL:(id)a4 httpRequestHeaders:(id)a5 requestOffset:(id)a6 requestLength:(id)a7 allowedContentTypes:(id)a8 figCryptor:(OpaqueFigCPECryptor *)a9 cryptorKeyRequestID:(unint64_t)a10
+- (AVAssetResourceLoadingRequest)initWithResourceLoader:(id)loader URL:(id)l httpRequestHeaders:(id)headers requestOffset:(id)offset requestLength:(id)length allowedContentTypes:(id)types figCryptor:(OpaqueFigCPECryptor *)cryptor cryptorKeyRequestID:(unint64_t)self0
 {
   v32.receiver = self;
   v32.super_class = AVAssetResourceLoadingRequest;
@@ -42,43 +42,43 @@
   {
     v17 = objc_alloc_init(AVAssetResourceLoadingRequestInternal);
     v16->_loadingRequest = v17;
-    if (v17 && (CFRetain(v17), v16->_loadingRequest->weakReference = -[AVWeakReference initWithReferencedObject:]([AVWeakReference alloc], "initWithReferencedObject:", v16), v16->_loadingRequest->weakReferenceToResourceLoader = -[AVWeakReference initWithReferencedObject:]([AVWeakReference alloc], "initWithReferencedObject:", a3), v16->_loadingRequest->URLRequest = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:a4], v16->_loadingRequest->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avassetresourceloadingrequest.ivars"), v16->_loadingRequest->dataCachingQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avassetresourceloadingrequest.dataCaching"), loadingRequest = v16->_loadingRequest, loadingRequest->weakReference) && a4 && loadingRequest->weakReferenceToResourceLoader && loadingRequest->URLRequest && loadingRequest->ivarAccessQueue && loadingRequest->dataCachingQueue)
+    if (v17 && (CFRetain(v17), v16->_loadingRequest->weakReference = -[AVWeakReference initWithReferencedObject:]([AVWeakReference alloc], "initWithReferencedObject:", v16), v16->_loadingRequest->weakReferenceToResourceLoader = -[AVWeakReference initWithReferencedObject:]([AVWeakReference alloc], "initWithReferencedObject:", loader), v16->_loadingRequest->URLRequest = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:l], v16->_loadingRequest->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avassetresourceloadingrequest.ivars"), v16->_loadingRequest->dataCachingQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avassetresourceloadingrequest.dataCaching"), loadingRequest = v16->_loadingRequest, loadingRequest->weakReference) && l && loadingRequest->weakReferenceToResourceLoader && loadingRequest->URLRequest && loadingRequest->ivarAccessQueue && loadingRequest->dataCachingQueue)
     {
-      v16->_loadingRequest->cachedContentInformation = [a3 cachedContentInformationForURL:a4];
-      if (a5)
+      v16->_loadingRequest->cachedContentInformation = [loader cachedContentInformationForURL:l];
+      if (headers)
       {
-        [(NSMutableURLRequest *)v16->_loadingRequest->URLRequest setAllHTTPHeaderFields:a5];
+        [(NSMutableURLRequest *)v16->_loadingRequest->URLRequest setAllHTTPHeaderFields:headers];
       }
 
       if (!v16->_loadingRequest->cachedContentInformation)
       {
-        [(AVAssetResourceLoadingRequest *)v16 _setContentInformationRequest:[[AVAssetResourceLoadingContentInformationRequest alloc] initWithLoadingRequest:v16 allowedContentTypes:a8]];
+        [(AVAssetResourceLoadingRequest *)v16 _setContentInformationRequest:[[AVAssetResourceLoadingContentInformationRequest alloc] initWithLoadingRequest:v16 allowedContentTypes:types]];
       }
 
       v19 = 0;
       v20 = 1;
       v21 = 0x7FFFFFFFFFFFFFFFLL;
-      v22 = 0;
-      if (a6 && a7)
+      longLongValue = 0;
+      if (offset && length)
       {
         v23 = [-[NSDictionary objectForKey:](v16->_loadingRequest->cachedContentInformation objectForKey:{@"Content-Length", "longLongValue"}];
-        v22 = [a6 longLongValue];
-        v24 = [a7 longLongValue];
-        v21 = v24;
+        longLongValue = [offset longLongValue];
+        longLongValue2 = [length longLongValue];
+        v21 = longLongValue2;
         v19 = 0;
-        v25 = v24 + v22;
+        v25 = longLongValue2 + longLongValue;
         v26 = v23 <= 0 || v25 < v23;
         v20 = !v26;
-        if (v24 >= 1 && (v22 & 0x8000000000000000) == 0)
+        if (longLongValue2 >= 1 && (longLongValue & 0x8000000000000000) == 0)
         {
-          v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bytes=%lld-%lld", v22, v25 - 1];
+          v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bytes=%lld-%lld", longLongValue, v25 - 1];
         }
       }
 
       [(NSMutableURLRequest *)v16->_loadingRequest->URLRequest setValue:v19 forHTTPHeaderField:@"Range"];
-      if (a9)
+      if (cryptor)
       {
-        v27 = CFRetain(a9);
+        v27 = CFRetain(cryptor);
       }
 
       else
@@ -87,22 +87,22 @@
       }
 
       v16->_loadingRequest->figCryptor = v27;
-      v16->_loadingRequest->cryptorKeyRequestID = a10;
-      v29 = [a3 _customURLHandler];
-      if (v29)
+      v16->_loadingRequest->cryptorKeyRequestID = d;
+      _customURLHandler = [loader _customURLHandler];
+      if (_customURLHandler)
       {
-        v29 = CFRetain(v29);
+        _customURLHandler = CFRetain(_customURLHandler);
       }
 
-      v16->_loadingRequest->customURLHandler = v29;
-      v30 = [a3 _customURLLoader];
-      if (v30)
+      v16->_loadingRequest->customURLHandler = _customURLHandler;
+      _customURLLoader = [loader _customURLLoader];
+      if (_customURLLoader)
       {
-        v30 = CFRetain(v30);
+        _customURLLoader = CFRetain(_customURLLoader);
       }
 
-      v16->_loadingRequest->customURLLoader = v30;
-      v31 = [[AVAssetResourceLoadingDataRequest alloc] initWithLoadingRequest:v16 requestedOffset:v22 requestedLength:v21 requestsAllDataToEndOfResource:v20 canSupplyIncrementalDataImmediately:v16->_loadingRequest->figCryptor == 0];
+      v16->_loadingRequest->customURLLoader = _customURLLoader;
+      v31 = [[AVAssetResourceLoadingDataRequest alloc] initWithLoadingRequest:v16 requestedOffset:longLongValue requestedLength:v21 requestsAllDataToEndOfResource:v20 canSupplyIncrementalDataImmediately:v16->_loadingRequest->figCryptor == 0];
       [(AVAssetResourceLoadingRequest *)v16 _setDataRequest:v31];
 
       v16->_loadingRequest->responseInfoSentOnceToken = objc_alloc_init(AVDispatchOnce);
@@ -204,18 +204,18 @@
   [(AVAssetResourceLoadingRequest *)self finishLoadingWithError:v3];
 }
 
-- (void)_setContentInformationRequest:(id)a3
+- (void)_setContentInformationRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
 
-  self->_loadingRequest->contentInformationRequest = a3;
+  self->_loadingRequest->contentInformationRequest = request;
 }
 
-- (void)_setDataRequest:(id)a3
+- (void)_setDataRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
 
-  self->_loadingRequest->dataRequest = a3;
+  self->_loadingRequest->dataRequest = request;
 }
 
 - (void)setResponse:(NSURLResponse *)response
@@ -301,7 +301,7 @@ id __55__AVAssetResourceLoadingRequest__getAndClearCachedData__block_invoke(uint
   return result;
 }
 
-- (void)_appendToCachedData:(id)a3
+- (void)_appendToCachedData:(id)data
 {
   dataCachingQueue = self->_loadingRequest->dataCachingQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -309,7 +309,7 @@ id __55__AVAssetResourceLoadingRequest__getAndClearCachedData__block_invoke(uint
   v4[2] = __53__AVAssetResourceLoadingRequest__appendToCachedData___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = data;
   av_readwrite_dispatch_queue_write(dataCachingQueue, v4);
 }
 
@@ -327,7 +327,7 @@ uint64_t __53__AVAssetResourceLoadingRequest__appendToCachedData___block_invoke(
   return [v2 appendData:v3];
 }
 
-- (void)_cacheContentInformation:(id)a3
+- (void)_cacheContentInformation:(id)information
 {
   if (self->_loadingRequest->cachedContentInformation)
   {
@@ -337,10 +337,10 @@ uint64_t __53__AVAssetResourceLoadingRequest__appendToCachedData___block_invoke(
 
   if ([(AVAssetResourceLoadingRequest *)self _canSetOrUseCachedContentInformation])
   {
-    v10 = [(AVAssetResourceLoadingRequest *)self _resourceLoader];
+    _resourceLoader = [(AVAssetResourceLoadingRequest *)self _resourceLoader];
     v11 = [(NSMutableURLRequest *)self->_loadingRequest->URLRequest URL];
 
-    [v10 cacheContentInformation:a3 forURL:v11];
+    [_resourceLoader cacheContentInformation:information forURL:v11];
   }
 }
 
@@ -375,9 +375,9 @@ uint64_t __41__AVAssetResourceLoadingRequest_redirect__block_invoke(uint64_t a1)
 - (id)serializableRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAssetResourceLoadingRequest *)self _requestInfo];
-  v11 = [(AVAssetResourceLoadingRequest *)self _isRequestForContentKey];
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v3];
+  _requestInfo = [(AVAssetResourceLoadingRequest *)self _requestInfo];
+  _isRequestForContentKey = [(AVAssetResourceLoadingRequest *)self _isRequestForContentKey];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:_requestInfo];
   [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", -[AVAssetResourceLoadingRequest _requestID](self, "_requestID")), @"FCUP_Response_RequestID"}];
   [v4 setObject:-[NSURL absoluteString](-[NSURLRequest URL](-[AVAssetResourceLoadingRequest request](self forKeyedSubscript:{"request"), "URL"), "absoluteString"), @"FCUP_Response_URL"}];
   [v4 setObject:-[NSURLRequest allHTTPHeaderFields](-[AVAssetResourceLoadingRequest request](self forKeyedSubscript:{"request"), "allHTTPHeaderFields"), @"FCUP_Response_Headers"}];
@@ -385,7 +385,7 @@ uint64_t __41__AVAssetResourceLoadingRequest_redirect__block_invoke(uint64_t a1)
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(__CFDictionary *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [(__CFDictionary *)_requestInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -396,7 +396,7 @@ uint64_t __41__AVAssetResourceLoadingRequest_redirect__block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_requestInfo);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -428,13 +428,13 @@ uint64_t __41__AVAssetResourceLoadingRequest_redirect__block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [(__CFDictionary *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [(__CFDictionary *)_requestInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  [v4 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", v11), @"FCUP_Response_IsContentKeyRequest"}];
+  [v4 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", _isRequestForContentKey), @"FCUP_Response_IsContentKeyRequest"}];
   return v4;
 }
 
@@ -471,16 +471,16 @@ uint64_t __41__AVAssetResourceLoadingRequest_redirect__block_invoke(uint64_t a1)
   [(AVDispatchOnce *)responseInfoSentOnceToken runBlockOnce:v3];
 }
 
-- (void)_sendDataToCustomURLHandler:(id)a3
+- (void)_sendDataToCustomURLHandler:(id)handler
 {
   v5 = 0;
   if (![(AVAssetResourceLoadingRequest *)self isCancelled])
   {
-    [(AVAssetResourceLoadingRequest *)self _sendDataToCustomURLHandler:a3, &v5];
+    [(AVAssetResourceLoadingRequest *)self _sendDataToCustomURLHandler:handler, &v5];
   }
 }
 
-- (void)_sendFinishLoadingToCustomURLHandlerWithError:(id)a3
+- (void)_sendFinishLoadingToCustomURLHandlerWithError:(id)error
 {
   if (![(AVAssetResourceLoadingRequest *)self isCancelled])
   {
@@ -490,25 +490,25 @@ uint64_t __41__AVAssetResourceLoadingRequest_redirect__block_invoke(uint64_t a1)
       [(AVAssetResourceLoadingRequest *)self _cacheContentInformation:[(AVAssetResourceLoadingContentInformationRequest *)[(AVAssetResourceLoadingRequest *)self contentInformationRequest] propertyList]];
     }
 
-    v5 = [(AVAssetResourceLoadingRequest *)self _customURLHandler];
+    _customURLHandler = [(AVAssetResourceLoadingRequest *)self _customURLHandler];
     requestID = self->_loadingRequest->requestID;
     v7 = *(*(CMBaseObjectGetVTable() + 16) + 24);
     if (v7)
     {
-      v7(v5, requestID, a3, 0);
+      v7(_customURLHandler, requestID, error, 0);
     }
 
-    v8 = [(AVAssetResourceLoadingRequest *)self _resourceLoader];
+    _resourceLoader = [(AVAssetResourceLoadingRequest *)self _resourceLoader];
 
-    [v8 _noteFinishingOfRequest:self];
+    [_resourceLoader _noteFinishingOfRequest:self];
   }
 }
 
 - (void)forwardRequestToContentKeySession
 {
-  v4 = [(AVAssetResourceLoadingRequest *)self _customURLLoader];
-  v5 = [(AVAssetResourceLoadingRequest *)self _customURLHandler];
-  v6 = [(AVAssetResourceLoadingRequest *)self _copyContentKeySessionCustomURLHandler];
+  _customURLLoader = [(AVAssetResourceLoadingRequest *)self _customURLLoader];
+  _customURLHandler = [(AVAssetResourceLoadingRequest *)self _customURLHandler];
+  _copyContentKeySessionCustomURLHandler = [(AVAssetResourceLoadingRequest *)self _copyContentKeySessionCustomURLHandler];
   requestID = self->_loadingRequest->requestID;
   if (![(AVAssetResourceLoadingRequest *)self _contentKeySessionIsAttached])
   {
@@ -522,7 +522,7 @@ uint64_t __41__AVAssetResourceLoadingRequest_redirect__block_invoke(uint64_t a1)
     v14 = -12782;
 LABEL_9:
     [(AVAssetResourceLoadingRequest *)self _sendFinishLoadingToCustomURLHandlerWithError:AVLocalizedErrorWithUnderlyingOSStatus(v14, 0)];
-    if (!v6)
+    if (!_copyContentKeySessionCustomURLHandler)
     {
       return;
     }
@@ -530,20 +530,20 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  v14 = v13(v4, v5, v6, requestID);
+  v14 = v13(_customURLLoader, _customURLHandler, _copyContentKeySessionCustomURLHandler, requestID);
   if (v14)
   {
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!_copyContentKeySessionCustomURLHandler)
   {
     return;
   }
 
 LABEL_5:
 
-  CFRelease(v6);
+  CFRelease(_copyContentKeySessionCustomURLHandler);
 }
 
 - (void)finishLoading
@@ -557,15 +557,15 @@ LABEL_5:
 
   else
   {
-    v5 = [(AVAssetResourceLoadingContentInformationRequest *)[(AVAssetResourceLoadingRequest *)self contentInformationRequest] contentType];
-    v6 = [(AVAssetResourceLoadingContentInformationRequest *)[(AVAssetResourceLoadingRequest *)self contentInformationRequest] allowedContentTypes];
-    if (v6 && v5 && ![(NSArray *)v6 containsObject:v5])
+    contentType = [(AVAssetResourceLoadingContentInformationRequest *)[(AVAssetResourceLoadingRequest *)self contentInformationRequest] contentType];
+    allowedContentTypes = [(AVAssetResourceLoadingContentInformationRequest *)[(AVAssetResourceLoadingRequest *)self contentInformationRequest] allowedContentTypes];
+    if (allowedContentTypes && contentType && ![(NSArray *)allowedContentTypes containsObject:contentType])
     {
       v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Must respond with a contentType contained in AVAssetResourceLoadingContentInformationRequest.allowedContentTypes.", v7, v8, v9, v10, v11, v15), 0}];
       objc_exception_throw(v14);
     }
 
-    if ([(AVAssetResourceLoadingRequest *)self _contentKeySessionIsAttached]&& ([(NSString *)v5 isEqualToString:@"com.apple.streamingkeydelivery.contentkey"]|| [(NSString *)v5 isEqualToString:@"com.apple.streamingkeydelivery.persistentcontentkey"]))
+    if ([(AVAssetResourceLoadingRequest *)self _contentKeySessionIsAttached]&& ([(NSString *)contentType isEqualToString:@"com.apple.streamingkeydelivery.contentkey"]|| [(NSString *)contentType isEqualToString:@"com.apple.streamingkeydelivery.persistentcontentkey"]))
     {
       os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
       os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
@@ -575,10 +575,10 @@ LABEL_5:
 
     else
     {
-      v13 = [(AVAssetResourceLoadingRequest *)self _getAndClearCachedData];
-      if (v13)
+      _getAndClearCachedData = [(AVAssetResourceLoadingRequest *)self _getAndClearCachedData];
+      if (_getAndClearCachedData)
       {
-        [(AVAssetResourceLoadingRequest *)self _sendDataToCustomURLHandler:v13];
+        [(AVAssetResourceLoadingRequest *)self _sendDataToCustomURLHandler:_getAndClearCachedData];
       }
 
       [(AVAssetResourceLoadingRequest *)self _sendFinishLoadingToCustomURLHandler];
@@ -598,9 +598,9 @@ LABEL_5:
   else
   {
     v4 = error;
-    v6 = [(NSError *)error userInfo];
+    userInfo = [(NSError *)error userInfo];
     v7 = *MEMORY[0x1E696AA08];
-    v8 = [(NSDictionary *)v6 objectForKey:*MEMORY[0x1E696AA08]];
+    v8 = [(NSDictionary *)userInfo objectForKey:*MEMORY[0x1E696AA08]];
     if (v8)
     {
       do
@@ -630,15 +630,15 @@ LABEL_5:
   [(AVAssetResourceLoadingRequest *)self finishLoading];
 }
 
-- (id)keyRequestDataUsingCryptorForApp:(id)a3 contentIdentifier:(id)a4 options:(id)a5 performAsync:(BOOL)a6 error:(id *)a7
+- (id)keyRequestDataUsingCryptorForApp:(id)app contentIdentifier:(id)identifier options:(id)options performAsync:(BOOL)async error:(id *)error
 {
-  v35 = a6;
+  asyncCopy = async;
   v40[4] = *MEMORY[0x1E69E9840];
   v37 = 0;
-  v12 = [objc_msgSend(a5 objectForKey:{@"StreamingContentKeyIsForAirPlayKey", "BOOLValue"}];
-  v13 = [a5 objectForKey:@"CSKRO_RemoteContext"];
+  v12 = [objc_msgSend(options objectForKey:{@"StreamingContentKeyIsForAirPlayKey", "BOOLValue"}];
+  v13 = [options objectForKey:@"CSKRO_RemoteContext"];
   v14 = *MEMORY[0x1E6962AB0];
-  v15 = [a5 objectForKey:*MEMORY[0x1E6962AB0]];
+  v15 = [options objectForKey:*MEMORY[0x1E6962AB0]];
   figCryptor = self->_loadingRequest->figCryptor;
   if (!figCryptor)
   {
@@ -648,14 +648,14 @@ LABEL_5:
   }
 
   v17 = v15;
-  v34 = a7;
-  v18 = [objc_msgSend(a5 objectForKey:{@"StreamingContentKeyRequestRequiresPersistentKey", "BOOLValue"}];
-  v19 = [objc_msgSend(a5 objectForKey:{@"StreamingContentKeyRequiresiTunesProvisioningKey", "BOOLValue"}];
+  errorCopy = error;
+  v18 = [objc_msgSend(options objectForKey:{@"StreamingContentKeyRequestRequiresPersistentKey", "BOOLValue"}];
+  v19 = [objc_msgSend(options objectForKey:{@"StreamingContentKeyRequiresiTunesProvisioningKey", "BOOLValue"}];
   v20 = *MEMORY[0x1E6962AC8];
   v39[0] = *MEMORY[0x1E6962AC0];
   v39[1] = v20;
-  v40[0] = a3;
-  v40[1] = a4;
+  v40[0] = app;
+  v40[1] = identifier;
   v39[2] = *MEMORY[0x1E6962AD0];
   v40[2] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_loadingRequest->requestID];
   v39[3] = *MEMORY[0x1E6962AE8];
@@ -706,7 +706,7 @@ LABEL_20:
       figCryptor = 0;
       v32 = -12782;
 LABEL_21:
-      a7 = v34;
+      error = errorCopy;
       goto LABEL_22;
     }
 
@@ -719,9 +719,9 @@ LABEL_21:
     }
   }
 
-  if (v35)
+  if (asyncCopy)
   {
-    v26 = self;
+    selfCopy = self;
     v27 = v22;
     global_queue = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -742,7 +742,7 @@ LABEL_21:
   }
 
   v31 = v30[11];
-  a7 = v34;
+  error = errorCopy;
   if (v31)
   {
     v32 = v31(figCryptor, v22, *MEMORY[0x1E695E480], &v37);
@@ -764,9 +764,9 @@ LABEL_21:
   }
 
 LABEL_22:
-  if (a7 && v32)
+  if (error && v32)
   {
-    *a7 = AVLocalizedErrorWithUnderlyingOSStatus(v32, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v32, 0);
   }
 
   return figCryptor;
@@ -817,9 +817,9 @@ void __111__AVAssetResourceLoadingRequest_keyRequestDataUsingCryptorForApp_conte
 
 - (OpaqueFigCustomURLHandler)_copyContentKeySessionCustomURLHandler
 {
-  v2 = [(AVAssetResourceLoadingRequest *)self _resourceLoader];
+  _resourceLoader = [(AVAssetResourceLoadingRequest *)self _resourceLoader];
 
-  return [v2 _copyContentKeySessionCustomURLHandler];
+  return [_resourceLoader _copyContentKeySessionCustomURLHandler];
 }
 
 - (NSData)streamingContentKeyRequestDataForApp:(NSData *)appIdentifier contentIdentifier:(NSData *)contentIdentifier options:(NSDictionary *)options error:(NSError *)outError
@@ -863,7 +863,7 @@ LABEL_11:
   return result;
 }
 
-- (void)generateStreamingContentKeyRequestDataAsynchronouslyForApp:(id)a3 contentIdentifier:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)generateStreamingContentKeyRequestDataAsynchronouslyForApp:(id)app contentIdentifier:(id)identifier options:(id)options completionHandler:(id)handler
 {
   if ([(AVAssetResourceLoadingRequest *)self _contentKeySessionIsAttached])
   {
@@ -874,7 +874,7 @@ LABEL_11:
   }
 
   v24 = 0;
-  if (!a3)
+  if (!app)
   {
     v21 = MEMORY[0x1E695DF30];
     v22 = *MEMORY[0x1E695D940];
@@ -886,7 +886,7 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!identifier)
   {
     v21 = MEMORY[0x1E695DF30];
     v22 = *MEMORY[0x1E695D940];
@@ -894,7 +894,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!a6)
+  if (!handler)
   {
     v21 = MEMORY[0x1E695DF30];
     v22 = *MEMORY[0x1E695D940];
@@ -911,8 +911,8 @@ LABEL_16:
     objc_exception_throw([v18 exceptionWithName:v19 reason:v20 userInfo:0]);
   }
 
-  self->_loadingRequest->streamingKeyRequestCompletionHandler = [a6 copy];
-  [(AVAssetResourceLoadingRequest *)self keyRequestDataUsingCryptorForApp:a3 contentIdentifier:a4 options:a5 performAsync:1 error:&v24];
+  self->_loadingRequest->streamingKeyRequestCompletionHandler = [handler copy];
+  [(AVAssetResourceLoadingRequest *)self keyRequestDataUsingCryptorForApp:app contentIdentifier:identifier options:options performAsync:1 error:&v24];
   if (v24)
   {
     streamingKeyRequestCompletionHandler = self->_loadingRequest->streamingKeyRequestCompletionHandler;

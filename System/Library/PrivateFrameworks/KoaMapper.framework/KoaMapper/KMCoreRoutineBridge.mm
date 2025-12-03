@@ -1,16 +1,16 @@
 @interface KMCoreRoutineBridge
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (KMCoreRoutineBridge)init;
-- (id)_fetchLocationOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
+- (id)_fetchLocationOfInterestBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error;
 @end
 
 @implementation KMCoreRoutineBridge
 
-- (id)_fetchLocationOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (id)_fetchLocationOfInterestBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v8 = dispatch_semaphore_create(0);
   v29 = 0;
   v30 = &v29;
@@ -24,7 +24,7 @@
   v26 = __Block_byref_object_copy__1714;
   v27 = __Block_byref_object_dispose__1715;
   v28 = 0;
-  v9 = [MEMORY[0x277D01280] defaultManager];
+  defaultManager = [MEMORY[0x277D01280] defaultManager];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __78__KMCoreRoutineBridge__fetchLocationOfInterestBetweenStartDate_endDate_error___block_invoke;
@@ -33,15 +33,15 @@
   v22 = &v23;
   v10 = v8;
   v20 = v10;
-  [v9 fetchLocationsOfInterestVisitedBetweenStartDate:v6 endDate:v7 withHandler:v19];
+  [defaultManager fetchLocationsOfInterestVisitedBetweenStartDate:dateCopy endDate:endDateCopy withHandler:v19];
 
   v11 = dispatch_time(0, 1000000000);
   if (dispatch_semaphore_wait(v10, v11))
   {
     v12 = MEMORY[0x277CCA9B8];
     v35 = *MEMORY[0x277CCA068];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fetch CoreRoutine LOI timed out after %f second(s)", 0x3FF0000000000000];
-    v36[0] = v13;
+    0x3FF0000000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fetch CoreRoutine LOI timed out after %f second(s)", 0x3FF0000000000000];
+    v36[0] = 0x3FF0000000000000;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v15 = [v12 errorWithDomain:@"com.apple.siri.vocabulary.donate.coreroutine.loi" code:1 userInfo:v14];
     KVSetError();
@@ -85,19 +85,19 @@ void __78__KMCoreRoutineBridge__fetchLocationOfInterestBetweenStartDate_endDate_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v48 = *MEMORY[0x277D85DE8];
-  v34 = a4;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 dateByAddingUnit:16 value:-90 toDate:v5 options:0];
+  blockCopy = block;
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar dateByAddingUnit:16 value:-90 toDate:date options:0];
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 dateByAddingUnit:16 value:10 toDate:v5 options:0];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar2 dateByAddingUnit:16 value:10 toDate:date options:0];
 
   v40 = 0;
-  v10 = self;
+  selfCopy = self;
   v11 = [(KMCoreRoutineBridge *)self _fetchLocationOfInterestBetweenStartDate:v7 endDate:v9 error:&v40];
   v12 = v40;
   if (v11)
@@ -114,7 +114,7 @@ void __78__KMCoreRoutineBridge__fetchLocationOfInterestBetweenStartDate_endDate_
       v14 = v13;
       v15 = *v37;
       v30 = v7;
-      v31 = v5;
+      v31 = date;
       v29 = v9;
       while (2)
       {
@@ -129,7 +129,7 @@ void __78__KMCoreRoutineBridge__fetchLocationOfInterestBetweenStartDate_endDate_
 
           v18 = *(*(&v36 + 1) + 8 * v16);
           v19 = objc_autoreleasePoolPush();
-          itemMapper = v10->_itemMapper;
+          itemMapper = selfCopy->_itemMapper;
           v35 = v17;
           v21 = [(KVItemMapper *)itemMapper mapObject:v18 error:&v35];
           v12 = v35;
@@ -152,19 +152,19 @@ void __78__KMCoreRoutineBridge__fetchLocationOfInterestBetweenStartDate_endDate_
             objc_autoreleasePoolPop(v19);
             v24 = 0;
             v7 = v30;
-            v5 = v31;
+            date = v31;
             goto LABEL_20;
           }
 
-          v22 = [v21 firstObject];
-          v23 = v34[2](v34, v22);
+          firstObject = [v21 firstObject];
+          v23 = blockCopy[2](blockCopy, firstObject);
 
           objc_autoreleasePoolPop(v19);
           if (!v23)
           {
             v24 = 0;
             v7 = v30;
-            v5 = v31;
+            date = v31;
             v9 = v29;
             goto LABEL_20;
           }
@@ -177,7 +177,7 @@ void __78__KMCoreRoutineBridge__fetchLocationOfInterestBetweenStartDate_endDate_
         v14 = [obj countByEnumeratingWithState:&v36 objects:v47 count:16];
         v24 = 1;
         v7 = v30;
-        v5 = v31;
+        date = v31;
         v9 = v29;
         if (v14)
         {

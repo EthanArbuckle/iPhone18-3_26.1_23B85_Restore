@@ -1,23 +1,23 @@
 @interface NEIKEv2IKESAInitPacket
-+ (NSObject)createIKESAInitForInitiatorIKESA:(uint64_t)a1;
-+ (id)createIKESAInitResponse:(unint64_t)a3 errorCode:(void *)a4 errorData:;
-- (uint64_t)validateSAInitAsInitiator:(void *)a1;
-- (uint64_t)validateSAInitAsResponder:(void *)a3 errorCodeToSend:;
++ (NSObject)createIKESAInitForInitiatorIKESA:(uint64_t)a;
++ (id)createIKESAInitResponse:(unint64_t)response errorCode:(void *)code errorData:;
+- (uint64_t)validateSAInitAsInitiator:(void *)initiator;
+- (uint64_t)validateSAInitAsResponder:(void *)responder errorCodeToSend:;
 - (void)filloutPayloads;
 - (void)gatherPayloads;
 @end
 
 @implementation NEIKEv2IKESAInitPacket
 
-+ (NSObject)createIKESAInitForInitiatorIKESA:(uint64_t)a1
++ (NSObject)createIKESAInitForInitiatorIKESA:(uint64_t)a
 {
   v219 = *MEMORY[0x1E69E9840];
   v2 = a2;
   objc_opt_self();
   if (!v2)
   {
-    v6 = ne_log_obj();
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    initOutbound = ne_log_obj();
+    if (!os_log_type_enabled(initOutbound, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_25;
     }
@@ -28,12 +28,12 @@
     goto LABEL_40;
   }
 
-  v4 = [(NEIKEv2IKESA *)v2 preferredKEMProtocol];
+  preferredKEMProtocol = [(NEIKEv2IKESA *)v2 preferredKEMProtocol];
 
-  if (!v4)
+  if (!preferredKEMProtocol)
   {
-    v6 = ne_log_obj();
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    initOutbound = ne_log_obj();
+    if (!os_log_type_enabled(initOutbound, OS_LOG_TYPE_FAULT))
     {
 LABEL_25:
       v76 = 0;
@@ -44,12 +44,12 @@ LABEL_25:
     v216 = "+[NEIKEv2IKESAInitPacket(Exchange) createIKESAInitForInitiatorIKESA:]";
     v80 = "%s called with null ikeSA.preferredKEMProtocol";
 LABEL_40:
-    _os_log_fault_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_FAULT, v80, buf, 0xCu);
+    _os_log_fault_impl(&dword_1BA83C000, initOutbound, OS_LOG_TYPE_FAULT, v80, buf, 0xCu);
     goto LABEL_25;
   }
 
-  v6 = [(NEIKEv2Packet *)[NEIKEv2IKESAInitPacket alloc] initOutbound];
-  if (!v6)
+  initOutbound = [(NEIKEv2Packet *)[NEIKEv2IKESAInitPacket alloc] initOutbound];
+  if (!initOutbound)
   {
     p_super = ne_log_obj();
     if (!os_log_type_enabled(p_super, OS_LOG_TYPE_FAULT))
@@ -68,9 +68,9 @@ LABEL_40:
   {
     v9 = objc_getProperty(v2, v8, 280, 1);
     v10 = [NEIKEv2NotifyPayload createNotifyPayloadType:v9 data:?];
-    objc_setProperty_atomic(v6, v11, v10, 88);
+    objc_setProperty_atomic(initOutbound, v11, v10, 88);
 
-    v13 = objc_getProperty(v6, v12, 88, 1);
+    v13 = objc_getProperty(initOutbound, v12, 88, 1);
 
     if (!v13)
     {
@@ -87,21 +87,21 @@ LABEL_40:
   }
 
   v14 = objc_alloc_init(NEIKEv2IKESAPayload);
-  objc_setProperty_atomic(v6, v15, v14, 96);
+  objc_setProperty_atomic(initOutbound, v15, v14, 96);
 
   v17 = objc_getProperty(v2, v16, 80, 1);
-  v18 = [v17 proposals];
-  v20 = objc_getProperty(v6, v19, 96, 1);
+  proposals = [v17 proposals];
+  v20 = objc_getProperty(initOutbound, v19, 96, 1);
   v22 = v20;
   if (v20)
   {
-    objc_setProperty_atomic(v20, v21, v18, 32);
+    objc_setProperty_atomic(v20, v21, proposals, 32);
   }
 
-  v24 = objc_getProperty(v6, v23, 96, 1);
-  v25 = [(NEIKEv2Payload *)v24 isValid];
+  v24 = objc_getProperty(initOutbound, v23, 96, 1);
+  isValid = [(NEIKEv2Payload *)v24 isValid];
 
-  if ((v25 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
     p_super = ne_log_obj();
     if (!os_log_type_enabled(p_super, OS_LOG_TYPE_FAULT))
@@ -116,14 +116,14 @@ LABEL_40:
   }
 
   v26 = objc_alloc_init(NEIKEv2KeyExchangePayload);
-  objc_setProperty_atomic(v6, v27, v26, 104);
+  objc_setProperty_atomic(initOutbound, v27, v26, 104);
 
-  v29 = [(NEIKEv2IKESA *)v2 preferredKEMProtocol];
-  v31 = objc_getProperty(v6, v30, 104, 1);
+  preferredKEMProtocol2 = [(NEIKEv2IKESA *)v2 preferredKEMProtocol];
+  v31 = objc_getProperty(initOutbound, v30, 104, 1);
   v33 = v31;
   if (v31)
   {
-    objc_setProperty_atomic(v31, v32, v29, 32);
+    objc_setProperty_atomic(v31, v32, preferredKEMProtocol2, 32);
   }
 
   v35 = objc_getProperty(v2, v34, 160, 1);
@@ -139,17 +139,17 @@ LABEL_40:
   }
 
   v38 = v37;
-  v40 = objc_getProperty(v6, v39, 104, 1);
+  v40 = objc_getProperty(initOutbound, v39, 104, 1);
   v42 = v40;
   if (v40)
   {
     objc_setProperty_atomic(v40, v41, v38, 40);
   }
 
-  v44 = objc_getProperty(v6, v43, 104, 1);
-  v45 = [(NEIKEv2Payload *)v44 isValid];
+  v44 = objc_getProperty(initOutbound, v43, 104, 1);
+  isValid2 = [(NEIKEv2Payload *)v44 isValid];
 
-  if ((v45 & 1) == 0)
+  if ((isValid2 & 1) == 0)
   {
     p_super = ne_log_obj();
     if (!os_log_type_enabled(p_super, OS_LOG_TYPE_FAULT))
@@ -164,20 +164,20 @@ LABEL_40:
   }
 
   v46 = objc_alloc_init(NEIKEv2NoncePayload);
-  objc_setProperty_atomic(v6, v47, v46, 112);
+  objc_setProperty_atomic(initOutbound, v47, v46, 112);
 
   v49 = objc_getProperty(v2, v48, 128, 1);
-  v51 = objc_getProperty(v6, v50, 112, 1);
+  v51 = objc_getProperty(initOutbound, v50, 112, 1);
   v53 = v51;
   if (v51)
   {
     objc_setProperty_atomic(v51, v52, v49, 32);
   }
 
-  v55 = objc_getProperty(v6, v54, 112, 1);
-  v56 = [(NEIKEv2Payload *)v55 isValid];
+  v55 = objc_getProperty(initOutbound, v54, 112, 1);
+  isValid3 = [(NEIKEv2Payload *)v55 isValid];
 
-  if ((v56 & 1) == 0)
+  if ((isValid3 & 1) == 0)
   {
     p_super = ne_log_obj();
     if (!os_log_type_enabled(p_super, OS_LOG_TYPE_FAULT))
@@ -195,9 +195,9 @@ LABEL_37:
   }
 
   v58 = objc_getProperty(v2, v57, 80, 1);
-  v59 = [v58 redirectedFromServer];
+  redirectedFromServer = [v58 redirectedFromServer];
 
-  if (v59)
+  if (redirectedFromServer)
   {
     v61 = objc_alloc_init(NEIKEv2NotifyPayload);
     p_super = &v61->super.super;
@@ -207,34 +207,34 @@ LABEL_37:
     }
 
     v64 = objc_getProperty(v2, v62, 80, 1);
-    v65 = [v64 redirectedFromServer];
-    v66 = [v65 addressFamily];
+    redirectedFromServer2 = [v64 redirectedFromServer];
+    addressFamily = [redirectedFromServer2 addressFamily];
 
     v68 = objc_getProperty(v2, v67, 80, 1);
-    v69 = [v68 redirectedFromServer];
-    v70 = v69;
-    if (v66 == 2)
+    redirectedFromServer3 = [v68 redirectedFromServer];
+    v70 = redirectedFromServer3;
+    if (addressFamily == 2)
     {
-      v71 = [v69 address];
+      address = [redirectedFromServer3 address];
 
       buf[0] = 1;
       v208[0] = 4;
       v72 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:6];
       [v72 appendBytes:buf length:1];
       [v72 appendBytes:v208 length:1];
-      v73 = v71 + 4;
+      v73 = address + 4;
       v74 = v72;
       v75 = 4;
     }
 
     else
     {
-      v84 = [v69 addressFamily];
+      addressFamily2 = [redirectedFromServer3 addressFamily];
 
-      if (v84 != 30)
+      if (addressFamily2 != 30)
       {
 LABEL_50:
-        if ([(NEIKEv2Packet *)v6 addNotifyPayload:?])
+        if ([(NEIKEv2Packet *)initOutbound addNotifyPayload:?])
         {
 
           goto LABEL_52;
@@ -251,15 +251,15 @@ LABEL_50:
       }
 
       v86 = objc_getProperty(v2, v85, 80, 1);
-      v87 = [v86 redirectedFromServer];
-      v88 = [v87 address];
+      redirectedFromServer4 = [v86 redirectedFromServer];
+      address2 = [redirectedFromServer4 address];
 
       buf[0] = 2;
       v208[0] = 16;
       v72 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:18];
       [v72 appendBytes:buf length:1];
       [v72 appendBytes:v208 length:1];
-      v73 = v88 + 8;
+      v73 = address2 + 8;
       v74 = v72;
       v75 = 16;
     }
@@ -274,17 +274,17 @@ LABEL_50:
   }
 
   v81 = objc_getProperty(v2, v60, 80, 1);
-  v82 = [v81 allowRedirect];
+  allowRedirect = [v81 allowRedirect];
 
-  if (!v82 || [(NEIKEv2Packet *)v6 addNotification:0 data:?])
+  if (!allowRedirect || [(NEIKEv2Packet *)initOutbound addNotification:0 data:?])
   {
 LABEL_52:
-    v90 = [(NEIKEv2IKESA *)v2 initiatorSPI];
-    v92 = [(NEIKEv2IKESA *)v2 responderSPI];
+    initiatorSPI = [(NEIKEv2IKESA *)v2 initiatorSPI];
+    responderSPI = [(NEIKEv2IKESA *)v2 responderSPI];
     v94 = objc_getProperty(v2, v93, 64, 1);
-    p_super = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v90 responderSPI:v92 address:v94];
+    p_super = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI responderSPI:responderSPI address:v94];
 
-    if (![(NEIKEv2Packet *)v6 addNotification:p_super data:?])
+    if (![(NEIKEv2Packet *)initOutbound addNotification:p_super data:?])
     {
       v101 = ne_log_obj();
       if (os_log_type_enabled(v101, OS_LOG_TYPE_FAULT))
@@ -297,38 +297,38 @@ LABEL_52:
       goto LABEL_146;
     }
 
-    v96 = [(NEIKEv2IKESA *)v2 initiatorSPI];
-    v98 = [(NEIKEv2IKESA *)v2 responderSPI];
+    initiatorSPI2 = [(NEIKEv2IKESA *)v2 initiatorSPI];
+    responderSPI2 = [(NEIKEv2IKESA *)v2 responderSPI];
     v100 = objc_getProperty(v2, v99, 72, 1);
-    v101 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v96 responderSPI:v98 address:v100];
+    v101 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI2 responderSPI:responderSPI2 address:v100];
 
-    if ([(NEIKEv2Packet *)v6 addNotification:v101 data:?])
+    if ([(NEIKEv2Packet *)initOutbound addNotification:v101 data:?])
     {
-      if ([(NEIKEv2Packet *)v6 addNotification:0 data:?])
+      if ([(NEIKEv2Packet *)initOutbound addNotification:0 data:?])
       {
         v103 = objc_getProperty(v2, v102, 88, 1);
-        v104 = [v103 authenticationProtocol];
+        authenticationProtocol = [v103 authenticationProtocol];
 
-        if (v104)
+        if (authenticationProtocol)
         {
           v106 = objc_getProperty(v2, v105, 88, 1);
-          v107 = [v106 authenticationProtocol];
+          authenticationProtocol2 = [v106 authenticationProtocol];
 
           v109 = objc_getProperty(v2, v108, 80, 1);
-          v110 = [v109 extraSupportedSignatureHashes];
-          v111 = [NEIKEv2Crypto copySignHashDataForSet:v110 authentication:v107];
+          extraSupportedSignatureHashes = [v109 extraSupportedSignatureHashes];
+          v111 = [NEIKEv2Crypto copySignHashDataForSet:extraSupportedSignatureHashes authentication:authenticationProtocol2];
 
-          if ([v107 isSecurePassword])
+          if ([authenticationProtocol2 isSecurePassword])
           {
             v113 = objc_getProperty(v2, v112, 88, 1);
-            v114 = [v113 remoteAuthentication];
-            v115 = [v107 isEqual:v114];
+            remoteAuthentication = [v113 remoteAuthentication];
+            v115 = [authenticationProtocol2 isEqual:remoteAuthentication];
 
             if (v115)
             {
-              *buf = bswap32([v107 securePasswordMethod]) >> 16;
+              *buf = bswap32([authenticationProtocol2 securePasswordMethod]) >> 16;
               v116 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:buf length:2];
-              if ([(NEIKEv2Packet *)v6 addNotification:v116 data:?])
+              if ([(NEIKEv2Packet *)initOutbound addNotification:v116 data:?])
               {
 
                 goto LABEL_86;
@@ -353,11 +353,11 @@ LABEL_142:
               }
 
               v185 = objc_getProperty(v2, v184, 88, 1);
-              v186 = [v185 remoteAuthentication];
+              remoteAuthentication2 = [v185 remoteAuthentication];
               *buf = 138412546;
-              v216 = v107;
+              v216 = authenticationProtocol2;
               v217 = 2112;
-              v218 = v186;
+              v218 = remoteAuthentication2;
               _os_log_fault_impl(&dword_1BA83C000, v116, OS_LOG_TYPE_FAULT, "Local authentication %@ is GSPM but doesn't match remote authentication %@", buf, 0x16u);
             }
 
@@ -368,15 +368,15 @@ LABEL_142:
         else
         {
           v188 = v101;
-          v107 = objc_alloc_init(MEMORY[0x1E695DFA8]);
+          authenticationProtocol2 = objc_alloc_init(MEMORY[0x1E695DFA8]);
           v204 = 0u;
           v205 = 0u;
           v206 = 0u;
           v207 = 0u;
           v122 = objc_getProperty(v2, v121, 80, 1);
-          v123 = [v122 proposals];
+          proposals2 = [v122 proposals];
 
-          v124 = [v123 countByEnumeratingWithState:&v204 objects:v214 count:16];
+          v124 = [proposals2 countByEnumeratingWithState:&v204 objects:v214 count:16];
           if (v124)
           {
             v125 = v124;
@@ -387,7 +387,7 @@ LABEL_142:
               {
                 if (*v205 != v126)
                 {
-                  objc_enumerationMutation(v123);
+                  objc_enumerationMutation(proposals2);
                 }
 
                 v128 = *(*(&v204 + 1) + 8 * i);
@@ -397,28 +397,28 @@ LABEL_142:
                 }
 
                 v129 = v128;
-                [v107 addObject:v129];
+                [authenticationProtocol2 addObject:v129];
               }
 
-              v125 = [v123 countByEnumeratingWithState:&v204 objects:v214 count:16];
+              v125 = [proposals2 countByEnumeratingWithState:&v204 objects:v214 count:16];
             }
 
             while (v125);
           }
 
           v131 = objc_getProperty(v2, v130, 80, 1);
-          v132 = [v131 extraSupportedSignatureHashes];
-          v111 = [NEIKEv2Crypto copySignHashDataForSet:v132 authenticationSet:v107];
+          extraSupportedSignatureHashes2 = [v131 extraSupportedSignatureHashes];
+          v111 = [NEIKEv2Crypto copySignHashDataForSet:extraSupportedSignatureHashes2 authenticationSet:authenticationProtocol2];
 
           v101 = v188;
         }
 
 LABEL_86:
 
-        if (v111 && ![(NEIKEv2Packet *)v6 addNotification:v111 data:?])
+        if (v111 && ![(NEIKEv2Packet *)initOutbound addNotification:v111 data:?])
         {
-          v107 = ne_log_obj();
-          if (!os_log_type_enabled(v107, OS_LOG_TYPE_FAULT))
+          authenticationProtocol2 = ne_log_obj();
+          if (!os_log_type_enabled(authenticationProtocol2, OS_LOG_TYPE_FAULT))
           {
 LABEL_143:
 
@@ -432,9 +432,9 @@ LABEL_143:
         else
         {
           v134 = objc_getProperty(v2, v133, 80, 1);
-          v135 = [v134 requestPPK];
+          requestPPK = [v134 requestPPK];
 
-          if (!v135 || [(NEIKEv2Packet *)v6 addNotification:0 data:?])
+          if (!requestPPK || [(NEIKEv2Packet *)initOutbound addNotification:0 data:?])
           {
             v187 = v111;
             v189 = v101;
@@ -443,9 +443,9 @@ LABEL_143:
             v200 = 0u;
             v201 = 0u;
             v137 = objc_getProperty(v2, v136, 80, 1);
-            v138 = [v137 proposals];
+            proposals3 = [v137 proposals];
 
-            v139 = [v138 countByEnumeratingWithState:&v200 objects:v213 count:16];
+            v139 = [proposals3 countByEnumeratingWithState:&v200 objects:v213 count:16];
             if (v139)
             {
               v140 = v139;
@@ -456,12 +456,12 @@ LABEL_143:
                 {
                   if (*v201 != v141)
                   {
-                    objc_enumerationMutation(v138);
+                    objc_enumerationMutation(proposals3);
                   }
 
-                  v143 = [*(*(&v200 + 1) + 8 * j) additionalKEMProtocols];
+                  additionalKEMProtocols = [*(*(&v200 + 1) + 8 * j) additionalKEMProtocols];
 
-                  if (v143 && ![(NEIKEv2Packet *)v6 addNotification:0 data:?])
+                  if (additionalKEMProtocols && ![(NEIKEv2Packet *)initOutbound addNotification:0 data:?])
                   {
                     v183 = ne_log_obj();
                     if (os_log_type_enabled(v183, OS_LOG_TYPE_FAULT))
@@ -475,7 +475,7 @@ LABEL_143:
                   }
                 }
 
-                v140 = [v138 countByEnumeratingWithState:&v200 objects:v213 count:16];
+                v140 = [proposals3 countByEnumeratingWithState:&v200 objects:v213 count:16];
                 if (v140)
                 {
                   continue;
@@ -490,10 +490,10 @@ LABEL_143:
             v196 = 0u;
             v197 = 0u;
             v145 = objc_getProperty(v2, v144, 80, 1);
-            v146 = [v145 customIKESAInitVendorPayloads];
+            customIKESAInitVendorPayloads = [v145 customIKESAInitVendorPayloads];
 
-            obj = v146;
-            v147 = [v146 countByEnumeratingWithState:&v196 objects:v212 count:16];
+            obj = customIKESAInitVendorPayloads;
+            v147 = [customIKESAInitVendorPayloads countByEnumeratingWithState:&v196 objects:v212 count:16];
             if (v147)
             {
               v148 = v147;
@@ -509,26 +509,26 @@ LABEL_143:
 
                   v151 = *(*(&v196 + 1) + 8 * k);
                   v152 = objc_alloc_init(NEIKEv2VendorIDPayload);
-                  v154 = [v151 vendorData];
+                  vendorData = [v151 vendorData];
                   if (v152)
                   {
-                    objc_setProperty_atomic(v152, v153, v154, 32);
+                    objc_setProperty_atomic(v152, v153, vendorData, 32);
                   }
 
-                  v156 = objc_getProperty(v6, v155, 120, 1);
+                  v156 = objc_getProperty(initOutbound, v155, 120, 1);
 
                   if (v156)
                   {
-                    v158 = objc_getProperty(v6, v157, 120, 1);
+                    v158 = objc_getProperty(initOutbound, v157, 120, 1);
                     v159 = [v158 arrayByAddingObject:v152];
-                    objc_setProperty_atomic(v6, v160, v159, 120);
+                    objc_setProperty_atomic(initOutbound, v160, v159, 120);
                   }
 
                   else
                   {
                     v211 = v152;
                     v158 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v211 count:1];
-                    objc_setProperty_atomic(v6, v161, v158, 120);
+                    objc_setProperty_atomic(initOutbound, v161, v158, 120);
                   }
                 }
 
@@ -543,10 +543,10 @@ LABEL_143:
             v192 = 0u;
             v193 = 0u;
             v163 = objc_getProperty(v2, v162, 80, 1);
-            v164 = [v163 customIKESAInitPayloads];
+            customIKESAInitPayloads = [v163 customIKESAInitPayloads];
 
-            obja = v164;
-            v165 = [v164 countByEnumeratingWithState:&v192 objects:v210 count:16];
+            obja = customIKESAInitPayloads;
+            v165 = [customIKESAInitPayloads countByEnumeratingWithState:&v192 objects:v210 count:16];
             if (v165)
             {
               v166 = v165;
@@ -563,33 +563,33 @@ LABEL_143:
 
                   v169 = *(*(&v192 + 1) + 8 * v168);
                   v170 = objc_alloc_init(NEIKEv2CustomPayload);
-                  v171 = [v169 customType];
+                  customType = [v169 customType];
                   if (v170)
                   {
-                    v170->_customType = v171;
-                    v172 = [v169 customData];
-                    objc_setProperty_atomic(v170, v173, v172, 40);
+                    v170->_customType = customType;
+                    customData = [v169 customData];
+                    objc_setProperty_atomic(v170, v173, customData, 40);
                   }
 
                   else
                   {
-                    v172 = [v169 customData];
+                    customData = [v169 customData];
                   }
 
-                  v175 = objc_getProperty(v6, v174, 56, 1);
+                  v175 = objc_getProperty(initOutbound, v174, 56, 1);
 
                   if (v175)
                   {
-                    v177 = objc_getProperty(v6, v176, 56, 1);
+                    v177 = objc_getProperty(initOutbound, v176, 56, 1);
                     v178 = [v177 arrayByAddingObject:v170];
-                    objc_setProperty_atomic(v6, v179, v178, 56);
+                    objc_setProperty_atomic(initOutbound, v179, v178, 56);
                   }
 
                   else
                   {
                     v209 = v170;
                     v177 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v209 count:1];
-                    objc_setProperty_atomic(v6, v180, v177, 56);
+                    objc_setProperty_atomic(initOutbound, v180, v177, 56);
                   }
 
                   ++v168;
@@ -603,15 +603,15 @@ LABEL_143:
               while (v181);
             }
 
-            v76 = v6;
+            v76 = initOutbound;
 LABEL_131:
             v111 = v187;
             v101 = v189;
             goto LABEL_145;
           }
 
-          v107 = ne_log_obj();
-          if (!os_log_type_enabled(v107, OS_LOG_TYPE_FAULT))
+          authenticationProtocol2 = ne_log_obj();
+          if (!os_log_type_enabled(authenticationProtocol2, OS_LOG_TYPE_FAULT))
           {
             goto LABEL_143;
           }
@@ -620,7 +620,7 @@ LABEL_131:
           v182 = "[packet addNotification:NEIKEv2NotifyTypeUsePPK] failed";
         }
 
-        _os_log_fault_impl(&dword_1BA83C000, v107, OS_LOG_TYPE_FAULT, v182, buf, 2u);
+        _os_log_fault_impl(&dword_1BA83C000, authenticationProtocol2, OS_LOG_TYPE_FAULT, v182, buf, 2u);
         goto LABEL_143;
       }
 
@@ -675,16 +675,16 @@ LABEL_65:
   return v76;
 }
 
-+ (id)createIKESAInitResponse:(unint64_t)a3 errorCode:(void *)a4 errorData:
++ (id)createIKESAInitResponse:(unint64_t)response errorCode:(void *)code errorData:
 {
   v6 = a2;
-  v7 = a4;
+  codeCopy = code;
   objc_opt_self();
   v8 = [(NEIKEv2Packet *)[NEIKEv2IKESAInitPacket alloc] initResponse:v6];
   if (v8)
   {
     v9 = v8;
-    if ([(NEIKEv2Packet *)v8 addNotification:a3 data:v7])
+    if ([(NEIKEv2Packet *)v8 addNotification:response data:codeCopy])
     {
       v9 = v9;
       v10 = v9;
@@ -717,12 +717,12 @@ LABEL_11:
   return v10;
 }
 
-- (uint64_t)validateSAInitAsInitiator:(void *)a1
+- (uint64_t)validateSAInitAsInitiator:(void *)initiator
 {
   v389 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v5 = v3;
-  if (!a1)
+  if (!initiator)
   {
     v54 = 0;
     goto LABEL_53;
@@ -756,7 +756,7 @@ LABEL_11:
     goto LABEL_23;
   }
 
-  v6 = objc_getProperty(a1, v4, 128, 1);
+  v6 = objc_getProperty(initiator, v4, 128, 1);
 
   if (!v6)
   {
@@ -776,7 +776,7 @@ LABEL_23:
     goto LABEL_51;
   }
 
-  if (![(NEIKEv2Packet *)a1 hasErrors])
+  if (![(NEIKEv2Packet *)initiator hasErrors])
   {
     goto LABEL_16;
   }
@@ -785,7 +785,7 @@ LABEL_23:
   v380 = 0u;
   v377 = 0u;
   v378 = 0u;
-  v9 = objc_getProperty(a1, v8, 64, 1);
+  v9 = objc_getProperty(initiator, v8, 64, 1);
   v10 = [v9 countByEnumeratingWithState:&v377 objects:v388 count:16];
   if (!v10)
   {
@@ -806,15 +806,15 @@ LABEL_23:
       v14 = *(*(&v377 + 1) + 8 * i);
       if (v14 && (v14[4] - 1) <= 0x3FFE)
       {
-        v23 = [(NEIKEv2NotifyPayload *)*(*(&v377 + 1) + 8 * i) copyError];
+        copyError = [(NEIKEv2NotifyPayload *)*(*(&v377 + 1) + 8 * i) copyError];
         v25 = ne_log_obj();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          v84 = [(NEIKEv2Packet *)a1 copyShortDescription];
+          copyShortDescription = [(NEIKEv2Packet *)initiator copyShortDescription];
           buf = 138412546;
-          v382 = v84;
+          v382 = copyShortDescription;
           v383 = 2112;
-          v384 = v23;
+          v384 = copyError;
           _os_log_error_impl(&dword_1BA83C000, v25, OS_LOG_TYPE_ERROR, "%@ Initiator init received notify error %@", &buf, 0x16u);
         }
 
@@ -833,13 +833,13 @@ LABEL_23:
 
           else
           {
-            [(NEIKEv2IKESA *)v5 setState:v23 error:?];
+            [(NEIKEv2IKESA *)v5 setState:copyError error:?];
           }
         }
 
         else
         {
-          [(NEIKEv2IKESA *)v5 setState:v23 error:?];
+          [(NEIKEv2IKESA *)v5 setState:copyError error:?];
         }
 
 LABEL_50:
@@ -855,14 +855,14 @@ LABEL_50:
 LABEL_15:
 
 LABEL_16:
-  if ([(NEIKEv2Packet *)a1 hasNotification:?])
+  if ([(NEIKEv2Packet *)initiator hasNotification:?])
   {
     v16 = ne_log_obj();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v74 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription2 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412290;
-      v382 = v74;
+      v382 = copyShortDescription2;
       _os_log_error_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_ERROR, "%@ Received notify server redirect", &buf, 0xCu);
     }
 
@@ -870,33 +870,33 @@ LABEL_16:
     goto LABEL_20;
   }
 
-  v19 = objc_getProperty(a1, v15, 88, 1);
+  v19 = objc_getProperty(initiator, v15, 88, 1);
 
   if (v19)
   {
-    Property = objc_getProperty(a1, v20, 88, 1);
+    Property = objc_getProperty(initiator, v20, 88, 1);
     v9 = Property;
     if (Property)
     {
       Property = objc_getProperty(Property, v22, 40, 1);
     }
 
-    v23 = Property;
-    objc_setProperty_atomic(v5, v24, v23, 280);
+    copyError = Property;
+    objc_setProperty_atomic(v5, v24, copyError, 280);
     goto LABEL_50;
   }
 
-  v32 = objc_getProperty(a1, v20, 40, 1);
-  v33 = [v32 value];
+  v32 = objc_getProperty(initiator, v20, 40, 1);
+  value = [v32 value];
 
-  if (!v33)
+  if (!value)
   {
     v57 = ne_log_obj();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
     {
-      v167 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription3 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412290;
-      v382 = v167;
+      v382 = copyShortDescription3;
       _os_log_error_impl(&dword_1BA83C000, v57, OS_LOG_TYPE_ERROR, "%@ Received no remote SPI on SA_INIT", &buf, 0xCu);
     }
 
@@ -907,14 +907,14 @@ LABEL_20:
     goto LABEL_51;
   }
 
-  v35 = objc_getProperty(a1, v34, 40, 1);
+  v35 = objc_getProperty(initiator, v34, 40, 1);
   [(NEIKEv2IKESA *)v5 assignRemoteSPI:v35];
 
-  v37 = objc_getProperty(a1, v36, 128, 1);
+  v37 = objc_getProperty(initiator, v36, 128, 1);
   objc_setProperty_atomic(v5, v38, v37, 320);
 
-  objc_setProperty_atomic(a1, v39, 0, 128);
-  v41 = objc_getProperty(a1, v40, 96, 1);
+  objc_setProperty_atomic(initiator, v39, 0, 128);
+  v41 = objc_getProperty(initiator, v40, 96, 1);
   v43 = v41;
   if (v41)
   {
@@ -928,10 +928,10 @@ LABEL_20:
     v65 = ne_log_obj();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
     {
-      v168 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription4 = [(NEIKEv2Packet *)initiator copyShortDescription];
       v169 = [v9 count];
       buf = 138412546;
-      v382 = v168;
+      v382 = copyShortDescription4;
       v383 = 1024;
       LODWORD(v384) = v169;
       _os_log_error_impl(&dword_1BA83C000, v65, OS_LOG_TYPE_ERROR, "%@ Received %u SA proposals, require 1", &buf, 0x12u);
@@ -950,9 +950,9 @@ LABEL_20:
     v75 = ne_log_obj();
     if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
     {
-      v179 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription5 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412546;
-      v382 = v179;
+      v382 = copyShortDescription5;
       v383 = 2112;
       v384 = ErrorPeerInvalidSyntax;
       _os_log_error_impl(&dword_1BA83C000, v75, OS_LOG_TYPE_ERROR, "%@ Received invalid SA proposal %@", &buf, 0x16u);
@@ -969,9 +969,9 @@ LABEL_20:
   v373 = 0u;
   v374 = 0u;
   v47 = objc_getProperty(v5, v46, 80, 1);
-  v48 = [v47 proposals];
+  proposals = [v47 proposals];
 
-  v49 = [v48 countByEnumeratingWithState:&v373 objects:v387 count:16];
+  v49 = [proposals countByEnumeratingWithState:&v373 objects:v387 count:16];
   if (!v49)
   {
 LABEL_47:
@@ -980,20 +980,20 @@ LABEL_92:
     v148 = ne_log_obj();
     if (os_log_type_enabled(v148, OS_LOG_TYPE_ERROR))
     {
-      v181 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription6 = [(NEIKEv2Packet *)initiator copyShortDescription];
       v183 = objc_getProperty(v5, v182, 80, 1);
-      v184 = [v183 proposals];
+      proposals2 = [v183 proposals];
       buf = 138412802;
-      v382 = v181;
+      v382 = copyShortDescription6;
       v383 = 2112;
       v384 = ErrorPeerInvalidSyntax;
       v385 = 2112;
-      v386 = v184;
+      v386 = proposals2;
       _os_log_error_impl(&dword_1BA83C000, v148, OS_LOG_TYPE_ERROR, "%@ Received proposal %@ does not match config %@", &buf, 0x20u);
     }
 
     v83 = objc_getProperty(v5, v149, 80, 1);
-    v147 = [v83 proposals];
+    proposals3 = [v83 proposals];
     v157 = NEIKEv2CreateErrorPeerInvalidSyntax(@"Received proposal %@ does not match config %@", v150, v151, v152, v153, v154, v155, v156, ErrorPeerInvalidSyntax);
     [(NEIKEv2IKESA *)v5 setState:v157 error:?];
 LABEL_95:
@@ -1011,7 +1011,7 @@ LABEL_41:
   {
     if (*v374 != v51)
     {
-      objc_enumerationMutation(v48);
+      objc_enumerationMutation(proposals);
     }
 
     v53 = *(*(&v373 + 1) + 8 * v52);
@@ -1022,7 +1022,7 @@ LABEL_41:
 
     if (v50 == ++v52)
     {
-      v50 = [v48 countByEnumeratingWithState:&v373 objects:v387 count:16];
+      v50 = [proposals countByEnumeratingWithState:&v373 objects:v387 count:16];
       if (v50)
       {
         goto LABEL_41;
@@ -1048,9 +1048,9 @@ LABEL_41:
     v158 = ne_log_obj();
     if (os_log_type_enabled(v158, OS_LOG_TYPE_ERROR))
     {
-      v205 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription7 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412546;
-      v382 = v205;
+      v382 = copyShortDescription7;
       v383 = 2112;
       v384 = ErrorPeerInvalidSyntax;
       _os_log_error_impl(&dword_1BA83C000, v158, OS_LOG_TYPE_ERROR, "%@ Could not set chosen proposal values %@", &buf, 0x16u);
@@ -1069,14 +1069,14 @@ LABEL_41:
 
   v93 = v90;
 
-  if (v93 && ([(NEIKEv2Packet *)a1 hasNotification:?]& 1) == 0)
+  if (v93 && ([(NEIKEv2Packet *)initiator hasNotification:?]& 1) == 0)
   {
     v336 = ne_log_obj();
     if (os_log_type_enabled(v336, OS_LOG_TYPE_ERROR))
     {
-      v346 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription8 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412546;
-      v382 = v346;
+      v382 = copyShortDescription8;
       v383 = 2112;
       v384 = ErrorPeerInvalidSyntax;
       _os_log_error_impl(&dword_1BA83C000, v336, OS_LOG_TYPE_ERROR, "%@ Chosen proposal requires IKE_INTERMEDIATE but peer does not support it %@ ", &buf, 0x16u);
@@ -1086,16 +1086,16 @@ LABEL_41:
     goto LABEL_123;
   }
 
-  v95 = objc_getProperty(a1, v94, 104, 1);
+  v95 = objc_getProperty(initiator, v94, 104, 1);
 
   if (!v95)
   {
     v170 = ne_log_obj();
     if (os_log_type_enabled(v170, OS_LOG_TYPE_ERROR))
     {
-      v207 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription9 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412290;
-      v382 = v207;
+      v382 = copyShortDescription9;
       _os_log_error_impl(&dword_1BA83C000, v170, OS_LOG_TYPE_ERROR, "%@ Did not receive KE payload", &buf, 0xCu);
     }
 
@@ -1103,7 +1103,7 @@ LABEL_41:
     goto LABEL_122;
   }
 
-  v97 = objc_getProperty(a1, v96, 104, 1);
+  v97 = objc_getProperty(initiator, v96, 104, 1);
   v99 = v97;
   if (v97)
   {
@@ -1117,9 +1117,9 @@ LABEL_41:
     v180 = ne_log_obj();
     if (os_log_type_enabled(v180, OS_LOG_TYPE_ERROR))
     {
-      v208 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription10 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412290;
-      v382 = v208;
+      v382 = copyShortDescription10;
       _os_log_error_impl(&dword_1BA83C000, v180, OS_LOG_TYPE_ERROR, "%@ Did not receive method in KE payload", &buf, 0xCu);
     }
 
@@ -1127,7 +1127,7 @@ LABEL_41:
     goto LABEL_122;
   }
 
-  v102 = objc_getProperty(a1, v101, 104, 1);
+  v102 = objc_getProperty(initiator, v101, 104, 1);
   v104 = v102;
   if (v102)
   {
@@ -1141,9 +1141,9 @@ LABEL_41:
     v185 = ne_log_obj();
     if (os_log_type_enabled(v185, OS_LOG_TYPE_ERROR))
     {
-      v291 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription11 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412290;
-      v382 = v291;
+      v382 = copyShortDescription11;
       _os_log_error_impl(&dword_1BA83C000, v185, OS_LOG_TYPE_ERROR, "%@ Did not receive data in KE payload", &buf, 0xCu);
     }
 
@@ -1151,7 +1151,7 @@ LABEL_41:
     goto LABEL_122;
   }
 
-  v107 = objc_getProperty(a1, v106, 104, 1);
+  v107 = objc_getProperty(initiator, v106, 104, 1);
   v109 = v107;
   if (v107)
   {
@@ -1161,18 +1161,18 @@ LABEL_41:
   v110 = v107;
   selfb = [v110 method];
   v112 = objc_getProperty(v5, v111, 96, 1);
-  v114 = [(NEIKEv2IKESAProposal *)v112 kemProtocol];
-  v115 = [v114 method];
+  kemProtocol = [(NEIKEv2IKESAProposal *)v112 kemProtocol];
+  method = [kemProtocol method];
 
-  if (selfb != v115)
+  if (selfb != method)
   {
     v186 = ne_log_obj();
     v187 = &OBJC_IVAR___NEFilterFlow__direction;
     if (os_log_type_enabled(v186, OS_LOG_TYPE_ERROR))
     {
       v367 = v83;
-      v303 = [(NEIKEv2Packet *)a1 copyShortDescription];
-      v305 = objc_getProperty(a1, v304, 104, 1);
+      copyShortDescription12 = [(NEIKEv2Packet *)initiator copyShortDescription];
+      v305 = objc_getProperty(initiator, v304, 104, 1);
       v307 = v305;
       if (v305)
       {
@@ -1180,41 +1180,41 @@ LABEL_41:
       }
 
       selfc = v305;
-      v308 = [selfc method];
+      method2 = [selfc method];
       v310 = objc_getProperty(v5, v309, 96, 1);
-      v312 = [(NEIKEv2IKESAProposal *)v310 kemProtocol];
-      v313 = [v312 method];
+      kemProtocol2 = [(NEIKEv2IKESAProposal *)v310 kemProtocol];
+      method3 = [kemProtocol2 method];
       buf = 138412802;
-      v382 = v303;
+      v382 = copyShortDescription12;
       v383 = 2048;
-      v384 = v308;
+      v384 = method2;
       v385 = 2048;
-      v386 = v313;
+      v386 = method3;
       _os_log_error_impl(&dword_1BA83C000, v186, OS_LOG_TYPE_ERROR, "%@ Did not receive matching method from KE payload (%zu != %zu)", &buf, 0x20u);
 
       v83 = v367;
       v187 = &OBJC_IVAR___NEFilterFlow__direction;
     }
 
-    v189 = objc_getProperty(a1, v188, v187[585], 1);
-    v147 = v189;
+    v189 = objc_getProperty(initiator, v188, v187[585], 1);
+    proposals3 = v189;
     if (v189)
     {
       v189 = objc_getProperty(v189, v190, 32, 1);
     }
 
     v157 = v189;
-    v191 = [v157 method];
+    method4 = [v157 method];
     v193 = objc_getProperty(v5, v192, 96, 1);
-    v195 = [(NEIKEv2IKESAProposal *)v193 kemProtocol];
-    [v195 method];
-    v203 = NEIKEv2CreateErrorPeerInvalidSyntax(@"Did not receive matching method from KE payload (%zu != %zu)", v196, v197, v198, v199, v200, v201, v202, v191);
+    kemProtocol3 = [(NEIKEv2IKESAProposal *)v193 kemProtocol];
+    [kemProtocol3 method];
+    v203 = NEIKEv2CreateErrorPeerInvalidSyntax(@"Did not receive matching method from KE payload (%zu != %zu)", v196, v197, v198, v199, v200, v201, v202, method4);
     [(NEIKEv2IKESA *)v5 setState:v203 error:?];
 
     goto LABEL_95;
   }
 
-  v117 = objc_getProperty(a1, v116, 104, 1);
+  v117 = objc_getProperty(initiator, v116, 104, 1);
   v119 = v117;
   if (v117)
   {
@@ -1224,16 +1224,16 @@ LABEL_41:
   v120 = v117;
   objc_setProperty_atomic(v5, v121, v120, 152);
 
-  v123 = objc_getProperty(a1, v122, 112, 1);
+  v123 = objc_getProperty(initiator, v122, 112, 1);
 
   if (!v123)
   {
     v204 = ne_log_obj();
     if (os_log_type_enabled(v204, OS_LOG_TYPE_ERROR))
     {
-      v319 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription13 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412290;
-      v382 = v319;
+      v382 = copyShortDescription13;
       _os_log_error_impl(&dword_1BA83C000, v204, OS_LOG_TYPE_ERROR, "%@ Did not receive NONCE payload", &buf, 0xCu);
     }
 
@@ -1241,7 +1241,7 @@ LABEL_41:
     goto LABEL_122;
   }
 
-  v125 = objc_getProperty(a1, v124, 112, 1);
+  v125 = objc_getProperty(initiator, v124, 112, 1);
   v127 = v125;
   if (v125)
   {
@@ -1255,9 +1255,9 @@ LABEL_41:
     v206 = ne_log_obj();
     if (os_log_type_enabled(v206, OS_LOG_TYPE_ERROR))
     {
-      v320 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription14 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412290;
-      v382 = v320;
+      v382 = copyShortDescription14;
       _os_log_error_impl(&dword_1BA83C000, v206, OS_LOG_TYPE_ERROR, "%@ Did not receive NONCE data", &buf, 0xCu);
     }
 
@@ -1265,21 +1265,21 @@ LABEL_41:
 LABEL_122:
     v166 = NEIKEv2CreateErrorPeerInvalidSyntax(v178, v171, v172, v173, v174, v175, v176, v177, v361);
 LABEL_123:
-    v147 = v166;
+    proposals3 = v166;
     [(NEIKEv2IKESA *)v5 setState:v166 error:?];
     goto LABEL_124;
   }
 
   v130 = objc_getProperty(v5, v129, 80, 1);
-  v131 = [v130 strictNonceSizeChecks];
+  strictNonceSizeChecks = [v130 strictNonceSizeChecks];
 
   v366 = v83;
-  if (!v131)
+  if (!strictNonceSizeChecks)
   {
     goto LABEL_133;
   }
 
-  v133 = objc_getProperty(a1, v132, 112, 1);
+  v133 = objc_getProperty(initiator, v132, 112, 1);
   v135 = v133;
   if (v133)
   {
@@ -1295,27 +1295,27 @@ LABEL_123:
     v139 = ne_log_obj();
     if (os_log_type_enabled(v139, OS_LOG_TYPE_ERROR))
     {
-      v321 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription15 = [(NEIKEv2Packet *)initiator copyShortDescription];
       buf = 138412546;
-      v382 = v321;
+      v382 = copyShortDescription15;
       v383 = 2048;
       v384 = v137;
       _os_log_error_impl(&dword_1BA83C000, v139, OS_LOG_TYPE_ERROR, "%@ NONCE data length %zu is out of bounds", &buf, 0x16u);
     }
 
-    v147 = NEIKEv2CreateErrorPeerInvalidSyntax(@"NONCE data length %zu is out of bounds", v140, v141, v142, v143, v144, v145, v146, v137);
-    [(NEIKEv2IKESA *)v5 setState:v147 error:?];
+    proposals3 = NEIKEv2CreateErrorPeerInvalidSyntax(@"NONCE data length %zu is out of bounds", v140, v141, v142, v143, v144, v145, v146, v137);
+    [(NEIKEv2IKESA *)v5 setState:proposals3 error:?];
     goto LABEL_132;
   }
 
   v209 = objc_getProperty(v5, v138, 96, 1);
-  v211 = [(NEIKEv2IKESAProposal *)v209 prfProtocol];
-  v212 = [v211 nonceSize];
+  prfProtocol = [(NEIKEv2IKESAProposal *)v209 prfProtocol];
+  nonceSize = [prfProtocol nonceSize];
 
-  if (self >= v212)
+  if (self >= nonceSize)
   {
 LABEL_133:
-    v224 = objc_getProperty(a1, v132, 112, 1);
+    v224 = objc_getProperty(initiator, v132, 112, 1);
     v226 = v224;
     if (v224)
     {
@@ -1325,7 +1325,7 @@ LABEL_133:
     v227 = v224;
     objc_setProperty_atomic(v5, v228, v227, 136);
 
-    selfa = [(NEIKEv2Packet *)a1 copyNotification:?];
+    selfa = [(NEIKEv2Packet *)initiator copyNotification:?];
     if (selfa)
     {
       v230 = objc_getProperty(selfa, v229, 40, 1);
@@ -1334,20 +1334,20 @@ LABEL_133:
     }
 
     v232 = objc_getProperty(v5, v229, 88, 1);
-    v233 = [v232 authenticationProtocol];
-    v234 = [v233 isSecurePassword];
+    authenticationProtocol = [v232 authenticationProtocol];
+    isSecurePassword = [authenticationProtocol isSecurePassword];
 
-    if (v234)
+    if (isSecurePassword)
     {
-      v235 = [(NEIKEv2Packet *)a1 copyNotification:?];
+      v235 = [(NEIKEv2Packet *)initiator copyNotification:?];
       if (!v235)
       {
         v347 = ne_log_obj();
         if (os_log_type_enabled(v347, OS_LOG_TYPE_ERROR))
         {
-          v358 = [(NEIKEv2Packet *)a1 copyShortDescription];
+          copyShortDescription16 = [(NEIKEv2Packet *)initiator copyShortDescription];
           buf = 138412290;
-          v382 = v358;
+          v382 = copyShortDescription16;
           _os_log_error_impl(&dword_1BA83C000, v347, OS_LOG_TYPE_ERROR, "%@ Did not receive secure password methods notify", &buf, 0xCu);
         }
 
@@ -1368,8 +1368,8 @@ LABEL_183:
         v239 = [NEIKEv2AuthenticationProtocol alloc];
         v240 = [(NEIKEv2AuthenticationProtocol *)v239 initWithSecurePassword:bswap32(v372) >> 16];
         v242 = objc_getProperty(v5, v241, 88, 1);
-        v243 = [v242 authenticationProtocol];
-        v244 = [(NEIKEv2AuthenticationProtocol *)v240 isEqual:v243];
+        authenticationProtocol2 = [v242 authenticationProtocol];
+        v244 = [(NEIKEv2AuthenticationProtocol *)v240 isEqual:authenticationProtocol2];
 
         if (v244)
         {
@@ -1381,20 +1381,20 @@ LABEL_183:
         v292 = ne_log_obj();
         if (os_log_type_enabled(v292, OS_LOG_TYPE_ERROR))
         {
-          v324 = [(NEIKEv2Packet *)a1 copyShortDescription];
+          copyShortDescription17 = [(NEIKEv2Packet *)initiator copyShortDescription];
           v326 = objc_getProperty(v5, v325, 88, 1);
-          v327 = [v326 authenticationProtocol];
+          authenticationProtocol3 = [v326 authenticationProtocol];
           buf = 138412802;
-          v382 = v324;
+          v382 = copyShortDescription17;
           v383 = 2112;
           v384 = v240;
           v385 = 2112;
-          v386 = v327;
+          v386 = authenticationProtocol3;
           _os_log_error_impl(&dword_1BA83C000, v292, OS_LOG_TYPE_ERROR, "%@ Secure password method %@ does not match configured %@", &buf, 0x20u);
         }
 
         v294 = objc_getProperty(v5, v293, 88, 1);
-        v363 = [v294 authenticationProtocol];
+        authenticationProtocol4 = [v294 authenticationProtocol];
         v302 = NEIKEv2CreateErrorPeerInvalidSyntax(@"Secure password method %@ does not match configured %@", v295, v296, v297, v298, v299, v300, v301, v240);
         [(NEIKEv2IKESA *)v5 setState:v302 error:?];
       }
@@ -1404,10 +1404,10 @@ LABEL_183:
         v348 = ne_log_obj();
         if (os_log_type_enabled(v348, OS_LOG_TYPE_ERROR))
         {
-          v359 = [(NEIKEv2Packet *)a1 copyShortDescription];
+          copyShortDescription18 = [(NEIKEv2Packet *)initiator copyShortDescription];
           v360 = [v238 length];
           buf = 138412546;
-          v382 = v359;
+          v382 = copyShortDescription18;
           v383 = 2048;
           v384 = v360;
           _os_log_error_impl(&dword_1BA83C000, v348, OS_LOG_TYPE_ERROR, "%@ Secure password methods notify has incorrect length %zu != sizeof(uint16_t)", &buf, 0x16u);
@@ -1421,78 +1421,78 @@ LABEL_183:
 LABEL_184:
       v54 = 0;
 LABEL_191:
-      v147 = selfa;
+      proposals3 = selfa;
       goto LABEL_192;
     }
 
 LABEL_142:
-    if ([(NEIKEv2Packet *)a1 hasNotification:?]&& (*(v5 + 13) & 1) == 0)
+    if ([(NEIKEv2Packet *)initiator hasNotification:?]&& (*(v5 + 13) & 1) == 0)
     {
       *(v5 + 10) = 1;
       v245 = ne_log_obj();
       if (os_log_type_enabled(v245, OS_LOG_TYPE_DEBUG))
       {
-        v333 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription19 = [(NEIKEv2Packet *)initiator copyShortDescription];
         buf = 138412290;
-        v382 = v333;
+        v382 = copyShortDescription19;
         _os_log_debug_impl(&dword_1BA83C000, v245, OS_LOG_TYPE_DEBUG, "%@ IKEv2 fragmentation supported", &buf, 0xCu);
       }
     }
 
-    if ([(NEIKEv2Packet *)a1 hasNotification:?])
+    if ([(NEIKEv2Packet *)initiator hasNotification:?])
     {
       v246 = ne_log_obj();
       if (os_log_type_enabled(v246, OS_LOG_TYPE_DEBUG))
       {
-        v323 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription20 = [(NEIKEv2Packet *)initiator copyShortDescription];
         buf = 138412290;
-        v382 = v323;
+        v382 = copyShortDescription20;
         _os_log_debug_impl(&dword_1BA83C000, v246, OS_LOG_TYPE_DEBUG, "%@ Childless IKEv2 supported", &buf, 0xCu);
       }
 
       v248 = objc_getProperty(v5, v247, 80, 1);
-      v249 = [v248 requestChildlessSA];
+      requestChildlessSA = [v248 requestChildlessSA];
 
-      if (v249)
+      if (requestChildlessSA)
       {
         *(v5 + 23) = 1;
       }
     }
 
-    if ([(NEIKEv2Packet *)a1 hasNotification:?])
+    if ([(NEIKEv2Packet *)initiator hasNotification:?])
     {
       v251 = objc_getProperty(v5, v250, 80, 1);
-      v252 = [v251 requestPPK];
+      requestPPK = [v251 requestPPK];
 
-      if (v252)
+      if (requestPPK)
       {
         *(v5 + 24) = 1;
         v253 = ne_log_obj();
         if (os_log_type_enabled(v253, OS_LOG_TYPE_INFO))
         {
-          v254 = [(NEIKEv2Packet *)a1 copyShortDescription];
+          copyShortDescription21 = [(NEIKEv2Packet *)initiator copyShortDescription];
           buf = 138412290;
-          v382 = v254;
+          v382 = copyShortDescription21;
           _os_log_impl(&dword_1BA83C000, v253, OS_LOG_TYPE_INFO, "%@ PPK use requested", &buf, 0xCu);
         }
 
 LABEL_161:
-        v364 = [(NEIKEv2Packet *)a1 copyNotification:?];
-        v365 = [(NEIKEv2Packet *)a1 copyNotification:?];
+        v364 = [(NEIKEv2Packet *)initiator copyNotification:?];
+        v365 = [(NEIKEv2Packet *)initiator copyNotification:?];
         if (!v364 || !v365)
         {
           goto LABEL_190;
         }
 
-        v267 = [(NEIKEv2IKESA *)v5 initiatorSPI];
-        v269 = [(NEIKEv2IKESA *)v5 responderSPI];
+        initiatorSPI = [(NEIKEv2IKESA *)v5 initiatorSPI];
+        responderSPI = [(NEIKEv2IKESA *)v5 responderSPI];
         v271 = objc_getProperty(v5, v270, 72, 1);
-        v272 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v267 responderSPI:v269 address:v271];
+        v272 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI responderSPI:responderSPI address:v271];
 
-        v274 = [(NEIKEv2IKESA *)v5 initiatorSPI];
-        v276 = [(NEIKEv2IKESA *)v5 responderSPI];
+        initiatorSPI2 = [(NEIKEv2IKESA *)v5 initiatorSPI];
+        responderSPI2 = [(NEIKEv2IKESA *)v5 responderSPI];
         v278 = objc_getProperty(v5, v277, 64, 1);
-        v279 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v274 responderSPI:v276 address:v278];
+        v279 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI2 responderSPI:responderSPI2 address:v278];
 
         v281 = objc_getProperty(v364, v280, 40, 1);
         LOBYTE(v278) = [v272 isEqualToData:v281];
@@ -1503,9 +1503,9 @@ LABEL_161:
           v283 = ne_log_obj();
           if (os_log_type_enabled(v283, OS_LOG_TYPE_DEBUG))
           {
-            v344 = [(NEIKEv2Packet *)a1 copyShortDescription];
+            copyShortDescription22 = [(NEIKEv2Packet *)initiator copyShortDescription];
             buf = 138412290;
-            v382 = v344;
+            v382 = copyShortDescription22;
             _os_log_debug_impl(&dword_1BA83C000, v283, OS_LOG_TYPE_DEBUG, "%@ Detected incoming NAT", &buf, 0xCu);
           }
         }
@@ -1519,9 +1519,9 @@ LABEL_161:
           v287 = ne_log_obj();
           if (os_log_type_enabled(v287, OS_LOG_TYPE_DEBUG))
           {
-            v345 = [(NEIKEv2Packet *)a1 copyShortDescription];
+            copyShortDescription23 = [(NEIKEv2Packet *)initiator copyShortDescription];
             buf = 138412290;
-            v382 = v345;
+            v382 = copyShortDescription23;
             _os_log_debug_impl(&dword_1BA83C000, v287, OS_LOG_TYPE_DEBUG, "%@ Detected outgoing NAT", &buf, 0xCu);
           }
         }
@@ -1563,9 +1563,9 @@ LABEL_190:
       v314 = ne_log_obj();
       if (os_log_type_enabled(v314, OS_LOG_TYPE_ERROR))
       {
-        v335 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription24 = [(NEIKEv2Packet *)initiator copyShortDescription];
         buf = 138412290;
-        v382 = v335;
+        v382 = copyShortDescription24;
         _os_log_error_impl(&dword_1BA83C000, v314, OS_LOG_TYPE_ERROR, "%@ PPK use requested but PPK use is not configured", &buf, 0xCu);
       }
 
@@ -1575,9 +1575,9 @@ LABEL_190:
     else
     {
       v255 = objc_getProperty(v5, v250, 88, 1);
-      v256 = [v255 ppkMandatory];
+      ppkMandatory = [v255 ppkMandatory];
 
-      if (!v256)
+      if (!ppkMandatory)
       {
         goto LABEL_161;
       }
@@ -1585,9 +1585,9 @@ LABEL_190:
       v257 = ne_log_obj();
       if (os_log_type_enabled(v257, OS_LOG_TYPE_ERROR))
       {
-        v334 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription25 = [(NEIKEv2Packet *)initiator copyShortDescription];
         buf = 138412290;
-        v382 = v334;
+        v382 = copyShortDescription25;
         _os_log_error_impl(&dword_1BA83C000, v257, OS_LOG_TYPE_ERROR, "%@ PPK use not requested but PPK use is mandatory", &buf, 0xCu);
       }
 
@@ -1600,20 +1600,20 @@ LABEL_190:
   v213 = ne_log_obj();
   if (os_log_type_enabled(v213, OS_LOG_TYPE_ERROR))
   {
-    v328 = [(NEIKEv2Packet *)a1 copyShortDescription];
+    copyShortDescription26 = [(NEIKEv2Packet *)initiator copyShortDescription];
     v330 = objc_getProperty(v5, v329, 96, 1);
-    v332 = [(NEIKEv2IKESAProposal *)v330 prfProtocol];
+    prfProtocol2 = [(NEIKEv2IKESAProposal *)v330 prfProtocol];
     buf = 138412802;
-    v382 = v328;
+    v382 = copyShortDescription26;
     v383 = 2048;
     v384 = self;
     v385 = 2112;
-    v386 = v332;
+    v386 = prfProtocol2;
     _os_log_error_impl(&dword_1BA83C000, v213, OS_LOG_TYPE_ERROR, "%@ NONCE data length %zu is shorter than the minimum for PRF protocol %@", &buf, 0x20u);
   }
 
-  v147 = objc_getProperty(v5, v214, 96, 1);
-  v362 = [(NEIKEv2IKESAProposal *)v147 prfProtocol];
+  proposals3 = objc_getProperty(v5, v214, 96, 1);
+  prfProtocol3 = [(NEIKEv2IKESAProposal *)proposals3 prfProtocol];
   v223 = NEIKEv2CreateErrorPeerInvalidSyntax(@"NONCE data length %zu is shorter than the minimum for PRF protocol %@", v216, v217, v218, v219, v220, v221, v222, self);
   [(NEIKEv2IKESA *)v5 setState:v223 error:?];
 
@@ -1633,7 +1633,7 @@ LABEL_53:
   return v54;
 }
 
-- (uint64_t)validateSAInitAsResponder:(void *)a3 errorCodeToSend:
+- (uint64_t)validateSAInitAsResponder:(void *)responder errorCodeToSend:
 {
   v275 = *MEMORY[0x1E69E9840];
   v5 = a2;
@@ -1652,7 +1652,7 @@ LABEL_53:
     goto LABEL_70;
   }
 
-  v8 = objc_getProperty(a1, v6, 128, 1);
+  v8 = objc_getProperty(self, v6, 128, 1);
 
   if (!v8)
   {
@@ -1670,15 +1670,15 @@ LABEL_70:
     goto LABEL_77;
   }
 
-  if ([(NEIKEv2Packet *)a1 hasErrors])
+  if ([(NEIKEv2Packet *)self hasErrors])
   {
     v266 = 0u;
     v267 = 0u;
     v264 = 0u;
     v265 = 0u;
-    if (a1)
+    if (self)
     {
-      Property = objc_getProperty(a1, v10, 64, 1);
+      Property = objc_getProperty(self, v10, 64, 1);
     }
 
     else
@@ -1704,19 +1704,19 @@ LABEL_70:
           v17 = *(*(&v264 + 1) + 8 * i);
           if (v17 && v17[1].isa - 1 <= 0x3FFE)
           {
-            v110 = [(NEIKEv2NotifyPayload *)v17 copyError];
+            copyError = [(NEIKEv2NotifyPayload *)v17 copyError];
             v111 = ne_log_obj();
             if (os_log_type_enabled(v111, OS_LOG_TYPE_ERROR))
             {
-              v138 = [(NEIKEv2Packet *)a1 copyShortDescription];
+              copyShortDescription = [(NEIKEv2Packet *)self copyShortDescription];
               *buf = 138412546;
-              v269 = v138;
+              v269 = copyShortDescription;
               v270 = 2112;
-              v271 = v110;
+              v271 = copyError;
               _os_log_error_impl(&dword_1BA83C000, v111, OS_LOG_TYPE_ERROR, "%@ Responder init received notify error %@", buf, 0x16u);
             }
 
-            [(NEIKEv2IKESA *)v7 setState:v110 error:?];
+            [(NEIKEv2IKESA *)v7 setState:copyError error:?];
             goto LABEL_77;
           }
         }
@@ -1732,22 +1732,22 @@ LABEL_70:
     }
   }
 
-  v18 = objc_getProperty(a1, v10, 32, 1);
-  v19 = [v18 value];
+  v18 = objc_getProperty(self, v10, 32, 1);
+  value = [v18 value];
 
-  if (v19)
+  if (value)
   {
-    v21 = objc_getProperty(a1, v20, 32, 1);
+    v21 = objc_getProperty(self, v20, 32, 1);
     [(NEIKEv2IKESA *)v7 assignRemoteSPI:v21];
 
-    v24 = objc_getProperty(a1, v22, 128, 1);
+    v24 = objc_getProperty(self, v22, 128, 1);
     if (v7)
     {
       objc_setProperty_atomic(v7, v23, v24, 320);
     }
 
-    objc_setProperty_atomic(a1, v25, 0, 128);
-    v27 = objc_getProperty(a1, v26, 96, 1);
+    objc_setProperty_atomic(self, v25, 0, 128);
+    v27 = objc_getProperty(self, v26, 96, 1);
     v29 = v27;
     if (v27)
     {
@@ -1767,7 +1767,7 @@ LABEL_70:
     }
 
     v32 = v31;
-    v33 = [v32 proposals];
+    proposals = [v32 proposals];
 
     if ([v12 count])
     {
@@ -1782,13 +1782,13 @@ LABEL_70:
       }
 
       v36 = v35;
-      v37 = +[NEIKEv2IKESAProposal chooseSAProposalFromLocalProposals:remoteProposals:preferRemoteProposals:](NEIKEv2IKESAProposal, v33, v12, [v36 preferInitiatorProposalOrder]);
+      v37 = +[NEIKEv2IKESAProposal chooseSAProposalFromLocalProposals:remoteProposals:preferRemoteProposals:](NEIKEv2IKESAProposal, proposals, v12, [v36 preferInitiatorProposalOrder]);
       objc_setProperty_atomic(v7, v38, v37, 96);
 
       v39 = ne_log_obj();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
-        v41 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription2 = [(NEIKEv2Packet *)self copyShortDescription];
         if (v7)
         {
           v42 = objc_getProperty(v7, v40, 96, 1);
@@ -1801,7 +1801,7 @@ LABEL_70:
 
         v43 = v42;
         *buf = 138412802;
-        v269 = v41;
+        v269 = copyShortDescription2;
         v270 = 2112;
         v271 = v43;
         v272 = 2112;
@@ -1841,12 +1841,12 @@ LABEL_70:
 
         v51 = v48;
 
-        if (v51 && ([(NEIKEv2Packet *)a1 hasNotification:?]& 1) == 0)
+        if (v51 && ([(NEIKEv2Packet *)self hasNotification:?]& 1) == 0)
         {
           v243 = ne_log_obj();
           if (os_log_type_enabled(v243, OS_LOG_TYPE_ERROR))
           {
-            v255 = [(NEIKEv2Packet *)a1 copyShortDescription];
+            copyShortDescription3 = [(NEIKEv2Packet *)self copyShortDescription];
             if (v7)
             {
               v256 = objc_getProperty(v7, v254, 96, 1);
@@ -1859,7 +1859,7 @@ LABEL_70:
 
             v257 = v256;
             *buf = 138412546;
-            v269 = v255;
+            v269 = copyShortDescription3;
             v270 = 2112;
             v271 = v257;
             _os_log_error_impl(&dword_1BA83C000, v243, OS_LOG_TYPE_ERROR, "%@ Chosen proposal requires IKE_INTERMEDIATE but peer does not support it %@", buf, 0x16u);
@@ -1882,11 +1882,11 @@ LABEL_70:
           goto LABEL_96;
         }
 
-        v53 = objc_getProperty(a1, v52, 104, 1);
+        v53 = objc_getProperty(self, v52, 104, 1);
 
         if (v53)
         {
-          v55 = objc_getProperty(a1, v54, 104, 1);
+          v55 = objc_getProperty(self, v54, 104, 1);
           v57 = v55;
           if (v55)
           {
@@ -1897,7 +1897,7 @@ LABEL_70:
 
           if (v58)
           {
-            v60 = objc_getProperty(a1, v59, 104, 1);
+            v60 = objc_getProperty(self, v59, 104, 1);
             v62 = v60;
             if (v60)
             {
@@ -1908,7 +1908,7 @@ LABEL_70:
 
             if (v63)
             {
-              v65 = objc_getProperty(a1, v64, 104, 1);
+              v65 = objc_getProperty(self, v64, 104, 1);
               v67 = v65;
               if (v65)
               {
@@ -1916,8 +1916,8 @@ LABEL_70:
               }
 
               v68 = v65;
-              v70 = [v68 method];
-              v263 = v33;
+              method = [v68 method];
+              v263 = proposals;
               if (v7)
               {
                 v71 = objc_getProperty(v7, v69, 96, 1);
@@ -1929,14 +1929,14 @@ LABEL_70:
               }
 
               v72 = v71;
-              v74 = [(NEIKEv2IKESAProposal *)v72 kemProtocol];
-              v75 = [v74 method];
+              kemProtocol = [(NEIKEv2IKESAProposal *)v72 kemProtocol];
+              method2 = [kemProtocol method];
 
-              if (v70 == v75)
+              if (method == method2)
               {
-                v77 = objc_getProperty(a1, v76, 104, 1);
+                v77 = objc_getProperty(self, v76, 104, 1);
                 v79 = v77;
-                v33 = v263;
+                proposals = v263;
                 if (v77)
                 {
                   v77 = objc_getProperty(v77, v78, 40, 1);
@@ -1948,11 +1948,11 @@ LABEL_70:
                   objc_setProperty_atomic(v7, v80, v81, 152);
                 }
 
-                v83 = objc_getProperty(a1, v82, 112, 1);
+                v83 = objc_getProperty(self, v82, 112, 1);
 
                 if (v83)
                 {
-                  v85 = objc_getProperty(a1, v84, 112, 1);
+                  v85 = objc_getProperty(self, v84, 112, 1);
                   v87 = v85;
                   if (v85)
                   {
@@ -1974,11 +1974,11 @@ LABEL_70:
                     }
 
                     v91 = v90;
-                    v92 = [v91 strictNonceSizeChecks];
+                    strictNonceSizeChecks = [v91 strictNonceSizeChecks];
 
-                    if (v92)
+                    if (strictNonceSizeChecks)
                     {
-                      v94 = objc_getProperty(a1, v93, 112, 1);
+                      v94 = objc_getProperty(self, v93, 112, 1);
                       v96 = v94;
                       if (v94)
                       {
@@ -1993,9 +1993,9 @@ LABEL_70:
                         v100 = ne_log_obj();
                         if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
                         {
-                          v233 = [(NEIKEv2Packet *)a1 copyShortDescription];
+                          copyShortDescription4 = [(NEIKEv2Packet *)self copyShortDescription];
                           *buf = 138412546;
-                          v269 = v233;
+                          v269 = copyShortDescription4;
                           v270 = 2048;
                           v271 = v98;
                           _os_log_error_impl(&dword_1BA83C000, v100, OS_LOG_TYPE_ERROR, "%@ NONCE data length %zu is out of bounds", buf, 0x16u);
@@ -2016,15 +2016,15 @@ LABEL_70:
                       }
 
                       v156 = v155;
-                      v158 = [(NEIKEv2IKESAProposal *)v156 prfProtocol];
-                      v159 = [v158 nonceSize];
+                      prfProtocol = [(NEIKEv2IKESAProposal *)v156 prfProtocol];
+                      nonceSize = [prfProtocol nonceSize];
 
-                      if (v98 < v159)
+                      if (v98 < nonceSize)
                       {
                         v160 = ne_log_obj();
                         if (os_log_type_enabled(v160, OS_LOG_TYPE_ERROR))
                         {
-                          v238 = [(NEIKEv2Packet *)a1 copyShortDescription];
+                          copyShortDescription5 = [(NEIKEv2Packet *)self copyShortDescription];
                           if (v7)
                           {
                             v239 = objc_getProperty(v7, v237, 96, 1);
@@ -2036,13 +2036,13 @@ LABEL_70:
                           }
 
                           v240 = v239;
-                          v242 = [(NEIKEv2IKESAProposal *)v240 prfProtocol];
+                          prfProtocol2 = [(NEIKEv2IKESAProposal *)v240 prfProtocol];
                           *buf = 138412802;
-                          v269 = v238;
+                          v269 = copyShortDescription5;
                           v270 = 2048;
                           v271 = v98;
                           v272 = 2112;
-                          v273 = v242;
+                          v273 = prfProtocol2;
                           _os_log_error_impl(&dword_1BA83C000, v160, OS_LOG_TYPE_ERROR, "%@ NONCE data length %zu is shorter than the minimum for PRF protocol %@", buf, 0x20u);
                         }
 
@@ -2057,7 +2057,7 @@ LABEL_70:
                         }
 
                         v152 = v162;
-                        v259 = [(NEIKEv2IKESAProposal *)v152 prfProtocol];
+                        prfProtocol3 = [(NEIKEv2IKESAProposal *)v152 prfProtocol];
                         v171 = NEIKEv2CreateErrorPeerInvalidSyntax(@"NONCE data length %zu is shorter than the minimum for PRF protocol %@", v164, v165, v166, v167, v168, v169, v170, v98);
                         [(NEIKEv2IKESA *)v7 setState:v171 error:?];
 
@@ -2065,7 +2065,7 @@ LABEL_70:
                       }
                     }
 
-                    v172 = objc_getProperty(a1, v93, 112, 1);
+                    v172 = objc_getProperty(self, v93, 112, 1);
                     v174 = v172;
                     if (v172)
                     {
@@ -2075,7 +2075,7 @@ LABEL_70:
                     v175 = v172;
                     objc_setProperty_atomic(v7, v176, v175, 136);
 
-                    v177 = [(NEIKEv2Packet *)a1 copyNotification:?];
+                    v177 = [(NEIKEv2Packet *)self copyNotification:?];
                     v179 = v177;
                     if (v177)
                     {
@@ -2084,28 +2084,28 @@ LABEL_70:
                       objc_storeStrong((v7 + 112), v181);
                     }
 
-                    v182 = [(NEIKEv2Packet *)a1 copyNotification:?];
+                    v182 = [(NEIKEv2Packet *)self copyNotification:?];
                     v183 = [(NEIKEv2IKESA *)v7 selectSecurePasswordMethod:v182];
                     objc_storeStrong((v7 + 104), v183);
 
-                    if ([(NEIKEv2Packet *)a1 hasNotification:?]&& (*(v7 + 13) & 1) == 0)
+                    if ([(NEIKEv2Packet *)self hasNotification:?]&& (*(v7 + 13) & 1) == 0)
                     {
                       *(v7 + 10) = 1;
                       v184 = ne_log_obj();
                       if (os_log_type_enabled(v184, OS_LOG_TYPE_DEBUG))
                       {
-                        v234 = [(NEIKEv2Packet *)a1 copyShortDescription];
+                        copyShortDescription6 = [(NEIKEv2Packet *)self copyShortDescription];
                         *buf = 138412290;
-                        v269 = v234;
+                        v269 = copyShortDescription6;
                         _os_log_debug_impl(&dword_1BA83C000, v184, OS_LOG_TYPE_DEBUG, "%@ IKEv2 fragmentation supported", buf, 0xCu);
                       }
                     }
 
-                    if (![(NEIKEv2Packet *)a1 hasNotification:?])
+                    if (![(NEIKEv2Packet *)self hasNotification:?])
                     {
 LABEL_136:
-                      v192 = [(NEIKEv2Packet *)a1 copyNotification:?];
-                      v193 = [(NEIKEv2Packet *)a1 copyNotification:?];
+                      v192 = [(NEIKEv2Packet *)self copyNotification:?];
+                      v193 = [(NEIKEv2Packet *)self copyNotification:?];
                       v195 = v193;
                       if (!v192 || !v193)
                       {
@@ -2114,13 +2114,13 @@ LABEL_136:
 
                       v260 = v179;
                       v262 = v182;
-                      v196 = [(NEIKEv2IKESA *)v7 initiatorSPI];
+                      initiatorSPI = [(NEIKEv2IKESA *)v7 initiatorSPI];
                       v198 = objc_getProperty(v7, v197, 72, 1);
-                      v199 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v196 responderSPI:0 address:v198];
+                      v199 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI responderSPI:0 address:v198];
 
-                      v201 = [(NEIKEv2IKESA *)v7 initiatorSPI];
+                      initiatorSPI2 = [(NEIKEv2IKESA *)v7 initiatorSPI];
                       v203 = objc_getProperty(v7, v202, 64, 1);
-                      v204 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v201 responderSPI:0 address:v203];
+                      v204 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI2 responderSPI:0 address:v203];
 
                       v206 = objc_getProperty(v192, v205, 40, 1);
                       v261 = v199;
@@ -2132,9 +2132,9 @@ LABEL_136:
                         v208 = ne_log_obj();
                         if (os_log_type_enabled(v208, OS_LOG_TYPE_DEBUG))
                         {
-                          v235 = [(NEIKEv2Packet *)a1 copyShortDescription];
+                          copyShortDescription7 = [(NEIKEv2Packet *)self copyShortDescription];
                           *buf = 138412290;
-                          v269 = v235;
+                          v269 = copyShortDescription7;
                           _os_log_debug_impl(&dword_1BA83C000, v208, OS_LOG_TYPE_DEBUG, "%@ Detected incoming NAT", buf, 0xCu);
                         }
                       }
@@ -2149,9 +2149,9 @@ LABEL_136:
                         v212 = ne_log_obj();
                         if (os_log_type_enabled(v212, OS_LOG_TYPE_DEBUG))
                         {
-                          v236 = [(NEIKEv2Packet *)a1 copyShortDescription];
+                          copyShortDescription8 = [(NEIKEv2Packet *)self copyShortDescription];
                           *buf = 138412290;
-                          v269 = v236;
+                          v269 = copyShortDescription8;
                           _os_log_debug_impl(&dword_1BA83C000, v212, OS_LOG_TYPE_DEBUG, "%@ Detected outgoing NAT", buf, 0xCu);
                         }
                       }
@@ -2184,7 +2184,7 @@ LABEL_136:
 LABEL_152:
 
                       v182 = v262;
-                      v33 = v263;
+                      proposals = v263;
 LABEL_153:
 
                       v120 = 1;
@@ -2192,17 +2192,17 @@ LABEL_153:
                     }
 
                     v186 = objc_getProperty(v7, v185, 80, 1);
-                    v187 = [v186 requestPPK];
+                    requestPPK = [v186 requestPPK];
 
-                    if (v187)
+                    if (requestPPK)
                     {
                       *(v7 + 24) = 1;
                       v188 = ne_log_obj();
                       if (os_log_type_enabled(v188, OS_LOG_TYPE_INFO))
                       {
-                        v189 = [(NEIKEv2Packet *)a1 copyShortDescription];
+                        copyShortDescription9 = [(NEIKEv2Packet *)self copyShortDescription];
                         *buf = 138412290;
-                        v269 = v189;
+                        v269 = copyShortDescription9;
                         v190 = "%@ PPK use requested";
 LABEL_134:
                         _os_log_impl(&dword_1BA83C000, v188, OS_LOG_TYPE_INFO, v190, buf, 0xCu);
@@ -2214,9 +2214,9 @@ LABEL_134:
                       v188 = ne_log_obj();
                       if (os_log_type_enabled(v188, OS_LOG_TYPE_INFO))
                       {
-                        v189 = [(NEIKEv2Packet *)a1 copyShortDescription];
+                        copyShortDescription9 = [(NEIKEv2Packet *)self copyShortDescription];
                         *buf = 138412290;
-                        v269 = v189;
+                        v269 = copyShortDescription9;
                         v190 = "%@ PPK use requested but PPK use is not configured";
                         goto LABEL_134;
                       }
@@ -2228,9 +2228,9 @@ LABEL_134:
                   v151 = ne_log_obj();
                   if (os_log_type_enabled(v151, OS_LOG_TYPE_ERROR))
                   {
-                    v232 = [(NEIKEv2Packet *)a1 copyShortDescription];
+                    copyShortDescription10 = [(NEIKEv2Packet *)self copyShortDescription];
                     *buf = 138412290;
-                    v269 = v232;
+                    v269 = copyShortDescription10;
                     _os_log_error_impl(&dword_1BA83C000, v151, OS_LOG_TYPE_ERROR, "%@ Did not receive NONCE data", buf, 0xCu);
                   }
 
@@ -2242,9 +2242,9 @@ LABEL_134:
                   v141 = ne_log_obj();
                   if (os_log_type_enabled(v141, OS_LOG_TYPE_ERROR))
                   {
-                    v230 = [(NEIKEv2Packet *)a1 copyShortDescription];
+                    copyShortDescription11 = [(NEIKEv2Packet *)self copyShortDescription];
                     *buf = 138412290;
-                    v269 = v230;
+                    v269 = copyShortDescription11;
                     _os_log_error_impl(&dword_1BA83C000, v141, OS_LOG_TYPE_ERROR, "%@ Did not receive NONCE payload", buf, 0xCu);
                   }
 
@@ -2261,11 +2261,11 @@ LABEL_111:
               }
 
               v137 = ne_log_obj();
-              v33 = v263;
+              proposals = v263;
               if (os_log_type_enabled(v137, OS_LOG_TYPE_ERROR))
               {
-                v217 = [(NEIKEv2Packet *)a1 copyShortDescription];
-                v219 = objc_getProperty(a1, v218, 104, 1);
+                copyShortDescription12 = [(NEIKEv2Packet *)self copyShortDescription];
+                v219 = objc_getProperty(self, v218, 104, 1);
                 v221 = v219;
                 if (v219)
                 {
@@ -2273,7 +2273,7 @@ LABEL_111:
                 }
 
                 v222 = v219;
-                v224 = [v222 method];
+                method3 = [v222 method];
                 if (v7)
                 {
                   v225 = objc_getProperty(v7, v223, 96, 1);
@@ -2285,23 +2285,23 @@ LABEL_111:
                 }
 
                 v226 = v225;
-                v228 = [(NEIKEv2IKESAProposal *)v226 kemProtocol];
-                v229 = [v228 method];
+                kemProtocol2 = [(NEIKEv2IKESAProposal *)v226 kemProtocol];
+                method4 = [kemProtocol2 method];
                 *buf = 138412802;
-                v269 = v217;
+                v269 = copyShortDescription12;
                 v270 = 2048;
-                v271 = v224;
+                v271 = method3;
                 v272 = 2048;
-                v273 = v229;
+                v273 = method4;
                 _os_log_error_impl(&dword_1BA83C000, v137, OS_LOG_TYPE_ERROR, "%@ Received KE method %zu does not match KE method %zu in SA proposal", buf, 0x20u);
 
-                v33 = v263;
+                proposals = v263;
               }
 
-              if (a3)
+              if (responder)
               {
                 v120 = 0;
-                *a3 = 17;
+                *responder = 17;
                 goto LABEL_98;
               }
 
@@ -2315,9 +2315,9 @@ LABEL_98:
             v133 = ne_log_obj();
             if (os_log_type_enabled(v133, OS_LOG_TYPE_ERROR))
             {
-              v191 = [(NEIKEv2Packet *)a1 copyShortDescription];
+              copyShortDescription13 = [(NEIKEv2Packet *)self copyShortDescription];
               *buf = 138412290;
-              v269 = v191;
+              v269 = copyShortDescription13;
               _os_log_error_impl(&dword_1BA83C000, v133, OS_LOG_TYPE_ERROR, "%@ Did not receive data in KE payload", buf, 0xCu);
             }
 
@@ -2329,9 +2329,9 @@ LABEL_98:
             v132 = ne_log_obj();
             if (os_log_type_enabled(v132, OS_LOG_TYPE_ERROR))
             {
-              v154 = [(NEIKEv2Packet *)a1 copyShortDescription];
+              copyShortDescription14 = [(NEIKEv2Packet *)self copyShortDescription];
               *buf = 138412290;
-              v269 = v154;
+              v269 = copyShortDescription14;
               _os_log_error_impl(&dword_1BA83C000, v132, OS_LOG_TYPE_ERROR, "%@ Did not receive method in KE payload", buf, 0xCu);
             }
 
@@ -2344,9 +2344,9 @@ LABEL_98:
           v131 = ne_log_obj();
           if (os_log_type_enabled(v131, OS_LOG_TYPE_ERROR))
           {
-            v153 = [(NEIKEv2Packet *)a1 copyShortDescription];
+            copyShortDescription15 = [(NEIKEv2Packet *)self copyShortDescription];
             *buf = 138412290;
-            v269 = v153;
+            v269 = copyShortDescription15;
             _os_log_error_impl(&dword_1BA83C000, v131, OS_LOG_TYPE_ERROR, "%@ Did not receive KE payload", buf, 0xCu);
           }
 
@@ -2359,15 +2359,15 @@ LABEL_98:
         v130 = ne_log_obj();
         if (os_log_type_enabled(v130, OS_LOG_TYPE_ERROR))
         {
-          v150 = [(NEIKEv2Packet *)a1 copyShortDescription];
+          copyShortDescription16 = [(NEIKEv2Packet *)self copyShortDescription];
           *buf = 138412290;
-          v269 = v150;
+          v269 = copyShortDescription16;
           _os_log_error_impl(&dword_1BA83C000, v130, OS_LOG_TYPE_ERROR, "%@ No matching proposal found", buf, 0xCu);
         }
 
-        if (a3)
+        if (responder)
         {
-          *a3 = 14;
+          *responder = 14;
         }
 
         v129 = @"No matching proposal found";
@@ -2379,9 +2379,9 @@ LABEL_98:
       v121 = ne_log_obj();
       if (os_log_type_enabled(v121, OS_LOG_TYPE_ERROR))
       {
-        v140 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription17 = [(NEIKEv2Packet *)self copyShortDescription];
         *buf = 138412290;
-        v269 = v140;
+        v269 = copyShortDescription17;
         _os_log_error_impl(&dword_1BA83C000, v121, OS_LOG_TYPE_ERROR, "%@ Received no SA proposals", buf, 0xCu);
       }
 
@@ -2398,9 +2398,9 @@ LABEL_96:
   v112 = ne_log_obj();
   if (os_log_type_enabled(v112, OS_LOG_TYPE_ERROR))
   {
-    v139 = [(NEIKEv2Packet *)a1 copyShortDescription];
+    copyShortDescription18 = [(NEIKEv2Packet *)self copyShortDescription];
     *buf = 138412290;
-    v269 = v139;
+    v269 = copyShortDescription18;
     _os_log_error_impl(&dword_1BA83C000, v112, OS_LOG_TYPE_ERROR, "%@ Received no remote SPI on SA_INIT", buf, 0xCu);
   }
 
@@ -2451,10 +2451,10 @@ LABEL_99:
         }
 
         v11 = *(*(&v37 + 1) + 8 * v10);
-        v12 = [v11 type];
-        if (v12 <= 39)
+        type = [v11 type];
+        if (type <= 39)
         {
-          if (v12 == 33)
+          if (type == 33)
           {
             v24 = *(v9 + 2600);
             objc_opt_class();
@@ -2473,12 +2473,12 @@ LABEL_99:
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
 LABEL_33:
-              v28 = [(NEIKEv2Packet *)self copyShortDescription];
-              v29 = [v11 typeDescription];
+              copyShortDescription = [(NEIKEv2Packet *)self copyShortDescription];
+              typeDescription = [v11 typeDescription];
               *buf = v36;
-              v45 = v28;
+              v45 = copyShortDescription;
               v46 = 2112;
-              v47 = v29;
+              v47 = typeDescription;
               _os_log_impl(&dword_1BA83C000, v27, OS_LOG_TYPE_DEFAULT, "%@ ignoring unexpected %@ payload", buf, 0x16u);
 
               v9 = 0x1E7F04000;
@@ -2489,7 +2489,7 @@ LABEL_34:
             goto LABEL_48;
           }
 
-          if (v12 == 34)
+          if (type == 34)
           {
             if (!self)
             {
@@ -2505,7 +2505,7 @@ LABEL_27:
 
         else
         {
-          switch(v12)
+          switch(type)
           {
             case '(':
               if (!self)
@@ -2544,7 +2544,7 @@ LABEL_36:
                 v18 = [objc_getProperty(self v16];
 LABEL_42:
                 v31 = 120;
-                v32 = self;
+                selfCopy2 = self;
                 v33 = v18;
                 goto LABEL_45;
               }
@@ -2577,11 +2577,11 @@ LABEL_42:
         {
           v18 = [objc_getProperty(self v26];
 LABEL_44:
-          v32 = self;
+          selfCopy2 = self;
           v33 = v18;
           v31 = 56;
 LABEL_45:
-          objc_setProperty_atomic(v32, v17, v33, v31);
+          objc_setProperty_atomic(selfCopy2, v17, v33, v31);
           goto LABEL_46;
         }
 

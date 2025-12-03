@@ -1,12 +1,12 @@
 @interface SBCoverSheetToAppSwitcherModifier
-- (SBCoverSheetToAppSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 progress:(double)a5 velocity:(double)a6 supportsBlur:(BOOL)a7;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
+- (SBCoverSheetToAppSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout progress:(double)progress velocity:(double)velocity supportsBlur:(BOOL)blur;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
 - (id)_blurAnimationSettings;
 - (id)_blurParameters;
 - (id)_opacityAnimationSettings;
 - (id)_scaleAnimationSettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
@@ -14,38 +14,38 @@
 
 @implementation SBCoverSheetToAppSwitcherModifier
 
-- (SBCoverSheetToAppSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 progress:(double)a5 velocity:(double)a6 supportsBlur:(BOOL)a7
+- (SBCoverSheetToAppSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout progress:(double)progress velocity:(double)velocity supportsBlur:(BOOL)blur
 {
-  v14 = a4;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = SBCoverSheetToAppSwitcherModifier;
-  v15 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:a3];
+  v15 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:d];
   if (v15)
   {
-    if (!v14)
+    if (!layoutCopy)
     {
       [SBCoverSheetToAppSwitcherModifier initWithTransitionID:a2 appLayout:v15 progress:? velocity:? supportsBlur:?];
     }
 
-    objc_storeStrong(&v15->_appLayout, a4);
-    v15->_progress = a5;
-    v15->_velocity = a6;
-    v15->_supportsBlur = a7;
+    objc_storeStrong(&v15->_appLayout, layout);
+    v15->_progress = progress;
+    v15->_velocity = velocity;
+    v15->_supportsBlur = blur;
   }
 
   return v15;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBCoverSheetToAppSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCoverSheetToAppSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (BSEqualObjects() && ((v7 = [(SBCoverSheetToAppSwitcherModifier *)self _isFlyOutAnimation], v8 = [(SBTransitionSwitcherModifier *)self transitionPhase], v8 == 1) && !v7 || v8 == 2 && v7))
   {
-    v9 = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
-    v10 = [v9 animationSettings];
-    [v10 coverSheetFlyInScale];
+    switcherSettings = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings coverSheetFlyInScale];
     v12 = v11;
   }
 
@@ -53,45 +53,45 @@
   {
     v15.receiver = self;
     v15.super_class = SBCoverSheetToAppSwitcherModifier;
-    [(SBCoverSheetToAppSwitcherModifier *)&v15 scaleForIndex:a3];
+    [(SBCoverSheetToAppSwitcherModifier *)&v15 scaleForIndex:index];
     v12 = v13;
   }
 
   return v12;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   if (!BSEqualObjects() || (v9 = [(SBCoverSheetToAppSwitcherModifier *)self _isFlyOutAnimation], v10 = [(SBTransitionSwitcherModifier *)self transitionPhase], v11 = 0.0, v10 != 1 || v9) && (v10 != 2 || !v9))
   {
     v14.receiver = self;
     v14.super_class = SBCoverSheetToAppSwitcherModifier;
-    [(SBCoverSheetToAppSwitcherModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBCoverSheetToAppSwitcherModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v11 = v12;
   }
 
   return v11;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v12.receiver = self;
   v12.super_class = SBCoverSheetToAppSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:v4];
+  elementCopy = element;
+  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:elementCopy];
   v6 = objc_opt_class();
-  v7 = SBSafeCast(v6, v4);
+  v7 = SBSafeCast(v6, elementCopy);
 
   if (BSEqualObjects())
   {
     v8 = [v5 mutableCopy];
-    v9 = [(SBCoverSheetToAppSwitcherModifier *)self _scaleAnimationSettings];
-    [v8 setScaleSettings:v9];
+    _scaleAnimationSettings = [(SBCoverSheetToAppSwitcherModifier *)self _scaleAnimationSettings];
+    [v8 setScaleSettings:_scaleAnimationSettings];
 
     [v8 setScaleUpdateMode:3];
-    v10 = [(SBCoverSheetToAppSwitcherModifier *)self _opacityAnimationSettings];
-    [v8 setOpacitySettings:v10];
+    _opacityAnimationSettings = [(SBCoverSheetToAppSwitcherModifier *)self _opacityAnimationSettings];
+    [v8 setOpacitySettings:_opacityAnimationSettings];
 
     [v8 setOpacityUpdateMode:3];
     v5 = v8;
@@ -104,60 +104,60 @@
 {
   v12.receiver = self;
   v12.super_class = SBCoverSheetToAppSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
   if (![(SBCoverSheetToAppSwitcherModifier *)self _isFlyOutAnimation])
   {
     v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:2];
-    v5 = SBAppendSwitcherModifierResponse(v4, v3);
+    v5 = SBAppendSwitcherModifierResponse(v4, transitionWillBegin);
 
     if (self->_supportsBlur)
     {
       v6 = [SBBlurItemContainerSwitcherEventResponse alloc];
       appLayout = self->_appLayout;
-      v8 = [(SBCoverSheetToAppSwitcherModifier *)self _blurParameters];
-      v9 = [(SBBlurItemContainerSwitcherEventResponse *)v6 initWithAppLayout:appLayout shouldBlur:1 blurParameters:v8 animationUpdateMode:2];
+      _blurParameters = [(SBCoverSheetToAppSwitcherModifier *)self _blurParameters];
+      v9 = [(SBBlurItemContainerSwitcherEventResponse *)v6 initWithAppLayout:appLayout shouldBlur:1 blurParameters:_blurParameters animationUpdateMode:2];
 
       v10 = SBAppendSwitcherModifierResponse(v9, v5);
 
       v5 = v10;
     }
 
-    v3 = v5;
+    transitionWillBegin = v5;
   }
 
-  return v3;
+  return transitionWillBegin;
 }
 
 - (id)transitionWillUpdate
 {
   v18.receiver = self;
   v18.super_class = SBCoverSheetToAppSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v18 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v18 transitionWillUpdate];
   if (self->_supportsBlur)
   {
     v4 = [SBBlurItemContainerSwitcherEventResponse alloc];
     appLayout = self->_appLayout;
-    v6 = [(SBCoverSheetToAppSwitcherModifier *)self _isFlyOutAnimation];
-    v7 = [(SBCoverSheetToAppSwitcherModifier *)self _blurParameters];
-    v8 = [(SBBlurItemContainerSwitcherEventResponse *)v4 initWithAppLayout:appLayout shouldBlur:v6 blurParameters:v7 animationUpdateMode:3];
+    _isFlyOutAnimation = [(SBCoverSheetToAppSwitcherModifier *)self _isFlyOutAnimation];
+    _blurParameters = [(SBCoverSheetToAppSwitcherModifier *)self _blurParameters];
+    v8 = [(SBBlurItemContainerSwitcherEventResponse *)v4 initWithAppLayout:appLayout shouldBlur:_isFlyOutAnimation blurParameters:_blurParameters animationUpdateMode:3];
 
-    v9 = SBAppendSwitcherModifierResponse(v8, v3);
+    v9 = SBAppendSwitcherModifierResponse(v8, transitionWillUpdate);
 
-    v3 = v9;
+    transitionWillUpdate = v9;
   }
 
-  v10 = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
-  v11 = [v10 animationSettings];
+  switcherSettings = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  [v11 coverSheetFlyInMaximumVelocity];
-  [v11 coverSheetFlyInVelocityScaleFactor];
+  [animationSettings coverSheetFlyInMaximumVelocity];
+  [animationSettings coverSheetFlyInVelocityScaleFactor];
   SBVelocityMatrixForUniform2DScaling();
   v12 = [SBInjectVelocitySwitcherEventResponse alloc];
   memset(v17, 0, sizeof(v17));
   v13 = [MEMORY[0x277CCAE60] valueWithCATransform3D:v17];
   v14 = [(SBInjectVelocitySwitcherEventResponse *)v12 initWithVelocity:v13 forKey:@"transform" appLayout:self->_appLayout];
 
-  v15 = SBAppendSwitcherModifierResponse(v14, v3);
+  v15 = SBAppendSwitcherModifierResponse(v14, transitionWillUpdate);
 
   return v15;
 }
@@ -166,61 +166,61 @@
 {
   v10.receiver = self;
   v10.super_class = SBCoverSheetToAppSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v10 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v10 transitionDidEnd];
   if ([(SBCoverSheetToAppSwitcherModifier *)self _isFlyOutAnimation])
   {
     v4 = [SBBlurItemContainerSwitcherEventResponse alloc];
     appLayout = self->_appLayout;
-    v6 = [(SBCoverSheetToAppSwitcherModifier *)self _blurParameters];
-    v7 = [(SBBlurItemContainerSwitcherEventResponse *)v4 initWithAppLayout:appLayout shouldBlur:0 blurParameters:v6 animationUpdateMode:2];
+    _blurParameters = [(SBCoverSheetToAppSwitcherModifier *)self _blurParameters];
+    v7 = [(SBBlurItemContainerSwitcherEventResponse *)v4 initWithAppLayout:appLayout shouldBlur:0 blurParameters:_blurParameters animationUpdateMode:2];
 
-    v8 = SBAppendSwitcherModifierResponse(v7, v3);
+    v8 = SBAppendSwitcherModifierResponse(v7, transitionDidEnd);
 
-    v3 = v8;
+    transitionDidEnd = v8;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
 - (id)_blurParameters
 {
   v3 = +[SBBlurItemContainerParameters defaultCrossblurBlurParameters];
-  v4 = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
-  v5 = [v4 animationSettings];
-  [v5 coverSheetFlyInBlurRadius];
+  switcherSettings = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings coverSheetFlyInBlurRadius];
   [v3 setBlurRadius:?];
 
-  v6 = [(SBCoverSheetToAppSwitcherModifier *)self _blurAnimationSettings];
-  [v3 setBlurAnimationSettings:v6];
+  _blurAnimationSettings = [(SBCoverSheetToAppSwitcherModifier *)self _blurAnimationSettings];
+  [v3 setBlurAnimationSettings:_blurAnimationSettings];
 
   return v3;
 }
 
 - (id)_scaleAnimationSettings
 {
-  v2 = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 coverSheetFlyInScaleSettings];
+  switcherSettings = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  coverSheetFlyInScaleSettings = [animationSettings coverSheetFlyInScaleSettings];
 
-  return v4;
+  return coverSheetFlyInScaleSettings;
 }
 
 - (id)_blurAnimationSettings
 {
-  v2 = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 coverSheetFlyInBlurSettings];
+  switcherSettings = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  coverSheetFlyInBlurSettings = [animationSettings coverSheetFlyInBlurSettings];
 
-  return v4;
+  return coverSheetFlyInBlurSettings;
 }
 
 - (id)_opacityAnimationSettings
 {
-  v2 = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 coverSheetFlyInOpacitySettings];
+  switcherSettings = [(SBCoverSheetToAppSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  coverSheetFlyInOpacitySettings = [animationSettings coverSheetFlyInOpacitySettings];
 
-  return v4;
+  return coverSheetFlyInOpacitySettings;
 }
 
 - (void)initWithTransitionID:(uint64_t)a1 appLayout:(uint64_t)a2 progress:velocity:supportsBlur:.cold.1(uint64_t a1, uint64_t a2)

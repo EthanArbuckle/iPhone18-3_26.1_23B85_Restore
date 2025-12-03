@@ -1,15 +1,15 @@
 @interface HRSSupportedFHIRConfiguration
 + (id)emetConfiguration;
 + (void)emetConfiguration;
-- (BOOL)addSupportedFHIRRelease:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSupportedFHIRRelease:(id)a3;
-- (BOOL)isSupportedFHIRResourceType:(id)a3 FHIRRelease:(id)a4;
-- (BOOL)isSupportedFHIRResourceType:(id)a3 FHIRVersionString:(id)a4;
-- (BOOL)isSupportedFHIRVersionString:(id)a3;
+- (BOOL)addSupportedFHIRRelease:(id)release error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSupportedFHIRRelease:(id)release;
+- (BOOL)isSupportedFHIRResourceType:(id)type FHIRRelease:(id)release;
+- (BOOL)isSupportedFHIRResourceType:(id)type FHIRVersionString:(id)string;
+- (BOOL)isSupportedFHIRVersionString:(id)string;
 - (HRSSupportedFHIRConfiguration)init;
-- (HRSSupportedFHIRConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HRSSupportedFHIRConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,15 +30,15 @@
   return v2;
 }
 
-- (BOOL)isSupportedFHIRVersionString:(id)a3
+- (BOOL)isSupportedFHIRVersionString:(id)string
 {
   v9 = 0;
-  v4 = [MEMORY[0x277CCD3D0] versionFromVersionString:a3 error:&v9];
+  v4 = [MEMORY[0x277CCD3D0] versionFromVersionString:string error:&v9];
   v5 = v9;
   if (v4)
   {
-    v6 = [v4 FHIRRelease];
-    v7 = [(HRSSupportedFHIRConfiguration *)self isSupportedFHIRRelease:v6];
+    fHIRRelease = [v4 FHIRRelease];
+    v7 = [(HRSSupportedFHIRConfiguration *)self isSupportedFHIRRelease:fHIRRelease];
   }
 
   else
@@ -55,10 +55,10 @@
   return v7;
 }
 
-- (BOOL)isSupportedFHIRRelease:(id)a3
+- (BOOL)isSupportedFHIRRelease:(id)release
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_releasesTable objectForKeyedSubscript:v4];
+  releaseCopy = release;
+  v5 = [(NSMutableDictionary *)self->_releasesTable objectForKeyedSubscript:releaseCopy];
   if (!v5)
   {
     _HKInitializeLogging();
@@ -71,16 +71,16 @@
   return v5 != 0;
 }
 
-- (BOOL)isSupportedFHIRResourceType:(id)a3 FHIRVersionString:(id)a4
+- (BOOL)isSupportedFHIRResourceType:(id)type FHIRVersionString:(id)string
 {
-  v6 = a3;
+  typeCopy = type;
   v12 = 0;
-  v7 = [MEMORY[0x277CCD3D0] versionFromVersionString:a4 error:&v12];
+  v7 = [MEMORY[0x277CCD3D0] versionFromVersionString:string error:&v12];
   v8 = v12;
   if (v7)
   {
-    v9 = [v7 FHIRRelease];
-    v10 = [(HRSSupportedFHIRConfiguration *)self isSupportedFHIRResourceType:v6 FHIRRelease:v9];
+    fHIRRelease = [v7 FHIRRelease];
+    v10 = [(HRSSupportedFHIRConfiguration *)self isSupportedFHIRResourceType:typeCopy FHIRRelease:fHIRRelease];
   }
 
   else
@@ -97,12 +97,12 @@
   return v10;
 }
 
-- (BOOL)isSupportedFHIRResourceType:(id)a3 FHIRRelease:(id)a4
+- (BOOL)isSupportedFHIRResourceType:(id)type FHIRRelease:(id)release
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_releasesTable objectForKeyedSubscript:v7];
+  typeCopy = type;
+  releaseCopy = release;
+  v8 = [(NSMutableDictionary *)self->_releasesTable objectForKeyedSubscript:releaseCopy];
   v9 = v8;
   if (!v8)
   {
@@ -115,8 +115,8 @@
     goto LABEL_8;
   }
 
-  v10 = [v8 resourceTypes];
-  v11 = [v10 containsObject:v6];
+  resourceTypes = [v8 resourceTypes];
+  v11 = [resourceTypes containsObject:typeCopy];
 
   if ((v11 & 1) == 0)
   {
@@ -128,9 +128,9 @@
       v18 = 138543874;
       v19 = objc_opt_class();
       v20 = 2114;
-      v21 = v7;
+      v21 = releaseCopy;
       v22 = 2114;
-      v23 = v6;
+      v23 = typeCopy;
       v17 = v19;
       _os_log_debug_impl(&dword_2519FE000, v16, OS_LOG_TYPE_DEBUG, "%{public}@ FHIR release %{public}@ is supported but resource type %{public}@ is not", &v18, 0x20u);
     }
@@ -147,23 +147,23 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)addSupportedFHIRRelease:(id)a3 error:(id *)a4
+- (BOOL)addSupportedFHIRRelease:(id)release error:(id *)error
 {
-  v6 = a3;
+  releaseCopy = release;
   releasesTable = self->_releasesTable;
-  v8 = [v6 FHIRRelease];
-  v9 = [(NSMutableDictionary *)releasesTable objectForKeyedSubscript:v8];
+  fHIRRelease = [releaseCopy FHIRRelease];
+  v9 = [(NSMutableDictionary *)releasesTable objectForKeyedSubscript:fHIRRelease];
 
   if (v9)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"%@ already has FHIR release %@ configured, cannot add a second configuration", self, v6}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"%@ already has FHIR release %@ configured, cannot add a second configuration", self, releaseCopy}];
   }
 
   else
   {
     v10 = self->_releasesTable;
-    v11 = [v6 FHIRRelease];
-    [(NSMutableDictionary *)v10 setObject:v6 forKeyedSubscript:v11];
+    fHIRRelease2 = [releaseCopy FHIRRelease];
+    [(NSMutableDictionary *)v10 setObject:releaseCopy forKeyedSubscript:fHIRRelease2];
   }
 
   return v9 == 0;
@@ -171,7 +171,7 @@ LABEL_9:
 
 + (id)emetConfiguration
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = [MEMORY[0x277CBEB98] setWithObjects:{@"AllergyIntolerance", @"Condition", @"DiagnosticReport", @"Immunization", @"MedicationDispense", @"MedicationOrder", @"MedicationStatement", @"Observation", @"Patient", @"Procedure", 0}];
   v4 = [HRSSupportedFHIRRelease alloc];
   v5 = [(HRSSupportedFHIRRelease *)v4 initWithFHIRRelease:*MEMORY[0x277CCBDC8] resourceTypes:v3];
@@ -190,10 +190,10 @@ LABEL_9:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -204,8 +204,8 @@ LABEL_9:
     if (objc_opt_isKindOfClass())
     {
       releasesTable = self->_releasesTable;
-      v6 = [(HRSSupportedFHIRConfiguration *)v4 releasesTable];
-      v7 = [(NSMutableDictionary *)releasesTable isEqualToDictionary:v6];
+      releasesTable = [(HRSSupportedFHIRConfiguration *)equalCopy releasesTable];
+      v7 = [(NSMutableDictionary *)releasesTable isEqualToDictionary:releasesTable];
     }
 
     else
@@ -219,8 +219,8 @@ LABEL_9:
 
 - (id)description
 {
-  v3 = [(NSMutableDictionary *)self->_releasesTable allValues];
-  v4 = [v3 hk_map:&__block_literal_global_11];
+  allValues = [(NSMutableDictionary *)self->_releasesTable allValues];
+  v4 = [allValues hk_map:&__block_literal_global_11];
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
@@ -231,7 +231,7 @@ LABEL_9:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSMutableDictionary *)self->_releasesTable copy];
@@ -240,14 +240,14 @@ LABEL_9:
   return v4;
 }
 
-- (HRSSupportedFHIRConfiguration)initWithCoder:(id)a3
+- (HRSSupportedFHIRConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"ReleasesTable"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ReleasesTable"];
   if (v9)
   {
     v15.receiver = self;
@@ -261,16 +261,16 @@ LABEL_9:
     }
 
     self = v10;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v13 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)isSupportedFHIRVersionString:.cold.1()

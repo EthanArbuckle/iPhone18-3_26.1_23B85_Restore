@@ -1,8 +1,8 @@
 @interface MPCAudioSpectrumObserver
 + (id)defaultObserver;
-- (float)averagePowerOfFrequencyBandAtIndex:(int64_t)a3 frequencyBand:(MPCAudioFrequencyBand *)a4;
-- (int64_t)addAnalysisBand:(MPCAudioSpectrumAnalyzerBand)a3;
-- (int64_t)addFrequencyBand:(MPCAudioFrequencyBand)a3;
+- (float)averagePowerOfFrequencyBandAtIndex:(int64_t)index frequencyBand:(MPCAudioFrequencyBand *)band;
+- (int64_t)addAnalysisBand:(MPCAudioSpectrumAnalyzerBand)band;
+- (int64_t)addFrequencyBand:(MPCAudioFrequencyBand)band;
 - (void)_resizeBandStorage;
 - (void)beginReport;
 - (void)dealloc;
@@ -13,12 +13,12 @@
 
 - (void)finishReport
 {
-  v3 = [(MPCAudioSpectrumObserver *)self onUpdate];
+  onUpdate = [(MPCAudioSpectrumObserver *)self onUpdate];
 
-  if (v3)
+  if (onUpdate)
   {
-    v4 = [(MPCAudioSpectrumObserver *)self onUpdate];
-    v4[2](v4, self);
+    onUpdate2 = [(MPCAudioSpectrumObserver *)self onUpdate];
+    onUpdate2[2](onUpdate2, self);
   }
 }
 
@@ -53,22 +53,22 @@
   }
 }
 
-- (float)averagePowerOfFrequencyBandAtIndex:(int64_t)a3 frequencyBand:(MPCAudioFrequencyBand *)a4
+- (float)averagePowerOfFrequencyBandAtIndex:(int64_t)index frequencyBand:(MPCAudioFrequencyBand *)band
 {
-  p_var0 = &self->_bands[a3].var0;
+  p_var0 = &self->_bands[index].var0;
   result = p_var0[2].var0;
-  if (a4)
+  if (band)
   {
-    *a4 = p_var0[1];
+    *band = p_var0[1];
   }
 
   return result;
 }
 
-- (int64_t)addFrequencyBand:(MPCAudioFrequencyBand)a3
+- (int64_t)addFrequencyBand:(MPCAudioFrequencyBand)band
 {
-  var0 = a3.var0;
-  var1 = a3.var1;
+  var0 = band.var0;
+  var1 = band.var1;
   [(MPCAudioSpectrumObserver *)self _resizeBandStorage];
   v4 = &self->_bands[self->_numberOfBands];
   *v4 = vdupq_lane_s64(__SPAIR64__(LODWORD(var1), LODWORD(var0)), 0);
@@ -79,25 +79,25 @@
   return result;
 }
 
-- (int64_t)addAnalysisBand:(MPCAudioSpectrumAnalyzerBand)a3
+- (int64_t)addAnalysisBand:(MPCAudioSpectrumAnalyzerBand)band
 {
-  v3 = a3.var0 > 600.0;
-  a3.var1 = 300.0;
+  v3 = band.var0 > 600.0;
+  band.var1 = 300.0;
   v4 = 5000.0;
-  if (a3.var0 <= 600.0)
+  if (band.var0 <= 600.0)
   {
     v4 = 300.0;
   }
 
-  v5 = a3.var0 > 300.0;
-  a3.var0 = 20.0;
+  v5 = band.var0 > 300.0;
+  band.var0 = 20.0;
   if (v5)
   {
-    a3.var0 = v4;
-    LODWORD(a3.var1) = dword_1C6045068[v3];
+    band.var0 = v4;
+    LODWORD(band.var1) = dword_1C6045068[v3];
   }
 
-  return [(MPCAudioSpectrumObserver *)self addFrequencyBand:*&a3, *&a3.var1];
+  return [(MPCAudioSpectrumObserver *)self addFrequencyBand:*&band, *&band.var1];
 }
 
 - (void)dealloc
@@ -115,7 +115,7 @@
 
 + (id)defaultObserver
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   LODWORD(v3) = 20.0;
   LODWORD(v4) = 1133903872;
   [v2 addFrequencyBand:{v3, v4}];

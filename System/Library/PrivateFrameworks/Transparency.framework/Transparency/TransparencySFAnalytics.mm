@@ -1,22 +1,22 @@
 @interface TransparencySFAnalytics
 + (id)databasePath;
 + (id)logger;
-- (void)backgroundPerform:(id)a3;
-- (void)logHardFailureForEventNamed:(id)a3 withAttributes:(id)a4;
-- (void)logMetric:(id)a3 withName:(id)a4;
-- (void)logResultForEvent:(id)a3 hardFailure:(BOOL)a4 result:(id)a5;
-- (void)logResultForEvent:(id)a3 hardFailure:(BOOL)a4 result:(id)a5 withAttributes:(id)a6;
-- (void)logRockwellForEventNamed:(id)a3 withAttributes:(id)a4;
-- (void)logSoftFailureForEventNamed:(id)a3 withAttributes:(id)a4;
-- (void)logSuccessForEventNamed:(id)a3;
-- (void)noteEventNamed:(id)a3;
+- (void)backgroundPerform:(id)perform;
+- (void)logHardFailureForEventNamed:(id)named withAttributes:(id)attributes;
+- (void)logMetric:(id)metric withName:(id)name;
+- (void)logResultForEvent:(id)event hardFailure:(BOOL)failure result:(id)result;
+- (void)logResultForEvent:(id)event hardFailure:(BOOL)failure result:(id)result withAttributes:(id)attributes;
+- (void)logRockwellForEventNamed:(id)named withAttributes:(id)attributes;
+- (void)logSoftFailureForEventNamed:(id)named withAttributes:(id)attributes;
+- (void)logSuccessForEventNamed:(id)named;
+- (void)noteEventNamed:(id)named;
 @end
 
 @implementation TransparencySFAnalytics
 
 + (id)logger
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TransparencySFAnalytics;
   v2 = objc_msgSendSuper2(&v4, sel_logger);
 
@@ -25,26 +25,26 @@
 
 + (id)databasePath
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  if ([v4 isEqualToString:@"swtransparencyd"])
+  if ([processName isEqualToString:@"swtransparencyd"])
   {
     +[SWTransparencySFAnalytics databasePath];
   }
 
   else
   {
-    [a1 defaultAnalyticsDatabasePath:@"TransparencyAnalytics"];
+    [self defaultAnalyticsDatabasePath:@"TransparencyAnalytics"];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)backgroundPerform:(id)a3
+- (void)backgroundPerform:(id)perform
 {
-  v3 = a3;
+  performCopy = perform;
   if (backgroundPerform__onceToken != -1)
   {
     [TransparencySFAnalytics backgroundPerform:];
@@ -68,7 +68,7 @@
     block[1] = 3221225472;
     block[2] = __45__TransparencySFAnalytics_backgroundPerform___block_invoke_2;
     block[3] = &unk_1E8701F68;
-    v11 = v3;
+    v11 = performCopy;
     dispatch_group_async(v5, v4, block);
     if ((atomic_exchange(backgroundPerform__has_transaction, 1u) & 1) == 0)
     {
@@ -113,16 +113,16 @@ void __45__TransparencySFAnalytics_backgroundPerform___block_invoke_26(uint64_t 
   }
 }
 
-- (void)logSuccessForEventNamed:(id)a3
+- (void)logSuccessForEventNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__TransparencySFAnalytics_logSuccessForEventNamed___block_invoke;
   v6[3] = &unk_1E8701FB8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = namedCopy;
+  selfCopy = self;
+  v5 = namedCopy;
   [(TransparencySFAnalytics *)self backgroundPerform:v6];
 }
 
@@ -134,19 +134,19 @@ id __51__TransparencySFAnalytics_logSuccessForEventNamed___block_invoke(uint64_t
   return objc_msgSendSuper2(&v3, sel_logSuccessForEventNamed_, v1);
 }
 
-- (void)logHardFailureForEventNamed:(id)a3 withAttributes:(id)a4
+- (void)logHardFailureForEventNamed:(id)named withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  attributesCopy = attributes;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__TransparencySFAnalytics_logHardFailureForEventNamed_withAttributes___block_invoke;
   v10[3] = &unk_1E8701FE0;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = namedCopy;
+  v12 = attributesCopy;
+  selfCopy = self;
+  v8 = attributesCopy;
+  v9 = namedCopy;
   [(TransparencySFAnalytics *)self backgroundPerform:v10];
 }
 
@@ -159,19 +159,19 @@ id __70__TransparencySFAnalytics_logHardFailureForEventNamed_withAttributes___bl
   return objc_msgSendSuper2(&v4, sel_logHardFailureForEventNamed_withAttributes_, v2, v1);
 }
 
-- (void)logSoftFailureForEventNamed:(id)a3 withAttributes:(id)a4
+- (void)logSoftFailureForEventNamed:(id)named withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  attributesCopy = attributes;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__TransparencySFAnalytics_logSoftFailureForEventNamed_withAttributes___block_invoke;
   v10[3] = &unk_1E8701FE0;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = namedCopy;
+  v12 = attributesCopy;
+  selfCopy = self;
+  v8 = attributesCopy;
+  v9 = namedCopy;
   [(TransparencySFAnalytics *)self backgroundPerform:v10];
 }
 
@@ -184,10 +184,10 @@ id __70__TransparencySFAnalytics_logSoftFailureForEventNamed_withAttributes___bl
   return objc_msgSendSuper2(&v4, sel_logSoftFailureForEventNamed_withAttributes_, v2, v1);
 }
 
-- (void)logRockwellForEventNamed:(id)a3 withAttributes:(id)a4
+- (void)logRockwellForEventNamed:(id)named withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  attributesCopy = attributes;
   v12.receiver = self;
   v12.super_class = TransparencySFAnalytics;
   if ([(TransparencySFAnalytics *)&v12 respondsToSelector:sel_logRockwellFailureForEventNamed_withAttributes_])
@@ -196,9 +196,9 @@ id __70__TransparencySFAnalytics_logSoftFailureForEventNamed_withAttributes___bl
     v8[1] = 3221225472;
     v8[2] = __67__TransparencySFAnalytics_logRockwellForEventNamed_withAttributes___block_invoke;
     v8[3] = &unk_1E8701FE0;
-    v9 = v6;
-    v10 = v7;
-    v11 = self;
+    v9 = namedCopy;
+    v10 = attributesCopy;
+    selfCopy = self;
     [(TransparencySFAnalytics *)self backgroundPerform:v8];
   }
 }
@@ -212,16 +212,16 @@ id __67__TransparencySFAnalytics_logRockwellForEventNamed_withAttributes___block
   return objc_msgSendSuper2(&v4, sel_logRockwellFailureForEventNamed_withAttributes_, v2, v1);
 }
 
-- (void)noteEventNamed:(id)a3
+- (void)noteEventNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__TransparencySFAnalytics_noteEventNamed___block_invoke;
   v6[3] = &unk_1E8701FB8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = namedCopy;
+  selfCopy = self;
+  v5 = namedCopy;
   [(TransparencySFAnalytics *)self backgroundPerform:v6];
 }
 
@@ -233,20 +233,20 @@ id __42__TransparencySFAnalytics_noteEventNamed___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_noteEventNamed_, v1);
 }
 
-- (void)logResultForEvent:(id)a3 hardFailure:(BOOL)a4 result:(id)a5
+- (void)logResultForEvent:(id)event hardFailure:(BOOL)failure result:(id)result
 {
-  v8 = a3;
-  v9 = a5;
+  eventCopy = event;
+  resultCopy = result;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__TransparencySFAnalytics_logResultForEvent_hardFailure_result___block_invoke;
   v12[3] = &unk_1E8702008;
-  v16 = a4;
-  v13 = v8;
-  v14 = v9;
-  v15 = self;
-  v10 = v9;
-  v11 = v8;
+  failureCopy = failure;
+  v13 = eventCopy;
+  v14 = resultCopy;
+  selfCopy = self;
+  v10 = resultCopy;
+  v11 = eventCopy;
   [(TransparencySFAnalytics *)self backgroundPerform:v12];
 }
 
@@ -260,23 +260,23 @@ id __64__TransparencySFAnalytics_logResultForEvent_hardFailure_result___block_in
   return objc_msgSendSuper2(&v5, sel_logResultForEvent_hardFailure_result_, v3, v2, v1);
 }
 
-- (void)logResultForEvent:(id)a3 hardFailure:(BOOL)a4 result:(id)a5 withAttributes:(id)a6
+- (void)logResultForEvent:(id)event hardFailure:(BOOL)failure result:(id)result withAttributes:(id)attributes
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  eventCopy = event;
+  resultCopy = result;
+  attributesCopy = attributes;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __79__TransparencySFAnalytics_logResultForEvent_hardFailure_result_withAttributes___block_invoke;
   v16[3] = &unk_1E8702030;
-  v21 = a4;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v20 = self;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  failureCopy = failure;
+  v17 = eventCopy;
+  v18 = resultCopy;
+  v19 = attributesCopy;
+  selfCopy = self;
+  v13 = attributesCopy;
+  v14 = resultCopy;
+  v15 = eventCopy;
   [(TransparencySFAnalytics *)self backgroundPerform:v16];
 }
 
@@ -291,19 +291,19 @@ id __79__TransparencySFAnalytics_logResultForEvent_hardFailure_result_withAttrib
   return objc_msgSendSuper2(&v6, sel_logResultForEvent_hardFailure_result_withAttributes_, v2, v1, v3, v4);
 }
 
-- (void)logMetric:(id)a3 withName:(id)a4
+- (void)logMetric:(id)metric withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  nameCopy = name;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__TransparencySFAnalytics_logMetric_withName___block_invoke;
   v10[3] = &unk_1E8701FE0;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = metricCopy;
+  v12 = nameCopy;
+  selfCopy = self;
+  v8 = nameCopy;
+  v9 = metricCopy;
   [(TransparencySFAnalytics *)self backgroundPerform:v10];
 }
 

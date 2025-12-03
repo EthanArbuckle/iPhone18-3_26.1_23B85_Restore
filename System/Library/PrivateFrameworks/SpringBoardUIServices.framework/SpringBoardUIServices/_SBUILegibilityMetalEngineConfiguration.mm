@@ -1,26 +1,26 @@
 @interface _SBUILegibilityMetalEngineConfiguration
-+ (id)buildDestinationTextureForDevice:(id)a3 size:(CGSize)a4 pixelFormat:(unint64_t)a5 outOutputBytes:(void *)a6 outLength:(unint64_t *)a7 outBytesPerRow:(unint64_t *)a8;
-- (CGSize)_metalTextureOutputSizeForInputSize:(CGSize)a3;
++ (id)buildDestinationTextureForDevice:(id)device size:(CGSize)size pixelFormat:(unint64_t)format outOutputBytes:(void *)bytes outLength:(unint64_t *)length outBytesPerRow:(unint64_t *)row;
+- (CGSize)_metalTextureOutputSizeForInputSize:(CGSize)size;
 - (SBUILegibilitySettings)settings;
-- (_SBUILegibilityMetalEngineConfiguration)initWithScreen:(id)a3 settings:(id)a4 algo:(int64_t)a5 pixelFormat:(unint64_t)a6;
-- (id)_prepareImageForConvolution:(id)a3 settings:(id)a4;
-- (id)_sourceTextureForImage:(id)a3 settings:(id)a4 outMetalOutputTextureSize:(CGSize *)a5;
-- (id)drawImageForSize:(CGSize)a3 scale:(double)a4 drawBlock:(id)a5;
-- (id)executeBlurForImage:(id)a3 settings:(id)a4;
+- (_SBUILegibilityMetalEngineConfiguration)initWithScreen:(id)screen settings:(id)settings algo:(int64_t)algo pixelFormat:(unint64_t)format;
+- (id)_prepareImageForConvolution:(id)convolution settings:(id)settings;
+- (id)_sourceTextureForImage:(id)image settings:(id)settings outMetalOutputTextureSize:(CGSize *)size;
+- (id)drawImageForSize:(CGSize)size scale:(double)scale drawBlock:(id)block;
+- (id)executeBlurForImage:(id)image settings:(id)settings;
 - (void)_configureConvolutionKernel;
 - (void)dealloc;
 @end
 
 @implementation _SBUILegibilityMetalEngineConfiguration
 
-- (_SBUILegibilityMetalEngineConfiguration)initWithScreen:(id)a3 settings:(id)a4 algo:(int64_t)a5 pixelFormat:(unint64_t)a6
+- (_SBUILegibilityMetalEngineConfiguration)initWithScreen:(id)screen settings:(id)settings algo:(int64_t)algo pixelFormat:(unint64_t)format
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v12)
+  screenCopy = screen;
+  settingsCopy = settings;
+  v14 = settingsCopy;
+  if (screenCopy)
   {
-    if (v13)
+    if (settingsCopy)
     {
       goto LABEL_3;
     }
@@ -43,10 +43,10 @@ LABEL_3:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_screen, a3);
-    [v12 scale];
+    objc_storeStrong(&v15->_screen, screen);
+    [screenCopy scale];
     *(v16 + 104) = v17;
-    *(v16 + 40) = a5;
+    *(v16 + 40) = algo;
     *(v16 + 88) = 0x4028000000000000;
     objc_storeWeak((v16 + 64), v14);
     v18 = MTLCreateSystemDefaultDevice();
@@ -60,16 +60,16 @@ LABEL_3:
       v20 = v27;
     }
 
-    v21 = [v20 newCommandQueue];
+    newCommandQueue = [v20 newCommandQueue];
     v22 = *(v16 + 16);
-    *(v16 + 16) = v21;
+    *(v16 + 16) = newCommandQueue;
 
     v23 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:*(v16 + 72)];
     v24 = *(v16 + 80);
     *(v16 + 80) = v23;
 
-    *(v16 + 24) = a6;
-    *(v16 + 32) = SBUIColorSpaceFromPixelFormat(a6);
+    *(v16 + 24) = format;
+    *(v16 + 32) = SBUIColorSpaceFromPixelFormat(format);
     [v16 _configureConvolutionKernel];
   }
 
@@ -143,59 +143,59 @@ LABEL_14:
   [(MPSUnaryImageKernel *)v15 setEdgeMode:1];
 }
 
-+ (id)buildDestinationTextureForDevice:(id)a3 size:(CGSize)a4 pixelFormat:(unint64_t)a5 outOutputBytes:(void *)a6 outLength:(unint64_t *)a7 outBytesPerRow:(unint64_t *)a8
++ (id)buildDestinationTextureForDevice:(id)device size:(CGSize)size pixelFormat:(unint64_t)format outOutputBytes:(void *)bytes outLength:(unint64_t *)length outBytesPerRow:(unint64_t *)row
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  SBUIBytesPerPixelForMetalPixelFormat(a5);
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
+  SBUIBytesPerPixelForMetalPixelFormat(format);
   v15 = (CGBitmapGetAlignedBytesPerRow() & 0xFFFFFFFFFFFFFFC0) + 64;
   v16 = ((v15 * height) & 0xFFFFFFFFFFFFF000) + 4096;
   v17 = malloc_default_zone();
   v18 = malloc_type_zone_memalign(v17, 0x1000uLL, v16, 0x4FCC339FuLL);
   bzero(v18, v16);
-  if (a6)
+  if (bytes)
   {
-    *a6 = v18;
+    *bytes = v18;
   }
 
-  if (a7)
+  if (length)
   {
-    *a7 = v16;
+    *length = v16;
   }
 
-  if (a8)
+  if (row)
   {
-    *a8 = v15;
+    *row = v15;
   }
 
-  v19 = [v14 newBufferWithBytesNoCopy:v18 length:v16 options:0 deallocator:0];
+  v19 = [deviceCopy newBufferWithBytesNoCopy:v18 length:v16 options:0 deallocator:0];
 
-  v20 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:a5 width:width height:height mipmapped:0];
+  v20 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:format width:width height:height mipmapped:0];
   [v20 setUsage:2];
   v21 = [v19 newTextureWithDescriptor:v20 offset:0 bytesPerRow:v15];
 
   return v21;
 }
 
-- (id)_sourceTextureForImage:(id)a3 settings:(id)a4 outMetalOutputTextureSize:(CGSize *)a5
+- (id)_sourceTextureForImage:(id)image settings:(id)settings outMetalOutputTextureSize:(CGSize *)size
 {
-  v8 = a3;
-  v9 = [(_SBUILegibilityMetalEngineConfiguration *)self _prepareImageForConvolution:v8 settings:a4];
-  v10 = [v9 CGImage];
-  if (v10)
+  imageCopy = image;
+  v9 = [(_SBUILegibilityMetalEngineConfiguration *)self _prepareImageForConvolution:imageCopy settings:settings];
+  cGImage = [v9 CGImage];
+  if (cGImage)
   {
-    v11 = v10;
-    Width = CGImageGetWidth(v10);
+    v11 = cGImage;
+    Width = CGImageGetWidth(cGImage);
     [(_SBUILegibilityMetalEngineConfiguration *)self _metalTextureOutputSizeForInputSize:Width, CGImageGetHeight(v11)];
-    if (a5)
+    if (size)
     {
-      a5->width = v13;
-      a5->height = v14;
+      size->width = v13;
+      size->height = v14;
     }
 
     v15 = CGImageGetProperty();
-    if (v15 && ([MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:SBUIMetalPixelFormatForCGImage(v8 width:0) height:objc_msgSend(v15 mipmapped:"width"), objc_msgSend(v15, "height"), 0], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "setUsage:", 2), v17 = -[MTLDevice newTextureWithDescriptor:iosurface:plane:](self->_device, "newTextureWithDescriptor:iosurface:plane:", v16, v15, 0), v16, v17) || (textureLoader = self->_textureLoader, v23 = 0, v17 = -[MTKTextureLoader newTextureWithCGImage:options:error:](textureLoader, "newTextureWithCGImage:options:error:", v11, 0, &v23), (v19 = v23) == 0))
+    if (v15 && ([MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:SBUIMetalPixelFormatForCGImage(imageCopy width:0) height:objc_msgSend(v15 mipmapped:"width"), objc_msgSend(v15, "height"), 0], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "setUsage:", 2), v17 = -[MTLDevice newTextureWithDescriptor:iosurface:plane:](self->_device, "newTextureWithDescriptor:iosurface:plane:", v16, v15, 0), v16, v17) || (textureLoader = self->_textureLoader, v23 = 0, v17 = -[MTKTextureLoader newTextureWithCGImage:options:error:](textureLoader, "newTextureWithCGImage:options:error:", v11, 0, &v23), (v19 = v23) == 0))
     {
       v17 = v17;
       v20 = 0;
@@ -217,16 +217,16 @@ LABEL_14:
   return v21;
 }
 
-- (CGSize)_metalTextureOutputSizeForInputSize:(CGSize)a3
+- (CGSize)_metalTextureOutputSizeForInputSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
-  if (*MEMORY[0x1E695F060] != width || v5 != a3.height)
+  if (*MEMORY[0x1E695F060] != width || v5 != size.height)
   {
     v7 = width;
     v4 = llroundf(v7);
-    height = a3.height;
+    height = size.height;
     v5 = llroundf(height);
   }
 
@@ -236,16 +236,16 @@ LABEL_14:
   return result;
 }
 
-- (id)_prepareImageForConvolution:(id)a3 settings:(id)a4
+- (id)_prepareImageForConvolution:(id)convolution settings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  convolutionCopy = convolution;
+  settingsCopy = settings;
+  v8 = settingsCopy;
   if (self->_shadowScale != 1.0)
   {
-    if (v7)
+    if (settingsCopy)
     {
-      [v7 shadowSettings];
+      [settingsCopy shadowSettings];
       v9 = *&v32;
     }
 
@@ -257,15 +257,15 @@ LABEL_14:
     }
 
     scale = self->_scale;
-    [v6 size];
+    [convolutionCopy size];
     v13 = v9 + v12;
     shadowScale = self->_shadowScale;
     *&v11 = shadowScale * (v9 + v11);
     v15 = ceilf(*&v11);
     *&v11 = shadowScale * v13;
     v16 = ceilf(*&v11);
-    [v6 size];
-    [v6 size];
+    [convolutionCopy size];
+    [convolutionCopy size];
     UIRectCenteredIntegralRectScale();
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -277,15 +277,15 @@ LABEL_14:
     v28 = v18;
     v29 = v19;
     v30 = v20;
-    v24 = v6;
-    v21 = v6;
-    v6 = [(_SBUILegibilityMetalEngineConfiguration *)self drawImageForSize:v23 scale:v15 drawBlock:v16, scale, *&scale];
+    v24 = convolutionCopy;
+    v21 = convolutionCopy;
+    convolutionCopy = [(_SBUILegibilityMetalEngineConfiguration *)self drawImageForSize:v23 scale:v15 drawBlock:v16, scale, *&scale];
   }
 
-  return v6;
+  return convolutionCopy;
 }
 
-- (id)drawImageForSize:(CGSize)a3 scale:(double)a4 drawBlock:(id)a5
+- (id)drawImageForSize:(CGSize)size scale:(double)scale drawBlock:(id)block
 {
   pixelFormat = self->_pixelFormat;
   if (pixelFormat == 10)
@@ -298,34 +298,34 @@ LABEL_14:
     v6 = 2;
   }
 
-  v7 = UIImageCreateFromMTLPixelFormat(pixelFormat, v6, 0, a5, 0, a3.width, a3.height, a4);
+  v7 = UIImageCreateFromMTLPixelFormat(pixelFormat, v6, 0, block, 0, size.width, size.height, scale);
 
   return v7;
 }
 
-- (id)executeBlurForImage:(id)a3 settings:(id)a4
+- (id)executeBlurForImage:(id)image settings:(id)settings
 {
-  if (a3)
+  if (image)
   {
-    v6 = a4;
-    v7 = a3;
-    [v7 scale];
+    settingsCopy = settings;
+    imageCopy = image;
+    [imageCopy scale];
     v9 = v8;
-    v10 = [v7 imageOrientation];
+    imageOrientation = [imageCopy imageOrientation];
     v21 = *MEMORY[0x1E695F060];
-    v11 = [(_SBUILegibilityMetalEngineConfiguration *)self _sourceTextureForImage:v7 settings:v6 outMetalOutputTextureSize:&v21];
+    v11 = [(_SBUILegibilityMetalEngineConfiguration *)self _sourceTextureForImage:imageCopy settings:settingsCopy outMetalOutputTextureSize:&v21];
 
     v19 = 0;
     v20 = 0;
     bytesPerRow = 0;
     v12 = [objc_opt_class() buildDestinationTextureForDevice:self->_device size:self->_pixelFormat pixelFormat:&v20 outOutputBytes:&v19 outLength:&bytesPerRow outBytesPerRow:v21];
-    v13 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    [(MPSUnaryImageKernel *)self->_blurKernel encodeToCommandBuffer:v13 sourceTexture:v11 destinationTexture:v12];
-    [v13 commit];
-    [v13 waitUntilCompleted];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    [(MPSUnaryImageKernel *)self->_blurKernel encodeToCommandBuffer:commandBuffer sourceTexture:v11 destinationTexture:v12];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
     v14 = CGDataProviderCreateWithData(0, v20, v19, _SBUILegibilityMetalEngineCGDataProviderFreeDataCallback);
     v15 = CGImageCreate(*&v21, *(&v21 + 1), 8uLL, 0x20uLL, bytesPerRow, self->_outputColorSpace, 1u, v14, 0, 0, kCGRenderingIntentDefault);
-    v16 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v15 scale:v10 orientation:v9];
+    v16 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v15 scale:imageOrientation orientation:v9];
     if (v15)
     {
       CGImageRelease(v15);

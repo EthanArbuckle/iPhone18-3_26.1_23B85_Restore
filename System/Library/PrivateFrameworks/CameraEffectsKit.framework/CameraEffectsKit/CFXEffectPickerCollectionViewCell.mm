@@ -4,7 +4,7 @@
 - (void)awakeFromNib;
 - (void)configureCellAppearence;
 - (void)prepareForReuse;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation CFXEffectPickerCollectionViewCell
@@ -19,12 +19,12 @@
 
 - (void)configureCellAppearence
 {
-  v3 = [(CFXEffectPickerCollectionViewCell *)self imageView];
-  v4 = [v3 layer];
-  [v4 setCornerRadius:7.0];
+  imageView = [(CFXEffectPickerCollectionViewCell *)self imageView];
+  layer = [imageView layer];
+  [layer setCornerRadius:7.0];
 
-  v5 = [(CFXEffectPickerCollectionViewCell *)self imageView];
-  [v5 setClipsToBounds:1];
+  imageView2 = [(CFXEffectPickerCollectionViewCell *)self imageView];
+  [imageView2 setClipsToBounds:1];
 }
 
 - (void)prepareForReuse
@@ -32,36 +32,36 @@
   v4.receiver = self;
   v4.super_class = CFXEffectPickerCollectionViewCell;
   [(CFXEffectPickerCollectionViewCell *)&v4 prepareForReuse];
-  v3 = [(CFXEffectPickerCollectionViewCell *)self imageView];
-  [v3 setJtImage:0];
+  imageView = [(CFXEffectPickerCollectionViewCell *)self imageView];
+  [imageView setJtImage:0];
 
   [(CFXEffectPickerCollectionViewCell *)self setEffect:0];
   [(CFXEffectPickerCollectionViewCell *)self setEffectIdentifier:0];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(CFXEffectPickerCollectionViewCell *)self imageView];
-  [v5 setJtImage:v4];
+  imageCopy = image;
+  imageView = [(CFXEffectPickerCollectionViewCell *)self imageView];
+  [imageView setJtImage:imageCopy];
 }
 
 - (JTImage)image
 {
-  v2 = [(CFXEffectPickerCollectionViewCell *)self imageView];
-  v3 = [v2 jtImage];
+  imageView = [(CFXEffectPickerCollectionViewCell *)self imageView];
+  jtImage = [imageView jtImage];
 
-  return v3;
+  return jtImage;
 }
 
 - (id)accessibilityLabel
 {
   v5.receiver = self;
   v5.super_class = CFXEffectPickerCollectionViewCell;
-  v2 = [(CFXEffectPickerCollectionViewCell *)&v5 accessibilityLabel];
-  v3 = [v2 lowercaseString];
+  accessibilityLabel = [(CFXEffectPickerCollectionViewCell *)&v5 accessibilityLabel];
+  lowercaseString = [accessibilityLabel lowercaseString];
 
-  return v3;
+  return lowercaseString;
 }
 
 @end

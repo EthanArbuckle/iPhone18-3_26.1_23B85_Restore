@@ -1,17 +1,17 @@
 @interface SyncRentalOperation
-- (BOOL)_handleResponse:(id)a3 error:(id *)a4;
-- (SyncRentalOperation)initWithAccountIdentifier:(id)a3;
-- (SyncRentalOperation)initWithSinfs:(id)a3;
+- (BOOL)_handleResponse:(id)response error:(id *)error;
+- (SyncRentalOperation)initWithAccountIdentifier:(id)identifier;
+- (SyncRentalOperation)initWithSinfs:(id)sinfs;
 - (id)_bodyData;
 - (void)_run;
 @end
 
 @implementation SyncRentalOperation
 
-- (SyncRentalOperation)initWithSinfs:(id)a3
+- (SyncRentalOperation)initWithSinfs:(id)sinfs
 {
-  v5 = a3;
-  if (![v5 count])
+  sinfsCopy = sinfs;
+  if (![sinfsCopy count])
   {
     sub_10027202C(a2, self);
   }
@@ -21,7 +21,7 @@
   v6 = [(SyncRentalOperation *)&v13 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [sinfsCopy copy];
     sinfs = v6->_sinfs;
     v6->_sinfs = v7;
 
@@ -37,10 +37,10 @@
   return v6;
 }
 
-- (SyncRentalOperation)initWithAccountIdentifier:(id)a3
+- (SyncRentalOperation)initWithAccountIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (![v5 unsignedLongLongValue])
+  identifierCopy = identifier;
+  if (![identifierCopy unsignedLongLongValue])
   {
     sub_1002720A0(a2, self);
   }
@@ -50,7 +50,7 @@
   v6 = [(SyncRentalOperation *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     accountIdentifier = v6->_accountIdentifier;
     v6->_accountIdentifier = v7;
   }
@@ -87,19 +87,19 @@
         }
 
         v11 = +[ISDevice sharedInstance];
-        v12 = [v11 guid];
+        guid = [v11 guid];
 
-        if (v12)
+        if (guid)
         {
-          [v9 setObject:v12 forKey:@"guid"];
+          [v9 setObject:guid forKey:@"guid"];
         }
 
         v13 = +[SSDevice currentDevice];
-        v14 = [v13 productType];
+        productType = [v13 productType];
 
-        if (v14)
+        if (productType)
         {
-          [v9 setObject:v14 forKey:@"hw.model"];
+          [v9 setObject:productType forKey:@"hw.model"];
         }
 
         if (v7)
@@ -118,19 +118,19 @@
         v16 = +[SSLogConfig sharedConfig];
       }
 
-      v21 = [v16 shouldLog];
+      shouldLog = [v16 shouldLog];
       if ([v16 shouldLogToDisk])
       {
-        v22 = v21 | 2;
+        v22 = shouldLog | 2;
       }
 
       else
       {
-        v22 = v21;
+        v22 = shouldLog;
       }
 
-      v23 = [v16 OSLogObject];
-      if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v16 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v22 &= 2u;
       }
@@ -150,9 +150,9 @@
 
       if (v26)
       {
-        v23 = [NSString stringWithCString:v26 encoding:4, &v36, v33];
+        oSLogObject = [NSString stringWithCString:v26 encoding:4, &v36, v33];
         free(v26);
-        v32 = v23;
+        v32 = oSLogObject;
         SSFileLog();
 LABEL_37:
       }
@@ -166,19 +166,19 @@ LABEL_37:
         v16 = +[SSLogConfig sharedConfig];
       }
 
-      v17 = [v16 shouldLog];
+      shouldLog2 = [v16 shouldLog];
       if ([v16 shouldLogToDisk])
       {
-        v18 = v17 | 2;
+        v18 = shouldLog2 | 2;
       }
 
       else
       {
-        v18 = v17;
+        v18 = shouldLog2;
       }
 
-      v19 = [v16 OSLogObject];
-      if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v16 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v18 &= 2u;
       }
@@ -199,9 +199,9 @@ LABEL_37:
           goto LABEL_39;
         }
 
-        v19 = [NSString stringWithCString:v6 encoding:4, &v36, v33];
+        oSLogObject2 = [NSString stringWithCString:v6 encoding:4, &v36, v33];
         free(v6);
-        v32 = v19;
+        v32 = oSLogObject2;
         SSFileLog();
       }
 
@@ -225,19 +225,19 @@ LABEL_40:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v27 = [v9 shouldLog];
+  shouldLog3 = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v28 = v27 | 2;
+    v28 = shouldLog3 | 2;
   }
 
   else
   {
-    v28 = v27;
+    v28 = shouldLog3;
   }
 
-  v14 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  productType = [v9 OSLogObject];
+  if (!os_log_type_enabled(productType, OS_LOG_TYPE_DEFAULT))
   {
     v28 &= 2u;
   }
@@ -256,7 +256,7 @@ LABEL_40:
       goto LABEL_52;
     }
 
-    v14 = [NSString stringWithCString:v15 encoding:4, &v36, v33];
+    productType = [NSString stringWithCString:v15 encoding:4, &v36, v33];
     free(v15);
     SSFileLog();
   }
@@ -269,11 +269,11 @@ LABEL_52:
   return v15;
 }
 
-- (BOOL)_handleResponse:(id)a3 error:(id *)a4
+- (BOOL)_handleResponse:(id)response error:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:kISFailureTypeKey];
-  v6 = [v4 objectForKey:@"rental-bag-response"];
+  responseCopy = response;
+  v5 = [responseCopy objectForKey:kISFailureTypeKey];
+  v6 = [responseCopy objectForKey:@"rental-bag-response"];
   v7 = v6;
   if (v5)
   {
@@ -283,19 +283,19 @@ LABEL_52:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -329,9 +329,9 @@ LABEL_13:
         goto LABEL_33;
       }
 
-      v11 = [NSString stringWithCString:v13 encoding:4, &v46, v44];
+      oSLogObject = [NSString stringWithCString:v13 encoding:4, &v46, v44];
       free(v13);
-      v43 = v11;
+      v43 = oSLogObject;
       SSFileLog();
     }
 
@@ -346,19 +346,19 @@ LABEL_13:
       v27 = +[SSLogConfig sharedConfig];
     }
 
-    v28 = [v27 shouldLog];
+    shouldLog2 = [v27 shouldLog];
     if ([v27 shouldLogToDisk])
     {
-      v29 = v28 | 2;
+      v29 = shouldLog2 | 2;
     }
 
     else
     {
-      v29 = v28;
+      v29 = shouldLog2;
     }
 
-    v30 = [v27 OSLogObject];
-    if (!os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v27 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v29 &= 2u;
     }
@@ -381,9 +381,9 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      v30 = [NSString stringWithCString:v32 encoding:4, &v46, v44];
+      oSLogObject2 = [NSString stringWithCString:v32 encoding:4, &v46, v44];
       free(v32);
-      v43 = v30;
+      v43 = oSLogObject2;
       SSFileLog();
     }
 
@@ -395,7 +395,7 @@ LABEL_46:
     goto LABEL_21;
   }
 
-  v16 = [v4 objectForKey:@"device-diversity"];
+  v16 = [responseCopy objectForKey:@"device-diversity"];
   v15 = v16;
   if (v16)
   {
@@ -410,19 +410,19 @@ LABEL_21:
         v18 = +[SSLogConfig sharedConfig];
       }
 
-      v19 = [v18 shouldLog];
+      shouldLog3 = [v18 shouldLog];
       if ([v18 shouldLogToDisk])
       {
-        v20 = v19 | 2;
+        v20 = shouldLog3 | 2;
       }
 
       else
       {
-        v20 = v19;
+        v20 = shouldLog3;
       }
 
-      v21 = [v18 OSLogObject];
-      if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v18 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v20 &= 2u;
       }
@@ -449,9 +449,9 @@ LABEL_33:
           goto LABEL_48;
         }
 
-        v21 = [NSString stringWithCString:v23 encoding:4, &v46, v44];
+        oSLogObject3 = [NSString stringWithCString:v23 encoding:4, &v46, v44];
         free(v23);
-        v43 = v21;
+        v43 = oSLogObject3;
         SSFileLog();
       }
 
@@ -470,19 +470,19 @@ LABEL_48:
     v33 = +[SSLogConfig sharedConfig];
   }
 
-  v34 = [v33 shouldLog];
+  shouldLog4 = [v33 shouldLog];
   if ([v33 shouldLogToDisk])
   {
-    v35 = v34 | 2;
+    v35 = shouldLog4 | 2;
   }
 
   else
   {
-    v35 = v34;
+    v35 = shouldLog4;
   }
 
-  v36 = [v33 OSLogObject];
-  if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+  oSLogObject4 = [v33 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
   {
     v35 &= 2u;
   }
@@ -493,32 +493,32 @@ LABEL_48:
     v46 = 138412546;
     v47 = v37;
     v48 = 2112;
-    v49 = v4;
+    v49 = responseCopy;
     v38 = v37;
     LODWORD(v44) = 22;
     v39 = _os_log_send_and_compose_impl();
 
-    v40 = a4;
+    errorCopy2 = error;
     if (!v39)
     {
       goto LABEL_60;
     }
 
-    v36 = [NSString stringWithCString:v39 encoding:4, &v46, v44];
+    oSLogObject4 = [NSString stringWithCString:v39 encoding:4, &v46, v44];
     free(v39);
     SSFileLog();
   }
 
   else
   {
-    v40 = a4;
+    errorCopy2 = error;
   }
 
 LABEL_60:
-  if (v40)
+  if (errorCopy2)
   {
     v41 = v15;
-    *v40 = v15;
+    *errorCopy2 = v15;
   }
 
   return v26;
@@ -526,8 +526,8 @@ LABEL_60:
 
 - (void)_run
 {
-  v3 = [(SyncRentalOperation *)self _bodyData];
-  if (!v3)
+  _bodyData = [(SyncRentalOperation *)self _bodyData];
+  if (!_bodyData)
   {
     v17 = ISError();
     v16 = 0;
@@ -542,14 +542,14 @@ LABEL_60:
   [(DaemonProtocolDataProvider *)v5 setShouldProcessDialogs:0];
   v6 = objc_alloc_init(SSMutableURLRequestProperties);
   [v6 setCachePolicy:1];
-  v7 = [(SyncRentalOperation *)self clientIdentifierHeader];
-  [v6 setClientIdentifier:v7];
+  clientIdentifierHeader = [(SyncRentalOperation *)self clientIdentifierHeader];
+  [v6 setClientIdentifier:clientIdentifierHeader];
 
-  [v6 setHTTPBody:v3];
+  [v6 setHTTPBody:_bodyData];
   [v6 setHTTPMethod:@"POST"];
   [v6 setURLBagKey:@"rental-sync"];
-  v8 = [(SyncRentalOperation *)self userAgent];
-  [v6 setValue:v8 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  userAgent = [(SyncRentalOperation *)self userAgent];
+  [v6 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
 
   [v4 setRequestProperties:v6];
   v9 = +[SSLogConfig sharedDaemonConfig];
@@ -558,19 +558,19 @@ LABEL_60:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  v12 = [v9 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v13 = v11;
   }
@@ -594,9 +594,9 @@ LABEL_60:
 
   if (v15)
   {
-    v12 = [NSString stringWithCString:v15 encoding:4, &v30, v25];
+    oSLogObject = [NSString stringWithCString:v15 encoding:4, &v30, v25];
     free(v15);
-    v24 = v12;
+    v24 = oSLogObject;
     SSFileLog();
 LABEL_13:
   }
@@ -606,16 +606,16 @@ LABEL_13:
   v17 = v29;
   if (v16)
   {
-    v18 = [(DaemonProtocolDataProvider *)v5 output];
+    output = [(DaemonProtocolDataProvider *)v5 output];
     v28 = v17;
-    v16 = [(SyncRentalOperation *)self _handleResponse:v18 error:&v28];
+    v16 = [(SyncRentalOperation *)self _handleResponse:output error:&v28];
     v26 = v28;
 
-    v19 = [NSPropertyListSerialization dataWithPropertyList:v18 format:100 options:0 error:0];
+    v19 = [NSPropertyListSerialization dataWithPropertyList:output format:100 options:0 error:0];
     [(SyncRentalOperation *)self lock];
     v20 = [SSURLConnectionResponse alloc];
-    v21 = [v4 response];
-    v22 = [v20 initWithURLResponse:v21 bodyData:v19];
+    response = [v4 response];
+    v22 = [v20 initWithURLResponse:response bodyData:v19];
     URLResponse = self->_URLResponse;
     self->_URLResponse = v22;
 

@@ -1,22 +1,22 @@
 @interface SISchemaUIStateTransition
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaUIStateDismissed)dismissed;
 - (SISchemaUIStatePresenting)presenting;
-- (SISchemaUIStateTransition)initWithDictionary:(id)a3;
-- (SISchemaUIStateTransition)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUIStateTransition)initWithDictionary:(id)dictionary;
+- (SISchemaUIStateTransition)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteDismissed;
 - (void)deletePresenting;
-- (void)setDismissed:(id)a3;
-- (void)setHasDismissalReason:(BOOL)a3;
-- (void)setHasPreviousState:(BOOL)a3;
-- (void)setHasSiriPresentationType:(BOOL)a3;
-- (void)setPresenting:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDismissed:(id)dismissed;
+- (void)setHasDismissalReason:(BOOL)reason;
+- (void)setHasPreviousState:(BOOL)state;
+- (void)setHasSiriPresentationType:(BOOL)type;
+- (void)setPresenting:(id)presenting;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUIStateTransition
@@ -53,7 +53,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -68,7 +68,7 @@
       v6 = off_1E78E6D60[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"currentState"];
+    [dictionary setObject:v6 forKeyedSubscript:@"currentState"];
     has = self->_has;
   }
 
@@ -85,38 +85,38 @@
       v8 = off_1E78E6BC0[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"dismissalReason"];
+    [dictionary setObject:v8 forKeyedSubscript:@"dismissalReason"];
   }
 
   if (self->_dismissed)
   {
-    v9 = [(SISchemaUIStateTransition *)self dismissed];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    dismissed = [(SISchemaUIStateTransition *)self dismissed];
+    dictionaryRepresentation = [dismissed dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"dismissed"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dismissed"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"dismissed"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dismissed"];
     }
   }
 
   if (self->_presenting)
   {
-    v12 = [(SISchemaUIStateTransition *)self presenting];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    presenting = [(SISchemaUIStateTransition *)self presenting];
+    dictionaryRepresentation2 = [presenting dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"presenting"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"presenting"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"presenting"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"presenting"];
     }
   }
 
@@ -134,7 +134,7 @@
       v17 = off_1E78E6D60[v16];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"previousState"];
+    [dictionary setObject:v17 forKeyedSubscript:@"previousState"];
     v15 = self->_has;
   }
 
@@ -151,51 +151,51 @@
       v19 = off_1E78E6D88[v18];
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"siriPresentationType"];
+    [dictionary setObject:v19 forKeyedSubscript:@"siriPresentationType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (SISchemaUIStateTransition)initWithDictionary:(id)a3
+- (SISchemaUIStateTransition)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = SISchemaUIStateTransition;
   v5 = [(SISchemaUIStateTransition *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"currentState"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"currentState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUIStateTransition setCurrentState:](v5, "setCurrentState:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"previousState"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"previousState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUIStateTransition setPreviousState:](v5, "setPreviousState:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"siriPresentationType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"siriPresentationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUIStateTransition setSiriPresentationType:](v5, "setSiriPresentationType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"dismissalReason"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"dismissalReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUIStateTransition setDismissalReason:](v5, "setDismissalReason:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"presenting"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"presenting"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -203,7 +203,7 @@
       [(SISchemaUIStateTransition *)v5 setPresenting:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"dismissed"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"dismissed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -217,30 +217,30 @@
   return v5;
 }
 
-- (SISchemaUIStateTransition)initWithJSON:(id)a3
+- (SISchemaUIStateTransition)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUIStateTransition *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUIStateTransition *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUIStateTransition *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -307,22 +307,22 @@ LABEL_10:
   return v7 ^ [(SISchemaUIStateDismissed *)self->_dismissed hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichPresentationstate = self->_whichPresentationstate;
-  if (whichPresentationstate != [v4 whichPresentationstate])
+  if (whichPresentationstate != [equalCopy whichPresentationstate])
   {
     goto LABEL_28;
   }
 
   has = self->_has;
-  v7 = v4[40];
+  v7 = equalCopy[40];
   if ((*&has & 1) != (v7 & 1))
   {
     goto LABEL_28;
@@ -331,13 +331,13 @@ LABEL_10:
   if (*&has)
   {
     currentState = self->_currentState;
-    if (currentState != [v4 currentState])
+    if (currentState != [equalCopy currentState])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v7 = v4[40];
+    v7 = equalCopy[40];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -346,13 +346,13 @@ LABEL_10:
     if (v9)
     {
       previousState = self->_previousState;
-      if (previousState != [v4 previousState])
+      if (previousState != [equalCopy previousState])
       {
         goto LABEL_28;
       }
 
       has = self->_has;
-      v7 = v4[40];
+      v7 = equalCopy[40];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -361,13 +361,13 @@ LABEL_10:
       if (v11)
       {
         siriPresentationType = self->_siriPresentationType;
-        if (siriPresentationType != [v4 siriPresentationType])
+        if (siriPresentationType != [equalCopy siriPresentationType])
         {
           goto LABEL_28;
         }
 
         has = self->_has;
-        v7 = v4[40];
+        v7 = equalCopy[40];
       }
 
       v13 = (*&has >> 3) & 1;
@@ -379,26 +379,26 @@ LABEL_10:
       if (v13)
       {
         dismissalReason = self->_dismissalReason;
-        if (dismissalReason != [v4 dismissalReason])
+        if (dismissalReason != [equalCopy dismissalReason])
         {
           goto LABEL_28;
         }
       }
 
-      v15 = [(SISchemaUIStateTransition *)self presenting];
-      v16 = [v4 presenting];
-      if ((v15 != 0) == (v16 == 0))
+      presenting = [(SISchemaUIStateTransition *)self presenting];
+      presenting2 = [equalCopy presenting];
+      if ((presenting != 0) == (presenting2 == 0))
       {
         goto LABEL_27;
       }
 
-      v17 = [(SISchemaUIStateTransition *)self presenting];
-      if (v17)
+      presenting3 = [(SISchemaUIStateTransition *)self presenting];
+      if (presenting3)
       {
-        v18 = v17;
-        v19 = [(SISchemaUIStateTransition *)self presenting];
-        v20 = [v4 presenting];
-        v21 = [v19 isEqual:v20];
+        v18 = presenting3;
+        presenting4 = [(SISchemaUIStateTransition *)self presenting];
+        presenting5 = [equalCopy presenting];
+        v21 = [presenting4 isEqual:presenting5];
 
         if (!v21)
         {
@@ -410,12 +410,12 @@ LABEL_10:
       {
       }
 
-      v15 = [(SISchemaUIStateTransition *)self dismissed];
-      v16 = [v4 dismissed];
-      if ((v15 != 0) != (v16 == 0))
+      presenting = [(SISchemaUIStateTransition *)self dismissed];
+      presenting2 = [equalCopy dismissed];
+      if ((presenting != 0) != (presenting2 == 0))
       {
-        v22 = [(SISchemaUIStateTransition *)self dismissed];
-        if (!v22)
+        dismissed = [(SISchemaUIStateTransition *)self dismissed];
+        if (!dismissed)
         {
 
 LABEL_31:
@@ -423,10 +423,10 @@ LABEL_31:
           goto LABEL_29;
         }
 
-        v23 = v22;
-        v24 = [(SISchemaUIStateTransition *)self dismissed];
-        v25 = [v4 dismissed];
-        v26 = [v24 isEqual:v25];
+        v23 = dismissed;
+        dismissed2 = [(SISchemaUIStateTransition *)self dismissed];
+        dismissed3 = [equalCopy dismissed];
+        v26 = [dismissed2 isEqual:dismissed3];
 
         if (v26)
         {
@@ -448,9 +448,9 @@ LABEL_29:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -495,23 +495,23 @@ LABEL_5:
   }
 
 LABEL_6:
-  v5 = [(SISchemaUIStateTransition *)self presenting];
+  presenting = [(SISchemaUIStateTransition *)self presenting];
 
-  if (v5)
+  if (presenting)
   {
-    v6 = [(SISchemaUIStateTransition *)self presenting];
+    presenting2 = [(SISchemaUIStateTransition *)self presenting];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(SISchemaUIStateTransition *)self dismissed];
+  dismissed = [(SISchemaUIStateTransition *)self dismissed];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (dismissed)
   {
-    v9 = [(SISchemaUIStateTransition *)self dismissed];
+    dismissed2 = [(SISchemaUIStateTransition *)self dismissed];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
@@ -525,21 +525,21 @@ LABEL_6:
   }
 }
 
-- (void)setDismissed:(id)a3
+- (void)setDismissed:(id)dismissed
 {
-  v4 = a3;
+  dismissedCopy = dismissed;
   presenting = self->_presenting;
   self->_presenting = 0;
 
   v6 = 6;
-  if (!v4)
+  if (!dismissedCopy)
   {
     v6 = 0;
   }
 
   self->_whichPresentationstate = v6;
   dismissed = self->_dismissed;
-  self->_dismissed = v4;
+  self->_dismissed = dismissedCopy;
 }
 
 - (void)deletePresenting
@@ -552,26 +552,26 @@ LABEL_6:
   }
 }
 
-- (void)setPresenting:(id)a3
+- (void)setPresenting:(id)presenting
 {
-  v4 = a3;
+  presentingCopy = presenting;
   dismissed = self->_dismissed;
   self->_dismissed = 0;
 
   v6 = 5;
-  if (!v4)
+  if (!presentingCopy)
   {
     v6 = 0;
   }
 
   self->_whichPresentationstate = v6;
   presenting = self->_presenting;
-  self->_presenting = v4;
+  self->_presenting = presentingCopy;
 }
 
-- (void)setHasDismissalReason:(BOOL)a3
+- (void)setHasDismissalReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -584,9 +584,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSiriPresentationType:(BOOL)a3
+- (void)setHasSiriPresentationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -599,9 +599,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPreviousState:(BOOL)a3
+- (void)setHasPreviousState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -614,26 +614,26 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SISchemaUIStateTransition;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaUIStateTransition *)self presenting];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  presenting = [(SISchemaUIStateTransition *)self presenting];
+  v7 = [presenting applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaUIStateTransition *)self deletePresenting];
   }
 
-  v9 = [(SISchemaUIStateTransition *)self dismissed];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  dismissed = [(SISchemaUIStateTransition *)self dismissed];
+  v10 = [dismissed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaUIStateTransition *)self deleteDismissed];
   }

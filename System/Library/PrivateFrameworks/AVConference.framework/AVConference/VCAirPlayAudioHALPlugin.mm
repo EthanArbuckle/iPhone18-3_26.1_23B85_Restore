@@ -1,14 +1,14 @@
 @interface VCAirPlayAudioHALPlugin
 + (AudioServerPlugInDriverInterface)createInterface;
 + (AudioServerPlugInDriverInterface)sharedAudioServerPluginDriver;
-+ (__CFDictionary)createConduitCreationOptionsWithDeviceInfo:(id)a3 inOptions:(__CFDictionary *)a4;
++ (__CFDictionary)createConduitCreationOptionsWithDeviceInfo:(id)info inOptions:(__CFDictionary *)options;
 + (id)sharedAirPlayAudioHALPluginNullDevice;
-+ (tagVCAudioHALPluginConfiguration)convertASBDToInterleavedFormat:(SEL)a3;
++ (tagVCAudioHALPluginConfiguration)convertASBDToInterleavedFormat:(SEL)format;
 + (void)createInterface;
-+ (void)registerAudioServerPluginDriver:(AudioServerPlugInDriverInterface *)a3 onQueue:(id)a4;
++ (void)registerAudioServerPluginDriver:(AudioServerPlugInDriverInterface *)driver onQueue:(id)queue;
 - (BOOL)start;
 - (BOOL)stop;
-- (VCAirPlayAudioHALPlugin)initWithConfig:(tagVCAudioHALPluginConfiguration *)a3 loadBinary:(BOOL)a4 conduitCreateOptions:(__CFDictionary *)a5;
+- (VCAirPlayAudioHALPlugin)initWithConfig:(tagVCAudioHALPluginConfiguration *)config loadBinary:(BOOL)binary conduitCreateOptions:(__CFDictionary *)options;
 - (void)dealloc;
 - (void)invalidate;
 - (void)start;
@@ -18,7 +18,7 @@
 
 @implementation VCAirPlayAudioHALPlugin
 
-+ (tagVCAudioHALPluginConfiguration)convertASBDToInterleavedFormat:(SEL)a3
++ (tagVCAudioHALPluginConfiguration)convertASBDToInterleavedFormat:(SEL)format
 {
   v56 = *MEMORY[0x1E69E9840];
   retstr->remoteDeviceInfo = 0;
@@ -166,9 +166,9 @@ LABEL_15:
   return result;
 }
 
-- (VCAirPlayAudioHALPlugin)initWithConfig:(tagVCAudioHALPluginConfiguration *)a3 loadBinary:(BOOL)a4 conduitCreateOptions:(__CFDictionary *)a5
+- (VCAirPlayAudioHALPlugin)initWithConfig:(tagVCAudioHALPluginConfiguration *)config loadBinary:(BOOL)binary conduitCreateOptions:(__CFDictionary *)options
 {
-  v6 = a4;
+  binaryCopy = binary;
   v20 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = VCAirPlayAudioHALPlugin;
@@ -191,29 +191,29 @@ LABEL_15:
         *&buf[28] = 2048;
         *&buf[30] = v8;
         *&buf[38] = 1024;
-        *&buf[40] = v6;
+        *&buf[40] = binaryCopy;
         *&buf[44] = 2112;
-        *&buf[46] = a5;
+        *&buf[46] = options;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAirPlayAudioHALPlugin-init (%p) loadBinary=%d conduitCreateOptions=%@", buf, 0x36u);
       }
     }
 
-    if (a3)
+    if (config)
     {
       pthread_mutex_init((v8 + 168), 0);
-      *(v8 + 12) = [VCAirPlayAudioHALPlugin createConduitCreationOptionsWithDeviceInfo:a3->remoteDeviceInfo inOptions:a5];
-      if (v6 && !+[VCAirPlayAudioHALPlugin sharedAudioServerPluginDriver])
+      *(v8 + 12) = [VCAirPlayAudioHALPlugin createConduitCreationOptionsWithDeviceInfo:config->remoteDeviceInfo inOptions:options];
+      if (binaryCopy && !+[VCAirPlayAudioHALPlugin sharedAudioServerPluginDriver])
       {
         [VCAirPlayAudioHALPlugin initWithConfig:v8 loadBinary:? conduitCreateOptions:?];
       }
 
       else
       {
-        v11 = [[VCAudioHALPluginMockAudioInject alloc] initWithConfig:a3];
+        v11 = [[VCAudioHALPluginMockAudioInject alloc] initWithConfig:config];
         *(v8 + 1) = v11;
         if (v11)
         {
-          [VCAirPlayAudioHALPlugin convertASBDToInterleavedFormat:a3];
+          [VCAirPlayAudioHALPlugin convertASBDToInterleavedFormat:config];
           v12 = v19;
           v13 = *&buf[48];
           *(v8 + 3) = *&buf[32];
@@ -264,7 +264,7 @@ LABEL_15:
       v11 = 1024;
       v12 = 139;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAirPlayAudioHALPlugin-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -299,7 +299,7 @@ LABEL_15:
       v9 = 1024;
       v10 = 147;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAirPlayAudioHALPlugin-invalidate (%p)", &v5, 0x26u);
     }
   }
@@ -322,7 +322,7 @@ LABEL_15:
       v11 = 1024;
       v12 = 164;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAirPlayAudioHALPlugin-start (%p)", &v7, 0x26u);
     }
   }
@@ -403,7 +403,7 @@ LABEL_11:
       v11 = 1024;
       v12 = 199;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAirPlayAudioHALPlugin-stop (%p)", &v7, 0x26u);
     }
   }
@@ -425,23 +425,23 @@ LABEL_11:
   return resumed;
 }
 
-+ (void)registerAudioServerPluginDriver:(AudioServerPlugInDriverInterface *)a3 onQueue:(id)a4
++ (void)registerAudioServerPluginDriver:(AudioServerPlugInDriverInterface *)driver onQueue:(id)queue
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!driver)
   {
-    [VCAirPlayAudioHALPlugin registerAudioServerPluginDriver:a1 onQueue:?];
+    [VCAirPlayAudioHALPlugin registerAudioServerPluginDriver:self onQueue:?];
     return;
   }
 
   v7 = objc_opt_class();
-  if (!a4)
+  if (!queue)
   {
     [VCAirPlayAudioHALPlugin registerAudioServerPluginDriver:? onQueue:?];
     return;
   }
 
-  if (v7 == a1)
+  if (v7 == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -468,7 +468,7 @@ LABEL_13:
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [a1 performSelector:sel_logPrefix];
+      v8 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -491,7 +491,7 @@ LABEL_13:
         v36 = 2112;
         v37 = v8;
         v38 = 2048;
-        v39 = a1;
+        selfCopy3 = self;
         v11 = " [%s] %s:%d %@(%p) Registering remote audio server plugin driver";
         v12 = v15;
         v13 = 48;
@@ -504,11 +504,11 @@ LABEL_13:
   block[7] = 3221225472;
   block[8] = __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___block_invoke;
   block[9] = &unk_1E85F50D8;
-  block[10] = a1;
-  block[11] = a4;
-  block[12] = a3;
+  block[10] = self;
+  block[11] = queue;
+  block[12] = driver;
   v16 = AudioServerPlugInRegisterRemote();
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -537,7 +537,7 @@ LABEL_24:
   {
     if (objc_opt_respondsToSelector())
     {
-      v17 = [a1 performSelector:sel_logPrefix];
+      v17 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -560,7 +560,7 @@ LABEL_24:
         v36 = 2112;
         v37 = v17;
         v38 = 2048;
-        v39 = a1;
+        selfCopy3 = self;
         v40 = 1024;
         v41 = v16;
         v20 = " [%s] %s:%d %@(%p) Plugin register remote returned=%i";
@@ -573,7 +573,7 @@ LABEL_24:
 
   if (v16)
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -589,7 +589,7 @@ LABEL_24:
     {
       if (objc_opt_respondsToSelector())
       {
-        v25 = [a1 performSelector:sel_logPrefix];
+        v25 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -612,7 +612,7 @@ LABEL_24:
           v36 = 2112;
           v37 = v25;
           v38 = 2048;
-          v39 = a1;
+          selfCopy3 = self;
           v40 = 1024;
           v41 = 5;
           v42 = 1024;
@@ -627,9 +627,9 @@ LABEL_24:
     block[1] = 3221225472;
     block[2] = __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___block_invoke_12;
     block[3] = &unk_1E85F40E0;
-    block[4] = a4;
-    block[5] = a3;
-    dispatch_after(v28, a4, block);
+    block[4] = queue;
+    block[5] = driver;
+    dispatch_after(v28, queue, block);
   }
 }
 
@@ -699,7 +699,7 @@ void __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___blo
   v3 = CFURLCreateWithFileSystemPath(0, @"/System/Library/Audio/Plug-Ins/AVC/AVCHalogen.driver", kCFURLPOSIXPathStyle, 1u);
   if (!v3)
   {
-    +[(VCAirPlayAudioHALPlugin *)a1];
+    +[(VCAirPlayAudioHALPlugin *)self];
     return *v43;
   }
 
@@ -707,7 +707,7 @@ void __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___blo
   v5 = CFPlugInCreate(0, v3);
   if (!v5)
   {
-    [(VCAirPlayAudioHALPlugin *)a1 createInterface:v4];
+    [(VCAirPlayAudioHALPlugin *)self createInterface:v4];
     return *v43;
   }
 
@@ -716,7 +716,7 @@ void __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___blo
   FactoriesForPlugInTypeInPlugIn = CFPlugInFindFactoriesForPlugInTypeInPlugIn(v13, v12);
   if (!FactoriesForPlugInTypeInPlugIn)
   {
-    [(VCAirPlayAudioHALPlugin *)a1 createInterface:v4];
+    [(VCAirPlayAudioHALPlugin *)self createInterface:v4];
     v20 = *&v43[8];
     goto LABEL_22;
   }
@@ -724,14 +724,14 @@ void __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___blo
   v20 = FactoriesForPlugInTypeInPlugIn;
   if (CFArrayGetCount(FactoriesForPlugInTypeInPlugIn) <= 0)
   {
-    +[(VCAirPlayAudioHALPlugin *)a1];
+    +[(VCAirPlayAudioHALPlugin *)self];
     goto LABEL_21;
   }
 
   ValueAtIndex = CFArrayGetValueAtIndex(v20, 0);
   if (!ValueAtIndex)
   {
-    +[(VCAirPlayAudioHALPlugin *)a1];
+    +[(VCAirPlayAudioHALPlugin *)self];
     goto LABEL_21;
   }
 
@@ -740,7 +740,7 @@ void __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___blo
   v24 = CFPlugInInstanceCreate(0, v22, v23);
   if (!v24)
   {
-    +[(VCAirPlayAudioHALPlugin *)a1];
+    +[(VCAirPlayAudioHALPlugin *)self];
     goto LABEL_21;
   }
 
@@ -759,7 +759,7 @@ void __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___blo
     v30 = objc_opt_class();
     if (v29)
     {
-      if (v30 == a1)
+      if (v30 == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 7)
         {
@@ -788,7 +788,7 @@ void __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___blo
       {
         if (objc_opt_respondsToSelector())
         {
-          v31 = [a1 performSelector:sel_logPrefix];
+          v31 = [self performSelector:sel_logPrefix];
         }
 
         else
@@ -817,7 +817,7 @@ void __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___blo
         WORD2(v44) = 2112;
         *(&v44 + 6) = v31;
         HIWORD(v44) = 2048;
-        v45 = a1;
+        selfCopy = self;
         v34 = " [%s] %s:%d %@(%p) Plugin loaded!";
         v35 = v38;
         v36 = 48;
@@ -849,7 +849,7 @@ LABEL_22:
   v3[1] = 3221225472;
   v3[2] = __56__VCAirPlayAudioHALPlugin_sharedAudioServerPluginDriver__block_invoke;
   v3[3] = &unk_1E85F3778;
-  v3[4] = a1;
+  v3[4] = self;
   if (sharedAudioServerPluginDriver_onceToken != -1)
   {
     dispatch_once(&sharedAudioServerPluginDriver_onceToken, v3);
@@ -1025,14 +1025,14 @@ LABEL_11:
   }
 }
 
-+ (__CFDictionary)createConduitCreationOptionsWithDeviceInfo:(id)a3 inOptions:(__CFDictionary *)a4
++ (__CFDictionary)createConduitCreationOptionsWithDeviceInfo:(id)info inOptions:(__CFDictionary *)options
 {
   v53 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!options)
   {
-    if (!a3)
+    if (!info)
     {
-      if (objc_opt_class() == a1)
+      if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 7)
         {
@@ -1091,7 +1091,7 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    if (objc_opt_class() != a1)
+    if (objc_opt_class() != self)
     {
       if (OUTLINED_FUNCTION_28_0())
       {
@@ -1138,10 +1138,10 @@ LABEL_56:
     return 0;
   }
 
-  MutableCopy = CFDictionaryCreateMutableCopy(*MEMORY[0x1E695E480], 0, a4);
+  MutableCopy = CFDictionaryCreateMutableCopy(*MEMORY[0x1E695E480], 0, options);
   if (!MutableCopy)
   {
-    if (objc_opt_class() != a1)
+    if (objc_opt_class() != self)
     {
       if (OUTLINED_FUNCTION_28_0())
       {
@@ -1180,17 +1180,17 @@ LABEL_56:
   }
 
   Mutable = MutableCopy;
-  if (!a3)
+  if (!info)
   {
     return Mutable;
   }
 
 LABEL_7:
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [a1 performSelector:sel_logPrefix];
+      v8 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -1210,23 +1210,23 @@ LABEL_7:
       goto LABEL_18;
     }
 
-    v19 = [a3 deviceName];
-    v20 = [a3 deviceUID];
-    [a3 modelUID];
+    deviceName = [info deviceName];
+    deviceUID = [info deviceUID];
+    [info modelUID];
     LODWORD(v39) = 136317186;
     *(&v39 + 4) = v17;
     WORD6(v39) = 2080;
     OUTLINED_FUNCTION_6();
     OUTLINED_FUNCTION_29();
-    v42 = v8;
+    infoCopy2 = v8;
     OUTLINED_FUNCTION_15_5();
-    v44 = a1;
+    selfCopy = self;
     v45 = v21;
-    v46 = a3;
+    infoCopy = info;
     v47 = v22;
-    v48 = v19;
+    v48 = deviceName;
     v49 = v22;
-    v50 = v20;
+    v50 = deviceUID;
     v51 = v22;
     v52 = v23;
     v14 = " [%s] %s:%d %@(%p) remoteDeviceInfo=%p deviceName=%@ deviceUID=%@ modelUID=%@";
@@ -1241,19 +1241,19 @@ LABEL_7:
     v9 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [a3 deviceName];
-      v11 = [a3 deviceUID];
-      [a3 modelUID];
+      deviceName2 = [info deviceName];
+      deviceUID2 = [info deviceUID];
+      [info modelUID];
       OUTLINED_FUNCTION_10();
       WORD6(v39) = v12;
       OUTLINED_FUNCTION_6();
       v40 = 64;
       v41 = 2048;
-      v42 = a3;
+      infoCopy2 = info;
       v43 = 2112;
-      v44 = v10;
+      selfCopy = deviceName2;
       v45 = 2112;
-      v46 = v11;
+      infoCopy = deviceUID2;
       v47 = 2112;
       v48 = v13;
       v14 = " [%s] %s:%d remoteDeviceInfo=%p deviceName=%@ deviceUID=%@ modelUID=%@";
@@ -1265,27 +1265,27 @@ LABEL_17:
   }
 
 LABEL_18:
-  v24 = [a3 deviceName];
+  deviceName3 = [info deviceName];
   v25 = *MEMORY[0x1E6962838];
-  if (v24)
+  if (deviceName3)
   {
-    v26 = [a3 deviceName];
+    deviceName4 = [info deviceName];
   }
 
   else
   {
-    v26 = @"Airplay Audio HAL Device";
+    deviceName4 = @"Airplay Audio HAL Device";
   }
 
-  CFDictionarySetValue(Mutable, v25, v26);
-  if ([a3 deviceUID])
+  CFDictionarySetValue(Mutable, v25, deviceName4);
+  if ([info deviceUID])
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x1E6962840], [a3 deviceUID]);
+    CFDictionarySetValue(Mutable, *MEMORY[0x1E6962840], [info deviceUID]);
   }
 
-  if ([a3 modelUID])
+  if ([info modelUID])
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x1E6962848], [a3 modelUID]);
+    CFDictionarySetValue(Mutable, *MEMORY[0x1E6962848], [info modelUID]);
   }
 
   return Mutable;
@@ -1397,7 +1397,7 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = __64__VCAirPlayAudioHALPlugin_sharedAirPlayAudioHALPluginNullDevice__block_invoke;
     block[3] = &unk_1E85F3778;
-    block[4] = a1;
+    block[4] = self;
     if (qword_1EDBDA868 != -1)
     {
       dispatch_once(&qword_1EDBDA868, block);
@@ -1405,7 +1405,7 @@ LABEL_6:
 
     if (!_MergedGlobals_2)
     {
-      if (objc_opt_class() == a1)
+      if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 3)
         {
@@ -1457,7 +1457,7 @@ LABEL_6:
         v15 = 2112;
         v16 = v4;
         v17 = 2048;
-        v18 = a1;
+        selfCopy = self;
         v7 = " [%s] %s:%d %@(%p) Shared AirPlay Audio HAL plugin object does not exist";
         v8 = v11;
         v9 = 48;
@@ -1640,7 +1640,7 @@ LABEL_11:
 
 - (void)start
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -1682,7 +1682,7 @@ LABEL_11:
 
 - (void)stop
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -1830,7 +1830,7 @@ void __67__VCAirPlayAudioHALPlugin_registerAudioServerPluginDriver_onQueue___blo
 
 + (void)createInterface
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {

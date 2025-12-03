@@ -1,55 +1,55 @@
 @interface HDSourceManager
-+ (uint64_t)_isLocalDeviceBundleIdentifier:(uint64_t)a1;
-- (BOOL)_deleteSourcesWithUUIDs:(id)a3 localSourceEntityCacheKey:(id)a4 syncIdentity:(id)a5 deleteSamples:(BOOL)a6 transaction:(id)a7 error:(id *)a8;
-- (BOOL)createSourcesWithCodables:(id)a3 provenance:(int64_t)a4 error:(id *)a5;
-- (BOOL)deleteSourceWithBundleIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)setLocalDeviceSourceUUID:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)updateCurrentDeviceNameWithError:(id *)a3;
++ (uint64_t)_isLocalDeviceBundleIdentifier:(uint64_t)identifier;
+- (BOOL)_deleteSourcesWithUUIDs:(id)ds localSourceEntityCacheKey:(id)key syncIdentity:(id)identity deleteSamples:(BOOL)samples transaction:(id)transaction error:(id *)error;
+- (BOOL)createSourcesWithCodables:(id)codables provenance:(int64_t)provenance error:(id *)error;
+- (BOOL)deleteSourceWithBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setLocalDeviceSourceUUID:(id)d bundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)updateCurrentDeviceNameWithError:(id *)error;
 - (HDSourceManager)init;
-- (HDSourceManager)initWithProfile:(id)a3;
-- (id)_clientSourcesWithPredicate:(uint64_t)a3 error:;
-- (id)_createSourceEntityForBundleIdentifier:(void *)a3 owningAppBundleIdentifier:(void *)a4 name:(uint64_t)a5 options:(uint64_t)a6 isCurrentDevice:(void *)a7 productType:(uint64_t)a8 error:;
-- (id)_createSourceEntityForLocalDeviceWithError:(id *)a3;
-- (id)_sourceForBundleIdentifier:(void *)a3 createSourceBlock:(void *)a4 modifySourceBlock:(uint64_t)a5 error:;
-- (id)_sourceFromEphemeralSource:(uint64_t)a3 provenance:(int)a4 createOrUpdateIfNecessary:(uint64_t)a5 error:;
-- (id)_sourceUUIDsForBundleIdentifier:(uint64_t)a3 error:;
-- (id)allSourcesForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)allWatchSourcesWithError:(id *)a3;
-- (id)clientSourceForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)clientSourceForPersistentID:(id)a3 error:(id *)a4;
-- (id)clientSourceForSourceEntities:(id)a3 error:(id *)a4;
-- (id)clientSourceForSourceEntity:(id)a3 error:(id *)a4;
-- (id)clientSourceForUUID:(id)a3 error:(id *)a4;
-- (id)clientSourcesForSourceIDs:(id)a3 error:(id *)a4;
-- (id)createOrUpdateSourceForClient:(id)a3 error:(id *)a4;
-- (id)insertCodableSource:(id)a3 provenance:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-- (id)insertSourceWithBundleIdentifier:(id)a3 owningAppBundleIdentifier:(id)a4 UUID:(id)a5 name:(id)a6 options:(unint64_t)a7 isCurrentDevice:(BOOL)a8 productType:(id)a9 modificationDate:(id)a10 provenance:(int64_t)a11 error:(id *)a12;
-- (id)localDeviceSourceWithError:(id *)a3;
-- (id)localSourceForBundleIdentifier:(id)a3 copyIfNecessary:(BOOL)a4 error:(id *)a5;
-- (id)localSourceForSourceID:(id)a3 copyIfNecessary:(BOOL)a4 error:(id *)a5;
-- (id)privateSourceForClinicalAccountIdentifier:(id)a3 provenance:(int64_t)a4 createOrUpdateIfNecessary:(BOOL)a5 nameOnCreateOrUpdate:(id)a6 error:(id *)a7;
-- (id)publicSourceForClinicalExternalIdentifier:(id)a3 provenance:(int64_t)a4 createOrUpdateIfNecessary:(BOOL)a5 nameOnCreateOrUpdate:(id)a6 error:(id *)a7;
-- (id)sourceEntityForClientSource:(id)a3 createOrUpdateIfNecessary:(BOOL)a4 error:(id *)a5;
-- (id)sourceForAppleDeviceWithUUID:(id)a3 identifier:(id)a4 name:(id)a5 productType:(id)a6 createIfNecessary:(BOOL)a7 error:(id *)a8;
-- (id)sourceForClient:(id)a3 error:(id *)a4;
-- (id)sourceForCodableSource:(id)a3 provenance:(int64_t)a4 createIfNecessary:(BOOL)a5 isDeleted:(BOOL *)a6 error:(id *)a7;
-- (id)sourceUUIDForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)uncachedClientSourceForPersistentID:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (uint64_t)_createSourcesWithCodables:(uint64_t)a3 provenance:(void *)a4 sourceUUIDSToDelete:(unsigned int)a5 deleteSamples:(void *)a6 transaction:(uint64_t)a7 error:;
-- (void)_applicationsUninstalledNotification:(id)a3;
+- (HDSourceManager)initWithProfile:(id)profile;
+- (id)_clientSourcesWithPredicate:(uint64_t)predicate error:;
+- (id)_createSourceEntityForBundleIdentifier:(void *)identifier owningAppBundleIdentifier:(void *)bundleIdentifier name:(uint64_t)name options:(uint64_t)options isCurrentDevice:(void *)device productType:(uint64_t)type error:;
+- (id)_createSourceEntityForLocalDeviceWithError:(id *)error;
+- (id)_sourceForBundleIdentifier:(void *)identifier createSourceBlock:(void *)block modifySourceBlock:(uint64_t)sourceBlock error:;
+- (id)_sourceFromEphemeralSource:(uint64_t)source provenance:(int)provenance createOrUpdateIfNecessary:(uint64_t)necessary error:;
+- (id)_sourceUUIDsForBundleIdentifier:(uint64_t)identifier error:;
+- (id)allSourcesForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)allWatchSourcesWithError:(id *)error;
+- (id)clientSourceForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)clientSourceForPersistentID:(id)d error:(id *)error;
+- (id)clientSourceForSourceEntities:(id)entities error:(id *)error;
+- (id)clientSourceForSourceEntity:(id)entity error:(id *)error;
+- (id)clientSourceForUUID:(id)d error:(id *)error;
+- (id)clientSourcesForSourceIDs:(id)ds error:(id *)error;
+- (id)createOrUpdateSourceForClient:(id)client error:(id *)error;
+- (id)insertCodableSource:(id)source provenance:(int64_t)provenance profile:(id)profile error:(id *)error;
+- (id)insertSourceWithBundleIdentifier:(id)identifier owningAppBundleIdentifier:(id)bundleIdentifier UUID:(id)d name:(id)name options:(unint64_t)options isCurrentDevice:(BOOL)device productType:(id)type modificationDate:(id)self0 provenance:(int64_t)self1 error:(id *)self2;
+- (id)localDeviceSourceWithError:(id *)error;
+- (id)localSourceForBundleIdentifier:(id)identifier copyIfNecessary:(BOOL)necessary error:(id *)error;
+- (id)localSourceForSourceID:(id)d copyIfNecessary:(BOOL)necessary error:(id *)error;
+- (id)privateSourceForClinicalAccountIdentifier:(id)identifier provenance:(int64_t)provenance createOrUpdateIfNecessary:(BOOL)necessary nameOnCreateOrUpdate:(id)update error:(id *)error;
+- (id)publicSourceForClinicalExternalIdentifier:(id)identifier provenance:(int64_t)provenance createOrUpdateIfNecessary:(BOOL)necessary nameOnCreateOrUpdate:(id)update error:(id *)error;
+- (id)sourceEntityForClientSource:(id)source createOrUpdateIfNecessary:(BOOL)necessary error:(id *)error;
+- (id)sourceForAppleDeviceWithUUID:(id)d identifier:(id)identifier name:(id)name productType:(id)type createIfNecessary:(BOOL)necessary error:(id *)error;
+- (id)sourceForClient:(id)client error:(id *)error;
+- (id)sourceForCodableSource:(id)source provenance:(int64_t)provenance createIfNecessary:(BOOL)necessary isDeleted:(BOOL *)deleted error:(id *)error;
+- (id)sourceUUIDForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)uncachedClientSourceForPersistentID:(id)d transaction:(id)transaction error:(id *)error;
+- (uint64_t)_createSourcesWithCodables:(uint64_t)codables provenance:(void *)provenance sourceUUIDSToDelete:(unsigned int)delete deleteSamples:(void *)samples transaction:(uint64_t)transaction error:;
+- (void)_applicationsUninstalledNotification:(id)notification;
 - (void)invalidateAndWait;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDSourceManager
 
-- (HDSourceManager)initWithProfile:(id)a3
+- (HDSourceManager)initWithProfile:(id)profile
 {
-  v5 = a3;
-  if (!v5)
+  profileCopy = profile;
+  if (!profileCopy)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
   }
 
   v30.receiver = self;
@@ -58,7 +58,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_profile, v5);
+    objc_storeWeak(&v6->_profile, profileCopy);
     v8 = HKCreateSerialDispatchQueue();
     queue = v7->_queue;
     v7->_queue = v8;
@@ -87,8 +87,8 @@
     localSourceForSourceID = v7->_localSourceForSourceID;
     v7->_localSourceForSourceID = v24;
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v7 selector:sel__applicationsUninstalledNotification_ name:@"HDHealthDaemonApplicationsUninstalledNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__applicationsUninstalledNotification_ name:@"HDHealthDaemonApplicationsUninstalledNotification" object:0];
 
     WeakRetained = objc_loadWeakRetained(&v7->_profile);
     [WeakRetained registerProfileReadyObserver:v7 queue:v7->_queue];
@@ -106,11 +106,11 @@
 
 - (void)invalidateAndWait
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"HDHealthDaemonApplicationsUninstalledNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"HDHealthDaemonApplicationsUninstalledNotification" object:0];
 }
 
-- (BOOL)updateCurrentDeviceNameWithError:(id *)a3
+- (BOOL)updateCurrentDeviceNameWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   if (HKIsUnitTesting())
@@ -123,16 +123,16 @@
       *buf = 138412546;
       v42 = objc_opt_class();
       v43 = 2048;
-      v44 = self;
+      selfCopy4 = self;
       v7 = v42;
       _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "<%@:%p> updateCurrentDeviceNameWithError: started", buf, 0x16u);
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [WeakRetained profileType];
+  profileType = [WeakRetained profileType];
 
-  if (v9 == 2)
+  if (profileType == 2)
   {
     v10 = 1;
   }
@@ -140,9 +140,9 @@
   else
   {
     v11 = objc_loadWeakRetained(&self->_profile);
-    v12 = [v11 daemon];
-    v13 = [v12 behavior];
-    v14 = [v13 currentDeviceDisplayName];
+    daemon = [v11 daemon];
+    behavior = [daemon behavior];
+    currentDeviceDisplayName = [behavior currentDeviceDisplayName];
 
     v15 = [HDKeyValueDomain alloc];
     v16 = objc_loadWeakRetained(&self->_profile);
@@ -154,7 +154,7 @@
     v20 = v19;
     if (v18 || !v19)
     {
-      if (v18 && ([v14 isEqualToString:v18] & 1) != 0)
+      if (v18 && ([currentDeviceDisplayName isEqualToString:v18] & 1) != 0)
       {
         v10 = 1;
       }
@@ -174,23 +174,23 @@
             *buf = 138412546;
             v42 = v26;
             v43 = 2048;
-            v44 = self;
+            selfCopy4 = self;
             v27 = v26;
             _os_log_impl(&dword_228986000, v25, OS_LOG_TYPE_DEFAULT, "<%@:%p> updateCurrentDeviceNameWithError: mid", buf, 0x16u);
           }
         }
 
         v28 = objc_loadWeakRetained(&self->_profile);
-        v29 = [v28 database];
+        database = [v28 database];
 
         v36[0] = MEMORY[0x277D85DD0];
         v36[1] = 3221225472;
         v36[2] = __52__HDSourceManager_updateCurrentDeviceNameWithError___block_invoke;
         v36[3] = &unk_278615D40;
-        v37 = v14;
-        v38 = self;
+        v37 = currentDeviceDisplayName;
+        selfCopy3 = self;
         v39 = v17;
-        v10 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:v29 error:a3 block:v36];
+        v10 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:database error:error block:v36];
         if (HKIsUnitTesting())
         {
           _HKInitializeLogging();
@@ -202,7 +202,7 @@
             *buf = 138412546;
             v42 = v32;
             v43 = 2048;
-            v44 = self;
+            selfCopy4 = self;
             v33 = v32;
             _os_log_impl(&dword_228986000, v31, OS_LOG_TYPE_DEFAULT, "<%@:%p> updateCurrentDeviceNameWithError: ended", buf, 0x16u);
           }
@@ -210,11 +210,11 @@
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       v21 = v19;
       v10 = 0;
-      *a3 = v20;
+      *error = v20;
     }
 
     else
@@ -290,15 +290,15 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)setLocalDeviceSourceUUID:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setLocalDeviceSourceUUID:(id)d bundleIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  dCopy = d;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (!dCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil"}];
 
     if (v11)
     {
@@ -306,30 +306,30 @@ LABEL_12:
     }
 
 LABEL_5:
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!identifierCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v13 = [WeakRetained database];
+  database = [WeakRetained database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __67__HDSourceManager_setLocalDeviceSourceUUID_bundleIdentifier_error___block_invoke;
   v20[3] = &unk_278615D40;
-  v21 = v9;
-  v22 = self;
+  v21 = dCopy;
+  selfCopy = self;
   v23 = v11;
   v14 = v11;
-  v15 = v9;
-  v16 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:v13 error:a5 block:v20];
+  v15 = dCopy;
+  v16 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:database error:error block:v20];
 
   return v16;
 }
@@ -425,13 +425,13 @@ uint64_t __67__HDSourceManager_setLocalDeviceSourceUUID_bundleIdentifier_error__
   return v17;
 }
 
-- (id)_sourceForBundleIdentifier:(void *)a3 createSourceBlock:(void *)a4 modifySourceBlock:(uint64_t)a5 error:
+- (id)_sourceForBundleIdentifier:(void *)identifier createSourceBlock:(void *)block modifySourceBlock:(uint64_t)sourceBlock error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v12 = 0;
-  if (a1 && v9)
+  if (self && v9)
   {
     v27 = 0;
     v28 = &v27;
@@ -444,19 +444,19 @@ uint64_t __67__HDSourceManager_setLocalDeviceSourceUUID_bundleIdentifier_error__
     aBlock[2] = __88__HDSourceManager__sourceForBundleIdentifier_createSourceBlock_modifySourceBlock_error___block_invoke;
     aBlock[3] = &unk_2786202B0;
     v26 = &v27;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v23 = v9;
-    v13 = v10;
+    v13 = identifierCopy;
     v24 = v13;
-    v14 = v11;
+    v14 = blockCopy;
     v25 = v14;
     v15 = _Block_copy(aBlock);
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     v17 = WeakRetained;
     if (v13 | v14)
     {
-      v18 = [WeakRetained database];
-      v19 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:v18 error:a5 block:v15];
+      database = [WeakRetained database];
+      v19 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:database error:sourceBlock block:v15];
 
       if (v19)
       {
@@ -473,8 +473,8 @@ LABEL_8:
 
     else
     {
-      v20 = [WeakRetained database];
-      [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v20 error:a5 block:v15];
+      database2 = [WeakRetained database];
+      [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database2 error:sourceBlock block:v15];
     }
 
     goto LABEL_8;
@@ -485,9 +485,9 @@ LABEL_9:
   return v12;
 }
 
-- (id)allSourcesForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)allSourcesForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -495,18 +495,18 @@ LABEL_9:
   v19 = __Block_byref_object_dispose__86;
   v20 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__HDSourceManager_allSourcesForBundleIdentifier_error___block_invoke;
   v12[3] = &unk_278615F88;
   v12[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v13 = v9;
   v14 = &v15;
-  LODWORD(a4) = [(HDHealthEntity *)HDLogicalSourceEntity performReadTransactionWithHealthDatabase:v8 error:a4 block:v12];
+  LODWORD(error) = [(HDHealthEntity *)HDLogicalSourceEntity performReadTransactionWithHealthDatabase:database error:error block:v12];
 
-  if (a4)
+  if (error)
   {
     v10 = [MEMORY[0x277CBEB98] setWithArray:v16[5]];
   }
@@ -549,10 +549,10 @@ BOOL __55__HDSourceManager_allSourcesForBundleIdentifier_error___block_invoke(ui
   return v11;
 }
 
-- (id)localSourceForBundleIdentifier:(id)a3 copyIfNecessary:(BOOL)a4 error:(id *)a5
+- (id)localSourceForBundleIdentifier:(id)identifier copyIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  necessaryCopy = necessary;
+  identifierCopy = identifier;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -564,17 +564,17 @@ BOOL __55__HDSourceManager_allSourcesForBundleIdentifier_error___block_invoke(ui
   v22 = __72__HDSourceManager_localSourceForBundleIdentifier_copyIfNecessary_error___block_invoke;
   v23 = &unk_278620170;
   v26 = &v28;
-  v24 = self;
-  v9 = v8;
+  selfCopy = self;
+  v9 = identifierCopy;
   v25 = v9;
-  v27 = v6;
+  v27 = necessaryCopy;
   v10 = _Block_copy(&v20);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v12 = WeakRetained;
-  if (v6)
+  if (necessaryCopy)
   {
-    v13 = [WeakRetained database];
-    v14 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:v13 error:a5 block:v10];
+    database = [WeakRetained database];
+    v14 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:database error:error block:v10];
 
     if (!v14)
     {
@@ -586,8 +586,8 @@ LABEL_3:
 
   else
   {
-    v16 = [WeakRetained database];
-    v17 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v16 error:a5 block:v10];
+    database2 = [WeakRetained database];
+    v17 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database2 error:error block:v10];
 
     if (!v17)
     {
@@ -773,21 +773,21 @@ LABEL_23:
   return v12;
 }
 
-- (id)insertCodableSource:(id)a3 provenance:(int64_t)a4 profile:(id)a5 error:(id *)a6
+- (id)insertCodableSource:(id)source provenance:(int64_t)provenance profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 decodedUUID];
-  if (v11)
+  sourceCopy = source;
+  profileCopy = profile;
+  decodedUUID = [sourceCopy decodedUUID];
+  if (decodedUUID)
   {
-    if ([v9 hasOptions])
+    if ([sourceCopy hasOptions])
     {
-      v12 = [v9 options];
+      options = [sourceCopy options];
     }
 
     else
     {
-      v12 = 0;
+      options = 0;
     }
 
     v25 = 0;
@@ -796,18 +796,18 @@ LABEL_23:
     v28 = __Block_byref_object_copy__86;
     v29 = __Block_byref_object_dispose__86;
     v30 = 0;
-    v14 = [v10 database];
+    database = [profileCopy database];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __64__HDSourceManager_insertCodableSource_provenance_profile_error___block_invoke;
     v18[3] = &unk_27861F578;
-    v19 = v9;
-    v20 = v10;
+    v19 = sourceCopy;
+    v20 = profileCopy;
     v22 = &v25;
-    v21 = v11;
-    v23 = v12;
-    v24 = a4;
-    v15 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:v14 error:a6 block:v18];
+    v21 = decodedUUID;
+    v23 = options;
+    provenanceCopy = provenance;
+    v15 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:database error:error block:v18];
 
     if (v15)
     {
@@ -826,7 +826,7 @@ LABEL_23:
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:3 description:@"missing source UUID during decoding"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"missing source UUID during decoding"];
     v13 = 0;
   }
 
@@ -999,10 +999,10 @@ LABEL_30:
   return v31;
 }
 
-- (id)localSourceForSourceID:(id)a3 copyIfNecessary:(BOOL)a4 error:(id *)a5
+- (id)localSourceForSourceID:(id)d copyIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  necessaryCopy = necessary;
+  dCopy = d;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -1014,17 +1014,17 @@ LABEL_30:
   v22 = __64__HDSourceManager_localSourceForSourceID_copyIfNecessary_error___block_invoke;
   v23 = &unk_278620170;
   v26 = &v28;
-  v24 = self;
-  v9 = v8;
+  selfCopy = self;
+  v9 = dCopy;
   v25 = v9;
-  v27 = v6;
+  v27 = necessaryCopy;
   v10 = _Block_copy(&v20);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v12 = WeakRetained;
-  if (v6)
+  if (necessaryCopy)
   {
-    v13 = [WeakRetained database];
-    v14 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:v13 error:a5 block:v10];
+    database = [WeakRetained database];
+    v14 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:database error:error block:v10];
 
     if (!v14)
     {
@@ -1036,8 +1036,8 @@ LABEL_3:
 
   else
   {
-    v16 = [WeakRetained database];
-    v17 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v16 error:a5 block:v10];
+    database2 = [WeakRetained database];
+    v17 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database2 error:error block:v10];
 
     if (!v17)
     {
@@ -1121,7 +1121,7 @@ id __64__HDSourceManager_localSourceForSourceID_copyIfNecessary_error___block_in
   return v9;
 }
 
-+ (uint64_t)_isLocalDeviceBundleIdentifier:(uint64_t)a1
++ (uint64_t)_isLocalDeviceBundleIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
@@ -1130,7 +1130,7 @@ id __64__HDSourceManager_localSourceForSourceID_copyIfNecessary_error___block_in
   return v3;
 }
 
-- (id)localDeviceSourceWithError:(id *)a3
+- (id)localDeviceSourceWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -1145,8 +1145,8 @@ id __64__HDSourceManager_localSourceForSourceID_copyIfNecessary_error___block_in
   aBlock[4] = &v19;
   v5 = _Block_copy(aBlock);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained database];
-  v8 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v7 error:a3 block:v5];
+  database = [WeakRetained database];
+  v8 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database error:error block:v5];
 
   if (!v8)
   {
@@ -1160,7 +1160,7 @@ id __64__HDSourceManager_localSourceForSourceID_copyIfNecessary_error___block_in
   }
 
   v10 = objc_loadWeakRetained(&self->_profile);
-  v11 = [v10 database];
+  database2 = [v10 database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __46__HDSourceManager_localDeviceSourceWithError___block_invoke_2;
@@ -1168,7 +1168,7 @@ id __64__HDSourceManager_localSourceForSourceID_copyIfNecessary_error___block_in
   v16 = v5;
   v17 = &v19;
   v15[4] = self;
-  v12 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:v11 error:a3 block:v15];
+  v12 = [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:database2 error:error block:v15];
 
   if (v12)
   {
@@ -1231,46 +1231,46 @@ BOOL __46__HDSourceManager_localDeviceSourceWithError___block_invoke_2(uint64_t 
   return *(*(*(a1 + 48) + 8) + 40) != 0;
 }
 
-- (id)privateSourceForClinicalAccountIdentifier:(id)a3 provenance:(int64_t)a4 createOrUpdateIfNecessary:(BOOL)a5 nameOnCreateOrUpdate:(id)a6 error:(id *)a7
+- (id)privateSourceForClinicalAccountIdentifier:(id)identifier provenance:(int64_t)provenance createOrUpdateIfNecessary:(BOOL)necessary nameOnCreateOrUpdate:(id)update error:(id *)error
 {
-  v8 = a5;
-  v11 = [MEMORY[0x277CCDA00] _privateSourceForClinicalAccountIdentifier:a3 name:a6];
-  v12 = [(HDSourceManager *)self _sourceFromEphemeralSource:v11 provenance:a4 createOrUpdateIfNecessary:v8 error:a7];
+  necessaryCopy = necessary;
+  v11 = [MEMORY[0x277CCDA00] _privateSourceForClinicalAccountIdentifier:identifier name:update];
+  v12 = [(HDSourceManager *)self _sourceFromEphemeralSource:v11 provenance:provenance createOrUpdateIfNecessary:necessaryCopy error:error];
 
   return v12;
 }
 
-- (id)_sourceFromEphemeralSource:(uint64_t)a3 provenance:(int)a4 createOrUpdateIfNecessary:(uint64_t)a5 error:
+- (id)_sourceFromEphemeralSource:(uint64_t)source provenance:(int)provenance createOrUpdateIfNecessary:(uint64_t)necessary error:
 {
   v9 = a2;
   v10 = v9;
-  if (a1)
+  if (self)
   {
-    if (a4)
+    if (provenance)
     {
-      v11 = [v9 name];
+      name = [v9 name];
 
-      if (!v11)
+      if (!name)
       {
-        v18 = [MEMORY[0x277CCA890] currentHandler];
-        [v18 handleFailureInMethod:sel__sourceFromEphemeralSource_provenance_createOrUpdateIfNecessary_error_ object:a1 file:@"HDSourceManager.m" lineNumber:523 description:{@"Invalid parameter not satisfying: %@", @"source.name"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel__sourceFromEphemeralSource_provenance_createOrUpdateIfNecessary_error_ object:self file:@"HDSourceManager.m" lineNumber:523 description:{@"Invalid parameter not satisfying: %@", @"source.name"}];
       }
 
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __89__HDSourceManager__sourceFromEphemeralSource_provenance_createOrUpdateIfNecessary_error___block_invoke;
       aBlock[3] = &unk_2786201C0;
-      aBlock[4] = a1;
+      aBlock[4] = self;
       v12 = v10;
       v23 = v12;
-      v24 = a3;
+      sourceCopy = source;
       v13 = _Block_copy(aBlock);
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __89__HDSourceManager__sourceFromEphemeralSource_provenance_createOrUpdateIfNecessary_error___block_invoke_2;
       v19[3] = &unk_2786201E8;
       v20 = v12;
-      v21 = a1;
+      selfCopy = self;
       v14 = _Block_copy(v19);
     }
 
@@ -1280,8 +1280,8 @@ BOOL __46__HDSourceManager_localDeviceSourceWithError___block_invoke_2(uint64_t 
       v14 = 0;
     }
 
-    v15 = [v10 bundleIdentifier];
-    v16 = [(HDSourceManager *)a1 _sourceForBundleIdentifier:v15 createSourceBlock:v13 modifySourceBlock:v14 error:a5];
+    bundleIdentifier = [v10 bundleIdentifier];
+    v16 = [(HDSourceManager *)self _sourceForBundleIdentifier:bundleIdentifier createSourceBlock:v13 modifySourceBlock:v14 error:necessary];
   }
 
   else
@@ -1292,11 +1292,11 @@ BOOL __46__HDSourceManager_localDeviceSourceWithError___block_invoke_2(uint64_t 
   return v16;
 }
 
-- (id)publicSourceForClinicalExternalIdentifier:(id)a3 provenance:(int64_t)a4 createOrUpdateIfNecessary:(BOOL)a5 nameOnCreateOrUpdate:(id)a6 error:(id *)a7
+- (id)publicSourceForClinicalExternalIdentifier:(id)identifier provenance:(int64_t)provenance createOrUpdateIfNecessary:(BOOL)necessary nameOnCreateOrUpdate:(id)update error:(id *)error
 {
-  v8 = a5;
-  v11 = [MEMORY[0x277CCDA00] _publicSourceForClinicalExternalIdentifier:a3 name:a6];
-  v12 = [(HDSourceManager *)self _sourceFromEphemeralSource:v11 provenance:a4 createOrUpdateIfNecessary:v8 error:a7];
+  necessaryCopy = necessary;
+  v11 = [MEMORY[0x277CCDA00] _publicSourceForClinicalExternalIdentifier:identifier name:update];
+  v12 = [(HDSourceManager *)self _sourceFromEphemeralSource:v11 provenance:provenance createOrUpdateIfNecessary:necessaryCopy error:error];
 
   return v12;
 }
@@ -1334,74 +1334,74 @@ uint64_t __89__HDSourceManager__sourceFromEphemeralSource_provenance_createOrUpd
   return v11;
 }
 
-- (id)sourceForClient:(id)a3 error:(id *)a4
+- (id)sourceForClient:(id)client error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 sourceBundleIdentifier];
-  if (v7)
+  clientCopy = client;
+  sourceBundleIdentifier = [clientCopy sourceBundleIdentifier];
+  if (sourceBundleIdentifier)
   {
-    v8 = [MEMORY[0x277CCDA00] hd_sourceForClient:v6 bundleIdentifier:0];
-    v9 = [(HDSourceManager *)self sourceEntityForClientSource:v8 createOrUpdateIfNecessary:0 error:a4];
+    v8 = [MEMORY[0x277CCDA00] hd_sourceForClient:clientCopy bundleIdentifier:0];
+    v9 = [(HDSourceManager *)self sourceEntityForClientSource:v8 createOrUpdateIfNecessary:0 error:error];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:4 description:@"Missing application-identifier entitlement"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:4 description:@"Missing application-identifier entitlement"];
     v9 = 0;
   }
 
   return v9;
 }
 
-- (id)createOrUpdateSourceForClient:(id)a3 error:(id *)a4
+- (id)createOrUpdateSourceForClient:(id)client error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 sourceBundleIdentifier];
-  if (v7)
+  clientCopy = client;
+  sourceBundleIdentifier = [clientCopy sourceBundleIdentifier];
+  if (sourceBundleIdentifier)
   {
-    v8 = [MEMORY[0x277CCDA00] hd_sourceForClient:v6 bundleIdentifier:0];
+    v8 = [MEMORY[0x277CCDA00] hd_sourceForClient:clientCopy bundleIdentifier:0];
     v13 = 0;
     v9 = [(HDSourceManager *)self sourceEntityForClientSource:v8 createOrUpdateIfNecessary:1 error:&v13];
     v10 = v13;
 
     if (!(v9 | v10))
     {
-      v10 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Failed to create source for client %@", v7}];
+      v10 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Failed to create source for client %@", sourceBundleIdentifier}];
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:4 description:@"Missing application-identifier entitlement"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:4 description:@"Missing application-identifier entitlement"];
     v9 = 0;
   }
 
   return v9;
 }
 
-- (id)sourceEntityForClientSource:(id)a3 createOrUpdateIfNecessary:(BOOL)a4 error:(id *)a5
+- (id)sourceEntityForClientSource:(id)source createOrUpdateIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = [v9 bundleIdentifier];
-  if (v10)
+  necessaryCopy = necessary;
+  sourceCopy = source;
+  bundleIdentifier = [sourceCopy bundleIdentifier];
+  if (bundleIdentifier)
   {
-    if (v6)
+    if (necessaryCopy)
     {
 LABEL_3:
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __79__HDSourceManager_sourceEntityForClientSource_createOrUpdateIfNecessary_error___block_invoke;
       aBlock[3] = &unk_278620210;
-      v21 = v10;
-      v22 = self;
-      v11 = v9;
+      v21 = bundleIdentifier;
+      selfCopy = self;
+      v11 = sourceCopy;
       v23 = v11;
       v12 = _Block_copy(aBlock);
       v17[0] = MEMORY[0x277D85DD0];
@@ -1409,7 +1409,7 @@ LABEL_3:
       v17[2] = __79__HDSourceManager_sourceEntityForClientSource_createOrUpdateIfNecessary_error___block_invoke_2;
       v17[3] = &unk_2786201E8;
       v18 = v11;
-      v19 = self;
+      selfCopy2 = self;
       v13 = _Block_copy(v17);
 
       goto LABEL_6;
@@ -1418,10 +1418,10 @@ LABEL_3:
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:616 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:616 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
 
-    if (v6)
+    if (necessaryCopy)
     {
       goto LABEL_3;
     }
@@ -1430,7 +1430,7 @@ LABEL_3:
   v12 = 0;
   v13 = 0;
 LABEL_6:
-  v15 = [(HDSourceManager *)self _sourceForBundleIdentifier:v10 createSourceBlock:v12 modifySourceBlock:v13 error:a5];
+  v15 = [(HDSourceManager *)self _sourceForBundleIdentifier:bundleIdentifier createSourceBlock:v12 modifySourceBlock:v13 error:error];
 
   return v15;
 }
@@ -1482,18 +1482,18 @@ id __79__HDSourceManager_sourceEntityForClientSource_createOrUpdateIfNecessary_e
   return v5;
 }
 
-- (id)_createSourceEntityForBundleIdentifier:(void *)a3 owningAppBundleIdentifier:(void *)a4 name:(uint64_t)a5 options:(uint64_t)a6 isCurrentDevice:(void *)a7 productType:(uint64_t)a8 error:
+- (id)_createSourceEntityForBundleIdentifier:(void *)identifier owningAppBundleIdentifier:(void *)bundleIdentifier name:(uint64_t)name options:(uint64_t)options isCurrentDevice:(void *)device productType:(uint64_t)type error:
 {
-  if (a1)
+  if (self)
   {
     v15 = MEMORY[0x277CCAD78];
-    v16 = a7;
-    v17 = a4;
-    v18 = a3;
+    deviceCopy = device;
+    bundleIdentifierCopy = bundleIdentifier;
+    identifierCopy = identifier;
     v19 = a2;
-    v20 = [v15 UUID];
-    v21 = [MEMORY[0x277CBEAA8] date];
-    v22 = [a1 insertSourceWithBundleIdentifier:v19 owningAppBundleIdentifier:v18 UUID:v20 name:v17 options:a5 isCurrentDevice:a6 productType:v16 modificationDate:v21 provenance:0 error:a8];
+    uUID = [v15 UUID];
+    date = [MEMORY[0x277CBEAA8] date];
+    v22 = [self insertSourceWithBundleIdentifier:v19 owningAppBundleIdentifier:identifierCopy UUID:uUID name:bundleIdentifierCopy options:name isCurrentDevice:options productType:deviceCopy modificationDate:date provenance:0 error:type];
   }
 
   else
@@ -1523,24 +1523,24 @@ uint64_t __79__HDSourceManager_sourceEntityForClientSource_createOrUpdateIfNeces
   return v11;
 }
 
-- (id)sourceForAppleDeviceWithUUID:(id)a3 identifier:(id)a4 name:(id)a5 productType:(id)a6 createIfNecessary:(BOOL)a7 error:(id *)a8
+- (id)sourceForAppleDeviceWithUUID:(id)d identifier:(id)identifier name:(id)name productType:(id)type createIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if (v9)
+  necessaryCopy = necessary;
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  typeCopy = type;
+  if (necessaryCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __100__HDSourceManager_sourceForAppleDeviceWithUUID_identifier_name_productType_createIfNecessary_error___block_invoke;
     aBlock[3] = &unk_278620238;
     aBlock[4] = self;
-    v22 = v15;
-    v23 = v14;
-    v24 = v16;
-    v25 = v17;
+    v22 = identifierCopy;
+    v23 = dCopy;
+    v24 = nameCopy;
+    v25 = typeCopy;
     v18 = _Block_copy(aBlock);
   }
 
@@ -1549,7 +1549,7 @@ uint64_t __79__HDSourceManager_sourceEntityForClientSource_createOrUpdateIfNeces
     v18 = 0;
   }
 
-  v19 = [(HDSourceManager *)self _sourceForBundleIdentifier:v15 createSourceBlock:v18 modifySourceBlock:0 error:a8];
+  v19 = [(HDSourceManager *)self _sourceForBundleIdentifier:identifierCopy createSourceBlock:v18 modifySourceBlock:0 error:error];
 
   return v19;
 }
@@ -1606,42 +1606,42 @@ id __100__HDSourceManager_sourceForAppleDeviceWithUUID_identifier_name_productTy
   return v12;
 }
 
-- (id)sourceForCodableSource:(id)a3 provenance:(int64_t)a4 createIfNecessary:(BOOL)a5 isDeleted:(BOOL *)a6 error:(id *)a7
+- (id)sourceForCodableSource:(id)source provenance:(int64_t)provenance createIfNecessary:(BOOL)necessary isDeleted:(BOOL *)deleted error:(id *)error
 {
-  v9 = a5;
-  v12 = a3;
+  necessaryCopy = necessary;
+  sourceCopy = source;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__86;
   v31 = __Block_byref_object_dispose__86;
   v32 = 0;
-  v13 = [v12 decodedUUID];
+  decodedUUID = [sourceCopy decodedUUID];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained database];
+  database = [WeakRetained database];
 
-  if (v13)
+  if (decodedUUID)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __87__HDSourceManager_sourceForCodableSource_provenance_createIfNecessary_isDeleted_error___block_invoke;
     aBlock[3] = &unk_278620260;
     v23 = &v27;
-    v24 = a6;
-    v26 = v9;
-    v20 = v13;
-    v21 = self;
-    v22 = v12;
-    v25 = a4;
+    deletedCopy = deleted;
+    v26 = necessaryCopy;
+    v20 = decodedUUID;
+    selfCopy = self;
+    v22 = sourceCopy;
+    provenanceCopy = provenance;
     v16 = _Block_copy(aBlock);
-    if (v9)
+    if (necessaryCopy)
     {
-      [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:v15 error:a7 block:v16];
+      [(HDHealthEntity *)HDSourceEntity performWriteTransactionWithHealthDatabase:database error:error block:v16];
     }
 
     else
     {
-      [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v15 error:a7 block:v16];
+      [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database error:error block:v16];
     }
 
     v17 = v28[5];
@@ -1803,11 +1803,11 @@ id __88__HDSourceManager__sourceForBundleIdentifier_createSourceBlock_modifySour
   return v6;
 }
 
-- (id)clientSourceForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)clientSourceForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v27 = 0;
-  v7 = [(HDSourceManager *)self localSourceForBundleIdentifier:v6 error:&v27];
+  v7 = [(HDSourceManager *)self localSourceForBundleIdentifier:identifierCopy error:&v27];
   v8 = v27;
   v9 = v8;
   if (v7)
@@ -1824,14 +1824,14 @@ id __88__HDSourceManager__sourceForBundleIdentifier_createSourceBlock_modifySour
     v25 = __Block_byref_object_dispose__86;
     v26 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v16 = [WeakRetained database];
+    database = [WeakRetained database];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __57__HDSourceManager_clientSourceForBundleIdentifier_error___block_invoke;
     v18[3] = &unk_278614110;
-    v19 = v6;
+    v19 = identifierCopy;
     v20 = &v21;
-    v17 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v16 error:a4 block:v18];
+    v17 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database error:error block:v18];
 
     if (v17)
     {
@@ -1852,7 +1852,7 @@ id __88__HDSourceManager__sourceForBundleIdentifier_createSourceBlock_modifySour
 
 LABEL_2:
     v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v7, "persistentID")}];
-    v11 = [(HDSourceManager *)self clientSourceForPersistentID:v10 error:a4];
+    v11 = [(HDSourceManager *)self clientSourceForPersistentID:v10 error:error];
 
 LABEL_3:
     v12 = v11;
@@ -1860,11 +1860,11 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v14 = v8;
     v12 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -1892,53 +1892,53 @@ uint64_t __57__HDSourceManager_clientSourceForBundleIdentifier_error___block_inv
   return 1;
 }
 
-- (id)uncachedClientSourceForPersistentID:(id)a3 transaction:(id)a4 error:(id *)a5
+- (id)uncachedClientSourceForPersistentID:(id)d transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [(HDDatabaseValueCache *)self->_clientSourceCache fetchObjectForKey:v8 transaction:a4 error:a5 faultHandler:&__block_literal_global_92];
+  dCopy = d;
+  v9 = [(HDDatabaseValueCache *)self->_clientSourceCache fetchObjectForKey:dCopy transaction:transaction error:error faultHandler:&__block_literal_global_92];
   if (!v9)
   {
-    v10 = -[HDSQLiteEntity initWithPersistentID:]([HDSourceEntity alloc], "initWithPersistentID:", [v8 longLongValue]);
+    v10 = -[HDSQLiteEntity initWithPersistentID:]([HDSourceEntity alloc], "initWithPersistentID:", [dCopy longLongValue]);
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v9 = [(HDSourceEntity *)v10 sourceWithProfile:WeakRetained error:a5];
+    v9 = [(HDSourceEntity *)v10 sourceWithProfile:WeakRetained error:error];
   }
 
   return v9;
 }
 
-- (id)clientSourceForPersistentID:(id)a3 error:(id *)a4
+- (id)clientSourceForPersistentID:(id)d error:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
-    v13 = a3;
+    dCopy = d;
     v6 = MEMORY[0x277CBEA60];
-    v7 = a3;
-    v8 = [v6 arrayWithObjects:&v13 count:1];
+    dCopy2 = d;
+    v8 = [v6 arrayWithObjects:&dCopy count:1];
 
-    v9 = [(HDSourceManager *)self clientSourcesForSourceIDs:v8 error:a4, v13, v14];
-    v10 = [v9 anyObject];
+    v9 = [(HDSourceManager *)self clientSourcesForSourceIDs:v8 error:error, dCopy, v14];
+    anyObject = [v9 anyObject];
   }
 
   else
   {
-    v10 = 0;
+    anyObject = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return anyObject;
 }
 
-- (id)clientSourceForSourceEntities:(id)a3 error:(id *)a4
+- (id)clientSourceForSourceEntities:(id)entities error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  entitiesCopy = entities;
+  if ([entitiesCopy count])
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v6 anyObject];
-    v9 = [v7 numberWithLongLong:{objc_msgSend(v8, "persistentID")}];
-    v10 = [(HDSourceManager *)self clientSourceForPersistentID:v9 error:a4];
+    anyObject = [entitiesCopy anyObject];
+    v9 = [v7 numberWithLongLong:{objc_msgSend(anyObject, "persistentID")}];
+    v10 = [(HDSourceManager *)self clientSourceForPersistentID:v9 error:error];
   }
 
   else
@@ -1949,21 +1949,21 @@ uint64_t __57__HDSourceManager_clientSourceForBundleIdentifier_error___block_inv
   return v10;
 }
 
-- (id)clientSourceForSourceEntity:(id)a3 error:(id *)a4
+- (id)clientSourceForSourceEntity:(id)entity error:(id *)error
 {
-  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(a3, "persistentID")}];
-  v7 = [(HDSourceManager *)self clientSourceForPersistentID:v6 error:a4];
+  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(entity, "persistentID")}];
+  v7 = [(HDSourceManager *)self clientSourceForPersistentID:v6 error:error];
 
   return v7;
 }
 
-- (id)sourceUUIDForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)sourceUUIDForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [(HDSourceManager *)self localSourceForBundleIdentifier:a3 error:?];
+  v6 = [(HDSourceManager *)self localSourceForBundleIdentifier:identifier error:?];
   if (v6)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v8 = [v6 sourceUUIDWithProfile:WeakRetained error:a4];
+    v8 = [v6 sourceUUIDWithProfile:WeakRetained error:error];
   }
 
   else
@@ -1974,24 +1974,24 @@ uint64_t __57__HDSourceManager_clientSourceForBundleIdentifier_error___block_inv
   return v8;
 }
 
-- (id)clientSourcesForSourceIDs:(id)a3 error:(id *)a4
+- (id)clientSourcesForSourceIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  dsCopy = ds;
+  v7 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __51__HDSourceManager_clientSourcesForSourceIDs_error___block_invoke;
   v15[3] = &unk_278615D40;
-  v16 = v6;
-  v17 = self;
+  v16 = dsCopy;
+  selfCopy = self;
   v18 = v7;
   v10 = v7;
-  v11 = v6;
-  LODWORD(a4) = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v9 error:a4 block:v15];
+  v11 = dsCopy;
+  LODWORD(error) = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a4)
+  if (error)
   {
     v12 = v10;
   }
@@ -2187,23 +2187,23 @@ LABEL_17:
   return v7;
 }
 
-- (id)clientSourceForUUID:(id)a3 error:(id *)a4
+- (id)clientSourceForUUID:(id)d error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  dCopy = d;
+  if (!dCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:915 description:{@"Invalid parameter not satisfying: %@", @"sourceUUID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:915 description:{@"Invalid parameter not satisfying: %@", @"sourceUUID != nil"}];
   }
 
-  v8 = HDSourceEntityPredicateForSourceWithUUID(v7, 0);
+  v8 = HDSourceEntityPredicateForSourceWithUUID(dCopy, 0);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [HDSourceEntity firstSourceWithPredicate:v8 profile:WeakRetained error:a4];
+  v10 = [HDSourceEntity firstSourceWithPredicate:v8 profile:WeakRetained error:error];
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_profile);
-    v12 = [v10 sourceWithProfile:v11 error:a4];
+    v12 = [v10 sourceWithProfile:v11 error:error];
   }
 
   else
@@ -2214,23 +2214,23 @@ LABEL_17:
   return v12;
 }
 
-- (id)_clientSourcesWithPredicate:(uint64_t)a3 error:
+- (id)_clientSourcesWithPredicate:(uint64_t)predicate error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v8 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    database = [WeakRetained database];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __53__HDSourceManager__clientSourcesWithPredicate_error___block_invoke;
     v13[3] = &unk_278615D40;
     v14 = v5;
-    v15 = a1;
+    selfCopy = self;
     v9 = v6;
     v16 = v9;
-    v10 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v8 error:a3 block:v13];
+    v10 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database error:predicate block:v13];
 
     if (v10)
     {
@@ -2251,10 +2251,10 @@ LABEL_17:
   return v11;
 }
 
-- (id)allWatchSourcesWithError:(id *)a3
+- (id)allWatchSourcesWithError:(id *)error
 {
   v5 = HDSourceEntityPredicateForAppleWatchSources();
-  v6 = [(HDSourceManager *)self _clientSourcesWithPredicate:v5 error:a3];
+  v6 = [(HDSourceManager *)self _clientSourcesWithPredicate:v5 error:error];
 
   return v6;
 }
@@ -2288,7 +2288,7 @@ BOOL __53__HDSourceManager__clientSourcesWithPredicate_error___block_invoke_2(ui
   return v4 != 0;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = HKIsUnitTesting();
@@ -2303,7 +2303,7 @@ BOOL __53__HDSourceManager__clientSourcesWithPredicate_error___block_invoke_2(ui
       *buf = 138412546;
       v22 = objc_opt_class();
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v8 = v22;
       _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "<%@:%p> profileDidBecomeReady: started", buf, 0x16u);
     }
@@ -2321,11 +2321,11 @@ BOOL __53__HDSourceManager__clientSourcesWithPredicate_error___block_invoke_2(ui
     {
       v17 = v11;
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v19 = [WeakRetained profileIdentifier];
+      profileIdentifier = [WeakRetained profileIdentifier];
       *buf = 138543618;
-      v22 = v19;
+      v22 = profileIdentifier;
       v23 = 2114;
-      v24 = v10;
+      selfCopy2 = v10;
       _os_log_error_impl(&dword_228986000, v17, OS_LOG_TYPE_ERROR, "Current device source name update failed for profile with identifier %{public}@: %{public}@", buf, 0x16u);
     }
   }
@@ -2341,7 +2341,7 @@ BOOL __53__HDSourceManager__clientSourcesWithPredicate_error___block_invoke_2(ui
       *buf = 138412546;
       v22 = v14;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v15 = v14;
       _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "<%@:%p> profileDidBecomeReady: ended", buf, 0x16u);
     }
@@ -2350,14 +2350,14 @@ BOOL __53__HDSourceManager__clientSourcesWithPredicate_error___block_invoke_2(ui
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)insertSourceWithBundleIdentifier:(id)a3 owningAppBundleIdentifier:(id)a4 UUID:(id)a5 name:(id)a6 options:(unint64_t)a7 isCurrentDevice:(BOOL)a8 productType:(id)a9 modificationDate:(id)a10 provenance:(int64_t)a11 error:(id *)a12
+- (id)insertSourceWithBundleIdentifier:(id)identifier owningAppBundleIdentifier:(id)bundleIdentifier UUID:(id)d name:(id)name options:(unint64_t)options isCurrentDevice:(BOOL)device productType:(id)type modificationDate:(id)self0 provenance:(int64_t)self1 error:(id *)self2
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  v33 = a10;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  dCopy = d;
+  nameCopy = name;
+  typeCopy = type;
+  dateCopy = date;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -2365,29 +2365,29 @@ BOOL __53__HDSourceManager__clientSourcesWithPredicate_error___block_invoke_2(ui
   v52 = __Block_byref_object_dispose__86;
   v53 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v22 = [WeakRetained database];
+  database = [WeakRetained database];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __158__HDSourceManager_insertSourceWithBundleIdentifier_owningAppBundleIdentifier_UUID_name_options_isCurrentDevice_productType_modificationDate_provenance_error___block_invoke;
   v36[3] = &unk_278620348;
-  v23 = v16;
+  v23 = identifierCopy;
   v37 = v23;
-  v24 = v17;
+  v24 = bundleIdentifierCopy;
   v38 = v24;
-  v39 = self;
+  selfCopy = self;
   v44 = &v48;
-  v25 = v18;
+  v25 = dCopy;
   v40 = v25;
-  v26 = v19;
+  v26 = nameCopy;
   v41 = v26;
-  v45 = a7;
-  v47 = a8;
-  v27 = v20;
+  optionsCopy = options;
+  deviceCopy = device;
+  v27 = typeCopy;
   v42 = v27;
-  v28 = v33;
+  v28 = dateCopy;
   v43 = v28;
-  v46 = a11;
-  v29 = [(HDHealthEntity *)HDLogicalSourceEntity performWriteTransactionWithHealthDatabase:v22 error:a12 block:v36];
+  provenanceCopy = provenance;
+  v29 = [(HDHealthEntity *)HDLogicalSourceEntity performWriteTransactionWithHealthDatabase:database error:error block:v36];
 
   if (v29)
   {
@@ -2435,33 +2435,33 @@ BOOL __158__HDSourceManager_insertSourceWithBundleIdentifier_owningAppBundleIden
   return v15;
 }
 
-- (BOOL)createSourcesWithCodables:(id)a3 provenance:(int64_t)a4 error:(id *)a5
+- (BOOL)createSourcesWithCodables:(id)codables provenance:(int64_t)provenance error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 hk_mapToSet:&__block_literal_global_377];
+  codablesCopy = codables;
+  v9 = [codablesCopy hk_mapToSet:&__block_literal_global_377];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __62__HDSourceManager_createSourcesWithCodables_provenance_error___block_invoke_2;
   v20[3] = &unk_278613550;
   v20[4] = self;
-  v21 = v8;
-  v23 = a4;
+  v21 = codablesCopy;
+  provenanceCopy = provenance;
   v22 = v9;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__HDSourceManager_createSourcesWithCodables_provenance_error___block_invoke_3;
   v15[3] = &unk_278620390;
   v16 = v22;
-  v17 = self;
+  selfCopy = self;
   v18 = v21;
-  v19 = a4;
+  provenanceCopy2 = provenance;
   v12 = v21;
   v13 = v22;
-  LOBYTE(a5) = [(HDHealthEntity *)HDSampleEntity performWriteTransactionWithHealthDatabase:v11 error:a5 block:v20 inaccessibilityHandler:v15];
+  LOBYTE(error) = [(HDHealthEntity *)HDSampleEntity performWriteTransactionWithHealthDatabase:database error:error block:v20 inaccessibilityHandler:v15];
 
-  return a5;
+  return error;
 }
 
 id __62__HDSourceManager_createSourcesWithCodables_provenance_error___block_invoke(uint64_t a1, void *a2)
@@ -2480,14 +2480,14 @@ id __62__HDSourceManager_createSourcesWithCodables_provenance_error___block_invo
   return v3;
 }
 
-- (uint64_t)_createSourcesWithCodables:(uint64_t)a3 provenance:(void *)a4 sourceUUIDSToDelete:(unsigned int)a5 deleteSamples:(void *)a6 transaction:(uint64_t)a7 error:
+- (uint64_t)_createSourcesWithCodables:(uint64_t)codables provenance:(void *)provenance sourceUUIDSToDelete:(unsigned int)delete deleteSamples:(void *)samples transaction:(uint64_t)transaction error:
 {
   v33 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v24 = a4;
-  v12 = a6;
+  provenanceCopy = provenance;
+  samplesCopy = samples;
   v25 = v11;
-  if (a1)
+  if (self)
   {
     v30 = 0u;
     v31 = 0u;
@@ -2509,7 +2509,7 @@ id __62__HDSourceManager_createSourcesWithCodables_provenance_error___block_invo
           }
 
           v26 = *(*(&v28 + 1) + 8 * i);
-          v27 = v12;
+          v27 = samplesCopy;
           v18 = HKWithAutoreleasePool();
 
           if ((v18 & 1) == 0)
@@ -2529,15 +2529,15 @@ id __62__HDSourceManager_createSourcesWithCodables_provenance_error___block_invo
       }
     }
 
-    v19 = v24;
-    v20 = [a1 _deleteSourcesWithUUIDs:v24 localSourceEntityCacheKey:0 syncIdentity:0 deleteSamples:a5 transaction:v12 error:a7];
+    v19 = provenanceCopy;
+    v20 = [self _deleteSourcesWithUUIDs:provenanceCopy localSourceEntityCacheKey:0 syncIdentity:0 deleteSamples:delete transaction:samplesCopy error:transaction];
   }
 
   else
   {
 LABEL_12:
     v20 = 0;
-    v19 = v24;
+    v19 = provenanceCopy;
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -2614,23 +2614,23 @@ uint64_t __109__HDSourceManager__createSourcesWithCodables_provenance_sourceUUID
   return v5;
 }
 
-- (BOOL)deleteSourceWithBundleIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteSourceWithBundleIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:1115 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSourceManager.m" lineNumber:1115 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [WeakRetained database];
+  database = [WeakRetained database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__HDSourceManager_deleteSourceWithBundleIdentifier_error___block_invoke;
   v16[3] = &unk_278613218;
   v16[4] = self;
-  v17 = v7;
+  v17 = identifierCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__HDSourceManager_deleteSourceWithBundleIdentifier_error___block_invoke_2;
@@ -2638,7 +2638,7 @@ uint64_t __109__HDSourceManager__createSourcesWithCodables_provenance_sourceUUID
   v14[4] = self;
   v15 = v17;
   v10 = v17;
-  v11 = [(HDHealthEntity *)HDSampleEntity performWriteTransactionWithHealthDatabase:v9 error:a4 block:v16 inaccessibilityHandler:v14];
+  v11 = [(HDHealthEntity *)HDSampleEntity performWriteTransactionWithHealthDatabase:database error:error block:v16 inaccessibilityHandler:v14];
 
   return v11;
 }
@@ -2665,13 +2665,13 @@ uint64_t __58__HDSourceManager_deleteSourceWithBundleIdentifier_error___block_in
   return v12;
 }
 
-- (id)_sourceUUIDsForBundleIdentifier:(uint64_t)a3 error:
+- (id)_sourceUUIDsForBundleIdentifier:(uint64_t)identifier error:
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [a1 allSourcesForBundleIdentifier:v5 error:a3];
+    v6 = [self allSourcesForBundleIdentifier:v5 error:identifier];
     v7 = v6;
     if (v6)
     {
@@ -2699,8 +2699,8 @@ uint64_t __58__HDSourceManager_deleteSourceWithBundleIdentifier_error___block_in
               }
 
               v14 = *(*(&v21 + 1) + 8 * i);
-              WeakRetained = objc_loadWeakRetained(a1 + 1);
-              v16 = [v14 sourceUUIDWithProfile:WeakRetained error:a3];
+              WeakRetained = objc_loadWeakRetained(self + 1);
+              v16 = [v14 sourceUUIDWithProfile:WeakRetained error:identifier];
 
               if (!v16)
               {
@@ -2729,7 +2729,7 @@ LABEL_14:
         goto LABEL_17;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:{@"No sources with bundle identifier %@", v5}];
+      [MEMORY[0x277CCA9B8] hk_assignError:identifier code:3 format:{@"No sources with bundle identifier %@", v5}];
     }
 
     v17 = 0;
@@ -2797,23 +2797,23 @@ uint64_t __58__HDSourceManager_deleteSourceWithBundleIdentifier_error___block_in
   return v16;
 }
 
-- (BOOL)_deleteSourcesWithUUIDs:(id)a3 localSourceEntityCacheKey:(id)a4 syncIdentity:(id)a5 deleteSamples:(BOOL)a6 transaction:(id)a7 error:(id *)a8
+- (BOOL)_deleteSourcesWithUUIDs:(id)ds localSourceEntityCacheKey:(id)key syncIdentity:(id)identity deleteSamples:(BOOL)samples transaction:(id)transaction error:(id *)error
 {
-  v10 = a6;
+  samplesCopy = samples;
   v64 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v42 = a4;
-  v15 = a5;
-  v16 = a7;
-  v44 = v14;
-  if ([v14 count])
+  dsCopy = ds;
+  keyCopy = key;
+  identityCopy = identity;
+  transactionCopy = transaction;
+  v44 = dsCopy;
+  if ([dsCopy count])
   {
-    v40 = self;
-    v45 = v16;
-    v17 = [v16 databaseForEntityClass:objc_opt_class()];
+    selfCopy = self;
+    v45 = transactionCopy;
+    v17 = [transactionCopy databaseForEntityClass:objc_opt_class()];
     v41 = HDSourceEntityPredicateForSourcesWithUUIDs(v44);
     v18 = MEMORY[0x277CBEB98];
-    v19 = [HDSourceEntity sourcesWithPredicate:v41 includeDeleted:1 database:v17 error:a8];
+    v19 = [HDSourceEntity sourcesWithPredicate:v41 includeDeleted:1 database:v17 error:error];
     v20 = [v18 setWithArray:v19];
 
     v21 = v20;
@@ -2821,7 +2821,7 @@ uint64_t __58__HDSourceManager_deleteSourceWithBundleIdentifier_error___block_in
     {
       if ([v20 count])
       {
-        if (!v10)
+        if (!samplesCopy)
         {
           goto LABEL_9;
         }
@@ -2836,7 +2836,7 @@ uint64_t __58__HDSourceManager_deleteSourceWithBundleIdentifier_error___block_in
         v51 = 3221225472;
         v52 = __114__HDSourceManager__deleteSourcesWithUUIDs_localSourceEntityCacheKey_syncIdentity_deleteSamples_transaction_error___block_invoke;
         v53 = &unk_2786203B8;
-        v54 = v40;
+        v54 = selfCopy;
         v55 = v41;
         v56 = v17;
         v20 = v20;
@@ -2859,7 +2859,7 @@ uint64_t __58__HDSourceManager_deleteSourceWithBundleIdentifier_error___block_in
         else
         {
 LABEL_9:
-          v24 = [HDLogicalSourceEntity lookUpOrCreateLogicalSourceWithBundleIdentifier:&stru_283BF39C8 owningAppBundleIdentifier:0 transaction:v45 error:a8];
+          v24 = [HDLogicalSourceEntity lookUpOrCreateLogicalSourceWithBundleIdentifier:&stru_283BF39C8 owningAppBundleIdentifier:0 transaction:v45 error:error];
           _HKInitializeLogging();
           v25 = *MEMORY[0x277CCC2A0];
           if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
@@ -2892,21 +2892,21 @@ LABEL_9:
                 }
 
                 v31 = *(*(&v46 + 1) + 8 * i);
-                if (v15)
+                if (identityCopy)
                 {
-                  v32 = [v15 entity];
-                  v33 = [v32 persistentID];
+                  entity = [identityCopy entity];
+                  persistentID = [entity persistentID];
                 }
 
                 else
                 {
-                  v32 = [*(*(&v46 + 1) + 8 * i) valueForProperty:@"sync_identity" database:v17];
-                  v33 = [v32 integerValue];
+                  entity = [*(*(&v46 + 1) + 8 * i) valueForProperty:@"sync_identity" database:v17];
+                  persistentID = [entity integerValue];
                 }
 
-                v34 = v33;
+                v34 = persistentID;
 
-                if (![v31 deleteSourceWithTombstoneLogicalSourceID:objc_msgSend(v24 syncIdentity:"persistentID") database:v34 transaction:v17 error:{v45, a8}])
+                if (![v31 deleteSourceWithTombstoneLogicalSourceID:objc_msgSend(v24 syncIdentity:"persistentID") database:v34 transaction:v17 error:{v45, error}])
                 {
                   LOBYTE(v22) = 0;
                   WeakRetained = obj;
@@ -2924,12 +2924,12 @@ LABEL_9:
             }
           }
 
-          if ([HDLogicalSourceEntity deleteLogicalSourceEntitiesIfNecessaryWithTransaction:v45 error:a8])
+          if ([HDLogicalSourceEntity deleteLogicalSourceEntitiesIfNecessaryWithTransaction:v45 error:error])
           {
-            sourceEntityByBundleIdentifierCache = v40->_sourceEntityByBundleIdentifierCache;
-            if (v42)
+            sourceEntityByBundleIdentifierCache = selfCopy->_sourceEntityByBundleIdentifierCache;
+            if (keyCopy)
             {
-              [(HDDatabaseValueCache *)sourceEntityByBundleIdentifierCache removeObjectForKey:v42 transaction:v45];
+              [(HDDatabaseValueCache *)sourceEntityByBundleIdentifierCache removeObjectForKey:keyCopy transaction:v45];
             }
 
             else
@@ -2937,11 +2937,11 @@ LABEL_9:
               [(HDDatabaseValueCache *)sourceEntityByBundleIdentifierCache removeAllObjectsWithTransaction:v45];
             }
 
-            [(HDDatabaseValueCache *)v40->_clientSourceCache removeAllObjectsWithTransaction:v45];
-            [(HDDatabaseValueCache *)v40->_localSourceForBundleIdentifierCache removeAllObjectsWithTransaction:v45];
-            WeakRetained = objc_loadWeakRetained(&v40->_profile);
-            v37 = [WeakRetained sourceOrderManager];
-            [v37 resetCacheWithTransaction:v45];
+            [(HDDatabaseValueCache *)selfCopy->_clientSourceCache removeAllObjectsWithTransaction:v45];
+            [(HDDatabaseValueCache *)selfCopy->_localSourceForBundleIdentifierCache removeAllObjectsWithTransaction:v45];
+            WeakRetained = objc_loadWeakRetained(&selfCopy->_profile);
+            sourceOrderManager = [WeakRetained sourceOrderManager];
+            [sourceOrderManager resetCacheWithTransaction:v45];
 
             LOBYTE(v22) = 1;
 LABEL_33:
@@ -2958,13 +2958,13 @@ LABEL_33:
         goto LABEL_35;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a8 code:3 format:{@"No sources with UUIDs %@", v44}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"No sources with UUIDs %@", v44}];
     }
 
     LOBYTE(v22) = 0;
 LABEL_35:
 
-    v16 = v45;
+    transactionCopy = v45;
     goto LABEL_36;
   }
 
@@ -3124,26 +3124,26 @@ void __59__HDSourceManager__fetchClientSourceForPersistentID_error___block_invok
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createSourceEntityForLocalDeviceWithError:(id *)a3
+- (id)_createSourceEntityForLocalDeviceWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CCDA00] _generateIdentifierForAppleDevice];
+  _generateIdentifierForAppleDevice = [MEMORY[0x277CCDA00] _generateIdentifierForAppleDevice];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained daemon];
-  v8 = [v7 behavior];
-  v9 = [v8 currentDeviceProductType];
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  currentDeviceProductType = [behavior currentDeviceProductType];
 
-  v10 = [MEMORY[0x277CCDA00] hd_currentDeviceSourceName];
+  hd_currentDeviceSourceName = [MEMORY[0x277CCDA00] hd_currentDeviceSourceName];
   v11 = HKSourceOptionsForAppleDevice();
-  v12 = [(HDSourceManager *)self _createSourceEntityForBundleIdentifier:v5 owningAppBundleIdentifier:0 name:v10 options:v11 isCurrentDevice:1 productType:v9 error:a3];
+  v12 = [(HDSourceManager *)self _createSourceEntityForBundleIdentifier:_generateIdentifierForAppleDevice owningAppBundleIdentifier:0 name:hd_currentDeviceSourceName options:v11 isCurrentDevice:1 productType:currentDeviceProductType error:error];
 
   return v12;
 }
 
-- (void)_applicationsUninstalledNotification:(id)a3
+- (void)_applicationsUninstalledNotification:(id)notification
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HDHealthDaemonApplicationsUninstalledBundleIdentifiersKey"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HDHealthDaemonApplicationsUninstalledBundleIdentifiersKey"];
 
   if (v5)
   {
@@ -3194,11 +3194,11 @@ void __59__HDSourceManager__fetchClientSourceForPersistentID_error___block_invok
           if (self)
           {
             v16 = *(*(&v41 + 1) + 8 * i);
-            v17 = [v16 bundleIdentifier];
+            bundleIdentifier = [v16 bundleIdentifier];
             WeakRetained = objc_loadWeakRetained(&self->_profile);
-            v19 = [WeakRetained dataManager];
+            dataManager = [WeakRetained dataManager];
             v47 = 0;
-            v20 = [v19 hasSampleWithBundleIdentifier:v17 error:&v47];
+            v20 = [dataManager hasSampleWithBundleIdentifier:bundleIdentifier error:&v47];
             v21 = v47;
 
             if (v20 == 1)
@@ -3213,7 +3213,7 @@ void __59__HDSourceManager__fetchClientSourceForPersistentID_error___block_invok
               if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543618;
-                v50 = v17;
+                v50 = bundleIdentifier;
                 v51 = 2114;
                 v52 = v21;
                 _os_log_error_impl(&dword_228986000, v22, OS_LOG_TYPE_ERROR, "Error while checking if application %{public}@ has samples: %{public}@", buf, 0x16u);
@@ -3225,7 +3225,7 @@ LABEL_21:
             }
 
             v46 = 0;
-            v23 = [(HDSourceManager *)self deleteSourceWithBundleIdentifier:v17 error:&v46];
+            v23 = [(HDSourceManager *)self deleteSourceWithBundleIdentifier:bundleIdentifier error:&v46];
             v24 = v46;
             _HKInitializeLogging();
             v25 = *MEMORY[0x277CCC2A0];
@@ -3235,7 +3235,7 @@ LABEL_21:
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543618;
-                v50 = v17;
+                v50 = bundleIdentifier;
                 v51 = 2114;
                 v52 = v24;
                 _os_log_error_impl(&dword_228986000, v25, OS_LOG_TYPE_ERROR, "Failed to delete source without data for uninstalled application %{public}@: %{public}@", buf, 0x16u);
@@ -3247,12 +3247,12 @@ LABEL_21:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v50 = v17;
+              v50 = bundleIdentifier;
               _os_log_impl(&dword_228986000, v25, OS_LOG_TYPE_DEFAULT, "Successfully deleted source without data for uninstalled application %{public}@", buf, 0xCu);
             }
 
-            v27 = [v16 bundleIdentifier];
-            [v39 addObject:v27];
+            bundleIdentifier2 = [v16 bundleIdentifier];
+            [v39 addObject:bundleIdentifier2];
           }
         }
 

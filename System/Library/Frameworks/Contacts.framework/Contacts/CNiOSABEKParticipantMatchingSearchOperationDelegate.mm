@@ -1,18 +1,18 @@
 @interface CNiOSABEKParticipantMatchingSearchOperationDelegate
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4;
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record;
 @end
 
 @implementation CNiOSABEKParticipantMatchingSearchOperationDelegate
 
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record
 {
-  if (a4)
+  if (record)
   {
-    v5 = [(CNiOSABEKParticipantMatchingSearchOperationDelegate *)self completionHandler];
-    (v5)[2](v5, a4);
+    completionHandler = [(CNiOSABEKParticipantMatchingSearchOperationDelegate *)self completionHandler];
+    (completionHandler)[2](completionHandler, record);
   }
 
-  return a4 == 0;
+  return record == 0;
 }
 
 @end

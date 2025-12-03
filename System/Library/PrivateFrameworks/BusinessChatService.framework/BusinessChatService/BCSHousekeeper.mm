@@ -1,21 +1,21 @@
 @interface BCSHousekeeper
-- (BCSHousekeeper)initWithUserDefaults:(id)a3 currentVersion:(int64_t)a4;
+- (BCSHousekeeper)initWithUserDefaults:(id)defaults currentVersion:(int64_t)version;
 - (void)cleanupDataAtOldPathsIfNeeded;
 @end
 
 @implementation BCSHousekeeper
 
-- (BCSHousekeeper)initWithUserDefaults:(id)a3 currentVersion:(int64_t)a4
+- (BCSHousekeeper)initWithUserDefaults:(id)defaults currentVersion:(int64_t)version
 {
-  v7 = a3;
+  defaultsCopy = defaults;
   v11.receiver = self;
   v11.super_class = BCSHousekeeper;
   v8 = [(BCSHousekeeper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_userDefaults, a3);
-    v9->_currentVersion = a4;
+    objc_storeStrong(&v8->_userDefaults, defaults);
+    v9->_currentVersion = version;
   }
 
   return v9;
@@ -24,8 +24,8 @@
 - (void)cleanupDataAtOldPathsIfNeeded
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(BCSHousekeeper *)self userDefaults];
-  v4 = [v3 integerForKey:@"BCSHousekeepingCurrentVersion"];
+  userDefaults = [(BCSHousekeeper *)self userDefaults];
+  v4 = [userDefaults integerForKey:@"BCSHousekeepingCurrentVersion"];
 
   if (v4 >= [(BCSHousekeeper *)self currentVersion])
   {
@@ -44,8 +44,8 @@
 
   else
   {
-    v8 = [(BCSHousekeeper *)self userDefaults];
-    [v8 setInteger:-[BCSHousekeeper currentVersion](self forKey:{"currentVersion"), @"BCSHousekeepingCurrentVersion"}];
+    userDefaults2 = [(BCSHousekeeper *)self userDefaults];
+    [userDefaults2 setInteger:-[BCSHousekeeper currentVersion](self forKey:{"currentVersion"), @"BCSHousekeepingCurrentVersion"}];
     v5 = *MEMORY[0x277D85DE8];
   }
 }

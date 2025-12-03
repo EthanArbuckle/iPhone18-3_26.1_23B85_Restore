@@ -1,12 +1,12 @@
 @interface NPKProtoPrepareProvisioningTargetResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPrepareProvisioningTargetResponse
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPrepareProvisioningTargetResponse;
   v4 = [(NPKProtoPrepareProvisioningTargetResponse *)&v8 description];
-  v5 = [(NPKProtoPrepareProvisioningTargetResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPrepareProvisioningTargetResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   encryptedTargetData = self->_encryptedTargetData;
   if (encryptedTargetData)
   {
-    [v3 setObject:encryptedTargetData forKey:@"encryptedTargetData"];
+    [dictionary setObject:encryptedTargetData forKey:@"encryptedTargetData"];
   }
 
   if (*&self->_has)
@@ -48,57 +48,57 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_encryptedTargetData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     wasFamilyCircle = self->_wasFamilyCircle;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_encryptedTargetData)
   {
-    [v4 setEncryptedTargetData:?];
-    v4 = v5;
+    [toCopy setEncryptedTargetData:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_wasFamilyCircle;
-    v4[28] |= 1u;
+    toCopy[24] = self->_wasFamilyCircle;
+    toCopy[28] |= 1u;
   }
 
   if (self->_errorData)
   {
     [v5 setErrorData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_encryptedTargetData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_encryptedTargetData copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -108,23 +108,23 @@
     *(v5 + 28) |= 1u;
   }
 
-  v8 = [(NSData *)self->_errorData copyWithZone:a3];
+  v8 = [(NSData *)self->_errorData copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   encryptedTargetData = self->_encryptedTargetData;
-  if (encryptedTargetData | *(v4 + 1))
+  if (encryptedTargetData | *(equalCopy + 1))
   {
     if (![(NSData *)encryptedTargetData isEqual:?])
     {
@@ -132,18 +132,18 @@
     }
   }
 
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ((*(v4 + 28) & 1) == 0)
+  if ((*(equalCopy + 28) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (!self->_wasFamilyCircle)
   {
 LABEL_5:
@@ -157,14 +157,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ((*(v4 + 24) & 1) == 0)
+  if ((*(equalCopy + 24) & 1) == 0)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
   errorData = self->_errorData;
-  if (errorData | *(v4 + 2))
+  if (errorData | *(equalCopy + 2))
   {
     v8 = [(NSData *)errorData isEqual:?];
   }
@@ -195,26 +195,26 @@ LABEL_10:
   return v4 ^ v3 ^ [(NSData *)self->_errorData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NPKProtoPrepareProvisioningTargetResponse *)self setEncryptedTargetData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[28])
+  if (fromCopy[28])
   {
-    self->_wasFamilyCircle = v4[24];
+    self->_wasFamilyCircle = fromCopy[24];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoPrepareProvisioningTargetResponse *)self setErrorData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

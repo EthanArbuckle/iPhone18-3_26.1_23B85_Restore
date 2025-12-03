@@ -1,36 +1,36 @@
 @interface VLFScanningInstructionView
 - (UIColor)textColor;
-- (VLFScanningInstructionView)initWithLayout:(unint64_t)a3;
+- (VLFScanningInstructionView)initWithLayout:(unint64_t)layout;
 - (id)titleTextForCurrentState;
-- (id)titleTextForState:(int64_t)a3;
+- (id)titleTextForState:(int64_t)state;
 - (void)configureSizingLabel;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCurrentLayout:(unint64_t)a3;
-- (void)setCurrentScanningState:(int64_t)a3;
-- (void)setTextColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCurrentLayout:(unint64_t)layout;
+- (void)setCurrentScanningState:(int64_t)state;
+- (void)setTextColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateForCurrentState;
 @end
 
 @implementation VLFScanningInstructionView
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSUserDefaults standardUserDefaults];
 
-  if (v13 == v11)
+  if (v13 == objectCopy)
   {
-    if ([v10 isEqualToString:@"VLFSessionScanningAnimationAlternativeLongestTextKey"])
+    if ([pathCopy isEqualToString:@"VLFSessionScanningAnimationAlternativeLongestTextKey"])
     {
       [(VLFScanningInstructionView *)self configureSizingLabel];
     }
 
-    else if ([v10 isEqualToString:@"VLFSessionScanningAnimationShowLongestTextKey"])
+    else if ([pathCopy isEqualToString:@"VLFSessionScanningAnimationShowLongestTextKey"])
     {
       v14 = +[NSUserDefaults standardUserDefaults];
       v15 = [v14 BOOLForKey:@"VLFSessionScanningAnimationShowLongestTextKey"];
@@ -45,31 +45,31 @@
 
     else
     {
-      [(VLFScanningInstructionView *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6, v17.receiver, v17.super_class, self, VLFScanningInstructionView];
+      [(VLFScanningInstructionView *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context, v17.receiver, v17.super_class, self, VLFScanningInstructionView];
     }
   }
 
   else
   {
-    [(VLFScanningInstructionView *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6, self, VLFScanningInstructionView, v18.receiver, v18.super_class];
+    [(VLFScanningInstructionView *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context, self, VLFScanningInstructionView, v18.receiver, v18.super_class];
   }
 }
 
 - (void)updateForCurrentState
 {
-  v4 = [(VLFScanningInstructionView *)self titleTextForCurrentState];
-  v3 = [(VLFScanningInstructionView *)self instructionLabel];
-  [v3 setText:v4];
+  titleTextForCurrentState = [(VLFScanningInstructionView *)self titleTextForCurrentState];
+  instructionLabel = [(VLFScanningInstructionView *)self instructionLabel];
+  [instructionLabel setText:titleTextForCurrentState];
 }
 
-- (id)titleTextForState:(int64_t)a3
+- (id)titleTextForState:(int64_t)state
 {
   Integer = GEOConfigGetInteger();
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
-      if (a3 != 2)
+      if (state != 2)
       {
         goto LABEL_22;
       }
@@ -117,7 +117,7 @@ LABEL_40:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v20 = 136315906;
-        v21 = "[VLFScanningInstructionView titleTextForState:]";
+        stateCopy = "[VLFScanningInstructionView titleTextForState:]";
         v22 = 2080;
         v23 = "VLFScanningInstructionView.m";
         v24 = 1024;
@@ -134,7 +134,7 @@ LABEL_40:
         {
           v19 = +[NSThread callStackSymbols];
           v20 = 138412290;
-          v21 = v19;
+          stateCopy = v19;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%@", &v20, 0xCu);
         }
       }
@@ -185,7 +185,7 @@ LABEL_38:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v20 = 136315906;
-      v21 = "[VLFScanningInstructionView titleTextForState:]";
+      stateCopy = "[VLFScanningInstructionView titleTextForState:]";
       v22 = 2080;
       v23 = "VLFScanningInstructionView.m";
       v24 = 1024;
@@ -202,7 +202,7 @@ LABEL_38:
       {
         v16 = +[NSThread callStackSymbols];
         v20 = 138412290;
-        v21 = v16;
+        stateCopy = v16;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@", &v20, 0xCu);
       }
     }
@@ -210,7 +210,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 3:
       v5 = +[NSBundle mainBundle];
@@ -237,7 +237,7 @@ LABEL_22:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v20 = 136315650;
-    v21 = "[VLFScanningInstructionView titleTextForState:]";
+    stateCopy = "[VLFScanningInstructionView titleTextForState:]";
     v22 = 2080;
     v23 = "VLFScanningInstructionView.m";
     v24 = 1024;
@@ -252,7 +252,7 @@ LABEL_22:
     {
       v12 = +[NSThread callStackSymbols];
       v20 = 138412290;
-      v21 = v12;
+      stateCopy = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%@", &v20, 0xCu);
     }
   }
@@ -261,7 +261,7 @@ LABEL_22:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v20 = 134217984;
-    v21 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Asked for title with invalid state: %ld", &v20, 0xCu);
   }
 
@@ -273,9 +273,9 @@ LABEL_15:
 
 - (id)titleTextForCurrentState
 {
-  v3 = [(VLFScanningInstructionView *)self currentScanningState];
+  currentScanningState = [(VLFScanningInstructionView *)self currentScanningState];
 
-  return [(VLFScanningInstructionView *)self titleTextForState:v3];
+  return [(VLFScanningInstructionView *)self titleTextForState:currentScanningState];
 }
 
 - (void)configureSizingLabel
@@ -361,16 +361,16 @@ LABEL_21:
       }
 
       v16 = *(*(&v35 + 1) + 8 * j);
-      v17 = [(VLFScanningInstructionView *)self sizingLabel];
-      [v17 setText:v16];
+      sizingLabel = [(VLFScanningInstructionView *)self sizingLabel];
+      [sizingLabel setText:v16];
 
-      v18 = [(VLFScanningInstructionView *)self sizingLabel];
-      v19 = [v18 font];
-      [v19 pointSize];
+      sizingLabel2 = [(VLFScanningInstructionView *)self sizingLabel];
+      font = [sizingLabel2 font];
+      [font pointSize];
       v21 = v20;
 
-      v22 = [(VLFScanningInstructionView *)self sizingLabel];
-      [v22 contentHeight];
+      sizingLabel3 = [(VLFScanningInstructionView *)self sizingLabel];
+      [sizingLabel3 contentHeight];
       v24 = v23;
 
       if (v21 >= v13 && (vabdd_f64(v21, v13) > 2.22044605e-16 || v24 <= v14))
@@ -398,8 +398,8 @@ LABEL_21:
   }
 
 LABEL_30:
-  v32 = [(VLFScanningInstructionView *)self sizingLabel];
-  [v32 setText:v11];
+  sizingLabel4 = [(VLFScanningInstructionView *)self sizingLabel];
+  [sizingLabel4 setText:v11];
 
   v33 = sub_100B251D0();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -419,11 +419,11 @@ LABEL_30:
   v15.receiver = self;
   v15.super_class = VLFScanningInstructionView;
   [(VLFScanningInstructionView *)&v15 layoutSubviews];
-  v3 = [(VLFScanningInstructionView *)self superview];
-  [v3 frame];
+  superview = [(VLFScanningInstructionView *)self superview];
+  [superview frame];
   v5 = v4 > 290.0;
-  v6 = [(VLFScanningInstructionView *)self sizingLabel];
-  [v6 setRunningOnBigPhone:v5];
+  sizingLabel = [(VLFScanningInstructionView *)self sizingLabel];
+  [sizingLabel setRunningOnBigPhone:v5];
 
   [(VLFScanningInstructionView *)self lastViewWidth];
   v8 = v7;
@@ -449,12 +449,12 @@ LABEL_30:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11.receiver = self;
   v11.super_class = VLFScanningInstructionView;
-  [(VLFScanningInstructionView *)&v11 traitCollectionDidChange:v4];
+  [(VLFScanningInstructionView *)&v11 traitCollectionDidChange:changeCopy];
   v5 = sub_100B251D0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -462,32 +462,32 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Updating for new trait collection", v10, 2u);
   }
 
-  if (!v4 || (-[VLFScanningInstructionView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), [v6 preferredContentSizeCategory], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "preferredContentSizeCategory"), v8 = objc_claimAutoreleasedReturnValue(), v9 = UIContentSizeCategoryCompareToCategory(v7, v8), v8, v7, v6, v9))
+  if (!changeCopy || (-[VLFScanningInstructionView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), [v6 preferredContentSizeCategory], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(changeCopy, "preferredContentSizeCategory"), v8 = objc_claimAutoreleasedReturnValue(), v9 = UIContentSizeCategoryCompareToCategory(v7, v8), v8, v7, v6, v9))
   {
     [(VLFScanningInstructionView *)self configureSizingLabel];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(VLFScanningInstructionView *)self instructionLabel];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  instructionLabel = [(VLFScanningInstructionView *)self instructionLabel];
+  [instructionLabel setTextColor:colorCopy];
 }
 
 - (UIColor)textColor
 {
-  v2 = [(VLFScanningInstructionView *)self instructionLabel];
-  v3 = [v2 textColor];
+  instructionLabel = [(VLFScanningInstructionView *)self instructionLabel];
+  textColor = [instructionLabel textColor];
 
-  return v3;
+  return textColor;
 }
 
-- (void)setCurrentScanningState:(int64_t)a3
+- (void)setCurrentScanningState:(int64_t)state
 {
-  if (self->_currentScanningState != a3)
+  if (self->_currentScanningState != state)
   {
-    self->_currentScanningState = a3;
+    self->_currentScanningState = state;
     v4 = sub_100B251D0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -514,22 +514,22 @@ LABEL_30:
 
     else
     {
-      v7 = [(VLFScanningInstructionView *)self animationManager];
+      animationManager = [(VLFScanningInstructionView *)self animationManager];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_100B25B74;
       v8[3] = &unk_101661B18;
       v8[4] = self;
-      [v7 fadeWithFadeOutCompletion:v8];
+      [animationManager fadeWithFadeOutCompletion:v8];
     }
   }
 }
 
-- (void)setCurrentLayout:(unint64_t)a3
+- (void)setCurrentLayout:(unint64_t)layout
 {
-  if (self->_currentLayout != a3)
+  if (self->_currentLayout != layout)
   {
-    self->_currentLayout = a3;
+    self->_currentLayout = layout;
     v4 = sub_100B251D0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -540,12 +540,12 @@ LABEL_30:
     }
 
     v6 = self->_currentLayout;
-    v7 = [(VLFScanningInstructionView *)self sizingLabel];
-    [v7 setCurrentLayout:v6];
+    sizingLabel = [(VLFScanningInstructionView *)self sizingLabel];
+    [sizingLabel setCurrentLayout:v6];
 
     v8 = self->_currentLayout;
-    v9 = [(VLFScanningInstructionView *)self instructionLabel];
-    [v9 setCurrentLayout:v8];
+    instructionLabel = [(VLFScanningInstructionView *)self instructionLabel];
+    [instructionLabel setCurrentLayout:v8];
 
     [(VLFScanningInstructionView *)self configureSizingLabel];
   }
@@ -564,7 +564,7 @@ LABEL_30:
   [(VLFScanningInstructionView *)&v5 dealloc];
 }
 
-- (VLFScanningInstructionView)initWithLayout:(unint64_t)a3
+- (VLFScanningInstructionView)initWithLayout:(unint64_t)layout
 {
   v45.receiver = self;
   v45.super_class = VLFScanningInstructionView;
@@ -573,7 +573,7 @@ LABEL_30:
   if (v4)
   {
     v4->_currentScanningState = 1;
-    v4->_currentLayout = a3;
+    v4->_currentLayout = layout;
     v43 = +[NSMutableArray array];
     v6 = [[VLFScanningInstructionLabel alloc] initForSizing:1];
     sizingLabel = v5->_sizingLabel;
@@ -598,21 +598,21 @@ LABEL_30:
 
     [(VLFScanningInstructionLabel *)v5->_sizingLabel setCurrentLayout:v5->_currentLayout];
     [(VLFScanningInstructionView *)v5 addSubview:v5->_sizingLabel];
-    v41 = [(VLFScanningInstructionLabel *)v5->_sizingLabel leadingAnchor];
-    v39 = [(VLFScanningInstructionView *)v5 leadingAnchor];
-    v37 = [v41 constraintEqualToAnchor:v39];
+    leadingAnchor = [(VLFScanningInstructionLabel *)v5->_sizingLabel leadingAnchor];
+    leadingAnchor2 = [(VLFScanningInstructionView *)v5 leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v47[0] = v37;
-    v36 = [(VLFScanningInstructionLabel *)v5->_sizingLabel trailingAnchor];
-    v11 = [(VLFScanningInstructionView *)v5 trailingAnchor];
-    v12 = [v36 constraintEqualToAnchor:v11];
+    trailingAnchor = [(VLFScanningInstructionLabel *)v5->_sizingLabel trailingAnchor];
+    trailingAnchor2 = [(VLFScanningInstructionView *)v5 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v47[1] = v12;
-    v13 = [(VLFScanningInstructionLabel *)v5->_sizingLabel topAnchor];
-    v14 = [(VLFScanningInstructionView *)v5 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [(VLFScanningInstructionLabel *)v5->_sizingLabel topAnchor];
+    topAnchor2 = [(VLFScanningInstructionView *)v5 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v47[2] = v15;
-    v16 = [(VLFScanningInstructionLabel *)v5->_sizingLabel bottomAnchor];
-    v17 = [(VLFScanningInstructionView *)v5 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [(VLFScanningInstructionLabel *)v5->_sizingLabel bottomAnchor];
+    bottomAnchor2 = [(VLFScanningInstructionView *)v5 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v47[3] = v18;
     v19 = [NSArray arrayWithObjects:v47 count:4];
     [v43 addObjectsFromArray:v19];
@@ -624,25 +624,25 @@ LABEL_30:
     [(VLFScanningInstructionLabel *)v5->_instructionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(VLFScanningInstructionLabel *)v5->_instructionLabel setCurrentLayout:v5->_currentLayout];
     [(VLFScanningInstructionView *)v5 addSubview:v5->_instructionLabel];
-    v42 = [(VLFScanningInstructionLabel *)v5->_instructionLabel leadingAnchor];
-    v40 = [(VLFScanningInstructionView *)v5 leadingAnchor];
-    v38 = [v42 constraintEqualToAnchor:v40];
+    leadingAnchor3 = [(VLFScanningInstructionLabel *)v5->_instructionLabel leadingAnchor];
+    leadingAnchor4 = [(VLFScanningInstructionView *)v5 leadingAnchor];
+    v38 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v46[0] = v38;
-    v22 = [(VLFScanningInstructionLabel *)v5->_instructionLabel trailingAnchor];
-    v23 = [(VLFScanningInstructionView *)v5 trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    trailingAnchor3 = [(VLFScanningInstructionLabel *)v5->_instructionLabel trailingAnchor];
+    trailingAnchor4 = [(VLFScanningInstructionView *)v5 trailingAnchor];
+    v24 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v46[1] = v24;
-    v25 = [(VLFScanningInstructionLabel *)v5->_instructionLabel firstBaselineAnchor];
-    v26 = [(VLFScanningInstructionLabel *)v5->_sizingLabel firstBaselineAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    firstBaselineAnchor = [(VLFScanningInstructionLabel *)v5->_instructionLabel firstBaselineAnchor];
+    firstBaselineAnchor2 = [(VLFScanningInstructionLabel *)v5->_sizingLabel firstBaselineAnchor];
+    v27 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     v46[2] = v27;
     v28 = [NSArray arrayWithObjects:v46 count:3];
     [v43 addObjectsFromArray:v28];
 
     [NSLayoutConstraint activateConstraints:v43];
     v29 = [VLFScanningAnimationManager alloc];
-    v30 = [(VLFScanningInstructionLabel *)v5->_instructionLabel layer];
-    v31 = [(VLFScanningAnimationManager *)v29 initWithLayer:v30];
+    layer = [(VLFScanningInstructionLabel *)v5->_instructionLabel layer];
+    v31 = [(VLFScanningAnimationManager *)v29 initWithLayer:layer];
     animationManager = v5->_animationManager;
     v5->_animationManager = v31;
 

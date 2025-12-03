@@ -1,42 +1,42 @@
 @interface SBRevealContinuousExposeStripsGestureModifier
-- (SBRevealContinuousExposeStripsGestureModifier)initWithGestureID:(id)a3 initialAppLayout:(id)a4;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (SBRevealContinuousExposeStripsGestureModifier)initWithGestureID:(id)d initialAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleGestureEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 @end
 
 @implementation SBRevealContinuousExposeStripsGestureModifier
 
-- (SBRevealContinuousExposeStripsGestureModifier)initWithGestureID:(id)a3 initialAppLayout:(id)a4
+- (SBRevealContinuousExposeStripsGestureModifier)initWithGestureID:(id)d initialAppLayout:(id)layout
 {
-  v8 = a4;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBRevealContinuousExposeStripsGestureModifier;
-  v9 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:a3];
+  v9 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:d];
   if (v9)
   {
-    if (!v8)
+    if (!layoutCopy)
     {
       [SBRevealContinuousExposeStripsGestureModifier initWithGestureID:a2 initialAppLayout:v9];
     }
 
-    objc_storeStrong(&v9->_initialAppLayout, a4);
+    objc_storeStrong(&v9->_initialAppLayout, layout);
   }
 
   return v9;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBRevealContinuousExposeStripsGestureModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBRevealContinuousExposeStripsGestureModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_initialAppLayout] && (-[SBRevealContinuousExposeStripsGestureModifier windowManagementContext](self, "windowManagementContext"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isFlexibleWindowingEnabled"), v7, (v8 & 1) == 0))
   {
     [(SBRevealContinuousExposeStripsGestureModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:v6];
-    [(SBRevealContinuousExposeStripsGestureModifier *)self scaleForIndex:a3];
+    [(SBRevealContinuousExposeStripsGestureModifier *)self scaleForIndex:index];
     SBRectCornerRadiiForRadius();
   }
 
@@ -44,7 +44,7 @@
   {
     v21.receiver = self;
     v21.super_class = SBRevealContinuousExposeStripsGestureModifier;
-    [(SBRevealContinuousExposeStripsGestureModifier *)&v21 cornerRadiiForIndex:a3];
+    [(SBRevealContinuousExposeStripsGestureModifier *)&v21 cornerRadiiForIndex:index];
   }
 
   v13 = v9;
@@ -63,25 +63,25 @@
   return result;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
   v23.receiver = self;
   v23.super_class = SBRevealContinuousExposeStripsGestureModifier;
-  [(SBRevealContinuousExposeStripsGestureModifier *)&v23 shadowOpacityForLayoutRole:a3 atIndex:?];
+  [(SBRevealContinuousExposeStripsGestureModifier *)&v23 shadowOpacityForLayoutRole:role atIndex:?];
   v7 = v6;
-  v8 = [(SBRevealContinuousExposeStripsGestureModifier *)self appLayouts];
-  v9 = [v8 objectAtIndex:a4];
+  appLayouts = [(SBRevealContinuousExposeStripsGestureModifier *)self appLayouts];
+  v9 = [appLayouts objectAtIndex:index];
 
   if ([v9 isEqual:self->_initialAppLayout])
   {
-    v10 = [(SBRevealContinuousExposeStripsGestureModifier *)self windowManagementContext];
-    v11 = [v10 isFlexibleWindowingEnabled];
+    windowManagementContext = [(SBRevealContinuousExposeStripsGestureModifier *)self windowManagementContext];
+    isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-    if ((v11 & 1) == 0)
+    if ((isFlexibleWindowingEnabled & 1) == 0)
     {
       v22.receiver = self;
       v22.super_class = SBRevealContinuousExposeStripsGestureModifier;
-      [(SBRevealContinuousExposeStripsGestureModifier *)&v22 frameForIndex:a4];
+      [(SBRevealContinuousExposeStripsGestureModifier *)&v22 frameForIndex:index];
       v13 = v12;
       v15 = v14;
       [(SBRevealContinuousExposeStripsGestureModifier *)self containerViewBounds];
@@ -106,25 +106,25 @@
   return v7;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBRevealContinuousExposeStripsGestureModifier;
-  v3 = a3;
-  v4 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:v3];
+  elementCopy = element;
+  v4 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:elementCopy];
   v5 = [v4 mutableCopy];
 
-  v6 = [v3 switcherLayoutElementType];
-  if (!v6)
+  switcherLayoutElementType = [elementCopy switcherLayoutElementType];
+  if (!switcherLayoutElementType)
   {
-    v7 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    [v7 setTrackingResponse:0.15];
-    [v7 setTrackingDampingRatio:0.85];
+    initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    [initWithDefaultValues setTrackingResponse:0.15];
+    [initWithDefaultValues setTrackingDampingRatio:0.85];
     v11 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-    [v7 setFrameRateRange:1114113 highFrameRateReason:{*&v11.minimum, *&v11.maximum, *&v11.preferred}];
-    [v5 setLayoutSettings:v7];
-    [v5 setPositionSettings:v7];
-    [v5 setOpacitySettings:v7];
+    [initWithDefaultValues setFrameRateRange:1114113 highFrameRateReason:{*&v11.minimum, *&v11.maximum, *&v11.preferred}];
+    [v5 setLayoutSettings:initWithDefaultValues];
+    [v5 setPositionSettings:initWithDefaultValues];
+    [v5 setOpacitySettings:initWithDefaultValues];
     [v5 setUpdateMode:5];
     if ([v5 layoutUpdateMode])
     {
@@ -145,30 +145,30 @@
   return v5;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v20.receiver = self;
   v20.super_class = SBRevealContinuousExposeStripsGestureModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v20 handleGestureEvent:v4];
-  v6 = [v4 isIndirectPanGestureEvent];
+  v5 = [(SBGestureSwitcherModifier *)&v20 handleGestureEvent:eventCopy];
+  isIndirectPanGestureEvent = [eventCopy isIndirectPanGestureEvent];
   [(SBRevealContinuousExposeStripsGestureModifier *)self isRTLEnabled];
-  [v4 translationInContainerView];
-  v7 = [(SBSwitcherModifier *)self windowingConfiguration];
-  [v7 stripWidth];
+  [eventCopy translationInContainerView];
+  windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+  [windowingConfiguration stripWidth];
 
   v19 = 0u;
   BYTE8(v19) = 1;
   BSUIConstrainValueToIntervalWithRubberBand();
   self->_progress = v8;
-  if ([v4 phase] == 3)
+  if ([eventCopy phase] == 3)
   {
-    if (v6)
+    if (isIndirectPanGestureEvent)
     {
-      v9 = [v4 indirectPanEndReason];
-      if ([v4 isCanceled])
+      indirectPanEndReason = [eventCopy indirectPanEndReason];
+      if ([eventCopy isCanceled])
       {
-        if (v9 != 6)
+        if (indirectPanEndReason != 6)
         {
 LABEL_13:
           v11 = [[SBUpdateContinuousExposeStripsPresentationResponse alloc] initWithPresentationOptions:0 dismissalOptions:1];
@@ -176,7 +176,7 @@ LABEL_13:
         }
       }
 
-      else if (v9 != 4 && (BSFloatGreaterThanOrEqualToFloat() & 1) == 0)
+      else if (indirectPanEndReason != 4 && (BSFloatGreaterThanOrEqualToFloat() & 1) == 0)
       {
         goto LABEL_13;
       }
@@ -186,7 +186,7 @@ LABEL_13:
 
     else
     {
-      if (([v4 isCanceled] & 1) != 0 || !BSFloatGreaterThanOrEqualToFloat())
+      if (([eventCopy isCanceled] & 1) != 0 || !BSFloatGreaterThanOrEqualToFloat())
       {
         goto LABEL_13;
       }
@@ -210,15 +210,15 @@ LABEL_14:
   return v5;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBRevealContinuousExposeStripsGestureModifier;
-  v4 = a3;
-  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 >= 2)
+  if (phase >= 2)
   {
     [(SBChainableModifier *)self setState:1];
   }

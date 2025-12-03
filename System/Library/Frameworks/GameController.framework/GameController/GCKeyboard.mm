@@ -3,7 +3,7 @@
 - (GCKeyboard)init;
 - (NSString)debugDescription;
 - (NSString)description;
-- (int64_t)compareTo:(id)a3;
+- (int64_t)compareTo:(id)to;
 @end
 
 @implementation GCKeyboard
@@ -11,11 +11,11 @@
 + (GCKeyboard)coalescedKeyboard
 {
   v2 = +[_GCLegacyDeviceSession sharedInstance];
-  v3 = [v2 keyboards];
-  v4 = [(GCDeviceCollection *)v3 underlyingCollection];
-  v5 = [v4 anyObject];
+  keyboards = [v2 keyboards];
+  underlyingCollection = [(GCDeviceCollection *)keyboards underlyingCollection];
+  anyObject = [underlyingCollection anyObject];
 
-  return v5;
+  return anyObject;
 }
 
 - (GCKeyboard)init
@@ -38,14 +38,14 @@
   return v3;
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
-  v4 = a3;
-  v5 = [(GCKeyboard *)self creationSequence];
-  if (v5 >= [v4 creationSequence])
+  toCopy = to;
+  creationSequence = [(GCKeyboard *)self creationSequence];
+  if (creationSequence >= [toCopy creationSequence])
   {
-    v7 = [(GCKeyboard *)self creationSequence];
-    v6 = v7 > [v4 creationSequence];
+    creationSequence2 = [(GCKeyboard *)self creationSequence];
+    v6 = creationSequence2 > [toCopy creationSequence];
   }
 
   else
@@ -59,8 +59,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GCKeyboard *)self vendorName];
-  v5 = [v3 stringWithFormat:@"<GCKeyboard %p '%@'>", self, v4];
+  vendorName = [(GCKeyboard *)self vendorName];
+  v5 = [v3 stringWithFormat:@"<GCKeyboard %p '%@'>", self, vendorName];
 
   return v5;
 }

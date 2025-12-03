@@ -1,6 +1,6 @@
 @interface HOActivationManager
 - (HOActivationManager)init;
-- (void)_enteredForeground:(id)a3;
+- (void)_enteredForeground:(id)foreground;
 @end
 
 @implementation HOActivationManager
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (void)_enteredForeground:(id)a3
+- (void)_enteredForeground:(id)foreground
 {
   v4 = +[NSDate date];
   [(HOActivationManager *)self setLastEnteredForegroundDate:v4];

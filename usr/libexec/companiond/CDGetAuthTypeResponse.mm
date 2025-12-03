@@ -1,14 +1,14 @@
 @interface CDGetAuthTypeResponse
-- (CDGetAuthTypeResponse)initWithRapportDictionary:(id)a3;
+- (CDGetAuthTypeResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDGetAuthTypeResponse
 
-- (CDGetAuthTypeResponse)initWithRapportDictionary:(id)a3
+- (CDGetAuthTypeResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = CDGetAuthTypeResponse;
   v5 = [(CDGetAuthTypeResponse *)&v9 init];
@@ -59,9 +59,9 @@
 
   v6 = [v3 appendBool:self->_sandboxPurchase withName:@"sandboxPurchase" ifEqualTo:1];
   v7 = [v3 appendInteger:self->_authFlags withName:@"authFlags"];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface SBINAppIntentSystemContext
-- (BOOL)isEqual:(id)a3;
-- (SBINAppIntentSystemContext)initWithPreciseTimestamp:(id)a3 actionSource:(unint64_t)a4;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBINAppIntentSystemContext)initWithPreciseTimestamp:(id)timestamp actionSource:(unint64_t)source;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBINAppIntentSystemContext
 
-- (SBINAppIntentSystemContext)initWithPreciseTimestamp:(id)a3 actionSource:(unint64_t)a4
+- (SBINAppIntentSystemContext)initWithPreciseTimestamp:(id)timestamp actionSource:(unint64_t)source
 {
-  v7 = a3;
+  timestampCopy = timestamp;
   v11.receiver = self;
   v11.super_class = SBINAppIntentSystemContext;
   v8 = [(SBINAppIntentSystemContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_preciseTimestamp, a3);
-    v9->_actionSource = a4;
+    objc_storeStrong(&v8->_preciseTimestamp, timestamp);
+    v9->_actionSource = source;
   }
 
   return v9;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   preciseTimestamp = self->_preciseTimestamp;
-  v5 = a3;
-  v6 = [v5 appendObject:preciseTimestamp withName:@"preciseTimestamp"];
+  formatterCopy = formatter;
+  v6 = [formatterCopy appendObject:preciseTimestamp withName:@"preciseTimestamp"];
   v7 = NSStringFromSBINAppIntentActionSource(self->_actionSource);
-  [v5 appendString:v7 withName:@"actionSource"];
+  [formatterCopy appendString:v7 withName:@"actionSource"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -46,7 +46,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       preciseTimestamp = self->_preciseTimestamp;
       v9 = v7->_preciseTimestamp;
       if (BSEqualObjects())

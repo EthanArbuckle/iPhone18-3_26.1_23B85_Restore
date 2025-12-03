@@ -1,31 +1,31 @@
 @interface CKCustomBlockValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
-- (CKCustomBlockValidator)initWithBlock:(id)a3;
+- (BOOL)validate:(id)validate error:(id *)error;
+- (CKCustomBlockValidator)initWithBlock:(id)block;
 @end
 
 @implementation CKCustomBlockValidator
 
-- (CKCustomBlockValidator)initWithBlock:(id)a3
+- (CKCustomBlockValidator)initWithBlock:(id)block
 {
   v7.receiver = self;
   v7.super_class = CKCustomBlockValidator;
-  v3 = a3;
+  blockCopy = block;
   v4 = [(CKCustomBlockValidator *)&v7 init];
-  objc_msgSend_setBlock_(v4, v5, v3, v7.receiver, v7.super_class);
+  objc_msgSend_setBlock_(v4, v5, blockCopy, v7.receiver, v7.super_class);
 
   return v4;
 }
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
-  v6 = a3;
+  validateCopy = validate;
   v9 = objc_msgSend_block(self, v7, v8);
-  v10 = (v9)[2](v9, v6);
+  v10 = (v9)[2](v9, validateCopy);
 
-  if (a4 && v10)
+  if (error && v10)
   {
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v10 == 0;

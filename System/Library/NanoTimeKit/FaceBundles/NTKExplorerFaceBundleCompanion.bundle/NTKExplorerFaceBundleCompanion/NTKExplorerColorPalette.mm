@@ -24,15 +24,15 @@
   if ([(NTKExplorerColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKExplorerColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKExplorerColorPalette *)self primaryColor];
+    primaryColor = [(NTKExplorerColorPalette *)self primaryColor];
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_handsInlay
@@ -40,22 +40,22 @@
   if ([(NTKExplorerColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKExplorerColorPalette *)self paletteAtIndex:1];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKExplorerColorPalette *)self primaryShiftedColor];
+    primaryColor = [(NTKExplorerColorPalette *)self primaryShiftedColor];
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)tritium_hands
 {
-  v3 = [(NTKExplorerColorPalette *)self configuration];
-  v4 = [v3 colorOption];
-  v5 = [v4 isEqualToString:@"white | gray"];
+  configuration = [(NTKExplorerColorPalette *)self configuration];
+  colorOption = [configuration colorOption];
+  v5 = [colorOption isEqualToString:@"white | gray"];
 
   if (v5)
   {
@@ -73,9 +73,9 @@
 
 - (id)tritium_handsInlay
 {
-  v3 = [(NTKExplorerColorPalette *)self configuration];
-  v4 = [v3 colorOption];
-  [v4 isEqualToString:@"white | gray"];
+  configuration = [(NTKExplorerColorPalette *)self configuration];
+  colorOption = [configuration colorOption];
+  [colorOption isEqualToString:@"white | gray"];
 
   return [(NTKExplorerColorPalette *)self handsInlay];
 }

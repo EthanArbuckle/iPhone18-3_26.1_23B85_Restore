@@ -12,24 +12,24 @@
 + (void)clearVoiceTriggerCount;
 + (void)notifyVoiceTrigger;
 + (void)notifyVoiceTriggeredSiriSessionCancelled;
-+ (void)notifyVoiceTriggeredSiriSessionCancelled:(id)a3;
-+ (void)requestAudioCapture:(double)a3;
-+ (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)a3;
++ (void)notifyVoiceTriggeredSiriSessionCancelled:(id)cancelled;
++ (void)requestAudioCapture:(double)capture;
++ (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)reply;
 + (void)requestForcedSecondChance;
 + (void)requestForcedTriggerEvent;
-+ (void)requestPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4;
-+ (void)requestVoiceTriggerEnabled:(BOOL)a3 forReason:(id)a4;
-+ (void)setCurrentBuiltInRTModelDictionary:(id)a3;
-- (VTStateManager)initWithProperty:(id)a3 callbackWithMessage:(id)a4;
-- (VTStateManager)initWithProperty:(id)a3 callbackWithMessageAndTimestamp:(id)a4;
-- (VTStateManager)initWithProperty:(id)a3 phraseSpotter:(id)a4 enablePolicy:(id)a5 callbackWithMessageAndTimestamp:(id)a6;
-- (void)VTFirstUnlockMonitor:(id)a3 didReceiveFirstUnlock:(BOOL)a4;
++ (void)requestPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout;
++ (void)requestVoiceTriggerEnabled:(BOOL)enabled forReason:(id)reason;
++ (void)setCurrentBuiltInRTModelDictionary:(id)dictionary;
+- (VTStateManager)initWithProperty:(id)property callbackWithMessage:(id)message;
+- (VTStateManager)initWithProperty:(id)property callbackWithMessageAndTimestamp:(id)timestamp;
+- (VTStateManager)initWithProperty:(id)property phraseSpotter:(id)spotter enablePolicy:(id)policy callbackWithMessageAndTimestamp:(id)timestamp;
+- (void)VTFirstUnlockMonitor:(id)monitor didReceiveFirstUnlock:(BOOL)unlock;
 - (void)_initializeXPCService;
-- (void)_notifyStateTransitionToState:(int64_t)a3 withStartTimestamp:(unint64_t)a4;
-- (void)_powerlog:(id)a3;
-- (void)_stateTransitionDidOccur:(BOOL)a3 fromCallback:(BOOL)a4;
-- (void)gestureMonitorDidReceiveSleepGesture:(id)a3;
-- (void)gestureMonitorDidReceiveWakeGesture:(id)a3;
+- (void)_notifyStateTransitionToState:(int64_t)state withStartTimestamp:(unint64_t)timestamp;
+- (void)_powerlog:(id)_powerlog;
+- (void)_stateTransitionDidOccur:(BOOL)occur fromCallback:(BOOL)callback;
+- (void)gestureMonitorDidReceiveSleepGesture:(id)gesture;
+- (void)gestureMonitorDidReceiveWakeGesture:(id)gesture;
 @end
 
 @implementation VTStateManager
@@ -56,9 +56,9 @@
   }
 
   v3 = objc_alloc_init(VTXPCServiceClient);
-  v4 = [(VTXPCServiceClient *)v3 requestCurrentBuiltInRTModelDictionary];
+  requestCurrentBuiltInRTModelDictionary = [(VTXPCServiceClient *)v3 requestCurrentBuiltInRTModelDictionary];
 
-  return v4;
+  return requestCurrentBuiltInRTModelDictionary;
 }
 
 - (void)_initializeXPCService
@@ -80,15 +80,15 @@
   notify_post("com.apple.voicetrigger.XPCRestarted");
 }
 
-- (void)VTFirstUnlockMonitor:(id)a3 didReceiveFirstUnlock:(BOOL)a4
+- (void)VTFirstUnlockMonitor:(id)monitor didReceiveFirstUnlock:(BOOL)unlock
 {
-  if (a4)
+  if (unlock)
   {
     notify_post("com.apple.corespeech.voicetriggerassetchange");
   }
 }
 
-- (void)gestureMonitorDidReceiveSleepGesture:(id)a3
+- (void)gestureMonitorDidReceiveSleepGesture:(id)gesture
 {
   if (!+[VTUtilities isNano])
   {
@@ -98,7 +98,7 @@
   }
 }
 
-- (void)gestureMonitorDidReceiveWakeGesture:(id)a3
+- (void)gestureMonitorDidReceiveWakeGesture:(id)gesture
 {
   if (+[VTUtilities isNano])
   {
@@ -113,23 +113,23 @@
   }
 }
 
-- (void)_powerlog:(id)a3
+- (void)_powerlog:(id)_powerlog
 {
-  v3 = a3;
+  _powerlogCopy = _powerlog;
   if (PLShouldLogRegisteredEvent())
   {
     PLLogRegisteredEvent();
   }
 }
 
-- (void)_notifyStateTransitionToState:(int64_t)a3 withStartTimestamp:(unint64_t)a4
+- (void)_notifyStateTransitionToState:(int64_t)state withStartTimestamp:(unint64_t)timestamp
 {
   v13 = *MEMORY[0x277D85DE8];
   if (self->_callbackWithMessageAndTimestamp)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 2 && !self->_rtModelDownloaded)
+      if (state == 2 && !self->_rtModelDownloaded)
       {
         self->_rtModelDownloaded = 1;
       }
@@ -149,7 +149,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 134349056;
-        v10 = 2;
+        stateCopy = 2;
         _os_log_impl(&dword_223A31000, v7, OS_LOG_TYPE_DEFAULT, "::: Callback with message and timestamp : %{public}ld, 0", &v9, 0xCu);
       }
 
@@ -161,9 +161,9 @@
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134349312;
-      v10 = a3;
+      stateCopy = state;
       v11 = 2050;
-      v12 = a4;
+      timestampCopy = timestamp;
       _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "::: Callback with message and timestamp : %{public}ld, %{public}llu", &v9, 0x16u);
     }
 
@@ -171,18 +171,18 @@
   }
 }
 
-- (void)_stateTransitionDidOccur:(BOOL)a3 fromCallback:(BOOL)a4
+- (void)_stateTransitionDidOccur:(BOOL)occur fromCallback:(BOOL)callback
 {
-  v4 = a4;
-  v5 = a3;
+  callbackCopy = callback;
+  occurCopy = occur;
   v26 = *MEMORY[0x277D85DE8];
-  if (self->_voiceTriggerIsEnabledOnCoreSpeechDaemon != a3)
+  if (self->_voiceTriggerIsEnabledOnCoreSpeechDaemon != occur)
   {
-    self->_voiceTriggerIsEnabledOnCoreSpeechDaemon = a3;
+    self->_voiceTriggerIsEnabledOnCoreSpeechDaemon = occur;
     notify_post("com.apple.voicetrigger.enablePolicyChanged");
   }
 
-  if (v5)
+  if (occurCopy)
   {
     v7 = +[VTPreferences sharedPreferences];
     v8 = [v7 voiceTriggerInCoreSpeech] ^ 1;
@@ -207,7 +207,7 @@
     _os_log_impl(&dword_223A31000, v9, OS_LOG_TYPE_DEFAULT, "VoiceTrigger will %{public}@", v25, 0xCu);
   }
 
-  if (v4 && self->_voiceTriggerIsEnabled == v8)
+  if (callbackCopy && self->_voiceTriggerIsEnabled == v8)
   {
     v11 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -273,7 +273,7 @@
       }
 
       self->_wakeGestureHostTime = v21;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 0;
     }
 
@@ -290,21 +290,21 @@
       }
 
       self->_wakeGestureHostTime = 0;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 1;
       v21 = 0;
     }
 
-    [(VTStateManager *)v19 _notifyStateTransitionToState:v20 withStartTimestamp:v21];
+    [(VTStateManager *)selfCopy2 _notifyStateTransitionToState:v20 withStartTimestamp:v21];
   }
 }
 
-- (VTStateManager)initWithProperty:(id)a3 phraseSpotter:(id)a4 enablePolicy:(id)a5 callbackWithMessageAndTimestamp:(id)a6
+- (VTStateManager)initWithProperty:(id)property phraseSpotter:(id)spotter enablePolicy:(id)policy callbackWithMessageAndTimestamp:(id)timestamp
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  propertyCopy = property;
+  spotterCopy = spotter;
+  policyCopy = policy;
+  timestampCopy = timestamp;
   v47.receiver = self;
   v47.super_class = VTStateManager;
   v14 = [(VTStateManager *)&v47 init];
@@ -358,11 +358,11 @@ LABEL_11:
     v19 = *(v14 + 1);
     *(v14 + 1) = v18;
 
-    v20 = MEMORY[0x223DF24E0](v13);
+    v20 = MEMORY[0x223DF24E0](timestampCopy);
     v21 = *(v14 + 4);
     *(v14 + 4) = v20;
 
-    objc_storeStrong(v14 + 2, a4);
+    objc_storeStrong(v14 + 2, spotter);
     v22 = objc_alloc_init(VTBuiltInRTModel);
     v23 = *(v14 + 3);
     *(v14 + 3) = v22;
@@ -370,9 +370,9 @@ LABEL_11:
     *(v14 + 28) = 0;
     *(v14 + 58) = 0;
     *(v14 + 9) = 0;
-    if (v10)
+    if (propertyCopy)
     {
-      v24 = [v10 objectForKeyedSubscript:@"VoiceTriggerAvailable"];
+      v24 = [propertyCopy objectForKeyedSubscript:@"VoiceTriggerAvailable"];
       v25 = v24;
       if (v24 && [v24 BOOLValue])
       {
@@ -396,9 +396,9 @@ LABEL_11:
     [v14 _initializeXPCService];
     dispatch_async(*(v14 + 1), &__block_literal_global_3739);
     v28 = +[VTPreferences sharedPreferences];
-    v29 = [v28 gestureSubscriptionEnabled];
+    gestureSubscriptionEnabled = [v28 gestureSubscriptionEnabled];
 
-    if (v29)
+    if (gestureSubscriptionEnabled)
     {
       v30 = +[VTGestureMonitor defaultGestureMonitor];
       v31 = *(v14 + 8);
@@ -413,7 +413,7 @@ LABEL_11:
     *(v14 + 11) = v32;
 
     [*(v14 + 11) start];
-    objc_storeStrong(v14 + 5, a5);
+    objc_storeStrong(v14 + 5, policy);
     objc_initWeak(&buf, v14);
     v34 = *(v14 + 5);
     v42[0] = MEMORY[0x277D85DD0];
@@ -432,14 +432,14 @@ LABEL_11:
       }
 
       [v14 _stateTransitionDidOccur:1 fromCallback:0];
-      v36 = [v14 coreSpeechKeepAliveHandler];
-      [v36 voiceTriggerPolicyDidChange:1];
+      coreSpeechKeepAliveHandler = [v14 coreSpeechKeepAliveHandler];
+      [coreSpeechKeepAliveHandler voiceTriggerPolicyDidChange:1];
     }
 
     else
     {
-      v36 = [v14 coreSpeechKeepAliveHandler];
-      [v36 voiceTriggerPolicyDidChange:0];
+      coreSpeechKeepAliveHandler = [v14 coreSpeechKeepAliveHandler];
+      [coreSpeechKeepAliveHandler voiceTriggerPolicyDidChange:0];
     }
 
     v37 = +[VTFirstUnlockMonitor sharedInstance];
@@ -587,10 +587,10 @@ void __94__VTStateManager_initWithProperty_phraseSpotter_enablePolicy_callbackWi
   }
 }
 
-- (VTStateManager)initWithProperty:(id)a3 callbackWithMessageAndTimestamp:(id)a4
+- (VTStateManager)initWithProperty:(id)property callbackWithMessageAndTimestamp:(id)timestamp
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  timestampCopy = timestamp;
   if (+[VTUtilities VTIsHorseman])
   {
     v8 = VTLogContextFacilityVoiceTrigger;
@@ -622,9 +622,9 @@ LABEL_10:
     {
       v13 = [[VTPhraseSpotter alloc] initWithHardwareSampleRate:16000.0];
       v14 = +[VTPolicy defaultVoiceTriggerEnablePolicy];
-      self = [(VTStateManager *)self initWithProperty:v6 phraseSpotter:v13 enablePolicy:v14 callbackWithMessageAndTimestamp:v7];
+      self = [(VTStateManager *)self initWithProperty:propertyCopy phraseSpotter:v13 enablePolicy:v14 callbackWithMessageAndTimestamp:timestampCopy];
 
-      v11 = self;
+      selfCopy = self;
       goto LABEL_12;
     }
 
@@ -638,22 +638,22 @@ LABEL_10:
     }
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_12:
 
-  return v11;
+  return selfCopy;
 }
 
-- (VTStateManager)initWithProperty:(id)a3 callbackWithMessage:(id)a4
+- (VTStateManager)initWithProperty:(id)property callbackWithMessage:(id)message
 {
-  v6 = a4;
+  messageCopy = message;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__VTStateManager_initWithProperty_callbackWithMessage___block_invoke;
   v10[3] = &unk_2784EC918;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(VTStateManager *)self initWithProperty:a3 callbackWithMessageAndTimestamp:v10];
+  v11 = messageCopy;
+  v7 = messageCopy;
+  v8 = [(VTStateManager *)self initWithProperty:property callbackWithMessageAndTimestamp:v10];
 
   return v8;
 }
@@ -661,29 +661,29 @@ LABEL_12:
 + (BOOL)iPhoneShouldStartVoiceTriggerInCoreSpeech
 {
   v2 = +[VTPreferences sharedPreferences];
-  v3 = [v2 voiceTriggerInCoreSpeech];
+  voiceTriggerInCoreSpeech = [v2 voiceTriggerInCoreSpeech];
 
-  if (!v3)
+  if (!voiceTriggerInCoreSpeech)
   {
     return 0;
   }
 
   v4 = +[VTPolicy defaultVoiceTriggerEnablePolicy];
-  v5 = [v4 isEnabled];
+  isEnabled = [v4 isEnabled];
 
-  return v5;
+  return isEnabled;
 }
 
 + (void)notifyVoiceTrigger
 {
   v2 = +[VTPreferences sharedPreferences];
-  v3 = [v2 useSiriActivationSPIForiOS];
+  useSiriActivationSPIForiOS = [v2 useSiriActivationSPIForiOS];
 
-  if (v3)
+  if (useSiriActivationSPIForiOS)
   {
     mach_absolute_time();
     v6 = +[VTPhraseSpotter currentSpotter];
-    v4 = [v6 lastVoiceTriggerEventInfo];
+    lastVoiceTriggerEventInfo = [v6 lastVoiceTriggerEventInfo];
     AFSiriActivationBuiltInMicVoiceTrigger();
   }
 
@@ -723,23 +723,23 @@ void __36__VTStateManager_notifyVoiceTrigger__block_invoke(uint64_t a1, int a2, 
   }
 }
 
-+ (void)setCurrentBuiltInRTModelDictionary:(id)a3
++ (void)setCurrentBuiltInRTModelDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[VTStateManager _serviceClient];
-  [v4 setCurrentBuiltInRTModelDictionary:v3];
+  [v4 setCurrentBuiltInRTModelDictionary:dictionaryCopy];
 }
 
-+ (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)a3
++ (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = dispatch_semaphore_create(0);
   v5 = +[VTStateManager _serviceClient];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__VTStateManager_requestCurrentVoiceTriggerAssetDictionaryWithReply___block_invoke;
   v9[3] = &unk_2784EC940;
-  v6 = v3;
+  v6 = replyCopy;
   v11 = v6;
   v7 = v4;
   v10 = v7;
@@ -763,47 +763,47 @@ intptr_t __69__VTStateManager_requestCurrentVoiceTriggerAssetDictionaryWithReply
 + (id)requestCurrentVoiceTriggerAssetDictionary
 {
   v2 = objc_alloc_init(VTXPCServiceClient);
-  v3 = [(VTXPCServiceClient *)v2 requestCurrentVoiceTriggerAssetDictionary];
+  requestCurrentVoiceTriggerAssetDictionary = [(VTXPCServiceClient *)v2 requestCurrentVoiceTriggerAssetDictionary];
 
-  return v3;
+  return requestCurrentVoiceTriggerAssetDictionary;
 }
 
-+ (void)requestAudioCapture:(double)a3
++ (void)requestAudioCapture:(double)capture
 {
   v4 = +[VTStateManager _serviceClient];
-  [v4 requestAudioCapture:a3];
+  [v4 requestAudioCapture:capture];
 }
 
 + (id)firstChanceTriggeredDate
 {
   v2 = +[VTStateManager _serviceClient];
-  v3 = [v2 getFirstChanceTriggeredDate];
+  getFirstChanceTriggeredDate = [v2 getFirstChanceTriggeredDate];
 
-  return v3;
+  return getFirstChanceTriggeredDate;
 }
 
 + (id)firstChanceVTEventInfo
 {
   v2 = +[VTStateManager _serviceClient];
-  v3 = [v2 getFirstChanceVTEventInfo];
+  getFirstChanceVTEventInfo = [v2 getFirstChanceVTEventInfo];
 
-  return v3;
+  return getFirstChanceVTEventInfo;
 }
 
 + (id)firstChanceAudioBuffer
 {
   v2 = +[VTStateManager _serviceClient];
-  v3 = [v2 getFirstChanceAudioBuffer];
+  getFirstChanceAudioBuffer = [v2 getFirstChanceAudioBuffer];
 
-  return v3;
+  return getFirstChanceAudioBuffer;
 }
 
 + (int64_t)getVoiceTriggerCount
 {
   v2 = +[VTStateManager _serviceClient];
-  v3 = [v2 getVoiceTriggerCount];
+  getVoiceTriggerCount = [v2 getVoiceTriggerCount];
 
-  return v3;
+  return getVoiceTriggerCount;
 }
 
 + (void)clearVoiceTriggerCount
@@ -847,20 +847,20 @@ intptr_t __69__VTStateManager_requestCurrentVoiceTriggerAssetDictionaryWithReply
   [v2 notifySecondChanceRequest];
 }
 
-+ (void)notifyVoiceTriggeredSiriSessionCancelled:(id)a3
++ (void)notifyVoiceTriggeredSiriSessionCancelled:(id)cancelled
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  cancelledCopy = cancelled;
   v4 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = cancelledCopy;
     _os_log_impl(&dword_223A31000, v4, OS_LOG_TYPE_DEFAULT, "::: Received voice triggered siri session cancellation with reason: %{public}@", &v6, 0xCu);
   }
 
   v5 = +[VTStateManager _serviceClient];
-  [v5 notifyVoiceTriggeredSiriSessionCancelled:v3];
+  [v5 notifyVoiceTriggeredSiriSessionCancelled:cancelledCopy];
 }
 
 + (void)notifyVoiceTriggeredSiriSessionCancelled
@@ -873,30 +873,30 @@ intptr_t __69__VTStateManager_requestCurrentVoiceTriggerAssetDictionaryWithReply
   }
 
   v3 = +[VTPreferences sharedPreferences];
-  v4 = [v3 corespeechDaemonEnabled];
+  corespeechDaemonEnabled = [v3 corespeechDaemonEnabled];
 
-  if (v4)
+  if (corespeechDaemonEnabled)
   {
-    v5 = [getCSVoiceTriggerXPCServiceClass() sharedService];
-    [v5 notifyVoiceTriggeredSiriSessionCancelled];
+    sharedService = [getCSVoiceTriggerXPCServiceClass() sharedService];
+    [sharedService notifyVoiceTriggeredSiriSessionCancelled];
   }
 
   else
   {
-    v5 = +[VTStateManager _serviceClient];
-    [v5 notifyVoiceTriggeredSiriSessionCancelled:@"Unknown"];
+    sharedService = +[VTStateManager _serviceClient];
+    [sharedService notifyVoiceTriggeredSiriSessionCancelled:@"Unknown"];
   }
 }
 
-+ (void)requestPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4
++ (void)requestPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout
 {
-  v5 = a3;
+  bypassingCopy = bypassing;
   v15 = *MEMORY[0x277D85DE8];
   v6 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"DO NOT";
-    if (v5)
+    if (bypassingCopy)
     {
       v7 = @"DO";
     }
@@ -904,14 +904,14 @@ intptr_t __69__VTStateManager_requestCurrentVoiceTriggerAssetDictionaryWithReply
     v11 = 138543618;
     v12 = v7;
     v13 = 2050;
-    v14 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "::: Received request to %{public}@ bypass phrase spotter with timeout: %{public}f", &v11, 0x16u);
   }
 
   v8 = +[VTPreferences sharedPreferences];
-  v9 = [v8 corespeechDaemonEnabled];
+  corespeechDaemonEnabled = [v8 corespeechDaemonEnabled];
 
-  if (v9)
+  if (corespeechDaemonEnabled)
   {
     [getCSVoiceTriggerXPCServiceClass() sharedService];
   }
@@ -921,19 +921,19 @@ intptr_t __69__VTStateManager_requestCurrentVoiceTriggerAssetDictionaryWithReply
     +[VTStateManager _serviceClient];
   }
   v10 = ;
-  [v10 setPhraseSpotterBypassing:v5 timeout:a4];
+  [v10 setPhraseSpotterBypassing:bypassingCopy timeout:timeout];
 }
 
-+ (void)requestVoiceTriggerEnabled:(BOOL)a3 forReason:(id)a4
++ (void)requestVoiceTriggerEnabled:(BOOL)enabled forReason:(id)reason
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  reasonCopy = reason;
   v6 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"DISABLE";
-    if (v4)
+    if (enabledCopy)
     {
       v7 = @"ENABLE";
     }
@@ -941,14 +941,14 @@ intptr_t __69__VTStateManager_requestCurrentVoiceTriggerAssetDictionaryWithReply
     v11 = 138543618;
     v12 = v7;
     v13 = 2114;
-    v14 = v5;
+    v14 = reasonCopy;
     _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "::: Received request to %{public}@ voice trigger - Reason: %{public}@)", &v11, 0x16u);
   }
 
   v8 = +[VTPreferences sharedPreferences];
-  v9 = [v8 corespeechDaemonEnabled];
+  corespeechDaemonEnabled = [v8 corespeechDaemonEnabled];
 
-  if (v9)
+  if (corespeechDaemonEnabled)
   {
     [getCSVoiceTriggerXPCServiceClass() sharedService];
   }
@@ -958,7 +958,7 @@ intptr_t __69__VTStateManager_requestCurrentVoiceTriggerAssetDictionaryWithReply
     +[VTStateManager _serviceClient];
   }
   v10 = ;
-  [v10 enableVoiceTrigger:v4 withAssertion:v5];
+  [v10 enableVoiceTrigger:enabledCopy withAssertion:reasonCopy];
 }
 
 uint64_t __32__VTStateManager__serviceClient__block_invoke()

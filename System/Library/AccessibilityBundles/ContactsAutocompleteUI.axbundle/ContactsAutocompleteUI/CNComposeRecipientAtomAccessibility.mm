@@ -1,5 +1,5 @@
 @interface CNComposeRecipientAtomAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsScreenLocked;
 - (BOOL)_axMFAddressIsSafeDomain;
 - (id)_accessibilityElementHelp;
@@ -10,24 +10,24 @@
 
 @implementation CNComposeRecipientAtomAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNComposeRecipientAtom" isKindOfClass:@"CNAtomView"];
-  [v3 validateClass:@"CNAtomView" hasInstanceMethod:@"presentationOptions" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CNComposeRecipient" hasInstanceMethod:@"displayString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipient" hasInstanceMethod:@"compositeName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipient" hasInstanceMethod:@"normalizedAddress" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipientAtom" hasInstanceVariable:@"_recipient" withType:"CNComposeRecipient"];
-  [v3 validateClass:@"CNComposeRecipient" hasInstanceMethod:@"address" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NSString" hasInstanceMethod:@"mf_addressDomain" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAtomView" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNComposeRecipientAtom" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"CNComposeRecipientAtomDelegate" hasRequiredInstanceMethod:@"selectComposeRecipientAtom:"];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasProperty:@"delegate" withType:"@"];
-  [v3 validateClass:@"CNComposeHeaderView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipientTextView" isKindOfClass:@"CNComposeHeaderView"];
-  [v3 validateProtocol:@"CNComposeRecipientTextViewDelegate" hasOptionalInstanceMethod:@"composeRecipientView:disambiguateRecipientForAtom:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNComposeRecipientAtom" isKindOfClass:@"CNAtomView"];
+  [validationsCopy validateClass:@"CNAtomView" hasInstanceMethod:@"presentationOptions" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipient" hasInstanceMethod:@"displayString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipient" hasInstanceMethod:@"compositeName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipient" hasInstanceMethod:@"normalizedAddress" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientAtom" hasInstanceVariable:@"_recipient" withType:"CNComposeRecipient"];
+  [validationsCopy validateClass:@"CNComposeRecipient" hasInstanceMethod:@"address" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NSString" hasInstanceMethod:@"mf_addressDomain" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAtomView" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientAtom" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"CNComposeRecipientAtomDelegate" hasRequiredInstanceMethod:@"selectComposeRecipientAtom:"];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasProperty:@"delegate" withType:"@"];
+  [validationsCopy validateClass:@"CNComposeHeaderView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" isKindOfClass:@"CNComposeHeaderView"];
+  [validationsCopy validateProtocol:@"CNComposeRecipientTextViewDelegate" hasOptionalInstanceMethod:@"composeRecipientView:disambiguateRecipientForAtom:"];
 }
 
 - (id)accessibilityHint
@@ -71,14 +71,14 @@
   v9 = __UIAXStringForVariables();
 
   v10 = [(CNComposeRecipientAtomAccessibility *)self safeValueForKey:@"presentationOptions", v8, @"__AXStringForVariablesSentinel"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
   v12 = @"address.madrid.failure";
-  if (v11 <= 63)
+  if (intValue <= 63)
   {
-    if (v11 != 1)
+    if (intValue != 1)
     {
-      if (v11 != 4)
+      if (intValue != 4)
       {
         goto LABEL_13;
       }
@@ -89,7 +89,7 @@
     goto LABEL_12;
   }
 
-  if (v11 == 64 || v11 == 0x20000)
+  if (intValue == 64 || intValue == 0x20000)
   {
 LABEL_12:
     v16 = accessibilityLocalizedString(v12);
@@ -186,14 +186,14 @@ void __65__CNComposeRecipientAtomAccessibility_accessibilityCustomActions__block
 {
   v2 = [(CNComposeRecipientAtomAccessibility *)self safeValueForKey:@"_recipient"];
   v3 = [v2 safeStringForKey:@"address"];
-  v4 = [v3 mf_addressDomain];
+  mf_addressDomain = [v3 mf_addressDomain];
 
-  v5 = [MEMORY[0x29EDC58E0] sharedConnection];
-  v6 = [v5 managedEmailDomains];
+  mEMORY[0x29EDC58E0] = [MEMORY[0x29EDC58E0] sharedConnection];
+  managedEmailDomains = [mEMORY[0x29EDC58E0] managedEmailDomains];
 
-  if (v6)
+  if (managedEmailDomains)
   {
-    v7 = [v6 containsObject:v4];
+    v7 = [managedEmailDomains containsObject:mf_addressDomain];
   }
 
   else
@@ -206,8 +206,8 @@ void __65__CNComposeRecipientAtomAccessibility_accessibilityCustomActions__block
 
 - (BOOL)_axIsScreenLocked
 {
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  v3 = [v2 isScreenLockedWithPasscode:0];
+  server = [MEMORY[0x29EDBDFA8] server];
+  v3 = [server isScreenLockedWithPasscode:0];
 
   return v3;
 }

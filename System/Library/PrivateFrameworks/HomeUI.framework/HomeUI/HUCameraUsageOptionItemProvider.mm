@@ -1,23 +1,23 @@
 @interface HUCameraUsageOptionItemProvider
 - (HUCameraUsageOptionItemProvider)init;
-- (HUCameraUsageOptionItemProvider)initWithPresenceEventType:(unint64_t)a3 cameraProfiles:(id)a4;
+- (HUCameraUsageOptionItemProvider)initWithPresenceEventType:(unint64_t)type cameraProfiles:(id)profiles;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HUCameraUsageOptionItemProvider
 
-- (HUCameraUsageOptionItemProvider)initWithPresenceEventType:(unint64_t)a3 cameraProfiles:(id)a4
+- (HUCameraUsageOptionItemProvider)initWithPresenceEventType:(unint64_t)type cameraProfiles:(id)profiles
 {
-  v6 = a4;
+  profilesCopy = profiles;
   v14.receiver = self;
   v14.super_class = HUCameraUsageOptionItemProvider;
   v7 = [(HFItemProvider *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_presenceEventType = a3;
-    v9 = [v6 copy];
+    v7->_presenceEventType = type;
+    v9 = [profilesCopy copy];
     cameraProfiles = v8->_cameraProfiles;
     v8->_cameraProfiles = v9;
 
@@ -31,9 +31,9 @@
 
 - (HUCameraUsageOptionItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithPresenceEventType_cameraProfiles_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUCameraUsageOptionItemProvider.m" lineNumber:101 description:{@"%s is unavailable; use %@ instead", "-[HUCameraUsageOptionItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraUsageOptionItemProvider.m" lineNumber:101 description:{@"%s is unavailable; use %@ instead", "-[HUCameraUsageOptionItemProvider init]", v5}];
 
   return 0;
 }
@@ -146,8 +146,8 @@ id __46__HUCameraUsageOptionItemProvider_reloadItems__block_invoke_5(uint64_t a1
 {
   v5.receiver = self;
   v5.super_class = HUCameraUsageOptionItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:*MEMORY[0x277D13B28]];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:*MEMORY[0x277D13B28]];
 
   return v3;
 }

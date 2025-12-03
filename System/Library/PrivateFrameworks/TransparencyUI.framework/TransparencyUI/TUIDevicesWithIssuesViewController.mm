@@ -1,28 +1,28 @@
 @interface TUIDevicesWithIssuesViewController
-- (TUIDevicesWithIssuesViewController)initWithAccountManager:(id)a3 devicesWithIssuesIdentifiers:(id)a4;
+- (TUIDevicesWithIssuesViewController)initWithAccountManager:(id)manager devicesWithIssuesIdentifiers:(id)identifiers;
 - (id)specifiers;
-- (void)specifierProvider:(id)a3 didFinishLoadingSpecifier:(id)a4;
-- (void)specifierProvider:(id)a3 showViewController:(id)a4;
-- (void)specifierProvider:(id)a3 willBeginLoadingSpecifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)validateDataclassAccessForProvider:(id)a3 specifier:(id)a4 completion:(id)a5;
+- (void)specifierProvider:(id)provider didFinishLoadingSpecifier:(id)specifier;
+- (void)specifierProvider:(id)provider showViewController:(id)controller;
+- (void)specifierProvider:(id)provider willBeginLoadingSpecifier:(id)specifier;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)validateDataclassAccessForProvider:(id)provider specifier:(id)specifier completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation TUIDevicesWithIssuesViewController
 
-- (TUIDevicesWithIssuesViewController)initWithAccountManager:(id)a3 devicesWithIssuesIdentifiers:(id)a4
+- (TUIDevicesWithIssuesViewController)initWithAccountManager:(id)manager devicesWithIssuesIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  identifiersCopy = identifiers;
   v12.receiver = self;
   v12.super_class = TUIDevicesWithIssuesViewController;
   v9 = [(TUIDevicesWithIssuesViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeStrong(&v10->_devicesWithIssuesIdentifiers, a4);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeStrong(&v10->_devicesWithIssuesIdentifiers, identifiers);
   }
 
   return v10;
@@ -34,51 +34,51 @@
   v31.receiver = self;
   v31.super_class = TUIDevicesWithIssuesViewController;
   [(TUIDevicesWithIssuesViewController *)&v31 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(TUIDevicesWithIssuesViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(TUIDevicesWithIssuesViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   v5 = *MEMORY[0x277D3FC60];
   [*(&self->super.super.super.super.super.isa + v5) setClipsToBounds:1];
-  v6 = [*(&self->super.super.super.super.super.isa + v5) layer];
-  [v6 setCornerRadius:10.0];
+  layer = [*(&self->super.super.super.super.super.isa + v5) layer];
+  [layer setCornerRadius:10.0];
 
   [*(&self->super.super.super.super.super.isa + v5) setScrollEnabled:0];
   [*(&self->super.super.super.super.super.isa + v5) _setTopPadding:0.0];
   [*(&self->super.super.super.super.super.isa + v5) _setBottomPadding:0.0];
   [*(&self->super.super.super.super.super.isa + v5) setSectionHeaderHeight:0.0];
   [*(&self->super.super.super.super.super.isa + v5) setSectionFooterHeight:0.0];
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [*(&self->super.super.super.super.super.isa + v5) setBackgroundColor:v7];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [*(&self->super.super.super.super.super.isa + v5) setBackgroundColor:clearColor2];
 
   [*(&self->super.super.super.super.super.isa + v5) setTranslatesAutoresizingMaskIntoConstraints:0];
   v23 = MEMORY[0x277CCAAD0];
-  v29 = [*(&self->super.super.super.super.super.isa + v5) leadingAnchor];
-  v30 = [(TUIDevicesWithIssuesViewController *)self view];
-  v28 = [v30 leadingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  leadingAnchor = [*(&self->super.super.super.super.super.isa + v5) leadingAnchor];
+  view2 = [(TUIDevicesWithIssuesViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[0] = v27;
-  v25 = [*(&self->super.super.super.super.super.isa + v5) trailingAnchor];
-  v26 = [(TUIDevicesWithIssuesViewController *)self view];
-  v24 = [v26 trailingAnchor];
-  v22 = [v25 constraintEqualToAnchor:v24];
+  trailingAnchor = [*(&self->super.super.super.super.super.isa + v5) trailingAnchor];
+  view3 = [(TUIDevicesWithIssuesViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[1] = v22;
-  v21 = [*(&self->super.super.super.super.super.isa + v5) topAnchor];
-  v8 = [(TUIDevicesWithIssuesViewController *)self view];
-  v9 = [v8 topAnchor];
-  v10 = [v21 constraintEqualToAnchor:v9];
+  topAnchor = [*(&self->super.super.super.super.super.isa + v5) topAnchor];
+  view4 = [(TUIDevicesWithIssuesViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[2] = v10;
-  v11 = [*(&self->super.super.super.super.super.isa + v5) bottomAnchor];
-  v12 = [(TUIDevicesWithIssuesViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  bottomAnchor = [*(&self->super.super.super.super.super.isa + v5) bottomAnchor];
+  view5 = [(TUIDevicesWithIssuesViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:4];
   [v23 activateConstraints:v15];
 
-  v16 = [*(&self->super.super.super.super.super.isa + v5) heightAnchor];
+  heightAnchor = [*(&self->super.super.super.super.super.isa + v5) heightAnchor];
   [*(&self->super.super.super.super.super.isa + v5) contentSize];
-  v18 = [v16 constraintEqualToConstant:v17];
+  v18 = [heightAnchor constraintEqualToConstant:v17];
   tableViewHeightConstraint = self->_tableViewHeightConstraint;
   self->_tableViewHeightConstraint = v18;
 
@@ -86,11 +86,11 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v16 = a4;
+  cellCopy = cell;
   deviceSpecifierProvider = self->_deviceSpecifierProvider;
-  v8 = a5;
+  pathCopy = path;
   if ([(TUIDevicesWithIssuesSpecifierProvider *)deviceSpecifierProvider devicesWithIssuesCount])
   {
     [MEMORY[0x277D75348] secondarySystemBackgroundColor];
@@ -101,17 +101,17 @@
     [MEMORY[0x277D75348] clearColor];
   }
   v9 = ;
-  [v16 setBackgroundColor:v9];
+  [cellCopy setBackgroundColor:v9];
 
-  v10 = [v8 row];
+  v10 = [pathCopy row];
   v11 = *MEMORY[0x277D3FC60];
   v12 = *(&self->super.super.super.super.super.isa + v11);
-  v13 = [v8 section];
+  section = [pathCopy section];
 
-  if (v10 == [v12 numberOfRowsInSection:v13] - 1)
+  if (v10 == [v12 numberOfRowsInSection:section] - 1)
   {
     [*(&self->super.super.super.super.super.isa + v11) bounds];
-    [v16 setSeparatorInset:{0.0, 0.0, 0.0, v14}];
+    [cellCopy setSeparatorInset:{0.0, 0.0, 0.0, v14}];
   }
 
   [*(&self->super.super.super.super.super.isa + v11) layoutIfNeeded];
@@ -125,16 +125,16 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = [[TUIDevicesWithIssuesSpecifierProvider alloc] initWithAccountManager:self->_accountManager devicesWithIssuesIdentifiers:self->_devicesWithIssuesIdentifiers];
     deviceSpecifierProvider = self->_deviceSpecifierProvider;
     self->_deviceSpecifierProvider = v6;
 
     [(TUIDevicesWithIssuesSpecifierProvider *)self->_deviceSpecifierProvider setDelegate:self];
-    v8 = [(TUIDevicesWithIssuesSpecifierProvider *)self->_deviceSpecifierProvider specifiers];
-    [v5 addObjectsFromArray:v8];
+    specifiers = [(TUIDevicesWithIssuesSpecifierProvider *)self->_deviceSpecifierProvider specifiers];
+    [array addObjectsFromArray:specifiers];
 
-    v9 = [v5 copy];
+    v9 = [array copy];
     v10 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v9;
 
@@ -144,27 +144,27 @@
   return v4;
 }
 
-- (void)specifierProvider:(id)a3 showViewController:(id)a4
+- (void)specifierProvider:(id)provider showViewController:(id)controller
 {
-  v7 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [(TUIDevicesWithIssuesViewController *)self presentViewController:v6 animated:1 completion:0];
+    [(TUIDevicesWithIssuesViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    [(TUIDevicesWithIssuesViewController *)self showViewController:v6 sender:v7];
+    [(TUIDevicesWithIssuesViewController *)self showViewController:controllerCopy sender:providerCopy];
   }
 }
 
-- (void)specifierProvider:(id)a3 willBeginLoadingSpecifier:(id)a4
+- (void)specifierProvider:(id)provider willBeginLoadingSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_16 != -1)
   {
     [TUIDevicesWithIssuesViewController specifierProvider:willBeginLoadingSpecifier:];
@@ -185,10 +185,10 @@ uint64_t __82__TUIDevicesWithIssuesViewController_specifierProvider_willBeginLoa
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)specifierProvider:(id)a3 didFinishLoadingSpecifier:(id)a4
+- (void)specifierProvider:(id)provider didFinishLoadingSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_16 != -1)
   {
     [TUIDevicesWithIssuesViewController specifierProvider:didFinishLoadingSpecifier:];
@@ -216,11 +216,11 @@ uint64_t __89__TUIDevicesWithIssuesViewController_reloadSpecifiersForProvider_ol
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)validateDataclassAccessForProvider:(id)a3 specifier:(id)a4 completion:(id)a5
+- (void)validateDataclassAccessForProvider:(id)provider specifier:(id)specifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  specifierCopy = specifier;
+  completionCopy = completion;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_16 != -1)
   {
     [TUIDevicesWithIssuesViewController validateDataclassAccessForProvider:specifier:completion:];

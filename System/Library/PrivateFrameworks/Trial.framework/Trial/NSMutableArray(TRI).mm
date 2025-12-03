@@ -7,12 +7,12 @@
 
 - (BOOL)triMoveFirstItemToFrontPassingTest:()TRI
 {
-  v2 = [a1 indexOfObjectPassingTest:?];
+  v2 = [self indexOfObjectPassingTest:?];
   if (v2 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [a1 objectAtIndexedSubscript:v2];
-    [a1 removeObjectAtIndex:v2];
-    [a1 insertObject:v3 atIndex:0];
+    v3 = [self objectAtIndexedSubscript:v2];
+    [self removeObjectAtIndex:v2];
+    [self insertObject:v3 atIndex:0];
   }
 
   return v2 != 0x7FFFFFFFFFFFFFFFLL;
@@ -20,10 +20,10 @@
 
 - (BOOL)triRemoveFirstItemPassingTest:()TRI
 {
-  v2 = [a1 indexOfObjectPassingTest:?];
+  v2 = [self indexOfObjectPassingTest:?];
   if (v2 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a1 removeObjectAtIndex:v2];
+    [self removeObjectAtIndex:v2];
   }
 
   return v2 != 0x7FFFFFFFFFFFFFFFLL;

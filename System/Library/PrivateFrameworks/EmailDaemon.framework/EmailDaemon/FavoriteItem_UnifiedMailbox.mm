@@ -1,9 +1,9 @@
 @interface FavoriteItem_UnifiedMailbox
 - (BOOL)acceptsMessageTransfers;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isVisible;
-- (FavoriteItem_UnifiedMailbox)initWithDictionary:(id)a3;
-- (FavoriteItem_UnifiedMailbox)initWithMailboxType:(int64_t)a3;
+- (FavoriteItem_UnifiedMailbox)initWithDictionary:(id)dictionary;
+- (FavoriteItem_UnifiedMailbox)initWithMailboxType:(int64_t)type;
 - (id)analyticsKey;
 - (id)description;
 - (id)dictionaryRepresentation;
@@ -16,46 +16,46 @@
 
 @implementation FavoriteItem_UnifiedMailbox
 
-- (FavoriteItem_UnifiedMailbox)initWithMailboxType:(int64_t)a3
+- (FavoriteItem_UnifiedMailbox)initWithMailboxType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = FavoriteItem_UnifiedMailbox;
   result = [(FavoriteItem *)&v5 initWithType:4];
   if (result)
   {
-    result->_mailboxType = a3;
+    result->_mailboxType = type;
   }
 
   return result;
 }
 
-- (FavoriteItem_UnifiedMailbox)initWithDictionary:(id)a3
+- (FavoriteItem_UnifiedMailbox)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = FavoriteItem_UnifiedMailbox;
-  v5 = [(FavoriteItem *)&v8 initWithDictionary:v4];
+  v5 = [(FavoriteItem *)&v8 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"mailboxType"];
+    v6 = [dictionaryCopy objectForKey:@"mailboxType"];
     v5->_mailboxType = [v6 integerValue];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_mailboxType == v5->_mailboxType;
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_mailboxType == v5->_mailboxType;
   }
 
   return v6;
@@ -88,8 +88,8 @@
 
 - (id)itemURLString
 {
-  v2 = [(FavoriteItem_UnifiedMailbox *)self itemID];
-  v3 = [NSString stringWithFormat:@"favoriteitem://unifiedmailbox/%@", v2];
+  itemID = [(FavoriteItem_UnifiedMailbox *)self itemID];
+  v3 = [NSString stringWithFormat:@"favoriteitem://unifiedmailbox/%@", itemID];
 
   return v3;
 }
@@ -142,28 +142,28 @@
 - (BOOL)isVisible
 {
   v2 = sub_100027C70();
-  v3 = [v2 accountsProvider];
-  v4 = [v3 isDisplayingMultipleAccounts];
+  accountsProvider = [v2 accountsProvider];
+  isDisplayingMultipleAccounts = [accountsProvider isDisplayingMultipleAccounts];
 
-  return v4;
+  return isDisplayingMultipleAccounts;
 }
 
 - (BOOL)acceptsMessageTransfers
 {
-  v2 = [(FavoriteItem_UnifiedMailbox *)self mailboxType];
+  mailboxType = [(FavoriteItem_UnifiedMailbox *)self mailboxType];
 
-  return [MFMailboxUid typeIsValidTransferDestination:v2];
+  return [MFMailboxUid typeIsValidTransferDestination:mailboxType];
 }
 
 - (id)dictionaryRepresentation
 {
   v6.receiver = self;
   v6.super_class = FavoriteItem_UnifiedMailbox;
-  v3 = [(FavoriteItem *)&v6 dictionaryRepresentation];
+  dictionaryRepresentation = [(FavoriteItem *)&v6 dictionaryRepresentation];
   v4 = [NSNumber numberWithInteger:self->_mailboxType];
-  [v3 setObject:v4 forKey:@"mailboxType"];
+  [dictionaryRepresentation setObject:v4 forKey:@"mailboxType"];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)displayName
@@ -358,8 +358,8 @@ LABEL_14:
   }
 
   v22 = objc_opt_class();
-  v23 = [(FavoriteItem_UnifiedMailbox *)self displayName];
-  v24 = [NSString stringWithFormat:@"<%@: %p mailboxType = %@; displayName = %@>", v22, self, v21, v23];;
+  displayName = [(FavoriteItem_UnifiedMailbox *)self displayName];
+  v24 = [NSString stringWithFormat:@"<%@: %p mailboxType = %@; displayName = %@>", v22, self, v21, displayName];;
 
   return v24;
 }

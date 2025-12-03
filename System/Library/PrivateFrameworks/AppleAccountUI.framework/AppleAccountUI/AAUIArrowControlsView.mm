@@ -1,38 +1,38 @@
 @interface AAUIArrowControlsView
-+ (double)defaultHeightForOrientation:(int64_t)a3;
-+ (double)defaultWidthForOrientation:(int64_t)a3;
-- (AAUIArrowControlsView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_arrowButtonWasTapped:(id)a3;
++ (double)defaultHeightForOrientation:(int64_t)orientation;
++ (double)defaultWidthForOrientation:(int64_t)orientation;
+- (AAUIArrowControlsView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_arrowButtonWasTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setInterfaceOrientation:(int64_t)a3;
+- (void)setInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation AAUIArrowControlsView
 
-+ (double)defaultHeightForOrientation:(int64_t)a3
++ (double)defaultHeightForOrientation:(int64_t)orientation
 {
-  v3 = _AAUIImageForButtonDirection(-1, a3 != 0);
+  v3 = _AAUIImageForButtonDirection(-1, orientation != 0);
   [v3 size];
   v5 = v4;
 
   return v5;
 }
 
-+ (double)defaultWidthForOrientation:(int64_t)a3
++ (double)defaultWidthForOrientation:(int64_t)orientation
 {
-  v3 = _AAUIImageForButtonDirection(1, a3 != 0);
+  v3 = _AAUIImageForButtonDirection(1, orientation != 0);
   [v3 size];
   v5 = v4 + v4;
 
   return v5;
 }
 
-- (AAUIArrowControlsView)initWithFrame:(CGRect)a3
+- (AAUIArrowControlsView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = AAUIArrowControlsView;
-  v3 = [(AAUIArrowControlsView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AAUIArrowControlsView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC738] buttonWithType:1];
@@ -56,10 +56,10 @@
   return v3;
 }
 
-- (void)_arrowButtonWasTapped:(id)a3
+- (void)_arrowButtonWasTapped:(id)tapped
 {
-  v4 = a3;
-  if (self->_upButton == v4)
+  tappedCopy = tapped;
+  if (self->_upButton == tappedCopy)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -67,7 +67,7 @@
     }
   }
 
-  else if (self->_downButton == v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  else if (self->_downButton == tappedCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [(AAUIArrowControlsViewDelegate *)self->_delegate arrowControlsView:self didTapDownButton:self->_upButton];
   }
@@ -80,35 +80,35 @@
   [(UIButton *)self->_upButton frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(UIButton *)self->_upButton imageView];
-  v8 = [v7 image];
-  [v8 size];
+  imageView = [(UIButton *)self->_upButton imageView];
+  image = [imageView image];
+  [image size];
   v10 = v9 + 16.0;
 
-  v11 = [(UIButton *)self->_upButton imageView];
-  v12 = [v11 image];
-  [v12 size];
+  imageView2 = [(UIButton *)self->_upButton imageView];
+  image2 = [imageView2 image];
+  [image2 size];
   v14 = v13 + 24.0;
 
   [(UIButton *)self->_upButton setFrame:v4, v6, v10, v14];
   [(UIButton *)self->_downButton frame];
   v16 = v15;
-  v17 = [(UIButton *)self->_downButton imageView];
-  v18 = [v17 image];
-  [v18 size];
+  imageView3 = [(UIButton *)self->_downButton imageView];
+  image3 = [imageView3 image];
+  [image3 size];
   v20 = v19 + 16.0;
 
-  v21 = [(UIButton *)self->_downButton imageView];
-  v22 = [v21 image];
-  [v22 size];
+  imageView4 = [(UIButton *)self->_downButton imageView];
+  image4 = [imageView4 image];
+  [image4 size];
   v24 = v23 + 24.0;
 
   [(UIButton *)self->_upButton frame];
   MaxX = CGRectGetMaxX(v45);
-  v26 = [MEMORY[0x1E69DC938] currentDevice];
-  v27 = [v26 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v27 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v28 = 18.0;
   }
@@ -124,10 +124,10 @@
   v32 = v31;
   [(UIButton *)self->_upButton frame];
   v34 = v33;
-  v35 = [MEMORY[0x1E69DC938] currentDevice];
-  v36 = [v35 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v36 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v37 = 18.0;
   }
@@ -151,14 +151,14 @@
   [(AAUIArrowControlsView *)self setFrame:v30, v32, v40, v43];
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3
+- (void)setInterfaceOrientation:(int64_t)orientation
 {
-  if (self->_interfaceOrientation != a3)
+  if (self->_interfaceOrientation != orientation)
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v8 = (a3 - 3) < 2 && (v6 & 0xFFFFFFFFFFFFFFFBLL) != 1;
+    v8 = (orientation - 3) < 2 && (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1;
     upButton = self->_upButton;
     v10 = _AAUIImageForButtonDirection(1, v8);
     [(UIButton *)upButton setImage:v10 forState:0];
@@ -169,16 +169,16 @@
     [(UIButton *)downButton setImage:v12 forState:0];
 
     [(UIButton *)self->_downButton sizeToFit];
-    self->_interfaceOrientation = a3;
+    self->_interfaceOrientation = orientation;
   }
 
   [(AAUIArrowControlsView *)self layoutSubviews];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(UIButton *)self->_downButton frame];
   v8 = v7;
   v10 = v9;

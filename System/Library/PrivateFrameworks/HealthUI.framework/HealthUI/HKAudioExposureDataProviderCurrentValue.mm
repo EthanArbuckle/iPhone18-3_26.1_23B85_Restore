@@ -1,49 +1,49 @@
 @interface HKAudioExposureDataProviderCurrentValue
-- (HKAudioExposureDataProviderCurrentValue)initWithLEQQuantity:(id)a3 secondsListened:(double)a4 daysAggregated:(int64_t)a5 date:(id)a6;
-- (id)_attributedSymbolForClassification:(unint64_t)a3 font:(id)a4;
-- (id)attributedStringWithDisplayType:(id)a3 unitController:(id)a4 valueFont:(id)a5 unitFont:(id)a6 dateCache:(id)a7;
-- (id)attributedSupplementaryStringWithDisplayType:(id)a3 unitController:(id)a4 font:(id)a5;
-- (id)lastUpdatedDescriptionWithDateCache:(id)a3;
-- (id)lastUpdatedShortDescriptionWithDateCache:(id)a3;
-- (id)stringWithDisplayType:(id)a3 unitController:(id)a4;
+- (HKAudioExposureDataProviderCurrentValue)initWithLEQQuantity:(id)quantity secondsListened:(double)listened daysAggregated:(int64_t)aggregated date:(id)date;
+- (id)_attributedSymbolForClassification:(unint64_t)classification font:(id)font;
+- (id)attributedStringWithDisplayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont dateCache:(id)cache;
+- (id)attributedSupplementaryStringWithDisplayType:(id)type unitController:(id)controller font:(id)font;
+- (id)lastUpdatedDescriptionWithDateCache:(id)cache;
+- (id)lastUpdatedShortDescriptionWithDateCache:(id)cache;
+- (id)stringWithDisplayType:(id)type unitController:(id)controller;
 @end
 
 @implementation HKAudioExposureDataProviderCurrentValue
 
-- (HKAudioExposureDataProviderCurrentValue)initWithLEQQuantity:(id)a3 secondsListened:(double)a4 daysAggregated:(int64_t)a5 date:(id)a6
+- (HKAudioExposureDataProviderCurrentValue)initWithLEQQuantity:(id)quantity secondsListened:(double)listened daysAggregated:(int64_t)aggregated date:(id)date
 {
-  v11 = a3;
-  v12 = a6;
+  quantityCopy = quantity;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = HKAudioExposureDataProviderCurrentValue;
   v13 = [(HKAudioExposureDataProviderCurrentValue *)&v15 init];
   if (v13)
   {
-    v13->_classification = [MEMORY[0x1E696BF20] classifyLEQ:v11 forDuration:a5 overDays:a4];
-    objc_storeStrong(&v13->_leqQuantity, a3);
-    v13->_secondsListened = a4;
-    v13->_daysAggregated = a5;
-    objc_storeStrong(&v13->_date, a6);
+    v13->_classification = [MEMORY[0x1E696BF20] classifyLEQ:quantityCopy forDuration:aggregated overDays:listened];
+    objc_storeStrong(&v13->_leqQuantity, quantity);
+    v13->_secondsListened = listened;
+    v13->_daysAggregated = aggregated;
+    objc_storeStrong(&v13->_date, date);
   }
 
   return v13;
 }
 
-- (id)attributedStringWithDisplayType:(id)a3 unitController:(id)a4 valueFont:(id)a5 unitFont:(id)a6 dateCache:(id)a7
+- (id)attributedStringWithDisplayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont dateCache:(id)cache
 {
   v21[2] = *MEMORY[0x1E69E9840];
   v8 = *MEMORY[0x1E69DB650];
   v20[0] = *MEMORY[0x1E69DB648];
   v20[1] = v8;
-  v21[0] = a5;
+  v21[0] = font;
   v9 = MEMORY[0x1E69DC888];
-  v10 = a5;
-  v11 = [v9 hk_chartLollipopValueColor];
-  v21[1] = v11;
+  fontCopy = font;
+  hk_chartLollipopValueColor = [v9 hk_chartLollipopValueColor];
+  v21[1] = hk_chartLollipopValueColor;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
   v13 = [MEMORY[0x1E696BF20] localizedDisplayNameForClassification:self->_classification];
-  v14 = [(HKAudioExposureDataProviderCurrentValue *)self _attributedSymbolForClassification:self->_classification font:v10];
+  v14 = [(HKAudioExposureDataProviderCurrentValue *)self _attributedSymbolForClassification:self->_classification font:fontCopy];
   v15 = [v14 mutableCopy];
 
   v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:v12];
@@ -56,25 +56,25 @@
   return v15;
 }
 
-- (id)lastUpdatedDescriptionWithDateCache:(id)a3
+- (id)lastUpdatedDescriptionWithDateCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(HKAudioExposureDataProviderCurrentValue *)self date];
-  v6 = HKLastUpdatedText(v5, v4);
+  cacheCopy = cache;
+  date = [(HKAudioExposureDataProviderCurrentValue *)self date];
+  v6 = HKLastUpdatedText(date, cacheCopy);
 
   return v6;
 }
 
-- (id)lastUpdatedShortDescriptionWithDateCache:(id)a3
+- (id)lastUpdatedShortDescriptionWithDateCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(HKAudioExposureDataProviderCurrentValue *)self date];
-  v6 = HKMostRecentSampleEndDateText(v5, v4, 0);
+  cacheCopy = cache;
+  date = [(HKAudioExposureDataProviderCurrentValue *)self date];
+  v6 = HKMostRecentSampleEndDateText(date, cacheCopy, 0);
 
   return v6;
 }
 
-- (id)stringWithDisplayType:(id)a3 unitController:(id)a4
+- (id)stringWithDisplayType:(id)type unitController:(id)controller
 {
   if (!self->_classification)
   {
@@ -84,16 +84,16 @@
 
   leqQuantity = self->_leqQuantity;
   v7 = MEMORY[0x1E696C510];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 decibelAWeightedSoundPressureLevelUnit];
-  [(HKQuantity *)leqQuantity doubleValueForUnit:v10];
+  controllerCopy = controller;
+  typeCopy = type;
+  decibelAWeightedSoundPressureLevelUnit = [v7 decibelAWeightedSoundPressureLevelUnit];
+  [(HKQuantity *)leqQuantity doubleValueForUnit:decibelAWeightedSoundPressureLevelUnit];
   v12 = v11;
 
-  v13 = [v8 unitForDisplayType:v9];
-  v14 = [v9 hk_valueFormatterForUnit:v13];
+  v13 = [controllerCopy unitForDisplayType:typeCopy];
+  v14 = [typeCopy hk_valueFormatterForUnit:v13];
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-  v16 = [v14 stringFromValue:v15 displayType:v9 unitController:v8];
+  v16 = [v14 stringFromValue:v15 displayType:typeCopy unitController:controllerCopy];
 
   v17 = [MEMORY[0x1E696AD98] numberWithDouble:self->_secondsListened];
   v18 = HKTimePeriodString(v17, 0);
@@ -126,17 +126,17 @@ LABEL_10:
   return v21;
 }
 
-- (id)attributedSupplementaryStringWithDisplayType:(id)a3 unitController:(id)a4 font:(id)a5
+- (id)attributedSupplementaryStringWithDisplayType:(id)type unitController:(id)controller font:(id)font
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(HKAudioExposureDataProviderCurrentValue *)self stringWithDisplayType:a3 unitController:a4];
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  fontCopy = font;
+  v9 = [(HKAudioExposureDataProviderCurrentValue *)self stringWithDisplayType:type unitController:controller];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   v11 = *MEMORY[0x1E69DB650];
   v16[0] = *MEMORY[0x1E69DB648];
   v16[1] = v11;
-  v17[0] = v8;
-  v17[1] = v10;
+  v17[0] = fontCopy;
+  v17[1] = secondaryLabelColor;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v13 = objc_alloc(MEMORY[0x1E696AAB0]);
 
@@ -145,13 +145,13 @@ LABEL_10:
   return v14;
 }
 
-- (id)_attributedSymbolForClassification:(unint64_t)a3 font:(id)a4
+- (id)_attributedSymbolForClassification:(unint64_t)classification font:(id)font
 {
-  v5 = a4;
-  if (a3)
+  fontCopy = font;
+  if (classification)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
-    v7 = [MEMORY[0x1E69DCAB8] hk_hearingHealthAudioExposureSymbolForClassification:a3 font:v5];
+    v7 = [MEMORY[0x1E69DCAB8] hk_hearingHealthAudioExposureSymbolForClassification:classification font:fontCopy];
     [v6 setImage:v7];
 
     v8 = objc_alloc_init(MEMORY[0x1E696AD40]);

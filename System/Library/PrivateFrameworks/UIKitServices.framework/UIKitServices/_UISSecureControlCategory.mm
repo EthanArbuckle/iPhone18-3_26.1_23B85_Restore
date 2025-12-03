@@ -1,56 +1,56 @@
 @interface _UISSecureControlCategory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (NSString)iconGlyph;
-- (_UISSecureControlCategory)initWithCoder:(id)a3;
-- (_UISSecureControlCategory)initWithType:(unint64_t)a3 iconIndex:(unint64_t)a4 labelIndex:(unint64_t)a5;
-- (unint64_t)authenticationMessageContextForStyle:(id)a3;
+- (_UISSecureControlCategory)initWithCoder:(id)coder;
+- (_UISSecureControlCategory)initWithType:(unint64_t)type iconIndex:(unint64_t)index labelIndex:(unint64_t)labelIndex;
+- (unint64_t)authenticationMessageContextForStyle:(id)style;
 - (unsigned)secureName;
 - (unsigned)secureNameForDrawing;
 @end
 
 @implementation _UISSecureControlCategory
 
-- (_UISSecureControlCategory)initWithType:(unint64_t)a3 iconIndex:(unint64_t)a4 labelIndex:(unint64_t)a5
+- (_UISSecureControlCategory)initWithType:(unint64_t)type iconIndex:(unint64_t)index labelIndex:(unint64_t)labelIndex
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  labelIndexCopy = labelIndex;
+  indexCopy = index;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = _UISSecureControlCategory;
   result = [(_UISSecureControlCategory *)&v9 init];
   if (result)
   {
-    result->_fields.all = v7 & 0x3F | ((v6 & 0x1F) << 6) | (v5 << 11);
+    result->_fields.all = typeCopy & 0x3F | ((indexCopy & 0x1F) << 6) | (labelIndexCopy << 11);
   }
 
   return result;
 }
 
-- (_UISSecureControlCategory)initWithCoder:(id)a3
+- (_UISSecureControlCategory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _UISSecureControlCategory;
   v5 = [(_UISSecureControlCategory *)&v7 init];
   if (v5)
   {
-    v5->_fields.all = [v4 decodeInt32ForKey:@"all"];
+    v5->_fields.all = [coderCopy decodeInt32ForKey:@"all"];
   }
 
   return v5;
 }
 
-- (unint64_t)authenticationMessageContextForStyle:(id)a3
+- (unint64_t)authenticationMessageContextForStyle:(id)style
 {
-  v4 = [a3 userInterfaceStyle];
+  userInterfaceStyle = [style userInterfaceStyle];
   v5 = &unk_1F0A846A0;
-  if (v4 != 1)
+  if (userInterfaceStyle != 1)
   {
     v5 = 0;
   }
 
-  if (v4)
+  if (userInterfaceStyle)
   {
     v6 = v5;
   }
@@ -60,25 +60,25 @@
     v6 = &unk_1F0A84688;
   }
 
-  v7 = [v6 objectAtIndexedSubscript:self->_fields.all & 0x3FLL];
-  v8 = [v7 unsignedLongLongValue];
+  0x3FLL = [v6 objectAtIndexedSubscript:self->_fields.all & 0x3FLL];
+  unsignedLongLongValue = [0x3FLL unsignedLongLongValue];
 
-  return v8;
+  return unsignedLongLongValue;
 }
 
 - (NSString)iconGlyph
 {
-  v3 = [&unk_1F0A84610 objectAtIndexedSubscript:self->_fields.all & 0x3FLL];
-  v4 = [v3 objectAtIndexedSubscript:(self->_fields.all >> 6) & 0x1F];
+  0x3FLL = [&unk_1F0A84610 objectAtIndexedSubscript:self->_fields.all & 0x3FLL];
+  0x1F = [0x3FLL objectAtIndexedSubscript:(self->_fields.all >> 6) & 0x1F];
 
-  return v4;
+  return 0x1F;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_fields.all == v4[4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_fields.all == equalCopy[4];
 
   return v5;
 }
@@ -99,11 +99,11 @@
 
 - (unsigned)secureName
 {
-  v3 = [&unk_1F0A84640 objectAtIndexedSubscript:self->_fields.all & 0x3FLL];
-  v4 = [v3 objectAtIndexedSubscript:self->_fields.all >> 11];
-  v5 = [v4 unsignedIntegerValue];
+  0x3FLL = [&unk_1F0A84640 objectAtIndexedSubscript:self->_fields.all & 0x3FLL];
+  v4 = [0x3FLL objectAtIndexedSubscript:self->_fields.all >> 11];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (unsigned)secureNameForDrawing

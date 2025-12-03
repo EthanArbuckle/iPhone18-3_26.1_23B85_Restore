@@ -1,17 +1,17 @@
 @interface HKGraphViewTileThread
-- (BOOL)_laterRenderingExists:(id)a3;
+- (BOOL)_laterRenderingExists:(id)exists;
 - (HKGraphView)graphView;
-- (HKGraphViewTileThread)initWithGraphView:(id)a3;
+- (HKGraphViewTileThread)initWithGraphView:(id)view;
 - (void)cancel;
 - (void)main;
-- (void)scheduleRedrawUsingRenderer:(id)a3;
+- (void)scheduleRedrawUsingRenderer:(id)renderer;
 @end
 
 @implementation HKGraphViewTileThread
 
-- (HKGraphViewTileThread)initWithGraphView:(id)a3
+- (HKGraphViewTileThread)initWithGraphView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = HKGraphViewTileThread;
   v5 = [(HKGraphViewTileThread *)&v13 init];
@@ -30,7 +30,7 @@
     rendererQueue = v5->_rendererQueue;
     v5->_rendererQueue = v10;
 
-    objc_storeWeak(&v5->_graphView, v4);
+    objc_storeWeak(&v5->_graphView, viewCopy);
   }
 
   return v5;
@@ -44,25 +44,25 @@
     do
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = [(HKGraphViewTileThread *)self queueSemaphore];
-      dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
+      queueSemaphore = [(HKGraphViewTileThread *)self queueSemaphore];
+      dispatch_semaphore_wait(queueSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
       [(NSLock *)self->_queueLock lock];
-      v6 = [(HKGraphViewTileThread *)self rendererQueue];
-      v7 = [v6 firstObject];
+      rendererQueue = [(HKGraphViewTileThread *)self rendererQueue];
+      firstObject = [rendererQueue firstObject];
 
-      if (v7)
+      if (firstObject)
       {
-        v8 = [(HKGraphViewTileThread *)self rendererQueue];
-        [v8 removeObjectAtIndex:0];
+        rendererQueue2 = [(HKGraphViewTileThread *)self rendererQueue];
+        [rendererQueue2 removeObjectAtIndex:0];
 
-        if (![(HKGraphViewTileThread *)self _laterRenderingExists:v7])
+        if (![(HKGraphViewTileThread *)self _laterRenderingExists:firstObject])
         {
           [(NSLock *)self->_queueLock unlock];
-          v9 = [(HKGraphViewTileThread *)self graphView];
-          if (v9)
+          graphView = [(HKGraphViewTileThread *)self graphView];
+          if (graphView)
           {
-            [v7 renderTileContent];
+            [firstObject renderTileContent];
           }
 
           goto LABEL_9;
@@ -80,16 +80,16 @@ LABEL_9:
   objc_autoreleasePoolPop(v3);
 }
 
-- (BOOL)_laterRenderingExists:(id)a3
+- (BOOL)_laterRenderingExists:(id)exists
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  existsCopy = exists;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(HKGraphViewTileThread *)self rendererQueue];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  rendererQueue = [(HKGraphViewTileThread *)self rendererQueue];
+  v6 = [rendererQueue countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -99,17 +99,17 @@ LABEL_9:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(rendererQueue);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) sameForRendering:v4])
+        if ([*(*(&v10 + 1) + 8 * i) sameForRendering:existsCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [rendererQueue countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -124,17 +124,17 @@ LABEL_11:
   return v6;
 }
 
-- (void)scheduleRedrawUsingRenderer:(id)a3
+- (void)scheduleRedrawUsingRenderer:(id)renderer
 {
   queueLock = self->_queueLock;
-  v5 = a3;
+  rendererCopy = renderer;
   [(NSLock *)queueLock lock];
-  v6 = [(HKGraphViewTileThread *)self rendererQueue];
-  [v6 addObject:v5];
+  rendererQueue = [(HKGraphViewTileThread *)self rendererQueue];
+  [rendererQueue addObject:rendererCopy];
 
   [(NSLock *)self->_queueLock unlock];
-  v7 = [(HKGraphViewTileThread *)self queueSemaphore];
-  dispatch_semaphore_signal(v7);
+  queueSemaphore = [(HKGraphViewTileThread *)self queueSemaphore];
+  dispatch_semaphore_signal(queueSemaphore);
 }
 
 - (void)cancel
@@ -142,8 +142,8 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = HKGraphViewTileThread;
   [(HKGraphViewTileThread *)&v4 cancel];
-  v3 = [(HKGraphViewTileThread *)self queueSemaphore];
-  dispatch_semaphore_signal(v3);
+  queueSemaphore = [(HKGraphViewTileThread *)self queueSemaphore];
+  dispatch_semaphore_signal(queueSemaphore);
 }
 
 - (HKGraphView)graphView

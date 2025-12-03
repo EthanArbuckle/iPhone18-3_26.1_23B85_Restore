@@ -1,15 +1,15 @@
 @interface UICollectionViewDiffableDataSource
-- (BOOL)_subclassOverridesMethodWithSelector:(SEL)a3;
+- (BOOL)_subclassOverridesMethodWithSelector:(SEL)selector;
 - (NSDiffableDataSourceSnapshot)snapshot;
 - (UICollectionViewDiffableDataSource)initWithCollectionView:(UICollectionView *)collectionView cellProvider:(UICollectionViewDiffableDataSourceCellProvider)cellProvider;
-- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 itemRenderer:(id)a4;
-- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 itemRenderers:(id)a4 rendererIdentifierProvider:(id)a5;
-- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 sectionControllers:(id)a4 rendererIdentifierProvider:(id)a5;
-- (UICollectionViewDiffableDataSource)initWithViewUpdatesSink:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_setDidReorderItemsHandler:(id)a3;
+- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)view itemRenderer:(id)renderer;
+- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)view itemRenderers:(id)renderers rendererIdentifierProvider:(id)provider;
+- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)view sectionControllers:(id)controllers rendererIdentifierProvider:(id)provider;
+- (UICollectionViewDiffableDataSource)initWithViewUpdatesSink:(id)sink;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_setDidReorderItemsHandler:(id)handler;
 - (void)applySnapshot:(NSDiffableDataSourceSnapshot *)snapshot animatingDifferences:(BOOL)animatingDifferences completion:(void *)completion;
 - (void)applySnapshotUsingReloadData:(NSDiffableDataSourceSnapshot *)snapshot completion:(void *)completion;
 - (void)validateIdentifiers;
@@ -20,8 +20,8 @@
 - (NSDiffableDataSourceSnapshot)snapshot
 {
   v3 = [off_1E70ECB58 alloc];
-  v4 = [(__UIDiffableDataSource *)self->_impl snapshot];
-  v5 = [v3 initWithImpl:v4];
+  snapshot = [(__UIDiffableDataSource *)self->_impl snapshot];
+  v5 = [v3 initWithImpl:snapshot];
 
   return v5;
 }
@@ -50,27 +50,27 @@
   v5 = animatingDifferences;
   impl = self->_impl;
   v8 = completion;
-  v9 = [(NSDiffableDataSourceSnapshot *)snapshot impl];
-  [(__UIDiffableDataSource *)impl applyDifferencesFromSnapshot:v9 animatingDifferences:v5 completion:v8];
+  impl = [(NSDiffableDataSourceSnapshot *)snapshot impl];
+  [(__UIDiffableDataSource *)impl applyDifferencesFromSnapshot:impl animatingDifferences:v5 completion:v8];
 }
 
 - (void)applySnapshotUsingReloadData:(NSDiffableDataSourceSnapshot *)snapshot completion:(void *)completion
 {
   impl = self->_impl;
   v6 = completion;
-  v7 = [(NSDiffableDataSourceSnapshot *)snapshot impl];
-  [(__UIDiffableDataSource *)impl reloadFromSnapshot:v7 completion:v6];
+  impl = [(NSDiffableDataSourceSnapshot *)snapshot impl];
+  [(__UIDiffableDataSource *)impl reloadFromSnapshot:impl completion:v6];
 }
 
-- (UICollectionViewDiffableDataSource)initWithViewUpdatesSink:(id)a3
+- (UICollectionViewDiffableDataSource)initWithViewUpdatesSink:(id)sink
 {
-  v4 = a3;
+  sinkCopy = sink;
   v9.receiver = self;
   v9.super_class = UICollectionViewDiffableDataSource;
   v5 = [(UICollectionViewDiffableDataSource *)&v9 init];
   if (v5)
   {
-    v6 = [[__UIDiffableDataSource alloc] initWithViewUpdatesSink:v4];
+    v6 = [[__UIDiffableDataSource alloc] initWithViewUpdatesSink:sinkCopy];
     impl = v5->_impl;
     v5->_impl = v6;
   }
@@ -78,69 +78,69 @@
   return v5;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if ([(__UIDiffableDataSource *)self->_impl numberOfSections]<= a4)
+  if ([(__UIDiffableDataSource *)self->_impl numberOfSections]<= section)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UIDiffableDataSource.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"section < _impl.numberOfSections"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDiffableDataSource.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"section < _impl.numberOfSections"}];
   }
 
   impl = self->_impl;
-  v8 = [(__UIDiffableDataSource *)impl state];
-  v9 = [v8 sections];
-  v10 = [v9 objectAtIndexedSubscript:a4];
+  state = [(__UIDiffableDataSource *)impl state];
+  sections = [state sections];
+  v10 = [sections objectAtIndexedSubscript:section];
   v11 = [(__UIDiffableDataSource *)impl numberOfItemsInSection:v10];
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  viewCopy = view;
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIDiffableDataSource.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDiffableDataSource.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
   }
 
-  v9 = [(__UIDiffableDataSource *)self->_impl _cellForItemAtIndexPath:v8 collectionView:v7];
+  v9 = [(__UIDiffableDataSource *)self->_impl _cellForItemAtIndexPath:pathCopy collectionView:viewCopy];
 
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIDiffableDataSource.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDiffableDataSource.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
   }
 
-  v12 = [(__UIDiffableDataSource *)self->_impl supplementaryViewProvider];
+  supplementaryViewProvider = [(__UIDiffableDataSource *)self->_impl supplementaryViewProvider];
 
-  if (!v12)
+  if (!supplementaryViewProvider)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIDiffableDataSource.m" lineNumber:152 description:{@"CollectionView %@ requested a supplementary view, but a supplementaryViewProvider was not specified on the diffable data source. Please configure the diffable data source accordingly and add the supplementary provider", v9}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDiffableDataSource.m" lineNumber:152 description:{@"CollectionView %@ requested a supplementary view, but a supplementaryViewProvider was not specified on the diffable data source. Please configure the diffable data source accordingly and add the supplementary provider", viewCopy}];
   }
 
-  v13 = [(__UIDiffableDataSource *)self->_impl supplementaryViewProvider];
-  v14 = (v13)[2](v13, v9, v10, v11);
+  supplementaryViewProvider2 = [(__UIDiffableDataSource *)self->_impl supplementaryViewProvider];
+  v14 = (supplementaryViewProvider2)[2](supplementaryViewProvider2, viewCopy, kindCopy, pathCopy);
 
   return v14;
 }
 
-- (BOOL)_subclassOverridesMethodWithSelector:(SEL)a3
+- (BOOL)_subclassOverridesMethodWithSelector:(SEL)selector
 {
   v4 = objc_opt_class();
   v5 = objc_opt_class();
-  MethodImplementation = class_getMethodImplementation(v4, a3);
-  v7 = class_getMethodImplementation(v5, a3);
+  MethodImplementation = class_getMethodImplementation(v4, selector);
+  v7 = class_getMethodImplementation(v5, selector);
   if (MethodImplementation)
   {
     v8 = v7 == 0;
@@ -154,38 +154,38 @@
   return !v8 && MethodImplementation != v7;
 }
 
-- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 itemRenderers:(id)a4 rendererIdentifierProvider:(id)a5
+- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)view itemRenderers:(id)renderers rendererIdentifierProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  renderersCopy = renderers;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = UICollectionViewDiffableDataSource;
   v11 = [(UICollectionViewDiffableDataSource *)&v15 init];
   if (v11)
   {
-    v12 = [[__UIDiffableDataSource alloc] initWithCollectionView:v8 itemRenderers:v9 rendererIdentifierProvider:v10];
+    v12 = [[__UIDiffableDataSource alloc] initWithCollectionView:viewCopy itemRenderers:renderersCopy rendererIdentifierProvider:providerCopy];
     impl = v11->_impl;
     v11->_impl = v12;
 
-    [v8 setDataSource:v11];
+    [viewCopy setDataSource:v11];
   }
 
   return v11;
 }
 
-- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 sectionControllers:(id)a4 rendererIdentifierProvider:(id)a5
+- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)view sectionControllers:(id)controllers rendererIdentifierProvider:(id)provider
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  controllersCopy = controllers;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = UICollectionViewDiffableDataSource;
   v11 = [(UICollectionViewDiffableDataSource *)&v24 init];
   if (v11)
   {
-    v12 = [[__UIDiffableDataSource alloc] initWithCollectionView:v8 sectionControllers:v9 rendererIdentifierProvider:v10];
+    v12 = [[__UIDiffableDataSource alloc] initWithCollectionView:viewCopy sectionControllers:controllersCopy rendererIdentifierProvider:providerCopy];
     impl = v11->_impl;
     v11->_impl = v12;
 
@@ -193,7 +193,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = v9;
+    v14 = controllersCopy;
     v15 = [v14 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v15)
     {
@@ -219,29 +219,29 @@
       while (v16);
     }
 
-    [v8 setDataSource:v11];
+    [viewCopy setDataSource:v11];
   }
 
   return v11;
 }
 
-- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 itemRenderer:(id)a4
+- (UICollectionViewDiffableDataSource)initWithCollectionView:(id)view itemRenderer:(id)renderer
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a4;
+  rendererCopy = renderer;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  rendererCopy2 = renderer;
+  viewCopy = view;
+  v9 = [v6 arrayWithObjects:&rendererCopy count:1];
 
-  v10 = [(UICollectionViewDiffableDataSource *)self initWithCollectionView:v8 itemRenderers:v9 rendererIdentifierProvider:&__block_literal_global_107, v12, v13];
+  v10 = [(UICollectionViewDiffableDataSource *)self initWithCollectionView:viewCopy itemRenderers:v9 rendererIdentifierProvider:&__block_literal_global_107, rendererCopy, v13];
   return v10;
 }
 
-- (void)_setDidReorderItemsHandler:(id)a3
+- (void)_setDidReorderItemsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  handlerCopy = handler;
+  v5 = _Block_copy(handlerCopy);
   didReorderItemsHandler = self->_didReorderItemsHandler;
   self->_didReorderItemsHandler = v5;
 
@@ -270,15 +270,15 @@ void __65__UICollectionViewDiffableDataSource__setDidReorderItemsHandler___block
 
 - (void)validateIdentifiers
 {
-  v2 = [(__UIDiffableDataSource *)self->_impl state];
+  state = [(__UIDiffableDataSource *)self->_impl state];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    [v2 sections];
+    [state sections];
     objc_claimAutoreleasedReturnValue();
     _UIDiffableDataSourceValidateIdentifiers();
   }
 
-  [v2 validateIdentifiers];
+  [state validateIdentifiers];
 }
 
 @end

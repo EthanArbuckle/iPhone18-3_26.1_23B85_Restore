@@ -6,16 +6,16 @@
 - (BOOL)isAdHocCodeSigned;
 - (BOOL)isAppleSigned;
 - (BOOL)isBetaApp;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNewsstandApp;
 - (NSString)clientIdentifierHeader;
 - (NSString)userAgent;
 - (SSXPCConnection)outputConnection;
-- (XPCClient)initWithApplicationIdentifier:(id)a3 isAppleSigned:(BOOL)a4;
-- (XPCClient)initWithInputConnection:(id)a3;
+- (XPCClient)initWithApplicationIdentifier:(id)identifier isAppleSigned:(BOOL)signed;
+- (XPCClient)initWithInputConnection:(id)connection;
 - (id)_applicationBackgroundModes;
 - (id)_initCommon;
-- (id)beginBackgroundTaskWithReason:(unsigned int)a3 expirationBlock:(id)a4;
+- (id)beginBackgroundTaskWithReason:(unsigned int)reason expirationBlock:(id)block;
 - (id)copyApplicationBackgroundModes;
 - (id)copyInputConnection;
 - (id)description;
@@ -23,14 +23,14 @@
 - (int64_t)clientType;
 - (unsigned)_applicationState;
 - (unsigned)applicationState;
-- (void)_applicationStateChanged:(id)a3;
+- (void)_applicationStateChanged:(id)changed;
 - (void)_handleOutputConnectionDisconnect;
-- (void)_invalidateBackgroundTaskAssertion:(id)a3;
+- (void)_invalidateBackgroundTaskAssertion:(id)assertion;
 - (void)dealloc;
-- (void)endBackgroundTaskWithIdentifier:(id)a3;
-- (void)loadSpringBoardStateWithCompletionBlock:(id)a3;
-- (void)sendCoalescedMessageWithIdentifier:(unint64_t)a3;
-- (void)setOutputConnectionWithConnection:(id)a3;
+- (void)endBackgroundTaskWithIdentifier:(id)identifier;
+- (void)loadSpringBoardStateWithCompletionBlock:(id)block;
+- (void)sendCoalescedMessageWithIdentifier:(unint64_t)identifier;
+- (void)setOutputConnectionWithConnection:(id)connection;
 @end
 
 @implementation XPCClient
@@ -128,8 +128,8 @@
         }
 
         v9 = [(NSMutableDictionary *)self->_backgroundTasks objectForKey:*(*(&v14 + 1) + 8 * v8)];
-        v10 = [v9 processAssertion];
-        [v10 setInvalidationHandler:0];
+        processAssertion = [v9 processAssertion];
+        [processAssertion setInvalidationHandler:0];
 
         v8 = v8 + 1;
       }
@@ -189,10 +189,10 @@
         v6 = 0;
       }
 
-      v7 = [v6 applicationType];
+      applicationType = [v6 applicationType];
 
       v8 = 1;
-      if (!v7)
+      if (!applicationType)
       {
         v8 = 2;
       }
@@ -216,15 +216,15 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
 
-    self->_isNewsstandApp = v6;
+    self->_isNewsstandApp = bOOLValue;
 
     isNewsstandApp = self->_isNewsstandApp;
   }
@@ -302,8 +302,8 @@
   if (self->_isBetaApp == 255)
   {
     self->_isBetaApp = 0;
-    v3 = [(XPCClient *)self _clientType];
-    switch(v3)
+    _clientType = [(XPCClient *)self _clientType];
+    switch(_clientType)
     {
       case 3:
 LABEL_5:
@@ -313,10 +313,10 @@ LABEL_5:
         if (self->_clientIdentifier)
         {
           v4 = [LSApplicationProxy applicationProxyForIdentifier:?];
-          v5 = [v4 appState];
-          v6 = [v5 isValid];
+          appState = [v4 appState];
+          isValid = [appState isValid];
 
-          if (v6)
+          if (isValid)
           {
             self->_isBetaApp = [v4 isBetaApp];
           }
@@ -372,13 +372,13 @@ LABEL_5:
   return v3;
 }
 
-- (XPCClient)initWithInputConnection:(id)a3
+- (XPCClient)initWithInputConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [(XPCClient *)self _initCommon];
-  if (v6)
+  connectionCopy = connection;
+  _initCommon = [(XPCClient *)self _initCommon];
+  if (_initCommon)
   {
-    if (v5)
+    if (connectionCopy)
     {
       v7 = SSXPCConnectionCopyExecutablePath();
       if (v7)
@@ -396,8 +396,8 @@ LABEL_5:
             {
               v13 = v12;
               v14 = CFBundleGetIdentifier(v12);
-              clientIdentifier = v6->_clientIdentifier;
-              v6->_clientIdentifier = v14;
+              clientIdentifier = _initCommon->_clientIdentifier;
+              _initCommon->_clientIdentifier = v14;
 
               v16 = CFBundleGetValueForInfoDictionaryKey(v13, _kCFBundleShortVersionStringKey);
               if (!v16)
@@ -405,14 +405,14 @@ LABEL_5:
                 v16 = CFBundleGetValueForInfoDictionaryKey(v13, kCFBundleVersionKey);
               }
 
-              objc_storeStrong(&v6->_clientVersion, v16);
+              objc_storeStrong(&_initCommon->_clientVersion, v16);
               v17 = CFBundleGetInfoDictionary(v13);
               if ([v17 count])
               {
                 v18 = +[SSDevice currentDevice];
                 v19 = [v18 userAgentWithBundleRef:v13 isCachable:0];
-                userAgent = v6->_userAgent;
-                v6->_userAgent = v19;
+                userAgent = _initCommon->_userAgent;
+                _initCommon->_userAgent = v19;
               }
 
               CFRelease(v13);
@@ -424,24 +424,24 @@ LABEL_5:
           CFRelease(v9);
         }
 
-        v21 = v6->_clientIdentifier;
+        v21 = _initCommon->_clientIdentifier;
         v22 = v21 != 0;
         if (!v21)
         {
-          v23 = [(__CFString *)v7 lastPathComponent];
-          v24 = v6->_clientIdentifier;
-          v6->_clientIdentifier = v23;
+          lastPathComponent = [(__CFString *)v7 lastPathComponent];
+          v24 = _initCommon->_clientIdentifier;
+          _initCommon->_clientIdentifier = lastPathComponent;
 
-          clientVersion = v6->_clientVersion;
-          v6->_clientVersion = @"1.0";
+          clientVersion = _initCommon->_clientVersion;
+          _initCommon->_clientVersion = @"1.0";
         }
 
-        if (!v6->_userAgent)
+        if (!_initCommon->_userAgent)
         {
           v26 = +[SSDevice currentDevice];
-          v27 = [v26 userAgentWithClientName:v6->_clientIdentifier version:v6->_clientVersion];
-          v28 = v6->_userAgent;
-          v6->_userAgent = v27;
+          v27 = [v26 userAgentWithClientName:_initCommon->_clientIdentifier version:_initCommon->_clientVersion];
+          v28 = _initCommon->_userAgent;
+          _initCommon->_userAgent = v27;
         }
       }
 
@@ -454,25 +454,25 @@ LABEL_5:
       v44 = 0u;
       xpc_connection_get_audit_token();
       v29 = [[NSData alloc] initWithBytes:location length:32];
-      auditTokenData = v6->_auditTokenData;
-      v6->_auditTokenData = v29;
+      auditTokenData = _initCommon->_auditTokenData;
+      _initCommon->_auditTokenData = v29;
 
-      objc_storeStrong(&v6->_inputConnection, a3);
-      v6->_pid = xpc_connection_get_pid(v5);
+      objc_storeStrong(&_initCommon->_inputConnection, connection);
+      _initCommon->_pid = xpc_connection_get_pid(connectionCopy);
       v31 = SSXPCConnectionCopyValueForEntitlement();
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v6->_entitlements, v31);
+        objc_storeStrong(&_initCommon->_entitlements, v31);
       }
 
       else if (objc_opt_respondsToSelector())
       {
         v32 = objc_alloc_init(NSDictionary);
-        entitlements = v6->_entitlements;
-        v6->_entitlements = v32;
+        entitlements = _initCommon->_entitlements;
+        _initCommon->_entitlements = v32;
 
-        v6->_legacyEntitlements = 1;
+        _initCommon->_legacyEntitlements = 1;
       }
     }
 
@@ -481,17 +481,17 @@ LABEL_5:
       v22 = 1;
     }
 
-    if ([(NSString *)v6->_clientIdentifier isEqualToString:@"com.apple.springboard"])
+    if ([(NSString *)_initCommon->_clientIdentifier isEqualToString:@"com.apple.springboard"])
     {
       v34 = 3;
 LABEL_27:
-      v6->_clientType = v34;
+      _initCommon->_clientType = v34;
       goto LABEL_33;
     }
 
-    if ([(NSString *)v6->_clientIdentifier isEqualToString:@"com.apple.lowtide"])
+    if ([(NSString *)_initCommon->_clientIdentifier isEqualToString:@"com.apple.lowtide"])
     {
-      v6->_clientType = 0;
+      _initCommon->_clientType = 0;
       goto LABEL_33;
     }
 
@@ -501,22 +501,22 @@ LABEL_27:
       goto LABEL_27;
     }
 
-    v6->_clientType = -1;
-    if (v6->_clientIdentifier)
+    _initCommon->_clientType = -1;
+    if (_initCommon->_clientIdentifier)
     {
       v35 = +[NSNotificationCenter defaultCenter];
-      objc_initWeak(location, v6);
+      objc_initWeak(location, _initCommon);
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
       v41[2] = sub_10011FED4;
       v41[3] = &unk_100329090;
       objc_copyWeak(&v42, location);
       v36 = [v35 addObserverForName:@"SpringBoardUtilityApplicationStateChangeNotification" object:0 queue:0 usingBlock:v41];
-      stateChangeObserver = v6->_stateChangeObserver;
-      v6->_stateChangeObserver = v36;
+      stateChangeObserver = _initCommon->_stateChangeObserver;
+      _initCommon->_stateChangeObserver = v36;
 
       v38 = +[SpringBoardUtility sharedInstance];
-      v39 = [NSArray arrayWithObject:v6->_clientIdentifier];
+      v39 = [NSArray arrayWithObject:_initCommon->_clientIdentifier];
       [v38 beginGeneratingStateChangeNotificationsForIdentifiers:v39];
 
       objc_destroyWeak(&v42);
@@ -526,20 +526,20 @@ LABEL_27:
 
 LABEL_33:
 
-  return v6;
+  return _initCommon;
 }
 
-- (XPCClient)initWithApplicationIdentifier:(id)a3 isAppleSigned:(BOOL)a4
+- (XPCClient)initWithApplicationIdentifier:(id)identifier isAppleSigned:(BOOL)signed
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = XPCClient;
   v7 = [(XPCClient *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_appleSigned = a4;
-    v9 = [v6 copy];
+    v7->_appleSigned = signed;
+    v9 = [identifierCopy copy];
     clientIdentifier = v8->_clientIdentifier;
     v8->_clientIdentifier = v9;
 
@@ -549,17 +549,17 @@ LABEL_33:
   return v8;
 }
 
-- (id)beginBackgroundTaskWithReason:(unsigned int)a3 expirationBlock:(id)a4
+- (id)beginBackgroundTaskWithReason:(unsigned int)reason expirationBlock:(id)block
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&reason;
+  blockCopy = block;
   if ([(XPCClient *)self clientType]== 1)
   {
     v7 = [[BKSProcessAssertion alloc] initWithPID:self->_pid flags:1 reason:v4 name:@"com.apple.itunesstored.xpcclient"];
     if ([v7 valid])
     {
       v8 = +[NSUUID UUID];
-      v9 = [v8 UUIDString];
+      uUIDString = [v8 UUIDString];
       dispatchQueue = self->_dispatchQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -567,10 +567,10 @@ LABEL_33:
       block[3] = &unk_1003290B8;
       v11 = v7;
       v18 = v11;
-      v21 = v6;
-      v19 = self;
+      v21 = blockCopy;
+      selfCopy = self;
       v22 = v4;
-      v12 = v9;
+      v12 = uUIDString;
       v20 = v12;
       dispatch_sync(dispatchQueue, block);
       objc_initWeak(&location, v11);
@@ -620,17 +620,17 @@ LABEL_33:
 
 - (NSString)clientIdentifierHeader
 {
-  v2 = [(XPCClient *)self clientIdentifier];
+  clientIdentifier = [(XPCClient *)self clientIdentifier];
   v3 = ISClientIdentifierForBundleIdentifier();
 
   return v3;
 }
 
-- (void)endBackgroundTaskWithIdentifier:(id)a3
+- (void)endBackgroundTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     dispatchQueue = self->_dispatchQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -638,7 +638,7 @@ LABEL_33:
     v7[2] = sub_100120644;
     v7[3] = &unk_100327238;
     v7[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     dispatch_sync(dispatchQueue, v7);
   }
 }
@@ -719,21 +719,21 @@ LABEL_33:
   return v3;
 }
 
-- (void)loadSpringBoardStateWithCompletionBlock:(id)a3
+- (void)loadSpringBoardStateWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100120D58;
   v7[3] = &unk_1003271C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)sendCoalescedMessageWithIdentifier:(unint64_t)a3
+- (void)sendCoalescedMessageWithIdentifier:(unint64_t)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -741,21 +741,21 @@ LABEL_33:
   v4[2] = sub_100120E74;
   v4[3] = &unk_100329108;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setOutputConnectionWithConnection:(id)a3
+- (void)setOutputConnectionWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012108C;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -784,15 +784,15 @@ LABEL_33:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
     clientIdentifier = self->_clientIdentifier;
-    v8 = [v4 clientIdentifier];
-    v6 = [(NSString *)clientIdentifier isEqual:v8];
+    clientIdentifier = [equalCopy clientIdentifier];
+    v6 = [(NSString *)clientIdentifier isEqual:clientIdentifier];
   }
 
   else
@@ -803,17 +803,17 @@ LABEL_33:
   return v6;
 }
 
-- (void)_applicationStateChanged:(id)a3
+- (void)_applicationStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100121400;
   v7[3] = &unk_100327238;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -828,17 +828,17 @@ LABEL_33:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_invalidateBackgroundTaskAssertion:(id)a3
+- (void)_invalidateBackgroundTaskAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100121924;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assertionCopy;
+  v6 = assertionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -847,8 +847,8 @@ LABEL_33:
   if (self->_isAdHocCodeSigned == 255)
   {
     self->_isAdHocCodeSigned = 0;
-    v3 = [(XPCClient *)self _clientType];
-    switch(v3)
+    _clientType = [(XPCClient *)self _clientType];
+    switch(_clientType)
     {
       case 3:
 LABEL_5:
@@ -858,10 +858,10 @@ LABEL_5:
         if (self->_clientIdentifier)
         {
           v4 = [LSApplicationProxy applicationProxyForIdentifier:?];
-          v5 = [v4 appState];
-          v6 = [v5 isValid];
+          appState = [v4 appState];
+          isValid = [appState isValid];
 
-          if (v6)
+          if (isValid)
           {
             self->_isAdHocCodeSigned = [v4 isAdHocCodeSigned];
           }

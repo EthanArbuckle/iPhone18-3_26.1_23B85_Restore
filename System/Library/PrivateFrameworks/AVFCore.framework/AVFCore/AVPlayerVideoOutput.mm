@@ -1,46 +1,46 @@
 @interface AVPlayerVideoOutput
-- (AVPlayerVideoOutput)initWithSpecification:(id)a3;
-- (BOOL)_attachToPlayer:(id)a3 exceptionReason:(id *)a4;
-- (BOOL)_setupWithOutputSpecification:(id)a3 exceptionReasonOut:(id *)a4;
-- (BOOL)hasNewTaggedBufferGroupForHostTime:(id *)a3;
-- (OpaqueCMTaggedBufferGroup)_copyTaggedBufferGroupForHostTimeInternal:(id *)a3 doNotConsume:(BOOL)a4 presentationTimeStamp:(id *)a5 activeConfiguration:(id *)a6 lastSeenTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)a7;
-- (id)_playerItemWithIdentifier:(id)a3;
+- (AVPlayerVideoOutput)initWithSpecification:(id)specification;
+- (BOOL)_attachToPlayer:(id)player exceptionReason:(id *)reason;
+- (BOOL)_setupWithOutputSpecification:(id)specification exceptionReasonOut:(id *)out;
+- (BOOL)hasNewTaggedBufferGroupForHostTime:(id *)time;
+- (OpaqueCMTaggedBufferGroup)_copyTaggedBufferGroupForHostTimeInternal:(id *)internal doNotConsume:(BOOL)consume presentationTimeStamp:(id *)stamp activeConfiguration:(id *)configuration lastSeenTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)group;
+- (id)_playerItemWithIdentifier:(id)identifier;
 - (id)attachedPlayer;
 - (id)resourceLifeCycleHandler;
 - (int)_createAndConfigureVideoReceiverIfNecessaryOnStateQueue;
-- (int)_setUpVideoReceiverEventHandlers:(OpaqueFigVideoReceiver *)a3;
-- (void)_detachFromPlayer:(id)a3;
-- (void)_handleVideoReceiverActiveConfigurationChanged:(FigVideoReceiverConfigurationInfo *)a3;
-- (void)_setResourceLifeCycleHandler:(id)a3;
+- (int)_setUpVideoReceiverEventHandlers:(OpaqueFigVideoReceiver *)handlers;
+- (void)_detachFromPlayer:(id)player;
+- (void)_handleVideoReceiverActiveConfigurationChanged:(FigVideoReceiverConfigurationInfo *)changed;
+- (void)_setResourceLifeCycleHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation AVPlayerVideoOutput
 
-- (BOOL)_setupWithOutputSpecification:(id)a3 exceptionReasonOut:(id *)a4
+- (BOOL)_setupWithOutputSpecification:(id)specification exceptionReasonOut:(id *)out
 {
-  if (a3)
+  if (specification)
   {
-    if ([a3 preferredTagCollections] && objc_msgSend(objc_msgSend(a3, "preferredTagCollections"), "count"))
+    if ([specification preferredTagCollections] && objc_msgSend(objc_msgSend(specification, "preferredTagCollections"), "count"))
     {
-      self->_outputSpecification = [a3 copy];
+      self->_outputSpecification = [specification copy];
       self->_receiverState.stateQueue = dispatch_queue_create("com.apple.avfoundation.avplayervideooutput.state", 0);
       self->_iVarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avplayervideooutput.ivars");
       return 1;
     }
 
-    if (a4)
+    if (out)
     {
       v13 = @"AVPlayerVideoOutput: Received malformed outputSpecification";
 LABEL_9:
-      v14 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, v13, a4, v4, v5, v6, v7, v15);
+      v14 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, v13, out, v4, v5, v6, v7, v15);
       result = 0;
-      *a4 = v14;
+      *out = v14;
       return result;
     }
   }
 
-  else if (a4)
+  else if (out)
   {
     v13 = @"AVPlayerVideoOutput: outputSpecification cannot be nil.";
     goto LABEL_9;
@@ -49,7 +49,7 @@ LABEL_9:
   return 0;
 }
 
-- (AVPlayerVideoOutput)initWithSpecification:(id)a3
+- (AVPlayerVideoOutput)initWithSpecification:(id)specification
 {
   v17.receiver = self;
   v17.super_class = AVPlayerVideoOutput;
@@ -58,7 +58,7 @@ LABEL_9:
   if (v5)
   {
     v16 = 0;
-    if (![(AVPlayerVideoOutput *)v5 _setupWithOutputSpecification:a3 exceptionReasonOut:&v16])
+    if (![(AVPlayerVideoOutput *)v5 _setupWithOutputSpecification:specification exceptionReasonOut:&v16])
     {
       v7 = v6;
       if (v16)
@@ -144,7 +144,7 @@ id __37__AVPlayerVideoOutput_attachedPlayer__block_invoke(uint64_t a1)
   return result;
 }
 
-- (OpaqueCMTaggedBufferGroup)_copyTaggedBufferGroupForHostTimeInternal:(id *)a3 doNotConsume:(BOOL)a4 presentationTimeStamp:(id *)a5 activeConfiguration:(id *)a6 lastSeenTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)a7
+- (OpaqueCMTaggedBufferGroup)_copyTaggedBufferGroupForHostTimeInternal:(id *)internal doNotConsume:(BOOL)consume presentationTimeStamp:(id *)stamp activeConfiguration:(id *)configuration lastSeenTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)group
 {
   v12 = 0;
   v50[1] = *MEMORY[0x1E69E9840];
@@ -172,7 +172,7 @@ id __37__AVPlayerVideoOutput_attachedPlayer__block_invoke(uint64_t a1)
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  if (a4)
+  if (consume)
   {
     v49 = *MEMORY[0x1E6973DD0];
     v50[0] = MEMORY[0x1E695E118];
@@ -184,8 +184,8 @@ id __37__AVPlayerVideoOutput_attachedPlayer__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __146__AVPlayerVideoOutput__copyTaggedBufferGroupForHostTimeInternal_doNotConsume_presentationTimeStamp_activeConfiguration_lastSeenTaggedBufferGroup___block_invoke;
   block[3] = &unk_1E74647D0;
-  v22 = *&a3->var0;
-  var3 = a3->var3;
+  v22 = *&internal->var0;
+  var3 = internal->var3;
   block[4] = self;
   block[5] = v12;
   block[6] = &v45;
@@ -193,26 +193,26 @@ id __37__AVPlayerVideoOutput_attachedPlayer__block_invoke(uint64_t a1)
   block[8] = &v39;
   block[9] = &v33;
   block[10] = &v25;
-  v24 = a4;
+  consumeCopy = consume;
   dispatch_sync(stateQueue, block);
   if (v30[3] && !*(v46 + 6))
   {
-    if (a5)
+    if (stamp)
     {
       v14 = v40[6];
-      *&a5->var0 = *(v40 + 2);
-      a5->var3 = v14;
+      *&stamp->var0 = *(v40 + 2);
+      stamp->var3 = v14;
     }
 
-    if (a6)
+    if (configuration)
     {
-      *a6 = v34[5];
+      *configuration = v34[5];
     }
 
-    if (a7)
+    if (group)
     {
       v15 = v26;
-      *a7 = v26[3];
+      *group = v26[3];
       v15[3] = 0;
     }
   }
@@ -233,9 +233,9 @@ id __37__AVPlayerVideoOutput_attachedPlayer__block_invoke(uint64_t a1)
   return v18;
 }
 
-- (BOOL)hasNewTaggedBufferGroupForHostTime:(id *)a3
+- (BOOL)hasNewTaggedBufferGroupForHostTime:(id *)time
 {
-  v7 = *a3;
+  v7 = *time;
   cf = 0;
   v3 = [(AVPlayerVideoOutput *)self _copyTaggedBufferGroupForHostTimeInternal:&v7 doNotConsume:1 presentationTimeStamp:0 activeConfiguration:0 lastSeenTaggedBufferGroup:&cf];
   if (v3)
@@ -258,19 +258,19 @@ id __37__AVPlayerVideoOutput_attachedPlayer__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)_playerItemWithIdentifier:(id)a3
+- (id)_playerItemWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
   Weak = objc_loadWeak(&self->_receiverState.weakPlayer);
   v5 = 0;
-  if (a3 && Weak)
+  if (identifier && Weak)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [Weak _items];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    _items = [Weak _items];
+    v7 = [_items countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -281,7 +281,7 @@ LABEL_5:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_items);
         }
 
         v5 = *(*(&v12 + 1) + 8 * v10);
@@ -292,7 +292,7 @@ LABEL_5:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v8 = [_items countByEnumeratingWithState:&v12 objects:v16 count:16];
           v5 = 0;
           if (v8)
           {
@@ -313,14 +313,14 @@ LABEL_5:
   return v5;
 }
 
-- (void)_handleVideoReceiverActiveConfigurationChanged:(FigVideoReceiverConfigurationInfo *)a3
+- (void)_handleVideoReceiverActiveConfigurationChanged:(FigVideoReceiverConfigurationInfo *)changed
 {
   v19 = 0;
   v5 = *(MEMORY[0x1E695EFD0] + 16);
   v16 = *MEMORY[0x1E695EFD0];
   v17 = v5;
   v18 = *(MEMORY[0x1E695EFD0] + 32);
-  v6 = [(AVPlayerVideoOutput *)self _playerItemWithIdentifier:a3->var0];
+  v6 = [(AVPlayerVideoOutput *)self _playerItemWithIdentifier:changed->var0];
   v7 = FigCFDictionaryCopyArrayOfValues();
   v8 = 0;
   while (1)
@@ -347,12 +347,12 @@ LABEL_5:
   if (v6)
   {
     v10 = [AVPlayerVideoOutputConfiguration alloc];
-    var1 = a3->var1;
+    var1 = changed->var1;
     v15[0] = v16;
     v15[1] = v17;
     v15[2] = v18;
-    v13 = *&a3->var3.var0;
-    var3 = a3->var3.var3;
+    v13 = *&changed->var3.var0;
+    var3 = changed->var3.var3;
     v12 = [(AVPlayerVideoOutputConfiguration *)v10 initWithSourcePlayerItem:v6 dataChannelDescriptions:var1 transform:v15 activationTime:&v13];
   }
 
@@ -364,7 +364,7 @@ LABEL_5:
   self->_receiverState.activeConfiguration = v12;
 }
 
-- (int)_setUpVideoReceiverEventHandlers:(OpaqueFigVideoReceiver *)a3
+- (int)_setUpVideoReceiverEventHandlers:(OpaqueFigVideoReceiver *)handlers
 {
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
@@ -375,7 +375,7 @@ LABEL_5:
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 192);
   if (v4)
   {
-    v5 = v4(a3, v7);
+    v5 = v4(handlers, v7);
   }
 
   else
@@ -424,13 +424,13 @@ void *__56__AVPlayerVideoOutput__setUpVideoReceiverEventHandlers___block_invoke(
     goto LABEL_38;
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(AVVideoOutputSpecification *)self->_outputSpecification preferredTagCollections];
+  array = [MEMORY[0x1E695DF70] array];
+  preferredTagCollections = [(AVVideoOutputSpecification *)self->_outputSpecification preferredTagCollections];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  v6 = [(NSArray *)preferredTagCollections countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v6)
   {
     v7 = v6;
@@ -441,7 +441,7 @@ LABEL_5:
     {
       if (*v42 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(preferredTagCollections);
       }
 
       v3 = FigDataChannelGroupCreate();
@@ -456,7 +456,7 @@ LABEL_5:
         goto LABEL_38;
       }
 
-      [v4 addObject:cf];
+      [array addObject:cf];
       if (cf)
       {
         CFRelease(cf);
@@ -465,7 +465,7 @@ LABEL_5:
 
       if (v7 == ++v9)
       {
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v41 objects:v49 count:16];
+        v7 = [(NSArray *)preferredTagCollections countByEnumeratingWithState:&v41 objects:v49 count:16];
         if (v7)
         {
           goto LABEL_5;
@@ -485,14 +485,14 @@ LABEL_37:
     goto LABEL_39;
   }
 
-  v3 = v11(v10, v4, 0);
+  v3 = v11(v10, array, 0);
   if (v3)
   {
     goto LABEL_38;
   }
 
-  v40 = [MEMORY[0x1E695DF70] array];
-  if ([(NSArray *)v5 count])
+  array2 = [MEMORY[0x1E695DF70] array];
+  if ([(NSArray *)preferredTagCollections count])
   {
     v12 = 0;
     v39 = *MEMORY[0x1E6973DB8];
@@ -507,7 +507,7 @@ LABEL_37:
     v13 = *MEMORY[0x1E6973D90];
     do
     {
-      v14 = [(NSArray *)v5 objectAtIndex:v12];
+      v14 = [(NSArray *)preferredTagCollections objectAtIndex:v12];
       v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
       v16 = [(AVVideoOutputSpecification *)self->_outputSpecification _videoColorPropertiesForTagCollection:v14];
       if (v16)
@@ -552,22 +552,22 @@ LABEL_37:
         v24 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
         [v24 setObject:v14 forKeyedSubscript:v31];
         [v24 setObject:v15 forKeyedSubscript:v13];
-        [v40 addObject:v24];
+        [array2 addObject:v24];
       }
 
       ++v12;
     }
 
-    while (v12 < [(NSArray *)v5 count]);
+    while (v12 < [(NSArray *)preferredTagCollections count]);
   }
 
-  if ([v40 count])
+  if ([array2 count])
   {
     v25 = v46;
     v26 = *(*(CMBaseObjectGetVTable() + 16) + 80);
     if (v26)
     {
-      v3 = v26(v25, v40, 0);
+      v3 = v26(v25, array2, 0);
       if (!v3)
       {
         goto LABEL_33;
@@ -618,7 +618,7 @@ LABEL_41:
   return v29;
 }
 
-- (BOOL)_attachToPlayer:(id)a3 exceptionReason:(id *)a4
+- (BOOL)_attachToPlayer:(id)player exceptionReason:(id *)reason
 {
   v8 = 0;
   v9 = &v8;
@@ -630,9 +630,9 @@ LABEL_41:
   block[2] = __55__AVPlayerVideoOutput__attachToPlayer_exceptionReason___block_invoke;
   block[3] = &unk_1E7464820;
   block[4] = self;
-  block[5] = a3;
+  block[5] = player;
   block[6] = &v8;
-  block[7] = a4;
+  block[7] = reason;
   block[8] = a2;
   dispatch_sync(stateQueue, block);
   v5 = *(v9 + 24);
@@ -689,7 +689,7 @@ LABEL_12:
   return result;
 }
 
-- (void)_detachFromPlayer:(id)a3
+- (void)_detachFromPlayer:(id)player
 {
   stateQueue = self->_receiverState.stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -697,13 +697,13 @@ LABEL_12:
   v4[2] = __41__AVPlayerVideoOutput__detachFromPlayer___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = player;
   dispatch_sync(stateQueue, v4);
 }
 
-- (void)_setResourceLifeCycleHandler:(id)a3
+- (void)_setResourceLifeCycleHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   iVarAccessQueue = self->_iVarAccessQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;

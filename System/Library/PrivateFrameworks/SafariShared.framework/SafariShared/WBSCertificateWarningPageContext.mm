@@ -1,20 +1,20 @@
 @interface WBSCertificateWarningPageContext
-+ (BOOL)certificateWarningCannotBeBypassedForTrust:(__SecTrust *)a3;
-+ (int64_t)certificateWarningCategoryForError:(id)a3 trustIncludesRevokedCertificate:(BOOL)a4 clockSkew:(double)a5;
-+ (int64_t)numberOfDaysBetweenCertificateValidityRangeAndNow:(id)a3;
++ (BOOL)certificateWarningCannotBeBypassedForTrust:(__SecTrust *)trust;
++ (int64_t)certificateWarningCategoryForError:(id)error trustIncludesRevokedCertificate:(BOOL)certificate clockSkew:(double)skew;
++ (int64_t)numberOfDaysBetweenCertificateValidityRangeAndNow:(id)now;
 - (NSString)expiredCerticateDescription;
-- (WBSCertificateWarningPageContext)initWithCoder:(id)a3;
-- (WBSCertificateWarningPageContext)initWithWarningCategory:(int64_t)a3 failingURL:(id)a4 numberOfDaysInvalid:(int64_t)a5 canGoBack:(BOOL)a6 clockSkew:(double)a7;
-- (id)initPrivateRelayFailClosedNavigationWarningWithFailingURL:(id)a3 isPrivateRelaySetToTrackersAndWebsites:(BOOL)a4 canGoBack:(BOOL)a5;
-- (void)encodeWithCoder:(id)a3;
+- (WBSCertificateWarningPageContext)initWithCoder:(id)coder;
+- (WBSCertificateWarningPageContext)initWithWarningCategory:(int64_t)category failingURL:(id)l numberOfDaysInvalid:(int64_t)invalid canGoBack:(BOOL)back clockSkew:(double)skew;
+- (id)initPrivateRelayFailClosedNavigationWarningWithFailingURL:(id)l isPrivateRelaySetToTrackersAndWebsites:(BOOL)websites canGoBack:(BOOL)back;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSCertificateWarningPageContext
 
-+ (BOOL)certificateWarningCannotBeBypassedForTrust:(__SecTrust *)a3
++ (BOOL)certificateWarningCannotBeBypassedForTrust:(__SecTrust *)trust
 {
   result = kSecTrustResultInvalid;
-  TrustResult = SecTrustGetTrustResult(a3, &result);
+  TrustResult = SecTrustGetTrustResult(trust, &result);
   if (!TrustResult)
   {
     return result == kSecTrustResultFatalTrustFailure || result == kSecTrustResultDeny;
@@ -30,26 +30,26 @@
   return 1;
 }
 
-+ (int64_t)certificateWarningCategoryForError:(id)a3 trustIncludesRevokedCertificate:(BOOL)a4 clockSkew:(double)a5
++ (int64_t)certificateWarningCategoryForError:(id)error trustIncludesRevokedCertificate:(BOOL)certificate clockSkew:(double)skew
 {
-  v7 = a3;
-  v8 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v9 = [v8 effectiveBoolValueForSetting:*MEMORY[0x1E69ADF80]];
+  errorCopy = error;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v9 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADF80]];
 
   v10 = 2;
-  if (v9 != 2 && !a4)
+  if (v9 != 2 && !certificate)
   {
-    v11 = [v7 code];
-    v12 = [v7 userInfo];
-    v13 = [v12 safari_numberForKey:*MEMORY[0x1E695AD28]];
-    v14 = [v13 integerValue];
+    code = [errorCopy code];
+    userInfo = [errorCopy userInfo];
+    v13 = [userInfo safari_numberForKey:*MEMORY[0x1E695AD28]];
+    integerValue = [v13 integerValue];
 
-    if (v11 == -1201 || v14 == -9814)
+    if (code == -1201 || integerValue == -9814)
     {
-      v10 = 4 * (fabs(a5) >= 86400.0);
+      v10 = 4 * (fabs(skew) >= 86400.0);
     }
 
-    else if (v14 == -9843)
+    else if (integerValue == -9843)
     {
       v10 = 3;
     }
@@ -63,16 +63,16 @@
   return v10;
 }
 
-+ (int64_t)numberOfDaysBetweenCertificateValidityRangeAndNow:(id)a3
++ (int64_t)numberOfDaysBetweenCertificateValidityRangeAndNow:(id)now
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  nowCopy = now;
   Current = CFAbsoluteTimeGetCurrent();
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = nowCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -134,37 +134,37 @@ LABEL_18:
   return v11;
 }
 
-- (WBSCertificateWarningPageContext)initWithWarningCategory:(int64_t)a3 failingURL:(id)a4 numberOfDaysInvalid:(int64_t)a5 canGoBack:(BOOL)a6 clockSkew:(double)a7
+- (WBSCertificateWarningPageContext)initWithWarningCategory:(int64_t)category failingURL:(id)l numberOfDaysInvalid:(int64_t)invalid canGoBack:(BOOL)back clockSkew:(double)skew
 {
-  v13 = a4;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = WBSCertificateWarningPageContext;
   v14 = [(WBSCertificateWarningPageContext *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    v14->_warningCategory = a3;
-    objc_storeStrong(&v14->_failingURL, a4);
-    v15->_canGoBack = a6;
-    v15->_numberOfDaysInvalid = a5;
-    v15->_clockSkew = a7;
+    v14->_warningCategory = category;
+    objc_storeStrong(&v14->_failingURL, l);
+    v15->_canGoBack = back;
+    v15->_numberOfDaysInvalid = invalid;
+    v15->_clockSkew = skew;
     v16 = v15;
   }
 
   return v15;
 }
 
-- (id)initPrivateRelayFailClosedNavigationWarningWithFailingURL:(id)a3 isPrivateRelaySetToTrackersAndWebsites:(BOOL)a4 canGoBack:(BOOL)a5
+- (id)initPrivateRelayFailClosedNavigationWarningWithFailingURL:(id)l isPrivateRelaySetToTrackersAndWebsites:(BOOL)websites canGoBack:(BOOL)back
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = v8;
-  if (a4)
+  backCopy = back;
+  lCopy = l;
+  v9 = lCopy;
+  if (websites)
   {
     v10 = 7;
   }
 
-  else if ([v8 safari_isHTTPURL])
+  else if ([lCopy safari_isHTTPURL])
   {
     v10 = 8;
   }
@@ -174,32 +174,32 @@ LABEL_18:
     v10 = 7;
   }
 
-  v11 = [(WBSCertificateWarningPageContext *)self initWithWarningCategory:v10 failingURL:v9 numberOfDaysInvalid:0 canGoBack:v5 clockSkew:0.0];
+  v11 = [(WBSCertificateWarningPageContext *)self initWithWarningCategory:v10 failingURL:v9 numberOfDaysInvalid:0 canGoBack:backCopy clockSkew:0.0];
 
   return v11;
 }
 
-- (WBSCertificateWarningPageContext)initWithCoder:(id)a3
+- (WBSCertificateWarningPageContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"WarningCategory"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FailingURL"];
-  v7 = [v4 decodeBoolForKey:@"CanGoBack"];
-  v8 = [v4 decodeIntegerForKey:@"NumberOfDaysInvalid"];
-  [v4 decodeDoubleForKey:@"ClockSkew"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"WarningCategory"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FailingURL"];
+  v7 = [coderCopy decodeBoolForKey:@"CanGoBack"];
+  v8 = [coderCopy decodeIntegerForKey:@"NumberOfDaysInvalid"];
+  [coderCopy decodeDoubleForKey:@"ClockSkew"];
   v9 = [(WBSCertificateWarningPageContext *)self initWithWarningCategory:v5 failingURL:v6 numberOfDaysInvalid:v8 canGoBack:v7 clockSkew:?];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_warningCategory forKey:@"WarningCategory"];
-  [v4 encodeObject:self->_failingURL forKey:@"FailingURL"];
-  [v4 encodeBool:self->_canGoBack forKey:@"CanGoBack"];
-  [v4 encodeInteger:self->_numberOfDaysInvalid forKey:@"NumberOfDaysInvalid"];
-  [v4 encodeDouble:@"ClockSkew" forKey:self->_clockSkew];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_warningCategory forKey:@"WarningCategory"];
+  [coderCopy encodeObject:self->_failingURL forKey:@"FailingURL"];
+  [coderCopy encodeBool:self->_canGoBack forKey:@"CanGoBack"];
+  [coderCopy encodeInteger:self->_numberOfDaysInvalid forKey:@"NumberOfDaysInvalid"];
+  [coderCopy encodeDouble:@"ClockSkew" forKey:self->_clockSkew];
 }
 
 - (NSString)expiredCerticateDescription
@@ -224,17 +224,17 @@ LABEL_2:
         numberOfDaysInvalid = -numberOfDaysInvalid;
       }
 
-      v8 = [v6 localizedStringWithFormat:v7, numberOfDaysInvalid];
+      numberOfDaysInvalid = [v6 localizedStringWithFormat:v7, numberOfDaysInvalid];
     }
 
     else
     {
       v7 = _WBSLocalizedString();
-      v8 = [v6 localizedStringWithFormat:v7, self->_numberOfDaysInvalid];
+      numberOfDaysInvalid = [v6 localizedStringWithFormat:v7, self->_numberOfDaysInvalid];
     }
 
     v10 = self->_expiredCertificateDescription;
-    self->_expiredCertificateDescription = v8;
+    self->_expiredCertificateDescription = numberOfDaysInvalid;
 
     expiredCertificateDescription = self->_expiredCertificateDescription;
     goto LABEL_2;

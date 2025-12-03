@@ -1,10 +1,10 @@
 @interface SUItemValidator
-- (BOOL)validateItems:(id)a3 offers:(id)a4 error:(id *)a5;
+- (BOOL)validateItems:(id)items offers:(id)offers error:(id *)error;
 - (NSArray)validationTests;
-- (void)addCollectionValidationTests:(id)a3;
-- (void)addItemValidationTests:(id)a3;
+- (void)addCollectionValidationTests:(id)tests;
+- (void)addItemValidationTests:(id)tests;
 - (void)dealloc;
-- (void)removeValidationTest:(id)a3;
+- (void)removeValidationTest:(id)test;
 @end
 
 @implementation SUItemValidator
@@ -16,7 +16,7 @@
   [(SUItemValidator *)&v3 dealloc];
 }
 
-- (void)addCollectionValidationTests:(id)a3
+- (void)addCollectionValidationTests:(id)tests
 {
   v16 = *MEMORY[0x1E69E9840];
   if (!self->_collectionTests)
@@ -28,7 +28,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [tests countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -39,7 +39,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(tests);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -50,14 +50,14 @@
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [tests countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addItemValidationTests:(id)a3
+- (void)addItemValidationTests:(id)tests
 {
   v16 = *MEMORY[0x1E69E9840];
   if (!self->_itemTests)
@@ -69,7 +69,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [tests countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -80,7 +80,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(tests);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -91,22 +91,22 @@
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [tests countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)removeValidationTest:(id)a3
+- (void)removeValidationTest:(id)test
 {
   [(NSMutableArray *)self->_collectionTests removeObject:?];
   itemTests = self->_itemTests;
 
-  [(NSMutableArray *)itemTests removeObject:a3];
+  [(NSMutableArray *)itemTests removeObject:test];
 }
 
-- (BOOL)validateItems:(id)a3 offers:(id)a4 error:(id *)a5
+- (BOOL)validateItems:(id)items offers:(id)offers error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
   v38 = 0;
@@ -129,7 +129,7 @@ LABEL_3:
         objc_enumerationMutation(collectionTests);
       }
 
-      v14 = [*(*(&v34 + 1) + 8 * v13) validateItems:a3 offers:a4 error:&v38];
+      v14 = [*(*(&v34 + 1) + 8 * v13) validateItems:items offers:offers error:&v38];
       if (!v14)
       {
         break;
@@ -160,7 +160,7 @@ LABEL_9:
     if (!v28)
     {
       LOBYTE(v14) = 1;
-      if (a5)
+      if (error)
       {
         goto LABEL_26;
       }
@@ -169,7 +169,7 @@ LABEL_9:
     }
 
     v29 = *v31;
-    v26 = a5;
+    errorCopy = error;
     while (2)
     {
       v15 = 0;
@@ -181,16 +181,16 @@ LABEL_9:
         }
 
         v16 = *(*(&v30 + 1) + 8 * v15);
-        v17 = [a3 count];
-        v18 = [a4 count];
+        v17 = [items count];
+        v18 = [offers count];
         if (v17 >= 1)
         {
           v19 = v18;
           v20 = 0;
           while (1)
           {
-            v21 = [a3 objectAtIndex:v20];
-            v22 = v20 >= v19 ? 0 : [a4 objectAtIndex:v20];
+            v21 = [items objectAtIndex:v20];
+            v22 = v20 >= v19 ? 0 : [offers objectAtIndex:v20];
             v23 = [MEMORY[0x1E695DEC8] arrayWithObject:v21];
             if (([v16 validateItems:v23 offers:objc_msgSend(MEMORY[0x1E695DEC8] error:{"arrayWithObjects:", v22, 0), &v38}] & 1) == 0)
             {
@@ -204,7 +204,7 @@ LABEL_9:
           }
 
           LOBYTE(v14) = 0;
-          a5 = v26;
+          error = errorCopy;
           goto LABEL_25;
         }
 
@@ -215,7 +215,7 @@ LABEL_21:
       while (v15 != v28);
       v24 = [(NSMutableArray *)obj countByEnumeratingWithState:&v30 objects:v39 count:16];
       LOBYTE(v14) = 1;
-      a5 = v26;
+      error = errorCopy;
       v28 = v24;
       if (v24)
       {
@@ -227,10 +227,10 @@ LABEL_21:
   }
 
 LABEL_25:
-  if (a5)
+  if (error)
   {
 LABEL_26:
-    *a5 = v38;
+    *error = v38;
   }
 
   return v14;
@@ -238,11 +238,11 @@ LABEL_26:
 
 - (NSArray)validationTests
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_collectionTests)
   {
-    [(NSArray *)v3 addObjectsFromArray:?];
+    [(NSArray *)array addObjectsFromArray:?];
   }
 
   if (self->_itemTests)

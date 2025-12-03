@@ -1,21 +1,21 @@
 @interface SDNetworkOperation
 - (NSString)description;
-- (SDNetworkOperation)initWithKind:(id)a3;
+- (SDNetworkOperation)initWithKind:(id)kind;
 - (SDNetworkOperationDelegate)delegate;
-- (void)airDropConnection:(id)a3 event:(int64_t)a4 withResults:(id)a5;
-- (void)airDropController:(id)a3 didChange:(id)a4;
-- (void)airDropInformation:(id)a3 didChange:(id)a4;
-- (void)airDropServer:(id)a3 event:(int64_t)a4 withResults:(id)a5;
-- (void)airDropSession:(id)a3 event:(int64_t)a4 withResults:(id)a5;
-- (void)airDropStatus:(id)a3 didChange:(id)a4;
-- (void)copyPropertyForKey:(id)a3;
+- (void)airDropConnection:(id)connection event:(int64_t)event withResults:(id)results;
+- (void)airDropController:(id)controller didChange:(id)change;
+- (void)airDropInformation:(id)information didChange:(id)change;
+- (void)airDropServer:(id)server event:(int64_t)event withResults:(id)results;
+- (void)airDropSession:(id)session event:(int64_t)event withResults:(id)results;
+- (void)airDropStatus:(id)status didChange:(id)change;
+- (void)copyPropertyForKey:(id)key;
 - (void)dealloc;
 - (void)invalidate;
-- (void)networkEjecter:(id)a3 event:(int64_t)a4 withResults:(id)a5;
-- (void)networkResolver:(id)a3 event:(int64_t)a4 withResults:(id)a5;
-- (void)notifyClientWithPosixError:(int64_t)a3;
+- (void)networkEjecter:(id)ejecter event:(int64_t)event withResults:(id)results;
+- (void)networkResolver:(id)resolver event:(int64_t)event withResults:(id)results;
+- (void)notifyClientWithPosixError:(int64_t)error;
 - (void)resume;
-- (void)setProperty:(void *)a3 forKey:(id)a4;
+- (void)setProperty:(void *)property forKey:(id)key;
 @end
 
 @implementation SDNetworkOperation
@@ -85,16 +85,16 @@ LABEL_6:
   [(SDNetworkOperation *)&v3 dealloc];
 }
 
-- (SDNetworkOperation)initWithKind:(id)a3
+- (SDNetworkOperation)initWithKind:(id)kind
 {
-  v5 = a3;
+  kindCopy = kind;
   v15.receiver = self;
   v15.super_class = SDNetworkOperation;
   v6 = [(SDNetworkOperation *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_kind, a3);
+    objc_storeStrong(&v6->_kind, kind);
     operation = v7->_operation;
     v7->_operation = 0;
 
@@ -116,40 +116,40 @@ LABEL_6:
   return v7;
 }
 
-- (void)setProperty:(void *)a3 forKey:(id)a4
+- (void)setProperty:(void *)property forKey:(id)key
 {
-  v7 = a4;
-  if (([v7 isEqual:kSFOperationKindKey] & 1) == 0)
+  keyCopy = key;
+  if (([keyCopy isEqual:kSFOperationKindKey] & 1) == 0)
   {
     if (([(NSString *)self->_kind isEqual:kSFOperationKindController]& 1) != 0 || [(NSString *)self->_kind isEqual:kSFOperationKindInformation])
     {
-      [self->_operation setProperty:a3 forKey:v7];
+      [self->_operation setProperty:property forKey:keyCopy];
     }
 
     properties = self->_properties;
-    if (a3)
+    if (property)
     {
-      [(NSMutableDictionary *)properties setObject:a3 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)properties setObject:property forKeyedSubscript:keyCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)properties removeObjectForKey:v7];
+      [(NSMutableDictionary *)properties removeObjectForKey:keyCopy];
     }
   }
 }
 
-- (void)copyPropertyForKey:(id)a3
+- (void)copyPropertyForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqual:kSFOperationKindKey])
+  keyCopy = key;
+  if ([keyCopy isEqual:kSFOperationKindKey])
   {
     v5 = self->_kind;
   }
 
   else
   {
-    v5 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:keyCopy];
   }
 
   v6 = v5;
@@ -157,70 +157,70 @@ LABEL_6:
   return v6;
 }
 
-- (void)airDropStatus:(id)a3 didChange:(id)a4
+- (void)airDropStatus:(id)status didChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained networkOperation:self event:12 withResults:v5];
+  [WeakRetained networkOperation:self event:12 withResults:changeCopy];
 }
 
-- (void)airDropInformation:(id)a3 didChange:(id)a4
+- (void)airDropInformation:(id)information didChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained networkOperation:self event:12 withResults:v5];
+  [WeakRetained networkOperation:self event:12 withResults:changeCopy];
 }
 
-- (void)airDropController:(id)a3 didChange:(id)a4
+- (void)airDropController:(id)controller didChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained networkOperation:self event:12 withResults:v5];
+  [WeakRetained networkOperation:self event:12 withResults:changeCopy];
 }
 
-- (void)airDropSession:(id)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)airDropSession:(id)session event:(int64_t)event withResults:(id)results
 {
-  v7 = a5;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained networkOperation:self event:a4 withResults:v7];
+  [WeakRetained networkOperation:self event:event withResults:resultsCopy];
 }
 
-- (void)airDropServer:(id)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)airDropServer:(id)server event:(int64_t)event withResults:(id)results
 {
-  v7 = a5;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained networkOperation:self event:a4 withResults:v7];
+  [WeakRetained networkOperation:self event:event withResults:resultsCopy];
 }
 
-- (void)networkEjecter:(id)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)networkEjecter:(id)ejecter event:(int64_t)event withResults:(id)results
 {
-  v7 = a5;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained networkOperation:self event:a4 withResults:v7];
+  [WeakRetained networkOperation:self event:event withResults:resultsCopy];
 }
 
-- (void)networkResolver:(id)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)networkResolver:(id)resolver event:(int64_t)event withResults:(id)results
 {
-  v7 = a5;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained networkOperation:self event:a4 withResults:v7];
+  [WeakRetained networkOperation:self event:event withResults:resultsCopy];
 }
 
-- (void)airDropConnection:(id)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)airDropConnection:(id)connection event:(int64_t)event withResults:(id)results
 {
-  v7 = a5;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained networkOperation:self event:a4 withResults:v7];
+  [WeakRetained networkOperation:self event:event withResults:resultsCopy];
 }
 
-- (void)notifyClientWithPosixError:(int64_t)a3
+- (void)notifyClientWithPosixError:(int64_t)error
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1001353B8;
   v3[3] = &unk_1008CFD30;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = error;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
@@ -261,7 +261,7 @@ LABEL_6:
             return;
           }
 
-          v4 = self;
+          selfCopy3 = self;
           v5 = 1;
           goto LABEL_5;
         }
@@ -391,11 +391,11 @@ LABEL_66:
       }
     }
 
-    v4 = self;
+    selfCopy3 = self;
     v5 = 22;
 LABEL_5:
 
-    [(SDNetworkOperation *)v4 notifyClientWithPosixError:v5];
+    [(SDNetworkOperation *)selfCopy3 notifyClientWithPosixError:v5];
     return;
   }
 
@@ -407,7 +407,7 @@ LABEL_5:
       return;
     }
 
-    v4 = self;
+    selfCopy3 = self;
     v5 = 37;
     goto LABEL_5;
   }
@@ -477,9 +477,9 @@ LABEL_5:
         memset(v58, 0, sizeof(v58));
         [self->_operation setAuditToken:v58];
         [self->_operation setClientPid:xpc_connection_get_pid(self->_connection)];
-        v38 = [self->_operation clientBundleID];
+        clientBundleID = [self->_operation clientBundleID];
 
-        if (!v38)
+        if (!clientBundleID)
         {
           v39 = sub_10000C344(self->_connection);
           [self->_operation setClientBundleID:v39];

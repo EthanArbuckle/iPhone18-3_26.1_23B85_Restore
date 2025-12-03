@@ -8,7 +8,7 @@
 
 - (NSData)poster
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214551A44();
 
   return v3;

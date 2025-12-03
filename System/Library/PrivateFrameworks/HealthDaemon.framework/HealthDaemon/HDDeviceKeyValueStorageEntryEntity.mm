@@ -1,46 +1,46 @@
 @interface HDDeviceKeyValueStorageEntryEntity
-+ (BOOL)enumerateAllEntriesForSyncIdentity:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)removeEntitesForKeys:(id)a3 domain:(id)a4 syncEntityIdentity:(int64_t)a5 transaction:(id)a6 error:(id *)a7;
-+ (BOOL)replaceEntriesForOldSyncIdentity:(int64_t)a3 withNewSyncIdentity:(int64_t)a4 deviceContextID:(int64_t)a5 transaction:(id)a6 error:(id *)a7;
-+ (id)_predicateForAnyKeys:(id)a3;
-+ (id)_predicateForKeys:(id)a3 domain:(id)a4;
-+ (id)_predicateForSyncEntityIdentity:(int64_t)a3 domain:(id)a4 keys:(id)a5;
++ (BOOL)enumerateAllEntriesForSyncIdentity:(id)identity transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)removeEntitesForKeys:(id)keys domain:(id)domain syncEntityIdentity:(int64_t)identity transaction:(id)transaction error:(id *)error;
++ (BOOL)replaceEntriesForOldSyncIdentity:(int64_t)identity withNewSyncIdentity:(int64_t)syncIdentity deviceContextID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (id)_predicateForAnyKeys:(id)keys;
++ (id)_predicateForKeys:(id)keys domain:(id)domain;
++ (id)_predicateForSyncEntityIdentity:(int64_t)identity domain:(id)domain keys:(id)keys;
 + (id)_propertiesForEntity;
-+ (id)fetchEntriesForKeys:(id)a3 domain:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)fetchEntryForKey:(id)a3 domain:(id)a4 syncEntityIdentity:(int64_t)a5 transaction:(id)a6 error:(id *)a7;
-+ (int)setData:(id)a3 forKey:(id)a4 domain:(id)a5 deviceContextID:(int64_t)a6 syncEntityIdentity:(int64_t)a7 modificationDate:(id)a8 transaction:(id)a9 error:(id *)a10;
-+ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)a3 key:(id)a4 domain:(id)a5 object:(id)a6 syncEntityIdentity:(int64_t)a7 deviceContext:(int64_t)a8 modificationDate:(id)a9;
++ (id)fetchEntriesForKeys:(id)keys domain:(id)domain transaction:(id)transaction error:(id *)error;
++ (id)fetchEntryForKey:(id)key domain:(id)domain syncEntityIdentity:(int64_t)identity transaction:(id)transaction error:(id *)error;
++ (int)setData:(id)data forKey:(id)key domain:(id)domain deviceContextID:(int64_t)d syncEntityIdentity:(int64_t)identity modificationDate:(id)date transaction:(id)transaction error:(id *)self0;
++ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)binder key:(id)key domain:(id)domain object:(id)object syncEntityIdentity:(int64_t)identity deviceContext:(int64_t)context modificationDate:(id)date;
 @end
 
 @implementation HDDeviceKeyValueStorageEntryEntity
 
-+ (id)fetchEntriesForKeys:(id)a3 domain:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)fetchEntriesForKeys:(id)keys domain:(id)domain transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  keysCopy = keys;
+  domainCopy = domain;
+  transactionCopy = transaction;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__144;
   v29 = __Block_byref_object_dispose__144;
   v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [v12 databaseForEntityClass:a1];
-  v14 = [a1 _predicateForKeys:v10 domain:v11];
-  v15 = [a1 queryWithDatabase:v13 predicate:v14];
+  v13 = [transactionCopy databaseForEntityClass:self];
+  v14 = [self _predicateForKeys:keysCopy domain:domainCopy];
+  v15 = [self queryWithDatabase:v13 predicate:v14];
 
-  v16 = [a1 _propertiesForEntity];
+  _propertiesForEntity = [self _propertiesForEntity];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __83__HDDeviceKeyValueStorageEntryEntity_fetchEntriesForKeys_domain_transaction_error___block_invoke;
   v21[3] = &unk_278627150;
-  v17 = v12;
+  v17 = transactionCopy;
   v22 = v17;
   v23 = &v25;
-  v24 = a1;
-  LODWORD(a6) = [v15 enumerateProperties:v16 error:a6 enumerationHandler:v21];
+  selfCopy = self;
+  LODWORD(error) = [v15 enumerateProperties:_propertiesForEntity error:error enumerationHandler:v21];
 
-  if (a6)
+  if (error)
   {
     v18 = v26[5];
   }
@@ -79,13 +79,13 @@ BOOL __83__HDDeviceKeyValueStorageEntryEntity_fetchEntriesForKeys_domain_transac
   return v5 != 0;
 }
 
-+ (BOOL)enumerateAllEntriesForSyncIdentity:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateAllEntriesForSyncIdentity:(id)identity transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v11 databaseForEntityClass:a1];
-  v14 = [HDSyncIdentityEntity concreteIdentityForIdentity:v12 transaction:v11 error:a5];
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  identityCopy = identity;
+  v13 = [transactionCopy databaseForEntityClass:self];
+  v14 = [HDSyncIdentityEntity concreteIdentityForIdentity:identityCopy transaction:transactionCopy error:error];
 
   if (v14)
   {
@@ -93,7 +93,7 @@ BOOL __83__HDDeviceKeyValueStorageEntryEntity_fetchEntriesForKeys_domain_transac
     v23[1] = 3221225472;
     v23[2] = __110__HDDeviceKeyValueStorageEntryEntity_enumerateAllEntriesForSyncIdentity_transaction_error_enumerationHandler___block_invoke;
     v23[3] = &__block_descriptor_40_e15___NSString_8__0l;
-    v23[4] = a1;
+    v23[4] = self;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __110__HDDeviceKeyValueStorageEntryEntity_enumerateAllEntriesForSyncIdentity_transaction_error_enumerationHandler___block_invoke_2;
@@ -103,10 +103,10 @@ BOOL __83__HDDeviceKeyValueStorageEntryEntity_fetchEntriesForKeys_domain_transac
     v17[1] = 3221225472;
     v17[2] = __110__HDDeviceKeyValueStorageEntryEntity_enumerateAllEntriesForSyncIdentity_transaction_error_enumerationHandler___block_invoke_3;
     v17[3] = &unk_278627178;
-    v20 = a1;
+    selfCopy = self;
     v18 = v22;
-    v19 = v10;
-    v15 = [v13 executeCachedStatementForKey:&enumerateAllEntriesForSyncIdentity_transaction_error_enumerationHandler__lookupKey error:a5 SQLGenerator:v23 bindingHandler:v21 enumerationHandler:v17];
+    v19 = handlerCopy;
+    v15 = [v13 executeCachedStatementForKey:&enumerateAllEntriesForSyncIdentity_transaction_error_enumerationHandler__lookupKey error:error SQLGenerator:v23 bindingHandler:v21 enumerationHandler:v17];
   }
 
   else
@@ -149,41 +149,41 @@ uint64_t __110__HDDeviceKeyValueStorageEntryEntity_enumerateAllEntriesForSyncIde
   return 1;
 }
 
-+ (id)fetchEntryForKey:(id)a3 domain:(id)a4 syncEntityIdentity:(int64_t)a5 transaction:(id)a6 error:(id *)a7
++ (id)fetchEntryForKey:(id)key domain:(id)domain syncEntityIdentity:(int64_t)identity transaction:(id)transaction error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  keyCopy = key;
+  domainCopy = domain;
+  transactionCopy = transaction;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__144;
   v35 = __Block_byref_object_dispose__144;
   v36 = 0;
-  v15 = [v14 databaseForEntityClass:a1];
+  v15 = [transactionCopy databaseForEntityClass:self];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __99__HDDeviceKeyValueStorageEntryEntity_fetchEntryForKey_domain_syncEntityIdentity_transaction_error___block_invoke;
   v30[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v30[4] = a1;
+  v30[4] = self;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __99__HDDeviceKeyValueStorageEntryEntity_fetchEntryForKey_domain_syncEntityIdentity_transaction_error___block_invoke_2;
   v26[3] = &unk_2786199F8;
-  v16 = v13;
+  v16 = domainCopy;
   v27 = v16;
-  v17 = v12;
+  v17 = keyCopy;
   v28 = v17;
-  v29 = a5;
+  identityCopy = identity;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __99__HDDeviceKeyValueStorageEntryEntity_fetchEntryForKey_domain_syncEntityIdentity_transaction_error___block_invoke_3;
   v22[3] = &unk_2786271A0;
-  v18 = v14;
+  v18 = transactionCopy;
   v23 = v18;
   v24 = &v31;
-  v25 = a1;
-  if ([v15 executeCachedStatementForKey:&fetchEntryForKey_domain_syncEntityIdentity_transaction_error__lookupKey error:a7 SQLGenerator:v30 bindingHandler:v26 enumerationHandler:v22])
+  selfCopy = self;
+  if ([v15 executeCachedStatementForKey:&fetchEntryForKey_domain_syncEntityIdentity_transaction_error__lookupKey error:error SQLGenerator:v30 bindingHandler:v26 enumerationHandler:v22])
   {
     v19 = v32[5];
   }
@@ -242,10 +242,10 @@ BOOL __99__HDDeviceKeyValueStorageEntryEntity_fetchEntryForKey_domain_syncEntity
   return v4 != 0;
 }
 
-+ (BOOL)replaceEntriesForOldSyncIdentity:(int64_t)a3 withNewSyncIdentity:(int64_t)a4 deviceContextID:(int64_t)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)replaceEntriesForOldSyncIdentity:(int64_t)identity withNewSyncIdentity:(int64_t)syncIdentity deviceContextID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v12 = a6;
+  transactionCopy = transaction;
   v13 = objc_alloc(MEMORY[0x277CBEB18]);
   v23[0] = @"sync_identity_id";
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
@@ -257,49 +257,49 @@ BOOL __99__HDDeviceKeyValueStorageEntryEntity_fetchEntryForKey_domain_syncEntity
     [v15 addObject:@"device_record_id"];
   }
 
-  v17 = [v12 databaseForEntityClass:a1];
-  v18 = [a1 _predicateForSyncEntityIdentity:a3 domain:0 keys:0];
+  v17 = [transactionCopy databaseForEntityClass:self];
+  v18 = [self _predicateForSyncEntityIdentity:identity domain:0 keys:0];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __125__HDDeviceKeyValueStorageEntryEntity_replaceEntriesForOldSyncIdentity_withNewSyncIdentity_deviceContextID_transaction_error___block_invoke;
   v22[3] = &__block_descriptor_56_e34_v16__0__HDSQLiteStatementBinder__8l;
-  v22[4] = a1;
-  v22[5] = a4;
-  v22[6] = a5;
-  v19 = [a1 updateProperties:v15 predicate:v18 database:v17 error:a7 bindingHandler:v22];
+  v22[4] = self;
+  v22[5] = syncIdentity;
+  v22[6] = d;
+  v19 = [self updateProperties:v15 predicate:v18 database:v17 error:error bindingHandler:v22];
 
   v20 = *MEMORY[0x277D85DE8];
   return v19;
 }
 
-+ (int)setData:(id)a3 forKey:(id)a4 domain:(id)a5 deviceContextID:(int64_t)a6 syncEntityIdentity:(int64_t)a7 modificationDate:(id)a8 transaction:(id)a9 error:(id *)a10
++ (int)setData:(id)data forKey:(id)key domain:(id)domain deviceContextID:(int64_t)d syncEntityIdentity:(int64_t)identity modificationDate:(id)date transaction:(id)transaction error:(id *)self0
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
-  if (v16)
+  dataCopy = data;
+  keyCopy = key;
+  domainCopy = domain;
+  dateCopy = date;
+  transactionCopy = transaction;
+  if (dataCopy)
   {
     v51 = 0;
-    v21 = [a1 fetchEntryForKey:v17 domain:v18 syncEntityIdentity:a7 transaction:v20 error:&v51];
+    v21 = [self fetchEntryForKey:keyCopy domain:domainCopy syncEntityIdentity:identity transaction:transactionCopy error:&v51];
     v22 = v51;
     if (v21 || !v22)
     {
       v39 = v22;
       if (v21)
       {
-        v37 = v19;
-        v26 = [v21 value];
-        v27 = [v26 isEqual:v16];
+        v37 = dateCopy;
+        value = [v21 value];
+        v27 = [value isEqual:dataCopy];
 
         if (v27)
         {
           _HKInitializeLogging();
           v28 = *MEMORY[0x277CCC328];
           v24 = 2;
-          v19 = v37;
+          dateCopy = v37;
           v23 = v39;
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEBUG))
           {
@@ -314,37 +314,37 @@ BOOL __99__HDDeviceKeyValueStorageEntryEntity_fetchEntryForKey_domain_syncEntity
         v53[0] = @"value";
         v53[1] = @"date_modified";
         v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
-        v52 = v17;
+        v52 = keyCopy;
         v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v52 count:1];
-        v30 = [a1 _predicateForSyncEntityIdentity:a7 domain:v18 keys:v34];
-        v31 = [v20 databaseForEntityClass:a1];
+        v30 = [self _predicateForSyncEntityIdentity:identity domain:domainCopy keys:v34];
+        v31 = [transactionCopy databaseForEntityClass:self];
         v40[0] = MEMORY[0x277D85DD0];
         v40[1] = 3221225472;
         v40[2] = __130__HDDeviceKeyValueStorageEntryEntity_setData_forKey_domain_deviceContextID_syncEntityIdentity_modificationDate_transaction_error___block_invoke_346;
         v40[3] = &unk_278613DE8;
-        v41 = v16;
+        v41 = dataCopy;
         v42 = v37;
-        v24 = [a1 updateProperties:v36 predicate:v30 database:v31 error:a10 bindingHandler:v40];
+        v24 = [self updateProperties:v36 predicate:v30 database:v31 error:error bindingHandler:v40];
 
-        v19 = v37;
+        dateCopy = v37;
       }
 
       else
       {
-        v38 = [v20 databaseForEntityClass:a1];
-        v35 = [a1 _propertiesForEntity];
+        v38 = [transactionCopy databaseForEntityClass:self];
+        _propertiesForEntity = [self _propertiesForEntity];
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
         v43[2] = __130__HDDeviceKeyValueStorageEntryEntity_setData_forKey_domain_deviceContextID_syncEntityIdentity_modificationDate_transaction_error___block_invoke;
         v43[3] = &unk_2786271E8;
-        v48 = a1;
-        v44 = v17;
-        v45 = v18;
-        v46 = v16;
-        v49 = a7;
-        v50 = a6;
-        v47 = v19;
-        v29 = [a1 insertOrReplaceEntity:0 database:v38 properties:v35 error:a10 bindingHandler:v43];
+        selfCopy = self;
+        v44 = keyCopy;
+        v45 = domainCopy;
+        v46 = dataCopy;
+        identityCopy = identity;
+        dCopy = d;
+        v47 = dateCopy;
+        v29 = [self insertOrReplaceEntity:0 database:v38 properties:_propertiesForEntity error:error bindingHandler:v43];
 
         v24 = v29 != 0;
       }
@@ -355,10 +355,10 @@ BOOL __99__HDDeviceKeyValueStorageEntryEntity_fetchEntryForKey_domain_syncEntity
     else
     {
       v23 = v22;
-      if (a10)
+      if (error)
       {
         v24 = 0;
-        *a10 = v22;
+        *error = v22;
       }
 
       else
@@ -373,9 +373,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v56[0] = v17;
+  v56[0] = keyCopy;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:1];
-  v24 = [a1 removeEntitesForKeys:v25 domain:v18 syncEntityIdentity:a7 transaction:v20 error:a10];
+  v24 = [self removeEntitesForKeys:v25 domain:domainCopy syncEntityIdentity:identity transaction:transactionCopy error:error];
 
 LABEL_16:
   v32 = *MEMORY[0x277D85DE8];
@@ -390,15 +390,15 @@ void __130__HDDeviceKeyValueStorageEntryEntity_setData_forKey_domain_deviceConte
   JUMPOUT(0x22AAC6B60);
 }
 
-+ (BOOL)removeEntitesForKeys:(id)a3 domain:(id)a4 syncEntityIdentity:(int64_t)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)removeEntitesForKeys:(id)keys domain:(id)domain syncEntityIdentity:(int64_t)identity transaction:(id)transaction error:(id *)error
 {
-  v12 = a4;
-  v13 = a3;
-  v14 = [a6 databaseForEntityClass:a1];
-  v15 = [a1 _predicateForSyncEntityIdentity:a5 domain:v12 keys:v13];
+  domainCopy = domain;
+  keysCopy = keys;
+  v14 = [transaction databaseForEntityClass:self];
+  v15 = [self _predicateForSyncEntityIdentity:identity domain:domainCopy keys:keysCopy];
 
-  LOBYTE(a7) = [a1 deleteEntitiesInDatabase:v14 predicate:v15 error:a7];
-  return a7;
+  LOBYTE(error) = [self deleteEntitiesInDatabase:v14 predicate:v15 error:error];
+  return error;
 }
 
 + (id)_propertiesForEntity
@@ -415,12 +415,12 @@ void __130__HDDeviceKeyValueStorageEntryEntity_setData_forKey_domain_deviceConte
   return v2;
 }
 
-+ (id)_predicateForKeys:(id)a3 domain:(id)a4
++ (id)_predicateForKeys:(id)keys domain:(id)domain
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a1 _predicateForAnyKeys:a3];
-  v8 = [MEMORY[0x277D10B18] predicateWithProperty:@"domain" equalToValue:v6];
+  domainCopy = domain;
+  v7 = [self _predicateForAnyKeys:keys];
+  v8 = [MEMORY[0x277D10B18] predicateWithProperty:@"domain" equalToValue:domainCopy];
 
   if (v7)
   {
@@ -441,16 +441,16 @@ void __130__HDDeviceKeyValueStorageEntryEntity_setData_forKey_domain_deviceConte
   return v11;
 }
 
-+ (id)_predicateForAnyKeys:(id)a3
++ (id)_predicateForAnyKeys:(id)keys
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keysCopy = keys;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = keysCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -490,28 +490,28 @@ void __130__HDDeviceKeyValueStorageEntryEntity_setData_forKey_domain_deviceConte
   return v11;
 }
 
-+ (id)_predicateForSyncEntityIdentity:(int64_t)a3 domain:(id)a4 keys:(id)a5
++ (id)_predicateForSyncEntityIdentity:(int64_t)identity domain:(id)domain keys:(id)keys
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  domainCopy = domain;
+  keysCopy = keys;
   v10 = objc_alloc(MEMORY[0x277CBEB18]);
   v11 = MEMORY[0x277D10B18];
-  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:identity];
   v13 = [v11 predicateWithProperty:@"sync_identity_id" equalToValue:v12];
   v21[0] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   v15 = [v10 initWithArray:v14];
 
-  if (v8)
+  if (domainCopy)
   {
-    v16 = [MEMORY[0x277D10B18] predicateWithProperty:@"domain" equalToValue:v8];
+    v16 = [MEMORY[0x277D10B18] predicateWithProperty:@"domain" equalToValue:domainCopy];
     [v15 addObject:v16];
   }
 
-  if (v9)
+  if (keysCopy)
   {
-    v17 = [a1 _predicateForAnyKeys:v9];
+    v17 = [self _predicateForAnyKeys:keysCopy];
     [v15 addObject:v17];
   }
 
@@ -522,19 +522,19 @@ void __130__HDDeviceKeyValueStorageEntryEntity_setData_forKey_domain_deviceConte
   return v18;
 }
 
-+ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)a3 key:(id)a4 domain:(id)a5 object:(id)a6 syncEntityIdentity:(int64_t)a7 deviceContext:(int64_t)a8 modificationDate:(id)a9
++ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)binder key:(id)key domain:(id)domain object:(id)object syncEntityIdentity:(int64_t)identity deviceContext:(int64_t)context modificationDate:(id)date
 {
-  v14 = a9;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  MEMORY[0x22AAC6B90](a3, @"sync_identity_id", a7);
-  MEMORY[0x22AAC6BD0](a3, @"domain", v16);
+  dateCopy = date;
+  objectCopy = object;
+  domainCopy = domain;
+  keyCopy = key;
+  MEMORY[0x22AAC6B90](binder, @"sync_identity_id", identity);
+  MEMORY[0x22AAC6BD0](binder, @"domain", domainCopy);
 
-  MEMORY[0x22AAC6BD0](a3, @"key", v17);
-  MEMORY[0x22AAC6B40](a3, @"value", v15);
+  MEMORY[0x22AAC6BD0](binder, @"key", keyCopy);
+  MEMORY[0x22AAC6B40](binder, @"value", objectCopy);
 
-  [v14 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
 
   JUMPOUT(0x22AAC6B60);
 }

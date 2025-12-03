@@ -1,36 +1,36 @@
 @interface MBCellularDataSubscriptionMonitor
-- (BOOL)_startDelegateTimerWithTimeout:(unint64_t)a3;
-- (MBCellularDataSubscriptionMonitor)initWithQueue:(id)a3 timeout:(unint64_t)a4;
-- (MBCellularDataSubscriptionMonitor)initWithTimeout:(unint64_t)a3;
-- (unint64_t)_backupOnCellularSupportWithError:(id *)a3;
+- (BOOL)_startDelegateTimerWithTimeout:(unint64_t)timeout;
+- (MBCellularDataSubscriptionMonitor)initWithQueue:(id)queue timeout:(unint64_t)timeout;
+- (MBCellularDataSubscriptionMonitor)initWithTimeout:(unint64_t)timeout;
+- (unint64_t)_backupOnCellularSupportWithError:(id *)error;
 - (void)_cancelDelegateTimer;
-- (void)_refreshBackupOnCellularSupportWithTimeout:(unint64_t)a3;
+- (void)_refreshBackupOnCellularSupportWithTimeout:(unint64_t)timeout;
 - (void)cancel;
-- (void)currentDataSimChanged:(id)a3;
-- (void)dataSettingsChanged:(id)a3;
-- (void)internetDataStatus:(id)a3;
+- (void)currentDataSimChanged:(id)changed;
+- (void)dataSettingsChanged:(id)changed;
+- (void)internetDataStatus:(id)status;
 - (void)start;
 @end
 
 @implementation MBCellularDataSubscriptionMonitor
 
-- (MBCellularDataSubscriptionMonitor)initWithQueue:(id)a3 timeout:(unint64_t)a4
+- (MBCellularDataSubscriptionMonitor)initWithQueue:(id)queue timeout:(unint64_t)timeout
 {
-  v6 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = MBCellularDataSubscriptionMonitor;
   v7 = [(MBCellularDataSubscriptionMonitor *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(MBCellularDataSubscriptionMonitor *)v7 setQueue:v6];
-    [(MBCellularDataSubscriptionMonitor *)v8 setTimeout:a4];
+    [(MBCellularDataSubscriptionMonitor *)v7 setQueue:queueCopy];
+    [(MBCellularDataSubscriptionMonitor *)v8 setTimeout:timeout];
   }
 
   return v8;
 }
 
-- (MBCellularDataSubscriptionMonitor)initWithTimeout:(unint64_t)a3
+- (MBCellularDataSubscriptionMonitor)initWithTimeout:(unint64_t)timeout
 {
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_attr_make_with_qos_class(v5, QOS_CLASS_UTILITY, 0);
@@ -38,7 +38,7 @@
   v7 = objc_opt_class();
   Name = class_getName(v7);
   v9 = dispatch_queue_create(Name, v6);
-  v10 = [(MBCellularDataSubscriptionMonitor *)self initWithQueue:v9 timeout:a3];
+  v10 = [(MBCellularDataSubscriptionMonitor *)self initWithQueue:v9 timeout:timeout];
   v11 = v10;
   if (v10)
   {
@@ -49,24 +49,24 @@
   return v11;
 }
 
-- (unint64_t)_backupOnCellularSupportWithError:(id *)a3
+- (unint64_t)_backupOnCellularSupportWithError:(id *)error
 {
   v127 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!error)
   {
     [MBCellularDataSubscriptionMonitor _backupOnCellularSupportWithError:];
   }
 
-  v5 = [(MBCellularDataSubscriptionMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(MBCellularDataSubscriptionMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  *a3 = 0;
-  v6 = [(MBCellularDataSubscriptionMonitor *)self telephonyClient];
-  v7 = v6;
-  if (v6)
+  *error = 0;
+  telephonyClient = [(MBCellularDataSubscriptionMonitor *)self telephonyClient];
+  v7 = telephonyClient;
+  if (telephonyClient)
   {
     v120 = 0;
-    v8 = [v6 getCurrentDataSubscriptionContextSync:&v120];
+    v8 = [telephonyClient getCurrentDataSubscriptionContextSync:&v120];
     v9 = v120;
     v10 = MBGetDefaultLog();
     v11 = v10;
@@ -82,7 +82,7 @@
 
       v48 = v9;
       v41 = 0;
-      *a3 = v9;
+      *error = v9;
       goto LABEL_66;
     }
 
@@ -223,17 +223,17 @@ LABEL_54:
                 goto LABEL_64;
               }
 
-              v97 = [v96 newRadioCoverage];
-              v98 = [v96 radioTechnology];
-              v99 = v98;
-              if (v97)
+              newRadioCoverage = [v96 newRadioCoverage];
+              radioTechnology = [v96 radioTechnology];
+              v99 = radioTechnology;
+              if (newRadioCoverage)
               {
                 v100 = 2;
               }
 
               else
               {
-                if (v98 != 7)
+                if (radioTechnology != 7)
                 {
                   goto LABEL_62;
                 }
@@ -250,7 +250,7 @@ LABEL_62:
                 *buf = 138544130;
                 v122 = v18;
                 v123 = 1024;
-                *v124 = v97;
+                *v124 = newRadioCoverage;
                 *&v124[4] = 1024;
                 *&v124[6] = v99;
                 v125 = 2048;
@@ -345,7 +345,7 @@ LABEL_27:
 
     v59 = v19;
     v41 = 0;
-    *a3 = v19;
+    *error = v19;
 LABEL_65:
 
     v9 = v19;
@@ -355,27 +355,27 @@ LABEL_66:
   }
 
   [MBError errorWithCode:1 format:@"nil CoreTelephonyClient"];
-  *a3 = v41 = 0;
+  *error = v41 = 0;
 LABEL_67:
 
   v114 = *MEMORY[0x1E69E9840];
   return v41;
 }
 
-- (BOOL)_startDelegateTimerWithTimeout:(unint64_t)a3
+- (BOOL)_startDelegateTimerWithTimeout:(unint64_t)timeout
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(MBCellularDataSubscriptionMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(MBCellularDataSubscriptionMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(MBCellularDataSubscriptionMonitor *)self _cancelDelegateTimer];
-  if (a3)
+  if (timeout)
   {
     objc_initWeak(&location, self);
-    v6 = [(MBCellularDataSubscriptionMonitor *)self queue];
-    v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v6);
+    queue2 = [(MBCellularDataSubscriptionMonitor *)self queue];
+    v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queue2);
 
-    v8 = dispatch_walltime(0, 1000000000 * a3);
+    v8 = dispatch_walltime(0, 1000000000 * timeout);
     dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
@@ -388,11 +388,11 @@ LABEL_67:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218240;
-      v22 = a3;
+      timeoutCopy = timeout;
       v23 = 2048;
       v24 = v7;
       _os_log_impl(&dword_1DEB5D000, v9, OS_LOG_TYPE_DEBUG, "Starting CoreTelephonyClientDataDelegate timer (%llds): %p", buf, 0x16u);
-      _MBLog(@"Db", "Starting CoreTelephonyClientDataDelegate timer (%llds): %p", v10, v11, v12, v13, v14, v15, a3);
+      _MBLog(@"Db", "Starting CoreTelephonyClientDataDelegate timer (%llds): %p", v10, v11, v12, v13, v14, v15, timeout);
     }
 
     dispatch_resume(v7);
@@ -401,7 +401,7 @@ LABEL_67:
     objc_destroyWeak(&location);
   }
 
-  result = a3 != 0;
+  result = timeout != 0;
   v17 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -432,49 +432,49 @@ void __68__MBCellularDataSubscriptionMonitor__startDelegateTimerWithTimeout___bl
 - (void)_cancelDelegateTimer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(MBCellularDataSubscriptionMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MBCellularDataSubscriptionMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(MBCellularDataSubscriptionMonitor *)self delegateTimer];
-  if (v4)
+  delegateTimer = [(MBCellularDataSubscriptionMonitor *)self delegateTimer];
+  if (delegateTimer)
   {
     [(MBCellularDataSubscriptionMonitor *)self setDelegateTimer:0];
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v14 = v4;
+      v14 = delegateTimer;
       _os_log_impl(&dword_1DEB5D000, v5, OS_LOG_TYPE_DEBUG, "Canceling CoreTelephonyClientDataDelegate timer: %p", buf, 0xCu);
-      _MBLog(@"Db", "Canceling CoreTelephonyClientDataDelegate timer: %p", v6, v7, v8, v9, v10, v11, v4);
+      _MBLog(@"Db", "Canceling CoreTelephonyClientDataDelegate timer: %p", v6, v7, v8, v9, v10, v11, delegateTimer);
     }
 
-    dispatch_source_cancel(v4);
+    dispatch_source_cancel(delegateTimer);
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_refreshBackupOnCellularSupportWithTimeout:(unint64_t)a3
+- (void)_refreshBackupOnCellularSupportWithTimeout:(unint64_t)timeout
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(MBCellularDataSubscriptionMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(MBCellularDataSubscriptionMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v23 = 0;
   v6 = [(MBCellularDataSubscriptionMonitor *)self _backupOnCellularSupportWithError:&v23];
   v7 = v23;
   if ([v7 code] == 35 && (objc_msgSend(v7, "domain"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E696A798]), v8, v9))
   {
-    if (![(MBCellularDataSubscriptionMonitor *)self _startDelegateTimerWithTimeout:a3])
+    if (![(MBCellularDataSubscriptionMonitor *)self _startDelegateTimerWithTimeout:timeout])
     {
       self->_backupOnCellularSupportChanged = 0;
-      v10 = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupportHandler];
+      backupOnCellularSupportHandler = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupportHandler];
 
-      if (v10)
+      if (backupOnCellularSupportHandler)
       {
-        v11 = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupportHandler];
+        backupOnCellularSupportHandler2 = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupportHandler];
         v12 = [MBError errorWithCode:17 format:@"Failed to fetch backupOnCellularSupport"];
-        (v11)[2](v11, v6, v12);
+        (backupOnCellularSupportHandler2)[2](backupOnCellularSupportHandler2, v6, v12);
 
 LABEL_12:
       }
@@ -486,11 +486,11 @@ LABEL_12:
     v13 = MBGetDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupport];
+      backupOnCellularSupport = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupport];
       *buf = 134218240;
       v25 = v6;
       v26 = 2048;
-      v27 = v14;
+      v27 = backupOnCellularSupport;
       _os_log_impl(&dword_1DEB5D000, v13, OS_LOG_TYPE_DEFAULT, "backupOnCellularSupport changed: %ld(%ld)", buf, 0x16u);
       [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupport];
       _MBLog(@"Df", "backupOnCellularSupport changed: %ld(%ld)", v15, v16, v17, v18, v19, v20, v6);
@@ -498,12 +498,12 @@ LABEL_12:
 
     self->_backupOnCellularSupportChanged = 1;
     [(MBCellularDataSubscriptionMonitor *)self setBackupOnCellularSupport:v6];
-    v21 = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupportHandler];
+    backupOnCellularSupportHandler3 = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupportHandler];
 
-    if (v21)
+    if (backupOnCellularSupportHandler3)
     {
-      v11 = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupportHandler];
-      v11[2](v11, v6, 0);
+      backupOnCellularSupportHandler2 = [(MBCellularDataSubscriptionMonitor *)self backupOnCellularSupportHandler];
+      backupOnCellularSupportHandler2[2](backupOnCellularSupportHandler2, v6, 0);
       goto LABEL_12;
     }
   }
@@ -524,13 +524,13 @@ LABEL_12:
     [MBCellularDataSubscriptionMonitor start];
   }
 
-  v3 = [(MBCellularDataSubscriptionMonitor *)self queue];
+  queue = [(MBCellularDataSubscriptionMonitor *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__MBCellularDataSubscriptionMonitor_start__block_invoke;
   block[3] = &unk_1E8684358;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __42__MBCellularDataSubscriptionMonitor_start__block_invoke(uint64_t a1)
@@ -553,13 +553,13 @@ uint64_t __42__MBCellularDataSubscriptionMonitor_start__block_invoke(uint64_t a1
 - (void)cancel
 {
   [(MBCellularDataSubscriptionMonitor *)self setTelephonyClient:0];
-  v3 = [(MBCellularDataSubscriptionMonitor *)self queue];
+  queue = [(MBCellularDataSubscriptionMonitor *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__MBCellularDataSubscriptionMonitor_cancel__block_invoke;
   block[3] = &unk_1E8684358;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __43__MBCellularDataSubscriptionMonitor_cancel__block_invoke(uint64_t a1)
@@ -579,56 +579,56 @@ void __43__MBCellularDataSubscriptionMonitor_cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MBCellularDataSubscriptionMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(MBCellularDataSubscriptionMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = changedCopy;
     _os_log_impl(&dword_1DEB5D000, v6, OS_LOG_TYPE_DEFAULT, "currentDataSimChanged: %@", buf, 0xCu);
-    _MBLog(@"Df", "currentDataSimChanged: %@", v7, v8, v9, v10, v11, v12, v4);
+    _MBLog(@"Df", "currentDataSimChanged: %@", v7, v8, v9, v10, v11, v12, changedCopy);
   }
 
   [(MBCellularDataSubscriptionMonitor *)self _refreshBackupOnCellularSupportWithTimeout:0];
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dataSettingsChanged:(id)a3
+- (void)dataSettingsChanged:(id)changed
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  changedCopy = changed;
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v3;
+    v13 = changedCopy;
     _os_log_impl(&dword_1DEB5D000, v4, OS_LOG_TYPE_DEFAULT, "dataSettingsChanged: %@", buf, 0xCu);
-    _MBLog(@"Df", "dataSettingsChanged: %@", v5, v6, v7, v8, v9, v10, v3);
+    _MBLog(@"Df", "dataSettingsChanged: %@", v5, v6, v7, v8, v9, v10, changedCopy);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)internetDataStatus:(id)a3
+- (void)internetDataStatus:(id)status
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MBCellularDataSubscriptionMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  statusCopy = status;
+  queue = [(MBCellularDataSubscriptionMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = statusCopy;
     _os_log_impl(&dword_1DEB5D000, v6, OS_LOG_TYPE_DEFAULT, "internetDataStatus: %@", buf, 0xCu);
-    _MBLog(@"Df", "internetDataStatus: %@", v7, v8, v9, v10, v11, v12, v4);
+    _MBLog(@"Df", "internetDataStatus: %@", v7, v8, v9, v10, v11, v12, statusCopy);
   }
 
   [(MBCellularDataSubscriptionMonitor *)self _refreshBackupOnCellularSupportWithTimeout:0];

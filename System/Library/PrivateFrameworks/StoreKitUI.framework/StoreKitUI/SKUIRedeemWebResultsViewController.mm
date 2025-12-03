@@ -1,23 +1,23 @@
 @interface SKUIRedeemWebResultsViewController
-+ (BOOL)canShowResultsForRedeem:(id)a3;
++ (BOOL)canShowResultsForRedeem:(id)redeem;
 - (void)dealloc;
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4;
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success;
 - (void)viewDidLoad;
 @end
 
 @implementation SKUIRedeemWebResultsViewController
 
-+ (BOOL)canShowResultsForRedeem:(id)a3
++ (BOOL)canShowResultsForRedeem:(id)redeem
 {
-  v3 = a3;
+  redeemCopy = redeem;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIRedeemWebResultsViewController canShowResultsForRedeem:];
   }
 
-  v4 = [v3 customizedThankyouURL];
+  customizedThankyouURL = [redeemCopy customizedThankyouURL];
 
-  return v4 != 0;
+  return customizedThankyouURL != 0;
 }
 
 - (void)viewDidLoad
@@ -30,8 +30,8 @@
 - (void)dealloc
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIRedeemWebResultsViewController *)self childViewControllers];
-  v4 = [v3 copy];
+  childViewControllers = [(SKUIRedeemWebResultsViewController *)self childViewControllers];
+  v4 = [childViewControllers copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -54,8 +54,8 @@
 
         v10 = *(*(&v13 + 1) + 8 * i);
         [v10 willMoveToParentViewController:0];
-        v11 = [v10 view];
-        [v11 removeFromSuperview];
+        view = [v10 view];
+        [view removeFromSuperview];
 
         [v10 removeFromParentViewController];
       }
@@ -71,26 +71,26 @@
   [(SKUIRedeemWebResultsViewController *)&v12 dealloc];
 }
 
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success
 {
-  if (!a4)
+  if (!success)
   {
     v6 = [SKUIRedeemNativeResultsViewController alloc];
-    v7 = [(SKUIRedeemResultsViewController *)self redeem];
-    v12 = [(SKUIRedeemNativeResultsViewController *)v6 initWithRedeem:v7];
+    redeem = [(SKUIRedeemResultsViewController *)self redeem];
+    v12 = [(SKUIRedeemNativeResultsViewController *)v6 initWithRedeem:redeem];
 
-    v8 = [(SKUIRedeemStepViewController *)self clientContext];
-    [(SKUIRedeemStepViewController *)v12 setClientContext:v8];
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    [(SKUIRedeemStepViewController *)v12 setClientContext:clientContext];
 
     [(SKUIRedeemResultsViewController *)v12 setRedeemCategory:[(SKUIRedeemResultsViewController *)self redeemCategory]];
-    v9 = [(SKUIRedeemStepViewController *)self operationQueue];
-    [(SKUIRedeemNativeResultsViewController *)v12 setOperationQueue:v9];
+    operationQueue = [(SKUIRedeemStepViewController *)self operationQueue];
+    [(SKUIRedeemNativeResultsViewController *)v12 setOperationQueue:operationQueue];
 
-    v10 = [(SKUIRedeemStepViewController *)self configuration];
-    [(SKUIRedeemStepViewController *)v12 setConfiguration:v10];
+    configuration = [(SKUIRedeemStepViewController *)self configuration];
+    [(SKUIRedeemStepViewController *)v12 setConfiguration:configuration];
 
-    v11 = [(SKUIRedeemWebResultsViewController *)self navigationController];
-    [v11 pushViewController:v12 animated:1];
+    navigationController = [(SKUIRedeemWebResultsViewController *)self navigationController];
+    [navigationController pushViewController:v12 animated:1];
   }
 }
 

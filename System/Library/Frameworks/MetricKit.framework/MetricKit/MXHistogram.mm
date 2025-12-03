@@ -1,28 +1,28 @@
 @interface MXHistogram
-- (MXHistogram)initWithCoder:(id)a3;
-- (MXHistogram)initWithHistogramBucketData:(id)a3;
+- (MXHistogram)initWithCoder:(id)coder;
+- (MXHistogram)initWithHistogramBucketData:(id)data;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXHistogram
 
-- (MXHistogram)initWithHistogramBucketData:(id)a3
+- (MXHistogram)initWithHistogramBucketData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = MXHistogram;
   v6 = [(MXHistogram *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!dataCopy)
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_histogramData, a3);
+    objc_storeStrong(&v6->_histogramData, data);
     v7->_totalBucketCount = [(NSArray *)v7->_histogramData count];
   }
 
@@ -32,18 +32,18 @@ LABEL_6:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   histogramData = self->_histogramData;
-  v5 = a3;
-  [v5 encodeObject:histogramData forKey:@"histogramValue"];
+  coderCopy = coder;
+  [coderCopy encodeObject:histogramData forKey:@"histogramValue"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_totalBucketCount];
-  [v5 encodeObject:v6 forKey:@"histogramNumBuckets"];
+  [coderCopy encodeObject:v6 forKey:@"histogramNumBuckets"];
 }
 
-- (MXHistogram)initWithCoder:(id)a3
+- (MXHistogram)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MXHistogram;
   v5 = [(MXHistogram *)&v13 init];
@@ -52,11 +52,11 @@ LABEL_6:
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"histogramValue"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"histogramValue"];
     histogramData = v5->_histogramData;
     v5->_histogramData = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"histogramNumBuckets"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"histogramNumBuckets"];
     v5->_totalBucketCount = [v11 unsignedIntegerValue];
   }
 
@@ -92,10 +92,10 @@ LABEL_6:
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v18 + 1) + 8 * i) toDictionary];
+        toDictionary = [*(*(&v18 + 1) + 8 * i) toDictionary];
         v13 = [MEMORY[0x277CCABB0] numberWithInt:v9];
-        v14 = [v13 stringValue];
-        [v4 setObject:v12 forKey:v14];
+        stringValue = [v13 stringValue];
+        [v4 setObject:toDictionary forKey:stringValue];
 
         v9 = (v9 + 1);
       }

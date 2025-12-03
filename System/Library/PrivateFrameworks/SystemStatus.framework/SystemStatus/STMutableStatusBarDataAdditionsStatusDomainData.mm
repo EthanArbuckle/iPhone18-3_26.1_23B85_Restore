@@ -1,16 +1,16 @@
 @interface STMutableStatusBarDataAdditionsStatusDomainData
-- (BOOL)applyDiff:(id)a3;
+- (BOOL)applyDiff:(id)diff;
 - (STMutableDictionaryData)entryDictionaryData;
-- (STMutableStatusBarDataAdditionsStatusDomainData)initWithEntryDictionaryData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_updateEntry:(void *)a3 forKey:;
+- (STMutableStatusBarDataAdditionsStatusDomainData)initWithEntryDictionaryData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_updateEntry:(void *)entry forKey:;
 @end
 
 @implementation STMutableStatusBarDataAdditionsStatusDomainData
 
-- (STMutableStatusBarDataAdditionsStatusDomainData)initWithEntryDictionaryData:(id)a3
+- (STMutableStatusBarDataAdditionsStatusDomainData)initWithEntryDictionaryData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   v5 = [(STStatusBarDataAdditionsStatusDomainData *)&self->super.super.isa _initWithEntryDictionaryData:v4];
 
   return v5;
@@ -20,48 +20,48 @@
 {
   v4.receiver = self;
   v4.super_class = STMutableStatusBarDataAdditionsStatusDomainData;
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)&v4 entryDictionaryData];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)&v4 entryDictionaryData];
 
-  return v2;
+  return entryDictionaryData;
 }
 
-- (void)_updateEntry:(void *)a3 forKey:
+- (void)_updateEntry:(void *)entry forKey:
 {
   v7 = a2;
-  v5 = a3;
-  if (a1)
+  entryCopy = entry;
+  if (self)
   {
     if (v7)
     {
-      [(STStatusBarDataAdditionsStatusDomainData *)a1 _expectedClassForKey:v5];
+      [(STStatusBarDataAdditionsStatusDomainData *)self _expectedClassForKey:entryCopy];
       objc_opt_isKindOfClass();
-      v6 = [a1 entryDictionaryData];
-      [v6 setObject:v7 forKey:v5];
+      entryDictionaryData = [self entryDictionaryData];
+      [entryDictionaryData setObject:v7 forKey:entryCopy];
     }
 
     else
     {
-      v6 = [a1 entryDictionaryData];
-      [v6 removeObjectForKey:v5];
+      entryDictionaryData = [self entryDictionaryData];
+      [entryDictionaryData removeObjectForKey:entryCopy];
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STStatusBarDataAdditionsStatusDomainData allocWithZone:a3];
+  v4 = [STStatusBarDataAdditionsStatusDomainData allocWithZone:zone];
 
   return [(STStatusBarDataAdditionsStatusDomainData *)v4 initWithData:?];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

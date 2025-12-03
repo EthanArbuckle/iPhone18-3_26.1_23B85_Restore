@@ -43,7 +43,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sIsMXFullyInitialized = 0;
     sIsMXFullyInitializedCondition = objc_alloc_init(MEMORY[0x1E696AB30]);

@@ -1,16 +1,16 @@
 @interface RTPBluepoiTile
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (unint64_t)deniedMuidCategoryAtIndex:(unint64_t)a3;
+- (unint64_t)deniedMuidCategoryAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addPoiMetadata:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addPoiMetadata:(id)metadata;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RTPBluepoiTile
@@ -23,36 +23,36 @@
   [(RTPBluepoiTile *)&v3 dealloc];
 }
 
-- (void)addPoiMetadata:(id)a3
+- (void)addPoiMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   poiMetadatas = self->_poiMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!poiMetadatas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_poiMetadatas;
     self->_poiMetadatas = v6;
 
-    v4 = v8;
+    metadataCopy = v8;
     poiMetadatas = self->_poiMetadatas;
   }
 
-  [(NSMutableArray *)poiMetadatas addObject:v4];
+  [(NSMutableArray *)poiMetadatas addObject:metadataCopy];
 }
 
-- (unint64_t)deniedMuidCategoryAtIndex:(unint64_t)a3
+- (unint64_t)deniedMuidCategoryAtIndex:(unint64_t)index
 {
   p_deniedMuidCategorys = &self->_deniedMuidCategorys;
   count = self->_deniedMuidCategorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_deniedMuidCategorys->list[a3];
+  return p_deniedMuidCategorys->list[index];
 }
 
 - (id)description
@@ -60,8 +60,8 @@
   v7.receiver = self;
   v7.super_class = RTPBluepoiTile;
   v3 = [(RTPBluepoiTile *)&v7 description];
-  v4 = [(RTPBluepoiTile *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RTPBluepoiTile *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -78,8 +78,8 @@
   modelTile = self->_modelTile;
   if (modelTile)
   {
-    v6 = [(RTPModelTile *)modelTile dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"model_tile"];
+    dictionaryRepresentation = [(RTPModelTile *)modelTile dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"model_tile"];
   }
 
   if ([(NSMutableArray *)self->_poiMetadatas count])
@@ -104,8 +104,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -120,22 +120,22 @@
   applePayCalibration = self->_applePayCalibration;
   if (applePayCalibration)
   {
-    v15 = [(RTPCalibrationParameter *)applePayCalibration dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"apple_pay_calibration"];
+    dictionaryRepresentation3 = [(RTPCalibrationParameter *)applePayCalibration dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"apple_pay_calibration"];
   }
 
   nonApplePayCalibration = self->_nonApplePayCalibration;
   if (nonApplePayCalibration)
   {
-    v17 = [(RTPCalibrationParameter *)nonApplePayCalibration dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"non_apple_pay_calibration"];
+    dictionaryRepresentation4 = [(RTPCalibrationParameter *)nonApplePayCalibration dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"non_apple_pay_calibration"];
   }
 
   globalConfig = self->_globalConfig;
   if (globalConfig)
   {
-    v19 = [(RTPBluepoiConfig *)globalConfig dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"global_config"];
+    dictionaryRepresentation5 = [(RTPBluepoiConfig *)globalConfig dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"global_config"];
   }
 
   v20 = PBRepeatedUInt64NSArray();
@@ -144,14 +144,14 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -162,18 +162,18 @@
       while (1)
       {
         LOBYTE(v40) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v40 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v40 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v40 & 0x7F) << v6;
@@ -191,9 +191,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -211,18 +211,18 @@ LABEL_15:
             while (1)
             {
               LOBYTE(v40) = 0;
-              v28 = [a3 position] + 1;
-              if (v28 >= [a3 position] && (v29 = objc_msgSend(a3, "position") + 1, v29 <= objc_msgSend(a3, "length")))
+              v28 = [from position] + 1;
+              if (v28 >= [from position] && (v29 = objc_msgSend(from, "position") + 1, v29 <= objc_msgSend(from, "length")))
               {
-                v30 = [a3 data];
-                [v30 getBytes:&v40 range:{objc_msgSend(a3, "position"), 1}];
+                data2 = [from data];
+                [data2 getBytes:&v40 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v27 |= (v40 & 0x7F) << v25;
@@ -240,7 +240,7 @@ LABEL_15:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v31 = 0;
             }
@@ -258,7 +258,7 @@ LABEL_71:
             objc_storeStrong(&self->_modelTile, v15);
             v40 = 0;
             v41 = 0;
-            if (!PBReaderPlaceMark() || !RTPModelTileReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !RTPModelTileReadFrom(v15, from))
             {
 LABEL_86:
 
@@ -273,7 +273,7 @@ LABEL_87:
             [(RTPBluepoiTile *)self addPoiMetadata:v15];
             v40 = 0;
             v41 = 0;
-            if (!PBReaderPlaceMark() || !RTPPoiMetadataReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !RTPPoiMetadataReadFrom(v15, from))
             {
               goto LABEL_86;
             }
@@ -290,7 +290,7 @@ LABEL_87:
           objc_storeStrong(&self->_globalConfig, v15);
           v40 = 0;
           v41 = 0;
-          if (!PBReaderPlaceMark() || !RTPBluepoiConfigReadFrom(v15, a3))
+          if (!PBReaderPlaceMark() || !RTPBluepoiConfigReadFrom(v15, from))
           {
             goto LABEL_86;
           }
@@ -312,8 +312,8 @@ LABEL_87:
 
             while (1)
             {
-              v18 = [a3 position];
-              if (v18 >= [a3 length] || (objc_msgSend(a3, "hasError") & 1) != 0)
+              position2 = [from position];
+              if (position2 >= [from length] || (objc_msgSend(from, "hasError") & 1) != 0)
               {
                 break;
               }
@@ -324,18 +324,18 @@ LABEL_87:
               while (1)
               {
                 v42 = 0;
-                v22 = [a3 position] + 1;
-                if (v22 >= [a3 position] && (v23 = objc_msgSend(a3, "position") + 1, v23 <= objc_msgSend(a3, "length")))
+                v22 = [from position] + 1;
+                if (v22 >= [from position] && (v23 = objc_msgSend(from, "position") + 1, v23 <= objc_msgSend(from, "length")))
                 {
-                  v24 = [a3 data];
-                  [v24 getBytes:&v42 range:{objc_msgSend(a3, "position"), 1}];
+                  data3 = [from data];
+                  [data3 getBytes:&v42 range:{objc_msgSend(from, "position"), 1}];
 
-                  [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                  [from setPosition:{objc_msgSend(from, "position") + 1}];
                 }
 
                 else
                 {
-                  [a3 _setError];
+                  [from _setError];
                 }
 
                 v21 |= (v42 & 0x7F) << v19;
@@ -352,7 +352,7 @@ LABEL_87:
                 }
               }
 
-              [a3 hasError];
+              [from hasError];
 LABEL_44:
               PBRepeatedUInt64Add();
             }
@@ -368,18 +368,18 @@ LABEL_44:
             while (1)
             {
               LOBYTE(v40) = 0;
-              v36 = [a3 position] + 1;
-              if (v36 >= [a3 position] && (v37 = objc_msgSend(a3, "position") + 1, v37 <= objc_msgSend(a3, "length")))
+              v36 = [from position] + 1;
+              if (v36 >= [from position] && (v37 = objc_msgSend(from, "position") + 1, v37 <= objc_msgSend(from, "length")))
               {
-                v38 = [a3 data];
-                [v38 getBytes:&v40 range:{objc_msgSend(a3, "position"), 1}];
+                data4 = [from data];
+                [data4 getBytes:&v40 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v35 |= (v40 & 0x7F) << v33;
@@ -396,7 +396,7 @@ LABEL_44:
               }
             }
 
-            [a3 hasError];
+            [from hasError];
 LABEL_83:
             PBRepeatedUInt64Add();
           }
@@ -422,7 +422,7 @@ LABEL_57:
           objc_storeStrong(&self->PBCodable_opaque[v16], v15);
           v40 = 0;
           v41 = 0;
-          if (!PBReaderPlaceMark() || !RTPCalibrationParameterReadFrom(v15, a3))
+          if (!PBReaderPlaceMark() || !RTPCalibrationParameterReadFrom(v15, from))
           {
             goto LABEL_86;
           }
@@ -440,19 +440,19 @@ LABEL_65:
       }
 
 LABEL_66:
-      v32 = [a3 position];
+      position3 = [from position];
     }
 
-    while (v32 < [a3 length]);
+    while (position3 < [from length]);
   }
 
-  LOBYTE(v17) = [a3 hasError] ^ 1;
+  LOBYTE(v17) = [from hasError] ^ 1;
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     tileKey = self->_tileKey;
@@ -526,28 +526,28 @@ LABEL_66:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_tileKey;
-    *(v4 + 80) |= 1u;
+    toCopy[4] = self->_tileKey;
+    *(toCopy + 80) |= 1u;
   }
 
-  v12 = v4;
+  v12 = toCopy;
   if (self->_modelTile)
   {
-    [v4 setModelTile:?];
+    [toCopy setModelTile:?];
   }
 
   if ([(RTPBluepoiTile *)self poiMetadatasCount])
   {
     [v12 clearPoiMetadatas];
-    v5 = [(RTPBluepoiTile *)self poiMetadatasCount];
-    if (v5)
+    poiMetadatasCount = [(RTPBluepoiTile *)self poiMetadatasCount];
+    if (poiMetadatasCount)
     {
-      v6 = v5;
+      v6 = poiMetadatasCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(RTPBluepoiTile *)self poiMetadataAtIndex:i];
@@ -574,10 +574,10 @@ LABEL_66:
   if ([(RTPBluepoiTile *)self deniedMuidCategorysCount])
   {
     [v12 clearDeniedMuidCategorys];
-    v9 = [(RTPBluepoiTile *)self deniedMuidCategorysCount];
-    if (v9)
+    deniedMuidCategorysCount = [(RTPBluepoiTile *)self deniedMuidCategorysCount];
+    if (deniedMuidCategorysCount)
     {
-      v10 = v9;
+      v10 = deniedMuidCategorysCount;
       for (j = 0; j != v10; ++j)
       {
         [v12 addDeniedMuidCategory:{-[RTPBluepoiTile deniedMuidCategoryAtIndex:](self, "deniedMuidCategoryAtIndex:", j)}];
@@ -586,9 +586,9 @@ LABEL_66:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -596,7 +596,7 @@ LABEL_66:
     *(v5 + 80) |= 1u;
   }
 
-  v7 = [(RTPModelTile *)self->_modelTile copyWithZone:a3];
+  v7 = [(RTPModelTile *)self->_modelTile copyWithZone:zone];
   v8 = v6[7];
   v6[7] = v7;
 
@@ -619,7 +619,7 @@ LABEL_66:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{a3, v22}];
+        v14 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{zone, v22}];
         [v6 addPoiMetadata:v14];
       }
 
@@ -629,15 +629,15 @@ LABEL_66:
     while (v11);
   }
 
-  v15 = [(RTPCalibrationParameter *)self->_applePayCalibration copyWithZone:a3];
+  v15 = [(RTPCalibrationParameter *)self->_applePayCalibration copyWithZone:zone];
   v16 = v6[5];
   v6[5] = v15;
 
-  v17 = [(RTPCalibrationParameter *)self->_nonApplePayCalibration copyWithZone:a3];
+  v17 = [(RTPCalibrationParameter *)self->_nonApplePayCalibration copyWithZone:zone];
   v18 = v6[8];
   v6[8] = v17;
 
-  v19 = [(RTPBluepoiConfig *)self->_globalConfig copyWithZone:a3];
+  v19 = [(RTPBluepoiConfig *)self->_globalConfig copyWithZone:zone];
   v20 = v6[6];
   v6[6] = v19;
 
@@ -645,24 +645,24 @@ LABEL_66:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(equalCopy + 80);
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_tileKey != *(v4 + 4))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_tileKey != *(equalCopy + 4))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
 LABEL_18:
     IsEqual = 0;
@@ -670,13 +670,13 @@ LABEL_18:
   }
 
   modelTile = self->_modelTile;
-  if (modelTile | *(v4 + 7) && ![(RTPModelTile *)modelTile isEqual:?])
+  if (modelTile | *(equalCopy + 7) && ![(RTPModelTile *)modelTile isEqual:?])
   {
     goto LABEL_18;
   }
 
   poiMetadatas = self->_poiMetadatas;
-  if (poiMetadatas | *(v4 + 9))
+  if (poiMetadatas | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)poiMetadatas isEqual:?])
     {
@@ -685,7 +685,7 @@ LABEL_18:
   }
 
   applePayCalibration = self->_applePayCalibration;
-  if (applePayCalibration | *(v4 + 5))
+  if (applePayCalibration | *(equalCopy + 5))
   {
     if (![(RTPCalibrationParameter *)applePayCalibration isEqual:?])
     {
@@ -694,7 +694,7 @@ LABEL_18:
   }
 
   nonApplePayCalibration = self->_nonApplePayCalibration;
-  if (nonApplePayCalibration | *(v4 + 8))
+  if (nonApplePayCalibration | *(equalCopy + 8))
   {
     if (![(RTPCalibrationParameter *)nonApplePayCalibration isEqual:?])
     {
@@ -703,7 +703,7 @@ LABEL_18:
   }
 
   globalConfig = self->_globalConfig;
-  if (globalConfig | *(v4 + 6))
+  if (globalConfig | *(equalCopy + 6))
   {
     if (![(RTPBluepoiConfig *)globalConfig isEqual:?])
     {
@@ -737,13 +737,13 @@ LABEL_19:
   return v6 ^ v8 ^ PBRepeatedUInt64Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[10])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[10])
   {
-    self->_tileKey = v4[4];
+    self->_tileKey = fromCopy[4];
     *&self->_has |= 1u;
   }
 
@@ -835,10 +835,10 @@ LABEL_19:
     [(RTPBluepoiTile *)self setGlobalConfig:?];
   }
 
-  v19 = [v5 deniedMuidCategorysCount];
-  if (v19)
+  deniedMuidCategorysCount = [v5 deniedMuidCategorysCount];
+  if (deniedMuidCategorysCount)
   {
-    v20 = v19;
+    v20 = deniedMuidCategorysCount;
     for (j = 0; j != v20; ++j)
     {
       -[RTPBluepoiTile addDeniedMuidCategory:](self, "addDeniedMuidCategory:", [v5 deniedMuidCategoryAtIndex:j]);

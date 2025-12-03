@@ -1,39 +1,39 @@
 @interface ACMonitoredAccountStore
-- (ACMonitoredAccountStore)initWithWithRemoteEndpoint:(id)a3 effectiveBundleID:(id)a4 accountTypes:(id)a5 propertiesToPrefetch:(id)a6 delegate:(id)a7;
+- (ACMonitoredAccountStore)initWithWithRemoteEndpoint:(id)endpoint effectiveBundleID:(id)d accountTypes:(id)types propertiesToPrefetch:(id)prefetch delegate:(id)delegate;
 - (NSArray)monitoredAccounts;
 - (id)_allDelegates;
-- (id)monitoredAccountWithIdentifier:(id)a3;
-- (void)_accountsListPopulated:(id)a3;
-- (void)_lock_accountWasAdded:(id)a3;
-- (void)_lock_accountWasModified:(id)a3;
-- (void)_lock_accountWasRemoved:(id)a3;
-- (void)_lock_processAccountsListForNotifications:(id)a3 forType:(id)a4;
-- (void)_registerAccountMonitorSynchronouslyWithCompletion:(id)a3;
-- (void)_registerAccountMonitorWithCompletion:(id)a3;
+- (id)monitoredAccountWithIdentifier:(id)identifier;
+- (void)_accountsListPopulated:(id)populated;
+- (void)_lock_accountWasAdded:(id)added;
+- (void)_lock_accountWasModified:(id)modified;
+- (void)_lock_accountWasRemoved:(id)removed;
+- (void)_lock_processAccountsListForNotifications:(id)notifications forType:(id)type;
+- (void)_registerAccountMonitorSynchronouslyWithCompletion:(id)completion;
+- (void)_registerAccountMonitorWithCompletion:(id)completion;
 - (void)_registerForApplicationStateDidChangeNotification;
 - (void)_registerForCredentialChangedNotifications;
 - (void)_registerNotifyReaders;
-- (void)_reregisterForAccountType:(id)a3;
+- (void)_reregisterForAccountType:(id)type;
 - (void)_sendNotificationOfChange;
-- (void)addDelegate:(id)a3;
-- (void)credentialsChangedNotification:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)credentialsChangedNotification:(id)notification;
 - (void)dealloc;
-- (void)registerSynchronouslyWithError:(id *)a3;
-- (void)registerWithCompletion:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)registerSynchronouslyWithError:(id *)error;
+- (void)registerWithCompletion:(id)completion;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation ACMonitoredAccountStore
 
 - (void)_registerForApplicationStateDidChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__ACMonitoredAccountStore__registerForApplicationStateDidChangeNotification__block_invoke;
   v6[3] = &unk_1E7975608;
   v6[4] = self;
-  v4 = [v3 addObserverForName:@"UIApplicationDidBecomeActiveNotification" object:0 queue:0 usingBlock:v6];
+  v4 = [defaultCenter addObserverForName:@"UIApplicationDidBecomeActiveNotification" object:0 queue:0 usingBlock:v6];
   didBecomeActiveObserver = self->_didBecomeActiveObserver;
   self->_didBecomeActiveObserver = v4;
 }
@@ -66,14 +66,14 @@
 
         objc_initWeak(&location, self);
         v9 = [ACNotifyReader alloc];
-        v10 = [(ACAccountStore *)self replyQueue];
+        replyQueue = [(ACAccountStore *)self replyQueue];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __49__ACMonitoredAccountStore__registerNotifyReaders__block_invoke;
         v16[3] = &unk_1E7975518;
         objc_copyWeak(&v17, &location);
         v16[4] = v6;
-        v11 = [(ACNotifyReader *)v9 initWithKey:v8 updateQueue:v10 updateBlock:v16];
+        v11 = [(ACNotifyReader *)v9 initWithKey:v8 updateQueue:replyQueue updateBlock:v16];
         [(NSSet *)v15 addObject:v11];
 
         objc_destroyWeak(&v17);
@@ -94,20 +94,20 @@
 
 - (void)_sendNotificationOfChange
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"ACMonitoredAccountStoreDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ACMonitoredAccountStoreDidChangeNotification" object:self];
 }
 
 - (void)_registerForCredentialChangedNotifications
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__ACMonitoredAccountStore__registerForCredentialChangedNotifications__block_invoke;
   v6[3] = &unk_1E79755E0;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 addObserverForName:@"ACAccountCredentialsDidChangeNotification" object:0 queue:0 usingBlock:v6];
+  v4 = [defaultCenter addObserverForName:@"ACAccountCredentialsDidChangeNotification" object:0 queue:0 usingBlock:v6];
   credentialsDidChangeObserver = self->_credentialsDidChangeObserver;
   self->_credentialsDidChangeObserver = v4;
 
@@ -147,27 +147,27 @@ id __44__ACMonitoredAccountStore_monitoredAccounts__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (ACMonitoredAccountStore)initWithWithRemoteEndpoint:(id)a3 effectiveBundleID:(id)a4 accountTypes:(id)a5 propertiesToPrefetch:(id)a6 delegate:(id)a7
+- (ACMonitoredAccountStore)initWithWithRemoteEndpoint:(id)endpoint effectiveBundleID:(id)d accountTypes:(id)types propertiesToPrefetch:(id)prefetch delegate:(id)delegate
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  typesCopy = types;
+  prefetchCopy = prefetch;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = ACMonitoredAccountStore;
-  v16 = [(ACAccountStore *)&v22 initWithRemoteEndpoint:a3 effectiveBundleID:a4];
+  v16 = [(ACAccountStore *)&v22 initWithRemoteEndpoint:endpoint effectiveBundleID:d];
   if (v16)
   {
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     accountsByID = v16->_accountsByID;
-    v16->_accountsByID = v17;
+    v16->_accountsByID = dictionary;
 
-    v19 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     delegates = v16->_delegates;
-    v16->_delegates = v19;
+    v16->_delegates = weakObjectsHashTable;
 
-    [(NSHashTable *)v16->_delegates addObject:v15];
-    objc_storeStrong(&v16->_accountTypesToMonitor, a5);
-    objc_storeStrong(&v16->_propertiesToPrefetch, a6);
+    [(NSHashTable *)v16->_delegates addObject:delegateCopy];
+    objc_storeStrong(&v16->_accountTypesToMonitor, types);
+    objc_storeStrong(&v16->_propertiesToPrefetch, prefetch);
     v16->_monitoredAccountsCacheLock._os_unfair_lock_opaque = 0;
     [(ACMonitoredAccountStore *)v16 _registerForApplicationStateDidChangeNotification];
   }
@@ -179,14 +179,14 @@ id __44__ACMonitoredAccountStore_monitoredAccounts__block_invoke(uint64_t a1)
 {
   if (self->_credentialsDidChangeObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_credentialsDidChangeObserver];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_credentialsDidChangeObserver];
   }
 
   if (self->_didBecomeActiveObserver)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self->_didBecomeActiveObserver];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self->_didBecomeActiveObserver];
   }
 
   v5.receiver = self;
@@ -194,10 +194,10 @@ id __44__ACMonitoredAccountStore_monitoredAccounts__block_invoke(uint64_t a1)
   [(ACAccountStore *)&v5 dealloc];
 }
 
-- (void)registerWithCompletion:(id)a3
+- (void)registerWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/register-types-to-monitor", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -231,7 +231,7 @@ id __44__ACMonitoredAccountStore_monitoredAccounts__block_invoke(uint64_t a1)
   v18[2] = v9;
   objc_copyWeak(v18, buf);
   v16[4] = self;
-  v14 = v4;
+  v14 = completionCopy;
   v17 = v14;
   [(ACMonitoredAccountStore *)self _registerAccountMonitorWithCompletion:v16];
 
@@ -313,7 +313,7 @@ void __50__ACMonitoredAccountStore_registerWithCompletion___block_invoke(uint64_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerSynchronouslyWithError:(id *)a3
+- (void)registerSynchronouslyWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = _os_activity_create(&dword_1AC3CD000, "accounts/register-types-to-monitor-sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -355,9 +355,9 @@ void __50__ACMonitoredAccountStore_registerWithCompletion___block_invoke(uint64_
   v15[4] = self;
   v15[5] = &buf;
   [(ACMonitoredAccountStore *)self _registerAccountMonitorSynchronouslyWithCompletion:v15];
-  if (a3)
+  if (error)
   {
-    *a3 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -435,16 +435,16 @@ void __58__ACMonitoredAccountStore_registerSynchronouslyWithError___block_invoke
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)monitoredAccountWithIdentifier:(id)a3
+- (id)monitoredAccountWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__ACMonitoredAccountStore_monitoredAccountWithIdentifier___block_invoke;
   v8[3] = &unk_1E7975450;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = identifierCopy;
+  v5 = identifierCopy;
   v6 = ac_unfair_lock_perform_with_result(&self->_monitoredAccountsCacheLock, v8);
 
   return v6;
@@ -458,27 +458,27 @@ id __58__ACMonitoredAccountStore_monitoredAccountWithIdentifier___block_invoke(u
   return v2;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_delegates addObject:v5];
+  [(NSHashTable *)self->_delegates addObject:delegateCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_delegates removeObject:v5];
+  [(NSHashTable *)self->_delegates removeObject:delegateCopy];
   objc_sync_exit(v4);
 }
 
-- (void)_registerAccountMonitorWithCompletion:(id)a3
+- (void)_registerAccountMonitorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accountTypesToMonitor = self->_accountTypesToMonitor;
   if (!accountTypesToMonitor)
   {
@@ -503,10 +503,10 @@ LABEL_6:
   v18[2] = __65__ACMonitoredAccountStore__registerAccountMonitorWithCompletion___block_invoke;
   v18[3] = &unk_1E79754A0;
   v18[4] = self;
-  v19 = v4;
-  v6 = v4;
+  v19 = completionCopy;
+  v6 = completionCopy;
   v7 = MEMORY[0x1AC5B3C70](v18);
-  v8 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __65__ACMonitoredAccountStore__registerAccountMonitorWithCompletion___block_invoke_3;
@@ -520,7 +520,7 @@ LABEL_6:
   v14[4] = self;
   v15 = v17;
   v9 = v17;
-  ac_dispatch_remote(v8, v16, v14);
+  ac_dispatch_remote(remoteAccountStoreSession, v16, v14);
 }
 
 void __65__ACMonitoredAccountStore__registerAccountMonitorWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -548,9 +548,9 @@ void __65__ACMonitoredAccountStore__registerAccountMonitorWithCompletion___block
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)_registerAccountMonitorSynchronouslyWithCompletion:(id)a3
+- (void)_registerAccountMonitorSynchronouslyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accountTypesToMonitor = self->_accountTypesToMonitor;
   if (!accountTypesToMonitor)
   {
@@ -570,13 +570,13 @@ LABEL_6:
     objc_exception_throw(v11);
   }
 
-  v6 = [(ACAccountStore *)self remoteAccountStoreSession];
+  remoteAccountStoreSession = [(ACAccountStore *)self remoteAccountStoreSession];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__ACMonitoredAccountStore__registerAccountMonitorSynchronouslyWithCompletion___block_invoke;
   v14[3] = &unk_1E79754C8;
   v14[4] = self;
-  v15 = v4;
+  v15 = completionCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__ACMonitoredAccountStore__registerAccountMonitorSynchronouslyWithCompletion___block_invoke_2;
@@ -584,7 +584,7 @@ LABEL_6:
   v12[4] = self;
   v13 = v15;
   v7 = v15;
-  ac_dispatch_remote_sync(v6, v14, v12);
+  ac_dispatch_remote_sync(remoteAccountStoreSession, v14, v12);
 }
 
 void __78__ACMonitoredAccountStore__registerAccountMonitorSynchronouslyWithCompletion___block_invoke_2(uint64_t a1)
@@ -605,21 +605,21 @@ void __49__ACMonitoredAccountStore__registerNotifyReaders__block_invoke(uint64_t
   }
 }
 
-- (void)_reregisterForAccountType:(id)a3
+- (void)_reregisterForAccountType:(id)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = _ACLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = typeCopy;
     _os_log_impl(&dword_1AC3CD000, v5, OS_LOG_TYPE_DEFAULT, "ACMonitoredAccountStore: Fetching accounts of account type %@...", buf, 0xCu);
   }
 
-  if (v4)
+  if (typeCopy)
   {
-    v12 = v4;
+    v12 = typeCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
     propertiesToPrefetch = self->_propertiesToPrefetch;
     v10[0] = MEMORY[0x1E69E9820];
@@ -627,7 +627,7 @@ void __49__ACMonitoredAccountStore__registerNotifyReaders__block_invoke(uint64_t
     v10[2] = __53__ACMonitoredAccountStore__reregisterForAccountType___block_invoke;
     v10[3] = &unk_1E7975568;
     v10[4] = self;
-    v11 = v4;
+    v11 = typeCopy;
     [(ACAccountStore *)self accountsWithAccountTypeIdentifiers:v6 preloadedProperties:propertiesToPrefetch completion:v10];
   }
 
@@ -717,18 +717,18 @@ void __53__ACMonitoredAccountStore__reregisterForAccountType___block_invoke_2(ui
   }
 }
 
-- (void)_lock_processAccountsListForNotifications:(id)a3 forType:(id)a4
+- (void)_lock_processAccountsListForNotifications:(id)notifications forType:(id)type
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v32 = a4;
-  v34 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v6, "count")}];
-  v31 = [(NSMutableDictionary *)self->_accountsByID allValues];
+  notificationsCopy = notifications;
+  typeCopy = type;
+  v34 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
+  allValues = [(NSMutableDictionary *)self->_accountsByID allValues];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v6;
+  obj = notificationsCopy;
   v7 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v7)
   {
@@ -745,14 +745,14 @@ void __53__ACMonitoredAccountStore__reregisterForAccountType___block_invoke_2(ui
 
         v11 = *(*(&v39 + 1) + 8 * i);
         accountsByID = self->_accountsByID;
-        v13 = [v11 identifier];
-        v14 = [(NSMutableDictionary *)accountsByID objectForKeyedSubscript:v13];
+        identifier = [v11 identifier];
+        v14 = [(NSMutableDictionary *)accountsByID objectForKeyedSubscript:identifier];
 
         if (v14)
         {
-          v15 = [v11 modificationID];
-          v16 = [v14 modificationID];
-          v17 = [v15 isEqualToString:v16];
+          modificationID = [v11 modificationID];
+          modificationID2 = [v14 modificationID];
+          v17 = [modificationID isEqualToString:modificationID2];
 
           if ((v17 & 1) == 0)
           {
@@ -765,8 +765,8 @@ void __53__ACMonitoredAccountStore__reregisterForAccountType___block_invoke_2(ui
           [(ACMonitoredAccountStore *)self _lock_accountWasAdded:v11];
         }
 
-        v18 = [v11 identifier];
-        [v34 addObject:v18];
+        identifier2 = [v11 identifier];
+        [v34 addObject:identifier2];
       }
 
       v8 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -779,7 +779,7 @@ void __53__ACMonitoredAccountStore__reregisterForAccountType___block_invoke_2(ui
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v19 = v31;
+  v19 = allValues;
   v20 = [v19 countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v20)
   {
@@ -795,11 +795,11 @@ void __53__ACMonitoredAccountStore__reregisterForAccountType___block_invoke_2(ui
         }
 
         v24 = *(*(&v35 + 1) + 8 * j);
-        if (v32)
+        if (typeCopy)
         {
-          v25 = [*(*(&v35 + 1) + 8 * j) accountType];
-          v26 = [v25 identifier];
-          v27 = [v32 isEqualToString:v26];
+          accountType = [*(*(&v35 + 1) + 8 * j) accountType];
+          identifier3 = [accountType identifier];
+          v27 = [typeCopy isEqualToString:identifier3];
 
           if (!v27)
           {
@@ -807,8 +807,8 @@ void __53__ACMonitoredAccountStore__reregisterForAccountType___block_invoke_2(ui
           }
         }
 
-        v28 = [v24 identifier];
-        v29 = [v34 containsObject:v28];
+        identifier4 = [v24 identifier];
+        v29 = [v34 containsObject:identifier4];
 
         if ((v29 & 1) == 0)
         {
@@ -825,15 +825,15 @@ void __53__ACMonitoredAccountStore__reregisterForAccountType___block_invoke_2(ui
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_accountsListPopulated:(id)a3
+- (void)_accountsListPopulated:(id)populated
 {
-  v4 = a3;
+  populatedCopy = populated;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __50__ACMonitoredAccountStore__accountsListPopulated___block_invoke;
   v9 = &unk_1E7975590;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = populatedCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_monitoredAccountsCacheLock);
@@ -889,18 +889,18 @@ void __69__ACMonitoredAccountStore__registerForCredentialChangedNotifications__b
   [WeakRetained credentialsChangedNotification:v3];
 }
 
-- (void)credentialsChangedNotification:(id)a3
+- (void)credentialsChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(ACAccountStore *)self replyQueue];
+  notificationCopy = notification;
+  replyQueue = [(ACAccountStore *)self replyQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__ACMonitoredAccountStore_credentialsChangedNotification___block_invoke;
   v7[3] = &unk_1E7975590;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(replyQueue, v7);
 }
 
 void __58__ACMonitoredAccountStore_credentialsChangedNotification___block_invoke(uint64_t a1)
@@ -956,39 +956,39 @@ void __58__ACMonitoredAccountStore_credentialsChangedNotification___block_invoke
 {
   v3 = self->_delegates;
   objc_sync_enter(v3);
-  v4 = [(NSHashTable *)self->_delegates allObjects];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
   objc_sync_exit(v3);
 
-  return v4;
+  return allObjects;
 }
 
-- (void)_lock_accountWasAdded:(id)a3
+- (void)_lock_accountWasAdded:(id)added
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addedCopy = added;
   v5 = _ACLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = addedCopy;
     _os_log_impl(&dword_1AC3CD000, v5, OS_LOG_TYPE_DEFAULT, "ACMonitoredAccountStore: account was added: %@", buf, 0xCu);
   }
 
-  [v4 _setAccountStore:self];
-  v6 = [v4 copy];
+  [addedCopy _setAccountStore:self];
+  v6 = [addedCopy copy];
   accountsByID = self->_accountsByID;
-  v8 = [v4 identifier];
-  [(NSMutableDictionary *)accountsByID setObject:v6 forKeyedSubscript:v8];
+  identifier = [addedCopy identifier];
+  [(NSMutableDictionary *)accountsByID setObject:v6 forKeyedSubscript:identifier];
 
-  v9 = [(ACAccountStore *)self replyQueue];
+  replyQueue = [(ACAccountStore *)self replyQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49__ACMonitoredAccountStore__lock_accountWasAdded___block_invoke;
   v12[3] = &unk_1E7975590;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
-  dispatch_async(v9, v12);
+  v13 = addedCopy;
+  v10 = addedCopy;
+  dispatch_async(replyQueue, v12);
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -1037,33 +1037,33 @@ uint64_t __49__ACMonitoredAccountStore__lock_accountWasAdded___block_invoke(uint
   return result;
 }
 
-- (void)_lock_accountWasModified:(id)a3
+- (void)_lock_accountWasModified:(id)modified
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modifiedCopy = modified;
   v5 = _ACLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = modifiedCopy;
     _os_log_impl(&dword_1AC3CD000, v5, OS_LOG_TYPE_DEFAULT, "ACMonitoredAccountStore: account was modified: %@", buf, 0xCu);
   }
 
-  [v4 _setAccountStore:self];
-  v6 = [v4 copy];
+  [modifiedCopy _setAccountStore:self];
+  v6 = [modifiedCopy copy];
   accountsByID = self->_accountsByID;
-  v8 = [v4 identifier];
-  [(NSMutableDictionary *)accountsByID setObject:v6 forKeyedSubscript:v8];
+  identifier = [modifiedCopy identifier];
+  [(NSMutableDictionary *)accountsByID setObject:v6 forKeyedSubscript:identifier];
 
-  v9 = [(ACAccountStore *)self replyQueue];
+  replyQueue = [(ACAccountStore *)self replyQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __52__ACMonitoredAccountStore__lock_accountWasModified___block_invoke;
   v12[3] = &unk_1E7975590;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
-  dispatch_async(v9, v12);
+  v13 = modifiedCopy;
+  v10 = modifiedCopy;
+  dispatch_async(replyQueue, v12);
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -1112,32 +1112,32 @@ uint64_t __52__ACMonitoredAccountStore__lock_accountWasModified___block_invoke(u
   return result;
 }
 
-- (void)_lock_accountWasRemoved:(id)a3
+- (void)_lock_accountWasRemoved:(id)removed
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  removedCopy = removed;
   v5 = _ACLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = removedCopy;
     _os_log_impl(&dword_1AC3CD000, v5, OS_LOG_TYPE_DEFAULT, "ACMonitoredAccountStore: account was removed: %@", buf, 0xCu);
   }
 
-  [v4 _setAccountStore:self];
+  [removedCopy _setAccountStore:self];
   accountsByID = self->_accountsByID;
-  v7 = [v4 identifier];
-  [(NSMutableDictionary *)accountsByID setObject:0 forKeyedSubscript:v7];
+  identifier = [removedCopy identifier];
+  [(NSMutableDictionary *)accountsByID setObject:0 forKeyedSubscript:identifier];
 
-  v8 = [(ACAccountStore *)self replyQueue];
+  replyQueue = [(ACAccountStore *)self replyQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__ACMonitoredAccountStore__lock_accountWasRemoved___block_invoke;
   v11[3] = &unk_1E7975590;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
-  dispatch_async(v8, v11);
+  v12 = removedCopy;
+  v9 = removedCopy;
+  dispatch_async(replyQueue, v11);
 
   v10 = *MEMORY[0x1E69E9840];
 }

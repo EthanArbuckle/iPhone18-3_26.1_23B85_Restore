@@ -1,17 +1,17 @@
 @interface BKTouchDeliveryObservationManager
 + (id)sharedInstance;
 - (BKTouchDeliveryObservationManager)init;
-- (void)_queue_pendUpdate:(id)a3;
+- (void)_queue_pendUpdate:(id)update;
 - (void)_queue_postPendingUpdates;
-- (void)_queue_postUpdate:(id)a3 forTouchIdentifier:(unsigned int)a4;
-- (void)_queue_setProcessPID:(int)a3 observesGlobalTouches:(BOOL)a4;
-- (void)_queue_setProcessPID:(int)a3 observesTouch:(BOOL)a4 withIdentifier:(unsigned int)a5;
-- (void)connectionDidTerminate:(id)a3;
-- (void)noteTouchUpOccurred:(unsigned int)a3 detached:(BOOL)a4 context:(unsigned int)a5 clientPort:(unsigned int)a6;
-- (void)setObservesAllTouches:(id)a3;
-- (void)setObservesTouch:(id)a3 withIdentifier:(id)a4;
-- (void)touch:(unsigned int)a3 pathIndex:(int64_t)a4 upAtPoint:(CGPoint)a5 detached:(BOOL)a6;
-- (void)touchDidDetach:(unsigned int)a3 destinations:(id)a4;
+- (void)_queue_postUpdate:(id)update forTouchIdentifier:(unsigned int)identifier;
+- (void)_queue_setProcessPID:(int)d observesGlobalTouches:(BOOL)touches;
+- (void)_queue_setProcessPID:(int)d observesTouch:(BOOL)touch withIdentifier:(unsigned int)identifier;
+- (void)connectionDidTerminate:(id)terminate;
+- (void)noteTouchUpOccurred:(unsigned int)occurred detached:(BOOL)detached context:(unsigned int)context clientPort:(unsigned int)port;
+- (void)setObservesAllTouches:(id)touches;
+- (void)setObservesTouch:(id)touch withIdentifier:(id)identifier;
+- (void)touch:(unsigned int)touch pathIndex:(int64_t)index upAtPoint:(CGPoint)point detached:(BOOL)detached;
+- (void)touchDidDetach:(unsigned int)detach destinations:(id)destinations;
 - (void)touchDidFinishProcessingTouchCollection;
 @end
 
@@ -53,28 +53,28 @@
   dispatch_async(queue, block);
 }
 
-- (void)_queue_postUpdate:(id)a3 forTouchIdentifier:(unsigned int)a4
+- (void)_queue_postUpdate:(id)update forTouchIdentifier:(unsigned int)identifier
 {
-  v6 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [v6 pid];
+  v7 = [updateCopy pid];
   v8 = BKLogTouchDeliveryObserver();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109376;
-    v21 = a4;
+    identifierCopy = identifier;
     v22 = 1024;
     v23 = v7;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "touch %X sent to destination pid:%d", buf, 0xEu);
   }
 
-  v9 = [(BSMutableIntegerMap *)self->_touchIdentifierToPIDs objectForKey:a4];
+  v9 = [(BSMutableIntegerMap *)self->_touchIdentifierToPIDs objectForKey:identifier];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100025F64;
   v18[3] = &unk_1000FA718;
   v18[4] = self;
-  v10 = v6;
+  v10 = updateCopy;
   v19 = v10;
   [v9 enumerateIndexesUsingBlock:v18];
   v11 = [(NSMutableIndexSet *)self->_globalTouchObserverPIDs mutableCopy];
@@ -100,43 +100,43 @@
   }
 }
 
-- (void)_queue_pendUpdate:(id)a3
+- (void)_queue_pendUpdate:(id)update
 {
-  v9 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [v9 touchIdentifier];
-  v5 = [v9 contextID];
-  v6 = v4;
-  v7 = [(BSMutableIntegerMap *)self->_touchIdentifierToUpdate objectForKey:v4];
+  touchIdentifier = [updateCopy touchIdentifier];
+  contextID = [updateCopy contextID];
+  v6 = touchIdentifier;
+  v7 = [(BSMutableIntegerMap *)self->_touchIdentifierToUpdate objectForKey:touchIdentifier];
   v8 = v7;
-  if (v5 || !v7)
+  if (contextID || !v7)
   {
-    [(BSMutableIntegerMap *)self->_touchIdentifierToUpdate setObject:v9 forKey:v6];
+    [(BSMutableIntegerMap *)self->_touchIdentifierToUpdate setObject:updateCopy forKey:v6];
   }
 }
 
-- (void)_queue_setProcessPID:(int)a3 observesGlobalTouches:(BOOL)a4
+- (void)_queue_setProcessPID:(int)d observesGlobalTouches:(BOOL)touches
 {
-  v4 = a4;
+  touchesCopy = touches;
   dispatch_assert_queue_V2(self->_queue);
   globalTouchObserverPIDs = self->_globalTouchObserverPIDs;
-  if (v4)
+  if (touchesCopy)
   {
 
-    [(NSMutableIndexSet *)globalTouchObserverPIDs addIndex:a3];
+    [(NSMutableIndexSet *)globalTouchObserverPIDs addIndex:d];
   }
 
   else
   {
 
-    [(NSMutableIndexSet *)globalTouchObserverPIDs removeIndex:a3];
+    [(NSMutableIndexSet *)globalTouchObserverPIDs removeIndex:d];
   }
 }
 
-- (void)_queue_setProcessPID:(int)a3 observesTouch:(BOOL)a4 withIdentifier:(unsigned int)a5
+- (void)_queue_setProcessPID:(int)d observesTouch:(BOOL)touch withIdentifier:(unsigned int)identifier
 {
-  v5 = a4;
-  v9 = [(BSMutableIntegerMap *)self->_touchIdentifierToPIDs objectForKey:a5];
+  touchCopy = touch;
+  v9 = [(BSMutableIntegerMap *)self->_touchIdentifierToPIDs objectForKey:identifier];
   if (v9)
   {
     v8 = 1;
@@ -144,7 +144,7 @@
 
   else
   {
-    v8 = !v5;
+    v8 = !touchCopy;
   }
 
   if (!v8)
@@ -153,34 +153,34 @@
     [BSMutableIntegerMap setObject:"setObject:forKey:" forKey:?];
   }
 
-  if (v5)
+  if (touchCopy)
   {
-    [v9 addIndex:a3];
+    [v9 addIndex:d];
   }
 
   else
   {
-    [v9 removeIndex:a3];
+    [v9 removeIndex:d];
   }
 }
 
-- (void)touchDidDetach:(unsigned int)a3 destinations:(id)a4
+- (void)touchDidDetach:(unsigned int)detach destinations:(id)destinations
 {
-  v6 = a4;
-  v7 = [v6 copy];
+  destinationsCopy = destinations;
+  v7 = [destinationsCopy copy];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100026258;
   block[3] = &unk_1000FD1A0;
   v11 = v7;
-  v12 = self;
-  v13 = a3;
+  selfCopy = self;
+  detachCopy = detach;
   v9 = v7;
   dispatch_async(queue, block);
 }
 
-- (void)touch:(unsigned int)a3 pathIndex:(int64_t)a4 upAtPoint:(CGPoint)a5 detached:(BOOL)a6
+- (void)touch:(unsigned int)touch pathIndex:(int64_t)index upAtPoint:(CGPoint)point detached:(BOOL)detached
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -188,74 +188,74 @@
   v7[2] = sub_100026480;
   v7[3] = &unk_1000FA6C8;
   v7[4] = self;
-  v8 = a3;
-  v9 = a6;
+  touchCopy = touch;
+  detachedCopy = detached;
   dispatch_async(queue, v7);
 }
 
-- (void)setObservesTouch:(id)a3 withIdentifier:(id)a4
+- (void)setObservesTouch:(id)touch withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   v8 = +[BSServiceConnection currentContext];
-  v9 = [v8 remoteProcess];
+  remoteProcess = [v8 remoteProcess];
 
-  v10 = [v9 pid];
-  v11 = [v7 unsignedIntValue];
+  v10 = [remoteProcess pid];
+  unsignedIntValue = [identifierCopy unsignedIntValue];
   v12 = BKLogTouchDeliveryObserver();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13[0] = 67109632;
     v13[1] = v10;
     v14 = 1024;
-    v15 = [v6 BOOLValue];
+    bOOLValue = [touchCopy BOOLValue];
     v16 = 1024;
-    v17 = v11;
+    v17 = unsignedIntValue;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "pid:%d observes touch:%{BOOL}u identifier:%X", v13, 0x14u);
   }
 
-  -[BKTouchDeliveryObservationManager _queue_setProcessPID:observesTouch:withIdentifier:](self, "_queue_setProcessPID:observesTouch:withIdentifier:", v10, [v6 BOOLValue], v11);
+  -[BKTouchDeliveryObservationManager _queue_setProcessPID:observesTouch:withIdentifier:](self, "_queue_setProcessPID:observesTouch:withIdentifier:", v10, [touchCopy BOOLValue], unsignedIntValue);
 }
 
-- (void)setObservesAllTouches:(id)a3
+- (void)setObservesAllTouches:(id)touches
 {
-  v4 = a3;
+  touchesCopy = touches;
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[BSServiceConnection currentContext];
-  v6 = [v5 remoteProcess];
+  remoteProcess = [v5 remoteProcess];
 
-  v7 = [v6 pid];
+  v7 = [remoteProcess pid];
   v8 = BKLogTouchDeliveryObserver();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = +[BSServiceConnection currentContext];
     v10 = 138543874;
-    v11 = v6;
+    v11 = remoteProcess;
     v12 = 2114;
     v13 = v9;
     v14 = 1024;
-    v15 = [v4 BOOLValue];
+    bOOLValue = [touchesCopy BOOLValue];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "process:%{public}@ (ctx:%{public}@) observes all touches:%{BOOL}u", &v10, 0x1Cu);
   }
 
-  -[BKTouchDeliveryObservationManager _queue_setProcessPID:observesGlobalTouches:](self, "_queue_setProcessPID:observesGlobalTouches:", v7, [v4 BOOLValue]);
+  -[BKTouchDeliveryObservationManager _queue_setProcessPID:observesGlobalTouches:](self, "_queue_setProcessPID:observesGlobalTouches:", v7, [touchesCopy BOOLValue]);
 }
 
-- (void)connectionDidTerminate:(id)a3
+- (void)connectionDidTerminate:(id)terminate
 {
-  v4 = a3;
+  terminateCopy = terminate;
   dispatch_assert_queue_V2(self->_queue);
   v5 = BKLogTouchDeliveryObserver();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = terminateCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "terminate %{public}@", buf, 0xCu);
   }
 
-  v6 = [v4 remoteToken];
-  v7 = [v6 pid];
+  remoteToken = [terminateCopy remoteToken];
+  v7 = [remoteToken pid];
 
   [(NSMutableIndexSet *)self->_globalTouchObserverPIDs removeIndex:v7];
   touchIdentifierToPIDs = self->_touchIdentifierToPIDs;
@@ -267,7 +267,7 @@
   [(BSMutableIntegerMap *)touchIdentifierToPIDs enumerateWithBlock:v9];
 }
 
-- (void)noteTouchUpOccurred:(unsigned int)a3 detached:(BOOL)a4 context:(unsigned int)a5 clientPort:(unsigned int)a6
+- (void)noteTouchUpOccurred:(unsigned int)occurred detached:(BOOL)detached context:(unsigned int)context clientPort:(unsigned int)port
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -275,10 +275,10 @@
   block[2] = sub_100026AC8;
   block[3] = &unk_1000FA680;
   block[4] = self;
-  v8 = a6;
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  portCopy = port;
+  occurredCopy = occurred;
+  contextCopy = context;
+  detachedCopy = detached;
   dispatch_async(queue, block);
 }
 
@@ -305,9 +305,9 @@
     bsServiceDispatchQueue = v2->_bsServiceDispatchQueue;
     v2->_bsServiceDispatchQueue = v9;
 
-    v11 = [(BSServiceDispatchQueue *)v2->_bsServiceDispatchQueue queue];
+    queue = [(BSServiceDispatchQueue *)v2->_bsServiceDispatchQueue queue];
     queue = v2->_queue;
-    v2->_queue = v11;
+    v2->_queue = queue;
 
     v13 = [BKHIDDomainServiceServer alloc];
     v14 = v2->_bsServiceDispatchQueue;

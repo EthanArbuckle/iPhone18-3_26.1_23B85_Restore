@@ -1,11 +1,11 @@
 @interface CTBIMDispositionNotificationWrapper
-- (CTBIMDispositionNotificationWrapper)initWithWrapped:(optional<ctb::IMDispositionNotification> *)a3;
+- (CTBIMDispositionNotificationWrapper)initWithWrapped:(optional<ctb::IMDispositionNotification> *)wrapped;
 - (id).cxx_construct;
 @end
 
 @implementation CTBIMDispositionNotificationWrapper
 
-- (CTBIMDispositionNotificationWrapper)initWithWrapped:(optional<ctb::IMDispositionNotification> *)a3
+- (CTBIMDispositionNotificationWrapper)initWithWrapped:(optional<ctb::IMDispositionNotification> *)wrapped
 {
   v7.receiver = self;
   v7.super_class = CTBIMDispositionNotificationWrapper;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    std::__optional_storage_base<ctb::IMDispositionNotification,false>::__assign_from[abi:ne200100]<std::__optional_move_assign_base<ctb::IMDispositionNotification,false>>(&v4->_wrapped, &a3->var0.var0);
+    std::__optional_storage_base<ctb::IMDispositionNotification,false>::__assign_from[abi:ne200100]<std::__optional_move_assign_base<ctb::IMDispositionNotification,false>>(&v4->_wrapped, &wrapped->var0.var0);
   }
 
   return v5;

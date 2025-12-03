@@ -1,40 +1,40 @@
 @interface HDMedicationUserDomainConceptDailyAnalytics
-+ (id)_countOfUserDomainConceptsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)_medicationsAddedCountSinceDate:(id)a3 transaction:(id)a4;
-+ (id)_predicateForMedicationsSinceDate:(id)a3;
++ (id)_countOfUserDomainConceptsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error;
++ (id)_medicationsAddedCountSinceDate:(id)date transaction:(id)transaction;
++ (id)_predicateForMedicationsSinceDate:(id)date;
 - (BOOL)isEventSubmissionIHAGated;
-- (HDMedicationUserDomainConceptDailyAnalytics)initWithProfile:(id)a3 medicationsKeyValueDomain:(id)a4 calendar:(id)a5 currentDate:(id)a6;
+- (HDMedicationUserDomainConceptDailyAnalytics)initWithProfile:(id)profile medicationsKeyValueDomain:(id)domain calendar:(id)calendar currentDate:(id)date;
 - (NSString)eventName;
-- (id)_archivedMedsCountPayloadWithTransaction:(id)a3;
-- (id)_hasAddedMedsInPastIHAGatedPayloadWithTransaction:(id)a3;
-- (id)_hasAddedMedsInPastUnrestrictedPayloadWithTransaction:(id)a3;
+- (id)_archivedMedsCountPayloadWithTransaction:(id)transaction;
+- (id)_hasAddedMedsInPastIHAGatedPayloadWithTransaction:(id)transaction;
+- (id)_hasAddedMedsInPastUnrestrictedPayloadWithTransaction:(id)transaction;
 - (id)_hasAnyLifestyleFactorEnabledPayload;
-- (id)_hasMedsListPayloadWithTransaction:(id)a3;
-- (id)_medsCountPayloadWithTransaction:(id)a3;
-- (id)_medsInteractionsPayloadWithTransaction:(id)a3;
-- (id)_weeksSinceFirstAddedMedPayloadWithTransaction:(id)a3;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)_hasMedsListPayloadWithTransaction:(id)transaction;
+- (id)_medsCountPayloadWithTransaction:(id)transaction;
+- (id)_medsInteractionsPayloadWithTransaction:(id)transaction;
+- (id)_weeksSinceFirstAddedMedPayloadWithTransaction:(id)transaction;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HDMedicationUserDomainConceptDailyAnalytics
 
-- (HDMedicationUserDomainConceptDailyAnalytics)initWithProfile:(id)a3 medicationsKeyValueDomain:(id)a4 calendar:(id)a5 currentDate:(id)a6
+- (HDMedicationUserDomainConceptDailyAnalytics)initWithProfile:(id)profile medicationsKeyValueDomain:(id)domain calendar:(id)calendar currentDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  domainCopy = domain;
+  calendarCopy = calendar;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = HDMedicationUserDomainConceptDailyAnalytics;
   v14 = [(HDMedicationUserDomainConceptDailyAnalytics *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
-    objc_storeStrong(&v15->_medicationsKeyValueDomain, a4);
-    objc_storeStrong(&v15->_calendar, a5);
-    objc_storeStrong(&v15->_currentDate, a6);
+    objc_storeWeak(&v14->_profile, profileCopy);
+    objc_storeStrong(&v15->_medicationsKeyValueDomain, domain);
+    objc_storeStrong(&v15->_calendar, calendar);
+    objc_storeStrong(&v15->_currentDate, date);
   }
 
   return v15;
@@ -60,12 +60,12 @@
   return 0;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained database];
-  v15 = self;
+  database = [WeakRetained database];
+  selfCopy = self;
   v16 = 0;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -73,7 +73,7 @@
   v13[3] = &unk_2796CD5C8;
   v14 = v5;
   v8 = v5;
-  LODWORD(v5) = [(HDHealthEntity *)HDMedicationUserDomainConceptEntity performReadTransactionWithHealthDatabase:v7 error:&v16 block:v13];
+  LODWORD(v5) = [(HDHealthEntity *)HDMedicationUserDomainConceptEntity performReadTransactionWithHealthDatabase:database error:&v16 block:v13];
   v9 = v16;
 
   if (v5)
@@ -114,12 +114,12 @@ uint64_t __96__HDMedicationUserDomainConceptDailyAnalytics_makeUnrestrictedEvent
   return 1;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained database];
-  v15 = self;
+  database = [WeakRetained database];
+  selfCopy = self;
   v16 = 0;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -127,7 +127,7 @@ uint64_t __96__HDMedicationUserDomainConceptDailyAnalytics_makeUnrestrictedEvent
   v13[3] = &unk_2796CD5C8;
   v14 = v5;
   v8 = v5;
-  LODWORD(v5) = [(HDHealthEntity *)HDMedicationUserDomainConceptEntity performReadTransactionWithHealthDatabase:v7 error:&v16 block:v13];
+  LODWORD(v5) = [(HDHealthEntity *)HDMedicationUserDomainConceptEntity performReadTransactionWithHealthDatabase:database error:&v16 block:v13];
   v9 = v16;
 
   if (v5)
@@ -168,12 +168,12 @@ uint64_t __92__HDMedicationUserDomainConceptDailyAnalytics_makeIHAGatedEventPayl
   return 1;
 }
 
-- (id)_weeksSinceFirstAddedMedPayloadWithTransaction:(id)a3
+- (id)_weeksSinceFirstAddedMedPayloadWithTransaction:(id)transaction
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
+  medicationUserDomainConceptTypeIdentifier = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
   v7 = HDUserDomainConceptEntityPredicateForConceptsWithTypeIdentifier();
   v8 = [MEMORY[0x277D10B68] orderingTermWithProperty:*MEMORY[0x277D10500] entityClass:objc_opt_class() ascending:1];
   v33[0] = v8;
@@ -186,14 +186,14 @@ uint64_t __92__HDMedicationUserDomainConceptDailyAnalytics_makeIHAGatedEventPayl
   v29 = __Block_byref_object_dispose__10;
   v30 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained userDomainConceptManager];
+  userDomainConceptManager = [WeakRetained userDomainConceptManager];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __94__HDMedicationUserDomainConceptDailyAnalytics__weeksSinceFirstAddedMedPayloadWithTransaction___block_invoke;
   v23[3] = &unk_2796CE488;
   v23[4] = &v25;
   v24 = 0;
-  v12 = [v11 enumerateUserDomainConceptsWithPredicate:v7 limit:1 orderingTerms:v9 error:&v24 enumerationHandler:v23];
+  v12 = [userDomainConceptManager enumerateUserDomainConceptsWithPredicate:v7 limit:1 orderingTerms:v9 error:&v24 enumerationHandler:v23];
   v13 = v24;
 
   if (v12)
@@ -202,8 +202,8 @@ uint64_t __92__HDMedicationUserDomainConceptDailyAnalytics_makeIHAGatedEventPayl
     {
       v14 = [(NSCalendar *)self->_calendar startOfDayForDate:self->_currentDate];
       calendar = self->_calendar;
-      v16 = [v26[5] creationDate];
-      v17 = [(NSCalendar *)calendar startOfDayForDate:v16];
+      creationDate = [v26[5] creationDate];
+      v17 = [(NSCalendar *)calendar startOfDayForDate:creationDate];
 
       v18 = self->_calendar;
       v19 = HKMedicationAnalyticsWeeksBetweenDates();
@@ -218,7 +218,7 @@ uint64_t __92__HDMedicationUserDomainConceptDailyAnalytics_makeIHAGatedEventPayl
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25181C000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] No error when fetching oldest medications added, but also no value", buf, 0xCu);
     }
   }
@@ -267,14 +267,14 @@ LABEL_9:
   return v3;
 }
 
-- (id)_medsInteractionsPayloadWithTransaction:(id)a3
+- (id)_medsInteractionsPayloadWithTransaction:(id)transaction
 {
   v74[3] = *MEMORY[0x277D85DE8];
-  v44 = a3;
+  transactionCopy = transaction;
   v50 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v49 = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
+  medicationUserDomainConceptTypeIdentifier = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
   v48 = HDUserDomainConceptEntityPredicateForConceptsWithTypeIdentifier();
-  v4 = [MEMORY[0x277CCD5D0] appleOntologySystem];
+  appleOntologySystem = [MEMORY[0x277CCD5D0] appleOntologySystem];
   v47 = HDUserDomainConceptEntityPredicateForMedicalCodingSystem();
 
   v46 = [MEMORY[0x277D10938] predicateForElementsOfListType:2];
@@ -292,14 +292,14 @@ LABEL_9:
   v70 = __Block_byref_object_dispose__10;
   v71 = objc_alloc_init(MEMORY[0x277CBEB58]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained userDomainConceptManager];
+  userDomainConceptManager = [WeakRetained userDomainConceptManager];
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
   v64[2] = __87__HDMedicationUserDomainConceptDailyAnalytics__medsInteractionsPayloadWithTransaction___block_invoke;
   v64[3] = &unk_2796CE4B0;
   v64[4] = &v66;
   v65 = 0;
-  v9 = [v8 enumerateUserDomainConceptsWithPredicate:v45 error:&v65 enumerationHandler:v64];
+  v9 = [userDomainConceptManager enumerateUserDomainConceptsWithPredicate:v45 error:&v65 enumerationHandler:v64];
   v51 = v65;
 
   if (v9)
@@ -357,8 +357,8 @@ LABEL_9:
             v56 = 0u;
             v57 = 0u;
             v58 = 0u;
-            v19 = [v18 interactions];
-            v20 = [v19 countByEnumeratingWithState:&v55 objects:v72 count:16];
+            interactions = [v18 interactions];
+            v20 = [interactions countByEnumeratingWithState:&v55 objects:v72 count:16];
             if (v20)
             {
               v21 = *v56;
@@ -368,13 +368,13 @@ LABEL_9:
                 {
                   if (*v56 != v21)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(interactions);
                   }
 
-                  v23 = [*(*(&v55 + 1) + 8 * j) severity];
-                  v24 = [v23 severityLevel];
+                  severity = [*(*(&v55 + 1) + 8 * j) severity];
+                  severityLevel = [severity severityLevel];
 
-                  switch(v24)
+                  switch(severityLevel)
                   {
                     case 1:
                       ++v14;
@@ -388,7 +388,7 @@ LABEL_9:
                   }
                 }
 
-                v20 = [v19 countByEnumeratingWithState:&v55 objects:v72 count:16];
+                v20 = [interactions countByEnumeratingWithState:&v55 objects:v72 count:16];
               }
 
               while (v20);
@@ -461,12 +461,12 @@ LABEL_9:
   return v37;
 }
 
-- (id)_hasAddedMedsInPastIHAGatedPayloadWithTransaction:(id)a3
+- (id)_hasAddedMedsInPastIHAGatedPayloadWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-1 toDate:self->_currentDate];
-  v7 = [objc_opt_class() _medicationsAddedCountSinceDate:v6 transaction:v4];
+  v7 = [objc_opt_class() _medicationsAddedCountSinceDate:v6 transaction:transactionCopy];
   v8 = v7;
   if (v7)
   {
@@ -485,7 +485,7 @@ LABEL_9:
   }
 
   v10 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-7 toDate:self->_currentDate];
-  v11 = [objc_opt_class() _medicationsAddedCountSinceDate:v10 transaction:v4];
+  v11 = [objc_opt_class() _medicationsAddedCountSinceDate:v10 transaction:transactionCopy];
   v12 = v11;
   if (v11)
   {
@@ -515,12 +515,12 @@ LABEL_11:
   return v5;
 }
 
-- (id)_hasAddedMedsInPastUnrestrictedPayloadWithTransaction:(id)a3
+- (id)_hasAddedMedsInPastUnrestrictedPayloadWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-30 toDate:self->_currentDate];
-  v7 = [objc_opt_class() _medicationsAddedCountSinceDate:v6 transaction:v4];
+  v7 = [objc_opt_class() _medicationsAddedCountSinceDate:v6 transaction:transactionCopy];
   v8 = v7;
   if (v7)
   {
@@ -538,7 +538,7 @@ LABEL_11:
   }
 
   v11 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-180 toDate:self->_currentDate];
-  v12 = [objc_opt_class() _medicationsAddedCountSinceDate:v11 transaction:v4];
+  v12 = [objc_opt_class() _medicationsAddedCountSinceDate:v11 transaction:transactionCopy];
   v13 = v12;
   if (!v12)
   {
@@ -550,7 +550,7 @@ LABEL_11:
     [v5 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"hasAddedMedsInPast6Months"];
 LABEL_9:
     v16 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-365 toDate:self->_currentDate];
-    v17 = [objc_opt_class() _medicationsAddedCountSinceDate:v16 transaction:v4];
+    v17 = [objc_opt_class() _medicationsAddedCountSinceDate:v16 transaction:transactionCopy];
     v18 = v17;
     if (v17)
     {
@@ -574,14 +574,14 @@ LABEL_13:
   return v5;
 }
 
-- (id)_medsCountPayloadWithTransaction:(id)a3
+- (id)_medsCountPayloadWithTransaction:(id)transaction
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x277D10938] predicateForElementsOfListType:2];
   v11 = 0;
-  v7 = [MEMORY[0x277D10938] countOfUserDomainConceptsMatchingPredicate:v6 options:0 transaction:v4 error:&v11];
+  v7 = [MEMORY[0x277D10938] countOfUserDomainConceptsMatchingPredicate:v6 options:0 transaction:transactionCopy error:&v11];
 
   v8 = v11;
   if (v7)
@@ -603,19 +603,19 @@ LABEL_13:
   return v5;
 }
 
-- (id)_archivedMedsCountPayloadWithTransaction:(id)a3
+- (id)_archivedMedsCountPayloadWithTransaction:(id)transaction
 {
-  v3 = a3;
+  transactionCopy = transaction;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0;
-  v5 = [objc_opt_class() _countOfUserDomainConceptsWithPredicate:0 transaction:v3 error:&v17];
+  v5 = [objc_opt_class() _countOfUserDomainConceptsWithPredicate:0 transaction:transactionCopy error:&v17];
   v6 = v17;
   if (v5)
   {
     v7 = objc_opt_class();
     v8 = [MEMORY[0x277D10938] predicateForElementsOfListType:2];
     v16 = v6;
-    v9 = [v7 _countOfUserDomainConceptsWithPredicate:v8 transaction:v3 error:&v16];
+    v9 = [v7 _countOfUserDomainConceptsWithPredicate:v8 transaction:transactionCopy error:&v16];
     v10 = v16;
 
     if (v9)
@@ -656,14 +656,14 @@ LABEL_13:
   return v13;
 }
 
-- (id)_hasMedsListPayloadWithTransaction:(id)a3
+- (id)_hasMedsListPayloadWithTransaction:(id)transaction
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x277D10938] predicateForElementsOfListType:2];
   v11 = 0;
-  v7 = [MEMORY[0x277D10938] countOfUserDomainConceptsMatchingPredicate:v6 options:0 transaction:v4 error:&v11];
+  v7 = [MEMORY[0x277D10938] countOfUserDomainConceptsMatchingPredicate:v6 options:0 transaction:transactionCopy error:&v11];
 
   v8 = v11;
   if (v7)
@@ -685,14 +685,14 @@ LABEL_13:
   return v5;
 }
 
-+ (id)_medicationsAddedCountSinceDate:(id)a3 transaction:(id)a4
++ (id)_medicationsAddedCountSinceDate:(id)date transaction:(id)transaction
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _predicateForMedicationsSinceDate:v6];
+  dateCopy = date;
+  transactionCopy = transaction;
+  v8 = [objc_opt_class() _predicateForMedicationsSinceDate:dateCopy];
   v15 = 0;
-  v9 = [objc_opt_class() _countOfUserDomainConceptsWithPredicate:v8 transaction:v7 error:&v15];
+  v9 = [objc_opt_class() _countOfUserDomainConceptsWithPredicate:v8 transaction:transactionCopy error:&v15];
 
   v10 = v15;
   if (v9)
@@ -707,9 +707,9 @@ LABEL_13:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v17 = a1;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v6;
+      v19 = dateCopy;
       v20 = 2114;
       v21 = v10;
       _os_log_error_impl(&dword_25181C000, v12, OS_LOG_TYPE_ERROR, "[%{public}@] Error when determining if user added medications since date: %{public}@, continuing daily analytics submission: %{public}@", buf, 0x20u);
@@ -721,27 +721,27 @@ LABEL_13:
   return v9;
 }
 
-+ (id)_countOfUserDomainConceptsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)_countOfUserDomainConceptsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  transactionCopy = transaction;
+  predicateCopy = predicate;
   v9 = objc_opt_class();
   v10 = *MEMORY[0x277D10560];
-  v11 = [v7 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
-  v12 = [v9 countDistinctForProperty:v10 predicate:v8 database:v11 error:a5];
+  v12 = [v9 countDistinctForProperty:v10 predicate:predicateCopy database:protectedDatabase error:error];
 
   return v12;
 }
 
-+ (id)_predicateForMedicationsSinceDate:(id)a3
++ (id)_predicateForMedicationsSinceDate:(id)date
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCDB50];
-  v4 = a3;
-  v5 = [v3 medicationUserDomainConceptTypeIdentifier];
+  dateCopy = date;
+  medicationUserDomainConceptTypeIdentifier = [v3 medicationUserDomainConceptTypeIdentifier];
   v6 = HDUserDomainConceptEntityPredicateForConceptsWithTypeIdentifier();
-  v7 = [MEMORY[0x277D10B18] predicateWithProperty:*MEMORY[0x277D10500] greaterThanValue:v4];
+  v7 = [MEMORY[0x277D10B18] predicateWithProperty:*MEMORY[0x277D10500] greaterThanValue:dateCopy];
 
   v8 = MEMORY[0x277D10B20];
   v13[0] = v6;

@@ -1,25 +1,25 @@
 @interface _INPBHomeAttributeRange
-- (BOOL)isEqual:(id)a3;
-- (_INPBHomeAttributeRange)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBHomeAttributeRange)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasUpperValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasUpperValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBHomeAttributeRange
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBHomeAttributeRange *)self hasLowerValue])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBHomeAttributeRange *)self lowerValue];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"lowerValue"];
+    [dictionary setObject:v5 forKeyedSubscript:@"lowerValue"];
   }
 
   if ([(_INPBHomeAttributeRange *)self hasUpperValue])
@@ -27,10 +27,10 @@
     v6 = MEMORY[0x1E696AD98];
     [(_INPBHomeAttributeRange *)self upperValue];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"upperValue"];
+    [dictionary setObject:v7 forKeyedSubscript:@"upperValue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -104,21 +104,21 @@
   return v14 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBHomeAttributeRange *)self hasLowerValue];
-    if (v5 == [v4 hasLowerValue])
+    hasLowerValue = [(_INPBHomeAttributeRange *)self hasLowerValue];
+    if (hasLowerValue == [equalCopy hasLowerValue])
     {
-      if (!-[_INPBHomeAttributeRange hasLowerValue](self, "hasLowerValue") || ![v4 hasLowerValue] || (lowerValue = self->_lowerValue, objc_msgSend(v4, "lowerValue"), lowerValue == v7))
+      if (!-[_INPBHomeAttributeRange hasLowerValue](self, "hasLowerValue") || ![equalCopy hasLowerValue] || (lowerValue = self->_lowerValue, objc_msgSend(equalCopy, "lowerValue"), lowerValue == v7))
       {
-        v8 = [(_INPBHomeAttributeRange *)self hasUpperValue];
-        if (v8 == [v4 hasUpperValue])
+        hasUpperValue = [(_INPBHomeAttributeRange *)self hasUpperValue];
+        if (hasUpperValue == [equalCopy hasUpperValue])
         {
-          if (!-[_INPBHomeAttributeRange hasUpperValue](self, "hasUpperValue") || ![v4 hasUpperValue] || (upperValue = self->_upperValue, objc_msgSend(v4, "upperValue"), upperValue == v12))
+          if (!-[_INPBHomeAttributeRange hasUpperValue](self, "hasUpperValue") || ![equalCopy hasUpperValue] || (upperValue = self->_upperValue, objc_msgSend(equalCopy, "upperValue"), upperValue == v12))
           {
             v9 = 1;
           }
@@ -130,7 +130,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBHomeAttributeRange allocWithZone:?]];
   if ([(_INPBHomeAttributeRange *)self hasLowerValue])
@@ -148,33 +148,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBHomeAttributeRange *)self data];
+  coderCopy = coder;
+  data = [(_INPBHomeAttributeRange *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBHomeAttributeRange)initWithCoder:(id)a3
+- (_INPBHomeAttributeRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBHomeAttributeRange *)self initWithData:v6];
+    self = [(_INPBHomeAttributeRange *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_INPBHomeAttributeRange *)self hasLowerValue])
   {
     lowerValue = self->_lowerValue;
@@ -188,9 +188,9 @@
   }
 }
 
-- (void)setHasUpperValue:(BOOL)a3
+- (void)setHasUpperValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }

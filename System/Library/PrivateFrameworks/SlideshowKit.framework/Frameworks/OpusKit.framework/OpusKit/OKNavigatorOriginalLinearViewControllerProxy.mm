@@ -1,36 +1,36 @@
 @interface OKNavigatorOriginalLinearViewControllerProxy
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (BOOL)prepareForDisplay;
 - (BOOL)prepareForUnload;
 - (BOOL)prepareForWarmup;
-- (id)nameForPageAfterPage:(id)a3;
-- (id)nameForPageBeforePage:(id)a3;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
+- (id)nameForPageAfterPage:(id)page;
+- (id)nameForPageBeforePage:(id)page;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
 - (void)applySettings;
 - (void)commonInit;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didReceiveMemoryWarning;
-- (void)gotoNext:(id)a3;
-- (void)gotoPrevious:(id)a3;
-- (void)navigateToPageWithName:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4;
+- (void)gotoNext:(id)next;
+- (void)gotoPrevious:(id)previous;
+- (void)navigateToPageWithName:(id)name animated:(BOOL)animated completion:(id)completion;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers;
 - (void)prepareAdjacentPageViewControllers;
 - (void)reloadPagesViewController;
-- (void)setSettingOrientation:(unint64_t)a3;
-- (void)setSettingTransition:(unint64_t)a3;
+- (void)setSettingOrientation:(unint64_t)orientation;
+- (void)setSettingTransition:(unint64_t)transition;
 - (void)updatePagesViewController;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation OKNavigatorOriginalLinearViewControllerProxy
@@ -85,32 +85,32 @@
   [(OKNavigatorViewControllerProxy *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorOriginalLinearViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 viewWillAppear:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorOriginalLinearViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 viewDidAppear:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorOriginalLinearViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 viewWillDisappear:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorOriginalLinearViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 viewDidDisappear:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 viewDidDisappear:disappear];
 }
 
 - (void)viewWillLayoutSubviews
@@ -127,18 +127,18 @@
   [(OKNavigatorViewControllerProxy *)&v2 viewDidLayoutSubviews];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorOriginalLinearViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 willMoveToParentViewController:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 willMoveToParentViewController:controller];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorOriginalLinearViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 didMoveToParentViewController:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 didMoveToParentViewController:controller];
 }
 
 - (void)applySettings
@@ -204,7 +204,7 @@
 + (id)supportedSettings
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKNavigatorOriginalLinearViewControllerProxy;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v10[0] = @"transition";
@@ -228,13 +228,13 @@
   return v2;
 }
 
-- (void)setSettingTransition:(unint64_t)a3
+- (void)setSettingTransition:(unint64_t)transition
 {
-  if (self->_transitionStyle != a3)
+  if (self->_transitionStyle != transition)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_transitionStyle = a3;
+    self->_transitionStyle = transition;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __69__OKNavigatorOriginalLinearViewControllerProxy_setSettingTransition___block_invoke;
@@ -244,13 +244,13 @@
   }
 }
 
-- (void)setSettingOrientation:(unint64_t)a3
+- (void)setSettingOrientation:(unint64_t)orientation
 {
-  if (self->_navigationOrientation != a3)
+  if (self->_navigationOrientation != orientation)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_navigationOrientation = a3;
+    self->_navigationOrientation = orientation;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __70__OKNavigatorOriginalLinearViewControllerProxy_setSettingOrientation___block_invoke;
@@ -283,10 +283,10 @@
   [(OKNavigatorOriginalLinearViewControllerProxy *)self addChildViewControllerInstantly:self->_pagesViewController];
   if ([(NSArray *)self->_orderedPagesNames count])
   {
-    v6 = [(OKNavigatorViewControllerProxy *)self currentPageViewController];
-    if (v6 || (v6 = [(OKNavigatorViewControllerProxy *)self pageViewControllerForPageWithName:[(NSArray *)self->_orderedPagesNames firstObject] createIfNeeded:1]) != 0)
+    currentPageViewController = [(OKNavigatorViewControllerProxy *)self currentPageViewController];
+    if (currentPageViewController || (currentPageViewController = [(OKNavigatorViewControllerProxy *)self pageViewControllerForPageWithName:[(NSArray *)self->_orderedPagesNames firstObject] createIfNeeded:1]) != 0)
     {
-      v7 = v6;
+      v7 = currentPageViewController;
       [-[OKNavigatorOriginalLinearViewControllerProxy view](self "view")];
       [-[OKPageViewController view](v7 "view")];
       v12 = self->_pagesViewController;
@@ -357,14 +357,14 @@ LABEL_5:
 - (void)prepareAdjacentPageViewControllers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NSArray *)[(UIPageViewController *)self->_pagesViewController viewControllers] firstObject];
-  v4 = [(OKNavigatorOriginalLinearViewControllerProxy *)self pageViewController:self->_pagesViewController viewControllerBeforeViewController:v3];
-  v5 = [(OKNavigatorOriginalLinearViewControllerProxy *)self pageViewController:self->_pagesViewController viewControllerAfterViewController:v3];
+  firstObject = [(NSArray *)[(UIPageViewController *)self->_pagesViewController viewControllers] firstObject];
+  v4 = [(OKNavigatorOriginalLinearViewControllerProxy *)self pageViewController:self->_pagesViewController viewControllerBeforeViewController:firstObject];
+  v5 = [(OKNavigatorOriginalLinearViewControllerProxy *)self pageViewController:self->_pagesViewController viewControllerAfterViewController:firstObject];
   v6 = [MEMORY[0x277CBEB58] setWithArray:{-[OKNavigatorViewControllerProxy cachedPageViewControllerForPageWithNames:](self, "cachedPageViewControllerForPageWithNames:", self->_orderedPagesNames)}];
   v7 = v6;
-  if (v3)
+  if (firstObject)
   {
-    [v6 removeObject:v3];
+    [v6 removeObject:firstObject];
   }
 
   if (v4)
@@ -416,7 +416,7 @@ LABEL_5:
   }
 }
 
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers
 {
   v16 = *MEMORY[0x277D85DE8];
   [(OKPageViewController *)[(OKNavigatorViewControllerProxy *)self currentPageViewController] pageWillDisappear:0];
@@ -424,7 +424,7 @@ LABEL_5:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [controllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -436,7 +436,7 @@ LABEL_5:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(controllers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
@@ -446,30 +446,30 @@ LABEL_5:
       }
 
       while (v7 != v9);
-      v7 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [controllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v7 = [(OKNavigatorViewControllerProxy *)self currentPageViewController:a3];
+  v7 = [(OKNavigatorViewControllerProxy *)self currentPageViewController:controller];
   [(OKNavigatorViewControllerProxy *)self setCurrentPageViewController:[(NSArray *)[(UIPageViewController *)self->_pagesViewController viewControllers] firstObject]];
   [(OKNavigatorOriginalLinearViewControllerProxy *)self prepareAdjacentPageViewControllers];
   [(OKPageViewController *)v7 pageDidDisappear:0];
   [(OKPageViewController *)[(OKNavigatorViewControllerProxy *)self currentPageViewController] pageDidAppear:0];
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  if (!a4)
+  if (!viewController)
   {
     return 0;
   }
 
-  v6 = -[NSArray indexOfObject:](self->_orderedPagesNames, "indexOfObject:", [objc_msgSend(a4 page]);
+  v6 = -[NSArray indexOfObject:](self->_orderedPagesNames, "indexOfObject:", [objc_msgSend(viewController page]);
   v7 = v6;
   if (v6)
   {
@@ -497,14 +497,14 @@ LABEL_5:
   return v4;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  if (!a4)
+  if (!viewController)
   {
     return 0;
   }
 
-  v5 = -[NSArray indexOfObject:](self->_orderedPagesNames, "indexOfObject:", [objc_msgSend(a4 page]);
+  v5 = -[NSArray indexOfObject:](self->_orderedPagesNames, "indexOfObject:", [objc_msgSend(viewController page]);
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -527,75 +527,75 @@ LABEL_5:
 {
   v5.receiver = self;
   v5.super_class = OKNavigatorOriginalLinearViewControllerProxy;
-  v3 = [(OKNavigatorViewControllerProxy *)&v5 prepareForDisplay];
-  if (v3)
+  prepareForDisplay = [(OKNavigatorViewControllerProxy *)&v5 prepareForDisplay];
+  if (prepareForDisplay)
   {
     [(OKNavigatorOriginalLinearViewControllerProxy *)self updatePagesViewController];
   }
 
-  return v3;
+  return prepareForDisplay;
 }
 
 - (BOOL)prepareForWarmup
 {
   v5.receiver = self;
   v5.super_class = OKNavigatorOriginalLinearViewControllerProxy;
-  v3 = [(OKNavigatorViewControllerProxy *)&v5 prepareForWarmup];
-  if (v3)
+  prepareForWarmup = [(OKNavigatorViewControllerProxy *)&v5 prepareForWarmup];
+  if (prepareForWarmup)
   {
     [(OKNavigatorOriginalLinearViewControllerProxy *)self updatePagesViewController];
   }
 
-  return v3;
+  return prepareForWarmup;
 }
 
 - (BOOL)prepareForUnload
 {
   v5.receiver = self;
   v5.super_class = OKNavigatorOriginalLinearViewControllerProxy;
-  v3 = [(OKNavigatorViewControllerProxy *)&v5 prepareForUnload];
-  if (v3)
+  prepareForUnload = [(OKNavigatorViewControllerProxy *)&v5 prepareForUnload];
+  if (prepareForUnload)
   {
     [(OKNavigatorOriginalLinearViewControllerProxy *)self updatePagesViewController];
   }
 
-  return v3;
+  return prepareForUnload;
 }
 
-- (id)nameForPageBeforePage:(id)a3
+- (id)nameForPageBeforePage:(id)page
 {
-  v4 = [(OKPresentationNavigator *)[(OKNavigatorViewControllerProxy *)self navigator] pagesNames];
-  v5 = -[NSMutableArray indexOfObject:](v4, "indexOfObject:", [objc_msgSend(a3 "page")]);
+  pagesNames = [(OKPresentationNavigator *)[(OKNavigatorViewControllerProxy *)self navigator] pagesNames];
+  v5 = -[NSMutableArray indexOfObject:](pagesNames, "indexOfObject:", [objc_msgSend(page "page")]);
   if (!v5 || v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  return [(NSMutableArray *)v4 objectAtIndex:v5 - 1];
+  return [(NSMutableArray *)pagesNames objectAtIndex:v5 - 1];
 }
 
-- (id)nameForPageAfterPage:(id)a3
+- (id)nameForPageAfterPage:(id)page
 {
-  v4 = [(OKPresentationNavigator *)[(OKNavigatorViewControllerProxy *)self navigator] pagesNames];
-  v5 = -[NSMutableArray indexOfObject:](v4, "indexOfObject:", [objc_msgSend(a3 "page")]);
+  pagesNames = [(OKPresentationNavigator *)[(OKNavigatorViewControllerProxy *)self navigator] pagesNames];
+  v5 = -[NSMutableArray indexOfObject:](pagesNames, "indexOfObject:", [objc_msgSend(page "page")]);
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v6 = v5;
-  if (v5 >= [(NSMutableArray *)v4 count]- 1)
+  if (v5 >= [(NSMutableArray *)pagesNames count]- 1)
   {
     return 0;
   }
 
-  return [(NSMutableArray *)v4 objectAtIndex:v6 + 1];
+  return [(NSMutableArray *)pagesNames objectAtIndex:v6 + 1];
 }
 
-- (void)gotoPrevious:(id)a3
+- (void)gotoPrevious:(id)previous
 {
   v5 = [(OKNavigatorOriginalLinearViewControllerProxy *)self nameForPageBeforePage:[(OKNavigatorViewControllerProxy *)self currentPageViewController]];
-  [a3 setShouldPropagate:v5 == 0];
+  [previous setShouldPropagate:v5 == 0];
   if (v5)
   {
 
@@ -603,10 +603,10 @@ LABEL_5:
   }
 }
 
-- (void)gotoNext:(id)a3
+- (void)gotoNext:(id)next
 {
   v5 = [(OKNavigatorOriginalLinearViewControllerProxy *)self nameForPageAfterPage:[(OKNavigatorViewControllerProxy *)self currentPageViewController]];
-  [a3 setShouldPropagate:v5 == 0];
+  [next setShouldPropagate:v5 == 0];
   if (v5)
   {
 
@@ -614,20 +614,20 @@ LABEL_5:
   }
 }
 
-- (void)navigateToPageWithName:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)navigateToPageWithName:(id)name animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   v23[1] = *MEMORY[0x277D85DE8];
-  v8 = [(OKNavigatorViewControllerProxy *)self pageViewControllerForPageWithName:a3 createIfNeeded:1];
+  v8 = [(OKNavigatorViewControllerProxy *)self pageViewControllerForPageWithName:name createIfNeeded:1];
   if (!v8)
   {
-    if (!a5)
+    if (!completion)
     {
       return;
     }
 
-    v19 = *(a5 + 2);
-    v20 = a5;
+    v19 = *(completion + 2);
+    completionCopy2 = completion;
     v21 = 0;
     goto LABEL_8;
   }
@@ -641,8 +641,8 @@ LABEL_5:
     v14 = [(NSArray *)self->_orderedPagesNames indexOfObject:[(OKPresentationCanvas *)[(OKPageViewController *)v9 page] name]];
     v15 = v14 < [(NSArray *)self->_orderedPagesNames indexOfObject:[(OKPresentationCanvas *)[(OKPageViewController *)[(OKNavigatorViewControllerProxy *)self currentPageViewController] page] name]];
     [(OKPageViewController *)v9 prepareForMode:[(OKNavigatorViewControllerProxy *)self prepareMode]];
-    v16 = [(OKNavigatorViewControllerProxy *)self currentPageViewController];
-    [(OKPageViewController *)v16 pageWillDisappear:1];
+    currentPageViewController = [(OKNavigatorViewControllerProxy *)self currentPageViewController];
+    [(OKPageViewController *)currentPageViewController pageWillDisappear:1];
     [(OKPageViewController *)v9 pageWillAppear:1];
     pagesViewController = self->_pagesViewController;
     v23[0] = v9;
@@ -653,20 +653,20 @@ LABEL_5:
     v22[3] = &unk_279C90658;
     v22[4] = self;
     v22[5] = v9;
-    v22[6] = v16;
-    v22[7] = a5;
-    [(UIPageViewController *)pagesViewController setViewControllers:v18 direction:v15 animated:v6 completion:v22];
+    v22[6] = currentPageViewController;
+    v22[7] = completion;
+    [(UIPageViewController *)pagesViewController setViewControllers:v18 direction:v15 animated:animatedCopy completion:v22];
     return;
   }
 
-  if (a5)
+  if (completion)
   {
-    v19 = *(a5 + 2);
-    v20 = a5;
+    v19 = *(completion + 2);
+    completionCopy2 = completion;
     v21 = 1;
 LABEL_8:
 
-    v19(v20, v21);
+    v19(completionCopy2, v21);
   }
 }
 
@@ -688,12 +688,12 @@ uint64_t __91__OKNavigatorOriginalLinearViewControllerProxy_navigateToPageWithNa
   return result;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKNavigatorOriginalLinearViewController"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKNavigatorOriginalLinearViewController"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

@@ -1,99 +1,99 @@
 @interface HDKeyValueEntity
-+ (BOOL)_doInsertValues:(void *)a3 forKeys:(void *)a4 modificationDates:(void *)a5 domain:(uint64_t)a6 category:(uint64_t)a7 provenance:(uint64_t)a8 syncIdentity:(uint64_t)a9 updatePolicy:(void *)a10 database:(uint64_t)a11 error:;
-+ (BOOL)_enumerateKeyValueEntitiesInCategory:(int64_t)a3 predicate:(id)a4 healthDatabase:(id)a5 error:(id *)a6 usingBlock:(id)a7;
-+ (BOOL)_insertCodableCategoryDomainDictionary:(id)a3 provenance:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)_insertCodableTimestampedKeyValuePairs:(id)a3 domain:(id)a4 category:(int64_t)a5 provenance:(int64_t)a6 syncIdentity:(int64_t)a7 updatePolicy:(int64_t)a8 profile:(id)a9 error:(id *)a10;
-+ (BOOL)_insertKeysAndValues:(id)a3 modificationDate:(id)a4 domain:(id)a5 category:(int64_t)a6 provenance:(int64_t)a7 syncIdentity:(int64_t)a8 updatePolicy:(int64_t)a9 profile:(id)a10 error:(id *)a11;
-+ (BOOL)_insertValues:(id)a3 forKeys:(id)a4 modificationDates:(id)a5 domain:(id)a6 category:(int64_t)a7 provenance:(int64_t)a8 syncIdentity:(int64_t)a9 updatePolicy:(int64_t)a10 profile:(id)a11 error:(id *)a12;
-+ (BOOL)_setRawKeysAndValues:(id)a3 domain:(id)a4 category:(int64_t)a5 syncIdentity:(int64_t)a6 database:(id)a7 error:(id *)a8;
-+ (BOOL)enumerateValuesForDomain:(id)a3 category:(int64_t)a4 keys:(id)a5 profile:(id)a6 error:(id *)a7 usingBlock:(id)a8;
-+ (BOOL)persistDatabaseIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)persistDatabaseIdentifier:(id)a3 syncIdentity:(int64_t)a4 database:(id)a5 error:(id *)a6;
-+ (BOOL)removeValuesForDomain:(id)a3 category:(int64_t)a4 keys:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)setData:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)setData:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 syncIdentity:(int64_t)a7 profile:(id)a8 error:(id *)a9;
-+ (BOOL)setDate:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)setDateComponents:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)setNumber:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)setOkemoZursObjectAnchor:(int64_t)a3 syncIdentity:(int64_t)a4 database:(id)a5 error:(id *)a6;
-+ (BOOL)setQuantity:(id)a3 unit:(id)a4 forKey:(id)a5 domain:(id)a6 category:(int64_t)a7 profile:(id)a8 error:(id *)a9;
-+ (BOOL)setString:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)setValueForAllKeys:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)setValuesWithDictionary:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 error:(id *)a7;
-+ (Class)_entityClassForKeyValueCategory:(int64_t)a3;
-+ (id)_modDateForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8;
-+ (id)_predicateForCategory:(uint64_t)a1;
-+ (id)_predicateForDomain:(uint64_t)a1;
-+ (id)_predicateForKeys:(uint64_t)a1;
-+ (id)_rawValueForKey:(void *)a3 domain:(uint64_t)a4 category:(void *)a5 profile:(void *)a6 entity:(uint64_t)a7 error:;
-+ (id)_rawValuesForKeys:(id)a3 domain:(id)a4 category:(int64_t)a5 database:(id)a6 error:(id *)a7;
-+ (id)_valuesForKeys:(void *)a3 domain:(uint64_t)a4 category:(void *)a5 profile:(uint64_t)a6 error:(void *)a7 handler:;
-+ (id)allValuesForDomain:(id)a3 category:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (id)dataForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8;
-+ (id)dateComponentsForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8;
-+ (id)dateForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)_doInsertValues:(void *)values forKeys:(void *)keys modificationDates:(void *)dates domain:(uint64_t)domain category:(uint64_t)category provenance:(uint64_t)provenance syncIdentity:(uint64_t)identity updatePolicy:(void *)self0 database:(uint64_t)self1 error:;
++ (BOOL)_enumerateKeyValueEntitiesInCategory:(int64_t)category predicate:(id)predicate healthDatabase:(id)database error:(id *)error usingBlock:(id)block;
++ (BOOL)_insertCodableCategoryDomainDictionary:(id)dictionary provenance:(int64_t)provenance profile:(id)profile error:(id *)error;
++ (BOOL)_insertCodableTimestampedKeyValuePairs:(id)pairs domain:(id)domain category:(int64_t)category provenance:(int64_t)provenance syncIdentity:(int64_t)identity updatePolicy:(int64_t)policy profile:(id)profile error:(id *)self0;
++ (BOOL)_insertKeysAndValues:(id)values modificationDate:(id)date domain:(id)domain category:(int64_t)category provenance:(int64_t)provenance syncIdentity:(int64_t)identity updatePolicy:(int64_t)policy profile:(id)self0 error:(id *)self1;
++ (BOOL)_insertValues:(id)values forKeys:(id)keys modificationDates:(id)dates domain:(id)domain category:(int64_t)category provenance:(int64_t)provenance syncIdentity:(int64_t)identity updatePolicy:(int64_t)self0 profile:(id)self1 error:(id *)self2;
++ (BOOL)_setRawKeysAndValues:(id)values domain:(id)domain category:(int64_t)category syncIdentity:(int64_t)identity database:(id)database error:(id *)error;
++ (BOOL)enumerateValuesForDomain:(id)domain category:(int64_t)category keys:(id)keys profile:(id)profile error:(id *)error usingBlock:(id)block;
++ (BOOL)persistDatabaseIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (BOOL)persistDatabaseIdentifier:(id)identifier syncIdentity:(int64_t)identity database:(id)database error:(id *)error;
++ (BOOL)removeValuesForDomain:(id)domain category:(int64_t)category keys:(id)keys profile:(id)profile error:(id *)error;
++ (BOOL)setData:(id)data forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (BOOL)setData:(id)data forKey:(id)key domain:(id)domain category:(int64_t)category syncIdentity:(int64_t)identity profile:(id)profile error:(id *)error;
++ (BOOL)setDate:(id)date forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (BOOL)setDateComponents:(id)components forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (BOOL)setNumber:(id)number forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (BOOL)setOkemoZursObjectAnchor:(int64_t)anchor syncIdentity:(int64_t)identity database:(id)database error:(id *)error;
++ (BOOL)setQuantity:(id)quantity unit:(id)unit forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (BOOL)setString:(id)string forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (BOOL)setValueForAllKeys:(id)keys domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (BOOL)setValuesWithDictionary:(id)dictionary domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (Class)_entityClassForKeyValueCategory:(int64_t)category;
++ (id)_modDateForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error;
++ (id)_predicateForCategory:(uint64_t)category;
++ (id)_predicateForDomain:(uint64_t)domain;
++ (id)_predicateForKeys:(uint64_t)keys;
++ (id)_rawValueForKey:(void *)key domain:(uint64_t)domain category:(void *)category profile:(void *)profile entity:(uint64_t)entity error:;
++ (id)_rawValuesForKeys:(id)keys domain:(id)domain category:(int64_t)category database:(id)database error:(id *)error;
++ (id)_valuesForKeys:(void *)keys domain:(uint64_t)domain category:(void *)category profile:(uint64_t)profile error:(void *)error handler:;
++ (id)allValuesForDomain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (id)dataForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error;
++ (id)dateComponentsForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error;
++ (id)dateForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)generateNewDatabaseIdentifier;
-+ (id)numberForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8;
-+ (id)okemoZursObjectAnchorWithProfile:(id)a3 error:(id *)a4;
-+ (id)quantityForKey:(id)a3 unit:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 entity:(id *)a8 error:(id *)a9;
-+ (id)retrieveDatabaseIdentifierCreationDateFromProfile:(id)a3 error:(id *)a4;
-+ (id)retrieveDatabaseIdentifierFromDatabase:(id)a3 error:(id *)a4;
-+ (id)retrieveDatabaseIdentifierFromProfile:(id)a3 error:(id *)a4;
-+ (id)stringForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8;
++ (id)numberForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error;
++ (id)okemoZursObjectAnchorWithProfile:(id)profile error:(id *)error;
++ (id)quantityForKey:(id)key unit:(id)unit domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error;
++ (id)retrieveDatabaseIdentifierCreationDateFromProfile:(id)profile error:(id *)error;
++ (id)retrieveDatabaseIdentifierFromDatabase:(id)database error:(id *)error;
++ (id)retrieveDatabaseIdentifierFromProfile:(id)profile error:(id *)error;
++ (id)stringForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error;
 + (id)uniquedColumns;
-+ (id)valuesForKeys:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 error:(id *)a7;
-+ (uint64_t)_readRawValuesInCategory:(void *)a3 predicate:(void *)a4 database:(uint64_t)a5 error:(void *)a6 usingBlock:;
-+ (uint64_t)_setRawKeysAndValues:(void *)a3 domain:(uint64_t)a4 category:(void *)a5 profile:(uint64_t)a6 error:;
++ (id)valuesForKeys:(id)keys domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error;
++ (uint64_t)_readRawValuesInCategory:(void *)category predicate:(void *)predicate database:(uint64_t)database error:(void *)error usingBlock:;
++ (uint64_t)_setRawKeysAndValues:(void *)values domain:(uint64_t)domain category:(void *)category profile:(uint64_t)profile error:;
 @end
 
 @implementation HDKeyValueEntity
 
 + (id)generateNewDatabaseIdentifier
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v2 hk_dataForUUIDBytes];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  hk_dataForUUIDBytes = [uUID hk_dataForUUIDBytes];
 
-  return v3;
+  return hk_dataForUUIDBytes;
 }
 
-+ (BOOL)persistDatabaseIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)persistDatabaseIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  LOBYTE(a5) = [a1 setData:v9 forKey:@"IDENTIFIER" domain:@"DATABASE_CREATION" category:objc_msgSend(a1 profile:"_deviceLocalCategory") error:{v8, a5}];
+  profileCopy = profile;
+  identifierCopy = identifier;
+  LOBYTE(error) = [self setData:identifierCopy forKey:@"IDENTIFIER" domain:@"DATABASE_CREATION" category:objc_msgSend(self profile:"_deviceLocalCategory") error:{profileCopy, error}];
 
-  return a5;
+  return error;
 }
 
-+ (id)retrieveDatabaseIdentifierFromProfile:(id)a3 error:(id *)a4
++ (id)retrieveDatabaseIdentifierFromProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 dataForKey:@"IDENTIFIER" domain:@"DATABASE_CREATION" category:objc_msgSend(a1 profile:"_deviceLocalCategory") entity:v6 error:{0, a4}];
+  profileCopy = profile;
+  v7 = [self dataForKey:@"IDENTIFIER" domain:@"DATABASE_CREATION" category:objc_msgSend(self profile:"_deviceLocalCategory") entity:profileCopy error:{0, error}];
 
   return v7;
 }
 
-+ (id)retrieveDatabaseIdentifierCreationDateFromProfile:(id)a3 error:(id *)a4
++ (id)retrieveDatabaseIdentifierCreationDateFromProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 _modDateForKey:@"IDENTIFIER" domain:@"DATABASE_CREATION" category:objc_msgSend(a1 profile:"_deviceLocalCategory") entity:v6 error:{0, a4}];
+  profileCopy = profile;
+  v7 = [self _modDateForKey:@"IDENTIFIER" domain:@"DATABASE_CREATION" category:objc_msgSend(self profile:"_deviceLocalCategory") entity:profileCopy error:{0, error}];
 
   return v7;
 }
 
-+ (BOOL)persistDatabaseIdentifier:(id)a3 syncIdentity:(int64_t)a4 database:(id)a5 error:(id *)a6
++ (BOOL)persistDatabaseIdentifier:(id)identifier syncIdentity:(int64_t)identity database:(id)database error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  if (v11)
+  identifierCopy = identifier;
+  databaseCopy = database;
+  if (identifierCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity+DatabaseProperties.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"(data == nil) || [data isKindOfClass:[NSData class]]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity+DatabaseProperties.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"(data == nil) || [data isKindOfClass:[NSData class]]"}];
     }
   }
 
@@ -102,30 +102,30 @@
   v20[0] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
-  v15 = [a1 _setRawKeysAndValues:v14 domain:@"DATABASE_CREATION" category:objc_msgSend(a1 syncIdentity:"_deviceLocalCategory") database:a4 error:{v12, a6}];
+  v15 = [self _setRawKeysAndValues:v14 domain:@"DATABASE_CREATION" category:objc_msgSend(self syncIdentity:"_deviceLocalCategory") database:identity error:{databaseCopy, error}];
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-+ (id)retrieveDatabaseIdentifierFromDatabase:(id)a3 error:(id *)a4
++ (id)retrieveDatabaseIdentifierFromDatabase:(id)database error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!a4)
+  databaseCopy = database;
+  if (!error)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity+DatabaseProperties.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity+DatabaseProperties.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"error"}];
   }
 
-  v8 = [a1 _deviceLocalCategory];
+  _deviceLocalCategory = [self _deviceLocalCategory];
   v16[0] = @"IDENTIFIER";
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v10 = [a1 _rawValuesForKeys:v9 domain:@"DATABASE_CREATION" category:v8 database:v7 error:a4];
+  v10 = [self _rawValuesForKeys:v9 domain:@"DATABASE_CREATION" category:_deviceLocalCategory database:databaseCopy error:error];
 
-  if (!v10 && !*a4)
+  if (!v10 && !*error)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity+DatabaseProperties.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"values || *error"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity+DatabaseProperties.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"values || *error"}];
   }
 
   v11 = [v10 objectForKeyedSubscript:@"IDENTIFIER"];
@@ -135,44 +135,44 @@
   return v11;
 }
 
-+ (BOOL)setOkemoZursObjectAnchor:(int64_t)a3 syncIdentity:(int64_t)a4 database:(id)a5 error:(id *)a6
++ (BOOL)setOkemoZursObjectAnchor:(int64_t)anchor syncIdentity:(int64_t)identity database:(id)database error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v17 = @"OBJECT_ANCHOR_8_2";
   v10 = MEMORY[0x277CCABB0];
-  v11 = a5;
-  v12 = [v10 numberWithLongLong:a3];
+  databaseCopy = database;
+  v12 = [v10 numberWithLongLong:anchor];
   v13 = _HDSQLiteValueForNumber();
   v18[0] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
 
-  LOBYTE(a6) = [a1 _setRawKeysAndValues:v14 domain:@"OBJECT_ANCHOR" category:objc_msgSend(a1 syncIdentity:"_deviceLocalCategory") database:a4 error:{v11, a6}];
+  LOBYTE(error) = [self _setRawKeysAndValues:v14 domain:@"OBJECT_ANCHOR" category:objc_msgSend(self syncIdentity:"_deviceLocalCategory") database:identity error:{databaseCopy, error}];
   v15 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
-+ (id)okemoZursObjectAnchorWithProfile:(id)a3 error:(id *)a4
++ (id)okemoZursObjectAnchorWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 numberForKey:@"OBJECT_ANCHOR_8_2" domain:@"OBJECT_ANCHOR" category:objc_msgSend(a1 profile:"_deviceLocalCategory") entity:v6 error:{0, a4}];
+  profileCopy = profile;
+  v7 = [self numberForKey:@"OBJECT_ANCHOR_8_2" domain:@"OBJECT_ANCHOR" category:objc_msgSend(self profile:"_deviceLocalCategory") entity:profileCopy error:{0, error}];
 
   return v7;
 }
 
-+ (id)dataForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8
++ (id)dataForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error
 {
-  v14 = a3;
-  v15 = [(HDKeyValueEntity *)a1 _rawValueForKey:v14 domain:a4 category:a5 profile:a6 entity:a7 error:a8];
+  keyCopy = key;
+  v15 = [(HDKeyValueEntity *)self _rawValueForKey:keyCopy domain:domain category:category profile:profile entity:entity error:error];
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v17 = objc_opt_class();
-    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), v14, v17}];
+    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), keyCopy, v17}];
     if (v18)
     {
-      if (a8)
+      if (error)
       {
         v19 = v18;
-        *a8 = v18;
+        *error = v18;
       }
 
       else
@@ -192,12 +192,12 @@
   return v16;
 }
 
-+ (id)_rawValueForKey:(void *)a3 domain:(uint64_t)a4 category:(void *)a5 profile:(void *)a6 entity:(uint64_t)a7 error:
++ (id)_rawValueForKey:(void *)key domain:(uint64_t)domain category:(void *)category profile:(void *)profile entity:(uint64_t)entity error:
 {
   v36[1] = *MEMORY[0x277D85DE8];
   v12 = a2;
-  v13 = a3;
-  v14 = a5;
+  keyCopy = key;
+  categoryCopy = category;
   v15 = objc_opt_self();
   v30 = 0;
   v31 = &v30;
@@ -222,17 +222,17 @@
     v23[3] = &unk_27862ACA0;
     v23[4] = &v30;
     v23[5] = &v24;
-    v23[6] = a6;
+    v23[6] = profile;
     v23[7] = v16;
-    v18 = [(HDKeyValueEntity *)v16 _valuesForKeys:v17 domain:v13 category:a4 profile:v14 error:a7 handler:v23];
+    v18 = [(HDKeyValueEntity *)v16 _valuesForKeys:v17 domain:keyCopy category:domain profile:categoryCopy error:entity handler:v23];
   }
 
-  if (a6)
+  if (profile)
   {
     v19 = v25[5];
     if (v19)
     {
-      *a6 = v19;
+      *profile = v19;
     }
   }
 
@@ -245,20 +245,20 @@
   return v20;
 }
 
-+ (id)dateForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8
++ (id)dateForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error
 {
-  v14 = a3;
-  v15 = [(HDKeyValueEntity *)a1 _rawValueForKey:v14 domain:a4 category:a5 profile:a6 entity:a7 error:a8];
+  keyCopy = key;
+  v15 = [(HDKeyValueEntity *)self _rawValueForKey:keyCopy domain:domain category:category profile:profile entity:entity error:error];
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v17 = objc_opt_class();
-    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), v14, v17}];
+    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), keyCopy, v17}];
     if (v18)
     {
-      if (a8)
+      if (error)
       {
         v19 = v18;
-        *a8 = v18;
+        *error = v18;
       }
 
       else
@@ -278,9 +278,9 @@
   return v16;
 }
 
-+ (id)dateComponentsForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8
++ (id)dateComponentsForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error
 {
-  v8 = [a1 dateForKey:a3 domain:a4 category:a5 profile:a6 entity:a7 error:a8];
+  v8 = [self dateForKey:key domain:domain category:category profile:profile entity:entity error:error];
   if (v8)
   {
     v9 = [MEMORY[0x277CBEA80] hk_canonicalDateOfBirthDateComponentsWithDate:v8];
@@ -294,21 +294,21 @@
   return v9;
 }
 
-+ (id)quantityForKey:(id)a3 unit:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 entity:(id *)a8 error:(id *)a9
++ (id)quantityForKey:(id)key unit:(id)unit domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = [(HDKeyValueEntity *)a1 _rawValueForKey:v15 domain:a5 category:a6 profile:a7 entity:a8 error:a9];
+  keyCopy = key;
+  unitCopy = unit;
+  v17 = [(HDKeyValueEntity *)self _rawValueForKey:keyCopy domain:domain category:category profile:profile entity:entity error:error];
   if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v19 = objc_opt_class();
-    v20 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), v15, v19}];
+    v20 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), keyCopy, v19}];
     if (v20)
     {
-      if (a9)
+      if (error)
       {
         v21 = v20;
-        *a9 = v20;
+        *error = v20;
       }
 
       else
@@ -328,20 +328,20 @@
   return v18;
 }
 
-+ (id)numberForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8
++ (id)numberForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error
 {
-  v14 = a3;
-  v15 = [(HDKeyValueEntity *)a1 _rawValueForKey:v14 domain:a4 category:a5 profile:a6 entity:a7 error:a8];
+  keyCopy = key;
+  v15 = [(HDKeyValueEntity *)self _rawValueForKey:keyCopy domain:domain category:category profile:profile entity:entity error:error];
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v17 = objc_opt_class();
-    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), v14, v17}];
+    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), keyCopy, v17}];
     if (v18)
     {
-      if (a8)
+      if (error)
       {
         v19 = v18;
-        *a8 = v18;
+        *error = v18;
       }
 
       else
@@ -361,20 +361,20 @@
   return v16;
 }
 
-+ (id)stringForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8
++ (id)stringForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error
 {
-  v14 = a3;
-  v15 = [(HDKeyValueEntity *)a1 _rawValueForKey:v14 domain:a4 category:a5 profile:a6 entity:a7 error:a8];
+  keyCopy = key;
+  v15 = [(HDKeyValueEntity *)self _rawValueForKey:keyCopy domain:domain category:category profile:profile entity:entity error:error];
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v17 = objc_opt_class();
-    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), v14, v17}];
+    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Found unexpected type %@ for key %@, expecting %@", objc_opt_class(), keyCopy, v17}];
     if (v18)
     {
-      if (a8)
+      if (error)
       {
         v19 = v18;
-        *a8 = v18;
+        *error = v18;
       }
 
       else
@@ -394,27 +394,27 @@
   return v16;
 }
 
-+ (id)valuesForKeys:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 error:(id *)a7
++ (id)valuesForKeys:(id)keys domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  profileCopy = profile;
+  domainCopy = domain;
+  keysCopy = keys;
   v14 = objc_opt_self();
-  v15 = [(HDKeyValueEntity *)v14 _valuesForKeys:v13 domain:v12 category:a5 profile:v11 error:a7 handler:&__block_literal_global_366_1];
+  v15 = [(HDKeyValueEntity *)v14 _valuesForKeys:keysCopy domain:domainCopy category:category profile:profileCopy error:error handler:&__block_literal_global_366_1];
 
   return v15;
 }
 
-+ (BOOL)enumerateValuesForDomain:(id)a3 category:(int64_t)a4 keys:(id)a5 profile:(id)a6 error:(id *)a7 usingBlock:(id)a8
++ (BOOL)enumerateValuesForDomain:(id)domain category:(int64_t)category keys:(id)keys profile:(id)profile error:(id *)error usingBlock:(id)block
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = a8;
-  v16 = a6;
-  v17 = [(HDKeyValueEntity *)a1 _predicateForDomain:a3];
-  if ([v14 count])
+  keysCopy = keys;
+  blockCopy = block;
+  profileCopy = profile;
+  v17 = [(HDKeyValueEntity *)self _predicateForDomain:domain];
+  if ([keysCopy count])
   {
-    [(HDKeyValueEntity *)a1 _predicateForKeys:v14];
+    [(HDKeyValueEntity *)self _predicateForKeys:keysCopy];
   }
 
   else
@@ -428,22 +428,22 @@
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
   v21 = [v19 predicateMatchingAllPredicates:v20];
 
-  v22 = [v16 database];
+  database = [profileCopy database];
 
-  v23 = [a1 _enumerateKeyValueEntitiesInCategory:a4 predicate:v21 healthDatabase:v22 error:a7 usingBlock:v15];
+  v23 = [self _enumerateKeyValueEntitiesInCategory:category predicate:v21 healthDatabase:database error:error usingBlock:blockCopy];
   v24 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-+ (id)_predicateForDomain:(uint64_t)a1
++ (id)_predicateForDomain:(uint64_t)domain
 {
   v2 = a2;
   v3 = objc_opt_self();
   if (!v2)
   {
     v6 = v3;
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:sel__predicateForDomain_ object:v6 file:@"HDKeyValueEntity.m" lineNumber:1108 description:{@"Invalid parameter not satisfying: %@", @"domain != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__predicateForDomain_ object:v6 file:@"HDKeyValueEntity.m" lineNumber:1108 description:{@"Invalid parameter not satisfying: %@", @"domain != nil"}];
   }
 
   v4 = [MEMORY[0x277D10B18] predicateWithProperty:@"domain" equalToValue:v2];
@@ -451,7 +451,7 @@
   return v4;
 }
 
-+ (id)_predicateForKeys:(uint64_t)a1
++ (id)_predicateForKeys:(uint64_t)keys
 {
   v2 = a2;
   objc_opt_self();
@@ -468,28 +468,28 @@
   return v3;
 }
 
-+ (id)allValuesForDomain:(id)a3 category:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (id)allValuesForDomain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
   v10 = MEMORY[0x277CBEB38];
-  v11 = a5;
-  v12 = a3;
-  v13 = [v10 dictionary];
-  v14 = [MEMORY[0x277CBEB68] null];
-  v15 = [(HDKeyValueEntity *)a1 _predicateForDomain:v12];
+  profileCopy = profile;
+  domainCopy = domain;
+  dictionary = [v10 dictionary];
+  null = [MEMORY[0x277CBEB68] null];
+  v15 = [(HDKeyValueEntity *)self _predicateForDomain:domainCopy];
 
-  v16 = [v11 database];
+  database = [profileCopy database];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __62__HDKeyValueEntity_allValuesForDomain_category_profile_error___block_invoke;
   v22[3] = &unk_278628C58;
-  v23 = v14;
-  v17 = v13;
+  v23 = null;
+  v17 = dictionary;
   v24 = v17;
-  v18 = v14;
-  LOBYTE(a6) = [a1 _enumerateKeyValueEntitiesInCategory:a4 predicate:v15 healthDatabase:v16 error:a6 usingBlock:v22];
+  v18 = null;
+  LOBYTE(error) = [self _enumerateKeyValueEntitiesInCategory:category predicate:v15 healthDatabase:database error:error usingBlock:v22];
 
-  if ((a6 & 1) == 0)
+  if ((error & 1) == 0)
   {
 
     v17 = 0;
@@ -513,23 +513,23 @@ void __62__HDKeyValueEntity_allValuesForDomain_category_profile_error___block_in
   }
 }
 
-+ (id)_valuesForKeys:(void *)a3 domain:(uint64_t)a4 category:(void *)a5 profile:(uint64_t)a6 error:(void *)a7 handler:
++ (id)_valuesForKeys:(void *)keys domain:(uint64_t)domain category:(void *)category profile:(uint64_t)profile error:(void *)error handler:
 {
   v34[2] = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a7;
-  v12 = a5;
-  v13 = a3;
+  errorCopy = error;
+  categoryCopy = category;
+  keysCopy = keys;
   v14 = objc_opt_self();
   if (![v10 count])
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:sel__valuesForKeys_domain_category_profile_error_handler_ object:v14 file:@"HDKeyValueEntity.m" lineNumber:571 description:{@"Invalid parameter not satisfying: %@", @"[keys count] > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__valuesForKeys_domain_category_profile_error_handler_ object:v14 file:@"HDKeyValueEntity.m" lineNumber:571 description:{@"Invalid parameter not satisfying: %@", @"[keys count] > 0"}];
   }
 
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = [(HDKeyValueEntity *)v14 _predicateForKeys:v10];
-  v17 = [(HDKeyValueEntity *)v14 _predicateForDomain:v13];
+  v17 = [(HDKeyValueEntity *)v14 _predicateForDomain:keysCopy];
 
   v18 = MEMORY[0x277D10B20];
   v34[0] = v17;
@@ -537,17 +537,17 @@ void __62__HDKeyValueEntity_allValuesForDomain_category_profile_error___block_in
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
   v20 = [v18 predicateMatchingAllPredicates:v19];
 
-  v21 = [v12 database];
+  database = [categoryCopy database];
 
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __73__HDKeyValueEntity__valuesForKeys_domain_category_profile_error_handler___block_invoke;
   v31[3] = &unk_27862AD10;
-  v33 = v11;
-  v22 = v15;
+  v33 = errorCopy;
+  v22 = dictionary;
   v32 = v22;
-  v23 = v11;
-  LOBYTE(v19) = [v14 _enumerateKeyValueEntitiesInCategory:a4 predicate:v20 healthDatabase:v21 error:a6 usingBlock:v31];
+  v23 = errorCopy;
+  LOBYTE(v19) = [v14 _enumerateKeyValueEntitiesInCategory:domain predicate:v20 healthDatabase:database error:profile usingBlock:v31];
 
   if ((v19 & 1) == 0)
   {
@@ -562,149 +562,149 @@ void __62__HDKeyValueEntity_allValuesForDomain_category_profile_error___block_in
   return v22;
 }
 
-+ (BOOL)setData:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)setData:(id)data forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  if (v15)
+  dataCopy = data;
+  keyCopy = key;
+  domainCopy = domain;
+  profileCopy = profile;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"(data == nil) || [data isKindOfClass:[NSData class]]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"(data == nil) || [data isKindOfClass:[NSData class]]"}];
     }
   }
 
-  v25 = v16;
+  v25 = keyCopy;
   v19 = _HDSQLiteValueForData();
   v26[0] = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-  v21 = [(HDKeyValueEntity *)a1 _setRawKeysAndValues:v20 domain:v17 category:a6 profile:v18 error:a8];
+  v21 = [(HDKeyValueEntity *)self _setRawKeysAndValues:v20 domain:domainCopy category:category profile:profileCopy error:error];
   v22 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-+ (uint64_t)_setRawKeysAndValues:(void *)a3 domain:(uint64_t)a4 category:(void *)a5 profile:(uint64_t)a6 error:
++ (uint64_t)_setRawKeysAndValues:(void *)values domain:(uint64_t)domain category:(void *)category profile:(uint64_t)profile error:
 {
-  v10 = a5;
-  v11 = a3;
+  categoryCopy = category;
+  valuesCopy = values;
   v12 = a2;
   v13 = objc_opt_self();
   if (!v12)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:sel__setRawKeysAndValues_domain_category_profile_error_ object:v13 file:@"HDKeyValueEntity.m" lineNumber:658 description:{@"Invalid parameter not satisfying: %@", @"keysAndValues != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__setRawKeysAndValues_domain_category_profile_error_ object:v13 file:@"HDKeyValueEntity.m" lineNumber:658 description:{@"Invalid parameter not satisfying: %@", @"keysAndValues != nil"}];
   }
 
   v14 = objc_opt_self();
-  if (v14 != [v14 _entityClassForKeyValueCategory:a4])
+  if (v14 != [v14 _entityClassForKeyValueCategory:domain])
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:sel__setRawKeysAndValues_domain_category_profile_error_ object:v13 file:@"HDKeyValueEntity.m" lineNumber:659 description:{@"Invalid parameter not satisfying: %@", @"[self _validateEntityClassForCategory:category]"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__setRawKeysAndValues_domain_category_profile_error_ object:v13 file:@"HDKeyValueEntity.m" lineNumber:659 description:{@"Invalid parameter not satisfying: %@", @"[self _validateEntityClassForCategory:category]"}];
   }
 
-  v15 = [MEMORY[0x277CBEAA8] date];
-  v16 = [v13 _insertKeysAndValues:v12 modificationDate:v15 domain:v11 category:a4 provenance:0 syncIdentity:-2 updatePolicy:1 profile:v10 error:a6];
+  date = [MEMORY[0x277CBEAA8] date];
+  v16 = [v13 _insertKeysAndValues:v12 modificationDate:date domain:valuesCopy category:domain provenance:0 syncIdentity:-2 updatePolicy:1 profile:categoryCopy error:profile];
 
   return v16;
 }
 
-+ (BOOL)setData:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 syncIdentity:(int64_t)a7 profile:(id)a8 error:(id *)a9
++ (BOOL)setData:(id)data forKey:(id)key domain:(id)domain category:(int64_t)category syncIdentity:(int64_t)identity profile:(id)profile error:(id *)error
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if (v15)
+  dataCopy = data;
+  keyCopy = key;
+  domainCopy = domain;
+  profileCopy = profile;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v28 = [MEMORY[0x277CCA890] currentHandler];
-      [v28 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"(data == nil) || [data isKindOfClass:[NSData class]]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"(data == nil) || [data isKindOfClass:[NSData class]]"}];
     }
   }
 
-  v30 = v16;
+  v30 = keyCopy;
   v19 = _HDSQLiteValueForData();
   v31[0] = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
 
   if (!v20)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:324 description:{@"Invalid parameter not satisfying: %@", @"dict != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:324 description:{@"Invalid parameter not satisfying: %@", @"dict != nil"}];
   }
 
   v21 = objc_opt_self();
-  if (v21 != [v21 _entityClassForKeyValueCategory:a6])
+  if (v21 != [v21 _entityClassForKeyValueCategory:category])
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"[self _validateEntityClassForCategory:category]"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"[self _validateEntityClassForCategory:category]"}];
   }
 
-  v22 = [MEMORY[0x277CBEAA8] date];
-  v23 = [a1 _insertKeysAndValues:v20 modificationDate:v22 domain:v17 category:a6 provenance:0 syncIdentity:a7 updatePolicy:1 profile:v18 error:a9];
+  date = [MEMORY[0x277CBEAA8] date];
+  v23 = [self _insertKeysAndValues:v20 modificationDate:date domain:domainCopy category:category provenance:0 syncIdentity:identity updatePolicy:1 profile:profileCopy error:error];
 
   v24 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-+ (BOOL)setDate:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)setDate:(id)date forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  if (v15)
+  dateCopy = date;
+  keyCopy = key;
+  domainCopy = domain;
+  profileCopy = profile;
+  if (dateCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:346 description:{@"Invalid parameter not satisfying: %@", @"(date == nil) || [date isKindOfClass:[NSDate class]]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:346 description:{@"Invalid parameter not satisfying: %@", @"(date == nil) || [date isKindOfClass:[NSDate class]]"}];
     }
   }
 
-  v25 = v16;
+  v25 = keyCopy;
   v19 = _HDSQLiteValueForDate();
   v26[0] = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-  v21 = [(HDKeyValueEntity *)a1 _setRawKeysAndValues:v20 domain:v17 category:a6 profile:v18 error:a8];
+  v21 = [(HDKeyValueEntity *)self _setRawKeysAndValues:v20 domain:domainCopy category:category profile:profileCopy error:error];
   v22 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-+ (BOOL)setDateComponents:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)setDateComponents:(id)components forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  if (v15)
+  componentsCopy = components;
+  keyCopy = key;
+  domainCopy = domain;
+  profileCopy = profile;
+  if (componentsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
-      [v25 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:358 description:{@"Invalid parameter not satisfying: %@", @"(dateComponents == nil) || [dateComponents isKindOfClass:[NSDateComponents class]]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:358 description:{@"Invalid parameter not satisfying: %@", @"(dateComponents == nil) || [dateComponents isKindOfClass:[NSDateComponents class]]"}];
     }
 
-    v19 = [v15 calendar];
-    v20 = [v19 copy];
+    calendar = [componentsCopy calendar];
+    v20 = [calendar copy];
 
     v21 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
     [v20 setTimeZone:v21];
 
-    v22 = [v20 dateFromComponents:v15];
+    v22 = [v20 dateFromComponents:componentsCopy];
   }
 
   else
@@ -712,101 +712,101 @@ void __62__HDKeyValueEntity_allValuesForDomain_category_profile_error___block_in
     v22 = 0;
   }
 
-  v23 = [a1 setDate:v22 forKey:v16 domain:v17 category:a6 profile:v18 error:a8];
+  v23 = [self setDate:v22 forKey:keyCopy domain:domainCopy category:category profile:profileCopy error:error];
 
   return v23;
 }
 
-+ (BOOL)setQuantity:(id)a3 unit:(id)a4 forKey:(id)a5 domain:(id)a6 category:(int64_t)a7 profile:(id)a8 error:(id *)a9
++ (BOOL)setQuantity:(id)quantity unit:(id)unit forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  if (v16)
+  quantityCopy = quantity;
+  unitCopy = unit;
+  keyCopy = key;
+  domainCopy = domain;
+  profileCopy = profile;
+  if (quantityCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v26 = [MEMORY[0x277CCA890] currentHandler];
-      [v26 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"quanity == nil || [quanity isKindOfClass:[HKQuantity class]]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"quanity == nil || [quanity isKindOfClass:[HKQuantity class]]"}];
     }
   }
 
-  v27 = v18;
+  v27 = keyCopy;
   v21 = _HDSQLiteValueForQuantity();
   v28[0] = v21;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
 
-  v23 = [(HDKeyValueEntity *)a1 _setRawKeysAndValues:v22 domain:v19 category:a7 profile:v20 error:a9];
+  v23 = [(HDKeyValueEntity *)self _setRawKeysAndValues:v22 domain:domainCopy category:category profile:profileCopy error:error];
   v24 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-+ (BOOL)setNumber:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)setNumber:(id)number forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  if (v15)
+  numberCopy = number;
+  keyCopy = key;
+  domainCopy = domain;
+  profileCopy = profile;
+  if (numberCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:388 description:{@"Invalid parameter not satisfying: %@", @"(number == nil) || [number isKindOfClass:[NSNumber class]]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:388 description:{@"Invalid parameter not satisfying: %@", @"(number == nil) || [number isKindOfClass:[NSNumber class]]"}];
     }
   }
 
-  v25 = v16;
+  v25 = keyCopy;
   v19 = _HDSQLiteValueForNumber();
   v26[0] = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-  v21 = [(HDKeyValueEntity *)a1 _setRawKeysAndValues:v20 domain:v17 category:a6 profile:v18 error:a8];
+  v21 = [(HDKeyValueEntity *)self _setRawKeysAndValues:v20 domain:domainCopy category:category profile:profileCopy error:error];
   v22 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-+ (BOOL)setString:(id)a3 forKey:(id)a4 domain:(id)a5 category:(int64_t)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)setString:(id)string forKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  if (v15)
+  stringCopy = string;
+  keyCopy = key;
+  domainCopy = domain;
+  profileCopy = profile;
+  if (stringCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"(string == nil) || [string isKindOfClass:[NSString class]]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"(string == nil) || [string isKindOfClass:[NSString class]]"}];
     }
   }
 
-  v25 = v16;
+  v25 = keyCopy;
   v19 = _HDSQLiteValueForString();
   v26[0] = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-  v21 = [(HDKeyValueEntity *)a1 _setRawKeysAndValues:v20 domain:v17 category:a6 profile:v18 error:a8];
+  v21 = [(HDKeyValueEntity *)self _setRawKeysAndValues:v20 domain:domainCopy category:category profile:profileCopy error:error];
   v22 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-+ (BOOL)setValuesWithDictionary:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)setValuesWithDictionary:(id)dictionary domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if ([v12 count])
+  dictionaryCopy = dictionary;
+  domainCopy = domain;
+  profileCopy = profile;
+  if ([dictionaryCopy count])
   {
-    v15 = [(HDKeyValueEntity *)a1 _setRawKeysAndValues:v12 domain:v13 category:a5 profile:v14 error:a7];
+    v15 = [(HDKeyValueEntity *)self _setRawKeysAndValues:dictionaryCopy domain:domainCopy category:category profile:profileCopy error:error];
   }
 
   else
@@ -817,24 +817,24 @@ void __62__HDKeyValueEntity_allValuesForDomain_category_profile_error___block_in
   return v15;
 }
 
-+ (BOOL)removeValuesForDomain:(id)a3 category:(int64_t)a4 keys:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)removeValuesForDomain:(id)domain category:(int64_t)category keys:(id)keys profile:(id)profile error:(id *)error
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (v13 && ![v13 count])
+  domainCopy = domain;
+  keysCopy = keys;
+  profileCopy = profile;
+  if (keysCopy && ![keysCopy count])
   {
     v22 = 1;
   }
 
   else
   {
-    v15 = [(HDKeyValueEntity *)a1 _predicateForDomain:v12];
-    v16 = [(HDKeyValueEntity *)a1 _predicateForCategory:a4];
-    if (v13)
+    v15 = [(HDKeyValueEntity *)self _predicateForDomain:domainCopy];
+    v16 = [(HDKeyValueEntity *)self _predicateForCategory:category];
+    if (keysCopy)
     {
-      [(HDKeyValueEntity *)a1 _predicateForKeys:v13];
+      [(HDKeyValueEntity *)self _predicateForKeys:keysCopy];
     }
 
     else
@@ -849,15 +849,15 @@ void __62__HDKeyValueEntity_allValuesForDomain_category_profile_error___block_in
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
     v20 = [v18 predicateMatchingAllPredicates:v19];
 
-    v21 = [v14 database];
-    v22 = [a1 deleteEntitiesWithPredicate:v20 healthDatabase:v21 error:a7];
+    database = [profileCopy database];
+    v22 = [self deleteEntitiesWithPredicate:v20 healthDatabase:database error:error];
   }
 
   v23 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-+ (id)_predicateForCategory:(uint64_t)a1
++ (id)_predicateForCategory:(uint64_t)category
 {
   objc_opt_self();
   v3 = MEMORY[0x277D10B18];
@@ -867,15 +867,15 @@ void __62__HDKeyValueEntity_allValuesForDomain_category_profile_error___block_in
   return v5;
 }
 
-+ (BOOL)setValueForAllKeys:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)setValueForAllKeys:(id)keys domain:(id)domain category:(int64_t)category profile:(id)profile error:(id *)error
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [v13 database];
-  v15 = [(HDKeyValueEntity *)a1 _predicateForDomain:v12];
-  v16 = [(HDKeyValueEntity *)a1 _predicateForCategory:a5];
+  keysCopy = keys;
+  domainCopy = domain;
+  profileCopy = profile;
+  database = [profileCopy database];
+  v15 = [(HDKeyValueEntity *)self _predicateForDomain:domainCopy];
+  v16 = [(HDKeyValueEntity *)self _predicateForCategory:category];
   v17 = MEMORY[0x277D10B20];
   v36[0] = v15;
   v36[1] = v16;
@@ -886,19 +886,19 @@ void __62__HDKeyValueEntity_allValuesForDomain_category_profile_error___block_in
   v28[1] = 3221225472;
   v28[2] = __69__HDKeyValueEntity_setValueForAllKeys_domain_category_profile_error___block_invoke;
   v28[3] = &unk_278614558;
-  v29 = v13;
-  v30 = v12;
-  v34 = a5;
-  v35 = a1;
+  v29 = profileCopy;
+  v30 = domainCopy;
+  categoryCopy = category;
+  selfCopy = self;
   v31 = v19;
-  v32 = v14;
-  v33 = v11;
-  v20 = v11;
-  v21 = v14;
+  v32 = database;
+  v33 = keysCopy;
+  v20 = keysCopy;
+  v21 = database;
   v22 = v19;
-  v23 = v12;
-  v24 = v13;
-  LOBYTE(v18) = [a1 performWriteTransactionWithHealthDatabase:v21 error:a7 block:v28];
+  v23 = domainCopy;
+  v24 = profileCopy;
+  LOBYTE(v18) = [self performWriteTransactionWithHealthDatabase:v21 error:error block:v28];
 
   v25 = *MEMORY[0x277D85DE8];
   return v18;
@@ -971,27 +971,27 @@ void *__73__HDKeyValueEntity__rawValueForKey_domain_category_profile_entity_erro
   return v14;
 }
 
-+ (id)_rawValuesForKeys:(id)a3 domain:(id)a4 category:(int64_t)a5 database:(id)a6 error:(id *)a7
++ (id)_rawValuesForKeys:(id)keys domain:(id)domain category:(int64_t)category database:(id)database error:(id *)error
 {
   v12 = MEMORY[0x277CBEB38];
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v12 dictionary];
-  v17 = [(HDKeyValueEntity *)a1 _predicateForKeys:v15];
+  databaseCopy = database;
+  domainCopy = domain;
+  keysCopy = keys;
+  dictionary = [v12 dictionary];
+  v17 = [(HDKeyValueEntity *)self _predicateForKeys:keysCopy];
 
-  v18 = [(HDKeyValueEntity *)a1 _predicateForDomain:v14];
+  v18 = [(HDKeyValueEntity *)self _predicateForDomain:domainCopy];
 
   v19 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v18 otherPredicate:v17];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __69__HDKeyValueEntity__rawValuesForKeys_domain_category_database_error___block_invoke;
   v22[3] = &unk_27862ACC8;
-  v20 = v16;
+  v20 = dictionary;
   v23 = v20;
-  LOBYTE(a7) = [(HDKeyValueEntity *)a1 _readRawValuesInCategory:a5 predicate:v19 database:v13 error:a7 usingBlock:v22];
+  LOBYTE(error) = [(HDKeyValueEntity *)self _readRawValuesInCategory:category predicate:v19 database:databaseCopy error:error usingBlock:v22];
 
-  if ((a7 & 1) == 0)
+  if ((error & 1) == 0)
   {
 
     v20 = 0;
@@ -1018,12 +1018,12 @@ void __69__HDKeyValueEntity__rawValuesForKeys_domain_category_database_error___b
   }
 }
 
-+ (uint64_t)_readRawValuesInCategory:(void *)a3 predicate:(void *)a4 database:(uint64_t)a5 error:(void *)a6 usingBlock:
++ (uint64_t)_readRawValuesInCategory:(void *)category predicate:(void *)predicate database:(uint64_t)database error:(void *)error usingBlock:
 {
   v24[4] = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  errorCopy = error;
+  predicateCopy = predicate;
+  categoryCopy = category;
   v13 = objc_opt_self();
   v24[0] = @"domain";
   v24[1] = @"key";
@@ -1031,17 +1031,17 @@ void __69__HDKeyValueEntity__rawValuesForKeys_domain_category_database_error___b
   v24[3] = @"mod_date";
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
   v15 = [(HDKeyValueEntity *)v13 _predicateForCategory:a2];
-  v16 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v15 otherPredicate:v12];
+  v16 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v15 otherPredicate:categoryCopy];
 
-  v17 = [v13 queryWithDatabase:v11 predicate:v16];
+  v17 = [v13 queryWithDatabase:predicateCopy predicate:v16];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __81__HDKeyValueEntity__readRawValuesInCategory_predicate_database_error_usingBlock___block_invoke;
   v22[3] = &unk_278616A78;
-  v23 = v10;
-  v18 = v10;
-  v19 = [v17 enumeratePersistentIDsAndProperties:v14 error:a5 enumerationHandler:v22];
+  v23 = errorCopy;
+  v18 = errorCopy;
+  v19 = [v17 enumeratePersistentIDsAndProperties:v14 error:database enumerationHandler:v22];
 
   v20 = *MEMORY[0x277D85DE8];
   return v19;
@@ -1098,29 +1098,29 @@ uint64_t __81__HDKeyValueEntity__readRawValuesInCategory_predicate_database_erro
   return 1;
 }
 
-+ (BOOL)_enumerateKeyValueEntitiesInCategory:(int64_t)a3 predicate:(id)a4 healthDatabase:(id)a5 error:(id *)a6 usingBlock:(id)a7
++ (BOOL)_enumerateKeyValueEntitiesInCategory:(int64_t)category predicate:(id)predicate healthDatabase:(id)database error:(id *)error usingBlock:(id)block
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  predicateCopy = predicate;
+  databaseCopy = database;
+  blockCopy = block;
   v16 = objc_opt_self();
-  if (v16 != [v16 _entityClassForKeyValueCategory:a3])
+  if (v16 != [v16 _entityClassForKeyValueCategory:category])
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:638 description:{@"Invalid parameter not satisfying: %@", @"[self _validateEntityClassForCategory:category]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:638 description:{@"Invalid parameter not satisfying: %@", @"[self _validateEntityClassForCategory:category]"}];
   }
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __99__HDKeyValueEntity__enumerateKeyValueEntitiesInCategory_predicate_healthDatabase_error_usingBlock___block_invoke;
   v22[3] = &unk_2786145D0;
-  v25 = a1;
-  v26 = a3;
-  v23 = v13;
-  v24 = v15;
-  v17 = v15;
-  v18 = v13;
-  v19 = [a1 performReadTransactionWithHealthDatabase:v14 error:a6 block:v22];
+  selfCopy = self;
+  categoryCopy = category;
+  v23 = predicateCopy;
+  v24 = blockCopy;
+  v17 = blockCopy;
+  v18 = predicateCopy;
+  v19 = [self performReadTransactionWithHealthDatabase:databaseCopy error:error block:v22];
 
   return v19;
 }
@@ -1136,37 +1136,37 @@ uint64_t __99__HDKeyValueEntity__enumerateKeyValueEntitiesInCategory_predicate_h
   return v9;
 }
 
-+ (BOOL)_setRawKeysAndValues:(id)a3 domain:(id)a4 category:(int64_t)a5 syncIdentity:(int64_t)a6 database:(id)a7 error:(id *)a8
++ (BOOL)_setRawKeysAndValues:(id)values domain:(id)domain category:(int64_t)category syncIdentity:(int64_t)identity database:(id)database error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  if (!v15)
+  valuesCopy = values;
+  domainCopy = domain;
+  databaseCopy = database;
+  if (!valuesCopy)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:680 description:{@"Invalid parameter not satisfying: %@", @"keysAndValues != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:680 description:{@"Invalid parameter not satisfying: %@", @"keysAndValues != nil"}];
   }
 
   v18 = objc_opt_self();
-  if (v18 != [v18 _entityClassForKeyValueCategory:a5])
+  if (v18 != [v18 _entityClassForKeyValueCategory:category])
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:681 description:{@"Invalid parameter not satisfying: %@", @"[self _validateEntityClassForCategory:category]"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:681 description:{@"Invalid parameter not satisfying: %@", @"[self _validateEntityClassForCategory:category]"}];
   }
 
-  v19 = [MEMORY[0x277CBEAA8] date];
-  v20 = v15;
-  v21 = v19;
-  v22 = v16;
-  v23 = v17;
+  date = [MEMORY[0x277CBEAA8] date];
+  v20 = valuesCopy;
+  v21 = date;
+  v22 = domainCopy;
+  v23 = databaseCopy;
   v24 = objc_opt_self();
   v25 = [v20 count];
   if (v25)
   {
     v26 = v25;
-    v37 = a8;
+    errorCopy = error;
     v27 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v25];
-    v38 = a6;
+    identityCopy = identity;
     v28 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v26];
     v29 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v26];
     v39[0] = MEMORY[0x277D85DD0];
@@ -1181,7 +1181,7 @@ uint64_t __99__HDKeyValueEntity__enumerateKeyValueEntitiesInCategory_predicate_h
     v31 = v28;
     v32 = v27;
     [v20 enumerateKeysAndObjectsUsingBlock:v39];
-    v33 = [(HDKeyValueEntity *)v24 _doInsertValues:v32 forKeys:v31 modificationDates:v30 domain:v22 category:a5 provenance:0 syncIdentity:v38 updatePolicy:1 database:v23 error:v37];
+    v33 = [(HDKeyValueEntity *)v24 _doInsertValues:v32 forKeys:v31 modificationDates:v30 domain:v22 category:category provenance:0 syncIdentity:identityCopy updatePolicy:1 database:v23 error:errorCopy];
   }
 
   else
@@ -1192,20 +1192,20 @@ uint64_t __99__HDKeyValueEntity__enumerateKeyValueEntitiesInCategory_predicate_h
   return v33;
 }
 
-+ (BOOL)_insertKeysAndValues:(id)a3 modificationDate:(id)a4 domain:(id)a5 category:(int64_t)a6 provenance:(int64_t)a7 syncIdentity:(int64_t)a8 updatePolicy:(int64_t)a9 profile:(id)a10 error:(id *)a11
++ (BOOL)_insertKeysAndValues:(id)values modificationDate:(id)date domain:(id)domain category:(int64_t)category provenance:(int64_t)provenance syncIdentity:(int64_t)identity updatePolicy:(int64_t)policy profile:(id)self0 error:(id *)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a10;
-  v21 = [v17 count];
+  valuesCopy = values;
+  dateCopy = date;
+  domainCopy = domain;
+  profileCopy = profile;
+  v21 = [valuesCopy count];
   if (v21)
   {
     v22 = v21;
-    v33 = a1;
+    selfCopy = self;
     v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v21];
-    v32 = a7;
-    v24 = a8;
+    provenanceCopy = provenance;
+    identityCopy = identity;
     v25 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v22];
     v26 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v22];
     v34[0] = MEMORY[0x277D85DD0];
@@ -1215,12 +1215,12 @@ uint64_t __99__HDKeyValueEntity__enumerateKeyValueEntitiesInCategory_predicate_h
     v35 = v23;
     v36 = v25;
     v37 = v26;
-    v38 = v18;
+    v38 = dateCopy;
     v27 = v26;
     v28 = v25;
     v29 = v23;
-    [v17 enumerateKeysAndObjectsUsingBlock:v34];
-    v30 = [v33 _insertValues:v29 forKeys:v28 modificationDates:v27 domain:v19 category:a6 provenance:v32 syncIdentity:v24 updatePolicy:a9 profile:v20 error:a11];
+    [valuesCopy enumerateKeysAndObjectsUsingBlock:v34];
+    v30 = [selfCopy _insertValues:v29 forKeys:v28 modificationDates:v27 domain:domainCopy category:category provenance:provenanceCopy syncIdentity:identityCopy updatePolicy:policy profile:profileCopy error:error];
   }
 
   else
@@ -1257,28 +1257,28 @@ uint64_t __126__HDKeyValueEntity__insertKeysAndValues_modificationDate_domain_ca
   return [v7 addObject:v8];
 }
 
-+ (BOOL)_doInsertValues:(void *)a3 forKeys:(void *)a4 modificationDates:(void *)a5 domain:(uint64_t)a6 category:(uint64_t)a7 provenance:(uint64_t)a8 syncIdentity:(uint64_t)a9 updatePolicy:(void *)a10 database:(uint64_t)a11 error:
++ (BOOL)_doInsertValues:(void *)values forKeys:(void *)keys modificationDates:(void *)dates domain:(uint64_t)domain category:(uint64_t)category provenance:(uint64_t)provenance syncIdentity:(uint64_t)identity updatePolicy:(void *)self0 database:(uint64_t)self1 error:
 {
   v14 = a2;
-  v15 = a3;
-  v16 = a4;
-  v54 = a5;
-  v53 = a10;
+  valuesCopy = values;
+  keysCopy = keys;
+  datesCopy = dates;
+  policyCopy = policy;
   v55 = objc_opt_self();
-  v17 = [v15 count];
+  v17 = [valuesCopy count];
   if ([v14 count] != v17)
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
-    [v41 handleFailureInMethod:sel__doInsertValues_forKeys_modificationDates_domain_category_provenance_syncIdentity_updatePolicy_database_error_ object:v55 file:@"HDKeyValueEntity.m" lineNumber:910 description:{@"Invalid parameter not satisfying: %@", @"[values count] == count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__doInsertValues_forKeys_modificationDates_domain_category_provenance_syncIdentity_updatePolicy_database_error_ object:v55 file:@"HDKeyValueEntity.m" lineNumber:910 description:{@"Invalid parameter not satisfying: %@", @"[values count] == count"}];
   }
 
-  if ([v16 count] != v17)
+  if ([keysCopy count] != v17)
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:sel__doInsertValues_forKeys_modificationDates_domain_category_provenance_syncIdentity_updatePolicy_database_error_ object:v55 file:@"HDKeyValueEntity.m" lineNumber:911 description:{@"Invalid parameter not satisfying: %@", @"[dates count] == count"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__doInsertValues_forKeys_modificationDates_domain_category_provenance_syncIdentity_updatePolicy_database_error_ object:v55 file:@"HDKeyValueEntity.m" lineNumber:911 description:{@"Invalid parameter not satisfying: %@", @"[dates count] == count"}];
   }
 
-  if (v54)
+  if (datesCopy)
   {
     if (v17)
     {
@@ -1290,8 +1290,8 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v43 = [MEMORY[0x277CCA890] currentHandler];
-  [v43 handleFailureInMethod:sel__doInsertValues_forKeys_modificationDates_domain_category_provenance_syncIdentity_updatePolicy_database_error_ object:v55 file:@"HDKeyValueEntity.m" lineNumber:912 description:{@"Invalid parameter not satisfying: %@", @"domain != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:sel__doInsertValues_forKeys_modificationDates_domain_category_provenance_syncIdentity_updatePolicy_database_error_ object:v55 file:@"HDKeyValueEntity.m" lineNumber:912 description:{@"Invalid parameter not satisfying: %@", @"domain != nil"}];
 
   if (!v17)
   {
@@ -1302,32 +1302,32 @@ LABEL_7:
   v51 = v17;
   v52 = 0;
   v18 = 0;
-  v19 = a9;
+  identityCopy3 = identity;
   v47 = *MEMORY[0x277D10A40];
-  v45 = v15;
+  v45 = valuesCopy;
   v46 = v14;
   do
   {
-    v20 = [v15 objectAtIndexedSubscript:v18];
+    v20 = [valuesCopy objectAtIndexedSubscript:v18];
     v56 = [v14 objectAtIndexedSubscript:v18];
-    v21 = v16;
-    v22 = [v16 objectAtIndexedSubscript:v18];
+    v21 = keysCopy;
+    v22 = [keysCopy objectAtIndexedSubscript:v18];
     [v22 timeIntervalSinceReferenceDate];
     v24 = v23;
 
     v25 = v20;
-    v26 = v54;
-    v27 = v53;
+    v26 = datesCopy;
+    v27 = policyCopy;
     objc_opt_self();
-    if (v19 == 2)
+    if (identityCopy3 == 2)
     {
       v28 = v25;
       v29 = v26;
       v30 = v27;
       v31 = objc_opt_self();
       v32 = MEMORY[0x277CCACA8];
-      v33 = [v31 disambiguatedDatabaseTable];
-      v34 = [v32 stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ? AND %@ = ? AND %@ = ? AND %@ >= ?", v47, v33, @"category", @"domain", @"key", @"mod_date", 0];;
+      disambiguatedDatabaseTable = [v31 disambiguatedDatabaseTable];
+      v34 = [v32 stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ? AND %@ = ? AND %@ = ? AND %@ >= ?", v47, disambiguatedDatabaseTable, @"category", @"domain", @"key", @"mod_date", 0];;
 
       v72 = 0;
       v73 = &v72;
@@ -1337,7 +1337,7 @@ LABEL_7:
       v67[1] = 3221225472;
       v67[2] = __107__HDKeyValueEntity__validateModificationDatePolicyWithKey_domain_category_modificationDate_database_error___block_invoke;
       v67[3] = &unk_2786214F8;
-      v70 = a6;
+      domainCopy = domain;
       v35 = v29;
       v68 = v35;
       v36 = v28;
@@ -1348,39 +1348,39 @@ LABEL_7:
       v66[2] = __107__HDKeyValueEntity__validateModificationDatePolicyWithKey_domain_category_modificationDate_database_error___block_invoke_2;
       v66[3] = &unk_278614620;
       v66[4] = &v72;
-      if ([v30 executeSQL:v34 error:a11 bindingHandler:v67 enumerationHandler:v66])
+      if ([v30 executeSQL:v34 error:database bindingHandler:v67 enumerationHandler:v66])
       {
         if (*(v73 + 24))
         {
-          v19 = 1;
+          identityCopy3 = 1;
         }
 
         else
         {
-          v19 = 2;
+          identityCopy3 = 2;
         }
       }
 
       else
       {
-        v19 = 3;
+        identityCopy3 = 3;
       }
 
       _Block_object_dispose(&v72, 8);
-      v15 = v45;
+      valuesCopy = v45;
       v14 = v46;
     }
 
-    else if (v19 != 1)
+    else if (identityCopy3 != 1)
     {
-      v19 = 0;
+      identityCopy3 = 0;
     }
 
-    v16 = v21;
+    keysCopy = v21;
 
-    if (v19 == 1)
+    if (identityCopy3 == 1)
     {
-      v37 = [v55 _insertStatementKey];
+      _insertStatementKey = [v55 _insertStatementKey];
       v65[0] = MEMORY[0x277D85DD0];
       v65[1] = 3221225472;
       v65[2] = __130__HDKeyValueEntity__doInsertValues_forKeys_modificationDates_domain_category_provenance_syncIdentity_updatePolicy_database_error___block_invoke;
@@ -1393,16 +1393,16 @@ LABEL_7:
       v58 = v56;
       v59 = v25;
       v60 = v26;
-      v61 = a6;
-      v62 = a7;
+      domainCopy2 = domain;
+      categoryCopy = category;
       v63 = v24;
-      v64 = a8;
+      provenanceCopy = provenance;
       v38 = v25;
       v39 = v56;
-      LOBYTE(v37) = [v27 executeCachedStatementForKey:v37 error:a11 SQLGenerator:v65 bindingHandler:v57 enumerationHandler:0];
+      LOBYTE(_insertStatementKey) = [v27 executeCachedStatementForKey:_insertStatementKey error:database SQLGenerator:v65 bindingHandler:v57 enumerationHandler:0];
 
-      v19 = a9;
-      if ((v37 & 1) == 0)
+      identityCopy3 = identity;
+      if ((_insertStatementKey & 1) == 0)
       {
         break;
       }
@@ -1411,8 +1411,8 @@ LABEL_7:
     else
     {
 
-      v40 = v19 == 3;
-      v19 = a9;
+      v40 = identityCopy3 == 3;
+      identityCopy3 = identity;
       if (v40)
       {
         break;
@@ -1428,18 +1428,18 @@ LABEL_25:
   return v52;
 }
 
-+ (BOOL)_insertCodableCategoryDomainDictionary:(id)a3 provenance:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)_insertCodableCategoryDomainDictionary:(id)dictionary provenance:(int64_t)provenance profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 _validateForInsertionWithError:a6])
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
+  if ([dictionaryCopy _validateForInsertionWithError:error])
   {
-    v10 = [v8 keyValuePairs];
-    if ([v10 count])
+    keyValuePairs = [dictionaryCopy keyValuePairs];
+    if ([keyValuePairs count])
     {
-      v13 = v8;
-      v14 = v10;
-      v15 = v9;
+      v13 = dictionaryCopy;
+      v14 = keyValuePairs;
+      v15 = profileCopy;
       v11 = HKWithAutoreleasePool();
     }
 
@@ -1644,23 +1644,23 @@ LABEL_17:
   return v10;
 }
 
-+ (BOOL)_insertCodableTimestampedKeyValuePairs:(id)a3 domain:(id)a4 category:(int64_t)a5 provenance:(int64_t)a6 syncIdentity:(int64_t)a7 updatePolicy:(int64_t)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)_insertCodableTimestampedKeyValuePairs:(id)pairs domain:(id)domain category:(int64_t)category provenance:(int64_t)provenance syncIdentity:(int64_t)identity updatePolicy:(int64_t)policy profile:(id)profile error:(id *)self0
 {
   v50 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a9;
-  v19 = [v16 count];
+  pairsCopy = pairs;
+  domainCopy = domain;
+  profileCopy = profile;
+  v19 = [pairsCopy count];
   if (v19)
   {
     v20 = v19;
-    v37 = a1;
-    v38 = a8;
-    v39 = a7;
-    v40 = a5;
-    v41 = a6;
-    v42 = v18;
-    v43 = v17;
+    selfCopy = self;
+    policyCopy = policy;
+    identityCopy = identity;
+    categoryCopy = category;
+    provenanceCopy = provenance;
+    v42 = profileCopy;
+    v43 = domainCopy;
     v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v19];
     v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v20];
     v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v20];
@@ -1668,8 +1668,8 @@ LABEL_17:
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v44 = v16;
-    v24 = v16;
+    v44 = pairsCopy;
+    v24 = pairsCopy;
     v25 = [v24 countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (v25)
     {
@@ -1685,23 +1685,23 @@ LABEL_17:
           }
 
           v29 = *(*(&v45 + 1) + 8 * i);
-          v30 = [v29 decodedValue];
-          if (v30)
+          decodedValue = [v29 decodedValue];
+          if (decodedValue)
           {
-            [v21 addObject:v30];
+            [v21 addObject:decodedValue];
           }
 
           else
           {
-            v31 = [MEMORY[0x277CBEB68] null];
-            [v21 addObject:v31];
+            null = [MEMORY[0x277CBEB68] null];
+            [v21 addObject:null];
           }
 
           v32 = [v29 key];
           [v22 addObject:v32];
 
-          v33 = [v29 decodedTimestamp];
-          [v23 addObject:v33];
+          decodedTimestamp = [v29 decodedTimestamp];
+          [v23 addObject:decodedTimestamp];
         }
 
         v26 = [v24 countByEnumeratingWithState:&v45 objects:v49 count:16];
@@ -1710,11 +1710,11 @@ LABEL_17:
       while (v26);
     }
 
-    v18 = v42;
-    v17 = v43;
-    v34 = [v37 _insertValues:v21 forKeys:v22 modificationDates:v23 domain:v43 category:v40 provenance:v41 syncIdentity:v39 updatePolicy:v38 profile:v42 error:a10];
+    profileCopy = v42;
+    domainCopy = v43;
+    v34 = [selfCopy _insertValues:v21 forKeys:v22 modificationDates:v23 domain:v43 category:categoryCopy provenance:provenanceCopy syncIdentity:identityCopy updatePolicy:policyCopy profile:v42 error:error];
 
-    v16 = v44;
+    pairsCopy = v44;
   }
 
   else
@@ -1773,48 +1773,48 @@ uint64_t __107__HDKeyValueEntity__validateModificationDatePolicyWithKey_domain_c
   return sqlite3_bind_double(a2, 4, v6);
 }
 
-+ (BOOL)_insertValues:(id)a3 forKeys:(id)a4 modificationDates:(id)a5 domain:(id)a6 category:(int64_t)a7 provenance:(int64_t)a8 syncIdentity:(int64_t)a9 updatePolicy:(int64_t)a10 profile:(id)a11 error:(id *)a12
++ (BOOL)_insertValues:(id)values forKeys:(id)keys modificationDates:(id)dates domain:(id)domain category:(int64_t)category provenance:(int64_t)provenance syncIdentity:(int64_t)identity updatePolicy:(int64_t)self0 profile:(id)self1 error:(id *)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a11;
-  v22 = [v18 count];
-  if ([v17 count] != v22)
+  valuesCopy = values;
+  keysCopy = keys;
+  datesCopy = dates;
+  domainCopy = domain;
+  profileCopy = profile;
+  v22 = [keysCopy count];
+  if ([valuesCopy count] != v22)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:1049 description:{@"Invalid parameter not satisfying: %@", @"[values count] == count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:1049 description:{@"Invalid parameter not satisfying: %@", @"[values count] == count"}];
   }
 
-  if ([v19 count] != v22)
+  if ([datesCopy count] != v22)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:1050 description:{@"Invalid parameter not satisfying: %@", @"[dates count] == count"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:1050 description:{@"Invalid parameter not satisfying: %@", @"[dates count] == count"}];
   }
 
-  v23 = a1;
-  if (!v20)
+  selfCopy = self;
+  if (!domainCopy)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"HDKeyValueEntity.m" lineNumber:1051 description:{@"Invalid parameter not satisfying: %@", @"domain != nil"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:1051 description:{@"Invalid parameter not satisfying: %@", @"domain != nil"}];
   }
 
-  v33 = [v21 database];
+  database = [profileCopy database];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __127__HDKeyValueEntity__insertValues_forKeys_modificationDates_domain_category_provenance_syncIdentity_updatePolicy_profile_error___block_invoke;
   v48[3] = &unk_278619D80;
-  v49 = v21;
-  v50 = v20;
-  v54 = a7;
-  v55 = a9;
-  v56 = a1;
-  v51 = v17;
-  v52 = v18;
-  v53 = v19;
-  v57 = a8;
-  v58 = a10;
+  v49 = profileCopy;
+  v50 = domainCopy;
+  categoryCopy = category;
+  identityCopy = identity;
+  selfCopy2 = self;
+  v51 = valuesCopy;
+  v52 = keysCopy;
+  v53 = datesCopy;
+  provenanceCopy = provenance;
+  policyCopy = policy;
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __127__HDKeyValueEntity__insertValues_forKeys_modificationDates_domain_category_provenance_syncIdentity_updatePolicy_profile_error___block_invoke_2;
@@ -1823,10 +1823,10 @@ uint64_t __107__HDKeyValueEntity__validateModificationDatePolicyWithKey_domain_c
   v39 = v51;
   v40 = v53;
   v41 = v50;
-  v44 = a7;
-  v45 = a8;
-  v46 = a9;
-  v47 = a10;
+  categoryCopy2 = category;
+  provenanceCopy2 = provenance;
+  identityCopy2 = identity;
+  policyCopy2 = policy;
   v42 = v49;
   v43 = v22;
   v24 = v49;
@@ -1834,7 +1834,7 @@ uint64_t __107__HDKeyValueEntity__validateModificationDatePolicyWithKey_domain_c
   v26 = v53;
   v27 = v51;
   v28 = v52;
-  v29 = [v23 performWriteTransactionWithHealthDatabase:v33 error:a12 block:v48 inaccessibilityHandler:v37];
+  v29 = [selfCopy performWriteTransactionWithHealthDatabase:database error:error block:v48 inaccessibilityHandler:v37];
 
   return v29;
 }
@@ -1892,10 +1892,10 @@ uint64_t __127__HDKeyValueEntity__insertValues_forKeys_modificationDates_domain_
   return v12;
 }
 
-+ (Class)_entityClassForKeyValueCategory:(int64_t)a3
++ (Class)_entityClassForKeyValueCategory:(int64_t)category
 {
   v14 = *MEMORY[0x277D85DE8];
-  if ((a3 - 100) >= 8 && a3 > 5)
+  if ((category - 100) >= 8 && category > 5)
   {
     _HKInitializeLogging();
     v7 = *MEMORY[0x277CCC2A0];
@@ -1905,7 +1905,7 @@ uint64_t __127__HDKeyValueEntity__insertValues_forKeys_modificationDates_domain_
       v10 = 138543618;
       v11 = objc_opt_class();
       v12 = 2048;
-      v13 = a3;
+      categoryCopy = category;
       v9 = v11;
       _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@: unrecognized category %ld", &v10, 0x16u);
     }
@@ -1923,12 +1923,12 @@ uint64_t __127__HDKeyValueEntity__insertValues_forKeys_modificationDates_domain_
   return v4;
 }
 
-+ (id)_modDateForKey:(id)a3 domain:(id)a4 category:(int64_t)a5 profile:(id)a6 entity:(id *)a7 error:(id *)a8
++ (id)_modDateForKey:(id)key domain:(id)domain category:(int64_t)category profile:(id)profile entity:(id *)entity error:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  keyCopy = key;
+  domainCopy = domain;
+  profileCopy = profile;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x3032000000;
@@ -1947,9 +1947,9 @@ uint64_t __127__HDKeyValueEntity__insertValues_forKeys_modificationDates_domain_
   v27 = __Block_byref_object_copy__171;
   v28 = __Block_byref_object_dispose__171;
   v29 = 0;
-  if (v14)
+  if (keyCopy)
   {
-    v38[0] = v14;
+    v38[0] = keyCopy;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -1958,17 +1958,17 @@ uint64_t __127__HDKeyValueEntity__insertValues_forKeys_modificationDates_domain_
     v23[4] = v36;
     v23[5] = &v30;
     v23[6] = &v24;
-    v23[7] = a7;
-    v23[8] = a1;
-    v18 = [(HDKeyValueEntity *)a1 _valuesForKeys:v17 domain:v15 category:a5 profile:v16 error:a8 handler:v23];
+    v23[7] = entity;
+    v23[8] = self;
+    v18 = [(HDKeyValueEntity *)self _valuesForKeys:v17 domain:domainCopy category:category profile:profileCopy error:error handler:v23];
   }
 
-  if (a7)
+  if (entity)
   {
     v19 = v25[5];
     if (v19)
     {
-      *a7 = v19;
+      *entity = v19;
     }
   }
 
@@ -2028,13 +2028,13 @@ void *__72__HDKeyValueEntity__modDateForKey_domain_category_profile_entity_error
   return v2;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[_HDKeyValueEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [[_HDKeyValueEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }

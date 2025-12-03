@@ -7,8 +7,8 @@
 
 - (NSString)description
 {
-  v2 = self;
-  v3._countAndFlagsBits = sub_100597C80(v2);
+  selfCopy = self;
+  v3._countAndFlagsBits = sub_100597C80(selfCopy);
   String.append(_:)(v3);
 
   v4._countAndFlagsBits = 10558;

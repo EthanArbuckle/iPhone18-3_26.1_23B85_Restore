@@ -1,22 +1,22 @@
 @interface AccountDetailCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation AccountDetailCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStoreKit.DynamicTypeLabel"];
-  [v3 validateClass:@"AppStore.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityAccessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityDisabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AppStore.AccountDetailCollectionViewCell" hasSwiftField:@"detailLabel" withSwiftType:"DynamicTypeLabel"];
-  [v3 validateClass:@"AppStore.CountBadgeView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"AppStore.CountBadgeView" hasInstanceMethod:@"accessibilityCountLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStoreKit.DynamicTypeLabel"];
+  [validationsCopy validateClass:@"AppStore.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityAccessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityDisabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AppStore.AccountDetailCollectionViewCell" hasSwiftField:@"detailLabel" withSwiftType:"DynamicTypeLabel"];
+  [validationsCopy validateClass:@"AppStore.CountBadgeView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"AppStore.CountBadgeView" hasInstanceMethod:@"accessibilityCountLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

@@ -6,47 +6,47 @@
 
 - (void)_cnui_applyContactStyle
 {
-  v8 = [a1 _cnui_contactStyle];
-  v2 = [v8 backgroundColor];
+  _cnui_contactStyle = [self _cnui_contactStyle];
+  backgroundColor = [_cnui_contactStyle backgroundColor];
 
-  if (v2)
+  if (backgroundColor)
   {
-    v3 = [v8 backgroundColor];
-    [a1 setBackgroundColor:v3];
+    backgroundColor2 = [_cnui_contactStyle backgroundColor];
+    [self setBackgroundColor:backgroundColor2];
   }
 
-  if (([v8 usesOpaqueBackground] & 1) == 0)
+  if (([_cnui_contactStyle usesOpaqueBackground] & 1) == 0)
   {
-    [a1 setBackgroundColor:0];
+    [self setBackgroundColor:0];
   }
 
-  v4 = [v8 sectionIndexBackgroundColor];
+  sectionIndexBackgroundColor = [_cnui_contactStyle sectionIndexBackgroundColor];
 
-  if (v4)
+  if (sectionIndexBackgroundColor)
   {
-    v5 = [v8 sectionIndexBackgroundColor];
-    [a1 setSectionIndexBackgroundColor:v5];
+    sectionIndexBackgroundColor2 = [_cnui_contactStyle sectionIndexBackgroundColor];
+    [self setSectionIndexBackgroundColor:sectionIndexBackgroundColor2];
   }
 
-  v6 = [v8 separatorColor];
+  separatorColor = [_cnui_contactStyle separatorColor];
 
-  if (v6)
+  if (separatorColor)
   {
-    v7 = [v8 separatorColor];
-    [a1 setSeparatorColor:v7];
+    separatorColor2 = [_cnui_contactStyle separatorColor];
+    [self setSeparatorColor:separatorColor2];
   }
 
-  if ([v8 separatorStyle])
+  if ([_cnui_contactStyle separatorStyle])
   {
-    [a1 setSeparatorStyle:{objc_msgSend(v8, "separatorStyle")}];
+    [self setSeparatorStyle:{objc_msgSend(_cnui_contactStyle, "separatorStyle")}];
   }
 
-  if ([v8 separatorBackdropOverlayBlendMode])
+  if ([_cnui_contactStyle separatorBackdropOverlayBlendMode])
   {
-    [a1 _setSeparatorBackdropOverlayBlendMode:{objc_msgSend(v8, "separatorBackdropOverlayBlendMode")}];
+    [self _setSeparatorBackdropOverlayBlendMode:{objc_msgSend(_cnui_contactStyle, "separatorBackdropOverlayBlendMode")}];
   }
 
-  [a1 setOpaque:{objc_msgSend(v8, "usesOpaqueBackground")}];
+  [self setOpaque:{objc_msgSend(_cnui_contactStyle, "usesOpaqueBackground")}];
 }
 
 @end

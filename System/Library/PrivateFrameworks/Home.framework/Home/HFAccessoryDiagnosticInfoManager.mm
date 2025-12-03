@@ -1,37 +1,37 @@
 @interface HFAccessoryDiagnosticInfoManager
-- (BOOL)hasDiagnosticInfoForAccessory:(id)a3;
-- (BOOL)isCDPStatusGoodForAccessory:(id)a3;
+- (BOOL)hasDiagnosticInfoForAccessory:(id)accessory;
+- (BOOL)isCDPStatusGoodForAccessory:(id)accessory;
 - (HFAccessoryDiagnosticInfoManager)init;
-- (HFAccessoryDiagnosticInfoManager)initWithDispatcher:(id)a3;
+- (HFAccessoryDiagnosticInfoManager)initWithDispatcher:(id)dispatcher;
 - (HFHomeKitDispatcher)dispatcher;
-- (id)_diagnosticInfoForAccessory:(id)a3;
-- (id)fetchDiagnosticInfoForFirstPartyAccessory:(id)a3;
-- (id)softwareVersionForAccessory:(id)a3;
-- (id)wifiNetworkInfoForAccessory:(id)a3;
-- (void)_notifyObserversOfReceivedDiagnosticInfo:(id)a3 forAccessory:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (id)_diagnosticInfoForAccessory:(id)accessory;
+- (id)fetchDiagnosticInfoForFirstPartyAccessory:(id)accessory;
+- (id)softwareVersionForAccessory:(id)accessory;
+- (id)wifiNetworkInfoForAccessory:(id)accessory;
+- (void)_notifyObserversOfReceivedDiagnosticInfo:(id)info forAccessory:(id)accessory;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation HFAccessoryDiagnosticInfoManager
 
-- (HFAccessoryDiagnosticInfoManager)initWithDispatcher:(id)a3
+- (HFAccessoryDiagnosticInfoManager)initWithDispatcher:(id)dispatcher
 {
-  v4 = a3;
+  dispatcherCopy = dispatcher;
   v11.receiver = self;
   v11.super_class = HFAccessoryDiagnosticInfoManager;
   v5 = [(HFAccessoryDiagnosticInfoManager *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     accessoryUniqueIDToDiagnosticInfoMapTable = v5->_accessoryUniqueIDToDiagnosticInfoMapTable;
-    v5->_accessoryUniqueIDToDiagnosticInfoMapTable = v6;
+    v5->_accessoryUniqueIDToDiagnosticInfoMapTable = strongToStrongObjectsMapTable;
 
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v8;
+    v5->_observers = weakObjectsHashTable;
 
-    objc_storeWeak(&v5->_dispatcher, v4);
+    objc_storeWeak(&v5->_dispatcher, dispatcherCopy);
   }
 
   return v5;
@@ -39,43 +39,43 @@
 
 - (HFAccessoryDiagnosticInfoManager)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithDispatcher_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryDiagnosticInfoManager.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryDiagnosticInfoManager init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryDiagnosticInfoManager.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryDiagnosticInfoManager init]", v5}];
 
   return 0;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFAccessoryDiagnosticInfoManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFAccessoryDiagnosticInfoManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFAccessoryDiagnosticInfoManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFAccessoryDiagnosticInfoManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (id)fetchDiagnosticInfoForFirstPartyAccessory:(id)a3
+- (id)fetchDiagnosticInfoForFirstPartyAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = objc_opt_new();
-  v6 = [(HFAccessoryDiagnosticInfoManager *)self dispatcher];
-  v7 = [v6 homeManager];
+  dispatcher = [(HFAccessoryDiagnosticInfoManager *)self dispatcher];
+  homeManager = [dispatcher homeManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__HFAccessoryDiagnosticInfoManager_fetchDiagnosticInfoForFirstPartyAccessory___block_invoke;
   v13[3] = &unk_277DF7C20;
-  v14 = v4;
-  v15 = self;
+  v14 = accessoryCopy;
+  selfCopy = self;
   v8 = v5;
   v16 = v8;
-  v9 = v4;
-  [v7 fetchAppleMediaAccesoryDiagnosticInfo:v9 options:3 completion:v13];
+  v9 = accessoryCopy;
+  [homeManager fetchAppleMediaAccesoryDiagnosticInfo:v9 options:3 completion:v13];
 
   v10 = v16;
   v11 = v8;
@@ -128,58 +128,58 @@ void __78__HFAccessoryDiagnosticInfoManager_fetchDiagnosticInfoForFirstPartyAcce
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasDiagnosticInfoForAccessory:(id)a3
+- (BOOL)hasDiagnosticInfoForAccessory:(id)accessory
 {
-  v3 = [(HFAccessoryDiagnosticInfoManager *)self _diagnosticInfoForAccessory:a3];
+  v3 = [(HFAccessoryDiagnosticInfoManager *)self _diagnosticInfoForAccessory:accessory];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)isCDPStatusGoodForAccessory:(id)a3
+- (BOOL)isCDPStatusGoodForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
-  v6 = [v5 home];
-  v7 = [v6 hf_currentUserIsOwner];
+  home = [v5 home];
+  hf_currentUserIsOwner = [home hf_currentUserIsOwner];
 
-  if (v7 && [(HFAccessoryDiagnosticInfoManager *)self hasDiagnosticInfoForAccessory:v4])
+  if (hf_currentUserIsOwner && [(HFAccessoryDiagnosticInfoManager *)self hasDiagnosticInfoForAccessory:accessoryCopy])
   {
-    v8 = [(HFAccessoryDiagnosticInfoManager *)self _diagnosticInfoForAccessory:v4];
-    v9 = [v8 cdpStatusGood];
+    v8 = [(HFAccessoryDiagnosticInfoManager *)self _diagnosticInfoForAccessory:accessoryCopy];
+    cdpStatusGood = [v8 cdpStatusGood];
   }
 
   else
   {
-    v9 = 1;
+    cdpStatusGood = 1;
   }
 
-  return v9;
+  return cdpStatusGood;
 }
 
-- (id)wifiNetworkInfoForAccessory:(id)a3
+- (id)wifiNetworkInfoForAccessory:(id)accessory
 {
-  v3 = [(HFAccessoryDiagnosticInfoManager *)self _diagnosticInfoForAccessory:a3];
-  v4 = [v3 wifiInfo];
+  v3 = [(HFAccessoryDiagnosticInfoManager *)self _diagnosticInfoForAccessory:accessory];
+  wifiInfo = [v3 wifiInfo];
 
-  return v4;
+  return wifiInfo;
 }
 
-- (id)softwareVersionForAccessory:(id)a3
+- (id)softwareVersionForAccessory:(id)accessory
 {
-  v3 = [(HFAccessoryDiagnosticInfoManager *)self _diagnosticInfoForAccessory:a3];
-  v4 = [v3 softwareVersion];
+  v3 = [(HFAccessoryDiagnosticInfoManager *)self _diagnosticInfoForAccessory:accessory];
+  softwareVersion = [v3 softwareVersion];
 
-  return v4;
+  return softwareVersion;
 }
 
-- (void)_notifyObserversOfReceivedDiagnosticInfo:(id)a3 forAccessory:(id)a4
+- (void)_notifyObserversOfReceivedDiagnosticInfo:(id)info forAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFAccessoryDiagnosticInfoManager *)self observers];
-  v9 = [v8 copy];
+  infoCopy = info;
+  accessoryCopy = accessory;
+  observers = [(HFAccessoryDiagnosticInfoManager *)self observers];
+  v9 = [observers copy];
 
   v19 = 0u;
   v20 = 0u;
@@ -204,7 +204,7 @@ void __78__HFAccessoryDiagnosticInfoManager_fetchDiagnosticInfoForFirstPartyAcce
         v15 = *(*(&v17 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          [v15 didUpdateDiagnosticInfo:v6 forAccessory:{v7, v17}];
+          [v15 didUpdateDiagnosticInfo:infoCopy forAccessory:{accessoryCopy, v17}];
         }
 
         ++v14;
@@ -220,13 +220,13 @@ void __78__HFAccessoryDiagnosticInfoManager_fetchDiagnosticInfoForFirstPartyAcce
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_diagnosticInfoForAccessory:(id)a3
+- (id)_diagnosticInfoForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(HFAccessoryDiagnosticInfoManager *)self accessoryUniqueIDToDiagnosticInfoMapTable];
-  v6 = [v4 uniqueIdentifier];
+  accessoryCopy = accessory;
+  accessoryUniqueIDToDiagnosticInfoMapTable = [(HFAccessoryDiagnosticInfoManager *)self accessoryUniqueIDToDiagnosticInfoMapTable];
+  uniqueIdentifier = [accessoryCopy uniqueIdentifier];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [accessoryUniqueIDToDiagnosticInfoMapTable objectForKey:uniqueIdentifier];
 
   return v7;
 }

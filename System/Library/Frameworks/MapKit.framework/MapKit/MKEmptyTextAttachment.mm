@@ -1,11 +1,11 @@
 @interface MKEmptyTextAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)result glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
-- (MKEmptyTextAttachment)initWithWidth:(double)a3;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)result glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
+- (MKEmptyTextAttachment)initWithWidth:(double)width;
 @end
 
 @implementation MKEmptyTextAttachment
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)result glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)result glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
   width = self->_width;
   v7 = 0.0;
@@ -16,14 +16,14 @@
   return result;
 }
 
-- (MKEmptyTextAttachment)initWithWidth:(double)a3
+- (MKEmptyTextAttachment)initWithWidth:(double)width
 {
   v5.receiver = self;
   v5.super_class = MKEmptyTextAttachment;
   result = [(MKEmptyTextAttachment *)&v5 initWithData:0 ofType:0];
   if (result)
   {
-    result->_width = a3;
+    result->_width = width;
   }
 
   return result;

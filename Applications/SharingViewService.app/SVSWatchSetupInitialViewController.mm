@@ -1,15 +1,15 @@
 @interface SVSWatchSetupInitialViewController
-- (SVSWatchSetupInitialViewController)initWithUserInfo:(id)a3;
+- (SVSWatchSetupInitialViewController)initWithUserInfo:(id)info;
 - (WatchSetupViewControllerProxy)mainController;
 - (void)_handleContinueButton;
 - (void)_handleUpdateNow;
 - (void)_launchWatchAppForPairing;
 - (void)_restoreWatchApp;
-- (void)applicationsDidInstall:(id)a3;
-- (void)handleDeviceSetupNotification:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)handleDeviceSetupNotification:(id)notification;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SVSWatchSetupInitialViewController
@@ -21,14 +21,14 @@
   return WeakRetained;
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  installCopy = install;
+  v5 = [installCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -39,11 +39,11 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        v10 = [v9 isEqual:@"com.apple.Bridge"];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        v10 = [bundleIdentifier isEqual:@"com.apple.Bridge"];
 
         if (v10)
         {
@@ -62,7 +62,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -93,8 +93,8 @@ LABEL_15:
 
 - (void)_launchWatchAppForPairing
 {
-  v2 = [(SVSWatchSetupInitialViewController *)self mainController];
-  [v2 dismissAnimated:1 completion:&stru_100195918];
+  mainController = [(SVSWatchSetupInitialViewController *)self mainController];
+  [mainController dismissAnimated:1 completion:&stru_100195918];
 }
 
 - (void)_handleUpdateNow
@@ -128,10 +128,10 @@ LABEL_15:
   {
     [(SVSWatchSetupInitialViewController *)self setPairing:1];
     v3 = [LSApplicationProxy applicationProxyForIdentifier:@"com.apple.Bridge"];
-    v4 = [v3 appState];
-    v5 = [v4 isInstalled];
+    appState = [v3 appState];
+    isInstalled = [appState isInstalled];
 
-    if (v5)
+    if (isInstalled)
     {
 
       [(SVSWatchSetupInitialViewController *)self _launchWatchAppForPairing];
@@ -145,34 +145,34 @@ LABEL_15:
   }
 }
 
-- (void)handleDeviceSetupNotification:(id)a3
+- (void)handleDeviceSetupNotification:(id)notification
 {
-  v17 = a3;
-  v4 = [(SVSWatchSetupInitialViewController *)self isPairing];
-  v5 = v17;
-  if (!v4)
+  notificationCopy = notification;
+  isPairing = [(SVSWatchSetupInitialViewController *)self isPairing];
+  v5 = notificationCopy;
+  if (!isPairing)
   {
-    v6 = [v17 name];
-    v7 = [v17 userInfo];
+    name = [notificationCopy name];
+    userInfo = [notificationCopy userInfo];
     if (dword_1001BF328 <= 30 && (dword_1001BF328 != -1 || _LogCategory_Initialize()))
     {
       v8 = &stru_100195CA8;
-      if (v7)
+      if (userInfo)
       {
-        v8 = v7;
+        v8 = userInfo;
       }
 
-      v15 = v6;
+      v15 = name;
       v16 = v8;
       LogPrintF();
     }
 
-    v9 = [v17 name];
-    v10 = [v9 isEqual:@"com.apple.sharing.DeviceSetup"];
+    name2 = [notificationCopy name];
+    v10 = [name2 isEqual:@"com.apple.sharing.DeviceSetup"];
 
     if (v10 && !CFDictionaryGetInt64())
     {
-      v11 = [(SVSWatchSetupInitialViewController *)self userInfo];
+      userInfo2 = [(SVSWatchSetupInitialViewController *)self userInfo];
       CFStringGetTypeID();
       v12 = CFDictionaryGetTypedValue();
 
@@ -185,22 +185,22 @@ LABEL_15:
           LogPrintF();
         }
 
-        v14 = [(SVSWatchSetupInitialViewController *)self mainController];
-        [v14 dismiss:0];
+        mainController = [(SVSWatchSetupInitialViewController *)self mainController];
+        [mainController dismiss:0];
       }
     }
 
-    v5 = v17;
+    v5 = notificationCopy;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(isPairing, v5);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SVSWatchSetupInitialViewController;
-  [(SVSWatchSetupInitialViewController *)&v5 viewDidDisappear:a3];
+  [(SVSWatchSetupInitialViewController *)&v5 viewDidDisappear:disappear];
   if (dword_1001BF328 <= 30 && (dword_1001BF328 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -210,19 +210,19 @@ LABEL_15:
   [v4 removeObserver:self name:@"com.apple.sharing.DeviceSetup" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = SVSWatchSetupInitialViewController;
-  [(SVSWatchSetupInitialViewController *)&v7 viewWillAppear:a3];
+  [(SVSWatchSetupInitialViewController *)&v7 viewWillAppear:appear];
   if (dword_1001BF328 <= 30 && (dword_1001BF328 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v4 = [(SVSWatchSetupInitialViewController *)self mainController];
-  v5 = [v4 _remoteViewControllerProxy];
-  [v5 setStatusBarHidden:1 withDuration:0.0];
+  mainController = [(SVSWatchSetupInitialViewController *)self mainController];
+  _remoteViewControllerProxy = [mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 
   v6 = +[NSDistributedNotificationCenter defaultCenter];
   [v6 addObserver:self selector:"handleDeviceSetupNotification:" name:@"com.apple.sharing.DeviceSetup" object:0 suspensionBehavior:4];
@@ -265,35 +265,35 @@ LABEL_15:
     [v7 setAdvertisingName:v34];
   }
 
-  v8 = [(SVSWatchSetupInitialViewController *)self contentView];
-  [v8 addSubview:v7];
+  contentView = [(SVSWatchSetupInitialViewController *)self contentView];
+  [contentView addSubview:v7];
 
-  v30 = [v7 topAnchor];
-  v32 = [(SVSWatchSetupInitialViewController *)self contentView];
-  v31 = [v32 mainContentGuide];
-  v29 = [v31 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  topAnchor = [v7 topAnchor];
+  contentView2 = [(SVSWatchSetupInitialViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v39[0] = v28;
-  v25 = [v7 bottomAnchor];
-  v27 = [(SVSWatchSetupInitialViewController *)self contentView];
-  v26 = [v27 mainContentGuide];
-  v24 = [v26 bottomAnchor];
-  v23 = [v25 constraintLessThanOrEqualToAnchor:v24];
+  bottomAnchor = [v7 bottomAnchor];
+  contentView3 = [(SVSWatchSetupInitialViewController *)self contentView];
+  mainContentGuide2 = [contentView3 mainContentGuide];
+  bottomAnchor2 = [mainContentGuide2 bottomAnchor];
+  v23 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v39[1] = v23;
-  v20 = [v7 leadingAnchor];
-  v22 = [(SVSWatchSetupInitialViewController *)self contentView];
-  v21 = [v22 mainContentGuide];
-  v19 = [v21 leadingAnchor];
-  v9 = [v20 constraintEqualToAnchor:v19];
+  leadingAnchor = [v7 leadingAnchor];
+  contentView4 = [(SVSWatchSetupInitialViewController *)self contentView];
+  mainContentGuide3 = [contentView4 mainContentGuide];
+  leadingAnchor2 = [mainContentGuide3 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[2] = v9;
-  v10 = [v7 trailingAnchor];
-  v11 = [(SVSWatchSetupInitialViewController *)self contentView];
-  v12 = [v11 mainContentGuide];
-  v13 = [v12 trailingAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
+  trailingAnchor = [v7 trailingAnchor];
+  contentView5 = [(SVSWatchSetupInitialViewController *)self contentView];
+  mainContentGuide4 = [contentView5 mainContentGuide];
+  trailingAnchor2 = [mainContentGuide4 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v39[3] = v14;
-  v15 = [v7 heightAnchor];
-  v16 = [v15 constraintEqualToConstant:175.0];
+  heightAnchor = [v7 heightAnchor];
+  v16 = [heightAnchor constraintEqualToConstant:175.0];
   v39[4] = v16;
   v17 = [NSArray arrayWithObjects:v39 count:5];
   [NSLayoutConstraint activateConstraints:v17];
@@ -302,13 +302,13 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (SVSWatchSetupInitialViewController)initWithUserInfo:(id)a3
+- (SVSWatchSetupInitialViewController)initWithUserInfo:(id)info
 {
   v8.receiver = self;
   v8.super_class = SVSWatchSetupInitialViewController;
-  v3 = a3;
+  infoCopy = info;
   v4 = [(SVSWatchSetupInitialViewController *)&v8 initWithContentView:0];
-  v5 = [v3 copy];
+  v5 = [infoCopy copy];
 
   userInfo = v4->_userInfo;
   v4->_userInfo = v5;

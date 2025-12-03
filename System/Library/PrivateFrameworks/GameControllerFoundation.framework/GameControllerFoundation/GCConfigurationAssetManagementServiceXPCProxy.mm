@@ -1,16 +1,16 @@
 @interface GCConfigurationAssetManagementServiceXPCProxy
 - (GCConfigurationAssetManagementServiceXPCProxy)init;
-- (GCConfigurationAssetManagementServiceXPCProxy)initWithService:(id)a3;
-- (void)assetsWithReply:(id)a3;
-- (void)lastUpdateDateWithReply:(id)a3;
+- (GCConfigurationAssetManagementServiceXPCProxy)initWithService:(id)service;
+- (void)assetsWithReply:(id)reply;
+- (void)lastUpdateDateWithReply:(id)reply;
 @end
 
 @implementation GCConfigurationAssetManagementServiceXPCProxy
 
-- (GCConfigurationAssetManagementServiceXPCProxy)initWithService:(id)a3
+- (GCConfigurationAssetManagementServiceXPCProxy)initWithService:(id)service
 {
-  v5 = a3;
-  if (!v5)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
     [(GCConfigurationAssetManagementServiceXPCProxy *)a2 initWithService:?];
   }
@@ -19,7 +19,7 @@
   v9.super_class = GCConfigurationAssetManagementServiceXPCProxy;
   v6 = [(GCConfigurationAssetManagementServiceXPCProxy *)&v9 init];
   service = v6->_service;
-  v6->_service = v5;
+  v6->_service = serviceCopy;
 
   return v6;
 }
@@ -31,21 +31,21 @@
   return 0;
 }
 
-- (void)assetsWithReply:(id)a3
+- (void)assetsWithReply:(id)reply
 {
   service = self->_service;
-  v4 = a3;
-  v5 = [(GCConfigurationAssetManagementService *)service assets];
+  replyCopy = reply;
+  assets = [(GCConfigurationAssetManagementService *)service assets];
   v10 = 0;
   v11 = 0;
-  [v5 waitForResult:&v11 error:&v10];
+  [assets waitForResult:&v11 error:&v10];
   v6 = v11;
   v7 = v10;
   v8 = v6;
 
   v9 = [v8 gc_arrayByTransformingElementsUsingBlock:&__block_literal_global_6];
 
-  v4[2](v4, v9, v7);
+  replyCopy[2](replyCopy, v9, v7);
 }
 
 GCConfigurationAssetXPCProxy *__65__GCConfigurationAssetManagementServiceXPCProxy_assetsWithReply___block_invoke(uint64_t a1, void *a2)
@@ -56,19 +56,19 @@ GCConfigurationAssetXPCProxy *__65__GCConfigurationAssetManagementServiceXPCProx
   return v3;
 }
 
-- (void)lastUpdateDateWithReply:(id)a3
+- (void)lastUpdateDateWithReply:(id)reply
 {
   service = self->_service;
-  v4 = a3;
-  v5 = [(GCConfigurationAssetManagementService *)service lastUpdateDate];
+  replyCopy = reply;
+  lastUpdateDate = [(GCConfigurationAssetManagementService *)service lastUpdateDate];
   v9 = 0;
   v10 = 0;
-  [v5 waitForResult:&v10 error:&v9];
+  [lastUpdateDate waitForResult:&v10 error:&v9];
   v6 = v10;
   v7 = v9;
   v8 = v6;
 
-  v4[2](v4, v8, v7);
+  replyCopy[2](replyCopy, v8, v7);
 }
 
 - (void)initWithService:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

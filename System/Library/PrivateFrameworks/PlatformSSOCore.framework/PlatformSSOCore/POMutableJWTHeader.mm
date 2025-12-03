@@ -1,122 +1,122 @@
 @interface POMutableJWTHeader
-- (void)addCustomClaims:(id)a3;
-- (void)addEphemeralPublicKey:(__SecKey *)a3;
-- (void)setAlg:(id)a3;
-- (void)setApu:(id)a3;
-- (void)setApv:(id)a3;
-- (void)setCty:(id)a3;
-- (void)setEnc:(id)a3;
-- (void)setEpk:(id)a3;
-- (void)setKid:(id)a3;
-- (void)setP2c:(id)a3;
-- (void)setP2s:(id)a3;
-- (void)setTyp:(id)a3;
-- (void)setX5c:(id)a3;
-- (void)setX5t:(id)a3;
+- (void)addCustomClaims:(id)claims;
+- (void)addEphemeralPublicKey:(__SecKey *)key;
+- (void)setAlg:(id)alg;
+- (void)setApu:(id)apu;
+- (void)setApv:(id)apv;
+- (void)setCty:(id)cty;
+- (void)setEnc:(id)enc;
+- (void)setEpk:(id)epk;
+- (void)setKid:(id)kid;
+- (void)setP2c:(id)p2c;
+- (void)setP2s:(id)p2s;
+- (void)setTyp:(id)typ;
+- (void)setX5c:(id)x5c;
+- (void)setX5t:(id)x5t;
 @end
 
 @implementation POMutableJWTHeader
 
-- (void)setTyp:(id)a3
+- (void)setTyp:(id)typ
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"typ"];
+  typCopy = typ;
+  data = [(POJWTHeader *)self data];
+  [data setObject:typCopy forKeyedSubscript:@"typ"];
 }
 
-- (void)setCty:(id)a3
+- (void)setCty:(id)cty
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"cty"];
+  ctyCopy = cty;
+  data = [(POJWTHeader *)self data];
+  [data setObject:ctyCopy forKeyedSubscript:@"cty"];
 }
 
-- (void)setAlg:(id)a3
+- (void)setAlg:(id)alg
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"alg"];
+  algCopy = alg;
+  data = [(POJWTHeader *)self data];
+  [data setObject:algCopy forKeyedSubscript:@"alg"];
 }
 
-- (void)setX5c:(id)a3
+- (void)setX5c:(id)x5c
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"x5c"];
+  x5cCopy = x5c;
+  data = [(POJWTHeader *)self data];
+  [data setObject:x5cCopy forKeyedSubscript:@"x5c"];
 }
 
-- (void)setX5t:(id)a3
+- (void)setX5t:(id)x5t
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"x5t"];
+  x5tCopy = x5t;
+  data = [(POJWTHeader *)self data];
+  [data setObject:x5tCopy forKeyedSubscript:@"x5t"];
 }
 
-- (void)setKid:(id)a3
+- (void)setKid:(id)kid
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"kid"];
+  kidCopy = kid;
+  data = [(POJWTHeader *)self data];
+  [data setObject:kidCopy forKeyedSubscript:@"kid"];
 }
 
-- (void)setEnc:(id)a3
+- (void)setEnc:(id)enc
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"enc"];
+  encCopy = enc;
+  data = [(POJWTHeader *)self data];
+  [data setObject:encCopy forKeyedSubscript:@"enc"];
 }
 
-- (void)setP2s:(id)a3
+- (void)setP2s:(id)p2s
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"p2s"];
+  p2sCopy = p2s;
+  data = [(POJWTHeader *)self data];
+  [data setObject:p2sCopy forKeyedSubscript:@"p2s"];
 }
 
-- (void)setP2c:(id)a3
+- (void)setP2c:(id)p2c
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"p2c"];
+  p2cCopy = p2c;
+  data = [(POJWTHeader *)self data];
+  [data setObject:p2cCopy forKeyedSubscript:@"p2c"];
 }
 
-- (void)setEpk:(id)a3
+- (void)setEpk:(id)epk
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"epk"];
+  epkCopy = epk;
+  data = [(POJWTHeader *)self data];
+  [data setObject:epkCopy forKeyedSubscript:@"epk"];
 }
 
-- (void)setApu:(id)a3
+- (void)setApu:(id)apu
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"apu"];
+  apuCopy = apu;
+  data = [(POJWTHeader *)self data];
+  [data setObject:apuCopy forKeyedSubscript:@"apu"];
 }
 
-- (void)setApv:(id)a3
+- (void)setApv:(id)apv
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"apv"];
+  apvCopy = apv;
+  data = [(POJWTHeader *)self data];
+  [data setObject:apvCopy forKeyedSubscript:@"apv"];
 }
 
-- (void)addCustomClaims:(id)a3
+- (void)addCustomClaims:(id)claims
 {
-  v4 = a3;
-  v5 = [(POJWTHeader *)self data];
-  [v5 addEntriesFromDictionary:v4];
+  claimsCopy = claims;
+  data = [(POJWTHeader *)self data];
+  [data addEntriesFromDictionary:claimsCopy];
 }
 
-- (void)addEphemeralPublicKey:(__SecKey *)a3
+- (void)addEphemeralPublicKey:(__SecKey *)key
 {
-  v5 = SecKeyCopyAttributes(a3);
+  v5 = SecKeyCopyAttributes(key);
   v6 = [(__CFDictionary *)v5 objectForKeyedSubscript:*MEMORY[0x277CDBFE0]];
   v7 = [(__CFDictionary *)v5 objectForKeyedSubscript:*MEMORY[0x277CDC028]];
   if ([v6 isEqualToString:*MEMORY[0x277CDC000]] && ((objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CDC030]) & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CDC040]) & 1) != 0))
   {
     error = 0;
-    v8 = SecKeyCopyExternalRepresentation(a3, &error);
+    v8 = SecKeyCopyExternalRepresentation(key, &error);
     v9 = v8;
     if (error)
     {
@@ -135,11 +135,11 @@
       v14 = objc_opt_new();
       [v14 setObject:@"EC" forKeyedSubscript:@"kty"];
       [v14 setObject:@"P-256" forKeyedSubscript:@"crv"];
-      v15 = [v12 psso_base64URLEncodedString];
-      [v14 setObject:v15 forKeyedSubscript:@"x"];
+      psso_base64URLEncodedString = [v12 psso_base64URLEncodedString];
+      [v14 setObject:psso_base64URLEncodedString forKeyedSubscript:@"x"];
 
-      v16 = [v13 psso_base64URLEncodedString];
-      [v14 setObject:v16 forKeyedSubscript:@"y"];
+      psso_base64URLEncodedString2 = [v13 psso_base64URLEncodedString];
+      [v14 setObject:psso_base64URLEncodedString2 forKeyedSubscript:@"y"];
 
       [(POMutableJWTHeader *)self setEpk:v14];
     }

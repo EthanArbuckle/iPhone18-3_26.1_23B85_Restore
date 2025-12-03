@@ -8,9 +8,9 @@
 
 + (void)updateFromDefaults
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  showDebugIndicators = [v2 BOOLForKey:@"LPShowDebugIndicators"];
-  disableLegacyStoreLookups = [v2 BOOLForKey:@"LPDisableLegacyStoreLookups"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  showDebugIndicators = [standardUserDefaults BOOLForKey:@"LPShowDebugIndicators"];
+  disableLegacyStoreLookups = [standardUserDefaults BOOLForKey:@"LPDisableLegacyStoreLookups"];
   disableAutoPlay = UIAccessibilityIsReduceMotionEnabled();
   disableAnimations = disableAutoPlay;
   if ((updateFromDefaults_hasEverUpdated & 1) != 0 || ([MEMORY[0x1E696AD88] defaultCenter], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696ADC8], "mainQueue"), v4 = objc_claimAutoreleasedReturnValue(), v5 = *MEMORY[0x1E69DD918], v7[0] = MEMORY[0x1E69E9820], v7[1] = 3221225472, v7[2] = __32__LPSettings_updateFromDefaults__block_invoke_2, v7[3] = &unk_1E7A35DA0, v8 = &__block_literal_global_8, v6 = objc_msgSend(v3, "addObserverForName:object:queue:usingBlock:", v5, 0, v4, v7), v4, v3, v8, updateFromDefaults_hasEverUpdated == 1))
@@ -39,9 +39,9 @@ BOOL __32__LPSettings_updateFromDefaults__block_invoke()
   }
 
   v3 = +[LPTestingOverrides forceSubsampleImagesToScreenSize];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)useLightweightMaterials

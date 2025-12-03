@@ -1,42 +1,42 @@
 @interface WDFont
-+ (int)cpFontClassFromWdFontFamily:(int)a3;
-- (BOOL)isEqual:(id)a3;
++ (int)cpFontClassFromWdFontFamily:(int)family;
+- (BOOL)isEqual:(id)equal;
 - (WDFont)init;
-- (WDFont)initWithName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WDFont)initWithName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)secondName;
-- (void)addAlternateName:(id)a3;
-- (void)setName:(id)a3;
+- (void)addAlternateName:(id)name;
+- (void)setName:(id)name;
 @end
 
 @implementation WDFont
 
-+ (int)cpFontClassFromWdFontFamily:(int)a3
++ (int)cpFontClassFromWdFontFamily:(int)family
 {
-  if ((a3 - 1) > 4)
+  if ((family - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D70E370[a3 - 1];
+    return dword_25D70E370[family - 1];
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  nameCopy = name;
+  v4 = [nameCopy copy];
   mName = self->mName;
   self->mName = v4;
 }
 
-- (void)addAlternateName:(id)a3
+- (void)addAlternateName:(id)name
 {
   mAlternateNames = self->mAlternateNames;
-  v4 = [a3 copy];
+  v4 = [name copy];
   [(NSMutableArray *)mAlternateNames addObject:?];
 }
 
@@ -73,15 +73,15 @@
   return v2;
 }
 
-- (WDFont)initWithName:(id)a3
+- (WDFont)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = WDFont;
   v5 = [(WDFont *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     mName = v5->mName;
     v5->mName = v6;
 
@@ -96,7 +96,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDFont allocWithZone:?]];
   v5 = [(NSString *)self->mName copy];
@@ -112,20 +112,20 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     mName = self->mName;
-    v7 = [v5 name];
-    if ([(NSString *)mName isEqualToString:v7])
+    name = [v5 name];
+    if ([(NSString *)mName isEqualToString:name])
     {
       mAlternateNames = self->mAlternateNames;
-      v9 = [v5 alternateNames];
-      if (-[NSMutableArray isEqualToArray:](mAlternateNames, "isEqualToArray:", v9) && (mFontFamily = self->mFontFamily, mFontFamily == [v5 fontFamily]) && (mCharacterSet = self->mCharacterSet, mCharacterSet == objc_msgSend(v5, "characterSet")))
+      alternateNames = [v5 alternateNames];
+      if (-[NSMutableArray isEqualToArray:](mAlternateNames, "isEqualToArray:", alternateNames) && (mFontFamily = self->mFontFamily, mFontFamily == [v5 fontFamily]) && (mCharacterSet = self->mCharacterSet, mCharacterSet == objc_msgSend(v5, "characterSet")))
       {
         mPitch = self->mPitch;
         v13 = mPitch == [v5 pitch];

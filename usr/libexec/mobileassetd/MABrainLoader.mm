@@ -1,12 +1,12 @@
 @interface MABrainLoader
 + (id)sharedInstance;
-- (BOOL)healthCheck:(id)a3 history:(id)a4;
-- (BOOL)loadCryptex:(BOOL)a3 bundle:(id)a4 bundleName:(id)a5;
-- (BOOL)loadTrustCache:(BOOL)a3 bundle:(id)a4 bundleName:(id)a5 needsUnlock:(BOOL *)a6;
-- (BOOL)verify:(id)a3 history:(id)a4;
+- (BOOL)healthCheck:(id)check history:(id)history;
+- (BOOL)loadCryptex:(BOOL)cryptex bundle:(id)bundle bundleName:(id)name;
+- (BOOL)loadTrustCache:(BOOL)cache bundle:(id)bundle bundleName:(id)name needsUnlock:(BOOL *)unlock;
+- (BOOL)verify:(id)verify history:(id)history;
 - (char)getTrainName;
 - (id)loadHistory;
-- (void)recordLaunch:(id)a3 history:(id)a4;
+- (void)recordLaunch:(id)launch history:(id)history;
 @end
 
 @implementation MABrainLoader
@@ -21,19 +21,19 @@
   return qword_100010600;
 }
 
-- (BOOL)loadCryptex:(BOOL)a3 bundle:(id)a4 bundleName:(id)a5
+- (BOOL)loadCryptex:(BOOL)cryptex bundle:(id)bundle bundleName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (([v7 isPersonalized] & 1) == 0 && (objc_msgSend(v7, "isGloballySigned") & 1) == 0 && !v6)
+  cryptexCopy = cryptex;
+  bundleCopy = bundle;
+  nameCopy = name;
+  if (([bundleCopy isPersonalized] & 1) == 0 && (objc_msgSend(bundleCopy, "isGloballySigned") & 1) == 0 && !cryptexCopy)
   {
     v13 = sub_100000D90(@"Brain");
     v14 = objc_claimAutoreleasedReturnValue(v13);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v22 = v8;
+      v22 = nameCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[MAB] MobileAssetBrain bundle %@ is not personalized, and unpersonalized brains are not allowed.", buf, 0xCu);
     }
 
@@ -47,7 +47,7 @@ LABEL_17:
   v9 = sub_100000D90(@"Brain");
   v10 = objc_claimAutoreleasedReturnValue(v9);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (cryptexCopy)
   {
     if (!v11)
     {
@@ -55,7 +55,7 @@ LABEL_17:
     }
 
     *buf = 138412290;
-    v22 = v8;
+    v22 = nameCopy;
     v12 = "[MAB] MobileAssetBrain bundle %@ is personalized, but unpersonalized brains are also allowed.";
   }
 
@@ -67,7 +67,7 @@ LABEL_17:
     }
 
     *buf = 138412290;
-    v22 = v8;
+    v22 = nameCopy;
     v12 = "[MAB] MobileAssetBrain bundle %@ is personalized.";
   }
 
@@ -75,7 +75,7 @@ LABEL_17:
 LABEL_13:
 
   v20 = 0;
-  v16 = [v7 graft:&v20];
+  v16 = [bundleCopy graft:&v20];
   v15 = v20;
   if ((v16 & 1) == 0)
   {
@@ -84,7 +84,7 @@ LABEL_13:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v22 = v8;
+      v22 = nameCopy;
       v23 = 2112;
       v24 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[MAB] Error grafting MobileAssetBrain bundle %@: %@", buf, 0x16u);
@@ -99,14 +99,14 @@ LABEL_18:
   return v17;
 }
 
-- (BOOL)loadTrustCache:(BOOL)a3 bundle:(id)a4 bundleName:(id)a5 needsUnlock:(BOOL *)a6
+- (BOOL)loadTrustCache:(BOOL)cache bundle:(id)bundle bundleName:(id)name needsUnlock:(BOOL *)unlock
 {
-  LODWORD(v8) = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isPersonalized])
+  LODWORD(v8) = cache;
+  bundleCopy = bundle;
+  nameCopy = name;
+  if ([bundleCopy isPersonalized])
   {
-    v11 = objc_claimAutoreleasedReturnValue([v9 trustCachePath]);
+    v11 = objc_claimAutoreleasedReturnValue([bundleCopy trustCachePath]);
     v48 = 0;
     v12 = objc_claimAutoreleasedReturnValue([NSData dataWithContentsOfFile:v11 options:0 error:&v48]);
     v13 = v48;
@@ -124,7 +124,7 @@ LABEL_38:
         goto LABEL_39;
       }
 
-      v16 = objc_claimAutoreleasedReturnValue([v9 trustCachePath]);
+      v16 = objc_claimAutoreleasedReturnValue([bundleCopy trustCachePath]);
       *buf = 138412546;
       v50 = v16;
       v51 = 2112;
@@ -135,7 +135,7 @@ LABEL_38:
       goto LABEL_5;
     }
 
-    v22 = objc_claimAutoreleasedReturnValue([v9 ticketPath]);
+    v22 = objc_claimAutoreleasedReturnValue([bundleCopy ticketPath]);
     v47 = 0;
     v15 = objc_claimAutoreleasedReturnValue([NSData dataWithContentsOfFile:v22 options:0 error:&v47]);
     v13 = v47;
@@ -146,7 +146,7 @@ LABEL_38:
       v16 = objc_claimAutoreleasedReturnValue(v23);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v24 = objc_claimAutoreleasedReturnValue([v9 ticketPath]);
+        v24 = objc_claimAutoreleasedReturnValue([bundleCopy ticketPath]);
         *buf = 138412546;
         v50 = v24;
         v51 = 2112;
@@ -187,7 +187,7 @@ LABEL_38:
       }
 
       *buf = 138412802;
-      v50 = v10;
+      v50 = nameCopy;
       v51 = 2112;
       *v52 = v12;
       *&v52[8] = 2112;
@@ -202,10 +202,10 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v46 = [v9 hasValidCurrentBootOnlyTicket];
-    v27 = [v12 bytes];
-    v28 = [v15 bytes];
-    if (v46)
+    hasValidCurrentBootOnlyTicket = [bundleCopy hasValidCurrentBootOnlyTicket];
+    bytes = [v12 bytes];
+    bytes2 = [v15 bytes];
+    if (hasValidCurrentBootOnlyTicket)
     {
       v29 = 24;
     }
@@ -215,7 +215,7 @@ LABEL_36:
       v29 = 17;
     }
 
-    trust_cache = amfi_load_trust_cache(v29, v27, v25, v28, v26, 0, 0);
+    trust_cache = amfi_load_trust_cache(v29, bytes, v25, bytes2, v26, 0, 0);
     v31 = __error();
     if (trust_cache)
     {
@@ -230,7 +230,7 @@ LABEL_36:
         {
           v37 = strerror(v32);
           *buf = 138412802;
-          v50 = v10;
+          v50 = nameCopy;
           v51 = 1024;
           *v52 = v32;
           *&v52[4] = 2080;
@@ -239,7 +239,7 @@ LABEL_36:
         }
 
         LOBYTE(v8) = 0;
-        *a6 = 1;
+        *unlock = 1;
         goto LABEL_38;
       }
 
@@ -247,7 +247,7 @@ LABEL_36:
       {
         v44 = strerror(v32);
         *buf = 138412802;
-        v50 = v10;
+        v50 = nameCopy;
         v51 = 1024;
         *v52 = v32;
         *&v52[4] = 2080;
@@ -286,7 +286,7 @@ LABEL_48:
       }
 
       *buf = 138412290;
-      v50 = v10;
+      v50 = nameCopy;
       v41 = "[MAB] Successfully loaded trust cache for MobileAssetBrain bundle %@";
       v42 = v8;
       v43 = 12;
@@ -304,7 +304,7 @@ LABEL_48:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v50 = v10;
+      v50 = nameCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MAB] MobileAssetBrain bundle %@ is not personalized, but unpersonalized brains are allowed.", buf, 0xCu);
     }
 
@@ -316,7 +316,7 @@ LABEL_48:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v50 = v10;
+      v50 = nameCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "[MAB] MobileAssetBrain bundle %@ is not personalized, and unpersonalized brains are not allowed.", buf, 0xCu);
     }
 
@@ -420,11 +420,11 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)healthCheck:(id)a3 history:(id)a4
+- (BOOL)healthCheck:(id)check history:(id)history
 {
-  v5 = a4;
-  v6 = objc_claimAutoreleasedReturnValue([a3 bundleId]);
-  v7 = objc_claimAutoreleasedReturnValue([v5 objectForKeyedSubscript:@"LaunchRecords"]);
+  historyCopy = history;
+  v6 = objc_claimAutoreleasedReturnValue([check bundleId]);
+  v7 = objc_claimAutoreleasedReturnValue([historyCopy objectForKeyedSubscript:@"LaunchRecords"]);
   v8 = objc_claimAutoreleasedReturnValue([v7 objectForKeyedSubscript:v6]);
 
   if (v8)
@@ -433,7 +433,7 @@ LABEL_16:
     v36 = objc_claimAutoreleasedReturnValue(+[NSDate date]);
     if (v9)
     {
-      v35 = v5;
+      v35 = historyCopy;
       v10 = 0;
       v11 = 0;
       v34 = v9;
@@ -492,7 +492,7 @@ LABEL_16:
         }
 
         v22 = 0;
-        v5 = v35;
+        historyCopy = v35;
         goto LABEL_31;
       }
 
@@ -503,7 +503,7 @@ LABEL_16:
         {
           v32 = sub_100000D90(@"Brain");
           v21 = objc_claimAutoreleasedReturnValue(v32);
-          v5 = v35;
+          historyCopy = v35;
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             v33 = "s";
@@ -526,7 +526,7 @@ LABEL_16:
         }
       }
 
-      v5 = v35;
+      historyCopy = v35;
       if (v11)
       {
         v29 = sub_100000D90(@"Brain");
@@ -597,12 +597,12 @@ LABEL_32:
   return v22;
 }
 
-- (BOOL)verify:(id)a3 history:(id)a4
+- (BOOL)verify:(id)verify history:(id)history
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_claimAutoreleasedReturnValue([v6 bundleId]);
-  v9 = objc_claimAutoreleasedReturnValue([v6 graftPath]);
+  verifyCopy = verify;
+  historyCopy = history;
+  v8 = objc_claimAutoreleasedReturnValue([verifyCopy bundleId]);
+  v9 = objc_claimAutoreleasedReturnValue([verifyCopy graftPath]);
   v10 = objc_claimAutoreleasedReturnValue([v9 stringByAppendingPathComponent:@"/System/Library/CoreServices/RestoreVersion.plist"]);
 
   v11 = objc_claimAutoreleasedReturnValue([NSURL fileURLWithPath:v10]);
@@ -618,7 +618,7 @@ LABEL_32:
 
     if (v14 && v16)
     {
-      v43 = v7;
+      v43 = historyCopy;
       v17 = [[SUCoreRestoreVersion alloc] initWithRestoreVersion:v14];
       v18 = [[SUCoreRestoreVersion alloc] initWithRestoreVersion:v16];
       v19 = v18;
@@ -693,14 +693,14 @@ LABEL_41:
           v41 = objc_claimAutoreleasedReturnValue(v33);
           if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
           {
-            v40 = [v19 buildGroup];
-            v34 = [v17 buildGroup];
+            buildGroup = [v19 buildGroup];
+            buildGroup2 = [v17 buildGroup];
             *buf = 138412802;
             v46 = v8;
             v47 = 2048;
-            v48 = v40;
+            v48 = buildGroup;
             v49 = 2048;
-            v50 = v34;
+            v50 = buildGroup2;
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "[MAB] MobileAssetBrain bundle %@ is from a different build group than the OS, but cross build group brains are allowed. (%ld -> %ld)", buf, 0x20u);
           }
         }
@@ -720,7 +720,7 @@ LABEL_41:
 
         else
         {
-          v24 = [(MABrainLoader *)self healthCheck:v6 history:v43];
+          v24 = [(MABrainLoader *)self healthCheck:verifyCopy history:v43];
         }
 
         goto LABEL_45;
@@ -730,14 +730,14 @@ LABEL_41:
       v21 = objc_claimAutoreleasedReturnValue(v37);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v42 = [v19 buildGroup];
-        v38 = [v17 buildGroup];
+        buildGroup3 = [v19 buildGroup];
+        buildGroup4 = [v17 buildGroup];
         *buf = 138412802;
         v46 = v8;
         v47 = 2048;
-        v48 = v42;
+        v48 = buildGroup3;
         v49 = 2048;
-        v50 = v38;
+        v50 = buildGroup4;
         v22 = "[MAB] MobileAssetBrain bundle %@ is from a different build group than the OS. (%ld -> %ld)";
         goto LABEL_41;
       }
@@ -748,7 +748,7 @@ LABEL_44:
       v24 = 0;
 LABEL_45:
 
-      v7 = v43;
+      historyCopy = v43;
 LABEL_46:
 
       goto LABEL_47;
@@ -812,21 +812,21 @@ LABEL_48:
   return v24;
 }
 
-- (void)recordLaunch:(id)a3 history:(id)a4
+- (void)recordLaunch:(id)launch history:(id)history
 {
-  v5 = a3;
-  v6 = a4;
+  launchCopy = launch;
+  historyCopy = history;
   v7 = @"built-in";
-  v42 = v5;
-  if (v5)
+  v42 = launchCopy;
+  if (launchCopy)
   {
-    v7 = v5;
+    v7 = launchCopy;
   }
 
   v44 = v7;
-  if (v6)
+  if (historyCopy)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [historyCopy mutableCopy];
   }
 
   else
@@ -835,7 +835,7 @@ LABEL_48:
   }
 
   v43 = v8;
-  v9 = objc_claimAutoreleasedReturnValue([v6 objectForKeyedSubscript:@"LaunchRecords"]);
+  v9 = objc_claimAutoreleasedReturnValue([historyCopy objectForKeyedSubscript:@"LaunchRecords"]);
   v10 = [v9 mutableCopy];
   v11 = v10;
   if (v10)
@@ -865,14 +865,14 @@ LABEL_48:
   v20 = sub_100000D90(@"Brain");
   v21 = objc_claimAutoreleasedReturnValue(v20);
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (launchCopy)
   {
     if (v22)
     {
       *buf = 67109378;
       LODWORD(v48[0]) = 50;
       WORD2(v48[0]) = 2112;
-      *(v48 + 6) = v5;
+      *(v48 + 6) = launchCopy;
       v23 = "[MAB] Only preserving the last %d launch records for MobileAssetBrain bundle %@";
       v24 = v21;
       v25 = 18;

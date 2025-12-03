@@ -1,25 +1,25 @@
 @interface MRMutableVirtualVoiceInputDeviceDescriptor
-- (void)setDefaultFormat:(id)a3;
-- (void)setSupportedFormats:(id)a3;
+- (void)setDefaultFormat:(id)format;
+- (void)setSupportedFormats:(id)formats;
 @end
 
 @implementation MRMutableVirtualVoiceInputDeviceDescriptor
 
-- (void)setSupportedFormats:(id)a3
+- (void)setSupportedFormats:(id)formats
 {
-  if (self->super._supportedFormats != a3)
+  if (self->super._supportedFormats != formats)
   {
-    v5 = [a3 copy];
+    v5 = [formats copy];
     supportedFormats = self->super._supportedFormats;
     self->super._supportedFormats = v5;
   }
 }
 
-- (void)setDefaultFormat:(id)a3
+- (void)setDefaultFormat:(id)format
 {
-  if (self->super._defaultFormat != a3)
+  if (self->super._defaultFormat != format)
   {
-    v5 = [a3 copy];
+    v5 = [format copy];
     defaultFormat = self->super._defaultFormat;
     self->super._defaultFormat = v5;
   }

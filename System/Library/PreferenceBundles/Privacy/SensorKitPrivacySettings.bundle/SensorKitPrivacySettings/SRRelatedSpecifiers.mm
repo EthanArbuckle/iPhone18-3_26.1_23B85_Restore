@@ -1,6 +1,6 @@
 @interface SRRelatedSpecifiers
 + (void)initialize;
-- (id)specifiersForRelatedSettings:(id)a3;
+- (id)specifiersForRelatedSettings:(id)settings;
 - (void)navigateToAuthorization;
 @end
 
@@ -8,13 +8,13 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_11018 = os_log_create("com.apple.SensorKit", "SRRelatedSpecifiers");
   }
 }
 
-- (id)specifiersForRelatedSettings:(id)a3
+- (id)specifiersForRelatedSettings:(id)settings
 {
   v33 = +[NSMutableArray array];
   v4 = +[NSMutableSet set];
@@ -60,22 +60,22 @@
   }
 
   v13 = [[SRAuthorizationStore alloc] initWithSensors:v5];
-  v14 = [v13 readerAuthorizationBundleIdValues];
+  readerAuthorizationBundleIdValues = [v13 readerAuthorizationBundleIdValues];
 
-  if (![v14 count])
+  if (![readerAuthorizationBundleIdValues count])
   {
     return &__NSArray0__struct;
   }
 
-  v34 = v14;
+  v34 = readerAuthorizationBundleIdValues;
   [v33 addObject:{+[PSSpecifier groupSpecifierWithName:](PSSpecifier, "groupSpecifierWithName:", -[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"APPS_AND_STUDIES_USING_RESEARCH_SENSORS", &stru_C650, 0))}];
-  v15 = v14;
+  v15 = readerAuthorizationBundleIdValues;
   v31 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"AUTHORIZED", &stru_C650, 0];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v16 = [v14 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  v16 = [readerAuthorizationBundleIdValues countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v16)
   {
     v17 = v16;
@@ -114,7 +114,7 @@
                   objc_enumerationMutation(v23);
                 }
 
-                if ([objc_msgSend(+[SRSensorDescription sensorDescriptionForSensor:](SRSensorDescription sensorDescriptionForSensor:{*(*(&v36 + 1) + 8 * k)), "relatedSettingsCategories"), "containsObject:", a3}])
+                if ([objc_msgSend(+[SRSensorDescription sensorDescriptionForSensor:](SRSensorDescription sensorDescriptionForSensor:{*(*(&v36 + 1) + 8 * k)), "relatedSettingsCategories"), "containsObject:", settings}])
                 {
                   [v33 addObject:{+[PSSpecifier sk_appSpecifierForBundle:value:cellType:target:](PSSpecifier, "sk_appSpecifierForBundle:value:cellType:target:", v22, v31, 4, self)}];
                   v15 = v34;

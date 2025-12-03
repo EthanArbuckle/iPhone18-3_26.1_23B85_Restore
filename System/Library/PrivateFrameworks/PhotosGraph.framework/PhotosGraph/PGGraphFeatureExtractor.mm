@@ -1,7 +1,7 @@
 @interface PGGraphFeatureExtractor
-+ (id)featureExtractorWithError:(id *)a3;
-- (PGGraphFeatureExtractor)initWithError:(id *)a3;
-- (PGGraphFeatureExtractor)initWithName:(id)a3 featureNames:(id)a4 relation:(id)a5 labelForTargetBlock:(id)a6;
++ (id)featureExtractorWithError:(id *)error;
+- (PGGraphFeatureExtractor)initWithError:(id *)error;
+- (PGGraphFeatureExtractor)initWithName:(id)name featureNames:(id)names relation:(id)relation labelForTargetBlock:(id)block;
 - (unint64_t)featureLength;
 @end
 
@@ -9,13 +9,13 @@
 
 - (unint64_t)featureLength
 {
-  v2 = [(MARelationCollectionFeatureExtractor *)self featureNames];
-  v3 = [v2 count];
+  featureNames = [(MARelationCollectionFeatureExtractor *)self featureNames];
+  v3 = [featureNames count];
 
   return v3;
 }
 
-- (PGGraphFeatureExtractor)initWithError:(id *)a3
+- (PGGraphFeatureExtractor)initWithError:(id *)error
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -28,16 +28,16 @@
   objc_exception_throw(v8);
 }
 
-- (PGGraphFeatureExtractor)initWithName:(id)a3 featureNames:(id)a4 relation:(id)a5 labelForTargetBlock:(id)a6
+- (PGGraphFeatureExtractor)initWithName:(id)name featureNames:(id)names relation:(id)relation labelForTargetBlock:(id)block
 {
   v7.receiver = self;
   v7.super_class = PGGraphFeatureExtractor;
-  return [(MARelationCollectionFeatureExtractor *)&v7 initWithName:a3 featureNames:a4 relation:a5 labelForTargetBlock:a6];
+  return [(MARelationCollectionFeatureExtractor *)&v7 initWithName:name featureNames:names relation:relation labelForTargetBlock:block];
 }
 
-+ (id)featureExtractorWithError:(id *)a3
++ (id)featureExtractorWithError:(id *)error
 {
-  v3 = [[a1 alloc] initWithError:a3];
+  v3 = [[self alloc] initWithError:error];
 
   return v3;
 }

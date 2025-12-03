@@ -1,18 +1,18 @@
 @interface CarChromeNavigationCameraStyleManager
 + (CarChromeNavigationCameraStyleManager)sharedInstance;
 - (CarChromeNavigationCameraStyleManager)init;
-- (int64_t)_oppositeCameraStyle:(int64_t)a3;
+- (int64_t)_oppositeCameraStyle:(int64_t)style;
 - (void)_initialize;
 - (void)_teardown;
 - (void)_toggleCameraStyle;
 - (void)_updateCameraStyles;
 - (void)_updateSceneCounts;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)setCenterConsoleCameraStyle:(int64_t)a3;
-- (void)setInstrumentClusterCameraStyle:(int64_t)a3;
+- (void)registerObserver:(id)observer;
+- (void)setCenterConsoleCameraStyle:(int64_t)style;
+- (void)setInstrumentClusterCameraStyle:(int64_t)style;
 - (void)toggleCameraStyle;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CarChromeNavigationCameraStyleManager
@@ -33,26 +33,26 @@
       goto LABEL_27;
     }
 
-    v22 = self;
+    selfCopy = self;
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
     if (objc_opt_respondsToSelector())
     {
-      v25 = [(CarChromeNavigationCameraStyleManager *)v22 performSelector:"accessibilityIdentifier"];
+      v25 = [(CarChromeNavigationCameraStyleManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v26 = v25;
       if (v25 && ![v25 isEqualToString:v24])
       {
-        v27 = [NSString stringWithFormat:@"%@<%p, %@>", v24, v22, v26];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v24, selfCopy, v26];
 
         goto LABEL_26;
       }
     }
 
-    v27 = [NSString stringWithFormat:@"%@<%p>", v24, v22];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v24, selfCopy];
 LABEL_26:
 
     *buf = 138543362;
-    v60 = v27;
+    v60 = selfCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}@] Updating camera style with only IC", buf, 0xCu);
 
 LABEL_27:
@@ -84,30 +84,30 @@ LABEL_35:
 
       v39 = v38;
 
-      v40 = [v39 integerValue];
+      integerValue = [v39 integerValue];
       goto LABEL_65;
     }
 
-    v29 = self;
+    selfCopy2 = self;
     v30 = objc_opt_class();
     v31 = NSStringFromClass(v30);
     if (objc_opt_respondsToSelector())
     {
-      v32 = [(CarChromeNavigationCameraStyleManager *)v29 performSelector:"accessibilityIdentifier"];
+      v32 = [(CarChromeNavigationCameraStyleManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v33 = v32;
       if (v32 && ![v32 isEqualToString:v31])
       {
-        v34 = [NSString stringWithFormat:@"%@<%p, %@>", v31, v29, v33];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v31, selfCopy2, v33];
 
         goto LABEL_34;
       }
     }
 
-    v34 = [NSString stringWithFormat:@"%@<%p>", v31, v29];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v31, selfCopy2];
 LABEL_34:
 
     *buf = 138543362;
-    v60 = v34;
+    v60 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] Updating camera style with only CS", buf, 0xCu);
 
     goto LABEL_35;
@@ -118,26 +118,26 @@ LABEL_34:
     goto LABEL_10;
   }
 
-  v6 = self;
+  selfCopy3 = self;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(CarChromeNavigationCameraStyleManager *)v6 performSelector:"accessibilityIdentifier"];
+    v9 = [(CarChromeNavigationCameraStyleManager *)selfCopy3 performSelector:"accessibilityIdentifier"];
     v10 = v9;
     if (v9 && ![v9 isEqualToString:v8])
     {
-      v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+      selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy3, v10];
 
       goto LABEL_9;
     }
   }
 
-  v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+  selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy3];
 LABEL_9:
 
   *buf = 138543362;
-  v60 = v11;
+  v60 = selfCopy3;
   _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] Updating camera style with dual displays", buf, 0xCu);
 
 LABEL_10:
@@ -150,7 +150,7 @@ LABEL_10:
     if (v42)
     {
       v43 = +[NSUserDefaults standardUserDefaults];
-      v40 = [v43 integerForKey:@"CarNavigationDualDisplayCameraStyle"];
+      integerValue = [v43 integerForKey:@"CarNavigationDualDisplayCameraStyle"];
 
       v35 = sub_100DFEAB0();
       if (!os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -160,36 +160,36 @@ LABEL_65:
         goto LABEL_66;
       }
 
-      v44 = self;
+      selfCopy4 = self;
       v45 = objc_opt_class();
       v46 = NSStringFromClass(v45);
       if (objc_opt_respondsToSelector())
       {
-        v47 = [(CarChromeNavigationCameraStyleManager *)v44 performSelector:"accessibilityIdentifier"];
+        v47 = [(CarChromeNavigationCameraStyleManager *)selfCopy4 performSelector:"accessibilityIdentifier"];
         v48 = v47;
         if (v47 && ![v47 isEqualToString:v46])
         {
-          v49 = [NSString stringWithFormat:@"%@<%p, %@>", v46, v44, v48];
+          selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v46, selfCopy4, v48];
 
           goto LABEL_46;
         }
       }
 
-      v49 = [NSString stringWithFormat:@"%@<%p>", v46, v44];
+      selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v46, selfCopy4];
 LABEL_46:
 
-      if (v40 > 6)
+      if (integerValue > 6)
       {
         v50 = @".Unknown";
       }
 
       else
       {
-        v50 = *(&off_101655628 + v40);
+        v50 = *(&off_101655628 + integerValue);
       }
 
       *buf = 138543618;
-      v60 = v49;
+      v60 = selfCopy4;
       v61 = 2112;
       v62 = v50;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "[%{public}@] This is the first time dual displays have been connected; using saved camera style default: %@", buf, 0x16u);
@@ -204,26 +204,26 @@ LABEL_46:
       goto LABEL_55;
     }
 
-    v53 = self;
+    selfCopy5 = self;
     v54 = objc_opt_class();
     v55 = NSStringFromClass(v54);
     if (objc_opt_respondsToSelector())
     {
-      v56 = [(CarChromeNavigationCameraStyleManager *)v53 performSelector:"accessibilityIdentifier"];
+      v56 = [(CarChromeNavigationCameraStyleManager *)selfCopy5 performSelector:"accessibilityIdentifier"];
       v57 = v56;
       if (v56 && ![v56 isEqualToString:v55])
       {
-        v58 = [NSString stringWithFormat:@"%@<%p, %@>", v55, v53, v57];
+        selfCopy5 = [NSString stringWithFormat:@"%@<%p, %@>", v55, selfCopy5, v57];
 
         goto LABEL_54;
       }
     }
 
-    v58 = [NSString stringWithFormat:@"%@<%p>", v55, v53];
+    selfCopy5 = [NSString stringWithFormat:@"%@<%p>", v55, selfCopy5];
 LABEL_54:
 
     *buf = 138543618;
-    v60 = v58;
+    v60 = selfCopy5;
     v61 = 2048;
     v62 = Integer;
     _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "[%{public}@] This is the first time dual displays have been connected; use behavior %ld", buf, 0x16u);
@@ -233,12 +233,12 @@ LABEL_55:
 LABEL_56:
     if (v28)
     {
-      v40 = 1;
+      integerValue = 1;
     }
 
     else
     {
-      v40 = 2;
+      integerValue = 2;
     }
 
     goto LABEL_66;
@@ -247,45 +247,45 @@ LABEL_56:
   v12 = sub_100DFEAB0();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = self;
+    selfCopy6 = self;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(CarChromeNavigationCameraStyleManager *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(CarChromeNavigationCameraStyleManager *)selfCopy6 performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy6 = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy6, v17];
 
         goto LABEL_17;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy6 = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy6];
 LABEL_17:
 
-    v19 = [(CarChromeNavigationCameraStyleManager *)v13 centerConsoleDualDisplayCameraStyle];
-    if (v19 > 6)
+    centerConsoleDualDisplayCameraStyle = [(CarChromeNavigationCameraStyleManager *)selfCopy6 centerConsoleDualDisplayCameraStyle];
+    if (centerConsoleDualDisplayCameraStyle > 6)
     {
       v20 = @".Unknown";
     }
 
     else
     {
-      v20 = *(&off_101655628 + v19);
+      v20 = *(&off_101655628 + centerConsoleDualDisplayCameraStyle);
     }
 
     *buf = 138543618;
-    v60 = v18;
+    v60 = selfCopy6;
     v61 = 2112;
     v62 = v20;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}@] Dual displays have been connected more than once; use the last saved camera style: %@", buf, 0x16u);
   }
 
-  v40 = [(CarChromeNavigationCameraStyleManager *)self centerConsoleDualDisplayCameraStyle];
+  integerValue = [(CarChromeNavigationCameraStyleManager *)self centerConsoleDualDisplayCameraStyle];
 LABEL_66:
-  [(CarChromeNavigationCameraStyleManager *)self setCenterConsoleCameraStyle:v40];
+  [(CarChromeNavigationCameraStyleManager *)self setCenterConsoleCameraStyle:integerValue];
 }
 
 - (void)_updateSceneCounts
@@ -296,52 +296,52 @@ LABEL_66:
   [(CarChromeNavigationCameraStyleManager *)self _updateCameraStyles];
 }
 
-- (void)setInstrumentClusterCameraStyle:(int64_t)a3
+- (void)setInstrumentClusterCameraStyle:(int64_t)style
 {
-  if (self->_instrumentClusterCameraStyle != a3)
+  if (self->_instrumentClusterCameraStyle != style)
   {
     v5 = sub_100DFEAB0();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
 LABEL_12:
 
-      self->_instrumentClusterCameraStyle = a3;
-      v13 = [(CarChromeNavigationCameraStyleManager *)self observers];
-      [v13 carChromeNavigationCameraStyleManager:self didChangeInstrumentClusterCameraStyle:self->_instrumentClusterCameraStyle];
+      self->_instrumentClusterCameraStyle = style;
+      observers = [(CarChromeNavigationCameraStyleManager *)self observers];
+      [observers carChromeNavigationCameraStyleManager:self didChangeInstrumentClusterCameraStyle:self->_instrumentClusterCameraStyle];
 
       return;
     }
 
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarChromeNavigationCameraStyleManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarChromeNavigationCameraStyleManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
-    if (a3 > 6)
+    if (style > 6)
     {
       v12 = @".Unknown";
     }
 
     else
     {
-      v12 = *(&off_101655628 + a3);
+      v12 = *(&off_101655628 + style);
     }
 
     *buf = 138543618;
-    v15 = v11;
+    v15 = selfCopy;
     v16 = 2112;
     v17 = v12;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Got new IC camera style: %@", buf, 0x16u);
@@ -350,7 +350,7 @@ LABEL_8:
   }
 }
 
-- (void)setCenterConsoleCameraStyle:(int64_t)a3
+- (void)setCenterConsoleCameraStyle:(int64_t)style
 {
   if (self->_centerConsoleSceneCount && self->_instrumentClusterSceneCount)
   {
@@ -359,40 +359,40 @@ LABEL_8:
     {
 LABEL_13:
 
-      self->_centerConsoleDualDisplayCameraStyle = a3;
+      self->_centerConsoleDualDisplayCameraStyle = style;
       goto LABEL_14;
     }
 
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarChromeNavigationCameraStyleManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarChromeNavigationCameraStyleManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_9;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_9:
 
-    if (a3 > 6)
+    if (style > 6)
     {
       v12 = @".Unknown";
     }
 
     else
     {
-      v12 = *(&off_101655628 + a3);
+      v12 = *(&off_101655628 + style);
     }
 
     *buf = 138543618;
-    v23 = v11;
+    v23 = selfCopy;
     v24 = 2112;
     v25 = v12;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Updating dual display camera style: %@", buf, 0x16u);
@@ -401,7 +401,7 @@ LABEL_9:
   }
 
 LABEL_14:
-  if (self->_centerConsoleCameraStyle == a3)
+  if (self->_centerConsoleCameraStyle == style)
   {
     return;
   }
@@ -409,50 +409,50 @@ LABEL_14:
   v13 = sub_100DFEAB0();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = self;
+    selfCopy2 = self;
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(CarChromeNavigationCameraStyleManager *)v14 performSelector:"accessibilityIdentifier"];
+      v17 = [(CarChromeNavigationCameraStyleManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v18 = v17;
       if (v17 && ![v17 isEqualToString:v16])
       {
-        v19 = [NSString stringWithFormat:@"%@<%p, %@>", v16, v14, v18];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v16, selfCopy2, v18];
 
         goto LABEL_21;
       }
     }
 
-    v19 = [NSString stringWithFormat:@"%@<%p>", v16, v14];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v16, selfCopy2];
 LABEL_21:
 
-    if (a3 > 6)
+    if (style > 6)
     {
       v20 = @".Unknown";
     }
 
     else
     {
-      v20 = *(&off_101655628 + a3);
+      v20 = *(&off_101655628 + style);
     }
 
     *buf = 138543618;
-    v23 = v19;
+    v23 = selfCopy2;
     v24 = 2112;
     v25 = v20;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}@] Got new CS camera style style: %@", buf, 0x16u);
   }
 
-  self->_centerConsoleCameraStyle = a3;
-  [(CarChromeNavigationCameraStyleManager *)self setInstrumentClusterCameraStyle:[(CarChromeNavigationCameraStyleManager *)self _oppositeCameraStyle:a3]];
-  v21 = [(CarChromeNavigationCameraStyleManager *)self observers];
-  [v21 carChromeNavigationCameraStyleManager:self didChangeCenterConsoleCameraStyle:self->_centerConsoleCameraStyle];
+  self->_centerConsoleCameraStyle = style;
+  [(CarChromeNavigationCameraStyleManager *)self setInstrumentClusterCameraStyle:[(CarChromeNavigationCameraStyleManager *)self _oppositeCameraStyle:style]];
+  observers = [(CarChromeNavigationCameraStyleManager *)self observers];
+  [observers carChromeNavigationCameraStyleManager:self didChangeCenterConsoleCameraStyle:self->_centerConsoleCameraStyle];
 }
 
-- (int64_t)_oppositeCameraStyle:(int64_t)a3
+- (int64_t)_oppositeCameraStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     return 1;
   }
@@ -471,10 +471,10 @@ LABEL_21:
     goto LABEL_14;
   }
 
-  v4 = self;
-  if (!v4)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v9 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -482,33 +482,33 @@ LABEL_21:
   v6 = NSStringFromClass(v5);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(CarChromeNavigationCameraStyleManager *)v4 performSelector:"accessibilityIdentifier"];
+    v7 = [(CarChromeNavigationCameraStyleManager *)selfCopy performSelector:"accessibilityIdentifier"];
     v8 = v7;
     if (v7 && ![v7 isEqualToString:v6])
     {
-      v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
       goto LABEL_8;
     }
   }
 
-  v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  v10 = [(CarChromeNavigationCameraStyleManager *)v4 centerConsoleCameraStyle];
-  if (v10 > 6)
+  centerConsoleCameraStyle = [(CarChromeNavigationCameraStyleManager *)selfCopy centerConsoleCameraStyle];
+  if (centerConsoleCameraStyle > 6)
   {
     v11 = @".Unknown";
   }
 
   else
   {
-    v11 = *(&off_101655628 + v10);
+    v11 = *(&off_101655628 + centerConsoleCameraStyle);
   }
 
   *buf = 138543618;
-  v13 = v9;
+  v13 = selfCopy;
   v14 = 2112;
   v15 = v11;
   _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Toggling camera style from existing style: %@", buf, 0x16u);
@@ -522,10 +522,10 @@ LABEL_14:
   v3 = sub_100DFEAB0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -533,22 +533,22 @@ LABEL_14:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarChromeNavigationCameraStyleManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarChromeNavigationCameraStyleManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Tearing down", buf, 0xCu);
   }
 
@@ -576,10 +576,10 @@ LABEL_12:
       return;
     }
 
-    v5 = self;
-    if (!v5)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v10 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -587,24 +587,24 @@ LABEL_12:
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(CarChromeNavigationCameraStyleManager *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(CarChromeNavigationCameraStyleManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy, v9];
 
         goto LABEL_9;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy];
 LABEL_9:
 
 LABEL_11:
-    instrumentClusterSceneCount = v5->_instrumentClusterSceneCount;
-    centerConsoleSceneCount = v5->_centerConsoleSceneCount;
+    instrumentClusterSceneCount = selfCopy->_instrumentClusterSceneCount;
+    centerConsoleSceneCount = selfCopy->_centerConsoleSceneCount;
     *buf = 138543874;
-    v14 = v10;
+    v14 = selfCopy;
     v15 = 2048;
     v16 = instrumentClusterSceneCount;
     v17 = 2048;
@@ -654,16 +654,16 @@ LABEL_7:
 LABEL_12:
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_100DFEAB0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -671,33 +671,33 @@ LABEL_12:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarChromeNavigationCameraStyleManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarChromeNavigationCameraStyleManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v24 = v11;
+    v24 = selfCopy;
     v25 = 2112;
-    v26 = v4;
+    v26 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Unregistering observer: %@", buf, 0x16u);
   }
 
-  v12 = [(CarChromeNavigationCameraStyleManager *)self observers];
-  [v12 unregisterObserver:v4];
+  observers = [(CarChromeNavigationCameraStyleManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 
-  v13 = [(CarChromeNavigationCameraStyleManager *)self observers];
-  v14 = [v13 allObservers];
-  v15 = [v14 count];
+  observers2 = [(CarChromeNavigationCameraStyleManager *)self observers];
+  allObservers = [observers2 allObservers];
+  v15 = [allObservers count];
 
   if (!v15)
   {
@@ -710,10 +710,10 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v17 = self;
-    if (!v17)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v22 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_21;
     }
 
@@ -721,22 +721,22 @@ LABEL_22:
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v20 = [(CarChromeNavigationCameraStyleManager *)v17 performSelector:"accessibilityIdentifier"];
+      v20 = [(CarChromeNavigationCameraStyleManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v21 = v20;
       if (v20 && ![v20 isEqualToString:v19])
       {
-        v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy2, v21];
 
         goto LABEL_19;
       }
     }
 
-    v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy2];
 LABEL_19:
 
 LABEL_21:
     *buf = 138543362;
-    v24 = v22;
+    v24 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}@] Lost last observer; will tear down now", buf, 0xCu);
 
     goto LABEL_22;
@@ -745,16 +745,16 @@ LABEL_21:
 LABEL_23:
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_100DFEAB0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -762,33 +762,33 @@ LABEL_23:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarChromeNavigationCameraStyleManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarChromeNavigationCameraStyleManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v24 = v11;
+    v24 = selfCopy;
     v25 = 2112;
-    v26 = v4;
+    v26 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Registering observer: %@", buf, 0x16u);
   }
 
-  v12 = [(CarChromeNavigationCameraStyleManager *)self observers];
-  [v12 registerObserver:v4];
+  observers = [(CarChromeNavigationCameraStyleManager *)self observers];
+  [observers registerObserver:observerCopy];
 
-  v13 = [(CarChromeNavigationCameraStyleManager *)self observers];
-  v14 = [v13 allObservers];
-  v15 = [v14 count];
+  observers2 = [(CarChromeNavigationCameraStyleManager *)self observers];
+  allObservers = [observers2 allObservers];
+  v15 = [allObservers count];
 
   if (v15 == 1)
   {
@@ -801,10 +801,10 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v17 = self;
-    if (!v17)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v22 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_21;
     }
 
@@ -812,22 +812,22 @@ LABEL_22:
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v20 = [(CarChromeNavigationCameraStyleManager *)v17 performSelector:"accessibilityIdentifier"];
+      v20 = [(CarChromeNavigationCameraStyleManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v21 = v20;
       if (v20 && ![v20 isEqualToString:v19])
       {
-        v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy2, v21];
 
         goto LABEL_19;
       }
     }
 
-    v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy2];
 LABEL_19:
 
 LABEL_21:
     *buf = 138543362;
-    v24 = v22;
+    v24 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}@] Got 1st observer; will initialize now", buf, 0xCu);
 
     goto LABEL_22;
@@ -841,10 +841,10 @@ LABEL_23:
   v3 = sub_100DFEAB0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -852,22 +852,22 @@ LABEL_23:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarChromeNavigationCameraStyleManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarChromeNavigationCameraStyleManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Deallocating", buf, 0xCu);
   }
 
@@ -932,8 +932,8 @@ LABEL_9:
 
     v16 = v15;
 
-    v17 = [v16 integerValue];
-    [(CarChromeNavigationCameraStyleManager *)v2 setCenterConsoleCameraStyle:v17];
+    integerValue = [v16 integerValue];
+    [(CarChromeNavigationCameraStyleManager *)v2 setCenterConsoleCameraStyle:integerValue];
     v18 = sub_100DFEAB0();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {

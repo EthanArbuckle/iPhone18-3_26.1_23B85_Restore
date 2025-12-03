@@ -1,17 +1,17 @@
 @interface NavLaneGuidanceViewController
 - (BOOL)hasLaneGuidance;
 - (MUBlurView)backgroundView;
-- (NavLaneGuidanceViewController)initWithDelegate:(id)a3 blurGroup:(id)a4;
+- (NavLaneGuidanceViewController)initWithDelegate:(id)delegate blurGroup:(id)group;
 - (NavLaneGuidanceViewControllerDelegate)delegate;
 - (void)_insertBackgroundView;
-- (void)_updateLaneGuidanceAnimated:(BOOL)a3;
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4;
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4;
+- (void)_updateLaneGuidanceAnimated:(BOOL)animated;
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id;
+- (void)navigationService:(id)service showLaneDirections:(id)directions;
 - (void)pressedLaneGuidance;
-- (void)setCornerMask:(unint64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setLayoutProgress:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCornerMask:(unint64_t)mask;
+- (void)setCornerRadius:(double)radius;
+- (void)setLayoutProgress:(double)progress;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -19,8 +19,8 @@
 
 - (BOOL)hasLaneGuidance
 {
-  v2 = [(NavLaneGuidanceViewController *)self laneGuidanceInfo];
-  v3 = v2 != 0;
+  laneGuidanceInfo = [(NavLaneGuidanceViewController *)self laneGuidanceInfo];
+  v3 = laneGuidanceInfo != 0;
 
   return v3;
 }
@@ -32,69 +32,69 @@
   return WeakRetained;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v3 = a3;
-  if (vabdd_f64(self->_cornerRadius, a3) > 2.22044605e-16)
+  radiusCopy = radius;
+  if (vabdd_f64(self->_cornerRadius, radius) > 2.22044605e-16)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     cornerMask = self->_cornerMask;
     if (cornerMask)
     {
-      v6 = a3;
+      radiusCopy2 = radius;
     }
 
     else
     {
-      v6 = 0.0;
+      radiusCopy2 = 0.0;
     }
 
     if ((cornerMask & 2) != 0)
     {
-      v7 = a3;
+      radiusCopy3 = radius;
     }
 
     else
     {
-      v7 = 0.0;
+      radiusCopy3 = 0.0;
     }
 
     if ((cornerMask & 4) != 0)
     {
-      v8 = a3;
+      radiusCopy4 = radius;
     }
 
     else
     {
-      v8 = 0.0;
+      radiusCopy4 = 0.0;
     }
 
     if ((cornerMask & 8) != 0)
     {
-      v9 = a3;
+      radiusCopy5 = radius;
     }
 
     else
     {
-      v9 = 0.0;
+      radiusCopy5 = 0.0;
     }
 
-    v10 = [(NavLaneGuidanceViewController *)self viewIfLoaded];
-    v11 = [v10 layer];
-    v17 = v8;
-    v18 = v8;
-    v19 = v9;
-    v20 = v9;
-    v21 = v7;
-    v22 = v7;
-    v23 = v6;
-    v24 = v6;
-    [v11 setCornerRadii:&v17];
+    viewIfLoaded = [(NavLaneGuidanceViewController *)self viewIfLoaded];
+    layer = [viewIfLoaded layer];
+    v17 = radiusCopy4;
+    v18 = radiusCopy4;
+    v19 = radiusCopy5;
+    v20 = radiusCopy5;
+    v21 = radiusCopy3;
+    v22 = radiusCopy3;
+    v23 = radiusCopy2;
+    v24 = radiusCopy2;
+    [layer setCornerRadii:&v17];
 
     v12 = self->_cornerMask;
     if (v12)
     {
-      v13 = v3;
+      v13 = radiusCopy;
     }
 
     else
@@ -104,7 +104,7 @@
 
     if ((v12 & 2) != 0)
     {
-      v14 = v3;
+      v14 = radiusCopy;
     }
 
     else
@@ -114,7 +114,7 @@
 
     if ((v12 & 4) != 0)
     {
-      v15 = v3;
+      v15 = radiusCopy;
     }
 
     else
@@ -124,25 +124,25 @@
 
     if ((v12 & 8) == 0)
     {
-      v3 = 0.0;
+      radiusCopy = 0.0;
     }
 
-    v16 = [(MUBlurView *)self->_backgroundView layer];
+    layer2 = [(MUBlurView *)self->_backgroundView layer];
     v17 = v15;
     v18 = v15;
-    v19 = v3;
-    v20 = v3;
+    v19 = radiusCopy;
+    v20 = radiusCopy;
     v21 = v14;
     v22 = v14;
     v23 = v13;
     v24 = v13;
-    [v16 setCornerRadii:&v17];
+    [layer2 setCornerRadii:&v17];
   }
 }
 
-- (void)setCornerMask:(unint64_t)a3
+- (void)setCornerMask:(unint64_t)mask
 {
-  if (self->_cornerMask != a3)
+  if (self->_cornerMask != mask)
   {
     v32 = v10;
     v33 = v9;
@@ -152,10 +152,10 @@
     v37 = v5;
     v38 = v3;
     v39 = v4;
-    v11 = a3;
-    self->_cornerMask = a3;
+    maskCopy = mask;
+    self->_cornerMask = mask;
     v13 = 0.0;
-    if (a3)
+    if (mask)
     {
       cornerRadius = self->_cornerRadius;
     }
@@ -165,7 +165,7 @@
       cornerRadius = 0.0;
     }
 
-    if ((a3 & 2) != 0)
+    if ((mask & 2) != 0)
     {
       v15 = self->_cornerRadius;
     }
@@ -175,7 +175,7 @@
       v15 = 0.0;
     }
 
-    if ((a3 & 4) != 0)
+    if ((mask & 4) != 0)
     {
       v16 = self->_cornerRadius;
     }
@@ -185,7 +185,7 @@
       v16 = 0.0;
     }
 
-    if ((a3 & 8) != 0)
+    if ((mask & 8) != 0)
     {
       v17 = self->_cornerRadius;
     }
@@ -195,8 +195,8 @@
       v17 = 0.0;
     }
 
-    v18 = [(NavLaneGuidanceViewController *)self viewIfLoaded];
-    v19 = [v18 layer];
+    viewIfLoaded = [(NavLaneGuidanceViewController *)self viewIfLoaded];
+    layer = [viewIfLoaded layer];
     v24 = v16;
     v25 = v16;
     v26 = v17;
@@ -205,9 +205,9 @@
     v29 = v15;
     v30 = cornerRadius;
     v31 = cornerRadius;
-    [v19 setCornerRadii:&v24];
+    [layer setCornerRadii:&v24];
 
-    if (v11)
+    if (maskCopy)
     {
       v20 = self->_cornerRadius;
     }
@@ -217,7 +217,7 @@
       v20 = 0.0;
     }
 
-    if ((v11 & 2) != 0)
+    if ((maskCopy & 2) != 0)
     {
       v21 = self->_cornerRadius;
     }
@@ -227,7 +227,7 @@
       v21 = 0.0;
     }
 
-    if ((v11 & 4) != 0)
+    if ((maskCopy & 4) != 0)
     {
       v22 = self->_cornerRadius;
     }
@@ -237,12 +237,12 @@
       v22 = 0.0;
     }
 
-    if ((v11 & 8) != 0)
+    if ((maskCopy & 8) != 0)
     {
       v13 = self->_cornerRadius;
     }
 
-    v23 = [(MUBlurView *)self->_backgroundView layer];
+    layer2 = [(MUBlurView *)self->_backgroundView layer];
     v24 = v22;
     v25 = v22;
     v26 = v13;
@@ -251,7 +251,7 @@
     v29 = v21;
     v30 = v20;
     v31 = v20;
-    [v23 setCornerRadii:&v24];
+    [layer2 setCornerRadii:&v24];
   }
 }
 
@@ -261,27 +261,27 @@
   backgroundView = self->_backgroundView;
   self->_backgroundView = 0;
 
-  v4 = [(NavLaneGuidanceViewController *)self view];
-  v5 = [(NavLaneGuidanceViewController *)self backgroundView];
-  [v4 insertSubview:v5 atIndex:0];
+  view = [(NavLaneGuidanceViewController *)self view];
+  backgroundView = [(NavLaneGuidanceViewController *)self backgroundView];
+  [view insertSubview:backgroundView atIndex:0];
 
-  v10 = [(NavLaneGuidanceViewController *)self backgroundView];
-  v6 = [(NavLaneGuidanceViewController *)self view];
+  backgroundView2 = [(NavLaneGuidanceViewController *)self backgroundView];
+  view2 = [(NavLaneGuidanceViewController *)self view];
   LODWORD(v7) = 1148846080;
-  v8 = [v10 _maps_constraintsEqualToEdgesOfView:v6 priority:v7];
-  v9 = [v8 allConstraints];
-  [NSLayoutConstraint activateConstraints:v9];
+  v8 = [backgroundView2 _maps_constraintsEqualToEdgesOfView:view2 priority:v7];
+  allConstraints = [v8 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
-- (void)_updateLaneGuidanceAnimated:(BOOL)a3
+- (void)_updateLaneGuidanceAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NavLaneGuidanceViewController *)self view];
-  v6 = [v5 superview];
-  [v6 layoutIfNeeded];
+  animatedCopy = animated;
+  view = [(NavLaneGuidanceViewController *)self view];
+  superview = [view superview];
+  [superview layoutIfNeeded];
 
-  v7 = [(NavLaneGuidanceViewController *)self laneGuidanceInfo];
-  if (v7)
+  laneGuidanceInfo = [(NavLaneGuidanceViewController *)self laneGuidanceInfo];
+  if (laneGuidanceInfo)
   {
     v8 = 76.0;
   }
@@ -296,7 +296,7 @@
   v10[0] = _NSConcreteStackBlock;
   v10[2] = sub_1008B54D0;
   v10[3] = &unk_101661650;
-  if (!v3)
+  if (!animatedCopy)
   {
     v9 = 0.0;
   }
@@ -306,63 +306,63 @@
   [UIView animateWithDuration:117440512 delay:v10 options:0 animations:v9 completion:0.0];
 }
 
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id
 {
-  [(NavLaneGuidanceViewController *)self setLaneGuidanceInfo:0, a4];
+  [(NavLaneGuidanceViewController *)self setLaneGuidanceInfo:0, id];
 
   [(NavLaneGuidanceViewController *)self _updateLaneGuidanceAnimated:1];
 }
 
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4
+- (void)navigationService:(id)service showLaneDirections:(id)directions
 {
-  v5 = a4;
-  v6 = [(NavLaneGuidanceViewController *)self laneGuidanceInfo];
-  v7 = v6 == 0;
+  directionsCopy = directions;
+  laneGuidanceInfo = [(NavLaneGuidanceViewController *)self laneGuidanceInfo];
+  v7 = laneGuidanceInfo == 0;
 
-  v8 = [[NavSignLaneGuidanceInfo alloc] initWithGuidanceLaneInfo:v5];
+  v8 = [[NavSignLaneGuidanceInfo alloc] initWithGuidanceLaneInfo:directionsCopy];
   [(NavLaneGuidanceViewController *)self setLaneGuidanceInfo:v8];
 
-  v9 = [(NavLaneGuidanceViewController *)self laneGuidanceInfo];
-  v10 = [v9 lanes];
-  v11 = [(NavLaneGuidanceViewController *)self laneGuidanceView];
-  [v11 setLanes:v10];
+  laneGuidanceInfo2 = [(NavLaneGuidanceViewController *)self laneGuidanceInfo];
+  lanes = [laneGuidanceInfo2 lanes];
+  laneGuidanceView = [(NavLaneGuidanceViewController *)self laneGuidanceView];
+  [laneGuidanceView setLanes:lanes];
 
   [(NavLaneGuidanceViewController *)self _updateLaneGuidanceAnimated:v7];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = NavLaneGuidanceViewController;
-  v4 = a3;
-  [(NavLaneGuidanceViewController *)&v11 traitCollectionDidChange:v4];
-  v5 = [(NavLaneGuidanceViewController *)self traitCollection];
-  v6 = sub_100017FE8(v4, v5);
+  changeCopy = change;
+  [(NavLaneGuidanceViewController *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(NavLaneGuidanceViewController *)self traitCollection];
+  v6 = sub_100017FE8(changeCopy, traitCollection);
 
   if (v6)
   {
-    v7 = [(NavLaneGuidanceViewController *)self traitCollection];
-    v8 = [v7 isLuminanceReduced];
+    traitCollection2 = [(NavLaneGuidanceViewController *)self traitCollection];
+    isLuminanceReduced = [traitCollection2 isLuminanceReduced];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1008B57B4;
     v9[3] = &unk_101661AE0;
-    v10 = v8;
+    v10 = isLuminanceReduced;
     v9[4] = self;
-    [UIView _maps_animateForAndromeda:v8 animations:v9];
+    [UIView _maps_animateForAndromeda:isLuminanceReduced animations:v9];
   }
 }
 
-- (void)setLayoutProgress:(double)a3
+- (void)setLayoutProgress:(double)progress
 {
-  if (self->_layoutProgress != a3)
+  if (self->_layoutProgress != progress)
   {
-    self->_layoutProgress = a3;
-    v4 = [(NavLaneGuidanceViewController *)self traitCollection];
-    v5 = [v4 isLuminanceReduced];
+    self->_layoutProgress = progress;
+    traitCollection = [(NavLaneGuidanceViewController *)self traitCollection];
+    isLuminanceReduced = [traitCollection isLuminanceReduced];
 
-    if ((v5 & 1) == 0)
+    if ((isLuminanceReduced & 1) == 0)
     {
       v8 = sub_1000808D8();
       [(NavLaneGuidanceViewController *)self layoutProgress];
@@ -404,8 +404,8 @@
     [(MUBlurView *)self->_backgroundView setNonBlurredColor:v10];
 
     [(MUBlurView *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(MUBlurView *)self->_backgroundView layer];
-    [v11 setCornerCurve:kCACornerCurveContinuous];
+    layer = [(MUBlurView *)self->_backgroundView layer];
+    [layer setCornerCurve:kCACornerCurveContinuous];
 
     cornerMask = self->_cornerMask;
     if (cornerMask)
@@ -448,7 +448,7 @@
       v16 = 0.0;
     }
 
-    v17 = [(MUBlurView *)self->_backgroundView layer];
+    layer2 = [(MUBlurView *)self->_backgroundView layer];
     *v20 = v15;
     *&v20[1] = v15;
     *&v20[2] = v16;
@@ -457,10 +457,10 @@
     *&v20[5] = v14;
     *&v20[6] = cornerRadius;
     *&v20[7] = cornerRadius;
-    [v17 setCornerRadii:v20];
+    [layer2 setCornerRadii:v20];
 
-    v18 = [(MUBlurView *)self->_backgroundView layer];
-    [v18 setMasksToBounds:1];
+    layer3 = [(MUBlurView *)self->_backgroundView layer];
+    [layer3 setMasksToBounds:1];
 
     backgroundView = self->_backgroundView;
   }
@@ -470,8 +470,8 @@
 
 - (void)pressedLaneGuidance
 {
-  v2 = [(NavLaneGuidanceViewController *)self delegate];
-  [v2 didTapLaneGuidance];
+  delegate = [(NavLaneGuidanceViewController *)self delegate];
+  [delegate didTapLaneGuidance];
 }
 
 - (void)viewDidLoad
@@ -479,9 +479,9 @@
   v35.receiver = self;
   v35.super_class = NavLaneGuidanceViewController;
   [(NavLaneGuidanceViewController *)&v35 viewDidLoad];
-  v3 = [(NavLaneGuidanceViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setCornerCurve:kCACornerCurveContinuous];
+  view = [(NavLaneGuidanceViewController *)self view];
+  layer = [view layer];
+  [layer setCornerCurve:kCACornerCurveContinuous];
 
   cornerMask = self->_cornerMask;
   if (cornerMask)
@@ -524,8 +524,8 @@
     v9 = 0.0;
   }
 
-  v10 = [(NavLaneGuidanceViewController *)self view];
-  v11 = [v10 layer];
+  view2 = [(NavLaneGuidanceViewController *)self view];
+  layer2 = [view2 layer];
   *v34 = v8;
   *&v34[1] = v8;
   *&v34[2] = v9;
@@ -534,11 +534,11 @@
   *&v34[5] = v7;
   *&v34[6] = cornerRadius;
   *&v34[7] = cornerRadius;
-  [v11 setCornerRadii:v34];
+  [layer2 setCornerRadii:v34];
 
-  v12 = [(NavLaneGuidanceViewController *)self view];
-  v13 = [v12 layer];
-  [v13 setMasksToBounds:1];
+  view3 = [(NavLaneGuidanceViewController *)self view];
+  layer3 = [view3 layer];
+  [layer3 setMasksToBounds:1];
 
   [(NavLaneGuidanceViewController *)self _insertBackgroundView];
   v14 = [[NavSignLaneGuidanceView alloc] initWithLaneStyle:0];
@@ -552,35 +552,35 @@
   v17 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"pressedLaneGuidance"];
   [(NavSignLaneGuidanceView *)v16 addGestureRecognizer:v17];
 
-  v18 = [(NavLaneGuidanceViewController *)self view];
-  [v18 addSubview:self->_laneGuidanceView];
+  view4 = [(NavLaneGuidanceViewController *)self view];
+  [view4 addSubview:self->_laneGuidanceView];
 
-  v32 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView leadingAnchor];
-  v33 = [(NavLaneGuidanceViewController *)self view];
-  v31 = [v33 leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  leadingAnchor = [(NavSignLaneGuidanceView *)self->_laneGuidanceView leadingAnchor];
+  view5 = [(NavLaneGuidanceViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[0] = v30;
-  v29 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView trailingAnchor];
-  v19 = [(NavLaneGuidanceViewController *)self view];
-  v20 = [v19 trailingAnchor];
-  v21 = [v29 constraintEqualToAnchor:v20];
+  trailingAnchor = [(NavSignLaneGuidanceView *)self->_laneGuidanceView trailingAnchor];
+  view6 = [(NavLaneGuidanceViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[1] = v21;
-  v22 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView bottomAnchor];
-  v23 = [(NavLaneGuidanceViewController *)self view];
-  v24 = [v23 bottomAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:-8.0];
+  bottomAnchor = [(NavSignLaneGuidanceView *)self->_laneGuidanceView bottomAnchor];
+  view7 = [(NavLaneGuidanceViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
   v36[2] = v25;
-  v26 = [(NavSignLaneGuidanceView *)self->_laneGuidanceView heightAnchor];
-  v27 = [v26 constraintEqualToConstant:76.0];
+  heightAnchor = [(NavSignLaneGuidanceView *)self->_laneGuidanceView heightAnchor];
+  v27 = [heightAnchor constraintEqualToConstant:76.0];
   v36[3] = v27;
   v28 = [NSArray arrayWithObjects:v36 count:4];
   [NSLayoutConstraint activateConstraints:v28];
 }
 
-- (NavLaneGuidanceViewController)initWithDelegate:(id)a3 blurGroup:(id)a4
+- (NavLaneGuidanceViewController)initWithDelegate:(id)delegate blurGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  groupCopy = group;
   v13.receiver = self;
   v13.super_class = NavLaneGuidanceViewController;
   v8 = [(NavLaneGuidanceViewController *)&v13 initWithNibName:0 bundle:0];
@@ -590,8 +590,8 @@
     v10 = NSStringFromClass(v9);
     [(NavLaneGuidanceViewController *)v8 setAccessibilityIdentifier:v10];
 
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v8->_blurGroup, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v8->_blurGroup, group);
     v11 = +[MNNavigationService sharedService];
     [v11 registerObserver:v8];
   }

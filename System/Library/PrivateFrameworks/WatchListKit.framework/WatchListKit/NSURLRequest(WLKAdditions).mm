@@ -16,14 +16,14 @@
     v36 = v15;
     HIDWORD(v35) = [v14 isEqualToString:@"POST"];
     LODWORD(v35) = [v14 isEqualToString:@"PATCH"];
-    v17 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v13 cachePolicy:a8 timeoutInterval:a1];
+    v17 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v13 cachePolicy:a8 timeoutInterval:self];
     [v17 setHTTPMethod:v14];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v18 = [v16 allKeys];
-    v19 = [v18 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    allKeys = [v16 allKeys];
+    v19 = [allKeys countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v19)
     {
       v20 = v19;
@@ -34,7 +34,7 @@
         {
           if (*v38 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allKeys);
           }
 
           v23 = *(*(&v37 + 1) + 8 * i);
@@ -42,7 +42,7 @@
           [v17 setValue:v24 forHTTPHeaderField:v23];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v37 objects:v42 count:16];
+        v20 = [allKeys countByEnumeratingWithState:&v37 objects:v42 count:16];
       }
 
       while (v20);
@@ -72,10 +72,10 @@
       else if (HIDWORD(v35))
       {
         v31 = [MEMORY[0x277CCACE0] componentsWithURL:v13 resolvingAgainstBaseURL:0];
-        v32 = [v13 query];
-        if ([v32 length])
+        query = [v13 query];
+        if ([query length])
         {
-          v33 = [v32 dataUsingEncoding:4];
+          v33 = [query dataUsingEncoding:4];
           [v17 setHTTPBody:v33];
 
           [v17 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];

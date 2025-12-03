@@ -14,7 +14,7 @@
   v6 = a3;
   if ([v6 count])
   {
-    v7 = [a1 ic_patternForTokens:v6 matchWordBoundaries:a4];
+    v7 = [self ic_patternForTokens:v6 matchWordBoundaries:a4];
     v10 = 0;
     v8 = [objc_alloc(MEMORY[0x1E696AE70]) initWithPattern:v7 options:1 error:&v10];
   }
@@ -92,7 +92,7 @@
   v7 = a4;
   if ([v6 count])
   {
-    v8 = [a1 ic_patternForTokens:v6 matchWordBoundaries:1];
+    v8 = [self ic_patternForTokens:v6 matchWordBoundaries:1];
     if (![v7 count])
     {
       v9 = 0;
@@ -111,7 +111,7 @@ LABEL_12:
     }
 
 LABEL_5:
-    v10 = [a1 ic_patternForTokens:v7 matchWordBoundaries:0];
+    v10 = [self ic_patternForTokens:v7 matchWordBoundaries:0];
     v9 = v10;
     if (v8 && v10)
     {
@@ -154,7 +154,7 @@ LABEL_14:
   }
 
   v4 = a3;
-  v5 = [a1 rangeOfFirstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v5 = [self rangeOfFirstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
   v7 = v6;
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL && v7 != 0;
@@ -166,8 +166,8 @@ LABEL_14:
   v12 = a3;
   v13 = a7;
   v14 = [v12 mutableCopy];
-  v15 = [v12 string];
-  v16 = [a1 matchesInString:v15 options:a4 range:{a5, a6}];
+  string = [v12 string];
+  v16 = [self matchesInString:string options:a4 range:{a5, a6}];
 
   v32 = 0u;
   v33 = 0u;
@@ -190,11 +190,11 @@ LABEL_14:
         }
 
         v21 = *(*(&v30 + 1) + 8 * i);
-        v22 = [v12 string];
-        v23 = [a1 replacementStringForResult:v21 inString:v22 offset:0 template:v13];
+        string2 = [v12 string];
+        v23 = [self replacementStringForResult:v21 inString:string2 offset:0 template:v13];
 
-        v24 = [v21 range];
-        [v14 replaceCharactersInRange:v24 withString:{v25, v23}];
+        range = [v21 range];
+        [v14 replaceCharactersInRange:range withString:{v25, v23}];
       }
 
       v18 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];

@@ -1,19 +1,19 @@
 @interface PUPickerActivityProgressController
 - (PUPickerActivityProgressController)init;
 - (void)_setupAlertController;
-- (void)setMessage:(id)a3;
-- (void)setProgress:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)showFromSourceViewController:(id)a3 completion:(id)a4;
+- (void)setMessage:(id)message;
+- (void)setProgress:(id)progress;
+- (void)setTitle:(id)title;
+- (void)showFromSourceViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation PUPickerActivityProgressController
 
 - (void)_setupAlertController
 {
-  v3 = [(PUPickerActivityProgressController *)self title];
-  v4 = [(PUPickerActivityProgressController *)self message];
-  v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v3 message:v4 preferredStyle:1];
+  title = [(PUPickerActivityProgressController *)self title];
+  message = [(PUPickerActivityProgressController *)self message];
+  v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:title message:message preferredStyle:1];
   objc_initWeak(&location, self);
   v6 = PULocalizedString(@"CANCEL");
   v8 = MEMORY[0x1E69E9820];
@@ -42,21 +42,21 @@ void __59__PUPickerActivityProgressController__setupAlertController__block_invok
   }
 }
 
-- (void)showFromSourceViewController:(id)a3 completion:(id)a4
+- (void)showFromSourceViewController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   [(PUPickerActivityProgressController *)self _setupAlertController];
-  [v7 presentViewController:self->_alertController animated:1 completion:v6];
+  [controllerCopy presentViewController:self->_alertController animated:1 completion:completionCopy];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
-  if (self->_message != v4)
+  messageCopy = message;
+  if (self->_message != messageCopy)
   {
-    v8 = v4;
-    if (![(NSString *)v4 isEqualToString:?])
+    v8 = messageCopy;
+    if (![(NSString *)messageCopy isEqualToString:?])
     {
       v5 = [(NSString *)v8 copy];
       message = self->_message;
@@ -73,13 +73,13 @@ void __59__PUPickerActivityProgressController__setupAlertController__block_invok
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  if (self->_title != v4)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    v8 = v4;
-    if (![(NSString *)v4 isEqualToString:?])
+    v8 = titleCopy;
+    if (![(NSString *)titleCopy isEqualToString:?])
     {
       v5 = [(NSString *)v8 copy];
       title = self->_title;
@@ -96,11 +96,11 @@ void __59__PUPickerActivityProgressController__setupAlertController__block_invok
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  objc_storeStrong(&self->_progress, a3);
-  v5 = a3;
-  [(PUAssetPickerActivityProgressViewController *)self->_progressViewController setProgress:v5];
+  objc_storeStrong(&self->_progress, progress);
+  progressCopy = progress;
+  [(PUAssetPickerActivityProgressViewController *)self->_progressViewController setProgress:progressCopy];
 }
 
 - (PUPickerActivityProgressController)init

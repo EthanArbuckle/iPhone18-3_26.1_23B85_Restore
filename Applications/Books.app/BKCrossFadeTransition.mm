@@ -1,8 +1,8 @@
 @interface BKCrossFadeTransition
 + (id)transition;
-+ (id)transitionWithDuration:(double)a3;
++ (id)transitionWithDuration:(double)duration;
 - (BKCrossFadeTransition)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation BKCrossFadeTransition
@@ -14,10 +14,10 @@
   return v2;
 }
 
-+ (id)transitionWithDuration:(double)a3
++ (id)transitionWithDuration:(double)duration
 {
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setDuration:a3];
+  [v4 setDuration:duration];
 
   return v4;
 }
@@ -35,44 +35,44 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v7 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v8 = [v6 view];
-  v9 = [v7 view];
-  v10 = [v5 window];
-  [v10 setUserInteractionEnabled:0];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v7 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  view = [v6 view];
+  view2 = [v7 view];
+  window = [containerView window];
+  [window setUserInteractionEnabled:0];
 
-  [v5 addSubview:v9];
-  [v8 frame];
-  [v9 setFrame:?];
+  [containerView addSubview:view2];
+  [view frame];
+  [view2 setFrame:?];
   +[CATransaction begin];
   v11 = +[CATransition animation];
   [v11 setType:kCATransitionFade];
-  [(BKCrossFadeTransition *)self transitionDuration:v4];
+  [(BKCrossFadeTransition *)self transitionDuration:transitionCopy];
   [v11 setDuration:?];
-  v12 = [v5 layer];
-  [v12 addAnimation:v11 forKey:@"fade"];
+  layer = [containerView layer];
+  [layer addAnimation:v11 forKey:@"fade"];
 
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  [v8 setHidden:1];
-  [v9 setHidden:0];
-  [v9 setAlpha:1.0];
+  [view setHidden:1];
+  [view2 setHidden:0];
+  [view2 setAlpha:1.0];
   +[CATransaction commit];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000AF80C;
   v16[3] = &unk_100A03A30;
-  v17 = v5;
-  v18 = v8;
-  v19 = v4;
-  v13 = v4;
-  v14 = v8;
-  v15 = v5;
+  v17 = containerView;
+  v18 = view;
+  v19 = transitionCopy;
+  v13 = transitionCopy;
+  v14 = view;
+  v15 = containerView;
   [CATransaction setCompletionBlock:v16];
   +[CATransaction commit];
 }

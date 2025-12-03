@@ -1,39 +1,39 @@
 @interface BMMomentsEventDataEventBundlePerson
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMomentsEventDataEventBundlePerson)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMomentsEventDataEventBundlePerson)initWithPersonRelationships:(id)a3 isMEPerson:(id)a4 significanceScore:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMMomentsEventDataEventBundlePerson)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMomentsEventDataEventBundlePerson)initWithPersonRelationships:(id)relationships isMEPerson:(id)person significanceScore:(id)score;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_personRelationshipsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMomentsEventDataEventBundlePerson
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMomentsEventDataEventBundlePerson *)self personRelationships];
-    v7 = [v5 personRelationships];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    personRelationships = [(BMMomentsEventDataEventBundlePerson *)self personRelationships];
+    personRelationships2 = [v5 personRelationships];
+    v8 = personRelationships2;
+    if (personRelationships == personRelationships2)
     {
     }
 
     else
     {
-      v9 = [(BMMomentsEventDataEventBundlePerson *)self personRelationships];
-      v10 = [v5 personRelationships];
-      v11 = [v9 isEqual:v10];
+      personRelationships3 = [(BMMomentsEventDataEventBundlePerson *)self personRelationships];
+      personRelationships4 = [v5 personRelationships];
+      v11 = [personRelationships3 isEqual:personRelationships4];
 
       if (!v11)
       {
@@ -75,7 +75,7 @@ LABEL_19:
 - (id)jsonDictionary
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMomentsEventDataEventBundlePerson *)self _personRelationshipsJSONArray];
+  _personRelationshipsJSONArray = [(BMMomentsEventDataEventBundlePerson *)self _personRelationshipsJSONArray];
   if ([(BMMomentsEventDataEventBundlePerson *)self hasIsMEPerson])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMomentsEventDataEventBundlePerson isMEPerson](self, "isMEPerson")}];
@@ -100,29 +100,29 @@ LABEL_19:
   }
 
   v14[0] = @"personRelationships";
-  v8 = v3;
-  if (!v3)
+  null = _personRelationshipsJSONArray;
+  if (!_personRelationshipsJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v8;
+  v15[0] = null;
   v14[1] = @"isMEPerson";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v9;
+  v15[1] = null2;
   v14[2] = @"significanceScore";
-  v10 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v10;
+  v15[2] = null3;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
   if (v7)
   {
@@ -133,7 +133,7 @@ LABEL_19:
 
 LABEL_21:
 
-    if (v3)
+    if (_personRelationshipsJSONArray)
     {
       goto LABEL_17;
     }
@@ -147,7 +147,7 @@ LABEL_21:
   }
 
 LABEL_16:
-  if (v3)
+  if (_personRelationshipsJSONArray)
   {
     goto LABEL_17;
   }
@@ -168,8 +168,8 @@ LABEL_17:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMMomentsEventDataEventBundlePerson *)self personRelationships];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  personRelationships = [(BMMomentsEventDataEventBundlePerson *)self personRelationships];
+  v5 = [personRelationships countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -180,14 +180,14 @@ LABEL_17:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(personRelationships);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [personRelationships countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -198,18 +198,18 @@ LABEL_17:
   return v3;
 }
 
-- (BMMomentsEventDataEventBundlePerson)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMomentsEventDataEventBundlePerson)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"personRelationships"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"personRelationships"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
-    v40 = v5;
-    v41 = self;
+    v40 = dictionaryCopy;
+    selfCopy2 = self;
 
     v6 = 0;
   }
@@ -221,7 +221,7 @@ LABEL_17:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v32 = objc_alloc(MEMORY[0x1E696ABC0]);
           v33 = *MEMORY[0x1E698F240];
@@ -229,18 +229,18 @@ LABEL_17:
           v44 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"personRelationships"];
           v60[0] = v44;
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:&v59 count:1];
-          v21 = 0;
-          *a4 = [v32 initWithDomain:v33 code:2 userInfo:v18];
+          selfCopy3 = 0;
+          *error = [v32 initWithDomain:v33 code:2 userInfo:v18];
           goto LABEL_35;
         }
 
-        v21 = 0;
+        selfCopy3 = 0;
         goto LABEL_36;
       }
     }
 
-    v40 = v5;
-    v41 = self;
+    v40 = dictionaryCopy;
+    selfCopy2 = self;
   }
 
   v44 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
@@ -270,8 +270,8 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v23 = objc_alloc(MEMORY[0x1E696ABC0]);
           v24 = *MEMORY[0x1E698F240];
@@ -284,28 +284,28 @@ LABEL_17:
 LABEL_28:
           v20 = [v25 dictionaryWithObjects:v26 forKeys:v27 count:1];
           v28 = [v23 initWithDomain:v24 code:2 userInfo:v20];
-          v21 = 0;
-          *v22 = v28;
+          selfCopy3 = 0;
+          *errorCopy2 = v28;
 LABEL_32:
           v18 = v6;
-          v5 = v40;
-          self = v41;
+          dictionaryCopy = v40;
+          self = selfCopy2;
           goto LABEL_33;
         }
 
 LABEL_39:
-        v21 = 0;
+        selfCopy3 = 0;
         v18 = v6;
-        v5 = v40;
-        self = v41;
+        dictionaryCopy = v40;
+        self = selfCopy2;
         goto LABEL_35;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v22 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v23 = objc_alloc(MEMORY[0x1E696ABC0]);
           v24 = *MEMORY[0x1E698F240];
@@ -329,13 +329,13 @@ LABEL_39:
       if (v17)
       {
         v20 = v17;
-        if (a4)
+        if (error)
         {
           v29 = v17;
-          *a4 = v20;
+          *error = v20;
         }
 
-        v21 = 0;
+        selfCopy3 = 0;
         goto LABEL_32;
       }
 
@@ -353,19 +353,19 @@ LABEL_39:
 
 LABEL_16:
 
-  v5 = v40;
+  dictionaryCopy = v40;
   v14 = [v40 objectForKeyedSubscript:@"isMEPerson"];
   if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
-    self = v41;
+    self = selfCopy2;
     if (objc_opt_isKindOfClass())
     {
       v18 = v14;
       goto LABEL_19;
     }
 
-    if (a4)
+    if (error)
     {
       v34 = objc_alloc(MEMORY[0x1E696ABC0]);
       v35 = *MEMORY[0x1E698F240];
@@ -375,19 +375,19 @@ LABEL_16:
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
       v36 = [v34 initWithDomain:v35 code:2 userInfo:v19];
       v18 = 0;
-      v21 = 0;
-      *a4 = v36;
+      selfCopy3 = 0;
+      *error = v36;
       goto LABEL_23;
     }
 
     v18 = 0;
-    v21 = 0;
+    selfCopy3 = 0;
   }
 
   else
   {
     v18 = 0;
-    self = v41;
+    self = selfCopy2;
 LABEL_19:
     v19 = [v40 objectForKeyedSubscript:@"significanceScore"];
     if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -402,12 +402,12 @@ LABEL_19:
       v20 = v19;
 LABEL_22:
       self = [(BMMomentsEventDataEventBundlePerson *)self initWithPersonRelationships:v44 isMEPerson:v18 significanceScore:v20];
-      v21 = self;
+      selfCopy3 = self;
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
         v37 = objc_alloc(MEMORY[0x1E696ABC0]);
         v42 = *MEMORY[0x1E698F240];
@@ -415,11 +415,11 @@ LABEL_22:
         v38 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"significanceScore"];
         v51 = v38;
         v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
-        *a4 = [v37 initWithDomain:v42 code:2 userInfo:v39];
+        *error = [v37 initWithDomain:v42 code:2 userInfo:v39];
       }
 
       v20 = 0;
-      v21 = 0;
+      selfCopy3 = 0;
     }
 
 LABEL_23:
@@ -431,22 +431,22 @@ LABEL_35:
 LABEL_36:
 
   v30 = *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMMomentsEventDataEventBundlePerson *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -468,7 +468,7 @@ LABEL_36:
 
         v10 = *(*(&v14 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -493,9 +493,9 @@ LABEL_36:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMMomentsEventDataEventBundlePerson;
   v5 = [(BMEventBase *)&v35 init];
@@ -505,12 +505,12 @@ LABEL_36:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -521,18 +521,18 @@ LABEL_36:
       while (1)
       {
         LOBYTE(v36[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v36[0] & 0x7F) << v8;
@@ -550,9 +550,9 @@ LABEL_36:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -562,18 +562,18 @@ LABEL_16:
       {
         v5->_hasSignificanceScore = 1;
         v36[0] = 0;
-        v26 = [v4 position] + 8;
-        if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 8, v27 <= objc_msgSend(v4, "length")))
+        v26 = [fromCopy position] + 8;
+        if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 8, v27 <= objc_msgSend(fromCopy, "length")))
         {
-          v28 = [v4 data];
-          [v28 getBytes:v36 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         *&v5->_significanceScore = v36[0];
@@ -588,18 +588,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v36[0]) = 0;
-          v22 = [v4 position] + 1;
-          if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+          v22 = [fromCopy position] + 1;
+          if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:v36 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v36[0] & 0x7F) << v19;
@@ -617,7 +617,7 @@ LABEL_16:
           }
         }
 
-        v25 = (v21 != 0) & ~[v4 hasError];
+        v25 = (v21 != 0) & ~[fromCopy hasError];
 LABEL_39:
         v5->_isMEPerson = v25;
       }
@@ -626,7 +626,7 @@ LABEL_39:
       {
         v36[0] = 0;
         v36[1] = 0;
-        if (!PBReaderPlaceMark() || (v17 = [[BMMomentsEventDataEventBundlePersonPersonRelationship alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v17 = [[BMMomentsEventDataEventBundlePersonPersonRelationship alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_47:
 
@@ -643,18 +643,18 @@ LABEL_47:
         goto LABEL_47;
       }
 
-      v29 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v29 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v30 = [v6 copy];
   personRelationships = v5->_personRelationships;
   v5->_personRelationships = v30;
 
-  v32 = [v4 hasError];
-  if (v32)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_44:
     v33 = 0;
@@ -672,32 +672,32 @@ LABEL_45:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMomentsEventDataEventBundlePerson *)self personRelationships];
+  personRelationships = [(BMMomentsEventDataEventBundlePerson *)self personRelationships];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMomentsEventDataEventBundlePerson isMEPerson](self, "isMEPerson")}];
   v6 = MEMORY[0x1E696AD98];
   [(BMMomentsEventDataEventBundlePerson *)self significanceScore];
   v7 = [v6 numberWithDouble:?];
-  v8 = [v3 initWithFormat:@"BMMomentsEventDataEventBundlePerson with personRelationships: %@, isMEPerson: %@, significanceScore: %@", v4, v5, v7];
+  v8 = [v3 initWithFormat:@"BMMomentsEventDataEventBundlePerson with personRelationships: %@, isMEPerson: %@, significanceScore: %@", personRelationships, v5, v7];
 
   return v8;
 }
 
-- (BMMomentsEventDataEventBundlePerson)initWithPersonRelationships:(id)a3 isMEPerson:(id)a4 significanceScore:(id)a5
+- (BMMomentsEventDataEventBundlePerson)initWithPersonRelationships:(id)relationships isMEPerson:(id)person significanceScore:(id)score
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  relationshipsCopy = relationships;
+  personCopy = person;
+  scoreCopy = score;
   v15.receiver = self;
   v15.super_class = BMMomentsEventDataEventBundlePerson;
   v12 = [(BMEventBase *)&v15 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_personRelationships, a3);
-    if (v10)
+    objc_storeStrong(&v12->_personRelationships, relationships);
+    if (personCopy)
     {
       v12->_hasIsMEPerson = 1;
-      v12->_isMEPerson = [v10 BOOLValue];
+      v12->_isMEPerson = [personCopy BOOLValue];
     }
 
     else
@@ -706,10 +706,10 @@ LABEL_45:
       v12->_isMEPerson = 0;
     }
 
-    if (v11)
+    if (scoreCopy)
     {
       v12->_hasSignificanceScore = 1;
-      [v11 doubleValue];
+      [scoreCopy doubleValue];
     }
 
     else
@@ -764,9 +764,9 @@ id __46__BMMomentsEventDataEventBundlePerson_columns__block_invoke(uint64_t a1, 
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -774,8 +774,8 @@ id __46__BMMomentsEventDataEventBundlePerson_columns__block_invoke(uint64_t a1, 
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMomentsEventDataEventBundlePerson alloc] initByReadFrom:v7];
     v4 = v8;

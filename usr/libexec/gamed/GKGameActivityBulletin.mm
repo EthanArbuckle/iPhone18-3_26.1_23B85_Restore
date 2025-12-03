@@ -1,30 +1,30 @@
 @interface GKGameActivityBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
-- (GKGameActivityBulletin)initWithPushNotification:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleAction:(id)a3;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
+- (GKGameActivityBulletin)initWithPushNotification:(id)notification;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleAction:(id)action;
 @end
 
 @implementation GKGameActivityBulletin
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002846DC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1002846DC(coderCopy);
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100284D3C(v4, v6);
 }
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = swift_allocObject();
   *(v6 + 16) = v4;
@@ -32,9 +32,9 @@
   sub_10028567C(v5, sub_1001FBD0C, v6);
 }
 
-- (GKGameActivityBulletin)initWithPushNotification:(id)a3
+- (GKGameActivityBulletin)initWithPushNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

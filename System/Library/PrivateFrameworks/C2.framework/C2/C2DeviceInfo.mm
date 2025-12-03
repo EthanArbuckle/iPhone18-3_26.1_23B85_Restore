@@ -60,8 +60,8 @@
 
 + (id)testName
 {
-  v2 = [MEMORY[0x277CBEBD0] c2DefaultsDomain];
-  v3 = [v2 stringForKey:@"C2MetricsTestName"];
+  c2DefaultsDomain = [MEMORY[0x277CBEBD0] c2DefaultsDomain];
+  v3 = [c2DefaultsDomain stringForKey:@"C2MetricsTestName"];
 
   return v3;
 }

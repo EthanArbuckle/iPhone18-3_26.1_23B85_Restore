@@ -1,12 +1,12 @@
 @interface MPPMediaPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MPPMediaPredicate
@@ -30,23 +30,23 @@
   return v6 ^ v7 ^ [(MPPSearchStringPredicate *)self->_searchStringPredicate hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_type != *(v4 + 12))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_type != *(equalCopy + 12))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
 LABEL_17:
     v10 = 0;
@@ -54,13 +54,13 @@ LABEL_17:
   }
 
   propertyPredicate = self->_propertyPredicate;
-  if (propertyPredicate | *(v4 + 4) && ![(MPPPropertyPredicate *)propertyPredicate isEqual:?])
+  if (propertyPredicate | *(equalCopy + 4) && ![(MPPPropertyPredicate *)propertyPredicate isEqual:?])
   {
     goto LABEL_17;
   }
 
   compoundPredicate = self->_compoundPredicate;
-  if (compoundPredicate | *(v4 + 1))
+  if (compoundPredicate | *(equalCopy + 1))
   {
     if (![(MPPCompoundPredicate *)compoundPredicate isEqual:?])
     {
@@ -69,7 +69,7 @@ LABEL_17:
   }
 
   conditionalPredicate = self->_conditionalPredicate;
-  if (conditionalPredicate | *(v4 + 2))
+  if (conditionalPredicate | *(equalCopy + 2))
   {
     if (![(MPPConditionalPredicate *)conditionalPredicate isEqual:?])
     {
@@ -78,7 +78,7 @@ LABEL_17:
   }
 
   persistentIDsPredicate = self->_persistentIDsPredicate;
-  if (persistentIDsPredicate | *(v4 + 3))
+  if (persistentIDsPredicate | *(equalCopy + 3))
   {
     if (![(MPPPersistentIDsPredicate *)persistentIDsPredicate isEqual:?])
     {
@@ -87,7 +87,7 @@ LABEL_17:
   }
 
   searchStringPredicate = self->_searchStringPredicate;
-  if (searchStringPredicate | *(v4 + 5))
+  if (searchStringPredicate | *(equalCopy + 5))
   {
     v10 = [(MPPSearchStringPredicate *)searchStringPredicate isEqual:?];
   }
@@ -102,9 +102,9 @@ LABEL_18:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -112,165 +112,165 @@ LABEL_18:
     *(v5 + 52) |= 1u;
   }
 
-  v7 = [(MPPPropertyPredicate *)self->_propertyPredicate copyWithZone:a3];
+  v7 = [(MPPPropertyPredicate *)self->_propertyPredicate copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(MPPCompoundPredicate *)self->_compoundPredicate copyWithZone:a3];
+  v9 = [(MPPCompoundPredicate *)self->_compoundPredicate copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
-  v11 = [(MPPConditionalPredicate *)self->_conditionalPredicate copyWithZone:a3];
+  v11 = [(MPPConditionalPredicate *)self->_conditionalPredicate copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
-  v13 = [(MPPPersistentIDsPredicate *)self->_persistentIDsPredicate copyWithZone:a3];
+  v13 = [(MPPPersistentIDsPredicate *)self->_persistentIDsPredicate copyWithZone:zone];
   v14 = v6[3];
   v6[3] = v13;
 
-  v15 = [(MPPSearchStringPredicate *)self->_searchStringPredicate copyWithZone:a3];
+  v15 = [(MPPSearchStringPredicate *)self->_searchStringPredicate copyWithZone:zone];
   v16 = v6[5];
   v6[5] = v15;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(MPPMediaPredicate *)self hasType])
   {
-    [v9 setType:{-[MPPMediaPredicate type](self, "type")}];
+    [toCopy setType:{-[MPPMediaPredicate type](self, "type")}];
   }
 
   if ([(MPPMediaPredicate *)self hasPropertyPredicate])
   {
-    v4 = [(MPPMediaPredicate *)self propertyPredicate];
-    [v9 setPropertyPredicate:v4];
+    propertyPredicate = [(MPPMediaPredicate *)self propertyPredicate];
+    [toCopy setPropertyPredicate:propertyPredicate];
   }
 
   if ([(MPPMediaPredicate *)self hasCompoundPredicate])
   {
-    v5 = [(MPPMediaPredicate *)self compoundPredicate];
-    [v9 setCompoundPredicate:v5];
+    compoundPredicate = [(MPPMediaPredicate *)self compoundPredicate];
+    [toCopy setCompoundPredicate:compoundPredicate];
   }
 
   if ([(MPPMediaPredicate *)self hasConditionalPredicate])
   {
-    v6 = [(MPPMediaPredicate *)self conditionalPredicate];
-    [v9 setConditionalPredicate:v6];
+    conditionalPredicate = [(MPPMediaPredicate *)self conditionalPredicate];
+    [toCopy setConditionalPredicate:conditionalPredicate];
   }
 
   if ([(MPPMediaPredicate *)self hasPersistentIDsPredicate])
   {
-    v7 = [(MPPMediaPredicate *)self persistentIDsPredicate];
-    [v9 setPersistentIDsPredicate:v7];
+    persistentIDsPredicate = [(MPPMediaPredicate *)self persistentIDsPredicate];
+    [toCopy setPersistentIDsPredicate:persistentIDsPredicate];
   }
 
   if ([(MPPMediaPredicate *)self hasSearchStringPredicate])
   {
-    v8 = [(MPPMediaPredicate *)self searchStringPredicate];
-    [v9 setSearchStringPredicate:v8];
+    searchStringPredicate = [(MPPMediaPredicate *)self searchStringPredicate];
+    [toCopy setSearchStringPredicate:searchStringPredicate];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    [v15 writeInt32:self->_type forTag:1];
+    [toCopy writeInt32:self->_type forTag:1];
   }
 
   if (self->_propertyPredicate)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69C65C0]);
     [(MPPPropertyPredicate *)self->_propertyPredicate writeTo:v4];
-    v5 = [v4 data];
-    [v15 writeData:v5 forTag:2];
+    data = [v4 data];
+    [toCopy writeData:data forTag:2];
   }
 
   if (self->_compoundPredicate)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69C65C0]);
     [(MPPCompoundPredicate *)self->_compoundPredicate writeTo:v6];
-    v7 = [v6 data];
-    [v15 writeData:v7 forTag:3];
+    data2 = [v6 data];
+    [toCopy writeData:data2 forTag:3];
   }
 
   if (self->_conditionalPredicate)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69C65C0]);
     [(MPPConditionalPredicate *)self->_conditionalPredicate writeTo:v8];
-    v9 = [v8 data];
-    [v15 writeData:v9 forTag:4];
+    data3 = [v8 data];
+    [toCopy writeData:data3 forTag:4];
   }
 
   if (self->_persistentIDsPredicate)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69C65C0]);
     [(MPPPersistentIDsPredicate *)self->_persistentIDsPredicate writeTo:v10];
-    v11 = [v10 data];
-    [v15 writeData:v11 forTag:5];
+    data4 = [v10 data];
+    [toCopy writeData:data4 forTag:5];
   }
 
-  v12 = v15;
+  v12 = toCopy;
   if (self->_searchStringPredicate)
   {
     v13 = objc_alloc_init(MEMORY[0x1E69C65C0]);
     [(MPPSearchStringPredicate *)self->_searchStringPredicate writeTo:v13];
-    v14 = [v13 data];
-    [v15 writeData:v14 forTag:6];
+    data5 = [v13 data];
+    [toCopy writeData:data5 forTag:6];
 
-    v12 = v15;
+    v12 = toCopy;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_type];
-    [v3 setObject:v4 forKey:@"type"];
+    [dictionary setObject:v4 forKey:@"type"];
   }
 
   propertyPredicate = self->_propertyPredicate;
   if (propertyPredicate)
   {
-    v6 = [(MPPPropertyPredicate *)propertyPredicate dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"propertyPredicate"];
+    dictionaryRepresentation = [(MPPPropertyPredicate *)propertyPredicate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"propertyPredicate"];
   }
 
   compoundPredicate = self->_compoundPredicate;
   if (compoundPredicate)
   {
-    v8 = [(MPPCompoundPredicate *)compoundPredicate dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"compoundPredicate"];
+    dictionaryRepresentation2 = [(MPPCompoundPredicate *)compoundPredicate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"compoundPredicate"];
   }
 
   conditionalPredicate = self->_conditionalPredicate;
   if (conditionalPredicate)
   {
-    v10 = [(MPPConditionalPredicate *)conditionalPredicate dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"conditionalPredicate"];
+    dictionaryRepresentation3 = [(MPPConditionalPredicate *)conditionalPredicate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"conditionalPredicate"];
   }
 
   persistentIDsPredicate = self->_persistentIDsPredicate;
   if (persistentIDsPredicate)
   {
-    v12 = [(MPPPersistentIDsPredicate *)persistentIDsPredicate dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"persistentIDsPredicate"];
+    dictionaryRepresentation4 = [(MPPPersistentIDsPredicate *)persistentIDsPredicate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"persistentIDsPredicate"];
   }
 
   searchStringPredicate = self->_searchStringPredicate;
   if (searchStringPredicate)
   {
-    v14 = [(MPPSearchStringPredicate *)searchStringPredicate dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"searchStringPredicate"];
+    dictionaryRepresentation5 = [(MPPSearchStringPredicate *)searchStringPredicate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"searchStringPredicate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -279,8 +279,8 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = MPPMediaPredicate;
   v4 = [(MPPMediaPredicate *)&v8 description];
-  v5 = [(MPPMediaPredicate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MPPMediaPredicate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

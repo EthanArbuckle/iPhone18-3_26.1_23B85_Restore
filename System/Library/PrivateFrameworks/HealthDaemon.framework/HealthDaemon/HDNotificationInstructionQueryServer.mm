@@ -7,8 +7,8 @@
 - (void)_queue_start
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = [(HDQueryServer *)self configuration];
-  v4 = [v3 debugIdentifier];
+  configuration = [(HDQueryServer *)self configuration];
+  debugIdentifier = [configuration debugIdentifier];
 
   _HKInitializeLogging();
   v5 = MEMORY[0x277CCC300];
@@ -19,7 +19,7 @@
     *buf = 138543618;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = debugIdentifier;
     v8 = *&buf[4];
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Query Started", buf, 0x16u);
   }
@@ -27,8 +27,8 @@
   v40.receiver = self;
   v40.super_class = HDNotificationInstructionQueryServer;
   [(HDQueryServer *)&v40 _queue_start];
-  v9 = [(HDQueryServer *)self clientProxy];
-  v10 = [v9 remoteObjectProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -49,8 +49,8 @@
   v31[2] = 0x2020000000;
   v31[3] = 0;
   v11 = [HDNotificationInstructionDiagnostics alloc];
-  v12 = [(HDQueryServer *)self profile];
-  v13 = [(HDNotificationInstructionDiagnostics *)v11 initWithProfile:v12];
+  profile = [(HDQueryServer *)self profile];
+  v13 = [(HDNotificationInstructionDiagnostics *)v11 initWithProfile:profile];
 
   v30 = 0;
   v24[0] = MEMORY[0x277D85DD0];
@@ -60,7 +60,7 @@
   v24[4] = self;
   v26 = &v32;
   v27 = buf;
-  v14 = v10;
+  v14 = remoteObjectProxy;
   v25 = v14;
   v28 = &v36;
   v29 = v31;
@@ -72,14 +72,14 @@
     {
       v17 = *(*&buf[8] + 40);
       v18 = *(v37 + 24);
-      v19 = [(HDQueryServer *)self queryUUID];
-      [v14 client_deliverNotificationInstructions:v17 clearPending:v18 isFinalBatch:1 queryUUID:v19];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [v14 client_deliverNotificationInstructions:v17 clearPending:v18 isFinalBatch:1 queryUUID:queryUUID];
     }
 
     else
     {
-      v19 = [(HDQueryServer *)self queryUUID];
-      [v14 client_deliverError:v16 forQuery:v19];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [v14 client_deliverError:v16 forQuery:queryUUID];
     }
   }
 
@@ -91,7 +91,7 @@
     *v41 = 138543618;
     v42 = v21;
     v43 = 2114;
-    v44 = v4;
+    v44 = debugIdentifier;
     v22 = v21;
     _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Query Finished", v41, 0x16u);
   }

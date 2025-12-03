@@ -1,15 +1,15 @@
 @interface _MPCQueueControllerBehaviorPodcastsTransportableExtension
-- (BOOL)isSupportedSessionType:(id)a3 reason:(id *)a4;
+- (BOOL)isSupportedSessionType:(id)type reason:(id *)reason;
 - (MPCQueueControllerSessionTypesInvalidatable)sessionTypesInvalidatable;
 - (id)allKnownSessionTypes;
-- (void)setSessionTypesInvalidatable:(id)a3;
+- (void)setSessionTypesInvalidatable:(id)invalidatable;
 @end
 
 @implementation _MPCQueueControllerBehaviorPodcastsTransportableExtension
 
 - (id)allKnownSessionTypes
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5C6EEB8();
 
   type metadata accessor for MPPlaybackSessionType();
@@ -18,13 +18,13 @@
   return v3;
 }
 
-- (BOOL)isSupportedSessionType:(id)a3 reason:(id *)a4
+- (BOOL)isSupportedSessionType:(id)type reason:(id *)reason
 {
-  v6 = a3;
-  v7 = self;
-  LOBYTE(a4) = sub_1C5C6F42C(v6, a4);
+  typeCopy = type;
+  selfCopy = self;
+  LOBYTE(reason) = sub_1C5C6F42C(typeCopy, reason);
 
-  return a4 & 1;
+  return reason & 1;
 }
 
 - (MPCQueueControllerSessionTypesInvalidatable)sessionTypesInvalidatable
@@ -34,11 +34,11 @@
   return v2;
 }
 
-- (void)setSessionTypesInvalidatable:(id)a3
+- (void)setSessionTypesInvalidatable:(id)invalidatable
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C5D2B070(a3);
+  selfCopy = self;
+  sub_1C5D2B070(invalidatable);
 }
 
 @end

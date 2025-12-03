@@ -1,18 +1,18 @@
 @interface CalculateUnitCategory
-+ (id)categoryWithTypeInfo:(id)a3 unitsInfo:(id)a4 collection:(id)a5;
-- (BOOL)contains:(id)a3;
++ (id)categoryWithTypeInfo:(id)info unitsInfo:(id)unitsInfo collection:(id)collection;
+- (BOOL)contains:(id)contains;
 - (CalculateUnit)preferredFromUnit;
 - (CalculateUnit)preferredToUnit;
-- (CalculateUnitCategory)initWithTypeInfo:(id)a3 unitsInfo:(id)a4 collection:(id)a5;
+- (CalculateUnitCategory)initWithTypeInfo:(id)info unitsInfo:(id)unitsInfo collection:(id)collection;
 - (CalculateUnitCollection)collection;
 - (NSString)displayName;
 - (NSString)name;
-- (id)findUnitWithName:(id)a3;
-- (id)findUnitsWithQuery:(id)a3;
+- (id)findUnitWithName:(id)name;
+- (id)findUnitsWithQuery:(id)query;
 - (id)locale;
 - (id)preferredUnits;
 - (unint64_t)unitType;
-- (void)_findPreferredSIUnit:(id *)a3 metric:(id *)a4 US:(id *)a5 UK:(id *)a6;
+- (void)_findPreferredSIUnit:(id *)unit metric:(id *)metric US:(id *)s UK:(id *)k;
 @end
 
 @implementation CalculateUnitCategory
@@ -24,28 +24,28 @@
   return WeakRetained;
 }
 
-- (CalculateUnitCategory)initWithTypeInfo:(id)a3 unitsInfo:(id)a4 collection:(id)a5
+- (CalculateUnitCategory)initWithTypeInfo:(id)info unitsInfo:(id)unitsInfo collection:(id)collection
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  unitsInfoCopy = unitsInfo;
+  collectionCopy = collection;
   v27.receiver = self;
   v27.super_class = CalculateUnitCategory;
   v11 = [(CalculateUnitCategory *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    v22 = v10;
-    [(CalculateUnitCategory *)v11 setCollection:v10];
-    [(CalculateUnitCategory *)v12 setTypeInfo:v8];
+    v22 = collectionCopy;
+    [(CalculateUnitCategory *)v11 setCollection:collectionCopy];
+    [(CalculateUnitCategory *)v12 setTypeInfo:infoCopy];
     v13 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = [v8 units];
-    v15 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    units = [infoCopy units];
+    v15 = [units countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v15)
     {
       v16 = v15;
@@ -57,10 +57,10 @@
         {
           if (*v24 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(units);
           }
 
-          v19 = +[CalculateUnit unitWithID:unitsInfo:exponent:](CalculateUnit, "unitWithID:unitsInfo:exponent:", [*(*(&v23 + 1) + 8 * v18) unitID], v9, 1);
+          v19 = +[CalculateUnit unitWithID:unitsInfo:exponent:](CalculateUnit, "unitWithID:unitsInfo:exponent:", [*(*(&v23 + 1) + 8 * v18) unitID], unitsInfoCopy, 1);
           [v19 setCategory:v12];
           [v13 addObject:v19];
 
@@ -68,31 +68,31 @@
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v16 = [units countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v16);
     }
 
     [(CalculateUnitCategory *)v12 setUnits:v13];
-    v10 = v22;
+    collectionCopy = v22;
   }
 
   v20 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (id)findUnitsWithQuery:(id)a3
+- (id)findUnitsWithQuery:(id)query
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queryCopy = query;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(CalculateUnitCategory *)self units];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  units = [(CalculateUnitCategory *)self units];
+  v7 = [units countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -103,17 +103,17 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(units);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 contains:v4])
+        if ([v11 contains:queryCopy])
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [units countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -124,16 +124,16 @@
   return v5;
 }
 
-- (id)findUnitWithName:(id)a3
+- (id)findUnitWithName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CalculateUnitCategory *)self units];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  units = [(CalculateUnitCategory *)self units];
+  v6 = [units countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -143,12 +143,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(units);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -157,7 +157,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [units countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -174,17 +174,17 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v4 = a3;
-  if ([v4 length])
+  containsCopy = contains;
+  if ([containsCopy length])
   {
-    v5 = [v4 decomposedStringWithCanonicalMapping];
+    decomposedStringWithCanonicalMapping = [containsCopy decomposedStringWithCanonicalMapping];
 
-    v6 = [(CalculateUnitCategory *)self displayName];
-    v7 = [v6 rangeOfString:v5 options:129] != 0x7FFFFFFFFFFFFFFFLL;
+    displayName = [(CalculateUnitCategory *)self displayName];
+    v7 = [displayName rangeOfString:decomposedStringWithCanonicalMapping options:129] != 0x7FFFFFFFFFFFFFFFLL;
 
-    v4 = v5;
+    containsCopy = decomposedStringWithCanonicalMapping;
   }
 
   else
@@ -197,16 +197,16 @@ LABEL_11:
 
 - (CalculateUnit)preferredToUnit
 {
-  v2 = [(CalculateUnitCategory *)self preferredUnits];
-  v3 = [v2 objectAtIndexedSubscript:1];
+  preferredUnits = [(CalculateUnitCategory *)self preferredUnits];
+  v3 = [preferredUnits objectAtIndexedSubscript:1];
 
   return v3;
 }
 
 - (CalculateUnit)preferredFromUnit
 {
-  v2 = [(CalculateUnitCategory *)self preferredUnits];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  preferredUnits = [(CalculateUnitCategory *)self preferredUnits];
+  v3 = [preferredUnits objectAtIndexedSubscript:0];
 
   return v3;
 }
@@ -214,8 +214,8 @@ LABEL_11:
 - (id)preferredUnits
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [(CalculateUnitCategory *)self locale];
-  v4 = [v3 objectForKey:*MEMORY[0x1E695D9B8]];
+  locale = [(CalculateUnitCategory *)self locale];
+  v4 = [locale objectForKey:*MEMORY[0x1E695D9B8]];
   v5 = objc_opt_new();
   if ([(CalculateUnitCategory *)self unitType]!= 16)
   {
@@ -224,13 +224,13 @@ LABEL_11:
     v36 = 0;
     v37 = 0;
     [(CalculateUnitCategory *)self _findPreferredSIUnit:&v39 metric:&v38 US:&v37 UK:&v36];
-    v6 = v39;
+    currencyCode = v39;
     v23 = v38;
     v24 = v37;
     v10 = v36;
-    if (v6)
+    if (currencyCode)
     {
-      [v5 addObject:v6];
+      [v5 addObject:currencyCode];
     }
 
     if ([v4 isEqualToString:*MEMORY[0x1E695D9C8]])
@@ -296,13 +296,13 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  v6 = [v3 currencyCode];
+  currencyCode = [locale currencyCode];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v7 = [(CalculateUnitCategory *)self units];
-  v8 = [v7 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  units = [(CalculateUnitCategory *)self units];
+  v8 = [units countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (!v8)
   {
 
@@ -316,7 +316,7 @@ LABEL_48:
   v9 = v8;
   v31 = v4;
   v32 = v5;
-  v33 = v3;
+  v33 = locale;
   v34 = 0;
   v35 = 0;
   v10 = 0;
@@ -327,11 +327,11 @@ LABEL_48:
     {
       if (*v41 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(units);
       }
 
       v13 = *(*(&v40 + 1) + 8 * i);
-      if (v6 && ([*(*(&v40 + 1) + 8 * i) name], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", v6), v14, (v15 & 1) != 0))
+      if (currencyCode && ([*(*(&v40 + 1) + 8 * i) name], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", currencyCode), v14, (v15 & 1) != 0))
       {
         v16 = v34;
         v17 = v10;
@@ -340,8 +340,8 @@ LABEL_48:
 
       else
       {
-        v18 = [v13 name];
-        v19 = [v18 isEqualToString:@"EUR"];
+        name = [v13 name];
+        v19 = [name isEqualToString:@"EUR"];
 
         if (v19)
         {
@@ -352,8 +352,8 @@ LABEL_48:
 
         else
         {
-          v20 = [v13 name];
-          v21 = [v20 isEqualToString:@"USD"];
+          name2 = [v13 name];
+          v21 = [name2 isEqualToString:@"USD"];
 
           v16 = v10;
           v17 = v13;
@@ -369,7 +369,7 @@ LABEL_48:
       v10 = v17;
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    v9 = [units countByEnumeratingWithState:&v40 objects:v44 count:16];
   }
 
   while (v9);
@@ -382,7 +382,7 @@ LABEL_48:
   }
 
   v4 = v31;
-  v3 = v33;
+  locale = v33;
   v24 = v35;
   if (([v31 isEqualToString:*MEMORY[0x1E695D9D0]] & 1) == 0)
   {
@@ -422,15 +422,15 @@ LABEL_50:
   return v5;
 }
 
-- (void)_findPreferredSIUnit:(id *)a3 metric:(id *)a4 US:(id *)a5 UK:(id *)a6
+- (void)_findPreferredSIUnit:(id *)unit metric:(id *)metric US:(id *)s UK:(id *)k
 {
   v42 = *MEMORY[0x1E69E9840];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = [(CalculateUnitCategory *)self units];
-  v10 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  units = [(CalculateUnitCategory *)self units];
+  v10 = [units countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v10)
   {
     v11 = v10;
@@ -442,23 +442,23 @@ LABEL_50:
       {
         if (*v37 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(units);
         }
 
         v15 = *(*(&v36 + 1) + 8 * i);
         if ([v15 isPreferredUnit])
         {
-          v16 = [v15 unitInfo];
-          v17 = [v16 measurementSystem];
+          unitInfo = [v15 unitInfo];
+          measurementSystem = [unitInfo measurementSystem];
 
-          if (!v17)
+          if (!measurementSystem)
           {
             ++v12;
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v11 = [units countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v11);
@@ -474,8 +474,8 @@ LABEL_50:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v19 = [(CalculateUnitCategory *)self units];
-  v20 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  units2 = [(CalculateUnitCategory *)self units];
+  v20 = [units2 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v20)
   {
     v21 = v20;
@@ -486,7 +486,7 @@ LABEL_50:
       {
         if (*v33 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(units2);
         }
 
         v24 = *(*(&v32 + 1) + 8 * j);
@@ -494,50 +494,50 @@ LABEL_50:
         {
           if (v18)
           {
-            v25 = a4;
+            metricCopy2 = metric;
             if (![v24 isBaseUnit])
             {
               goto LABEL_28;
             }
           }
 
-          v26 = [v24 unitInfo];
-          v27 = [v26 measurementSystem];
+          unitInfo2 = [v24 unitInfo];
+          measurementSystem2 = [unitInfo2 measurementSystem];
 
-          if (v27 > 1)
+          if (measurementSystem2 > 1)
           {
-            v25 = a5;
-            if (v27 != 2)
+            metricCopy2 = s;
+            if (measurementSystem2 != 2)
             {
-              if (v27 != 3)
+              if (measurementSystem2 != 3)
               {
                 continue;
               }
 
-              v25 = a6;
+              metricCopy2 = k;
             }
 
 LABEL_28:
             v28 = v24;
-            *v25 = v24;
+            *metricCopy2 = v24;
             continue;
           }
 
-          v25 = a3;
-          if (!v27)
+          metricCopy2 = unit;
+          if (!measurementSystem2)
           {
             goto LABEL_28;
           }
 
-          v25 = a4;
-          if (v27 == 1)
+          metricCopy2 = metric;
+          if (measurementSystem2 == 1)
           {
             goto LABEL_28;
           }
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v21 = [units2 countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v21);
@@ -548,23 +548,23 @@ LABEL_28:
 
 - (NSString)displayName
 {
-  v3 = [(CalculateUnitCategory *)self name];
-  v4 = [(CalculateUnitCategory *)self locale];
-  v5 = [Localize localizationForLocale:v4];
-  v6 = [Localize localizedStringForKey:v3 value:0 table:@"Localizable" localization:v5];
+  name = [(CalculateUnitCategory *)self name];
+  locale = [(CalculateUnitCategory *)self locale];
+  v5 = [Localize localizationForLocale:locale];
+  v6 = [Localize localizedStringForKey:name value:0 table:@"Localizable" localization:v5];
 
   return v6;
 }
 
 - (id)locale
 {
-  v2 = [(CalculateUnitCategory *)self collection];
-  v3 = [v2 locales];
-  v4 = [v3 firstObject];
-  v5 = v4;
-  if (v4)
+  collection = [(CalculateUnitCategory *)self collection];
+  locales = [collection locales];
+  firstObject = [locales firstObject];
+  v5 = firstObject;
+  if (firstObject)
   {
-    v6 = v4;
+    v6 = firstObject;
   }
 
   else
@@ -579,27 +579,27 @@ LABEL_28:
 
 - (NSString)name
 {
-  v2 = [(CalculateUnitCategory *)self typeInfo];
-  v3 = [v2 name];
+  typeInfo = [(CalculateUnitCategory *)self typeInfo];
+  name = [typeInfo name];
 
-  return v3;
+  return name;
 }
 
 - (unint64_t)unitType
 {
-  v2 = [(CalculateUnitCategory *)self name];
-  v3 = [&unk_1F419A730 objectForKeyedSubscript:v2];
-  v4 = [v3 intValue];
+  name = [(CalculateUnitCategory *)self name];
+  v3 = [&unk_1F419A730 objectForKeyedSubscript:name];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-+ (id)categoryWithTypeInfo:(id)a3 unitsInfo:(id)a4 collection:(id)a5
++ (id)categoryWithTypeInfo:(id)info unitsInfo:(id)unitsInfo collection:(id)collection
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CalculateUnitCategory alloc] initWithTypeInfo:v9 unitsInfo:v8 collection:v7];
+  collectionCopy = collection;
+  unitsInfoCopy = unitsInfo;
+  infoCopy = info;
+  v10 = [[CalculateUnitCategory alloc] initWithTypeInfo:infoCopy unitsInfo:unitsInfoCopy collection:collectionCopy];
 
   return v10;
 }

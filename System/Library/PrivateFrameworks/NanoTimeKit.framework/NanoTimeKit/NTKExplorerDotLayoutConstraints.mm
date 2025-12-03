@@ -1,20 +1,20 @@
 @interface NTKExplorerDotLayoutConstraints
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLayoutConstraints:(id)a3;
-- (NTKExplorerDotLayoutConstraints)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLayoutConstraints:(id)constraints;
+- (NTKExplorerDotLayoutConstraints)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKExplorerDotLayoutConstraints
 
-- (BOOL)isEqualToLayoutConstraints:(id)a3
+- (BOOL)isEqualToLayoutConstraints:(id)constraints
 {
-  v4 = a3;
+  constraintsCopy = constraints;
   dotDiameter = self->_dotDiameter;
-  [v4 dotDiameter];
-  if (vabdd_f64(dotDiameter, v6) >= 2.22044605e-16 || (dotBorderWidth = self->_dotBorderWidth, [v4 dotBorderWidth], vabdd_f64(dotBorderWidth, v8) >= 2.22044605e-16) || (dotSpacing = self->_dotSpacing, objc_msgSend(v4, "dotSpacing"), vabdd_f64(dotSpacing, v10) >= 2.22044605e-16))
+  [constraintsCopy dotDiameter];
+  if (vabdd_f64(dotDiameter, v6) >= 2.22044605e-16 || (dotBorderWidth = self->_dotBorderWidth, [constraintsCopy dotBorderWidth], vabdd_f64(dotBorderWidth, v8) >= 2.22044605e-16) || (dotSpacing = self->_dotSpacing, objc_msgSend(constraintsCopy, "dotSpacing"), vabdd_f64(dotSpacing, v10) >= 2.22044605e-16))
   {
     v13 = 0;
   }
@@ -22,17 +22,17 @@
   else
   {
     noServiceDotHeight = self->_noServiceDotHeight;
-    [v4 noServiceDotHeight];
+    [constraintsCopy noServiceDotHeight];
     v13 = vabdd_f64(noServiceDotHeight, v12) < 2.22044605e-16;
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -40,7 +40,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NTKExplorerDotLayoutConstraints *)self isEqualToLayoutConstraints:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NTKExplorerDotLayoutConstraints *)self isEqualToLayoutConstraints:equalCopy];
   }
 
   return v5;
@@ -60,7 +60,7 @@
   return v6 ^ v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NTKExplorerDotLayoutConstraints);
   v5 = v4;
@@ -75,29 +75,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dotDiameter = self->_dotDiameter;
-  v5 = a3;
-  [v5 encodeDouble:@"dotDiameterKey" forKey:dotDiameter];
-  [v5 encodeDouble:@"dotBorderWidthKey" forKey:self->_dotBorderWidth];
-  [v5 encodeDouble:@"dotSpacingKey" forKey:self->_dotSpacing];
-  [v5 encodeDouble:@"noServiceDotHeightKey" forKey:self->_noServiceDotHeight];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"dotDiameterKey" forKey:dotDiameter];
+  [coderCopy encodeDouble:@"dotBorderWidthKey" forKey:self->_dotBorderWidth];
+  [coderCopy encodeDouble:@"dotSpacingKey" forKey:self->_dotSpacing];
+  [coderCopy encodeDouble:@"noServiceDotHeightKey" forKey:self->_noServiceDotHeight];
 }
 
-- (NTKExplorerDotLayoutConstraints)initWithCoder:(id)a3
+- (NTKExplorerDotLayoutConstraints)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NTKExplorerDotLayoutConstraints *)self init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"dotDiameterKey"];
+    [coderCopy decodeDoubleForKey:@"dotDiameterKey"];
     v5->_dotDiameter = v6;
-    [v4 decodeDoubleForKey:@"dotBorderWidthKey"];
+    [coderCopy decodeDoubleForKey:@"dotBorderWidthKey"];
     v5->_dotBorderWidth = v7;
-    [v4 decodeDoubleForKey:@"dotSpacingKey"];
+    [coderCopy decodeDoubleForKey:@"dotSpacingKey"];
     v5->_dotSpacing = v8;
-    [v4 decodeDoubleForKey:@"noServiceDotHeightKey"];
+    [coderCopy decodeDoubleForKey:@"noServiceDotHeightKey"];
     v5->_noServiceDotHeight = v9;
   }
 

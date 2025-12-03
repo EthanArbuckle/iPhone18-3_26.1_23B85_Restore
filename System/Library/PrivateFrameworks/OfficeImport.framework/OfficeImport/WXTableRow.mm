@@ -1,50 +1,50 @@
 @interface WXTableRow
-+ (void)readCellsFrom:(_xmlNode *)a3 tableGrid:(void *)a4 to:(id)a5 gridIndex:(int64_t *)a6 state:(id)a7;
-+ (void)readFrom:(_xmlNode *)a3 tableGrid:(void *)a4 to:(id)a5 state:(id)a6;
++ (void)readCellsFrom:(_xmlNode *)from tableGrid:(void *)grid to:(id)to gridIndex:(int64_t *)index state:(id)state;
++ (void)readFrom:(_xmlNode *)from tableGrid:(void *)grid to:(id)to state:(id)state;
 @end
 
 @implementation WXTableRow
 
-+ (void)readFrom:(_xmlNode *)a3 tableGrid:(void *)a4 to:(id)a5 state:(id)a6
++ (void)readFrom:(_xmlNode *)from tableGrid:(void *)grid to:(id)to state:(id)state
 {
-  v8 = a5;
-  v9 = a6;
-  v29 = [v8 properties];
-  v10 = [v9 WXMainNamespace];
-  v11 = OCXFindChild(a3, v10, "tblPrEx");
+  toCopy = to;
+  stateCopy = state;
+  properties = [toCopy properties];
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v11 = OCXFindChild(from, wXMainNamespace, "tblPrEx");
 
   if (v11)
   {
-    v12 = [v29 tableProperties];
-    [WXTableProperties readFrom:v11 to:v12 state:v9];
+    tableProperties = [properties tableProperties];
+    [WXTableProperties readFrom:v11 to:tableProperties state:stateCopy];
   }
 
-  v13 = [v9 WXMainNamespace];
-  v14 = OCXFindChild(a3, v13, "trPr");
+  wXMainNamespace2 = [stateCopy WXMainNamespace];
+  v14 = OCXFindChild(from, wXMainNamespace2, "trPr");
 
   if (v14)
   {
-    [WXTableRowProperties readFrom:v14 to:v29 state:v9];
+    [WXTableRowProperties readFrom:v14 to:properties state:stateCopy];
   }
 
-  v28 = [v8 table];
-  v15 = [v28 properties];
-  if ([v15 isBaseStyleOverridden] && objc_msgSend(v9, "currentRowCNFStyle"))
+  table = [toCopy table];
+  properties2 = [table properties];
+  if ([properties2 isBaseStyleOverridden] && objc_msgSend(stateCopy, "currentRowCNFStyle"))
   {
-    v25 = v15;
-    v16 = [v15 baseStyle];
+    v25 = properties2;
+    baseStyle = [properties2 baseStyle];
     v17 = 0;
     do
     {
-      if (([v9 currentRowCNFStyle] & (1 << v17)) != 0)
+      if (([stateCopy currentRowCNFStyle] & (1 << v17)) != 0)
       {
-        v18 = [v16 tableStyleOverrideForPart:v17];
+        v18 = [baseStyle tableStyleOverrideForPart:v17];
         v19 = v18;
         if (v18 && [v18 isTableRowPropertiesOverridden])
         {
-          v20 = [v8 properties];
-          v21 = [v19 tableRowProperties];
-          [v20 addProperties:v21];
+          properties3 = [toCopy properties];
+          tableRowProperties = [v19 tableRowProperties];
+          [properties3 addProperties:tableRowProperties];
         }
       }
 
@@ -53,31 +53,31 @@
 
     while (v17 != 12);
 
-    v15 = v25;
+    properties2 = v25;
   }
 
   v30 = 0;
   if (v14)
   {
-    v22 = [v9 WXMainNamespace];
-    v23 = OCXFindChild(v14, v22, "gridBefore");
+    wXMainNamespace3 = [stateCopy WXMainNamespace];
+    v23 = OCXFindChild(v14, wXMainNamespace3, "gridBefore");
 
     if (v23)
     {
-      v24 = [v9 WXMainNamespace];
-      v30 = CXDefaultLongAttribute(v23, v24, "val", 0);
+      wXMainNamespace4 = [stateCopy WXMainNamespace];
+      v30 = CXDefaultLongAttribute(v23, wXMainNamespace4, "val", 0);
     }
   }
 
-  [a1 readCellsFrom:a3 tableGrid:a4 to:v8 gridIndex:&v30 state:v9];
-  [v9 setCurrentRowCNFStyle:0];
+  [self readCellsFrom:from tableGrid:grid to:toCopy gridIndex:&v30 state:stateCopy];
+  [stateCopy setCurrentRowCNFStyle:0];
 }
 
-+ (void)readCellsFrom:(_xmlNode *)a3 tableGrid:(void *)a4 to:(id)a5 gridIndex:(int64_t *)a6 state:(id)a7
++ (void)readCellsFrom:(_xmlNode *)from tableGrid:(void *)grid to:(id)to gridIndex:(int64_t *)index state:(id)state
 {
-  v37 = a5;
-  v11 = a7;
-  v12 = OCXFirstChild(a3);
+  toCopy = to;
+  stateCopy = state;
+  v12 = OCXFirstChild(from);
   v35 = 0;
   v13 = 0;
   while (v12)
@@ -85,12 +85,12 @@
     if (xmlStrEqual(v12->name, "sdt"))
     {
       [TCMessageContext reportWarning:WXFormsNotSupported];
-      v14 = [v11 WXMainNamespace];
-      v15 = OCXFindChild(v12, v14, "sdtContent");
+      wXMainNamespace = [stateCopy WXMainNamespace];
+      v15 = OCXFindChild(v12, wXMainNamespace, "sdtContent");
 
       if (v15)
       {
-        [a1 readCellsFrom:v15 tableGrid:a4 to:v37 gridIndex:a6 state:v11];
+        [self readCellsFrom:v15 tableGrid:grid to:toCopy gridIndex:index state:stateCopy];
       }
 
       goto LABEL_30;
@@ -98,24 +98,24 @@
 
     if (xmlStrEqual(v12->name, "commentRangeStart"))
     {
-      [v11 addPendingComment:v12];
+      [stateCopy addPendingComment:v12];
       goto LABEL_30;
     }
 
     if (xmlStrEqual(v12->name, "tc"))
     {
-      v16 = [v11 WXMainNamespace];
-      v17 = OCXFindChild(v12, v16, "tcPr");
+      wXMainNamespace2 = [stateCopy WXMainNamespace];
+      v17 = OCXFindChild(v12, wXMainNamespace2, "tcPr");
 
       if (v17)
       {
-        v18 = [v11 WXMainNamespace];
-        v19 = OCXFindChild(v17, v18, "gridSpan");
+        wXMainNamespace3 = [stateCopy WXMainNamespace];
+        v19 = OCXFindChild(v17, wXMainNamespace3, "gridSpan");
 
         if (v19)
         {
-          v20 = [v11 WXMainNamespace];
-          v21 = CXDefaultLongAttribute(v19, v20, "val", 1);
+          wXMainNamespace4 = [stateCopy WXMainNamespace];
+          v21 = CXDefaultLongAttribute(v19, wXMainNamespace4, "val", 1);
         }
 
         else
@@ -123,14 +123,14 @@
           v21 = 1;
         }
 
-        v22 = [v11 WXMainNamespace];
-        v23 = OCXFindChild(v17, v22, "hMerge");
+        wXMainNamespace5 = [stateCopy WXMainNamespace];
+        v23 = OCXFindChild(v17, wXMainNamespace5, "hMerge");
 
         if (v23)
         {
-          v24 = [v11 WXMainNamespace];
+          wXMainNamespace6 = [stateCopy WXMainNamespace];
           v38 = 0;
-          v25 = CXOptionalStringAttribute(v23, v24, "val", &v38);
+          v25 = CXOptionalStringAttribute(v23, wXMainNamespace6, "val", &v38);
           v26 = v38;
 
           if (v25)
@@ -145,18 +145,18 @@
 
           if ((v35 & 1) != 0 && (v27 & 1) == 0)
           {
-            v28 = [v13 properties];
-            v29 = [v28 width];
+            properties = [v13 properties];
+            width = [properties width];
 
 LABEL_24:
             if (v21 >= 1)
             {
-              v31 = *a6;
-              v32 = *a4;
-              v33 = ((*(a4 + 1) - *a4) >> 3);
-              if (*a6 > v33)
+              v31 = *index;
+              v32 = *grid;
+              v33 = ((*(grid + 1) - *grid) >> 3);
+              if (*index > v33)
               {
-                v33 = *a6;
+                v33 = *index;
               }
 
               do
@@ -166,16 +166,16 @@ LABEL_24:
                   break;
                 }
 
-                v29 += *(v32 + 8 * v31++);
-                *a6 = v31;
+                width += *(v32 + 8 * v31++);
+                *index = v31;
                 --v21;
               }
 
               while (v21);
             }
 
-            v34 = [v13 properties];
-            [v34 setWidth:v29];
+            properties2 = [v13 properties];
+            [properties2 setWidth:width];
 
             goto LABEL_30;
           }
@@ -195,11 +195,11 @@ LABEL_24:
         v21 = 1;
       }
 
-      v30 = [v37 addCell];
+      addCell = [toCopy addCell];
 
-      [WXTableCell readFrom:v12 to:v30 state:v11];
-      v29 = 0;
-      v13 = v30;
+      [WXTableCell readFrom:v12 to:addCell state:stateCopy];
+      width = 0;
+      v13 = addCell;
       goto LABEL_24;
     }
 

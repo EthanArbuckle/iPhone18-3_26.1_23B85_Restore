@@ -9,7 +9,7 @@
 
 + (id)nf_valueWithCGRect:()NFAdditions
 {
-  *v6 = a1;
+  *v6 = self;
   *&v6[1] = a2;
   *&v6[2] = a3;
   *&v6[3] = a4;
@@ -21,13 +21,13 @@
 - (double)nf_CGRectValue
 {
   memset(v2, 0, sizeof(v2));
-  _getNSValueBytes(a1, v2, 0x20uLL);
+  _getNSValueBytes(self, v2, 0x20uLL);
   return *v2;
 }
 
 + (id)nf_valueWithCGPoint:()NFAdditions
 {
-  *v4 = a1;
+  *v4 = self;
   *&v4[1] = a2;
   v2 = [MEMORY[0x277CCAE60] valueWithBytes:v4 objCType:"{CGPoint=dd}"];
 
@@ -38,7 +38,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  _getNSValueBytes(a1, v2, 0x10uLL);
+  _getNSValueBytes(self, v2, 0x10uLL);
   return *v2;
 }
 

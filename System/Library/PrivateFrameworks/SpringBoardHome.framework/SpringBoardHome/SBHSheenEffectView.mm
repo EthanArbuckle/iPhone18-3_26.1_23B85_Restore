@@ -1,25 +1,25 @@
 @interface SBHSheenEffectView
 - (SBHIconSettings)iconSettings;
-- (SBHSheenEffectView)initWithCoder:(id)a3;
-- (SBHSheenEffectView)initWithFrame:(CGRect)a3;
+- (SBHSheenEffectView)initWithCoder:(id)coder;
+- (SBHSheenEffectView)initWithFrame:(CGRect)frame;
 - (double)lightAngle;
 - (id)globalSheenEffect;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setLightActivityLevel:(unint64_t)a3;
-- (void)setLightAngle:(double)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setLightActivityLevel:(unint64_t)level;
+- (void)setLightAngle:(double)angle;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBHSheenEffectView
 
-- (SBHSheenEffectView)initWithFrame:(CGRect)a3
+- (SBHSheenEffectView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_1BEE4720C();
   sub_1BEE471FC();
   sub_1BEE471EC();
@@ -34,7 +34,7 @@
   return v8;
 }
 
-- (SBHSheenEffectView)initWithCoder:(id)a3
+- (SBHSheenEffectView)initWithCoder:(id)coder
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -50,11 +50,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedManager];
-  [v5 removeObserver_];
+  selfCopy = self;
+  sharedManager = [v3 sharedManager];
+  [sharedManager removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = SBHSheenEffectView;
   [(SBHSheenEffectView *)&v6 dealloc];
 }
@@ -69,7 +69,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1BEE25348();
   v5 = v4;
 
@@ -91,7 +91,7 @@
   return v3;
 }
 
-- (void)setLightAngle:(double)a3
+- (void)setLightAngle:(double)angle
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -101,11 +101,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_1BEE25A68(a3);
+  selfCopy = self;
+  sub_1BEE25A68(angle);
 }
 
-- (void)setLightActivityLevel:(unint64_t)a3
+- (void)setLightActivityLevel:(unint64_t)level
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -115,11 +115,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_1BEE25BDC(a3);
+  selfCopy = self;
+  sub_1BEE25BDC(level);
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -130,14 +130,14 @@
   }
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR___SBHSheenEffectView_contentVisibility);
-  *(&self->super.super.super.isa + OBJC_IVAR___SBHSheenEffectView_contentVisibility) = a3;
-  if (v5 == a3)
+  *(&self->super.super.super.isa + OBJC_IVAR___SBHSheenEffectView_contentVisibility) = visibility;
+  if (v5 == visibility)
   {
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
     sub_1BEE25E08();
   }
 }
@@ -154,7 +154,7 @@
 
   v4.receiver = self;
   v4.super_class = SBHSheenEffectView;
-  v3 = self;
+  selfCopy = self;
   [(SBHSheenEffectView *)&v4 didMoveToWindow];
   sub_1BEE25E08();
 }
@@ -174,7 +174,7 @@
   return v3;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -184,10 +184,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (key)
   {
     v7 = sub_1BEE4708C();
-    a4 = v8;
+    key = v8;
   }
 
   else
@@ -195,11 +195,11 @@
     v7 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
+  settingsCopy = settings;
+  selfCopy = self;
   v11.value._countAndFlagsBits = v7;
-  v11.value._object = a4;
-  SBHSheenEffectView.settings(_:changedValueForKey:)(a3, v11);
+  v11.value._object = key;
+  SBHSheenEffectView.settings(_:changedValueForKey:)(settings, v11);
 }
 
 @end

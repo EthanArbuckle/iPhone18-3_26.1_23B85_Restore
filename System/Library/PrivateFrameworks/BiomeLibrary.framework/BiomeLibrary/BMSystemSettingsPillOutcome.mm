@@ -1,26 +1,26 @@
 @interface BMSystemSettingsPillOutcome
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSystemSettingsPillOutcome)initWithChildAccount:(id)a3 firstUpdate:(id)a4 fromPill:(id)a5 gesture:(id)a6 gestureOn:(id)a7;
-- (BMSystemSettingsPillOutcome)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSystemSettingsPillOutcome)initWithChildAccount:(id)account firstUpdate:(id)update fromPill:(id)pill gesture:(id)gesture gestureOn:(id)on;
+- (BMSystemSettingsPillOutcome)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSystemSettingsPillOutcome
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMSystemSettingsPillOutcome hasChildAccount](self, "hasChildAccount") || [v5 hasChildAccount])
     {
       if (![(BMSystemSettingsPillOutcome *)self hasChildAccount])
@@ -33,8 +33,8 @@
         goto LABEL_27;
       }
 
-      v6 = [(BMSystemSettingsPillOutcome *)self childAccount];
-      if (v6 != [v5 childAccount])
+      childAccount = [(BMSystemSettingsPillOutcome *)self childAccount];
+      if (childAccount != [v5 childAccount])
       {
         goto LABEL_27;
       }
@@ -52,8 +52,8 @@
         goto LABEL_27;
       }
 
-      v7 = [(BMSystemSettingsPillOutcome *)self firstUpdate];
-      if (v7 != [v5 firstUpdate])
+      firstUpdate = [(BMSystemSettingsPillOutcome *)self firstUpdate];
+      if (firstUpdate != [v5 firstUpdate])
       {
         goto LABEL_27;
       }
@@ -71,25 +71,25 @@
         goto LABEL_27;
       }
 
-      v8 = [(BMSystemSettingsPillOutcome *)self fromPill];
-      if (v8 != [v5 fromPill])
+      fromPill = [(BMSystemSettingsPillOutcome *)self fromPill];
+      if (fromPill != [v5 fromPill])
       {
         goto LABEL_27;
       }
     }
 
-    v9 = [(BMSystemSettingsPillOutcome *)self gesture];
-    v10 = [v5 gesture];
-    v11 = v10;
-    if (v9 == v10)
+    gesture = [(BMSystemSettingsPillOutcome *)self gesture];
+    gesture2 = [v5 gesture];
+    v11 = gesture2;
+    if (gesture == gesture2)
     {
     }
 
     else
     {
-      v12 = [(BMSystemSettingsPillOutcome *)self gesture];
-      v13 = [v5 gesture];
-      v14 = [v12 isEqual:v13];
+      gesture3 = [(BMSystemSettingsPillOutcome *)self gesture];
+      gesture4 = [v5 gesture];
+      v14 = [gesture3 isEqual:gesture4];
 
       if (!v14)
       {
@@ -105,8 +105,8 @@
 
     if (-[BMSystemSettingsPillOutcome hasGestureOn](self, "hasGestureOn") && [v5 hasGestureOn])
     {
-      v16 = [(BMSystemSettingsPillOutcome *)self gestureOn];
-      v15 = v16 ^ [v5 gestureOn] ^ 1;
+      gestureOn = [(BMSystemSettingsPillOutcome *)self gestureOn];
+      v15 = gestureOn ^ [v5 gestureOn] ^ 1;
 LABEL_28:
 
       goto LABEL_29;
@@ -156,7 +156,7 @@ LABEL_29:
     v5 = 0;
   }
 
-  v6 = [(BMSystemSettingsPillOutcome *)self gesture];
+  gesture = [(BMSystemSettingsPillOutcome *)self gesture];
   if ([(BMSystemSettingsPillOutcome *)self hasGestureOn])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSystemSettingsPillOutcome gestureOn](self, "gestureOn")}];
@@ -168,50 +168,50 @@ LABEL_29:
   }
 
   v18 = @"childAccount";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"firstUpdate";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"fromPill";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"gesture";
-  v11 = v6;
-  if (!v6)
+  null4 = gesture;
+  if (!gesture)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"gestureOn";
-  v12 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
   if (v7)
   {
-    if (v6)
+    if (gesture)
     {
       goto LABEL_25;
     }
@@ -220,7 +220,7 @@ LABEL_29:
   else
   {
 
-    if (v6)
+    if (gesture)
     {
 LABEL_25:
       if (v5)
@@ -271,38 +271,38 @@ LABEL_28:
   return v13;
 }
 
-- (BMSystemSettingsPillOutcome)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSystemSettingsPillOutcome)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"childAccount"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"childAccount"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"firstUpdate"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"firstUpdate"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_20;
         }
 
         v23 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v36 = a4;
+        errorCopy = error;
         v24 = *MEMORY[0x1E698F240];
         v49 = *MEMORY[0x1E696A578];
         v41 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"firstUpdate"];
         v50 = v41;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
         v25 = [v23 initWithDomain:v24 code:2 userInfo:v10];
-        a4 = 0;
+        error = 0;
         v15 = 0;
-        *v36 = v25;
+        *errorCopy = v25;
         goto LABEL_19;
       }
 
@@ -314,19 +314,19 @@ LABEL_4:
       v39 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"fromPill"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"fromPill"];
     v40 = v8;
-    v42 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
           v15 = 0;
-          a4 = v39;
+          error = v39;
           goto LABEL_19;
         }
 
@@ -339,12 +339,12 @@ LABEL_4:
         v28 = [v26 initWithDomain:v27 code:2 userInfo:v11];
         v41 = 0;
         v15 = 0;
-        v29 = a4;
-        a4 = v39;
-        *v29 = v28;
+        errorCopy2 = error;
+        error = v39;
+        *errorCopy2 = v28;
 LABEL_18:
 
-        self = v42;
+        self = selfCopy;
         v8 = v40;
 LABEL_19:
 
@@ -359,22 +359,22 @@ LABEL_19:
       v41 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"gesture"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"gesture"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v12 = 0;
           v15 = 0;
-          a4 = v39;
+          error = v39;
           goto LABEL_18;
         }
 
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v37 = a4;
+        errorCopy3 = error;
         v31 = *MEMORY[0x1E698F240];
         v45 = *MEMORY[0x1E696A578];
         v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"gesture"];
@@ -383,8 +383,8 @@ LABEL_19:
         v32 = [v30 initWithDomain:v31 code:2 userInfo:v13];
         v12 = 0;
         v15 = 0;
-        a4 = v39;
-        *v37 = v32;
+        error = v39;
+        *errorCopy3 = v32;
         goto LABEL_17;
       }
 
@@ -396,13 +396,13 @@ LABEL_19:
       v12 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"gestureOn"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"gestureOn"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v38 = objc_alloc(MEMORY[0x1E696ABC0]);
           v35 = *MEMORY[0x1E698F240];
@@ -410,12 +410,12 @@ LABEL_19:
           v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"gestureOn"];
           v44 = v33;
           v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-          *a4 = [v38 initWithDomain:v35 code:2 userInfo:v34];
+          *error = [v38 initWithDomain:v35 code:2 userInfo:v34];
         }
 
         v14 = 0;
         v15 = 0;
-        a4 = v39;
+        error = v39;
         goto LABEL_17;
       }
 
@@ -427,9 +427,9 @@ LABEL_19:
       v14 = 0;
     }
 
-    a4 = v39;
-    v15 = [(BMSystemSettingsPillOutcome *)v42 initWithChildAccount:v40 firstUpdate:v39 fromPill:v41 gesture:v12 gestureOn:v14];
-    v42 = v15;
+    error = v39;
+    v15 = [(BMSystemSettingsPillOutcome *)selfCopy initWithChildAccount:v40 firstUpdate:v39 fromPill:v41 gesture:v12 gestureOn:v14];
+    selfCopy = v15;
 LABEL_17:
 
     goto LABEL_18;
@@ -442,7 +442,7 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v15 = 0;
@@ -450,17 +450,17 @@ LABEL_17:
   }
 
   v18 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v19 = a4;
+  errorCopy4 = error;
   v20 = *MEMORY[0x1E698F240];
   v51 = *MEMORY[0x1E696A578];
   v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"childAccount"];
   v52[0] = v21;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
   v22 = v20;
-  a4 = v21;
+  error = v21;
   v8 = 0;
   v15 = 0;
-  *v19 = [v18 initWithDomain:v22 code:2 userInfo:v9];
+  *errorCopy4 = [v18 initWithDomain:v22 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -472,14 +472,14 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMSystemSettingsPillOutcome *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_hasChildAccount)
   {
     childAccount = self->_childAccount;
@@ -510,9 +510,9 @@ LABEL_21:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v47.receiver = self;
   v47.super_class = BMSystemSettingsPillOutcome;
   v5 = [(BMEventBase *)&v47 init];
@@ -521,12 +521,12 @@ LABEL_21:
     goto LABEL_75;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_73;
       }
@@ -537,18 +537,18 @@ LABEL_21:
       while (1)
       {
         v48 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v48 & 0x7F) << v7;
@@ -566,9 +566,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_73;
       }
@@ -585,18 +585,18 @@ LABEL_16:
           while (1)
           {
             v48 = 0;
-            v40 = [v4 position] + 1;
-            if (v40 >= [v4 position] && (v41 = objc_msgSend(v4, "position") + 1, v41 <= objc_msgSend(v4, "length")))
+            v40 = [fromCopy position] + 1;
+            if (v40 >= [fromCopy position] && (v41 = objc_msgSend(fromCopy, "position") + 1, v41 <= objc_msgSend(fromCopy, "length")))
             {
-              v42 = [v4 data];
-              [v42 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v39 |= (v48 & 0x7F) << v37;
@@ -614,7 +614,7 @@ LABEL_16:
             }
           }
 
-          v22 = (v39 != 0) & ~[v4 hasError];
+          v22 = (v39 != 0) & ~[fromCopy hasError];
 LABEL_66:
           v43 = 16;
         }
@@ -639,18 +639,18 @@ LABEL_61:
           while (1)
           {
             v48 = 0;
-            v26 = [v4 position] + 1;
-            if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+            v26 = [fromCopy position] + 1;
+            if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
             {
-              v28 = [v4 data];
-              [v28 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v25 |= (v48 & 0x7F) << v23;
@@ -668,7 +668,7 @@ LABEL_61:
             }
           }
 
-          v22 = (v25 != 0) & ~[v4 hasError];
+          v22 = (v25 != 0) & ~[fromCopy hasError];
 LABEL_70:
           v43 = 18;
         }
@@ -695,18 +695,18 @@ LABEL_70:
         while (1)
         {
           v48 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v48 & 0x7F) << v16;
@@ -724,7 +724,7 @@ LABEL_70:
           }
         }
 
-        v22 = (v18 != 0) & ~[v4 hasError];
+        v22 = (v18 != 0) & ~[fromCopy hasError];
 LABEL_68:
         v43 = 22;
         goto LABEL_71;
@@ -735,8 +735,8 @@ LABEL_68:
       v5->_gesture = v35;
 
 LABEL_72:
-      v44 = [v4 position];
-      if (v44 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_73;
       }
@@ -749,18 +749,18 @@ LABEL_72:
     while (1)
     {
       v48 = 0;
-      v32 = [v4 position] + 1;
-      if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+      v32 = [fromCopy position] + 1;
+      if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
       {
-        v34 = [v4 data];
-        [v34 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+        data5 = [fromCopy data];
+        [data5 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v31 |= (v48 & 0x7F) << v29;
@@ -778,7 +778,7 @@ LABEL_72:
       }
     }
 
-    v22 = (v31 != 0) & ~[v4 hasError];
+    v22 = (v31 != 0) & ~[fromCopy hasError];
 LABEL_64:
     v43 = 20;
 LABEL_71:
@@ -787,7 +787,7 @@ LABEL_71:
   }
 
 LABEL_73:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_74:
     v45 = 0;
@@ -808,30 +808,30 @@ LABEL_75:
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSystemSettingsPillOutcome childAccount](self, "childAccount")}];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSystemSettingsPillOutcome firstUpdate](self, "firstUpdate")}];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSystemSettingsPillOutcome fromPill](self, "fromPill")}];
-  v7 = [(BMSystemSettingsPillOutcome *)self gesture];
+  gesture = [(BMSystemSettingsPillOutcome *)self gesture];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSystemSettingsPillOutcome gestureOn](self, "gestureOn")}];
-  v9 = [v3 initWithFormat:@"BMSystemSettingsPillOutcome with childAccount: %@, firstUpdate: %@, fromPill: %@, gesture: %@, gestureOn: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMSystemSettingsPillOutcome with childAccount: %@, firstUpdate: %@, fromPill: %@, gesture: %@, gestureOn: %@", v4, v5, v6, gesture, v8];
 
   return v9;
 }
 
-- (BMSystemSettingsPillOutcome)initWithChildAccount:(id)a3 firstUpdate:(id)a4 fromPill:(id)a5 gesture:(id)a6 gestureOn:(id)a7
+- (BMSystemSettingsPillOutcome)initWithChildAccount:(id)account firstUpdate:(id)update fromPill:(id)pill gesture:(id)gesture gestureOn:(id)on
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accountCopy = account;
+  updateCopy = update;
+  pillCopy = pill;
+  gestureCopy = gesture;
+  onCopy = on;
   v19.receiver = self;
   v19.super_class = BMSystemSettingsPillOutcome;
   v17 = [(BMEventBase *)&v19 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (accountCopy)
     {
       v17->_hasChildAccount = 1;
-      v17->_childAccount = [v12 BOOLValue];
+      v17->_childAccount = [accountCopy BOOLValue];
     }
 
     else
@@ -840,10 +840,10 @@ LABEL_75:
       v17->_childAccount = 0;
     }
 
-    if (v13)
+    if (updateCopy)
     {
       v17->_hasFirstUpdate = 1;
-      v17->_firstUpdate = [v13 BOOLValue];
+      v17->_firstUpdate = [updateCopy BOOLValue];
     }
 
     else
@@ -852,10 +852,10 @@ LABEL_75:
       v17->_firstUpdate = 0;
     }
 
-    if (v14)
+    if (pillCopy)
     {
       v17->_hasFromPill = 1;
-      v17->_fromPill = [v14 BOOLValue];
+      v17->_fromPill = [pillCopy BOOLValue];
     }
 
     else
@@ -864,11 +864,11 @@ LABEL_75:
       v17->_fromPill = 0;
     }
 
-    objc_storeStrong(&v17->_gesture, a6);
-    if (v16)
+    objc_storeStrong(&v17->_gesture, gesture);
+    if (onCopy)
     {
       v17->_hasGestureOn = 1;
-      v17->_gestureOn = [v16 BOOLValue];
+      v17->_gestureOn = [onCopy BOOLValue];
     }
 
     else
@@ -920,9 +920,9 @@ LABEL_75:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -930,8 +930,8 @@ LABEL_75:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSystemSettingsPillOutcome alloc] initByReadFrom:v7];
     v4 = v8;

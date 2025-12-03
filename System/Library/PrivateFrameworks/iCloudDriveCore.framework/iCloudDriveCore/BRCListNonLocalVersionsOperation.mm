@@ -1,20 +1,20 @@
 @interface BRCListNonLocalVersionsOperation
-- (BRCListNonLocalVersionsOperation)initWithDocumentItem:(id)a3 sessionContext:(id)a4;
+- (BRCListNonLocalVersionsOperation)initWithDocumentItem:(id)item sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCListNonLocalVersionsOperation
 
-- (BRCListNonLocalVersionsOperation)initWithDocumentItem:(id)a3 sessionContext:(id)a4
+- (BRCListNonLocalVersionsOperation)initWithDocumentItem:(id)item sessionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 serverZone];
-  v9 = [v8 metadataSyncContext];
+  itemCopy = item;
+  contextCopy = context;
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
   v20.receiver = self;
   v20.super_class = BRCListNonLocalVersionsOperation;
-  v10 = [(_BRCOperation *)&v20 initWithName:@"versions/list-non-local-versions" syncContext:v9 sessionContext:v7];
+  v10 = [(_BRCOperation *)&v20 initWithName:@"versions/list-non-local-versions" syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v10)
   {
@@ -22,30 +22,30 @@
     v12 = brc_default_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [(BRCListNonLocalVersionsOperation *)v6 initWithDocumentItem:v11 sessionContext:v12];
+      [(BRCListNonLocalVersionsOperation *)itemCopy initWithDocumentItem:v11 sessionContext:v12];
     }
 
-    [(BRCListNonLocalVersionsOperation *)v10 setItem:v6];
-    v13 = [v6 documentRecordID];
-    [(BRCListNonLocalVersionsOperation *)v10 setRecordID:v13];
+    [(BRCListNonLocalVersionsOperation *)v10 setItem:itemCopy];
+    documentRecordID = [itemCopy documentRecordID];
+    [(BRCListNonLocalVersionsOperation *)v10 setRecordID:documentRecordID];
 
-    v14 = [objc_alloc(MEMORY[0x277CBC5D0]) initShareIDWithShareableItem:v6];
+    v14 = [objc_alloc(MEMORY[0x277CBC5D0]) initShareIDWithShareableItem:itemCopy];
     [(BRCListNonLocalVersionsOperation *)v10 setShareID:v14];
 
-    v15 = [v6 serverZone];
-    [(BRCListNonLocalVersionsOperation *)v10 setServerZone:v15];
+    serverZone2 = [itemCopy serverZone];
+    [(BRCListNonLocalVersionsOperation *)v10 setServerZone:serverZone2];
 
-    v16 = [v6 currentVersion];
-    [(BRCListNonLocalVersionsOperation *)v10 setCurrentVersion:v16];
+    currentVersion = [itemCopy currentVersion];
+    [(BRCListNonLocalVersionsOperation *)v10 setCurrentVersion:currentVersion];
 
     [(_BRCOperation *)v10 setNonDiscretionary:1];
-    v17 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v10 setGroup:v17];
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v10 setGroup:br_sharingMisc];
 
     v18 = [[BRCNotification alloc] initWithLocalItem:v10->_item itemDiffs:0];
     [(BRCListNonLocalVersionsOperation *)v10 setNotification:v18];
 
-    objc_storeStrong(&v10->_sessionContext, a4);
+    objc_storeStrong(&v10->_sessionContext, context);
   }
 
   return v10;
@@ -61,40 +61,40 @@
 - (void)main
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v3 = [(BRCListNonLocalVersionsOperation *)self serverZone];
-  v4 = [v3 clientZone];
+  serverZone = [(BRCListNonLocalVersionsOperation *)self serverZone];
+  clientZone = [serverZone clientZone];
 
-  v5 = [(BRCListNonLocalVersionsOperation *)self recordID];
+  recordID = [(BRCListNonLocalVersionsOperation *)self recordID];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc(MEMORY[0x277CBC398]);
-  v26[0] = v5;
+  v26[0] = recordID;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
   v9 = [v7 initWithRecordIDs:v8];
 
   v10 = [MEMORY[0x277CBC5A0] desiredKeysWithMask:153];
   [v9 setDesiredKeys:v10];
 
-  v11 = [MEMORY[0x277CBC4F8] br_fetchNonLocalVersions];
-  [v9 setGroup:v11];
+  br_fetchNonLocalVersions = [MEMORY[0x277CBC4F8] br_fetchNonLocalVersions];
+  [v9 setGroup:br_fetchNonLocalVersions];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __40__BRCListNonLocalVersionsOperation_main__block_invoke;
   v22[3] = &unk_278506B20;
   v22[4] = self;
-  v12 = v5;
+  v12 = recordID;
   v23 = v12;
-  v24 = v4;
+  v24 = clientZone;
   v13 = v6;
   v25 = v13;
-  v14 = v4;
+  v14 = clientZone;
   [v9 setFetchRecordVersionsProgressBlock:v22];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __40__BRCListNonLocalVersionsOperation_main__block_invoke_9;
   v18[3] = &unk_278502620;
   v19 = v12;
-  v20 = self;
+  selfCopy = self;
   v21 = v13;
   v15 = v13;
   v16 = v12;

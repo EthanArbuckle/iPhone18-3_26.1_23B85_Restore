@@ -1,26 +1,26 @@
 @interface MSDViewServiceRootViewController
-- (MSDViewServiceRootViewController)initWithScene:(id)a3;
+- (MSDViewServiceRootViewController)initWithScene:(id)scene;
 - (void)doCancelInstall;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)operationFailed:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)operationFailed:(id)failed;
 - (void)presentConfirmationAlert;
 - (void)quit;
-- (void)respondToGesture:(id)a3;
-- (void)respondToShowErrorGesture:(id)a3;
-- (void)restartTimerWithTimeInterval:(double)a3;
-- (void)showErrorTimeout:(id)a3;
-- (void)timeout:(id)a3;
+- (void)respondToGesture:(id)gesture;
+- (void)respondToShowErrorGesture:(id)gesture;
+- (void)restartTimerWithTimeInterval:(double)interval;
+- (void)showErrorTimeout:(id)timeout;
+- (void)timeout:(id)timeout;
 - (void)updateErrorState;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation MSDViewServiceRootViewController
 
-- (MSDViewServiceRootViewController)initWithScene:(id)a3
+- (MSDViewServiceRootViewController)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = sub_1000015E4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -49,10 +49,10 @@
     }
 
     [(MSDViewServiceRootViewController *)v6 setObserverAdded:0];
-    v12 = [v4 configurationContext];
-    [(MSDViewServiceRootViewController *)v6 setConfigurationContext:v12];
+    configurationContext = [sceneCopy configurationContext];
+    [(MSDViewServiceRootViewController *)v6 setConfigurationContext:configurationContext];
 
-    [(MSDViewServiceRootViewController *)v6 setScene:v4];
+    [(MSDViewServiceRootViewController *)v6 setScene:sceneCopy];
   }
 
   return v6;
@@ -83,8 +83,8 @@
   [(MSDViewServiceRootViewController *)self setView:v13];
   v15 = [UIBlurEffect effectWithStyle:2];
   v16 = [[UIVisualEffectView alloc] initWithEffect:v15];
-  v17 = [(MSDViewServiceRootViewController *)self view];
-  [v17 bounds];
+  view = [(MSDViewServiceRootViewController *)self view];
+  [view bounds];
   [v16 setFrame:?];
 
   [v16 setAutoresizingMask:18];
@@ -93,34 +93,34 @@
   v18 = [[UIVisualEffectView alloc] initWithEffect:v217];
   [v13 bounds];
   [v18 setFrame:?];
-  v19 = [v16 contentView];
+  contentView = [v16 contentView];
   v216 = v18;
-  [v19 addSubview:v18];
+  [contentView addSubview:v18];
 
-  v20 = [(MSDViewServiceRootViewController *)self view];
+  view2 = [(MSDViewServiceRootViewController *)self view];
   v218 = v16;
-  [v20 insertSubview:v16 atIndex:0];
+  [view2 insertSubview:v16 atIndex:0];
 
-  v21 = [(MSDViewServiceRootViewController *)self configurationContext];
-  v22 = [v21 userInfo];
+  configurationContext = [(MSDViewServiceRootViewController *)self configurationContext];
+  userInfo = [configurationContext userInfo];
 
   v23 = +[NSBundle mainBundle];
-  v24 = [v22 objectForKeyedSubscript:@"DisplayString"];
+  v24 = [userInfo objectForKeyedSubscript:@"DisplayString"];
   v25 = [v23 localizedStringForKey:v24 value:&stru_10000C608 table:0];
   [(MSDViewServiceRootViewController *)self setDisplayString:v25];
 
-  v215 = v22;
-  v214 = [v22 objectForKeyedSubscript:@"CancelButton"];
-  v26 = [v214 BOOLValue];
+  v215 = userInfo;
+  v214 = [userInfo objectForKeyedSubscript:@"CancelButton"];
+  bOOLValue = [v214 BOOLValue];
   v27 = +[MSDViewServiceModel sharedInstance];
-  [v27 setShowCancelButton:v26];
+  [v27 setShowCancelButton:bOOLValue];
 
   v28 = sub_1000015E4();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [(MSDViewServiceRootViewController *)self displayString];
+    displayString = [(MSDViewServiceRootViewController *)self displayString];
     *buf = 138543362;
-    v223 = v29;
+    v223 = displayString;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "StoreDemoViewService DisplayString = %{public}@", buf, 0xCu);
   }
 
@@ -129,10 +129,10 @@
 
   v31 = objc_alloc_init(NSMutableParagraphStyle);
   v32 = +[UIDevice currentDevice];
-  v33 = [v32 userInterfaceIdiom];
+  userInterfaceIdiom = [v32 userInterfaceIdiom];
 
   v34 = 25.0;
-  if (v33 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v34 = 40.0;
     v35 = 40.0;
@@ -143,7 +143,7 @@
     v35 = 30.0;
   }
 
-  if (v33 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v36 = 50.0;
   }
@@ -153,7 +153,7 @@
     v36 = 30.0;
   }
 
-  if (v33 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v37 = 15.0;
   }
@@ -164,174 +164,174 @@
   }
 
   v38 = [UIFont fontWithName:@"HelveticaNeue-Thin" size:v34];
-  v39 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v39 setFont:v38];
+  mainLabel = [(MSDViewServiceRootViewController *)self mainLabel];
+  [mainLabel setFont:v38];
 
   [v31 setMinimumLineHeight:v35];
   [v31 setMaximumLineHeight:v36];
   [v31 setLineSpacing:v37];
 
-  v40 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
+  mainLabel2 = [(MSDViewServiceRootViewController *)self mainLabel];
+  [mainLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v41 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v41 setNumberOfLines:0];
+  mainLabel3 = [(MSDViewServiceRootViewController *)self mainLabel];
+  [mainLabel3 setNumberOfLines:0];
 
-  v42 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v42 setAdjustsFontSizeToFitWidth:1];
+  mainLabel4 = [(MSDViewServiceRootViewController *)self mainLabel];
+  [mainLabel4 setAdjustsFontSizeToFitWidth:1];
 
   v43 = +[UIColor clearColor];
-  v44 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v44 setBackgroundColor:v43];
+  mainLabel5 = [(MSDViewServiceRootViewController *)self mainLabel];
+  [mainLabel5 setBackgroundColor:v43];
 
   v45 = +[UIColor whiteColor];
-  v46 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v46 setTextColor:v45];
+  mainLabel6 = [(MSDViewServiceRootViewController *)self mainLabel];
+  [mainLabel6 setTextColor:v45];
 
   [v31 setAlignment:1];
   v220 = NSParagraphStyleAttributeName;
   v221 = v31;
   v212 = [NSDictionary dictionaryWithObjects:&v221 forKeys:&v220 count:1];
   v47 = [NSAttributedString alloc];
-  v48 = [(MSDViewServiceRootViewController *)self displayString];
-  v49 = [v47 initWithString:v48 attributes:v212];
-  v50 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v50 setAttributedText:v49];
+  displayString2 = [(MSDViewServiceRootViewController *)self displayString];
+  v49 = [v47 initWithString:displayString2 attributes:v212];
+  mainLabel7 = [(MSDViewServiceRootViewController *)self mainLabel];
+  [mainLabel7 setAttributedText:v49];
 
-  v51 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v51 sizeToFit];
+  mainLabel8 = [(MSDViewServiceRootViewController *)self mainLabel];
+  [mainLabel8 sizeToFit];
 
-  v52 = [(MSDViewServiceRootViewController *)self view];
-  v53 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v52 addSubview:v53];
+  view3 = [(MSDViewServiceRootViewController *)self view];
+  mainLabel9 = [(MSDViewServiceRootViewController *)self mainLabel];
+  [view3 addSubview:mainLabel9];
 
   v54 = objc_alloc_init(UIButton);
   [(MSDViewServiceRootViewController *)self setCancelButton:v54];
 
-  v55 = [(MSDViewServiceRootViewController *)self cancelButton];
-  [v55 setHidden:1];
+  cancelButton = [(MSDViewServiceRootViewController *)self cancelButton];
+  [cancelButton setHidden:1];
 
-  v56 = [(MSDViewServiceRootViewController *)self cancelButton];
-  [v56 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cancelButton2 = [(MSDViewServiceRootViewController *)self cancelButton];
+  [cancelButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v57 = [(MSDViewServiceRootViewController *)self cancelButton];
+  cancelButton3 = [(MSDViewServiceRootViewController *)self cancelButton];
   v58 = +[NSBundle mainBundle];
   v59 = [v58 localizedStringForKey:@"STOP_INSTALL" value:&stru_10000C608 table:0];
-  [v57 setTitle:v59 forState:0];
+  [cancelButton3 setTitle:v59 forState:0];
 
-  v60 = [(MSDViewServiceRootViewController *)self cancelButton];
-  [v60 sizeToFit];
+  cancelButton4 = [(MSDViewServiceRootViewController *)self cancelButton];
+  [cancelButton4 sizeToFit];
 
-  v61 = [(MSDViewServiceRootViewController *)self cancelButton];
-  [v61 addTarget:self action:"presentConfirmationAlert" forControlEvents:64];
+  cancelButton5 = [(MSDViewServiceRootViewController *)self cancelButton];
+  [cancelButton5 addTarget:self action:"presentConfirmationAlert" forControlEvents:64];
 
-  v62 = [(MSDViewServiceRootViewController *)self view];
-  v63 = [(MSDViewServiceRootViewController *)self cancelButton];
-  [v62 addSubview:v63];
+  view4 = [(MSDViewServiceRootViewController *)self view];
+  cancelButton6 = [(MSDViewServiceRootViewController *)self cancelButton];
+  [view4 addSubview:cancelButton6];
 
   v64 = objc_alloc_init(UILabel);
   [(MSDViewServiceRootViewController *)self setStatusLabel:v64];
 
-  v65 = [(MSDViewServiceRootViewController *)self statusLabel];
-  [v65 setTranslatesAutoresizingMaskIntoConstraints:0];
+  statusLabel = [(MSDViewServiceRootViewController *)self statusLabel];
+  [statusLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v66 = +[NSBundle mainBundle];
   v67 = [v66 localizedStringForKey:@"ITEM_FAILED" value:&stru_10000C608 table:0];
-  v68 = [(MSDViewServiceRootViewController *)self statusLabel];
-  [v68 setText:v67];
+  statusLabel2 = [(MSDViewServiceRootViewController *)self statusLabel];
+  [statusLabel2 setText:v67];
 
-  v69 = [(MSDViewServiceRootViewController *)self statusLabel];
-  [v69 setLineBreakMode:0];
+  statusLabel3 = [(MSDViewServiceRootViewController *)self statusLabel];
+  [statusLabel3 setLineBreakMode:0];
 
-  v70 = [(MSDViewServiceRootViewController *)self statusLabel];
-  [v70 setNumberOfLines:0];
+  statusLabel4 = [(MSDViewServiceRootViewController *)self statusLabel];
+  [statusLabel4 setNumberOfLines:0];
 
-  v71 = [(MSDViewServiceRootViewController *)self statusLabel];
+  statusLabel5 = [(MSDViewServiceRootViewController *)self statusLabel];
   v72 = +[UIColor whiteColor];
-  [v71 setTextColor:v72];
+  [statusLabel5 setTextColor:v72];
 
-  v73 = [(MSDViewServiceRootViewController *)self statusLabel];
+  statusLabel6 = [(MSDViewServiceRootViewController *)self statusLabel];
   v74 = [UIFont systemFontOfSize:14.0];
-  [v73 setFont:v74];
+  [statusLabel6 setFont:v74];
 
-  v75 = [(MSDViewServiceRootViewController *)self statusLabel];
-  [v75 setTextAlignment:2];
+  statusLabel7 = [(MSDViewServiceRootViewController *)self statusLabel];
+  [statusLabel7 setTextAlignment:2];
 
-  v76 = [(MSDViewServiceRootViewController *)self statusLabel];
-  [v76 sizeToFit];
+  statusLabel8 = [(MSDViewServiceRootViewController *)self statusLabel];
+  [statusLabel8 sizeToFit];
 
-  v77 = [(MSDViewServiceRootViewController *)self view];
-  v78 = [(MSDViewServiceRootViewController *)self statusLabel];
-  [v77 addSubview:v78];
+  view5 = [(MSDViewServiceRootViewController *)self view];
+  statusLabel9 = [(MSDViewServiceRootViewController *)self statusLabel];
+  [view5 addSubview:statusLabel9];
 
   v79 = objc_alloc_init(UITextView);
   [(MSDViewServiceRootViewController *)self setErrorView:v79];
 
-  v80 = [(MSDViewServiceRootViewController *)self errorView];
-  [v80 setHidden:1];
+  errorView = [(MSDViewServiceRootViewController *)self errorView];
+  [errorView setHidden:1];
 
-  v81 = [(MSDViewServiceRootViewController *)self errorView];
-  [v81 setUserInteractionEnabled:0];
+  errorView2 = [(MSDViewServiceRootViewController *)self errorView];
+  [errorView2 setUserInteractionEnabled:0];
 
-  v82 = [(MSDViewServiceRootViewController *)self errorView];
-  [v82 setTranslatesAutoresizingMaskIntoConstraints:0];
+  errorView3 = [(MSDViewServiceRootViewController *)self errorView];
+  [errorView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v83 = [(MSDViewServiceRootViewController *)self errorView];
+  errorView4 = [(MSDViewServiceRootViewController *)self errorView];
   v84 = +[UIColor whiteColor];
-  [v83 setTextColor:v84];
+  [errorView4 setTextColor:v84];
 
-  v85 = [(MSDViewServiceRootViewController *)self errorView];
+  errorView5 = [(MSDViewServiceRootViewController *)self errorView];
   v86 = [UIFont systemFontOfSize:14.0];
-  [v85 setFont:v86];
+  [errorView5 setFont:v86];
 
   v87 = +[UIColor clearColor];
-  v88 = [(MSDViewServiceRootViewController *)self errorView];
-  [v88 setBackgroundColor:v87];
+  errorView6 = [(MSDViewServiceRootViewController *)self errorView];
+  [errorView6 setBackgroundColor:v87];
 
-  v89 = [(MSDViewServiceRootViewController *)self errorView];
-  [v89 setTextAlignment:0];
+  errorView7 = [(MSDViewServiceRootViewController *)self errorView];
+  [errorView7 setTextAlignment:0];
 
-  v90 = [(MSDViewServiceRootViewController *)self view];
-  v91 = [(MSDViewServiceRootViewController *)self errorView];
-  [v90 addSubview:v91];
+  view6 = [(MSDViewServiceRootViewController *)self view];
+  errorView8 = [(MSDViewServiceRootViewController *)self errorView];
+  [view6 addSubview:errorView8];
 
   v92 = [[UIProgressView alloc] initWithProgressViewStyle:0];
   [(MSDViewServiceRootViewController *)self setProgressBar:v92];
 
-  v93 = [(MSDViewServiceRootViewController *)self progressBar];
-  [v93 setTranslatesAutoresizingMaskIntoConstraints:0];
+  progressBar = [(MSDViewServiceRootViewController *)self progressBar];
+  [progressBar setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v94 = [(MSDViewServiceRootViewController *)self progressBar];
-  [v94 setHidden:1];
+  progressBar2 = [(MSDViewServiceRootViewController *)self progressBar];
+  [progressBar2 setHidden:1];
 
   v95 = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
-  v96 = [(MSDViewServiceRootViewController *)self progressBar];
-  [v96 setTrackTintColor:v95];
+  progressBar3 = [(MSDViewServiceRootViewController *)self progressBar];
+  [progressBar3 setTrackTintColor:v95];
 
   v97 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5];
-  v98 = [(MSDViewServiceRootViewController *)self progressBar];
-  [v98 setTintColor:v97];
+  progressBar4 = [(MSDViewServiceRootViewController *)self progressBar];
+  [progressBar4 setTintColor:v97];
 
-  v99 = [(MSDViewServiceRootViewController *)self view];
-  v100 = [(MSDViewServiceRootViewController *)self progressBar];
-  [v99 addSubview:v100];
+  view7 = [(MSDViewServiceRootViewController *)self view];
+  progressBar5 = [(MSDViewServiceRootViewController *)self progressBar];
+  [view7 addSubview:progressBar5];
 
-  v101 = [(MSDViewServiceRootViewController *)self view];
-  v102 = [(MSDViewServiceRootViewController *)self mainLabel];
-  v103 = [(MSDViewServiceRootViewController *)self view];
-  v104 = [NSLayoutConstraint constraintWithItem:v102 attribute:9 relatedBy:0 toItem:v103 attribute:9 multiplier:1.0 constant:0.0];
-  [v101 addConstraint:v104];
+  view8 = [(MSDViewServiceRootViewController *)self view];
+  mainLabel10 = [(MSDViewServiceRootViewController *)self mainLabel];
+  view9 = [(MSDViewServiceRootViewController *)self view];
+  v104 = [NSLayoutConstraint constraintWithItem:mainLabel10 attribute:9 relatedBy:0 toItem:view9 attribute:9 multiplier:1.0 constant:0.0];
+  [view8 addConstraint:v104];
 
-  v105 = [(MSDViewServiceRootViewController *)self view];
-  v106 = [(MSDViewServiceRootViewController *)self mainLabel];
-  v107 = [(MSDViewServiceRootViewController *)self view];
-  v108 = [NSLayoutConstraint constraintWithItem:v106 attribute:10 relatedBy:0 toItem:v107 attribute:10 multiplier:1.0 constant:0.0];
-  [v105 addConstraint:v108];
+  view10 = [(MSDViewServiceRootViewController *)self view];
+  mainLabel11 = [(MSDViewServiceRootViewController *)self mainLabel];
+  view11 = [(MSDViewServiceRootViewController *)self view];
+  v108 = [NSLayoutConstraint constraintWithItem:mainLabel11 attribute:10 relatedBy:0 toItem:view11 attribute:10 multiplier:1.0 constant:0.0];
+  [view10 addConstraint:v108];
 
   v109 = +[UIDevice currentDevice];
-  v110 = [v109 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v109 userInterfaceIdiom];
 
-  if (v110 == 1)
+  if (userInterfaceIdiom2 == 1)
   {
     v111 = 50.0;
   }
@@ -341,137 +341,137 @@
     v111 = 10.0;
   }
 
-  v112 = [(MSDViewServiceRootViewController *)self view];
-  v113 = [(MSDViewServiceRootViewController *)self mainLabel];
-  v114 = [(MSDViewServiceRootViewController *)self view];
-  v115 = [NSLayoutConstraint constraintWithItem:v113 attribute:5 relatedBy:0 toItem:v114 attribute:5 multiplier:1.0 constant:v111];
-  [v112 addConstraint:v115];
+  view12 = [(MSDViewServiceRootViewController *)self view];
+  mainLabel12 = [(MSDViewServiceRootViewController *)self mainLabel];
+  view13 = [(MSDViewServiceRootViewController *)self view];
+  v115 = [NSLayoutConstraint constraintWithItem:mainLabel12 attribute:5 relatedBy:0 toItem:view13 attribute:5 multiplier:1.0 constant:v111];
+  [view12 addConstraint:v115];
 
-  v116 = [(MSDViewServiceRootViewController *)self view];
-  v117 = [(MSDViewServiceRootViewController *)self mainLabel];
-  v118 = [(MSDViewServiceRootViewController *)self view];
-  v119 = [NSLayoutConstraint constraintWithItem:v117 attribute:5 relatedBy:0 toItem:v118 attribute:5 multiplier:1.0 constant:v111];
-  [v116 addConstraint:v119];
+  view14 = [(MSDViewServiceRootViewController *)self view];
+  mainLabel13 = [(MSDViewServiceRootViewController *)self mainLabel];
+  view15 = [(MSDViewServiceRootViewController *)self view];
+  v119 = [NSLayoutConstraint constraintWithItem:mainLabel13 attribute:5 relatedBy:0 toItem:view15 attribute:5 multiplier:1.0 constant:v111];
+  [view14 addConstraint:v119];
 
-  v120 = [(MSDViewServiceRootViewController *)self view];
-  v121 = [(MSDViewServiceRootViewController *)self cancelButton];
-  v122 = [(MSDViewServiceRootViewController *)self view];
-  v123 = [NSLayoutConstraint constraintWithItem:v121 attribute:9 relatedBy:0 toItem:v122 attribute:9 multiplier:1.0 constant:0.0];
-  [v120 addConstraint:v123];
+  view16 = [(MSDViewServiceRootViewController *)self view];
+  cancelButton7 = [(MSDViewServiceRootViewController *)self cancelButton];
+  view17 = [(MSDViewServiceRootViewController *)self view];
+  v123 = [NSLayoutConstraint constraintWithItem:cancelButton7 attribute:9 relatedBy:0 toItem:view17 attribute:9 multiplier:1.0 constant:0.0];
+  [view16 addConstraint:v123];
 
-  v124 = [(MSDViewServiceRootViewController *)self view];
-  v125 = [(MSDViewServiceRootViewController *)self cancelButton];
-  v126 = [(MSDViewServiceRootViewController *)self view];
-  v127 = [NSLayoutConstraint constraintWithItem:v125 attribute:10 relatedBy:0 toItem:v126 attribute:10 multiplier:1.7 constant:0.0];
-  [v124 addConstraint:v127];
+  view18 = [(MSDViewServiceRootViewController *)self view];
+  cancelButton8 = [(MSDViewServiceRootViewController *)self cancelButton];
+  view19 = [(MSDViewServiceRootViewController *)self view];
+  v127 = [NSLayoutConstraint constraintWithItem:cancelButton8 attribute:10 relatedBy:0 toItem:view19 attribute:10 multiplier:1.7 constant:0.0];
+  [view18 addConstraint:v127];
 
-  v128 = [(MSDViewServiceRootViewController *)self view];
-  v129 = [(MSDViewServiceRootViewController *)self errorView];
-  v130 = [v129 centerXAnchor];
-  v131 = [(MSDViewServiceRootViewController *)self view];
-  v132 = [v131 safeAreaLayoutGuide];
-  v133 = [v132 centerXAnchor];
-  v134 = [v130 constraintEqualToAnchor:v133];
-  [v128 addConstraint:v134];
+  view20 = [(MSDViewServiceRootViewController *)self view];
+  errorView9 = [(MSDViewServiceRootViewController *)self errorView];
+  centerXAnchor = [errorView9 centerXAnchor];
+  view21 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide = [view21 safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+  v134 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [view20 addConstraint:v134];
 
-  v135 = [(MSDViewServiceRootViewController *)self view];
-  v136 = [(MSDViewServiceRootViewController *)self errorView];
-  v137 = [v136 centerYAnchor];
-  v138 = [(MSDViewServiceRootViewController *)self view];
-  v139 = [v138 safeAreaLayoutGuide];
-  v140 = [v139 centerYAnchor];
-  v141 = [v137 constraintEqualToAnchor:v140];
-  [v135 addConstraint:v141];
+  view22 = [(MSDViewServiceRootViewController *)self view];
+  errorView10 = [(MSDViewServiceRootViewController *)self errorView];
+  centerYAnchor = [errorView10 centerYAnchor];
+  view23 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide2 = [view23 safeAreaLayoutGuide];
+  centerYAnchor2 = [safeAreaLayoutGuide2 centerYAnchor];
+  v141 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [view22 addConstraint:v141];
 
-  v142 = [(MSDViewServiceRootViewController *)self view];
-  v143 = [(MSDViewServiceRootViewController *)self errorView];
-  v144 = [v143 leadingAnchor];
-  v145 = [(MSDViewServiceRootViewController *)self view];
-  v146 = [v145 safeAreaLayoutGuide];
-  v147 = [v146 leadingAnchor];
-  v148 = [v144 constraintEqualToAnchor:v147 constant:20.0];
-  [v142 addConstraint:v148];
+  view24 = [(MSDViewServiceRootViewController *)self view];
+  errorView11 = [(MSDViewServiceRootViewController *)self errorView];
+  leadingAnchor = [errorView11 leadingAnchor];
+  view25 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide3 = [view25 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
+  v148 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
+  [view24 addConstraint:v148];
 
-  v149 = [(MSDViewServiceRootViewController *)self view];
-  v150 = [(MSDViewServiceRootViewController *)self errorView];
-  v151 = [v150 trailingAnchor];
-  v152 = [(MSDViewServiceRootViewController *)self view];
-  v153 = [v152 safeAreaLayoutGuide];
-  v154 = [v153 trailingAnchor];
-  v155 = [v151 constraintEqualToAnchor:v154 constant:-20.0];
-  [v149 addConstraint:v155];
+  view26 = [(MSDViewServiceRootViewController *)self view];
+  errorView12 = [(MSDViewServiceRootViewController *)self errorView];
+  trailingAnchor = [errorView12 trailingAnchor];
+  view27 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide4 = [view27 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide4 trailingAnchor];
+  v155 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
+  [view26 addConstraint:v155];
 
-  v156 = [(MSDViewServiceRootViewController *)self view];
-  v157 = [(MSDViewServiceRootViewController *)self errorView];
-  v158 = [v157 topAnchor];
-  v159 = [(MSDViewServiceRootViewController *)self view];
-  v160 = [v159 safeAreaLayoutGuide];
-  v161 = [v160 topAnchor];
-  v162 = [v158 constraintEqualToAnchor:v161 constant:20.0];
-  [v156 addConstraint:v162];
+  view28 = [(MSDViewServiceRootViewController *)self view];
+  errorView13 = [(MSDViewServiceRootViewController *)self errorView];
+  topAnchor = [errorView13 topAnchor];
+  view29 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide5 = [view29 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide5 topAnchor];
+  v162 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
+  [view28 addConstraint:v162];
 
-  v163 = [(MSDViewServiceRootViewController *)self view];
-  v164 = [(MSDViewServiceRootViewController *)self errorView];
-  v165 = [v164 bottomAnchor];
-  v166 = [(MSDViewServiceRootViewController *)self view];
-  v167 = [v166 safeAreaLayoutGuide];
-  v168 = [v167 bottomAnchor];
-  v169 = [v165 constraintEqualToAnchor:v168 constant:-20.0];
-  [v163 addConstraint:v169];
+  view30 = [(MSDViewServiceRootViewController *)self view];
+  errorView14 = [(MSDViewServiceRootViewController *)self errorView];
+  bottomAnchor = [errorView14 bottomAnchor];
+  view31 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide6 = [view31 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide6 bottomAnchor];
+  v169 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
+  [view30 addConstraint:v169];
 
-  v170 = [(MSDViewServiceRootViewController *)self view];
-  v171 = [(MSDViewServiceRootViewController *)self statusLabel];
-  v172 = [v171 trailingAnchor];
-  v173 = [(MSDViewServiceRootViewController *)self view];
-  v174 = [v173 safeAreaLayoutGuide];
-  v175 = [v174 trailingAnchor];
-  v176 = [v172 constraintEqualToAnchor:v175 constant:-20.0];
-  [v170 addConstraint:v176];
+  view32 = [(MSDViewServiceRootViewController *)self view];
+  statusLabel10 = [(MSDViewServiceRootViewController *)self statusLabel];
+  trailingAnchor3 = [statusLabel10 trailingAnchor];
+  view33 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide7 = [view33 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide7 trailingAnchor];
+  v176 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-20.0];
+  [view32 addConstraint:v176];
 
-  v177 = [(MSDViewServiceRootViewController *)self view];
-  v178 = [(MSDViewServiceRootViewController *)self statusLabel];
-  v179 = [v178 leadingAnchor];
-  v180 = [(MSDViewServiceRootViewController *)self view];
-  v181 = [v180 safeAreaLayoutGuide];
-  v182 = [v181 leadingAnchor];
-  v183 = [v179 constraintEqualToAnchor:v182 constant:20.0];
-  [v177 addConstraint:v183];
+  view34 = [(MSDViewServiceRootViewController *)self view];
+  statusLabel11 = [(MSDViewServiceRootViewController *)self statusLabel];
+  leadingAnchor3 = [statusLabel11 leadingAnchor];
+  view35 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide8 = [view35 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide8 leadingAnchor];
+  v183 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
+  [view34 addConstraint:v183];
 
-  v184 = [(MSDViewServiceRootViewController *)self view];
-  v185 = [(MSDViewServiceRootViewController *)self statusLabel];
-  v186 = [v185 bottomAnchor];
-  v187 = [(MSDViewServiceRootViewController *)self view];
-  v188 = [v187 safeAreaLayoutGuide];
-  v189 = [v188 bottomAnchor];
-  v190 = [v186 constraintEqualToAnchor:v189 constant:-20.0];
-  [v184 addConstraint:v190];
+  view36 = [(MSDViewServiceRootViewController *)self view];
+  statusLabel12 = [(MSDViewServiceRootViewController *)self statusLabel];
+  bottomAnchor3 = [statusLabel12 bottomAnchor];
+  view37 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide9 = [view37 safeAreaLayoutGuide];
+  bottomAnchor4 = [safeAreaLayoutGuide9 bottomAnchor];
+  v190 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-20.0];
+  [view36 addConstraint:v190];
 
-  v191 = [(MSDViewServiceRootViewController *)self view];
-  v192 = [(MSDViewServiceRootViewController *)self progressBar];
-  v193 = [v192 centerXAnchor];
-  v194 = [(MSDViewServiceRootViewController *)self view];
-  v195 = [v194 safeAreaLayoutGuide];
-  v196 = [v195 centerXAnchor];
-  v197 = [v193 constraintEqualToAnchor:v196];
-  [v191 addConstraint:v197];
+  view38 = [(MSDViewServiceRootViewController *)self view];
+  progressBar6 = [(MSDViewServiceRootViewController *)self progressBar];
+  centerXAnchor3 = [progressBar6 centerXAnchor];
+  view39 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide10 = [view39 safeAreaLayoutGuide];
+  centerXAnchor4 = [safeAreaLayoutGuide10 centerXAnchor];
+  v197 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+  [view38 addConstraint:v197];
 
-  v198 = [(MSDViewServiceRootViewController *)self view];
-  v199 = [(MSDViewServiceRootViewController *)self progressBar];
-  v200 = [v199 widthAnchor];
-  v201 = [(MSDViewServiceRootViewController *)self view];
-  v202 = [v201 safeAreaLayoutGuide];
-  v203 = [v202 widthAnchor];
-  v204 = [v200 constraintEqualToAnchor:v203];
-  [v198 addConstraint:v204];
+  view40 = [(MSDViewServiceRootViewController *)self view];
+  progressBar7 = [(MSDViewServiceRootViewController *)self progressBar];
+  widthAnchor = [progressBar7 widthAnchor];
+  view41 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide11 = [view41 safeAreaLayoutGuide];
+  widthAnchor2 = [safeAreaLayoutGuide11 widthAnchor];
+  v204 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+  [view40 addConstraint:v204];
 
-  v205 = [(MSDViewServiceRootViewController *)self view];
-  v206 = [(MSDViewServiceRootViewController *)self progressBar];
-  v207 = [v206 bottomAnchor];
-  v208 = [(MSDViewServiceRootViewController *)self view];
-  v209 = [v208 safeAreaLayoutGuide];
-  v210 = [v209 bottomAnchor];
-  v211 = [v207 constraintEqualToAnchor:v210];
-  [v205 addConstraint:v211];
+  view42 = [(MSDViewServiceRootViewController *)self view];
+  progressBar8 = [(MSDViewServiceRootViewController *)self progressBar];
+  bottomAnchor5 = [progressBar8 bottomAnchor];
+  view43 = [(MSDViewServiceRootViewController *)self view];
+  safeAreaLayoutGuide12 = [view43 safeAreaLayoutGuide];
+  bottomAnchor6 = [safeAreaLayoutGuide12 bottomAnchor];
+  v211 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
+  [view42 addConstraint:v211];
 
   [(MSDViewServiceRootViewController *)self updateErrorState];
 }
@@ -490,19 +490,19 @@
   }
 
   v4 = objc_alloc_init(UIView);
-  v5 = [(MSDViewServiceRootViewController *)self view];
-  [v5 size];
+  view = [(MSDViewServiceRootViewController *)self view];
+  [view size];
   v7 = v6 * 0.5;
-  v8 = [(MSDViewServiceRootViewController *)self view];
-  [v8 size];
+  view2 = [(MSDViewServiceRootViewController *)self view];
+  [view2 size];
   v10 = v9 * 0.5;
-  v11 = [(MSDViewServiceRootViewController *)self view];
-  [v11 size];
+  view3 = [(MSDViewServiceRootViewController *)self view];
+  [view3 size];
   v13 = v12 * 0.5;
 
   [v4 setFrame:{v7, 0.0, v10, v13}];
-  v14 = [(MSDViewServiceRootViewController *)self view];
-  [v14 addSubview:v4];
+  view4 = [(MSDViewServiceRootViewController *)self view];
+  [view4 addSubview:v4];
 
   v15 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"respondToGesture:"];
   [v15 setDelegate:self];
@@ -513,19 +513,19 @@
   {
     v16 = objc_alloc_init(UIView);
 
-    v17 = [(MSDViewServiceRootViewController *)self view];
-    [v17 size];
+    view5 = [(MSDViewServiceRootViewController *)self view];
+    [view5 size];
     v19 = v18 * 0.5;
-    v20 = [(MSDViewServiceRootViewController *)self view];
-    [v20 size];
+    view6 = [(MSDViewServiceRootViewController *)self view];
+    [view6 size];
     v22 = v21 * 0.5;
-    v23 = [(MSDViewServiceRootViewController *)self view];
-    [v23 size];
+    view7 = [(MSDViewServiceRootViewController *)self view];
+    [view7 size];
     v25 = v24 * 0.5;
 
     [v16 setFrame:{0.0, v19, v22, v25}];
-    v26 = [(MSDViewServiceRootViewController *)self view];
-    [v26 addSubview:v16];
+    view8 = [(MSDViewServiceRootViewController *)self view];
+    [view8 addSubview:v16];
 
     v27 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"respondToShowErrorGesture:"];
     [v27 setDelegate:self];
@@ -537,7 +537,7 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4 = sub_1000015E4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -572,69 +572,69 @@
   [(MSDViewServiceRootViewController *)self quit];
 }
 
-- (void)timeout:(id)a3
+- (void)timeout:(id)timeout
 {
   [(MSDViewServiceRootViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v4 = [(MSDViewServiceRootViewController *)self cancelButton];
-  [v4 setHidden:1];
+  cancelButton = [(MSDViewServiceRootViewController *)self cancelButton];
+  [cancelButton setHidden:1];
 }
 
-- (void)showErrorTimeout:(id)a3
+- (void)showErrorTimeout:(id)timeout
 {
-  v4 = [(MSDViewServiceRootViewController *)self errorView];
-  [v4 setHidden:1];
+  errorView = [(MSDViewServiceRootViewController *)self errorView];
+  [errorView setHidden:1];
 
-  v5 = [(MSDViewServiceRootViewController *)self mainLabel];
-  [v5 setHidden:0];
+  mainLabel = [(MSDViewServiceRootViewController *)self mainLabel];
+  [mainLabel setHidden:0];
 
   v6 = +[MSDViewServiceModel sharedInstance];
-  v7 = [v6 errorMessage];
+  errorMessage = [v6 errorMessage];
 
-  if (v7)
+  if (errorMessage)
   {
-    v8 = [(MSDViewServiceRootViewController *)self statusLabel];
-    [v8 setHidden:0];
+    statusLabel = [(MSDViewServiceRootViewController *)self statusLabel];
+    [statusLabel setHidden:0];
   }
 }
 
-- (void)respondToGesture:(id)a3
+- (void)respondToGesture:(id)gesture
 {
-  v7 = a3;
-  if ([v7 state] == 3 || objc_msgSend(v7, "state") == 4)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
   {
-    v4 = +[MSDViewServiceModel sharedInstance];
-    if ([v4 showCancelButton])
+    cancelButton2 = +[MSDViewServiceModel sharedInstance];
+    if ([cancelButton2 showCancelButton])
     {
-      v5 = [(MSDViewServiceRootViewController *)self cancelButton];
-      v6 = [v5 isHidden];
+      cancelButton = [(MSDViewServiceRootViewController *)self cancelButton];
+      isHidden = [cancelButton isHidden];
 
-      if (!v6)
+      if (!isHidden)
       {
         goto LABEL_7;
       }
 
       [(MSDViewServiceRootViewController *)self restartTimerWithTimeInterval:10.0];
-      v4 = [(MSDViewServiceRootViewController *)self cancelButton];
-      [v4 setHidden:0];
+      cancelButton2 = [(MSDViewServiceRootViewController *)self cancelButton];
+      [cancelButton2 setHidden:0];
     }
   }
 
 LABEL_7:
 }
 
-- (void)restartTimerWithTimeInterval:(double)a3
+- (void)restartTimerWithTimeInterval:(double)interval
 {
-  v5 = [(MSDViewServiceRootViewController *)self timer];
+  timer = [(MSDViewServiceRootViewController *)self timer];
 
-  if (v5)
+  if (timer)
   {
-    v6 = [(MSDViewServiceRootViewController *)self timer];
-    [v6 invalidate];
+    timer2 = [(MSDViewServiceRootViewController *)self timer];
+    [timer2 invalidate];
 
     [(MSDViewServiceRootViewController *)self setTimer:0];
   }
 
-  v7 = [NSTimer scheduledTimerWithTimeInterval:self target:"timeout:" selector:0 userInfo:0 repeats:a3];
+  v7 = [NSTimer scheduledTimerWithTimeInterval:self target:"timeout:" selector:0 userInfo:0 repeats:interval];
   [(MSDViewServiceRootViewController *)self setTimer:v7];
 }
 
@@ -670,22 +670,22 @@ LABEL_7:
   [(MSDViewServiceRootViewController *)self restartTimerWithTimeInterval:30.0];
 }
 
-- (void)respondToShowErrorGesture:(id)a3
+- (void)respondToShowErrorGesture:(id)gesture
 {
-  v13 = a3;
-  if ([v13 state] == 3 || objc_msgSend(v13, "state") == 4)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
   {
-    v4 = [(MSDViewServiceRootViewController *)self errorView];
-    v5 = [v4 isHidden];
+    errorView = [(MSDViewServiceRootViewController *)self errorView];
+    isHidden = [errorView isHidden];
 
-    if (v5)
+    if (isHidden)
     {
-      v6 = [(MSDViewServiceRootViewController *)self showErrorTimer];
+      showErrorTimer = [(MSDViewServiceRootViewController *)self showErrorTimer];
 
-      if (v6)
+      if (showErrorTimer)
       {
-        v7 = [(MSDViewServiceRootViewController *)self showErrorTimer];
-        [v7 invalidate];
+        showErrorTimer2 = [(MSDViewServiceRootViewController *)self showErrorTimer];
+        [showErrorTimer2 invalidate];
 
         [(MSDViewServiceRootViewController *)self setShowErrorTimer:0];
       }
@@ -693,28 +693,28 @@ LABEL_7:
       v8 = [NSTimer scheduledTimerWithTimeInterval:self target:"showErrorTimeout:" selector:0 userInfo:0 repeats:30.0];
       [(MSDViewServiceRootViewController *)self setShowErrorTimer:v8];
 
-      v9 = [(MSDViewServiceRootViewController *)self errorView];
-      [v9 setHidden:0];
+      errorView2 = [(MSDViewServiceRootViewController *)self errorView];
+      [errorView2 setHidden:0];
 
-      v10 = [(MSDViewServiceRootViewController *)self mainLabel];
-      [v10 setHidden:1];
+      mainLabel = [(MSDViewServiceRootViewController *)self mainLabel];
+      [mainLabel setHidden:1];
 
-      v11 = [(MSDViewServiceRootViewController *)self cancelButton];
-      [v11 setHidden:1];
+      cancelButton = [(MSDViewServiceRootViewController *)self cancelButton];
+      [cancelButton setHidden:1];
 
-      v12 = [(MSDViewServiceRootViewController *)self statusLabel];
-      [v12 setHidden:1];
+      statusLabel = [(MSDViewServiceRootViewController *)self statusLabel];
+      [statusLabel setHidden:1];
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  if ([v9 isEqualToString:@"errorToReport"])
+  if ([pathCopy isEqualToString:@"errorToReport"])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -725,13 +725,13 @@ LABEL_7:
     objc_destroyWeak(&v21);
   }
 
-  else if ([v9 isEqualToString:@"errorMessage"])
+  else if ([pathCopy isEqualToString:@"errorMessage"])
   {
     v12 = sub_1000015E4();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v11;
+      v24 = changeCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Received an error message change: %{public}@", buf, 0xCu);
     }
 
@@ -744,7 +744,7 @@ LABEL_7:
     objc_destroyWeak(&v19);
   }
 
-  else if ([v9 isEqualToString:@"progress"])
+  else if ([pathCopy isEqualToString:@"progress"])
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -755,7 +755,7 @@ LABEL_7:
     objc_destroyWeak(&v17);
   }
 
-  else if ([v9 isEqualToString:@"disableIdleTimer"])
+  else if ([pathCopy isEqualToString:@"disableIdleTimer"])
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -781,12 +781,12 @@ LABEL_7:
 - (void)updateErrorState
 {
   v3 = +[MSDViewServiceModel sharedInstance];
-  v7 = [v3 errorMessage];
+  errorMessage = [v3 errorMessage];
 
-  v4 = [(MSDViewServiceRootViewController *)self statusLabel];
-  if (v7)
+  statusLabel = [(MSDViewServiceRootViewController *)self statusLabel];
+  if (errorMessage)
   {
-    v5 = v7;
+    v5 = errorMessage;
   }
 
   else
@@ -794,26 +794,26 @@ LABEL_7:
     v5 = @"<no error>";
   }
 
-  [v4 setHidden:v7 == 0];
+  [statusLabel setHidden:errorMessage == 0];
 
-  v6 = [(MSDViewServiceRootViewController *)self errorView];
-  [v6 setText:v5];
+  errorView = [(MSDViewServiceRootViewController *)self errorView];
+  [errorView setText:v5];
 }
 
-- (void)operationFailed:(id)a3
+- (void)operationFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = +[MSDKManagedDevice sharedInstance];
-  v6 = [v5 typeOfDemoDevice];
+  typeOfDemoDevice = [v5 typeOfDemoDevice];
 
-  if (v6 == 5)
+  if (typeOfDemoDevice == 5)
   {
     [(MSDViewServiceRootViewController *)self quit];
   }
 
   else
   {
-    if ([v4 code] == 3727741088)
+    if ([failedCopy code] == 3727741088)
     {
       v7 = @"CONNECTION_FAILED";
     }
@@ -846,8 +846,8 @@ LABEL_7:
 
 - (void)quit
 {
-  v2 = [(MSDViewServiceRootViewController *)self scene];
-  [v2 deactivate];
+  scene = [(MSDViewServiceRootViewController *)self scene];
+  [scene deactivate];
 }
 
 @end

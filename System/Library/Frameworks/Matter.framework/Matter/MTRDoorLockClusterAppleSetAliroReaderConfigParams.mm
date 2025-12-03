@@ -1,8 +1,8 @@
 @interface MTRDoorLockClusterAppleSetAliroReaderConfigParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRDoorLockClusterAppleSetAliroReaderConfigParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,17 +15,17 @@
   v2 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     signingKey = v2->_signingKey;
-    v2->_signingKey = v3;
+    v2->_signingKey = data;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
     verificationKey = v2->_verificationKey;
-    v2->_verificationKey = v5;
+    v2->_verificationKey = data2;
 
-    v7 = [MEMORY[0x277CBEA90] data];
+    data3 = [MEMORY[0x277CBEA90] data];
     groupIdentifier = v2->_groupIdentifier;
-    v2->_groupIdentifier = v7;
+    v2->_groupIdentifier = data3;
 
     groupResolvingKey = v2->_groupResolvingKey;
     v2->_groupResolvingKey = 0;
@@ -40,26 +40,26 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterAppleSetAliroReaderConfigParams);
-  v5 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self signingKey];
-  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setSigningKey:v5];
+  signingKey = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self signingKey];
+  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setSigningKey:signingKey];
 
-  v6 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self verificationKey];
-  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setVerificationKey:v6];
+  verificationKey = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self verificationKey];
+  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setVerificationKey:verificationKey];
 
-  v7 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupIdentifier];
-  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setGroupIdentifier:v7];
+  groupIdentifier = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupIdentifier];
+  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setGroupIdentifier:groupIdentifier];
 
-  v8 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupResolvingKey];
-  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setGroupResolvingKey:v8];
+  groupResolvingKey = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupResolvingKey];
+  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setGroupResolvingKey:groupResolvingKey];
 
-  v9 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v10 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self serverSideProcessingTimeout];
-  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setServerSideProcessingTimeout:v10];
+  serverSideProcessingTimeout = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self serverSideProcessingTimeout];
+  [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -78,7 +78,7 @@
   return v10;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v29 = 0;
   v27 = 0u;
@@ -87,26 +87,26 @@
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v5 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self signingKey];
-  sub_238DB6950(v18, [v5 bytes], objc_msgSend(v5, "length"));
+  signingKey = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self signingKey];
+  sub_238DB6950(v18, [signingKey bytes], objc_msgSend(signingKey, "length"));
 
   v26 = v18[0];
-  v6 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self verificationKey];
-  sub_238DB6950(v18, [v6 bytes], objc_msgSend(v6, "length"));
+  verificationKey = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self verificationKey];
+  sub_238DB6950(v18, [verificationKey bytes], objc_msgSend(verificationKey, "length"));
 
   v27 = v18[0];
-  v7 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupIdentifier];
-  sub_238DB6950(v18, [v7 bytes], objc_msgSend(v7, "length"));
+  groupIdentifier = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupIdentifier];
+  sub_238DB6950(v18, [groupIdentifier bytes], objc_msgSend(groupIdentifier, "length"));
 
   v28 = v18[0];
-  v8 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupResolvingKey];
+  groupResolvingKey = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupResolvingKey];
 
-  if (v8)
+  if (groupResolvingKey)
   {
     v29 = 1;
     v30 = 0uLL;
-    v9 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupResolvingKey];
-    sub_238DB6950(v18, [v9 bytes], objc_msgSend(v9, "length"));
+    groupResolvingKey2 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self groupResolvingKey];
+    sub_238DB6950(v18, [groupResolvingKey2 bytes], objc_msgSend(groupResolvingKey2, "length"));
 
     v30 = v18[0];
   }
@@ -130,8 +130,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v10 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v10 = sub_2393C7114(reader, 21, 256);
       v13 = v17;
       v12 = v10;
     }
@@ -159,19 +159,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRDoorLockClusterAppleSetAliroReaderConfigParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -182,7 +182,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x565D00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

@@ -1,37 +1,37 @@
 @interface NTKPrideLinearQuad
 - ($8EF4127CF77ECA3DDB612FCF233DC3A8)noiseConfiguration;
-- (BOOL)preSemaphoreComputeForTime:(double)a3;
+- (BOOL)preSemaphoreComputeForTime:(double)time;
 - (BOOL)shouldForceRender;
-- (NTKPrideLinearQuad)initWithDevice:(id)a3 useXRsRGB:(BOOL)a4 touchCrownHandler:(id)a5;
-- (float)_xPositionForSpline:(int)a3;
-- (float)globalAmplitudeForTime:(double)a3;
-- (float)noiseSamplePositionForControlPoint:(int)a3 inSpline:(int)a4;
+- (NTKPrideLinearQuad)initWithDevice:(id)device useXRsRGB:(BOOL)b touchCrownHandler:(id)handler;
+- (float)_xPositionForSpline:(int)spline;
+- (float)globalAmplitudeForTime:(double)time;
+- (float)noiseSamplePositionForControlPoint:(int)point inSpline:(int)spline;
 - (id)generateVignetteTextureData;
 - (id)getNTKPrideSplineDefinitionFiller;
 - (id)renderPipelineManager;
 - (int)numControlPointsPerSpline;
 - (int)numSplines;
-- (void)_computePigeonLocationsForPigeons:(int)a3 inHoles:(int)a4 pigeonIndices:(int *)a5 pigeonToHole:(int *)a6 pigeonsPerHole:(int *)a7;
+- (void)_computePigeonLocationsForPigeons:(int)pigeons inHoles:(int)holes pigeonIndices:(int *)indices pigeonToHole:(int *)hole pigeonsPerHole:(int *)perHole;
 - (void)_generateControlPointDampingCoefficients;
 - (void)_generateSplineColors;
 - (void)_generateSplinePositions;
 - (void)_initializePerSplineData;
-- (void)applyTransitionFromBandedToFabricWithFraction:(double)a3;
+- (void)applyTransitionFromBandedToFabricWithFraction:(double)fraction;
 - (void)clearWaves;
 - (void)dealloc;
 - (void)handleScreenOff;
-- (void)processSpline:(int)a3;
+- (void)processSpline:(int)spline;
 - (void)setBandedMode;
 - (void)setFabricMode;
-- (void)startWavesAtTime:(double)a3;
+- (void)startWavesAtTime:(double)time;
 @end
 
 @implementation NTKPrideLinearQuad
 
-- (void)processSpline:(int)a3
+- (void)processSpline:(int)spline
 {
-  v4 = *&self->_controlPointsDampingCoefficients[88] + 320 * a3;
-  v5 = [*(v4 + 240) controlPointsBuffer];
+  v4 = *&self->_controlPointsDampingCoefficients[88] + 320 * spline;
+  controlPointsBuffer = [*(v4 + 240) controlPointsBuffer];
   LODWORD(v13) = 0;
   v6 = [(NTKPrideMetalQuad *)self clkDevice:0];
   sub_528C(v6, &v12);
@@ -44,7 +44,7 @@
     do
     {
       v10 = vadd_f32(vadd_f32(*v9, vmul_f32(v9[18], vmul_n_f32(*(&self->super._amplitudeMultiplier + 2 * v8), *(v4 + 96 + 4 * v8)))), 0xBF000000BF000000);
-      *(*v5 + 8 * v8++) = vadd_f32(v10, v10);
+      *(*controlPointsBuffer + 8 * v8++) = vadd_f32(v10, v10);
       ++v9;
     }
 
@@ -60,8 +60,8 @@
 {
   v5 = 0;
   memset(v4, 0, sizeof(v4));
-  v2 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_528C(v2, v4);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_528C(clkDevice, v4);
 
   return v4[0];
 }
@@ -77,8 +77,8 @@
 
 - (void)_generateSplineColors
 {
-  v4 = [(NTKPrideMetalQuad *)self clkDevice];
-  if ([v4 deviceCategory] == &dword_0 + 1)
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  if ([clkDevice deviceCategory] == &dword_0 + 1)
   {
     v5 = &unk_1AFA0;
   }
@@ -108,7 +108,7 @@
       }
 
       *(*&self->_controlPointsDampingCoefficients[88] + v7 - 56) = v10;
-      v4 = v4 & 0xFFFFFFFF00000000 | PRIDE_COLORS_2018[*(*&self->_controlPointsDampingCoefficients[88] + v7)];
+      clkDevice = clkDevice & 0xFFFFFFFF00000000 | PRIDE_COLORS_2018[*(*&self->_controlPointsDampingCoefficients[88] + v7)];
       CLKUIConvertToRGBfFromSRGB8_fast();
       *(*&self->_controlPointsDampingCoefficients[88] + v7 - 24) = v11;
       ++v6;
@@ -142,23 +142,23 @@
   return v2;
 }
 
-- (void)_computePigeonLocationsForPigeons:(int)a3 inHoles:(int)a4 pigeonIndices:(int *)a5 pigeonToHole:(int *)a6 pigeonsPerHole:(int *)a7
+- (void)_computePigeonLocationsForPigeons:(int)pigeons inHoles:(int)holes pigeonIndices:(int *)indices pigeonToHole:(int *)hole pigeonsPerHole:(int *)perHole
 {
-  v12 = a3;
-  *a6 = malloc_type_calloc(a3, 4uLL, 0x100004052888210uLL);
-  *a5 = malloc_type_calloc(v12, 4uLL, 0x100004052888210uLL);
-  v13 = malloc_type_calloc(a4, 4uLL, 0x100004052888210uLL);
-  *a7 = v13;
-  if (a3 >= 1)
+  pigeonsCopy = pigeons;
+  *hole = malloc_type_calloc(pigeons, 4uLL, 0x100004052888210uLL);
+  *indices = malloc_type_calloc(pigeonsCopy, 4uLL, 0x100004052888210uLL);
+  v13 = malloc_type_calloc(holes, 4uLL, 0x100004052888210uLL);
+  *perHole = v13;
+  if (pigeons >= 1)
   {
     v14 = 0;
-    v15 = *a5;
-    v16 = *a6;
+    v15 = *indices;
+    v16 = *hole;
     do
     {
-      v17 = a4 / a3 * v14;
+      v17 = holes / pigeons * v14;
       v18 = v17;
-      v19 = ((v17 - v17) * a3 / a4);
+      v19 = ((v17 - v17) * pigeons / holes);
       if (vabdd_f64(1.0, v19) < 0.00001)
       {
         v19 = 1;
@@ -169,7 +169,7 @@
       ++v13[v18];
     }
 
-    while (a3 != v14);
+    while (pigeons != v14);
   }
 }
 
@@ -179,8 +179,8 @@
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
-  v3 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_528C(v3, &v38);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_528C(clkDevice, &v38);
 
   if ([(NTKPrideLinearQuad *)self numSplines]>= 1)
   {
@@ -283,9 +283,9 @@
   *(v7 - 1) = 1048576000;
 }
 
-- (float)_xPositionForSpline:(int)a3
+- (float)_xPositionForSpline:(int)spline
 {
-  v3 = *&self->_controlPointsDampingCoefficients[88] + 320 * a3;
+  v3 = *&self->_controlPointsDampingCoefficients[88] + 320 * spline;
   v4 = *(v3 + 272);
   v5 = *(v3 + 248);
   aspectRatio = self->_aspectRatio;
@@ -332,23 +332,23 @@
   return v3;
 }
 
-- (NTKPrideLinearQuad)initWithDevice:(id)a3 useXRsRGB:(BOOL)a4 touchCrownHandler:(id)a5
+- (NTKPrideLinearQuad)initWithDevice:(id)device useXRsRGB:(BOOL)b touchCrownHandler:(id)handler
 {
-  v8 = a3;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = NTKPrideLinearQuad;
-  v9 = [(NTKPrideSplinesQuad *)&v16 initWithDevice:v8 touchCrownHandler:a5];
+  v9 = [(NTKPrideSplinesQuad *)&v16 initWithDevice:deviceCopy touchCrownHandler:handler];
   v10 = v9;
   if (v9)
   {
-    LOBYTE(v9->_currentStyle) = a4;
+    LOBYTE(v9->_currentStyle) = b;
     [(NTKPrideLinearQuad *)v9 _initializePerSplineData];
     [(NTKPrideLinearQuad *)v10 _generateSplinePositions];
     [(NTKPrideLinearQuad *)v10 _generateSplineColors];
     [(NTKPrideLinearQuad *)v10 _generateControlPointDampingCoefficients];
-    [v8 screenBounds];
+    [deviceCopy screenBounds];
     v12 = v11;
-    [v8 screenBounds];
+    [deviceCopy screenBounds];
     v14 = v12 / v13;
     *&v10->_perSplineData = v14;
     [(NTKPrideLinearQuad *)v10 clearWaves];
@@ -386,7 +386,7 @@
   [(NTKPrideSplinesQuad *)&v7 dealloc];
 }
 
-- (void)applyTransitionFromBandedToFabricWithFraction:(double)a3
+- (void)applyTransitionFromBandedToFabricWithFraction:(double)fraction
 {
   v8 = 0;
   v4 = [(NTKPrideMetalQuad *)self clkDevice:0];
@@ -442,8 +442,8 @@
   LOBYTE(self->_displayMode) = 0;
   self->_vignetteAmount = 0.0;
   [(NTKPrideLinearQuad *)self clearWaves];
-  v3 = [(NTKPrideLinearQuad *)self quadView];
-  [v3 discardContents];
+  quadView = [(NTKPrideLinearQuad *)self quadView];
+  [quadView discardContents];
 }
 
 - (void)clearWaves
@@ -456,9 +456,9 @@
   LOBYTE(self->_displayMode) = 0;
 }
 
-- (float)globalAmplitudeForTime:(double)a3
+- (float)globalAmplitudeForTime:(double)time
 {
-  v3 = a3 - self->_currentFade;
+  v3 = time - self->_currentFade;
   v4 = 4.0;
   if (v3 < 0.0)
   {
@@ -475,21 +475,21 @@
   return v5 * v6;
 }
 
-- (void)startWavesAtTime:(double)a3
+- (void)startWavesAtTime:(double)time
 {
   if (*&self->_paused)
   {
-    v8 = [(NTKPrideSplinesQuad *)self touchCrownHandler];
+    touchCrownHandler = [(NTKPrideSplinesQuad *)self touchCrownHandler];
     [(NTKPrideMetalQuad *)self currentTime];
     v5 = v4;
     LODWORD(v4) = 0.5;
     LODWORD(v6) = 0.5;
-    [v8 startWaveAtX:v4 y:v6 atTime:v5];
+    [touchCrownHandler startWaveAtX:v4 y:v6 atTime:v5];
   }
 
   else
   {
-    v7 = a3 + 0.3;
+    v7 = time + 0.3;
     self->_currentFade = v7;
   }
 }
@@ -519,17 +519,17 @@
     sub_151D4();
   }
 
-  v3 = [(NTKPrideMetalQuad *)self clkDevice];
-  v4 = _NoiseConfiguration(v3, v2);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  v4 = _NoiseConfiguration(clkDevice, v2);
 
   return v4;
 }
 
-- (float)noiseSamplePositionForControlPoint:(int)a3 inSpline:(int)a4
+- (float)noiseSamplePositionForControlPoint:(int)point inSpline:(int)spline
 {
-  v4 = *(a1 + 272) + 320 * a4;
-  v5 = *(v4 + 8 * a3);
-  if (!*(a1 + 312))
+  v4 = *(self + 272) + 320 * spline;
+  v5 = *(v4 + 8 * point);
+  if (!*(self + 312))
   {
     LODWORD(v5) = *(v4 + 276);
   }
@@ -537,11 +537,11 @@
   return *&v5;
 }
 
-- (BOOL)preSemaphoreComputeForTime:(double)a3
+- (BOOL)preSemaphoreComputeForTime:(double)time
 {
   v8.receiver = self;
   v8.super_class = NTKPrideLinearQuad;
-  v4 = [(NTKPrideSplinesQuad *)&v8 preSemaphoreComputeForTime:a3];
+  v4 = [(NTKPrideSplinesQuad *)&v8 preSemaphoreComputeForTime:time];
   if (v4)
   {
     vignetteAmount = self->_vignetteAmount;
@@ -567,8 +567,8 @@
   v21 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_528C(v3, &v19);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_528C(clkDevice, &v19);
 
   v4 = 0.25;
   if (*&self->_paused == 1)

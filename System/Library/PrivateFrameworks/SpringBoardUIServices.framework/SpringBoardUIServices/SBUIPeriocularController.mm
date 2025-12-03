@@ -29,9 +29,9 @@ uint64_t __42__SBUIPeriocularController_sharedInstance__block_invoke()
 - (BOOL)periocularEnabled
 {
   v2 = +[SBUIBiometricResource sharedInstance];
-  v3 = [v2 isPeriocularMatchingEnabled];
+  isPeriocularMatchingEnabled = [v2 isPeriocularMatchingEnabled];
 
-  return v3;
+  return isPeriocularMatchingEnabled;
 }
 
 @end

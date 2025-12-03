@@ -1,18 +1,18 @@
 @interface _HKAllowedCountriesInIntersectionOfLocalAndRemoteSet
 - (BOOL)someRegionIsSupported;
-- (_HKAllowedCountriesInIntersectionOfLocalAndRemoteSet)initWithLocalCountrySet:(id)a3 remoteCountrySet:(id)a4;
-- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)a3;
+- (_HKAllowedCountriesInIntersectionOfLocalAndRemoteSet)initWithLocalCountrySet:(id)set remoteCountrySet:(id)countrySet;
+- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)code;
 @end
 
 @implementation _HKAllowedCountriesInIntersectionOfLocalAndRemoteSet
 
-- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)a3
+- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)code
 {
-  v4 = a3;
-  if (v4)
+  codeCopy = code;
+  if (codeCopy)
   {
-    v5 = [(HKAllowedCountries *)self localCountrySet];
-    v6 = [v5 containsCountryCode:v4];
+    localCountrySet = [(HKAllowedCountries *)self localCountrySet];
+    v6 = [localCountrySet containsCountryCode:codeCopy];
 
     if (v6)
     {
@@ -24,8 +24,8 @@
       v7 = 8;
     }
 
-    v8 = [(HKAllowedCountries *)self remoteCountrySet];
-    v9 = [v8 containsCountryCode:v4];
+    remoteCountrySet = [(HKAllowedCountries *)self remoteCountrySet];
+    v9 = [remoteCountrySet containsCountryCode:codeCopy];
 
     if ((v9 & 1) == 0)
     {
@@ -43,13 +43,13 @@
 
 - (BOOL)someRegionIsSupported
 {
-  v3 = [(HKAllowedCountries *)self localCountrySet];
-  v4 = [v3 isEmpty];
+  localCountrySet = [(HKAllowedCountries *)self localCountrySet];
+  isEmpty = [localCountrySet isEmpty];
 
-  if (v4)
+  if (isEmpty)
   {
-    v5 = [(HKAllowedCountries *)self remoteCountrySet];
-    v6 = [v5 isEmpty] ^ 1;
+    remoteCountrySet = [(HKAllowedCountries *)self remoteCountrySet];
+    v6 = [remoteCountrySet isEmpty] ^ 1;
   }
 
   else
@@ -60,16 +60,16 @@
   return v6;
 }
 
-- (_HKAllowedCountriesInIntersectionOfLocalAndRemoteSet)initWithLocalCountrySet:(id)a3 remoteCountrySet:(id)a4
+- (_HKAllowedCountriesInIntersectionOfLocalAndRemoteSet)initWithLocalCountrySet:(id)set remoteCountrySet:(id)countrySet
 {
   v6 = MEMORY[0x1E696AEC0];
   v7 = MEMORY[0x1E696AD98];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 numberWithInteger:{objc_msgSend(v9, "contentVersion")}];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "contentVersion")}];
+  countrySetCopy = countrySet;
+  setCopy = set;
+  v10 = [v7 numberWithInteger:{objc_msgSend(setCopy, "contentVersion")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(countrySetCopy, "contentVersion")}];
   v12 = [v6 stringWithFormat:@"%@_%@_%@", @"intersectionOfLocalAndRemoteSet", v10, v11];
-  v13 = [(HKAllowedCountries *)self _initWithCategory:v12 version:v9 localCountrySet:5 remoteState:v8 remoteCountrySet:?];
+  v13 = [(HKAllowedCountries *)self _initWithCategory:v12 version:setCopy localCountrySet:5 remoteState:countrySetCopy remoteCountrySet:?];
 
   return v13;
 }

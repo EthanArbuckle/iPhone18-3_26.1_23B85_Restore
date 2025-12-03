@@ -1,24 +1,24 @@
 @interface IDSKeychainWrapper
-+ (BOOL)_isKeychainError:(id)a3 withOSStatus:(int)a4;
-+ (id)descriptionForDataProtectionClass:(int64_t)a3;
-+ (id)shortDescriptionForDataProtectionClass:(int64_t)a3;
-- (BOOL)removeDataForIdentifier:(id)a3 dataProtectionClass:(int64_t)a4 error:(id *)a5;
-- (BOOL)saveData:(id)a3 forIdentifier:(id)a4 allowSync:(BOOL)a5 allowBackup:(BOOL)a6 dataProtectionClass:(int64_t)a7 error:(id *)a8;
-- (id)dataForIdentifier:(id)a3 error:(id *)a4;
-- (void)saveData:(id)a3 forIdentifier:(id)a4 dataProtectionClass:(int64_t)a5 withCompletion:(id)a6;
++ (BOOL)_isKeychainError:(id)error withOSStatus:(int)status;
++ (id)descriptionForDataProtectionClass:(int64_t)class;
++ (id)shortDescriptionForDataProtectionClass:(int64_t)class;
+- (BOOL)removeDataForIdentifier:(id)identifier dataProtectionClass:(int64_t)class error:(id *)error;
+- (BOOL)saveData:(id)data forIdentifier:(id)identifier allowSync:(BOOL)sync allowBackup:(BOOL)backup dataProtectionClass:(int64_t)class error:(id *)error;
+- (id)dataForIdentifier:(id)identifier error:(id *)error;
+- (void)saveData:(id)data forIdentifier:(id)identifier dataProtectionClass:(int64_t)class withCompletion:(id)completion;
 @end
 
 @implementation IDSKeychainWrapper
 
-+ (BOOL)_isKeychainError:(id)a3 withOSStatus:(int)a4
++ (BOOL)_isKeychainError:(id)error withOSStatus:(int)status
 {
-  v4 = *&a4;
-  v5 = a3;
-  v6 = [v5 domain];
-  if ([v6 isEqualToString:@"IDSKeychainWrapperErrorDomain"] && objc_msgSend(v5, "code") == -2000)
+  v4 = *&status;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"IDSKeychainWrapperErrorDomain"] && objc_msgSend(errorCopy, "code") == -2000)
   {
-    v7 = [v5 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"IDSKeychainWrapperErrorOSStatus"];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"IDSKeychainWrapperErrorOSStatus"];
     v9 = [NSNumber numberWithInt:v4];
     v10 = [v8 isEqual:v9];
   }
@@ -31,15 +31,15 @@
   return v10;
 }
 
-+ (id)shortDescriptionForDataProtectionClass:(int64_t)a3
++ (id)shortDescriptionForDataProtectionClass:(int64_t)class
 {
   v3 = @"A";
-  if (!a3)
+  if (!class)
   {
     v3 = @"C";
   }
 
-  if (a3 == 2)
+  if (class == 2)
   {
     return @"D";
   }
@@ -50,15 +50,15 @@
   }
 }
 
-+ (id)descriptionForDataProtectionClass:(int64_t)a3
++ (id)descriptionForDataProtectionClass:(int64_t)class
 {
   v3 = @"Class D";
-  if (!a3)
+  if (!class)
   {
     v3 = @"Class C";
   }
 
-  if (a3 == 1)
+  if (class == 1)
   {
     return @"Class A";
   }
@@ -69,10 +69,10 @@
   }
 }
 
-- (id)dataForIdentifier:(id)a3 error:(id *)a4
+- (id)dataForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(IDSKeychainWrapper *)self _keychainAccountFromBaseIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(IDSKeychainWrapper *)self _keychainAccountFromBaseIdentifier:identifierCopy];
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -105,7 +105,7 @@
       _IDSLogV();
     }
 
-    a4 = v10;
+    error = v10;
   }
 
   else
@@ -125,26 +125,26 @@
       _IDSLogV();
     }
 
-    if (a4)
+    if (error)
     {
       v17 = @"IDSKeychainWrapperErrorOSStatus";
       v14 = [NSNumber numberWithInt:0];
       v18 = v14;
       v15 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-      *a4 = [NSError errorWithDomain:@"IDSKeychainWrapperErrorDomain" code:-2000 userInfo:v15];
+      *error = [NSError errorWithDomain:@"IDSKeychainWrapperErrorDomain" code:-2000 userInfo:v15];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
-  return a4;
+  return error;
 }
 
-- (BOOL)saveData:(id)a3 forIdentifier:(id)a4 allowSync:(BOOL)a5 allowBackup:(BOOL)a6 dataProtectionClass:(int64_t)a7 error:(id *)a8
+- (BOOL)saveData:(id)data forIdentifier:(id)identifier allowSync:(BOOL)sync allowBackup:(BOOL)backup dataProtectionClass:(int64_t)class error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [(IDSKeychainWrapper *)self _keychainAccountFromBaseIdentifier:v12];
+  dataCopy = data;
+  identifierCopy = identifier;
+  v13 = [(IDSKeychainWrapper *)self _keychainAccountFromBaseIdentifier:identifierCopy];
   v14 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,12 +159,12 @@
     _IDSLogV();
   }
 
-  if ([v11 length])
+  if ([dataCopy length])
   {
     v15 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v11 length];
+      v16 = [dataCopy length];
       *buf = 134217984;
       v31 = v16;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "  => Will save %ld bytes", buf, 0xCu);
@@ -172,7 +172,7 @@
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      [v11 length];
+      [dataCopy length];
       _IDSLogV();
     }
 
@@ -193,7 +193,7 @@
         _IDSLogV();
       }
 
-      if (a8)
+      if (error)
       {
         v28 = @"IDSKeychainWrapperErrorOSStatus";
         v18 = [NSNumber numberWithInt:0];
@@ -201,9 +201,9 @@
         v19 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
         v20 = [NSError errorWithDomain:@"IDSKeychainWrapperErrorDomain" code:-2000 userInfo:v19];
 LABEL_34:
-        *a8 = v20;
+        *error = v20;
 
-        LOBYTE(a8) = 0;
+        LOBYTE(error) = 0;
         goto LABEL_35;
       }
 
@@ -211,7 +211,7 @@ LABEL_34:
     }
 
 LABEL_26:
-    LOBYTE(a8) = 1;
+    LOBYTE(error) = 1;
     goto LABEL_35;
   }
 
@@ -247,7 +247,7 @@ LABEL_26:
     _IDSLogV();
   }
 
-  if (a8)
+  if (error)
   {
     v26 = @"IDSKeychainWrapperErrorOSStatus";
     v18 = [NSNumber numberWithInt:0];
@@ -270,15 +270,15 @@ LABEL_35:
     _IDSLogV();
   }
 
-  return a8;
+  return error;
 }
 
-- (void)saveData:(id)a3 forIdentifier:(id)a4 dataProtectionClass:(int64_t)a5 withCompletion:(id)a6
+- (void)saveData:(id)data forIdentifier:(id)identifier dataProtectionClass:(int64_t)class withCompletion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(IDSKeychainWrapper *)self _keychainAccountFromBaseIdentifier:v10];
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v12 = [(IDSKeychainWrapper *)self _keychainAccountFromBaseIdentifier:identifierCopy];
   v13 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -295,7 +295,7 @@ LABEL_35:
   v14 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v9 length];
+    v15 = [dataCopy length];
     *buf = 134217984;
     v19 = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "  => Will save %ld bytes", buf, 0xCu);
@@ -303,30 +303,30 @@ LABEL_35:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    [v9 length];
+    [dataCopy length];
     _IDSLogV();
   }
 
-  v17 = v11;
-  v16 = v11;
+  v17 = completionCopy;
+  v16 = completionCopy;
   IMSetKeychainDataWithProtectionWithCompletion();
 }
 
-- (BOOL)removeDataForIdentifier:(id)a3 dataProtectionClass:(int64_t)a4 error:(id *)a5
+- (BOOL)removeDataForIdentifier:(id)identifier dataProtectionClass:(int64_t)class error:(id *)error
 {
   v11 = 0;
-  v6 = [(IDSKeychainWrapper *)self saveData:0 forIdentifier:a3 allowSync:0 dataProtectionClass:a4 error:&v11];
+  v6 = [(IDSKeychainWrapper *)self saveData:0 forIdentifier:identifier allowSync:0 dataProtectionClass:class error:&v11];
   v7 = v11;
   if (v6 & 1) != 0 || ([objc_opt_class() isItemNotFoundError:v7])
   {
     v8 = 1;
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = v7;
     v8 = 0;
-    *a5 = v7;
+    *error = v7;
   }
 
   else

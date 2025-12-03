@@ -1,64 +1,64 @@
 @interface NTKBundleComplicationMigrationTypeLookupKey
-- (BOOL)isEqual:(id)a3;
-- (NTKBundleComplicationMigrationTypeLookupKey)initWithCoder:(id)a3;
-- (NTKBundleComplicationMigrationTypeLookupKey)initWithComplicationType:(unint64_t)a3 family:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (NTKBundleComplicationMigrationTypeLookupKey)initWithCoder:(id)coder;
+- (NTKBundleComplicationMigrationTypeLookupKey)initWithComplicationType:(unint64_t)type family:(int64_t)family;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKBundleComplicationMigrationTypeLookupKey
 
-- (NTKBundleComplicationMigrationTypeLookupKey)initWithComplicationType:(unint64_t)a3 family:(int64_t)a4
+- (NTKBundleComplicationMigrationTypeLookupKey)initWithComplicationType:(unint64_t)type family:(int64_t)family
 {
   v7.receiver = self;
   v7.super_class = NTKBundleComplicationMigrationTypeLookupKey;
   result = [(NTKBundleComplicationMigrationTypeLookupKey *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_family = a4;
+    result->_type = type;
+    result->_family = family;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == v4[1] && self->_family == v4[2];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == equalCopy[1] && self->_family == equalCopy[2];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendUnsignedInteger:self->_type];
-  v5 = [v3 appendInteger:self->_family];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendUnsignedInteger:self->_type];
+  v5 = [builder appendInteger:self->_family];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_family forKey:@"family"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_family forKey:@"family"];
 }
 
-- (NTKBundleComplicationMigrationTypeLookupKey)initWithCoder:(id)a3
+- (NTKBundleComplicationMigrationTypeLookupKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NTKBundleComplicationMigrationTypeLookupKey;
   v5 = [(NTKBundleComplicationMigrationTypeLookupKey *)&v7 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_family = [v4 decodeIntegerForKey:@"family"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_family = [coderCopy decodeIntegerForKey:@"family"];
   }
 
   return v5;

@@ -15,8 +15,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = *v16;
@@ -26,7 +26,7 @@
       {
         if (*v16 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
@@ -47,9 +47,9 @@
           v11 = CRCastAsClass<CROutputRegion>(v10);
           if (v11 && ![v10 fieldType])
           {
-            v12 = [v11 formFieldRegions];
-            v13 = [v12 _flattenedFields];
-            [v2 addObjectsFromArray:v13];
+            formFieldRegions = [v11 formFieldRegions];
+            _flattenedFields = [formFieldRegions _flattenedFields];
+            [v2 addObjectsFromArray:_flattenedFields];
           }
 
           else
@@ -59,7 +59,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);
@@ -76,7 +76,7 @@
   v7[3] = &__block_descriptor_40_e49_B24__0___CRFormFieldProviding__8__NSDictionary_16l;
   v7[4] = a3;
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:v7];
-  v5 = [a1 filteredArrayUsingPredicate:v4];
+  v5 = [self filteredArrayUsingPredicate:v4];
 
   return v5;
 }
@@ -89,7 +89,7 @@
   v7[3] = &__block_descriptor_40_e49_B24__0___CRFormFieldProviding__8__NSDictionary_16l;
   v7[4] = a3;
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:v7];
-  v5 = [a1 filteredArrayUsingPredicate:v4];
+  v5 = [self filteredArrayUsingPredicate:v4];
 
   return v5;
 }
@@ -97,7 +97,7 @@
 - (id)_nonFieldRegions
 {
   v2 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_117];
-  v3 = [a1 filteredArrayUsingPredicate:v2];
+  v3 = [self filteredArrayUsingPredicate:v2];
 
   return v3;
 }

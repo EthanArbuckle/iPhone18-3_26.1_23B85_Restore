@@ -1,15 +1,15 @@
 @interface GDVUStreamingGallery
-- (id)addWithObservations:(id)a3 observationIdentifiers:(id)a4 trackIdentifiers:(id)a5 context:(id)a6 error:(id *)a7;
-- (id)updateWithMaxKeyFacesPerCluster:(int64_t)a3 error:(id *)a4;
-- (id)updateWithMaxKeyFacesPerCluster:(int64_t)a3 sortBy:(id)a4 error:(id *)a5;
+- (id)addWithObservations:(id)observations observationIdentifiers:(id)identifiers trackIdentifiers:(id)trackIdentifiers context:(id)context error:(id *)error;
+- (id)updateWithMaxKeyFacesPerCluster:(int64_t)cluster error:(id *)error;
+- (id)updateWithMaxKeyFacesPerCluster:(int64_t)cluster sortBy:(id)by error:(id *)error;
 @end
 
 @implementation GDVUStreamingGallery
 
-- (id)updateWithMaxKeyFacesPerCluster:(int64_t)a3 error:(id *)a4
+- (id)updateWithMaxKeyFacesPerCluster:(int64_t)cluster error:(id *)error
 {
-  v5 = self;
-  GDVUStreamingGallery.update(withMaxKeyFacesPerCluster:)(a3);
+  selfCopy = self;
+  GDVUStreamingGallery.update(withMaxKeyFacesPerCluster:)(cluster);
 
   type metadata accessor for GDVUClusterResult(v6);
   v7 = sub_1ABF240C4();
@@ -17,10 +17,10 @@
   return v7;
 }
 
-- (id)updateWithMaxKeyFacesPerCluster:(int64_t)a3 sortBy:(id)a4 error:(id *)a5
+- (id)updateWithMaxKeyFacesPerCluster:(int64_t)cluster sortBy:(id)by error:(id *)error
 {
   sub_1ABF240D4();
-  v6 = self;
+  selfCopy = self;
   GDVUStreamingGallery.update(withMaxKeyFacesPerCluster:sortBy:)();
 
   type metadata accessor for GDVUClusterResult(v7);
@@ -29,23 +29,23 @@
   return v8;
 }
 
-- (id)addWithObservations:(id)a3 observationIdentifiers:(id)a4 trackIdentifiers:(id)a5 context:(id)a6 error:(id *)a7
+- (id)addWithObservations:(id)observations observationIdentifiers:(id)identifiers trackIdentifiers:(id)trackIdentifiers context:(id)context error:(id *)error
 {
   sub_1ABAFF390(0, &qword_1EB4CE6C8, 0x1E69845D8);
   v11 = sub_1ABF240D4();
-  if (a4)
+  if (identifiers)
   {
-    a4 = sub_1ABF240D4();
+    identifiers = sub_1ABF240D4();
   }
 
-  if (a5)
+  if (trackIdentifiers)
   {
-    a5 = sub_1ABF240D4();
+    trackIdentifiers = sub_1ABF240D4();
   }
 
-  v12 = a6;
-  v13 = self;
-  GDVUStreamingGallery.add(with:observationIdentifiers:trackIdentifiers:context:)(v11, a4, a5, a6);
+  contextCopy = context;
+  selfCopy = self;
+  GDVUStreamingGallery.add(with:observationIdentifiers:trackIdentifiers:context:)(v11, identifiers, trackIdentifiers, context);
 
   v14 = sub_1ABF240C4();
 

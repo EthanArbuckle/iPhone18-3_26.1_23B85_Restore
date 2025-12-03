@@ -1,21 +1,21 @@
 @interface SIRINLUINTERNALSNLP_INTERMEDIATEITFMExecutedHandcraftedRules
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALSNLP_INTERMEDIATEITFMExecutedHandcraftedRules
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   rules = self->_rules;
-  v6 = v4[2];
-  v7 = v4;
+  v6 = fromCopy[2];
+  v7 = fromCopy;
   if (rules)
   {
     if (!v6)
@@ -36,9 +36,9 @@
     [(SIRINLUINTERNALSNLP_INTERMEDIATEITFMExecutedHandcraftedRules *)self setRules:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(SIRINLUINTERNALSNLP_INTERMEDIATEITFMExecutedHandcraftedRules *)self setModelType:?];
   }
@@ -46,13 +46,13 @@ LABEL_7:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((rules = self->_rules, !(rules | v4[2])) || -[SIRINLUINTERNALSNLP_INTERMEDIATESNLPHandcraftedRules isEqual:](rules, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((rules = self->_rules, !(rules | equalCopy[2])) || -[SIRINLUINTERNALSNLP_INTERMEDIATESNLPHandcraftedRules isEqual:](rules, "isEqual:")))
   {
     modelType = self->_modelType;
-    if (modelType | v4[1])
+    if (modelType | equalCopy[1])
     {
       v7 = [(NSString *)modelType isEqual:?];
     }
@@ -71,71 +71,71 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUINTERNALSNLP_INTERMEDIATESNLPHandcraftedRules *)self->_rules copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUINTERNALSNLP_INTERMEDIATESNLPHandcraftedRules *)self->_rules copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_modelType copyWithZone:a3];
+  v8 = [(NSString *)self->_modelType copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_rules)
   {
-    [v4 setRules:?];
-    v4 = v5;
+    [toCopy setRules:?];
+    toCopy = v5;
   }
 
   if (self->_modelType)
   {
     [v5 setModelType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_rules)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_modelType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   rules = self->_rules;
   if (rules)
   {
-    v5 = [(SIRINLUINTERNALSNLP_INTERMEDIATESNLPHandcraftedRules *)rules dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"rules"];
+    dictionaryRepresentation = [(SIRINLUINTERNALSNLP_INTERMEDIATESNLPHandcraftedRules *)rules dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"rules"];
   }
 
   modelType = self->_modelType;
   if (modelType)
   {
-    [v3 setObject:modelType forKey:@"model_type"];
+    [dictionary setObject:modelType forKey:@"model_type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -144,8 +144,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALSNLP_INTERMEDIATEITFMExecutedHandcraftedRules;
   v4 = [(SIRINLUINTERNALSNLP_INTERMEDIATEITFMExecutedHandcraftedRules *)&v8 description];
-  v5 = [(SIRINLUINTERNALSNLP_INTERMEDIATEITFMExecutedHandcraftedRules *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALSNLP_INTERMEDIATEITFMExecutedHandcraftedRules *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

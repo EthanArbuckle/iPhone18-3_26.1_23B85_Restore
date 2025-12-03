@@ -1,35 +1,35 @@
 @interface CAMOverlayServiceConnection
-- (CAMOverlayServiceConnection)initWithClient:(id)a3 queue:(id)a4;
+- (CAMOverlayServiceConnection)initWithClient:(id)client queue:(id)queue;
 - (CAMOverlayServiceConnectionClient)client;
-- (void)_handleActivatedConnection:(id)a3;
-- (void)_handleInterruptedConnection:(id)a3;
-- (void)_handleInvalidatedConnection:(id)a3;
-- (void)_updateStatusWithReason:(unint64_t)a3;
-- (void)applyControlUpdate:(id)a3 completion:(id)a4;
-- (void)configureWithControls:(id)a3 initialUpdates:(id)a4 completion:(id)a5;
+- (void)_handleActivatedConnection:(id)connection;
+- (void)_handleInterruptedConnection:(id)connection;
+- (void)_handleInvalidatedConnection:(id)connection;
+- (void)_updateStatusWithReason:(unint64_t)reason;
+- (void)applyControlUpdate:(id)update completion:(id)completion;
+- (void)configureWithControls:(id)controls initialUpdates:(id)updates completion:(id)completion;
 - (void)dealloc;
-- (void)didChangeInterfaceReduced:(id)a3;
-- (void)invalidateWithReason:(unint64_t)a3;
-- (void)serverDidChangeActiveControlIdentifier:(id)a3;
-- (void)serverDidChangeFocusLocked:(id)a3;
-- (void)serverDidChangeOverlayVisible:(id)a3 activeControlIdentifier:(id)a4;
-- (void)serverDidUpdateControl:(id)a3;
+- (void)didChangeInterfaceReduced:(id)reduced;
+- (void)invalidateWithReason:(unint64_t)reason;
+- (void)serverDidChangeActiveControlIdentifier:(id)identifier;
+- (void)serverDidChangeFocusLocked:(id)locked;
+- (void)serverDidChangeOverlayVisible:(id)visible activeControlIdentifier:(id)identifier;
+- (void)serverDidUpdateControl:(id)control;
 @end
 
 @implementation CAMOverlayServiceConnection
 
-- (CAMOverlayServiceConnection)initWithClient:(id)a3 queue:(id)a4
+- (CAMOverlayServiceConnection)initWithClient:(id)client queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = CAMOverlayServiceConnection;
   v8 = [(CAMOverlayServiceConnection *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_client, v6);
-    objc_storeStrong(&v9->_clientQueue, a4);
+    objc_storeWeak(&v8->_client, clientCopy);
+    objc_storeStrong(&v9->_clientQueue, queue);
     v9->_status = 0;
     v10 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v11 = dispatch_queue_create("com.apple.camera.overlay-connection", v10);
@@ -152,17 +152,17 @@ void __52__CAMOverlayServiceConnection_initWithClient_queue___block_invoke_5(uin
   [(CAMOverlayServiceConnection *)&v4 dealloc];
 }
 
-- (void)_updateStatusWithReason:(unint64_t)a3
+- (void)_updateStatusWithReason:(unint64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(CAMOverlayServiceConnection *)self _serverConnection];
+  _serverConnection = [(CAMOverlayServiceConnection *)self _serverConnection];
 
-  if (v5)
+  if (_serverConnection)
   {
-    v6 = [(CAMOverlayServiceConnection *)self _serverProxy];
+    _serverProxy = [(CAMOverlayServiceConnection *)self _serverProxy];
 
-    v7 = v6 != 0;
-    v8 = v6 != 0;
+    v7 = _serverProxy != 0;
+    v8 = _serverProxy != 0;
   }
 
   else
@@ -177,14 +177,14 @@ void __52__CAMOverlayServiceConnection_initWithClient_queue___block_invoke_5(uin
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = off_278851C08[v8];
-      if (a3 > 2)
+      if (reason > 2)
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = off_278851C20[a3];
+        v11 = off_278851C20[reason];
       }
 
       v17 = 138543618;
@@ -199,54 +199,54 @@ void __52__CAMOverlayServiceConnection_initWithClient_queue___block_invoke_5(uin
     {
       if ([(CAMOverlayServiceConnection *)self _lastKnownFocusLocked])
       {
-        v12 = [(CAMOverlayServiceConnection *)self client];
-        [v12 cameraOverlayConnection:self didChangeFocusLocked:0];
+        client = [(CAMOverlayServiceConnection *)self client];
+        [client cameraOverlayConnection:self didChangeFocusLocked:0];
       }
 
       if ([(CAMOverlayServiceConnection *)self _lastKnownOverlayVisibility])
       {
-        v13 = [(CAMOverlayServiceConnection *)self client];
-        [v13 cameraOverlayConnection:self didChangeOverlayVisible:0 activeControlIdentifier:0];
+        client2 = [(CAMOverlayServiceConnection *)self client];
+        [client2 cameraOverlayConnection:self didChangeOverlayVisible:0 activeControlIdentifier:0];
       }
 
       if ([(CAMOverlayServiceConnection *)self _lastKnownOverlayInterfaceReduced])
       {
-        v14 = [(CAMOverlayServiceConnection *)self client];
-        [v14 cameraOverlayConnection:self didChangeInterfaceReduced:0];
+        client3 = [(CAMOverlayServiceConnection *)self client];
+        [client3 cameraOverlayConnection:self didChangeInterfaceReduced:0];
       }
     }
 
-    if (a3 != 1)
+    if (reason != 1)
     {
-      v15 = [(CAMOverlayServiceConnection *)self client];
-      [v15 cameraOverlayConnection:self didChangeStatus:v8];
+      client4 = [(CAMOverlayServiceConnection *)self client];
+      [client4 cameraOverlayConnection:self didChangeStatus:v8];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateWithReason:(unint64_t)a3
+- (void)invalidateWithReason:(unint64_t)reason
 {
-  v5 = [(CAMOverlayServiceConnection *)self _serverConnection];
-  [v5 invalidate];
+  _serverConnection = [(CAMOverlayServiceConnection *)self _serverConnection];
+  [_serverConnection invalidate];
 
   [(CAMOverlayServiceConnection *)self _setServerConnection:0];
   [(CAMOverlayServiceConnection *)self _setServerProxy:0];
 
-  [(CAMOverlayServiceConnection *)self _updateStatusWithReason:a3];
+  [(CAMOverlayServiceConnection *)self _updateStatusWithReason:reason];
 }
 
-- (void)configureWithControls:(id)a3 initialUpdates:(id)a4 completion:(id)a5
+- (void)configureWithControls:(id)controls initialUpdates:(id)updates completion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CAMOverlayServiceConnection *)self status];
-  if (v11)
+  controlsCopy = controls;
+  updatesCopy = updates;
+  completionCopy = completion;
+  status = [(CAMOverlayServiceConnection *)self status];
+  if (status)
   {
-    if (v11 != 2)
+    if (status != 2)
     {
       goto LABEL_9;
     }
@@ -265,17 +265,17 @@ void __52__CAMOverlayServiceConnection_initWithClient_queue___block_invoke_5(uin
   v22[0] = *MEMORY[0x277CCA068];
   *v21 = v12;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v22 count:1];
-  v16 = [v14 errorWithDomain:@"CAMOverlayErrorDomain" code:v13 userInfo:v15];
+  _serverProxy = [v14 errorWithDomain:@"CAMOverlayErrorDomain" code:v13 userInfo:v15];
 
-  if (v16)
+  if (_serverProxy)
   {
     v17 = os_log_create("com.apple.camera.overlay", "Client");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [CAMOverlayServiceConnection configureWithControls:v16 initialUpdates:v17 completion:?];
+      [CAMOverlayServiceConnection configureWithControls:_serverProxy initialUpdates:v17 completion:?];
     }
 
-    v10[2](v10, v16);
+    completionCopy[2](completionCopy, _serverProxy);
     goto LABEL_12;
   }
 
@@ -283,28 +283,28 @@ LABEL_9:
   v18 = os_log_create("com.apple.camera.overlay", "Client");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v8 count];
+    v19 = [controlsCopy count];
     *v21 = 134217984;
     *&v21[4] = v19;
     _os_log_impl(&dword_22E684000, v18, OS_LOG_TYPE_DEFAULT, "Sending overlay %lu control(s)", v21, 0xCu);
   }
 
-  v16 = [(CAMOverlayServiceConnection *)self _serverProxy];
-  [v16 clientDidConfigureControls:v8 initialUpdates:v9 reply:v10];
+  _serverProxy = [(CAMOverlayServiceConnection *)self _serverProxy];
+  [_serverProxy clientDidConfigureControls:controlsCopy initialUpdates:updatesCopy reply:completionCopy];
 LABEL_12:
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyControlUpdate:(id)a3 completion:(id)a4
+- (void)applyControlUpdate:(id)update completion:(id)completion
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMOverlayServiceConnection *)self status];
-  if (v8)
+  updateCopy = update;
+  completionCopy = completion;
+  status = [(CAMOverlayServiceConnection *)self status];
+  if (status)
   {
-    if (v8 != 2)
+    if (status != 2)
     {
       goto LABEL_9;
     }
@@ -323,17 +323,17 @@ LABEL_12:
   v17 = *MEMORY[0x277CCA068];
   v18[0] = v9;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-  v13 = [v11 errorWithDomain:@"CAMOverlayErrorDomain" code:v10 userInfo:v12];
+  _serverProxy = [v11 errorWithDomain:@"CAMOverlayErrorDomain" code:v10 userInfo:v12];
 
-  if (v13)
+  if (_serverProxy)
   {
     v14 = os_log_create("com.apple.camera.overlay", "Client");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [(CAMOverlayServiceConnection *)v6 applyControlUpdate:v13 completion:v14];
+      [(CAMOverlayServiceConnection *)updateCopy applyControlUpdate:_serverProxy completion:v14];
     }
 
-    v7[2](v7, v13);
+    completionCopy[2](completionCopy, _serverProxy);
     goto LABEL_12;
   }
 
@@ -341,28 +341,28 @@ LABEL_9:
   v15 = os_log_create("com.apple.camera.overlay", "Client");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [CAMOverlayServiceConnection applyControlUpdate:v6 completion:v15];
+    [CAMOverlayServiceConnection applyControlUpdate:updateCopy completion:v15];
   }
 
-  v13 = [(CAMOverlayServiceConnection *)self _serverProxy];
-  [v13 clientDidUpdateControl:v6 reply:v7];
+  _serverProxy = [(CAMOverlayServiceConnection *)self _serverProxy];
+  [_serverProxy clientDidUpdateControl:updateCopy reply:completionCopy];
 LABEL_12:
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActivatedConnection:(id)a3
+- (void)_handleActivatedConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CAMOverlayServiceConnection *)self clientQueue];
+  connectionCopy = connection;
+  clientQueue = [(CAMOverlayServiceConnection *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__CAMOverlayServiceConnection__handleActivatedConnection___block_invoke;
   v7[3] = &unk_278851B98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = connectionCopy;
+  v6 = connectionCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 uint64_t __58__CAMOverlayServiceConnection__handleActivatedConnection___block_invoke(uint64_t a1)
@@ -379,15 +379,15 @@ uint64_t __58__CAMOverlayServiceConnection__handleActivatedConnection___block_in
   return [v5 _updateStatusWithReason:2];
 }
 
-- (void)_handleInterruptedConnection:(id)a3
+- (void)_handleInterruptedConnection:(id)connection
 {
-  v4 = [(CAMOverlayServiceConnection *)self clientQueue];
+  clientQueue = [(CAMOverlayServiceConnection *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CAMOverlayServiceConnection__handleInterruptedConnection___block_invoke;
   block[3] = &unk_278851AF8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 }
 
 uint64_t __60__CAMOverlayServiceConnection__handleInterruptedConnection___block_invoke(uint64_t a1)
@@ -401,15 +401,15 @@ uint64_t __60__CAMOverlayServiceConnection__handleInterruptedConnection___block_
   return [v3 _updateStatusWithReason:2];
 }
 
-- (void)_handleInvalidatedConnection:(id)a3
+- (void)_handleInvalidatedConnection:(id)connection
 {
-  v4 = [(CAMOverlayServiceConnection *)self clientQueue];
+  clientQueue = [(CAMOverlayServiceConnection *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CAMOverlayServiceConnection__handleInvalidatedConnection___block_invoke;
   block[3] = &unk_278851AF8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 }
 
 uint64_t __60__CAMOverlayServiceConnection__handleInvalidatedConnection___block_invoke(uint64_t a1)
@@ -421,16 +421,16 @@ uint64_t __60__CAMOverlayServiceConnection__handleInvalidatedConnection___block_
   return [v2 _updateStatusWithReason:2];
 }
 
-- (void)serverDidChangeOverlayVisible:(id)a3 activeControlIdentifier:(id)a4
+- (void)serverDidChangeOverlayVisible:(id)visible activeControlIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 BOOLValue];
+  identifierCopy = identifier;
+  bOOLValue = [visible BOOLValue];
   v8 = os_log_create("com.apple.camera.overlay", "Client");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
-    if (v7)
+    if (bOOLValue)
     {
       v9 = @"YES";
     }
@@ -438,20 +438,20 @@ uint64_t __60__CAMOverlayServiceConnection__handleInvalidatedConnection___block_
     *buf = 138543618;
     v17 = v9;
     v18 = 2114;
-    v19 = v6;
+    v19 = identifierCopy;
     _os_log_impl(&dword_22E684000, v8, OS_LOG_TYPE_DEFAULT, "Received overlay visibility %{public}@ for control ID %{public}@", buf, 0x16u);
   }
 
-  v10 = [(CAMOverlayServiceConnection *)self clientQueue];
+  clientQueue = [(CAMOverlayServiceConnection *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__CAMOverlayServiceConnection_serverDidChangeOverlayVisible_activeControlIdentifier___block_invoke;
   block[3] = &unk_278851BC0;
-  v15 = v7;
+  v15 = bOOLValue;
   block[4] = self;
-  v14 = v6;
-  v11 = v6;
-  dispatch_async(v10, block);
+  v14 = identifierCopy;
+  v11 = identifierCopy;
+  dispatch_async(clientQueue, block);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -463,27 +463,27 @@ void __85__CAMOverlayServiceConnection_serverDidChangeOverlayVisible_activeContr
   [v2 cameraOverlayConnection:*(a1 + 32) didChangeOverlayVisible:*(a1 + 48) activeControlIdentifier:*(a1 + 40)];
 }
 
-- (void)serverDidChangeActiveControlIdentifier:(id)a3
+- (void)serverDidChangeActiveControlIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = os_log_create("com.apple.camera.overlay", "Client");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = identifierCopy;
     _os_log_impl(&dword_22E684000, v5, OS_LOG_TYPE_DEFAULT, "Received active control ID %{public}@", buf, 0xCu);
   }
 
-  v6 = [(CAMOverlayServiceConnection *)self clientQueue];
+  clientQueue = [(CAMOverlayServiceConnection *)self clientQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__CAMOverlayServiceConnection_serverDidChangeActiveControlIdentifier___block_invoke;
   v9[3] = &unk_278851B98;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = identifierCopy;
+  v7 = identifierCopy;
+  dispatch_async(clientQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -494,15 +494,15 @@ void __70__CAMOverlayServiceConnection_serverDidChangeActiveControlIdentifier___
   [v2 cameraOverlayConnection:*(a1 + 32) didChangeActiveControlIdentifier:*(a1 + 40)];
 }
 
-- (void)didChangeInterfaceReduced:(id)a3
+- (void)didChangeInterfaceReduced:(id)reduced
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 BOOLValue];
+  bOOLValue = [reduced BOOLValue];
   v5 = os_log_create("com.apple.camera.overlay", "Client");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v4)
+    if (bOOLValue)
     {
       v6 = @"YES";
     }
@@ -512,14 +512,14 @@ void __70__CAMOverlayServiceConnection_serverDidChangeActiveControlIdentifier___
     _os_log_impl(&dword_22E684000, v5, OS_LOG_TYPE_DEFAULT, "Received overlay interfaceReduced %{public}@", buf, 0xCu);
   }
 
-  v7 = [(CAMOverlayServiceConnection *)self clientQueue];
+  clientQueue = [(CAMOverlayServiceConnection *)self clientQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__CAMOverlayServiceConnection_didChangeInterfaceReduced___block_invoke;
   v9[3] = &unk_278851BE8;
   v9[4] = self;
-  v10 = v4;
-  dispatch_async(v7, v9);
+  v10 = bOOLValue;
+  dispatch_async(clientQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -531,15 +531,15 @@ void __57__CAMOverlayServiceConnection_didChangeInterfaceReduced___block_invoke(
   [v2 cameraOverlayConnection:*(a1 + 32) didChangeInterfaceReduced:*(a1 + 40)];
 }
 
-- (void)serverDidChangeFocusLocked:(id)a3
+- (void)serverDidChangeFocusLocked:(id)locked
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 BOOLValue];
+  bOOLValue = [locked BOOLValue];
   v5 = os_log_create("com.apple.camera.overlay", "Client");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v4)
+    if (bOOLValue)
     {
       v6 = @"YES";
     }
@@ -549,14 +549,14 @@ void __57__CAMOverlayServiceConnection_didChangeInterfaceReduced___block_invoke(
     _os_log_impl(&dword_22E684000, v5, OS_LOG_TYPE_DEFAULT, "Received overlay focusLocked %{public}@", buf, 0xCu);
   }
 
-  v7 = [(CAMOverlayServiceConnection *)self clientQueue];
+  clientQueue = [(CAMOverlayServiceConnection *)self clientQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__CAMOverlayServiceConnection_serverDidChangeFocusLocked___block_invoke;
   v9[3] = &unk_278851BE8;
   v9[4] = self;
-  v10 = v4;
-  dispatch_async(v7, v9);
+  v10 = bOOLValue;
+  dispatch_async(clientQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -568,31 +568,31 @@ void __58__CAMOverlayServiceConnection_serverDidChangeFocusLocked___block_invoke
   [v2 cameraOverlayConnection:*(a1 + 32) didChangeFocusLocked:*(a1 + 40)];
 }
 
-- (void)serverDidUpdateControl:(id)a3
+- (void)serverDidUpdateControl:(id)control
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controlCopy = control;
   v5 = os_log_create("com.apple.camera.overlay", "Client");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 debugDescription];
-    v7 = [v4 controlIdentifier];
+    v6 = [controlCopy debugDescription];
+    controlIdentifier = [controlCopy controlIdentifier];
     *buf = 138543618;
     v14 = v6;
     v15 = 2114;
-    v16 = v7;
+    v16 = controlIdentifier;
     _os_log_impl(&dword_22E684000, v5, OS_LOG_TYPE_DEFAULT, "Received overlay update %{public}@ for ID %{public}@", buf, 0x16u);
   }
 
-  v8 = [(CAMOverlayServiceConnection *)self clientQueue];
+  clientQueue = [(CAMOverlayServiceConnection *)self clientQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__CAMOverlayServiceConnection_serverDidUpdateControl___block_invoke;
   v11[3] = &unk_278851B98;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
-  dispatch_async(v8, v11);
+  v12 = controlCopy;
+  v9 = controlCopy;
+  dispatch_async(clientQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
 }

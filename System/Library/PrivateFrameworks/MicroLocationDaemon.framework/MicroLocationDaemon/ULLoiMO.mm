@@ -1,26 +1,26 @@
 @interface ULLoiMO
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4;
-+ (id)createWithLastSeenTimeStamp:(double)a3 loiId:(id)a4 loiGroupId:(id)a5 loiType:(id)a6 inManagedObjectContext:(id)a7;
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context;
++ (id)createWithLastSeenTimeStamp:(double)stamp loiId:(id)id loiGroupId:(id)groupId loiType:(id)type inManagedObjectContext:(id)context;
 - (optional<ULLoiDO>)convertToDO;
 @end
 
 @implementation ULLoiMO
 
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = [[ULLoiMO alloc] initWithContext:v5];
-  [(ULLoiMO *)v6 setLastSeenTimeStamp:*a3];
-  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3 + 8];
-  v8 = [v7 UUIDString];
-  [(ULLoiMO *)v6 setLoiId:v8];
+  contextCopy = context;
+  v6 = [[ULLoiMO alloc] initWithContext:contextCopy];
+  [(ULLoiMO *)v6 setLastSeenTimeStamp:*o];
+  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o + 8];
+  uUIDString = [v7 UUIDString];
+  [(ULLoiMO *)v6 setLoiId:uUIDString];
 
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3 + 24];
-  v10 = [v9 UUIDString];
-  [(ULLoiMO *)v6 setLoiGroupId:v10];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o + 24];
+  uUIDString2 = [v9 UUIDString];
+  [(ULLoiMO *)v6 setLoiGroupId:uUIDString2];
 
-  v13 = *(a3 + 5);
-  v12 = a3 + 40;
+  v13 = *(o + 5);
+  v12 = o + 40;
   v11 = v13;
   if (v12[23] >= 0)
   {
@@ -38,17 +38,17 @@
   return v6;
 }
 
-+ (id)createWithLastSeenTimeStamp:(double)a3 loiId:(id)a4 loiGroupId:(id)a5 loiType:(id)a6 inManagedObjectContext:(id)a7
++ (id)createWithLastSeenTimeStamp:(double)stamp loiId:(id)id loiGroupId:(id)groupId loiType:(id)type inManagedObjectContext:(id)context
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [[ULLoiMO alloc] initWithContext:v14];
-  [(ULLoiMO *)v15 setLastSeenTimeStamp:a3];
-  [(ULLoiMO *)v15 setLoiId:v11];
-  [(ULLoiMO *)v15 setLoiGroupId:v12];
-  [(ULLoiMO *)v15 setLoiType:v13];
+  idCopy = id;
+  groupIdCopy = groupId;
+  typeCopy = type;
+  contextCopy = context;
+  v15 = [[ULLoiMO alloc] initWithContext:contextCopy];
+  [(ULLoiMO *)v15 setLastSeenTimeStamp:stamp];
+  [(ULLoiMO *)v15 setLoiId:idCopy];
+  [(ULLoiMO *)v15 setLoiGroupId:groupIdCopy];
+  [(ULLoiMO *)v15 setLoiType:typeCopy];
 
   return v15;
 }
@@ -59,11 +59,11 @@
   v37 = *MEMORY[0x277D85DE8];
   [v1 lastSeenTimeStamp];
   v5 = v4;
-  v6 = [v2 loiType];
-  v7 = v6;
-  if (v6)
+  loiType = [v2 loiType];
+  v7 = loiType;
+  if (loiType)
   {
-    [v6 stdString];
+    [loiType stdString];
   }
 
   else
@@ -74,11 +74,11 @@
 
   if (BYTE8(v25))
   {
-    v8 = [v2 loiId];
-    v9 = v8;
-    if (v8)
+    loiId = [v2 loiId];
+    v9 = loiId;
+    if (loiId)
     {
-      [v8 boostUUID];
+      [loiId boostUUID];
     }
 
     else
@@ -110,11 +110,11 @@
       }
     }
 
-    v13 = [v2 loiGroupId];
-    v14 = v13;
-    if (v13)
+    loiGroupId = [v2 loiGroupId];
+    v14 = loiGroupId;
+    if (loiGroupId)
     {
-      [v13 boostUUID];
+      [loiGroupId boostUUID];
     }
 
     else

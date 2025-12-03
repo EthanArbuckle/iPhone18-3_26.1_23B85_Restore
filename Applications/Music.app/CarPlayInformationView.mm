@@ -1,9 +1,9 @@
 @interface CarPlayInformationView
 + (_TtC5Music22CarPlayInformationView)loading;
-+ (id)errorWithTitle:(id)a3 buttonText:(id)a4 buttonAction:(id)a5;
-+ (id)noContentWithTitle:(id)a3 subtitle:(id)a4 buttonText:(id)a5 buttonAction:(id)a6 isCentered:(BOOL)a7;
-- (_TtC5Music22CarPlayInformationView)initWithCoder:(id)a3;
-- (_TtC5Music22CarPlayInformationView)initWithFrame:(CGRect)a3;
++ (id)errorWithTitle:(id)title buttonText:(id)text buttonAction:(id)action;
++ (id)noContentWithTitle:(id)title subtitle:(id)subtitle buttonText:(id)text buttonAction:(id)action isCentered:(BOOL)centered;
+- (_TtC5Music22CarPlayInformationView)initWithCoder:(id)coder;
+- (_TtC5Music22CarPlayInformationView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CarPlayInformationView
@@ -25,10 +25,10 @@
   return v9;
 }
 
-+ (id)errorWithTitle:(id)a3 buttonText:(id)a4 buttonAction:(id)a5
++ (id)errorWithTitle:(id)title buttonText:(id)text buttonAction:(id)action
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(action);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -41,14 +41,14 @@
   return v16;
 }
 
-+ (id)noContentWithTitle:(id)a3 subtitle:(id)a4 buttonText:(id)a5 buttonAction:(id)a6 isCentered:(BOOL)a7
++ (id)noContentWithTitle:(id)title subtitle:(id)subtitle buttonText:(id)text buttonAction:(id)action isCentered:(BOOL)centered
 {
-  v11 = _Block_copy(a6);
-  if (a3)
+  v11 = _Block_copy(action);
+  if (title)
   {
     v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v13;
-    if (a4)
+    title = v13;
+    if (subtitle)
     {
       goto LABEL_3;
     }
@@ -57,12 +57,12 @@
   else
   {
     v12 = 0;
-    if (a4)
+    if (subtitle)
     {
 LABEL_3:
       v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-      a4 = v15;
-      if (a5)
+      subtitle = v15;
+      if (text)
       {
         goto LABEL_4;
       }
@@ -79,14 +79,14 @@ LABEL_8:
   }
 
   v14 = 0;
-  if (!a5)
+  if (!text)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
   v16 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  a5 = v17;
+  text = v17;
   if (v11)
   {
 LABEL_5:
@@ -99,20 +99,20 @@ LABEL_5:
 LABEL_9:
   v18 = 0;
 LABEL_10:
-  v19 = sub_10026A004(v12, a3, v14, a4, v16, a5, v11, v18, a7);
+  v19 = sub_10026A004(v12, title, v14, subtitle, v16, text, v11, v18, centered);
   sub_100020438(v11);
 
   return v19;
 }
 
-- (_TtC5Music22CarPlayInformationView)initWithCoder:(id)a3
+- (_TtC5Music22CarPlayInformationView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_TtC5Music22CarPlayInformationView)initWithFrame:(CGRect)a3
+- (_TtC5Music22CarPlayInformationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

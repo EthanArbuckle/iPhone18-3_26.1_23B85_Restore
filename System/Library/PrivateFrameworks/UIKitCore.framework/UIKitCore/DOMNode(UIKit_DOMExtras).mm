@@ -10,15 +10,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 tagName];
+    tagName = [self tagName];
   }
 
   else
   {
-    v2 = 0;
+    tagName = 0;
   }
 
-  return v2;
+  return tagName;
 }
 
 - (id)urlScheme
@@ -26,16 +26,16 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 absoluteLinkURL];
-    v3 = [v2 scheme];
+    absoluteLinkURL = [self absoluteLinkURL];
+    scheme = [absoluteLinkURL scheme];
   }
 
   else
   {
-    v3 = 0;
+    scheme = 0;
   }
 
-  return v3;
+  return scheme;
 }
 
 @end

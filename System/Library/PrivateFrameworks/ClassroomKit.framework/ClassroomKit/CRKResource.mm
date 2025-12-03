@@ -1,42 +1,42 @@
 @interface CRKResource
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHostedResource:(id)a3;
-- (CRKResource)initWithCoder:(id)a3;
-- (CRKResource)initWithDictionary:(id)a3;
-- (CRKResource)initWithHostedURL:(id)a3 isZippedBundle:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHostedResource:(id)resource;
+- (CRKResource)initWithCoder:(id)coder;
+- (CRKResource)initWithDictionary:(id)dictionary;
+- (CRKResource)initWithHostedURL:(id)l isZippedBundle:(BOOL)bundle;
 - (NSDictionary)dictionaryValue;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKResource
 
-- (CRKResource)initWithDictionary:(id)a3
+- (CRKResource)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"HostedURL"];
-  v6 = [v4 objectForKeyedSubscript:@"IsZippedBundle"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"HostedURL"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"IsZippedBundle"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
     self = -[CRKResource initWithHostedURL:isZippedBundle:](self, "initWithHostedURL:isZippedBundle:", v5, [v6 BOOLValue]);
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (CRKResource)initWithHostedURL:(id)a3 isZippedBundle:(BOOL)a4
+- (CRKResource)initWithHostedURL:(id)l isZippedBundle:(BOOL)bundle
 {
-  v8 = a3;
-  if (!v8)
+  lCopy = l;
+  if (!lCopy)
   {
     [CRKResource initWithHostedURL:a2 isZippedBundle:self];
   }
@@ -47,8 +47,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_hostedURL, a3);
-    v10->_zippedBundle = a4;
+    objc_storeStrong(&v9->_hostedURL, l);
+    v10->_zippedBundle = bundle;
   }
 
   return v10;
@@ -56,32 +56,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRKResource *)self hostedURL];
-  v4 = [v3 hash];
+  hostedURL = [(CRKResource *)self hostedURL];
+  v4 = [hostedURL hash];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKResource isZippedBundle](self, "isZippedBundle")}];
   v6 = [v5 hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRKResource *)self isEqualToHostedResource:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRKResource *)self isEqualToHostedResource:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToHostedResource:(id)a3
+- (BOOL)isEqualToHostedResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(CRKResource *)self hostedURL];
-  v6 = [v4 hostedURL];
-  if ([v5 isEqual:v6])
+  resourceCopy = resource;
+  hostedURL = [(CRKResource *)self hostedURL];
+  hostedURL2 = [resourceCopy hostedURL];
+  if ([hostedURL isEqual:hostedURL2])
   {
-    v7 = [(CRKResource *)self isZippedBundle];
-    v8 = v7 ^ [v4 isZippedBundle] ^ 1;
+    isZippedBundle = [(CRKResource *)self isZippedBundle];
+    v8 = isZippedBundle ^ [resourceCopy isZippedBundle] ^ 1;
   }
 
   else
@@ -96,16 +96,16 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKResource *)self hostedURL];
-  v6 = [v5 absoluteString];
-  v7 = [(CRKResource *)self isZippedBundle];
+  hostedURL = [(CRKResource *)self hostedURL];
+  absoluteString = [hostedURL absoluteString];
+  isZippedBundle = [(CRKResource *)self isZippedBundle];
   v8 = @"NO";
-  if (v7)
+  if (isZippedBundle)
   {
     v8 = @"YES";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@: %p { hostedURL = %@, isZippedBundle = %@ }>", v4, self, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p { hostedURL = %@, isZippedBundle = %@ }>", v4, self, absoluteString, v8];
 
   return v9;
 }
@@ -114,9 +114,9 @@
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"HostedURL";
-  v3 = [(CRKResource *)self hostedURL];
+  hostedURL = [(CRKResource *)self hostedURL];
   v7[1] = @"IsZippedBundle";
-  v8[0] = v3;
+  v8[0] = hostedURL;
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKResource isZippedBundle](self, "isZippedBundle")}];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
@@ -124,34 +124,34 @@
   return v5;
 }
 
-- (CRKResource)initWithCoder:(id)a3
+- (CRKResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CRKResource;
   v5 = [(CRKResource *)&v11 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"hostedURL"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"hostedURL"];
     hostedURL = v5->_hostedURL;
     v5->_hostedURL = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zippedBundle"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zippedBundle"];
     v5->_zippedBundle = [v9 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKResource *)self hostedURL];
-  [v4 encodeObject:v5 forKey:@"hostedURL"];
+  coderCopy = coder;
+  hostedURL = [(CRKResource *)self hostedURL];
+  [coderCopy encodeObject:hostedURL forKey:@"hostedURL"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKResource isZippedBundle](self, "isZippedBundle")}];
-  [v4 encodeObject:v6 forKey:@"zippedBundle"];
+  [coderCopy encodeObject:v6 forKey:@"zippedBundle"];
 }
 
 - (void)initWithHostedURL:(uint64_t)a1 isZippedBundle:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

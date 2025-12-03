@@ -1,26 +1,26 @@
 @interface HUHomePodStereoSwapperCell
-- (HUHomePodStereoSwapperCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUHomePodStereoSwapperCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUHomePodStereoSwapperCellDelegate)delegate;
 - (void)_setupConstraints;
 - (void)_swap;
-- (void)finishSetupWithDelegate:(id)a3 selectionStyle:(int64_t)a4 homePodVariant:(unint64_t)a5;
+- (void)finishSetupWithDelegate:(id)delegate selectionStyle:(int64_t)style homePodVariant:(unint64_t)variant;
 @end
 
 @implementation HUHomePodStereoSwapperCell
 
-- (HUHomePodStereoSwapperCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUHomePodStereoSwapperCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = HUHomePodStereoSwapperCell;
-  return [(HUHomePodStereoSwapperCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  return [(HUHomePodStereoSwapperCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
 }
 
-- (void)finishSetupWithDelegate:(id)a3 selectionStyle:(int64_t)a4 homePodVariant:(unint64_t)a5
+- (void)finishSetupWithDelegate:(id)delegate selectionStyle:(int64_t)style homePodVariant:(unint64_t)variant
 {
   v30 = *MEMORY[0x277D85DE8];
-  [(HUHomePodStereoSwapperCell *)self setDelegate:a3];
-  [(HUHomePodStereoSwapperCell *)self setSelectionStyle:a4];
-  [(HUHomePodStereoSwapperCell *)self setHomePodVariant:a5];
+  [(HUHomePodStereoSwapperCell *)self setDelegate:delegate];
+  [(HUHomePodStereoSwapperCell *)self setSelectionStyle:style];
+  [(HUHomePodStereoSwapperCell *)self setHomePodVariant:variant];
   v8 = [[HUHomePodDetailView alloc] initWithRole:1 variant:[(HUHomePodStereoSwapperCell *)self homePodVariant]];
   [(HUHomePodStereoSwapperCell *)self setLeftHomePod:v8];
 
@@ -30,16 +30,16 @@
   v10 = [MEMORY[0x277D75220] buttonWithType:0];
   [(HUHomePodStereoSwapperCell *)self setSwapButton:v10];
 
-  v11 = [(HUHomePodStereoSwapperCell *)self swapButton];
+  swapButton = [(HUHomePodStereoSwapperCell *)self swapButton];
   LODWORD(v12) = 1148846080;
-  [v11 setContentCompressionResistancePriority:0 forAxis:v12];
+  [swapButton setContentCompressionResistancePriority:0 forAxis:v12];
 
-  v13 = [(HUHomePodStereoSwapperCell *)self swapButton];
+  swapButton2 = [(HUHomePodStereoSwapperCell *)self swapButton];
   v14 = HUNullableImageNamed(@"SpeakerFlipper");
-  [v13 setImage:v14 forState:0];
+  [swapButton2 setImage:v14 forState:0];
 
-  v15 = [(HUHomePodStereoSwapperCell *)self swapButton];
-  [v15 addTarget:self action:sel__swap forControlEvents:64];
+  swapButton3 = [(HUHomePodStereoSwapperCell *)self swapButton];
+  [swapButton3 addTarget:self action:sel__swap forControlEvents:64];
 
   v26 = 0u;
   v27 = 0u;
@@ -66,8 +66,8 @@
 
         v22 = *(*(&v24 + 1) + 8 * i);
         [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v23 = [(HUHomePodStereoSwapperCell *)self contentView];
-        [v23 addSubview:v22];
+        contentView = [(HUHomePodStereoSwapperCell *)self contentView];
+        [contentView addSubview:v22];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -239,12 +239,12 @@ id __47__HUHomePodStereoSwapperCell__setupConstraints__block_invoke(uint64_t a1)
 
 - (void)_swap
 {
-  v3 = [(HUHomePodStereoSwapperCell *)self swapButton];
-  [HUAnimationUtilities schedulePopAnimation:v3 scaleFactor:0 beginDuration:0.8 endDuration:0.2 completion:0.4];
+  swapButton = [(HUHomePodStereoSwapperCell *)self swapButton];
+  [HUAnimationUtilities schedulePopAnimation:swapButton scaleFactor:0 beginDuration:0.8 endDuration:0.2 completion:0.4];
 
-  v4 = [(HUHomePodStereoSwapperCell *)self delegate];
+  delegate = [(HUHomePodStereoSwapperCell *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained didPressSwapButton:self];

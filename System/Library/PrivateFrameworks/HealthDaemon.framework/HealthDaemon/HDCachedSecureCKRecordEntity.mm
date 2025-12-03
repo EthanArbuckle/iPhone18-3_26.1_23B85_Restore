@@ -1,39 +1,39 @@
 @interface HDCachedSecureCKRecordEntity
-+ (BOOL)deleteRecordWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 recordName:(id)a7 profile:(id)a8 error:(id *)a9;
-+ (BOOL)insertOrUpdateWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 recordData:(id)a7 recordName:(id)a8 profile:(id)a9 error:(id *)a10;
-+ (BOOL)insertOrUpdateWithRecordID:(int64_t)a3 recordData:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)synchronizeRecordsWithProfile:(id)a3 error:(id *)a4;
-+ (BOOL)updateWithRecordData:(id)a3 recordID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)_unprotectedRecordEntityWithContainerIdentifier:(uint64_t)a3 databaseScope:(void *)a4 zoneName:(void *)a5 ownerName:(void *)a6 recordName:(void *)a7 profile:(uint64_t)a8 error:;
-+ (id)insertWithRecordID:(int64_t)a3 recordData:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)protectedRecordDataForUnprotectedEntity:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (BOOL)deleteRecordWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName recordName:(id)recordName profile:(id)profile error:(id *)error;
++ (BOOL)insertOrUpdateWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName recordData:(id)data recordName:(id)recordName profile:(id)profile error:(id *)self0;
++ (BOOL)insertOrUpdateWithRecordID:(int64_t)d recordData:(id)data profile:(id)profile error:(id *)error;
++ (BOOL)synchronizeRecordsWithProfile:(id)profile error:(id *)error;
++ (BOOL)updateWithRecordData:(id)data recordID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (id)_unprotectedRecordEntityWithContainerIdentifier:(uint64_t)identifier databaseScope:(void *)scope zoneName:(void *)name ownerName:(void *)ownerName recordName:(void *)recordName profile:(uint64_t)profile error:;
++ (id)insertWithRecordID:(int64_t)d recordData:(id)data transaction:(id)transaction error:(id *)error;
++ (id)protectedRecordDataForUnprotectedEntity:(id)entity transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDCachedSecureCKRecordEntity
 
-+ (id)insertWithRecordID:(int64_t)a3 recordData:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)insertWithRecordID:(int64_t)d recordData:(id)data transaction:(id)transaction error:(id *)error
 {
-  v10 = a4;
-  v11 = [a5 databaseForEntityClass:a1];
-  v20 = a3;
+  dataCopy = data;
+  v11 = [transaction databaseForEntityClass:self];
+  dCopy = d;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __80__HDCachedSecureCKRecordEntity_insertWithRecordID_recordData_transaction_error___block_invoke;
   v21[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v21[4] = a1;
+  v21[4] = self;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __80__HDCachedSecureCKRecordEntity_insertWithRecordID_recordData_transaction_error___block_invoke_2;
   v18[3] = &unk_278613B58;
-  v12 = v10;
+  v12 = dataCopy;
   v19 = v12;
-  v13 = [v11 executeCachedStatementForKey:&insertWithRecordID_recordData_transaction_error__lookupKey error:a6 SQLGenerator:v21 bindingHandler:v18 enumerationHandler:0];
+  v13 = [v11 executeCachedStatementForKey:&insertWithRecordID_recordData_transaction_error__lookupKey error:error SQLGenerator:v21 bindingHandler:v18 enumerationHandler:0];
   v14 = 0;
   if (v13)
   {
     v15 = [HDCachedSecureCKRecordEntity alloc];
-    v16 = [v11 lastInsertRowID];
-    v14 = -[HDSQLiteEntity initWithPersistentID:](v15, "initWithPersistentID:", [v16 longLongValue]);
+    lastInsertRowID = [v11 lastInsertRowID];
+    v14 = -[HDSQLiteEntity initWithPersistentID:](v15, "initWithPersistentID:", [lastInsertRowID longLongValue]);
   }
 
   return v14;
@@ -58,50 +58,50 @@ uint64_t __80__HDCachedSecureCKRecordEntity_insertWithRecordID_recordData_transa
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)updateWithRecordData:(id)a3 recordID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)updateWithRecordData:(id)data recordID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [a5 databaseForEntityClass:a1];
-  v12 = HDPredicateForRecordID(a4);
+  dataCopy = data;
+  v11 = [transaction databaseForEntityClass:self];
+  v12 = HDPredicateForRecordID(d);
   v19[0] = @"record_data";
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __80__HDCachedSecureCKRecordEntity_updateWithRecordData_recordID_transaction_error___block_invoke;
   v17[3] = &unk_278614508;
-  v18 = v10;
-  v14 = v10;
-  LOBYTE(a6) = [a1 updateProperties:v13 predicate:v12 database:v11 error:a6 bindingHandler:v17];
+  v18 = dataCopy;
+  v14 = dataCopy;
+  LOBYTE(error) = [self updateProperties:v13 predicate:v12 database:v11 error:error bindingHandler:v17];
 
   v15 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
-+ (BOOL)insertOrUpdateWithRecordID:(int64_t)a3 recordData:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)insertOrUpdateWithRecordID:(int64_t)d recordData:(id)data profile:(id)profile error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 database];
+  dataCopy = data;
+  profileCopy = profile;
+  database = [profileCopy database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __84__HDCachedSecureCKRecordEntity_insertOrUpdateWithRecordID_recordData_profile_error___block_invoke;
   v20[3] = &unk_27861E450;
-  v22 = a1;
-  v23 = a3;
-  v21 = v10;
+  selfCopy = self;
+  dCopy = d;
+  v21 = dataCopy;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __84__HDCachedSecureCKRecordEntity_insertOrUpdateWithRecordID_recordData_profile_error___block_invoke_2;
   v16[3] = &unk_2786146C0;
-  v18 = v11;
-  v19 = a3;
+  v18 = profileCopy;
+  dCopy2 = d;
   v17 = v21;
-  v13 = v11;
+  v13 = profileCopy;
   v14 = v21;
-  LOBYTE(a6) = [(HDHealthEntity *)HDCachedSecureCKRecordEntity performWriteTransactionWithHealthDatabase:v12 error:a6 block:v20 inaccessibilityHandler:v16];
+  LOBYTE(error) = [(HDHealthEntity *)HDCachedSecureCKRecordEntity performWriteTransactionWithHealthDatabase:database error:error block:v20 inaccessibilityHandler:v16];
 
-  return a6;
+  return error;
 }
 
 BOOL __84__HDCachedSecureCKRecordEntity_insertOrUpdateWithRecordID_recordData_profile_error___block_invoke(void *a1, void *a2, void *a3)
@@ -197,12 +197,12 @@ uint64_t __84__HDCachedSecureCKRecordEntity_insertOrUpdateWithRecordID_recordDat
   return v7;
 }
 
-+ (BOOL)insertOrUpdateWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 recordData:(id)a7 recordName:(id)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)insertOrUpdateWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName recordData:(id)data recordName:(id)recordName profile:(id)profile error:(id *)self0
 {
-  v16 = a7;
-  v17 = a9;
+  dataCopy = data;
+  profileCopy = profile;
   v25 = 0;
-  v18 = [(HDCachedSecureCKRecordEntity *)a1 _unprotectedRecordEntityWithContainerIdentifier:a3 databaseScope:a4 zoneName:a5 ownerName:a6 recordName:a8 profile:v17 error:&v25];
+  v18 = [(HDCachedSecureCKRecordEntity *)self _unprotectedRecordEntityWithContainerIdentifier:identifier databaseScope:scope zoneName:name ownerName:ownerName recordName:recordName profile:profileCopy error:&v25];
   v19 = v25;
   v20 = v19;
   if (v18)
@@ -219,7 +219,7 @@ uint64_t __84__HDCachedSecureCKRecordEntity_insertOrUpdateWithRecordID_recordDat
   {
     if (v18)
     {
-      v22 = +[HDCachedSecureCKRecordEntity insertOrUpdateWithRecordID:recordData:profile:error:](HDCachedSecureCKRecordEntity, "insertOrUpdateWithRecordID:recordData:profile:error:", [v18 persistentID], v16, v17, a10);
+      v22 = +[HDCachedSecureCKRecordEntity insertOrUpdateWithRecordID:recordData:profile:error:](HDCachedSecureCKRecordEntity, "insertOrUpdateWithRecordID:recordData:profile:error:", [v18 persistentID], dataCopy, profileCopy, error);
     }
 
     else
@@ -228,11 +228,11 @@ uint64_t __84__HDCachedSecureCKRecordEntity_insertOrUpdateWithRecordID_recordDat
     }
   }
 
-  else if (a10)
+  else if (error)
   {
     v23 = v19;
     v22 = 0;
-    *a10 = v20;
+    *error = v20;
   }
 
   else
@@ -244,13 +244,13 @@ uint64_t __84__HDCachedSecureCKRecordEntity_insertOrUpdateWithRecordID_recordDat
   return v22;
 }
 
-+ (id)_unprotectedRecordEntityWithContainerIdentifier:(uint64_t)a3 databaseScope:(void *)a4 zoneName:(void *)a5 ownerName:(void *)a6 recordName:(void *)a7 profile:(uint64_t)a8 error:
++ (id)_unprotectedRecordEntityWithContainerIdentifier:(uint64_t)identifier databaseScope:(void *)scope zoneName:(void *)name ownerName:(void *)ownerName recordName:(void *)recordName profile:(uint64_t)profile error:
 {
   v14 = a2;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  scopeCopy = scope;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  recordNameCopy = recordName;
   objc_opt_self();
   v34 = 0;
   v35 = &v34;
@@ -258,24 +258,24 @@ uint64_t __84__HDCachedSecureCKRecordEntity_insertOrUpdateWithRecordID_recordDat
   v37 = __Block_byref_object_copy__157;
   v38 = __Block_byref_object_dispose__157;
   v39 = 0;
-  v19 = [v18 database];
+  database = [recordNameCopy database];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __138__HDCachedSecureCKRecordEntity__unprotectedRecordEntityWithContainerIdentifier_databaseScope_zoneName_ownerName_recordName_profile_error___block_invoke;
   v27[3] = &unk_278628688;
   v20 = v14;
   v28 = v20;
-  v33 = a3;
-  v21 = v15;
+  identifierCopy = identifier;
+  v21 = scopeCopy;
   v29 = v21;
-  v22 = v16;
+  v22 = nameCopy;
   v30 = v22;
   v32 = &v34;
-  v23 = v17;
+  v23 = ownerNameCopy;
   v31 = v23;
-  LODWORD(a8) = [(HDHealthEntity *)HDCachedCKRecordEntity performReadTransactionWithHealthDatabase:v19 error:a8 block:v27];
+  LODWORD(profile) = [(HDHealthEntity *)HDCachedCKRecordEntity performReadTransactionWithHealthDatabase:database error:profile block:v27];
 
-  if (a8)
+  if (profile)
   {
     v24 = v35[5];
   }
@@ -292,36 +292,36 @@ uint64_t __84__HDCachedSecureCKRecordEntity_insertOrUpdateWithRecordID_recordDat
   return v25;
 }
 
-+ (id)protectedRecordDataForUnprotectedEntity:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)protectedRecordDataForUnprotectedEntity:(id)entity transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  entityCopy = entity;
+  transactionCopy = transaction;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__157;
   v23 = __Block_byref_object_dispose__157;
   v24 = 0;
-  v10 = [v9 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __90__HDCachedSecureCKRecordEntity_protectedRecordDataForUnprotectedEntity_transaction_error___block_invoke;
   v18[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v18[4] = a1;
+  v18[4] = self;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__HDCachedSecureCKRecordEntity_protectedRecordDataForUnprotectedEntity_transaction_error___block_invoke_2;
   v16[3] = &unk_278614860;
-  v11 = v8;
+  v11 = entityCopy;
   v17 = v11;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__HDCachedSecureCKRecordEntity_protectedRecordDataForUnprotectedEntity_transaction_error___block_invoke_3;
   v15[3] = &unk_278614620;
   v15[4] = &v19;
-  LODWORD(a5) = [v10 executeCachedStatementForKey:&protectedRecordDataForUnprotectedEntity_transaction_error__lookupKey error:a5 SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15];
+  LODWORD(error) = [protectedDatabase executeCachedStatementForKey:&protectedRecordDataForUnprotectedEntity_transaction_error__lookupKey error:error SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -364,31 +364,31 @@ uint64_t __90__HDCachedSecureCKRecordEntity_protectedRecordDataForUnprotectedEnt
   return 1;
 }
 
-+ (BOOL)deleteRecordWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 recordName:(id)a7 profile:(id)a8 error:(id *)a9
++ (BOOL)deleteRecordWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName recordName:(id)recordName profile:(id)profile error:(id *)error
 {
-  v15 = a8;
+  profileCopy = profile;
   v29 = 0;
-  v16 = [(HDCachedSecureCKRecordEntity *)a1 _unprotectedRecordEntityWithContainerIdentifier:a3 databaseScope:a4 zoneName:a5 ownerName:a6 recordName:a7 profile:v15 error:&v29];
+  v16 = [(HDCachedSecureCKRecordEntity *)self _unprotectedRecordEntityWithContainerIdentifier:identifier databaseScope:scope zoneName:name ownerName:ownerName recordName:recordName profile:profileCopy error:&v29];
   v17 = v29;
   v18 = v17;
   if (v16 || !v17)
   {
     if (v16)
     {
-      v21 = [v15 database];
+      database = [profileCopy database];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __126__HDCachedSecureCKRecordEntity_deleteRecordWithContainerIdentifier_databaseScope_zoneName_ownerName_recordName_profile_error___block_invoke;
       v26[3] = &unk_278619348;
-      v28 = a1;
+      selfCopy = self;
       v27 = v16;
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __126__HDCachedSecureCKRecordEntity_deleteRecordWithContainerIdentifier_databaseScope_zoneName_ownerName_recordName_profile_error___block_invoke_2;
       v23[3] = &unk_278616F88;
       v24 = v27;
-      v25 = v15;
-      v20 = [a1 performWriteTransactionWithHealthDatabase:v21 error:a9 block:v26 inaccessibilityHandler:v23];
+      v25 = profileCopy;
+      v20 = [self performWriteTransactionWithHealthDatabase:database error:error block:v26 inaccessibilityHandler:v23];
     }
 
     else
@@ -397,11 +397,11 @@ uint64_t __90__HDCachedSecureCKRecordEntity_protectedRecordDataForUnprotectedEnt
     }
   }
 
-  else if (a9)
+  else if (error)
   {
     v19 = v17;
     v20 = 0;
-    *a9 = v18;
+    *error = v18;
   }
 
   else
@@ -433,12 +433,12 @@ uint64_t __126__HDCachedSecureCKRecordEntity_deleteRecordWithContainerIdentifier
   return v7;
 }
 
-+ (BOOL)synchronizeRecordsWithProfile:(id)a3 error:(id *)a4
++ (BOOL)synchronizeRecordsWithProfile:(id)profile error:(id *)error
 {
-  v6 = [a3 database];
-  LOBYTE(a4) = [a1 performWriteTransactionWithHealthDatabase:v6 error:a4 block:&__block_literal_global_188 inaccessibilityHandler:0];
+  database = [profile database];
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:&__block_literal_global_188 inaccessibilityHandler:0];
 
-  return a4;
+  return error;
 }
 
 uint64_t __68__HDCachedSecureCKRecordEntity_synchronizeRecordsWithProfile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)

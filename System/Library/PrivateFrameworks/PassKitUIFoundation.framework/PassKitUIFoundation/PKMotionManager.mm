@@ -2,9 +2,9 @@
 + (id)sharedManager;
 - (id)_init;
 - (void)dealloc;
-- (void)registerClient:(id)a3;
-- (void)unregisterClient:(id)a3;
-- (void)updateWithMotion:(id)a3;
+- (void)registerClient:(id)client;
+- (void)unregisterClient:(id)client;
+- (void)updateWithMotion:(id)motion;
 @end
 
 @implementation PKMotionManager
@@ -35,9 +35,9 @@ uint64_t __32__PKMotionManager_sharedManager__block_invoke()
   v2 = [(PKMotionManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x277CCAA50] pk_weakObjectsHashTableUsingPointerPersonality];
     clients = v2->_clients;
-    v2->_clients = v3;
+    v2->_clients = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v5 = objc_alloc_init(MEMORY[0x277CC1CD8]);
     motionManager = v2->_motionManager;
@@ -61,10 +61,10 @@ uint64_t __32__PKMotionManager_sharedManager__block_invoke()
   [(PKMotionManager *)&v3 dealloc];
 }
 
-- (void)updateWithMotion:(id)a3
+- (void)updateWithMotion:(id)motion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  motionCopy = motion;
   v5 = [(NSHashTable *)self->_clients copy];
   v12 = 0u;
   v13 = 0u;
@@ -86,7 +86,7 @@ uint64_t __32__PKMotionManager_sharedManager__block_invoke()
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) motionManager:self didReceiveMotion:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v10++) motionManager:self didReceiveMotion:{motionCopy, v12}];
       }
 
       while (v8 != v10);
@@ -99,17 +99,17 @@ uint64_t __32__PKMotionManager_sharedManager__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerClient:(id)a3
+- (void)registerClient:(id)client
 {
-  v4 = a3;
-  if (v4)
+  clientCopy = client;
+  if (clientCopy)
   {
-    [(NSHashTable *)self->_clients addObject:v4];
+    [(NSHashTable *)self->_clients addObject:clientCopy];
     if (self->_monitoring)
     {
       if (self->_motion)
       {
-        [v4 motionManager:self didReceiveMotion:?];
+        [clientCopy motionManager:self didReceiveMotion:?];
       }
     }
 
@@ -117,13 +117,13 @@ uint64_t __32__PKMotionManager_sharedManager__block_invoke()
     {
       self->_monitoring = 1;
       motionManager = self->_motionManager;
-      v6 = [MEMORY[0x277CCABD8] mainQueue];
+      mainQueue = [MEMORY[0x277CCABD8] mainQueue];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __34__PKMotionManager_registerClient___block_invoke;
       v7[3] = &unk_279A004D8;
       v7[4] = self;
-      [(CMMotionManager *)motionManager startDeviceMotionUpdatesToQueue:v6 withHandler:v7];
+      [(CMMotionManager *)motionManager startDeviceMotionUpdatesToQueue:mainQueue withHandler:v7];
     }
   }
 }
@@ -143,16 +143,16 @@ void __34__PKMotionManager_registerClient___block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (void)unregisterClient:(id)a3
+- (void)unregisterClient:(id)client
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  clientCopy = client;
+  v5 = clientCopy;
+  if (clientCopy)
   {
-    v7 = v4;
-    [(NSHashTable *)self->_clients removeObject:v4];
-    v4 = [(NSHashTable *)self->_clients anyObject];
-    if (v4)
+    v7 = clientCopy;
+    [(NSHashTable *)self->_clients removeObject:clientCopy];
+    clientCopy = [(NSHashTable *)self->_clients anyObject];
+    if (clientCopy)
     {
     }
 
@@ -168,7 +168,7 @@ void __34__PKMotionManager_registerClient___block_invoke(uint64_t a1, void *a2, 
       motion = self->_motion;
       self->_motion = 0;
 
-      v4 = [(CMMotionManager *)self->_motionManager stopDeviceMotionUpdates];
+      clientCopy = [(CMMotionManager *)self->_motionManager stopDeviceMotionUpdates];
     }
 
     v5 = v7;
@@ -176,7 +176,7 @@ void __34__PKMotionManager_registerClient___block_invoke(uint64_t a1, void *a2, 
 
 LABEL_7:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](clientCopy, v5);
 }
 
 @end

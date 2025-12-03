@@ -1,22 +1,22 @@
 @interface HKAudioExposureDevicesDataSource
-- (HKAudioExposureDevicesDataSource)initWithDeviceType:(unint64_t)a3 healthStore:(id)a4;
-- (id)_localizedNameForDevice:(id)a3;
+- (HKAudioExposureDevicesDataSource)initWithDeviceType:(unint64_t)type healthStore:(id)store;
+- (id)_localizedNameForDevice:(id)device;
 - (id)_makeDeviceQueryForDeviceType;
 - (id)_sampleTypeForDeviceType;
 - (int64_t)deviceCount;
 - (void)_cleanUp;
 - (void)_notify_dataSourceIsReady;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)cancelQuery;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)startQuery;
 @end
 
 @implementation HKAudioExposureDevicesDataSource
 
-- (HKAudioExposureDevicesDataSource)initWithDeviceType:(unint64_t)a3 healthStore:(id)a4
+- (HKAudioExposureDevicesDataSource)initWithDeviceType:(unint64_t)type healthStore:(id)store
 {
-  v7 = a4;
+  storeCopy = store;
   v21.receiver = self;
   v21.super_class = HKAudioExposureDevicesDataSource;
   v8 = [(HKAudioExposureDevicesDataSource *)&v21 init];
@@ -24,7 +24,7 @@
   if (v8)
   {
     v8->_ready = 0;
-    v8->_deviceType = a3;
+    v8->_deviceType = type;
     v10 = [MEMORY[0x1E695DFD8] set];
     devices = v9->_devices;
     v9->_devices = v10;
@@ -32,7 +32,7 @@
     devicesByName = v9->_devicesByName;
     v9->_devicesByName = MEMORY[0x1E695E0F8];
 
-    objc_storeStrong(&v9->_healthStore, a4);
+    objc_storeStrong(&v9->_healthStore, store);
     v13 = objc_alloc(MEMORY[0x1E696C2F0]);
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
@@ -50,8 +50,8 @@
 
 - (int64_t)deviceCount
 {
-  v2 = [(HKAudioExposureDevicesDataSource *)self devices];
-  v3 = [v2 count];
+  devices = [(HKAudioExposureDevicesDataSource *)self devices];
+  v3 = [devices count];
 
   return v3;
 }
@@ -59,12 +59,12 @@
 - (void)startQuery
 {
   [(HKAudioExposureDevicesDataSource *)self setReady:0];
-  v3 = [(HKAudioExposureDevicesDataSource *)self _makeDeviceQueryForDeviceType];
-  [(HKAudioExposureDevicesDataSource *)self setQuery:v3];
+  _makeDeviceQueryForDeviceType = [(HKAudioExposureDevicesDataSource *)self _makeDeviceQueryForDeviceType];
+  [(HKAudioExposureDevicesDataSource *)self setQuery:_makeDeviceQueryForDeviceType];
 
-  v5 = [(HKAudioExposureDevicesDataSource *)self healthStore];
-  v4 = [(HKAudioExposureDevicesDataSource *)self query];
-  [v5 executeQuery:v4];
+  healthStore = [(HKAudioExposureDevicesDataSource *)self healthStore];
+  query = [(HKAudioExposureDevicesDataSource *)self query];
+  [healthStore executeQuery:query];
 }
 
 - (void)cancelQuery
@@ -76,18 +76,18 @@
 
 - (void)_cleanUp
 {
-  v3 = [(HKAudioExposureDevicesDataSource *)self healthStore];
-  v4 = [(HKAudioExposureDevicesDataSource *)self query];
-  [v3 stopQuery:v4];
+  healthStore = [(HKAudioExposureDevicesDataSource *)self healthStore];
+  query = [(HKAudioExposureDevicesDataSource *)self query];
+  [healthStore stopQuery:query];
 
   [(HKAudioExposureDevicesDataSource *)self setQuery:0];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HKAudioExposureDevicesDataSource *)self observers];
-  [v5 registerObserver:v4 queue:MEMORY[0x1E69E96A0]];
+  observerCopy = observer;
+  observers = [(HKAudioExposureDevicesDataSource *)self observers];
+  [observers registerObserver:observerCopy queue:MEMORY[0x1E69E96A0]];
 
   if ([(HKAudioExposureDevicesDataSource *)self isReady])
   {
@@ -96,22 +96,22 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HKAudioExposureDevicesDataSource *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(HKAudioExposureDevicesDataSource *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
 - (void)_notify_dataSourceIsReady
 {
-  v3 = [(HKAudioExposureDevicesDataSource *)self observers];
+  observers = [(HKAudioExposureDevicesDataSource *)self observers];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __61__HKAudioExposureDevicesDataSource__notify_dataSourceIsReady__block_invoke;
   v4[3] = &unk_1E81B8FF0;
   v4[4] = self;
-  [v3 notifyObservers:v4];
+  [observers notifyObservers:v4];
 }
 
 void __61__HKAudioExposureDevicesDataSource__notify_dataSourceIsReady__block_invoke(uint64_t a1, void *a2)
@@ -132,8 +132,8 @@ void __61__HKAudioExposureDevicesDataSource__notify_dataSourceIsReady__block_inv
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
   v4 = objc_alloc(MEMORY[0x1E696C0D8]);
-  v5 = [(HKAudioExposureDevicesDataSource *)self _sampleTypeForDeviceType];
-  v6 = [v4 initWithObjectType:v5 predicate:0 resultsHandler:v3];
+  _sampleTypeForDeviceType = [(HKAudioExposureDevicesDataSource *)self _sampleTypeForDeviceType];
+  v6 = [v4 initWithObjectType:_sampleTypeForDeviceType predicate:0 resultsHandler:v3];
 
   return v6;
 }
@@ -245,10 +245,10 @@ uint64_t __65__HKAudioExposureDevicesDataSource__makeDeviceQueryForDeviceType__b
 
 - (id)_sampleTypeForDeviceType
 {
-  v2 = [(HKAudioExposureDevicesDataSource *)self deviceType];
-  if (v2)
+  deviceType = [(HKAudioExposureDevicesDataSource *)self deviceType];
+  if (deviceType)
   {
-    if (v2 != 1)
+    if (deviceType != 1)
     {
       goto LABEL_6;
     }
@@ -261,18 +261,18 @@ uint64_t __65__HKAudioExposureDevicesDataSource__makeDeviceQueryForDeviceType__b
     v3 = MEMORY[0x1E696BD28];
   }
 
-  v2 = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*v3];
+  deviceType = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*v3];
 LABEL_6:
 
-  return v2;
+  return deviceType;
 }
 
-- (id)_localizedNameForDevice:(id)a3
+- (id)_localizedNameForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 name];
+  deviceCopy = device;
+  name = [deviceCopy name];
 
-  if (!v4)
+  if (!name)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v9 = v8;
@@ -280,9 +280,9 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v5 = [v3 name];
-  v6 = [v5 lowercaseString];
-  v7 = [v6 isEqualToString:@"wired"];
+  name2 = [deviceCopy name];
+  lowercaseString = [name2 lowercaseString];
+  v7 = [lowercaseString isEqualToString:@"wired"];
 
   if (v7)
   {
@@ -290,15 +290,15 @@ LABEL_6:
     v9 = v8;
     v10 = @"WIRED_HEADPHONE_DEVICE_NAME";
 LABEL_5:
-    v11 = [v8 localizedStringForKey:v10 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+    name3 = [v8 localizedStringForKey:v10 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
     goto LABEL_7;
   }
 
-  v11 = [v3 name];
+  name3 = [deviceCopy name];
 LABEL_7:
 
-  return v11;
+  return name3;
 }
 
 void __65__HKAudioExposureDevicesDataSource__makeDeviceQueryForDeviceType__block_invoke_cold_1(uint64_t a1, NSObject *a2)

@@ -1,23 +1,23 @@
 @interface MFComposeAttachmentDataProvider
-- (MFComposeAttachmentDataProvider)initWithData:(id)a3 forContentID:(id)a4;
-- (id)_dataForAttachment:(id)a3;
-- (id)dataForContentID:(id)a3;
-- (id)rawDataForContentID:(id)a3;
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4;
-- (void)addData:(id)a3 forContentID:(id)a4;
+- (MFComposeAttachmentDataProvider)initWithData:(id)data forContentID:(id)d;
+- (id)_dataForAttachment:(id)attachment;
+- (id)dataForContentID:(id)d;
+- (id)rawDataForContentID:(id)d;
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message;
+- (void)addData:(id)data forContentID:(id)d;
 - (void)dealloc;
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6;
-- (void)recordPasteboardDataForAttachments:(id)a3;
-- (void)recordUndoDataForAttachments:(id)a3;
-- (void)removeDataForAttachment:(id)a3;
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion;
+- (void)recordPasteboardDataForAttachments:(id)attachments;
+- (void)recordUndoDataForAttachments:(id)attachments;
+- (void)removeDataForAttachment:(id)attachment;
 @end
 
 @implementation MFComposeAttachmentDataProvider
 
-- (MFComposeAttachmentDataProvider)initWithData:(id)a3 forContentID:(id)a4
+- (MFComposeAttachmentDataProvider)initWithData:(id)data forContentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = MFComposeAttachmentDataProvider;
   v8 = [(MFComposeAttachmentDataProvider *)&v18 init];
@@ -27,7 +27,7 @@
     attachmentsData = v8->_attachmentsData;
     v8->_attachmentsData = v9;
 
-    [(MFComposeAttachmentDataProvider *)v8 addData:v6 forContentID:v7];
+    [(MFComposeAttachmentDataProvider *)v8 addData:dataCopy forContentID:dCopy];
     v11 = objc_alloc_init(MEMORY[0x277CBEA78]);
     attachmentsPlaceholderData = v8->_attachmentsPlaceholderData;
     v8->_attachmentsPlaceholderData = v11;
@@ -51,45 +51,45 @@
   [(MFComposeAttachmentDataProvider *)&v2 dealloc];
 }
 
-- (void)addData:(id)a3 forContentID:(id)a4
+- (void)addData:(id)data forContentID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  if (v6)
+  dataCopy = data;
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:v6];
-    v8 = [v7 isEqualToData:v10];
+    v7 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:dCopy];
+    v8 = [v7 isEqualToData:dataCopy];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [objc_alloc(MEMORY[0x277D24F00]) initWithData:v10];
-      [(NSMutableDictionary *)self->_attachmentsData setValue:v9 forKey:v6];
+      v9 = [objc_alloc(MEMORY[0x277D24F00]) initWithData:dataCopy];
+      [(NSMutableDictionary *)self->_attachmentsData setValue:v9 forKey:dCopy];
     }
   }
 }
 
-- (void)removeDataForAttachment:(id)a3
+- (void)removeDataForAttachment:(id)attachment
 {
-  if (a3)
+  if (attachment)
   {
-    v4 = [a3 lastPathComponent];
-    [(NSMutableDictionary *)self->_attachmentsData removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_attachmentsPasteboardData removeObjectForKey:v4];
+    lastPathComponent = [attachment lastPathComponent];
+    [(NSMutableDictionary *)self->_attachmentsData removeObjectForKey:lastPathComponent];
+    [(NSMutableDictionary *)self->_attachmentsPasteboardData removeObjectForKey:lastPathComponent];
   }
 }
 
-- (void)recordPasteboardDataForAttachments:(id)a3
+- (void)recordPasteboardDataForAttachments:(id)attachments
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  attachmentsCopy = attachments;
+  if (attachmentsCopy)
   {
     [(NSMutableDictionary *)self->_attachmentsPasteboardData removeAllObjects];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v4;
+    v5 = attachmentsCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -105,17 +105,17 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * v9) lastPathComponent];
-          if ([v10 length])
+          lastPathComponent = [*(*(&v13 + 1) + 8 * v9) lastPathComponent];
+          if ([lastPathComponent length])
           {
-            v11 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:v10];
+            v11 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:lastPathComponent];
             if (v11)
             {
-              [(NSMutableDictionary *)self->_attachmentsPasteboardData setObject:v11 forKey:v10];
+              [(NSMutableDictionary *)self->_attachmentsPasteboardData setObject:v11 forKey:lastPathComponent];
             }
 
-            [(NSMutableDictionary *)self->_attachmentsData removeObjectForKey:v10];
-            [(NSMutableDictionary *)self->_attachmentsPasteboardData removeObjectForKey:v10];
+            [(NSMutableDictionary *)self->_attachmentsData removeObjectForKey:lastPathComponent];
+            [(NSMutableDictionary *)self->_attachmentsPasteboardData removeObjectForKey:lastPathComponent];
           }
 
           ++v9;
@@ -132,18 +132,18 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordUndoDataForAttachments:(id)a3
+- (void)recordUndoDataForAttachments:(id)attachments
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  attachmentsCopy = attachments;
+  if (attachmentsCopy)
   {
     [(NSMutableDictionary *)self->_attachmentsUndoData removeAllObjects];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v4;
+    v5 = attachmentsCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -159,17 +159,17 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * v9) lastPathComponent];
-          if ([v10 length])
+          lastPathComponent = [*(*(&v13 + 1) + 8 * v9) lastPathComponent];
+          if ([lastPathComponent length])
           {
-            v11 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:v10];
+            v11 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:lastPathComponent];
             if (v11)
             {
-              [(NSMutableDictionary *)self->_attachmentsUndoData setObject:v11 forKey:v10];
+              [(NSMutableDictionary *)self->_attachmentsUndoData setObject:v11 forKey:lastPathComponent];
             }
 
-            [(NSMutableDictionary *)self->_attachmentsData removeObjectForKey:v10];
-            [(NSMutableDictionary *)self->_attachmentsPasteboardData removeObjectForKey:v10];
+            [(NSMutableDictionary *)self->_attachmentsData removeObjectForKey:lastPathComponent];
+            [(NSMutableDictionary *)self->_attachmentsPasteboardData removeObjectForKey:lastPathComponent];
           }
 
           ++v9;
@@ -186,30 +186,30 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dataForAttachment:(id)a3
+- (id)_dataForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [v4 contentID];
-  if (![v5 length])
+  attachmentCopy = attachment;
+  contentID = [attachmentCopy contentID];
+  if (![contentID length])
   {
-    v6 = [v4 url];
-    v7 = [v6 lastPathComponent];
+    v6 = [attachmentCopy url];
+    lastPathComponent = [v6 lastPathComponent];
 
-    v5 = v7;
+    contentID = lastPathComponent;
   }
 
-  v8 = [(MFComposeAttachmentDataProvider *)self dataForContentID:v5];
+  v8 = [(MFComposeAttachmentDataProvider *)self dataForContentID:contentID];
 
   return v8;
 }
 
-- (id)dataForContentID:(id)a3
+- (id)dataForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(MFComposeAttachmentDataProvider *)self rawDataForContentID:v4];
+  dCopy = d;
+  v5 = [(MFComposeAttachmentDataProvider *)self rawDataForContentID:dCopy];
   if ([MFAttachmentPlaceholder isPlaceholderSerializedRepresentation:v5])
   {
-    v6 = [(NSCache *)self->_attachmentsPlaceholderData objectForKey:v4];
+    v6 = [(NSCache *)self->_attachmentsPlaceholderData objectForKey:dCopy];
     if (v6)
     {
       goto LABEL_3;
@@ -222,7 +222,7 @@
       v6 = [MFAttachmentPlaceholder dataForPlaceholder:v9];
       if ([v6 length])
       {
-        [(NSCache *)self->_attachmentsPlaceholderData setObject:v6 forKey:v4];
+        [(NSCache *)self->_attachmentsPlaceholderData setObject:v6 forKey:dCopy];
       }
 
       if (v6)
@@ -238,16 +238,16 @@ LABEL_3:
   return v5;
 }
 
-- (id)rawDataForContentID:(id)a3
+- (id)rawDataForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:dCopy];
   if (!v5)
   {
-    v5 = [(NSMutableDictionary *)self->_attachmentsPasteboardData objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_attachmentsPasteboardData objectForKey:dCopy];
     if (!v5)
     {
-      v5 = [(NSMutableDictionary *)self->_attachmentsUndoData objectForKey:v4];
+      v5 = [(NSMutableDictionary *)self->_attachmentsUndoData objectForKey:dCopy];
     }
   }
 
@@ -260,33 +260,33 @@ LABEL_3:
     {
       if (v8)
       {
-        [(MFComposeAttachmentDataProvider *)v4 rawDataForContentID:v7];
+        [(MFComposeAttachmentDataProvider *)dCopy rawDataForContentID:v7];
       }
     }
 
     else if (v8)
     {
-      [(MFComposeAttachmentDataProvider *)v4 rawDataForContentID:v7];
+      [(MFComposeAttachmentDataProvider *)dCopy rawDataForContentID:v7];
     }
   }
 
   return v6;
 }
 
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MFComposeAttachmentDataProvider *)self _dataForAttachment:v16];
+  attachmentCopy = attachment;
+  consumerCopy = consumer;
+  progressCopy = progress;
+  completionCopy = completion;
+  v13 = [(MFComposeAttachmentDataProvider *)self _dataForAttachment:attachmentCopy];
   if (v13)
   {
-    [v10 appendData:v13];
-    v14 = [v16 encodedFileSize];
-    [v11 setCompletedUnitCount:v14];
-    [v11 setTotalUnitCount:v14];
-    [v10 done];
+    [consumerCopy appendData:v13];
+    encodedFileSize = [attachmentCopy encodedFileSize];
+    [progressCopy setCompletedUnitCount:encodedFileSize];
+    [progressCopy setTotalUnitCount:encodedFileSize];
+    [consumerCopy done];
     v15 = 0;
   }
 
@@ -295,24 +295,24 @@ LABEL_3:
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:@"Could not find data for compose attachment." title:@"No Data Found" userInfo:0];
   }
 
-  v12[2](v12, v13 != 0, v15, 0);
+  completionCopy[2](completionCopy, v13 != 0, v15, 0);
 }
 
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message
 {
-  v5 = a3;
-  v6 = [a4 attachmentStorageLocation];
-  if (v6)
+  attachmentCopy = attachment;
+  attachmentStorageLocation = [message attachmentStorageLocation];
+  if (attachmentStorageLocation)
   {
-    v7 = [v5 part];
-    v8 = [v7 partNumber];
-    v9 = [v6 stringByAppendingPathComponent:v8];
+    part = [attachmentCopy part];
+    partNumber = [part partNumber];
+    v9 = [attachmentStorageLocation stringByAppendingPathComponent:partNumber];
 
-    v10 = [v5 fileName];
-    v6 = [v9 stringByAppendingPathComponent:v10];
+    fileName = [attachmentCopy fileName];
+    attachmentStorageLocation = [v9 stringByAppendingPathComponent:fileName];
   }
 
-  return v6;
+  return attachmentStorageLocation;
 }
 
 - (void)rawDataForContentID:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

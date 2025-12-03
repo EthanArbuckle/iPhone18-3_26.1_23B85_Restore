@@ -1,14 +1,14 @@
 @interface ServiceTFBetaLaunchHostViewController
 - (TFHostedBetaAppLaunchScreenView)launchViewController;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismissViewService;
-- (void)_presentLaunchViewControllerForIdentifier:(id)a3;
-- (void)_setupViewController:(id)a3 forPresentationInTraitEnvironment:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_presentLaunchViewControllerForIdentifier:(id)identifier;
+- (void)_setupViewController:(id)controller forPresentationInTraitEnvironment:(id)environment;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ServiceTFBetaLaunchHostViewController
@@ -16,9 +16,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }
@@ -29,68 +29,68 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = ServiceTFBetaLaunchHostViewController;
-  [(ServiceTFBetaLaunchHostViewController *)&v6 traitCollectionDidChange:a3];
-  v4 = [(ServiceTFBetaLaunchHostViewController *)self launchViewController];
-  v5 = [(ServiceTFBetaLaunchHostViewController *)self traitCollection];
-  [v4 launchScreenHost:self traitCollectionDidChange:v5];
+  [(ServiceTFBetaLaunchHostViewController *)&v6 traitCollectionDidChange:change];
+  launchViewController = [(ServiceTFBetaLaunchHostViewController *)self launchViewController];
+  traitCollection = [(ServiceTFBetaLaunchHostViewController *)self traitCollection];
+  [launchViewController launchScreenHost:self traitCollectionDidChange:traitCollection];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(ServiceTFBetaLaunchHostViewController *)self _remoteViewControllerProxy];
-  [v7 setDesiredHardwareButtonEvents:16];
-  [v7 setAllowsMenuButtonDismissal:1];
-  [v7 setWallpaperTunnelActive:0];
-  [v7 setAllowsAlertStacking:1];
-  [v7 setDismissalAnimationStyle:2];
-  [v7 setReachabilityDisabled:1];
+  contextCopy = context;
+  completionCopy = completion;
+  _remoteViewControllerProxy = [(ServiceTFBetaLaunchHostViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:0];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:2];
+  [_remoteViewControllerProxy setReachabilityDisabled:1];
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-  [v7 setSwipeDismissalStyle:(v9 & 0xFFFFFFFFFFFFFFFBLL) != 1];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1];
   v10 = +[UIDevice currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v10 userInterfaceIdiom];
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v12 = +[UIApplication sharedApplication];
-    v13 = [v12 statusBarOrientation];
+    statusBarOrientation = [v12 statusBarOrientation];
 
-    [v7 setLaunchingInterfaceOrientation:v13];
+    [_remoteViewControllerProxy setLaunchingInterfaceOrientation:statusBarOrientation];
   }
 
-  v14 = [v16 userInfo];
-  v15 = [TFBetaLaunchHandleConfiguration configurationFromUserInfo:v14];
+  userInfo = [contextCopy userInfo];
+  v15 = [TFBetaLaunchHandleConfiguration configurationFromUserInfo:userInfo];
   [(ServiceTFBetaLaunchHostViewController *)self setActiveConfiguration:v15];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -102,7 +102,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * v8) events] & 0x10) != 0)
@@ -114,77 +114,77 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_presentLaunchViewControllerForIdentifier:(id)a3
+- (void)_presentLaunchViewControllerForIdentifier:(id)identifier
 {
-  v4 = [(ServiceTFBetaLaunchHostViewController *)self activeConfiguration];
-  v5 = [v4 bundleIdentifier];
-  v6 = [(ServiceTFBetaLaunchHostViewController *)self activeConfiguration];
-  v7 = [v6 launchInfo];
-  v11 = [TFBetaAppLaunchScreenProvider createBetaAppLaunchViewControllerForIdentifier:v5 hostedIn:self withSidepackLaunchInfo:v7];
+  activeConfiguration = [(ServiceTFBetaLaunchHostViewController *)self activeConfiguration];
+  bundleIdentifier = [activeConfiguration bundleIdentifier];
+  activeConfiguration2 = [(ServiceTFBetaLaunchHostViewController *)self activeConfiguration];
+  launchInfo = [activeConfiguration2 launchInfo];
+  v11 = [TFBetaAppLaunchScreenProvider createBetaAppLaunchViewControllerForIdentifier:bundleIdentifier hostedIn:self withSidepackLaunchInfo:launchInfo];
 
   [(ServiceTFBetaLaunchHostViewController *)self setLaunchViewController:v11];
   v8 = [UINavigationController alloc];
-  v9 = [(ServiceTFBetaLaunchHostViewController *)self launchViewController];
-  v10 = [v8 initWithRootViewController:v9];
+  launchViewController = [(ServiceTFBetaLaunchHostViewController *)self launchViewController];
+  v10 = [v8 initWithRootViewController:launchViewController];
 
   [v10 setDelegate:self];
   [(ServiceTFBetaLaunchHostViewController *)self _setupViewController:v10 forPresentationInTraitEnvironment:self];
   [(ServiceTFBetaLaunchHostViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)_setupViewController:(id)a3 forPresentationInTraitEnvironment:(id)a4
+- (void)_setupViewController:(id)controller forPresentationInTraitEnvironment:(id)environment
 {
-  v7 = a3;
-  v5 = [a4 traitCollection];
-  v6 = [v5 horizontalSizeClass];
+  controllerCopy = controller;
+  traitCollection = [environment traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v6 == 1)
+  if (horizontalSizeClass == 1)
   {
-    [v7 setModalPresentationStyle:0];
-    [v7 setModalTransitionStyle:2];
+    [controllerCopy setModalPresentationStyle:0];
+    [controllerCopy setModalTransitionStyle:2];
   }
 
   else
   {
-    [v7 setModalPresentationStyle:2];
+    [controllerCopy setModalPresentationStyle:2];
   }
 }
 
 - (void)_dismissViewService
 {
-  v3 = [(ServiceTFBetaLaunchHostViewController *)self _remoteViewControllerProxy];
-  v4 = [(ServiceTFBetaLaunchHostViewController *)self presentedViewController];
+  _remoteViewControllerProxy = [(ServiceTFBetaLaunchHostViewController *)self _remoteViewControllerProxy];
+  presentedViewController = [(ServiceTFBetaLaunchHostViewController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    v5 = [(ServiceTFBetaLaunchHostViewController *)self presentedViewController];
+    presentedViewController2 = [(ServiceTFBetaLaunchHostViewController *)self presentedViewController];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100007B7C;
     v6[3] = &unk_100051148;
-    v7 = v3;
-    [v5 dismissViewControllerAnimated:1 completion:v6];
+    v7 = _remoteViewControllerProxy;
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:v6];
   }
 
   else
   {
-    [v3 dismiss];
+    [_remoteViewControllerProxy dismiss];
   }
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }

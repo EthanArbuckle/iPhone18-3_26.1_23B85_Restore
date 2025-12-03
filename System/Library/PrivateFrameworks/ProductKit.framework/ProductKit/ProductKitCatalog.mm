@@ -1,10 +1,10 @@
 @interface ProductKitCatalog
 - (ProductKitCatalog)init;
-- (void)updateCatalogWithCompletionHandler:(id)a3;
-- (void)watchBandFilesForFeatureWithURL:(id)a3 featureString:(id)a4 completionHandler:(id)a5;
-- (void)watchBandFilesForFeatureWithURL:(id)a3 featureString:(id)a4 variant:(id)a5 completionHandler:(id)a6;
-- (void)watchBandImageForFeatureWithURL:(id)a3 featureString:(id)a4 completionHandler:(id)a5;
-- (void)watchBandImageForFeatureWithURL:(id)a3 featureString:(id)a4 variant:(id)a5 completionHandler:(id)a6;
+- (void)updateCatalogWithCompletionHandler:(id)handler;
+- (void)watchBandFilesForFeatureWithURL:(id)l featureString:(id)string completionHandler:(id)handler;
+- (void)watchBandFilesForFeatureWithURL:(id)l featureString:(id)string variant:(id)variant completionHandler:(id)handler;
+- (void)watchBandImageForFeatureWithURL:(id)l featureString:(id)string completionHandler:(id)handler;
+- (void)watchBandImageForFeatureWithURL:(id)l featureString:(id)string variant:(id)variant completionHandler:(id)handler;
 @end
 
 @implementation ProductKitCatalog
@@ -21,49 +21,49 @@
   return v2;
 }
 
-- (void)updateCatalogWithCompletionHandler:(id)a3
+- (void)updateCatalogWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ProductKitCatalog *)self underlyingObject];
-  [v5 updateCatalogWithCompletionHandler:v4];
+  handlerCopy = handler;
+  underlyingObject = [(ProductKitCatalog *)self underlyingObject];
+  [underlyingObject updateCatalogWithCompletionHandler:handlerCopy];
 }
 
-- (void)watchBandFilesForFeatureWithURL:(id)a3 featureString:(id)a4 completionHandler:(id)a5
+- (void)watchBandFilesForFeatureWithURL:(id)l featureString:(id)string completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ProductKitCatalog *)self underlyingObject];
-  [v11 watchBandFilesForFeatureWithURL:v10 featureString:v9 variant:0 completionHandler:v8];
+  handlerCopy = handler;
+  stringCopy = string;
+  lCopy = l;
+  underlyingObject = [(ProductKitCatalog *)self underlyingObject];
+  [underlyingObject watchBandFilesForFeatureWithURL:lCopy featureString:stringCopy variant:0 completionHandler:handlerCopy];
 }
 
-- (void)watchBandImageForFeatureWithURL:(id)a3 featureString:(id)a4 completionHandler:(id)a5
+- (void)watchBandImageForFeatureWithURL:(id)l featureString:(id)string completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ProductKitCatalog *)self underlyingObject];
-  [v11 watchBandImageForFeatureWithURL:v10 featureString:v9 variant:0 completionHandler:v8];
+  handlerCopy = handler;
+  stringCopy = string;
+  lCopy = l;
+  underlyingObject = [(ProductKitCatalog *)self underlyingObject];
+  [underlyingObject watchBandImageForFeatureWithURL:lCopy featureString:stringCopy variant:0 completionHandler:handlerCopy];
 }
 
-- (void)watchBandFilesForFeatureWithURL:(id)a3 featureString:(id)a4 variant:(id)a5 completionHandler:(id)a6
+- (void)watchBandFilesForFeatureWithURL:(id)l featureString:(id)string variant:(id)variant completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(ProductKitCatalog *)self underlyingObject];
-  [v14 watchBandFilesForFeatureWithURL:v13 featureString:v12 variant:v11 completionHandler:v10];
+  handlerCopy = handler;
+  variantCopy = variant;
+  stringCopy = string;
+  lCopy = l;
+  underlyingObject = [(ProductKitCatalog *)self underlyingObject];
+  [underlyingObject watchBandFilesForFeatureWithURL:lCopy featureString:stringCopy variant:variantCopy completionHandler:handlerCopy];
 }
 
-- (void)watchBandImageForFeatureWithURL:(id)a3 featureString:(id)a4 variant:(id)a5 completionHandler:(id)a6
+- (void)watchBandImageForFeatureWithURL:(id)l featureString:(id)string variant:(id)variant completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(ProductKitCatalog *)self underlyingObject];
-  [v14 watchBandImageForFeatureWithURL:v13 featureString:v12 variant:v11 completionHandler:v10];
+  handlerCopy = handler;
+  variantCopy = variant;
+  stringCopy = string;
+  lCopy = l;
+  underlyingObject = [(ProductKitCatalog *)self underlyingObject];
+  [underlyingObject watchBandImageForFeatureWithURL:lCopy featureString:stringCopy variant:variantCopy completionHandler:handlerCopy];
 }
 
 @end

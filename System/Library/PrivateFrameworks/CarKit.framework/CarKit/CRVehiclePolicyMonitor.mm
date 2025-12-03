@@ -1,28 +1,28 @@
 @interface CRVehiclePolicyMonitor
-- (CRVehiclePolicyMonitor)initWithVehicleCertificateSerial:(id)a3;
+- (CRVehiclePolicyMonitor)initWithVehicleCertificateSerial:(id)serial;
 - (CRVehiclePolicyMonitoring)delegate;
 - (id)monitoringConnection;
 - (void)dealloc;
 - (void)startMonitoring;
 - (void)stopMonitoring;
-- (void)willDisableCertificateSerial:(id)a3 reply:(id)a4;
-- (void)willEnableCertificateSerial:(id)a3 reply:(id)a4;
+- (void)willDisableCertificateSerial:(id)serial reply:(id)reply;
+- (void)willEnableCertificateSerial:(id)serial reply:(id)reply;
 @end
 
 @implementation CRVehiclePolicyMonitor
 
-- (CRVehiclePolicyMonitor)initWithVehicleCertificateSerial:(id)a3
+- (CRVehiclePolicyMonitor)initWithVehicleCertificateSerial:(id)serial
 {
-  v4 = a3;
+  serialCopy = serial;
   v9.receiver = self;
   v9.super_class = CRVehiclePolicyMonitor;
   v5 = [(CRVehiclePolicyMonitor *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(CRVehiclePolicyMonitor *)v5 setVehicleCertificateSerial:v4];
-    v7 = [(CRVehiclePolicyMonitor *)v6 monitoringConnection];
-    [(CRVehiclePolicyMonitor *)v6 setServiceConnection:v7];
+    [(CRVehiclePolicyMonitor *)v5 setVehicleCertificateSerial:serialCopy];
+    monitoringConnection = [(CRVehiclePolicyMonitor *)v6 monitoringConnection];
+    [(CRVehiclePolicyMonitor *)v6 setServiceConnection:monitoringConnection];
 
     [(CRVehiclePolicyMonitor *)v6 setMonitoring:0];
   }
@@ -80,10 +80,10 @@ uint64_t __46__CRVehiclePolicyMonitor_monitoringConnection__block_invoke(uint64_
 - (void)startMonitoring
 {
   [(CRVehiclePolicyMonitor *)self setMonitoring:1];
-  v5 = [(CRVehiclePolicyMonitor *)self vehicleCertificateSerial];
-  v3 = [(CRVehiclePolicyMonitor *)self serviceConnection];
-  v4 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_21];
-  [v4 startMonitoringCertificateSerial:v5 reply:&__block_literal_global_35_0];
+  vehicleCertificateSerial = [(CRVehiclePolicyMonitor *)self vehicleCertificateSerial];
+  serviceConnection = [(CRVehiclePolicyMonitor *)self serviceConnection];
+  v4 = [serviceConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_21];
+  [v4 startMonitoringCertificateSerial:vehicleCertificateSerial reply:&__block_literal_global_35_0];
 }
 
 void __41__CRVehiclePolicyMonitor_startMonitoring__block_invoke(uint64_t a1, void *a2)
@@ -109,10 +109,10 @@ void __41__CRVehiclePolicyMonitor_startMonitoring__block_invoke_33()
 - (void)stopMonitoring
 {
   [(CRVehiclePolicyMonitor *)self setMonitoring:0];
-  v5 = [(CRVehiclePolicyMonitor *)self vehicleCertificateSerial];
-  v3 = [(CRVehiclePolicyMonitor *)self serviceConnection];
-  v4 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_37_1];
-  [v4 stopMonitoringCertificateSerial:v5 reply:&__block_literal_global_40_1];
+  vehicleCertificateSerial = [(CRVehiclePolicyMonitor *)self vehicleCertificateSerial];
+  serviceConnection = [(CRVehiclePolicyMonitor *)self serviceConnection];
+  v4 = [serviceConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_37_1];
+  [v4 stopMonitoringCertificateSerial:vehicleCertificateSerial reply:&__block_literal_global_40_1];
 }
 
 void __40__CRVehiclePolicyMonitor_stopMonitoring__block_invoke(uint64_t a1, void *a2)
@@ -135,10 +135,10 @@ void __40__CRVehiclePolicyMonitor_stopMonitoring__block_invoke_38()
   }
 }
 
-- (void)willEnableCertificateSerial:(id)a3 reply:(id)a4
+- (void)willEnableCertificateSerial:(id)serial reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  serialCopy = serial;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -146,21 +146,21 @@ void __40__CRVehiclePolicyMonitor_stopMonitoring__block_invoke_38()
     _os_log_impl(&dword_1C81FC000, v8, OS_LOG_TYPE_DEFAULT, "client received willEnableCertificateSerial", buf, 2u);
   }
 
-  v9 = [(CRVehiclePolicyMonitor *)self vehicleCertificateSerial];
-  v10 = [v9 isEqualToData:v7];
+  vehicleCertificateSerial = [(CRVehiclePolicyMonitor *)self vehicleCertificateSerial];
+  v10 = [vehicleCertificateSerial isEqualToData:serialCopy];
 
   if (v10)
   {
-    v11 = [(CRVehiclePolicyMonitor *)self delegate];
+    delegate = [(CRVehiclePolicyMonitor *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CRVehiclePolicyMonitor *)self delegate];
-      [v13 willEnableVehicleTrackedByMonitor:self];
+      delegate2 = [(CRVehiclePolicyMonitor *)self delegate];
+      [delegate2 willEnableVehicleTrackedByMonitor:self];
     }
 
-    v6[2](v6);
+    replyCopy[2](replyCopy);
   }
 
   else
@@ -174,10 +174,10 @@ void __40__CRVehiclePolicyMonitor_stopMonitoring__block_invoke_38()
   }
 }
 
-- (void)willDisableCertificateSerial:(id)a3 reply:(id)a4
+- (void)willDisableCertificateSerial:(id)serial reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  serialCopy = serial;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -185,21 +185,21 @@ void __40__CRVehiclePolicyMonitor_stopMonitoring__block_invoke_38()
     _os_log_impl(&dword_1C81FC000, v8, OS_LOG_TYPE_DEFAULT, "client received willDisableCertificateSerial", buf, 2u);
   }
 
-  v9 = [(CRVehiclePolicyMonitor *)self vehicleCertificateSerial];
-  v10 = [v9 isEqualToData:v7];
+  vehicleCertificateSerial = [(CRVehiclePolicyMonitor *)self vehicleCertificateSerial];
+  v10 = [vehicleCertificateSerial isEqualToData:serialCopy];
 
   if (v10)
   {
-    v11 = [(CRVehiclePolicyMonitor *)self delegate];
+    delegate = [(CRVehiclePolicyMonitor *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CRVehiclePolicyMonitor *)self delegate];
-      [v13 willDisableVehicleTrackedByMonitor:self];
+      delegate2 = [(CRVehiclePolicyMonitor *)self delegate];
+      [delegate2 willDisableVehicleTrackedByMonitor:self];
     }
 
-    v6[2](v6);
+    replyCopy[2](replyCopy);
   }
 
   else

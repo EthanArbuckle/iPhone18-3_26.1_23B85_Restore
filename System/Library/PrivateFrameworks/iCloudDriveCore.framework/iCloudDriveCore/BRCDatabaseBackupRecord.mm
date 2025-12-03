@@ -1,40 +1,40 @@
 @interface BRCDatabaseBackupRecord
-- (BRCDatabaseBackupRecord)initWithPQLResultSet:(id)a3;
-- (BRCDatabaseBackupRecord)initWithRelativePath:(id)a3 fileID:(id)a4 docID:(id)a5 genCount:(unsigned int)a6 isDirectory:(BOOL)a7;
+- (BRCDatabaseBackupRecord)initWithPQLResultSet:(id)set;
+- (BRCDatabaseBackupRecord)initWithRelativePath:(id)path fileID:(id)d docID:(id)iD genCount:(unsigned int)count isDirectory:(BOOL)directory;
 - (id)description;
 @end
 
 @implementation BRCDatabaseBackupRecord
 
-- (BRCDatabaseBackupRecord)initWithRelativePath:(id)a3 fileID:(id)a4 docID:(id)a5 genCount:(unsigned int)a6 isDirectory:(BOOL)a7
+- (BRCDatabaseBackupRecord)initWithRelativePath:(id)path fileID:(id)d docID:(id)iD genCount:(unsigned int)count isDirectory:(BOOL)directory
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  pathCopy = path;
+  dCopy = d;
+  iDCopy = iD;
   v19.receiver = self;
   v19.super_class = BRCDatabaseBackupRecord;
   v16 = [(BRCDatabaseBackupRecord *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_relativePath, a3);
-    objc_storeStrong(&v17->_fileID, a4);
-    objc_storeStrong(&v17->_docID, a5);
-    v17->_genCount = a6;
-    v17->_isDirectory = a7;
+    objc_storeStrong(&v16->_relativePath, path);
+    objc_storeStrong(&v17->_fileID, d);
+    objc_storeStrong(&v17->_docID, iD);
+    v17->_genCount = count;
+    v17->_isDirectory = directory;
   }
 
   return v17;
 }
 
-- (BRCDatabaseBackupRecord)initWithPQLResultSet:(id)a3
+- (BRCDatabaseBackupRecord)initWithPQLResultSet:(id)set
 {
-  v4 = a3;
-  v5 = [v4 stringAtIndex:0];
-  v6 = [v4 numberAtIndex:1];
-  v7 = [v4 numberAtIndex:2];
-  v8 = [v4 unsignedIntAtIndex:3];
-  v9 = [v4 BOOLAtIndex:4];
+  setCopy = set;
+  v5 = [setCopy stringAtIndex:0];
+  v6 = [setCopy numberAtIndex:1];
+  v7 = [setCopy numberAtIndex:2];
+  v8 = [setCopy unsignedIntAtIndex:3];
+  v9 = [setCopy BOOLAtIndex:4];
 
   v10 = [(BRCDatabaseBackupRecord *)self initWithRelativePath:v5 fileID:v6 docID:v7 genCount:v8 isDirectory:v9];
   return v10;

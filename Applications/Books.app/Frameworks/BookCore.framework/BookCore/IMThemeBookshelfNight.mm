@@ -22,16 +22,16 @@
     v6 = [UIColor colorWithRed:0.0156862754 green:0.0156862754 blue:0.0588235296 alpha:0.100000001];
     [(IMThemeBookshelf *)v3 setScrimColor:v6];
 
-    v7 = [(IMThemeBookshelf *)v3 scrimColor];
-    [(IMThemeBookshelf *)v3 setScrimColorList:v7];
+    scrimColor = [(IMThemeBookshelf *)v3 scrimColor];
+    [(IMThemeBookshelf *)v3 setScrimColorList:scrimColor];
 
     [(IMThemeBookshelf *)v3 setToolbarStyle:1];
     [(IMThemeBookshelf *)v3 setToolbarTintColor:0];
     v8 = [UIColor colorWithWhite:0.1 alpha:1.0];
     [(IMTheme *)v3 setPopoverBackgroundColor:v8];
 
-    v9 = [(IMTheme *)v3 toolbarTitleColor];
-    [(IMTheme *)v3 setPopoverTitleColor:v9];
+    toolbarTitleColor = [(IMTheme *)v3 toolbarTitleColor];
+    [(IMTheme *)v3 setPopoverTitleColor:toolbarTitleColor];
 
     v10 = [UIColor colorWithRed:0.937254906 green:0.937254906 blue:0.960784316 alpha:0.170000002];
     [(IMThemeBookshelf *)v3 setSearchBackgroundColor:v10];
@@ -68,9 +68,9 @@
     [(IMThemeBookshelf *)v3 setBackgroundFixedGradientColor1:v21];
 
     v22 = [UIColor colorWithRed:0.0627451017 green:0.0627451017 blue:0.0627451017 alpha:0.0];
-    v23 = [v22 CGColor];
+    cGColor = [v22 CGColor];
     v24 = [UIColor colorWithRed:0.0627451017 green:0.0627451017 blue:0.0627451017 alpha:0.400000006];
-    v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v23, [v24 CGColor], 0);
+    v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor, [v24 CGColor], 0);
 
     *locations = xmmword_2A4130;
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
@@ -90,10 +90,10 @@
     v30 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.0];
     [(IMThemeBookshelf *)v3 setRowTopGradientColor1:v30];
 
-    v31 = [(IMThemeBookshelf *)v3 rowTopGradientColor0];
-    v32 = [(IMThemeBookshelf *)v3 rowSolidFillColor];
+    rowTopGradientColor0 = [(IMThemeBookshelf *)v3 rowTopGradientColor0];
+    rowSolidFillColor = [(IMThemeBookshelf *)v3 rowSolidFillColor];
     [(IMThemeBookshelf *)v3 rowSolidFillColorTopmostAlpha];
-    v33 = [v32 colorWithAlphaComponent:?];
+    v33 = [rowSolidFillColor colorWithAlphaComponent:?];
     v60 = 0.0;
     v61 = 0.0;
     v58 = 0.0;
@@ -102,7 +102,7 @@
     v57 = 0.0;
     v54 = 0.0;
     v55 = 0.0;
-    [v31 getRed:&v61 green:&v60 blue:&v59 alpha:&v58];
+    [rowTopGradientColor0 getRed:&v61 green:&v60 blue:&v59 alpha:&v58];
     [v33 getRed:&v57 green:&v56 blue:&v55 alpha:&v54];
     v34 = 1.0 - v58;
     v35 = v58 + v54 * (1.0 - v58);
@@ -140,14 +140,14 @@
     v45 = [UIColor colorWithRed:0.0156862754 green:0.0156862754 blue:0.0392156877 alpha:1.0];
     [(IMTheme *)v3 setTableViewBackgroundColor:v45];
 
-    v46 = [(IMTheme *)v3 tableViewBackgroundColor];
-    [(IMTheme *)v3 setTableViewCellBackgroundColor:v46];
+    tableViewBackgroundColor = [(IMTheme *)v3 tableViewBackgroundColor];
+    [(IMTheme *)v3 setTableViewCellBackgroundColor:tableViewBackgroundColor];
 
     v47 = [UIColor colorWithRed:0.352941176 green:0.352941176 blue:0.368627451 alpha:1.0];
     [(IMThemeBookshelf *)v3 setApplicationSnapshotScrimColor:v47];
 
-    v48 = [(IMTheme *)v3 headerTextColor];
-    [(IMTheme *)v3 setFooterTextColor:v48];
+    headerTextColor = [(IMTheme *)v3 headerTextColor];
+    [(IMTheme *)v3 setFooterTextColor:headerTextColor];
 
     [(IMTheme *)v3 setKeyboardAppearance:1];
     [(IMTheme *)v3 setContentStatusBarStyle:1];

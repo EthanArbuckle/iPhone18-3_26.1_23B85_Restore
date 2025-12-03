@@ -1,19 +1,19 @@
 @interface TSWPEquationLayoutContext
-- (BOOL)isEqual:(id)a3;
-- (TSWPEquationLayoutContext)initWithTextAttributes:(__CFDictionary *)a3 columnWidth:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSWPEquationLayoutContext)initWithTextAttributes:(__CFDictionary *)attributes columnWidth:(double)width;
 - (void)dealloc;
 @end
 
 @implementation TSWPEquationLayoutContext
 
-- (TSWPEquationLayoutContext)initWithTextAttributes:(__CFDictionary *)a3 columnWidth:(double)a4
+- (TSWPEquationLayoutContext)initWithTextAttributes:(__CFDictionary *)attributes columnWidth:(double)width
 {
   v10.receiver = self;
   v10.super_class = TSWPEquationLayoutContext;
   v6 = [(TSWPEquationLayoutContext *)&v10 init];
   if (v6)
   {
-    Value = CFDictionaryGetValue(a3, *MEMORY[0x277CC4838]);
+    Value = CFDictionaryGetValue(attributes, *MEMORY[0x277CC4838]);
     if (Value)
     {
       v8 = Value;
@@ -21,7 +21,7 @@
       v6->_fontName = CTFontCopyPostScriptName(v8);
     }
 
-    v6->_columnWidth = a4;
+    v6->_columnWidth = width;
   }
 
   return v6;
@@ -40,7 +40,7 @@
   [(TSWPEquationLayoutContext *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();

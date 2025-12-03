@@ -1,26 +1,26 @@
 @interface AWDCoreRoutinePersistenceStoreMigrationDuration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasByteSize:(BOOL)a3;
-- (void)setHasDeviceClass:(BOOL)a3;
-- (void)setHasDidVacuum:(BOOL)a3;
-- (void)setHasNextModelVersion:(BOOL)a3;
-- (void)setHasPreviousModelVersion:(BOOL)a3;
-- (void)setHasStoreType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasByteSize:(BOOL)size;
+- (void)setHasDeviceClass:(BOOL)class;
+- (void)setHasDidVacuum:(BOOL)vacuum;
+- (void)setHasNextModelVersion:(BOOL)version;
+- (void)setHasPreviousModelVersion:(BOOL)version;
+- (void)setHasStoreType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutinePersistenceStoreMigrationDuration
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasStoreType:(BOOL)a3
+- (void)setHasStoreType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasDidVacuum:(BOOL)a3
+- (void)setHasDidVacuum:(BOOL)vacuum
 {
-  if (a3)
+  if (vacuum)
   {
     v3 = 0x80;
   }
@@ -63,9 +63,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasDeviceClass:(BOOL)a3
+- (void)setHasDeviceClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 8;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPreviousModelVersion:(BOOL)a3
+- (void)setHasPreviousModelVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 32;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasNextModelVersion:(BOOL)a3
+- (void)setHasNextModelVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasByteSize:(BOOL)a3
+- (void)setHasByteSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 4;
   }
@@ -132,11 +132,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -155,7 +155,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_storeType), @"storeType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_storeType), @"storeType"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -169,7 +169,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_migrationTimeInterval), @"migrationTimeInterval"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_migrationTimeInterval), @"migrationTimeInterval"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -183,7 +183,7 @@ LABEL_5:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didVacuum), @"didVacuum"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didVacuum), @"didVacuum"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -197,7 +197,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deviceClass), @"deviceClass"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deviceClass), @"deviceClass"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -208,17 +208,17 @@ LABEL_7:
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_nextModelVersion), @"nextModelVersion"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_nextModelVersion), @"nextModelVersion"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_9;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_previousModelVersion), @"previousModelVersion"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_previousModelVersion), @"previousModelVersion"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -229,13 +229,13 @@ LABEL_8:
   if ((has & 4) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_byteSize), @"byteSize"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_byteSize), @"byteSize"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -348,13 +348,13 @@ LABEL_17:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 48) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 48) |= 2u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -373,8 +373,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 10) = self->_storeType;
-  *(a3 + 48) |= 0x40u;
+  *(to + 10) = self->_storeType;
+  *(to + 48) |= 0x40u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -388,8 +388,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(a3 + 1) = *&self->_migrationTimeInterval;
-  *(a3 + 48) |= 1u;
+  *(to + 1) = *&self->_migrationTimeInterval;
+  *(to + 48) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -403,8 +403,8 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(a3 + 44) = self->_didVacuum;
-  *(a3 + 48) |= 0x80u;
+  *(to + 44) = self->_didVacuum;
+  *(to + 48) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -418,8 +418,8 @@ LABEL_6:
   }
 
 LABEL_14:
-  *(a3 + 7) = self->_deviceClass;
-  *(a3 + 48) |= 8u;
+  *(to + 7) = self->_deviceClass;
+  *(to + 48) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -433,8 +433,8 @@ LABEL_7:
   }
 
 LABEL_15:
-  *(a3 + 9) = self->_previousModelVersion;
-  *(a3 + 48) |= 0x20u;
+  *(to + 9) = self->_previousModelVersion;
+  *(to + 48) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -445,23 +445,23 @@ LABEL_8:
     }
 
 LABEL_17:
-    *(a3 + 6) = self->_byteSize;
-    *(a3 + 48) |= 4u;
+    *(to + 6) = self->_byteSize;
+    *(to + 48) |= 4u;
     return;
   }
 
 LABEL_16:
-  *(a3 + 8) = self->_nextModelVersion;
-  *(a3 + 48) |= 0x10u;
+  *(to + 8) = self->_nextModelVersion;
+  *(to + 48) |= 0x10u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_17;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -573,9 +573,9 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
@@ -583,57 +583,57 @@ LABEL_9:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 48) & 2) == 0 || self->_timestamp != *(a3 + 2))
+    if ((*(equal + 48) & 2) == 0 || self->_timestamp != *(equal + 2))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(a3 + 48) & 2) != 0)
+  else if ((*(equal + 48) & 2) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(a3 + 48) & 0x40) == 0 || self->_storeType != *(a3 + 10))
+    if ((*(equal + 48) & 0x40) == 0 || self->_storeType != *(equal + 10))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(a3 + 48) & 0x40) != 0)
+  else if ((*(equal + 48) & 0x40) != 0)
   {
     goto LABEL_44;
   }
 
   if (*&self->_has)
   {
-    if ((*(a3 + 48) & 1) == 0 || self->_migrationTimeInterval != *(a3 + 1))
+    if ((*(equal + 48) & 1) == 0 || self->_migrationTimeInterval != *(equal + 1))
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(a3 + 48))
+  else if (*(equal + 48))
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((*(a3 + 48) & 0x80) != 0)
+    if ((*(equal + 48) & 0x80) != 0)
     {
-      v6 = *(a3 + 44);
+      v6 = *(equal + 44);
       if (self->_didVacuum)
       {
-        if ((*(a3 + 44) & 1) == 0)
+        if ((*(equal + 44) & 1) == 0)
         {
           goto LABEL_44;
         }
       }
 
-      else if (*(a3 + 44))
+      else if (*(equal + 44))
       {
         goto LABEL_44;
       }
@@ -646,7 +646,7 @@ LABEL_44:
     return v5;
   }
 
-  if ((*(a3 + 48) & 0x80) != 0)
+  if ((*(equal + 48) & 0x80) != 0)
   {
     goto LABEL_44;
   }
@@ -654,47 +654,47 @@ LABEL_44:
 LABEL_19:
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 48) & 8) == 0 || self->_deviceClass != *(a3 + 7))
+    if ((*(equal + 48) & 8) == 0 || self->_deviceClass != *(equal + 7))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(a3 + 48) & 8) != 0)
+  else if ((*(equal + 48) & 8) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(a3 + 48) & 0x20) == 0 || self->_previousModelVersion != *(a3 + 9))
+    if ((*(equal + 48) & 0x20) == 0 || self->_previousModelVersion != *(equal + 9))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(a3 + 48) & 0x20) != 0)
+  else if ((*(equal + 48) & 0x20) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 48) & 0x10) == 0 || self->_nextModelVersion != *(a3 + 8))
+    if ((*(equal + 48) & 0x10) == 0 || self->_nextModelVersion != *(equal + 8))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(a3 + 48) & 0x10) != 0)
+  else if ((*(equal + 48) & 0x10) != 0)
   {
     goto LABEL_44;
   }
 
-  LOBYTE(v5) = (*(a3 + 48) & 4) == 0;
+  LOBYTE(v5) = (*(equal + 48) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 48) & 4) == 0 || self->_byteSize != *(a3 + 6))
+    if ((*(equal + 48) & 4) == 0 || self->_byteSize != *(equal + 6))
     {
       goto LABEL_44;
     }
@@ -833,14 +833,14 @@ LABEL_16:
   return v5 ^ v4 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 48);
+  v3 = *(from + 48);
   if ((v3 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v3 = *(a3 + 48);
+    v3 = *(from + 48);
     if ((v3 & 0x40) == 0)
     {
 LABEL_3:
@@ -853,14 +853,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 48) & 0x40) == 0)
+  else if ((*(from + 48) & 0x40) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_storeType = *(a3 + 10);
+  self->_storeType = *(from + 10);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 48);
+  v3 = *(from + 48);
   if ((v3 & 1) == 0)
   {
 LABEL_4:
@@ -873,9 +873,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_migrationTimeInterval = *(a3 + 1);
+  self->_migrationTimeInterval = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 48);
+  v3 = *(from + 48);
   if ((v3 & 0x80) == 0)
   {
 LABEL_5:
@@ -888,9 +888,9 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_didVacuum = *(a3 + 44);
+  self->_didVacuum = *(from + 44);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 48);
+  v3 = *(from + 48);
   if ((v3 & 8) == 0)
   {
 LABEL_6:
@@ -903,9 +903,9 @@ LABEL_6:
   }
 
 LABEL_14:
-  self->_deviceClass = *(a3 + 7);
+  self->_deviceClass = *(from + 7);
   *&self->_has |= 8u;
-  v3 = *(a3 + 48);
+  v3 = *(from + 48);
   if ((v3 & 0x20) == 0)
   {
 LABEL_7:
@@ -918,9 +918,9 @@ LABEL_7:
   }
 
 LABEL_15:
-  self->_previousModelVersion = *(a3 + 9);
+  self->_previousModelVersion = *(from + 9);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 48);
+  v3 = *(from + 48);
   if ((v3 & 0x10) == 0)
   {
 LABEL_8:
@@ -930,15 +930,15 @@ LABEL_8:
     }
 
 LABEL_17:
-    self->_byteSize = *(a3 + 6);
+    self->_byteSize = *(from + 6);
     *&self->_has |= 4u;
     return;
   }
 
 LABEL_16:
-  self->_nextModelVersion = *(a3 + 8);
+  self->_nextModelVersion = *(from + 8);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 48) & 4) != 0)
+  if ((*(from + 48) & 4) != 0)
   {
     goto LABEL_17;
   }

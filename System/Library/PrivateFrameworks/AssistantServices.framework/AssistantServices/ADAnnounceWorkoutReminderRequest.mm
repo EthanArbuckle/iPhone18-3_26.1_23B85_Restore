@@ -1,18 +1,18 @@
 @interface ADAnnounceWorkoutReminderRequest
-- (ADAnnounceWorkoutReminderRequest)initWithWorkoutReminder:(id)a3 completion:(id)a4;
+- (ADAnnounceWorkoutReminderRequest)initWithWorkoutReminder:(id)reminder completion:(id)completion;
 @end
 
 @implementation ADAnnounceWorkoutReminderRequest
 
-- (ADAnnounceWorkoutReminderRequest)initWithWorkoutReminder:(id)a3 completion:(id)a4
+- (ADAnnounceWorkoutReminderRequest)initWithWorkoutReminder:(id)reminder completion:(id)completion
 {
-  v6 = a3;
+  reminderCopy = reminder;
   v11.receiver = self;
   v11.super_class = ADAnnounceWorkoutReminderRequest;
-  v7 = [(ADAnnouncementRequest *)&v11 initWithAnnouncementRequestType:1 platform:1 completion:a4];
+  v7 = [(ADAnnouncementRequest *)&v11 initWithAnnouncementRequestType:1 platform:1 completion:completion];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [reminderCopy copy];
     workoutReminder = v7->_workoutReminder;
     v7->_workoutReminder = v8;
 

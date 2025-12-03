@@ -2,32 +2,32 @@
 + (id)instance;
 + (void)initialize;
 - (ServerCommonAudioProfile)init;
-- (id)nameForCentral:(id)a3;
+- (id)nameForCentral:(id)central;
 - (id)peripheralManagerStateString;
-- (void)addService:(id)a3;
+- (void)addService:(id)service;
 - (void)advertiseAudioService;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
 - (void)createServices;
 - (void)destroyServices;
-- (void)handleMediaControlRequest:(id)a3;
-- (void)handleServiceEvent:(unsigned __int8)a3 withEventObj:(id)a4;
-- (void)handleTelephonyControlRequest:(id)a3;
+- (void)handleMediaControlRequest:(id)request;
+- (void)handleServiceEvent:(unsigned __int8)event withEventObj:(id)obj;
+- (void)handleTelephonyControlRequest:(id)request;
 - (void)initializeCISPeripheral;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4;
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3;
-- (void)removeService:(id)a3;
-- (void)respondToRequest:(id)a3 withResult:(int64_t)a4;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests;
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers;
+- (void)removeService:(id)service;
+- (void)respondToRequest:(id)request withResult:(int64_t)result;
 - (void)sendStreamingNotification;
-- (void)updateValue:(id)a3 forCharacteristic:(id)a4 onSubscribedCentrals:(id)a5;
+- (void)updateValue:(id)value forCharacteristic:(id)characteristic onSubscribedCentrals:(id)centrals;
 @end
 
 @implementation ServerCommonAudioProfile
@@ -46,7 +46,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = qword_1000AA020;
     qword_1000AA020 = &off_10009B1C0;
@@ -117,9 +117,9 @@
         {
           v9 = objc_alloc_init(v8);
           [v9 setServiceEventHandler:{&stru_100095620, v12}];
-          v10 = [(ServerCommonAudioProfile *)self serverServiceMap];
-          v11 = [v9 service];
-          [v10 setObject:v9 forKey:v11];
+          serverServiceMap = [(ServerCommonAudioProfile *)self serverServiceMap];
+          service = [v9 service];
+          [serverServiceMap setObject:v9 forKey:service];
 
           [v9 start];
         }
@@ -146,8 +146,8 @@
 
   v4 = [CBUUID UUIDWithString:CBUUIDCommonAudioServiceString];
   v11[0] = CBAdvertisementDataServiceUUIDsKey;
-  v5 = [v4 data];
-  v10 = v5;
+  data = [v4 data];
+  v10 = data;
   v6 = [NSArray arrayWithObjects:&v10 count:1];
   v12[0] = v6;
   v12[1] = &__kCFBooleanTrue;
@@ -156,8 +156,8 @@
   v12[2] = &off_10009B298;
   v7 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 
-  v8 = [(ServerCommonAudioProfile *)self peripheralManager];
-  [v8 startAdvertising:v7];
+  peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
+  [peripheralManager startAdvertising:v7];
 }
 
 - (void)initializeCISPeripheral
@@ -169,51 +169,51 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Initializing CIS Peripheral", buf, 2u);
   }
 
-  v4 = [(ServerCommonAudioProfile *)self peripheralManager];
+  peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10003638C;
   v5[3] = &unk_100095648;
   v5[4] = self;
-  [v4 initCISPeripheral:0 completion:v5];
+  [peripheralManager initCISPeripheral:0 completion:v5];
 }
 
 - (void)destroyServices
 {
-  v2 = [(ServerCommonAudioProfile *)self serverServiceMap];
-  [v2 removeAllObjects];
+  serverServiceMap = [(ServerCommonAudioProfile *)self serverServiceMap];
+  [serverServiceMap removeAllObjects];
 }
 
-- (void)addService:(id)a3
+- (void)addService:(id)service
 {
-  v4 = a3;
-  v5 = [(ServerCommonAudioProfile *)self peripheralManager];
-  [v5 addService:v4];
+  serviceCopy = service;
+  peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
+  [peripheralManager addService:serviceCopy];
 }
 
-- (void)removeService:(id)a3
+- (void)removeService:(id)service
 {
-  v4 = a3;
-  v5 = [(ServerCommonAudioProfile *)self peripheralManager];
-  [v5 removeService:v4];
+  serviceCopy = service;
+  peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
+  [peripheralManager removeService:serviceCopy];
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ServerCommonAudioProfile *)self peripheralManagerStateString];
+    peripheralManagerStateString = [(ServerCommonAudioProfile *)self peripheralManagerStateString];
     v8 = 136315394;
     v9 = "[ServerCommonAudioProfile peripheralManagerDidUpdateState:]";
     v10 = 2112;
-    v11 = v7;
+    v11 = peripheralManagerStateString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s : PeripheralManager state is now %@", &v8, 0x16u);
   }
 
-  if ([v4 state] == 5)
+  if ([stateCopy state] == 5)
   {
     [(ServerCommonAudioProfile *)self createServices];
     [(ServerCommonAudioProfile *)self advertiseAudioService];
@@ -226,73 +226,73 @@
   }
 }
 
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ServerCommonAudioProfile *)self serverServiceMap];
-  v11 = [v10 objectForKey:v8];
+  managerCopy = manager;
+  serviceCopy = service;
+  errorCopy = error;
+  serverServiceMap = [(ServerCommonAudioProfile *)self serverServiceMap];
+  v11 = [serverServiceMap objectForKey:serviceCopy];
 
   if (v11)
   {
-    [v11 peripheralManager:v12 didAddService:v8 error:v9];
+    [v11 peripheralManager:managerCopy didAddService:serviceCopy error:errorCopy];
   }
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ServerCommonAudioProfile *)self serverServiceMap];
-  v9 = [v7 characteristic];
-  v10 = [v9 service];
-  v11 = [v8 objectForKey:v10];
+  managerCopy = manager;
+  requestCopy = request;
+  serverServiceMap = [(ServerCommonAudioProfile *)self serverServiceMap];
+  characteristic = [requestCopy characteristic];
+  service = [characteristic service];
+  v11 = [serverServiceMap objectForKey:service];
 
   if (v11)
   {
     v12 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
-      sub_10005D40C(v12, v7, self);
+      sub_10005D40C(v12, requestCopy, self);
     }
 
-    [v11 peripheralManager:v6 didReceiveReadRequest:v7];
+    [v11 peripheralManager:managerCopy didReceiveReadRequest:requestCopy];
   }
 
   else
   {
-    v13 = [(ServerCommonAudioProfile *)self peripheralManager];
-    [v13 respondToRequest:v7 withResult:10];
+    peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
+    [peripheralManager respondToRequest:requestCopy withResult:10];
   }
 }
 
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 firstObject];
-  v9 = [(ServerCommonAudioProfile *)self serverServiceMap];
-  v10 = [v8 characteristic];
-  v11 = [v10 service];
-  v12 = [v9 objectForKey:v11];
+  managerCopy = manager;
+  requestsCopy = requests;
+  firstObject = [requestsCopy firstObject];
+  serverServiceMap = [(ServerCommonAudioProfile *)self serverServiceMap];
+  characteristic = [firstObject characteristic];
+  service = [characteristic service];
+  v12 = [serverServiceMap objectForKey:service];
 
   if (v12)
   {
     v26 = v12;
-    v27 = v8;
-    v28 = v6;
+    v27 = firstObject;
+    v28 = managerCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = v7;
+    v13 = requestsCopy;
     v14 = [v13 countByEnumeratingWithState:&v31 objects:v43 count:16];
     if (v14)
     {
       v15 = v14;
       v16 = *v32;
-      v29 = self;
+      selfCopy = self;
       do
       {
         v17 = 0;
@@ -308,22 +308,22 @@
           {
             v19 = *(*(&v31 + 1) + 8 * v17);
             v20 = v18;
-            v30 = [v19 central];
-            v21 = [(ServerCommonAudioProfile *)self nameForCentral:v30];
-            v22 = [v19 characteristic];
-            v23 = [v22 UUID];
-            v24 = [v19 value];
+            central = [v19 central];
+            v21 = [(ServerCommonAudioProfile *)self nameForCentral:central];
+            characteristic2 = [v19 characteristic];
+            uUID = [characteristic2 UUID];
+            value = [v19 value];
             *buf = 136315906;
             v36 = "[ServerCommonAudioProfile peripheralManager:didReceiveWriteRequests:]";
             v37 = 2112;
             v38 = v21;
             v39 = 2112;
-            v40 = v23;
+            v40 = uUID;
             v41 = 2112;
-            v42 = v24;
+            v42 = value;
             _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%s : Central %@ sent a write request on characteristic %@: %@", buf, 0x2Au);
 
-            self = v29;
+            self = selfCopy;
           }
 
           v17 = v17 + 1;
@@ -337,53 +337,53 @@
     }
 
     v12 = v26;
-    v6 = v28;
+    managerCopy = v28;
     [v26 peripheralManager:v28 didReceiveWriteRequests:v13];
-    v8 = v27;
+    firstObject = v27;
   }
 
   else
   {
-    v25 = [(ServerCommonAudioProfile *)self peripheralManager];
-    [v25 respondToRequest:v8 withResult:10];
+    peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
+    [peripheralManager respondToRequest:firstObject withResult:10];
   }
 }
 
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  advertisingCopy = advertising;
+  errorCopy = error;
+  if (errorCopy)
   {
     v7 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
     {
-      sub_10005D504(v7, v6);
+      sub_10005D504(v7, errorCopy);
     }
   }
 }
 
-- (void)respondToRequest:(id)a3 withResult:(int64_t)a4
+- (void)respondToRequest:(id)request withResult:(int64_t)result
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
-    sub_10005D5DC(v7, v6);
+    sub_10005D5DC(v7, requestCopy);
   }
 
-  v8 = [(ServerCommonAudioProfile *)self peripheralManager];
-  [v8 respondToRequest:v6 withResult:a4];
+  peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
+  [peripheralManager respondToRequest:requestCopy withResult:result];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ServerCommonAudioProfile *)self serverServiceMap];
-  v12 = [v10 service];
-  v13 = [v11 objectForKey:v12];
+  managerCopy = manager;
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  serverServiceMap = [(ServerCommonAudioProfile *)self serverServiceMap];
+  service = [characteristicCopy service];
+  v13 = [serverServiceMap objectForKey:service];
 
   if (v13)
   {
@@ -391,23 +391,23 @@
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(ServerCommonAudioProfile *)self nameForCentral:v9];
-      v17 = [v10 UUID];
+      v16 = [(ServerCommonAudioProfile *)self nameForCentral:centralCopy];
+      uUID = [characteristicCopy UUID];
       v23 = 138412546;
       v24 = v16;
       v25 = 2112;
-      v26 = v17;
+      v26 = uUID;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Central %@ is now subscribed to characteristic %@", &v23, 0x16u);
     }
 
-    [v13 peripheralManager:v8 central:v9 didSubscribeToCharacteristic:v10];
+    [v13 peripheralManager:managerCopy central:centralCopy didSubscribeToCharacteristic:characteristicCopy];
   }
 
   if (!self->_peer)
   {
     v18 = +[ConnectionManager instance];
-    v19 = [v9 identifier];
-    v20 = [v18 peripheralForIdentifier:v19];
+    identifier = [centralCopy identifier];
+    v20 = [v18 peripheralForIdentifier:identifier];
     peer = self->_peer;
     self->_peer = v20;
 
@@ -416,14 +416,14 @@
   }
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ServerCommonAudioProfile *)self serverServiceMap];
-  v12 = [v10 service];
-  v13 = [v11 objectForKey:v12];
+  managerCopy = manager;
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  serverServiceMap = [(ServerCommonAudioProfile *)self serverServiceMap];
+  service = [characteristicCopy service];
+  v13 = [serverServiceMap objectForKey:service];
 
   if (v13)
   {
@@ -431,16 +431,16 @@
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(ServerCommonAudioProfile *)self nameForCentral:v9];
-      v17 = [v10 UUID];
+      v16 = [(ServerCommonAudioProfile *)self nameForCentral:centralCopy];
+      uUID = [characteristicCopy UUID];
       v21 = 138412546;
       v22 = v16;
       v23 = 2112;
-      v24 = v17;
+      v24 = uUID;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Central %@ is now unsubscribed from characteristic %@", &v21, 0x16u);
     }
 
-    [v13 peripheralManager:v8 central:v9 didUnsubscribeFromCharacteristic:v10];
+    [v13 peripheralManager:managerCopy central:centralCopy didUnsubscribeFromCharacteristic:characteristicCopy];
   }
 
   if (self->_peer)
@@ -458,42 +458,42 @@
   }
 }
 
-- (void)updateValue:(id)a3 forCharacteristic:(id)a4 onSubscribedCentrals:(id)a5
+- (void)updateValue:(id)value forCharacteristic:(id)characteristic onSubscribedCentrals:(id)centrals
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ServerCommonAudioProfile *)self pendingUpdates];
-  if ([v11 count])
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  centralsCopy = centrals;
+  pendingUpdates = [(ServerCommonAudioProfile *)self pendingUpdates];
+  if ([pendingUpdates count])
   {
 
     goto LABEL_6;
   }
 
-  v12 = [(ServerCommonAudioProfile *)self peripheralManager];
-  v13 = [v12 updateValue:v8 forCharacteristic:v9 onSubscribedCentrals:v10];
+  peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
+  v13 = [peripheralManager updateValue:valueCopy forCharacteristic:characteristicCopy onSubscribedCentrals:centralsCopy];
 
   if ((v13 & 1) == 0)
   {
 LABEL_6:
-    v17 = [(ServerCommonAudioProfile *)self pendingUpdates];
-    v18 = [ATTUpdate updateWithValue:v8 characteristic:v9 centrals:v10];
-    [v17 addObject:v18];
+    pendingUpdates2 = [(ServerCommonAudioProfile *)self pendingUpdates];
+    v18 = [ATTUpdate updateWithValue:valueCopy characteristic:characteristicCopy centrals:centralsCopy];
+    [pendingUpdates2 addObject:v18];
 
     v19 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v9 UUID];
-      v22 = [(ServerCommonAudioProfile *)self pendingUpdates];
+      uUID = [characteristicCopy UUID];
+      pendingUpdates3 = [(ServerCommonAudioProfile *)self pendingUpdates];
       v23 = 136315906;
       v24 = "[ServerCommonAudioProfile updateValue:forCharacteristic:onSubscribedCentrals:]";
       v25 = 2112;
-      v26 = v21;
+      v26 = uUID;
       v27 = 2112;
-      v28 = v8;
+      v28 = valueCopy;
       v29 = 2048;
-      v30 = [v22 count];
+      v30 = [pendingUpdates3 count];
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s : Queued update on characteristic %@, NSData value: %@, %lu pending updates", &v23, 0x2Au);
     }
 
@@ -504,49 +504,49 @@ LABEL_6:
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v9 UUID];
+    uUID2 = [characteristicCopy UUID];
     v23 = 136315650;
     v24 = "[ServerCommonAudioProfile updateValue:forCharacteristic:onSubscribedCentrals:]";
     v25 = 2112;
-    v26 = v16;
+    v26 = uUID2;
     v27 = 2112;
-    v28 = v8;
+    v28 = valueCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s : update sent immediately for characteristic %@, NSData value: %@", &v23, 0x20u);
   }
 
 LABEL_8:
 }
 
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers
 {
-  v24 = a3;
+  subscribersCopy = subscribers;
   v4 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(ServerCommonAudioProfile *)self pendingUpdates];
+    pendingUpdates = [(ServerCommonAudioProfile *)self pendingUpdates];
     *buf = 136315394;
     v26 = "[ServerCommonAudioProfile peripheralManagerIsReadyToUpdateSubscribers:]";
     v27 = 2048;
-    v28 = [v6 count];
+    v28 = [pendingUpdates count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s : Ready to send updates, %lu pending", buf, 0x16u);
   }
 
-  v7 = [(ServerCommonAudioProfile *)self pendingUpdates];
-  v8 = [v7 count];
+  pendingUpdates2 = [(ServerCommonAudioProfile *)self pendingUpdates];
+  v8 = [pendingUpdates2 count];
 
   if (v8)
   {
     while (1)
     {
-      v9 = [(ServerCommonAudioProfile *)self pendingUpdates];
-      v10 = [v9 firstObject];
+      pendingUpdates3 = [(ServerCommonAudioProfile *)self pendingUpdates];
+      firstObject = [pendingUpdates3 firstObject];
 
-      v11 = [(ServerCommonAudioProfile *)self peripheralManager];
-      v12 = [v10 value];
-      v13 = [v10 characteristic];
-      v14 = [v10 centrals];
-      v15 = [v11 updateValue:v12 forCharacteristic:v13 onSubscribedCentrals:v14];
+      peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
+      value = [firstObject value];
+      characteristic = [firstObject characteristic];
+      centrals = [firstObject centrals];
+      v15 = [peripheralManager updateValue:value forCharacteristic:characteristic onSubscribedCentrals:centrals];
 
       v16 = qword_1000A9FE0;
       if (!v15)
@@ -557,23 +557,23 @@ LABEL_8:
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [v10 characteristic];
-        v19 = [v18 UUID];
-        v20 = [v10 value];
+        characteristic2 = [firstObject characteristic];
+        uUID = [characteristic2 UUID];
+        value2 = [firstObject value];
         *buf = 136315650;
         v26 = "[ServerCommonAudioProfile peripheralManagerIsReadyToUpdateSubscribers:]";
         v27 = 2112;
-        v28 = v19;
+        v28 = uUID;
         v29 = 2112;
-        v30 = v20;
+        v30 = value2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s : Serviced a pending update and updated subscribers on characteristic %@, NSData value: %@", buf, 0x20u);
       }
 
-      v21 = [(ServerCommonAudioProfile *)self pendingUpdates];
-      [v21 removeObject:v10];
+      pendingUpdates4 = [(ServerCommonAudioProfile *)self pendingUpdates];
+      [pendingUpdates4 removeObject:firstObject];
 
-      v22 = [(ServerCommonAudioProfile *)self pendingUpdates];
-      v23 = [v22 count];
+      pendingUpdates5 = [(ServerCommonAudioProfile *)self pendingUpdates];
+      v23 = [pendingUpdates5 count];
 
       if (!v23)
       {
@@ -590,20 +590,20 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v5 = a4;
+  peripheralCopy = peripheral;
   v6 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v5;
+    v14 = peripheralCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Server Connected to Client device %@", buf, 0xCu);
   }
 
   peer = self->_peer;
-  self->_peer = v5;
-  v8 = v5;
+  self->_peer = peripheralCopy;
+  v8 = peripheralCopy;
 
   [(CBPeripheral *)self->_peer setDelegate:self];
   v9 = [CBUUID UUIDWithString:CBUUIDGenericTelephoneBearerServiceString];
@@ -614,18 +614,18 @@ LABEL_12:
   [(CBPeripheral *)self->_peer discoverServices:v11];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  if (!a4)
+  peripheralCopy = peripheral;
+  if (!services)
   {
-    v27 = self;
-    v28 = v6;
+    selfCopy = self;
+    v28 = peripheralCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = [v6 services];
+    obj = [peripheralCopy services];
     v25 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v25)
     {
@@ -666,9 +666,9 @@ LABEL_12:
                 if (v15)
                 {
                   v16 = v15;
-                  v17 = [v8 UUID];
-                  v18 = [(objc_class *)v16 UUID];
-                  v19 = [v17 isEqual:v18];
+                  uUID = [v8 UUID];
+                  uUID2 = [(objc_class *)v16 UUID];
+                  v19 = [uUID isEqual:uUID2];
 
                   if (v19)
                   {
@@ -682,7 +682,7 @@ LABEL_12:
                         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Found MCS Service on LE Audio Client", buf, 2u);
                       }
 
-                      objc_storeStrong(&v27->_mcsInterface, v20);
+                      objc_storeStrong(&selfCopy->_mcsInterface, v20);
                     }
 
                     if ([(NSString *)v14 containsString:@"TBS"])
@@ -694,7 +694,7 @@ LABEL_12:
                         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Found TBS Service on LE Audio Client", buf, 2u);
                       }
 
-                      objc_storeStrong(&v27->_tbsInterface, v20);
+                      objc_storeStrong(&selfCopy->_tbsInterface, v20);
                     }
 
                     [v20 start];
@@ -718,110 +718,110 @@ LABEL_12:
       while (v25);
     }
 
-    v6 = v28;
+    peripheralCopy = v28;
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [v9 UUID];
-      v14 = [v8 name];
+      uUID = [serviceCopy UUID];
+      name = [peripheralCopy name];
       v21 = 138412802;
-      v22 = v13;
+      v22 = uUID;
       v23 = 2112;
-      v24 = v14;
+      v24 = name;
       v25 = 2112;
-      v26 = v10;
+      v26 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Error discovering characteristics for service %@ on peripheral %@: %@", &v21, 0x20u);
     }
   }
 
   else
   {
-    v15 = [v9 UUID];
+    uUID2 = [serviceCopy UUID];
     v16 = +[MCSInterface UUID];
-    v17 = [v15 isEqual:v16];
+    v17 = [uUID2 isEqual:v16];
 
     if (v17)
     {
-      [(MCSInterface *)self->_mcsInterface peripheral:v8 didDiscoverCharacteristicsForService:v9 error:0];
+      [(MCSInterface *)self->_mcsInterface peripheral:peripheralCopy didDiscoverCharacteristicsForService:serviceCopy error:0];
     }
 
-    v18 = [v9 UUID];
+    uUID3 = [serviceCopy UUID];
     v19 = +[TBSInterface UUID];
-    v20 = [v18 isEqual:v19];
+    v20 = [uUID3 isEqual:v19];
 
     if (v20)
     {
-      [(TBSInterface *)self->_tbsInterface peripheral:v8 didDiscoverCharacteristicsForService:v9 error:0];
+      [(TBSInterface *)self->_tbsInterface peripheral:peripheralCopy didDiscoverCharacteristicsForService:serviceCopy error:0];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [v9 service];
-      v14 = [v13 UUID];
-      v15 = [v8 name];
+      service = [characteristicCopy service];
+      uUID = [service UUID];
+      name = [peripheralCopy name];
       v24 = 138412802;
-      v25 = v14;
+      v25 = uUID;
       v26 = 2112;
-      v27 = v15;
+      v27 = name;
       v28 = 2112;
-      v29 = v10;
+      v29 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Error discovering characteristics for service %@ on peripheral %@: %@", &v24, 0x20u);
     }
   }
 
   else
   {
-    v16 = [v9 service];
-    v17 = [v16 UUID];
+    service2 = [characteristicCopy service];
+    uUID2 = [service2 UUID];
     v18 = +[MCSInterface UUID];
-    v19 = [v17 isEqual:v18];
+    v19 = [uUID2 isEqual:v18];
 
     if (v19)
     {
-      [(MCSInterface *)self->_mcsInterface peripheral:v8 didUpdateValueForCharacteristic:v9 error:0];
+      [(MCSInterface *)self->_mcsInterface peripheral:peripheralCopy didUpdateValueForCharacteristic:characteristicCopy error:0];
     }
 
-    v20 = [v9 service];
-    v21 = [v20 UUID];
+    service3 = [characteristicCopy service];
+    uUID3 = [service3 UUID];
     v22 = +[TBSInterface UUID];
-    v23 = [v21 isEqual:v22];
+    v23 = [uUID3 isEqual:v22];
 
     if (v23)
     {
-      [(TBSInterface *)self->_tbsInterface peripheral:v8 didUpdateValueForCharacteristic:v9 error:0];
+      [(TBSInterface *)self->_tbsInterface peripheral:peripheralCopy didUpdateValueForCharacteristic:characteristicCopy error:0];
     }
   }
 }
 
-- (void)handleMediaControlRequest:(id)a3
+- (void)handleMediaControlRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
+  requestCopy = request;
+  v5 = requestCopy;
   if (self->_mcsInterface)
   {
-    v6 = [v4 objectForKeyedSubscript:@"MCSCommand"];
+    v6 = [requestCopy objectForKeyedSubscript:@"MCSCommand"];
     if ([v6 isEqualToString:@"play"])
     {
       mcsInterface = self->_mcsInterface;
@@ -972,13 +972,13 @@ LABEL_47:
 LABEL_48:
 }
 
-- (void)handleTelephonyControlRequest:(id)a3
+- (void)handleTelephonyControlRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
+  requestCopy = request;
+  v5 = requestCopy;
   if (self->_tbsInterface)
   {
-    v6 = [v4 objectForKeyedSubscript:@"TBSCommand"];
+    v6 = [requestCopy objectForKeyedSubscript:@"TBSCommand"];
     v7 = +[NSMutableArray array];
     [v7 addObject:0];
     if ([v6 isEqualToString:@"accept"])
@@ -1031,9 +1031,9 @@ LABEL_12:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v16 = self;
-  v4 = [(ServerCommonAudioProfile *)self serverServiceMap];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  serverServiceMap = [(ServerCommonAudioProfile *)self serverServiceMap];
+  v5 = [serverServiceMap countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1045,25 +1045,25 @@ LABEL_12:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(serverServiceMap);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 UUID];
+        uUID = [v10 UUID];
         v12 = [CBUUID UUIDWithString:v8];
-        v13 = [v11 isEqual:v12];
+        v13 = [uUID isEqual:v12];
 
         if (v13)
         {
-          v14 = [(ServerCommonAudioProfile *)v16 serverServiceMap];
-          v15 = [v14 objectForKey:v10];
+          serverServiceMap2 = [(ServerCommonAudioProfile *)selfCopy serverServiceMap];
+          v15 = [serverServiceMap2 objectForKey:v10];
 
           [v15 receiveObjectMessage:1 withEventObject:v10];
           goto LABEL_13;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [serverServiceMap countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v6)
       {
         continue;
@@ -1076,10 +1076,10 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)handleServiceEvent:(unsigned __int8)a3 withEventObj:(id)a4
+- (void)handleServiceEvent:(unsigned __int8)event withEventObj:(id)obj
 {
-  v4 = a3;
-  v5 = a4;
+  eventCopy = event;
+  objCopy = obj;
   v6 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
@@ -1088,17 +1088,17 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s event", &v7, 0xCu);
   }
 
-  if (v4 != 1 && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
+  if (eventCopy != 1 && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
   {
     sub_10005D8FC();
   }
 }
 
-- (id)nameForCentral:(id)a3
+- (id)nameForCentral:(id)central
 {
-  v3 = [a3 identifier];
+  identifier = [central identifier];
   v4 = +[ConnectionManager instance];
-  v5 = [v4 peripheralForIdentifier:v3];
+  v5 = [v4 peripheralForIdentifier:identifier];
 
   if (v5)
   {
@@ -1107,7 +1107,7 @@ LABEL_13:
 
   else
   {
-    [v3 UUIDString];
+    [identifier UUIDString];
   }
   v6 = ;
 
@@ -1116,17 +1116,17 @@ LABEL_13:
 
 - (id)peripheralManagerStateString
 {
-  v2 = [(ServerCommonAudioProfile *)self peripheralManager];
-  v3 = [v2 state];
+  peripheralManager = [(ServerCommonAudioProfile *)self peripheralManager];
+  state = [peripheralManager state];
 
-  if ((v3 - 1) > 9)
+  if ((state - 1) > 9)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_100095668 + (v3 - 1));
+    return *(&off_100095668 + (state - 1));
   }
 }
 

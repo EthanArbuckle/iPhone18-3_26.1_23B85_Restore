@@ -5,29 +5,29 @@
 - (void)initialScan;
 - (void)layoutSublayers;
 - (void)resetMask;
-- (void)scanFrom:(CGPoint)a3;
-- (void)setBackgroundImage:(id)a3 ctx:(id)a4 format:(int)a5 colorSpace:(CGColorSpace *)a6;
-- (void)setBackgroundMask:(CGImage *)a3;
-- (void)setBlendImages:(id)a3 ctx:(id)a4 format:(int)a5 colorSpace:(CGColorSpace *)a6;
-- (void)setForegroundImage:(id)a3 ctx:(id)a4 format:(int)a5 colorSpace:(CGColorSpace *)a6;
-- (void)setForegroundMask:(CGImage *)a3;
-- (void)setIsDimmed:(BOOL)a3;
-- (void)setIsThrottled:(BOOL)a3;
-- (void)setSourceImage:(CGImage *)a3;
+- (void)scanFrom:(CGPoint)from;
+- (void)setBackgroundImage:(id)image ctx:(id)ctx format:(int)format colorSpace:(CGColorSpace *)space;
+- (void)setBackgroundMask:(CGImage *)mask;
+- (void)setBlendImages:(id)images ctx:(id)ctx format:(int)format colorSpace:(CGColorSpace *)space;
+- (void)setForegroundImage:(id)image ctx:(id)ctx format:(int)format colorSpace:(CGColorSpace *)space;
+- (void)setForegroundMask:(CGImage *)mask;
+- (void)setIsDimmed:(BOOL)dimmed;
+- (void)setIsThrottled:(BOOL)throttled;
+- (void)setSourceImage:(CGImage *)image;
 @end
 
 @implementation PUVFXDimmingBackgroundLayer
 
-- (void)setIsThrottled:(BOOL)a3
+- (void)setIsThrottled:(BOOL)throttled
 {
-  v4 = self;
-  sub_1B38777D4(a3);
+  selfCopy = self;
+  sub_1B38777D4(throttled);
 }
 
-- (void)setIsDimmed:(BOOL)a3
+- (void)setIsDimmed:(BOOL)dimmed
 {
-  v4 = self;
-  sub_1B38779F4(a3);
+  selfCopy = self;
+  sub_1B38779F4(dimmed);
 }
 
 - (CGImage)foregroundMask
@@ -37,11 +37,11 @@
   return v2;
 }
 
-- (void)setForegroundMask:(CGImage *)a3
+- (void)setForegroundMask:(CGImage *)mask
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3877BFC(a3);
+  maskCopy = mask;
+  selfCopy = self;
+  sub_1B3877BFC(mask);
 }
 
 - (CGImage)backgroundMask
@@ -51,11 +51,11 @@
   return v2;
 }
 
-- (void)setBackgroundMask:(CGImage *)a3
+- (void)setBackgroundMask:(CGImage *)mask
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3877F10(a3);
+  maskCopy = mask;
+  selfCopy = self;
+  sub_1B3877F10(mask);
 }
 
 - (CGImage)sourceImage
@@ -65,67 +65,67 @@
   return v2;
 }
 
-- (void)setSourceImage:(CGImage *)a3
+- (void)setSourceImage:(CGImage *)image
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B38782C8(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_1B38782C8(image);
 }
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B387874C();
 }
 
 - (void)resetMask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3878BE0();
 }
 
-- (void)setBlendImages:(id)a3 ctx:(id)a4 format:(int)a5 colorSpace:(CGColorSpace *)a6
+- (void)setBlendImages:(id)images ctx:(id)ctx format:(int)format colorSpace:(CGColorSpace *)space
 {
-  v7 = *&a5;
+  v7 = *&format;
   sub_1B3710718(0, &qword_1EB857820);
   v10 = sub_1B3C9C788();
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  sub_1B3878CB8(v10, v11, v7, v12);
+  ctxCopy = ctx;
+  spaceCopy = space;
+  selfCopy = self;
+  sub_1B3878CB8(v10, ctxCopy, v7, spaceCopy);
 }
 
-- (void)setForegroundImage:(id)a3 ctx:(id)a4 format:(int)a5 colorSpace:(CGColorSpace *)a6
+- (void)setForegroundImage:(id)image ctx:(id)ctx format:(int)format colorSpace:(CGColorSpace *)space
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  sub_1B3878EF4(v10, v11, v7, v12);
+  v7 = *&format;
+  imageCopy = image;
+  ctxCopy = ctx;
+  spaceCopy = space;
+  selfCopy = self;
+  sub_1B3878EF4(imageCopy, ctxCopy, v7, spaceCopy);
 }
 
-- (void)setBackgroundImage:(id)a3 ctx:(id)a4 format:(int)a5 colorSpace:(CGColorSpace *)a6
+- (void)setBackgroundImage:(id)image ctx:(id)ctx format:(int)format colorSpace:(CGColorSpace *)space
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  sub_1B3879288(v10, v11, v7, v12);
+  v7 = *&format;
+  imageCopy = image;
+  ctxCopy = ctx;
+  spaceCopy = space;
+  selfCopy = self;
+  sub_1B3879288(imageCopy, ctxCopy, v7, spaceCopy);
 }
 
-- (void)scanFrom:(CGPoint)a3
+- (void)scanFrom:(CGPoint)from
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = from.y;
+  x = from.x;
+  selfCopy = self;
   sub_1B3879984(x, y);
 }
 
 - (void)initialScan
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3879AE8();
 }
 

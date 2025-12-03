@@ -1,23 +1,23 @@
 @interface IMFaceTimeUtilities
-+ (BOOL)activeTUConversationHasActivitySession:(id)a3;
-+ (BOOL)conversationIsAVLessSharePlay:(id)a3;
-+ (BOOL)conversationIsVideoCall:(id)a3;
-+ (BOOL)isScreenShareActivityForTUConversation:(id)a3;
-+ (id)activityMetadataForTUConversation:(id)a3;
-+ (id)activitySessionForTUConversation:(id)a3;
-+ (id)currentCallForTUConversation:(id)a3;
-+ (id)remoteParticipantHandleSharingScreenForTUConversation:(id)a3;
-+ (void)initiateTUConversationForParticipants:(id)a3 senderAddress:(id)a4 videoEnabled:(BOOL)a5 groupID:(id)a6 displayName:(id)a7 screenShareType:(unint64_t)a8;
-+ (void)leaveTUCall:(id)a3;
++ (BOOL)activeTUConversationHasActivitySession:(id)session;
++ (BOOL)conversationIsAVLessSharePlay:(id)play;
++ (BOOL)conversationIsVideoCall:(id)call;
++ (BOOL)isScreenShareActivityForTUConversation:(id)conversation;
++ (id)activityMetadataForTUConversation:(id)conversation;
++ (id)activitySessionForTUConversation:(id)conversation;
++ (id)currentCallForTUConversation:(id)conversation;
++ (id)remoteParticipantHandleSharingScreenForTUConversation:(id)conversation;
++ (void)initiateTUConversationForParticipants:(id)participants senderAddress:(id)address videoEnabled:(BOOL)enabled groupID:(id)d displayName:(id)name screenShareType:(unint64_t)type;
++ (void)leaveTUCall:(id)call;
 + (void)leaveTUConversation;
 @end
 
 @implementation IMFaceTimeUtilities
 
-+ (id)currentCallForTUConversation:(id)a3
++ (id)currentCallForTUConversation:(id)conversation
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  conversationCopy = conversation;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -46,7 +46,7 @@
         v21 = objc_msgSend_activeConversationForCall_(v19, v20, v18);
 
         v24 = objc_msgSend_UUID(v21, v22, v23);
-        v27 = objc_msgSend_UUID(v3, v25, v26);
+        v27 = objc_msgSend_UUID(conversationCopy, v25, v26);
         isEqual = objc_msgSend_isEqual_(v24, v28, v27);
 
         if (isEqual)
@@ -73,27 +73,27 @@
   return v15;
 }
 
-+ (BOOL)activeTUConversationHasActivitySession:(id)a3
++ (BOOL)activeTUConversationHasActivitySession:(id)session
 {
-  if (!a3)
+  if (!session)
   {
     return 0;
   }
 
-  v3 = objc_msgSend_activitySessionForTUConversation_(IMFaceTimeUtilities, a2, a3);
+  v3 = objc_msgSend_activitySessionForTUConversation_(IMFaceTimeUtilities, a2, session);
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (void)initiateTUConversationForParticipants:(id)a3 senderAddress:(id)a4 videoEnabled:(BOOL)a5 groupID:(id)a6 displayName:(id)a7 screenShareType:(unint64_t)a8
++ (void)initiateTUConversationForParticipants:(id)participants senderAddress:(id)address videoEnabled:(BOOL)enabled groupID:(id)d displayName:(id)name screenShareType:(unint64_t)type
 {
-  v101 = a5;
+  enabledCopy = enabled;
   v118 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v104 = a4;
-  v102 = a6;
-  v103 = a7;
+  participantsCopy = participants;
+  addressCopy = address;
+  dCopy = d;
+  nameCopy = name;
   if (IMDeviceIsGreenTea() && IMOSLoggingEnabled())
   {
     v14 = OSLogHandleForIMFoundationCategory();
@@ -105,13 +105,13 @@
   }
 
   v15 = MEMORY[0x1E695DFA8];
-  v16 = objc_msgSend_count(v11, v12, v13);
+  v16 = objc_msgSend_count(participantsCopy, v12, v13);
   v18 = objc_msgSend_setWithCapacity_(v15, v17, v16);
   v109 = 0u;
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
-  obj = v11;
+  obj = participantsCopy;
   v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v19, &v107, v117, 16);
   if (v22)
   {
@@ -162,7 +162,7 @@
     v39 = objc_alloc(MEMORY[0x1E69D8C10]);
     v41 = objc_msgSend_initWithRemoteMembers_(v39, v40, v18);
     v43 = v41;
-    if (v101)
+    if (enabledCopy)
     {
       objc_msgSend_setAvMode_(v41, v42, 2);
     }
@@ -172,14 +172,14 @@
       objc_msgSend_setAvMode_(v41, v42, 1);
     }
 
-    objc_msgSend_setVideoEnabled_(v43, v44, v101);
-    objc_msgSend_setRequestToShareMyScreen_(v43, v45, a8 == 1);
-    objc_msgSend_setRequestToShareScreen_(v43, v46, a8 == 2);
+    objc_msgSend_setVideoEnabled_(v43, v44, enabledCopy);
+    objc_msgSend_setRequestToShareMyScreen_(v43, v45, type == 1);
+    objc_msgSend_setRequestToShareScreen_(v43, v46, type == 2);
     objc_msgSend_setShouldSuppressInCallUI_(v43, v47, 1);
     v50 = objc_msgSend_expanseProvider(MEMORY[0x1E69D8BA8], v48, v49);
     objc_msgSend_setProvider_(v43, v51, v50);
 
-    if (a8)
+    if (type)
     {
       objc_msgSend_setOriginatingUIType_(v43, v52, 32);
     }
@@ -191,11 +191,11 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v55 = objc_msgSend_normalizedHandleWithDestinationID_(MEMORY[0x1E69D8C00], v53, v104);
+      v55 = objc_msgSend_normalizedHandleWithDestinationID_(MEMORY[0x1E69D8C00], v53, addressCopy);
       v58 = objc_msgSend_facetimeService(IMService, v56, v57);
       v59 = IMPreferredAccountForService(v58);
 
-      if (objc_msgSend_hasAlias_(v59, v60, v104))
+      if (objc_msgSend_hasAlias_(v59, v60, addressCopy))
       {
         objc_msgSend_setCallerID_(v43, v61, v55);
       }
@@ -207,7 +207,7 @@
         {
           v66 = objc_msgSend_aliases(v59, v64, v65);
           *buf = 138412546;
-          v114 = v104;
+          v114 = addressCopy;
           v115 = 2112;
           v116 = v66;
           _os_log_impl(&dword_1A823F000, v63, OS_LOG_TYPE_INFO, "IMFaceTimeUtilities: Skipping setting callerID since FT account doesn't contain senderAddress: %@, aliases: %@", buf, 0x16u);
@@ -234,9 +234,9 @@
     else
     {
       v67 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v69 = objc_msgSend_initWithUUIDString_(v67, v68, v102);
+      v69 = objc_msgSend_initWithUUIDString_(v67, v68, dCopy);
       objc_msgSend_setMessagesGroupUUID_(v43, v70, v69);
-      objc_msgSend_setMessagesGroupName_(v43, v71, v103);
+      objc_msgSend_setMessagesGroupName_(v43, v71, nameCopy);
       v72 = objc_alloc(MEMORY[0x1E695DFD8]);
       v73 = objc_alloc(MEMORY[0x1E69D8B68]);
       v75 = objc_msgSend_initWithHandleType_notificationStyles_(v73, v74, 2, 2);
@@ -286,30 +286,30 @@
   objc_msgSend_leaveTUCall_(IMFaceTimeUtilities, v9, v8);
 }
 
-+ (void)leaveTUCall:(id)a3
++ (void)leaveTUCall:(id)call
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  callCopy = call;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = callCopy;
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "Leaving TUCall %@", &v10, 0xCu);
     }
   }
 
   v7 = objc_msgSend_sharedInstance(MEMORY[0x1E69D8A58], v4, v5);
-  objc_msgSend_disconnectCall_(v7, v8, v3);
+  objc_msgSend_disconnectCall_(v7, v8, callCopy);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isScreenShareActivityForTUConversation:(id)a3
++ (BOOL)isScreenShareActivityForTUConversation:(id)conversation
 {
-  v3 = objc_msgSend_activitySessionForTUConversation_(IMFaceTimeUtilities, a2, a3);
+  v3 = objc_msgSend_activitySessionForTUConversation_(IMFaceTimeUtilities, a2, conversation);
   v6 = objc_msgSend_activity(v3, v4, v5);
 
   if (v6)
@@ -325,13 +325,13 @@
   return isScreenSharingActivity;
 }
 
-+ (id)activitySessionForTUConversation:(id)a3
++ (id)activitySessionForTUConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v7 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v5, v6);
   isAVLessSharePlayEnabled = objc_msgSend_isAVLessSharePlayEnabled(v7, v8, v9);
 
-  v13 = objc_msgSend_activitySessions(v4, v11, v12);
+  v13 = objc_msgSend_activitySessions(conversationCopy, v11, v12);
   v16 = v13;
   if (isAVLessSharePlayEnabled)
   {
@@ -339,9 +339,9 @@
 
     if (!v17)
     {
-      if (objc_msgSend_conversationIsAVLessSharePlay_(a1, v18, v4))
+      if (objc_msgSend_conversationIsAVLessSharePlay_(self, v18, conversationCopy))
       {
-        v17 = objc_msgSend_stagedActivitySession(v4, v19, v20);
+        v17 = objc_msgSend_stagedActivitySession(conversationCopy, v19, v20);
       }
 
       else
@@ -360,9 +360,9 @@
   return v17;
 }
 
-+ (id)remoteParticipantHandleSharingScreenForTUConversation:(id)a3
++ (id)remoteParticipantHandleSharingScreenForTUConversation:(id)conversation
 {
-  v3 = objc_msgSend_activitySessionForTUConversation_(IMFaceTimeUtilities, a2, a3);
+  v3 = objc_msgSend_activitySessionForTUConversation_(IMFaceTimeUtilities, a2, conversation);
   v6 = objc_msgSend_activity(v3, v4, v5);
 
   if (objc_msgSend_isScreenSharingActivity(v6, v7, v8))
@@ -379,16 +379,16 @@
   return v14;
 }
 
-+ (id)activityMetadataForTUConversation:(id)a3
++ (id)activityMetadataForTUConversation:(id)conversation
 {
   v4 = MEMORY[0x1E69A8070];
-  v5 = a3;
+  conversationCopy = conversation;
   v8 = objc_msgSend_sharedFeatureFlags(v4, v6, v7);
   isAVLessSharePlayEnabled = objc_msgSend_isAVLessSharePlayEnabled(v8, v9, v10);
 
   if (isAVLessSharePlayEnabled)
   {
-    v14 = objc_msgSend_activitySessionForTUConversation_(a1, v12, v5);
+    v14 = objc_msgSend_activitySessionForTUConversation_(self, v12, conversationCopy);
 
     v17 = objc_msgSend_activity(v14, v15, v16);
     v20 = objc_msgSend_metadata(v17, v18, v19);
@@ -396,7 +396,7 @@
 
   else
   {
-    v14 = objc_msgSend_activitySessions(v5, v12, v13);
+    v14 = objc_msgSend_activitySessions(conversationCopy, v12, v13);
 
     v17 = objc_msgSend_allObjects(v14, v21, v22);
     v25 = objc_msgSend_firstObject(v17, v23, v24);
@@ -407,28 +407,28 @@
   return v20;
 }
 
-+ (BOOL)conversationIsVideoCall:(id)a3
++ (BOOL)conversationIsVideoCall:(id)call
 {
-  v3 = a3;
-  v6 = objc_msgSend_avMode(v3, v4, v5);
+  callCopy = call;
+  v6 = objc_msgSend_avMode(callCopy, v4, v5);
   v7 = NSSelectorFromString(&cfstr_Resolvedaudiov.isa);
   if (objc_opt_respondsToSelector())
   {
-    v6 = objc_msgSend_performSelector_(v3, v8, v7);
+    v6 = objc_msgSend_performSelector_(callCopy, v8, v7);
   }
 
   return v6 == 2;
 }
 
-+ (BOOL)conversationIsAVLessSharePlay:(id)a3
++ (BOOL)conversationIsAVLessSharePlay:(id)play
 {
-  v3 = a3;
+  playCopy = play;
   v6 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v4, v5);
   isAVLessSharePlayEnabled = objc_msgSend_isAVLessSharePlayEnabled(v6, v7, v8);
 
   if (isAVLessSharePlayEnabled)
   {
-    v12 = objc_msgSend_avMode(v3, v10, v11) == 0;
+    v12 = objc_msgSend_avMode(playCopy, v10, v11) == 0;
   }
 
   else

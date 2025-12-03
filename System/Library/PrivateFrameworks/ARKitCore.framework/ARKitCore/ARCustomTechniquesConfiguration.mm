@@ -1,9 +1,9 @@
 @interface ARCustomTechniquesConfiguration
 - (ARWorldMap)initialWorldMap;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLightEstimationEnabled;
 - (NSArray)techniques;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)imageSensorSettings;
 - (id)initPrivate;
@@ -13,10 +13,10 @@
 - (void)_updateCaptureSettings;
 - (void)configureRecordingTechnique;
 - (void)ensureTechniqueAndCustomSensorCompatibility;
-- (void)setCameraPosition:(int64_t)a3;
-- (void)setCustomSensors:(id)a3;
-- (void)setProvidesAudioData:(BOOL)a3;
-- (void)setTechniques:(id)a3;
+- (void)setCameraPosition:(int64_t)position;
+- (void)setCustomSensors:(id)sensors;
+- (void)setProvidesAudioData:(BOOL)data;
+- (void)setTechniques:(id)techniques;
 @end
 
 @implementation ARCustomTechniquesConfiguration
@@ -25,13 +25,13 @@
 {
   v4.receiver = self;
   v4.super_class = ARCustomTechniquesConfiguration;
-  v2 = [(ARConfiguration *)&v4 initPrivate];
-  if (v2 && ARShouldSupport1440pAndAutofocus())
+  initPrivate = [(ARConfiguration *)&v4 initPrivate];
+  if (initPrivate && ARShouldSupport1440pAndAutofocus())
   {
-    [v2 setAutoFocusEnabled:1];
+    [initPrivate setAutoFocusEnabled:1];
   }
 
-  return v2;
+  return initPrivate;
 }
 
 - (id)imageSensorSettings
@@ -39,7 +39,7 @@
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = ARCustomTechniquesConfiguration;
-  v3 = [(ARConfiguration *)&v18 imageSensorSettings];
+  imageSensorSettings = [(ARConfiguration *)&v18 imageSensorSettings];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -71,7 +71,7 @@
         {
           v8 = MEMORY[0x1E6986FE8];
 LABEL_12:
-          [v3 setMetaData:{*v8, v14}];
+          [imageSensorSettings setMetaData:{*v8, v14}];
           goto LABEL_13;
         }
       }
@@ -91,15 +91,15 @@ LABEL_13:
   templateConfiguration = self->_templateConfiguration;
   if (templateConfiguration)
   {
-    v11 = [(ARConfiguration *)templateConfiguration imageSensorSettings];
-    [v3 setVisionDataOutputEnabled:{objc_msgSend(v11, "visionDataOutputEnabled")}];
-    v12 = [v11 visionDataOutputParameters];
-    [v3 setVisionDataOutputParameters:v12];
+    imageSensorSettings2 = [(ARConfiguration *)templateConfiguration imageSensorSettings];
+    [imageSensorSettings setVisionDataOutputEnabled:{objc_msgSend(imageSensorSettings2, "visionDataOutputEnabled")}];
+    visionDataOutputParameters = [imageSensorSettings2 visionDataOutputParameters];
+    [imageSensorSettings setVisionDataOutputParameters:visionDataOutputParameters];
 
-    [v3 setCalibrationDataOutputEnabled:{objc_msgSend(v11, "calibrationDataOutputEnabled")}];
+    [imageSensorSettings setCalibrationDataOutputEnabled:{objc_msgSend(imageSensorSettings2, "calibrationDataOutputEnabled")}];
   }
 
-  return v3;
+  return imageSensorSettings;
 }
 
 - (int64_t)worldAlignment
@@ -119,8 +119,8 @@ LABEL_13:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(ARCustomTechniquesConfiguration *)self techniques];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    techniques = [(ARCustomTechniquesConfiguration *)self techniques];
+    v6 = [techniques countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -132,23 +132,23 @@ LABEL_13:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(techniques);
           }
 
           v10 = *(*(&v12 + 1) + 8 * v9);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v11 = [v10 alignment];
+            alignment = [v10 alignment];
 
-            return v11;
+            return alignment;
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [techniques countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           continue;
@@ -221,44 +221,44 @@ LABEL_13:
 - (ARWorldMap)initialWorldMap
 {
   v3 = objc_opt_class();
-  v4 = [(ARCustomTechniquesConfiguration *)self techniques];
-  v5 = [ARTechnique techniqueOfClass:v3 inArray:v4];
+  techniques = [(ARCustomTechniquesConfiguration *)self techniques];
+  v5 = [ARTechnique techniqueOfClass:v3 inArray:techniques];
 
-  v6 = [v5 options];
-  v7 = [v6 initialWorldMap];
+  options = [v5 options];
+  initialWorldMap = [options initialWorldMap];
 
-  return v7;
+  return initialWorldMap;
 }
 
-- (void)setCustomSensors:(id)a3
+- (void)setCustomSensors:(id)sensors
 {
   v4.receiver = self;
   v4.super_class = ARCustomTechniquesConfiguration;
-  [(ARConfiguration *)&v4 setCustomSensors:a3];
+  [(ARConfiguration *)&v4 setCustomSensors:sensors];
   [(ARCustomTechniquesConfiguration *)self _updateCaptureSettings];
   self->_needsEnsureTechniqueAndCustomSensorCompatibility = 1;
 }
 
-- (void)setCameraPosition:(int64_t)a3
+- (void)setCameraPosition:(int64_t)position
 {
   v4.receiver = self;
   v4.super_class = ARCustomTechniquesConfiguration;
-  [(ARConfiguration *)&v4 setCameraPosition:a3];
+  [(ARConfiguration *)&v4 setCameraPosition:position];
   [(ARCustomTechniquesConfiguration *)self _updateCaptureSettings];
   self->_needsEnsureTechniqueAndCustomSensorCompatibility = 1;
 }
 
-- (void)setProvidesAudioData:(BOOL)a3
+- (void)setProvidesAudioData:(BOOL)data
 {
   v4.receiver = self;
   v4.super_class = ARCustomTechniquesConfiguration;
-  [(ARConfiguration *)&v4 setProvidesAudioData:a3];
+  [(ARConfiguration *)&v4 setProvidesAudioData:data];
   self->_needsConfigureRecordingTechnique = 1;
 }
 
-- (void)setTechniques:(id)a3
+- (void)setTechniques:(id)techniques
 {
-  v4 = [a3 copy];
+  v4 = [techniques copy];
   techniques = self->_techniques;
   self->_techniques = v4;
 
@@ -279,8 +279,8 @@ LABEL_13:
 - (void)_updateCaptureSettings
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(ARConfiguration *)self customSensors];
-  if (!v3)
+  customSensors = [(ARConfiguration *)self customSensors];
+  if (!customSensors)
   {
     if ([(ARConfiguration *)self cameraPosition])
     {
@@ -314,8 +314,8 @@ LABEL_13:
     if (v5 == [(ARVideoFormat *)self->super._videoFormat captureDevicePosition])
     {
       v6 = v23[5];
-      v7 = [(ARVideoFormat *)self->super._videoFormat captureDeviceType];
-      LOBYTE(v6) = v6 == v7;
+      captureDeviceType = [(ARVideoFormat *)self->super._videoFormat captureDeviceType];
+      LOBYTE(v6) = v6 == captureDeviceType;
 
       if (v6)
       {
@@ -326,26 +326,26 @@ LABEL_13:
     if (*(v19 + 24) == 1)
     {
       v8 = +[ARWorldTrackingConfiguration supportedVideoFormats];
-      v9 = [v8 firstObject];
+      firstObject = [v8 firstObject];
     }
 
     else
     {
       v8 = [ARVideoFormat supportedVideoFormatsForDevicePosition:v29[3] deviceType:v23[5]];
-      v11 = [v8 firstObject];
+      firstObject2 = [v8 firstObject];
       videoFormat = self->super._videoFormat;
-      self->super._videoFormat = v11;
+      self->super._videoFormat = firstObject2;
 
       if (self->super._videoFormat || !ARRGBFaceTrackingEnabled())
       {
         goto LABEL_14;
       }
 
-      v9 = +[ARFaceTrackingConfiguration fallbackVideoFormat];
+      firstObject = +[ARFaceTrackingConfiguration fallbackVideoFormat];
     }
 
     v10 = self->super._videoFormat;
-    self->super._videoFormat = v9;
+    self->super._videoFormat = firstObject;
 
 LABEL_14:
     if (_ARLogGeneral_onceToken_12 != -1)
@@ -362,7 +362,7 @@ LABEL_14:
       *buf = 138543874;
       v33 = v15;
       v34 = 2048;
-      v35 = self;
+      selfCopy = self;
       v36 = 2114;
       v37 = v16;
       _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Video format updated in custom techniques configurations: %{public}@", buf, 0x20u);
@@ -418,14 +418,14 @@ LABEL_5:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 options];
-    v6 = [v5 copy];
-    v7 = [(ARConfiguration *)self deviceModel];
-    [v6 setDeviceModel:v7];
+    options = [v3 options];
+    v6 = [options copy];
+    deviceModel = [(ARConfiguration *)self deviceModel];
+    [v6 setDeviceModel:deviceModel];
 
-    v8 = [(ARConfiguration *)self replaySensor];
-    v9 = v8;
-    if (v8 && [v8 replayMode])
+    replaySensor = [(ARConfiguration *)self replaySensor];
+    v9 = replaySensor;
+    if (replaySensor && [replaySensor replayMode])
     {
       [v6 setDeterministicMode:1];
     }
@@ -438,14 +438,14 @@ LABEL_5:
 
     if (self->super._videoFormat)
     {
-      v10 = [(ARCustomTechniquesConfiguration *)self imageSensorSettings];
-      [v6 setImageSensorSettings:v10];
+      imageSensorSettings = [(ARCustomTechniquesConfiguration *)self imageSensorSettings];
+      [v6 setImageSensorSettings:imageSensorSettings];
 
-      v11 = [(ARCustomTechniquesConfiguration *)self imageSensorSettingsForUltraWide];
-      [v6 setImageSensorSettingsForUltraWide:v11];
+      imageSensorSettingsForUltraWide = [(ARCustomTechniquesConfiguration *)self imageSensorSettingsForUltraWide];
+      [v6 setImageSensorSettingsForUltraWide:imageSensorSettingsForUltraWide];
     }
 
-    if (([v5 isEqual:v6] & 1) == 0)
+    if (([options isEqual:v6] & 1) == 0)
     {
       v12 = [[ARWorldTrackingTechnique alloc] initWithOptions:v6];
       context = objc_autoreleasePoolPush();
@@ -467,15 +467,15 @@ LABEL_5:
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_51];
   v9 = [(NSArray *)techniques filteredArrayUsingPredicate:v4];
 
-  v5 = [v9 firstObject];
-  if (v5)
+  firstObject = [v9 firstObject];
+  if (firstObject)
   {
-    [v5 setExpectAudioData:{-[ARConfiguration providesAudioData](self, "providesAudioData")}];
+    [firstObject setExpectAudioData:{-[ARConfiguration providesAudioData](self, "providesAudioData")}];
     v6 = self->_techniques;
     v7 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_120_0];
     v8 = [(NSArray *)v6 filteredArrayUsingPredicate:v7];
 
-    [v5 setExpectDepthData:{objc_msgSend(v8, "count") != 0}];
+    [firstObject setExpectDepthData:{objc_msgSend(v8, "count") != 0}];
   }
 }
 
@@ -497,18 +497,18 @@ LABEL_5:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = ARCustomTechniquesConfiguration;
-  if ([(ARConfiguration *)&v10 isEqual:v4])
+  if ([(ARConfiguration *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(ARCustomTechniquesConfiguration *)self techniques];
-    v7 = [v5 techniques];
+    v5 = equalCopy;
+    techniques = [(ARCustomTechniquesConfiguration *)self techniques];
+    techniques2 = [v5 techniques];
 
-    v8 = [v6 isEqualToArray:v7];
+    v8 = [techniques isEqualToArray:techniques2];
   }
 
   else
@@ -519,19 +519,19 @@ LABEL_5:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = ARCustomTechniquesConfiguration;
-  v4 = [(ARConfiguration *)&v11 copyWithZone:a3];
-  v5 = [(ARCustomTechniquesConfiguration *)self techniques];
-  v6 = [v5 copy];
+  v4 = [(ARConfiguration *)&v11 copyWithZone:zone];
+  techniques = [(ARCustomTechniquesConfiguration *)self techniques];
+  v6 = [techniques copy];
   v7 = v4[15];
   v4[15] = v6;
 
-  v8 = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
+  templateConfiguration = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
   v9 = v4[16];
-  v4[16] = v8;
+  v4[16] = templateConfiguration;
 
   return v4;
 }
@@ -543,8 +543,8 @@ LABEL_5:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ARCustomTechniquesConfiguration *)self techniques];
-  v8 = [v7 valueForKey:@"description"];
+  techniques = [(ARCustomTechniquesConfiguration *)self techniques];
+  v8 = [techniques valueForKey:@"description"];
   v9 = [v8 componentsJoinedByString:{@", "}];
   [v6 appendFormat:@" techniques=[%@]", v9];
 

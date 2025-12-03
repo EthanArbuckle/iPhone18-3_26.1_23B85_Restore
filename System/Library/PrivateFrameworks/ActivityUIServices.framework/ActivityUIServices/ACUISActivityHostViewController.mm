@@ -1,48 +1,48 @@
 @interface ACUISActivityHostViewController
-- (ACUISActivityHostViewController)activityHostViewControllerWithViewController:(id)a3 didReceiveAction:(id)a4;
-- (ACUISActivityHostViewController)activityHostViewControllerWithViewController:(id)a3 requestsLaunchWithAction:(id)a4;
-- (ACUISActivityHostViewController)initWithActivityHostViewController:(id)a3;
+- (ACUISActivityHostViewController)activityHostViewControllerWithViewController:(id)controller didReceiveAction:(id)action;
+- (ACUISActivityHostViewController)activityHostViewControllerWithViewController:(id)controller requestsLaunchWithAction:(id)action;
+- (ACUISActivityHostViewController)initWithActivityHostViewController:(id)controller;
 - (ACUISActivityHostViewControllerDelegate)delegate;
-- (BOOL)handleHardwareButtonForType:(unint64_t)a3;
+- (BOOL)handleHardwareButtonForType:(unint64_t)type;
 - (NSString)activityIdentifier;
-- (int64_t)swiftHardwareButtonPressTypeForType:(unint64_t)a3;
+- (int64_t)swiftHardwareButtonPressTypeForType:(unint64_t)type;
 - (unint64_t)presentationMode;
-- (unsigned)swiftPresentationMode:(unint64_t)a3;
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3;
-- (void)activityHostViewControllerAudioCategoriesDisablingVolumeHUDDidChangeWithViewController:(id)a3;
-- (void)activityHostViewControllerBackgroundTintColorDidChangeWithViewController:(id)a3;
-- (void)activityHostViewControllerHostShouldCancelTouchesWithViewController:(id)a3;
-- (void)activityHostViewControllerSignificantUserInteractionBeganWithViewController:(id)a3;
-- (void)activityHostViewControllerSignificantUserInteractionEndedWithViewController:(id)a3;
-- (void)activityHostViewControllerTextColorDidChangeWithViewController:(id)a3;
+- (unsigned)swiftPresentationMode:(unint64_t)mode;
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller;
+- (void)activityHostViewControllerAudioCategoriesDisablingVolumeHUDDidChangeWithViewController:(id)controller;
+- (void)activityHostViewControllerBackgroundTintColorDidChangeWithViewController:(id)controller;
+- (void)activityHostViewControllerHostShouldCancelTouchesWithViewController:(id)controller;
+- (void)activityHostViewControllerSignificantUserInteractionBeganWithViewController:(id)controller;
+- (void)activityHostViewControllerSignificantUserInteractionEndedWithViewController:(id)controller;
+- (void)activityHostViewControllerTextColorDidChangeWithViewController:(id)controller;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setPresentationMode:(unint64_t)a3;
-- (void)setVisibility:(unint64_t)a3;
+- (void)setPresentationMode:(unint64_t)mode;
+- (void)setVisibility:(unint64_t)visibility;
 - (void)viewDidLoad;
 @end
 
 @implementation ACUISActivityHostViewController
 
-- (ACUISActivityHostViewController)initWithActivityHostViewController:(id)a3
+- (ACUISActivityHostViewController)initWithActivityHostViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = ACUISActivityHostViewController;
   v6 = [(ACUISActivityHostViewController *)&v14 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activityHostViewController, a3);
+    objc_storeStrong(&v6->_activityHostViewController, controller);
     [(ActivityHostViewController *)v7->_activityHostViewController setDelegate:v7];
     v8 = [ACUISActivitySceneDescriptor alloc];
-    v9 = [v5 activitySceneDescriptor];
-    v10 = [v5 acActivityDescriptor];
-    v11 = [(ACUISActivitySceneDescriptor *)v8 initWithActivitySceneDescriptor:v9 acActivityDescriptor:v10];
+    activitySceneDescriptor = [controllerCopy activitySceneDescriptor];
+    acActivityDescriptor = [controllerCopy acActivityDescriptor];
+    v11 = [(ACUISActivitySceneDescriptor *)v8 initWithActivitySceneDescriptor:activitySceneDescriptor acActivityDescriptor:acActivityDescriptor];
     activitySceneDescriptor = v7->_activitySceneDescriptor;
     v7->_activitySceneDescriptor = v11;
 
-    if (v5)
+    if (controllerCopy)
     {
       [(ACUISActivitySceneDescriptor *)v7->_activitySceneDescriptor setUseFallbackMetrics:1];
     }
@@ -61,45 +61,45 @@
 
 - (NSString)activityIdentifier
 {
-  v2 = [(ACUISActivitySceneDescriptor *)self->_activitySceneDescriptor activityDescriptor];
-  v3 = [v2 activityIdentifier];
+  activityDescriptor = [(ACUISActivitySceneDescriptor *)self->_activitySceneDescriptor activityDescriptor];
+  activityIdentifier = [activityDescriptor activityIdentifier];
 
-  return v3;
+  return activityIdentifier;
 }
 
-- (void)setVisibility:(unint64_t)a3
+- (void)setVisibility:(unint64_t)visibility
 {
-  if (self->_visibility != a3)
+  if (self->_visibility != visibility)
   {
-    self->_visibility = a3;
+    self->_visibility = visibility;
   }
 }
 
 - (unint64_t)presentationMode
 {
-  v2 = [(ActivityHostViewController *)self->_activityHostViewController presentationMode];
-  if (v2 == 2)
+  presentationMode = [(ActivityHostViewController *)self->_activityHostViewController presentationMode];
+  if (presentationMode == 2)
   {
     return 2;
   }
 
   else
   {
-    return v2 == 1;
+    return presentationMode == 1;
   }
 }
 
-- (void)setPresentationMode:(unint64_t)a3
+- (void)setPresentationMode:(unint64_t)mode
 {
-  v4 = [(ACUISActivityHostViewController *)self swiftPresentationMode:a3];
+  v4 = [(ACUISActivityHostViewController *)self swiftPresentationMode:mode];
   activityHostViewController = self->_activityHostViewController;
 
   [(ActivityHostViewController *)activityHostViewController setPresentationMode:v4];
 }
 
-- (BOOL)handleHardwareButtonForType:(unint64_t)a3
+- (BOOL)handleHardwareButtonForType:(unint64_t)type
 {
-  v4 = [(ACUISActivityHostViewController *)self swiftHardwareButtonPressTypeForType:a3];
+  v4 = [(ACUISActivityHostViewController *)self swiftHardwareButtonPressTypeForType:type];
   activityHostViewController = self->_activityHostViewController;
 
   return [(ActivityHostViewController *)activityHostViewController handleHardwareButtonForType:v4];
@@ -117,7 +117,7 @@
   }
 }
 
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller
 {
   [(ActivityHostViewController *)self->_activityHostViewController preferredContentSize];
 
@@ -134,19 +134,19 @@
   [(ACUISActivityHostViewController *)&v3 viewDidLoad];
 }
 
-- (ACUISActivityHostViewController)activityHostViewControllerWithViewController:(id)a3 requestsLaunchWithAction:(id)a4
+- (ACUISActivityHostViewController)activityHostViewControllerWithViewController:(id)controller requestsLaunchWithAction:(id)action
 {
-  v7 = a4;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained activityHostViewController:self requestsLaunchWithAction:v7];
+    [WeakRetained activityHostViewController:self requestsLaunchWithAction:actionCopy];
   }
 
   return result;
 }
 
-- (void)activityHostViewControllerBackgroundTintColorDidChangeWithViewController:(id)a3
+- (void)activityHostViewControllerBackgroundTintColorDidChangeWithViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -155,7 +155,7 @@
   }
 }
 
-- (void)activityHostViewControllerTextColorDidChangeWithViewController:(id)a3
+- (void)activityHostViewControllerTextColorDidChangeWithViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -164,7 +164,7 @@
   }
 }
 
-- (void)activityHostViewControllerHostShouldCancelTouchesWithViewController:(id)a3
+- (void)activityHostViewControllerHostShouldCancelTouchesWithViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -173,7 +173,7 @@
   }
 }
 
-- (void)activityHostViewControllerSignificantUserInteractionBeganWithViewController:(id)a3
+- (void)activityHostViewControllerSignificantUserInteractionBeganWithViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -182,7 +182,7 @@
   }
 }
 
-- (void)activityHostViewControllerSignificantUserInteractionEndedWithViewController:(id)a3
+- (void)activityHostViewControllerSignificantUserInteractionEndedWithViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -191,7 +191,7 @@
   }
 }
 
-- (void)activityHostViewControllerAudioCategoriesDisablingVolumeHUDDidChangeWithViewController:(id)a3
+- (void)activityHostViewControllerAudioCategoriesDisablingVolumeHUDDidChangeWithViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -200,13 +200,13 @@
   }
 }
 
-- (ACUISActivityHostViewController)activityHostViewControllerWithViewController:(id)a3 didReceiveAction:(id)a4
+- (ACUISActivityHostViewController)activityHostViewControllerWithViewController:(id)controller didReceiveAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [WeakRetained activityHostViewController:self didReceiveAction:v5];
+    v7 = [WeakRetained activityHostViewController:self didReceiveAction:actionCopy];
   }
 
   else
@@ -217,29 +217,29 @@
   return v7;
 }
 
-- (unsigned)swiftPresentationMode:(unint64_t)a3
+- (unsigned)swiftPresentationMode:(unint64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return mode == 1;
   }
 }
 
-- (int64_t)swiftHardwareButtonPressTypeForType:(unint64_t)a3
+- (int64_t)swiftHardwareButtonPressTypeForType:(unint64_t)type
 {
-  if (a3 - 1 >= 4)
+  if (type - 1 >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 

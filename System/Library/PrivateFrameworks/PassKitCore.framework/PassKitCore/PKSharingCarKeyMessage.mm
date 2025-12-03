@@ -1,38 +1,38 @@
 @interface PKSharingCarKeyMessage
-- (BOOL)configureWithContent:(id)a3;
+- (BOOL)configureWithContent:(id)content;
 - (NSData)underlyingPayload;
 - (NSDictionary)carKeySharingDict;
 - (NSString)friendKeyIdentifier;
 - (NSString)shareIdentifier;
 - (NSString)shareSessionIdentifier;
-- (PKSharingCarKeyMessage)initWithRawMessage:(id)a3 type:(unint64_t)a4 shareIdentifier:(id)a5 friendKeyIdentifier:(id)a6 carKeySharingDict:(id)a7;
-- (PKSharingCarKeyMessage)messageWithBindingAttestation:(id)a3;
+- (PKSharingCarKeyMessage)initWithRawMessage:(id)message type:(unint64_t)type shareIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier carKeySharingDict:(id)dict;
+- (PKSharingCarKeyMessage)messageWithBindingAttestation:(id)attestation;
 @end
 
 @implementation PKSharingCarKeyMessage
 
-- (PKSharingCarKeyMessage)initWithRawMessage:(id)a3 type:(unint64_t)a4 shareIdentifier:(id)a5 friendKeyIdentifier:(id)a6 carKeySharingDict:(id)a7
+- (PKSharingCarKeyMessage)initWithRawMessage:(id)message type:(unint64_t)type shareIdentifier:(id)identifier friendKeyIdentifier:(id)keyIdentifier carKeySharingDict:(id)dict
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  v13 = 0;
-  if (a3 && a5)
+  dictCopy = dict;
+  selfCopy = 0;
+  if (message && identifier)
   {
     v14 = MEMORY[0x1E695DF90];
-    v15 = a6;
-    v16 = a5;
-    v17 = a3;
+    keyIdentifierCopy = keyIdentifier;
+    identifierCopy = identifier;
+    messageCopy = message;
     v18 = objc_alloc_init(v14);
-    v19 = [v17 hexEncoding];
+    hexEncoding = [messageCopy hexEncoding];
 
-    [v18 setObject:v19 forKeyedSubscript:@"sharingData"];
-    [v18 setObject:v16 forKeyedSubscript:@"sharingId"];
+    [v18 setObject:hexEncoding forKeyedSubscript:@"sharingData"];
+    [v18 setObject:identifierCopy forKeyedSubscript:@"sharingId"];
 
-    [v18 setObject:v15 forKeyedSubscript:@"friendKeyId"];
-    if (v12)
+    [v18 setObject:keyIdentifierCopy forKeyedSubscript:@"friendKeyId"];
+    if (dictCopy)
     {
       v24 = @"carKey";
-      v25[0] = v12;
+      v25[0] = dictCopy;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     }
 
@@ -43,29 +43,29 @@
 
     v23.receiver = self;
     v23.super_class = PKSharingCarKeyMessage;
-    v21 = [(PKSharingGenericMessage *)&v23 initWithFormat:2 type:a4 genericSharingDict:v18 appleSharingDict:v20 displayInformation:0];
-    if (v12)
+    v21 = [(PKSharingGenericMessage *)&v23 initWithFormat:2 type:type genericSharingDict:v18 appleSharingDict:v20 displayInformation:0];
+    if (dictCopy)
     {
     }
 
     self = v21;
 
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)configureWithContent:(id)a3
+- (BOOL)configureWithContent:(id)content
 {
   v9.receiver = self;
   v9.super_class = PKSharingCarKeyMessage;
-  v4 = [(PKSharingGenericMessage *)&v9 configureWithContent:a3];
+  v4 = [(PKSharingGenericMessage *)&v9 configureWithContent:content];
   if (v4)
   {
-    v5 = [(PKSharingCarKeyMessage *)self underlyingPayload];
+    underlyingPayload = [(PKSharingCarKeyMessage *)self underlyingPayload];
 
-    if (v5)
+    if (underlyingPayload)
     {
       LOBYTE(v4) = 1;
     }
@@ -88,16 +88,16 @@
 
 - (NSDictionary)carKeySharingDict
 {
-  v2 = [(PKSharingGenericMessage *)self appleSharingDict];
-  v3 = [v2 PKDictionaryForKey:@"carKey"];
+  appleSharingDict = [(PKSharingGenericMessage *)self appleSharingDict];
+  v3 = [appleSharingDict PKDictionaryForKey:@"carKey"];
 
   return v3;
 }
 
 - (NSString)shareSessionIdentifier
 {
-  v2 = [(PKSharingCarKeyMessage *)self carKeySharingDict];
-  v3 = [v2 PKStringForKey:@"sharingSessionUUID"];
+  carKeySharingDict = [(PKSharingCarKeyMessage *)self carKeySharingDict];
+  v3 = [carKeySharingDict PKStringForKey:@"sharingSessionUUID"];
 
   return v3;
 }
@@ -105,9 +105,9 @@
 - (NSString)shareIdentifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(PKSharingGenericMessage *)self genericSharingDict];
-  v4 = [v3 PKStringForKey:@"sharingId"];
-  if (v4 || ([v3 PKStringForKey:@"sharingIdentifier"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  genericSharingDict = [(PKSharingGenericMessage *)self genericSharingDict];
+  v4 = [genericSharingDict PKStringForKey:@"sharingId"];
+  if (v4 || ([genericSharingDict PKStringForKey:@"sharingIdentifier"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = v4;
@@ -119,7 +119,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "PKSharingMessage: Unable to find credential share identifier for %@", &v10, 0xCu);
     }
 
@@ -134,8 +134,8 @@
 
 - (NSString)friendKeyIdentifier
 {
-  v2 = [(PKSharingGenericMessage *)self genericSharingDict];
-  v3 = [v2 PKStringForKey:@"friendKeyId"];
+  genericSharingDict = [(PKSharingGenericMessage *)self genericSharingDict];
+  v3 = [genericSharingDict PKStringForKey:@"friendKeyId"];
   v4 = v3;
   if (v3)
   {
@@ -144,7 +144,7 @@
 
   else
   {
-    v5 = [v2 PKStringForKey:@"friendKeyIdentifier"];
+    v5 = [genericSharingDict PKStringForKey:@"friendKeyIdentifier"];
   }
 
   v6 = v5;
@@ -154,27 +154,27 @@
 
 - (NSData)underlyingPayload
 {
-  v2 = [(PKSharingGenericMessage *)self genericSharingDict];
-  v3 = [v2 PKStringForKey:@"sharingData"];
-  if (v3 || ([v2 PKStringForKey:@"message"], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  genericSharingDict = [(PKSharingGenericMessage *)self genericSharingDict];
+  v3 = [genericSharingDict PKStringForKey:@"sharingData"];
+  if (v3 || ([genericSharingDict PKStringForKey:@"message"], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
-    v5 = [v3 pk_decodeHexadecimal];
+    pk_decodeHexadecimal = [v3 pk_decodeHexadecimal];
   }
 
   else
   {
-    v5 = 0;
+    pk_decodeHexadecimal = 0;
   }
 
-  return v5;
+  return pk_decodeHexadecimal;
 }
 
-- (PKSharingCarKeyMessage)messageWithBindingAttestation:(id)a3
+- (PKSharingCarKeyMessage)messageWithBindingAttestation:(id)attestation
 {
-  v4 = a3;
-  v5 = [(PKSharingCarKeyMessage *)self carKeySharingDict];
-  v6 = [v5 mutableCopy];
+  attestationCopy = attestation;
+  carKeySharingDict = [(PKSharingCarKeyMessage *)self carKeySharingDict];
+  v6 = [carKeySharingDict mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -188,15 +188,15 @@
 
   v9 = v8;
 
-  v10 = [v4 hexEncoding];
+  hexEncoding = [attestationCopy hexEncoding];
 
-  [v9 setObject:v10 forKeyedSubscript:@"bindingAttestation"];
+  [v9 setObject:hexEncoding forKeyedSubscript:@"bindingAttestation"];
   v11 = [PKSharingCarKeyMessage alloc];
-  v12 = [(PKSharingCarKeyMessage *)self underlyingPayload];
-  v13 = [(PKSharingMessage *)self type];
-  v14 = [(PKSharingCarKeyMessage *)self shareIdentifier];
-  v15 = [(PKSharingCarKeyMessage *)self friendKeyIdentifier];
-  v16 = [(PKSharingCarKeyMessage *)v11 initWithRawMessage:v12 type:v13 shareIdentifier:v14 friendKeyIdentifier:v15 carKeySharingDict:v9];
+  underlyingPayload = [(PKSharingCarKeyMessage *)self underlyingPayload];
+  type = [(PKSharingMessage *)self type];
+  shareIdentifier = [(PKSharingCarKeyMessage *)self shareIdentifier];
+  friendKeyIdentifier = [(PKSharingCarKeyMessage *)self friendKeyIdentifier];
+  v16 = [(PKSharingCarKeyMessage *)v11 initWithRawMessage:underlyingPayload type:type shareIdentifier:shareIdentifier friendKeyIdentifier:friendKeyIdentifier carKeySharingDict:v9];
 
   return v16;
 }

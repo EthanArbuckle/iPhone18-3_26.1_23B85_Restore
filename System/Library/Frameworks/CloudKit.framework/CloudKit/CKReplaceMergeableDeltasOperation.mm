@@ -1,23 +1,23 @@
 @interface CKReplaceMergeableDeltasOperation
-- (BOOL)CKOperationShouldRun:(id *)a3;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
-- (CKReplaceMergeableDeltasOperation)initWithReplaceDeltasRequests:(id)a3;
+- (CKReplaceMergeableDeltasOperation)initWithReplaceDeltasRequests:(id)requests;
 - (id)activityCreate;
 - (id)perReplacementBlock;
 - (id)replaceMergeableDeltasCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleCompletedReplaceDeltasRequest:(id)a3 error:(id)a4;
-- (void)setPerReplacementBlock:(id)a3;
-- (void)setReplaceMergeableDeltasCompletionBlock:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleCompletedReplaceDeltasRequest:(id)request error:(id)error;
+- (void)setPerReplacementBlock:(id)block;
+- (void)setReplaceMergeableDeltasCompletionBlock:(id)block;
 @end
 
 @implementation CKReplaceMergeableDeltasOperation
 
-- (void)setPerReplacementBlock:(id)a3
+- (void)setPerReplacementBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -31,16 +31,16 @@
     v12[2] = sub_1885B43FC;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     perReplacementBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_perReplacementBlock != v6)
+  if (self->_perReplacementBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     perReplacementBlock = self->_perReplacementBlock;
     self->_perReplacementBlock = v9;
 LABEL_9:
@@ -83,9 +83,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setReplaceMergeableDeltasCompletionBlock:(id)a3
+- (void)setReplaceMergeableDeltasCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -99,16 +99,16 @@ LABEL_9:
     v12[2] = sub_1885B4788;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     replaceMergeableDeltasCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_replaceMergeableDeltasCompletionBlock != v6)
+  if (self->_replaceMergeableDeltasCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     replaceMergeableDeltasCompletionBlock = self->_replaceMergeableDeltasCompletionBlock;
     self->_replaceMergeableDeltasCompletionBlock = v9;
 LABEL_9:
@@ -151,15 +151,15 @@ LABEL_9:
   return v6;
 }
 
-- (CKReplaceMergeableDeltasOperation)initWithReplaceDeltasRequests:(id)a3
+- (CKReplaceMergeableDeltasOperation)initWithReplaceDeltasRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v15.receiver = self;
   v15.super_class = CKReplaceMergeableDeltasOperation;
   v7 = [(CKOperation *)&v15 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(requestsCopy, v5, v6);
     replaceDeltasRequests = v7->_replaceDeltasRequests;
     v7->_replaceDeltasRequests = v8;
 
@@ -171,7 +171,7 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v18.receiver = self;
   v18.super_class = CKReplaceMergeableDeltasOperation;
@@ -188,13 +188,13 @@ LABEL_9:
 
     else
     {
-      if (a3)
+      if (run)
       {
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
-        *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v16, @"CKErrorDomain", 12, @"%@ cannot run without a %@", v13, v15);
+        *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v16, @"CKErrorDomain", 12, @"%@ cannot run without a %@", v13, v15);
       }
 
       LOBYTE(v5) = 0;
@@ -204,23 +204,23 @@ LABEL_9:
   return v5;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKReplaceMergeableDeltasOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:v4];
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:infoCopy];
   v7 = objc_msgSend_replaceDeltasRequests(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setReplaceDeltasRequests_(v4, v8, v7);
+  objc_msgSend_setReplaceDeltasRequests_(infoCopy, v8, v7);
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKReplaceMergeableDeltasOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_replaceDeltasRequests(v4, v5, v6, v9.receiver, v9.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_replaceDeltasRequests(infoCopy, v5, v6, v9.receiver, v9.super_class);
 
   objc_msgSend_setReplaceDeltasRequests_(self, v8, v7);
 }
@@ -249,11 +249,11 @@ LABEL_9:
   return v5;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v7 = objc_msgSend_perValueErrors(self, v4, v5);
     v10 = objc_msgSend_count(v7, v8, v9);
@@ -265,16 +265,16 @@ LABEL_9:
       v39[0] = v11;
       v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v12, v39, &v38, 1);
 
-      v6 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v14, @"CKInternalErrorDomain", 1011, v13, @"Failed to replace some delta metadata");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v14, @"CKInternalErrorDomain", 1011, v13, @"Failed to replace some delta metadata");
     }
 
     else
     {
-      v6 = 0;
+      errorCopy = 0;
     }
   }
 
-  v15 = objc_msgSend_CKClientSuitableError(v6, v4, v5);
+  v15 = objc_msgSend_CKClientSuitableError(errorCopy, v4, v5);
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -331,15 +331,15 @@ LABEL_9:
   return v2;
 }
 
-- (void)handleCompletedReplaceDeltasRequest:(id)a3 error:(id)a4
+- (void)handleCompletedReplaceDeltasRequest:(id)request error:(id)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v11 = objc_msgSend_CKClientSuitableError(a4, v7, v8);
+  requestCopy = request;
+  v11 = objc_msgSend_CKClientSuitableError(error, v7, v8);
   if (v11)
   {
     v12 = objc_msgSend_perValueErrors(self, v9, v10);
-    v15 = objc_msgSend_valueID(v6, v13, v14);
+    v15 = objc_msgSend_valueID(requestCopy, v13, v14);
     objc_msgSend_setObject_forKeyedSubscript_(v12, v16, v11, v15);
   }
 
@@ -356,7 +356,7 @@ LABEL_9:
     v34 = 138543874;
     v35 = v29;
     v36 = 2112;
-    v37 = v6;
+    v37 = requestCopy;
     v38 = 2112;
     v39 = v11;
     _os_log_debug_impl(&dword_1883EA000, v26, OS_LOG_TYPE_DEBUG, "Operation %{public}@ received replace mergeable deltas request callback for %@ with error: %@", &v34, 0x20u);
@@ -367,7 +367,7 @@ LABEL_9:
   if (v20)
   {
     v23 = objc_msgSend_perReplacementBlock(self, v21, v22);
-    (v23)[2](v23, v6, v11);
+    (v23)[2](v23, requestCopy, v11);
   }
 
   if (ck_log_initialization_predicate != -1)
@@ -383,7 +383,7 @@ LABEL_9:
     v34 = 138543874;
     v35 = v33;
     v36 = 2112;
-    v37 = v6;
+    v37 = requestCopy;
     v38 = 2112;
     v39 = v11;
     _os_log_debug_impl(&dword_1883EA000, v30, OS_LOG_TYPE_DEBUG, "Operation %{public}@ finished replace mergeable deltas request callback for %@ with error: %@", &v34, 0x20u);

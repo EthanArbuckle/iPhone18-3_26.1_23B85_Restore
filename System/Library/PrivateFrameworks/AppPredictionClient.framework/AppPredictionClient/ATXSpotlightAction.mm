@@ -1,45 +1,45 @@
 @interface ATXSpotlightAction
-+ (id)_contactSuggestionResultWithId:(id)a3 title:(id)a4;
-+ (id)_searchSuggestionResultWithString:(id)a3;
-+ (id)actionIdentifierFromTopic:(id)a3;
-+ (id)spotlightActionTypeFromTopic:(id)a3;
-+ (unint64_t)instanceIdentifierFromTopic:(id)a3;
++ (id)_contactSuggestionResultWithId:(id)id title:(id)title;
++ (id)_searchSuggestionResultWithString:(id)string;
++ (id)actionIdentifierFromTopic:(id)topic;
++ (id)spotlightActionTypeFromTopic:(id)topic;
++ (unint64_t)instanceIdentifierFromTopic:(id)topic;
 - (ATXActionCriteria)criteria;
-- (ATXSpotlightAction)initWithCoder:(id)a3;
-- (ATXSpotlightAction)initWithContactName:(id)a3 contactEmail:(id)a4 subtitle:(id)a5 criteria:(id)a6;
-- (ATXSpotlightAction)initWithContactName:(id)a3 contactIdentifier:(id)a4 subtitle:(id)a5 criteria:(id)a6;
-- (ATXSpotlightAction)initWithEntityName:(id)a3 qid:(id)a4 criteria:(id)a5;
-- (ATXSpotlightAction)initWithFlightCode:(id)a3 date:(id)a4 criteria:(id)a5;
-- (ATXSpotlightAction)initWithMediaName:(id)a3 identifier:(id)a4 criteria:(id)a5;
-- (ATXSpotlightAction)initWithPOIName:(id)a3 muid:(id)a4 criteria:(id)a5;
-- (ATXSpotlightAction)initWithSearchString:(id)a3;
-- (ATXSpotlightAction)initWithSportsTeamName:(id)a3 qid:(id)a4 criteria:(id)a5;
-- (ATXSpotlightAction)initWithTopic:(id)a3 criteria:(id)a4 actionDescription:(id)a5 actionIdentifier:(id)a6;
-- (ATXSpotlightAction)initWithWeatherLocation:(id)a3 latitude:(double)a4 longitude:(double)a5 criteria:(id)a6;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
+- (ATXSpotlightAction)initWithCoder:(id)coder;
+- (ATXSpotlightAction)initWithContactName:(id)name contactEmail:(id)email subtitle:(id)subtitle criteria:(id)criteria;
+- (ATXSpotlightAction)initWithContactName:(id)name contactIdentifier:(id)identifier subtitle:(id)subtitle criteria:(id)criteria;
+- (ATXSpotlightAction)initWithEntityName:(id)name qid:(id)qid criteria:(id)criteria;
+- (ATXSpotlightAction)initWithFlightCode:(id)code date:(id)date criteria:(id)criteria;
+- (ATXSpotlightAction)initWithMediaName:(id)name identifier:(id)identifier criteria:(id)criteria;
+- (ATXSpotlightAction)initWithPOIName:(id)name muid:(id)muid criteria:(id)criteria;
+- (ATXSpotlightAction)initWithSearchString:(id)string;
+- (ATXSpotlightAction)initWithSportsTeamName:(id)name qid:(id)qid criteria:(id)criteria;
+- (ATXSpotlightAction)initWithTopic:(id)topic criteria:(id)criteria actionDescription:(id)description actionIdentifier:(id)identifier;
+- (ATXSpotlightAction)initWithWeatherLocation:(id)location latitude:(double)latitude longitude:(double)longitude criteria:(id)criteria;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSpotlightAction
 
-- (ATXSpotlightAction)initWithTopic:(id)a3 criteria:(id)a4 actionDescription:(id)a5 actionIdentifier:(id)a6
+- (ATXSpotlightAction)initWithTopic:(id)topic criteria:(id)criteria actionDescription:(id)description actionIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  topicCopy = topic;
+  criteriaCopy = criteria;
+  descriptionCopy = description;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = ATXSpotlightAction;
   v15 = [(ATXSpotlightAction *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_topic, a3);
-    objc_storeStrong(&v16->_criteria, a4);
-    objc_storeStrong(&v16->_actionDescription, a5);
-    objc_storeStrong(&v16->_actionIdentifier, a6);
+    objc_storeStrong(&v15->_topic, topic);
+    objc_storeStrong(&v16->_criteria, criteria);
+    objc_storeStrong(&v16->_actionDescription, description);
+    objc_storeStrong(&v16->_actionIdentifier, identifier);
   }
 
   return v16;
@@ -61,33 +61,33 @@
   return v3;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -98,104 +98,104 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   topic = self->_topic;
-  v5 = a3;
-  [v5 encodeObject:topic forKey:@"KEY_TOPIC"];
-  [v5 encodeObject:self->_actionDescription forKey:@"KEY_ACTION_DESCRIPTION"];
-  [v5 encodeObject:self->_actionIdentifier forKey:@"KEY_ACTION_IDENTIFIER"];
-  [v5 encodeObject:self->_criteria forKey:@"KEY_ACTION_CRITERIA"];
+  coderCopy = coder;
+  [coderCopy encodeObject:topic forKey:@"KEY_TOPIC"];
+  [coderCopy encodeObject:self->_actionDescription forKey:@"KEY_ACTION_DESCRIPTION"];
+  [coderCopy encodeObject:self->_actionIdentifier forKey:@"KEY_ACTION_IDENTIFIER"];
+  [coderCopy encodeObject:self->_criteria forKey:@"KEY_ACTION_CRITERIA"];
 }
 
-- (ATXSpotlightAction)initWithCoder:(id)a3
+- (ATXSpotlightAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_default();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"KEY_TOPIC" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXSpotlightAction" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"KEY_TOPIC" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXSpotlightAction" errorCode:-1 logHandle:v7];
 
-  v9 = [v4 error];
+  error = [coderCopy error];
 
-  v10 = 0;
-  if (!v9 && v8)
+  selfCopy = 0;
+  if (!error && v8)
   {
     v11 = MEMORY[0x1E69C5D78];
     v12 = objc_opt_class();
     v13 = __atxlog_handle_default();
-    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"KEY_ACTION_DESCRIPTION" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXSpotlightAction" errorCode:-1 logHandle:v13];
+    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"KEY_ACTION_DESCRIPTION" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXSpotlightAction" errorCode:-1 logHandle:v13];
 
-    v15 = [v4 error];
+    error2 = [coderCopy error];
 
-    v10 = 0;
-    if (!v15 && v14)
+    selfCopy = 0;
+    if (!error2 && v14)
     {
       v16 = MEMORY[0x1E69C5D78];
       v17 = objc_opt_class();
       v18 = __atxlog_handle_default();
-      v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"KEY_ACTION_IDENTIFIER" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXSpotlightAction" errorCode:-1 logHandle:v18];
+      v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"KEY_ACTION_IDENTIFIER" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXSpotlightAction" errorCode:-1 logHandle:v18];
 
-      v20 = [v4 error];
+      error3 = [coderCopy error];
 
-      v10 = 0;
-      if (!v20 && v19)
+      selfCopy = 0;
+      if (!error3 && v19)
       {
         v21 = MEMORY[0x1E69C5D78];
         v22 = objc_opt_class();
         v23 = __atxlog_handle_default();
-        v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"KEY_ACTION_CRITERIA" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXSpotlightAction" errorCode:-1 logHandle:v23];
+        v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"KEY_ACTION_CRITERIA" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXSpotlightAction" errorCode:-1 logHandle:v23];
 
-        v25 = [v4 error];
+        error4 = [coderCopy error];
 
-        if (v25)
+        if (error4)
         {
-          v10 = 0;
+          selfCopy = 0;
         }
 
         else
         {
           self = [(ATXSpotlightAction *)self initWithTopic:v8 criteria:v24 actionDescription:v14 actionIdentifier:v19];
-          v10 = self;
+          selfCopy = self;
         }
       }
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SFTopic *)self->_topic identifier];
-  v4 = [v3 hash];
+  identifier = [(SFTopic *)self->_topic identifier];
+  v4 = [identifier hash];
 
   return [(NSString *)self->_actionIdentifier hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ATXSpotlightAction *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ATXSpotlightAction *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(SFTopic *)self->_topic identifier];
-      v7 = [(SFTopic *)v5->_topic identifier];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      identifier = [(SFTopic *)self->_topic identifier];
+      identifier2 = [(SFTopic *)v5->_topic identifier];
+      v8 = identifier2;
+      if (identifier == identifier2)
       {
       }
 
       else
       {
-        v9 = [v6 isEqual:v7];
+        v9 = [identifier isEqual:identifier2];
 
         if ((v9 & 1) == 0)
         {
@@ -229,158 +229,158 @@ LABEL_14:
   return v10;
 }
 
-- (ATXSpotlightAction)initWithSearchString:(id)a3
+- (ATXSpotlightAction)initWithSearchString:(id)string
 {
-  v4 = [MEMORY[0x1E69D3DE0] localTopicWithTitle:a3];
+  v4 = [MEMORY[0x1E69D3DE0] localTopicWithTitle:string];
   v5 = [(ATXSpotlightAction *)self initWithTopic:v4 criteria:0 actionDescription:@"Search-String" actionIdentifier:@"SP-Search-String"];
 
   return v5;
 }
 
-- (ATXSpotlightAction)initWithContactName:(id)a3 contactIdentifier:(id)a4 subtitle:(id)a5 criteria:(id)a6
+- (ATXSpotlightAction)initWithContactName:(id)name contactIdentifier:(id)identifier subtitle:(id)subtitle criteria:(id)criteria
 {
-  v10 = a3;
+  nameCopy = name;
   v11 = MEMORY[0x1E69D3DE0];
-  v12 = a6;
-  v13 = [v11 localTopicWithContactName:v10 contactIdentifier:a4 detailText:a5];
-  v14 = v10;
+  criteriaCopy = criteria;
+  v13 = [v11 localTopicWithContactName:nameCopy contactIdentifier:identifier detailText:subtitle];
+  v14 = nameCopy;
   v15 = [objc_opt_class() actionIdentifierFromTopic:v13];
-  v16 = [(ATXSpotlightAction *)self initWithTopic:v13 criteria:v12 actionDescription:v14 actionIdentifier:v15];
+  v16 = [(ATXSpotlightAction *)self initWithTopic:v13 criteria:criteriaCopy actionDescription:v14 actionIdentifier:v15];
 
   return v16;
 }
 
-- (ATXSpotlightAction)initWithContactName:(id)a3 contactEmail:(id)a4 subtitle:(id)a5 criteria:(id)a6
+- (ATXSpotlightAction)initWithContactName:(id)name contactEmail:(id)email subtitle:(id)subtitle criteria:(id)criteria
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  emailCopy = email;
+  subtitleCopy = subtitle;
+  criteriaCopy = criteria;
   if (objc_opt_respondsToSelector())
   {
     v14 = MEMORY[0x1E69D3DE0];
-    v22[0] = v11;
+    v22[0] = emailCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-    v16 = [v14 localTopicWithContactName:v10 emails:v15 phones:0 detailText:v12];
+    v16 = [v14 localTopicWithContactName:nameCopy emails:v15 phones:0 detailText:subtitleCopy];
 
-    v17 = v10;
+    v17 = nameCopy;
     v18 = [objc_opt_class() actionIdentifierFromTopic:v16];
-    v19 = [(ATXSpotlightAction *)self initWithTopic:v16 criteria:v13 actionDescription:v17 actionIdentifier:v18];
+    v19 = [(ATXSpotlightAction *)self initWithTopic:v16 criteria:criteriaCopy actionDescription:v17 actionIdentifier:v18];
 
     self = v19;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (ATXSpotlightAction)initWithFlightCode:(id)a3 date:(id)a4 criteria:(id)a5
+- (ATXSpotlightAction)initWithFlightCode:(id)code date:(id)date criteria:(id)criteria
 {
-  v8 = a3;
-  v9 = a4;
+  codeCopy = code;
+  dateCopy = date;
   v10 = MEMORY[0x1E69CA0E8];
-  v11 = a5;
+  criteriaCopy = criteria;
   v12 = [v10 alloc];
   v13 = v12;
-  if (v9)
+  if (dateCopy)
   {
-    v14 = [v12 initWithQuery:v8 date:v9];
+    v14 = [v12 initWithQuery:codeCopy date:dateCopy];
   }
 
   else
   {
     v15 = [MEMORY[0x1E695DF00] now];
-    v14 = [v13 initWithQuery:v8 date:v15];
+    v14 = [v13 initWithQuery:codeCopy date:v15];
   }
 
-  v16 = v8;
+  v16 = codeCopy;
   v17 = [objc_opt_class() actionIdentifierFromTopic:v14];
-  v18 = [(ATXSpotlightAction *)self initWithTopic:v14 criteria:v11 actionDescription:v16 actionIdentifier:v17];
+  v18 = [(ATXSpotlightAction *)self initWithTopic:v14 criteria:criteriaCopy actionDescription:v16 actionIdentifier:v17];
 
   return v18;
 }
 
-- (ATXSpotlightAction)initWithWeatherLocation:(id)a3 latitude:(double)a4 longitude:(double)a5 criteria:(id)a6
+- (ATXSpotlightAction)initWithWeatherLocation:(id)location latitude:(double)latitude longitude:(double)longitude criteria:(id)criteria
 {
-  v10 = a3;
-  v11 = a6;
-  if (a4 == 0.0 || a5 == 0.0)
+  locationCopy = location;
+  criteriaCopy = criteria;
+  if (latitude == 0.0 || longitude == 0.0)
   {
     v18 = __atxlog_handle_default();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [ATXSpotlightAction initWithWeatherLocation:v18 latitude:a4 longitude:a5 criteria:?];
+      [ATXSpotlightAction initWithWeatherLocation:v18 latitude:latitude longitude:longitude criteria:?];
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v12 = objc_alloc_init(MEMORY[0x1E69CA190]);
-    [v12 setLat:a4];
-    [v12 setLng:a5];
-    v13 = [objc_alloc(MEMORY[0x1E69CA5C0]) initWithQuery:v10 location:v12];
-    v14 = v10;
+    [v12 setLat:latitude];
+    [v12 setLng:longitude];
+    v13 = [objc_alloc(MEMORY[0x1E69CA5C0]) initWithQuery:locationCopy location:v12];
+    v14 = locationCopy;
     v15 = [objc_opt_class() actionIdentifierFromTopic:v13];
-    v16 = [(ATXSpotlightAction *)self initWithTopic:v13 criteria:v11 actionDescription:v14 actionIdentifier:v15];
+    v16 = [(ATXSpotlightAction *)self initWithTopic:v13 criteria:criteriaCopy actionDescription:v14 actionIdentifier:v15];
 
     self = v16;
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (ATXSpotlightAction)initWithMediaName:(id)a3 identifier:(id)a4 criteria:(id)a5
+- (ATXSpotlightAction)initWithMediaName:(id)name identifier:(id)identifier criteria:(id)criteria
 {
-  v8 = a3;
+  nameCopy = name;
   v9 = MEMORY[0x1E69CA328];
-  v10 = a5;
-  v11 = a4;
-  v12 = [[v9 alloc] initWithType:1 query:v8 identifier:v11];
+  criteriaCopy = criteria;
+  identifierCopy = identifier;
+  v12 = [[v9 alloc] initWithType:1 query:nameCopy identifier:identifierCopy];
 
-  v13 = v8;
+  v13 = nameCopy;
   v14 = [objc_opt_class() actionIdentifierFromTopic:v12];
-  v15 = [(ATXSpotlightAction *)self initWithTopic:v12 criteria:v10 actionDescription:v13 actionIdentifier:v14];
+  v15 = [(ATXSpotlightAction *)self initWithTopic:v12 criteria:criteriaCopy actionDescription:v13 actionIdentifier:v14];
 
   return v15;
 }
 
-- (ATXSpotlightAction)initWithPOIName:(id)a3 muid:(id)a4 criteria:(id)a5
+- (ATXSpotlightAction)initWithPOIName:(id)name muid:(id)muid criteria:(id)criteria
 {
-  v8 = a3;
+  nameCopy = name;
   v9 = MEMORY[0x1E69CA328];
-  v10 = a5;
-  v11 = a4;
+  criteriaCopy = criteria;
+  muidCopy = muid;
   v12 = [v9 alloc];
-  v13 = [v11 stringValue];
+  stringValue = [muidCopy stringValue];
 
-  v14 = [v12 initWithType:6 query:v8 identifier:v13];
-  v15 = v8;
+  v14 = [v12 initWithType:6 query:nameCopy identifier:stringValue];
+  v15 = nameCopy;
   v16 = [objc_opt_class() actionIdentifierFromTopic:v14];
-  v17 = [(ATXSpotlightAction *)self initWithTopic:v14 criteria:v10 actionDescription:v15 actionIdentifier:v16];
+  v17 = [(ATXSpotlightAction *)self initWithTopic:v14 criteria:criteriaCopy actionDescription:v15 actionIdentifier:v16];
 
   return v17;
 }
 
-- (ATXSpotlightAction)initWithSportsTeamName:(id)a3 qid:(id)a4 criteria:(id)a5
+- (ATXSpotlightAction)initWithSportsTeamName:(id)name qid:(id)qid criteria:(id)criteria
 {
   v8 = MEMORY[0x1E69CA470];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithQuery:@"team-qid" requestedEntityType:@"Team" identifier:v10];
+  criteriaCopy = criteria;
+  qidCopy = qid;
+  nameCopy = name;
+  v12 = [[v8 alloc] initWithQuery:@"team-qid" requestedEntityType:@"Team" identifier:qidCopy];
 
-  if (v11)
+  if (nameCopy)
   {
-    v13 = v11;
+    v13 = nameCopy;
   }
 
   else
@@ -390,22 +390,22 @@ LABEL_14:
 
   v14 = v13;
   v15 = [objc_opt_class() actionIdentifierFromTopic:v12];
-  v16 = [(ATXSpotlightAction *)self initWithTopic:v12 criteria:v9 actionDescription:v14 actionIdentifier:v15];
+  v16 = [(ATXSpotlightAction *)self initWithTopic:v12 criteria:criteriaCopy actionDescription:v14 actionIdentifier:v15];
 
   return v16;
 }
 
-- (ATXSpotlightAction)initWithEntityName:(id)a3 qid:(id)a4 criteria:(id)a5
+- (ATXSpotlightAction)initWithEntityName:(id)name qid:(id)qid criteria:(id)criteria
 {
   v8 = MEMORY[0x1E69CA328];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithType:2 query:@"entity-qid" identifier:v10];
+  criteriaCopy = criteria;
+  qidCopy = qid;
+  nameCopy = name;
+  v12 = [[v8 alloc] initWithType:2 query:@"entity-qid" identifier:qidCopy];
 
-  if (v11)
+  if (nameCopy)
   {
-    v13 = v11;
+    v13 = nameCopy;
   }
 
   else
@@ -413,33 +413,33 @@ LABEL_14:
     v13 = @"entity-qid";
   }
 
-  v14 = [(ATXSpotlightAction *)self initWithTopic:v12 criteria:v9 actionDescription:v13 actionIdentifier:@"SP-Entity-QID"];
+  v14 = [(ATXSpotlightAction *)self initWithTopic:v12 criteria:criteriaCopy actionDescription:v13 actionIdentifier:@"SP-Entity-QID"];
 
   return v14;
 }
 
-+ (id)actionIdentifierFromTopic:(id)a3
++ (id)actionIdentifierFromTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [a1 spotlightActionTypeFromTopic:v4];
-  v6 = [a1 instanceIdentifierFromTopic:v4];
+  topicCopy = topic;
+  v5 = [self spotlightActionTypeFromTopic:topicCopy];
+  v6 = [self instanceIdentifierFromTopic:topicCopy];
 
   v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@:%lu", v5, v6];
 
   return v7;
 }
 
-+ (unint64_t)instanceIdentifierFromTopic:(id)a3
++ (unint64_t)instanceIdentifierFromTopic:(id)topic
 {
-  v3 = [a3 identifier];
-  v4 = [v3 hash];
+  identifier = [topic identifier];
+  v4 = [identifier hash];
 
   return v4;
 }
 
-+ (id)spotlightActionTypeFromTopic:(id)a3
++ (id)spotlightActionTypeFromTopic:(id)topic
 {
-  v3 = a3;
+  topicCopy = topic;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -455,19 +455,19 @@ LABEL_14:
       goto LABEL_21;
     }
 
-    v5 = v3;
-    v6 = [v5 queryType];
-    if (v6 > 4)
+    v5 = topicCopy;
+    queryType = [v5 queryType];
+    if (queryType > 4)
     {
-      if ((v6 - 7) >= 2)
+      if ((queryType - 7) >= 2)
       {
-        if (v6 == 5)
+        if (queryType == 5)
         {
           v4 = @"SP-Flight";
           goto LABEL_22;
         }
 
-        if (v6 == 6)
+        if (queryType == 6)
         {
           v4 = @"SP-POI-Muid";
 LABEL_22:
@@ -488,11 +488,11 @@ LABEL_26:
 
     else
     {
-      if (v6 > 1)
+      if (queryType > 1)
       {
-        if (v6 != 2)
+        if (queryType != 2)
         {
-          if (v6 == 3)
+          if (queryType == 3)
           {
             v4 = @"SP-Sports-Team-QID";
           }
@@ -508,9 +508,9 @@ LABEL_26:
         goto LABEL_18;
       }
 
-      if (v6)
+      if (queryType)
       {
-        if (v6 == 1)
+        if (queryType == 1)
         {
           v4 = @"SP-Media-AdamId";
           goto LABEL_22;
@@ -540,32 +540,32 @@ LABEL_23:
   return v4;
 }
 
-+ (id)_searchSuggestionResultWithString:(id)a3
++ (id)_searchSuggestionResultWithString:(id)string
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69CA3E8];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   v6 = objc_opt_new();
-  [v6 setText:v4];
+  [v6 setText:stringCopy];
   [v5 setTitle:v6];
-  [v5 setCompletion:v4];
+  [v5 setCompletion:stringCopy];
   [v5 setResultBundleId:@"com.apple.searchd.suggestion"];
   [v5 setSectionBundleIdentifier:@"com.apple.searchd.recent.suggestions"];
-  [v5 setIdentifier:v4];
+  [v5 setIdentifier:stringCopy];
   v7 = objc_opt_new();
   [v7 setSymbolName:@"magnifyingglass.circle.fill"];
   [v7 setIsTemplate:1];
   v8 = objc_opt_new();
-  v9 = [v5 resultBundleId];
-  [v8 setBundleIdentifier:v9];
+  resultBundleId = [v5 resultBundleId];
+  [v8 setBundleIdentifier:resultBundleId];
 
   v10 = objc_opt_new();
-  v11 = [MEMORY[0x1E69CA3A0] textWithString:v4];
+  v11 = [MEMORY[0x1E69CA3A0] textWithString:stringCopy];
   [v10 setSuggestionText:v11];
 
-  v12 = [v10 suggestionText];
-  [v12 setMaxLines:1];
+  suggestionText = [v10 suggestionText];
+  [suggestionText setMaxLines:1];
 
   [v10 setSuggestionType:0];
   v19[0] = v8;
@@ -574,7 +574,7 @@ LABEL_23:
 
   [v10 setThumbnail:v7];
   v14 = objc_opt_new();
-  [v14 setSearchString:v4];
+  [v14 setSearchString:stringCopy];
 
   [v14 setQuerySource:1];
   [v10 setCommand:v14];
@@ -588,32 +588,32 @@ LABEL_23:
   return v5;
 }
 
-+ (id)_contactSuggestionResultWithId:(id)a3 title:(id)a4
++ (id)_contactSuggestionResultWithId:(id)id title:(id)title
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69CA3E8];
-  v6 = a4;
-  v7 = a3;
+  titleCopy = title;
+  idCopy = id;
   v8 = objc_alloc_init(v5);
   v9 = objc_opt_new();
-  [v9 setText:v6];
+  [v9 setText:titleCopy];
   [v8 setTitle:v9];
-  [v8 setCompletion:v6];
+  [v8 setCompletion:titleCopy];
   [v8 setResultBundleId:@"com.apple.searchd.suggestion"];
   [v8 setSectionBundleIdentifier:@"com.apple.searchd.recent.suggestions"];
-  [v8 setIdentifier:v7];
+  [v8 setIdentifier:idCopy];
   v10 = objc_opt_new();
-  v11 = [v8 resultBundleId];
-  [v10 setBundleIdentifier:v11];
+  resultBundleId = [v8 resultBundleId];
+  [v10 setBundleIdentifier:resultBundleId];
 
   v12 = objc_opt_new();
   [v12 setSymbolName:@"person.crop.circle"];
   [v12 setIsTemplate:1];
   v13 = objc_opt_new();
   [v13 setEntityType:2];
-  [v13 setEntityIdentifier:v7];
+  [v13 setEntityIdentifier:idCopy];
 
-  [v13 setTokenString:v6];
+  [v13 setTokenString:titleCopy];
   [v13 setSymbolImage:v12];
   v14 = objc_opt_new();
   [v14 setCommand:v13];

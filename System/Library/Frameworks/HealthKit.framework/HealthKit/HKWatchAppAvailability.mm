@@ -1,23 +1,23 @@
 @interface HKWatchAppAvailability
-- (HKWatchAppAvailability)initWithBundleID:(id)a3;
-- (id)findApplicationIn:(id)a3;
-- (void)appInstallStateOnWatch:(id)a3 completion:(id)a4;
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4;
+- (HKWatchAppAvailability)initWithBundleID:(id)d;
+- (id)findApplicationIn:(id)in;
+- (void)appInstallStateOnWatch:(id)watch completion:(id)completion;
+- (void)appQuery:(id)query resultsDidChange:(id)change;
 - (void)dealloc;
 @end
 
 @implementation HKWatchAppAvailability
 
-- (HKWatchAppAvailability)initWithBundleID:(id)a3
+- (HKWatchAppAvailability)initWithBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = HKWatchAppAvailability;
   v6 = [(HKWatchAppAvailability *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleID, a3);
+    objc_storeStrong(&v6->_bundleID, d);
     v7->_installState = -1;
     v8 = [HKObserverSet alloc];
     v9 = [(HKObserverSet *)v8 initWithName:@"AppAvailabilityObservers" loggingCategory:HKLogDefault];
@@ -30,18 +30,18 @@
 
 - (void)dealloc
 {
-  v3 = [(HKWatchAppAvailability *)self query];
-  [v3 setObserver:0];
+  query = [(HKWatchAppAvailability *)self query];
+  [query setObserver:0];
 
   v4.receiver = self;
   v4.super_class = HKWatchAppAvailability;
   [(HKWatchAppAvailability *)&v4 dealloc];
 }
 
-- (void)appInstallStateOnWatch:(id)a3 completion:(id)a4
+- (void)appInstallStateOnWatch:(id)watch completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  watchCopy = watch;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2050000000;
@@ -60,23 +60,23 @@
 
   v10 = v9;
   _Block_object_dispose(&v19, 8);
-  v11 = [v9 queryForSystemAppsOnPairedDevice:v7];
+  v11 = [v9 queryForSystemAppsOnPairedDevice:watchCopy];
   [(HKWatchAppAvailability *)self setQuery:v11];
 
-  v12 = [(HKWatchAppAvailability *)self query];
-  [v12 setObserver:self];
+  query = [(HKWatchAppAvailability *)self query];
+  [query setObserver:self];
 
   objc_initWeak(location, self);
-  v13 = [(HKWatchAppAvailability *)self query];
+  query2 = [(HKWatchAppAvailability *)self query];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__HKWatchAppAvailability_appInstallStateOnWatch_completion___block_invoke;
   v15[3] = &unk_1E7381968;
   objc_copyWeak(v17, location);
-  v14 = v8;
+  v14 = completionCopy;
   v16 = v14;
   v17[1] = a2;
-  [v13 executeQueryWithResultHandler:v15];
+  [query2 executeQueryWithResultHandler:v15];
 
   objc_destroyWeak(v17);
   objc_destroyWeak(location);
@@ -187,39 +187,39 @@ LABEL_18:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)findApplicationIn:(id)a3
+- (id)findApplicationIn:(id)in
 {
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
-  v6 = [(HKWatchAppAvailability *)self bundleID];
-  v7 = [v4 predicateWithFormat:@"bundleID == %@", v6];
+  inCopy = in;
+  bundleID = [(HKWatchAppAvailability *)self bundleID];
+  v7 = [v4 predicateWithFormat:@"bundleID == %@", bundleID];
 
-  v8 = [v5 filteredArrayUsingPredicate:v7];
+  v8 = [inCopy filteredArrayUsingPredicate:v7];
 
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
-  return v9;
+  return firstObject;
 }
 
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4
+- (void)appQuery:(id)query resultsDidChange:(id)change
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HKWatchAppAvailability *)self query];
+  changeCopy = change;
+  queryCopy = query;
+  query = [(HKWatchAppAvailability *)self query];
 
-  if (v9 == v8)
+  if (query == queryCopy)
   {
-    v10 = [(HKWatchAppAvailability *)self _test_apps];
-    if (v10)
+    _test_apps = [(HKWatchAppAvailability *)self _test_apps];
+    if (_test_apps)
     {
-      v11 = [(HKWatchAppAvailability *)self _test_apps];
-      v12 = [(HKWatchAppAvailability *)self findApplicationIn:v11];
+      _test_apps2 = [(HKWatchAppAvailability *)self _test_apps];
+      v12 = [(HKWatchAppAvailability *)self findApplicationIn:_test_apps2];
     }
 
     else
     {
-      v12 = [(HKWatchAppAvailability *)self findApplicationIn:v7];
+      v12 = [(HKWatchAppAvailability *)self findApplicationIn:changeCopy];
     }
 
     if (v12)
@@ -231,8 +231,8 @@ LABEL_18:
 
       else
       {
-        v18 = [v12 progress];
-        v13 = v18 != 0;
+        progress = [v12 progress];
+        v13 = progress != 0;
       }
     }
 
@@ -244,13 +244,13 @@ LABEL_18:
       {
         v15 = v14;
         v16 = NSStringFromSelector(a2);
-        v17 = [(HKWatchAppAvailability *)self bundleID];
+        bundleID = [(HKWatchAppAvailability *)self bundleID];
         *buf = 138543874;
-        v31 = self;
+        selfCopy2 = self;
         v32 = 2114;
         v33 = v16;
         v34 = 2114;
-        v35 = v17;
+        v35 = bundleID;
         _os_log_impl(&dword_19197B000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}@] -> Application (%{public}@) was not found on watch", buf, 0x20u);
       }
 
@@ -284,7 +284,7 @@ LABEL_18:
         v23 = v20;
         v24 = [v21 numberWithUnsignedInteger:{-[HKWatchAppAvailabilityObserver count](v22, "count")}];
         *buf = 138543618;
-        v31 = self;
+        selfCopy2 = self;
         v32 = 2112;
         v33 = v24;
         _os_log_impl(&dword_19197B000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying %@ observers of onboarding completion update", buf, 0x16u);

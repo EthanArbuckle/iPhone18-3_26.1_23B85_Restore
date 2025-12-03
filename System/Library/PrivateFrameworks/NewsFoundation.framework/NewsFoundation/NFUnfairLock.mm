@@ -1,20 +1,20 @@
 @interface NFUnfairLock
-- (NFUnfairLock)initWithOptions:(int64_t)a3;
-- (void)performWithLockSync:(id)a3;
+- (NFUnfairLock)initWithOptions:(int64_t)options;
+- (void)performWithLockSync:(id)sync;
 @end
 
 @implementation NFUnfairLock
 
-- (NFUnfairLock)initWithOptions:(int64_t)a3
+- (NFUnfairLock)initWithOptions:(int64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v5.receiver = self;
   v5.super_class = NFUnfairLock;
   result = [(NFUnfairLock *)&v5 init];
   if (result)
   {
     result->_unfairLock._os_unfair_lock_opaque = 0;
-    if (v3)
+    if (optionsCopy)
     {
       result->_unfairLockOptions |= 0x10000u;
     }
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (void)performWithLockSync:(id)a3
+- (void)performWithLockSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   [(NFUnfairLock *)self lock];
-  v4[2](v4);
+  syncCopy[2](syncCopy);
 
   [(NFUnfairLock *)self unlock];
 }

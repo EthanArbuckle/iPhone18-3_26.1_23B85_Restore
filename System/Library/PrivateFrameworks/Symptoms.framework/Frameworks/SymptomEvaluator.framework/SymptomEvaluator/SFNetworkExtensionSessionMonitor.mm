@@ -1,5 +1,5 @@
 @interface SFNetworkExtensionSessionMonitor
-- (BOOL)_setUpNESessionForConfigurationID:(id)a3 neSessionType:(int)a4 statusChangedCallback:(id)a5;
+- (BOOL)_setUpNESessionForConfigurationID:(id)d neSessionType:(int)type statusChangedCallback:(id)callback;
 - (void)dealloc;
 @end
 
@@ -212,14 +212,14 @@ LABEL_23:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_setUpNESessionForConfigurationID:(id)a3 neSessionType:(int)a4 statusChangedCallback:(id)a5
+- (BOOL)_setUpNESessionForConfigurationID:(id)d neSessionType:(int)type statusChangedCallback:(id)callback
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  callbackCopy = callback;
   v22[0] = 0;
   v22[1] = 0;
-  [v7 getUUIDBytes:v22];
+  [dCopy getUUIDBytes:v22];
   v9 = ne_session_create();
   self->_session = v9;
   if (v9)
@@ -230,7 +230,7 @@ LABEL_23:
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v18 = 138412546;
-      v19 = v7;
+      v19 = dCopy;
       v20 = 2080;
       v21 = v22;
       v12 = "NEStateRelay: Set Event handler for session: ConfigurationID: %@ config_id: %s";

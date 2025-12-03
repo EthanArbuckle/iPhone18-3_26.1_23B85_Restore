@@ -1,18 +1,18 @@
 @interface SHFUPluginMobileAsset
-- (SHFUPluginMobileAsset)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6 deviceProperties:(id)a7;
+- (SHFUPluginMobileAsset)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options deviceProperties:(id)properties;
 - (id)downloadCatalog;
-- (id)findLastestAsset:(id *)a3;
-- (void)downloadFirmwareWithOptions:(id)a3;
-- (void)findFirmwareWithOptions:(id)a3 remote:(BOOL)a4;
+- (id)findLastestAsset:(id *)asset;
+- (void)downloadFirmwareWithOptions:(id)options;
+- (void)findFirmwareWithOptions:(id)options remote:(BOOL)remote;
 @end
 
 @implementation SHFUPluginMobileAsset
 
-- (SHFUPluginMobileAsset)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6 deviceProperties:(id)a7
+- (SHFUPluginMobileAsset)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options deviceProperties:(id)properties
 {
   v11.receiver = self;
   v11.super_class = SHFUPluginMobileAsset;
-  v7 = [(SHFUPlugin *)&v11 initWithDeviceClass:a3 delegate:a4 info:a5 options:a6 deviceProperties:a7];
+  v7 = [(SHFUPlugin *)&v11 initWithDeviceClass:class delegate:delegate info:info options:options deviceProperties:properties];
   if (v7)
   {
     v8 = [[NSNumber alloc] initWithBool:0];
@@ -25,10 +25,10 @@
 
 - (id)downloadCatalog
 {
-  v3 = [(SHFUPluginMobileAsset *)self searchLocal];
-  v4 = [v3 BOOLValue];
+  searchLocal = [(SHFUPluginMobileAsset *)self searchLocal];
+  bOOLValue = [searchLocal BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = 0;
   }
@@ -47,7 +47,7 @@
     v32 = &v31;
     v33 = 0x2020000000;
     v34 = -1;
-    v7 = [(SHFUPlugin *)self serialQueue];
+    serialQueue = [(SHFUPlugin *)self serialQueue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1000130EC;
@@ -57,7 +57,7 @@
     v29 = &v31;
     v8 = v6;
     v28 = v8;
-    v9 = notify_register_dispatch("com.apple.MobileAsset.DownloadsReady", &v34, v7, handler);
+    v9 = notify_register_dispatch("com.apple.MobileAsset.DownloadsReady", &v34, serialQueue, handler);
 
     v10 = objc_alloc_init(MADownloadOptions);
     [v10 setDiscretionary:0];
@@ -69,7 +69,7 @@
     do
     {
       v11 = dispatch_semaphore_create(0);
-      v12 = [(SHFUPlugin *)self mobileAssetType];
+      mobileAssetType = [(SHFUPlugin *)self mobileAssetType];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1000131D8;
@@ -82,7 +82,7 @@
       v21 = &v23;
       v14 = v11;
       v19 = v14;
-      [MAAsset startCatalogDownload:v12 options:v10 then:v17];
+      [MAAsset startCatalogDownload:mobileAssetType options:v10 then:v17];
 
       dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
     }
@@ -108,73 +108,73 @@
   return v5;
 }
 
-- (id)findLastestAsset:(id *)a3
+- (id)findLastestAsset:(id *)asset
 {
-  v5 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100015E20(self);
   }
 
-  if (!a3)
+  if (!asset)
   {
     v24 = 0;
     goto LABEL_15;
   }
 
-  v6 = [(SHFUPluginMobileAsset *)self downloadCatalog];
+  downloadCatalog = [(SHFUPluginMobileAsset *)self downloadCatalog];
   v7 = [MAAssetQuery alloc];
-  v8 = [(SHFUPlugin *)self mobileAssetType];
-  v9 = [v7 initWithType:v8];
+  mobileAssetType = [(SHFUPlugin *)self mobileAssetType];
+  v9 = [v7 initWithType:mobileAssetType];
 
   [v9 returnTypes:2];
   v10 = ASAttributeCompatibilityVersion;
-  v11 = [(SHFUPlugin *)self compatibilityVersion];
-  v12 = [v11 stringValue];
-  [v9 addKeyValuePair:v10 with:v12];
+  compatibilityVersion = [(SHFUPlugin *)self compatibilityVersion];
+  stringValue = [compatibilityVersion stringValue];
+  [v9 addKeyValuePair:v10 with:stringValue];
 
-  v13 = [v9 queryMetaDataSync];
-  if ((v13 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  queryMetaDataSync = [v9 queryMetaDataSync];
+  if ((queryMetaDataSync & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
-    v14 = [(SHFUPlugin *)self mobileAssetType];
-    v15 = [NSString stringWithFormat:@"MobileAsset query failed for %@. MAQueryResult = %ld", v14, v13];
+    mobileAssetType2 = [(SHFUPlugin *)self mobileAssetType];
+    v15 = [NSString stringWithFormat:@"MobileAsset query failed for %@. MAQueryResult = %ld", mobileAssetType2, queryMetaDataSync];
 
     v16 = [NSError alloc];
-    v17 = [(SHFUPlugin *)self errorDomain];
+    errorDomain = [(SHFUPlugin *)self errorDomain];
     v49 = NSLocalizedDescriptionKey;
     v50 = v15;
     v18 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
     v19 = v16;
-    v20 = v17;
+    v20 = errorDomain;
     v21 = 48;
   }
 
   else
   {
-    v27 = [(SHFUPlugin *)self logHandle];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
+    logHandle2 = [(SHFUPlugin *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
       sub_100015EAC(self);
     }
 
-    v28 = [v9 results];
-    v29 = [v28 count];
+    results = [v9 results];
+    v29 = [results count];
 
     if (v29)
     {
-      v30 = [(SHFUPlugin *)self logHandle];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
+      logHandle3 = [(SHFUPlugin *)self logHandle];
+      if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEBUG))
       {
         sub_100015F38(v9);
       }
 
       v31 = ASAttributeContentVersion;
-      v32 = [NSString stringWithFormat:@"SELF.attributes.%@ == %%@.@max.attributes.%@", ASAttributeContentVersion, ASAttributeContentVersion];
-      v33 = [v9 results];
-      v34 = [NSPredicate predicateWithFormat:v32, v33];
+      aSAttributeContentVersion = [NSString stringWithFormat:@"SELF.attributes.%@ == %%@.@max.attributes.%@", ASAttributeContentVersion, ASAttributeContentVersion];
+      results2 = [v9 results];
+      v34 = [NSPredicate predicateWithFormat:aSAttributeContentVersion, results2];
 
-      v35 = [v9 results];
-      v36 = [v35 filteredArrayUsingPredicate:v34];
+      results3 = [v9 results];
+      v36 = [results3 filteredArrayUsingPredicate:v34];
 
       if ([v36 count])
       {
@@ -186,11 +186,11 @@
       {
         v44 = [NSString stringWithFormat:@"Could not find asset with max %@", v31];
         v41 = [NSError alloc];
-        v42 = [(SHFUPlugin *)self errorDomain];
+        errorDomain2 = [(SHFUPlugin *)self errorDomain];
         v45 = NSLocalizedDescriptionKey;
         v46 = v44;
         v43 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-        v22 = [v41 initWithDomain:v42 code:7 userInfo:v43];
+        v22 = [v41 initWithDomain:errorDomain2 code:7 userInfo:v43];
 
         v24 = 0;
       }
@@ -203,27 +203,27 @@
       goto LABEL_7;
     }
 
-    v37 = [(SHFUPlugin *)self compatibilityVersion];
-    v38 = [v37 intValue];
-    v39 = [(SHFUPlugin *)self mobileAssetType];
-    v15 = [NSString stringWithFormat:@"MAQueryResult = %ld. No assets with %@ %d found for domain %@", v13, v10, v38, v39];
+    compatibilityVersion2 = [(SHFUPlugin *)self compatibilityVersion];
+    intValue = [compatibilityVersion2 intValue];
+    mobileAssetType3 = [(SHFUPlugin *)self mobileAssetType];
+    v15 = [NSString stringWithFormat:@"MAQueryResult = %ld. No assets with %@ %d found for domain %@", queryMetaDataSync, v10, intValue, mobileAssetType3];
 
     v40 = [NSError alloc];
-    v17 = [(SHFUPlugin *)self errorDomain];
+    errorDomain = [(SHFUPlugin *)self errorDomain];
     v47 = NSLocalizedDescriptionKey;
     v48 = v15;
     v18 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v19 = v40;
-    v20 = v17;
+    v20 = errorDomain;
     v21 = 2;
   }
 
   v22 = [v19 initWithDomain:v20 code:v21 userInfo:v18];
 
 LABEL_7:
-  if (v6)
+  if (downloadCatalog)
   {
-    v23 = v6;
+    v23 = downloadCatalog;
   }
 
   else
@@ -232,12 +232,12 @@ LABEL_7:
   }
 
   v24 = 0;
-  *a3 = v23;
+  *asset = v23;
 LABEL_11:
-  v25 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+  logHandle4 = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100015FC4(v24, v25);
+    sub_100015FC4(v24, logHandle4);
   }
 
 LABEL_15:
@@ -245,17 +245,17 @@ LABEL_15:
   return v24;
 }
 
-- (void)findFirmwareWithOptions:(id)a3 remote:(BOOL)a4
+- (void)findFirmwareWithOptions:(id)options remote:(BOOL)remote
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  remoteCopy = remote;
+  optionsCopy = options;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100016054();
   }
 
-  if (v4)
+  if (remoteCopy)
   {
     v8 = +[ASAsset nonUserInitiatedDownloadsAllowed]^ 1;
   }
@@ -275,26 +275,26 @@ LABEL_15:
   v13 = 0;
   if (v10 && !v11)
   {
-    v14 = [(SHFUPlugin *)self latestFirmwareVersions];
-    v15 = [v10 attributes];
-    v16 = [v15 objectForKeyedSubscript:@"FirmwareVersions"];
-    [v14 addEntriesFromDictionary:v16];
+    latestFirmwareVersions = [(SHFUPlugin *)self latestFirmwareVersions];
+    attributes = [v10 attributes];
+    v16 = [attributes objectForKeyedSubscript:@"FirmwareVersions"];
+    [latestFirmwareVersions addEntriesFromDictionary:v16];
 
-    v17 = [(SHFUPlugin *)self delegate];
+    delegate = [(SHFUPlugin *)self delegate];
     [(SHFUPlugin *)self batteryCheckDevice];
     v48 = v10;
-    v19 = v18 = v6;
-    v20 = [v19 BOOLValue];
-    v21 = [(SHFUPlugin *)self logHandle];
-    v22 = [(SHFUPlugin *)self options];
-    v23 = [v22 objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
-    v24 = [(SHFUPlugin *)self errorDomain];
+    v19 = v18 = optionsCopy;
+    bOOLValue = [v19 BOOLValue];
+    logHandle2 = [(SHFUPlugin *)self logHandle];
+    options = [(SHFUPlugin *)self options];
+    v23 = [options objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
+    errorDomain = [(SHFUPlugin *)self errorDomain];
     v54 = 0;
-    v25 = [SHFUDevice getDevices:v17 hasPowerSource:v20 logHandle:v21 registryEntryID:v23 errorDomain:v24 error:&v54];
+    v25 = [SHFUDevice getDevices:delegate hasPowerSource:bOOLValue logHandle:logHandle2 registryEntryID:v23 errorDomain:errorDomain error:&v54];
     v12 = v54;
 
     v13 = v25;
-    v6 = v18;
+    optionsCopy = v18;
     v10 = v48;
   }
 
@@ -306,7 +306,7 @@ LABEL_15:
   }
 
   v47 = v13;
-  v49 = v6;
+  v49 = optionsCopy;
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
@@ -336,23 +336,23 @@ LABEL_15:
       v34 = [(SHFUPlugin *)self deviceNeedsUpdate:v33];
       if (v34)
       {
-        v37 = [v10 state];
+        state = [v10 state];
         v12 = 0;
         v26 = 1;
-        if (v37 > 6)
+        if (state > 6)
         {
           v27 = 1;
           goto LABEL_27;
         }
 
         v27 = 1;
-        if (((1 << v37) & 0x6C) == 0)
+        if (((1 << state) & 0x6C) == 0)
         {
           goto LABEL_27;
         }
 
-        v38 = [v10 getLocalUrl];
-        [(SHFUPlugin *)self setFirmwareDirectory:v38];
+        getLocalUrl = [v10 getLocalUrl];
+        [(SHFUPlugin *)self setFirmwareDirectory:getLocalUrl];
         v12 = 0;
 LABEL_26:
 
@@ -361,18 +361,18 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v35 = [(SHFUPlugin *)self latestFirmwareVersions];
-      v36 = [v33 hardwareVersionSupportedBy:v35];
+      latestFirmwareVersions2 = [(SHFUPlugin *)self latestFirmwareVersions];
+      v36 = [v33 hardwareVersionSupportedBy:latestFirmwareVersions2];
 
       if ((v36 & 1) == 0)
       {
-        v38 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Device has HW revision ID %u which does not match FW files", [v33 hardwareVersion]);
+        getLocalUrl = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Device has HW revision ID %u which does not match FW files", [v33 hardwareVersion]);
         v39 = [NSError alloc];
-        v40 = [(SHFUPlugin *)self errorDomain];
+        errorDomain2 = [(SHFUPlugin *)self errorDomain];
         v66 = NSLocalizedDescriptionKey;
-        v67 = v38;
+        v67 = getLocalUrl;
         v41 = [NSDictionary dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-        v12 = [v39 initWithDomain:v40 code:44 userInfo:v41];
+        v12 = [v39 initWithDomain:errorDomain2 code:44 userInfo:v41];
 
         goto LABEL_26;
       }
@@ -393,14 +393,14 @@ LABEL_26:
 LABEL_27:
 
   v13 = v47;
-  v6 = v49;
+  optionsCopy = v49;
 LABEL_28:
-  v42 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+  logHandle3 = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
   {
-    v43 = [(SHFUPlugin *)self targetDevice];
+    targetDevice = [(SHFUPlugin *)self targetDevice];
     *buf = 138413314;
-    v57 = v43;
+    v57 = targetDevice;
     v58 = 1024;
     v59 = v12 == 0;
     v60 = 1024;
@@ -409,11 +409,11 @@ LABEL_28:
     v63 = v26;
     v64 = 2112;
     v65 = v12;
-    _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "findFirmware: target device %@ successful %d updateAvailable %d needsDownload %d error %@", buf, 0x28u);
+    _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "findFirmware: target device %@ successful %d updateAvailable %d needsDownload %d error %@", buf, 0x28u);
   }
 
-  v44 = [(SHFUPlugin *)self delegate];
-  v45 = [(SHFUPlugin *)self pluginInfo];
+  delegate2 = [(SHFUPlugin *)self delegate];
+  pluginInfo = [(SHFUPlugin *)self pluginInfo];
   if (v12)
   {
     v46 = 0;
@@ -424,7 +424,7 @@ LABEL_28:
     v46 = v27;
   }
 
-  [v44 didFind:v12 == 0 info:v45 updateAvailable:v27 needsDownload:v26 error:v12];
+  [delegate2 didFind:v12 == 0 info:pluginInfo updateAvailable:v27 needsDownload:v26 error:v12];
 
   if ((v46 & 1) == 0)
   {
@@ -434,11 +434,11 @@ LABEL_28:
   }
 }
 
-- (void)downloadFirmwareWithOptions:(id)a3
+- (void)downloadFirmwareWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  optionsCopy = options;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100016104();
   }
@@ -467,7 +467,7 @@ LABEL_28:
     v19 = sub_1000142AC;
     v20 = &unk_100024878;
     v24 = &v33;
-    v21 = self;
+    selfCopy = self;
     v22 = v6;
     v25 = &v27;
     v9 = v8;
@@ -479,11 +479,11 @@ LABEL_28:
   v10 = [(SHFUPlugin *)self logHandle:v17];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(SHFUPlugin *)self targetDevice];
+    targetDevice = [(SHFUPlugin *)self targetDevice];
     v12 = *(v34 + 24);
     v13 = v28[5];
     *buf = 138412802;
-    v38 = v11;
+    v38 = targetDevice;
     v39 = 1024;
     v40 = v12;
     v41 = 2112;
@@ -491,10 +491,10 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "downloadFirmware: target device %@ successful %d error %@", buf, 0x1Cu);
   }
 
-  v14 = [(SHFUPlugin *)self delegate];
+  delegate = [(SHFUPlugin *)self delegate];
   v15 = *(v34 + 24);
-  v16 = [(SHFUPlugin *)self pluginInfo];
-  [v14 didDownload:v15 info:v16 error:v28[5]];
+  pluginInfo = [(SHFUPlugin *)self pluginInfo];
+  [delegate didDownload:v15 info:pluginInfo error:v28[5]];
 
   if ((v34[3] & 1) == 0)
   {

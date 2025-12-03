@@ -1,10 +1,10 @@
 @interface __RKWaitAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKWaitAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKWaitAction.copy(with:)(v5);

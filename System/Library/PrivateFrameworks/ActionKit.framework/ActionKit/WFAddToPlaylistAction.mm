@@ -1,49 +1,49 @@
 @interface WFAddToPlaylistAction
 - (id)disabledOnPlatforms;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFAddToPlaylistAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFAddToPlaylistAction *)self parameterValueForKey:@"WFPlaylistName" ofClass:objc_opt_class()];
   v6 = WFPlaylistsMatchingDescriptor(v5);
-  v7 = [v6 firstObject];
-  if (v7 || ([v5 entireMusicLibrary] & 1) != 0)
+  firstObject = [v6 firstObject];
+  if (firstObject || ([v5 entireMusicLibrary] & 1) != 0)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __52__WFAddToPlaylistAction_runAsynchronouslyWithInput___block_invoke;
     v22[3] = &unk_278C22028;
-    v23 = v7;
-    v24 = self;
-    WFAddContentToPlaylist(v23, v4, v22);
+    v23 = firstObject;
+    selfCopy = self;
+    WFAddContentToPlaylist(v23, inputCopy, v22);
     v8 = v23;
   }
 
   else
   {
     v8 = WFLocalizedString(@"Playlist Not Found");
-    v10 = [v5 playlistName];
-    v11 = [v10 length];
+    playlistName = [v5 playlistName];
+    v11 = [playlistName length];
 
     v12 = MEMORY[0x277CCACA8];
     if (v11)
     {
       v13 = WFLocalizedString(@"%1$@ failed because the playlist “%2$@” could not be found.");
-      v14 = [(WFAddToPlaylistAction *)self localizedName];
-      v15 = [v5 playlistName];
-      v16 = [v12 localizedStringWithFormat:v13, v14, v15];
+      localizedName = [(WFAddToPlaylistAction *)self localizedName];
+      playlistName2 = [v5 playlistName];
+      v16 = [v12 localizedStringWithFormat:v13, localizedName, playlistName2];
     }
 
     else
     {
       v13 = WFLocalizedString(@"%1$@ failed because no playlist was specified. Please choose a playlist.");
-      v14 = [(WFAddToPlaylistAction *)self localizedName];
-      v16 = [v12 localizedStringWithFormat:v13, v14];
+      localizedName = [(WFAddToPlaylistAction *)self localizedName];
+      v16 = [v12 localizedStringWithFormat:v13, localizedName];
     }
 
     v17 = MEMORY[0x277CCA9B8];
@@ -108,8 +108,8 @@ void __52__WFAddToPlaylistAction_runAsynchronouslyWithInput___block_invoke(uint6
 {
   v5.receiver = self;
   v5.super_class = WFAddToPlaylistAction;
-  v2 = [(WFAddToPlaylistAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFAddToPlaylistAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

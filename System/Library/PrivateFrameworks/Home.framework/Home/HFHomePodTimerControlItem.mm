@@ -1,61 +1,61 @@
 @interface HFHomePodTimerControlItem
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFHomeKitSettingsValueManager)valueManager;
-- (HFHomePodTimerControlItem)initWithMediaProfileContainer:(id)a3 displayResults:(id)a4;
-- (HFHomePodTimerControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
+- (HFHomePodTimerControlItem)initWithMediaProfileContainer:(id)container displayResults:(id)results;
+- (HFHomePodTimerControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
 - (id)readValueAndPopulateStandardResults;
-- (id)resultsForBatchReadResponse:(id)a3;
+- (id)resultsForBatchReadResponse:(id)response;
 - (unint64_t)hash;
 @end
 
 @implementation HFHomePodTimerControlItem
 
-- (HFHomePodTimerControlItem)initWithMediaProfileContainer:(id)a3 displayResults:(id)a4
+- (HFHomePodTimerControlItem)initWithMediaProfileContainer:(id)container displayResults:(id)results
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 hf_home];
-  if (!v10)
+  containerCopy = container;
+  resultsCopy = results;
+  hf_home = [containerCopy hf_home];
+  if (!hf_home)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HFHomePodTimerControlItem.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomePodTimerControlItem.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
   }
 
   v11 = [HFSimpleAggregatedCharacteristicValueSource alloc];
-  v12 = [v10 hf_characteristicValueManager];
+  hf_characteristicValueManager = [hf_home hf_characteristicValueManager];
   v13 = [MEMORY[0x277CBEB98] set];
-  v14 = [(HFSimpleAggregatedCharacteristicValueSource *)v11 initWithValueSource:v12 characteristics:v13 primaryServiceDescriptor:0];
+  v14 = [(HFSimpleAggregatedCharacteristicValueSource *)v11 initWithValueSource:hf_characteristicValueManager characteristics:v13 primaryServiceDescriptor:0];
 
   v15 = objc_alloc_init(HFControlItemCharacteristicOptions);
   v19.receiver = self;
   v19.super_class = HFHomePodTimerControlItem;
-  v16 = [(HFControlItem *)&v19 initWithValueSource:v14 characteristicOptions:v15 displayResults:v9];
+  v16 = [(HFControlItem *)&v19 initWithValueSource:v14 characteristicOptions:v15 displayResults:resultsCopy];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_mediaProfileContainer, a3);
+    objc_storeStrong(&v16->_mediaProfileContainer, container);
   }
 
   return v16;
 }
 
-- (HFHomePodTimerControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFHomePodTimerControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithMediaProfileContainer_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFHomePodTimerControlItem.m" lineNumber:57 description:{@"%s is unavailable; use %@ instead", "-[HFHomePodTimerControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomePodTimerControlItem.m" lineNumber:57 description:{@"%s is unavailable; use %@ instead", "-[HFHomePodTimerControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
 
   return 0;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFHomePodTimerControlItem *)self mediaProfileContainer];
-  v7 = [(HFControlItem *)self displayResults];
-  v8 = [v5 initWithMediaProfileContainer:v6 displayResults:v7];
+  mediaProfileContainer = [(HFHomePodTimerControlItem *)self mediaProfileContainer];
+  displayResults = [(HFControlItem *)self displayResults];
+  v8 = [v5 initWithMediaProfileContainer:mediaProfileContainer displayResults:displayResults];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
@@ -63,31 +63,31 @@
 
 - (HFHomeKitSettingsValueManager)valueManager
 {
-  v2 = [(HFHomePodTimerControlItem *)self mediaProfileContainer];
-  v3 = [v2 hf_settingsValueManager];
+  mediaProfileContainer = [(HFHomePodTimerControlItem *)self mediaProfileContainer];
+  hf_settingsValueManager = [mediaProfileContainer hf_settingsValueManager];
 
-  return v3;
+  return hf_settingsValueManager;
 }
 
 - (id)readValueAndPopulateStandardResults
 {
   v13.receiver = self;
   v13.super_class = HFHomePodTimerControlItem;
-  v3 = [(HFControlItem *)&v13 readValueAndPopulateStandardResults];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(HFHomePodTimerControlItem *)self mediaProfileContainer];
-  v6 = [v5 hf_dependentHomeKitObjectsForDownstreamItems];
-  v7 = [v6 mutableCopy];
+  readValueAndPopulateStandardResults = [(HFControlItem *)&v13 readValueAndPopulateStandardResults];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  mediaProfileContainer = [(HFHomePodTimerControlItem *)self mediaProfileContainer];
+  hf_dependentHomeKitObjectsForDownstreamItems = [mediaProfileContainer hf_dependentHomeKitObjectsForDownstreamItems];
+  v7 = [hf_dependentHomeKitObjectsForDownstreamItems mutableCopy];
 
-  [v4 na_safeSetObject:v7 forKey:@"dependentHomeKitObjects"];
-  [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"actionRequiresDeviceUnlock"];
+  [dictionary na_safeSetObject:v7 forKey:@"dependentHomeKitObjects"];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"actionRequiresDeviceUnlock"];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__HFHomePodTimerControlItem_readValueAndPopulateStandardResults__block_invoke;
   v11[3] = &unk_277DF3FD0;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v3 flatMap:v11];
+  v12 = dictionary;
+  v8 = dictionary;
+  v9 = [readValueAndPopulateStandardResults flatMap:v11];
 
   return v9;
 }
@@ -101,23 +101,23 @@ id __64__HFHomePodTimerControlItem_readValueAndPopulateStandardResults__block_in
   return v4;
 }
 
-- (id)resultsForBatchReadResponse:(id)a3
+- (id)resultsForBatchReadResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v13.receiver = self;
   v13.super_class = HFHomePodTimerControlItem;
-  v5 = [(HFControlItem *)&v13 resultsForBatchReadResponse:v4];
+  v5 = [(HFControlItem *)&v13 resultsForBatchReadResponse:responseCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(HFHomePodTimerControlItem *)self mediaProfileContainer];
-  LOBYTE(v5) = [v7 hf_isReachable];
+  mediaProfileContainer = [(HFHomePodTimerControlItem *)self mediaProfileContainer];
+  LOBYTE(v5) = [mediaProfileContainer hf_isReachable];
 
   if ((v5 & 1) == 0)
   {
     v8 = [MEMORY[0x277CCA9B8] hf_errorWithCode:35];
     v9 = [MEMORY[0x277CBEB98] set];
-    v10 = [v4 contextProvider];
-    v11 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v8 readTraits:v9 contextProvider:v10];
+    contextProvider = [responseCopy contextProvider];
+    v11 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v8 readTraits:v9 contextProvider:contextProvider];
 
     [v6 na_safeSetObject:v11 forKey:@"underlyingError"];
   }
@@ -154,19 +154,19 @@ id __40__HFHomePodTimerControlItem_na_identity__block_invoke_3(uint64_t a1, void
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

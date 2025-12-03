@@ -3,7 +3,7 @@
 - (UIEdgeInsets)sectionSpacing;
 - (UIEdgeInsets)showcaseSectionSpacing;
 - (id)debugDescription;
-- (void)setCompoundRowMetrics:(TVRowMetrics *)a3;
+- (void)setCompoundRowMetrics:(TVRowMetrics *)metrics;
 @end
 
 @implementation _TVStackSection
@@ -43,13 +43,13 @@
   return self;
 }
 
-- (void)setCompoundRowMetrics:(TVRowMetrics *)a3
+- (void)setCompoundRowMetrics:(TVRowMetrics *)metrics
 {
-  *&self->_compoundRowMetrics.rowType = *&a3->rowType;
-  rowPadding = a3->rowPadding;
-  rowInset = a3->rowInset;
-  rowMargin = a3->rowMargin;
-  self->_compoundRowMetrics.rowInsetAlt = a3->rowInsetAlt;
+  *&self->_compoundRowMetrics.rowType = *&metrics->rowType;
+  rowPadding = metrics->rowPadding;
+  rowInset = metrics->rowInset;
+  rowMargin = metrics->rowMargin;
+  self->_compoundRowMetrics.rowInsetAlt = metrics->rowInsetAlt;
   self->_compoundRowMetrics.rowMargin = rowMargin;
   self->_compoundRowMetrics.rowPadding = rowPadding;
   self->_compoundRowMetrics.rowInset = rowInset;

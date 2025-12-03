@@ -1,47 +1,47 @@
 @interface CRFormAddTextBasedDetectionFieldsStep
-- (id)findMatchesForPattern:(id)a3 fields:(id)a4 lines:(id)a5;
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6;
-- (id)rectangleEstimatesForPatternFields:(id)a3 matching:(id)a4 recognizedTextLines:(id)a5;
-- (void)resolveAssignmentForPatternFields:(id)a3 matching:(id)a4 estimates:(id)a5 recognizedTextLines:(id)a6 detectedFields:(id)a7 outNewFields:(id *)a8 outFieldsToDelete:(id *)a9 normalizationSize:(CGSize)a10;
+- (id)findMatchesForPattern:(id)pattern fields:(id)fields lines:(id)lines;
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options;
+- (id)rectangleEstimatesForPatternFields:(id)fields matching:(id)matching recognizedTextLines:(id)lines;
+- (void)resolveAssignmentForPatternFields:(id)fields matching:(id)matching estimates:(id)estimates recognizedTextLines:(id)lines detectedFields:(id)detectedFields outNewFields:(id *)newFields outFieldsToDelete:(id *)delete normalizationSize:(CGSize)self0;
 @end
 
 @implementation CRFormAddTextBasedDetectionFieldsStep
 
-- (id)findMatchesForPattern:(id)a3 fields:(id)a4 lines:(id)a5
+- (id)findMatchesForPattern:(id)pattern fields:(id)fields lines:(id)lines
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v7 = a4;
-  v29 = a5;
-  v27 = [MEMORY[0x1E695DF70] array];
+  patternCopy = pattern;
+  fieldsCopy = fields;
+  linesCopy = lines;
+  array = [MEMORY[0x1E695DF70] array];
   v8 = 0;
-  v28 = [v7 count];
+  v28 = [fieldsCopy count];
   v9 = v28 >> 1;
-  while (v8 < [v29 count])
+  while (v8 < [linesCopy count])
   {
-    v10 = [v29 objectAtIndexedSubscript:v8];
+    v10 = [linesCopy objectAtIndexedSubscript:v8];
     if (v28 >= 2)
     {
       v12 = 0;
       v11 = 0;
       do
       {
-        v13 = [v10 children];
-        v14 = v11 + v12 < [v13 count];
+        children = [v10 children];
+        v14 = v11 + v12 < [children count];
 
         if (!v14)
         {
           break;
         }
 
-        v15 = [v10 children];
-        v16 = [v15 objectAtIndexedSubscript:v11 + v12];
+        children2 = [v10 children];
+        v16 = [children2 objectAtIndexedSubscript:v11 + v12];
 
-        v17 = [v16 text];
-        v18 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v19 = [v17 stringByTrimmingCharactersInSet:v18];
+        text = [v16 text];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v19 = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-        v20 = [v7 objectAtIndexedSubscript:(2 * v12) | 1];
+        v20 = [fieldsCopy objectAtIndexedSubscript:(2 * v12) | 1];
         v21 = [v19 isEqualToString:v20];
         if (v21)
         {
@@ -72,35 +72,35 @@
       v23 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
       v30[1] = v23;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
-      [v27 addObject:v24];
+      [array addObject:v24];
     }
 
     ++v8;
   }
 
-  return v27;
+  return array;
 }
 
-- (id)rectangleEstimatesForPatternFields:(id)a3 matching:(id)a4 recognizedTextLines:(id)a5
+- (id)rectangleEstimatesForPatternFields:(id)fields matching:(id)matching recognizedTextLines:(id)lines
 {
-  v7 = a3;
-  v8 = a4;
-  v110 = a5;
+  fieldsCopy = fields;
+  matchingCopy = matching;
+  linesCopy = lines;
   [MEMORY[0x1E695DF70] array];
-  v111 = v7;
-  v108 = v107 = v8;
-  v9 = [v7 count];
-  v10 = [v8 objectAtIndexedSubscript:0];
-  v109 = [v10 integerValue];
+  v111 = fieldsCopy;
+  v108 = v107 = matchingCopy;
+  v9 = [fieldsCopy count];
+  v10 = [matchingCopy objectAtIndexedSubscript:0];
+  integerValue = [v10 integerValue];
 
-  v11 = [v8 objectAtIndexedSubscript:1];
-  v12 = [v11 integerValue];
+  v11 = [matchingCopy objectAtIndexedSubscript:1];
+  integerValue2 = [v11 integerValue];
   v13 = v9 >> 1;
 
   v101 = v9;
   if (v9 >= 2)
   {
-    v17 = v12;
+    v17 = integerValue2;
     v18 = 0;
     v19 = 0;
     v20 = 0;
@@ -111,61 +111,61 @@
     v22 = 1;
     do
     {
-      v23 = [v110 objectAtIndexedSubscript:{v109, v101}];
-      v24 = [v23 children];
-      v25 = [v24 objectAtIndexedSubscript:v17];
-      v26 = [v25 boundingQuad];
+      v23 = [linesCopy objectAtIndexedSubscript:{integerValue, v101}];
+      children = [v23 children];
+      v25 = [children objectAtIndexedSubscript:v17];
+      boundingQuad = [v25 boundingQuad];
 
-      [v26 size];
+      [boundingQuad size];
       v28 = v27;
       if (v18)
       {
         v29 = [v111 objectAtIndexedSubscript:v22 - 1];
-        v30 = [v29 intValue];
+        intValue = [v29 intValue];
 
         v31 = [v111 objectAtIndexedSubscript:v22];
-        v20 += v30 + [v31 length];
+        v20 += intValue + [v31 length];
       }
 
       v16 = v16 + v28;
       v22 += 2;
       --v18;
       ++v17;
-      v19 = v26;
+      v19 = boundingQuad;
     }
 
     while (v21 != v18);
     v15 = v20;
-    v14 = v26;
+    boundingQuad6 = boundingQuad;
     v13 = v103;
-    v12 = v105;
+    integerValue2 = v105;
   }
 
   else
   {
-    v14 = 0;
+    boundingQuad6 = 0;
     v15 = 0.0;
     v16 = 0.0;
   }
 
-  v32 = [v110 objectAtIndexedSubscript:{v109, v101}];
-  v33 = [v32 boundingQuad];
-  [v33 normalizationSize];
+  v32 = [linesCopy objectAtIndexedSubscript:{integerValue, v101}];
+  boundingQuad2 = [v32 boundingQuad];
+  [boundingQuad2 normalizationSize];
   v35 = v34;
   v37 = v36;
 
-  v38 = [v110 objectAtIndexedSubscript:v109];
-  v39 = [v38 children];
-  v104 = v12 + v13;
-  v106 = [v39 objectAtIndexedSubscript:v12 + v13 - 1];
-  v40 = [v106 boundingQuad];
-  [v40 boundingBox];
+  v38 = [linesCopy objectAtIndexedSubscript:integerValue];
+  children2 = [v38 children];
+  v104 = integerValue2 + v13;
+  v106 = [children2 objectAtIndexedSubscript:integerValue2 + v13 - 1];
+  boundingQuad3 = [v106 boundingQuad];
+  [boundingQuad3 boundingBox];
   MaxX = CGRectGetMaxX(v120);
-  v42 = [v110 objectAtIndexedSubscript:v109];
-  v43 = [v42 children];
-  v44 = [v43 objectAtIndexedSubscript:v12];
-  v45 = [v44 boundingQuad];
-  [v45 boundingBox];
+  v42 = [linesCopy objectAtIndexedSubscript:integerValue];
+  children3 = [v42 children];
+  v44 = [children3 objectAtIndexedSubscript:integerValue2];
+  boundingQuad4 = [v44 boundingQuad];
+  [boundingQuad4 boundingBox];
   v46 = v16 / v13;
   v47 = MaxX - CGRectGetMinX(v121);
 
@@ -177,31 +177,31 @@
     goto LABEL_30;
   }
 
-  if (v12 < 1)
+  if (integerValue2 < 1)
   {
     v55 = 0.0;
   }
 
   else
   {
-    v51 = [v110 objectAtIndexedSubscript:v109];
-    v52 = [v51 children];
-    v53 = [v52 objectAtIndexedSubscript:v12 - 1];
-    v54 = [v53 boundingQuad];
-    [v54 boundingBox];
+    v51 = [linesCopy objectAtIndexedSubscript:integerValue];
+    children4 = [v51 children];
+    v53 = [children4 objectAtIndexedSubscript:integerValue2 - 1];
+    boundingQuad5 = [v53 boundingQuad];
+    [boundingQuad5 boundingBox];
     v55 = CGRectGetMaxX(v122);
   }
 
   if (v102 >= 2)
   {
     v56 = 0;
-    v57 = v14;
+    v57 = boundingQuad6;
     do
     {
-      v58 = [v110 objectAtIndexedSubscript:v109];
-      v59 = [v58 children];
-      v60 = [v59 objectAtIndexedSubscript:v12];
-      v14 = [v60 boundingQuad];
+      v58 = [linesCopy objectAtIndexedSubscript:integerValue];
+      children5 = [v58 children];
+      v60 = [children5 objectAtIndexedSubscript:integerValue2];
+      boundingQuad6 = [v60 boundingQuad];
 
       v61 = [v111 objectAtIndexedSubscript:v56];
       LODWORD(v60) = [v61 intValue];
@@ -218,27 +218,27 @@
       else
       {
         v62 = [v111 objectAtIndexedSubscript:v56];
-        v63 = [v62 intValue];
+        intValue2 = [v62 intValue];
 
-        [v14 topLeft];
-        v64 = v48 * v63;
+        [boundingQuad6 topLeft];
+        v64 = v48 * intValue2;
         if (v65 - v64 >= v55)
         {
-          [v14 topLeft];
+          [boundingQuad6 topLeft];
           v70 = v69;
-          [v14 topLeft];
+          [boundingQuad6 topLeft];
           v72 = v71;
           v73 = v70 - v64;
           *v118 = v73;
           *&v118[1] = v71;
-          *&v118[2] = v48 * v63;
+          *&v118[2] = v48 * intValue2;
           *&v118[3] = v46;
           v74 = [MEMORY[0x1E696B098] valueWithBytes:v118 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
           [v108 addObject:v74];
 
           v123.origin.x = v73;
           v123.origin.y = v72;
-          v123.size.width = v48 * v63;
+          v123.size.width = v48 * intValue2;
           v123.size.height = v46;
           v55 = CGRectGetMaxX(v123);
           goto LABEL_21;
@@ -253,7 +253,7 @@
 
 LABEL_21:
       v75 = MEMORY[0x1E696B098];
-      [v14 boundingBox];
+      [boundingQuad6 boundingBox];
       v115[0] = v76;
       v115[1] = v77;
       v115[2] = v78;
@@ -262,33 +262,33 @@ LABEL_21:
       [v108 addObject:v80];
 
       v56 += 2;
-      ++v12;
-      v57 = v14;
+      ++integerValue2;
+      v57 = boundingQuad6;
       --v13;
     }
 
     while (v13);
   }
 
-  v81 = [v110 objectAtIndexedSubscript:v109];
-  v82 = [v81 children];
-  v83 = [v82 count];
+  v81 = [linesCopy objectAtIndexedSubscript:integerValue];
+  children6 = [v81 children];
+  v83 = [children6 count];
 
   MinX = 1.0;
   if (v104 < v83)
   {
-    v85 = [v110 objectAtIndexedSubscript:v109];
-    v86 = [v85 children];
-    v87 = [v86 objectAtIndexedSubscript:v104];
-    v88 = [v87 boundingQuad];
-    [v88 boundingBox];
+    v85 = [linesCopy objectAtIndexedSubscript:integerValue];
+    children7 = [v85 children];
+    v87 = [children7 objectAtIndexedSubscript:v104];
+    boundingQuad7 = [v87 boundingQuad];
+    [boundingQuad7 boundingBox];
     MinX = CGRectGetMinX(v124);
   }
 
-  v89 = [v111 lastObject];
-  v90 = [v89 intValue];
+  lastObject = [v111 lastObject];
+  intValue3 = [lastObject intValue];
 
-  if (v90 < 1)
+  if (intValue3 < 1)
   {
     v96 = *(MEMORY[0x1E695F058] + 16);
     v112[0] = *MEMORY[0x1E695F058];
@@ -299,18 +299,18 @@ LABEL_21:
 
   else
   {
-    v91 = [v111 lastObject];
-    v92 = [v91 intValue];
+    lastObject2 = [v111 lastObject];
+    intValue4 = [lastObject2 intValue];
 
-    [v14 topRight];
-    if (v48 * v92 + v93 <= MinX)
+    [boundingQuad6 topRight];
+    if (v48 * intValue4 + v93 <= MinX)
     {
-      [v14 topRight];
+      [boundingQuad6 topRight];
       v98 = v97;
-      [v14 topRight];
+      [boundingQuad6 topRight];
       v114[0] = v98;
       v114[1] = v99;
-      *&v114[2] = v48 * v92;
+      *&v114[2] = v48 * intValue4;
       *&v114[3] = v46;
       v95 = [MEMORY[0x1E696B098] valueWithBytes:v114 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
       [v108 addObject:v95];
@@ -333,26 +333,26 @@ LABEL_30:
   return v49;
 }
 
-- (void)resolveAssignmentForPatternFields:(id)a3 matching:(id)a4 estimates:(id)a5 recognizedTextLines:(id)a6 detectedFields:(id)a7 outNewFields:(id *)a8 outFieldsToDelete:(id *)a9 normalizationSize:(CGSize)a10
+- (void)resolveAssignmentForPatternFields:(id)fields matching:(id)matching estimates:(id)estimates recognizedTextLines:(id)lines detectedFields:(id)detectedFields outNewFields:(id *)newFields outFieldsToDelete:(id *)delete normalizationSize:(CGSize)self0
 {
-  height = a10.height;
-  width = a10.width;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v50 = a7;
-  v48 = v16;
-  v20 = [v16 count];
-  v21 = v17;
-  v22 = [v17 objectAtIndexedSubscript:0];
-  v23 = [v22 integerValue];
+  height = size.height;
+  width = size.width;
+  fieldsCopy = fields;
+  matchingCopy = matching;
+  estimatesCopy = estimates;
+  linesCopy = lines;
+  detectedFieldsCopy = detectedFields;
+  v48 = fieldsCopy;
+  v20 = [fieldsCopy count];
+  v21 = matchingCopy;
+  v22 = [matchingCopy objectAtIndexedSubscript:0];
+  integerValue = [v22 integerValue];
   v24 = v20 >> 1;
 
   v25 = 0;
   do
   {
-    v26 = [v18 objectAtIndexedSubscript:2 * v25];
+    v26 = [estimatesCopy objectAtIndexedSubscript:2 * v25];
     [v26 rectValue];
     v28 = v27;
     v30 = v29;
@@ -374,16 +374,16 @@ LABEL_30:
       *&v51[5] = v30;
       *&v51[6] = v32;
       *&v51[7] = v34;
-      v51[8] = a9;
-      if ([v50 indexOfObjectPassingTest:v51] == 0x7FFFFFFFFFFFFFFFLL)
+      v51[8] = delete;
+      if ([detectedFieldsCopy indexOfObjectPassingTest:v51] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        for (i = 0; i < [v19 count]; ++i)
+        for (i = 0; i < [linesCopy count]; ++i)
         {
-          if (v23 != i)
+          if (integerValue != i)
           {
-            v37 = [v19 objectAtIndexedSubscript:i];
-            v38 = [v37 boundingQuad];
-            [v38 boundingBox];
+            v37 = [linesCopy objectAtIndexedSubscript:i];
+            boundingQuad = [v37 boundingQuad];
+            [boundingQuad boundingBox];
             v54.origin.x = v39;
             v54.origin.y = v40;
             v54.size.width = v41;
@@ -401,10 +401,10 @@ LABEL_30:
           }
         }
 
-        v44 = [[CRNormalizedQuad alloc] initWithNormalizedBoundingBox:v28 size:v30, v32, v34, width, height];
+        height = [[CRNormalizedQuad alloc] initWithNormalizedBoundingBox:v28 size:v30, v32, v34, width, height];
         LOBYTE(v47) = 0;
-        v45 = [[CRFormTextFieldOutputRegion alloc] initWithQuad:v44 labelRegion:0 subFields:0 contentType:0 source:1 hasBoundedWidth:0 hasBoundedHeight:v47];
-        [*a8 addObject:v45];
+        v45 = [[CRFormTextFieldOutputRegion alloc] initWithQuad:height labelRegion:0 subFields:0 contentType:0 source:1 hasBoundedWidth:0 hasBoundedHeight:v47];
+        [*newFields addObject:v45];
       }
     }
 
@@ -445,13 +445,13 @@ uint64_t __178__CRFormAddTextBasedDetectionFieldsStep_resolveAssignmentForPatter
   return v14 & 1;
 }
 
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options
 {
   v39 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v32 = a4;
-  v36 = a5;
-  v33 = a6;
+  processCopy = process;
+  fieldsCopy = fields;
+  documentCopy = document;
+  optionsCopy = options;
   v10 = CROSLogForCategory(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -462,27 +462,27 @@ uint64_t __178__CRFormAddTextBasedDetectionFieldsStep_resolveAssignmentForPatter
     _os_log_impl(&dword_1B40D2000, v10, OS_LOG_TYPE_DEBUG, "CRFormPostProcessor: %s is running.", buf, 0xCu);
   }
 
-  v13 = [v36 contentsWithTypes:8];
+  v13 = [documentCopy contentsWithTypes:8];
   *buf = [MEMORY[0x1E695DF70] array];
-  v37 = [MEMORY[0x1E695DF70] array];
-  v14 = [v36 text];
-  v15 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v16 = [v14 componentsSeparatedByCharactersInSet:v15];
+  array = [MEMORY[0x1E695DF70] array];
+  text = [documentCopy text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v16 = [text componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
   v34 = [v16 componentsJoinedByString:&stru_1F2BB4348];
 
   for (i = 0; ; i = v19 + 1)
   {
-    v18 = [&unk_1F2BFB218 allKeys];
+    allKeys = [&unk_1F2BFB218 allKeys];
     v19 = i;
-    v20 = i < [v18 count];
+    v20 = i < [allKeys count];
 
     if (!v20)
     {
       break;
     }
 
-    v21 = [&unk_1F2BFB218 allKeys];
-    v22 = [v21 objectAtIndexedSubscript:v19];
+    allKeys2 = [&unk_1F2BFB218 allKeys];
+    v22 = [allKeys2 objectAtIndexedSubscript:v19];
 
     v23 = [&unk_1F2BFB218 objectForKeyedSubscript:v22];
     if ([v34 containsString:v22])
@@ -496,24 +496,24 @@ uint64_t __178__CRFormAddTextBasedDetectionFieldsStep_resolveAssignmentForPatter
         if ([v27 count])
         {
           v28 = [v24 objectAtIndexedSubscript:j];
-          v29 = [v36 boundingQuad];
-          [v29 normalizationSize];
-          [(CRFormAddTextBasedDetectionFieldsStep *)self resolveAssignmentForPatternFields:v23 matching:v28 estimates:v27 recognizedTextLines:v13 detectedFields:v35 outNewFields:&v37 outFieldsToDelete:buf normalizationSize:?];
+          boundingQuad = [documentCopy boundingQuad];
+          [boundingQuad normalizationSize];
+          [(CRFormAddTextBasedDetectionFieldsStep *)self resolveAssignmentForPatternFields:v23 matching:v28 estimates:v27 recognizedTextLines:v13 detectedFields:processCopy outNewFields:&array outFieldsToDelete:buf normalizationSize:?];
         }
       }
     }
   }
 
-  if ([*buf count] || objc_msgSend(v37, "count"))
+  if ([*buf count] || objc_msgSend(array, "count"))
   {
-    v30 = [v35 mutableCopy];
+    v30 = [processCopy mutableCopy];
     [v30 removeObjectsInArray:*buf];
-    [v30 addObjectsFromArray:v37];
+    [v30 addObjectsFromArray:array];
   }
 
   else
   {
-    v30 = v35;
+    v30 = processCopy;
   }
 
   return v30;

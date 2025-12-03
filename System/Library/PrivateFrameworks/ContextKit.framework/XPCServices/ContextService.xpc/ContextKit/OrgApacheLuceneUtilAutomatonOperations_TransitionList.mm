@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneUtilAutomatonOperations_TransitionList
-- (void)addWithOrgApacheLuceneUtilAutomatonTransition:(id)a3;
+- (void)addWithOrgApacheLuceneUtilAutomatonTransition:(id)transition;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonOperations_TransitionList
 
-- (void)addWithOrgApacheLuceneUtilAutomatonTransition:(id)a3
+- (void)addWithOrgApacheLuceneUtilAutomatonTransition:(id)transition
 {
   p_transitions = &self->transitions_;
   transitions = self->transitions_;
@@ -17,11 +17,11 @@
   v12 = self->next_ + 3;
   if (transitions[2] < v12)
   {
-    v13 = OrgApacheLuceneUtilArrayUtil_growWithIntArray_withInt_(transitions, v12, a3, v3, v4, v5, v6, v7);
+    v13 = OrgApacheLuceneUtilArrayUtil_growWithIntArray_withInt_(transitions, v12, transition, v3, v4, v5, v6, v7);
     JreStrongAssign(p_transitions, v13);
   }
 
-  if (!a3 || (v14 = *p_transitions) == 0)
+  if (!transition || (v14 = *p_transitions) == 0)
   {
 LABEL_13:
     JreThrowNullPointerException();
@@ -34,7 +34,7 @@ LABEL_13:
     IOSArray_throwOutOfBoundsWithMsg(size, next);
   }
 
-  *(&v14->super.size_ + next + 1) = *(a3 + 3);
+  *(&v14->super.size_ + next + 1) = *(transition + 3);
   v17 = self->transitions_;
   v18 = v17->super.size_;
   v19 = self->next_ + 1;
@@ -43,8 +43,8 @@ LABEL_13:
     IOSArray_throwOutOfBoundsWithMsg(v18, v19);
   }
 
-  *(&v17->super.size_ + v19 + 1) = *(a3 + 4);
-  v20 = *(a3 + 5);
+  *(&v17->super.size_ + v19 + 1) = *(transition + 4);
+  v20 = *(transition + 5);
   v21 = self->transitions_;
   v22 = self->next_;
   v23 = v21->super.size_;

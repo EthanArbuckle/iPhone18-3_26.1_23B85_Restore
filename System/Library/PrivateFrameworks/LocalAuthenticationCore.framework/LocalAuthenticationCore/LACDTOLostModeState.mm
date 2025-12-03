@@ -1,25 +1,25 @@
 @interface LACDTOLostModeState
 + (id)nullInstance;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValid:(id)a3;
-- (LACDTOLostModeState)initWithIsInLostMode:(BOOL)a3 confirmed:(BOOL)a4 createdAt:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValid:(id)valid;
+- (LACDTOLostModeState)initWithIsInLostMode:(BOOL)mode confirmed:(BOOL)confirmed createdAt:(id)at;
 - (id)description;
 @end
 
 @implementation LACDTOLostModeState
 
-- (LACDTOLostModeState)initWithIsInLostMode:(BOOL)a3 confirmed:(BOOL)a4 createdAt:(id)a5
+- (LACDTOLostModeState)initWithIsInLostMode:(BOOL)mode confirmed:(BOOL)confirmed createdAt:(id)at
 {
-  v9 = a5;
+  atCopy = at;
   v13.receiver = self;
   v13.super_class = LACDTOLostModeState;
   v10 = [(LACDTOLostModeState *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_isInLostMode = a3;
-    objc_storeStrong(&v10->_createdAt, a5);
-    v11->_confirmed = a4;
+    v10->_isInLostMode = mode;
+    objc_storeStrong(&v10->_createdAt, at);
+    v11->_confirmed = confirmed;
   }
 
   return v11;
@@ -32,12 +32,12 @@
   return v2;
 }
 
-- (BOOL)isValid:(id)a3
+- (BOOL)isValid:(id)valid
 {
-  v4 = a3;
-  if (self->_confirmed && [(NSDate *)self->_createdAt compare:v4]!= NSOrderedDescending)
+  validCopy = valid;
+  if (self->_confirmed && [(NSDate *)self->_createdAt compare:validCopy]!= NSOrderedDescending)
   {
-    v6 = [v4 timeIntervalSinceDate:self->_createdAt];
+    v6 = [validCopy timeIntervalSinceDate:self->_createdAt];
     v5 = v7 <= LACDTOLostModeStateMaxAgeSeconds(v6);
   }
 
@@ -49,19 +49,19 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 isInLostMode];
-    if (v6 == -[LACDTOLostModeState isInLostMode](self, "isInLostMode") && (v7 = [v5 confirmed], v7 == -[LACDTOLostModeState confirmed](self, "confirmed")))
+    v5 = equalCopy;
+    isInLostMode = [v5 isInLostMode];
+    if (isInLostMode == -[LACDTOLostModeState isInLostMode](self, "isInLostMode") && (v7 = [v5 confirmed], v7 == -[LACDTOLostModeState confirmed](self, "confirmed")))
     {
-      v9 = [v5 createdAt];
-      v10 = [(LACDTOLostModeState *)self createdAt];
-      v8 = v9 == v10;
+      createdAt = [v5 createdAt];
+      createdAt2 = [(LACDTOLostModeState *)self createdAt];
+      v8 = createdAt == createdAt2;
     }
 
     else
@@ -114,12 +114,12 @@
     v28 = [v9 stringWithFormat:@"confirmed: %@", v10];
     v30[1] = v28;
     v11 = MEMORY[0x1E696AEC0];
-    v27 = [(LACDTOLostModeState *)self createdAt];
-    v26 = [v11 stringWithFormat:@"createdAt: %@", v27];
+    createdAt = [(LACDTOLostModeState *)self createdAt];
+    v26 = [v11 stringWithFormat:@"createdAt: %@", createdAt];
     v30[2] = v26;
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(LACDTOLostModeState *)self createdAt];
-    [v13 timeIntervalSince1970];
+    createdAt2 = [(LACDTOLostModeState *)self createdAt];
+    [createdAt2 timeIntervalSince1970];
     v15 = [v12 stringWithFormat:@"createdAtTimestamp: %.2f", v14];
     v30[3] = v15;
     v16 = MEMORY[0x1E696AEC0];

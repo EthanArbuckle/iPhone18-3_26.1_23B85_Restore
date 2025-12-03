@@ -1,17 +1,17 @@
 @interface COSPairingController
 - (COSPairingController)init;
-- (id)selectSpecifier:(id)a3;
-- (void)_startSpinnerInSpecifier:(id)a3;
+- (id)selectSpecifier:(id)specifier;
+- (void)_startSpinnerInSpecifier:(id)specifier;
 - (void)_stopSpinnerInActiveSpecifier;
 - (void)cancelledUnpair;
-- (void)confirmUnpairingForSpecifier:(id)a3;
-- (void)confirmUnpairingMissingForSpecifier:(id)a3;
-- (void)confirmedUnpairAndMarkAsMissing:(BOOL)a3;
-- (void)enableDisableUnpairButton:(unint64_t)a3;
-- (void)handleUnpairNotification:(id)a3;
+- (void)confirmUnpairingForSpecifier:(id)specifier;
+- (void)confirmUnpairingMissingForSpecifier:(id)specifier;
+- (void)confirmedUnpairAndMarkAsMissing:(BOOL)missing;
+- (void)enableDisableUnpairButton:(unint64_t)button;
+- (void)handleUnpairNotification:(id)notification;
 - (void)jumpToFindMyApp;
-- (void)nanoRegistryStatusChanged:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)nanoRegistryStatusChanged:(id)changed;
+- (void)setSpecifier:(id)specifier;
 - (void)tinkeriForgot;
 @end
 
@@ -34,45 +34,45 @@
   return v2;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setProperty:v6 forKey:PSDataSourceClassKey];
+  [specifierCopy setProperty:v6 forKey:PSDataSourceClassKey];
 
   v24.receiver = self;
   v24.super_class = COSPairingController;
-  [(COSPairingController *)&v24 setSpecifier:v4];
+  [(COSPairingController *)&v24 setSpecifier:specifierCopy];
   v7 = [*&self->BPSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"COSAssociatedDevice"];
   device = self->_device;
   self->_device = v7;
 
-  v9 = [(COSPairingController *)self navigationItem];
+  navigationItem = [(COSPairingController *)self navigationItem];
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"TITLE" value:&stru_10026E598 table:@"Pairing"];
-  [v9 setTitle:v11];
+  [navigationItem setTitle:v11];
 
-  v12 = [(COSPairingController *)self device];
-  v13 = [v12 valueForProperty:NRDevicePropertyIsAltAccount];
+  device = [(COSPairingController *)self device];
+  v13 = [device valueForProperty:NRDevicePropertyIsAltAccount];
   LODWORD(v11) = [v13 BOOLValue];
 
   if (v11)
   {
-    v14 = [(COSPairingController *)self aboutDataSource];
-    [v14 setTinkerDevice:1];
+    aboutDataSource = [(COSPairingController *)self aboutDataSource];
+    [aboutDataSource setTinkerDevice:1];
 
-    v15 = [(COSPairingController *)self device];
+    device2 = [(COSPairingController *)self device];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1001149C0;
     v23[3] = &unk_100269680;
     v23[4] = self;
-    [BPSAppleIDDevices fetchFamilyMemberForDevice:v15 withCompletion:v23];
+    [BPSAppleIDDevices fetchFamilyMemberForDevice:device2 withCompletion:v23];
   }
 
-  v16 = [(COSPairingController *)self device];
-  if (sub_10002D18C(v16))
+  device3 = [(COSPairingController *)self device];
+  if (sub_10002D18C(device3))
   {
     v17 = +[COSFindMyController isDeviceLocatorEnabled];
 
@@ -81,39 +81,39 @@
       goto LABEL_7;
     }
 
-    v18 = [(COSPairingController *)self device];
-    v16 = [v18 valueForProperty:NRDevicePropertyUDID];
+    device4 = [(COSPairingController *)self device];
+    device3 = [device4 valueForProperty:NRDevicePropertyUDID];
 
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100114AAC;
     v22[3] = &unk_100269800;
     v22[4] = self;
-    [COSFindMyController allowsMarkAsMissingForUDID:v16 completion:v22];
+    [COSFindMyController allowsMarkAsMissingForUDID:device3 completion:v22];
   }
 
 LABEL_7:
-  v19 = [v4 propertyForKey:@"COSDeviceState"];
-  v20 = [v19 integerValue];
+  v19 = [specifierCopy propertyForKey:@"COSDeviceState"];
+  integerValue = [v19 integerValue];
 
-  if ((v20 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v21 = [(COSPairingController *)self aboutDataSource];
-    [v21 setMigrationDevice:1];
+    aboutDataSource2 = [(COSPairingController *)self aboutDataSource];
+    [aboutDataSource2 setMigrationDevice:1];
   }
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = COSPairingController;
-  v4 = [(COSPairingController *)&v8 selectSpecifier:a3];
+  v4 = [(COSPairingController *)&v8 selectSpecifier:specifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v5 = v4;
-    v6 = [(COSPairingController *)self device];
-    [v5 setDevice:v6];
+    device = [(COSPairingController *)self device];
+    [v5 setDevice:device];
   }
 
   return v4;
@@ -128,10 +128,10 @@ LABEL_7:
   BPSOpenSensitiveURLAsync();
 }
 
-- (void)confirmUnpairingMissingForSpecifier:(id)a3
+- (void)confirmUnpairingMissingForSpecifier:(id)specifier
 {
-  objc_storeStrong(&self->_specifierBeingConfirmed, a3);
-  v17 = a3;
+  objc_storeStrong(&self->_specifierBeingConfirmed, specifier);
+  specifierCopy = specifier;
   v16 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyName];
   v5 = objc_alloc_init(PSConfirmationSpecifier);
   v18[0] = PSConfirmationTitleKey;
@@ -172,15 +172,15 @@ LABEL_7:
   }
 
   v4 = objc_alloc_init(AKAppleIDAuthenticationInAppContext);
-  v5 = [(COSPairingController *)self aboutDataSource];
-  v6 = [v5 deviceUser];
+  aboutDataSource = [(COSPairingController *)self aboutDataSource];
+  deviceUser = [aboutDataSource deviceUser];
 
-  v7 = [v6 appleID];
+  appleID = [deviceUser appleID];
 
-  if (v7)
+  if (appleID)
   {
-    v8 = [v6 appleID];
-    [v4 setUsername:v8];
+    appleID2 = [deviceUser appleID];
+    [v4 setUsername:appleID2];
   }
 
   [v4 setIsUsernameEditable:1];
@@ -199,15 +199,15 @@ LABEL_7:
   [(AKAppleIDAuthenticationController *)self->_authController authenticateWithContext:self->_authContext completion:&stru_10026C430];
 }
 
-- (void)confirmedUnpairAndMarkAsMissing:(BOOL)a3
+- (void)confirmedUnpairAndMarkAsMissing:(BOOL)missing
 {
-  v3 = a3;
+  missingCopy = missing;
   [(COSPairingController *)self _startSpinnerInSpecifier:self->_specifierBeingConfirmed];
   specifierBeingConfirmed = self->_specifierBeingConfirmed;
   self->_specifierBeingConfirmed = 0;
 
-  v6 = [(COSPairingController *)self view];
-  [v6 setUserInteractionEnabled:0];
+  view = [(COSPairingController *)self view];
+  [view setUserInteractionEnabled:0];
 
   v7 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyIsPaired];
   v8 = +[NSNotificationCenter defaultCenter];
@@ -222,20 +222,20 @@ LABEL_7:
   v9 = v7;
   v25 = v9;
   v10 = objc_retainBlock(v24);
-  v11 = [(COSPairingController *)self aboutDataSource];
-  if ([v11 migrationDevice])
+  aboutDataSource = [(COSPairingController *)self aboutDataSource];
+  if ([aboutDataSource migrationDevice])
   {
   }
 
   else
   {
-    v12 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       v13 = objc_alloc_init(COSUnpairActionsHelperContext);
       [(COSUnpairActionsHelperContext *)v13 setDevice:self->_device];
-      [(COSUnpairActionsHelperContext *)v13 setMarkAsMissing:v3];
+      [(COSUnpairActionsHelperContext *)v13 setMarkAsMissing:missingCopy];
       [(COSUnpairActionsHelperContext *)v13 setPresentingViewController:self];
       v14 = +[NSBundle mainBundle];
       v15 = [v14 localizedStringForKey:@"CONFIRM_REMOVE_ACTIVATION_LOCK" value:&stru_10026E598 table:@"Pairing"];
@@ -262,9 +262,9 @@ LABEL_7:
   v20 = pbb_manualunpairing_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v9 BOOLValue];
+    bOOLValue2 = [v9 BOOLValue];
     *buf = 67109120;
-    v29 = v21;
+    v29 = bOOLValue2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Forgetting migration device. isPaired: %d", buf, 8u);
   }
 
@@ -275,28 +275,28 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)_startSpinnerInSpecifier:(id)a3
+- (void)_startSpinnerInSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (v4 && !self->_activelyLoadingSpecifierIdentifier)
+  specifierCopy = specifier;
+  if (specifierCopy && !self->_activelyLoadingSpecifierIdentifier)
   {
-    v9 = v4;
-    v5 = [v4 propertyForKey:PSTableCellKey];
+    v9 = specifierCopy;
+    v5 = [specifierCopy propertyForKey:PSTableCellKey];
     if (v5)
     {
       v6 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
       [v6 startAnimating];
       [v5 setAccessoryView:v6];
-      v7 = [v9 identifier];
+      identifier = [v9 identifier];
       activelyLoadingSpecifierIdentifier = self->_activelyLoadingSpecifierIdentifier;
-      self->_activelyLoadingSpecifierIdentifier = v7;
+      self->_activelyLoadingSpecifierIdentifier = identifier;
     }
 
-    v4 = v9;
+    specifierCopy = v9;
   }
 }
 
-- (void)handleUnpairNotification:(id)a3
+- (void)handleUnpairNotification:(id)notification
 {
   objc_initWeak(&location, self);
   v3[0] = _NSConcreteStackBlock;
@@ -332,10 +332,10 @@ LABEL_8:
   self->_specifierBeingConfirmed = 0;
 }
 
-- (void)confirmUnpairingForSpecifier:(id)a3
+- (void)confirmUnpairingForSpecifier:(id)specifier
 {
-  objc_storeStrong(&self->_specifierBeingConfirmed, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_specifierBeingConfirmed, specifier);
+  specifierCopy = specifier;
   v6 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyName];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"UNPAIR_CONFIRMATION_TITLE" value:&stru_10026E598 table:@"Pairing"];
@@ -370,12 +370,12 @@ LABEL_8:
   [(COSPairingController *)self showConfirmationViewForSpecifier:v16];
 }
 
-- (void)enableDisableUnpairButton:(unint64_t)a3
+- (void)enableDisableUnpairButton:(unint64_t)button
 {
   v5 = sub_100009AB4();
   v6 = [v5 count];
 
-  v7 = a3 != 2 || v6 == 0;
+  v7 = button != 2 || v6 == 0;
   v8 = !v7;
   if (v7)
   {
@@ -400,38 +400,38 @@ LABEL_8:
     }
   }
 
-  v15 = [(COSPairingController *)self aboutDataSource];
-  [v15 setEnableUnpairButtons:v8];
+  aboutDataSource = [(COSPairingController *)self aboutDataSource];
+  [aboutDataSource setEnableUnpairButtons:v8];
 }
 
-- (void)nanoRegistryStatusChanged:(id)a3
+- (void)nanoRegistryStatusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (changedCopy)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:NRPairedDeviceRegistryStatusKey];
-    v8 = [v7 unsignedLongValue];
+    userInfo = [changedCopy userInfo];
+    v7 = [userInfo objectForKey:NRPairedDeviceRegistryStatusKey];
+    unsignedLongValue = [v7 unsignedLongValue];
   }
 
   else
   {
-    v6 = +[NRPairedDeviceRegistry sharedInstance];
-    v8 = [v6 status];
+    userInfo = +[NRPairedDeviceRegistry sharedInstance];
+    unsignedLongValue = [userInfo status];
   }
 
   v9 = pbb_manualunpairing_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = v8;
+    v11 = unsignedLongValue;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "NR Status Changed to %lu", &v10, 0xCu);
   }
 
-  if (v8)
+  if (unsignedLongValue)
   {
-    [(COSPairingController *)self enableDisableUnpairButton:v8];
+    [(COSPairingController *)self enableDisableUnpairButton:unsignedLongValue];
   }
 }
 

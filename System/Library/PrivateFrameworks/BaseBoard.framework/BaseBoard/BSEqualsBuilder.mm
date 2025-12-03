@@ -1,25 +1,25 @@
 @interface BSEqualsBuilder
 + (id)builder;
-+ (id)builderWithObject:(id)a3 ofExpectedClass:(Class)a4;
++ (id)builderWithObject:(id)object ofExpectedClass:(Class)class;
 - (BSEqualsBuilder)init;
-- (id)appendArray:(id)a3 counterpart:(id)a4;
-- (id)appendBool:(BOOL)a3 counterpart:(id)a4;
-- (id)appendCGAffineTransform:(CGAffineTransform *)a3 counterpart:(id)a4;
-- (id)appendCGFloat:(double)a3 counterpart:(id)a4;
-- (id)appendCGPoint:(CGPoint)a3 counterpart:(id)a4;
-- (id)appendCGRect:(CGRect)a3 counterpart:(id)a4;
-- (id)appendCGSize:(CGSize)a3 counterpart:(id)a4;
-- (id)appendClass:(Class)a3 counterpart:(id)a4;
-- (id)appendDouble:(double)a3 counterpart:(id)a4;
-- (id)appendEqualsBlocks:(id)a3;
-- (id)appendFloat:(float)a3 counterpart:(id)a4;
-- (id)appendInt64:(int64_t)a3 counterpart:(id)a4;
-- (id)appendInteger:(int64_t)a3 counterpart:(id)a4;
-- (id)appendObject:(id)a3 counterpart:(id)a4;
-- (id)appendPointer:(void *)a3 counterpart:(id)a4;
-- (id)appendSizeT:(unint64_t)a3 counterpart:(id)a4;
-- (id)appendString:(id)a3 counterpart:(id)a4;
-- (id)appendUnsignedInteger:(unint64_t)a3 counterpart:(id)a4;
+- (id)appendArray:(id)array counterpart:(id)counterpart;
+- (id)appendBool:(BOOL)bool counterpart:(id)counterpart;
+- (id)appendCGAffineTransform:(CGAffineTransform *)transform counterpart:(id)counterpart;
+- (id)appendCGFloat:(double)float counterpart:(id)counterpart;
+- (id)appendCGPoint:(CGPoint)point counterpart:(id)counterpart;
+- (id)appendCGRect:(CGRect)rect counterpart:(id)counterpart;
+- (id)appendCGSize:(CGSize)size counterpart:(id)counterpart;
+- (id)appendClass:(Class)class counterpart:(id)counterpart;
+- (id)appendDouble:(double)double counterpart:(id)counterpart;
+- (id)appendEqualsBlocks:(id)blocks;
+- (id)appendFloat:(float)float counterpart:(id)counterpart;
+- (id)appendInt64:(int64_t)int64 counterpart:(id)counterpart;
+- (id)appendInteger:(int64_t)integer counterpart:(id)counterpart;
+- (id)appendObject:(id)object counterpart:(id)counterpart;
+- (id)appendPointer:(void *)pointer counterpart:(id)counterpart;
+- (id)appendSizeT:(unint64_t)t counterpart:(id)counterpart;
+- (id)appendString:(id)string counterpart:(id)counterpart;
+- (id)appendUnsignedInteger:(unint64_t)integer counterpart:(id)counterpart;
 @end
 
 @implementation BSEqualsBuilder
@@ -41,9 +41,9 @@
   return v2;
 }
 
-+ (id)builderWithObject:(id)a3 ofExpectedClass:(Class)a4
++ (id)builderWithObject:(id)object ofExpectedClass:(Class)class
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [BSEqualsBuilder alloc];
   isKindOfClass = objc_opt_isKindOfClass();
   if (v5)
@@ -78,11 +78,11 @@
   return self;
 }
 
-- (id)appendEqualsBlocks:(id)a3
+- (id)appendEqualsBlocks:(id)blocks
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_equal)
+  blocksCopy = blocks;
+  v5 = blocksCopy;
+  if (blocksCopy && self->_equal)
   {
     v10 = &v11;
     if (self->_equal)
@@ -102,7 +102,7 @@
 
     else
     {
-      v7 = v4;
+      v7 = blocksCopy;
     }
 
     v5 = v7;
@@ -111,111 +111,111 @@
   return self;
 }
 
-- (id)appendBool:(BOOL)a3 counterpart:(id)a4
+- (id)appendBool:(BOOL)bool counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = (*(v6 + 2))(v6) ^ a3 ^ 1;
+    self->_equal = (*(counterpartCopy + 2))(counterpartCopy) ^ bool ^ 1;
   }
 
   return self;
 }
 
-- (id)appendInt64:(int64_t)a3 counterpart:(id)a4
+- (id)appendInt64:(int64_t)int64 counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = (*(v6 + 2))(v6) == a3;
+    self->_equal = (*(counterpartCopy + 2))(counterpartCopy) == int64;
   }
 
   return self;
 }
 
-- (id)appendInteger:(int64_t)a3 counterpart:(id)a4
+- (id)appendInteger:(int64_t)integer counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = (*(v6 + 2))(v6) == a3;
+    self->_equal = (*(counterpartCopy + 2))(counterpartCopy) == integer;
   }
 
   return self;
 }
 
-- (id)appendUnsignedInteger:(unint64_t)a3 counterpart:(id)a4
+- (id)appendUnsignedInteger:(unint64_t)integer counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = (*(v6 + 2))(v6) == a3;
+    self->_equal = (*(counterpartCopy + 2))(counterpartCopy) == integer;
   }
 
   return self;
 }
 
-- (id)appendSizeT:(unint64_t)a3 counterpart:(id)a4
+- (id)appendSizeT:(unint64_t)t counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = (*(v6 + 2))(v6) == a3;
+    self->_equal = (*(counterpartCopy + 2))(counterpartCopy) == t;
   }
 
   return self;
 }
 
-- (id)appendFloat:(float)a3 counterpart:(id)a4
+- (id)appendFloat:(float)float counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = vabds_f32(a3, (*(v6 + 2))(v6)) < 0.00000011921;
+    self->_equal = vabds_f32(float, (*(counterpartCopy + 2))(counterpartCopy)) < 0.00000011921;
   }
 
   return self;
 }
 
-- (id)appendDouble:(double)a3 counterpart:(id)a4
+- (id)appendDouble:(double)double counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = vabdd_f64(a3, (*(v6 + 2))(v6)) < 2.22044605e-16;
+    self->_equal = vabdd_f64(double, (*(counterpartCopy + 2))(counterpartCopy)) < 2.22044605e-16;
   }
 
   return self;
 }
 
-- (id)appendCGFloat:(double)a3 counterpart:(id)a4
+- (id)appendCGFloat:(double)float counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = vabdd_f64(a3, (*(v6 + 2))(v6)) < 2.22044605e-16;
+    self->_equal = vabdd_f64(float, (*(counterpartCopy + 2))(counterpartCopy)) < 2.22044605e-16;
   }
 
   return self;
 }
 
-- (id)appendCGPoint:(CGPoint)a3 counterpart:(id)a4
+- (id)appendCGPoint:(CGPoint)point counterpart:(id)counterpart
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && self->_equal)
+  y = point.y;
+  x = point.x;
+  counterpartCopy = counterpart;
+  v8 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    v9 = vabdd_f64(x, (*(v7 + 2))(v7)) < 2.22044605e-16;
+    v9 = vabdd_f64(x, (*(counterpartCopy + 2))(counterpartCopy)) < 2.22044605e-16;
     if (vabdd_f64(y, v10) >= 2.22044605e-16)
     {
       v9 = 0;
@@ -227,15 +227,15 @@
   return self;
 }
 
-- (id)appendCGSize:(CGSize)a3 counterpart:(id)a4
+- (id)appendCGSize:(CGSize)size counterpart:(id)counterpart
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && self->_equal)
+  height = size.height;
+  width = size.width;
+  counterpartCopy = counterpart;
+  v8 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    v9 = vabdd_f64(width, (*(v7 + 2))(v7)) < 2.22044605e-16;
+    v9 = vabdd_f64(width, (*(counterpartCopy + 2))(counterpartCopy)) < 2.22044605e-16;
     if (vabdd_f64(height, v10) >= 2.22044605e-16)
     {
       v9 = 0;
@@ -247,61 +247,61 @@
   return self;
 }
 
-- (id)appendCGRect:(CGRect)a3 counterpart:(id)a4
+- (id)appendCGRect:(CGRect)rect counterpart:(id)counterpart
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = v9;
-  if (v9 && self->_equal)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  counterpartCopy = counterpart;
+  v10 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    v11 = (*(v9 + 2))(v9);
+    v11 = (*(counterpartCopy + 2))(counterpartCopy);
     self->_equal = BSRectEqualToRect(x, y, width, height, v11, v12, v13, v14);
   }
 
   return self;
 }
 
-- (id)appendCGAffineTransform:(CGAffineTransform *)a3 counterpart:(id)a4
+- (id)appendCGAffineTransform:(CGAffineTransform *)transform counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    (*(v6 + 2))(&t2, v6);
-    v8 = *&a3->c;
-    *&v10.a = *&a3->a;
+    (*(counterpartCopy + 2))(&t2, counterpartCopy);
+    v8 = *&transform->c;
+    *&v10.a = *&transform->a;
     *&v10.c = v8;
-    *&v10.tx = *&a3->tx;
+    *&v10.tx = *&transform->tx;
     self->_equal = CGAffineTransformEqualToTransform(&v10, &t2);
   }
 
   return self;
 }
 
-- (id)appendClass:(Class)a3 counterpart:(id)a4
+- (id)appendClass:(Class)class counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = (*(v6 + 2))(v6) == a3;
+    self->_equal = (*(counterpartCopy + 2))(counterpartCopy) == class;
   }
 
   return self;
 }
 
-- (id)appendObject:(id)a3 counterpart:(id)a4
+- (id)appendObject:(id)object counterpart:(id)counterpart
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && self->_equal)
+  objectCopy = object;
+  counterpartCopy = counterpart;
+  v8 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    v9 = (*(v7 + 2))(v7);
-    if (v9 == v6)
+    v9 = (*(counterpartCopy + 2))(counterpartCopy);
+    if (v9 == objectCopy)
     {
       v10 = 1;
     }
@@ -309,9 +309,9 @@
     else
     {
       v10 = 0;
-      if (v6 && v9)
+      if (objectCopy && v9)
       {
-        v10 = [v6 isEqual:v9];
+        v10 = [objectCopy isEqual:v9];
       }
     }
 
@@ -321,27 +321,27 @@
   return self;
 }
 
-- (id)appendPointer:(void *)a3 counterpart:(id)a4
+- (id)appendPointer:(void *)pointer counterpart:(id)counterpart
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_equal)
+  counterpartCopy = counterpart;
+  v7 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    self->_equal = (*(v6 + 2))(v6) == a3;
+    self->_equal = (*(counterpartCopy + 2))(counterpartCopy) == pointer;
   }
 
   return self;
 }
 
-- (id)appendString:(id)a3 counterpart:(id)a4
+- (id)appendString:(id)string counterpart:(id)counterpart
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && self->_equal)
+  stringCopy = string;
+  counterpartCopy = counterpart;
+  v8 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    v9 = (*(v7 + 2))(v7);
-    if (v9 == v6)
+    v9 = (*(counterpartCopy + 2))(counterpartCopy);
+    if (v9 == stringCopy)
     {
       v10 = 1;
     }
@@ -349,9 +349,9 @@
     else
     {
       v10 = 0;
-      if (v6 && v9)
+      if (stringCopy && v9)
       {
-        v10 = [v6 isEqualToString:v9];
+        v10 = [stringCopy isEqualToString:v9];
       }
     }
 
@@ -361,15 +361,15 @@
   return self;
 }
 
-- (id)appendArray:(id)a3 counterpart:(id)a4
+- (id)appendArray:(id)array counterpart:(id)counterpart
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && self->_equal)
+  arrayCopy = array;
+  counterpartCopy = counterpart;
+  v8 = counterpartCopy;
+  if (counterpartCopy && self->_equal)
   {
-    v9 = (*(v7 + 2))(v7);
-    self->_equal = [v6 isEqualToArray:v9];
+    v9 = (*(counterpartCopy + 2))(counterpartCopy);
+    self->_equal = [arrayCopy isEqualToArray:v9];
   }
 
   return self;

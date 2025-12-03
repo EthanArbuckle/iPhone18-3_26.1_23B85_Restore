@@ -1,32 +1,32 @@
 @interface OITSUDuration
-+ (id)durationWithTimeInterval:(double)a3;
-- (OITSUDuration)initWithTimeInterval:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)durationWithTimeInterval:(double)interval;
+- (OITSUDuration)initWithTimeInterval:(double)interval;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OITSUDuration
 
-+ (id)durationWithTimeInterval:(double)a3
++ (id)durationWithTimeInterval:(double)interval
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithTimeInterval:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithTimeInterval:interval];
 
   return v3;
 }
 
-- (OITSUDuration)initWithTimeInterval:(double)a3
+- (OITSUDuration)initWithTimeInterval:(double)interval
 {
   v5.receiver = self;
   v5.super_class = OITSUDuration;
   result = [(OITSUDuration *)&v5 init];
   if (result)
   {
-    result->mTimeInterval = a3;
+    result->mTimeInterval = interval;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mTimeInterval = self->mTimeInterval;

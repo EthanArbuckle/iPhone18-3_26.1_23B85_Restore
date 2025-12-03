@@ -1,5 +1,5 @@
 @interface NSXPCStoreMessageContext
-- (id)initForMessage:(id)a3 store:(id)a4;
+- (id)initForMessage:(id)message store:(id)store;
 - (void)dealloc;
 @end
 
@@ -16,16 +16,16 @@
   [(NSXPCStoreMessageContext *)&v3 dealloc];
 }
 
-- (id)initForMessage:(id)a3 store:(id)a4
+- (id)initForMessage:(id)message store:(id)store
 {
   v9.receiver = self;
   v9.super_class = NSXPCStoreMessageContext;
   v6 = [(NSXPCStoreMessageContext *)&v9 init];
   if (v6)
   {
-    v7 = a3;
-    v6->_store = a4;
-    v6->_message = v7;
+    messageCopy = message;
+    v6->_store = store;
+    v6->_message = messageCopy;
     v6->_result = 0;
   }
 

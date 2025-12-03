@@ -1,44 +1,44 @@
 @interface MusicRecognitionPlatterViewController
-- (_TtC16MusicRecognition37MusicRecognitionPlatterViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)receivedWithSpectralOutput:(id)a3;
-- (void)setKeyColor:(id)a3;
+- (_TtC16MusicRecognition37MusicRecognitionPlatterViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)receivedWithSpectralOutput:(id)output;
+- (void)setKeyColor:(id)color;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MusicRecognitionPlatterViewController
 
-- (void)setKeyColor:(id)a3
+- (void)setKeyColor:(id)color
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicRecognition37MusicRecognitionPlatterViewController_keyColor);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicRecognition37MusicRecognitionPlatterViewController_keyColor) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicRecognition37MusicRecognitionPlatterViewController_keyColor) = color;
+  colorCopy = color;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000E574();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10000EB68(a3);
+  selfCopy = self;
+  sub_10000EB68(appear);
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10000FD04(a3);
+  selfCopy = self;
+  sub_10000FD04(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (_TtC16MusicRecognition37MusicRecognitionPlatterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicRecognition37MusicRecognitionPlatterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -50,14 +50,14 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100010008(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100010008(v5, v7, bundle);
 }
 
-- (void)receivedWithSpectralOutput:(id)a3
+- (void)receivedWithSpectralOutput:(id)output
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_100010518(v4);
 }
 

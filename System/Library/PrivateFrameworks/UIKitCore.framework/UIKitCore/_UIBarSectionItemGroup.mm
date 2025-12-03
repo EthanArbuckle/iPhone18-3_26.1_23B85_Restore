@@ -1,36 +1,36 @@
 @interface _UIBarSectionItemGroup
-- (BOOL)isEqual:(id)a3;
-- (_UIBarSectionItemGroup)initWithGroup:(id)a3;
-- (_UIBarSectionItemGroup)initWithItems:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIBarSectionItemGroup)initWithGroup:(id)group;
+- (_UIBarSectionItemGroup)initWithItems:(id)items;
 - (id)description;
 @end
 
 @implementation _UIBarSectionItemGroup
 
-- (_UIBarSectionItemGroup)initWithGroup:(id)a3
+- (_UIBarSectionItemGroup)initWithGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = _UIBarSectionItemGroup;
   v6 = [(_UIBarSectionItemGroup *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_group, a3);
+    objc_storeStrong(&v6->_group, group);
   }
 
   return v7;
 }
 
-- (_UIBarSectionItemGroup)initWithItems:(id)a3
+- (_UIBarSectionItemGroup)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = _UIBarSectionItemGroup;
   v5 = [(_UIBarSectionItemGroup *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     items = v5->_items;
     v5->_items = v6;
   }
@@ -38,13 +38,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     items = self->_items;
     if (items)

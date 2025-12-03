@@ -1,34 +1,34 @@
 @interface TUIElementActionData
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementActionData
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 stringForAttribute:137 node:var0];
-  [v9 setKey:v10];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  objectCopy = object;
+  v10 = [attributesCopy stringForAttribute:137 node:var0];
+  [objectCopy setKey:v10];
 
-  v11 = [v8 objectForAttribute:217 node:var0];
+  v11 = [attributesCopy objectForAttribute:217 node:var0];
 
-  [v9 setValue:v11];
+  [objectCopy setValue:v11];
 }
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 key];
+  objectCopy = object;
+  builderCopy = builder;
+  v7 = [objectCopy key];
 
   if (v7)
   {
-    v8 = [v10 value];
-    v9 = [v10 key];
-    [v6 setActionData:v8 forKey:v9];
+    value = [objectCopy value];
+    v9 = [objectCopy key];
+    [builderCopy setActionData:value forKey:v9];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface VCPHumanPoseVideoRequest
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4;
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error;
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error;
 - (VCPHumanPoseVideoRequest)init;
-- (VCPHumanPoseVideoRequest)initWithOptions:(id)a3;
-- (float)bodyDistance:(id)a3 withBodyB:(id)a4;
-- (id)processSampleBuffer:(opaqueCMSampleBuffer *)a3 withOptions:(id)a4 error:(id *)a5;
-- (int)associatePersons:(id)a3 withExisingPersons:(id)a4;
-- (void)computeActionScoreForPerson:(id)a3;
-- (void)computeVarWithID:(id)a3 index1:(int)a4 index2:(int)a5 interVar:(float *)a6 intraVar:(float *)a7;
+- (VCPHumanPoseVideoRequest)initWithOptions:(id)options;
+- (float)bodyDistance:(id)distance withBodyB:(id)b;
+- (id)processSampleBuffer:(opaqueCMSampleBuffer *)buffer withOptions:(id)options error:(id *)error;
+- (int)associatePersons:(id)persons withExisingPersons:(id)exisingPersons;
+- (void)computeActionScoreForPerson:(id)person;
+- (void)computeVarWithID:(id)d index1:(int)index1 index2:(int)index2 interVar:(float *)var intraVar:(float *)intraVar;
 @end
 
 @implementation VCPHumanPoseVideoRequest
@@ -23,12 +23,12 @@
   return 0;
 }
 
-- (VCPHumanPoseVideoRequest)initWithOptions:(id)a3
+- (VCPHumanPoseVideoRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v19.receiver = self;
   v19.super_class = VCPHumanPoseVideoRequest;
-  v5 = [(VCPRequest *)&v19 initWithOptions:v4];
+  v5 = [(VCPRequest *)&v19 initWithOptions:optionsCopy];
   v7 = v5;
   if (v5)
   {
@@ -44,9 +44,9 @@
       v10 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
     }
 
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     existingPersonsArray = v7->_existingPersonsArray;
-    v7->_existingPersonsArray = v11;
+    v7->_existingPersonsArray = array;
 
     v13 = [[VCPImageHumanPoseAnalyzer alloc] initWithKeypointsOption:1 aspectRatio:v10 lightweight:0 forceCPU:v7->super._useCPUOnly sharedModel:0 flushModel:0];
     analyzer = v7->_analyzer;
@@ -76,16 +76,16 @@
   return v17;
 }
 
-- (float)bodyDistance:(id)a3 withBodyB:(id)a4
+- (float)bodyDistance:(id)distance withBodyB:(id)b
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  distanceCopy = distance;
+  bCopy = b;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v5;
+  v7 = distanceCopy;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v8)
   {
@@ -112,7 +112,7 @@ LABEL_14:
       }
 
       v14 = *(*(&v28 + 1) + 8 * v13);
-      v15 = [v6 objectAtIndexedSubscript:{v9, v28}];
+      v15 = [bCopy objectAtIndexedSubscript:{v9, v28}];
       [v14 confidence];
       if (v16 > 0.1)
       {
@@ -153,22 +153,22 @@ LABEL_15:
   return v26;
 }
 
-- (id)processSampleBuffer:(opaqueCMSampleBuffer *)a3 withOptions:(id)a4 error:(id *)a5
+- (id)processSampleBuffer:(opaqueCMSampleBuffer *)buffer withOptions:(id)options error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v35 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v45 = 0;
   if (!self->_analyzer)
   {
     goto LABEL_28;
   }
 
-  if (!a3)
+  if (!buffer)
   {
     v13 = 0;
     v11 = -50;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_31;
     }
@@ -176,7 +176,7 @@ LABEL_15:
     goto LABEL_30;
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (!ImageBuffer)
   {
 LABEL_28:
@@ -190,10 +190,10 @@ LABEL_28:
   v11 = [(VCPImageHumanPoseAnalyzer *)analyzer analyzePixelBuffer:ImageBuffer flags:&v45 results:&v44 cancel:&__block_literal_global_46];
   v12 = v44;
   v13 = v12;
-  if (v11 || ([v12 objectForKeyedSubscript:@"HumanPoseResults"], v14 = objc_claimAutoreleasedReturnValue(), v15 = v14 == 0, v14, !v15) && ((objc_msgSend(v13, "objectForKeyedSubscript:", @"HumanPoseResults"), v16 = objc_claimAutoreleasedReturnValue(), v11 = +[VCPHumanPoseImageRequest parseResults:observations:revision:](VCPHumanPoseImageRequest, "parseResults:observations:revision:", v16, v35, self->super._revision), v16, v11) || objc_msgSend(v35, "count") && (v11 = -[VCPHumanPoseVideoRequest associatePersons:withExisingPersons:](self, "associatePersons:withExisingPersons:", v35, self->_existingPersons)) != 0))
+  if (v11 || ([v12 objectForKeyedSubscript:@"HumanPoseResults"], v14 = objc_claimAutoreleasedReturnValue(), v15 = v14 == 0, v14, !v15) && ((objc_msgSend(v13, "objectForKeyedSubscript:", @"HumanPoseResults"), v16 = objc_claimAutoreleasedReturnValue(), v11 = +[VCPHumanPoseImageRequest parseResults:observations:revision:](VCPHumanPoseImageRequest, "parseResults:observations:revision:", v16, array, self->super._revision), v16, v11) || objc_msgSend(array, "count") && (v11 = -[VCPHumanPoseVideoRequest associatePersons:withExisingPersons:](self, "associatePersons:withExisingPersons:", array, self->_existingPersons)) != 0))
   {
 LABEL_29:
-    if (!a5)
+    if (!error)
     {
 LABEL_31:
       v29 = 0;
@@ -206,12 +206,12 @@ LABEL_30:
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: failed to processSampleBuffer"];
     v47 = v31;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-    *a5 = [v30 errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:v32];
+    *error = [v30 errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:v32];
 
     goto LABEL_31;
   }
 
-  v17 = [MEMORY[0x1E695DEC8] arrayWithArray:v35];
+  v17 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   existingPersons = self->_existingPersons;
   self->_existingPersons = v17;
 
@@ -222,7 +222,7 @@ LABEL_30:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v19 = v35;
+    v19 = array;
     v20 = [v19 countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v20)
     {
@@ -238,7 +238,7 @@ LABEL_30:
 
           v23 = *(*(&v40 + 1) + 8 * i);
           v24 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v23, "personID", v34)}];
-          [v8 setObject:v23 forKey:v24];
+          [dictionary setObject:v23 forKey:v24];
         }
 
         v20 = [v19 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -252,7 +252,7 @@ LABEL_30:
       [(NSMutableArray *)self->_existingPersonsArray removeLastObject];
     }
 
-    [(NSMutableArray *)self->_existingPersonsArray insertObject:v8 atIndex:0, v34];
+    [(NSMutableArray *)self->_existingPersonsArray insertObject:dictionary atIndex:0, v34];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
@@ -281,34 +281,34 @@ LABEL_30:
     }
   }
 
-  v29 = v35;
+  v29 = array;
 LABEL_32:
 
   return v29;
 }
 
-- (void)computeActionScoreForPerson:(id)a3
+- (void)computeActionScoreForPerson:(id)person
 {
   v83 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  personCopy = person;
   if ((atomic_load_explicit(&qword_1ED942820, memory_order_acquire) & 1) == 0)
   {
-    v70 = self;
-    v71 = v4;
-    v72 = v70;
-    [VCPHumanPoseVideoRequest computeActionScoreForPerson:v70];
-    v4 = v71;
+    selfCopy = self;
+    v71 = personCopy;
+    v72 = selfCopy;
+    [VCPHumanPoseVideoRequest computeActionScoreForPerson:selfCopy];
+    personCopy = v71;
     self = v72;
   }
 
-  v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "personID", v4)}];
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(personCopy, "personID", personCopy)}];
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
   obj = self->_existingPersonsArray;
   v6 = [(NSMutableArray *)obj countByEnumeratingWithState:&v78 objects:v82 count:16];
-  v74 = self;
+  selfCopy2 = self;
   if (v6)
   {
     v7 = *v79;
@@ -331,8 +331,8 @@ LABEL_5:
         goto LABEL_26;
       }
 
-      v14 = [v12 keypoints];
-      v15 = [v14 objectAtIndexedSubscript:11];
+      keypoints = [v12 keypoints];
+      v15 = [keypoints objectAtIndexedSubscript:11];
       [v15 confidence];
       if (v16 <= 0.1)
       {
@@ -340,22 +340,22 @@ LABEL_5:
 
       else
       {
-        v17 = [v13 keypoints];
-        v18 = [v17 objectAtIndexedSubscript:5];
+        keypoints2 = [v13 keypoints];
+        v18 = [keypoints2 objectAtIndexedSubscript:5];
         [v18 confidence];
         v20 = v19 > 0.1;
 
         if (v20)
         {
-          v21 = [v13 keypoints];
-          v22 = [v21 objectAtIndexedSubscript:11];
+          keypoints3 = [v13 keypoints];
+          v22 = [keypoints3 objectAtIndexedSubscript:11];
           [v22 location];
           v24 = v23;
           v26 = v25;
-          v27 = [v13 keypoints];
-          v28 = [v27 objectAtIndexedSubscript:5];
+          keypoints4 = [v13 keypoints];
+          v28 = [keypoints4 objectAtIndexedSubscript:5];
           [v28 location];
-          [(VCPHumanPoseVideoRequest *)v74 normDistance:v24 point2:v26, v29, v30];
+          [(VCPHumanPoseVideoRequest *)selfCopy2 normDistance:v24 point2:v26, v29, v30];
           v32 = v31;
 
 LABEL_16:
@@ -365,13 +365,13 @@ LABEL_16:
         }
       }
 
-      v33 = [v13 keypoints];
-      v34 = [v33 objectAtIndexedSubscript:12];
+      keypoints5 = [v13 keypoints];
+      v34 = [keypoints5 objectAtIndexedSubscript:12];
       [v34 confidence];
       if (v35 > 0.1)
       {
-        v36 = [v13 keypoints];
-        v37 = [v36 objectAtIndexedSubscript:6];
+        keypoints6 = [v13 keypoints];
+        v37 = [keypoints6 objectAtIndexedSubscript:6];
         [v37 confidence];
         v39 = v38 > 0.1;
 
@@ -380,15 +380,15 @@ LABEL_16:
           goto LABEL_18;
         }
 
-        v40 = [v13 keypoints];
-        v41 = [v40 objectAtIndexedSubscript:12];
+        keypoints7 = [v13 keypoints];
+        v41 = [keypoints7 objectAtIndexedSubscript:12];
         [v41 location];
         v43 = v42;
         v45 = v44;
-        v46 = [v13 keypoints];
-        v47 = [v46 objectAtIndexedSubscript:6];
+        keypoints8 = [v13 keypoints];
+        v47 = [keypoints8 objectAtIndexedSubscript:6];
         [v47 location];
-        [(VCPHumanPoseVideoRequest *)v74 normDistance:v43 point2:v45, v48, v49];
+        [(VCPHumanPoseVideoRequest *)selfCopy2 normDistance:v43 point2:v45, v48, v49];
         v32 = v50;
 
         goto LABEL_16;
@@ -397,8 +397,8 @@ LABEL_16:
 LABEL_18:
       for (i = 5; i != 17; ++i)
       {
-        v52 = [v13 keypoints];
-        v53 = [v52 objectAtIndexedSubscript:i];
+        keypoints9 = [v13 keypoints];
+        v53 = [keypoints9 objectAtIndexedSubscript:i];
         [v53 confidence];
         v55 = v54 > 0.1;
 
@@ -431,18 +431,18 @@ LABEL_26:
   v58 = 0.0;
   if (v9 >= *&_MergedGlobals_1)
   {
-    humanActionWindowSize = v74->super._humanActionWindowSize;
+    humanActionWindowSize = selfCopy2->super._humanActionWindowSize;
     v77 = 0;
-    [(VCPHumanPoseVideoRequest *)v74 computeVarWithID:v5 index1:9 index2:5 interVar:&v77 + 4 intraVar:&v77, 0.0, 0.0];
+    [(VCPHumanPoseVideoRequest *)selfCopy2 computeVarWithID:v5 index1:9 index2:5 interVar:&v77 + 4 intraVar:&v77, 0.0, 0.0];
     v61 = v77;
     LODWORD(obja) = HIDWORD(v61);
     LODWORD(v60) = v61;
-    [(VCPHumanPoseVideoRequest *)v74 computeVarWithID:v5 index1:10 index2:6 interVar:&v77 + 4 intraVar:&v77];
+    [(VCPHumanPoseVideoRequest *)selfCopy2 computeVarWithID:v5 index1:10 index2:6 interVar:&v77 + 4 intraVar:&v77];
     v62 = v77;
-    [(VCPHumanPoseVideoRequest *)v74 computeVarWithID:v5 index1:15 index2:11 interVar:&v77 + 4 intraVar:&v77];
+    [(VCPHumanPoseVideoRequest *)selfCopy2 computeVarWithID:v5 index1:15 index2:11 interVar:&v77 + 4 intraVar:&v77];
     v64 = *(&v77 + 1);
     v63 = *&v77;
-    [(VCPHumanPoseVideoRequest *)v74 computeVarWithID:v5 index1:16 index2:12 interVar:&v77 + 4 intraVar:&v77];
+    [(VCPHumanPoseVideoRequest *)selfCopy2 computeVarWithID:v5 index1:16 index2:12 interVar:&v77 + 4 intraVar:&v77];
     *&v56 = v8 / (12 * humanActionWindowSize);
     v65 = (v10 / v9) * ((v10 / v9) * 4.0);
     v66 = sqrtf(fmaxf(((((obja + 0.0) + *(&v62 + 1)) + v64) + *(&v77 + 1)) / v65, 0.0));
@@ -467,14 +467,14 @@ LABEL_26:
   [v73 setAbsoluteActionScore:v69];
 }
 
-- (void)computeVarWithID:(id)a3 index1:(int)a4 index2:(int)a5 interVar:(float *)a6 intraVar:(float *)a7
+- (void)computeVarWithID:(id)d index1:(int)index1 index2:(int)index2 interVar:(float *)var intraVar:(float *)intraVar
 {
   v93 = *MEMORY[0x1E69E9840];
-  v87 = a3;
-  v73 = a6;
-  if (a6 && a7)
+  dCopy = d;
+  varCopy = var;
+  if (var && intraVar)
   {
-    v72 = a7;
+    intraVarCopy = intraVar;
     v90 = 0u;
     v91 = 0u;
     v88 = 0u;
@@ -484,8 +484,8 @@ LABEL_26:
     if (v12)
     {
       v13 = *v89;
-      v14 = a4;
-      v86 = a5;
+      index1Copy = index1;
+      index2Copy = index2;
       v15 = 0.0;
       v84 = 0.0;
       v82 = 0.0;
@@ -504,15 +504,15 @@ LABEL_5:
           objc_enumerationMutation(obj);
         }
 
-        v17 = [*(*(&v88 + 1) + 8 * v16) objectForKey:v87];
+        v17 = [*(*(&v88 + 1) + 8 * v16) objectForKey:dCopy];
         v18 = v17;
         if (!v17)
         {
           break;
         }
 
-        v19 = [v17 keypoints];
-        v20 = [v19 objectAtIndexedSubscript:v14];
+        keypoints = [v17 keypoints];
+        v20 = [keypoints objectAtIndexedSubscript:index1Copy];
         [v20 confidence];
         if (v21 <= 0.1)
         {
@@ -520,57 +520,57 @@ LABEL_5:
 
         else
         {
-          v22 = [v18 keypoints];
-          v23 = [v22 objectAtIndexedSubscript:v86];
+          keypoints2 = [v18 keypoints];
+          v23 = [keypoints2 objectAtIndexedSubscript:index2Copy];
           [v23 confidence];
           v25 = v24 > 0.1;
 
           if (v25)
           {
-            v26 = [v18 keypoints];
-            v27 = [v26 objectAtIndexedSubscript:v14];
+            keypoints3 = [v18 keypoints];
+            v27 = [keypoints3 objectAtIndexedSubscript:index1Copy];
             [v27 location];
             v76 = v28;
 
-            v29 = [v18 keypoints];
-            v30 = [v29 objectAtIndexedSubscript:v14];
+            keypoints4 = [v18 keypoints];
+            v30 = [keypoints4 objectAtIndexedSubscript:index1Copy];
             [v30 location];
             v32 = v31;
-            v33 = [v18 keypoints];
-            v34 = [v33 objectAtIndexedSubscript:v14];
+            keypoints5 = [v18 keypoints];
+            v34 = [keypoints5 objectAtIndexedSubscript:index1Copy];
             v75 = v32;
             [v34 location];
             v74 = v35;
 
-            v36 = [v18 keypoints];
-            v37 = [v36 objectAtIndexedSubscript:v14];
+            keypoints6 = [v18 keypoints];
+            v37 = [keypoints6 objectAtIndexedSubscript:index1Copy];
             [v37 location];
             v39 = v38;
 
-            v40 = [v18 keypoints];
-            v41 = [v40 objectAtIndexedSubscript:v14];
+            keypoints7 = [v18 keypoints];
+            v41 = [keypoints7 objectAtIndexedSubscript:index1Copy];
             [v41 location];
             v43 = v42;
-            v44 = [v18 keypoints];
-            v45 = [v44 objectAtIndexedSubscript:v14];
+            keypoints8 = [v18 keypoints];
+            v45 = [keypoints8 objectAtIndexedSubscript:index1Copy];
             [v45 location];
             v47 = v46;
 
-            v48 = [v18 keypoints];
-            v49 = [v48 objectAtIndexedSubscript:v14];
+            keypoints9 = [v18 keypoints];
+            v49 = [keypoints9 objectAtIndexedSubscript:index1Copy];
             [v49 location];
             v51 = v50;
-            v52 = [v18 keypoints];
-            v53 = [v52 objectAtIndexedSubscript:v86];
+            keypoints10 = [v18 keypoints];
+            v53 = [keypoints10 objectAtIndexedSubscript:index2Copy];
             [v53 location];
             v55 = v54;
 
-            v56 = [v18 keypoints];
-            v57 = [v56 objectAtIndexedSubscript:v14];
+            keypoints11 = [v18 keypoints];
+            v57 = [keypoints11 objectAtIndexedSubscript:index1Copy];
             [v57 location];
             v59 = v58;
-            v60 = [v18 keypoints];
-            v61 = [v60 objectAtIndexedSubscript:v86];
+            keypoints12 = [v18 keypoints];
+            v61 = [keypoints12 objectAtIndexedSubscript:index2Copy];
             [v61 location];
             v63 = v62;
 
@@ -620,27 +620,27 @@ LABEL_5:
       v71 = 0.0;
     }
 
-    *v73 = v71;
-    *v72 = v70;
+    *varCopy = v71;
+    *intraVarCopy = v70;
   }
 }
 
-- (int)associatePersons:(id)a3 withExisingPersons:(id)a4
+- (int)associatePersons:(id)persons withExisingPersons:(id)exisingPersons
 {
   v85 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v48 = a4;
-  if ([v48 count])
+  personsCopy = persons;
+  exisingPersonsCopy = exisingPersons;
+  if ([exisingPersonsCopy count])
   {
-    v6 = [v48 count];
-    if (v6 >= [v53 count])
+    v6 = [exisingPersonsCopy count];
+    if (v6 >= [personsCopy count])
     {
-      v9 = [MEMORY[0x1E695DF70] arrayWithArray:v48];
+      v9 = [MEMORY[0x1E695DF70] arrayWithArray:exisingPersonsCopy];
       v73 = 0u;
       v74 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v7 = v53;
+      v7 = personsCopy;
       v41 = [v7 countByEnumeratingWithState:&v71 objects:v83 count:16];
       if (v41)
       {
@@ -664,7 +664,7 @@ LABEL_5:
             if (v28)
             {
               v54 = 0;
-              v29 = 0;
+              personID = 0;
               v52 = *v68;
               v30 = 3.4028e38;
               while (2)
@@ -678,15 +678,15 @@ LABEL_5:
                   }
 
                   v32 = *(*(&v67 + 1) + 8 * j);
-                  v14 = [v27 keypoints];
-                  if ([v14 count] != 17)
+                  keypoints = [v27 keypoints];
+                  if ([keypoints count] != 17)
                   {
                     v9 = obja;
                     goto LABEL_61;
                   }
 
-                  v33 = [v32 keypoints];
-                  v34 = [v33 count] == 17;
+                  keypoints2 = [v32 keypoints];
+                  v34 = [keypoints2 count] == 17;
 
                   if (!v34)
                   {
@@ -694,14 +694,14 @@ LABEL_5:
                     goto LABEL_63;
                   }
 
-                  v35 = [v27 keypoints];
-                  v36 = [v32 keypoints];
-                  [(VCPHumanPoseVideoRequest *)self bodyDistance:v35 withBodyB:v36];
+                  keypoints3 = [v27 keypoints];
+                  keypoints4 = [v32 keypoints];
+                  [(VCPHumanPoseVideoRequest *)self bodyDistance:keypoints3 withBodyB:keypoints4];
                   v38 = v37;
 
                   if (v38 < v30)
                   {
-                    v29 = [v32 personID];
+                    personID = [v32 personID];
                     v39 = v32;
 
                     v54 = v39;
@@ -722,10 +722,10 @@ LABEL_5:
             else
             {
               v54 = 0;
-              v29 = 0;
+              personID = 0;
             }
 
-            [v27 setPersonID:v29];
+            [v27 setPersonID:personID];
             [obja removeObject:v54];
           }
 
@@ -745,12 +745,12 @@ LABEL_5:
 
     else
     {
-      v49 = [MEMORY[0x1E695DF70] arrayWithArray:v53];
+      v49 = [MEMORY[0x1E695DF70] arrayWithArray:personsCopy];
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v7 = v48;
+      v7 = exisingPersonsCopy;
       v42 = [v7 countByEnumeratingWithState:&v63 objects:v81 count:16];
       if (v42)
       {
@@ -785,23 +785,23 @@ LABEL_10:
             }
 
             v13 = *(*(&v59 + 1) + 8 * v12);
-            v14 = [v8 keypoints];
-            if ([v14 count] != 17)
+            keypoints = [v8 keypoints];
+            if ([keypoints count] != 17)
             {
               break;
             }
 
-            v15 = [v13 keypoints];
-            v16 = [v15 count] == 17;
+            keypoints5 = [v13 keypoints];
+            v16 = [keypoints5 count] == 17;
 
             if (!v16)
             {
               goto LABEL_63;
             }
 
-            v17 = [v8 keypoints];
-            v18 = [v13 keypoints];
-            [(VCPHumanPoseVideoRequest *)self bodyDistance:v17 withBodyB:v18];
+            keypoints6 = [v8 keypoints];
+            keypoints7 = [v13 keypoints];
+            [(VCPHumanPoseVideoRequest *)self bodyDistance:keypoints6 withBodyB:keypoints7];
             v20 = v19;
 
             if (v20 < v11)
@@ -900,7 +900,7 @@ LABEL_22:
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v9 = v53;
+    v9 = personsCopy;
     v22 = [v9 countByEnumeratingWithState:&v75 objects:v84 count:16];
     if (v22)
     {
@@ -927,7 +927,7 @@ LABEL_22:
   return v22;
 }
 
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error
 {
   personID = self->_personID;
   preferredWidth = self->_preferredWidth;
@@ -936,7 +936,7 @@ LABEL_22:
   return result;
 }
 
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error
 {
   analyzer = self->_analyzer;
   self->_analyzer = 0;

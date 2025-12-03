@@ -1,6 +1,6 @@
 @interface DMCRFMBSnapshot
-+ (id)snapshotIdentifierFromSnapshot:(id)a3;
-- (DMCRFMBSnapshot)initWithSnapshot:(id)a3;
++ (id)snapshotIdentifierFromSnapshot:(id)snapshot;
+- (DMCRFMBSnapshot)initWithSnapshot:(id)snapshot;
 - (DMCRFSnapshotIdentifier)identifier;
 - (NSDate)date;
 - (NSDate)dateCreated;
@@ -10,9 +10,9 @@
 
 @implementation DMCRFMBSnapshot
 
-- (DMCRFMBSnapshot)initWithSnapshot:(id)a3
+- (DMCRFMBSnapshot)initWithSnapshot:(id)snapshot
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   v8.receiver = self;
   v8.super_class = DMCRFMBSnapshot;
   v6 = [(DMCRFMBSnapshot *)&v8 init];
@@ -21,63 +21,63 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v6->_snapshot, a3);
+      objc_storeStrong(&v6->_snapshot, snapshot);
     }
   }
 
   return v6;
 }
 
-+ (id)snapshotIdentifierFromSnapshot:(id)a3
++ (id)snapshotIdentifierFromSnapshot:(id)snapshot
 {
   v3 = MEMORY[0x277D28A68];
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = [v3 alloc];
-  v6 = [v4 backupUUID];
-  v7 = [v4 snapshotUUID];
+  backupUUID = [snapshotCopy backupUUID];
+  snapshotUUID = [snapshotCopy snapshotUUID];
 
-  v8 = [v5 initWithBackupUUID:v6 snapshotUUID:v7];
+  v8 = [v5 initWithBackupUUID:backupUUID snapshotUUID:snapshotUUID];
 
   return v8;
 }
 
 - (NSDate)date
 {
-  v2 = [(DMCRFMBSnapshot *)self snapshot];
-  v3 = [v2 date];
+  snapshot = [(DMCRFMBSnapshot *)self snapshot];
+  date = [snapshot date];
 
-  return v3;
+  return date;
 }
 
 - (NSDate)dateCreated
 {
-  v2 = [(DMCRFMBSnapshot *)self snapshot];
-  v3 = [v2 created];
+  snapshot = [(DMCRFMBSnapshot *)self snapshot];
+  created = [snapshot created];
 
-  return v3;
+  return created;
 }
 
 - (NSDate)dateModified
 {
-  v2 = [(DMCRFMBSnapshot *)self snapshot];
-  v3 = [v2 modified];
+  snapshot = [(DMCRFMBSnapshot *)self snapshot];
+  modified = [snapshot modified];
 
-  return v3;
+  return modified;
 }
 
 - (NSString)deviceName
 {
-  v2 = [(DMCRFMBSnapshot *)self snapshot];
-  v3 = [v2 deviceName];
+  snapshot = [(DMCRFMBSnapshot *)self snapshot];
+  deviceName = [snapshot deviceName];
 
-  return v3;
+  return deviceName;
 }
 
 - (DMCRFSnapshotIdentifier)identifier
 {
   v3 = objc_opt_class();
-  v4 = [(DMCRFMBSnapshot *)self snapshot];
-  v5 = [v3 snapshotIdentifierFromSnapshot:v4];
+  snapshot = [(DMCRFMBSnapshot *)self snapshot];
+  v5 = [v3 snapshotIdentifierFromSnapshot:snapshot];
 
   v6 = [[DMCRFMBSnapshotIdentifier alloc] initWithMBSnapshotIdentifier:v5];
 

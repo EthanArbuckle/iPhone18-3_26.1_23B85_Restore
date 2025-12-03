@@ -1,13 +1,13 @@
 @interface ApplicationShortcutController
-+ (id)_shortcutItemWithType:(id)a3 systemImageName:(id)a4;
-+ (id)_shortcutItemsIncludingPrivateBrowsing:(BOOL)a3;
++ (id)_shortcutItemWithType:(id)type systemImageName:(id)name;
++ (id)_shortcutItemsIncludingPrivateBrowsing:(BOOL)browsing;
 + (void)setUpManagedConfigurationNotificationResponder;
 + (void)updateShortcutItemsIfNeeded;
-- (BOOL)_handleActionWithType:(id)a3;
-- (BOOL)handleActionWithType:(id)a3;
+- (BOOL)_handleActionWithType:(id)type;
+- (BOOL)handleActionWithType:(id)type;
 - (BrowserController)browserController;
-- (void)_openNewEmptyTabWithURLFieldFocused:(BOOL)a3 privateBrowsingState:(int64_t)a4;
-- (void)_showBookmarksPanelWithSelectedCollection:(id)a3;
+- (void)_openNewEmptyTabWithURLFieldFocused:(BOOL)focused privateBrowsingState:(int64_t)state;
+- (void)_showBookmarksPanelWithSelectedCollection:(id)collection;
 @end
 
 @implementation ApplicationShortcutController
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __79__ApplicationShortcutController_setUpManagedConfigurationNotificationResponder__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (setUpManagedConfigurationNotificationResponder_onceToken != -1)
   {
     dispatch_once(&setUpManagedConfigurationNotificationResponder_onceToken, block);
@@ -44,7 +44,7 @@ void __79__ApplicationShortcutController_setUpManagedConfigurationNotificationRe
   v4[1] = 3221225472;
   v4[2] = __60__ApplicationShortcutController_updateShortcutItemsIfNeeded__block_invoke;
   v4[3] = &__block_descriptor_40_e8_v12__0B8l;
-  v4[4] = a1;
+  v4[4] = self;
   [v3 determineIfPrivateBrowsingIsAvailableWithCompletionHandler:v4];
 }
 
@@ -72,9 +72,9 @@ void __60__ApplicationShortcutController_updateShortcutItemsIfNeeded__block_invo
   }
 }
 
-- (BOOL)handleActionWithType:(id)a3
+- (BOOL)handleActionWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -86,7 +86,7 @@ void __60__ApplicationShortcutController_updateShortcutItemsIfNeeded__block_invo
   v8[3] = &unk_2781DA400;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = typeCopy;
   v9 = v6;
   [v5 performWithoutAnimation:v8];
   LOBYTE(v5) = *(v12 + 24);
@@ -102,11 +102,11 @@ uint64_t __54__ApplicationShortcutController_handleActionWithType___block_invoke
   return result;
 }
 
-- (BOOL)_handleActionWithType:(id)a3
+- (BOOL)_handleActionWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_initWeak(&location, self);
-  if ([v4 isEqualToString:*MEMORY[0x277CDBA10]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CDBA10]])
   {
     v5 = 1;
     [(ApplicationShortcutController *)self _openNewEmptyTabWithURLFieldFocused:1 privateBrowsingState:0];
@@ -114,7 +114,7 @@ uint64_t __54__ApplicationShortcutController_handleActionWithType___block_invoke
 
   else
   {
-    if ([v4 isEqualToString:*MEMORY[0x277CDBA08]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CDBA08]])
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
       if ([WeakRetained isPrivateBrowsingAvailable])
@@ -136,14 +136,14 @@ uint64_t __54__ApplicationShortcutController_handleActionWithType___block_invoke
 
     else
     {
-      if ([v4 isEqualToString:*MEMORY[0x277CDBA00]])
+      if ([typeCopy isEqualToString:*MEMORY[0x277CDBA00]])
       {
         v7 = kCollectionTypeBookmarks;
       }
 
       else
       {
-        if (![v4 isEqualToString:*MEMORY[0x277CDBA18]])
+        if (![typeCopy isEqualToString:*MEMORY[0x277CDBA18]])
         {
           v5 = 0;
           goto LABEL_14;
@@ -178,58 +178,58 @@ void __55__ApplicationShortcutController__handleActionWithType___block_invoke(ui
   }
 }
 
-+ (id)_shortcutItemWithType:(id)a3 systemImageName:(id)a4
++ (id)_shortcutItemWithType:(id)type systemImageName:(id)name
 {
   v5 = MEMORY[0x277D75198];
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  typeCopy = type;
   v8 = [v5 alloc];
   v9 = _SFLocalizedTitleStringForShortcutItemType();
-  v10 = [MEMORY[0x277D75190] iconWithSystemImageName:v6];
+  v10 = [MEMORY[0x277D75190] iconWithSystemImageName:nameCopy];
 
-  v11 = [v8 initWithType:v7 localizedTitle:v9 localizedSubtitle:0 icon:v10 userInfo:0];
+  v11 = [v8 initWithType:typeCopy localizedTitle:v9 localizedSubtitle:0 icon:v10 userInfo:0];
 
   return v11;
 }
 
-- (void)_openNewEmptyTabWithURLFieldFocused:(BOOL)a3 privateBrowsingState:(int64_t)a4
+- (void)_openNewEmptyTabWithURLFieldFocused:(BOOL)focused privateBrowsingState:(int64_t)state
 {
-  v5 = a3;
+  focusedCopy = focused;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v7 = [WeakRetained tabController];
-  v8 = [WeakRetained tabCollectionViewProvider];
-  if (v5)
+  tabController = [WeakRetained tabController];
+  tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+  if (focusedCopy)
   {
     [WeakRetained setSkipShowingRecentSearches:1];
   }
 
-  v9 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-  [WeakRetained dismissTransientUIAnimated:v9 options:2];
-  v10 = [WeakRetained isShowingPrivateTabs];
-  if (a4 != 1 || (v10 & 1) != 0)
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  [WeakRetained dismissTransientUIAnimated:areAnimationsEnabled options:2];
+  isShowingPrivateTabs = [WeakRetained isShowingPrivateTabs];
+  if (state != 1 || (isShowingPrivateTabs & 1) != 0)
   {
-    if (((a4 == 0) & v10) == 1)
+    if (((state == 0) & isShowingPrivateTabs) == 1)
     {
-      [v7 selectLocalTabGroup];
+      [tabController selectLocalTabGroup];
     }
   }
 
   else
   {
-    [v7 selectPrivateTabGroup];
+    [tabController selectPrivateTabGroup];
   }
 
-  if ([v7 isPrivateBrowsingEnabled])
+  if ([tabController isPrivateBrowsingEnabled])
   {
     v11 = +[Application sharedApplication];
-    v12 = [v11 isPrivateBrowsingLocked];
+    isPrivateBrowsingLocked = [v11 isPrivateBrowsingLocked];
 
-    LOBYTE(v5) = v5 & ~v12;
+    LOBYTE(focusedCopy) = focusedCopy & ~isPrivateBrowsingLocked;
   }
 
   else
   {
-    v12 = 0;
+    isPrivateBrowsingLocked = 0;
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -238,36 +238,36 @@ void __55__ApplicationShortcutController__handleActionWithType___block_invoke(ui
   aBlock[3] = &unk_2781DA450;
   v13 = WeakRetained;
   v24 = v13;
-  v25 = v9;
-  v26 = v5;
+  v25 = areAnimationsEnabled;
+  v26 = focusedCopy;
   v14 = _Block_copy(aBlock);
-  v15 = [v7 blankTabToReuse];
-  if (v15)
+  blankTabToReuse = [tabController blankTabToReuse];
+  if (blankTabToReuse)
   {
-    v16 = [v7 activeTabDocument];
+    activeTabDocument = [tabController activeTabDocument];
 
-    if (v15 != v16)
+    if (blankTabToReuse != activeTabDocument)
     {
-      [v7 setActiveTab:v15 animated:v9];
+      [tabController setActiveTab:blankTabToReuse animated:areAnimationsEnabled];
     }
 
-    if (v12)
+    if (isPrivateBrowsingLocked)
     {
-      v17 = [v8 tabSwitcherViewController];
-      [v17 setDismissesOnUnlock:1];
+      tabSwitcherViewController = [tabCollectionViewProvider tabSwitcherViewController];
+      [tabSwitcherViewController setDismissesOnUnlock:1];
     }
 
-    [v8 updateTabViewsAnimatingTabBar:v9];
-    v18 = [v8 tabThumbnailCollectionView];
+    [tabCollectionViewProvider updateTabViewsAnimatingTabBar:areAnimationsEnabled];
+    tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
     v19 = objc_opt_respondsToSelector();
-    if (v9 && (v19 & 1) != 0)
+    if (areAnimationsEnabled && (v19 & 1) != 0)
     {
-      [v18 dismissWithAddTabAnimation];
+      [tabThumbnailCollectionView dismissWithAddTabAnimation];
     }
 
     else
     {
-      [v18 dismissAnimated:v9];
+      [tabThumbnailCollectionView dismissAnimated:areAnimationsEnabled];
     }
 
     v14[2](v14);
@@ -280,10 +280,10 @@ void __55__ApplicationShortcutController__handleActionWithType___block_invoke(ui
     v20[2] = __90__ApplicationShortcutController__openNewEmptyTabWithURLFieldFocused_privateBrowsingState___block_invoke_2;
     v20[3] = &unk_2781DA478;
     v22 = v14;
-    v21 = v8;
-    [v7 openNewTabWithOptions:0 completionHandler:v20];
+    v21 = tabCollectionViewProvider;
+    [tabController openNewTabWithOptions:0 completionHandler:v20];
 
-    v18 = v22;
+    tabThumbnailCollectionView = v22;
   }
 }
 
@@ -311,82 +311,82 @@ void __90__ApplicationShortcutController__openNewEmptyTabWithURLFieldFocused_pri
   }
 }
 
-- (void)_showBookmarksPanelWithSelectedCollection:(id)a3
+- (void)_showBookmarksPanelWithSelectedCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained tabController];
-  v6 = [v5 activeTabDocument];
-  if ([v6 isBlank])
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  if ([activeTabDocument isBlank])
   {
     if ([WeakRetained isPresentingModalBookmarksController])
     {
-      v7 = 1;
+      isShowingSidebar = 1;
     }
 
     else
     {
-      v8 = [WeakRetained sidebarUIProxy];
-      v7 = [v8 isShowingSidebar];
+      sidebarUIProxy = [WeakRetained sidebarUIProxy];
+      isShowingSidebar = [sidebarUIProxy isShowingSidebar];
     }
   }
 
   else
   {
-    v7 = 0;
+    isShowingSidebar = 0;
   }
 
-  if ([WeakRetained isSuspendedOrSuspending] && (v7 & 1) == 0)
+  if ([WeakRetained isSuspendedOrSuspending] && (isShowingSidebar & 1) == 0)
   {
     [(ApplicationShortcutController *)self _openNewEmptyTabWithURLFieldFocused:0 privateBrowsingState:2];
   }
 
-  v9 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-  v10 = [WeakRetained tabCollectionViewProvider];
-  v11 = [v10 tabThumbnailCollectionView];
-  [v11 dismissAnimated:v9];
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+  tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
+  [tabThumbnailCollectionView dismissAnimated:areAnimationsEnabled];
 
-  if (!v9)
+  if (!areAnimationsEnabled)
   {
     goto LABEL_13;
   }
 
-  v12 = [WeakRetained sidebarUIProxy];
-  if ([v12 isShowingSidebar])
+  sidebarUIProxy2 = [WeakRetained sidebarUIProxy];
+  if ([sidebarUIProxy2 isShowingSidebar])
   {
 
 LABEL_13:
-    [WeakRetained showBookmarksPanelWithNonAnimatedTransitionWithCollection:v4];
+    [WeakRetained showBookmarksPanelWithNonAnimatedTransitionWithCollection:collectionCopy];
     goto LABEL_14;
   }
 
-  v13 = [WeakRetained isPresentingModalBookmarksController];
+  isPresentingModalBookmarksController = [WeakRetained isPresentingModalBookmarksController];
 
-  if (v13)
+  if (isPresentingModalBookmarksController)
   {
     goto LABEL_13;
   }
 
   [WeakRetained toggleBookmarksPresentation];
 LABEL_14:
-  [WeakRetained setCurrentBookmarksCollection:v4];
+  [WeakRetained setCurrentBookmarksCollection:collectionCopy];
 }
 
-+ (id)_shortcutItemsIncludingPrivateBrowsing:(BOOL)a3
++ (id)_shortcutItemsIncludingPrivateBrowsing:(BOOL)browsing
 {
-  v3 = a3;
+  browsingCopy = browsing;
   v11[4] = *MEMORY[0x277D85DE8];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__ApplicationShortcutController__shortcutItemsIncludingPrivateBrowsing___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_shortcutItemsIncludingPrivateBrowsing__onceToken != -1)
   {
     dispatch_once(&_shortcutItemsIncludingPrivateBrowsing__onceToken, block);
   }
 
-  if (v3)
+  if (browsingCopy)
   {
     v11[0] = _shortcutItemsIncludingPrivateBrowsing__newTabShortcutItem;
     v11[1] = _shortcutItemsIncludingPrivateBrowsing__newPrivateTabShortcutItem;

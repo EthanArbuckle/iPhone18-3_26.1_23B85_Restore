@@ -1,19 +1,19 @@
 @interface MSCollection
 + (Class)managedClass;
-- (MSCollection)initWithCollectionDescription:(id)a3 image:(id)a4 imageUrl:(id)a5 positionIndex:(int64_t)a6 title:(id)a7;
-- (MSCollection)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSCollection)initWithStore:(id)a3 collectionDescription:(id)a4 image:(id)a5 imageUrl:(id)a6 positionIndex:(int64_t)a7 title:(id)a8;
+- (MSCollection)initWithCollectionDescription:(id)description image:(id)image imageUrl:(id)url positionIndex:(int64_t)index title:(id)title;
+- (MSCollection)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSCollection)initWithStore:(id)store collectionDescription:(id)description image:(id)image imageUrl:(id)url positionIndex:(int64_t)index title:(id)title;
 - (NSData)image;
 - (id)fetchPlaces;
 - (int)placesCount;
 - (int64_t)positionIndex;
-- (void)addPlace:(id)a3;
-- (void)beforeDeleteWithManaged:(id)a3;
+- (void)addPlace:(id)place;
+- (void)beforeDeleteWithManaged:(id)managed;
 - (void)flushChanges;
-- (void)removePlace:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setPositionIndex:(int64_t)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
+- (void)removePlace:(id)place;
+- (void)setImage:(id)image;
+- (void)setPositionIndex:(int64_t)index;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
 @end
 
 @implementation MSCollection
@@ -22,9 +22,9 @@
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  LODWORD(v4) = *(&v5->super.super.isa + OBJC_IVAR___MSCollection__placesCount);
+  LODWORD(v4) = *(&selfCopy->super.super.isa + OBJC_IVAR___MSCollection__placesCount);
   [*(&self->super.super.isa + v3) unlock];
 
   return v4;
@@ -32,7 +32,7 @@
 
 - (NSData)image
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B6294B38();
   v5 = v4;
 
@@ -53,7 +53,7 @@
 
 - (id)fetchPlaces
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B62902D8();
 
   type metadata accessor for CollectionItem();
@@ -62,14 +62,14 @@
   return v3;
 }
 
-- (MSCollection)initWithCollectionDescription:(id)a3 image:(id)a4 imageUrl:(id)a5 positionIndex:(int64_t)a6 title:(id)a7
+- (MSCollection)initWithCollectionDescription:(id)description image:(id)image imageUrl:(id)url positionIndex:(int64_t)index title:(id)title
 {
-  v9 = a4;
-  if (a3)
+  imageCopy = image;
+  if (description)
   {
     v10 = sub_1B63BEBD4();
     v12 = v11;
-    if (v9)
+    if (imageCopy)
     {
       goto LABEL_3;
     }
@@ -79,16 +79,16 @@
   {
     v10 = 0;
     v12 = 0;
-    if (a4)
+    if (image)
     {
 LABEL_3:
-      v13 = v9;
-      v14 = a5;
-      v15 = a7;
-      v9 = sub_1B63BE924();
+      v13 = imageCopy;
+      urlCopy = url;
+      titleCopy = title;
+      imageCopy = sub_1B63BE924();
       v17 = v16;
 
-      if (a5)
+      if (url)
       {
         goto LABEL_4;
       }
@@ -96,7 +96,7 @@ LABEL_3:
 LABEL_8:
       v18 = 0;
       v20 = 0;
-      if (a7)
+      if (title)
       {
         goto LABEL_5;
       }
@@ -104,14 +104,14 @@ LABEL_8:
 LABEL_9:
       v21 = 0;
       v23 = 0;
-      return Collection.init(collectionDescription:image:imageUrl:positionIndex:title:)(v10, v12, v9, v17, v18, v20, a6, v21, v23);
+      return Collection.init(collectionDescription:image:imageUrl:positionIndex:title:)(v10, v12, imageCopy, v17, v18, v20, index, v21, v23);
     }
   }
 
-  v24 = a5;
-  v25 = a7;
+  urlCopy2 = url;
+  titleCopy2 = title;
   v17 = 0xF000000000000000;
-  if (!a5)
+  if (!url)
   {
     goto LABEL_8;
   }
@@ -120,7 +120,7 @@ LABEL_4:
   v18 = sub_1B63BEBD4();
   v20 = v19;
 
-  if (!a7)
+  if (!title)
   {
     goto LABEL_9;
   }
@@ -129,12 +129,12 @@ LABEL_5:
   v21 = sub_1B63BEBD4();
   v23 = v22;
 
-  return Collection.init(collectionDescription:image:imageUrl:positionIndex:title:)(v10, v12, v9, v17, v18, v20, a6, v21, v23);
+  return Collection.init(collectionDescription:image:imageUrl:positionIndex:title:)(v10, v12, imageCopy, v17, v18, v20, index, v21, v23);
 }
 
-- (MSCollection)initWithStore:(id)a3 collectionDescription:(id)a4 image:(id)a5 imageUrl:(id)a6 positionIndex:(int64_t)a7 title:(id)a8
+- (MSCollection)initWithStore:(id)store collectionDescription:(id)description image:(id)image imageUrl:(id)url positionIndex:(int64_t)index title:(id)title
 {
-  if (a4)
+  if (description)
   {
     v12 = sub_1B63BEBD4();
     v14 = v13;
@@ -146,16 +146,16 @@ LABEL_5:
     v14 = 0;
   }
 
-  v15 = a3;
-  if (a5)
+  storeCopy = store;
+  if (image)
   {
-    v16 = a5;
-    v17 = a6;
-    v18 = a8;
+    imageCopy = image;
+    urlCopy = url;
+    titleCopy = title;
     v19 = sub_1B63BE924();
     v21 = v20;
 
-    if (a6)
+    if (url)
     {
       goto LABEL_6;
     }
@@ -163,7 +163,7 @@ LABEL_5:
 LABEL_9:
     v22 = 0;
     v24 = 0;
-    if (a8)
+    if (title)
     {
       goto LABEL_7;
     }
@@ -171,14 +171,14 @@ LABEL_9:
 LABEL_10:
     v25 = 0;
     v27 = 0;
-    return Collection.init(store:collectionDescription:image:imageUrl:positionIndex:title:)(v15, v12, v14, v19, v21, v22, v24, a7, v25, v27);
+    return Collection.init(store:collectionDescription:image:imageUrl:positionIndex:title:)(storeCopy, v12, v14, v19, v21, v22, v24, index, v25, v27);
   }
 
-  v28 = a6;
-  v29 = a8;
+  urlCopy2 = url;
+  titleCopy2 = title;
   v19 = 0;
   v21 = 0xF000000000000000;
-  if (!a6)
+  if (!url)
   {
     goto LABEL_9;
   }
@@ -187,7 +187,7 @@ LABEL_6:
   v22 = sub_1B63BEBD4();
   v24 = v23;
 
-  if (!a8)
+  if (!title)
   {
     goto LABEL_10;
   }
@@ -196,7 +196,7 @@ LABEL_7:
   v25 = sub_1B63BEBD4();
   v27 = v26;
 
-  return Collection.init(store:collectionDescription:image:imageUrl:positionIndex:title:)(v15, v12, v14, v19, v21, v22, v24, a7, v25, v27);
+  return Collection.init(store:collectionDescription:image:imageUrl:positionIndex:title:)(storeCopy, v12, v14, v19, v21, v22, v24, index, v25, v27);
 }
 
 - (void)flushChanges
@@ -214,79 +214,79 @@ LABEL_7:
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v8 = a3;
-  v9 = self;
-  sub_1B628422C(v8, a4, a5);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B628422C(objectCopy, load, parent);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v3 = a3;
-  if (a3)
+  imageCopy = image;
+  if (image)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1B63BE924();
+    selfCopy = self;
+    v5 = imageCopy;
+    imageCopy = sub_1B63BE924();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1B62CCEE4(v3, v7);
-  sub_1B6284F64(v3, v7);
+  sub_1B62CCEE4(imageCopy, v7);
+  sub_1B6284F64(imageCopy, v7);
 }
 
 - (int64_t)positionIndex
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  v6 = *(&v5->super.super.isa + OBJC_IVAR___MSCollection__positionIndex);
+  v6 = *(&selfCopy->super.super.isa + OBJC_IVAR___MSCollection__positionIndex);
   [*(&self->super.super.isa + v3) unlock];
 
   return v6;
 }
 
-- (void)setPositionIndex:(int64_t)a3
+- (void)setPositionIndex:(int64_t)index
 {
-  v4 = self;
-  sub_1B62C96E4(a3);
+  selfCopy = self;
+  sub_1B62C96E4(index);
 }
 
-- (void)addPlace:(id)a3
+- (void)addPlace:(id)place
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B62CA2D0(v4);
+  placeCopy = place;
+  selfCopy = self;
+  sub_1B62CA2D0(placeCopy);
 }
 
-- (void)removePlace:(id)a3
+- (void)removePlace:(id)place
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B62CA548(v4);
+  placeCopy = place;
+  selfCopy = self;
+  sub_1B62CA548(placeCopy);
 }
 
-- (MSCollection)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSCollection)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  return sub_1B6283680(a3, a4, v7, v6);
+  parentCopy = parent;
+  loadCopy = load;
+  objectCopy = object;
+  return sub_1B6283680(object, store, loadCopy, parentCopy);
 }
 
-- (void)beforeDeleteWithManaged:(id)a3
+- (void)beforeDeleteWithManaged:(id)managed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B6383EA4(v4);
+  managedCopy = managed;
+  selfCopy = self;
+  sub_1B6383EA4(managedCopy);
 }
 
 @end

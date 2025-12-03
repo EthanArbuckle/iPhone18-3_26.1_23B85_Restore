@@ -16,16 +16,16 @@
 
 - (BOOL)hasAcknowledgedIntroScreens
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ScreenTimeEyeReliefIntroAcknowledged"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ScreenTimeEyeReliefIntroAcknowledged"];
 
   return v3;
 }
 
 - (void)acknowledgeIntroScreens
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 setBool:1 forKey:@"ScreenTimeEyeReliefIntroAcknowledged"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:@"ScreenTimeEyeReliefIntroAcknowledged"];
 }
 
 @end

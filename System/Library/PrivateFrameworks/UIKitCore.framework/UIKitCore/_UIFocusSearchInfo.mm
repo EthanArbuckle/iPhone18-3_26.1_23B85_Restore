@@ -1,7 +1,7 @@
 @interface _UIFocusSearchInfo
 + (id)defaultInfo;
-- (BOOL)shouldIncludeFocusItem:(id)a3;
-- (_UIFocusSearchInfo)initWithFocusEvaluator:(id)a3;
+- (BOOL)shouldIncludeFocusItem:(id)item;
+- (_UIFocusSearchInfo)initWithFocusEvaluator:(id)evaluator;
 @end
 
 @implementation _UIFocusSearchInfo
@@ -13,9 +13,9 @@
   return v2;
 }
 
-- (_UIFocusSearchInfo)initWithFocusEvaluator:(id)a3
+- (_UIFocusSearchInfo)initWithFocusEvaluator:(id)evaluator
 {
-  v4 = a3;
+  evaluatorCopy = evaluator;
   v8.receiver = self;
   v8.super_class = _UIFocusSearchInfo;
   v5 = [(_UIFocusSearchInfo *)&v8 init];
@@ -23,20 +23,20 @@
   if (v5)
   {
     v5->_treatFocusableItemAsLeaf = 1;
-    [(_UIFocusSearchInfo *)v5 setEvaluator:v4];
+    [(_UIFocusSearchInfo *)v5 setEvaluator:evaluatorCopy];
   }
 
   return v6;
 }
 
-- (BOOL)shouldIncludeFocusItem:(id)a3
+- (BOOL)shouldIncludeFocusItem:(id)item
 {
-  v4 = a3;
-  v5 = [(_UIFocusSearchInfo *)self evaluator];
-  if (v5)
+  itemCopy = item;
+  evaluator = [(_UIFocusSearchInfo *)self evaluator];
+  if (evaluator)
   {
-    v6 = [(_UIFocusSearchInfo *)self evaluator];
-    v7 = (v6)[2](v6, v4);
+    evaluator2 = [(_UIFocusSearchInfo *)self evaluator];
+    v7 = (evaluator2)[2](evaluator2, itemCopy);
   }
 
   else

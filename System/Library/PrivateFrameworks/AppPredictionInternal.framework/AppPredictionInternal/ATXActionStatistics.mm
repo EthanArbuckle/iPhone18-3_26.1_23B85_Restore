@@ -1,6 +1,6 @@
 @interface ATXActionStatistics
 - (ATXActionStatistics)init;
-- (void)updateActionStatisticsForSlotResolutionStatistics:(id)a3 candidateActionPredictions:(id)a4;
+- (void)updateActionStatisticsForSlotResolutionStatistics:(id)statistics candidateActionPredictions:(id)predictions;
 @end
 
 @implementation ATXActionStatistics
@@ -68,16 +68,16 @@
   return v2;
 }
 
-- (void)updateActionStatisticsForSlotResolutionStatistics:(id)a3 candidateActionPredictions:(id)a4
+- (void)updateActionStatisticsForSlotResolutionStatistics:(id)statistics candidateActionPredictions:(id)predictions
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  statisticsCopy = statistics;
+  predictionsCopy = predictions;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v51 objects:v55 count:16];
+  v8 = [predictionsCopy countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v8)
   {
     v9 = v8;
@@ -88,146 +88,146 @@
       {
         if (*v52 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(predictionsCopy);
         }
 
         v12 = *(*(&v51 + 1) + 8 * i);
-        v13 = [v12 scoredAction];
-        v14 = [v13 predictedItem];
+        scoredAction = [v12 scoredAction];
+        predictedItem = [scoredAction predictedItem];
 
-        if (v14)
+        if (predictedItem)
         {
           v15 = [ATXMinimalSlotResolutionParameters alloc];
-          v16 = [v12 slotSet];
-          v17 = [(ATXMinimalSlotResolutionParameters *)v15 initWithAction:v14 slots:v16];
+          slotSet = [v12 slotSet];
+          v17 = [(ATXMinimalSlotResolutionParameters *)v15 initWithAction:predictedItem slots:slotSet];
 
-          v18 = [v6[2] objectForKeyedSubscript:v17];
+          v18 = [statisticsCopy[2] objectForKeyedSubscript:v17];
           [(NSMutableDictionary *)self->_statisticsForParameters setObject:v18 forKeyedSubscript:v17];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v51 objects:v55 count:16];
+      v9 = [predictionsCopy countByEnumeratingWithState:&v51 objects:v55 count:16];
     }
 
     while (v9);
   }
 
   totalTimeOfDayCount = self->_totalTimeOfDayCount;
-  self->_totalLaunches = *(v6 + 4) + self->_totalLaunches;
-  self->_totalTimeOfDayCount = *(v6 + 6) + totalTimeOfDayCount;
+  self->_totalLaunches = *(statisticsCopy + 4) + self->_totalLaunches;
+  self->_totalTimeOfDayCount = *(statisticsCopy + 6) + totalTimeOfDayCount;
   totalHourWindowCount = self->_totalHourWindowCount;
-  self->_totalThirtyMinuteWindowCount = *(v6 + 7) + self->_totalThirtyMinuteWindowCount;
-  self->_totalHourWindowCount = *(v6 + 8) + totalHourWindowCount;
+  self->_totalThirtyMinuteWindowCount = *(statisticsCopy + 7) + self->_totalThirtyMinuteWindowCount;
+  self->_totalHourWindowCount = *(statisticsCopy + 8) + totalHourWindowCount;
   totalCoarseTimeOfDayCount = self->_totalCoarseTimeOfDayCount;
-  self->_totalEightHourWindowCount = *(v6 + 9) + self->_totalEightHourWindowCount;
+  self->_totalEightHourWindowCount = *(statisticsCopy + 9) + self->_totalEightHourWindowCount;
   totalPartOfWeekCount = self->_totalPartOfWeekCount;
-  self->_totalDayOfWeekCount = *(v6 + 11) + self->_totalDayOfWeekCount;
-  self->_totalPartOfWeekCount = *(v6 + 12) + totalPartOfWeekCount;
+  self->_totalDayOfWeekCount = *(statisticsCopy + 11) + self->_totalDayOfWeekCount;
+  self->_totalPartOfWeekCount = *(statisticsCopy + 12) + totalPartOfWeekCount;
   totalDayAndPrevLocationCount = self->_totalDayAndPrevLocationCount;
-  self->_totalPartOfWeekAndLocationCount = *(v6 + 37) + self->_totalPartOfWeekAndLocationCount;
+  self->_totalPartOfWeekAndLocationCount = *(statisticsCopy + 37) + self->_totalPartOfWeekAndLocationCount;
   totalTimeOfDayOccurrences = self->_totalTimeOfDayOccurrences;
-  self->_totalPartOfWeekAndTimeCount = *(v6 + 38) + self->_totalPartOfWeekAndTimeCount;
+  self->_totalPartOfWeekAndTimeCount = *(statisticsCopy + 38) + self->_totalPartOfWeekAndTimeCount;
   totalMotionTypeCount = self->_totalMotionTypeCount;
-  self->_totalLocationCount = *(v6 + 13) + self->_totalLocationCount;
-  self->_totalCoarseTimeOfDayCount = *(v6 + 10) + totalCoarseTimeOfDayCount;
-  self->_totalMotionTypeCount = *(v6 + 14) + totalMotionTypeCount;
+  self->_totalLocationCount = *(statisticsCopy + 13) + self->_totalLocationCount;
+  self->_totalCoarseTimeOfDayCount = *(statisticsCopy + 10) + totalCoarseTimeOfDayCount;
+  self->_totalMotionTypeCount = *(statisticsCopy + 14) + totalMotionTypeCount;
   totalTimeAndLocationCount = self->_totalTimeAndLocationCount;
-  self->_totalPrevLocationCount = *(v6 + 15) + self->_totalPrevLocationCount;
-  self->_totalTimeAndLocationCount = *(v6 + 29) + totalTimeAndLocationCount;
+  self->_totalPrevLocationCount = *(statisticsCopy + 15) + self->_totalPrevLocationCount;
+  self->_totalTimeAndLocationCount = *(statisticsCopy + 29) + totalTimeAndLocationCount;
   totalDayAndLocationCount = self->_totalDayAndLocationCount;
-  self->_totalTimeAndDayCount = *(v6 + 30) + self->_totalTimeAndDayCount;
-  self->_totalDayAndLocationCount = *(v6 + 31) + totalDayAndLocationCount;
+  self->_totalTimeAndDayCount = *(statisticsCopy + 30) + self->_totalTimeAndDayCount;
+  self->_totalDayAndLocationCount = *(statisticsCopy + 31) + totalDayAndLocationCount;
   totalPrevLocationAndMotionTypeCount = self->_totalPrevLocationAndMotionTypeCount;
-  self->_totalTimeAndDayAndLocationCount = *(v6 + 32) + self->_totalTimeAndDayAndLocationCount;
-  self->_totalPrevLocationAndMotionTypeCount = *(v6 + 33) + totalPrevLocationAndMotionTypeCount;
+  self->_totalTimeAndDayAndLocationCount = *(statisticsCopy + 32) + self->_totalTimeAndDayAndLocationCount;
+  self->_totalPrevLocationAndMotionTypeCount = *(statisticsCopy + 33) + totalPrevLocationAndMotionTypeCount;
   totalTimeAndPrevLocationCount = self->_totalTimeAndPrevLocationCount;
-  self->_totalPrevLocationAndLocationCount = *(v6 + 34) + self->_totalPrevLocationAndLocationCount;
-  self->_totalTimeAndPrevLocationCount = *(v6 + 35) + totalTimeAndPrevLocationCount;
-  self->_totalDayAndPrevLocationCount = *(v6 + 36) + totalDayAndPrevLocationCount;
-  self->_totalTimeOfDayOccurrences = *(v6 + 39) + totalTimeOfDayOccurrences;
+  self->_totalPrevLocationAndLocationCount = *(statisticsCopy + 34) + self->_totalPrevLocationAndLocationCount;
+  self->_totalTimeAndPrevLocationCount = *(statisticsCopy + 35) + totalTimeAndPrevLocationCount;
+  self->_totalDayAndPrevLocationCount = *(statisticsCopy + 36) + totalDayAndPrevLocationCount;
+  self->_totalTimeOfDayOccurrences = *(statisticsCopy + 39) + totalTimeOfDayOccurrences;
   totalLocationOccurrences = self->_totalLocationOccurrences;
-  self->_totalDayOfWeekOccurrences = *(v6 + 40) + self->_totalDayOfWeekOccurrences;
-  self->_totalLocationOccurrences = *(v6 + 41) + totalLocationOccurrences;
+  self->_totalDayOfWeekOccurrences = *(statisticsCopy + 40) + self->_totalDayOfWeekOccurrences;
+  self->_totalLocationOccurrences = *(statisticsCopy + 41) + totalLocationOccurrences;
   totalPreviousLocationOccurrences = self->_totalPreviousLocationOccurrences;
-  self->_totalMotionTypeOccurrences = *(v6 + 42) + self->_totalMotionTypeOccurrences;
-  self->_totalPreviousLocationOccurrences = *(v6 + 43) + totalPreviousLocationOccurrences;
+  self->_totalMotionTypeOccurrences = *(statisticsCopy + 42) + self->_totalMotionTypeOccurrences;
+  self->_totalPreviousLocationOccurrences = *(statisticsCopy + 43) + totalPreviousLocationOccurrences;
   totalTimeAndDayOccurrences = self->_totalTimeAndDayOccurrences;
-  self->_totalPartOfWeekOccurrences = *(v6 + 44) + self->_totalPartOfWeekOccurrences;
-  self->_totalTimeAndDayOccurrences = *(v6 + 45) + totalTimeAndDayOccurrences;
+  self->_totalPartOfWeekOccurrences = *(statisticsCopy + 44) + self->_totalPartOfWeekOccurrences;
+  self->_totalTimeAndDayOccurrences = *(statisticsCopy + 45) + totalTimeAndDayOccurrences;
   totalDayAndLocationOccurrences = self->_totalDayAndLocationOccurrences;
-  self->_totalTimeAndLocationOccurrences = *(v6 + 46) + self->_totalTimeAndLocationOccurrences;
-  self->_totalDayAndLocationOccurrences = *(v6 + 47) + totalDayAndLocationOccurrences;
+  self->_totalTimeAndLocationOccurrences = *(statisticsCopy + 46) + self->_totalTimeAndLocationOccurrences;
+  self->_totalDayAndLocationOccurrences = *(statisticsCopy + 47) + totalDayAndLocationOccurrences;
   totalPrevLocationAndLocationOccurrences = self->_totalPrevLocationAndLocationOccurrences;
-  self->_totalTimeAndDayAndLocationOccurrences = *(v6 + 48) + self->_totalTimeAndDayAndLocationOccurrences;
-  self->_totalPrevLocationAndLocationOccurrences = *(v6 + 49) + totalPrevLocationAndLocationOccurrences;
+  self->_totalTimeAndDayAndLocationOccurrences = *(statisticsCopy + 48) + self->_totalTimeAndDayAndLocationOccurrences;
+  self->_totalPrevLocationAndLocationOccurrences = *(statisticsCopy + 49) + totalPrevLocationAndLocationOccurrences;
   totalTimeAndPrevLocationOccurrences = self->_totalTimeAndPrevLocationOccurrences;
-  self->_totalPrevLocationAndMotionTypeOccurrences = *(v6 + 50) + self->_totalPrevLocationAndMotionTypeOccurrences;
-  self->_totalTimeAndPrevLocationOccurrences = *(v6 + 51) + totalTimeAndPrevLocationOccurrences;
+  self->_totalPrevLocationAndMotionTypeOccurrences = *(statisticsCopy + 50) + self->_totalPrevLocationAndMotionTypeOccurrences;
+  self->_totalTimeAndPrevLocationOccurrences = *(statisticsCopy + 51) + totalTimeAndPrevLocationOccurrences;
   totalPartOfWeekAndLocationOccurrences = self->_totalPartOfWeekAndLocationOccurrences;
-  self->_totalDayAndPrevLocationOccurrences = *(v6 + 52) + self->_totalDayAndPrevLocationOccurrences;
-  self->_totalPartOfWeekAndLocationOccurrences = *(v6 + 53) + totalPartOfWeekAndLocationOccurrences;
+  self->_totalDayAndPrevLocationOccurrences = *(statisticsCopy + 52) + self->_totalDayAndPrevLocationOccurrences;
+  self->_totalPartOfWeekAndLocationOccurrences = *(statisticsCopy + 53) + totalPartOfWeekAndLocationOccurrences;
   totalConfirms = self->_totalConfirms;
-  self->_totalPartOfWeekAndTimeOccurrences = *(v6 + 54) + self->_totalPartOfWeekAndTimeOccurrences;
-  self->_totalConfirms = *(v6 + 17) + totalConfirms;
+  self->_totalPartOfWeekAndTimeOccurrences = *(statisticsCopy + 54) + self->_totalPartOfWeekAndTimeOccurrences;
+  self->_totalConfirms = *(statisticsCopy + 17) + totalConfirms;
   totalExplicitRejectsNoDecay = self->_totalExplicitRejectsNoDecay;
-  self->_totalRejects = *(v6 + 18) + self->_totalRejects;
-  self->_totalExplicitRejectsNoDecay = *(v6 + 19) + totalExplicitRejectsNoDecay;
+  self->_totalRejects = *(statisticsCopy + 18) + self->_totalRejects;
+  self->_totalExplicitRejectsNoDecay = *(statisticsCopy + 19) + totalExplicitRejectsNoDecay;
   totalRejectsInSpotlight = self->_totalRejectsInSpotlight;
-  self->_totalConfirmsInSpotlight = *(v6 + 20) + self->_totalConfirmsInSpotlight;
-  self->_totalRejectsInSpotlight = *(v6 + 21) + totalRejectsInSpotlight;
+  self->_totalConfirmsInSpotlight = *(statisticsCopy + 20) + self->_totalConfirmsInSpotlight;
+  self->_totalRejectsInSpotlight = *(statisticsCopy + 21) + totalRejectsInSpotlight;
   totalRejectsInSpotlightWithinMeanWindow = self->_totalRejectsInSpotlightWithinMeanWindow;
-  self->_totalConfirmsInSpotlightWithinMeanWindow = *(v6 + 22) + self->_totalConfirmsInSpotlightWithinMeanWindow;
-  self->_totalRejectsInSpotlightWithinMeanWindow = *(v6 + 23) + totalRejectsInSpotlightWithinMeanWindow;
-  [(NSMutableSet *)self->_totalUniqueDaysConfirmedOrRejectedInSpotlightWithinMeanWindow unionSet:v6[24]];
+  self->_totalConfirmsInSpotlightWithinMeanWindow = *(statisticsCopy + 22) + self->_totalConfirmsInSpotlightWithinMeanWindow;
+  self->_totalRejectsInSpotlightWithinMeanWindow = *(statisticsCopy + 23) + totalRejectsInSpotlightWithinMeanWindow;
+  [(NSMutableSet *)self->_totalUniqueDaysConfirmedOrRejectedInSpotlightWithinMeanWindow unionSet:statisticsCopy[24]];
   totalRejectsTodayInLockscreen = self->_totalRejectsTodayInLockscreen;
-  self->_totalConfirmsTodayInLockscreen = *(v6 + 25) + self->_totalConfirmsTodayInLockscreen;
-  self->_totalRejectsTodayInLockscreen = *(v6 + 26) + totalRejectsTodayInLockscreen;
+  self->_totalConfirmsTodayInLockscreen = *(statisticsCopy + 25) + self->_totalConfirmsTodayInLockscreen;
+  self->_totalRejectsTodayInLockscreen = *(statisticsCopy + 26) + totalRejectsTodayInLockscreen;
   totalRejectsInLockscreen = self->_totalRejectsInLockscreen;
-  self->_totalConfirmsInLockscreen = *(v6 + 27) + self->_totalConfirmsInLockscreen;
-  self->_totalRejectsInLockscreen = *(v6 + 28) + totalRejectsInLockscreen;
+  self->_totalConfirmsInLockscreen = *(statisticsCopy + 27) + self->_totalConfirmsInLockscreen;
+  self->_totalRejectsInLockscreen = *(statisticsCopy + 28) + totalRejectsInLockscreen;
   totalCoarseTimePOWLocationOccurrences = self->_totalCoarseTimePOWLocationOccurrences;
-  self->_totalCoarseTimePOWLocationCount = *(v6 + 55) + self->_totalCoarseTimePOWLocationCount;
-  self->_totalCoarseTimePOWLocationOccurrences = *(v6 + 56) + totalCoarseTimePOWLocationOccurrences;
+  self->_totalCoarseTimePOWLocationCount = *(statisticsCopy + 55) + self->_totalCoarseTimePOWLocationCount;
+  self->_totalCoarseTimePOWLocationOccurrences = *(statisticsCopy + 56) + totalCoarseTimePOWLocationOccurrences;
   totalConfirmsCoarseTimePOWLocationOccurrences = self->_totalConfirmsCoarseTimePOWLocationOccurrences;
-  self->_totalConfirmsCoarseTimePOWLocationCount = *(v6 + 57) + self->_totalConfirmsCoarseTimePOWLocationCount;
-  self->_totalConfirmsCoarseTimePOWLocationOccurrences = *(v6 + 58) + totalConfirmsCoarseTimePOWLocationOccurrences;
+  self->_totalConfirmsCoarseTimePOWLocationCount = *(statisticsCopy + 57) + self->_totalConfirmsCoarseTimePOWLocationCount;
+  self->_totalConfirmsCoarseTimePOWLocationOccurrences = *(statisticsCopy + 58) + totalConfirmsCoarseTimePOWLocationOccurrences;
   totalRejectsCoarseTimePOWLocationOccurrences = self->_totalRejectsCoarseTimePOWLocationOccurrences;
-  self->_totalRejectsCoarseTimePOWLocationCount = *(v6 + 59) + self->_totalRejectsCoarseTimePOWLocationCount;
-  self->_totalRejectsCoarseTimePOWLocationOccurrences = *(v6 + 60) + totalRejectsCoarseTimePOWLocationOccurrences;
+  self->_totalRejectsCoarseTimePOWLocationCount = *(statisticsCopy + 59) + self->_totalRejectsCoarseTimePOWLocationCount;
+  self->_totalRejectsCoarseTimePOWLocationOccurrences = *(statisticsCopy + 60) + totalRejectsCoarseTimePOWLocationOccurrences;
   totalSpecificTimeDOWLocationOccurrences = self->_totalSpecificTimeDOWLocationOccurrences;
-  self->_totalSpecificTimeDOWLocationCount = *(v6 + 61) + self->_totalSpecificTimeDOWLocationCount;
-  self->_totalSpecificTimeDOWLocationOccurrences = *(v6 + 62) + totalSpecificTimeDOWLocationOccurrences;
+  self->_totalSpecificTimeDOWLocationCount = *(statisticsCopy + 61) + self->_totalSpecificTimeDOWLocationCount;
+  self->_totalSpecificTimeDOWLocationOccurrences = *(statisticsCopy + 62) + totalSpecificTimeDOWLocationOccurrences;
   totalConfirmsSpecificTimeDOWLocationOccurrences = self->_totalConfirmsSpecificTimeDOWLocationOccurrences;
-  self->_totalConfirmsSpecificTimeDOWLocationCount = *(v6 + 63) + self->_totalConfirmsSpecificTimeDOWLocationCount;
-  self->_totalConfirmsSpecificTimeDOWLocationOccurrences = *(v6 + 64) + totalConfirmsSpecificTimeDOWLocationOccurrences;
+  self->_totalConfirmsSpecificTimeDOWLocationCount = *(statisticsCopy + 63) + self->_totalConfirmsSpecificTimeDOWLocationCount;
+  self->_totalConfirmsSpecificTimeDOWLocationOccurrences = *(statisticsCopy + 64) + totalConfirmsSpecificTimeDOWLocationOccurrences;
   totalRejectsSpecificTimeDOWLocationOccurrences = self->_totalRejectsSpecificTimeDOWLocationOccurrences;
-  self->_totalRejectsSpecificTimeDOWLocationCount = *(v6 + 65) + self->_totalRejectsSpecificTimeDOWLocationCount;
-  self->_totalRejectsSpecificTimeDOWLocationOccurrences = *(v6 + 66) + totalRejectsSpecificTimeDOWLocationOccurrences;
+  self->_totalRejectsSpecificTimeDOWLocationCount = *(statisticsCopy + 65) + self->_totalRejectsSpecificTimeDOWLocationCount;
+  self->_totalRejectsSpecificTimeDOWLocationOccurrences = *(statisticsCopy + 66) + totalRejectsSpecificTimeDOWLocationOccurrences;
   launchesCoarseGeoHashInContext = self->_launchesCoarseGeoHashInContext;
-  self->_launchesDayOfWeekInContext = *(v6 + 67) + self->_launchesDayOfWeekInContext;
-  self->_launchesCoarseGeoHashInContext = *(v6 + 68) + launchesCoarseGeoHashInContext;
-  self->_launchesSpecificGeoHashInContext = *(v6 + 69) + self->_launchesSpecificGeoHashInContext;
-  self->_launchesTimeOfDayInContext = *(v6 + 70) + self->_launchesTimeOfDayInContext;
-  self->_confirmsTimeOfDayInContext = *(v6 + 71) + self->_confirmsTimeOfDayInContext;
-  self->_rejectsTimeOfDayInContext = *(v6 + 72) + self->_rejectsTimeOfDayInContext;
-  self->_confirmsDayOfWeekInContext = *(v6 + 73) + self->_confirmsDayOfWeekInContext;
-  self->_rejectsDayOfWeekInContext = *(v6 + 74) + self->_rejectsDayOfWeekInContext;
-  self->_confirmsCoarseGeoHashInContext = *(v6 + 75) + self->_confirmsCoarseGeoHashInContext;
-  self->_rejectsCoarseGeoHashInContext = *(v6 + 76) + self->_rejectsCoarseGeoHashInContext;
-  self->_confirmsSpecificGeoHashInContext = *(v6 + 77) + self->_confirmsSpecificGeoHashInContext;
-  self->_rejectsSpecificGeoHashInContext = *(v6 + 78) + self->_rejectsSpecificGeoHashInContext;
-  self->_homeScreenActionConfirmsOnDayOfWeekInContext = *(v6 + 79) + self->_homeScreenActionConfirmsOnDayOfWeekInContext;
-  self->_homeScreenActionRejectsOnDayOfWeekInContext = *(v6 + 80) + self->_homeScreenActionRejectsOnDayOfWeekInContext;
-  self->_homeScreenActionConfirmsAtTimeOfDayInContext = *(v6 + 81) + self->_homeScreenActionConfirmsAtTimeOfDayInContext;
-  self->_homeScreenActionRejectsAtTimeOfDayInContext = *(v6 + 82) + self->_homeScreenActionRejectsAtTimeOfDayInContext;
-  self->_homeScreenActionConfirmsAtCoarseGeohashInContext = *(v6 + 83) + self->_homeScreenActionConfirmsAtCoarseGeohashInContext;
-  self->_homeScreenActionRejectsAtCoarseGeohashInContext = *(v6 + 84) + self->_homeScreenActionRejectsAtCoarseGeohashInContext;
-  self->_homeScreenActionConfirmsAtSpecificGeohashInContext = *(v6 + 85) + self->_homeScreenActionConfirmsAtSpecificGeohashInContext;
-  self->_homeScreenActionRejectsAtSpecificGeohashInContext = *(v6 + 86) + self->_homeScreenActionRejectsAtSpecificGeohashInContext;
-  self->_homeScreenActionConfirmsAtCoarseTimePOWLocationInContext = *(v6 + 87) + self->_homeScreenActionConfirmsAtCoarseTimePOWLocationInContext;
-  self->_homeScreenActionRejectsAtCoarseTimePOWLocationInContext = *(v6 + 88) + self->_homeScreenActionRejectsAtCoarseTimePOWLocationInContext;
-  self->_homeScreenActionConfirmsAtSpecificTimeDOWLocationInContext = *(v6 + 89) + self->_homeScreenActionConfirmsAtSpecificTimeDOWLocationInContext;
-  self->_homeScreenActionRejectsAtSpecificTimeDOWLocationInContext = *(v6 + 90) + self->_homeScreenActionRejectsAtSpecificTimeDOWLocationInContext;
+  self->_launchesDayOfWeekInContext = *(statisticsCopy + 67) + self->_launchesDayOfWeekInContext;
+  self->_launchesCoarseGeoHashInContext = *(statisticsCopy + 68) + launchesCoarseGeoHashInContext;
+  self->_launchesSpecificGeoHashInContext = *(statisticsCopy + 69) + self->_launchesSpecificGeoHashInContext;
+  self->_launchesTimeOfDayInContext = *(statisticsCopy + 70) + self->_launchesTimeOfDayInContext;
+  self->_confirmsTimeOfDayInContext = *(statisticsCopy + 71) + self->_confirmsTimeOfDayInContext;
+  self->_rejectsTimeOfDayInContext = *(statisticsCopy + 72) + self->_rejectsTimeOfDayInContext;
+  self->_confirmsDayOfWeekInContext = *(statisticsCopy + 73) + self->_confirmsDayOfWeekInContext;
+  self->_rejectsDayOfWeekInContext = *(statisticsCopy + 74) + self->_rejectsDayOfWeekInContext;
+  self->_confirmsCoarseGeoHashInContext = *(statisticsCopy + 75) + self->_confirmsCoarseGeoHashInContext;
+  self->_rejectsCoarseGeoHashInContext = *(statisticsCopy + 76) + self->_rejectsCoarseGeoHashInContext;
+  self->_confirmsSpecificGeoHashInContext = *(statisticsCopy + 77) + self->_confirmsSpecificGeoHashInContext;
+  self->_rejectsSpecificGeoHashInContext = *(statisticsCopy + 78) + self->_rejectsSpecificGeoHashInContext;
+  self->_homeScreenActionConfirmsOnDayOfWeekInContext = *(statisticsCopy + 79) + self->_homeScreenActionConfirmsOnDayOfWeekInContext;
+  self->_homeScreenActionRejectsOnDayOfWeekInContext = *(statisticsCopy + 80) + self->_homeScreenActionRejectsOnDayOfWeekInContext;
+  self->_homeScreenActionConfirmsAtTimeOfDayInContext = *(statisticsCopy + 81) + self->_homeScreenActionConfirmsAtTimeOfDayInContext;
+  self->_homeScreenActionRejectsAtTimeOfDayInContext = *(statisticsCopy + 82) + self->_homeScreenActionRejectsAtTimeOfDayInContext;
+  self->_homeScreenActionConfirmsAtCoarseGeohashInContext = *(statisticsCopy + 83) + self->_homeScreenActionConfirmsAtCoarseGeohashInContext;
+  self->_homeScreenActionRejectsAtCoarseGeohashInContext = *(statisticsCopy + 84) + self->_homeScreenActionRejectsAtCoarseGeohashInContext;
+  self->_homeScreenActionConfirmsAtSpecificGeohashInContext = *(statisticsCopy + 85) + self->_homeScreenActionConfirmsAtSpecificGeohashInContext;
+  self->_homeScreenActionRejectsAtSpecificGeohashInContext = *(statisticsCopy + 86) + self->_homeScreenActionRejectsAtSpecificGeohashInContext;
+  self->_homeScreenActionConfirmsAtCoarseTimePOWLocationInContext = *(statisticsCopy + 87) + self->_homeScreenActionConfirmsAtCoarseTimePOWLocationInContext;
+  self->_homeScreenActionRejectsAtCoarseTimePOWLocationInContext = *(statisticsCopy + 88) + self->_homeScreenActionRejectsAtCoarseTimePOWLocationInContext;
+  self->_homeScreenActionConfirmsAtSpecificTimeDOWLocationInContext = *(statisticsCopy + 89) + self->_homeScreenActionConfirmsAtSpecificTimeDOWLocationInContext;
+  self->_homeScreenActionRejectsAtSpecificTimeDOWLocationInContext = *(statisticsCopy + 90) + self->_homeScreenActionRejectsAtSpecificTimeDOWLocationInContext;
 
   v50 = *MEMORY[0x277D85DE8];
 }

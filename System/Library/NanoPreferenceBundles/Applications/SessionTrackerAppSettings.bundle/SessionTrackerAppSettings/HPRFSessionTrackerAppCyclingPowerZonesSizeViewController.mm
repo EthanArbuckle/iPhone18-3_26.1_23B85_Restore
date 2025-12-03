@@ -1,28 +1,28 @@
 @interface HPRFSessionTrackerAppCyclingPowerZonesSizeViewController
-- (HPRFSessionTrackerAppCyclingPowerZonesSizeViewController)initWithConfiguration:(id)a3 updateDelegate:(id)a4;
+- (HPRFSessionTrackerAppCyclingPowerZonesSizeViewController)initWithConfiguration:(id)configuration updateDelegate:(id)delegate;
 - (WOCyclingPowerZonesConfigurationUpdateDelegate)updateDelegate;
 - (id)applicationBundleIdentifier;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (void)_insertZoneSizeSpecifiers:(id)a3;
-- (void)_pressedZoneSizePreference:(id)a3;
-- (void)setConfiguration:(id)a3;
+- (void)_insertZoneSizeSpecifiers:(id)specifiers;
+- (void)_pressedZoneSizePreference:(id)preference;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation HPRFSessionTrackerAppCyclingPowerZonesSizeViewController
 
-- (HPRFSessionTrackerAppCyclingPowerZonesSizeViewController)initWithConfiguration:(id)a3 updateDelegate:(id)a4
+- (HPRFSessionTrackerAppCyclingPowerZonesSizeViewController)initWithConfiguration:(id)configuration updateDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HPRFSessionTrackerAppCyclingPowerZonesSizeViewController;
   v9 = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_updateDelegate, v8);
-    objc_storeStrong(&v10->_configuration, a3);
+    objc_storeWeak(&v9->_updateDelegate, delegateCopy);
+    objc_storeStrong(&v10->_configuration, configuration);
   }
 
   return v10;
@@ -40,16 +40,16 @@
 - (id)applicationBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)specifiers
 {
   v3 = objc_opt_new();
-  v4 = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self localizedPaneTitle];
-  [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self setTitle:v4];
+  localizedPaneTitle = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self localizedPaneTitle];
+  [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self setTitle:localizedPaneTitle];
 
   [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self _insertZoneSizeSpecifiers:v3];
   v5 = OBJC_IVAR___PSListController__specifiers;
@@ -63,15 +63,15 @@
   return v8;
 }
 
-- (void)_insertZoneSizeSpecifiers:(id)a3
+- (void)_insertZoneSizeSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v5 = +[WOCyclingPowerZonesConfigurationEditor allSupportedSizes];
   if ([v5 count])
   {
     v6 = [PSSpecifier groupSpecifierWithID:@"CYCLING_POWER_ZONES_SIZE_GROUP_ID"];
     [v6 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
-    [v4 addObject:v6];
+    [specifiersCopy addObject:v6];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -104,17 +104,17 @@
 
           [v7 setUserInfo:v10];
           [v7 setButtonAction:"_pressedZoneSizePreference:"];
-          v14 = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self configuration];
-          v15 = [v14 zones];
-          v16 = [v15 count];
-          v17 = [v10 integerValue];
+          configuration = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self configuration];
+          zones = [configuration zones];
+          v16 = [zones count];
+          integerValue = [v10 integerValue];
 
-          if (v16 == v17)
+          if (v16 == integerValue)
           {
             [v6 setProperty:v7 forKey:v19];
           }
 
-          [v4 addObject:v7];
+          [specifiersCopy addObject:v7];
 
           v8 = v8 + 1;
           v9 = v7;
@@ -131,42 +131,42 @@
   }
 }
 
-- (void)_pressedZoneSizePreference:(id)a3
+- (void)_pressedZoneSizePreference:(id)preference
 {
-  v12 = a3;
-  v4 = [v12 userInfo];
+  preferenceCopy = preference;
+  userInfo = [preferenceCopy userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v12 userInfo];
+    userInfo2 = [preferenceCopy userInfo];
   }
 
   else
   {
-    v5 = 0;
+    userInfo2 = 0;
   }
 
-  v6 = [v5 integerValue];
-  v7 = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self configuration];
-  v8 = [v7 zones];
-  v9 = [v8 count];
+  integerValue = [userInfo2 integerValue];
+  configuration = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self configuration];
+  zones = [configuration zones];
+  v9 = [zones count];
 
-  if (v9 != v6)
+  if (v9 != integerValue)
   {
-    v10 = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self configuration];
-    v11 = [WOCyclingPowerZonesConfigurationEditor changeZonesSizeTo:v6 using:v10];
+    configuration2 = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self configuration];
+    v11 = [WOCyclingPowerZonesConfigurationEditor changeZonesSizeTo:integerValue using:configuration2];
     [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self setConfiguration:v11];
 
     [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self reloadSpecifiers];
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_configuration, a3);
-  v5 = a3;
-  v6 = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self updateDelegate];
-  [v6 updateWithConfiguration:v5];
+  objc_storeStrong(&self->_configuration, configuration);
+  configurationCopy = configuration;
+  updateDelegate = [(HPRFSessionTrackerAppCyclingPowerZonesSizeViewController *)self updateDelegate];
+  [updateDelegate updateWithConfiguration:configurationCopy];
 }
 
 - (WOCyclingPowerZonesConfigurationUpdateDelegate)updateDelegate

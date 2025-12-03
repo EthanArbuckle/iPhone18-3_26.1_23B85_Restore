@@ -29,8 +29,8 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 name];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        name = [v10 name];
+        [v4 setObject:v10 forKeyedSubscript:name];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

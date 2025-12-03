@@ -1,13 +1,13 @@
 @interface _NSCachedAttributedString
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (void)initialize;
-- (BOOL)hasColorGlyphsInRange:(_NSRange)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasColorGlyphsInRange:(_NSRange)range;
+- (BOOL)isEqual:(id)equal;
 - (_NSCachedAttributedString)init;
-- (_NSCachedAttributedString)initWithAttributedString:(id)a3;
-- (_NSCachedAttributedString)initWithString:(id)a3 attributes:(id)a4;
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)attributesAtIndex:(unint64_t)a3 longestEffectiveRange:(_NSRange *)a4 inRange:(_NSRange)a5;
+- (_NSCachedAttributedString)initWithAttributedString:(id)string;
+- (_NSCachedAttributedString)initWithString:(id)string attributes:(id)attributes;
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)attributesAtIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange;
 - (id)copyCachedInstance;
 - (id)string;
 - (unint64_t)hash;
@@ -15,7 +15,7 @@
 - (void)dealloc;
 - (void)finalize;
 - (void)release;
-- (void)setAttributes:(id)a3 range:(_NSRange)a4;
+- (void)setAttributes:(id)attributes range:(_NSRange)range;
 @end
 
 @implementation _NSCachedAttributedString
@@ -34,22 +34,22 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3 = [v2 integerForKey:@"NSStringDrawingLongTermCacheSize"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v3 = [standardUserDefaults integerForKey:@"NSStringDrawingLongTermCacheSize"];
     if (v3)
     {
       __NSCachedAttrStringLongTermCacheSize = v3 & ~(v3 >> 63);
     }
 
-    v4 = [v2 integerForKey:@"NSStringDrawingLongTermThreshold"];
+    v4 = [standardUserDefaults integerForKey:@"NSStringDrawingLongTermThreshold"];
     if (v4 >= 1)
     {
       __NSCachedAttrStringLongTermPromotionThreshold = v4;
     }
 
-    v5 = [v2 integerForKey:@"NSStringDrawingShortTermCacheSize"];
+    v5 = [standardUserDefaults integerForKey:@"NSStringDrawingShortTermCacheSize"];
     if (v5)
     {
       __NSCachedAttrStringShortTermCacheSize = v5 & ~(v5 >> 63);
@@ -272,7 +272,7 @@ LABEL_15:
   os_unfair_lock_unlock(&__NSCachedAttrStringLock);
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v5 = __NSCachedAttrStringCacheNextIndex;
@@ -280,9 +280,9 @@ LABEL_15:
   {
     os_unfair_lock_unlock(&__NSCachedAttrStringLock);
 LABEL_5:
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS____NSCachedAttributedString;
-    return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
   }
 
   --__NSCachedAttrStringCacheNextIndex;
@@ -296,30 +296,30 @@ LABEL_5:
   return v6;
 }
 
-- (_NSCachedAttributedString)initWithAttributedString:(id)a3
+- (_NSCachedAttributedString)initWithAttributedString:(id)string
 {
   v6.receiver = self;
   v6.super_class = _NSCachedAttributedString;
   v4 = [(_NSCachedAttributedString *)&v6 init];
   if (v4)
   {
-    v4->_contents = [a3 copyWithZone:0];
-    v4->_length = [a3 length];
+    v4->_contents = [string copyWithZone:0];
+    v4->_length = [string length];
   }
 
   return v4;
 }
 
-- (_NSCachedAttributedString)initWithString:(id)a3 attributes:(id)a4
+- (_NSCachedAttributedString)initWithString:(id)string attributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = _NSCachedAttributedString;
   v6 = [(_NSCachedAttributedString *)&v8 init];
   if (v6)
   {
-    v6->_contents = [a3 copyWithZone:0];
-    v6->_baseAttributes = [NSAttributeDictionary newWithDictionary:a4];
-    v6->_length = [a3 length];
+    v6->_contents = [string copyWithZone:0];
+    v6->_baseAttributes = [NSAttributeDictionary newWithDictionary:attributes];
+    v6->_length = [string length];
   }
 
   return v6;
@@ -363,7 +363,7 @@ LABEL_5:
   [(_NSCachedAttributedString *)&v9 finalize];
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   length = self->_length;
   runs = self->_runs;
@@ -391,7 +391,7 @@ LABEL_8:
     {
       v9 = *p_var1;
       v10 = *p_var1 + v7;
-      if (v10 > a3)
+      if (v10 > index)
       {
         break;
       }
@@ -407,10 +407,10 @@ LABEL_8:
     baseAttributes = *(p_var1 - 1);
     if (baseAttributes)
     {
-      if (a4)
+      if (range)
       {
-        a4->location = v7;
-        a4->length = v9;
+        range->location = v7;
+        range->length = v9;
       }
 
       return baseAttributes;
@@ -422,20 +422,20 @@ LABEL_8:
   baseAttributes = self->_baseAttributes;
   if (!baseAttributes)
   {
-    return [self->_contents attributesAtIndex:a3 longestEffectiveRange:a4 inRange:v7];
+    return [self->_contents attributesAtIndex:index longestEffectiveRange:range inRange:v7];
   }
 
-  if (a4)
+  if (range)
   {
-    a4->location = v7;
-    a4->length = length;
+    range->location = v7;
+    range->length = length;
     return self->_baseAttributes;
   }
 
   return baseAttributes;
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 longestEffectiveRange:(_NSRange *)a4 inRange:(_NSRange)a5
+- (id)attributesAtIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange
 {
   runs = self->_runs;
   if (!runs)
@@ -454,7 +454,7 @@ LABEL_8:
   while (1)
   {
     v12 = *p_var1 + v10.location;
-    if (v12 > a3)
+    if (v12 > index)
     {
       break;
     }
@@ -468,14 +468,14 @@ LABEL_8:
   }
 
   v10.length = *p_var1;
-  v13 = NSIntersectionRange(v10, a5);
-  a5 = v13;
+  v13 = NSIntersectionRange(v10, inRange);
+  inRange = v13;
   result = *(p_var1 - 1);
   if (result)
   {
-    if (a4)
+    if (range)
     {
-      *a4 = v13;
+      *range = v13;
     }
   }
 
@@ -485,9 +485,9 @@ LABEL_10:
     result = self->_baseAttributes;
     if (result)
     {
-      if (a4)
+      if (range)
       {
-        *a4 = a5;
+        *range = inRange;
         return self->_baseAttributes;
       }
     }
@@ -496,17 +496,17 @@ LABEL_10:
     {
       contents = self->_contents;
 
-      return [contents attributesAtIndex:a3 longestEffectiveRange:a4 inRange:{a5.location, a5.length}];
+      return [contents attributesAtIndex:index longestEffectiveRange:range inRange:{inRange.location, inRange.length}];
     }
   }
 
   return result;
 }
 
-- (BOOL)hasColorGlyphsInRange:(_NSRange)a3
+- (BOOL)hasColorGlyphsInRange:(_NSRange)range
 {
-  v3 = a3.location + a3.length;
-  if (a3.location < a3.location + a3.length)
+  v3 = range.location + range.length;
+  if (range.location < range.location + range.length)
   {
     v5 = 0;
     runs = self->_runs;
@@ -518,7 +518,7 @@ LABEL_10:
         {
           var1 = runs->var1;
           v9 = var1 + v5;
-          if (var1 + v5 > a3.location)
+          if (var1 + v5 > range.location)
           {
             break;
           }
@@ -552,14 +552,14 @@ LABEL_9:
       var0 = self->_baseAttributes;
       if (!var0)
       {
-        var0 = [self->_contents attributesAtIndex:a3.location longestEffectiveRange:0 inRange:{a3.location, v3 - a3.location}];
+        var0 = [self->_contents attributesAtIndex:range.location longestEffectiveRange:0 inRange:{range.location, v3 - range.location}];
       }
 
 LABEL_12:
       result = [-[NSAttributeDictionary objectForKeyedSubscript:](var0 objectForKeyedSubscript:{@"NSFont", "_hasColorGlyphs"}];
       if (!result)
       {
-        a3.location = v10 + var1;
+        range.location = v10 + var1;
         if (v10 + var1 < v3)
         {
           continue;
@@ -573,23 +573,23 @@ LABEL_12:
   return 0;
 }
 
-- (void)setAttributes:(id)a3 range:(_NSRange)a4
+- (void)setAttributes:(id)attributes range:(_NSRange)range
 {
-  if (!a3)
+  if (!attributes)
   {
     return;
   }
 
-  length = a4.length;
-  if (!a4.length)
+  length = range.length;
+  if (!range.length)
   {
     return;
   }
 
-  location = a4.location;
-  v7 = a4.location + a4.length;
+  location = range.location;
+  v7 = range.location + range.length;
   v8 = self->_length;
-  if (a4.location + a4.length > v8 || v8 < 1)
+  if (range.location + range.length > v8 || v8 < 1)
   {
     return;
   }
@@ -702,7 +702,7 @@ LABEL_28:
       v20 = &v15->var0;
     }
 
-    v15->var0 = [NSAttributeDictionary newWithDictionary:a3];
+    v15->var0 = [NSAttributeDictionary newWithDictionary:attributes];
     v15->var1 = length;
     if (v19 >= 0x11)
     {
@@ -765,15 +765,15 @@ LABEL_46:
       p_var0[2 * v24 + 1] = v17;
     }
 
-    v15->var0 = [NSAttributeDictionary newWithDictionary:a3];
+    v15->var0 = [NSAttributeDictionary newWithDictionary:attributes];
     v15->var1 = length;
     self->_numRuns += v24;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -793,11 +793,11 @@ LABEL_46:
     [(_NSCachedAttributedString *)self hash];
   }
 
-  v6 = *(a3 + 4);
+  v6 = *(equal + 4);
   if (v6)
   {
-    [a3 hash];
-    v6 = *(a3 + 4);
+    [equal hash];
+    v6 = *(equal + 4);
   }
 
   hashValue = self->_hashValue;
@@ -805,12 +805,12 @@ LABEL_46:
   if (hashValue == v6)
   {
     baseAttributes = self->_baseAttributes;
-    if (baseAttributes != *(a3 + 2) && ![(NSAttributeDictionary *)baseAttributes isEqual:?])
+    if (baseAttributes != *(equal + 2) && ![(NSAttributeDictionary *)baseAttributes isEqual:?])
     {
       return 0;
     }
 
-    if (![self->_contents isEqual:*(a3 + 1)])
+    if (![self->_contents isEqual:*(equal + 1)])
     {
       return 0;
     }

@@ -1,52 +1,52 @@
 @interface TIKeyboardInputManagerLogger
-+ (BOOL)createTypologyDirectoryAtURL:(id)a3;
-+ (id)_writeToFileWithTypologyLog:(id)a3 directoryURL:(id)a4 requireDeviceUnlocked:(BOOL)a5;
++ (BOOL)createTypologyDirectoryAtURL:(id)l;
++ (id)_writeToFileWithTypologyLog:(id)log directoryURL:(id)l requireDeviceUnlocked:(BOOL)unlocked;
 + (id)accessibilityConfigInfo;
-+ (void)_backgroundPruneLogsWithPreferences:(id)a3;
-+ (void)_backgroundWriteLog:(id)a3 preferences:(id)a4 completion:(id)a5;
-+ (void)_writeHumanReadableTraceForTypologyLog:(id)a3 directoryURL:(id)a4;
-+ (void)pruneTypologyLogsAtDirectoryURL:(id)a3 toMaxNumBytes:(int64_t)a4 expirationInterval:(double)a5 satisfyingPredicate:(id)a6;
-+ (void)submitAggregrateDictionaryReport:(id)a3 inputModeIdentifier:(id)a4;
-- (BOOL)allowTypologyLogForKeyboardState:(id)a3;
++ (void)_backgroundPruneLogsWithPreferences:(id)preferences;
++ (void)_backgroundWriteLog:(id)log preferences:(id)preferences completion:(id)completion;
++ (void)_writeHumanReadableTraceForTypologyLog:(id)log directoryURL:(id)l;
++ (void)pruneTypologyLogsAtDirectoryURL:(id)l toMaxNumBytes:(int64_t)bytes expirationInterval:(double)interval satisfyingPredicate:(id)predicate;
++ (void)submitAggregrateDictionaryReport:(id)report inputModeIdentifier:(id)identifier;
+- (BOOL)allowTypologyLogForKeyboardState:(id)state;
 - (BOOL)isInternalDeviceWithForcedTypologyLoggingForTesting;
-- (BOOL)shouldWriteToSyslogForKeyboardState:(id)a3;
-- (TIKeyboardInputManagerLogger)initWithTypologyPreferences:(id)a3;
+- (BOOL)shouldWriteToSyslogForKeyboardState:(id)state;
+- (TIKeyboardInputManagerLogger)initWithTypologyPreferences:(id)preferences;
 - (id)writeToFile;
-- (void)_tryWriteToSyslogWithTrace:(id)a3;
+- (void)_tryWriteToSyslogWithTrace:(id)trace;
 - (void)backgroundWriteLogs;
 - (void)dealloc;
-- (void)didReachMaximumEntries:(id)a3;
-- (void)disableTypologyLogIfNecessaryForKeyboardState:(id)a3;
-- (void)logAutocorrections:(id)a3 trace:(id)a4 forKeyboardState:(id)a5 requestToken:(id)a6;
-- (void)logCandidateResultSet:(id)a3 trace:(id)a4 forKeyboardState:(id)a5 requestToken:(id)a6;
-- (void)logHitKeyCode:(int64_t)a3 forTouchEvent:(id)a4 keyboardState:(id)a5;
-- (void)logKeyboardConfig:(id)a3 forSyncToKeyboardState:(id)a4;
-- (void)logKeyboardConfig:(id)a3 textToCommit:(id)a4 forAcceptedCandidate:(id)a5 keyboardState:(id)a6;
-- (void)logKeyboardLayout:(id)a3 name:(id)a4;
-- (void)logKeyboardOutput:(id)a3 keyboardConfiguration:(id)a4 trace:(id)a5 forKeyboardInput:(id)a6 keyboardState:(id)a7;
-- (void)logReceivedCandidateRejected:(id)a3;
+- (void)didReachMaximumEntries:(id)entries;
+- (void)disableTypologyLogIfNecessaryForKeyboardState:(id)state;
+- (void)logAutocorrections:(id)autocorrections trace:(id)trace forKeyboardState:(id)state requestToken:(id)token;
+- (void)logCandidateResultSet:(id)set trace:(id)trace forKeyboardState:(id)state requestToken:(id)token;
+- (void)logHitKeyCode:(int64_t)code forTouchEvent:(id)event keyboardState:(id)state;
+- (void)logKeyboardConfig:(id)config forSyncToKeyboardState:(id)state;
+- (void)logKeyboardConfig:(id)config textToCommit:(id)commit forAcceptedCandidate:(id)candidate keyboardState:(id)state;
+- (void)logKeyboardLayout:(id)layout name:(id)name;
+- (void)logKeyboardOutput:(id)output keyboardConfiguration:(id)configuration trace:(id)trace forKeyboardInput:(id)input keyboardState:(id)state;
+- (void)logReceivedCandidateRejected:(id)rejected;
 - (void)logReceivedLastAcceptedCandidateCorrected;
-- (void)logReceivedSetOriginalInput:(id)a3;
-- (void)logReceivedSkipHitTestForTouchEvent:(id)a3 forKeyboardState:(id)a4;
-- (void)logReceivedTextAccepted:(id)a3;
-- (void)logRefinements:(id)a3 forCandidate:(id)a4 keyboardState:(id)a5;
-- (void)logReplacements:(id)a3 forString:(id)a4 keyLayout:(id)a5;
-- (void)setConfig:(id)a3;
-- (void)tryStartingTypologyLogForSyncToKeyboardState:(id)a3;
+- (void)logReceivedSetOriginalInput:(id)input;
+- (void)logReceivedSkipHitTestForTouchEvent:(id)event forKeyboardState:(id)state;
+- (void)logReceivedTextAccepted:(id)accepted;
+- (void)logRefinements:(id)refinements forCandidate:(id)candidate keyboardState:(id)state;
+- (void)logReplacements:(id)replacements forString:(id)string keyLayout:(id)layout;
+- (void)setConfig:(id)config;
+- (void)tryStartingTypologyLogForSyncToKeyboardState:(id)state;
 @end
 
 @implementation TIKeyboardInputManagerLogger
 
 - (void)dealloc
 {
-  v3 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v3 finalizeComputation];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic finalizeComputation];
 
-  v4 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  v5 = [v4 aggregateReport];
+  typologyStatistic2 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  aggregateReport = [typologyStatistic2 aggregateReport];
 
-  v6 = [(TIKeyboardInputManagerLogger *)self inputModeIdentifier];
-  [TIKeyboardInputManagerLogger submitAggregrateDictionaryReport:v5 inputModeIdentifier:v6];
+  inputModeIdentifier = [(TIKeyboardInputManagerLogger *)self inputModeIdentifier];
+  [TIKeyboardInputManagerLogger submitAggregrateDictionaryReport:aggregateReport inputModeIdentifier:inputModeIdentifier];
 
   [(TIKeyboardInputManagerLogger *)self backgroundWriteLogs];
   v7.receiver = self;
@@ -56,26 +56,26 @@
 
 - (void)backgroundWriteLogs
 {
-  v4 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  v3 = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
-  if (v4 && TI_DEVICE_UNLOCKED() && [v3 typologyLoggingEnabled])
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  typologyPreferences = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
+  if (typologyLog && TI_DEVICE_UNLOCKED() && [typologyPreferences typologyLoggingEnabled])
   {
-    [objc_opt_class() _backgroundWriteLog:v4 preferences:v3 completion:&__block_literal_global_83];
+    [objc_opt_class() _backgroundWriteLog:typologyLog preferences:typologyPreferences completion:&__block_literal_global_83];
   }
 }
 
-- (void)logKeyboardLayout:(id)a3 name:(id)a4
+- (void)logKeyboardLayout:(id)layout name:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D6F4F0];
-  v7 = a4;
-  v8 = a3;
+  nameCopy = name;
+  layoutCopy = layout;
   v9 = objc_alloc_init(v6);
-  [v9 setName:v7];
+  [v9 setName:nameCopy];
 
-  [v9 setKeyboardLayout:v8];
-  v10 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v10 logRecord:v9];
+  [v9 setKeyboardLayout:layoutCopy];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v9];
 
   if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:0])
   {
@@ -90,8 +90,8 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         v13 = MEMORY[0x277CCACA8];
-        v14 = [v9 shortDescription];
-        v15 = [v13 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logKeyboardLayout:name:]", v14];
+        shortDescription = [v9 shortDescription];
+        v15 = [v13 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logKeyboardLayout:name:]", shortDescription];
         *buf = 138412290;
         v17 = v15;
         _os_log_debug_impl(&dword_22CA55000, v11, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -106,11 +106,11 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D6F4F8]);
-  v4 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v4 logRecord:v3];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v3];
 
-  v5 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v5 visitRecordLastAcceptedCandidateCorrected:v3];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordLastAcceptedCandidateCorrected:v3];
 
   if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:0])
   {
@@ -125,8 +125,8 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         v8 = MEMORY[0x277CCACA8];
-        v9 = [v3 shortDescription];
-        v10 = [v8 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedLastAcceptedCandidateCorrected]", v9];
+        shortDescription = [v3 shortDescription];
+        v10 = [v8 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedLastAcceptedCandidateCorrected]", shortDescription];
         *buf = 138412290;
         v12 = v10;
         _os_log_debug_impl(&dword_22CA55000, v6, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -137,19 +137,19 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logReceivedCandidateRejected:(id)a3
+- (void)logReceivedCandidateRejected:(id)rejected
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D6F4C8];
-  v5 = a3;
+  rejectedCopy = rejected;
   v6 = objc_alloc_init(v4);
-  [v6 setCandidate:v5];
+  [v6 setCandidate:rejectedCopy];
 
-  v7 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v7 logRecord:v6];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v6];
 
-  v8 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v8 visitRecordCandidateRejected:v6];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordCandidateRejected:v6];
 
   if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:0])
   {
@@ -164,8 +164,8 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v11 = MEMORY[0x277CCACA8];
-        v12 = [v6 shortDescription];
-        v13 = [v11 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedCandidateRejected:]", v12];
+        shortDescription = [v6 shortDescription];
+        v13 = [v11 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedCandidateRejected:]", shortDescription];
         *buf = 138412290;
         v15 = v13;
         _os_log_debug_impl(&dword_22CA55000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -176,19 +176,19 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logReceivedTextAccepted:(id)a3
+- (void)logReceivedTextAccepted:(id)accepted
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D6F530];
-  v5 = a3;
+  acceptedCopy = accepted;
   v6 = objc_alloc_init(v4);
-  [v6 setCandidate:v5];
+  [v6 setCandidate:acceptedCopy];
 
-  v7 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v7 logRecord:v6];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v6];
 
-  v8 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v8 visitRecordTextAccepted:v6];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordTextAccepted:v6];
 
   if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:0])
   {
@@ -203,8 +203,8 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v11 = MEMORY[0x277CCACA8];
-        v12 = [v6 shortDescription];
-        v13 = [v11 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedTextAccepted:]", v12];
+        shortDescription = [v6 shortDescription];
+        v13 = [v11 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedTextAccepted:]", shortDescription];
         *buf = 138412290;
         v15 = v13;
         _os_log_debug_impl(&dword_22CA55000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -215,19 +215,19 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logReceivedSetOriginalInput:(id)a3
+- (void)logReceivedSetOriginalInput:(id)input
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D6F518];
-  v5 = a3;
+  inputCopy = input;
   v6 = objc_alloc_init(v4);
-  [v6 setOriginalInput:v5];
+  [v6 setOriginalInput:inputCopy];
 
-  v7 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v7 logRecord:v6];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v6];
 
-  v8 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v8 visitRecordSetOriginalInput:v6];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordSetOriginalInput:v6];
 
   if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:0])
   {
@@ -242,8 +242,8 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v11 = MEMORY[0x277CCACA8];
-        v12 = [v6 shortDescription];
-        v13 = [v11 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedSetOriginalInput:]", v12];
+        shortDescription = [v6 shortDescription];
+        v13 = [v11 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedSetOriginalInput:]", shortDescription];
         *buf = 138412290;
         v15 = v13;
         _os_log_debug_impl(&dword_22CA55000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -254,39 +254,39 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logReceivedSkipHitTestForTouchEvent:(id)a3 forKeyboardState:(id)a4
+- (void)logReceivedSkipHitTestForTouchEvent:(id)event forKeyboardState:(id)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:v7];
-  v8 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  v9 = [v8 loggedRecordOfClass:objc_opt_class()];
+  eventCopy = event;
+  stateCopy = state;
+  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:stateCopy];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  v9 = [typologyLog loggedRecordOfClass:objc_opt_class()];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v7 keyLayout];
-    [(TIKeyboardInputManagerLogger *)self logKeyboardLayout:v10 name:&stru_283FDFAF8];
+    keyLayout = [stateCopy keyLayout];
+    [(TIKeyboardInputManagerLogger *)self logKeyboardLayout:keyLayout name:&stru_283FDFAF8];
   }
 
-  if (![v6 stage])
+  if (![eventCopy stage])
   {
     v11 = objc_alloc_init(MEMORY[0x277D6F4D8]);
-    [v11 setKeyboardState:v7];
-    v12 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-    [v12 logRecord:v11];
+    [v11 setKeyboardState:stateCopy];
+    typologyLog2 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+    [typologyLog2 logRecord:v11];
   }
 
   v13 = objc_alloc_init(MEMORY[0x277D6F520]);
-  [v13 setTouchEvent:v6];
-  [v13 setKeyboardState:v7];
-  v14 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v14 logRecord:v13];
+  [v13 setTouchEvent:eventCopy];
+  [v13 setKeyboardState:stateCopy];
+  typologyLog3 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog3 logRecord:v13];
 
-  v15 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v15 visitRecordSkipHitTest:v13];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordSkipHitTest:v13];
 
-  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:v7])
+  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:stateCopy])
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -299,8 +299,8 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         v18 = MEMORY[0x277CCACA8];
-        v19 = [v13 shortDescription];
-        v20 = [v18 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedSkipHitTestForTouchEvent:forKeyboardState:]", v19];
+        shortDescription = [v13 shortDescription];
+        v20 = [v18 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReceivedSkipHitTestForTouchEvent:forKeyboardState:]", shortDescription];
         *buf = 138412290;
         v22 = v20;
         _os_log_debug_impl(&dword_22CA55000, v16, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -311,40 +311,40 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logHitKeyCode:(int64_t)a3 forTouchEvent:(id)a4 keyboardState:(id)a5
+- (void)logHitKeyCode:(int64_t)code forTouchEvent:(id)event keyboardState:(id)state
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:v9];
-  v10 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  v11 = [v10 loggedRecordOfClass:objc_opt_class()];
+  eventCopy = event;
+  stateCopy = state;
+  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:stateCopy];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  v11 = [typologyLog loggedRecordOfClass:objc_opt_class()];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [v9 keyLayout];
-    [(TIKeyboardInputManagerLogger *)self logKeyboardLayout:v12 name:&stru_283FDFAF8];
+    keyLayout = [stateCopy keyLayout];
+    [(TIKeyboardInputManagerLogger *)self logKeyboardLayout:keyLayout name:&stru_283FDFAF8];
   }
 
-  if (![v8 stage])
+  if (![eventCopy stage])
   {
     v13 = objc_alloc_init(MEMORY[0x277D6F4D8]);
-    [v13 setKeyboardState:v9];
-    v14 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-    [v14 logRecord:v13];
+    [v13 setKeyboardState:stateCopy];
+    typologyLog2 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+    [typologyLog2 logRecord:v13];
   }
 
   v15 = objc_alloc_init(MEMORY[0x277D6F4E0]);
-  [v15 setKeyCode:a3];
-  [v15 setTouchEvent:v8];
-  [v15 setKeyboardState:v9];
-  v16 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v16 logRecord:v15];
+  [v15 setKeyCode:code];
+  [v15 setTouchEvent:eventCopy];
+  [v15 setKeyboardState:stateCopy];
+  typologyLog3 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog3 logRecord:v15];
 
-  v17 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v17 visitRecordHitTest:v15];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordHitTest:v15];
 
-  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:v9])
+  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:stateCopy])
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -357,8 +357,8 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         v20 = MEMORY[0x277CCACA8];
-        v21 = [v15 shortDescription];
-        v22 = [v20 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logHitKeyCode:forTouchEvent:keyboardState:]", v21];
+        shortDescription = [v15 shortDescription];
+        v22 = [v20 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logHitKeyCode:forTouchEvent:keyboardState:]", shortDescription];
         *buf = 138412290;
         v24 = v22;
         _os_log_debug_impl(&dword_22CA55000, v18, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -369,25 +369,25 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRefinements:(id)a3 forCandidate:(id)a4 keyboardState:(id)a5
+- (void)logRefinements:(id)refinements forCandidate:(id)candidate keyboardState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:v8];
+  stateCopy = state;
+  candidateCopy = candidate;
+  refinementsCopy = refinements;
+  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:stateCopy];
   v11 = objc_alloc_init(MEMORY[0x277D6F508]);
-  [v11 setCandidate:v9];
+  [v11 setCandidate:candidateCopy];
 
-  [v11 setRefinements:v10];
-  [v11 setKeyboardState:v8];
-  v12 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v12 logRecord:v11];
+  [v11 setRefinements:refinementsCopy];
+  [v11 setKeyboardState:stateCopy];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v11];
 
-  v13 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v13 visitRecordRefinements:v11];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordRefinements:v11];
 
-  LODWORD(self) = [(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:v8];
+  LODWORD(self) = [(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:stateCopy];
   if (self)
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
@@ -401,8 +401,8 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         v16 = MEMORY[0x277CCACA8];
-        v17 = [v11 shortDescription];
-        v18 = [v16 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logRefinements:forCandidate:keyboardState:]", v17];
+        shortDescription = [v11 shortDescription];
+        v18 = [v16 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logRefinements:forCandidate:keyboardState:]", shortDescription];
         *buf = 138412290;
         v20 = v18;
         _os_log_debug_impl(&dword_22CA55000, v14, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -413,24 +413,24 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logReplacements:(id)a3 forString:(id)a4 keyLayout:(id)a5
+- (void)logReplacements:(id)replacements forString:(id)string keyLayout:(id)layout
 {
   v22 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277D6F510];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  layoutCopy = layout;
+  stringCopy = string;
+  replacementsCopy = replacements;
   v12 = objc_alloc_init(v8);
-  [v12 setCandidates:v11];
+  [v12 setCandidates:replacementsCopy];
 
-  [v12 setString:v10];
-  [v12 setKeyLayout:v9];
+  [v12 setString:stringCopy];
+  [v12 setKeyLayout:layoutCopy];
 
-  v13 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v13 logRecord:v12];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v12];
 
-  v14 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v14 visitRecordReplacements:v12];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordReplacements:v12];
 
   if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:0])
   {
@@ -445,8 +445,8 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v17 = MEMORY[0x277CCACA8];
-        v18 = [v12 shortDescription];
-        v19 = [v17 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReplacements:forString:keyLayout:]", v18];
+        shortDescription = [v12 shortDescription];
+        v19 = [v17 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logReplacements:forString:keyLayout:]", shortDescription];
         *buf = 138412290;
         v21 = v19;
         _os_log_debug_impl(&dword_22CA55000, v15, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -457,36 +457,36 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logKeyboardConfig:(id)a3 textToCommit:(id)a4 forAcceptedCandidate:(id)a5 keyboardState:(id)a6
+- (void)logKeyboardConfig:(id)config textToCommit:(id)commit forAcceptedCandidate:(id)candidate keyboardState:(id)state
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:v10];
-  if (v11)
+  stateCopy = state;
+  candidateCopy = candidate;
+  commitCopy = commit;
+  configCopy = config;
+  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:stateCopy];
+  if (candidateCopy)
   {
     v14 = objc_alloc_init(MEMORY[0x277D6F4D8]);
-    [v14 setKeyboardState:v10];
-    v15 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-    [v15 logRecord:v14];
+    [v14 setKeyboardState:stateCopy];
+    typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+    [typologyLog logRecord:v14];
   }
 
   v16 = objc_alloc_init(MEMORY[0x277D6F4B8]);
-  [v16 setKeyboardConfig:v13];
+  [v16 setKeyboardConfig:configCopy];
 
-  [v16 setTextToCommit:v12];
-  [v16 setCandidate:v11];
+  [v16 setTextToCommit:commitCopy];
+  [v16 setCandidate:candidateCopy];
 
-  [v16 setKeyboardState:v10];
-  v17 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v17 logRecord:v16];
+  [v16 setKeyboardState:stateCopy];
+  typologyLog2 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog2 logRecord:v16];
 
-  v18 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v18 visitRecordAcceptedCandidate:v16];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordAcceptedCandidate:v16];
 
-  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:v10])
+  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:stateCopy])
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -499,8 +499,8 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         v21 = MEMORY[0x277CCACA8];
-        v22 = [v16 shortDescription];
-        v23 = [v21 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logKeyboardConfig:textToCommit:forAcceptedCandidate:keyboardState:]", v22];
+        shortDescription = [v16 shortDescription];
+        v23 = [v21 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logKeyboardConfig:textToCommit:forAcceptedCandidate:keyboardState:]", shortDescription];
         *buf = 138412290;
         v25 = v23;
         _os_log_debug_impl(&dword_22CA55000, v19, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -511,28 +511,28 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCandidateResultSet:(id)a3 trace:(id)a4 forKeyboardState:(id)a5 requestToken:(id)a6
+- (void)logCandidateResultSet:(id)set trace:(id)trace forKeyboardState:(id)state requestToken:(id)token
 {
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:v12];
+  traceCopy = trace;
+  tokenCopy = token;
+  stateCopy = state;
+  setCopy = set;
+  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:stateCopy];
   v14 = objc_alloc_init(MEMORY[0x277D6F4D0]);
-  [v14 setResultSet:v13];
+  [v14 setResultSet:setCopy];
 
-  [v14 setKeyboardState:v12];
-  [v14 setRequestToken:v11];
+  [v14 setKeyboardState:stateCopy];
+  [v14 setRequestToken:tokenCopy];
 
-  v15 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v15 logRecord:v14 trace:v10];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v14 trace:traceCopy];
 
-  v16 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v16 visitRecordCandidateResultSet:v14];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordCandidateResultSet:v14];
 
-  LODWORD(v16) = [(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:v12];
-  if (v16)
+  LODWORD(typologyStatistic) = [(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:stateCopy];
+  if (typologyStatistic)
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -545,46 +545,46 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         v19 = MEMORY[0x277CCACA8];
-        v20 = [v14 shortDescription];
-        v21 = [v19 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logCandidateResultSet:trace:forKeyboardState:requestToken:]", v20];
+        shortDescription = [v14 shortDescription];
+        v21 = [v19 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logCandidateResultSet:trace:forKeyboardState:requestToken:]", shortDescription];
         *buf = 138412290;
         v23 = v21;
         _os_log_debug_impl(&dword_22CA55000, v17, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
-    if ([v10 length])
+    if ([traceCopy length])
     {
-      [(TIKeyboardInputManagerLogger *)self _tryWriteToSyslogWithTrace:v10];
+      [(TIKeyboardInputManagerLogger *)self _tryWriteToSyslogWithTrace:traceCopy];
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAutocorrections:(id)a3 trace:(id)a4 forKeyboardState:(id)a5 requestToken:(id)a6
+- (void)logAutocorrections:(id)autocorrections trace:(id)trace forKeyboardState:(id)state requestToken:(id)token
 {
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:v12];
+  traceCopy = trace;
+  tokenCopy = token;
+  stateCopy = state;
+  autocorrectionsCopy = autocorrections;
+  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:stateCopy];
   v14 = objc_alloc_init(MEMORY[0x277D6F4C0]);
-  [v14 setAutocorrections:v13];
+  [v14 setAutocorrections:autocorrectionsCopy];
 
-  [v14 setListUIDisplayed:{objc_msgSend(v12, "autocorrectionListUIDisplayed")}];
-  [v14 setKeyboardState:v12];
-  [v14 setRequestToken:v11];
+  [v14 setListUIDisplayed:{objc_msgSend(stateCopy, "autocorrectionListUIDisplayed")}];
+  [v14 setKeyboardState:stateCopy];
+  [v14 setRequestToken:tokenCopy];
 
-  v15 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v15 logRecord:v14 trace:v10];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v14 trace:traceCopy];
 
-  v16 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v16 visitRecordAutocorrections:v14];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordAutocorrections:v14];
 
-  LODWORD(v16) = [(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:v12];
-  if (v16)
+  LODWORD(typologyStatistic) = [(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:stateCopy];
+  if (typologyStatistic)
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -597,55 +597,55 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         v19 = MEMORY[0x277CCACA8];
-        v20 = [v14 shortDescription];
-        v21 = [v19 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logAutocorrections:trace:forKeyboardState:requestToken:]", v20];
+        shortDescription = [v14 shortDescription];
+        v21 = [v19 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logAutocorrections:trace:forKeyboardState:requestToken:]", shortDescription];
         *buf = 138412290;
         v23 = v21;
         _os_log_debug_impl(&dword_22CA55000, v17, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
-    if ([v10 length])
+    if ([traceCopy length])
     {
-      [(TIKeyboardInputManagerLogger *)self _tryWriteToSyslogWithTrace:v10];
+      [(TIKeyboardInputManagerLogger *)self _tryWriteToSyslogWithTrace:traceCopy];
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logKeyboardOutput:(id)a3 keyboardConfiguration:(id)a4 trace:(id)a5 forKeyboardInput:(id)a6 keyboardState:(id)a7
+- (void)logKeyboardOutput:(id)output keyboardConfiguration:(id)configuration trace:(id)trace forKeyboardInput:(id)input keyboardState:(id)state
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a4;
-  v16 = a3;
-  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:v14];
-  v17 = [v13 touchEvent];
+  traceCopy = trace;
+  inputCopy = input;
+  stateCopy = state;
+  configurationCopy = configuration;
+  outputCopy = output;
+  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:stateCopy];
+  touchEvent = [inputCopy touchEvent];
 
-  if (!v17)
+  if (!touchEvent)
   {
     v18 = objc_alloc_init(MEMORY[0x277D6F4D8]);
-    [v18 setKeyboardState:v14];
-    v19 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-    [v19 logRecord:v18];
+    [v18 setKeyboardState:stateCopy];
+    typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+    [typologyLog logRecord:v18];
   }
 
   v20 = objc_alloc_init(MEMORY[0x277D6F4E8]);
-  [v20 setOutput:v16];
+  [v20 setOutput:outputCopy];
 
-  [v20 setKeyboardConfig:v15];
-  [v20 setKeyboardState:v14];
-  [v20 setInput:v13];
-  v21 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v21 logRecord:v20 trace:v12];
+  [v20 setKeyboardConfig:configurationCopy];
+  [v20 setKeyboardState:stateCopy];
+  [v20 setInput:inputCopy];
+  typologyLog2 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog2 logRecord:v20 trace:traceCopy];
 
-  v22 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v22 visitRecordKeyboardInput:v20];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordKeyboardInput:v20];
 
-  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:v14])
+  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:stateCopy])
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -658,54 +658,54 @@
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
         v25 = MEMORY[0x277CCACA8];
-        v26 = [v20 shortDescription];
-        v27 = [v25 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logKeyboardOutput:keyboardConfiguration:trace:forKeyboardInput:keyboardState:]", v26];
+        shortDescription = [v20 shortDescription];
+        v27 = [v25 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logKeyboardOutput:keyboardConfiguration:trace:forKeyboardInput:keyboardState:]", shortDescription];
         *buf = 138412290;
         v29 = v27;
         _os_log_debug_impl(&dword_22CA55000, v23, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
-    if ([v12 length])
+    if ([traceCopy length])
     {
-      [(TIKeyboardInputManagerLogger *)self _tryWriteToSyslogWithTrace:v12];
+      [(TIKeyboardInputManagerLogger *)self _tryWriteToSyslogWithTrace:traceCopy];
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logKeyboardConfig:(id)a3 forSyncToKeyboardState:(id)a4
+- (void)logKeyboardConfig:(id)config forSyncToKeyboardState:(id)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:v6];
-  [(TIKeyboardInputManagerLogger *)self tryStartingTypologyLogForSyncToKeyboardState:v6];
+  stateCopy = state;
+  configCopy = config;
+  [(TIKeyboardInputManagerLogger *)self disableTypologyLogIfNecessaryForKeyboardState:stateCopy];
+  [(TIKeyboardInputManagerLogger *)self tryStartingTypologyLogForSyncToKeyboardState:stateCopy];
   v8 = objc_alloc_init(MEMORY[0x277D6F4D8]);
-  [v8 setKeyboardState:v6];
-  v9 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v9 logRecord:v8];
+  [v8 setKeyboardState:stateCopy];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog logRecord:v8];
 
   v10 = objc_alloc_init(MEMORY[0x277D6F528]);
-  [v10 setKeyboardConfig:v7];
+  [v10 setKeyboardConfig:configCopy];
 
-  [v10 setKeyboardState:v6];
-  v11 = [(TIKeyboardInputManagerLogger *)self inputModeIdentifier];
+  [v10 setKeyboardState:stateCopy];
+  inputModeIdentifier = [(TIKeyboardInputManagerLogger *)self inputModeIdentifier];
 
-  if (!v11)
+  if (!inputModeIdentifier)
   {
-    v12 = [v6 inputMode];
-    [(TIKeyboardInputManagerLogger *)self setInputModeIdentifier:v12];
+    inputMode = [stateCopy inputMode];
+    [(TIKeyboardInputManagerLogger *)self setInputModeIdentifier:inputMode];
   }
 
-  v13 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v13 logRecord:v10];
+  typologyLog2 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog2 logRecord:v10];
 
-  v14 = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
-  [v14 visitRecordSync:v10];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)self typologyStatistic];
+  [typologyStatistic visitRecordSync:v10];
 
-  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:v6])
+  if ([(TIKeyboardInputManagerLogger *)self shouldWriteToSyslogForKeyboardState:stateCopy])
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -718,8 +718,8 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v17 = MEMORY[0x277CCACA8];
-        v18 = [v10 shortDescription];
-        v19 = [v17 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logKeyboardConfig:forSyncToKeyboardState:]", v18];
+        shortDescription = [v10 shortDescription];
+        v19 = [v17 stringWithFormat:@"%s %@", "-[TIKeyboardInputManagerLogger logKeyboardConfig:forSyncToKeyboardState:]", shortDescription];
         *buf = 138412290;
         v21 = v19;
         _os_log_debug_impl(&dword_22CA55000, v15, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -730,21 +730,21 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tryWriteToSyslogWithTrace:(id)a3
+- (void)_tryWriteToSyslogWithTrace:(id)trace
 {
-  v3 = a3;
+  traceCopy = trace;
   if (TICanLogMessageAtLevel_onceToken != -1)
   {
-    v5 = v3;
+    v5 = traceCopy;
     dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
-    v3 = v5;
+    traceCopy = v5;
   }
 
   if (TICanLogMessageAtLevel_logLevel >= 3)
   {
-    v4 = v3;
-    [v3 enumerateLinesUsingBlock:&__block_literal_global_101];
-    v3 = v4;
+    v4 = traceCopy;
+    [traceCopy enumerateLinesUsingBlock:&__block_literal_global_101];
+    traceCopy = v4;
   }
 }
 
@@ -780,24 +780,24 @@ void __59__TIKeyboardInputManagerLogger__tryWriteToSyslogWithTrace___block_invok
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConfig:(id)a3
+- (void)setConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  [v5 setConfig:v4];
+  configCopy = config;
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  [typologyLog setConfig:configCopy];
 }
 
 - (id)writeToFile
 {
-  v3 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  v4 = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
-  v5 = v4;
-  if (v3 && [v4 typologyLoggingEnabled] && ((TI_DEVICE_UNLOCKED() & 1) != 0 || -[TIKeyboardInputManagerLogger isInternalDeviceWithForcedTypologyLoggingForTesting](self, "isInternalDeviceWithForcedTypologyLoggingForTesting")))
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  typologyPreferences = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
+  v5 = typologyPreferences;
+  if (typologyLog && [typologyPreferences typologyLoggingEnabled] && ((TI_DEVICE_UNLOCKED() & 1) != 0 || -[TIKeyboardInputManagerLogger isInternalDeviceWithForcedTypologyLoggingForTesting](self, "isInternalDeviceWithForcedTypologyLoggingForTesting")))
   {
-    v6 = [v5 typologyDirectoryURL];
-    v7 = [TIKeyboardInputManagerLogger _writeToFileWithTypologyLog:v3 directoryURL:v6 requireDeviceUnlocked:[(TIKeyboardInputManagerLogger *)self isInternalDeviceWithForcedTypologyLoggingForTesting]^ 1];
-    v8 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-    [v8 setDelegate:0];
+    typologyDirectoryURL = [v5 typologyDirectoryURL];
+    v7 = [TIKeyboardInputManagerLogger _writeToFileWithTypologyLog:typologyLog directoryURL:typologyDirectoryURL requireDeviceUnlocked:[(TIKeyboardInputManagerLogger *)self isInternalDeviceWithForcedTypologyLoggingForTesting]^ 1];
+    typologyLog2 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+    [typologyLog2 setDelegate:0];
 
     [(TIKeyboardInputManagerLogger *)self setTypologyLog:0];
     [(TIKeyboardInputManagerLogger *)self setSbsOverrideLoggingCapture:0];
@@ -813,81 +813,81 @@ void __59__TIKeyboardInputManagerLogger__tryWriteToSyslogWithTrace___block_invok
 
 - (BOOL)isInternalDeviceWithForcedTypologyLoggingForTesting
 {
-  v2 = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
-  v3 = [v2 isInternalDeviceWithForcedTypologyLoggingForTesting];
+  typologyPreferences = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
+  isInternalDeviceWithForcedTypologyLoggingForTesting = [typologyPreferences isInternalDeviceWithForcedTypologyLoggingForTesting];
 
-  return v3;
+  return isInternalDeviceWithForcedTypologyLoggingForTesting;
 }
 
-- (void)didReachMaximumEntries:(id)a3
+- (void)didReachMaximumEntries:(id)entries
 {
-  v20 = a3;
-  v4 = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
-  v5 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-  if (v5)
+  entriesCopy = entries;
+  typologyPreferences = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  if (typologyLog)
   {
-    v6 = v5;
-    v7 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-    if (v7 == v20)
+    typologyLog3 = typologyLog;
+    typologyLog2 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+    if (typologyLog2 == entriesCopy)
     {
-      v8 = [v4 persistenceStrategy];
+      persistenceStrategy = [typologyPreferences persistenceStrategy];
 
-      if (v8 != 1)
+      if (persistenceStrategy != 1)
       {
         goto LABEL_6;
       }
 
-      v6 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-      [v6 setDelegate:0];
+      typologyLog3 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+      [typologyLog3 setDelegate:0];
       v19 = objc_alloc(MEMORY[0x277D6F4B0]);
-      v9 = [v6 uuid];
-      v10 = [v6 partIndex];
-      v11 = [v6 date];
-      v12 = [v6 systemVersion];
-      v13 = [v6 buildVersion];
-      v14 = [v6 clientIdentifier];
-      v15 = [v6 config];
-      v16 = v10 + 1;
-      v17 = v9;
-      v7 = [v19 initWithUUID:v9 partIndex:v16 date:v11 systemVersion:v12 buildVersion:v13 clientIdentifier:v14 config:v15];
+      uuid = [typologyLog3 uuid];
+      partIndex = [typologyLog3 partIndex];
+      date = [typologyLog3 date];
+      systemVersion = [typologyLog3 systemVersion];
+      buildVersion = [typologyLog3 buildVersion];
+      clientIdentifier = [typologyLog3 clientIdentifier];
+      config = [typologyLog3 config];
+      v16 = partIndex + 1;
+      v17 = uuid;
+      typologyLog2 = [v19 initWithUUID:uuid partIndex:v16 date:date systemVersion:systemVersion buildVersion:buildVersion clientIdentifier:clientIdentifier config:config];
 
-      [(TIKeyboardInputManagerLogger *)self setTypologyLog:v7];
-      v18 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-      [v18 setDelegate:self];
+      [(TIKeyboardInputManagerLogger *)self setTypologyLog:typologyLog2];
+      typologyLog4 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+      [typologyLog4 setDelegate:self];
 
-      [objc_opt_class() _backgroundWriteLog:v6 preferences:v4 completion:&__block_literal_global_16865];
+      [objc_opt_class() _backgroundWriteLog:typologyLog3 preferences:typologyPreferences completion:&__block_literal_global_16865];
     }
   }
 
 LABEL_6:
 }
 
-- (void)disableTypologyLogIfNecessaryForKeyboardState:(id)a3
+- (void)disableTypologyLogIfNecessaryForKeyboardState:(id)state
 {
-  v6 = a3;
-  v4 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  stateCopy = state;
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
 
-  if (v4 && ![(TIKeyboardInputManagerLogger *)self allowTypologyLogForKeyboardState:v6])
+  if (typologyLog && ![(TIKeyboardInputManagerLogger *)self allowTypologyLogForKeyboardState:stateCopy])
   {
-    v5 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-    [v5 setDelegate:0];
+    typologyLog2 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+    [typologyLog2 setDelegate:0];
 
     [(TIKeyboardInputManagerLogger *)self setTypologyLog:0];
     [(TIKeyboardInputManagerLogger *)self setSbsOverrideLoggingCapture:0];
   }
 }
 
-- (void)tryStartingTypologyLogForSyncToKeyboardState:(id)a3
+- (void)tryStartingTypologyLogForSyncToKeyboardState:(id)state
 {
-  v10 = a3;
-  v4 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+  stateCopy = state;
+  typologyLog = [(TIKeyboardInputManagerLogger *)self typologyLog];
 
-  if (!v4 && [(TIKeyboardInputManagerLogger *)self allowTypologyLogForKeyboardState:v10])
+  if (!typologyLog && [(TIKeyboardInputManagerLogger *)self allowTypologyLogForKeyboardState:stateCopy])
   {
-    v5 = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
-    v6 = [v5 typologyLoggingEnabledByProfile];
+    typologyPreferences = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
+    typologyLoggingEnabledByProfile = [typologyPreferences typologyLoggingEnabledByProfile];
 
-    if (v6)
+    if (typologyLoggingEnabledByProfile)
     {
       v7 = objc_alloc_init(TIStatusBarStyleOverrideLoggingCapture);
       [(TIKeyboardInputManagerLogger *)self setSbsOverrideLoggingCapture:v7];
@@ -896,31 +896,31 @@ LABEL_6:
     v8 = objc_alloc_init(MEMORY[0x277D6F4B0]);
     [(TIKeyboardInputManagerLogger *)self setTypologyLog:v8];
 
-    v9 = [(TIKeyboardInputManagerLogger *)self typologyLog];
-    [v9 setDelegate:self];
+    typologyLog2 = [(TIKeyboardInputManagerLogger *)self typologyLog];
+    [typologyLog2 setDelegate:self];
   }
 }
 
-- (BOOL)allowTypologyLogForKeyboardState:(id)a3
+- (BOOL)allowTypologyLogForKeyboardState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (!stateCopy)
   {
     goto LABEL_9;
   }
 
-  if ([v4 secureTextEntry])
+  if ([stateCopy secureTextEntry])
   {
     goto LABEL_3;
   }
 
-  v6 = [v5 clientIdentifier];
-  if ([v6 isEqualToString:@"com.apple.mobilesafari"])
+  clientIdentifier = [v5 clientIdentifier];
+  if ([clientIdentifier isEqualToString:@"com.apple.mobilesafari"])
   {
-    v7 = [v5 wordLearningEnabled];
+    wordLearningEnabled = [v5 wordLearningEnabled];
 
-    if ((v7 & 1) == 0)
+    if ((wordLearningEnabled & 1) == 0)
     {
 LABEL_3:
       [(TIKeyboardInputManagerLogger *)self setHadSecureText:1];
@@ -934,22 +934,22 @@ LABEL_3:
 
   if (![(TIKeyboardInputManagerLogger *)self hadSecureText])
   {
-    v10 = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
-    v8 = [v10 typologyLoggingEnabled];
+    typologyPreferences = [(TIKeyboardInputManagerLogger *)self typologyPreferences];
+    typologyLoggingEnabled = [typologyPreferences typologyLoggingEnabled];
 
     goto LABEL_10;
   }
 
 LABEL_9:
-  v8 = 0;
+  typologyLoggingEnabled = 0;
 LABEL_10:
 
-  return v8;
+  return typologyLoggingEnabled;
 }
 
-- (BOOL)shouldWriteToSyslogForKeyboardState:(id)a3
+- (BOOL)shouldWriteToSyslogForKeyboardState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   if (TICanLogMessageAtLevel_onceToken != -1)
   {
     dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
@@ -962,25 +962,25 @@ LABEL_10:
 
   else
   {
-    v4 = [v3 secureTextEntry] ^ 1;
+    v4 = [stateCopy secureTextEntry] ^ 1;
   }
 
   return v4;
 }
 
-- (TIKeyboardInputManagerLogger)initWithTypologyPreferences:(id)a3
+- (TIKeyboardInputManagerLogger)initWithTypologyPreferences:(id)preferences
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  preferencesCopy = preferences;
   v15.receiver = self;
   v15.super_class = TIKeyboardInputManagerLogger;
   v6 = [(TIKeyboardInputManagerLogger *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_typologyPreferences, a3);
-    v8 = [MEMORY[0x277D6F540] statistic];
-    v16[0] = v8;
+    objc_storeStrong(&v6->_typologyPreferences, preferences);
+    statistic = [MEMORY[0x277D6F540] statistic];
+    v16[0] = statistic;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
 
     v10 = [MEMORY[0x277D6F538] statisticCompositeWithStatistics:v9];
@@ -988,41 +988,41 @@ LABEL_10:
     v7->_typologyStatistic = v10;
   }
 
-  v12 = [(TIKeyboardInputManagerLogger *)v7 typologyStatistic];
-  [v12 prepareForComputation];
+  typologyStatistic = [(TIKeyboardInputManagerLogger *)v7 typologyStatistic];
+  [typologyStatistic prepareForComputation];
 
   v13 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-+ (void)pruneTypologyLogsAtDirectoryURL:(id)a3 toMaxNumBytes:(int64_t)a4 expirationInterval:(double)a5 satisfyingPredicate:(id)a6
++ (void)pruneTypologyLogsAtDirectoryURL:(id)l toMaxNumBytes:(int64_t)bytes expirationInterval:(double)interval satisfyingPredicate:(id)predicate
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
+  lCopy = l;
+  predicateCopy = predicate;
   v11 = *MEMORY[0x277CBE7B0];
   v12 = *MEMORY[0x277CBE838];
   v45[0] = *MEMORY[0x277CBE7B0];
   v45[1] = v12;
   v34 = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v32 = v13;
-  v33 = v9;
-  v15 = [v14 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:v13 options:4 error:0];
+  v33 = lCopy;
+  v15 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:v13 options:4 error:0];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __117__TIKeyboardInputManagerLogger_pruneTypologyLogsAtDirectoryURL_toMaxNumBytes_expirationInterval_satisfyingPredicate___block_invoke;
   v42[3] = &unk_2787325A8;
-  v31 = v10;
+  v31 = predicateCopy;
   v43 = v31;
   v30 = [v15 indexesOfObjectsPassingTest:v42];
   v16 = [v15 objectsAtIndexes:?];
 
   v17 = [v16 sortedArrayUsingComparator:&__block_literal_global_97_16891];
 
-  v35 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-a5];
+  v35 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-interval];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -1049,10 +1049,10 @@ LABEL_10:
         [v24 getResourceValue:&v37 forKey:v11 error:0];
         v25 = v37;
         v26 = v25;
-        if (v21 > a4 || ([v25 earlierDate:v35], v27 = objc_claimAutoreleasedReturnValue(), v27, v27 == v26))
+        if (v21 > bytes || ([v25 earlierDate:v35], v27 = objc_claimAutoreleasedReturnValue(), v27, v27 == v26))
         {
-          v28 = [MEMORY[0x277CCAA00] defaultManager];
-          [v28 removeItemAtURL:v24 error:0];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          [defaultManager2 removeItemAtURL:v24 error:0];
         }
 
         else
@@ -1089,14 +1089,14 @@ uint64_t __117__TIKeyboardInputManagerLogger_pruneTypologyLogsAtDirectoryURL_toM
   return v7;
 }
 
-+ (void)submitAggregrateDictionaryReport:(id)a3 inputModeIdentifier:(id)a4
++ (void)submitAggregrateDictionaryReport:(id)report inputModeIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (TI_DEVICE_UNLOCKED_SINCE_BOOT() && [v6 length])
+  reportCopy = report;
+  identifierCopy = identifier;
+  if (TI_DEVICE_UNLOCKED_SINCE_BOOT() && [identifierCopy length])
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = reportCopy;
+    v8 = identifierCopy;
     TIDispatchAsync();
   }
 }
@@ -1137,17 +1137,17 @@ void __85__TIKeyboardInputManagerLogger_submitAggregrateDictionaryReport_inputMo
   }
 }
 
-+ (void)_backgroundPruneLogsWithPreferences:(id)a3
++ (void)_backgroundPruneLogsWithPreferences:(id)preferences
 {
-  v3 = a3;
-  v4 = [v3 typologyDirectoryURL];
-  [v3 maxBytesPersistedTypologyRecords];
-  [v3 maxBytesPersistedTypologyTraceLogs];
-  [v3 maxLifetimeInterval];
+  preferencesCopy = preferences;
+  typologyDirectoryURL = [preferencesCopy typologyDirectoryURL];
+  [preferencesCopy maxBytesPersistedTypologyRecords];
+  [preferencesCopy maxBytesPersistedTypologyTraceLogs];
+  [preferencesCopy maxLifetimeInterval];
 
   v5 = _TIQueueLow();
-  v7 = v4;
-  v6 = v4;
+  v7 = typologyDirectoryURL;
+  v6 = typologyDirectoryURL;
   TIDispatchAsync();
 }
 
@@ -1189,18 +1189,18 @@ uint64_t __68__TIKeyboardInputManagerLogger__backgroundPruneLogsWithPreferences_
   return v4;
 }
 
-+ (void)_backgroundWriteLog:(id)a3 preferences:(id)a4 completion:(id)a5
++ (void)_backgroundWriteLog:(id)log preferences:(id)preferences completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  logCopy = log;
+  preferencesCopy = preferences;
+  completionCopy = completion;
   v10 = _TIQueueLow();
-  v14 = v8;
-  v15 = v7;
-  v16 = v9;
-  v11 = v9;
-  v12 = v7;
-  v13 = v8;
+  v14 = preferencesCopy;
+  v15 = logCopy;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = logCopy;
+  v13 = preferencesCopy;
   TIDispatchAsync();
 }
 
@@ -1212,36 +1212,36 @@ void __75__TIKeyboardInputManagerLogger__backgroundWriteLog_preferences_completi
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)_writeHumanReadableTraceForTypologyLog:(id)a3 directoryURL:(id)a4
++ (void)_writeHumanReadableTraceForTypologyLog:(id)log directoryURL:(id)l
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (TI_DEVICE_UNLOCKED() && [objc_opt_class() createTypologyDirectoryAtURL:v6])
+  logCopy = log;
+  lCopy = l;
+  if (TI_DEVICE_UNLOCKED() && [objc_opt_class() createTypologyDirectoryAtURL:lCopy])
   {
     v7 = MEMORY[0x277CCAB68];
-    v8 = [v5 date];
-    v9 = [MEMORY[0x277CBEAF8] currentLocale];
-    v10 = [v8 descriptionWithLocale:v9];
+    date = [logCopy date];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v10 = [date descriptionWithLocale:currentLocale];
     v11 = [v7 stringWithFormat:@"Date: %@\n", v10];
 
-    v12 = [v5 systemVersion];
-    v13 = [v5 buildVersion];
-    [v11 appendFormat:@"iOS version: %@ (%@)\n", v12, v13];
+    systemVersion = [logCopy systemVersion];
+    buildVersion = [logCopy buildVersion];
+    [v11 appendFormat:@"iOS version: %@ (%@)\n", systemVersion, buildVersion];
 
-    v14 = [v5 filename];
-    v15 = [v14 stringByReplacingOccurrencesOfString:@"typology" withString:@"typologyTrace" options:8 range:{0, objc_msgSend(v14, "length")}];
+    filename = [logCopy filename];
+    v15 = [filename stringByReplacingOccurrencesOfString:@"typology" withString:@"typologyTrace" options:8 range:{0, objc_msgSend(filename, "length")}];
 
     v16 = [v15 stringByReplacingOccurrencesOfString:@".plist" withString:@".log" options:12 range:{0, objc_msgSend(v15, "length")}];
 
-    v17 = [v6 URLByAppendingPathComponent:v16];
+    v17 = [lCopy URLByAppendingPathComponent:v16];
     v37 = *MEMORY[0x277CCA1B0];
     v38[0] = *MEMORY[0x277CCA190];
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
-    v19 = [MEMORY[0x277CCAA00] defaultManager];
-    v20 = [v17 path];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v17 path];
     v21 = [v11 dataUsingEncoding:4];
-    v22 = [v19 createFileAtPath:v20 contents:v21 attributes:v18];
+    v22 = [defaultManager createFileAtPath:path contents:v21 attributes:v18];
 
     if (v22)
     {
@@ -1261,7 +1261,7 @@ void __75__TIKeyboardInputManagerLogger__backgroundWriteLog_preferences_completi
         v32 = v26;
         v33 = v23;
         v27 = v23;
-        [v5 enumerateTraceRecordsWithBlock:v31];
+        [logCopy enumerateTraceRecordsWithBlock:v31];
         v28 = [v26 dataUsingEncoding:4];
         [v27 writeData:v28];
 
@@ -1320,9 +1320,9 @@ void __84__TIKeyboardInputManagerLogger__writeHumanReadableTraceForTypologyLog_d
 {
   v2 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.Accessibility"];
   v3 = [v2 objectForKey:@"AccessibilityEnabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v6 = [v2 BOOLForKey:@"FullKeyboardAccessEnabled"];
@@ -1369,23 +1369,23 @@ void __84__TIKeyboardInputManagerLogger__writeHumanReadableTraceForTypologyLog_d
   return v5;
 }
 
-+ (id)_writeToFileWithTypologyLog:(id)a3 directoryURL:(id)a4 requireDeviceUnlocked:(BOOL)a5
++ (id)_writeToFileWithTypologyLog:(id)log directoryURL:(id)l requireDeviceUnlocked:(BOOL)unlocked
 {
-  v5 = a5;
+  unlockedCopy = unlocked;
   v27[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8 && (!v5 || TI_DEVICE_UNLOCKED()) && [objc_opt_class() createTypologyDirectoryAtURL:v9])
+  logCopy = log;
+  lCopy = l;
+  if (logCopy && (!unlockedCopy || TI_DEVICE_UNLOCKED()) && [objc_opt_class() createTypologyDirectoryAtURL:lCopy])
   {
-    v10 = [v8 recommendedTypologyLogFilename];
-    v11 = [v9 URLByAppendingPathComponent:v10];
+    recommendedTypologyLogFilename = [logCopy recommendedTypologyLogFilename];
+    v11 = [lCopy URLByAppendingPathComponent:recommendedTypologyLogFilename];
 
-    v12 = [v8 recommendedTraceLogFilename];
-    v13 = [v9 URLByAppendingPathComponent:v12];
+    recommendedTraceLogFilename = [logCopy recommendedTraceLogFilename];
+    v13 = [lCopy URLByAppendingPathComponent:recommendedTraceLogFilename];
 
-    v14 = [a1 accessibilityConfigInfo];
+    accessibilityConfigInfo = [self accessibilityConfigInfo];
     v24 = 0;
-    v15 = [v8 writeToTypologyLogFile:v11 andTraceLogFile:v13 withAccessibilityInfo:v14 error:&v24];
+    v15 = [logCopy writeToTypologyLogFile:v11 andTraceLogFile:v13 withAccessibilityInfo:accessibilityConfigInfo error:&v24];
     v16 = v24;
 
     if (v15)
@@ -1406,8 +1406,8 @@ void __84__TIKeyboardInputManagerLogger__writeHumanReadableTraceForTypologyLog_d
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         v21 = MEMORY[0x277CCACA8];
-        v22 = [v8 filename];
-        v23 = [v21 stringWithFormat:@"%s Error serializing and writing property list %@: %@", "+[TIKeyboardInputManagerLogger _writeToFileWithTypologyLog:directoryURL:requireDeviceUnlocked:]", v22, v16];
+        filename = [logCopy filename];
+        v23 = [v21 stringWithFormat:@"%s Error serializing and writing property list %@: %@", "+[TIKeyboardInputManagerLogger _writeToFileWithTypologyLog:directoryURL:requireDeviceUnlocked:]", filename, v16];
         *buf = 138412290;
         v26 = v23;
         _os_log_debug_impl(&dword_22CA55000, v18, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -1427,14 +1427,14 @@ void __84__TIKeyboardInputManagerLogger__writeHumanReadableTraceForTypologyLog_d
   return v17;
 }
 
-+ (BOOL)createTypologyDirectoryAtURL:(id)a3
++ (BOOL)createTypologyDirectoryAtURL:(id)l
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  lCopy = l;
+  defaultManager = [v3 defaultManager];
   v12 = 0;
-  v6 = [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v12];
+  v6 = [defaultManager createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:&v12];
 
   v7 = v12;
   if ((v6 & 1) == 0)

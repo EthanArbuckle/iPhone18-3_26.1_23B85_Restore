@@ -1,5 +1,5 @@
 @interface CPLEngineForceSyncTask
-- (CPLEngineForceSyncTask)initWithScopeIdentifiers:(id)a3 engineLibrary:(id)a4 filter:(id)a5 delegate:(id)a6;
+- (CPLEngineForceSyncTask)initWithScopeIdentifiers:(id)identifiers engineLibrary:(id)library filter:(id)filter delegate:(id)delegate;
 - (CPLEngineForceSyncTaskDelegate)delegate;
 - (NSError)discardedError;
 - (NSString)description;
@@ -8,15 +8,15 @@
 - (id)_phaseDescription;
 - (int64_t)forcedTaskPriority;
 - (void)_dispatchNextSyncTask;
-- (void)_dispatchSyncTask:(id)a3;
+- (void)_dispatchSyncTask:(id)task;
 - (void)_dropCurrentTask;
-- (void)_finishWithError:(id)a3;
+- (void)_finishWithError:(id)error;
 - (void)cancelTask;
 - (void)dealloc;
 - (void)launchTask;
 - (void)reallyCancel;
 - (void)reallyLaunch;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CPLEngineForceSyncTask
@@ -30,21 +30,21 @@
 
 - (NSString)description
 {
-  v3 = [(CPLEngineForceSyncTask *)self _phaseDescription];
+  _phaseDescription = [(CPLEngineForceSyncTask *)self _phaseDescription];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = objc_opt_class();
-  v6 = [(CPLForceSyncTask *)self taskIdentifier];
-  v7 = [(CPLForceSyncTask *)self scopeIdentifiers];
-  v8 = [v7 componentsJoinedByString:{@", "}];
+  taskIdentifier = [(CPLForceSyncTask *)self taskIdentifier];
+  scopeIdentifiers = [(CPLForceSyncTask *)self scopeIdentifiers];
+  v8 = [scopeIdentifiers componentsJoinedByString:{@", "}];
   v9 = v8;
-  if (v3)
+  if (_phaseDescription)
   {
-    v10 = [v4 initWithFormat:@"<%@ %@ (%@) (%@)>", v5, v6, v8, v3];
+    v10 = [v4 initWithFormat:@"<%@ %@ (%@) (%@)>", v5, taskIdentifier, v8, _phaseDescription];
   }
 
   else
   {
-    v10 = [v4 initWithFormat:@"<%@ %@ (%@)>", v5, v6, v8, v13];
+    v10 = [v4 initWithFormat:@"<%@ %@ (%@)>", v5, taskIdentifier, v8, v13];
   }
 
   v11 = v10;
@@ -55,12 +55,12 @@
 - (id)_phaseDescription
 {
   os_unfair_lock_lock(&self->_currentTaskLock);
-  v3 = [(CPLEngineSyncTask *)self->_currentTask phaseDescription];
-  if (v3)
+  phaseDescription = [(CPLEngineSyncTask *)self->_currentTask phaseDescription];
+  if (phaseDescription)
   {
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
     currentTask = self->_currentTask;
-    v6 = [v4 initWithFormat:@"%@ %@", objc_opt_class(), v3];
+    v6 = [v4 initWithFormat:@"%@ %@", objc_opt_class(), phaseDescription];
   }
 
   else
@@ -75,18 +75,18 @@
   return v8;
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  errorCopy = error;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__CPLEngineForceSyncTask_task_didFinishWithError___block_invoke;
   v14[3] = &unk_1E861B1C8;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = taskCopy;
+  v16 = errorCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -94,8 +94,8 @@
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = errorCopy;
+  v12 = taskCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -299,11 +299,11 @@ void __38__CPLEngineForceSyncTask_reallyLaunch__block_invoke(uint64_t a1)
   [WeakRetained forceSyncTaskHasBeenLaunched:self];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(CPLEngineForceSyncTask *)self taskDidFinishWithErrorBlock];
-  (v5)[2](v5, self, v4);
+  errorCopy = error;
+  taskDidFinishWithErrorBlock = [(CPLEngineForceSyncTask *)self taskDidFinishWithErrorBlock];
+  (taskDidFinishWithErrorBlock)[2](taskDidFinishWithErrorBlock, self, errorCopy);
 
   self->_reallyLaunched = 0;
   [(CPLSyncSession *)self->_fakeSession sessionIsDone];
@@ -316,24 +316,24 @@ void __38__CPLEngineForceSyncTask_reallyLaunch__block_invoke(uint64_t a1)
 - (void)_dispatchNextSyncTask
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(NSEnumerator *)self->_syncTaskEnumerator nextObject];
-  if (v3)
+  nextObject = [(NSEnumerator *)self->_syncTaskEnumerator nextObject];
+  if (nextObject)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v4 = __CPLForceSyncOSLogDomain();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [v3 taskIdentifier];
+        taskIdentifier = [nextObject taskIdentifier];
         v7 = 138543618;
-        v8 = self;
+        selfCopy = self;
         v9 = 2114;
-        v10 = v5;
+        v10 = taskIdentifier;
         _os_log_impl(&dword_1DC05A000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: launching %{public}@", &v7, 0x16u);
       }
     }
 
-    [(CPLEngineForceSyncTask *)self _dispatchSyncTask:v3];
+    [(CPLEngineForceSyncTask *)self _dispatchSyncTask:nextObject];
   }
 
   else
@@ -362,13 +362,13 @@ void __38__CPLEngineForceSyncTask_reallyLaunch__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_dispatchSyncTask:(id)a3
+- (void)_dispatchSyncTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_currentTaskLock);
   currentTask = self->_currentTask;
-  self->_currentTask = v4;
-  v6 = v4;
+  self->_currentTask = taskCopy;
+  v6 = taskCopy;
 
   [(CPLEngineSyncTask *)v6 setTransportUserIdentifier:self->_transportUserIdentifier];
   [(CPLEngineSyncTask *)v6 setForceSync:1];
@@ -401,37 +401,37 @@ void __38__CPLEngineForceSyncTask_reallyLaunch__block_invoke(uint64_t a1)
   [(CPLEngineForceSyncTask *)&v4 dealloc];
 }
 
-- (CPLEngineForceSyncTask)initWithScopeIdentifiers:(id)a3 engineLibrary:(id)a4 filter:(id)a5 delegate:(id)a6
+- (CPLEngineForceSyncTask)initWithScopeIdentifiers:(id)identifiers engineLibrary:(id)library filter:(id)filter delegate:(id)delegate
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  libraryCopy = library;
+  filterCopy = filter;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = CPLEngineForceSyncTask;
-  v14 = [(CPLForceSyncTask *)&v26 initWithScopeIdentifiers:a3];
+  v14 = [(CPLForceSyncTask *)&v26 initWithScopeIdentifiers:identifiers];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_engineLibrary, a4);
-    objc_storeStrong(&v15->_filter, a5);
-    objc_storeWeak(&v15->_delegate, v13);
+    objc_storeStrong(&v14->_engineLibrary, library);
+    objc_storeStrong(&v15->_filter, filter);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v16 = dispatch_queue_create("com.apple.cpl.forcesync", 0);
     queue = v15->_queue;
     v15->_queue = v16;
 
     v15->_currentTaskLock._os_unfair_lock_opaque = 0;
-    v18 = [v11 configuration];
+    configuration = [libraryCopy configuration];
     configuration = v15->_configuration;
-    v15->_configuration = v18;
+    v15->_configuration = configuration;
 
-    v20 = [(CPLEngineLibrary *)v15->_engineLibrary scheduler];
-    v21 = [CPLSyncSession detachedSyncSessionWithScheduler:v20 configuration:v15 scopeFilter:v12];
+    scheduler = [(CPLEngineLibrary *)v15->_engineLibrary scheduler];
+    v21 = [CPLSyncSession detachedSyncSessionWithScheduler:scheduler configuration:v15 scopeFilter:filterCopy];
     fakeSession = v15->_fakeSession;
     v15->_fakeSession = v21;
 
-    v23 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v15->_creationDate;
-    v15->_creationDate = v23;
+    v15->_creationDate = date;
   }
 
   return v15;
@@ -439,10 +439,10 @@ void __38__CPLEngineForceSyncTask_reallyLaunch__block_invoke(uint64_t a1)
 
 - (NSString)simpleDescription
 {
-  v2 = [(CPLEngineForceSyncTask *)self filter];
-  v3 = [v2 simpleDescription];
+  filter = [(CPLEngineForceSyncTask *)self filter];
+  simpleDescription = [filter simpleDescription];
 
-  return v3;
+  return simpleDescription;
 }
 
 - (int64_t)forcedTaskPriority
@@ -462,8 +462,8 @@ void __38__CPLEngineForceSyncTask_reallyLaunch__block_invoke(uint64_t a1)
 
 - (NSError)discardedError
 {
-  v2 = [(CPLForceSyncTask *)self scopeIdentifiers];
-  v3 = [v2 componentsJoinedByString:{@", "}];
+  scopeIdentifiers = [(CPLForceSyncTask *)self scopeIdentifiers];
+  v3 = [scopeIdentifiers componentsJoinedByString:{@", "}];
   v4 = [CPLErrors cplErrorWithCode:10 description:@"Will download %@ in background", v3];
 
   return v4;

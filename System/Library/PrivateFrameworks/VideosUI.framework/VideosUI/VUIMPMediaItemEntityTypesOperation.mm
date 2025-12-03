@@ -1,13 +1,13 @@
 @interface VUIMPMediaItemEntityTypesOperation
-- (BOOL)_canUseCheapEntityCheckWithMediaEntityType:(id)a3;
+- (BOOL)_canUseCheapEntityCheckWithMediaEntityType:(id)type;
 - (BOOL)_mediaLibraryHasEpisodes;
 - (BOOL)_mediaLibraryHasHasHomeVideos;
 - (BOOL)_mediaLibraryHasLocalMediaItems;
-- (BOOL)_mediaLibraryHasMediaItemsWithQuery:(id)a3;
+- (BOOL)_mediaLibraryHasMediaItemsWithQuery:(id)query;
 - (BOOL)_mediaLibraryHasMovieRentals;
 - (BOOL)_mediaLibraryHasMovies;
 - (VUIMPMediaItemEntityTypesOperation)init;
-- (VUIMPMediaItemEntityTypesOperation)initWithMPMediaLibrary:(id)a3;
+- (VUIMPMediaItemEntityTypesOperation)initWithMPMediaLibrary:(id)library;
 - (void)executionDidBegin;
 @end
 
@@ -23,10 +23,10 @@
   return 0;
 }
 
-- (VUIMPMediaItemEntityTypesOperation)initWithMPMediaLibrary:(id)a3
+- (VUIMPMediaItemEntityTypesOperation)initWithMPMediaLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaLibrary"}];
   }
@@ -37,7 +37,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaLibrary, a3);
+    objc_storeStrong(&v6->_mediaLibrary, library);
   }
 
   return v7;
@@ -73,100 +73,100 @@
   v7 = +[VUIMediaLibraryUtilities mediaItemEntityTypesSortComparator];
   [v10 sortUsingComparator:v7];
 
-  v8 = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasLocalMediaItems];
+  _mediaLibraryHasLocalMediaItems = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasLocalMediaItems];
   v9 = objc_alloc_init(VUIMediaItemEntityTypesFetchResponse);
   [(VUIMediaItemEntityTypesFetchResponse *)v9 setMediaItemEntityTypes:v10];
-  [(VUIMediaItemEntityTypesFetchResponse *)v9 setLocalMediaItemsAvailable:v8];
+  [(VUIMediaItemEntityTypesFetchResponse *)v9 setLocalMediaItemsAvailable:_mediaLibraryHasLocalMediaItems];
   [(VUIMPMediaItemEntityTypesOperation *)self setResponse:v9];
   [(VUIAsynchronousOperation *)self finishExecutionIfPossible];
 }
 
 - (BOOL)_mediaLibraryHasMovies
 {
-  v3 = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
+  mediaLibrary = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
   v4 = +[VUIMediaEntityType movie];
   v5 = [(VUIMPMediaItemEntityTypesOperation *)self _canUseCheapEntityCheckWithMediaEntityType:v4];
 
   if (v5)
   {
-    v6 = [v3 hasMovies];
+    hasMovies = [mediaLibrary hasMovies];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E6970618] vui_moviesQueryWithMediaLibrary:v3];
-    v6 = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasMediaItemsWithQuery:v7];
+    v7 = [MEMORY[0x1E6970618] vui_moviesQueryWithMediaLibrary:mediaLibrary];
+    hasMovies = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasMediaItemsWithQuery:v7];
   }
 
-  return v6;
+  return hasMovies;
 }
 
 - (BOOL)_mediaLibraryHasMovieRentals
 {
-  v3 = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
+  mediaLibrary = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
   v4 = +[VUIMediaEntityType movieRental];
   v5 = [(VUIMPMediaItemEntityTypesOperation *)self _canUseCheapEntityCheckWithMediaEntityType:v4];
 
   if (v5)
   {
-    v6 = [v3 hasMovieRentals];
+    hasMovieRentals = [mediaLibrary hasMovieRentals];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E6970618] vui_movieRentalsQueryWithMediaLibrary:v3];
-    v6 = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasMediaItemsWithQuery:v7];
+    v7 = [MEMORY[0x1E6970618] vui_movieRentalsQueryWithMediaLibrary:mediaLibrary];
+    hasMovieRentals = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasMediaItemsWithQuery:v7];
   }
 
-  return v6;
+  return hasMovieRentals;
 }
 
 - (BOOL)_mediaLibraryHasEpisodes
 {
-  v3 = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
+  mediaLibrary = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
   v4 = +[VUIMediaEntityType episode];
   v5 = [(VUIMPMediaItemEntityTypesOperation *)self _canUseCheapEntityCheckWithMediaEntityType:v4];
 
   if (v5)
   {
-    v6 = [v3 hasTVShows];
+    hasTVShows = [mediaLibrary hasTVShows];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E6970618] vui_episodesQueryWithMediaLibrary:v3];
-    v6 = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasMediaItemsWithQuery:v7];
+    v7 = [MEMORY[0x1E6970618] vui_episodesQueryWithMediaLibrary:mediaLibrary];
+    hasTVShows = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasMediaItemsWithQuery:v7];
   }
 
-  return v6;
+  return hasTVShows;
 }
 
 - (BOOL)_mediaLibraryHasHasHomeVideos
 {
-  v3 = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
+  mediaLibrary = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
   v4 = +[VUIMediaEntityType homeVideo];
   v5 = [(VUIMPMediaItemEntityTypesOperation *)self _canUseCheapEntityCheckWithMediaEntityType:v4];
 
   if (v5)
   {
-    v6 = [v3 hasHomeVideos];
+    hasHomeVideos = [mediaLibrary hasHomeVideos];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E6970618] vui_homeVideosQueryWithMediaLibrary:v3];
-    v6 = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasMediaItemsWithQuery:v7];
+    v7 = [MEMORY[0x1E6970618] vui_homeVideosQueryWithMediaLibrary:mediaLibrary];
+    hasHomeVideos = [(VUIMPMediaItemEntityTypesOperation *)self _mediaLibraryHasMediaItemsWithQuery:v7];
   }
 
-  return v6;
+  return hasHomeVideos;
 }
 
 - (BOOL)_mediaLibraryHasLocalMediaItems
 {
-  v3 = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
-  v4 = [v3 vui_isDeviceMediaLibrary];
+  mediaLibrary = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
+  vui_isDeviceMediaLibrary = [mediaLibrary vui_isDeviceMediaLibrary];
 
-  if (!v4)
+  if (!vui_isDeviceMediaLibrary)
   {
     return 0;
   }
@@ -179,34 +179,34 @@
   return v8;
 }
 
-- (BOOL)_canUseCheapEntityCheckWithMediaEntityType:(id)a3
+- (BOOL)_canUseCheapEntityCheckWithMediaEntityType:(id)type
 {
-  v4 = a3;
-  v5 = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
-  v6 = [v5 vui_isDeviceMediaLibrary];
+  typeCopy = type;
+  mediaLibrary = [(VUIMPMediaItemEntityTypesOperation *)self mediaLibrary];
+  vui_isDeviceMediaLibrary = [mediaLibrary vui_isDeviceMediaLibrary];
 
-  if (v6)
+  if (vui_isDeviceMediaLibrary)
   {
-    v7 = [v4 mediaCategoryType];
-    if (v7 == 1)
+    mediaCategoryType = [typeCopy mediaCategoryType];
+    if (mediaCategoryType == 1)
     {
-      v8 = [MEMORY[0x1E69DF780] sharedInstance];
-      v9 = [v8 allowsShowingUndownloadedTVShows];
+      mEMORY[0x1E69DF780] = [MEMORY[0x1E69DF780] sharedInstance];
+      allowsShowingUndownloadedTVShows = [mEMORY[0x1E69DF780] allowsShowingUndownloadedTVShows];
     }
 
     else
     {
-      if (v7)
+      if (mediaCategoryType)
       {
         v10 = 1;
         goto LABEL_9;
       }
 
-      v8 = [MEMORY[0x1E69DF780] sharedInstance];
-      v9 = [v8 allowsShowingUndownloadedMovies];
+      mEMORY[0x1E69DF780] = [MEMORY[0x1E69DF780] sharedInstance];
+      allowsShowingUndownloadedTVShows = [mEMORY[0x1E69DF780] allowsShowingUndownloadedMovies];
     }
 
-    v10 = v9;
+    v10 = allowsShowingUndownloadedTVShows;
   }
 
   else
@@ -219,14 +219,14 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_mediaLibraryHasMediaItemsWithQuery:(id)a3
+- (BOOL)_mediaLibraryHasMediaItemsWithQuery:(id)query
 {
-  v3 = a3;
-  [v3 setEntityLimit:1];
-  v4 = [v3 items];
+  queryCopy = query;
+  [queryCopy setEntityLimit:1];
+  items = [queryCopy items];
 
-  LOBYTE(v3) = [v4 count] != 0;
-  return v3;
+  LOBYTE(queryCopy) = [items count] != 0;
+  return queryCopy;
 }
 
 @end

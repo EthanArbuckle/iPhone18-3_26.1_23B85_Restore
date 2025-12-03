@@ -1,44 +1,44 @@
 @interface AVTAvatarConfigurationImageRenderer
-- (AVTAvatarConfigurationImageRenderer)initWithEnvironment:(id)a3 avatar:(id)a4;
-- (AVTAvatarConfigurationImageRenderer)initWithSnapshotBuilder:(id)a3 avatar:(id)a4 lockProvider:(id)a5 logger:(id)a6;
+- (AVTAvatarConfigurationImageRenderer)initWithEnvironment:(id)environment avatar:(id)avatar;
+- (AVTAvatarConfigurationImageRenderer)initWithSnapshotBuilder:(id)builder avatar:(id)avatar lockProvider:(id)provider logger:(id)logger;
 - (AVTMemoji)avatar;
 - (AVTSnapshotBuilder)snapshotBuilder;
-- (id)imageForAvatarConfiguration:(id)a3 scope:(id)a4;
-- (id)nts_imageForAvatarConfiguration:(id)a3 scope:(id)a4;
+- (id)imageForAvatarConfiguration:(id)configuration scope:(id)scope;
+- (id)nts_imageForAvatarConfiguration:(id)configuration scope:(id)scope;
 @end
 
 @implementation AVTAvatarConfigurationImageRenderer
 
-- (AVTAvatarConfigurationImageRenderer)initWithEnvironment:(id)a3 avatar:(id)a4
+- (AVTAvatarConfigurationImageRenderer)initWithEnvironment:(id)environment avatar:(id)avatar
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 lockProvider];
-  v9 = [v7 logger];
+  avatarCopy = avatar;
+  environmentCopy = environment;
+  lockProvider = [environmentCopy lockProvider];
+  logger = [environmentCopy logger];
 
-  v10 = [(AVTAvatarConfigurationImageRenderer *)self initWithSnapshotBuilder:0 avatar:v6 lockProvider:v8 logger:v9];
+  v10 = [(AVTAvatarConfigurationImageRenderer *)self initWithSnapshotBuilder:0 avatar:avatarCopy lockProvider:lockProvider logger:logger];
   return v10;
 }
 
-- (AVTAvatarConfigurationImageRenderer)initWithSnapshotBuilder:(id)a3 avatar:(id)a4 lockProvider:(id)a5 logger:(id)a6
+- (AVTAvatarConfigurationImageRenderer)initWithSnapshotBuilder:(id)builder avatar:(id)avatar lockProvider:(id)provider logger:(id)logger
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  builderCopy = builder;
+  avatarCopy = avatar;
+  providerCopy = provider;
+  loggerCopy = logger;
   v21.receiver = self;
   v21.super_class = AVTAvatarConfigurationImageRenderer;
   v15 = [(AVTAvatarConfigurationImageRenderer *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_avatar, a4);
-    objc_storeStrong(&v16->_snapshotBuilder, a3);
-    v17 = v13[2](v13, "com.apple.AvatarUI.snapshotBuilderRenderingQueue");
+    objc_storeStrong(&v15->_avatar, avatar);
+    objc_storeStrong(&v16->_snapshotBuilder, builder);
+    v17 = providerCopy[2](providerCopy, "com.apple.AvatarUI.snapshotBuilderRenderingQueue");
     snapshotBuilderQueue = v16->_snapshotBuilderQueue;
     v16->_snapshotBuilderQueue = v17;
 
-    objc_storeStrong(&v16->_logger, a6);
+    objc_storeStrong(&v16->_logger, logger);
     if (v16->_avatar)
     {
       snapshotBuilder = v16->_snapshotBuilder;
@@ -54,26 +54,26 @@
 
 - (AVTMemoji)avatar
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  avatar = v2->_avatar;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  avatar = selfCopy->_avatar;
   if (!avatar)
   {
-    v4 = [MEMORY[0x1E698E2A0] memoji];
-    v5 = v2->_avatar;
-    v2->_avatar = v4;
+    memoji = [MEMORY[0x1E698E2A0] memoji];
+    v5 = selfCopy->_avatar;
+    selfCopy->_avatar = memoji;
 
-    avatar = v2->_avatar;
-    snapshotBuilder = v2->_snapshotBuilder;
+    avatar = selfCopy->_avatar;
+    snapshotBuilder = selfCopy->_snapshotBuilder;
     if (snapshotBuilder)
     {
       [(AVTSnapshotBuilder *)snapshotBuilder setAvatar:avatar];
-      avatar = v2->_avatar;
+      avatar = selfCopy->_avatar;
     }
   }
 
   v7 = avatar;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -98,28 +98,28 @@
   return snapshotBuilder;
 }
 
-- (id)imageForAvatarConfiguration:(id)a3 scope:(id)a4
+- (id)imageForAvatarConfiguration:(id)configuration scope:(id)scope
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  scopeCopy = scope;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__20;
   v21 = __Block_byref_object_dispose__20;
   v22 = 0;
-  v8 = [(AVTAvatarConfigurationImageRenderer *)self snapshotBuilderQueue];
+  snapshotBuilderQueue = [(AVTAvatarConfigurationImageRenderer *)self snapshotBuilderQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__AVTAvatarConfigurationImageRenderer_imageForAvatarConfiguration_scope___block_invoke;
   v13[3] = &unk_1E7F3B758;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = configurationCopy;
+  v15 = scopeCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = scopeCopy;
+  v10 = configurationCopy;
+  dispatch_sync(snapshotBuilderQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -137,45 +137,45 @@ uint64_t __73__AVTAvatarConfigurationImageRenderer_imageForAvatarConfiguration_s
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)nts_imageForAvatarConfiguration:(id)a3 scope:(id)a4
+- (id)nts_imageForAvatarConfiguration:(id)configuration scope:(id)scope
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTAvatarConfigurationImageRenderer *)self logger];
-  v9 = [v7 description];
-  [v8 logRenderingConfiguration:v9];
+  scopeCopy = scope;
+  configurationCopy = configuration;
+  logger = [(AVTAvatarConfigurationImageRenderer *)self logger];
+  v9 = [configurationCopy description];
+  [logger logRenderingConfiguration:v9];
 
-  v10 = [(AVTAvatarConfigurationImageRenderer *)self avatar];
-  [v7 applyToAvatar:v10 animated:0];
+  avatar = [(AVTAvatarConfigurationImageRenderer *)self avatar];
+  [configurationCopy applyToAvatar:avatar animated:0];
 
   v25 = *MEMORY[0x1E698E268];
   v26[0] = &unk_1F39A5D20;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v12 = [v11 mutableCopy];
 
-  v13 = [v6 adaptedFramingModeForObjectType:2];
-  v14 = [v6 pose];
+  v13 = [scopeCopy adaptedFramingModeForObjectType:2];
+  pose = [scopeCopy pose];
   if (v13)
   {
     [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E698E258]];
   }
 
-  if (v14)
+  if (pose)
   {
-    [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x1E698E260]];
+    [v12 setObject:pose forKeyedSubscript:*MEMORY[0x1E698E260]];
   }
 
-  v15 = [(AVTAvatarConfigurationImageRenderer *)self snapshotBuilder];
-  [v6 size];
+  snapshotBuilder = [(AVTAvatarConfigurationImageRenderer *)self snapshotBuilder];
+  [scopeCopy size];
   v17 = v16;
   v19 = v18;
-  [v6 scale];
-  v21 = [v15 imageWithSize:v12 scale:v17 options:{v19, v20}];
+  [scopeCopy scale];
+  v21 = [snapshotBuilder imageWithSize:v12 scale:v17 options:{v19, v20}];
 
-  v22 = [(AVTAvatarConfigurationImageRenderer *)self logger];
+  logger2 = [(AVTAvatarConfigurationImageRenderer *)self logger];
   v23 = [v21 description];
-  [v22 logSnapshotReturnedImage:v23];
+  [logger2 logSnapshotReturnedImage:v23];
 
   return v21;
 }

@@ -1,40 +1,40 @@
 @interface FMDAccessoryRegistry
-+ (id)archiverFromURL:(id)a3;
++ (id)archiverFromURL:(id)l;
 + (id)connectedAccessoriesStorageLocation;
 + (id)defaultStorageLocation;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)supportsAccessory:(id)a3;
-- (FMDAccessoryRegistry)initWithSupportDelete:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)supportsAccessory:(id)accessory;
+- (FMDAccessoryRegistry)initWithSupportDelete:(id)delete;
 - (FMDAccessoryRegistrySupportDelegate)supportDelegate;
-- (id)accessoryForIdentifier:(id)a3;
+- (id)accessoryForIdentifier:(id)identifier;
 - (id)allAccessories;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)registeredDelegates;
-- (void)_addAccessory:(id)a3 previouslyPaired:(BOOL)a4;
-- (void)_forceUpdateAccessory:(id)a3;
-- (void)_removeAccessory:(id)a3;
-- (void)accessories:(id)a3;
-- (void)addDataSource:(id)a3;
-- (void)addDataSources:(id)a3;
-- (void)availabilitydidChangeFor:(id)a3 status:(id)a4 withCompletion:(id)a5;
+- (void)_addAccessory:(id)accessory previouslyPaired:(BOOL)paired;
+- (void)_forceUpdateAccessory:(id)accessory;
+- (void)_removeAccessory:(id)accessory;
+- (void)accessories:(id)accessories;
+- (void)addDataSource:(id)source;
+- (void)addDataSources:(id)sources;
+- (void)availabilitydidChangeFor:(id)for status:(id)status withCompletion:(id)completion;
 - (void)clearAccessoryRegistry;
 - (void)computeAccessoryRegistry;
 - (void)dealloc;
-- (void)forceUpdateAccessory:(id)a3;
-- (void)forwardInvocation:(id)a3;
+- (void)forceUpdateAccessory:(id)accessory;
+- (void)forwardInvocation:(id)invocation;
 - (void)postConnectionStatusChangeNotification;
 - (void)readAccessoriesFromDisk;
 - (void)readConnectedAccessoriesFromDisk;
-- (void)refetchBauuids:(id)a3;
-- (void)registerDelegate:(id)a3;
+- (void)refetchBauuids:(id)bauuids;
+- (void)registerDelegate:(id)delegate;
 - (void)reloadData;
-- (void)removeAccessory:(id)a3;
+- (void)removeAccessory:(id)accessory;
 - (void)sanitizeConnectedAccessoriesWithoutMatchingBootId;
 - (void)saveAccessoriesToDisk;
 - (void)saveConnectedAccessoriesDictToDisk;
-- (void)updateAccessory:(id)a3;
-- (void)updateAccessory:(id)a3 assets:(id)a4;
-- (void)updateAccessory:(id)a3 playbackChannels:(id)a4 completion:(id)a5;
+- (void)updateAccessory:(id)accessory;
+- (void)updateAccessory:(id)accessory assets:(id)assets;
+- (void)updateAccessory:(id)accessory playbackChannels:(id)channels completion:(id)completion;
 @end
 
 @implementation FMDAccessoryRegistry
@@ -47,14 +47,14 @@
   v10 = sub_10000AA84;
   v11 = sub_100002B0C;
   v12 = &__NSArray0__struct;
-  v3 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000A450;
   v6[3] = &unk_1002CD260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessoryQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -80,10 +80,10 @@
   return v4;
 }
 
-+ (id)archiverFromURL:(id)a3
++ (id)archiverFromURL:(id)l
 {
-  v3 = a3;
-  v4 = [[FMDataArchiver alloc] initWithFileURL:v3];
+  lCopy = l;
+  v4 = [[FMDataArchiver alloc] initWithFileURL:lCopy];
 
   [v4 setDataProtectionClass:4];
   [v4 setBackedUp:0];
@@ -92,9 +92,9 @@
   return v4;
 }
 
-- (FMDAccessoryRegistry)initWithSupportDelete:(id)a3
+- (FMDAccessoryRegistry)initWithSupportDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   v24.receiver = self;
   v24.super_class = FMDAccessoryRegistry;
   v5 = [(FMDAccessoryRegistry *)&v24 init];
@@ -124,19 +124,19 @@
     [(FMDAccessoryRegistry *)v6 setDelegateQueue:v13];
 
     v14 = objc_opt_class();
-    v15 = [objc_opt_class() defaultStorageLocation];
-    v16 = [v14 archiverFromURL:v15];
+    defaultStorageLocation = [objc_opt_class() defaultStorageLocation];
+    v16 = [v14 archiverFromURL:defaultStorageLocation];
     [(FMDAccessoryRegistry *)v6 setDataArchiver:v16];
 
     v17 = objc_opt_class();
-    v18 = [objc_opt_class() connectedAccessoriesStorageLocation];
-    v19 = [v17 archiverFromURL:v18];
+    connectedAccessoriesStorageLocation = [objc_opt_class() connectedAccessoriesStorageLocation];
+    v19 = [v17 archiverFromURL:connectedAccessoriesStorageLocation];
     [(FMDAccessoryRegistry *)v6 setConnectedAccessoriesDataArchiver:v19];
 
-    [(FMDAccessoryRegistry *)v6 setSupportDelegate:v4];
+    [(FMDAccessoryRegistry *)v6 setSupportDelegate:deleteCopy];
     v20 = +[FMDSystemConfig sharedInstance];
-    v21 = [v20 bootSessionUUID];
-    [(FMDAccessoryRegistry *)v6 setCurrentBootUUID:v21];
+    bootSessionUUID = [v20 bootSessionUUID];
+    [(FMDAccessoryRegistry *)v6 setCurrentBootUUID:bootSessionUUID];
 
     [(FMDAccessoryRegistry *)v6 readConnectedAccessoriesFromDisk];
     [(FMDAccessoryRegistry *)v6 readAccessoriesFromDisk];
@@ -152,8 +152,8 @@
 
 - (void)dealloc
 {
-  v3 = [(FMDAccessoryRegistry *)self dataSourceRetryTimer];
-  [v3 cancel];
+  dataSourceRetryTimer = [(FMDAccessoryRegistry *)self dataSourceRetryTimer];
+  [dataSourceRetryTimer cancel];
 
   [(FMDAccessoryRegistry *)self setDataSourceRetryTimer:0];
   v4.receiver = self;
@@ -161,108 +161,108 @@
   [(FMDAccessoryRegistry *)&v4 dealloc];
 }
 
-- (void)registerDelegate:(id)a3
+- (void)registerDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(FMDAccessoryRegistry *)self delegateQueue];
+  delegateCopy = delegate;
+  delegateQueue = [(FMDAccessoryRegistry *)self delegateQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10018C0BC;
   v7[3] = &unk_1002CD478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  selfCopy = self;
+  v6 = delegateCopy;
+  dispatch_async(delegateQueue, v7);
 }
 
 - (void)clearAccessoryRegistry
 {
-  v3 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10018C1AC;
   block[3] = &unk_1002CD4C8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(accessoryQueue, block);
 }
 
-- (void)updateAccessory:(id)a3 assets:(id)a4
+- (void)updateAccessory:(id)accessory assets:(id)assets
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  assetsCopy = assets;
   objc_initWeak(&location, self);
-  v8 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10018C39C;
   v11[3] = &unk_1002CE3B8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = accessoryCopy;
+  v13 = assetsCopy;
+  v9 = assetsCopy;
+  v10 = accessoryCopy;
+  dispatch_async(accessoryQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)updateAccessory:(id)a3 playbackChannels:(id)a4 completion:(id)a5
+- (void)updateAccessory:(id)accessory playbackChannels:(id)channels completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  channelsCopy = channels;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10018C770;
   block[3] = &unk_1002D0008;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = accessoryCopy;
+  v17 = channelsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = channelsCopy;
+  v14 = accessoryCopy;
+  dispatch_async(accessoryQueue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 }
 
-- (void)addDataSources:(id)a3
+- (void)addDataSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   objc_initWeak(&location, self);
-  v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10018CA58;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = sourcesCopy;
   v8 = v6;
-  dispatch_async(v5, block);
+  dispatch_async(accessoryQueue, block);
 
   [(FMDAccessoryRegistry *)self reloadData];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)addDataSource:(id)a3
+- (void)addDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_initWeak(&location, self);
-  v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10018CBC0;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = sourceCopy;
   v8 = v6;
-  dispatch_async(v5, block);
+  dispatch_async(accessoryQueue, block);
 
   [(FMDAccessoryRegistry *)self reloadData];
   objc_destroyWeak(&v9);
@@ -272,19 +272,19 @@
 - (void)reloadData
 {
   objc_initWeak(&location, self);
-  v3 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10018CCE8;
   v4[3] = &unk_1002CD518;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(accessoryQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v16.receiver = self;
   v16.super_class = FMDAccessoryRegistry;
@@ -295,12 +295,12 @@
 
   else
   {
-    v5 = [(FMDAccessoryRegistry *)self registeredDelegates];
+    registeredDelegates = [(FMDAccessoryRegistry *)self registeredDelegates];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    v6 = [registeredDelegates countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -312,14 +312,14 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(registeredDelegates);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
           v4 |= objc_opt_respondsToSelector();
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [registeredDelegates countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v7);
@@ -334,19 +334,19 @@
   return v4 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v18.receiver = self;
   v18.super_class = FMDAccessoryRegistry;
   v5 = [(FMDAccessoryRegistry *)&v18 methodSignatureForSelector:?];
   if (!v5)
   {
-    v6 = [(FMDAccessoryRegistry *)self registeredDelegates];
+    registeredDelegates = [(FMDAccessoryRegistry *)self registeredDelegates];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    v7 = [registeredDelegates countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -358,19 +358,19 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(registeredDelegates);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v12 = [v11 methodSignatureForSelector:a3];
+            v12 = [v11 methodSignatureForSelector:selector];
 
             v5 = v12;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v8 = [registeredDelegates countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v8);
@@ -385,15 +385,15 @@
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(FMDAccessoryRegistry *)self registeredDelegates];
+  invocationCopy = invocation;
+  registeredDelegates = [(FMDAccessoryRegistry *)self registeredDelegates];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  v6 = [registeredDelegates countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v6)
   {
     v8 = v6;
@@ -407,11 +407,11 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(registeredDelegates);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        [v4 selector];
+        [invocationCopy selector];
         if (objc_opt_respondsToSelector())
         {
           v12 = sub_100002880();
@@ -422,14 +422,14 @@
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "FMDAccessoryRegistry forwardInvocation to delegate %@", buf, 0xCu);
           }
 
-          [v4 invokeWithTarget:v11];
+          [invocationCopy invokeWithTarget:v11];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v8 = [registeredDelegates countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v8);
@@ -444,14 +444,14 @@
   v10 = sub_10000AA84;
   v11 = sub_100002B0C;
   v12 = &__NSArray0__struct;
-  v3 = [(FMDAccessoryRegistry *)self delegateQueue];
+  delegateQueue = [(FMDAccessoryRegistry *)self delegateQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10018D28C;
   v6[3] = &unk_1002CD260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(delegateQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -459,19 +459,19 @@
   return v4;
 }
 
-- (void)accessories:(id)a3
+- (void)accessories:(id)accessories
 {
-  v4 = a3;
+  accessoriesCopy = accessories;
   objc_initWeak(&location, self);
-  v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10018D3F0;
   block[3] = &unk_1002CDEF0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = accessoriesCopy;
+  v6 = accessoriesCopy;
+  dispatch_async(accessoryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -479,15 +479,15 @@
 
 - (void)computeAccessoryRegistry
 {
-  v3 = [(FMDAccessoryRegistry *)self accessoryQueue];
-  dispatch_assert_queue_V2(v3);
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
+  dispatch_assert_queue_V2(accessoryQueue);
 
   v4 = +[FMDSystemConfig sharedInstance];
-  v5 = [v4 unlockState];
+  unlockState = [v4 unlockState];
 
   v6 = sub_100002880();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5 == 1)
+  if (unlockState == 1)
   {
     if (v7)
     {
@@ -504,8 +504,8 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "FMDAccessoryRegistry computeAccessoryRegistry", buf, 2u);
     }
 
-    v8 = [(FMDAccessoryRegistry *)self dataSourceRetryTimer];
-    [v8 cancel];
+    dataSourceRetryTimer = [(FMDAccessoryRegistry *)self dataSourceRetryTimer];
+    [dataSourceRetryTimer cancel];
 
     v9 = +[NSMutableArray array];
     v10 = +[NSMutableArray array];
@@ -519,25 +519,25 @@
     v39 = 0;
     v40 = &v39;
     v41 = 0x2020000000;
-    v12 = [(FMDAccessoryRegistry *)self dataSources];
-    v13 = [v12 count];
+    dataSources = [(FMDAccessoryRegistry *)self dataSources];
+    v13 = [dataSources count];
 
     v42 = v13;
-    v14 = [(FMDAccessoryRegistry *)self dataSources];
+    dataSources2 = [(FMDAccessoryRegistry *)self dataSources];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_10018D9A4;
     v32[3] = &unk_1002D0080;
     v6 = v9;
     v33 = v6;
-    v34 = self;
+    selfCopy = self;
     v15 = v10;
     v35 = v15;
     v37 = &v39;
     v16 = v11;
     v36 = v16;
     v38 = buf;
-    [v14 enumerateObjectsUsingBlock:v32];
+    [dataSources2 enumerateObjectsUsingBlock:v32];
 
     [v16 wait];
     if ([v16 timeoutOccurred] && v40[3] || *(v44[0] + 40))
@@ -553,13 +553,13 @@
 
       objc_initWeak(&location, self);
       v20 = [FMDispatchTimer alloc];
-      v21 = [(FMDAccessoryRegistry *)self accessoryQueue];
+      accessoryQueue2 = [(FMDAccessoryRegistry *)self accessoryQueue];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_10018DC28;
       v29[3] = &unk_1002CD518;
       objc_copyWeak(&v30, &location);
-      v22 = [v20 initWithQueue:v21 timeout:v29 completion:v19];
+      v22 = [v20 initWithQueue:accessoryQueue2 timeout:v29 completion:v19];
 
       [(FMDAccessoryRegistry *)self setDataSourceRetryTimer:v22];
       [v22 start];
@@ -571,15 +571,15 @@
     else
     {
       [(FMDAccessoryRegistry *)self setDataSourceErrorBackoffCount:0];
-      v23 = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
-      v24 = [v23 copy];
+      accessoriesByIdentifier = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
+      v24 = [accessoriesByIdentifier copy];
 
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_10018DCC4;
       v26[3] = &unk_1002D00A8;
       v27 = v15;
-      v28 = self;
+      selfCopy2 = self;
       [v24 enumerateKeysAndObjectsUsingBlock:v26];
     }
 
@@ -595,18 +595,18 @@
   }
 }
 
-- (BOOL)supportsAccessory:(id)a3
+- (BOOL)supportsAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 accessoryIdentifier];
-  v6 = [v5 isValid];
+  accessoryCopy = accessory;
+  accessoryIdentifier = [accessoryCopy accessoryIdentifier];
+  isValid = [accessoryIdentifier isValid];
 
-  if (v6)
+  if (isValid)
   {
-    v7 = [(FMDAccessoryRegistry *)self supportDelegate];
+    supportDelegate = [(FMDAccessoryRegistry *)self supportDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 supportsAccessory:v4];
+      v8 = [supportDelegate supportsAccessory:accessoryCopy];
     }
 
     else
@@ -623,10 +623,10 @@
   return v8;
 }
 
-- (id)accessoryForIdentifier:(id)a3
+- (id)accessoryForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v10 = 0;
     v11 = &v10;
@@ -634,16 +634,16 @@
     v13 = sub_10000AA84;
     v14 = sub_100002B0C;
     v15 = &__NSDictionary0__struct;
-    v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
+    accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10018DF50;
     v9[3] = &unk_1002CD260;
     v9[4] = self;
     v9[5] = &v10;
-    dispatch_sync(v5, v9);
+    dispatch_sync(accessoryQueue, v9);
 
-    v6 = [v11[5] objectForKeyedSubscript:v4];
+    v6 = [v11[5] objectForKeyedSubscript:identifierCopy];
     _Block_object_dispose(&v10, 8);
   }
 
@@ -661,37 +661,37 @@
   return v6;
 }
 
-- (void)_addAccessory:(id)a3 previouslyPaired:(BOOL)a4
+- (void)_addAccessory:(id)accessory previouslyPaired:(BOOL)paired
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(FMDAccessoryRegistry *)self accessoryQueue];
-  dispatch_assert_queue_V2(v7);
+  pairedCopy = paired;
+  accessoryCopy = accessory;
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
+  dispatch_assert_queue_V2(accessoryQueue);
 
-  v8 = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
-  v9 = [v8 mutableCopy];
+  accessoriesByIdentifier = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
+  v9 = [accessoriesByIdentifier mutableCopy];
 
-  v10 = [v6 accessoryIdentifier];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  accessoryIdentifier = [accessoryCopy accessoryIdentifier];
+  v11 = [v9 objectForKeyedSubscript:accessoryIdentifier];
 
   v12 = sub_100002880();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v19 = v6;
+    v19 = accessoryCopy;
     v20 = 1024;
     v21 = v11 == 0;
     v22 = 1024;
-    v23 = v4;
+    v23 = pairedCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "FMDAccessoryRegistry addAccessory %@ New - %i PreviouslyPaired - %i", buf, 0x18u);
   }
 
-  v13 = [v6 accessoryIdentifier];
-  [v9 setObject:v6 forKeyedSubscript:v13];
+  accessoryIdentifier2 = [accessoryCopy accessoryIdentifier];
+  [v9 setObject:accessoryCopy forKeyedSubscript:accessoryIdentifier2];
 
   [(FMDAccessoryRegistry *)self setAccessoriesByIdentifier:v9];
   [(FMDAccessoryRegistry *)self saveAccessoriesToDisk];
-  if (!v11 && !v4)
+  if (!v11 && !pairedCopy)
   {
     objc_initWeak(buf, self);
     block[0] = _NSConcreteStackBlock;
@@ -699,8 +699,8 @@
     block[2] = sub_10018E2D8;
     block[3] = &unk_1002CE3B8;
     objc_copyWeak(&v17, buf);
-    v15 = v6;
-    v16 = self;
+    v15 = accessoryCopy;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, block);
 
     objc_destroyWeak(&v17);
@@ -708,27 +708,27 @@
   }
 }
 
-- (void)_removeAccessory:(id)a3
+- (void)_removeAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
-  dispatch_assert_queue_V2(v5);
+  accessoryCopy = accessory;
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
+  dispatch_assert_queue_V2(accessoryQueue);
 
-  v6 = [v4 accessoryIdentifier];
-  if (v6)
+  accessoryIdentifier = [accessoryCopy accessoryIdentifier];
+  if (accessoryIdentifier)
   {
     v7 = sub_100002880();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = accessoryCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "FMDAccessoryRegistry removing accessory %@", buf, 0xCu);
     }
 
-    v8 = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
-    v9 = [v8 mutableCopy];
+    accessoriesByIdentifier = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
+    v9 = [accessoriesByIdentifier mutableCopy];
 
-    [v9 removeObjectForKey:v6];
+    [v9 removeObjectForKey:accessoryIdentifier];
     [(FMDAccessoryRegistry *)self setAccessoriesByIdentifier:v9];
     [(FMDAccessoryRegistry *)self saveAccessoriesToDisk];
     objc_initWeak(buf, self);
@@ -737,8 +737,8 @@
     block[2] = sub_10018E4EC;
     block[3] = &unk_1002CE3B8;
     objc_copyWeak(&v13, buf);
-    v11 = v4;
-    v12 = self;
+    v11 = accessoryCopy;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, block);
 
     objc_destroyWeak(&v13);
@@ -753,43 +753,43 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.icloud.FindMy.accesoriesConnectionStateChanged", 0, 0, 1u);
 }
 
-- (void)forceUpdateAccessory:(id)a3
+- (void)forceUpdateAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryCopy = accessory;
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10018EB50;
   v7[3] = &unk_1002CD478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
+  dispatch_sync(accessoryQueue, v7);
 }
 
-- (void)_forceUpdateAccessory:(id)a3
+- (void)_forceUpdateAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
-  dispatch_assert_queue_V2(v5);
+  accessoryCopy = accessory;
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
+  dispatch_assert_queue_V2(accessoryQueue);
 
-  v6 = [v4 accessoryIdentifier];
-  v7 = v6;
-  if (v6 && ([v6 isValid] & 1) != 0)
+  accessoryIdentifier = [accessoryCopy accessoryIdentifier];
+  v7 = accessoryIdentifier;
+  if (accessoryIdentifier && ([accessoryIdentifier isValid] & 1) != 0)
   {
-    v8 = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    accessoriesByIdentifier = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
+    v9 = [accessoriesByIdentifier objectForKeyedSubscript:v7];
 
-    [v4 updateWithAccessory:v9];
+    [accessoryCopy updateWithAccessory:v9];
     v10 = sub_100002880();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = accessoryCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "FMDAccessoryRegistry : force updating accessory: %@", &v11, 0xCu);
     }
 
-    [(FMDAccessoryRegistry *)self accessoryDidUpdate:v4];
+    [(FMDAccessoryRegistry *)self accessoryDidUpdate:accessoryCopy];
   }
 
   else
@@ -802,43 +802,43 @@
   }
 }
 
-- (void)updateAccessory:(id)a3
+- (void)updateAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   objc_initWeak(&location, self);
-  v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10018EDB4;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
+  dispatch_async(accessoryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)removeAccessory:(id)a3
+- (void)removeAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   objc_initWeak(&location, self);
-  v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10018EEF8;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
+  dispatch_async(accessoryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)refetchBauuids:(id)a3
+- (void)refetchBauuids:(id)bauuids
 {
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -847,26 +847,26 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "refetchBauuid", buf, 2u);
   }
 
-  v5 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10018F018;
   block[3] = &unk_1002CD4C8;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(accessoryQueue, block);
 }
 
 - (void)sanitizeConnectedAccessoriesWithoutMatchingBootId
 {
-  v3 = [(FMDAccessoryRegistry *)self connectedAccessoryIdentifiersToBootId];
-  v4 = [v3 allKeys];
+  connectedAccessoryIdentifiersToBootId = [(FMDAccessoryRegistry *)self connectedAccessoryIdentifiersToBootId];
+  allKeys = [connectedAccessoryIdentifiersToBootId allKeys];
 
   v5 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = allKeys;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -883,11 +883,11 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(FMDAccessoryRegistry *)self connectedAccessoryIdentifiersToBootId];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        connectedAccessoryIdentifiersToBootId2 = [(FMDAccessoryRegistry *)self connectedAccessoryIdentifiersToBootId];
+        v13 = [connectedAccessoryIdentifiersToBootId2 objectForKeyedSubscript:v11];
 
-        v14 = [(FMDAccessoryRegistry *)self currentBootUUID];
-        v15 = [v13 isEqualToString:v14];
+        currentBootUUID = [(FMDAccessoryRegistry *)self currentBootUUID];
+        v15 = [v13 isEqualToString:currentBootUUID];
 
         if ((v15 & 1) == 0)
         {
@@ -904,17 +904,17 @@
     while (v8);
   }
 
-  v16 = [(FMDAccessoryRegistry *)self connectedAccessoryIdentifiersToBootId];
-  [v16 removeObjectsForKeys:v5];
+  connectedAccessoryIdentifiersToBootId3 = [(FMDAccessoryRegistry *)self connectedAccessoryIdentifiersToBootId];
+  [connectedAccessoryIdentifiersToBootId3 removeObjectsForKeys:v5];
 }
 
 - (void)readConnectedAccessoriesFromDisk
 {
-  v3 = [(FMDAccessoryRegistry *)self connectedAccessoriesDataArchiver];
+  connectedAccessoriesDataArchiver = [(FMDAccessoryRegistry *)self connectedAccessoriesDataArchiver];
   v4 = objc_opt_class();
   v5 = [NSSet setWithObjects:v4, objc_opt_class(), 0];
   v12 = 0;
-  v6 = [v3 readDictionaryAndClasses:v5 error:&v12];
+  v6 = [connectedAccessoriesDataArchiver readDictionaryAndClasses:v5 error:&v12];
   v7 = v12;
 
   if (v7 && ([v7 fm_isFileNotFoundError] & 1) == 0)
@@ -951,14 +951,14 @@
 - (void)readAccessoriesFromDisk
 {
   objc_initWeak(&location, self);
-  v3 = [(FMDAccessoryRegistry *)self accessoryQueue];
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10018F7D8;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v5, &location);
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(accessoryQueue, block);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -966,21 +966,21 @@
 
 - (void)saveConnectedAccessoriesDictToDisk
 {
-  v3 = [(FMDAccessoryRegistry *)self accessoryQueue];
-  dispatch_assert_queue_V2(v3);
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
+  dispatch_assert_queue_V2(accessoryQueue);
 
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
+    accessoriesByIdentifier = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
     v10 = 138412290;
-    v11 = v5;
+    v11 = accessoriesByIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "FMDAccessoryRegistry saveConnectedAccessoriesToDisk %@", &v10, 0xCu);
   }
 
-  v6 = [(FMDAccessoryRegistry *)self connectedAccessoriesDataArchiver];
-  v7 = [(FMDAccessoryRegistry *)self connectedAccessoryIdentifiersToBootId];
-  v8 = [v6 saveDictionary:v7];
+  connectedAccessoriesDataArchiver = [(FMDAccessoryRegistry *)self connectedAccessoriesDataArchiver];
+  connectedAccessoryIdentifiersToBootId = [(FMDAccessoryRegistry *)self connectedAccessoryIdentifiersToBootId];
+  v8 = [connectedAccessoriesDataArchiver saveDictionary:connectedAccessoryIdentifiersToBootId];
 
   if (v8)
   {
@@ -994,21 +994,21 @@
 
 - (void)saveAccessoriesToDisk
 {
-  v3 = [(FMDAccessoryRegistry *)self accessoryQueue];
-  dispatch_assert_queue_V2(v3);
+  accessoryQueue = [(FMDAccessoryRegistry *)self accessoryQueue];
+  dispatch_assert_queue_V2(accessoryQueue);
 
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
+    accessoriesByIdentifier = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
     v10 = 138412290;
-    v11 = v5;
+    v11 = accessoriesByIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "FMDAccessoryRegistry saveAccessoriesToDisk %@", &v10, 0xCu);
   }
 
-  v6 = [(FMDAccessoryRegistry *)self dataArchiver];
-  v7 = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
-  v8 = [v6 saveDictionary:v7];
+  dataArchiver = [(FMDAccessoryRegistry *)self dataArchiver];
+  accessoriesByIdentifier2 = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
+  v8 = [dataArchiver saveDictionary:accessoriesByIdentifier2];
 
   if (v8)
   {
@@ -1020,25 +1020,25 @@
   }
 }
 
-- (void)availabilitydidChangeFor:(id)a3 status:(id)a4 withCompletion:(id)a5
+- (void)availabilitydidChangeFor:(id)for status:(id)status withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  statusCopy = status;
+  completionCopy = completion;
+  forCopy = for;
   v11 = sub_10000BE38();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v8;
+    v23 = statusCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "availabilitydidChangeFor status = %@", buf, 0xCu);
   }
 
-  v12 = [v8 objectForKeyedSubscript:@"components"];
-  v9[2](v9, 0);
+  v12 = [statusCopy objectForKeyedSubscript:@"components"];
+  completionCopy[2](completionCopy, 0);
 
-  v13 = [[FMDAccessoryIdentifier alloc] initWithString:v10];
-  v14 = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  v13 = [[FMDAccessoryIdentifier alloc] initWithString:forCopy];
+  accessoriesByIdentifier = [(FMDAccessoryRegistry *)self accessoriesByIdentifier];
+  v15 = [accessoriesByIdentifier objectForKeyedSubscript:v13];
 
   if (v15)
   {
@@ -1046,7 +1046,7 @@
     if (objc_opt_isKindOfClass())
     {
       v16 = v15;
-      v17 = [v8 objectForKeyedSubscript:@"statusUpdateTime"];
+      v17 = [statusCopy objectForKeyedSubscript:@"statusUpdateTime"];
       if (v17)
       {
         objc_opt_class();

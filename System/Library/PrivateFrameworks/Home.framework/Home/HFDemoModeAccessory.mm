@@ -1,14 +1,14 @@
 @interface HFDemoModeAccessory
-+ (BOOL)_hasValidKeys:(id)a3;
++ (BOOL)_hasValidKeys:(id)keys;
 + (id)_demoModeAccessoryTypeToHomeKitAccessoryType;
-+ (id)accessoryWithContentsOfDictionary:(id)a3 forHome:(id)a4;
++ (id)accessoryWithContentsOfDictionary:(id)dictionary forHome:(id)home;
 - (BOOL)_isAppleInternalAccessory;
 - (BOOL)_shouldShowAppleInternalManufacturerInfo;
 - (BOOL)hf_effectiveIsFavorite;
 - (BOOL)hf_hasSetFavorite;
 - (BOOL)hf_isFavorite;
 - (BOOL)hf_isMediaAccessory;
-- (HFDemoModeAccessory)initWithContentsOfDictionary:(id)a3 forHome:(id)a4;
+- (HFDemoModeAccessory)initWithContentsOfDictionary:(id)dictionary forHome:(id)home;
 - (HFServiceNameComponents)hf_serviceNameComponents;
 - (NSString)description;
 - (NSString)firmwareVersion;
@@ -16,30 +16,30 @@
 - (NSString)model;
 - (NSUUID)uniqueIdentifier;
 - (id)category;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)name;
 - (id)room;
 - (id)serialNumber;
 - (int64_t)certificationStatus;
-- (void)_updateManufacturerInfoWithString:(id)a3 forKey:(id)a4;
+- (void)_updateManufacturerInfoWithString:(id)string forKey:(id)key;
 @end
 
 @implementation HFDemoModeAccessory
 
-+ (id)accessoryWithContentsOfDictionary:(id)a3 forHome:(id)a4
++ (id)accessoryWithContentsOfDictionary:(id)dictionary forHome:(id)home
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HFDemoModeAccessory alloc] initWithContentsOfDictionary:v6 forHome:v5];
+  homeCopy = home;
+  dictionaryCopy = dictionary;
+  v7 = [[HFDemoModeAccessory alloc] initWithContentsOfDictionary:dictionaryCopy forHome:homeCopy];
 
   return v7;
 }
 
-+ (BOOL)_hasValidKeys:(id)a3
++ (BOOL)_hasValidKeys:(id)keys
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keysCopy = keys;
   v19[0] = @"name";
   v19[1] = @"type";
   v19[2] = @"room";
@@ -63,7 +63,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v10 = [v3 objectForKeyedSubscript:{*(*(&v14 + 1) + 8 * i), v14}];
+        v10 = [keysCopy objectForKeyedSubscript:{*(*(&v14 + 1) + 8 * i), v14}];
         v11 = v10 != 0;
 
         v8 &= v11;
@@ -89,13 +89,13 @@
   internalUniqueIdentifier = self->_internalUniqueIdentifier;
   if (!internalUniqueIdentifier)
   {
-    v4 = [(HFDemoModeAccessory *)self applicationData];
-    v5 = [v4 objectForKeyedSubscript:@"UUID"];
+    applicationData = [(HFDemoModeAccessory *)self applicationData];
+    v5 = [applicationData objectForKeyedSubscript:@"UUID"];
 
     if (v5)
     {
       v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5];
-      v7 = self->_internalUniqueIdentifier;
+      uUIDString = self->_internalUniqueIdentifier;
       self->_internalUniqueIdentifier = v6;
     }
 
@@ -105,9 +105,9 @@
       v9 = self->_internalUniqueIdentifier;
       self->_internalUniqueIdentifier = v8;
 
-      v7 = [(NSUUID *)self->_internalUniqueIdentifier UUIDString];
-      v10 = [(HFDemoModeAccessory *)self applicationData];
-      [v10 setObject:v7 forKeyedSubscript:@"UUID"];
+      uUIDString = [(NSUUID *)self->_internalUniqueIdentifier UUIDString];
+      applicationData2 = [(HFDemoModeAccessory *)self applicationData];
+      [applicationData2 setObject:uUIDString forKeyedSubscript:@"UUID"];
     }
 
     internalUniqueIdentifier = self->_internalUniqueIdentifier;
@@ -118,8 +118,8 @@
 
 - (NSString)firmwareVersion
 {
-  v2 = [(HFDemoModeAccessory *)self applicationData];
-  v3 = [v2 objectForKeyedSubscript:@"manufacturerInfo"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v3 = [applicationData objectForKeyedSubscript:@"manufacturerInfo"];
 
   v4 = [v3 objectForKeyedSubscript:@"firmware"];
 
@@ -128,8 +128,8 @@
 
 - (NSString)manufacturer
 {
-  v2 = [(HFDemoModeAccessory *)self applicationData];
-  v3 = [v2 objectForKeyedSubscript:@"manufacturerInfo"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v3 = [applicationData objectForKeyedSubscript:@"manufacturerInfo"];
 
   v4 = [v3 objectForKeyedSubscript:@"name"];
 
@@ -138,8 +138,8 @@
 
 - (NSString)model
 {
-  v3 = [(HFDemoModeAccessory *)self applicationData];
-  v4 = [v3 objectForKeyedSubscript:@"manufacturerInfo"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v4 = [applicationData objectForKeyedSubscript:@"manufacturerInfo"];
 
   v5 = [v4 objectForKeyedSubscript:@"model"];
   v6 = v5;
@@ -150,10 +150,10 @@
 
   else if ([(HFDemoModeAccessory *)self _isAppleInternalAccessory]&& [(HFDemoModeAccessory *)self _shouldShowAppleInternalManufacturerInfo])
   {
-    v8 = [(HFDemoModeAccessory *)self uniqueIdentifier];
-    v9 = [v8 UUIDString];
+    uniqueIdentifier = [(HFDemoModeAccessory *)self uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
 
-    v10 = [v9 substringWithRange:{objc_msgSend(v9, "length") - 7, 7}];
+    v10 = [uUIDString substringWithRange:{objc_msgSend(uUIDString, "length") - 7, 7}];
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"993-%@/A", v10];
     [(HFDemoModeAccessory *)self _updateManufacturerInfoWithString:v7 forKey:@"model"];
   }
@@ -168,8 +168,8 @@
 
 - (id)serialNumber
 {
-  v3 = [(HFDemoModeAccessory *)self applicationData];
-  v4 = [v3 objectForKeyedSubscript:@"manufacturerInfo"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v4 = [applicationData objectForKeyedSubscript:@"manufacturerInfo"];
 
   v5 = [v4 objectForKeyedSubscript:@"serialNumber"];
   v6 = v5;
@@ -180,9 +180,9 @@
 
   else if ([(HFDemoModeAccessory *)self _isAppleInternalAccessory]&& [(HFDemoModeAccessory *)self _shouldShowAppleInternalManufacturerInfo])
   {
-    v8 = [(HFDemoModeAccessory *)self uniqueIdentifier];
-    v9 = [v8 UUIDString];
-    v10 = [v9 stringByReplacingOccurrencesOfString:@"-" withString:&stru_2824B1A78];
+    uniqueIdentifier = [(HFDemoModeAccessory *)self uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    v10 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_2824B1A78];
 
     v7 = [v10 substringWithRange:{0, 12}];
     [(HFDemoModeAccessory *)self _updateManufacturerInfoWithString:v7 forKey:@"serialNumber"];
@@ -199,15 +199,15 @@
 - (id)room
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 home];
+  home = [v3 home];
 
-  v5 = [v4 rooms];
+  rooms = [home rooms];
   v6 = MEMORY[0x277CCAC30];
-  v7 = [(HFDemoModeAccessory *)self applicationData];
-  v8 = [v7 objectForKeyedSubscript:@"room"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v8 = [applicationData objectForKeyedSubscript:@"room"];
   v9 = [v6 predicateWithFormat:@"name = %@", v8];
 
-  v10 = [v5 filteredArrayUsingPredicate:v9];
+  v10 = [rooms filteredArrayUsingPredicate:v9];
 
   if ([v10 count] == 1)
   {
@@ -216,7 +216,7 @@
 
   else
   {
-    [v4 roomForEntireHome];
+    [home roomForEntireHome];
   }
   v11 = ;
 
@@ -225,16 +225,16 @@
 
 - (id)name
 {
-  v2 = [(HFDemoModeAccessory *)self hf_serviceNameComponents];
-  v3 = [v2 serviceName];
+  hf_serviceNameComponents = [(HFDemoModeAccessory *)self hf_serviceNameComponents];
+  serviceName = [hf_serviceNameComponents serviceName];
 
-  return v3;
+  return serviceName;
 }
 
 - (id)category
 {
-  v3 = [(HFDemoModeAccessory *)self applicationData];
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v4 = [applicationData objectForKeyedSubscript:@"type"];
   v5 = v4;
   v6 = @"Other";
   if (v4)
@@ -244,10 +244,10 @@
 
   v7 = v6;
 
-  v8 = [objc_opt_class() _demoModeAccessoryTypeToHomeKitAccessoryType];
-  v9 = [(HFDemoModeAccessory *)self applicationData];
-  v10 = [v9 objectForKeyedSubscript:@"type"];
-  v11 = [v8 objectForKeyedSubscript:v10];
+  _demoModeAccessoryTypeToHomeKitAccessoryType = [objc_opt_class() _demoModeAccessoryTypeToHomeKitAccessoryType];
+  applicationData2 = [(HFDemoModeAccessory *)self applicationData];
+  v10 = [applicationData2 objectForKeyedSubscript:@"type"];
+  v11 = [_demoModeAccessoryTypeToHomeKitAccessoryType objectForKeyedSubscript:v10];
   v12 = v11;
   v13 = *MEMORY[0x277CCE8C8];
   if (v11)
@@ -287,17 +287,17 @@
 
 - (BOOL)hf_isFavorite
 {
-  v2 = [(HFDemoModeAccessory *)self applicationData];
-  v3 = [v2 objectForKeyedSubscript:@"HFApplicationDataAccessoryIsFavoriteKey"];
-  v4 = [v3 BOOLValue];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v3 = [applicationData objectForKeyedSubscript:@"HFApplicationDataAccessoryIsFavoriteKey"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)hf_hasSetFavorite
 {
-  v2 = [(HFDemoModeAccessory *)self applicationData];
-  v3 = [v2 objectForKeyedSubscript:@"HFApplicationDataAccessoryIsFavoriteKey"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v3 = [applicationData objectForKeyedSubscript:@"HFApplicationDataAccessoryIsFavoriteKey"];
   v4 = v3 != 0;
 
   return v4;
@@ -318,44 +318,44 @@
 
 - (HFServiceNameComponents)hf_serviceNameComponents
 {
-  v3 = [(HFDemoModeAccessory *)self applicationData];
-  v4 = [v3 objectForKeyedSubscript:@"name"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v4 = [applicationData objectForKeyedSubscript:@"name"];
 
-  v5 = [(HFDemoModeAccessory *)self applicationData];
-  v6 = [v5 objectForKeyedSubscript:@"room"];
+  applicationData2 = [(HFDemoModeAccessory *)self applicationData];
+  v6 = [applicationData2 objectForKeyedSubscript:@"room"];
 
   v7 = [[HFServiceNameComponents alloc] initWithRawServiceName:v4 rawRoomName:v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HFDemoModeAccessory alloc];
-  v5 = [(HFDemoModeAccessory *)self applicationData];
-  v6 = [v5 dictionary];
-  v7 = [(HFDemoModeAccessory *)self home];
-  v8 = [(HFDemoModeAccessory *)v4 initWithContentsOfDictionary:v6 forHome:v7];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  dictionary = [applicationData dictionary];
+  home = [(HFDemoModeAccessory *)self home];
+  v8 = [(HFDemoModeAccessory *)v4 initWithContentsOfDictionary:dictionary forHome:home];
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HFDemoModeAccessory alloc];
-  v5 = [(HFDemoModeAccessory *)self applicationData];
-  v6 = [v5 dictionary];
-  v7 = [(HFDemoModeAccessory *)self home];
-  v8 = [(HFDemoModeAccessory *)v4 initWithContentsOfDictionary:v6 forHome:v7];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  dictionary = [applicationData dictionary];
+  home = [(HFDemoModeAccessory *)self home];
+  v8 = [(HFDemoModeAccessory *)v4 initWithContentsOfDictionary:dictionary forHome:home];
 
   return v8;
 }
 
-- (HFDemoModeAccessory)initWithContentsOfDictionary:(id)a3 forHome:(id)a4
+- (HFDemoModeAccessory)initWithContentsOfDictionary:(id)dictionary forHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  if ([objc_opt_class() _hasValidKeys:v6])
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  if ([objc_opt_class() _hasValidKeys:dictionaryCopy])
   {
     v16.receiver = self;
     v16.super_class = HFDemoModeAccessory;
@@ -369,9 +369,9 @@
       v14[3] = &unk_277DFDD58;
       v10 = v8;
       v15 = v10;
-      [v6 enumerateKeysAndObjectsUsingBlock:v14];
-      objc_storeStrong(v10 + 86, a4);
-      v11 = [v6 objectForKeyedSubscript:@"type"];
+      [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v14];
+      objc_storeStrong(v10 + 86, home);
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"type"];
       if ([HFDemoModeAccessoryManager isInternalAccessoryType:v11])
       {
         [v10 setIsInternallyCertified:1];
@@ -379,15 +379,15 @@
     }
 
     self = v9;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 void __60__HFDemoModeAccessory_initWithContentsOfDictionary_forHome___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -403,17 +403,17 @@ void __60__HFDemoModeAccessory_initWithContentsOfDictionary_forHome___block_invo
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HFDemoModeAccessory *)self name];
-  v6 = [(HFDemoModeAccessory *)self uniqueIdentifier];
-  v7 = [v6 UUIDString];
-  v8 = [(HFDemoModeAccessory *)self isReachable];
+  name = [(HFDemoModeAccessory *)self name];
+  uniqueIdentifier = [(HFDemoModeAccessory *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  isReachable = [(HFDemoModeAccessory *)self isReachable];
   v9 = @"NO";
-  if (v8)
+  if (isReachable)
   {
     v9 = @"YES";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@, Name = %@, Identifier = %@, Reachable = %@>", v4, v5, v7, v9];
+  v10 = [v3 stringWithFormat:@"<%@, Name = %@, Identifier = %@, Reachable = %@>", v4, name, uUIDString, v9];
 
   return v10;
 }
@@ -452,24 +452,24 @@ void __67__HFDemoModeAccessory__demoModeAccessoryTypeToHomeKitAccessoryType__blo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateManufacturerInfoWithString:(id)a3 forKey:(id)a4
+- (void)_updateManufacturerInfoWithString:(id)string forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFDemoModeAccessory *)self applicationData];
-  v11 = [v8 objectForKeyedSubscript:@"manufacturerInfo"];
+  keyCopy = key;
+  stringCopy = string;
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v11 = [applicationData objectForKeyedSubscript:@"manufacturerInfo"];
 
   v9 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v11];
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  [v9 setObject:stringCopy forKeyedSubscript:keyCopy];
 
-  v10 = [(HFDemoModeAccessory *)self applicationData];
-  [v10 setObject:v9 forKeyedSubscript:@"manufacturerInfo"];
+  applicationData2 = [(HFDemoModeAccessory *)self applicationData];
+  [applicationData2 setObject:v9 forKeyedSubscript:@"manufacturerInfo"];
 }
 
 - (BOOL)_isAppleInternalAccessory
 {
-  v2 = [(HFDemoModeAccessory *)self applicationData];
-  v3 = [v2 objectForKeyedSubscript:@"type"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v3 = [applicationData objectForKeyedSubscript:@"type"];
 
   v4 = v3 && (([v3 isEqualToString:@"HomePod"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"HomePodMini") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"MediaSystem-HomePod") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"MediaSystem-HomePodMini") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"AppleTV") & 1) != 0);
   return v4;
@@ -477,12 +477,12 @@ void __67__HFDemoModeAccessory__demoModeAccessoryTypeToHomeKitAccessoryType__blo
 
 - (BOOL)_shouldShowAppleInternalManufacturerInfo
 {
-  v3 = [(HFDemoModeAccessory *)self applicationData];
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  applicationData = [(HFDemoModeAccessory *)self applicationData];
+  v4 = [applicationData objectForKeyedSubscript:@"type"];
   if ([v4 isEqualToString:@"MediaSystem-HomePod"])
   {
-    v5 = [(HFDemoModeAccessory *)self applicationData];
-    v6 = [v5 objectForKeyedSubscript:@"type"];
+    applicationData2 = [(HFDemoModeAccessory *)self applicationData];
+    v6 = [applicationData2 objectForKeyedSubscript:@"type"];
     v7 = [v6 isEqualToString:@"MediaSystem-HomePodMini"] ^ 1;
   }
 

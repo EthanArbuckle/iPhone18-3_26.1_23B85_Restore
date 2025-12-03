@@ -1,10 +1,10 @@
 @interface PKNavigationItemConfiguration
 - (PKNavigationItemConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)applyToViewController:(uint64_t)a1;
-- (void)setLeadingItemGroups:(uint64_t)a1;
-- (void)setTitleView:(uint64_t)a1;
-- (void)setTrailingItemGroups:(uint64_t)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)applyToViewController:(uint64_t)controller;
+- (void)setLeadingItemGroups:(uint64_t)groups;
+- (void)setTitleView:(uint64_t)view;
+- (void)setTrailingItemGroups:(uint64_t)groups;
 @end
 
 @implementation PKNavigationItemConfiguration
@@ -60,7 +60,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 2) = self->_style;
@@ -82,38 +82,38 @@
   return v4;
 }
 
-- (void)applyToViewController:(uint64_t)a1
+- (void)applyToViewController:(uint64_t)controller
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!controller)
   {
     goto LABEL_87;
   }
 
   if (v3)
   {
-    v5 = [v3 navigationItem];
-    v6 = [v4 navigationController];
-    v7 = [v6 navigationBar];
+    navigationItem = [v3 navigationItem];
+    navigationController = [v4 navigationController];
+    navigationBar = [navigationController navigationBar];
 
     v8 = MEMORY[0x1E69DD250];
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __55__PKNavigationItemConfiguration_applyToViewController___block_invoke;
     v70[3] = &unk_1E8010970;
-    v9 = v7;
+    v9 = navigationBar;
     v71 = v9;
     [v8 performWithoutAnimation:v70];
 
-    if ([v5 style] != *(a1 + 16))
+    if ([navigationItem style] != *(controller + 16))
     {
-      [v5 setStyle:?];
+      [navigationItem setStyle:?];
     }
 
-    if (*(a1 + 9) == 1)
+    if (*(controller + 9) == 1)
     {
-      if (*(a1 + 8))
+      if (*(controller + 8))
       {
         v10 = 2;
       }
@@ -129,70 +129,70 @@
       v10 = 1;
     }
 
-    if ([v5 _preferredNavigationBarVisibility] != v10)
+    if ([navigationItem _preferredNavigationBarVisibility] != v10)
     {
-      [v5 _setPreferredNavigationBarVisibility:v10];
+      [navigationItem _setPreferredNavigationBarVisibility:v10];
     }
 
-    v11 = [v5 _isNavigationBarHidden];
-    v12 = *(a1 + 9);
-    if (v11 == v12)
+    _isNavigationBarHidden = [navigationItem _isNavigationBarHidden];
+    v12 = *(controller + 9);
+    if (_isNavigationBarHidden == v12)
     {
-      [v5 _setNavigationBarHidden:v12 ^ 1u];
+      [navigationItem _setNavigationBarHidden:v12 ^ 1u];
     }
 
-    if (*(a1 + 10) == 1)
+    if (*(controller + 10) == 1)
     {
       v13 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
       [v13 configureWithTransparentBackground];
       v14 = [v13 copy];
-      [v5 setScrollEdgeAppearance:v14];
+      [navigationItem setScrollEdgeAppearance:v14];
 
       [v13 configureWithDefaultBackground];
       [v13 _setTitleControlHidden:1];
       v15 = [v13 copy];
-      [v5 setStandardAppearance:v15];
+      [navigationItem setStandardAppearance:v15];
     }
 
     else
     {
-      v16 = [v5 scrollEdgeAppearance];
+      scrollEdgeAppearance = [navigationItem scrollEdgeAppearance];
 
-      if (v16)
+      if (scrollEdgeAppearance)
       {
-        [v5 setScrollEdgeAppearance:0];
+        [navigationItem setScrollEdgeAppearance:0];
       }
 
-      v17 = [v5 standardAppearance];
+      standardAppearance = [navigationItem standardAppearance];
 
-      if (v17)
+      if (standardAppearance)
       {
-        [v5 setStandardAppearance:0];
+        [navigationItem setStandardAppearance:0];
       }
     }
 
-    v18 = [v5 compactScrollEdgeAppearance];
+    compactScrollEdgeAppearance = [navigationItem compactScrollEdgeAppearance];
 
-    if (v18)
+    if (compactScrollEdgeAppearance)
     {
-      [v5 setCompactScrollEdgeAppearance:0];
+      [navigationItem setCompactScrollEdgeAppearance:0];
     }
 
-    v19 = [v5 compactAppearance];
+    compactAppearance = [navigationItem compactAppearance];
 
-    if (v19)
+    if (compactAppearance)
     {
-      [v5 setCompactAppearance:0];
+      [navigationItem setCompactAppearance:0];
     }
 
-    if ([v5 largeTitleDisplayMode] != *(a1 + 80))
+    if ([navigationItem largeTitleDisplayMode] != *(controller + 80))
     {
-      [v5 setLargeTitleDisplayMode:?];
+      [navigationItem setLargeTitleDisplayMode:?];
     }
 
-    v20 = [v5 attributedTitle];
-    v21 = *(a1 + 24);
-    v22 = v20;
+    attributedTitle = [navigationItem attributedTitle];
+    v21 = *(controller + 24);
+    v22 = attributedTitle;
     v23 = v21;
     v24 = v23;
     if (v22 == v23)
@@ -208,9 +208,9 @@
       if (v25)
       {
 LABEL_34:
-        v26 = [v5 largeTitle];
-        v27 = *(a1 + 32);
-        v28 = v26;
+        largeTitle = [navigationItem largeTitle];
+        v27 = *(controller + 32);
+        v28 = largeTitle;
         v29 = v27;
         v30 = v29;
         if (v28 == v29)
@@ -226,17 +226,17 @@ LABEL_34:
           if (v31)
           {
 LABEL_42:
-            v32 = [v5 titleView];
-            v33 = *(a1 + 40);
+            titleView = [navigationItem titleView];
+            v33 = *(controller + 40);
 
-            if (v32 != v33)
+            if (titleView != v33)
             {
-              [v5 setTitleView:*(a1 + 40)];
+              [navigationItem setTitleView:*(controller + 40)];
             }
 
-            v34 = [v5 attributedSubtitle];
-            v35 = *(a1 + 48);
-            v36 = v34;
+            attributedSubtitle = [navigationItem attributedSubtitle];
+            v35 = *(controller + 48);
+            v36 = attributedSubtitle;
             v37 = v35;
             v38 = v37;
             if (v36 == v37)
@@ -252,9 +252,9 @@ LABEL_42:
               if (v39)
               {
 LABEL_52:
-                v40 = [v5 largeAttributedSubtitle];
-                v41 = *(a1 + 56);
-                v42 = v40;
+                largeAttributedSubtitle = [navigationItem largeAttributedSubtitle];
+                v41 = *(controller + 56);
+                v42 = largeAttributedSubtitle;
                 v43 = v41;
                 v44 = v43;
                 if (v42 == v43)
@@ -270,41 +270,41 @@ LABEL_52:
                   if (v45)
                   {
 LABEL_60:
-                    v46 = [v5 subtitleView];
-                    v47 = *(a1 + 64);
+                    subtitleView = [navigationItem subtitleView];
+                    v47 = *(controller + 64);
 
-                    if (v46 != v47)
+                    if (subtitleView != v47)
                     {
-                      [v5 setSubtitleView:*(a1 + 64)];
+                      [navigationItem setSubtitleView:*(controller + 64)];
                     }
 
-                    v48 = [v5 largeSubtitleView];
-                    v49 = *(a1 + 72);
+                    largeSubtitleView = [navigationItem largeSubtitleView];
+                    v49 = *(controller + 72);
 
-                    if (v48 != v49)
+                    if (largeSubtitleView != v49)
                     {
-                      [v5 setLargeSubtitleView:*(a1 + 72)];
+                      [navigationItem setLargeSubtitleView:*(controller + 72)];
                     }
 
-                    v50 = [v5 leadingItemGroups];
-                    v51 = __55__PKNavigationItemConfiguration_applyToViewController___block_invoke_2(v50, *(a1 + 104));
+                    leadingItemGroups = [navigationItem leadingItemGroups];
+                    v51 = __55__PKNavigationItemConfiguration_applyToViewController___block_invoke_2(leadingItemGroups, *(controller + 104));
 
                     if (!v51)
                     {
-                      [v5 setLeadingItemGroups:*(a1 + 104)];
+                      [navigationItem setLeadingItemGroups:*(controller + 104)];
                     }
 
-                    v52 = [v5 trailingItemGroups];
-                    v53 = __55__PKNavigationItemConfiguration_applyToViewController___block_invoke_2(v52, *(a1 + 112));
+                    trailingItemGroups = [navigationItem trailingItemGroups];
+                    v53 = __55__PKNavigationItemConfiguration_applyToViewController___block_invoke_2(trailingItemGroups, *(controller + 112));
 
                     if (!v53)
                     {
-                      [v5 setTrailingItemGroups:*(a1 + 112)];
+                      [navigationItem setTrailingItemGroups:*(controller + 112)];
                     }
 
-                    v54 = [v4 toolbarItems];
-                    v55 = *(a1 + 120);
-                    v56 = v54;
+                    toolbarItems = [v4 toolbarItems];
+                    v55 = *(controller + 120);
+                    v56 = toolbarItems;
                     v57 = v55;
                     v58 = [v56 count];
                     if (v58 == [v57 count] && (v56 == 0) != (v57 != 0))
@@ -336,16 +336,16 @@ LABEL_74:
                       }
                     }
 
-                    [v4 setToolbarItems:*(a1 + 120) animated:1];
+                    [v4 setToolbarItems:*(controller + 120) animated:1];
 LABEL_76:
-                    if ([v5 backButtonDisplayMode] != *(a1 + 96))
+                    if ([navigationItem backButtonDisplayMode] != *(controller + 96))
                     {
-                      [v5 setBackButtonDisplayMode:?];
+                      [navigationItem setBackButtonDisplayMode:?];
                     }
 
-                    v64 = [v5 backButtonTitle];
-                    v65 = *(a1 + 88);
-                    v66 = v64;
+                    backButtonTitle = [navigationItem backButtonTitle];
+                    v65 = *(controller + 88);
+                    v66 = backButtonTitle;
                     v67 = v65;
                     v68 = v67;
                     if (v66 == v67)
@@ -368,7 +368,7 @@ LABEL_76:
                       {
                       }
 
-                      [v5 setBackButtonTitle:*(a1 + 88)];
+                      [navigationItem setBackButtonTitle:*(controller + 88)];
                     }
 
 LABEL_86:
@@ -383,7 +383,7 @@ LABEL_87:
                 {
                 }
 
-                [v5 setLargeAttributedSubtitle:*(a1 + 56)];
+                [navigationItem setLargeAttributedSubtitle:*(controller + 56)];
                 goto LABEL_60;
               }
             }
@@ -392,7 +392,7 @@ LABEL_87:
             {
             }
 
-            [v5 setAttributedSubtitle:*(a1 + 48)];
+            [navigationItem setAttributedSubtitle:*(controller + 48)];
             goto LABEL_52;
           }
         }
@@ -401,7 +401,7 @@ LABEL_87:
         {
         }
 
-        [v5 setLargeTitle:*(a1 + 32)];
+        [navigationItem setLargeTitle:*(controller + 32)];
         goto LABEL_42;
       }
     }
@@ -410,7 +410,7 @@ LABEL_87:
     {
     }
 
-    [v5 setAttributedTitle:*(a1 + 24)];
+    [navigationItem setAttributedTitle:*(controller + 24)];
     goto LABEL_34;
   }
 
@@ -461,10 +461,10 @@ BOOL __55__PKNavigationItemConfiguration_applyToViewController___block_invoke_2(
   return v12;
 }
 
-- (void)setLeadingItemGroups:(uint64_t)a1
+- (void)setLeadingItemGroups:(uint64_t)groups
 {
   v3 = a2;
-  if (a1)
+  if (groups)
   {
     if (!v3)
     {
@@ -474,17 +474,17 @@ BOOL __55__PKNavigationItemConfiguration_applyToViewController___block_invoke_2(
 
     v6 = v3;
     v4 = [v3 copy];
-    v5 = *(a1 + 104);
-    *(a1 + 104) = v4;
+    v5 = *(groups + 104);
+    *(groups + 104) = v4;
 
     v3 = v6;
   }
 }
 
-- (void)setTrailingItemGroups:(uint64_t)a1
+- (void)setTrailingItemGroups:(uint64_t)groups
 {
   v3 = a2;
-  if (a1)
+  if (groups)
   {
     if (!v3)
     {
@@ -494,18 +494,18 @@ BOOL __55__PKNavigationItemConfiguration_applyToViewController___block_invoke_2(
 
     v6 = v3;
     v4 = [v3 copy];
-    v5 = *(a1 + 112);
-    *(a1 + 112) = v4;
+    v5 = *(groups + 112);
+    *(groups + 112) = v4;
 
     v3 = v6;
   }
 }
 
-- (void)setTitleView:(uint64_t)a1
+- (void)setTitleView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((view + 40), a2);
   }
 }
 

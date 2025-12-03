@@ -1,11 +1,11 @@
 @interface PGGraphROIEdge
 + (id)filter;
-+ (id)filterAboveConfidence:(double)a3;
-+ (id)filterAboveConfidence:(double)a3 hasLegacyWeights:(BOOL)a4;
-- (BOOL)hasProperties:(id)a3;
-- (PGGraphROIEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
++ (id)filterAboveConfidence:(double)confidence;
++ (id)filterAboveConfidence:(double)confidence hasLegacyWeights:(BOOL)weights;
+- (BOOL)hasProperties:(id)properties;
+- (PGGraphROIEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
 - (id)edgeDescription;
-- (id)initFromMomentNode:(id)a3 toROINode:(id)a4 confidence:(double)a5;
+- (id)initFromMomentNode:(id)node toROINode:(id)iNode confidence:(double)confidence;
 - (id)propertyDictionary;
 @end
 
@@ -16,8 +16,8 @@
   v3 = MEMORY[0x277CCACA8];
   v7.receiver = self;
   v7.super_class = PGGraphROIEdge;
-  v4 = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
-  v5 = [v3 stringWithFormat:@"%@ (%.2f)", v4, *&self->_confidence];
+  edgeDescription = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
+  v5 = [v3 stringWithFormat:@"%@ (%.2f)", edgeDescription, *&self->_confidence];
 
   return v5;
 }
@@ -35,11 +35,11 @@
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"confidence"];
     v7 = v6;
@@ -62,49 +62,49 @@
   return v9;
 }
 
-- (PGGraphROIEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphROIEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [a7 objectForKeyedSubscript:@"confidence"];
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  v12 = [properties objectForKeyedSubscript:@"confidence"];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [(PGGraphROIEdge *)self initFromMomentNode:v11 toROINode:v10 confidence:v14];
+  v15 = [(PGGraphROIEdge *)self initFromMomentNode:nodeCopy toROINode:targetNodeCopy confidence:v14];
   return v15;
 }
 
-- (id)initFromMomentNode:(id)a3 toROINode:(id)a4 confidence:(double)a5
+- (id)initFromMomentNode:(id)node toROINode:(id)iNode confidence:(double)confidence
 {
   v7.receiver = self;
   v7.super_class = PGGraphROIEdge;
-  result = [(PGGraphEdge *)&v7 initWithSourceNode:a3 targetNode:a4];
+  result = [(PGGraphEdge *)&v7 initWithSourceNode:node targetNode:iNode];
   if (result)
   {
-    *(result + 5) = a5;
+    *(result + 5) = confidence;
   }
 
   return result;
 }
 
-+ (id)filterAboveConfidence:(double)a3 hasLegacyWeights:(BOOL)a4
++ (id)filterAboveConfidence:(double)confidence hasLegacyWeights:(BOOL)weights
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (weights)
   {
-    v5 = [a1 filter];
+    filter = [self filter];
     v13 = @"__weight";
     v6 = objc_alloc(MEMORY[0x277D22B98]);
-    v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithDouble:confidence];
     v8 = [v6 initWithComparator:5 value:v7];
     v14[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    v10 = [v5 filterBySettingProperties:v9];
+    v10 = [filter filterBySettingProperties:v9];
   }
 
   else
   {
-    v10 = [a1 filterAboveConfidence:a3];
+    v10 = [self filterAboveConfidence:confidence];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -112,17 +112,17 @@
   return v10;
 }
 
-+ (id)filterAboveConfidence:(double)a3
++ (id)filterAboveConfidence:(double)confidence
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [a1 filter];
+  filter = [self filter];
   v12 = @"confidence";
   v5 = objc_alloc(MEMORY[0x277D22B98]);
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:confidence];
   v7 = [v5 initWithComparator:5 value:v6];
   v13[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v9 = [v4 filterBySettingProperties:v8];
+  v9 = [filter filterBySettingProperties:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 

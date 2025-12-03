@@ -1,15 +1,15 @@
 @interface AWDMDNSResponderResolveStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDomain:(id)a3;
-- (void)addServer:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addDomain:(id)domain;
+- (void)addServer:(id)server;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMDNSResponderResolveStats
@@ -23,7 +23,7 @@
   [(AWDMDNSResponderResolveStats *)&v3 dealloc];
 }
 
-- (void)addServer:(id)a3
+- (void)addServer:(id)server
 {
   servers = self->_servers;
   if (!servers)
@@ -32,10 +32,10 @@
     self->_servers = servers;
   }
 
-  [(NSMutableArray *)servers addObject:a3];
+  [(NSMutableArray *)servers addObject:server];
 }
 
-- (void)addDomain:(id)a3
+- (void)addDomain:(id)domain
 {
   domains = self->_domains;
   if (!domains)
@@ -44,7 +44,7 @@
     self->_domains = domains;
   }
 
-  [(NSMutableArray *)domains addObject:a3];
+  [(NSMutableArray *)domains addObject:domain];
 }
 
 - (id)description
@@ -57,10 +57,10 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_servers count])
@@ -94,7 +94,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"server"];
+    [dictionary setObject:v4 forKey:@"server"];
   }
 
   if ([(NSMutableArray *)self->_domains count])
@@ -128,14 +128,14 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"domain"];
+    [dictionary setObject:v10 forKey:@"domain"];
   }
 
   v16 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -205,47 +205,47 @@
   v17 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
   if ([(AWDMDNSResponderResolveStats *)self serversCount])
   {
-    [a3 clearServers];
-    v5 = [(AWDMDNSResponderResolveStats *)self serversCount];
-    if (v5)
+    [to clearServers];
+    serversCount = [(AWDMDNSResponderResolveStats *)self serversCount];
+    if (serversCount)
     {
-      v6 = v5;
+      v6 = serversCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addServer:{-[AWDMDNSResponderResolveStats serverAtIndex:](self, "serverAtIndex:", i)}];
+        [to addServer:{-[AWDMDNSResponderResolveStats serverAtIndex:](self, "serverAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDMDNSResponderResolveStats *)self domainsCount])
   {
-    [a3 clearDomains];
-    v8 = [(AWDMDNSResponderResolveStats *)self domainsCount];
-    if (v8)
+    [to clearDomains];
+    domainsCount = [(AWDMDNSResponderResolveStats *)self domainsCount];
+    if (domainsCount)
     {
-      v9 = v8;
+      v9 = domainsCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addDomain:{-[AWDMDNSResponderResolveStats domainAtIndex:](self, "domainAtIndex:", j)}];
+        [to addDomain:{-[AWDMDNSResponderResolveStats domainAtIndex:](self, "domainAtIndex:", j)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -272,7 +272,7 @@
           objc_enumerationMutation(servers);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v25 + 1) + 8 * i) copyWithZone:zone];
         [v6 addServer:v12];
       }
 
@@ -301,7 +301,7 @@
           objc_enumerationMutation(domains);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * j) copyWithZone:a3];
+        v18 = [*(*(&v21 + 1) + 8 * j) copyWithZone:zone];
         [v6 addDomain:v18];
       }
 
@@ -315,21 +315,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 32);
+    v6 = *(equal + 32);
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_11:
       LOBYTE(v5) = 0;
@@ -337,10 +337,10 @@ LABEL_11:
     }
 
     servers = self->_servers;
-    if (!(servers | *(a3 + 3)) || (v5 = [(NSMutableArray *)servers isEqual:?]) != 0)
+    if (!(servers | *(equal + 3)) || (v5 = [(NSMutableArray *)servers isEqual:?]) != 0)
     {
       domains = self->_domains;
-      if (domains | *(a3 + 2))
+      if (domains | *(equal + 2))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)domains isEqual:?];
@@ -372,12 +372,12 @@ LABEL_11:
   return v4 ^ [(NSMutableArray *)self->_domains hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -385,7 +385,7 @@ LABEL_11:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(a3 + 3);
+  v5 = *(from + 3);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -413,7 +413,7 @@ LABEL_11:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(a3 + 2);
+  v10 = *(from + 2);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

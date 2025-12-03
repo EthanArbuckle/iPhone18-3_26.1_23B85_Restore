@@ -1,13 +1,13 @@
 @interface NTKArgonEncryptedBundleEnumerator
-- (NTKArgonEncryptedBundleEnumerator)initWithSearchPathDomains:(unint64_t)a3;
-- (NTKArgonEncryptedBundleEnumerator)initWithSourceDirectoryPaths:(id)a3;
-- (NTKArgonEncryptedBundleEnumerator)initWithSourceDirectoryURLs:(id)a3;
+- (NTKArgonEncryptedBundleEnumerator)initWithSearchPathDomains:(unint64_t)domains;
+- (NTKArgonEncryptedBundleEnumerator)initWithSourceDirectoryPaths:(id)paths;
+- (NTKArgonEncryptedBundleEnumerator)initWithSourceDirectoryURLs:(id)ls;
 - (id)nextObject;
 @end
 
 @implementation NTKArgonEncryptedBundleEnumerator
 
-- (NTKArgonEncryptedBundleEnumerator)initWithSearchPathDomains:(unint64_t)a3
+- (NTKArgonEncryptedBundleEnumerator)initWithSearchPathDomains:(unint64_t)domains
 {
   v9.receiver = self;
   v9.super_class = NTKArgonEncryptedBundleEnumerator;
@@ -18,27 +18,27 @@
   }
 
   v5 = v4;
-  v6 = NTKFaceSupportArchiveSearchPathsForDomains(a3);
+  v6 = NTKFaceSupportArchiveSearchPathsForDomains(domains);
   v7 = [(NTKArgonEncryptedBundleEnumerator *)v5 initWithSourceDirectoryPaths:v6];
 
   return v7;
 }
 
-- (NTKArgonEncryptedBundleEnumerator)initWithSourceDirectoryURLs:(id)a3
+- (NTKArgonEncryptedBundleEnumerator)initWithSourceDirectoryURLs:(id)ls
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lsCopy = ls;
   v20.receiver = self;
   v20.super_class = NTKArgonEncryptedBundleEnumerator;
   v5 = [(NTKArgonEncryptedBundleEnumerator *)&v20 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(lsCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v4;
+    v7 = lsCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v8)
     {
@@ -54,9 +54,9 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * v11) absoluteURL];
-          v13 = [v12 path];
-          [v6 addObject:v13];
+          absoluteURL = [*(*(&v16 + 1) + 8 * v11) absoluteURL];
+          path = [absoluteURL path];
+          [v6 addObject:path];
 
           ++v11;
         }
@@ -75,10 +75,10 @@
   return v5;
 }
 
-- (NTKArgonEncryptedBundleEnumerator)initWithSourceDirectoryPaths:(id)a3
+- (NTKArgonEncryptedBundleEnumerator)initWithSourceDirectoryPaths:(id)paths
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathsCopy = paths;
   v45.receiver = self;
   v45.super_class = NTKArgonEncryptedBundleEnumerator;
   v5 = [(NTKArgonEncryptedBundleEnumerator *)&v45 init];
@@ -86,13 +86,13 @@
   if (v5)
   {
     v28 = v5;
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v29 = v4;
-    obj = v4;
+    v29 = pathsCopy;
+    obj = pathsCopy;
     v32 = [obj countByEnumeratingWithState:&v41 objects:v51 count:16];
     if (v32)
     {
@@ -107,9 +107,9 @@
           }
 
           v9 = *(*(&v41 + 1) + 8 * i);
-          v10 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
           v40 = 0;
-          v11 = [v10 contentsOfDirectoryAtPath:v9 error:&v40];
+          v11 = [defaultManager contentsOfDirectoryAtPath:v9 error:&v40];
           v12 = v40;
 
           if (v11)
@@ -138,13 +138,13 @@
                   }
 
                   v19 = *(*(&v36 + 1) + 8 * j);
-                  v20 = [v19 pathExtension];
-                  v21 = [v20 isEqualToString:@"aea"];
+                  pathExtension = [v19 pathExtension];
+                  v21 = [pathExtension isEqualToString:@"aea"];
 
                   if (v21)
                   {
                     v22 = [v13 URLByAppendingPathComponent:v19];
-                    [v7 addObject:v22];
+                    [array addObject:v22];
                   }
                 }
 
@@ -179,16 +179,16 @@
       while (v32);
     }
 
-    v23 = [v7 copy];
+    v23 = [array copy];
     v6 = v28;
     allObjects = v28->_allObjects;
     v28->_allObjects = v23;
 
-    v25 = [(NSArray *)v28->_allObjects objectEnumerator];
+    objectEnumerator = [(NSArray *)v28->_allObjects objectEnumerator];
     urlEnumerator = v28->_urlEnumerator;
-    v28->_urlEnumerator = v25;
+    v28->_urlEnumerator = objectEnumerator;
 
-    v4 = v29;
+    pathsCopy = v29;
   }
 
   return v6;
@@ -196,9 +196,9 @@
 
 - (id)nextObject
 {
-  v3 = [(NSEnumerator *)self->_urlEnumerator nextObject];
+  nextObject = [(NSEnumerator *)self->_urlEnumerator nextObject];
   lastURL = self->_lastURL;
-  self->_lastURL = v3;
+  self->_lastURL = nextObject;
 
   v5 = self->_lastURL;
 

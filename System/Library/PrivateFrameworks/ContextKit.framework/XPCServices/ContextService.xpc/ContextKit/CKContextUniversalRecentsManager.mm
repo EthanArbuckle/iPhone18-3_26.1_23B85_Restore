@@ -1,24 +1,24 @@
 @interface CKContextUniversalRecentsManager
-- (CKContextUniversalRecentsManager)initWithProtocolImpl:(id)a3;
-- (id)_extractedTitleForResponse:(id)a3;
-- (id)_prettifiedUrlStringForURL:(id)a3;
-- (id)_titleForUserActivity:(id)a3 bundleIdentifier:(id)a4 response:(id)a5;
+- (CKContextUniversalRecentsManager)initWithProtocolImpl:(id)impl;
+- (id)_extractedTitleForResponse:(id)response;
+- (id)_prettifiedUrlStringForURL:(id)l;
+- (id)_titleForUserActivity:(id)activity bundleIdentifier:(id)identifier response:(id)response;
 - (void)_pruneRecentsFromSafari;
-- (void)processDonation:(id)a3 retrievingTopics:(BOOL)a4;
+- (void)processDonation:(id)donation retrievingTopics:(BOOL)topics;
 @end
 
 @implementation CKContextUniversalRecentsManager
 
-- (CKContextUniversalRecentsManager)initWithProtocolImpl:(id)a3
+- (CKContextUniversalRecentsManager)initWithProtocolImpl:(id)impl
 {
-  v4 = a3;
+  implCopy = impl;
   v15.receiver = self;
   v15.super_class = CKContextUniversalRecentsManager;
   v5 = [(CKContextUniversalRecentsManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_serviceImpl, v4);
+    objc_storeWeak(&v5->_serviceImpl, implCopy);
     v7 = objc_alloc_init(CKContextRecentsPredictionManager);
     predictionManager = v6->_predictionManager;
     v6->_predictionManager = v7;
@@ -43,38 +43,38 @@
   return v6;
 }
 
-- (void)processDonation:(id)a3 retrievingTopics:(BOOL)a4
+- (void)processDonation:(id)donation retrievingTopics:(BOOL)topics
 {
-  v5 = a3;
+  donationCopy = donation;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    sub_1002BC86C(v5);
+    sub_1002BC86C(donationCopy);
   }
 
-  v6 = [v5 associatedUserActivity];
-  v7 = [v6 userActivity];
+  associatedUserActivity = [donationCopy associatedUserActivity];
+  userActivity = [associatedUserActivity userActivity];
 
-  if (v7)
+  if (userActivity)
   {
     v8 = +[NSUUID UUID];
-    v9 = [v5 donorBundleIdentifier];
-    if (([v7 isEligibleForPublicIndexing] & 1) == 0 && (objc_msgSend(v7, "isEligibleForPrediction") & 1) == 0 && (objc_msgSend(v7, "isEligibleForSearch") & 1) == 0)
+    donorBundleIdentifier = [donationCopy donorBundleIdentifier];
+    if (([userActivity isEligibleForPublicIndexing] & 1) == 0 && (objc_msgSend(userActivity, "isEligibleForPrediction") & 1) == 0 && (objc_msgSend(userActivity, "isEligibleForSearch") & 1) == 0)
     {
-      v10 = [(CKContextRecentsPredictionManager *)self->_predictionManager recentsCache];
-      v11 = [(CKContextUniversalRecentsManager *)self _titleForUserActivity:v7 bundleIdentifier:v9 response:0];
-      [v10 insertUserActivityData:v7 preferredTitle:v11 bundleId:v9 topics:0 hasAssociatedImageRepresentation:0 uuid:v8];
+      recentsCache = [(CKContextRecentsPredictionManager *)self->_predictionManager recentsCache];
+      v11 = [(CKContextUniversalRecentsManager *)self _titleForUserActivity:userActivity bundleIdentifier:donorBundleIdentifier response:0];
+      [recentsCache insertUserActivityData:userActivity preferredTitle:v11 bundleId:donorBundleIdentifier topics:0 hasAssociatedImageRepresentation:0 uuid:v8];
     }
   }
 }
 
-- (id)_titleForUserActivity:(id)a3 bundleIdentifier:(id)a4 response:(id)a5
+- (id)_titleForUserActivity:(id)activity bundleIdentifier:(id)identifier response:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([qword_1005572C0 containsObject:v9])
+  activityCopy = activity;
+  identifierCopy = identifier;
+  responseCopy = response;
+  if ([qword_1005572C0 containsObject:identifierCopy])
   {
-    v11 = [(CKContextUniversalRecentsManager *)self _extractedTitleForResponse:v10];
+    v11 = [(CKContextUniversalRecentsManager *)self _extractedTitleForResponse:responseCopy];
     if ([v11 length])
     {
       v12 = v11;
@@ -90,41 +90,41 @@ LABEL_9:
     v11 = 0;
   }
 
-  v13 = [v8 title];
+  title = [activityCopy title];
 
-  if ([v13 length] && (objc_msgSend(v13, "isEqualToString:", v9) & 1) == 0)
+  if ([title length] && (objc_msgSend(title, "isEqualToString:", identifierCopy) & 1) == 0)
   {
-    v16 = [NSURL URLWithString:v13];
+    v16 = [NSURL URLWithString:title];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 scheme];
-      if (![v18 length])
+      scheme = [v16 scheme];
+      if (![scheme length])
       {
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v19 = [v17 host];
-      v20 = [v19 length];
+      host = [v17 host];
+      v20 = [host length];
 
       if (v20)
       {
         [(CKContextUniversalRecentsManager *)self _prettifiedUrlStringForURL:v17];
-        v13 = v18 = v13;
+        title = scheme = title;
         goto LABEL_14;
       }
     }
 
 LABEL_15:
-    v14 = v13;
+    v14 = title;
 
     v15 = v14;
     goto LABEL_17;
   }
 
-  v14 = [(CKContextUniversalRecentsManager *)self _extractedTitleForResponse:v10];
+  v14 = [(CKContextUniversalRecentsManager *)self _extractedTitleForResponse:responseCopy];
 
   if ([v14 length])
   {
@@ -138,26 +138,26 @@ LABEL_17:
   return v15;
 }
 
-- (id)_prettifiedUrlStringForURL:(id)a3
+- (id)_prettifiedUrlStringForURL:(id)l
 {
-  v3 = [a3 host];
-  v4 = [v3 lowercaseString];
+  host = [l host];
+  lowercaseString = [host lowercaseString];
 
-  if ([v4 hasPrefix:@"www."])
+  if ([lowercaseString hasPrefix:@"www."])
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"www.", "length")}];
+    v5 = [lowercaseString substringFromIndex:{objc_msgSend(@"www.", "length")}];
 
-    v4 = v5;
+    lowercaseString = v5;
   }
 
-  return v4;
+  return lowercaseString;
 }
 
-- (id)_extractedTitleForResponse:(id)a3
+- (id)_extractedTitleForResponse:(id)response
 {
-  if (a3)
+  if (response)
   {
-    [a3 results];
+    [response results];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -177,13 +177,13 @@ LABEL_17:
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
-          v9 = [v8 tags];
-          v10 = [v9 containsObject:@"CK0001"];
+          tags = [v8 tags];
+          v10 = [tags containsObject:@"CK0001"];
 
           if (v10)
           {
-            v11 = [v8 title];
-            if ([v11 length])
+            title = [v8 title];
+            if ([title length])
             {
               goto LABEL_13;
             }
@@ -196,23 +196,23 @@ LABEL_17:
       while (v5);
     }
 
-    v11 = 0;
+    title = 0;
 LABEL_13:
   }
 
   else
   {
-    v11 = 0;
+    title = 0;
   }
 
-  return v11;
+  return title;
 }
 
 - (void)_pruneRecentsFromSafari
 {
-  v3 = [(CKContextRecentsPredictionManager *)self->_predictionManager recentsCache];
+  recentsCache = [(CKContextRecentsPredictionManager *)self->_predictionManager recentsCache];
   v2 = [NSSet setWithObject:@"com.apple.mobilesafari"];
-  [v3 pruneRecentsForBundleIdentifiers:v2];
+  [recentsCache pruneRecentsForBundleIdentifiers:v2];
 }
 
 @end

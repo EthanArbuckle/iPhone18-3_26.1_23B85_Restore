@@ -1,9 +1,9 @@
 @interface HMDSharedUserProfilePhotoManager
 + (id)logCategory;
-- (HMDSharedUserProfilePhotoManager)initWithCloudTransform:(id)a3 delegate:(id)a4;
+- (HMDSharedUserProfilePhotoManager)initWithCloudTransform:(id)transform delegate:(id)delegate;
 - (HMDSharedUserProfilePhotoManagerDelegate)delegate;
 - (void)configure;
-- (void)didInsertOrUpdateModel:(id)a3 changedProperties:(id)a4;
+- (void)didInsertOrUpdateModel:(id)model changedProperties:(id)properties;
 @end
 
 @implementation HMDSharedUserProfilePhotoManager
@@ -15,12 +15,12 @@
   return WeakRetained;
 }
 
-- (void)didInsertOrUpdateModel:(id)a3 changedProperties:(id)a4
+- (void)didInsertOrUpdateModel:(id)model changedProperties:(id)properties
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  modelCopy = model;
+  propertiesCopy = properties;
+  v8 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -37,7 +37,7 @@
   if (v10)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -50,9 +50,9 @@
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [v10 workingStoreHomeMember];
+    workingStoreHomeMember = [v10 workingStoreHomeMember];
     v16 = objc_autoreleasePoolPush();
-    v17 = v12;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -60,14 +60,14 @@
       v28 = 138543618;
       v29 = v19;
       v30 = 2112;
-      v31 = v15;
+      v31 = workingStoreHomeMember;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@updating member %@", &v28, 0x16u);
     }
 
     objc_autoreleasePoolPop(v16);
-    v20 = [(HMDSharedUserProfilePhotoManager *)v17 delegate];
-    v21 = [v15 idsMergeIdentifier];
-    v22 = [v20 userWithMergeID:v21];
+    delegate = [(HMDSharedUserProfilePhotoManager *)v17 delegate];
+    idsMergeIdentifier = [workingStoreHomeMember idsMergeIdentifier];
+    v22 = [delegate userWithMergeID:idsMergeIdentifier];
 
     if (!v22)
     {
@@ -82,7 +82,7 @@
         v30 = 2112;
         v31 = 0;
         v32 = 2112;
-        v33 = v15;
+        v33 = workingStoreHomeMember;
         _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@Found no user %@ for member: %@", &v28, 0x20u);
       }
 
@@ -98,27 +98,27 @@
 - (void)configure
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSharedUserProfilePhotoManager *)self cloudTransform];
+  cloudTransform = [(HMDSharedUserProfilePhotoManager *)self cloudTransform];
   v4 = +[MKFCKSharedUserPhoto entity];
   v7[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  [v3 registerCloudChangeListener:self forEntities:v5];
+  [cloudTransform registerCloudChangeListener:self forEntities:v5];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSharedUserProfilePhotoManager)initWithCloudTransform:(id)a3 delegate:(id)a4
+- (HMDSharedUserProfilePhotoManager)initWithCloudTransform:(id)transform delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  transformCopy = transform;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HMDSharedUserProfilePhotoManager;
   v9 = [(HMDSharedUserProfilePhotoManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cloudTransform, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_cloudTransform, transform);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

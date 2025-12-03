@@ -1,11 +1,11 @@
 @interface _LTDAssetAnalytics
 + (_LTDAssetAnalytics)shared;
 - (id)_init;
-- (id)createEventWithNSLocale:(id)a3 connectionType:(unint64_t)a4 downloadTriggerSource:(unint64_t)a5;
-- (id)getEventWithNSLocale:(id)a3;
-- (void)markEventsAsRetriedForLocales:(id)a3;
-- (void)sendEventToAnalytics:(id)a3;
-- (void)sendEventsToAnalytics:(id)a3;
+- (id)createEventWithNSLocale:(id)locale connectionType:(unint64_t)type downloadTriggerSource:(unint64_t)source;
+- (id)getEventWithNSLocale:(id)locale;
+- (void)markEventsAsRetriedForLocales:(id)locales;
+- (void)sendEventToAnalytics:(id)analytics;
+- (void)sendEventsToAnalytics:(id)analytics;
 @end
 
 @implementation _LTDAssetAnalytics
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __28___LTDAssetAnalytics_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);
@@ -32,28 +32,28 @@
   v6.receiver = self;
   v6.super_class = _LTDAssetAnalytics;
   v2 = [(_LTDAssetAnalytics *)&v6 init];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   localeAnalyticsMap = v2->_localeAnalyticsMap;
-  v2->_localeAnalyticsMap = v3;
+  v2->_localeAnalyticsMap = dictionary;
 
   v2->_lock._os_unfair_lock_opaque = 0;
   return v2;
 }
 
-- (id)createEventWithNSLocale:(id)a3 connectionType:(unint64_t)a4 downloadTriggerSource:(unint64_t)a5
+- (id)createEventWithNSLocale:(id)locale connectionType:(unint64_t)type downloadTriggerSource:(unint64_t)source
 {
-  v8 = a3;
-  v9 = [[_LTDAssetDownloadAnalyticsEvent alloc] initWithNSLocale:v8 connectionType:a4 downloadTriggerSource:a5];
-  v10 = [v8 _ltLocaleIdentifier];
+  localeCopy = locale;
+  v9 = [[_LTDAssetDownloadAnalyticsEvent alloc] initWithNSLocale:localeCopy connectionType:type downloadTriggerSource:source];
+  _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
 
-  if (v10)
+  if (_ltLocaleIdentifier)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __83___LTDAssetAnalytics_createEventWithNSLocale_connectionType_downloadTriggerSource___block_invoke;
     v20[3] = &unk_2789B5968;
     v20[4] = self;
-    v21 = v10;
+    v21 = _ltLocaleIdentifier;
     v22 = v9;
     os_unfair_lock_assert_not_owner(&self->_lock);
     os_unfair_lock_lock(&self->_lock);
@@ -73,17 +73,17 @@
   return v9;
 }
 
-- (void)markEventsAsRetriedForLocales:(id)a3
+- (void)markEventsAsRetriedForLocales:(id)locales
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localesCopy = locales;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __52___LTDAssetAnalytics_markEventsAsRetriedForLocales___block_invoke;
   v14 = &unk_2789B5990;
-  v5 = v4;
+  v5 = localesCopy;
   v15 = v5;
-  v16 = self;
+  selfCopy = self;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   __52___LTDAssetAnalytics_markEventsAsRetriedForLocales___block_invoke(&v11);
@@ -102,26 +102,26 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getEventWithNSLocale:(id)a3
+- (id)getEventWithNSLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__3;
   v28 = __Block_byref_object_dispose__3;
   v29 = 0;
-  v5 = [v4 _ltLocaleIdentifier];
-  v6 = v5;
-  if (v5)
+  _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
+  v6 = _ltLocaleIdentifier;
+  if (_ltLocaleIdentifier)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v19 = __43___LTDAssetAnalytics_getEventWithNSLocale___block_invoke;
     v20 = &unk_2789B59B8;
     v23 = &v24;
-    v21 = self;
-    v22 = v5;
+    selfCopy = self;
+    v22 = _ltLocaleIdentifier;
     v7 = v18;
     os_unfair_lock_assert_not_owner(&self->_lock);
     os_unfair_lock_lock(&self->_lock);
@@ -146,38 +146,38 @@
   return v16;
 }
 
-- (void)sendEventToAnalytics:(id)a3
+- (void)sendEventToAnalytics:(id)analytics
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = _LTOSLogAnalytics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = _LTDAssetAnalyticStringForDownloadOutcome([v4 downloadOutcome]);
+    v7 = _LTDAssetAnalyticStringForDownloadOutcome([analyticsCopy downloadOutcome]);
     *buf = 138543362;
     v28 = v7;
     _os_log_impl(&dword_232E53000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  v8 = [v4 localeIdentifier];
-  v9 = v8;
-  if (v8)
+  localeIdentifier = [analyticsCopy localeIdentifier];
+  v9 = localeIdentifier;
+  if (localeIdentifier)
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __43___LTDAssetAnalytics_sendEventToAnalytics___block_invoke;
     v25[3] = &unk_2789B5990;
     v25[4] = self;
-    v26 = v8;
+    v26 = localeIdentifier;
     os_unfair_lock_assert_not_owner(&self->_lock);
     os_unfair_lock_lock(&self->_lock);
     __43___LTDAssetAnalytics_sendEventToAnalytics___block_invoke(v25);
     os_unfair_lock_unlock(&self->_lock);
 
-    v10 = [v4 localeIdentifier];
-    [v4 completionTime];
-    v12 = -[_LTDAssetAnalytics analyticsDataForLocaleIdentifier:completionTime:connectionType:downloadOutcome:downloadTriggerSource:hasClientReportedError:](self, "analyticsDataForLocaleIdentifier:completionTime:connectionType:downloadOutcome:downloadTriggerSource:hasClientReportedError:", v10, [v4 connectionType], objc_msgSend(v4, "downloadOutcome"), objc_msgSend(v4, "downloadTriggerSource"), objc_msgSend(v4, "hasClientReportedError"), v11);
+    localeIdentifier2 = [analyticsCopy localeIdentifier];
+    [analyticsCopy completionTime];
+    v12 = -[_LTDAssetAnalytics analyticsDataForLocaleIdentifier:completionTime:connectionType:downloadOutcome:downloadTriggerSource:hasClientReportedError:](self, "analyticsDataForLocaleIdentifier:completionTime:connectionType:downloadOutcome:downloadTriggerSource:hasClientReportedError:", localeIdentifier2, [analyticsCopy connectionType], objc_msgSend(analyticsCopy, "downloadOutcome"), objc_msgSend(analyticsCopy, "downloadTriggerSource"), objc_msgSend(analyticsCopy, "hasClientReportedError"), v11);
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"com.apple.translation", @"AssetDownloadMetrics"];
     v24 = v12;
@@ -197,15 +197,15 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendEventsToAnalytics:(id)a3
+- (void)sendEventsToAnalytics:(id)analytics
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  analyticsCopy = analytics;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [analyticsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -217,14 +217,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(analyticsCopy);
         }
 
         [(_LTDAssetAnalytics *)self sendEventToAnalytics:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [analyticsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

@@ -1,13 +1,13 @@
 @interface CNAuthorizationContext
-+ (BOOL)shouldIgnoreAssumedIdentity:(id)a3;
-+ (BOOL)shouldIgnoreAssumedIdentityForBundleIdentifier:(id)a3;
++ (BOOL)shouldIgnoreAssumedIdentity:(id)identity;
++ (BOOL)shouldIgnoreAssumedIdentityForBundleIdentifier:(id)identifier;
 + (CNAuthorizationContext)sharedInstance;
 + (id)os_log;
 - (BOOL)cachedAddressingGrammarAccessGranted;
 - (BOOL)cachedNotesAccessGranted;
 - (BOOL)checkClientIsFirstOrSecondParty;
-- (BOOL)checkTCCEntitlementNamesAllowContacts:(id)a3;
-- (BOOL)doesClientHaveEntitlement:(id)a3;
+- (BOOL)checkTCCEntitlementNamesAllowContacts:(id)contacts;
+- (BOOL)doesClientHaveEntitlement:(id)entitlement;
 - (BOOL)isAccessGranted;
 - (BOOL)isAccessGrantedRequestingAccessIfNeeded;
 - (BOOL)isAccessRestricted;
@@ -26,23 +26,23 @@
 - (BOOL)isNotesAccessGrantedImpl;
 - (BOOL)isThirdPartyNotesEntitled;
 - (BOOL)isUnitTesting;
-- (BOOL)requestAccessWithError:(id *)a3;
+- (BOOL)requestAccessWithError:(id *)error;
 - (BOOL)shouldAlwaysQueryAuthorizationStatus;
 - (BOOL)shouldAlwaysQueryAuthorizationStatusImpl;
-- (CNAuthorizationContext)initWithAuditToken:(id)a3 assumedIdentity:(id)a4;
-- (CNAuthorizationContext)initWithAuditToken:(id)a3 assumedIdentity:(id)a4 tccServices:(id)a5;
+- (CNAuthorizationContext)initWithAuditToken:(id)token assumedIdentity:(id)identity;
+- (CNAuthorizationContext)initWithAuditToken:(id)token assumedIdentity:(id)identity tccServices:(id)services;
 - (NSString)clientBundleIdentifier;
 - (id)clientBundleIdentifierImpl;
-- (id)errorForStatus:(int64_t)a3;
-- (id)requestAuthorizationFuture:(int64_t)a3;
+- (id)errorForStatus:(int64_t)status;
+- (id)requestAuthorizationFuture:(int64_t)future;
 - (int64_t)cachedAuthorizationStatus;
-- (int64_t)resolveRequestAuthorizationFuture:(id)a3;
+- (int64_t)resolveRequestAuthorizationFuture:(id)future;
 - (void)checkClientIsFirstOrSecondParty;
 - (void)isClientTCCKilledOnAuthorizationChange;
 - (void)isThirdPartyNotesEntitled;
-- (void)requestAuthorization:(int64_t)a3 completionHandler:(id)a4;
+- (void)requestAuthorization:(int64_t)authorization completionHandler:(id)handler;
 - (void)resetCachedStatus;
-- (void)simulateStatus:(int64_t)a3;
+- (void)simulateStatus:(int64_t)status;
 - (void)stopSimulation;
 @end
 
@@ -69,14 +69,14 @@ uint64_t __40__CNAuthorizationContext_sharedInstance__block_invoke()
 
 - (BOOL)isAccessGrantedRequestingAccessIfNeeded
 {
-  v3 = [(CNAuthorizationContext *)self authorizationStatus];
-  if (!v3)
+  authorizationStatus = [(CNAuthorizationContext *)self authorizationStatus];
+  if (!authorizationStatus)
   {
     v4 = [(CNAuthorizationContext *)self requestAuthorizationFuture:0];
-    v3 = [(CNAuthorizationContext *)self resolveRequestAuthorizationFuture:v4];
+    authorizationStatus = [(CNAuthorizationContext *)self resolveRequestAuthorizationFuture:v4];
   }
 
-  return (v3 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  return (authorizationStatus & 0xFFFFFFFFFFFFFFFELL) == 2;
 }
 
 - (int64_t)cachedAuthorizationStatus
@@ -88,9 +88,9 @@ uint64_t __40__CNAuthorizationContext_sharedInstance__block_invoke()
   v6[3] = &unk_1E6ED6538;
   v6[4] = self;
   v3 = CNResultWithLock(authorizationStatusLock, v6);
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)shouldAlwaysQueryAuthorizationStatus
@@ -101,9 +101,9 @@ uint64_t __40__CNAuthorizationContext_sharedInstance__block_invoke()
   v5[3] = &unk_1E6ED51B8;
   v5[4] = self;
   v2 = cn_objectResultWithObjectLock(self, v5);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __62__CNAuthorizationContext_shouldAlwaysQueryAuthorizationStatus__block_invoke(uint64_t a1)
@@ -127,35 +127,35 @@ id __62__CNAuthorizationContext_shouldAlwaysQueryAuthorizationStatus__block_invo
 {
   if ([(CNAuthorizationContext *)self isUnitTesting])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isGreenTeaDevice) = 1;
   }
 
   else
   {
-    v3 = [(CNAuthorizationContext *)self isGreenTeaDevice];
-    if (v3 && ([(CNAuthorizationContext *)self isClientTCCUncoupledProcess]|| (v3 = [(CNAuthorizationContext *)self isClientTCCCoupledProcess])))
+    isGreenTeaDevice = [(CNAuthorizationContext *)self isGreenTeaDevice];
+    if (isGreenTeaDevice && ([(CNAuthorizationContext *)self isClientTCCUncoupledProcess]|| (isGreenTeaDevice = [(CNAuthorizationContext *)self isClientTCCCoupledProcess])))
     {
-      LOBYTE(v3) = ![(CNAuthorizationContext *)self isClientTCCKilledOnAuthorizationChange];
+      LOBYTE(isGreenTeaDevice) = ![(CNAuthorizationContext *)self isClientTCCKilledOnAuthorizationChange];
     }
   }
 
-  return v3;
+  return isGreenTeaDevice;
 }
 
 - (BOOL)isUnitTesting
 {
-  v2 = [(CNAuthorizationContext *)self tccServices];
-  v3 = [v2 isUnitTesting];
+  tccServices = [(CNAuthorizationContext *)self tccServices];
+  isUnitTesting = [tccServices isUnitTesting];
 
-  return v3;
+  return isUnitTesting;
 }
 
 - (BOOL)isGreenTeaDevice
 {
   v2 = +[(CNEnvironmentBase *)CNEnvironment];
-  v3 = [v2 isGreenTeaDevice];
+  isGreenTeaDevice = [v2 isGreenTeaDevice];
 
-  return v3;
+  return isGreenTeaDevice;
 }
 
 id __51__CNAuthorizationContext_cachedAuthorizationStatus__block_invoke(uint64_t a1)
@@ -182,10 +182,10 @@ id __51__CNAuthorizationContext_cachedAuthorizationStatus__block_invoke(uint64_t
 
 - (BOOL)isAccessRestricted
 {
-  v2 = [(CNAuthorizationContext *)self tccServices];
-  v3 = [v2 isAuthorizationRestricted];
+  tccServices = [(CNAuthorizationContext *)self tccServices];
+  isAuthorizationRestricted = [tccServices isAuthorizationRestricted];
 
-  return v3;
+  return isAuthorizationRestricted;
 }
 
 - (BOOL)isAccessGranted
@@ -207,9 +207,9 @@ id __51__CNAuthorizationContext_cachedAuthorizationStatus__block_invoke(uint64_t
   v6[3] = &unk_1E6ED6538;
   v6[4] = self;
   v3 = CNResultWithLock(notesAccessStatusLock, v6);
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 id __50__CNAuthorizationContext_cachedNotesAccessGranted__block_invoke(uint64_t a1)
@@ -253,29 +253,29 @@ id __62__CNAuthorizationContext_cachedAddressingGrammarAccessGranted__block_invo
   v6[3] = &unk_1E6ED6538;
   v6[4] = self;
   v3 = CNResultWithLock(notesAccessStatusLock, v6);
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isNotesAccessGrantedImpl
 {
-  v3 = [(CNAuthorizationContext *)self isAccessGranted];
-  if (v3)
+  isAccessGranted = [(CNAuthorizationContext *)self isAccessGranted];
+  if (isAccessGranted)
   {
     if ([(CNAuthorizationContext *)self isFirstPartyNotesEntitled])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isAccessGranted) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(CNAuthorizationContext *)self isThirdPartyNotesEntitled];
+      LOBYTE(isAccessGranted) = [(CNAuthorizationContext *)self isThirdPartyNotesEntitled];
     }
   }
 
-  return v3;
+  return isAccessGranted;
 }
 
 id __44__CNAuthorizationContext_isClientTCCAllowed__block_invoke(uint64_t a1)
@@ -313,9 +313,9 @@ id __44__CNAuthorizationContext_isClientTCCAllowed__block_invoke(uint64_t a1)
   v5[3] = &unk_1E6ED51B8;
   v5[4] = self;
   v2 = cn_objectResultWithObjectLock(self, v5);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isClientTCCAllowedImpl
@@ -332,14 +332,14 @@ id __44__CNAuthorizationContext_isClientTCCAllowed__block_invoke(uint64_t a1)
 
 - (BOOL)isAddressingGrammarAccessGrantedImpl
 {
-  v3 = [(CNAuthorizationContext *)self isAccessGranted];
-  if (v3)
+  isAccessGranted = [(CNAuthorizationContext *)self isAccessGranted];
+  if (isAccessGranted)
   {
 
-    LOBYTE(v3) = [(CNAuthorizationContext *)self isFirstPartyAddressingGrammarEntitled];
+    LOBYTE(isAccessGranted) = [(CNAuthorizationContext *)self isFirstPartyAddressingGrammarEntitled];
   }
 
-  return v3;
+  return isAccessGranted;
 }
 
 - (BOOL)isFirstPartyAddressingGrammarEntitled
@@ -360,9 +360,9 @@ id __44__CNAuthorizationContext_isClientTCCAllowed__block_invoke(uint64_t a1)
   v5[3] = &unk_1E6ED51B8;
   v5[4] = self;
   v2 = cn_objectResultWithObjectLock(self, v5);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __52__CNAuthorizationContext_isClientTCCRegionalAllowed__block_invoke(uint64_t a1)
@@ -413,45 +413,45 @@ uint64_t __32__CNAuthorizationContext_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CNAuthorizationContext)initWithAuditToken:(id)a3 assumedIdentity:(id)a4
+- (CNAuthorizationContext)initWithAuditToken:(id)token assumedIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  tokenCopy = token;
+  identityCopy = identity;
+  if (tokenCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [objc_opt_class() shouldIgnoreAssumedIdentity:v7];
+    v8 = [objc_opt_class() shouldIgnoreAssumedIdentity:identityCopy];
   }
 
-  v9 = [objc_opt_class() sharedInstance];
-  v10 = v9;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  selfCopy = sharedInstance;
   if ((v8 & 1) == 0)
   {
 
-    self = [(CNAuthorizationContext *)self initWithAuditToken:v6 assumedIdentity:v7 tccServices:0];
-    v10 = self;
+    self = [(CNAuthorizationContext *)self initWithAuditToken:tokenCopy assumedIdentity:identityCopy tccServices:0];
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (CNAuthorizationContext)initWithAuditToken:(id)a3 assumedIdentity:(id)a4 tccServices:(id)a5
+- (CNAuthorizationContext)initWithAuditToken:(id)token assumedIdentity:(id)identity tccServices:(id)services
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tokenCopy = token;
+  identityCopy = identity;
+  servicesCopy = services;
   v24.receiver = self;
   v24.super_class = CNAuthorizationContext;
   v12 = [(CNAuthorizationContext *)&v24 init];
   if (v12)
   {
-    if (v11)
+    if (servicesCopy)
     {
-      v13 = v11;
+      v13 = servicesCopy;
     }
 
     else
@@ -462,8 +462,8 @@ uint64_t __32__CNAuthorizationContext_os_log__block_invoke()
     tccServices = v12->_tccServices;
     v12->_tccServices = v13;
 
-    objc_storeStrong(&v12->_cnAuditToken, a3);
-    objc_storeStrong(&v12->_assumedIdentity, a4);
+    objc_storeStrong(&v12->_cnAuditToken, token);
+    objc_storeStrong(&v12->_assumedIdentity, identity);
     authorizationStatusCachedValue = v12->_authorizationStatusCachedValue;
     v12->_authorizationStatusCachedValue = &unk_1EF4641E0;
 
@@ -493,9 +493,9 @@ uint64_t __32__CNAuthorizationContext_os_log__block_invoke()
   v5[3] = &unk_1E6ED51B8;
   v5[4] = self;
   v2 = cn_objectResultWithObjectLock(self, v5);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __52__CNAuthorizationContext_isClientFirstOrSecondParty__block_invoke(uint64_t a1)
@@ -545,42 +545,42 @@ id __48__CNAuthorizationContext_clientBundleIdentifier__block_invoke(uint64_t a1
   return v3;
 }
 
-- (BOOL)requestAccessWithError:(id *)a3
+- (BOOL)requestAccessWithError:(id *)error
 {
-  v4 = [(CNAuthorizationContext *)self isAccessGrantedRequestingAccessIfNeeded];
-  if (!v4)
+  isAccessGrantedRequestingAccessIfNeeded = [(CNAuthorizationContext *)self isAccessGrantedRequestingAccessIfNeeded];
+  if (!isAccessGrantedRequestingAccessIfNeeded)
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:7 userInfo:0];
-    if (a3)
+    if (error)
     {
       v5 = v5;
-      *a3 = v5;
+      *error = v5;
     }
   }
 
-  return v4;
+  return isAccessGrantedRequestingAccessIfNeeded;
 }
 
-- (void)requestAuthorization:(int64_t)a3 completionHandler:(id)a4
+- (void)requestAuthorization:(int64_t)authorization completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(CNAuthorizationContext *)self authorizationStatus];
-  if (v7)
+  handlerCopy = handler;
+  authorizationStatus = [(CNAuthorizationContext *)self authorizationStatus];
+  if (authorizationStatus)
   {
-    v8 = v7;
-    v9 = [(CNAuthorizationContext *)self errorForStatus:v7];
-    v6[2](v6, v8, v9);
+    v8 = authorizationStatus;
+    v9 = [(CNAuthorizationContext *)self errorForStatus:authorizationStatus];
+    handlerCopy[2](handlerCopy, v8, v9);
   }
 
   else
   {
-    v9 = [(CNAuthorizationContext *)self requestAuthorizationFuture:a3];
+    v9 = [(CNAuthorizationContext *)self requestAuthorizationFuture:authorization];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __65__CNAuthorizationContext_requestAuthorization_completionHandler___block_invoke;
     v13[3] = &unk_1E6ED64E8;
     v13[4] = self;
-    v10 = v6;
+    v10 = handlerCopy;
     v14 = v10;
     [v9 addSuccessBlock:v13];
     v11[0] = MEMORY[0x1E69E9820];
@@ -598,9 +598,9 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)errorForStatus:(int64_t)a3
+- (id)errorForStatus:(int64_t)status
 {
-  if (a3 == 1)
+  if (status == 1)
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:7 userInfo:{0, v3}];
   }
@@ -613,43 +613,43 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
   return v5;
 }
 
-- (void)simulateStatus:(int64_t)a3
+- (void)simulateStatus:(int64_t)status
 {
-  v4 = [(CNAuthorizationContext *)self tccServices];
-  [v4 simulateStatus:a3];
+  tccServices = [(CNAuthorizationContext *)self tccServices];
+  [tccServices simulateStatus:status];
 }
 
 - (void)stopSimulation
 {
-  v2 = [(CNAuthorizationContext *)self tccServices];
-  [v2 stopSimulation];
+  tccServices = [(CNAuthorizationContext *)self tccServices];
+  [tccServices stopSimulation];
 }
 
-+ (BOOL)shouldIgnoreAssumedIdentity:(id)a3
++ (BOOL)shouldIgnoreAssumedIdentity:(id)identity
 {
-  if (!a3)
+  if (!identity)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(objc_class *)+[CNTCCFactory defaultClass](CNTCCFactory bundleIdentifierForIdentity:"bundleIdentifierForIdentity:", v4];
+  identityCopy = identity;
+  identityCopy = [(objc_class *)+[CNTCCFactory defaultClass](CNTCCFactory bundleIdentifierForIdentity:"bundleIdentifierForIdentity:", identityCopy];
 
-  v6 = [a1 shouldIgnoreAssumedIdentityForBundleIdentifier:v5];
-  v7 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  v6 = [self shouldIgnoreAssumedIdentityForBundleIdentifier:identityCopy];
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
-    [(CNAuthorizationContext *)v6 shouldIgnoreAssumedIdentity:v5, v7];
+    [(CNAuthorizationContext *)v6 shouldIgnoreAssumedIdentity:identityCopy, os_log];
   }
 
   return v6;
 }
 
-+ (BOOL)shouldIgnoreAssumedIdentityForBundleIdentifier:(id)a3
++ (BOOL)shouldIgnoreAssumedIdentityForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy && [identifierCopy length])
   {
     v5 = [&unk_1EF464210 containsObject:v4];
   }
@@ -664,9 +664,9 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
 
 - (BOOL)isClientTCCUncoupledProcess
 {
-  v3 = [(CNAuthorizationContext *)self assumedIdentity];
+  assumedIdentity = [(CNAuthorizationContext *)self assumedIdentity];
 
-  if (!v3)
+  if (!assumedIdentity)
   {
     return 0;
   }
@@ -674,21 +674,21 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
   return [(CNAuthorizationContext *)self doesClientHaveEntitlement:@"com.apple.private.attribution.explicitly-assumed-identities"];
 }
 
-- (BOOL)doesClientHaveEntitlement:(id)a3
+- (BOOL)doesClientHaveEntitlement:(id)entitlement
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNAuthorizationContext *)self cnAuditToken];
+  entitlementCopy = entitlement;
+  cnAuditToken = [(CNAuthorizationContext *)self cnAuditToken];
 
   v6 = +[(CNEnvironmentBase *)CNEnvironment];
-  v7 = [v6 entitlementVerifier];
-  if (v5)
+  entitlementVerifier = [v6 entitlementVerifier];
+  if (cnAuditToken)
   {
-    v8 = [(CNAuthorizationContext *)self cnAuditToken];
-    v9 = v8;
-    if (v8)
+    cnAuditToken2 = [(CNAuthorizationContext *)self cnAuditToken];
+    v9 = cnAuditToken2;
+    if (cnAuditToken2)
     {
-      [v8 audit_token];
+      [cnAuditToken2 audit_token];
     }
 
     else
@@ -696,29 +696,29 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
       memset(buf, 0, sizeof(buf));
     }
 
-    v26[0] = v4;
+    v26[0] = entitlementCopy;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     v21 = 0;
-    v10 = [v7 valuesForAuditToken:buf forEntitlements:v12 error:&v21];
+    v10 = [entitlementVerifier valuesForAuditToken:buf forEntitlements:v12 error:&v21];
     v11 = v21;
   }
 
   else
   {
-    v25 = v4;
+    v25 = entitlementCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
     v20 = 0;
-    v10 = [v7 valuesForCurrentProcessForEntitlements:v9 error:&v20];
+    v10 = [entitlementVerifier valuesForCurrentProcessForEntitlements:v9 error:&v20];
     v11 = v20;
   }
 
   if (v11)
   {
-    v13 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(CNAuthorizationContext *)self cnAuditToken];
-      if (v17)
+      cnAuditToken3 = [(CNAuthorizationContext *)self cnAuditToken];
+      if (cnAuditToken3)
       {
         v18 = @"audit token";
       }
@@ -728,16 +728,16 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
         v18 = @"current process";
       }
 
-      v19 = [v11 userInfo];
+      userInfo = [v11 userInfo];
       *buf = 138413058;
       *&buf[4] = v18;
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = entitlementCopy;
       *&buf[22] = 2112;
       *&buf[24] = v11;
       v23 = 2112;
-      v24 = v19;
-      _os_log_error_impl(&dword_1859F0000, v13, OS_LOG_TYPE_ERROR, "Error checking %@ entitlement %@: %@ %@", buf, 0x2Au);
+      v24 = userInfo;
+      _os_log_error_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_ERROR, "Error checking %@ entitlement %@: %@ %@", buf, 0x2Au);
     }
   }
 
@@ -749,18 +749,18 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
 
 - (BOOL)isClientTCCKilledOnAuthorizationChange
 {
-  v3 = [(CNAuthorizationContext *)self cnAuditToken];
+  cnAuditToken = [(CNAuthorizationContext *)self cnAuditToken];
 
   v4 = +[(CNEnvironmentBase *)CNEnvironment];
-  v5 = [v4 entitlementVerifier];
-  v6 = v5;
-  if (v3)
+  entitlementVerifier = [v4 entitlementVerifier];
+  v6 = entitlementVerifier;
+  if (cnAuditToken)
   {
-    v7 = [(CNAuthorizationContext *)self cnAuditToken];
-    v8 = v7;
-    if (v7)
+    cnAuditToken2 = [(CNAuthorizationContext *)self cnAuditToken];
+    v8 = cnAuditToken2;
+    if (cnAuditToken2)
     {
-      [v7 audit_token];
+      [cnAuditToken2 audit_token];
     }
 
     else
@@ -776,14 +776,14 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
   else
   {
     v13 = 0;
-    v9 = [v5 currentProcessHasBooleanEntitlement:@"com.apple.private.tcc.kill-on-assumed-identity-authorization-change" error:&v13];
+    v9 = [entitlementVerifier currentProcessHasBooleanEntitlement:@"com.apple.private.tcc.kill-on-assumed-identity-authorization-change" error:&v13];
     v10 = v13;
   }
 
   if (v10)
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNAuthorizationContext isClientTCCKilledOnAuthorizationChange];
     }
@@ -794,18 +794,18 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
 
 - (BOOL)isThirdPartyNotesEntitled
 {
-  v3 = [(CNAuthorizationContext *)self cnAuditToken];
+  cnAuditToken = [(CNAuthorizationContext *)self cnAuditToken];
 
   v4 = +[(CNEnvironmentBase *)CNEnvironment];
-  v5 = [v4 entitlementVerifier];
-  v6 = v5;
-  if (v3)
+  entitlementVerifier = [v4 entitlementVerifier];
+  v6 = entitlementVerifier;
+  if (cnAuditToken)
   {
-    v7 = [(CNAuthorizationContext *)self cnAuditToken];
-    v8 = v7;
-    if (v7)
+    cnAuditToken2 = [(CNAuthorizationContext *)self cnAuditToken];
+    v8 = cnAuditToken2;
+    if (cnAuditToken2)
     {
-      [v7 audit_token];
+      [cnAuditToken2 audit_token];
     }
 
     else
@@ -821,14 +821,14 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
   else
   {
     v13 = 0;
-    v9 = [v5 currentProcessHasBooleanEntitlement:@"com.apple.developer.contacts.notes" error:&v13];
+    v9 = [entitlementVerifier currentProcessHasBooleanEntitlement:@"com.apple.developer.contacts.notes" error:&v13];
     v10 = v13;
   }
 
   if (v10)
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNAuthorizationContext isThirdPartyNotesEntitled];
     }
@@ -837,21 +837,21 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
   return v9;
 }
 
-- (BOOL)checkTCCEntitlementNamesAllowContacts:(id)a3
+- (BOOL)checkTCCEntitlementNamesAllowContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [(CNAuthorizationContext *)self cnAuditToken];
+  contactsCopy = contacts;
+  cnAuditToken = [(CNAuthorizationContext *)self cnAuditToken];
 
   v6 = +[(CNEnvironmentBase *)CNEnvironment];
-  v7 = [v6 entitlementVerifier];
-  v8 = v7;
-  if (v5)
+  entitlementVerifier = [v6 entitlementVerifier];
+  v8 = entitlementVerifier;
+  if (cnAuditToken)
   {
-    v9 = [(CNAuthorizationContext *)self cnAuditToken];
-    v10 = v9;
-    if (v9)
+    cnAuditToken2 = [(CNAuthorizationContext *)self cnAuditToken];
+    v10 = cnAuditToken2;
+    if (cnAuditToken2)
     {
-      [v9 audit_token];
+      [cnAuditToken2 audit_token];
     }
 
     else
@@ -860,21 +860,21 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
     }
 
     v16 = 0;
-    LOBYTE(v11) = [v8 auditToken:v17 hasArrayWithStringValue:@"kTCCServiceAddressBook" forAnyEntitlement:v4 error:&v16];
+    LOBYTE(v11) = [v8 auditToken:v17 hasArrayWithStringValue:@"kTCCServiceAddressBook" forAnyEntitlement:contactsCopy error:&v16];
     v12 = v16;
   }
 
   else
   {
     v15 = 0;
-    v11 = [v7 currentProcessHasArrayWithStringValue:@"kTCCServiceAddressBook" forAnyEntitlement:v4 error:&v15];
+    v11 = [entitlementVerifier currentProcessHasArrayWithStringValue:@"kTCCServiceAddressBook" forAnyEntitlement:contactsCopy error:&v15];
     v12 = v15;
   }
 
   if (v12)
   {
-    v13 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNAuthorizationContext checkTCCEntitlementNamesAllowContacts:];
     }
@@ -895,18 +895,18 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
 
 - (BOOL)checkClientIsFirstOrSecondParty
 {
-  v3 = [(CNAuthorizationContext *)self cnAuditToken];
+  cnAuditToken = [(CNAuthorizationContext *)self cnAuditToken];
 
   v4 = +[(CNEnvironmentBase *)CNEnvironment];
-  v5 = [v4 entitlementVerifier];
-  v6 = v5;
-  if (v3)
+  entitlementVerifier = [v4 entitlementVerifier];
+  v6 = entitlementVerifier;
+  if (cnAuditToken)
   {
-    v7 = [(CNAuthorizationContext *)self cnAuditToken];
-    v8 = v7;
-    if (v7)
+    cnAuditToken2 = [(CNAuthorizationContext *)self cnAuditToken];
+    v8 = cnAuditToken2;
+    if (cnAuditToken2)
     {
-      [v7 audit_token];
+      [cnAuditToken2 audit_token];
     }
 
     else
@@ -922,14 +922,14 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
   else
   {
     v13 = 0;
-    v9 = [v5 currentProcessIsFirstOrSecondPartyWithError:&v13];
+    v9 = [entitlementVerifier currentProcessIsFirstOrSecondPartyWithError:&v13];
     v10 = v13;
   }
 
   if (v10)
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNAuthorizationContext checkClientIsFirstOrSecondParty];
     }
@@ -940,30 +940,30 @@ void __65__CNAuthorizationContext_requestAuthorization_completionHandler___block
 
 - (id)clientBundleIdentifierImpl
 {
-  v3 = [(CNAuthorizationContext *)self tccServices];
-  v4 = [(CNAuthorizationContext *)self cnAuditToken];
-  v5 = [(CNAuthorizationContext *)self assumedIdentity];
-  v6 = [v3 bundleIdentifierForAuditToken:v4 assumedIdentity:v5];
+  tccServices = [(CNAuthorizationContext *)self tccServices];
+  cnAuditToken = [(CNAuthorizationContext *)self cnAuditToken];
+  assumedIdentity = [(CNAuthorizationContext *)self assumedIdentity];
+  v6 = [tccServices bundleIdentifierForAuditToken:cnAuditToken assumedIdentity:assumedIdentity];
 
   v7 = off_1EF4401A8(&__block_literal_global_2_2, v6);
 
   return v7;
 }
 
-- (id)requestAuthorizationFuture:(int64_t)a3
+- (id)requestAuthorizationFuture:(int64_t)future
 {
   v5 = objc_alloc_init(CNPromise);
-  v6 = [(CNAuthorizationContext *)self tccServices];
-  v7 = [(CNAuthorizationContext *)self cnAuditToken];
-  v8 = [(CNAuthorizationContext *)self assumedIdentity];
+  tccServices = [(CNAuthorizationContext *)self tccServices];
+  cnAuditToken = [(CNAuthorizationContext *)self cnAuditToken];
+  assumedIdentity = [(CNAuthorizationContext *)self assumedIdentity];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __53__CNAuthorizationContext_requestAuthorizationFuture___block_invoke;
   v15 = &unk_1E6ED6560;
-  v16 = self;
+  selfCopy = self;
   v17 = v5;
   v9 = v5;
-  [v6 requestAuthorization:a3 auditToken:v7 assumedIdentity:v8 completionHandler:&v12];
+  [tccServices requestAuthorization:future auditToken:cnAuditToken assumedIdentity:assumedIdentity completionHandler:&v12];
 
   v10 = [(CNPromise *)v9 future:v12];
 
@@ -986,15 +986,15 @@ void __53__CNAuthorizationContext_requestAuthorizationFuture___block_invoke(uint
   [*(a1 + 40) finishWithResult:{v5, v6, v7, v8, v9, v10}];
 }
 
-- (int64_t)resolveRequestAuthorizationFuture:(id)a3
+- (int64_t)resolveRequestAuthorizationFuture:(id)future
 {
   v8 = 0;
-  v3 = [a3 result:&v8];
+  v3 = [future result:&v8];
   v4 = v8;
   if (!v3)
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNAuthorizationContext resolveRequestAuthorizationFuture:v4];
     }
@@ -1002,36 +1002,36 @@ void __53__CNAuthorizationContext_requestAuthorizationFuture___block_invoke(uint
     v3 = MEMORY[0x1E695E110];
   }
 
-  v6 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (void)resetCachedStatus
 {
-  v3 = [(CNAuthorizationContext *)self authorizationStatusLock];
+  authorizationStatusLock = [(CNAuthorizationContext *)self authorizationStatusLock];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__CNAuthorizationContext_resetCachedStatus__block_invoke;
   v8[3] = &unk_1E6ED5830;
   v8[4] = self;
-  CNRunWithLock(v3, v8);
+  CNRunWithLock(authorizationStatusLock, v8);
 
-  v4 = [(CNAuthorizationContext *)self notesAccessStatusLock];
+  notesAccessStatusLock = [(CNAuthorizationContext *)self notesAccessStatusLock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CNAuthorizationContext_resetCachedStatus__block_invoke_2;
   v7[3] = &unk_1E6ED5830;
   v7[4] = self;
-  CNRunWithLock(v4, v7);
+  CNRunWithLock(notesAccessStatusLock, v7);
 
-  v5 = [(CNAuthorizationContext *)self addressingGrammarAccessStatusLock];
+  addressingGrammarAccessStatusLock = [(CNAuthorizationContext *)self addressingGrammarAccessStatusLock];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__CNAuthorizationContext_resetCachedStatus__block_invoke_3;
   v6[3] = &unk_1E6ED5830;
   v6[4] = self;
-  CNRunWithLock(v5, v6);
+  CNRunWithLock(addressingGrammarAccessStatusLock, v6);
 }
 
 void __43__CNAuthorizationContext_resetCachedStatus__block_invoke(uint64_t a1)
@@ -1076,8 +1076,8 @@ void __43__CNAuthorizationContext_resetCachedStatus__block_invoke_3(uint64_t a1)
 {
   OUTLINED_FUNCTION_3_0();
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [v0 cnAuditToken];
-  v2 = [OUTLINED_FUNCTION_2_0() userInfo];
+  cnAuditToken = [v0 cnAuditToken];
+  userInfo = [OUTLINED_FUNCTION_2_0() userInfo];
   OUTLINED_FUNCTION_0_4();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x20u);
@@ -1089,8 +1089,8 @@ void __43__CNAuthorizationContext_resetCachedStatus__block_invoke_3(uint64_t a1)
 {
   OUTLINED_FUNCTION_3_0();
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [v0 cnAuditToken];
-  v2 = [OUTLINED_FUNCTION_2_0() userInfo];
+  cnAuditToken = [v0 cnAuditToken];
+  userInfo = [OUTLINED_FUNCTION_2_0() userInfo];
   OUTLINED_FUNCTION_0_4();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x20u);
@@ -1115,8 +1115,8 @@ void __43__CNAuthorizationContext_resetCachedStatus__block_invoke_3(uint64_t a1)
 {
   OUTLINED_FUNCTION_3_0();
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [v0 cnAuditToken];
-  v2 = [OUTLINED_FUNCTION_2_0() userInfo];
+  cnAuditToken = [v0 cnAuditToken];
+  userInfo = [OUTLINED_FUNCTION_2_0() userInfo];
   OUTLINED_FUNCTION_0_4();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x20u);

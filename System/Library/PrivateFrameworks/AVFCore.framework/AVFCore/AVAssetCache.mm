@@ -1,19 +1,19 @@
 @interface AVAssetCache
-- (AVAssetCache)initWithURL:(id)a3;
+- (AVAssetCache)initWithURL:(id)l;
 - (BOOL)isDefunct;
 - (BOOL)isPlayableOffline;
 - (NSArray)mediaSelectionOptionsInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup;
 - (id)URL;
 - (id)_init;
 - (id)allKeys;
-- (id)lastModifiedDateOfEntryForKey:(id)a3;
-- (id)mediaPresentationLanguagesForMediaSelectionGroup:(id)a3;
-- (id)mediaPresentationSettingsForMediaSelectionGroup:(id)a3;
+- (id)lastModifiedDateOfEntryForKey:(id)key;
+- (id)mediaPresentationLanguagesForMediaSelectionGroup:(id)group;
+- (id)mediaPresentationSettingsForMediaSelectionGroup:(id)group;
 - (int64_t)currentSize;
 - (int64_t)maxEntrySize;
 - (int64_t)maxSize;
-- (int64_t)sizeOfEntryForKey:(id)a3;
-- (void)removeEntryForKey:(id)a3;
+- (int64_t)sizeOfEntryForKey:(id)key;
+- (void)removeEntryForKey:(id)key;
 @end
 
 @implementation AVAssetCache
@@ -25,11 +25,11 @@
   return [(AVAssetCache *)&v3 init];
 }
 
-- (AVAssetCache)initWithURL:(id)a3
+- (AVAssetCache)initWithURL:(id)l
 {
   v4 = [AVManagedAssetCache alloc];
 
-  return [(AVManagedAssetCache *)v4 initWithURL:a3];
+  return [(AVManagedAssetCache *)v4 initWithURL:l];
 }
 
 - (NSArray)mediaSelectionOptionsInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup
@@ -41,7 +41,7 @@
   return [v6 array];
 }
 
-- (id)mediaPresentationSettingsForMediaSelectionGroup:(id)a3
+- (id)mediaPresentationSettingsForMediaSelectionGroup:(id)group
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);
@@ -50,7 +50,7 @@
   return [v6 dictionary];
 }
 
-- (id)mediaPresentationLanguagesForMediaSelectionGroup:(id)a3
+- (id)mediaPresentationLanguagesForMediaSelectionGroup:(id)group
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);
@@ -94,21 +94,21 @@
   return 0;
 }
 
-- (void)removeEntryForKey:(id)a3
+- (void)removeEntryForKey:(id)key
 {
   v5 = objc_opt_class();
 
   AVRequestConcreteImplementation(self, a2, v5);
 }
 
-- (int64_t)sizeOfEntryForKey:(id)a3
+- (int64_t)sizeOfEntryForKey:(id)key
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);
   return 0;
 }
 
-- (id)lastModifiedDateOfEntryForKey:(id)a3
+- (id)lastModifiedDateOfEntryForKey:(id)key
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);

@@ -6,36 +6,36 @@
 - (NSString)selectionPreContextText;
 - (_NSRange)annotationStorageRange;
 - (id)p_userDataDictionary;
-- (id)p_userDataObjectForKey:(id)a3;
+- (id)p_userDataObjectForKey:(id)key;
 - (unint64_t)absolutePhysicalPageIndex;
 - (unint64_t)contentNodeRelativePageIndex;
-- (void)p_setUserDataDictionary:(id)a3;
-- (void)p_setUserDataObject:(id)a3 forKey:(id)a4;
-- (void)setAbsolutePhysicalPageIndex:(unint64_t)a3;
-- (void)setAnnotationStorageRange:(_NSRange)a3;
-- (void)setContentNodeRelativePageIndex:(unint64_t)a3;
+- (void)p_setUserDataDictionary:(id)dictionary;
+- (void)p_setUserDataObject:(id)object forKey:(id)key;
+- (void)setAbsolutePhysicalPageIndex:(unint64_t)index;
+- (void)setAnnotationStorageRange:(_NSRange)range;
+- (void)setContentNodeRelativePageIndex:(unint64_t)index;
 @end
 
 @implementation AEAnnotation
 
 - (unint64_t)absolutePhysicalPageIndex
 {
-  v2 = [(AEAnnotation *)self plAbsolutePhysicalLocation];
+  plAbsolutePhysicalLocation = [(AEAnnotation *)self plAbsolutePhysicalLocation];
 
-  return [v2 unsignedIntegerValue];
+  return [plAbsolutePhysicalLocation unsignedIntegerValue];
 }
 
-- (void)setAbsolutePhysicalPageIndex:(unint64_t)a3
+- (void)setAbsolutePhysicalPageIndex:(unint64_t)index
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:index];
 
   [(AEAnnotation *)self setPlAbsolutePhysicalLocation:v4];
 }
 
-- (void)setAnnotationStorageRange:(_NSRange)a3
+- (void)setAnnotationStorageRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [NSNumber numberWithUnsignedInteger:?];
   v7 = [NSNumber numberWithUnsignedInteger:location + length];
   [(AEAnnotation *)self setPlLocationRangeStart:v6];
@@ -65,20 +65,20 @@
 
 - (NSString)annotationContentNodeID
 {
-  v2 = [(AEAnnotation *)self plStorageUUID];
-  if ([v2 length] < 0x26)
+  plStorageUUID = [(AEAnnotation *)self plStorageUUID];
+  if ([plStorageUUID length] < 0x26)
   {
     return 0;
   }
 
-  return [v2 substringWithRange:{0, 38}];
+  return [plStorageUUID substringWithRange:{0, 38}];
 }
 
 - (NSString)annotationStorageIDWithoutContentNodeID
 {
-  v3 = [(AEAnnotation *)self plStorageUUID];
-  v4 = [v3 length];
-  v5 = [v3 length];
+  plStorageUUID = [(AEAnnotation *)self plStorageUUID];
+  v4 = [plStorageUUID length];
+  v5 = [plStorageUUID length];
   if (v4 < 0x28)
   {
     if (v5 != &stru_20.cmdsize + 2)
@@ -87,26 +87,26 @@
       return 0;
     }
 
-    return v3;
+    return plStorageUUID;
   }
 
   else
   {
 
-    return [v3 substringWithRange:{39, v5 - 39}];
+    return [plStorageUUID substringWithRange:{39, v5 - 39}];
   }
 }
 
 - (id)p_userDataDictionary
 {
-  v2 = [(AEAnnotation *)self plUserData];
-  if (!v2)
+  plUserData = [(AEAnnotation *)self plUserData];
+  if (!plUserData)
   {
     return 0;
   }
 
   v12 = 0;
-  v3 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v2 error:&v12];
+  v3 = [[NSKeyedUnarchiver alloc] initForReadingFromData:plUserData error:&v12];
   if (v12)
   {
     v4 = THLog();
@@ -131,13 +131,13 @@
   return v5;
 }
 
-- (void)p_setUserDataDictionary:(id)a3
+- (void)p_setUserDataDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v7 = objc_alloc_init(NSMutableData);
     v5 = [[NSKeyedArchiver alloc] initForWritingWithMutableData:v7];
-    [v5 encodeObject:a3 forKey:@"dictionary"];
+    [v5 encodeObject:dictionary forKey:@"dictionary"];
     [v5 finishEncoding];
 
     v6 = v7;
@@ -152,13 +152,13 @@
   [(AEAnnotation *)self setPlUserData:v6];
 }
 
-- (id)p_userDataObjectForKey:(id)a3
+- (id)p_userDataObjectForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = [(AEAnnotation *)self p_userDataDictionary];
+    p_userDataDictionary = [(AEAnnotation *)self p_userDataDictionary];
 
-    return [v4 objectForKey:a3];
+    return [p_userDataDictionary objectForKey:key];
   }
 
   else
@@ -168,20 +168,20 @@
   }
 }
 
-- (void)p_setUserDataObject:(id)a3 forKey:(id)a4
+- (void)p_setUserDataObject:(id)object forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
     [v7 addEntriesFromDictionary:{-[AEAnnotation p_userDataDictionary](self, "p_userDataDictionary")}];
-    if (a3)
+    if (object)
     {
-      [v7 setObject:a3 forKey:a4];
+      [v7 setObject:object forKey:key];
     }
 
     else
     {
-      [v7 removeObjectForKey:a4];
+      [v7 removeObjectForKey:key];
     }
 
     [(AEAnnotation *)self p_setUserDataDictionary:v7];
@@ -228,9 +228,9 @@
   return [v2 unsignedIntegerValue];
 }
 
-- (void)setContentNodeRelativePageIndex:(unint64_t)a3
+- (void)setContentNodeRelativePageIndex:(unint64_t)index
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:index];
 
   [(AEAnnotation *)self p_setUserDataObject:v4 forKey:@"cnRelPg"];
 }

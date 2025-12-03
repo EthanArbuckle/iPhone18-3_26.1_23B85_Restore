@@ -1,18 +1,18 @@
 @interface PXStoryPHAssetCollectionAssetsProducer
-+ (BOOL)shouldEnableCurationForAssetCollection:(id)a3;
++ (BOOL)shouldEnableCurationForAssetCollection:(id)collection;
 - (PXStoryPHAssetCollectionAssetsProducer)init;
-- (PXStoryPHAssetCollectionAssetsProducer)initWithAssetCollection:(id)a3 keyAsset:(id)a4 referencePersons:(id)a5 curationKind:(int64_t)a6 options:(unint64_t)a7;
-- (id)requestAssetsWithOptions:(unint64_t)a3 storyQueue:(id)a4 resultHandler:(id)a5;
+- (PXStoryPHAssetCollectionAssetsProducer)initWithAssetCollection:(id)collection keyAsset:(id)asset referencePersons:(id)persons curationKind:(int64_t)kind options:(unint64_t)options;
+- (id)requestAssetsWithOptions:(unint64_t)options storyQueue:(id)queue resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPHAssetCollectionAssetsProducer
 
-- (id)requestAssetsWithOptions:(unint64_t)a3 storyQueue:(id)a4 resultHandler:(id)a5
+- (id)requestAssetsWithOptions:(unint64_t)options storyQueue:(id)queue resultHandler:(id)handler
 {
-  v6 = a3;
+  optionsCopy = options;
   v39[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if ((v6 & 2) != 0)
+  queueCopy = queue;
+  if ((optionsCopy & 2) != 0)
   {
     v9 = 712742;
   }
@@ -22,16 +22,16 @@
     v9 = 712738;
   }
 
-  v34 = a5;
+  handlerCopy = handler;
   v10 = v9 & 0xFFFFFFFFFFFFFFBFLL | (([(PXStoryPHAssetCollectionAssetsProducer *)self options]& 1) << 6);
-  v11 = [(PXStoryPHAssetCollectionAssetsProducer *)self assetCollection];
-  v12 = [objc_opt_class() shouldEnableCurationForAssetCollection:v11];
+  assetCollection = [(PXStoryPHAssetCollectionAssetsProducer *)self assetCollection];
+  v12 = [objc_opt_class() shouldEnableCurationForAssetCollection:assetCollection];
   if (v12)
   {
     v10 |= 0x10uLL;
   }
 
-  if ([PXStoryPHAssetCollectionAssetsProducer shouldApplyDetailsViewContextForAssetCollection:v11])
+  if ([PXStoryPHAssetCollectionAssetsProducer shouldApplyDetailsViewContextForAssetCollection:assetCollection])
   {
     v10 |= 0x100000uLL;
   }
@@ -47,8 +47,8 @@
   }
 
   v14 = [PXPhotosDataSourceConfiguration alloc];
-  v15 = [(PXStoryPHAssetCollectionAssetsProducer *)self assetCollection];
-  v16 = [(PXPhotosDataSourceConfiguration *)v14 initWithAssetCollection:v15 options:v13];
+  assetCollection2 = [(PXStoryPHAssetCollectionAssetsProducer *)self assetCollection];
+  v16 = [(PXPhotosDataSourceConfiguration *)v14 initWithAssetCollection:assetCollection2 options:v13];
 
   [(PXPhotosDataSourceConfiguration *)v16 setCurationKind:[(PXStoryPHAssetCollectionAssetsProducer *)self curationKind]];
   if (v12)
@@ -62,29 +62,29 @@
     [(PXPhotosDataSourceConfiguration *)v16 setLibraryFilter:0];
   }
 
-  v17 = [(PXStoryPHAssetCollectionAssetsProducer *)self referencePersons];
-  [(PXPhotosDataSourceConfiguration *)v16 setFilterPersons:v17];
-  v18 = [(PXStoryPHAssetCollectionAssetsProducer *)self keyAsset];
-  v19 = [v18 count];
+  referencePersons = [(PXStoryPHAssetCollectionAssetsProducer *)self referencePersons];
+  [(PXPhotosDataSourceConfiguration *)v16 setFilterPersons:referencePersons];
+  keyAsset = [(PXStoryPHAssetCollectionAssetsProducer *)self keyAsset];
+  v19 = [keyAsset count];
 
   if (v19)
   {
-    v20 = [(PXStoryPHAssetCollectionAssetsProducer *)self assetCollection];
-    v38 = v20;
-    v21 = [(PXStoryPHAssetCollectionAssetsProducer *)self keyAsset];
-    v39[0] = v21;
+    assetCollection3 = [(PXStoryPHAssetCollectionAssetsProducer *)self assetCollection];
+    v38 = assetCollection3;
+    keyAsset2 = [(PXStoryPHAssetCollectionAssetsProducer *)self keyAsset];
+    v39[0] = keyAsset2;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     [(PXPhotosDataSourceConfiguration *)v16 setExistingKeyAssetsFetchResults:v22];
   }
 
-  v23 = [v11 photoLibrary];
-  if (![v17 count])
+  photoLibrary = [assetCollection photoLibrary];
+  if (![referencePersons count])
   {
-    v24 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:v23];
+    v24 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:photoLibrary];
     if ([v24 showUnsavedSyndicatedContentInMemories])
     {
-      v25 = [(PXStoryPHAssetCollectionAssetsProducer *)self assetCollection];
-      [(PXPhotosDataSourceConfiguration *)v16 setCanIncludeUnsavedSyndicatedAssets:PXContentSyndicationShouldShowUnsavedAssetsInAssetCollection(v25)];
+      assetCollection4 = [(PXStoryPHAssetCollectionAssetsProducer *)self assetCollection];
+      [(PXPhotosDataSourceConfiguration *)v16 setCanIncludeUnsavedSyndicatedAssets:PXContentSyndicationShouldShowUnsavedAssetsInAssetCollection(assetCollection4)];
     }
 
     else
@@ -93,7 +93,7 @@
     }
   }
 
-  [(PXPhotosDataSourceConfiguration *)v16 setClientQueue:v8];
+  [(PXPhotosDataSourceConfiguration *)v16 setClientQueue:queueCopy];
   [(PXPhotosDataSourceConfiguration *)v16 setWantsCurationByDefault:(v13 >> 4) & 1];
   v26 = *MEMORY[0x1E6978D10];
   v37[0] = *MEMORY[0x1E6978C18];
@@ -103,16 +103,16 @@
 
   v28 = [[PXPhotosDataSource alloc] initWithPhotosDataSourceConfiguration:v16];
   v29 = v28;
-  if ((v6 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     [(PXPhotosDataSource *)v28 setAllowSlowFetchesOnClientQueue:1];
-    if (v6)
+    if (optionsCopy)
     {
       goto LABEL_27;
     }
   }
 
-  else if (v6)
+  else if (optionsCopy)
   {
     [(PXPhotosDataSource *)v28 forceAccurateAllSectionsIfNeeded];
 LABEL_27:
@@ -120,41 +120,41 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v30 = [off_1E7721858 sharedScheduler];
+  sharedScheduler = [off_1E7721858 sharedScheduler];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __92__PXStoryPHAssetCollectionAssetsProducer_requestAssetsWithOptions_storyQueue_resultHandler___block_invoke;
   v35[3] = &unk_1E774C648;
   v36 = v29;
-  [v30 scheduleMainQueueTask:v35];
+  [sharedScheduler scheduleMainQueueTask:v35];
 
 LABEL_28:
   v31 = [[PXPhotoKitAssetsDataSourceManager alloc] initWithPhotosDataSource:v29];
   v32 = [[PXStoryProducerResult alloc] initWithObject:v31];
-  v34[2](v34, v32);
+  handlerCopy[2](handlerCopy, v32);
 
   return 0;
 }
 
-- (PXStoryPHAssetCollectionAssetsProducer)initWithAssetCollection:(id)a3 keyAsset:(id)a4 referencePersons:(id)a5 curationKind:(int64_t)a6 options:(unint64_t)a7
+- (PXStoryPHAssetCollectionAssetsProducer)initWithAssetCollection:(id)collection keyAsset:(id)asset referencePersons:(id)persons curationKind:(int64_t)kind options:(unint64_t)options
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  collectionCopy = collection;
+  assetCopy = asset;
+  personsCopy = persons;
   v21.receiver = self;
   v21.super_class = PXStoryPHAssetCollectionAssetsProducer;
   v16 = [(PXStoryPHAssetCollectionAssetsProducer *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_assetCollection, a3);
-    objc_storeStrong(&v17->_keyAsset, a4);
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_assetCollection, collection);
+    objc_storeStrong(&v17->_keyAsset, asset);
+    v18 = [personsCopy copy];
     referencePersons = v17->_referencePersons;
     v17->_referencePersons = v18;
 
-    v17->_curationKind = a6;
-    v17->_options = a7;
+    v17->_curationKind = kind;
+    v17->_options = options;
   }
 
   return v17;
@@ -162,31 +162,31 @@ LABEL_28:
 
 - (PXStoryPHAssetCollectionAssetsProducer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryPHAssetCollectionAssetsProducer.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXStoryPHAssetCollectionAssetsProducer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPHAssetCollectionAssetsProducer.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXStoryPHAssetCollectionAssetsProducer init]"}];
 
   abort();
 }
 
-+ (BOOL)shouldEnableCurationForAssetCollection:(id)a3
++ (BOOL)shouldEnableCurationForAssetCollection:(id)collection
 {
-  v3 = a3;
-  if (([v3 assetCollectionType] | 2) == 6)
+  collectionCopy = collection;
+  if (([collectionCopy assetCollectionType] | 2) == 6)
   {
-    v4 = 1;
+    px_isRegularAlbum = 1;
   }
 
   else
   {
-    v4 = [v3 px_isRegularAlbum];
+    px_isRegularAlbum = [collectionCopy px_isRegularAlbum];
   }
 
-  if ([v3 assetCollectionType] == 2)
+  if ([collectionCopy assetCollectionType] == 2)
   {
-    v4 |= [v3 isUserSmartAlbum] ^ 1;
+    px_isRegularAlbum |= [collectionCopy isUserSmartAlbum] ^ 1;
   }
 
-  return v4 & 1;
+  return px_isRegularAlbum & 1;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface DTTapLocal
 - (BOOL)_canFetchWhileArchiving;
-- (DTTapLocal)initWithConfig:(id)a3 memoHandler:(id)a4 delegate:(id)a5;
-- (id)_fetchDataForReason:(unint64_t)a3;
-- (id)_handleStatusMemo:(id)a3;
+- (DTTapLocal)initWithConfig:(id)config memoHandler:(id)handler delegate:(id)delegate;
+- (id)_fetchDataForReason:(unint64_t)reason;
+- (id)_handleStatusMemo:(id)memo;
 - (void)_pause;
 - (void)_start;
 - (void)_stop;
@@ -11,28 +11,28 @@
 
 @implementation DTTapLocal
 
-- (DTTapLocal)initWithConfig:(id)a3 memoHandler:(id)a4 delegate:(id)a5
+- (DTTapLocal)initWithConfig:(id)config memoHandler:(id)handler delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  handlerCopy = handler;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = DTTapLocal;
-  v11 = [(DTTap *)&v16 initWithConfig:v8 memoHandler:v9];
+  v11 = [(DTTap *)&v16 initWithConfig:configCopy memoHandler:handlerCopy];
   v12 = v11;
   if (v11)
   {
-    if (!v10)
+    if (!delegateCopy)
     {
       sub_24802F390();
     }
 
-    objc_storeStrong(&v11->_delegate, a5);
+    objc_storeStrong(&v11->_delegate, delegate);
     [(DTTapLocalDelegate *)v12->_delegate setTap:v12];
-    v13 = [(DTTapLocalDelegate *)v12->_delegate validateConfig];
-    if (v13)
+    validateConfig = [(DTTapLocalDelegate *)v12->_delegate validateConfig];
+    if (validateConfig)
     {
-      v14 = [(DTTapLocal *)v12 _handleStatusMemo:v13];
+      v14 = [(DTTapLocal *)v12 _handleStatusMemo:validateConfig];
       [v14 waitUntilFinished];
       v12->_validConfig = 0;
     }
@@ -52,18 +52,18 @@
   {
     handler[11] = v2;
     handler[12] = v3;
-    v6 = [(DTTap *)self config];
-    v7 = [v6 pollingInterval];
+    config = [(DTTap *)self config];
+    pollingInterval = [config pollingInterval];
 
-    if (v7)
+    if (pollingInterval)
     {
-      v8 = [(DTTap *)self serialQueue];
+      serialQueue = [(DTTap *)self serialQueue];
       if (self->_pollTimer)
       {
         sub_24802F3BC(a2, self);
       }
 
-      v9 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v8);
+      v9 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, serialQueue);
       pollTimer = self->_pollTimer;
       self->_pollTimer = v9;
 
@@ -75,13 +75,13 @@
       handler[4] = self;
       dispatch_source_set_event_handler(v11, handler);
       v12 = self->_pollTimer;
-      v13 = dispatch_time(0, v7);
-      dispatch_source_set_timer(v12, v13, v7, 0x4C4B40uLL);
+      v13 = dispatch_time(0, pollingInterval);
+      dispatch_source_set_timer(v12, v13, pollingInterval, 0x4C4B40uLL);
       dispatch_resume(self->_pollTimer);
     }
 
-    v14 = [(DTTapLocal *)self delegate];
-    [v14 start];
+    delegate = [(DTTapLocal *)self delegate];
+    [delegate start];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -117,8 +117,8 @@
 {
   if (self->_validConfig)
   {
-    v3 = [(DTTapLocal *)self delegate];
-    [v3 pause];
+    delegate = [(DTTapLocal *)self delegate];
+    [delegate pause];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -131,8 +131,8 @@
 {
   if (self->_validConfig)
   {
-    v3 = [(DTTapLocal *)self delegate];
-    [v3 unpause];
+    delegate = [(DTTapLocal *)self delegate];
+    [delegate unpause];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -143,13 +143,13 @@
 
 - (BOOL)_canFetchWhileArchiving
 {
-  v2 = [(DTTapLocal *)self delegate];
-  v3 = [v2 canFetchWhileArchiving];
+  delegate = [(DTTapLocal *)self delegate];
+  canFetchWhileArchiving = [delegate canFetchWhileArchiving];
 
-  return v3;
+  return canFetchWhileArchiving;
 }
 
-- (id)_fetchDataForReason:(unint64_t)a3
+- (id)_fetchDataForReason:(unint64_t)reason
 {
   if (self->_validConfig)
   {
@@ -167,17 +167,17 @@
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v5 = [(DTTapLocal *)self delegate];
+    delegate = [(DTTapLocal *)self delegate];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_247FC5340;
     v8[3] = &unk_278EF3358;
     v8[7] = &v15;
-    v8[8] = a3;
+    v8[8] = reason;
     v8[4] = self;
     v8[5] = v13;
     v8[6] = &v9;
-    [v5 fetchDataForReason:a3 block:v8];
+    [delegate fetchDataForReason:reason block:v8];
 
     if ((v10[3] & 1) == 0)
     {
@@ -198,16 +198,16 @@
   return v6;
 }
 
-- (id)_handleStatusMemo:(id)a3
+- (id)_handleStatusMemo:(id)memo
 {
-  v4 = a3;
-  v5 = [(DTTap *)self config];
-  v6 = [v5 statusHandler];
+  memoCopy = memo;
+  config = [(DTTap *)self config];
+  statusHandler = [config statusHandler];
 
-  if (v6)
+  if (statusHandler)
   {
-    v7 = [(DTTap *)self memoHandler];
-    v8 = [v7 handleMemo:v4];
+    memoHandler = [(DTTap *)self memoHandler];
+    v8 = [memoHandler handleMemo:memoCopy];
   }
 
   else

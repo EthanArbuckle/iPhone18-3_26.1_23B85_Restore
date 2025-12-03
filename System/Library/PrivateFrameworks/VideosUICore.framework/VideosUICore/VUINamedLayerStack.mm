@@ -1,6 +1,6 @@
 @interface VUINamedLayerStack
-+ (id)decodedNamedLayerStackWithImage:(id)a3 size:(CGSize)a4 cornerRadius:(double)a5;
-+ (id)namedLayerStackWithImage:(id)a3;
++ (id)decodedNamedLayerStackWithImage:(id)image size:(CGSize)size cornerRadius:(double)radius;
++ (id)namedLayerStackWithImage:(id)image;
 - (CGImage)flattenedImage;
 - (CGSize)radiosityImageScale;
 - (CGSize)size;
@@ -20,25 +20,25 @@
   return [(VUINamedLayerStack *)&v3 init];
 }
 
-+ (id)namedLayerStackWithImage:(id)a3
++ (id)namedLayerStackWithImage:(id)image
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0 && [v3 _representsLayeredImage])
+  imageCopy = image;
+  if (imageCopy && (objc_opt_respondsToSelector() & 1) != 0 && [imageCopy _representsLayeredImage])
   {
-    v4 = [v3 imageAsset];
-    v5 = [v4 _layerStack];
+    imageAsset = [imageCopy imageAsset];
+    _layerStack = [imageAsset _layerStack];
 
     v6 = objc_alloc(MEMORY[0x277CBEB18]);
-    v7 = [v5 layers];
-    v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+    layers = [_layerStack layers];
+    v8 = [v6 initWithCapacity:{objc_msgSend(layers, "count")}];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 layers];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    layers2 = [_layerStack layers];
+    v10 = [layers2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -49,7 +49,7 @@
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(layers2);
           }
 
           v14 = [VUINamedLayerImage namedLayerImageFromNamedLayerImage:*(*(&v19 + 1) + 8 * i)];
@@ -59,66 +59,66 @@
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [layers2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
     }
 
-    if (v5 && [v8 count])
+    if (_layerStack && [v8 count])
     {
-      v15 = [(VUINamedLayerStack *)[VUIDeflatableNamedLayerImage alloc] _init];
-      [v15 setLayerStack:v5];
-      v16 = [MEMORY[0x277D755B8] imageWithCGImage:{objc_msgSend(v3, "CGImage")}];
-      [v15 setCornerRadiusFlatImage:v16];
+      _init = [(VUINamedLayerStack *)[VUIDeflatableNamedLayerImage alloc] _init];
+      [_init setLayerStack:_layerStack];
+      v16 = [MEMORY[0x277D755B8] imageWithCGImage:{objc_msgSend(imageCopy, "CGImage")}];
+      [_init setCornerRadiusFlatImage:v16];
 
       v17 = [v8 copy];
-      [v15 setReplacementLayers:v17];
+      [_init setReplacementLayers:v17];
 
-      [v15 setOriginalImage:v3];
+      [_init setOriginalImage:imageCopy];
     }
 
     else
     {
-      v15 = 0;
+      _init = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    _init = 0;
   }
 
-  return v15;
+  return _init;
 }
 
-+ (id)decodedNamedLayerStackWithImage:(id)a3 size:(CGSize)a4 cornerRadius:(double)a5
++ (id)decodedNamedLayerStackWithImage:(id)image size:(CGSize)size cornerRadius:(double)radius
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0 && [v8 _representsLayeredImage])
+  imageCopy = image;
+  if (imageCopy && (objc_opt_respondsToSelector() & 1) != 0 && [imageCopy _representsLayeredImage])
   {
-    v32[0] = [v8 CGImage];
+    v32[0] = [imageCopy CGImage];
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-    v10 = VUICompositeBitmapImageOfSizeForImages(v9, 0, 0, width, height, a5);
+    v10 = VUICompositeBitmapImageOfSizeForImages(v9, 0, 0, width, height, radius);
 
     v26 = [MEMORY[0x277D755B8] imageWithCGImage:v10];
     CGImageRelease(v10);
-    v11 = [v8 imageAsset];
-    v12 = [v11 _layerStack];
+    imageAsset = [imageCopy imageAsset];
+    _layerStack = [imageAsset _layerStack];
 
     v13 = objc_alloc(MEMORY[0x277CBEB18]);
-    v14 = [v12 layers];
-    v15 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+    layers = [_layerStack layers];
+    v15 = [v13 initWithCapacity:{objc_msgSend(layers, "count")}];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v16 = [v12 layers];
-    v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    layers2 = [_layerStack layers];
+    v17 = [layers2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v17)
     {
       v18 = v17;
@@ -129,7 +129,7 @@
         {
           if (*v28 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(layers2);
           }
 
           v21 = [VUINamedLayerImage decodedNamedLayerImageFromNamedLayerImage:*(*(&v27 + 1) + 8 * i)];
@@ -139,63 +139,63 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v18 = [layers2 countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v18);
     }
 
-    if (v12)
+    if (_layerStack)
     {
-      v22 = 0;
+      _init = 0;
       v23 = v26;
       if ([v15 count] && v26)
       {
-        v22 = [objc_alloc(objc_opt_class()) _init];
-        [v22 setLayerStack:v12];
-        [v22 setCornerRadiusFlatImage:v26];
+        _init = [objc_alloc(objc_opt_class()) _init];
+        [_init setLayerStack:_layerStack];
+        [_init setCornerRadiusFlatImage:v26];
         v24 = [v15 copy];
-        [v22 setReplacementLayers:v24];
+        [_init setReplacementLayers:v24];
 
-        [v22 setOriginalImage:v8];
+        [_init setOriginalImage:imageCopy];
       }
     }
 
     else
     {
-      v22 = 0;
+      _init = 0;
       v23 = v26;
     }
   }
 
   else
   {
-    v22 = 0;
+    _init = 0;
   }
 
-  return v22;
+  return _init;
 }
 
 - (NSString)name
 {
-  v3 = [(VUINamedLayerStack *)self layerStack];
+  layerStack = [(VUINamedLayerStack *)self layerStack];
 
-  if (v3)
+  if (layerStack)
   {
-    v4 = [(VUINamedLayerStack *)self layerStack];
-    v5 = [v4 name];
+    layerStack2 = [(VUINamedLayerStack *)self layerStack];
+    name = [layerStack2 name];
   }
 
   else
   {
-    v4 = [(VUINamedLayerStack *)self replacementLayers];
-    v6 = [v4 firstObject];
-    v5 = [v6 name];
+    layerStack2 = [(VUINamedLayerStack *)self replacementLayers];
+    firstObject = [layerStack2 firstObject];
+    name = [firstObject name];
   }
 
-  if (v5)
+  if (name)
   {
-    v7 = v5;
+    v7 = name;
   }
 
   else
@@ -208,40 +208,40 @@
 
 - (NSArray)layers
 {
-  v3 = [(VUINamedLayerStack *)self replacementLayers];
+  replacementLayers = [(VUINamedLayerStack *)self replacementLayers];
 
-  if (v3)
+  if (replacementLayers)
   {
-    v4 = [(VUINamedLayerStack *)self replacementLayers];
+    replacementLayers2 = [(VUINamedLayerStack *)self replacementLayers];
   }
 
   else
   {
-    v5 = [(VUINamedLayerStack *)self layerStack];
-    v4 = [v5 layers];
+    layerStack = [(VUINamedLayerStack *)self layerStack];
+    replacementLayers2 = [layerStack layers];
   }
 
-  return v4;
+  return replacementLayers2;
 }
 
 - (CGSize)size
 {
-  v3 = [(VUINamedLayerStack *)self layerStack];
+  layerStack = [(VUINamedLayerStack *)self layerStack];
 
-  if (v3)
+  if (layerStack)
   {
-    v4 = [(VUINamedLayerStack *)self layerStack];
-    [v4 size];
+    layerStack2 = [(VUINamedLayerStack *)self layerStack];
+    [layerStack2 size];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(VUINamedLayerStack *)self replacementLayers];
-    v4 = [v9 firstObject];
+    replacementLayers = [(VUINamedLayerStack *)self replacementLayers];
+    layerStack2 = [replacementLayers firstObject];
 
-    [v4 frame];
+    [layerStack2 frame];
     v6 = v10;
     v8 = v11;
   }
@@ -255,16 +255,16 @@
 
 - (double)scale
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
-  v6 = [(VUINamedLayerStack *)self layerStack];
+  layerStack = [(VUINamedLayerStack *)self layerStack];
 
-  if (v6)
+  if (layerStack)
   {
-    v7 = [(VUINamedLayerStack *)self layerStack];
-    [v7 scale];
+    layerStack2 = [(VUINamedLayerStack *)self layerStack];
+    [layerStack2 scale];
     v5 = v8;
   }
 
@@ -273,40 +273,40 @@
 
 - (CGImage)flattenedImage
 {
-  v2 = [(VUINamedLayerStack *)self cornerRadiusFlatImage];
-  v3 = [v2 CGImage];
+  cornerRadiusFlatImage = [(VUINamedLayerStack *)self cornerRadiusFlatImage];
+  cGImage = [cornerRadiusFlatImage CGImage];
 
-  return v3;
+  return cGImage;
 }
 
 - (id)radiosityImage
 {
-  v3 = [(VUINamedLayerStack *)self layerStack];
+  layerStack = [(VUINamedLayerStack *)self layerStack];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VUINamedLayerStack *)self layerStack];
-    v6 = [v5 radiosityImage];
+    layerStack2 = [(VUINamedLayerStack *)self layerStack];
+    radiosityImage = [layerStack2 radiosityImage];
   }
 
   else
   {
-    v6 = 0;
+    radiosityImage = 0;
   }
 
-  return v6;
+  return radiosityImage;
 }
 
 - (CGSize)radiosityImageScale
 {
-  v3 = [(VUINamedLayerStack *)self layerStack];
+  layerStack = [(VUINamedLayerStack *)self layerStack];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VUINamedLayerStack *)self layerStack];
-    [v5 radiosityImageScale];
+    layerStack2 = [(VUINamedLayerStack *)self layerStack];
+    [layerStack2 radiosityImageScale];
     v7 = v6;
     v9 = v8;
   }

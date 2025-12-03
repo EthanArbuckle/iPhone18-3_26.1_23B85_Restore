@@ -1,206 +1,206 @@
 @interface _INPBMessageLinkMetadata
-- (BOOL)isEqual:(id)a3;
-- (_INPBMessageLinkMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBMessageLinkMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsLinkMediaType:(id)a3;
+- (int)StringAsLinkMediaType:(id)type;
 - (unint64_t)hash;
-- (void)addIconURL:(id)a3;
-- (void)addImageURL:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlbumArtist:(id)a3;
-- (void)setAlbumName:(id)a3;
-- (void)setAppleTvSubtitle:(id)a3;
-- (void)setAppleTvTitle:(id)a3;
-- (void)setArtistGenre:(id)a3;
-- (void)setArtistName:(id)a3;
-- (void)setAudioBookAuthor:(id)a3;
-- (void)setAudioBookName:(id)a3;
-- (void)setAudioBookNarrator:(id)a3;
-- (void)setBookAuthor:(id)a3;
-- (void)setBookName:(id)a3;
-- (void)setCreator:(id)a3;
-- (void)setITunesStoreFrontIdentifier:(id)a3;
-- (void)setITunesStoreIdentifier:(id)a3;
-- (void)setIconURLs:(id)a3;
-- (void)setImageURLs:(id)a3;
-- (void)setItemType:(id)a3;
-- (void)setLinkMediaType:(int)a3;
-- (void)setMovieBundleGenre:(id)a3;
-- (void)setMovieBundleName:(id)a3;
-- (void)setMovieGenre:(id)a3;
-- (void)setMovieName:(id)a3;
-- (void)setMusicVideoArtist:(id)a3;
-- (void)setMusicVideoName:(id)a3;
-- (void)setOpenGraphType:(id)a3;
-- (void)setOriginalURL:(id)a3;
-- (void)setPlaylistCurator:(id)a3;
-- (void)setPlaylistName:(id)a3;
-- (void)setPodcastArtist:(id)a3;
-- (void)setPodcastEpisodeArtist:(id)a3;
-- (void)setPodcastEpisodeName:(id)a3;
-- (void)setPodcastEpisodePodcastName:(id)a3;
-- (void)setPodcastName:(id)a3;
-- (void)setRadioCurator:(id)a3;
-- (void)setRadioName:(id)a3;
-- (void)setSiteName:(id)a3;
-- (void)setSoftwareGenre:(id)a3;
-- (void)setSoftwareName:(id)a3;
-- (void)setSoftwarePlatform:(id)a3;
-- (void)setSongAlbum:(id)a3;
-- (void)setSongArtist:(id)a3;
-- (void)setSongTitle:(id)a3;
-- (void)setSummary:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTvEpisodeEpisodeName:(id)a3;
-- (void)setTvEpisodeGenre:(id)a3;
-- (void)setTvEpisodeSeasonName:(id)a3;
-- (void)setTvSeasonGenre:(id)a3;
-- (void)setTvSeasonName:(id)a3;
-- (void)setTvShowName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIconURL:(id)l;
+- (void)addImageURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlbumArtist:(id)artist;
+- (void)setAlbumName:(id)name;
+- (void)setAppleTvSubtitle:(id)subtitle;
+- (void)setAppleTvTitle:(id)title;
+- (void)setArtistGenre:(id)genre;
+- (void)setArtistName:(id)name;
+- (void)setAudioBookAuthor:(id)author;
+- (void)setAudioBookName:(id)name;
+- (void)setAudioBookNarrator:(id)narrator;
+- (void)setBookAuthor:(id)author;
+- (void)setBookName:(id)name;
+- (void)setCreator:(id)creator;
+- (void)setITunesStoreFrontIdentifier:(id)identifier;
+- (void)setITunesStoreIdentifier:(id)identifier;
+- (void)setIconURLs:(id)ls;
+- (void)setImageURLs:(id)ls;
+- (void)setItemType:(id)type;
+- (void)setLinkMediaType:(int)type;
+- (void)setMovieBundleGenre:(id)genre;
+- (void)setMovieBundleName:(id)name;
+- (void)setMovieGenre:(id)genre;
+- (void)setMovieName:(id)name;
+- (void)setMusicVideoArtist:(id)artist;
+- (void)setMusicVideoName:(id)name;
+- (void)setOpenGraphType:(id)type;
+- (void)setOriginalURL:(id)l;
+- (void)setPlaylistCurator:(id)curator;
+- (void)setPlaylistName:(id)name;
+- (void)setPodcastArtist:(id)artist;
+- (void)setPodcastEpisodeArtist:(id)artist;
+- (void)setPodcastEpisodeName:(id)name;
+- (void)setPodcastEpisodePodcastName:(id)name;
+- (void)setPodcastName:(id)name;
+- (void)setRadioCurator:(id)curator;
+- (void)setRadioName:(id)name;
+- (void)setSiteName:(id)name;
+- (void)setSoftwareGenre:(id)genre;
+- (void)setSoftwareName:(id)name;
+- (void)setSoftwarePlatform:(id)platform;
+- (void)setSongAlbum:(id)album;
+- (void)setSongArtist:(id)artist;
+- (void)setSongTitle:(id)title;
+- (void)setSummary:(id)summary;
+- (void)setTitle:(id)title;
+- (void)setTvEpisodeEpisodeName:(id)name;
+- (void)setTvEpisodeGenre:(id)genre;
+- (void)setTvEpisodeSeasonName:(id)name;
+- (void)setTvSeasonGenre:(id)genre;
+- (void)setTvSeasonName:(id)name;
+- (void)setTvShowName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBMessageLinkMetadata
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_albumArtist)
   {
-    v4 = [(_INPBMessageLinkMetadata *)self albumArtist];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"albumArtist"];
+    albumArtist = [(_INPBMessageLinkMetadata *)self albumArtist];
+    v5 = [albumArtist copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"albumArtist"];
   }
 
   if (self->_albumName)
   {
-    v6 = [(_INPBMessageLinkMetadata *)self albumName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"albumName"];
+    albumName = [(_INPBMessageLinkMetadata *)self albumName];
+    v7 = [albumName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"albumName"];
   }
 
   if (self->_appleTvSubtitle)
   {
-    v8 = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"appleTvSubtitle"];
+    appleTvSubtitle = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
+    v9 = [appleTvSubtitle copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"appleTvSubtitle"];
   }
 
   if (self->_appleTvTitle)
   {
-    v10 = [(_INPBMessageLinkMetadata *)self appleTvTitle];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"appleTvTitle"];
+    appleTvTitle = [(_INPBMessageLinkMetadata *)self appleTvTitle];
+    v11 = [appleTvTitle copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"appleTvTitle"];
   }
 
   if (self->_artistGenre)
   {
-    v12 = [(_INPBMessageLinkMetadata *)self artistGenre];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"artistGenre"];
+    artistGenre = [(_INPBMessageLinkMetadata *)self artistGenre];
+    v13 = [artistGenre copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"artistGenre"];
   }
 
   if (self->_artistName)
   {
-    v14 = [(_INPBMessageLinkMetadata *)self artistName];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"artistName"];
+    artistName = [(_INPBMessageLinkMetadata *)self artistName];
+    v15 = [artistName copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"artistName"];
   }
 
   if (self->_audioBookAuthor)
   {
-    v16 = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"audioBookAuthor"];
+    audioBookAuthor = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
+    v17 = [audioBookAuthor copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"audioBookAuthor"];
   }
 
   if (self->_audioBookName)
   {
-    v18 = [(_INPBMessageLinkMetadata *)self audioBookName];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"audioBookName"];
+    audioBookName = [(_INPBMessageLinkMetadata *)self audioBookName];
+    v19 = [audioBookName copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"audioBookName"];
   }
 
   if (self->_audioBookNarrator)
   {
-    v20 = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"audioBookNarrator"];
+    audioBookNarrator = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
+    v21 = [audioBookNarrator copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"audioBookNarrator"];
   }
 
   if (self->_bookAuthor)
   {
-    v22 = [(_INPBMessageLinkMetadata *)self bookAuthor];
-    v23 = [v22 copy];
-    [v3 setObject:v23 forKeyedSubscript:@"bookAuthor"];
+    bookAuthor = [(_INPBMessageLinkMetadata *)self bookAuthor];
+    v23 = [bookAuthor copy];
+    [dictionary setObject:v23 forKeyedSubscript:@"bookAuthor"];
   }
 
   if (self->_bookName)
   {
-    v24 = [(_INPBMessageLinkMetadata *)self bookName];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"bookName"];
+    bookName = [(_INPBMessageLinkMetadata *)self bookName];
+    v25 = [bookName copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"bookName"];
   }
 
   if (self->_creator)
   {
-    v26 = [(_INPBMessageLinkMetadata *)self creator];
-    v27 = [v26 copy];
-    [v3 setObject:v27 forKeyedSubscript:@"creator"];
+    creator = [(_INPBMessageLinkMetadata *)self creator];
+    v27 = [creator copy];
+    [dictionary setObject:v27 forKeyedSubscript:@"creator"];
   }
 
   if (self->_iTunesStoreFrontIdentifier)
   {
-    v28 = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"iTunesStoreFrontIdentifier"];
+    iTunesStoreFrontIdentifier = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
+    v29 = [iTunesStoreFrontIdentifier copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"iTunesStoreFrontIdentifier"];
   }
 
   if (self->_iTunesStoreIdentifier)
   {
-    v30 = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
-    v31 = [v30 copy];
-    [v3 setObject:v31 forKeyedSubscript:@"iTunesStoreIdentifier"];
+    iTunesStoreIdentifier = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
+    v31 = [iTunesStoreIdentifier copy];
+    [dictionary setObject:v31 forKeyedSubscript:@"iTunesStoreIdentifier"];
   }
 
   if (self->_iconURLs)
   {
-    v32 = [(_INPBMessageLinkMetadata *)self iconURLs];
-    v33 = [v32 copy];
-    [v3 setObject:v33 forKeyedSubscript:@"iconURL"];
+    iconURLs = [(_INPBMessageLinkMetadata *)self iconURLs];
+    v33 = [iconURLs copy];
+    [dictionary setObject:v33 forKeyedSubscript:@"iconURL"];
   }
 
   if (self->_imageURLs)
   {
-    v34 = [(_INPBMessageLinkMetadata *)self imageURLs];
-    v35 = [v34 copy];
-    [v3 setObject:v35 forKeyedSubscript:@"imageURL"];
+    imageURLs = [(_INPBMessageLinkMetadata *)self imageURLs];
+    v35 = [imageURLs copy];
+    [dictionary setObject:v35 forKeyedSubscript:@"imageURL"];
   }
 
   if (self->_itemType)
   {
-    v36 = [(_INPBMessageLinkMetadata *)self itemType];
-    v37 = [v36 copy];
-    [v3 setObject:v37 forKeyedSubscript:@"itemType"];
+    itemType = [(_INPBMessageLinkMetadata *)self itemType];
+    v37 = [itemType copy];
+    [dictionary setObject:v37 forKeyedSubscript:@"itemType"];
   }
 
   if ([(_INPBMessageLinkMetadata *)self hasLinkMediaType])
   {
-    v38 = [(_INPBMessageLinkMetadata *)self linkMediaType];
-    if (v38 > 99)
+    linkMediaType = [(_INPBMessageLinkMetadata *)self linkMediaType];
+    if (linkMediaType > 99)
     {
-      if (v38 <= 139)
+      if (linkMediaType <= 139)
       {
-        if (v38 > 119)
+        if (linkMediaType > 119)
         {
-          if (v38 == 120)
+          if (linkMediaType == 120)
           {
             v39 = @"PODCAST_EPISODE";
             goto LABEL_80;
           }
 
-          if (v38 == 130)
+          if (linkMediaType == 130)
           {
             v39 = @"TV_EPISODE";
             goto LABEL_80;
@@ -209,13 +209,13 @@
 
         else
         {
-          if (v38 == 100)
+          if (linkMediaType == 100)
           {
             v39 = @"AUDIO_BOOK";
             goto LABEL_80;
           }
 
-          if (v38 == 110)
+          if (linkMediaType == 110)
           {
             v39 = @"PODCAST";
             goto LABEL_80;
@@ -223,15 +223,15 @@
         }
       }
 
-      else if (v38 <= 159)
+      else if (linkMediaType <= 159)
       {
-        if (v38 == 140)
+        if (linkMediaType == 140)
         {
           v39 = @"TV_SEASON";
           goto LABEL_80;
         }
 
-        if (v38 == 150)
+        if (linkMediaType == 150)
         {
           v39 = @"MOVIE";
           goto LABEL_80;
@@ -240,7 +240,7 @@
 
       else
       {
-        switch(v38)
+        switch(linkMediaType)
         {
           case 0xA0:
             v39 = @"TV_SHOW";
@@ -255,17 +255,17 @@
       }
     }
 
-    else if (v38 <= 49)
+    else if (linkMediaType <= 49)
     {
-      if (v38 > 29)
+      if (linkMediaType > 29)
       {
-        if (v38 == 30)
+        if (linkMediaType == 30)
         {
           v39 = @"ALBUM";
           goto LABEL_80;
         }
 
-        if (v38 == 40)
+        if (linkMediaType == 40)
         {
           v39 = @"MUSIC_VIDEO";
           goto LABEL_80;
@@ -274,13 +274,13 @@
 
       else
       {
-        if (v38 == 10)
+        if (linkMediaType == 10)
         {
           v39 = @"UNKNOWN_LINK_TYPE";
           goto LABEL_80;
         }
 
-        if (v38 == 20)
+        if (linkMediaType == 20)
         {
           v39 = @"SONG";
           goto LABEL_80;
@@ -288,15 +288,15 @@
       }
     }
 
-    else if (v38 <= 69)
+    else if (linkMediaType <= 69)
     {
-      if (v38 == 50)
+      if (linkMediaType == 50)
       {
         v39 = @"ARTIST";
         goto LABEL_80;
       }
 
-      if (v38 == 60)
+      if (linkMediaType == 60)
       {
         v39 = @"PLAYLIST";
         goto LABEL_80;
@@ -305,7 +305,7 @@
 
     else
     {
-      switch(v38)
+      switch(linkMediaType)
       {
         case 'F':
           v39 = @"RADIO";
@@ -316,252 +316,252 @@
         case 'Z':
           v39 = @"BOOK";
 LABEL_80:
-          [v3 setObject:v39 forKeyedSubscript:@"linkMediaType"];
+          [dictionary setObject:v39 forKeyedSubscript:@"linkMediaType"];
 
           goto LABEL_81;
       }
     }
 
-    v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v38];
+    v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", linkMediaType];
     goto LABEL_80;
   }
 
 LABEL_81:
-  v40 = [(_INPBMessageLinkMetadata *)self linkURL];
-  v41 = [v40 dictionaryRepresentation];
-  [v3 setObject:v41 forKeyedSubscript:@"linkURL"];
+  linkURL = [(_INPBMessageLinkMetadata *)self linkURL];
+  dictionaryRepresentation = [linkURL dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkURL"];
 
   if (self->_movieBundleGenre)
   {
-    v42 = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
-    v43 = [v42 copy];
-    [v3 setObject:v43 forKeyedSubscript:@"movieBundleGenre"];
+    movieBundleGenre = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
+    v43 = [movieBundleGenre copy];
+    [dictionary setObject:v43 forKeyedSubscript:@"movieBundleGenre"];
   }
 
   if (self->_movieBundleName)
   {
-    v44 = [(_INPBMessageLinkMetadata *)self movieBundleName];
-    v45 = [v44 copy];
-    [v3 setObject:v45 forKeyedSubscript:@"movieBundleName"];
+    movieBundleName = [(_INPBMessageLinkMetadata *)self movieBundleName];
+    v45 = [movieBundleName copy];
+    [dictionary setObject:v45 forKeyedSubscript:@"movieBundleName"];
   }
 
   if (self->_movieGenre)
   {
-    v46 = [(_INPBMessageLinkMetadata *)self movieGenre];
-    v47 = [v46 copy];
-    [v3 setObject:v47 forKeyedSubscript:@"movieGenre"];
+    movieGenre = [(_INPBMessageLinkMetadata *)self movieGenre];
+    v47 = [movieGenre copy];
+    [dictionary setObject:v47 forKeyedSubscript:@"movieGenre"];
   }
 
   if (self->_movieName)
   {
-    v48 = [(_INPBMessageLinkMetadata *)self movieName];
-    v49 = [v48 copy];
-    [v3 setObject:v49 forKeyedSubscript:@"movieName"];
+    movieName = [(_INPBMessageLinkMetadata *)self movieName];
+    v49 = [movieName copy];
+    [dictionary setObject:v49 forKeyedSubscript:@"movieName"];
   }
 
   if (self->_musicVideoArtist)
   {
-    v50 = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
-    v51 = [v50 copy];
-    [v3 setObject:v51 forKeyedSubscript:@"musicVideoArtist"];
+    musicVideoArtist = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
+    v51 = [musicVideoArtist copy];
+    [dictionary setObject:v51 forKeyedSubscript:@"musicVideoArtist"];
   }
 
   if (self->_musicVideoName)
   {
-    v52 = [(_INPBMessageLinkMetadata *)self musicVideoName];
-    v53 = [v52 copy];
-    [v3 setObject:v53 forKeyedSubscript:@"musicVideoName"];
+    musicVideoName = [(_INPBMessageLinkMetadata *)self musicVideoName];
+    v53 = [musicVideoName copy];
+    [dictionary setObject:v53 forKeyedSubscript:@"musicVideoName"];
   }
 
   if (self->_openGraphType)
   {
-    v54 = [(_INPBMessageLinkMetadata *)self openGraphType];
-    v55 = [v54 copy];
-    [v3 setObject:v55 forKeyedSubscript:@"openGraphType"];
+    openGraphType = [(_INPBMessageLinkMetadata *)self openGraphType];
+    v55 = [openGraphType copy];
+    [dictionary setObject:v55 forKeyedSubscript:@"openGraphType"];
   }
 
   if (self->_originalURL)
   {
-    v56 = [(_INPBMessageLinkMetadata *)self originalURL];
-    v57 = [v56 copy];
-    [v3 setObject:v57 forKeyedSubscript:@"originalURL"];
+    originalURL = [(_INPBMessageLinkMetadata *)self originalURL];
+    v57 = [originalURL copy];
+    [dictionary setObject:v57 forKeyedSubscript:@"originalURL"];
   }
 
   if (self->_playlistCurator)
   {
-    v58 = [(_INPBMessageLinkMetadata *)self playlistCurator];
-    v59 = [v58 copy];
-    [v3 setObject:v59 forKeyedSubscript:@"playlistCurator"];
+    playlistCurator = [(_INPBMessageLinkMetadata *)self playlistCurator];
+    v59 = [playlistCurator copy];
+    [dictionary setObject:v59 forKeyedSubscript:@"playlistCurator"];
   }
 
   if (self->_playlistName)
   {
-    v60 = [(_INPBMessageLinkMetadata *)self playlistName];
-    v61 = [v60 copy];
-    [v3 setObject:v61 forKeyedSubscript:@"playlistName"];
+    playlistName = [(_INPBMessageLinkMetadata *)self playlistName];
+    v61 = [playlistName copy];
+    [dictionary setObject:v61 forKeyedSubscript:@"playlistName"];
   }
 
   if (self->_podcastArtist)
   {
-    v62 = [(_INPBMessageLinkMetadata *)self podcastArtist];
-    v63 = [v62 copy];
-    [v3 setObject:v63 forKeyedSubscript:@"podcastArtist"];
+    podcastArtist = [(_INPBMessageLinkMetadata *)self podcastArtist];
+    v63 = [podcastArtist copy];
+    [dictionary setObject:v63 forKeyedSubscript:@"podcastArtist"];
   }
 
   if (self->_podcastEpisodeArtist)
   {
-    v64 = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
-    v65 = [v64 copy];
-    [v3 setObject:v65 forKeyedSubscript:@"podcastEpisodeArtist"];
+    podcastEpisodeArtist = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
+    v65 = [podcastEpisodeArtist copy];
+    [dictionary setObject:v65 forKeyedSubscript:@"podcastEpisodeArtist"];
   }
 
   if (self->_podcastEpisodeName)
   {
-    v66 = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
-    v67 = [v66 copy];
-    [v3 setObject:v67 forKeyedSubscript:@"podcastEpisodeName"];
+    podcastEpisodeName = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
+    v67 = [podcastEpisodeName copy];
+    [dictionary setObject:v67 forKeyedSubscript:@"podcastEpisodeName"];
   }
 
   if (self->_podcastEpisodePodcastName)
   {
-    v68 = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
-    v69 = [v68 copy];
-    [v3 setObject:v69 forKeyedSubscript:@"podcastEpisodePodcastName"];
+    podcastEpisodePodcastName = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
+    v69 = [podcastEpisodePodcastName copy];
+    [dictionary setObject:v69 forKeyedSubscript:@"podcastEpisodePodcastName"];
   }
 
-  v70 = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
-  v71 = [v70 dictionaryRepresentation];
-  [v3 setObject:v71 forKeyedSubscript:@"podcastEpisodeReleaseDate"];
+  podcastEpisodeReleaseDate = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
+  dictionaryRepresentation2 = [podcastEpisodeReleaseDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"podcastEpisodeReleaseDate"];
 
   if (self->_podcastName)
   {
-    v72 = [(_INPBMessageLinkMetadata *)self podcastName];
-    v73 = [v72 copy];
-    [v3 setObject:v73 forKeyedSubscript:@"podcastName"];
+    podcastName = [(_INPBMessageLinkMetadata *)self podcastName];
+    v73 = [podcastName copy];
+    [dictionary setObject:v73 forKeyedSubscript:@"podcastName"];
   }
 
   if (self->_radioCurator)
   {
-    v74 = [(_INPBMessageLinkMetadata *)self radioCurator];
-    v75 = [v74 copy];
-    [v3 setObject:v75 forKeyedSubscript:@"radioCurator"];
+    radioCurator = [(_INPBMessageLinkMetadata *)self radioCurator];
+    v75 = [radioCurator copy];
+    [dictionary setObject:v75 forKeyedSubscript:@"radioCurator"];
   }
 
   if (self->_radioName)
   {
-    v76 = [(_INPBMessageLinkMetadata *)self radioName];
-    v77 = [v76 copy];
-    [v3 setObject:v77 forKeyedSubscript:@"radioName"];
+    radioName = [(_INPBMessageLinkMetadata *)self radioName];
+    v77 = [radioName copy];
+    [dictionary setObject:v77 forKeyedSubscript:@"radioName"];
   }
 
   if (self->_siteName)
   {
-    v78 = [(_INPBMessageLinkMetadata *)self siteName];
-    v79 = [v78 copy];
-    [v3 setObject:v79 forKeyedSubscript:@"siteName"];
+    siteName = [(_INPBMessageLinkMetadata *)self siteName];
+    v79 = [siteName copy];
+    [dictionary setObject:v79 forKeyedSubscript:@"siteName"];
   }
 
   if (self->_softwareGenre)
   {
-    v80 = [(_INPBMessageLinkMetadata *)self softwareGenre];
-    v81 = [v80 copy];
-    [v3 setObject:v81 forKeyedSubscript:@"softwareGenre"];
+    softwareGenre = [(_INPBMessageLinkMetadata *)self softwareGenre];
+    v81 = [softwareGenre copy];
+    [dictionary setObject:v81 forKeyedSubscript:@"softwareGenre"];
   }
 
   if (self->_softwareName)
   {
-    v82 = [(_INPBMessageLinkMetadata *)self softwareName];
-    v83 = [v82 copy];
-    [v3 setObject:v83 forKeyedSubscript:@"softwareName"];
+    softwareName = [(_INPBMessageLinkMetadata *)self softwareName];
+    v83 = [softwareName copy];
+    [dictionary setObject:v83 forKeyedSubscript:@"softwareName"];
   }
 
   if (self->_softwarePlatform)
   {
-    v84 = [(_INPBMessageLinkMetadata *)self softwarePlatform];
-    v85 = [v84 copy];
-    [v3 setObject:v85 forKeyedSubscript:@"softwarePlatform"];
+    softwarePlatform = [(_INPBMessageLinkMetadata *)self softwarePlatform];
+    v85 = [softwarePlatform copy];
+    [dictionary setObject:v85 forKeyedSubscript:@"softwarePlatform"];
   }
 
   if (self->_songAlbum)
   {
-    v86 = [(_INPBMessageLinkMetadata *)self songAlbum];
-    v87 = [v86 copy];
-    [v3 setObject:v87 forKeyedSubscript:@"songAlbum"];
+    songAlbum = [(_INPBMessageLinkMetadata *)self songAlbum];
+    v87 = [songAlbum copy];
+    [dictionary setObject:v87 forKeyedSubscript:@"songAlbum"];
   }
 
   if (self->_songArtist)
   {
-    v88 = [(_INPBMessageLinkMetadata *)self songArtist];
-    v89 = [v88 copy];
-    [v3 setObject:v89 forKeyedSubscript:@"songArtist"];
+    songArtist = [(_INPBMessageLinkMetadata *)self songArtist];
+    v89 = [songArtist copy];
+    [dictionary setObject:v89 forKeyedSubscript:@"songArtist"];
   }
 
   if (self->_songTitle)
   {
-    v90 = [(_INPBMessageLinkMetadata *)self songTitle];
-    v91 = [v90 copy];
-    [v3 setObject:v91 forKeyedSubscript:@"songTitle"];
+    songTitle = [(_INPBMessageLinkMetadata *)self songTitle];
+    v91 = [songTitle copy];
+    [dictionary setObject:v91 forKeyedSubscript:@"songTitle"];
   }
 
   if (self->_summary)
   {
-    v92 = [(_INPBMessageLinkMetadata *)self summary];
-    v93 = [v92 copy];
-    [v3 setObject:v93 forKeyedSubscript:@"summary"];
+    summary = [(_INPBMessageLinkMetadata *)self summary];
+    v93 = [summary copy];
+    [dictionary setObject:v93 forKeyedSubscript:@"summary"];
   }
 
   if (self->_title)
   {
-    v94 = [(_INPBMessageLinkMetadata *)self title];
-    v95 = [v94 copy];
-    [v3 setObject:v95 forKeyedSubscript:@"title"];
+    title = [(_INPBMessageLinkMetadata *)self title];
+    v95 = [title copy];
+    [dictionary setObject:v95 forKeyedSubscript:@"title"];
   }
 
   if (self->_tvEpisodeEpisodeName)
   {
-    v96 = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
-    v97 = [v96 copy];
-    [v3 setObject:v97 forKeyedSubscript:@"tvEpisodeEpisodeName"];
+    tvEpisodeEpisodeName = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
+    v97 = [tvEpisodeEpisodeName copy];
+    [dictionary setObject:v97 forKeyedSubscript:@"tvEpisodeEpisodeName"];
   }
 
   if (self->_tvEpisodeGenre)
   {
-    v98 = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
-    v99 = [v98 copy];
-    [v3 setObject:v99 forKeyedSubscript:@"tvEpisodeGenre"];
+    tvEpisodeGenre = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
+    v99 = [tvEpisodeGenre copy];
+    [dictionary setObject:v99 forKeyedSubscript:@"tvEpisodeGenre"];
   }
 
   if (self->_tvEpisodeSeasonName)
   {
-    v100 = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
-    v101 = [v100 copy];
-    [v3 setObject:v101 forKeyedSubscript:@"tvEpisodeSeasonName"];
+    tvEpisodeSeasonName = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
+    v101 = [tvEpisodeSeasonName copy];
+    [dictionary setObject:v101 forKeyedSubscript:@"tvEpisodeSeasonName"];
   }
 
   if (self->_tvSeasonGenre)
   {
-    v102 = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
-    v103 = [v102 copy];
-    [v3 setObject:v103 forKeyedSubscript:@"tvSeasonGenre"];
+    tvSeasonGenre = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
+    v103 = [tvSeasonGenre copy];
+    [dictionary setObject:v103 forKeyedSubscript:@"tvSeasonGenre"];
   }
 
   if (self->_tvSeasonName)
   {
-    v104 = [(_INPBMessageLinkMetadata *)self tvSeasonName];
-    v105 = [v104 copy];
-    [v3 setObject:v105 forKeyedSubscript:@"tvSeasonName"];
+    tvSeasonName = [(_INPBMessageLinkMetadata *)self tvSeasonName];
+    v105 = [tvSeasonName copy];
+    [dictionary setObject:v105 forKeyedSubscript:@"tvSeasonName"];
   }
 
   if (self->_tvShowName)
   {
-    v106 = [(_INPBMessageLinkMetadata *)self tvShowName];
-    v107 = [v106 copy];
-    [v3 setObject:v107 forKeyedSubscript:@"tvShowName"];
+    tvShowName = [(_INPBMessageLinkMetadata *)self tvShowName];
+    v107 = [tvShowName copy];
+    [dictionary setObject:v107 forKeyedSubscript:@"tvShowName"];
   }
 
-  v108 = v3;
+  v108 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -630,28 +630,28 @@ LABEL_81:
   return v41 ^ v46 ^ [(NSString *)self->_tvShowName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_261;
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self albumArtist];
-  v6 = [v4 albumArtist];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self albumArtist];
+  albumArtist2 = [equalCopy albumArtist];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v7 = [(_INPBMessageLinkMetadata *)self albumArtist];
-  if (v7)
+  albumArtist3 = [(_INPBMessageLinkMetadata *)self albumArtist];
+  if (albumArtist3)
   {
-    v8 = v7;
-    v9 = [(_INPBMessageLinkMetadata *)self albumArtist];
-    v10 = [v4 albumArtist];
-    v11 = [v9 isEqual:v10];
+    v8 = albumArtist3;
+    albumArtist4 = [(_INPBMessageLinkMetadata *)self albumArtist];
+    albumArtist5 = [equalCopy albumArtist];
+    v11 = [albumArtist4 isEqual:albumArtist5];
 
     if (!v11)
     {
@@ -663,20 +663,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self albumName];
-  v6 = [v4 albumName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self albumName];
+  albumArtist2 = [equalCopy albumName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v12 = [(_INPBMessageLinkMetadata *)self albumName];
-  if (v12)
+  albumName = [(_INPBMessageLinkMetadata *)self albumName];
+  if (albumName)
   {
-    v13 = v12;
-    v14 = [(_INPBMessageLinkMetadata *)self albumName];
-    v15 = [v4 albumName];
-    v16 = [v14 isEqual:v15];
+    v13 = albumName;
+    albumName2 = [(_INPBMessageLinkMetadata *)self albumName];
+    albumName3 = [equalCopy albumName];
+    v16 = [albumName2 isEqual:albumName3];
 
     if (!v16)
     {
@@ -688,20 +688,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
-  v6 = [v4 appleTvSubtitle];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
+  albumArtist2 = [equalCopy appleTvSubtitle];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v17 = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
-  if (v17)
+  appleTvSubtitle = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
+  if (appleTvSubtitle)
   {
-    v18 = v17;
-    v19 = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
-    v20 = [v4 appleTvSubtitle];
-    v21 = [v19 isEqual:v20];
+    v18 = appleTvSubtitle;
+    appleTvSubtitle2 = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
+    appleTvSubtitle3 = [equalCopy appleTvSubtitle];
+    v21 = [appleTvSubtitle2 isEqual:appleTvSubtitle3];
 
     if (!v21)
     {
@@ -713,20 +713,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self appleTvTitle];
-  v6 = [v4 appleTvTitle];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self appleTvTitle];
+  albumArtist2 = [equalCopy appleTvTitle];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v22 = [(_INPBMessageLinkMetadata *)self appleTvTitle];
-  if (v22)
+  appleTvTitle = [(_INPBMessageLinkMetadata *)self appleTvTitle];
+  if (appleTvTitle)
   {
-    v23 = v22;
-    v24 = [(_INPBMessageLinkMetadata *)self appleTvTitle];
-    v25 = [v4 appleTvTitle];
-    v26 = [v24 isEqual:v25];
+    v23 = appleTvTitle;
+    appleTvTitle2 = [(_INPBMessageLinkMetadata *)self appleTvTitle];
+    appleTvTitle3 = [equalCopy appleTvTitle];
+    v26 = [appleTvTitle2 isEqual:appleTvTitle3];
 
     if (!v26)
     {
@@ -738,20 +738,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self artistGenre];
-  v6 = [v4 artistGenre];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self artistGenre];
+  albumArtist2 = [equalCopy artistGenre];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v27 = [(_INPBMessageLinkMetadata *)self artistGenre];
-  if (v27)
+  artistGenre = [(_INPBMessageLinkMetadata *)self artistGenre];
+  if (artistGenre)
   {
-    v28 = v27;
-    v29 = [(_INPBMessageLinkMetadata *)self artistGenre];
-    v30 = [v4 artistGenre];
-    v31 = [v29 isEqual:v30];
+    v28 = artistGenre;
+    artistGenre2 = [(_INPBMessageLinkMetadata *)self artistGenre];
+    artistGenre3 = [equalCopy artistGenre];
+    v31 = [artistGenre2 isEqual:artistGenre3];
 
     if (!v31)
     {
@@ -763,20 +763,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self artistName];
-  v6 = [v4 artistName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self artistName];
+  albumArtist2 = [equalCopy artistName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v32 = [(_INPBMessageLinkMetadata *)self artistName];
-  if (v32)
+  artistName = [(_INPBMessageLinkMetadata *)self artistName];
+  if (artistName)
   {
-    v33 = v32;
-    v34 = [(_INPBMessageLinkMetadata *)self artistName];
-    v35 = [v4 artistName];
-    v36 = [v34 isEqual:v35];
+    v33 = artistName;
+    artistName2 = [(_INPBMessageLinkMetadata *)self artistName];
+    artistName3 = [equalCopy artistName];
+    v36 = [artistName2 isEqual:artistName3];
 
     if (!v36)
     {
@@ -788,20 +788,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
-  v6 = [v4 audioBookAuthor];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
+  albumArtist2 = [equalCopy audioBookAuthor];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v37 = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
-  if (v37)
+  audioBookAuthor = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
+  if (audioBookAuthor)
   {
-    v38 = v37;
-    v39 = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
-    v40 = [v4 audioBookAuthor];
-    v41 = [v39 isEqual:v40];
+    v38 = audioBookAuthor;
+    audioBookAuthor2 = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
+    audioBookAuthor3 = [equalCopy audioBookAuthor];
+    v41 = [audioBookAuthor2 isEqual:audioBookAuthor3];
 
     if (!v41)
     {
@@ -813,20 +813,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self audioBookName];
-  v6 = [v4 audioBookName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self audioBookName];
+  albumArtist2 = [equalCopy audioBookName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v42 = [(_INPBMessageLinkMetadata *)self audioBookName];
-  if (v42)
+  audioBookName = [(_INPBMessageLinkMetadata *)self audioBookName];
+  if (audioBookName)
   {
-    v43 = v42;
-    v44 = [(_INPBMessageLinkMetadata *)self audioBookName];
-    v45 = [v4 audioBookName];
-    v46 = [v44 isEqual:v45];
+    v43 = audioBookName;
+    audioBookName2 = [(_INPBMessageLinkMetadata *)self audioBookName];
+    audioBookName3 = [equalCopy audioBookName];
+    v46 = [audioBookName2 isEqual:audioBookName3];
 
     if (!v46)
     {
@@ -838,20 +838,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
-  v6 = [v4 audioBookNarrator];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
+  albumArtist2 = [equalCopy audioBookNarrator];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v47 = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
-  if (v47)
+  audioBookNarrator = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
+  if (audioBookNarrator)
   {
-    v48 = v47;
-    v49 = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
-    v50 = [v4 audioBookNarrator];
-    v51 = [v49 isEqual:v50];
+    v48 = audioBookNarrator;
+    audioBookNarrator2 = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
+    audioBookNarrator3 = [equalCopy audioBookNarrator];
+    v51 = [audioBookNarrator2 isEqual:audioBookNarrator3];
 
     if (!v51)
     {
@@ -863,20 +863,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self bookAuthor];
-  v6 = [v4 bookAuthor];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self bookAuthor];
+  albumArtist2 = [equalCopy bookAuthor];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v52 = [(_INPBMessageLinkMetadata *)self bookAuthor];
-  if (v52)
+  bookAuthor = [(_INPBMessageLinkMetadata *)self bookAuthor];
+  if (bookAuthor)
   {
-    v53 = v52;
-    v54 = [(_INPBMessageLinkMetadata *)self bookAuthor];
-    v55 = [v4 bookAuthor];
-    v56 = [v54 isEqual:v55];
+    v53 = bookAuthor;
+    bookAuthor2 = [(_INPBMessageLinkMetadata *)self bookAuthor];
+    bookAuthor3 = [equalCopy bookAuthor];
+    v56 = [bookAuthor2 isEqual:bookAuthor3];
 
     if (!v56)
     {
@@ -888,20 +888,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self bookName];
-  v6 = [v4 bookName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self bookName];
+  albumArtist2 = [equalCopy bookName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v57 = [(_INPBMessageLinkMetadata *)self bookName];
-  if (v57)
+  bookName = [(_INPBMessageLinkMetadata *)self bookName];
+  if (bookName)
   {
-    v58 = v57;
-    v59 = [(_INPBMessageLinkMetadata *)self bookName];
-    v60 = [v4 bookName];
-    v61 = [v59 isEqual:v60];
+    v58 = bookName;
+    bookName2 = [(_INPBMessageLinkMetadata *)self bookName];
+    bookName3 = [equalCopy bookName];
+    v61 = [bookName2 isEqual:bookName3];
 
     if (!v61)
     {
@@ -913,20 +913,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self creator];
-  v6 = [v4 creator];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self creator];
+  albumArtist2 = [equalCopy creator];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v62 = [(_INPBMessageLinkMetadata *)self creator];
-  if (v62)
+  creator = [(_INPBMessageLinkMetadata *)self creator];
+  if (creator)
   {
-    v63 = v62;
-    v64 = [(_INPBMessageLinkMetadata *)self creator];
-    v65 = [v4 creator];
-    v66 = [v64 isEqual:v65];
+    v63 = creator;
+    creator2 = [(_INPBMessageLinkMetadata *)self creator];
+    creator3 = [equalCopy creator];
+    v66 = [creator2 isEqual:creator3];
 
     if (!v66)
     {
@@ -938,20 +938,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
-  v6 = [v4 iTunesStoreFrontIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
+  albumArtist2 = [equalCopy iTunesStoreFrontIdentifier];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v67 = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
-  if (v67)
+  iTunesStoreFrontIdentifier = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
+  if (iTunesStoreFrontIdentifier)
   {
-    v68 = v67;
-    v69 = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
-    v70 = [v4 iTunesStoreFrontIdentifier];
-    v71 = [v69 isEqual:v70];
+    v68 = iTunesStoreFrontIdentifier;
+    iTunesStoreFrontIdentifier2 = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
+    iTunesStoreFrontIdentifier3 = [equalCopy iTunesStoreFrontIdentifier];
+    v71 = [iTunesStoreFrontIdentifier2 isEqual:iTunesStoreFrontIdentifier3];
 
     if (!v71)
     {
@@ -963,20 +963,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
-  v6 = [v4 iTunesStoreIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
+  albumArtist2 = [equalCopy iTunesStoreIdentifier];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v72 = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
-  if (v72)
+  iTunesStoreIdentifier = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
+  if (iTunesStoreIdentifier)
   {
-    v73 = v72;
-    v74 = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
-    v75 = [v4 iTunesStoreIdentifier];
-    v76 = [v74 isEqual:v75];
+    v73 = iTunesStoreIdentifier;
+    iTunesStoreIdentifier2 = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
+    iTunesStoreIdentifier3 = [equalCopy iTunesStoreIdentifier];
+    v76 = [iTunesStoreIdentifier2 isEqual:iTunesStoreIdentifier3];
 
     if (!v76)
     {
@@ -988,20 +988,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self iconURLs];
-  v6 = [v4 iconURLs];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self iconURLs];
+  albumArtist2 = [equalCopy iconURLs];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v77 = [(_INPBMessageLinkMetadata *)self iconURLs];
-  if (v77)
+  iconURLs = [(_INPBMessageLinkMetadata *)self iconURLs];
+  if (iconURLs)
   {
-    v78 = v77;
-    v79 = [(_INPBMessageLinkMetadata *)self iconURLs];
-    v80 = [v4 iconURLs];
-    v81 = [v79 isEqual:v80];
+    v78 = iconURLs;
+    iconURLs2 = [(_INPBMessageLinkMetadata *)self iconURLs];
+    iconURLs3 = [equalCopy iconURLs];
+    v81 = [iconURLs2 isEqual:iconURLs3];
 
     if (!v81)
     {
@@ -1013,20 +1013,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self imageURLs];
-  v6 = [v4 imageURLs];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self imageURLs];
+  albumArtist2 = [equalCopy imageURLs];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v82 = [(_INPBMessageLinkMetadata *)self imageURLs];
-  if (v82)
+  imageURLs = [(_INPBMessageLinkMetadata *)self imageURLs];
+  if (imageURLs)
   {
-    v83 = v82;
-    v84 = [(_INPBMessageLinkMetadata *)self imageURLs];
-    v85 = [v4 imageURLs];
-    v86 = [v84 isEqual:v85];
+    v83 = imageURLs;
+    imageURLs2 = [(_INPBMessageLinkMetadata *)self imageURLs];
+    imageURLs3 = [equalCopy imageURLs];
+    v86 = [imageURLs2 isEqual:imageURLs3];
 
     if (!v86)
     {
@@ -1038,20 +1038,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self itemType];
-  v6 = [v4 itemType];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self itemType];
+  albumArtist2 = [equalCopy itemType];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v87 = [(_INPBMessageLinkMetadata *)self itemType];
-  if (v87)
+  itemType = [(_INPBMessageLinkMetadata *)self itemType];
+  if (itemType)
   {
-    v88 = v87;
-    v89 = [(_INPBMessageLinkMetadata *)self itemType];
-    v90 = [v4 itemType];
-    v91 = [v89 isEqual:v90];
+    v88 = itemType;
+    itemType2 = [(_INPBMessageLinkMetadata *)self itemType];
+    itemType3 = [equalCopy itemType];
+    v91 = [itemType2 isEqual:itemType3];
 
     if (!v91)
     {
@@ -1063,38 +1063,38 @@ LABEL_81:
   {
   }
 
-  v92 = [(_INPBMessageLinkMetadata *)self hasLinkMediaType];
-  if (v92 != [v4 hasLinkMediaType])
+  hasLinkMediaType = [(_INPBMessageLinkMetadata *)self hasLinkMediaType];
+  if (hasLinkMediaType != [equalCopy hasLinkMediaType])
   {
     goto LABEL_261;
   }
 
   if ([(_INPBMessageLinkMetadata *)self hasLinkMediaType])
   {
-    if ([v4 hasLinkMediaType])
+    if ([equalCopy hasLinkMediaType])
     {
       linkMediaType = self->_linkMediaType;
-      if (linkMediaType != [v4 linkMediaType])
+      if (linkMediaType != [equalCopy linkMediaType])
       {
         goto LABEL_261;
       }
     }
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self linkURL];
-  v6 = [v4 linkURL];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self linkURL];
+  albumArtist2 = [equalCopy linkURL];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v94 = [(_INPBMessageLinkMetadata *)self linkURL];
-  if (v94)
+  linkURL = [(_INPBMessageLinkMetadata *)self linkURL];
+  if (linkURL)
   {
-    v95 = v94;
-    v96 = [(_INPBMessageLinkMetadata *)self linkURL];
-    v97 = [v4 linkURL];
-    v98 = [v96 isEqual:v97];
+    v95 = linkURL;
+    linkURL2 = [(_INPBMessageLinkMetadata *)self linkURL];
+    linkURL3 = [equalCopy linkURL];
+    v98 = [linkURL2 isEqual:linkURL3];
 
     if (!v98)
     {
@@ -1106,20 +1106,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
-  v6 = [v4 movieBundleGenre];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
+  albumArtist2 = [equalCopy movieBundleGenre];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v99 = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
-  if (v99)
+  movieBundleGenre = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
+  if (movieBundleGenre)
   {
-    v100 = v99;
-    v101 = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
-    v102 = [v4 movieBundleGenre];
-    v103 = [v101 isEqual:v102];
+    v100 = movieBundleGenre;
+    movieBundleGenre2 = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
+    movieBundleGenre3 = [equalCopy movieBundleGenre];
+    v103 = [movieBundleGenre2 isEqual:movieBundleGenre3];
 
     if (!v103)
     {
@@ -1131,20 +1131,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self movieBundleName];
-  v6 = [v4 movieBundleName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self movieBundleName];
+  albumArtist2 = [equalCopy movieBundleName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v104 = [(_INPBMessageLinkMetadata *)self movieBundleName];
-  if (v104)
+  movieBundleName = [(_INPBMessageLinkMetadata *)self movieBundleName];
+  if (movieBundleName)
   {
-    v105 = v104;
-    v106 = [(_INPBMessageLinkMetadata *)self movieBundleName];
-    v107 = [v4 movieBundleName];
-    v108 = [v106 isEqual:v107];
+    v105 = movieBundleName;
+    movieBundleName2 = [(_INPBMessageLinkMetadata *)self movieBundleName];
+    movieBundleName3 = [equalCopy movieBundleName];
+    v108 = [movieBundleName2 isEqual:movieBundleName3];
 
     if (!v108)
     {
@@ -1156,20 +1156,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self movieGenre];
-  v6 = [v4 movieGenre];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self movieGenre];
+  albumArtist2 = [equalCopy movieGenre];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v109 = [(_INPBMessageLinkMetadata *)self movieGenre];
-  if (v109)
+  movieGenre = [(_INPBMessageLinkMetadata *)self movieGenre];
+  if (movieGenre)
   {
-    v110 = v109;
-    v111 = [(_INPBMessageLinkMetadata *)self movieGenre];
-    v112 = [v4 movieGenre];
-    v113 = [v111 isEqual:v112];
+    v110 = movieGenre;
+    movieGenre2 = [(_INPBMessageLinkMetadata *)self movieGenre];
+    movieGenre3 = [equalCopy movieGenre];
+    v113 = [movieGenre2 isEqual:movieGenre3];
 
     if (!v113)
     {
@@ -1181,20 +1181,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self movieName];
-  v6 = [v4 movieName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self movieName];
+  albumArtist2 = [equalCopy movieName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v114 = [(_INPBMessageLinkMetadata *)self movieName];
-  if (v114)
+  movieName = [(_INPBMessageLinkMetadata *)self movieName];
+  if (movieName)
   {
-    v115 = v114;
-    v116 = [(_INPBMessageLinkMetadata *)self movieName];
-    v117 = [v4 movieName];
-    v118 = [v116 isEqual:v117];
+    v115 = movieName;
+    movieName2 = [(_INPBMessageLinkMetadata *)self movieName];
+    movieName3 = [equalCopy movieName];
+    v118 = [movieName2 isEqual:movieName3];
 
     if (!v118)
     {
@@ -1206,20 +1206,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
-  v6 = [v4 musicVideoArtist];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
+  albumArtist2 = [equalCopy musicVideoArtist];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v119 = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
-  if (v119)
+  musicVideoArtist = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
+  if (musicVideoArtist)
   {
-    v120 = v119;
-    v121 = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
-    v122 = [v4 musicVideoArtist];
-    v123 = [v121 isEqual:v122];
+    v120 = musicVideoArtist;
+    musicVideoArtist2 = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
+    musicVideoArtist3 = [equalCopy musicVideoArtist];
+    v123 = [musicVideoArtist2 isEqual:musicVideoArtist3];
 
     if (!v123)
     {
@@ -1231,20 +1231,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self musicVideoName];
-  v6 = [v4 musicVideoName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self musicVideoName];
+  albumArtist2 = [equalCopy musicVideoName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v124 = [(_INPBMessageLinkMetadata *)self musicVideoName];
-  if (v124)
+  musicVideoName = [(_INPBMessageLinkMetadata *)self musicVideoName];
+  if (musicVideoName)
   {
-    v125 = v124;
-    v126 = [(_INPBMessageLinkMetadata *)self musicVideoName];
-    v127 = [v4 musicVideoName];
-    v128 = [v126 isEqual:v127];
+    v125 = musicVideoName;
+    musicVideoName2 = [(_INPBMessageLinkMetadata *)self musicVideoName];
+    musicVideoName3 = [equalCopy musicVideoName];
+    v128 = [musicVideoName2 isEqual:musicVideoName3];
 
     if (!v128)
     {
@@ -1256,20 +1256,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self openGraphType];
-  v6 = [v4 openGraphType];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self openGraphType];
+  albumArtist2 = [equalCopy openGraphType];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v129 = [(_INPBMessageLinkMetadata *)self openGraphType];
-  if (v129)
+  openGraphType = [(_INPBMessageLinkMetadata *)self openGraphType];
+  if (openGraphType)
   {
-    v130 = v129;
-    v131 = [(_INPBMessageLinkMetadata *)self openGraphType];
-    v132 = [v4 openGraphType];
-    v133 = [v131 isEqual:v132];
+    v130 = openGraphType;
+    openGraphType2 = [(_INPBMessageLinkMetadata *)self openGraphType];
+    openGraphType3 = [equalCopy openGraphType];
+    v133 = [openGraphType2 isEqual:openGraphType3];
 
     if (!v133)
     {
@@ -1281,20 +1281,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self originalURL];
-  v6 = [v4 originalURL];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self originalURL];
+  albumArtist2 = [equalCopy originalURL];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v134 = [(_INPBMessageLinkMetadata *)self originalURL];
-  if (v134)
+  originalURL = [(_INPBMessageLinkMetadata *)self originalURL];
+  if (originalURL)
   {
-    v135 = v134;
-    v136 = [(_INPBMessageLinkMetadata *)self originalURL];
-    v137 = [v4 originalURL];
-    v138 = [v136 isEqual:v137];
+    v135 = originalURL;
+    originalURL2 = [(_INPBMessageLinkMetadata *)self originalURL];
+    originalURL3 = [equalCopy originalURL];
+    v138 = [originalURL2 isEqual:originalURL3];
 
     if (!v138)
     {
@@ -1306,20 +1306,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self playlistCurator];
-  v6 = [v4 playlistCurator];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self playlistCurator];
+  albumArtist2 = [equalCopy playlistCurator];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v139 = [(_INPBMessageLinkMetadata *)self playlistCurator];
-  if (v139)
+  playlistCurator = [(_INPBMessageLinkMetadata *)self playlistCurator];
+  if (playlistCurator)
   {
-    v140 = v139;
-    v141 = [(_INPBMessageLinkMetadata *)self playlistCurator];
-    v142 = [v4 playlistCurator];
-    v143 = [v141 isEqual:v142];
+    v140 = playlistCurator;
+    playlistCurator2 = [(_INPBMessageLinkMetadata *)self playlistCurator];
+    playlistCurator3 = [equalCopy playlistCurator];
+    v143 = [playlistCurator2 isEqual:playlistCurator3];
 
     if (!v143)
     {
@@ -1331,20 +1331,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self playlistName];
-  v6 = [v4 playlistName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self playlistName];
+  albumArtist2 = [equalCopy playlistName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v144 = [(_INPBMessageLinkMetadata *)self playlistName];
-  if (v144)
+  playlistName = [(_INPBMessageLinkMetadata *)self playlistName];
+  if (playlistName)
   {
-    v145 = v144;
-    v146 = [(_INPBMessageLinkMetadata *)self playlistName];
-    v147 = [v4 playlistName];
-    v148 = [v146 isEqual:v147];
+    v145 = playlistName;
+    playlistName2 = [(_INPBMessageLinkMetadata *)self playlistName];
+    playlistName3 = [equalCopy playlistName];
+    v148 = [playlistName2 isEqual:playlistName3];
 
     if (!v148)
     {
@@ -1356,20 +1356,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self podcastArtist];
-  v6 = [v4 podcastArtist];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self podcastArtist];
+  albumArtist2 = [equalCopy podcastArtist];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v149 = [(_INPBMessageLinkMetadata *)self podcastArtist];
-  if (v149)
+  podcastArtist = [(_INPBMessageLinkMetadata *)self podcastArtist];
+  if (podcastArtist)
   {
-    v150 = v149;
-    v151 = [(_INPBMessageLinkMetadata *)self podcastArtist];
-    v152 = [v4 podcastArtist];
-    v153 = [v151 isEqual:v152];
+    v150 = podcastArtist;
+    podcastArtist2 = [(_INPBMessageLinkMetadata *)self podcastArtist];
+    podcastArtist3 = [equalCopy podcastArtist];
+    v153 = [podcastArtist2 isEqual:podcastArtist3];
 
     if (!v153)
     {
@@ -1381,20 +1381,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
-  v6 = [v4 podcastEpisodeArtist];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
+  albumArtist2 = [equalCopy podcastEpisodeArtist];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v154 = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
-  if (v154)
+  podcastEpisodeArtist = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
+  if (podcastEpisodeArtist)
   {
-    v155 = v154;
-    v156 = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
-    v157 = [v4 podcastEpisodeArtist];
-    v158 = [v156 isEqual:v157];
+    v155 = podcastEpisodeArtist;
+    podcastEpisodeArtist2 = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
+    podcastEpisodeArtist3 = [equalCopy podcastEpisodeArtist];
+    v158 = [podcastEpisodeArtist2 isEqual:podcastEpisodeArtist3];
 
     if (!v158)
     {
@@ -1406,20 +1406,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
-  v6 = [v4 podcastEpisodeName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
+  albumArtist2 = [equalCopy podcastEpisodeName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v159 = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
-  if (v159)
+  podcastEpisodeName = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
+  if (podcastEpisodeName)
   {
-    v160 = v159;
-    v161 = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
-    v162 = [v4 podcastEpisodeName];
-    v163 = [v161 isEqual:v162];
+    v160 = podcastEpisodeName;
+    podcastEpisodeName2 = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
+    podcastEpisodeName3 = [equalCopy podcastEpisodeName];
+    v163 = [podcastEpisodeName2 isEqual:podcastEpisodeName3];
 
     if (!v163)
     {
@@ -1431,20 +1431,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
-  v6 = [v4 podcastEpisodePodcastName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
+  albumArtist2 = [equalCopy podcastEpisodePodcastName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v164 = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
-  if (v164)
+  podcastEpisodePodcastName = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
+  if (podcastEpisodePodcastName)
   {
-    v165 = v164;
-    v166 = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
-    v167 = [v4 podcastEpisodePodcastName];
-    v168 = [v166 isEqual:v167];
+    v165 = podcastEpisodePodcastName;
+    podcastEpisodePodcastName2 = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
+    podcastEpisodePodcastName3 = [equalCopy podcastEpisodePodcastName];
+    v168 = [podcastEpisodePodcastName2 isEqual:podcastEpisodePodcastName3];
 
     if (!v168)
     {
@@ -1456,20 +1456,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
-  v6 = [v4 podcastEpisodeReleaseDate];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
+  albumArtist2 = [equalCopy podcastEpisodeReleaseDate];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v169 = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
-  if (v169)
+  podcastEpisodeReleaseDate = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
+  if (podcastEpisodeReleaseDate)
   {
-    v170 = v169;
-    v171 = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
-    v172 = [v4 podcastEpisodeReleaseDate];
-    v173 = [v171 isEqual:v172];
+    v170 = podcastEpisodeReleaseDate;
+    podcastEpisodeReleaseDate2 = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
+    podcastEpisodeReleaseDate3 = [equalCopy podcastEpisodeReleaseDate];
+    v173 = [podcastEpisodeReleaseDate2 isEqual:podcastEpisodeReleaseDate3];
 
     if (!v173)
     {
@@ -1481,20 +1481,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self podcastName];
-  v6 = [v4 podcastName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self podcastName];
+  albumArtist2 = [equalCopy podcastName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v174 = [(_INPBMessageLinkMetadata *)self podcastName];
-  if (v174)
+  podcastName = [(_INPBMessageLinkMetadata *)self podcastName];
+  if (podcastName)
   {
-    v175 = v174;
-    v176 = [(_INPBMessageLinkMetadata *)self podcastName];
-    v177 = [v4 podcastName];
-    v178 = [v176 isEqual:v177];
+    v175 = podcastName;
+    podcastName2 = [(_INPBMessageLinkMetadata *)self podcastName];
+    podcastName3 = [equalCopy podcastName];
+    v178 = [podcastName2 isEqual:podcastName3];
 
     if (!v178)
     {
@@ -1506,20 +1506,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self radioCurator];
-  v6 = [v4 radioCurator];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self radioCurator];
+  albumArtist2 = [equalCopy radioCurator];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v179 = [(_INPBMessageLinkMetadata *)self radioCurator];
-  if (v179)
+  radioCurator = [(_INPBMessageLinkMetadata *)self radioCurator];
+  if (radioCurator)
   {
-    v180 = v179;
-    v181 = [(_INPBMessageLinkMetadata *)self radioCurator];
-    v182 = [v4 radioCurator];
-    v183 = [v181 isEqual:v182];
+    v180 = radioCurator;
+    radioCurator2 = [(_INPBMessageLinkMetadata *)self radioCurator];
+    radioCurator3 = [equalCopy radioCurator];
+    v183 = [radioCurator2 isEqual:radioCurator3];
 
     if (!v183)
     {
@@ -1531,20 +1531,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self radioName];
-  v6 = [v4 radioName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self radioName];
+  albumArtist2 = [equalCopy radioName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v184 = [(_INPBMessageLinkMetadata *)self radioName];
-  if (v184)
+  radioName = [(_INPBMessageLinkMetadata *)self radioName];
+  if (radioName)
   {
-    v185 = v184;
-    v186 = [(_INPBMessageLinkMetadata *)self radioName];
-    v187 = [v4 radioName];
-    v188 = [v186 isEqual:v187];
+    v185 = radioName;
+    radioName2 = [(_INPBMessageLinkMetadata *)self radioName];
+    radioName3 = [equalCopy radioName];
+    v188 = [radioName2 isEqual:radioName3];
 
     if (!v188)
     {
@@ -1556,20 +1556,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self siteName];
-  v6 = [v4 siteName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self siteName];
+  albumArtist2 = [equalCopy siteName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v189 = [(_INPBMessageLinkMetadata *)self siteName];
-  if (v189)
+  siteName = [(_INPBMessageLinkMetadata *)self siteName];
+  if (siteName)
   {
-    v190 = v189;
-    v191 = [(_INPBMessageLinkMetadata *)self siteName];
-    v192 = [v4 siteName];
-    v193 = [v191 isEqual:v192];
+    v190 = siteName;
+    siteName2 = [(_INPBMessageLinkMetadata *)self siteName];
+    siteName3 = [equalCopy siteName];
+    v193 = [siteName2 isEqual:siteName3];
 
     if (!v193)
     {
@@ -1581,20 +1581,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self softwareGenre];
-  v6 = [v4 softwareGenre];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self softwareGenre];
+  albumArtist2 = [equalCopy softwareGenre];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v194 = [(_INPBMessageLinkMetadata *)self softwareGenre];
-  if (v194)
+  softwareGenre = [(_INPBMessageLinkMetadata *)self softwareGenre];
+  if (softwareGenre)
   {
-    v195 = v194;
-    v196 = [(_INPBMessageLinkMetadata *)self softwareGenre];
-    v197 = [v4 softwareGenre];
-    v198 = [v196 isEqual:v197];
+    v195 = softwareGenre;
+    softwareGenre2 = [(_INPBMessageLinkMetadata *)self softwareGenre];
+    softwareGenre3 = [equalCopy softwareGenre];
+    v198 = [softwareGenre2 isEqual:softwareGenre3];
 
     if (!v198)
     {
@@ -1606,20 +1606,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self softwareName];
-  v6 = [v4 softwareName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self softwareName];
+  albumArtist2 = [equalCopy softwareName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v199 = [(_INPBMessageLinkMetadata *)self softwareName];
-  if (v199)
+  softwareName = [(_INPBMessageLinkMetadata *)self softwareName];
+  if (softwareName)
   {
-    v200 = v199;
-    v201 = [(_INPBMessageLinkMetadata *)self softwareName];
-    v202 = [v4 softwareName];
-    v203 = [v201 isEqual:v202];
+    v200 = softwareName;
+    softwareName2 = [(_INPBMessageLinkMetadata *)self softwareName];
+    softwareName3 = [equalCopy softwareName];
+    v203 = [softwareName2 isEqual:softwareName3];
 
     if (!v203)
     {
@@ -1631,20 +1631,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self softwarePlatform];
-  v6 = [v4 softwarePlatform];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self softwarePlatform];
+  albumArtist2 = [equalCopy softwarePlatform];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v204 = [(_INPBMessageLinkMetadata *)self softwarePlatform];
-  if (v204)
+  softwarePlatform = [(_INPBMessageLinkMetadata *)self softwarePlatform];
+  if (softwarePlatform)
   {
-    v205 = v204;
-    v206 = [(_INPBMessageLinkMetadata *)self softwarePlatform];
-    v207 = [v4 softwarePlatform];
-    v208 = [v206 isEqual:v207];
+    v205 = softwarePlatform;
+    softwarePlatform2 = [(_INPBMessageLinkMetadata *)self softwarePlatform];
+    softwarePlatform3 = [equalCopy softwarePlatform];
+    v208 = [softwarePlatform2 isEqual:softwarePlatform3];
 
     if (!v208)
     {
@@ -1656,20 +1656,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self songAlbum];
-  v6 = [v4 songAlbum];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self songAlbum];
+  albumArtist2 = [equalCopy songAlbum];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v209 = [(_INPBMessageLinkMetadata *)self songAlbum];
-  if (v209)
+  songAlbum = [(_INPBMessageLinkMetadata *)self songAlbum];
+  if (songAlbum)
   {
-    v210 = v209;
-    v211 = [(_INPBMessageLinkMetadata *)self songAlbum];
-    v212 = [v4 songAlbum];
-    v213 = [v211 isEqual:v212];
+    v210 = songAlbum;
+    songAlbum2 = [(_INPBMessageLinkMetadata *)self songAlbum];
+    songAlbum3 = [equalCopy songAlbum];
+    v213 = [songAlbum2 isEqual:songAlbum3];
 
     if (!v213)
     {
@@ -1681,20 +1681,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self songArtist];
-  v6 = [v4 songArtist];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self songArtist];
+  albumArtist2 = [equalCopy songArtist];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v214 = [(_INPBMessageLinkMetadata *)self songArtist];
-  if (v214)
+  songArtist = [(_INPBMessageLinkMetadata *)self songArtist];
+  if (songArtist)
   {
-    v215 = v214;
-    v216 = [(_INPBMessageLinkMetadata *)self songArtist];
-    v217 = [v4 songArtist];
-    v218 = [v216 isEqual:v217];
+    v215 = songArtist;
+    songArtist2 = [(_INPBMessageLinkMetadata *)self songArtist];
+    songArtist3 = [equalCopy songArtist];
+    v218 = [songArtist2 isEqual:songArtist3];
 
     if (!v218)
     {
@@ -1706,20 +1706,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self songTitle];
-  v6 = [v4 songTitle];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self songTitle];
+  albumArtist2 = [equalCopy songTitle];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v219 = [(_INPBMessageLinkMetadata *)self songTitle];
-  if (v219)
+  songTitle = [(_INPBMessageLinkMetadata *)self songTitle];
+  if (songTitle)
   {
-    v220 = v219;
-    v221 = [(_INPBMessageLinkMetadata *)self songTitle];
-    v222 = [v4 songTitle];
-    v223 = [v221 isEqual:v222];
+    v220 = songTitle;
+    songTitle2 = [(_INPBMessageLinkMetadata *)self songTitle];
+    songTitle3 = [equalCopy songTitle];
+    v223 = [songTitle2 isEqual:songTitle3];
 
     if (!v223)
     {
@@ -1731,20 +1731,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self summary];
-  v6 = [v4 summary];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self summary];
+  albumArtist2 = [equalCopy summary];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v224 = [(_INPBMessageLinkMetadata *)self summary];
-  if (v224)
+  summary = [(_INPBMessageLinkMetadata *)self summary];
+  if (summary)
   {
-    v225 = v224;
-    v226 = [(_INPBMessageLinkMetadata *)self summary];
-    v227 = [v4 summary];
-    v228 = [v226 isEqual:v227];
+    v225 = summary;
+    summary2 = [(_INPBMessageLinkMetadata *)self summary];
+    summary3 = [equalCopy summary];
+    v228 = [summary2 isEqual:summary3];
 
     if (!v228)
     {
@@ -1756,20 +1756,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self title];
+  albumArtist2 = [equalCopy title];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v229 = [(_INPBMessageLinkMetadata *)self title];
-  if (v229)
+  title = [(_INPBMessageLinkMetadata *)self title];
+  if (title)
   {
-    v230 = v229;
-    v231 = [(_INPBMessageLinkMetadata *)self title];
-    v232 = [v4 title];
-    v233 = [v231 isEqual:v232];
+    v230 = title;
+    title2 = [(_INPBMessageLinkMetadata *)self title];
+    title3 = [equalCopy title];
+    v233 = [title2 isEqual:title3];
 
     if (!v233)
     {
@@ -1781,20 +1781,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
-  v6 = [v4 tvEpisodeEpisodeName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
+  albumArtist2 = [equalCopy tvEpisodeEpisodeName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v234 = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
-  if (v234)
+  tvEpisodeEpisodeName = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
+  if (tvEpisodeEpisodeName)
   {
-    v235 = v234;
-    v236 = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
-    v237 = [v4 tvEpisodeEpisodeName];
-    v238 = [v236 isEqual:v237];
+    v235 = tvEpisodeEpisodeName;
+    tvEpisodeEpisodeName2 = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
+    tvEpisodeEpisodeName3 = [equalCopy tvEpisodeEpisodeName];
+    v238 = [tvEpisodeEpisodeName2 isEqual:tvEpisodeEpisodeName3];
 
     if (!v238)
     {
@@ -1806,20 +1806,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
-  v6 = [v4 tvEpisodeGenre];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
+  albumArtist2 = [equalCopy tvEpisodeGenre];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v239 = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
-  if (v239)
+  tvEpisodeGenre = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
+  if (tvEpisodeGenre)
   {
-    v240 = v239;
-    v241 = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
-    v242 = [v4 tvEpisodeGenre];
-    v243 = [v241 isEqual:v242];
+    v240 = tvEpisodeGenre;
+    tvEpisodeGenre2 = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
+    tvEpisodeGenre3 = [equalCopy tvEpisodeGenre];
+    v243 = [tvEpisodeGenre2 isEqual:tvEpisodeGenre3];
 
     if (!v243)
     {
@@ -1831,20 +1831,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
-  v6 = [v4 tvEpisodeSeasonName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
+  albumArtist2 = [equalCopy tvEpisodeSeasonName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v244 = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
-  if (v244)
+  tvEpisodeSeasonName = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
+  if (tvEpisodeSeasonName)
   {
-    v245 = v244;
-    v246 = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
-    v247 = [v4 tvEpisodeSeasonName];
-    v248 = [v246 isEqual:v247];
+    v245 = tvEpisodeSeasonName;
+    tvEpisodeSeasonName2 = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
+    tvEpisodeSeasonName3 = [equalCopy tvEpisodeSeasonName];
+    v248 = [tvEpisodeSeasonName2 isEqual:tvEpisodeSeasonName3];
 
     if (!v248)
     {
@@ -1856,20 +1856,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
-  v6 = [v4 tvSeasonGenre];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
+  albumArtist2 = [equalCopy tvSeasonGenre];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v249 = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
-  if (v249)
+  tvSeasonGenre = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
+  if (tvSeasonGenre)
   {
-    v250 = v249;
-    v251 = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
-    v252 = [v4 tvSeasonGenre];
-    v253 = [v251 isEqual:v252];
+    v250 = tvSeasonGenre;
+    tvSeasonGenre2 = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
+    tvSeasonGenre3 = [equalCopy tvSeasonGenre];
+    v253 = [tvSeasonGenre2 isEqual:tvSeasonGenre3];
 
     if (!v253)
     {
@@ -1881,20 +1881,20 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self tvSeasonName];
-  v6 = [v4 tvSeasonName];
-  if ((v5 != 0) == (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self tvSeasonName];
+  albumArtist2 = [equalCopy tvSeasonName];
+  if ((albumArtist != 0) == (albumArtist2 == 0))
   {
     goto LABEL_260;
   }
 
-  v254 = [(_INPBMessageLinkMetadata *)self tvSeasonName];
-  if (v254)
+  tvSeasonName = [(_INPBMessageLinkMetadata *)self tvSeasonName];
+  if (tvSeasonName)
   {
-    v255 = v254;
-    v256 = [(_INPBMessageLinkMetadata *)self tvSeasonName];
-    v257 = [v4 tvSeasonName];
-    v258 = [v256 isEqual:v257];
+    v255 = tvSeasonName;
+    tvSeasonName2 = [(_INPBMessageLinkMetadata *)self tvSeasonName];
+    tvSeasonName3 = [equalCopy tvSeasonName];
+    v258 = [tvSeasonName2 isEqual:tvSeasonName3];
 
     if (!v258)
     {
@@ -1906,12 +1906,12 @@ LABEL_81:
   {
   }
 
-  v5 = [(_INPBMessageLinkMetadata *)self tvShowName];
-  v6 = [v4 tvShowName];
-  if ((v5 != 0) != (v6 == 0))
+  albumArtist = [(_INPBMessageLinkMetadata *)self tvShowName];
+  albumArtist2 = [equalCopy tvShowName];
+  if ((albumArtist != 0) != (albumArtist2 == 0))
   {
-    v259 = [(_INPBMessageLinkMetadata *)self tvShowName];
-    if (!v259)
+    tvShowName = [(_INPBMessageLinkMetadata *)self tvShowName];
+    if (!tvShowName)
     {
 
 LABEL_264:
@@ -1919,10 +1919,10 @@ LABEL_264:
       goto LABEL_262;
     }
 
-    v260 = v259;
-    v261 = [(_INPBMessageLinkMetadata *)self tvShowName];
-    v262 = [v4 tvShowName];
-    v263 = [v261 isEqual:v262];
+    v260 = tvShowName;
+    tvShowName2 = [(_INPBMessageLinkMetadata *)self tvShowName];
+    tvShowName3 = [equalCopy tvShowName];
+    v263 = [tvShowName2 isEqual:tvShowName3];
 
     if (v263)
     {
@@ -1942,58 +1942,58 @@ LABEL_262:
   return v264;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBMessageLinkMetadata allocWithZone:](_INPBMessageLinkMetadata init];
-  v6 = [(NSString *)self->_albumArtist copyWithZone:a3];
+  v6 = [(NSString *)self->_albumArtist copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setAlbumArtist:v6];
 
-  v7 = [(NSString *)self->_albumName copyWithZone:a3];
+  v7 = [(NSString *)self->_albumName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setAlbumName:v7];
 
-  v8 = [(NSString *)self->_appleTvSubtitle copyWithZone:a3];
+  v8 = [(NSString *)self->_appleTvSubtitle copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setAppleTvSubtitle:v8];
 
-  v9 = [(NSString *)self->_appleTvTitle copyWithZone:a3];
+  v9 = [(NSString *)self->_appleTvTitle copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setAppleTvTitle:v9];
 
-  v10 = [(NSString *)self->_artistGenre copyWithZone:a3];
+  v10 = [(NSString *)self->_artistGenre copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setArtistGenre:v10];
 
-  v11 = [(NSString *)self->_artistName copyWithZone:a3];
+  v11 = [(NSString *)self->_artistName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setArtistName:v11];
 
-  v12 = [(NSString *)self->_audioBookAuthor copyWithZone:a3];
+  v12 = [(NSString *)self->_audioBookAuthor copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setAudioBookAuthor:v12];
 
-  v13 = [(NSString *)self->_audioBookName copyWithZone:a3];
+  v13 = [(NSString *)self->_audioBookName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setAudioBookName:v13];
 
-  v14 = [(NSString *)self->_audioBookNarrator copyWithZone:a3];
+  v14 = [(NSString *)self->_audioBookNarrator copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setAudioBookNarrator:v14];
 
-  v15 = [(NSString *)self->_bookAuthor copyWithZone:a3];
+  v15 = [(NSString *)self->_bookAuthor copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setBookAuthor:v15];
 
-  v16 = [(NSString *)self->_bookName copyWithZone:a3];
+  v16 = [(NSString *)self->_bookName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setBookName:v16];
 
-  v17 = [(NSString *)self->_creator copyWithZone:a3];
+  v17 = [(NSString *)self->_creator copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setCreator:v17];
 
-  v18 = [(NSString *)self->_iTunesStoreFrontIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_iTunesStoreFrontIdentifier copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setITunesStoreFrontIdentifier:v18];
 
-  v19 = [(NSString *)self->_iTunesStoreIdentifier copyWithZone:a3];
+  v19 = [(NSString *)self->_iTunesStoreIdentifier copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setITunesStoreIdentifier:v19];
 
-  v20 = [(NSArray *)self->_iconURLs copyWithZone:a3];
+  v20 = [(NSArray *)self->_iconURLs copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setIconURLs:v20];
 
-  v21 = [(NSArray *)self->_imageURLs copyWithZone:a3];
+  v21 = [(NSArray *)self->_imageURLs copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setImageURLs:v21];
 
-  v22 = [(NSString *)self->_itemType copyWithZone:a3];
+  v22 = [(NSString *)self->_itemType copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setItemType:v22];
 
   if ([(_INPBMessageLinkMetadata *)self hasLinkMediaType])
@@ -2001,246 +2001,246 @@ LABEL_262:
     [(_INPBMessageLinkMetadata *)v5 setLinkMediaType:[(_INPBMessageLinkMetadata *)self linkMediaType]];
   }
 
-  v23 = [(_INPBURLValue *)self->_linkURL copyWithZone:a3];
+  v23 = [(_INPBURLValue *)self->_linkURL copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setLinkURL:v23];
 
-  v24 = [(NSString *)self->_movieBundleGenre copyWithZone:a3];
+  v24 = [(NSString *)self->_movieBundleGenre copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setMovieBundleGenre:v24];
 
-  v25 = [(NSString *)self->_movieBundleName copyWithZone:a3];
+  v25 = [(NSString *)self->_movieBundleName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setMovieBundleName:v25];
 
-  v26 = [(NSString *)self->_movieGenre copyWithZone:a3];
+  v26 = [(NSString *)self->_movieGenre copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setMovieGenre:v26];
 
-  v27 = [(NSString *)self->_movieName copyWithZone:a3];
+  v27 = [(NSString *)self->_movieName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setMovieName:v27];
 
-  v28 = [(NSString *)self->_musicVideoArtist copyWithZone:a3];
+  v28 = [(NSString *)self->_musicVideoArtist copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setMusicVideoArtist:v28];
 
-  v29 = [(NSString *)self->_musicVideoName copyWithZone:a3];
+  v29 = [(NSString *)self->_musicVideoName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setMusicVideoName:v29];
 
-  v30 = [(NSString *)self->_openGraphType copyWithZone:a3];
+  v30 = [(NSString *)self->_openGraphType copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setOpenGraphType:v30];
 
-  v31 = [(NSString *)self->_originalURL copyWithZone:a3];
+  v31 = [(NSString *)self->_originalURL copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setOriginalURL:v31];
 
-  v32 = [(NSString *)self->_playlistCurator copyWithZone:a3];
+  v32 = [(NSString *)self->_playlistCurator copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setPlaylistCurator:v32];
 
-  v33 = [(NSString *)self->_playlistName copyWithZone:a3];
+  v33 = [(NSString *)self->_playlistName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setPlaylistName:v33];
 
-  v34 = [(NSString *)self->_podcastArtist copyWithZone:a3];
+  v34 = [(NSString *)self->_podcastArtist copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setPodcastArtist:v34];
 
-  v35 = [(NSString *)self->_podcastEpisodeArtist copyWithZone:a3];
+  v35 = [(NSString *)self->_podcastEpisodeArtist copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setPodcastEpisodeArtist:v35];
 
-  v36 = [(NSString *)self->_podcastEpisodeName copyWithZone:a3];
+  v36 = [(NSString *)self->_podcastEpisodeName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setPodcastEpisodeName:v36];
 
-  v37 = [(NSString *)self->_podcastEpisodePodcastName copyWithZone:a3];
+  v37 = [(NSString *)self->_podcastEpisodePodcastName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setPodcastEpisodePodcastName:v37];
 
-  v38 = [(_INPBDateTime *)self->_podcastEpisodeReleaseDate copyWithZone:a3];
+  v38 = [(_INPBDateTime *)self->_podcastEpisodeReleaseDate copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setPodcastEpisodeReleaseDate:v38];
 
-  v39 = [(NSString *)self->_podcastName copyWithZone:a3];
+  v39 = [(NSString *)self->_podcastName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setPodcastName:v39];
 
-  v40 = [(NSString *)self->_radioCurator copyWithZone:a3];
+  v40 = [(NSString *)self->_radioCurator copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setRadioCurator:v40];
 
-  v41 = [(NSString *)self->_radioName copyWithZone:a3];
+  v41 = [(NSString *)self->_radioName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setRadioName:v41];
 
-  v42 = [(NSString *)self->_siteName copyWithZone:a3];
+  v42 = [(NSString *)self->_siteName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setSiteName:v42];
 
-  v43 = [(NSString *)self->_softwareGenre copyWithZone:a3];
+  v43 = [(NSString *)self->_softwareGenre copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setSoftwareGenre:v43];
 
-  v44 = [(NSString *)self->_softwareName copyWithZone:a3];
+  v44 = [(NSString *)self->_softwareName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setSoftwareName:v44];
 
-  v45 = [(NSString *)self->_softwarePlatform copyWithZone:a3];
+  v45 = [(NSString *)self->_softwarePlatform copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setSoftwarePlatform:v45];
 
-  v46 = [(NSString *)self->_songAlbum copyWithZone:a3];
+  v46 = [(NSString *)self->_songAlbum copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setSongAlbum:v46];
 
-  v47 = [(NSString *)self->_songArtist copyWithZone:a3];
+  v47 = [(NSString *)self->_songArtist copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setSongArtist:v47];
 
-  v48 = [(NSString *)self->_songTitle copyWithZone:a3];
+  v48 = [(NSString *)self->_songTitle copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setSongTitle:v48];
 
-  v49 = [(NSString *)self->_summary copyWithZone:a3];
+  v49 = [(NSString *)self->_summary copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setSummary:v49];
 
-  v50 = [(NSString *)self->_title copyWithZone:a3];
+  v50 = [(NSString *)self->_title copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setTitle:v50];
 
-  v51 = [(NSString *)self->_tvEpisodeEpisodeName copyWithZone:a3];
+  v51 = [(NSString *)self->_tvEpisodeEpisodeName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setTvEpisodeEpisodeName:v51];
 
-  v52 = [(NSString *)self->_tvEpisodeGenre copyWithZone:a3];
+  v52 = [(NSString *)self->_tvEpisodeGenre copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setTvEpisodeGenre:v52];
 
-  v53 = [(NSString *)self->_tvEpisodeSeasonName copyWithZone:a3];
+  v53 = [(NSString *)self->_tvEpisodeSeasonName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setTvEpisodeSeasonName:v53];
 
-  v54 = [(NSString *)self->_tvSeasonGenre copyWithZone:a3];
+  v54 = [(NSString *)self->_tvSeasonGenre copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setTvSeasonGenre:v54];
 
-  v55 = [(NSString *)self->_tvSeasonName copyWithZone:a3];
+  v55 = [(NSString *)self->_tvSeasonName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setTvSeasonName:v55];
 
-  v56 = [(NSString *)self->_tvShowName copyWithZone:a3];
+  v56 = [(NSString *)self->_tvShowName copyWithZone:zone];
   [(_INPBMessageLinkMetadata *)v5 setTvShowName:v56];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBMessageLinkMetadata *)self data];
+  coderCopy = coder;
+  data = [(_INPBMessageLinkMetadata *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBMessageLinkMetadata)initWithCoder:(id)a3
+- (_INPBMessageLinkMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBMessageLinkMetadata *)self initWithData:v6];
+    self = [(_INPBMessageLinkMetadata *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v127 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBMessageLinkMetadata *)self albumArtist];
+  toCopy = to;
+  albumArtist = [(_INPBMessageLinkMetadata *)self albumArtist];
 
-  if (v5)
+  if (albumArtist)
   {
     albumArtist = self->_albumArtist;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_INPBMessageLinkMetadata *)self albumName];
+  albumName = [(_INPBMessageLinkMetadata *)self albumName];
 
-  if (v7)
+  if (albumName)
   {
     albumName = self->_albumName;
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
+  appleTvSubtitle = [(_INPBMessageLinkMetadata *)self appleTvSubtitle];
 
-  if (v9)
+  if (appleTvSubtitle)
   {
     appleTvSubtitle = self->_appleTvSubtitle;
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(_INPBMessageLinkMetadata *)self appleTvTitle];
+  appleTvTitle = [(_INPBMessageLinkMetadata *)self appleTvTitle];
 
-  if (v11)
+  if (appleTvTitle)
   {
     appleTvTitle = self->_appleTvTitle;
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_INPBMessageLinkMetadata *)self artistGenre];
+  artistGenre = [(_INPBMessageLinkMetadata *)self artistGenre];
 
-  if (v13)
+  if (artistGenre)
   {
     artistGenre = self->_artistGenre;
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_INPBMessageLinkMetadata *)self artistName];
+  artistName = [(_INPBMessageLinkMetadata *)self artistName];
 
-  if (v15)
+  if (artistName)
   {
     artistName = self->_artistName;
     PBDataWriterWriteStringField();
   }
 
-  v17 = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
+  audioBookAuthor = [(_INPBMessageLinkMetadata *)self audioBookAuthor];
 
-  if (v17)
+  if (audioBookAuthor)
   {
     audioBookAuthor = self->_audioBookAuthor;
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(_INPBMessageLinkMetadata *)self audioBookName];
+  audioBookName = [(_INPBMessageLinkMetadata *)self audioBookName];
 
-  if (v19)
+  if (audioBookName)
   {
     audioBookName = self->_audioBookName;
     PBDataWriterWriteStringField();
   }
 
-  v21 = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
+  audioBookNarrator = [(_INPBMessageLinkMetadata *)self audioBookNarrator];
 
-  if (v21)
+  if (audioBookNarrator)
   {
     audioBookNarrator = self->_audioBookNarrator;
     PBDataWriterWriteStringField();
   }
 
-  v23 = [(_INPBMessageLinkMetadata *)self bookAuthor];
+  bookAuthor = [(_INPBMessageLinkMetadata *)self bookAuthor];
 
-  if (v23)
+  if (bookAuthor)
   {
     bookAuthor = self->_bookAuthor;
     PBDataWriterWriteStringField();
   }
 
-  v25 = [(_INPBMessageLinkMetadata *)self bookName];
+  bookName = [(_INPBMessageLinkMetadata *)self bookName];
 
-  if (v25)
+  if (bookName)
   {
     bookName = self->_bookName;
     PBDataWriterWriteStringField();
   }
 
-  v27 = [(_INPBMessageLinkMetadata *)self creator];
+  creator = [(_INPBMessageLinkMetadata *)self creator];
 
-  if (v27)
+  if (creator)
   {
     creator = self->_creator;
     PBDataWriterWriteStringField();
   }
 
-  v29 = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
+  iTunesStoreFrontIdentifier = [(_INPBMessageLinkMetadata *)self iTunesStoreFrontIdentifier];
 
-  if (v29)
+  if (iTunesStoreFrontIdentifier)
   {
     iTunesStoreFrontIdentifier = self->_iTunesStoreFrontIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v31 = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
+  iTunesStoreIdentifier = [(_INPBMessageLinkMetadata *)self iTunesStoreIdentifier];
 
-  if (v31)
+  if (iTunesStoreIdentifier)
   {
     iTunesStoreIdentifier = self->_iTunesStoreIdentifier;
     PBDataWriterWriteStringField();
@@ -2310,9 +2310,9 @@ LABEL_262:
     while (v41);
   }
 
-  v45 = [(_INPBMessageLinkMetadata *)self itemType];
+  itemType = [(_INPBMessageLinkMetadata *)self itemType];
 
-  if (v45)
+  if (itemType)
   {
     itemType = self->_itemType;
     PBDataWriterWriteStringField();
@@ -2324,273 +2324,273 @@ LABEL_262:
     PBDataWriterWriteInt32Field();
   }
 
-  v48 = [(_INPBMessageLinkMetadata *)self linkURL];
+  linkURL = [(_INPBMessageLinkMetadata *)self linkURL];
 
-  if (v48)
+  if (linkURL)
   {
-    v49 = [(_INPBMessageLinkMetadata *)self linkURL];
+    linkURL2 = [(_INPBMessageLinkMetadata *)self linkURL];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
+  movieBundleGenre = [(_INPBMessageLinkMetadata *)self movieBundleGenre];
 
-  if (v50)
+  if (movieBundleGenre)
   {
     movieBundleGenre = self->_movieBundleGenre;
     PBDataWriterWriteStringField();
   }
 
-  v52 = [(_INPBMessageLinkMetadata *)self movieBundleName];
+  movieBundleName = [(_INPBMessageLinkMetadata *)self movieBundleName];
 
-  if (v52)
+  if (movieBundleName)
   {
     movieBundleName = self->_movieBundleName;
     PBDataWriterWriteStringField();
   }
 
-  v54 = [(_INPBMessageLinkMetadata *)self movieGenre];
+  movieGenre = [(_INPBMessageLinkMetadata *)self movieGenre];
 
-  if (v54)
+  if (movieGenre)
   {
     movieGenre = self->_movieGenre;
     PBDataWriterWriteStringField();
   }
 
-  v56 = [(_INPBMessageLinkMetadata *)self movieName];
+  movieName = [(_INPBMessageLinkMetadata *)self movieName];
 
-  if (v56)
+  if (movieName)
   {
     movieName = self->_movieName;
     PBDataWriterWriteStringField();
   }
 
-  v58 = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
+  musicVideoArtist = [(_INPBMessageLinkMetadata *)self musicVideoArtist];
 
-  if (v58)
+  if (musicVideoArtist)
   {
     musicVideoArtist = self->_musicVideoArtist;
     PBDataWriterWriteStringField();
   }
 
-  v60 = [(_INPBMessageLinkMetadata *)self musicVideoName];
+  musicVideoName = [(_INPBMessageLinkMetadata *)self musicVideoName];
 
-  if (v60)
+  if (musicVideoName)
   {
     musicVideoName = self->_musicVideoName;
     PBDataWriterWriteStringField();
   }
 
-  v62 = [(_INPBMessageLinkMetadata *)self openGraphType];
+  openGraphType = [(_INPBMessageLinkMetadata *)self openGraphType];
 
-  if (v62)
+  if (openGraphType)
   {
     openGraphType = self->_openGraphType;
     PBDataWriterWriteStringField();
   }
 
-  v64 = [(_INPBMessageLinkMetadata *)self originalURL];
+  originalURL = [(_INPBMessageLinkMetadata *)self originalURL];
 
-  if (v64)
+  if (originalURL)
   {
     originalURL = self->_originalURL;
     PBDataWriterWriteStringField();
   }
 
-  v66 = [(_INPBMessageLinkMetadata *)self playlistCurator];
+  playlistCurator = [(_INPBMessageLinkMetadata *)self playlistCurator];
 
-  if (v66)
+  if (playlistCurator)
   {
     playlistCurator = self->_playlistCurator;
     PBDataWriterWriteStringField();
   }
 
-  v68 = [(_INPBMessageLinkMetadata *)self playlistName];
+  playlistName = [(_INPBMessageLinkMetadata *)self playlistName];
 
-  if (v68)
+  if (playlistName)
   {
     playlistName = self->_playlistName;
     PBDataWriterWriteStringField();
   }
 
-  v70 = [(_INPBMessageLinkMetadata *)self podcastArtist];
+  podcastArtist = [(_INPBMessageLinkMetadata *)self podcastArtist];
 
-  if (v70)
+  if (podcastArtist)
   {
     podcastArtist = self->_podcastArtist;
     PBDataWriterWriteStringField();
   }
 
-  v72 = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
+  podcastEpisodeArtist = [(_INPBMessageLinkMetadata *)self podcastEpisodeArtist];
 
-  if (v72)
+  if (podcastEpisodeArtist)
   {
     podcastEpisodeArtist = self->_podcastEpisodeArtist;
     PBDataWriterWriteStringField();
   }
 
-  v74 = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
+  podcastEpisodeName = [(_INPBMessageLinkMetadata *)self podcastEpisodeName];
 
-  if (v74)
+  if (podcastEpisodeName)
   {
     podcastEpisodeName = self->_podcastEpisodeName;
     PBDataWriterWriteStringField();
   }
 
-  v76 = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
+  podcastEpisodePodcastName = [(_INPBMessageLinkMetadata *)self podcastEpisodePodcastName];
 
-  if (v76)
+  if (podcastEpisodePodcastName)
   {
     podcastEpisodePodcastName = self->_podcastEpisodePodcastName;
     PBDataWriterWriteStringField();
   }
 
-  v78 = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
+  podcastEpisodeReleaseDate = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
 
-  if (v78)
+  if (podcastEpisodeReleaseDate)
   {
-    v79 = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
+    podcastEpisodeReleaseDate2 = [(_INPBMessageLinkMetadata *)self podcastEpisodeReleaseDate];
     PBDataWriterWriteSubmessage();
   }
 
-  v80 = [(_INPBMessageLinkMetadata *)self podcastName];
+  podcastName = [(_INPBMessageLinkMetadata *)self podcastName];
 
-  if (v80)
+  if (podcastName)
   {
     podcastName = self->_podcastName;
     PBDataWriterWriteStringField();
   }
 
-  v82 = [(_INPBMessageLinkMetadata *)self radioCurator];
+  radioCurator = [(_INPBMessageLinkMetadata *)self radioCurator];
 
-  if (v82)
+  if (radioCurator)
   {
     radioCurator = self->_radioCurator;
     PBDataWriterWriteStringField();
   }
 
-  v84 = [(_INPBMessageLinkMetadata *)self radioName];
+  radioName = [(_INPBMessageLinkMetadata *)self radioName];
 
-  if (v84)
+  if (radioName)
   {
     radioName = self->_radioName;
     PBDataWriterWriteStringField();
   }
 
-  v86 = [(_INPBMessageLinkMetadata *)self siteName];
+  siteName = [(_INPBMessageLinkMetadata *)self siteName];
 
-  if (v86)
+  if (siteName)
   {
     siteName = self->_siteName;
     PBDataWriterWriteStringField();
   }
 
-  v88 = [(_INPBMessageLinkMetadata *)self softwareGenre];
+  softwareGenre = [(_INPBMessageLinkMetadata *)self softwareGenre];
 
-  if (v88)
+  if (softwareGenre)
   {
     softwareGenre = self->_softwareGenre;
     PBDataWriterWriteStringField();
   }
 
-  v90 = [(_INPBMessageLinkMetadata *)self softwareName];
+  softwareName = [(_INPBMessageLinkMetadata *)self softwareName];
 
-  if (v90)
+  if (softwareName)
   {
     softwareName = self->_softwareName;
     PBDataWriterWriteStringField();
   }
 
-  v92 = [(_INPBMessageLinkMetadata *)self softwarePlatform];
+  softwarePlatform = [(_INPBMessageLinkMetadata *)self softwarePlatform];
 
-  if (v92)
+  if (softwarePlatform)
   {
     softwarePlatform = self->_softwarePlatform;
     PBDataWriterWriteStringField();
   }
 
-  v94 = [(_INPBMessageLinkMetadata *)self songAlbum];
+  songAlbum = [(_INPBMessageLinkMetadata *)self songAlbum];
 
-  if (v94)
+  if (songAlbum)
   {
     songAlbum = self->_songAlbum;
     PBDataWriterWriteStringField();
   }
 
-  v96 = [(_INPBMessageLinkMetadata *)self songArtist];
+  songArtist = [(_INPBMessageLinkMetadata *)self songArtist];
 
-  if (v96)
+  if (songArtist)
   {
     songArtist = self->_songArtist;
     PBDataWriterWriteStringField();
   }
 
-  v98 = [(_INPBMessageLinkMetadata *)self songTitle];
+  songTitle = [(_INPBMessageLinkMetadata *)self songTitle];
 
-  if (v98)
+  if (songTitle)
   {
     songTitle = self->_songTitle;
     PBDataWriterWriteStringField();
   }
 
-  v100 = [(_INPBMessageLinkMetadata *)self summary];
+  summary = [(_INPBMessageLinkMetadata *)self summary];
 
-  if (v100)
+  if (summary)
   {
     summary = self->_summary;
     PBDataWriterWriteStringField();
   }
 
-  v102 = [(_INPBMessageLinkMetadata *)self title];
+  title = [(_INPBMessageLinkMetadata *)self title];
 
-  if (v102)
+  if (title)
   {
     title = self->_title;
     PBDataWriterWriteStringField();
   }
 
-  v104 = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
+  tvEpisodeEpisodeName = [(_INPBMessageLinkMetadata *)self tvEpisodeEpisodeName];
 
-  if (v104)
+  if (tvEpisodeEpisodeName)
   {
     tvEpisodeEpisodeName = self->_tvEpisodeEpisodeName;
     PBDataWriterWriteStringField();
   }
 
-  v106 = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
+  tvEpisodeGenre = [(_INPBMessageLinkMetadata *)self tvEpisodeGenre];
 
-  if (v106)
+  if (tvEpisodeGenre)
   {
     tvEpisodeGenre = self->_tvEpisodeGenre;
     PBDataWriterWriteStringField();
   }
 
-  v108 = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
+  tvEpisodeSeasonName = [(_INPBMessageLinkMetadata *)self tvEpisodeSeasonName];
 
-  if (v108)
+  if (tvEpisodeSeasonName)
   {
     tvEpisodeSeasonName = self->_tvEpisodeSeasonName;
     PBDataWriterWriteStringField();
   }
 
-  v110 = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
+  tvSeasonGenre = [(_INPBMessageLinkMetadata *)self tvSeasonGenre];
 
-  if (v110)
+  if (tvSeasonGenre)
   {
     tvSeasonGenre = self->_tvSeasonGenre;
     PBDataWriterWriteStringField();
   }
 
-  v112 = [(_INPBMessageLinkMetadata *)self tvSeasonName];
+  tvSeasonName = [(_INPBMessageLinkMetadata *)self tvSeasonName];
 
-  if (v112)
+  if (tvSeasonName)
   {
     tvSeasonName = self->_tvSeasonName;
     PBDataWriterWriteStringField();
   }
 
-  v114 = [(_INPBMessageLinkMetadata *)self tvShowName];
+  tvShowName = [(_INPBMessageLinkMetadata *)self tvShowName];
 
-  if (v114)
+  if (tvShowName)
   {
     tvShowName = self->_tvShowName;
     PBDataWriterWriteStringField();
@@ -2599,383 +2599,383 @@ LABEL_262:
   v116 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTvShowName:(id)a3
+- (void)setTvShowName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   tvShowName = self->_tvShowName;
   self->_tvShowName = v4;
 
   MEMORY[0x1EEE66BB8](v4, tvShowName);
 }
 
-- (void)setTvSeasonName:(id)a3
+- (void)setTvSeasonName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   tvSeasonName = self->_tvSeasonName;
   self->_tvSeasonName = v4;
 
   MEMORY[0x1EEE66BB8](v4, tvSeasonName);
 }
 
-- (void)setTvSeasonGenre:(id)a3
+- (void)setTvSeasonGenre:(id)genre
 {
-  v4 = [a3 copy];
+  v4 = [genre copy];
   tvSeasonGenre = self->_tvSeasonGenre;
   self->_tvSeasonGenre = v4;
 
   MEMORY[0x1EEE66BB8](v4, tvSeasonGenre);
 }
 
-- (void)setTvEpisodeSeasonName:(id)a3
+- (void)setTvEpisodeSeasonName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   tvEpisodeSeasonName = self->_tvEpisodeSeasonName;
   self->_tvEpisodeSeasonName = v4;
 
   MEMORY[0x1EEE66BB8](v4, tvEpisodeSeasonName);
 }
 
-- (void)setTvEpisodeGenre:(id)a3
+- (void)setTvEpisodeGenre:(id)genre
 {
-  v4 = [a3 copy];
+  v4 = [genre copy];
   tvEpisodeGenre = self->_tvEpisodeGenre;
   self->_tvEpisodeGenre = v4;
 
   MEMORY[0x1EEE66BB8](v4, tvEpisodeGenre);
 }
 
-- (void)setTvEpisodeEpisodeName:(id)a3
+- (void)setTvEpisodeEpisodeName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   tvEpisodeEpisodeName = self->_tvEpisodeEpisodeName;
   self->_tvEpisodeEpisodeName = v4;
 
   MEMORY[0x1EEE66BB8](v4, tvEpisodeEpisodeName);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
   MEMORY[0x1EEE66BB8](v4, title);
 }
 
-- (void)setSummary:(id)a3
+- (void)setSummary:(id)summary
 {
-  v4 = [a3 copy];
+  v4 = [summary copy];
   summary = self->_summary;
   self->_summary = v4;
 
   MEMORY[0x1EEE66BB8](v4, summary);
 }
 
-- (void)setSongTitle:(id)a3
+- (void)setSongTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   songTitle = self->_songTitle;
   self->_songTitle = v4;
 
   MEMORY[0x1EEE66BB8](v4, songTitle);
 }
 
-- (void)setSongArtist:(id)a3
+- (void)setSongArtist:(id)artist
 {
-  v4 = [a3 copy];
+  v4 = [artist copy];
   songArtist = self->_songArtist;
   self->_songArtist = v4;
 
   MEMORY[0x1EEE66BB8](v4, songArtist);
 }
 
-- (void)setSongAlbum:(id)a3
+- (void)setSongAlbum:(id)album
 {
-  v4 = [a3 copy];
+  v4 = [album copy];
   songAlbum = self->_songAlbum;
   self->_songAlbum = v4;
 
   MEMORY[0x1EEE66BB8](v4, songAlbum);
 }
 
-- (void)setSoftwarePlatform:(id)a3
+- (void)setSoftwarePlatform:(id)platform
 {
-  v4 = [a3 copy];
+  v4 = [platform copy];
   softwarePlatform = self->_softwarePlatform;
   self->_softwarePlatform = v4;
 
   MEMORY[0x1EEE66BB8](v4, softwarePlatform);
 }
 
-- (void)setSoftwareName:(id)a3
+- (void)setSoftwareName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   softwareName = self->_softwareName;
   self->_softwareName = v4;
 
   MEMORY[0x1EEE66BB8](v4, softwareName);
 }
 
-- (void)setSoftwareGenre:(id)a3
+- (void)setSoftwareGenre:(id)genre
 {
-  v4 = [a3 copy];
+  v4 = [genre copy];
   softwareGenre = self->_softwareGenre;
   self->_softwareGenre = v4;
 
   MEMORY[0x1EEE66BB8](v4, softwareGenre);
 }
 
-- (void)setSiteName:(id)a3
+- (void)setSiteName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   siteName = self->_siteName;
   self->_siteName = v4;
 
   MEMORY[0x1EEE66BB8](v4, siteName);
 }
 
-- (void)setRadioName:(id)a3
+- (void)setRadioName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   radioName = self->_radioName;
   self->_radioName = v4;
 
   MEMORY[0x1EEE66BB8](v4, radioName);
 }
 
-- (void)setRadioCurator:(id)a3
+- (void)setRadioCurator:(id)curator
 {
-  v4 = [a3 copy];
+  v4 = [curator copy];
   radioCurator = self->_radioCurator;
   self->_radioCurator = v4;
 
   MEMORY[0x1EEE66BB8](v4, radioCurator);
 }
 
-- (void)setPodcastName:(id)a3
+- (void)setPodcastName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   podcastName = self->_podcastName;
   self->_podcastName = v4;
 
   MEMORY[0x1EEE66BB8](v4, podcastName);
 }
 
-- (void)setPodcastEpisodePodcastName:(id)a3
+- (void)setPodcastEpisodePodcastName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   podcastEpisodePodcastName = self->_podcastEpisodePodcastName;
   self->_podcastEpisodePodcastName = v4;
 
   MEMORY[0x1EEE66BB8](v4, podcastEpisodePodcastName);
 }
 
-- (void)setPodcastEpisodeName:(id)a3
+- (void)setPodcastEpisodeName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   podcastEpisodeName = self->_podcastEpisodeName;
   self->_podcastEpisodeName = v4;
 
   MEMORY[0x1EEE66BB8](v4, podcastEpisodeName);
 }
 
-- (void)setPodcastEpisodeArtist:(id)a3
+- (void)setPodcastEpisodeArtist:(id)artist
 {
-  v4 = [a3 copy];
+  v4 = [artist copy];
   podcastEpisodeArtist = self->_podcastEpisodeArtist;
   self->_podcastEpisodeArtist = v4;
 
   MEMORY[0x1EEE66BB8](v4, podcastEpisodeArtist);
 }
 
-- (void)setPodcastArtist:(id)a3
+- (void)setPodcastArtist:(id)artist
 {
-  v4 = [a3 copy];
+  v4 = [artist copy];
   podcastArtist = self->_podcastArtist;
   self->_podcastArtist = v4;
 
   MEMORY[0x1EEE66BB8](v4, podcastArtist);
 }
 
-- (void)setPlaylistName:(id)a3
+- (void)setPlaylistName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   playlistName = self->_playlistName;
   self->_playlistName = v4;
 
   MEMORY[0x1EEE66BB8](v4, playlistName);
 }
 
-- (void)setPlaylistCurator:(id)a3
+- (void)setPlaylistCurator:(id)curator
 {
-  v4 = [a3 copy];
+  v4 = [curator copy];
   playlistCurator = self->_playlistCurator;
   self->_playlistCurator = v4;
 
   MEMORY[0x1EEE66BB8](v4, playlistCurator);
 }
 
-- (void)setOriginalURL:(id)a3
+- (void)setOriginalURL:(id)l
 {
-  v4 = [a3 copy];
+  v4 = [l copy];
   originalURL = self->_originalURL;
   self->_originalURL = v4;
 
   MEMORY[0x1EEE66BB8](v4, originalURL);
 }
 
-- (void)setOpenGraphType:(id)a3
+- (void)setOpenGraphType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   openGraphType = self->_openGraphType;
   self->_openGraphType = v4;
 
   MEMORY[0x1EEE66BB8](v4, openGraphType);
 }
 
-- (void)setMusicVideoName:(id)a3
+- (void)setMusicVideoName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   musicVideoName = self->_musicVideoName;
   self->_musicVideoName = v4;
 
   MEMORY[0x1EEE66BB8](v4, musicVideoName);
 }
 
-- (void)setMusicVideoArtist:(id)a3
+- (void)setMusicVideoArtist:(id)artist
 {
-  v4 = [a3 copy];
+  v4 = [artist copy];
   musicVideoArtist = self->_musicVideoArtist;
   self->_musicVideoArtist = v4;
 
   MEMORY[0x1EEE66BB8](v4, musicVideoArtist);
 }
 
-- (void)setMovieName:(id)a3
+- (void)setMovieName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   movieName = self->_movieName;
   self->_movieName = v4;
 
   MEMORY[0x1EEE66BB8](v4, movieName);
 }
 
-- (void)setMovieGenre:(id)a3
+- (void)setMovieGenre:(id)genre
 {
-  v4 = [a3 copy];
+  v4 = [genre copy];
   movieGenre = self->_movieGenre;
   self->_movieGenre = v4;
 
   MEMORY[0x1EEE66BB8](v4, movieGenre);
 }
 
-- (void)setMovieBundleName:(id)a3
+- (void)setMovieBundleName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   movieBundleName = self->_movieBundleName;
   self->_movieBundleName = v4;
 
   MEMORY[0x1EEE66BB8](v4, movieBundleName);
 }
 
-- (void)setMovieBundleGenre:(id)a3
+- (void)setMovieBundleGenre:(id)genre
 {
-  v4 = [a3 copy];
+  v4 = [genre copy];
   movieBundleGenre = self->_movieBundleGenre;
   self->_movieBundleGenre = v4;
 
   MEMORY[0x1EEE66BB8](v4, movieBundleGenre);
 }
 
-- (int)StringAsLinkMediaType:(id)a3
+- (int)StringAsLinkMediaType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_LINK_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_LINK_TYPE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SONG"])
+  else if ([typeCopy isEqualToString:@"SONG"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"ALBUM"])
+  else if ([typeCopy isEqualToString:@"ALBUM"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"MUSIC_VIDEO"])
+  else if ([typeCopy isEqualToString:@"MUSIC_VIDEO"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"ARTIST"])
+  else if ([typeCopy isEqualToString:@"ARTIST"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"PLAYLIST"])
+  else if ([typeCopy isEqualToString:@"PLAYLIST"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"RADIO"])
+  else if ([typeCopy isEqualToString:@"RADIO"])
   {
     v4 = 70;
   }
 
-  else if ([v3 isEqualToString:@"SOFTWARE"])
+  else if ([typeCopy isEqualToString:@"SOFTWARE"])
   {
     v4 = 80;
   }
 
-  else if ([v3 isEqualToString:@"BOOK"])
+  else if ([typeCopy isEqualToString:@"BOOK"])
   {
     v4 = 90;
   }
 
-  else if ([v3 isEqualToString:@"AUDIO_BOOK"])
+  else if ([typeCopy isEqualToString:@"AUDIO_BOOK"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"PODCAST"])
+  else if ([typeCopy isEqualToString:@"PODCAST"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"PODCAST_EPISODE"])
+  else if ([typeCopy isEqualToString:@"PODCAST_EPISODE"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"TV_EPISODE"])
+  else if ([typeCopy isEqualToString:@"TV_EPISODE"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"TV_SEASON"])
+  else if ([typeCopy isEqualToString:@"TV_SEASON"])
   {
     v4 = 140;
   }
 
-  else if ([v3 isEqualToString:@"MOVIE"])
+  else if ([typeCopy isEqualToString:@"MOVIE"])
   {
     v4 = 150;
   }
 
-  else if ([v3 isEqualToString:@"TV_SHOW"])
+  else if ([typeCopy isEqualToString:@"TV_SHOW"])
   {
     v4 = 160;
   }
 
-  else if ([v3 isEqualToString:@"MOVIE_BUNDLE"])
+  else if ([typeCopy isEqualToString:@"MOVIE_BUNDLE"])
   {
     v4 = 170;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_TV"])
+  else if ([typeCopy isEqualToString:@"APPLE_TV"])
   {
     v4 = 180;
   }
@@ -2988,10 +2988,10 @@ LABEL_262:
   return v4;
 }
 
-- (void)setLinkMediaType:(int)a3
+- (void)setLinkMediaType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -2999,193 +2999,193 @@ LABEL_262:
   else
   {
     *&self->_has = has | 1;
-    self->_linkMediaType = a3;
+    self->_linkMediaType = type;
   }
 }
 
-- (void)setItemType:(id)a3
+- (void)setItemType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   itemType = self->_itemType;
   self->_itemType = v4;
 
   MEMORY[0x1EEE66BB8](v4, itemType);
 }
 
-- (void)addImageURL:(id)a3
+- (void)addImageURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   imageURLs = self->_imageURLs;
-  v8 = v4;
+  v8 = lCopy;
   if (!imageURLs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_imageURLs;
-    self->_imageURLs = v6;
+    self->_imageURLs = array;
 
-    v4 = v8;
+    lCopy = v8;
     imageURLs = self->_imageURLs;
   }
 
-  [(NSArray *)imageURLs addObject:v4];
+  [(NSArray *)imageURLs addObject:lCopy];
 }
 
-- (void)setImageURLs:(id)a3
+- (void)setImageURLs:(id)ls
 {
-  v4 = [a3 mutableCopy];
+  v4 = [ls mutableCopy];
   imageURLs = self->_imageURLs;
   self->_imageURLs = v4;
 
   MEMORY[0x1EEE66BB8](v4, imageURLs);
 }
 
-- (void)addIconURL:(id)a3
+- (void)addIconURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   iconURLs = self->_iconURLs;
-  v8 = v4;
+  v8 = lCopy;
   if (!iconURLs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_iconURLs;
-    self->_iconURLs = v6;
+    self->_iconURLs = array;
 
-    v4 = v8;
+    lCopy = v8;
     iconURLs = self->_iconURLs;
   }
 
-  [(NSArray *)iconURLs addObject:v4];
+  [(NSArray *)iconURLs addObject:lCopy];
 }
 
-- (void)setIconURLs:(id)a3
+- (void)setIconURLs:(id)ls
 {
-  v4 = [a3 mutableCopy];
+  v4 = [ls mutableCopy];
   iconURLs = self->_iconURLs;
   self->_iconURLs = v4;
 
   MEMORY[0x1EEE66BB8](v4, iconURLs);
 }
 
-- (void)setITunesStoreIdentifier:(id)a3
+- (void)setITunesStoreIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   iTunesStoreIdentifier = self->_iTunesStoreIdentifier;
   self->_iTunesStoreIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, iTunesStoreIdentifier);
 }
 
-- (void)setITunesStoreFrontIdentifier:(id)a3
+- (void)setITunesStoreFrontIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   iTunesStoreFrontIdentifier = self->_iTunesStoreFrontIdentifier;
   self->_iTunesStoreFrontIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, iTunesStoreFrontIdentifier);
 }
 
-- (void)setCreator:(id)a3
+- (void)setCreator:(id)creator
 {
-  v4 = [a3 copy];
+  v4 = [creator copy];
   creator = self->_creator;
   self->_creator = v4;
 
   MEMORY[0x1EEE66BB8](v4, creator);
 }
 
-- (void)setBookName:(id)a3
+- (void)setBookName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   bookName = self->_bookName;
   self->_bookName = v4;
 
   MEMORY[0x1EEE66BB8](v4, bookName);
 }
 
-- (void)setBookAuthor:(id)a3
+- (void)setBookAuthor:(id)author
 {
-  v4 = [a3 copy];
+  v4 = [author copy];
   bookAuthor = self->_bookAuthor;
   self->_bookAuthor = v4;
 
   MEMORY[0x1EEE66BB8](v4, bookAuthor);
 }
 
-- (void)setAudioBookNarrator:(id)a3
+- (void)setAudioBookNarrator:(id)narrator
 {
-  v4 = [a3 copy];
+  v4 = [narrator copy];
   audioBookNarrator = self->_audioBookNarrator;
   self->_audioBookNarrator = v4;
 
   MEMORY[0x1EEE66BB8](v4, audioBookNarrator);
 }
 
-- (void)setAudioBookName:(id)a3
+- (void)setAudioBookName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   audioBookName = self->_audioBookName;
   self->_audioBookName = v4;
 
   MEMORY[0x1EEE66BB8](v4, audioBookName);
 }
 
-- (void)setAudioBookAuthor:(id)a3
+- (void)setAudioBookAuthor:(id)author
 {
-  v4 = [a3 copy];
+  v4 = [author copy];
   audioBookAuthor = self->_audioBookAuthor;
   self->_audioBookAuthor = v4;
 
   MEMORY[0x1EEE66BB8](v4, audioBookAuthor);
 }
 
-- (void)setArtistName:(id)a3
+- (void)setArtistName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   artistName = self->_artistName;
   self->_artistName = v4;
 
   MEMORY[0x1EEE66BB8](v4, artistName);
 }
 
-- (void)setArtistGenre:(id)a3
+- (void)setArtistGenre:(id)genre
 {
-  v4 = [a3 copy];
+  v4 = [genre copy];
   artistGenre = self->_artistGenre;
   self->_artistGenre = v4;
 
   MEMORY[0x1EEE66BB8](v4, artistGenre);
 }
 
-- (void)setAppleTvTitle:(id)a3
+- (void)setAppleTvTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   appleTvTitle = self->_appleTvTitle;
   self->_appleTvTitle = v4;
 
   MEMORY[0x1EEE66BB8](v4, appleTvTitle);
 }
 
-- (void)setAppleTvSubtitle:(id)a3
+- (void)setAppleTvSubtitle:(id)subtitle
 {
-  v4 = [a3 copy];
+  v4 = [subtitle copy];
   appleTvSubtitle = self->_appleTvSubtitle;
   self->_appleTvSubtitle = v4;
 
   MEMORY[0x1EEE66BB8](v4, appleTvSubtitle);
 }
 
-- (void)setAlbumName:(id)a3
+- (void)setAlbumName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   albumName = self->_albumName;
   self->_albumName = v4;
 
   MEMORY[0x1EEE66BB8](v4, albumName);
 }
 
-- (void)setAlbumArtist:(id)a3
+- (void)setAlbumArtist:(id)artist
 {
-  v4 = [a3 copy];
+  v4 = [artist copy];
   albumArtist = self->_albumArtist;
   self->_albumArtist = v4;
 

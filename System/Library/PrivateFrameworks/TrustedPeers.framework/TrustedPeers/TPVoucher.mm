@@ -1,11 +1,11 @@
 @interface TPVoucher
-+ (id)voucherInfoWithData:(id)a3 sig:(id)a4;
-+ (id)voucherWithReason:(unint64_t)a3 beneficiaryID:(id)a4 sponsorID:(id)a5 signingKeyPair:(id)a6 error:(id *)a7;
-- (BOOL)checkSignatureWithKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVoucher:(id)a3;
-- (TPVoucher)initWithObj:(id)a3 data:(id)a4 sig:(id)a5;
-- (id)createRecoveryECPublicKey:(id)a3;
++ (id)voucherInfoWithData:(id)data sig:(id)sig;
++ (id)voucherWithReason:(unint64_t)reason beneficiaryID:(id)d sponsorID:(id)iD signingKeyPair:(id)pair error:(id *)error;
+- (BOOL)checkSignatureWithKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVoucher:(id)voucher;
+- (TPVoucher)initWithObj:(id)obj data:(id)data sig:(id)sig;
+- (id)createRecoveryECPublicKey:(id)key;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -15,18 +15,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TPVoucher *)self data];
-  v4 = [v3 hash];
+  data = [(TPVoucher *)self data];
+  v4 = [data hash];
   v5 = [(TPVoucher *)self sig];
   v6 = [v5 hash] - v4 + 32 * v4;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -34,28 +34,28 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPVoucher *)self isEqualToVoucher:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPVoucher *)self isEqualToVoucher:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToVoucher:(id)a3
+- (BOOL)isEqualToVoucher:(id)voucher
 {
-  v4 = a3;
-  if (v4 == self)
+  voucherCopy = voucher;
+  if (voucherCopy == self)
   {
     v9 = 1;
   }
 
   else
   {
-    v5 = [(TPVoucher *)self data];
-    v6 = [(TPVoucher *)v4 data];
-    if ([v5 isEqualToData:v6])
+    data = [(TPVoucher *)self data];
+    data2 = [(TPVoucher *)voucherCopy data];
+    if ([data isEqualToData:data2])
     {
       v7 = [(TPVoucher *)self sig];
-      v8 = [(TPVoucher *)v4 sig];
+      v8 = [(TPVoucher *)voucherCopy sig];
       v9 = [v7 isEqualToData:v8];
     }
 
@@ -71,8 +71,8 @@
 - (id)description
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TPVoucher *)self dictionaryRepresentation];
-  v5 = [v4 description];
+  dictionaryRepresentation = [(TPVoucher *)self dictionaryRepresentation];
+  v5 = [dictionaryRepresentation description];
 
   objc_autoreleasePoolPop(v3);
 
@@ -82,22 +82,22 @@
 - (id)dictionaryRepresentation
 {
   v3 = [TPPBVoucher alloc];
-  v4 = [(TPVoucher *)self data];
-  v5 = [(TPPBVoucher *)v3 initWithData:v4];
+  data = [(TPVoucher *)self data];
+  v5 = [(TPPBVoucher *)v3 initWithData:data];
 
-  v6 = [(TPPBVoucher *)v5 dictionaryRepresentation];
+  dictionaryRepresentation = [(TPPBVoucher *)v5 dictionaryRepresentation];
 
-  return v6;
+  return dictionaryRepresentation;
 }
 
-- (id)createRecoveryECPublicKey:(id)a3
+- (id)createRecoveryECPublicKey:(id)key
 {
   v3 = MEMORY[0x277D4D2F0];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 alloc];
   v6 = [objc_alloc(MEMORY[0x277D4D2E8]) initWithCurve:4];
   v11 = 0;
-  v7 = [v5 initWithData:v4 specifier:v6 error:&v11];
+  v7 = [v5 initWithData:keyCopy specifier:v6 error:&v11];
 
   v8 = v11;
   v9 = 0;
@@ -109,28 +109,28 @@
   return v9;
 }
 
-- (BOOL)checkSignatureWithKey:(id)a3
+- (BOOL)checkSignatureWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(TPVoucher *)self sig];
-  v6 = [(TPVoucher *)self data];
-  v7 = checkTypesafeSignature(v4, v5, v6, @"TPPB.Voucher");
+  data = [(TPVoucher *)self data];
+  v7 = checkTypesafeSignature(keyCopy, v5, data, @"TPPB.Voucher");
 
   return v7;
 }
 
-- (TPVoucher)initWithObj:(id)a3 data:(id)a4 sig:(id)a5
+- (TPVoucher)initWithObj:(id)obj data:(id)data sig:(id)sig
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objCopy = obj;
+  dataCopy = data;
+  sigCopy = sig;
   v11 = +[TPStringTable defaultTable];
   v22.receiver = self;
   v22.super_class = TPVoucher;
   v12 = [(TPVoucher *)&v22 init];
   if (v12)
   {
-    v13 = [v8 reason] - 1;
+    v13 = [objCopy reason] - 1;
     if (v13 < 7)
     {
       v14 = v13 + 1;
@@ -142,31 +142,31 @@
     }
 
     v12->_reason = v14;
-    v15 = [v8 beneficiary];
-    v16 = [v11 stringWithString:v15];
+    beneficiary = [objCopy beneficiary];
+    v16 = [v11 stringWithString:beneficiary];
     beneficiaryID = v12->_beneficiaryID;
     v12->_beneficiaryID = v16;
 
-    v18 = [v8 sponsor];
-    v19 = [v11 stringWithString:v18];
+    sponsor = [objCopy sponsor];
+    v19 = [v11 stringWithString:sponsor];
     sponsorID = v12->_sponsorID;
     v12->_sponsorID = v19;
 
-    objc_storeStrong(&v12->_data, a4);
-    objc_storeStrong(&v12->_sig, a5);
+    objc_storeStrong(&v12->_data, data);
+    objc_storeStrong(&v12->_sig, sig);
   }
 
   return v12;
 }
 
-+ (id)voucherInfoWithData:(id)a3 sig:(id)a4
++ (id)voucherInfoWithData:(id)data sig:(id)sig
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[TPPBVoucher alloc] initWithData:v5];
+  dataCopy = data;
+  sigCopy = sig;
+  v7 = [[TPPBVoucher alloc] initWithData:dataCopy];
   if (v7)
   {
-    v8 = [[TPVoucher alloc] initWithObj:v7 data:v5 sig:v6];
+    v8 = [[TPVoucher alloc] initWithObj:v7 data:dataCopy sig:sigCopy];
   }
 
   else
@@ -177,30 +177,30 @@
   return v8;
 }
 
-+ (id)voucherWithReason:(unint64_t)a3 beneficiaryID:(id)a4 sponsorID:(id)a5 signingKeyPair:(id)a6 error:(id *)a7
++ (id)voucherWithReason:(unint64_t)reason beneficiaryID:(id)d sponsorID:(id)iD signingKeyPair:(id)pair error:(id *)error
 {
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  pairCopy = pair;
+  iDCopy = iD;
+  dCopy = d;
   v16 = objc_alloc_init(TPPBVoucher);
-  [(TPPBVoucher *)v16 setBeneficiary:v15];
+  [(TPPBVoucher *)v16 setBeneficiary:dCopy];
 
-  [(TPPBVoucher *)v16 setSponsor:v14];
-  if (a3 - 1 >= 7)
+  [(TPPBVoucher *)v16 setSponsor:iDCopy];
+  if (reason - 1 >= 7)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"TPVoucher.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TPVoucher.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
     v19 = 0;
   }
 
   else
   {
-    [(TPPBVoucher *)v16 setReason:a3];
-    v17 = [(TPPBVoucher *)v16 data];
-    v18 = typesafeSignature(v13, v17, @"TPPB.Voucher", a7);
+    [(TPPBVoucher *)v16 setReason:reason];
+    currentHandler = [(TPPBVoucher *)v16 data];
+    v18 = typesafeSignature(pairCopy, currentHandler, @"TPPB.Voucher", error);
     if (v18)
     {
-      v19 = [[TPVoucher alloc] initWithObj:v16 data:v17 sig:v18];
+      v19 = [[TPVoucher alloc] initWithObj:v16 data:currentHandler sig:v18];
     }
 
     else

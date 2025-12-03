@@ -1,9 +1,9 @@
 @interface CSVoiceTriggerStatAggregator
 + (id)sharedAggregator;
 - (CSVoiceTriggerStatAggregator)init;
-- (void)logFalseWakeUp:(BOOL)a3 withPhrase:(id)a4;
-- (void)logSecondPassResult:(int)a3 eventInfo:(id)a4 triggerAPWakeUp:(BOOL)a5;
-- (void)logTimeBasedTriggerLengthSampleCountStatistics:(unint64_t)a3 withAOPVTTriggerLengthSampleCount:(unint64_t)a4;
+- (void)logFalseWakeUp:(BOOL)up withPhrase:(id)phrase;
+- (void)logSecondPassResult:(int)result eventInfo:(id)info triggerAPWakeUp:(BOOL)up;
+- (void)logTimeBasedTriggerLengthSampleCountStatistics:(unint64_t)statistics withAOPVTTriggerLengthSampleCount:(unint64_t)count;
 @end
 
 @implementation CSVoiceTriggerStatAggregator
@@ -34,19 +34,19 @@ id __67__CSVoiceTriggerStatAggregator_reportDigitalZerosWithAudioZeroRun___block
   return v3;
 }
 
-- (void)logTimeBasedTriggerLengthSampleCountStatistics:(unint64_t)a3 withAOPVTTriggerLengthSampleCount:(unint64_t)a4
+- (void)logTimeBasedTriggerLengthSampleCountStatistics:(unint64_t)statistics withAOPVTTriggerLengthSampleCount:(unint64_t)count
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3 - a4;
+  v6 = statistics - count;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v10 = "[CSVoiceTriggerStatAggregator logTimeBasedTriggerLengthSampleCountStatistics:withAOPVTTriggerLengthSampleCount:]";
     v11 = 2048;
-    v12 = a3;
+    statisticsCopy = statistics;
     v13 = 2048;
-    v14 = a4;
+    countCopy = count;
     v15 = 2048;
     v16 = v6;
     _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s Sending event with time based triggerLengthSampleCount %llu, AOPVT triggerLengthSampleCount %llu, and delta of %lld samples", buf, 0x2Au);
@@ -75,15 +75,15 @@ id __113__CSVoiceTriggerStatAggregator_logTimeBasedTriggerLengthSampleCountStati
   return v5;
 }
 
-- (void)logFalseWakeUp:(BOOL)a3 withPhrase:(id)a4
+- (void)logFalseWakeUp:(BOOL)up withPhrase:(id)phrase
 {
-  v4 = a3;
+  upCopy = up;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v4)
+  phraseCopy = phrase;
+  if (upCopy)
   {
     ++self->_numFalseWakeUp;
-    v7 = [(NSMutableDictionary *)self->_falseWakePhraseDictionary objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_falseWakePhraseDictionary objectForKey:phraseCopy];
 
     falseWakePhraseDictionary = self->_falseWakePhraseDictionary;
     if (v7)
@@ -94,15 +94,15 @@ id __113__CSVoiceTriggerStatAggregator_logTimeBasedTriggerLengthSampleCountStati
 
     else
     {
-      v11 = [(NSMutableDictionary *)self->_falseWakePhraseDictionary objectForKeyedSubscript:v6];
-      v12 = [v11 intValue];
+      v11 = [(NSMutableDictionary *)self->_falseWakePhraseDictionary objectForKeyedSubscript:phraseCopy];
+      intValue = [v11 intValue];
 
       v13 = self->_falseWakePhraseDictionary;
-      v9 = [MEMORY[0x1E696AD98] numberWithInt:(v12 + 1)];
+      v9 = [MEMORY[0x1E696AD98] numberWithInt:(intValue + 1)];
       v10 = v13;
     }
 
-    [(NSMutableDictionary *)v10 setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)v10 setObject:v9 forKey:phraseCopy];
 
     v14 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -159,7 +159,7 @@ id __113__CSVoiceTriggerStatAggregator_logTimeBasedTriggerLengthSampleCountStati
           *&v32[4] = 2050;
           *&v32[6] = v20;
           *&v32[14] = 2114;
-          *&v32[16] = v6;
+          *&v32[16] = phraseCopy;
           _os_log_impl(&dword_1DDA4B000, v22, OS_LOG_TYPE_DEFAULT, "%s PowerLog : HeySiriFalseTrigger numFalseWakeUp:%{public}d, secondsSinceLastReport:%{public}lf, phrase:%{public}@", &v29, 0x26u);
         }
 
@@ -180,10 +180,10 @@ id __113__CSVoiceTriggerStatAggregator_logTimeBasedTriggerLengthSampleCountStati
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logSecondPassResult:(int)a3 eventInfo:(id)a4 triggerAPWakeUp:(BOOL)a5
+- (void)logSecondPassResult:(int)result eventInfo:(id)info triggerAPWakeUp:(BOOL)up
 {
-  v6 = a4;
-  v5 = v6;
+  infoCopy = info;
+  v5 = infoCopy;
   AnalyticsSendEventLazy();
 }
 

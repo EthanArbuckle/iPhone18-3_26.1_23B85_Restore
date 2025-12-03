@@ -1,22 +1,22 @@
 @interface CSSelfTriggerEnabledMonitorAccessory
 + (id)sharedInstance;
 - (CSSelfTriggerEnabledMonitorAccessory)init;
-- (void)_didReceiveSelfTriggerChanged:(BOOL)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveSelfTriggerChanged:(BOOL)changed;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSSelfTriggerEnabledMonitorAccessory
 
-- (void)_didReceiveSelfTriggerChanged:(BOOL)a3
+- (void)_didReceiveSelfTriggerChanged:(BOOL)changed
 {
-  self->_enabled = a3;
+  self->_enabled = changed;
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10011B4C0;
   v3[3] = &unk_1002537E8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(CSSelfTriggerEnabledMonitorAccessory *)self enumerateObserversInQueue:v3];
 }
 
@@ -31,7 +31,7 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v4 = +[CSFPreferences sharedPreferences];
   self->_enabled = [v4 isSelfTriggerEnabledAccessory];

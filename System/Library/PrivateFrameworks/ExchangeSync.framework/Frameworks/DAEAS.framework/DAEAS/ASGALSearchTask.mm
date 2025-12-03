@@ -1,8 +1,8 @@
 @interface ASGALSearchTask
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5;
-- (BOOL)processContext:(id)a3;
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken;
+- (BOOL)processContext:(id)context;
 - (id)requestBody;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)performTask;
 @end
 
@@ -10,8 +10,8 @@
 
 - (void)performTask
 {
-  v3 = [(ASSearchTask *)self query];
-  [v3 setState:1];
+  query = [(ASSearchTask *)self query];
+  [query setState:1];
 
   v4.receiver = self;
   v4.super_class = ASGALSearchTask;
@@ -25,24 +25,24 @@
   [v3 openTag:5];
   [v3 openTag:7];
   [v3 appendTag:8 withStringContent:@"GAL"];
-  v4 = [(ASSearchTask *)self query];
-  v5 = [v4 searchString];
-  [v3 appendTag:9 withStringContent:v5];
+  query = [(ASSearchTask *)self query];
+  searchString = [query searchString];
+  [v3 appendTag:9 withStringContent:searchString];
 
   [v3 openTag:10];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(ASSearchTask *)self query];
-  v8 = [v6 stringWithFormat:@"0-%d", objc_msgSend(v7, "maxResults")];
+  query2 = [(ASSearchTask *)self query];
+  v8 = [v6 stringWithFormat:@"0-%d", objc_msgSend(query2, "maxResults")];
   [v3 appendTag:11 withStringContent:v8];
 
-  v9 = [(ASSearchTask *)self query];
-  if ([v9 includePhotos])
+  query3 = [(ASSearchTask *)self query];
+  if ([query3 includePhotos])
   {
-    v10 = [(ASTask *)self taskManager];
-    v11 = [v10 protocol];
-    v12 = [v11 supportsGALPhotos];
+    taskManager = [(ASTask *)self taskManager];
+    protocol = [taskManager protocol];
+    supportsGALPhotos = [protocol supportsGALPhotos];
 
-    if (v12)
+    if (supportsGALPhotos)
     {
       [v3 appendEmptyTag:33];
     }
@@ -55,44 +55,44 @@
   [v3 closeTag:10];
   [v3 closeTag:7];
   [v3 closeTag:5];
-  v13 = [v3 data];
+  data = [v3 data];
 
-  return v13;
+  return data;
 }
 
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken
 {
-  *a4 = 15;
-  *a3 = 5;
-  *a5 = 12;
+  *page = 15;
+  *token = 5;
+  *statusToken = 12;
   return 1;
 }
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self currentlyParsingItem];
+  contextCopy = context;
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
 
-  if (!v5)
+  if (!currentlyParsingItem)
   {
     if (!self->super.super._haveSwitchedCodePage)
     {
-      if (![v4 hasNumberOfTokensRemaining:2])
+      if (![contextCopy hasNumberOfTokensRemaining:2])
       {
         goto LABEL_17;
       }
 
-      if ([v4 currentByte])
+      if ([contextCopy currentByte])
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to search code page"];
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASGALSearchTask.m", 71, objc_msgSend(v4, "curOffset")];
+        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASGALSearchTask.m", 71, objc_msgSend(contextCopy, "curOffset")];
         v13 = DALoggingwithCategory();
         v14 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v13, v14))
         {
           *buf = 134217984;
-          v23 = [v4 curOffset];
+          curOffset = [contextCopy curOffset];
           _os_log_impl(&dword_24A0AC000, v13, v14, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -103,21 +103,21 @@
         }
 
         *buf = 138412290;
-        v23 = v11;
+        curOffset = v11;
         goto LABEL_28;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      if ([v4 currentByte] != 15)
+      [contextCopy advanceOffsetByAmount:1];
+      if ([contextCopy currentByte] != 15)
       {
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to search code page"];
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASGALSearchTask.m", 71, objc_msgSend(v4, "curOffset")];
+        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASGALSearchTask.m", 71, objc_msgSend(contextCopy, "curOffset")];
         v18 = DALoggingwithCategory();
         v14 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v18, v14))
         {
           *buf = 134217984;
-          v23 = [v4 curOffset];
+          curOffset = [contextCopy curOffset];
           _os_log_impl(&dword_24A0AC000, v18, v14, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -128,12 +128,12 @@
         }
 
         *buf = 138412290;
-        v23 = v11;
+        curOffset = v11;
         goto LABEL_28;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      [v4 setCodePage:15];
+      [contextCopy advanceOffsetByAmount:1];
+      [contextCopy setCodePage:15];
       self->super.super._haveSwitchedCodePage = 1;
     }
 
@@ -147,25 +147,25 @@ LABEL_7:
       goto LABEL_2;
     }
 
-    if (![v4 hasNumberOfTokensRemaining:1])
+    if (![contextCopy hasNumberOfTokensRemaining:1])
     {
       goto LABEL_17;
     }
 
-    if (([v4 currentByte] & 0x3F) == 5)
+    if (([contextCopy currentByte] & 0x3F) == 5)
     {
       self->super.super._haveParsedCommand = 1;
       goto LABEL_7;
     }
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected search response"];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASGALSearchTask.m", 72, objc_msgSend(v4, "curOffset")];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASGALSearchTask.m", 72, objc_msgSend(contextCopy, "curOffset")];
     v17 = DALoggingwithCategory();
     v14 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v17, v14))
     {
       *buf = 134217984;
-      v23 = [v4 curOffset];
+      curOffset = [contextCopy curOffset];
       _os_log_impl(&dword_24A0AC000, v17, v14, "Failure at index %lld:", buf, 0xCu);
     }
 
@@ -174,26 +174,26 @@ LABEL_7:
     {
 LABEL_29:
 
-      [v4 setParseErrorReason:v12];
+      [contextCopy setParseErrorReason:v12];
 LABEL_30:
-      v19 = [v4 parseErrorReason];
-      v16 = v19 == 0;
+      parseErrorReason = [contextCopy parseErrorReason];
+      v16 = parseErrorReason == 0;
 
       goto LABEL_31;
     }
 
     *buf = 138412290;
-    v23 = v11;
+    curOffset = v11;
 LABEL_28:
     _os_log_impl(&dword_24A0AC000, v15, v14, "failure reason was %@", buf, 0xCu);
     goto LABEL_29;
   }
 
 LABEL_2:
-  v6 = [(ASTask *)self currentlyParsingItem];
-  v7 = [(ASTask *)self taskManager];
-  v8 = [v7 account];
-  [v6 parseASParseContext:v4 root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:v8];
+  currentlyParsingItem2 = [(ASTask *)self currentlyParsingItem];
+  taskManager = [(ASTask *)self taskManager];
+  account = [taskManager account];
+  [currentlyParsingItem2 parseASParseContext:contextCopy root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:account];
 
   currentlyParsingItem = self->super.super._currentlyParsingItem;
   if (currentlyParsingItem && [(ASItem *)currentlyParsingItem parsingState]>= 2)
@@ -209,49 +209,49 @@ LABEL_31:
   return v16;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  errorCopy = error;
   v6 = DALoggingwithCategory();
   v7 = MEMORY[0x277D03988];
   v8 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v6, v8))
   {
     *buf = 138412290;
-    v45 = v5;
+    selfCopy = errorCopy;
     _os_log_impl(&dword_24A0AC000, v6, v8, "Search task finished with error %@", buf, 0xCu);
   }
 
-  v9 = [(ASTask *)self taskStatusForError:v5];
+  v9 = [(ASTask *)self taskStatusForError:errorCopy];
   v10 = objc_opt_new();
-  v11 = [(ASTask *)self currentlyParsingItem];
-  v12 = [(ASSearchTask *)self query];
-  [v12 setState:2];
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
+  query = [(ASSearchTask *)self query];
+  [query setState:2];
 
-  if (v5 || !v11)
+  if (errorCopy || !currentlyParsingItem)
   {
-    if (v9 != -1 && !v11)
+    if (v9 != -1 && !currentlyParsingItem)
     {
       v28 = DALoggingwithCategory();
       v29 = *(v7 + 3);
       if (os_log_type_enabled(v28, v29))
       {
         *buf = 138412546;
-        v45 = self;
+        selfCopy = self;
         v46 = 2112;
-        v47 = v5;
+        v47 = errorCopy;
         _os_log_impl(&dword_24A0AC000, v28, v29, "%@ failed: %@", buf, 0x16u);
       }
 
-      if (!v5)
+      if (!errorCopy)
       {
         v9 = 1;
       }
     }
   }
 
-  else if ([(ASGALSearchTask *)v11 parsingState]== 2)
+  else if ([(ASGALSearchTask *)currentlyParsingItem parsingState]== 2)
   {
     v13 = DALoggingwithCategory();
     v14 = *(v7 + 6);
@@ -259,33 +259,33 @@ LABEL_31:
     {
       v15 = objc_opt_class();
       *buf = 138412546;
-      v45 = v15;
+      selfCopy = v15;
       v46 = 2112;
-      v47 = v11;
+      v47 = currentlyParsingItem;
       v16 = v15;
       _os_log_impl(&dword_24A0AC000, v13, v14, "%@ Parsed response of %@", buf, 0x16u);
     }
 
-    v17 = [(ASGALSearchTask *)v11 status];
-    v9 = -[ASSearchTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v17 intValue]);
+    status = [(ASGALSearchTask *)currentlyParsingItem status];
+    v9 = -[ASSearchTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status intValue]);
 
-    v18 = [(ASGALSearchTask *)v11 stores];
-    if ([v18 count])
+    stores = [(ASGALSearchTask *)currentlyParsingItem stores];
+    if ([stores count])
     {
       v31 = a2;
-      v33 = v18;
-      v34 = v11;
-      v19 = [v18 objectAtIndexedSubscript:0];
-      v20 = [v19 status];
-      v9 = -[ASSearchTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v20 intValue]);
+      v33 = stores;
+      v34 = currentlyParsingItem;
+      v19 = [stores objectAtIndexedSubscript:0];
+      status2 = [v19 status];
+      v9 = -[ASSearchTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status2 intValue]);
 
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
       v32 = v19;
-      v21 = [v19 results];
-      v22 = [v21 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      results = [v19 results];
+      v22 = [results countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v22)
       {
         v23 = v22;
@@ -296,7 +296,7 @@ LABEL_31:
           {
             if (*v40 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(results);
             }
 
             v26 = *(*(&v39 + 1) + 8 * i);
@@ -306,30 +306,30 @@ LABEL_31:
               [(ASGALSearchTask *)v26 finishWithError:v31, self];
             }
 
-            v27 = [v26 convertToDAContactSearchResultElement];
-            if (v27)
+            convertToDAContactSearchResultElement = [v26 convertToDAContactSearchResultElement];
+            if (convertToDAContactSearchResultElement)
             {
-              [v10 addObject:v27];
+              [v10 addObject:convertToDAContactSearchResultElement];
             }
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v39 objects:v43 count:16];
+          v23 = [results countByEnumeratingWithState:&v39 objects:v43 count:16];
         }
 
         while (v23);
       }
 
-      v18 = v33;
-      v11 = v34;
+      stores = v33;
+      currentlyParsingItem = v34;
     }
   }
 
-  if (!v5 && v9 != 2)
+  if (!errorCopy && v9 != 2)
   {
-    v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:v9 userInfo:0];
+    errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:v9 userInfo:0];
   }
 
-  if (![(ASTask *)self attemptRetryWithStatus:v9 error:v5])
+  if (![(ASTask *)self attemptRetryWithStatus:v9 error:errorCopy])
   {
     -[ASSearchTask setNumDownloadedElements:](self, "setNumDownloadedElements:", [v10 count]);
     v35[0] = MEMORY[0x277D85DD0];
@@ -339,7 +339,7 @@ LABEL_31:
     v38 = v9;
     v35[4] = self;
     v36 = v10;
-    v37 = v5;
+    v37 = errorCopy;
     [(ASTask *)self finishWithError:v37 afterDelegateCallout:v35];
   }
 

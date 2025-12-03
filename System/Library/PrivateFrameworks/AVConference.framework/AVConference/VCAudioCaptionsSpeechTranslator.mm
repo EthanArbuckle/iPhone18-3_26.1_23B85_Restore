@@ -1,29 +1,29 @@
 @interface VCAudioCaptionsSpeechTranslator
-- (BOOL)addToCaptionTasksWithError:(id *)a3;
-- (BOOL)setUpCaptionsWithError:(id *)a3;
-- (BOOL)setupTranslatorSharedWithError:(id *)a3;
-- (BOOL)setupTranslatorStandaloneWithError:(id *)a3;
+- (BOOL)addToCaptionTasksWithError:(id *)error;
+- (BOOL)setUpCaptionsWithError:(id *)error;
+- (BOOL)setupTranslatorSharedWithError:(id *)error;
+- (BOOL)setupTranslatorStandaloneWithError:(id *)error;
 - (BOOL)shouldPushSamples;
-- (BOOL)startCaptionsWithError:(id *)a3;
-- (VCAudioCaptionsSpeechTranslator)initWithDelegate:(id)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6;
-- (void)client:(id)a3 didReceiveTranscriptionResult:(id)a4;
-- (void)client:(id)a3 didReceiveTranslationResult:(id)a4;
-- (void)client:(id)a3 didStopTranslationWithError:(id)a4;
+- (BOOL)startCaptionsWithError:(id *)error;
+- (VCAudioCaptionsSpeechTranslator)initWithDelegate:(id)delegate isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent;
+- (void)client:(id)client didReceiveTranscriptionResult:(id)result;
+- (void)client:(id)client didReceiveTranslationResult:(id)result;
+- (void)client:(id)client didStopTranslationWithError:(id)error;
 - (void)dealloc;
 - (void)destroyCaptions;
-- (void)packageAndSendTranscribedString:(id)a3 withTask:(id)a4;
-- (void)packageAndSendTranslatedString:(id)a3 withTask:(id)a4;
-- (void)pushSamples:(char *)a3 numSamples:(int)a4 hostTime:(double)a5;
-- (void)serverDidDisconnectForClient:(id)a3;
+- (void)packageAndSendTranscribedString:(id)string withTask:(id)task;
+- (void)packageAndSendTranslatedString:(id)string withTask:(id)task;
+- (void)pushSamples:(char *)samples numSamples:(int)numSamples hostTime:(double)time;
+- (void)serverDidDisconnectForClient:(id)client;
 - (void)stopCaptions;
-- (void)translationDidStartForClient:(id)a3;
+- (void)translationDidStartForClient:(id)client;
 @end
 
 @implementation VCAudioCaptionsSpeechTranslator
 
-- (VCAudioCaptionsSpeechTranslator)initWithDelegate:(id)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6
+- (VCAudioCaptionsSpeechTranslator)initWithDelegate:(id)delegate isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent
 {
-  v8 = a4;
+  localCopy = local;
   v112 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCAudioCaptionsSpeechTranslator-init");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -46,7 +46,7 @@
 
   v98.receiver = self;
   v98.super_class = VCAudioCaptionsSpeechTranslator;
-  v13 = [(VCAudioCaptions *)&v98 initWithDelegate:a3 isLocal:v8 taskIdentifier:a5 reportingAgent:a6];
+  v13 = [(VCAudioCaptions *)&v98 initWithDelegate:delegate isLocal:localCopy taskIdentifier:identifier reportingAgent:agent];
   v14 = v13;
   if (v13)
   {
@@ -215,10 +215,10 @@ LABEL_16:
       }
     }
 
-    v36 = [(AVAudioFormat *)v14->super._frameworkAudioFormat streamDescription];
-    v97 = *(v36 + 32);
-    v95 = *v36;
-    v96 = *(v36 + 16);
+    streamDescription = [(AVAudioFormat *)v14->super._frameworkAudioFormat streamDescription];
+    v97 = *(streamDescription + 32);
+    v95 = *streamDescription;
+    v96 = *(streamDescription + 16);
     captionsFormat = v14->super._captionsFormat;
     *buf = v95;
     *&buf[16] = v96;
@@ -510,7 +510,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -524,19 +524,19 @@ LABEL_11:
   [(VCAudioCaptions *)&v11 dealloc];
 }
 
-- (void)packageAndSendTranslatedString:(id)a3 withTask:(id)a4
+- (void)packageAndSendTranslatedString:(id)string withTask:(id)task
 {
   v61 = *MEMORY[0x1E69E9840];
   if ([(VCAudioCaptions *)self delegate])
   {
-    v7 = [(VCAudioCaptions *)self taskInfoForTask:a4];
+    v7 = [(VCAudioCaptions *)self taskInfoForTask:task];
     if (v7)
     {
       v8 = v7;
       [(__CFString *)v7 setUtteranceNumber:self->super._translatedUtteranceNumber];
       ++self->_currentTranslatedUpdateNumber;
       [(__CFString *)v8 setUpdateNumber:?];
-      if (![a3 isFinal])
+      if (![string isFinal])
       {
         goto LABEL_32;
       }
@@ -584,7 +584,7 @@ LABEL_11:
         v49 = 2112;
         v50 = v8;
         v51 = 2048;
-        v52 = *&v11;
+        selfCopy3 = *&v11;
         v53 = 2048;
         v54 = translatedLatencyAverage;
         v55 = 1024;
@@ -629,7 +629,7 @@ LABEL_11:
         v49 = 2112;
         v50 = v19;
         v51 = 2048;
-        v52 = self;
+        selfCopy3 = self;
         v53 = 2112;
         v54 = *&v8;
         v55 = 2048;
@@ -708,7 +708,7 @@ LABEL_32:
         v49 = 2112;
         v50 = v33;
         v51 = 2048;
-        v52 = self;
+        selfCopy3 = self;
         v53 = 2112;
         v54 = *&v8;
         v36 = " [%s] %s:%d %@(%p) Update translatedResult utterance to info=%@";
@@ -718,7 +718,7 @@ LABEL_32:
 
       _os_log_impl(&dword_1DB56E000, v37, OS_LOG_TYPE_DEFAULT, v36, &v43, v38);
 LABEL_43:
-      v41 = -[VCCaptionsTranscription initWithTextTranscription:taskInfo:isLocal:isFinal:isTranslated:]([VCCaptionsTranscription alloc], "initWithTextTranscription:taskInfo:isLocal:isFinal:isTranslated:", [a3 translatedText], v8, self->super._isLocal, objc_msgSend(a3, "isFinal"), 1);
+      v41 = -[VCCaptionsTranscription initWithTextTranscription:taskInfo:isLocal:isFinal:isTranslated:]([VCCaptionsTranscription alloc], "initWithTextTranscription:taskInfo:isLocal:isFinal:isTranslated:", [string translatedText], v8, self->super._isLocal, objc_msgSend(string, "isFinal"), 1);
       if (v41)
       {
         v42 = v41;
@@ -778,7 +778,7 @@ LABEL_22:
           v49 = 2112;
           v50 = v13;
           v51 = 2048;
-          v52 = self;
+          selfCopy3 = self;
           v16 = " [%s] %s:%d %@(%p) Cannot sendTranscription as we don't have a task for it";
           v17 = v21;
           v18 = 48;
@@ -789,19 +789,19 @@ LABEL_22:
   }
 }
 
-- (void)packageAndSendTranscribedString:(id)a3 withTask:(id)a4
+- (void)packageAndSendTranscribedString:(id)string withTask:(id)task
 {
   v47 = *MEMORY[0x1E69E9840];
   if ([(VCAudioCaptions *)self delegate])
   {
-    v7 = [(VCAudioCaptions *)self taskInfoForTask:a4];
+    v7 = [(VCAudioCaptions *)self taskInfoForTask:task];
     if (v7)
     {
       v8 = v7;
       [(__CFString *)v7 setUtteranceNumber:self->super._currentUtteranceNumber];
       ++self->_currentSourceUpdateNumber;
       [(__CFString *)v8 setUpdateNumber:?];
-      if (![a3 isFinal])
+      if (![string isFinal])
       {
         goto LABEL_27;
       }
@@ -866,7 +866,7 @@ LABEL_22:
         v41 = 2112;
         v42 = v9;
         v43 = 2048;
-        v44 = self;
+        selfCopy3 = self;
         v45 = 2112;
         v46 = v8;
         v18 = " [%s] %s:%d %@(%p) Update transcriptionResult utterance from info=%@";
@@ -940,7 +940,7 @@ LABEL_27:
         v41 = 2112;
         v42 = v25;
         v43 = 2048;
-        v44 = self;
+        selfCopy3 = self;
         v45 = 2112;
         v46 = v8;
         v28 = " [%s] %s:%d %@(%p) Update transcriptionResult utterance to info=%@";
@@ -950,7 +950,7 @@ LABEL_27:
 
       _os_log_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_DEFAULT, v28, &v35, v30);
 LABEL_38:
-      v33 = -[VCCaptionsTranscription initWithTextTranscription:taskInfo:isLocal:isFinal:isTranslated:]([VCCaptionsTranscription alloc], "initWithTextTranscription:taskInfo:isLocal:isFinal:isTranslated:", [a3 text], v8, self->super._isLocal, objc_msgSend(a3, "isFinal"), 0);
+      v33 = -[VCCaptionsTranscription initWithTextTranscription:taskInfo:isLocal:isFinal:isTranslated:]([VCCaptionsTranscription alloc], "initWithTextTranscription:taskInfo:isLocal:isFinal:isTranslated:", [string text], v8, self->super._isLocal, objc_msgSend(string, "isFinal"), 0);
       if (v33)
       {
         v34 = v33;
@@ -1010,7 +1010,7 @@ LABEL_20:
           v41 = 2112;
           v42 = v10;
           v43 = 2048;
-          v44 = self;
+          selfCopy3 = self;
           v13 = " [%s] %s:%d %@(%p) Cannot sendTranscription as we don't have a task for it";
           v14 = v22;
           v15 = 48;
@@ -1021,7 +1021,7 @@ LABEL_20:
   }
 }
 
-- (BOOL)setupTranslatorStandaloneWithError:(id *)a3
+- (BOOL)setupTranslatorStandaloneWithError:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
 
@@ -1070,7 +1070,7 @@ LABEL_20:
           v33 = 2112;
           v34 = v17;
           v35 = 2048;
-          v36 = self;
+          selfCopy3 = self;
           _os_log_error_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create the _translatorConfiguration for SpeechTranslator", buf, 0x30u);
         }
 
@@ -1148,7 +1148,7 @@ LABEL_33:
       v33 = 2112;
       v34 = v7;
       v35 = 2048;
-      v36 = self;
+      selfCopy3 = self;
       v10 = " [%s] %s:%d %@(%p) Setup and start translator client for VCAudioCaptionsTranslatorModeStandalone";
       v11 = v14;
       v12 = 48;
@@ -1210,7 +1210,7 @@ LABEL_14:
         v33 = 2112;
         v34 = v18;
         v35 = 2048;
-        v36 = self;
+        selfCopy3 = self;
         _os_log_error_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create the _translatorClient for standalone SpeechTranslator", buf, 0x30u);
       }
 
@@ -1225,14 +1225,14 @@ LABEL_40:
 
   self->_translatorConfiguration = 0;
   self->_translatorClient = 0;
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
   v25 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 8, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechTranslator.m", v21], v22);
   result = 0;
-  *a3 = v25;
+  *error = v25;
   return result;
 }
 
@@ -1266,7 +1266,7 @@ void __70__VCAudioCaptionsSpeechTranslator_setupTranslatorStandaloneWithError___
   }
 }
 
-- (BOOL)setupTranslatorSharedWithError:(id *)a3
+- (BOOL)setupTranslatorSharedWithError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   if (!self->super._translatorIdentifier)
@@ -1311,7 +1311,7 @@ void __70__VCAudioCaptionsSpeechTranslator_setupTranslatorStandaloneWithError___
           v22 = 2112;
           v23 = v7;
           v24 = 2048;
-          v25 = self;
+          selfCopy2 = self;
           _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed as Nil _translatorIdentifier passed to initialize SpeechTranslator", buf, 0x30u);
         }
 
@@ -1372,7 +1372,7 @@ LABEL_22:
         v22 = 2112;
         v23 = v8;
         v24 = 2048;
-        v25 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create the _translatorClient for shared SpeechTranslator", buf, 0x30u);
       }
 
@@ -1386,18 +1386,18 @@ LABEL_28:
 LABEL_29:
 
   self->_translatorClient = 0;
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
   v15 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 8, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechTranslator.m", v11], v12);
   result = 0;
-  *a3 = v15;
+  *error = v15;
   return result;
 }
 
-- (BOOL)addToCaptionTasksWithError:(id *)a3
+- (BOOL)addToCaptionTasksWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = [VCCaptionTaskInfo alloc];
@@ -1406,9 +1406,9 @@ LABEL_29:
   ++self->super._currentUtteranceNumber;
   v8 = [(VCCaptionTaskInfo *)v5 initWithTask:translatorClient token:streamToken utteranceNumber:?];
   v9 = v8;
-  if (a3 && !v8)
+  if (error && !v8)
   {
-    [VCAudioCaptionsSpeechTranslator addToCaptionTasksWithError:a3];
+    [VCAudioCaptionsSpeechTranslator addToCaptionTasksWithError:error];
   }
 
   else if (v8)
@@ -1473,7 +1473,7 @@ LABEL_29:
       WORD2(v25) = 2112;
       *(&v25 + 6) = v10;
       HIWORD(v25) = 2048;
-      v26 = self;
+      selfCopy2 = self;
       LOWORD(v27) = 2112;
       *(&v27 + 2) = v9;
       v13 = " [%s] %s:%d %@(%p) taskInfo=%@";
@@ -1483,7 +1483,7 @@ LABEL_29:
 
     _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, v13, v24, v15);
 LABEL_15:
-    [(NSMutableArray *)self->super._captionTasks addObject:v9, *v24, *&v24[16], v25, v26, v27];
+    [(NSMutableArray *)self->super._captionTasks addObject:v9, *v24, *&v24[16], v25, selfCopy2, v27];
 
     self->super._currentTaskInfo = v9;
     LOBYTE(v18) = 1;
@@ -1537,7 +1537,7 @@ LABEL_15:
       WORD2(v25) = 2112;
       *(&v25 + 6) = v19;
       HIWORD(v25) = 2048;
-      v26 = self;
+      selfCopy2 = self;
       LOWORD(v27) = 2048;
       *(&v27 + 2) = v22;
       _os_log_error_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate taskInfo for token=%lu", v24, 0x3Au);
@@ -1622,7 +1622,7 @@ LABEL_15:
       v21 = 2112;
       v22 = v5;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 1024;
       v26 = v14;
       v9 = " [%s] %s:%d %@(%p) Will not push samples; Recognizer state=%d";
@@ -1639,11 +1639,11 @@ LABEL_18:
   return result;
 }
 
-- (void)pushSamples:(char *)a3 numSamples:(int)a4 hostTime:(double)a5
+- (void)pushSamples:(char *)samples numSamples:(int)numSamples hostTime:(double)time
 {
   v23 = *MEMORY[0x1E69E9840];
   VCCaptionTaskInfo_HostTime(self->super._currentTaskInfo);
-  v8 = VCAudioCaptions_ConvertSamplesToPCM(self, a3, a4);
+  v8 = VCAudioCaptions_ConvertSamplesToPCM(self, samples, numSamples);
   self->super._isAudioConverterActive = 1;
   v12 = v8;
   if (v8)
@@ -1691,7 +1691,7 @@ LABEL_18:
         v19 = 2112;
         v20 = v9;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Sample PCM buffer is nil", buf, 0x30u);
       }
     }
@@ -1734,7 +1734,7 @@ LABEL_18:
     v17 = 2112;
     v18 = v3;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v6 = " [%s] %s:%d %@(%p) ";
     v7 = v10;
     v8 = 48;
@@ -1824,7 +1824,7 @@ LABEL_11:
         WORD2(v12) = 2112;
         *(&v12 + 6) = v3;
         HIWORD(v12) = 2048;
-        v13 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -1833,7 +1833,7 @@ LABEL_11:
     }
   }
 
-  [(NSMutableArray *)self->super._captionTasks removeObject:self->super._currentTaskInfo, *v11, *&v11[16], v12, v13];
+  [(NSMutableArray *)self->super._captionTasks removeObject:self->super._currentTaskInfo, *v11, *&v11[16], v12, selfCopy];
 
   self->super._currentTaskInfo = 0;
   [(STSpeechTranslatorClient *)self->_translatorClient invalidate];
@@ -1841,7 +1841,7 @@ LABEL_11:
   self->_translatorClient = 0;
 }
 
-- (void)translationDidStartForClient:(id)a3
+- (void)translationDidStartForClient:(id)client
 {
   v25 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1859,7 +1859,7 @@ LABEL_11:
         v17 = 1024;
         v18 = 419;
         v19 = 2112;
-        v20 = a3;
+        clientCopy = client;
         v8 = " [%s] %s:%d Translation started for STSpeechTranslatorClient=%@";
         v9 = v7;
         v10 = 38;
@@ -1894,11 +1894,11 @@ LABEL_11:
         v17 = 1024;
         v18 = 419;
         v19 = 2112;
-        v20 = v5;
+        clientCopy = v5;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 2112;
-        v24 = a3;
+        clientCopy2 = client;
         v8 = " [%s] %s:%d %@(%p) Translation started for STSpeechTranslatorClient=%@";
         v9 = v12;
         v10 = 58;
@@ -1908,7 +1908,7 @@ LABEL_11:
   }
 }
 
-- (void)client:(id)a3 didStopTranslationWithError:(id)a4
+- (void)client:(id)client didStopTranslationWithError:(id)error
 {
   v29 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1926,9 +1926,9 @@ LABEL_11:
         v19 = 1024;
         v20 = 423;
         v21 = 2112;
-        v22 = a3;
+        clientCopy = client;
         v23 = 2112;
-        v24 = a4;
+        selfCopy = error;
         v10 = " [%s] %s:%d Translation stopped for STSpeechTranslatorClient=%@ with error=%@";
         v11 = v9;
         v12 = 48;
@@ -1963,13 +1963,13 @@ LABEL_11:
         v19 = 1024;
         v20 = 423;
         v21 = 2112;
-        v22 = v7;
+        clientCopy = v7;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = a3;
+        clientCopy2 = client;
         v27 = 2112;
-        v28 = a4;
+        errorCopy2 = error;
         v10 = " [%s] %s:%d %@(%p) Translation stopped for STSpeechTranslatorClient=%@ with error=%@";
         v11 = v14;
         v12 = 68;
@@ -1979,7 +1979,7 @@ LABEL_11:
   }
 }
 
-- (void)client:(id)a3 didReceiveTranslationResult:(id)a4
+- (void)client:(id)client didReceiveTranslationResult:(id)result
 {
   v31 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1997,11 +1997,11 @@ LABEL_11:
         v21 = 1024;
         v22 = 427;
         v23 = 2048;
-        v24 = a3;
+        clientCopy = client;
         v25 = 1024;
-        *v26 = [a4 isFinal];
+        *v26 = [result isFinal];
         *&v26[4] = 2112;
-        *&v26[6] = [a4 identifier];
+        *&v26[6] = [result identifier];
         v10 = " [%s] %s:%d TranslatorClient=%p didReceiveTranslationResult isFinal=%d, id=%@";
         v11 = v9;
         v12 = 54;
@@ -2036,15 +2036,15 @@ LABEL_11:
         v21 = 1024;
         v22 = 427;
         v23 = 2112;
-        v24 = v7;
+        clientCopy = v7;
         v25 = 2048;
         *v26 = self;
         *&v26[8] = 2048;
-        *&v26[10] = a3;
+        *&v26[10] = client;
         v27 = 1024;
-        v28 = [a4 isFinal];
+        isFinal = [result isFinal];
         v29 = 2112;
-        v30 = [a4 identifier];
+        identifier = [result identifier];
         v10 = " [%s] %s:%d %@(%p) TranslatorClient=%p didReceiveTranslationResult isFinal=%d, id=%@";
         v11 = v14;
         v12 = 74;
@@ -2059,12 +2059,12 @@ LABEL_11:
   block[2] = __70__VCAudioCaptionsSpeechTranslator_client_didReceiveTranslationResult___block_invoke;
   block[3] = &unk_1E85F3E30;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = result;
+  block[6] = client;
   dispatch_async(captionsQueue, block);
 }
 
-- (void)client:(id)a3 didReceiveTranscriptionResult:(id)a4
+- (void)client:(id)client didReceiveTranscriptionResult:(id)result
 {
   v31 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -2082,11 +2082,11 @@ LABEL_11:
         v21 = 1024;
         v22 = 434;
         v23 = 2048;
-        v24 = a3;
+        clientCopy = client;
         v25 = 1024;
-        *v26 = [a4 isFinal];
+        *v26 = [result isFinal];
         *&v26[4] = 2112;
-        *&v26[6] = [a4 identifier];
+        *&v26[6] = [result identifier];
         v10 = " [%s] %s:%d TranslatorClient=%p didReceiveTranscriptionResult isFinal=%d, id=%@";
         v11 = v9;
         v12 = 54;
@@ -2121,15 +2121,15 @@ LABEL_11:
         v21 = 1024;
         v22 = 434;
         v23 = 2112;
-        v24 = v7;
+        clientCopy = v7;
         v25 = 2048;
         *v26 = self;
         *&v26[8] = 2048;
-        *&v26[10] = a3;
+        *&v26[10] = client;
         v27 = 1024;
-        v28 = [a4 isFinal];
+        isFinal = [result isFinal];
         v29 = 2112;
-        v30 = [a4 identifier];
+        identifier = [result identifier];
         v10 = " [%s] %s:%d %@(%p) TranslatorClient=%p didReceiveTranscriptionResult isFinal=%d, id=%@";
         v11 = v14;
         v12 = 74;
@@ -2144,12 +2144,12 @@ LABEL_11:
   block[2] = __72__VCAudioCaptionsSpeechTranslator_client_didReceiveTranscriptionResult___block_invoke;
   block[3] = &unk_1E85F3E30;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = result;
+  block[6] = client;
   dispatch_async(captionsQueue, block);
 }
 
-- (void)serverDidDisconnectForClient:(id)a3
+- (void)serverDidDisconnectForClient:(id)client
 {
   v25 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -2167,7 +2167,7 @@ LABEL_11:
         v17 = 1024;
         v18 = 441;
         v19 = 2112;
-        v20 = a3;
+        clientCopy = client;
         v8 = " [%s] %s:%d The server disconnected for the STSpeechTranslatorClient=%@";
         v9 = v7;
         v10 = 38;
@@ -2202,11 +2202,11 @@ LABEL_11:
         v17 = 1024;
         v18 = 441;
         v19 = 2112;
-        v20 = v5;
+        clientCopy = v5;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 2112;
-        v24 = a3;
+        clientCopy2 = client;
         v8 = " [%s] %s:%d %@(%p) The server disconnected for the STSpeechTranslatorClient=%@";
         v9 = v12;
         v10 = 58;
@@ -2216,7 +2216,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)setUpCaptionsWithError:(id *)a3
+- (BOOL)setUpCaptionsWithError:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super._captionsQueue);
@@ -2368,7 +2368,7 @@ LABEL_43:
       if (VRTraceGetErrorLogLevelForModule() < 3 || (VRTraceErrorLogLevelToCSTR(), v36 = *v7, !os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR)))
       {
 LABEL_50:
-        if (!a3)
+        if (!error)
         {
 LABEL_52:
           IsInternalOSInstalled = VRTraceIsInternalOSInstalled();
@@ -2379,7 +2379,7 @@ LABEL_52:
 
           if (self->super._translatorMode)
           {
-            v44 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v45 = self->super._translatorMode;
             if (v45 > 2)
             {
@@ -2391,14 +2391,14 @@ LABEL_52:
               v46 = off_1E85F9308[v45];
             }
 
-            [v44 handleFailureInMethod:a2 object:self file:@"VCAudioCaptionsSpeechTranslator.m" lineNumber:282 description:{@"Fatal error in STSpeechTranslator usage. In SpeechTranslator module but translator mode is OFF translatorMode=%@", v46}];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"VCAudioCaptionsSpeechTranslator.m" lineNumber:282 description:{@"Fatal error in STSpeechTranslator usage. In SpeechTranslator module but translator mode is OFF translatorMode=%@", v46}];
           }
 
           goto LABEL_54;
         }
 
 LABEL_51:
-        *a3 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 8, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechTranslator.m", 279], 8);
+        *error = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 8, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechTranslator.m", 279], 8);
         goto LABEL_52;
       }
 
@@ -2415,7 +2415,7 @@ LABEL_51:
     }
 
     _os_log_error_impl(v38, v39, v40, v41, v42, v43);
-    if (!a3)
+    if (!error)
     {
       goto LABEL_52;
     }
@@ -2425,7 +2425,7 @@ LABEL_51:
 
   if (translatorMode != 2)
   {
-    if (translatorMode == 1 && ![(VCAudioCaptionsSpeechTranslator *)self setupTranslatorStandaloneWithError:a3])
+    if (translatorMode == 1 && ![(VCAudioCaptionsSpeechTranslator *)self setupTranslatorStandaloneWithError:error])
     {
       goto LABEL_54;
     }
@@ -2516,13 +2516,13 @@ LABEL_29:
     goto LABEL_42;
   }
 
-  IsInternalOSInstalled = [(VCAudioCaptionsSpeechTranslator *)self setupTranslatorSharedWithError:a3];
+  IsInternalOSInstalled = [(VCAudioCaptionsSpeechTranslator *)self setupTranslatorSharedWithError:error];
   if (!IsInternalOSInstalled)
   {
     return IsInternalOSInstalled;
   }
 
-  if ([(VCAudioCaptionsSpeechTranslator *)self addToCaptionTasksWithError:a3])
+  if ([(VCAudioCaptionsSpeechTranslator *)self addToCaptionTasksWithError:error])
   {
     goto LABEL_29;
   }
@@ -2532,7 +2532,7 @@ LABEL_54:
   return IsInternalOSInstalled;
 }
 
-- (BOOL)startCaptionsWithError:(id *)a3
+- (BOOL)startCaptionsWithError:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
   v6 = objc_opt_class();
@@ -2637,7 +2637,7 @@ LABEL_10:
       v61 = 2112;
       v62 = *&v27;
       v63 = 2048;
-      v64 = self;
+      selfCopy2 = self;
       OUTLINED_FUNCTION_10_22();
       v34 = 48;
     }
@@ -2703,7 +2703,7 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  if (![(VCAudioCaptionsSpeechTranslator *)self addToCaptionTasksWithError:a3])
+  if (![(VCAudioCaptionsSpeechTranslator *)self addToCaptionTasksWithError:error])
   {
     return 1;
   }
@@ -2768,7 +2768,7 @@ LABEL_27:
       OUTLINED_FUNCTION_3_39();
       v62 = *&v15;
       v63 = 2048;
-      v64 = self;
+      selfCopy2 = self;
       v65 = 2048;
       v66 = v26;
       OUTLINED_FUNCTION_9_29();
@@ -2835,14 +2835,14 @@ LABEL_60:
 LABEL_62:
   v52 = 13;
 LABEL_63:
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
   v54 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 9, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechTranslator.m", v37], v52);
   result = 0;
-  *a3 = v54;
+  *error = v54;
   return result;
 }
 

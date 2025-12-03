@@ -1,15 +1,15 @@
 @interface NDFDevicePayload
 - (_TtC31SymptomNetworkDiagnosticsCommon16NDFDevicePayload)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDFDevicePayload
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_29EC1F9EC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_29EC1F9EC(coderCopy);
 }
 
 - (_TtC31SymptomNetworkDiagnosticsCommon16NDFDevicePayload)init

@@ -1,7 +1,7 @@
 @interface AccessoryInfoFetchController
 - (NSUUID)messageTargetUUID;
 - (_TtC13HomeKitDaemon28AccessoryInfoFetchController)init;
-- (void)handleFetchWithMessage:(id)a3;
+- (void)handleFetchWithMessage:(id)message;
 @end
 
 @implementation AccessoryInfoFetchController
@@ -20,11 +20,11 @@
   return v8;
 }
 
-- (void)handleFetchWithMessage:(id)a3
+- (void)handleFetchWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = self;
-  sub_22966A0E8(v4);
+  messageCopy = message;
+  selfCopy = self;
+  sub_22966A0E8(messageCopy);
 }
 
 - (_TtC13HomeKitDaemon28AccessoryInfoFetchController)init

@@ -1,38 +1,38 @@
 @interface _UIBannerManager
-- (_UIBannerManager)initWithScene:(id)a3;
-- (id)bannerWithContent:(id)a3;
+- (_UIBannerManager)initWithScene:(id)scene;
+- (id)bannerWithContent:(id)content;
 - (void)_createWindowIfNeeded;
-- (void)_setScene:(id)a3;
+- (void)_setScene:(id)scene;
 @end
 
 @implementation _UIBannerManager
 
-- (_UIBannerManager)initWithScene:(id)a3
+- (_UIBannerManager)initWithScene:(id)scene
 {
   v6.receiver = self;
   v6.super_class = _UIBannerManager;
-  v3 = a3;
+  sceneCopy = scene;
   v4 = [(_UIBannerManager *)&v6 init];
-  [(_UIBannerManager *)v4 _setScene:v3, v6.receiver, v6.super_class];
+  [(_UIBannerManager *)v4 _setScene:sceneCopy, v6.receiver, v6.super_class];
 
   return v4;
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
-  v5 = a3;
-  if (v5)
+  sceneCopy = scene;
+  if (sceneCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"_UIBannerManager.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"scene == nil || [scene isKindOfClass:[UIWindowScene class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBannerManager.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"scene == nil || [scene isKindOfClass:[UIWindowScene class]]"}];
     }
   }
 
   windowScene = self->_windowScene;
-  self->_windowScene = v5;
+  self->_windowScene = sceneCopy;
 }
 
 - (void)_createWindowIfNeeded
@@ -51,8 +51,8 @@
 
     [(UIView *)self->_containerView setPreservesSuperviewLayoutMargins:1];
     v9 = self->_containerView;
-    v10 = [(UIWindow *)self->_window rootViewController];
-    [v10 setView:v9];
+    rootViewController = [(UIWindow *)self->_window rootViewController];
+    [rootViewController setView:v9];
 
     [(UIWindow *)self->_window setHidden:0];
     [(UIView *)self->_window bounds];
@@ -62,12 +62,12 @@
   }
 }
 
-- (id)bannerWithContent:(id)a3
+- (id)bannerWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   [(_UIBannerManager *)self _createWindowIfNeeded];
   v5 = objc_alloc_init(_UIBanner);
-  [(_UIBanner *)v5 setContent:v4];
+  [(_UIBanner *)v5 setContent:contentCopy];
 
   [(_UIBanner *)v5 setManager:self];
 

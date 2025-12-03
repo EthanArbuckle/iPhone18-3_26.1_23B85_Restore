@@ -1,9 +1,9 @@
 @interface CRLFreehandDrawingShapeItem
-+ (id)crlaxDescriptionFor:(id)a3;
++ (id)crlaxDescriptionFor:(id)for;
 - (BOOL)canSnapToShape;
 - (BOOL)hasSnappedToShape;
 - (BOOL)isFreehandDrawingShape;
-- (BOOL)shouldPreventDragAndDropWithItem:(id)a3;
+- (BOOL)shouldPreventDragAndDropWithItem:(id)item;
 - (CRLBezierPath)maskPath;
 - (CRLCanvasInfoGeometry)geometry;
 - (CRLPKStrokePathCompactData)pencilKitStrokePathCompactData;
@@ -11,21 +11,21 @@
 - (CRLStroke)stroke;
 - (NSString)localizedName;
 - (NSUUID)renderGroupID;
-- (id)commandsToUpdateModelToMatch:(id)a3;
+- (id)commandsToUpdateModelToMatch:(id)match;
 - (int64_t)snappedShapeType;
-- (void)setGeometry:(id)a3;
-- (void)setMaskPath:(id)a3;
-- (void)setPathSource:(id)a3;
-- (void)setPencilKitStrokePathCompactData:(id)a3;
-- (void)setSnappedShapeType:(int64_t)a3;
-- (void)setStroke:(id)a3;
+- (void)setGeometry:(id)geometry;
+- (void)setMaskPath:(id)path;
+- (void)setPathSource:(id)source;
+- (void)setPencilKitStrokePathCompactData:(id)data;
+- (void)setSnappedShapeType:(int64_t)type;
+- (void)setStroke:(id)stroke;
 @end
 
 @implementation CRLFreehandDrawingShapeItem
 
-- (BOOL)shouldPreventDragAndDropWithItem:(id)a3
+- (BOOL)shouldPreventDragAndDropWithItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 1;
   }
@@ -36,7 +36,7 @@
 
 - (BOOL)isFreehandDrawingShape
 {
-  v2 = self;
+  selfCopy = self;
   sub_100EA9414();
 
   return 1;
@@ -44,7 +44,7 @@
 
 - (NSString)localizedName
 {
-  v2 = self;
+  selfCopy = self;
   sub_100EA9A2C();
 
   v3 = String._bridgeToObjectiveC()();
@@ -55,33 +55,33 @@
 - (CRLCanvasInfoGeometry)geometry
 {
   v2 = *(**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 296);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 
   return v5;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = self;
-  sub_100EADEC0(v4);
+  geometryCopy = geometry;
+  selfCopy = self;
+  sub_100EADEC0(geometryCopy);
 }
 
 - (CRLStroke)stroke
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100EAE0D4();
 
   return v3;
 }
 
-- (void)setStroke:(id)a3
+- (void)setStroke:(id)stroke
 {
-  v5 = a3;
-  v6 = self;
-  sub_100EAE318(a3);
+  strokeCopy = stroke;
+  selfCopy = self;
+  sub_100EAE318(stroke);
 }
 
 - (CRLPathSource)pathSource
@@ -91,7 +91,7 @@
   if (result)
   {
     v5 = *(v3 + 840);
-    v6 = self;
+    selfCopy = self;
 
     v8 = v5(v7);
 
@@ -106,11 +106,11 @@
   return result;
 }
 
-- (void)setPathSource:(id)a3
+- (void)setPathSource:(id)source
 {
-  v4 = a3;
-  v5 = self;
-  sub_100EAE550(v4);
+  sourceCopy = source;
+  selfCopy = self;
+  sub_100EAE550(sourceCopy);
 }
 
 - (NSUUID)renderGroupID
@@ -118,7 +118,7 @@
   v3 = sub_1005B981C(&qword_1019F6990);
   __chkstk_darwin(v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_100EAE818(v5);
 
   v7 = type metadata accessor for UUID();
@@ -137,39 +137,39 @@
 
 - (CRLPKStrokePathCompactData)pencilKitStrokePathCompactData
 {
-  v2 = self;
+  selfCopy = self;
   sub_100EAEB0C();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPencilKitStrokePathCompactData:(id)a3
+- (void)setPencilKitStrokePathCompactData:(id)data
 {
-  v5 = a3;
-  v6 = self;
-  sub_100EAEE34(a3);
+  dataCopy = data;
+  selfCopy = self;
+  sub_100EAEE34(data);
 }
 
 - (CRLBezierPath)maskPath
 {
-  v2 = self;
+  selfCopy = self;
   sub_100EAF3B0();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMaskPath:(id)a3
+- (void)setMaskPath:(id)path
 {
-  v5 = a3;
-  v6 = self;
-  sub_100EAF710(a3);
+  pathCopy = path;
+  selfCopy = self;
+  sub_100EAF710(path);
 }
 
 - (BOOL)canSnapToShape
 {
-  v2 = self;
+  selfCopy = self;
   sub_100EAFCDC();
   v4 = v3;
 
@@ -208,29 +208,29 @@
 
 - (int64_t)snappedShapeType
 {
-  v2 = self;
+  selfCopy = self;
   sub_100EB00C4();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSnappedShapeType:(int64_t)a3
+- (void)setSnappedShapeType:(int64_t)type
 {
-  v4 = self;
-  sub_100EB02F4(a3);
+  selfCopy = self;
+  sub_100EB02F4(type);
 }
 
-- (id)commandsToUpdateModelToMatch:(id)a3
+- (id)commandsToUpdateModelToMatch:(id)match
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100EB058C(v4);
+  matchCopy = match;
+  selfCopy = self;
+  v6 = sub_100EB058C(matchCopy);
 
   return v6;
 }
 
-+ (id)crlaxDescriptionFor:(id)a3
++ (id)crlaxDescriptionFor:(id)for
 {
   type metadata accessor for CRLFreehandDrawingShapeItem();
   sub_100EB64C8(&qword_101A21DC8, type metadata accessor for CRLFreehandDrawingShapeItem);

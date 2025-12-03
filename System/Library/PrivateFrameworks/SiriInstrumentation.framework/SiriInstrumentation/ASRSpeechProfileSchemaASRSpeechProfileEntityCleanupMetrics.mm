@@ -1,49 +1,49 @@
 @interface ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics
-- (ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics)initWithDictionary:(id)a3;
-- (ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics)initWithDictionary:(id)dictionary;
+- (ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNumEntitiesCleaned:(BOOL)a3;
-- (void)setHasNumEntitiesContainingEmoji:(BOOL)a3;
-- (void)setHasNumEntitiesContainingSpecialCharacters:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNumEntitiesCleaned:(BOOL)cleaned;
+- (void)setHasNumEntitiesContainingEmoji:(BOOL)emoji;
+- (void)setHasNumEntitiesContainingSpecialCharacters:(BOOL)characters;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics
 
-- (ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics)initWithDictionary:(id)a3
+- (ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics;
   v5 = [(ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isCleanupIngestionEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isCleanupIngestionEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics setIsCleanupIngestionEnabled:](v5, "setIsCleanupIngestionEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numEntitiesContainingEmoji"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numEntitiesContainingEmoji"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics setNumEntitiesContainingEmoji:](v5, "setNumEntitiesContainingEmoji:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numEntitiesContainingSpecialCharacters"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numEntitiesContainingSpecialCharacters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics setNumEntitiesContainingSpecialCharacters:](v5, "setNumEntitiesContainingSpecialCharacters:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numEntitiesCleaned"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numEntitiesCleaned"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics)initWithJSON:(id)a3
+- (ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics isCleanupIngestionEnabled](self, "isCleanupIngestionEnabled")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isCleanupIngestionEnabled"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isCleanupIngestionEnabled"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -118,7 +118,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics numEntitiesCleaned](self, "numEntitiesCleaned")}];
-  [v3 setObject:v8 forKeyedSubscript:@"numEntitiesCleaned"];
+  [dictionary setObject:v8 forKeyedSubscript:@"numEntitiesCleaned"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -134,19 +134,19 @@ LABEL_4:
 
 LABEL_11:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics numEntitiesContainingEmoji](self, "numEntitiesContainingEmoji")}];
-  [v3 setObject:v9 forKeyedSubscript:@"numEntitiesContainingEmoji"];
+  [dictionary setObject:v9 forKeyedSubscript:@"numEntitiesContainingEmoji"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSpeechProfileSchemaASRSpeechProfileEntityCleanupMetrics numEntitiesContainingSpecialCharacters](self, "numEntitiesContainingSpecialCharacters")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numEntitiesContainingSpecialCharacters"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numEntitiesContainingSpecialCharacters"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,16 +203,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -221,13 +221,13 @@ LABEL_5:
   if (*&has)
   {
     isCleanupIngestionEnabled = self->_isCleanupIngestionEnabled;
-    if (isCleanupIngestionEnabled != [v4 isCleanupIngestionEnabled])
+    if (isCleanupIngestionEnabled != [equalCopy isCleanupIngestionEnabled])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -239,13 +239,13 @@ LABEL_5:
   if (v8)
   {
     numEntitiesContainingEmoji = self->_numEntitiesContainingEmoji;
-    if (numEntitiesContainingEmoji != [v4 numEntitiesContainingEmoji])
+    if (numEntitiesContainingEmoji != [equalCopy numEntitiesContainingEmoji])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -257,10 +257,10 @@ LABEL_5:
   if (v10)
   {
     numEntitiesContainingSpecialCharacters = self->_numEntitiesContainingSpecialCharacters;
-    if (numEntitiesContainingSpecialCharacters == [v4 numEntitiesContainingSpecialCharacters])
+    if (numEntitiesContainingSpecialCharacters == [equalCopy numEntitiesContainingSpecialCharacters])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -279,7 +279,7 @@ LABEL_14:
   if (v12)
   {
     numEntitiesCleaned = self->_numEntitiesCleaned;
-    if (numEntitiesCleaned != [v4 numEntitiesCleaned])
+    if (numEntitiesCleaned != [equalCopy numEntitiesCleaned])
     {
       goto LABEL_18;
     }
@@ -291,9 +291,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -340,9 +340,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasNumEntitiesCleaned:(BOOL)a3
+- (void)setHasNumEntitiesCleaned:(BOOL)cleaned
 {
-  if (a3)
+  if (cleaned)
   {
     v3 = 8;
   }
@@ -355,9 +355,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumEntitiesContainingSpecialCharacters:(BOOL)a3
+- (void)setHasNumEntitiesContainingSpecialCharacters:(BOOL)characters
 {
-  if (a3)
+  if (characters)
   {
     v3 = 4;
   }
@@ -370,9 +370,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumEntitiesContainingEmoji:(BOOL)a3
+- (void)setHasNumEntitiesContainingEmoji:(BOOL)emoji
 {
-  if (a3)
+  if (emoji)
   {
     v3 = 2;
   }

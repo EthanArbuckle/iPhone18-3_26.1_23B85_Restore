@@ -1,31 +1,31 @@
 @interface _UIBarButtonItemActionBinding
-- (_UIBarButtonItemActionBinding)initWithBarButtonItems:(id)a3 registerObservers:(id)a4 unregisterObservers:(id)a5;
-- (void)_update:(id)a3;
+- (_UIBarButtonItemActionBinding)initWithBarButtonItems:(id)items registerObservers:(id)observers unregisterObservers:(id)unregisterObservers;
+- (void)_update:(id)_update;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation _UIBarButtonItemActionBinding
 
-- (_UIBarButtonItemActionBinding)initWithBarButtonItems:(id)a3 registerObservers:(id)a4 unregisterObservers:(id)a5
+- (_UIBarButtonItemActionBinding)initWithBarButtonItems:(id)items registerObservers:(id)observers unregisterObservers:(id)unregisterObservers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  observersCopy = observers;
+  unregisterObserversCopy = unregisterObservers;
   v19.receiver = self;
   v19.super_class = _UIBarButtonItemActionBinding;
   v11 = [(_UIBarButtonItemActionBinding *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [itemsCopy copy];
     barButtonItems = v11->_barButtonItems;
     v11->_barButtonItems = v12;
 
-    v14 = _Block_copy(v9);
+    v14 = _Block_copy(observersCopy);
     registerObservers = v11->_registerObservers;
     v11->_registerObservers = v14;
 
-    v16 = _Block_copy(v10);
+    v16 = _Block_copy(unregisterObserversCopy);
     unregisterObservers = v11->_unregisterObservers;
     v11->_unregisterObservers = v16;
   }
@@ -33,7 +33,7 @@
   return v11;
 }
 
-- (void)_update:(id)a3
+- (void)_update:(id)_update
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -56,11 +56,11 @@
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 target];
-        v10 = [v8 action];
-        if (v9)
+        target = [v8 target];
+        action = [v8 action];
+        if (target)
         {
-          v11 = v10 == 0;
+          v11 = action == 0;
         }
 
         else
@@ -70,7 +70,7 @@
 
         if (!v11)
         {
-          [v8 setEnabled:{objc_msgSend(v9, "canPerformAction:withSender:", v10, 0)}];
+          [v8 setEnabled:{objc_msgSend(target, "canPerformAction:withSender:", action, 0)}];
         }
       }
 

@@ -1,8 +1,8 @@
 @interface NWBonjourBrowseDescriptor
-+ (id)descriptorWithType:(id)a3 domain:(id)a4;
++ (id)descriptorWithType:(id)type domain:(id)domain;
 - (NSString)domain;
 - (NSString)type;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 @end
 
 @implementation NWBonjourBrowseDescriptor
@@ -10,8 +10,8 @@
 - (NSString)domain
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(NWBrowseDescriptor *)self internalDescriptor];
-  bonjour_service_domain = nw_browse_descriptor_get_bonjour_service_domain(v2);
+  internalDescriptor = [(NWBrowseDescriptor *)self internalDescriptor];
+  bonjour_service_domain = nw_browse_descriptor_get_bonjour_service_domain(internalDescriptor);
 
   if (bonjour_service_domain)
   {
@@ -125,8 +125,8 @@ LABEL_15:
 - (NSString)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(NWBrowseDescriptor *)self internalDescriptor];
-  bonjour_service_type = nw_browse_descriptor_get_bonjour_service_type(v2);
+  internalDescriptor = [(NWBrowseDescriptor *)self internalDescriptor];
+  bonjour_service_type = nw_browse_descriptor_get_bonjour_service_type(internalDescriptor);
 
   if (bonjour_service_type)
   {
@@ -237,22 +237,22 @@ LABEL_15:
   return v4;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(NWBonjourBrowseDescriptor *)self type:*&a3];
-  v7 = [(NWBonjourBrowseDescriptor *)self domain];
-  v8 = [v5 stringWithFormat:@"%@.%@", v6, v7];
+  v6 = [(NWBonjourBrowseDescriptor *)self type:*&indent];
+  domain = [(NWBonjourBrowseDescriptor *)self domain];
+  v8 = [v5 stringWithFormat:@"%@.%@", v6, domain];
 
   return v8;
 }
 
-+ (id)descriptorWithType:(id)a3 domain:(id)a4
++ (id)descriptorWithType:(id)type domain:(id)domain
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  bonjour_service = nw_browse_descriptor_create_bonjour_service([v6 UTF8String], objc_msgSend(v5, "UTF8String"));
+  domainCopy = domain;
+  typeCopy = type;
+  bonjour_service = nw_browse_descriptor_create_bonjour_service([typeCopy UTF8String], objc_msgSend(domainCopy, "UTF8String"));
   if (bonjour_service)
   {
     v8 = [(NWBrowseDescriptor *)NWBonjourBrowseDescriptor descriptorWithInternalDescriptor:bonjour_service];
@@ -275,7 +275,7 @@ LABEL_15:
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
       v11 = gLogObj;
-      v12 = type;
+      typeCopy3 = type;
       if (!os_log_type_enabled(v11, type))
       {
         goto LABEL_22;
@@ -286,7 +286,7 @@ LABEL_15:
       v13 = "%{public}s nw_browse_descriptor_create_bonjour_service failed";
 LABEL_20:
       v18 = v11;
-      v19 = v12;
+      v19 = typeCopy3;
       goto LABEL_21;
     }
 
@@ -295,7 +295,7 @@ LABEL_20:
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
       v11 = gLogObj;
-      v12 = type;
+      typeCopy3 = type;
       if (!os_log_type_enabled(v11, type))
       {
         goto LABEL_22;
@@ -311,7 +311,7 @@ LABEL_20:
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v11 = gLogObj;
-    v15 = type;
+    typeCopy4 = type;
     v16 = os_log_type_enabled(v11, type);
     if (!backtrace_string)
     {
@@ -331,7 +331,7 @@ LABEL_22:
       v23 = "+[NWBonjourBrowseDescriptor descriptorWithType:domain:]";
       v13 = "%{public}s nw_browse_descriptor_create_bonjour_service failed, no backtrace";
       v18 = v11;
-      v19 = v15;
+      v19 = typeCopy4;
 LABEL_21:
       _os_log_impl(&dword_181A37000, v18, v19, v13, buf, 0xCu);
       goto LABEL_22;
@@ -343,7 +343,7 @@ LABEL_21:
       v23 = "+[NWBonjourBrowseDescriptor descriptorWithType:domain:]";
       v24 = 2082;
       v25 = backtrace_string;
-      _os_log_impl(&dword_181A37000, v11, v15, "%{public}s nw_browse_descriptor_create_bonjour_service failed, dumping backtrace:%{public}s", buf, 0x16u);
+      _os_log_impl(&dword_181A37000, v11, typeCopy4, "%{public}s nw_browse_descriptor_create_bonjour_service failed, dumping backtrace:%{public}s", buf, 0x16u);
     }
 
     free(backtrace_string);

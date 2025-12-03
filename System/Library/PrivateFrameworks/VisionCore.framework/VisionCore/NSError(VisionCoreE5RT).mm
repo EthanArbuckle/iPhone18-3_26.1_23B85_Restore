@@ -42,7 +42,7 @@
     [v10 appendString:v6];
   }
 
-  v11 = [a1 VisionCoreErrorForFailedOperationWithLocalizedDescription:v10];
+  v11 = [self VisionCoreErrorForFailedOperationWithLocalizedDescription:v10];
 
   return v11;
 }
@@ -55,7 +55,7 @@
     last_error_message = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:last_error_message];
   }
 
-  v6 = [a1 VisionCoreErrorForE5RTErrorCode:a3 localizedDescription:last_error_message];
+  v6 = [self VisionCoreErrorForE5RTErrorCode:a3 localizedDescription:last_error_message];
 
   return v6;
 }

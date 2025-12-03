@@ -1,72 +1,72 @@
 @interface NTKComplicationCollection
-+ (id)_bundleForWatchKitAppID:(id)a3;
-+ (id)lsSDKVersionForApplicationID:(id)a3;
++ (id)_bundleForWatchKitAppID:(id)d;
++ (id)lsSDKVersionForApplicationID:(id)d;
 + (id)newWidgetCollection;
 + (id)sharedBundleCollection;
 + (id)sharedRemoteCollection;
-- (BOOL)hasSampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4 family:(int64_t)a5;
-- (NTKComplicationCollection)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4;
-- (id)_fetchOrCreateSampleDataForClientIdentifier:(id)a3 descriptor:(id)a4 family:(int64_t)a5;
-- (id)_sampleDataForClientIdentifier:(id)a3 descriptor:(id)a4;
+- (BOOL)hasSampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
+- (NTKComplicationCollection)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d;
+- (id)_fetchOrCreateSampleDataForClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
+- (id)_sampleDataForClientIdentifier:(id)identifier descriptor:(id)descriptor;
 - (id)clients;
-- (id)clientsSupportingFamily:(int64_t)a3;
-- (id)complicationDescriptorsForClientIdentifier:(id)a3;
-- (id)sampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4 applicationID:(id)a5 family:(int64_t)a6;
-- (id)supportedTemplateFamiliesForClientIdentifier:(id)a3 descriptor:(id)a4;
-- (void)_cleanupOrphanedSampleTemplatesForClientIdentifier:(id)a3;
+- (id)clientsSupportingFamily:(int64_t)family;
+- (id)complicationDescriptorsForClientIdentifier:(id)identifier;
+- (id)sampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor applicationID:(id)d family:(int64_t)family;
+- (id)supportedTemplateFamiliesForClientIdentifier:(id)identifier descriptor:(id)descriptor;
+- (void)_cleanupOrphanedSampleTemplatesForClientIdentifier:(id)identifier;
 - (void)_notifyLoaded;
 - (void)_notifyReloaded;
-- (void)_notifyRemovedComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4;
-- (void)_notifyUpdateComplicationDescriptorsForClientIdentifier:(id)a3;
-- (void)_notifyUpdateComplicationSampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4;
-- (void)_performOrEnqueueUpdate:(id)a3;
+- (void)_notifyRemovedComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor;
+- (void)_notifyUpdateComplicationDescriptorsForClientIdentifier:(id)identifier;
+- (void)_notifyUpdateComplicationSampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor;
+- (void)_performOrEnqueueUpdate:(id)update;
 - (void)_register;
 - (void)_registerIfNeeded;
-- (void)_removeComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4;
-- (void)_sendToDaemonRemoveComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4;
-- (void)_sendToDaemonUpdatedComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4;
-- (void)_sendToDaemonUpdatedSampleDataTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6;
-- (void)_setComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4;
-- (void)_setLocalizedSampleTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6;
-- (void)_setLocalizedSampleTemplateReference:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6;
-- (void)_throwIfNotLoaded:(SEL)a3;
-- (void)addObserver:(id)a3;
+- (void)_removeComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor;
+- (void)_sendToDaemonRemoveComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor;
+- (void)_sendToDaemonUpdatedComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier;
+- (void)_sendToDaemonUpdatedSampleDataTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
+- (void)_setComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier;
+- (void)_setLocalizedSampleTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
+- (void)_setLocalizedSampleTemplateReference:(id)reference forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
+- (void)_throwIfNotLoaded:(SEL)loaded;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)loadFullCollectionWithLocalizableSampleTemplates:(id)a3 complicationDescriptors:(id)a4 seqId:(id)a5;
-- (void)performAfterLoad:(id)a3;
-- (void)removeAllComplicationSampleTemplatesExceptThoseWithClientIdentifiers:(id)a3;
-- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4;
-- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4 seqId:(id)a5;
-- (void)removeObserver:(id)a3;
+- (void)loadFullCollectionWithLocalizableSampleTemplates:(id)templates complicationDescriptors:(id)descriptors seqId:(id)id;
+- (void)performAfterLoad:(id)load;
+- (void)removeAllComplicationSampleTemplatesExceptThoseWithClientIdentifiers:(id)identifiers;
+- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor;
+- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor seqId:(id)id;
+- (void)removeObserver:(id)observer;
 - (void)resumeUpdatesFromDaemon;
-- (void)setComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4;
-- (void)setLocalizableSampleTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6;
+- (void)setComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier;
+- (void)setLocalizableSampleTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family;
 - (void)suspendUpdatesFromDaemon;
-- (void)updateComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4 seqId:(id)a5;
-- (void)updateSampleTemplateReference:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6 seqId:(id)a7;
+- (void)updateComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier seqId:(id)id;
+- (void)updateSampleTemplateReference:(id)reference forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family seqId:(id)id;
 @end
 
 @implementation NTKComplicationCollection
 
-- (NTKComplicationCollection)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4
+- (NTKComplicationCollection)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v44.receiver = self;
   v44.super_class = NTKComplicationCollection;
   v9 = [(NTKComplicationCollection *)&v44 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collectionIdentifier, a3);
-    objc_storeStrong(&v10->_deviceUUID, a4);
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v9->_collectionIdentifier, identifier);
+    objc_storeStrong(&v10->_deviceUUID, d);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v10->_observers;
-    v10->_observers = v11;
+    v10->_observers = weakObjectsHashTable;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     loadCallbacks = v10->_loadCallbacks;
-    v10->_loadCallbacks = v13;
+    v10->_loadCallbacks = array;
 
     v15 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     observersLock = v10->_observersLock;
@@ -76,13 +76,13 @@
     lock = v10->_lock;
     v10->_lock = v17;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     localizeableSampleDataTemplates = v10->_localizeableSampleDataTemplates;
-    v10->_localizeableSampleDataTemplates = v19;
+    v10->_localizeableSampleDataTemplates = dictionary;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     complicationDescriptors = v10->_complicationDescriptors;
-    v10->_complicationDescriptors = v21;
+    v10->_complicationDescriptors = dictionary2;
 
     v23 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.nanotimekit.complicationstoreserver" options:4096];
     connection = v10->_connection;
@@ -105,7 +105,7 @@
     v40[2] = __69__NTKComplicationCollection_initWithCollectionIdentifier_deviceUUID___block_invoke;
     v40[3] = &unk_27877F610;
     objc_copyWeak(&v42, &location);
-    v31 = v7;
+    v31 = identifierCopy;
     v41 = v31;
     [(NSXPCConnection *)v30 setInterruptionHandler:v40];
     v32 = v10->_connection;
@@ -177,7 +177,7 @@ void __69__NTKComplicationCollection_initWithCollectionIdentifier_deviceUUID___b
   block[1] = 3221225472;
   block[2] = __51__NTKComplicationCollection_sharedRemoteCollection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedRemoteCollection_onceToken != -1)
   {
     dispatch_once(&sharedRemoteCollection_onceToken, block);
@@ -197,7 +197,7 @@ void __51__NTKComplicationCollection_sharedRemoteCollection__block_invoke(uint64
 
 + (id)newWidgetCollection
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
 
   return [v2 initWithCollectionIdentifier:@"WidgetComplications" deviceUUID:0];
 }
@@ -208,7 +208,7 @@ void __51__NTKComplicationCollection_sharedRemoteCollection__block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __51__NTKComplicationCollection_sharedBundleCollection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedBundleCollection_onceToken != -1)
   {
     dispatch_once(&sharedBundleCollection_onceToken, block);
@@ -226,42 +226,42 @@ void __51__NTKComplicationCollection_sharedBundleCollection__block_invoke(uint64
   sharedBundleCollection___sharedBundleCollection = v1;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   observersLock = self->_observersLock;
-  v5 = a3;
+  observerCopy = observer;
   [(NSLock *)observersLock lock];
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   v6 = self->_observersLock;
 
   [(NSLock *)v6 unlock];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   observersLock = self->_observersLock;
-  v5 = a3;
+  observerCopy = observer;
   [(NSLock *)observersLock lock];
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   v6 = self->_observersLock;
 
   [(NSLock *)v6 unlock];
 }
 
-- (void)performAfterLoad:(id)a3
+- (void)performAfterLoad:(id)load
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  loadCopy = load;
+  v5 = loadCopy;
+  if (loadCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __46__NTKComplicationCollection_performAfterLoad___block_invoke;
     v6[3] = &unk_27877FF60;
     v6[4] = self;
-    v7 = v4;
+    v7 = loadCopy;
     [(NTKComplicationCollection *)self _performOrEnqueueUpdate:v6];
   }
 }
@@ -284,17 +284,17 @@ void __46__NTKComplicationCollection_performAfterLoad___block_invoke(uint64_t a1
   }
 }
 
-+ (id)lsSDKVersionForApplicationID:(id)a3
++ (id)lsSDKVersionForApplicationID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v20 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v20];
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v20];
   v5 = v20;
   if (v4)
   {
-    v6 = [v4 SDKVersion];
+    sDKVersion = [v4 SDKVersion];
     v7 = 0;
-    if (v6)
+    if (sDKVersion)
     {
       goto LABEL_15;
     }
@@ -309,11 +309,11 @@ void __46__NTKComplicationCollection_performAfterLoad___block_invoke(uint64_t a1
   }
 
   v19 = 0;
-  v9 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v3 error:&v19];
+  v9 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:dCopy error:&v19];
   v7 = v19;
   if (v9)
   {
-    v6 = [v9 SDKVersion];
+    sDKVersion = [v9 SDKVersion];
   }
 
   else
@@ -324,36 +324,36 @@ void __46__NTKComplicationCollection_performAfterLoad___block_invoke(uint64_t a1
       +[NTKComplicationCollection lsSDKVersionForApplicationID:];
     }
 
-    v6 = 0;
+    sDKVersion = 0;
   }
 
-  if (!v6)
+  if (!sDKVersion)
   {
 LABEL_12:
     v11 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(NTKComplicationCollection *)v3 lsSDKVersionForApplicationID:v11, v12, v13, v14, v15, v16, v17];
+      [(NTKComplicationCollection *)dCopy lsSDKVersionForApplicationID:v11, v12, v13, v14, v15, v16, v17];
     }
   }
 
 LABEL_15:
 
-  return v6;
+  return sDKVersion;
 }
 
 - (id)clients
 {
   v18 = *MEMORY[0x277D85DE8];
   [(NSRecursiveLock *)self->_lock lock];
-  v3 = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates allKeys];
+  allKeys = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates allKeys];
   [(NSRecursiveLock *)self->_lock unlock];
   v4 = [MEMORY[0x277CBEB58] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -381,12 +381,12 @@ LABEL_15:
     while (v7);
   }
 
-  v11 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
-- (id)clientsSupportingFamily:(int64_t)a3
+- (id)clientsSupportingFamily:(int64_t)family
 {
   v5 = [MEMORY[0x277CBEB58] set];
   [(NSRecursiveLock *)self->_lock lock];
@@ -396,13 +396,13 @@ LABEL_15:
   v12 = __53__NTKComplicationCollection_clientsSupportingFamily___block_invoke;
   v13 = &unk_278784318;
   v14 = v5;
-  v15 = a3;
+  familyCopy = family;
   v7 = v5;
   [(NSMutableDictionary *)localizeableSampleDataTemplates enumerateKeysAndObjectsUsingBlock:&v10];
   [(NSRecursiveLock *)self->_lock unlock:v10];
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
 void __53__NTKComplicationCollection_clientsSupportingFamily___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -434,37 +434,37 @@ void __53__NTKComplicationCollection_clientsSupportingFamily___block_invoke_2(ui
   }
 }
 
-- (id)supportedTemplateFamiliesForClientIdentifier:(id)a3 descriptor:(id)a4
+- (id)supportedTemplateFamiliesForClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
-  v4 = [(NTKComplicationCollection *)self _sampleDataForClientIdentifier:a3 descriptor:a4];
-  v5 = [v4 supportedFamilies];
+  v4 = [(NTKComplicationCollection *)self _sampleDataForClientIdentifier:identifier descriptor:descriptor];
+  supportedFamilies = [v4 supportedFamilies];
 
-  return v5;
+  return supportedFamilies;
 }
 
-- (BOOL)hasSampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4 family:(int64_t)a5
+- (BOOL)hasSampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
-  v6 = [(NTKComplicationCollection *)self _sampleDataForClientIdentifier:a3 descriptor:a4];
-  LOBYTE(a5) = [v6 hasTemplateForFamily:a5];
+  v6 = [(NTKComplicationCollection *)self _sampleDataForClientIdentifier:identifier descriptor:descriptor];
+  LOBYTE(family) = [v6 hasTemplateForFamily:family];
 
-  return a5;
+  return family;
 }
 
-- (id)sampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4 applicationID:(id)a5 family:(int64_t)a6
+- (id)sampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor applicationID:(id)d family:(int64_t)family
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v31 = a5;
-  v30 = [(NTKComplicationCollection *)self _sampleDataForClientIdentifier:v10 descriptor:a4];
-  v29 = [v30 templateForFamily:a6];
+  identifierCopy = identifier;
+  dCopy = d;
+  v30 = [(NTKComplicationCollection *)self _sampleDataForClientIdentifier:identifierCopy descriptor:descriptor];
+  v29 = [v30 templateForFamily:family];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v11 = +[NTKCompanionAppLibrary sharedAppLibrary];
-  v12 = [v11 thirdPartyApps];
+  thirdPartyApps = [v11 thirdPartyApps];
 
-  v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v13 = [thirdPartyApps countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (!v13)
   {
 LABEL_14:
@@ -482,7 +482,7 @@ LABEL_3:
   {
     if (*v33 != v15)
     {
-      objc_enumerationMutation(v12);
+      objc_enumerationMutation(thirdPartyApps);
     }
 
     v17 = *(*(&v32 + 1) + 8 * v16);
@@ -493,15 +493,15 @@ LABEL_3:
     }
 
     v18 = v17;
-    v19 = [v18 complicationClientIdentifier];
-    if (([v19 isEqualToString:v10] & 1) == 0)
+    complicationClientIdentifier = [v18 complicationClientIdentifier];
+    if (([complicationClientIdentifier isEqualToString:identifierCopy] & 1) == 0)
     {
 
       goto LABEL_11;
     }
 
-    v20 = [v18 watchApplicationIdentifier];
-    v21 = [v20 isEqualToString:v31];
+    watchApplicationIdentifier = [v18 watchApplicationIdentifier];
+    v21 = [watchApplicationIdentifier isEqualToString:dCopy];
 
     if (v21)
     {
@@ -513,7 +513,7 @@ LABEL_11:
 LABEL_12:
     if (v14 == ++v16)
     {
-      v14 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v14 = [thirdPartyApps countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v14)
       {
         goto LABEL_3;
@@ -523,11 +523,11 @@ LABEL_12:
     }
   }
 
-  v24 = [v18 urlToWatchKitBundle];
-  v25 = v24;
-  if (v24)
+  urlToWatchKitBundle = [v18 urlToWatchKitBundle];
+  v25 = urlToWatchKitBundle;
+  if (urlToWatchKitBundle)
   {
-    v26 = [MEMORY[0x277CCA8D8] bundleWithURL:v24];
+    v26 = [MEMORY[0x277CCA8D8] bundleWithURL:urlToWatchKitBundle];
   }
 
   else
@@ -552,12 +552,12 @@ LABEL_21:
   return v27;
 }
 
-- (id)complicationDescriptorsForClientIdentifier:(id)a3
+- (id)complicationDescriptorsForClientIdentifier:(id)identifier
 {
   lock = self->_lock;
-  v5 = a3;
+  identifierCopy = identifier;
   [(NSRecursiveLock *)lock lock];
-  v6 = [(NSMutableDictionary *)self->_complicationDescriptors objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_complicationDescriptors objectForKey:identifierCopy];
 
   v7 = [v6 copy];
   [(NSRecursiveLock *)self->_lock unlock];
@@ -565,30 +565,30 @@ LABEL_21:
   return v7;
 }
 
-+ (id)_bundleForWatchKitAppID:(id)a3
++ (id)_bundleForWatchKitAppID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v26 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v26];
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v26];
   v5 = v26;
   if (!v4)
   {
-    v6 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    applicationExtensionRecords = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
+    if (os_log_type_enabled(applicationExtensionRecords, OS_LOG_TYPE_ERROR))
     {
-      [(NTKComplicationCollection *)v3 _bundleForWatchKitAppID:v5, v6];
+      [(NTKComplicationCollection *)dCopy _bundleForWatchKitAppID:v5, applicationExtensionRecords];
     }
 
     goto LABEL_14;
   }
 
-  v6 = [v4 applicationExtensionRecords];
+  applicationExtensionRecords = [v4 applicationExtensionRecords];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v7 = [applicationExtensionRecords countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (!v7)
   {
 LABEL_14:
@@ -599,7 +599,7 @@ LABEL_14:
   v8 = v7;
   v19 = v5;
   v20 = v4;
-  v21 = v3;
+  v21 = dCopy;
   v9 = 0;
   v10 = *v23;
   do
@@ -608,13 +608,13 @@ LABEL_14:
     {
       if (*v23 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(applicationExtensionRecords);
       }
 
       v12 = *(*(&v22 + 1) + 8 * i);
-      v13 = [v12 extensionPointRecord];
-      v14 = [v13 name];
-      v15 = [v14 isEqualToString:@"com.apple.watchkit"];
+      extensionPointRecord = [v12 extensionPointRecord];
+      name = [extensionPointRecord name];
+      v15 = [name isEqualToString:@"com.apple.watchkit"];
 
       if (v15)
       {
@@ -625,90 +625,90 @@ LABEL_14:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    v8 = [applicationExtensionRecords countByEnumeratingWithState:&v22 objects:v27 count:16];
   }
 
   while (v8);
   v4 = v20;
-  v3 = v21;
+  dCopy = v21;
   v5 = v19;
 LABEL_15:
 
   return v9;
 }
 
-- (void)setLocalizableSampleTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6
+- (void)setLocalizableSampleTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
-  if (a3)
+  if (template)
   {
-    v10 = a5;
-    v12 = a4;
-    v11 = a3;
-    [(NTKComplicationCollection *)self _setLocalizedSampleTemplate:v11 forClientIdentifier:v12 descriptor:v10 family:a6];
-    [(NTKComplicationCollection *)self _sendToDaemonUpdatedSampleDataTemplate:v11 forClientIdentifier:v12 descriptor:v10 family:a6];
+    descriptorCopy = descriptor;
+    identifierCopy = identifier;
+    templateCopy = template;
+    [(NTKComplicationCollection *)self _setLocalizedSampleTemplate:templateCopy forClientIdentifier:identifierCopy descriptor:descriptorCopy family:family];
+    [(NTKComplicationCollection *)self _sendToDaemonUpdatedSampleDataTemplate:templateCopy forClientIdentifier:identifierCopy descriptor:descriptorCopy family:family];
 
-    [(NTKComplicationCollection *)self _notifyUpdateComplicationSampleTemplateForClientIdentifier:v12 descriptor:v10];
+    [(NTKComplicationCollection *)self _notifyUpdateComplicationSampleTemplateForClientIdentifier:identifierCopy descriptor:descriptorCopy];
   }
 }
 
-- (void)setComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4
+- (void)setComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  descriptorsCopy = descriptors;
+  identifierCopy = identifier;
+  if (descriptorsCopy)
   {
     v8 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = v6;
+      v10 = descriptorsCopy;
       v11 = 2112;
-      v12 = v7;
+      v12 = identifierCopy;
       _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "NTKComplicationCollection, setting %@ descriptors for %@", &v9, 0x16u);
     }
 
-    [(NTKComplicationCollection *)self _setComplicationDescriptors:v6 forClientIdentifier:v7];
-    [(NTKComplicationCollection *)self _sendToDaemonUpdatedComplicationDescriptors:v6 forClientIdentifier:v7];
-    [(NTKComplicationCollection *)self _notifyUpdateComplicationDescriptorsForClientIdentifier:v7];
-    [(NTKComplicationCollection *)self _cleanupOrphanedSampleTemplatesForClientIdentifier:v7];
+    [(NTKComplicationCollection *)self _setComplicationDescriptors:descriptorsCopy forClientIdentifier:identifierCopy];
+    [(NTKComplicationCollection *)self _sendToDaemonUpdatedComplicationDescriptors:descriptorsCopy forClientIdentifier:identifierCopy];
+    [(NTKComplicationCollection *)self _notifyUpdateComplicationDescriptorsForClientIdentifier:identifierCopy];
+    [(NTKComplicationCollection *)self _cleanupOrphanedSampleTemplatesForClientIdentifier:identifierCopy];
   }
 }
 
-- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4
+- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
   [(NTKComplicationCollection *)self _throwIfNotLoaded:a2];
   v9 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 identifier];
+    identifier = [descriptorCopy identifier];
     v11 = 138412546;
-    v12 = v7;
+    v12 = identifierCopy;
     v13 = 2112;
-    v14 = v10;
+    v14 = identifier;
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "NTKComplicationCollection, removing complication sample templates for %@, %@", &v11, 0x16u);
   }
 
-  [(NTKComplicationCollection *)self _removeComplicationSampleTemplatesForClientIdentifier:v7 descriptor:v8];
-  [(NTKComplicationCollection *)self _sendToDaemonRemoveComplicationSampleTemplatesForClientIdentifier:v7 descriptor:v8];
-  [(NTKComplicationCollection *)self _notifyRemovedComplicationSampleTemplatesForClientIdentifier:v7 descriptor:v8];
+  [(NTKComplicationCollection *)self _removeComplicationSampleTemplatesForClientIdentifier:identifierCopy descriptor:descriptorCopy];
+  [(NTKComplicationCollection *)self _sendToDaemonRemoveComplicationSampleTemplatesForClientIdentifier:identifierCopy descriptor:descriptorCopy];
+  [(NTKComplicationCollection *)self _notifyRemovedComplicationSampleTemplatesForClientIdentifier:identifierCopy descriptor:descriptorCopy];
 }
 
-- (void)removeAllComplicationSampleTemplatesExceptThoseWithClientIdentifiers:(id)a3
+- (void)removeAllComplicationSampleTemplatesExceptThoseWithClientIdentifiers:(id)identifiers
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(NSRecursiveLock *)self->_lock lock];
-  v5 = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates allKeys];
+  allKeys = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates allKeys];
   [(NSRecursiveLock *)self->_lock unlock];
   v6 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = identifiersCopy;
     _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "NTKComplicationCollection, removing all complication sample templates except those with client identifiers %@", buf, 0xCu);
   }
 
@@ -716,7 +716,7 @@ LABEL_15:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = allKeys;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -732,7 +732,7 @@ LABEL_15:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (([v4 containsObject:v12] & 1) == 0)
+        if (([identifiersCopy containsObject:v12] & 1) == 0)
         {
           v13 = [(NTKComplicationCollection *)self complicationDescriptorsForClientIdentifier:v12];
           v14[0] = MEMORY[0x277D85DD0];
@@ -754,29 +754,29 @@ LABEL_15:
   }
 }
 
-- (id)_fetchOrCreateSampleDataForClientIdentifier:(id)a3 descriptor:(id)a4 family:(int64_t)a5
+- (id)_fetchOrCreateSampleDataForClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
   [(NSRecursiveLock *)self->_lock lock];
-  v10 = [(NTKComplicationCollection *)self _sampleDataForClientIdentifier:v8 descriptor:v9];
+  v10 = [(NTKComplicationCollection *)self _sampleDataForClientIdentifier:identifierCopy descriptor:descriptorCopy];
   if (!v10)
   {
     v11 = [NTKComplicationSampleData alloc];
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:family];
     v16[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
     v10 = [(NTKComplicationSampleData *)v11 initWithSupportedFamilies:v13];
 
-    v14 = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates objectForKeyedSubscript:v8];
-    if (!v14)
+    dictionary = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates objectForKeyedSubscript:identifierCopy];
+    if (!dictionary)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
-      [(NSMutableDictionary *)self->_localizeableSampleDataTemplates setObject:v14 forKeyedSubscript:v8];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(NSMutableDictionary *)self->_localizeableSampleDataTemplates setObject:dictionary forKeyedSubscript:identifierCopy];
     }
 
-    [v14 setObject:v10 forKeyedSubscript:v9];
+    [dictionary setObject:v10 forKeyedSubscript:descriptorCopy];
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
@@ -784,54 +784,54 @@ LABEL_15:
   return v10;
 }
 
-- (void)_setLocalizedSampleTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6
+- (void)_setLocalizedSampleTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
-  v10 = a3;
-  v11 = [(NTKComplicationCollection *)self _fetchOrCreateSampleDataForClientIdentifier:a4 descriptor:a5 family:a6];
-  [v11 setTemplate:v10 forFamily:a6];
+  templateCopy = template;
+  v11 = [(NTKComplicationCollection *)self _fetchOrCreateSampleDataForClientIdentifier:identifier descriptor:descriptor family:family];
+  [v11 setTemplate:templateCopy forFamily:family];
 }
 
-- (void)_setLocalizedSampleTemplateReference:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6
+- (void)_setLocalizedSampleTemplateReference:(id)reference forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
-  v10 = a3;
-  v12 = [(NTKComplicationCollection *)self _fetchOrCreateSampleDataForClientIdentifier:a4 descriptor:a5 family:a6];
-  v11 = [v10 path];
+  referenceCopy = reference;
+  v12 = [(NTKComplicationCollection *)self _fetchOrCreateSampleDataForClientIdentifier:identifier descriptor:descriptor family:family];
+  path = [referenceCopy path];
 
-  [v12 setTemplatePath:v11 forFamily:a6];
+  [v12 setTemplatePath:path forFamily:family];
 }
 
-- (void)_setComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4
+- (void)_setComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier
 {
-  v9 = a3;
+  descriptorsCopy = descriptors;
   lock = self->_lock;
-  v7 = a4;
+  identifierCopy = identifier;
   [(NSRecursiveLock *)lock lock];
   complicationDescriptors = self->_complicationDescriptors;
-  if (v9)
+  if (descriptorsCopy)
   {
-    [(NSMutableDictionary *)complicationDescriptors setObject:v9 forKey:v7];
+    [(NSMutableDictionary *)complicationDescriptors setObject:descriptorsCopy forKey:identifierCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)complicationDescriptors removeObjectForKey:v7];
+    [(NSMutableDictionary *)complicationDescriptors removeObjectForKey:identifierCopy];
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)_cleanupOrphanedSampleTemplatesForClientIdentifier:(id)a3
+- (void)_cleanupOrphanedSampleTemplatesForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(NSRecursiveLock *)self->_lock lock];
-  v5 = [(NTKComplicationCollection *)self clients];
-  v6 = [v5 containsObject:v4];
+  clients = [(NTKComplicationCollection *)self clients];
+  v6 = [clients containsObject:identifierCopy];
 
-  v7 = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates objectForKey:v4];
-  v8 = [(NSMutableDictionary *)self->_complicationDescriptors objectForKey:v4];
+  v7 = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates objectForKey:identifierCopy];
+  v8 = [(NSMutableDictionary *)self->_complicationDescriptors objectForKey:identifierCopy];
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v7 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [v7 allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = [MEMORY[0x277CBEB98] setWithArray:v8];
   [v11 minusSet:v12];
@@ -841,9 +841,9 @@ LABEL_15:
   v14[2] = __80__NTKComplicationCollection__cleanupOrphanedSampleTemplatesForClientIdentifier___block_invoke;
   v14[3] = &unk_278784368;
   v17 = v6;
-  v15 = v4;
-  v16 = self;
-  v13 = v4;
+  v15 = identifierCopy;
+  selfCopy = self;
+  v13 = identifierCopy;
   [v11 enumerateObjectsUsingBlock:v14];
   [(NSRecursiveLock *)self->_lock unlock];
 }
@@ -871,28 +871,28 @@ void __80__NTKComplicationCollection__cleanupOrphanedSampleTemplatesForClientIde
   }
 }
 
-- (void)_removeComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4
+- (void)_removeComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
   v8 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 identifier];
+    identifier = [descriptorCopy identifier];
     v11 = 138412546;
-    v12 = v6;
+    v12 = identifierCopy;
     v13 = 2112;
-    v14 = v9;
+    v14 = identifier;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "NTKComplicationCollection, removing complication sample data for %@, %@", &v11, 0x16u);
   }
 
   [(NSRecursiveLock *)self->_lock lock];
-  v10 = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates objectForKey:v6];
-  [v10 removeObjectForKey:v7];
+  v10 = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates objectForKey:identifierCopy];
+  [v10 removeObjectForKey:descriptorCopy];
   if (![v10 count])
   {
-    [(NSMutableDictionary *)self->_localizeableSampleDataTemplates removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_localizeableSampleDataTemplates removeObjectForKey:identifierCopy];
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
@@ -902,9 +902,9 @@ void __80__NTKComplicationCollection__cleanupOrphanedSampleTemplatesForClientIde
 {
   if (!self->_updatesEnqueuedWhileSuspended)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     updatesEnqueuedWhileSuspended = self->_updatesEnqueuedWhileSuspended;
-    self->_updatesEnqueuedWhileSuspended = v3;
+    self->_updatesEnqueuedWhileSuspended = array;
   }
 
   self->_updatesSuspended = 1;
@@ -948,52 +948,52 @@ void __80__NTKComplicationCollection__cleanupOrphanedSampleTemplatesForClientIde
   self->_updatesSuspended = 0;
 }
 
-- (void)_sendToDaemonUpdatedSampleDataTemplate:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6
+- (void)_sendToDaemonUpdatedSampleDataTemplate:(id)template forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  templateCopy = template;
   [(NTKComplicationCollection *)self _registerIfNeeded];
-  v13 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v13 updateLocalizableSampleDataTemplate:v12 forClientIdentifier:v11 descriptor:v10 family:a6];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy updateLocalizableSampleDataTemplate:templateCopy forClientIdentifier:identifierCopy descriptor:descriptorCopy family:family];
 }
 
-- (void)_sendToDaemonUpdatedComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4
+- (void)_sendToDaemonUpdatedComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  descriptorsCopy = descriptors;
   [(NTKComplicationCollection *)self _registerIfNeeded];
-  v8 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v8 updateComplicationDescriptors:v7 forClientIdentifier:v6];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy updateComplicationDescriptors:descriptorsCopy forClientIdentifier:identifierCopy];
 }
 
-- (void)_sendToDaemonRemoveComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4
+- (void)_sendToDaemonRemoveComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
   [(NTKComplicationCollection *)self _registerIfNeeded];
   v8 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 identifier];
+    identifier = [descriptorCopy identifier];
     v11 = 138412546;
-    v12 = v6;
+    v12 = identifierCopy;
     v13 = 2112;
-    v14 = v9;
+    v14 = identifier;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "NTKComplicationCollection, telling daemon to remove complication sample templates for %@, %@", &v11, 0x16u);
   }
 
-  v10 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v10 removeComplicationSampleTemplatesForClientIdentifier:v6 descriptor:v7];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy removeComplicationSampleTemplatesForClientIdentifier:identifierCopy descriptor:descriptorCopy];
 }
 
-- (void)loadFullCollectionWithLocalizableSampleTemplates:(id)a3 complicationDescriptors:(id)a4 seqId:(id)a5
+- (void)loadFullCollectionWithLocalizableSampleTemplates:(id)templates complicationDescriptors:(id)descriptors seqId:(id)id
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  templatesCopy = templates;
+  descriptorsCopy = descriptors;
+  idCopy = id;
   v11 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1005,18 +1005,18 @@ void __80__NTKComplicationCollection__cleanupOrphanedSampleTemplatesForClientIde
 
   v13 = objc_opt_class();
   v14 = objc_opt_class();
-  NTKValidateDictionary(v8, v13, v14);
+  NTKValidateDictionary(templatesCopy, v13, v14);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __108__NTKComplicationCollection_loadFullCollectionWithLocalizableSampleTemplates_complicationDescriptors_seqId___block_invoke;
   v18[3] = &unk_278780FF8;
   v18[4] = self;
-  v19 = v10;
-  v20 = v9;
-  v21 = v8;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
+  v19 = idCopy;
+  v20 = descriptorsCopy;
+  v21 = templatesCopy;
+  v15 = templatesCopy;
+  v16 = descriptorsCopy;
+  v17 = idCopy;
   [(NTKComplicationCollection *)self _performOrEnqueueUpdate:v18];
 }
 
@@ -1129,17 +1129,17 @@ void __108__NTKComplicationCollection_loadFullCollectionWithLocalizableSampleTem
   }
 }
 
-- (void)updateSampleTemplateReference:(id)a3 forClientIdentifier:(id)a4 descriptor:(id)a5 family:(int64_t)a6 seqId:(id)a7
+- (void)updateSampleTemplateReference:(id)reference forClientIdentifier:(id)identifier descriptor:(id)descriptor family:(int64_t)family seqId:(id)id
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v12)
+  referenceCopy = reference;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  idCopy = id;
+  if (referenceCopy)
   {
-    if (v13)
+    if (identifierCopy)
     {
-      if (v14)
+      if (descriptorCopy)
       {
 LABEL_4:
         v16[0] = MEMORY[0x277D85DD0];
@@ -1147,11 +1147,11 @@ LABEL_4:
         v16[2] = __103__NTKComplicationCollection_updateSampleTemplateReference_forClientIdentifier_descriptor_family_seqId___block_invoke;
         v16[3] = &unk_2787843E0;
         v16[4] = self;
-        v17 = v15;
-        v18 = v12;
-        v19 = v13;
-        v20 = v14;
-        v21 = a6;
+        v17 = idCopy;
+        v18 = referenceCopy;
+        v19 = identifierCopy;
+        v20 = descriptorCopy;
+        familyCopy = family;
         [(NTKComplicationCollection *)self _performOrEnqueueUpdate:v16];
 
         goto LABEL_5;
@@ -1161,7 +1161,7 @@ LABEL_4:
     else
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ must be non-nil", @"ClientIdentifier"}];
-      if (v14)
+      if (descriptorCopy)
       {
         goto LABEL_4;
       }
@@ -1185,15 +1185,15 @@ uint64_t __103__NTKComplicationCollection_updateSampleTemplateReference_forClien
   return [v2 _notifyUpdateComplicationSampleTemplateForClientIdentifier:v3 descriptor:v4];
 }
 
-- (void)updateComplicationDescriptors:(id)a3 forClientIdentifier:(id)a4 seqId:(id)a5
+- (void)updateComplicationDescriptors:(id)descriptors forClientIdentifier:(id)identifier seqId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  descriptorsCopy = descriptors;
+  identifierCopy = identifier;
+  idCopy = id;
+  if (!descriptorsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ must be non-nil", @"CLKComplicationDescriptor"}];
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -1203,25 +1203,25 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v11 = objc_opt_class();
-  NTKValidateArray(v8, v11);
+  NTKValidateArray(descriptorsCopy, v11);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__NTKComplicationCollection_updateComplicationDescriptors_forClientIdentifier_seqId___block_invoke;
   v15[3] = &unk_278780FF8;
   v15[4] = self;
-  v16 = v10;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = idCopy;
+  v17 = descriptorsCopy;
+  v18 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = descriptorsCopy;
+  v14 = idCopy;
   [(NTKComplicationCollection *)self _performOrEnqueueUpdate:v15];
 }
 
@@ -1235,12 +1235,12 @@ uint64_t __85__NTKComplicationCollection_updateComplicationDescriptors_forClient
   return [v2 _notifyUpdateComplicationDescriptorsForClientIdentifier:v3];
 }
 
-- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4 seqId:(id)a5
+- (void)removeComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor seqId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  idCopy = id;
+  if (!identifierCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ must be non-nil", @"ClientIdentifier"}];
   }
@@ -1250,12 +1250,12 @@ uint64_t __85__NTKComplicationCollection_updateComplicationDescriptors_forClient
   v14[2] = __99__NTKComplicationCollection_removeComplicationSampleTemplatesForClientIdentifier_descriptor_seqId___block_invoke;
   v14[3] = &unk_278780FF8;
   v14[4] = self;
-  v15 = v10;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = idCopy;
+  v16 = identifierCopy;
+  v17 = descriptorCopy;
+  v11 = descriptorCopy;
+  v12 = identifierCopy;
+  v13 = idCopy;
   [(NTKComplicationCollection *)self _performOrEnqueueUpdate:v14];
 }
 
@@ -1270,11 +1270,11 @@ uint64_t __99__NTKComplicationCollection_removeComplicationSampleTemplatesForCli
   return [v2 _notifyRemovedComplicationSampleTemplatesForClientIdentifier:v3 descriptor:v4];
 }
 
-- (void)_notifyUpdateComplicationSampleTemplateForClientIdentifier:(id)a3 descriptor:(id)a4
+- (void)_notifyUpdateComplicationSampleTemplateForClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
   if (self->_hasLoaded)
   {
     [(NSLock *)self->_observersLock lock];
@@ -1303,7 +1303,7 @@ uint64_t __99__NTKComplicationCollection_removeComplicationSampleTemplatesForCli
           v14 = *(*(&v15 + 1) + 8 * v13);
           if (objc_opt_respondsToSelector())
           {
-            [v14 complicationCollection:self didUpdateSampleTemplateForClient:v6 descriptor:{v7, v15}];
+            [v14 complicationCollection:self didUpdateSampleTemplateForClient:identifierCopy descriptor:{descriptorCopy, v15}];
           }
 
           ++v13;
@@ -1318,10 +1318,10 @@ uint64_t __99__NTKComplicationCollection_removeComplicationSampleTemplatesForCli
   }
 }
 
-- (void)_notifyUpdateComplicationDescriptorsForClientIdentifier:(id)a3
+- (void)_notifyUpdateComplicationDescriptorsForClientIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (self->_hasLoaded)
   {
     [(NSLock *)self->_observersLock lock];
@@ -1350,7 +1350,7 @@ uint64_t __99__NTKComplicationCollection_removeComplicationSampleTemplatesForCli
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            [v11 complicationCollection:self didUpdateComplicationDescriptorsForClient:{v4, v12}];
+            [v11 complicationCollection:self didUpdateComplicationDescriptorsForClient:{identifierCopy, v12}];
           }
 
           ++v10;
@@ -1365,11 +1365,11 @@ uint64_t __99__NTKComplicationCollection_removeComplicationSampleTemplatesForCli
   }
 }
 
-- (void)_notifyRemovedComplicationSampleTemplatesForClientIdentifier:(id)a3 descriptor:(id)a4
+- (void)_notifyRemovedComplicationSampleTemplatesForClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
   if (self->_hasLoaded)
   {
     [(NSLock *)self->_observersLock lock];
@@ -1398,7 +1398,7 @@ uint64_t __99__NTKComplicationCollection_removeComplicationSampleTemplatesForCli
           v14 = *(*(&v15 + 1) + 8 * v13);
           if (objc_opt_respondsToSelector())
           {
-            [v14 complicationCollection:self didRemoveSampleTemplatesForClient:v6 descriptor:{v7, v15}];
+            [v14 complicationCollection:self didRemoveSampleTemplatesForClient:identifierCopy descriptor:{descriptorCopy, v15}];
           }
 
           ++v13;
@@ -1533,10 +1533,10 @@ uint64_t __99__NTKComplicationCollection_removeComplicationSampleTemplatesForCli
   }
 }
 
-- (id)_sampleDataForClientIdentifier:(id)a3 descriptor:(id)a4
+- (id)_sampleDataForClientIdentifier:(id)identifier descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
   [(NSRecursiveLock *)self->_lock lock];
   v18 = 0;
   v19 = &v18;
@@ -1544,12 +1544,12 @@ uint64_t __99__NTKComplicationCollection_removeComplicationSampleTemplatesForCli
   v21 = __Block_byref_object_copy__38;
   v22 = __Block_byref_object_dispose__38;
   v23 = 0;
-  v8 = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_localizeableSampleDataTemplates objectForKeyedSubscript:identifierCopy];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __71__NTKComplicationCollection__sampleDataForClientIdentifier_descriptor___block_invoke;
   v15 = &unk_278784408;
-  v9 = v7;
+  v9 = descriptorCopy;
   v16 = v9;
   v17 = &v18;
   [v8 enumerateKeysAndObjectsUsingBlock:&v12];
@@ -1574,8 +1574,8 @@ void __71__NTKComplicationCollection__sampleDataForClientIdentifier_descriptor__
 
 - (void)_register
 {
-  v3 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v3 registerForCollectionIdentifier:self->_collectionIdentifier deviceUUID:self->_deviceUUID withSeqId:self->_seqId];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy registerForCollectionIdentifier:self->_collectionIdentifier deviceUUID:self->_deviceUUID withSeqId:self->_seqId];
 
   self->_registrationNeeded = 0;
 }
@@ -1588,28 +1588,28 @@ void __71__NTKComplicationCollection__sampleDataForClientIdentifier_descriptor__
   }
 }
 
-- (void)_throwIfNotLoaded:(SEL)a3
+- (void)_throwIfNotLoaded:(SEL)loaded
 {
   if (!self->_hasLoaded)
   {
     v5 = MEMORY[0x277CBEAD8];
     v6 = *MEMORY[0x277CBE658];
-    v8 = [(NTKComplicationCollection *)self collectionIdentifier];
-    v7 = NSStringFromSelector(a3);
-    [v5 raise:v6 format:{@"Attempt to modify complication collection (%@) before it has loaded (sel = %@)", v8, v7}];
+    collectionIdentifier = [(NTKComplicationCollection *)self collectionIdentifier];
+    v7 = NSStringFromSelector(loaded);
+    [v5 raise:v6 format:{@"Attempt to modify complication collection (%@) before it has loaded (sel = %@)", collectionIdentifier, v7}];
   }
 }
 
-- (void)_performOrEnqueueUpdate:(id)a3
+- (void)_performOrEnqueueUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__NTKComplicationCollection__performOrEnqueueUpdate___block_invoke;
   v6[3] = &unk_27877FF60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

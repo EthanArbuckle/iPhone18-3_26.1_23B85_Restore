@@ -1,22 +1,22 @@
 @interface UtsSearchParamResolutionResult
-+ (id)confirmationRequiredWithUtsSearchParamToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithUtsSearchParamsToDisambiguate:(id)a3;
-+ (id)successWithResolvedUtsSearchParam:(id)a3;
++ (id)confirmationRequiredWithUtsSearchParamToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithUtsSearchParamsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedUtsSearchParam:(id)param;
 @end
 
 @implementation UtsSearchParamResolutionResult
 
-+ (id)successWithResolvedUtsSearchParam:(id)a3
++ (id)successWithResolvedUtsSearchParam:(id)param
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static UtsSearchParamResolutionResult.success(with:)(v4);
+  paramCopy = param;
+  v5 = static UtsSearchParamResolutionResult.success(with:)(paramCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithUtsSearchParamsToDisambiguate:(id)a3
++ (id)disambiguationWithUtsSearchParamsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for UtsSearchParam();
   v3 = sub_269854CB4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithUtsSearchParamToConfirm:(id)a3
++ (id)confirmationRequiredWithUtsSearchParamToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static UtsSearchParamResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static UtsSearchParamResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_26984C7F8();
   sub_269854CB4();

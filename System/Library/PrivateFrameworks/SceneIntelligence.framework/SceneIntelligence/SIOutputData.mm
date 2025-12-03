@@ -1,21 +1,21 @@
 @interface SIOutputData
-+ (id)initWithConfig:(id)a3;
-- (BOOL)copyDataTo:(id)a3;
-- (BOOL)saveToDisk:(id)a3 identifier:(id)a4;
-- (SIOutputData)initWithConfig:(id)a3;
++ (id)initWithConfig:(id)config;
+- (BOOL)copyDataTo:(id)to;
+- (BOOL)saveToDisk:(id)disk identifier:(id)identifier;
+- (SIOutputData)initWithConfig:(id)config;
 @end
 
 @implementation SIOutputData
 
-+ (id)initWithConfig:(id)a3
++ (id)initWithConfig:(id)config
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 algorithmOutputClassName];
-  v5 = v4;
-  if (v4)
+  configCopy = config;
+  algorithmOutputClassName = [configCopy algorithmOutputClassName];
+  v5 = algorithmOutputClassName;
+  if (algorithmOutputClassName)
   {
-    v6 = [objc_alloc(NSClassFromString(v4)) initWithConfig:v3];
+    v6 = [objc_alloc(NSClassFromString(algorithmOutputClassName)) initWithConfig:configCopy];
   }
 
   else
@@ -38,7 +38,7 @@
   return v6;
 }
 
-- (SIOutputData)initWithConfig:(id)a3
+- (SIOutputData)initWithConfig:(id)config
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = __SceneIntelligenceLogSharedInstance();
@@ -55,7 +55,7 @@
   return 0;
 }
 
-- (BOOL)copyDataTo:(id)a3
+- (BOOL)copyDataTo:(id)to
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = __SceneIntelligenceLogSharedInstance();
@@ -72,7 +72,7 @@
   return 0;
 }
 
-- (BOOL)saveToDisk:(id)a3 identifier:(id)a4
+- (BOOL)saveToDisk:(id)disk identifier:(id)identifier
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = __SceneIntelligenceLogSharedInstance();

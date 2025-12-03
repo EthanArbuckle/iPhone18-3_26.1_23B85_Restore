@@ -6,9 +6,9 @@
 
 - (id)CUIK_color
 {
-  v2 = [a1 data];
-  v3 = [a1 providerIdentifier];
-  v4 = [CUIKColorDeserializer deserializeColor:v2 providerIdentifier:v3];
+  data = [self data];
+  providerIdentifier = [self providerIdentifier];
+  v4 = [CUIKColorDeserializer deserializeColor:data providerIdentifier:providerIdentifier];
 
   return v4;
 }

@@ -1,27 +1,27 @@
 @interface EnergyTelemetry
 + (id)sharedInstance;
 - (BOOL)isBAInfoAvailable;
-- (BOOL)recordLastAccumulatedEnergyTelemetry:(id)a3;
+- (BOOL)recordLastAccumulatedEnergyTelemetry:(id)telemetry;
 - (EnergyTelemetry)init;
-- (id)appendIncrementalData:(id)a3 toRecords:(id)a4;
+- (id)appendIncrementalData:(id)data toRecords:(id)records;
 - (id)copyAccumulatedEnergyTelemetry;
-- (id)fetchEmissionHistoriesForDays:(id)a3 fromRecords:(id)a4;
-- (id)findDayStarts:(id)a3 returnMidnights:(id *)a4;
+- (id)fetchEmissionHistoriesForDays:(id)days fromRecords:(id)records;
+- (id)findDayStarts:(id)starts returnMidnights:(id *)midnights;
 - (id)getBalancingAuthority;
-- (id)getDateFrom:(id)a3 alignedToMinutes:(unint64_t)a4;
+- (id)getDateFrom:(id)from alignedToMinutes:(unint64_t)minutes;
 - (id)getIncrementalEnergyRecord;
 - (id)getLastAccumulatedEnergyTelemetry;
-- (id)getUTCMidnightFor:(id)a3;
-- (unint64_t)iterateDaysCovering:(id)a3 toEnd:(id)a4;
-- (unsigned)getSlotWithDate:(id)a3;
+- (id)getUTCMidnightFor:(id)for;
+- (unint64_t)iterateDaysCovering:(id)covering toEnd:(id)end;
+- (unsigned)getSlotWithDate:(id)date;
 - (void)calculateEnergyAndPublishTelemetry;
 - (void)getEnergyTelemetry;
-- (void)sendDailySummaryToCoreAnalyticsForDate:(id)a3 withLocation:(id)a4 withCarbon:(double)a5 withEnergy:(double)a6 withSystem:(double)a7 missingIntensity:(BOOL)a8;
-- (void)sendDayToCoreAnalytics:(_NSRange)a3 ofRecord:(id)a4;
-- (void)sendDayToPowerlog:(_NSRange)a3 ofRecord:(id)a4;
-- (void)sendSlotEventToCoreAnalytics:(id)a3;
-- (void)sendTypedEventToCoreAnalyticsWithDate:(id)a3 withEnergy:(double)a4 andIntensity:(id)a5 forSlot:(id)a6 atLocation:(id)a7;
-- (void)setIncrementalEnergyRecord:(id)a3;
+- (void)sendDailySummaryToCoreAnalyticsForDate:(id)date withLocation:(id)location withCarbon:(double)carbon withEnergy:(double)energy withSystem:(double)system missingIntensity:(BOOL)intensity;
+- (void)sendDayToCoreAnalytics:(_NSRange)analytics ofRecord:(id)record;
+- (void)sendDayToPowerlog:(_NSRange)powerlog ofRecord:(id)record;
+- (void)sendSlotEventToCoreAnalytics:(id)analytics;
+- (void)sendTypedEventToCoreAnalyticsWithDate:(id)date withEnergy:(double)energy andIntensity:(id)intensity forSlot:(id)slot atLocation:(id)location;
+- (void)setIncrementalEnergyRecord:(id)record;
 @end
 
 @implementation EnergyTelemetry
@@ -124,15 +124,15 @@ LABEL_17:
   return v3;
 }
 
-- (id)getUTCMidnightFor:(id)a3
+- (id)getUTCMidnightFor:(id)for
 {
-  v4 = a3;
-  if (v4)
+  forCopy = for;
+  if (forCopy)
   {
     p_utcMidnight = &self->_utcMidnight;
-    if (!self->_utcMidnight || ![(NSCalendar *)self->_utcCal isDate:v4 inSameDayAsDate:?])
+    if (!self->_utcMidnight || ![(NSCalendar *)self->_utcCal isDate:forCopy inSameDayAsDate:?])
     {
-      v6 = [(NSCalendar *)self->_utcCal dateBySettingHour:0 minute:0 second:0 ofDate:v4 options:0];
+      v6 = [(NSCalendar *)self->_utcCal dateBySettingHour:0 minute:0 second:0 ofDate:forCopy options:0];
       utcMidnight = self->_utcMidnight;
       self->_utcMidnight = v6;
 
@@ -158,13 +158,13 @@ LABEL_17:
   return v8;
 }
 
-- (unsigned)getSlotWithDate:(id)a3
+- (unsigned)getSlotWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(EnergyTelemetry *)self getUTCMidnightFor:v4];
+  dateCopy = date;
+  v5 = [(EnergyTelemetry *)self getUTCMidnightFor:dateCopy];
   if (v5)
   {
-    [v4 timeIntervalSinceDate:v5];
+    [dateCopy timeIntervalSinceDate:v5];
     v7 = (v6 / 60.0) / 0xF;
   }
 
@@ -181,12 +181,12 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)recordLastAccumulatedEnergyTelemetry:(id)a3
+- (BOOL)recordLastAccumulatedEnergyTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   v5 = self->_defaults;
   objc_sync_enter(v5);
-  [(NSUserDefaults *)self->_defaults setObject:v4 forKey:@"last_telemetry_baseline"];
+  [(NSUserDefaults *)self->_defaults setObject:telemetryCopy forKey:@"last_telemetry_baseline"];
   objc_sync_exit(v5);
 
   return 1;
@@ -212,33 +212,33 @@ LABEL_17:
   return v4;
 }
 
-- (void)setIncrementalEnergyRecord:(id)a3
+- (void)setIncrementalEnergyRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v4 = self->_defaults;
   objc_sync_enter(v4);
-  [(NSUserDefaults *)self->_defaults setObject:v5 forKey:@"incremental_telemetry_array"];
+  [(NSUserDefaults *)self->_defaults setObject:recordCopy forKey:@"incremental_telemetry_array"];
   objc_sync_exit(v4);
 }
 
-- (id)getDateFrom:(id)a3 alignedToMinutes:(unint64_t)a4
+- (id)getDateFrom:(id)from alignedToMinutes:(unint64_t)minutes
 {
-  if (a3)
+  if (from)
   {
-    if (a4)
+    if (minutes)
     {
-      v5 = a4;
+      minutesCopy = minutes;
     }
 
     else
     {
-      v5 = 60;
+      minutesCopy = 60;
     }
 
     utcCal = self->_utcCal;
-    v7 = a3;
-    v8 = [(NSCalendar *)utcCal components:96 fromDate:v7];
-    v9 = -[NSCalendar dateBySettingHour:minute:second:ofDate:options:](self->_utcCal, "dateBySettingHour:minute:second:ofDate:options:", [v8 hour], objc_msgSend(v8, "minute") / v5 * v5, 0, v7, 0);
+    fromCopy = from;
+    v8 = [(NSCalendar *)utcCal components:96 fromDate:fromCopy];
+    v9 = -[NSCalendar dateBySettingHour:minute:second:ofDate:options:](self->_utcCal, "dateBySettingHour:minute:second:ofDate:options:", [v8 hour], objc_msgSend(v8, "minute") / minutesCopy * minutesCopy, 0, fromCopy, 0);
   }
 
   else
@@ -278,24 +278,24 @@ LABEL_17:
   return v2;
 }
 
-- (id)findDayStarts:(id)a3 returnMidnights:(id *)a4
+- (id)findDayStarts:(id)starts returnMidnights:(id *)midnights
 {
-  v5 = a3;
+  startsCopy = starts;
   v18 = [NSSortDescriptor sortDescriptorWithKey:@"slot_date" ascending:1];
   v21 = v18;
   v6 = [NSArray arrayWithObjects:&v21 count:1];
-  [v5 sortUsingDescriptors:v6];
+  [startsCopy sortUsingDescriptors:v6];
 
   v20 = +[NSMutableIndexSet indexSet];
   v7 = [NSMutableArray arrayWithCapacity:7];
-  v8 = [v5 count];
+  v8 = [startsCopy count];
   if (v8)
   {
     v9 = v8;
     v10 = 0;
     for (i = 0; i != v9; ++i)
     {
-      v12 = [v5 objectAtIndexedSubscript:i];
+      v12 = [startsCopy objectAtIndexedSubscript:i];
       v13 = [v12 objectForKeyedSubscript:@"slot_date"];
       v14 = [(EnergyTelemetry *)self getUTCMidnightFor:v13];
 
@@ -315,61 +315,61 @@ LABEL_17:
     v10 = 0;
   }
 
-  if (a4)
+  if (midnights)
   {
     v16 = v7;
-    *a4 = v7;
+    *midnights = v7;
   }
 
   return v20;
 }
 
-- (id)appendIncrementalData:(id)a3 toRecords:(id)a4
+- (id)appendIncrementalData:(id)data toRecords:(id)records
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count] < 0x2A0)
+  dataCopy = data;
+  recordsCopy = records;
+  if ([recordsCopy count] < 0x2A0)
   {
-    if ([v7 count])
+    if ([recordsCopy count])
     {
-      v9 = [v7 lastObject];
-      v10 = [v9 objectForKeyedSubscript:@"slot_date"];
+      lastObject = [recordsCopy lastObject];
+      v10 = [lastObject objectForKeyedSubscript:@"slot_date"];
       if (!v10)
       {
-        v11 = [v9 objectForKeyedSubscript:@"telemetry_date"];
+        v11 = [lastObject objectForKeyedSubscript:@"telemetry_date"];
         v10 = [(EnergyTelemetry *)self getDateFrom:v11 alignedToMinutes:15];
       }
 
-      v12 = [v6 objectForKeyedSubscript:@"slot_date"];
+      v12 = [dataCopy objectForKeyedSubscript:@"slot_date"];
       if ([v12 isEqualToDate:v10])
       {
-        v13 = [v9 objectForKeyedSubscript:@"wall_energy_consumed"];
+        v13 = [lastObject objectForKeyedSubscript:@"wall_energy_consumed"];
         [v13 doubleValue];
         v15 = v14;
-        v16 = [v6 objectForKeyedSubscript:@"wall_energy_consumed"];
+        v16 = [dataCopy objectForKeyedSubscript:@"wall_energy_consumed"];
         [v16 doubleValue];
         v18 = [NSNumber numberWithDouble:v15 + v17];
-        [v6 setObject:v18 forKeyedSubscript:@"wall_energy_consumed"];
+        [dataCopy setObject:v18 forKeyedSubscript:@"wall_energy_consumed"];
 
-        v19 = [v9 objectForKeyedSubscript:@"system_energy_consumed"];
+        v19 = [lastObject objectForKeyedSubscript:@"system_energy_consumed"];
         [v19 doubleValue];
         v21 = v20;
-        v22 = [v6 objectForKeyedSubscript:@"system_energy_consumed"];
+        v22 = [dataCopy objectForKeyedSubscript:@"system_energy_consumed"];
         [v22 doubleValue];
         v24 = [NSNumber numberWithDouble:v21 + v23];
-        [v6 setObject:v24 forKeyedSubscript:@"system_energy_consumed"];
+        [dataCopy setObject:v24 forKeyedSubscript:@"system_energy_consumed"];
 
-        [v7 removeLastObject];
+        [recordsCopy removeLastObject];
       }
 
-      [v7 addObject:v6];
-      v8 = v6;
+      [recordsCopy addObject:dataCopy];
+      v8 = dataCopy;
     }
 
     else
     {
-      [v7 addObject:v6];
-      v8 = v6;
+      [recordsCopy addObject:dataCopy];
+      v8 = dataCopy;
     }
   }
 
@@ -388,10 +388,10 @@ LABEL_17:
 
 - (void)getEnergyTelemetry
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(EnergyTelemetry *)v2 getIncrementalEnergyRecord];
-  v4 = [v3 mutableCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  getIncrementalEnergyRecord = [(EnergyTelemetry *)selfCopy getIncrementalEnergyRecord];
+  v4 = [getIncrementalEnergyRecord mutableCopy];
 
   if (!v4)
   {
@@ -399,42 +399,42 @@ LABEL_17:
   }
 
   v90 = v4;
-  v5 = v2->_log;
+  v5 = selfCopy->_log;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100007998([v4 count], v95, v5);
   }
 
-  v6 = [(EnergyTelemetry *)v2 copyAccumulatedEnergyTelemetry];
-  if (v6)
+  copyAccumulatedEnergyTelemetry = [(EnergyTelemetry *)selfCopy copyAccumulatedEnergyTelemetry];
+  if (copyAccumulatedEnergyTelemetry)
   {
     if ([v90 count])
     {
-      v7 = [v90 lastObject];
-      v8 = [v7 objectForKeyedSubscript:@"slot_date"];
+      lastObject = [v90 lastObject];
+      v8 = [lastObject objectForKeyedSubscript:@"slot_date"];
       v9 = v8 == 0;
 
       if (v9)
       {
-        if (os_log_type_enabled(v2->_log, OS_LOG_TYPE_DEBUG))
+        if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
         {
           sub_1000079E0();
         }
 
         v10 = +[NSMutableArray array];
 
-        [(EnergyTelemetry *)v2 setIncrementalEnergyRecord:v10];
+        [(EnergyTelemetry *)selfCopy setIncrementalEnergyRecord:v10];
         v90 = v10;
       }
     }
 
-    v88 = [(EnergyTelemetry *)v2 getLastAccumulatedEnergyTelemetry];
-    if (v88)
+    getLastAccumulatedEnergyTelemetry = [(EnergyTelemetry *)selfCopy getLastAccumulatedEnergyTelemetry];
+    if (getLastAccumulatedEnergyTelemetry)
     {
-      v11 = [v6 objectForKeyedSubscript:@"system_energy_consumed"];
+      v11 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"system_energy_consumed"];
       [v11 doubleValue];
       v13 = v12;
-      v14 = [v88 objectForKeyedSubscript:@"system_energy_consumed"];
+      v14 = [getLastAccumulatedEnergyTelemetry objectForKeyedSubscript:@"system_energy_consumed"];
       [v14 doubleValue];
       if (v13 < v15)
       {
@@ -443,15 +443,15 @@ LABEL_17:
 
       else
       {
-        v16 = [v6 objectForKeyedSubscript:@"wall_energy_consumed"];
+        v16 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"wall_energy_consumed"];
         [v16 doubleValue];
         v18 = v17;
-        v19 = [v88 objectForKeyedSubscript:@"wall_energy_consumed"];
+        v19 = [getLastAccumulatedEnergyTelemetry objectForKeyedSubscript:@"wall_energy_consumed"];
         [v19 doubleValue];
         v21 = v18 < v20;
       }
 
-      v23 = [v88 objectForKeyedSubscript:@"telemetry_date"];
+      v23 = [getLastAccumulatedEnergyTelemetry objectForKeyedSubscript:@"telemetry_date"];
       v24 = +[NSDate date];
       v25 = [v23 laterDate:v24];
       v87 = v23;
@@ -459,7 +459,7 @@ LABEL_17:
 
       if (v22)
       {
-        log = v2->_log;
+        log = selfCopy->_log;
         v22 = 1;
         if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
         {
@@ -477,12 +477,12 @@ LABEL_17:
       v21 = 0;
     }
 
-    if (os_log_type_enabled(v2->_log, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
     {
       sub_100007A1C();
     }
 
-    if (v88)
+    if (getLastAccumulatedEnergyTelemetry)
     {
       v27 = v87 == 0;
     }
@@ -495,11 +495,11 @@ LABEL_17:
     v28 = v27;
     if (((v22 || v21) | v28))
     {
-      v29 = v2->_log;
+      v29 = selfCopy->_log;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v92 = v88;
+        v92 = getLastAccumulatedEnergyTelemetry;
         v93 = 1024;
         LODWORD(v94[0]) = v21;
         WORD2(v94[0]) = 1024;
@@ -510,36 +510,36 @@ LABEL_17:
 
     else
     {
-      v31 = [v6 objectForKeyedSubscript:@"telemetry_date"];
+      v31 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"telemetry_date"];
       [v31 timeIntervalSinceDate:v87];
       v33 = v32;
 
-      if (os_log_type_enabled(v2->_log, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
       {
         sub_100007A8C();
       }
 
       if (v33 <= 14400.0)
       {
-        v34 = [v6 objectForKeyedSubscript:@"system_energy_consumed"];
+        v34 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"system_energy_consumed"];
         [v34 doubleValue];
         v36 = v35;
-        v37 = [v88 objectForKeyedSubscript:@"system_energy_consumed"];
+        v37 = [getLastAccumulatedEnergyTelemetry objectForKeyedSubscript:@"system_energy_consumed"];
         [v37 doubleValue];
         v39 = v38;
 
-        v40 = [v6 objectForKeyedSubscript:@"wall_energy_consumed"];
+        v40 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"wall_energy_consumed"];
         [v40 doubleValue];
         v42 = v41;
-        v43 = [v88 objectForKeyedSubscript:@"wall_energy_consumed"];
+        v43 = [getLastAccumulatedEnergyTelemetry objectForKeyedSubscript:@"wall_energy_consumed"];
         [v43 doubleValue];
         v45 = v44;
 
-        v46 = [(EnergyTelemetry *)v2 getDateFrom:v87 alignedToMinutes:15];
+        v46 = [(EnergyTelemetry *)selfCopy getDateFrom:v87 alignedToMinutes:15];
         v47 = v87;
-        v89 = [v6 objectForKeyedSubscript:@"telemetry_date"];
+        v89 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"telemetry_date"];
         v48 = v47;
-        v49 = [v6 objectForKeyedSubscript:@"telemetry_date"];
+        v49 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"telemetry_date"];
         [v49 timeIntervalSinceDate:v46];
         v51 = v50;
 
@@ -552,12 +552,12 @@ LABEL_17:
 
         else
         {
-          if (os_log_type_enabled(v2->_log, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
           {
             sub_100007B0C();
           }
 
-          v54 = [(EnergyTelemetry *)v2 getDateFrom:v89 alignedToMinutes:15];
+          v54 = [(EnergyTelemetry *)selfCopy getDateFrom:v89 alignedToMinutes:15];
           v55 = [v54 dateByAddingTimeInterval:-(900 * (671 - v53))];
 
           v46 = v55;
@@ -566,7 +566,7 @@ LABEL_17:
 
         v85 = v46;
         v57 = [v85 dateByAddingTimeInterval:900.0];
-        v58 = [(EnergyTelemetry *)v2 getDateFrom:v89 alignedToMinutes:15];
+        v58 = [(EnergyTelemetry *)selfCopy getDateFrom:v89 alignedToMinutes:15];
         [v57 timeIntervalSinceDate:v56];
         v60 = v59;
         v84 = v56;
@@ -597,11 +597,11 @@ LABEL_17:
           }
 
           v70 = +[NSMutableDictionary dictionary];
-          v71 = [NSNumber numberWithUnsignedInt:[(EnergyTelemetry *)v2 getSlotWithDate:i]];
+          v71 = [NSNumber numberWithUnsignedInt:[(EnergyTelemetry *)selfCopy getSlotWithDate:i]];
           [v70 setObject:v71 forKeyedSubscript:@"slot_id"];
 
           [v70 setObject:i forKeyedSubscript:@"slot_date"];
-          v72 = [v6 objectForKeyedSubscript:@"adapter_family"];
+          v72 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"adapter_family"];
           [v70 setObject:v72 forKeyedSubscript:@"adapter_family"];
 
           v73 = v69 / v62;
@@ -611,13 +611,13 @@ LABEL_17:
           v75 = [NSNumber numberWithDouble:v63 * v73];
           [v70 setObject:v75 forKeyedSubscript:@"system_energy_consumed"];
 
-          v76 = [v6 objectForKeyedSubscript:@"balancing_authority_id"];
+          v76 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"balancing_authority_id"];
           [v70 setObject:v76 forKeyedSubscript:@"balancing_authority_id"];
 
-          v77 = [v6 objectForKeyedSubscript:@"telemetry_date"];
+          v77 = [copyAccumulatedEnergyTelemetry objectForKeyedSubscript:@"telemetry_date"];
           [v70 setObject:v77 forKeyedSubscript:@"telemetry_date"];
 
-          v78 = v2->_log;
+          v78 = selfCopy->_log;
           if (os_log_type_enabled(v78, OS_LOG_TYPE_DEBUG))
           {
             v83 = [v70 description];
@@ -630,7 +630,7 @@ LABEL_17:
             ++v86;
           }
 
-          v79 = [(EnergyTelemetry *)v2 appendIncrementalData:v70 toRecords:v90];
+          v79 = [(EnergyTelemetry *)selfCopy appendIncrementalData:v70 toRecords:v90];
           v80 = [i dateByAddingTimeInterval:900.0];
 
           [v89 timeIntervalSinceDate:v80];
@@ -639,34 +639,34 @@ LABEL_17:
           v60 = fmin(fabs(v82), 900.0);
         }
 
-        [(EnergyTelemetry *)v2 setIncrementalEnergyRecord:v90];
-        [(EnergyTelemetry *)v2 recordLastAccumulatedEnergyTelemetry:v6];
+        [(EnergyTelemetry *)selfCopy setIncrementalEnergyRecord:v90];
+        [(EnergyTelemetry *)selfCopy recordLastAccumulatedEnergyTelemetry:copyAccumulatedEnergyTelemetry];
 
         v30 = v87;
         goto LABEL_60;
       }
 
-      if (os_log_type_enabled(v2->_log, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
       {
         sub_100007B90();
       }
     }
 
-    [(EnergyTelemetry *)v2 recordLastAccumulatedEnergyTelemetry:v6];
+    [(EnergyTelemetry *)selfCopy recordLastAccumulatedEnergyTelemetry:copyAccumulatedEnergyTelemetry];
     v30 = v87;
 LABEL_60:
 
     goto LABEL_61;
   }
 
-  if (os_log_type_enabled(v2->_log, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_100007BC4();
   }
 
 LABEL_61:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)copyAccumulatedEnergyTelemetry
@@ -758,14 +758,14 @@ LABEL_9:
   if (!sub_1000056EC() || !sub_1000019E8() || ![(EnergyTelemetry *)self isBAInfoAvailable])
   {
 LABEL_23:
-    v22 = 0;
+    identifier = 0;
     goto LABEL_24;
   }
 
-  v21 = [(EnergyTelemetry *)self getBalancingAuthority];
-  v22 = [v21 identifier];
+  getBalancingAuthority = [(EnergyTelemetry *)self getBalancingAuthority];
+  identifier = [getBalancingAuthority identifier];
 
-  if (!v22)
+  if (!identifier)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -776,9 +776,9 @@ LABEL_23:
   }
 
 LABEL_24:
-  if (v22)
+  if (identifier)
   {
-    v23 = v22;
+    v23 = identifier;
   }
 
   else
@@ -795,12 +795,12 @@ LABEL_28:
 
 - (void)calculateEnergyAndPublishTelemetry
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  obj = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
   v70 = +[NSMutableIndexSet indexSet];
-  v3 = [(EnergyTelemetry *)v2 getIncrementalEnergyRecord];
-  v71 = [v3 mutableCopy];
+  getIncrementalEnergyRecord = [(EnergyTelemetry *)selfCopy getIncrementalEnergyRecord];
+  v71 = [getIncrementalEnergyRecord mutableCopy];
 
   if (v71 && [v71 count])
   {
@@ -1116,11 +1116,11 @@ LABEL_61:
   sub_100001E00();
   if (objc_opt_class() && [(EnergyTelemetry *)self isBAInfoAvailable]&& sub_1000056EC())
   {
-    v3 = [(_GDSManager *)self->gridManager latestBalancingAuthority];
+    latestBalancingAuthority = [(_GDSManager *)self->gridManager latestBalancingAuthority];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
-      sub_100007DBC(log, v3);
+      sub_100007DBC(log, latestBalancingAuthority);
     }
   }
 
@@ -1133,17 +1133,17 @@ LABEL_61:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "GridDataServices framework unavailable", v7, 2u);
     }
 
-    v3 = 0;
+    latestBalancingAuthority = 0;
   }
 
-  return v3;
+  return latestBalancingAuthority;
 }
 
-- (void)sendDayToPowerlog:(_NSRange)a3 ofRecord:(id)a4
+- (void)sendDayToPowerlog:(_NSRange)powerlog ofRecord:(id)record
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = powerlog.length;
+  location = powerlog.location;
+  recordCopy = record;
   if (length)
   {
     v55[0] = @"telemetry_date";
@@ -1163,15 +1163,15 @@ LABEL_61:
     v10 = 0;
     *&v11 = 138412290;
     v35 = v11;
-    v38 = self;
-    v39 = v7;
+    selfCopy = self;
+    v39 = recordCopy;
     v36 = location;
     v37 = length;
     do
     {
       context = objc_autoreleasePoolPush();
-      v12 = [v7 objectAtIndexedSubscript:v10 + location];
-      v13 = [v12 mutableCopy];
+      location = [recordCopy objectAtIndexedSubscript:v10 + location];
+      v13 = [location mutableCopy];
 
       v14 = [v13 objectForKeyedSubscript:@"sent_to_powerlog"];
 
@@ -1234,11 +1234,11 @@ LABEL_61:
         v9 = v42 + 1;
         [v13 setObject:&__kCFBooleanTrue forKeyedSubscript:@"sent_to_powerlog"];
         location = v36;
-        v7 = v39;
+        recordCopy = v39;
         [v39 setObject:v13 atIndexedSubscript:v10 + v36];
 
         length = v37;
-        self = v38;
+        self = selfCopy;
       }
 
       objc_autoreleasePoolPop(context);
@@ -1296,11 +1296,11 @@ LABEL_20:
 LABEL_26:
 }
 
-- (void)sendDayToCoreAnalytics:(_NSRange)a3 ofRecord:(id)a4
+- (void)sendDayToCoreAnalytics:(_NSRange)analytics ofRecord:(id)record
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = analytics.length;
+  location = analytics.location;
+  recordCopy = record;
   if (length)
   {
     v33 = location;
@@ -1321,7 +1321,7 @@ LABEL_26:
       do
       {
         v12 = objc_autoreleasePoolPush();
-        v13 = [v7 objectAtIndexedSubscript:location];
+        v13 = [recordCopy objectAtIndexedSubscript:location];
         v14 = [v13 mutableCopy];
 
         v15 = [v14 objectForKeyedSubscript:@"avg_intensity"];
@@ -1362,7 +1362,7 @@ LABEL_26:
 
           [(EnergyTelemetry *)self sendSlotEventToCoreAnalytics:v14];
           [v14 setObject:&__kCFBooleanTrue forKeyedSubscript:@"sent_to_coreanalytics"];
-          [v7 setObject:v14 atIndexedSubscript:location];
+          [recordCopy setObject:v14 atIndexedSubscript:location];
         }
 
         objc_autoreleasePoolPop(v12);
@@ -1373,11 +1373,11 @@ LABEL_26:
       while (length);
     }
 
-    v27 = [v7 objectAtIndexedSubscript:v33];
+    v27 = [recordCopy objectAtIndexedSubscript:v33];
     v28 = [v27 objectForKeyedSubscript:@"slot_date"];
     v29 = [(EnergyTelemetry *)self getUTCMidnightFor:v28];
 
-    v30 = [v7 objectAtIndexedSubscript:v33];
+    v30 = [recordCopy objectAtIndexedSubscript:v33];
     v31 = [v30 objectForKeyedSubscript:@"balancing_authority_id"];
 
     v32 = self->_log;
@@ -1414,26 +1414,26 @@ LABEL_26:
   }
 }
 
-- (void)sendDailySummaryToCoreAnalyticsForDate:(id)a3 withLocation:(id)a4 withCarbon:(double)a5 withEnergy:(double)a6 withSystem:(double)a7 missingIntensity:(BOOL)a8
+- (void)sendDailySummaryToCoreAnalyticsForDate:(id)date withLocation:(id)location withCarbon:(double)carbon withEnergy:(double)energy withSystem:(double)system missingIntensity:(BOOL)intensity
 {
-  v8 = a8;
-  v14 = a4;
-  v24[0] = v14;
+  intensityCopy = intensity;
+  locationCopy = location;
+  v24[0] = locationCopy;
   v23[0] = @"domain";
   v23[1] = @"date";
-  v15 = [(NSISO8601DateFormatter *)self->_utcFormatter stringFromDate:a3];
+  v15 = [(NSISO8601DateFormatter *)self->_utcFormatter stringFromDate:date];
   v24[1] = v15;
   v23[2] = @"summary_value";
-  v16 = [NSNumber numberWithDouble:a5];
+  v16 = [NSNumber numberWithDouble:carbon];
   v24[2] = v16;
   v23[3] = @"wall_value";
-  v17 = [NSNumber numberWithDouble:a6];
+  v17 = [NSNumber numberWithDouble:energy];
   v24[3] = v17;
   v23[4] = @"system_energy_value";
-  v18 = [NSNumber numberWithDouble:a7];
+  v18 = [NSNumber numberWithDouble:system];
   v19 = v18;
   v20 = &__kCFBooleanTrue;
-  if (!v8)
+  if (!intensityCopy)
   {
     v20 = &__kCFBooleanFalse;
   }
@@ -1454,48 +1454,48 @@ LABEL_26:
   AnalyticsSendEventLazy();
 }
 
-- (void)sendSlotEventToCoreAnalytics:(id)a3
+- (void)sendSlotEventToCoreAnalytics:(id)analytics
 {
-  v4 = a3;
-  v11 = [v4 objectForKeyedSubscript:@"balancing_authority_id"];
-  v5 = [v4 objectForKeyedSubscript:@"slot_date"];
-  v6 = [v4 objectForKeyedSubscript:@"wall_energy_consumed"];
+  analyticsCopy = analytics;
+  v11 = [analyticsCopy objectForKeyedSubscript:@"balancing_authority_id"];
+  v5 = [analyticsCopy objectForKeyedSubscript:@"slot_date"];
+  v6 = [analyticsCopy objectForKeyedSubscript:@"wall_energy_consumed"];
   [v6 doubleValue];
   v8 = v7;
-  v9 = [v4 objectForKeyedSubscript:@"avg_intensity"];
-  v10 = [v4 objectForKeyedSubscript:@"slot_id"];
+  v9 = [analyticsCopy objectForKeyedSubscript:@"avg_intensity"];
+  v10 = [analyticsCopy objectForKeyedSubscript:@"slot_id"];
 
   [(EnergyTelemetry *)self sendTypedEventToCoreAnalyticsWithDate:v5 withEnergy:v9 andIntensity:v10 forSlot:v11 atLocation:v8];
 }
 
-- (void)sendTypedEventToCoreAnalyticsWithDate:(id)a3 withEnergy:(double)a4 andIntensity:(id)a5 forSlot:(id)a6 atLocation:(id)a7
+- (void)sendTypedEventToCoreAnalyticsWithDate:(id)date withEnergy:(double)energy andIntensity:(id)intensity forSlot:(id)slot atLocation:(id)location
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = v13;
-  if (!v11)
+  dateCopy = date;
+  intensityCopy = intensity;
+  slotCopy = slot;
+  locationCopy = location;
+  v14 = locationCopy;
+  if (!intensityCopy)
   {
-    v11 = &off_100011358;
+    intensityCopy = &off_100011358;
   }
 
-  v19 = v11;
-  v20 = v13;
-  v21 = v10;
-  v22 = v12;
-  v15 = v12;
-  v16 = v10;
+  v19 = intensityCopy;
+  v20 = locationCopy;
+  v21 = dateCopy;
+  v22 = slotCopy;
+  v15 = slotCopy;
+  v16 = dateCopy;
   v17 = v14;
-  v18 = v11;
+  v18 = intensityCopy;
   AnalyticsSendEventLazy();
 }
 
-- (unint64_t)iterateDaysCovering:(id)a3 toEnd:(id)a4
+- (unint64_t)iterateDaysCovering:(id)covering toEnd:(id)end
 {
-  v6 = a4;
-  v7 = [(EnergyTelemetry *)self getUTCMidnightFor:a3];
-  v8 = [(EnergyTelemetry *)self getUTCMidnightFor:v6];
+  endCopy = end;
+  v7 = [(EnergyTelemetry *)self getUTCMidnightFor:covering];
+  v8 = [(EnergyTelemetry *)self getUTCMidnightFor:endCopy];
   v9 = v7;
   v10 = [v8 earlierDate:v9];
 
@@ -1525,14 +1525,14 @@ LABEL_26:
   return v11;
 }
 
-- (id)fetchEmissionHistoriesForDays:(id)a3 fromRecords:(id)a4
+- (id)fetchEmissionHistoriesForDays:(id)days fromRecords:(id)records
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstIndex];
-  v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", 96 * [v5 count]);
-  v47 = v5;
-  v9 = [v5 indexGreaterThanIndex:v7];
+  daysCopy = days;
+  recordsCopy = records;
+  firstIndex = [daysCopy firstIndex];
+  v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", 96 * [daysCopy count]);
+  v47 = daysCopy;
+  v9 = [daysCopy indexGreaterThanIndex:firstIndex];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
     *&v10 = 138412803;
@@ -1541,14 +1541,14 @@ LABEL_26:
     while (1)
     {
       v12 = v9;
-      v13 = [NSMutableDictionary dictionaryWithCapacity:v9 - v7, v44];
-      v14 = v7;
+      v13 = [NSMutableDictionary dictionaryWithCapacity:v9 - firstIndex, v44];
+      v14 = firstIndex;
       v51 = v13;
-      if (v12 > v7)
+      if (v12 > firstIndex)
       {
         do
         {
-          v15 = [v6 objectAtIndexedSubscript:v14];
+          v15 = [recordsCopy objectAtIndexedSubscript:v14];
           v16 = [v15 objectForKeyedSubscript:@"balancing_authority_id"];
           v17 = [v13 objectForKeyedSubscript:v16];
           [v17 doubleValue];
@@ -1574,7 +1574,7 @@ LABEL_26:
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
         {
           v41 = log;
-          v42 = [v6 objectAtIndexedSubscript:v7];
+          v42 = [recordsCopy objectAtIndexedSubscript:firstIndex];
           v43 = [v42 objectForKeyedSubscript:@"slot_date"];
           *buf = 138412546;
           v53 = v43;
@@ -1602,16 +1602,16 @@ LABEL_26:
         v26 = v27;
       }
 
-      v28 = v7;
-      if (v12 > v7)
+      v28 = firstIndex;
+      if (v12 > firstIndex)
       {
         do
         {
-          v29 = [v6 objectAtIndexedSubscript:v28];
+          v29 = [recordsCopy objectAtIndexedSubscript:v28];
           v30 = [v29 mutableCopy];
 
           [v30 setObject:v26 forKeyedSubscript:@"balancing_authority_id"];
-          [v6 setObject:v30 atIndexedSubscript:v28];
+          [recordsCopy setObject:v30 atIndexedSubscript:v28];
 
           ++v28;
         }
@@ -1619,7 +1619,7 @@ LABEL_26:
         while (v12 != v28);
       }
 
-      v31 = [v6 objectAtIndexedSubscript:v7];
+      v31 = [recordsCopy objectAtIndexedSubscript:firstIndex];
       v32 = [v31 objectForKeyedSubscript:@"slot_date"];
       v33 = [(EnergyTelemetry *)self getUTCMidnightFor:v32];
 
@@ -1648,10 +1648,10 @@ LABEL_26:
         }
 
         v35 = [(_GDSManager *)self->gridManager carbonIntensityHistoryForBA:v26 from:v49 to:v48];
-        v40 = [v35 historicalMap];
-        if (v40)
+        historicalMap = [v35 historicalMap];
+        if (historicalMap)
         {
-          [v45 addEntriesFromDictionary:v40];
+          [v45 addEntriesFromDictionary:historicalMap];
         }
 
         goto LABEL_33;
@@ -1660,7 +1660,7 @@ LABEL_26:
 LABEL_34:
 
       v9 = [v47 indexGreaterThanIndex:v12];
-      v7 = v12;
+      firstIndex = v12;
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_2;
@@ -1673,7 +1673,7 @@ LABEL_34:
     v59[0] = &off_100011358;
     v59[1] = &off_100011358;
     v35 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:2];
-    if (v12 <= v7)
+    if (v12 <= firstIndex)
     {
       v8 = v45;
     }
@@ -1683,14 +1683,14 @@ LABEL_34:
       v8 = v45;
       do
       {
-        v36 = [v6 objectAtIndexedSubscript:v7];
+        v36 = [recordsCopy objectAtIndexedSubscript:firstIndex];
         v37 = [v36 objectForKeyedSubscript:@"slot_date"];
         [v45 setObject:v35 forKeyedSubscript:v37];
 
-        ++v7;
+        ++firstIndex;
       }
 
-      while (v12 != v7);
+      while (v12 != firstIndex);
     }
 
     v38 = v49;

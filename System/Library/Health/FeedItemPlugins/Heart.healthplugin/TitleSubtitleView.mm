@@ -1,16 +1,16 @@
 @interface TitleSubtitleView
-- (_TtC5Heart17TitleSubtitleView)initWithCoder:(id)a3;
-- (_TtC5Heart17TitleSubtitleView)initWithFrame:(CGRect)a3;
+- (_TtC5Heart17TitleSubtitleView)initWithCoder:(id)coder;
+- (_TtC5Heart17TitleSubtitleView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TitleSubtitleView
 
-- (_TtC5Heart17TitleSubtitleView)initWithFrame:(CGRect)a3
+- (_TtC5Heart17TitleSubtitleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Heart17TitleSubtitleView____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Heart17TitleSubtitleView____lazy_storage___subtitleLabel) = 0;
   v8 = self + OBJC_IVAR____TtC5Heart17TitleSubtitleView_item;
@@ -20,13 +20,13 @@
   *(v8 + 4) = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(TitleSubtitleView *)&v12 initWithFrame:x, y, width, height];
+  height = [(TitleSubtitleView *)&v12 initWithFrame:x, y, width, height];
   sub_29D806248();
 
-  return v10;
+  return height;
 }
 
-- (_TtC5Heart17TitleSubtitleView)initWithCoder:(id)a3
+- (_TtC5Heart17TitleSubtitleView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Heart17TitleSubtitleView____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Heart17TitleSubtitleView____lazy_storage___subtitleLabel) = 0;

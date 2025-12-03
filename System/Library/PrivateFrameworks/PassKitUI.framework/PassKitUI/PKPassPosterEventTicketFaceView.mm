@@ -1,11 +1,11 @@
 @interface PKPassPosterEventTicketFaceView
 - (BOOL)flushFormattedFieldValues;
 - (id)fetchRelevantBuckets;
-- (void)_updateBodyLabelColorsForRelevancyActive:(BOOL)a3;
+- (void)_updateBodyLabelColorsForRelevancyActive:(BOOL)active;
 - (void)createBodyContentViews;
 - (void)createHeaderContentViews;
 - (void)layoutSubviews;
-- (void)setRelevancyActive:(BOOL)a3;
+- (void)setRelevancyActive:(BOOL)active;
 @end
 
 @implementation PKPassPosterEventTicketFaceView
@@ -13,11 +13,11 @@
 - (id)fetchRelevantBuckets
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v2 = [(PKPassFaceView *)self pass];
-  v3 = [PKEventTicketFaceBucketsFactory headerFieldsForPass:v2];
-  v4 = [PKEventTicketFaceBucketsFactory primaryFieldsForPass:v2];
-  v5 = [PKEventTicketFaceBucketsFactory secondaryFieldsForPass:v2];
-  v6 = [PKEventTicketFaceBucketsFactory auxiliaryFieldsForPass:v2];
+  pass = [(PKPassFaceView *)self pass];
+  v3 = [PKEventTicketFaceBucketsFactory headerFieldsForPass:pass];
+  v4 = [PKEventTicketFaceBucketsFactory primaryFieldsForPass:pass];
+  v5 = [PKEventTicketFaceBucketsFactory secondaryFieldsForPass:pass];
+  v6 = [PKEventTicketFaceBucketsFactory auxiliaryFieldsForPass:pass];
   v9[0] = v3;
   v9[1] = v4;
   v9[2] = v5;
@@ -29,28 +29,28 @@
 
 - (BOOL)flushFormattedFieldValues
 {
-  v3 = [(PKPassFaceView *)self pass];
-  v4 = [PKEventTicketFaceBucketsFactory headerFieldsForPass:v3];
+  pass = [(PKPassFaceView *)self pass];
+  v4 = [PKEventTicketFaceBucketsFactory headerFieldsForPass:pass];
 
-  v5 = [v4 firstObject];
-  v6 = [v5 label];
-  v7 = [v5 value];
-  v8 = [(PKPassFaceView *)self buckets];
-  v9 = [v8 firstObject];
-  v10 = [v9 firstObject];
+  firstObject = [v4 firstObject];
+  label = [firstObject label];
+  value = [firstObject value];
+  buckets = [(PKPassFaceView *)self buckets];
+  firstObject2 = [buckets firstObject];
+  v9FirstObject = [firstObject2 firstObject];
 
-  v11 = [v10 label];
-  v12 = v6;
+  label2 = [v9FirstObject label];
+  v12 = label;
   v13 = v12;
-  if (v11 == v12)
+  if (label2 == v12)
   {
 
     goto LABEL_7;
   }
 
-  if (v12 && v11)
+  if (v12 && label2)
   {
-    v14 = [v11 isEqualToString:v12];
+    v14 = [label2 isEqualToString:v12];
 
     if ((v14 & 1) == 0)
     {
@@ -63,21 +63,21 @@ LABEL_7:
   }
 
 LABEL_9:
-  [v10 setLabel:v13];
+  [v9FirstObject setLabel:v13];
   v15 = 1;
 LABEL_10:
-  v16 = [v10 value];
-  v17 = v7;
+  value2 = [v9FirstObject value];
+  v17 = value;
   v18 = v17;
-  if (v16 == v17)
+  if (value2 == v17)
   {
   }
 
   else
   {
-    if (v17 && v16)
+    if (v17 && value2)
     {
-      v19 = [v16 isEqualToString:v17];
+      v19 = [value2 isEqualToString:v17];
 
       if (v19)
       {
@@ -89,7 +89,7 @@ LABEL_10:
     {
     }
 
-    [v10 setUnformattedValue:v18];
+    [v9FirstObject setUnformattedValue:v18];
     v15 = 1;
   }
 
@@ -104,16 +104,16 @@ LABEL_18:
   v85.receiver = self;
   v85.super_class = PKPassPosterEventTicketFaceView;
   [(PKPassFrontFaceView *)&v85 createHeaderContentViews];
-  v3 = [(PKPassFaceView *)self style];
-  v4 = [(PKPassFaceView *)self pass];
-  v5 = [(PKPassFaceView *)self colorProfile];
+  style = [(PKPassFaceView *)self style];
+  pass = [(PKPassFaceView *)self pass];
+  colorProfile = [(PKPassFaceView *)self colorProfile];
   v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
-  v80 = v5;
-  if (([v5 supportsAutomaticForegroundVibrancy] & 1) != 0 || objc_msgSend(v5, "supportsAutomaticLabelVibrancy"))
+  v80 = colorProfile;
+  if (([colorProfile supportsAutomaticForegroundVibrancy] & 1) != 0 || objc_msgSend(colorProfile, "supportsAutomaticLabelVibrancy"))
   {
     v7 = MEMORY[0x1E69DC888];
-    v8 = [v4 frontFaceImageAverageColor];
-    v9 = [v7 pkui_colorWithPKColor:v8];
+    frontFaceImageAverageColor = [pass frontFaceImageAverageColor];
+    v9 = [v7 pkui_colorWithPKColor:frontFaceImageAverageColor];
 
     [v9 CGColor];
     PKColorGetLightness();
@@ -135,8 +135,8 @@ LABEL_18:
     v84[4] = v11;
     v12 = [v6 traitCollectionByModifyingTraits:v84];
 
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    v79 = [v13 resolvedColorWithTraitCollection:v12];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v79 = [labelColor resolvedColorWithTraitCollection:v12];
 
     v6 = v12;
   }
@@ -152,40 +152,40 @@ LABEL_18:
   v82 = *(MEMORY[0x1E695F050] + 16);
   self->_cachedLogoLabelRect.origin = *MEMORY[0x1E695F050];
   self->_cachedLogoLabelRect.size = v82;
-  v14 = [v4 logoText];
+  logoText = [pass logoText];
   PKPassFaceLogoRect();
-  if (!CGRectIsEmpty(v90) && (v3 - 11) >= 0xFFFFFFFFFFFFFFFELL)
+  if (!CGRectIsEmpty(v90) && (style - 11) >= 0xFFFFFFFFFFFFFFFELL)
   {
-    v15 = [v4 eventType];
-    v16 = [v4 stringForSemanticKey:*MEMORY[0x1E69BBE38]];
-    v17 = [v4 stringForSemanticKey:*MEMORY[0x1E69BBD48]];
-    if (v15 == 3 && (v18 = v16) != 0 && (v19 = v18, v20 = [v18 length], v19, v20) && (v21 = v17) != 0 && (v22 = v21, v23 = objc_msgSend(v21, "length"), v22, v23))
+    eventType = [pass eventType];
+    v16 = [pass stringForSemanticKey:*MEMORY[0x1E69BBE38]];
+    v17 = [pass stringForSemanticKey:*MEMORY[0x1E69BBD48]];
+    if (eventType == 3 && (v18 = v16) != 0 && (v19 = v18, v20 = [v18 length], v19, v20) && (v21 = v17) != 0 && (v22 = v21, v23 = objc_msgSend(v21, "length"), v22, v23))
     {
       v77 = v22;
-      v78 = v14;
+      v78 = logoText;
       self->_usingSportsLabel = 1;
       v24 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       logoLabel = self->_logoLabel;
       self->_logoLabel = v24;
 
       v26 = self->_logoLabel;
-      v27 = [MEMORY[0x1E69DC888] clearColor];
-      [(UILabel *)v26 setBackgroundColor:v27];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UILabel *)v26 setBackgroundColor:clearColor];
 
       [(UILabel *)self->_logoLabel setLineBreakMode:4];
       [(UILabel *)self->_logoLabel setNumberOfLines:1];
       [(UILabel *)self->_logoLabel setTextAlignment:0];
-      if ([v5 supportsAutomaticForegroundVibrancy])
+      if ([colorProfile supportsAutomaticForegroundVibrancy])
       {
-        v28 = v79;
+        foregroundColor = v79;
       }
 
       else
       {
-        v28 = [v5 foregroundColor];
+        foregroundColor = [colorProfile foregroundColor];
       }
 
-      v40 = v28;
+      v40 = foregroundColor;
       v73 = objc_alloc_init(MEMORY[0x1E696AD40]);
       v61 = PKFontForDefaultDesign(v83, *MEMORY[0x1E69DDCF8], 32770, 0, *MEMORY[0x1E69DB958]);
       v71 = *MEMORY[0x1E69DB650];
@@ -223,12 +223,12 @@ LABEL_18:
       [(UILabel *)self->_logoLabel setAttributedText:v73];
       [(PKPassFrontFaceView *)self insertContentView:self->_logoLabel ofType:0];
 
-      v14 = v78;
+      logoText = v78;
     }
 
     else
     {
-      v29 = v14;
+      v29 = logoText;
       if (!v29)
       {
         goto LABEL_25;
@@ -242,14 +242,14 @@ LABEL_18:
         goto LABEL_25;
       }
 
-      v32 = v14;
+      v32 = logoText;
       v33 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       v34 = self->_logoLabel;
       self->_logoLabel = v33;
 
       v35 = self->_logoLabel;
-      v36 = [MEMORY[0x1E69DC888] clearColor];
-      [(UILabel *)v35 setBackgroundColor:v36];
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      [(UILabel *)v35 setBackgroundColor:clearColor2];
 
       [(UILabel *)self->_logoLabel setLineBreakMode:4];
       [(UILabel *)self->_logoLabel setNumberOfLines:2];
@@ -258,41 +258,41 @@ LABEL_18:
       v38 = PKFontForDefaultDesign(v83, *MEMORY[0x1E69DDD80], 32770, 0, *MEMORY[0x1E69DB958]);
       [(UILabel *)v37 setFont:v38];
 
-      if ([v5 supportsAutomaticForegroundVibrancy])
+      if ([colorProfile supportsAutomaticForegroundVibrancy])
       {
-        v39 = v79;
+        foregroundColor2 = v79;
       }
 
       else
       {
-        v39 = [v5 foregroundColor];
+        foregroundColor2 = [colorProfile foregroundColor];
       }
 
-      v40 = v39;
-      [(UILabel *)self->_logoLabel setTextColor:v39];
+      v40 = foregroundColor2;
+      [(UILabel *)self->_logoLabel setTextColor:foregroundColor2];
       [(UILabel *)self->_logoLabel setText:v30];
       [(PKPassFrontFaceView *)self insertContentView:self->_logoLabel ofType:0];
-      v14 = v32;
+      logoText = v32;
     }
 
 LABEL_25:
   }
 
-  v41 = v14;
-  v42 = [(PKPassFaceView *)self buckets];
-  v43 = [v42 firstObject];
-  v44 = [v43 firstObject];
+  v41 = logoText;
+  buckets = [(PKPassFaceView *)self buckets];
+  firstObject = [buckets firstObject];
+  v43FirstObject = [firstObject firstObject];
 
-  if (!v44)
+  if (!v43FirstObject)
   {
     __break(1u);
   }
 
   self->_cachedDateLabelFrame.origin = v81;
   self->_cachedDateLabelFrame.size = v82;
-  v45 = [v44 label];
-  v46 = [v44 value];
-  if (v46)
+  label = [v43FirstObject label];
+  value = [v43FirstObject value];
+  if (value)
   {
     v47 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     dateLabel = self->_dateLabel;
@@ -302,7 +302,7 @@ LABEL_25:
     [(UILabel *)self->_dateLabel setLineBreakMode:4];
     [(UILabel *)self->_dateLabel setTextAlignment:2];
     v49 = MEMORY[0x1E69DDCF8];
-    if (v45)
+    if (label)
     {
       v49 = MEMORY[0x1E69DDD80];
     }
@@ -314,23 +314,23 @@ LABEL_25:
 
     if ([v80 supportsAutomaticForegroundVibrancy])
     {
-      v53 = v79;
+      foregroundColor3 = v79;
     }
 
     else
     {
-      v53 = [v80 foregroundColor];
+      foregroundColor3 = [v80 foregroundColor];
     }
 
-    v54 = v53;
-    [(UILabel *)self->_dateLabel setTextColor:v53];
-    [(UILabel *)self->_dateLabel setText:v46];
+    v54 = foregroundColor3;
+    [(UILabel *)self->_dateLabel setTextColor:foregroundColor3];
+    [(UILabel *)self->_dateLabel setText:value];
     [(PKPassFrontFaceView *)self insertContentView:self->_dateLabel ofType:0];
   }
 
   self->_cachedTimeLabelFrame.origin = v81;
   self->_cachedTimeLabelFrame.size = v82;
-  if (v45)
+  if (label)
   {
     v55 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     timeLabel = self->_timeLabel;
@@ -345,17 +345,17 @@ LABEL_25:
 
     if ([v80 supportsAutomaticLabelVibrancy])
     {
-      v59 = v79;
+      labelColor2 = v79;
     }
 
     else
     {
-      v59 = [v80 labelColor];
+      labelColor2 = [v80 labelColor];
     }
 
-    v60 = v59;
-    [(UILabel *)self->_timeLabel setTextColor:v59];
-    [(UILabel *)self->_timeLabel setText:v45];
+    v60 = labelColor2;
+    [(UILabel *)self->_timeLabel setTextColor:labelColor2];
+    [(UILabel *)self->_timeLabel setText:label];
     [(PKPassFrontFaceView *)self insertContentView:self->_timeLabel ofType:0];
   }
 }
@@ -380,13 +380,13 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
   v128.receiver = self;
   v128.super_class = PKPassPosterEventTicketFaceView;
   [(PKPassFrontFaceView *)&v128 createBodyContentViews];
-  v3 = [(PKPassFaceView *)self pass];
-  v112 = [v3 seatingInformation];
-  v4 = [v112 firstSeat];
+  pass = [(PKPassFaceView *)self pass];
+  seatingInformation = [pass seatingInformation];
+  firstSeat = [seatingInformation firstSeat];
   v5 = MEMORY[0x1E69DC888];
-  v111 = v4;
-  v6 = [v4 sectionColor];
-  v7 = [v5 pkui_colorWithPKColor:v6];
+  v111 = firstSeat;
+  sectionColor = [firstSeat sectionColor];
+  v7 = [v5 pkui_colorWithPKColor:sectionColor];
 
   if (v7)
   {
@@ -402,11 +402,11 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
     [(UIView *)self->_sectionColorMaskView setBackgroundColor:v7];
     [(UIView *)self->_sectionColorView addSubview:self->_sectionColorMaskView];
     v12 = objc_alloc_init(MEMORY[0x1E6979398]);
-    v13 = [(UIView *)self->_sectionColorMaskView layer];
-    [v13 setMask:v12];
+    layer = [(UIView *)self->_sectionColorMaskView layer];
+    [layer setMask:v12];
 
-    v14 = [(UIView *)self->_sectionColorMaskView layer];
-    [v14 setMasksToBounds:1];
+    layer2 = [(UIView *)self->_sectionColorMaskView layer];
+    [layer2 setMasksToBounds:1];
 
     if ([(PKPassFrontFaceView *)self isRelevancyActive])
     {
@@ -414,11 +414,11 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
     }
   }
 
-  v15 = [v3 secondaryLogoImage];
+  secondaryLogoImage = [pass secondaryLogoImage];
   v115 = v7;
-  if (v15)
+  if (secondaryLogoImage)
   {
-    v16 = v15;
+    v16 = secondaryLogoImage;
     v17 = [MEMORY[0x1E69B8950] constraintsWithMaxSize:{135.0, 12.0}];
     [v16 scale];
     [v17 setOutputScale:?];
@@ -447,21 +447,21 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
   v120 = *MEMORY[0x1E69DB8D0];
   v114 = *MEMORY[0x1E69DDD28];
   v26 = _PKFontForDesign(v25, *MEMORY[0x1E69DB8D0], *MEMORY[0x1E69DDD28], 0, 0, 0);
-  v27 = [(PKPassFaceView *)self colorProfile];
-  if ([v27 supportsAutomaticForegroundVibrancy])
+  colorProfile = [(PKPassFaceView *)self colorProfile];
+  if ([colorProfile supportsAutomaticForegroundVibrancy])
   {
-    v28 = 1;
+    supportsAutomaticLabelVibrancy = 1;
   }
 
   else
   {
-    v28 = [v27 supportsAutomaticLabelVibrancy];
+    supportsAutomaticLabelVibrancy = [colorProfile supportsAutomaticLabelVibrancy];
   }
 
   v29 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v30 = [v29 layer];
-  v31 = v28 ^ 1u;
-  [v30 setAllowsGroupBlending:v31];
+  layer3 = [v29 layer];
+  v31 = supportsAutomaticLabelVibrancy ^ 1u;
+  [layer3 setAllowsGroupBlending:v31];
 
   v122 = v29;
   [(PKPassFrontFaceView *)self insertContentView:v29 ofType:2];
@@ -476,15 +476,15 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
 
   else
   {
-    v32 = [v27 footerBackgroundColor];
+    footerBackgroundColor = [colorProfile footerBackgroundColor];
     v33 = MEMORY[0x1E69DC888];
-    v34 = [v3 frontFaceImageAverageColor];
-    v35 = [v33 pkui_colorWithPKColor:v34];
+    frontFaceImageAverageColor = [pass frontFaceImageAverageColor];
+    v35 = [v33 pkui_colorWithPKColor:frontFaceImageAverageColor];
 
-    v36 = [(PKPassFrontFaceView *)self isRelevancyActive];
-    if (v32)
+    isRelevancyActive = [(PKPassFrontFaceView *)self isRelevancyActive];
+    if (footerBackgroundColor)
     {
-      v37 = v32;
+      v37 = footerBackgroundColor;
     }
 
     else
@@ -492,7 +492,7 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
       v37 = v35;
     }
 
-    if (v115 != 0 && v36)
+    if (v115 != 0 && isRelevancyActive)
     {
       v38 = v115;
     }
@@ -526,7 +526,7 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
     v127[3] = &__block_descriptor_40_e27_v16__0___UIMutableTraits__8l;
     v127[4] = v41;
     v42 = v25;
-    v43 = v3;
+    v43 = pass;
     if (v39 < 0.85)
     {
       v44 = MEMORY[0x1E6979CF8];
@@ -539,14 +539,14 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
 
     v45 = [v42 traitCollectionByModifyingTraits:v127];
 
-    v46 = [MEMORY[0x1E69DC888] labelColor];
-    v121 = [v46 resolvedColorWithTraitCollection:v45];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v121 = [labelColor resolvedColorWithTraitCollection:v45];
 
     v47 = *v44;
-    v3 = v43;
+    pass = v43;
     v123 = v47;
-    v48 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v119 = [v48 resolvedColorWithTraitCollection:v45];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v119 = [secondaryLabelColor resolvedColorWithTraitCollection:v45];
 
     v49 = v41 == 2;
     v25 = v45;
@@ -556,29 +556,29 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
   PKPassFrontFaceContentSize();
   PKEventTicketV2PassScaleFactor();
   v51 = v50;
-  v52 = [(PKPassFaceView *)self buckets];
-  if ([v52 count] != 4)
+  buckets = [(PKPassFaceView *)self buckets];
+  if ([buckets count] != 4)
   {
     __break(1u);
     return;
   }
 
-  v53 = [v52 objectAtIndex:1];
-  v54 = [v53 firstObject];
+  v53 = [buckets objectAtIndex:1];
+  firstObject = [v53 firstObject];
 
-  v116 = [v52 objectAtIndex:2];
+  v116 = [buckets objectAtIndex:2];
   v55 = [v116 count];
-  v56 = [v52 objectAtIndex:3];
-  v126 = [v56 firstObject];
+  v56 = [buckets objectAtIndex:3];
+  firstObject2 = [v56 firstObject];
 
   v124 = *(MEMORY[0x1E695F050] + 16);
   v125 = *MEMORY[0x1E695F050];
   self->_cachedPrimaryFieldFrame.origin = *MEMORY[0x1E695F050];
   self->_cachedPrimaryFieldFrame.size = v124;
   v57 = MEMORY[0x1E69DDD58];
-  v117 = v54;
-  v113 = v52;
-  if (v54)
+  v117 = firstObject;
+  v113 = buckets;
+  if (firstObject)
   {
     v58 = *MEMORY[0x1E69DDD58];
     v59 = PKFontForDefaultDesign(v25, v58, 2, 0, *MEMORY[0x1E69DB958]);
@@ -593,7 +593,7 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
     v107 = v25;
     if (v55)
     {
-      if ([v27 supportsAutomaticLabelVibrancy])
+      if ([colorProfile supportsAutomaticLabelVibrancy])
       {
         v62 = v121;
         if (v49)
@@ -612,33 +612,33 @@ uint64_t __59__PKPassPosterEventTicketFaceView_createHeaderContentViews__block_i
         goto LABEL_41;
       }
 
-      v66 = [v27 labelColor];
+      labelColor2 = [colorProfile labelColor];
     }
 
-    else if ([v27 supportsAutomaticForegroundVibrancy])
+    else if ([colorProfile supportsAutomaticForegroundVibrancy])
     {
-      v66 = v121;
+      labelColor2 = v121;
     }
 
     else
     {
-      v66 = [v27 foregroundColor];
+      labelColor2 = [colorProfile foregroundColor];
     }
 
-    v64 = v66;
+    v64 = labelColor2;
     v65 = 0;
 LABEL_41:
-    [(UILabel *)self->_primaryFieldLabel setTextColor:v64, v107, v3, v110];
-    v67 = [(UILabel *)self->_primaryFieldLabel layer];
-    [v67 setCompositingFilter:v65];
+    [(UILabel *)self->_primaryFieldLabel setTextColor:v64, v107, pass, v110];
+    layer4 = [(UILabel *)self->_primaryFieldLabel layer];
+    [layer4 setCompositingFilter:v65];
 
     v68 = self->_primaryFieldLabel;
-    v69 = [v117 value];
-    [(UILabel *)v68 setText:v69];
+    value = [v117 value];
+    [(UILabel *)v68 setText:value];
 
     [v122 addSubview:self->_primaryFieldLabel];
     v25 = v108;
-    v3 = v109;
+    pass = v109;
     v57 = MEMORY[0x1E69DDD58];
   }
 
@@ -667,22 +667,22 @@ LABEL_41:
     [(PKDynamicPassBucketView *)self->_secondaryBucketView setSpacing:v73];
     [(PKDynamicPassBucketView *)self->_secondaryBucketView setVerticalPadding:0.0];
     [(PKDynamicPassBucketView *)self->_secondaryBucketView setMinResizeScale:0.6];
-    v77 = v3;
-    if ([v27 supportsAutomaticLabelVibrancy])
+    v77 = pass;
+    if ([colorProfile supportsAutomaticLabelVibrancy])
     {
-      v78 = v119;
+      labelColor3 = v119;
     }
 
     else
     {
-      v78 = [v27 labelColor];
+      labelColor3 = [colorProfile labelColor];
     }
 
-    v79 = v78;
+    v79 = labelColor3;
     v80 = v25;
-    v81 = [v27 supportsAutomaticLabelVibrancy];
+    supportsAutomaticLabelVibrancy2 = [colorProfile supportsAutomaticLabelVibrancy];
     v82 = v123;
-    if (!v81)
+    if (!supportsAutomaticLabelVibrancy2)
     {
       v82 = 0;
     }
@@ -691,30 +691,30 @@ LABEL_41:
     [(PKDynamicPassBucketView *)self->_secondaryBucketView setLabelFont:v118];
     [(PKDynamicPassBucketView *)self->_secondaryBucketView setLabelTextColor:v79];
     [(PKDynamicPassBucketView *)self->_secondaryBucketView setLabelBlendMode:v83];
-    if ([v27 supportsAutomaticForegroundVibrancy])
+    if ([colorProfile supportsAutomaticForegroundVibrancy])
     {
-      v84 = v121;
+      foregroundColor = v121;
     }
 
     else
     {
-      v84 = [v27 foregroundColor];
+      foregroundColor = [colorProfile foregroundColor];
     }
 
-    v85 = v84;
+    v85 = foregroundColor;
     [(PKDynamicPassBucketView *)self->_secondaryBucketView setValueFont:v72];
     [(PKDynamicPassBucketView *)self->_secondaryBucketView setValueTextColor:v85];
     [(PKPassFrontFaceView *)self insertContentView:self->_secondaryBucketView ofType:2];
 
     v25 = v80;
-    v3 = v77;
-    v52 = v113;
+    pass = v77;
+    buckets = v113;
   }
 
   self->_cachedSecnamLabelFrame.origin = v125;
   self->_cachedSecnamLabelFrame.size = v124;
-  v86 = [v126 label];
-  if (v86)
+  label = [firstObject2 label];
+  if (label)
   {
     v87 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     secnamLabel = self->_secnamLabel;
@@ -727,20 +727,20 @@ LABEL_41:
     v90 = _PKFontForDesign(v25, v120, v114, 0x8000, 32, 0);
     [(UILabel *)v89 setFont:v90];
 
-    if ([v27 supportsAutomaticLabelVibrancy])
+    if ([colorProfile supportsAutomaticLabelVibrancy])
     {
-      v91 = v119;
+      labelColor4 = v119;
     }
 
     else
     {
-      v91 = [v27 labelColor];
+      labelColor4 = [colorProfile labelColor];
     }
 
-    v92 = v91;
-    v93 = [v27 supportsAutomaticLabelVibrancy];
+    v92 = labelColor4;
+    supportsAutomaticLabelVibrancy3 = [colorProfile supportsAutomaticLabelVibrancy];
     v94 = v123;
-    if (!v93)
+    if (!supportsAutomaticLabelVibrancy3)
     {
       v94 = 0;
     }
@@ -748,10 +748,10 @@ LABEL_41:
     v95 = self->_secnamLabel;
     v96 = v94;
     [(UILabel *)v95 setTextColor:v92];
-    v97 = [(UILabel *)self->_secnamLabel layer];
-    [v97 setCompositingFilter:v96];
+    layer5 = [(UILabel *)self->_secnamLabel layer];
+    [layer5 setCompositingFilter:v96];
 
-    [(UILabel *)self->_secnamLabel setText:v86];
+    [(UILabel *)self->_secnamLabel setText:label];
     v98 = self->_secnamLabel;
 
     [v122 addSubview:v98];
@@ -759,14 +759,14 @@ LABEL_41:
 
   self->_cachedVenueLabelFrame.origin = v125;
   self->_cachedVenueLabelFrame.size = v124;
-  v99 = [v126 value];
-  if (v99)
+  value2 = [firstObject2 value];
+  if (value2)
   {
     v100 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     venueLabel = self->_venueLabel;
     self->_venueLabel = v100;
 
-    if (v86)
+    if (label)
     {
       v102 = 1;
     }
@@ -777,25 +777,25 @@ LABEL_41:
     }
 
     [(UILabel *)self->_venueLabel setNumberOfLines:v102];
-    [(UILabel *)self->_venueLabel setLineBreakMode:4 * (v86 != 0)];
+    [(UILabel *)self->_venueLabel setLineBreakMode:4 * (label != 0)];
     [(UILabel *)self->_venueLabel setTextAlignment:0];
     v103 = self->_venueLabel;
     v104 = _PKFontForDesign(v25, v120, v114, 0, 32, 0);
     [(UILabel *)v103 setFont:v104];
 
-    if ([v27 supportsAutomaticForegroundVibrancy])
+    if ([colorProfile supportsAutomaticForegroundVibrancy])
     {
-      v105 = v121;
+      foregroundColor2 = v121;
     }
 
     else
     {
-      v105 = [v27 foregroundColor];
+      foregroundColor2 = [colorProfile foregroundColor];
     }
 
-    v106 = v105;
-    [(UILabel *)self->_venueLabel setTextColor:v105];
-    [(UILabel *)self->_venueLabel setText:v99];
+    v106 = foregroundColor2;
+    [(UILabel *)self->_venueLabel setTextColor:foregroundColor2];
+    [(UILabel *)self->_venueLabel setText:value2];
     [(PKPassFrontFaceView *)self insertContentView:self->_venueLabel ofType:2];
   }
 }
@@ -815,31 +815,31 @@ uint64_t __57__PKPassPosterEventTicketFaceView_createBodyContentViews__block_inv
   return [a2 setUserInterfaceStyle:v2];
 }
 
-- (void)_updateBodyLabelColorsForRelevancyActive:(BOOL)a3
+- (void)_updateBodyLabelColorsForRelevancyActive:(BOOL)active
 {
-  v46 = [(PKPassFaceView *)self pass];
-  v5 = [(PKPassFaceView *)self colorProfile];
-  if (([v5 supportsAutomaticForegroundVibrancy] & 1) == 0 && !objc_msgSend(v5, "supportsAutomaticLabelVibrancy"))
+  pass = [(PKPassFaceView *)self pass];
+  colorProfile = [(PKPassFaceView *)self colorProfile];
+  if (([colorProfile supportsAutomaticForegroundVibrancy] & 1) == 0 && !objc_msgSend(colorProfile, "supportsAutomaticLabelVibrancy"))
   {
     goto LABEL_39;
   }
 
-  v6 = [v46 seatingInformation];
-  v7 = [v6 firstSeat];
+  seatingInformation = [pass seatingInformation];
+  firstSeat = [seatingInformation firstSeat];
   v8 = MEMORY[0x1E69DC888];
-  v45 = v7;
-  v9 = [v7 sectionColor];
-  v10 = [v8 pkui_colorWithPKColor:v9];
+  v45 = firstSeat;
+  sectionColor = [firstSeat sectionColor];
+  v10 = [v8 pkui_colorWithPKColor:sectionColor];
 
-  v11 = [v5 footerBackgroundColor];
+  footerBackgroundColor = [colorProfile footerBackgroundColor];
   v12 = MEMORY[0x1E69DC888];
-  v13 = [v46 frontFaceImageAverageColor];
-  v14 = [v12 pkui_colorWithPKColor:v13];
+  frontFaceImageAverageColor = [pass frontFaceImageAverageColor];
+  v14 = [v12 pkui_colorWithPKColor:frontFaceImageAverageColor];
 
   v44 = v14;
-  if (v11)
+  if (footerBackgroundColor)
   {
-    v15 = v11;
+    v15 = footerBackgroundColor;
   }
 
   else
@@ -847,7 +847,7 @@ uint64_t __57__PKPassPosterEventTicketFaceView_createBodyContentViews__block_inv
     v15 = v14;
   }
 
-  if (a3 && v10 != 0)
+  if (active && v10 != 0)
   {
     v16 = v10;
   }
@@ -881,28 +881,28 @@ uint64_t __57__PKPassPosterEventTicketFaceView_createBodyContentViews__block_inv
   }
 
   v21 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:v19];
-  v22 = [MEMORY[0x1E69DC888] labelColor];
-  v23 = [v22 resolvedColorWithTraitCollection:v21];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v23 = [labelColor resolvedColorWithTraitCollection:v21];
 
   v24 = *v20;
-  v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v26 = [v25 resolvedColorWithTraitCollection:v21];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v26 = [secondaryLabelColor resolvedColorWithTraitCollection:v21];
 
   if (self->_primaryFieldLabel)
   {
-    v42 = v11;
+    v42 = footerBackgroundColor;
     v43 = v24;
     v27 = v26;
     v28 = v23;
-    v29 = [(PKPassFaceView *)self buckets];
-    v30 = [v29 objectAtIndex:2];
+    buckets = [(PKPassFaceView *)self buckets];
+    v30 = [buckets objectAtIndex:2];
     v31 = [v30 count];
 
     if (v31)
     {
       v23 = v28;
       v26 = v27;
-      if ([v5 supportsAutomaticLabelVibrancy])
+      if ([colorProfile supportsAutomaticLabelVibrancy])
       {
         v32 = v18 >= 0.5;
         v33 = v18 < 0.85;
@@ -919,15 +919,15 @@ uint64_t __57__PKPassPosterEventTicketFaceView_createBodyContentViews__block_inv
         }
 
         primaryFieldLabel = self->_primaryFieldLabel;
-        v41 = v6;
+        v41 = seatingInformation;
         v37 = v35;
         v38 = primaryFieldLabel;
         v26 = v27;
         [(UILabel *)v38 setTextColor:v23];
-        v39 = [(UILabel *)self->_primaryFieldLabel layer];
-        [v39 setCompositingFilter:v37];
+        layer = [(UILabel *)self->_primaryFieldLabel layer];
+        [layer setCompositingFilter:v37];
 
-        v6 = v41;
+        seatingInformation = v41;
         goto LABEL_25;
       }
     }
@@ -936,43 +936,43 @@ uint64_t __57__PKPassPosterEventTicketFaceView_createBodyContentViews__block_inv
     {
       v23 = v28;
       v26 = v27;
-      if ([v5 supportsAutomaticForegroundVibrancy])
+      if ([colorProfile supportsAutomaticForegroundVibrancy])
       {
         [(UILabel *)self->_primaryFieldLabel setTextColor:v28];
-        v39 = [(UILabel *)self->_primaryFieldLabel layer];
-        [v39 setCompositingFilter:0];
+        layer = [(UILabel *)self->_primaryFieldLabel layer];
+        [layer setCompositingFilter:0];
 LABEL_25:
 
         v23 = v28;
       }
     }
 
-    v11 = v42;
+    footerBackgroundColor = v42;
     v24 = v43;
   }
 
   if (self->_secondaryBucketView)
   {
-    if ([v5 supportsAutomaticLabelVibrancy])
+    if ([colorProfile supportsAutomaticLabelVibrancy])
     {
       [(PKDynamicPassBucketView *)self->_secondaryBucketView setLabelTextColor:v26];
       [(PKDynamicPassBucketView *)self->_secondaryBucketView setLabelBlendMode:v24];
     }
 
-    if ([v5 supportsAutomaticForegroundVibrancy])
+    if ([colorProfile supportsAutomaticForegroundVibrancy])
     {
       [(PKDynamicPassBucketView *)self->_secondaryBucketView setValueTextColor:v23];
     }
   }
 
-  if (self->_secnamLabel && [v5 supportsAutomaticLabelVibrancy])
+  if (self->_secnamLabel && [colorProfile supportsAutomaticLabelVibrancy])
   {
     [(UILabel *)self->_secnamLabel setTextColor:v26];
-    v40 = [(UILabel *)self->_secnamLabel layer];
-    [v40 setCompositingFilter:v24];
+    layer2 = [(UILabel *)self->_secnamLabel layer];
+    [layer2 setCompositingFilter:v24];
   }
 
-  if (self->_venueLabel && [v5 supportsAutomaticForegroundVibrancy])
+  if (self->_venueLabel && [colorProfile supportsAutomaticForegroundVibrancy])
   {
     [(UILabel *)self->_venueLabel setTextColor:v23];
   }
@@ -1017,8 +1017,8 @@ LABEL_39:
         v16 = v8;
       }
 
-      v19 = [(PKPassFaceView *)self pass];
-      [v19 logoRect];
+      pass = [(PKPassFaceView *)self pass];
+      [pass logoRect];
       v21 = v20;
       v23 = v22;
       v25 = v24;
@@ -1051,8 +1051,8 @@ LABEL_39:
       v239.size.width = v16;
       v239.size.height = v17;
       v29 = CGRectGetMaxX(v239) - MinX;
-      v30 = [(UILabel *)self->_logoLabel font];
-      [v30 _bodyLeading];
+      font = [(UILabel *)self->_logoLabel font];
+      [font _bodyLeading];
       v32.n128_u64[0] = v31;
       v33.n128_f64[0] = v29;
       PKSizeCeilToPixel(v33, v32, v34);
@@ -1150,8 +1150,8 @@ LABEL_39:
     [(UILabel *)self->_timeLabel setFrame:v59, MaxY, v56, v58];
   }
 
-  v61 = [(PKPassFaceView *)self backgroundView];
-  [v61 bounds];
+  backgroundView = [(PKPassFaceView *)self backgroundView];
+  [backgroundView bounds];
   v63 = v62;
   v65 = v64;
   v67 = v66;
@@ -1161,19 +1161,19 @@ LABEL_39:
   {
     PKPassFacePartialBlurRect();
     [(UIView *)self->_sectionColorView setFrame:0.0, v233 - CGRectGetHeight(v241), v5];
-    v70 = [(PKPassFaceView *)self contentView];
-    [v70 sendSubviewToBack:self->_sectionColorView];
+    contentView = [(PKPassFaceView *)self contentView];
+    [contentView sendSubviewToBack:self->_sectionColorView];
 
     [(PKPassPosterEventTicketFaceView *)self convertRect:self->_sectionColorView toView:v63, v65, v67, v69];
     [(UIView *)self->_sectionColorMaskView setFrame:?];
-    v71 = [(UIView *)self->_sectionColorMaskView layer];
-    v72 = [v71 mask];
+    layer = [(UIView *)self->_sectionColorMaskView layer];
+    mask = [layer mask];
 
-    [v72 setFrame:{v63, v65, v67, v69}];
-    v73 = [(PKPassFaceView *)self backgroundView];
-    v74 = [v73 image];
+    [mask setFrame:{v63, v65, v67, v69}];
+    backgroundView2 = [(PKPassFaceView *)self backgroundView];
+    image = [backgroundView2 image];
 
-    [v72 setContents:{objc_msgSend(v74, "CGImage")}];
+    [mask setContents:{objc_msgSend(image, "CGImage")}];
   }
 
   secondaryLogoImageView = self->_secondaryLogoImageView;
@@ -1211,9 +1211,9 @@ LABEL_39:
     {
       v224 = v81;
       v221 = v82;
-      v90 = [(UILabel *)self->_secnamLabel font];
-      v91 = [(UILabel *)self->_venueLabel font];
-      v92 = v91;
+      font2 = [(UILabel *)self->_secnamLabel font];
+      font3 = [(UILabel *)self->_venueLabel font];
+      v92 = font3;
       v93 = self->_secondaryLogoSize.width;
       if (self->_secnamLabel)
       {
@@ -1231,7 +1231,7 @@ LABEL_39:
         [(UILabel *)self->_venueLabel sizeThatFits:v94, 1.79769313e308];
         v96 = v95;
         v98 = v97;
-        [v90 _bodyLeading];
+        [font2 _bodyLeading];
         v100.n128_u64[0] = v99;
         v101.n128_f64[0] = v94;
         PKSizeCeilToPixel(v101, v100, v102);
@@ -1254,7 +1254,7 @@ LABEL_39:
           [(UILabel *)self->_secnamLabel sizeThatFits:1.79769313e308, v106];
           v109 = v117;
           v92 = v114;
-          v90 = v113;
+          font2 = v113;
         }
 
         if (v96 >= v94)
@@ -1301,7 +1301,7 @@ LABEL_39:
         }
 
         venueLabel = self->_venueLabel;
-        [v91 _bodyLeading];
+        [font3 _bodyLeading];
         PKFloatCeilToPixel(v123, v124);
         [(UILabel *)venueLabel sizeThatFits:1.79769313e308, v125];
         if (v126 <= v121)
@@ -1370,8 +1370,8 @@ LABEL_39:
       v225 = v81;
       if (self->_primaryFieldLabel)
       {
-        v141 = [(PKDynamicPassBucketView *)self->_secondaryBucketView bucket];
-        v142 = [v141 count];
+        bucket = [(PKDynamicPassBucketView *)self->_secondaryBucketView bucket];
+        v142 = [bucket count];
 
         v143 = v81 + 24.0;
         if (v142 <= 1)
@@ -1390,20 +1390,20 @@ LABEL_39:
       [(PKDynamicPassBucketView *)self->_secondaryBucketView fittedSizeFor:v144, 1.79769313e308];
       v146 = v145;
       v148 = v147;
-      v149 = [(PKDynamicPassBucketView *)self->_secondaryBucketView labelFont];
-      v150 = [(PKDynamicPassBucketView *)self->_secondaryBucketView resizedValueFont];
-      v151 = v150;
-      if (v150)
+      labelFont = [(PKDynamicPassBucketView *)self->_secondaryBucketView labelFont];
+      resizedValueFont = [(PKDynamicPassBucketView *)self->_secondaryBucketView resizedValueFont];
+      v151 = resizedValueFont;
+      if (resizedValueFont)
       {
-        v152 = v150;
+        valueFont = resizedValueFont;
       }
 
       else
       {
-        v152 = [(PKDynamicPassBucketView *)self->_secondaryBucketView valueFont];
+        valueFont = [(PKDynamicPassBucketView *)self->_secondaryBucketView valueFont];
       }
 
-      v153 = v152;
+      v153 = valueFont;
 
       v244.origin.x = v88;
       v244.origin.y = v87;
@@ -1418,9 +1418,9 @@ LABEL_39:
         CGRectGetMinY(v245);
       }
 
-      [v149 ascender];
+      [labelFont ascender];
       v155 = v154;
-      [v149 capHeight];
+      [labelFont capHeight];
       v157.n128_f64[0] = v155 - v156;
       PKFloatFloorToPixel(v157, v158);
       [v153 descender];
@@ -1446,8 +1446,8 @@ LABEL_39:
     p_cachedPrimaryFieldFrame = &self->_cachedPrimaryFieldFrame;
     if (CGRectIsNull(self->_cachedPrimaryFieldFrame))
     {
-      v163 = [(PKDynamicPassBucketView *)self->_secondaryBucketView bucket];
-      v164 = [v163 count];
+      bucket2 = [(PKDynamicPassBucketView *)self->_secondaryBucketView bucket];
+      v164 = [bucket2 count];
 
       v223 = v83;
       if (self->_secondaryBucketView)
@@ -1471,9 +1471,9 @@ LABEL_39:
 
       PKEventTicketV2PassScaleFactor();
       v232 = v167;
-      v168 = [(UILabel *)self->_primaryFieldLabel font];
+      font4 = [(UILabel *)self->_primaryFieldLabel font];
       primaryFieldLabel = self->_primaryFieldLabel;
-      [v168 _bodyLeading];
+      [font4 _bodyLeading];
       PKFloatCeilToPixel(v170, v171);
       [(UILabel *)primaryFieldLabel sizeThatFits:1.79769313e308, v172];
       v174 = v173;
@@ -1497,7 +1497,7 @@ LABEL_39:
           v174 = v186;
           v176 = v187;
 
-          v168 = v179;
+          font4 = v179;
         }
 
         if (v174 > v165)
@@ -1523,26 +1523,26 @@ LABEL_39:
           [(UILabel *)self->_primaryFieldLabel sizeThatFits:v165, 1.79769313e308];
           v174 = v193;
           v176 = v194;
-          v168 = v192;
+          font4 = v192;
         }
       }
 
       secondaryBucketView = self->_secondaryBucketView;
       if (secondaryBucketView && v164 >= 2)
       {
-        v196 = [(PKDynamicPassBucketView *)secondaryBucketView resizedValueFont];
-        v197 = v196;
-        if (v196)
+        resizedValueFont2 = [(PKDynamicPassBucketView *)secondaryBucketView resizedValueFont];
+        v197 = resizedValueFont2;
+        if (resizedValueFont2)
         {
-          v198 = v196;
+          valueFont2 = resizedValueFont2;
         }
 
         else
         {
-          v198 = [(PKDynamicPassBucketView *)self->_secondaryBucketView valueFont];
+          valueFont2 = [(PKDynamicPassBucketView *)self->_secondaryBucketView valueFont];
         }
 
-        v208 = v198;
+        v208 = valueFont2;
 
         v248.origin.x = v82;
         v248.origin.y = v223;
@@ -1552,15 +1552,15 @@ LABEL_39:
         [v208 descender];
         PKFloatCeilToPixel(v210, v211);
         v213 = v209 + v212;
-        [v168 descender];
+        [font4 descender];
         PKFloatCeilToPixel(v214, v215);
         v207 = v213 - v216;
-        [v168 _bodyLeading];
+        [font4 _bodyLeading];
         PKFloatCeilToPixel(v217, v218);
         if (v176 <= v219)
         {
           [v208 capHeight];
-          [v168 capHeight];
+          [font4 capHeight];
           PKFloatRoundToPixel();
           v207 = v207 - v220;
         }
@@ -1581,12 +1581,12 @@ LABEL_39:
           CGRectGetMinY(v247);
         }
 
-        [v168 ascender];
+        [font4 ascender];
         v200 = v199;
-        [v168 capHeight];
+        [font4 capHeight];
         v202.n128_f64[0] = v200 - v201;
         PKFloatFloorToPixel(v202, v203);
-        [v168 descender];
+        [font4 descender];
         PKFloatFloorToPixel(v204, v205);
         PKFloatRoundToPixel();
         v207 = v206;
@@ -1602,16 +1602,16 @@ LABEL_39:
   }
 }
 
-- (void)setRelevancyActive:(BOOL)a3
+- (void)setRelevancyActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(PKPassFrontFaceView *)self isRelevancyActive];
+  activeCopy = active;
+  isRelevancyActive = [(PKPassFrontFaceView *)self isRelevancyActive];
   v6.receiver = self;
   v6.super_class = PKPassPosterEventTicketFaceView;
-  [(PKPassFrontFaceView *)&v6 setRelevancyActive:v3];
-  if (v5 != v3 && self->_sectionColorView)
+  [(PKPassFrontFaceView *)&v6 setRelevancyActive:activeCopy];
+  if (isRelevancyActive != activeCopy && self->_sectionColorView)
   {
-    if (v3)
+    if (activeCopy)
     {
       [PKPassFrontFaceView insertContentView:"insertContentView:ofType:" ofType:?];
     }
@@ -1621,7 +1621,7 @@ LABEL_39:
       [PKPassFaceView removeContentView:"removeContentView:ofType:" ofType:?];
     }
 
-    [(PKPassPosterEventTicketFaceView *)self _updateBodyLabelColorsForRelevancyActive:v3];
+    [(PKPassPosterEventTicketFaceView *)self _updateBodyLabelColorsForRelevancyActive:activeCopy];
   }
 }
 

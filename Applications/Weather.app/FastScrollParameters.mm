@@ -1,12 +1,12 @@
 @interface FastScrollParameters
-- (void)setCompletionHandler:(id)a3;
+- (void)setCompletionHandler:(id)handler;
 @end
 
 @implementation FastScrollParameters
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -19,7 +19,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1007B95B8(v4, v5);
 }
 

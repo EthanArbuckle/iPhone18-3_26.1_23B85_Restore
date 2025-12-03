@@ -1,56 +1,56 @@
 @interface CKTranscriptCollectionView
 - (BOOL)unanimatedLayoutPassShouldSnapToTargetFrames;
-- (CGRect)targetFrameForItemAtIndexPath:(id)a3;
-- (CKTranscriptCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (id)_stringForDynamicsDisabledReason:(int64_t)a3;
-- (id)indexPathForItemAtPoint:(CGPoint)a3;
-- (id)indexPathForItemAtPoint:(CGPoint)a3 inSection:(int64_t)a4;
-- (void)__ck_scrollToBottom:(BOOL)a3;
-- (void)_updateScrollingLockStateForRecognizer:(id)a3;
-- (void)beginDisablingTranscriptDynamicsForReason:(int64_t)a3;
-- (void)beginHoldingContentOffsetUpdatesForReason:(id)a3;
-- (void)configureAppEntityForConversationId:(id)a3;
-- (void)correctOverscrollIfNecessaryWithAnimationProperties:(id)a3;
+- (CGRect)targetFrameForItemAtIndexPath:(id)path;
+- (CKTranscriptCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (id)_stringForDynamicsDisabledReason:(int64_t)reason;
+- (id)indexPathForItemAtPoint:(CGPoint)point;
+- (id)indexPathForItemAtPoint:(CGPoint)point inSection:(int64_t)section;
+- (void)__ck_scrollToBottom:(BOOL)bottom;
+- (void)_updateScrollingLockStateForRecognizer:(id)recognizer;
+- (void)beginDisablingTranscriptDynamicsForReason:(int64_t)reason;
+- (void)beginHoldingContentOffsetUpdatesForReason:(id)reason;
+- (void)configureAppEntityForConversationId:(id)id;
+- (void)correctOverscrollIfNecessaryWithAnimationProperties:(id)properties;
 - (void)didMoveToWindow;
-- (void)endDisablingTranscriptDynamicsForReason:(int64_t)a3;
+- (void)endDisablingTranscriptDynamicsForReason:(int64_t)reason;
 - (void)endHoldingContentOffsetUpdatesForAllReasons;
-- (void)endHoldingContentOffsetUpdatesForReason:(id)a3;
-- (void)enforceTranscriptScrollIntentWithAnimationProperties:(id)a3;
+- (void)endHoldingContentOffsetUpdatesForReason:(id)reason;
+- (void)enforceTranscriptScrollIntentWithAnimationProperties:(id)properties;
 - (void)invalidateNeedsContentOffsetAdjustmentForNextContentSizeChange;
 - (void)layoutSubviews;
-- (void)performContentOffsetUpdateTemporarilyOverridingHoldStatus:(id)a3;
+- (void)performContentOffsetUpdateTemporarilyOverridingHoldStatus:(id)status;
 - (void)reloadData;
 - (void)safeAreaInsetsDidChange;
-- (void)scrollToBottomHidingMessageAtIndexPath:(id)a3 computedInsets:(UIEdgeInsets)a4 animationProperties:(id)a5;
-- (void)scrollToBottomWithAnimationProperties:(id)a3 computedInsets:(UIEdgeInsets)a4;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setContentOffset:(CGPoint)a3 animationProperties:(id)a4;
-- (void)setContentSize:(CGSize)a3;
+- (void)scrollToBottomHidingMessageAtIndexPath:(id)path computedInsets:(UIEdgeInsets)insets animationProperties:(id)properties;
+- (void)scrollToBottomWithAnimationProperties:(id)properties computedInsets:(UIEdgeInsets)insets;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setContentOffset:(CGPoint)offset animationProperties:(id)properties;
+- (void)setContentSize:(CGSize)size;
 - (void)setNeedsContentOffsetAdjustmentForNextContentSizeChange;
 - (void)setNeedsScrollIntentEnforced;
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3;
-- (void)setTranscriptScrollIntent:(int64_t)a3;
-- (void)swipeToReplyGestureHandler:(id)a3;
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets;
+- (void)setTranscriptScrollIntent:(int64_t)intent;
+- (void)swipeToReplyGestureHandler:(id)handler;
 @end
 
 @implementation CKTranscriptCollectionView
 
 - (void)layoutSubviews
 {
-  v3 = [(CKTranscriptCollectionView *)self needsScrollIntentEnforcementBlock];
-  if (!v3 || ([(CKTranscriptCollectionView *)self isDecelerating]& 1) != 0 || ([(CKTranscriptCollectionView *)self isScrollAnimating]& 1) != 0 || ([(CKTranscriptCollectionView *)self isDragging]& 1) != 0)
+  needsScrollIntentEnforcementBlock = [(CKTranscriptCollectionView *)self needsScrollIntentEnforcementBlock];
+  if (!needsScrollIntentEnforcementBlock || ([(CKTranscriptCollectionView *)self isDecelerating]& 1) != 0 || ([(CKTranscriptCollectionView *)self isScrollAnimating]& 1) != 0 || ([(CKTranscriptCollectionView *)self isDragging]& 1) != 0)
   {
     goto LABEL_7;
   }
 
-  v4 = [(CKTranscriptCollectionView *)self isTracking];
+  isTracking = [(CKTranscriptCollectionView *)self isTracking];
 
-  if ((v4 & 1) == 0)
+  if ((isTracking & 1) == 0)
   {
-    v3 = [(CKTranscriptCollectionView *)self needsScrollIntentEnforcementBlock];
-    dispatch_async(MEMORY[0x1E69E96A0], v3);
+    needsScrollIntentEnforcementBlock = [(CKTranscriptCollectionView *)self needsScrollIntentEnforcementBlock];
+    dispatch_async(MEMORY[0x1E69E96A0], needsScrollIntentEnforcementBlock);
 LABEL_7:
   }
 
@@ -59,19 +59,19 @@ LABEL_7:
   [(CKTranscriptCollectionView *)&v5 layoutSubviews];
 }
 
-- (CKTranscriptCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (CKTranscriptCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v19.receiver = self;
   v19.super_class = CKTranscriptCollectionView;
-  v4 = [(CKEditableCollectionView *)&v19 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(CKEditableCollectionView *)&v19 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
     [(CKTranscriptCollectionView *)v4 setPrefetchingEnabled:0];
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 forceMinTranscriptMarginInsets];
+    forceMinTranscriptMarginInsets = [v6 forceMinTranscriptMarginInsets];
 
-    if (v7)
+    if (forceMinTranscriptMarginInsets)
     {
       v8 = +[CKUIBehavior sharedBehaviors];
       [v8 minTranscriptMarginInsets];
@@ -91,27 +91,27 @@ LABEL_7:
     hideShowPendingAnimations = v5->_hideShowPendingAnimations;
     v5->_hideShowPendingAnimations = v13;
 
-    v15 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v16 = [v15 isSwipeToReplyEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isSwipeToReplyEnabled = [mEMORY[0x1E69A8070] isSwipeToReplyEnabled];
 
-    if (v16)
+    if (isSwipeToReplyEnabled)
     {
-      v17 = [(CKTranscriptCollectionView *)v5 panGestureRecognizer];
-      [v17 addTarget:v5 action:sel_swipeToReplyGestureHandler_];
+      panGestureRecognizer = [(CKTranscriptCollectionView *)v5 panGestureRecognizer];
+      [panGestureRecognizer addTarget:v5 action:sel_swipeToReplyGestureHandler_];
     }
   }
 
   return v5;
 }
 
-- (void)setTranscriptScrollIntent:(int64_t)a3
+- (void)setTranscriptScrollIntent:(int64_t)intent
 {
   v14 = *MEMORY[0x1E69E9840];
   transcriptScrollIntent = self->_transcriptScrollIntent;
-  if (transcriptScrollIntent != a3)
+  if (transcriptScrollIntent != intent)
   {
     v6 = CKDebugNameForCKTranscriptScrollIntent(transcriptScrollIntent);
-    v7 = CKDebugNameForCKTranscriptScrollIntent(a3);
+    v7 = CKDebugNameForCKTranscriptScrollIntent(intent);
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -122,8 +122,8 @@ LABEL_7:
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Transcript scroll intent changing from %{public}@ to %{public}@", &v10, 0x16u);
     }
 
-    self->_transcriptScrollIntent = a3;
-    if (a3 != 2)
+    self->_transcriptScrollIntent = intent;
+    if (intent != 2)
     {
       highlightedMessageScrollContext = self->_highlightedMessageScrollContext;
       self->_highlightedMessageScrollContext = 0;
@@ -131,18 +131,18 @@ LABEL_7:
   }
 }
 
-- (void)enforceTranscriptScrollIntentWithAnimationProperties:(id)a3
+- (void)enforceTranscriptScrollIntentWithAnimationProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(CKTranscriptCollectionView *)self delegate];
-  [v5 transcriptCollectionViewNeedsScrollIntentEnforced:self withAnimationProperties:v4];
+  propertiesCopy = properties;
+  delegate = [(CKTranscriptCollectionView *)self delegate];
+  [delegate transcriptCollectionViewNeedsScrollIntentEnforced:self withAnimationProperties:propertiesCopy];
 }
 
 - (void)setNeedsScrollIntentEnforced
 {
-  v3 = [(CKTranscriptCollectionView *)self needsScrollIntentEnforcementBlock];
+  needsScrollIntentEnforcementBlock = [(CKTranscriptCollectionView *)self needsScrollIntentEnforcementBlock];
 
-  if (v3)
+  if (needsScrollIntentEnforcementBlock)
   {
     v4 = IMLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -232,19 +232,19 @@ void __58__CKTranscriptCollectionView_setNeedsScrollIntentEnforced__block_invoke
   }
 }
 
-- (void)beginHoldingContentOffsetUpdatesForReason:(id)a3
+- (void)beginHoldingContentOffsetUpdatesForReason:(id)reason
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v12 = 138543362;
-    v13 = v4;
+    v13 = reasonCopy;
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "DISABLE: Content Offset changes for Reason: %{public}@", &v12, 0xCu);
   }
 
-  [(NSCountedSet *)self->_contentOffsetDisabledReasons addObject:v4];
+  [(NSCountedSet *)self->_contentOffsetDisabledReasons addObject:reasonCopy];
   v6 = [(NSCountedSet *)self->_contentOffsetDisabledReasons count];
   v7 = IMLogHandleForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
@@ -271,19 +271,19 @@ LABEL_8:
   }
 }
 
-- (void)endHoldingContentOffsetUpdatesForReason:(id)a3
+- (void)endHoldingContentOffsetUpdatesForReason:(id)reason
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v13 = 138543362;
-    v14 = v4;
+    v14 = reasonCopy;
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "ENABLE: Content Offset changes for Reason: %{public}@", &v13, 0xCu);
   }
 
-  [(NSCountedSet *)self->_contentOffsetDisabledReasons removeObject:v4];
+  [(NSCountedSet *)self->_contentOffsetDisabledReasons removeObject:reasonCopy];
   v6 = [(NSCountedSet *)self->_contentOffsetDisabledReasons count];
   v7 = IMLogHandleForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
@@ -323,10 +323,10 @@ LABEL_8:
   }
 }
 
-- (void)performContentOffsetUpdateTemporarilyOverridingHoldStatus:(id)a3
+- (void)performContentOffsetUpdateTemporarilyOverridingHoldStatus:(id)status
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statusCopy = status;
   v5 = [(NSCountedSet *)self->_contentOffsetDisabledReasons count];
   v6 = IMLogHandleForCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
@@ -362,19 +362,19 @@ LABEL_8:
 LABEL_7:
 
   [(CKTranscriptCollectionView *)self setIsTemporarilyOverridingContentOffsetRestriction:1];
-  if (v4)
+  if (statusCopy)
   {
-    v4[2](v4);
+    statusCopy[2](statusCopy);
   }
 
   [(CKTranscriptCollectionView *)self setIsTemporarilyOverridingContentOffsetRestriction:0, *v12];
 }
 
-- (void)__ck_scrollToBottom:(BOOL)a3
+- (void)__ck_scrollToBottom:(BOOL)bottom
 {
   if (![(CKTranscriptCollectionView *)self ignoresAutomaticScrollsTowardBottom])
   {
-    if (a3)
+    if (bottom)
     {
       [(CKTranscriptCollectionView *)self setTranscriptScrollIntent:6];
       v5.receiver = self;
@@ -394,63 +394,63 @@ LABEL_7:
   }
 }
 
-- (void)scrollToBottomWithAnimationProperties:(id)a3 computedInsets:(UIEdgeInsets)a4
+- (void)scrollToBottomWithAnimationProperties:(id)properties computedInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  propertiesCopy = properties;
   if (![(CKTranscriptCollectionView *)self ignoresAutomaticScrollsTowardBottom])
   {
-    if ([v9 animationType])
+    if ([propertiesCopy animationType])
     {
       [(UIScrollView *)self __ck_bottomOffsetWithComputedInsets:top, left, bottom, right];
-      [(CKTranscriptCollectionView *)self setContentOffset:v9 animationProperties:?];
+      [(CKTranscriptCollectionView *)self setContentOffset:propertiesCopy animationProperties:?];
     }
 
     else
     {
       [(CKTranscriptCollectionView *)self beginDisablingTranscriptDynamicsForReason:12];
       [(UIScrollView *)self __ck_bottomOffsetWithComputedInsets:top, left, bottom, right];
-      [(CKTranscriptCollectionView *)self setContentOffset:v9 animationProperties:?];
+      [(CKTranscriptCollectionView *)self setContentOffset:propertiesCopy animationProperties:?];
       [(CKTranscriptCollectionView *)self endDisablingTranscriptDynamicsForReason:12];
     }
   }
 }
 
-- (void)scrollToBottomHidingMessageAtIndexPath:(id)a3 computedInsets:(UIEdgeInsets)a4 animationProperties:(id)a5
+- (void)scrollToBottomHidingMessageAtIndexPath:(id)path computedInsets:(UIEdgeInsets)insets animationProperties:(id)properties
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v13 = a3;
-  v11 = a5;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  pathCopy = path;
+  propertiesCopy = properties;
   if (![(CKTranscriptCollectionView *)self ignoresAutomaticScrollsTowardBottom])
   {
-    v12 = [v11 animationType];
-    if (v13 || v12)
+    animationType = [propertiesCopy animationType];
+    if (pathCopy || animationType)
     {
       [(CKTranscriptCollectionView *)self beginDisablingTranscriptDynamicsForReason:15];
-      [(UICollectionView *)self __ck_bottomOffsetHidingIndexPath:v13 computedInsets:top, left, bottom, right];
-      [(CKTranscriptCollectionView *)self setContentOffset:v11 animationProperties:?];
+      [(UICollectionView *)self __ck_bottomOffsetHidingIndexPath:pathCopy computedInsets:top, left, bottom, right];
+      [(CKTranscriptCollectionView *)self setContentOffset:propertiesCopy animationProperties:?];
       [(CKTranscriptCollectionView *)self endDisablingTranscriptDynamicsForReason:15];
     }
 
     else
     {
       [(UICollectionView *)self __ck_bottomOffsetHidingIndexPath:0 computedInsets:top, left, bottom, right];
-      [(CKTranscriptCollectionView *)self setContentOffset:v11 animationProperties:?];
+      [(CKTranscriptCollectionView *)self setContentOffset:propertiesCopy animationProperties:?];
     }
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
   if ([(CKTranscriptCollectionView *)self isHoldingContentOffsetUpdates])
   {
     v8 = IMLogHandleForCategory();
@@ -474,7 +474,7 @@ LABEL_7:
 
     else
     {
-      if (v4)
+      if (animatedCopy)
       {
         if (CKMainScreenScale_once_92 != -1)
         {
@@ -498,22 +498,22 @@ LABEL_7:
         v17 = 0;
       }
 
-      v19 = [(CKTranscriptCollectionView *)self delegate];
-      [v19 collectionViewWillProgrammaticallyScroll:self animated:v17];
+      delegate = [(CKTranscriptCollectionView *)self delegate];
+      [delegate collectionViewWillProgrammaticallyScroll:self animated:v17];
 
       v20.receiver = self;
       v20.super_class = CKTranscriptCollectionView;
-      [(CKTranscriptCollectionView *)&v20 setContentOffset:v4 animated:x, y];
+      [(CKTranscriptCollectionView *)&v20 setContentOffset:animatedCopy animated:x, y];
     }
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3 animationProperties:(id)a4
+- (void)setContentOffset:(CGPoint)offset animationProperties:(id)properties
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CKTranscriptCollectionView *)self isHoldingContentOffsetUpdates];
+  y = offset.y;
+  x = offset.x;
+  propertiesCopy = properties;
+  isHoldingContentOffsetUpdates = [(CKTranscriptCollectionView *)self isHoldingContentOffsetUpdates];
   if (objc_opt_respondsToSelector())
   {
     [(CKTranscriptCollectionView *)self _animationTargetContentOffset];
@@ -527,10 +527,10 @@ LABEL_7:
   v11 = v9;
   v12 = v10;
   v13 = CKPointApproximatelyEqualToPointWithTolerance(v9, v10, x, y, 0.001);
-  if (v8)
+  if (isHoldingContentOffsetUpdates)
   {
-    v14 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    delegate = IMLogHandleForCategory();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEBUG))
     {
       [CKTranscriptCollectionView setContentOffset:y animationProperties:?];
     }
@@ -538,8 +538,8 @@ LABEL_7:
 
   else if (v13)
   {
-    v14 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    delegate = IMLogHandleForCategory();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEBUG))
     {
       [CKTranscriptCollectionView setContentOffset:y animationProperties:?];
     }
@@ -560,7 +560,7 @@ LABEL_7:
 
     v16 = round(x * v15) / v15 != v11;
     v17 = round(y * v15) / v15 != v12 || v16;
-    if ([v7 animationType])
+    if ([propertiesCopy animationType])
     {
       v18 = v17;
     }
@@ -570,10 +570,10 @@ LABEL_7:
       v18 = 0;
     }
 
-    v14 = [(CKTranscriptCollectionView *)self delegate];
-    [v14 collectionViewWillProgrammaticallyScroll:self animated:v18];
-    v19 = [v7 animationType];
-    switch(v19)
+    delegate = [(CKTranscriptCollectionView *)self delegate];
+    [delegate collectionViewWillProgrammaticallyScroll:self animated:v18];
+    animationType = [propertiesCopy animationType];
+    switch(animationType)
     {
       case 2:
         v27.receiver = self;
@@ -581,11 +581,11 @@ LABEL_7:
         [(CKTranscriptCollectionView *)&v27 setContentOffset:1 animated:x, y];
         break;
       case 1:
-        v20 = [v7 caBasicAnimation];
+        caBasicAnimation = [propertiesCopy caBasicAnimation];
         v21 = self->_transcriptCustomScrollAnimation;
         transcriptCustomScrollAnimation = self->_transcriptCustomScrollAnimation;
-        self->_transcriptCustomScrollAnimation = v20;
-        v23 = v20;
+        self->_transcriptCustomScrollAnimation = caBasicAnimation;
+        v23 = caBasicAnimation;
 
         v26[0] = MEMORY[0x1E69E9820];
         v26[1] = 3221225472;
@@ -628,12 +628,12 @@ id __67__CKTranscriptCollectionView_setContentOffset_animationProperties___block
   return objc_msgSendSuper2(&v2, sel_setContentOffset_animated_, 1, *(a1 + 40), *(a1 + 48));
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v18 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  offsetCopy = offset;
   if ([(CKTranscriptCollectionView *)self isHoldingContentOffsetUpdates])
   {
     v6 = IMLogHandleForCategory();
@@ -669,36 +669,36 @@ id __67__CKTranscriptCollectionView_setContentOffset_animationProperties___block
         }
       }
 
-      v13 = [(CKTranscriptCollectionView *)self delegate];
-      [v13 collectionViewWillScroll:self targetContentOffset:&v15];
+      delegate = [(CKTranscriptCollectionView *)self delegate];
+      [delegate collectionViewWillScroll:self targetContentOffset:&offsetCopy];
 
       v14.receiver = self;
       v14.super_class = CKTranscriptCollectionView;
-      [(CKTranscriptCollectionView *)&v14 setContentOffset:v15.x, v15.y];
+      [(CKTranscriptCollectionView *)&v14 setContentOffset:offsetCopy.x, offsetCopy.y];
     }
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v18 = a3;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  insetCopy = inset;
   [(CKTranscriptCollectionView *)self contentInset];
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
-    v15 = [(CKTranscriptCollectionView *)self delegate];
-    [v15 collectionViewWillInset:self targetContentInset:&v18];
+    delegate = [(CKTranscriptCollectionView *)self delegate];
+    [delegate collectionViewWillInset:self targetContentInset:&insetCopy];
 
     [(CKTranscriptCollectionView *)self _setAutomaticContentOffsetAdjustmentEnabled:0];
     v17.receiver = self;
     v17.super_class = CKTranscriptCollectionView;
-    [(CKTranscriptCollectionView *)&v17 setContentInset:v18.top, v18.left, v18.bottom, v18.right];
-    [(CKTranscriptCollectionView *)self setScrollIndicatorInsets:v18.top, v18.left, v18.bottom, v18.right];
-    v16 = [(CKTranscriptCollectionView *)self delegate];
-    [v16 collectionViewDidInset:self];
+    [(CKTranscriptCollectionView *)&v17 setContentInset:insetCopy.top, insetCopy.left, insetCopy.bottom, insetCopy.right];
+    [(CKTranscriptCollectionView *)self setScrollIndicatorInsets:insetCopy.top, insetCopy.left, insetCopy.bottom, insetCopy.right];
+    delegate2 = [(CKTranscriptCollectionView *)self delegate];
+    [delegate2 collectionViewDidInset:self];
   }
 }
 
@@ -711,20 +711,20 @@ id __67__CKTranscriptCollectionView_setContentOffset_animationProperties___block
   [(CKTranscriptCollectionView *)self setScrollIndicatorInsets:?];
 }
 
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets
 {
-  top = a3.top;
-  [(CKTranscriptCollectionView *)self _shouldReverseLayoutDirection:a3.top];
+  top = insets.top;
+  [(CKTranscriptCollectionView *)self _shouldReverseLayoutDirection:insets.top];
   [(CKEditableCollectionView *)self safeAreaInsets];
   v5.receiver = self;
   v5.super_class = CKTranscriptCollectionView;
   [(CKTranscriptCollectionView *)&v5 setScrollIndicatorInsets:top];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v23 = *MEMORY[0x1E69E9840];
   [(CKTranscriptCollectionView *)self contentSize];
   if (v7 != width || v6 != height)
@@ -774,9 +774,9 @@ id __67__CKTranscriptCollectionView_setContentOffset_animationProperties___block
   }
 }
 
-- (CGRect)targetFrameForItemAtIndexPath:(id)a3
+- (CGRect)targetFrameForItemAtIndexPath:(id)path
 {
-  v3 = [(CKTranscriptCollectionView *)self layoutAttributesForItemAtIndexPath:a3];
+  v3 = [(CKTranscriptCollectionView *)self layoutAttributesForItemAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -806,10 +806,10 @@ id __67__CKTranscriptCollectionView_setContentOffset_animationProperties___block
   return result;
 }
 
-- (void)correctOverscrollIfNecessaryWithAnimationProperties:(id)a3
+- (void)correctOverscrollIfNecessaryWithAnimationProperties:(id)properties
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertiesCopy = properties;
   [(CKTranscriptCollectionView *)self contentOffset];
   v26 = v5;
   v7 = v6;
@@ -871,7 +871,7 @@ LABEL_10:
     }
 
 LABEL_11:
-    [(CKTranscriptCollectionView *)self setContentOffset:v4 animationProperties:v26, v23];
+    [(CKTranscriptCollectionView *)self setContentOffset:propertiesCopy animationProperties:v26, v23];
   }
 }
 
@@ -896,8 +896,8 @@ LABEL_11:
   {
     if ((IMEnableModernTranscript() & 1) == 0)
     {
-      v4 = [(CKTranscriptCollectionView *)self collectionViewLayout];
-      [v4 reloadData];
+      collectionViewLayout = [(CKTranscriptCollectionView *)self collectionViewLayout];
+      [collectionViewLayout reloadData];
     }
 
     v5.receiver = self;
@@ -906,10 +906,10 @@ LABEL_11:
   }
 }
 
-- (id)indexPathForItemAtPoint:(CGPoint)a3
+- (id)indexPathForItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v15 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = CKTranscriptCollectionView;
@@ -921,8 +921,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = [(CKTranscriptCollectionView *)self delegate];
-  v8 = [v7 transcriptCollectionView:self preferredIndexPathForAssociatedItemAtPoint:{x, y}];
+  delegate = [(CKTranscriptCollectionView *)self delegate];
+  v8 = [delegate transcriptCollectionView:self preferredIndexPathForAssociatedItemAtPoint:{x, y}];
   v9 = v8;
   if (!v8 || [v8 item] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v9, "section") == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -945,17 +945,17 @@ LABEL_11:
   return v9;
 }
 
-- (id)indexPathForItemAtPoint:(CGPoint)a3 inSection:(int64_t)a4
+- (id)indexPathForItemAtPoint:(CGPoint)point inSection:(int64_t)section
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(CKTranscriptCollectionView *)self indexPathsForVisibleItems];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  indexPathsForVisibleItems = [(CKTranscriptCollectionView *)self indexPathsForVisibleItems];
+  v9 = [indexPathsForVisibleItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -966,11 +966,11 @@ LABEL_11:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v13 section] == a4)
+        if ([v13 section] == section)
         {
           v14 = [(CKTranscriptCollectionView *)self layoutAttributesForItemAtIndexPath:v13];
           [v14 frame];
@@ -985,7 +985,7 @@ LABEL_11:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [indexPathsForVisibleItems countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -1001,7 +1001,7 @@ LABEL_13:
   return v15;
 }
 
-- (void)beginDisablingTranscriptDynamicsForReason:(int64_t)a3
+- (void)beginDisablingTranscriptDynamicsForReason:(int64_t)reason
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = [(CKTranscriptCollectionView *)self _stringForDynamicsDisabledReason:?];
@@ -1014,7 +1014,7 @@ LABEL_13:
   }
 
   transcriptDynamicsDisabledReasons = self->_transcriptDynamicsDisabledReasons;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
   [(NSCountedSet *)transcriptDynamicsDisabledReasons addObject:v8];
 
   if ([(NSCountedSet *)self->_transcriptDynamicsDisabledReasons count]>= 2)
@@ -1030,7 +1030,7 @@ LABEL_13:
   }
 }
 
-- (void)endDisablingTranscriptDynamicsForReason:(int64_t)a3
+- (void)endDisablingTranscriptDynamicsForReason:(int64_t)reason
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = [(CKTranscriptCollectionView *)self _stringForDynamicsDisabledReason:?];
@@ -1043,7 +1043,7 @@ LABEL_13:
   }
 
   transcriptDynamicsDisabledReasons = self->_transcriptDynamicsDisabledReasons;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
   [(NSCountedSet *)transcriptDynamicsDisabledReasons removeObject:v8];
 
   if ([(NSCountedSet *)self->_transcriptDynamicsDisabledReasons count])
@@ -1104,74 +1104,74 @@ LABEL_11:
   return v8;
 }
 
-- (void)swipeToReplyGestureHandler:(id)a3
+- (void)swipeToReplyGestureHandler:(id)handler
 {
-  v9 = a3;
-  v4 = [v9 state];
-  if ((v4 - 3) >= 3)
+  handlerCopy = handler;
+  state = [handlerCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v4 == 2)
+    if (state == 2)
     {
-      v8 = [(CKTranscriptCollectionView *)self swipeTargetBalloonCell];
-      [v8 swipeToReplyGestureHandler:v9];
+      swipeTargetBalloonCell = [(CKTranscriptCollectionView *)self swipeTargetBalloonCell];
+      [swipeTargetBalloonCell swipeToReplyGestureHandler:handlerCopy];
 
-      [(CKTranscriptCollectionView *)self _updateScrollingLockStateForRecognizer:v9];
+      [(CKTranscriptCollectionView *)self _updateScrollingLockStateForRecognizer:handlerCopy];
     }
 
-    else if (v4 == 1)
+    else if (state == 1)
     {
-      v6 = [CKSwipeToReplyRules balloonCellFromGestureRecognizer:v9 inTranscriptCollectionView:self];
+      v6 = [CKSwipeToReplyRules balloonCellFromGestureRecognizer:handlerCopy inTranscriptCollectionView:self];
       if (v6)
       {
         [(CKTranscriptCollectionView *)self setSwipeTargetBalloonCell:v6];
       }
 
-      v7 = [(CKTranscriptCollectionView *)self swipeTargetBalloonCell];
-      [v7 swipeToReplyGestureHandler:v9];
+      swipeTargetBalloonCell2 = [(CKTranscriptCollectionView *)self swipeTargetBalloonCell];
+      [swipeTargetBalloonCell2 swipeToReplyGestureHandler:handlerCopy];
     }
   }
 
   else
   {
-    v5 = [(CKTranscriptCollectionView *)self swipeTargetBalloonCell];
-    [v5 swipeToReplyGestureHandler:v9];
+    swipeTargetBalloonCell3 = [(CKTranscriptCollectionView *)self swipeTargetBalloonCell];
+    [swipeTargetBalloonCell3 swipeToReplyGestureHandler:handlerCopy];
 
-    [(CKTranscriptCollectionView *)self _updateScrollingLockStateForRecognizer:v9];
+    [(CKTranscriptCollectionView *)self _updateScrollingLockStateForRecognizer:handlerCopy];
     [(CKTranscriptCollectionView *)self setSwipeTargetBalloonCell:0];
   }
 }
 
-- (void)_updateScrollingLockStateForRecognizer:(id)a3
+- (void)_updateScrollingLockStateForRecognizer:(id)recognizer
 {
-  v10 = a3;
-  if ([v10 state] == 4 || objc_msgSend(v10, "state") == 5 || objc_msgSend(v10, "state") == 3 || (-[CKTranscriptCollectionView swipeTargetBalloonCell](self, "swipeTargetBalloonCell"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 4 || objc_msgSend(recognizerCopy, "state") == 5 || objc_msgSend(recognizerCopy, "state") == 3 || (-[CKTranscriptCollectionView swipeTargetBalloonCell](self, "swipeTargetBalloonCell"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
     v9 = 1;
   }
 
   else
   {
-    v5 = [(CKTranscriptCollectionView *)self swipeTargetBalloonCell];
-    v6 = [v5 contentView];
-    [v10 translationInView:v6];
+    swipeTargetBalloonCell = [(CKTranscriptCollectionView *)self swipeTargetBalloonCell];
+    contentView = [swipeTargetBalloonCell contentView];
+    [recognizerCopy translationInView:contentView];
     v8 = v7;
 
     v9 = v8 <= 0.0;
   }
 
-  [v10 _setCanPanVertically:v9];
+  [recognizerCopy _setCanPanVertically:v9];
 }
 
-- (id)_stringForDynamicsDisabledReason:(int64_t)a3
+- (id)_stringForDynamicsDisabledReason:(int64_t)reason
 {
-  if ((a3 - 1) > 0x10)
+  if ((reason - 1) > 0x10)
   {
     return @"CollectionViewBatchUpdate";
   }
 
   else
   {
-    return off_1E72F7848[a3 - 1];
+    return off_1E72F7848[reason - 1];
   }
 }
 
@@ -1180,17 +1180,17 @@ LABEL_11:
   v6.receiver = self;
   v6.super_class = CKTranscriptCollectionView;
   [(CKTranscriptCollectionView *)&v6 didMoveToWindow];
-  v3 = [(CKTranscriptCollectionView *)self didMoveToWindowHandler];
+  didMoveToWindowHandler = [(CKTranscriptCollectionView *)self didMoveToWindowHandler];
 
-  if (v3)
+  if (didMoveToWindowHandler)
   {
-    v4 = [(CKTranscriptCollectionView *)self didMoveToWindowHandler];
-    v5 = [(CKTranscriptCollectionView *)self window];
-    (v4)[2](v4, v5);
+    didMoveToWindowHandler2 = [(CKTranscriptCollectionView *)self didMoveToWindowHandler];
+    window = [(CKTranscriptCollectionView *)self window];
+    (didMoveToWindowHandler2)[2](didMoveToWindowHandler2, window);
   }
 }
 
-- (void)configureAppEntityForConversationId:(id)a3
+- (void)configureAppEntityForConversationId:(id)id
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAD5D900);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -1199,7 +1199,7 @@ LABEL_11:
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (id)
   {
     v12 = sub_190D56F10();
     v14 = v13;
@@ -1207,7 +1207,7 @@ LABEL_11:
     v16[0] = v12;
     v16[1] = v14;
     sub_190B197DC();
-    v15 = self;
+    selfCopy = self;
     sub_190D50900();
     (*(v9 + 16))(v7, v11, v8);
     (*(v9 + 56))(v7, 0, 1, v8);

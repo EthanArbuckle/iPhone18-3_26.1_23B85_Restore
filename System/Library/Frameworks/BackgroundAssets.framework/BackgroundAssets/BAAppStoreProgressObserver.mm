@@ -1,30 +1,30 @@
 @interface BAAppStoreProgressObserver
-+ (id)progressObserverWithConfiguration:(id)a3;
++ (id)progressObserverWithConfiguration:(id)configuration;
 - (_BYTE)_initPrivately;
 - (void)invalidate;
-- (void)setAppBundleIdentifiers:(id)a3;
-- (void)setHandlerQueue:(id)a3;
-- (void)setSystemProxy:(uint64_t)a1;
-- (void)setUpdateHandler:(id)a3;
-- (void)updateConfiguration:(id)a3;
+- (void)setAppBundleIdentifiers:(id)identifiers;
+- (void)setHandlerQueue:(id)queue;
+- (void)setSystemProxy:(uint64_t)proxy;
+- (void)setUpdateHandler:(id)handler;
+- (void)updateConfiguration:(id)configuration;
 @end
 
 @implementation BAAppStoreProgressObserver
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_valid)
   {
     v12 = objc_opt_new();
-    v4[2](v4, v12);
+    configurationCopy[2](configurationCopy, v12);
 
     goto LABEL_9;
   }
 
   self->_configuring = 1;
-  v4[2](v4, self);
+  configurationCopy[2](configurationCopy, self);
   self->_configuring = 0;
   v5 = self->_configuration;
   if (!v5)
@@ -73,13 +73,13 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setAppBundleIdentifiers:(id)a3
+- (void)setAppBundleIdentifiers:(id)identifiers
 {
-  v12 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_configuring)
   {
-    [(BAAppStoreProgressConfiguration *)self->_configuration setAppBundleIdentifiers:v12];
+    [(BAAppStoreProgressConfiguration *)self->_configuration setAppBundleIdentifiers:identifiersCopy];
   }
 
   else
@@ -95,13 +95,13 @@ LABEL_10:
   }
 }
 
-- (void)setUpdateHandler:(id)a3
+- (void)setUpdateHandler:(id)handler
 {
-  v12 = a3;
+  handlerCopy = handler;
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_configuring)
   {
-    [(BAAppStoreProgressConfiguration *)self->_configuration setUpdateHandler:v12];
+    [(BAAppStoreProgressConfiguration *)self->_configuration setUpdateHandler:handlerCopy];
   }
 
   else
@@ -117,13 +117,13 @@ LABEL_10:
   }
 }
 
-- (void)setHandlerQueue:(id)a3
+- (void)setHandlerQueue:(id)queue
 {
-  v12 = a3;
+  queueCopy = queue;
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_configuring)
   {
-    [(BAAppStoreProgressConfiguration *)self->_configuration setHandlerQueue:v12];
+    [(BAAppStoreProgressConfiguration *)self->_configuration setHandlerQueue:queueCopy];
   }
 
   else
@@ -141,12 +141,12 @@ LABEL_10:
 
 - (_BYTE)_initPrivately
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = BAAppStoreProgressObserver;
   v1 = objc_msgSendSuper2(&v8, sel_init);
   v2 = v1;
@@ -166,20 +166,20 @@ LABEL_10:
   return v2;
 }
 
-+ (id)progressObserverWithConfiguration:(id)a3
++ (id)progressObserverWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   inited = [[BAAppStoreProgressObserver alloc] _initPrivately];
-  [inited updateConfiguration:v3];
+  [inited updateConfiguration:configurationCopy];
 
   return inited;
 }
 
-- (void)setSystemProxy:(uint64_t)a1
+- (void)setSystemProxy:(uint64_t)proxy
 {
-  if (a1)
+  if (proxy)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((proxy + 24), a2);
   }
 }
 

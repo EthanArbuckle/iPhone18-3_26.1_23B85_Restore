@@ -1,6 +1,6 @@
 @interface TUSFSpeechSoftLinking
 + (BOOL)isGeneralASRSupportedOnDevice;
-+ (id)generalASRLanguageForLocale:(id)a3;
++ (id)generalASRLanguageForLocale:(id)locale;
 @end
 
 @implementation TUSFSpeechSoftLinking
@@ -28,9 +28,9 @@
   return [v2 isGeneralASRSupportedOnDevice];
 }
 
-+ (id)generalASRLanguageForLocale:(id)a3
++ (id)generalASRLanguageForLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -49,7 +49,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [v4 generalASRLanguageForLocale:v3];
+  v6 = [v4 generalASRLanguageForLocale:localeCopy];
 
   return v6;
 }

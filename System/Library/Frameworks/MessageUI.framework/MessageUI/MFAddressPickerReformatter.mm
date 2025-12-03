@@ -1,32 +1,32 @@
 @interface MFAddressPickerReformatter
-- (BOOL)_attemptUniquingDisplayedStringsUsingBlock:(id)a3;
-- (BOOL)_reformattedAddressesByDisplayedStringsAreUnique:(id)a3;
+- (BOOL)_attemptUniquingDisplayedStringsUsingBlock:(id)block;
+- (BOOL)_reformattedAddressesByDisplayedStringsAreUnique:(id)unique;
 - (id)_reformattedAddressesByDisplayedStrings;
 - (id)_saveMiddleTruncationRanges;
-- (id)reformattedAddressAtIndex:(unint64_t)a3;
-- (id)reformattedAddressStringAtIndex:(unint64_t)a3;
+- (id)reformattedAddressAtIndex:(unint64_t)index;
+- (id)reformattedAddressStringAtIndex:(unint64_t)index;
 - (void)_attemptUniquingDisplayedStrings;
-- (void)_determineFontSize:(BOOL *)a3;
+- (void)_determineFontSize:(BOOL *)size;
 - (void)_expandAllLocalParts;
 - (void)_invalidateReformattedAddresses;
-- (void)_restoreMiddleTruncationRanges:(id)a3;
+- (void)_restoreMiddleTruncationRanges:(id)ranges;
 - (void)_truncateIdenticalLocalPartsWithDifferentDomainParts;
-- (void)_truncateIdenticalLocalPartsWithDifferentDomainPartsWithTailLength:(unint64_t)a3 options:(unint64_t)a4;
+- (void)_truncateIdenticalLocalPartsWithDifferentDomainPartsWithTailLength:(unint64_t)length options:(unint64_t)options;
 - (void)_updateReformattedAddressesIfNecessary;
-- (void)setAddresses:(id)a3;
-- (void)setAttributesDisabled:(BOOL)a3;
-- (void)setMaximumWidth:(double)a3;
-- (void)setMinimumFontSize:(double)a3 maximumFontSize:(double)a4;
+- (void)setAddresses:(id)addresses;
+- (void)setAttributesDisabled:(BOOL)disabled;
+- (void)setMaximumWidth:(double)width;
+- (void)setMinimumFontSize:(double)size maximumFontSize:(double)fontSize;
 @end
 
 @implementation MFAddressPickerReformatter
 
-- (void)setAddresses:(id)a3
+- (void)setAddresses:(id)addresses
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_addresses] & 1) == 0)
+  addressesCopy = addresses;
+  if (([addressesCopy isEqual:self->_addresses] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [addressesCopy copy];
     addresses = self->_addresses;
     self->_addresses = v4;
 
@@ -34,49 +34,49 @@
   }
 }
 
-- (void)setMaximumWidth:(double)a3
+- (void)setMaximumWidth:(double)width
 {
-  if (self->_maximumWidth != a3)
+  if (self->_maximumWidth != width)
   {
-    self->_maximumWidth = a3;
+    self->_maximumWidth = width;
     [(MFAddressPickerReformatter *)self _invalidateReformattedAddresses];
   }
 }
 
-- (void)setAttributesDisabled:(BOOL)a3
+- (void)setAttributesDisabled:(BOOL)disabled
 {
-  if (self->_attributesDisabled != a3)
+  if (self->_attributesDisabled != disabled)
   {
-    self->_attributesDisabled = a3;
+    self->_attributesDisabled = disabled;
     [(MFAddressPickerReformatter *)self _invalidateReformattedAddresses];
   }
 }
 
-- (void)setMinimumFontSize:(double)a3 maximumFontSize:(double)a4
+- (void)setMinimumFontSize:(double)size maximumFontSize:(double)fontSize
 {
-  if (self->_minimumFontSize != a3 || self->_maximumFontSize != a4)
+  if (self->_minimumFontSize != size || self->_maximumFontSize != fontSize)
   {
-    self->_minimumFontSize = a3;
-    self->_maximumFontSize = a4;
+    self->_minimumFontSize = size;
+    self->_maximumFontSize = fontSize;
     [(MFAddressPickerReformatter *)self _invalidateReformattedAddresses];
   }
 }
 
-- (id)reformattedAddressAtIndex:(unint64_t)a3
+- (id)reformattedAddressAtIndex:(unint64_t)index
 {
   [(MFAddressPickerReformatter *)self _updateReformattedAddressesIfNecessary];
-  v5 = [(NSArray *)self->_reformattedAddresses objectAtIndex:a3];
+  v5 = [(NSArray *)self->_reformattedAddresses objectAtIndex:index];
   v6 = [v5 attributedStringWithFontSize:-[MFAddressPickerReformatter _defaultOptions](self maximumWidth:"_defaultOptions") options:{self->_fontSize, self->_maximumWidth}];
 
   return v6;
 }
 
-- (id)reformattedAddressStringAtIndex:(unint64_t)a3
+- (id)reformattedAddressStringAtIndex:(unint64_t)index
 {
-  v3 = [(MFAddressPickerReformatter *)self reformattedAddressAtIndex:a3];
-  v4 = [v3 string];
+  v3 = [(MFAddressPickerReformatter *)self reformattedAddressAtIndex:index];
+  string = [v3 string];
 
-  return v4;
+  return string;
 }
 
 - (void)_invalidateReformattedAddresses
@@ -93,8 +93,8 @@
   {
     if (self->_attributesDisabled && self->_minimumFontSize != self->_maximumFontSize)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"MFAddressPickerReformatter.m" lineNumber:115 description:@"Single font size required with attributes disabled"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MFAddressPickerReformatter.m" lineNumber:115 description:@"Single font size required with attributes disabled"];
     }
 
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_addresses, "count")}];
@@ -138,7 +138,7 @@
   }
 }
 
-- (void)_determineFontSize:(BOOL *)a3
+- (void)_determineFontSize:(BOOL *)size
 {
   minimumFontSize = self->_minimumFontSize;
   maximumFontSize = self->_maximumFontSize;
@@ -160,9 +160,9 @@
   }
 
   self->_fontSize = minimumFontSize;
-  if (a3)
+  if (size)
   {
-    *a3 = v8;
+    *size = v8;
   }
 }
 
@@ -218,7 +218,7 @@ LABEL_11:
   [(MFAddressPickerReformatter *)self _truncateIdenticalLocalPartsWithDifferentDomainPartsWithTailLength:0 options:v3];
 }
 
-- (void)_truncateIdenticalLocalPartsWithDifferentDomainPartsWithTailLength:(unint64_t)a3 options:(unint64_t)a4
+- (void)_truncateIdenticalLocalPartsWithDifferentDomainPartsWithTailLength:(unint64_t)length options:(unint64_t)options
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSArray count](self->_reformattedAddresses, "count")}];
@@ -241,12 +241,12 @@ LABEL_11:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 localPart];
-        v12 = [v5 objectForKey:v11];
+        localPart = [v10 localPart];
+        v12 = [v5 objectForKey:localPart];
         if (!v12)
         {
           v12 = [MEMORY[0x1E695DFA8] set];
-          [v5 setObject:v12 forKey:v11];
+          [v5 setObject:v12 forKey:localPart];
         }
 
         [v12 addObject:v10];
@@ -263,8 +263,8 @@ LABEL_11:
   v15[2] = __105__MFAddressPickerReformatter__truncateIdenticalLocalPartsWithDifferentDomainPartsWithTailLength_options___block_invoke;
   v15[3] = &unk_1E806C638;
   v15[4] = self;
-  v15[5] = a4;
-  v15[6] = a3;
+  v15[5] = options;
+  v15[6] = length;
   [v5 enumerateKeysAndObjectsUsingBlock:v15];
 }
 
@@ -383,25 +383,25 @@ uint64_t __62__MFAddressPickerReformatter__attemptUniquingDisplayedStrings__bloc
   return [v1 _truncateIdenticalLocalPartsWithDifferentDomainPartsWithTailLength:v2 options:v3];
 }
 
-- (BOOL)_attemptUniquingDisplayedStringsUsingBlock:(id)a3
+- (BOOL)_attemptUniquingDisplayedStringsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MFAddressPickerReformatter *)self _reformattedAddressesByDisplayedStrings];
-  if ([(MFAddressPickerReformatter *)self _reformattedAddressesByDisplayedStringsAreUnique:v5])
+  blockCopy = block;
+  _reformattedAddressesByDisplayedStrings = [(MFAddressPickerReformatter *)self _reformattedAddressesByDisplayedStrings];
+  if ([(MFAddressPickerReformatter *)self _reformattedAddressesByDisplayedStringsAreUnique:_reformattedAddressesByDisplayedStrings])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(MFAddressPickerReformatter *)self _saveMiddleTruncationRanges];
-    v4[2](v4);
-    v8 = [(MFAddressPickerReformatter *)self _reformattedAddressesByDisplayedStrings];
-    v9 = [v8 count];
-    v6 = v9 > [v5 count];
+    _saveMiddleTruncationRanges = [(MFAddressPickerReformatter *)self _saveMiddleTruncationRanges];
+    blockCopy[2](blockCopy);
+    _reformattedAddressesByDisplayedStrings2 = [(MFAddressPickerReformatter *)self _reformattedAddressesByDisplayedStrings];
+    v9 = [_reformattedAddressesByDisplayedStrings2 count];
+    v6 = v9 > [_reformattedAddressesByDisplayedStrings count];
     if (!v6)
     {
-      [(MFAddressPickerReformatter *)self _restoreMiddleTruncationRanges:v7];
+      [(MFAddressPickerReformatter *)self _restoreMiddleTruncationRanges:_saveMiddleTruncationRanges];
     }
   }
 
@@ -433,13 +433,13 @@ uint64_t __62__MFAddressPickerReformatter__attemptUniquingDisplayedStrings__bloc
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [v9 attributedStringWithFontSize:-[MFAddressPickerReformatter _defaultOptions](self maximumWidth:"_defaultOptions" options:{v14), self->_fontSize, self->_maximumWidth}];
-        v11 = [v10 string];
+        string = [v10 string];
 
-        v12 = [v4 objectForKey:v11];
+        v12 = [v4 objectForKey:string];
         if (!v12)
         {
           v12 = [MEMORY[0x1E695DFA8] set];
-          [v4 setObject:v12 forKey:v11];
+          [v4 setObject:v12 forKey:string];
         }
 
         [v12 addObject:v9];
@@ -476,19 +476,19 @@ uint64_t __62__MFAddressPickerReformatter__attemptUniquingDisplayedStrings__bloc
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [v7 middleTruncationRange];
-        if (v8 != 0x7FFFFFFFFFFFFFFFLL && v9 != 0)
+        middleTruncationRange = [v7 middleTruncationRange];
+        if (middleTruncationRange != 0x7FFFFFFFFFFFFFFFLL && v9 != 0)
         {
           v13[0] = MEMORY[0x1E69E9820];
-          v11 = v8 + v9;
+          v11 = middleTruncationRange + v9;
           v13[1] = 3221225472;
           v13[2] = __50__MFAddressPickerReformatter__expandAllLocalParts__block_invoke;
           v13[3] = &unk_1E806C688;
-          v13[6] = v8;
+          v13[6] = middleTruncationRange;
           v13[7] = v9;
           v13[4] = v7;
           v13[5] = self;
-          v12 = MFLastIndexInRangePassingTest(v8, v8 + v9, v13);
+          v12 = MFLastIndexInRangePassingTest(middleTruncationRange, middleTruncationRange + v9, v13);
           if (v12 != 0x7FFFFFFFFFFFFFFFLL)
           {
             [v7 setMiddleTruncationRange:{v12, v11 - v12}];
@@ -510,7 +510,7 @@ BOOL __50__MFAddressPickerReformatter__expandAllLocalParts__block_invoke(uint64_
   return v3 <= *(*(a1 + 40) + 24);
 }
 
-- (BOOL)_reformattedAddressesByDisplayedStringsAreUnique:(id)a3
+- (BOOL)_reformattedAddressesByDisplayedStringsAreUnique:(id)unique
 {
   v6 = 0;
   v7 = &v6;
@@ -521,7 +521,7 @@ BOOL __50__MFAddressPickerReformatter__expandAllLocalParts__block_invoke(uint64_
   v5[2] = __79__MFAddressPickerReformatter__reformattedAddressesByDisplayedStringsAreUnique___block_invoke;
   v5[3] = &unk_1E806C6B0;
   v5[4] = &v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:v5];
+  [unique enumerateKeysAndObjectsUsingBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -576,16 +576,16 @@ unint64_t __79__MFAddressPickerReformatter__reformattedAddressesByDisplayedStrin
   return v3;
 }
 
-- (void)_restoreMiddleTruncationRanges:(id)a3
+- (void)_restoreMiddleTruncationRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   reformattedAddresses = self->_reformattedAddresses;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__MFAddressPickerReformatter__restoreMiddleTruncationRanges___block_invoke;
   v7[3] = &unk_1E806C6D8;
-  v8 = v4;
-  v6 = v4;
+  v8 = rangesCopy;
+  v6 = rangesCopy;
   [(NSArray *)reformattedAddresses enumerateObjectsUsingBlock:v7];
 }
 

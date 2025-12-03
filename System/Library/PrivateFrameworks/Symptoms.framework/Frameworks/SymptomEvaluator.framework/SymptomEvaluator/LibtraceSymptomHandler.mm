@@ -1,5 +1,5 @@
 @interface LibtraceSymptomHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
 - (NSString)description;
 @end
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __40__LibtraceSymptomHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_11 != -1)
   {
     dispatch_once(&sharedInstance_pred_11, block);
@@ -45,11 +45,11 @@ void __40__LibtraceSymptomHandler_sharedInstance__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[LibtraceSymptomHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }

@@ -4,14 +4,14 @@
 - (id)_messageTextWithCountdown;
 - (void)_clearCountdownTimer;
 - (void)_countdownTimerFired;
-- (void)_startCountdownTimerWithInitialTime:(unint64_t)a3;
-- (void)client:(id)a3 installDidStart:(id)a4;
-- (void)client:(id)a3 installWantsToStart:(id)a4 completion:(id)a5;
+- (void)_startCountdownTimerWithInitialTime:(unint64_t)time;
+- (void)client:(id)client installDidStart:(id)start;
+- (void)client:(id)client installWantsToStart:(id)start completion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
 - (void)loadView;
 - (void)reboot;
-- (void)userWantsToDeferInstall:(id)a3;
+- (void)userWantsToDeferInstall:(id)install;
 - (void)viewDidLoad;
 @end
 
@@ -85,12 +85,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[SUSUIInstallAlertExtensionViewController] Loading view", &v29, 2u);
   }
 
-  v4 = [(SUSUIInstallAlertExtensionViewController *)self extensionContext];
-  v5 = [v4 inputItems];
+  extensionContext = [(SUSUIInstallAlertExtensionViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
 
-  if (v5 && [v5 count])
+  if (inputItems && [inputItems count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
+    v6 = [inputItems objectAtIndexedSubscript:0];
     v7 = v6;
     if (!v6)
     {
@@ -104,11 +104,11 @@
       goto LABEL_40;
     }
 
-    v8 = [v6 userInfo];
-    v9 = v8;
-    if (v8)
+    userInfo = [v6 userInfo];
+    v9 = userInfo;
+    if (userInfo)
     {
-      v10 = [v8 objectForKeyedSubscript:@"ExtensionAlertKeyHumanReadableUpdateName"];
+      v10 = [userInfo objectForKeyedSubscript:@"ExtensionAlertKeyHumanReadableUpdateName"];
       updateName = self->_updateName;
       self->_updateName = v10;
 
@@ -202,8 +202,8 @@
 
         [(SUSUIInstallAlertExtensionViewController *)self _clearCountdownTimer];
         [(SUSUIInstallAlertExtensionViewController *)self _startCountdownTimerWithInitialTime:self->_countdownTimeout];
-        v28 = [(SUSUIInstallAlertExtensionViewController *)self _createView];
-        [(SUSUIInstallAlertExtensionViewController *)self setView:v28];
+        _createView = [(SUSUIInstallAlertExtensionViewController *)self _createView];
+        [(SUSUIInstallAlertExtensionViewController *)self setView:_createView];
 
         goto LABEL_39;
       }
@@ -259,7 +259,7 @@ LABEL_41:
   [(SUSUIInstallAlertExtensionViewController *)&v4 viewDidLoad];
 }
 
-- (void)userWantsToDeferInstall:(id)a3
+- (void)userWantsToDeferInstall:(id)install
 {
   v4 = SUSUILogExtension();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -271,7 +271,7 @@ LABEL_41:
   [(SUSUIInstallAlertExtensionViewController *)self invalidate];
 }
 
-- (void)client:(id)a3 installWantsToStart:(id)a4 completion:(id)a5
+- (void)client:(id)client installWantsToStart:(id)start completion:(id)completion
 {
   v6 = SUSUILogExtension();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -283,7 +283,7 @@ LABEL_41:
   [(SUSUIInstallAlertExtensionViewController *)self invalidate];
 }
 
-- (void)client:(id)a3 installDidStart:(id)a4
+- (void)client:(id)client installDidStart:(id)start
 {
   v5 = SUSUILogExtension();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -312,8 +312,8 @@ LABEL_41:
   self->_label = v5;
 
   v7 = self->_label;
-  v8 = [(SUSUIInstallAlertExtensionViewController *)self _messageTextWithCountdown];
-  [(UILabel *)v7 setText:v8];
+  _messageTextWithCountdown = [(SUSUIInstallAlertExtensionViewController *)self _messageTextWithCountdown];
+  [(UILabel *)v7 setText:_messageTextWithCountdown];
 
   [(UILabel *)self->_label setAutoresizingMask:40];
   [(UILabel *)self->_label setLineBreakMode:0];
@@ -348,8 +348,8 @@ LABEL_41:
   label = self->_label;
   if (label)
   {
-    v7 = [(SUSUIInstallAlertExtensionViewController *)self _messageTextWithCountdown];
-    [(UILabel *)label setText:v7];
+    _messageTextWithCountdown = [(SUSUIInstallAlertExtensionViewController *)self _messageTextWithCountdown];
+    [(UILabel *)label setText:_messageTextWithCountdown];
 
     timeLeftUntilInstall = self->_timeLeftUntilInstall;
   }
@@ -420,9 +420,9 @@ LABEL_41:
   }
 }
 
-- (void)_startCountdownTimerWithInitialTime:(unint64_t)a3
+- (void)_startCountdownTimerWithInitialTime:(unint64_t)time
 {
-  self->_timeLeftUntilInstall = a3;
+  self->_timeLeftUntilInstall = time;
   v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"_countdownTimerFired" selector:0 userInfo:1 repeats:1.0];
   countdownTimer = self->_countdownTimer;
   self->_countdownTimer = v5;
@@ -434,7 +434,7 @@ LABEL_41:
     v9 = 138412546;
     v10 = v8;
     v11 = 2048;
-    v12 = a3;
+    timeCopy = time;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[SUSUIInstallAlertExtensionViewController] Started countdown timer %@ with initial time %lu", &v9, 0x16u);
   }
 }

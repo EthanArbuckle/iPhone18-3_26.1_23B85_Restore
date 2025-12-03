@@ -18,7 +18,7 @@
   v9 = a4;
   if ([v8 length] && objc_msgSend(v9, "length"))
   {
-    v10 = [a1 copyItemAtPath:v8 toPath:v9 error:a5];
+    v10 = [self copyItemAtPath:v8 toPath:v9 error:a5];
     v11 = v10;
     if (a5 && v10)
     {
@@ -55,32 +55,32 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = a4;
-  v6 = [a3 stringByStandardizingPath];
-  v7 = [v5 stringByStandardizingPath];
+  stringByStandardizingPath = [a3 stringByStandardizingPath];
+  stringByStandardizingPath2 = [v5 stringByStandardizingPath];
 
-  if (([v6 hasPrefix:v7] & 1) == 0)
+  if (([stringByStandardizingPath hasPrefix:stringByStandardizingPath2] & 1) == 0)
   {
-    v8 = [v6 triStringByResolvingSymlinksInPath];
+    triStringByResolvingSymlinksInPath = [stringByStandardizingPath triStringByResolvingSymlinksInPath];
 
-    v9 = [v7 triStringByResolvingSymlinksInPath];
+    triStringByResolvingSymlinksInPath2 = [stringByStandardizingPath2 triStringByResolvingSymlinksInPath];
 
-    v7 = v9;
-    v6 = v8;
+    stringByStandardizingPath2 = triStringByResolvingSymlinksInPath2;
+    stringByStandardizingPath = triStringByResolvingSymlinksInPath;
   }
 
-  if ([v6 hasPrefix:v7])
+  if ([stringByStandardizingPath hasPrefix:stringByStandardizingPath2])
   {
-    v10 = [v6 pathComponents];
-    v11 = [v7 pathComponents];
-    v12 = [v10 count];
-    if (v12 == [v11 count])
+    pathComponents = [stringByStandardizingPath pathComponents];
+    pathComponents2 = [stringByStandardizingPath2 pathComponents];
+    v12 = [pathComponents count];
+    if (v12 == [pathComponents2 count])
     {
       v13 = @".";
     }
 
     else
     {
-      v15 = [v10 subarrayWithRange:{objc_msgSend(v11, "count"), objc_msgSend(v10, "count") - objc_msgSend(v11, "count")}];
+      v15 = [pathComponents subarrayWithRange:{objc_msgSend(pathComponents2, "count"), objc_msgSend(pathComponents, "count") - objc_msgSend(pathComponents2, "count")}];
       v13 = [MEMORY[0x277CCACA8] pathWithComponents:v15];
     }
   }
@@ -91,13 +91,13 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412546;
-      v19 = v6;
+      v19 = stringByStandardizingPath;
       v20 = 2112;
-      v21 = v7;
+      v21 = stringByStandardizingPath2;
       _os_log_error_impl(&dword_22EA6B000, v14, OS_LOG_TYPE_ERROR, "expected path to be a prefix of parent path: path=%@, parent=%@", &v18, 0x16u);
     }
 
-    v13 = v6;
+    v13 = stringByStandardizingPath;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -112,20 +112,20 @@
   v9 = v8;
   if (a4)
   {
-    v10 = v8;
+    stringByDeletingLastPathComponent = v8;
   }
 
   else
   {
-    v10 = [v8 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v8 stringByDeletingLastPathComponent];
   }
 
-  v11 = v10;
+  v11 = stringByDeletingLastPathComponent;
   v22 = 0;
-  if (([a1 fileExistsAtPath:v10 isDirectory:&v22] & 1) == 0)
+  if (([self fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:&v22] & 1) == 0)
   {
     v21 = 0;
-    v13 = [a1 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v21];
+    v13 = [self createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v21];
     v14 = v21;
     v15 = v14;
     if ((v13 & 1) == 0)
@@ -186,12 +186,12 @@ LABEL_18:
   v7 = a3;
   if (!v7)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"NSFileManager+TRI.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileManager+TRI.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v32 = 0;
-  if (![a1 fileExistsAtPath:v7 isDirectory:&v32])
+  if (![self fileExistsAtPath:v7 isDirectory:&v32])
   {
     v15 = 1;
     goto LABEL_19;
@@ -200,7 +200,7 @@ LABEL_18:
   if (v32 != 1)
   {
 LABEL_18:
-    v15 = [a1 removeItemAtPath:v7 error:a4];
+    v15 = [self removeItemAtPath:v7 error:a4];
     goto LABEL_19;
   }
 
@@ -208,38 +208,38 @@ LABEL_18:
   if (!stat([v7 fileSystemRepresentation], &v31))
   {
     chmod([v7 fileSystemRepresentation], v31.st_mode & 0x16F | 0x90);
-    v16 = [a1 enumeratorAtPath:v7];
+    v16 = [self enumeratorAtPath:v7];
     v17 = objc_autoreleasePoolPush();
-    v18 = [v16 nextObject];
-    if (v18)
+    nextObject = [v16 nextObject];
+    if (nextObject)
     {
-      v19 = v18;
+      nextObject2 = nextObject;
       v20 = *MEMORY[0x277CCA1E0];
       v21 = *MEMORY[0x277CCA1E8];
       v30 = *MEMORY[0x277CCA180];
       do
       {
-        v22 = [v16 fileAttributes];
-        v23 = [v22 objectForKeyedSubscript:v20];
+        fileAttributes = [v16 fileAttributes];
+        v23 = [fileAttributes objectForKeyedSubscript:v20];
 
         if (v23 == v21)
         {
-          v24 = [v16 fileAttributes];
-          v25 = [v24 objectForKeyedSubscript:v30];
+          fileAttributes2 = [v16 fileAttributes];
+          v25 = [fileAttributes2 objectForKeyedSubscript:v30];
 
           if (v25)
           {
-            v26 = [v7 stringByAppendingPathComponent:v19];
+            v26 = [v7 stringByAppendingPathComponent:nextObject2];
             chmod([v26 fileSystemRepresentation], objc_msgSend(v25, "unsignedShortValue") | 0x90);
           }
         }
 
         objc_autoreleasePoolPop(v17);
         v17 = objc_autoreleasePoolPush();
-        v19 = [v16 nextObject];
+        nextObject2 = [v16 nextObject];
       }
 
-      while (v19);
+      while (nextObject2);
     }
 
     objc_autoreleasePoolPop(v17);
@@ -353,7 +353,7 @@ LABEL_12:
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 triHasFileProtection:v4])
+  if ([self triHasFileProtection:v4])
   {
     v5 = open([v4 fileSystemRepresentation], 2);
     if (v5 < 0)
@@ -420,9 +420,9 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
   v4 = a3;
-  v5 = [v3 defaultManager];
+  defaultManager = [v3 defaultManager];
   v11 = 0;
-  v6 = [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v11];
+  v6 = [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v11];
 
   v7 = v11;
   if ((v6 & 1) == 0)
@@ -443,35 +443,35 @@ LABEL_11:
 + (id)triArbitraryFileInDirWithPath:()TRI
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 enumeratorAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager enumeratorAtPath:v3];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 nextObject];
-  if (v7)
+  nextObject = [v5 nextObject];
+  if (nextObject)
   {
-    v8 = v7;
+    nextObject2 = nextObject;
     v9 = *MEMORY[0x277CCA1F0];
     while (1)
     {
-      v10 = [v5 fileAttributes];
-      v11 = [v10 fileType];
+      fileAttributes = [v5 fileAttributes];
+      fileType = [fileAttributes fileType];
 
-      if (v11 == v9)
+      if (fileType == v9)
       {
         break;
       }
 
       objc_autoreleasePoolPop(v6);
       v6 = objc_autoreleasePoolPush();
-      v8 = [v5 nextObject];
-      if (!v8)
+      nextObject2 = [v5 nextObject];
+      if (!nextObject2)
       {
         goto LABEL_5;
       }
     }
 
-    v12 = [v3 stringByAppendingPathComponent:v8];
+    v12 = [v3 stringByAppendingPathComponent:nextObject2];
   }
 
   else

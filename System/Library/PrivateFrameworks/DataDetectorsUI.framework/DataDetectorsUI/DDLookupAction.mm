@@ -1,42 +1,42 @@
 @interface DDLookupAction
-- (DDLookupAction)initWithQueryString:(id)a3 range:(_NSRange)a4 context:(id)a5;
-- (DDLookupAction)initWithRVQuery:(id)a3 context:(id)a4;
-- (DDLookupAction)initWithRVQuery:(id)a3 reportAnIssueBlock:(id)a4 metadataFetchingBlock:(id)a5 context:(id)a6;
+- (DDLookupAction)initWithQueryString:(id)string range:(_NSRange)range context:(id)context;
+- (DDLookupAction)initWithRVQuery:(id)query context:(id)context;
+- (DDLookupAction)initWithRVQuery:(id)query reportAnIssueBlock:(id)block metadataFetchingBlock:(id)fetchingBlock context:(id)context;
 - (id)createViewController;
 - (id)menuActions;
 @end
 
 @implementation DDLookupAction
 
-- (DDLookupAction)initWithRVQuery:(id)a3 context:(id)a4
+- (DDLookupAction)initWithRVQuery:(id)query context:(id)context
 {
-  v7 = a3;
+  queryCopy = query;
   v11.receiver = self;
   v11.super_class = DDLookupAction;
-  v8 = [(DDParsecPreviewAction *)&v11 initWithURL:0 result:0 context:a4];
+  v8 = [(DDParsecPreviewAction *)&v11 initWithURL:0 result:0 context:context];
   v9 = v8;
   if (v8)
   {
     [(DDParsecPreviewAction *)v8 setPreviewMode:0];
-    objc_storeStrong(&v9->_query, a3);
+    objc_storeStrong(&v9->_query, query);
   }
 
   return v9;
 }
 
-- (DDLookupAction)initWithQueryString:(id)a3 range:(_NSRange)a4 context:(id)a5
+- (DDLookupAction)initWithQueryString:(id)string range:(_NSRange)range context:(id)context
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = DDLookupAction;
-  v10 = [(DDParsecPreviewAction *)&v15 initWithURL:0 result:0 context:a5];
+  v10 = [(DDParsecPreviewAction *)&v15 initWithURL:0 result:0 context:context];
   v11 = v10;
   if (v10)
   {
     [(DDParsecPreviewAction *)v10 setPreviewMode:0];
-    v12 = [v9 copy];
+    v12 = [stringCopy copy];
     queryString = v11->_queryString;
     v11->_queryString = v12;
 
@@ -47,24 +47,24 @@
   return v11;
 }
 
-- (DDLookupAction)initWithRVQuery:(id)a3 reportAnIssueBlock:(id)a4 metadataFetchingBlock:(id)a5 context:(id)a6
+- (DDLookupAction)initWithRVQuery:(id)query reportAnIssueBlock:(id)block metadataFetchingBlock:(id)fetchingBlock context:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  queryCopy = query;
+  blockCopy = block;
+  fetchingBlockCopy = fetchingBlock;
   v21.receiver = self;
   v21.super_class = DDLookupAction;
-  v14 = [(DDParsecPreviewAction *)&v21 initWithURL:0 result:0 context:a6];
+  v14 = [(DDParsecPreviewAction *)&v21 initWithURL:0 result:0 context:context];
   v15 = v14;
   if (v14)
   {
     [(DDParsecPreviewAction *)v14 setPreviewMode:0];
-    objc_storeStrong(&v15->_query, a3);
-    v16 = _Block_copy(v12);
+    objc_storeStrong(&v15->_query, query);
+    v16 = _Block_copy(blockCopy);
     reportAnIssueBlock = v15->_reportAnIssueBlock;
     v15->_reportAnIssueBlock = v16;
 
-    v18 = _Block_copy(v13);
+    v18 = _Block_copy(fetchingBlockCopy);
     reportAnIssueMetadataFetchingBlock = v15->_reportAnIssueMetadataFetchingBlock;
     v15->_reportAnIssueMetadataFetchingBlock = v18;
   }
@@ -117,20 +117,20 @@ LABEL_6:
   query = self->_query;
   if (query)
   {
-    v4 = [(RVQuery *)query title];
-    length = [(NSString *)v4 length];
+    title = [(RVQuery *)query title];
+    length = [(NSString *)title length];
     location = 0;
   }
 
   else
   {
-    v4 = self->_queryString;
+    title = self->_queryString;
     location = self->_queryStringRange.location;
     length = self->_queryStringRange.length;
   }
 
-  v7 = [[DDCopyAction alloc] initWithQueryString:v4 range:location context:length, self->super.super.super.super._context];
-  v8 = [[DDSearchWebAction alloc] initWithQueryString:v4 range:location context:length, self->super.super.super.super._context];
+  v7 = [[DDCopyAction alloc] initWithQueryString:title range:location context:length, self->super.super.super.super._context];
+  v8 = [[DDSearchWebAction alloc] initWithQueryString:title range:location context:length, self->super.super.super.super._context];
   v13[0] = v8;
   v13[1] = v7;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];

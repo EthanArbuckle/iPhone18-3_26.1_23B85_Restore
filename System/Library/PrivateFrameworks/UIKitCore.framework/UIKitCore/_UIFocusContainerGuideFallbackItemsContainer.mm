@@ -1,21 +1,21 @@
 @interface _UIFocusContainerGuideFallbackItemsContainer
 - (UICoordinateSpace)coordinateSpace;
 - (UIFocusEnvironment)parentFocusEnvironment;
-- (_UIFocusContainerGuideFallbackItemsContainer)initWithParentEnvironment:(id)a3 childItems:(id)a4;
+- (_UIFocusContainerGuideFallbackItemsContainer)initWithParentEnvironment:(id)environment childItems:(id)items;
 - (void)setNeedsFocusUpdate;
 - (void)updateFocusIfNeeded;
 @end
 
 @implementation _UIFocusContainerGuideFallbackItemsContainer
 
-- (_UIFocusContainerGuideFallbackItemsContainer)initWithParentEnvironment:(id)a3 childItems:(id)a4
+- (_UIFocusContainerGuideFallbackItemsContainer)initWithParentEnvironment:(id)environment childItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  environmentCopy = environment;
+  itemsCopy = items;
+  v9 = itemsCopy;
+  if (environmentCopy)
   {
-    if (v8)
+    if (itemsCopy)
     {
       goto LABEL_3;
     }
@@ -23,8 +23,8 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIFocusContainerGuideFallbackItemsContainer.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"parentEnvironment != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusContainerGuideFallbackItemsContainer.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"parentEnvironment != nil"}];
 
     if (v9)
     {
@@ -32,8 +32,8 @@
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"_UIFocusContainerGuideFallbackItemsContainer.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"childItems != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusContainerGuideFallbackItemsContainer.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"childItems != nil"}];
 
 LABEL_3:
   v15.receiver = self;
@@ -42,8 +42,8 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_parentFocusEnvironment, v7);
-    objc_storeStrong(&v11->_childItems, a4);
+    objc_storeWeak(&v10->_parentFocusEnvironment, environmentCopy);
+    objc_storeStrong(&v11->_childItems, items);
   }
 
   return v11;
@@ -51,11 +51,11 @@ LABEL_3:
 
 - (UICoordinateSpace)coordinateSpace
 {
-  v2 = [(_UIFocusContainerGuideFallbackItemsContainer *)self parentFocusEnvironment];
-  v3 = [v2 focusItemContainer];
-  v4 = [v3 coordinateSpace];
+  parentFocusEnvironment = [(_UIFocusContainerGuideFallbackItemsContainer *)self parentFocusEnvironment];
+  focusItemContainer = [parentFocusEnvironment focusItemContainer];
+  coordinateSpace = [focusItemContainer coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
 - (void)setNeedsFocusUpdate

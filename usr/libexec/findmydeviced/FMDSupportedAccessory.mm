@@ -1,34 +1,34 @@
 @interface FMDSupportedAccessory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FMDSupportedAccessory)init;
-- (FMDSupportedAccessory)initWithCoder:(id)a3;
-- (FMDSupportedAccessory)initWithDictionary:(id)a3 assetRegistry:(id)a4;
-- (FMDSupportedAccessory)initWithType:(id)a3 locationInfo:(id)a4;
-- (FMDSupportedAccessory)initWithVendorID:(unsigned __int16)a3 productID:(unsigned int)a4 profile:(int64_t)a5 assets:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)profileForProfileName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)unmarshallAssets:(id)a3 assetRegistry:(id)a4;
+- (FMDSupportedAccessory)initWithCoder:(id)coder;
+- (FMDSupportedAccessory)initWithDictionary:(id)dictionary assetRegistry:(id)registry;
+- (FMDSupportedAccessory)initWithType:(id)type locationInfo:(id)info;
+- (FMDSupportedAccessory)initWithVendorID:(unsigned __int16)d productID:(unsigned int)iD profile:(int64_t)profile assets:(id)assets;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)profileForProfileName:(id)name;
+- (void)encodeWithCoder:(id)coder;
+- (void)unmarshallAssets:(id)assets assetRegistry:(id)registry;
 @end
 
 @implementation FMDSupportedAccessory
 
-- (FMDSupportedAccessory)initWithDictionary:(id)a3 assetRegistry:(id)a4
+- (FMDSupportedAccessory)initWithDictionary:(id)dictionary assetRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  registryCopy = registry;
   v8 = [(FMDSupportedAccessory *)self init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"assets"];
-    [(FMDSupportedAccessory *)v8 unmarshallAssets:v9 assetRegistry:v7];
-    v10 = [v6 objectForKeyedSubscript:@"vendorId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"assets"];
+    [(FMDSupportedAccessory *)v8 unmarshallAssets:v9 assetRegistry:registryCopy];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"vendorId"];
     v8->_vendorID = [v10 intValue];
 
-    v11 = [v6 objectForKeyedSubscript:@"productId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"productId"];
     v8->_productID = [v11 intValue];
 
-    v12 = [v6 objectForKeyedSubscript:@"productType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"productType"];
     productType = v12;
     if (!v12)
     {
@@ -37,7 +37,7 @@
 
     [(FMDSupportedAccessory *)v8 setProductType:productType];
 
-    v14 = [v6 objectForKeyedSubscript:@"maxHistoricalLocations"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"maxHistoricalLocations"];
     maximumHistoricalLocations = v14;
     if (!v14)
     {
@@ -46,7 +46,7 @@
 
     [(FMDSupportedAccessory *)v8 setMaximumHistoricalLocations:maximumHistoricalLocations];
 
-    v16 = [v6 objectForKeyedSubscript:@"longTermLocationExpiry"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"longTermLocationExpiry"];
     longTermlocationExpiryTimeInterval = v16;
     if (!v16)
     {
@@ -55,7 +55,7 @@
 
     [(FMDSupportedAccessory *)v8 setLongTermlocationExpiryTimeInterval:longTermlocationExpiryTimeInterval];
 
-    v18 = [v6 objectForKeyedSubscript:@"shortTermLocationExpiry"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"shortTermLocationExpiry"];
     shortTermlocationExpiryTimeInterval = v18;
     if (!v18)
     {
@@ -64,7 +64,7 @@
 
     [(FMDSupportedAccessory *)v8 setShortTermlocationExpiryTimeInterval:shortTermlocationExpiryTimeInterval];
 
-    v20 = [v6 objectForKeyedSubscript:@"locationThrottleRatio"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"locationThrottleRatio"];
     locationThrottleRatio = v20;
     if (!v20)
     {
@@ -73,7 +73,7 @@
 
     [(FMDSupportedAccessory *)v8 setLocationThrottleRatio:locationThrottleRatio];
 
-    v22 = [v6 objectForKeyedSubscript:@"locateTimeout"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"locateTimeout"];
     locateTimeout = v22;
     if (!v22)
     {
@@ -82,7 +82,7 @@
 
     [(FMDSupportedAccessory *)v8 setLocateTimeout:locateTimeout];
 
-    v24 = [v6 objectForKeyedSubscript:@"desiredAccuracy"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"desiredAccuracy"];
     desiredAccuracy = v24;
     if (!v24)
     {
@@ -91,7 +91,7 @@
 
     [(FMDSupportedAccessory *)v8 setDesiredAccuracy:desiredAccuracy];
 
-    v26 = [v6 objectForKeyedSubscript:@"startThreshold"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"startThreshold"];
     startThreshold = v26;
     if (!v26)
     {
@@ -100,7 +100,7 @@
 
     [(FMDSupportedAccessory *)v8 setStartThreshold:startThreshold];
 
-    v28 = [v6 objectForKeyedSubscript:@"endThreshold"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"endThreshold"];
     endThreshold = v28;
     if (!v28)
     {
@@ -109,7 +109,7 @@
 
     [(FMDSupportedAccessory *)v8 setEndThreshold:endThreshold];
 
-    v30 = [v6 objectForKeyedSubscript:@"decayFactor"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"decayFactor"];
     decayFactor = v30;
     if (!v30)
     {
@@ -118,7 +118,7 @@
 
     [(FMDSupportedAccessory *)v8 setDecayFactor:decayFactor];
 
-    v32 = [v6 objectForKeyedSubscript:@"cachedLocValidityDuration"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"cachedLocValidityDuration"];
     cachedLocValidityDuration = v32;
     if (!v32)
     {
@@ -127,7 +127,7 @@
 
     [(FMDSupportedAccessory *)v8 setCachedLocValidityDuration:cachedLocValidityDuration];
 
-    v34 = [v6 objectForKeyedSubscript:@"advertisementStatusKey"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"advertisementStatusKey"];
     [(FMDSupportedAccessory *)v8 setProfile:[(FMDSupportedAccessory *)v8 profileForProfileName:v34]];
     v35 = [[FMDAccessoryIdentifier alloc] initWithVendorID:v8->_vendorID productID:v8->_productID];
     [(FMDSupportedAccessory *)v8 setAccessoryIdentifier:v35];
@@ -136,22 +136,22 @@
   return v8;
 }
 
-- (FMDSupportedAccessory)initWithType:(id)a3 locationInfo:(id)a4
+- (FMDSupportedAccessory)initWithType:(id)type locationInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  infoCopy = info;
   v8 = [(FMDSupportedAccessory *)self init];
   v9 = v8;
   if (v8)
   {
-    productType = v6;
-    if (!v6)
+    productType = typeCopy;
+    if (!typeCopy)
     {
       productType = v8->_productType;
     }
 
     [(FMDSupportedAccessory *)v8 setProductType:productType];
-    v11 = [v7 objectForKeyedSubscript:@"maxHistoricalLocations"];
+    v11 = [infoCopy objectForKeyedSubscript:@"maxHistoricalLocations"];
     maximumHistoricalLocations = v11;
     if (!v11)
     {
@@ -160,7 +160,7 @@
 
     [(FMDSupportedAccessory *)v9 setMaximumHistoricalLocations:maximumHistoricalLocations];
 
-    v13 = [v7 objectForKeyedSubscript:@"longTermLocationExpiry"];
+    v13 = [infoCopy objectForKeyedSubscript:@"longTermLocationExpiry"];
     longTermlocationExpiryTimeInterval = v13;
     if (!v13)
     {
@@ -169,7 +169,7 @@
 
     [(FMDSupportedAccessory *)v9 setLongTermlocationExpiryTimeInterval:longTermlocationExpiryTimeInterval];
 
-    v15 = [v7 objectForKeyedSubscript:@"shortTermLocationExpiry"];
+    v15 = [infoCopy objectForKeyedSubscript:@"shortTermLocationExpiry"];
     shortTermlocationExpiryTimeInterval = v15;
     if (!v15)
     {
@@ -178,7 +178,7 @@
 
     [(FMDSupportedAccessory *)v9 setShortTermlocationExpiryTimeInterval:shortTermlocationExpiryTimeInterval];
 
-    v17 = [v7 objectForKeyedSubscript:@"locationThrottleRatio"];
+    v17 = [infoCopy objectForKeyedSubscript:@"locationThrottleRatio"];
     locationThrottleRatio = v17;
     if (!v17)
     {
@@ -187,7 +187,7 @@
 
     [(FMDSupportedAccessory *)v9 setLocationThrottleRatio:locationThrottleRatio];
 
-    v19 = [v7 objectForKeyedSubscript:@"locateTimeout"];
+    v19 = [infoCopy objectForKeyedSubscript:@"locateTimeout"];
     locateTimeout = v19;
     if (!v19)
     {
@@ -196,7 +196,7 @@
 
     [(FMDSupportedAccessory *)v9 setLocateTimeout:locateTimeout];
 
-    v21 = [v7 objectForKeyedSubscript:@"desiredAccuracy"];
+    v21 = [infoCopy objectForKeyedSubscript:@"desiredAccuracy"];
     desiredAccuracy = v21;
     if (!v21)
     {
@@ -205,7 +205,7 @@
 
     [(FMDSupportedAccessory *)v9 setDesiredAccuracy:desiredAccuracy];
 
-    v23 = [v7 objectForKeyedSubscript:@"startThreshold"];
+    v23 = [infoCopy objectForKeyedSubscript:@"startThreshold"];
     startThreshold = v23;
     if (!v23)
     {
@@ -214,7 +214,7 @@
 
     [(FMDSupportedAccessory *)v9 setStartThreshold:startThreshold];
 
-    v25 = [v7 objectForKeyedSubscript:@"endThreshold"];
+    v25 = [infoCopy objectForKeyedSubscript:@"endThreshold"];
     endThreshold = v25;
     if (!v25)
     {
@@ -223,7 +223,7 @@
 
     [(FMDSupportedAccessory *)v9 setEndThreshold:endThreshold];
 
-    v27 = [v7 objectForKeyedSubscript:@"decayFactor"];
+    v27 = [infoCopy objectForKeyedSubscript:@"decayFactor"];
     decayFactor = v27;
     if (!v27)
     {
@@ -232,7 +232,7 @@
 
     [(FMDSupportedAccessory *)v9 setDecayFactor:decayFactor];
 
-    v29 = [v7 objectForKeyedSubscript:@"cachedLocValidityDuration"];
+    v29 = [infoCopy objectForKeyedSubscript:@"cachedLocValidityDuration"];
     cachedLocValidityDuration = v29;
     if (!v29)
     {
@@ -245,20 +245,20 @@
   return v9;
 }
 
-- (FMDSupportedAccessory)initWithVendorID:(unsigned __int16)a3 productID:(unsigned int)a4 profile:(int64_t)a5 assets:(id)a6
+- (FMDSupportedAccessory)initWithVendorID:(unsigned __int16)d productID:(unsigned int)iD profile:(int64_t)profile assets:(id)assets
 {
-  v10 = a6;
+  assetsCopy = assets;
   v11 = [(FMDSupportedAccessory *)self init];
   v12 = v11;
   if (v11)
   {
-    v11->_vendorID = a3;
-    v11->_productID = a4;
+    v11->_vendorID = d;
+    v11->_productID = iD;
     v13 = [[FMDAccessoryIdentifier alloc] initWithVendorID:v11->_vendorID productID:v11->_productID];
     [(FMDSupportedAccessory *)v12 setAccessoryIdentifier:v13];
 
-    [(FMDSupportedAccessory *)v12 setProfile:a5];
-    [(FMDSupportedAccessory *)v12 setAssets:v10];
+    [(FMDSupportedAccessory *)v12 setProfile:profile];
+    [(FMDSupportedAccessory *)v12 setAssets:assetsCopy];
   }
 
   return v12;
@@ -288,16 +288,16 @@
   return v3;
 }
 
-- (void)unmarshallAssets:(id)a3 assetRegistry:(id)a4
+- (void)unmarshallAssets:(id)assets assetRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  registryCopy = registry;
   v8 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v6;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -313,7 +313,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [v7 newAssetWithDictionary:{*(*(&v15 + 1) + 8 * v13), v15}];
+        v14 = [registryCopy newAssetWithDictionary:{*(*(&v15 + 1) + 8 * v13), v15}];
         [v8 fm_safeAddObject:v14];
 
         v13 = v13 + 1;
@@ -329,15 +329,15 @@
   [(FMDSupportedAccessory *)self setAssets:v8];
 }
 
-- (int64_t)profileForProfileName:(id)a3
+- (int64_t)profileForProfileName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AirPods"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AirPods"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Frost"])
+  else if ([nameCopy isEqualToString:@"Frost"])
   {
     v4 = 2;
   }
@@ -350,76 +350,76 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   vendorID = self->_vendorID;
-  v5 = a3;
-  [v5 encodeInt:vendorID forKey:@"vendorId"];
-  [v5 encodeInt:self->_productID forKey:@"productId"];
+  coderCopy = coder;
+  [coderCopy encodeInt:vendorID forKey:@"vendorId"];
+  [coderCopy encodeInt:self->_productID forKey:@"productId"];
   productType = self->_productType;
   v7 = NSStringFromSelector("productType");
-  [v5 encodeObject:productType forKey:v7];
+  [coderCopy encodeObject:productType forKey:v7];
 
   assets = self->_assets;
   v9 = NSStringFromSelector("assets");
-  [v5 encodeObject:assets forKey:v9];
+  [coderCopy encodeObject:assets forKey:v9];
 
   maximumHistoricalLocations = self->_maximumHistoricalLocations;
   v11 = NSStringFromSelector("maximumHistoricalLocations");
-  [v5 encodeObject:maximumHistoricalLocations forKey:v11];
+  [coderCopy encodeObject:maximumHistoricalLocations forKey:v11];
 
   longTermlocationExpiryTimeInterval = self->_longTermlocationExpiryTimeInterval;
   v13 = NSStringFromSelector("longTermlocationExpiryTimeInterval");
-  [v5 encodeObject:longTermlocationExpiryTimeInterval forKey:v13];
+  [coderCopy encodeObject:longTermlocationExpiryTimeInterval forKey:v13];
 
   shortTermlocationExpiryTimeInterval = self->_shortTermlocationExpiryTimeInterval;
   v15 = NSStringFromSelector("shortTermlocationExpiryTimeInterval");
-  [v5 encodeObject:shortTermlocationExpiryTimeInterval forKey:v15];
+  [coderCopy encodeObject:shortTermlocationExpiryTimeInterval forKey:v15];
 
   locationThrottleRatio = self->_locationThrottleRatio;
   v17 = NSStringFromSelector("locationThrottleRatio");
-  [v5 encodeObject:locationThrottleRatio forKey:v17];
+  [coderCopy encodeObject:locationThrottleRatio forKey:v17];
 
   locateTimeout = self->_locateTimeout;
   v19 = NSStringFromSelector("locateTimeout");
-  [v5 encodeObject:locateTimeout forKey:v19];
+  [coderCopy encodeObject:locateTimeout forKey:v19];
 
   startThreshold = self->_startThreshold;
   v21 = NSStringFromSelector("startThreshold");
-  [v5 encodeObject:startThreshold forKey:v21];
+  [coderCopy encodeObject:startThreshold forKey:v21];
 
   endThreshold = self->_endThreshold;
   v23 = NSStringFromSelector("endThreshold");
-  [v5 encodeObject:endThreshold forKey:v23];
+  [coderCopy encodeObject:endThreshold forKey:v23];
 
   decayFactor = self->_decayFactor;
   v25 = NSStringFromSelector("decayFactor");
-  [v5 encodeObject:decayFactor forKey:v25];
+  [coderCopy encodeObject:decayFactor forKey:v25];
 
   cachedLocValidityDuration = self->_cachedLocValidityDuration;
   v27 = NSStringFromSelector("cachedLocValidityDuration");
-  [v5 encodeObject:cachedLocValidityDuration forKey:v27];
+  [coderCopy encodeObject:cachedLocValidityDuration forKey:v27];
 
   desiredAccuracy = self->_desiredAccuracy;
   v29 = NSStringFromSelector("desiredAccuracy");
-  [v5 encodeObject:desiredAccuracy forKey:v29];
+  [coderCopy encodeObject:desiredAccuracy forKey:v29];
 
   v31 = [NSNumber numberWithInteger:self->_profile];
   v30 = NSStringFromSelector("profile");
-  [v5 encodeObject:v31 forKey:v30];
+  [coderCopy encodeObject:v31 forKey:v30];
 }
 
-- (FMDSupportedAccessory)initWithCoder:(id)a3
+- (FMDSupportedAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FMDSupportedAccessory *)self init];
   if (v5)
   {
-    v5->_vendorID = [v4 decodeIntForKey:@"vendorId"];
-    v5->_productID = [v4 decodeIntForKey:@"productId"];
+    v5->_vendorID = [coderCopy decodeIntForKey:@"vendorId"];
+    v5->_productID = [coderCopy decodeIntForKey:@"productId"];
     v6 = objc_opt_class();
     v7 = NSStringFromSelector("productType");
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     productType = v8;
     if (!v8)
     {
@@ -430,13 +430,13 @@
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector("assets");
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     assets = v5->_assets;
     v5->_assets = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector("maximumHistoricalLocations");
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     maximumHistoricalLocations = v16;
     if (!v16)
     {
@@ -447,7 +447,7 @@
 
     v18 = objc_opt_class();
     v19 = NSStringFromSelector("longTermlocationExpiryTimeInterval");
-    v20 = [v4 decodeObjectOfClass:v18 forKey:v19];
+    v20 = [coderCopy decodeObjectOfClass:v18 forKey:v19];
     longTermlocationExpiryTimeInterval = v20;
     if (!v20)
     {
@@ -458,7 +458,7 @@
 
     v22 = objc_opt_class();
     v23 = NSStringFromSelector("shortTermlocationExpiryTimeInterval");
-    v24 = [v4 decodeObjectOfClass:v22 forKey:v23];
+    v24 = [coderCopy decodeObjectOfClass:v22 forKey:v23];
     shortTermlocationExpiryTimeInterval = v24;
     if (!v24)
     {
@@ -469,7 +469,7 @@
 
     v26 = objc_opt_class();
     v27 = NSStringFromSelector("locationThrottleRatio");
-    v28 = [v4 decodeObjectOfClass:v26 forKey:v27];
+    v28 = [coderCopy decodeObjectOfClass:v26 forKey:v27];
     locationThrottleRatio = v28;
     if (!v28)
     {
@@ -480,7 +480,7 @@
 
     v30 = objc_opt_class();
     v31 = NSStringFromSelector("locateTimeout");
-    v32 = [v4 decodeObjectOfClass:v30 forKey:v31];
+    v32 = [coderCopy decodeObjectOfClass:v30 forKey:v31];
     locateTimeout = v32;
     if (!v32)
     {
@@ -491,7 +491,7 @@
 
     v34 = objc_opt_class();
     v35 = NSStringFromSelector("startThreshold");
-    v36 = [v4 decodeObjectOfClass:v34 forKey:v35];
+    v36 = [coderCopy decodeObjectOfClass:v34 forKey:v35];
     startThreshold = v36;
     if (!v36)
     {
@@ -502,7 +502,7 @@
 
     v38 = objc_opt_class();
     v39 = NSStringFromSelector("endThreshold");
-    v40 = [v4 decodeObjectOfClass:v38 forKey:v39];
+    v40 = [coderCopy decodeObjectOfClass:v38 forKey:v39];
     endThreshold = v40;
     if (!v40)
     {
@@ -513,7 +513,7 @@
 
     v42 = objc_opt_class();
     v43 = NSStringFromSelector("decayFactor");
-    v44 = [v4 decodeObjectOfClass:v42 forKey:v43];
+    v44 = [coderCopy decodeObjectOfClass:v42 forKey:v43];
     decayFactor = v44;
     if (!v44)
     {
@@ -524,7 +524,7 @@
 
     v46 = objc_opt_class();
     v47 = NSStringFromSelector("cachedLocValidityDuration");
-    v48 = [v4 decodeObjectOfClass:v46 forKey:v47];
+    v48 = [coderCopy decodeObjectOfClass:v46 forKey:v47];
     cachedLocValidityDuration = v48;
     if (!v48)
     {
@@ -535,7 +535,7 @@
 
     v50 = objc_opt_class();
     v51 = NSStringFromSelector("desiredAccuracy");
-    v52 = [v4 decodeObjectOfClass:v50 forKey:v51];
+    v52 = [coderCopy decodeObjectOfClass:v50 forKey:v51];
     desiredAccuracy = v52;
     if (!v52)
     {
@@ -546,7 +546,7 @@
 
     v54 = objc_opt_class();
     v55 = NSStringFromSelector("profile");
-    v56 = [v4 decodeObjectOfClass:v54 forKey:v55];
+    v56 = [coderCopy decodeObjectOfClass:v54 forKey:v55];
     profile = [v56 integerValue];
     if (!profile)
     {
@@ -562,20 +562,20 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [FMDSupportedAccessory allocWithZone:a3];
+  v4 = [FMDSupportedAccessory allocWithZone:zone];
   vendorID = self->_vendorID;
   productID = self->_productID;
-  v7 = [(FMDSupportedAccessory *)self profile];
+  profile = [(FMDSupportedAccessory *)self profile];
 
-  return [(FMDSupportedAccessory *)v4 initWithVendorID:vendorID productID:productID profile:v7];
+  return [(FMDSupportedAccessory *)v4 initWithVendorID:vendorID productID:productID profile:profile];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -585,12 +585,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(FMDSupportedAccessory *)self vendorID];
-      if (v6 == [(FMDSupportedAccessory *)v5 vendorID])
+      v5 = equalCopy;
+      vendorID = [(FMDSupportedAccessory *)self vendorID];
+      if (vendorID == [(FMDSupportedAccessory *)v5 vendorID])
       {
-        v7 = [(FMDSupportedAccessory *)self productID];
-        v8 = v7 == [(FMDSupportedAccessory *)v5 productID];
+        productID = [(FMDSupportedAccessory *)self productID];
+        v8 = productID == [(FMDSupportedAccessory *)v5 productID];
       }
 
       else

@@ -1,6 +1,6 @@
 @interface MTRUnitTestingClusterTestDifferentVendorMeiEventEvent
 - (MTRUnitTestingClusterTestDifferentVendorMeiEventEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestDifferentVendorMeiEventEvent);
-  v5 = [(MTRUnitTestingClusterTestDifferentVendorMeiEventEvent *)self arg1];
-  [(MTRUnitTestingClusterTestDifferentVendorMeiEventEvent *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterTestDifferentVendorMeiEventEvent *)self arg1];
+  [(MTRUnitTestingClusterTestDifferentVendorMeiEventEvent *)v4 setArg1:arg1];
 
   return v4;
 }

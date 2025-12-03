@@ -1,15 +1,15 @@
 @interface CESRFieldTypeMapping
-- (BOOL)isEqual:(id)a3;
-- (CESRFieldTypeMapping)initWithFieldTypeName:(id)a3 vocabularyLabel:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CESRFieldTypeMapping)initWithFieldTypeName:(id)name vocabularyLabel:(id)label;
 - (unint64_t)hash;
 @end
 
 @implementation CESRFieldTypeMapping
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
     goto LABEL_22;
@@ -22,13 +22,13 @@
     goto LABEL_22;
   }
 
-  v7 = v6;
-  v8 = [(CESRFieldTypeMapping *)self fieldTypeName];
-  if (v8 || ([(CESRFieldTypeMapping *)v7 fieldTypeName], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  v7 = equalCopy;
+  fieldTypeName = [(CESRFieldTypeMapping *)self fieldTypeName];
+  if (fieldTypeName || ([(CESRFieldTypeMapping *)v7 fieldTypeName], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CESRFieldTypeMapping *)self fieldTypeName];
-    v4 = [(CESRFieldTypeMapping *)v7 fieldTypeName];
-    if (![v3 isEqualToString:v4])
+    fieldTypeName2 = [(CESRFieldTypeMapping *)self fieldTypeName];
+    fieldTypeName3 = [(CESRFieldTypeMapping *)v7 fieldTypeName];
+    if (![fieldTypeName2 isEqualToString:fieldTypeName3])
     {
       v10 = 0;
 LABEL_18:
@@ -45,14 +45,14 @@ LABEL_18:
     v9 = 0;
   }
 
-  v11 = [(CESRFieldTypeMapping *)self vocabularyLabel];
-  if (v11 || ([(CESRFieldTypeMapping *)v7 vocabularyLabel], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  vocabularyLabel = [(CESRFieldTypeMapping *)self vocabularyLabel];
+  if (vocabularyLabel || ([(CESRFieldTypeMapping *)v7 vocabularyLabel], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = [(CESRFieldTypeMapping *)self vocabularyLabel:v15];
-    v13 = [(CESRFieldTypeMapping *)v7 vocabularyLabel];
-    v10 = [v12 isEqual:v13];
+    vocabularyLabel2 = [(CESRFieldTypeMapping *)v7 vocabularyLabel];
+    v10 = [v12 isEqual:vocabularyLabel2];
 
-    if (v11)
+    if (vocabularyLabel)
     {
       goto LABEL_17;
     }
@@ -71,7 +71,7 @@ LABEL_17:
   }
 
 LABEL_19:
-  if (!v8)
+  if (!fieldTypeName)
   {
   }
 
@@ -81,26 +81,26 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [(CESRFieldTypeMapping *)self fieldTypeName];
-  v4 = [v3 hash];
-  v5 = [(CESRFieldTypeMapping *)self vocabularyLabel];
-  v6 = [v5 hash];
+  fieldTypeName = [(CESRFieldTypeMapping *)self fieldTypeName];
+  v4 = [fieldTypeName hash];
+  vocabularyLabel = [(CESRFieldTypeMapping *)self vocabularyLabel];
+  v6 = [vocabularyLabel hash];
 
   return v6 ^ v4;
 }
 
-- (CESRFieldTypeMapping)initWithFieldTypeName:(id)a3 vocabularyLabel:(id)a4
+- (CESRFieldTypeMapping)initWithFieldTypeName:(id)name vocabularyLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  labelCopy = label;
   v12.receiver = self;
   v12.super_class = CESRFieldTypeMapping;
   v9 = [(CESRFieldTypeMapping *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fieldTypeName, a3);
-    objc_storeStrong(&v10->_vocabularyLabel, a4);
+    objc_storeStrong(&v9->_fieldTypeName, name);
+    objc_storeStrong(&v10->_vocabularyLabel, label);
   }
 
   return v10;

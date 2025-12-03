@@ -2,25 +2,25 @@
 + (id)Nearby;
 + (id)configurationForNearby;
 + (id)storeConfigurationForNearby;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMWatchLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Nearby"])
+  if ([name isEqualToString:@"Nearby"])
   {
-    v4 = [a1 Nearby];
+    nearby = [self Nearby];
   }
 
   else
   {
-    v4 = 0;
+    nearby = 0;
   }
 
-  return v4;
+  return nearby;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForNearby
 {
-  v3 = [a1 storeConfigurationForNearby];
-  v4 = [a1 syncPolicyForNearby];
+  storeConfigurationForNearby = [self storeConfigurationForNearby];
+  syncPolicyForNearby = [self syncPolicyForNearby];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"9AC92BB7-7901-47AA-AAC4-ADE7A1E4556E"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Watch.Nearby" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Watch.Nearby" eventClass:objc_opt_class() storeConfig:storeConfigurationForNearby syncPolicy:syncPolicyForNearby legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)Nearby
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForNearby];
+  configurationForNearby = [self configurationForNearby];
   v3 = +[BMWatchNearby columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Watch.Nearby" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Watch.Nearby" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Watch.Nearby" schema:v9 configuration:configurationForNearby];
 
   v11 = *MEMORY[0x1E69E9840];
 

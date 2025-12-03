@@ -1,52 +1,52 @@
 @interface SFAuthenticationSession
-- (BOOL)_startRequestingFromWebAuthenticationSession:(BOOL)a3 inWindow:(id)a4 dryRun:(BOOL)a5;
-- (SFAuthenticationSession)initWithURL:(id)a3 callback:(id)a4 storageMode:(unint64_t)a5 jitEnabled:(BOOL)a6 completionHandler:(id)a7;
-- (SFAuthenticationSession)initWithURL:(id)a3 callbackURLScheme:(id)a4 usingEphemeralSession:(BOOL)a5 jitEnabled:(BOOL)a6 completionHandler:(id)a7;
+- (BOOL)_startRequestingFromWebAuthenticationSession:(BOOL)session inWindow:(id)window dryRun:(BOOL)run;
+- (SFAuthenticationSession)initWithURL:(id)l callback:(id)callback storageMode:(unint64_t)mode jitEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (SFAuthenticationSession)initWithURL:(id)l callbackURLScheme:(id)scheme usingEphemeralSession:(BOOL)session jitEnabled:(BOOL)enabled completionHandler:(id)handler;
 - (_SFAuthenticationSessionDelegate)_delegate;
-- (id)presentingViewControllerForAuthenticationViewController:(id)a3;
+- (id)presentingViewControllerForAuthenticationViewController:(id)controller;
 - (void)cancel;
 - (void)dealloc;
-- (void)safariViewController:(id)a3 didDecideCookieSharingForURL:(id)a4 shouldCancel:(BOOL)a5 withError:(id)a6;
-- (void)safariViewController:(id)a3 hostApplicationOpenURL:(id)a4;
-- (void)safariViewControllerDidFinish:(id)a3;
+- (void)safariViewController:(id)controller didDecideCookieSharingForURL:(id)l shouldCancel:(BOOL)cancel withError:(id)error;
+- (void)safariViewController:(id)controller hostApplicationOpenURL:(id)l;
+- (void)safariViewControllerDidFinish:(id)finish;
 @end
 
 @implementation SFAuthenticationSession
 
-- (SFAuthenticationSession)initWithURL:(id)a3 callbackURLScheme:(id)a4 usingEphemeralSession:(BOOL)a5 jitEnabled:(BOOL)a6 completionHandler:(id)a7
+- (SFAuthenticationSession)initWithURL:(id)l callbackURLScheme:(id)scheme usingEphemeralSession:(BOOL)session jitEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v7 = a6;
-  v8 = a5;
+  enabledCopy = enabled;
+  sessionCopy = session;
   v12 = MEMORY[0x1E695A958];
-  v13 = a7;
-  v14 = a3;
-  v15 = [v12 callbackWithCustomScheme:a4];
-  v16 = [(SFAuthenticationSession *)self initWithURL:v14 callback:v15 storageMode:v8 jitEnabled:v7 completionHandler:v13];
+  handlerCopy = handler;
+  lCopy = l;
+  v15 = [v12 callbackWithCustomScheme:scheme];
+  v16 = [(SFAuthenticationSession *)self initWithURL:lCopy callback:v15 storageMode:sessionCopy jitEnabled:enabledCopy completionHandler:handlerCopy];
 
   return v16;
 }
 
-- (SFAuthenticationSession)initWithURL:(id)a3 callback:(id)a4 storageMode:(unint64_t)a5 jitEnabled:(BOOL)a6 completionHandler:(id)a7
+- (SFAuthenticationSession)initWithURL:(id)l callback:(id)callback storageMode:(unint64_t)mode jitEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  lCopy = l;
+  callbackCopy = callback;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = SFAuthenticationSession;
   v15 = [(SFAuthenticationSession *)&v22 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [lCopy copy];
     initialURL = v15->_initialURL;
     v15->_initialURL = v16;
 
-    objc_storeStrong(&v15->_callback, a4);
-    v18 = _Block_copy(v14);
+    objc_storeStrong(&v15->_callback, callback);
+    v18 = _Block_copy(handlerCopy);
     completionHandler = v15->_completionHandler;
     v15->_completionHandler = v18;
 
-    v15->_storageMode = a5;
-    v15->_jitEnabled = a6;
+    v15->_storageMode = mode;
+    v15->_jitEnabled = enabled;
     v20 = v15;
   }
 
@@ -61,9 +61,9 @@
   [(SFAuthenticationSession *)&v3 dealloc];
 }
 
-- (BOOL)_startRequestingFromWebAuthenticationSession:(BOOL)a3 inWindow:(id)a4 dryRun:(BOOL)a5
+- (BOOL)_startRequestingFromWebAuthenticationSession:(BOOL)session inWindow:(id)window dryRun:(BOOL)run
 {
-  v7 = a4;
+  windowCopy = window;
   if (self->_authViewController || self->_sessionStarted)
   {
     v8 = 0;
@@ -71,8 +71,8 @@
 
   else
   {
-    v10 = [(NSURL *)self->_initialURL scheme];
-    v11 = [v10 safari_isCaseInsensitiveEqualToString:@"http"];
+    scheme = [(NSURL *)self->_initialURL scheme];
+    v11 = [scheme safari_isCaseInsensitiveEqualToString:@"http"];
 
     if (v11)
     {
@@ -86,9 +86,9 @@
     }
 
     v8 = 1;
-    if (!a5)
+    if (!run)
     {
-      v15 = [[SFAuthenticationViewController alloc] initWithURL:self->_initialURL callback:self->_callback storageMode:self->_storageMode jitEnabled:self->_jitEnabled presentationContextWindow:v7 additionalHeaderFields:self->_additionalHeaderFields proxiedAssociatedDomains:self->_proxiedAssociatedDomains networkAttributionApplicationBundleIdentifier:self->_networkAttributionApplicationBundleIdentifier];
+      v15 = [[SFAuthenticationViewController alloc] initWithURL:self->_initialURL callback:self->_callback storageMode:self->_storageMode jitEnabled:self->_jitEnabled presentationContextWindow:windowCopy additionalHeaderFields:self->_additionalHeaderFields proxiedAssociatedDomains:self->_proxiedAssociatedDomains networkAttributionApplicationBundleIdentifier:self->_networkAttributionApplicationBundleIdentifier];
       authViewController = self->_authViewController;
       self->_authViewController = v15;
 
@@ -107,10 +107,10 @@
   authViewController = self->_authViewController;
   if (authViewController)
   {
-    v4 = [(SFAuthenticationViewController *)authViewController presentingViewController];
+    presentingViewController = [(SFAuthenticationViewController *)authViewController presentingViewController];
 
     v5 = self->_authViewController;
-    if (v4)
+    if (presentingViewController)
     {
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -134,12 +134,12 @@ void __33__SFAuthenticationSession_cancel__block_invoke(uint64_t a1)
   *(v1 + 24) = 0;
 }
 
-- (id)presentingViewControllerForAuthenticationViewController:(id)a3
+- (id)presentingViewControllerForAuthenticationViewController:(id)controller
 {
-  v4 = [(SFAuthenticationSession *)self _delegate];
+  _delegate = [(SFAuthenticationSession *)self _delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 _presentingViewControllerForAuthenticationSession:self];
+    v5 = [_delegate _presentingViewControllerForAuthenticationSession:self];
   }
 
   else
@@ -150,7 +150,7 @@ void __33__SFAuthenticationSession_cancel__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
   authViewController = self->_authViewController;
   self->_authViewController = 0;
@@ -163,9 +163,9 @@ void __33__SFAuthenticationSession_cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)safariViewController:(id)a3 hostApplicationOpenURL:(id)a4
+- (void)safariViewController:(id)controller hostApplicationOpenURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   authViewController = self->_authViewController;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -176,7 +176,7 @@ void __33__SFAuthenticationSession_cancel__block_invoke(uint64_t a1)
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, v5, 0);
+    completionHandler[2](completionHandler, lCopy, 0);
   }
 }
 
@@ -187,15 +187,15 @@ void __71__SFAuthenticationSession_safariViewController_hostApplicationOpenURL__
   *(v1 + 24) = 0;
 }
 
-- (void)safariViewController:(id)a3 didDecideCookieSharingForURL:(id)a4 shouldCancel:(BOOL)a5 withError:(id)a6
+- (void)safariViewController:(id)controller didDecideCookieSharingForURL:(id)l shouldCancel:(BOOL)cancel withError:(id)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  cancelCopy = cancel;
+  controllerCopy = controller;
+  lCopy = l;
+  errorCopy = error;
   if (self->_authViewController)
   {
-    if (v7)
+    if (cancelCopy)
     {
       v13 = WBS_LOG_CHANNEL_PREFIXSVCPrivacy();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -207,9 +207,9 @@ void __71__SFAuthenticationSession_safariViewController_hostApplicationOpenURL__
       completionHandler = self->_completionHandler;
       if (completionHandler)
       {
-        if (v12)
+        if (errorCopy)
         {
-          completionHandler[2](self->_completionHandler, 0, v12);
+          completionHandler[2](self->_completionHandler, 0, errorCopy);
         }
 
         else

@@ -1,12 +1,12 @@
 @interface PXRearrangeTransientCollectionListAction
-+ (BOOL)canPerformOnCollection:(id)a3;
++ (BOOL)canPerformOnCollection:(id)collection;
 - (PHObject)targetObject;
 - (PXFastEnumeration)movedObjects;
-- (PXRearrangeTransientCollectionListAction)initWithCollectionList:(id)a3 movedObjects:(id)a4 targetObject:(id)a5;
-- (PXRearrangeTransientCollectionListAction)initWithPhotoLibrary:(id)a3;
-- (void)performAction:(id)a3;
-- (void)setMovedObjects:(id)a3;
-- (void)setTargetObject:(id)a3;
+- (PXRearrangeTransientCollectionListAction)initWithCollectionList:(id)list movedObjects:(id)objects targetObject:(id)object;
+- (PXRearrangeTransientCollectionListAction)initWithPhotoLibrary:(id)library;
+- (void)performAction:(id)action;
+- (void)setMovedObjects:(id)objects;
+- (void)setTargetObject:(id)object;
 @end
 
 @implementation PXRearrangeTransientCollectionListAction
@@ -19,11 +19,11 @@
   return v2;
 }
 
-- (void)setMovedObjects:(id)a3
+- (void)setMovedObjects:(id)objects
 {
   v5 = OBJC_IVAR___PXRearrangeTransientCollectionListAction_movedObjects;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = objects;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -35,50 +35,50 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setTargetObject:(id)a3
+- (void)setTargetObject:(id)object
 {
   v5 = OBJC_IVAR___PXRearrangeTransientCollectionListAction_targetObject;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.isa + v5) = object;
+  objectCopy = object;
 }
 
-+ (BOOL)canPerformOnCollection:(id)a3
++ (BOOL)canPerformOnCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 px_isUtilitiesFolder])
+  collectionCopy = collection;
+  if ([collectionCopy px_isUtilitiesFolder])
   {
-    v4 = 1;
+    px_isMediaTypesFolder = 1;
   }
 
   else
   {
-    v4 = [v3 px_isMediaTypesFolder];
+    px_isMediaTypesFolder = [collectionCopy px_isMediaTypesFolder];
   }
 
-  return v4;
+  return px_isMediaTypesFolder;
 }
 
-- (PXRearrangeTransientCollectionListAction)initWithCollectionList:(id)a3 movedObjects:(id)a4 targetObject:(id)a5
+- (PXRearrangeTransientCollectionListAction)initWithCollectionList:(id)list movedObjects:(id)objects targetObject:(id)object
 {
-  v7 = a3;
+  listCopy = list;
   swift_unknownObjectRetain();
-  v8 = a5;
-  return PXRearrangeTransientCollectionListAction.init(collectionList:movedObjects:targetObject:)(v7, a4, a5);
+  objectCopy = object;
+  return PXRearrangeTransientCollectionListAction.init(collectionList:movedObjects:targetObject:)(listCopy, objects, object);
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   _Block_copy(v4);
-  v5 = self;
-  sub_1A4A2F494(v5, v4);
+  selfCopy = self;
+  sub_1A4A2F494(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (PXRearrangeTransientCollectionListAction)initWithPhotoLibrary:(id)a3
+- (PXRearrangeTransientCollectionListAction)initWithPhotoLibrary:(id)library
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

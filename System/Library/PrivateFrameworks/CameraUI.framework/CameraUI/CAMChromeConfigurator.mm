@@ -4,73 +4,73 @@
 - (BOOL)isTorchSupported;
 - (BOOL)isTrackingLensPositionSlider;
 - (CAMChromeConfigurator)init;
-- (CAMChromeConfigurator)initWithEventHandler:(id)a3 captureGraphConfiguration:(id)a4;
+- (CAMChromeConfigurator)initWithEventHandler:(id)handler captureGraphConfiguration:(id)configuration;
 - (CAMDynamicShutterControl)shutterControl;
 - (CGRect)chromeSidebarFrame;
 - (CGRect)collapsedTopBarFrame;
 - (int64_t)hdrMode;
-- (void)performChanges:(id)a3;
+- (void)performChanges:(id)changes;
 - (void)removeThumbnailImage;
-- (void)setActivePrimaryConstituentDeviceType:(int64_t)a3;
-- (void)setAvailableCaptureModeRawValues:(id)a3;
-- (void)setCaptureGraphConfiguration:(id)a3;
-- (void)setDepthEffectSuggestionButtonMode:(int64_t)a3;
-- (void)setDynamicShutterShapeOpacity:(double)a3;
-- (void)setDynamicShutterShowDragHandle:(BOOL)a3;
-- (void)setFilterItemDisplayNames:(id)a3;
-- (void)setFilterThumbnailContents:(id)a3;
-- (void)setFlashMode:(int64_t)a3;
-- (void)setIsAutoMacroButtonVisible:(BOOL)a3;
-- (void)setIsLensPositionLockedByUser:(BOOL)a3;
-- (void)setIsLensPositionSupported:(BOOL)a3;
-- (void)setIsSemanticStylesSupported:(BOOL)a3;
-- (void)setIsSmartStyleCustomized:(BOOL)a3;
-- (void)setIsSmartStyleDisabled:(BOOL)a3;
-- (void)setIsSmartStylesSupported:(BOOL)a3;
-- (void)setIsTorchActive:(BOOL)a3;
-- (void)setIsTorchCurrentlyUnavailable:(BOOL)a3;
-- (void)setIsTorchSupported:(BOOL)a3;
-- (void)setLensPosition:(double)a3;
-- (void)setMacroMode:(int64_t)a3;
-- (void)setNightModeDurationMapping:(id)a3;
-- (void)setOverscanOverlayAlpha:(double)a3 duration:(double)a4;
-- (void)setSemanticStylePreset:(int64_t)a3;
-- (void)setSharedLibraryEnabled:(BOOL)a3 mode:(int64_t)a4;
-- (void)setShowTorchInTopBarForAllStates:(BOOL)a3;
-- (void)setSmartStyleCastIntensity:(double)a3;
-- (void)setSmartStyleCastType:(int64_t)a3;
-- (void)setSmartStyleDPadDefaultValue:(CGPoint)a3;
-- (void)setSmartStyleDPadValue:(CGPoint)a3;
-- (void)setSmartStyleIsUsersSystemStyle:(BOOL)a3;
-- (void)setSmartStylePresetType:(int64_t)a3;
-- (void)setSupportedVideoFormatsRawValues:(id)a3;
-- (void)setTorchMode:(int64_t)a3;
+- (void)setActivePrimaryConstituentDeviceType:(int64_t)type;
+- (void)setAvailableCaptureModeRawValues:(id)values;
+- (void)setCaptureGraphConfiguration:(id)configuration;
+- (void)setDepthEffectSuggestionButtonMode:(int64_t)mode;
+- (void)setDynamicShutterShapeOpacity:(double)opacity;
+- (void)setDynamicShutterShowDragHandle:(BOOL)handle;
+- (void)setFilterItemDisplayNames:(id)names;
+- (void)setFilterThumbnailContents:(id)contents;
+- (void)setFlashMode:(int64_t)mode;
+- (void)setIsAutoMacroButtonVisible:(BOOL)visible;
+- (void)setIsLensPositionLockedByUser:(BOOL)user;
+- (void)setIsLensPositionSupported:(BOOL)supported;
+- (void)setIsSemanticStylesSupported:(BOOL)supported;
+- (void)setIsSmartStyleCustomized:(BOOL)customized;
+- (void)setIsSmartStyleDisabled:(BOOL)disabled;
+- (void)setIsSmartStylesSupported:(BOOL)supported;
+- (void)setIsTorchActive:(BOOL)active;
+- (void)setIsTorchCurrentlyUnavailable:(BOOL)unavailable;
+- (void)setIsTorchSupported:(BOOL)supported;
+- (void)setLensPosition:(double)position;
+- (void)setMacroMode:(int64_t)mode;
+- (void)setNightModeDurationMapping:(id)mapping;
+- (void)setOverscanOverlayAlpha:(double)alpha duration:(double)duration;
+- (void)setSemanticStylePreset:(int64_t)preset;
+- (void)setSharedLibraryEnabled:(BOOL)enabled mode:(int64_t)mode;
+- (void)setShowTorchInTopBarForAllStates:(BOOL)states;
+- (void)setSmartStyleCastIntensity:(double)intensity;
+- (void)setSmartStyleCastType:(int64_t)type;
+- (void)setSmartStyleDPadDefaultValue:(CGPoint)value;
+- (void)setSmartStyleDPadValue:(CGPoint)value;
+- (void)setSmartStyleIsUsersSystemStyle:(BOOL)style;
+- (void)setSmartStylePresetType:(int64_t)type;
+- (void)setSupportedVideoFormatsRawValues:(id)values;
+- (void)setTorchMode:(int64_t)mode;
 - (void)showControlPanel;
 - (void)showSmartStyleExpanded;
-- (void)updateThumbnailImage:(id)a3 uuid:(id)a4 animated:(BOOL)a5;
+- (void)updateThumbnailImage:(id)image uuid:(id)uuid animated:(BOOL)animated;
 @end
 
 @implementation CAMChromeConfigurator
 
-- (CAMChromeConfigurator)initWithEventHandler:(id)a3 captureGraphConfiguration:(id)a4
+- (CAMChromeConfigurator)initWithEventHandler:(id)handler captureGraphConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = sub_1A397D9F8(v5, a4);
+  handlerCopy = handler;
+  v6 = sub_1A397D9F8(handlerCopy, configuration);
 
   return v6;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changes);
   _Block_copy(v4);
-  v5 = self;
-  sub_1A397E04C(v5, v4);
+  selfCopy = self;
+  sub_1A397E04C(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)setAvailableCaptureModeRawValues:(id)a3
+- (void)setAvailableCaptureModeRawValues:(id)values
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB0FF728);
   v5 = MEMORY[0x1EEE9AC00](v4 - 8);
@@ -92,14 +92,14 @@
   (*(v11 + 8))(v13, v10);
 }
 
-- (void)setCaptureGraphConfiguration:(id)a3
+- (void)setCaptureGraphConfiguration:(id)configuration
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
 
-  sub_1A3979764(a3, v6);
+  sub_1A3979764(configuration, selfCopy);
 }
 
 - (int64_t)hdrMode
@@ -117,46 +117,46 @@
   }
 }
 
-- (void)updateThumbnailImage:(id)a3 uuid:(id)a4 animated:(BOOL)a5
+- (void)updateThumbnailImage:(id)image uuid:(id)uuid animated:(BOOL)animated
 {
   sub_1A3A31850();
-  v7 = a3;
-  v8 = self;
-  sub_1A3970674(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_1A3970674(image);
 }
 
 - (void)removeThumbnailImage
 {
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v3 = self;
+  selfCopy = self;
   sub_1A3A2F070();
 }
 
-- (void)setNightModeDurationMapping:(id)a3
+- (void)setNightModeDurationMapping:(id)mapping
 {
-  v4 = *&a3.var0;
-  v5 = *&a3.var1;
+  v4 = *&mapping.var0;
+  v5 = *&mapping.var1;
   swift_getKeyPath();
   swift_getKeyPath();
   sub_1A3979F04(v4, v5, 0, self);
 }
 
-- (void)setOverscanOverlayAlpha:(double)a3 duration:(double)a4
+- (void)setOverscanOverlayAlpha:(double)alpha duration:(double)duration
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  sub_1A3979F04(*&a3, *&a4, 0, self);
+  sub_1A3979F04(*&alpha, *&duration, 0, self);
 }
 
-- (void)setSharedLibraryEnabled:(BOOL)a3 mode:(int64_t)a4
+- (void)setSharedLibraryEnabled:(BOOL)enabled mode:(int64_t)mode
 {
-  v6 = a3;
+  enabledCopy = enabled;
   swift_getKeyPath();
   swift_getKeyPath();
-  v7 = self;
+  selfCopy = self;
 
-  sub_1A397A054(v6, a4, v7);
+  sub_1A397A054(enabledCopy, mode, selfCopy);
 }
 
 - (CAMDynamicShutterControl)shutterControl
@@ -166,7 +166,7 @@
   if (v3)
   {
     v4 = *(v2 + 1096);
-    v5 = self;
+    selfCopy = self;
     v6 = sub_1A38C048C(v3, v4);
     v7 = v3(v6);
     sub_1A3671090(v3);
@@ -180,17 +180,17 @@
   return v7;
 }
 
-- (void)setSupportedVideoFormatsRawValues:(id)a3
+- (void)setSupportedVideoFormatsRawValues:(id)values
 {
   sub_1A38E805C(0, &qword_1ED998538);
   v4 = sub_1A3A319A0();
-  v5 = self;
+  selfCopy = self;
   sub_1A3971A08(v4);
 }
 
 - (void)showControlPanel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A38EDFE0(0x23uLL, 0, 0, 1);
 }
 
@@ -199,7 +199,7 @@
   v3 = *(&self->super.isa + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v4 = self;
+  selfCopy = self;
   sub_1A3A2F080();
 
   v5 = v3[8];
@@ -223,7 +223,7 @@
   v3 = *(&self->super.isa + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v4 = self;
+  selfCopy = self;
   sub_1A3A2F080();
 
   v5 = v3[28];
@@ -244,265 +244,265 @@
 
 - (BOOL)isFlashSupported
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A39726E4();
 
   return v3 & 1;
 }
 
-- (void)setFlashMode:(int64_t)a3
+- (void)setFlashMode:(int64_t)mode
 {
   v5 = *(&self->super.isa + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v6 = self;
+  selfCopy = self;
   sub_1A3A2F080();
 
   v7 = *(v5 + 616);
   sub_1A3A2EA60();
-  v8 = sub_1A39F6FA8(a3);
+  v8 = sub_1A39F6FA8(mode);
   sub_1A391C264(v8, v7);
 }
 
-- (void)setIsTorchSupported:(BOOL)a3
+- (void)setIsTorchSupported:(BOOL)supported
 {
-  v4 = self;
-  sub_1A3972A74(a3);
+  selfCopy = self;
+  sub_1A3972A74(supported);
 }
 
 - (BOOL)isTorchSupported
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A3972CA0();
 
   return v3 & 1;
 }
 
-- (void)setShowTorchInTopBarForAllStates:(BOOL)a3
+- (void)setShowTorchInTopBarForAllStates:(BOOL)states
 {
-  v4 = self;
-  sub_1A3972E04(a3);
+  selfCopy = self;
+  sub_1A3972E04(states);
 }
 
-- (void)setIsTorchActive:(BOOL)a3
+- (void)setIsTorchActive:(BOOL)active
 {
-  v4 = self;
-  sub_1A3973030(a3);
+  selfCopy = self;
+  sub_1A3973030(active);
 }
 
-- (void)setIsTorchCurrentlyUnavailable:(BOOL)a3
+- (void)setIsTorchCurrentlyUnavailable:(BOOL)unavailable
 {
-  v4 = self;
-  sub_1A397325C(a3);
+  selfCopy = self;
+  sub_1A397325C(unavailable);
 }
 
-- (void)setTorchMode:(int64_t)a3
+- (void)setTorchMode:(int64_t)mode
 {
-  v4 = self;
-  sub_1A3973488(a3);
+  selfCopy = self;
+  sub_1A3973488(mode);
 }
 
-- (void)setIsSemanticStylesSupported:(BOOL)a3
+- (void)setIsSemanticStylesSupported:(BOOL)supported
 {
   v5 = *(&self->super.isa + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v6 = self;
+  selfCopy = self;
   sub_1A3A2F080();
 
   v7 = *(v5 + 936);
   sub_1A3A2EA60();
-  sub_1A3918D10(a3, v7);
+  sub_1A3918D10(supported, v7);
 }
 
-- (void)setSemanticStylePreset:(int64_t)a3
+- (void)setSemanticStylePreset:(int64_t)preset
 {
   v5 = *(&self->super.isa + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v6 = self;
+  selfCopy = self;
   sub_1A3A2F080();
 
   v7 = *(v5 + 936);
   sub_1A3A2EA60();
-  sub_1A3918E24(a3, v7);
+  sub_1A3918E24(preset, v7);
 }
 
-- (void)setIsSmartStylesSupported:(BOOL)a3
+- (void)setIsSmartStylesSupported:(BOOL)supported
 {
-  v4 = self;
-  sub_1A39739C0(a3);
+  selfCopy = self;
+  sub_1A39739C0(supported);
 }
 
-- (void)setSmartStyleDPadValue:(CGPoint)a3
+- (void)setSmartStyleDPadValue:(CGPoint)value
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = value.y;
+  x = value.x;
+  selfCopy = self;
   sub_1A3973BEC(x, y);
 }
 
-- (void)setSmartStyleDPadDefaultValue:(CGPoint)a3
+- (void)setSmartStyleDPadDefaultValue:(CGPoint)value
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = value.y;
+  x = value.x;
+  selfCopy = self;
   sub_1A3973E2C(x, y);
 }
 
-- (void)setSmartStyleCastType:(int64_t)a3
+- (void)setSmartStyleCastType:(int64_t)type
 {
-  v4 = self;
-  sub_1A397406C(a3);
+  selfCopy = self;
+  sub_1A397406C(type);
 }
 
-- (void)setSmartStylePresetType:(int64_t)a3
+- (void)setSmartStylePresetType:(int64_t)type
 {
-  v4 = self;
-  sub_1A3974294(a3);
+  selfCopy = self;
+  sub_1A3974294(type);
 }
 
-- (void)setSmartStyleCastIntensity:(double)a3
+- (void)setSmartStyleCastIntensity:(double)intensity
 {
-  v4 = self;
-  sub_1A39744BC(a3);
+  selfCopy = self;
+  sub_1A39744BC(intensity);
 }
 
-- (void)setIsSmartStyleCustomized:(BOOL)a3
+- (void)setIsSmartStyleCustomized:(BOOL)customized
 {
-  v4 = self;
-  sub_1A39746EC(a3);
+  selfCopy = self;
+  sub_1A39746EC(customized);
 }
 
-- (void)setIsSmartStyleDisabled:(BOOL)a3
+- (void)setIsSmartStyleDisabled:(BOOL)disabled
 {
-  v4 = self;
-  sub_1A3974918(a3);
+  selfCopy = self;
+  sub_1A3974918(disabled);
 }
 
-- (void)setSmartStyleIsUsersSystemStyle:(BOOL)a3
+- (void)setSmartStyleIsUsersSystemStyle:(BOOL)style
 {
-  v4 = self;
-  sub_1A3974B44(a3);
+  selfCopy = self;
+  sub_1A3974B44(style);
 }
 
 - (void)showSmartStyleExpanded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A38EDFE0(0x19uLL, 0, 0, 1);
 }
 
-- (void)setFilterThumbnailContents:(id)a3
+- (void)setFilterThumbnailContents:(id)contents
 {
   v5 = *(&self->super.isa + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v6 = a3;
-  v7 = self;
+  contentsCopy = contents;
+  selfCopy = self;
   sub_1A3A2F080();
 
   v8 = *(v5 + 944);
   sub_1A3A2EA60();
-  sub_1A39062FC(a3, v8);
+  sub_1A39062FC(contents, v8);
 }
 
-- (void)setFilterItemDisplayNames:(id)a3
+- (void)setFilterItemDisplayNames:(id)names
 {
   v4 = sub_1A3A319A0();
-  v5 = self;
+  selfCopy = self;
   sub_1A3975014(v4);
 }
 
-- (void)setIsLensPositionSupported:(BOOL)a3
+- (void)setIsLensPositionSupported:(BOOL)supported
 {
-  v4 = self;
-  sub_1A3975320(a3);
+  selfCopy = self;
+  sub_1A3975320(supported);
 }
 
 - (BOOL)isLensPositionLockedByUser
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A397554C();
 
   return v3 & 1;
 }
 
-- (void)setIsLensPositionLockedByUser:(BOOL)a3
+- (void)setIsLensPositionLockedByUser:(BOOL)user
 {
-  v4 = self;
-  sub_1A39756B0(a3);
+  selfCopy = self;
+  sub_1A39756B0(user);
 }
 
-- (void)setLensPosition:(double)a3
+- (void)setLensPosition:(double)position
 {
-  v4 = self;
-  sub_1A39758DC(a3);
+  selfCopy = self;
+  sub_1A39758DC(position);
 }
 
 - (BOOL)isTrackingLensPositionSlider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A3975B0C();
 
   return v3 & 1;
 }
 
-- (void)setDynamicShutterShowDragHandle:(BOOL)a3
+- (void)setDynamicShutterShowDragHandle:(BOOL)handle
 {
-  v4 = self;
-  sub_1A39764DC(a3);
+  selfCopy = self;
+  sub_1A39764DC(handle);
 }
 
-- (void)setDynamicShutterShapeOpacity:(double)a3
+- (void)setDynamicShutterShapeOpacity:(double)opacity
 {
-  v4 = self;
-  sub_1A3976708(a3);
+  selfCopy = self;
+  sub_1A3976708(opacity);
 }
 
-- (void)setActivePrimaryConstituentDeviceType:(int64_t)a3
+- (void)setActivePrimaryConstituentDeviceType:(int64_t)type
 {
-  v4 = self;
-  sub_1A3976938(a3);
+  selfCopy = self;
+  sub_1A3976938(type);
 }
 
-- (void)setMacroMode:(int64_t)a3
+- (void)setMacroMode:(int64_t)mode
 {
   v5 = *(&self->super.isa + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v6 = self;
+  selfCopy = self;
   sub_1A3A2F080();
 
   v7 = *(v5 + 648);
   sub_1A3A2EA60();
-  v8 = sub_1A3919550(a3);
+  v8 = sub_1A3919550(mode);
   sub_1A390C05C(v8, v7);
 }
 
-- (void)setIsAutoMacroButtonVisible:(BOOL)a3
+- (void)setIsAutoMacroButtonVisible:(BOOL)visible
 {
   v5 = *(&self->super.isa + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v6 = self;
+  selfCopy = self;
   sub_1A3A2F080();
 
   v7 = *(v5 + 648);
   sub_1A3A2EA60();
-  sub_1A390BF48(a3, v7);
+  sub_1A390BF48(visible, v7);
 }
 
-- (void)setDepthEffectSuggestionButtonMode:(int64_t)a3
+- (void)setDepthEffectSuggestionButtonMode:(int64_t)mode
 {
   v5 = *(&self->super.isa + OBJC_IVAR___CAMChromeConfigurator_viewModel);
   swift_getKeyPath();
   sub_1A397E370(&qword_1ED996608, type metadata accessor for ChromeViewModel);
-  v6 = self;
+  selfCopy = self;
   sub_1A3A2F080();
 
   v7 = *(v5 + 656);
   sub_1A3A2EA60();
-  v8 = sub_1A3915298(a3);
+  v8 = sub_1A3915298(mode);
   sub_1A39078A8(v8, v7);
 }
 

@@ -1,44 +1,44 @@
 @interface HUQuickControlSingleControlViewController
 + (Class)controlItemClass;
 + (id)controlItemPredicate;
-- (BOOL)hasModelValueChangedForInteractionCoordinator:(id)a3;
+- (BOOL)hasModelValueChangedForInteractionCoordinator:(id)coordinator;
 - (BOOL)isUserInteractionEnabled;
 - (HFControlItem)controlItem;
-- (HUQuickControlSingleControlViewController)initWithControlItem:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7;
-- (HUQuickControlSingleControlViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7;
+- (HUQuickControlSingleControlViewController)initWithControlItem:(id)item home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control;
+- (HUQuickControlSingleControlViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control;
 - (HUQuickControlViewProfile)viewProfile;
 - (id)createInteractionCoordinator;
 - (id)createViewProfile;
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3;
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size;
 - (id)overrideStatusText;
-- (id)overrideValueForCharacteristic:(id)a3;
+- (id)overrideValueForCharacteristic:(id)characteristic;
 - (id)viewForTouchContinuation;
-- (void)_setModelValue:(id)a3 writeValue:(BOOL)a4;
+- (void)_setModelValue:(id)value writeValue:(BOOL)writeValue;
 - (void)_updateControlTransform;
 - (void)_updateControlViewReachabilityState;
 - (void)_updateTitle;
 - (void)_updateViewProfileForCurrentItemState;
 - (void)_updateWriteState;
-- (void)_writeModelControlValue:(id)a3;
-- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)a3;
-- (void)hideAuxiliaryViewForInteractionCoordinator:(id)a3;
-- (void)interactionCoordinator:(id)a3 interactionStateDidChange:(BOOL)a4;
-- (void)interactionCoordinator:(id)a3 showAuxiliaryView:(id)a4;
-- (void)interactionCoordinator:(id)a3 viewValueDidChange:(id)a4;
-- (void)interactionCoordinatorWantsDismissal:(id)a3;
+- (void)_writeModelControlValue:(id)value;
+- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)recognizer;
+- (void)hideAuxiliaryViewForInteractionCoordinator:(id)coordinator;
+- (void)interactionCoordinator:(id)coordinator interactionStateDidChange:(BOOL)change;
+- (void)interactionCoordinator:(id)coordinator showAuxiliaryView:(id)view;
+- (void)interactionCoordinator:(id)coordinator viewValueDidChange:(id)change;
+- (void)interactionCoordinatorWantsDismissal:(id)dismissal;
 - (void)loadView;
-- (void)quickControlItemUpdater:(id)a3 didUpdateResultsForControlItems:(id)a4;
-- (void)setControlOrientation:(unint64_t)a3;
-- (void)setControlSize:(unint64_t)a3;
-- (void)setHorizontalControlCompressionFactor:(double)a3;
-- (void)setPreferredControl:(unint64_t)a3;
-- (void)setPreferredFrameLayoutGuide:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setVerticalDirectionalControlStretchFactor:(double)a3;
+- (void)quickControlItemUpdater:(id)updater didUpdateResultsForControlItems:(id)items;
+- (void)setControlOrientation:(unint64_t)orientation;
+- (void)setControlSize:(unint64_t)size;
+- (void)setHorizontalControlCompressionFactor:(double)factor;
+- (void)setPreferredControl:(unint64_t)control;
+- (void)setPreferredFrameLayoutGuide:(id)guide;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setVerticalDirectionalControlStretchFactor:(double)factor;
 - (void)updateValueFromControlItem;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUQuickControlSingleControlViewController
@@ -50,7 +50,7 @@
   v6[1] = 3221225472;
   v6[2] = __65__HUQuickControlSingleControlViewController_controlItemPredicate__block_invoke;
   v6[3] = &__block_descriptor_40_e23_B16__0__HFControlItem_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [(HUQuickControlSingleItemPredicate *)v3 initWithBlock:v6];
 
   return v4;
@@ -66,53 +66,53 @@ uint64_t __65__HUQuickControlSingleControlViewController_controlItemPredicate__b
   return v2 & 1;
 }
 
-- (HUQuickControlSingleControlViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7
+- (HUQuickControlSingleControlViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a4;
-  if ([v12 count] != 1)
+  itemsCopy = items;
+  updaterCopy = updater;
+  homeCopy = home;
+  if ([itemsCopy count] != 1)
   {
-    NSLog(&cfstr_ShouldBeInitia.isa, self, v12);
+    NSLog(&cfstr_ShouldBeInitia.isa, self, itemsCopy);
   }
 
-  v15 = [v12 anyObject];
-  v16 = [(HUQuickControlSingleControlViewController *)self initWithControlItem:v15 home:v14 itemUpdater:v13 controlOrientation:a6 preferredControl:a7];
+  anyObject = [itemsCopy anyObject];
+  v16 = [(HUQuickControlSingleControlViewController *)self initWithControlItem:anyObject home:homeCopy itemUpdater:updaterCopy controlOrientation:orientation preferredControl:control];
 
   return v16;
 }
 
-- (HUQuickControlSingleControlViewController)initWithControlItem:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7
+- (HUQuickControlSingleControlViewController)initWithControlItem:(id)item home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  itemCopy = item;
+  homeCopy = home;
+  updaterCopy = updater;
   [objc_opt_class() controlItemClass];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"HUQuickControlSingleControlViewController.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"[originalControlItem isKindOfClass:[self.class controlItemClass]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlSingleControlViewController.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"[originalControlItem isKindOfClass:[self.class controlItemClass]]"}];
   }
 
-  v16 = [MEMORY[0x277CBEB98] setWithObject:v13];
+  v16 = [MEMORY[0x277CBEB98] setWithObject:itemCopy];
   v39.receiver = self;
   v39.super_class = HUQuickControlSingleControlViewController;
-  v17 = [(HUQuickControlViewController *)&v39 initWithControlItems:v16 home:v14 itemUpdater:v15 controlOrientation:a6 preferredControl:a7];
+  v17 = [(HUQuickControlViewController *)&v39 initWithControlItems:v16 home:homeCopy itemUpdater:updaterCopy controlOrientation:orientation preferredControl:control];
 
   if (v17)
   {
-    v18 = [(HUQuickControlSingleControlViewController *)v17 controlItem];
-    v19 = [v18 latestResults];
-    v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D137F0]];
+    controlItem = [(HUQuickControlSingleControlViewController *)v17 controlItem];
+    latestResults = [controlItem latestResults];
+    v20 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D137F0]];
     v21 = v20;
     if (!v20)
     {
       v20 = MEMORY[0x277CBEC38];
     }
 
-    v22 = [v20 BOOLValue];
+    bOOLValue = [v20 BOOLValue];
 
-    if (v22)
+    if (bOOLValue)
     {
       v23 = 0.25;
     }
@@ -123,25 +123,25 @@ uint64_t __65__HUQuickControlSingleControlViewController_controlItemPredicate__b
     }
 
     v24 = objc_alloc(MEMORY[0x277D2C940]);
-    v25 = [(HUQuickControlSingleControlViewController *)v17 controlItem];
-    v26 = [v25 latestResults];
-    v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+    controlItem2 = [(HUQuickControlSingleControlViewController *)v17 controlItem];
+    latestResults2 = [controlItem2 latestResults];
+    v27 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13818]];
     v28 = [v24 initWithThrottleInterval:v27 initialValue:v23];
     valueWriteThrottler = v17->_valueWriteThrottler;
     v17->_valueWriteThrottler = v28;
 
     objc_initWeak(&location, v17);
-    v30 = [(HUQuickControlSingleControlViewController *)v17 valueWriteThrottler];
+    valueWriteThrottler = [(HUQuickControlSingleControlViewController *)v17 valueWriteThrottler];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __118__HUQuickControlSingleControlViewController_initWithControlItem_home_itemUpdater_controlOrientation_preferredControl___block_invoke;
     v36[3] = &unk_277DB99B8;
     objc_copyWeak(&v37, &location);
-    v31 = [v30 observeValueChangesWithBlock:v36];
+    v31 = [valueWriteThrottler observeValueChangesWithBlock:v36];
 
-    v32 = [(HUQuickControlSingleControlViewController *)v17 createInteractionCoordinator];
+    createInteractionCoordinator = [(HUQuickControlSingleControlViewController *)v17 createInteractionCoordinator];
     interactionCoordinator = v17->_interactionCoordinator;
-    v17->_interactionCoordinator = v32;
+    v17->_interactionCoordinator = createInteractionCoordinator;
 
     v17->_hasSetControlSize = 0;
     [(HUQuickControlSingleControlViewController *)v17 _updateTitle];
@@ -161,32 +161,32 @@ void __118__HUQuickControlSingleControlViewController_initWithControlItem_home_i
 
 - (HFControlItem)controlItem
 {
-  v3 = [(HUQuickControlViewController *)self controlItems];
-  v4 = [v3 count];
+  controlItems = [(HUQuickControlViewController *)self controlItems];
+  v4 = [controlItems count];
 
   if (v4 != 1)
   {
-    v5 = [(HUQuickControlViewController *)self controlItems];
-    NSLog(&cfstr_ShouldHaveExac.isa, self, v5);
+    controlItems2 = [(HUQuickControlViewController *)self controlItems];
+    NSLog(&cfstr_ShouldHaveExac.isa, self, controlItems2);
   }
 
-  v6 = [(HUQuickControlViewController *)self controlItems];
-  v7 = [v6 anyObject];
+  controlItems3 = [(HUQuickControlViewController *)self controlItems];
+  anyObject = [controlItems3 anyObject];
 
-  return v7;
+  return anyObject;
 }
 
 - (void)loadView
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v4 = [v3 controlView];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator controlView];
 
-  v5 = [[_HUQuickControlSingleControlHostView alloc] initWithContentView:v4];
+  v5 = [[_HUQuickControlSingleControlHostView alloc] initWithContentView:controlView];
   [(HUQuickControlSingleControlViewController *)self setView:v5];
 
-  v6 = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
-  v7 = [(HUQuickControlSingleControlViewController *)self view];
-  [v7 setPreferredFrameLayoutGuide:v6];
+  preferredFrameLayoutGuide = [(HUQuickControlViewController *)self preferredFrameLayoutGuide];
+  view = [(HUQuickControlSingleControlViewController *)self view];
+  [view setPreferredFrameLayoutGuide:preferredFrameLayoutGuide];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -196,103 +196,103 @@ void __118__HUQuickControlSingleControlViewController_initWithControlItem_home_i
   [MEMORY[0x277D75D18] performWithoutAnimation:v8];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUQuickControlSingleControlViewController;
-  [(HUQuickControlSingleControlViewController *)&v5 viewWillAppear:a3];
-  v4 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  [v4 setViewVisible:1];
+  [(HUQuickControlSingleControlViewController *)&v5 viewWillAppear:appear];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  [interactionCoordinator setViewVisible:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUQuickControlSingleControlViewController;
-  [(HUQuickControlSingleControlViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  [v4 setViewVisible:0];
+  [(HUQuickControlSingleControlViewController *)&v5 viewDidDisappear:disappear];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  [interactionCoordinator setViewVisible:0];
 }
 
-- (void)setPreferredFrameLayoutGuide:(id)a3
+- (void)setPreferredFrameLayoutGuide:(id)guide
 {
-  v4 = a3;
+  guideCopy = guide;
   v6.receiver = self;
   v6.super_class = HUQuickControlSingleControlViewController;
-  [(HUQuickControlViewController *)&v6 setPreferredFrameLayoutGuide:v4];
+  [(HUQuickControlViewController *)&v6 setPreferredFrameLayoutGuide:guideCopy];
   if ([(HUQuickControlSingleControlViewController *)self isViewLoaded])
   {
-    v5 = [(HUQuickControlSingleControlViewController *)self view];
-    [v5 setPreferredFrameLayoutGuide:v4];
+    view = [(HUQuickControlSingleControlViewController *)self view];
+    [view setPreferredFrameLayoutGuide:guideCopy];
   }
 }
 
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size
 {
-  v4 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v5 = [v4 controlView];
-  v6 = [v5 intrinsicSizeDescriptorForControlSize:a3];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator controlView];
+  v6 = [controlView intrinsicSizeDescriptorForControlSize:size];
 
   return v6;
 }
 
-- (id)overrideValueForCharacteristic:(id)a3
+- (id)overrideValueForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  if (-[HUQuickControlSingleControlViewController areWritesInProgressOrPossible](self, "areWritesInProgressOrPossible") && (-[HUQuickControlViewController affectedCharacteristics](self, "affectedCharacteristics"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:v4], v5, v6))
+  characteristicCopy = characteristic;
+  if (-[HUQuickControlSingleControlViewController areWritesInProgressOrPossible](self, "areWritesInProgressOrPossible") && (-[HUQuickControlViewController affectedCharacteristics](self, "affectedCharacteristics"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:characteristicCopy], v5, v6))
   {
-    v7 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v8 = [(HUQuickControlSingleControlViewController *)self modelValue];
-    v9 = [v7 characteristicValuesForValue:v8];
-    v10 = [v4 characteristicType];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+    modelValue = [(HUQuickControlSingleControlViewController *)self modelValue];
+    v9 = [controlItem characteristicValuesForValue:modelValue];
+    characteristicType = [characteristicCopy characteristicType];
+    v11 = [v9 objectForKeyedSubscript:characteristicType];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = HUQuickControlSingleControlViewController;
-    v11 = [(HUQuickControlViewController *)&v13 overrideValueForCharacteristic:v4];
+    v11 = [(HUQuickControlViewController *)&v13 overrideValueForCharacteristic:characteristicCopy];
   }
 
   return v11;
 }
 
-- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)a3
+- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)recognizer
 {
   v6.receiver = self;
   v6.super_class = HUQuickControlSingleControlViewController;
-  v4 = a3;
-  [(HUQuickControlViewController *)&v6 beginUserInteractionWithFirstTouchGestureRecognizer:v4];
+  recognizerCopy = recognizer;
+  [(HUQuickControlViewController *)&v6 beginUserInteractionWithFirstTouchGestureRecognizer:recognizerCopy];
   v5 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator:v6.receiver];
-  [v5 beginUserInteractionWithFirstTouchGestureRecognizer:v4];
+  [v5 beginUserInteractionWithFirstTouchGestureRecognizer:recognizerCopy];
 }
 
-- (void)setControlSize:(unint64_t)a3
+- (void)setControlSize:(unint64_t)size
 {
   v4.receiver = self;
   v4.super_class = HUQuickControlSingleControlViewController;
-  [(HUQuickControlViewController *)&v4 setControlSize:a3];
+  [(HUQuickControlViewController *)&v4 setControlSize:size];
   [(HUQuickControlSingleControlViewController *)self setHasSetControlSize:1];
   [(HUQuickControlSingleControlViewController *)self invalidateViewProfile];
 }
 
-- (void)setControlOrientation:(unint64_t)a3
+- (void)setControlOrientation:(unint64_t)orientation
 {
   v6.receiver = self;
   v6.super_class = HUQuickControlSingleControlViewController;
   [(HUQuickControlViewController *)&v6 setControlOrientation:?];
-  v5 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  [v5 setOrientation:a3];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  [viewProfile setOrientation:orientation];
 
   [(HUQuickControlSingleControlViewController *)self invalidateViewProfile];
 }
 
-- (void)setPreferredControl:(unint64_t)a3
+- (void)setPreferredControl:(unint64_t)control
 {
   v4.receiver = self;
   v4.super_class = HUQuickControlSingleControlViewController;
-  [(HUQuickControlViewController *)&v4 setPreferredControl:a3];
+  [(HUQuickControlViewController *)&v4 setPreferredControl:control];
   [(HUQuickControlSingleControlViewController *)self invalidateViewProfile];
 }
 
@@ -310,38 +310,38 @@ void __118__HUQuickControlSingleControlViewController_initWithControlItem_home_i
 
 - (BOOL)isUserInteractionEnabled
 {
-  v2 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v3 = [v2 isUserInteractionEnabled];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  isUserInteractionEnabled = [interactionCoordinator isUserInteractionEnabled];
 
-  return v3;
+  return isUserInteractionEnabled;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  [v4 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  [interactionCoordinator setUserInteractionEnabled:enabledCopy];
 }
 
-- (void)_setModelValue:(id)a3 writeValue:(BOOL)a4
+- (void)_setModelValue:(id)value writeValue:(BOOL)writeValue
 {
-  v4 = a4;
-  v7 = a3;
+  writeValueCopy = writeValue;
+  valueCopy = value;
   modelValue = self->_modelValue;
-  v12 = v7;
-  if (modelValue == v7)
+  v12 = valueCopy;
+  if (modelValue == valueCopy)
   {
-    objc_storeStrong(&self->_modelValue, a3);
-    v11 = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
-    [v11 setValue:v12 notifyObservers:v4];
+    objc_storeStrong(&self->_modelValue, value);
+    valueWriteThrottler = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
+    [valueWriteThrottler setValue:v12 notifyObservers:writeValueCopy];
   }
 
   else
   {
     v9 = [modelValue isEqual:?];
-    objc_storeStrong(&self->_modelValue, a3);
-    v10 = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
-    [v10 setValue:v12 notifyObservers:v4];
+    objc_storeStrong(&self->_modelValue, value);
+    valueWriteThrottler2 = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
+    [valueWriteThrottler2 setValue:v12 notifyObservers:writeValueCopy];
 
     if ((v9 & 1) == 0)
     {
@@ -352,22 +352,22 @@ void __118__HUQuickControlSingleControlViewController_initWithControlItem_home_i
 
 - (void)updateValueFromControlItem
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v4 = [v3 latestResults];
-  v11 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v11 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
   v5 = v11;
   if (v11)
   {
-    v6 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-    v7 = [v6 isUserInteractionActive];
+    interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+    isUserInteractionActive = [interactionCoordinator isUserInteractionActive];
 
-    if ((v7 & 1) == 0)
+    if ((isUserInteractionActive & 1) == 0)
     {
-      v8 = [(HUQuickControlSingleControlViewController *)self controlToViewValueTransformer];
-      v9 = [v8 transformedValueForValue:v11];
-      v10 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-      [v10 setValue:v9];
+      controlToViewValueTransformer = [(HUQuickControlSingleControlViewController *)self controlToViewValueTransformer];
+      v9 = [controlToViewValueTransformer transformedValueForValue:v11];
+      interactionCoordinator2 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+      [interactionCoordinator2 setValue:v9];
     }
 
     [(HUQuickControlSingleControlViewController *)self _setModelValue:v11 writeValue:0];
@@ -375,15 +375,15 @@ void __118__HUQuickControlSingleControlViewController_initWithControlItem_home_i
   }
 }
 
-- (void)_writeModelControlValue:(id)a3
+- (void)_writeModelControlValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   [(HUQuickControlSingleControlViewController *)self setInFlightWriteCount:[(HUQuickControlSingleControlViewController *)self inFlightWriteCount]+ 1];
   [(HUQuickControlSingleControlViewController *)self setHasWrittenAnyNewValues:1];
   [(HUQuickControlSingleControlViewController *)self _updateWriteState];
   objc_initWeak(&location, self);
-  v5 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v6 = [v5 writeValue:v4];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  v6 = [controlItem writeValue:valueCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__HUQuickControlSingleControlViewController__writeModelControlValue___block_invoke;
@@ -405,24 +405,24 @@ void __69__HUQuickControlSingleControlViewController__writeModelControlValue___b
 
 - (void)_updateWriteState
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self areWritesInProgressOrPossible];
-  v4 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  if (([v4 isUserInteractionActive] & 1) != 0 || -[HUQuickControlSingleControlViewController inFlightWriteCount](self, "inFlightWriteCount"))
+  areWritesInProgressOrPossible = [(HUQuickControlSingleControlViewController *)self areWritesInProgressOrPossible];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  if (([interactionCoordinator isUserInteractionActive] & 1) != 0 || -[HUQuickControlSingleControlViewController inFlightWriteCount](self, "inFlightWriteCount"))
   {
     [(HUQuickControlSingleControlViewController *)self setWritesInProgressOrPossible:1];
   }
 
   else
   {
-    v11 = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
-    -[HUQuickControlSingleControlViewController setWritesInProgressOrPossible:](self, "setWritesInProgressOrPossible:", [v11 hasPendingValueChange]);
+    valueWriteThrottler = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
+    -[HUQuickControlSingleControlViewController setWritesInProgressOrPossible:](self, "setWritesInProgressOrPossible:", [valueWriteThrottler hasPendingValueChange]);
   }
 
-  if (v3 != [(HUQuickControlSingleControlViewController *)self areWritesInProgressOrPossible])
+  if (areWritesInProgressOrPossible != [(HUQuickControlSingleControlViewController *)self areWritesInProgressOrPossible])
   {
-    v5 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v6 = [v5 characteristicOptions];
-    v7 = [v6 objectForKeyedSubscript:&unk_2824923D8];
+    controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+    characteristicOptions = [controlItem characteristicOptions];
+    v7 = [characteristicOptions objectForKeyedSubscript:&unk_2824923D8];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __62__HUQuickControlSingleControlViewController__updateWriteState__block_invoke;
@@ -430,17 +430,17 @@ void __69__HUQuickControlSingleControlViewController__writeModelControlValue___b
     v12[4] = self;
     v8 = [v7 na_flatMap:v12];
 
-    LODWORD(v6) = [(HUQuickControlSingleControlViewController *)self areWritesInProgressOrPossible];
-    v9 = [(HUQuickControlViewController *)self characteristicWritingDelegate];
-    v10 = v9;
-    if (v6)
+    LODWORD(characteristicOptions) = [(HUQuickControlSingleControlViewController *)self areWritesInProgressOrPossible];
+    characteristicWritingDelegate = [(HUQuickControlViewController *)self characteristicWritingDelegate];
+    v10 = characteristicWritingDelegate;
+    if (characteristicOptions)
     {
-      [v9 quickControlContent:self willBeginPossibleWritesForCharacteristics:v8];
+      [characteristicWritingDelegate quickControlContent:self willBeginPossibleWritesForCharacteristics:v8];
     }
 
     else
     {
-      [v9 quickControlContent:self didEndPossibleWritesForCharacteristics:v8];
+      [characteristicWritingDelegate quickControlContent:self didEndPossibleWritesForCharacteristics:v8];
     }
   }
 }
@@ -458,9 +458,9 @@ id __62__HUQuickControlSingleControlViewController__updateWriteState__block_invo
 
 - (void)_updateTitle
 {
-  v6 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v3 = [v6 latestResults];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v4 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   if (v4)
   {
     [(HUQuickControlSingleControlViewController *)self setTitle:v4];
@@ -475,45 +475,45 @@ id __62__HUQuickControlSingleControlViewController__updateWriteState__block_invo
 
 - (void)_updateViewProfileForCurrentItemState
 {
-  v19 = [(HUQuickControlSingleControlViewController *)self createViewProfile];
-  [v19 setControlSize:{-[HUQuickControlViewController controlSize](self, "controlSize")}];
-  v3 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D14158]];
-  [v19 setSuspendedState:{objc_msgSend(v5, "unsignedIntegerValue")}];
+  createViewProfile = [(HUQuickControlSingleControlViewController *)self createViewProfile];
+  [createViewProfile setControlSize:{-[HUQuickControlViewController controlSize](self, "controlSize")}];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14158]];
+  [createViewProfile setSuspendedState:{objc_msgSend(v5, "unsignedIntegerValue")}];
 
-  [v19 setOrientation:{-[HUQuickControlViewController controlOrientation](self, "controlOrientation")}];
-  v6 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v7 = [v6 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13808]];
-  [v19 setSupplementaryFormattedValue:v8];
+  [createViewProfile setOrientation:{-[HUQuickControlViewController controlOrientation](self, "controlOrientation")}];
+  controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults2 = [controlItem2 latestResults];
+  v8 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13808]];
+  [createViewProfile setSupplementaryFormattedValue:v8];
 
-  v9 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v10 = [v9 latestResults];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D137E8]];
-  [v19 setDecorationIconDescriptor:v11];
+  controlItem3 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults3 = [controlItem3 latestResults];
+  v11 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D137E8]];
+  [createViewProfile setDecorationIconDescriptor:v11];
 
-  v12 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v13 = [v12 hu_tintColor];
-  [v19 setTintColor:v13];
+  controlItem4 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  hu_tintColor = [controlItem4 hu_tintColor];
+  [createViewProfile setTintColor:hu_tintColor];
 
-  [(HUQuickControlSingleControlViewController *)self setViewProfile:v19];
-  v14 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v15 = [v14 controlView];
+  [(HUQuickControlSingleControlViewController *)self setViewProfile:createViewProfile];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator controlView];
 
-  v16 = [v15 profile];
-  if (v16)
+  profile = [controlView profile];
+  if (profile)
   {
     v17 = objc_opt_class();
     if (v17 == objc_opt_class())
     {
-      [v15 setProfile:v19];
+      [controlView setProfile:createViewProfile];
     }
 
     else
     {
-      v18 = [(HUQuickControlSingleControlViewController *)self createInteractionCoordinator];
-      [(HUQuickControlSingleControlViewController *)self setInteractionCoordinator:v18];
+      createInteractionCoordinator = [(HUQuickControlSingleControlViewController *)self createInteractionCoordinator];
+      [(HUQuickControlSingleControlViewController *)self setInteractionCoordinator:createInteractionCoordinator];
     }
   }
 }
@@ -525,8 +525,8 @@ id __62__HUQuickControlSingleControlViewController__updateWriteState__block_invo
   [(HUQuickControlSingleControlViewController *)self verticalDirectionalControlStretchFactor];
   memset(&v14, 0, sizeof(v14));
   CGAffineTransformMakeScale(&v14, v4, fabs(v5) + 1.0);
-  v6 = [(HUQuickControlSingleControlViewController *)self view];
-  [v6 bounds];
+  view = [(HUQuickControlSingleControlViewController *)self view];
+  [view bounds];
   v8 = v7;
   [(HUQuickControlSingleControlViewController *)self verticalDirectionalControlStretchFactor];
   v12 = v14;
@@ -534,26 +534,26 @@ id __62__HUQuickControlSingleControlViewController__updateWriteState__block_invo
   v14 = v13;
 
   v11 = v14;
-  v10 = [(HUQuickControlSingleControlViewController *)self view];
+  view2 = [(HUQuickControlSingleControlViewController *)self view];
   v13 = v11;
-  [v10 setTransform:&v13];
+  [view2 setTransform:&v13];
 }
 
-- (void)setHorizontalControlCompressionFactor:(double)a3
+- (void)setHorizontalControlCompressionFactor:(double)factor
 {
   if ((NACGFloatEqualToFloat() & 1) == 0)
   {
-    self->_horizontalControlCompressionFactor = a3;
+    self->_horizontalControlCompressionFactor = factor;
 
     [(HUQuickControlSingleControlViewController *)self _updateControlTransform];
   }
 }
 
-- (void)setVerticalDirectionalControlStretchFactor:(double)a3
+- (void)setVerticalDirectionalControlStretchFactor:(double)factor
 {
   if ((NACGFloatEqualToFloat() & 1) == 0)
   {
-    self->_verticalDirectionalControlStretchFactor = a3;
+    self->_verticalDirectionalControlStretchFactor = factor;
 
     [(HUQuickControlSingleControlViewController *)self _updateControlTransform];
   }
@@ -569,50 +569,50 @@ id __62__HUQuickControlSingleControlViewController__updateWriteState__block_invo
 
 - (id)createInteractionCoordinator
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUQuickControlSingleControlViewController.m" lineNumber:343 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUQuickControlSingleControlViewController createInteractionCoordinator]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlSingleControlViewController.m" lineNumber:343 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUQuickControlSingleControlViewController createInteractionCoordinator]", objc_opt_class()}];
 
   return 0;
 }
 
 + (Class)controlItemClass
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HUQuickControlSingleControlViewController.m" lineNumber:349 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HUQuickControlSingleControlViewController controlItemClass]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlSingleControlViewController.m" lineNumber:349 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HUQuickControlSingleControlViewController controlItemClass]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)createViewProfile
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUQuickControlSingleControlViewController.m" lineNumber:355 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUQuickControlSingleControlViewController createViewProfile]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlSingleControlViewController.m" lineNumber:355 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUQuickControlSingleControlViewController createViewProfile]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)overrideStatusText
 {
-  v2 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v3 = [v2 latestResults];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v4 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
 
   return v4;
 }
 
-- (void)quickControlItemUpdater:(id)a3 didUpdateResultsForControlItems:(id)a4
+- (void)quickControlItemUpdater:(id)updater didUpdateResultsForControlItems:(id)items
 {
-  v6 = a4;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = HUQuickControlSingleControlViewController;
-  [(HUQuickControlViewController *)&v10 quickControlItemUpdater:a3 didUpdateResultsForControlItems:v6];
-  v7 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v8 = [v6 containsObject:v7];
+  [(HUQuickControlViewController *)&v10 quickControlItemUpdater:updater didUpdateResultsForControlItems:itemsCopy];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  v8 = [itemsCopy containsObject:controlItem];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    NSLog(&cfstr_UnexpectedUpda.isa, v6, v9);
+    controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    NSLog(&cfstr_UnexpectedUpda.isa, itemsCopy, controlItem2);
   }
 
   if (![(HUQuickControlSingleControlViewController *)self areWritesInProgressOrPossible])
@@ -627,9 +627,9 @@ id __62__HUQuickControlSingleControlViewController__updateWriteState__block_invo
 
 - (void)_updateControlViewReachabilityState
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v4 = [v3 latestResults];
-  v12 = [v4 objectForKeyedSubscript:*MEMORY[0x277D140E8]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v12 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D140E8]];
 
   if (v12)
   {
@@ -641,12 +641,12 @@ id __62__HUQuickControlSingleControlViewController__updateWriteState__block_invo
     v5 = 2;
   }
 
-  v6 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v7 = [v6 controlView];
-  if ([v7 conformsToProtocol:&unk_2824F3238])
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator controlView];
+  if ([controlView conformsToProtocol:&unk_2824F3238])
   {
-    v8 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-    v9 = [v8 controlView];
+    interactionCoordinator2 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+    controlView2 = [interactionCoordinator2 controlView];
     v10 = objc_opt_respondsToSelector();
 
     if ((v10 & 1) == 0)
@@ -654,10 +654,10 @@ id __62__HUQuickControlSingleControlViewController__updateWriteState__block_invo
       goto LABEL_9;
     }
 
-    v11 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-    v6 = [v11 controlView];
+    interactionCoordinator3 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+    interactionCoordinator = [interactionCoordinator3 controlView];
 
-    [v6 setReachabilityState:v5];
+    [interactionCoordinator setReachabilityState:v5];
   }
 
   else
@@ -667,92 +667,92 @@ id __62__HUQuickControlSingleControlViewController__updateWriteState__block_invo
 LABEL_9:
 }
 
-- (void)interactionCoordinator:(id)a3 viewValueDidChange:(id)a4
+- (void)interactionCoordinator:(id)coordinator viewValueDidChange:(id)change
 {
-  v20 = a3;
-  v6 = a4;
-  if (([v20 isUserInteractionActive] & 1) == 0)
+  coordinatorCopy = coordinator;
+  changeCopy = change;
+  if (([coordinatorCopy isUserInteractionActive] & 1) == 0)
   {
-    NSLog(&cfstr_ReceivedAValue.isa, v20);
+    NSLog(&cfstr_ReceivedAValue.isa, coordinatorCopy);
   }
 
-  v7 = [(HUQuickControlSingleControlViewController *)self controlToViewValueTransformer];
-  v8 = [v7 valueForTransformedValue:v6];
+  controlToViewValueTransformer = [(HUQuickControlSingleControlViewController *)self controlToViewValueTransformer];
+  v8 = [controlToViewValueTransformer valueForTransformedValue:changeCopy];
 
-  v9 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v10 = [v9 normalizedValueForValue:v8];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  v10 = [controlItem normalizedValueForValue:v8];
 
-  v11 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v12 = [v11 latestResults];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem2 latestResults];
+  v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
   v14 = [v13 isEqual:v10];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v16 = [v15 latestResults];
-    v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13800]];
+    controlItem3 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    latestResults2 = [controlItem3 latestResults];
+    v17 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13800]];
     v18 = [v17 isEqual:MEMORY[0x277CBEC38]];
 
     [(HUQuickControlSingleControlViewController *)self _setModelValue:v10 writeValue:v18 ^ 1u];
   }
 
-  v19 = [(HUQuickControlViewController *)self characteristicWritingDelegate];
-  [v19 quickControlContentDidUpdateCharacteristicValueOverrides:self];
+  characteristicWritingDelegate = [(HUQuickControlViewController *)self characteristicWritingDelegate];
+  [characteristicWritingDelegate quickControlContentDidUpdateCharacteristicValueOverrides:self];
 }
 
-- (void)interactionCoordinator:(id)a3 interactionStateDidChange:(BOOL)a4
+- (void)interactionCoordinator:(id)coordinator interactionStateDidChange:(BOOL)change
 {
-  if (!a4)
+  if (!change)
   {
-    v5 = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
-    [v5 flushValueChanges];
+    valueWriteThrottler = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
+    [valueWriteThrottler flushValueChanges];
   }
 
   [(HUQuickControlSingleControlViewController *)self _updateWriteState];
 }
 
-- (BOOL)hasModelValueChangedForInteractionCoordinator:(id)a3
+- (BOOL)hasModelValueChangedForInteractionCoordinator:(id)coordinator
 {
   if ([(HUQuickControlSingleControlViewController *)self hasWrittenAnyNewValues])
   {
     return 1;
   }
 
-  v5 = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
-  v6 = [v5 hasPendingValueChange];
+  valueWriteThrottler = [(HUQuickControlSingleControlViewController *)self valueWriteThrottler];
+  hasPendingValueChange = [valueWriteThrottler hasPendingValueChange];
 
-  return v6;
+  return hasPendingValueChange;
 }
 
-- (void)interactionCoordinatorWantsDismissal:(id)a3
+- (void)interactionCoordinatorWantsDismissal:(id)dismissal
 {
-  v4 = [(HUQuickControlViewController *)self quickControlHost];
-  [v4 quickControlContent:self requestDismissalOfType:1];
+  quickControlHost = [(HUQuickControlViewController *)self quickControlHost];
+  [quickControlHost quickControlContent:self requestDismissalOfType:1];
 }
 
-- (void)interactionCoordinator:(id)a3 showAuxiliaryView:(id)a4
+- (void)interactionCoordinator:(id)coordinator showAuxiliaryView:(id)view
 {
-  v5 = a4;
-  v6 = [(HUQuickControlViewController *)self quickControlHost];
-  [v6 quickControlContent:self showAuxiliaryView:v5];
+  viewCopy = view;
+  quickControlHost = [(HUQuickControlViewController *)self quickControlHost];
+  [quickControlHost quickControlContent:self showAuxiliaryView:viewCopy];
 }
 
-- (void)hideAuxiliaryViewForInteractionCoordinator:(id)a3
+- (void)hideAuxiliaryViewForInteractionCoordinator:(id)coordinator
 {
-  v4 = [(HUQuickControlViewController *)self quickControlHost];
-  [v4 hideAuxiliaryViewForQuickControlContent:self];
+  quickControlHost = [(HUQuickControlViewController *)self quickControlHost];
+  [quickControlHost hideAuxiliaryViewForQuickControlContent:self];
 }
 
 - (id)viewForTouchContinuation
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  [v3 recordInteractionStart];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  [interactionCoordinator recordInteractionStart];
 
-  v4 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v5 = [v4 controlView];
+  interactionCoordinator2 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator2 controlView];
 
-  return v5;
+  return controlView;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface APDatabaseMigration
-- (APDatabaseMigration)initWithDatabasePath:(id)a3;
+- (APDatabaseMigration)initWithDatabasePath:(id)path;
 - (id)_buildSortedURLs;
-- (id)_getQueriesForFileAtURL:(id)a3;
-- (int64_t)_getVersionFromFileAtURL:(id)a3;
+- (id)_getQueriesForFileAtURL:(id)l;
+- (int64_t)_getVersionFromFileAtURL:(id)l;
 - (int64_t)lastVersion;
 @end
 
 @implementation APDatabaseMigration
 
-- (APDatabaseMigration)initWithDatabasePath:(id)a3
+- (APDatabaseMigration)initWithDatabasePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = APDatabaseMigration;
   v6 = [(APDatabaseMigration *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databasePath, a3);
+    objc_storeStrong(&v6->_databasePath, path);
     v11 = objc_msgSend__buildSortedURLs(v7, v8, v9, v10);
     sortedScriptsURLs = v7->_sortedScriptsURLs;
     v7->_sortedScriptsURLs = v11;
@@ -58,11 +58,11 @@
   }
 }
 
-- (id)_getQueriesForFileAtURL:(id)a3
+- (id)_getQueriesForFileAtURL:(id)l
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v7 = objc_msgSend_dataWithContentsOfURL_(MEMORY[0x1E695DEF0], v4, v3, v5);
+  lCopy = l;
+  v7 = objc_msgSend_dataWithContentsOfURL_(MEMORY[0x1E695DEF0], v4, lCopy, v5);
   if (v7)
   {
     v28 = 0;
@@ -99,7 +99,7 @@
     {
       v20 = objc_opt_class();
       v21 = v20;
-      v25 = objc_msgSend_absoluteString(v3, v22, v23, v24);
+      v25 = objc_msgSend_absoluteString(lCopy, v22, v23, v24);
       *buf = 138478083;
       v30 = v20;
       v31 = 2113;
@@ -165,9 +165,9 @@
   return v30;
 }
 
-- (int64_t)_getVersionFromFileAtURL:(id)a3
+- (int64_t)_getVersionFromFileAtURL:(id)l
 {
-  v4 = objc_msgSend_lastPathComponent(a3, a2, a3, v3);
+  v4 = objc_msgSend_lastPathComponent(l, a2, l, v3);
   v8 = objc_msgSend_stringByDeletingPathExtension(v4, v5, v6, v7);
   v12 = objc_msgSend_integerValue(v8, v9, v10, v11);
 

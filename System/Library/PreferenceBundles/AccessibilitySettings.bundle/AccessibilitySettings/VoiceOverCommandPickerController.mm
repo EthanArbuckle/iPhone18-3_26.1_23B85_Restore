@@ -1,10 +1,10 @@
 @interface VoiceOverCommandPickerController
 - (VoiceOverCommandPickerPresenter)presenter;
 - (id)makeSpecifiers;
-- (void)_resetCommandButtonTapped:(id)a3;
-- (void)_unassignCommandButtonTapped:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_resetCommandButtonTapped:(id)tapped;
+- (void)_unassignCommandButtonTapped:(id)tapped;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverCommandPickerController
@@ -13,13 +13,13 @@
 {
   v3 = objc_opt_new();
   v4 = OBJC_IVAR___PSViewController__specifier;
-  v5 = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
+  voCommandManager = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
   v73 = v4;
-  v6 = [*&self->AXUISettingsSearchableBaseListController_opaque[v4] voCommandResolver];
+  voCommandResolver = [*&self->AXUISettingsSearchableBaseListController_opaque[v4] voCommandResolver];
   v7 = PSListController_ptr;
-  v74 = v5;
-  v72 = v6;
-  if ([v6 isHandwritingScreenreaderMode])
+  v74 = voCommandManager;
+  v72 = voCommandResolver;
+  if ([voCommandResolver isHandwritingScreenreaderMode])
   {
     v8 = +[PSSpecifier emptyGroupSpecifier];
     [v3 addObject:v8];
@@ -28,10 +28,10 @@
     v88 = 0u;
     v89 = 0u;
     v9 = +[VOSCommandCategory handwriting];
-    v10 = [v9 commands];
+    commands = [v9 commands];
 
-    obj = v10;
-    v11 = [v10 countByEnumeratingWithState:&v88 objects:v95 count:16];
+    obj = commands;
+    v11 = [commands countByEnumeratingWithState:&v88 objects:v95 count:16];
     if (v11)
     {
       v12 = v11;
@@ -48,14 +48,14 @@
           }
 
           v15 = *(*(&v88 + 1) + 8 * i);
-          if ([v74 availabilityForCommand:v15 withResolver:v6] != &dword_0 + 1)
+          if ([v74 availabilityForCommand:v15 withResolver:voCommandResolver] != &dword_0 + 1)
           {
             v16 = v7[5];
-            v17 = [*&self->AXUISettingsSearchableBaseListController_opaque[v73] voCommandContext];
-            v18 = [v17 resolver];
+            voCommandContext = [*&self->AXUISettingsSearchableBaseListController_opaque[v73] voCommandContext];
+            resolver = [voCommandContext resolver];
             v19 = v16;
-            v6 = v72;
-            v20 = [v19 voCommandItem:v15 commandManager:v74 resolver:v18];
+            voCommandResolver = v72;
+            v20 = [v19 voCommandItem:v15 commandManager:v74 resolver:resolver];
 
             v7 = PSListController_ptr;
             [v3 addObject:v20];
@@ -77,7 +77,7 @@ LABEL_23:
     goto LABEL_46;
   }
 
-  if ([v6 isBSIScreenreaderMode])
+  if ([voCommandResolver isBSIScreenreaderMode])
   {
     v8 = +[PSSpecifier emptyGroupSpecifier];
     [v3 addObject:v8];
@@ -86,10 +86,10 @@ LABEL_23:
     v84 = 0u;
     v85 = 0u;
     v21 = +[VOSCommandCategory brailleScreenInput];
-    v22 = [v21 commands];
+    commands2 = [v21 commands];
 
-    obj = v22;
-    v23 = [v22 countByEnumeratingWithState:&v84 objects:v94 count:16];
+    obj = commands2;
+    v23 = [commands2 countByEnumeratingWithState:&v84 objects:v94 count:16];
     if (v23)
     {
       v24 = v23;
@@ -106,14 +106,14 @@ LABEL_23:
           }
 
           v27 = *(*(&v84 + 1) + 8 * j);
-          if ([v74 availabilityForCommand:v27 withResolver:v6] != &dword_0 + 1)
+          if ([v74 availabilityForCommand:v27 withResolver:voCommandResolver] != &dword_0 + 1)
           {
             v28 = v7[5];
-            v29 = [*&self->AXUISettingsSearchableBaseListController_opaque[v73] voCommandContext];
-            v30 = [v29 resolver];
+            voCommandContext2 = [*&self->AXUISettingsSearchableBaseListController_opaque[v73] voCommandContext];
+            resolver2 = [voCommandContext2 resolver];
             v31 = v28;
-            v6 = v72;
-            v32 = [v31 voCommandItem:v27 commandManager:v74 resolver:v30];
+            voCommandResolver = v72;
+            v32 = [v31 voCommandItem:v27 commandManager:v74 resolver:resolver2];
 
             v7 = PSListController_ptr;
             [v3 addObject:v32];
@@ -152,14 +152,14 @@ LABEL_23:
         }
 
         v34 = *(*(&v80 + 1) + 8 * k);
-        v35 = [v34 commands];
-        if ([v35 count])
+        commands3 = [v34 commands];
+        if ([commands3 count])
         {
           v70 = k;
-          v36 = self;
+          selfCopy = self;
           v37 = v7[5];
-          v38 = [v34 localizedCategoryName];
-          v39 = [v37 groupSpecifierWithName:v38];
+          localizedCategoryName = [v34 localizedCategoryName];
+          v39 = [v37 groupSpecifierWithName:localizedCategoryName];
 
           v40 = v3;
           v67 = v39;
@@ -168,8 +168,8 @@ LABEL_23:
           v79 = 0u;
           v76 = 0u;
           v77 = 0u;
-          v68 = v35;
-          v41 = v35;
+          v68 = commands3;
+          v41 = commands3;
           v42 = [v41 countByEnumeratingWithState:&v76 objects:v92 count:16];
           if (v42)
           {
@@ -186,16 +186,16 @@ LABEL_23:
                 }
 
                 v46 = *(*(&v76 + 1) + 8 * m);
-                if ([v5 availabilityForCommand:v46 withResolver:v6] != &dword_0 + 1)
+                if ([voCommandManager availabilityForCommand:v46 withResolver:voCommandResolver] != &dword_0 + 1)
                 {
                   v47 = v7[5];
-                  v48 = [*&v36->AXUISettingsSearchableBaseListController_opaque[v73] voCommandContext];
-                  v49 = [v48 resolver];
+                  voCommandContext3 = [*&selfCopy->AXUISettingsSearchableBaseListController_opaque[v73] voCommandContext];
+                  resolver3 = [voCommandContext3 resolver];
                   v50 = v47;
-                  v5 = v74;
-                  v51 = [v50 voCommandItem:v46 commandManager:v74 resolver:v49];
+                  voCommandManager = v74;
+                  v51 = [v50 voCommandItem:v46 commandManager:v74 resolver:resolver3];
 
-                  v6 = v72;
+                  voCommandResolver = v72;
                   v7 = PSListController_ptr;
                   [v40 addObject:v51];
                   v75 = v51;
@@ -214,9 +214,9 @@ LABEL_23:
           }
 
           v8 = v67;
-          v35 = v68;
+          commands3 = v68;
           v3 = v40;
-          self = v36;
+          self = selfCopy;
           k = v70;
         }
       }
@@ -235,9 +235,9 @@ LABEL_23:
 
 LABEL_46:
 
-  v52 = [v7[5] emptyGroupSpecifier];
+  emptyGroupSpecifier = [v7[5] emptyGroupSpecifier];
 
-  [v3 addObject:v52];
+  [v3 addObject:emptyGroupSpecifier];
   v53 = v7[5];
   v54 = settingsLocString(@"vo.reset.command", @"VoiceOverSettings");
   v55 = [v53 deleteButtonSpecifierWithName:v54 target:self action:"_resetCommandButtonTapped:"];
@@ -245,10 +245,10 @@ LABEL_46:
   self->_resetCommandSpecifier = v55;
 
   [v3 addObject:self->_resetCommandSpecifier];
-  v57 = [*&self->AXUISettingsSearchableBaseListController_opaque[v73] voCommandContext];
-  v58 = [v57 command];
+  voCommandContext4 = [*&self->AXUISettingsSearchableBaseListController_opaque[v73] voCommandContext];
+  command = [voCommandContext4 command];
 
-  if (v58)
+  if (command)
   {
     v59 = v7[5];
     v60 = settingsLocString(@"vo.unassign.command", @"VoiceOverSettings");
@@ -265,97 +265,97 @@ LABEL_46:
   return v3;
 }
 
-- (void)_resetCommandButtonTapped:(id)a3
+- (void)_resetCommandButtonTapped:(id)tapped
 {
-  v4 = [(VoiceOverCommandPickerController *)self presenter];
-  v5 = [v4 userSelectedCommandBlock];
+  presenter = [(VoiceOverCommandPickerController *)self presenter];
+  userSelectedCommandBlock = [presenter userSelectedCommandBlock];
 
-  if (v5)
+  if (userSelectedCommandBlock)
   {
     v6 = OBJC_IVAR___PSViewController__specifier;
-    v7 = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
-    v12 = [v7 command];
+    voCommandContext = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
+    command = [voCommandContext command];
 
-    v8 = [*&self->AXUISettingsSearchableBaseListController_opaque[v6] voCommandContext];
-    v9 = [v8 gesture];
+    voCommandContext2 = [*&self->AXUISettingsSearchableBaseListController_opaque[v6] voCommandContext];
+    gesture = [voCommandContext2 gesture];
 
-    v10 = [(VoiceOverCommandPickerController *)self presenter];
-    v11 = [v10 userSelectedCommandBlock];
-    (v11)[2](v11, v12, v9, 2);
+    presenter2 = [(VoiceOverCommandPickerController *)self presenter];
+    userSelectedCommandBlock2 = [presenter2 userSelectedCommandBlock];
+    (userSelectedCommandBlock2)[2](userSelectedCommandBlock2, command, gesture, 2);
   }
 }
 
-- (void)_unassignCommandButtonTapped:(id)a3
+- (void)_unassignCommandButtonTapped:(id)tapped
 {
-  v4 = [(VoiceOverCommandPickerController *)self presenter];
-  v5 = [v4 userSelectedCommandBlock];
+  presenter = [(VoiceOverCommandPickerController *)self presenter];
+  userSelectedCommandBlock = [presenter userSelectedCommandBlock];
 
-  if (v5)
+  if (userSelectedCommandBlock)
   {
     v6 = OBJC_IVAR___PSViewController__specifier;
-    v7 = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
-    v12 = [v7 command];
+    voCommandContext = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
+    command = [voCommandContext command];
 
-    v8 = [*&self->AXUISettingsSearchableBaseListController_opaque[v6] voCommandContext];
-    v9 = [v8 gesture];
+    voCommandContext2 = [*&self->AXUISettingsSearchableBaseListController_opaque[v6] voCommandContext];
+    gesture = [voCommandContext2 gesture];
 
-    v10 = [(VoiceOverCommandPickerController *)self presenter];
-    v11 = [v10 userSelectedCommandBlock];
-    (v11)[2](v11, v12, v9, 1);
+    presenter2 = [(VoiceOverCommandPickerController *)self presenter];
+    userSelectedCommandBlock2 = [presenter2 userSelectedCommandBlock];
+    (userSelectedCommandBlock2)[2](userSelectedCommandBlock2, command, gesture, 1);
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v7 = *&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 voCommandContext];
-  v14 = [v10 command];
+  pathCopy = path;
+  cellCopy = cell;
+  voCommandContext = [v7 voCommandContext];
+  command = [voCommandContext command];
 
-  v11 = [(VoiceOverCommandPickerController *)self specifierForIndexPath:v8];
+  v11 = [(VoiceOverCommandPickerController *)self specifierForIndexPath:pathCopy];
 
-  v12 = [v11 voCommandContext];
-  v13 = [v12 command];
+  voCommandContext2 = [v11 voCommandContext];
+  command2 = [voCommandContext2 command];
 
-  [v9 setChecked:{objc_msgSend(v14, "isEqual:", v13)}];
+  [cellCopy setChecked:{objc_msgSend(command, "isEqual:", command2)}];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [(VoiceOverCommandPickerController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [(VoiceOverCommandPickerController *)self specifierForIndexPath:pathCopy];
   v9 = v8;
   if (v8 == self->_unassignButtonSpecifier || v8 == self->_resetCommandSpecifier)
   {
     v22.receiver = self;
     v22.super_class = VoiceOverCommandPickerController;
-    [(VoiceOverCommandPickerController *)&v22 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(VoiceOverCommandPickerController *)&v22 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
   else
   {
     v10 = OBJC_IVAR___PSViewController__specifier;
-    v11 = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
-    v12 = [v11 command];
+    voCommandContext = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
+    command = [voCommandContext command];
 
-    v13 = [*&self->AXUISettingsSearchableBaseListController_opaque[v10] voCommandContext];
-    v14 = [v13 gesture];
+    voCommandContext2 = [*&self->AXUISettingsSearchableBaseListController_opaque[v10] voCommandContext];
+    gesture = [voCommandContext2 gesture];
 
-    v15 = [(PSSpecifier *)v9 voCommandContext];
-    v16 = [v15 command];
+    voCommandContext3 = [(PSSpecifier *)v9 voCommandContext];
+    command2 = [voCommandContext3 command];
 
-    v17 = [v16 isEqual:v12];
-    v18 = [(VoiceOverCommandPickerController *)self presenter];
-    v19 = [v18 userSelectedCommandBlock];
+    v17 = [command2 isEqual:command];
+    presenter = [(VoiceOverCommandPickerController *)self presenter];
+    userSelectedCommandBlock = [presenter userSelectedCommandBlock];
 
-    if (v19)
+    if (userSelectedCommandBlock)
     {
-      v20 = [(VoiceOverCommandPickerController *)self presenter];
-      v21 = [v20 userSelectedCommandBlock];
-      (v21)[2](v21, v16, v14, v17);
+      presenter2 = [(VoiceOverCommandPickerController *)self presenter];
+      userSelectedCommandBlock2 = [presenter2 userSelectedCommandBlock];
+      (userSelectedCommandBlock2)[2](userSelectedCommandBlock2, command2, gesture, v17);
     }
   }
 }

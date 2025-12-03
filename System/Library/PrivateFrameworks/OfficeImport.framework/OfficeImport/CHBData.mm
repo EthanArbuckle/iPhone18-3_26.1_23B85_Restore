@@ -1,44 +1,44 @@
 @interface CHBData
-+ (id)readFrom:(const void *)a3 state:(id)a4;
++ (id)readFrom:(const void *)from state:(id)state;
 @end
 
 @implementation CHBData
 
-+ (id)readFrom:(const void *)a3 state:(id)a4
++ (id)readFrom:(const void *)from state:(id)state
 {
-  v5 = a4;
-  if (a3 && XlChartLinkedData::hasEnteredData(a3))
+  stateCopy = state;
+  if (from && XlChartLinkedData::hasEnteredData(from))
   {
-    v6 = *(a3 + 12);
-    v7 = [v5 resources];
-    v8 = [CHDData dataWithDataPointCount:v6 resources:v7];
+    v6 = *(from + 12);
+    resources = [stateCopy resources];
+    v8 = [CHDData dataWithDataPointCount:v6 resources:resources];
   }
 
   else
   {
-    v9 = [v5 resources];
-    v8 = [CHDData dataWithResources:v9];
+    resources2 = [stateCopy resources];
+    v8 = [CHDData dataWithResources:resources2];
 
-    if (!a3)
+    if (!from)
     {
       v36 = v8;
       goto LABEL_47;
     }
   }
 
-  v10 = *(a3 + 2);
+  v10 = *(from + 2);
   if (v10)
   {
-    v11 = *(a3 + 12);
+    v11 = *(from + 12);
     v12 = objc_opt_class();
-    v13 = [v5 ebReaderSheetState];
-    v14 = [EBFormula edFormulaFromXlFmlaDefinition:v10 withFormulaLength:v11 formulaClass:v12 state:v13];
+    ebReaderSheetState = [stateCopy ebReaderSheetState];
+    v14 = [EBFormula edFormulaFromXlFmlaDefinition:v10 withFormulaLength:v11 formulaClass:v12 state:ebReaderSheetState];
 
-    v15 = [v5 workbook];
-    [v14 setWorkbook:v15];
+    workbook = [stateCopy workbook];
+    [v14 setWorkbook:workbook];
 
-    v16 = [v5 chart];
-    [v8 setFormula:v14 chart:v16];
+    chart = [stateCopy chart];
+    [v8 setFormula:v14 chart:chart];
   }
 
   else
@@ -46,14 +46,14 @@
     v14 = 0;
   }
 
-  if (XlChartLinkedData::hasEnteredData(a3))
+  if (XlChartLinkedData::hasEnteredData(from))
   {
     v40 = v14;
-    v41 = v5;
-    v17 = [v8 dataValues];
-    v18 = *(a3 + 4);
-    v39 = a3;
-    v19 = a3 + 40;
+    v41 = stateCopy;
+    dataValues = [v8 dataValues];
+    v18 = *(from + 4);
+    fromCopy = from;
+    v19 = from + 40;
     if (v18 != v19)
     {
       v20 = 0;
@@ -147,7 +147,7 @@ LABEL_16:
 
       v43 = *(v18 + 8);
       v45 = v27;
-      [v17 addDataPoint:&v43];
+      [dataValues addDataPoint:&v43];
       v29 = *(v18 + 8);
       if (v29 <= v20)
       {
@@ -185,11 +185,11 @@ LABEL_16:
 
     LOWORD(v22) = -1;
 LABEL_40:
-    [v17 finishReading];
+    [dataValues finishReading];
 
     v14 = v40;
-    v5 = v41;
-    a3 = v39;
+    stateCopy = v41;
+    from = fromCopy;
   }
 
   else
@@ -197,15 +197,15 @@ LABEL_40:
     LOWORD(v22) = -1;
   }
 
-  v37 = *(a3 + 13);
-  if (*([v5 xlReader] + 1344) == 1)
+  v37 = *(from + 13);
+  if (*([stateCopy xlReader] + 1344) == 1)
   {
     if (v37 == 0x8000)
     {
       LOWORD(v37) = v22;
     }
 
-    else if (*(a3 + 28) == 1)
+    else if (*(from + 28) == 1)
     {
       LOWORD(v37) = v22;
     }

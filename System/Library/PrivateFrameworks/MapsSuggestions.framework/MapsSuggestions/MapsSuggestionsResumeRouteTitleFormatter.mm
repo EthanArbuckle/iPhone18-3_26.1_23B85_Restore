@@ -1,17 +1,17 @@
 @interface MapsSuggestionsResumeRouteTitleFormatter
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4 requiredChargeLevel:(id)a5 currentChargeLevel:(id)a6;
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta requiredChargeLevel:(id)level currentChargeLevel:(id)chargeLevel;
 @end
 
 @implementation MapsSuggestionsResumeRouteTitleFormatter
 
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4 requiredChargeLevel:(id)a5 currentChargeLevel:(id)a6
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta requiredChargeLevel:(id)level currentChargeLevel:(id)chargeLevel
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  entryCopy = entry;
+  etaCopy = eta;
+  levelCopy = level;
+  chargeLevelCopy = chargeLevel;
+  if (!entryCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v11)
+  if (!etaCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if ([v10 type] != 11)
+  if ([entryCopy type] != 11)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -73,39 +73,39 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v14 = [v10 stringForKey:@"MapsSuggestionsResumeRouteDefaultTitle"];
+  v14 = [entryCopy stringForKey:@"MapsSuggestionsResumeRouteDefaultTitle"];
   if (v14)
   {
-    [v12 doubleValue];
+    [levelCopy doubleValue];
     v16 = v15;
-    [v13 doubleValue];
+    [chargeLevelCopy doubleValue];
     v18 = v17;
-    v19 = [v10 BOOLeanForKey:@"MapsSuggestionsIsResumingAnEVRoute" is:0];
-    if (v13 && v12 && (v19 & 1) == 0 && (![v10 BOOLeanForKey:@"MapsSuggestionsIsResumingAnEVRoute" is:1] || (v21 = v18 * 100.0, v20 = v16 * 100.0, v18 * 100.0 < v16 * 100.0)))
+    v19 = [entryCopy BOOLeanForKey:@"MapsSuggestionsIsResumingAnEVRoute" is:0];
+    if (chargeLevelCopy && levelCopy && (v19 & 1) == 0 && (![entryCopy BOOLeanForKey:@"MapsSuggestionsIsResumingAnEVRoute" is:1] || (v21 = v18 * 100.0, v20 = v16 * 100.0, v18 * 100.0 < v16 * 100.0)))
     {
-      [v10 setBoolean:0 forKey:{@"MapsSuggestionsHasEnoughChargeKey", v20, v21}];
-      v22 = [v10 stringForKey:@"MapsSuggestionsResumeRouteTitleWhenCharging"];
-      v28 = [v10 stringForKey:@"MapsSuggestionsResumeRouteSubtitleWhenCharging"];
+      [entryCopy setBoolean:0 forKey:{@"MapsSuggestionsHasEnoughChargeKey", v20, v21}];
+      v22 = [entryCopy stringForKey:@"MapsSuggestionsResumeRouteTitleWhenCharging"];
+      trafficString = [entryCopy stringForKey:@"MapsSuggestionsResumeRouteSubtitleWhenCharging"];
       if (v22)
       {
         v29 = GEOFindOrCreateLog();
         v30 = v29;
-        if (v28)
+        if (trafficString)
         {
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
             v32 = 138412290;
-            v33 = v13;
+            v33 = chargeLevelCopy;
             _os_log_impl(&dword_1C5126000, v30, OS_LOG_TYPE_INFO, "Setting titles for EV ResumeRoute entry because the vehicle is still charging at %@", &v32, 0xCu);
           }
 
           v24 = 1;
-          if (([(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:v10 title:v22 subtitle:v28 includeLockedVersions:1]& 1) != 0)
+          if (([(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:entryCopy title:v22 subtitle:trafficString includeLockedVersions:1]& 1) != 0)
           {
             goto LABEL_39;
           }
 
-          [v10 setTitle:v22];
+          [entryCopy setTitle:v22];
         }
 
         else
@@ -147,11 +147,11 @@ LABEL_19:
 
     else
     {
-      [v10 setBoolean:1 forKey:@"MapsSuggestionsHasEnoughChargeKey"];
-      v22 = [v10 routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
+      [entryCopy setBoolean:1 forKey:@"MapsSuggestionsHasEnoughChargeKey"];
+      v22 = [entryCopy routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
       if (v22)
       {
-        v23 = [v10 uint64ForKey:@"MapsSuggestionsResumeRouteWaypointIndex"] + 1;
+        v23 = [entryCopy uint64ForKey:@"MapsSuggestionsResumeRouteWaypointIndex"] + 1;
         if (v23 < [v22 waypointsCount])
         {
           v24 = 0;
@@ -161,8 +161,8 @@ LABEL_40:
         }
       }
 
-      v28 = [v11 trafficString];
-      v24 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:v10 title:v14 subtitle:v28 includeLockedVersions:1];
+      trafficString = [etaCopy trafficString];
+      v24 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:entryCopy title:v14 subtitle:trafficString includeLockedVersions:1];
     }
 
 LABEL_39:

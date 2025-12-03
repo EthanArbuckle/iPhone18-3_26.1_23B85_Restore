@@ -1,7 +1,7 @@
 @interface NTKComplicationDataSourceCache
 + (NTKComplicationDataSourceCache)sharedInstance;
-- (Class)_dataSourceClassForComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (Class)dataSourceClassForComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (Class)_dataSourceClassForComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device;
+- (Class)dataSourceClassForComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device;
 - (NTKComplicationDataSourceCache)init;
 - (void)_invalidateCache;
 - (void)dealloc;
@@ -42,7 +42,7 @@ void __48__NTKComplicationDataSourceCache_sharedInstance__block_invoke()
     v3->_lock_cache = v4;
 
     objc_initWeak(&location, v3);
-    v6 = [MEMORY[0x277D37B40] pairedDeviceDidChangeCapabilities];
+    pairedDeviceDidChangeCapabilities = [MEMORY[0x277D37B40] pairedDeviceDidChangeCapabilities];
     v7 = MEMORY[0x277D85CD0];
     v8 = MEMORY[0x277D85CD0];
     v10[0] = MEMORY[0x277D85DD0];
@@ -50,7 +50,7 @@ void __48__NTKComplicationDataSourceCache_sharedInstance__block_invoke()
     v10[2] = __38__NTKComplicationDataSourceCache_init__block_invoke;
     v10[3] = &unk_27877E868;
     objc_copyWeak(&v11, &location);
-    notify_register_dispatch(v6, &v3->_capabilitiesChangedNotificationToken, v7, v10);
+    notify_register_dispatch(pairedDeviceDidChangeCapabilities, &v3->_capabilitiesChangedNotificationToken, v7, v10);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -73,22 +73,22 @@ void __38__NTKComplicationDataSourceCache_init__block_invoke(uint64_t a1)
   [(NTKComplicationDataSourceCache *)&v3 dealloc];
 }
 
-- (Class)dataSourceClassForComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5
+- (Class)dataSourceClassForComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device
 {
-  v8 = a5;
+  deviceCopy = device;
   v9 = objc_opt_new();
-  v10 = [v8 pairingID];
-  [v9 setPairingID:v10];
+  pairingID = [deviceCopy pairingID];
+  [v9 setPairingID:pairingID];
 
-  [v9 setComplicationType:a3];
-  [v9 setComplicationFamily:a4];
+  [v9 setComplicationType:type];
+  [v9 setComplicationFamily:family];
   os_unfair_lock_lock(&self->_lock);
   v11 = [(NSMutableDictionary *)self->_lock_cache objectForKeyedSubscript:v9];
   os_unfair_lock_unlock(&self->_lock);
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEB68] null];
-    v13 = [v11 isEqual:v12];
+    null = [MEMORY[0x277CBEB68] null];
+    v13 = [v11 isEqual:null];
 
     v14 = v11;
     if (v13)
@@ -100,7 +100,7 @@ void __38__NTKComplicationDataSourceCache_init__block_invoke(uint64_t a1)
 
   else
   {
-    v14 = [(NTKComplicationDataSourceCache *)self _dataSourceClassForComplicationType:a3 family:a4 forDevice:v8];
+    v14 = [(NTKComplicationDataSourceCache *)self _dataSourceClassForComplicationType:type family:family forDevice:deviceCopy];
     os_unfair_lock_lock(&self->_lock);
     if (v14)
     {
@@ -109,8 +109,8 @@ void __38__NTKComplicationDataSourceCache_init__block_invoke(uint64_t a1)
 
     else
     {
-      v16 = [MEMORY[0x277CBEB68] null];
-      [(NSMutableDictionary *)self->_lock_cache setObject:v16 forKeyedSubscript:v9];
+      null2 = [MEMORY[0x277CBEB68] null];
+      [(NSMutableDictionary *)self->_lock_cache setObject:null2 forKeyedSubscript:v9];
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -130,10 +130,10 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (Class)_dataSourceClassForComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5
+- (Class)_dataSourceClassForComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  deviceCopy = device;
   if (_dataSourceClassForComplicationType_family_forDevice__onceToken != -1)
   {
     [NTKComplicationDataSourceCache _dataSourceClassForComplicationType:family:forDevice:];
@@ -149,8 +149,8 @@ LABEL_9:
   v20[2] = __87__NTKComplicationDataSourceCache__dataSourceClassForComplicationType_family_forDevice___block_invoke_2;
   v20[3] = &unk_2787844D0;
   v20[4] = &v21;
-  v20[5] = a3;
-  [v8 enumerateBundlesForComplicationFamily:a4 device:v7 withBlock:v20];
+  v20[5] = type;
+  [v8 enumerateBundlesForComplicationFamily:family device:deviceCopy withBlock:v20];
 
   if (v22[3])
   {
@@ -178,7 +178,7 @@ LABEL_7:
         }
 
         v14 = *(*(&v16 + 1) + 8 * v13);
-        if ([v14 acceptsComplicationType:a3 withFamily:a4 forDevice:{v7, v16}])
+        if ([v14 acceptsComplicationType:type withFamily:family forDevice:{deviceCopy, v16}])
         {
           break;
         }

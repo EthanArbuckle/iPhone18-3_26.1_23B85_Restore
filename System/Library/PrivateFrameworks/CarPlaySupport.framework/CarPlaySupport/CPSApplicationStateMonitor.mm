@@ -1,5 +1,5 @@
 @interface CPSApplicationStateMonitor
-- (BOOL)_sceneIsForeground:(id)a3;
+- (BOOL)_sceneIsForeground:(id)foreground;
 - (BOOL)canPostNavigationAlertNotification;
 - (BOOL)isApplicationActive;
 - (BOOL)templateApplicationSceneIsActive;
@@ -7,16 +7,16 @@
 - (UIWindowScene)windowSceneForGuidanceWidgetScene;
 - (UIWindowScene)windowSceneForMapWidgetScene;
 - (UIWindowScene)windowSceneForTemplateApplicationScene;
-- (void)_observeScene:(id)a3;
-- (void)_sceneActivated:(id)a3;
-- (void)_sceneDidEnterBackground:(id)a3;
-- (void)_sceneWillEnterForeground:(id)a3;
-- (void)addApplicationStateObserver:(id)a3;
+- (void)_observeScene:(id)scene;
+- (void)_sceneActivated:(id)activated;
+- (void)_sceneDidEnterBackground:(id)background;
+- (void)_sceneWillEnterForeground:(id)foreground;
+- (void)addApplicationStateObserver:(id)observer;
 - (void)dealloc;
-- (void)removeApplicationStateObserver:(id)a3;
-- (void)setWindowSceneForGuidanceWidgetScene:(id)a3;
-- (void)setWindowSceneForMapWidgetScene:(id)a3;
-- (void)setWindowSceneForTemplateApplicationScene:(id)a3;
+- (void)removeApplicationStateObserver:(id)observer;
+- (void)setWindowSceneForGuidanceWidgetScene:(id)scene;
+- (void)setWindowSceneForMapWidgetScene:(id)scene;
+- (void)setWindowSceneForTemplateApplicationScene:(id)scene;
 @end
 
 @implementation CPSApplicationStateMonitor
@@ -48,36 +48,36 @@
   return v8;
 }
 
-- (void)_observeScene:(id)a3
+- (void)_observeScene:(id)scene
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:v7 selector:sel__sceneWillEnterForeground_ name:*MEMORY[0x277D76E80] object:location[0]];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:v7 selector:sel__sceneActivated_ name:*MEMORY[0x277D76E48] object:location[0]];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:v7 selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x277D76E58] object:location[0]];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(location, scene);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel__sceneWillEnterForeground_ name:*MEMORY[0x277D76E80] object:location[0]];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:selfCopy selector:sel__sceneActivated_ name:*MEMORY[0x277D76E48] object:location[0]];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:selfCopy selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x277D76E58] object:location[0]];
+  MEMORY[0x277D82BD8](defaultCenter3);
   objc_storeStrong(location, 0);
 }
 
-- (void)setWindowSceneForGuidanceWidgetScene:(id)a3
+- (void)setWindowSceneForGuidanceWidgetScene:(id)scene
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v8->_windowSceneForGuidanceWidgetScene);
+  objc_storeStrong(location, scene);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_windowSceneForGuidanceWidgetScene);
   v5 = location[0];
   MEMORY[0x277D82BD8](WeakRetained);
   if (WeakRetained != v5)
   {
-    objc_storeWeak(&v8->_windowSceneForGuidanceWidgetScene, location[0]);
-    v3 = v8;
-    v4 = objc_loadWeakRetained(&v8->_windowSceneForGuidanceWidgetScene);
+    objc_storeWeak(&selfCopy->_windowSceneForGuidanceWidgetScene, location[0]);
+    v3 = selfCopy;
+    v4 = objc_loadWeakRetained(&selfCopy->_windowSceneForGuidanceWidgetScene);
     [(CPSApplicationStateMonitor *)v3 _observeScene:?];
     MEMORY[0x277D82BD8](v4);
   }
@@ -85,20 +85,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setWindowSceneForMapWidgetScene:(id)a3
+- (void)setWindowSceneForMapWidgetScene:(id)scene
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v8->_windowSceneForMapWidgetScene);
+  objc_storeStrong(location, scene);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_windowSceneForMapWidgetScene);
   v5 = location[0];
   MEMORY[0x277D82BD8](WeakRetained);
   if (WeakRetained != v5)
   {
-    objc_storeWeak(&v8->_windowSceneForMapWidgetScene, location[0]);
-    v3 = v8;
-    v4 = objc_loadWeakRetained(&v8->_windowSceneForMapWidgetScene);
+    objc_storeWeak(&selfCopy->_windowSceneForMapWidgetScene, location[0]);
+    v3 = selfCopy;
+    v4 = objc_loadWeakRetained(&selfCopy->_windowSceneForMapWidgetScene);
     [(CPSApplicationStateMonitor *)v3 _observeScene:?];
     MEMORY[0x277D82BD8](v4);
   }
@@ -106,20 +106,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setWindowSceneForTemplateApplicationScene:(id)a3
+- (void)setWindowSceneForTemplateApplicationScene:(id)scene
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v8->_windowSceneForTemplateApplicationScene);
+  objc_storeStrong(location, scene);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_windowSceneForTemplateApplicationScene);
   v5 = location[0];
   MEMORY[0x277D82BD8](WeakRetained);
   if (WeakRetained != v5)
   {
-    objc_storeWeak(&v8->_windowSceneForTemplateApplicationScene, location[0]);
-    v3 = v8;
-    v4 = objc_loadWeakRetained(&v8->_windowSceneForTemplateApplicationScene);
+    objc_storeWeak(&selfCopy->_windowSceneForTemplateApplicationScene, location[0]);
+    v3 = selfCopy;
+    v4 = objc_loadWeakRetained(&selfCopy->_windowSceneForTemplateApplicationScene);
     [(CPSApplicationStateMonitor *)v3 _observeScene:?];
     MEMORY[0x277D82BD8](v4);
   }
@@ -129,45 +129,45 @@
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:v6];
-  *&v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
-  v4.receiver = v6;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
+  *&v2 = MEMORY[0x277D82BD8](defaultCenter).n128_u64[0];
+  v4.receiver = selfCopy;
   v4.super_class = CPSApplicationStateMonitor;
   [(CPSApplicationStateMonitor *)&v4 dealloc];
 }
 
-- (void)addApplicationStateObserver:(id)a3
+- (void)addApplicationStateObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CARObserverHashTable *)v4->_stateObservers addObserver:location[0]];
+  objc_storeStrong(location, observer);
+  [(CARObserverHashTable *)selfCopy->_stateObservers addObserver:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)removeApplicationStateObserver:(id)a3
+- (void)removeApplicationStateObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CARObserverHashTable *)v4->_stateObservers removeObserver:location[0]];
+  objc_storeStrong(location, observer);
+  [(CARObserverHashTable *)selfCopy->_stateObservers removeObserver:location[0]];
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)isApplicationActive
 {
-  v4 = [(CPSApplicationStateMonitor *)self windowSceneForTemplateApplicationScene];
+  windowSceneForTemplateApplicationScene = [(CPSApplicationStateMonitor *)self windowSceneForTemplateApplicationScene];
   v5 = [(CPSApplicationStateMonitor *)self _sceneIsForeground:?];
-  v6 = [(CPSApplicationStateMonitor *)self windowSceneForGuidanceWidgetScene];
+  windowSceneForGuidanceWidgetScene = [(CPSApplicationStateMonitor *)self windowSceneForGuidanceWidgetScene];
   v10 = [(CPSApplicationStateMonitor *)self _sceneIsForeground:?];
-  v7 = [(CPSApplicationStateMonitor *)self windowSceneForMapWidgetScene];
+  windowSceneForMapWidgetScene = [(CPSApplicationStateMonitor *)self windowSceneForMapWidgetScene];
   v8 = [(CPSApplicationStateMonitor *)self _sceneIsForeground:?];
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](windowSceneForMapWidgetScene);
   v9 = 1;
   if (!v5)
   {
@@ -181,12 +181,12 @@
   return v9 & 1;
 }
 
-- (BOOL)_sceneIsForeground:(id)a3
+- (BOOL)_sceneIsForeground:(id)foreground
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, foreground);
   if (location[0])
   {
     v4 = 1;
@@ -209,19 +209,19 @@
 
 - (BOOL)canPostNavigationAlertNotification
 {
-  v4 = [(CPSApplicationStateMonitor *)self windowSceneForTemplateApplicationScene];
+  windowSceneForTemplateApplicationScene = [(CPSApplicationStateMonitor *)self windowSceneForTemplateApplicationScene];
   v5 = ![(CPSApplicationStateMonitor *)self _sceneIsForeground:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](windowSceneForTemplateApplicationScene);
   return v5;
 }
 
 - (BOOL)templateApplicationSceneIsActive
 {
-  v4 = [(CPSApplicationStateMonitor *)self windowSceneForTemplateApplicationScene];
+  windowSceneForTemplateApplicationScene = [(CPSApplicationStateMonitor *)self windowSceneForTemplateApplicationScene];
   v5 = 0;
-  if (v4)
+  if (windowSceneForTemplateApplicationScene)
   {
-    v6 = [(CPSApplicationStateMonitor *)self windowSceneForTemplateApplicationScene];
+    windowSceneForTemplateApplicationScene2 = [(CPSApplicationStateMonitor *)self windowSceneForTemplateApplicationScene];
     v5 = 1;
     v3 = [(CPSApplicationStateMonitor *)self _sceneIsForeground:?];
   }
@@ -233,40 +233,40 @@
 
   if (v5)
   {
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](windowSceneForTemplateApplicationScene2);
   }
 
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](windowSceneForTemplateApplicationScene);
   return v3;
 }
 
-- (void)_sceneWillEnterForeground:(id)a3
+- (void)_sceneWillEnterForeground:(id)foreground
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSApplicationStateMonitor *)v4 _notifyObserversForeground:[(CPSApplicationStateMonitor *)v4 isApplicationActive]];
+  objc_storeStrong(location, foreground);
+  [(CPSApplicationStateMonitor *)selfCopy _notifyObserversForeground:[(CPSApplicationStateMonitor *)selfCopy isApplicationActive]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_sceneActivated:(id)a3
+- (void)_sceneActivated:(id)activated
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSApplicationStateMonitor *)v4 _notifyObserversForeground:[(CPSApplicationStateMonitor *)v4 isApplicationActive]];
+  objc_storeStrong(location, activated);
+  [(CPSApplicationStateMonitor *)selfCopy _notifyObserversForeground:[(CPSApplicationStateMonitor *)selfCopy isApplicationActive]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSApplicationStateMonitor *)v4 _notifyObserversForeground:[(CPSApplicationStateMonitor *)v4 isApplicationActive]];
+  objc_storeStrong(location, background);
+  [(CPSApplicationStateMonitor *)selfCopy _notifyObserversForeground:[(CPSApplicationStateMonitor *)selfCopy isApplicationActive]];
   objc_storeStrong(location, 0);
 }
 

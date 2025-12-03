@@ -1,32 +1,32 @@
 @interface MSPFeedbackSubmissionTicket
-+ (id)ticketForFeedbackRequest:(id)a3;
-+ (id)ticketForFeedbackRequest:(id)a3 traits:(id)a4;
-+ (id)ticketForFeedbackRequestParameters:(id)a3 mapItem:(id)a4 traits:(id)a5;
-- (MSPFeedbackSubmissionTicket)initWithMapServiceTicket:(id)a3;
++ (id)ticketForFeedbackRequest:(id)request;
++ (id)ticketForFeedbackRequest:(id)request traits:(id)traits;
++ (id)ticketForFeedbackRequestParameters:(id)parameters mapItem:(id)item traits:(id)traits;
+- (MSPFeedbackSubmissionTicket)initWithMapServiceTicket:(id)ticket;
 - (void)cancel;
-- (void)submitWithCallbackQueue:(id)a3 handler:(id)a4 networkActivity:(id)a5;
+- (void)submitWithCallbackQueue:(id)queue handler:(id)handler networkActivity:(id)activity;
 @end
 
 @implementation MSPFeedbackSubmissionTicket
 
-- (MSPFeedbackSubmissionTicket)initWithMapServiceTicket:(id)a3
+- (MSPFeedbackSubmissionTicket)initWithMapServiceTicket:(id)ticket
 {
-  v5 = a3;
+  ticketCopy = ticket;
   v14.receiver = self;
   v14.super_class = MSPFeedbackSubmissionTicket;
   v6 = [(MSPFeedbackSubmissionTicket *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ticket, a3);
+    objc_storeStrong(&v6->_ticket, ticket);
     v8 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:100];
     fakeProgress = v7->_fakeProgress;
     v7->_fakeProgress = v8;
 
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     sessionIdentifier = v7->_sessionIdentifier;
-    v7->_sessionIdentifier = v11;
+    v7->_sessionIdentifier = uUIDString;
 
     v7->_cancelled = 0;
   }
@@ -34,38 +34,38 @@
   return v7;
 }
 
-+ (id)ticketForFeedbackRequest:(id)a3
++ (id)ticketForFeedbackRequest:(id)request
 {
   v4 = MEMORY[0x277D0EBD0];
-  v5 = a3;
-  v6 = [v4 sharedService];
-  v7 = [v6 defaultTraits];
-  v8 = [a1 ticketForFeedbackRequest:v5 traits:v7];
+  requestCopy = request;
+  sharedService = [v4 sharedService];
+  defaultTraits = [sharedService defaultTraits];
+  v8 = [self ticketForFeedbackRequest:requestCopy traits:defaultTraits];
 
   return v8;
 }
 
-+ (id)ticketForFeedbackRequest:(id)a3 traits:(id)a4
++ (id)ticketForFeedbackRequest:(id)request traits:(id)traits
 {
   v5 = MEMORY[0x277D0EBD0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedService];
-  v9 = [v8 ticketForFeedbackRequest:v7 traits:v6];
+  traitsCopy = traits;
+  requestCopy = request;
+  sharedService = [v5 sharedService];
+  v9 = [sharedService ticketForFeedbackRequest:requestCopy traits:traitsCopy];
 
   v10 = [objc_alloc(objc_opt_class()) initWithMapServiceTicket:v9];
 
   return v10;
 }
 
-+ (id)ticketForFeedbackRequestParameters:(id)a3 mapItem:(id)a4 traits:(id)a5
++ (id)ticketForFeedbackRequestParameters:(id)parameters mapItem:(id)item traits:(id)traits
 {
   v7 = MEMORY[0x277D0EBD0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedService];
-  v12 = [v11 ticketForFeedbackRequestParameters:v10 placeForProblemContext:v9 userCredentials:0 pushToken:0 allowContactBackAtEmailAddress:0 traits:v8];
+  traitsCopy = traits;
+  itemCopy = item;
+  parametersCopy = parameters;
+  sharedService = [v7 sharedService];
+  v12 = [sharedService ticketForFeedbackRequestParameters:parametersCopy placeForProblemContext:itemCopy userCredentials:0 pushToken:0 allowContactBackAtEmailAddress:0 traits:traitsCopy];
 
   v13 = [objc_alloc(objc_opt_class()) initWithMapServiceTicket:v12];
 
@@ -75,18 +75,18 @@
 - (void)cancel
 {
   [(GEOMapServiceFeedbackReportTicket *)self->_ticket cancel];
-  v3 = [(MSPFeedbackSubmissionTicket *)self fakeProgress];
-  [v3 cancel];
+  fakeProgress = [(MSPFeedbackSubmissionTicket *)self fakeProgress];
+  [fakeProgress cancel];
 
   self->_cancelled = 1;
 }
 
-- (void)submitWithCallbackQueue:(id)a3 handler:(id)a4 networkActivity:(id)a5
+- (void)submitWithCallbackQueue:(id)queue handler:(id)handler networkActivity:(id)activity
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
+  activityCopy = activity;
   v11 = MSPGetMSPFeedbackSubmissionTicketLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -96,8 +96,8 @@
     _os_log_impl(&dword_25813A000, v11, OS_LOG_TYPE_INFO, "<<<<<< BEGIN Session %@ >>>>>>>>", buf, 0xCu);
   }
 
-  v13 = [(MSPFeedbackSubmissionTicket *)self fakeProgress];
-  [v13 setCompletedUnitCount:20];
+  fakeProgress = [(MSPFeedbackSubmissionTicket *)self fakeProgress];
+  [fakeProgress setCompletedUnitCount:20];
 
   v14 = MSPGetMSPFeedbackSubmissionTicketLog();
   v15 = os_signpost_id_generate(v14);
@@ -124,13 +124,13 @@
   v26[1] = 3221225472;
   v26[2] = __79__MSPFeedbackSubmissionTicket_submitWithCallbackQueue_handler_networkActivity___block_invoke;
   v26[3] = &unk_279868820;
-  v21 = v8;
+  v21 = queueCopy;
   v30 = v15;
   v27 = v21;
-  v28 = self;
-  v22 = v9;
+  selfCopy = self;
+  v22 = handlerCopy;
   v29 = v22;
-  [(GEOMapServiceFeedbackReportTicket *)ticket submitWithHandler:v26 networkActivity:v10];
+  [(GEOMapServiceFeedbackReportTicket *)ticket submitWithHandler:v26 networkActivity:activityCopy];
 
   v23 = MSPGetMSPFeedbackSubmissionTicketLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))

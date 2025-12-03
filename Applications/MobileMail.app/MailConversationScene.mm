@@ -1,26 +1,26 @@
 @interface MailConversationScene
 + (id)log;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)conversationViewControllerAllowsRemindMeAction:(id)a3;
-- (BOOL)displayMessage:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)conversationViewControllerAllowsRemindMeAction:(id)action;
+- (BOOL)displayMessage:(id)message;
 - (BOOL)isComposeWindowActive;
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
 - (MFMailPopoverManager)popoverManager;
 - (_TtC10MobileMail21AppStoreReviewManager)appStoreReviewManager;
 - (id)_createURLRoutes;
 - (id)activeViewController;
-- (id)composeAccountIsDefault:(BOOL *)a3;
+- (id)composeAccountIsDefault:(BOOL *)default;
 - (id)stateRestorationActivityForMailScene;
-- (void)_composeCommandInvoked:(id)a3;
-- (void)_sheetPresentationControllerDidTearOff:(id)a3;
-- (void)conversationViewControllerWantsDismissal:(id)a3;
-- (void)dismissComposeViewController:(id)a3 animated:(BOOL)a4 afterSending:(BOOL)a5;
-- (void)mailComposeDeliveryControllerDidAttemptToSend:(id)a3 outgoingMessageDelivery:(id)a4 result:(id)a5;
-- (void)mailSceneDidConnectWithOptions:(id)a3;
+- (void)_composeCommandInvoked:(id)invoked;
+- (void)_sheetPresentationControllerDidTearOff:(id)off;
+- (void)conversationViewControllerWantsDismissal:(id)dismissal;
+- (void)dismissComposeViewController:(id)controller animated:(BOOL)animated afterSending:(BOOL)sending;
+- (void)mailComposeDeliveryControllerDidAttemptToSend:(id)send outgoingMessageDelivery:(id)delivery result:(id)result;
+- (void)mailSceneDidConnectWithOptions:(id)options;
 - (void)mailSceneDidDisconnect;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)referenceMessageNoLongerAvailableInConversationView:(id)a3;
-- (void)showComposeWithContext:(id)a3 animated:(BOOL)a4 initialTitle:(id)a5 presentationSource:(id)a6 completionBlock:(id)a7;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)referenceMessageNoLongerAvailableInConversationView:(id)view;
+- (void)showComposeWithContext:(id)context animated:(BOOL)animated initialTitle:(id)title presentationSource:(id)source completionBlock:(id)block;
 @end
 
 @implementation MailConversationScene
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = sub_10010D328;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD090 != -1)
   {
     dispatch_once(&qword_1006DD090, block);
@@ -42,18 +42,18 @@
   return v2;
 }
 
-- (void)mailSceneDidConnectWithOptions:(id)a3
+- (void)mailSceneDidConnectWithOptions:(id)options
 {
   v34.receiver = self;
   v34.super_class = MailConversationScene;
-  v33 = a3;
+  optionsCopy = options;
   [(MailScene *)&v34 mailSceneDidConnectWithOptions:?];
   v4 = [ConversationViewController alloc];
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 contactStore];
+  contactStore = [v5 contactStore];
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 avatarGenerator];
-  v9 = [(ConversationViewController *)v4 initWithScene:self contactStore:v6 avatarGenerator:v8];
+  avatarGenerator = [v7 avatarGenerator];
+  v9 = [(ConversationViewController *)v4 initWithScene:self contactStore:contactStore avatarGenerator:avatarGenerator];
 
   [(ConversationViewControllerBase *)v9 setIsPrimary:1];
   [(ConversationViewControllerBase *)v9 setIsStandalone:1];
@@ -66,61 +66,61 @@
 
   v13 = [[MailDetailNavigationController alloc] initWithRootViewController:v9];
   v14 = [MFMailComposeControllerViewDelegateHandler alloc];
-  v15 = [(MailScene *)self daemonInterface];
-  v16 = [(MFMailComposeControllerViewDelegateHandler *)v14 initWithUICoordinator:self daemonInterface:v15];
+  daemonInterface = [(MailScene *)self daemonInterface];
+  v16 = [(MFMailComposeControllerViewDelegateHandler *)v14 initWithUICoordinator:self daemonInterface:daemonInterface];
   [(MailConversationScene *)self setComposeViewDelegateHandler:v16];
 
   [(MailConversationScene *)self setConversationViewController:v9];
   [(MailConversationScene *)self setNavigationController:v13];
-  v17 = [(MailConversationScene *)self session];
-  v18 = [v17 stateRestorationActivity];
+  session = [(MailConversationScene *)self session];
+  stateRestorationActivity = [session stateRestorationActivity];
 
-  if (!v18)
+  if (!stateRestorationActivity)
   {
-    v19 = [v33 userActivities];
-    v18 = [v19 ef_anyPassingTest:&stru_100650718];
+    userActivities = [optionsCopy userActivities];
+    stateRestorationActivity = [userActivities ef_anyPassingTest:&stru_100650718];
   }
 
-  v20 = [v18 userInfo];
-  v21 = [v20 objectForKeyedSubscript:MSMailActivityHandoffDisplayMessageKeyRestorationState];
+  userInfo = [stateRestorationActivity userInfo];
+  v21 = [userInfo objectForKeyedSubscript:MSMailActivityHandoffDisplayMessageKeyRestorationState];
 
   v22 = [NSPredicate predicateWithValue:0];
-  v23 = [(MailConversationScene *)self activationConditions];
-  [v23 setCanActivateForTargetContentIdentifierPredicate:v22];
+  activationConditions = [(MailConversationScene *)self activationConditions];
+  [activationConditions setCanActivateForTargetContentIdentifierPredicate:v22];
 
   v24 = +[MailConversationScene log];
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(MailConversationScene *)self session];
-    v26 = [v25 persistentIdentifier];
-    v27 = [(MailConversationScene *)self session];
-    v28 = [v27 stateRestorationActivity];
+    session2 = [(MailConversationScene *)self session];
+    persistentIdentifier = [session2 persistentIdentifier];
+    session3 = [(MailConversationScene *)self session];
+    stateRestorationActivity2 = [session3 stateRestorationActivity];
     *buf = 138412546;
-    v36 = v26;
+    v36 = persistentIdentifier;
     v37 = 1024;
-    v38 = v28 != 0;
+    v38 = stateRestorationActivity2 != 0;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Connection conditions: sessionID=%@ hasRestorationActivity=%{BOOL}d", buf, 0x12u);
   }
 
   if (v21)
   {
-    v29 = [(MailScene *)self daemonInterface];
-    v30 = [v29 messageRepository];
-    v31 = [ConversationViewRestorationState loadFromDictionary:v21 usingRepository:v30];
+    daemonInterface2 = [(MailScene *)self daemonInterface];
+    messageRepository = [daemonInterface2 messageRepository];
+    v31 = [ConversationViewRestorationState loadFromDictionary:v21 usingRepository:messageRepository];
 
-    v32 = [(MailConversationScene *)self conversationViewController];
-    [v32 restoreState:v31];
+    conversationViewController = [(MailConversationScene *)self conversationViewController];
+    [conversationViewController restoreState:v31];
   }
 }
 
 - (id)stateRestorationActivityForMailScene
 {
-  v3 = [(MailConversationScene *)self conversationViewController];
-  v4 = [v3 newBackgroundMonitor];
-  [v4 setAction:1];
-  [(MailScene *)self addBackgroundMonitor:v4];
-  v5 = [v3 captureRestorationState];
-  if (v5)
+  conversationViewController = [(MailConversationScene *)self conversationViewController];
+  newBackgroundMonitor = [conversationViewController newBackgroundMonitor];
+  [newBackgroundMonitor setAction:1];
+  [(MailScene *)self addBackgroundMonitor:newBackgroundMonitor];
+  captureRestorationState = [conversationViewController captureRestorationState];
+  if (captureRestorationState)
   {
     v6 = [NSUserActivity alloc];
     v7 = MSMailActivityHandoffTypeDisplayMessage;
@@ -128,8 +128,8 @@
     v13[0] = v7;
     v12[0] = MSMailActivityHandoffTypeKey;
     v12[1] = MSMailActivityHandoffDisplayMessageKeyRestorationState;
-    v9 = [v5 dictionaryRepresentation];
-    v13[1] = v9;
+    dictionaryRepresentation = [captureRestorationState dictionaryRepresentation];
+    v13[1] = dictionaryRepresentation;
     v10 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
     [v8 setUserInfo:v10];
   }
@@ -149,15 +149,15 @@
   [(MailScene *)&v7 mailSceneDidDisconnect];
   if ([(MailConversationScene *)self isComposeWindowActive])
   {
-    v3 = [(MailConversationScene *)self navigationController];
-    v4 = [v3 presentedViewController];
+    navigationController = [(MailConversationScene *)self navigationController];
+    presentedViewController = [navigationController presentedViewController];
 
-    if (![v4 resolution])
+    if (![presentedViewController resolution])
     {
-      [v4 _setCompositionContext:0];
+      [presentedViewController _setCompositionContext:0];
       v5 = +[UIApplication sharedApplication];
-      v6 = [v5 dockPersistence];
-      [v6 recoverAbandonedDrafts];
+      dockPersistence = [v5 dockPersistence];
+      [dockPersistence recoverAbandonedDrafts];
     }
   }
 }
@@ -167,8 +167,8 @@
   v3 = [[MFComposeURLRoute alloc] initWithScene:self];
   v7.receiver = self;
   v7.super_class = MailConversationScene;
-  v4 = [(MailScene *)&v7 _createURLRoutes];
-  v5 = [v4 arrayByAddingObject:v3];
+  _createURLRoutes = [(MailScene *)&v7 _createURLRoutes];
+  v5 = [_createURLRoutes arrayByAddingObject:v3];
 
   return v5;
 }
@@ -181,11 +181,11 @@
     [v8 handleFailureInMethod:a2 object:self file:@"MailConversationScene.m" lineNumber:143 description:@"Current thread must be main"];
   }
 
-  v4 = [(MailConversationScene *)self delegate];
-  v5 = [v4 window];
-  if (v5)
+  delegate = [(MailConversationScene *)self delegate];
+  window = [delegate window];
+  if (window)
   {
-    v6 = [MFMailPopoverManager managerForWindow:v5 createIfNeeded:1];
+    v6 = [MFMailPopoverManager managerForWindow:window createIfNeeded:1];
   }
 
   else
@@ -196,41 +196,41 @@
   return v6;
 }
 
-- (BOOL)displayMessage:(id)a3
+- (BOOL)displayMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSError errorWithDomain:EMErrorDomain code:2050 userInfo:0];
-  [v3 requestAbortedWithError:v4];
+  [messageCopy requestAbortedWithError:v4];
 
   return 0;
 }
 
 - (BOOL)isComposeWindowActive
 {
-  v2 = [(MailConversationScene *)self navigationController];
-  v3 = [v2 presentedViewController];
+  navigationController = [(MailConversationScene *)self navigationController];
+  presentedViewController = [navigationController presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)showComposeWithContext:(id)a3 animated:(BOOL)a4 initialTitle:(id)a5 presentationSource:(id)a6 completionBlock:(id)a7
+- (void)showComposeWithContext:(id)context animated:(BOOL)animated initialTitle:(id)title presentationSource:(id)source completionBlock:(id)block
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[ComposeNavigationController alloc] initWithComposition:v12];
-  v17 = [(ComposeNavigationController *)v16 presentationController];
-  [v17 setDelegate:self];
+  animatedCopy = animated;
+  contextCopy = context;
+  titleCopy = title;
+  sourceCopy = source;
+  blockCopy = block;
+  v16 = [[ComposeNavigationController alloc] initWithComposition:contextCopy];
+  presentationController = [(ComposeNavigationController *)v16 presentationController];
+  [presentationController setDelegate:self];
 
   if (v16)
   {
-    v18 = [(ComposeNavigationController *)v16 presentationController];
-    v37 = v15;
-    v38 = v14;
+    presentationController2 = [(ComposeNavigationController *)v16 presentationController];
+    v37 = blockCopy;
+    v38 = sourceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -241,30 +241,30 @@
         goto LABEL_6;
       }
 
-      v18 = [(ComposeNavigationController *)v16 presentationController];
-      [v18 _setAllowsTearOff:1];
-      [v18 setPrefersGrabberVisible:1];
+      presentationController2 = [(ComposeNavigationController *)v16 presentationController];
+      [presentationController2 _setAllowsTearOff:1];
+      [presentationController2 setPrefersGrabberVisible:1];
     }
 
 LABEL_6:
-    v20 = [(MailConversationScene *)self composeViewDelegateHandler];
-    [(ComposeNavigationController *)v16 setMailComposeDelegate:v20];
+    composeViewDelegateHandler = [(MailConversationScene *)self composeViewDelegateHandler];
+    [(ComposeNavigationController *)v16 setMailComposeDelegate:composeViewDelegateHandler];
 
-    if (v13 || ([v12 draftSubject], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (titleCopy || ([contextCopy draftSubject], (titleCopy = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      [(ComposeNavigationController *)v16 setInitialTitle:v13];
+      [(ComposeNavigationController *)v16 setInitialTitle:titleCopy];
     }
 
-    v21 = [(MailConversationScene *)self composeCompletionBlock];
+    composeCompletionBlock = [(MailConversationScene *)self composeCompletionBlock];
 
-    if (v21)
+    if (composeCompletionBlock)
     {
-      v22 = [(MailConversationScene *)self composeCompletionBlock];
-      v22[2]();
+      composeCompletionBlock2 = [(MailConversationScene *)self composeCompletionBlock];
+      composeCompletionBlock2[2]();
     }
 
-    [(MailConversationScene *)self setComposeCompletionBlock:v15];
-    v36 = v10;
+    [(MailConversationScene *)self setComposeCompletionBlock:blockCopy];
+    v36 = animatedCopy;
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_10010E364;
@@ -273,20 +273,20 @@ LABEL_6:
     v23 = v16;
     v40 = v23;
     v24 = objc_retainBlock(v39);
-    v25 = [(MailConversationScene *)self navigationController];
+    navigationController = [(MailConversationScene *)self navigationController];
     v26 = +[CLFSystemShellSwitcher sharedSystemShellSwitcher];
-    v27 = [v26 isClarityBoardEnabled];
+    isClarityBoardEnabled = [v26 isClarityBoardEnabled];
 
-    if (v27 & 1 | ((+[UIDevice mf_isPadIdiom]& 1) == 0))
+    if (isClarityBoardEnabled & 1 | ((+[UIDevice mf_isPadIdiom]& 1) == 0))
     {
-      v28 = [v12 attachmentToMarkupContentID];
-      if (!v28)
+      attachmentToMarkupContentID = [contextCopy attachmentToMarkupContentID];
+      if (!attachmentToMarkupContentID)
       {
         goto LABEL_21;
       }
 
-      v29 = [(MailConversationScene *)self navigationController];
-      v30 = [v29 presentedViewController];
+      navigationController2 = [(MailConversationScene *)self navigationController];
+      presentedViewController = [navigationController2 presentedViewController];
       v42 = 0;
       v43 = &v42;
       v44 = 0x2050000000;
@@ -309,24 +309,24 @@ LABEL_6:
 
       if (isKindOfClass)
       {
-        v34 = [v25 presentedViewController];
-        [v34 presentViewController:v23 animated:v36 completion:v24];
+        presentedViewController2 = [navigationController presentedViewController];
+        [presentedViewController2 presentViewController:v23 animated:v36 completion:v24];
       }
 
       else
       {
 LABEL_21:
-        [v25 presentViewController:v23 animated:v36 completion:v24];
+        [navigationController presentViewController:v23 animated:v36 completion:v24];
       }
     }
 
     else
     {
-      [MFBayAdoption openComposeWithContext:v12 presentationSource:v38 requestingScene:self];
+      [MFBayAdoption openComposeWithContext:contextCopy presentationSource:v38 requestingScene:self];
     }
 
-    v15 = v37;
-    v14 = v38;
+    blockCopy = v37;
+    sourceCopy = v38;
     goto LABEL_23;
   }
 
@@ -339,24 +339,24 @@ LABEL_21:
 LABEL_23:
 }
 
-- (id)composeAccountIsDefault:(BOOL *)a3
+- (id)composeAccountIsDefault:(BOOL *)default
 {
-  *a3 = 0;
-  v5 = [(MailConversationScene *)self conversationViewController];
-  v6 = [v5 referenceMessageListItem];
-  v7 = [v6 mailboxes];
-  v8 = [v7 firstObject];
+  *default = 0;
+  conversationViewController = [(MailConversationScene *)self conversationViewController];
+  referenceMessageListItem = [conversationViewController referenceMessageListItem];
+  mailboxes = [referenceMessageListItem mailboxes];
+  firstObject = [mailboxes firstObject];
 
-  if (!v8 || (-[MailScene mailboxProvider](self, "mailboxProvider"), v9 = objc_claimAutoreleasedReturnValue(), [v8 objectID], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "legacyMailboxForObjectID:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, objc_msgSend(v11, "account"), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
+  if (!firstObject || (-[MailScene mailboxProvider](self, "mailboxProvider"), v9 = objc_claimAutoreleasedReturnValue(), [firstObject objectID], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "legacyMailboxForObjectID:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, objc_msgSend(v11, "account"), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
   {
-    *a3 = 1;
+    *default = 1;
     v12 = +[MailAccount defaultMailAccountForDelivery];
   }
 
   return v12;
 }
 
-- (void)_composeCommandInvoked:(id)a3
+- (void)_composeCommandInvoked:(id)invoked
 {
   v4 = +[MailConversationScene log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -376,23 +376,23 @@ LABEL_23:
   v9 = +[MailConversationScene log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 ef_publicDescription];
+    ef_publicDescription = [v8 ef_publicDescription];
     *buf = 138412546;
-    v15 = v10;
+    v15 = ef_publicDescription;
     v16 = 1024;
     v17 = v13;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Compose using account:%@, isDefault: %{BOOL}d.", buf, 0x12u);
   }
 
-  v11 = [v8 defaultEmailAddress];
-  v12 = v11;
-  if (!v11)
+  defaultEmailAddress = [v8 defaultEmailAddress];
+  firstEmailAddress = defaultEmailAddress;
+  if (!defaultEmailAddress)
   {
-    v12 = [v8 firstEmailAddress];
+    firstEmailAddress = [v8 firstEmailAddress];
   }
 
-  [v7 setPreferredSendingEmailAddress:v12];
-  if (!v11)
+  [v7 setPreferredSendingEmailAddress:firstEmailAddress];
+  if (!defaultEmailAddress)
   {
   }
 
@@ -401,27 +401,27 @@ LABEL_23:
   [(MailConversationScene *)self showComposeWithContext:v7 animated:1 initialTitle:0 presentationSource:0 completionBlock:0];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("_composeCommandInvoked:" == a3)
+  senderCopy = sender;
+  if ("_composeCommandInvoked:" == action)
   {
-    v8 = [(MailConversationScene *)self mf_rootViewController];
-    v9 = [v8 presentedViewController];
-    v7 = v9 == 0;
+    mf_rootViewController = [(MailConversationScene *)self mf_rootViewController];
+    presentedViewController = [mf_rootViewController presentedViewController];
+    v7 = presentedViewController == 0;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = MailConversationScene;
-    v7 = [(MailScene *)&v11 canPerformAction:a3 withSender:v6];
+    v7 = [(MailScene *)&v11 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;
 }
 
-- (void)referenceMessageNoLongerAvailableInConversationView:(id)a3
+- (void)referenceMessageNoLongerAvailableInConversationView:(id)view
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -432,7 +432,7 @@ LABEL_23:
   [v3 performBlock:v4];
 }
 
-- (void)conversationViewControllerWantsDismissal:(id)a3
+- (void)conversationViewControllerWantsDismissal:(id)dismissal
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -443,51 +443,51 @@ LABEL_23:
   [v3 performBlock:v4];
 }
 
-- (BOOL)conversationViewControllerAllowsRemindMeAction:(id)a3
+- (BOOL)conversationViewControllerAllowsRemindMeAction:(id)action
 {
-  v3 = [a3 referenceMessageListItem];
-  v4 = [v3 mailboxes];
-  v5 = [v4 ef_all:&stru_100650738];
+  referenceMessageListItem = [action referenceMessageListItem];
+  mailboxes = [referenceMessageListItem mailboxes];
+  v5 = [mailboxes ef_all:&stru_100650738];
 
   return v5;
 }
 
-- (void)mailComposeDeliveryControllerDidAttemptToSend:(id)a3 outgoingMessageDelivery:(id)a4 result:(id)a5
+- (void)mailComposeDeliveryControllerDidAttemptToSend:(id)send outgoingMessageDelivery:(id)delivery result:(id)result
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v9 status] & 0xFFFFFFFFFFFFFFFBLL) != 0)
+  sendCopy = send;
+  deliveryCopy = delivery;
+  resultCopy = result;
+  if (([resultCopy status] & 0xFFFFFFFFFFFFFFFBLL) != 0)
   {
-    v10 = [v12 error];
-    v11 = [v8 account];
-    [(MailScene *)self displayError:v10 forAccount:v11 mode:2];
+    error = [sendCopy error];
+    account = [deliveryCopy account];
+    [(MailScene *)self displayError:error forAccount:account mode:2];
   }
 }
 
-- (void)dismissComposeViewController:(id)a3 animated:(BOOL)a4 afterSending:(BOOL)a5
+- (void)dismissComposeViewController:(id)controller animated:(BOOL)animated afterSending:(BOOL)sending
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [(MailConversationScene *)self activeViewController];
-  v10 = [(MailConversationScene *)self activeViewController];
+  sendingCopy = sending;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  activeViewController = [(MailConversationScene *)self activeViewController];
+  activeViewController2 = [(MailConversationScene *)self activeViewController];
 
-  if (v10 == v8)
+  if (activeViewController2 == controllerCopy)
   {
-    v12 = [(MailConversationScene *)self session];
-    [v12 mf_setActiveDraft:0];
+    session = [(MailConversationScene *)self session];
+    [session mf_setActiveDraft:0];
 
-    if (v6 && v5)
+    if (animatedCopy && sendingCopy)
     {
-      v13 = [(MailConversationScene *)self navigationController];
-      [v13 dismissViewControllerWithTransition:3 completion:0];
+      navigationController = [(MailConversationScene *)self navigationController];
+      [navigationController dismissViewControllerWithTransition:3 completion:0];
     }
 
     else
     {
-      v13 = [(MailConversationScene *)self navigationController];
-      [v13 dismissViewControllerAnimated:v6 completion:0];
+      navigationController = [(MailConversationScene *)self navigationController];
+      [navigationController dismissViewControllerAnimated:animatedCopy completion:0];
     }
   }
 
@@ -496,40 +496,40 @@ LABEL_23:
     v11 = +[MailConversationScene log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_100488A88(v8, v9, v11);
+      sub_100488A88(controllerCopy, activeViewController, v11);
     }
   }
 }
 
 - (id)activeViewController
 {
-  v2 = [(MailConversationScene *)self navigationController];
-  v3 = [v2 visibleViewController];
+  navigationController = [(MailConversationScene *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
 
-  return v3;
+  return visibleViewController;
 }
 
 - (_TtC10MobileMail21AppStoreReviewManager)appStoreReviewManager
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 appStoreReviewManager];
+  appStoreReviewManager = [v2 appStoreReviewManager];
 
-  return v3;
+  return appStoreReviewManager;
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v3 = [a3 presentedViewController];
-  v4 = [v3 isDirty];
+  presentedViewController = [dismiss presentedViewController];
+  isDirty = [presentedViewController isDirty];
 
-  return v4 ^ 1;
+  return isDirty ^ 1;
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v3 = a3;
-  v4 = [v3 presentedViewController];
-  [v4 _mailComposeController];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
+  [presentedViewController _mailComposeController];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010EF98;
@@ -538,10 +538,10 @@ LABEL_23:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_sheetPresentationControllerDidTearOff:(id)a3
+- (void)_sheetPresentationControllerDidTearOff:(id)off
 {
-  v3 = [(MailConversationScene *)self session];
-  [v3 mf_setActiveDraft:0];
+  session = [(MailConversationScene *)self session];
+  [session mf_setActiveDraft:0];
 }
 
 @end

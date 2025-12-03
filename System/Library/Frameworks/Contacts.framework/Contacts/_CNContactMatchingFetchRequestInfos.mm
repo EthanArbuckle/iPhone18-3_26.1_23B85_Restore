@@ -1,17 +1,17 @@
 @interface _CNContactMatchingFetchRequestInfos
-+ (id)fetchRequestInfoForPredicate:(id)a3 properties:(id)a4;
++ (id)fetchRequestInfoForPredicate:(id)predicate properties:(id)properties;
 @end
 
 @implementation _CNContactMatchingFetchRequestInfos
 
-+ (id)fetchRequestInfoForPredicate:(id)a3 properties:(id)a4
++ (id)fetchRequestInfoForPredicate:(id)predicate properties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setPredicate:v7];
+  propertiesCopy = properties;
+  predicateCopy = predicate;
+  v8 = objc_alloc_init(self);
+  [v8 setPredicate:predicateCopy];
 
-  [v8 setProperties:v6];
+  [v8 setProperties:propertiesCopy];
 
   return v8;
 }

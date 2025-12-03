@@ -1,10 +1,10 @@
 @interface SnapshotManager
-- (void)voiceOverStatusDidChangeWithNotification:(id)a3;
+- (void)voiceOverStatusDidChangeWithNotification:(id)notification;
 @end
 
 @implementation SnapshotManager
 
-- (void)voiceOverStatusDidChangeWithNotification:(id)a3
+- (void)voiceOverStatusDidChangeWithNotification:(id)notification
 {
   v3 = sub_220FBFDC0();
   v4 = *(v3 - 8);

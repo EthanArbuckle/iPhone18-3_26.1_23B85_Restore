@@ -1,25 +1,25 @@
 @interface CAMPDFConverter
-+ (id)_pdfPageOptionsForImageRef:(CGImage *)a3;
-+ (void)convertToPDFAndWrite:(id)a3 documentName:(id)a4 completionHandler:(id)a5;
++ (id)_pdfPageOptionsForImageRef:(CGImage *)ref;
++ (void)convertToPDFAndWrite:(id)write documentName:(id)name completionHandler:(id)handler;
 @end
 
 @implementation CAMPDFConverter
 
-+ (void)convertToPDFAndWrite:(id)a3 documentName:(id)a4 completionHandler:(id)a5
++ (void)convertToPDFAndWrite:(id)write documentName:(id)name completionHandler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v39 = a5;
+  writeCopy = write;
+  nameCopy = name;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__CAMPDFConverter_convertToPDFAndWrite_documentName_completionHandler___block_invoke;
   aBlock[3] = &__block_descriptor_40_e26___PDFPage_16__0__UIImage_8l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v10 = _Block_copy(aBlock);
   v11 = objc_alloc_init(MEMORY[0x1E6978028]);
   v12 = objc_autoreleasePoolPush();
-  if ([v8 pageCount])
+  if ([writeCopy pageCount])
   {
     v36 = v12;
     v13 = 0;
@@ -29,7 +29,7 @@
     {
       v16 = v14;
       v17 = v13;
-      v14 = [v8 imageOfPageAtIndex:v15];
+      v14 = [writeCopy imageOfPageAtIndex:v15];
 
       v13 = v10[2](v10, v14);
 
@@ -43,12 +43,12 @@
         v18 = os_log_create("com.apple.camera", "Camera");
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v35 = [v8 pageCount];
+          pageCount = [writeCopy pageCount];
           v19 = [v14 debugDescription];
           *buf = 134218498;
           v46 = v15;
           v47 = 2048;
-          v48 = v35;
+          v48 = pageCount;
           v49 = 2114;
           v50 = v19;
           _os_log_error_impl(&dword_1A3640000, v18, OS_LOG_TYPE_ERROR, "Failed to create PDF page from image (image %lu/%lu of scanned document) with description: %{public}@", buf, 0x20u);
@@ -58,26 +58,26 @@
       ++v15;
     }
 
-    while (v15 < [v8 pageCount]);
+    while (v15 < [writeCopy pageCount]);
 
     v12 = v36;
   }
 
   objc_autoreleasePoolPop(v12);
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
-  v21 = [v20 temporaryDirectory];
-  v22 = [MEMORY[0x1E696AFB0] UUID];
-  v23 = [v22 UUIDString];
-  v24 = [v21 URLByAppendingPathComponent:v23];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v24 = [temporaryDirectory URLByAppendingPathComponent:uUIDString];
 
-  v25 = [v24 path];
-  LOBYTE(v23) = [v20 fileExistsAtPath:v25];
+  path = [v24 path];
+  LOBYTE(uUIDString) = [defaultManager fileExistsAtPath:path];
 
-  if (v23)
+  if (uUIDString)
   {
-    v26 = [v24 path];
+    path2 = [v24 path];
     v41 = 0;
-    [v20 removeItemAtPath:v26 error:&v41];
+    [defaultManager removeItemAtPath:path2 error:&v41];
     v27 = v41;
 
     if (v27)
@@ -90,15 +90,15 @@
 
 LABEL_17:
 
-      v30 = v39;
-      (*(v39 + 2))(v39, 0);
+      v30 = handlerCopy;
+      (*(handlerCopy + 2))(handlerCopy, 0);
       goto LABEL_22;
     }
   }
 
-  v29 = [v24 path];
+  path3 = [v24 path];
   v40 = 0;
-  [v20 createDirectoryAtPath:v29 withIntermediateDirectories:1 attributes:0 error:&v40];
+  [defaultManager createDirectoryAtPath:path3 withIntermediateDirectories:1 attributes:0 error:&v40];
   v27 = v40;
 
   if (v27)
@@ -112,14 +112,14 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.pdf", v9];
-  v31 = [v24 URLByAppendingPathComponent:v37];
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.pdf", nameCopy];
+  v31 = [v24 URLByAppendingPathComponent:nameCopy];
   v43 = *MEMORY[0x1E695F3B0];
   v44 = MEMORY[0x1E695E118];
   [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-  v38 = v21;
-  v33 = v32 = v9;
-  v30 = v39;
+  v38 = temporaryDirectory;
+  v33 = v32 = nameCopy;
+  v30 = handlerCopy;
   if ([v11 writeToURL:v31 withOptions:v33])
   {
     v34 = v31;
@@ -130,10 +130,10 @@ LABEL_17:
     v34 = 0;
   }
 
-  (*(v39 + 2))(v39, v34);
+  (*(handlerCopy + 2))(handlerCopy, v34);
 
-  v9 = v32;
-  v21 = v38;
+  nameCopy = v32;
+  temporaryDirectory = v38;
 
 LABEL_22:
 }
@@ -149,7 +149,7 @@ id __71__CAMPDFConverter_convertToPDFAndWrite_documentName_completionHandler___b
   return v7;
 }
 
-+ (id)_pdfPageOptionsForImageRef:(CGImage *)a3
++ (id)_pdfPageOptionsForImageRef:(CGImage *)ref
 {
   v10[2] = *MEMORY[0x1E69E9840];
   CGImageGetSizeAfterOrientation();

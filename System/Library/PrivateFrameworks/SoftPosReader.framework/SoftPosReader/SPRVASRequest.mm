@@ -1,32 +1,32 @@
 @interface SPRVASRequest
-- (SPRVASRequest)initWithCoder:(id)a3;
-- (SPRVASRequest)initWithVasTerminalProtocol:(id)a3 merchantId:(id)a4 vasUrl:(id)a5 vasFilter:(id)a6;
+- (SPRVASRequest)initWithCoder:(id)coder;
+- (SPRVASRequest)initWithVasTerminalProtocol:(id)protocol merchantId:(id)id vasUrl:(id)url vasFilter:(id)filter;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPRVASRequest
 
-- (SPRVASRequest)initWithVasTerminalProtocol:(id)a3 merchantId:(id)a4 vasUrl:(id)a5 vasFilter:(id)a6
+- (SPRVASRequest)initWithVasTerminalProtocol:(id)protocol merchantId:(id)id vasUrl:(id)url vasFilter:(id)filter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  protocolCopy = protocol;
+  idCopy = id;
+  urlCopy = url;
+  filterCopy = filter;
   vasTerminalProtocol = self->_vasTerminalProtocol;
-  self->_vasTerminalProtocol = v10;
-  v15 = v10;
+  self->_vasTerminalProtocol = protocolCopy;
+  v15 = protocolCopy;
 
   merchantId = self->_merchantId;
-  self->_merchantId = v11;
-  v17 = v11;
+  self->_merchantId = idCopy;
+  v17 = idCopy;
 
   vasUrl = self->_vasUrl;
-  self->_vasUrl = v12;
-  v19 = v12;
+  self->_vasUrl = urlCopy;
+  v19 = urlCopy;
 
   vasFilter = self->_vasFilter;
-  self->_vasFilter = v13;
+  self->_vasFilter = filterCopy;
 
   return self;
 }
@@ -42,26 +42,26 @@
   return v11;
 }
 
-- (SPRVASRequest)initWithCoder:(id)a3
+- (SPRVASRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"vasTerminalProtocol", v7);
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"vasTerminalProtocol", v7);
   vasTerminalProtocol = self->_vasTerminalProtocol;
   self->_vasTerminalProtocol = v8;
 
   v10 = objc_opt_class();
-  v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"merchantId", v12);
+  v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"merchantId", v12);
   merchantId = self->_merchantId;
   self->_merchantId = v13;
 
   v15 = objc_opt_class();
-  v18 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"vasUrl", v17);
+  v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"vasUrl", v17);
   vasUrl = self->_vasUrl;
   self->_vasUrl = v18;
 
   v20 = objc_opt_class();
-  v23 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"vasFilter", v22);
+  v23 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"vasFilter", v22);
 
   vasFilter = self->_vasFilter;
   self->_vasFilter = v23;
@@ -69,14 +69,14 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   vasTerminalProtocol = self->_vasTerminalProtocol;
-  v13 = a3;
-  objc_msgSend_encodeObject_forKey_(v13, v5, vasTerminalProtocol, @"vasTerminalProtocol", v6);
-  objc_msgSend_encodeObject_forKey_(v13, v7, self->_merchantId, @"merchantId", v8);
-  objc_msgSend_encodeObject_forKey_(v13, v9, self->_vasUrl, @"vasUrl", v10);
-  objc_msgSend_encodeObject_forKey_(v13, v11, self->_vasFilter, @"vasFilter", v12);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, vasTerminalProtocol, @"vasTerminalProtocol", v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_merchantId, @"merchantId", v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_vasUrl, @"vasUrl", v10);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, self->_vasFilter, @"vasFilter", v12);
 }
 
 @end

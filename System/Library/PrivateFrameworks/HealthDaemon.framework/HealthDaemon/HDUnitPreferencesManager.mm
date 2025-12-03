@@ -1,33 +1,33 @@
 @interface HDUnitPreferencesManager
-- (BOOL)removePreferredUnitForType:(id)a3 error:(id *)a4;
-- (BOOL)setPreferredUnit:(id)a3 forType:(id)a4 error:(id *)a5;
-- (HDUnitPreferencesManager)initWithProfile:(id)a3;
-- (__CFString)_domainForVersion:(__CFString *)a1;
-- (id)_lock_generateVersionedUnitPreferencesWithError:(uint64_t)a1;
-- (id)_lock_unitForType:(void *)a3 versionedUnitPreferences:(uint64_t)a4 version:(void *)a5 locale:;
-- (id)_stringFromQuantityType:(void *)a1;
-- (id)preferredUnitForType:(id)a3 error:(id *)a4;
-- (id)unitPreferencesDictionaryForTypes:(id)a3 version:(int64_t)a4 authorizationOracle:(id)a5 error:(id *)a6;
+- (BOOL)removePreferredUnitForType:(id)type error:(id *)error;
+- (BOOL)setPreferredUnit:(id)unit forType:(id)type error:(id *)error;
+- (HDUnitPreferencesManager)initWithProfile:(id)profile;
+- (__CFString)_domainForVersion:(__CFString *)version;
+- (id)_lock_generateVersionedUnitPreferencesWithError:(uint64_t)error;
+- (id)_lock_unitForType:(void *)type versionedUnitPreferences:(uint64_t)preferences version:(void *)version locale:;
+- (id)_stringFromQuantityType:(void *)type;
+- (id)preferredUnitForType:(id)type error:(id *)error;
+- (id)unitPreferencesDictionaryForTypes:(id)types version:(int64_t)version authorizationOracle:(id)oracle error:(id *)error;
 - (uint64_t)_lock_notifyObserversWithUnitPreferences;
-- (void)_localeDidChange:(id)a3;
-- (void)_lock_setUnit:(void *)a3 forType:;
+- (void)_localeDidChange:(id)change;
+- (void)_lock_setUnit:(void *)unit forType:;
 - (void)dealloc;
-- (void)setPreferredUnitToDefaultIfNotSetForType:(id)a3;
+- (void)setPreferredUnitToDefaultIfNotSetForType:(id)type;
 - (void)unitTesting_resetUnits;
 @end
 
 @implementation HDUnitPreferencesManager
 
-- (HDUnitPreferencesManager)initWithProfile:(id)a3
+- (HDUnitPreferencesManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v15.receiver = self;
   v15.super_class = HDUnitPreferencesManager;
   v5 = [(HDUnitPreferencesManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
@@ -37,8 +37,8 @@
     v6->_observers = v11;
 
     v6->_lock._os_unfair_lock_opaque = 0;
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v6 selector:sel__localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v6;
@@ -46,24 +46,24 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
   v4.receiver = self;
   v4.super_class = HDUnitPreferencesManager;
   [(HDUnitPreferencesManager *)&v4 dealloc];
 }
 
-- (id)unitPreferencesDictionaryForTypes:(id)a3 version:(int64_t)a4 authorizationOracle:(id)a5 error:(id *)a6
+- (id)unitPreferencesDictionaryForTypes:(id)types version:(int64_t)version authorizationOracle:(id)oracle error:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  typesCopy = types;
+  oracleCopy = oracle;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v10 = v8;
+  v10 = typesCopy;
   v11 = [v10 countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v11)
   {
@@ -82,7 +82,7 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a6 code:3 format:{@"Object (%@) is not of class %@", v15, objc_opt_class()}];
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Object (%@) is not of class %@", v15, objc_opt_class()}];
           v24 = 0;
           v23 = v10;
           goto LABEL_39;
@@ -100,9 +100,9 @@
   }
 
   v16 = v10;
-  v17 = v9;
+  v17 = oracleCopy;
   v18 = v17;
-  v19 = self;
+  selfCopy2 = self;
   if (!self)
   {
     v23 = 0;
@@ -115,7 +115,7 @@
   v22 = v21;
   if (v20)
   {
-    v23 = [v18 authorizationStatusRecordsForTypes:v16 error:a6];
+    v23 = [v18 authorizationStatusRecordsForTypes:v16 error:error];
     goto LABEL_16;
   }
 
@@ -136,10 +136,10 @@ LABEL_16:
   v25 = v21;
   v23 = 0;
 LABEL_17:
-  if (a6)
+  if (error)
   {
     v26 = v25;
-    *a6 = v25;
+    *error = v25;
   }
 
   else
@@ -156,7 +156,7 @@ LABEL_21:
 
   os_unfair_lock_lock(&self->_lock);
   v41 = v10;
-  v42 = v9;
+  v42 = oracleCopy;
   if (self)
   {
     versionedUnitPreferences = self->_versionedUnitPreferences;
@@ -164,7 +164,7 @@ LABEL_21:
     {
       v43 = versionedUnitPreferences;
 LABEL_27:
-      v30 = [MEMORY[0x277CBEAF8] currentLocale];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
       v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v46 = 0u;
       v47 = 0u;
@@ -189,7 +189,7 @@ LABEL_27:
             v37 = [v23 objectForKey:v36];
             if ([v37 canRead])
             {
-              [(HDUnitPreferencesManager *)self _lock_unitForType:v36 versionedUnitPreferences:v43 version:a4 locale:v30];
+              [(HDUnitPreferencesManager *)self _lock_unitForType:v36 versionedUnitPreferences:v43 version:version locale:currentLocale];
             }
 
             else
@@ -206,11 +206,11 @@ LABEL_27:
         while (v33);
       }
 
-      v19 = self;
+      selfCopy2 = self;
       goto LABEL_38;
     }
 
-    v28 = [(HDUnitPreferencesManager *)self _lock_generateVersionedUnitPreferencesWithError:a6];
+    v28 = [(HDUnitPreferencesManager *)self _lock_generateVersionedUnitPreferencesWithError:error];
     v29 = self->_versionedUnitPreferences;
     self->_versionedUnitPreferences = v28;
 
@@ -224,10 +224,10 @@ LABEL_27:
   v43 = 0;
   v24 = 0;
 LABEL_38:
-  os_unfair_lock_unlock(&v19->_lock);
+  os_unfair_lock_unlock(&selfCopy2->_lock);
 
   v10 = v41;
-  v9 = v42;
+  oracleCopy = v42;
 LABEL_39:
 
   v39 = *MEMORY[0x277D85DE8];
@@ -235,33 +235,33 @@ LABEL_39:
   return v24;
 }
 
-- (id)_lock_unitForType:(void *)a3 versionedUnitPreferences:(uint64_t)a4 version:(void *)a5 locale:
+- (id)_lock_unitForType:(void *)type versionedUnitPreferences:(uint64_t)preferences version:(void *)version locale:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  typeCopy = type;
+  versionCopy = version;
+  if (self)
   {
-    if (a4 < 0)
+    if (preferences < 0)
     {
 LABEL_7:
-      a1 = _HKGenerateDefaultUnitForQuantityTypeWithVersion();
+      self = _HKGenerateDefaultUnitForQuantityTypeWithVersion();
     }
 
     else
     {
-      v12 = a4;
+      preferencesCopy = preferences;
       while (1)
       {
-        v13 = [v10 objectAtIndexedSubscript:v12];
-        a1 = [v13 objectForKeyedSubscript:v9];
+        v13 = [typeCopy objectAtIndexedSubscript:preferencesCopy];
+        self = [v13 objectForKeyedSubscript:v9];
 
-        if (a1)
+        if (self)
         {
           break;
         }
 
-        if (v12-- <= 0)
+        if (preferencesCopy-- <= 0)
         {
           goto LABEL_7;
         }
@@ -269,42 +269,42 @@ LABEL_7:
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)setPreferredUnit:(id)a3 forType:(id)a4 error:(id *)a5
+- (BOOL)setPreferredUnit:(id)unit forType:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 isCompatibleWithUnit:v8];
+  unitCopy = unit;
+  typeCopy = type;
+  v10 = [typeCopy isCompatibleWithUnit:unitCopy];
   if (v10)
   {
     os_unfair_lock_lock(&self->_lock);
-    [(HDUnitPreferencesManager *)self _lock_setUnit:v8 forType:v9];
+    [(HDUnitPreferencesManager *)self _lock_setUnit:unitCopy forType:typeCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:{@"Unit (%@) is not compatible with the provided type (%@)", v8, v9}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Unit (%@) is not compatible with the provided type (%@)", unitCopy, typeCopy}];
   }
 
   return v10;
 }
 
-- (void)_lock_setUnit:(void *)a3 forType:
+- (void)_lock_setUnit:(void *)unit forType:
 {
   v42 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     v32 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  v4 = a3;
+  unitCopy = unit;
   v5 = _HKUnitPreferencesVersionToUnitDictionaryForQuantityType();
-  v6 = v4;
-  v7 = [(HDUnitPreferencesManager *)a1 _lock_generateVersionedUnitPreferencesWithError:?];
+  v6 = unitCopy;
+  v7 = [(HDUnitPreferencesManager *)self _lock_generateVersionedUnitPreferencesWithError:?];
   v8 = [v7 mutableCopy];
 
   v9 = 0x277CCA000uLL;
@@ -337,8 +337,8 @@ LABEL_7:
     while (v10 < [v8 count]);
   }
 
-  v15 = *(a1 + 16);
-  *(a1 + 16) = v8;
+  v15 = *(self + 16);
+  *(self + 16) = v8;
 
   v35 = v5;
   v33 = v6;
@@ -346,7 +346,7 @@ LABEL_7:
   v16 = 0;
   for (i = 0; i != 3; ++i)
   {
-    v18 = [(HDUnitPreferencesManager *)a1 _domainForVersion:?];
+    v18 = [(HDUnitPreferencesManager *)self _domainForVersion:?];
     v19 = [*(v9 + 2992) numberWithInteger:i];
     v20 = [v35 objectForKeyedSubscript:v19];
 
@@ -354,7 +354,7 @@ LABEL_7:
     {
       [v20 unitString];
       v22 = v21 = v9;
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
+      WeakRetained = objc_loadWeakRetained((self + 8));
       v37 = v16;
       v24 = [(HDKeyValueEntity *)HDProtectedKeyValueEntity setString:v22 forKey:v34 domain:v18 category:104 profile:WeakRetained error:&v37];
       v25 = v37;
@@ -369,7 +369,7 @@ LABEL_7:
 
     else
     {
-      v26 = objc_loadWeakRetained((a1 + 8));
+      v26 = objc_loadWeakRetained((self + 8));
       v36 = v16;
       v27 = [(HDKeyValueEntity *)HDProtectedKeyValueEntity setString:0 forKey:v34 domain:v18 category:104 profile:v26 error:&v36];
       v28 = v36;
@@ -396,29 +396,29 @@ LABEL_7:
 LABEL_16:
   }
 
-  [(HDUnitPreferencesManager *)a1 _lock_notifyObserversWithUnitPreferences];
+  [(HDUnitPreferencesManager *)self _lock_notifyObserversWithUnitPreferences];
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removePreferredUnitForType:(id)a3 error:(id *)a4
+- (BOOL)removePreferredUnitForType:(id)type error:(id *)error
 {
-  v6 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_lock);
-  v7 = v6;
+  v7 = typeCopy;
   v8 = v7;
   if (self)
   {
     v9 = [HDUnitPreferencesManager _stringFromQuantityType:v7];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v11 = [WeakRetained database];
+    database = [WeakRetained database];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __67__HDUnitPreferencesManager__lock_removePreferredUnitForType_error___block_invoke;
     v23 = &unk_278613218;
-    v24 = self;
+    selfCopy = self;
     v12 = v9;
     v25 = v12;
-    v13 = [(HDHealthEntity *)HDProtectedKeyValueEntity performWriteTransactionWithHealthDatabase:v11 error:a4 block:&v20];
+    v13 = [(HDHealthEntity *)HDProtectedKeyValueEntity performWriteTransactionWithHealthDatabase:database error:error block:&v20];
 
     if (v13)
     {
@@ -454,10 +454,10 @@ LABEL_16:
   return v13;
 }
 
-- (void)setPreferredUnitToDefaultIfNotSetForType:(id)a3
+- (void)setPreferredUnitToDefaultIfNotSetForType:(id)type
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -467,7 +467,7 @@ LABEL_16:
     if (v4)
     {
       v6 = v4;
-      v7 = v16;
+      v7 = typeCopy;
       if (self)
       {
         v19 = 0u;
@@ -509,7 +509,7 @@ LABEL_16:
         }
       }
 
-      v13 = [MEMORY[0x277CBEAF8] currentLocale];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
       v14 = _HKGenerateDefaultUnitForQuantityTypeWithVersion();
 
       [(HDUnitPreferencesManager *)self _lock_setUnit:v14 forType:v7];
@@ -522,10 +522,10 @@ LABEL_15:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lock_generateVersionedUnitPreferencesWithError:(uint64_t)a1
+- (id)_lock_generateVersionedUnitPreferencesWithError:(uint64_t)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!error)
   {
     v17 = 0;
     goto LABEL_18;
@@ -535,10 +535,10 @@ LABEL_15:
   v4 = 0;
   while (1)
   {
-    v5 = [(HDUnitPreferencesManager *)a1 _domainForVersion:v4];
+    v5 = [(HDUnitPreferencesManager *)error _domainForVersion:v4];
     v23 = 0;
     v6 = v5;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((error + 8));
     v8 = [(HDKeyValueEntity *)HDProtectedKeyValueEntity allValuesForDomain:v6 category:104 profile:WeakRetained error:&v23];
 
     if (v8)
@@ -550,7 +550,7 @@ LABEL_15:
       *&buf[8] = 3221225472;
       *&buf[16] = __77__HDUnitPreferencesManager__unitPreferencesDictionaryFromKeyValueDictionary___block_invoke;
       v25 = &unk_27861AE68;
-      v26 = a1;
+      errorCopy = error;
       v12 = v11;
       v27 = v12;
       [v10 enumerateKeysAndObjectsUsingBlock:buf];
@@ -591,7 +591,7 @@ LABEL_9:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    *&buf[4] = a1;
+    *&buf[4] = error;
     *&buf[12] = 2114;
     *&buf[14] = v6;
     *&buf[22] = 2114;
@@ -619,13 +619,13 @@ LABEL_18:
   return v17;
 }
 
-- (id)preferredUnitForType:(id)a3 error:(id *)a4
+- (id)preferredUnitForType:(id)type error:(id *)error
 {
-  v6 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(HDUnitPreferencesManager *)self _lock_generateVersionedUnitPreferencesWithError:a4];
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [(HDUnitPreferencesManager *)self _lock_unitForType:v6 versionedUnitPreferences:v7 version:2 locale:v8];
+  v7 = [(HDUnitPreferencesManager *)self _lock_generateVersionedUnitPreferencesWithError:error];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v9 = [(HDUnitPreferencesManager *)self _lock_unitForType:typeCopy versionedUnitPreferences:v7 version:2 locale:currentLocale];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -657,14 +657,14 @@ LABEL_18:
   return result;
 }
 
-- (id)_stringFromQuantityType:(void *)a1
+- (id)_stringFromQuantityType:(void *)type
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = a1;
+  typeCopy = type;
   v3 = [v1 alloc];
-  v4 = [v2 code];
+  code = [typeCopy code];
 
-  v5 = [v3 initWithFormat:@"%ld", v4];
+  v5 = [v3 initWithFormat:@"%ld", code];
 
   return v5;
 }
@@ -713,25 +713,25 @@ LABEL_8:
   return v5;
 }
 
-- (__CFString)_domainForVersion:(__CFString *)a1
+- (__CFString)_domainForVersion:(__CFString *)version
 {
-  if (!a1)
+  if (!version)
   {
 LABEL_4:
 
-    return a1;
+    return version;
   }
 
   if (a2)
   {
-    a1 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%ld", @"Version", a2];
+    version = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%ld", @"Version", a2];
     v2 = vars8;
     goto LABEL_4;
   }
 
-  a1 = &stru_283BF39C8;
+  version = &stru_283BF39C8;
 
-  return a1;
+  return version;
 }
 
 void __77__HDUnitPreferencesManager__unitPreferencesDictionaryFromKeyValueDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -811,7 +811,7 @@ LABEL_19:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_localeDidChange:(id)a3
+- (void)_localeDidChange:(id)change
 {
   os_unfair_lock_lock(&self->_lock);
   [(HDUnitPreferencesManager *)self _lock_notifyObserversWithUnitPreferences];

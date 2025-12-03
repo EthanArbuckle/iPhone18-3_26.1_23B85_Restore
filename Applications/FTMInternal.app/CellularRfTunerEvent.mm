@@ -1,22 +1,22 @@
 @interface CellularRfTunerEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasElapsedMs:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTimeoutMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasElapsedMs:(BOOL)ms;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTimeoutMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularRfTunerEvent
 
-- (void)setHasElapsedMs:(BOOL)a3
+- (void)setHasElapsedMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTimeoutMs:(BOOL)a3
+- (void)setHasTimeoutMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = CellularRfTunerEvent;
   v3 = [(CellularRfTunerEvent *)&v7 description];
-  v4 = [(CellularRfTunerEvent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularRfTunerEvent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -82,15 +82,15 @@
   oldState = self->_oldState;
   if (oldState)
   {
-    v6 = [(TunerState *)oldState dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"old_state"];
+    dictionaryRepresentation = [(TunerState *)oldState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"old_state"];
   }
 
   thenewState = self->_thenewState;
   if (thenewState)
   {
-    v8 = [(TunerState *)thenewState dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"new_state"];
+    dictionaryRepresentation2 = [(TunerState *)thenewState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"new_state"];
   }
 
   has = self->_has;
@@ -132,9 +132,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -186,33 +186,33 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 48) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_oldState)
   {
-    [v4 setOldState:?];
-    v4 = v6;
+    [toCopy setOldState:?];
+    toCopy = v6;
   }
 
   if (self->_thenewState)
   {
     [v6 setThenewState:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_elapsedMs;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 4) = self->_elapsedMs;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -231,21 +231,21 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 11) = self->_timeoutMs;
-  *(v4 + 48) |= 8u;
+  *(toCopy + 11) = self->_timeoutMs;
+  *(toCopy + 48) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_10:
-    *(v4 + 10) = self->_subsId;
-    *(v4 + 48) |= 4u;
+    *(toCopy + 10) = self->_subsId;
+    *(toCopy + 48) |= 4u;
   }
 
 LABEL_11:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -253,11 +253,11 @@ LABEL_11:
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(TunerState *)self->_oldState copyWithZone:a3];
+  v7 = [(TunerState *)self->_oldState copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(TunerState *)self->_thenewState copyWithZone:a3];
+  v9 = [(TunerState *)self->_thenewState copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
@@ -299,24 +299,24 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_25:
     v8 = 0;
@@ -324,13 +324,13 @@ LABEL_25:
   }
 
   oldState = self->_oldState;
-  if (oldState | *(v4 + 4) && ![(TunerState *)oldState isEqual:?])
+  if (oldState | *(equalCopy + 4) && ![(TunerState *)oldState isEqual:?])
   {
     goto LABEL_25;
   }
 
   thenewState = self->_thenewState;
-  if (thenewState | *(v4 + 3))
+  if (thenewState | *(equalCopy + 3))
   {
     if (![(TunerState *)thenewState isEqual:?])
     {
@@ -340,34 +340,34 @@ LABEL_25:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_elapsedMs != *(v4 + 4))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_elapsedMs != *(equalCopy + 4))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_timeoutMs != *(v4 + 11))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_timeoutMs != *(equalCopy + 11))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_25;
   }
 
-  v8 = (*(v4 + 48) & 4) == 0;
+  v8 = (*(equalCopy + 48) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_subsId != *(v4 + 10))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_subsId != *(equalCopy + 10))
     {
       goto LABEL_25;
     }
@@ -432,13 +432,13 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[6])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 

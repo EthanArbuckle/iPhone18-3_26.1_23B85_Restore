@@ -1,39 +1,39 @@
 @interface PROPlugInGroup
-+ (id)allocWithZone:(_NSZone *)a3;
-- (PROPlugInGroup)initWithUUID:(__CFUUID *)a3 name:(id)a4 bundle:(id)a5;
++ (id)allocWithZone:(_NSZone *)zone;
+- (PROPlugInGroup)initWithUUID:(__CFUUID *)d name:(id)name bundle:(id)bundle;
 - (__CFUUID)uuid;
 - (id)displayName;
 - (id)name;
 - (id)plugIns;
-- (id)plugInsForProtocols:(id)a3;
-- (void)addPlugIn:(id)a3;
-- (void)removePlugIn:(id)a3;
+- (id)plugInsForProtocols:(id)protocols;
+- (void)addPlugIn:(id)in;
+- (void)removePlugIn:(id)in;
 @end
 
 @implementation PROPlugInGroup
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_class() == a1)
+  selfCopy = self;
+  if (objc_opt_class() == self)
   {
-    v4 = objc_opt_class();
+    selfCopy = objc_opt_class();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
-- (PROPlugInGroup)initWithUUID:(__CFUUID *)a3 name:(id)a4 bundle:(id)a5
+- (PROPlugInGroup)initWithUUID:(__CFUUID *)d name:(id)name bundle:(id)bundle
 {
   v6 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE660];
   v8 = NSStringFromSelector(a2);
   [v6 raise:v7 format:{@"*** Bad news! %@ send to abstract class %@!", v8, objc_opt_class()}];
-  v9 = self;
+  selfCopy = self;
   return 0;
 }
 
-- (void)addPlugIn:(id)a3
+- (void)addPlugIn:(id)in
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -41,7 +41,7 @@
   [v3 raise:v4 format:{@"*** Bad news! %@ send to abstract class %@!", v5, objc_opt_class()}];
 }
 
-- (void)removePlugIn:(id)a3
+- (void)removePlugIn:(id)in
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -85,7 +85,7 @@
   return 0;
 }
 
-- (id)plugInsForProtocols:(id)a3
+- (id)plugInsForProtocols:(id)protocols
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];

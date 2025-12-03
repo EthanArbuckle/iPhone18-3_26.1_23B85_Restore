@@ -1,72 +1,72 @@
 @interface HUHomeFeatureOnboarder
-- (HUHomeFeatureOnboarder)initWithFeatures:(id)a3 home:(id)a4 devices:(id)a5 usageOptions:(id)a6;
-- (HUHomeFeatureOnboarder)initWithFeatures:(id)a3 home:(id)a4 usageOptions:(id)a5;
-- (HUHomeFeatureOnboarder)initWithGroupedFeatures:(id)a3 home:(id)a4 usageOptions:(id)a5;
-- (id)_subclass_buildAllFlowGroupsFromFeatureGroups:(id)a3 usageOptions:(id)a4;
-- (id)getPostProcessingFlowsForResults:(id)a3;
+- (HUHomeFeatureOnboarder)initWithFeatures:(id)features home:(id)home devices:(id)devices usageOptions:(id)options;
+- (HUHomeFeatureOnboarder)initWithFeatures:(id)features home:(id)home usageOptions:(id)options;
+- (HUHomeFeatureOnboarder)initWithGroupedFeatures:(id)features home:(id)home usageOptions:(id)options;
+- (id)_subclass_buildAllFlowGroupsFromFeatureGroups:(id)groups usageOptions:(id)options;
+- (id)getPostProcessingFlowsForResults:(id)results;
 @end
 
 @implementation HUHomeFeatureOnboarder
 
-- (HUHomeFeatureOnboarder)initWithFeatures:(id)a3 home:(id)a4 devices:(id)a5 usageOptions:(id)a6
+- (HUHomeFeatureOnboarder)initWithFeatures:(id)features home:(id)home devices:(id)devices usageOptions:(id)options
 {
-  objc_storeStrong(&self->_devices, a5);
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [MEMORY[0x277CBEA60] arrayWithObject:v14];
+  objc_storeStrong(&self->_devices, devices);
+  devicesCopy = devices;
+  optionsCopy = options;
+  homeCopy = home;
+  featuresCopy = features;
+  v15 = [MEMORY[0x277CBEA60] arrayWithObject:featuresCopy];
 
-  v16 = [(HUHomeFeatureOnboarder *)self initWithGroupedFeatures:v15 home:v13 usageOptions:v12];
+  v16 = [(HUHomeFeatureOnboarder *)self initWithGroupedFeatures:v15 home:homeCopy usageOptions:optionsCopy];
   return v16;
 }
 
-- (HUHomeFeatureOnboarder)initWithFeatures:(id)a3 home:(id)a4 usageOptions:(id)a5
+- (HUHomeFeatureOnboarder)initWithFeatures:(id)features home:(id)home usageOptions:(id)options
 {
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 arrayWithObject:a3];
-  v12 = [(HUHomeFeatureOnboarder *)self initWithGroupedFeatures:v11 home:v10 usageOptions:v9];
+  optionsCopy = options;
+  homeCopy = home;
+  v11 = [v8 arrayWithObject:features];
+  v12 = [(HUHomeFeatureOnboarder *)self initWithGroupedFeatures:v11 home:homeCopy usageOptions:optionsCopy];
 
   return v12;
 }
 
-- (HUHomeFeatureOnboarder)initWithGroupedFeatures:(id)a3 home:(id)a4 usageOptions:(id)a5
+- (HUHomeFeatureOnboarder)initWithGroupedFeatures:(id)features home:(id)home usageOptions:(id)options
 {
-  objc_storeStrong(&self->_home, a4);
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  objc_storeStrong(&self->_home, home);
+  homeCopy = home;
+  optionsCopy = options;
+  featuresCopy = features;
   v14.receiver = self;
   v14.super_class = HUHomeFeatureOnboarder;
-  v12 = [(HUFeatureOnboarder *)&v14 initWithGroupedFeatures:v11 usageOptions:v10];
+  v12 = [(HUFeatureOnboarder *)&v14 initWithGroupedFeatures:featuresCopy usageOptions:optionsCopy];
 
   return v12;
 }
 
-- (id)_subclass_buildAllFlowGroupsFromFeatureGroups:(id)a3 usageOptions:(id)a4
+- (id)_subclass_buildAllFlowGroupsFromFeatureGroups:(id)groups usageOptions:(id)options
 {
-  v7 = a4;
-  v8 = a3;
-  if (![v8 count])
+  optionsCopy = options;
+  groupsCopy = groups;
+  if (![groupsCopy count])
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HUHomeFeatureOnboarder.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"featureGroups.count != 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeFeatureOnboarder.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"featureGroups.count != 0"}];
   }
 
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __85__HUHomeFeatureOnboarder__subclass_buildAllFlowGroupsFromFeatureGroups_usageOptions___block_invoke;
   v16[3] = &unk_277DBECE8;
   v19 = a2;
   v16[4] = self;
-  v17 = v7;
-  v10 = v9;
+  v17 = optionsCopy;
+  v10 = array;
   v18 = v10;
-  v11 = v7;
-  [v8 na_each:v16];
+  v11 = optionsCopy;
+  [groupsCopy na_each:v16];
 
   v12 = v18;
   v13 = v10;
@@ -165,12 +165,12 @@ LABEL_17:
   return v10;
 }
 
-- (id)getPostProcessingFlowsForResults:(id)a3
+- (id)getPostProcessingFlowsForResults:(id)results
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUHomeFeatureOnboarder *)self home];
-  v7 = [HUHomeFeatureOnboardingUtilities home:v6 checkForOwnerUpgradeRequirementsFromResults:v5];
+  resultsCopy = results;
+  home = [(HUHomeFeatureOnboarder *)self home];
+  v7 = [HUHomeFeatureOnboardingUtilities home:home checkForOwnerUpgradeRequirementsFromResults:resultsCopy];
 
   if (HFForceOwnerMustUpgradeOnboarding())
   {
@@ -179,7 +179,7 @@ LABEL_17:
     {
       v9 = NSStringFromSelector(a2);
       v39 = 138412802;
-      v40 = self;
+      selfCopy6 = self;
       v41 = 2112;
       v42 = v9;
       v43 = 2048;
@@ -192,7 +192,7 @@ LABEL_17:
 
   else if (!v7)
   {
-    v12 = 0;
+    array = 0;
     goto LABEL_9;
   }
 
@@ -201,7 +201,7 @@ LABEL_17:
   {
     v11 = NSStringFromSelector(a2);
     v39 = 138412802;
-    v40 = self;
+    selfCopy6 = self;
     v41 = 2112;
     v42 = v11;
     v43 = 2048;
@@ -209,15 +209,15 @@ LABEL_17:
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@ Owner Upgrade requirements %lu", &v39, 0x20u);
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = [HUOwnerMustUpgradeOnboardingFlow alloc];
-  v14 = [(HUHomeFeatureOnboarder *)self home];
-  v15 = [(HUOwnerMustUpgradeOnboardingFlow *)v13 initWithUpgradeRequirements:v7 home:v14];
-  [v12 na_safeAddObject:v15];
+  home2 = [(HUHomeFeatureOnboarder *)self home];
+  v15 = [(HUOwnerMustUpgradeOnboardingFlow *)v13 initWithUpgradeRequirements:v7 home:home2];
+  [array na_safeAddObject:v15];
 
 LABEL_9:
-  v16 = [(HUHomeFeatureOnboarder *)self home];
-  v17 = [HUHomeFeatureOnboardingUtilities home:v16 checkForMultiUserDeviceUpgradeRequirements:v5];
+  home3 = [(HUHomeFeatureOnboarder *)self home];
+  v17 = [HUHomeFeatureOnboardingUtilities home:home3 checkForMultiUserDeviceUpgradeRequirements:resultsCopy];
 
   if (HKForceDevicesNeedUpgrade())
   {
@@ -226,7 +226,7 @@ LABEL_9:
     {
       v19 = NSStringFromSelector(a2);
       v39 = 138412802;
-      v40 = self;
+      selfCopy6 = self;
       v41 = 2112;
       v42 = v19;
       v43 = 2048;
@@ -247,7 +247,7 @@ LABEL_9:
   {
     v21 = NSStringFromSelector(a2);
     v39 = 138412802;
-    v40 = self;
+    selfCopy6 = self;
     v41 = 2112;
     v42 = v21;
     v43 = 2048;
@@ -255,32 +255,32 @@ LABEL_9:
     _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "%@:%@ Upgrade Multi User Devices requirements %lu", &v39, 0x20u);
   }
 
-  if (!v12)
+  if (!array)
   {
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   v22 = [HUUpgradeMultiUserDevicesOnboardingFlow alloc];
-  v23 = [(HUHomeFeatureOnboarder *)self home];
-  v24 = [(HUUpgradeMultiUserDevicesOnboardingFlow *)v22 initWithUpgradeRequirements:v17 home:v23];
-  [v12 na_safeAddObject:v24];
+  home4 = [(HUHomeFeatureOnboarder *)self home];
+  v24 = [(HUUpgradeMultiUserDevicesOnboardingFlow *)v22 initWithUpgradeRequirements:v17 home:home4];
+  [array na_safeAddObject:v24];
 
 LABEL_19:
   v25 = +[HUHomeFeatureOnboardingUtilities fetchSupportedVoiceRecognitionLanguages];
   if (v25)
   {
-    if (![HUHomeFeatureOnboardingUtilities hasUserSaidYesToVoiceIdentificationInResults:v5])
+    if (![HUHomeFeatureOnboardingUtilities hasUserSaidYesToVoiceIdentificationInResults:resultsCopy])
     {
       goto LABEL_30;
     }
 
-    if (!v12)
+    if (!array)
     {
-      v12 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    v26 = [(HUHomeFeatureOnboarder *)self home];
-    v27 = [HUHomeFeatureOnboardingUtilities analyzeHomeAssistantDevicesForSupportedVoiceRecognitionLanguages:v25 home:v26];
+    home5 = [(HUHomeFeatureOnboarder *)self home];
+    v27 = [HUHomeFeatureOnboardingUtilities analyzeHomeAssistantDevicesForSupportedVoiceRecognitionLanguages:v25 home:home5];
 
     v28 = [v27 objectForKeyedSubscript:@"languageMismatch"];
     v29 = HFLogForCategory();
@@ -289,7 +289,7 @@ LABEL_19:
       v30 = NSStringFromSelector(a2);
       v31 = [(HUHomeFeatureOnboarder *)v28 count];
       v39 = 138412802;
-      v40 = self;
+      selfCopy6 = self;
       v41 = 2112;
       v42 = v30;
       v43 = 2048;
@@ -300,9 +300,9 @@ LABEL_19:
     if ([(HUHomeFeatureOnboarder *)v28 count])
     {
       v32 = [HUHomeAssistantDevicesUnsupportedLanguageFlow alloc];
-      v33 = [(HUHomeFeatureOnboarder *)self home];
-      v34 = [(HUHomeAssistantDevicesUnsupportedLanguageFlow *)v32 initWithHomeAssistantDevicesHavingLanguageMismatch:v28 home:v33];
-      [v12 na_safeAddObject:v34];
+      home6 = [(HUHomeFeatureOnboarder *)self home];
+      v34 = [(HUHomeAssistantDevicesUnsupportedLanguageFlow *)v32 initWithHomeAssistantDevicesHavingLanguageMismatch:v28 home:home6];
+      [array na_safeAddObject:v34];
     }
   }
 
@@ -316,7 +316,7 @@ LABEL_19:
 
     v28 = NSStringFromSelector(a2);
     v39 = 138412290;
-    v40 = v28;
+    selfCopy6 = v28;
     _os_log_error_impl(&dword_20CEB6000, v27, OS_LOG_TYPE_ERROR, "%@ Error fetching voice recognition languages", &v39, 0xCu);
   }
 
@@ -326,19 +326,19 @@ LABEL_30:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
     v36 = NSStringFromSelector(a2);
-    v37 = [v12 count];
+    v37 = [array count];
     v39 = 138413058;
-    v40 = self;
+    selfCopy6 = self;
     v41 = 2112;
     v42 = v36;
     v43 = 2048;
     v44 = v37;
     v45 = 2112;
-    v46 = v12;
+    v46 = array;
     _os_log_impl(&dword_20CEB6000, v35, OS_LOG_TYPE_DEFAULT, "%@:%@ postProcessingFlowGroup has %lu flows: %@", &v39, 0x2Au);
   }
 
-  return v12;
+  return array;
 }
 
 @end

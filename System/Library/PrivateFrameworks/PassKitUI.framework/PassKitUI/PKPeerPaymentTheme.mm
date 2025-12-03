@@ -10,40 +10,40 @@
 
 + (id)secondaryTextColor
 {
-  v2 = [a1 primaryTextColor];
-  v3 = [v2 colorWithAlphaComponent:0.5];
+  primaryTextColor = [self primaryTextColor];
+  v3 = [primaryTextColor colorWithAlphaComponent:0.5];
 
   return v3;
 }
 
 + (id)secondaryButtonTextPressedColor
 {
-  v2 = [a1 secondaryButtonTextColor];
-  v3 = [v2 colorWithAlphaComponent:0.3];
+  secondaryButtonTextColor = [self secondaryButtonTextColor];
+  v3 = [secondaryButtonTextColor colorWithAlphaComponent:0.3];
 
   return v3;
 }
 
 + (id)disabledTextColor
 {
-  v2 = [a1 primaryTextColor];
-  v3 = [v2 colorWithAlphaComponent:0.3];
+  primaryTextColor = [self primaryTextColor];
+  v3 = [primaryTextColor colorWithAlphaComponent:0.3];
 
   return v3;
 }
 
 + (id)platterPressedColor
 {
-  v2 = [a1 platterColor];
-  v3 = [v2 colorWithAlphaComponent:0.8];
+  platterColor = [self platterColor];
+  v3 = [platterColor colorWithAlphaComponent:0.8];
 
   return v3;
 }
 
 + (id)separatorColor
 {
-  v2 = [a1 primaryTextColor];
-  v3 = [v2 colorWithAlphaComponent:0.07];
+  primaryTextColor = [self primaryTextColor];
+  v3 = [primaryTextColor colorWithAlphaComponent:0.07];
 
   return v3;
 }

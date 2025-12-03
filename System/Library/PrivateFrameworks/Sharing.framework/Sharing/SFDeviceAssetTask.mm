@@ -1,31 +1,31 @@
 @interface SFDeviceAssetTask
 - (BOOL)completeIfPossible;
-- (BOOL)updateTaskWithBundle:(id)a3 error:(id)a4 isFallback:(BOOL)a5 isImperfectMatch:(BOOL)a6 isCached:(BOOL)a7;
-- (SFDeviceAssetTask)initWithDeviceQuery:(id)a3 requestConfiguration:(id)a4 dispatchQueue:(id)a5 useProcessLocalCache:(BOOL)a6;
-- (id)bundleAtURL:(id)a3 error:(id *)a4;
-- (id)bundleURLFromAssetURL:(id)a3;
+- (BOOL)updateTaskWithBundle:(id)bundle error:(id)error isFallback:(BOOL)fallback isImperfectMatch:(BOOL)match isCached:(BOOL)cached;
+- (SFDeviceAssetTask)initWithDeviceQuery:(id)query requestConfiguration:(id)configuration dispatchQueue:(id)queue useProcessLocalCache:(BOOL)cache;
+- (id)bundleAtURL:(id)l error:(id *)error;
+- (id)bundleURLFromAssetURL:(id)l;
 - (void)cancelTimeout;
-- (void)completeWithBundle:(id)a3 isFallback:(BOOL)a4 isCached:(BOOL)a5;
+- (void)completeWithBundle:(id)bundle isFallback:(BOOL)fallback isCached:(BOOL)cached;
 - (void)createQueryParameters;
 @end
 
 @implementation SFDeviceAssetTask
 
-- (SFDeviceAssetTask)initWithDeviceQuery:(id)a3 requestConfiguration:(id)a4 dispatchQueue:(id)a5 useProcessLocalCache:(BOOL)a6
+- (SFDeviceAssetTask)initWithDeviceQuery:(id)query requestConfiguration:(id)configuration dispatchQueue:(id)queue useProcessLocalCache:(BOOL)cache
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  queryCopy = query;
+  configurationCopy = configuration;
+  queueCopy = queue;
   v27.receiver = self;
   v27.super_class = SFDeviceAssetTask;
   v14 = [(SFDeviceAssetTask *)&v27 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_deviceAssetQuery, a3);
-    objc_storeStrong(&v15->_dispatchQueue, a5);
-    v15->_useProcessLocalCache = a6;
-    objc_storeStrong(&v15->_configuration, a4);
+    objc_storeStrong(&v14->_deviceAssetQuery, query);
+    objc_storeStrong(&v15->_dispatchQueue, queue);
+    v15->_useProcessLocalCache = cache;
+    objc_storeStrong(&v15->_configuration, configuration);
     [(SFDeviceAssetRequestConfiguration *)v15->_configuration timeout];
     if (fabs(v16) >= 0.00000011920929)
     {
@@ -98,14 +98,14 @@ LABEL_7:
   v5 = [[SFDeviceQueryParameters alloc] initWithDeviceAssetQuery:self->_deviceAssetQuery installedOnly:1 imperfectMatch:0 fallback:0];
   [(NSMutableArray *)self->_deviceQueryParameters addObject:v5];
   deviceAssetQuery = self->_deviceAssetQuery;
-  v7 = [(SFDeviceQueryParameters *)v5 maQuery];
-  SFDeviceAssetAddKeyValuePairsForStrictMatch(deviceAssetQuery, v7);
+  maQuery = [(SFDeviceQueryParameters *)v5 maQuery];
+  SFDeviceAssetAddKeyValuePairsForStrictMatch(deviceAssetQuery, maQuery);
 
   v8 = [[SFDeviceQueryParameters alloc] initWithDeviceAssetQuery:self->_deviceAssetQuery installedOnly:1 imperfectMatch:0 fallback:1];
-  v9 = [(SFDeviceAssetTask *)self timer];
+  timer = [(SFDeviceAssetTask *)self timer];
 
   v10 = self->_deviceQueryParameters;
-  if (v9)
+  if (timer)
   {
     [(NSMutableArray *)v10 insertObject:v8 atIndex:0];
   }
@@ -118,32 +118,32 @@ LABEL_7:
   v13 = [[SFDeviceQueryParameters alloc] initWithDeviceAssetQuery:self->_deviceAssetQuery installedOnly:0 imperfectMatch:0 fallback:0];
 
   v11 = self->_deviceAssetQuery;
-  v12 = [(SFDeviceQueryParameters *)v13 maQuery];
-  SFDeviceAssetAddKeyValuePairsForStrictMatch(v11, v12);
+  maQuery2 = [(SFDeviceQueryParameters *)v13 maQuery];
+  SFDeviceAssetAddKeyValuePairsForStrictMatch(v11, maQuery2);
 
   [(NSMutableArray *)self->_deviceQueryParameters addObject:v13];
 }
 
-- (BOOL)updateTaskWithBundle:(id)a3 error:(id)a4 isFallback:(BOOL)a5 isImperfectMatch:(BOOL)a6 isCached:(BOOL)a7
+- (BOOL)updateTaskWithBundle:(id)bundle error:(id)error isFallback:(BOOL)fallback isImperfectMatch:(BOOL)match isCached:(BOOL)cached
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  if (v12)
+  cachedCopy = cached;
+  matchCopy = match;
+  fallbackCopy = fallback;
+  bundleCopy = bundle;
+  errorCopy = error;
+  if (bundleCopy)
   {
-    if (v7)
+    if (cachedCopy)
     {
       p_cachedBundle = &self->_cachedBundle;
     }
 
     else
     {
-      if (!v9)
+      if (!fallbackCopy)
       {
-        v16 = v12;
-        if (v8)
+        v16 = bundleCopy;
+        if (matchCopy)
         {
           p_cachedBundle = &self->_imperfectMatchBundle;
         }
@@ -159,35 +159,35 @@ LABEL_7:
       p_cachedBundle = &self->_fallbackBundle;
     }
 
-    v15 = v12;
+    v15 = bundleCopy;
 LABEL_10:
     v17 = *p_cachedBundle;
-    *p_cachedBundle = v12;
+    *p_cachedBundle = bundleCopy;
   }
 
-  if (v13)
+  if (errorCopy)
   {
-    v18 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-    if (*[v18 ucat] > 90)
+    deviceAssetQuery = [(SFDeviceAssetTask *)self deviceAssetQuery];
+    if (*[deviceAssetQuery ucat] > 90)
     {
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    v19 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-    if (*[v19 ucat] != -1)
+    deviceAssetQuery2 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+    if (*[deviceAssetQuery2 ucat] != -1)
     {
 
 LABEL_16:
-      v18 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-      [v18 ucat];
+      deviceAssetQuery = [(SFDeviceAssetTask *)self deviceAssetQuery];
+      [deviceAssetQuery ucat];
       LogPrintF();
       goto LABEL_17;
     }
 
-    v20 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-    [v20 ucat];
+    deviceAssetQuery3 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+    [deviceAssetQuery3 ucat];
     v21 = _LogCategory_Initialize();
 
     if (v21)
@@ -198,9 +198,9 @@ LABEL_16:
 
 LABEL_18:
   error = self->_error;
-  self->_error = v13;
+  self->_error = errorCopy;
 
-  return v12 != 0;
+  return bundleCopy != 0;
 }
 
 - (void)cancelTimeout
@@ -217,55 +217,55 @@ LABEL_18:
 
 - (BOOL)completeIfPossible
 {
-  v3 = [(SFDeviceAssetTask *)self matchBundle];
+  matchBundle = [(SFDeviceAssetTask *)self matchBundle];
 
-  if (!v3)
+  if (!matchBundle)
   {
-    v6 = [(SFDeviceAssetTask *)self fallbackBundle];
+    fallbackBundle = [(SFDeviceAssetTask *)self fallbackBundle];
 
-    if (!v6)
+    if (!fallbackBundle)
     {
-      v11 = [(SFDeviceAssetTask *)self imperfectMatchBundle];
+      imperfectMatchBundle = [(SFDeviceAssetTask *)self imperfectMatchBundle];
 
-      if (!v11)
+      if (!imperfectMatchBundle)
       {
-        v22 = [(SFDeviceAssetTask *)self cachedBundle];
+        cachedBundle = [(SFDeviceAssetTask *)self cachedBundle];
 
-        if (!v22)
+        if (!cachedBundle)
         {
-          return v3 == 0;
+          return matchBundle == 0;
         }
 
-        v8 = [(SFDeviceAssetTask *)self cachedBundle];
-        v16 = self;
-        v17 = v8;
+        cachedBundle2 = [(SFDeviceAssetTask *)self cachedBundle];
+        selfCopy3 = self;
+        v17 = cachedBundle2;
         v18 = 0;
         v19 = 1;
         goto LABEL_18;
       }
 
-      v12 = [(SFDeviceAssetTask *)self imperfectMatchBundle];
+      imperfectMatchBundle2 = [(SFDeviceAssetTask *)self imperfectMatchBundle];
       goto LABEL_16;
     }
 
-    v7 = [(SFDeviceAssetTask *)self timer];
+    timer = [(SFDeviceAssetTask *)self timer];
 
-    v8 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-    v9 = *[v8 ucat];
-    if (v7)
+    cachedBundle2 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+    v9 = *[cachedBundle2 ucat];
+    if (timer)
     {
       if (v9 <= 50)
       {
-        v10 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-        if (*[v10 ucat] == -1)
+        deviceAssetQuery = [(SFDeviceAssetTask *)self deviceAssetQuery];
+        if (*[deviceAssetQuery ucat] == -1)
         {
-          v23 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-          [v23 ucat];
+          deviceAssetQuery2 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+          [deviceAssetQuery2 ucat];
           v24 = _LogCategory_Initialize();
 
           if (!v24)
           {
-            return v3 == 0;
+            return matchBundle == 0;
           }
         }
 
@@ -273,8 +273,8 @@ LABEL_18:
         {
         }
 
-        v8 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-        [v8 ucat];
+        cachedBundle2 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+        [cachedBundle2 ucat];
         LogPrintF();
       }
 
@@ -283,19 +283,19 @@ LABEL_18:
 
     if (v9 <= 50)
     {
-      v21 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-      if (*[v21 ucat] == -1)
+      deviceAssetQuery3 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+      if (*[deviceAssetQuery3 ucat] == -1)
       {
-        v25 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-        [v25 ucat];
+        deviceAssetQuery4 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+        [deviceAssetQuery4 ucat];
         v26 = _LogCategory_Initialize();
 
         if (!v26)
         {
 LABEL_31:
-          v8 = [(SFDeviceAssetTask *)self fallbackBundle];
-          v16 = self;
-          v17 = v8;
+          cachedBundle2 = [(SFDeviceAssetTask *)self fallbackBundle];
+          selfCopy3 = self;
+          v17 = cachedBundle2;
           v18 = 1;
           goto LABEL_17;
         }
@@ -305,38 +305,38 @@ LABEL_31:
       {
       }
 
-      v8 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-      [v8 ucat];
+      cachedBundle2 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+      [cachedBundle2 ucat];
       LogPrintF();
     }
 
     goto LABEL_31;
   }
 
-  v4 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-  if (*[v4 ucat] > 50)
+  deviceAssetQuery5 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+  if (*[deviceAssetQuery5 ucat] > 50)
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v5 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-  if (*[v5 ucat] != -1)
+  deviceAssetQuery6 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+  if (*[deviceAssetQuery6 ucat] != -1)
   {
 
 LABEL_13:
-    v4 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-    [v4 ucat];
-    v15 = [(SFDeviceAssetTask *)self matchBundle];
-    v27 = [v15 bundlePath];
+    deviceAssetQuery5 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+    [deviceAssetQuery5 ucat];
+    matchBundle2 = [(SFDeviceAssetTask *)self matchBundle];
+    bundlePath = [matchBundle2 bundlePath];
     LogPrintF();
 
     goto LABEL_14;
   }
 
-  v13 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-  [v13 ucat];
+  deviceAssetQuery7 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+  [deviceAssetQuery7 ucat];
   v14 = _LogCategory_Initialize();
 
   if (v14)
@@ -345,41 +345,41 @@ LABEL_13:
   }
 
 LABEL_15:
-  v12 = [(SFDeviceAssetTask *)self matchBundle];
+  imperfectMatchBundle2 = [(SFDeviceAssetTask *)self matchBundle];
 LABEL_16:
-  v8 = v12;
-  v16 = self;
-  v17 = v8;
+  cachedBundle2 = imperfectMatchBundle2;
+  selfCopy3 = self;
+  v17 = cachedBundle2;
   v18 = 0;
 LABEL_17:
   v19 = 0;
 LABEL_18:
-  [(SFDeviceAssetTask *)v16 completeWithBundle:v17 isFallback:v18 isCached:v19];
+  [(SFDeviceAssetTask *)selfCopy3 completeWithBundle:v17 isFallback:v18 isCached:v19];
 LABEL_19:
 
-  return v3 == 0;
+  return matchBundle == 0;
 }
 
-- (void)completeWithBundle:(id)a3 isFallback:(BOOL)a4 isCached:(BOOL)a5
+- (void)completeWithBundle:(id)bundle isFallback:(BOOL)fallback isCached:(BOOL)cached
 {
-  v8 = a3;
+  bundleCopy = bundle;
   [(SFDeviceAssetTask *)self cancelTimeout];
-  v9 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-  v10 = [v9 effectiveProductType];
+  deviceAssetQuery = [(SFDeviceAssetTask *)self deviceAssetQuery];
+  effectiveProductType = [deviceAssetQuery effectiveProductType];
 
-  v11 = [(SFDeviceAssetTask *)self dispatchQueue];
+  dispatchQueue = [(SFDeviceAssetTask *)self dispatchQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__SFDeviceAssetTask_completeWithBundle_isFallback_isCached___block_invoke;
   v14[3] = &unk_1E788D608;
-  v17 = a5;
-  v18 = a4;
+  cachedCopy = cached;
+  fallbackCopy = fallback;
   v14[4] = self;
-  v15 = v8;
-  v16 = v10;
-  v12 = v10;
-  v13 = v8;
-  dispatch_async(v11, v14);
+  v15 = bundleCopy;
+  v16 = effectiveProductType;
+  v12 = effectiveProductType;
+  v13 = bundleCopy;
+  dispatch_async(dispatchQueue, v14);
 }
 
 void __60__SFDeviceAssetTask_completeWithBundle_isFallback_isCached___block_invoke(uint64_t a1)
@@ -565,50 +565,50 @@ LABEL_34:
 LABEL_35:
 }
 
-- (id)bundleURLFromAssetURL:(id)a3
+- (id)bundleURLFromAssetURL:(id)l
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     v9 = 0;
-    v10 = 0;
+    firstObject = 0;
     goto LABEL_13;
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v6 = *MEMORY[0x1E695DBB0];
   v20[0] = *MEMORY[0x1E695DB78];
   v20[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v19 = 0;
-  v8 = [v5 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v7 options:7 error:&v19];
+  v8 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:v7 options:7 error:&v19];
   v9 = v19;
 
   if (![v8 count])
   {
-    v11 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-    if (*[v11 ucat] >= 91)
+    deviceAssetQuery = [(SFDeviceAssetTask *)self deviceAssetQuery];
+    if (*[deviceAssetQuery ucat] >= 91)
     {
     }
 
     else
     {
-      v12 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-      if (*[v12 ucat] != -1)
+      deviceAssetQuery2 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+      if (*[deviceAssetQuery2 ucat] != -1)
       {
 
 LABEL_10:
-        v15 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-        [v15 ucat];
-        v18 = [v4 path];
+        deviceAssetQuery3 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+        [deviceAssetQuery3 ucat];
+        path = [lCopy path];
         LogPrintF();
 
         goto LABEL_11;
       }
 
-      v13 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-      [v13 ucat];
+      deviceAssetQuery4 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+      [deviceAssetQuery4 ucat];
       v14 = _LogCategory_Initialize();
 
       if (v14)
@@ -618,52 +618,52 @@ LABEL_10:
     }
 
 LABEL_11:
-    v10 = 0;
+    firstObject = 0;
     goto LABEL_12;
   }
 
-  v10 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 LABEL_12:
 
 LABEL_13:
   v16 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)bundleAtURL:(id)a3 error:(id *)a4
+- (id)bundleAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     v13 = 0;
     goto LABEL_18;
   }
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:0 options:0 error:0];
-  v9 = [v8 firstObject];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:0 options:0 error:0];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
     v21 = 0;
-    CanAccessURL = SFDeviceAssetProcessCanAccessURL(v9, &v21);
+    CanAccessURL = SFDeviceAssetProcessCanAccessURL(firstObject, &v21);
     v11 = v21;
     if (CanAccessURL)
     {
-      v12 = [MEMORY[0x1E696AAE8] bundleWithURL:v6];
+      v12 = [MEMORY[0x1E696AAE8] bundleWithURL:lCopy];
       if (v12)
       {
         v13 = v12;
-        if (a4)
+        if (error)
         {
-          *a4 = 0;
+          *error = 0;
         }
 
         goto LABEL_17;
       }
 
-      v14 = *a4;
+      v14 = *error;
 
       v11 = v14;
     }
@@ -674,28 +674,28 @@ LABEL_13:
     v11 = 0;
   }
 
-  v15 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-  if (*[v15 ucat] > 90)
+  deviceAssetQuery = [(SFDeviceAssetTask *)self deviceAssetQuery];
+  if (*[deviceAssetQuery ucat] > 90)
   {
     goto LABEL_15;
   }
 
-  v16 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-  if (*[v16 ucat] != -1)
+  deviceAssetQuery2 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+  if (*[deviceAssetQuery2 ucat] != -1)
   {
 
 LABEL_14:
-    v15 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-    [v15 ucat];
-    v20 = [v6 path];
+    deviceAssetQuery = [(SFDeviceAssetTask *)self deviceAssetQuery];
+    [deviceAssetQuery ucat];
+    path = [lCopy path];
     LogPrintF();
 
 LABEL_15:
     goto LABEL_16;
   }
 
-  v17 = [(SFDeviceAssetTask *)self deviceAssetQuery];
-  [v17 ucat];
+  deviceAssetQuery3 = [(SFDeviceAssetTask *)self deviceAssetQuery];
+  [deviceAssetQuery3 ucat];
   v18 = _LogCategory_Initialize();
 
   if (v18)

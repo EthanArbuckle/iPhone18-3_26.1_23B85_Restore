@@ -1,72 +1,72 @@
 @interface AVTStickerPresetOverride
-+ (id)presetOverrideFromDictionary:(id)a3 forCategoryName:(id)a4;
-- (AVTStickerPresetOverride)initWithCategory:(int64_t)a3 presetIdentifier:(id)a4 unless:(id)a5;
-- (void)applyToAvatar:(id)a3 reversionContext:(id)a4;
++ (id)presetOverrideFromDictionary:(id)dictionary forCategoryName:(id)name;
+- (AVTStickerPresetOverride)initWithCategory:(int64_t)category presetIdentifier:(id)identifier unless:(id)unless;
+- (void)applyToAvatar:(id)avatar reversionContext:(id)context;
 @end
 
 @implementation AVTStickerPresetOverride
 
-+ (id)presetOverrideFromDictionary:(id)a3 forCategoryName:(id)a4
++ (id)presetOverrideFromDictionary:(id)dictionary forCategoryName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v7 = [AVTStickerPresetOverride alloc];
-  v8 = AVTPresetCategoryFromString(v5);
+  v8 = AVTPresetCategoryFromString(nameCopy);
 
-  v9 = [v6 objectForKeyedSubscript:@"value"];
-  v10 = [v6 objectForKeyedSubscript:@"unless"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"value"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"unless"];
 
   v11 = [(AVTStickerPresetOverride *)v7 initWithCategory:v8 presetIdentifier:v9 unless:v10];
 
   return v11;
 }
 
-- (AVTStickerPresetOverride)initWithCategory:(int64_t)a3 presetIdentifier:(id)a4 unless:(id)a5
+- (AVTStickerPresetOverride)initWithCategory:(int64_t)category presetIdentifier:(id)identifier unless:(id)unless
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  unlessCopy = unless;
   v14.receiver = self;
   v14.super_class = AVTStickerPresetOverride;
   v11 = [(AVTStickerPresetOverride *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_category = a3;
-    objc_storeStrong(&v11->_unlessIdentifiers, a5);
-    objc_storeStrong(&v12->_presetIdentifier, a4);
+    v11->_category = category;
+    objc_storeStrong(&v11->_unlessIdentifiers, unless);
+    objc_storeStrong(&v12->_presetIdentifier, identifier);
   }
 
   return v12;
 }
 
-- (void)applyToAvatar:(id)a3 reversionContext:(id)a4
+- (void)applyToAvatar:(id)avatar reversionContext:(id)context
 {
-  v20 = a3;
-  v6 = a4;
+  avatarCopy = avatar;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v20;
-    v8 = [(AVTStickerPresetOverride *)self category];
-    v9 = [(AVTStickerPresetOverride *)self presetIdentifier];
-    v10 = [AVTPreset presetWithCategory:v8 identifier:v9];
+    v7 = avatarCopy;
+    category = [(AVTStickerPresetOverride *)self category];
+    presetIdentifier = [(AVTStickerPresetOverride *)self presetIdentifier];
+    v10 = [AVTPreset presetWithCategory:category identifier:presetIdentifier];
 
     v11 = [v7 presetForCategory:{-[AVTStickerPresetOverride category](self, "category")}];
-    v12 = [(AVTStickerPresetOverride *)self unlessIdentifiers];
-    v13 = [v11 identifier];
-    v14 = [v12 containsObject:v13];
+    unlessIdentifiers = [(AVTStickerPresetOverride *)self unlessIdentifiers];
+    identifier = [v11 identifier];
+    v14 = [unlessIdentifiers containsObject:identifier];
 
     if ((v14 & 1) == 0)
     {
-      if (v6)
+      if (contextCopy)
       {
         v15 = [AVTStickerPresetOverride alloc];
-        v16 = [(AVTStickerPresetOverride *)self category];
-        v17 = [v11 identifier];
-        v18 = [(AVTStickerPresetOverride *)self unlessIdentifiers];
-        v19 = [(AVTStickerPresetOverride *)v15 initWithCategory:v16 presetIdentifier:v17 unless:v18];
+        category2 = [(AVTStickerPresetOverride *)self category];
+        identifier2 = [v11 identifier];
+        unlessIdentifiers2 = [(AVTStickerPresetOverride *)self unlessIdentifiers];
+        v19 = [(AVTStickerPresetOverride *)v15 initWithCategory:category2 presetIdentifier:identifier2 unless:unlessIdentifiers2];
 
-        [v6 savePresetOverride:v19];
+        [contextCopy savePresetOverride:v19];
       }
 
       [v7 setPreset:v10 forCategory:-[AVTStickerPresetOverride category](self animated:{"category"), 0}];

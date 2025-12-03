@@ -1,10 +1,10 @@
 @interface StackedTwoLabelView
-- (_TtC15HealthRecordsUI19StackedTwoLabelView)initWithCoder:(id)a3;
+- (_TtC15HealthRecordsUI19StackedTwoLabelView)initWithCoder:(id)coder;
 @end
 
 @implementation StackedTwoLabelView
 
-- (_TtC15HealthRecordsUI19StackedTwoLabelView)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI19StackedTwoLabelView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI19StackedTwoLabelView____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI19StackedTwoLabelView____lazy_storage___subtitleLabel) = 0;

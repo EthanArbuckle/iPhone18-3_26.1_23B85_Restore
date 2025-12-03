@@ -1,13 +1,13 @@
 @interface VNControlledCapacityTasksQueue
-+ (void)setRequiresHighQoS:(BOOL)a3;
-+ (void)setTasksTimeout:(int64_t)a3;
++ (void)setRequiresHighQoS:(BOOL)s;
++ (void)setTasksTimeout:(int64_t)timeout;
 - (BOOL)currentQueueIsSynchronizationQueue;
-- (BOOL)dispatchGroupWait:(id)a3 error:(id *)a4;
-- (VNControlledCapacityTasksQueue)initWithDispatchQueueLabel:(id)a3 maximumTasksCount:(int64_t)a4;
+- (BOOL)dispatchGroupWait:(id)wait error:(id *)error;
+- (VNControlledCapacityTasksQueue)initWithDispatchQueueLabel:(id)label maximumTasksCount:(int64_t)count;
 - (id)description;
-- (void)dispatchGroupAsyncByPreservingQueueCapacity:(id)a3 block:(id)a4;
-- (void)dispatchSyncByPreservingQueueCapacity:(id)a3;
-- (void)setMaximumTasksCount:(int64_t)a3;
+- (void)dispatchGroupAsyncByPreservingQueueCapacity:(id)capacity block:(id)block;
+- (void)dispatchSyncByPreservingQueueCapacity:(id)capacity;
+- (void)setMaximumTasksCount:(int64_t)count;
 @end
 
 @implementation VNControlledCapacityTasksQueue
@@ -19,18 +19,18 @@
   return v2;
 }
 
-- (void)setMaximumTasksCount:(int64_t)a3
+- (void)setMaximumTasksCount:(int64_t)count
 {
-  if (a3 <= 0)
+  if (count <= 0)
   {
-    [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Maximum queue tasks count (%ld) must be a positive number", a3];
+    [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Maximum queue tasks count (%ld) must be a positive number", count];
     [VNError VNAssert:0 log:?];
   }
 
   else
   {
-    self->_maximumTasksCount = a3;
-    self->_semaphore = dispatch_semaphore_create(a3);
+    self->_maximumTasksCount = count;
+    self->_semaphore = dispatch_semaphore_create(count);
   }
 
   MEMORY[0x1EEE66BB8]();
@@ -49,9 +49,9 @@
   return v3;
 }
 
-- (BOOL)dispatchGroupWait:(id)a3 error:(id *)a4
+- (BOOL)dispatchGroupWait:(id)wait error:(id *)error
 {
-  v5 = a3;
+  waitCopy = wait;
   v6 = +[VNControlledCapacityTasksQueue tasksTimeout];
   if (v6 < 1)
   {
@@ -63,69 +63,69 @@
     v7 = dispatch_time(0, v6);
   }
 
-  v8 = dispatch_group_wait(v5, v7);
+  v8 = dispatch_group_wait(waitCopy, v7);
   v9 = v8;
-  if (a4 && v8)
+  if (error && v8)
   {
-    *a4 = [VNError errorForExecutionTimeoutWithLocalizedDescription:@"Timed out waiting for dispatch_group_wait completion"];
+    *error = [VNError errorForExecutionTimeoutWithLocalizedDescription:@"Timed out waiting for dispatch_group_wait completion"];
   }
 
   return v9 == 0;
 }
 
-- (void)dispatchSyncByPreservingQueueCapacity:(id)a3
+- (void)dispatchSyncByPreservingQueueCapacity:(id)capacity
 {
   semaphore = self->_semaphore;
-  v5 = a3;
+  capacityCopy = capacity;
   dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
-  dispatch_sync(self->_queue, v5);
+  dispatch_sync(self->_queue, capacityCopy);
 
   v6 = self->_semaphore;
 
   dispatch_semaphore_signal(v6);
 }
 
-- (void)dispatchGroupAsyncByPreservingQueueCapacity:(id)a3 block:(id)a4
+- (void)dispatchGroupAsyncByPreservingQueueCapacity:(id)capacity block:(id)block
 {
   semaphore = self->_semaphore;
-  v7 = a4;
-  group = a3;
+  blockCopy = block;
+  group = capacity;
   dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
-  dispatch_group_async(group, self->_queue, v7);
+  dispatch_group_async(group, self->_queue, blockCopy);
 }
 
-- (VNControlledCapacityTasksQueue)initWithDispatchQueueLabel:(id)a3 maximumTasksCount:(int64_t)a4
+- (VNControlledCapacityTasksQueue)initWithDispatchQueueLabel:(id)label maximumTasksCount:(int64_t)count
 {
-  v6 = a3;
+  labelCopy = label;
   v21.receiver = self;
   v21.super_class = VNControlledCapacityTasksQueue;
   v7 = [(VNControlledCapacityTasksQueue *)&v21 init];
   v8 = v7;
   v9 = 0;
-  if (a4 >= 1 && v7)
+  if (count >= 1 && v7)
   {
-    v10 = [objc_opt_class() targetHighPriorityQueue];
+    targetHighPriorityQueue = [objc_opt_class() targetHighPriorityQueue];
 
-    v11 = v6;
-    v12 = [v6 UTF8String];
+    v11 = labelCopy;
+    uTF8String = [labelCopy UTF8String];
     [objc_opt_class() dispatchQueueAttribute];
-    if (v10)
+    if (targetHighPriorityQueue)
       v13 = {;
-      v14 = [objc_opt_class() targetHighPriorityQueue];
-      v15 = dispatch_queue_create_with_target_V2(v12, v13, v14);
+      targetHighPriorityQueue2 = [objc_opt_class() targetHighPriorityQueue];
+      v15 = dispatch_queue_create_with_target_V2(uTF8String, v13, targetHighPriorityQueue2);
       queue = v8->_queue;
       v8->_queue = v15;
     }
 
     else
       v13 = {;
-      v17 = dispatch_queue_create(v12, v13);
-      v14 = v8->_queue;
+      v17 = dispatch_queue_create(uTF8String, v13);
+      targetHighPriorityQueue2 = v8->_queue;
       v8->_queue = v17;
     }
 
-    v8->_maximumTasksCount = a4;
-    v18 = dispatch_semaphore_create(a4);
+    v8->_maximumTasksCount = count;
+    v18 = dispatch_semaphore_create(count);
     semaphore = v8->_semaphore;
     v8->_semaphore = v18;
 
@@ -135,18 +135,18 @@
   return v9;
 }
 
-+ (void)setRequiresHighQoS:(BOOL)a3
++ (void)setRequiresHighQoS:(BOOL)s
 {
   os_unfair_lock_lock(&_requiresHighQoSLock);
-  _requiresHighQoS = a3;
+  _requiresHighQoS = s;
 
   os_unfair_lock_unlock(&_requiresHighQoSLock);
 }
 
-+ (void)setTasksTimeout:(int64_t)a3
++ (void)setTasksTimeout:(int64_t)timeout
 {
   os_unfair_lock_lock(&_tasksTimeoutLock);
-  _tasksTimeout = a3;
+  _tasksTimeout = timeout;
 
   os_unfair_lock_unlock(&_tasksTimeoutLock);
 }

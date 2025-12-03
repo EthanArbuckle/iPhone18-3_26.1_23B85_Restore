@@ -1,5 +1,5 @@
 @interface SBDeviceApplicationSceneClassicAccessoryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateRotationButton;
 - (void)_updateZoomButton;
@@ -7,16 +7,16 @@
 
 @implementation SBDeviceApplicationSceneClassicAccessoryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceMethod:@"_updateZoomButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceMethod:@"_isZoomed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceMethod:@"_updateRotationButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceVariable:@"_zoomButton" withType:"UIButton"];
-  [v3 validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceVariable:@"_counterClockWiseRotationButton" withType:"UIButton"];
-  [v3 validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceVariable:@"_clockWiseRotationButton" withType:"UIButton"];
-  [v3 validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceVariable:@"_buttonOrientation" withType:"NSInteger"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceMethod:@"_updateZoomButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceMethod:@"_isZoomed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceMethod:@"_updateRotationButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceVariable:@"_zoomButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceVariable:@"_counterClockWiseRotationButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceVariable:@"_clockWiseRotationButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneClassicAccessoryView" hasInstanceVariable:@"_buttonOrientation" withType:"NSInteger"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

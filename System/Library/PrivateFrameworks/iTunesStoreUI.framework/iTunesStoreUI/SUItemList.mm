@@ -1,26 +1,26 @@
 @interface SUItemList
 - (NSArray)sectionIndexTitles;
-- (id)_groupAtExternalIndex:(int64_t)a3;
+- (id)_groupAtExternalIndex:(int64_t)index;
 - (id)copyItems;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)hintTextForKey:(id)a3;
-- (id)indexPathOfItem:(id)a3;
-- (id)indexPathOfItemWithIdentifier:(unint64_t)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)itemsForSectionAtIndex:(int64_t)a3;
-- (id)sectionItemForSectionAtIndex:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)hintTextForKey:(id)key;
+- (id)indexPathOfItem:(id)item;
+- (id)indexPathOfItemWithIdentifier:(unint64_t)identifier;
+- (id)itemAtIndexPath:(id)path;
+- (id)itemsForSectionAtIndex:(int64_t)index;
+- (id)sectionItemForSectionAtIndex:(int64_t)index;
 - (int64_t)numberOfItems;
 - (int64_t)numberOfSections;
-- (int64_t)sectionIndexForIndexTitle:(id)a3 atIndex:(int64_t)a4;
-- (void)_removeHiddenItemsFromArray:(id)a3;
+- (int64_t)sectionIndexForIndexTitle:(id)title atIndex:(int64_t)index;
+- (void)_removeHiddenItemsFromArray:(id)array;
 - (void)dealloc;
-- (void)enumerateItemsUsingBlock:(id)a3;
-- (void)insertItems:(id)a3 atIndexPath:(id)a4;
-- (void)removeItemAtIndexPath:(id)a3;
-- (void)replaceItemAtIndexPath:(id)a3 withItems:(id)a4;
-- (void)setHintText:(id)a3;
-- (void)setItems:(id)a3;
-- (void)setItemsFromPropertyList:(id)a3;
+- (void)enumerateItemsUsingBlock:(id)block;
+- (void)insertItems:(id)items atIndexPath:(id)path;
+- (void)removeItemAtIndexPath:(id)path;
+- (void)replaceItemAtIndexPath:(id)path withItems:(id)items;
+- (void)setHintText:(id)text;
+- (void)setItems:(id)items;
+- (void)setItemsFromPropertyList:(id)list;
 @end
 
 @implementation SUItemList
@@ -32,11 +32,11 @@
   [(SUItemList *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  *(v5 + 8) = [(NSMutableArray *)self->_groups mutableCopyWithZone:a3];
-  *(v5 + 16) = [(NSDictionary *)self->_hintText copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  *(v5 + 8) = [(NSMutableArray *)self->_groups mutableCopyWithZone:zone];
+  *(v5 + 16) = [(NSDictionary *)self->_hintText copyWithZone:zone];
   *(v5 + 24) = self->_ignoresEmptySections;
   return v5;
 }
@@ -78,7 +78,7 @@
   return v3;
 }
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
   v14 = 0;
   v4 = [(NSMutableArray *)self->_groups count];
@@ -98,7 +98,7 @@
         do
         {
           v12 = [v7 objectAtIndex:v11 - 1];
-          (*(a3 + 2))(a3, v12, [MEMORY[0x1E696AC88] indexPathForRow:v11 - 1 inSection:v6], &v14);
+          (*(block + 2))(block, v12, [MEMORY[0x1E696AC88] indexPathForRow:v11 - 1 inSection:v6], &v14);
           v9 = v14;
           if (v11 >= v10)
           {
@@ -118,7 +118,7 @@
   }
 }
 
-- (id)indexPathOfItem:(id)a3
+- (id)indexPathOfItem:(id)item
 {
   v6 = 0;
   v7 = &v6;
@@ -130,7 +130,7 @@
   v5[1] = 3221225472;
   v5[2] = __30__SUItemList_indexPathOfItem___block_invoke;
   v5[3] = &unk_1E8165F38;
-  v5[4] = a3;
+  v5[4] = item;
   v5[5] = &v6;
   [(SUItemList *)self enumerateItemsUsingBlock:v5];
   v3 = v7[5];
@@ -151,7 +151,7 @@ void *__30__SUItemList_indexPathOfItem___block_invoke(void *result, uint64_t a2,
   return result;
 }
 
-- (id)indexPathOfItemWithIdentifier:(unint64_t)a3
+- (id)indexPathOfItemWithIdentifier:(unint64_t)identifier
 {
   v6 = 0;
   v7 = &v6;
@@ -164,7 +164,7 @@ void *__30__SUItemList_indexPathOfItem___block_invoke(void *result, uint64_t a2,
   v5[2] = __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke;
   v5[3] = &unk_1E8165F60;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = identifier;
   [(SUItemList *)self enumerateItemsUsingBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -184,22 +184,22 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  if ([a3 length] != 2)
+  if ([path length] != 2)
   {
     [(SUItemList *)a2 itemAtIndexPath:?];
   }
 
-  v6 = [-[SUItemList _groupAtExternalIndex:](self _groupAtExternalIndex:{objc_msgSend(a3, "indexAtPosition:", 0)), "items"}];
-  v7 = [a3 indexAtPosition:1];
+  v6 = [-[SUItemList _groupAtExternalIndex:](self _groupAtExternalIndex:{objc_msgSend(path, "indexAtPosition:", 0)), "items"}];
+  v7 = [path indexAtPosition:1];
 
   return [v6 objectAtIndex:v7];
 }
 
-- (id)itemsForSectionAtIndex:(int64_t)a3
+- (id)itemsForSectionAtIndex:(int64_t)index
 {
-  v3 = [(SUItemList *)self _groupAtExternalIndex:a3];
+  v3 = [(SUItemList *)self _groupAtExternalIndex:index];
 
   return [v3 items];
 }
@@ -278,28 +278,28 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (int64_t)sectionIndexForIndexTitle:(id)a3 atIndex:(int64_t)a4
+- (int64_t)sectionIndexForIndexTitle:(id)title atIndex:(int64_t)index
 {
-  if (a4 < 1 || !self->_ignoresEmptySections)
+  if (index < 1 || !self->_ignoresEmptySections)
   {
-    return a4;
+    return index;
   }
 
   v6 = 0;
-  v7 = a4;
+  indexCopy = index;
   do
   {
-    v7 = (__PAIR128__(v7, [objc_msgSend(-[NSMutableArray objectAtIndex:](self->_groups objectAtIndex:{v6++), "items"), "count"}]) - 1) >> 64;
+    indexCopy = (__PAIR128__(indexCopy, [objc_msgSend(-[NSMutableArray objectAtIndex:](self->_groups objectAtIndex:{v6++), "items"), "count"}]) - 1) >> 64;
   }
 
-  while (a4 != v6);
-  return v7;
+  while (index != v6);
+  return indexCopy;
 }
 
 - (NSArray)sectionIndexTitles
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -320,10 +320,10 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
           objc_enumerationMutation(groups);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) indexBarTitle];
-        if ([v9 length])
+        indexBarTitle = [*(*(&v11 + 1) + 8 * v8) indexBarTitle];
+        if ([indexBarTitle length])
         {
-          [(NSArray *)v3 addObject:v9];
+          [(NSArray *)array addObject:indexBarTitle];
         }
 
         ++v8;
@@ -336,12 +336,12 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)sectionItemForSectionAtIndex:(int64_t)a3
+- (id)sectionItemForSectionAtIndex:(int64_t)index
 {
-  v4 = [(SUItemList *)self _groupAtExternalIndex:a3];
+  v4 = [(SUItemList *)self _groupAtExternalIndex:index];
   v5 = v4;
   if (self->_ignoresEmptySections && ![objc_msgSend(v4 "items")])
   {
@@ -351,53 +351,53 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
   return [v5 separatorItem];
 }
 
-- (void)insertItems:(id)a3 atIndexPath:(id)a4
+- (void)insertItems:(id)items atIndexPath:(id)path
 {
-  if ([a4 length] != 2)
+  if ([path length] != 2)
   {
     [SUItemList insertItems:a2 atIndexPath:self];
   }
 
-  v8 = -[SUItemList _groupAtExternalIndex:](self, "_groupAtExternalIndex:", [a4 indexAtPosition:0]);
-  v9 = [a4 indexAtPosition:1];
-  v10 = [v8 items];
-  v11 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v9, objc_msgSend(a3, "count")}];
+  v8 = -[SUItemList _groupAtExternalIndex:](self, "_groupAtExternalIndex:", [path indexAtPosition:0]);
+  v9 = [path indexAtPosition:1];
+  items = [v8 items];
+  v11 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v9, objc_msgSend(items, "count")}];
 
-  [v10 insertObjects:a3 atIndexes:v11];
+  [items insertObjects:items atIndexes:v11];
 }
 
-- (void)removeItemAtIndexPath:(id)a3
+- (void)removeItemAtIndexPath:(id)path
 {
-  if ([a3 length] != 2)
+  if ([path length] != 2)
   {
     [(SUItemList *)a2 removeItemAtIndexPath:?];
   }
 
-  v6 = [-[SUItemList _groupAtExternalIndex:](self _groupAtExternalIndex:{objc_msgSend(a3, "indexAtPosition:", 0)), "items"}];
-  v7 = [a3 indexAtPosition:1];
+  v6 = [-[SUItemList _groupAtExternalIndex:](self _groupAtExternalIndex:{objc_msgSend(path, "indexAtPosition:", 0)), "items"}];
+  v7 = [path indexAtPosition:1];
 
   [v6 removeObjectAtIndex:v7];
 }
 
-- (void)replaceItemAtIndexPath:(id)a3 withItems:(id)a4
+- (void)replaceItemAtIndexPath:(id)path withItems:(id)items
 {
   [(SUItemList *)self removeItemAtIndexPath:?];
 
-  [(SUItemList *)self insertItems:a4 atIndexPath:a3];
+  [(SUItemList *)self insertItems:items atIndexPath:path];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   self->_groups = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = objc_alloc_init(SUItemListGroup);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [a3 count];
+  v6 = [items count];
   if (v6 >= 1)
   {
     v7 = v6;
     for (i = 0; i != v7; ++i)
     {
-      v9 = [a3 objectAtIndex:i];
+      v9 = [items objectAtIndex:i];
       if ([v9 itemType] == 7)
       {
         if (i)
@@ -424,7 +424,7 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
   [(NSMutableArray *)self->_groups addObject:v10];
 }
 
-- (void)setItemsFromPropertyList:(id)a3
+- (void)setItemsFromPropertyList:(id)list
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -433,7 +433,7 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [list countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -445,7 +445,7 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(list);
         }
 
         v11 = [v6 newItemWithItemDictionary:*(*(&v13 + 1) + 8 * v10)];
@@ -459,7 +459,7 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [list countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -469,9 +469,9 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
   [(SUItemList *)self setItems:v5];
 }
 
-- (id)hintTextForKey:(id)a3
+- (id)hintTextForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     return [(NSDictionary *)self->_hintText objectForKey:?];
   }
@@ -482,22 +482,22 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)setHintText:(id)a3
+- (void)setHintText:(id)text
 {
   hintText = self->_hintText;
-  if (hintText != a3)
+  if (hintText != text)
   {
 
-    self->_hintText = a3;
+    self->_hintText = text;
   }
 }
 
-- (id)_groupAtExternalIndex:(int64_t)a3
+- (id)_groupAtExternalIndex:(int64_t)index
 {
   if (self->_ignoresEmptySections)
   {
     v5 = [(NSMutableArray *)self->_groups count];
-    if ((a3 & 0x8000000000000000) == 0)
+    if ((index & 0x8000000000000000) == 0)
     {
       v6 = v5;
       if (v5 >= 1)
@@ -507,10 +507,10 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
         {
           if (![objc_msgSend(-[NSMutableArray objectAtIndex:](self->_groups objectAtIndex:{v7), "items"), "count"}])
           {
-            ++a3;
+            ++index;
           }
 
-          v8 = v7++ < a3;
+          v8 = v7++ < index;
           v8 = v8 && v7 < v6;
         }
 
@@ -519,27 +519,27 @@ id __44__SUItemList_indexPathOfItemWithIdentifier___block_invoke(uint64_t a1, vo
     }
   }
 
-  if (a3 >= [(NSMutableArray *)self->_groups count])
+  if (index >= [(NSMutableArray *)self->_groups count])
   {
     return 0;
   }
 
   groups = self->_groups;
 
-  return [(NSMutableArray *)groups objectAtIndex:a3];
+  return [(NSMutableArray *)groups objectAtIndex:index];
 }
 
-- (void)_removeHiddenItemsFromArray:(id)a3
+- (void)_removeHiddenItemsFromArray:(id)array
 {
-  v4 = [a3 count];
+  v4 = [array count];
   if (v4 >= 1)
   {
     v5 = v4 + 1;
     do
     {
-      if (([objc_msgSend(a3 objectAtIndex:{v5 - 2), "isDisplayable:", 0}] & 1) == 0)
+      if (([objc_msgSend(array objectAtIndex:{v5 - 2), "isDisplayable:", 0}] & 1) == 0)
       {
-        [a3 removeObjectAtIndex:v5 - 2];
+        [array removeObjectAtIndex:v5 - 2];
       }
 
       --v5;

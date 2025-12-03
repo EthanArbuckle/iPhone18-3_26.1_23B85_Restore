@@ -1,12 +1,12 @@
 @interface _CNBoundedQueueingStrategy
-- (_CNBoundedQueueingStrategy)initWithCapacity:(unint64_t)a3;
-- (_CNBoundedQueueingStrategy)initWithCapacity:(unint64_t)a3 overflowHandler:(id)a4;
-- (void)enqueueObject:(id)a3 buffer:(id)a4;
+- (_CNBoundedQueueingStrategy)initWithCapacity:(unint64_t)capacity;
+- (_CNBoundedQueueingStrategy)initWithCapacity:(unint64_t)capacity overflowHandler:(id)handler;
+- (void)enqueueObject:(id)object buffer:(id)buffer;
 @end
 
 @implementation _CNBoundedQueueingStrategy
 
-- (_CNBoundedQueueingStrategy)initWithCapacity:(unint64_t)a3
+- (_CNBoundedQueueingStrategy)initWithCapacity:(unint64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = _CNBoundedQueueingStrategy;
@@ -14,20 +14,20 @@
   v5 = v4;
   if (v4)
   {
-    v4->_capacity = a3;
+    v4->_capacity = capacity;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (_CNBoundedQueueingStrategy)initWithCapacity:(unint64_t)a3 overflowHandler:(id)a4
+- (_CNBoundedQueueingStrategy)initWithCapacity:(unint64_t)capacity overflowHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(_CNBoundedQueueingStrategy *)self initWithCapacity:a3];
+  handlerCopy = handler;
+  v7 = [(_CNBoundedQueueingStrategy *)self initWithCapacity:capacity];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [handlerCopy copy];
     overflowHandler = v7->_overflowHandler;
     v7->_overflowHandler = v8;
 
@@ -37,23 +37,23 @@
   return v7;
 }
 
-- (void)enqueueObject:(id)a3 buffer:(id)a4
+- (void)enqueueObject:(id)object buffer:(id)buffer
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v6 count] == self->_capacity)
+  objectCopy = object;
+  bufferCopy = buffer;
+  if ([bufferCopy count] == self->_capacity)
   {
     overflowHandler = self->_overflowHandler;
     if (overflowHandler)
     {
-      v8 = [v6 firstObject];
-      overflowHandler[2](overflowHandler, v8);
+      firstObject = [bufferCopy firstObject];
+      overflowHandler[2](overflowHandler, firstObject);
     }
 
-    [v6 removeObjectAtIndex:0];
+    [bufferCopy removeObjectAtIndex:0];
   }
 
-  [v6 addObject:v9];
+  [bufferCopy addObject:objectCopy];
 }
 
 @end

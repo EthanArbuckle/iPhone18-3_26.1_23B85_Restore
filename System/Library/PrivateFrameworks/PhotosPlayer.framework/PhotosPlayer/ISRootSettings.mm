@@ -15,32 +15,32 @@
   v3 = [MEMORY[0x277CCABB0] numberWithInteger:12];
   v9[1] = @"SettingsArchiveKey";
   v10[0] = v3;
-  v4 = [(PTSettings *)self archiveDictionary];
-  v10[1] = v4;
+  archiveDictionary = [(PTSettings *)self archiveDictionary];
+  v10[1] = archiveDictionary;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [objc_opt_class() _defaultsKey];
-  [v6 setObject:v5 forKey:v7];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  _defaultsKey = [objc_opt_class() _defaultsKey];
+  [standardUserDefaults setObject:v5 forKey:_defaultsKey];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)createChildren
 {
-  v3 = [(PTSettings *)[ISPlayerSettings alloc] initWithDefaultValues];
+  initWithDefaultValues = [(PTSettings *)[ISPlayerSettings alloc] initWithDefaultValues];
   playerSettings = self->_playerSettings;
-  self->_playerSettings = v3;
+  self->_playerSettings = initWithDefaultValues;
 
-  v5 = [(PTSettings *)[ISVitalitySettings alloc] initWithDefaultValues];
+  initWithDefaultValues2 = [(PTSettings *)[ISVitalitySettings alloc] initWithDefaultValues];
   vitalitySettings = self->_vitalitySettings;
-  self->_vitalitySettings = v5;
+  self->_vitalitySettings = initWithDefaultValues2;
 
-  v7 = [(PTSettings *)[ISPerformanceDiagnosticsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues3 = [(PTSettings *)[ISPerformanceDiagnosticsSettings alloc] initWithDefaultValues];
   performanceDiagnosticsSettings = self->_performanceDiagnosticsSettings;
-  self->_performanceDiagnosticsSettings = v7;
+  self->_performanceDiagnosticsSettings = initWithDefaultValues3;
 
-  MEMORY[0x2821F96F8](v7, performanceDiagnosticsSettings);
+  MEMORY[0x2821F96F8](initWithDefaultValues3, performanceDiagnosticsSettings);
 }
 
 - (void)setDefaultValues
@@ -48,14 +48,14 @@
   v6.receiver = self;
   v6.super_class = ISRootSettings;
   [(PTSettings *)&v6 setDefaultValues];
-  v3 = [(ISRootSettings *)self playerSettings];
-  [v3 setDefaultValues];
+  playerSettings = [(ISRootSettings *)self playerSettings];
+  [playerSettings setDefaultValues];
 
-  v4 = [(ISRootSettings *)self vitalitySettings];
-  [v4 setDefaultValues];
+  vitalitySettings = [(ISRootSettings *)self vitalitySettings];
+  [vitalitySettings setDefaultValues];
 
-  v5 = [(ISRootSettings *)self performanceDiagnosticsSettings];
-  [v5 setDefaultValues];
+  performanceDiagnosticsSettings = [(ISRootSettings *)self performanceDiagnosticsSettings];
+  [performanceDiagnosticsSettings setDefaultValues];
 }
 
 + (id)settingsControllerModule
@@ -96,7 +96,7 @@
   block[1] = 3221225472;
   block[2] = __32__ISRootSettings_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2674 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2674, block);

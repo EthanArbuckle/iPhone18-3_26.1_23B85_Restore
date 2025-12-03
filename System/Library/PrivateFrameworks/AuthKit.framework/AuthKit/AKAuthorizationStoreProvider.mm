@@ -1,16 +1,16 @@
 @interface AKAuthorizationStoreProvider
-- (AKDataSeparatedContainerContext)sandboxContainerForPersona:(id)a3;
-- (id)storeForAltDSID:(id)a3;
+- (AKDataSeparatedContainerContext)sandboxContainerForPersona:(id)persona;
+- (id)storeForAltDSID:(id)d;
 @end
 
 @implementation AKAuthorizationStoreProvider
 
-- (id)storeForAltDSID:(id)a3
+- (id)storeForAltDSID:(id)d
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v12 = NSHomeDirectory();
   v23 = [(NSString *)v12 stringByAppendingString:@"/Library/Application Support/com.apple.akd/authorization.db"];
   _objc_release(v12);
@@ -23,7 +23,7 @@
   _objc_release(v9);
   if ((v11 & 1) != 0 && v21)
   {
-    v19 = [(AKAuthorizationStoreProvider *)v25 sandboxContainerForPersona:v21];
+    v19 = [(AKAuthorizationStoreProvider *)selfCopy sandboxContainerForPersona:v21];
     v20 = v3;
     if (v19 && v20)
     {
@@ -76,12 +76,12 @@
   return v4;
 }
 
-- (AKDataSeparatedContainerContext)sandboxContainerForPersona:(id)a3
+- (AKDataSeparatedContainerContext)sandboxContainerForPersona:(id)persona
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, persona);
   v31 = 0;
   sub_100038C64(&v33);
   v30 = container_query_create();
@@ -89,7 +89,7 @@
   container_query_operation_set_flags();
   v12 = location[0];
   v3 = location[0];
-  v29 = [v12 UTF8String];
+  uTF8String = [v12 UTF8String];
   container_query_set_persona_unique_string();
   if (container_query_get_single_result())
   {
@@ -101,9 +101,9 @@
       if (path)
       {
         v16 = [NSURL fileURLWithFileSystemRepresentation:path isDirectory:1 relativeToURL:0];
-        v4 = [v16 path];
+        path = [v16 path];
         v5 = v17;
-        v17 = v4;
+        v17 = path;
         _objc_release(v5);
         objc_storeStrong(&v16, 0);
         if (v17)

@@ -1,43 +1,43 @@
 @interface HFWallpaperEditCollectionBuilder
-- (HFWallpaperEditCollectionBuilder)initWithHomeKitObject:(id)a3;
-- (HFWallpaperEditCollectionBuilder)initWithHomeKitObject:(id)a3 namedWallpaperCollectionType:(int64_t)a4;
+- (HFWallpaperEditCollectionBuilder)initWithHomeKitObject:(id)object;
+- (HFWallpaperEditCollectionBuilder)initWithHomeKitObject:(id)object namedWallpaperCollectionType:(int64_t)type;
 - (NAFuture)initialEditCollectionFuture;
 - (id)commitWallpaper;
 - (id)description;
-- (id)editCollectionForWallpaper:(id)a3 image:(id)a4;
+- (id)editCollectionForWallpaper:(id)wallpaper image:(id)image;
 - (id)wallpaperEditCollectionFuture;
-- (void)setHkObject:(id)a3;
-- (void)setWallpaper:(id)a3 image:(id)a4;
+- (void)setHkObject:(id)object;
+- (void)setWallpaper:(id)wallpaper image:(id)image;
 @end
 
 @implementation HFWallpaperEditCollectionBuilder
 
-- (HFWallpaperEditCollectionBuilder)initWithHomeKitObject:(id)a3 namedWallpaperCollectionType:(int64_t)a4
+- (HFWallpaperEditCollectionBuilder)initWithHomeKitObject:(id)object namedWallpaperCollectionType:(int64_t)type
 {
-  v7 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = HFWallpaperEditCollectionBuilder;
   v8 = [(HFWallpaperEditCollectionBuilder *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_hkObject, a3);
-    v9->_namedWallpaperCollectionType = a4;
+    objc_storeStrong(&v8->_hkObject, object);
+    v9->_namedWallpaperCollectionType = type;
   }
 
   return v9;
 }
 
-- (HFWallpaperEditCollectionBuilder)initWithHomeKitObject:(id)a3
+- (HFWallpaperEditCollectionBuilder)initWithHomeKitObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = HFWallpaperEditCollectionBuilder;
   v6 = [(HFWallpaperEditCollectionBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hkObject, a3);
+    objc_storeStrong(&v6->_hkObject, object);
   }
 
   return v7;
@@ -45,9 +45,9 @@
 
 - (id)description
 {
-  v3 = [(HFWallpaperEditCollectionBuilder *)self namedWallpaperCollectionType];
+  namedWallpaperCollectionType = [(HFWallpaperEditCollectionBuilder *)self namedWallpaperCollectionType];
   v4 = @"room";
-  if (!v3)
+  if (!namedWallpaperCollectionType)
   {
     v4 = @"home";
   }
@@ -56,65 +56,65 @@
   v6 = v4;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(HFWallpaperEditCollectionBuilder *)self updatedEditCollection];
-  v10 = [v5 stringWithFormat:@"<%@: %p, type = %@, editCollection = %@>", v8, self, v6, v9];
+  updatedEditCollection = [(HFWallpaperEditCollectionBuilder *)self updatedEditCollection];
+  v10 = [v5 stringWithFormat:@"<%@: %p, type = %@, editCollection = %@>", v8, self, v6, updatedEditCollection];
 
   return v10;
 }
 
-- (void)setHkObject:(id)a3
+- (void)setHkObject:(id)object
 {
   p_hkObject = &self->_hkObject;
-  v8 = a3;
+  objectCopy = object;
   if (([*p_hkObject isEqual:?] & 1) == 0)
   {
     v6 = *p_hkObject;
     if (*p_hkObject)
     {
-      v7 = [(HFWallpaperEditCollectionBuilder *)self initialEditCollectionFuture];
-      [v7 cancel];
+      initialEditCollectionFuture = [(HFWallpaperEditCollectionBuilder *)self initialEditCollectionFuture];
+      [initialEditCollectionFuture cancel];
 
       [(HFWallpaperEditCollectionBuilder *)self setInitialEditCollectionFuture:0];
     }
 
     [(HFWallpaperEditCollectionBuilder *)self setHkObjectNewlyCreated:v6 == 0];
-    objc_storeStrong(&self->_hkObject, a3);
+    objc_storeStrong(&self->_hkObject, object);
   }
 }
 
 - (id)wallpaperEditCollectionFuture
 {
-  v3 = [(HFWallpaperEditCollectionBuilder *)self updatedEditCollection];
-  if (v3)
+  updatedEditCollection = [(HFWallpaperEditCollectionBuilder *)self updatedEditCollection];
+  if (updatedEditCollection)
   {
     v4 = MEMORY[0x277D2C900];
-    v5 = [(HFWallpaperEditCollectionBuilder *)self updatedEditCollection];
-    v6 = [v4 futureWithResult:v5];
+    updatedEditCollection2 = [(HFWallpaperEditCollectionBuilder *)self updatedEditCollection];
+    initialEditCollectionFuture = [v4 futureWithResult:updatedEditCollection2];
   }
 
   else
   {
-    v6 = [(HFWallpaperEditCollectionBuilder *)self initialEditCollectionFuture];
+    initialEditCollectionFuture = [(HFWallpaperEditCollectionBuilder *)self initialEditCollectionFuture];
   }
 
-  return v6;
+  return initialEditCollectionFuture;
 }
 
-- (void)setWallpaper:(id)a3 image:(id)a4
+- (void)setWallpaper:(id)wallpaper image:(id)image
 {
-  v5 = [(HFWallpaperEditCollectionBuilder *)self editCollectionForWallpaper:a3 image:a4];
+  v5 = [(HFWallpaperEditCollectionBuilder *)self editCollectionForWallpaper:wallpaper image:image];
   [(HFWallpaperEditCollectionBuilder *)self setUpdatedEditCollection:v5];
 }
 
 - (id)commitWallpaper
 {
-  v3 = [(HFWallpaperEditCollectionBuilder *)self initialEditCollectionFuture];
+  initialEditCollectionFuture = [(HFWallpaperEditCollectionBuilder *)self initialEditCollectionFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__HFWallpaperEditCollectionBuilder_commitWallpaper__block_invoke;
   v6[3] = &unk_277DFB600;
   v6[4] = self;
-  v4 = [v3 flatMap:v6];
+  v4 = [initialEditCollectionFuture flatMap:v6];
 
   return v4;
 }
@@ -174,9 +174,9 @@ LABEL_4:
 {
   if (!self->_initialEditCollectionFuture)
   {
-    v3 = [(HFWallpaperEditCollectionBuilder *)self hkObject];
+    hkObject = [(HFWallpaperEditCollectionBuilder *)self hkObject];
 
-    if (v3)
+    if (hkObject)
     {
       objc_initWeak(&location, self);
       v4 = MEMORY[0x277D2C900];
@@ -243,14 +243,14 @@ id __63__HFWallpaperEditCollectionBuilder_initialEditCollectionFuture__block_inv
   return v8;
 }
 
-- (id)editCollectionForWallpaper:(id)a3 image:(id)a4
+- (id)editCollectionForWallpaper:(id)wallpaper image:(id)image
 {
-  v5 = a4;
-  v6 = a3;
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
   v7 = +[HFWallpaperManager sharedInstance];
-  v8 = [v7 generateProcessedImageFromWallpaper:v6 originalImage:v5];
+  v8 = [v7 generateProcessedImageFromWallpaper:wallpaperCopy originalImage:imageCopy];
 
-  v9 = [[HFWallpaperEditCollection alloc] initWithWallpaper:v6 originalImage:v5 processedImage:v8];
+  v9 = [[HFWallpaperEditCollection alloc] initWithWallpaper:wallpaperCopy originalImage:imageCopy processedImage:v8];
 
   return v9;
 }

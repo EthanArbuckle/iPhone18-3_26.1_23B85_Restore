@@ -1,14 +1,14 @@
 @interface SimulatorNetwork
 - (_TtC15SeymourServices16SimulatorNetwork)init;
-- (id)fetch:(id)a3;
+- (id)fetch:(id)fetch;
 @end
 
 @implementation SimulatorNetwork
 
-- (id)fetch:(id)a3
+- (id)fetch:(id)fetch
 {
   sub_226E99364(0, &qword_27D7B92A8, 0x277CD4640);
-  v4 = a3;
+  fetchCopy = fetch;
   v5 = sub_22766CB50();
   v6 = sub_22766CB60();
 

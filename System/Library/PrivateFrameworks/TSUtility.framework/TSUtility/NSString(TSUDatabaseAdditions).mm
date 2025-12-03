@@ -10,18 +10,18 @@
 {
   v5 = sqlite3_column_text(a3, iCol);
 
-  return [a1 initWithUTF8String:v5];
+  return [self initWithUTF8String:v5];
 }
 
 - (uint64_t)bindToSqlStatement:()TSUDatabaseAdditions index:error:
 {
-  v9 = [a1 lengthOfBytesUsingEncoding:4];
+  v9 = [self lengthOfBytesUsingEncoding:4];
   if (HIDWORD(v9))
   {
     return 0;
   }
 
-  if (!sqlite3_bind_text(a3, a4, [a1 UTF8String], v9, 0xFFFFFFFFFFFFFFFFLL))
+  if (!sqlite3_bind_text(a3, a4, [self UTF8String], v9, 0xFFFFFFFFFFFFFFFFLL))
   {
     return 1;
   }

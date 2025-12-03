@@ -1,29 +1,29 @@
 @interface ECMappingInfo
-+ (id)mappingInfoWithSheetName:(id)a3;
-- (ECMappingInfo)initWithSheetName:(id)a3;
++ (id)mappingInfoWithSheetName:(id)name;
+- (ECMappingInfo)initWithSheetName:(id)name;
 @end
 
 @implementation ECMappingInfo
 
-- (ECMappingInfo)initWithSheetName:(id)a3
+- (ECMappingInfo)initWithSheetName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = ECMappingInfo;
   v6 = [(ECMappingInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mSheetName, a3);
+    objc_storeStrong(&v6->mSheetName, name);
   }
 
   return v7;
 }
 
-+ (id)mappingInfoWithSheetName:(id)a3
++ (id)mappingInfoWithSheetName:(id)name
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithSheetName:v3];
+  nameCopy = name;
+  v4 = [objc_alloc(objc_opt_class()) initWithSheetName:nameCopy];
 
   return v4;
 }

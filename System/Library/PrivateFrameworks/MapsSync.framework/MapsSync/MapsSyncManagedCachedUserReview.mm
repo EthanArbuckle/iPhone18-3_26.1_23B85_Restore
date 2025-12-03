@@ -1,14 +1,14 @@
 @interface MapsSyncManagedCachedUserReview
-- (MapsSyncManagedCachedUserReview)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (MapsSyncManagedCachedUserReview)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation MapsSyncManagedCachedUserReview
 
-- (MapsSyncManagedCachedUserReview)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (MapsSyncManagedCachedUserReview)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for MapsSyncManagedCachedUserReview();
-  return [(MapsSyncManagedCachedUserReview *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(MapsSyncManagedCachedUserReview *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

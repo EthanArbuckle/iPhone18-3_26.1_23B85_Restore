@@ -1,11 +1,11 @@
 @interface SiriUICollectionViewFlowLayout
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
 @end
 
 @implementation SiriUICollectionViewFlowLayout
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   if (self->_animatesBoundsChanges)
   {
@@ -18,24 +18,24 @@
     v9 = v4;
     v7.receiver = self;
     v7.super_class = SiriUICollectionViewFlowLayout;
-    v5 = [(SiriUICollectionViewFlowLayout *)&v7 initialLayoutAttributesForAppearingItemAtIndexPath:a3];
+    v5 = [(SiriUICollectionViewFlowLayout *)&v7 initialLayoutAttributesForAppearingItemAtIndexPath:path];
   }
 
   return v5;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
   if (self->_animatesBoundsChanges)
   {
-    v3 = [(UICollectionViewFlowLayout *)self layoutAttributesForItemAtIndexPath:a3];
+    v3 = [(UICollectionViewFlowLayout *)self layoutAttributesForItemAtIndexPath:path];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SiriUICollectionViewFlowLayout;
-    v3 = [(SiriUICollectionViewFlowLayout *)&v5 finalLayoutAttributesForDisappearingItemAtIndexPath:a3];
+    v3 = [(SiriUICollectionViewFlowLayout *)&v5 finalLayoutAttributesForDisappearingItemAtIndexPath:path];
   }
 
   return v3;

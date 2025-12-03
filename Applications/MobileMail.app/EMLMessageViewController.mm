@@ -1,50 +1,50 @@
 @interface EMLMessageViewController
-- (EMLMessageViewController)initWithScene:(id)a3 messageListItem:(id)a4 contactStore:(id)a5 avatarGenerator:(id)a6;
+- (EMLMessageViewController)initWithScene:(id)scene messageListItem:(id)item contactStore:(id)store avatarGenerator:(id)generator;
 - (id)_defaultBarButtonItems;
 - (id)_getCurrentlySelectedMessageContentForVisibleMessage;
-- (id)_indexPathOfMessageViewControllerMessage:(id)a3;
+- (id)_indexPathOfMessageViewControllerMessage:(id)message;
 - (id)_messageContentViewForVisibleMessage;
-- (id)_persistentIDForEMMessageObjectID:(id)a3;
-- (id)cellConfigurator:(id)a3 messageItemIDAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)messageItemIDAtIndexPath:(id)a3;
-- (id)messageRepositoryForTriageInteraction:(id)a3;
-- (id)presentingViewControllerForTriageInteraction:(id)a3;
+- (id)_persistentIDForEMMessageObjectID:(id)d;
+- (id)cellConfigurator:(id)configurator messageItemIDAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)messageItemIDAtIndexPath:(id)path;
+- (id)messageRepositoryForTriageInteraction:(id)interaction;
+- (id)presentingViewControllerForTriageInteraction:(id)interaction;
 - (id)targetMessageForBarButtonTriage;
 - (id)targetMessageItemIDForBarButtonTriage;
-- (void)_configureExpandedCell:(id)a3 atIndexPath:(id)a4 viewModel:(id)a5 collapseQuotedContent:(BOOL)a6;
-- (void)_forwardCommandInvoked:(id)a3;
-- (void)_printCommandInvoked:(id)a3;
+- (void)_configureExpandedCell:(id)cell atIndexPath:(id)path viewModel:(id)model collapseQuotedContent:(BOOL)content;
+- (void)_forwardCommandInvoked:(id)invoked;
+- (void)_printCommandInvoked:(id)invoked;
 - (void)_reloadDataSource;
-- (void)_showSingleMessage:(id)a3 animationOffset:(CGPoint)a4 initialScrollOffset:(CGPoint)a5;
+- (void)_showSingleMessage:(id)message animationOffset:(CGPoint)offset initialScrollOffset:(CGPoint)scrollOffset;
 - (void)loadView;
-- (void)replyButtonTapped:(id)a3;
+- (void)replyButtonTapped:(id)tapped;
 @end
 
 @implementation EMLMessageViewController
 
-- (EMLMessageViewController)initWithScene:(id)a3 messageListItem:(id)a4 contactStore:(id)a5 avatarGenerator:(id)a6
+- (EMLMessageViewController)initWithScene:(id)scene messageListItem:(id)item contactStore:(id)store avatarGenerator:(id)generator
 {
-  v11 = a4;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = EMLMessageViewController;
-  v12 = [(ConversationViewControllerBase *)&v20 initWithScene:a3 contactStore:a5 avatarGenerator:a6];
+  v12 = [(ConversationViewControllerBase *)&v20 initWithScene:scene contactStore:store avatarGenerator:generator];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_messageListItem, a4);
-    v14 = [v11 displayMessage];
-    v15 = [v14 result];
+    objc_storeStrong(&v12->_messageListItem, item);
+    displayMessage = [itemCopy displayMessage];
+    result = [displayMessage result];
 
-    [(ConversationViewControllerBase *)v13 setReferenceMessageListItem:v15];
-    v16 = [(ConversationViewControllerBase *)v13 collectionView];
-    [v16 setDataSource:v13];
+    [(ConversationViewControllerBase *)v13 setReferenceMessageListItem:result];
+    collectionView = [(ConversationViewControllerBase *)v13 collectionView];
+    [collectionView setDataSource:v13];
 
-    v17 = [[MessageContentRepresentationRequest alloc] initWithMessage:v15];
+    v17 = [[MessageContentRepresentationRequest alloc] initWithMessage:result];
     [(EMLMessageViewController *)v13 setContentRepresentationRequest:v17];
 
-    v18 = [(EMLMessageViewController *)v13 contentRepresentationRequest];
-    [v18 start];
+    contentRepresentationRequest = [(EMLMessageViewController *)v13 contentRepresentationRequest];
+    [contentRepresentationRequest start];
   }
 
   return v13;
@@ -55,153 +55,153 @@
   v4.receiver = self;
   v4.super_class = EMLMessageViewController;
   [(ConversationViewControllerBase *)&v4 loadView];
-  v3 = [(ConversationViewControllerBase *)self conversationLayout];
-  [v3 setSwipeDelegate:0];
+  conversationLayout = [(ConversationViewControllerBase *)self conversationLayout];
+  [conversationLayout setSwipeDelegate:0];
 }
 
 - (void)_reloadDataSource
 {
-  v2 = [(ConversationViewControllerBase *)self collectionView];
-  [v2 reloadData];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (id)messageItemIDAtIndexPath:(id)a3
+- (id)messageItemIDAtIndexPath:(id)path
 {
-  v3 = [(EMLMessageViewController *)self messageListItem];
-  v4 = [v3 itemID];
+  messageListItem = [(EMLMessageViewController *)self messageListItem];
+  itemID = [messageListItem itemID];
 
-  return v4;
+  return itemID;
 }
 
-- (void)_showSingleMessage:(id)a3 animationOffset:(CGPoint)a4 initialScrollOffset:(CGPoint)a5
+- (void)_showSingleMessage:(id)message animationOffset:(CGPoint)offset initialScrollOffset:(CGPoint)scrollOffset
 {
-  v5 = [(ConversationViewControllerBase *)self collectionView:a3];
-  v6 = [v5 visibleCells];
-  v12 = [v6 firstObject];
+  v5 = [(ConversationViewControllerBase *)self collectionView:message];
+  visibleCells = [v5 visibleCells];
+  firstObject = [visibleCells firstObject];
 
-  v7 = v12;
-  if (v12)
+  v7 = firstObject;
+  if (firstObject)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v7 = v12;
+    v7 = firstObject;
     if (isKindOfClass)
     {
-      v9 = [v12 messageViewController];
-      [v9 setAutomaticallyCollapseQuotedContent:0];
+      messageViewController = [firstObject messageViewController];
+      [messageViewController setAutomaticallyCollapseQuotedContent:0];
 
-      v10 = [v12 messageViewController];
-      v11 = [v10 messageContentView];
-      [v11 reload];
+      messageViewController2 = [firstObject messageViewController];
+      messageContentView = [messageViewController2 messageContentView];
+      [messageContentView reload];
 
-      v7 = v12;
+      v7 = firstObject;
     }
   }
 }
 
-- (void)_configureExpandedCell:(id)a3 atIndexPath:(id)a4 viewModel:(id)a5 collapseQuotedContent:(BOOL)a6
+- (void)_configureExpandedCell:(id)cell atIndexPath:(id)path viewModel:(id)model collapseQuotedContent:(BOOL)content
 {
-  v6 = a6;
-  v25 = a3;
-  v9 = [a5 messageContentRequest];
-  v10 = [v25 messageViewController];
+  contentCopy = content;
+  cellCopy = cell;
+  messageContentRequest = [model messageContentRequest];
+  messageViewController = [cellCopy messageViewController];
 
-  if (!v10)
+  if (!messageViewController)
   {
-    v11 = [(ConversationViewControllerBase *)self messageViewControllerReuseQueue];
-    v12 = [v11 dequeueMessageViewControllerForContentRequest:v9];
-    [v25 setMessageViewController:v12];
+    messageViewControllerReuseQueue = [(ConversationViewControllerBase *)self messageViewControllerReuseQueue];
+    v12 = [messageViewControllerReuseQueue dequeueMessageViewControllerForContentRequest:messageContentRequest];
+    [cellCopy setMessageViewController:v12];
   }
 
-  v13 = [v25 messageViewController];
-  [v13 setDelegate:self];
-  v14 = [v13 messageContentView];
-  [v14 setSuppressScrolling:0];
+  messageViewController2 = [cellCopy messageViewController];
+  [messageViewController2 setDelegate:self];
+  messageContentView = [messageViewController2 messageContentView];
+  [messageContentView setSuppressScrolling:0];
 
-  v15 = [(ConversationViewControllerBase *)self contactStore];
-  v16 = [v15 cnStore];
-  v17 = [v13 participantHeaderForContactStore:v16];
+  contactStore = [(ConversationViewControllerBase *)self contactStore];
+  cnStore = [contactStore cnStore];
+  v17 = [messageViewController2 participantHeaderForContactStore:cnStore];
 
-  [v17 setDisplayOptions:{-[EMLMessageViewController _headerDisplayOptionsForCell:displayedAsSingleMessage:](self, "_headerDisplayOptionsForCell:displayedAsSingleMessage:", v25, 1)}];
-  v18 = [v13 contentRequest];
-  LOBYTE(v15) = [v18 isEqual:v9];
+  [v17 setDisplayOptions:{-[EMLMessageViewController _headerDisplayOptionsForCell:displayedAsSingleMessage:](self, "_headerDisplayOptionsForCell:displayedAsSingleMessage:", cellCopy, 1)}];
+  contentRequest = [messageViewController2 contentRequest];
+  LOBYTE(contactStore) = [contentRequest isEqual:messageContentRequest];
 
-  if ((v15 & 1) == 0)
+  if ((contactStore & 1) == 0)
   {
     v19 = [NSMutableArray arrayWithObject:v17];
     v20 = [[MessageHeaderSubjectBlock alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     [v19 addObject:v20];
-    v21 = [v13 messageContentView];
-    [v21 setHeaderViewSubjectBlock:v20];
+    messageContentView2 = [messageViewController2 messageContentView];
+    [messageContentView2 setHeaderViewSubjectBlock:v20];
 
     [(MessageHeaderSubjectBlock *)v20 setHidden:0];
-    v22 = [v13 messageContentView];
-    v23 = [v22 headerView];
+    messageContentView3 = [messageViewController2 messageContentView];
+    headerView = [messageContentView3 headerView];
 
-    [v23 setHeaderBlocks:v19];
-    [v13 setAutomaticallyCollapseQuotedContent:v6];
-    [v13 setContentRequest:v9];
+    [headerView setHeaderBlocks:v19];
+    [messageViewController2 setAutomaticallyCollapseQuotedContent:contentCopy];
+    [messageViewController2 setContentRequest:messageContentRequest];
   }
 
-  [v25 setConfiguredForSingleMessageDisplay:1];
-  v24 = [v13 messageContentView];
-  [v24 setShowMessageFooter:0];
+  [cellCopy setConfiguredForSingleMessageDisplay:1];
+  messageContentView4 = [messageViewController2 messageContentView];
+  [messageContentView4 setShowMessageFooter:0];
 }
 
-- (id)cellConfigurator:(id)a3 messageItemIDAtIndexPath:(id)a4
+- (id)cellConfigurator:(id)configurator messageItemIDAtIndexPath:(id)path
 {
-  v4 = [(EMLMessageViewController *)self messageListItem:a3];
-  v5 = [v4 itemID];
+  v4 = [(EMLMessageViewController *)self messageListItem:configurator];
+  itemID = [v4 itemID];
 
-  return v5;
+  return itemID;
 }
 
-- (id)_persistentIDForEMMessageObjectID:(id)a3
+- (id)_persistentIDForEMMessageObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(ConversationViewControllerBase *)self scene];
-  v6 = [v5 daemonInterface];
-  v7 = [v6 messageRepository];
-  v8 = [v7 persistentIDForMessageObjectID:v4];
+  dCopy = d;
+  scene = [(ConversationViewControllerBase *)self scene];
+  daemonInterface = [scene daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
+  v8 = [messageRepository persistentIDForMessageObjectID:dCopy];
 
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ConversationViewControllerBase *)self cellConfigurator];
-  v7 = [v6 unconfiguredCellForItemAtIndexPath:v5];
-  v8 = [(EMLMessageViewController *)self contentRepresentationRequest];
-  v9 = [v8 itemID];
-  v10 = [v8 messageFuture];
-  [v6 configureCell:v7 forItemAtIndexPath:v5 itemID:v9 messageFuture:v10 contentRequest:v8];
+  pathCopy = path;
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+  v7 = [cellConfigurator unconfiguredCellForItemAtIndexPath:pathCopy];
+  contentRepresentationRequest = [(EMLMessageViewController *)self contentRepresentationRequest];
+  itemID = [contentRepresentationRequest itemID];
+  messageFuture = [contentRepresentationRequest messageFuture];
+  [cellConfigurator configureCell:v7 forItemAtIndexPath:pathCopy itemID:itemID messageFuture:messageFuture contentRequest:contentRepresentationRequest];
 
   return v7;
 }
 
 - (id)_messageContentViewForVisibleMessage
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  v4 = [(EMLMessageViewController *)self _currentlyVisibleIndexPath];
-  v5 = [v3 cellForItemAtIndexPath:v4];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  _currentlyVisibleIndexPath = [(EMLMessageViewController *)self _currentlyVisibleIndexPath];
+  v5 = [collectionView cellForItemAtIndexPath:_currentlyVisibleIndexPath];
 
-  v6 = [v5 messageViewController];
-  v7 = [v6 messageContentView];
+  messageViewController = [v5 messageViewController];
+  messageContentView = [messageViewController messageContentView];
 
-  return v7;
+  return messageContentView;
 }
 
 - (id)_getCurrentlySelectedMessageContentForVisibleMessage
 {
-  v2 = [(EMLMessageViewController *)self _messageContentViewForVisibleMessage];
-  v3 = [v2 selectedHTML];
-  v4 = [v3 length];
+  _messageContentViewForVisibleMessage = [(EMLMessageViewController *)self _messageContentViewForVisibleMessage];
+  selectedHTML = [_messageContentViewForVisibleMessage selectedHTML];
+  v4 = [selectedHTML length];
 
   if (v4)
   {
-    v5 = [v2 selectedHTML];
-    v7 = v5;
+    selectedHTML2 = [_messageContentViewForVisibleMessage selectedHTML];
+    v7 = selectedHTML2;
     v4 = [NSArray arrayWithObjects:&v7 count:1];
   }
 
@@ -210,14 +210,14 @@
 
 - (id)_defaultBarButtonItems
 {
-  v3 = [(ConversationViewControllerBase *)self barItemsManager];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [v3 destructiveButtonItem];
-  [v5 setEnabled:0];
-  v6 = [v3 moveButtonItem];
-  [v6 setEnabled:0];
-  v19[0] = v5;
-  v19[1] = v6;
+  destructiveButtonItem = [barItemsManager destructiveButtonItem];
+  [destructiveButtonItem setEnabled:0];
+  moveButtonItem = [barItemsManager moveButtonItem];
+  [moveButtonItem setEnabled:0];
+  v19[0] = destructiveButtonItem;
+  v19[1] = moveButtonItem;
   v7 = [NSArray arrayWithObjects:v19 count:2];
   [v4 addObjectsFromArray:v7];
 
@@ -229,33 +229,33 @@
   else
   {
     v9 = +[EFDevice currentDevice];
-    v10 = [v9 isRealityDevice];
+    isRealityDevice = [v9 isRealityDevice];
 
-    if (!v10)
+    if (!isRealityDevice)
     {
       goto LABEL_5;
     }
   }
 
-  v11 = [v3 replyButtonItem];
-  [v11 setEnabled:0];
+  replyButtonItem = [barItemsManager replyButtonItem];
+  [replyButtonItem setEnabled:0];
 
 LABEL_5:
-  v12 = [(EMLMessageViewController *)self traitCollection];
-  v13 = [v12 mf_hasCompactDimension];
+  traitCollection = [(EMLMessageViewController *)self traitCollection];
+  mf_hasCompactDimension = [traitCollection mf_hasCompactDimension];
 
-  if (v13)
+  if (mf_hasCompactDimension)
   {
-    v14 = [v3 replyButtonItem];
-    [v4 addObject:v14];
+    replyButtonItem2 = [barItemsManager replyButtonItem];
+    [v4 addObject:replyButtonItem2];
   }
 
-  v15 = [v3 composeButtonItem];
+  composeButtonItem = [barItemsManager composeButtonItem];
 
-  if (v15)
+  if (composeButtonItem)
   {
-    v16 = [v3 composeButtonItem];
-    [v4 addObject:v16];
+    composeButtonItem2 = [barItemsManager composeButtonItem];
+    [v4 addObject:composeButtonItem2];
   }
 
   v17 = [v4 copy];
@@ -263,11 +263,11 @@ LABEL_5:
   return v17;
 }
 
-- (void)replyButtonTapped:(id)a3
+- (void)replyButtonTapped:(id)tapped
 {
-  v16 = a3;
-  v17 = [(ConversationViewControllerBase *)self scene];
-  v4 = [(EMLMessageViewController *)self contentRepresentationRequest];
+  tappedCopy = tapped;
+  scene = [(ConversationViewControllerBase *)self scene];
+  contentRepresentationRequest = [(EMLMessageViewController *)self contentRepresentationRequest];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000A5980;
@@ -275,28 +275,28 @@ LABEL_5:
   v18[4] = self;
   v5 = objc_retainBlock(v18);
   v6 = [UIAlertController mf_actionSheetWithTitle:0 cancellationHandler:0];
-  v7 = [(EMLMessageViewController *)self _getCurrentlySelectedMessageContentForVisibleMessage];
-  v8 = sub_1000A59F4(self, 0, v7);
+  _getCurrentlySelectedMessageContentForVisibleMessage = [(EMLMessageViewController *)self _getCurrentlySelectedMessageContentForVisibleMessage];
+  v8 = sub_1000A59F4(self, 0, _getCurrentlySelectedMessageContentForVisibleMessage);
   v9 = [v8 alertActionWithCompletion:v5];
   [v6 addAction:v9];
 
-  v10 = sub_1000A59F4(self, 1, v7);
+  v10 = sub_1000A59F4(self, 1, _getCurrentlySelectedMessageContentForVisibleMessage);
   v11 = [v10 alertActionWithCompletion:v5];
   [v6 addAction:v11];
 
-  v12 = sub_1000A5B30(self, v7);
+  v12 = sub_1000A5B30(self, _getCurrentlySelectedMessageContentForVisibleMessage);
   v13 = [v12 alertActionWithCompletion:v5];
   [v6 addAction:v13];
 
-  v14 = [MFPrintTriageInteraction interactionWithContentRequest:v4 scene:v17 delegate:self];
+  v14 = [MFPrintTriageInteraction interactionWithContentRequest:contentRepresentationRequest scene:scene delegate:self];
   [v14 setDelegate:self];
   v15 = [v14 alertActionWithCompletion:v5];
   [v6 addAction:v15];
 
-  [v6 mf_presentFromViewController:self withSource:v16];
+  [v6 mf_presentFromViewController:self withSource:tappedCopy];
 }
 
-- (id)_indexPathOfMessageViewControllerMessage:(id)a3
+- (id)_indexPathOfMessageViewControllerMessage:(id)message
 {
   v3 = [NSIndexPath indexPathForRow:0 inSection:0];
 
@@ -305,72 +305,72 @@ LABEL_5:
 
 - (id)targetMessageItemIDForBarButtonTriage
 {
-  v2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v3 = [v2 displayMessageItemID];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  displayMessageItemID = [referenceMessageListItem displayMessageItemID];
 
-  return v3;
+  return displayMessageItemID;
 }
 
 - (id)targetMessageForBarButtonTriage
 {
-  v2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v3 = [v2 displayMessage];
-  v4 = [v3 result];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  displayMessage = [referenceMessageListItem displayMessage];
+  result = [displayMessage result];
 
-  return v4;
+  return result;
 }
 
-- (id)presentingViewControllerForTriageInteraction:(id)a3
+- (id)presentingViewControllerForTriageInteraction:(id)interaction
 {
-  v4 = [(EMLMessageViewController *)self presentingViewController];
+  presentingViewController = [(EMLMessageViewController *)self presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
-    v5 = self;
+    selfCopy = self;
 LABEL_5:
-    v7 = v5;
+    mf_rootViewController = selfCopy;
     goto LABEL_6;
   }
 
-  v6 = [(EMLMessageViewController *)self presentedViewController];
+  presentedViewController = [(EMLMessageViewController *)self presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
-    v5 = [(EMLMessageViewController *)self presentedViewController];
+    selfCopy = [(EMLMessageViewController *)self presentedViewController];
     goto LABEL_5;
   }
 
-  v9 = [(ConversationViewControllerBase *)self scene];
-  v7 = [v9 mf_rootViewController];
+  scene = [(ConversationViewControllerBase *)self scene];
+  mf_rootViewController = [scene mf_rootViewController];
 
 LABEL_6:
 
-  return v7;
+  return mf_rootViewController;
 }
 
-- (id)messageRepositoryForTriageInteraction:(id)a3
+- (id)messageRepositoryForTriageInteraction:(id)interaction
 {
-  v3 = [(ConversationViewControllerBase *)self scene];
-  v4 = [v3 daemonInterface];
-  v5 = [v4 messageRepository];
+  scene = [(ConversationViewControllerBase *)self scene];
+  daemonInterface = [scene daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
 
-  return v5;
+  return messageRepository;
 }
 
-- (void)_printCommandInvoked:(id)a3
+- (void)_printCommandInvoked:(id)invoked
 {
-  v4 = [(EMLMessageViewController *)self contentRepresentationRequest];
-  v5 = [(ConversationViewControllerBase *)self scene];
-  v6 = [MFPrintTriageInteraction interactionWithContentRequest:v4 scene:v5 delegate:self];
+  contentRepresentationRequest = [(EMLMessageViewController *)self contentRepresentationRequest];
+  scene = [(ConversationViewControllerBase *)self scene];
+  v6 = [MFPrintTriageInteraction interactionWithContentRequest:contentRepresentationRequest scene:scene delegate:self];
 
   [v6 setDelegate:self];
   sub_1000A609C(self, v6);
 }
 
-- (void)_forwardCommandInvoked:(id)a3
+- (void)_forwardCommandInvoked:(id)invoked
 {
-  v4 = [(EMLMessageViewController *)self _getCurrentlySelectedMessageContentForVisibleMessage];
-  v5 = sub_1000A5B30(self, v4);
+  _getCurrentlySelectedMessageContentForVisibleMessage = [(EMLMessageViewController *)self _getCurrentlySelectedMessageContentForVisibleMessage];
+  v5 = sub_1000A5B30(self, _getCurrentlySelectedMessageContentForVisibleMessage);
 
   sub_1000A609C(self, v5);
 }

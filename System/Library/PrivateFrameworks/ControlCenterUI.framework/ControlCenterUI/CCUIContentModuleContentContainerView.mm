@@ -1,16 +1,16 @@
 @interface CCUIContentModuleContentContainerView
-- (CCUIContentModuleContentContainerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CCUIContentModuleContentContainerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_configureGlass;
-- (void)_setContinuousCornerRadius:(double)a3 ignoreSubviewClipping:(BOOL)a4;
-- (void)_transitionToExpandedMode:(BOOL)a3 force:(BOOL)a4;
-- (void)_updateContinuousCornerRadiusIgnoringSubviewClipping:(BOOL)a3;
-- (void)addSubview:(id)a3;
-- (void)didEndTransitionToExpandedMode:(BOOL)a3;
+- (void)_setContinuousCornerRadius:(double)radius ignoreSubviewClipping:(BOOL)clipping;
+- (void)_transitionToExpandedMode:(BOOL)mode force:(BOOL)force;
+- (void)_updateContinuousCornerRadiusIgnoringSubviewClipping:(BOOL)clipping;
+- (void)addSubview:(id)subview;
+- (void)didEndTransitionToExpandedMode:(BOOL)mode;
 - (void)layoutSubviews;
-- (void)setAllowsGlassGrouping:(BOOL)a3;
-- (void)setModuleProvidesOwnPlatter:(BOOL)a3;
-- (void)setWantsSubduedBackground:(BOOL)a3;
+- (void)setAllowsGlassGrouping:(BOOL)grouping;
+- (void)setModuleProvidesOwnPlatter:(BOOL)platter;
+- (void)setWantsSubduedBackground:(BOOL)background;
 @end
 
 @implementation CCUIContentModuleContentContainerView
@@ -22,40 +22,40 @@
   [(CCUIContentModuleContentContainerView *)&v2 layoutSubviews];
 }
 
-- (CCUIContentModuleContentContainerView)initWithFrame:(CGRect)a3
+- (CCUIContentModuleContentContainerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CCUIContentModuleContentContainerView;
-  v3 = [(CCUITouchPassThroughView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CCUITouchPassThroughView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_allowsGlassGrouping = 1;
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(CCUIContentModuleContentContainerView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CCUIContentModuleContentContainerView *)v4 setBackgroundColor:clearColor];
 
     [(CCUIContentModuleContentContainerView *)v4 setOpaque:0];
     [(CCUIContentModuleContentContainerView *)v4 _transitionToExpandedMode:0 force:1];
     [(CCUIContentModuleContentContainerView *)v4 _configureGlass];
-    v6 = [(CCUIContentModuleContentContainerView *)v4 traitOverrides];
-    [v6 setVerticalSizeClass:2];
+    traitOverrides = [(CCUIContentModuleContentContainerView *)v4 traitOverrides];
+    [traitOverrides setVerticalSizeClass:2];
   }
 
   return v4;
 }
 
-- (void)_transitionToExpandedMode:(BOOL)a3 force:(BOOL)a4
+- (void)_transitionToExpandedMode:(BOOL)mode force:(BOOL)force
 {
-  if (a4 || self->_expanded != a3)
+  if (force || self->_expanded != mode)
   {
-    self->_expanded = a3;
-    [(CCUIContentModuleContentContainerView *)self _updateContinuousCornerRadiusIgnoringSubviewClipping:a4];
+    self->_expanded = mode;
+    [(CCUIContentModuleContentContainerView *)self _updateContinuousCornerRadiusIgnoringSubviewClipping:force];
   }
 }
 
-- (void)didEndTransitionToExpandedMode:(BOOL)a3
+- (void)didEndTransitionToExpandedMode:(BOOL)mode
 {
-  if (!a3)
+  if (!mode)
   {
     [(CCUIContentModuleContentContainerView *)self _setContinuousCornerRadius:1 ignoreSubviewClipping:self->_compactContinuousCornerRadius];
   }
@@ -83,49 +83,49 @@
   }
 }
 
-- (void)setModuleProvidesOwnPlatter:(BOOL)a3
+- (void)setModuleProvidesOwnPlatter:(BOOL)platter
 {
-  if (self->_moduleProvidesOwnPlatter != a3)
+  if (self->_moduleProvidesOwnPlatter != platter)
   {
-    self->_moduleProvidesOwnPlatter = a3;
+    self->_moduleProvidesOwnPlatter = platter;
     [(CCUIContentModuleContentContainerView *)self _configureGlass];
   }
 }
 
-- (void)setWantsSubduedBackground:(BOOL)a3
+- (void)setWantsSubduedBackground:(BOOL)background
 {
-  if (self->_wantsSubduedBackground != a3)
+  if (self->_wantsSubduedBackground != background)
   {
-    self->_wantsSubduedBackground = a3;
+    self->_wantsSubduedBackground = background;
     [(CCUIContentModuleContentContainerView *)self _configureGlass];
   }
 }
 
-- (void)setAllowsGlassGrouping:(BOOL)a3
+- (void)setAllowsGlassGrouping:(BOOL)grouping
 {
-  if (self->_allowsGlassGrouping != a3)
+  if (self->_allowsGlassGrouping != grouping)
   {
-    self->_allowsGlassGrouping = a3;
+    self->_allowsGlassGrouping = grouping;
     [(CCUIContentModuleContentContainerView *)self _configureGlass];
   }
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = CCUIContentModuleContentContainerView;
-  [(CCUIContentModuleContentContainerView *)&v4 addSubview:a3];
+  [(CCUIContentModuleContentContainerView *)&v4 addSubview:subview];
   [(CCUIContentModuleContentContainerView *)self _transitionToExpandedMode:self->_expanded force:1];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3 ignoreSubviewClipping:(BOOL)a4
+- (void)_setContinuousCornerRadius:(double)radius ignoreSubviewClipping:(BOOL)clipping
 {
   v4.receiver = self;
   v4.super_class = CCUIContentModuleContentContainerView;
-  [(CCUIContentModuleContentContainerView *)&v4 _setContinuousCornerRadius:a4, a3];
+  [(CCUIContentModuleContentContainerView *)&v4 _setContinuousCornerRadius:clipping, radius];
 }
 
-- (void)_updateContinuousCornerRadiusIgnoringSubviewClipping:(BOOL)a3
+- (void)_updateContinuousCornerRadiusIgnoringSubviewClipping:(BOOL)clipping
 {
   if (self->_expanded)
   {
@@ -137,16 +137,16 @@
     v3 = &OBJC_IVAR___CCUIContentModuleContentContainerView__compactContinuousCornerRadius;
   }
 
-  [(CCUIContentModuleContentContainerView *)self _setContinuousCornerRadius:a3 ignoreSubviewClipping:*(&self->super.super.super.super.isa + *v3)];
+  [(CCUIContentModuleContentContainerView *)self _setContinuousCornerRadius:clipping ignoreSubviewClipping:*(&self->super.super.super.super.isa + *v3)];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (self->_expanded && [v7 type] == 10)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  v8 = eventCopy;
+  if (self->_expanded && [eventCopy type] == 10)
   {
     [(CCUIContentModuleContentContainerView *)self bounds];
     UIRectGetCenter();

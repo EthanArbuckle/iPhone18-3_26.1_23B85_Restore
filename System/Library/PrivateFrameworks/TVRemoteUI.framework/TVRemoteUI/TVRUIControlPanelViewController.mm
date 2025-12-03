@@ -1,7 +1,7 @@
 @interface TVRUIControlPanelViewController
 - (_TVRUIEventDelegate)buttonActionsDelegate;
-- (id)_createPagedViewWithPrimaryButtonType:(int64_t)a3 leftButtonTypes:(id)a4;
-- (id)_createViewWithPrimaryButtonType:(int64_t)a3 leftButtonTypes:(id)a4 rightButtonTypes:(id)a5;
+- (id)_createPagedViewWithPrimaryButtonType:(int64_t)type leftButtonTypes:(id)types;
+- (id)_createViewWithPrimaryButtonType:(int64_t)type leftButtonTypes:(id)types rightButtonTypes:(id)buttonTypes;
 - (void)_createButtonPanelWithKeyboard;
 - (void)_createGenericControlButtonPanel;
 - (void)_createLegacyButtonPanel;
@@ -10,16 +10,16 @@
 - (void)_disableControls;
 - (void)_enableControls;
 - (void)_transitionToButtonPanelAndCreateIfNeeded;
-- (void)_transitionToPanelView:(id)a3;
+- (void)_transitionToPanelView:(id)view;
 - (void)_transitionToTouchpadPanelAndCreateIfNeeded;
 - (void)_updateViewState;
 - (void)disableSearchButton;
 - (void)enableSearchButton;
 - (void)hideKeyboardButton;
-- (void)setDevice:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)setDevice:(id)device;
+- (void)setEnabled:(BOOL)enabled;
 - (void)showKeyboardButton;
-- (void)transitonToViewForDeviceType:(int64_t)a3;
+- (void)transitonToViewForDeviceType:(int64_t)type;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -31,36 +31,36 @@
   v12.receiver = self;
   v12.super_class = TVRUIControlPanelViewController;
   [(TVRUIControlPanelViewController *)&v12 viewDidLoad];
-  v3 = [(TVRUIControlPanelViewController *)self styleProvider];
-  v4 = [v3 controlPanelBackgroundView];
-  [(TVRUIControlPanelViewController *)self setBackgroundView:v4];
+  styleProvider = [(TVRUIControlPanelViewController *)self styleProvider];
+  controlPanelBackgroundView = [styleProvider controlPanelBackgroundView];
+  [(TVRUIControlPanelViewController *)self setBackgroundView:controlPanelBackgroundView];
 
-  v5 = [(TVRUIControlPanelViewController *)self backgroundView];
+  backgroundView = [(TVRUIControlPanelViewController *)self backgroundView];
 
-  if (v5)
+  if (backgroundView)
   {
-    v6 = [(TVRUIControlPanelViewController *)self view];
-    v7 = [(TVRUIControlPanelViewController *)self backgroundView];
-    [v6 addSubview:v7];
+    view = [(TVRUIControlPanelViewController *)self view];
+    backgroundView2 = [(TVRUIControlPanelViewController *)self backgroundView];
+    [view addSubview:backgroundView2];
   }
 
   else
   {
-    v6 = [(TVRUIControlPanelViewController *)self styleProvider];
-    v7 = [v6 controlPanelBackgroundColor];
-    v8 = [(TVRUIControlPanelViewController *)self view];
-    [v8 setBackgroundColor:v7];
+    view = [(TVRUIControlPanelViewController *)self styleProvider];
+    backgroundView2 = [view controlPanelBackgroundColor];
+    view2 = [(TVRUIControlPanelViewController *)self view];
+    [view2 setBackgroundColor:backgroundView2];
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   [(TVRUIControlPanelViewController *)self setAllButtonPanels:v9];
 
   [(TVRUIControlPanelViewController *)self _createTouchpadButtonPanel];
-  v10 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
-  [v10 disableButtons];
+  touchpadButtonPanel = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+  [touchpadButtonPanel disableButtons];
 
-  v11 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
-  [(TVRUIControlPanelViewController *)self _transitionToPanelView:v11];
+  touchpadButtonPanel2 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+  [(TVRUIControlPanelViewController *)self _transitionToPanelView:touchpadButtonPanel2];
 }
 
 - (void)viewWillLayoutSubviews
@@ -68,83 +68,83 @@
   v68.receiver = self;
   v68.super_class = TVRUIControlPanelViewController;
   [(TVRUIControlPanelViewController *)&v68 viewWillLayoutSubviews];
-  v3 = [(TVRUIControlPanelViewController *)self backgroundView];
+  backgroundView = [(TVRUIControlPanelViewController *)self backgroundView];
 
-  if (v3)
+  if (backgroundView)
   {
-    v4 = [(TVRUIControlPanelViewController *)self view];
-    [v4 bounds];
+    view = [(TVRUIControlPanelViewController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(TVRUIControlPanelViewController *)self backgroundView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    backgroundView2 = [(TVRUIControlPanelViewController *)self backgroundView];
+    [backgroundView2 setFrame:{v6, v8, v10, v12}];
   }
 
-  v14 = [(TVRUIControlPanelViewController *)self view];
-  [v14 bounds];
+  view2 = [(TVRUIControlPanelViewController *)self view];
+  [view2 bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  touchpadButtonPanel = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+  [touchpadButtonPanel setFrame:{v16, v18, v20, v22}];
 
-  v24 = [(TVRUIControlPanelViewController *)self genericButtonPanel];
+  genericButtonPanel = [(TVRUIControlPanelViewController *)self genericButtonPanel];
 
-  if (v24)
+  if (genericButtonPanel)
   {
-    v25 = [(TVRUIControlPanelViewController *)self view];
-    [v25 bounds];
+    view3 = [(TVRUIControlPanelViewController *)self view];
+    [view3 bounds];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [(TVRUIControlPanelViewController *)self genericButtonPanel];
-    [v34 setFrame:{v27, v29, v31, v33}];
+    genericButtonPanel2 = [(TVRUIControlPanelViewController *)self genericButtonPanel];
+    [genericButtonPanel2 setFrame:{v27, v29, v31, v33}];
   }
 
-  v35 = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
+  panelWithKeyboardButton = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
 
-  if (v35)
+  if (panelWithKeyboardButton)
   {
-    v36 = [(TVRUIControlPanelViewController *)self view];
-    [v36 bounds];
+    view4 = [(TVRUIControlPanelViewController *)self view];
+    [view4 bounds];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
-    v45 = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
-    [v45 setFrame:{v38, v40, v42, v44}];
+    panelWithKeyboardButton2 = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
+    [panelWithKeyboardButton2 setFrame:{v38, v40, v42, v44}];
   }
 
-  v46 = [(TVRUIControlPanelViewController *)self legacyButtonPanel];
+  legacyButtonPanel = [(TVRUIControlPanelViewController *)self legacyButtonPanel];
 
-  if (v46)
+  if (legacyButtonPanel)
   {
-    v47 = [(TVRUIControlPanelViewController *)self view];
-    [v47 bounds];
+    view5 = [(TVRUIControlPanelViewController *)self view];
+    [view5 bounds];
     v49 = v48;
     v51 = v50;
     v53 = v52;
     v55 = v54;
-    v56 = [(TVRUIControlPanelViewController *)self legacyButtonPanel];
-    [v56 setFrame:{v49, v51, v53, v55}];
+    legacyButtonPanel2 = [(TVRUIControlPanelViewController *)self legacyButtonPanel];
+    [legacyButtonPanel2 setFrame:{v49, v51, v53, v55}];
   }
 
-  v57 = [(TVRUIControlPanelViewController *)self legacyPanelWithKeyboardButton];
+  legacyPanelWithKeyboardButton = [(TVRUIControlPanelViewController *)self legacyPanelWithKeyboardButton];
 
-  if (v57)
+  if (legacyPanelWithKeyboardButton)
   {
-    v58 = [(TVRUIControlPanelViewController *)self view];
-    [v58 bounds];
+    view6 = [(TVRUIControlPanelViewController *)self view];
+    [view6 bounds];
     v60 = v59;
     v62 = v61;
     v64 = v63;
     v66 = v65;
-    v67 = [(TVRUIControlPanelViewController *)self legacyPanelWithKeyboardButton];
-    [v67 setFrame:{v60, v62, v64, v66}];
+    legacyPanelWithKeyboardButton2 = [(TVRUIControlPanelViewController *)self legacyPanelWithKeyboardButton];
+    [legacyPanelWithKeyboardButton2 setFrame:{v60, v62, v64, v66}];
   }
 }
 
@@ -154,7 +154,7 @@
   {
     v3 = &unk_287E84B28;
     v4 = &unk_287E84B40;
-    v5 = self;
+    selfCopy2 = self;
     v6 = 5;
   }
 
@@ -162,11 +162,11 @@
   {
     v3 = &unk_287E84B58;
     v4 = &unk_287E84B70;
-    v5 = self;
+    selfCopy2 = self;
     v6 = 2;
   }
 
-  v7 = [(TVRUIControlPanelViewController *)v5 _createViewWithPrimaryButtonType:v6 leftButtonTypes:v3 rightButtonTypes:v4];
+  v7 = [(TVRUIControlPanelViewController *)selfCopy2 _createViewWithPrimaryButtonType:v6 leftButtonTypes:v3 rightButtonTypes:v4];
   [(TVRUIControlPanelViewController *)self setTouchpadButtonPanel:v7];
 
   v8 = _TVRUIViewControllerLog();
@@ -176,9 +176,9 @@
     _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "Created touchpad button panel WITHOUT page buttons", v11, 2u);
   }
 
-  v9 = [(TVRUIControlPanelViewController *)self allButtonPanels];
-  v10 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
-  [v9 addObject:v10];
+  allButtonPanels = [(TVRUIControlPanelViewController *)self allButtonPanels];
+  touchpadButtonPanel = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+  [allButtonPanels addObject:touchpadButtonPanel];
 }
 
 - (void)_createGenericControlButtonPanel
@@ -193,9 +193,9 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Created generic tv button panel", v7, 2u);
   }
 
-  v5 = [(TVRUIControlPanelViewController *)self allButtonPanels];
-  v6 = [(TVRUIControlPanelViewController *)self genericButtonPanel];
-  [v5 addObject:v6];
+  allButtonPanels = [(TVRUIControlPanelViewController *)self allButtonPanels];
+  genericButtonPanel = [(TVRUIControlPanelViewController *)self genericButtonPanel];
+  [allButtonPanels addObject:genericButtonPanel];
 }
 
 - (void)_createButtonPanelWithKeyboard
@@ -210,9 +210,9 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Created button panel with keyboard buttons and page buttons", v7, 2u);
   }
 
-  v5 = [(TVRUIControlPanelViewController *)self allButtonPanels];
-  v6 = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
-  [v5 addObject:v6];
+  allButtonPanels = [(TVRUIControlPanelViewController *)self allButtonPanels];
+  panelWithKeyboardButton = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
+  [allButtonPanels addObject:panelWithKeyboardButton];
 }
 
 - (void)_createLegacyButtonPanel
@@ -227,9 +227,9 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Created legacy button panel", v7, 2u);
   }
 
-  v5 = [(TVRUIControlPanelViewController *)self allButtonPanels];
-  v6 = [(TVRUIControlPanelViewController *)self legacyButtonPanel];
-  [v5 addObject:v6];
+  allButtonPanels = [(TVRUIControlPanelViewController *)self allButtonPanels];
+  legacyButtonPanel = [(TVRUIControlPanelViewController *)self legacyButtonPanel];
+  [allButtonPanels addObject:legacyButtonPanel];
 }
 
 - (void)_createLegacyPanelWithkeyboard
@@ -244,51 +244,51 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Created legacy button panel with keyboard button", v7, 2u);
   }
 
-  v5 = [(TVRUIControlPanelViewController *)self allButtonPanels];
-  v6 = [(TVRUIControlPanelViewController *)self legacyPanelWithKeyboardButton];
-  [v5 addObject:v6];
+  allButtonPanels = [(TVRUIControlPanelViewController *)self allButtonPanels];
+  legacyPanelWithKeyboardButton = [(TVRUIControlPanelViewController *)self legacyPanelWithKeyboardButton];
+  [allButtonPanels addObject:legacyPanelWithKeyboardButton];
 }
 
-- (id)_createViewWithPrimaryButtonType:(int64_t)a3 leftButtonTypes:(id)a4 rightButtonTypes:(id)a5
+- (id)_createViewWithPrimaryButtonType:(int64_t)type leftButtonTypes:(id)types rightButtonTypes:(id)buttonTypes
 {
-  v8 = a5;
-  v9 = a4;
+  buttonTypesCopy = buttonTypes;
+  typesCopy = types;
   v10 = +[TVRUIFeatures isSolariumEnabled];
   v11 = [TVRUIButtonPanelView alloc];
-  v12 = [(TVRUIControlPanelViewController *)self styleProvider];
-  v13 = [(TVRUIButtonPanelView *)v11 initWithPrimaryButtonType:a3 secondaryLeftButtons:v9 secondaryRightButtons:v8 styleProvider:v12 glassEnabled:v10];
+  styleProvider = [(TVRUIControlPanelViewController *)self styleProvider];
+  v13 = [(TVRUIButtonPanelView *)v11 initWithPrimaryButtonType:type secondaryLeftButtons:typesCopy secondaryRightButtons:buttonTypesCopy styleProvider:styleProvider glassEnabled:v10];
 
   [(TVRUIButtonPanelView *)v13 setAutoresizingMask:18];
-  v14 = [(TVRUIControlPanelViewController *)self buttonActionsDelegate];
-  [(TVRUIButtonPanelView *)v13 setButtonEventDelegate:v14];
+  buttonActionsDelegate = [(TVRUIControlPanelViewController *)self buttonActionsDelegate];
+  [(TVRUIButtonPanelView *)v13 setButtonEventDelegate:buttonActionsDelegate];
 
   return v13;
 }
 
-- (id)_createPagedViewWithPrimaryButtonType:(int64_t)a3 leftButtonTypes:(id)a4
+- (id)_createPagedViewWithPrimaryButtonType:(int64_t)type leftButtonTypes:(id)types
 {
-  v6 = a4;
+  typesCopy = types;
   v7 = [TVRUIButtonPanelView alloc];
-  v8 = [(TVRUIControlPanelViewController *)self styleProvider];
-  v9 = [(TVRUIButtonPanelView *)v7 initPagedPanelWithPrimaryButtonType:a3 secondaryLeftButtons:v6 styleProvider:v8];
+  styleProvider = [(TVRUIControlPanelViewController *)self styleProvider];
+  v9 = [(TVRUIButtonPanelView *)v7 initPagedPanelWithPrimaryButtonType:type secondaryLeftButtons:typesCopy styleProvider:styleProvider];
 
   [v9 setAutoresizingMask:18];
-  v10 = [(TVRUIControlPanelViewController *)self buttonActionsDelegate];
-  [v9 setButtonEventDelegate:v10];
+  buttonActionsDelegate = [(TVRUIControlPanelViewController *)self buttonActionsDelegate];
+  [v9 setButtonEventDelegate:buttonActionsDelegate];
 
   return v9;
 }
 
 - (void)showKeyboardButton
 {
-  v3 = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
+  panelWithKeyboardButton = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
 
-  if (!v3)
+  if (!panelWithKeyboardButton)
   {
     [(TVRUIControlPanelViewController *)self _createButtonPanelWithKeyboard];
   }
 
-  v4 = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
+  panelWithKeyboardButton2 = [(TVRUIControlPanelViewController *)self panelWithKeyboardButton];
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -296,7 +296,7 @@
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Requesting transition to keyboard button panel", v6, 2u);
   }
 
-  [(TVRUIControlPanelViewController *)self _transitionToPanelView:v4];
+  [(TVRUIControlPanelViewController *)self _transitionToPanelView:panelWithKeyboardButton2];
 }
 
 - (void)hideKeyboardButton
@@ -308,42 +308,42 @@
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "Hiding keyboard button panel and requesting transition to touchpad buttonpanel", v5, 2u);
   }
 
-  v4 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
-  [(TVRUIControlPanelViewController *)self _transitionToPanelView:v4];
+  touchpadButtonPanel = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+  [(TVRUIControlPanelViewController *)self _transitionToPanelView:touchpadButtonPanel];
 }
 
 - (void)enableSearchButton
 {
-  v2 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
-  [v2 enableSearchButton];
+  touchpadButtonPanel = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+  [touchpadButtonPanel enableSearchButton];
 }
 
 - (void)disableSearchButton
 {
-  v2 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
-  [v2 disableSearchButton];
+  touchpadButtonPanel = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+  [touchpadButtonPanel disableSearchButton];
 }
 
-- (void)_transitionToPanelView:(id)a3
+- (void)_transitionToPanelView:(id)view
 {
-  v4 = a3;
-  [(TVRUIControlPanelViewController *)self setCurrentButtonPanel:v4];
-  v5 = [(TVRUIControlPanelViewController *)self view];
-  v6 = [v5 subviews];
-  if ([v6 count])
+  viewCopy = view;
+  [(TVRUIControlPanelViewController *)self setCurrentButtonPanel:viewCopy];
+  view = [(TVRUIControlPanelViewController *)self view];
+  subviews = [view subviews];
+  if ([subviews count])
   {
-    v7 = [(TVRUIControlPanelViewController *)self view];
-    v8 = [v7 subviews];
-    v9 = [v8 objectAtIndexedSubscript:0];
-    v10 = [v9 isEqual:v4];
+    view2 = [(TVRUIControlPanelViewController *)self view];
+    subviews2 = [view2 subviews];
+    v9 = [subviews2 objectAtIndexedSubscript:0];
+    v10 = [v9 isEqual:viewCopy];
 
     if ((v10 & 1) == 0)
     {
       v11 = MEMORY[0x277D75D18];
-      v12 = [(TVRUIControlPanelViewController *)self view];
-      v13 = [v12 subviews];
-      v14 = [v13 objectAtIndexedSubscript:0];
-      [v11 transitionFromView:v14 toView:v4 duration:5242880 options:&__block_literal_global_11 completion:0.3];
+      view3 = [(TVRUIControlPanelViewController *)self view];
+      subviews3 = [view3 subviews];
+      v14 = [subviews3 objectAtIndexedSubscript:0];
+      [v11 transitionFromView:v14 toView:viewCopy duration:5242880 options:&__block_literal_global_11 completion:0.3];
 
 LABEL_8:
       goto LABEL_9;
@@ -354,20 +354,20 @@ LABEL_8:
   {
   }
 
-  v15 = [(TVRUIControlPanelViewController *)self view];
-  v16 = [v15 subviews];
-  v17 = [v16 count];
+  view4 = [(TVRUIControlPanelViewController *)self view];
+  subviews4 = [view4 subviews];
+  v17 = [subviews4 count];
 
   if (!v17)
   {
-    v18 = [(TVRUIControlPanelViewController *)self view];
-    [v18 addSubview:v4];
+    view5 = [(TVRUIControlPanelViewController *)self view];
+    [view5 addSubview:viewCopy];
 
-    v12 = _TVRUIViewControllerLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    view3 = _TVRUIViewControllerLog();
+    if (os_log_type_enabled(view3, OS_LOG_TYPE_DEFAULT))
     {
       *v19 = 0;
-      _os_log_impl(&dword_26CFEB000, v12, OS_LOG_TYPE_DEFAULT, "Adding buttonpanel as subview. not performing transition.", v19, 2u);
+      _os_log_impl(&dword_26CFEB000, view3, OS_LOG_TYPE_DEFAULT, "Adding buttonpanel as subview. not performing transition.", v19, 2u);
     }
 
     goto LABEL_8;
@@ -386,13 +386,13 @@ void __58__TVRUIControlPanelViewController__transitionToPanelView___block_invoke
   }
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 supportsTouchEvents];
+  deviceCopy = device;
+  supportsTouchEvents = [deviceCopy supportsTouchEvents];
   v6 = _TVRUIViewControllerLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (supportsTouchEvents)
   {
     if (v7)
     {
@@ -400,8 +400,8 @@ void __58__TVRUIControlPanelViewController__transitionToPanelView___block_invoke
       _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Device supports touch events. transitioning to touchpad buttonpanel", buf, 2u);
     }
 
-    v8 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
-    [(TVRUIControlPanelViewController *)self _transitionToPanelView:v8];
+    touchpadButtonPanel = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+    [(TVRUIControlPanelViewController *)self _transitionToPanelView:touchpadButtonPanel];
   }
 
   else
@@ -416,14 +416,14 @@ void __58__TVRUIControlPanelViewController__transitionToPanelView___block_invoke
   }
 
   remoteDevice = self->_remoteDevice;
-  self->_remoteDevice = v4;
+  self->_remoteDevice = deviceCopy;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(TVRUIControlPanelViewController *)self _updateViewState];
   }
 }
@@ -450,8 +450,8 @@ void __58__TVRUIControlPanelViewController__transitionToPanelView___block_invoke
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TVRUIControlPanelViewController *)self allButtonPanels];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allButtonPanels = [(TVRUIControlPanelViewController *)self allButtonPanels];
+  v3 = [allButtonPanels countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -463,14 +463,14 @@ void __58__TVRUIControlPanelViewController__transitionToPanelView___block_invoke
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allButtonPanels);
         }
 
         [*(*(&v9 + 1) + 8 * v6++) disableButtons];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allButtonPanels countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -491,8 +491,8 @@ void __58__TVRUIControlPanelViewController__transitionToPanelView___block_invoke
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(TVRUIControlPanelViewController *)self allButtonPanels];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allButtonPanels = [(TVRUIControlPanelViewController *)self allButtonPanels];
+  v4 = [allButtonPanels countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -504,14 +504,14 @@ void __58__TVRUIControlPanelViewController__transitionToPanelView___block_invoke
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allButtonPanels);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) enableButtonsForDevice:self->_remoteDevice];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allButtonPanels countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -525,12 +525,12 @@ void __58__TVRUIControlPanelViewController__transitionToPanelView___block_invoke
   }
 }
 
-- (void)transitonToViewForDeviceType:(int64_t)a3
+- (void)transitonToViewForDeviceType:(int64_t)type
 {
   [(TVRUIControlPanelViewController *)self loadViewIfNeeded];
   v5 = _TVRUIViewControllerLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (a3 == 2)
+  if (type == 2)
   {
     if (v6)
     {
@@ -555,28 +555,28 @@ void __58__TVRUIControlPanelViewController__transitionToPanelView___block_invoke
 
 - (void)_transitionToButtonPanelAndCreateIfNeeded
 {
-  v3 = [(TVRUIControlPanelViewController *)self genericButtonPanel];
+  genericButtonPanel = [(TVRUIControlPanelViewController *)self genericButtonPanel];
 
-  if (!v3)
+  if (!genericButtonPanel)
   {
     [(TVRUIControlPanelViewController *)self _createGenericControlButtonPanel];
   }
 
-  v4 = [(TVRUIControlPanelViewController *)self genericButtonPanel];
-  [(TVRUIControlPanelViewController *)self _transitionToPanelView:v4];
+  genericButtonPanel2 = [(TVRUIControlPanelViewController *)self genericButtonPanel];
+  [(TVRUIControlPanelViewController *)self _transitionToPanelView:genericButtonPanel2];
 }
 
 - (void)_transitionToTouchpadPanelAndCreateIfNeeded
 {
-  v3 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+  touchpadButtonPanel = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
 
-  if (!v3)
+  if (!touchpadButtonPanel)
   {
     [(TVRUIControlPanelViewController *)self _createTouchpadButtonPanel];
   }
 
-  v4 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
-  [(TVRUIControlPanelViewController *)self _transitionToPanelView:v4];
+  touchpadButtonPanel2 = [(TVRUIControlPanelViewController *)self touchpadButtonPanel];
+  [(TVRUIControlPanelViewController *)self _transitionToPanelView:touchpadButtonPanel2];
 }
 
 - (_TVRUIEventDelegate)buttonActionsDelegate

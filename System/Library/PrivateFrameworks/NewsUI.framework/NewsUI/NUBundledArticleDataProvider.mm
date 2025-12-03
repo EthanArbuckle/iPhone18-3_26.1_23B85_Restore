@@ -1,49 +1,49 @@
 @interface NUBundledArticleDataProvider
 - (NSString)articleID;
-- (NUBundledArticleDataProvider)initWithArticle:(id)a3 embedDataManager:(id)a4 linkedContentManager:(id)a5;
-- (id)embedForType:(id)a3;
-- (id)fileURLForBundleURL:(id)a3;
-- (id)loadImagesForImageRequest:(id)a3 completionBlock:(id)a4;
-- (void)fileURLForURL:(id)a3 onCompletion:(id)a4 onError:(id)a5;
-- (void)loadContextWithCompletionBlock:(id)a3;
-- (void)performBlockForFontsInBundle:(id)a3;
-- (void)registerFontsWithCompletion:(id)a3;
+- (NUBundledArticleDataProvider)initWithArticle:(id)article embedDataManager:(id)manager linkedContentManager:(id)contentManager;
+- (id)embedForType:(id)type;
+- (id)fileURLForBundleURL:(id)l;
+- (id)loadImagesForImageRequest:(id)request completionBlock:(id)block;
+- (void)fileURLForURL:(id)l onCompletion:(id)completion onError:(id)error;
+- (void)loadContextWithCompletionBlock:(id)block;
+- (void)performBlockForFontsInBundle:(id)bundle;
+- (void)registerFontsWithCompletion:(id)completion;
 @end
 
 @implementation NUBundledArticleDataProvider
 
-- (NUBundledArticleDataProvider)initWithArticle:(id)a3 embedDataManager:(id)a4 linkedContentManager:(id)a5
+- (NUBundledArticleDataProvider)initWithArticle:(id)article embedDataManager:(id)manager linkedContentManager:(id)contentManager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  articleCopy = article;
+  managerCopy = manager;
+  contentManagerCopy = contentManager;
   v17.receiver = self;
   v17.super_class = NUBundledArticleDataProvider;
   v12 = [(NUBundledArticleDataProvider *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_article, a3);
-    objc_storeStrong(&v13->_embedDataManager, a4);
-    objc_storeStrong(&v13->_linkedContentManager, a5);
-    v14 = [v11 linkedContentProviders];
+    objc_storeStrong(&v12->_article, article);
+    objc_storeStrong(&v13->_embedDataManager, manager);
+    objc_storeStrong(&v13->_linkedContentManager, contentManager);
+    linkedContentProviders = [contentManagerCopy linkedContentProviders];
     linkedContentProviders = v13->_linkedContentProviders;
-    v13->_linkedContentProviders = v14;
+    v13->_linkedContentProviders = linkedContentProviders;
   }
 
   return v13;
 }
 
-- (void)performBlockForFontsInBundle:(id)a3
+- (void)performBlockForFontsInBundle:(id)bundle
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v24 = self;
-  v6 = [(NUBundledArticleDataProvider *)self article];
-  v7 = [v6 headline];
-  v8 = [v7 localDraftPath];
-  v9 = [v5 contentsOfDirectoryAtPath:v8 error:0];
+  bundleCopy = bundle;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  selfCopy = self;
+  article = [(NUBundledArticleDataProvider *)self article];
+  headline = [article headline];
+  localDraftPath = [headline localDraftPath];
+  v9 = [defaultManager contentsOfDirectoryAtPath:localDraftPath error:0];
 
   v27 = 0u;
   v28 = 0u;
@@ -65,17 +65,17 @@
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 pathExtension];
-        if (([v15 isEqualToString:@"ttf"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"otf"))
+        pathExtension = [v14 pathExtension];
+        if (([pathExtension isEqualToString:@"ttf"] & 1) != 0 || objc_msgSend(pathExtension, "isEqualToString:", @"otf"))
         {
           v16 = MEMORY[0x277CBEBC0];
-          v17 = [(NUBundledArticleDataProvider *)v24 article];
-          v18 = [v17 headline];
-          v19 = [v18 localDraftPath];
-          v20 = [v19 stringByAppendingPathComponent:v14];
+          article2 = [(NUBundledArticleDataProvider *)selfCopy article];
+          headline2 = [article2 headline];
+          localDraftPath2 = [headline2 localDraftPath];
+          v20 = [localDraftPath2 stringByAppendingPathComponent:v14];
           v21 = [v16 fileURLWithPath:v20 isDirectory:0];
 
-          v4[2](v4, v21);
+          bundleCopy[2](bundleCopy, v21);
         }
       }
 
@@ -88,18 +88,18 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadContextWithCompletionBlock:(id)a3
+- (void)loadContextWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NUBundledArticleDataProvider *)self embedDataManager];
+  blockCopy = block;
+  embedDataManager = [(NUBundledArticleDataProvider *)self embedDataManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__NUBundledArticleDataProvider_loadContextWithCompletionBlock___block_invoke;
   v7[3] = &unk_2799A36A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 loadEmbedDataWithCompletion:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [embedDataManager loadEmbedDataWithCompletion:v7];
 }
 
 void __63__NUBundledArticleDataProvider_loadContextWithCompletionBlock___block_invoke(uint64_t a1)
@@ -184,24 +184,24 @@ void __63__NUBundledArticleDataProvider_loadContextWithCompletionBlock___block_i
 
 - (NSString)articleID
 {
-  v2 = [(NUBundledArticleDataProvider *)self article];
-  v3 = [v2 articleID];
+  article = [(NUBundledArticleDataProvider *)self article];
+  articleID = [article articleID];
 
-  return v3;
+  return articleID;
 }
 
-- (void)registerFontsWithCompletion:(id)a3
+- (void)registerFontsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(NUBundledArticleDataProvider *)self performBlockForFontsInBundle:&__block_literal_global_13];
-  v4[2]();
+  completionCopy[2]();
 }
 
-- (id)loadImagesForImageRequest:(id)a3 completionBlock:(id)a4
+- (id)loadImagesForImageRequest:(id)request completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URL];
+  requestCopy = request;
+  blockCopy = block;
+  v8 = [requestCopy URL];
 
   if (v8)
   {
@@ -211,24 +211,24 @@ void __63__NUBundledArticleDataProvider_loadContextWithCompletionBlock___block_i
     block[2] = __74__NUBundledArticleDataProvider_loadImagesForImageRequest_completionBlock___block_invoke;
     block[3] = &unk_2799A3170;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = requestCopy;
+    v15 = blockCopy;
     dispatch_async(v9, block);
   }
 
   else
   {
-    v10 = [v6 loadingBlock];
+    loadingBlock = [requestCopy loadingBlock];
 
-    if (v10)
+    if (loadingBlock)
     {
-      v11 = [v6 loadingBlock];
-      v11[2](v11, 0);
+      loadingBlock2 = [requestCopy loadingBlock];
+      loadingBlock2[2](loadingBlock2, 0);
     }
 
-    if (v7)
+    if (blockCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(blockCopy + 2))(blockCopy, 0);
     }
   }
 
@@ -276,19 +276,19 @@ void __74__NUBundledArticleDataProvider_loadImagesForImageRequest_completionBloc
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fileURLForURL:(id)a3 onCompletion:(id)a4 onError:(id)a5
+- (void)fileURLForURL:(id)l onCompletion:(id)completion onError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__NUBundledArticleDataProvider_fileURLForURL_onCompletion_onError___block_invoke;
   block[3] = &unk_2799A47F0;
-  v12 = v7;
-  v13 = v8;
+  v12 = lCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v8;
+  v9 = lCopy;
+  v10 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -299,24 +299,24 @@ void __67__NUBundledArticleDataProvider_fileURLForURL_onCompletion_onError___blo
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)embedForType:(id)a3
+- (id)embedForType:(id)type
 {
-  v4 = a3;
-  v5 = [(NUBundledArticleDataProvider *)self embedDataManager];
-  v6 = [v5 embedForType:v4];
+  typeCopy = type;
+  embedDataManager = [(NUBundledArticleDataProvider *)self embedDataManager];
+  v6 = [embedDataManager embedForType:typeCopy];
 
   return v6;
 }
 
-- (id)fileURLForBundleURL:(id)a3
+- (id)fileURLForBundleURL:(id)l
 {
-  v4 = a3;
-  v5 = [(NUBundledArticleDataProvider *)self article];
-  v6 = [v5 headline];
-  v7 = [v6 localDraftPath];
-  v8 = [v4 host];
+  lCopy = l;
+  article = [(NUBundledArticleDataProvider *)self article];
+  headline = [article headline];
+  localDraftPath = [headline localDraftPath];
+  host = [lCopy host];
 
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  v9 = [localDraftPath stringByAppendingPathComponent:host];
 
   v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
 

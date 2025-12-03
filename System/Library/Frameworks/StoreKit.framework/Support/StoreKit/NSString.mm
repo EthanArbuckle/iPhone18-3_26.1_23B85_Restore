@@ -3,10 +3,10 @@
 - (NSNumber)lib_numberValue;
 - (id)lib_accountDSIDValue;
 - (id)lib_digestMD5;
-- (id)lib_stringByAppendingPathComponents:(id)a3;
-- (id)lib_stringByCopyingUTF8StringWithLength:(unint64_t)a3;
-- (id)lib_stringByLimitingToLength:(unint64_t)a3 addElipsis:(BOOL)a4;
-- (id)lib_stringSantiziedAndTruncatedToLength:(unint64_t)a3;
+- (id)lib_stringByAppendingPathComponents:(id)components;
+- (id)lib_stringByCopyingUTF8StringWithLength:(unint64_t)length;
+- (id)lib_stringByLimitingToLength:(unint64_t)length addElipsis:(BOOL)elipsis;
+- (id)lib_stringSantiziedAndTruncatedToLength:(unint64_t)length;
 - (id)lib_volumePath;
 - (unint64_t)tcr_unsignedLongLong;
 @end
@@ -41,21 +41,21 @@
 - (id)lib_digestMD5
 {
   v2 = [(NSString *)self dataUsingEncoding:4];
-  v3 = [v2 lib_digestMD5];
+  lib_digestMD5 = [v2 lib_digestMD5];
 
-  return v3;
+  return lib_digestMD5;
 }
 
-- (id)lib_stringByAppendingPathComponents:(id)a3
+- (id)lib_stringByAppendingPathComponents:(id)components
 {
-  v4 = a3;
-  v5 = self;
+  componentsCopy = components;
+  selfCopy = self;
   v6 = objc_autoreleasePoolPush();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = componentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -64,7 +64,7 @@
     do
     {
       v11 = 0;
-      v12 = v5;
+      v12 = selfCopy;
       do
       {
         if (*v15 != v10)
@@ -72,10 +72,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v5 = [(NSString *)v12 stringByAppendingPathComponent:*(*(&v14 + 1) + 8 * v11), v14];
+        selfCopy = [(NSString *)v12 stringByAppendingPathComponent:*(*(&v14 + 1) + 8 * v11), v14];
 
         v11 = v11 + 1;
-        v12 = v5;
+        v12 = selfCopy;
       }
 
       while (v9 != v11);
@@ -87,17 +87,17 @@
 
   objc_autoreleasePoolPop(v6);
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)lib_stringByCopyingUTF8StringWithLength:(unint64_t)a3
+- (id)lib_stringByCopyingUTF8StringWithLength:(unint64_t)length
 {
-  v5 = malloc_type_malloc(a3 + 1, 0x100004077774924uLL);
+  v5 = malloc_type_malloc(length + 1, 0x100004077774924uLL);
   if (v5)
   {
     v6 = v5;
     v9 = 0;
-    if ([(NSString *)self getBytes:v5 maxLength:a3 usedLength:&v9 encoding:4 options:0 range:0 remainingRange:[(NSString *)self length], 0])
+    if ([(NSString *)self getBytes:v5 maxLength:length usedLength:&v9 encoding:4 options:0 range:0 remainingRange:[(NSString *)self length], 0])
     {
       v6[v9] = 0;
       v7 = [[NSString alloc] initWithUTF8String:v6];
@@ -119,44 +119,44 @@
   return v7;
 }
 
-- (id)lib_stringByLimitingToLength:(unint64_t)a3 addElipsis:(BOOL)a4
+- (id)lib_stringByLimitingToLength:(unint64_t)length addElipsis:(BOOL)elipsis
 {
-  v4 = a4;
-  if ([(NSString *)self length]<= a3)
+  elipsisCopy = elipsis;
+  if ([(NSString *)self length]<= length)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    if (v4)
+    if (elipsisCopy)
     {
-      v7 = [(NSString *)self substringToIndex:a3];
+      v7 = [(NSString *)self substringToIndex:length];
       v8 = [NSString stringWithFormat:@"%@...", v7];
 
       goto LABEL_7;
     }
 
-    v9 = [(NSString *)self substringToIndex:a3];
+    selfCopy = [(NSString *)self substringToIndex:length];
   }
 
-  v8 = v9;
+  v8 = selfCopy;
 LABEL_7:
 
   return v8;
 }
 
-- (id)lib_stringSantiziedAndTruncatedToLength:(unint64_t)a3
+- (id)lib_stringSantiziedAndTruncatedToLength:(unint64_t)length
 {
   v5 = +[NSMutableCharacterSet alphanumericCharacterSet];
   v6 = [NSCharacterSet characterSetWithCharactersInString:@".()-"];
   [v5 formUnionWithCharacterSet:v6];
 
-  v7 = [v5 invertedSet];
-  v8 = [(NSString *)self componentsSeparatedByCharactersInSet:v7];
+  invertedSet = [v5 invertedSet];
+  v8 = [(NSString *)self componentsSeparatedByCharactersInSet:invertedSet];
   v9 = [v8 componentsJoinedByString:&stru_10039AA00];
 
-  v10 = [v9 lib_stringByLimitingToLength:a3 addElipsis:1];
+  v10 = [v9 lib_stringByLimitingToLength:length addElipsis:1];
 
   return v10;
 }
@@ -166,25 +166,25 @@ LABEL_7:
   if ([(NSString *)self isAbsolutePath])
   {
     v3 = +[NSFileManager defaultManager];
-    v4 = self;
-    if (![(NSString *)v4 isEqualToString:@"/"])
+    selfCopy = self;
+    if (![(NSString *)selfCopy isEqualToString:@"/"])
     {
-      while (([v3 fileExistsAtPath:v4] & 1) == 0)
+      while (([v3 fileExistsAtPath:selfCopy] & 1) == 0)
       {
-        v5 = [(NSString *)v4 stringByDeletingLastPathComponent];
+        stringByDeletingLastPathComponent = [(NSString *)selfCopy stringByDeletingLastPathComponent];
 
-        v4 = v5;
-        if ([(NSString *)v5 isEqualToString:@"/"])
+        selfCopy = stringByDeletingLastPathComponent;
+        if ([(NSString *)stringByDeletingLastPathComponent isEqualToString:@"/"])
         {
           goto LABEL_7;
         }
       }
     }
 
-    v5 = v4;
+    stringByDeletingLastPathComponent = selfCopy;
 LABEL_7:
     bzero(&v8, 0x878uLL);
-    if (statfs([(NSString *)v5 fileSystemRepresentation], &v8))
+    if (statfs([(NSString *)stringByDeletingLastPathComponent fileSystemRepresentation], &v8))
     {
       v6 = 0;
     }
@@ -205,7 +205,7 @@ LABEL_7:
 
 - (NSData)sk_sha1Hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100128AA0();
 
   return v3;

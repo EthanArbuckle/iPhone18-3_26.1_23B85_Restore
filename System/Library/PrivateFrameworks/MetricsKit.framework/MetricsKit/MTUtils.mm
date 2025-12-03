@@ -1,26 +1,26 @@
 @interface MTUtils
-- (id)applyFieldsMap:(id)a3 sectionName:(id)a4;
+- (id)applyFieldsMap:(id)map sectionName:(id)name;
 @end
 
 @implementation MTUtils
 
-- (id)applyFieldsMap:(id)a3 sectionName:(id)a4
+- (id)applyFieldsMap:(id)map sectionName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTObject *)self metricsKit];
-  v9 = [v8 config];
-  v10 = [v9 sources];
+  mapCopy = map;
+  nameCopy = name;
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
+  sources = [config sources];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __38__MTUtils_applyFieldsMap_sectionName___block_invoke;
   v15[3] = &unk_2798CD458;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 thenWithBlock:v15];
+  v16 = mapCopy;
+  v17 = nameCopy;
+  v11 = nameCopy;
+  v12 = mapCopy;
+  v13 = [sources thenWithBlock:v15];
 
   return v13;
 }

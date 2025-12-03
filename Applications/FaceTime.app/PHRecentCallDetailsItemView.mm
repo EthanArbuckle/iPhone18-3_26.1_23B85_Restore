@@ -4,15 +4,15 @@
 + (id)_sharedTTYRelayImage;
 + (id)_verifiedCheckmarkImage;
 - (CGSize)intrinsicContentSize;
-- (PHRecentCallDetailsItemView)initWithCoder:(id)a3;
-- (PHRecentCallDetailsItemView)initWithFrame:(CGRect)a3 callUUID:(id)a4 ttyType:(int64_t)a5 timeLabel:(id)a6 statusLabel:(id)a7 durationAndDataText:(id)a8 emergencyItemsText:(id)a9 verified:(BOOL)a10 screenSharingTypeText:(id)a11;
+- (PHRecentCallDetailsItemView)initWithCoder:(id)coder;
+- (PHRecentCallDetailsItemView)initWithFrame:(CGRect)frame callUUID:(id)d ttyType:(int64_t)type timeLabel:(id)label statusLabel:(id)statusLabel durationAndDataText:(id)text emergencyItemsText:(id)itemsText verified:(BOOL)self0 screenSharingTypeText:(id)self1;
 - (PHRecentCallDetailsItemViewDelegate)delegate;
 - (void)addDurationAndDataSubview;
 - (void)addEmergencyItemsSubview;
 - (void)addRTTInfo;
 - (void)addScreenSharingTypeSubview;
 - (void)addVerifiedBadge;
-- (void)handleTTYTranscriptAction:(id)a3;
+- (void)handleTTYTranscriptAction:(id)action;
 - (void)loadSubviews;
 - (void)loadSubviewsLayoutConstraints;
 @end
@@ -67,43 +67,43 @@
   return v3;
 }
 
-- (PHRecentCallDetailsItemView)initWithFrame:(CGRect)a3 callUUID:(id)a4 ttyType:(int64_t)a5 timeLabel:(id)a6 statusLabel:(id)a7 durationAndDataText:(id)a8 emergencyItemsText:(id)a9 verified:(BOOL)a10 screenSharingTypeText:(id)a11
+- (PHRecentCallDetailsItemView)initWithFrame:(CGRect)frame callUUID:(id)d ttyType:(int64_t)type timeLabel:(id)label statusLabel:(id)statusLabel durationAndDataText:(id)text emergencyItemsText:(id)itemsText verified:(BOOL)self0 screenSharingTypeText:(id)self1
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v21 = a4;
-  v22 = a6;
-  v30 = a7;
-  v29 = a8;
-  v28 = a9;
-  v23 = a11;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dCopy = d;
+  labelCopy = label;
+  statusLabelCopy = statusLabel;
+  textCopy = text;
+  itemsTextCopy = itemsText;
+  typeTextCopy = typeText;
   v31.receiver = self;
   v31.super_class = PHRecentCallDetailsItemView;
-  v24 = [(PHRecentCallDetailsItemView *)&v31 initWithFrame:x, y, width, height];
-  v25 = v24;
-  if (v24)
+  height = [(PHRecentCallDetailsItemView *)&v31 initWithFrame:x, y, width, height];
+  v25 = height;
+  if (height)
   {
-    objc_storeStrong(&v24->_callUUID, a4);
-    v25->_ttyType = a5;
-    objc_storeStrong(&v25->_timeText, a6);
-    objc_storeStrong(&v25->_statusText, a7);
-    objc_storeStrong(&v25->_durationAndDataText, a8);
-    objc_storeStrong(&v25->_emergencyItemsText, a9);
-    v25->_verified = a10;
-    objc_storeStrong(&v25->_screenSharingTypeText, a11);
+    objc_storeStrong(&height->_callUUID, d);
+    v25->_ttyType = type;
+    objc_storeStrong(&v25->_timeText, label);
+    objc_storeStrong(&v25->_statusText, statusLabel);
+    objc_storeStrong(&v25->_durationAndDataText, text);
+    objc_storeStrong(&v25->_emergencyItemsText, itemsText);
+    v25->_verified = verified;
+    objc_storeStrong(&v25->_screenSharingTypeText, typeText);
     [(PHRecentCallDetailsItemView *)v25 loadSubviews];
   }
 
   return v25;
 }
 
-- (PHRecentCallDetailsItemView)initWithCoder:(id)a3
+- (PHRecentCallDetailsItemView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PHRecentCallDetailsItemView;
-  v3 = [(PHRecentCallDetailsItemView *)&v6 initWithCoder:a3];
+  v3 = [(PHRecentCallDetailsItemView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -115,24 +115,24 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PHRecentCallDetailsItemView *)self statusLabel];
-  [v3 intrinsicContentSize];
+  statusLabel = [(PHRecentCallDetailsItemView *)self statusLabel];
+  [statusLabel intrinsicContentSize];
   v5 = v4;
 
   if (self->_durationAndDataLabel)
   {
-    v6 = [(PHRecentCallDetailsItemView *)self statusLabel];
-    [v6 intrinsicContentSize];
+    statusLabel2 = [(PHRecentCallDetailsItemView *)self statusLabel];
+    [statusLabel2 intrinsicContentSize];
     v8 = v7;
-    v9 = [(PHRecentCallDetailsItemView *)self durationAndDataLabel];
-    [v9 intrinsicContentSize];
+    durationAndDataLabel = [(PHRecentCallDetailsItemView *)self durationAndDataLabel];
+    [durationAndDataLabel intrinsicContentSize];
     v5 = v8 + v10;
   }
 
   if (self->_screenSharingLabel)
   {
-    v11 = [(PHRecentCallDetailsItemView *)self screenSharingLabel];
-    [v11 intrinsicContentSize];
+    screenSharingLabel = [(PHRecentCallDetailsItemView *)self screenSharingLabel];
+    [screenSharingLabel intrinsicContentSize];
     v5 = v5 + v12;
   }
 
@@ -155,8 +155,8 @@
   [(UILabel *)self->_timeLabel setTextAlignment:4];
   [(UILabel *)self->_timeLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_timeLabel setContentMode:4];
-  v6 = [(PHRecentCallDetailsItemView *)self timeText];
-  [(UILabel *)self->_timeLabel setText:v6];
+  timeText = [(PHRecentCallDetailsItemView *)self timeText];
+  [(UILabel *)self->_timeLabel setText:timeText];
 
   [(UILabel *)self->_timeLabel setAdjustsFontForContentSizeCategory:1];
   LODWORD(v7) = 1148846080;
@@ -171,29 +171,29 @@
 
   [(UILabel *)self->_statusLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_statusLabel setContentMode:4];
-  v11 = [(PHRecentCallDetailsItemView *)self statusText];
-  [(UILabel *)self->_statusLabel setText:v11];
+  statusText = [(PHRecentCallDetailsItemView *)self statusText];
+  [(UILabel *)self->_statusLabel setText:statusText];
 
   [(UILabel *)self->_statusLabel setAdjustsFontForContentSizeCategory:1];
   [(UILabel *)self->_statusLabel setNumberOfLines:0];
   [(PHRecentCallDetailsItemView *)self addSubview:self->_statusLabel];
-  v12 = [(PHRecentCallDetailsItemView *)self emergencyItemsText];
+  emergencyItemsText = [(PHRecentCallDetailsItemView *)self emergencyItemsText];
 
-  if (v12)
+  if (emergencyItemsText)
   {
     [(PHRecentCallDetailsItemView *)self addEmergencyItemsSubview];
   }
 
-  v13 = [(PHRecentCallDetailsItemView *)self screenSharingTypeText];
+  screenSharingTypeText = [(PHRecentCallDetailsItemView *)self screenSharingTypeText];
 
-  if (v13)
+  if (screenSharingTypeText)
   {
     [(PHRecentCallDetailsItemView *)self addScreenSharingTypeSubview];
   }
 
-  v14 = [(PHRecentCallDetailsItemView *)self durationAndDataText];
+  durationAndDataText = [(PHRecentCallDetailsItemView *)self durationAndDataText];
 
-  if (v14)
+  if (durationAndDataText)
   {
     [(PHRecentCallDetailsItemView *)self addDurationAndDataSubview];
   }
@@ -213,63 +213,63 @@
 
 - (void)loadSubviewsLayoutConstraints
 {
-  v3 = [(PHRecentCallDetailsItemView *)self timeLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(PHRecentCallDetailsItemView *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  timeLabel = [(PHRecentCallDetailsItemView *)self timeLabel];
+  leadingAnchor = [timeLabel leadingAnchor];
+  leadingAnchor2 = [(PHRecentCallDetailsItemView *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v6 setActive:1];
 
-  v7 = [(PHRecentCallDetailsItemView *)self statusLabel];
-  v8 = [v7 leadingAnchor];
-  v9 = [(PHRecentCallDetailsItemView *)self timeLabel];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:8.0];
+  statusLabel = [(PHRecentCallDetailsItemView *)self statusLabel];
+  leadingAnchor3 = [statusLabel leadingAnchor];
+  timeLabel2 = [(PHRecentCallDetailsItemView *)self timeLabel];
+  trailingAnchor = [timeLabel2 trailingAnchor];
+  v11 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
   [v11 setActive:1];
 
   if (![(PHRecentCallDetailsItemView *)self verified]&& ![(PHRecentCallDetailsItemView *)self ttyType])
   {
-    v12 = [(PHRecentCallDetailsItemView *)self statusLabel];
-    v13 = [v12 trailingAnchor];
-    v14 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
-    v15 = [v13 constraintLessThanOrEqualToAnchor:v14];
+    statusLabel2 = [(PHRecentCallDetailsItemView *)self statusLabel];
+    trailingAnchor2 = [statusLabel2 trailingAnchor];
+    trailingAnchor3 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
+    v15 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
     [v15 setActive:1];
   }
 
-  v16 = [(PHRecentCallDetailsItemView *)self timeLabel];
-  v17 = [v16 topAnchor];
-  v18 = [(PHRecentCallDetailsItemView *)self topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  timeLabel3 = [(PHRecentCallDetailsItemView *)self timeLabel];
+  topAnchor = [timeLabel3 topAnchor];
+  topAnchor2 = [(PHRecentCallDetailsItemView *)self topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v19 setActive:1];
 
-  v20 = [(PHRecentCallDetailsItemView *)self statusLabel];
-  v21 = [v20 topAnchor];
-  v22 = [(PHRecentCallDetailsItemView *)self topAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  statusLabel3 = [(PHRecentCallDetailsItemView *)self statusLabel];
+  topAnchor3 = [statusLabel3 topAnchor];
+  topAnchor4 = [(PHRecentCallDetailsItemView *)self topAnchor];
+  v23 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v23 setActive:1];
 
   durationAndDataLabel = self->_durationAndDataLabel;
-  v28 = [(PHRecentCallDetailsItemView *)self bottomAnchor];
+  bottomAnchor = [(PHRecentCallDetailsItemView *)self bottomAnchor];
   if (durationAndDataLabel)
   {
-    v25 = [(UILabel *)self->_durationAndDataLabel bottomAnchor];
-    v26 = [v28 constraintEqualToAnchor:v25];
-    [v26 setActive:1];
+    bottomAnchor2 = [(UILabel *)self->_durationAndDataLabel bottomAnchor];
+    v25BottomAnchor = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [v25BottomAnchor setActive:1];
   }
 
   else
   {
-    v25 = [(PHRecentCallDetailsItemView *)self statusLabel];
-    v26 = [v25 bottomAnchor];
-    v27 = [v28 constraintEqualToAnchor:v26];
+    bottomAnchor2 = [(PHRecentCallDetailsItemView *)self statusLabel];
+    v25BottomAnchor = [bottomAnchor2 bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:v25BottomAnchor];
     [v27 setActive:1];
   }
 }
 
-- (void)handleTTYTranscriptAction:(id)a3
+- (void)handleTTYTranscriptAction:(id)action
 {
-  v5 = [(PHRecentCallDetailsItemView *)self delegate];
-  v4 = [(PHRecentCallDetailsItemView *)self callUUID];
-  [v5 presentConversationForUUID:v4];
+  delegate = [(PHRecentCallDetailsItemView *)self delegate];
+  callUUID = [(PHRecentCallDetailsItemView *)self callUUID];
+  [delegate presentConversationForUUID:callUUID];
 }
 
 - (void)addVerifiedBadge
@@ -287,21 +287,21 @@
   LODWORD(v8) = 1148846080;
   [(UIImageView *)self->_verifiedBadgeView setContentCompressionResistancePriority:0 forAxis:v8];
   [(PHRecentCallDetailsItemView *)self addSubview:self->_verifiedBadgeView];
-  v9 = [(UIImageView *)self->_verifiedBadgeView leadingAnchor];
-  v10 = [(PHRecentCallDetailsItemView *)self statusLabel];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:4.0];
+  leadingAnchor = [(UIImageView *)self->_verifiedBadgeView leadingAnchor];
+  statusLabel = [(PHRecentCallDetailsItemView *)self statusLabel];
+  trailingAnchor = [statusLabel trailingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:4.0];
   [v12 setActive:1];
 
-  v13 = [(UIImageView *)self->_verifiedBadgeView trailingAnchor];
-  v14 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
-  v15 = [v13 constraintLessThanOrEqualToAnchor:v14];
+  trailingAnchor2 = [(UIImageView *)self->_verifiedBadgeView trailingAnchor];
+  trailingAnchor3 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
+  v15 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
   [v15 setActive:1];
 
-  v19 = [(UIImageView *)self->_verifiedBadgeView centerYAnchor];
-  v16 = [(PHRecentCallDetailsItemView *)self timeLabel];
-  v17 = [v16 centerYAnchor];
-  v18 = [v19 constraintEqualToAnchor:v17];
+  centerYAnchor = [(UIImageView *)self->_verifiedBadgeView centerYAnchor];
+  timeLabel = [(PHRecentCallDetailsItemView *)self timeLabel];
+  centerYAnchor2 = [timeLabel centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v18 setActive:1];
 }
 
@@ -338,36 +338,36 @@
   LODWORD(v11) = 1148846080;
   [(UIImageView *)self->_ttyDetailDisclosureImageView setContentCompressionResistancePriority:0 forAxis:v11];
   [(PHRecentCallDetailsItemView *)self addSubview:self->_ttyDetailDisclosureImageView];
-  v12 = [(UIImageView *)self->_ttyDetailDisclosureImageView centerYAnchor];
-  v13 = [(PHRecentCallDetailsItemView *)self timeLabel];
-  v14 = [v13 centerYAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  centerYAnchor = [(UIImageView *)self->_ttyDetailDisclosureImageView centerYAnchor];
+  timeLabel = [(PHRecentCallDetailsItemView *)self timeLabel];
+  centerYAnchor2 = [timeLabel centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v15 setActive:1];
 
-  v16 = [v3 centerYAnchor];
-  v17 = [(PHRecentCallDetailsItemView *)self timeLabel];
-  v18 = [v17 centerYAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  centerYAnchor3 = [v3 centerYAnchor];
+  timeLabel2 = [(PHRecentCallDetailsItemView *)self timeLabel];
+  centerYAnchor4 = [timeLabel2 centerYAnchor];
+  v19 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v19 setActive:1];
 
-  v20 = [v3 trailingAnchor];
-  v21 = [(UIImageView *)self->_ttyDetailDisclosureImageView leadingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:-4.0];
+  trailingAnchor = [v3 trailingAnchor];
+  leadingAnchor = [(UIImageView *)self->_ttyDetailDisclosureImageView leadingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-4.0];
   [v22 setActive:1];
 
-  v23 = [(UIImageView *)self->_verifiedBadgeView trailingAnchor];
-  v24 = [v3 leadingAnchor];
-  v25 = [v23 constraintLessThanOrEqualToAnchor:v24];
+  trailingAnchor2 = [(UIImageView *)self->_verifiedBadgeView trailingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v25 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:leadingAnchor2];
   [v25 setActive:1];
 
-  v26 = [(UILabel *)self->_statusLabel trailingAnchor];
-  v27 = [v3 leadingAnchor];
-  v28 = [v26 constraintLessThanOrEqualToAnchor:v27];
+  trailingAnchor3 = [(UILabel *)self->_statusLabel trailingAnchor];
+  leadingAnchor3 = [v3 leadingAnchor];
+  v28 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor3];
   [v28 setActive:1];
 
-  v29 = [(UIImageView *)self->_ttyDetailDisclosureImageView trailingAnchor];
-  v30 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:-15.0];
+  trailingAnchor4 = [(UIImageView *)self->_ttyDetailDisclosureImageView trailingAnchor];
+  trailingAnchor5 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
+  v31 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-15.0];
   [v31 setActive:1];
 
   v32 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleTTYTranscriptAction:"];
@@ -387,26 +387,26 @@
   v6 = +[UIColor dynamicSecondaryLabelColor];
   [(UILabel *)self->_emergencyItemsLabel setTextColor:v6];
 
-  v7 = [(PHRecentCallDetailsItemView *)self emergencyItemsText];
-  [(UILabel *)self->_emergencyItemsLabel setText:v7];
+  emergencyItemsText = [(PHRecentCallDetailsItemView *)self emergencyItemsText];
+  [(UILabel *)self->_emergencyItemsLabel setText:emergencyItemsText];
 
   [(UILabel *)self->_emergencyItemsLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_emergencyItemsLabel setAdjustsFontForContentSizeCategory:1];
   [(UILabel *)self->_emergencyItemsLabel setNumberOfLines:0];
   [(PHRecentCallDetailsItemView *)self addSubview:self->_emergencyItemsLabel];
-  v8 = [(UILabel *)self->_emergencyItemsLabel leadingAnchor];
-  v9 = [(UILabel *)self->_statusLabel leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  leadingAnchor = [(UILabel *)self->_emergencyItemsLabel leadingAnchor];
+  leadingAnchor2 = [(UILabel *)self->_statusLabel leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v10 setActive:1];
 
-  v11 = [(UILabel *)self->_emergencyItemsLabel trailingAnchor];
-  v12 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
-  v13 = [v11 constraintLessThanOrEqualToAnchor:v12];
+  trailingAnchor = [(UILabel *)self->_emergencyItemsLabel trailingAnchor];
+  trailingAnchor2 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
+  v13 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   [v13 setActive:1];
 
-  v16 = [(UILabel *)self->_emergencyItemsLabel topAnchor];
-  v14 = [(UILabel *)self->_statusLabel bottomAnchor];
-  v15 = [v16 constraintEqualToAnchor:v14 constant:4.0];
+  topAnchor = [(UILabel *)self->_emergencyItemsLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_statusLabel bottomAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:4.0];
   [v15 setActive:1];
 }
 
@@ -422,8 +422,8 @@
   v6 = +[UIColor dynamicSecondaryLabelColor];
   [(UILabel *)self->_durationAndDataLabel setTextColor:v6];
 
-  v7 = [(PHRecentCallDetailsItemView *)self durationAndDataText];
-  [(UILabel *)self->_durationAndDataLabel setText:v7];
+  durationAndDataText = [(PHRecentCallDetailsItemView *)self durationAndDataText];
+  [(UILabel *)self->_durationAndDataLabel setText:durationAndDataText];
 
   [(UILabel *)self->_durationAndDataLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_durationAndDataLabel setAdjustsFontForContentSizeCategory:1];
@@ -432,32 +432,32 @@
   p_emergencyItemsLabel = &self->_emergencyItemsLabel;
   if (self->_emergencyItemsLabel)
   {
-    v9 = [(UILabel *)self->_durationAndDataLabel leadingAnchor];
+    leadingAnchor = [(UILabel *)self->_durationAndDataLabel leadingAnchor];
   }
 
   else
   {
     p_emergencyItemsLabel = &self->_screenSharingLabel;
     screenSharingLabel = self->_screenSharingLabel;
-    v9 = [(UILabel *)self->_durationAndDataLabel leadingAnchor];
+    leadingAnchor = [(UILabel *)self->_durationAndDataLabel leadingAnchor];
     if (!screenSharingLabel)
     {
       p_emergencyItemsLabel = &self->_statusLabel;
     }
   }
 
-  v11 = [(UILabel *)*p_emergencyItemsLabel leadingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  leadingAnchor2 = [(UILabel *)*p_emergencyItemsLabel leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v12 setActive:1];
 
-  v13 = [(UILabel *)self->_durationAndDataLabel topAnchor];
-  v14 = [(UILabel *)*p_emergencyItemsLabel bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:4.0];
+  topAnchor = [(UILabel *)self->_durationAndDataLabel topAnchor];
+  bottomAnchor = [(UILabel *)*p_emergencyItemsLabel bottomAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:4.0];
   [v15 setActive:1];
 
-  v18 = [(UILabel *)self->_durationAndDataLabel trailingAnchor];
-  v16 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
-  v17 = [v18 constraintLessThanOrEqualToAnchor:v16];
+  trailingAnchor = [(UILabel *)self->_durationAndDataLabel trailingAnchor];
+  trailingAnchor2 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
+  v17 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   [v17 setActive:1];
 }
 
@@ -473,8 +473,8 @@
   v6 = +[UIColor dynamicSecondaryLabelColor];
   [(UILabel *)self->_screenSharingLabel setTextColor:v6];
 
-  v7 = [(PHRecentCallDetailsItemView *)self screenSharingTypeText];
-  [(UILabel *)self->_screenSharingLabel setText:v7];
+  screenSharingTypeText = [(PHRecentCallDetailsItemView *)self screenSharingTypeText];
+  [(UILabel *)self->_screenSharingLabel setText:screenSharingTypeText];
 
   [(UILabel *)self->_screenSharingLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_screenSharingLabel setAdjustsFontForContentSizeCategory:1];
@@ -482,24 +482,24 @@
   [(PHRecentCallDetailsItemView *)self addSubview:self->_screenSharingLabel];
   p_durationAndDataLabel = &self->_durationAndDataLabel;
   durationAndDataLabel = self->_durationAndDataLabel;
-  v10 = [(UILabel *)self->_screenSharingLabel leadingAnchor];
+  leadingAnchor = [(UILabel *)self->_screenSharingLabel leadingAnchor];
   if (!durationAndDataLabel)
   {
     p_durationAndDataLabel = &self->_statusLabel;
   }
 
-  v11 = [(UILabel *)*p_durationAndDataLabel leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  leadingAnchor2 = [(UILabel *)*p_durationAndDataLabel leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v12 setActive:1];
 
-  v13 = [(UILabel *)self->_screenSharingLabel topAnchor];
-  v14 = [(UILabel *)*p_durationAndDataLabel bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:4.0];
+  topAnchor = [(UILabel *)self->_screenSharingLabel topAnchor];
+  bottomAnchor = [(UILabel *)*p_durationAndDataLabel bottomAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:4.0];
   [v15 setActive:1];
 
-  v18 = [(UILabel *)self->_screenSharingLabel trailingAnchor];
-  v16 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
-  v17 = [v18 constraintLessThanOrEqualToAnchor:v16];
+  trailingAnchor = [(UILabel *)self->_screenSharingLabel trailingAnchor];
+  trailingAnchor2 = [(PHRecentCallDetailsItemView *)self trailingAnchor];
+  v17 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   [v17 setActive:1];
 }
 

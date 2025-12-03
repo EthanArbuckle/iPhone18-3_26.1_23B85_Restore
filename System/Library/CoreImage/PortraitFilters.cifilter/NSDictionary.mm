@@ -3,10 +3,10 @@
 - (float)imageHeightScale;
 - (float)imageWidthScale;
 - (int)sanityCheckStatus;
-- (void)setCoreImageROIrect:(CGRect)a3;
-- (void)setImageHeightScale:(float)a3;
-- (void)setImageWidthScale:(float)a3;
-- (void)setSanityCheckStatus:(int)a3;
+- (void)setCoreImageROIrect:(CGRect)irect;
+- (void)setImageHeightScale:(float)scale;
+- (void)setImageWidthScale:(float)scale;
+- (void)setSanityCheckStatus:(int)status;
 @end
 
 @implementation NSDictionary
@@ -18,9 +18,9 @@
   return [AssociatedObject intValue];
 }
 
-- (void)setSanityCheckStatus:(int)a3
+- (void)setSanityCheckStatus:(int)status
 {
-  v4 = [NSNumber numberWithInt:*&a3];
+  v4 = [NSNumber numberWithInt:*&status];
 
   objc_setAssociatedObject(self, off_8C858, v4, &dword_0 + 1);
 }
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (void)setImageWidthScale:(float)a3
+- (void)setImageWidthScale:(float)scale
 {
   v4 = [NSNumber numberWithFloat:?];
 
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (void)setImageHeightScale:(float)a3
+- (void)setImageHeightScale:(float)scale
 {
   v4 = [NSNumber numberWithFloat:?];
 
@@ -67,9 +67,9 @@
   return result;
 }
 
-- (void)setCoreImageROIrect:(CGRect)a3
+- (void)setCoreImageROIrect:(CGRect)irect
 {
-  v4 = [NSValue valueWithRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [NSValue valueWithRect:irect.origin.x, irect.origin.y, irect.size.width, irect.size.height];
 
   objc_setAssociatedObject(self, &off_8C870, v4, &dword_0 + 1);
 }

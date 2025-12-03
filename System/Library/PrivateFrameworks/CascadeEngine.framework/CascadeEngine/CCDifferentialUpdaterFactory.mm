@@ -1,29 +1,29 @@
 @interface CCDifferentialUpdaterFactory
-- (CCDifferentialUpdaterFactory)initWithWriteAccess:(id)a3 changeNotifier:(id)a4 timeout:(double)a5;
-- (id)updaterForSet:(id)a3 withRequest:(id)a4;
+- (CCDifferentialUpdaterFactory)initWithWriteAccess:(id)access changeNotifier:(id)notifier timeout:(double)timeout;
+- (id)updaterForSet:(id)set withRequest:(id)request;
 @end
 
 @implementation CCDifferentialUpdaterFactory
 
-- (CCDifferentialUpdaterFactory)initWithWriteAccess:(id)a3 changeNotifier:(id)a4 timeout:(double)a5
+- (CCDifferentialUpdaterFactory)initWithWriteAccess:(id)access changeNotifier:(id)notifier timeout:(double)timeout
 {
-  v9 = a3;
-  v10 = a4;
+  accessCopy = access;
+  notifierCopy = notifier;
   v15.receiver = self;
   v15.super_class = CCDifferentialUpdaterFactory;
   v11 = [(CCDifferentialUpdaterFactory *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_writeAccess, a3);
+    objc_storeStrong(&v11->_writeAccess, access);
     if (!v12->_writeAccess)
     {
       v13 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v12->_changeNotifier, a4);
-    v12->_timeout = a5;
+    objc_storeStrong(&v12->_changeNotifier, notifier);
+    v12->_timeout = timeout;
   }
 
   v13 = v12;
@@ -32,17 +32,17 @@ LABEL_6:
   return v13;
 }
 
-- (id)updaterForSet:(id)a3 withRequest:(id)a4
+- (id)updaterForSet:(id)set withRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  requestCopy = request;
   writeAccess = self->_writeAccess;
-  v9 = [v7 accessAssertion];
-  v10 = [(CCDataResourceWriteAccess *)writeAccess setWriterForSet:v6 accessAssertion:v9];
+  accessAssertion = [requestCopy accessAssertion];
+  v10 = [(CCDataResourceWriteAccess *)writeAccess setWriterForSet:setCopy accessAssertion:accessAssertion];
 
   if (v10)
   {
-    v11 = [CCDifferentialUpdater updaterForSet:v6 withRequest:v7 setWriter:v10 changeNotifier:self->_changeNotifier timeout:self->_timeout];
+    v11 = [CCDifferentialUpdater updaterForSet:setCopy withRequest:requestCopy setWriter:v10 changeNotifier:self->_changeNotifier timeout:self->_timeout];
   }
 
   else

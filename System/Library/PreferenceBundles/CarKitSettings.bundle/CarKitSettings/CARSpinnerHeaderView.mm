@@ -1,11 +1,11 @@
 @interface CARSpinnerHeaderView
 - (BOOL)isSpinning;
 - (NSString)title;
-- (_TtC14CarKitSettings20CARSpinnerHeaderView)initWithCoder:(id)a3;
-- (_TtC14CarKitSettings20CARSpinnerHeaderView)initWithReuseIdentifier:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)setIsSpinning:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (_TtC14CarKitSettings20CARSpinnerHeaderView)initWithCoder:(id)coder;
+- (_TtC14CarKitSettings20CARSpinnerHeaderView)initWithReuseIdentifier:(id)identifier;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)setIsSpinning:(BOOL)spinning;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CARSpinnerHeaderView
@@ -29,9 +29,9 @@
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_4B5FC();
     v6 = v5;
@@ -43,7 +43,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   CARSpinnerHeaderView.title.setter(v4, v6);
 }
 
@@ -54,20 +54,20 @@
   return *(self + v3);
 }
 
-- (void)setIsSpinning:(BOOL)a3
+- (void)setIsSpinning:(BOOL)spinning
 {
-  v3 = a3;
+  spinningCopy = spinning;
   v5 = OBJC_IVAR____TtC14CarKitSettings20CARSpinnerHeaderView_isSpinning;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
-  if (v6 != v3)
+  *(self + v5) = spinningCopy;
+  if (v6 != spinningCopy)
   {
     [(CARSpinnerHeaderView *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_4A9BC();
   v5 = *(v4 - 8);
@@ -75,15 +75,15 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_4A9AC();
-  v9 = self;
+  selfCopy = self;
   CARSpinnerHeaderView.updateConfiguration(using:)();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (_TtC14CarKitSettings20CARSpinnerHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC14CarKitSettings20CARSpinnerHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     sub_4B5FC();
     v4 = (self + OBJC_IVAR____TtC14CarKitSettings20CARSpinnerHeaderView_title);
@@ -109,7 +109,7 @@
   return v7;
 }
 
-- (_TtC14CarKitSettings20CARSpinnerHeaderView)initWithCoder:(id)a3
+- (_TtC14CarKitSettings20CARSpinnerHeaderView)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC14CarKitSettings20CARSpinnerHeaderView_title);
   *v4 = 0;
@@ -117,8 +117,8 @@
   *(self + OBJC_IVAR____TtC14CarKitSettings20CARSpinnerHeaderView_isSpinning) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CARSpinnerHeaderView();
-  v5 = a3;
-  v6 = [(CARSpinnerHeaderView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(CARSpinnerHeaderView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

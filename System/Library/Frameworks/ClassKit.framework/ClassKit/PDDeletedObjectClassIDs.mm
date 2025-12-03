@@ -1,24 +1,24 @@
 @interface PDDeletedObjectClassIDs
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (PDDeletedObjectClassIDs)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (PDDeletedObjectClassIDs)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDDeletedObjectClassIDs
 
-- (PDDeletedObjectClassIDs)initWithDatabaseRow:(id)a3
+- (PDDeletedObjectClassIDs)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v14.receiver = self;
   v14.super_class = PDDeletedObjectClassIDs;
   v5 = [(PDDeletedObjectClassIDs *)&v14 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"objectID");
+    v6 = sub_10016D778(rowCopy, @"objectID");
     objectID = v5->_objectID;
     v5->_objectID = v6;
 
-    v8 = sub_10016D778(v4, @"classIDs");
+    v8 = sub_10016D778(rowCopy, @"classIDs");
     if (v8)
     {
       v9 = objc_opt_class();
@@ -32,10 +32,10 @@
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
-  sub_1000982FC(v4, self->_objectID, @"objectID");
+  toCopy = to;
+  sub_1000982FC(toCopy, self->_objectID, @"objectID");
   classIDs = self->_classIDs;
   if (classIDs)
   {
@@ -54,25 +54,25 @@
     v6 = 0;
   }
 
-  sub_1000982FC(v4, v6, @"classIDs");
+  sub_1000982FC(toCopy, v6, @"classIDs");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table PDDeletedObjectClassIDs(   objectID text not null,    classIDs blob not null)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDDeletedObjectClassIDs_objectID on PDDeletedObjectClassIDs (objectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table PDDeletedObjectClassIDs(   objectID text not null,    classIDs blob not null)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDDeletedObjectClassIDs_objectID on PDDeletedObjectClassIDs (objectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_7:
 

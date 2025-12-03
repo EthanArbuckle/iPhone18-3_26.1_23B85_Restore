@@ -1,21 +1,21 @@
 @interface DAChamberSensorEvent
-- (BOOL)isEqual:(id)a3;
-- (DAChamberSensorEvent)initWithSensorType:(int)a3 eventType:(int)a4;
+- (BOOL)isEqual:(id)equal;
+- (DAChamberSensorEvent)initWithSensorType:(int)type eventType:(int)eventType;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation DAChamberSensorEvent
 
-- (DAChamberSensorEvent)initWithSensorType:(int)a3 eventType:(int)a4
+- (DAChamberSensorEvent)initWithSensorType:(int)type eventType:(int)eventType
 {
   v7.receiver = self;
   v7.super_class = DAChamberSensorEvent;
   result = [(DAChamberSensorEvent *)&v7 init];
   if (result)
   {
-    result->_sensorType = a3;
-    result->_eventType = a4;
+    result->_sensorType = type;
+    result->_eventType = eventType;
   }
 
   return result;
@@ -23,10 +23,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DAChamberSensorEvent *)self sensorType];
-  if (v3)
+  sensorType = [(DAChamberSensorEvent *)self sensorType];
+  if (sensorType)
   {
-    if (v3 == 1)
+    if (sensorType == 1)
     {
       v4 = @"kDAChamberWifiSensor";
     }
@@ -50,16 +50,16 @@
   return v7 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_8;
@@ -68,8 +68,8 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = [(DAChamberSensorEvent *)self sensorType], v6 == [(DAChamberSensorEvent *)v5 sensorType]))
   {
-    v7 = [(DAChamberSensorEvent *)self eventType];
-    v8 = v7 == [(DAChamberSensorEvent *)v5 eventType];
+    eventType = [(DAChamberSensorEvent *)self eventType];
+    v8 = eventType == [(DAChamberSensorEvent *)v5 eventType];
   }
 
   else
@@ -87,10 +87,10 @@ LABEL_8:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DAChamberSensorEvent *)self sensorType];
-  if (v5)
+  sensorType = [(DAChamberSensorEvent *)self sensorType];
+  if (sensorType)
   {
-    if (v5 == 1)
+    if (sensorType == 1)
     {
       v6 = @"kDAChamberWifiSensor";
     }

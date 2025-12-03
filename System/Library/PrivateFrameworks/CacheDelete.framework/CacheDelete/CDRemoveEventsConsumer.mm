@@ -1,24 +1,24 @@
 @interface CDRemoveEventsConsumer
-- (CDRemoveEventsConsumer)initWithConsumer:(id)a3 identifier:(id)a4;
-- (void)callback:(id)a3;
-- (void)consumeStream:(__FSEventStream *)a3 forVolume:(id)a4;
+- (CDRemoveEventsConsumer)initWithConsumer:(id)consumer identifier:(id)identifier;
+- (void)callback:(id)callback;
+- (void)consumeStream:(__FSEventStream *)stream forVolume:(id)volume;
 - (void)dealloc;
 @end
 
 @implementation CDRemoveEventsConsumer
 
-- (CDRemoveEventsConsumer)initWithConsumer:(id)a3 identifier:(id)a4
+- (CDRemoveEventsConsumer)initWithConsumer:(id)consumer identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  consumerCopy = consumer;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = CDRemoveEventsConsumer;
   v8 = [(CDRemoveEventsConsumer *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a4);
-    v10 = MEMORY[0x1BFAF7E70](v6);
+    objc_storeStrong(&v8->_identifier, identifier);
+    v10 = MEMORY[0x1BFAF7E70](consumerCopy);
     consumer = v9->_consumer;
     v9->_consumer = v10;
 
@@ -48,23 +48,23 @@
   [(CDRemoveEventsConsumer *)&v3 dealloc];
 }
 
-- (void)callback:(id)a3
+- (void)callback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if ([(CDRemoveEventsConsumer *)self historyDone])
   {
     FSEventStreamStop([(CDRemoveEventsConsumer *)self stream]);
   }
 
-  v5 = [(CDRemoveEventsConsumer *)self consumer_q];
+  consumer_q = [(CDRemoveEventsConsumer *)self consumer_q];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__CDRemoveEventsConsumer_callback___block_invoke;
   v7[3] = &unk_1E7F02D40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = callbackCopy;
+  selfCopy = self;
+  v6 = callbackCopy;
+  dispatch_async(consumer_q, v7);
 }
 
 void __35__CDRemoveEventsConsumer_callback___block_invoke(uint64_t a1)
@@ -209,15 +209,15 @@ LABEL_31:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)consumeStream:(__FSEventStream *)a3 forVolume:(id)a4
+- (void)consumeStream:(__FSEventStream *)stream forVolume:(id)volume
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  volumeCopy = volume;
   v7 = mach_absolute_time();
-  if (a3)
+  if (stream)
   {
     bzero(&v28, 0x878uLL);
-    if (statfs([v6 UTF8String], &v28))
+    if (statfs([volumeCopy UTF8String], &v28))
     {
       v8 = CDGetLogHandle("client");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -225,7 +225,7 @@ LABEL_31:
         v22 = __error();
         v23 = strerror(*v22);
         v24 = 138543618;
-        v25 = v6;
+        v25 = volumeCopy;
         v26 = 2080;
         v27 = v23;
         _os_log_error_impl(&dword_1BA7F1000, v8, OS_LOG_TYPE_ERROR, "statfs failed for %{public}@ : %s", &v24, 0x16u);
@@ -243,15 +243,15 @@ LABEL_31:
         _os_log_error_impl(&dword_1BA7F1000, v13, OS_LOG_TYPE_ERROR, "consumer is being reused, replacing FSEventStream", &v24, 2u);
       }
 
-      v14 = [(CDRemoveEventsConsumer *)self stream];
+      stream = [(CDRemoveEventsConsumer *)self stream];
       [(CDRemoveEventsConsumer *)self setStream:0];
-      FSEventStreamInvalidate(v14);
-      FSEventStreamRelease(v14);
+      FSEventStreamInvalidate(stream);
+      FSEventStreamRelease(stream);
     }
 
     [(CDRemoveEventsConsumer *)self setFsid:*&v28.f_fsid];
-    [(CDRemoveEventsConsumer *)self setStream:a3];
-    [(CDRemoveEventsConsumer *)self setVolume:v6];
+    [(CDRemoveEventsConsumer *)self setStream:stream];
+    [(CDRemoveEventsConsumer *)self setVolume:volumeCopy];
     if (FSEventStreamStart([(CDRemoveEventsConsumer *)self stream]))
     {
       v15 = [(CDRemoveEventsConsumer *)self sem];
@@ -273,7 +273,7 @@ LABEL_31:
       v16 = __error();
       v17 = strerror(*v16);
       v24 = 138412546;
-      v25 = v6;
+      v25 = volumeCopy;
       v26 = 2080;
       v27 = v17;
       v18 = "CacheDeleteEnumerateRemovedFiles: Unable to start FSEventStream on volume %@ : %s";

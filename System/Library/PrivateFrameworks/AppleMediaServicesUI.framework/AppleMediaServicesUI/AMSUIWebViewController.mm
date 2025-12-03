@@ -1,103 +1,103 @@
 @interface AMSUIWebViewController
 + (AMSBagKeySet)bagKeySet;
 + (id)createBagForSubProfile;
-+ (id)verifyTrustedURL:(id)a3 bag:(id)a4;
++ (id)verifyTrustedURL:(id)l bag:(id)bag;
 - (ACAccount)account;
 - (AMSBagProtocol)bag;
 - (AMSProcessInfo)clientInfo;
 - (AMSUIWebAppearance)appearance;
 - (AMSUIWebDelegate)delegate;
-- (AMSUIWebViewController)initWithBag:(id)a3;
-- (AMSUIWebViewController)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5;
+- (AMSUIWebViewController)initWithBag:(id)bag;
+- (AMSUIWebViewController)initWithBag:(id)bag account:(id)account clientInfo:(id)info;
 - (BOOL)loadUsingWebKit;
 - (BOOL)reducedMemoryMode;
 - (NSDictionary)clientOptions;
 - (NSDictionary)metricsOverlay;
-- (id)_applyMappingsToURL:(id)a3;
-- (id)_buildRequestWithRequest:(id)a3 bagValue:(id)a4;
-- (id)_handleAuthenticateCloudRequest:(id)a3 pauseTimeouts:(BOOL)a4;
-- (id)_handleAuthenticateRequest:(id)a3 pauseTimeouts:(BOOL)a4;
-- (id)_handleDialogRequest:(id)a3 pauseTimeouts:(BOOL)a4;
-- (id)_handleEngagementRequest:(id)a3 pauseTimeouts:(BOOL)a4;
+- (id)_applyMappingsToURL:(id)l;
+- (id)_buildRequestWithRequest:(id)request bagValue:(id)value;
+- (id)_handleAuthenticateCloudRequest:(id)request pauseTimeouts:(BOOL)timeouts;
+- (id)_handleAuthenticateRequest:(id)request pauseTimeouts:(BOOL)timeouts;
+- (id)_handleDialogRequest:(id)request pauseTimeouts:(BOOL)timeouts;
+- (id)_handleEngagementRequest:(id)request pauseTimeouts:(BOOL)timeouts;
 - (id)_lazyPromiseForBagSnapshot;
-- (id)_lazyPromiseForLoadingRequest:(id)a3 bagValue:(id)a4;
+- (id)_lazyPromiseForLoadingRequest:(id)request bagValue:(id)value;
 - (id)_lazyPromiseForLoadingSession;
 - (id)_lazyPromiseForPageLoad;
-- (id)_loadMescalSessionForRequestWithURL:(id)a3;
-- (id)_loadRequest:(id)a3 bagValue:(id)a4;
-- (id)_parseWebPropertiesFromRequest:(id)a3;
+- (id)_loadMescalSessionForRequestWithURL:(id)l;
+- (id)_loadRequest:(id)request bagValue:(id)value;
+- (id)_parseWebPropertiesFromRequest:(id)request;
 - (id)_rootNavigationController;
 - (id)_shouldReplaceCurrentAccountAfterSuccessfulAuth;
-- (id)_stringForLoadState:(int64_t)a3;
-- (id)action:(id)a3 didResolveWithResult:(id)a4 error:(id)a5;
-- (id)action:(id)a3 handleActionObject:(id)a4;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
-- (id)loadURL:(id)a3;
+- (id)_stringForLoadState:(int64_t)state;
+- (id)action:(id)action didResolveWithResult:(id)result error:(id)error;
+- (id)action:(id)action handleActionObject:(id)object;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
+- (id)loadURL:(id)l;
 - (id)presentingSceneIdentifier;
 - (id)presentingWindow;
-- (id)runJSRequest:(id)a3;
+- (id)runJSRequest:(id)request;
 - (unint64_t)edgesPropagatingSafeAreaInsetsToSubviews;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
-- (void)_handleDidEncodeNetworkRequest:(id)a3;
-- (void)_showErrorViewWithError:(id)a3 request:(id)a4 bagValue:(id)a5;
-- (void)actionDidFinishPurchaseWithResult:(id)a3 error:(id)a4;
-- (void)didDismissController:(id)a3;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
+- (void)_handleDidEncodeNetworkRequest:(id)request;
+- (void)_showErrorViewWithError:(id)error request:(id)request bagValue:(id)value;
+- (void)actionDidFinishPurchaseWithResult:(id)result error:(id)error;
+- (void)didDismissController:(id)controller;
 - (void)loadView;
-- (void)setAccount:(id)a3;
-- (void)setAppearance:(id)a3;
-- (void)setBag:(id)a3;
-- (void)setClientInfo:(id)a3;
-- (void)setClientOptions:(id)a3;
-- (void)setMetricsOverlay:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setAppearance:(id)appearance;
+- (void)setBag:(id)bag;
+- (void)setClientInfo:(id)info;
+- (void)setClientOptions:(id)options;
+- (void)setMetricsOverlay:(id)overlay;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AMSUIWebViewController
 
-- (AMSUIWebViewController)initWithBag:(id)a3
+- (AMSUIWebViewController)initWithBag:(id)bag
 {
   v4 = MEMORY[0x1E698CAC8];
-  v5 = a3;
-  v6 = [v4 currentProcess];
-  v7 = [(AMSUIWebViewController *)self initWithBag:v5 account:0 clientInfo:v6];
+  bagCopy = bag;
+  currentProcess = [v4 currentProcess];
+  v7 = [(AMSUIWebViewController *)self initWithBag:bagCopy account:0 clientInfo:currentProcess];
 
   return v7;
 }
 
-- (AMSUIWebViewController)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5
+- (AMSUIWebViewController)initWithBag:(id)bag account:(id)account clientInfo:(id)info
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bagCopy = bag;
+  accountCopy = account;
+  infoCopy = info;
   v11 = [(AMSUIWebViewController *)self initWithNibName:0 bundle:0];
   if (v11)
   {
     v12 = AMSSetLogKey();
-    v13 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v13)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v13 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v37 = objc_opt_class();
       v38 = 2114;
       v39 = v12;
-      _os_log_impl(&dword_1BB036000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Initializing web view controller", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Initializing web view controller", buf, 0x16u);
     }
 
-    v15 = [[AMSUIWebClientContext alloc] initWithAccount:v9 clientInfo:v10 backingBag:v8];
+    v15 = [[AMSUIWebClientContext alloc] initWithAccount:accountCopy clientInfo:infoCopy backingBag:bagCopy];
     context = v11->_context;
     v11->_context = v15;
 
     [(AMSUIWebClientContext *)v11->_context setActionDelegate:v11];
-    v17 = [objc_alloc(MEMORY[0x1E698CA00]) initWithContainerID:@"com.apple.AppleMediaServices" bag:v8];
+    v17 = [objc_alloc(MEMORY[0x1E698CA00]) initWithContainerID:@"com.apple.AppleMediaServices" bag:bagCopy];
     [(AMSUIWebClientContext *)v11->_context setMetrics:v17];
 
     [(AMSUIWebClientContext *)v11->_context setLoadUsingWebKit:0];
@@ -112,9 +112,9 @@
     v11->_webPage = v19;
     v34 = v19;
 
-    v21 = v8;
-    v22 = v10;
-    v23 = v9;
+    v21 = bagCopy;
+    v22 = infoCopy;
+    v23 = accountCopy;
     v24 = [[AMSUIWebPlaceholderViewController alloc] initWithContext:v11->_context];
     [(AMSUIWebPlaceholderViewController *)v24 setAnimateFadeIn:1];
     v25 = [AMSUIWebContainerViewController alloc];
@@ -132,9 +132,9 @@
     v31 = [[AMSUIWebPluginLoader alloc] initWithContext:v11->_context];
     [(AMSUIWebClientContext *)v11->_context setPluginLoader:v31];
 
-    v9 = v23;
-    v10 = v22;
-    v8 = v21;
+    accountCopy = v23;
+    infoCopy = v22;
+    bagCopy = v21;
   }
 
   v32 = *MEMORY[0x1E69E9840];
@@ -146,29 +146,29 @@
   v19.receiver = self;
   v19.super_class = AMSUIWebViewController;
   [(AMSUICommonViewController *)&v19 loadView];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 setFrame:{0.0, 0.0, 360.0, 500.0}];
+  view = [(AMSUICommonViewController *)self view];
+  [view setFrame:{0.0, 0.0, 360.0, 500.0}];
 
-  v4 = [(AMSUIWebViewController *)self rootContainer];
-  [(AMSUIWebViewController *)self setChildViewController:v4];
-  v5 = [(UIViewController *)self ams_parentContainer];
-  v6 = [v5 appearance];
-  v7 = v6;
-  if (v6)
+  rootContainer = [(AMSUIWebViewController *)self rootContainer];
+  [(AMSUIWebViewController *)self setChildViewController:rootContainer];
+  ams_parentContainer = [(UIViewController *)self ams_parentContainer];
+  appearance = [ams_parentContainer appearance];
+  v7 = appearance;
+  if (appearance)
   {
-    v8 = v6;
+    appearance2 = appearance;
   }
 
   else
   {
-    v9 = [(AMSUIWebViewController *)self rootContainer];
-    v8 = [v9 appearance];
+    rootContainer2 = [(AMSUIWebViewController *)self rootContainer];
+    appearance2 = [rootContainer2 appearance];
   }
 
-  v10 = [v8 backgroundColor];
-  if (v10)
+  backgroundColor = [appearance2 backgroundColor];
+  if (backgroundColor)
   {
-    [(UIViewController *)self ams_setBackgroundColor:v10];
+    [(UIViewController *)self ams_setBackgroundColor:backgroundColor];
   }
 
   else
@@ -177,13 +177,13 @@
     [(UIViewController *)self ams_setBackgroundColor:v11];
   }
 
-  v12 = [(AMSUIWebViewController *)self childViewController];
-  [(UIViewController *)self ams_setChildViewController:v12];
+  childViewController = [(AMSUIWebViewController *)self childViewController];
+  [(UIViewController *)self ams_setChildViewController:childViewController];
 
   if ([MEMORY[0x1E698C890] automationMode])
   {
-    v13 = [(AMSUIWebViewController *)self automationView];
-    if (v13)
+    automationView = [(AMSUIWebViewController *)self automationView];
+    if (automationView)
     {
 LABEL_11:
 
@@ -196,15 +196,15 @@ LABEL_11:
       v15 = [v14 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
       [(AMSUIWebViewController *)self setAutomationView:v15];
 
-      v16 = [(AMSUIWebViewController *)self automationView];
-      [v16 setText:@"WK2"];
+      automationView2 = [(AMSUIWebViewController *)self automationView];
+      [automationView2 setText:@"WK2"];
 
-      v17 = [(AMSUIWebViewController *)self automationView];
-      [v17 setAlpha:0.05];
+      automationView3 = [(AMSUIWebViewController *)self automationView];
+      [automationView3 setAlpha:0.05];
 
-      v13 = [(AMSUICommonViewController *)self view];
-      v18 = [(AMSUIWebViewController *)self automationView];
-      [v13 addSubview:v18];
+      automationView = [(AMSUICommonViewController *)self view];
+      automationView4 = [(AMSUIWebViewController *)self automationView];
+      [automationView addSubview:automationView4];
 
       goto LABEL_11;
     }
@@ -218,182 +218,182 @@ LABEL_12:
   v36.receiver = self;
   v36.super_class = AMSUIWebViewController;
   [(AMSUIWebViewController *)&v36 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUIWebViewController *)self childViewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  childViewController = [(AMSUIWebViewController *)self childViewController];
+  view2 = [childViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 
-  v14 = [(AMSUIWebViewController *)self automationView];
+  automationView = [(AMSUIWebViewController *)self automationView];
 
-  if (v14)
+  if (automationView)
   {
-    v15 = [(AMSUIWebViewController *)self automationView];
-    v16 = [(AMSUICommonViewController *)self view];
-    [v16 bounds];
-    [v15 sizeThatFits:{v17, v18}];
+    automationView2 = [(AMSUIWebViewController *)self automationView];
+    view3 = [(AMSUICommonViewController *)self view];
+    [view3 bounds];
+    [automationView2 sizeThatFits:{v17, v18}];
     v20 = v19;
     v22 = v21;
 
-    v23 = [(AMSUICommonViewController *)self view];
-    [v23 bounds];
+    view4 = [(AMSUICommonViewController *)self view];
+    [view4 bounds];
     v25 = v24 - v20;
-    v26 = [(AMSUICommonViewController *)self view];
-    [v26 safeAreaInsets];
+    view5 = [(AMSUICommonViewController *)self view];
+    [view5 safeAreaInsets];
     v28 = v25 - v27 + -10.0;
-    v29 = [(AMSUICommonViewController *)self view];
-    [v29 bounds];
+    view6 = [(AMSUICommonViewController *)self view];
+    [view6 bounds];
     v31 = v30 - v22;
-    v32 = [(AMSUICommonViewController *)self view];
-    [v32 safeAreaInsets];
+    view7 = [(AMSUICommonViewController *)self view];
+    [view7 safeAreaInsets];
     v34 = v31 - v33;
-    v35 = [(AMSUIWebViewController *)self automationView];
-    [v35 setFrame:{v28, v34, v20, v22}];
+    automationView3 = [(AMSUIWebViewController *)self automationView];
+    [automationView3 setFrame:{v28, v34, v20, v22}];
   }
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v4 = [(AMSUIWebViewController *)self context];
-  v5 = [v4 flowController];
-  v6 = [v5 currentContainer];
-  v7 = [v6 contentScrollViewForEdge:a3];
+  context = [(AMSUIWebViewController *)self context];
+  flowController = [context flowController];
+  currentContainer = [flowController currentContainer];
+  v7 = [currentContainer contentScrollViewForEdge:edge];
 
   return v7;
 }
 
 - (unint64_t)edgesPropagatingSafeAreaInsetsToSubviews
 {
-  v2 = [(AMSUIWebViewController *)self webPage];
-  v3 = [v2 view];
+  webPage = [(AMSUIWebViewController *)self webPage];
+  view = [webPage view];
 
-  v4 = [v3 edgesPropagatingSafeAreaInsetsToSubviews];
-  return v4;
+  edgesPropagatingSafeAreaInsetsToSubviews = [view edgesPropagatingSafeAreaInsetsToSubviews];
+  return edgesPropagatingSafeAreaInsetsToSubviews;
 }
 
 - (ACAccount)account
 {
-  v2 = [(AMSUIWebViewController *)self context];
-  v3 = [v2 account];
+  context = [(AMSUIWebViewController *)self context];
+  account = [context account];
 
-  return v3;
+  return account;
 }
 
 - (AMSBagProtocol)bag
 {
-  v2 = [(AMSUIWebViewController *)self context];
-  v3 = [v2 bag];
+  context = [(AMSUIWebViewController *)self context];
+  v3 = [context bag];
 
   return v3;
 }
 
 - (AMSUIWebAppearance)appearance
 {
-  v2 = [(AMSUIWebViewController *)self rootContainer];
-  v3 = [v2 appearance];
+  rootContainer = [(AMSUIWebViewController *)self rootContainer];
+  appearance = [rootContainer appearance];
 
-  return v3;
+  return appearance;
 }
 
 - (AMSProcessInfo)clientInfo
 {
-  v2 = [(AMSUIWebViewController *)self context];
-  v3 = [v2 clientInfo];
+  context = [(AMSUIWebViewController *)self context];
+  clientInfo = [context clientInfo];
 
-  return v3;
+  return clientInfo;
 }
 
 - (NSDictionary)clientOptions
 {
-  v2 = [(AMSUIWebViewController *)self context];
-  v3 = [v2 clientOptions];
+  context = [(AMSUIWebViewController *)self context];
+  clientOptions = [context clientOptions];
 
-  return v3;
+  return clientOptions;
 }
 
 - (BOOL)loadUsingWebKit
 {
-  v2 = [(AMSUIWebViewController *)self context];
-  v3 = [v2 loadUsingWebKit];
+  context = [(AMSUIWebViewController *)self context];
+  loadUsingWebKit = [context loadUsingWebKit];
 
-  return v3;
+  return loadUsingWebKit;
 }
 
 - (NSDictionary)metricsOverlay
 {
-  v2 = [(AMSUIWebViewController *)self context];
-  v3 = [v2 metricsOverlay];
+  context = [(AMSUIWebViewController *)self context];
+  metricsOverlay = [context metricsOverlay];
 
-  return v3;
+  return metricsOverlay;
 }
 
 - (BOOL)reducedMemoryMode
 {
-  v2 = [(AMSUIWebViewController *)self context];
-  v3 = [v2 reducedMemoryMode];
+  context = [(AMSUIWebViewController *)self context];
+  reducedMemoryMode = [context reducedMemoryMode];
 
-  return v3;
+  return reducedMemoryMode;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v7 = [(AMSUIWebViewController *)self context];
-  v5 = [(AMSUIWebViewController *)self context];
-  v6 = [v5 clientInfo];
-  [v7 replaceCurrentAccount:v4 clientInfo:v6];
+  accountCopy = account;
+  context = [(AMSUIWebViewController *)self context];
+  context2 = [(AMSUIWebViewController *)self context];
+  clientInfo = [context2 clientInfo];
+  [context replaceCurrentAccount:accountCopy clientInfo:clientInfo];
 }
 
-- (void)setAppearance:(id)a3
+- (void)setAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [(AMSUIWebViewController *)self rootContainer];
-  [v5 setAppearance:v4];
+  appearanceCopy = appearance;
+  rootContainer = [(AMSUIWebViewController *)self rootContainer];
+  [rootContainer setAppearance:appearanceCopy];
 }
 
-- (void)setBag:(id)a3
+- (void)setBag:(id)bag
 {
-  v4 = a3;
-  v5 = [(AMSUIWebViewController *)self context];
-  [v5 updateBackingBag:v4];
+  bagCopy = bag;
+  context = [(AMSUIWebViewController *)self context];
+  [context updateBackingBag:bagCopy];
 }
 
-- (void)setClientInfo:(id)a3
+- (void)setClientInfo:(id)info
 {
-  v4 = a3;
-  v7 = [(AMSUIWebViewController *)self context];
-  v5 = [(AMSUIWebViewController *)self context];
-  v6 = [v5 account];
-  [v7 replaceCurrentAccount:v6 clientInfo:v4];
+  infoCopy = info;
+  context = [(AMSUIWebViewController *)self context];
+  context2 = [(AMSUIWebViewController *)self context];
+  account = [context2 account];
+  [context replaceCurrentAccount:account clientInfo:infoCopy];
 }
 
-- (void)setClientOptions:(id)a3
+- (void)setClientOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(AMSUIWebViewController *)self context];
-  [v5 setClientOptions:v4];
+  optionsCopy = options;
+  context = [(AMSUIWebViewController *)self context];
+  [context setClientOptions:optionsCopy];
 
-  v8 = [(AMSUIWebViewController *)self context];
-  v6 = [v8 dataProvider];
-  v7 = [v6 syncProperties];
+  context2 = [(AMSUIWebViewController *)self context];
+  dataProvider = [context2 dataProvider];
+  syncProperties = [dataProvider syncProperties];
 }
 
-- (void)setMetricsOverlay:(id)a3
+- (void)setMetricsOverlay:(id)overlay
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  overlayCopy = overlay;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -402,52 +402,52 @@ LABEL_12:
     v13 = 2114;
     v14 = v8;
     v15 = 2112;
-    v16 = v4;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Metrics overlay updated: %@", &v11, 0x20u);
+    v16 = overlayCopy;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Metrics overlay updated: %@", &v11, 0x20u);
   }
 
-  v9 = [(AMSUIWebViewController *)self context];
-  [v9 setMetricsOverlay:v4];
+  context = [(AMSUIWebViewController *)self context];
+  [context setMetricsOverlay:overlayCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)loadURL:(id)a3
+- (id)loadURL:(id)l
 {
-  v4 = [MEMORY[0x1E696AF68] requestWithURL:a3];
+  v4 = [MEMORY[0x1E696AF68] requestWithURL:l];
   v5 = [(AMSUIWebViewController *)self _loadRequest:v4 bagValue:0];
 
   return v5;
 }
 
-- (id)runJSRequest:(id)a3
+- (id)runJSRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AMSUIWebViewController *)self context];
-  v6 = [v5 dataProvider];
-  v7 = [v6 runJSRequest:v4];
+  requestCopy = request;
+  context = [(AMSUIWebViewController *)self context];
+  dataProvider = [context dataProvider];
+  v7 = [dataProvider runJSRequest:requestCopy];
 
   return v7;
 }
 
-+ (id)verifyTrustedURL:(id)a3 bag:(id)a4
++ (id)verifyTrustedURL:(id)l bag:(id)bag
 {
-  v5 = a3;
-  v6 = [a4 arrayForKey:@"trustedWebDomains"];
-  v7 = [v6 valuePromise];
+  lCopy = l;
+  v6 = [bag arrayForKey:@"trustedWebDomains"];
+  valuePromise = [v6 valuePromise];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __47__AMSUIWebViewController_verifyTrustedURL_bag___block_invoke;
   v13[3] = &unk_1E7F25D98;
-  v14 = v5;
-  v8 = v5;
-  v9 = [v7 thenWithBlock:v13];
+  v14 = lCopy;
+  v8 = lCopy;
+  v9 = [valuePromise thenWithBlock:v13];
   v10 = [v9 catchWithBlock:&__block_literal_global_37];
 
-  v11 = [v10 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v10 binaryPromiseAdapter];
 
-  return v11;
+  return binaryPromiseAdapter;
 }
 
 id __47__AMSUIWebViewController_verifyTrustedURL_bag___block_invoke(uint64_t a1, void *a2)
@@ -544,11 +544,11 @@ id __47__AMSUIWebViewController_verifyTrustedURL_bag___block_invoke_2(uint64_t a
 + (AMSBagKeySet)bagKeySet
 {
   v2 = objc_alloc_init(MEMORY[0x1E698CA40]);
-  v3 = [MEMORY[0x1E698C9E0] bagKeySet];
-  [v2 unionBagKeySet:v3];
+  bagKeySet = [MEMORY[0x1E698C9E0] bagKeySet];
+  [v2 unionBagKeySet:bagKeySet];
 
-  v4 = [MEMORY[0x1E698CAE8] bagKeySet];
-  [v2 unionBagKeySet:v4];
+  bagKeySet2 = [MEMORY[0x1E698CAE8] bagKeySet];
+  [v2 unionBagKeySet:bagKeySet2];
 
   return v2;
 }
@@ -556,41 +556,41 @@ id __47__AMSUIWebViewController_verifyTrustedURL_bag___block_invoke_2(uint64_t a
 + (id)createBagForSubProfile
 {
   v2 = MEMORY[0x1E698C7E0];
-  v3 = [objc_opt_class() bagKeySet];
-  v4 = [objc_opt_class() bagSubProfile];
-  v5 = [objc_opt_class() bagSubProfileVersion];
-  [v2 registerBagKeySet:v3 forProfile:v4 profileVersion:v5];
+  bagKeySet = [objc_opt_class() bagKeySet];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  [v2 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v6 = MEMORY[0x1E698C7D8];
-  v7 = [objc_opt_class() bagSubProfile];
-  v8 = [objc_opt_class() bagSubProfileVersion];
-  v9 = [v6 bagForProfile:v7 profileVersion:v8];
+  bagSubProfile2 = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion2 = [objc_opt_class() bagSubProfileVersion];
+  v9 = [v6 bagForProfile:bagSubProfile2 profileVersion:bagSubProfileVersion2];
 
   return v9;
 }
 
-- (id)action:(id)a3 handleActionObject:(id)a4
+- (id)action:(id)action handleActionObject:(id)object
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(AMSUIWebViewController *)self delegate];
+  objectCopy = object;
+  delegate = [(AMSUIWebViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-    v9 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v9)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v9 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
-      v13 = [(AMSUIWebViewController *)self delegate];
+      delegate2 = [(AMSUIWebViewController *)self delegate];
       *buf = 138544130;
       v26 = v11;
       v27 = 2114;
@@ -598,22 +598,22 @@ id __47__AMSUIWebViewController_verifyTrustedURL_bag___block_invoke_2(uint64_t a
       v29 = 2114;
       v30 = objc_opt_class();
       v31 = 2114;
-      v32 = v5;
-      _os_log_impl(&dword_1BB036000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate (%{public}@) with action: %{public}@", buf, 0x2Au);
+      v32 = objectCopy;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate (%{public}@) with action: %{public}@", buf, 0x2Au);
     }
 
-    v14 = [(AMSUIWebViewController *)self delegate];
+    delegate3 = [(AMSUIWebViewController *)self delegate];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __52__AMSUIWebViewController_action_handleActionObject___block_invoke;
     v23[3] = &unk_1E7F24B78;
-    v15 = v8;
-    v24 = v15;
-    v16 = [v14 webViewController:self handleDelegateAction:v5 completion:v23];
+    mEMORY[0x1E698C968]2 = v8;
+    v24 = mEMORY[0x1E698C968]2;
+    v16 = [delegate3 webViewController:self handleDelegateAction:objectCopy completion:v23];
 
     if (v16)
     {
-      v17 = v15;
+      v17 = mEMORY[0x1E698C968]2;
     }
 
     else
@@ -621,19 +621,19 @@ id __47__AMSUIWebViewController_verifyTrustedURL_bag___block_invoke_2(uint64_t a
       v17 = 0;
     }
 
-    v18 = v24;
+    oSLogObject2 = v24;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v15)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v15 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v18 = [v15 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
       v20 = AMSLogKey();
@@ -641,7 +641,7 @@ id __47__AMSUIWebViewController_verifyTrustedURL_bag___block_invoke_2(uint64_t a
       v26 = v19;
       v27 = 2114;
       v28 = v20;
-      _os_log_impl(&dword_1BB036000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Caller does not respond to delegate", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Caller does not respond to delegate", buf, 0x16u);
     }
 
     v17 = 0;
@@ -678,23 +678,23 @@ void __52__AMSUIWebViewController_action_handleActionObject___block_invoke(uint6
   }
 }
 
-- (id)action:(id)a3 didResolveWithResult:(id)a4 error:(id)a5
+- (id)action:(id)action didResolveWithResult:(id)result error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  resultCopy = result;
+  errorCopy = error;
   v9 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-  v10 = [(AMSUIWebViewController *)self delegate];
+  delegate = [(AMSUIWebViewController *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(AMSUIWebViewController *)self delegate];
+    delegate2 = [(AMSUIWebViewController *)self delegate];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __60__AMSUIWebViewController_action_didResolveWithResult_error___block_invoke;
     v15[3] = &unk_1E7F24B78;
     v16 = v9;
-    [v12 webViewController:self didResolveWithResult:v7 error:v8 completion:v15];
+    [delegate2 webViewController:self didResolveWithResult:resultCopy error:errorCopy completion:v15];
   }
 
   else
@@ -732,24 +732,24 @@ void __60__AMSUIWebViewController_action_didResolveWithResult_error___block_invo
   }
 }
 
-- (void)actionDidFinishPurchaseWithResult:(id)a3 error:(id)a4
+- (void)actionDidFinishPurchaseWithResult:(id)result error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSUIWebViewController *)self delegate];
+  resultCopy = result;
+  errorCopy = error;
+  delegate = [(AMSUIWebViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v10)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v10 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -757,32 +757,32 @@ void __60__AMSUIWebViewController_action_didResolveWithResult_error___block_invo
       v17 = v12;
       v18 = 2114;
       v19 = v13;
-      _os_log_impl(&dword_1BB036000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling purchase completed delegate callback", &v16, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling purchase completed delegate callback", &v16, 0x16u);
     }
 
-    v14 = [(AMSUIWebViewController *)self delegate];
-    [v14 webViewController:self didFinishPurchaseWithResult:v6 error:v7];
+    delegate2 = [(AMSUIWebViewController *)self delegate];
+    [delegate2 webViewController:self didFinishPurchaseWithResult:resultCopy error:errorCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didDismissController:(id)a3
+- (void)didDismissController:(id)controller
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [(AMSUIWebViewController *)self delegate];
+  delegate = [(AMSUIWebViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v6)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v6 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -790,71 +790,71 @@ void __60__AMSUIWebViewController_action_didResolveWithResult_error___block_invo
       v13 = v8;
       v14 = 2114;
       v15 = v9;
-      _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling will dismiss", &v12, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling will dismiss", &v12, 0x16u);
     }
 
-    v10 = [(AMSUIWebViewController *)self delegate];
-    [v10 willDismissWebViewController:self];
+    delegate2 = [(AMSUIWebViewController *)self delegate];
+    [delegate2 willDismissWebViewController:self];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = [(AMSUIWebViewController *)self _handleDialogRequest:a5 pauseTimeouts:1];
-  [v9 addFinishBlock:v8];
+  completionCopy = completion;
+  v9 = [(AMSUIWebViewController *)self _handleDialogRequest:request pauseTimeouts:1];
+  [v9 addFinishBlock:completionCopy];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = [(AMSUIWebViewController *)self _handleAuthenticateRequest:a5 pauseTimeouts:1];
-  [v9 addFinishBlock:v8];
+  completionCopy = completion;
+  v9 = [(AMSUIWebViewController *)self _handleAuthenticateRequest:request pauseTimeouts:1];
+  [v9 addFinishBlock:completionCopy];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = [(AMSUIWebViewController *)self _handleEngagementRequest:a5 pauseTimeouts:1];
-  [v9 addFinishBlock:v8];
+  completionCopy = completion;
+  v9 = [(AMSUIWebViewController *)self _handleEngagementRequest:request pauseTimeouts:1];
+  [v9 addFinishBlock:completionCopy];
 }
 
 - (id)presentingSceneIdentifier
 {
-  v2 = [(AMSUICommonViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _sceneIdentifier];
+  view = [(AMSUICommonViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v5;
+  return _sceneIdentifier;
 }
 
 - (id)presentingWindow
 {
-  v2 = [(AMSUICommonViewController *)self view];
-  v3 = [v2 window];
+  view = [(AMSUICommonViewController *)self view];
+  window = [view window];
 
-  return v3;
+  return window;
 }
 
-- (id)_applyMappingsToURL:(id)a3
+- (id)_applyMappingsToURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AMSUIWebViewController *)self context];
-  v6 = [v5 bag];
+  lCopy = l;
+  context = [(AMSUIWebViewController *)self context];
+  v6 = [context bag];
   v7 = [v6 dictionaryForKey:@"commerce-ui-urls/v2-mapped-urls"];
-  v8 = [v7 valuePromise];
+  valuePromise = [v7 valuePromise];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __46__AMSUIWebViewController__applyMappingsToURL___block_invoke;
   v16[3] = &unk_1E7F26DD8;
   v16[4] = self;
-  v9 = v4;
+  v9 = lCopy;
   v17 = v9;
-  v10 = [v8 thenWithBlock:v16];
+  v10 = [valuePromise thenWithBlock:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__AMSUIWebViewController__applyMappingsToURL___block_invoke_86;
@@ -1000,18 +1000,18 @@ LABEL_16:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_buildRequestWithRequest:(id)a3 bagValue:(id)a4
+- (id)_buildRequestWithRequest:(id)request bagValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URL];
+  requestCopy = request;
+  valueCopy = value;
+  v8 = [requestCopy URL];
 
-  if (!v8 || (v9 = MEMORY[0x1E698CAD0], [v6 URL], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "promiseWithResult:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+  if (!v8 || (v9 = MEMORY[0x1E698CAD0], [requestCopy URL], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "promiseWithResult:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
   {
-    v12 = [v7 valuePromise];
-    if (v12)
+    valuePromise = [valueCopy valuePromise];
+    if (valuePromise)
     {
-      v11 = v12;
+      v11 = valuePromise;
     }
 
     else
@@ -1038,11 +1038,11 @@ LABEL_16:
   v21[1] = 3221225472;
   v21[2] = __60__AMSUIWebViewController__buildRequestWithRequest_bagValue___block_invoke_4;
   v21[3] = &unk_1E7F26E00;
-  v22 = v6;
-  v23 = self;
-  v24 = v7;
-  v17 = v7;
-  v18 = v6;
+  v22 = requestCopy;
+  selfCopy = self;
+  v24 = valueCopy;
+  v17 = valueCopy;
+  v18 = requestCopy;
   v19 = [v16 thenWithBlock:v21];
 
   return v19;
@@ -1106,16 +1106,16 @@ id __60__AMSUIWebViewController__buildRequestWithRequest_bagValue___block_invoke
   return v11;
 }
 
-- (id)_handleAuthenticateRequest:(id)a3 pauseTimeouts:(BOOL)a4
+- (id)_handleAuthenticateRequest:(id)request pauseTimeouts:(BOOL)timeouts
 {
-  v4 = a4;
-  v6 = a3;
+  timeoutsCopy = timeouts;
+  requestCopy = request;
   v7 = objc_alloc_init(MEMORY[0x1E698CA58]);
-  if (v4)
+  if (timeoutsCopy)
   {
-    v8 = [(AMSUIWebViewController *)self context];
-    v9 = [v8 flowController];
-    [v9 startTimeoutInterruption];
+    context = [(AMSUIWebViewController *)self context];
+    flowController = [context flowController];
+    [flowController startTimeoutInterruption];
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -1125,8 +1125,8 @@ id __60__AMSUIWebViewController__buildRequestWithRequest_bagValue___block_invoke
     [v7 addFinishBlock:v21];
   }
 
-  v10 = [(AMSUIWebViewController *)self context];
-  v11 = [v10 flowController];
+  context2 = [(AMSUIWebViewController *)self context];
+  flowController2 = [context2 flowController];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __67__AMSUIWebViewController__handleAuthenticateRequest_pauseTimeouts___block_invoke_2;
@@ -1134,9 +1134,9 @@ id __60__AMSUIWebViewController__buildRequestWithRequest_bagValue___block_invoke
   v18[4] = self;
   v12 = v7;
   v19 = v12;
-  v20 = v6;
-  v13 = v6;
-  [v11 performSafeTransitionFrom:self block:v18];
+  v20 = requestCopy;
+  v13 = requestCopy;
+  [flowController2 performSafeTransitionFrom:self block:v18];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -1755,19 +1755,19 @@ void __67__AMSUIWebViewController__handleAuthenticateRequest_pauseTimeouts___blo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_handleAuthenticateCloudRequest:(id)a3 pauseTimeouts:(BOOL)a4
+- (id)_handleAuthenticateCloudRequest:(id)request pauseTimeouts:(BOOL)timeouts
 {
-  v4 = a4;
+  timeoutsCopy = timeouts;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v7)
+  requestCopy = request;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v7 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
@@ -1775,30 +1775,30 @@ void __67__AMSUIWebViewController__handleAuthenticateRequest_pauseTimeouts___blo
     v27 = v9;
     v28 = 2114;
     v29 = v10;
-    _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Beginning Cloud Auth Task", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Beginning Cloud Auth Task", buf, 0x16u);
   }
 
-  if (v4)
+  if (timeoutsCopy)
   {
-    v11 = [(AMSUIWebViewController *)self context];
-    v12 = [v11 flowController];
-    [v12 startTimeoutInterruption];
+    context = [(AMSUIWebViewController *)self context];
+    flowController = [context flowController];
+    [flowController startTimeoutInterruption];
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-  v14 = [(AMSUIWebViewController *)self context];
-  v15 = [v14 flowController];
+  context2 = [(AMSUIWebViewController *)self context];
+  flowController2 = [context2 flowController];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __72__AMSUIWebViewController__handleAuthenticateCloudRequest_pauseTimeouts___block_invoke;
   v22[3] = &unk_1E7F26F40;
   v22[4] = self;
-  v23 = v6;
-  v25 = v4;
+  v23 = requestCopy;
+  v25 = timeoutsCopy;
   v16 = v13;
   v24 = v16;
-  v17 = v6;
-  [v15 performSafeTransitionFrom:self block:v22];
+  v17 = requestCopy;
+  [flowController2 performSafeTransitionFrom:self block:v22];
 
   v18 = v24;
   v19 = v16;
@@ -1890,57 +1890,57 @@ void __72__AMSUIWebViewController__handleAuthenticateCloudRequest_pauseTimeouts_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_handleDialogRequest:(id)a3 pauseTimeouts:(BOOL)a4
+- (id)_handleDialogRequest:(id)request pauseTimeouts:(BOOL)timeouts
 {
-  v4 = a4;
+  timeoutsCopy = timeouts;
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-  v8 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v8)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v8 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
-    v11 = [(AMSUIWebViewController *)self context];
-    v12 = [v11 logKey];
+    context = [(AMSUIWebViewController *)self context];
+    logKey = [context logKey];
     *buf = 138543618;
     v28 = v10;
     v29 = 2114;
-    v30 = v12;
-    _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling dialog", buf, 0x16u);
+    v30 = logKey;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling dialog", buf, 0x16u);
   }
 
-  if (v4)
+  if (timeoutsCopy)
   {
-    v13 = [(AMSUIWebViewController *)self context];
-    v14 = [v13 flowController];
-    [v14 startTimeoutInterruption];
+    context2 = [(AMSUIWebViewController *)self context];
+    flowController = [context2 flowController];
+    [flowController startTimeoutInterruption];
   }
 
-  v15 = [(AMSUIWebViewController *)self context];
-  v16 = [v15 flowController];
+  context3 = [(AMSUIWebViewController *)self context];
+  flowController2 = [context3 flowController];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __61__AMSUIWebViewController__handleDialogRequest_pauseTimeouts___block_invoke;
   v24[3] = &unk_1E7F24590;
   v24[4] = self;
-  v25 = v6;
+  v25 = requestCopy;
   v17 = v7;
   v26 = v17;
-  v18 = v6;
-  [v16 performSafeTransitionFrom:self block:v24];
+  v18 = requestCopy;
+  [flowController2 performSafeTransitionFrom:self block:v24];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __61__AMSUIWebViewController__handleDialogRequest_pauseTimeouts___block_invoke_148;
   v22[3] = &unk_1E7F26F68;
   v22[4] = self;
-  v23 = v4;
+  v23 = timeoutsCopy;
   [v17 addFinishBlock:v22];
   v19 = v17;
 
@@ -2082,57 +2082,57 @@ LABEL_10:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_handleEngagementRequest:(id)a3 pauseTimeouts:(BOOL)a4
+- (id)_handleEngagementRequest:(id)request pauseTimeouts:(BOOL)timeouts
 {
-  v4 = a4;
+  timeoutsCopy = timeouts;
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-  v8 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v8)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v8 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
-    v11 = [(AMSUIWebViewController *)self context];
-    v12 = [v11 logKey];
+    context = [(AMSUIWebViewController *)self context];
+    logKey = [context logKey];
     *buf = 138543618;
     v28 = v10;
     v29 = 2114;
-    v30 = v12;
-    _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling engagement request", buf, 0x16u);
+    v30 = logKey;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling engagement request", buf, 0x16u);
   }
 
-  if (v4)
+  if (timeoutsCopy)
   {
-    v13 = [(AMSUIWebViewController *)self context];
-    v14 = [v13 flowController];
-    [v14 startTimeoutInterruption];
+    context2 = [(AMSUIWebViewController *)self context];
+    flowController = [context2 flowController];
+    [flowController startTimeoutInterruption];
   }
 
-  v15 = [(AMSUIWebViewController *)self context];
-  v16 = [v15 flowController];
+  context3 = [(AMSUIWebViewController *)self context];
+  flowController2 = [context3 flowController];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __65__AMSUIWebViewController__handleEngagementRequest_pauseTimeouts___block_invoke;
   v24[3] = &unk_1E7F24590;
   v24[4] = self;
-  v25 = v6;
+  v25 = requestCopy;
   v17 = v7;
   v26 = v17;
-  v18 = v6;
-  [v16 performSafeTransitionFrom:self block:v24];
+  v18 = requestCopy;
+  [flowController2 performSafeTransitionFrom:self block:v24];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __65__AMSUIWebViewController__handleEngagementRequest_pauseTimeouts___block_invoke_157;
   v22[3] = &unk_1E7F26F90;
   v22[4] = self;
-  v23 = v4;
+  v23 = timeoutsCopy;
   [v17 addFinishBlock:v22];
   v19 = v17;
 
@@ -2262,23 +2262,23 @@ LABEL_10:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleDidEncodeNetworkRequest:(id)a3
+- (void)_handleDidEncodeNetworkRequest:(id)request
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSUIWebViewController *)self delegate];
+  requestCopy = request;
+  delegate = [(AMSUIWebViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v7)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v7 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -2286,20 +2286,20 @@ LABEL_10:
       v14 = v9;
       v15 = 2114;
       v16 = v10;
-      _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate to decorate request", &v13, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate to decorate request", &v13, 0x16u);
     }
 
-    v11 = [(AMSUIWebViewController *)self delegate];
-    [v11 webViewController:self didEncodeNetworkRequest:v4];
+    delegate2 = [(AMSUIWebViewController *)self delegate];
+    [delegate2 webViewController:self didEncodeNetworkRequest:requestCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_lazyPromiseForLoadingRequest:(id)a3 bagValue:(id)a4
+- (id)_lazyPromiseForLoadingRequest:(id)request bagValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  valueCopy = value;
   objc_initWeak(&location, self);
   v8 = objc_alloc(MEMORY[0x1E698C958]);
   v13[0] = MEMORY[0x1E69E9820];
@@ -2307,9 +2307,9 @@ LABEL_10:
   v13[2] = __65__AMSUIWebViewController__lazyPromiseForLoadingRequest_bagValue___block_invoke;
   v13[3] = &unk_1E7F27008;
   objc_copyWeak(&v16, &location);
-  v9 = v6;
+  v9 = requestCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = valueCopy;
   v15 = v10;
   v11 = [v8 initWithBlock:v13];
 
@@ -2745,18 +2745,18 @@ uint64_t __49__AMSUIWebViewController__lazyPromiseForPageLoad__block_invoke_171(
   return [v4 finishWithResult:v5 error:a3];
 }
 
-- (id)_parseWebPropertiesFromRequest:(id)a3
+- (id)_parseWebPropertiesFromRequest:(id)request
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = [a3 mutableCopy];
+  v4 = [request mutableCopy];
   v5 = [v4 URL];
-  v6 = [v5 host];
-  v7 = [v6 length];
+  host = [v5 host];
+  v7 = [host length];
 
   if (!v7)
   {
-    v8 = [v5 ams_parameters];
-    v9 = [v8 objectForKeyedSubscript:@"url"];
+    ams_parameters = [v5 ams_parameters];
+    v9 = [ams_parameters objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2770,12 +2770,12 @@ uint64_t __49__AMSUIWebViewController__lazyPromiseForPageLoad__block_invoke_171(
 
     if (v10 && ([MEMORY[0x1E695DFF8] URLWithString:v10], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = v11;
+      mEMORY[0x1E698C968]2 = v11;
       [v4 setURL:v11];
-      v13 = [v8 objectForKeyedSubscript:@"dsid"];
+      oSLogObject2 = [ams_parameters objectForKeyedSubscript:@"dsid"];
       if (objc_opt_respondsToSelector())
       {
-        v14 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[NSObject longLongValue](v13, "longLongValue")}];
+        v14 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[NSObject longLongValue](oSLogObject2, "longLongValue")}];
       }
 
       else
@@ -2783,7 +2783,7 @@ uint64_t __49__AMSUIWebViewController__lazyPromiseForPageLoad__block_invoke_171(
         v14 = 0;
       }
 
-      v18 = [v8 objectForKeyedSubscript:@"accountType"];
+      v18 = [ams_parameters objectForKeyedSubscript:@"accountType"];
       objc_opt_class();
       v51 = v10;
       if (objc_opt_isKindOfClass())
@@ -2802,9 +2802,9 @@ uint64_t __49__AMSUIWebViewController__lazyPromiseForPageLoad__block_invoke_171(
         if (v19)
         {
           v20 = MEMORY[0x1E6959A48];
-          v21 = [(AMSUIWebViewController *)self context];
-          v22 = [v21 clientInfo];
-          [v22 accountMediaType];
+          context = [(AMSUIWebViewController *)self context];
+          clientInfo = [context clientInfo];
+          [clientInfo accountMediaType];
           v23 = v49 = v19;
           v24 = [v20 ams_sharedAccountStoreForMediaType:v23];
 
@@ -2813,41 +2813,41 @@ uint64_t __49__AMSUIWebViewController__lazyPromiseForPageLoad__block_invoke_171(
 
           if (v25)
           {
-            v26 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-            if (!v26)
+            mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+            if (!mEMORY[0x1E698C968])
             {
-              v26 = [MEMORY[0x1E698C968] sharedConfig];
+              mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
             }
 
-            v27 = [v26 OSLogObject];
-            if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+            oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
             {
               v45 = objc_opt_class();
-              v47 = [(AMSUIWebViewController *)self context];
-              v28 = [v47 logKey];
+              context2 = [(AMSUIWebViewController *)self context];
+              logKey = [context2 logKey];
               *buf = 138543618;
               v54 = v45;
               v55 = 2114;
-              v56 = v28;
-              _os_log_impl(&dword_1BB036000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Bootstrap: parsed URL is replacing the account...", buf, 0x16u);
+              v56 = logKey;
+              _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Bootstrap: parsed URL is replacing the account...", buf, 0x16u);
             }
 
-            v29 = [(AMSUIWebViewController *)self context];
-            v30 = [(AMSUIWebViewController *)self context];
-            v31 = [v30 clientInfo];
-            [v29 replaceCurrentAccount:v25 clientInfo:v31];
+            context3 = [(AMSUIWebViewController *)self context];
+            context4 = [(AMSUIWebViewController *)self context];
+            clientInfo2 = [context4 clientInfo];
+            [context3 replaceCurrentAccount:v25 clientInfo:clientInfo2];
 
             v19 = v49;
           }
         }
       }
 
-      v32 = [v8 objectForKeyedSubscript:@"signatureResumption"];
+      v32 = [ams_parameters objectForKeyedSubscript:@"signatureResumption"];
       if ((objc_opt_respondsToSelector() & 1) != 0 && [v32 BOOLValue])
       {
-        v46 = [(AMSUIWebViewController *)self context];
-        v33 = [v46 additionalHeaders];
-        v34 = [v33 mutableCopy];
+        context5 = [(AMSUIWebViewController *)self context];
+        additionalHeaders = [context5 additionalHeaders];
+        v34 = [additionalHeaders mutableCopy];
         v35 = v34;
         v50 = v19;
         if (v34)
@@ -2862,11 +2862,11 @@ uint64_t __49__AMSUIWebViewController__lazyPromiseForPageLoad__block_invoke_171(
 
         v48 = v36;
 
-        v37 = [MEMORY[0x1E698C940] resumptionHeaders];
-        v38 = v37;
-        if (v37)
+        resumptionHeaders = [MEMORY[0x1E698C940] resumptionHeaders];
+        v38 = resumptionHeaders;
+        if (resumptionHeaders)
         {
-          v39 = v37;
+          v39 = resumptionHeaders;
         }
 
         else
@@ -2877,11 +2877,11 @@ uint64_t __49__AMSUIWebViewController__lazyPromiseForPageLoad__block_invoke_171(
         [v48 addEntriesFromDictionary:v39];
 
         v40 = [v48 copy];
-        v41 = [(AMSUIWebViewController *)self context];
-        [v41 setAdditionalHeaders:v40];
+        context6 = [(AMSUIWebViewController *)self context];
+        [context6 setAdditionalHeaders:v40];
 
-        v42 = [(AMSUIWebViewController *)self context];
-        [v42 setSignatureResumption:1];
+        context7 = [(AMSUIWebViewController *)self context];
+        [context7 setSignatureResumption:1];
 
         v19 = v50;
       }
@@ -2891,23 +2891,23 @@ uint64_t __49__AMSUIWebViewController__lazyPromiseForPageLoad__block_invoke_171(
 
     else
     {
-      v12 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v12)
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968]2)
       {
-        v12 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v13 = [v12 OSLogObject];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v15 = objc_opt_class();
-        v16 = [(AMSUIWebViewController *)self context];
-        v17 = [v16 logKey];
+        context8 = [(AMSUIWebViewController *)self context];
+        logKey2 = [context8 logKey];
         *buf = 138543618;
         v54 = v15;
         v55 = 2114;
-        v56 = v17;
-        _os_log_impl(&dword_1BB036000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Unable to extract URL from query string", buf, 0x16u);
+        v56 = logKey2;
+        _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Unable to extract URL from query string", buf, 0x16u);
       }
     }
   }
@@ -2917,22 +2917,22 @@ uint64_t __49__AMSUIWebViewController__lazyPromiseForPageLoad__block_invoke_171(
   return v4;
 }
 
-- (id)_loadMescalSessionForRequestWithURL:(id)a3
+- (id)_loadMescalSessionForRequestWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AMSUIWebViewController *)self context];
-  v6 = [v5 bag];
+  lCopy = l;
+  context = [(AMSUIWebViewController *)self context];
+  v6 = [context bag];
   v7 = [v6 stringForKey:@"account-flow-url-patterns"];
-  v8 = [v7 valuePromise];
+  valuePromise = [v7 valuePromise];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__AMSUIWebViewController__loadMescalSessionForRequestWithURL___block_invoke;
   v12[3] = &unk_1E7F27058;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
-  v10 = [v8 thenWithBlock:v12];
+  v13 = lCopy;
+  selfCopy = self;
+  v9 = lCopy;
+  v10 = [valuePromise thenWithBlock:v12];
 
   return v10;
 }
@@ -2974,25 +2974,25 @@ id __62__AMSUIWebViewController__loadMescalSessionForRequestWithURL___block_invo
   return v18;
 }
 
-- (id)_loadRequest:(id)a3 bagValue:(id)a4
+- (id)_loadRequest:(id)request bagValue:(id)value
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v47 = a4;
-  v7 = [(AMSUIWebViewController *)self context];
-  v8 = [v7 logKey];
+  requestCopy = request;
+  valueCopy = value;
+  context = [(AMSUIWebViewController *)self context];
+  logKey = [context logKey];
   v9 = AMSSetLogKey();
 
   if ([(AMSUIWebViewController *)self hasStarted])
   {
-    v10 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v10)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v10 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -3000,70 +3000,70 @@ id __62__AMSUIWebViewController__loadMescalSessionForRequestWithURL___block_invo
       v61 = v12;
       v62 = 2114;
       v63 = v13;
-      _os_log_impl(&dword_1BB036000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Multiple loadRequest calls are not supported.", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Multiple loadRequest calls are not supported.", buf, 0x16u);
     }
 
     v14 = MEMORY[0x1E698C7F0];
     v15 = AMSError();
-    v16 = [v14 promiseWithError:v15];
+    binaryPromiseAdapter = [v14 promiseWithError:v15];
   }
 
   else
   {
-    v17 = [(AMSUIWebViewController *)self context];
-    [v17 setBootstrapComplete:0];
+    context2 = [(AMSUIWebViewController *)self context];
+    [context2 setBootstrapComplete:0];
 
     [(AMSUIWebViewController *)self setHasStarted:1];
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v15 setObject:v6 forKeyedSubscript:@"request"];
-    [v15 setObject:v47 forKeyedSubscript:@"bagValue"];
-    v18 = [(AMSUIWebViewController *)self context];
-    v19 = [v18 account];
-    v20 = [v19 hashedDescription];
-    [v15 setObject:v20 forKeyedSubscript:@"account"];
+    [v15 setObject:requestCopy forKeyedSubscript:@"request"];
+    [v15 setObject:valueCopy forKeyedSubscript:@"bagValue"];
+    context3 = [(AMSUIWebViewController *)self context];
+    account = [context3 account];
+    hashedDescription = [account hashedDescription];
+    [v15 setObject:hashedDescription forKeyedSubscript:@"account"];
 
-    v21 = [(AMSUIWebViewController *)self context];
-    v22 = [v21 clientInfo];
-    [v15 setObject:v22 forKeyedSubscript:@"clientInfo"];
+    context4 = [(AMSUIWebViewController *)self context];
+    clientInfo = [context4 clientInfo];
+    [v15 setObject:clientInfo forKeyedSubscript:@"clientInfo"];
 
-    v23 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v23)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v23 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v24 = [v23 OSLogObject];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v25 = objc_opt_class();
-      v26 = [(AMSUIWebViewController *)self context];
-      v27 = [v26 logKey];
-      v28 = [(AMSUIWebViewController *)self context];
-      v29 = [v28 clientOptions];
+      context5 = [(AMSUIWebViewController *)self context];
+      logKey2 = [context5 logKey];
+      context6 = [(AMSUIWebViewController *)self context];
+      clientOptions = [context6 clientOptions];
       *buf = 138544130;
       v61 = v25;
       v62 = 2114;
-      v63 = v27;
+      v63 = logKey2;
       v64 = 2114;
       v65 = v15;
       v66 = 2114;
-      v67 = v29;
-      _os_log_impl(&dword_1BB036000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting bootstrap: %{public}@ options: %{public}@", buf, 0x2Au);
+      v67 = clientOptions;
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting bootstrap: %{public}@ options: %{public}@", buf, 0x2Au);
     }
 
     v30 = MEMORY[0x1E698CAA8];
-    v31 = [v6 URL];
+    v31 = [requestCopy URL];
     [v30 sendCUIBootstrapInitiatedEventWithURL:v31];
 
-    v46 = [(AMSUIWebViewController *)self _parseWebPropertiesFromRequest:v6];
-    v32 = [(AMSUIWebViewController *)self _lazyPromiseForBagSnapshot];
-    v59[0] = v32;
-    v33 = [(AMSUIWebViewController *)self _lazyPromiseForLoadingSession];
-    v59[1] = v33;
-    v34 = [(AMSUIWebViewController *)self _lazyPromiseForLoadingRequest:v46 bagValue:v47];
+    v46 = [(AMSUIWebViewController *)self _parseWebPropertiesFromRequest:requestCopy];
+    _lazyPromiseForBagSnapshot = [(AMSUIWebViewController *)self _lazyPromiseForBagSnapshot];
+    v59[0] = _lazyPromiseForBagSnapshot;
+    _lazyPromiseForLoadingSession = [(AMSUIWebViewController *)self _lazyPromiseForLoadingSession];
+    v59[1] = _lazyPromiseForLoadingSession;
+    v34 = [(AMSUIWebViewController *)self _lazyPromiseForLoadingRequest:v46 bagValue:valueCopy];
     v59[2] = v34;
-    v35 = [(AMSUIWebViewController *)self _lazyPromiseForPageLoad];
-    v59[3] = v35;
+    _lazyPromiseForPageLoad = [(AMSUIWebViewController *)self _lazyPromiseForPageLoad];
+    v59[3] = _lazyPromiseForPageLoad;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:4];
 
     v37 = [MEMORY[0x1E698CAD0] promiseWithAll:v36];
@@ -3076,8 +3076,8 @@ id __62__AMSUIWebViewController__loadMescalSessionForRequestWithURL___block_invo
     [v37 addSuccessBlock:v57];
     v38 = objc_alloc_init(MEMORY[0x1E698CAD0]);
     [v38 finishWithPromise:v37];
-    v39 = [(AMSUIWebViewController *)self context];
-    v40 = [v39 flowController];
+    context7 = [(AMSUIWebViewController *)self context];
+    flowController = [context7 flowController];
     v41 = MEMORY[0x1E69E96A0];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
@@ -3086,16 +3086,16 @@ id __62__AMSUIWebViewController__loadMescalSessionForRequestWithURL___block_invo
     objc_copyWeak(&v56, buf);
     v42 = v38;
     v55 = v42;
-    [v40 startTimeout:MEMORY[0x1E69E96A0] queue:v54 block:30.0];
+    [flowController startTimeout:MEMORY[0x1E69E96A0] queue:v54 block:30.0];
 
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __48__AMSUIWebViewController__loadRequest_bagValue___block_invoke_2;
     v50[3] = &unk_1E7F270A8;
     objc_copyWeak(&v53, buf);
-    v43 = v6;
+    v43 = requestCopy;
     v51 = v43;
-    v52 = v47;
+    v52 = valueCopy;
     [v42 addErrorBlock:v50];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
@@ -3103,7 +3103,7 @@ id __62__AMSUIWebViewController__loadMescalSessionForRequestWithURL___block_invo
     v48[3] = &unk_1E7F24B78;
     v49 = v43;
     [v42 addFinishBlock:v48];
-    v16 = [v42 binaryPromiseAdapter];
+    binaryPromiseAdapter = [v42 binaryPromiseAdapter];
 
     objc_destroyWeak(&v53);
     objc_destroyWeak(&v56);
@@ -3114,7 +3114,7 @@ id __62__AMSUIWebViewController__loadMescalSessionForRequestWithURL___block_invo
 
   v44 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return binaryPromiseAdapter;
 }
 
 void __48__AMSUIWebViewController__loadRequest_bagValue___block_invoke(uint64_t a1)
@@ -3202,30 +3202,30 @@ void __48__AMSUIWebViewController__loadRequest_bagValue___block_invoke_225(uint6
 
 - (id)_rootNavigationController
 {
-  v2 = [(AMSUIWebViewController *)self rootContainer];
-  v3 = [v2 ams_navigationController];
+  rootContainer = [(AMSUIWebViewController *)self rootContainer];
+  ams_navigationController = [rootContainer ams_navigationController];
 
-  return v3;
+  return ams_navigationController;
 }
 
-- (void)_showErrorViewWithError:(id)a3 request:(id)a4 bagValue:(id)a5
+- (void)_showErrorViewWithError:(id)error request:(id)request bagValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  requestCopy = request;
+  valueCopy = value;
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__AMSUIWebViewController__showErrorViewWithError_request_bagValue___block_invoke;
   v14[3] = &unk_1E7F26650;
   v14[4] = self;
-  v15 = v8;
-  v11 = v8;
+  v15 = errorCopy;
+  v11 = errorCopy;
   objc_copyWeak(&v18, &location);
-  v16 = v9;
-  v17 = v10;
-  v12 = v10;
-  v13 = v9;
+  v16 = requestCopy;
+  v17 = valueCopy;
+  v12 = valueCopy;
+  v13 = requestCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 
   objc_destroyWeak(&v18);
@@ -3292,29 +3292,29 @@ void __67__AMSUIWebViewController__showErrorViewWithError_request_bagValue___blo
 
 - (id)_shouldReplaceCurrentAccountAfterSuccessfulAuth
 {
-  v4 = self;
+  selfCopy = self;
   v48 = *MEMORY[0x1E69E9840];
   if ([(AMSUIWebViewController *)self currentLoadState]== 1)
   {
-    v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v5)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v5 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v7 = [v4 context];
-      v8 = [v7 logKey];
+      context = [selfCopy context];
+      logKey = [context logKey];
       v9 = MEMORY[0x1E696AEC0];
       v10 = objc_opt_class();
       v11 = v10;
-      if (v8)
+      if (logKey)
       {
-        v4 = [v4 context];
-        v2 = [v4 logKey];
-        [v9 stringWithFormat:@"%@: [%@] ", v11, v2];
+        selfCopy = [selfCopy context];
+        logKey2 = [selfCopy logKey];
+        [v9 stringWithFormat:@"%@: [%@] ", v11, logKey2];
       }
 
       else
@@ -3324,11 +3324,11 @@ void __67__AMSUIWebViewController__showErrorViewWithError_request_bagValue___blo
       v12 = ;
       *buf = 138543362;
       v47 = v12;
-      _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_INFO, "%{public}@Load state is initial load, we should replace the account.", buf, 0xCu);
-      if (v8)
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@Load state is initial load, we should replace the account.", buf, 0xCu);
+      if (logKey)
       {
 
-        v12 = v4;
+        v12 = selfCopy;
       }
     }
 
@@ -3336,41 +3336,41 @@ void __67__AMSUIWebViewController__showErrorViewWithError_request_bagValue___blo
     v35 = MEMORY[0x1E698C810];
     v36 = 1;
 LABEL_35:
-    v39 = [v35 BOOLeanWithBool:v36];
-    v42 = [v34 promiseWithResult:v39];
+    accountMediaType = [v35 BOOLeanWithBool:v36];
+    v42 = [v34 promiseWithResult:accountMediaType];
     goto LABEL_36;
   }
 
-  v13 = [v4 context];
-  v14 = [v13 account];
-  if (v14)
+  context2 = [selfCopy context];
+  account = [context2 account];
+  if (account)
   {
-    v15 = v14;
-    v16 = [v4 context];
-    v17 = [v16 account];
-    v2 = [v17 ams_isLocalAccount];
+    v15 = account;
+    context3 = [selfCopy context];
+    account2 = [context3 account];
+    logKey2 = [account2 ams_isLocalAccount];
 
-    if ((v2 & 1) == 0)
+    if ((logKey2 & 1) == 0)
     {
-      v18 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v18)
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968]2)
       {
-        v18 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v19 = [v18 OSLogObject];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+      oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
       {
-        v20 = [v4 context];
-        v21 = [v20 logKey];
+        context4 = [selfCopy context];
+        logKey3 = [context4 logKey];
         v22 = MEMORY[0x1E696AEC0];
         v23 = objc_opt_class();
         v24 = v23;
-        if (v21)
+        if (logKey3)
         {
-          v4 = [v4 context];
-          v2 = [v4 logKey];
-          [v22 stringWithFormat:@"%@: [%@] ", v24, v2];
+          selfCopy = [selfCopy context];
+          logKey2 = [selfCopy logKey];
+          [v22 stringWithFormat:@"%@: [%@] ", v24, logKey2];
         }
 
         else
@@ -3380,11 +3380,11 @@ LABEL_35:
         v25 = ;
         *buf = 138543362;
         v47 = v25;
-        _os_log_impl(&dword_1BB036000, v19, OS_LOG_TYPE_INFO, "%{public}@There’s already a non-nil, non-local account, we should not replace the account.", buf, 0xCu);
-        if (v21)
+        _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@There’s already a non-nil, non-local account, we should not replace the account.", buf, 0xCu);
+        if (logKey3)
         {
 
-          v25 = v4;
+          v25 = selfCopy;
         }
       }
 
@@ -3399,25 +3399,25 @@ LABEL_35:
   {
   }
 
-  v26 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v26)
+  mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968]3)
   {
-    v26 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v27 = [v26 OSLogObject];
-  if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+  oSLogObject3 = [mEMORY[0x1E698C968]3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
   {
-    v28 = [v4 context];
-    v29 = [v28 logKey];
+    context5 = [selfCopy context];
+    logKey4 = [context5 logKey];
     v30 = MEMORY[0x1E696AEC0];
     v31 = objc_opt_class();
     v32 = v31;
-    if (v29)
+    if (logKey4)
     {
-      v2 = [v4 context];
-      v3 = [v2 logKey];
-      [v30 stringWithFormat:@"%@: [%@] ", v32, v3];
+      logKey2 = [selfCopy context];
+      v2LogKey = [logKey2 logKey];
+      [v30 stringWithFormat:@"%@: [%@] ", v32, v2LogKey];
     }
 
     else
@@ -3427,25 +3427,25 @@ LABEL_35:
     v33 = ;
     *buf = 138543362;
     v47 = v33;
-    _os_log_impl(&dword_1BB036000, v27, OS_LOG_TYPE_INFO, "%{public}@Checking for an active account to determine if we should replace the account.", buf, 0xCu);
-    if (v29)
+    _os_log_impl(&dword_1BB036000, oSLogObject3, OS_LOG_TYPE_INFO, "%{public}@Checking for an active account to determine if we should replace the account.", buf, 0xCu);
+    if (logKey4)
     {
 
-      v33 = v2;
+      v33 = logKey2;
     }
   }
 
-  v37 = [v4 context];
-  v38 = [v37 clientInfo];
-  v39 = [v38 accountMediaType];
+  context6 = [selfCopy context];
+  clientInfo = [context6 clientInfo];
+  accountMediaType = [clientInfo accountMediaType];
 
-  v40 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:v39];
-  v41 = [v40 ams_activeiTunesAccountForMediaType:v39];
+  v40 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:accountMediaType];
+  v41 = [v40 ams_activeiTunesAccountForMediaType:accountMediaType];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __73__AMSUIWebViewController__shouldReplaceCurrentAccountAfterSuccessfulAuth__block_invoke;
   v45[3] = &unk_1E7F270F8;
-  v45[4] = v4;
+  v45[4] = selfCopy;
   v42 = [v41 continueWithBlock:v45];
 
 LABEL_36:
@@ -3544,16 +3544,16 @@ LABEL_16:
   return v22;
 }
 
-- (id)_stringForLoadState:(int64_t)a3
+- (id)_stringForLoadState:(int64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7F27118[a3];
+    return off_1E7F27118[state];
   }
 }
 

@@ -1,90 +1,90 @@
 @interface BMCommunicationSafetyResultEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMCommunicationSafetyResultEvent)initWithChildID:(id)a3 deviceID:(id)a4 sourceBundleID:(id)a5 absoluteTimeStamp:(double)a6 eventDirection:(unint64_t)a7 eventType:(unint64_t)a8 contentType:(unint64_t)a9 contactHandles:(id)a10 contentID:(id)a11 conversationID:(id)a12 imageData:(id)a13 senderHandle:(id)a14 contentURL:(id)a15 conversationURL:(id)a16;
-- (BMCommunicationSafetyResultEvent)initWithCoder:(id)a3;
-- (BMCommunicationSafetyResultEvent)initWithProto:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMCommunicationSafetyResultEvent)initWithChildID:(id)d deviceID:(id)iD sourceBundleID:(id)bundleID absoluteTimeStamp:(double)stamp eventDirection:(unint64_t)direction eventType:(unint64_t)type contentType:(unint64_t)contentType contactHandles:(id)self0 contentID:(id)self1 conversationID:(id)self2 imageData:(id)self3 senderHandle:(id)self4 contentURL:(id)self5 conversationURL:(id)self6;
+- (BMCommunicationSafetyResultEvent)initWithCoder:(id)coder;
+- (BMCommunicationSafetyResultEvent)initWithProto:(id)proto;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMCommunicationSafetyResultEvent
 
-- (BMCommunicationSafetyResultEvent)initWithChildID:(id)a3 deviceID:(id)a4 sourceBundleID:(id)a5 absoluteTimeStamp:(double)a6 eventDirection:(unint64_t)a7 eventType:(unint64_t)a8 contentType:(unint64_t)a9 contactHandles:(id)a10 contentID:(id)a11 conversationID:(id)a12 imageData:(id)a13 senderHandle:(id)a14 contentURL:(id)a15 conversationURL:(id)a16
+- (BMCommunicationSafetyResultEvent)initWithChildID:(id)d deviceID:(id)iD sourceBundleID:(id)bundleID absoluteTimeStamp:(double)stamp eventDirection:(unint64_t)direction eventType:(unint64_t)type contentType:(unint64_t)contentType contactHandles:(id)self0 contentID:(id)self1 conversationID:(id)self2 imageData:(id)self3 senderHandle:(id)self4 contentURL:(id)self5 conversationURL:(id)self6
 {
-  v48 = a3;
-  v47 = a4;
-  v46 = a5;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v45 = a13;
-  v23 = a14;
-  v24 = a15;
-  v25 = a16;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  handlesCopy = handles;
+  contentIDCopy = contentID;
+  conversationIDCopy = conversationID;
+  dataCopy = data;
+  handleCopy = handle;
+  lCopy = l;
+  rLCopy = rL;
   v49.receiver = self;
   v49.super_class = BMCommunicationSafetyResultEvent;
   v26 = [(BMCommunicationSafetyResultEvent *)&v49 init];
   if (v26)
   {
-    v27 = [v48 copy];
+    v27 = [dCopy copy];
     childID = v26->_childID;
     v26->_childID = v27;
 
-    v29 = [v47 copy];
+    v29 = [iDCopy copy];
     deviceID = v26->_deviceID;
     v26->_deviceID = v29;
 
-    v31 = [v46 copy];
+    v31 = [bundleIDCopy copy];
     sourceBundleID = v26->_sourceBundleID;
     v26->_sourceBundleID = v31;
 
-    v26->_absoluteTimestamp = a6;
-    v26->_eventDirection = a7;
-    v26->_eventType = a8;
-    v26->_contentType = a9;
-    v33 = [v20 copy];
+    v26->_absoluteTimestamp = stamp;
+    v26->_eventDirection = direction;
+    v26->_eventType = type;
+    v26->_contentType = contentType;
+    v33 = [handlesCopy copy];
     contactHandles = v26->_contactHandles;
     v26->_contactHandles = v33;
 
-    v35 = [v21 copy];
+    v35 = [contentIDCopy copy];
     contentID = v26->_contentID;
     v26->_contentID = v35;
 
-    v37 = [v22 copy];
+    v37 = [conversationIDCopy copy];
     conversationID = v26->_conversationID;
     v26->_conversationID = v37;
 
-    objc_storeStrong(&v26->_imageData, a13);
-    v39 = [v23 copy];
+    objc_storeStrong(&v26->_imageData, data);
+    v39 = [handleCopy copy];
     senderHandle = v26->_senderHandle;
     v26->_senderHandle = v39;
 
-    objc_storeStrong(&v26->_contentURL, a15);
-    objc_storeStrong(&v26->_conversationURL, a16);
+    objc_storeStrong(&v26->_contentURL, l);
+    objc_storeStrong(&v26->_conversationURL, rL);
   }
 
   return v26;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = a1;
+    selfCopy = self;
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (version == 2)
   {
-    v7 = BMCommunicationSafetyResultEvent_v2;
+    selfCopy = BMCommunicationSafetyResultEvent_v2;
 LABEL_5:
-    v8 = [[v7 alloc] initWithProtoData:v6];
+    v8 = [[selfCopy alloc] initWithProtoData:dataCopy];
     goto LABEL_9;
   }
 
@@ -134,11 +134,11 @@ LABEL_9:
   v26 = senderHandle;
   v16[11] = @"senderHandle";
   v16[12] = @"contentURL";
-  v11 = [(NSURL *)contentURL absoluteString];
-  v27 = v11;
+  absoluteString = [(NSURL *)contentURL absoluteString];
+  v27 = absoluteString;
   v16[13] = @"conversationURL";
-  v12 = [(NSURL *)self->_conversationURL absoluteString];
-  v28 = v12;
+  absoluteString2 = [(NSURL *)self->_conversationURL absoluteString];
+  v28 = absoluteString2;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:v16 count:14];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -149,9 +149,9 @@ LABEL_9:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMCommunicationSafetyResultEvent *)self jsonDict];
+  jsonDict = [(BMCommunicationSafetyResultEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -166,57 +166,57 @@ LABEL_9:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMCommunicationSafetyResultEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMCommunicationSafetyResultEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMCommunicationSafetyResultEvent)initWithCoder:(id)a3
+- (BMCommunicationSafetyResultEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMCommunicationSafetyResultEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMCommunicationSafetyResultEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMCommunicationSafetyResultEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMCommunicationSafetyResultEvent)initWithProto:(id)a3
+- (BMCommunicationSafetyResultEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v37 = [v5 childId];
-      v36 = [v5 deviceId];
-      v35 = [v5 sourceBundleId];
+      v5 = protoCopy;
+      childId = [v5 childId];
+      deviceId = [v5 deviceId];
+      sourceBundleId = [v5 sourceBundleId];
       [v5 absoluteTimestamp];
       v7 = v6;
-      v8 = [v5 communicationSafetyResultEventDirection];
-      if (v8 >= 3)
+      communicationSafetyResultEventDirection = [v5 communicationSafetyResultEventDirection];
+      if (communicationSafetyResultEventDirection >= 3)
       {
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -229,12 +229,12 @@ LABEL_9:
 
       else
       {
-        v9 = v8;
+        v9 = communicationSafetyResultEventDirection;
       }
 
       v34 = v9;
-      v12 = [v5 communicationSafetyResultEventType];
-      if (v12 >= 4)
+      communicationSafetyResultEventType = [v5 communicationSafetyResultEventType];
+      if (communicationSafetyResultEventType >= 4)
       {
         v14 = __biome_log_for_category();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -247,13 +247,13 @@ LABEL_9:
 
       else
       {
-        v13 = v12;
+        v13 = communicationSafetyResultEventType;
       }
 
       v33 = v13;
-      v15 = [v5 communicationSafetyResultContentType];
-      v31 = v4;
-      if (v15 >= 3)
+      communicationSafetyResultContentType = [v5 communicationSafetyResultContentType];
+      v31 = protoCopy;
+      if (communicationSafetyResultContentType >= 3)
       {
         v17 = __biome_log_for_category();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -266,26 +266,26 @@ LABEL_9:
 
       else
       {
-        v16 = v15;
+        v16 = communicationSafetyResultContentType;
       }
 
       v30 = v16;
-      v32 = [v5 contactHandles];
-      v28 = [v32 copy];
-      v27 = [v5 contentId];
-      v26 = [v5 conversationId];
-      v18 = [v5 imageData];
-      v19 = [v5 senderHandle];
+      contactHandles = [v5 contactHandles];
+      v28 = [contactHandles copy];
+      contentId = [v5 contentId];
+      conversationId = [v5 conversationId];
+      imageData = [v5 imageData];
+      senderHandle = [v5 senderHandle];
       v20 = MEMORY[0x1E695DFF8];
-      v29 = [v5 contentURL];
-      v21 = [v20 URLWithString:v29];
+      contentURL = [v5 contentURL];
+      v21 = [v20 URLWithString:contentURL];
       v22 = MEMORY[0x1E695DFF8];
-      v23 = [v5 conversationURL];
-      v24 = [v22 URLWithString:v23];
-      self = [(BMCommunicationSafetyResultEvent *)self initWithChildID:v37 deviceID:v36 sourceBundleID:v35 absoluteTimeStamp:v34 eventDirection:v33 eventType:v30 contentType:v7 contactHandles:v28 contentID:v27 conversationID:v26 imageData:v18 senderHandle:v19 contentURL:v21 conversationURL:v24];
+      conversationURL = [v5 conversationURL];
+      v24 = [v22 URLWithString:conversationURL];
+      self = [(BMCommunicationSafetyResultEvent *)self initWithChildID:childId deviceID:deviceId sourceBundleID:sourceBundleId absoluteTimeStamp:v34 eventDirection:v33 eventType:v30 contentType:v7 contactHandles:v28 contentID:contentId conversationID:conversationId imageData:imageData senderHandle:senderHandle contentURL:v21 conversationURL:v24];
 
-      v10 = self;
-      v4 = v31;
+      selfCopy = self;
+      protoCopy = v31;
     }
 
     else
@@ -296,35 +296,35 @@ LABEL_9:
         [BMCommunicationSafetyResultEvent initWithProto:v5];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMCommunicationSafetyResultEvent *)self deviceID];
-  [v3 setDeviceId:v4];
+  deviceID = [(BMCommunicationSafetyResultEvent *)self deviceID];
+  [v3 setDeviceId:deviceID];
 
-  v5 = [(BMCommunicationSafetyResultEvent *)self childID];
-  [v3 setChildId:v5];
+  childID = [(BMCommunicationSafetyResultEvent *)self childID];
+  [v3 setChildId:childID];
 
-  v6 = [(BMCommunicationSafetyResultEvent *)self sourceBundleID];
-  [v3 setSourceBundleId:v6];
+  sourceBundleID = [(BMCommunicationSafetyResultEvent *)self sourceBundleID];
+  [v3 setSourceBundleId:sourceBundleID];
 
   [(BMCommunicationSafetyResultEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v7 = [(BMCommunicationSafetyResultEvent *)self eventDirection];
-  v8 = v7;
-  if (!v7 || v7 == 2 || v7 == 1)
+  eventDirection = [(BMCommunicationSafetyResultEvent *)self eventDirection];
+  v8 = eventDirection;
+  if (!eventDirection || eventDirection == 2 || eventDirection == 1)
   {
     v9 = 0;
   }
@@ -341,17 +341,17 @@ LABEL_9:
     v9 = 1;
   }
 
-  v11 = [(BMCommunicationSafetyResultEvent *)self eventType];
-  v12 = v11;
-  if (v11 > 1)
+  eventType = [(BMCommunicationSafetyResultEvent *)self eventType];
+  v12 = eventType;
+  if (eventType > 1)
   {
-    if (v11 == 2 || v11 == 3)
+    if (eventType == 2 || eventType == 3)
     {
       goto LABEL_16;
     }
   }
 
-  else if (v11 < 2)
+  else if (eventType < 2)
   {
     goto LABEL_16;
   }
@@ -365,13 +365,13 @@ LABEL_9:
   v12 = 0xFFFFFFFFLL;
   v9 = 1;
 LABEL_16:
-  v14 = [(BMCommunicationSafetyResultEvent *)self contentType];
-  if (v14 >= 3)
+  contentType = [(BMCommunicationSafetyResultEvent *)self contentType];
+  if (contentType >= 3)
   {
     v26 = __biome_log_for_category();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      [(BMCommunicationSafetyResultEvent *)v14 proto];
+      [(BMCommunicationSafetyResultEvent *)contentType proto];
     }
   }
 
@@ -379,30 +379,30 @@ LABEL_16:
   {
     [v3 setCommunicationSafetyResultEventDirection:v8];
     [v3 setCommunicationSafetyResultEventType:v12];
-    [v3 setCommunicationSafetyResultContentType:v14];
-    v15 = [(BMCommunicationSafetyResultEvent *)self contactHandles];
-    v16 = [v15 mutableCopy];
+    [v3 setCommunicationSafetyResultContentType:contentType];
+    contactHandles = [(BMCommunicationSafetyResultEvent *)self contactHandles];
+    v16 = [contactHandles mutableCopy];
     [v3 setContactHandles:v16];
 
-    v17 = [(BMCommunicationSafetyResultEvent *)self contentID];
-    [v3 setContentId:v17];
+    contentID = [(BMCommunicationSafetyResultEvent *)self contentID];
+    [v3 setContentId:contentID];
 
-    v18 = [(BMCommunicationSafetyResultEvent *)self conversationID];
-    [v3 setConversationId:v18];
+    conversationID = [(BMCommunicationSafetyResultEvent *)self conversationID];
+    [v3 setConversationId:conversationID];
 
-    v19 = [(BMCommunicationSafetyResultEvent *)self imageData];
-    [v3 setImageData:v19];
+    imageData = [(BMCommunicationSafetyResultEvent *)self imageData];
+    [v3 setImageData:imageData];
 
-    v20 = [(BMCommunicationSafetyResultEvent *)self senderHandle];
-    [v3 setSenderHandle:v20];
+    senderHandle = [(BMCommunicationSafetyResultEvent *)self senderHandle];
+    [v3 setSenderHandle:senderHandle];
 
-    v21 = [(BMCommunicationSafetyResultEvent *)self contentURL];
-    v22 = [v21 absoluteString];
-    [v3 setContentURL:v22];
+    contentURL = [(BMCommunicationSafetyResultEvent *)self contentURL];
+    absoluteString = [contentURL absoluteString];
+    [v3 setContentURL:absoluteString];
 
-    v23 = [(BMCommunicationSafetyResultEvent *)self conversationURL];
-    v24 = [v23 absoluteString];
-    [v3 setConversationURL:v24];
+    conversationURL = [(BMCommunicationSafetyResultEvent *)self conversationURL];
+    absoluteString2 = [conversationURL absoluteString];
+    [v3 setConversationURL:absoluteString2];
 
     v25 = v3;
     goto LABEL_23;
@@ -422,18 +422,18 @@ LABEL_23:
   v6 = v3 ^ [(NSString *)self->_deviceID hash];
   v7 = v5 ^ v6 ^ [(NSString *)self->_sourceBundleID hash];
   v8 = [(NSString *)self->_contentID hash];
-  v9 = [(NSURL *)self->_contentURL absoluteString];
-  v10 = v8 ^ [v9 hash];
+  absoluteString = [(NSURL *)self->_contentURL absoluteString];
+  v10 = v8 ^ [absoluteString hash];
   v11 = v7 ^ v10 ^ [(NSString *)self->_conversationID hash];
-  v12 = [(NSURL *)self->_conversationURL absoluteString];
-  v13 = [v12 hash];
+  absoluteString2 = [(NSURL *)self->_conversationURL absoluteString];
+  v13 = [absoluteString2 hash];
 
   return v11 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -441,26 +441,26 @@ LABEL_23:
     goto LABEL_45;
   }
 
-  v7 = v6;
+  v7 = equalCopy;
   v8 = v7;
   childID = self->_childID;
   v10 = childID;
   if (!childID)
   {
-    v11 = [v7 childID];
-    if (!v11)
+    childID = [v7 childID];
+    if (!childID)
     {
       v78 = 0;
       v12 = 0;
       goto LABEL_10;
     }
 
-    v78 = v11;
+    v78 = childID;
     v10 = self->_childID;
   }
 
-  v3 = [v8 childID];
-  if (![(NSString *)v10 isEqualToString:v3])
+  childID2 = [v8 childID];
+  if (![(NSString *)v10 isEqualToString:childID2])
   {
 
     v13 = 0;
@@ -473,8 +473,8 @@ LABEL_10:
   v15 = deviceID;
   if (!deviceID)
   {
-    v16 = [v8 deviceID];
-    if (!v16)
+    deviceID = [v8 deviceID];
+    if (!deviceID)
     {
       v17 = v12;
       v76 = 0;
@@ -482,12 +482,12 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    v76 = v16;
+    v76 = deviceID;
     v15 = self->_deviceID;
   }
 
-  v4 = [v8 deviceID];
-  if (![(NSString *)v15 isEqualToString:v4])
+  deviceID2 = [v8 deviceID];
+  if (![(NSString *)v15 isEqualToString:deviceID2])
   {
 
     v13 = 0;
@@ -501,22 +501,22 @@ LABEL_17:
   v19 = sourceBundleID;
   if (!sourceBundleID)
   {
-    v20 = [v8 sourceBundleID];
-    if (!v20)
+    sourceBundleID = [v8 sourceBundleID];
+    if (!sourceBundleID)
     {
       v74 = 0;
       v75 = 0;
       goto LABEL_24;
     }
 
-    v74 = v20;
+    v74 = sourceBundleID;
     v19 = self->_sourceBundleID;
   }
 
-  v21 = [v8 sourceBundleID];
+  sourceBundleID2 = [v8 sourceBundleID];
   v22 = v19;
-  v23 = v21;
-  if (![(NSString *)v22 isEqualToString:v21])
+  v23 = sourceBundleID2;
+  if (![(NSString *)v22 isEqualToString:sourceBundleID2])
   {
 
     v13 = 0;
@@ -544,19 +544,19 @@ LABEL_24:
           v72 = contactHandles;
           if (!contactHandles)
           {
-            v30 = [v8 contactHandles];
-            if (!v30)
+            contactHandles = [v8 contactHandles];
+            if (!contactHandles)
             {
               v67 = 0;
               v70 = 0;
               goto LABEL_52;
             }
 
-            v67 = v30;
+            v67 = contactHandles;
             contactHandles = self->_contactHandles;
           }
 
-          v71 = [v8 contactHandles];
+          contactHandles2 = [v8 contactHandles];
           if (![(NSArray *)contactHandles isEqual:?])
           {
             v13 = 0;
@@ -570,19 +570,19 @@ LABEL_52:
           v69 = contentID;
           if (!contentID)
           {
-            v33 = [v8 contentID];
-            if (!v33)
+            contentID = [v8 contentID];
+            if (!contentID)
             {
               v63 = 0;
               v66 = 0;
               goto LABEL_59;
             }
 
-            v63 = v33;
+            v63 = contentID;
             contentID = self->_contentID;
           }
 
-          v68 = [v8 contentID];
+          contentID2 = [v8 contentID];
           if (![(NSString *)contentID isEqualToString:?])
           {
             v13 = 0;
@@ -596,19 +596,19 @@ LABEL_59:
           v65 = conversationID;
           if (!conversationID)
           {
-            v35 = [v8 conversationID];
-            if (!v35)
+            conversationID = [v8 conversationID];
+            if (!conversationID)
             {
               v59 = 0;
               v62 = 0;
               goto LABEL_66;
             }
 
-            v59 = v35;
+            v59 = conversationID;
             conversationID = self->_conversationID;
           }
 
-          v64 = [v8 conversationID];
+          conversationID2 = [v8 conversationID];
           if (![(NSString *)conversationID isEqualToString:?])
           {
             v13 = 0;
@@ -622,19 +622,19 @@ LABEL_66:
           v61 = senderHandle;
           if (!senderHandle)
           {
-            v37 = [v8 senderHandle];
-            if (!v37)
+            senderHandle = [v8 senderHandle];
+            if (!senderHandle)
             {
               v53 = 0;
               v57 = 0;
               goto LABEL_73;
             }
 
-            v53 = v37;
+            v53 = senderHandle;
             senderHandle = self->_senderHandle;
           }
 
-          v60 = [v8 senderHandle];
+          senderHandle2 = [v8 senderHandle];
           if (![(NSString *)senderHandle isEqualToString:?])
           {
             v13 = 0;
@@ -649,10 +649,10 @@ LABEL_73:
           v58 = contentURL;
           if (!contentURL)
           {
-            v48 = [v8 contentURL];
-            if (!v48)
+            contentURL = [v8 contentURL];
+            if (!contentURL)
             {
-              v48 = 0;
+              contentURL = 0;
               v52 = 0;
               goto LABEL_80;
             }
@@ -660,11 +660,11 @@ LABEL_73:
             contentURL = self->_contentURL;
           }
 
-          v39 = [(NSURL *)contentURL absoluteString];
-          v55 = [v8 contentURL];
-          [v55 absoluteString];
-          v54 = v56 = v39;
-          if (![v39 isEqualToString:?])
+          absoluteString = [(NSURL *)contentURL absoluteString];
+          contentURL2 = [v8 contentURL];
+          [contentURL2 absoluteString];
+          v54 = v56 = absoluteString;
+          if (![absoluteString isEqualToString:?])
           {
             v13 = 0;
             goto LABEL_89;
@@ -677,22 +677,22 @@ LABEL_80:
           v41 = conversationURL;
           if (!conversationURL)
           {
-            v42 = [v8 conversationURL];
-            if (!v42)
+            conversationURL = [v8 conversationURL];
+            if (!conversationURL)
             {
               v45 = 0;
               v13 = 1;
               goto LABEL_88;
             }
 
-            v46 = v42;
+            v46 = conversationURL;
             v41 = self->_conversationURL;
           }
 
           v49 = [(NSURL *)v41 absoluteString:v46];
-          v50 = [v8 conversationURL];
-          v43 = [v50 absoluteString];
-          v13 = [v49 isEqualToString:v43];
+          conversationURL2 = [v8 conversationURL];
+          absoluteString2 = [conversationURL2 absoluteString];
+          v13 = [v49 isEqualToString:absoluteString2];
 
           if (conversationURL)
           {

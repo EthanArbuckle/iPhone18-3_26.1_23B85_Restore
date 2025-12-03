@@ -1,10 +1,10 @@
 @interface SBUIProudLockContainerViewController
 - ($20D0CF0D87A8AD096D8C820DF2D4BB3C)configuration;
-- (BOOL)_canTransitionToState:(int64_t)a3;
+- (BOOL)_canTransitionToState:(int64_t)state;
 - (BOOL)_isBiometricLockedOut;
 - (BOOL)isGuidanceTextVisible;
 - (BOOL)isPortrait;
-- (SBUIProudLockContainerViewController)initWithAuthenticationInformationProvider:(id)a3;
+- (SBUIProudLockContainerViewController)initWithAuthenticationInformationProvider:(id)provider;
 - (SBUIProudLockContainerViewControllerDelegate)delegate;
 - (SBUIProudLockContainerViewControllerLockStatusProvider)authenticationInformationProvider;
 - (UIView)cameraCoveredView;
@@ -12,57 +12,57 @@
 - (id)_proudLockIconView;
 - (id)orientationProvider;
 - (int64_t)_actualIconState;
-- (int64_t)_iconViewStateForCoachingCondition:(unint64_t)a3;
+- (int64_t)_iconViewStateForCoachingCondition:(unint64_t)condition;
 - (int64_t)orientation;
-- (unint64_t)_effectiveCoachingConditionForCondition:(unint64_t)a3;
-- (unint64_t)_effectiveCoachingConditionForCondition:(unint64_t)a3 orientation:(int64_t)a4;
+- (unint64_t)_effectiveCoachingConditionForCondition:(unint64_t)condition;
+- (unint64_t)_effectiveCoachingConditionForCondition:(unint64_t)condition orientation:(int64_t)orientation;
 - (void)__reallyAllowCameraCoveredReinstatingCoachingIfNecessary;
-- (void)_allowCameraCoveredForUnlockSource:(int)a3;
-- (void)_allowCoachingConditionImmediately:(BOOL)a3;
+- (void)_allowCameraCoveredForUnlockSource:(int)source;
+- (void)_allowCoachingConditionImmediately:(BOOL)immediately;
 - (void)_allowLeavingCoachingCondition;
-- (void)_dontCallThis_showLockIfNeededAnimated:(BOOL)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)_dontCallThis_updateCoachingCondition:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_handleBiometricEvent:(unint64_t)a3;
-- (void)_performForcedUpdate:(id)a3;
-- (void)_provideFeedbackForCoachingCondition:(unint64_t)a3;
+- (void)_dontCallThis_showLockIfNeededAnimated:(BOOL)animated force:(BOOL)force completion:(id)completion;
+- (void)_dontCallThis_updateCoachingCondition:(unint64_t)condition animated:(BOOL)animated;
+- (void)_handleBiometricEvent:(unint64_t)event;
+- (void)_performForcedUpdate:(id)update;
+- (void)_provideFeedbackForCoachingCondition:(unint64_t)condition;
 - (void)_reallyAllowCameraCovered;
-- (void)_reallyAllowCoachingConditionAnimated:(BOOL)a3;
+- (void)_reallyAllowCoachingConditionAnimated:(BOOL)animated;
 - (void)_reallyAllowLeavingCoachingCondition;
-- (void)_setCoachingCondition:(unint64_t)a3 animated:(BOOL)a4 force:(BOOL)a5;
-- (void)_setCoachingCondition:(unint64_t)a3 animated:(BOOL)a4 skipScanningState:(BOOL)a5 force:(BOOL)a6;
-- (void)_setCounterTransformForOrientation:(int64_t)a3;
-- (void)_setIconState:(int64_t)a3 animated:(BOOL)a4 options:(int64_t)a5 force:(BOOL)a6 completion:(id)a7;
-- (void)_setLocalTransformForOrientation:(int64_t)a3;
+- (void)_setCoachingCondition:(unint64_t)condition animated:(BOOL)animated force:(BOOL)force;
+- (void)_setCoachingCondition:(unint64_t)condition animated:(BOOL)animated skipScanningState:(BOOL)state force:(BOOL)force;
+- (void)_setCounterTransformForOrientation:(int64_t)orientation;
+- (void)_setIconState:(int64_t)state animated:(BOOL)animated options:(int64_t)options force:(BOOL)force completion:(id)completion;
+- (void)_setLocalTransformForOrientation:(int64_t)orientation;
 - (void)_startScanningStateTimer;
-- (void)_updateIconViewStateAnimated:(BOOL)a3 force:(BOOL)a4 completion:(id)a5;
+- (void)_updateIconViewStateAnimated:(BOOL)animated force:(BOOL)force completion:(id)completion;
 - (void)_updateLockForFaceInView;
 - (void)_updateLockForMatchStarted;
 - (void)_updateScanningState;
-- (void)handleBiometricEvent:(unint64_t)a3;
-- (void)handlePhoneUnlockWithVisionError:(id)a3;
-- (void)handlePhoneUnlockWithWatchError:(id)a3;
+- (void)handleBiometricEvent:(unint64_t)event;
+- (void)handlePhoneUnlockWithVisionError:(id)error;
+- (void)handlePhoneUnlockWithWatchError:(id)error;
 - (void)loadView;
-- (void)overrideProudLockIconViewLayoutWithSize:(CGSize)a3 offset:(CGPoint)a4 extent:(double)a5;
+- (void)overrideProudLockIconViewLayoutWithSize:(CGSize)size offset:(CGPoint)offset extent:(double)extent;
 - (void)reset;
-- (void)setAuthenticated:(BOOL)a3 completion:(id)a4;
-- (void)setCanLeaveCoachingCondition:(BOOL)a3;
-- (void)setCanShowScanningState:(BOOL)a3;
-- (void)setConfiguration:(id *)a3;
-- (void)setHasSeenFaceSinceScreenOn:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setOrientationProvider:(id)a3;
-- (void)setScreenOn:(BOOL)a3 fromUnlockSource:(int)a4;
-- (void)setShouldShowScanningState:(BOOL)a3;
-- (void)setSuppressAlongsideCoaching:(BOOL)a3;
-- (void)setSuppressNotLooking:(BOOL)a3;
-- (void)setSuppressScanningState:(BOOL)a3;
-- (void)setTestProudLockIconView:(id)a3;
-- (void)setUnlockCompletion:(id)a3;
+- (void)setAuthenticated:(BOOL)authenticated completion:(id)completion;
+- (void)setCanLeaveCoachingCondition:(BOOL)condition;
+- (void)setCanShowScanningState:(BOOL)state;
+- (void)setConfiguration:(id *)configuration;
+- (void)setHasSeenFaceSinceScreenOn:(BOOL)on;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setOrientationProvider:(id)provider;
+- (void)setScreenOn:(BOOL)on fromUnlockSource:(int)source;
+- (void)setShouldShowScanningState:(BOOL)state;
+- (void)setSuppressAlongsideCoaching:(BOOL)coaching;
+- (void)setSuppressNotLooking:(BOOL)looking;
+- (void)setSuppressScanningState:(BOOL)state;
+- (void)setTestProudLockIconView:(id)view;
+- (void)setUnlockCompletion:(id)completion;
 - (void)updateForScreenWillTurnOff;
 - (void)updateLockForBiometricMatchFailure;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBUIProudLockContainerViewController
@@ -80,15 +80,15 @@
   testProudLockIconView = self->_testProudLockIconView;
   if (testProudLockIconView)
   {
-    v3 = testProudLockIconView;
+    view = testProudLockIconView;
   }
 
   else
   {
-    v3 = [(SBUIProudLockContainerViewController *)self view];
+    view = [(SBUIProudLockContainerViewController *)self view];
   }
 
-  return v3;
+  return view;
 }
 
 - (SBUIProudLockContainerViewControllerLockStatusProvider)authenticationInformationProvider
@@ -100,10 +100,10 @@
 
 - (int64_t)_actualIconState
 {
-  v2 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-  v3 = [v2 state];
+  _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+  state = [_proudLockIconView state];
 
-  return v3;
+  return state;
 }
 
 - ($20D0CF0D87A8AD096D8C820DF2D4BB3C)configuration
@@ -160,22 +160,22 @@ uint64_t __45__SBUIProudLockContainerViewController_reset__block_invoke(uint64_t
 
 - (BOOL)_isBiometricLockedOut
 {
-  v2 = [(SBUIProudLockContainerViewController *)self authenticationInformationProvider];
-  v3 = [v2 isBiometricLockedOut];
+  authenticationInformationProvider = [(SBUIProudLockContainerViewController *)self authenticationInformationProvider];
+  isBiometricLockedOut = [authenticationInformationProvider isBiometricLockedOut];
 
-  return v3;
+  return isBiometricLockedOut;
 }
 
-- (SBUIProudLockContainerViewController)initWithAuthenticationInformationProvider:(id)a3
+- (SBUIProudLockContainerViewController)initWithAuthenticationInformationProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = SBUIProudLockContainerViewController;
   v5 = [(SBUIProudLockContainerViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SBUIProudLockContainerViewController *)v5 setAuthenticationInformationProvider:v4];
+    [(SBUIProudLockContainerViewController *)v5 setAuthenticationInformationProvider:providerCopy];
     [(SBUIProudLockContainerViewController *)v6 setScreenOn:1];
     [(SBUIProudLockContainerViewController *)v6 setSuppressScanningState:1];
     [(SBUIProudLockContainerViewController *)v6 setSuppressNotLooking:0];
@@ -221,38 +221,38 @@ void __51__SBUIProudLockContainerViewController_viewDidLoad__block_invoke(uint64
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBUIProudLockContainerViewController;
-  [(SBUIProudLockContainerViewController *)&v4 viewWillAppear:a3];
+  [(SBUIProudLockContainerViewController *)&v4 viewWillAppear:appear];
   [(SBUIProudLockContainerViewController *)self _updateIconViewStateAnimated:0];
   [(SBUIProudLockContainerViewController *)self _startScanningStateTimer];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21.receiver = self;
   v21.super_class = SBUIProudLockContainerViewController;
-  v7 = a4;
-  [(SBUIProudLockContainerViewController *)&v21 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-  v9 = [v8 cameraCoveredView];
-  v10 = [v9 superview];
-  v11 = [(SBUIProudLockContainerViewController *)self view];
+  coordinatorCopy = coordinator;
+  [(SBUIProudLockContainerViewController *)&v21 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+  cameraCoveredView = [_proudLockIconView cameraCoveredView];
+  superview = [cameraCoveredView superview];
+  view = [(SBUIProudLockContainerViewController *)self view];
 
-  if (v10 != v11)
+  if (superview != view)
   {
-    v12 = [v10 superview];
+    v10Superview = [superview superview];
 
-    v10 = v12;
+    superview = v10Superview;
   }
 
-  if (v9)
+  if (cameraCoveredView)
   {
-    [v9 transform];
+    [cameraCoveredView transform];
   }
 
   else
@@ -261,10 +261,10 @@ void __51__SBUIProudLockContainerViewController_viewDidLoad__block_invoke(uint64
   }
 
   CGAffineTransformRotate(&v20, &v19, -1.0e-13);
-  [v9 setTransform:&v20];
-  if (v9)
+  [cameraCoveredView setTransform:&v20];
+  if (cameraCoveredView)
   {
-    [v9 localTransform];
+    [cameraCoveredView localTransform];
   }
 
   else
@@ -273,20 +273,20 @@ void __51__SBUIProudLockContainerViewController_viewDidLoad__block_invoke(uint64
   }
 
   CGAffineTransformRotate(&v20, &v19, 1.0e-13);
-  [v9 setLocalTransform:&v20];
-  v13 = SBUIWindowForViewControllerTransition(v7);
-  v14 = [v13 _toWindowOrientation];
+  [cameraCoveredView setLocalTransform:&v20];
+  v13 = SBUIWindowForViewControllerTransition(coordinatorCopy);
+  _toWindowOrientation = [v13 _toWindowOrientation];
 
-  [(SBUIProudLockContainerViewController *)self _setLocalTransformForOrientation:v14];
+  [(SBUIProudLockContainerViewController *)self _setLocalTransformForOrientation:_toWindowOrientation];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __91__SBUIProudLockContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v16[3] = &unk_1E789F0E8;
-  v17 = v10;
-  v18 = v14;
+  v17 = superview;
+  v18 = _toWindowOrientation;
   v16[4] = self;
-  v15 = v10;
-  [v7 animateAlongsideTransition:v16 completion:0];
+  v15 = superview;
+  [coordinatorCopy animateAlongsideTransition:v16 completion:0];
 }
 
 uint64_t __91__SBUIProudLockContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -300,13 +300,13 @@ uint64_t __91__SBUIProudLockContainerViewController_viewWillTransitionToSize_wit
   return [v3 _setCoachingCondition:v2 animated:1 force:1];
 }
 
-- (void)setScreenOn:(BOOL)a3 fromUnlockSource:(int)a4
+- (void)setScreenOn:(BOOL)on fromUnlockSource:(int)source
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_screenOn != a3)
+  if (self->_screenOn != on)
   {
-    v4 = *&a4;
-    self->_screenOn = a3;
+    v4 = *&source;
+    self->_screenOn = on;
     v6 = SBLogLockScreenBiometricFaceIDCoaching();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -342,23 +342,23 @@ uint64_t __91__SBUIProudLockContainerViewController_viewWillTransitionToSize_wit
   }
 }
 
-- (void)setAuthenticated:(BOOL)a3 completion:(id)a4
+- (void)setAuthenticated:(BOOL)authenticated completion:(id)completion
 {
-  v4 = a3;
+  authenticatedCopy = authenticated;
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (self->_authenticated == v4)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (self->_authenticated == authenticatedCopy)
   {
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6);
+      (*(completionCopy + 2))(completionCopy);
     }
   }
 
   else
   {
-    self->_authenticated = v4;
+    self->_authenticated = authenticatedCopy;
     v8 = SBLogLockScreenBiometricFaceIDCoaching();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -385,12 +385,12 @@ uint64_t __91__SBUIProudLockContainerViewController_viewWillTransitionToSize_wit
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (([(_UILegibilitySettings *)self->_legibilitySettings isEqual:v5]& 1) == 0)
+  settingsCopy = settings;
+  if (([(_UILegibilitySettings *)self->_legibilitySettings isEqual:settingsCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     v6 = SBLogLockScreenBiometricFaceIDCoaching();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -398,12 +398,12 @@ uint64_t __91__SBUIProudLockContainerViewController_viewWillTransitionToSize_wit
       _os_log_impl(&dword_1A9A79000, v6, OS_LOG_TYPE_INFO, "Updating Legibility Settings", v8, 2u);
     }
 
-    v7 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-    [v7 setLegibilitySettings:self->_legibilitySettings];
+    _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+    [_proudLockIconView setLegibilitySettings:self->_legibilitySettings];
   }
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
   p_configuration = &self->_configuration;
   v6 = *&self->_configuration.durationToSuppressCameraCoveredWhenWakingWithSmartCover;
@@ -413,27 +413,27 @@ uint64_t __91__SBUIProudLockContainerViewController_viewWillTransitionToSize_wit
   v7 = *&self->_configuration.bkCoachingHintsEnabled;
   v17[0] = *&self->_configuration.showScanningState;
   v17[1] = v7;
-  v8 = *&a3->var7;
-  v16[2] = *&a3->var5;
+  v8 = *&configuration->var7;
+  v16[2] = *&configuration->var5;
   v16[3] = v8;
-  v16[4] = *&a3->var9;
-  v9 = *&a3->var3;
-  v16[0] = *&a3->var0;
+  v16[4] = *&configuration->var9;
+  v9 = *&configuration->var3;
+  v16[0] = *&configuration->var0;
   v16[1] = v9;
   if (!SBUIProudLockContainerViewControllerConfigurationEqualToConfiguration(v17, v16))
   {
     suppressFaceIDDisabledState = p_configuration->suppressFaceIDDisabledState;
     substate = p_configuration->substate;
-    *&p_configuration->showScanningState = *&a3->var0;
-    v12 = *&a3->var9;
-    v14 = *&a3->var3;
-    v13 = *&a3->var5;
-    *&p_configuration->durationToSuppressCameraCoveredWhenWakingWithSmartCover = *&a3->var7;
+    *&p_configuration->showScanningState = *&configuration->var0;
+    v12 = *&configuration->var9;
+    v14 = *&configuration->var3;
+    v13 = *&configuration->var5;
+    *&p_configuration->durationToSuppressCameraCoveredWhenWakingWithSmartCover = *&configuration->var7;
     *&p_configuration->coachingDelaysUnlock = v12;
     *&p_configuration->bkCoachingHintsEnabled = v14;
     *&p_configuration->minimumDurationShowingCoaching = v13;
-    v15 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-    [v15 setDurationOnCameraCoveredGlyphBeforeCoaching:p_configuration->durationOnCameraCoveredGlyphBeforeCoaching];
+    _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+    [_proudLockIconView setDurationOnCameraCoveredGlyphBeforeCoaching:p_configuration->durationOnCameraCoveredGlyphBeforeCoaching];
 
     if (suppressFaceIDDisabledState != p_configuration->suppressFaceIDDisabledState || substate != p_configuration->substate)
     {
@@ -444,10 +444,10 @@ uint64_t __91__SBUIProudLockContainerViewController_viewWillTransitionToSize_wit
 
 - (UIView)cameraCoveredView
 {
-  v2 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-  v3 = [v2 cameraCoveredView];
+  _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+  cameraCoveredView = [_proudLockIconView cameraCoveredView];
 
-  return v3;
+  return cameraCoveredView;
 }
 
 - (void)updateLockForBiometricMatchFailure
@@ -497,12 +497,12 @@ void __74__SBUIProudLockContainerViewController_updateLockForBiometricMatchFailu
   }
 }
 
-- (void)setSuppressNotLooking:(BOOL)a3
+- (void)setSuppressNotLooking:(BOOL)looking
 {
-  if (self->_suppressNotLooking != a3)
+  if (self->_suppressNotLooking != looking)
   {
-    self->_suppressNotLooking = a3;
-    if (a3)
+    self->_suppressNotLooking = looking;
+    if (looking)
     {
       desiredIconState = self->_desiredIconState;
       if (desiredIconState == 25 || desiredIconState == 22)
@@ -513,26 +513,26 @@ void __74__SBUIProudLockContainerViewController_updateLockForBiometricMatchFailu
   }
 }
 
-- (void)setSuppressAlongsideCoaching:(BOOL)a3
+- (void)setSuppressAlongsideCoaching:(BOOL)coaching
 {
-  if (self->_suppressAlongsideCoaching != a3)
+  if (self->_suppressAlongsideCoaching != coaching)
   {
-    self->_suppressAlongsideCoaching = a3;
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    self->_suppressAlongsideCoaching = coaching;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v6 = (v5 & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 5) < 0xFFFFFFFFFFFFFFFELL;
-    v7 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-    [v7 setAllowsAlongsideCoaching:v6 & ~self->_suppressAlongsideCoaching & 1];
+    v6 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 5) < 0xFFFFFFFFFFFFFFFELL;
+    _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+    [_proudLockIconView setAllowsAlongsideCoaching:v6 & ~self->_suppressAlongsideCoaching & 1];
   }
 }
 
-- (void)setHasSeenFaceSinceScreenOn:(BOOL)a3
+- (void)setHasSeenFaceSinceScreenOn:(BOOL)on
 {
-  if (self->_hasSeenFaceSinceScreenOn != a3)
+  if (self->_hasSeenFaceSinceScreenOn != on)
   {
-    self->_hasSeenFaceSinceScreenOn = a3;
-    if (a3 && self->_configuration.bkCoachingHintsEnabled && [(SBUIProudLockContainerViewController *)self _isBiometricLockedOut])
+    self->_hasSeenFaceSinceScreenOn = on;
+    if (on && self->_configuration.bkCoachingHintsEnabled && [(SBUIProudLockContainerViewController *)self _isBiometricLockedOut])
     {
 
       [(SBUIProudLockContainerViewController *)self _setIconState:22 animated:1];
@@ -542,21 +542,21 @@ void __74__SBUIProudLockContainerViewController_updateLockForBiometricMatchFailu
 
 - (BOOL)isGuidanceTextVisible
 {
-  v2 = [(SBUIProudLockContainerViewController *)self _actualIconState];
+  _actualIconState = [(SBUIProudLockContainerViewController *)self _actualIconState];
 
-  return SBUIProudLockIconViewStateShowsCoachingText(v2);
+  return SBUIProudLockIconViewStateShowsCoachingText(_actualIconState);
 }
 
-- (void)handlePhoneUnlockWithWatchError:(id)a3
+- (void)handlePhoneUnlockWithWatchError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__SBUIProudLockContainerViewController_handlePhoneUnlockWithWatchError___block_invoke;
   v6[3] = &unk_1E789DD98;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = errorCopy;
+  selfCopy = self;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -584,7 +584,7 @@ void __72__SBUIProudLockContainerViewController_handlePhoneUnlockWithWatchError_
   }
 }
 
-- (void)handlePhoneUnlockWithVisionError:(id)a3
+- (void)handlePhoneUnlockWithVisionError:(id)error
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -607,19 +607,19 @@ void __73__SBUIProudLockContainerViewController_handlePhoneUnlockWithVisionError
   }
 }
 
-- (void)handleBiometricEvent:(unint64_t)a3
+- (void)handleBiometricEvent:(unint64_t)event
 {
   v5 = +[SBUIBiometricResource sharedInstance];
   if ([v5 hasBiometricAuthenticationCapabilityEnabled])
   {
-    [(SBUIProudLockContainerViewController *)self _handleBiometricEvent:a3];
+    [(SBUIProudLockContainerViewController *)self _handleBiometricEvent:event];
   }
 }
 
-- (void)_handleBiometricEvent:(unint64_t)a3
+- (void)_handleBiometricEvent:(unint64_t)event
 {
   v11 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(event)
   {
     case 0x1BuLL:
       [(SBUIProudLockContainerViewController *)self _updateIconViewStateAnimated:1];
@@ -629,9 +629,9 @@ void __73__SBUIProudLockContainerViewController_handlePhoneUnlockWithVisionError
       break;
     case 0xCuLL:
       v5 = +[SBUIBiometricResource sharedInstance];
-      v6 = [v5 hasPoseidonSupport];
+      hasPoseidonSupport = [v5 hasPoseidonSupport];
 
-      if ((v6 & 1) == 0)
+      if ((hasPoseidonSupport & 1) == 0)
       {
         [(SBUIProudLockContainerViewController *)self _updateLockForMatchStarted];
       }
@@ -639,17 +639,17 @@ void __73__SBUIProudLockContainerViewController_handlePhoneUnlockWithVisionError
       break;
   }
 
-  if (SBUIBiometricEventIsProvidingFeedback(a3))
+  if (SBUIBiometricEventIsProvidingFeedback(event))
   {
-    [(SBUIProudLockContainerViewController *)self _provideFeedbackForCoachingCondition:SBUIFaceIDCoachingConditionForBiometricEvent(a3)];
+    [(SBUIProudLockContainerViewController *)self _provideFeedbackForCoachingCondition:SBUIFaceIDCoachingConditionForBiometricEvent(event)];
   }
 
-  if (a3 <= 0x21 && ((1 << a3) & 0x2070009E0) != 0)
+  if (event <= 0x21 && ((1 << event) & 0x2070009E0) != 0)
   {
     v7 = SBLogLockScreenBiometricFaceIDCoaching();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = NSStringFromSBUIBiometricEvent(a3);
+      v8 = NSStringFromSBUIBiometricEvent(event);
       v9 = 138543362;
       v10 = v8;
       _os_log_impl(&dword_1A9A79000, v7, OS_LOG_TYPE_DEFAULT, "Received: Require Passcode -  %{public}@", &v9, 0xCu);
@@ -659,20 +659,20 @@ void __73__SBUIProudLockContainerViewController_handlePhoneUnlockWithVisionError
   }
 }
 
-- (void)_provideFeedbackForCoachingCondition:(unint64_t)a3
+- (void)_provideFeedbackForCoachingCondition:(unint64_t)condition
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = SBLogLockScreenBiometricFaceIDCoaching();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = DebugStringForSBUIFaceIDCoachingCondition(a3);
+    v6 = DebugStringForSBUIFaceIDCoachingCondition(condition);
     v10 = 138543362;
     v11 = v6;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "Received: Coaching -  %{public}@", &v10, 0xCu);
   }
 
-  self->_mostRecentCoachingFeedbackCondition = a3;
-  v7 = [(SBUIProudLockContainerViewController *)self _effectiveCoachingConditionForCondition:a3];
+  self->_mostRecentCoachingFeedbackCondition = condition;
+  v7 = [(SBUIProudLockContainerViewController *)self _effectiveCoachingConditionForCondition:condition];
   if (v7 == 4 && !self->_canShowCameraCovered)
   {
     v8 = SBLogLockScreenBiometricFaceIDCoaching();
@@ -744,48 +744,48 @@ void __73__SBUIProudLockContainerViewController_handlePhoneUnlockWithVisionError
 
 - (double)proudLockLandscapeOffset
 {
-  v2 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-  [v2 proudLockLandscapeOffset];
+  _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+  [_proudLockIconView proudLockLandscapeOffset];
   v4 = v3;
 
   return v4;
 }
 
-- (void)overrideProudLockIconViewLayoutWithSize:(CGSize)a3 offset:(CGPoint)a4 extent:(double)a5
+- (void)overrideProudLockIconViewLayoutWithSize:(CGSize)size offset:(CGPoint)offset extent:(double)extent
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
-  v10 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-  [v10 setOverrideSize:width offset:height extent:{x, y, a5}];
+  y = offset.y;
+  x = offset.x;
+  height = size.height;
+  width = size.width;
+  _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+  [_proudLockIconView setOverrideSize:width offset:height extent:{x, y, extent}];
 }
 
 - (BOOL)isPortrait
 {
-  v2 = [(SBUIProudLockContainerViewController *)self view];
-  v3 = [v2 window];
-  v4 = ([v3 interfaceOrientation] - 1) < 2;
+  view = [(SBUIProudLockContainerViewController *)self view];
+  window = [view window];
+  v4 = ([window interfaceOrientation] - 1) < 2;
 
   return v4;
 }
 
 - (int64_t)orientation
 {
-  v2 = [(SBUIProudLockContainerViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 interfaceOrientation];
+  view = [(SBUIProudLockContainerViewController *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
-  return v4;
+  return interfaceOrientation;
 }
 
-- (void)setUnlockCompletion:(id)a3
+- (void)setUnlockCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4 && self->_unlockCompletion)
+  completionCopy = completion;
+  if (completionCopy && self->_unlockCompletion)
   {
     v5 = MEMORY[0x1AC58E960]();
-    v6 = [v4 copy];
+    v6 = [completionCopy copy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __60__SBUIProudLockContainerViewController_setUnlockCompletion___block_invoke;
@@ -801,7 +801,7 @@ void __73__SBUIProudLockContainerViewController_handlePhoneUnlockWithVisionError
 
   else
   {
-    v11 = [v4 copy];
+    v11 = [completionCopy copy];
     v12 = self->_unlockCompletion;
     self->_unlockCompletion = v11;
   }
@@ -815,38 +815,38 @@ uint64_t __60__SBUIProudLockContainerViewController_setUnlockCompletion___block_
   return v2();
 }
 
-- (void)_setCounterTransformForOrientation:(int64_t)a3
+- (void)_setCounterTransformForOrientation:(int64_t)orientation
 {
-  v4 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-  v5 = [v4 cameraCoveredView];
-  v6 = [v5 superview];
-  v7 = [(SBUIProudLockContainerViewController *)self view];
+  _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+  cameraCoveredView = [_proudLockIconView cameraCoveredView];
+  superview = [cameraCoveredView superview];
+  view = [(SBUIProudLockContainerViewController *)self view];
 
-  if (v6 != v7)
+  if (superview != view)
   {
-    v8 = [v6 superview];
+    v6Superview = [superview superview];
 
-    v6 = v8;
+    superview = v6Superview;
   }
 
   v9 = SBUIFaceIDCameraOrientationForDevice();
   SBUIInterfaceOrientationForFaceIDCameraOrientation(v9);
   SBTransformFromOrientationToOrientation();
-  [v5 setTransform:&v10];
-  [v6 setNeedsLayout];
+  [cameraCoveredView setTransform:&v10];
+  [superview setNeedsLayout];
 }
 
-- (void)_setLocalTransformForOrientation:(int64_t)a3
+- (void)_setLocalTransformForOrientation:(int64_t)orientation
 {
-  v4 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
-  v5 = [v4 cameraCoveredView];
+  _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+  cameraCoveredView = [_proudLockIconView cameraCoveredView];
 
   v6 = SBUIFaceIDCameraOrientationForDevice();
-  if (a3 <= 2)
+  if (orientation <= 2)
   {
-    if (a3 != 1)
+    if (orientation != 1)
     {
-      if (a3 != 2 || v6 != 2)
+      if (orientation != 2 || v6 != 2)
       {
         goto LABEL_15;
       }
@@ -862,7 +862,7 @@ uint64_t __60__SBUIProudLockContainerViewController_setUnlockCompletion___block_
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (orientation == 3)
   {
     if (v6 != 1)
     {
@@ -874,27 +874,27 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3 == 4 && v6 == 1)
+  if (orientation == 4 && v6 == 1)
   {
 LABEL_11:
     v7 = -1.57079633;
 LABEL_14:
     CGAffineTransformMakeRotation(&v8, v7);
-    [v5 setLocalTransform:&v8];
+    [cameraCoveredView setLocalTransform:&v8];
   }
 
 LABEL_15:
 }
 
-- (void)setTestProudLockIconView:(id)a3
+- (void)setTestProudLockIconView:(id)view
 {
-  v5 = a3;
-  if (self->_testProudLockIconView != v5)
+  viewCopy = view;
+  if (self->_testProudLockIconView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_testProudLockIconView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_testProudLockIconView, view);
     [(SBUIProudLockIconView *)self->_testProudLockIconView setDurationOnCameraCoveredGlyphBeforeCoaching:self->_configuration.durationOnCameraCoveredGlyphBeforeCoaching];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
@@ -908,54 +908,54 @@ LABEL_15:
   return self;
 }
 
-- (void)setOrientationProvider:(id)a3
+- (void)setOrientationProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_orientationProvider != v5)
+  providerCopy = provider;
+  if (self->_orientationProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_orientationProvider, a3);
-    v5 = v6;
+    v6 = providerCopy;
+    objc_storeStrong(&self->_orientationProvider, provider);
+    providerCopy = v6;
   }
 }
 
-- (void)_updateIconViewStateAnimated:(BOOL)a3 force:(BOOL)a4 completion:(id)a5
+- (void)_updateIconViewStateAnimated:(BOOL)animated force:(BOOL)force completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v10 = a5;
+  forceCopy = force;
+  animatedCopy = animated;
+  completionCopy = completion;
   desiredCoachingCondition = self->_desiredCoachingCondition;
   if (!SBUIFaceIDCoachingConditionShouldBeVisible(desiredCoachingCondition) || desiredCoachingCondition == 8 && self->_configuration.suppressFaceIDDisabledState)
   {
-    [(SBUIProudLockContainerViewController *)self _dontCallThis_showLockIfNeededAnimated:v6 force:v5 completion:v10];
+    [(SBUIProudLockContainerViewController *)self _dontCallThis_showLockIfNeededAnimated:animatedCopy force:forceCopy completion:completionCopy];
   }
 
   else
   {
-    [(SBUIProudLockContainerViewController *)self _dontCallThis_updateCoachingCondition:desiredCoachingCondition animated:v6];
-    v9 = v10;
-    if (!v10)
+    [(SBUIProudLockContainerViewController *)self _dontCallThis_updateCoachingCondition:desiredCoachingCondition animated:animatedCopy];
+    v9 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
 
-    (*(v10 + 2))(v10);
+    (*(completionCopy + 2))(completionCopy);
   }
 
-  v9 = v10;
+  v9 = completionCopy;
 LABEL_8:
 }
 
-- (void)_dontCallThis_showLockIfNeededAnimated:(BOOL)a3 force:(BOOL)a4 completion:(id)a5
+- (void)_dontCallThis_showLockIfNeededAnimated:(BOOL)animated force:(BOOL)force completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(SBUIProudLockContainerViewController *)self isAuthenticated];
-  v10 = [(SBUIProudLockContainerViewController *)self authenticationInformationProvider];
-  if ([v10 hasPasscodeSet])
+  forceCopy = force;
+  animatedCopy = animated;
+  completionCopy = completion;
+  isAuthenticated = [(SBUIProudLockContainerViewController *)self isAuthenticated];
+  authenticationInformationProvider = [(SBUIProudLockContainerViewController *)self authenticationInformationProvider];
+  if ([authenticationInformationProvider hasPasscodeSet])
   {
-    if (v9)
+    if (isAuthenticated)
     {
       [(SBUIProudLockContainerViewController *)self setCanShowCoachingCondition:0];
       v11 = 2;
@@ -986,9 +986,9 @@ LABEL_8:
   v13[1] = 3221225472;
   v13[2] = __96__SBUIProudLockContainerViewController__dontCallThis_showLockIfNeededAnimated_force_completion___block_invoke;
   v13[3] = &unk_1E789DBE0;
-  v14 = v8;
-  v12 = v8;
-  [(SBUIProudLockContainerViewController *)self _setIconState:v11 animated:v6 options:0 force:v5 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(SBUIProudLockContainerViewController *)self _setIconState:v11 animated:animatedCopy options:0 force:forceCopy completion:v13];
 }
 
 uint64_t __96__SBUIProudLockContainerViewController__dontCallThis_showLockIfNeededAnimated_force_completion___block_invoke(uint64_t a1)
@@ -1002,11 +1002,11 @@ uint64_t __96__SBUIProudLockContainerViewController__dontCallThis_showLockIfNeed
   return result;
 }
 
-- (void)_dontCallThis_updateCoachingCondition:(unint64_t)a3 animated:(BOOL)a4
+- (void)_dontCallThis_updateCoachingCondition:(unint64_t)condition animated:(BOOL)animated
 {
-  if (self->_canShowCoachingCondition && SBUIFaceIDCoachingConditionShouldBeVisible(a3))
+  if (self->_canShowCoachingCondition && SBUIFaceIDCoachingConditionShouldBeVisible(condition))
   {
-    if (a3 == 8)
+    if (condition == 8)
     {
       if (self->_configuration.suppressFaceIDDisabledState)
       {
@@ -1014,51 +1014,51 @@ uint64_t __96__SBUIProudLockContainerViewController__dontCallThis_showLockIfNeed
       }
     }
 
-    else if (a3 == 4 && !self->_canShowCameraCovered)
+    else if (condition == 4 && !self->_canShowCameraCovered)
     {
       return;
     }
 
-    v6 = [(SBUIProudLockContainerViewController *)self delegate];
-    v7 = [v6 proudLockContainerViewControllerIsCoverSheetVisible:self];
+    delegate = [(SBUIProudLockContainerViewController *)self delegate];
+    v7 = [delegate proudLockContainerViewControllerIsCoverSheetVisible:self];
 
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 0xA || v7)
+    if ((condition & 0xFFFFFFFFFFFFFFFELL) != 0xA || v7)
     {
-      v8 = [(SBUIProudLockContainerViewController *)self _iconViewStateForCoachingCondition:a3];
+      v8 = [(SBUIProudLockContainerViewController *)self _iconViewStateForCoachingCondition:condition];
 
       [(SBUIProudLockContainerViewController *)self _setIconState:v8 animated:1 options:0 force:0 completion:&__block_literal_global_23];
     }
   }
 }
 
-- (void)_setCoachingCondition:(unint64_t)a3 animated:(BOOL)a4 force:(BOOL)a5
+- (void)_setCoachingCondition:(unint64_t)condition animated:(BOOL)animated force:(BOOL)force
 {
-  v5 = a5;
-  v6 = a4;
+  forceCopy = force;
+  animatedCopy = animated;
   [(SBUIProudLockContainerViewController *)self configuration:0];
-  [(SBUIProudLockContainerViewController *)self _setCoachingCondition:a3 animated:v6 skipScanningState:(v9 & 1) == 0 force:v5];
+  [(SBUIProudLockContainerViewController *)self _setCoachingCondition:condition animated:animatedCopy skipScanningState:(v9 & 1) == 0 force:forceCopy];
 }
 
-- (void)_setCoachingCondition:(unint64_t)a3 animated:(BOOL)a4 skipScanningState:(BOOL)a5 force:(BOOL)a6
+- (void)_setCoachingCondition:(unint64_t)condition animated:(BOOL)animated skipScanningState:(BOOL)state force:(BOOL)force
 {
   desiredCoachingCondition = self->_desiredCoachingCondition;
-  if (desiredCoachingCondition == a3 && !a6)
+  if (desiredCoachingCondition == condition && !force)
   {
     return;
   }
 
-  v9 = a5;
-  v10 = a4;
-  if (SBUIFaceIDCoachingConditionShouldBeVisible(desiredCoachingCondition) && SBUIFaceIDCoachingConditionShouldBeVisible(a3))
+  stateCopy = state;
+  animatedCopy = animated;
+  if (SBUIFaceIDCoachingConditionShouldBeVisible(desiredCoachingCondition) && SBUIFaceIDCoachingConditionShouldBeVisible(condition))
   {
     [(SBUIProudLockContainerViewController *)self _setCoachingCondition:1 animated:1];
   }
 
-  self->_desiredCoachingCondition = a3;
-  ShouldBeVisible = SBUIFaceIDCoachingConditionShouldBeVisible(a3);
+  self->_desiredCoachingCondition = condition;
+  ShouldBeVisible = SBUIFaceIDCoachingConditionShouldBeVisible(condition);
   if (ShouldBeVisible)
   {
-    v17 = SBUICoachingTextForSBUIFaceIDCoachingCondition(a3);
+    v17 = SBUICoachingTextForSBUIFaceIDCoachingCondition(condition);
   }
 
   else
@@ -1066,19 +1066,19 @@ uint64_t __96__SBUIProudLockContainerViewController__dontCallThis_showLockIfNeed
     v17 = 0;
   }
 
-  v13 = [(SBUIProudLockContainerViewController *)self delegate];
-  [v13 proudLockContainerViewController:self guidanceTextVisibilityDidChange:v17 animated:v10];
+  delegate = [(SBUIProudLockContainerViewController *)self delegate];
+  [delegate proudLockContainerViewController:self guidanceTextVisibilityDidChange:v17 animated:animatedCopy];
 
-  if (!(v10 & ~v9) && ((ShouldBeVisible ^ 1) & 1) == 0)
+  if (!(animatedCopy & ~stateCopy) && ((ShouldBeVisible ^ 1) & 1) == 0)
   {
-    v14 = self;
+    selfCopy2 = self;
     v15 = 1;
 LABEL_21:
-    [(SBUIProudLockContainerViewController *)v14 _updateIconViewStateAnimated:v15];
+    [(SBUIProudLockContainerViewController *)selfCopy2 _updateIconViewStateAnimated:v15];
     goto LABEL_22;
   }
 
-  v14 = self;
+  selfCopy2 = self;
   if (self->_desiredIconState == 5)
   {
     v16 = 0;
@@ -1091,29 +1091,29 @@ LABEL_21:
 
   if ((v16 & 1) == 0)
   {
-    v15 = v10;
+    v15 = animatedCopy;
     goto LABEL_21;
   }
 
-  [(SBUIProudLockContainerViewController *)self _setIconState:5 animated:v10];
+  [(SBUIProudLockContainerViewController *)self _setIconState:5 animated:animatedCopy];
 LABEL_22:
 }
 
-- (unint64_t)_effectiveCoachingConditionForCondition:(unint64_t)a3
+- (unint64_t)_effectiveCoachingConditionForCondition:(unint64_t)condition
 {
-  v5 = [(SBUIProudLockContainerViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 interfaceOrientation];
+  view = [(SBUIProudLockContainerViewController *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
-  return [(SBUIProudLockContainerViewController *)self _effectiveCoachingConditionForCondition:a3 orientation:v7];
+  return [(SBUIProudLockContainerViewController *)self _effectiveCoachingConditionForCondition:condition orientation:interfaceOrientation];
 }
 
-- (unint64_t)_effectiveCoachingConditionForCondition:(unint64_t)a3 orientation:(int64_t)a4
+- (unint64_t)_effectiveCoachingConditionForCondition:(unint64_t)condition orientation:(int64_t)orientation
 {
   v7 = +[SBUIBiometricResource sharedInstance];
   if (![v7 hasBiometricAuthenticationCapabilityEnabled] || !objc_msgSend(v7, "isPearlDetectEnabled"))
   {
-    a3 = 1;
+    condition = 1;
     goto LABEL_25;
   }
 
@@ -1127,19 +1127,19 @@ LABEL_22:
   {
     if (v8 != 2)
     {
-      SBUIFaceIDCoachingConditionShouldBeVisible(a3);
+      SBUIFaceIDCoachingConditionShouldBeVisible(condition);
       goto LABEL_23;
     }
 
     v9 = 4;
   }
 
-  if ((SBUIFaceIDCoachingConditionShouldBeVisible(a3) & 1) != 0 || v9 != a4)
+  if ((SBUIFaceIDCoachingConditionShouldBeVisible(condition) & 1) != 0 || v9 != orientation)
   {
 LABEL_23:
-    if (a3 == 13)
+    if (condition == 13)
     {
-      a3 = 1;
+      condition = 1;
     }
 
     goto LABEL_25;
@@ -1149,66 +1149,66 @@ LABEL_23:
   {
     if (SBFEffectiveDeviceClass() == 2)
     {
-      v10 = [(SBUIProudLockContainerViewController *)self isAuthenticated];
-      if (a3 == 13)
+      isAuthenticated = [(SBUIProudLockContainerViewController *)self isAuthenticated];
+      if (condition == 13)
       {
-        a3 = 1;
+        condition = 1;
       }
 
-      if (v10)
+      if (isAuthenticated)
       {
         goto LABEL_25;
       }
 
 LABEL_21:
-      a3 = 13;
+      condition = 13;
       goto LABEL_25;
     }
 
     goto LABEL_23;
   }
 
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v11 userInterfaceIdiom] != 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] != 1)
   {
 
     goto LABEL_23;
   }
 
-  v12 = [(SBUIProudLockContainerViewController *)self isAuthenticated];
+  isAuthenticated2 = [(SBUIProudLockContainerViewController *)self isAuthenticated];
 
-  if (a3 == 13)
+  if (condition == 13)
   {
-    a3 = 1;
+    condition = 1;
   }
 
-  if (!v12)
+  if (!isAuthenticated2)
   {
     goto LABEL_21;
   }
 
 LABEL_25:
 
-  return a3;
+  return condition;
 }
 
-- (void)_setIconState:(int64_t)a3 animated:(BOOL)a4 options:(int64_t)a5 force:(BOOL)a6 completion:(id)a7
+- (void)_setIconState:(int64_t)state animated:(BOOL)animated options:(int64_t)options force:(BOOL)force completion:(id)completion
 {
-  v9 = a4;
+  animatedCopy = animated;
   v44 = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  if (a6)
+  completionCopy = completion;
+  if (force)
   {
     goto LABEL_4;
   }
 
-  if (![(SBUIProudLockContainerViewController *)self _canTransitionToState:a3])
+  if (![(SBUIProudLockContainerViewController *)self _canTransitionToState:state])
   {
     v28 = SBLogBiometricResource();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       v29 = NSStringForSBUIProudLockIconViewState([(SBUIProudLockContainerViewController *)self _actualIconState]);
-      v30 = NSStringForSBUIProudLockIconViewState(a3);
+      v30 = NSStringForSBUIProudLockIconViewState(state);
       *buf = 138543618;
       v39 = v29;
       v40 = 2114;
@@ -1216,9 +1216,9 @@ LABEL_25:
       _os_log_impl(&dword_1A9A79000, v28, OS_LOG_TYPE_DEFAULT, "Ignoring request to go from SBUIProudLockIconViewState %{public}@ to %{public}@", buf, 0x16u);
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     goto LABEL_27;
@@ -1227,26 +1227,26 @@ LABEL_25:
   if (self->_forceCount)
   {
 LABEL_4:
-    a5 |= 2uLL;
+    options |= 2uLL;
   }
 
-  v13 = [(SBUIProudLockContainerViewController *)self _actualIconState];
-  IsCoaching = SBUIProudLockIconViewStateIsCoaching(v13);
+  _actualIconState = [(SBUIProudLockContainerViewController *)self _actualIconState];
+  IsCoaching = SBUIProudLockIconViewStateIsCoaching(_actualIconState);
   v15 = SBLogBiometricResource();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     desiredIconState = self->_desiredIconState;
     *buf = 134218496;
-    v39 = v13;
+    v39 = _actualIconState;
     v40 = 2048;
     v41 = desiredIconState;
     v42 = 2048;
-    v43 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_1A9A79000, v15, OS_LOG_TYPE_INFO, "actualIconState: %lu - _desiredIconState: %lu - toIconState: %lu", buf, 0x20u);
   }
 
-  self->_desiredIconState = a3;
-  v17 = SBUIProudLockIconViewStateIsCoaching(a3);
+  self->_desiredIconState = state;
+  v17 = SBUIProudLockIconViewStateIsCoaching(state);
   v33 = (SBUIProudLockIconViewStateIsCoaching(self->_desiredIconState) ^ 1) & IsCoaching;
   if (!IsCoaching || ((self->_desiredIconState - 1) >= 3 ? (v18 = v17 == 0) : (v18 = 0), v18 || self->_canLeaveCoachingCondition))
   {
@@ -1259,17 +1259,17 @@ LABEL_4:
       _os_log_impl(&dword_1A9A79000, v19, OS_LOG_TYPE_DEFAULT, "=> Transitioning to state: %{public}@", buf, 0xCu);
     }
 
-    v21 = v12;
+    v21 = completionCopy;
 
     v22 = SBUIFaceIDCoachingConditionForSBUIProudLockIconViewState(self->_desiredIconState);
     v23 = SBUICoachingTextForSBUIFaceIDCoachingCondition(v22);
-    v24 = [(SBUIProudLockContainerViewController *)self delegate];
-    v25 = [v24 transientSubtitleText];
+    delegate = [(SBUIProudLockContainerViewController *)self delegate];
+    transientSubtitleText = [delegate transientSubtitleText];
 
-    v26 = v9;
-    if (v25)
+    v26 = animatedCopy;
+    if (transientSubtitleText)
     {
-      v27 = [v25 isEqualToString:v23] ^ 1;
+      v27 = [transientSubtitleText isEqualToString:v23] ^ 1;
     }
 
     else
@@ -1277,7 +1277,7 @@ LABEL_4:
       v27 = 1;
     }
 
-    v31 = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
+    _proudLockIconView = [(SBUIProudLockContainerViewController *)self _proudLockIconView];
     v32 = self->_desiredIconState;
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
@@ -1287,7 +1287,7 @@ LABEL_4:
     v35 = v21;
     v36 = v17;
     v37 = v33;
-    [v31 setState:v32 animated:v26 updateText:v27 options:a5 completion:v34];
+    [_proudLockIconView setState:v32 animated:v26 updateText:v27 options:options completion:v34];
 
     if (v17)
     {
@@ -1297,18 +1297,18 @@ LABEL_4:
 
   else
   {
-    v21 = v12;
-    [(SBUIProudLockContainerViewController *)self setUnlockCompletion:v12];
+    v21 = completionCopy;
+    [(SBUIProudLockContainerViewController *)self setUnlockCompletion:completionCopy];
     if (v17)
     {
 LABEL_23:
       [(SBUIProudLockContainerViewController *)self setCanLeaveCoachingCondition:0];
-      v12 = v21;
+      completionCopy = v21;
       goto LABEL_27;
     }
   }
 
-  v12 = v21;
+  completionCopy = v21;
   if (v33)
   {
     [(SBUIProudLockContainerViewController *)self setCanShowCoachingCondition:0];
@@ -1353,7 +1353,7 @@ uint64_t __88__SBUIProudLockContainerViewController__setIconState_animated_optio
   return result;
 }
 
-- (BOOL)_canTransitionToState:(int64_t)a3
+- (BOOL)_canTransitionToState:(int64_t)state
 {
   if (!self->_screenOn)
   {
@@ -1361,17 +1361,17 @@ uint64_t __88__SBUIProudLockContainerViewController__setIconState_animated_optio
     return v6 & 1;
   }
 
-  v5 = [(SBUIProudLockContainerViewController *)self _actualIconState];
-  if (v5 == a3)
+  _actualIconState = [(SBUIProudLockContainerViewController *)self _actualIconState];
+  if (_actualIconState == state)
   {
     goto LABEL_3;
   }
 
-  v7 = v5;
-  if (v5 != 22 || (LOBYTE(v6) = 0, a3 == 1) && self->_configuration.suppressFaceIDDisabledState)
+  v7 = _actualIconState;
+  if (_actualIconState != 22 || (LOBYTE(v6) = 0, state == 1) && self->_configuration.suppressFaceIDDisabledState)
   {
-    IsCoaching = SBUIProudLockIconViewStateIsCoaching(v5);
-    v9 = SBUIProudLockIconViewStateIsCoaching(a3);
+    IsCoaching = SBUIProudLockIconViewStateIsCoaching(_actualIconState);
+    v9 = SBUIProudLockIconViewStateIsCoaching(state);
     if (SBUIProudLockIconViewStateIsUpsideDown(v7))
     {
       IsUpsideDown = 1;
@@ -1379,24 +1379,24 @@ uint64_t __88__SBUIProudLockContainerViewController__setIconState_animated_optio
 
     else
     {
-      IsUpsideDown = SBUIProudLockIconViewStateIsUpsideDown(a3);
+      IsUpsideDown = SBUIProudLockIconViewStateIsUpsideDown(state);
     }
 
     IsCameraCovered = SBUIProudLockIconViewStateIsCameraCovered(v7);
     if (IsCameraCovered)
     {
-      LOBYTE(IsCameraCovered) = SBUIProudLockIconViewStateIsCameraCovered(a3);
+      LOBYTE(IsCameraCovered) = SBUIProudLockIconViewStateIsCameraCovered(state);
     }
 
-    if ((IsUpsideDown & 1) != 0 || a3 <= 0x16 && ((1 << a3) & 0x40000E) != 0 || IsCameraCovered & 1 | ((IsCoaching & 1) == 0) | v9 & 1)
+    if ((IsUpsideDown & 1) != 0 || state <= 0x16 && ((1 << state) & 0x40000E) != 0 || IsCameraCovered & 1 | ((IsCoaching & 1) == 0) | v9 & 1)
     {
       if (v7 != 5)
       {
         if (v7 == 2)
         {
-          if (a3 < 0x17)
+          if (state < 0x17)
           {
-            v6 = 0x400003u >> a3;
+            v6 = 0x400003u >> state;
             return v6 & 1;
           }
 
@@ -1408,7 +1408,7 @@ LABEL_24:
         return v6 & 1;
       }
 
-      if ((a3 - 2) < 3 || a3 == 1 && [(SBUIProudLockContainerViewController *)self _isBiometricLockedOut]|| SBUIProudLockIconViewStateIsCoaching(a3))
+      if ((state - 2) < 3 || state == 1 && [(SBUIProudLockContainerViewController *)self _isBiometricLockedOut]|| SBUIProudLockIconViewStateIsCoaching(state))
       {
         goto LABEL_24;
       }
@@ -1421,30 +1421,30 @@ LABEL_3:
   return v6 & 1;
 }
 
-- (void)setCanShowScanningState:(BOOL)a3
+- (void)setCanShowScanningState:(BOOL)state
 {
-  if (self->_canShowScanningState != a3)
+  if (self->_canShowScanningState != state)
   {
-    self->_canShowScanningState = a3;
+    self->_canShowScanningState = state;
     [(SBUIProudLockContainerViewController *)self _updateScanningState];
   }
 }
 
-- (void)setShouldShowScanningState:(BOOL)a3
+- (void)setShouldShowScanningState:(BOOL)state
 {
-  if (self->_shouldShowScanningState != a3)
+  if (self->_shouldShowScanningState != state)
   {
-    self->_shouldShowScanningState = a3;
+    self->_shouldShowScanningState = state;
     [(SBUIProudLockContainerViewController *)self _updateScanningState];
   }
 }
 
-- (void)setSuppressScanningState:(BOOL)a3
+- (void)setSuppressScanningState:(BOOL)state
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->_suppressScanningState != a3)
+  if (self->_suppressScanningState != state)
   {
-    self->_suppressScanningState = a3;
+    self->_suppressScanningState = state;
     v4 = SBLogLockScreenBiometricFaceIDCoaching();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -1465,23 +1465,23 @@ LABEL_3:
   [(SBUIProudLockContainerViewController *)self performSelector:sel__allowScanningState withObject:0 afterDelay:v3];
 }
 
-- (void)_allowCoachingConditionImmediately:(BOOL)a3
+- (void)_allowCoachingConditionImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:sel__allowCoachingCondition object:0];
   if ([(SBUIProudLockContainerViewController *)self canShowCoachingCondition])
   {
-    v5 = !v3;
-    v6 = self;
+    v5 = !immediatelyCopy;
+    selfCopy2 = self;
 LABEL_5:
 
-    [(SBUIProudLockContainerViewController *)v6 _reallyAllowCoachingConditionAnimated:v5];
+    [(SBUIProudLockContainerViewController *)selfCopy2 _reallyAllowCoachingConditionAnimated:v5];
     return;
   }
 
-  if (v3)
+  if (immediatelyCopy)
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
     goto LABEL_5;
   }
@@ -1491,24 +1491,24 @@ LABEL_5:
   [(SBUIProudLockContainerViewController *)self performSelector:sel__allowCoachingCondition withObject:0 afterDelay:minimumDurationBetweenLeavingCoachingAndCoaching];
 }
 
-- (void)_reallyAllowCoachingConditionAnimated:(BOOL)a3
+- (void)_reallyAllowCoachingConditionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(SBUIProudLockContainerViewController *)self setCanShowCoachingCondition:1];
 
-  [(SBUIProudLockContainerViewController *)self _updateIconViewStateAnimated:v3];
+  [(SBUIProudLockContainerViewController *)self _updateIconViewStateAnimated:animatedCopy];
 }
 
-- (void)_allowCameraCoveredForUnlockSource:(int)a3
+- (void)_allowCameraCoveredForUnlockSource:(int)source
 {
-  if (a3 == 3)
+  if (source == 3)
   {
     v4 = 0;
     v5 = 48;
     goto LABEL_5;
   }
 
-  if (a3 == 41)
+  if (source == 41)
   {
     v4 = SBUIFaceIDCameraOrientationForDevice() != 2;
     v5 = 56;
@@ -1569,13 +1569,13 @@ LABEL_7:
   [(SBUIProudLockContainerViewController *)self _updateIconViewStateAnimated:1];
 }
 
-- (void)setCanLeaveCoachingCondition:(BOOL)a3
+- (void)setCanLeaveCoachingCondition:(BOOL)condition
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_canLeaveCoachingCondition != a3)
+  if (self->_canLeaveCoachingCondition != condition)
   {
-    self->_canLeaveCoachingCondition = a3;
-    if (a3 && (SBUIProudLockIconViewStateIsCoaching(self->_desiredIconState) & 1) == 0)
+    self->_canLeaveCoachingCondition = condition;
+    if (condition && (SBUIProudLockIconViewStateIsCoaching(self->_desiredIconState) & 1) == 0)
     {
       v4 = SBLogBiometricResource();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1597,23 +1597,23 @@ LABEL_7:
   }
 }
 
-- (int64_t)_iconViewStateForCoachingCondition:(unint64_t)a3
+- (int64_t)_iconViewStateForCoachingCondition:(unint64_t)condition
 {
   [(SBUIProudLockContainerViewController *)self configuration];
   v5 = v9;
-  v6 = [(SBUIProudLockContainerViewController *)self orientationProvider];
-  v7 = [v6 orientation];
+  orientationProvider = [(SBUIProudLockContainerViewController *)self orientationProvider];
+  orientation = [orientationProvider orientation];
 
-  return SBUIProudLockIconViewStateForSBUIFaceIDCoachingCondition(a3, v7, v5);
+  return SBUIProudLockIconViewStateForSBUIFaceIDCoachingCondition(condition, orientation, v5);
 }
 
-- (void)_performForcedUpdate:(id)a3
+- (void)_performForcedUpdate:(id)update
 {
   forceCount = self->_forceCount;
   self->_forceCount = forceCount + 1;
-  if (a3)
+  if (update)
   {
-    (*(a3 + 2))(a3, a2);
+    (*(update + 2))(update, a2);
     forceCount = self->_forceCount - 1;
   }
 

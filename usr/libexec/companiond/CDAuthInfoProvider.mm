@@ -1,25 +1,25 @@
 @interface CDAuthInfoProvider
-+ (id)createWithRequest:(id)a3 client:(id)a4 error:(id *)a5;
++ (id)createWithRequest:(id)request client:(id)client error:(id *)error;
 @end
 
 @implementation CDAuthInfoProvider
 
-+ (id)createWithRequest:(id)a3 client:(id)a4 error:(id *)a5
++ (id)createWithRequest:(id)request client:(id)client error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 overrideBundleIdentifier];
-  v9 = v8;
-  if (v8)
+  clientCopy = client;
+  overrideBundleIdentifier = [request overrideBundleIdentifier];
+  v9 = overrideBundleIdentifier;
+  if (overrideBundleIdentifier)
   {
-    v10 = v8;
+    bundleIdentifier = overrideBundleIdentifier;
   }
 
   else
   {
-    v10 = [v7 bundleIdentifier];
+    bundleIdentifier = [clientCopy bundleIdentifier];
   }
 
-  v11 = v10;
+  v11 = bundleIdentifier;
 
   if ([v11 length])
   {
@@ -48,7 +48,7 @@
 LABEL_8:
     v15 = v12;
     v14 = 0;
-    *a5 = v12;
+    *error = v12;
     goto LABEL_13;
   }
 

@@ -1,45 +1,45 @@
 @interface JavaUtilFormatter_CachedDecimalFormat
-- (id)updateWithLibcoreIcuLocaleData:(id)a3 withNSString:(id)a4;
+- (id)updateWithLibcoreIcuLocaleData:(id)data withNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilFormatter_CachedDecimalFormat
 
-- (id)updateWithLibcoreIcuLocaleData:(id)a3 withNSString:(id)a4
+- (id)updateWithLibcoreIcuLocaleData:(id)data withNSString:(id)string
 {
   p_decimalFormat = &self->decimalFormat_;
   if (!self->decimalFormat_)
   {
-    JreStrongAssign(&self->currentPattern_, a4);
-    JreStrongAssign(&self->currentLocaleData_, a3);
+    JreStrongAssign(&self->currentPattern_, string);
+    JreStrongAssign(&self->currentLocaleData_, data);
     v8 = new_LibcoreIcuNativeDecimalFormat_initWithNSString_withLibcoreIcuLocaleData_(self->currentPattern_, self->currentLocaleData_);
     JreStrongAssignAndConsume(p_decimalFormat, v8);
   }
 
-  if (!a4)
+  if (!string)
   {
     goto LABEL_11;
   }
 
-  if (([a4 isEqual:self->currentPattern_] & 1) == 0)
+  if (([string isEqual:self->currentPattern_] & 1) == 0)
   {
     if (!*p_decimalFormat)
     {
       goto LABEL_11;
     }
 
-    [(LibcoreIcuNativeDecimalFormat *)*p_decimalFormat applyPatternWithNSString:a4];
-    JreStrongAssign(&self->currentPattern_, a4);
+    [(LibcoreIcuNativeDecimalFormat *)*p_decimalFormat applyPatternWithNSString:string];
+    JreStrongAssign(&self->currentPattern_, string);
   }
 
   currentLocaleData = self->currentLocaleData_;
   p_currentLocaleData = &self->currentLocaleData_;
-  if (currentLocaleData != a3)
+  if (currentLocaleData != data)
   {
     if (*p_decimalFormat)
     {
-      [(LibcoreIcuNativeDecimalFormat *)*p_decimalFormat setDecimalFormatSymbolsWithLibcoreIcuLocaleData:a3];
-      JreStrongAssign(p_currentLocaleData, a3);
+      [(LibcoreIcuNativeDecimalFormat *)*p_decimalFormat setDecimalFormatSymbolsWithLibcoreIcuLocaleData:data];
+      JreStrongAssign(p_currentLocaleData, data);
       return *p_decimalFormat;
     }
 

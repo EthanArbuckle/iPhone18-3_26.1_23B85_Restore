@@ -3,18 +3,18 @@
 - (BOOL)_needsUpdate;
 - (BOOL)_playerIsPlaying;
 - (QLPHVideoScrubberFilmstripViewProvider)filmstripViewProvider;
-- (QLPHVideoScrubberView)initWithFrame:(CGRect)a3;
+- (QLPHVideoScrubberView)initWithFrame:(CGRect)frame;
 - (QLPHVideoScrubberViewInteractionDelegate)interactionDelegate;
-- (double)_lengthForDuration:(double)a3;
-- (double)videoScrubberController:(id)a3 lengthForDuration:(double)a4;
+- (double)_lengthForDuration:(double)duration;
+- (double)videoScrubberController:(id)controller lengthForDuration:(double)duration;
 - (id)_currentAVAsset;
 - (id)_currentVideoComposition;
 - (void)_handleInteractionBegan;
-- (void)_handleInteractionEndedAndTogglePlayState:(BOOL)a3;
-- (void)_handleTouchGesture:(id)a3;
+- (void)_handleInteractionEndedAndTogglePlayState:(BOOL)state;
+- (void)_handleTouchGesture:(id)gesture;
 - (void)_invalidateFilmStripView;
 - (void)_invalidateVideoScrubberController;
-- (void)_setVideoScrubberController:(id)a3;
+- (void)_setVideoScrubberController:(id)controller;
 - (void)_updateFilmStripViewIfNeeded;
 - (void)_updateIfNeeded;
 - (void)_updatePlayheadFrame;
@@ -23,27 +23,27 @@
 - (void)_updateVisibleRectOfFilmStripView;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setEstimatedDuration:(double)a3;
-- (void)setInteractionDelegate:(id)a3;
-- (void)setPlaceholderThumbnail:(id)a3;
-- (void)setPlayer:(id)a3;
-- (void)videoScrubberControllerDidUpdate:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setEstimatedDuration:(double)duration;
+- (void)setInteractionDelegate:(id)delegate;
+- (void)setPlaceholderThumbnail:(id)thumbnail;
+- (void)setPlayer:(id)player;
+- (void)videoScrubberControllerDidUpdate:(id)update;
 @end
 
 @implementation QLPHVideoScrubberView
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (avPlayerObservationContext == a6)
+  if (avPlayerObservationContext == context)
   {
 
-    [(QLPHVideoScrubberView *)self _invalidateFilmStripView:a3];
+    [(QLPHVideoScrubberView *)self _invalidateFilmStripView:path];
   }
 
   else
@@ -52,7 +52,7 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = QLPHVideoScrubberView;
-    [(QLPHVideoScrubberView *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(QLPHVideoScrubberView *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -66,12 +66,12 @@
   [(QLPHVideoScrubberView *)&v3 dealloc];
 }
 
-- (QLPHVideoScrubberView)initWithFrame:(CGRect)a3
+- (QLPHVideoScrubberView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.receiver = self;
   v17.super_class = QLPHVideoScrubberView;
   v7 = [(QLPHVideoScrubberView *)&v17 initWithFrame:?];
@@ -118,35 +118,35 @@
   y = v19.origin.y;
   v6 = v19.size.width;
   height = v19.size.height;
-  v8 = [(QLPHVideoScrubberView *)self scrollView];
-  [v8 setFrame:{x, y, v6, height}];
+  scrollView = [(QLPHVideoScrubberView *)self scrollView];
+  [scrollView setFrame:{x, y, v6, height}];
 
   v9 = width * 0.5;
-  v10 = [(QLPHVideoScrubberView *)self _videoScrubberController];
-  [v10 length];
+  _videoScrubberController = [(QLPHVideoScrubberView *)self _videoScrubberController];
+  [_videoScrubberController length];
   v12 = v11;
 
-  v13 = [(QLPHVideoScrubberView *)self scrollView];
-  [v13 setContentInset:{0.0, v9, 0.0, v9}];
+  scrollView2 = [(QLPHVideoScrubberView *)self scrollView];
+  [scrollView2 setContentInset:{0.0, v9, 0.0, v9}];
 
-  v14 = [(QLPHVideoScrubberView *)self _filmStripView];
+  _filmStripView = [(QLPHVideoScrubberView *)self _filmStripView];
 
-  if (v14)
+  if (_filmStripView)
   {
-    v15 = [(QLPHVideoScrubberView *)self _filmStripView];
-    [v15 setFrame:{0.0, 0.0, v12, height}];
+    _filmStripView2 = [(QLPHVideoScrubberView *)self _filmStripView];
+    [_filmStripView2 setFrame:{0.0, 0.0, v12, height}];
   }
 
-  v16 = [(QLPHVideoScrubberView *)self scrollView];
-  [v16 setContentSize:{v12, height}];
+  scrollView3 = [(QLPHVideoScrubberView *)self scrollView];
+  [scrollView3 setContentSize:{v12, height}];
 
   [(QLPHVideoScrubberView *)self _updateScrollViewContentOffset];
   [(QLPHVideoScrubberView *)self _updatePlayheadFrame];
 }
 
-- (void)setInteractionDelegate:(id)a3
+- (void)setInteractionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
 
   if (WeakRetained != obj)
@@ -172,116 +172,116 @@
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   player = self->_player;
-  if (player != v5)
+  if (player != playerCopy)
   {
-    v7 = v5;
+    v7 = playerCopy;
     [(AVPlayer *)player removeObserver:self forKeyPath:@"status" context:avPlayerObservationContext];
     [(AVPlayer *)self->_player removeObserver:self forKeyPath:@"currentItem" context:avPlayerObservationContext];
     [(AVPlayer *)self->_player removeObserver:self forKeyPath:@"currentItem.videoComposition" context:avPlayerObservationContext];
-    objc_storeStrong(&self->_player, a3);
+    objc_storeStrong(&self->_player, player);
     [(AVPlayer *)self->_player addObserver:self forKeyPath:@"status" options:0 context:avPlayerObservationContext];
     [(AVPlayer *)self->_player addObserver:self forKeyPath:@"currentItem" options:0 context:avPlayerObservationContext];
     [(AVPlayer *)self->_player addObserver:self forKeyPath:@"currentItem.videoComposition" options:0 context:avPlayerObservationContext];
     [(QLPHVideoScrubberView *)self _invalidateVideoScrubberController];
     player = [(QLPHVideoScrubberView *)self _invalidateFilmStripView];
-    v5 = v7;
+    playerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](player, v5);
+  MEMORY[0x2821F96F8](player, playerCopy);
 }
 
-- (void)setEstimatedDuration:(double)a3
+- (void)setEstimatedDuration:(double)duration
 {
-  if (self->_estimatedDuration != a3)
+  if (self->_estimatedDuration != duration)
   {
-    self->_estimatedDuration = a3;
+    self->_estimatedDuration = duration;
     [(QLPHVideoScrubberView *)self _invalidateVideoScrubberController];
 
     [(QLPHVideoScrubberView *)self _invalidateFilmStripView];
   }
 }
 
-- (void)_setVideoScrubberController:(id)a3
+- (void)_setVideoScrubberController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   videoScrubberController = self->__videoScrubberController;
-  if (videoScrubberController != v5)
+  if (videoScrubberController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXVideoScrubberController *)videoScrubberController setDelegate:0];
-    objc_storeStrong(&self->__videoScrubberController, a3);
+    objc_storeStrong(&self->__videoScrubberController, controller);
     videoScrubberController = [(PXVideoScrubberController *)v7 setDelegate:self];
-    v5 = v7;
+    controllerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](videoScrubberController, v5);
+  MEMORY[0x2821F96F8](videoScrubberController, controllerCopy);
 }
 
-- (void)setPlaceholderThumbnail:(id)a3
+- (void)setPlaceholderThumbnail:(id)thumbnail
 {
-  v5 = a3;
-  if (self->_placeholderThumbnail != v5)
+  thumbnailCopy = thumbnail;
+  if (self->_placeholderThumbnail != thumbnailCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderThumbnail, a3);
+    v6 = thumbnailCopy;
+    objc_storeStrong(&self->_placeholderThumbnail, thumbnail);
     [(QLPHVideoScrubberView *)self _invalidateFilmStripView];
-    v5 = v6;
+    thumbnailCopy = v6;
   }
 }
 
 - (id)_currentAVAsset
 {
-  v2 = [(QLPHVideoScrubberView *)self player];
-  v3 = [v2 currentItem];
+  player = [(QLPHVideoScrubberView *)self player];
+  currentItem = [player currentItem];
 
-  v4 = [v3 asset];
+  asset = [currentItem asset];
 
-  return v4;
+  return asset;
 }
 
 - (id)_currentVideoComposition
 {
-  v2 = [(QLPHVideoScrubberView *)self player];
-  v3 = [v2 currentItem];
+  player = [(QLPHVideoScrubberView *)self player];
+  currentItem = [player currentItem];
 
-  v4 = [v3 videoComposition];
+  videoComposition = [currentItem videoComposition];
 
-  return v4;
+  return videoComposition;
 }
 
 - (BOOL)_isUserInteractingWithScrollView
 {
-  v2 = [(QLPHVideoScrubberView *)self scrollView];
-  if ([v2 isDragging] & 1) != 0 || (objc_msgSend(v2, "isTracking"))
+  scrollView = [(QLPHVideoScrubberView *)self scrollView];
+  if ([scrollView isDragging] & 1) != 0 || (objc_msgSend(scrollView, "isTracking"))
   {
-    v3 = 1;
+    isDecelerating = 1;
   }
 
   else
   {
-    v3 = [v2 isDecelerating];
+    isDecelerating = [scrollView isDecelerating];
   }
 
-  return v3;
+  return isDecelerating;
 }
 
 - (BOOL)_playerIsPlaying
 {
-  v2 = [(QLPHVideoScrubberView *)self player];
-  [v2 rate];
+  player = [(QLPHVideoScrubberView *)self player];
+  [player rate];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (void)_handleTouchGesture:(id)a3
+- (void)_handleTouchGesture:(id)gesture
 {
-  v4 = [a3 state];
-  if (v4 == 3)
+  state = [gesture state];
+  if (state == 3)
   {
     if (!self->_interactionDelegateRespondsTo.didEndTouching)
     {
@@ -294,7 +294,7 @@
 
   else
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -310,16 +310,16 @@
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v12 = a3;
+  scrollCopy = scroll;
   if ([(QLPHVideoScrubberView *)self _isUserInteractingWithScrollView])
   {
-    [v12 contentSize];
+    [scrollCopy contentSize];
     v5 = v4;
-    [v12 contentInset];
+    [scrollCopy contentInset];
     v7 = v6;
-    [v12 contentOffset];
+    [scrollCopy contentOffset];
     v9 = fmax(v7 + v8, 0.0);
     if (v5 < v9)
     {
@@ -327,28 +327,28 @@
     }
 
     v10 = v9 / v5;
-    v11 = [(QLPHVideoScrubberView *)self _videoScrubberController];
-    [v11 setPlayheadProgress:v10];
+    _videoScrubberController = [(QLPHVideoScrubberView *)self _videoScrubberController];
+    [_videoScrubberController setPlayheadProgress:v10];
   }
 
   [(QLPHVideoScrubberView *)self _updateVisibleRectOfFilmStripView];
   [(QLPHVideoScrubberView *)self _updatePlayheadFrame];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if (self->_interactionDelegateRespondsTo.willBeginDragging)
   {
-    v5 = a3;
+    draggingCopy = dragging;
     WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-    [WeakRetained videoScrubberView:self willBeginDraggingInScrollView:v5];
+    [WeakRetained videoScrubberView:self willBeginDraggingInScrollView:draggingCopy];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v7 = a3;
-  if (!a4)
+  draggingCopy = dragging;
+  if (!decelerate)
   {
     [(QLPHVideoScrubberView *)self _handleInteractionEndedAndTogglePlayState:0];
   }
@@ -356,28 +356,28 @@
   if (self->_interactionDelegateRespondsTo.didEndDragging)
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-    [WeakRetained videoScrubberView:self didEndDraggingInScrollView:v7];
+    [WeakRetained videoScrubberView:self didEndDraggingInScrollView:draggingCopy];
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
   if (self->_interactionDelegateRespondsTo.willBeginDecelerating)
   {
-    v5 = a3;
+    deceleratingCopy = decelerating;
     WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-    [WeakRetained videoScrubberView:self willBeginDeceleratingInScrollView:v5];
+    [WeakRetained videoScrubberView:self willBeginDeceleratingInScrollView:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   [(QLPHVideoScrubberView *)self _handleInteractionEndedAndTogglePlayState:0];
   if (self->_interactionDelegateRespondsTo.didEndDecelerating)
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-    [WeakRetained videoScrubberView:self didEndDeceleratingInScrollView:v5];
+    [WeakRetained videoScrubberView:self didEndDeceleratingInScrollView:deceleratingCopy];
   }
 }
 
@@ -388,8 +388,8 @@
     if ([(QLPHVideoScrubberView *)self _playerIsPlaying])
     {
       self->_previousPlayState = 1;
-      v3 = [(QLPHVideoScrubberView *)self player];
-      [v3 pause];
+      player = [(QLPHVideoScrubberView *)self player];
+      [player pause];
     }
 
     else
@@ -399,20 +399,20 @@
   }
 }
 
-- (void)_handleInteractionEndedAndTogglePlayState:(BOOL)a3
+- (void)_handleInteractionEndedAndTogglePlayState:(BOOL)state
 {
   previousPlayState = self->_previousPlayState;
   if (previousPlayState)
   {
     v5 = previousPlayState == 2;
-    if (a3)
+    if (state)
     {
       v5 = previousPlayState != 2;
       if (previousPlayState != 1)
       {
 LABEL_4:
-        v6 = [(QLPHVideoScrubberView *)self player];
-        [v6 play];
+        player = [(QLPHVideoScrubberView *)self player];
+        [player play];
         goto LABEL_8;
       }
     }
@@ -429,8 +429,8 @@ LABEL_9:
       return;
     }
 
-    v6 = [(QLPHVideoScrubberView *)self player];
-    [v6 pause];
+    player = [(QLPHVideoScrubberView *)self player];
+    [player pause];
 LABEL_8:
 
     goto LABEL_9;
@@ -456,12 +456,12 @@ LABEL_8:
   if ([(QLPHVideoScrubberView *)self _needsUpdateFilmStripView])
   {
     [(QLPHVideoScrubberView *)self _setNeedsUpdateFilmStripView:0];
-    v3 = [(QLPHVideoScrubberView *)self _filmStripView];
+    _filmStripView = [(QLPHVideoScrubberView *)self _filmStripView];
 
-    if (!v3)
+    if (!_filmStripView)
     {
-      v4 = [(QLPHVideoScrubberView *)self filmstripViewProvider];
-      v5 = [v4 createFilmstripViewForVideoScrubberView:self];
+      filmstripViewProvider = [(QLPHVideoScrubberView *)self filmstripViewProvider];
+      v5 = [filmstripViewProvider createFilmstripViewForVideoScrubberView:self];
       v7 = v5;
       if (v5)
       {
@@ -478,28 +478,28 @@ LABEL_8:
       v11 = v8;
 
       [(QLPHVideoScrubberView *)self _setFilmStripView:v11];
-      v12 = [(QLPHVideoScrubberView *)self scrollView];
-      [v12 addSubview:v11];
+      scrollView = [(QLPHVideoScrubberView *)self scrollView];
+      [scrollView addSubview:v11];
     }
 
-    v13 = [(QLPHVideoScrubberView *)self _filmStripView];
+    _filmStripView2 = [(QLPHVideoScrubberView *)self _filmStripView];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(QLPHVideoScrubberView *)self _filmStripView];
-      v16 = [(QLPHVideoScrubberView *)self _currentAVAsset];
-      v17 = [(QLPHVideoScrubberView *)self _currentVideoComposition];
-      [v15 setAsset:v16 videoComposition:v17];
+      _filmStripView3 = [(QLPHVideoScrubberView *)self _filmStripView];
+      _currentAVAsset = [(QLPHVideoScrubberView *)self _currentAVAsset];
+      _currentVideoComposition = [(QLPHVideoScrubberView *)self _currentVideoComposition];
+      [_filmStripView3 setAsset:_currentAVAsset videoComposition:_currentVideoComposition];
     }
 
-    v18 = [(QLPHVideoScrubberView *)self _filmStripView];
-    v19 = [(QLPHVideoScrubberView *)self _currentAVAsset];
-    [v18 setAsset:v19];
+    _filmStripView4 = [(QLPHVideoScrubberView *)self _filmStripView];
+    _currentAVAsset2 = [(QLPHVideoScrubberView *)self _currentAVAsset];
+    [_filmStripView4 setAsset:_currentAVAsset2];
 
-    v20 = [(QLPHVideoScrubberView *)self _filmStripView];
-    v21 = [(QLPHVideoScrubberView *)self placeholderThumbnail];
-    [v20 setPlaceholderImage:v21];
+    _filmStripView5 = [(QLPHVideoScrubberView *)self _filmStripView];
+    placeholderThumbnail = [(QLPHVideoScrubberView *)self placeholderThumbnail];
+    [_filmStripView5 setPlaceholderImage:placeholderThumbnail];
 
     [(QLPHVideoScrubberView *)self _updateVisibleRectOfFilmStripView];
   }
@@ -513,20 +513,20 @@ LABEL_8:
   }
 
   [(QLPHVideoScrubberView *)self _setNeedsUpdateVideoScrubberController:0];
-  v17 = [(QLPHVideoScrubberView *)self player];
-  v3 = [(QLPHVideoScrubberView *)self _videoScrubberController];
-  if (v17)
+  player = [(QLPHVideoScrubberView *)self player];
+  _videoScrubberController = [(QLPHVideoScrubberView *)self _videoScrubberController];
+  if (player)
   {
-    v4 = [v3 target];
-    v5 = [v4 videoPlayer];
-    if (v5 != v17)
+    target = [_videoScrubberController target];
+    videoPlayer = [target videoPlayer];
+    if (videoPlayer != player)
     {
 
 LABEL_8:
       [(QLPHVideoScrubberView *)self estimatedDuration];
       v11 = v10;
       gotLoadHelper_x8__OBJC_CLASS___PXSimpleVideoScrubberControllerTarget(v10);
-      v13 = [objc_alloc(*(v12 + 3112)) initWithVideoPlayer:v17];
+      v13 = [objc_alloc(*(v12 + 3112)) initWithVideoPlayer:player];
       gotLoadHelper_x8__OBJC_CLASS___PXVideoScrubberController(v14);
       v16 = [objc_alloc(*(v15 + 3144)) initWithTarget:v13 estimatedDuration:v11];
       [(QLPHVideoScrubberView *)self _setVideoScrubberController:v16];
@@ -534,7 +534,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    [v3 estimatedDuration];
+    [_videoScrubberController estimatedDuration];
     v7 = v6;
     [(QLPHVideoScrubberView *)self estimatedDuration];
     v9 = v8;
@@ -575,8 +575,8 @@ LABEL_9:
 
 - (void)_updateVisibleRectOfFilmStripView
 {
-  v3 = [(QLPHVideoScrubberView *)self scrollView];
-  [v3 bounds];
+  scrollView = [(QLPHVideoScrubberView *)self scrollView];
+  [scrollView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -590,36 +590,36 @@ LABEL_9:
     v7 = v12;
   }
 
-  v13 = [(QLPHVideoScrubberView *)self _filmStripView];
-  [v13 setVisibleRect:{v5, v11, v7, v9}];
+  _filmStripView = [(QLPHVideoScrubberView *)self _filmStripView];
+  [_filmStripView setVisibleRect:{v5, v11, v7, v9}];
 }
 
 - (void)_updateScrollViewContentOffset
 {
-  v9 = [(QLPHVideoScrubberView *)self scrollView];
-  v3 = [(QLPHVideoScrubberView *)self _videoScrubberController];
-  [v3 playheadProgress];
+  scrollView = [(QLPHVideoScrubberView *)self scrollView];
+  _videoScrubberController = [(QLPHVideoScrubberView *)self _videoScrubberController];
+  [_videoScrubberController playheadProgress];
   v5 = v4;
 
-  [v9 contentSize];
+  [scrollView contentSize];
   v7 = v5 * v6;
-  [v9 contentInset];
-  [v9 setContentOffset:{v7 - v8, 0.0}];
+  [scrollView contentInset];
+  [scrollView setContentOffset:{v7 - v8, 0.0}];
 }
 
 - (void)_updatePlayheadFrame
 {
-  v3 = [(QLPHVideoScrubberView *)self scrollView];
-  [v3 frame];
+  scrollView = [(QLPHVideoScrubberView *)self scrollView];
+  [scrollView frame];
   v5 = v4;
   v7 = v6;
 
-  v18 = [(QLPHVideoScrubberView *)self scrollView];
-  [v18 contentSize];
+  scrollView2 = [(QLPHVideoScrubberView *)self scrollView];
+  [scrollView2 contentSize];
   v9 = v8;
-  [v18 contentInset];
+  [scrollView2 contentInset];
   v11 = v10;
-  [v18 contentOffset];
+  [scrollView2 contentOffset];
   v13 = v11 + v12;
   v14 = v9 - v13;
   if (v13 <= v9)
@@ -638,43 +638,43 @@ LABEL_9:
   }
 
   v16 = v5 * 0.5 - v7 * 0.5 * 0.5 + v15;
-  v17 = [(QLPHVideoScrubberView *)self _playheadView];
-  [v17 setFrame:{v16, 0.0, v7 * 0.5, v7 + 2.0}];
+  _playheadView = [(QLPHVideoScrubberView *)self _playheadView];
+  [_playheadView setFrame:{v16, 0.0, v7 * 0.5, v7 + 2.0}];
 }
 
-- (double)videoScrubberController:(id)a3 lengthForDuration:(double)a4
+- (double)videoScrubberController:(id)controller lengthForDuration:(double)duration
 {
-  [(QLPHVideoScrubberView *)self estimatedDuration:a3];
+  [(QLPHVideoScrubberView *)self estimatedDuration:controller];
 
   [(QLPHVideoScrubberView *)self _lengthForDuration:?];
   return result;
 }
 
-- (double)_lengthForDuration:(double)a3
+- (double)_lengthForDuration:(double)duration
 {
-  if (a3 < 1.0)
+  if (duration < 1.0)
   {
-    a3 = 1.0;
+    duration = 1.0;
   }
 
-  if (a3 >= 2.0)
+  if (duration >= 2.0)
   {
-    v4 = a3;
-    v3 = log2f(v4);
+    durationCopy = duration;
+    v3 = log2f(durationCopy);
   }
 
   else
   {
-    v3 = a3 * 0.5;
+    v3 = duration * 0.5;
   }
 
   return v3 * 150.0;
 }
 
-- (void)videoScrubberControllerDidUpdate:(id)a3
+- (void)videoScrubberControllerDidUpdate:(id)update
 {
-  v4 = [(QLPHVideoScrubberView *)self scrollView];
-  if (([v4 isDragging] & 1) == 0 && (objc_msgSend(v4, "isTracking") & 1) == 0 && (objc_msgSend(v4, "isDecelerating") & 1) == 0)
+  scrollView = [(QLPHVideoScrubberView *)self scrollView];
+  if (([scrollView isDragging] & 1) == 0 && (objc_msgSend(scrollView, "isTracking") & 1) == 0 && (objc_msgSend(scrollView, "isDecelerating") & 1) == 0)
   {
     [(QLPHVideoScrubberView *)self _updateScrollViewContentOffset];
   }

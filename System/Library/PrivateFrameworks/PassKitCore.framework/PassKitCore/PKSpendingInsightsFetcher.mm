@@ -1,9 +1,9 @@
 @interface PKSpendingInsightsFetcher
-- (BOOL)_validateTrends:(id)a3 againstSummary:(id)a4;
+- (BOOL)_validateTrends:(id)trends againstSummary:(id)summary;
 - (PKSpendingInsightsFetcher)init;
-- (id)_deriveTrendsFromSummary:(id)a3 previousSummary:(id)a4 error:(id *)a5;
-- (void)_getTrendsFromFinHealthForSummary:(id)a3 previousSummary:(id)a4 completion:(id)a5;
-- (void)fetchInsightTrendsForSummary:(id)a3 previousSummary:(id)a4 completion:(id)a5;
+- (id)_deriveTrendsFromSummary:(id)summary previousSummary:(id)previousSummary error:(id *)error;
+- (void)_getTrendsFromFinHealthForSummary:(id)summary previousSummary:(id)previousSummary completion:(id)completion;
+- (void)fetchInsightTrendsForSummary:(id)summary previousSummary:(id)previousSummary completion:(id)completion;
 @end
 
 @implementation PKSpendingInsightsFetcher
@@ -25,40 +25,40 @@
   return v2;
 }
 
-- (void)fetchInsightTrendsForSummary:(id)a3 previousSummary:(id)a4 completion:(id)a5
+- (void)fetchInsightTrendsForSummary:(id)summary previousSummary:(id)previousSummary completion:(id)completion
 {
   if (self->_useFinHealth)
   {
-    v8 = a5;
-    [(PKSpendingInsightsFetcher *)self _getTrendsFromFinHealthForSummary:a3 previousSummary:a4 completion:v8];
+    completionCopy = completion;
+    [(PKSpendingInsightsFetcher *)self _getTrendsFromFinHealthForSummary:summary previousSummary:previousSummary completion:completionCopy];
   }
 
   else
   {
     v11 = 0;
-    v9 = a5;
-    v10 = [(PKSpendingInsightsFetcher *)self _deriveTrendsFromSummary:a3 previousSummary:a4 error:&v11];
-    v8 = v11;
-    v9[2](v9, v10, v8);
+    completionCopy2 = completion;
+    v10 = [(PKSpendingInsightsFetcher *)self _deriveTrendsFromSummary:summary previousSummary:previousSummary error:&v11];
+    completionCopy = v11;
+    completionCopy2[2](completionCopy2, v10, completionCopy);
   }
 }
 
-- (void)_getTrendsFromFinHealthForSummary:(id)a3 previousSummary:(id)a4 completion:(id)a5
+- (void)_getTrendsFromFinHealthForSummary:(id)summary previousSummary:(id)previousSummary completion:(id)completion
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v23 = a4;
-  v9 = a5;
+  summaryCopy = summary;
+  previousSummaryCopy = previousSummary;
+  completionCopy = completion;
   if (self->_foundFHInsightsDiscrepancy)
   {
     v10 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKSpendingInsightErrorDomain" code:3 userInfo:0];
-    v9[2](v9, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 
   else
   {
-    v11 = [v8 summaryType];
-    if (v11 == 1)
+    summaryType = [summaryCopy summaryType];
+    if (summaryType == 1)
     {
       v12 = 2;
     }
@@ -68,17 +68,17 @@
       v12 = 1;
     }
 
-    v13 = [MEMORY[0x1E695DF00] date];
-    v22 = [v8 startDate];
-    v14 = [v8 endDate];
-    if ([v14 compare:v13] == -1)
+    date = [MEMORY[0x1E695DF00] date];
+    startDate = [summaryCopy startDate];
+    endDate = [summaryCopy endDate];
+    if ([endDate compare:date] == -1)
     {
-      v15 = v14;
+      v15 = endDate;
     }
 
     else
     {
-      v15 = v13;
+      v15 = date;
     }
 
     v16 = v15;
@@ -90,7 +90,7 @@
     v19 = off_1ED6D11A0();
     v29[1] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
-    if (v11 == 2)
+    if (summaryType == 2)
     {
       v21 = 3;
     }
@@ -104,10 +104,10 @@
     v24[1] = 3221225472;
     v24[2] = __90__PKSpendingInsightsFetcher__getTrendsFromFinHealthForSummary_previousSummary_completion___block_invoke;
     v24[3] = &unk_1E79E49E8;
-    v25 = v8;
+    v25 = summaryCopy;
     objc_copyWeak(&v27, &location);
-    v26 = v9;
-    [(FHSearchSuggestionController *)searchSuggestionController allFeatureInsightsWithStartDate:v22 endDate:v16 insightTypeItems:v20 trendWindow:v21 completion:v24];
+    v26 = completionCopy;
+    [(FHSearchSuggestionController *)searchSuggestionController allFeatureInsightsWithStartDate:startDate endDate:v16 insightTypeItems:v20 trendWindow:v21 completion:v24];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -192,43 +192,43 @@ LABEL_12:
 LABEL_17:
 }
 
-- (BOOL)_validateTrends:(id)a3 againstSummary:(id)a4
+- (BOOL)_validateTrends:(id)trends againstSummary:(id)summary
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  trendsCopy = trends;
+  summaryCopy = summary;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__PKSpendingInsightsFetcher__validateTrends_againstSummary___block_invoke_2;
   aBlock[3] = &unk_1E79E4A10;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = summaryCopy;
   v62 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [v6 overallSpendingTrend];
-  v11 = [v10 totalSpending];
-  v12 = [v11 amount];
+  overallSpendingTrend = [trendsCopy overallSpendingTrend];
+  totalSpending = [overallSpendingTrend totalSpending];
+  amount = [totalSpending amount];
 
-  v13 = [v8 totalSpending];
-  v14 = [v13 amount];
+  totalSpending2 = [v8 totalSpending];
+  amount2 = [totalSpending2 amount];
 
   v60 = 0;
-  LOBYTE(v13) = __60__PKSpendingInsightsFetcher__validateTrends_againstSummary___block_invoke(v12, v14, &v60);
+  LOBYTE(totalSpending2) = __60__PKSpendingInsightsFetcher__validateTrends_againstSummary___block_invoke(amount, amount2, &v60);
   v15 = v60;
-  if (v13)
+  if (totalSpending2)
   {
-    v16 = [v6 overallSpendingTrend];
-    v17 = [v16 previousTotalSpending];
-    v18 = [v17 amount];
+    overallSpendingTrend2 = [trendsCopy overallSpendingTrend];
+    previousTotalSpending = [overallSpendingTrend2 previousTotalSpending];
+    amount3 = [previousTotalSpending amount];
 
-    v19 = [v8 previousTotalSpending];
-    v20 = [v19 amount];
+    previousTotalSpending2 = [v8 previousTotalSpending];
+    amount4 = [previousTotalSpending2 amount];
 
-    v50 = v20;
+    v50 = amount4;
     if (([v8 isCurrentPeriod] & 1) == 0)
     {
       v59 = v15;
-      v21 = __60__PKSpendingInsightsFetcher__validateTrends_againstSummary___block_invoke(v18, v20, &v59);
+      v21 = __60__PKSpendingInsightsFetcher__validateTrends_againstSummary___block_invoke(amount3, amount4, &v59);
       v22 = v59;
 
       if (!v21)
@@ -237,11 +237,11 @@ LABEL_17:
         v41 = PKLogFacilityTypeGetObject(0xFuLL);
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
-          v42 = [v8 startDate];
+          startDate = [v8 startDate];
           [v8 endDate];
-          v44 = v43 = v18;
+          v44 = v43 = amount3;
           *buf = 138544130;
-          v64 = v42;
+          v64 = startDate;
           v65 = 2114;
           v66 = v44;
           v67 = 2112;
@@ -250,21 +250,21 @@ LABEL_17:
           v70 = v50;
           _os_log_impl(&dword_1AD337000, v41, OS_LOG_TYPE_DEFAULT, "Rejecting trends for dates [%{public}@ to %{public}@]\nbecause previous spending %@\ndoes not match summary previous spending %@. No further insights will be generated for this session.", buf, 0x2Au);
 
-          v18 = v43;
+          amount3 = v43;
         }
 
         v9 = v49;
         v49[2](v49, v22);
         v33 = 0;
         v15 = v22;
-        v20 = v50;
+        amount4 = v50;
 LABEL_26:
 
         goto LABEL_27;
       }
 
       v15 = v22;
-      v20 = v50;
+      amount4 = v50;
     }
 
     v57 = 0u;
@@ -276,17 +276,17 @@ LABEL_26:
     if (v23)
     {
       v24 = v23;
-      v46 = v18;
+      v46 = amount3;
       v47 = v8;
       v48 = v9;
       v52 = *v56;
-      v53 = v6;
+      v53 = trendsCopy;
       while (2)
       {
         v25 = 0;
         v26 = v15;
-        v27 = v14;
-        v28 = v12;
+        v27 = amount2;
+        v28 = amount;
         do
         {
           if (*v56 != v52)
@@ -296,49 +296,49 @@ LABEL_26:
 
           v29 = *(*(&v55 + 1) + 8 * v25);
           v30 = [v53 spendingTrendForMerchantCategory:{objc_msgSend(v29, "merchantCategory", v46)}];
-          v31 = [v30 totalSpending];
-          v12 = [v31 amount];
+          totalSpending3 = [v30 totalSpending];
+          amount = [totalSpending3 amount];
 
-          v32 = [v29 totalAmount];
-          v14 = [v32 amount];
+          totalAmount = [v29 totalAmount];
+          amount2 = [totalAmount amount];
 
           v54 = v26;
-          LOBYTE(v32) = __60__PKSpendingInsightsFetcher__validateTrends_againstSummary___block_invoke(v12, v14, &v54);
+          LOBYTE(totalAmount) = __60__PKSpendingInsightsFetcher__validateTrends_againstSummary___block_invoke(amount, amount2, &v54);
           v15 = v54;
 
-          if ((v32 & 1) == 0)
+          if ((totalAmount & 1) == 0)
           {
             v37 = PKLogFacilityTypeGetObject(0xFuLL);
             v8 = v47;
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
-              v38 = [v47 startDate];
-              v39 = [v47 endDate];
+              startDate2 = [v47 startDate];
+              endDate = [v47 endDate];
               v40 = PKMerchantCategoryToString([v29 merchantCategory]);
               *buf = 138544386;
-              v64 = v38;
+              v64 = startDate2;
               v65 = 2114;
-              v66 = v39;
+              v66 = endDate;
               v67 = 2112;
               v68 = v40;
               v69 = 2112;
-              v70 = v12;
+              v70 = amount;
               v71 = 2112;
-              v72 = v14;
+              v72 = amount2;
               _os_log_impl(&dword_1AD337000, v37, OS_LOG_TYPE_DEFAULT, "Rejecting trends for dates [%{public}@ to %{public}@]\nbecause spending for merchant category %@ %@\ndoes not match summary spending %@. No further insights will be generated for this session.", buf, 0x34u);
             }
 
             v9 = v48;
             v48[2](v48, v15);
             v33 = 0;
-            v6 = v53;
+            trendsCopy = v53;
             goto LABEL_20;
           }
 
           ++v25;
           v26 = v15;
-          v27 = v14;
-          v28 = v12;
+          v27 = amount2;
+          v28 = amount;
         }
 
         while (v24 != v25);
@@ -352,12 +352,12 @@ LABEL_26:
       }
 
       v33 = 1;
-      v6 = v53;
+      trendsCopy = v53;
       v8 = v47;
       v9 = v48;
 LABEL_20:
-      v18 = v46;
-      v20 = v50;
+      amount3 = v46;
+      amount4 = v50;
     }
 
     else
@@ -371,16 +371,16 @@ LABEL_20:
   v34 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [v8 startDate];
-    v36 = [v8 endDate];
+    startDate3 = [v8 startDate];
+    endDate2 = [v8 endDate];
     *buf = 138544130;
-    v64 = v35;
+    v64 = startDate3;
     v65 = 2114;
-    v66 = v36;
+    v66 = endDate2;
     v67 = 2112;
-    v68 = v12;
+    v68 = amount;
     v69 = 2112;
-    v70 = v14;
+    v70 = amount2;
     _os_log_impl(&dword_1AD337000, v34, OS_LOG_TYPE_DEFAULT, "Rejecting trends for dates [%{public}@ to %{public}@]\nbecause total spending %@\ndoes not match summary total spending %@. No further insights will be generated for this session.", buf, 0x2Au);
   }
 
@@ -437,28 +437,28 @@ void __60__PKSpendingInsightsFetcher__validateTrends_againstSummary___block_invo
   }
 }
 
-- (id)_deriveTrendsFromSummary:(id)a3 previousSummary:(id)a4 error:(id *)a5
+- (id)_deriveTrendsFromSummary:(id)summary previousSummary:(id)previousSummary error:(id *)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v8)
+  summaryCopy = summary;
+  previousSummaryCopy = previousSummary;
+  v9 = previousSummaryCopy;
+  if (!previousSummaryCopy)
   {
-    v11 = [v7 totalSpending];
-    v13 = [MEMORY[0x1E696AB90] zero];
-    v14 = [v7 totalSpending];
-    v15 = [v14 currency];
-    v12 = PKCurrencyAmountCreate(v13, v15, 0);
+    totalSpending = [summaryCopy totalSpending];
+    zero = [MEMORY[0x1E696AB90] zero];
+    totalSpending2 = [summaryCopy totalSpending];
+    currency = [totalSpending2 currency];
+    totalSpending3 = PKCurrencyAmountCreate(zero, currency, 0);
 
 LABEL_5:
-    v16 = [v11 amount];
-    v17 = [v12 amount];
-    v18 = [v16 decimalNumberBySubtracting:v17];
-    if ([v17 pk_isZeroNumber])
+    amount = [totalSpending amount];
+    amount2 = [totalSpending3 amount];
+    v18 = [amount decimalNumberBySubtracting:amount2];
+    if ([amount2 pk_isZeroNumber])
     {
       v19 = 0.0;
-      if (([v16 pk_isZeroNumber] & 1) == 0)
+      if (([amount pk_isZeroNumber] & 1) == 0)
       {
         v20 = 0;
 LABEL_31:
@@ -471,14 +471,14 @@ LABEL_31:
     {
       [v18 doubleValue];
       v22 = v21;
-      [v17 doubleValue];
+      [amount2 doubleValue];
       v19 = fabs(v22 / v23 * 100.0);
     }
 
-    v53 = v17;
-    v54 = v16;
+    v53 = amount2;
+    v54 = amount;
     v52 = v18;
-    if (v16 && ([v16 pk_isZeroNumber] & 1) == 0)
+    if (amount && ([amount pk_isZeroNumber] & 1) == 0)
     {
       v24 = __76__PKSpendingInsightsFetcher__deriveTrendsFromSummary_previousSummary_error___block_invoke(v18, v19);
     }
@@ -488,20 +488,20 @@ LABEL_31:
       v24 = 0;
     }
 
-    v25 = [v11 currencyAmountBySubtractingCurrencyAmount:v12];
-    v26 = [v25 absoluteValue];
+    v25 = [totalSpending currencyAmountBySubtractingCurrencyAmount:totalSpending3];
+    absoluteValue = [v25 absoluteValue];
 
-    v51 = v26;
-    v55 = v12;
-    v56 = v11;
-    v50 = [[PKSpendingInsightTrend alloc] initWithType:1 direction:v24 percentageChange:v26 amountChange:0 merchantCategory:v11 totalSpending:v12 previousTotalSpending:v19];
-    v57 = v7;
+    v51 = absoluteValue;
+    v55 = totalSpending3;
+    v56 = totalSpending;
+    v50 = [[PKSpendingInsightTrend alloc] initWithType:1 direction:v24 percentageChange:absoluteValue amountChange:0 merchantCategory:totalSpending totalSpending:totalSpending3 previousTotalSpending:v19];
+    v57 = summaryCopy;
     v58 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    obj = [v7 orderedSpendingCategories];
+    obj = [summaryCopy orderedSpendingCategories];
     v27 = [obj countByEnumeratingWithState:&v63 objects:v67 count:16];
     if (v27)
     {
@@ -519,38 +519,38 @@ LABEL_31:
           }
 
           v31 = *(*(&v63 + 1) + 8 * i);
-          v32 = [v31 merchantCategory];
-          v33 = [v31 totalAmount];
-          v34 = [v33 amount];
-          if (([v34 pk_isZeroNumber] & 1) == 0)
+          merchantCategory = [v31 merchantCategory];
+          totalAmount = [v31 totalAmount];
+          amount3 = [totalAmount amount];
+          if (([amount3 pk_isZeroNumber] & 1) == 0)
           {
-            if (v9 && ([v9 orderedSpendingCategories], v35 = objc_claimAutoreleasedReturnValue(), v62[0] = MEMORY[0x1E69E9820], v62[1] = 3221225472, v62[2] = __76__PKSpendingInsightsFetcher__deriveTrendsFromSummary_previousSummary_error___block_invoke_2, v62[3] = &__block_descriptor_40_e35_B16__0__PKPaymentTransactionGroup_8l, v62[4] = v32, objc_msgSend(v35, "pk_firstObjectPassingTest:", v62), v36 = objc_claimAutoreleasedReturnValue(), v35, v36))
+            if (v9 && ([v9 orderedSpendingCategories], v35 = objc_claimAutoreleasedReturnValue(), v62[0] = MEMORY[0x1E69E9820], v62[1] = 3221225472, v62[2] = __76__PKSpendingInsightsFetcher__deriveTrendsFromSummary_previousSummary_error___block_invoke_2, v62[3] = &__block_descriptor_40_e35_B16__0__PKPaymentTransactionGroup_8l, v62[4] = merchantCategory, objc_msgSend(v35, "pk_firstObjectPassingTest:", v62), currency2 = objc_claimAutoreleasedReturnValue(), v35, currency2))
             {
-              v37 = [v36 totalAmount];
-              v38 = [v37 amount];
+              totalAmount2 = [currency2 totalAmount];
+              amount4 = [totalAmount2 amount];
             }
 
             else
             {
-              v38 = [MEMORY[0x1E696AB90] zero];
-              v36 = [v33 currency];
-              v37 = PKCurrencyAmountCreate(v38, v36, 0);
+              amount4 = [MEMORY[0x1E696AB90] zero];
+              currency2 = [totalAmount currency];
+              totalAmount2 = PKCurrencyAmountCreate(amount4, currency2, 0);
             }
 
-            v39 = [v34 decimalNumberBySubtracting:v38];
-            v40 = [v37 amount];
-            v41 = [v40 pk_isZeroNumber];
+            v39 = [amount3 decimalNumberBySubtracting:amount4];
+            amount5 = [totalAmount2 amount];
+            pk_isZeroNumber = [amount5 pk_isZeroNumber];
 
-            if ((v41 & 1) == 0)
+            if ((pk_isZeroNumber & 1) == 0)
             {
               [v39 doubleValue];
               v43 = v42;
-              [(NSDecimalNumber *)v38 doubleValue];
+              [(NSDecimalNumber *)amount4 doubleValue];
               v45 = fabs(v43 / v44 * 100.0);
-              v46 = [v33 currencyAmountBySubtractingCurrencyAmount:v37];
-              v47 = [v46 absoluteValue];
+              v46 = [totalAmount currencyAmountBySubtractingCurrencyAmount:totalAmount2];
+              absoluteValue2 = [v46 absoluteValue];
 
-              v48 = [[PKSpendingInsightTrend alloc] initWithType:2 direction:__76__PKSpendingInsightsFetcher__deriveTrendsFromSummary_previousSummary_error___block_invoke(v39 percentageChange:v45) amountChange:v47 merchantCategory:v32 totalSpending:v33 previousTotalSpending:v37, v45];
+              v48 = [[PKSpendingInsightTrend alloc] initWithType:2 direction:__76__PKSpendingInsightsFetcher__deriveTrendsFromSummary_previousSummary_error___block_invoke(v39 percentageChange:v45) amountChange:absoluteValue2 merchantCategory:merchantCategory totalSpending:totalAmount previousTotalSpending:totalAmount2, v45];
               [v58 addObject:v48];
             }
 
@@ -566,27 +566,27 @@ LABEL_31:
     }
 
     v20 = [[PKSpendingInsightTrendCollection alloc] initWithOverallTrend:v50 categoryTrends:v58];
-    v11 = v56;
-    v7 = v57;
-    v16 = v54;
-    v12 = v55;
+    totalSpending = v56;
+    summaryCopy = v57;
+    amount = v54;
+    totalSpending3 = v55;
     v18 = v52;
-    v17 = v53;
+    amount2 = v53;
     goto LABEL_31;
   }
 
-  v10 = [v8 summaryType];
-  if (v10 == [v7 summaryType])
+  summaryType = [previousSummaryCopy summaryType];
+  if (summaryType == [summaryCopy summaryType])
   {
-    v11 = [v7 totalSpending];
-    v12 = [v9 totalSpending];
+    totalSpending = [summaryCopy totalSpending];
+    totalSpending3 = [v9 totalSpending];
     goto LABEL_5;
   }
 
   v20 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKSpendingInsightErrorDomain" code:4 userInfo:0];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKSpendingInsightErrorDomain" code:4 userInfo:0];
   }
 
 LABEL_32:

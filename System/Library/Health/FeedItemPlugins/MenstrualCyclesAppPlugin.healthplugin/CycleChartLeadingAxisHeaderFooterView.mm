@@ -1,11 +1,11 @@
 @interface CycleChartLeadingAxisHeaderFooterView
-- (_TtC24MenstrualCyclesAppPlugin37CycleChartLeadingAxisHeaderFooterView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin37CycleChartLeadingAxisHeaderFooterView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation CycleChartLeadingAxisHeaderFooterView
 
-- (_TtC24MenstrualCyclesAppPlugin37CycleChartLeadingAxisHeaderFooterView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin37CycleChartLeadingAxisHeaderFooterView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37CycleChartLeadingAxisHeaderFooterView_header;
   *v3 = 0u;
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_29DEC8694(x, y, width, height);
 }
 

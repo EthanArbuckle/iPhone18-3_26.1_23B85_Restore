@@ -1,25 +1,25 @@
 @interface POMMESSchemaPOMMESPegasusRequestStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESPegasusRequestStarted)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESPegasusRequestStarted)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESPegasusRequestStarted)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESPegasusRequestStarted)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESPegasusRequestStarted
 
-- (POMMESSchemaPOMMESPegasusRequestStarted)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESPegasusRequestStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = POMMESSchemaPOMMESPegasusRequestStarted;
   v5 = [(POMMESSchemaPOMMESPegasusRequestStarted *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"payloadSizeInKB"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"payloadSizeInKB"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESPegasusRequestStarted)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESPegasusRequestStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESPegasusRequestStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESPegasusRequestStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESPegasusRequestStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,18 +69,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = MEMORY[0x1E696AD98];
     [(POMMESSchemaPOMMESPegasusRequestStarted *)self payloadSizeInKB];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"payloadSizeInKB"];
+    [dictionary setObject:v5 forKeyedSubscript:@"payloadSizeInKB"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -118,15 +118,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[16] & 1))
+    if ((*&self->_has & 1) == (equalCopy[16] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (payloadSizeInKB = self->_payloadSizeInKB, [v4 payloadSizeInKB], payloadSizeInKB == v6))
+      if ((*&self->_has & 1) == 0 || (payloadSizeInKB = self->_payloadSizeInKB, [equalCopy payloadSizeInKB], payloadSizeInKB == v6))
       {
         v7 = 1;
       }
@@ -136,7 +136,7 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {

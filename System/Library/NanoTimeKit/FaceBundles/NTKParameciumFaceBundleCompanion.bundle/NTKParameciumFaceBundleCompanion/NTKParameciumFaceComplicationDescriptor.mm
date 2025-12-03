@@ -1,8 +1,8 @@
 @interface NTKParameciumFaceComplicationDescriptor
 - (id)complicationSlotDescriptors;
-- (id)localizedNameForComplicationSlot:(id)a3;
+- (id)localizedNameForComplicationSlot:(id)slot;
 - (id)orderedComplicationSlots;
-- (id)richComplicationSlotsForDevice:(id)a3;
+- (id)richComplicationSlotsForDevice:(id)device;
 @end
 
 @implementation NTKParameciumFaceComplicationDescriptor
@@ -11,8 +11,8 @@
 {
   v8.receiver = self;
   v8.super_class = NTKParameciumFaceComplicationDescriptor;
-  v2 = [(NTKParameciumFaceComplicationDescriptor *)&v8 complicationSlotDescriptors];
-  v3 = [v2 mutableCopy];
+  complicationSlotDescriptors = [(NTKParameciumFaceComplicationDescriptor *)&v8 complicationSlotDescriptors];
+  v3 = [complicationSlotDescriptors mutableCopy];
 
   v4 = +[NSMutableIndexSet indexSet];
   [v4 addIndex:57];
@@ -32,28 +32,28 @@
 {
   v6.receiver = self;
   v6.super_class = NTKParameciumFaceComplicationDescriptor;
-  v2 = [(NTKParameciumFaceComplicationDescriptor *)&v6 orderedComplicationSlots];
+  orderedComplicationSlots = [(NTKParameciumFaceComplicationDescriptor *)&v6 orderedComplicationSlots];
   v7 = NTKComplicationSlotSubdialTop;
   v3 = [NSArray arrayWithObjects:&v7 count:1];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  v4 = [orderedComplicationSlots arrayByAddingObjectsFromArray:v3];
 
   return v4;
 }
 
-- (id)localizedNameForComplicationSlot:(id)a3
+- (id)localizedNameForComplicationSlot:(id)slot
 {
   v5.receiver = self;
   v5.super_class = NTKParameciumFaceComplicationDescriptor;
-  v3 = [(NTKParameciumFaceComplicationDescriptor *)&v5 localizedNameForComplicationSlot:a3];
+  v3 = [(NTKParameciumFaceComplicationDescriptor *)&v5 localizedNameForComplicationSlot:slot];
 
   return v3;
 }
 
-- (id)richComplicationSlotsForDevice:(id)a3
+- (id)richComplicationSlotsForDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = NTKParameciumFaceComplicationDescriptor;
-  v3 = [(NTKParameciumFaceComplicationDescriptor *)&v5 richComplicationSlotsForDevice:a3];
+  v3 = [(NTKParameciumFaceComplicationDescriptor *)&v5 richComplicationSlotsForDevice:device];
 
   return v3;
 }

@@ -1,15 +1,15 @@
 @interface HKDF
-+ (id)deriveKeyWith:(id)a3 salt:(id)a4 outputSize:(int64_t)a5;
++ (id)deriveKeyWith:(id)with salt:(id)salt outputSize:(int64_t)size;
 - (_TtC17MessageProtection4HKDF)init;
 @end
 
 @implementation HKDF
 
-+ (id)deriveKeyWith:(id)a3 salt:(id)a4 outputSize:(int64_t)a5
++ (id)deriveKeyWith:(id)with salt:(id)salt outputSize:(int64_t)size
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = specialized static HKDF.deriveKeyWith(_:salt:outputSize:)(v6, v7);
+  withCopy = with;
+  saltCopy = salt;
+  v8 = specialized static HKDF.deriveKeyWith(_:salt:outputSize:)(withCopy, saltCopy);
 
   return v8;
 }

@@ -1,9 +1,9 @@
 @interface ULLabelStore
 + (unsigned)maxEntriesInTable;
 - (BOOL)deleteOrphanRecords;
-- (BOOL)deleteSimilarityListLabelsOlderThan:(double)a3 orNewerThan:(double)a4;
-- (BOOL)insertDataObjects:(const void *)a3 atLoiUUID:(const uuid *)a4;
-- (BOOL)insertDataObjects:(const void *)a3 forScanningEventUUID:(const uuid *)a4 andServiceUUID:(const uuid *)a5;
+- (BOOL)deleteSimilarityListLabelsOlderThan:(double)than orNewerThan:(double)newerThan;
+- (BOOL)insertDataObjects:(const void *)objects atLoiUUID:(const uuid *)d;
+- (BOOL)insertDataObjects:(const void *)objects forScanningEventUUID:(const uuid *)d andServiceUUID:(const uuid *)iD;
 - (__n128)insertDataObjects:atLoiUUID:;
 - (__n128)insertDataObjects:forScanningEventUUID:andServiceUUID:;
 - (id)insertDataObjects:atLoiUUID:;
@@ -19,46 +19,46 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULRecordingLabelsTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A719E8 unsignedIntValue];
+    unsignedIntValue = [&unk_286A719E8 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3 forScanningEventUUID:(const uuid *)a4 andServiceUUID:(const uuid *)a5
+- (BOOL)insertDataObjects:(const void *)objects forScanningEventUUID:(const uuid *)d andServiceUUID:(const uuid *)iD
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (*a3 == *(a3 + 1))
+  if (*objects == *(objects + 1))
   {
     v14 = 1;
   }
 
   else
   {
-    v8 = [(ULStore *)self dbStore];
-    v9 = (*(v8->var0 + 18))(v8);
-    v10 = [(ULStore *)self managedObjectContext];
-    v22 = [v9 fetchScanningEventManagedObjectWithUUID:a4 withManagedObjectContext:v10];
+    dbStore = [(ULStore *)self dbStore];
+    v9 = (*(dbStore->var0 + 18))(dbStore);
+    managedObjectContext = [(ULStore *)self managedObjectContext];
+    v22 = [v9 fetchScanningEventManagedObjectWithUUID:d withManagedObjectContext:managedObjectContext];
 
     if (v22)
     {
-      v11 = [(ULStore *)self dbStore];
-      v12 = (*(v11->var0 + 13))(v11);
-      v13 = [(ULStore *)self managedObjectContext];
-      v21 = [v12 fetchServiceManagedObjectWithUUID:a5 withManagedObjectContext:v13];
+      dbStore2 = [(ULStore *)self dbStore];
+      v12 = (*(dbStore2->var0 + 13))(dbStore2);
+      managedObjectContext2 = [(ULStore *)self managedObjectContext];
+      v21 = [v12 fetchServiceManagedObjectWithUUID:iD withManagedObjectContext:managedObjectContext2];
 
       if (v21)
       {
@@ -124,22 +124,22 @@
   return v14;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3 atLoiUUID:(const uuid *)a4
+- (BOOL)insertDataObjects:(const void *)objects atLoiUUID:(const uuid *)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
-  v7 = [(ULStore *)self dbStore];
-  v8 = (*(v7->var0 + 8))(v7);
-  v9 = [(ULStore *)self managedObjectContext];
-  v15 = [v8 fetchLoiManagedObjectWithUUID:a4 withManagedObjectContext:v9];
+  selfCopy = self;
+  dbStore = [(ULStore *)self dbStore];
+  v8 = (*(dbStore->var0 + 8))(dbStore);
+  managedObjectContext = [(ULStore *)self managedObjectContext];
+  v15 = [v8 fetchLoiManagedObjectWithUUID:d withManagedObjectContext:managedObjectContext];
 
   if (v15)
   {
     v17[0] = &unk_286A56450;
     v17[1] = &v15;
-    v17[2] = &v16;
+    v17[2] = &selfCopy;
     v17[3] = v17;
-    inserted = ULDBUtils::insertDataObjects<ULLabelDO,ULLabelMO>(self, a3, v17);
+    inserted = ULDBUtils::insertDataObjects<ULLabelDO,ULLabelMO>(self, objects, v17);
     std::__function::__value_func<ULLabelMO * ()(ULLabelDO const&)>::~__value_func[abi:ne200100](v17);
   }
 
@@ -188,22 +188,22 @@
   return result;
 }
 
-- (BOOL)deleteSimilarityListLabelsOlderThan:(double)a3 orNewerThan:(double)a4
+- (BOOL)deleteSimilarityListLabelsOlderThan:(double)than orNewerThan:(double)newerThan
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = MEMORY[0x277CCAC30];
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v11 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:than];
+  v11 = [MEMORY[0x277CCABB0] numberWithDouble:newerThan];
   v12 = [v9 predicateWithFormat:@"%K < %@ || %K > %@", @"receivedTimestamp", v10, @"receivedTimestamp", v11];
-  [v8 addObject:v12];
+  [array addObject:v12];
 
   v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K = %u", @"service", @"serviceType", 4];
-  [v8 addObject:v13];
+  [array addObject:v13];
 
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v15 byAndPredicates:v8 sortDescriptors:0 andLimit:0];
+  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v15 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   objc_autoreleasePoolPop(v7);
   return self;
@@ -211,13 +211,13 @@
 
 - (BOOL)deleteOrphanRecords
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = NIL || %K = NIL", @"scanningEvent", @"service"];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v6 byAndPredicates:v3 sortDescriptors:0 andLimit:0];
+  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v6 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   return self;
 }
@@ -233,18 +233,18 @@
 - (__n128)insertDataObjects:forScanningEventUUID:andServiceUUID:
 {
   *a2 = &unk_286A563C0;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
 - (id)insertDataObjects:forScanningEventUUID:andServiceUUID:
 {
-  v3 = **(a1 + 8);
-  v4 = **(a1 + 16);
-  v5 = [**(a1 + 24) managedObjectContext];
-  v6 = [ULLabelMO createFromDO:a2 withScanningEventMO:v3 serviceMO:v4 inManagedObjectContext:v5];
+  v3 = **(self + 8);
+  v4 = **(self + 16);
+  managedObjectContext = [**(self + 24) managedObjectContext];
+  v6 = [ULLabelMO createFromDO:a2 withScanningEventMO:v3 serviceMO:v4 inManagedObjectContext:managedObjectContext];
 
   return v6;
 }
@@ -252,7 +252,7 @@
 - (uint64_t)insertDataObjects:forScanningEventUUID:andServiceUUID:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -264,16 +264,16 @@
 - (__n128)insertDataObjects:atLoiUUID:
 {
   *a2 = &unk_286A56450;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
 
 - (id)insertDataObjects:atLoiUUID:
 {
-  v3 = **(a1 + 8);
-  v4 = [**(a1 + 16) managedObjectContext];
-  v5 = [ULLabelMO createFromDO:a2 withLoi:v3 inManagedObjectContext:v4];
+  v3 = **(self + 8);
+  managedObjectContext = [**(self + 16) managedObjectContext];
+  v5 = [ULLabelMO createFromDO:a2 withLoi:v3 inManagedObjectContext:managedObjectContext];
 
   return v5;
 }
@@ -281,7 +281,7 @@
 - (uint64_t)insertDataObjects:atLoiUUID:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

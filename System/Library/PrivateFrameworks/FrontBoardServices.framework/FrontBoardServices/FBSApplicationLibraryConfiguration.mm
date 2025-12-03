@@ -1,8 +1,8 @@
 @interface FBSApplicationLibraryConfiguration
 - (FBSApplicationLibraryConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setApplicationInfoClass:(Class)a3;
-- (void)setApplicationPlaceholderClass:(Class)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setApplicationInfoClass:(Class)class;
+- (void)setApplicationPlaceholderClass:(Class)class;
 @end
 
 @implementation FBSApplicationLibraryConfiguration
@@ -33,39 +33,39 @@
   return v2;
 }
 
-- (void)setApplicationInfoClass:(Class)a3
+- (void)setApplicationInfoClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    [(FBSApplicationLibraryConfiguration *)a3 setApplicationInfoClass:a2];
+    [(FBSApplicationLibraryConfiguration *)class setApplicationInfoClass:a2];
   }
 
   applicationInfoClass = self->_applicationInfoClass;
   p_applicationInfoClass = &self->_applicationInfoClass;
-  if (applicationInfoClass != a3)
+  if (applicationInfoClass != class)
   {
 
-    objc_storeStrong(p_applicationInfoClass, a3);
+    objc_storeStrong(p_applicationInfoClass, class);
   }
 }
 
-- (void)setApplicationPlaceholderClass:(Class)a3
+- (void)setApplicationPlaceholderClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    [(FBSApplicationLibraryConfiguration *)a3 setApplicationPlaceholderClass:a2];
+    [(FBSApplicationLibraryConfiguration *)class setApplicationPlaceholderClass:a2];
   }
 
   applicationPlaceholderClass = self->_applicationPlaceholderClass;
   p_applicationPlaceholderClass = &self->_applicationPlaceholderClass;
-  if (applicationPlaceholderClass != a3)
+  if (applicationPlaceholderClass != class)
   {
 
-    objc_storeStrong(p_applicationPlaceholderClass, a3);
+    objc_storeStrong(p_applicationPlaceholderClass, class);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(FBSApplicationLibraryConfiguration);
   [(FBSApplicationLibraryConfiguration *)v4 setApplicationInfoClass:self->_applicationInfoClass];

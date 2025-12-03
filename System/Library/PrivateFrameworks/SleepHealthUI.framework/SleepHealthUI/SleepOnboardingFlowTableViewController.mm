@@ -1,6 +1,6 @@
 @interface SleepOnboardingFlowTableViewController
 - (int64_t)hksp_presentationStyle;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -31,11 +31,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269D082C4();
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_269D97870();
   v7 = *(v6 - 8);
@@ -50,9 +50,9 @@
   }
 
   sub_269D97840();
-  v10 = a3;
-  v11 = self;
-  SleepOnboardingFlowTableViewController.tableView(_:didSelectRowAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  SleepOnboardingFlowTableViewController.tableView(_:didSelectRowAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }

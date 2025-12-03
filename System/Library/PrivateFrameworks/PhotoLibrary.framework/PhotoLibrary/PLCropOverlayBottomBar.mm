@@ -1,18 +1,18 @@
 @interface PLCropOverlayBottomBar
-- (PLCropOverlayBottomBar)initWithCoder:(id)a3;
-- (PLCropOverlayBottomBar)initWithFrame:(CGRect)a3;
+- (PLCropOverlayBottomBar)initWithCoder:(id)coder;
+- (PLCropOverlayBottomBar)initWithFrame:(CGRect)frame;
 - (void)_commonPLCropOverlayBottomBarInitialization;
 - (void)_updateBottomBars;
 - (void)_updatePreviewBottomBarForPlaybackState;
 - (void)_updateStyle;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setCameraBottomBar:(id)a3;
-- (void)setInPopover:(BOOL)a3;
-- (void)setPlayingVideo:(BOOL)a3;
-- (void)setPreviewBottomBar:(id)a3;
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setWallpaperBottomBar:(id)a3;
+- (void)setCameraBottomBar:(id)bar;
+- (void)setInPopover:(BOOL)popover;
+- (void)setPlayingVideo:(BOOL)video;
+- (void)setPreviewBottomBar:(id)bar;
+- (void)setStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setWallpaperBottomBar:(id)bar;
 @end
 
 @implementation PLCropOverlayBottomBar
@@ -38,10 +38,10 @@
   [(UIView *)self->_cameraBottomBar setAlpha:v4];
   [(PLCropOverlayPreviewBottomBar *)self->_previewBottomBar setAlpha:v3];
   style = self->_style;
-  v6 = [(PLCropOverlayPreviewBottomBar *)self->_previewBottomBar playbackButton];
+  playbackButton = [(PLCropOverlayPreviewBottomBar *)self->_previewBottomBar playbackButton];
   if (style == 2)
   {
-    [(UIButton *)v6 setHidden:0];
+    [(UIButton *)playbackButton setHidden:0];
 
     [(PLCropOverlayBottomBar *)self _updatePreviewBottomBarForPlaybackState];
   }
@@ -49,13 +49,13 @@
   else
   {
 
-    [(UIButton *)v6 setHidden:1];
+    [(UIButton *)playbackButton setHidden:1];
   }
 }
 
 - (void)_updatePreviewBottomBarForPlaybackState
 {
-  v3 = [(PLCropOverlayPreviewBottomBar *)self->_previewBottomBar playbackButton];
+  playbackButton = [(PLCropOverlayPreviewBottomBar *)self->_previewBottomBar playbackButton];
   playingVideo = self->_playingVideo;
   v5 = MEMORY[0x277D755B8];
   v6 = PLPhotoLibraryFrameworkBundle();
@@ -69,7 +69,7 @@
     v7 = @"PLCameraPickerPlay.png";
   }
 
-  -[UIButton setImage:forState:](v3, "setImage:forState:", [v5 imageNamed:v7 inBundle:v6], 0);
+  -[UIButton setImage:forState:](playbackButton, "setImage:forState:", [v5 imageNamed:v7 inBundle:v6], 0);
   previewBottomBar = self->_previewBottomBar;
 
   [(PLCropOverlayPreviewBottomBar *)previewBottomBar setNeedsLayout];
@@ -82,37 +82,37 @@
   [(PLCropOverlayBottomBar *)self setNeedsLayout];
 }
 
-- (void)setInPopover:(BOOL)a3
+- (void)setInPopover:(BOOL)popover
 {
-  if (self->_inPopover != a3)
+  if (self->_inPopover != popover)
   {
-    self->_inPopover = a3;
+    self->_inPopover = popover;
     [(PLCropOverlayBottomBar *)self _updateBottomBars];
   }
 }
 
-- (void)setPlayingVideo:(BOOL)a3
+- (void)setPlayingVideo:(BOOL)video
 {
-  if (self->_playingVideo != a3)
+  if (self->_playingVideo != video)
   {
-    self->_playingVideo = a3;
+    self->_playingVideo = video;
     [(PLCropOverlayBottomBar *)self _updatePreviewBottomBarForPlaybackState];
   }
 }
 
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
     v6[5] = v4;
     v6[6] = v5;
-    self->_style = a3;
+    self->_style = style;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __44__PLCropOverlayBottomBar_setStyle_animated___block_invoke;
     v6[3] = &unk_2782A2020;
     v6[4] = self;
-    if (a4)
+    if (animated)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v6 animations:0.3];
     }
@@ -124,43 +124,43 @@
   }
 }
 
-- (void)setWallpaperBottomBar:(id)a3
+- (void)setWallpaperBottomBar:(id)bar
 {
   wallpaperBottomBar = self->_wallpaperBottomBar;
-  if (wallpaperBottomBar != a3)
+  if (wallpaperBottomBar != bar)
   {
     [(PLCropOverlayWallpaperBottomBar *)wallpaperBottomBar removeFromSuperview];
 
-    v6 = a3;
-    self->_wallpaperBottomBar = v6;
-    [(PLCropOverlayBottomBar *)self addSubview:v6];
+    barCopy = bar;
+    self->_wallpaperBottomBar = barCopy;
+    [(PLCropOverlayBottomBar *)self addSubview:barCopy];
 
     [(PLCropOverlayBottomBar *)self _updateBottomBars];
   }
 }
 
-- (void)setPreviewBottomBar:(id)a3
+- (void)setPreviewBottomBar:(id)bar
 {
   previewBottomBar = self->_previewBottomBar;
-  if (previewBottomBar != a3)
+  if (previewBottomBar != bar)
   {
     [(PLCropOverlayPreviewBottomBar *)previewBottomBar removeFromSuperview];
 
-    v6 = a3;
-    self->_previewBottomBar = v6;
-    [(PLCropOverlayBottomBar *)self addSubview:v6];
+    barCopy = bar;
+    self->_previewBottomBar = barCopy;
+    [(PLCropOverlayBottomBar *)self addSubview:barCopy];
 
     [(PLCropOverlayBottomBar *)self _updateBottomBars];
   }
 }
 
-- (void)setCameraBottomBar:(id)a3
+- (void)setCameraBottomBar:(id)bar
 {
   cameraBottomBar = self->_cameraBottomBar;
-  if (cameraBottomBar != a3)
+  if (cameraBottomBar != bar)
   {
 
-    self->_cameraBottomBar = a3;
+    self->_cameraBottomBar = bar;
 
     [(PLCropOverlayBottomBar *)self _updateBottomBars];
   }
@@ -187,11 +187,11 @@
   [(PLCropOverlayBottomBar *)&v3 dealloc];
 }
 
-- (PLCropOverlayBottomBar)initWithCoder:(id)a3
+- (PLCropOverlayBottomBar)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PLCropOverlayBottomBar;
-  v3 = [(PLCropOverlayBottomBar *)&v6 initWithCoder:a3];
+  v3 = [(PLCropOverlayBottomBar *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -201,11 +201,11 @@
   return v4;
 }
 
-- (PLCropOverlayBottomBar)initWithFrame:(CGRect)a3
+- (PLCropOverlayBottomBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLCropOverlayBottomBar;
-  v3 = [(PLCropOverlayBottomBar *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLCropOverlayBottomBar *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

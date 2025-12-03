@@ -1,36 +1,36 @@
 @interface ATXWidgetLocationAuthorizationTracker
-- (ATXWidgetLocationAuthorizationTracker)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4;
+- (ATXWidgetLocationAuthorizationTracker)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier;
 - (BOOL)isContainerAuthorizedForWidgetUpdates;
 - (BOOL)widgetWantsLocation;
 - (void)isContainerAuthorizedForWidgetUpdates;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)widgetWantsLocation;
 @end
 
 @implementation ATXWidgetLocationAuthorizationTracker
 
-- (ATXWidgetLocationAuthorizationTracker)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4
+- (ATXWidgetLocationAuthorizationTracker)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v20.receiver = self;
   v20.super_class = ATXWidgetLocationAuthorizationTracker;
   v8 = [(ATXWidgetLocationAuthorizationTracker *)&v20 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     extensionBundleIdentifier = v8->_extensionBundleIdentifier;
     v8->_extensionBundleIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [bundleIdentifierCopy copy];
     containerBundleIdentifier = v8->_containerBundleIdentifier;
     v8->_containerBundleIdentifier = v11;
 
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String, v16);
     queue = v8->_queue;
     v8->_queue = v17;
   }
@@ -60,7 +60,7 @@
     v5 = v14[5];
     if (v5)
     {
-      v6 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
@@ -85,10 +85,10 @@
       v11[4] = self;
       v11[5] = &v13;
       dispatch_sync(v9, v11);
-      v6 = [v14[5] BOOLValue];
+      bOOLValue = [v14[5] BOOLValue];
     }
 
-    v7 = v6;
+    v7 = bOOLValue;
 LABEL_11:
     _Block_object_dispose(&v13, 8);
 
@@ -150,34 +150,34 @@ uint64_t __78__ATXWidgetLocationAuthorizationTracker_isContainerAuthorizedForWid
   objc_autoreleasePoolPop(v5);
   if (v9)
   {
-    v10 = __atxlog_handle_default();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    infoDictionary = __atxlog_handle_default();
+    if (os_log_type_enabled(infoDictionary, OS_LOG_TYPE_ERROR))
     {
       [(ATXWidgetLocationAuthorizationTracker *)p_extensionBundleIdentifier widgetWantsLocation];
     }
 
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v10 = [v8 infoDictionary];
-    v11 = [v10 objectForKey:@"NSWidgetWantsLocation" ofClass:objc_opt_class()];
-    v4 = [v11 BOOLValue];
+    infoDictionary = [v8 infoDictionary];
+    v11 = [infoDictionary objectForKey:@"NSWidgetWantsLocation" ofClass:objc_opt_class()];
+    bOOLValue = [v11 BOOLValue];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   queue = self->_queue;
-  v5 = a3;
+  authorizationCopy = authorization;
   dispatch_assert_queue_V2(queue);
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v5 isAuthorizedForWidgetUpdates];
+  isAuthorizedForWidgetUpdates = [authorizationCopy isAuthorizedForWidgetUpdates];
 
-  v8 = [v6 numberWithBool:v7];
+  v8 = [v6 numberWithBool:isAuthorizedForWidgetUpdates];
   queue_authorizedForWidgetUpdates = self->_queue_authorizedForWidgetUpdates;
   self->_queue_authorizedForWidgetUpdates = v8;
 
@@ -189,7 +189,7 @@ uint64_t __78__ATXWidgetLocationAuthorizationTracker_isContainerAuthorizedForWid
 - (void)isContainerAuthorizedForWidgetUpdates
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 136315394;
   v5 = "[ATXWidgetLocationAuthorizationTracker isContainerAuthorizedForWidgetUpdates]";
   v6 = 2112;
@@ -201,7 +201,7 @@ uint64_t __78__ATXWidgetLocationAuthorizationTracker_isContainerAuthorizedForWid
 - (void)widgetWantsLocation
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_244192000, a2, OS_LOG_TYPE_ERROR, "ATXWidgetLocationAuthorizationTracker: could not access LSApplicationExtensionRecord for extension bundle id %@", &v4, 0xCu);

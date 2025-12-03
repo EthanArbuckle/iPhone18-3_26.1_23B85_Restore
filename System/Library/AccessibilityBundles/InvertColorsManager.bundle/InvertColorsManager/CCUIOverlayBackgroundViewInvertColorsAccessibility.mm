@@ -6,9 +6,9 @@
 
 - (BOOL)accessibilityIgnoresInvertColors
 {
-  v2 = [(CCUIOverlayBackgroundViewInvertColorsAccessibility *)self window];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceStyle] == &dword_0 + 2;
+  window = [(CCUIOverlayBackgroundViewInvertColorsAccessibility *)self window];
+  traitCollection = [window traitCollection];
+  v4 = [traitCollection userInterfaceStyle] == &dword_0 + 2;
 
   return v4;
 }

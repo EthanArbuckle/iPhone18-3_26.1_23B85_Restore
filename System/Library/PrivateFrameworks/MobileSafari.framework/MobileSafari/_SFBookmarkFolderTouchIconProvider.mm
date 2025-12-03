@@ -1,10 +1,10 @@
 @interface _SFBookmarkFolderTouchIconProvider
-- (BOOL)canHandleRequest:(id)a3;
+- (BOOL)canHandleRequest:(id)request;
 - (_SFBookmarkFolderTouchIconProvider)init;
-- (id)configurationForRequest:(id)a3;
-- (id)folderUUIDForRequest:(id)a3;
-- (id)subrequestsForRequest:(id)a3 maximumNumberOfSubrequests:(unint64_t)a4;
-- (void)_folderContentsDidChange:(id)a3;
+- (id)configurationForRequest:(id)request;
+- (id)folderUUIDForRequest:(id)request;
+- (id)subrequestsForRequest:(id)request maximumNumberOfSubrequests:(unint64_t)subrequests;
+- (void)_folderContentsDidChange:(id)change;
 @end
 
 @implementation _SFBookmarkFolderTouchIconProvider
@@ -29,8 +29,8 @@
     v7 = v2;
     v12 = v7;
     dispatch_async(v6, block);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel__folderContentsDidChange_ name:*MEMORY[0x1E69E2120] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__folderContentsDidChange_ name:*MEMORY[0x1E69E2120] object:0];
 
     v9 = v7;
   }
@@ -38,35 +38,35 @@
   return v2;
 }
 
-- (BOOL)canHandleRequest:(id)a3
+- (BOOL)canHandleRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 bookmark];
-    v5 = [v4 isFolder];
+    bookmark = [requestCopy bookmark];
+    isFolder = [bookmark isFolder];
   }
 
   else
   {
-    v5 = 0;
+    isFolder = 0;
   }
 
-  return v5;
+  return isFolder;
 }
 
-- (id)folderUUIDForRequest:(id)a3
+- (id)folderUUIDForRequest:(id)request
 {
-  v3 = [a3 bookmark];
-  v4 = [v3 UUID];
+  bookmark = [request bookmark];
+  uUID = [bookmark UUID];
 
-  return v4;
+  return uUID;
 }
 
-- (id)subrequestsForRequest:(id)a3 maximumNumberOfSubrequests:(unint64_t)a4
+- (id)subrequestsForRequest:(id)request maximumNumberOfSubrequests:(unint64_t)subrequests
 {
-  v6 = [a3 bookmark];
+  bookmark = [request bookmark];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -79,10 +79,10 @@
   v11[2] = __87___SFBookmarkFolderTouchIconProvider_subrequestsForRequest_maximumNumberOfSubrequests___block_invoke;
   v11[3] = &unk_1E721BD30;
   v11[4] = self;
-  v12 = v6;
+  v12 = bookmark;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  subrequestsCopy = subrequests;
+  v8 = bookmark;
   dispatch_sync(bookmarkCollectionAccessQueue, v11);
   v9 = v16[5];
 
@@ -91,10 +91,10 @@
   return v9;
 }
 
-- (id)configurationForRequest:(id)a3
+- (id)configurationForRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 folderIconStyle] == 1)
+  requestCopy = request;
+  if ([requestCopy folderIconStyle] == 1)
   {
     v5 = [objc_alloc(MEMORY[0x1E69C9770]) initFor2x2LayoutWithOuterMarginScaleFactor:0.125];
   }
@@ -103,7 +103,7 @@
   {
     v8.receiver = self;
     v8.super_class = _SFBookmarkFolderTouchIconProvider;
-    v5 = [(WBSBookmarkFolderTouchIconProvider *)&v8 configurationForRequest:v4];
+    v5 = [(WBSBookmarkFolderTouchIconProvider *)&v8 configurationForRequest:requestCopy];
   }
 
   v6 = v5;
@@ -111,9 +111,9 @@
   return v6;
 }
 
-- (void)_folderContentsDidChange:(id)a3
+- (void)_folderContentsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   bookmarkCollectionAccessQueue = self->_bookmarkCollectionAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -121,8 +121,8 @@
   block[2] = __63___SFBookmarkFolderTouchIconProvider__folderContentsDidChange___block_invoke;
   block[3] = &unk_1E721C220;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(bookmarkCollectionAccessQueue, block);
 
   objc_destroyWeak(&v9);

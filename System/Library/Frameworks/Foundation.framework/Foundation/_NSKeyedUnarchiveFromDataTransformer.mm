@@ -1,6 +1,6 @@
 @interface _NSKeyedUnarchiveFromDataTransformer
 - (_NSKeyedUnarchiveFromDataTransformer)init;
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation _NSKeyedUnarchiveFromDataTransformer
@@ -16,9 +16,9 @@
   return [(NSValueTransformer *)&v6 init];
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     return [NSKeyedUnarchiver unarchiveObjectWithData:?];
   }

@@ -1,14 +1,14 @@
 @interface SVXAFSpeakableUtteranceParserProvider
-- (id)getWithLocale:(id)a3;
+- (id)getWithLocale:(id)locale;
 @end
 
 @implementation SVXAFSpeakableUtteranceParserProvider
 
-- (id)getWithLocale:(id)a3
+- (id)getWithLocale:(id)locale
 {
   v3 = MEMORY[0x277CEF430];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithLocale:v4];
+  localeCopy = locale;
+  v5 = [[v3 alloc] initWithLocale:localeCopy];
 
   return v5;
 }

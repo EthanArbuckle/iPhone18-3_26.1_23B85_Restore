@@ -1,19 +1,19 @@
 @interface HKAudiogramLongitudinalOverlayRoomViewController
-- (BOOL)infographicSupportedForDisplayType:(id)a3 healthStore:(id)a4;
-- (HKAudiogramLongitudinalOverlayRoomViewController)initWithApplicationItems:(id)a3 factorDisplayTypes:(id)a4;
-- (HKAudiogramLongitudinalOverlayRoomViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 factorDisplayTypes:(id)a5 mode:(int64_t)a6;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4;
+- (BOOL)infographicSupportedForDisplayType:(id)type healthStore:(id)store;
+- (HKAudiogramLongitudinalOverlayRoomViewController)initWithApplicationItems:(id)items factorDisplayTypes:(id)types;
+- (HKAudiogramLongitudinalOverlayRoomViewController)initWithDisplayDate:(id)date applicationItems:(id)items factorDisplayTypes:(id)types mode:(int64_t)mode;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope;
 - (void)viewDidLoad;
 @end
 
 @implementation HKAudiogramLongitudinalOverlayRoomViewController
 
-- (HKAudiogramLongitudinalOverlayRoomViewController)initWithApplicationItems:(id)a3 factorDisplayTypes:(id)a4
+- (HKAudiogramLongitudinalOverlayRoomViewController)initWithApplicationItems:(id)items factorDisplayTypes:(id)types
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -25,7 +25,7 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for AudiogramLongitudinalOverlayRoomViewController();
-  v7 = [(HKOverlayRoomViewController *)&v9 initWithDisplayDate:0 applicationItems:a3 factorDisplayTypes:a4 mode:3];
+  v7 = [(HKOverlayRoomViewController *)&v9 initWithDisplayDate:0 applicationItems:items factorDisplayTypes:types mode:3];
 
   return v7;
 }
@@ -42,19 +42,19 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for AudiogramLongitudinalOverlayRoomViewController();
-  v3 = self;
+  selfCopy = self;
   [(HKOverlayRoomViewController *)&v6 viewDidLoad];
-  v4 = [(HKOverlayRoomViewController *)v3 chartController:v6.receiver];
+  v4 = [(HKOverlayRoomViewController *)selfCopy chartController:v6.receiver];
   if (v4)
   {
     v5 = v4;
-    [(HKInteractiveChartViewController *)v4 setCurrentValueViewDataSourceDelegate:v3];
+    [(HKInteractiveChartViewController *)v4 setCurrentValueViewDataSourceDelegate:selfCopy];
   }
 
   sub_1C3C26594();
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -64,16 +64,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1C3C27704(v5);
+  itemsCopy = items;
+  selfCopy = self;
+  sub_1C3C27704(itemsCopy);
 
   v7 = sub_1C3D200C4();
 
   return v7;
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -83,14 +83,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
-  sub_1C3C5F470(v4);
+  itemsCopy = items;
+  sub_1C3C5F470(itemsCopy);
   v6 = v5;
 
   return v6;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -100,9 +100,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
+  itemsCopy = items;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1C3C277F0();
 
   sub_1C3C27CB4(0, &qword_1EC085778);
@@ -111,7 +111,7 @@
   return v11;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
   sub_1C3C27AE0();
   MEMORY[0x1EEE9AC00](v6 - 8);
@@ -124,7 +124,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (date)
   {
     sub_1C3D1E1A4();
     v9 = sub_1C3D1E1E4();
@@ -142,7 +142,7 @@
   return 0;
 }
 
-- (HKAudiogramLongitudinalOverlayRoomViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 factorDisplayTypes:(id)a5 mode:(int64_t)a6
+- (HKAudiogramLongitudinalOverlayRoomViewController)initWithDisplayDate:(id)date applicationItems:(id)items factorDisplayTypes:(id)types mode:(int64_t)mode
 {
   sub_1C3C27AE0();
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -155,7 +155,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (date)
   {
     sub_1C3D1E1A4();
     v10 = sub_1C3D1E1E4();
@@ -176,7 +176,7 @@
   return result;
 }
 
-- (BOOL)infographicSupportedForDisplayType:(id)a3 healthStore:(id)a4
+- (BOOL)infographicSupportedForDisplayType:(id)type healthStore:(id)store
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -189,7 +189,7 @@
   return 1;
 }
 
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -199,12 +199,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = [objc_opt_self() hearingLossInfographicViewController];
+  hearingLossInfographicViewController = [objc_opt_self() hearingLossInfographicViewController];
 
-  return v4;
+  return hearingLossInfographicViewController;
 }
 
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -214,10 +214,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = [(HKOverlayRoomViewController *)v8 chartController];
-  if (v9 && (v10 = v9, v11 = [(HKInteractiveChartViewController *)v9 stringForValueRange:v7 timeScope:a4], v10, v11))
+  rangeCopy = range;
+  selfCopy = self;
+  chartController = [(HKOverlayRoomViewController *)selfCopy chartController];
+  if (chartController && (v10 = chartController, v11 = [(HKInteractiveChartViewController *)chartController stringForValueRange:rangeCopy timeScope:scope], v10, v11))
   {
     sub_1C3D20104();
 

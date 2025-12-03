@@ -1,8 +1,8 @@
 @interface IMAudioSessionController
 + (id)queue;
 + (id)sharedInstance;
-- (void)configureAudioSessionWithOptions:(unint64_t)a3;
-- (void)setActive:(BOOL)a3 options:(unint64_t)a4 completion:(id)a5;
+- (void)configureAudioSessionWithOptions:(unint64_t)options;
+- (void)setActive:(BOOL)active options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation IMAudioSessionController
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_254803EBC;
   block[3] = &unk_279789240;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27F611850 != -1)
   {
     dispatch_once(&qword_27F611850, block);
@@ -36,19 +36,19 @@
   return v3;
 }
 
-- (void)setActive:(BOOL)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)setActive:(BOOL)active options:(unint64_t)options completion:(id)completion
 {
-  v6 = a3;
+  activeCopy = active;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v11 = objc_msgSend_audio(IMSharedUILogs, v9, v10);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = MEMORY[0x259C1AB40](v8);
+    v12 = MEMORY[0x259C1AB40](completionCopy);
     *buf = 67109632;
-    v24 = v6;
+    v24 = activeCopy;
     v25 = 1024;
-    v26 = a4 & 1;
+    v26 = options & 1;
     v27 = 2048;
     v28 = v12;
     _os_log_impl(&dword_2547F8000, v11, OS_LOG_TYPE_INFO, "setActive:%d shouldUseSpeaker:%d completion:%p", buf, 0x18u);
@@ -59,23 +59,23 @@
   v18[1] = 3221225472;
   v18[2] = sub_2548041D8;
   v18[3] = &unk_279789268;
-  v21 = v6;
-  v22 = a4 & 1;
+  v21 = activeCopy;
+  v22 = options & 1;
   v18[4] = self;
-  v19 = v8;
-  v20 = a4;
-  v16 = v8;
+  v19 = completionCopy;
+  optionsCopy = options;
+  v16 = completionCopy;
   dispatch_async(v15, v18);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureAudioSessionWithOptions:(unint64_t)a3
+- (void)configureAudioSessionWithOptions:(unint64_t)options
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, a3);
+  v5 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, options);
   v12 = @"IMAudioSessionControllerSessionNotificationOptionsKey";
-  v7 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v6, a3);
+  v7 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v6, options);
   v13[0] = v7;
   v9 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v8, v13, &v12, 1);
   objc_msgSend_postNotificationName_object_userInfo_(v5, v10, @"IMAudioSessionControllerSessionOptionsWillChangeNotification", self, v9);

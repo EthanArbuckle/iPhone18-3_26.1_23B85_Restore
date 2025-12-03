@@ -1,24 +1,24 @@
 @interface PLInstrumentedOperationQueue
 - (PLInstrumentedOperationQueue)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PLInstrumentedOperationQueue
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &sOperationCountContext)
+  if (context == &sOperationCountContext)
   {
-    v7 = [a5 objectForKey:{*MEMORY[0x1E696A4F0], a4}];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [change objectForKey:{*MEMORY[0x1E696A4F0], object}];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    v9 = [(PLInstrumentedOperationQueue *)self pl_operationCountChangedBlock];
-    if (v9)
+    pl_operationCountChangedBlock = [(PLInstrumentedOperationQueue *)self pl_operationCountChangedBlock];
+    if (pl_operationCountChangedBlock)
     {
-      v10 = v9;
-      v9[2](v9, v8);
-      v9 = v10;
+      v10 = pl_operationCountChangedBlock;
+      pl_operationCountChangedBlock[2](pl_operationCountChangedBlock, unsignedIntegerValue);
+      pl_operationCountChangedBlock = v10;
     }
   }
 
@@ -26,7 +26,7 @@
   {
     v11.receiver = self;
     v11.super_class = PLInstrumentedOperationQueue;
-    [(PLInstrumentedOperationQueue *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PLInstrumentedOperationQueue *)&v11 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

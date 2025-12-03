@@ -1,7 +1,7 @@
 @interface WOChronicle
 + (WOChronicle)shared;
 - (void)dumpReport;
-- (void)recordWithClassName:(id)a3 classInstance:(unint64_t)a4 selector:(SEL)a5;
+- (void)recordWithClassName:(id)name classInstance:(unint64_t)instance selector:(SEL)selector;
 @end
 
 @implementation WOChronicle
@@ -18,17 +18,17 @@
   return v3;
 }
 
-- (void)recordWithClassName:(id)a3 classInstance:(unint64_t)a4 selector:(SEL)a5
+- (void)recordWithClassName:(id)name classInstance:(unint64_t)instance selector:(SEL)selector
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
-  Chronicle.record(className:classInstance:selector:)(v8, v10, a4, a5);
+  selfCopy = self;
+  Chronicle.record(className:classInstance:selector:)(v8, v10, instance, selector);
 }
 
 - (void)dumpReport
 {
-  v2 = self;
+  selfCopy = self;
   Chronicle.dumpReport()();
 }
 

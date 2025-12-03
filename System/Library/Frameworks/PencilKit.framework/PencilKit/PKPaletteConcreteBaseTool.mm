@@ -15,8 +15,8 @@
   cachedConfiguration = self->_cachedConfiguration;
   if (!cachedConfiguration)
   {
-    v4 = [(PKPaletteConcreteBaseTool *)self toolIdentifier];
-    v5 = [PKToolConfiguration defaultConfigurationForToolWithIdentifier:v4];
+    toolIdentifier = [(PKPaletteConcreteBaseTool *)self toolIdentifier];
+    v5 = [PKToolConfiguration defaultConfigurationForToolWithIdentifier:toolIdentifier];
     v6 = self->_cachedConfiguration;
     self->_cachedConfiguration = v5;
 
@@ -30,21 +30,21 @@
 {
   if ([(PKPaletteConcreteBaseTool *)self isInkingTool])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isRulerTool
 {
-  v2 = [(PKPaletteConcreteBaseTool *)self toolIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.tool.ruler"];
+  toolIdentifier = [(PKPaletteConcreteBaseTool *)self toolIdentifier];
+  v3 = [toolIdentifier isEqualToString:@"com.apple.tool.ruler"];
 
   return v3;
 }
@@ -53,21 +53,21 @@
 {
   if ([(PKPaletteConcreteBaseTool *)self isErasingTool])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isGenerationTool
 {
-  v2 = [(PKPaletteConcreteBaseTool *)self toolIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.generationtool"];
+  toolIdentifier = [(PKPaletteConcreteBaseTool *)self toolIdentifier];
+  v3 = [toolIdentifier isEqualToString:@"com.apple.ink.generationtool"];
 
   return v3;
 }
@@ -76,21 +76,21 @@
 {
   if ([(PKPaletteConcreteBaseTool *)self isHandwritingTool])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isCustomTool
 {
-  v2 = [(PKPaletteConcreteBaseTool *)self toolIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.custom"];
+  toolIdentifier = [(PKPaletteConcreteBaseTool *)self toolIdentifier];
+  v3 = [toolIdentifier isEqualToString:@"com.apple.ink.custom"];
 
   return v3;
 }

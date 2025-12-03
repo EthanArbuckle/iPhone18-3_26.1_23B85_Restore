@@ -1,10 +1,10 @@
 @interface GameSyncedDirectoryHolder
 - (NSURL)presentedItemURL;
 - (void)dealloc;
-- (void)presentedItemDidGainVersion:(id)a3;
-- (void)savePresentedItemChangesWithCompletionHandler:(id)a3;
-- (void)setPresentedItemOperationQueue:(id)a3;
-- (void)setPresentedItemURL:(id)a3;
+- (void)presentedItemDidGainVersion:(id)version;
+- (void)savePresentedItemChangesWithCompletionHandler:(id)handler;
+- (void)setPresentedItemOperationQueue:(id)queue;
+- (void)setPresentedItemURL:(id)l;
 @end
 
 @implementation GameSyncedDirectoryHolder
@@ -31,13 +31,13 @@
   return v10;
 }
 
-- (void)setPresentedItemURL:(id)a3
+- (void)setPresentedItemURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd, &_s10Foundation3URLVSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v11 - v7;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -53,30 +53,30 @@
   outlined assign with take of URL?(v8, self + OBJC_IVAR____TtC8GameSave25GameSyncedDirectoryHolder_presentedItemURL);
 }
 
-- (void)setPresentedItemOperationQueue:(id)a3
+- (void)setPresentedItemOperationQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtC8GameSave25GameSyncedDirectoryHolder_presentedItemOperationQueue);
-  *(self + OBJC_IVAR____TtC8GameSave25GameSyncedDirectoryHolder_presentedItemOperationQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8GameSave25GameSyncedDirectoryHolder_presentedItemOperationQueue) = queue;
+  queueCopy = queue;
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   GameSyncedDirectoryHolder.stopMonitoringApplicationActivity()();
   GameSyncedDirectoryHolder.stopHoldingItem()();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for GameSyncedDirectoryHolder();
   [(GameSyncedDirectoryHolder *)&v3 dealloc];
 }
 
-- (void)savePresentedItemChangesWithCompletionHandler:(id)a3
+- (void)savePresentedItemChangesWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -92,15 +92,15 @@
   v13[3] = 0;
   v13[4] = &_sIeghH_IeAgH_TRTATu;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTATu, v13);
 }
 
-- (void)presentedItemDidGainVersion:(id)a3
+- (void)presentedItemDidGainVersion:(id)version
 {
-  v4 = a3;
-  v5 = self;
-  GameSyncedDirectoryHolder.presentedItemDidGain(_:)(v4);
+  versionCopy = version;
+  selfCopy = self;
+  GameSyncedDirectoryHolder.presentedItemDidGain(_:)(versionCopy);
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface _TVZoomableTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityRespondsToUserInteraction;
 @end
 
 @implementation _TVZoomableTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TVFocusableTextView"];
-  [v3 validateClass:@"_TVZoomableTextView" isKindOfClass:@"TVFocusableTextView"];
-  [v3 validateClass:@"TVFocusableTextView" hasInstanceMethod:@"moreLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TVFocusableTextView"];
+  [validationsCopy validateClass:@"_TVZoomableTextView" isKindOfClass:@"TVFocusableTextView"];
+  [validationsCopy validateClass:@"TVFocusableTextView" hasInstanceMethod:@"moreLabel" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityRespondsToUserInteraction
 {
   v2 = [(_TVZoomableTextViewAccessibility *)self safeValueForKey:@"moreLabel"];
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 @end

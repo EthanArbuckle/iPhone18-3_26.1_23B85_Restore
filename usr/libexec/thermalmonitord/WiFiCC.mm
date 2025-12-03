@@ -1,12 +1,12 @@
 @interface WiFiCC
-- (WiFiCC)initWithParams:(__CFDictionary *)a3;
+- (WiFiCC)initWithParams:(__CFDictionary *)params;
 - (void)defaultAction;
 - (void)refreshTGraphTelemetry;
 @end
 
 @implementation WiFiCC
 
-- (WiFiCC)initWithParams:(__CFDictionary *)a3
+- (WiFiCC)initWithParams:(__CFDictionary *)params
 {
   v9.receiver = self;
   v9.super_class = WiFiCC;
@@ -28,8 +28,8 @@
       }
     }
 
-    [(ComponentControl *)v5 updatePowerParameters:a3];
-    if (sub_100031D64(a3, @"expectsCPMSSupport", 0))
+    [(ComponentControl *)v5 updatePowerParameters:params];
+    if (sub_100031D64(params, @"expectsCPMSSupport", 0))
     {
       [(ComponentControl *)v5 setCPMSMitigationState:1];
     }

@@ -1,13 +1,13 @@
 @interface JPFileStream
-- (JPFileStream)initWithPath:(id)a3;
+- (JPFileStream)initWithPath:(id)path;
 @end
 
 @implementation JPFileStream
 
-- (JPFileStream)initWithPath:(id)a3
+- (JPFileStream)initWithPath:(id)path
 {
-  v4 = a3;
-  [a3 fileSystemRepresentation];
+  pathCopy = path;
+  [path fileSystemRepresentation];
   JetPackCreateFileStream();
 }
 

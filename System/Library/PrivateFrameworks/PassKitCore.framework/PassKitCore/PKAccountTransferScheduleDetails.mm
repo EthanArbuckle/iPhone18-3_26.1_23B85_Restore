@@ -1,34 +1,34 @@
 @interface PKAccountTransferScheduleDetails
-- (BOOL)isEqual:(id)a3;
-- (PKAccountTransferScheduleDetails)initWithCoder:(id)a3;
-- (PKAccountTransferScheduleDetails)initWithDictionary:(id)a3 productTimeZone:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountTransferScheduleDetails)initWithCoder:(id)coder;
+- (PKAccountTransferScheduleDetails)initWithDictionary:(id)dictionary productTimeZone:(id)zone;
 - (id)description;
 - (id)hashString;
 - (id)jsonDictionaryRepresentation;
 - (id)jsonString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountTransferScheduleDetails
 
-- (PKAccountTransferScheduleDetails)initWithDictionary:(id)a3 productTimeZone:(id)a4
+- (PKAccountTransferScheduleDetails)initWithDictionary:(id)dictionary productTimeZone:(id)zone
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  zoneCopy = zone;
   v8 = [(PKAccountTransferScheduleDetails *)self init];
   if (v8)
   {
-    v9 = [v6 PKStringForKey:@"frequency"];
+    v9 = [dictionaryCopy PKStringForKey:@"frequency"];
     v19[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     v8->_frequency = PKAccountTransferFrequencyFromStrings(v10);
 
-    v8->_scheduledDay = [v6 PKIntegerForKey:@"scheduledDay"];
-    v11 = [v6 PKStringForKey:@"scheduledDate"];
-    objc_storeStrong(&v8->_productTimeZone, a4);
-    v12 = PKPaymentDateFormatterWithTimeZone(v7);
+    v8->_scheduledDay = [dictionaryCopy PKIntegerForKey:@"scheduledDay"];
+    v11 = [dictionaryCopy PKStringForKey:@"scheduledDate"];
+    objc_storeStrong(&v8->_productTimeZone, zone);
+    v12 = PKPaymentDateFormatterWithTimeZone(zoneCopy);
     v13 = v12;
     if (v11)
     {
@@ -37,7 +37,7 @@
       v8->_scheduledDate = v14;
     }
 
-    v16 = [v6 PKStringForKey:@"transferTermsIdentifier"];
+    v16 = [dictionaryCopy PKStringForKey:@"transferTermsIdentifier"];
     transferTermsIdentifier = v8->_transferTermsIdentifier;
     v8->_transferTermsIdentifier = v16;
   }
@@ -49,9 +49,9 @@
 {
   v12 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(PKAccountTransferScheduleDetails *)self jsonDictionaryRepresentation];
+  jsonDictionaryRepresentation = [(PKAccountTransferScheduleDetails *)self jsonDictionaryRepresentation];
   v9 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:2 error:&v9];
+  v4 = [v2 dataWithJSONObject:jsonDictionaryRepresentation options:2 error:&v9];
   v5 = v9;
 
   if (v5)
@@ -77,49 +77,49 @@
 
 - (id)jsonDictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = PKAccountTransferFrequencyToStrings(self->_frequency);
-  v5 = [v4 firstObject];
-  [v3 setObject:v5 forKeyedSubscript:@"frequency"];
+  firstObject = [v4 firstObject];
+  [dictionary setObject:firstObject forKeyedSubscript:@"frequency"];
 
-  [v3 setObject:self->_transferTermsIdentifier forKeyedSubscript:@"transferTermsIdentifier"];
-  v6 = [v3 copy];
+  [dictionary setObject:self->_transferTermsIdentifier forKeyedSubscript:@"transferTermsIdentifier"];
+  v6 = [dictionary copy];
 
   return v6;
 }
 
 - (id)hashString
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = PKAccountTransferFrequencyToStrings(self->_frequency);
-  v5 = [v4 firstObject];
-  [v3 appendString:v5];
+  firstObject = [v4 firstObject];
+  [string appendString:firstObject];
 
   if (self->_transferTermsIdentifier)
   {
-    [v3 appendString:?];
+    [string appendString:?];
   }
 
-  v6 = [v3 copy];
+  v6 = [string copy];
 
   return v6;
 }
 
-- (PKAccountTransferScheduleDetails)initWithCoder:(id)a3
+- (PKAccountTransferScheduleDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountTransferScheduleDetails;
   v5 = [(PKAccountTransferScheduleDetails *)&v11 init];
   if (v5)
   {
-    v5->_frequency = [v4 decodeIntegerForKey:@"frequency"];
-    v5->_scheduledDay = [v4 decodeIntegerForKey:@"scheduledDay"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduledDate"];
+    v5->_frequency = [coderCopy decodeIntegerForKey:@"frequency"];
+    v5->_scheduledDay = [coderCopy decodeIntegerForKey:@"scheduledDay"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduledDate"];
     scheduledDate = v5->_scheduledDate;
     v5->_scheduledDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferTermsIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferTermsIdentifier"];
     transferTermsIdentifier = v5->_transferTermsIdentifier;
     v5->_transferTermsIdentifier = v8;
   }
@@ -127,19 +127,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   frequency = self->_frequency;
-  v5 = a3;
-  [v5 encodeInteger:frequency forKey:@"frequency"];
-  [v5 encodeObject:self->_scheduledDate forKey:@"scheduledDate"];
-  [v5 encodeInteger:self->_scheduledDay forKey:@"scheduledDay"];
-  [v5 encodeObject:self->_transferTermsIdentifier forKey:@"transferTermsIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:frequency forKey:@"frequency"];
+  [coderCopy encodeObject:self->_scheduledDate forKey:@"scheduledDate"];
+  [coderCopy encodeInteger:self->_scheduledDay forKey:@"scheduledDay"];
+  [coderCopy encodeObject:self->_transferTermsIdentifier forKey:@"transferTermsIdentifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -147,7 +147,7 @@
   }
 
   scheduledDate = self->_scheduledDate;
-  v6 = v4[4];
+  v6 = equalCopy[4];
   if (scheduledDate && v6)
   {
     if (([(NSDate *)scheduledDate isEqual:?]& 1) == 0)
@@ -162,7 +162,7 @@
   }
 
   transferTermsIdentifier = self->_transferTermsIdentifier;
-  v8 = v4[5];
+  v8 = equalCopy[5];
   if (!transferTermsIdentifier || !v8)
   {
     if (transferTermsIdentifier == v8)
@@ -181,12 +181,12 @@ LABEL_14:
   }
 
 LABEL_12:
-  if (self->_frequency != v4[2])
+  if (self->_frequency != equalCopy[2])
   {
     goto LABEL_14;
   }
 
-  v9 = self->_scheduledDay == v4[3];
+  v9 = self->_scheduledDay == equalCopy[3];
 LABEL_15:
 
   return v9;
@@ -194,10 +194,10 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_scheduledDate];
-  [v3 safelyAddObject:self->_transferTermsIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_scheduledDate];
+  [array safelyAddObject:self->_transferTermsIdentifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_frequency - v4 + 32 * v4;
   v6 = self->_scheduledDay - v5 + 32 * v5;
 
@@ -208,8 +208,8 @@ LABEL_15:
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
   v4 = PKAccountTransferFrequencyToStrings(self->_frequency);
-  v5 = [v4 firstObject];
-  [v3 appendFormat:@"frequency: '%ld'; ", v5];
+  firstObject = [v4 firstObject];
+  [v3 appendFormat:@"frequency: '%ld'; ", firstObject];
 
   if (self->_scheduledDay)
   {

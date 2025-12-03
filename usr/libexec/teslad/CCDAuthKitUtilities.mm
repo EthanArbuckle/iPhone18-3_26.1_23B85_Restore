@@ -1,6 +1,6 @@
 @interface CCDAuthKitUtilities
 + (BOOL)shouldActivateAnisette;
-+ (void)midWithCompletion:(id)a3;
++ (void)midWithCompletion:(id)completion;
 @end
 
 @implementation CCDAuthKitUtilities
@@ -55,9 +55,9 @@
   return v6;
 }
 
-+ (void)midWithCompletion:(id)a3
++ (void)midWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -81,8 +81,8 @@
   v8[1] = 3221225472;
   v8[2] = sub_1000013FC;
   v8[3] = &unk_10001C610;
-  v9 = v3;
-  v7 = v3;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 anisetteDataWithCompletion:v8];
 }
 

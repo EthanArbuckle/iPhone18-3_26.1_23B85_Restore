@@ -1,10 +1,10 @@
 @interface HUMediaServiceItemProvider
-- (HUMediaServiceItemProvider)initWithHome:(id)a3 delegate:(id)a4;
+- (HUMediaServiceItemProvider)initWithHome:(id)home delegate:(id)delegate;
 - (HUMediaServiceItemProviderDelegate)delegate;
 - (id)_fetchMediaServicesFuture;
 - (id)reloadItems;
 - (void)_notifyMediaServicesUpdated;
-- (void)mediaServicesDidUpdate:(id)a3;
+- (void)mediaServicesDidUpdate:(id)update;
 - (void)registerForExternalUpdates;
 - (void)unregisterForExternalUpdates;
 @end
@@ -109,18 +109,18 @@ LABEL_15:
   return v27;
 }
 
-- (HUMediaServiceItemProvider)initWithHome:(id)a3 delegate:(id)a4
+- (HUMediaServiceItemProvider)initWithHome:(id)home delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = HUMediaServiceItemProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = objc_opt_new();
     items = v10->_items;
     v10->_items = v11;
@@ -132,14 +132,14 @@ LABEL_15:
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HUMediaServiceItemProvider *)self _fetchMediaServicesFuture];
+  _fetchMediaServicesFuture = [(HUMediaServiceItemProvider *)self _fetchMediaServicesFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__HUMediaServiceItemProvider_reloadItems__block_invoke;
   v6[3] = &unk_277DC3948;
   v6[4] = self;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 flatMap:v6];
+  v4 = [_fetchMediaServicesFuture flatMap:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -245,19 +245,19 @@ id __41__HUMediaServiceItemProvider_reloadItems__block_invoke_6(uint64_t a1, voi
 
 - (void)registerForExternalUpdates
 {
-  v3 = [MEMORY[0x277D14820] sharedManager];
-  [v3 addMediaServiceManagerObserver:self];
+  mEMORY[0x277D14820] = [MEMORY[0x277D14820] sharedManager];
+  [mEMORY[0x277D14820] addMediaServiceManagerObserver:self];
 }
 
 - (void)unregisterForExternalUpdates
 {
-  v3 = [MEMORY[0x277D14820] sharedManager];
-  [v3 removeMediaServiceManagerObserver:self];
+  mEMORY[0x277D14820] = [MEMORY[0x277D14820] sharedManager];
+  [mEMORY[0x277D14820] removeMediaServiceManagerObserver:self];
 }
 
-- (void)mediaServicesDidUpdate:(id)a3
+- (void)mediaServicesDidUpdate:(id)update
 {
-  if (a3)
+  if (update)
   {
     [(HUMediaServiceItemProvider *)self _notifyMediaServicesUpdated];
   }
@@ -265,9 +265,9 @@ id __41__HUMediaServiceItemProvider_reloadItems__block_invoke_6(uint64_t a1, voi
 
 - (id)_fetchMediaServicesFuture
 {
-  v3 = [MEMORY[0x277D14820] sharedManager];
-  v4 = [(HUMediaServiceItemProvider *)self home];
-  v5 = [v3 mediaServicesForHome:v4];
+  mEMORY[0x277D14820] = [MEMORY[0x277D14820] sharedManager];
+  home = [(HUMediaServiceItemProvider *)self home];
+  v5 = [mEMORY[0x277D14820] mediaServicesForHome:home];
 
   v6 = MEMORY[0x277D2C900];
   v16[0] = MEMORY[0x277D85DD0];
@@ -279,9 +279,9 @@ id __41__HUMediaServiceItemProvider_reloadItems__block_invoke_6(uint64_t a1, voi
   v8 = [v6 futureWithBlock:v16];
   if (!v7 || ([MEMORY[0x277D14820] sharedManager], v9 = objc_claimAutoreleasedReturnValue(), -[HUMediaServiceItemProvider home](self, "home"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isRefreshNeededForHome:", v10), v10, v9, v11))
   {
-    v12 = [MEMORY[0x277D14820] sharedManager];
-    v13 = [(HUMediaServiceItemProvider *)self home];
-    v14 = [v12 fetchMediaServicesForHome:v13];
+    mEMORY[0x277D14820]2 = [MEMORY[0x277D14820] sharedManager];
+    home2 = [(HUMediaServiceItemProvider *)self home];
+    v14 = [mEMORY[0x277D14820]2 fetchMediaServicesForHome:home2];
   }
 
   return v8;
@@ -289,13 +289,13 @@ id __41__HUMediaServiceItemProvider_reloadItems__block_invoke_6(uint64_t a1, voi
 
 - (void)_notifyMediaServicesUpdated
 {
-  v3 = [(HUMediaServiceItemProvider *)self delegate];
-  v4 = [v3 conformsToProtocol:&unk_2825186F0];
+  delegate = [(HUMediaServiceItemProvider *)self delegate];
+  v4 = [delegate conformsToProtocol:&unk_2825186F0];
 
   if (v4)
   {
-    v5 = [(HUMediaServiceItemProvider *)self delegate];
-    [v5 mediaServiceItemProviderDidUpdateServices:self];
+    delegate2 = [(HUMediaServiceItemProvider *)self delegate];
+    [delegate2 mediaServiceItemProviderDidUpdateServices:self];
   }
 }
 

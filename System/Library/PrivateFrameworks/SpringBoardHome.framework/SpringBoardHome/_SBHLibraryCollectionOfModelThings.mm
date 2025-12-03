@@ -1,6 +1,6 @@
 @interface _SBHLibraryCollectionOfModelThings
-- (BOOL)examineModelValidityWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)examineModelValidityWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (SBFolderIconImageCache)folderIconImageCache;
 - (SBHIconImageCache)iconImageCache;
 - (SBHIconModel)iconModel;
@@ -8,48 +8,48 @@
 - (SBIconListLayoutProvider)listLayoutProvider;
 - (SBIconViewProviding)iconViewProvider;
 - (SBRootFolder)rootFolder;
-- (_SBHLibraryCollectionOfModelThings)initWithIconViewProvider:(id)a3 iconModel:(id)a4 rootFolder:(id)a5 listLayoutProvider:(id)a6 iconImageCache:(id)a7 folderIconImageCache:(id)a8 categoryMapProvider:(id)a9;
+- (_SBHLibraryCollectionOfModelThings)initWithIconViewProvider:(id)provider iconModel:(id)model rootFolder:(id)folder listLayoutProvider:(id)layoutProvider iconImageCache:(id)cache folderIconImageCache:(id)imageCache categoryMapProvider:(id)mapProvider;
 @end
 
 @implementation _SBHLibraryCollectionOfModelThings
 
-- (_SBHLibraryCollectionOfModelThings)initWithIconViewProvider:(id)a3 iconModel:(id)a4 rootFolder:(id)a5 listLayoutProvider:(id)a6 iconImageCache:(id)a7 folderIconImageCache:(id)a8 categoryMapProvider:(id)a9
+- (_SBHLibraryCollectionOfModelThings)initWithIconViewProvider:(id)provider iconModel:(id)model rootFolder:(id)folder listLayoutProvider:(id)layoutProvider iconImageCache:(id)cache folderIconImageCache:(id)imageCache categoryMapProvider:(id)mapProvider
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  providerCopy = provider;
+  modelCopy = model;
+  folderCopy = folder;
+  layoutProviderCopy = layoutProvider;
+  cacheCopy = cache;
+  imageCacheCopy = imageCache;
+  mapProviderCopy = mapProvider;
   v25.receiver = self;
   v25.super_class = _SBHLibraryCollectionOfModelThings;
   v22 = [(_SBHLibraryCollectionOfModelThings *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeWeak(&v22->_iconViewProvider, v15);
-    objc_storeWeak(&v23->_iconModel, v16);
-    objc_storeWeak(&v23->_rootFolder, v17);
-    objc_storeWeak(&v23->_listLayoutProvider, v18);
-    objc_storeWeak(&v23->_iconImageCache, v19);
-    objc_storeWeak(&v23->_folderIconImageCache, v20);
-    objc_storeWeak(&v23->_categoryMapProvider, v21);
+    objc_storeWeak(&v22->_iconViewProvider, providerCopy);
+    objc_storeWeak(&v23->_iconModel, modelCopy);
+    objc_storeWeak(&v23->_rootFolder, folderCopy);
+    objc_storeWeak(&v23->_listLayoutProvider, layoutProviderCopy);
+    objc_storeWeak(&v23->_iconImageCache, cacheCopy);
+    objc_storeWeak(&v23->_folderIconImageCache, imageCacheCopy);
+    objc_storeWeak(&v23->_categoryMapProvider, mapProviderCopy);
   }
 
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = v4;
-    WeakRetained = objc_loadWeakRetained(v4 + 1);
+    v7 = equalCopy;
+    WeakRetained = objc_loadWeakRetained(equalCopy + 1);
     v9 = objc_loadWeakRetained(&self->_iconViewProvider);
     v25 = BSEqualObjects();
 
@@ -88,7 +88,7 @@
   return v23 & 1;
 }
 
-- (BOOL)examineModelValidityWithError:(id *)a3
+- (BOOL)examineModelValidityWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_iconViewProvider);
 
@@ -112,9 +112,9 @@
   }
 
   v18 = v12 || v7 == 0 || v8 == 0 || v9 == 0 || v10 == 0 || v11 == 0;
-  if (a3 && v18)
+  if (error && v18)
   {
-    v23 = a3;
+    errorCopy = error;
     v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = v20;
@@ -188,7 +188,7 @@ LABEL_30:
       {
 LABEL_31:
         [v19 setObject:v21 forKeyedSubscript:@"missingModelItems"];
-        *v23 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SBHLibraryErrorDomain" code:1 userInfo:v19];
+        *errorCopy = [MEMORY[0x1E696ABC0] errorWithDomain:@"SBHLibraryErrorDomain" code:1 userInfo:v19];
 
         return v18 ^ 1;
       }

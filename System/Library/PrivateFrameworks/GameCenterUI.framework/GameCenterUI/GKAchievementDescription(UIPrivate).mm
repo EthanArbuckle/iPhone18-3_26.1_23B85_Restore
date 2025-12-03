@@ -7,10 +7,10 @@
 
 - (id)imageURL
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     if (*MEMORY[0x277D0C8F0] & 1 | ((*MEMORY[0x277D0C258] & 1) == 0))
     {
@@ -28,11 +28,11 @@
     v4 = 64;
   }
 
-  v5 = [a1 internal];
-  v6 = [v5 icons];
-  v7 = [MEMORY[0x277D0C8A8] sharedController];
-  [v7 greatestScreenScale];
-  v8 = [v6 _gkImageURLForSize:v4 scale:?];
+  internal = [self internal];
+  icons = [internal icons];
+  mEMORY[0x277D0C8A8] = [MEMORY[0x277D0C8A8] sharedController];
+  [mEMORY[0x277D0C8A8] greatestScreenScale];
+  v8 = [icons _gkImageURLForSize:v4 scale:?];
 
   return v8;
 }
@@ -43,8 +43,8 @@
   v2[1] = 3221225472;
   v2[2] = __49__GKAchievementDescription_UIPrivate__showBanner__block_invoke;
   v2[3] = &unk_27966BF18;
-  v2[4] = a1;
-  return [a1 loadImageWithTimeout:v2 completionHandler:3.0];
+  v2[4] = self;
+  return [self loadImageWithTimeout:v2 completionHandler:3.0];
 }
 
 @end

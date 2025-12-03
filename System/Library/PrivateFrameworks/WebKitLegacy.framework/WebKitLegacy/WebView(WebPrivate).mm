@@ -10,7 +10,7 @@
 - (uint64_t)_commonInitializationWithFrameName:()WebPrivate groupName:
 {
   v4 = WTF::fastMalloc(0x28);
-  result = WebCore::LocalFrameLoaderClient::LocalFrameLoaderClient(v4, a1);
+  result = WebCore::LocalFrameLoaderClient::LocalFrameLoaderClient(v4, self);
   *(v4 + 2) = 0;
   *(v4 + 3) = 0;
   *v4 = &unk_1F472B518;
@@ -22,7 +22,7 @@
 - (uint64_t)initSimpleHTMLDocumentWithStyle:()WebPrivate frame:preferences:groupName:
 {
   v4 = WTF::fastMalloc(0x28);
-  result = WebCore::LocalFrameLoaderClient::LocalFrameLoaderClient(v4, a1);
+  result = WebCore::LocalFrameLoaderClient::LocalFrameLoaderClient(v4, self);
   *(v4 + 2) = 0;
   *(v4 + 3) = 0;
   *v4 = &unk_1F472B518;
@@ -39,7 +39,7 @@
   {
     if (a2[24] == 255)
     {
-      *(*(a1 + 8) + 4) = 256;
+      *(*(self + 8) + 4) = 256;
       v3 = v7;
       if (!v7)
       {
@@ -51,7 +51,7 @@
     {
       WebCore::RemoteFrameGeometryTransformer::RemoteFrameGeometryTransformer();
       v7 = a2[24];
-      v5 = *(a1 + 8);
+      v5 = *(self + 8);
       if (v7)
       {
         *(v5 + 4) = 256;
@@ -78,7 +78,7 @@
   {
     v6[0] = *a2;
     v7 = 0;
-    *(*(a1 + 8) + 4) = v6[0] & 1 | 0x100;
+    *(*(self + 8) + 4) = v6[0] & 1 | 0x100;
     v3 = v7;
     if (!v7)
     {
@@ -94,19 +94,19 @@
 
 - (uint64_t)_requestStartDataInteraction:()WebPrivate globalPosition:
 {
-  v3 = *(a1 + 1);
-  *a1 = &unk_1F472C3B0;
-  *(a1 + 1) = 0;
+  v3 = *(self + 1);
+  *self = &unk_1F472C3B0;
+  *(self + 1) = 0;
   if (v3 && (add = atomic_fetch_add(v3, 0xFFFFFFFF), add == 1))
   {
     v7 = v2;
     atomic_store(add, v3);
-    v6 = a1;
+    selfCopy = self;
     WTF::fastFree(v3, a2);
-    a1 = v6;
+    self = selfCopy;
   }
 
-  return WTF::fastFree(a1, a2);
+  return WTF::fastFree(self, a2);
 }
 
 @end

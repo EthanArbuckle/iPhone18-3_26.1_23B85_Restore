@@ -1,38 +1,38 @@
 @interface BMPhotosMemoriesShared
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMPhotosMemoriesShared)initWithIdentifier:(id)a3 subset:(id)a4 isThirdPartyShareDestination:(id)a5;
-- (BMPhotosMemoriesShared)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMPhotosMemoriesShared)initWithIdentifier:(id)identifier subset:(id)subset isThirdPartyShareDestination:(id)destination;
+- (BMPhotosMemoriesShared)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPhotosMemoriesShared
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPhotosMemoriesShared *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMPhotosMemoriesShared *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMPhotosMemoriesShared *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMPhotosMemoriesShared *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMPhotosMemoriesShared *)self subset];
-    v14 = [v5 subset];
-    v15 = v14;
-    if (v13 == v14)
+    subset = [(BMPhotosMemoriesShared *)self subset];
+    subset2 = [v5 subset];
+    v15 = subset2;
+    if (subset == subset2)
     {
     }
 
     else
     {
-      v16 = [(BMPhotosMemoriesShared *)self subset];
-      v17 = [v5 subset];
-      v18 = [v16 isEqual:v17];
+      subset3 = [(BMPhotosMemoriesShared *)self subset];
+      subset4 = [v5 subset];
+      v18 = [subset3 isEqual:subset4];
 
       if (!v18)
       {
@@ -67,8 +67,8 @@
 
     if (-[BMPhotosMemoriesShared hasIsThirdPartyShareDestination](self, "hasIsThirdPartyShareDestination") && [v5 hasIsThirdPartyShareDestination])
     {
-      v19 = [(BMPhotosMemoriesShared *)self isThirdPartyShareDestination];
-      v12 = v19 ^ [v5 isThirdPartyShareDestination] ^ 1;
+      isThirdPartyShareDestination = [(BMPhotosMemoriesShared *)self isThirdPartyShareDestination];
+      v12 = isThirdPartyShareDestination ^ [v5 isThirdPartyShareDestination] ^ 1;
 LABEL_17:
 
       goto LABEL_18;
@@ -88,8 +88,8 @@ LABEL_18:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMPhotosMemoriesShared *)self identifier];
-  v4 = [(BMPhotosMemoriesShared *)self subset];
+  identifier = [(BMPhotosMemoriesShared *)self identifier];
+  subset = [(BMPhotosMemoriesShared *)self subset];
   if ([(BMPhotosMemoriesShared *)self hasIsThirdPartyShareDestination])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMPhotosMemoriesShared isThirdPartyShareDestination](self, "isThirdPartyShareDestination")}];
@@ -101,40 +101,40 @@ LABEL_18:
   }
 
   v12[0] = @"identifier";
-  v6 = v3;
-  if (!v3)
+  null = identifier;
+  if (!identifier)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"subset";
-  v7 = v4;
-  if (!v4)
+  null2 = subset;
+  if (!subset)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"isThirdPartyShareDestination";
-  v8 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (v5)
   {
-    if (v4)
+    if (subset)
     {
       goto LABEL_12;
     }
 
 LABEL_17:
 
-    if (v3)
+    if (identifier)
     {
       goto LABEL_13;
     }
@@ -142,13 +142,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v4)
+  if (!subset)
   {
     goto LABEL_17;
   }
 
 LABEL_12:
-  if (v3)
+  if (identifier)
   {
     goto LABEL_13;
   }
@@ -161,25 +161,25 @@ LABEL_13:
   return v9;
 }
 
-- (BMPhotosMemoriesShared)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMPhotosMemoriesShared)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"subset"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"subset"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_12;
         }
 
@@ -191,8 +191,8 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v19 = [v23 initWithDomain:v18 code:2 userInfo:v11];
         v10 = 0;
-        v13 = 0;
-        *a4 = v19;
+        selfCopy = 0;
+        *error = v19;
         goto LABEL_11;
       }
 
@@ -204,13 +204,13 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"isThirdPartyShareDestination"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isThirdPartyShareDestination"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v22 = *MEMORY[0x1E698F240];
@@ -218,11 +218,11 @@ LABEL_4:
           v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isThirdPartyShareDestination"];
           v26 = v20;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-          *a4 = [v24 initWithDomain:v22 code:2 userInfo:v21];
+          *error = [v24 initWithDomain:v22 code:2 userInfo:v21];
         }
 
         v12 = 0;
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_11;
       }
 
@@ -235,7 +235,7 @@ LABEL_4:
     }
 
     self = [(BMPhotosMemoriesShared *)self initWithIdentifier:v8 subset:v10 isThirdPartyShareDestination:v12];
-    v13 = self;
+    selfCopy = self;
 LABEL_11:
 
     goto LABEL_12;
@@ -248,10 +248,10 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -262,51 +262,51 @@ LABEL_11:
   v30[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   v8 = 0;
-  v13 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v9];
 LABEL_12:
 
 LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMPhotosMemoriesShared *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_subset)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasIsThirdPartyShareDestination)
   {
     isThirdPartyShareDestination = self->_isThirdPartyShareDestination;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMPhotosMemoriesShared;
   v5 = [(BMEventBase *)&v29 init];
@@ -315,12 +315,12 @@ LABEL_13:
     goto LABEL_40;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -331,18 +331,18 @@ LABEL_13:
       while (1)
       {
         v30 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -360,9 +360,9 @@ LABEL_13:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -377,18 +377,18 @@ LABEL_16:
         while (1)
         {
           v30 = 0;
-          v22 = [v4 position] + 1;
-          if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+          v22 = [fromCopy position] + 1;
+          if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v30 & 0x7F) << v19;
@@ -406,7 +406,7 @@ LABEL_16:
           }
         }
 
-        v25 = (v21 != 0) & ~[v4 hasError];
+        v25 = (v21 != 0) & ~[fromCopy hasError];
 LABEL_36:
         v5->_isThirdPartyShareDestination = v25;
       }
@@ -440,13 +440,13 @@ LABEL_36:
       }
 
 LABEL_37:
-      v26 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v26 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_39:
     v27 = 0;
@@ -464,31 +464,31 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMPhotosMemoriesShared *)self identifier];
-  v5 = [(BMPhotosMemoriesShared *)self subset];
+  identifier = [(BMPhotosMemoriesShared *)self identifier];
+  subset = [(BMPhotosMemoriesShared *)self subset];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMPhotosMemoriesShared isThirdPartyShareDestination](self, "isThirdPartyShareDestination")}];
-  v7 = [v3 initWithFormat:@"BMPhotosMemoriesShared with identifier: %@, subset: %@, isThirdPartyShareDestination: %@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"BMPhotosMemoriesShared with identifier: %@, subset: %@, isThirdPartyShareDestination: %@", identifier, subset, v6];
 
   return v7;
 }
 
-- (BMPhotosMemoriesShared)initWithIdentifier:(id)a3 subset:(id)a4 isThirdPartyShareDestination:(id)a5
+- (BMPhotosMemoriesShared)initWithIdentifier:(id)identifier subset:(id)subset isThirdPartyShareDestination:(id)destination
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  subsetCopy = subset;
+  destinationCopy = destination;
   v14.receiver = self;
   v14.super_class = BMPhotosMemoriesShared;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v12->_subset, a4);
-    if (v11)
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v12->_subset, subset);
+    if (destinationCopy)
     {
       v12->_hasIsThirdPartyShareDestination = 1;
-      v12->_isThirdPartyShareDestination = [v11 BOOLValue];
+      v12->_isThirdPartyShareDestination = [destinationCopy BOOLValue];
     }
 
     else
@@ -532,9 +532,9 @@ LABEL_40:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -542,8 +542,8 @@ LABEL_40:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMPhotosMemoriesShared alloc] initByReadFrom:v7];
     v4 = v8;

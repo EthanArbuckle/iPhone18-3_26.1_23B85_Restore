@@ -1,11 +1,11 @@
 @interface NTKCompanionFaceRenderer
-+ (id)_snapshotNameForFace:(id)a3 detailMode:(int64_t)a4;
++ (id)_snapshotNameForFace:(id)face detailMode:(int64_t)mode;
 + (id)_storagePath;
-+ (id)snapshotPathForFace:(id)a3 detailMode:(int64_t)a4;
++ (id)snapshotPathForFace:(id)face detailMode:(int64_t)mode;
 - (NTKCompanionFaceRenderer)init;
 - (void)_notifyFinishedFaceBatchIfNeeded;
 - (void)_startNextWorkItem;
-- (void)requestSnapshotOfFace:(id)a3 completion:(id)a4;
+- (void)requestSnapshotOfFace:(id)face completion:(id)completion;
 @end
 
 @implementation NTKCompanionFaceRenderer
@@ -22,9 +22,9 @@
     workQueue = v2->_workQueue;
     v2->_workQueue = v4;
 
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingTaskList = v2->_pendingTaskList;
-    v2->_pendingTaskList = v6;
+    v2->_pendingTaskList = array;
 
     v2->_queueActive = 0;
   }
@@ -32,17 +32,17 @@
   return v2;
 }
 
-- (void)requestSnapshotOfFace:(id)a3 completion:(id)a4
+- (void)requestSnapshotOfFace:(id)face completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() snapshotPathForFace:v6 detailMode:0x7FFFFFFFFFFFFFFFLL];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  faceCopy = face;
+  completionCopy = completion;
+  v8 = [objc_opt_class() snapshotPathForFace:faceCopy detailMode:0x7FFFFFFFFFFFFFFFLL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v8];
 
   if (v10)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -51,9 +51,9 @@
     block[1] = 3221225472;
     block[2] = __61__NTKCompanionFaceRenderer_requestSnapshotOfFace_completion___block_invoke;
     block[3] = &unk_27877EAA0;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
+    v12 = faceCopy;
+    selfCopy = self;
+    v14 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -81,28 +81,28 @@ void __61__NTKCompanionFaceRenderer_requestSnapshotOfFace_completion___block_inv
   }
 }
 
-+ (id)_snapshotNameForFace:(id)a3 detailMode:(int64_t)a4
++ (id)_snapshotNameForFace:(id)face detailMode:(int64_t)mode
 {
-  v5 = [a3 dailySnapshotKey];
-  v6 = v5;
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  dailySnapshotKey = [face dailySnapshotKey];
+  v6 = dailySnapshotKey;
+  if (mode != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v5 stringByAppendingFormat:@"~mode%d", a4];
+    mode = [dailySnapshotKey stringByAppendingFormat:@"~mode%d", mode];
 
-    v6 = v7;
+    v6 = mode;
   }
 
   return v6;
 }
 
-+ (id)snapshotPathForFace:(id)a3 detailMode:(int64_t)a4
++ (id)snapshotPathForFace:(id)face detailMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [a1 _storagePath];
-  v8 = [a1 _snapshotNameForFace:v6 detailMode:a4];
+  faceCopy = face;
+  _storagePath = [self _storagePath];
+  v8 = [self _snapshotNameForFace:faceCopy detailMode:mode];
 
   v9 = [v8 stringByAppendingPathExtension:@"png"];
-  v10 = [v7 stringByAppendingPathComponent:v9];
+  v10 = [_storagePath stringByAppendingPathComponent:v9];
 
   return v10;
 }
@@ -144,19 +144,19 @@ void __40__NTKCompanionFaceRenderer__storagePath__block_invoke()
 - (void)_startNextWorkItem
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(NSMutableArray *)self->_pendingTaskList firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_pendingTaskList firstObject];
+  if (firstObject)
   {
     self->_queueActive = 1;
     [(NSMutableArray *)self->_pendingTaskList removeObjectAtIndex:0];
-    v4 = [v3 completionHandler];
-    v5 = [v3 isMemberOfBatch];
-    v6 = [v3 face];
-    v7 = [v6 isEquivalentToFace:self->_currentFace];
+    completionHandler = [firstObject completionHandler];
+    isMemberOfBatch = [firstObject isMemberOfBatch];
+    face = [firstObject face];
+    v7 = [face isEquivalentToFace:self->_currentFace];
 
     if (v7)
     {
-      v8 = [(NTKFaceSnapshottingWindow *)self->_window rootViewController];
+      rootViewController = [(NTKFaceSnapshottingWindow *)self->_window rootViewController];
     }
 
     else
@@ -167,37 +167,37 @@ void __40__NTKCompanionFaceRenderer__storagePath__block_invoke()
       self->_window = v10;
 
       v12 = self->_window;
-      v13 = [v3 face];
-      v14 = [v13 device];
-      [(NTKFaceSnapshottingWindow *)v12 updateForDevice:v14];
+      face2 = [firstObject face];
+      device = [face2 device];
+      [(NTKFaceSnapshottingWindow *)v12 updateForDevice:device];
 
       v15 = [NTKFaceViewController alloc];
-      v16 = [v3 face];
-      v8 = [(NTKFaceViewController *)v15 initWithFace:v16 configuration:&__block_literal_global_43_1];
+      face3 = [firstObject face];
+      rootViewController = [(NTKFaceViewController *)v15 initWithFace:face3 configuration:&__block_literal_global_43_1];
 
-      [(NTKFaceSnapshottingWindow *)self->_window setRootViewController:v8];
+      [(NTKFaceSnapshottingWindow *)self->_window setRootViewController:rootViewController];
       [(NTKFaceSnapshottingWindow *)self->_window setHidden:0];
-      if (v5 && v4)
+      if (isMemberOfBatch && completionHandler)
       {
-        v17 = _Block_copy(v4);
+        v17 = _Block_copy(completionHandler);
         faceBatchCompletionHandler = self->_faceBatchCompletionHandler;
         self->_faceBatchCompletionHandler = v17;
       }
     }
 
-    v19 = [v3 face];
+    face4 = [firstObject face];
     currentFace = self->_currentFace;
-    self->_currentFace = v19;
+    self->_currentFace = face4;
 
-    v21 = [(NTKFaceViewController *)v8 faceView];
-    v22 = [v3 detailMode];
+    faceView = [(NTKFaceViewController *)rootViewController faceView];
+    detailMode = [firstObject detailMode];
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    [v21 setDetailMode:v22];
+    [faceView setDetailMode:detailMode];
     [(NTKFaceSnapshottingWindow *)self->_window setNeedsLayout];
     [(NTKFaceSnapshottingWindow *)self->_window layoutIfNeeded];
     [(NTKFaceSnapshottingWindow *)self->_window setNeedsDisplay];
-    [v21 setNeedsRender];
+    [faceView setNeedsRender];
     [MEMORY[0x277CD9FF0] commit];
     [MEMORY[0x277CD9FF0] flush];
     [(NTKFaceSnapshottingWindow *)self->_window bounds];
@@ -207,27 +207,27 @@ void __40__NTKCompanionFaceRenderer__storagePath__block_invoke()
     v28 = v27;
     v29 = v24 * v27;
     v30 = v26 * v27;
-    v31 = [(NTKFaceSnapshottingWindow *)self->_window _contextId];
+    _contextId = [(NTKFaceSnapshottingWindow *)self->_window _contextId];
     v32 = objc_opt_class();
-    v33 = [v3 face];
-    v34 = [v32 _snapshotNameForFace:v33 detailMode:v22];
+    face5 = [firstObject face];
+    v34 = [v32 _snapshotNameForFace:face5 detailMode:detailMode];
 
     workQueue = self->_workQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__NTKCompanionFaceRenderer__startNextWorkItem__block_invoke_2;
     block[3] = &unk_278784D98;
-    v46 = v31;
+    v46 = _contextId;
     v42 = v28;
     v43 = v29;
     v44 = v30;
     block[4] = self;
-    v39 = v3;
+    v39 = firstObject;
     v40 = v34;
-    v45 = v22;
-    v41 = v4;
-    v47 = v5;
-    v36 = v4;
+    v45 = detailMode;
+    v41 = completionHandler;
+    v47 = isMemberOfBatch;
+    v36 = completionHandler;
     v37 = v34;
     dispatch_async(workQueue, block);
   }

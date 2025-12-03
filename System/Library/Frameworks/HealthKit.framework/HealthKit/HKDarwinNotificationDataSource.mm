@@ -1,25 +1,25 @@
 @interface HKDarwinNotificationDataSource
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4;
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4;
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle;
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key;
 @end
 
 @implementation HKDarwinNotificationDataSource
 
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  handleCopy = handle;
   out_token = 0;
-  v7 = [v5 UTF8String];
+  uTF8String = [keyCopy UTF8String];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __78__HKDarwinNotificationDataSource_makeAndRegisterBridgedObserverForKey_handle___block_invoke;
   handler[3] = &unk_1E7384080;
-  v13 = v6;
-  v14 = v5;
-  v8 = v5;
-  v9 = v6;
-  notify_register_dispatch(v7, &out_token, MEMORY[0x1E69E96A0], handler);
+  v13 = handleCopy;
+  v14 = keyCopy;
+  v8 = keyCopy;
+  v9 = handleCopy;
+  notify_register_dispatch(uTF8String, &out_token, MEMORY[0x1E69E96A0], handler);
   v10 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
 
   return v10;
@@ -33,16 +33,16 @@ void __78__HKDarwinNotificationDataSource_makeAndRegisterBridgedObserverForKey_h
   [v1 notifyObserversOfChangeForKey:v2 newValue:v3];
 }
 
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key
 {
-  v5 = a3;
+  observerCopy = observer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 intValue];
-    if (v6 != -1)
+    intValue = [observerCopy intValue];
+    if (intValue != -1)
     {
-      notify_cancel(v6);
+      notify_cancel(intValue);
     }
   }
 
@@ -52,7 +52,7 @@ void __78__HKDarwinNotificationDataSource_makeAndRegisterBridgedObserverForKey_h
     v7 = HKLogInfrastructure();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(HKDarwinNotificationDataSource *)self unregisterBridgedObserver:v5 forKey:v7];
+      [(HKDarwinNotificationDataSource *)self unregisterBridgedObserver:observerCopy forKey:v7];
     }
   }
 }

@@ -1,24 +1,24 @@
 @interface AMSBiometricsIdentityMapChangeTask
-- (AMSBiometricsIdentityMapChangeTask)initWithAccount:(id)a3 session:(id)a4 task:(id)a5;
+- (AMSBiometricsIdentityMapChangeTask)initWithAccount:(id)account session:(id)session task:(id)task;
 - (id)perform;
 @end
 
 @implementation AMSBiometricsIdentityMapChangeTask
 
-- (AMSBiometricsIdentityMapChangeTask)initWithAccount:(id)a3 session:(id)a4 task:(id)a5
+- (AMSBiometricsIdentityMapChangeTask)initWithAccount:(id)account session:(id)session task:(id)task
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  sessionCopy = session;
+  taskCopy = task;
   v15.receiver = self;
   v15.super_class = AMSBiometricsIdentityMapChangeTask;
   v12 = [(AMSTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a3);
-    objc_storeStrong(&v13->_session, a4);
-    objc_storeStrong(&v13->_task, a5);
+    objc_storeStrong(&v12->_account, account);
+    objc_storeStrong(&v13->_session, session);
+    objc_storeStrong(&v13->_task, task);
   }
 
   return v13;
@@ -32,9 +32,9 @@
   v5[3] = &unk_1E73B3588;
   v5[4] = self;
   v2 = [(AMSTask *)self performTaskWithPromiseBlock:v5];
-  v3 = [v2 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v2 binaryPromiseAdapter];
 
-  return v3;
+  return binaryPromiseAdapter;
 }
 
 id __45__AMSBiometricsIdentityMapChangeTask_perform__block_invoke(uint64_t a1)

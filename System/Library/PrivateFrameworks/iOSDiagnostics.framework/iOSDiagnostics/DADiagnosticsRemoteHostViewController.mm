@@ -1,15 +1,15 @@
 @interface DADiagnosticsRemoteHostViewController
-- (void)viewServiceDidFinishWithReason:(unint64_t)a3;
+- (void)viewServiceDidFinishWithReason:(unint64_t)reason;
 @end
 
 @implementation DADiagnosticsRemoteHostViewController
 
-- (void)viewServiceDidFinishWithReason:(unint64_t)a3
+- (void)viewServiceDidFinishWithReason:(unint64_t)reason
 {
   if (![(DADiagnosticsRemoteHostViewController *)self finished])
   {
     [(DADiagnosticsRemoteHostViewController *)self setFinished:1];
-    v4 = [(DADiagnosticsRemoteViewController *)self delegate];
+    delegate = [(DADiagnosticsRemoteViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)

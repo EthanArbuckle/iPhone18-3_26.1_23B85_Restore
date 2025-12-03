@@ -1,41 +1,41 @@
 @interface PUPhotoEditBaseMediaNode
-- (PUPhotoEditBaseMediaNode)initWithAdjustmentNode:(id)a3;
+- (PUPhotoEditBaseMediaNode)initWithAdjustmentNode:(id)node;
 - (void)run;
-- (void)runNode:(id)a3 didCompleteWithError:(id)a4;
+- (void)runNode:(id)node didCompleteWithError:(id)error;
 @end
 
 @implementation PUPhotoEditBaseMediaNode
 
-- (void)runNode:(id)a3 didCompleteWithError:(id)a4
+- (void)runNode:(id)node didCompleteWithError:(id)error
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = v15;
-  v8 = v6;
+  nodeCopy = node;
+  errorCopy = error;
+  v7 = nodeCopy;
+  v8 = errorCopy;
   imageDataNode = self->_imageDataNode;
-  if (imageDataNode == v15)
+  if (imageDataNode == nodeCopy)
   {
-    v11 = [(PUEditableMediaProviderImageDataNode *)imageDataNode imageData];
+    imageData = [(PUEditableMediaProviderImageDataNode *)imageDataNode imageData];
     v12 = &OBJC_IVAR___PUPhotoEditBaseMediaNode__imageData;
   }
 
   else
   {
     videoAssetNode = self->_videoAssetNode;
-    if (videoAssetNode != v15)
+    if (videoAssetNode != nodeCopy)
     {
       goto LABEL_6;
     }
 
-    v11 = [(PUEditableMediaProviderVideoAssetNode *)videoAssetNode videoAsset];
+    imageData = [(PUEditableMediaProviderVideoAssetNode *)videoAssetNode videoAsset];
     v12 = &OBJC_IVAR___PUPhotoEditBaseMediaNode__videoAsset;
   }
 
   v13 = *v12;
   v14 = *(&self->super.super.isa + v13);
-  *(&self->super.super.isa + v13) = v11;
+  *(&self->super.super.isa + v13) = imageData;
 
-  v7 = v15;
+  v7 = nodeCopy;
 LABEL_6:
   if (self->_gatheringNode == v7)
   {
@@ -46,19 +46,19 @@ LABEL_6:
 - (void)run
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditBaseMediaNode *)self adjustmentNode];
-  v4 = [v3 adjustmentData];
-  v5 = [v3 asset];
-  v6 = [v3 mediaProvider];
-  if ([v4 baseVersion])
+  adjustmentNode = [(PUPhotoEditBaseMediaNode *)self adjustmentNode];
+  adjustmentData = [adjustmentNode adjustmentData];
+  asset = [adjustmentNode asset];
+  mediaProvider = [adjustmentNode mediaProvider];
+  if ([adjustmentData baseVersion])
   {
-    v7 = [[PUEditableMediaProviderImageDataNode alloc] initWithAsset:v5 mediaProvider:v6 version:8];
+    v7 = [[PUEditableMediaProviderImageDataNode alloc] initWithAsset:asset mediaProvider:mediaProvider version:8];
     imageDataNode = self->_imageDataNode;
     self->_imageDataNode = v7;
 
-    if ([v5 isLivePhoto])
+    if ([asset isLivePhoto])
     {
-      v9 = [[PUEditableMediaProviderVideoAssetNode alloc] initWithAsset:v5 mediaProvider:v6 version:8];
+      v9 = [[PUEditableMediaProviderVideoAssetNode alloc] initWithAsset:asset mediaProvider:mediaProvider version:8];
       videoAssetNode = self->_videoAssetNode;
       self->_videoAssetNode = v9;
 
@@ -89,11 +89,11 @@ LABEL_6:
   }
 }
 
-- (PUPhotoEditBaseMediaNode)initWithAdjustmentNode:(id)a3
+- (PUPhotoEditBaseMediaNode)initWithAdjustmentNode:(id)node
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v10[0] = v5;
+  nodeCopy = node;
+  v10[0] = nodeCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v9.receiver = self;
   v9.super_class = PUPhotoEditBaseMediaNode;
@@ -101,7 +101,7 @@ LABEL_6:
 
   if (v7)
   {
-    objc_storeStrong(&v7->_adjustmentNode, a3);
+    objc_storeStrong(&v7->_adjustmentNode, node);
   }
 
   return v7;

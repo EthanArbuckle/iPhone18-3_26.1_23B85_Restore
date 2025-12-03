@@ -2,7 +2,7 @@
 - (CGRect)frame;
 - (CGSize)size;
 - (UIView)viewForLayout;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _SFURLLabelAccessoryItem
@@ -20,27 +20,27 @@
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(_SFURLLabelAccessoryItem *)self viewForLayout];
-  [(UIImageView *)v9 setFrame:x, y, width, height];
-  v8 = v9;
-  if (self->_view != v9)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewForLayout = [(_SFURLLabelAccessoryItem *)self viewForLayout];
+  [(UIImageView *)viewForLayout setFrame:x, y, width, height];
+  v8 = viewForLayout;
+  if (self->_view != viewForLayout)
   {
-    [(UIImageView *)v9 bounds];
+    [(UIImageView *)viewForLayout bounds];
     [(UIImageView *)self->_view setFrame:?];
-    v8 = v9;
+    v8 = viewForLayout;
   }
 }
 
 - (CGRect)frame
 {
-  v2 = [(_SFURLLabelAccessoryItem *)self viewForLayout];
-  [v2 frame];
+  viewForLayout = [(_SFURLLabelAccessoryItem *)self viewForLayout];
+  [viewForLayout frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

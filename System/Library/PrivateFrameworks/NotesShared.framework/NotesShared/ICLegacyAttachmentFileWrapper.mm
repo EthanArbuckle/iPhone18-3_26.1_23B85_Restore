@@ -1,33 +1,33 @@
 @interface ICLegacyAttachmentFileWrapper
-- (ICLegacyAttachmentFileWrapper)initWithCIDURL:(id)a3;
-- (ICLegacyAttachmentFileWrapper)initWithCoder:(id)a3;
+- (ICLegacyAttachmentFileWrapper)initWithCIDURL:(id)l;
+- (ICLegacyAttachmentFileWrapper)initWithCoder:(id)coder;
 - (NSString)attachmentIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLegacyAttachmentFileWrapper
 
-- (ICLegacyAttachmentFileWrapper)initWithCIDURL:(id)a3
+- (ICLegacyAttachmentFileWrapper)initWithCIDURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = ICLegacyAttachmentFileWrapper;
   v5 = [(ICLegacyAttachmentFileWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICLegacyAttachmentFileWrapper *)v5 setCidURL:v4];
+    [(ICLegacyAttachmentFileWrapper *)v5 setCidURL:lCopy];
   }
 
   return v6;
 }
 
-- (ICLegacyAttachmentFileWrapper)initWithCoder:(id)a3
+- (ICLegacyAttachmentFileWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cidURL"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cidURL"];
   }
 
   else
@@ -40,23 +40,23 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if ([v5 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v4 = [(ICLegacyAttachmentFileWrapper *)self cidURL];
-    [v5 encodeObject:v4 forKey:@"cidURL"];
+    cidURL = [(ICLegacyAttachmentFileWrapper *)self cidURL];
+    [coderCopy encodeObject:cidURL forKey:@"cidURL"];
   }
 }
 
 - (NSString)attachmentIdentifier
 {
-  v2 = [(ICLegacyAttachmentFileWrapper *)self cidURL];
-  v3 = [v2 resourceSpecifier];
-  v4 = [v3 ic_md5];
+  cidURL = [(ICLegacyAttachmentFileWrapper *)self cidURL];
+  resourceSpecifier = [cidURL resourceSpecifier];
+  ic_md5 = [resourceSpecifier ic_md5];
 
-  return v4;
+  return ic_md5;
 }
 
 @end

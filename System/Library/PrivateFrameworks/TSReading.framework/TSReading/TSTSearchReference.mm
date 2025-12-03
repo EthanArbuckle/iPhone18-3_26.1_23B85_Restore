@@ -1,14 +1,14 @@
 @interface TSTSearchReference
-+ (TSTSearchReference)searchReferenceWithTableInfo:(id)a3 cellID:(id)a4 range:(_NSRange)a5;
-- (BOOL)isEqual:(id)a3;
++ (TSTSearchReference)searchReferenceWithTableInfo:(id)info cellID:(id)d range:(_NSRange)range;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isReplaceable;
 - (CGPoint)searchReferencePoint;
 - (NSString)description;
-- (TSTSearchReference)initWithTableInfo:(id)a3 cellID:(id)a4 range:(_NSRange)a5;
+- (TSTSearchReference)initWithTableInfo:(id)info cellID:(id)d range:(_NSRange)range;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)searchReferenceEnd;
-- (id)searchReferenceForReplacingWithString:(id)a3 options:(unint64_t)a4 authorCreatedWithCommand:(id *)a5;
+- (id)searchReferenceForReplacingWithString:(id)string options:(unint64_t)options authorCreatedWithCommand:(id *)command;
 - (id)searchReferenceStart;
 - (id)selection;
 - (void)dealloc;
@@ -16,24 +16,24 @@
 
 @implementation TSTSearchReference
 
-+ (TSTSearchReference)searchReferenceWithTableInfo:(id)a3 cellID:(id)a4 range:(_NSRange)a5
++ (TSTSearchReference)searchReferenceWithTableInfo:(id)info cellID:(id)d range:(_NSRange)range
 {
-  v5 = [[TSTSearchReference alloc] initWithTableInfo:a3 cellID:*&a4 range:a5.location, a5.length];
+  v5 = [[TSTSearchReference alloc] initWithTableInfo:info cellID:*&d range:range.location, range.length];
 
   return v5;
 }
 
-- (TSTSearchReference)initWithTableInfo:(id)a3 cellID:(id)a4 range:(_NSRange)a5
+- (TSTSearchReference)initWithTableInfo:(id)info cellID:(id)d range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v11.receiver = self;
   v11.super_class = TSTSearchReference;
   v9 = [(TSTSearchReference *)&v11 init];
   if (v9)
   {
-    v9->_tableInfo = a3;
-    v9->_cellID = a4;
+    v9->_tableInfo = info;
+    v9->_cellID = d;
     v9->_range.location = location;
     v9->_range.length = length;
   }
@@ -48,7 +48,7 @@
   [(TSTSearchReference *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -56,14 +56,14 @@
     return 0;
   }
 
-  v5 = [(TSTSearchReference *)self model];
-  v6 = [a3 model];
+  model = [(TSTSearchReference *)self model];
+  model2 = [equal model];
   location = self->_range.location;
   length = self->_range.length;
-  v9 = [a3 range];
+  range = [equal range];
   v11 = v10;
   cellID = self->_cellID;
-  return (([a3 cellID] ^ *&cellID) & 0xFFFFFF) == 0 && v5 == v6 && location == v9 && length == v11;
+  return (([equal cellID] ^ *&cellID) & 0xFFFFFF) == 0 && model == model2 && location == range && length == v11;
 }
 
 - (_NSRange)range
@@ -78,8 +78,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(TSTSearchReference *)self cellID];
-  return [v3 stringWithFormat:@"TSTSearchReference %p cellID %@ range %@", self, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"(%hu, %hu)", BYTE2(v4), v4), NSStringFromRange(self->_range)];
+  cellID = [(TSTSearchReference *)self cellID];
+  return [v3 stringWithFormat:@"TSTSearchReference %p cellID %@ range %@", self, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"(%hu, %hu)", BYTE2(cellID), cellID), NSStringFromRange(self->_range)];
 }
 
 - (id)selection
@@ -165,12 +165,12 @@ LABEL_8:
   return v5 & 1;
 }
 
-- (id)searchReferenceForReplacingWithString:(id)a3 options:(unint64_t)a4 authorCreatedWithCommand:(id *)a5
+- (id)searchReferenceForReplacingWithString:(id)string options:(unint64_t)options authorCreatedWithCommand:(id *)command
 {
   tableInfo = self->_tableInfo;
   cellID = self->_cellID;
-  v8 = [(TSTSearchReference *)self range:a3];
-  v9 = [a3 length];
+  v8 = [(TSTSearchReference *)self range:string];
+  v9 = [string length];
 
   return [TSTSearchReference searchReferenceWithTableInfo:tableInfo cellID:cellID range:v8, v9];
 }
@@ -179,21 +179,21 @@ LABEL_8:
 {
   tableInfo = self->_tableInfo;
   cellID = self->_cellID;
-  v4 = [(TSTSearchReference *)self range];
+  range = [(TSTSearchReference *)self range];
 
-  return [TSTSearchReference searchReferenceWithTableInfo:tableInfo cellID:cellID range:v4, 0];
+  return [TSTSearchReference searchReferenceWithTableInfo:tableInfo cellID:cellID range:range, 0];
 }
 
 - (id)searchReferenceEnd
 {
   tableInfo = self->_tableInfo;
   cellID = self->_cellID;
-  v4 = [(TSTSearchReference *)self range];
+  range = [(TSTSearchReference *)self range];
 
-  return [TSTSearchReference searchReferenceWithTableInfo:tableInfo cellID:cellID range:v4 + v5, 0];
+  return [TSTSearchReference searchReferenceWithTableInfo:tableInfo cellID:cellID range:range + v5, 0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TSTSearchReference alloc] initWithTableInfo:self->_tableInfo cellID:*&self->_cellID range:self->_range.location, self->_range.length];
   [(TSTSearchReference *)self searchReferencePoint];

@@ -1,11 +1,11 @@
 @interface CLDuetNowPlaying
-- (CLDuetNowPlaying)initWithBundleId:(id)a3 status:(id)a4 track:(id)a5 outputDeviceIDs:(id)a6;
+- (CLDuetNowPlaying)initWithBundleId:(id)id status:(id)status track:(id)track outputDeviceIDs:(id)ds;
 - (void)dealloc;
 @end
 
 @implementation CLDuetNowPlaying
 
-- (CLDuetNowPlaying)initWithBundleId:(id)a3 status:(id)a4 track:(id)a5 outputDeviceIDs:(id)a6
+- (CLDuetNowPlaying)initWithBundleId:(id)id status:(id)status track:(id)track outputDeviceIDs:(id)ds
 {
   v13.receiver = self;
   v13.super_class = CLDuetNowPlaying;
@@ -13,10 +13,10 @@
   v11 = v10;
   if (v10)
   {
-    [(CLDuetNowPlaying *)v10 setBundleId:a3];
-    [(CLDuetNowPlaying *)v11 setStatus:a4];
-    [(CLDuetNowPlaying *)v11 setTrack:a5];
-    [(CLDuetNowPlaying *)v11 setOutputDeviceIDs:a6];
+    [(CLDuetNowPlaying *)v10 setBundleId:id];
+    [(CLDuetNowPlaying *)v11 setStatus:status];
+    [(CLDuetNowPlaying *)v11 setTrack:track];
+    [(CLDuetNowPlaying *)v11 setOutputDeviceIDs:ds];
   }
 
   return v11;

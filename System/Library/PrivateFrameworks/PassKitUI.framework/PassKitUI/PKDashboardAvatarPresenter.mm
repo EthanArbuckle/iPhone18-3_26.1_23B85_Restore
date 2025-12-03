@@ -1,20 +1,20 @@
 @interface PKDashboardAvatarPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
-- (PKDashboardAvatarPresenter)initWithAvatarManager:(id)a3;
-- (id)_contactForItem:(id)a3;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
+- (PKDashboardAvatarPresenter)initWithAvatarManager:(id)manager;
+- (id)_contactForItem:(id)item;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureView:(id)a3 item:(id)a4;
-- (void)swapSummaryInCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
+- (void)_configureView:(id)view item:(id)item;
+- (void)swapSummaryInCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PKDashboardAvatarPresenter
 
-- (PKDashboardAvatarPresenter)initWithAvatarManager:(id)a3
+- (PKDashboardAvatarPresenter)initWithAvatarManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PKDashboardAvatarPresenter;
   v6 = [(PKDashboardAvatarPresenter *)&v9 init];
@@ -22,7 +22,7 @@
   if (v6)
   {
     v6->_needsSizing = 1;
-    objc_storeStrong(&v6->_avatarManager, a3);
+    objc_storeStrong(&v6->_avatarManager, manager);
   }
 
   return v7;
@@ -38,51 +38,51 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = [a4 dequeueReusableCellWithReuseIdentifier:@"avatarPresenter" forIndexPath:a5];
-  v10 = [v9 hostedContentView];
+  itemCopy = item;
+  v9 = [view dequeueReusableCellWithReuseIdentifier:@"avatarPresenter" forIndexPath:path];
+  hostedContentView = [v9 hostedContentView];
 
-  if (!v10)
+  if (!hostedContentView)
   {
     v11 = [[PKAvatarHeaderView alloc] initWithContact:0 counterpartHandle:0];
     [v9 setHostedContentView:v11];
   }
 
-  v12 = [v9 hostedContentView];
-  [(PKDashboardAvatarPresenter *)self _configureView:v12 item:v8];
+  hostedContentView2 = [v9 hostedContentView];
+  [(PKDashboardAvatarPresenter *)self _configureView:hostedContentView2 item:itemCopy];
 
   return v9;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [v10 hostedContentView];
-  [(PKDashboardAvatarPresenter *)self _configureView:v9 item:v8];
+  cellCopy = cell;
+  itemCopy = item;
+  hostedContentView = [cellCopy hostedContentView];
+  [(PKDashboardAvatarPresenter *)self _configureView:hostedContentView item:itemCopy];
 }
 
-- (void)swapSummaryInCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)swapSummaryInCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [v10 hostedContentView];
-  [(PKDashboardAvatarPresenter *)self _configureView:v9 item:v8];
+  cellCopy = cell;
+  itemCopy = item;
+  hostedContentView = [cellCopy hostedContentView];
+  [(PKDashboardAvatarPresenter *)self _configureView:hostedContentView item:itemCopy];
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
   if (self->_needsSizing)
   {
     sampleView = self->_sampleView;
     if (!sampleView)
     {
-      v14 = [(PKDashboardAvatarPresenter *)self _contactForItem:v10];
+      v14 = [(PKDashboardAvatarPresenter *)self _contactForItem:itemCopy];
       v15 = [[PKAvatarHeaderView alloc] initWithContact:v14 counterpartHandle:0];
       v16 = self->_sampleView;
       self->_sampleView = v15;
@@ -91,10 +91,10 @@
     }
 
     self->_needsSizing = 0;
-    [(PKDashboardAvatarPresenter *)self _configureView:sampleView item:v10];
+    [(PKDashboardAvatarPresenter *)self _configureView:sampleView item:itemCopy];
     v17 = self->_sampleView;
     +[PKDashboardCollectionViewCell defaultHorizontalInset];
-    [(PKAvatarHeaderView *)v17 sizeThatFits:a5 + v18 * -2.0, 3.40282347e38];
+    [(PKAvatarHeaderView *)v17 sizeThatFits:width + v18 * -2.0, 3.40282347e38];
     width = v19;
     height = v21;
     self->_viewSize.width = v19;
@@ -107,24 +107,24 @@
     height = self->_viewSize.height;
   }
 
-  v23 = width;
+  widthCopy = width;
   v24 = height;
   result.height = v24;
-  result.width = v23;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         self->_needsSizing = 1;
@@ -136,44 +136,44 @@
   }
 }
 
-- (id)_contactForItem:(id)a3
+- (id)_contactForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 familyMember];
-  v6 = [v4 accountUser];
+  itemCopy = item;
+  familyMember = [itemCopy familyMember];
+  accountUser = [itemCopy accountUser];
 
-  v7 = [v6 altDSID];
-  v8 = [v6 nameComponents];
-  if (!v7)
+  altDSID = [accountUser altDSID];
+  nameComponents = [accountUser nameComponents];
+  if (!altDSID)
   {
-    v7 = [v5 altDSID];
+    altDSID = [familyMember altDSID];
   }
 
-  v9 = [(PKContactAvatarManager *)self->_avatarManager cachedAvatarForAltDSID:v7];
+  v9 = [(PKContactAvatarManager *)self->_avatarManager cachedAvatarForAltDSID:altDSID];
   v10 = v9;
   v11 = MEMORY[0x1E69B8740];
   if (v9)
   {
     v12 = UIImagePNGRepresentation(v9);
-    v13 = [v11 contactForFamilyMember:v5 nameComponents:v8 imageData:v12];
+    v13 = [v11 contactForFamilyMember:familyMember nameComponents:nameComponents imageData:v12];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69B8740] contactForFamilyMember:v5 nameComponents:v8 imageData:0];
+    v13 = [MEMORY[0x1E69B8740] contactForFamilyMember:familyMember nameComponents:nameComponents imageData:0];
   }
 
   return v13;
 }
 
-- (void)_configureView:(id)a3 item:(id)a4
+- (void)_configureView:(id)view item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  viewCopy = view;
+  itemCopy = item;
+  if (viewCopy)
   {
-    v8 = [(PKDashboardAvatarPresenter *)self _contactForItem:v7];
-    [v6 setContact:v8];
+    v8 = [(PKDashboardAvatarPresenter *)self _contactForItem:itemCopy];
+    [viewCopy setContact:v8];
     objc_initWeak(&location, self);
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
@@ -182,28 +182,28 @@
     objc_copyWeak(&v23, &location);
     v9 = v8;
     v21 = v9;
-    v22 = v6;
+    v22 = viewCopy;
     v10 = _Block_copy(&v17);
-    v11 = [v9 imageData];
+    imageData = [v9 imageData];
 
-    if (!v11)
+    if (!imageData)
     {
-      v12 = [v7 familyMember];
-      if (v12)
+      familyMember = [itemCopy familyMember];
+      if (familyMember)
       {
 
 LABEL_6:
         avatarManager = self->_avatarManager;
-        v15 = [v7 familyMember];
-        v16 = [v7 accountUser];
-        [(PKContactAvatarManager *)avatarManager avatarForFamilyMember:v15 accountUser:v16 invitation:0 completion:v10];
+        familyMember2 = [itemCopy familyMember];
+        accountUser = [itemCopy accountUser];
+        [(PKContactAvatarManager *)avatarManager avatarForFamilyMember:familyMember2 accountUser:accountUser invitation:0 completion:v10];
 
         goto LABEL_7;
       }
 
-      v13 = [v7 accountUser];
+      accountUser2 = [itemCopy accountUser];
 
-      if (v13)
+      if (accountUser2)
       {
         goto LABEL_6;
       }

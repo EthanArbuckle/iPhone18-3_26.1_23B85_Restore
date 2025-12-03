@@ -1,5 +1,5 @@
 @interface IPodLibraryItem
-+ (unsigned)mediaTypeForStoreDownload:(id)a3;
++ (unsigned)mediaTypeForStoreDownload:(id)download;
 - (BOOL)hasItemArtwork;
 - (IPodLibraryItem)init;
 - (NSArray)chapters;
@@ -9,28 +9,28 @@
 - (NSString)itemMediaPath;
 - (StoreDownload)itemMetadata;
 - (double)durationInSeconds;
-- (id)_copyChapterVideoTracksForAsset:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_copyChapterVideoTracksForAsset:(id)asset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)assetType;
 - (int64_t)downloadType;
 - (int64_t)libraryPersistentIdentifier;
 - (int64_t)protectionType;
 - (int64_t)updateType;
 - (void)dealloc;
-- (void)loadPropertiesFromMediaPath:(id)a3 includeTracks:(BOOL)a4;
-- (void)setAdditionalEntityProperties:(id)a3;
-- (void)setAssetType:(int64_t)a3;
-- (void)setChapters:(id)a3;
-- (void)setDownloadType:(int64_t)a3;
-- (void)setDurationInSeconds:(double)a3;
-- (void)setItemArtworkData:(id)a3;
-- (void)setItemDownloadIdentifier:(id)a3;
-- (void)setItemMediaPath:(id)a3;
-- (void)setItemMetadata:(id)a3;
-- (void)setLibraryPersistentIdentifier:(int64_t)a3;
-- (void)setProtectionType:(int64_t)a3;
-- (void)setUpdateType:(int64_t)a3;
-- (void)setValue:(id)a3 forAdditionalEntityProperty:(id)a4;
+- (void)loadPropertiesFromMediaPath:(id)path includeTracks:(BOOL)tracks;
+- (void)setAdditionalEntityProperties:(id)properties;
+- (void)setAssetType:(int64_t)type;
+- (void)setChapters:(id)chapters;
+- (void)setDownloadType:(int64_t)type;
+- (void)setDurationInSeconds:(double)seconds;
+- (void)setItemArtworkData:(id)data;
+- (void)setItemDownloadIdentifier:(id)identifier;
+- (void)setItemMediaPath:(id)path;
+- (void)setItemMetadata:(id)metadata;
+- (void)setLibraryPersistentIdentifier:(int64_t)identifier;
+- (void)setProtectionType:(int64_t)type;
+- (void)setUpdateType:(int64_t)type;
+- (void)setValue:(id)value forAdditionalEntityProperty:(id)property;
 @end
 
 @implementation IPodLibraryItem
@@ -57,9 +57,9 @@
   [(IPodLibraryItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -67,24 +67,24 @@
   block[3] = &unk_10032A398;
   block[4] = v5;
   block[5] = self;
-  block[6] = a3;
+  block[6] = zone;
   dispatch_sync(dispatchQueue, block);
   return v5;
 }
 
-+ (unsigned)mediaTypeForStoreDownload:(id)a3
++ (unsigned)mediaTypeForStoreDownload:(id)download
 {
-  v4 = [a3 kind];
-  v5 = [a3 podcastType];
-  v6 = [v5 isEqualToString:SSDownloadPodcastTypeITunesU];
-  if ([v4 isEqualToString:SSDownloadKindPodcast])
+  kind = [download kind];
+  podcastType = [download podcastType];
+  v6 = [podcastType isEqualToString:SSDownloadPodcastTypeITunesU];
+  if ([kind isEqualToString:SSDownloadKindPodcast])
   {
     v7 = v6 == 0;
     v8 = 4;
     v9 = 32;
   }
 
-  else if ([v4 isEqualToString:SSDownloadKindVideoPodcast])
+  else if ([kind isEqualToString:SSDownloadKindVideoPodcast])
   {
     v7 = v6 == 0;
     v8 = 256;
@@ -93,22 +93,22 @@
 
   else
   {
-    if ([v4 isEqualToString:SSDownloadKindAudiobook])
+    if ([kind isEqualToString:SSDownloadKindAudiobook])
     {
       return 2;
     }
 
-    if ([v4 isEqualToString:SSDownloadKindMovie])
+    if ([kind isEqualToString:SSDownloadKindMovie])
     {
       return 2048;
     }
 
-    if ([v4 isEqualToString:SSDownloadKindTelevisionEpisode])
+    if ([kind isEqualToString:SSDownloadKindTelevisionEpisode])
     {
       return 512;
     }
 
-    v7 = [v4 isEqualToString:SSDownloadKindMusicVideo] == 0;
+    v7 = [kind isEqualToString:SSDownloadKindMusicVideo] == 0;
     v8 = 8;
     v9 = 1032;
   }
@@ -345,10 +345,10 @@
   return v3;
 }
 
-- (void)loadPropertiesFromMediaPath:(id)a3 includeTracks:(BOOL)a4
+- (void)loadPropertiesFromMediaPath:(id)path includeTracks:(BOOL)tracks
 {
-  v4 = a4;
-  v6 = [[AVURLAsset alloc] initWithURL:+[NSURL fileURLWithPath:](NSURL options:{"fileURLWithPath:", a3), 0}];
+  tracksCopy = tracks;
+  v6 = [[AVURLAsset alloc] initWithURL:+[NSURL fileURLWithPath:](NSURL options:{"fileURLWithPath:", path), 0}];
   if (!v6)
   {
     return;
@@ -379,7 +379,7 @@
       v12 = 2;
     }
 
-    if (v4)
+    if (tracksCopy)
     {
       goto LABEL_7;
     }
@@ -390,7 +390,7 @@ LABEL_9:
   }
 
   v12 = [objc_msgSend(v7 tracksWithMediaType:{AVMediaTypeAudio), "count"}] != 0;
-  if (!v4)
+  if (!tracksCopy)
   {
     goto LABEL_9;
   }
@@ -443,7 +443,7 @@ LABEL_10:
   return v3;
 }
 
-- (void)setAdditionalEntityProperties:(id)a3
+- (void)setAdditionalEntityProperties:(id)properties
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -451,11 +451,11 @@ LABEL_10:
   v4[2] = sub_100178268;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = properties;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setAssetType:(int64_t)a3
+- (void)setAssetType:(int64_t)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -463,11 +463,11 @@ LABEL_10:
   v4[2] = sub_100178324;
   v4[3] = &unk_100327808;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setChapters:(id)a3
+- (void)setChapters:(id)chapters
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -475,11 +475,11 @@ LABEL_10:
   v4[2] = sub_1001783A4;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = chapters;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setDownloadType:(int64_t)a3
+- (void)setDownloadType:(int64_t)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -487,11 +487,11 @@ LABEL_10:
   v4[2] = sub_100178460;
   v4[3] = &unk_100327808;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setDurationInSeconds:(double)a3
+- (void)setDurationInSeconds:(double)seconds
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -499,11 +499,11 @@ LABEL_10:
   v4[2] = sub_1001784E4;
   v4[3] = &unk_100327808;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = seconds;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setItemArtworkData:(id)a3
+- (void)setItemArtworkData:(id)data
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -511,11 +511,11 @@ LABEL_10:
   v4[2] = sub_100178568;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = data;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setItemDownloadIdentifier:(id)a3
+- (void)setItemDownloadIdentifier:(id)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -523,11 +523,11 @@ LABEL_10:
   v4[2] = sub_100178624;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setItemMediaPath:(id)a3
+- (void)setItemMediaPath:(id)path
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -535,11 +535,11 @@ LABEL_10:
   v4[2] = sub_1001786E0;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = path;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setItemMetadata:(id)a3
+- (void)setItemMetadata:(id)metadata
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -547,11 +547,11 @@ LABEL_10:
   v4[2] = sub_10017879C;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = metadata;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setLibraryPersistentIdentifier:(int64_t)a3
+- (void)setLibraryPersistentIdentifier:(int64_t)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -559,11 +559,11 @@ LABEL_10:
   v4[2] = sub_100178858;
   v4[3] = &unk_100327808;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setProtectionType:(int64_t)a3
+- (void)setProtectionType:(int64_t)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -571,11 +571,11 @@ LABEL_10:
   v4[2] = sub_1001788D8;
   v4[3] = &unk_100327808;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setUpdateType:(int64_t)a3
+- (void)setUpdateType:(int64_t)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -583,20 +583,20 @@ LABEL_10:
   v4[2] = sub_100178958;
   v4[3] = &unk_100327808;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setValue:(id)a3 forAdditionalEntityProperty:(id)a4
+- (void)setValue:(id)value forAdditionalEntityProperty:(id)property
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001789DC;
   block[3] = &unk_1003273E0;
-  block[4] = a3;
+  block[4] = value;
   block[5] = self;
-  block[6] = a4;
+  block[6] = property;
   dispatch_sync(dispatchQueue, block);
 }
 
@@ -619,17 +619,17 @@ LABEL_10:
   return v3;
 }
 
-- (id)_copyChapterVideoTracksForAsset:(id)a3
+- (id)_copyChapterVideoTracksForAsset:(id)asset
 {
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [a3 trackReferences];
-  v6 = [v5 objectForKey:AVAssetChapterListTrackReferencesKey];
+  trackReferences = [asset trackReferences];
+  v6 = [trackReferences objectForKey:AVAssetChapterListTrackReferencesKey];
   if ([v6 count] >= 2)
   {
     v7 = 1;
     do
     {
-      v8 = [a3 trackWithTrackID:{objc_msgSend(objc_msgSend(v6, "objectAtIndex:", v7), "intValue")}];
+      v8 = [asset trackWithTrackID:{objc_msgSend(objc_msgSend(v6, "objectAtIndex:", v7), "intValue")}];
       if ([objc_msgSend(v8 "mediaType")])
       {
         [v4 addObject:v8];

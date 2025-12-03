@@ -1,6 +1,6 @@
 @interface MusicVideoVerticalLockupCollectionViewCell
-- (_TtC16MusicApplication42MusicVideoVerticalLockupCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC16MusicApplication42MusicVideoVerticalLockupCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC16MusicApplication42MusicVideoVerticalLockupCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC16MusicApplication42MusicVideoVerticalLockupCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,16 +8,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_28FDFC();
 }
 
-- (_TtC16MusicApplication42MusicVideoVerticalLockupCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication42MusicVideoVerticalLockupCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC16MusicApplication42MusicVideoVerticalLockupCollectionViewCell_duration;
   *v8 = 0;
   v8[8] = 1;
@@ -31,10 +31,10 @@
   return [(VerticalLockupCollectionViewCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16MusicApplication42MusicVideoVerticalLockupCollectionViewCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication42MusicVideoVerticalLockupCollectionViewCell)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_2906C0(v3);
+  coderCopy = coder;
+  v4 = sub_2906C0(coderCopy);
 
   return v4;
 }

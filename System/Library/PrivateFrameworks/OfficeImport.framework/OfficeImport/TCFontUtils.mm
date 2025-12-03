@@ -1,27 +1,27 @@
 @interface TCFontUtils
-+ (id)stringByFixingString:(id)a3 latinFontFamilyName:(id)a4 symbolFontFamilyName:(id)a5;
++ (id)stringByFixingString:(id)string latinFontFamilyName:(id)name symbolFontFamilyName:(id)familyName;
 @end
 
 @implementation TCFontUtils
 
-+ (id)stringByFixingString:(id)a3 latinFontFamilyName:(id)a4 symbolFontFamilyName:(id)a5
++ (id)stringByFixingString:(id)string latinFontFamilyName:(id)name symbolFontFamilyName:(id)familyName
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v27 = v8;
-  v28 = v7;
-  v10 = [v7 length];
+  stringCopy = string;
+  nameCopy = name;
+  familyNameCopy = familyName;
+  v27 = nameCopy;
+  v28 = stringCopy;
+  v10 = [stringCopy length];
   std::vector<unsigned short>::vector[abi:ne200100](__p, v10);
-  [v7 getCharacters:__p[0] range:{0, v10}];
-  if (![(NSString *)v9 length])
+  [stringCopy getCharacters:__p[0] range:{0, v10}];
+  if (![(NSString *)familyNameCopy length])
   {
-    v11 = v8;
+    v11 = nameCopy;
 
-    v9 = v11;
+    familyNameCopy = v11;
   }
 
-  v12 = TCCodePointMapperForFontFamilyName(v8);
+  v12 = TCCodePointMapperForFontFamilyName(nameCopy);
   if (v12)
   {
     IsPi = 0;
@@ -78,7 +78,7 @@ LABEL_5:
 
           else
           {
-            v17 = TCCodePointMapperForFontFamilyName(v9);
+            v17 = TCCodePointMapperForFontFamilyName(familyNameCopy);
             if (v17)
             {
 LABEL_20:
@@ -93,7 +93,7 @@ LABEL_20:
               goto LABEL_27;
             }
 
-            if ((TCFontFamilyHasCodePointsInPiRange(v9) & 1) == 0 && (TCFontFamilyIsPi(v9) & 1) == 0)
+            if ((TCFontFamilyHasCodePointsInPiRange(familyNameCopy) & 1) == 0 && (TCFontFamilyIsPi(familyNameCopy) & 1) == 0)
             {
 LABEL_26:
               v17 = 0;
@@ -123,7 +123,7 @@ LABEL_27:
 
   else
   {
-    IsPi = TCFontFamilyIsPi(v8);
+    IsPi = TCFontFamilyIsPi(nameCopy);
     if (v10)
     {
       goto LABEL_5;

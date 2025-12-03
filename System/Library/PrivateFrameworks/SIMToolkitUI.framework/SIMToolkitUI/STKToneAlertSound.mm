@@ -1,19 +1,19 @@
 @interface STKToneAlertSound
-- (STKToneAlertSound)initWithType:(int64_t)a3 duration:(double)a4;
+- (STKToneAlertSound)initWithType:(int64_t)type duration:(double)duration;
 - (void)_reallyPlaySound;
 - (void)_reallyStopSound;
 @end
 
 @implementation STKToneAlertSound
 
-- (STKToneAlertSound)initWithType:(int64_t)a3 duration:(double)a4
+- (STKToneAlertSound)initWithType:(int64_t)type duration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = STKToneAlertSound;
-  result = [(STKBaseSound *)&v6 initWithDuration:a4];
+  result = [(STKBaseSound *)&v6 initWithDuration:duration];
   if (result)
   {
-    result->_alertType = a3;
+    result->_alertType = type;
   }
 
   return result;
@@ -22,10 +22,10 @@
 - (void)_reallyPlaySound
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(STKBaseSound *)self playsOnce];
+  playsOnce = [(STKBaseSound *)self playsOnce];
   v4 = [objc_alloc(MEMORY[0x277D71F58]) initWithType:self->_alertType];
   [v4 setVibrationIdentifier:*MEMORY[0x277D72070]];
-  [v4 setShouldRepeat:!v3];
+  [v4 setShouldRepeat:!playsOnce];
   objc_initWeak(&location, self);
   v5 = [MEMORY[0x277D71F50] alertWithConfiguration:v4];
   alert = self->_alert;
@@ -36,7 +36,7 @@
   {
     v8 = self->_alert;
     *buf = 134218240;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
     v17 = v8;
     _os_log_impl(&dword_262BB4000, v7, OS_LOG_TYPE_DEFAULT, "<STKSound:%p> - Tone sound: %p", buf, 0x16u);
@@ -95,7 +95,7 @@ void __37__STKToneAlertSound__reallyPlaySound__block_invoke(uint64_t a1, uint64_
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         v6 = 134217984;
-        v7 = self;
+        selfCopy = self;
         _os_log_impl(&dword_262BB4000, v4, OS_LOG_TYPE_DEFAULT, "<STKSound:%p> - Actually stopping TL sound explicitly.", &v6, 0xCu);
       }
 

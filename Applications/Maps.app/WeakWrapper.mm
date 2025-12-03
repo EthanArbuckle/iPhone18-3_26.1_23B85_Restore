@@ -1,5 +1,5 @@
 @interface WeakWrapper
-- (WeakWrapper)initWithWeakObject:(id)a3;
+- (WeakWrapper)initWithWeakObject:(id)object;
 - (id)weakObject;
 @end
 
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (WeakWrapper)initWithWeakObject:(id)a3
+- (WeakWrapper)initWithWeakObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = WeakWrapper;
   v5 = [(WeakWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakObject, v4);
+    objc_storeWeak(&v5->_weakObject, objectCopy);
   }
 
   return v6;

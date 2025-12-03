@@ -1,19 +1,19 @@
 @interface CPUIGridViewBaseStyleOptions
 - (CPUIGridViewBaseStyleOptions)init;
-- (CPUIGridViewBaseStyleOptions)initWithMaximumNumberOfLines:(unint64_t)a3 condensedOptions:(id)a4 imageGridOptions:(id)a5;
+- (CPUIGridViewBaseStyleOptions)initWithMaximumNumberOfLines:(unint64_t)lines condensedOptions:(id)options imageGridOptions:(id)gridOptions;
 @end
 
 @implementation CPUIGridViewBaseStyleOptions
 
-- (CPUIGridViewBaseStyleOptions)initWithMaximumNumberOfLines:(unint64_t)a3 condensedOptions:(id)a4 imageGridOptions:(id)a5
+- (CPUIGridViewBaseStyleOptions)initWithMaximumNumberOfLines:(unint64_t)lines condensedOptions:(id)options imageGridOptions:(id)gridOptions
 {
-  *(&self->super.isa + OBJC_IVAR___CPUIGridViewBaseStyleOptions_maximumNumberOfLines) = a3;
-  *(&self->super.isa + OBJC_IVAR___CPUIGridViewBaseStyleOptions_condensedOptions) = a4;
-  *(&self->super.isa + OBJC_IVAR___CPUIGridViewBaseStyleOptions_imageGridOptions) = a5;
+  *(&self->super.isa + OBJC_IVAR___CPUIGridViewBaseStyleOptions_maximumNumberOfLines) = lines;
+  *(&self->super.isa + OBJC_IVAR___CPUIGridViewBaseStyleOptions_condensedOptions) = options;
+  *(&self->super.isa + OBJC_IVAR___CPUIGridViewBaseStyleOptions_imageGridOptions) = gridOptions;
   v9.receiver = self;
   v9.super_class = CPUIGridViewBaseStyleOptions;
-  v6 = a4;
-  v7 = a5;
+  optionsCopy = options;
+  gridOptionsCopy = gridOptions;
   return [(CPUIGridViewBaseStyleOptions *)&v9 init];
 }
 

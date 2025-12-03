@@ -1,34 +1,34 @@
 @interface _UIMotionEffectEngineClient
-- (BOOL)isEqual:(id)a3;
-- (_UIMotionEffectEngineClient)initWithMotionEffect:(id)a3 view:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_UIMotionEffectEngineClient)initWithMotionEffect:(id)effect view:(id)view;
 - (id)description;
 @end
 
 @implementation _UIMotionEffectEngineClient
 
-- (_UIMotionEffectEngineClient)initWithMotionEffect:(id)a3 view:(id)a4
+- (_UIMotionEffectEngineClient)initWithMotionEffect:(id)effect view:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  effectCopy = effect;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = _UIMotionEffectEngineClient;
   v9 = [(_UIMotionEffectEngineClient *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_effect, a3);
-    objc_storeStrong(&v10->_view, a4);
+    objc_storeStrong(&v9->_effect, effect);
+    objc_storeStrong(&v10->_view, view);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4[1] == self->_effect && v4[2] == self->_view;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy[1] == self->_effect && equalCopy[2] == self->_view;
 
   return v5;
 }

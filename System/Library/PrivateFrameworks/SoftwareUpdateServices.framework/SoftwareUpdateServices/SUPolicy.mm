@@ -1,13 +1,13 @@
 @interface SUPolicy
-- (id)_stringForBool:(BOOL)a3;
+- (id)_stringForBool:(BOOL)bool;
 - (id)description;
 @end
 
 @implementation SUPolicy
 
-- (id)_stringForBool:(BOOL)a3
+- (id)_stringForBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     return @"YES";
   }

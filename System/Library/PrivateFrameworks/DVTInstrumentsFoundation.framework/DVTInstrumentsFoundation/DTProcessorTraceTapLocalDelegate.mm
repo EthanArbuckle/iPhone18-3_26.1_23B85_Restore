@@ -1,8 +1,8 @@
 @interface DTProcessorTraceTapLocalDelegate
 - (DTProcessorTraceTapLocalDelegate)init;
-- (DTProcessorTraceTapLocalDelegate)initWithConfig:(id)a3;
+- (DTProcessorTraceTapLocalDelegate)initWithConfig:(id)config;
 - (id)validateConfig;
-- (void)fetchDataForReason:(unint64_t)a3 block:(id)a4;
+- (void)fetchDataForReason:(unint64_t)reason block:(id)block;
 - (void)pause;
 - (void)start;
 - (void)stop;
@@ -11,7 +11,7 @@
 
 @implementation DTProcessorTraceTapLocalDelegate
 
-- (DTProcessorTraceTapLocalDelegate)initWithConfig:(id)a3
+- (DTProcessorTraceTapLocalDelegate)initWithConfig:(id)config
 {
   v5 = sub_2480309A8();
   v6 = *(v5 - 8);
@@ -19,9 +19,9 @@
   MEMORY[0x28223BE20]();
   v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   swift_unknownObjectWeakInit();
-  *(&self->super.isa + OBJC_IVAR___DTProcessorTraceTapLocalDelegate_config) = a3;
-  v10 = a3;
-  v20 = sub_248006358(v10);
+  *(&self->super.isa + OBJC_IVAR___DTProcessorTraceTapLocalDelegate_config) = config;
+  configCopy = config;
+  v20 = sub_248006358(configCopy);
   v11 = type metadata accessor for ProcessorTraceRecorder();
   v12 = objc_allocWithZone(v11);
   *&v12[OBJC_IVAR___DTProcessorTraceRecorder_currentLiveRecording] = 0;
@@ -51,7 +51,7 @@
 
 - (id)validateConfig
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_248005470();
 
   return v3;
@@ -59,34 +59,34 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_2480056FC();
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   sub_2480058A8();
 }
 
 - (void)pause
 {
-  v2 = self;
+  selfCopy = self;
   sub_248005A54();
 }
 
 - (void)unpause
 {
-  v2 = self;
+  selfCopy = self;
   sub_248005C00();
 }
 
-- (void)fetchDataForReason:(unint64_t)a3 block:(id)a4
+- (void)fetchDataForReason:(unint64_t)reason block:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   _Block_copy(v6);
-  v7 = self;
-  sub_248006A14(a3, v7, v6);
+  selfCopy = self;
+  sub_248006A14(reason, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

@@ -2,12 +2,12 @@
 - (NSDate)date;
 - (PROverridableDateProvider)init;
 - (void)_minuteTimerFired;
-- (void)_notifyObserversDidUpdateDate:(id)a3;
+- (void)_notifyObserversDidUpdateDate:(id)date;
 - (void)_scheduleNextMinuteTimer;
 - (void)_updateMinuteTimer;
-- (void)addMinuteUpdateObserver:(id)a3;
-- (void)removeMinuteUpdateObserver:(id)a3;
-- (void)setOverrideDate:(id)a3;
+- (void)addMinuteUpdateObserver:(id)observer;
+- (void)removeMinuteUpdateObserver:(id)observer;
+- (void)setOverrideDate:(id)date;
 @end
 
 @implementation PROverridableDateProvider
@@ -19,68 +19,68 @@
   v2 = [(PROverridableDateProvider *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
     calendar = v2->_calendar;
-    v2->_calendar = v3;
+    v2->_calendar = autoupdatingCurrentCalendar;
   }
 
   return v2;
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
-  v7 = a3;
+  dateCopy = date;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [dateCopy copy];
     overrideDate = self->_overrideDate;
     self->_overrideDate = v4;
 
     [(PROverridableDateProvider *)self _updateMinuteTimer];
-    v6 = [(PROverridableDateProvider *)self date];
-    [(PROverridableDateProvider *)self _notifyObserversDidUpdateDate:v6];
+    date = [(PROverridableDateProvider *)self date];
+    [(PROverridableDateProvider *)self _notifyObserversDidUpdateDate:date];
   }
 }
 
 - (NSDate)date
 {
-  v2 = self->_overrideDate;
-  if (!v2)
+  date = self->_overrideDate;
+  if (!date)
   {
-    v2 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  return v2;
+  return date;
 }
 
-- (void)addMinuteUpdateObserver:(id)a3
+- (void)addMinuteUpdateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     minuteObservers = self->_minuteObservers;
     v9 = v5;
     if (!minuteObservers)
     {
-      v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v8 = self->_minuteObservers;
-      self->_minuteObservers = v7;
+      self->_minuteObservers = weakObjectsHashTable;
 
       minuteObservers = self->_minuteObservers;
     }
 
     [(NSHashTable *)minuteObservers addObject:v9];
-    v4 = [(PROverridableDateProvider *)self _updateMinuteTimer];
+    observerCopy = [(PROverridableDateProvider *)self _updateMinuteTimer];
     v5 = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](observerCopy, v5);
 }
 
-- (void)removeMinuteUpdateObserver:(id)a3
+- (void)removeMinuteUpdateObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_minuteObservers removeObject:?];
 
@@ -130,12 +130,12 @@
 
 - (void)_scheduleNextMinuteTimer
 {
-  v3 = [(PROverridableDateProvider *)self date];
+  date = [(PROverridableDateProvider *)self date];
   v18 = 0;
   v16 = 0;
   v17 = 0;
   v15 = 0;
-  [(NSCalendar *)self->_calendar getHour:&v18 minute:&v17 second:&v16 nanosecond:&v15 fromDate:v3];
+  [(NSCalendar *)self->_calendar getHour:&v18 minute:&v17 second:&v16 nanosecond:&v15 fromDate:date];
   v4 = 60.0 - (v15 / 1000000000.0 + v16);
   [(NSTimer *)self->_minuteTimer invalidate];
   objc_initWeak(&location, self);
@@ -149,8 +149,8 @@
   minuteTimer = self->_minuteTimer;
   self->_minuteTimer = v6;
 
-  v8 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v8 addTimer:self->_minuteTimer forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop addTimer:self->_minuteTimer forMode:*MEMORY[0x1E695DA28]];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -169,8 +169,8 @@ void __53__PROverridableDateProvider__scheduleNextMinuteTimer__block_invoke(uint
 
 - (void)_minuteTimerFired
 {
-  v3 = [(PROverridableDateProvider *)self date];
-  [v3 timeIntervalSince1970];
+  date = [(PROverridableDateProvider *)self date];
+  [date timeIntervalSince1970];
   v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:ceil(v4)];
 
   [(PROverridableDateProvider *)self _notifyObserversDidUpdateDate:v6];
@@ -181,16 +181,16 @@ void __53__PROverridableDateProvider__scheduleNextMinuteTimer__block_invoke(uint
   [(PROverridableDateProvider *)self _updateMinuteTimer];
 }
 
-- (void)_notifyObserversDidUpdateDate:(id)a3
+- (void)_notifyObserversDidUpdateDate:(id)date
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSHashTable *)self->_minuteObservers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_minuteObservers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -202,14 +202,14 @@ void __53__PROverridableDateProvider__scheduleNextMinuteTimer__block_invoke(uint
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) dateProvider:self didUpdateDate:v4];
+        [*(*(&v10 + 1) + 8 * v9++) dateProvider:self didUpdateDate:dateCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

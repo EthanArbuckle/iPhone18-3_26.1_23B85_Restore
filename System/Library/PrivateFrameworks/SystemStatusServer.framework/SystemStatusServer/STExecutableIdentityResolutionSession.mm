@@ -1,25 +1,25 @@
 @interface STExecutableIdentityResolutionSession
-- (STExecutableIdentityResolutionSession)initWithResolver:(id)a3 cache:(id)a4;
-- (id)resolvedIdentityForIdentity:(id)a3;
+- (STExecutableIdentityResolutionSession)initWithResolver:(id)resolver cache:(id)cache;
+- (id)resolvedIdentityForIdentity:(id)identity;
 - (void)dealloc;
 - (void)invalidate;
-- (void)resolveIdentities:(id)a3;
+- (void)resolveIdentities:(id)identities;
 @end
 
 @implementation STExecutableIdentityResolutionSession
 
-- (STExecutableIdentityResolutionSession)initWithResolver:(id)a3 cache:(id)a4
+- (STExecutableIdentityResolutionSession)initWithResolver:(id)resolver cache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  resolverCopy = resolver;
+  cacheCopy = cache;
   v12.receiver = self;
   v12.super_class = STExecutableIdentityResolutionSession;
   v9 = [(STExecutableIdentityResolutionSession *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resolver, a3);
-    objc_storeStrong(&v10->_cache, a4);
+    objc_storeStrong(&v9->_resolver, resolver);
+    objc_storeStrong(&v10->_cache, cache);
   }
 
   return v10;
@@ -32,10 +32,10 @@
   [(STExecutableIdentityResolutionSession *)&v2 dealloc];
 }
 
-- (void)resolveIdentities:(id)a3
+- (void)resolveIdentities:(id)identities
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identitiesCopy = identities;
   if (self)
   {
     v5 = self->_cache;
@@ -53,7 +53,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v8 = [identitiesCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -64,7 +64,7 @@
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identitiesCopy);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
@@ -82,7 +82,7 @@
         [(STReferenceCountedCache *)v5 incrementReferenceCountForKey:v12];
       }
 
-      v9 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v9 = [identitiesCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v9);
@@ -128,7 +128,7 @@
 
   if (self)
   {
-    objc_setProperty_nonatomic_copy(self, v20, v4, 32);
+    objc_setProperty_nonatomic_copy(self, v20, identitiesCopy, 32);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -202,9 +202,9 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resolvedIdentityForIdentity:(id)a3
+- (id)resolvedIdentityForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   if (self)
   {
     cache = self->_cache;
@@ -216,7 +216,7 @@
   }
 
   v6 = cache;
-  v7 = [(STReferenceCountedCache *)v6 cachedObjectForKey:v4];
+  v7 = [(STReferenceCountedCache *)v6 cachedObjectForKey:identityCopy];
   v8 = v7;
   if (v7)
   {
@@ -235,7 +235,7 @@
       resolver = 0;
     }
 
-    v9 = [(STExecutableIdentityResolving *)resolver resolvedIdentityForIdentity:v4];
+    v9 = [(STExecutableIdentityResolving *)resolver resolvedIdentityForIdentity:identityCopy];
   }
 
   v11 = v9;

@@ -13,13 +13,13 @@
   v7 = a4;
   v52 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [MEMORY[0x1E696C370] quantityTypeForIdentifier:*MEMORY[0x1E696BC38]];
-  v46 = v51 = a1;
-  v8 = [a1 statisticsForType:?];
-  v9 = [v8 sumQuantity];
+  v46 = v51 = self;
+  v8 = [self statisticsForType:?];
+  sumQuantity = [v8 sumQuantity];
 
-  v10 = [MEMORY[0x1E696C510] kilocalorieUnit];
-  v47 = v9;
-  [v9 doubleValueForUnit:v10];
+  kilocalorieUnit = [MEMORY[0x1E696C510] kilocalorieUnit];
+  v47 = sumQuantity;
+  [sumQuantity doubleValueForUnit:kilocalorieUnit];
   v12 = v11;
 
   if (v12 > 0.00000011920929)
@@ -84,22 +84,22 @@
         {
           v33 = [v6 displayTypeForObjectType:v31];
           v34 = [v7 unitForDisplayType:v33];
-          v35 = [v31 aggregationStyle];
-          if (v35 != 1)
+          aggregationStyle = [v31 aggregationStyle];
+          if (aggregationStyle != 1)
           {
-            if (!v35)
+            if (!aggregationStyle)
             {
-              v36 = [v32 sumQuantity];
+              sumQuantity2 = [v32 sumQuantity];
 LABEL_13:
-              v37 = v36;
-              [v36 doubleValueForUnit:v34];
+              v37 = sumQuantity2;
+              [sumQuantity2 doubleValueForUnit:v34];
               v39 = v38;
 
               if (v39 > 0.00000011920929)
               {
-                v40 = [v33 presentation];
+                presentation = [v33 presentation];
                 v41 = [MEMORY[0x1E696AD98] numberWithDouble:v39];
-                [v40 adjustedValueForDaemonValue:v41];
+                [presentation adjustedValueForDaemonValue:v41];
                 v43 = v42 = v6;
                 v44 = HKFormattedStringFromValueForContext(v43, v33, v7, 0, 0, 1);
 
@@ -116,7 +116,7 @@ LABEL_13:
             goto LABEL_16;
           }
 
-          v36 = [v32 averageQuantity];
+          sumQuantity2 = [v32 averageQuantity];
           goto LABEL_13;
         }
 
@@ -135,8 +135,8 @@ LABEL_16:
 - (id)subExertionSamplePredicate
 {
   v1 = MEMORY[0x1E696C378];
-  v2 = [a1 UUID];
-  v3 = [v1 predicateForObjectWithUUID:v2];
+  uUID = [self UUID];
+  v3 = [v1 predicateForObjectWithUUID:uUID];
 
   return v3;
 }

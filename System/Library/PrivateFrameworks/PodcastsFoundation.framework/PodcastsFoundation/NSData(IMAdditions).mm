@@ -13,7 +13,7 @@
   v4 = [v3 length];
   v5 = v4 >> 1;
   v6 = malloc_type_malloc(v4 >> 1, 0x189BC8DEuLL);
-  v7 = [v3 UTF8String];
+  uTF8String = [v3 UTF8String];
   if (v4 < 2)
   {
 LABEL_5:
@@ -22,7 +22,7 @@ LABEL_5:
 
   else
   {
-    v8 = v7;
+    v8 = uTF8String;
     v9 = 0;
     while (1)
     {
@@ -49,12 +49,12 @@ LABEL_5:
 
 - (id)hexString
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = [MEMORY[0x1E696AD60] stringWithCapacity:2 * v2];
-  v4 = [a1 bytes];
+  bytes = [self bytes];
   if (v2)
   {
-    v5 = v4;
+    v5 = bytes;
     do
     {
       v6 = *v5++;
@@ -71,13 +71,13 @@ LABEL_5:
 - (id)uniquenessHash
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
     v3 = v2;
     memset(&v10, 0, sizeof(v10));
     CC_MD5_Init(&v10);
-    v4 = [a1 bytes];
+    bytes = [self bytes];
     if (v3 < 0x10000)
     {
       goto LABEL_5;
@@ -85,8 +85,8 @@ LABEL_5:
 
     do
     {
-      CC_MD5_Update(&v10, v4, 0x10000u);
-      v4 += 0x10000;
+      CC_MD5_Update(&v10, bytes, 0x10000u);
+      bytes += 0x10000;
       v3 -= 0x10000;
     }
 
@@ -94,7 +94,7 @@ LABEL_5:
     if (v3)
     {
 LABEL_5:
-      CC_MD5_Update(&v10, v4, v3);
+      CC_MD5_Update(&v10, bytes, v3);
     }
 
     CC_MD5_Final(md, &v10);

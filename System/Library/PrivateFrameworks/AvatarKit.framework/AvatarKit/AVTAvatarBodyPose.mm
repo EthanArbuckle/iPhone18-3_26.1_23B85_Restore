@@ -1,14 +1,14 @@
 @interface AVTAvatarBodyPose
 + (id)neutralPose;
-+ (id)posesInPosePack:(id)a3;
-- (AVTAvatarBodyPose)initWithDictionaryRepresentation:(id)a3;
-- (AVTAvatarBodyPose)initWithSceneKitHierarchy:(id)a3;
-- (AVTAvatarBodyPose)initWithSceneKitRootJoints:(id)a3;
-- (AVTAvatarBodyPose)initWithSceneKitSceneAtURL:(id)a3;
-- (void)_applyBodyPoseWithDictionaryRepresentation:(id)a3 skeletonRootJoint:(id)a4;
-- (void)_applyBodyPoseWithDictionaryRepresentationA:(id)a3 dictionaryRepresentationB:(id)a4 dictionaryRepresentationC:(id)a5 dictionaryRepresentationD:(id)a6 variantIntensityX:(float)a7 variantIntensityY:(float)a8 skeletonRootJoint:(id)a9;
-- (void)_applyBodyPoseWithDictionaryRepresentationA:(id)a3 dictionaryRepresentationB:(id)a4 variantIntensity:(float)a5 skeletonRootJoint:(id)a6;
-- (void)applyToBodySkeletonWithRootJoint:(id)a3 ageBodyPoseVariantIntensity:(float)a4 shoulderWidthBodyPoseVariantIntensity:(float)a5;
++ (id)posesInPosePack:(id)pack;
+- (AVTAvatarBodyPose)initWithDictionaryRepresentation:(id)representation;
+- (AVTAvatarBodyPose)initWithSceneKitHierarchy:(id)hierarchy;
+- (AVTAvatarBodyPose)initWithSceneKitRootJoints:(id)joints;
+- (AVTAvatarBodyPose)initWithSceneKitSceneAtURL:(id)l;
+- (void)_applyBodyPoseWithDictionaryRepresentation:(id)representation skeletonRootJoint:(id)joint;
+- (void)_applyBodyPoseWithDictionaryRepresentationA:(id)a dictionaryRepresentationB:(id)b dictionaryRepresentationC:(id)c dictionaryRepresentationD:(id)d variantIntensityX:(float)x variantIntensityY:(float)y skeletonRootJoint:(id)joint;
+- (void)_applyBodyPoseWithDictionaryRepresentationA:(id)a dictionaryRepresentationB:(id)b variantIntensity:(float)intensity skeletonRootJoint:(id)joint;
+- (void)applyToBodySkeletonWithRootJoint:(id)joint ageBodyPoseVariantIntensity:(float)intensity shoulderWidthBodyPoseVariantIntensity:(float)variantIntensity;
 @end
 
 @implementation AVTAvatarBodyPose
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __32__AVTAvatarBodyPose_neutralPose__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (neutralPose_onceToken != -1)
   {
     dispatch_once(&neutralPose_onceToken, block);
@@ -51,10 +51,10 @@ void __32__AVTAvatarBodyPose_neutralPose__block_invoke_2()
   kAVTBodyPosePackMemojiEditor_block_invoke_kAVTPrecompiledNeutralBodyPoseRepresentation = &unk_1F39E3520;
 }
 
-+ (id)posesInPosePack:(id)a3
++ (id)posesInPosePack:(id)pack
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"memojiEditor"])
+  packCopy = pack;
+  if ([packCopy isEqualToString:@"memojiEditor"])
   {
     if (posesInPosePack__onceToken != -1)
     {
@@ -69,7 +69,7 @@ void __32__AVTAvatarBodyPose_neutralPose__block_invoke_2()
     v5 = avt_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(AVTAvatarBodyPose *)v3 posesInPosePack:v5];
+      [(AVTAvatarBodyPose *)packCopy posesInPosePack:v5];
     }
 
     v4 = MEMORY[0x1E695E0F0];
@@ -122,9 +122,9 @@ void __37__AVTAvatarBodyPose_posesInPosePack___block_invoke()
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (AVTAvatarBodyPose)initWithSceneKitRootJoints:(id)a3
+- (AVTAvatarBodyPose)initWithSceneKitRootJoints:(id)joints
 {
-  v4 = a3;
+  jointsCopy = joints;
   v16.receiver = self;
   v16.super_class = AVTAvatarBodyPose;
   v5 = [(AVTAvatarBodyPose *)&v16 init];
@@ -140,7 +140,7 @@ void __37__AVTAvatarBodyPose_posesInPosePack___block_invoke()
     v8 = v7;
     v15 = v8;
     v9 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v13];
+    [jointsCopy enumerateKeysAndObjectsUsingBlock:v13];
     dictionaryRepresentation = v5->_dictionaryRepresentation;
     v5->_dictionaryRepresentation = v8;
     v11 = v8;
@@ -431,10 +431,10 @@ LABEL_27:
   v91 = *MEMORY[0x1E69E9840];
 }
 
-- (AVTAvatarBodyPose)initWithSceneKitHierarchy:(id)a3
+- (AVTAvatarBodyPose)initWithSceneKitHierarchy:(id)hierarchy
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [a3 childNodesPassingTest:&__block_literal_global_1934 recursively:1];
+  v3 = [hierarchy childNodesPassingTest:&__block_literal_global_1934 recursively:1];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v23 = 0u;
   v24 = 0u;
@@ -456,8 +456,8 @@ LABEL_27:
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:@"bodyRoot_JNT"];
+        name = [v10 name];
+        v12 = [name isEqualToString:@"bodyRoot_JNT"];
 
         if (v12)
         {
@@ -466,14 +466,14 @@ LABEL_27:
 
         else
         {
-          v13 = [v10 name];
-          v14 = [v13 rangeOfString:@"_variant_"];
+          name2 = [v10 name];
+          v14 = [name2 rangeOfString:@"_variant_"];
           v16 = v15;
 
           if (v14 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v17 = [v10 name];
-            v18 = [v17 substringFromIndex:v14 + v16];
+            name3 = [v10 name];
+            v18 = [name3 substringFromIndex:v14 + v16];
 
             [v4 setObject:v10 forKeyedSubscript:v18];
           }
@@ -499,11 +499,11 @@ uint64_t __47__AVTAvatarBodyPose_initWithSceneKitHierarchy___block_invoke(uint64
   return v3;
 }
 
-- (AVTAvatarBodyPose)initWithSceneKitSceneAtURL:(id)a3
+- (AVTAvatarBodyPose)initWithSceneKitSceneAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11 = 0;
-  v5 = [MEMORY[0x1E697A8C8] avt_newSceneWithURL:v4 options:0 error:&v11];
+  v5 = [MEMORY[0x1E697A8C8] avt_newSceneWithURL:lCopy options:0 error:&v11];
   v6 = v11;
   [v5 avt_fixQuirksOfNewUSDSchemaWithOptions:0 handler:0];
   if (v6)
@@ -511,94 +511,94 @@ uint64_t __47__AVTAvatarBodyPose_initWithSceneKitHierarchy___block_invoke(uint64
     v7 = avt_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(AVTAvatarPoseAnimation *)v4 initWithSceneKitSceneAtURL:v6 usdaMetadata:v7];
+      [(AVTAvatarPoseAnimation *)lCopy initWithSceneKitSceneAtURL:v6 usdaMetadata:v7];
     }
   }
 
-  v8 = [v5 rootNode];
-  v9 = [(AVTAvatarBodyPose *)self initWithSceneKitHierarchy:v8];
+  rootNode = [v5 rootNode];
+  v9 = [(AVTAvatarBodyPose *)self initWithSceneKitHierarchy:rootNode];
 
   return v9;
 }
 
-- (AVTAvatarBodyPose)initWithDictionaryRepresentation:(id)a3
+- (AVTAvatarBodyPose)initWithDictionaryRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = AVTAvatarBodyPose;
   v6 = [(AVTAvatarBodyPose *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionaryRepresentation, a3);
+    objc_storeStrong(&v6->_dictionaryRepresentation, representation);
   }
 
   return v7;
 }
 
-- (void)applyToBodySkeletonWithRootJoint:(id)a3 ageBodyPoseVariantIntensity:(float)a4 shoulderWidthBodyPoseVariantIntensity:(float)a5
+- (void)applyToBodySkeletonWithRootJoint:(id)joint ageBodyPoseVariantIntensity:(float)intensity shoulderWidthBodyPoseVariantIntensity:(float)variantIntensity
 {
-  v20 = a3;
+  jointCopy = joint;
   v8 = +[AVTAvatarBodyPose neutralPose];
 
   if (v8 == self)
   {
     v9 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"none"];
-    [(AVTAvatarBodyPose *)self _applyBodyPoseWithDictionaryRepresentation:v9 skeletonRootJoint:v20];
+    [(AVTAvatarBodyPose *)self _applyBodyPoseWithDictionaryRepresentation:v9 skeletonRootJoint:jointCopy];
     goto LABEL_9;
   }
 
-  if (a5 == 0.0)
+  if (variantIntensity == 0.0)
   {
     v9 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"none"];
     v10 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"age_child"];
-    v11 = self;
+    selfCopy2 = self;
     v12 = v9;
     v13 = v10;
-    *&v14 = a4;
+    *&v14 = intensity;
   }
 
   else
   {
     v9 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"none"];
     dictionaryRepresentation = self->_dictionaryRepresentation;
-    if (a4 != 0.0)
+    if (intensity != 0.0)
     {
       v10 = [(NSDictionary *)dictionaryRepresentation objectForKeyedSubscript:@"age_child"];
       v16 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"wide_shoulders_adult"];
       v17 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"wide_shoulders_child"];
-      *&v18 = a4;
-      *&v19 = a5;
-      [(AVTAvatarBodyPose *)self _applyBodyPoseWithDictionaryRepresentationA:v9 dictionaryRepresentationB:v10 dictionaryRepresentationC:v16 dictionaryRepresentationD:v17 variantIntensityX:v20 variantIntensityY:v18 skeletonRootJoint:v19];
+      *&v18 = intensity;
+      *&v19 = variantIntensity;
+      [(AVTAvatarBodyPose *)self _applyBodyPoseWithDictionaryRepresentationA:v9 dictionaryRepresentationB:v10 dictionaryRepresentationC:v16 dictionaryRepresentationD:v17 variantIntensityX:jointCopy variantIntensityY:v18 skeletonRootJoint:v19];
 
       goto LABEL_8;
     }
 
     v10 = [(NSDictionary *)dictionaryRepresentation objectForKeyedSubscript:@"wide_shoulders_adult"];
-    v11 = self;
+    selfCopy2 = self;
     v12 = v9;
     v13 = v10;
-    *&v14 = a5;
+    *&v14 = variantIntensity;
   }
 
-  [(AVTAvatarBodyPose *)v11 _applyBodyPoseWithDictionaryRepresentationA:v12 dictionaryRepresentationB:v13 variantIntensity:v20 skeletonRootJoint:v14];
+  [(AVTAvatarBodyPose *)selfCopy2 _applyBodyPoseWithDictionaryRepresentationA:v12 dictionaryRepresentationB:v13 variantIntensity:jointCopy skeletonRootJoint:v14];
 LABEL_8:
 
 LABEL_9:
 }
 
-- (void)_applyBodyPoseWithDictionaryRepresentation:(id)a3 skeletonRootJoint:(id)a4
+- (void)_applyBodyPoseWithDictionaryRepresentation:(id)representation skeletonRootJoint:(id)joint
 {
-  v5 = a3;
-  v6 = a4;
+  representationCopy = representation;
+  jointCopy = joint;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__AVTAvatarBodyPose__applyBodyPoseWithDictionaryRepresentation_skeletonRootJoint___block_invoke;
   v9[3] = &unk_1E7F47EA0;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = representationCopy;
+  v11 = jointCopy;
+  v7 = jointCopy;
+  v8 = representationCopy;
   [v7 enumerateHierarchyUsingBlock:v9];
 }
 
@@ -711,39 +711,39 @@ void __82__AVTAvatarBodyPose__applyBodyPoseWithDictionaryRepresentation_skeleton
   }
 }
 
-- (void)_applyBodyPoseWithDictionaryRepresentationA:(id)a3 dictionaryRepresentationB:(id)a4 variantIntensity:(float)a5 skeletonRootJoint:(id)a6
+- (void)_applyBodyPoseWithDictionaryRepresentationA:(id)a dictionaryRepresentationB:(id)b variantIntensity:(float)intensity skeletonRootJoint:(id)joint
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5 == 0.0)
+  aCopy = a;
+  bCopy = b;
+  jointCopy = joint;
+  if (intensity == 0.0)
   {
-    v13 = self;
-    v14 = v10;
+    selfCopy2 = self;
+    v14 = aCopy;
   }
 
   else
   {
-    if (a5 != 1.0)
+    if (intensity != 1.0)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __126__AVTAvatarBodyPose__applyBodyPoseWithDictionaryRepresentationA_dictionaryRepresentationB_variantIntensity_skeletonRootJoint___block_invoke;
       v15[3] = &unk_1E7F48FA0;
-      v16 = v10;
-      v17 = v11;
-      v19 = a5;
-      v18 = v12;
+      v16 = aCopy;
+      v17 = bCopy;
+      intensityCopy = intensity;
+      v18 = jointCopy;
       [v18 enumerateHierarchyUsingBlock:v15];
 
       goto LABEL_6;
     }
 
-    v13 = self;
-    v14 = v11;
+    selfCopy2 = self;
+    v14 = bCopy;
   }
 
-  [(AVTAvatarBodyPose *)v13 _applyBodyPoseWithDictionaryRepresentation:v14 skeletonRootJoint:v12];
+  [(AVTAvatarBodyPose *)selfCopy2 _applyBodyPoseWithDictionaryRepresentation:v14 skeletonRootJoint:jointCopy];
 LABEL_6:
 }
 
@@ -938,65 +938,65 @@ void __126__AVTAvatarBodyPose__applyBodyPoseWithDictionaryRepresentationA_dictio
   }
 }
 
-- (void)_applyBodyPoseWithDictionaryRepresentationA:(id)a3 dictionaryRepresentationB:(id)a4 dictionaryRepresentationC:(id)a5 dictionaryRepresentationD:(id)a6 variantIntensityX:(float)a7 variantIntensityY:(float)a8 skeletonRootJoint:(id)a9
+- (void)_applyBodyPoseWithDictionaryRepresentationA:(id)a dictionaryRepresentationB:(id)b dictionaryRepresentationC:(id)c dictionaryRepresentationD:(id)d variantIntensityX:(float)x variantIntensityY:(float)y skeletonRootJoint:(id)joint
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  if (a7 == 0.0)
+  aCopy = a;
+  bCopy = b;
+  cCopy = c;
+  dCopy = d;
+  jointCopy = joint;
+  if (x == 0.0)
   {
-    v22 = self;
-    v23 = v16;
-    v24 = v18;
+    selfCopy4 = self;
+    v23 = aCopy;
+    v24 = cCopy;
 LABEL_5:
-    *&v21 = a8;
+    *&v21 = y;
     goto LABEL_6;
   }
 
-  if (a7 == 1.0)
+  if (x == 1.0)
   {
-    v22 = self;
-    v23 = v17;
-    v24 = v19;
+    selfCopy4 = self;
+    v23 = bCopy;
+    v24 = dCopy;
     goto LABEL_5;
   }
 
-  if (a8 == 0.0)
+  if (y == 0.0)
   {
-    v22 = self;
-    v23 = v16;
-    v24 = v17;
+    selfCopy4 = self;
+    v23 = aCopy;
+    v24 = bCopy;
   }
 
   else
   {
-    if (a8 != 1.0)
+    if (y != 1.0)
     {
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __197__AVTAvatarBodyPose__applyBodyPoseWithDictionaryRepresentationA_dictionaryRepresentationB_dictionaryRepresentationC_dictionaryRepresentationD_variantIntensityX_variantIntensityY_skeletonRootJoint___block_invoke;
       v25[3] = &unk_1E7F48FC8;
-      v26 = v16;
-      v27 = v17;
-      v28 = v18;
-      v29 = v19;
-      v30 = a7;
-      v31 = a8;
-      [v20 enumerateHierarchyUsingBlock:v25];
+      v26 = aCopy;
+      v27 = bCopy;
+      v28 = cCopy;
+      v29 = dCopy;
+      xCopy = x;
+      yCopy = y;
+      [jointCopy enumerateHierarchyUsingBlock:v25];
 
       goto LABEL_7;
     }
 
-    v22 = self;
-    v23 = v18;
-    v24 = v19;
+    selfCopy4 = self;
+    v23 = cCopy;
+    v24 = dCopy;
   }
 
-  *&v21 = a7;
+  *&v21 = x;
 LABEL_6:
-  [(AVTAvatarBodyPose *)v22 _applyBodyPoseWithDictionaryRepresentationA:v23 dictionaryRepresentationB:v24 variantIntensity:v20 skeletonRootJoint:v21];
+  [(AVTAvatarBodyPose *)selfCopy4 _applyBodyPoseWithDictionaryRepresentationA:v23 dictionaryRepresentationB:v24 variantIntensity:jointCopy skeletonRootJoint:v21];
 LABEL_7:
 }
 

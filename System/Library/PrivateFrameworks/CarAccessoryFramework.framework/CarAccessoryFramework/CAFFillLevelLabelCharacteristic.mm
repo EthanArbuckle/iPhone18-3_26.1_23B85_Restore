@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFFillLevelLabelCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFFillLevelLabelCharacteristic *)self fillLevelLabelValue];
+  fillLevelLabelValue = [(CAFFillLevelLabelCharacteristic *)self fillLevelLabelValue];
 
-  return NSStringFromFillLevelLabel(v2);
+  return NSStringFromFillLevelLabel(fillLevelLabelValue);
 }
 
 @end

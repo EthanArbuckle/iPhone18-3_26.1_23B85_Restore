@@ -1,16 +1,16 @@
 @interface AVFigRoutingContextCommandOutputDeviceConfigurationModification
 + (void)initialize;
-- (void)addPeerToHomeGroup:(id)a3;
+- (void)addPeerToHomeGroup:(id)group;
 - (void)dealloc;
-- (void)removePeerWithIDFromHomeGroup:(id)a3;
-- (void)startAutomaticallyAllowingConnectionsFromPeersInHomeGroupAndRejectOtherConnections:(BOOL)a3;
+- (void)removePeerWithIDFromHomeGroup:(id)group;
+- (void)startAutomaticallyAllowingConnectionsFromPeersInHomeGroupAndRejectOtherConnections:(BOOL)connections;
 @end
 
 @implementation AVFigRoutingContextCommandOutputDeviceConfigurationModification
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -32,7 +32,7 @@
   [(AVFigRoutingContextCommandOutputDeviceConfigurationModification *)&v4 dealloc];
 }
 
-- (void)startAutomaticallyAllowingConnectionsFromPeersInHomeGroupAndRejectOtherConnections:(BOOL)a3
+- (void)startAutomaticallyAllowingConnectionsFromPeersInHomeGroupAndRejectOtherConnections:(BOOL)connections
 {
   UInt64 = FigCFNumberCreateUInt64();
   CFDictionarySetValue(self->_payload, *MEMORY[0x1E69617B8], *MEMORY[0x1E695E4D0]);
@@ -44,7 +44,7 @@
   }
 }
 
-- (void)addPeerToHomeGroup:(id)a3
+- (void)addPeerToHomeGroup:(id)group
 {
   v5 = *MEMORY[0x1E6961798];
   Value = CFDictionaryGetValue(self->_payload, *MEMORY[0x1E6961798]);
@@ -60,10 +60,10 @@
 
   v8 = *MEMORY[0x1E695E480];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E528], MEMORY[0x1E695E9E8]);
-  [a3 hasAdministratorPrivileges];
+  [group hasAdministratorPrivileges];
   UInt64 = FigCFNumberCreateUInt64();
-  CFDictionarySetValue(Mutable, *MEMORY[0x1E6961780], [a3 peerID]);
-  CFDictionarySetValue(Mutable, *MEMORY[0x1E6961790], [a3 publicKey]);
+  CFDictionarySetValue(Mutable, *MEMORY[0x1E6961780], [group peerID]);
+  CFDictionarySetValue(Mutable, *MEMORY[0x1E6961790], [group publicKey]);
   CFDictionarySetValue(Mutable, *MEMORY[0x1E6961788], UInt64);
   if (UInt64)
   {
@@ -95,9 +95,9 @@ LABEL_10:
   }
 }
 
-- (void)removePeerWithIDFromHomeGroup:(id)a3
+- (void)removePeerWithIDFromHomeGroup:(id)group
 {
-  values = a3;
+  values = group;
   v4 = *MEMORY[0x1E69617A0];
   Value = CFDictionaryGetValue(self->_payload, *MEMORY[0x1E69617A0]);
   if (!Value)

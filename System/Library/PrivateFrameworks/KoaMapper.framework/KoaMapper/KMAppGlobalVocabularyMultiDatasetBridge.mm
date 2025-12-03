@@ -1,24 +1,24 @@
 @interface KMAppGlobalVocabularyMultiDatasetBridge
 - (KMAppGlobalVocabularyMultiDatasetBridge)init;
-- (KMAppGlobalVocabularyMultiDatasetBridge)initWithModifiedOriginAppIds:(id)a3 languageCode:(id)a4;
-- (id)_extractAllAppIntentVocabularyForApp:(id)a3 languageCode:(id)a4;
-- (id)_extractAllAppIntentVocabularyFromBundle:(__CFBundle *)a3 languageCode:(id)a4;
-- (id)_sortAppIntentVocabularyByCascadeItemType:(id)a3;
-- (void)enumerateAllDatasets:(unint64_t *)a3 usingBlock:(id)a4;
+- (KMAppGlobalVocabularyMultiDatasetBridge)initWithModifiedOriginAppIds:(id)ids languageCode:(id)code;
+- (id)_extractAllAppIntentVocabularyForApp:(id)app languageCode:(id)code;
+- (id)_extractAllAppIntentVocabularyFromBundle:(__CFBundle *)bundle languageCode:(id)code;
+- (id)_sortAppIntentVocabularyByCascadeItemType:(id)type;
+- (void)enumerateAllDatasets:(unint64_t *)datasets usingBlock:(id)block;
 @end
 
 @implementation KMAppGlobalVocabularyMultiDatasetBridge
 
-- (id)_sortAppIntentVocabularyByCascadeItemType:(id)a3
+- (id)_sortAppIntentVocabularyByCascadeItemType:(id)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = typeCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -80,26 +80,26 @@ void __85__KMAppGlobalVocabularyMultiDatasetBridge__sortAppIntentVocabularyByCas
   }
 }
 
-- (id)_extractAllAppIntentVocabularyFromBundle:(__CFBundle *)a3 languageCode:(id)a4
+- (id)_extractAllAppIntentVocabularyFromBundle:(__CFBundle *)bundle languageCode:(id)code
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = CFBundleCopyResourceURLForLocalization(a3, @"AppIntentVocabulary", @"plist", 0, v6);
+  codeCopy = code;
+  v7 = CFBundleCopyResourceURLForLocalization(bundle, @"AppIntentVocabulary", @"plist", 0, codeCopy);
   if (!v7)
   {
-    v8 = v6;
+    v8 = codeCopy;
     if ([(__CFString *)v8 length])
     {
       v9 = [(__CFString *)v8 componentsSeparatedByString:@"-"];
-      v10 = [v9 firstObject];
+      firstObject = [v9 firstObject];
     }
 
     else
     {
-      v10 = 0;
+      firstObject = 0;
     }
 
-    v11 = CFBundleCopyResourceURLForLocalization(a3, @"AppIntentVocabulary", @"plist", 0, v10);
+    v11 = CFBundleCopyResourceURLForLocalization(bundle, @"AppIntentVocabulary", @"plist", 0, firstObject);
     if (v11)
     {
       v7 = v11;
@@ -110,7 +110,7 @@ void __85__KMAppGlobalVocabularyMultiDatasetBridge__sortAppIntentVocabularyByCas
       v12 = [(__CFString *)v8 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
       v13 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v12];
 
-      v7 = CFBundleCopyResourceURLForLocalization(a3, @"AppIntentVocabulary", @"plist", 0, [v13 localeIdentifier]);
+      v7 = CFBundleCopyResourceURLForLocalization(bundle, @"AppIntentVocabulary", @"plist", 0, [v13 localeIdentifier]);
       if (!v7)
       {
 
@@ -168,15 +168,15 @@ LABEL_19:
   return v16;
 }
 
-- (id)_extractAllAppIntentVocabularyForApp:(id)a3 languageCode:(id)a4
+- (id)_extractAllAppIntentVocabularyForApp:(id)app languageCode:(id)code
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  appCopy = app;
+  codeCopy = code;
+  if (codeCopy)
   {
     v18 = 0;
-    v8 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v6 allowPlaceholder:0 error:&v18];
+    v8 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:appCopy allowPlaceholder:0 error:&v18];
     v9 = v18;
     v10 = *MEMORY[0x277CBECE8];
     [v8 URL];
@@ -184,7 +184,7 @@ LABEL_19:
     if (Unique)
     {
       v12 = Unique;
-      v13 = [(KMAppGlobalVocabularyMultiDatasetBridge *)self _extractAllAppIntentVocabularyFromBundle:Unique languageCode:v7];
+      v13 = [(KMAppGlobalVocabularyMultiDatasetBridge *)self _extractAllAppIntentVocabularyFromBundle:Unique languageCode:codeCopy];
       _CFBundleFlushBundleCaches();
       CFRelease(v12);
     }
@@ -197,7 +197,7 @@ LABEL_19:
         *buf = 136315394;
         v20 = "[KMAppGlobalVocabularyMultiDatasetBridge _extractAllAppIntentVocabularyForApp:languageCode:]";
         v21 = 2112;
-        v22 = v6;
+        v22 = appCopy;
         _os_log_error_impl(&dword_2559DF000, v15, OS_LOG_TYPE_ERROR, "%s Cannot create a bundle instance with appId: %@", buf, 0x16u);
       }
 
@@ -223,10 +223,10 @@ LABEL_19:
   return v13;
 }
 
-- (void)enumerateAllDatasets:(unint64_t *)a3 usingBlock:(id)a4
+- (void)enumerateAllDatasets:(unint64_t *)datasets usingBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   v6 = KMLogContextCore;
   if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_INFO))
   {
@@ -251,7 +251,7 @@ LABEL_19:
   if (v30)
   {
     v29 = *v40;
-    v28 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v30; ++i)
@@ -302,7 +302,7 @@ LABEL_19:
                   _os_log_impl(&dword_2559DF000, v24, OS_LOG_TYPE_INFO, "%s Extracting app global terms for app: %@", buf, 0x16u);
                 }
 
-                v5[2](v5, v23);
+                blockCopy[2](blockCopy, v23);
               }
 
               v11 = v34 + v18;
@@ -312,7 +312,7 @@ LABEL_19:
             while (v18);
           }
 
-          self = v28;
+          self = selfCopy;
           v14 = v32;
           i = v33;
           v15 = v31;
@@ -327,15 +327,15 @@ LABEL_19:
     while (v30);
   }
 
-  *a3 = v11;
+  *datasets = v11;
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (KMAppGlobalVocabularyMultiDatasetBridge)initWithModifiedOriginAppIds:(id)a3 languageCode:(id)a4
+- (KMAppGlobalVocabularyMultiDatasetBridge)initWithModifiedOriginAppIds:(id)ids languageCode:(id)code
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  idsCopy = ids;
+  codeCopy = code;
   v22.receiver = self;
   v22.super_class = KMAppGlobalVocabularyMultiDatasetBridge;
   v9 = [(KMAppGlobalVocabularyMultiDatasetBridge *)&v22 init];
@@ -345,8 +345,8 @@ LABEL_19:
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v9->_modifiedAppIds, a3);
-  objc_storeStrong(&v10->_languageCode, a4);
+  objc_storeStrong(&v9->_modifiedAppIds, ids);
+  objc_storeStrong(&v10->_languageCode, code);
   modifiedAppIds = v10->_modifiedAppIds;
   if (!modifiedAppIds || !v10->_languageCode)
   {

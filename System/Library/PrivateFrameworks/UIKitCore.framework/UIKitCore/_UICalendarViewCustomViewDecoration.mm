@@ -1,19 +1,19 @@
 @interface _UICalendarViewCustomViewDecoration
-- (_UICalendarViewCustomViewDecoration)initWithCustomViewProvider:(id)a3;
-- (id)_decorationViewForReuseView:(id)a3;
+- (_UICalendarViewCustomViewDecoration)initWithCustomViewProvider:(id)provider;
+- (id)_decorationViewForReuseView:(id)view;
 @end
 
 @implementation _UICalendarViewCustomViewDecoration
 
-- (_UICalendarViewCustomViewDecoration)initWithCustomViewProvider:(id)a3
+- (_UICalendarViewCustomViewDecoration)initWithCustomViewProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = _UICalendarViewCustomViewDecoration;
   v5 = [(_UICalendarViewCustomViewDecoration *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(providerCopy);
     customViewProvider = v5->_customViewProvider;
     v5->_customViewProvider = v6;
   }
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (id)_decorationViewForReuseView:(id)a3
+- (id)_decorationViewForReuseView:(id)view
 {
   fulfilledCustomView = self->_fulfilledCustomView;
   if (!fulfilledCustomView)

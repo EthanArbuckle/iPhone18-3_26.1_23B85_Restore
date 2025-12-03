@@ -1,52 +1,52 @@
 @interface SBCornerPencilPanGestureRecognizer
-+ (id)interactiveCornerPanGestureRecognizerWithSettings:(id)a3 corner:(unint64_t)a4 target:(id)a5 action:(SEL)a6;
-+ (unint64_t)_edgesForCorner:(unint64_t)a3;
-- (BOOL)_isOrientedLocation:(CGPoint)a3 inCorner:(unint64_t)a4 forOrientedBounds:(CGRect)a5 withEdgeOffsets:(UIOffset)a6;
-- (BOOL)shouldReceiveTouch:(id)a3;
++ (id)interactiveCornerPanGestureRecognizerWithSettings:(id)settings corner:(unint64_t)corner target:(id)target action:(SEL)action;
++ (unint64_t)_edgesForCorner:(unint64_t)corner;
+- (BOOL)_isOrientedLocation:(CGPoint)location inCorner:(unint64_t)corner forOrientedBounds:(CGRect)bounds withEdgeOffsets:(UIOffset)offsets;
+- (BOOL)shouldReceiveTouch:(id)touch;
 - (UIOffset)_edgeOffsets;
-- (id)_initWithSettings:(id)a3 corner:(unint64_t)a4 target:(id)a5 action:(SEL)a6 type:(int64_t)a7 options:(unint64_t)a8;
+- (id)_initWithSettings:(id)settings corner:(unint64_t)corner target:(id)target action:(SEL)action type:(int64_t)type options:(unint64_t)options;
 - (int64_t)_touchInterfaceOrientation;
-- (void)_SBLogTouchesWithMethodName:(id)a3 withMethodName:(id)a4;
-- (void)_convertReferenceLocation:(CGPoint)a3 toOrientedLocation:(CGPoint *)a4 orientedBounds:(CGRect *)a5;
-- (void)_updateSettingsDerivedValues:(id)a3;
+- (void)_SBLogTouchesWithMethodName:(id)name withMethodName:(id)methodName;
+- (void)_convertReferenceLocation:(CGPoint)location toOrientedLocation:(CGPoint *)orientedLocation orientedBounds:(CGRect *)bounds;
+- (void)_updateSettingsDerivedValues:(id)values;
 - (void)reset;
-- (void)setEdges:(unint64_t)a3;
-- (void)setState:(int64_t)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setEdges:(unint64_t)edges;
+- (void)setState:(int64_t)state;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SBCornerPencilPanGestureRecognizer
 
-+ (unint64_t)_edgesForCorner:(unint64_t)a3
++ (unint64_t)_edgesForCorner:(unint64_t)corner
 {
-  if (a3 - 1 > 7)
+  if (corner - 1 > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_21F8A6EC8[a3 - 1];
+    return qword_21F8A6EC8[corner - 1];
   }
 }
 
-+ (id)interactiveCornerPanGestureRecognizerWithSettings:(id)a3 corner:(unint64_t)a4 target:(id)a5 action:(SEL)a6
++ (id)interactiveCornerPanGestureRecognizerWithSettings:(id)settings corner:(unint64_t)corner target:(id)target action:(SEL)action
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [[a1 alloc] _initWithSettings:v11 corner:a4 target:v10 action:a6 type:3 options:1];
+  targetCopy = target;
+  settingsCopy = settings;
+  v12 = [[self alloc] _initWithSettings:settingsCopy corner:corner target:targetCopy action:action type:3 options:1];
 
   return v12;
 }
 
-- (id)_initWithSettings:(id)a3 corner:(unint64_t)a4 target:(id)a5 action:(SEL)a6 type:(int64_t)a7 options:(unint64_t)a8
+- (id)_initWithSettings:(id)settings corner:(unint64_t)corner target:(id)target action:(SEL)action type:(int64_t)type options:(unint64_t)options
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = [objc_opt_class() _edgesForCorner:a4];
+  settingsCopy = settings;
+  targetCopy = target;
+  v17 = [objc_opt_class() _edgesForCorner:corner];
   if (!v17)
   {
     [SBCornerPencilPanGestureRecognizer _initWithSettings:a2 corner:self target:? action:? type:? options:?];
@@ -54,17 +54,17 @@
 
   v24.receiver = self;
   v24.super_class = SBCornerPencilPanGestureRecognizer;
-  v18 = [(SBScreenEdgePanGestureRecognizer *)&v24 initWithTarget:v16 action:a6 type:a7 options:a8];
+  v18 = [(SBScreenEdgePanGestureRecognizer *)&v24 initWithTarget:targetCopy action:action type:type options:options];
   v19 = v18;
   if (v18)
   {
-    [(SBCornerPencilPanGestureRecognizer *)v18 _updateSettingsDerivedValues:v15];
-    [v15 addKeyObserver:v19];
+    [(SBCornerPencilPanGestureRecognizer *)v18 _updateSettingsDerivedValues:settingsCopy];
+    [settingsCopy addKeyObserver:v19];
     v20 = objc_alloc_init(SBTouchHistory);
     touchHistory = v19->_touchHistory;
     v19->_touchHistory = v20;
 
-    v19->_corner = a4;
+    v19->_corner = corner;
     v23.receiver = v19;
     v23.super_class = SBCornerPencilPanGestureRecognizer;
     [(UIScreenEdgePanGestureRecognizer *)&v23 setEdges:v17];
@@ -76,34 +76,34 @@
   return v19;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a3;
+  settingsCopy = settings;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SBCornerPencilPanGestureRecognizer *)self _updateSettingsDerivedValues:v5];
+    [(SBCornerPencilPanGestureRecognizer *)self _updateSettingsDerivedValues:settingsCopy];
   }
 }
 
-- (void)_SBLogTouchesWithMethodName:(id)a3 withMethodName:(id)a4
+- (void)_SBLogTouchesWithMethodName:(id)name withMethodName:(id)methodName
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D6A798] sharedInstance];
-  v9 = [v8 isEnabled];
+  nameCopy = name;
+  methodNameCopy = methodName;
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
+  isEnabled = [mEMORY[0x277D6A798] isEnabled];
 
-  if (v9)
+  if (isEnabled)
   {
-    v10 = [MEMORY[0x277D6A798] sharedInstance];
+    mEMORY[0x277D6A798]2 = [MEMORY[0x277D6A798] sharedInstance];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __81__SBCornerPencilPanGestureRecognizer__SBLogTouchesWithMethodName_withMethodName___block_invoke;
     v11[3] = &unk_2783B74D0;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
-    [v10 logBlock:v11];
+    v12 = nameCopy;
+    selfCopy = self;
+    v14 = methodNameCopy;
+    [mEMORY[0x277D6A798]2 logBlock:v11];
   }
 }
 
@@ -233,61 +233,61 @@ id __81__SBCornerPencilPanGestureRecognizer__SBLogTouchesWithMethodName_withMeth
   return v32;
 }
 
-- (void)setEdges:(unint64_t)a3
+- (void)setEdges:(unint64_t)edges
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBCornerPencilPanGestureRecognizer.m" lineNumber:181 description:@"configure edges by passing in corner"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBCornerPencilPanGestureRecognizer.m" lineNumber:181 description:@"configure edges by passing in corner"];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  beganCopy = began;
+  anyObject = [beganCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
 
   _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, 0, 0);
   _SBLogCoalescedTouchesForGestureAndView_0(v10, self);
   v11 = NSStringFromSelector(a2);
-  [(SBCornerPencilPanGestureRecognizer *)self _SBLogTouchesWithMethodName:v8 withMethodName:v11];
+  [(SBCornerPencilPanGestureRecognizer *)self _SBLogTouchesWithMethodName:beganCopy withMethodName:v11];
 
   v12.receiver = self;
   v12.super_class = SBCornerPencilPanGestureRecognizer;
-  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesBegan:v8 withEvent:v7];
+  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  movedCopy = moved;
+  anyObject = [movedCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
 
   _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, 0, 0);
   _SBLogCoalescedTouchesForGestureAndView_0(v10, self);
   v11 = NSStringFromSelector(a2);
-  [(SBCornerPencilPanGestureRecognizer *)self _SBLogTouchesWithMethodName:v8 withMethodName:v11];
+  [(SBCornerPencilPanGestureRecognizer *)self _SBLogTouchesWithMethodName:movedCopy withMethodName:v11];
 
   v12.receiver = self;
   v12.super_class = SBCornerPencilPanGestureRecognizer;
-  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesMoved:v8 withEvent:v7];
+  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  endedCopy = ended;
+  anyObject = [endedCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
 
   _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, 0, 0);
   _SBLogCoalescedTouchesForGestureAndView_0(v10, self);
   v11 = NSStringFromSelector(a2);
-  [(SBCornerPencilPanGestureRecognizer *)self _SBLogTouchesWithMethodName:v8 withMethodName:v11];
+  [(SBCornerPencilPanGestureRecognizer *)self _SBLogTouchesWithMethodName:endedCopy withMethodName:v11];
 
   v12.receiver = self;
   v12.super_class = SBCornerPencilPanGestureRecognizer;
-  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesEnded:v8 withEvent:v7];
+  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
 - (void)reset
@@ -299,25 +299,25 @@ id __81__SBCornerPencilPanGestureRecognizer__SBLogTouchesWithMethodName_withMeth
   [(SBTouchHistory *)self->_touchHistory reset];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     self->_touchInterfaceOrientationWhenGestureBegan = [(SBCornerPencilPanGestureRecognizer *)self _touchInterfaceOrientation];
   }
 
-  v5 = [MEMORY[0x277D6A798] sharedInstance];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__SBCornerPencilPanGestureRecognizer_setState___block_invoke;
   v7[3] = &unk_2783B7B08;
   v7[4] = self;
-  v7[5] = a3;
-  [v5 logBlock:v7];
+  v7[5] = state;
+  [mEMORY[0x277D6A798] logBlock:v7];
 
   v6.receiver = self;
   v6.super_class = SBCornerPencilPanGestureRecognizer;
-  [(SBCornerPencilPanGestureRecognizer *)&v6 setState:a3];
+  [(SBCornerPencilPanGestureRecognizer *)&v6 setState:state];
 }
 
 id __47__SBCornerPencilPanGestureRecognizer_setState___block_invoke(uint64_t a1)
@@ -369,51 +369,51 @@ id __47__SBCornerPencilPanGestureRecognizer_setState___block_invoke(uint64_t a1)
   return touchInterfaceOrientationWhenGestureBegan;
 }
 
-- (BOOL)shouldReceiveTouch:(id)a3
+- (BOOL)shouldReceiveTouch:(id)touch
 {
   v10 = 0.0;
   v11 = 0.0;
   v8 = 0u;
   v9 = 0u;
-  [a3 locationInView:0];
+  [touch locationInView:0];
   [(SBCornerPencilPanGestureRecognizer *)self _convertReferenceLocation:&v10 toOrientedLocation:&v8 orientedBounds:?];
   corner = self->_corner;
   [(SBCornerPencilPanGestureRecognizer *)self _edgeOffsets];
   return [(SBCornerPencilPanGestureRecognizer *)self _isOrientedLocation:corner inCorner:v10 forOrientedBounds:v11 withEdgeOffsets:v8, v9, v5, v6];
 }
 
-- (void)_updateSettingsDerivedValues:(id)a3
+- (void)_updateSettingsDerivedValues:(id)values
 {
-  v4 = a3;
-  [v4 cornerHorizontalEdgeLength];
+  valuesCopy = values;
+  [valuesCopy cornerHorizontalEdgeLength];
   self->_cornerHorizontalEdgeLength = v5;
-  [v4 cornerVerticalEdgeLength];
+  [valuesCopy cornerVerticalEdgeLength];
   v7 = v6;
 
   self->_cornerVerticalEdgeLength = v7;
 }
 
-- (void)_convertReferenceLocation:(CGPoint)a3 toOrientedLocation:(CGPoint *)a4 orientedBounds:(CGRect *)a5
+- (void)_convertReferenceLocation:(CGPoint)location toOrientedLocation:(CGPoint *)orientedLocation orientedBounds:(CGRect *)bounds
 {
-  v16 = [(SBCornerPencilPanGestureRecognizer *)self view];
+  view = [(SBCornerPencilPanGestureRecognizer *)self view];
   [(SBCornerPencilPanGestureRecognizer *)self _touchInterfaceOrientation];
-  [v16 bounds];
+  [view bounds];
   _UIWindowConvertPointFromOrientationToOrientation();
   v9 = v8;
   v11 = v10;
   _UIWindowConvertRectFromOrientationToOrientation();
-  if (a4)
+  if (orientedLocation)
   {
-    a4->x = v9;
-    a4->y = v11;
+    orientedLocation->x = v9;
+    orientedLocation->y = v11;
   }
 
-  if (a5)
+  if (bounds)
   {
-    a5->origin.x = v12;
-    a5->origin.y = v13;
-    a5->size.width = v14;
-    a5->size.height = v15;
+    bounds->origin.x = v12;
+    bounds->origin.y = v13;
+    bounds->size.width = v14;
+    bounds->size.height = v15;
   }
 }
 
@@ -426,21 +426,21 @@ id __47__SBCornerPencilPanGestureRecognizer_setState___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_isOrientedLocation:(CGPoint)a3 inCorner:(unint64_t)a4 forOrientedBounds:(CGRect)a5 withEdgeOffsets:(UIOffset)a6
+- (BOOL)_isOrientedLocation:(CGPoint)location inCorner:(unint64_t)corner forOrientedBounds:(CGRect)bounds withEdgeOffsets:(UIOffset)offsets
 {
-  vertical = a6.vertical;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  vertical = offsets.vertical;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = location.y;
+  v12 = location.x;
   result = 0;
-  if (a4 > 3)
+  if (corner > 3)
   {
-    if (a4 == 4)
+    if (corner == 4)
     {
-      if (a3.x > a6.horizontal + CGRectGetMinX(a5))
+      if (location.x > offsets.horizontal + CGRectGetMinX(bounds))
       {
         return 0;
       }
@@ -457,12 +457,12 @@ id __47__SBCornerPencilPanGestureRecognizer_setState___block_invoke(uint64_t a1)
 
     else
     {
-      if (a4 != 8)
+      if (corner != 8)
       {
         return result;
       }
 
-      if (a3.x < CGRectGetMaxX(a5) - a6.horizontal)
+      if (location.x < CGRectGetMaxX(bounds) - offsets.horizontal)
       {
         return 0;
       }
@@ -493,9 +493,9 @@ id __47__SBCornerPencilPanGestureRecognizer_setState___block_invoke(uint64_t a1)
     return 0;
   }
 
-  if (a4 == 1)
+  if (corner == 1)
   {
-    if (a3.x <= a6.horizontal + CGRectGetMinX(a5))
+    if (location.x <= offsets.horizontal + CGRectGetMinX(bounds))
     {
       v18.origin.x = x;
       v18.origin.y = y;
@@ -514,12 +514,12 @@ id __47__SBCornerPencilPanGestureRecognizer_setState___block_invoke(uint64_t a1)
     return 0;
   }
 
-  if (a4 != 2)
+  if (corner != 2)
   {
     return result;
   }
 
-  if (a3.x < CGRectGetMaxX(a5) - a6.horizontal)
+  if (location.x < CGRectGetMaxX(bounds) - offsets.horizontal)
   {
     return 0;
   }

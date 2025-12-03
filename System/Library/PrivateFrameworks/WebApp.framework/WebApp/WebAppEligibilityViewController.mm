@@ -1,5 +1,5 @@
 @interface WebAppEligibilityViewController
-- (WebAppEligibilityViewController)initWithWebClip:(id)a3 scene:(id)a4;
+- (WebAppEligibilityViewController)initWithWebClip:(id)clip scene:(id)scene;
 - (void)_openURLAndDestroySceneIfNeeded;
 - (void)loadView;
 - (void)presentAlertIfNeeded;
@@ -7,18 +7,18 @@
 
 @implementation WebAppEligibilityViewController
 
-- (WebAppEligibilityViewController)initWithWebClip:(id)a3 scene:(id)a4
+- (WebAppEligibilityViewController)initWithWebClip:(id)clip scene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
+  clipCopy = clip;
+  sceneCopy = scene;
   v19.receiver = self;
   v19.super_class = WebAppEligibilityViewController;
   v9 = [(WebAppEligibilityViewController *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_webClip, a3);
-    objc_storeStrong(&v10->_scene, a4);
+    objc_storeStrong(&v9->_webClip, clip);
+    objc_storeStrong(&v10->_scene, scene);
     webClip = v10->_webClip;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -58,14 +58,14 @@ void __57__WebAppEligibilityViewController_initWithWebClip_scene___block_invoke(
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D753A8]);
-  v4 = [MEMORY[0x277D75390] emptyConfiguration];
-  v5 = [v3 initWithConfiguration:v4];
+  emptyConfiguration = [MEMORY[0x277D75390] emptyConfiguration];
+  v5 = [v3 initWithConfiguration:emptyConfiguration];
   unavailableView = self->_unavailableView;
   self->_unavailableView = v5;
 
   [(UIContentUnavailableView *)self->_unavailableView setAutoresizingMask:18];
-  v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [(UIContentUnavailableView *)self->_unavailableView setBackgroundColor:v7];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [(UIContentUnavailableView *)self->_unavailableView setBackgroundColor:systemBackgroundColor];
 
   v8 = self->_unavailableView;
 
@@ -76,9 +76,9 @@ void __57__WebAppEligibilityViewController_initWithWebClip_scene___block_invoke(
 {
   if ([(UIWebClip *)self->_webClip eligibilityStatus]== 1 || ![(UIWebClip *)self->_webClip eligibilityStatus]&& self->_overrideShowAlert)
   {
-    v3 = [(UIAlertController *)self->_alertController presentingViewController];
+    presentingViewController = [(UIAlertController *)self->_alertController presentingViewController];
 
-    if (!v3)
+    if (!presentingViewController)
     {
       alertController = self->_alertController;
 
@@ -92,8 +92,8 @@ void __57__WebAppEligibilityViewController_initWithWebClip_scene___block_invoke(
   if ([(UIWebClip *)self->_webClip eligibilityStatus]== 2)
   {
     v3 = MEMORY[0x277D66CE8];
-    v4 = [(UIWebClip *)self->_webClip identifier];
-    [v3 launchWebClipWithIdentifier:v4];
+    identifier = [(UIWebClip *)self->_webClip identifier];
+    [v3 launchWebClipWithIdentifier:identifier];
 
     self->_hasPendingDestroyScene = 1;
   }

@@ -1,37 +1,37 @@
 @interface HNDContinuousScroller
-- (BOOL)orientedPointLiesInContinuousScrollerActivationRegion:(CGPoint)a3;
-- (CGRect)_unobstructedOverflowFrameForScroller:(id)a3 originalOverflowFrame:(CGRect)a4;
+- (BOOL)orientedPointLiesInContinuousScrollerActivationRegion:(CGPoint)region;
+- (CGRect)_unobstructedOverflowFrameForScroller:(id)scroller originalOverflowFrame:(CGRect)frame;
 - (CGRect)orientedScrollViewFrame;
 - (CGRect)scrollViewFrame;
-- (HNDContinuousScroller)initWithTargetElement:(id)a3 scrollView:(id)a4 orientedScrollViewFrame:(CGRect)a5 scrollAxis:(unint64_t)a6 supportedScrollDirections:(int64_t)a7;
-- (id)directionForOrientedPoint:(CGPoint)a3;
-- (id)scrollingSpeedFactorForOrientedPoint:(CGPoint)a3;
+- (HNDContinuousScroller)initWithTargetElement:(id)element scrollView:(id)view orientedScrollViewFrame:(CGRect)frame scrollAxis:(unint64_t)axis supportedScrollDirections:(int64_t)directions;
+- (id)directionForOrientedPoint:(CGPoint)point;
+- (id)scrollingSpeedFactorForOrientedPoint:(CGPoint)point;
 - (void)_computeScrollViewFrameAndActivationRegions;
-- (void)extendActivationRegionWithoutCollidingWithScrollers:(id)a3 rotatedScreenBounds:(CGRect)a4;
+- (void)extendActivationRegionWithoutCollidingWithScrollers:(id)scrollers rotatedScreenBounds:(CGRect)bounds;
 @end
 
 @implementation HNDContinuousScroller
 
-- (HNDContinuousScroller)initWithTargetElement:(id)a3 scrollView:(id)a4 orientedScrollViewFrame:(CGRect)a5 scrollAxis:(unint64_t)a6 supportedScrollDirections:(int64_t)a7
+- (HNDContinuousScroller)initWithTargetElement:(id)element scrollView:(id)view orientedScrollViewFrame:(CGRect)frame scrollAxis:(unint64_t)axis supportedScrollDirections:(int64_t)directions
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a3;
-  v16 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  elementCopy = element;
+  viewCopy = view;
   v33.receiver = self;
   v33.super_class = HNDContinuousScroller;
   v17 = [(HNDContinuousScroller *)&v33 init];
   targetElement = v17->_targetElement;
-  v17->_targetElement = v15;
-  v19 = v15;
+  v17->_targetElement = elementCopy;
+  v19 = elementCopy;
 
   scrollView = v17->_scrollView;
-  v17->_scrollView = v16;
-  v21 = v16;
+  v17->_scrollView = viewCopy;
+  v21 = viewCopy;
 
-  v17->_scrollAxis = a6;
+  v17->_scrollAxis = axis;
   [(AXElement *)v21 visibleFrame];
   v23 = v22;
   v25 = v24;
@@ -54,7 +54,7 @@
   }
 
   v17->_overflowPadding = v31;
-  v17->_supportedScrollDirections = a7;
+  v17->_supportedScrollDirections = directions;
   [(HNDContinuousScroller *)v17 _computeScrollViewFrameAndActivationRegions];
   return v17;
 }
@@ -62,12 +62,12 @@
 - (void)_computeScrollViewFrameAndActivationRegions
 {
   v41 = +[NSMutableDictionary dictionary];
-  v3 = [(HNDContinuousScroller *)self scrollAreaToShowOverride];
+  scrollAreaToShowOverride = [(HNDContinuousScroller *)self scrollAreaToShowOverride];
 
-  if (v3)
+  if (scrollAreaToShowOverride)
   {
-    v4 = [(HNDContinuousScroller *)self scrollAreaToShowOverride];
-    [v4 floatValue];
+    scrollAreaToShowOverride2 = [(HNDContinuousScroller *)self scrollAreaToShowOverride];
+    [scrollAreaToShowOverride2 floatValue];
     v6 = v5;
   }
 
@@ -142,13 +142,13 @@
 LABEL_9:
 }
 
-- (void)extendActivationRegionWithoutCollidingWithScrollers:(id)a3 rotatedScreenBounds:(CGRect)a4
+- (void)extendActivationRegionWithoutCollidingWithScrollers:(id)scrollers rotatedScreenBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  scrollersCopy = scrollers;
   if ([(HNDContinuousScroller *)self scrollAxis])
   {
     if ([(HNDContinuousScroller *)self scrollAxis]!= 1)
@@ -168,13 +168,13 @@ LABEL_9:
     v11 = 4;
   }
 
-  v12 = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
+  scrollDirectionToActivationFrame = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
   v13 = [NSNumber numberWithUnsignedLong:v10];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  v14 = [scrollDirectionToActivationFrame objectForKeyedSubscript:v13];
 
-  v15 = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
+  scrollDirectionToActivationFrame2 = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
   v16 = [NSNumber numberWithUnsignedLong:v11];
-  v17 = [v15 objectForKeyedSubscript:v16];
+  v17 = [scrollDirectionToActivationFrame2 objectForKeyedSubscript:v16];
 
   if (v14 && v17)
   {
@@ -232,8 +232,8 @@ LABEL_9:
     }
 
     v71 = v11;
-    v37 = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
-    v78 = [NSMutableDictionary dictionaryWithDictionary:v37];
+    scrollDirectionToActivationFrame3 = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
+    v78 = [NSMutableDictionary dictionaryWithDictionary:scrollDirectionToActivationFrame3];
 
     v77 = +[NSMutableArray array];
     v89.origin.x = v19;
@@ -258,7 +258,7 @@ LABEL_9:
     v85 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v46 = v9;
+    v46 = scrollersCopy;
     v47 = [v46 countByEnumeratingWithState:&v84 objects:v88 count:16];
     if (v47)
     {
@@ -362,20 +362,20 @@ LABEL_9:
 LABEL_26:
 }
 
-- (CGRect)_unobstructedOverflowFrameForScroller:(id)a3 originalOverflowFrame:(CGRect)a4
+- (CGRect)_unobstructedOverflowFrameForScroller:(id)scroller originalOverflowFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [a3 scrollDirectionToActivationFrame];
-  v9 = [v8 allValues];
+  scrollDirectionToActivationFrame = [scroller scrollDirectionToActivationFrame];
+  allValues = [scrollDirectionToActivationFrame allValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -387,7 +387,7 @@ LABEL_26:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v23 + 1) + 8 * v13);
@@ -420,7 +420,7 @@ LABEL_26:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
@@ -437,24 +437,24 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)orientedPointLiesInContinuousScrollerActivationRegion:(CGPoint)a3
+- (BOOL)orientedPointLiesInContinuousScrollerActivationRegion:(CGPoint)region
 {
-  v3 = [(HNDContinuousScroller *)self directionForOrientedPoint:a3.x, a3.y];
+  v3 = [(HNDContinuousScroller *)self directionForOrientedPoint:region.x, region.y];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)directionForOrientedPoint:(CGPoint)a3
+- (id)directionForOrientedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  scrollDirectionToActivationFrame = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
+  v7 = [scrollDirectionToActivationFrame countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -465,12 +465,12 @@ LABEL_26:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(scrollDirectionToActivationFrame);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        scrollDirectionToActivationFrame2 = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
+        v13 = [scrollDirectionToActivationFrame2 objectForKeyedSubscript:v11];
 
         [v13 CGRectValue];
         v22.x = x;
@@ -483,7 +483,7 @@ LABEL_26:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [scrollDirectionToActivationFrame countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -499,10 +499,10 @@ LABEL_11:
   return v14;
 }
 
-- (id)scrollingSpeedFactorForOrientedPoint:(CGPoint)a3
+- (id)scrollingSpeedFactorForOrientedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(HNDContinuousScroller *)self directionForOrientedPoint:?];
   v7 = v6;
   if (!v6)
@@ -511,9 +511,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v8 = [v6 intValue];
-  v9 = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  intValue = [v6 intValue];
+  scrollDirectionToActivationFrame = [(HNDContinuousScroller *)self scrollDirectionToActivationFrame];
+  v10 = [scrollDirectionToActivationFrame objectForKeyedSubscript:v7];
 
   if (v10)
   {
@@ -522,8 +522,8 @@ LABEL_11:
     v16 = v12;
     v17 = v13;
     v18 = v14;
-    HIDWORD(v20) = v8 - 2;
-    LODWORD(v20) = v8 - 2;
+    HIDWORD(v20) = intValue - 2;
+    LODWORD(v20) = intValue - 2;
     v19 = v20 >> 1;
     if (v19 < 2)
     {
@@ -539,7 +539,7 @@ LABEL_11:
       v36.size.height = v18;
       v21 = v28 / (MaxY - CGRectGetMinY(v36));
       v25 = 1.0 - v21;
-      v26 = v8 == 2;
+      v26 = intValue == 2;
     }
 
     else
@@ -569,7 +569,7 @@ LABEL_12:
       v34.size.height = v18;
       v21 = v23 / (MaxX - CGRectGetMinX(v34));
       v25 = 1.0 - v21;
-      v26 = v8 == 8;
+      v26 = intValue == 8;
     }
 
     if (v26)

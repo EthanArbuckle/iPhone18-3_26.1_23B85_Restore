@@ -1,16 +1,16 @@
 @interface CRLGradientFillStopAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (CRLColorAccessibility)crlaxColor;
 - (NSString)crlaxStyleInfoDescription;
 @end
 
 @implementation CRLGradientFillStopAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -18,11 +18,11 @@
 - (CRLColorAccessibility)crlaxColor
 {
   v8 = 0;
-  v2 = [(CRLGradientFillStopAccessibility *)self crlaxTarget];
-  v3 = [v2 color];
+  crlaxTarget = [(CRLGradientFillStopAccessibility *)self crlaxTarget];
+  color = [crlaxTarget color];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, color, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -35,10 +35,10 @@
 
 - (NSString)crlaxStyleInfoDescription
 {
-  v2 = [(CRLGradientFillStopAccessibility *)self crlaxColor];
-  v3 = [v2 crlaxStyleInfoDescription];
+  crlaxColor = [(CRLGradientFillStopAccessibility *)self crlaxColor];
+  crlaxStyleInfoDescription = [crlaxColor crlaxStyleInfoDescription];
 
-  return v3;
+  return crlaxStyleInfoDescription;
 }
 
 @end

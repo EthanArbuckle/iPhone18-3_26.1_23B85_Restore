@@ -1,12 +1,12 @@
 @interface VUIStreamingBookmarkCache
 + (id)sharedInstance;
 - (VUIStreamingBookmarkCache)init;
-- (void)_activeAccountChangedNotification:(id)a3;
-- (void)addBookmarkForReferenceID:(id)a3 canonicalID:(id)a4 absoluteResumeTime:(id)a5 absoluteBookmarkTimestamp:(id)a6 relativeResumeTime:(id)a7 relativeBookmarkTimestamp:(id)a8;
+- (void)_activeAccountChangedNotification:(id)notification;
+- (void)addBookmarkForReferenceID:(id)d canonicalID:(id)iD absoluteResumeTime:(id)time absoluteBookmarkTimestamp:(id)timestamp relativeResumeTime:(id)resumeTime relativeBookmarkTimestamp:(id)bookmarkTimestamp;
 - (void)dealloc;
-- (void)removeBookmarkForCanonicalID:(id)a3;
-- (void)removeBookmarkForReferenceID:(id)a3;
-- (void)resumeTimeInfoForReferenceID:(id)a3 outAbsoluteResumeTime:(id *)a4 outAbsoluteTimestamp:(id *)a5 outMainContentRelativeResumeTime:(id *)a6 outMainContentRelativeTimestamp:(id *)a7;
+- (void)removeBookmarkForCanonicalID:(id)d;
+- (void)removeBookmarkForReferenceID:(id)d;
+- (void)resumeTimeInfoForReferenceID:(id)d outAbsoluteResumeTime:(id *)time outAbsoluteTimestamp:(id *)timestamp outMainContentRelativeResumeTime:(id *)resumeTime outMainContentRelativeTimestamp:(id *)relativeTimestamp;
 @end
 
 @implementation VUIStreamingBookmarkCache
@@ -41,8 +41,8 @@ void __43__VUIStreamingBookmarkCache_sharedInstance__block_invoke()
     bookmarkCacheStore = v2->_bookmarkCacheStore;
     v2->_bookmarkCacheStore = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__activeAccountChangedNotification_ name:*MEMORY[0x1E69D4A40] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__activeAccountChangedNotification_ name:*MEMORY[0x1E69D4A40] object:0];
   }
 
   return v2;
@@ -50,39 +50,39 @@ void __43__VUIStreamingBookmarkCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIStreamingBookmarkCache;
   [(VUIStreamingBookmarkCache *)&v4 dealloc];
 }
 
-- (void)resumeTimeInfoForReferenceID:(id)a3 outAbsoluteResumeTime:(id *)a4 outAbsoluteTimestamp:(id *)a5 outMainContentRelativeResumeTime:(id *)a6 outMainContentRelativeTimestamp:(id *)a7
+- (void)resumeTimeInfoForReferenceID:(id)d outAbsoluteResumeTime:(id *)time outAbsoluteTimestamp:(id *)timestamp outMainContentRelativeResumeTime:(id *)resumeTime outMainContentRelativeTimestamp:(id *)relativeTimestamp
 {
-  v12 = a3;
-  v13 = v12;
-  if (a4)
+  dCopy = d;
+  v13 = dCopy;
+  if (time)
   {
-    *a4 = 0;
+    *time = 0;
   }
 
-  if (a5)
+  if (timestamp)
   {
-    *a5 = 0;
+    *timestamp = 0;
   }
 
-  if (a6)
+  if (resumeTime)
   {
-    *a6 = 0;
+    *resumeTime = 0;
   }
 
-  if (a7)
+  if (relativeTimestamp)
   {
-    *a7 = 0;
+    *relativeTimestamp = 0;
   }
 
-  if (v12)
+  if (dCopy)
   {
     bookmarkCacheStore = self->_bookmarkCacheStore;
     if (bookmarkCacheStore && [(NSMutableDictionary *)bookmarkCacheStore count])
@@ -93,8 +93,8 @@ void __43__VUIStreamingBookmarkCache_sharedInstance__block_invoke()
       v31 = __Block_byref_object_copy__5;
       v32 = __Block_byref_object_dispose__5;
       v33 = 0;
-      v15 = self;
-      objc_sync_enter(v15);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v16 = self->_bookmarkCacheStore;
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
@@ -104,44 +104,44 @@ void __43__VUIStreamingBookmarkCache_sharedInstance__block_invoke()
       v26 = v13;
       [(NSMutableDictionary *)v16 enumerateKeysAndObjectsUsingBlock:v25];
 
-      objc_sync_exit(v15);
+      objc_sync_exit(selfCopy);
       v17 = *(v29 + 5);
       if (v17)
       {
-        if (a4)
+        if (time)
         {
-          v18 = [v17 absoluteResumeTime];
-          *a4 = [v18 copy];
+          absoluteResumeTime = [v17 absoluteResumeTime];
+          *time = [absoluteResumeTime copy];
         }
 
-        if (a5)
+        if (timestamp)
         {
-          v19 = [*(v29 + 5) absoluteBookmarkTimestamp];
-          *a5 = [v19 copy];
+          absoluteBookmarkTimestamp = [*(v29 + 5) absoluteBookmarkTimestamp];
+          *timestamp = [absoluteBookmarkTimestamp copy];
         }
 
-        if (a6)
+        if (resumeTime)
         {
-          v20 = [*(v29 + 5) relativeResumeTime];
-          *a6 = [v20 copy];
+          relativeResumeTime = [*(v29 + 5) relativeResumeTime];
+          *resumeTime = [relativeResumeTime copy];
         }
 
-        if (!a7)
+        if (!relativeTimestamp)
         {
           goto LABEL_30;
         }
 
-        v21 = [*(v29 + 5) relativeBookmarkTimestamp];
-        *a7 = [v21 copy];
+        relativeBookmarkTimestamp = [*(v29 + 5) relativeBookmarkTimestamp];
+        *relativeTimestamp = [relativeBookmarkTimestamp copy];
       }
 
       else
       {
-        v21 = VUIDefaultLogObject();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        relativeBookmarkTimestamp = VUIDefaultLogObject();
+        if (os_log_type_enabled(relativeBookmarkTimestamp, OS_LOG_TYPE_DEFAULT))
         {
           *v24 = 0;
-          _os_log_impl(&dword_1E323F000, v21, OS_LOG_TYPE_DEFAULT, "VUIStreamingBookmarkCache - Reference ID not found", v24, 2u);
+          _os_log_impl(&dword_1E323F000, relativeBookmarkTimestamp, OS_LOG_TYPE_DEFAULT, "VUIStreamingBookmarkCache - Reference ID not found", v24, 2u);
         }
       }
 
@@ -188,32 +188,32 @@ void __166__VUIStreamingBookmarkCache_resumeTimeInfoForReferenceID_outAbsoluteRe
   }
 }
 
-- (void)addBookmarkForReferenceID:(id)a3 canonicalID:(id)a4 absoluteResumeTime:(id)a5 absoluteBookmarkTimestamp:(id)a6 relativeResumeTime:(id)a7 relativeBookmarkTimestamp:(id)a8
+- (void)addBookmarkForReferenceID:(id)d canonicalID:(id)iD absoluteResumeTime:(id)time absoluteBookmarkTimestamp:(id)timestamp relativeResumeTime:(id)resumeTime relativeBookmarkTimestamp:(id)bookmarkTimestamp
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v14 && v15)
+  dCopy = d;
+  iDCopy = iD;
+  timeCopy = time;
+  timestampCopy = timestamp;
+  resumeTimeCopy = resumeTime;
+  bookmarkTimestampCopy = bookmarkTimestamp;
+  if (dCopy && iDCopy)
   {
-    v20 = [[VUIStreamingBookmark alloc] initWithAbsoluteResumeTime:v16 absoluteTimestamp:v17 relativeResumeTime:v18 relativeBookmarkTimestamp:v19];
-    v21 = self;
-    objc_sync_enter(v21);
+    v20 = [[VUIStreamingBookmark alloc] initWithAbsoluteResumeTime:timeCopy absoluteTimestamp:timestampCopy relativeResumeTime:resumeTimeCopy relativeBookmarkTimestamp:bookmarkTimestampCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (v20)
     {
-      v22 = [(NSMutableDictionary *)v21->_bookmarkCacheStore objectForKey:v15];
+      v22 = [(NSMutableDictionary *)selfCopy->_bookmarkCacheStore objectForKey:iDCopy];
       if (!v22)
       {
         v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
       }
 
-      [v22 setObject:v20 forKey:v14];
-      [(NSMutableDictionary *)v21->_bookmarkCacheStore setObject:v22 forKey:v15];
+      [v22 setObject:v20 forKey:dCopy];
+      [(NSMutableDictionary *)selfCopy->_bookmarkCacheStore setObject:v22 forKey:iDCopy];
     }
 
-    objc_sync_exit(v21);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -227,22 +227,22 @@ void __166__VUIStreamingBookmarkCache_resumeTimeInfoForReferenceID_outAbsoluteRe
   }
 }
 
-- (void)removeBookmarkForReferenceID:(id)a3
+- (void)removeBookmarkForReferenceID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    bookmarkCacheStore = v5->_bookmarkCacheStore;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    bookmarkCacheStore = selfCopy->_bookmarkCacheStore;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __58__VUIStreamingBookmarkCache_removeBookmarkForReferenceID___block_invoke;
     v7[3] = &unk_1E872FE20;
-    v8 = v4;
+    v8 = dCopy;
     [(NSMutableDictionary *)bookmarkCacheStore enumerateKeysAndObjectsUsingBlock:v7];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -258,26 +258,26 @@ void __58__VUIStreamingBookmarkCache_removeBookmarkForReferenceID___block_invoke
   }
 }
 
-- (void)removeBookmarkForCanonicalID:(id)a3
+- (void)removeBookmarkForCanonicalID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableDictionary *)v5->_bookmarkCacheStore removeObjectForKey:v6];
-    objc_sync_exit(v5);
+    v6 = dCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_bookmarkCacheStore removeObjectForKey:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    dCopy = v6;
   }
 }
 
-- (void)_activeAccountChangedNotification:(id)a3
+- (void)_activeAccountChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69D5920] activeAccount];
-  if (!v5)
+  notificationCopy = notification;
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  if (!activeAccount)
   {
     v6 = VUIDefaultLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -286,10 +286,10 @@ void __58__VUIStreamingBookmarkCache_removeBookmarkForReferenceID___block_invoke
       _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIStreamingBookmarkCache - User signs out. clear cached bookmarks", v8, 2u);
     }
 
-    v7 = self;
-    objc_sync_enter(v7);
-    [(NSMutableDictionary *)v7->_bookmarkCacheStore removeAllObjects];
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_bookmarkCacheStore removeAllObjects];
+    objc_sync_exit(selfCopy);
   }
 }
 

@@ -1,30 +1,30 @@
 @interface HUGridActionSetListViewController
-+ (double)requiredHeightWithLayoutOptions:(id)a3 numberOfItems:(unint64_t)a4;
-- (BOOL)canReorderItemAtIndexPath:(id)a3;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)hasDetailsActionForPresentationCoordinator:(id)a3 item:(id)a4;
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
++ (double)requiredHeightWithLayoutOptions:(id)options numberOfItems:(unint64_t)items;
+- (BOOL)canReorderItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)hasDetailsActionForPresentationCoordinator:(id)coordinator item:(id)item;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HUGridActionSetListViewController)init;
-- (HUGridActionSetListViewController)initWithRoom:(id)a3 onlyShowFavorites:(BOOL)a4;
+- (HUGridActionSetListViewController)initWithRoom:(id)room onlyShowFavorites:(BOOL)favorites;
 - (HUGridActionSetListViewControllerDelegate)actionSetListViewControllerDelegate;
 - (HUGridLayoutOptions)layoutOptions;
-- (id)_detailsViewControllerForActionSetItem:(id)a3;
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4;
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4;
-- (id)itemManager:(id)a3 futureToUpdateItems:(id)a4 itemUpdateOptions:(id)a5;
-- (id)reorderableItemListForSection:(int64_t)a3;
-- (void)_internalSetLayoutOptions:(id)a3;
+- (id)_detailsViewControllerForActionSetItem:(id)item;
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area;
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item;
+- (id)itemManager:(id)manager futureToUpdateItems:(id)items itemUpdateOptions:(id)options;
+- (id)reorderableItemListForSection:(int64_t)section;
+- (void)_internalSetLayoutOptions:(id)options;
 - (void)_updateLayoutScrollDirectionIfNeeded;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6;
-- (void)itemManager:(id)a3 didInsertItem:(id)a4 atIndexPath:(id)a5;
-- (void)itemManager:(id)a3 didRemoveItem:(id)a4 atIndexPath:(id)a5;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setLayoutOptions:(id)a3;
-- (void)setReorderableItemList:(id)a3 forSection:(int64_t)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems;
+- (void)itemManager:(id)manager didInsertItem:(id)item atIndexPath:(id)path;
+- (void)itemManager:(id)manager didRemoveItem:(id)item atIndexPath:(id)path;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setLayoutOptions:(id)options;
+- (void)setReorderableItemList:(id)list forSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -32,22 +32,22 @@
 
 - (HUGridActionSetListViewController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithRoom_onlyShowFavorites_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUGridActionSetListViewController.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HUGridActionSetListViewController init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUGridActionSetListViewController.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HUGridActionSetListViewController init]", v5}];
 
   return 0;
 }
 
-- (HUGridActionSetListViewController)initWithRoom:(id)a3 onlyShowFavorites:(BOOL)a4
+- (HUGridActionSetListViewController)initWithRoom:(id)room onlyShowFavorites:(BOOL)favorites
 {
-  v4 = a4;
-  v6 = a3;
+  favoritesCopy = favorites;
+  roomCopy = room;
   v7 = objc_alloc_init(HUGridFlowLayout);
   v8 = [[HUGridActionSetItemManager alloc] initWithDelegate:self];
-  [(HUGridActionSetItemManager *)v8 setRoom:v6];
+  [(HUGridActionSetItemManager *)v8 setRoom:roomCopy];
 
-  [(HUGridActionSetItemManager *)v8 setOnlyShowsFavorites:v4];
+  [(HUGridActionSetItemManager *)v8 setOnlyShowsFavorites:favoritesCopy];
   v12.receiver = self;
   v12.super_class = HUGridActionSetListViewController;
   v9 = [(HUControllableItemCollectionViewController *)&v12 initWithItemManager:v8 collectionViewLayout:v7];
@@ -65,33 +65,33 @@
   v10.receiver = self;
   v10.super_class = HUGridActionSetListViewController;
   [(HUControllableItemCollectionViewController *)&v10 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(HUGridActionSetListViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(HUGridActionSetListViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
-  v5 = [MEMORY[0x277D75348] clearColor];
-  v6 = [(HUGridActionSetListViewController *)self collectionView];
-  [v6 setBackgroundColor:v5];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  collectionView = [(HUGridActionSetListViewController *)self collectionView];
+  [collectionView setBackgroundColor:clearColor2];
 
-  v7 = [(HUGridActionSetListViewController *)self collectionView];
-  [v7 setShowsHorizontalScrollIndicator:0];
+  collectionView2 = [(HUGridActionSetListViewController *)self collectionView];
+  [collectionView2 setShowsHorizontalScrollIndicator:0];
 
-  v8 = [(HUGridActionSetListViewController *)self collectionView];
-  [v8 setShowsVerticalScrollIndicator:0];
+  collectionView3 = [(HUGridActionSetListViewController *)self collectionView];
+  [collectionView3 setShowsVerticalScrollIndicator:0];
 
-  v9 = [(HUGridActionSetListViewController *)self collectionView];
-  [v9 setContentInsetAdjustmentBehavior:2];
+  collectionView4 = [(HUGridActionSetListViewController *)self collectionView];
+  [collectionView4 setContentInsetAdjustmentBehavior:2];
 }
 
 - (HUGridLayoutOptions)layoutOptions
 {
   v3 = objc_opt_class();
-  v4 = [(HUGridActionSetListViewController *)self collectionViewLayout];
-  if (v4)
+  collectionViewLayout = [(HUGridActionSetListViewController *)self collectionViewLayout];
+  if (collectionViewLayout)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = collectionViewLayout;
     }
 
     else
@@ -99,28 +99,28 @@
       v5 = 0;
     }
 
-    v6 = v4;
+    v6 = collectionViewLayout;
     if (v5)
     {
       goto LABEL_8;
     }
 
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v7 handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
   }
 
   v6 = 0;
 LABEL_8:
 
-  v9 = [v6 layoutOptions];
+  layoutOptions = [v6 layoutOptions];
 
-  return v9;
+  return layoutOptions;
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v5 = [a3 copy];
+  v5 = [options copy];
   [v5 setScrollDirection:{-[HUGridActionSetListViewController _scrollDirectionForLayoutOptions:](self, "_scrollDirectionForLayoutOptions:", v5)}];
   [v5 setSectionBottomMargin:0.0];
   if ([MEMORY[0x277D14670] isHomeControlService])
@@ -137,20 +137,20 @@ LABEL_8:
   [(HUGridActionSetListViewController *)self _internalSetLayoutOptions:v5];
 }
 
-- (void)_internalSetLayoutOptions:(id)a3
+- (void)_internalSetLayoutOptions:(id)options
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_opt_class();
-  v6 = [(HUGridActionSetListViewController *)self collectionViewLayout];
-  if (!v6)
+  collectionViewLayout = [(HUGridActionSetListViewController *)self collectionViewLayout];
+  if (!collectionViewLayout)
   {
     goto LABEL_7;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = collectionViewLayout;
   }
 
   else
@@ -158,34 +158,34 @@ LABEL_8:
     v7 = 0;
   }
 
-  v8 = v6;
+  v8 = collectionViewLayout;
   if (!v7)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
 
 LABEL_7:
     v8 = 0;
   }
 
-  v11 = [v8 layoutOptions];
-  v12 = [v11 isEqual:v4];
+  layoutOptions = [v8 layoutOptions];
+  v12 = [layoutOptions isEqual:optionsCopy];
 
   if ((v12 & 1) == 0)
   {
-    [v8 setLayoutOptions:v4];
+    [v8 setLayoutOptions:optionsCopy];
     if ([(HUGridActionSetListViewController *)self isViewLoaded])
     {
-      v24 = v4;
+      v24 = optionsCopy;
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v13 = [(HUGridActionSetListViewController *)self collectionView];
-      v14 = [v13 indexPathsForVisibleItems];
+      collectionView = [(HUGridActionSetListViewController *)self collectionView];
+      indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-      v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v15 = [indexPathsForVisibleItems countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v15)
       {
         v16 = v15;
@@ -197,36 +197,36 @@ LABEL_7:
           {
             if (*v26 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(indexPathsForVisibleItems);
             }
 
             v19 = *(*(&v25 + 1) + 8 * v18);
-            v20 = [(HUGridActionSetListViewController *)self collectionView];
-            v21 = [v20 cellForItemAtIndexPath:v19];
-            v22 = [(HUItemCollectionViewController *)self itemManager];
-            v23 = [v22 displayedItemAtIndexPath:v19];
+            collectionView2 = [(HUGridActionSetListViewController *)self collectionView];
+            v21 = [collectionView2 cellForItemAtIndexPath:v19];
+            itemManager = [(HUItemCollectionViewController *)self itemManager];
+            v23 = [itemManager displayedItemAtIndexPath:v19];
             [(HUGridActionSetListViewController *)self configureCell:v21 forItem:v23];
 
             ++v18;
           }
 
           while (v16 != v18);
-          v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v16 = [indexPathsForVisibleItems countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v16);
       }
 
-      v4 = v24;
+      optionsCopy = v24;
     }
   }
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (-[HUGridActionSetListViewController actionSetItemManager](self, "actionSetItemManager"), v6 = objc_claimAutoreleasedReturnValue(), [v6 actionSetPlaceholderItem], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "isEqual:", v7), v7, v6, v8))
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (-[HUGridActionSetListViewController actionSetItemManager](self, "actionSetItemManager"), v6 = objc_claimAutoreleasedReturnValue(), [v6 actionSetPlaceholderItem], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(itemCopy, "isEqual:", v7), v7, v6, v8))
   {
     v9 = objc_opt_class();
   }
@@ -241,20 +241,20 @@ LABEL_7:
   return v9;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = HUGridActionSetListViewController;
-  [(HUControllableItemCollectionViewController *)&v10 configureCell:v6 forItem:a4];
+  [(HUControllableItemCollectionViewController *)&v10 configureCell:cellCopy forItem:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(HUGridActionSetListViewController *)self layoutOptions];
-    v8 = [v7 placeholderSceneCellOptions];
+    layoutOptions = [(HUGridActionSetListViewController *)self layoutOptions];
+    placeholderSceneCellOptions = [layoutOptions placeholderSceneCellOptions];
 LABEL_5:
-    v9 = v8;
-    [v6 setLayoutOptions:v8];
+    v9 = placeholderSceneCellOptions;
+    [cellCopy setLayoutOptions:placeholderSceneCellOptions];
 
     goto LABEL_6;
   }
@@ -262,26 +262,26 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(HUGridActionSetListViewController *)self layoutOptions];
-    v8 = [v7 sceneCellOptions];
+    layoutOptions = [(HUGridActionSetListViewController *)self layoutOptions];
+    placeholderSceneCellOptions = [layoutOptions sceneCellOptions];
     goto LABEL_5;
   }
 
 LABEL_6:
 }
 
-- (id)itemManager:(id)a3 futureToUpdateItems:(id)a4 itemUpdateOptions:(id)a5
+- (id)itemManager:(id)manager futureToUpdateItems:(id)items itemUpdateOptions:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HUGridActionSetListViewController *)self actionSetListViewControllerDelegate];
+  managerCopy = manager;
+  itemsCopy = items;
+  optionsCopy = options;
+  actionSetListViewControllerDelegate = [(HUGridActionSetListViewController *)self actionSetListViewControllerDelegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(HUGridActionSetListViewController *)self actionSetListViewControllerDelegate];
-    v15 = [v14 actionSetListViewController:self futureToUpdateItems:v10 itemUpdateOptions:v11];
+    actionSetListViewControllerDelegate2 = [(HUGridActionSetListViewController *)self actionSetListViewControllerDelegate];
+    v15 = [actionSetListViewControllerDelegate2 actionSetListViewController:self futureToUpdateItems:itemsCopy itemUpdateOptions:optionsCopy];
   }
 
   else
@@ -290,7 +290,7 @@ LABEL_6:
     {
       v18.receiver = self;
       v18.super_class = HUGridActionSetListViewController;
-      v16 = [(HUItemCollectionViewController *)&v18 itemManager:v9 futureToUpdateItems:v10 itemUpdateOptions:v11];
+      v16 = [(HUItemCollectionViewController *)&v18 itemManager:managerCopy futureToUpdateItems:itemsCopy itemUpdateOptions:optionsCopy];
     }
 
     else
@@ -304,40 +304,40 @@ LABEL_6:
   return v15;
 }
 
-- (void)itemManager:(id)a3 didInsertItem:(id)a4 atIndexPath:(id)a5
+- (void)itemManager:(id)manager didInsertItem:(id)item atIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = HUGridActionSetListViewController;
-  [(HUItemCollectionViewController *)&v6 itemManager:a3 didInsertItem:a4 atIndexPath:a5];
+  [(HUItemCollectionViewController *)&v6 itemManager:manager didInsertItem:item atIndexPath:path];
   [(HUGridActionSetListViewController *)self _updateLayoutScrollDirectionIfNeeded];
 }
 
-- (void)itemManager:(id)a3 didRemoveItem:(id)a4 atIndexPath:(id)a5
+- (void)itemManager:(id)manager didRemoveItem:(id)item atIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = HUGridActionSetListViewController;
-  [(HUItemCollectionViewController *)&v6 itemManager:a3 didRemoveItem:a4 atIndexPath:a5];
+  [(HUItemCollectionViewController *)&v6 itemManager:manager didRemoveItem:item atIndexPath:path];
   [(HUGridActionSetListViewController *)self _updateLayoutScrollDirectionIfNeeded];
 }
 
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems
 {
-  v10 = a6;
+  removeItemsCopy = removeItems;
   v13.receiver = self;
   v13.super_class = HUGridActionSetListViewController;
-  v11 = a5;
-  [(HUControllableItemCollectionViewController *)&v13 diffableDataItemManager:a3 didUpdateItems:a4 addItems:v11 removeItems:v10];
-  v12 = [v11 count];
+  addItemsCopy = addItems;
+  [(HUControllableItemCollectionViewController *)&v13 diffableDataItemManager:manager didUpdateItems:items addItems:addItemsCopy removeItems:removeItemsCopy];
+  v12 = [addItemsCopy count];
 
-  if (v12 || [v10 count])
+  if (v12 || [removeItemsCopy count])
   {
     [(HUGridActionSetListViewController *)self _updateLayoutScrollDirectionIfNeeded];
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [(HUGridActionSetListViewController *)self layoutOptions:a3];
+  v6 = [(HUGridActionSetListViewController *)self layoutOptions:view];
   if ([MEMORY[0x277D14670] isHomeControlService])
   {
     v7 = 1;
@@ -351,9 +351,9 @@ LABEL_6:
   [v6 pointWidthForNumberOfColumns:v7];
   v9 = v8;
 
-  v10 = [(HUGridActionSetListViewController *)self layoutOptions];
-  v11 = [v10 sceneCellOptions];
-  [v11 cellHeight];
+  layoutOptions = [(HUGridActionSetListViewController *)self layoutOptions];
+  sceneCellOptions = [layoutOptions sceneCellOptions];
+  [sceneCellOptions cellHeight];
   v13 = v12;
 
   v14 = v9;
@@ -363,9 +363,9 @@ LABEL_6:
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = [(HUGridActionSetListViewController *)self layoutOptions:a3];
+  v7 = [(HUGridActionSetListViewController *)self layoutOptions:dragging];
   if ([MEMORY[0x277D14670] isHomeControlService])
   {
     v8 = 1;
@@ -378,44 +378,44 @@ LABEL_6:
 
   [v7 pointWidthForNumberOfColumns:v8];
   v10 = v9;
-  v11 = [(HUGridActionSetListViewController *)self layoutOptions];
-  [v11 columnSpacing];
+  layoutOptions = [(HUGridActionSetListViewController *)self layoutOptions];
+  [layoutOptions columnSpacing];
   v13 = v10 + v12;
 
-  a5->x = v13 * round(a5->x / v13);
+  offset->x = v13 * round(offset->x / v13);
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  if ([+[HUGridActionSetListViewController superclass](HUGridActionSetListViewController "superclass")] && (v11.receiver = self, v11.super_class = HUGridActionSetListViewController, -[HUControllableItemCollectionViewController collectionView:shouldHighlightItemAtIndexPath:](&v11, sel_collectionView_shouldHighlightItemAtIndexPath_, v7, v8)))
+  viewCopy = view;
+  pathCopy = path;
+  if ([+[HUGridActionSetListViewController superclass](HUGridActionSetListViewController "superclass")] && (v11.receiver = self, v11.super_class = HUGridActionSetListViewController, -[HUControllableItemCollectionViewController collectionView:shouldHighlightItemAtIndexPath:](&v11, sel_collectionView_shouldHighlightItemAtIndexPath_, viewCopy, pathCopy)))
   {
-    v9 = 1;
+    isEditing = 1;
   }
 
   else
   {
-    v9 = [(HUGridActionSetListViewController *)self isEditing];
+    isEditing = [(HUGridActionSetListViewController *)self isEditing];
   }
 
-  return v9;
+  return isEditing;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([+[HUGridActionSetListViewController superclass](HUGridActionSetListViewController "superclass")])
   {
     v18.receiver = self;
     v18.super_class = HUGridActionSetListViewController;
-    [(HUItemCollectionViewController *)&v18 collectionView:v7 didSelectItemAtIndexPath:v8];
+    [(HUItemCollectionViewController *)&v18 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
   }
 
   objc_opt_class();
-  v9 = [(HUItemCollectionViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v8];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:pathCopy];
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -431,40 +431,40 @@ LABEL_6:
   if (v12 && [(HUGridActionSetListViewController *)self isEditing])
   {
     v13 = [(HUGridActionSetListViewController *)self _detailsViewControllerForActionSetItem:v12];
-    v14 = [(UIViewController *)self hu_delegateForModalPresentation];
-    [v13 setPresentationDelegate:v14];
+    hu_delegateForModalPresentation = [(UIViewController *)self hu_delegateForModalPresentation];
+    [v13 setPresentationDelegate:hu_delegateForModalPresentation];
 
     v15 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v13];
     [v15 setModalPresentationStyle:2];
-    v16 = [(HUGridActionSetListViewController *)self parentViewController];
-    v17 = [v16 hu_presentPreloadableViewController:v15 animated:1];
+    parentViewController = [(HUGridActionSetListViewController *)self parentViewController];
+    v17 = [parentViewController hu_presentPreloadableViewController:v15 animated:1];
   }
 }
 
-+ (double)requiredHeightWithLayoutOptions:(id)a3 numberOfItems:(unint64_t)a4
++ (double)requiredHeightWithLayoutOptions:(id)options numberOfItems:(unint64_t)items
 {
-  v5 = a3;
-  if ([v5 scrollDirection])
+  optionsCopy = options;
+  if ([optionsCopy scrollDirection])
   {
     v6 = 2;
   }
 
   else
   {
-    v7 = [v5 overrideNumberOfColumns];
-    if (v7)
+    overrideNumberOfColumns = [optionsCopy overrideNumberOfColumns];
+    if (overrideNumberOfColumns)
     {
-      v8 = [v5 overrideNumberOfColumns];
-      [v8 floatValue];
+      overrideNumberOfColumns2 = [optionsCopy overrideNumberOfColumns];
+      [overrideNumberOfColumns2 floatValue];
       v10 = v9;
     }
 
     else
     {
-      v10 = floorf(vcvts_n_f32_s64([v5 numberOfColumns], 1uLL));
+      v10 = floorf(vcvts_n_f32_s64([optionsCopy numberOfColumns], 1uLL));
     }
 
-    v11 = vcvtps_s32_f32(a4 / v10);
+    v11 = vcvtps_s32_f32(items / v10);
     if (v11 <= 2)
     {
       v6 = 2;
@@ -476,37 +476,37 @@ LABEL_6:
     }
   }
 
-  v12 = [v5 sceneCellOptions];
-  [v12 cellHeight];
+  sceneCellOptions = [optionsCopy sceneCellOptions];
+  [sceneCellOptions cellHeight];
   v14 = v13;
-  [v5 rowSpacing];
+  [optionsCopy rowSpacing];
   v16 = v15 * (v6 - 1) + v14 * v6;
 
   return v16;
 }
 
-- (BOOL)canReorderItemAtIndexPath:(id)a3
+- (BOOL)canReorderItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HUGridActionSetListViewController *)self actionSetItemManager];
-  v6 = [v5 isItemReorderableAtIndex:v4];
+  pathCopy = path;
+  actionSetItemManager = [(HUGridActionSetListViewController *)self actionSetItemManager];
+  v6 = [actionSetItemManager isItemReorderableAtIndex:pathCopy];
 
   return v6;
 }
 
-- (id)reorderableItemListForSection:(int64_t)a3
+- (id)reorderableItemListForSection:(int64_t)section
 {
-  v3 = [(HUGridActionSetListViewController *)self actionSetItemManager];
-  v4 = [v3 reorderableActionSetList];
+  actionSetItemManager = [(HUGridActionSetListViewController *)self actionSetItemManager];
+  reorderableActionSetList = [actionSetItemManager reorderableActionSetList];
 
-  return v4;
+  return reorderableActionSetList;
 }
 
-- (void)setReorderableItemList:(id)a3 forSection:(int64_t)a4
+- (void)setReorderableItemList:(id)list forSection:(int64_t)section
 {
-  v5 = a3;
+  listCopy = list;
   objc_opt_class();
-  v9 = v5;
+  v9 = listCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v9;
@@ -519,71 +519,71 @@ LABEL_6:
 
   v7 = v6;
 
-  v8 = [(HUGridActionSetListViewController *)self actionSetItemManager];
-  [v8 setReorderableActionSetList:v7];
+  actionSetItemManager = [(HUGridActionSetListViewController *)self actionSetItemManager];
+  [actionSetItemManager setReorderableActionSetList:v7];
 }
 
-- (BOOL)hasDetailsActionForPresentationCoordinator:(id)a3 item:(id)a4
+- (BOOL)hasDetailsActionForPresentationCoordinator:(id)coordinator item:(id)item
 {
-  v4 = a4;
+  itemCopy = item;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([(HUGridActionSetListViewController *)self _detailsViewControllerForActionSetItem:v5], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([(HUGridActionSetListViewController *)self _detailsViewControllerForActionSetItem:itemCopy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    NSLog(&cfstr_NoDetailsViewC.isa, v5);
+    NSLog(&cfstr_NoDetailsViewC.isa, itemCopy);
     v6 = 0;
   }
 
   return v6;
 }
 
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUGridActionSetListViewController *)self actionSetItemManager];
-  v9 = [v8 actionSetPlaceholderItem];
-  v10 = [v6 isEqual:v9];
+  itemCopy = item;
+  areaCopy = area;
+  actionSetItemManager = [(HUGridActionSetListViewController *)self actionSetItemManager];
+  actionSetPlaceholderItem = [actionSetItemManager actionSetPlaceholderItem];
+  v10 = [itemCopy isEqual:actionSetPlaceholderItem];
 
   if (v10)
   {
-    v11 = [(HUGridActionSetListViewController *)self actionSetListViewControllerDelegate];
+    actionSetListViewControllerDelegate = [(HUGridActionSetListViewController *)self actionSetListViewControllerDelegate];
 
-    if (v11)
+    if (actionSetListViewControllerDelegate)
     {
-      v12 = [(HUGridActionSetListViewController *)self actionSetListViewControllerDelegate];
-      [v12 addSceneTileAction:self];
+      actionSetListViewControllerDelegate2 = [(HUGridActionSetListViewController *)self actionSetListViewControllerDelegate];
+      [actionSetListViewControllerDelegate2 addSceneTileAction:self];
     }
 
-    v13 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = HUGridActionSetListViewController;
-    v13 = [(HUControllableItemCollectionViewController *)&v16 _performTapActionForItem:v6 tappedArea:v7];
+    futureWithNoResult = [(HUControllableItemCollectionViewController *)&v16 _performTapActionForItem:itemCopy tappedArea:areaCopy];
   }
 
-  v14 = v13;
+  v14 = futureWithNoResult;
 
   return v14;
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   if ([(HUGridActionSetListViewController *)self shouldAllowItemPresentation])
   {
-    v6 = [v5 item];
+    item = [contextCopy item];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -596,18 +596,18 @@ LABEL_6:
   return isKindOfClass & 1;
 }
 
-- (id)_detailsViewControllerForActionSetItem:(id)a3
+- (id)_detailsViewControllerForActionSetItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 actionSet];
+  itemCopy = item;
+  actionSet = [itemCopy actionSet];
 
-  if (v5)
+  if (actionSet)
   {
     v6 = objc_alloc(MEMORY[0x277D14398]);
-    v7 = [v4 actionSet];
-    v8 = [(HUItemCollectionViewController *)self itemManager];
-    v9 = [v8 home];
-    v10 = [v6 initWithExistingObject:v7 inHome:v9];
+    actionSet2 = [itemCopy actionSet];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    home = [itemManager home];
+    v10 = [v6 initWithExistingObject:actionSet2 inHome:home];
 
     v11 = [[HUSceneActionEditorViewController alloc] initWithActionSetBuilder:v10 mode:0];
   }
@@ -624,15 +624,15 @@ LABEL_6:
 - (void)_updateLayoutScrollDirectionIfNeeded
 {
   v3 = objc_opt_class();
-  v4 = [(HUGridActionSetListViewController *)self collectionViewLayout];
-  if (!v4)
+  collectionViewLayout = [(HUGridActionSetListViewController *)self collectionViewLayout];
+  if (!collectionViewLayout)
   {
     goto LABEL_7;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = collectionViewLayout;
   }
 
   else
@@ -640,22 +640,22 @@ LABEL_6:
     v5 = 0;
   }
 
-  v11 = v4;
+  v11 = collectionViewLayout;
   if (!v5)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v6 handleFailureInFunction:v7 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v7 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
 
 LABEL_7:
     v11 = 0;
   }
 
-  v8 = [v11 scrollDirection];
-  v9 = [v11 layoutOptions];
-  v10 = [(HUGridActionSetListViewController *)self _scrollDirectionForLayoutOptions:v9];
+  scrollDirection = [v11 scrollDirection];
+  layoutOptions = [v11 layoutOptions];
+  v10 = [(HUGridActionSetListViewController *)self _scrollDirectionForLayoutOptions:layoutOptions];
 
-  if (v8 != v10)
+  if (scrollDirection != v10)
   {
     [v11 setScrollDirection:v10];
   }

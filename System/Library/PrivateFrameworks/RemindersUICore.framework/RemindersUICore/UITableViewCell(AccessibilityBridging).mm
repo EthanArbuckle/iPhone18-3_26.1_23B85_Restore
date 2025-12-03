@@ -11,7 +11,7 @@
     return 0;
   }
 
-  return [a1 ttriAccessibilityIsSpeakThisElement];
+  return [self ttriAccessibilityIsSpeakThisElement];
 }
 
 @end

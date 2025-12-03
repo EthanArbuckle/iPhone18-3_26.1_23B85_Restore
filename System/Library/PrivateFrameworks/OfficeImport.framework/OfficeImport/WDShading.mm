@@ -2,13 +2,13 @@
 + (id)autoBackgroundColor;
 + (id)autoForegroundColor;
 + (id)nilShading;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToShading:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToShading:(id)shading;
 - (WDShading)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)setShading:(id)a3;
+- (void)setShading:(id)shading;
 @end
 
 @implementation WDShading
@@ -22,13 +22,13 @@
   if (v2)
   {
     v2->mStyle = 0;
-    v4 = [objc_opt_class() autoForegroundColor];
+    autoForegroundColor = [objc_opt_class() autoForegroundColor];
     mForegroundColor = v3->mForegroundColor;
-    v3->mForegroundColor = v4;
+    v3->mForegroundColor = autoForegroundColor;
 
-    v6 = [objc_opt_class() autoBackgroundColor];
+    autoBackgroundColor = [objc_opt_class() autoBackgroundColor];
     mBackgroundColor = v3->mBackgroundColor;
-    v3->mBackgroundColor = v6;
+    v3->mBackgroundColor = autoBackgroundColor;
   }
 
   return v3;
@@ -72,13 +72,13 @@
   return v2;
 }
 
-- (BOOL)isEqualToShading:(id)a3
+- (BOOL)isEqualToShading:(id)shading
 {
-  v4 = a3;
-  if (self->mStyle == *(v4 + 2) && ((mForegroundColor = self->mForegroundColor, mForegroundColor == v4[2]) || [(OITSUColor *)mForegroundColor isEqual:?]))
+  shadingCopy = shading;
+  if (self->mStyle == *(shadingCopy + 2) && ((mForegroundColor = self->mForegroundColor, mForegroundColor == shadingCopy[2]) || [(OITSUColor *)mForegroundColor isEqual:?]))
   {
     mBackgroundColor = self->mBackgroundColor;
-    if (mBackgroundColor == v4[3])
+    if (mBackgroundColor == shadingCopy[3])
     {
       v7 = 1;
     }
@@ -97,18 +97,18 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(WDShading *)self isEqualToShading:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(WDShading *)self isEqualToShading:v5];
   }
 
   return v6;
@@ -122,18 +122,18 @@
   return [(WDShading *)&v4 hash]^ mStyle;
 }
 
-- (void)setShading:(id)a3
+- (void)setShading:(id)shading
 {
-  v6 = a3;
-  -[WDShading setStyle:](self, "setStyle:", [v6 style]);
-  v4 = [v6 foreground];
-  [(WDShading *)self setForeground:v4];
+  shadingCopy = shading;
+  -[WDShading setStyle:](self, "setStyle:", [shadingCopy style]);
+  foreground = [shadingCopy foreground];
+  [(WDShading *)self setForeground:foreground];
 
-  v5 = [v6 background];
-  [(WDShading *)self setBackground:v5];
+  background = [shadingCopy background];
+  [(WDShading *)self setBackground:background];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDShading allocWithZone:?]];
   v5 = v4;
@@ -141,34 +141,34 @@
   {
     v4->mStyle = self->mStyle;
     mForegroundColor = self->mForegroundColor;
-    v7 = [objc_opt_class() autoForegroundColor];
-    if (mForegroundColor == v7)
+    autoForegroundColor = [objc_opt_class() autoForegroundColor];
+    if (mForegroundColor == autoForegroundColor)
     {
-      v8 = [objc_opt_class() autoForegroundColor];
+      autoForegroundColor2 = [objc_opt_class() autoForegroundColor];
     }
 
     else
     {
-      v8 = [(OITSUColor *)self->mForegroundColor copy];
+      autoForegroundColor2 = [(OITSUColor *)self->mForegroundColor copy];
     }
 
     v9 = v5->mForegroundColor;
-    v5->mForegroundColor = v8;
+    v5->mForegroundColor = autoForegroundColor2;
 
     mBackgroundColor = self->mBackgroundColor;
-    v11 = [objc_opt_class() autoBackgroundColor];
-    if (mBackgroundColor == v11)
+    autoBackgroundColor = [objc_opt_class() autoBackgroundColor];
+    if (mBackgroundColor == autoBackgroundColor)
     {
-      v12 = [objc_opt_class() autoBackgroundColor];
+      autoBackgroundColor2 = [objc_opt_class() autoBackgroundColor];
     }
 
     else
     {
-      v12 = [(OITSUColor *)self->mBackgroundColor copy];
+      autoBackgroundColor2 = [(OITSUColor *)self->mBackgroundColor copy];
     }
 
     v13 = v5->mBackgroundColor;
-    v5->mBackgroundColor = v12;
+    v5->mBackgroundColor = autoBackgroundColor2;
   }
 
   return v5;

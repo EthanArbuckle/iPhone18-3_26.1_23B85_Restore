@@ -1,13 +1,13 @@
 @interface SFDismissButton
-+ (SFDismissButton)buttonWithConfiguration:(id)a3 primaryAction:(id)a4;
-+ (id)_imageForDismissButtonStyle:(void *)a3 compatibleWithTraitCollection:;
-+ (id)accessibilityLabelWithStyle:(uint64_t)a1;
-+ (id)titleForDismissButtonStyle:(uint64_t)a1;
++ (SFDismissButton)buttonWithConfiguration:(id)configuration primaryAction:(id)action;
++ (id)_imageForDismissButtonStyle:(void *)style compatibleWithTraitCollection:;
++ (id)accessibilityLabelWithStyle:(uint64_t)style;
++ (id)titleForDismissButtonStyle:(uint64_t)style;
 - (SFDismissButton)init;
 - (uint64_t)_updateButtonStyle;
 - (uint64_t)setStyle:(uint64_t)result;
 - (uint64_t)style;
-- (void)setPreferredTraitCollection:(id *)a1;
+- (void)setPreferredTraitCollection:(id *)collection;
 @end
 
 @implementation SFDismissButton
@@ -24,8 +24,8 @@
     v5 = MEMORY[0x1E69DB878];
     [MEMORY[0x1E69DB878] labelFontSize];
     v6 = [v5 systemFontOfSize:?];
-    v7 = [(SFDismissButton *)v3 titleLabel];
-    [v7 setFont:v6];
+    titleLabel = [(SFDismissButton *)v3 titleLabel];
+    [titleLabel setFont:v6];
 
     [(SFDismissButton *)v3 _updateButtonStyle];
     v8 = v3;
@@ -34,19 +34,19 @@
   return v3;
 }
 
-+ (id)_imageForDismissButtonStyle:(void *)a3 compatibleWithTraitCollection:
++ (id)_imageForDismissButtonStyle:(void *)style compatibleWithTraitCollection:
 {
-  v5 = a3;
+  styleCopy = style;
   objc_opt_self();
   if (a2 <= 2)
   {
-    a1 = [MEMORY[0x1E69DCAB8] systemImageNamed:off_1E8496858[a2] compatibleWithTraitCollection:v5];
+    self = [MEMORY[0x1E69DCAB8] systemImageNamed:off_1E8496858[a2] compatibleWithTraitCollection:styleCopy];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)accessibilityLabelWithStyle:(uint64_t)a1
++ (id)accessibilityLabelWithStyle:(uint64_t)style
 {
   v3 = objc_opt_self();
   if (a2 <= 2)
@@ -57,7 +57,7 @@
   return v3;
 }
 
-+ (id)titleForDismissButtonStyle:(uint64_t)a1
++ (id)titleForDismissButtonStyle:(uint64_t)style
 {
   v3 = objc_opt_self();
   if (a2 <= 2)
@@ -75,8 +75,8 @@
     v1 = result;
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
-      v2 = [v1 configuration];
-      v3 = [v2 copy];
+      configuration = [v1 configuration];
+      v3 = [configuration copy];
 
       [SFDismissButton _imageForDismissButtonStyle:*(v1 + 752) compatibleWithTraitCollection:?];
       objc_claimAutoreleasedReturnValue();
@@ -99,16 +99,16 @@
   return result;
 }
 
-+ (SFDismissButton)buttonWithConfiguration:(id)a3 primaryAction:(id)a4
++ (SFDismissButton)buttonWithConfiguration:(id)configuration primaryAction:(id)action
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  actionCopy = action;
+  v7 = [configuration copy];
   v8 = [SFDismissButton _imageForDismissButtonStyle:0 compatibleWithTraitCollection:?];
   [v7 setImage:v8];
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___SFDismissButton;
-  v9 = objc_msgSendSuper2(&v11, sel_buttonWithConfiguration_primaryAction_, v7, v6);
+  v9 = objc_msgSendSuper2(&v11, sel_buttonWithConfiguration_primaryAction_, v7, actionCopy);
 
   [SFDismissButton accessibilityLabelWithStyle:?];
   objc_claimAutoreleasedReturnValue();
@@ -137,12 +137,12 @@
   return result;
 }
 
-- (void)setPreferredTraitCollection:(id *)a1
+- (void)setPreferredTraitCollection:(id *)collection
 {
   v4 = a2;
-  if (a1)
+  if (collection)
   {
-    v5 = a1[94];
+    v5 = collection[94];
     if (v5 != v4)
     {
       v11 = v4;
@@ -150,25 +150,25 @@
       v4 = v11;
       if ((v6 & 1) == 0)
       {
-        objc_storeStrong(a1 + 94, a2);
+        objc_storeStrong(collection + 94, a2);
         if ([MEMORY[0x1E69C8880] isSolariumEnabled])
         {
-          [(SFDismissButton *)a1 _updateButtonStyle];
+          [(SFDismissButton *)collection _updateButtonStyle];
         }
 
         else
         {
-          v7 = [MEMORY[0x1E69DCA40] defaultMetrics];
+          defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
           v8 = MEMORY[0x1E69DB878];
           [MEMORY[0x1E69DB878] labelFontSize];
           [v8 systemFontOfSize:?];
           objc_claimAutoreleasedReturnValue();
           v9 = [OUTLINED_FUNCTION_19() scaledFontForFont:? compatibleWithTraitCollection:?];
-          v10 = [a1 titleLabel];
-          [v10 setFont:v9];
+          titleLabel = [collection titleLabel];
+          [titleLabel setFont:v9];
         }
 
-        [a1 sizeToFit];
+        [collection sizeToFit];
         v4 = v11;
       }
     }

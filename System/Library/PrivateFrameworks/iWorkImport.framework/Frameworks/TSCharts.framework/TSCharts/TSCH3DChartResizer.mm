@@ -1,45 +1,45 @@
 @interface TSCH3DChartResizer
-+ (id)resizerWithLayout:(id)a3 chartType:(id)a4;
-+ (tvec2<float>)adjustLabelWrapSize:(void *)a3 forScene:(id)a4;
++ (id)resizerWithLayout:(id)layout chartType:(id)type;
++ (tvec2<float>)adjustLabelWrapSize:(void *)size forScene:(id)scene;
 - (BOOL)checkImprovement;
 - (BOOL)resize1;
-- (TSCH3DChartResizer)initWithLayout:(id)a3 chartType:(id)a4;
+- (TSCH3DChartResizer)initWithLayout:(id)layout chartType:(id)type;
 - (float)maxDepthRatio;
 - (float)perspectiveness;
 - (id).cxx_construct;
 - (tvec2<BOOL>)canImprove;
 - (tvec2<BOOL>)converges;
-- (tvec2<float>)resize:(void *)a3 startingSize:(void *)a4;
-- (tvec2<float>)updateResizerFromRequestedSize:(void *)a3 startingSize:(void *)a4;
-- (tvec2<int>)containingViewportFromSize:(void *)a3;
-- (tvec3<float>)adjust:(void *)a3;
-- (tvec3<float>)adjust:(void *)a3 by:(float)a4;
+- (tvec2<float>)resize:(void *)resize startingSize:(void *)size;
+- (tvec2<float>)updateResizerFromRequestedSize:(void *)size startingSize:(void *)startingSize;
+- (tvec2<int>)containingViewportFromSize:(void *)size;
+- (tvec3<float>)adjust:(void *)adjust;
+- (tvec3<float>)adjust:(void *)adjust by:(float)by;
 - (tvec3<float>)adjustedScale;
-- (tvec3<float>)clamp:(void *)a3;
-- (tvec3<float>)clampDepthRatio:(void *)a3;
+- (tvec3<float>)clamp:(void *)clamp;
+- (tvec3<float>)clampDepthRatio:(void *)ratio;
 - (void)adjustContainingViewport;
 - (void)dealloc;
-- (void)initializeResizing:(void *)a3;
+- (void)initializeResizing:(void *)resizing;
 - (void)loop;
 - (void)readjustContainingViewport;
-- (void)setContainingViewport:(void *)a3;
-- (void)setScale:(void *)a3;
+- (void)setContainingViewport:(void *)viewport;
+- (void)setScale:(void *)scale;
 - (void)updateResizeData;
 - (void)updateSteps;
 @end
 
 @implementation TSCH3DChartResizer
 
-+ (tvec2<float>)adjustLabelWrapSize:(void *)a3 forScene:(id)a4
++ (tvec2<float>)adjustLabelWrapSize:(void *)size forScene:(id)scene
 {
   v6 = v4;
-  v37 = a4;
-  v11 = objc_msgSend_main(v37, v7, v8, v9, v10);
+  sceneCopy = scene;
+  v11 = objc_msgSend_main(sceneCopy, v7, v8, v9, v10);
   v16 = objc_msgSend_resizer3DClass(v11, v12, v13, v14, v15);
 
   if (v16)
   {
-    objc_msgSend_adjustLabelWrapSize_(v16, v17, v18, v19, v20, a3);
+    objc_msgSend_adjustLabelWrapSize_(v16, v17, v18, v19, v20, size);
   }
 
   else
@@ -56,30 +56,30 @@
   return v36;
 }
 
-+ (id)resizerWithLayout:(id)a3 chartType:(id)a4
++ (id)resizerWithLayout:(id)layout chartType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithLayout_chartType_(v8, v9, v10, v11, v12, v6, v7);
+  layoutCopy = layout;
+  typeCopy = type;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithLayout_chartType_(v8, v9, v10, v11, v12, layoutCopy, typeCopy);
 
   return v13;
 }
 
-- (TSCH3DChartResizer)initWithLayout:(id)a3 chartType:(id)a4
+- (TSCH3DChartResizer)initWithLayout:(id)layout chartType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  layoutCopy = layout;
+  typeCopy = type;
   v33.receiver = self;
   v33.super_class = TSCH3DChartResizer;
   v9 = [(TSCH3DChartResizer *)&v33 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_layout, a3);
-    if (v7)
+    objc_storeStrong(&v9->_layout, layout);
+    if (layoutCopy)
     {
-      objc_msgSend_layoutSettings(v7, v11, v12, v13, v14);
+      objc_msgSend_layoutSettings(layoutCopy, v11, v12, v13, v14);
     }
 
     else
@@ -96,7 +96,7 @@
 
     *&v10->_layoutSettings.forceOmitLegend = v31;
     v10->_layoutSettings.max3DLimitingSeries = v32;
-    objc_storeStrong(&v10->_chartType, a4);
+    objc_storeStrong(&v10->_chartType, type);
     *&v10->_minStep = 0x3A83126F3B449BA6;
   }
 
@@ -173,19 +173,19 @@
   return self;
 }
 
-- (tvec3<float>)adjust:(void *)a3 by:(float)a4
+- (tvec3<float>)adjust:(void *)adjust by:(float)by
 {
   v8 = v4;
-  v9 = *a3;
-  *v4 = *a3;
-  *(v4 + 8) = *(a3 + 2);
+  v9 = *adjust;
+  *v4 = *adjust;
+  *(v4 + 8) = *(adjust + 2);
   index = self->_index;
-  *&v9 = *(v4 + 4 * index) * a4;
+  *&v9 = *(v4 + 4 * index) * by;
   *(v4 + 4 * index) = LODWORD(v9);
   v11 = objc_msgSend_depthRatioDimension(self->_chartType, a2, v9, v5, v6);
   if (index == v11)
   {
-    *(v8 + 8) = *(v8 + 8) * a4;
+    *(v8 + 8) = *(v8 + 8) * by;
   }
 
   result.var0 = v11;
@@ -194,7 +194,7 @@
   return result;
 }
 
-- (tvec3<float>)adjust:(void *)a3
+- (tvec3<float>)adjust:(void *)adjust
 {
   v9 = v3;
   v10 = *(&self->_current.delta.var0.var0 + self->_index);
@@ -224,7 +224,7 @@
     v20 = objc_opt_class();
     v21 = NSStringFromSelector(a2);
     v22 = MEMORY[0x277CCACA8];
-    v23 = *a3;
+    v23 = *adjust;
     sub_276152FD4("vec3(%f, %f, %f)", v24, v25, v26, v27, v28, v29, v30, SLOBYTE(v23));
     if (v93 >= 0)
     {
@@ -246,7 +246,7 @@
 
   v36 = (v14 * v19) + 1.0;
   *&v16 = v36;
-  v37 = objc_msgSend_adjust_by_(self, v15, v16, v17, v18, a3);
+  v37 = objc_msgSend_adjust_by_(self, v15, v16, v17, v18, adjust);
   if (byte_280A46430 == 1)
   {
     v42 = objc_opt_class();
@@ -358,7 +358,7 @@ LABEL_26:
   return result;
 }
 
-- (tvec3<float>)clamp:(void *)a3
+- (tvec3<float>)clamp:(void *)clamp
 {
   v10 = v3;
   if (byte_280A46430 == 1)
@@ -366,7 +366,7 @@ LABEL_26:
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(a2);
     v13 = MEMORY[0x277CCACA8];
-    v14 = *a3;
+    v14 = *clamp;
     sub_276152FD4("vec3(%f, %f, %f)", v15, v16, v17, v18, v19, v20, v21, SLOBYTE(v14));
     if (v138 >= 0)
     {
@@ -396,19 +396,19 @@ LABEL_26:
   do
   {
     v30 = *(&__p + v29);
-    *(&v130 + v29) = *(a3 + v29) <= v30;
+    *(&v130 + v29) = *(clamp + v29) <= v30;
     ++v29;
   }
 
   while (v29 != 3);
   v31 = 0;
   LOBYTE(v30) = BYTE2(v130);
-  v32 = *(a3 + 2);
+  v32 = *(clamp + 2);
   v33 = (*&v28 - v32) * LODWORD(v30);
   v34.i32[0] = LOBYTE(v130) & 1;
   v34.i32[1] = BYTE1(v130) & 1;
   v35 = vdup_lane_s32(*&v28, 0);
-  v36 = vadd_f32(*a3, vmul_f32(vsub_f32(v35, *a3), vcvt_f32_u32(v34)));
+  v36 = vadd_f32(*clamp, vmul_f32(vsub_f32(v35, *clamp), vcvt_f32_u32(v34)));
   v37 = v32 + v33;
   v133 = v36;
   v134 = v32 + v33;
@@ -607,7 +607,7 @@ LABEL_55:
   return result;
 }
 
-- (tvec3<float>)clampDepthRatio:(void *)a3
+- (tvec3<float>)clampDepthRatio:(void *)ratio
 {
   v9 = v3;
   if (byte_280A46430 == 1)
@@ -615,7 +615,7 @@ LABEL_55:
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(a2);
     v12 = MEMORY[0x277CCACA8];
-    v13 = *a3;
+    v13 = *ratio;
     sub_276152FD4("vec3(%f, %f, %f)", v14, v15, v16, v17, v18, v19, v20, SLOBYTE(v13));
     if (v52 >= 0)
     {
@@ -635,9 +635,9 @@ LABEL_55:
     NSLog(&cfstr_PPreclampzx.isa, v10, self, v11, v25);
   }
 
-  v26 = *a3;
-  *v9 = *a3;
-  v27 = *(a3 + 2);
+  v26 = *ratio;
+  *v9 = *ratio;
+  v27 = *(ratio + 2);
   *(v9 + 8) = v27;
   objc_msgSend_maxDepthRatio(self, a2, v26, v4, v5);
   v29 = *&v28;
@@ -944,11 +944,11 @@ LABEL_55:
   return v10;
 }
 
-- (void)setScale:(void *)a3
+- (void)setScale:(void *)scale
 {
   accessor = self->_accessor;
-  v11 = *a3;
-  v12 = *(a3 + 2);
+  v11 = *scale;
+  v12 = *(scale + 2);
   objc_msgSend_setInfoChartScaleVec3_(accessor, a2, COERCE_DOUBLE(__PAIR64__(HIDWORD(v11), v12)), v3, v4, &v11);
   objc_msgSend_updateResizeData(self, v7, v8, v9, v10);
 }
@@ -1130,14 +1130,14 @@ LABEL_55:
   return result;
 }
 
-- (tvec2<int>)containingViewportFromSize:(void *)a3
+- (tvec2<int>)containingViewportFromSize:(void *)size
 {
   v8 = v3;
   v9 = objc_msgSend_perspectiveness(self, a2, v4, v5, v6);
-  v11 = *a3;
-  if (*a3 <= *(a3 + 1))
+  v11 = *size;
+  if (*size <= *(size + 1))
   {
-    v11 = *(a3 + 1);
+    v11 = *(size + 1);
   }
 
   v12 = vcvtps_s32_f32(v10 * v11);
@@ -1146,7 +1146,7 @@ LABEL_55:
   return v9;
 }
 
-- (void)setContainingViewport:(void *)a3
+- (void)setContainingViewport:(void *)viewport
 {
   if (byte_280A46430 == 1)
   {
@@ -1182,7 +1182,7 @@ LABEL_55:
     }
 
     v35 = MEMORY[0x277CCACA8];
-    sub_276152FD4("ivec2(%d, %d)", v27, v28, v29, v30, v31, v32, v33, *a3);
+    sub_276152FD4("ivec2(%d, %d)", v27, v28, v29, v30, v31, v32, v33, *viewport);
     if (v43 >= 0)
     {
       objc_msgSend_stringWithUTF8String_(v35, v36, v37, v38, v39, __p);
@@ -1201,13 +1201,13 @@ LABEL_55:
     NSLog(&cfstr_PCvChangedFrom.isa, v8, self, v16, v34, v40);
   }
 
-  objc_msgSend_setContainingViewport_(self->_layout, a2, *a3, v3, v4, __p);
+  objc_msgSend_setContainingViewport_(self->_layout, a2, *viewport, v3, v4, __p);
 }
 
-- (void)initializeResizing:(void *)a3
+- (void)initializeResizing:(void *)resizing
 {
-  self->_target.var0.var0 = *a3;
-  LODWORD(v3) = *(a3 + 1);
+  self->_target.var0.var0 = *resizing;
+  LODWORD(v3) = *(resizing + 1);
   self->_target.var1.var0 = *&v3;
   objc_msgSend_seedResizeCondition(self, a2, v3, v4, v5);
   objc_msgSend_resetInfoChartScale(self->_accessor, v7, v8, v9, v10);
@@ -1262,26 +1262,26 @@ LABEL_55:
   MEMORY[0x2821F9670](self, sel_loop, v10, v11, v12);
 }
 
-- (tvec2<float>)updateResizerFromRequestedSize:(void *)a3 startingSize:(void *)a4
+- (tvec2<float>)updateResizerFromRequestedSize:(void *)size startingSize:(void *)startingSize
 {
   v6 = v4;
   v7 = objc_opt_class();
   v12 = objc_msgSend_minimumSize(v7, v8, v9, v10, v11);
   v14 = vdup_lane_s32(v13, 0);
-  *v6 = vbsl_s8(vcgt_f32(*a3, v14), *a3, v14);
+  *v6 = vbsl_s8(vcgt_f32(*size, v14), *size, v14);
   return v12;
 }
 
-- (tvec2<float>)resize:(void *)a3 startingSize:(void *)a4
+- (tvec2<float>)resize:(void *)resize startingSize:(void *)size
 {
   v11 = v4;
-  objc_msgSend_updateResizerFromRequestedSize_startingSize_(self, a2, v5, v6, v7, a3, a4);
+  objc_msgSend_updateResizerFromRequestedSize_startingSize_(self, a2, v5, v6, v7, resize, size);
   if (byte_280A46430 == 1)
   {
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(a2);
     v18 = MEMORY[0x277CCACA8];
-    v179 = *a3;
+    v179 = *resize;
     sub_276152FD4("vec2(%f, %f)", v19, v20, v21, v22, v23, v24, v25, SLOBYTE(v179));
     if (v187 >= 0)
     {
@@ -1513,7 +1513,7 @@ LABEL_36:
       }
 
       v158 = MEMORY[0x277CCACA8];
-      v182 = *a3;
+      v182 = *resize;
       sub_276152FD4("vec2(%f, %f)", v150, v151, v152, v153, v154, v155, v156, SLOBYTE(v182));
       if (v187 >= 0)
       {

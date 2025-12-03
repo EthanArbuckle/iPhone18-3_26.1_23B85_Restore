@@ -1,24 +1,24 @@
 @interface BKLibraryBookshelfCollectionsHeader
 - (BKLibraryActionHandler)actionHandler;
-- (BKLibraryBookshelfCollectionsHeader)initWithFrame:(CGRect)a3;
+- (BKLibraryBookshelfCollectionsHeader)initWithFrame:(CGRect)frame;
 - (BKLibraryBookshelfSupplementaryDataSource)dataSource;
 - (void)_setupGlyphs;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setActionHandler:(id)a3;
-- (void)setButtonText:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)updateButtonWithText:(id)a3 attributes:(id)a4;
+- (void)setActionHandler:(id)handler;
+- (void)setButtonText:(id)text;
+- (void)setDataSource:(id)source;
+- (void)updateButtonWithText:(id)text attributes:(id)attributes;
 @end
 
 @implementation BKLibraryBookshelfCollectionsHeader
 
-- (BKLibraryBookshelfCollectionsHeader)initWithFrame:(CGRect)a3
+- (BKLibraryBookshelfCollectionsHeader)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = BKLibraryBookshelfCollectionsHeader;
-  v3 = [(BKLibraryBookshelfCollectionsHeader *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKLibraryBookshelfCollectionsHeader *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIButton buttonWithType:0];
@@ -58,8 +58,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
-  [v11 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+  chevron = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
+  [chevron sizeThatFits:{1.79769313e308, 1.79769313e308}];
   v13 = v12;
   v15 = v14;
 
@@ -78,14 +78,14 @@
   v18 = v8 + v17 * -2.0;
   [(BKLibraryBookshelfCollectionsHeader *)self margins];
   v20 = v4 + v19;
-  v21 = [(BKLibraryBookshelfCollectionsHeader *)self button];
-  [v21 sizeThatFits:{v18, v10}];
+  button = [(BKLibraryBookshelfCollectionsHeader *)self button];
+  [button sizeThatFits:{v18, v10}];
   v23 = v22;
 
-  v24 = [(BKLibraryBookshelfCollectionsHeader *)self traitCollection];
-  v25 = [v24 horizontalSizeClass];
+  traitCollection = [(BKLibraryBookshelfCollectionsHeader *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v25 == 1)
+  if (horizontalSizeClass == 1)
   {
     v54.origin.x = v4;
     v54.origin.y = v6;
@@ -128,8 +128,8 @@
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  v39 = [(BKLibraryBookshelfCollectionsHeader *)self button];
-  [v39 setFrame:{v32, v34, v36, v38}];
+  button2 = [(BKLibraryBookshelfCollectionsHeader *)self button];
+  [button2 setFrame:{v32, v34, v36, v38}];
 
   [(BKLibraryBookshelfCollectionsHeader *)self isRTL];
   IMRectFlippedForRTL();
@@ -137,21 +137,21 @@
   v43 = v42;
   v45 = v44;
   v47 = v46;
-  v48 = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
-  [v48 setFrame:{v41, v43, v45, v47}];
+  chevron2 = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
+  [chevron2 setFrame:{v41, v43, v45, v47}];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v71.receiver = self;
   v71.super_class = BKLibraryBookshelfCollectionsHeader;
-  v4 = a3;
-  [(BKLibraryBookshelfCollectionsHeader *)&v71 applyLayoutAttributes:v4];
+  attributesCopy = attributes;
+  [(BKLibraryBookshelfCollectionsHeader *)&v71 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
   v5 = BUDynamicCast();
 
-  v6 = [v5 mainHeaderMetrics];
-  [(BKLibraryBookshelfCollectionsHeader *)self setMainHeaderMetrics:v6];
+  mainHeaderMetrics = [v5 mainHeaderMetrics];
+  [(BKLibraryBookshelfCollectionsHeader *)self setMainHeaderMetrics:mainHeaderMetrics];
   v7 = +[UIColor systemGroupedBackgroundColor];
   if (!qword_100AF75C8 || ([qword_100AF75C0 isEqual:v7] & 1) == 0)
   {
@@ -161,9 +161,9 @@
     qword_100AF75C8 = v8;
   }
 
-  v10 = [v6 readingListHighlightColor];
-  v11 = v10;
-  if (!qword_100AF75B8 || ([v10 isEqual:qword_100AF75B0] & 1) == 0)
+  readingListHighlightColor = [mainHeaderMetrics readingListHighlightColor];
+  v11 = readingListHighlightColor;
+  if (!qword_100AF75B8 || ([readingListHighlightColor isEqual:qword_100AF75B0] & 1) == 0)
   {
     objc_storeStrong(&qword_100AF75B0, v11);
     v12 = [UIImage imageWithColor:qword_100AF75B0];
@@ -174,98 +174,98 @@
   v14 = +[UIApplication sharedApplication];
   -[BKLibraryBookshelfCollectionsHeader setIsRTL:](self, "setIsRTL:", [v14 userInterfaceLayoutDirection] == 1);
 
-  v15 = [(BKLibraryBookshelfCollectionsHeader *)self button];
+  button = [(BKLibraryBookshelfCollectionsHeader *)self button];
   if ([v5 layoutDebugMode])
   {
     v16 = +[UIColor redColor];
     v17 = [v16 colorWithAlphaComponent:0.2];
-    v18 = [v17 CGColor];
+    cGColor = [v17 CGColor];
     [(BKLibraryBookshelfCollectionsHeader *)self layer];
     v19 = v67 = v7;
-    [v19 setBorderColor:v18];
+    [v19 setBorderColor:cGColor];
 
-    v20 = [(BKLibraryBookshelfCollectionsHeader *)self layer];
+    layer = [(BKLibraryBookshelfCollectionsHeader *)self layer];
     v21 = 0.5;
-    [v20 setBorderWidth:0.5];
+    [layer setBorderWidth:0.5];
 
     v22 = +[UIColor greenColor];
     v23 = [v22 colorWithAlphaComponent:0.2];
-    v24 = [v23 CGColor];
-    v25 = [v15 layer];
-    [v25 setBackgroundColor:v24];
+    cGColor2 = [v23 CGColor];
+    layer2 = [button layer];
+    [layer2 setBackgroundColor:cGColor2];
 
     v26 = +[UIColor redColor];
     v27 = [v26 colorWithAlphaComponent:0.2];
-    v28 = [v27 CGColor];
-    v29 = [v15 imageView];
-    v30 = [v29 layer];
-    [v30 setBorderColor:v28];
+    cGColor3 = [v27 CGColor];
+    imageView = [button imageView];
+    layer3 = [imageView layer];
+    [layer3 setBorderColor:cGColor3];
 
-    v31 = [v15 imageView];
-    v32 = [v31 layer];
-    [v32 setBorderWidth:0.5];
+    imageView2 = [button imageView];
+    layer4 = [imageView2 layer];
+    [layer4 setBorderWidth:0.5];
 
     v33 = +[UIColor redColor];
     v34 = [v33 colorWithAlphaComponent:0.2];
-    v35 = [v34 CGColor];
-    v36 = [v15 titleLabel];
-    v37 = [v36 layer];
-    [v37 setBorderColor:v35];
+    cGColor4 = [v34 CGColor];
+    titleLabel = [button titleLabel];
+    layer5 = [titleLabel layer];
+    [layer5 setBorderColor:cGColor4];
 
-    v38 = [v15 titleLabel];
-    v39 = [v38 layer];
-    [v39 setBorderWidth:0.5];
+    titleLabel2 = [button titleLabel];
+    layer6 = [titleLabel2 layer];
+    [layer6 setBorderWidth:0.5];
 
-    v40 = +[UIColor redColor];
-    v41 = [v40 colorWithAlphaComponent:0.2];
-    v42 = [v41 CGColor];
-    v43 = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
-    v44 = [v43 layer];
-    [v44 setBorderColor:v42];
+    titleLabel3 = +[UIColor redColor];
+    layer11 = [titleLabel3 colorWithAlphaComponent:0.2];
+    cGColor5 = [layer11 CGColor];
+    chevron = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
+    layer7 = [chevron layer];
+    [layer7 setBorderColor:cGColor5];
 
     v7 = v67;
   }
 
   else
   {
-    v45 = [(BKLibraryBookshelfCollectionsHeader *)self layer];
+    layer8 = [(BKLibraryBookshelfCollectionsHeader *)self layer];
     v21 = 0.0;
-    [v45 setBorderWidth:0.0];
+    [layer8 setBorderWidth:0.0];
 
-    v46 = [v15 layer];
-    [v46 setBackgroundColor:0];
+    layer9 = [button layer];
+    [layer9 setBackgroundColor:0];
 
-    v47 = [v15 imageView];
-    v48 = [v47 layer];
-    [v48 setBorderWidth:0.0];
+    imageView3 = [button imageView];
+    layer10 = [imageView3 layer];
+    [layer10 setBorderWidth:0.0];
 
-    v40 = [v15 titleLabel];
-    v41 = [v40 layer];
-    [v41 setBorderWidth:0.0];
+    titleLabel3 = [button titleLabel];
+    layer11 = [titleLabel3 layer];
+    [layer11 setBorderWidth:0.0];
   }
 
-  v49 = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
-  v50 = [v49 layer];
-  [v50 setBorderWidth:v21];
+  chevron2 = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
+  layer12 = [chevron2 layer];
+  [layer12 setBorderWidth:v21];
 
-  v51 = [(BKLibraryBookshelfCollectionsHeader *)self backgroundColor];
-  v52 = [v6 headerBackgroundColor];
+  backgroundColor = [(BKLibraryBookshelfCollectionsHeader *)self backgroundColor];
+  headerBackgroundColor = [mainHeaderMetrics headerBackgroundColor];
 
-  if (v51 != v52)
+  if (backgroundColor != headerBackgroundColor)
   {
-    v53 = [v6 headerBackgroundColor];
-    [(BKLibraryBookshelfCollectionsHeader *)self setBackgroundColor:v53];
+    headerBackgroundColor2 = [mainHeaderMetrics headerBackgroundColor];
+    [(BKLibraryBookshelfCollectionsHeader *)self setBackgroundColor:headerBackgroundColor2];
   }
 
-  [v6 readingListPadding];
+  [mainHeaderMetrics readingListPadding];
   [(BKLibraryBookshelfCollectionsHeader *)self setPadding:?];
-  [v6 chevronSpacing];
+  [mainHeaderMetrics chevronSpacing];
   [(BKLibraryBookshelfCollectionsHeader *)self setChevronSpacing:?];
-  v54 = [v5 columnMetrics];
-  [v54 margins];
+  columnMetrics = [v5 columnMetrics];
+  [columnMetrics margins];
   [(BKLibraryBookshelfCollectionsHeader *)self setMargins:?];
 
-  [v6 readingListImageSpacing];
+  [mainHeaderMetrics readingListImageSpacing];
   v56 = v55;
   v57 = v55 * 0.5;
   if ([(BKLibraryBookshelfCollectionsHeader *)self isRTL])
@@ -278,143 +278,143 @@
     v58 = v57;
   }
 
-  v59 = [v6 readingListHighlightColor];
+  readingListHighlightColor2 = [mainHeaderMetrics readingListHighlightColor];
   v60 = &qword_100AF75B8;
-  if (!v59)
+  if (!readingListHighlightColor2)
   {
     v60 = &qword_100AF75C8;
   }
 
   v61 = *v60;
 
-  [v15 setContentVerticalAlignment:0];
-  [v15 setContentHorizontalAlignment:4];
-  [v15 setImageEdgeInsets:{0.0, -v58, 0.0, v58}];
-  [v15 setTitleEdgeInsets:{0.0, v58, 0.0, -v58}];
-  [v15 setContentEdgeInsets:{0.0, v57, 0.0, v57}];
-  [v15 setBackgroundImage:v61 forState:1];
+  [button setContentVerticalAlignment:0];
+  [button setContentHorizontalAlignment:4];
+  [button setImageEdgeInsets:{0.0, -v58, 0.0, v58}];
+  [button setTitleEdgeInsets:{0.0, v58, 0.0, -v58}];
+  [button setContentEdgeInsets:{0.0, v57, 0.0, v57}];
+  [button setBackgroundImage:v61 forState:1];
   [(BKLibraryBookshelfCollectionsHeader *)self _setupGlyphs];
-  v62 = [v15 isEnabled];
-  if (v62 == [v5 editMode])
+  isEnabled = [button isEnabled];
+  if (isEnabled == [v5 editMode])
   {
     v68[0] = _NSConcreteStackBlock;
     v68[1] = 3221225472;
     v68[2] = sub_1000EB4B0;
     v68[3] = &unk_100A03440;
-    v69 = v15;
+    v69 = button;
     v70 = v5;
     [UIView transitionWithView:v69 duration:5242880 options:v68 animations:0 completion:0.3];
   }
 
-  v63 = [(BKLibraryBookshelfCollectionsHeader *)self buttonText];
+  buttonText = [(BKLibraryBookshelfCollectionsHeader *)self buttonText];
 
-  if (v63)
+  if (buttonText)
   {
-    v64 = [(BKLibraryBookshelfCollectionsHeader *)self buttonText];
-    v65 = [v6 collectionsLabelFontAttributes];
-    v66 = [v65 attributes];
-    [(BKLibraryBookshelfCollectionsHeader *)self updateButtonWithText:v64 attributes:v66];
+    buttonText2 = [(BKLibraryBookshelfCollectionsHeader *)self buttonText];
+    collectionsLabelFontAttributes = [mainHeaderMetrics collectionsLabelFontAttributes];
+    attributes = [collectionsLabelFontAttributes attributes];
+    [(BKLibraryBookshelfCollectionsHeader *)self updateButtonWithText:buttonText2 attributes:attributes];
   }
 }
 
 - (void)_setupGlyphs
 {
-  v3 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
-  v4 = [v3 chevronFontAttributes];
-  v5 = [v4 font];
-  v6 = [UIImageSymbolConfiguration configurationWithFont:v5 scale:1];
+  mainHeaderMetrics = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
+  chevronFontAttributes = [mainHeaderMetrics chevronFontAttributes];
+  font = [chevronFontAttributes font];
+  v6 = [UIImageSymbolConfiguration configurationWithFont:font scale:1];
 
-  v7 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
-  v8 = [v7 chevronName];
-  v9 = [UIImage systemImageNamed:v8];
+  mainHeaderMetrics2 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
+  chevronName = [mainHeaderMetrics2 chevronName];
+  v9 = [UIImage systemImageNamed:chevronName];
   v10 = [v9 imageWithConfiguration:v6];
   [(BKLibraryBookshelfCollectionsHeader *)self setChevronImage:v10];
 
-  v11 = [(BKLibraryBookshelfCollectionsHeader *)self chevronImage];
-  v12 = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
-  [v12 setImage:v11];
+  chevronImage = [(BKLibraryBookshelfCollectionsHeader *)self chevronImage];
+  chevron = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
+  [chevron setImage:chevronImage];
 
-  v13 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
-  v14 = [v13 chevronFontAttributes];
-  v15 = [v14 foregroundColor];
-  v16 = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
-  [v16 setTintColor:v15];
+  mainHeaderMetrics3 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
+  chevronFontAttributes2 = [mainHeaderMetrics3 chevronFontAttributes];
+  foregroundColor = [chevronFontAttributes2 foregroundColor];
+  chevron2 = [(BKLibraryBookshelfCollectionsHeader *)self chevron];
+  [chevron2 setTintColor:foregroundColor];
 
-  v17 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
-  v18 = [v17 iconFontAttributes];
-  v19 = [v18 font];
-  v30 = [UIImageSymbolConfiguration configurationWithFont:v19 scale:3];
+  mainHeaderMetrics4 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
+  iconFontAttributes = [mainHeaderMetrics4 iconFontAttributes];
+  font2 = [iconFontAttributes font];
+  v30 = [UIImageSymbolConfiguration configurationWithFont:font2 scale:3];
 
-  v20 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
-  v21 = [v20 iconName];
-  v22 = [UIImage systemImageNamed:v21];
+  mainHeaderMetrics5 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
+  iconName = [mainHeaderMetrics5 iconName];
+  v22 = [UIImage systemImageNamed:iconName];
   v23 = [v22 imageWithConfiguration:v30];
 
-  v24 = [(BKLibraryBookshelfCollectionsHeader *)self button];
-  [v24 setImage:v23 forState:0];
+  button = [(BKLibraryBookshelfCollectionsHeader *)self button];
+  [button setImage:v23 forState:0];
 
-  v25 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
-  v26 = [v25 iconFontAttributes];
-  v27 = [v26 foregroundColor];
-  v28 = [(BKLibraryBookshelfCollectionsHeader *)self button];
-  v29 = [v28 imageView];
-  [v29 setTintColor:v27];
+  mainHeaderMetrics6 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
+  iconFontAttributes2 = [mainHeaderMetrics6 iconFontAttributes];
+  foregroundColor2 = [iconFontAttributes2 foregroundColor];
+  button2 = [(BKLibraryBookshelfCollectionsHeader *)self button];
+  imageView = [button2 imageView];
+  [imageView setTintColor:foregroundColor2];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   [BKDataBinder unbind:self];
-  objc_storeWeak(&self->_dataSource, v4);
+  objc_storeWeak(&self->_dataSource, sourceCopy);
 
   [(BKLibraryBookshelfCollectionsHeader *)self _setupGlyphs];
-  v5 = [(BKLibraryBookshelfCollectionsHeader *)self button];
-  v6 = [v5 imageView];
-  [v6 setContentMode:1];
+  button = [(BKLibraryBookshelfCollectionsHeader *)self button];
+  imageView = [button imageView];
+  [imageView setContentMode:1];
 
-  v7 = [(BKLibraryBookshelfCollectionsHeader *)self dataSource];
+  dataSource = [(BKLibraryBookshelfCollectionsHeader *)self dataSource];
 
-  if (v7)
+  if (dataSource)
   {
-    v8 = [(BKLibraryBookshelfCollectionsHeader *)self dataSource];
-    [BKDataBinder bind:v8 key:@"readingListButtonText" to:self key:@"buttonText"];
+    dataSource2 = [(BKLibraryBookshelfCollectionsHeader *)self dataSource];
+    [BKDataBinder bind:dataSource2 key:@"readingListButtonText" to:self key:@"buttonText"];
   }
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  obj = a3;
+  obj = handler;
   WeakRetained = objc_loadWeakRetained(&self->_actionHandler);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_actionHandler, obj);
-    v6 = [(BKLibraryBookshelfCollectionsHeader *)self button];
-    [v6 removeTarget:0 action:0 forControlEvents:64];
+    button = [(BKLibraryBookshelfCollectionsHeader *)self button];
+    [button removeTarget:0 action:0 forControlEvents:64];
 
-    v7 = [(BKLibraryBookshelfCollectionsHeader *)self button];
-    v8 = [(BKLibraryBookshelfCollectionsHeader *)self actionHandler];
-    [v7 addTarget:v8 action:"showReadingLists" forControlEvents:64];
+    button2 = [(BKLibraryBookshelfCollectionsHeader *)self button];
+    actionHandler = [(BKLibraryBookshelfCollectionsHeader *)self actionHandler];
+    [button2 addTarget:actionHandler action:"showReadingLists" forControlEvents:64];
 
     v5 = obj;
   }
 }
 
-- (void)setButtonText:(id)a3
+- (void)setButtonText:(id)text
 {
-  objc_storeStrong(&self->_buttonText, a3);
-  v5 = a3;
-  v8 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
-  v6 = [v8 collectionsLabelFontAttributes];
-  v7 = [v6 attributes];
-  [(BKLibraryBookshelfCollectionsHeader *)self updateButtonWithText:v5 attributes:v7];
+  objc_storeStrong(&self->_buttonText, text);
+  textCopy = text;
+  mainHeaderMetrics = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
+  collectionsLabelFontAttributes = [mainHeaderMetrics collectionsLabelFontAttributes];
+  attributes = [collectionsLabelFontAttributes attributes];
+  [(BKLibraryBookshelfCollectionsHeader *)self updateButtonWithText:textCopy attributes:attributes];
 }
 
-- (void)updateButtonWithText:(id)a3 attributes:(id)a4
+- (void)updateButtonWithText:(id)text attributes:(id)attributes
 {
-  v43 = a3;
-  v6 = [a4 mutableCopy];
+  textCopy = text;
+  v6 = [attributes mutableCopy];
   v7 = [v6 objectForKeyedSubscript:NSParagraphStyleAttributeName];
   v8 = v7;
   if (v7)
@@ -435,12 +435,12 @@
   v12 = [v11 copy];
   [v6 setObject:v12 forKeyedSubscript:NSParagraphStyleAttributeName];
 
-  v13 = [[NSMutableAttributedString alloc] initWithString:v43 attributes:v6];
-  v14 = [(BKLibraryBookshelfCollectionsHeader *)self traitCollection];
-  v15 = [v14 horizontalSizeClass];
+  v13 = [[NSMutableAttributedString alloc] initWithString:textCopy attributes:v6];
+  traitCollection = [(BKLibraryBookshelfCollectionsHeader *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v42 = v10;
-  if (v15 == 1)
+  if (horizontalSizeClass == 1)
   {
     v16 = NSForegroundColorAttributeName;
   }
@@ -448,8 +448,8 @@
   else
   {
     v17 = objc_alloc_init(NSTextAttachment);
-    v18 = [(BKLibraryBookshelfCollectionsHeader *)self chevronImage];
-    v19 = [v18 imageWithRenderingMode:2];
+    chevronImage = [(BKLibraryBookshelfCollectionsHeader *)self chevronImage];
+    v19 = [chevronImage imageWithRenderingMode:2];
     [v17 setImage:v19];
 
     v20 = [[NSAttributedString alloc] initWithString:@" " attributes:v6];
@@ -459,28 +459,28 @@
     v22 = [v21 mutableCopy];
 
     v16 = NSForegroundColorAttributeName;
-    v23 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
-    v24 = [v23 chevronFontAttributes];
-    v25 = [v24 foregroundColor];
-    [v22 addAttribute:NSForegroundColorAttributeName value:v25 range:{0, objc_msgSend(v22, "length")}];
+    mainHeaderMetrics = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
+    chevronFontAttributes = [mainHeaderMetrics chevronFontAttributes];
+    foregroundColor = [chevronFontAttributes foregroundColor];
+    [v22 addAttribute:NSForegroundColorAttributeName value:foregroundColor range:{0, objc_msgSend(v22, "length")}];
 
     [v13 appendAttributedString:v22];
   }
 
-  v26 = [(BKLibraryBookshelfCollectionsHeader *)self button];
-  [v26 setAttributedTitle:v13 forState:0];
+  button = [(BKLibraryBookshelfCollectionsHeader *)self button];
+  [button setAttributedTitle:v13 forState:0];
 
   v27 = v6;
   v28 = [v27 objectForKey:v16];
   v29 = [v28 colorWithAlphaComponent:0.5];
   [v27 setObject:v29 forKey:v16];
 
-  v30 = [[NSMutableAttributedString alloc] initWithString:v43 attributes:v27];
-  if (v15 != 1)
+  v30 = [[NSMutableAttributedString alloc] initWithString:textCopy attributes:v27];
+  if (horizontalSizeClass != 1)
   {
     v31 = objc_alloc_init(NSTextAttachment);
-    v32 = [(BKLibraryBookshelfCollectionsHeader *)self chevronImage];
-    v33 = [v32 imageWithRenderingMode:2];
+    chevronImage2 = [(BKLibraryBookshelfCollectionsHeader *)self chevronImage];
+    v33 = [chevronImage2 imageWithRenderingMode:2];
     [v31 setImage:v33];
 
     v34 = [[NSAttributedString alloc] initWithString:@" " attributes:v27];
@@ -489,16 +489,16 @@
     v35 = [NSAttributedString attributedStringWithAttachment:v31];
     v36 = [v35 mutableCopy];
 
-    v37 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
-    v38 = [v37 chevronFontAttributes];
-    v39 = [v38 foregroundColor];
-    [v36 addAttribute:v16 value:v39 range:{0, objc_msgSend(v36, "length")}];
+    mainHeaderMetrics2 = [(BKLibraryBookshelfCollectionsHeader *)self mainHeaderMetrics];
+    chevronFontAttributes2 = [mainHeaderMetrics2 chevronFontAttributes];
+    foregroundColor2 = [chevronFontAttributes2 foregroundColor];
+    [v36 addAttribute:v16 value:foregroundColor2 range:{0, objc_msgSend(v36, "length")}];
 
     [v30 appendAttributedString:v36];
   }
 
-  v40 = [(BKLibraryBookshelfCollectionsHeader *)self button];
-  [v40 setAttributedTitle:v30 forState:2];
+  button2 = [(BKLibraryBookshelfCollectionsHeader *)self button];
+  [button2 setAttributedTitle:v30 forState:2];
 
   [(BKLibraryBookshelfCollectionsHeader *)self setNeedsLayout];
 }

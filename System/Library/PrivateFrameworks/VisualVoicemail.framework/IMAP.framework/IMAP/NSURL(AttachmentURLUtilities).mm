@@ -11,40 +11,40 @@
 
 - (uint64_t)mf_isValidAttachmentURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 hasPrefix:@"x-attach"];
+  scheme = [self scheme];
+  v2 = [scheme hasPrefix:@"x-attach"];
 
   return v2;
 }
 
 - (BOOL)mf_isResourceURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 caseInsensitiveCompare:@"cid"] == 0;
+  scheme = [self scheme];
+  v2 = [scheme caseInsensitiveCompare:@"cid"] == 0;
 
   return v2;
 }
 
 - (uint64_t)mf_rowID
 {
-  if (![a1 mf_isValidAttachmentURL])
+  if (![self mf_isValidAttachmentURL])
   {
     return 0xFFFFFFFFLL;
   }
 
-  v2 = [a1 host];
-  v3 = v2;
-  if (v2)
+  host = [self host];
+  v3 = host;
+  if (host)
   {
-    v4 = [v2 integerValue];
-    if (v4 < 0)
+    integerValue = [host integerValue];
+    if (integerValue < 0)
     {
       v5 = -1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = integerValue;
     }
   }
 
@@ -58,14 +58,14 @@
 
 - (id)mf_partNumbers
 {
-  if ([a1 mf_isValidAttachmentURL])
+  if ([self mf_isValidAttachmentURL])
   {
-    v2 = [a1 absoluteString];
-    v3 = [v2 pathComponents];
+    absoluteString = [self absoluteString];
+    pathComponents = [absoluteString pathComponents];
 
-    if ([v3 count])
+    if ([pathComponents count])
     {
-      v4 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
+      v4 = [pathComponents subarrayWithRange:{1, objc_msgSend(pathComponents, "count") - 1}];
     }
 
     else
@@ -84,18 +84,18 @@
 
 - (id)mf_lastPartNumber
 {
-  v1 = [a1 mf_partNumbers];
-  v2 = [v1 lastObject];
+  mf_partNumbers = [self mf_partNumbers];
+  lastObject = [mf_partNumbers lastObject];
 
-  return v2;
+  return lastObject;
 }
 
 - (id)mf_firstPartNumber
 {
-  v1 = [a1 mf_partNumbers];
-  if ([v1 count])
+  mf_partNumbers = [self mf_partNumbers];
+  if ([mf_partNumbers count])
   {
-    v2 = [v1 objectAtIndexedSubscript:0];
+    v2 = [mf_partNumbers objectAtIndexedSubscript:0];
   }
 
   else

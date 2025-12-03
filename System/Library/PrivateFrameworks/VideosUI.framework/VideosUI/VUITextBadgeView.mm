@@ -1,47 +1,47 @@
 @interface VUITextBadgeView
-+ (BOOL)_viewBackgroundImageNeedsUpdatingWithFrame:(CGRect)a3 currentBackgroundImage:(id)a4;
-+ (id)badgeWithLayout:(id)a3 existing:(id)a4;
++ (BOOL)_viewBackgroundImageNeedsUpdatingWithFrame:(CGRect)frame currentBackgroundImage:(id)image;
++ (id)badgeWithLayout:(id)layout existing:(id)existing;
 - (BOOL)_textBadgeBackgroundImageNeedsUpdating;
 - (CGSize)_textSize;
 - (CGSize)glyphSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (UIEdgeInsets)padding;
-- (VUITextBadgeView)initWithFrame:(CGRect)a3;
+- (VUITextBadgeView)initWithFrame:(CGRect)frame;
 - (VUITextBadgeViewDelegate)delegate;
 - (id)accessibilityLabel;
 - (void)_cancelPendingOperation;
-- (void)_configureWithLayout:(id)a3;
+- (void)_configureWithLayout:(id)layout;
 - (void)_imageLoaded;
 - (void)_invalidateTimer;
-- (void)_redrawView:(id)a3 withDuration:(double)a4;
-- (void)_updateBackgroundImagesWithCompletedOperation:(id)a3;
-- (void)_updateBackgroundMaterialImagesWithBackgroundImageSize:(CGSize)a3 performSynchronously:(BOOL)a4 overlayViewFrame:(CGRect)a5;
+- (void)_redrawView:(id)view withDuration:(double)duration;
+- (void)_updateBackgroundImagesWithCompletedOperation:(id)operation;
+- (void)_updateBackgroundMaterialImagesWithBackgroundImageSize:(CGSize)size performSynchronously:(BOOL)synchronously overlayViewFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)rentalExpirationLabelNeedsRelayout:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)rentalExpirationLabelNeedsRelayout:(id)relayout;
 - (void)reset;
-- (void)setAttributedTitle:(id)a3;
-- (void)setBackgroundImageForMaterialRendering:(id)a3 imageSize:(CGSize)a4 overlayViewFrame:(CGRect)a5;
-- (void)setBackgroundImageForMaterialRendering:(id)a3 imageSize:(CGSize)a4 overlayViewFrame:(CGRect)a5 operationQueue:(id)a6;
-- (void)setBadgeKind:(unint64_t)a3;
-- (void)setImageView:(id)a3;
-- (void)setLayerCornerRadius:(double)a3;
-- (void)setRentalExpirationLabel:(id)a3;
+- (void)setAttributedTitle:(id)title;
+- (void)setBackgroundImageForMaterialRendering:(id)rendering imageSize:(CGSize)size overlayViewFrame:(CGRect)frame;
+- (void)setBackgroundImageForMaterialRendering:(id)rendering imageSize:(CGSize)size overlayViewFrame:(CGRect)frame operationQueue:(id)queue;
+- (void)setBadgeKind:(unint64_t)kind;
+- (void)setImageView:(id)view;
+- (void)setLayerCornerRadius:(double)radius;
+- (void)setRentalExpirationLabel:(id)label;
 @end
 
 @implementation VUITextBadgeView
 
-- (VUITextBadgeView)initWithFrame:(CGRect)a3
+- (VUITextBadgeView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VUITextBadgeView;
   v3 = [(VUITextBadgeView *)&v6 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(VUITextBadgeView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(VUITextBadgeView *)v3 setBackgroundColor:clearColor];
 
     [(VUITextBadgeView *)v3 setContentMode:3];
     [(VUITextBadgeView *)v3 setClearsContextBeforeDrawing:1];
@@ -50,14 +50,14 @@
   return v3;
 }
 
-+ (id)badgeWithLayout:(id)a3 existing:(id)a4
++ (id)badgeWithLayout:(id)layout existing:(id)existing
 {
-  v5 = a4;
-  v6 = a3;
+  existingCopy = existing;
+  layoutCopy = layout;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = existingCopy;
   }
 
   else
@@ -67,52 +67,52 @@
 
   v8 = v7;
   [v7 reset];
-  [v8 _configureWithLayout:v6];
+  [v8 _configureWithLayout:layoutCopy];
 
   return v8;
 }
 
-- (void)_configureWithLayout:(id)a3
+- (void)_configureWithLayout:(id)layout
 {
-  v4 = a3;
-  -[VUITextBadgeView setBadgeKind:](self, "setBadgeKind:", [v4 badgeKind]);
-  [v4 padding];
+  layoutCopy = layout;
+  -[VUITextBadgeView setBadgeKind:](self, "setBadgeKind:", [layoutCopy badgeKind]);
+  [layoutCopy padding];
   [(VUITextBadgeView *)self setPadding:?];
-  v5 = [v4 tintColor];
-  [(VUITextBadgeView *)self setTintColor:v5];
+  tintColor = [layoutCopy tintColor];
+  [(VUITextBadgeView *)self setTintColor:tintColor];
 
-  -[VUITextBadgeView setIsUppercased:](self, "setIsUppercased:", [v4 isUppercased]);
-  -[VUITextBadgeView setBlendMode:](self, "setBlendMode:", [v4 blendMode]);
-  [v4 minHeight];
+  -[VUITextBadgeView setIsUppercased:](self, "setIsUppercased:", [layoutCopy isUppercased]);
+  -[VUITextBadgeView setBlendMode:](self, "setBlendMode:", [layoutCopy blendMode]);
+  [layoutCopy minHeight];
   [(VUITextBadgeView *)self setMinHeight:?];
-  [v4 layerCornerRadius];
+  [layoutCopy layerCornerRadius];
   [(VUITextBadgeView *)self setLayerCornerRadius:?];
-  v6 = [v4 backgroundColor];
-  [(VUITextBadgeView *)self setBackgroundColor:v6];
+  backgroundColor = [layoutCopy backgroundColor];
+  [(VUITextBadgeView *)self setBackgroundColor:backgroundColor];
 
-  v7 = [v4 gradientBgColors];
+  gradientBgColors = [layoutCopy gradientBgColors];
 
-  [(VUITextBadgeView *)self setGradientBgColors:v7];
+  [(VUITextBadgeView *)self setGradientBgColors:gradientBgColors];
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v8 = a3;
-  if (self->_imageView != v8)
+  viewCopy = view;
+  if (self->_imageView != viewCopy)
   {
-    objc_storeStrong(&self->_imageView, a3);
+    objc_storeStrong(&self->_imageView, view);
     [(VUITextBadgeView *)self vui_setNeedsDisplay];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v6 = *MEMORY[0x1E69DF860];
-      [v5 removeObserver:self name:*MEMORY[0x1E69DF860] object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E69DF860] object:0];
 
       if (self->_imageView)
       {
-        v7 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v7 addObserver:self selector:sel__imageLoaded name:v6 object:self->_imageView];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 addObserver:self selector:sel__imageLoaded name:v6 object:self->_imageView];
       }
     }
   }
@@ -130,35 +130,35 @@
   return attributedTitle;
 }
 
-- (void)setBadgeKind:(unint64_t)a3
+- (void)setBadgeKind:(unint64_t)kind
 {
-  if (self->_badgeKind != a3)
+  if (self->_badgeKind != kind)
   {
-    self->_badgeKind = a3;
+    self->_badgeKind = kind;
     [(VUITextBadgeView *)self setClipsToBounds:1];
 
     [(VUITextBadgeView *)self vui_setNeedsDisplay];
   }
 }
 
-- (void)setLayerCornerRadius:(double)a3
+- (void)setLayerCornerRadius:(double)radius
 {
-  if (self->_layerCornerRadius != a3)
+  if (self->_layerCornerRadius != radius)
   {
     [(VUITextBadgeView *)self setVuiClipsToBounds:1];
-    self->_layerCornerRadius = a3;
-    v5 = [(VUITextBadgeView *)self layer];
-    [v5 setCornerRadius:self->_layerCornerRadius];
+    self->_layerCornerRadius = radius;
+    layer = [(VUITextBadgeView *)self layer];
+    [layer setCornerRadius:self->_layerCornerRadius];
 
     [(VUITextBadgeView *)self vui_setNeedsDisplay];
   }
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  if (self->_attributedTitle != a3)
+  if (self->_attributedTitle != title)
   {
-    v4 = [a3 copy];
+    v4 = [title copy];
     attributedTitle = self->_attributedTitle;
     self->_attributedTitle = v4;
 
@@ -166,47 +166,47 @@
   }
 }
 
-- (void)setRentalExpirationLabel:(id)a3
+- (void)setRentalExpirationLabel:(id)label
 {
-  v5 = a3;
-  if (self->_rentalExpirationLabel != v5)
+  labelCopy = label;
+  if (self->_rentalExpirationLabel != labelCopy)
   {
-    v7 = v5;
-    v6 = [(VUILabel *)v5 vuiAttributedText];
-    [(VUITextBadgeView *)self setAttributedTitle:v6];
+    v7 = labelCopy;
+    vuiAttributedText = [(VUILabel *)labelCopy vuiAttributedText];
+    [(VUITextBadgeView *)self setAttributedTitle:vuiAttributedText];
 
     [(VUIRentalExpirationLabel *)v7 setDelegate:self];
     [(VUIRentalExpirationLabel *)self->_rentalExpirationLabel invalidateTimer];
     [(VUITextBadgeView *)self vui_addSubview:v7 oldView:self->_rentalExpirationLabel];
-    objc_storeStrong(&self->_rentalExpirationLabel, a3);
+    objc_storeStrong(&self->_rentalExpirationLabel, label);
     [(VUITextBadgeView *)self vui_setNeedsDisplay];
     [(VUITextBadgeView *)self setClipsToBounds:1];
     [(VUITextBadgeView *)self layoutIfNeeded];
-    v5 = v7;
+    labelCopy = v7;
   }
 }
 
-- (void)rentalExpirationLabelNeedsRelayout:(id)a3
+- (void)rentalExpirationLabelNeedsRelayout:(id)relayout
 {
-  v4 = [a3 vuiAttributedText];
-  [(VUITextBadgeView *)self setAttributedTitle:v4];
+  vuiAttributedText = [relayout vuiAttributedText];
+  [(VUITextBadgeView *)self setAttributedTitle:vuiAttributedText];
 
-  v5 = [(VUITextBadgeView *)self delegate];
-  [v5 textBadgeViewContentsUpdated:self];
+  delegate = [(VUITextBadgeView *)self delegate];
+  [delegate textBadgeViewContentsUpdated:self];
 }
 
 - (void)reset
 {
   [(VUITextBadgeView *)self _invalidateTimer];
   [(VUITextBadgeView *)self setAttributedTitle:0];
-  v3 = [(VUITextBadgeView *)self imageView];
+  imageView = [(VUITextBadgeView *)self imageView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUITextBadgeView *)self imageView];
-    [v5 setImage:0];
+    imageView2 = [(VUITextBadgeView *)self imageView];
+    [imageView2 setImage:0];
   }
 
   [(VUITextBadgeView *)self setLayerCornerRadius:0.0];
@@ -219,14 +219,14 @@
 - (void)dealloc
 {
   [(VUITextBadgeView *)self _invalidateTimer];
-  v3 = [(VUITextBadgeView *)self imageView];
+  imageView = [(VUITextBadgeView *)self imageView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DF860] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DF860] object:0];
   }
 
   [(VUITextBadgeView *)self _cancelPendingOperation];
@@ -235,11 +235,11 @@
   [(VUITextBadgeView *)&v6 dealloc];
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  if (a4)
+  if (only)
   {
-    [(VUITextBadgeView *)self sizeThatFits:a3.width, a3.height];
+    [(VUITextBadgeView *)self sizeThatFits:subviews.width, subviews.height];
   }
 
   else
@@ -253,11 +253,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self->_attributedTitle)
   {
-    [(VUITextBadgeView *)self _textSize:a3.width];
+    [(VUITextBadgeView *)self _textSize:fits.width];
     height = v4;
     VUIRoundValue();
     v7 = v6 + 0.0;
@@ -310,18 +310,18 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v40 = *MEMORY[0x1E69E9840];
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  v7 = [VUIBezierPath bezierPathWithRect:0.0, 0.0, width, height];
-  v8 = v7;
+  height = [VUIBezierPath bezierPathWithRect:0.0, 0.0, width, height];
+  v8 = height;
   if (self->_backgroundImage)
   {
-    CGContextAddPath(CurrentContext, [v7 vuiCGPath]);
+    CGContextAddPath(CurrentContext, [height vuiCGPath]);
     CGContextClip(CurrentContext);
     [(UIImage *)self->_backgroundImage drawAtPoint:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   }
@@ -329,8 +329,8 @@
   badgeKind = self->_badgeKind;
   if (badgeKind == 1)
   {
-    v18 = [(VUITextBadgeView *)self backgroundColor];
-    [v18 set];
+    backgroundColor = [(VUITextBadgeView *)self backgroundColor];
+    [backgroundColor set];
 
     [v8 setLineWidth:self->_strokeSize];
     [v8 stroke];
@@ -339,10 +339,10 @@
 
   if (badgeKind == 3)
   {
-    v17 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
 LABEL_13:
-    v19 = v17;
-    [v17 set];
+    v19 = clearColor;
+    [clearColor set];
 
     [v8 fill];
     goto LABEL_14;
@@ -355,7 +355,7 @@ LABEL_13:
 
   if (![(NSArray *)self->_gradientBgColors count])
   {
-    v17 = [(VUITextBadgeView *)self backgroundColor];
+    clearColor = [(VUITextBadgeView *)self backgroundColor];
     goto LABEL_13;
   }
 
@@ -392,23 +392,23 @@ LABEL_13:
 LABEL_14:
   p_padding = &self->_padding;
   left = self->_padding.left;
-  v22 = [(VUITextBadgeView *)self imageView];
+  imageView = [(VUITextBadgeView *)self imageView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v24 = [(VUITextBadgeView *)self imageView];
-    v25 = [v24 image];
+    imageView2 = [(VUITextBadgeView *)self imageView];
+    image = [imageView2 image];
 
     p_imageView = &self->_imageView;
-    if (self->_imageView && v25)
+    if (self->_imageView && image)
     {
       if (self->_tintColor)
       {
-        v27 = [v25 vui_imageWithColor:?];
+        v27 = [image vui_imageWithColor:?];
 
-        v25 = v27;
+        image = v27;
       }
 
       v28 = self->_glyphSize.width;
@@ -419,14 +419,14 @@ LABEL_14:
       }
 
       VUIRoundValue();
-      [v25 drawInRect:{left, v30, v28, v29}];
+      [image drawInRect:{left, v30, v28, v29}];
       left = v28 + 4.0 + left;
     }
   }
 
   else
   {
-    v25 = 0;
+    image = 0;
     p_imageView = &self->_imageView;
   }
 
@@ -523,56 +523,56 @@ LABEL_14:
   [(VUITextBadgeView *)self forceDisplayIfNeeded];
 }
 
-- (void)setBackgroundImageForMaterialRendering:(id)a3 imageSize:(CGSize)a4 overlayViewFrame:(CGRect)a5 operationQueue:(id)a6
+- (void)setBackgroundImageForMaterialRendering:(id)rendering imageSize:(CGSize)size overlayViewFrame:(CGRect)frame operationQueue:(id)queue
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.height;
-  v12 = a4.width;
-  v16 = a3;
-  v15 = a6;
-  objc_storeStrong(&self->_operationQueue, a6);
-  if (self->_backgroundImageForMaterialRendering != v16)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v11 = size.height;
+  v12 = size.width;
+  renderingCopy = rendering;
+  queueCopy = queue;
+  objc_storeStrong(&self->_operationQueue, queue);
+  if (self->_backgroundImageForMaterialRendering != renderingCopy)
   {
     self->_backgroundImageForMaterialRenderingHasChanged = 1;
-    objc_storeStrong(&self->_backgroundImageForMaterialRendering, a3);
+    objc_storeStrong(&self->_backgroundImageForMaterialRendering, rendering);
     [(VUITextBadgeView *)self _updateBackgroundMaterialImagesWithBackgroundImageSize:0 performSynchronously:v12 overlayViewFrame:v11, x, y, width, height];
   }
 }
 
-- (void)setBackgroundImageForMaterialRendering:(id)a3 imageSize:(CGSize)a4 overlayViewFrame:(CGRect)a5
+- (void)setBackgroundImageForMaterialRendering:(id)rendering imageSize:(CGSize)size overlayViewFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.height;
-  v10 = a4.width;
-  v13 = a3;
-  if (self->_backgroundImageForMaterialRendering != v13)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = size.height;
+  v10 = size.width;
+  renderingCopy = rendering;
+  if (self->_backgroundImageForMaterialRendering != renderingCopy)
   {
     self->_backgroundImageForMaterialRenderingHasChanged = 1;
-    v14 = v13;
-    objc_storeStrong(&self->_backgroundImageForMaterialRendering, a3);
+    v14 = renderingCopy;
+    objc_storeStrong(&self->_backgroundImageForMaterialRendering, rendering);
     [(VUITextBadgeView *)self _updateBackgroundMaterialImagesWithBackgroundImageSize:0 performSynchronously:v10 overlayViewFrame:v9, x, y, width, height];
-    v13 = v14;
+    renderingCopy = v14;
   }
 }
 
-- (void)_updateBackgroundMaterialImagesWithBackgroundImageSize:(CGSize)a3 performSynchronously:(BOOL)a4 overlayViewFrame:(CGRect)a5
+- (void)_updateBackgroundMaterialImagesWithBackgroundImageSize:(CGSize)size performSynchronously:(BOOL)synchronously overlayViewFrame:(CGRect)frame
 {
   v37 = *MEMORY[0x1E69E9840];
   if (self->_backgroundImageForMaterialRendering)
   {
-    height = a5.size.height;
-    width = a5.size.width;
-    y = a5.origin.y;
-    x = a5.origin.x;
-    v9 = a4;
-    v10 = a3.height;
-    v11 = a3.width;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    synchronouslyCopy = synchronously;
+    v10 = size.height;
+    v11 = size.width;
     [(VUITextBadgeView *)self _cancelPendingOperation];
     v13 = [[VUIOverlayBackgroundMaterialImagesOperation alloc] initWithSourceBackgroundImage:self->_backgroundImageForMaterialRendering];
     [(VUIOverlayBackgroundMaterialImagesOperation *)v13 setResizedBackgroundImageSize:v11, v10];
@@ -586,7 +586,7 @@ LABEL_14:
     }
 
     [(VUIOverlayBackgroundMaterialImagesOperation *)v13 setOverlayMaterialRequests:v14];
-    if (v9)
+    if (synchronouslyCopy)
     {
       [(VUIOverlayBackgroundMaterialImagesOperation *)v13 start];
       [(VUITextBadgeView *)self _updateBackgroundImagesWithCompletedOperation:v13];
@@ -605,8 +605,8 @@ LABEL_14:
       v33 = v22;
       v23 = [v21 blockOperationWithBlock:v32];
       [v23 addDependency:v22];
-      v24 = [MEMORY[0x1E696ADC8] mainQueue];
-      [v24 addOperation:v23];
+      mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+      [mainQueue addOperation:v23];
 
       [(NSOperationQueue *)self->_operationQueue addOperation:v22];
       objc_storeStrong(&self->_pendingOperation, v13);
@@ -655,24 +655,24 @@ void __113__VUITextBadgeView__updateBackgroundMaterialImagesWithBackgroundImageS
   }
 }
 
-- (void)_updateBackgroundImagesWithCompletedOperation:(id)a3
+- (void)_updateBackgroundImagesWithCompletedOperation:(id)operation
 {
-  v10 = a3;
-  v4 = [v10 isCancelled];
-  v5 = v10;
-  if ((v4 & 1) == 0)
+  operationCopy = operation;
+  isCancelled = [operationCopy isCancelled];
+  v5 = operationCopy;
+  if ((isCancelled & 1) == 0)
   {
-    v6 = [v10 resizedSourceBackgroundImage];
-    if (v6)
+    resizedSourceBackgroundImage = [operationCopy resizedSourceBackgroundImage];
+    if (resizedSourceBackgroundImage)
     {
-      objc_storeStrong(&self->_backgroundImageForMaterialRendering, v6);
+      objc_storeStrong(&self->_backgroundImageForMaterialRendering, resizedSourceBackgroundImage);
     }
 
-    v7 = [v10 overlayMaterialImageByIdentifier];
-    v8 = v7;
-    if (v7)
+    overlayMaterialImageByIdentifier = [operationCopy overlayMaterialImageByIdentifier];
+    v8 = overlayMaterialImageByIdentifier;
+    if (overlayMaterialImageByIdentifier)
     {
-      v9 = [v7 objectForKey:@"textBadge"];
+      v9 = [overlayMaterialImageByIdentifier objectForKey:@"textBadge"];
       if (v9)
       {
         [(VUITextBadgeView *)self setBackgroundImage:v9];
@@ -682,22 +682,22 @@ void __113__VUITextBadgeView__updateBackgroundMaterialImagesWithBackgroundImageS
       self->_backgroundImageForMaterialRenderingHasChanged = 0;
     }
 
-    v5 = v10;
+    v5 = operationCopy;
   }
 }
 
-- (void)_redrawView:(id)a3 withDuration:(double)a4
+- (void)_redrawView:(id)view withDuration:(double)duration
 {
-  v5 = a3;
-  [v5 setNeedsDisplay];
+  viewCopy = view;
+  [viewCopy setNeedsDisplay];
   v6 = MEMORY[0x1E69DD250];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__VUITextBadgeView__redrawView_withDuration___block_invoke;
   v8[3] = &unk_1E872D768;
-  v9 = v5;
-  v7 = v5;
-  [v6 transitionWithView:v7 duration:5242880 options:v8 animations:0 completion:a4];
+  v9 = viewCopy;
+  v7 = viewCopy;
+  [v6 transitionWithView:v7 duration:5242880 options:v8 animations:0 completion:duration];
 }
 
 uint64_t __45__VUITextBadgeView__redrawView_withDuration___block_invoke(uint64_t a1)
@@ -762,19 +762,19 @@ uint64_t __45__VUITextBadgeView__redrawView_withDuration___block_invoke(uint64_t
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(VUITextBadgeView *)self backgroundImage];
-  v13 = [objc_opt_class() _viewBackgroundImageNeedsUpdatingWithFrame:v12 currentBackgroundImage:{v5, v7, v9, v11}];
+  backgroundImage = [(VUITextBadgeView *)self backgroundImage];
+  v13 = [objc_opt_class() _viewBackgroundImageNeedsUpdatingWithFrame:backgroundImage currentBackgroundImage:{v5, v7, v9, v11}];
 
   return v13;
 }
 
-+ (BOOL)_viewBackgroundImageNeedsUpdatingWithFrame:(CGRect)a3 currentBackgroundImage:(id)a4
++ (BOOL)_viewBackgroundImageNeedsUpdatingWithFrame:(CGRect)frame currentBackgroundImage:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  imageCopy = image;
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -784,9 +784,9 @@ uint64_t __45__VUITextBadgeView__redrawView_withDuration___block_invoke(uint64_t
     v9 = 0;
   }
 
-  else if (v8)
+  else if (imageCopy)
   {
-    [v8 size];
+    [imageCopy size];
     v9 = height != v11 || width != v10;
   }
 
@@ -798,9 +798,9 @@ uint64_t __45__VUITextBadgeView__redrawView_withDuration___block_invoke(uint64_t
   return v9;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (VUITextBadgeViewPendingOperationContext == a6)
+  if (VUITextBadgeViewPendingOperationContext == context)
   {
     pendingOperation = self->_pendingOperation;
     self->_pendingOperation = 0;
@@ -812,7 +812,7 @@ uint64_t __45__VUITextBadgeView__redrawView_withDuration___block_invoke(uint64_t
     v11 = v7;
     v9.receiver = self;
     v9.super_class = VUITextBadgeView;
-    [(VUITextBadgeView *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(VUITextBadgeView *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

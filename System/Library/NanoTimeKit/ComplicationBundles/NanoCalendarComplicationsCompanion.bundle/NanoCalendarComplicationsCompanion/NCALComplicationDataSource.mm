@@ -1,24 +1,24 @@
 @interface NCALComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device;
 + (id)_debugCLKSideBySideFamilies;
 + (id)bundleIdentifier;
-- (NCALComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (NCALComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)lockedTemplate;
 - (id)sampleTemplate;
 - (void)dealloc;
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getTimelineEndDateWithHandler:(id)a3;
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getTimelineEndDateWithHandler:(id)handler;
 @end
 
 @implementation NCALComplicationDataSource
 
-- (NCALComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NCALComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NCALComplicationDataSource;
-  return [(NCALComplicationDataSource *)&v6 initWithComplication:a3 family:a4 forDevice:a5];
+  return [(NCALComplicationDataSource *)&v6 initWithComplication:complication family:family forDevice:device];
 }
 
 - (void)dealloc
@@ -30,7 +30,7 @@
 
 + (id)bundleIdentifier
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___NCALComplicationDataSource;
   v2 = objc_msgSendSuper2(&v5, "bundleIdentifier");
   v3 = [v2 stringByAppendingString:@".schedule"];
@@ -40,23 +40,23 @@
 
 - (id)sampleTemplate
 {
-  v2 = [(NCALComplicationDataSource *)self family];
+  family = [(NCALComplicationDataSource *)self family];
 
-  return [NCALTimelineEntryModel sampleEventTemplateForFamily:v2];
+  return [NCALTimelineEntryModel sampleEventTemplateForFamily:family];
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(NCALComplicationDataSource *)self _currrentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  _currrentTimelineEntry = [(NCALComplicationDataSource *)self _currrentTimelineEntry];
+  (*(handler + 2))(handlerCopy, _currrentTimelineEntry);
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = a4;
-  v6 = a3 - 7;
-  if (a3 < 7 && ((0x57u >> a3) & 1) != 0)
+  deviceCopy = device;
+  v6 = family - 7;
+  if (family < 7 && ((0x57u >> family) & 1) != 0)
   {
     v7 = 1;
   }
@@ -64,13 +64,13 @@
   else
   {
     v7 = 1;
-    if (a3 != 3)
+    if (family != 3)
     {
-      v8 = CLKComplicationFamilyCircularMedium == a3 || NTKComplicationFamilyUtilitarianLargeNarrow == a3;
+      v8 = CLKComplicationFamilyCircularMedium == family || NTKComplicationFamilyUtilitarianLargeNarrow == family;
       if (!v8 && (v6 >= 6 || ((0x37u >> v6) & 1) == 0))
       {
         v9 = NTKShowBlueRidgeUI();
-        if (a3 == 10)
+        if (family == 10)
         {
           v7 = v9;
         }
@@ -86,38 +86,38 @@
   return v7;
 }
 
-- (void)getTimelineEndDateWithHandler:(id)a3
+- (void)getTimelineEndDateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSDate distantFuture];
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
 - (id)lockedTemplate
 {
   v2 = [NCALTimelineEntryModel lockedEntryForFamily:[(NCALComplicationDataSource *)self family]];
-  v3 = [v2 complicationTemplate];
+  complicationTemplate = [v2 complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v7 = +[NCALNextEventIntent intent];
   v6 = [[CLKWidgetComplicationDescriptor alloc] initWithExtensionBundleIdentifier:@"com.apple.NanoCalendar.WidgetExtension" containerBundleIdentifier:@"com.apple.NanoCalendar" kind:@"com.apple.CalendarWidget.CalendarNextEventComplication" intent:v7];
-  v5[2](v5, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v7 = [[NSUUID alloc] initWithUUIDString:@"827A9753-8ABC-42BF-AFC5-76F5D1838CF9"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [deviceCopy supportsCapability:v7];
 
-  v9 = [a1 _debugCLKSideBySideFamilies];
-  v10 = [NSNumber numberWithInteger:a3];
-  LOBYTE(v7) = [v9 containsObject:v10];
+  _debugCLKSideBySideFamilies = [self _debugCLKSideBySideFamilies];
+  v10 = [NSNumber numberWithInteger:family];
+  LOBYTE(v7) = [_debugCLKSideBySideFamilies containsObject:v10];
 
   return v8 & (v7 ^ 1);
 }

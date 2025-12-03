@@ -1,30 +1,30 @@
 @interface ASPCarryLog_PersistentStateMgr
-- (ASPCarryLog_PersistentStateMgr)initWithIdentifier:(id)a3;
-- (id)getValueForKey:(id)a3;
+- (ASPCarryLog_PersistentStateMgr)initWithIdentifier:(id)identifier;
+- (id)getValueForKey:(id)key;
 - (void)_tryInitializePlistDir;
-- (void)removeKey:(id)a3 doPersist:(BOOL)a4;
-- (void)saveValue:(id)a3 forKey:(id)a4 doPersist:(BOOL)a5;
+- (void)removeKey:(id)key doPersist:(BOOL)persist;
+- (void)saveValue:(id)value forKey:(id)key doPersist:(BOOL)persist;
 @end
 
 @implementation ASPCarryLog_PersistentStateMgr
 
-- (ASPCarryLog_PersistentStateMgr)initWithIdentifier:(id)a3
+- (ASPCarryLog_PersistentStateMgr)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v41.receiver = self;
   v41.super_class = ASPCarryLog_PersistentStateMgr;
   v6 = [(ASPCarryLog_PersistentStateMgr *)&v41 init];
   if (v6)
   {
     v7 = +[NSFileManager defaultManager];
-    objc_storeStrong(&v6->_identifier, a3);
-    v8 = [v5 stringByAppendingString:@".plist"];
+    objc_storeStrong(&v6->_identifier, identifier);
+    v8 = [identifierCopy stringByAppendingString:@".plist"];
     v9 = [@"/private/var/db/NANDTelemetryServices" stringByAppendingPathComponent:v8];
     plistPath = v6->_plistPath;
     v6->_plistPath = v9;
 
-    v11 = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
-    v12 = [NSURL fileURLWithPath:v11 isDirectory:0];
+    plistPath = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
+    v12 = [NSURL fileURLWithPath:plistPath isDirectory:0];
     plistUrl = v6->_plistUrl;
     v6->_plistUrl = v12;
 
@@ -32,16 +32,16 @@
     v6->_stateDict = 0;
 
     [(ASPCarryLog_PersistentStateMgr *)v6 _tryInitializePlistDir];
-    v15 = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
-    v16 = [v7 fileExistsAtPath:v15];
+    plistPath2 = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
+    v16 = [v7 fileExistsAtPath:plistPath2];
 
     v17 = 0;
     v18 = 0;
     if (v16)
     {
-      v19 = [(ASPCarryLog_PersistentStateMgr *)v6 plistUrl];
+      plistUrl = [(ASPCarryLog_PersistentStateMgr *)v6 plistUrl];
       v40 = 0;
-      v18 = [NSDictionary dictionaryWithContentsOfURL:v19 error:&v40];
+      v18 = [NSDictionary dictionaryWithContentsOfURL:plistUrl error:&v40];
       v20 = v40;
 
       if (v20)
@@ -52,9 +52,9 @@
           sub_100048B20(v21, v6);
         }
 
-        v22 = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
+        plistPath3 = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
         v39 = v20;
-        [v7 removeItemAtPath:v22 error:&v39];
+        [v7 removeItemAtPath:plistPath3 error:&v39];
         v17 = v39;
       }
 
@@ -62,7 +62,7 @@
       {
         v23 = [NSMutableDictionary dictionaryWithDictionary:v18];
         v17 = 0;
-        v22 = v6->_stateDict;
+        plistPath3 = v6->_stateDict;
         v6->_stateDict = v23;
       }
     }
@@ -76,31 +76,31 @@
       v26 = oslog;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = v5;
+        v27 = identifierCopy;
         v28 = v26;
-        v29 = [v5 UTF8String];
+        uTF8String = [identifierCopy UTF8String];
         *buf = 136315138;
-        v43 = v29;
+        v43 = uTF8String;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Persistent state absent for %s. Generated an empty one.", buf, 0xCu);
       }
     }
 
-    v30 = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
-    v31 = [v7 fileExistsAtPath:v30];
+    plistPath4 = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
+    v31 = [v7 fileExistsAtPath:plistPath4];
 
     if ((v31 & 1) == 0)
     {
-      v32 = [(ASPCarryLog_PersistentStateMgr *)v6 stateDict];
-      v33 = [(ASPCarryLog_PersistentStateMgr *)v6 plistUrl];
+      stateDict = [(ASPCarryLog_PersistentStateMgr *)v6 stateDict];
+      plistUrl2 = [(ASPCarryLog_PersistentStateMgr *)v6 plistUrl];
       v38 = v17;
-      [v32 writeToURL:v33 error:&v38];
+      [stateDict writeToURL:plistUrl2 error:&v38];
       v34 = v38;
 
       v17 = v34;
       if (!v34)
       {
-        v35 = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
-        disableFileBackUp(v35);
+        plistPath5 = [(ASPCarryLog_PersistentStateMgr *)v6 plistPath];
+        disableFileBackUp(plistPath5);
 
         v17 = 0;
       }
@@ -140,9 +140,9 @@
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [@"/private/var/db/NANDTelemetryServices" UTF8String];
+      uTF8String = [@"/private/var/db/NANDTelemetryServices" UTF8String];
       *buf = 136315138;
-      v14 = v7;
+      v14 = uTF8String;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Plist directory %s does not exist. Creating it", buf, 0xCu);
     }
 
@@ -165,51 +165,51 @@
 LABEL_13:
 }
 
-- (id)getValueForKey:(id)a3
+- (id)getValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  stateDict = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
+  v6 = [stateDict objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (void)saveValue:(id)a3 forKey:(id)a4 doPersist:(BOOL)a5
+- (void)saveValue:(id)value forKey:(id)key doPersist:(BOOL)persist
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
-  [v10 setObject:v9 forKeyedSubscript:v8];
+  persistCopy = persist;
+  keyCopy = key;
+  valueCopy = value;
+  stateDict = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
+  [stateDict setObject:valueCopy forKeyedSubscript:keyCopy];
 
-  if (v5)
+  if (persistCopy)
   {
-    v11 = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
-    v12 = [(ASPCarryLog_PersistentStateMgr *)self plistUrl];
+    stateDict2 = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
+    plistUrl = [(ASPCarryLog_PersistentStateMgr *)self plistUrl];
     v14 = 0;
-    [v11 writeToURL:v12 error:&v14];
+    [stateDict2 writeToURL:plistUrl error:&v14];
     v13 = v14;
   }
 }
 
-- (void)removeKey:(id)a3 doPersist:(BOOL)a4
+- (void)removeKey:(id)key doPersist:(BOOL)persist
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  persistCopy = persist;
+  keyCopy = key;
+  stateDict = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
+  v8 = [stateDict objectForKeyedSubscript:keyCopy];
 
   if (v8)
   {
-    v9 = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
-    [v9 removeObjectForKey:v6];
+    stateDict2 = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
+    [stateDict2 removeObjectForKey:keyCopy];
 
-    if (v4)
+    if (persistCopy)
     {
-      v10 = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
-      v11 = [(ASPCarryLog_PersistentStateMgr *)self plistUrl];
+      stateDict3 = [(ASPCarryLog_PersistentStateMgr *)self stateDict];
+      plistUrl = [(ASPCarryLog_PersistentStateMgr *)self plistUrl];
       v13 = 0;
-      [v10 writeToURL:v11 error:&v13];
+      [stateDict3 writeToURL:plistUrl error:&v13];
       v12 = v13;
     }
   }

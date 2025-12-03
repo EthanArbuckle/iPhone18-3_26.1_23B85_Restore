@@ -51,8 +51,8 @@
   objc_copyWeak(&v7, buf);
   objc_copyWeak(&v8, &location);
   [v4 setCompletionBlock:v6];
-  v5 = [(VSFeaturedIdentityProviderLimitingOperation *)self privateQueue];
-  [v5 addOperation:v4];
+  privateQueue = [(VSFeaturedIdentityProviderLimitingOperation *)self privateQueue];
+  [privateQueue addOperation:v4];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v7);

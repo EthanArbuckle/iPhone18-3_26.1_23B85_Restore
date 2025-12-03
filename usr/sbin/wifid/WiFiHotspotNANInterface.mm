@@ -1,95 +1,95 @@
 @interface WiFiHotspotNANInterface
 - (BOOL)checkDeviceNanCapabilities;
-- (BOOL)isConnectedToSameNanNetwork:(__CFString *)a3;
+- (BOOL)isConnectedToSameNanNetwork:(__CFString *)network;
 - (WiFiHotspotNANInterface)init;
-- (unsigned)isHotspotDeviceSupportNAN:(__CFString *)a3 withCFStringRef:(__CFString *)a4;
-- (void)createWAPConfig:(id)a3;
-- (void)createWASConfig:(id)a3;
-- (void)dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5;
-- (void)dataSession:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)dataSession:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)dataSessionRequestStarted:(id)a3;
-- (void)publisher:(id)a3 dataConfirmedForHandle:(id)a4 localInterfaceIndex:(unsigned int)a5 serviceSpecificInfo:(id)a6;
-- (void)publisher:(id)a3 dataTerminatedForHandle:(id)a4 reason:(int64_t)a5;
-- (void)publisher:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)publisher:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)publisherStarted:(id)a3;
-- (void)registerClientDatapathTerminatedCallback:(void *)a3 withContext:(void *)a4;
-- (void)registerPublisherMetricCallback:(void *)a3 withContext:(void *)a4;
-- (void)registerStaArriveCallback:(void *)a3 withContext:(void *)a4;
-- (void)registerStaLeaveCallback:(void *)a3 withContext:(void *)a4;
-- (void)registerSubscriberMetricCallback:(void *)a3 withContext:(void *)a4;
-- (void)registerSubscriberTimerCancelCallback:(void *)a3 withContext:(void *)a4;
-- (void)setDataPathSecCfgForPHSOverNAN:(int64_t)a3;
-- (void)setDeviceNameForPHSOverNAN:(__CFString *)a3;
-- (void)setPasswordForPHSOverNAN:(__CFString *)a3;
+- (unsigned)isHotspotDeviceSupportNAN:(__CFString *)n withCFStringRef:(__CFString *)ref;
+- (void)createWAPConfig:(id)config;
+- (void)createWASConfig:(id)config;
+- (void)dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info;
+- (void)dataSession:(id)session failedToStartWithError:(int64_t)error;
+- (void)dataSession:(id)session terminatedWithReason:(int64_t)reason;
+- (void)dataSessionRequestStarted:(id)started;
+- (void)publisher:(id)publisher dataConfirmedForHandle:(id)handle localInterfaceIndex:(unsigned int)index serviceSpecificInfo:(id)info;
+- (void)publisher:(id)publisher dataTerminatedForHandle:(id)handle reason:(int64_t)reason;
+- (void)publisher:(id)publisher failedToStartWithError:(int64_t)error;
+- (void)publisher:(id)publisher terminatedWithReason:(int64_t)reason;
+- (void)publisherStarted:(id)started;
+- (void)registerClientDatapathTerminatedCallback:(void *)callback withContext:(void *)context;
+- (void)registerPublisherMetricCallback:(void *)callback withContext:(void *)context;
+- (void)registerStaArriveCallback:(void *)callback withContext:(void *)context;
+- (void)registerStaLeaveCallback:(void *)callback withContext:(void *)context;
+- (void)registerSubscriberMetricCallback:(void *)callback withContext:(void *)context;
+- (void)registerSubscriberTimerCancelCallback:(void *)callback withContext:(void *)context;
+- (void)setDataPathSecCfgForPHSOverNAN:(int64_t)n;
+- (void)setDeviceNameForPHSOverNAN:(__CFString *)n;
+- (void)setPasswordForPHSOverNAN:(__CFString *)n;
 - (void)startPublisherForPHSOverNAN;
-- (void)startSubscriberForPHSOverNAN:(id)a3 networkMacAddress:(id)a4;
+- (void)startSubscriberForPHSOverNAN:(id)n networkMacAddress:(id)address;
 - (void)stopPublisherForPHSOverNAN;
 - (void)stopSubscriberAsNoNetworkFound;
 - (void)stopSubscriberForPHSOverNAN;
-- (void)subscriber:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)subscriber:(id)a3 lostDiscoveryResultForPublishID:(unsigned __int8)a4 address:(id)a5;
-- (void)subscriber:(id)a3 receivedDiscoveryResult:(id)a4;
-- (void)subscriber:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)subscriberStarted:(id)a3;
+- (void)subscriber:(id)subscriber failedToStartWithError:(int64_t)error;
+- (void)subscriber:(id)subscriber lostDiscoveryResultForPublishID:(unsigned __int8)d address:(id)address;
+- (void)subscriber:(id)subscriber receivedDiscoveryResult:(id)result;
+- (void)subscriber:(id)subscriber terminatedWithReason:(int64_t)reason;
+- (void)subscriberStarted:(id)started;
 @end
 
 @implementation WiFiHotspotNANInterface
 
-- (void)publisherStarted:(id)a3
+- (void)publisherStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   v4 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"WiFiAwarePublisher started with publisher=%@", v5}];
+    [off_100298C40 WFLog:3 message:{"WiFiAwarePublisher started with publisher=%@", startedCopy}];
   }
 
   objc_autoreleasePoolPop(v4);
   self->_nanPublisherState = 2;
 }
 
-- (void)publisher:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)publisher:(id)publisher failedToStartWithError:(int64_t)error
 {
-  v7 = a3;
+  publisherCopy = publisher;
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"WiFiAwarePublisher failed to start with errorString=%d", a4}];
+    [off_100298C40 WFLog:3 message:{"WiFiAwarePublisher failed to start with errorString=%d", error}];
   }
 
   objc_autoreleasePoolPop(v6);
   self->_nanPublisherState = 0;
   if ([(WiFiHotspotNANInterface *)self publisherMetricsCallback])
   {
-    ([(WiFiHotspotNANInterface *)self publisherMetricsCallback])(0, a4, [(WiFiHotspotNANInterface *)self publisherMetricsCallbackContext]);
+    ([(WiFiHotspotNANInterface *)self publisherMetricsCallback])(0, error, [(WiFiHotspotNANInterface *)self publisherMetricsCallbackContext]);
   }
 }
 
-- (void)publisher:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)publisher:(id)publisher terminatedWithReason:(int64_t)reason
 {
-  v7 = a3;
+  publisherCopy = publisher;
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"WiFiAwarePublisher terminated with reasonString=%d", a4}];
+    [off_100298C40 WFLog:3 message:{"WiFiAwarePublisher terminated with reasonString=%d", reason}];
   }
 
   objc_autoreleasePoolPop(v6);
   self->_nanPublisherState = 0;
   if ([(WiFiHotspotNANInterface *)self publisherMetricsCallback])
   {
-    ([(WiFiHotspotNANInterface *)self publisherMetricsCallback])(2, a4, [(WiFiHotspotNANInterface *)self publisherMetricsCallbackContext]);
+    ([(WiFiHotspotNANInterface *)self publisherMetricsCallback])(2, reason, [(WiFiHotspotNANInterface *)self publisherMetricsCallbackContext]);
   }
 }
 
-- (void)publisher:(id)a3 dataConfirmedForHandle:(id)a4 localInterfaceIndex:(unsigned int)a5 serviceSpecificInfo:(id)a6
+- (void)publisher:(id)publisher dataConfirmedForHandle:(id)handle localInterfaceIndex:(unsigned int)index serviceSpecificInfo:(id)info
 {
-  v23 = a3;
-  v10 = a4;
-  v22 = a6;
-  objc_storeStrong(&self->_wapDataSession, a4);
+  publisherCopy = publisher;
+  handleCopy = handle;
+  infoCopy = info;
+  objc_storeStrong(&self->_wapDataSession, handle);
   self->_sessionTerminated = 0;
   memset(cStr, 170, sizeof(cStr));
   v11 = objc_autoreleasePoolPush();
@@ -101,29 +101,29 @@
   objc_autoreleasePoolPop(v11);
   v25 = 0;
   v24 = 0;
-  v12 = [v10 initiatorDataAddress];
-  v13 = [v12 data];
-  v14 = [v13 bytes];
-  v15 = [v10 initiatorDataAddress];
-  v16 = [v15 data];
-  if ([v16 length] >= 6)
+  initiatorDataAddress = [handleCopy initiatorDataAddress];
+  data = [initiatorDataAddress data];
+  bytes = [data bytes];
+  initiatorDataAddress2 = [handleCopy initiatorDataAddress];
+  data2 = [initiatorDataAddress2 data];
+  if ([data2 length] >= 6)
   {
-    v25 = v14[2];
-    v24 = *v14;
+    v25 = bytes[2];
+    v24 = *bytes;
   }
 
   else
   {
-    v17 = [v10 initiatorDataAddress];
-    v18 = [v17 data];
-    [v18 length];
+    initiatorDataAddress3 = [handleCopy initiatorDataAddress];
+    data3 = [initiatorDataAddress3 data];
+    [data3 length];
     __memcpy_chk();
   }
 
-  [v10 initiatorDataAddress];
+  [handleCopy initiatorDataAddress];
   v19 = [NSString stringWithFormat:@"%.2X:%.2X:%.2X:%.2X:%.2X:%.2X", v24, BYTE1(v24), BYTE2(v24), HIBYTE(v24), v25, HIBYTE(v25)];
-  [(NSMutableDictionary *)self->_wapDataSessionHandles setObject:v10 forKey:v19];
-  if (if_indextoname(a5, cStr))
+  [(NSMutableDictionary *)self->_wapDataSessionHandles setObject:handleCopy forKey:v19];
+  if (if_indextoname(index, cStr))
   {
     v20 = CFStringCreateWithCString(0, cStr, 0x600u);
   }
@@ -142,7 +142,7 @@
 
   if ([(WiFiHotspotNANInterface *)self staArrivecallback])
   {
-    (-[WiFiHotspotNANInterface staArrivecallback](self, "staArrivecallback"))([v10 datapathID], v19, v20, -[WiFiHotspotNANInterface callbackContext](self, "callbackContext"));
+    (-[WiFiHotspotNANInterface staArrivecallback](self, "staArrivecallback"))([handleCopy datapathID], v19, v20, -[WiFiHotspotNANInterface callbackContext](self, "callbackContext"));
   }
 
   if (v20)
@@ -151,43 +151,43 @@
   }
 }
 
-- (void)publisher:(id)a3 dataTerminatedForHandle:(id)a4 reason:(int64_t)a5
+- (void)publisher:(id)publisher dataTerminatedForHandle:(id)handle reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
+  reasonCopy2 = publisher;
+  handleCopy = handle;
   v10 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"WiFiAwarePublisher data session terminated for reason %d \n", a5}];
+    [off_100298C40 WFLog:3 message:{"WiFiAwarePublisher data session terminated for reason %d \n", reason}];
   }
 
   objc_autoreleasePoolPop(v10);
   v24 = 0;
   v23 = 0;
-  v11 = [v9 initiatorDataAddress];
-  v12 = [v11 data];
-  v13 = [v12 bytes];
-  v14 = [v9 initiatorDataAddress];
-  v15 = [v14 data];
-  if ([v15 length] >= 6)
+  initiatorDataAddress = [handleCopy initiatorDataAddress];
+  data = [initiatorDataAddress data];
+  bytes = [data bytes];
+  initiatorDataAddress2 = [handleCopy initiatorDataAddress];
+  data2 = [initiatorDataAddress2 data];
+  if ([data2 length] >= 6)
   {
-    v24 = v13[2];
-    v23 = *v13;
+    v24 = bytes[2];
+    v23 = *bytes;
   }
 
   else
   {
-    [v9 initiatorDataAddress];
-    v22 = v9;
-    v16 = a5;
-    v17 = a5 = v8;
-    v18 = [v17 data];
-    [v18 length];
+    [handleCopy initiatorDataAddress];
+    v22 = handleCopy;
+    reasonCopy = reason;
+    v17 = reason = reasonCopy2;
+    data3 = [v17 data];
+    [data3 length];
     __memcpy_chk();
 
-    v8 = a5;
-    LOBYTE(a5) = v16;
-    v9 = v22;
+    reasonCopy2 = reason;
+    LOBYTE(reason) = reasonCopy;
+    handleCopy = v22;
   }
 
   v19 = [NSString stringWithFormat:@"%.2X:%.2X:%.2X:%.2X:%.2X:%.2X", v23, BYTE1(v23), BYTE2(v23), HIBYTE(v23), v24, HIBYTE(v24)];
@@ -198,13 +198,13 @@
     [(NSMutableDictionary *)self->_wapDataSessionHandles removeObjectForKey:v19];
     if ([(WiFiHotspotNANInterface *)self staLeavecallback])
     {
-      (-[WiFiHotspotNANInterface staLeavecallback](self, "staLeavecallback"))([v9 datapathID], v19, 0, -[WiFiHotspotNANInterface callbackContext](self, "callbackContext"));
+      (-[WiFiHotspotNANInterface staLeavecallback](self, "staLeavecallback"))([handleCopy datapathID], v19, 0, -[WiFiHotspotNANInterface callbackContext](self, "callbackContext"));
     }
   }
 
   if ([(WiFiHotspotNANInterface *)self publisherMetricsCallback])
   {
-    ([(WiFiHotspotNANInterface *)self publisherMetricsCallback])(1, a5, [(WiFiHotspotNANInterface *)self publisherMetricsCallbackContext]);
+    ([(WiFiHotspotNANInterface *)self publisherMetricsCallback])(1, reason, [(WiFiHotspotNANInterface *)self publisherMetricsCallbackContext]);
   }
 
   v21 = objc_autoreleasePoolPush();
@@ -216,58 +216,58 @@
   objc_autoreleasePoolPop(v21);
 }
 
-- (void)registerStaLeaveCallback:(void *)a3 withContext:(void *)a4
+- (void)registerStaLeaveCallback:(void *)callback withContext:(void *)context
 {
-  [(WiFiHotspotNANInterface *)self setStaLeavecallback:a3];
+  [(WiFiHotspotNANInterface *)self setStaLeavecallback:callback];
 
-  [(WiFiHotspotNANInterface *)self setCallbackContext:a4];
+  [(WiFiHotspotNANInterface *)self setCallbackContext:context];
 }
 
-- (void)registerStaArriveCallback:(void *)a3 withContext:(void *)a4
+- (void)registerStaArriveCallback:(void *)callback withContext:(void *)context
 {
-  [(WiFiHotspotNANInterface *)self setStaArrivecallback:a3];
+  [(WiFiHotspotNANInterface *)self setStaArrivecallback:callback];
 
-  [(WiFiHotspotNANInterface *)self setCallbackContext:a4];
+  [(WiFiHotspotNANInterface *)self setCallbackContext:context];
 }
 
-- (void)registerPublisherMetricCallback:(void *)a3 withContext:(void *)a4
+- (void)registerPublisherMetricCallback:(void *)callback withContext:(void *)context
 {
-  [(WiFiHotspotNANInterface *)self setPublisherMetricsCallback:a3];
+  [(WiFiHotspotNANInterface *)self setPublisherMetricsCallback:callback];
 
-  [(WiFiHotspotNANInterface *)self setPublisherMetricsCallbackContext:a4];
+  [(WiFiHotspotNANInterface *)self setPublisherMetricsCallbackContext:context];
 }
 
-- (void)registerSubscriberMetricCallback:(void *)a3 withContext:(void *)a4
+- (void)registerSubscriberMetricCallback:(void *)callback withContext:(void *)context
 {
-  [(WiFiHotspotNANInterface *)self setSubscriberMetricsCallback:a3];
+  [(WiFiHotspotNANInterface *)self setSubscriberMetricsCallback:callback];
 
-  [(WiFiHotspotNANInterface *)self setSubscriberMetricsCallbackContext:a4];
+  [(WiFiHotspotNANInterface *)self setSubscriberMetricsCallbackContext:context];
 }
 
-- (void)registerSubscriberTimerCancelCallback:(void *)a3 withContext:(void *)a4
+- (void)registerSubscriberTimerCancelCallback:(void *)callback withContext:(void *)context
 {
-  [(WiFiHotspotNANInterface *)self setSubscriberCancelTimerCallback:a3];
+  [(WiFiHotspotNANInterface *)self setSubscriberCancelTimerCallback:callback];
 
-  [(WiFiHotspotNANInterface *)self setSubscriberCancelTimerCallbackContext:a4];
+  [(WiFiHotspotNANInterface *)self setSubscriberCancelTimerCallbackContext:context];
 }
 
-- (void)registerClientDatapathTerminatedCallback:(void *)a3 withContext:(void *)a4
+- (void)registerClientDatapathTerminatedCallback:(void *)callback withContext:(void *)context
 {
-  [(WiFiHotspotNANInterface *)self setStaDatapathTerminatedcallback:a3];
+  [(WiFiHotspotNANInterface *)self setStaDatapathTerminatedcallback:callback];
 
-  [(WiFiHotspotNANInterface *)self setLinkTerminatedCallbackContext:a4];
+  [(WiFiHotspotNANInterface *)self setLinkTerminatedCallbackContext:context];
 }
 
-- (BOOL)isConnectedToSameNanNetwork:(__CFString *)a3
+- (BOOL)isConnectedToSameNanNetwork:(__CFString *)network
 {
   v5 = objc_autoreleasePoolPush();
   v6 = off_100298C40;
   if (off_100298C40)
   {
-    v7 = [(WiFiAwareDataSession *)self->_waDataSession discoveryResult];
-    v8 = [v7 serviceName];
-    v9 = [(WiFiAwareDiscoveryResult *)self->_waDiscoveryResult serviceName];
-    [v6 WFLog:3 message:{"NANPHS: %d %d _clientAssociated %d \n", v8 == 0, v9 == 0, self->_clientAssociated}];
+    discoveryResult = [(WiFiAwareDataSession *)self->_waDataSession discoveryResult];
+    serviceName = [discoveryResult serviceName];
+    serviceName2 = [(WiFiAwareDiscoveryResult *)self->_waDiscoveryResult serviceName];
+    [v6 WFLog:3 message:{"NANPHS: %d %d _clientAssociated %d \n", serviceName == 0, serviceName2 == 0, self->_clientAssociated}];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -277,15 +277,15 @@
     v13 = off_100298C40;
     if (off_100298C40)
     {
-      v14 = [(WiFiAwareDataSession *)self->_waDataSession discoveryResult];
-      v15 = [v14 serviceName];
-      [v13 WFLog:3 message:{"NANPHS: serviceNameCurrent %@ serviceNameConnectedTo %@", a3, v15}];
+      discoveryResult2 = [(WiFiAwareDataSession *)self->_waDataSession discoveryResult];
+      serviceName3 = [discoveryResult2 serviceName];
+      [v13 WFLog:3 message:{"NANPHS: serviceNameCurrent %@ serviceNameConnectedTo %@", network, serviceName3}];
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [(WiFiAwareDataSession *)self->_waDataSession discoveryResult];
-    v17 = [v16 serviceName];
-    v18 = [(__CFString *)a3 isEqualToString:v17];
+    discoveryResult3 = [(WiFiAwareDataSession *)self->_waDataSession discoveryResult];
+    serviceName4 = [discoveryResult3 serviceName];
+    v18 = [(__CFString *)network isEqualToString:serviceName4];
   }
 
   else
@@ -303,48 +303,48 @@
   return v18;
 }
 
-- (void)subscriberStarted:(id)a3
+- (void)subscriberStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v3 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"WiFiAwareSubscriber started with subscriber=%@", v4}];
+    [off_100298C40 WFLog:3 message:{"WiFiAwareSubscriber started with subscriber=%@", startedCopy}];
   }
 
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)subscriber:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)subscriber:(id)subscriber failedToStartWithError:(int64_t)error
 {
-  v7 = a3;
+  subscriberCopy = subscriber;
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"WiFiAwareSubscriber failed to start with errorString=%d", a4}];
+    [off_100298C40 WFLog:3 message:{"WiFiAwareSubscriber failed to start with errorString=%d", error}];
   }
 
   objc_autoreleasePoolPop(v6);
   if ([(WiFiHotspotNANInterface *)self subscriberMetricsCallback])
   {
-    ([(WiFiHotspotNANInterface *)self subscriberMetricsCallback])(0, a4, [(WiFiHotspotNANInterface *)self subscriberMetricsCallbackContext]);
+    ([(WiFiHotspotNANInterface *)self subscriberMetricsCallback])(0, error, [(WiFiHotspotNANInterface *)self subscriberMetricsCallbackContext]);
   }
 }
 
-- (void)subscriber:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)subscriber:(id)subscriber terminatedWithReason:(int64_t)reason
 {
-  v7 = a3;
+  subscriberCopy = subscriber;
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"WiFiAwareSubscriber terminated with reasonString=%d", a4}];
+    [off_100298C40 WFLog:3 message:{"WiFiAwareSubscriber terminated with reasonString=%d", reason}];
   }
 
   objc_autoreleasePoolPop(v6);
   *&self->_subscriberStoppedCallbackRcvd = 257;
   if ([(WiFiHotspotNANInterface *)self subscriberMetricsCallback])
   {
-    ([(WiFiHotspotNANInterface *)self subscriberMetricsCallback])(2, a4, [(WiFiHotspotNANInterface *)self subscriberMetricsCallbackContext]);
+    ([(WiFiHotspotNANInterface *)self subscriberMetricsCallback])(2, reason, [(WiFiHotspotNANInterface *)self subscriberMetricsCallbackContext]);
   }
 }
 
@@ -400,10 +400,10 @@
   }
 }
 
-- (void)subscriber:(id)a3 receivedDiscoveryResult:(id)a4
+- (void)subscriber:(id)subscriber receivedDiscoveryResult:(id)result
 {
-  v26 = a3;
-  v6 = a4;
+  subscriberCopy = subscriber;
+  resultCopy = result;
   if (self->_clientAssociated && !self->_subscriberStoppedCallbackRcvd && (wasPHSOverNAN = self->_wasPHSOverNAN) != 0)
   {
     [(WiFiAwareSubscriber *)wasPHSOverNAN stop];
@@ -415,24 +415,24 @@
     v8 = off_100298C40;
     if (off_100298C40)
     {
-      v9 = [v6 serviceSpecificInfo];
-      v10 = [v9 instanceName];
-      v11 = [v6 serviceName];
-      [v8 WFLog:3 message:{"WiFiAwareSubscriber receivedDiscoveryResult with instance name %@, service name %@", v10, v11}];
+      serviceSpecificInfo = [resultCopy serviceSpecificInfo];
+      instanceName = [serviceSpecificInfo instanceName];
+      serviceName = [resultCopy serviceName];
+      [v8 WFLog:3 message:{"WiFiAwareSubscriber receivedDiscoveryResult with instance name %@, service name %@", instanceName, serviceName}];
     }
 
     objc_autoreleasePoolPop(v7);
     pwdList = self->_pwdList;
     if (pwdList && [(NSMutableArray *)pwdList count])
     {
-      v13 = [v26 configuration];
-      v14 = [v13 serviceName];
-      v15 = [v6 serviceName];
-      v16 = [v14 isEqualToString:v15];
+      configuration = [subscriberCopy configuration];
+      serviceName2 = [configuration serviceName];
+      serviceName3 = [resultCopy serviceName];
+      v16 = [serviceName2 isEqualToString:serviceName3];
 
       if (v16)
       {
-        objc_storeStrong(&self->_waDiscoveryResult, a4);
+        objc_storeStrong(&self->_waDiscoveryResult, result);
         v17 = [WiFiAwareDataSession alloc];
         waDiscoveryResult = self->_waDiscoveryResult;
         v19 = [(NSMutableArray *)self->_pwdList objectAtIndexedSubscript:0];
@@ -470,10 +470,10 @@
   }
 }
 
-- (void)subscriber:(id)a3 lostDiscoveryResultForPublishID:(unsigned __int8)a4 address:(id)a5
+- (void)subscriber:(id)subscriber lostDiscoveryResultForPublishID:(unsigned __int8)d address:(id)address
 {
-  v9 = a3;
-  v7 = a5;
+  subscriberCopy = subscriber;
+  addressCopy = address;
   v8 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -481,32 +481,32 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  [v9 stop];
+  [subscriberCopy stop];
   self->_subscriberStopped = 1;
 }
 
-- (void)dataSessionRequestStarted:(id)a3
+- (void)dataSessionRequestStarted:(id)started
 {
-  v7 = a3;
+  startedCopy = started;
   self->_sessionTerminated = 0;
   v4 = objc_autoreleasePoolPush();
   v5 = off_100298C40;
   if (off_100298C40)
   {
-    v6 = [v7 localDataAddress];
-    [v5 WFLog:3 message:{"WiFiAwareDataSession started, self nan data macAddress %@", v6}];
+    localDataAddress = [startedCopy localDataAddress];
+    [v5 WFLog:3 message:{"WiFiAwareDataSession started, self nan data macAddress %@", localDataAddress}];
   }
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)dataSession:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)dataSession:(id)session failedToStartWithError:(int64_t)error
 {
-  v7 = a3;
+  sessionCopy = session;
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"WiFiAwareDataSession failed to start with errorString=%d", a4}];
+    [off_100298C40 WFLog:3 message:{"WiFiAwareDataSession failed to start with errorString=%d", error}];
   }
 
   objc_autoreleasePoolPop(v6);
@@ -514,20 +514,20 @@
   *&self->_subscriberStoppedCallbackRcvd = 256;
 }
 
-- (void)dataSession:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)dataSession:(id)session terminatedWithReason:(int64_t)reason
 {
-  v17 = a3;
+  sessionCopy = session;
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"WiFiAwareDataSession terminated with reasonString=%d", a4}];
+    [off_100298C40 WFLog:3 message:{"WiFiAwareDataSession terminated with reasonString=%d", reason}];
   }
 
   objc_autoreleasePoolPop(v6);
   self->_sessionTerminated = 1;
   if ([(WiFiHotspotNANInterface *)self staDatapathTerminatedcallback])
   {
-    ([(WiFiHotspotNANInterface *)self staDatapathTerminatedcallback])(self->_networkMacAddr, self->_networkSsid, self->_current_rssi, self->_subscriber_ifname, a4, [(WiFiHotspotNANInterface *)self linkTerminatedCallbackContext]);
+    ([(WiFiHotspotNANInterface *)self staDatapathTerminatedcallback])(self->_networkMacAddr, self->_networkSsid, self->_current_rssi, self->_subscriber_ifname, reason, [(WiFiHotspotNANInterface *)self linkTerminatedCallbackContext]);
   }
 
   self->_clientAssociated = 0;
@@ -553,9 +553,9 @@
 
     [(WiFiAwareSubscriber *)self->_wasPHSOverNAN start];
     self->_subscriberStopped = 0;
-    v13 = [(WiFiAwareSubscribeConfiguration *)self->_wasCfg serviceName];
+    serviceName = [(WiFiAwareSubscribeConfiguration *)self->_wasCfg serviceName];
     lastAssociatedNetworkServiceName = self->_lastAssociatedNetworkServiceName;
-    self->_lastAssociatedNetworkServiceName = v13;
+    self->_lastAssociatedNetworkServiceName = serviceName;
 
     v15 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -569,11 +569,11 @@
   }
 }
 
-- (void)dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5
+- (void)dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  addressCopy = address;
+  infoCopy = info;
   v11 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -588,20 +588,20 @@
   v26 = 0;
   v25 = 0;
   memset(cStr, 170, sizeof(cStr));
-  v13 = [v9 data];
-  v14 = [v13 bytes];
-  v15 = [v9 data];
-  if ([v15 length] >= 6)
+  data = [addressCopy data];
+  bytes = [data bytes];
+  data2 = [addressCopy data];
+  if ([data2 length] >= 6)
   {
-    v17 = *v14;
-    v26 = v14[2];
+    v17 = *bytes;
+    v26 = bytes[2];
     v25 = v17;
   }
 
   else
   {
-    v16 = [v9 data];
-    [v16 length];
+    data3 = [addressCopy data];
+    [data3 length];
     __memcpy_chk();
   }
 
@@ -612,7 +612,7 @@
     ([(WiFiHotspotNANInterface *)self subscriberCancelTimerCallback])([(WiFiHotspotNANInterface *)self subscriberCancelTimerCallbackContext]);
   }
 
-  self->_subscriber_ifindex = [v8 localInterfaceIndex];
+  self->_subscriber_ifindex = [sessionCopy localInterfaceIndex];
   if (if_indextoname([(WiFiHotspotNANInterface *)self subscriber_ifindex], cStr))
   {
     v18 = CFStringCreateWithCString(0, cStr, 0x600u);
@@ -645,10 +645,10 @@
   objc_destroyWeak(&location);
 }
 
-- (unsigned)isHotspotDeviceSupportNAN:(__CFString *)a3 withCFStringRef:(__CFString *)a4
+- (unsigned)isHotspotDeviceSupportNAN:(__CFString *)n withCFStringRef:(__CFString *)ref
 {
   v6 = [NSArray arrayWithObjects:@"iPhone10, 6", @"iPhone11, 8", @"iPhone12, 5", @"iPhone13, 2", @"iPhone13, 4", 0];
-  v7 = [v6 containsObject:a3];
+  v7 = [v6 containsObject:n];
   v8 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -662,7 +662,7 @@
       v9 = "Device model %@ with OS version %@ does not support NAN based PHS ";
     }
 
-    [off_100298C40 WFLog:3 message:{v9, a3, a4}];
+    [off_100298C40 WFLog:3 message:{v9, n, ref}];
   }
 
   objc_autoreleasePoolPop(v8);
@@ -670,10 +670,10 @@
   return v7;
 }
 
-- (void)createWAPConfig:(id)a3
+- (void)createWAPConfig:(id)config
 {
-  v8 = a3;
-  v4 = [[WiFiAwarePublishConfiguration alloc] initWithServiceName:v8];
+  configCopy = config;
+  v4 = [[WiFiAwarePublishConfiguration alloc] initWithServiceName:configCopy];
   wapCfg = self->_wapCfg;
   self->_wapCfg = v4;
 
@@ -697,14 +697,14 @@
   }
 }
 
-- (void)setPasswordForPHSOverNAN:(__CFString *)a3
+- (void)setPasswordForPHSOverNAN:(__CFString *)n
 {
-  if (a3)
+  if (n)
   {
     [(NSMutableArray *)self->_pwdList removeAllObjects];
     pwdList = self->_pwdList;
 
-    [(NSMutableArray *)pwdList addObject:a3];
+    [(NSMutableArray *)pwdList addObject:n];
   }
 
   else
@@ -719,22 +719,22 @@
   }
 }
 
-- (void)setDataPathSecCfgForPHSOverNAN:(int64_t)a3
+- (void)setDataPathSecCfgForPHSOverNAN:(int64_t)n
 {
   v6 = [[WiFiAwarePublishDatapathSecurityConfiguration alloc] initWithPMKList:&__NSArray0__struct passphraseList:self->_pwdList];
-  v5 = [[WiFiAwarePublishDatapathConfiguration alloc] initWithServiceType:a3 securityConfiguration:v6];
+  v5 = [[WiFiAwarePublishDatapathConfiguration alloc] initWithServiceType:n securityConfiguration:v6];
   [(WiFiAwarePublishConfiguration *)self->_wapCfg setDatapathConfiguration:v5];
 }
 
-- (void)setDeviceNameForPHSOverNAN:(__CFString *)a3
+- (void)setDeviceNameForPHSOverNAN:(__CFString *)n
 {
-  v4 = [(WiFiAwarePublishConfiguration *)self->_wapCfg serviceSpecificInfo];
-  [v4 setInstanceName:a3];
+  serviceSpecificInfo = [(WiFiAwarePublishConfiguration *)self->_wapCfg serviceSpecificInfo];
+  [serviceSpecificInfo setInstanceName:n];
 
   v5 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"MIS deviceName set to %@ \n", a3}];
+    [off_100298C40 WFLog:3 message:{"MIS deviceName set to %@ \n", n}];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -742,10 +742,10 @@
 
 - (void)stopPublisherForPHSOverNAN
 {
-  v3 = [(NSMutableDictionary *)self->_wapDataSessionHandles allKeys];
+  allKeys = [(NSMutableDictionary *)self->_wapDataSessionHandles allKeys];
   self->_nanPublisherState = 3;
-  v13 = v3;
-  if ([v3 count] >= 1)
+  v13 = allKeys;
+  if ([allKeys count] >= 1)
   {
     v4 = 0;
     do
@@ -802,10 +802,10 @@
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)createWASConfig:(id)a3
+- (void)createWASConfig:(id)config
 {
-  v6 = a3;
-  v4 = [[WiFiAwareSubscribeConfiguration alloc] initWithServiceName:v6];
+  configCopy = config;
+  v4 = [[WiFiAwareSubscribeConfiguration alloc] initWithServiceName:configCopy];
   wasCfg = self->_wasCfg;
   self->_wasCfg = v4;
 
@@ -815,17 +815,17 @@
   }
 }
 
-- (void)startSubscriberForPHSOverNAN:(id)a3 networkMacAddress:(id)a4
+- (void)startSubscriberForPHSOverNAN:(id)n networkMacAddress:(id)address
 {
-  v35 = a3;
-  v6 = a4;
-  if (!v35)
+  nCopy = n;
+  addressCopy = address;
+  if (!nCopy)
   {
     sub_100173D30();
     goto LABEL_21;
   }
 
-  if (!v6)
+  if (!addressCopy)
   {
     sub_100173CD8();
     goto LABEL_21;
@@ -842,8 +842,8 @@
   if (off_100298C40)
   {
     lastAssociatedNetworkServiceName = self->_lastAssociatedNetworkServiceName;
-    v12 = [(WiFiAwareSubscribeConfiguration *)self->_wasCfg serviceName];
-    [v10 WFLog:3 message:{"WiFiAwareSubscriber _lastAssociatedNetworkServiceName %@ currentServicename %@ ", lastAssociatedNetworkServiceName, v12}];
+    serviceName = [(WiFiAwareSubscribeConfiguration *)self->_wasCfg serviceName];
+    [v10 WFLog:3 message:{"WiFiAwareSubscriber _lastAssociatedNetworkServiceName %@ currentServicename %@ ", lastAssociatedNetworkServiceName, serviceName}];
   }
 
   objc_autoreleasePoolPop(v9);
@@ -917,11 +917,11 @@ LABEL_14:
     }
 
     objc_autoreleasePoolPop(v20);
-    v21 = [[NSString alloc] initWithString:v35];
+    v21 = [[NSString alloc] initWithString:nCopy];
     networkSsidNext = self->_networkSsidNext;
     self->_networkSsidNext = v21;
 
-    v23 = [[NSString alloc] initWithString:v6];
+    v23 = [[NSString alloc] initWithString:addressCopy];
     networkMacAddrNext = self->_networkMacAddrNext;
     self->_networkMacAddrNext = v23;
 
@@ -930,19 +930,19 @@ LABEL_14:
 
   else
   {
-    v25 = [[NSString alloc] initWithString:v35];
+    v25 = [[NSString alloc] initWithString:nCopy];
     networkSsid = self->_networkSsid;
     self->_networkSsid = v25;
 
-    v27 = [[NSString alloc] initWithString:v6];
+    v27 = [[NSString alloc] initWithString:addressCopy];
     networkMacAddr = self->_networkMacAddr;
     self->_networkMacAddr = v27;
 
     [(WiFiAwareSubscriber *)self->_wasPHSOverNAN start];
     self->_subscriberStopped = 0;
-    v29 = [(WiFiAwareSubscribeConfiguration *)self->_wasCfg serviceName];
+    serviceName2 = [(WiFiAwareSubscribeConfiguration *)self->_wasCfg serviceName];
     v30 = self->_lastAssociatedNetworkServiceName;
-    self->_lastAssociatedNetworkServiceName = v29;
+    self->_lastAssociatedNetworkServiceName = serviceName2;
 
     v31 = objc_autoreleasePoolPush();
     if (off_100298C40)

@@ -1,14 +1,14 @@
 @interface ATXComplicationSuggestionHeuristics
 + (id)_countedHomeAccessoryEvents;
-+ (int64_t)scoreFromConfidence:(unsigned __int8)a3;
-+ (unint64_t)_fetchNumberOfCalendarEventsForStartDate:(id)a3 endDate:(id)a4;
++ (int64_t)scoreFromConfidence:(unsigned __int8)confidence;
++ (unint64_t)_fetchNumberOfCalendarEventsForStartDate:(id)date endDate:(id)endDate;
 + (unint64_t)_numBluetoothConnectionsOverLastWeek;
 + (unint64_t)_numCalendarEventsOverLastAndNextWeek;
 + (unint64_t)_numRemindersOverLastWeek;
-+ (unint64_t)getClimateCountGivenHomeCounts:(id)a3;
-+ (unint64_t)getLightCountGivenHomeCounts:(id)a3;
-+ (unint64_t)getSecurityCountGivenHomeCounts:(id)a3;
-+ (unint64_t)numberOfRemindersSinceDate:(id)a3;
++ (unint64_t)getClimateCountGivenHomeCounts:(id)counts;
++ (unint64_t)getLightCountGivenHomeCounts:(id)counts;
++ (unint64_t)getSecurityCountGivenHomeCounts:(id)counts;
++ (unint64_t)numberOfRemindersSinceDate:(id)date;
 - (ATXComplicationSuggestionHeuristics)init;
 - (id)_homeHeuristics;
 - (id)complicationHeuristicsDictionary;
@@ -57,26 +57,26 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
 - (id)complicationHeuristicsDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(ATXComplicationSuggestionHeuristics *)self _batteryHeuristic];
-  if ([(ATXComplicationSuggestionHeuristics *)self _confidenceIsValidForPrediction:v4])
+  _batteryHeuristic = [(ATXComplicationSuggestionHeuristics *)self _batteryHeuristic];
+  if ([(ATXComplicationSuggestionHeuristics *)self _confidenceIsValidForPrediction:_batteryHeuristic])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:_batteryHeuristic];
     v6 = +[ATXComplicationWidgetPersonalities batteryComplicationWidgetPersonality];
     [v3 setObject:v5 forKeyedSubscript:v6];
   }
 
-  v7 = [(ATXComplicationSuggestionHeuristics *)self _calendarHeuristic];
-  if ([(ATXComplicationSuggestionHeuristics *)self _confidenceIsValidForPrediction:v7])
+  _calendarHeuristic = [(ATXComplicationSuggestionHeuristics *)self _calendarHeuristic];
+  if ([(ATXComplicationSuggestionHeuristics *)self _confidenceIsValidForPrediction:_calendarHeuristic])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v7];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:_calendarHeuristic];
     v9 = +[ATXComplicationWidgetPersonalities calendarNextEventComplicationWidgetPersonality];
     [v3 setObject:v8 forKeyedSubscript:v9];
   }
 
-  v10 = [(ATXComplicationSuggestionHeuristics *)self _reminderHeuristic];
-  if ([(ATXComplicationSuggestionHeuristics *)self _confidenceIsValidForPrediction:v10])
+  _reminderHeuristic = [(ATXComplicationSuggestionHeuristics *)self _reminderHeuristic];
+  if ([(ATXComplicationSuggestionHeuristics *)self _confidenceIsValidForPrediction:_reminderHeuristic])
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v10];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:_reminderHeuristic];
     v12 = +[ATXComplicationWidgetPersonalities remindersComplicationWidgetPersonality];
     [v3 setObject:v11 forKeyedSubscript:v12];
   }
@@ -84,8 +84,8 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
   v13 = +[ATXComplicationWidgetPersonalities weatherConditionsComplicationWidgetPersonality];
   [v3 setObject:&unk_283A551D8 forKeyedSubscript:v13];
 
-  v14 = [(ATXComplicationSuggestionHeuristics *)self _homeHeuristics];
-  [v3 addEntriesFromDictionary:v14];
+  _homeHeuristics = [(ATXComplicationSuggestionHeuristics *)self _homeHeuristics];
+  [v3 addEntriesFromDictionary:_homeHeuristics];
 
   return v3;
 }
@@ -97,59 +97,59 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
   [v3 appendString:@"\nHeurstics scores:\n\n"];
   v4 = +[ATXComplicationWidgetPersonalities batteryComplicationWidgetPersonality];
   v5 = [objc_opt_class() scoreFromConfidence:{-[ATXComplicationSuggestionHeuristics _batteryHeuristic](self, "_batteryHeuristic")}];
-  v6 = [(_PASLazyPurgeableResult *)self->_cache result];
-  v7 = [v6 numBluetoothConnectionsOverLastWeek];
+  result = [(_PASLazyPurgeableResult *)self->_cache result];
+  numBluetoothConnectionsOverLastWeek = [result numBluetoothConnectionsOverLastWeek];
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v4 extensionBundleId];
+  extensionBundleId = [v4 extensionBundleId];
   v66 = v4;
-  v10 = [v4 kind];
-  v11 = [v8 stringWithFormat:@"Extension BundleId: %@\nKind: %@\nScore: %lu\nBluetooth connections over last week: %lu\n\n", v9, v10, v5, v7];
+  kind = [v4 kind];
+  v11 = [v8 stringWithFormat:@"Extension BundleId: %@\nKind: %@\nScore: %lu\nBluetooth connections over last week: %lu\n\n", extensionBundleId, kind, v5, numBluetoothConnectionsOverLastWeek];
 
   v65 = v11;
   [v3 appendString:v11];
   v12 = +[ATXComplicationWidgetPersonalities calendarNextEventComplicationWidgetPersonality];
   v13 = [objc_opt_class() scoreFromConfidence:{-[ATXComplicationSuggestionHeuristics _calendarHeuristic](self, "_calendarHeuristic")}];
-  v14 = [(_PASLazyPurgeableResult *)self->_cache result];
-  v15 = [v14 numCalendarEventsOverLastAndNextWeek];
+  result2 = [(_PASLazyPurgeableResult *)self->_cache result];
+  numCalendarEventsOverLastAndNextWeek = [result2 numCalendarEventsOverLastAndNextWeek];
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [v12 extensionBundleId];
+  extensionBundleId2 = [v12 extensionBundleId];
   v64 = v12;
-  v18 = [v12 kind];
-  v19 = [v16 stringWithFormat:@"Extension BundleId: %@\nKind: %@\nScore: %lu\nCalendar events over last and next week: %lu\n\n", v17, v18, v13, v15];
+  kind2 = [v12 kind];
+  v19 = [v16 stringWithFormat:@"Extension BundleId: %@\nKind: %@\nScore: %lu\nCalendar events over last and next week: %lu\n\n", extensionBundleId2, kind2, v13, numCalendarEventsOverLastAndNextWeek];
 
   v63 = v19;
   [v3 appendString:v19];
   v20 = +[ATXComplicationWidgetPersonalities remindersComplicationWidgetPersonality];
-  v21 = [(ATXComplicationSuggestionHeuristics *)self _reminderHeuristic];
-  v22 = [(_PASLazyPurgeableResult *)self->_cache result];
-  v23 = [v22 numRemindersOverLastWeek];
+  _reminderHeuristic = [(ATXComplicationSuggestionHeuristics *)self _reminderHeuristic];
+  result3 = [(_PASLazyPurgeableResult *)self->_cache result];
+  numRemindersOverLastWeek = [result3 numRemindersOverLastWeek];
 
-  v24 = [objc_opt_class() scoreFromConfidence:v21];
+  v24 = [objc_opt_class() scoreFromConfidence:_reminderHeuristic];
   v25 = MEMORY[0x277CCACA8];
-  v26 = [v20 extensionBundleId];
+  extensionBundleId3 = [v20 extensionBundleId];
   v62 = v20;
-  v27 = [v20 kind];
-  v28 = [v25 stringWithFormat:@"Extension BundleId: %@\nKind: %@\nScore: %lu\nReminders over last week: %lu\n\n", v26, v27, v24, v23];
+  kind3 = [v20 kind];
+  v28 = [v25 stringWithFormat:@"Extension BundleId: %@\nKind: %@\nScore: %lu\nReminders over last week: %lu\n\n", extensionBundleId3, kind3, v24, numRemindersOverLastWeek];
 
   v61 = v28;
   [v3 appendString:v28];
   v29 = +[ATXComplicationWidgetPersonalities weatherConditionsComplicationWidgetPersonality];
   v30 = [objc_opt_class() scoreFromConfidence:4];
   v31 = MEMORY[0x277CCACA8];
-  v32 = [v29 extensionBundleId];
+  extensionBundleId4 = [v29 extensionBundleId];
   v60 = v29;
-  v33 = [v29 kind];
-  v34 = [v31 stringWithFormat:@"Extension BundleId: %@\nKind: %@\nScore: %lu\n\n", v32, v33, v30];
+  kind4 = [v29 kind];
+  v34 = [v31 stringWithFormat:@"Extension BundleId: %@\nKind: %@\nScore: %lu\n\n", extensionBundleId4, kind4, v30];
 
   v59 = v34;
   [v3 appendString:v34];
-  v35 = [objc_opt_class() _countedHomeAccessoryEvents];
-  v36 = [objc_opt_class() getClimateCountGivenHomeCounts:v35];
-  v37 = [objc_opt_class() getLightCountGivenHomeCounts:v35];
-  v58 = v35;
-  v38 = [objc_opt_class() getSecurityCountGivenHomeCounts:v35];
+  _countedHomeAccessoryEvents = [objc_opt_class() _countedHomeAccessoryEvents];
+  v36 = [objc_opt_class() getClimateCountGivenHomeCounts:_countedHomeAccessoryEvents];
+  v37 = [objc_opt_class() getLightCountGivenHomeCounts:_countedHomeAccessoryEvents];
+  v58 = _countedHomeAccessoryEvents;
+  v38 = [objc_opt_class() getSecurityCountGivenHomeCounts:_countedHomeAccessoryEvents];
   [v3 appendString:@"Home Heuristics \n"];
   v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Climate Count: %lu\n", v36];
   [v3 appendString:v39];
@@ -162,12 +162,12 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
 
   v42 = v3;
   [v3 appendString:@"Scores: \n"];
-  v43 = [(ATXComplicationSuggestionHeuristics *)self _homeHeuristics];
+  _homeHeuristics = [(ATXComplicationSuggestionHeuristics *)self _homeHeuristics];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v44 = [v43 countByEnumeratingWithState:&v67 objects:v71 count:16];
+  v44 = [_homeHeuristics countByEnumeratingWithState:&v67 objects:v71 count:16];
   if (v44)
   {
     v45 = v44;
@@ -178,21 +178,21 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
       {
         if (*v68 != v46)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(_homeHeuristics);
         }
 
         v48 = *(*(&v67 + 1) + 8 * i);
         v49 = objc_opt_class();
-        v50 = [v43 objectForKeyedSubscript:v48];
+        v50 = [_homeHeuristics objectForKeyedSubscript:v48];
         v51 = [v49 scoreFromConfidence:{objc_msgSend(v50, "unsignedIntegerValue")}];
 
         v52 = MEMORY[0x277CCACA8];
-        v53 = [v48 kind];
-        v54 = [v52 stringWithFormat:@"%@: %ld\n", v53, v51];
+        kind5 = [v48 kind];
+        v54 = [v52 stringWithFormat:@"%@: %ld\n", kind5, v51];
         [v42 appendString:v54];
       }
 
-      v45 = [v43 countByEnumeratingWithState:&v67 objects:v71 count:16];
+      v45 = [_homeHeuristics countByEnumeratingWithState:&v67 objects:v71 count:16];
     }
 
     while (v45);
@@ -206,28 +206,28 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
   return v55;
 }
 
-+ (int64_t)scoreFromConfidence:(unsigned __int8)a3
++ (int64_t)scoreFromConfidence:(unsigned __int8)confidence
 {
-  if (a3 > 5u)
+  if (confidence > 5u)
   {
     return -10000;
   }
 
   else
   {
-    return qword_226871D90[a3];
+    return qword_226871D90[confidence];
   }
 }
 
 - (unsigned)_batteryHeuristic
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_PASLazyPurgeableResult *)self->_cache result];
-  v5 = [v4 numBluetoothConnectionsOverLastWeek];
+  result = [(_PASLazyPurgeableResult *)self->_cache result];
+  numBluetoothConnectionsOverLastWeek = [result numBluetoothConnectionsOverLastWeek];
 
-  if (v5 <= 0x14)
+  if (numBluetoothConnectionsOverLastWeek <= 0x14)
   {
-    if (v5 <= 5)
+    if (numBluetoothConnectionsOverLastWeek <= 5)
     {
       v7 = 2;
     }
@@ -237,7 +237,7 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
       v7 = 3;
     }
 
-    if (v5 <= 0xA)
+    if (numBluetoothConnectionsOverLastWeek <= 0xA)
     {
       v6 = v7;
     }
@@ -260,12 +260,12 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
 - (unsigned)_calendarHeuristic
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_PASLazyPurgeableResult *)self->_cache result];
-  v5 = [v4 numCalendarEventsOverLastAndNextWeek];
+  result = [(_PASLazyPurgeableResult *)self->_cache result];
+  numCalendarEventsOverLastAndNextWeek = [result numCalendarEventsOverLastAndNextWeek];
 
-  if (v5 <= 0x32)
+  if (numCalendarEventsOverLastAndNextWeek <= 0x32)
   {
-    if (v5 <= 8)
+    if (numCalendarEventsOverLastAndNextWeek <= 8)
     {
       v7 = 2;
     }
@@ -275,7 +275,7 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
       v7 = 3;
     }
 
-    if (v5 <= 0x14)
+    if (numCalendarEventsOverLastAndNextWeek <= 0x14)
     {
       v6 = v7;
     }
@@ -298,12 +298,12 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
 - (unsigned)_reminderHeuristic
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_PASLazyPurgeableResult *)self->_cache result];
-  v5 = [v4 numRemindersOverLastWeek];
+  result = [(_PASLazyPurgeableResult *)self->_cache result];
+  numRemindersOverLastWeek = [result numRemindersOverLastWeek];
 
-  if (v5 <= 0xA)
+  if (numRemindersOverLastWeek <= 0xA)
   {
-    if (v5 <= 1)
+    if (numRemindersOverLastWeek <= 1)
     {
       v7 = 2;
     }
@@ -313,7 +313,7 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
       v7 = 3;
     }
 
-    if (v5 <= 5)
+    if (numRemindersOverLastWeek <= 5)
     {
       v6 = v7;
     }
@@ -335,10 +335,10 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
 
 - (id)_homeHeuristics
 {
-  v3 = [objc_opt_class() _countedHomeAccessoryEvents];
-  v4 = [objc_opt_class() getClimateCountGivenHomeCounts:v3];
-  v5 = [objc_opt_class() getLightCountGivenHomeCounts:v3];
-  v6 = [objc_opt_class() getSecurityCountGivenHomeCounts:v3];
+  _countedHomeAccessoryEvents = [objc_opt_class() _countedHomeAccessoryEvents];
+  v4 = [objc_opt_class() getClimateCountGivenHomeCounts:_countedHomeAccessoryEvents];
+  v5 = [objc_opt_class() getLightCountGivenHomeCounts:_countedHomeAccessoryEvents];
+  v6 = [objc_opt_class() getSecurityCountGivenHomeCounts:_countedHomeAccessoryEvents];
   v7 = objc_opt_new();
   if (v4 && v5 && v6)
   {
@@ -494,38 +494,38 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
   return v7;
 }
 
-+ (unint64_t)getClimateCountGivenHomeCounts:(id)a3
++ (unint64_t)getClimateCountGivenHomeCounts:(id)counts
 {
-  v3 = a3;
-  v4 = [v3 countForObject:@"0000008A-0000-1000-8000-0026BB765291"];
-  v5 = [v3 countForObject:@"0000004A-0000-1000-8000-0026BB765291"] + v4;
-  v6 = [v3 countForObject:@"000000BC-0000-1000-8000-0026BB765291"];
-  v7 = v5 + v6 + [v3 countForObject:@"000000BD-0000-1000-8000-0026BB765291"];
-  v8 = [v3 countForObject:@"0000008D-0000-1000-8000-0026BB765291"];
-  v9 = [v3 countForObject:@"00000082-0000-1000-8000-0026BB765291"];
+  countsCopy = counts;
+  v4 = [countsCopy countForObject:@"0000008A-0000-1000-8000-0026BB765291"];
+  v5 = [countsCopy countForObject:@"0000004A-0000-1000-8000-0026BB765291"] + v4;
+  v6 = [countsCopy countForObject:@"000000BC-0000-1000-8000-0026BB765291"];
+  v7 = v5 + v6 + [countsCopy countForObject:@"000000BD-0000-1000-8000-0026BB765291"];
+  v8 = [countsCopy countForObject:@"0000008D-0000-1000-8000-0026BB765291"];
+  v9 = [countsCopy countForObject:@"00000082-0000-1000-8000-0026BB765291"];
 
   return v7 + v8 + v9;
 }
 
-+ (unint64_t)getSecurityCountGivenHomeCounts:(id)a3
++ (unint64_t)getSecurityCountGivenHomeCounts:(id)counts
 {
-  v3 = a3;
-  v4 = [v3 countForObject:@"00000041-0000-1000-8000-0026BB765291"];
-  v5 = [v3 countForObject:@"00000081-0000-1000-8000-0026BB765291"] + v4;
-  v6 = [v3 countForObject:@"0000008B-0000-1000-8000-0026BB765291"];
-  v7 = v5 + v6 + [v3 countForObject:@"00000080-0000-1000-8000-0026BB765291"];
-  v8 = [v3 countForObject:@"00000045-0000-1000-8000-0026BB765291"];
-  v9 = [v3 countForObject:@"0000007E-0000-1000-8000-0026BB765291"];
+  countsCopy = counts;
+  v4 = [countsCopy countForObject:@"00000041-0000-1000-8000-0026BB765291"];
+  v5 = [countsCopy countForObject:@"00000081-0000-1000-8000-0026BB765291"] + v4;
+  v6 = [countsCopy countForObject:@"0000008B-0000-1000-8000-0026BB765291"];
+  v7 = v5 + v6 + [countsCopy countForObject:@"00000080-0000-1000-8000-0026BB765291"];
+  v8 = [countsCopy countForObject:@"00000045-0000-1000-8000-0026BB765291"];
+  v9 = [countsCopy countForObject:@"0000007E-0000-1000-8000-0026BB765291"];
 
   return v7 + v8 + v9;
 }
 
-+ (unint64_t)getLightCountGivenHomeCounts:(id)a3
++ (unint64_t)getLightCountGivenHomeCounts:(id)counts
 {
-  v3 = a3;
-  v4 = [v3 countForObject:@"00000043-0000-1000-8000-0026BB765291"];
-  v5 = [v3 countForObject:@"00000049-0000-1000-8000-0026BB765291"] + v4;
-  v6 = [v3 countForObject:@"00000047-0000-1000-8000-0026BB765291"];
+  countsCopy = counts;
+  v4 = [countsCopy countForObject:@"00000043-0000-1000-8000-0026BB765291"];
+  v5 = [countsCopy countForObject:@"00000049-0000-1000-8000-0026BB765291"] + v4;
+  v6 = [countsCopy countForObject:@"00000047-0000-1000-8000-0026BB765291"];
 
   return v5 + v6;
 }
@@ -540,11 +540,11 @@ ATXComplicationSuggestionHeuristicsCache *__49__ATXComplicationSuggestionHeurist
   v20 = 0x2020000000;
   v21 = 0;
   v5 = BiomeLibrary();
-  v6 = [v5 Device];
-  v7 = [v6 Wireless];
-  v8 = [v7 Bluetooth];
+  device = [v5 Device];
+  wireless = [device Wireless];
+  bluetooth = [wireless Bluetooth];
   v9 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v3 endDate:0 maxEvents:0 lastN:0 reversed:0];
-  v10 = [v8 publisherWithUseCase:*MEMORY[0x277CEBB48] options:v9];
+  v10 = [bluetooth publisherWithUseCase:*MEMORY[0x277CEBB48] options:v9];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__ATXComplicationSuggestionHeuristics__numBluetoothConnectionsOverLastWeek__block_invoke_139;
@@ -618,17 +618,17 @@ void __75__ATXComplicationSuggestionHeuristics__numBluetoothConnectionsOverLastW
 + (unint64_t)_numRemindersOverLastWeek
 {
   v3 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-604800.0];
-  v4 = [a1 numberOfRemindersSinceDate:v3];
+  v4 = [self numberOfRemindersSinceDate:v3];
 
   return v4;
 }
 
-+ (unint64_t)numberOfRemindersSinceDate:(id)a3
++ (unint64_t)numberOfRemindersSinceDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[_ATXDataStore sharedInstance];
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [v4 numBundleIdOccurrencesForBundleId:@"com.apple.reminders" startDate:v3 endDate:v5];
+  v6 = [v4 numBundleIdOccurrencesForBundleId:@"com.apple.reminders" startDate:dateCopy endDate:v5];
 
   return v6;
 }
@@ -642,14 +642,14 @@ void __75__ATXComplicationSuggestionHeuristics__numBluetoothConnectionsOverLastW
   return v4;
 }
 
-+ (unint64_t)_fetchNumberOfCalendarEventsForStartDate:(id)a3 endDate:(id)a4
++ (unint64_t)_fetchNumberOfCalendarEventsForStartDate:(id)date endDate:(id)endDate
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v7 = objc_autoreleasePoolPush();
   v8 = [objc_alloc(MEMORY[0x277CC5A40]) initWithEKOptions:128];
-  v9 = [objc_alloc(MEMORY[0x277CF77A0]) initWithStartDate:v5 endDate:v6];
+  v9 = [objc_alloc(MEMORY[0x277CF77A0]) initWithStartDate:dateCopy endDate:endDateCopy];
   v10 = dispatch_semaphore_create(0);
   v28 = 0;
   v29 = &v28;
@@ -731,11 +731,11 @@ void __88__ATXComplicationSuggestionHeuristics__fetchNumberOfCalendarEventsForSt
 {
   v2 = objc_opt_new();
   v3 = BiomeLibrary();
-  v4 = [v3 HomeKit];
-  v5 = [v4 Client];
-  v6 = [v5 AccessoryControl];
+  homeKit = [v3 HomeKit];
+  client = [homeKit Client];
+  accessoryControl = [client AccessoryControl];
 
-  v7 = [v6 atx_publisherFromStartDate:0];
+  v7 = [accessoryControl atx_publisherFromStartDate:0];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__ATXComplicationSuggestionHeuristics__countedHomeAccessoryEvents__block_invoke_152;

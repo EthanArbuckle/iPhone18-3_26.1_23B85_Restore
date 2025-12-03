@@ -1,31 +1,31 @@
 @interface EKEventDetailAttendeesCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axStringForParticipants:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axStringForParticipants:(id)participants;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation EKEventDetailAttendeesCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKEventDetailAttendeesListView" hasInstanceVariable:@"_inviteeNames" withType:"NSMutableArray"];
-  [v3 validateClass:@"EKEventDetailAttendeesCell" hasInstanceMethod:@"_attendeesListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKEventDetailAttendeesListView" hasInstanceMethod:@"groupsNames" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKEventDetailAttendeesCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"EKEventDetailAttendeesCell" hasInstanceVariable:@"_countLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKEventDetailAttendeesListView" hasInstanceVariable:@"_inviteeNames" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"EKEventDetailAttendeesCell" hasInstanceMethod:@"_attendeesListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKEventDetailAttendeesListView" hasInstanceMethod:@"groupsNames" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKEventDetailAttendeesCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKEventDetailAttendeesCell" hasInstanceVariable:@"_countLabel" withType:"UILabel"];
 }
 
-- (id)_axStringForParticipants:(id)a3
+- (id)_axStringForParticipants:(id)participants
 {
   v29 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  participantsCopy = participants;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v4 = [participantsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -44,7 +44,7 @@
     {
       if (*v25 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(participantsCopy);
       }
 
       v11 = *(*(&v24 + 1) + 8 * v10);
@@ -52,9 +52,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v11 name];
+        name = [v11 name];
 LABEL_10:
-        v15 = v13;
+        v15 = name;
         v16 = __UIAXStringForVariables();
 
         v6 = v16;
@@ -65,15 +65,15 @@ LABEL_10:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v11 string];
+        name = [v11 string];
         goto LABEL_10;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v11 displayString];
-        v22 = [v17 string];
+        displayString = [v11 displayString];
+        string = [displayString string];
         v18 = __UIAXStringForVariables();
 
         if ([v11 isOptionalParticipant])
@@ -101,7 +101,7 @@ LABEL_11:
     }
 
     while (v5 != v10);
-    v19 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v19 = [participantsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     v5 = v19;
   }
 
@@ -116,9 +116,9 @@ LABEL_22:
 - (id)accessibilityLabel
 {
   v3 = [(EKEventDetailAttendeesCellAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(EKEventDetailAttendeesCellAccessibility *)self safeUIViewForKey:@"_countLabel"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -128,9 +128,9 @@ LABEL_22:
 {
   v3 = [(EKEventDetailAttendeesCellAccessibility *)self safeValueForKey:@"_attendeesListView"];
   v4 = [v3 safeValueForKey:@"groupsNames"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     LOBYTE(v41) = 0;
     v6 = [v3 safeValueForKey:@"_inviteeNames"];

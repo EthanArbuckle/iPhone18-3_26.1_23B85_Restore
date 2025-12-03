@@ -1,15 +1,15 @@
 @interface Texture2DWrapper
-- (Texture2DWrapper)initWithFigMetalContext:(id)a3 copyingPixelBuffer:(__CVBuffer *)a4 usage:(unint64_t)a5;
-- (Texture2DWrapper)initWithTexture:(id)a3 textureArray:(BOOL)a4;
-- (unint64_t)textureFormatOfPixelBuffer:(__CVBuffer *)a3;
+- (Texture2DWrapper)initWithFigMetalContext:(id)context copyingPixelBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage;
+- (Texture2DWrapper)initWithTexture:(id)texture textureArray:(BOOL)array;
+- (unint64_t)textureFormatOfPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation Texture2DWrapper
 
-- (Texture2DWrapper)initWithTexture:(id)a3 textureArray:(BOOL)a4
+- (Texture2DWrapper)initWithTexture:(id)texture textureArray:(BOOL)array
 {
-  v4 = a4;
-  v6 = a3;
+  arrayCopy = array;
+  textureCopy = texture;
   v26.receiver = self;
   v26.super_class = Texture2DWrapper;
   v7 = [(Texture2DWrapper *)&v26 init];
@@ -19,7 +19,7 @@
     goto LABEL_7;
   }
 
-  if (!v6)
+  if (!textureCopy)
   {
     sub_2957E1744();
 LABEL_7:
@@ -27,8 +27,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_msgSend_setTexture_(v7, v8, v6);
-  if (!v4)
+  objc_msgSend_setTexture_(v7, v8, textureCopy);
+  if (!arrayCopy)
   {
     goto LABEL_5;
   }
@@ -57,22 +57,22 @@ LABEL_8:
   return v24;
 }
 
-- (Texture2DWrapper)initWithFigMetalContext:(id)a3 copyingPixelBuffer:(__CVBuffer *)a4 usage:(unint64_t)a5
+- (Texture2DWrapper)initWithFigMetalContext:(id)context copyingPixelBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage
 {
-  v8 = a3;
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  v12 = objc_msgSend_textureFormatOfPixelBuffer_(self, v11, a4);
+  contextCopy = context;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  v12 = objc_msgSend_textureFormatOfPixelBuffer_(self, v11, buffer);
   if (!v12)
   {
     sub_2957E193C();
 LABEL_7:
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_4;
   }
 
-  self = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_textureArray_(self, v13, v8, v12, a5, 0, Width, Height);
-  if (CVPixelBufferLockBaseAddress(a4, 1uLL))
+  self = objc_msgSend_initNewTextureWithFigMetalContext_size_withFormat_usage_textureArray_(self, v13, contextCopy, v12, usage, 0, Width, Height);
+  if (CVPixelBufferLockBaseAddress(buffer, 1uLL))
   {
     sub_2957E18D4();
     goto LABEL_7;
@@ -83,21 +83,21 @@ LABEL_7:
   v22[3] = Width;
   v22[4] = Height;
   v22[5] = 1;
-  BaseAddress = CVPixelBufferGetBaseAddress(a4);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   objc_msgSend_replaceRegion_mipmapLevel_withBytes_bytesPerRow_(v16, v19, v22, 0, BaseAddress, BytesPerRow);
 
-  CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   self = self;
-  v20 = self;
+  selfCopy = self;
 LABEL_4:
 
-  return v20;
+  return selfCopy;
 }
 
-- (unint64_t)textureFormatOfPixelBuffer:(__CVBuffer *)a3
+- (unint64_t)textureFormatOfPixelBuffer:(__CVBuffer *)buffer
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   if (PixelFormatType > 1278226487)
   {
     if (PixelFormatType <= 1751410031)

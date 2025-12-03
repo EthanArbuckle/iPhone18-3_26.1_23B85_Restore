@@ -1,34 +1,34 @@
 @interface TSTTableDataString
-+ (id)objectWithString:(id)a3 refCount:(unsigned int)a4;
++ (id)objectWithString:(id)string refCount:(unsigned int)count;
 - (id)description;
-- (id)initObjectWithString:(id)a3 refCount:(unsigned int)a4;
+- (id)initObjectWithString:(id)string refCount:(unsigned int)count;
 - (unint64_t)estimateByteSize;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver completion:(id)completion;
 @end
 
 @implementation TSTTableDataString
 
-+ (id)objectWithString:(id)a3 refCount:(unsigned int)a4
++ (id)objectWithString:(id)string refCount:(unsigned int)count
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [a1 alloc];
-  inited = objc_msgSend_initObjectWithString_refCount_(v7, v8, v6, v4, v9);
+  v4 = *&count;
+  stringCopy = string;
+  v7 = [self alloc];
+  inited = objc_msgSend_initObjectWithString_refCount_(v7, v8, stringCopy, v4, v9);
 
   return inited;
 }
 
-- (id)initObjectWithString:(id)a3 refCount:(unsigned int)a4
+- (id)initObjectWithString:(id)string refCount:(unsigned int)count
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&count;
+  stringCopy = string;
   v35.receiver = self;
   v35.super_class = TSTTableDataString;
   v11 = [(TSTTableDataObject *)&v35 initWithRefCount:v4];
   if (v11)
   {
-    if (!v6)
+    if (!stringCopy)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataString initObjectWithString:refCount:]", v9, v10);
@@ -38,12 +38,12 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
     }
 
-    v23 = objc_msgSend_copy(v6, v7, v8, v9, v10);
+    v23 = objc_msgSend_copy(stringCopy, v7, v8, v9, v10);
     payload = v11->super._payload;
     v11->super._payload = v23;
 
     v29 = objc_msgSend_newlineCharacterSet(MEMORY[0x277CCA900], v25, v26, v27, v28);
-    v33 = objc_msgSend_rangeOfCharacterFromSet_(v6, v30, v29, v31, v32);
+    v33 = objc_msgSend_rangeOfCharacterFromSet_(stringCopy, v30, v29, v31, v32);
 
     v11->_shouldWrap = v33 != 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -51,31 +51,31 @@
   return v11;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver completion:(id)completion
 {
-  v25 = a4;
-  v8 = a5;
-  objc_msgSend_sharedLoadFromArchive_(self, v9, a3, v10, v11);
-  v15 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v12, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL, v13, v14);
+  unarchiverCopy = unarchiver;
+  completionCopy = completion;
+  objc_msgSend_sharedLoadFromArchive_(self, v9, archive, v10, v11);
+  v15 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v12, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL, v13, v14);
   objc_storeStrong(&self->super._payload, v15);
   v20 = objc_msgSend_newlineCharacterSet(MEMORY[0x277CCA900], v16, v17, v18, v19);
   v24 = objc_msgSend_rangeOfCharacterFromSet_(v15, v21, v20, v22, v23);
 
   self->_shouldWrap = v24 != 0x7FFFFFFFFFFFFFFFLL;
-  v8[2](v8, self);
+  completionCopy[2](completionCopy, self);
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
   v16.receiver = self;
   v16.super_class = TSTTableDataString;
-  [(TSTTableDataObject *)&v16 encodeToArchive:a3 archiver:a4];
+  [(TSTTableDataObject *)&v16 encodeToArchive:archive archiver:archiver];
   v10 = objc_msgSend_string(self, v6, v7, v8, v9);
   v15 = objc_msgSend_tsp_protobufString(v10, v11, v12, v13, v14);
 
   if (v15)
   {
-    sub_2215C0F50(a3, v15);
+    sub_2215C0F50(archive, v15);
   }
 }
 

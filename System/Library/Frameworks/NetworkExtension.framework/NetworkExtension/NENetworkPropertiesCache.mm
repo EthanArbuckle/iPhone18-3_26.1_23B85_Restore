@@ -2,16 +2,16 @@
 + (NENetworkPropertiesCache)sharedCache;
 - (BOOL)loadCache;
 - (NENetworkPropertiesCache)init;
-- (id)copyPropertiesForNetworkPath:(id)a3;
-- (id)createCacheKeyFromSignature:(void *)a1;
-- (id)encryptData:(void *)a1 withKey:(void *)a2;
-- (uint64_t)copyNetworkSignatureForPath:(uint64_t)a1;
-- (uint64_t)fetchKey:(void *)a1;
+- (id)copyPropertiesForNetworkPath:(id)path;
+- (id)createCacheKeyFromSignature:(void *)signature;
+- (id)encryptData:(void *)data withKey:(void *)key;
+- (uint64_t)copyNetworkSignatureForPath:(uint64_t)path;
+- (uint64_t)fetchKey:(void *)key;
 - (void)clear;
 - (void)rotateEncryptionKey;
-- (void)saveCacheToDisk:(void *)a1;
-- (void)setProperties:(id)a3 forNetworkPath:(id)a4;
-- (void)updateKeyWithCurrentKey:(void *)a3 currentCache:;
+- (void)saveCacheToDisk:(void *)disk;
+- (void)setProperties:(id)properties forNetworkPath:(id)path;
+- (void)updateKeyWithCurrentKey:(void *)key currentCache:;
 @end
 
 @implementation NENetworkPropertiesCache
@@ -50,27 +50,27 @@
 - (BOOL)loadCache
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v5 = 0;
     goto LABEL_7;
   }
 
   check = 0;
-  v2 = notify_check(*(a1 + 12), &check);
+  v2 = notify_check(*(self + 12), &check);
   if (!v2)
   {
-    if (!check && *(a1 + 40))
+    if (!check && *(self + 40))
     {
       goto LABEL_6;
     }
 
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = [a1 cacheFileURL];
-    v4 = [v8 initWithCString:objc_msgSend(v9 encoding:{"fileSystemRepresentation"), 4}];
+    cacheFileURL = [self cacheFileURL];
+    v4 = [v8 initWithCString:objc_msgSend(cacheFileURL encoding:{"fileSystemRepresentation"), 4}];
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v10 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = [defaultManager fileExistsAtPath:v4];
 
     if ((v11 & 1) == 0)
     {
@@ -81,15 +81,15 @@
         _os_log_impl(&dword_1BA83C000, v17, OS_LOG_TYPE_DEFAULT, "No network properties cache exists", buf, 2u);
       }
 
-      v18 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v18 = *(self + 40);
+      *(self + 40) = 0;
 
       goto LABEL_5;
     }
 
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v34 = 0;
-    v13 = [v12 attributesOfItemAtPath:v4 error:&v34];
+    v13 = [defaultManager2 attributesOfItemAtPath:v4 error:&v34];
     v14 = v34;
 
     if (!v13 || v14)
@@ -107,14 +107,14 @@
       goto LABEL_22;
     }
 
-    v15 = [v13 fileSize];
-    if (v15 > [a1 cacheMaxSizeBytes])
+    fileSize = [v13 fileSize];
+    if (fileSize > [self cacheMaxSizeBytes])
     {
       v16 = ne_log_obj();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v37 = v15;
+        v37 = fileSize;
         _os_log_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_DEFAULT, "Cache file is too large (%llu), re-setting", buf, 0xCu);
       }
 
@@ -122,16 +122,16 @@ LABEL_22:
 
       v19 = 0;
       v20 = 0;
-      v21 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v21 = *(self + 40);
+      *(self + 40) = 0;
       v5 = 1;
       goto LABEL_43;
     }
 
     v22 = MEMORY[0x1E695DEF0];
-    v23 = [a1 cacheFileURL];
+    cacheFileURL2 = [self cacheFileURL];
     v33 = 0;
-    v21 = [v22 dataWithContentsOfURL:v23 options:0 error:&v33];
+    v21 = [v22 dataWithContentsOfURL:cacheFileURL2 options:0 error:&v33];
     v19 = v33;
 
     if (!v21)
@@ -146,8 +146,8 @@ LABEL_22:
 
       if (v19)
       {
-        v29 = [v19 domain];
-        if ([v29 isEqualToString:*MEMORY[0x1E696A250]])
+        domain = [v19 domain];
+        if ([domain isEqualToString:*MEMORY[0x1E696A250]])
         {
           v5 = [v19 code] != 257;
         }
@@ -163,8 +163,8 @@ LABEL_22:
         v5 = 1;
       }
 
-      v31 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v31 = *(self + 40);
+      *(self + 40) = 0;
       goto LABEL_42;
     }
 
@@ -189,8 +189,8 @@ LABEL_35:
       if (isa_nsdictionary(v24))
       {
 LABEL_37:
-        v30 = *(a1 + 40);
-        *(a1 + 40) = v24;
+        v30 = *(self + 40);
+        *(self + 40) = v24;
         v31 = v24;
 
         v5 = 1;
@@ -239,10 +239,10 @@ LABEL_7:
   return v5;
 }
 
-- (uint64_t)fetchKey:(void *)a1
+- (uint64_t)fetchKey:(void *)key
 {
   v23[4] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!key)
   {
     v12 = 0;
     goto LABEL_13;
@@ -254,10 +254,10 @@ LABEL_7:
   v5 = *MEMORY[0x1E697AE88];
   v22[0] = v4;
   v22[1] = v5;
-  v6 = [a1 keychainIdentifier];
+  keychainIdentifier = [key keychainIdentifier];
   v7 = *MEMORY[0x1E697B260];
   v8 = *MEMORY[0x1E697B270];
-  v23[1] = v6;
+  v23[1] = keychainIdentifier;
   v23[2] = v8;
   v9 = *MEMORY[0x1E697B318];
   v22[2] = v7;
@@ -276,9 +276,9 @@ LABEL_7:
       goto LABEL_11;
     }
 
-    v15 = [a1 keychainIdentifier];
+    keychainIdentifier2 = [key keychainIdentifier];
     *buf = 138412290;
-    v21 = v15;
+    v21 = keychainIdentifier2;
     _os_log_impl(&dword_1BA83C000, v14, OS_LOG_TYPE_INFO, "No %@ item was found", buf, 0xCu);
 LABEL_9:
 
@@ -314,9 +314,9 @@ LABEL_9:
   v14 = ne_log_obj();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v15 = SecCopyErrorMessageString(v12, 0);
+    keychainIdentifier2 = SecCopyErrorMessageString(v12, 0);
     *buf = 138412290;
-    v21 = v15;
+    v21 = keychainIdentifier2;
     _os_log_error_impl(&dword_1BA83C000, v14, OS_LOG_TYPE_ERROR, "SecItemCopyMatching failed: %@", buf, 0xCu);
     goto LABEL_9;
   }
@@ -329,12 +329,12 @@ LABEL_13:
   return v12;
 }
 
-- (void)updateKeyWithCurrentKey:(void *)a3 currentCache:
+- (void)updateKeyWithCurrentKey:(void *)key currentCache:
 {
   v63[2] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  keyCopy = key;
+  if (self)
   {
     arc4random_buf(__buf, 0x20uLL);
     v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:__buf length:32];
@@ -353,8 +353,8 @@ LABEL_13:
       v12 = *MEMORY[0x1E697AE88];
       v62[0] = v10;
       v62[1] = v12;
-      v13 = [a1 keychainIdentifier];
-      v63[1] = v13;
+      keychainIdentifier = [self keychainIdentifier];
+      v63[1] = keychainIdentifier;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:2];
 
       v60 = *MEMORY[0x1E697B3C0];
@@ -372,9 +372,9 @@ LABEL_13:
       __buf[0] = v11;
       __buf[1] = v18;
       *&buf[16] = *MEMORY[0x1E697AE88];
-      v19 = [a1 keychainIdentifier];
+      keychainIdentifier2 = [self keychainIdentifier];
       v20 = *MEMORY[0x1E697B3C0];
-      __buf[2] = v19;
+      __buf[2] = keychainIdentifier2;
       __buf[3] = v9;
       v21 = *MEMORY[0x1E697ABD8];
       v57 = v20;
@@ -411,14 +411,14 @@ LABEL_13:
       goto LABEL_29;
     }
 
-    if (!v5 || !v6)
+    if (!v5 || !keyCopy)
     {
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v43 = a1;
+    selfCopy = self;
     v44 = v8;
     v47 = v9;
     v46 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -426,8 +426,8 @@ LABEL_29:
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v45 = v6;
-    v23 = v6;
+    v45 = keyCopy;
+    v23 = keyCopy;
     v24 = [v23 countByEnumeratingWithState:&v48 objects:v52 count:16];
     if (!v24)
     {
@@ -505,9 +505,9 @@ LABEL_26:
         {
 LABEL_28:
 
-          [(NENetworkPropertiesCache *)v43 saveCacheToDisk:v46];
+          [(NENetworkPropertiesCache *)selfCopy saveCacheToDisk:v46];
           v8 = v44;
-          v6 = v45;
+          keyCopy = v45;
           goto LABEL_29;
         }
 
@@ -521,13 +521,13 @@ LABEL_30:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (id)encryptData:(void *)a1 withKey:(void *)a2
+- (id)encryptData:(void *)data withKey:(void *)key
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = a2;
+  dataCopy = data;
+  keyCopy = key;
   size = 0;
-  v5 = CCCrypt(0, 0, 0, [v4 bytes], objc_msgSend(v4, "length"), 0, objc_msgSend(v3, "bytes"), objc_msgSend(v3, "length"), 0, 0, &size);
+  v5 = CCCrypt(0, 0, 0, [keyCopy bytes], objc_msgSend(keyCopy, "length"), 0, objc_msgSend(dataCopy, "bytes"), objc_msgSend(dataCopy, "length"), 0, 0, &size);
   if (v5 != -4301)
   {
     v15 = v5;
@@ -571,11 +571,11 @@ LABEL_14:
   }
 
   dataOut = v6;
-  v8 = [v4 bytes];
-  v9 = [v4 length];
-  v10 = [v3 bytes];
-  v11 = [v3 length];
-  v12 = CCCrypt(0, 0, 0, v8, v9, 0, v10, v11, dataOut, size, &size);
+  bytes = [keyCopy bytes];
+  v9 = [keyCopy length];
+  bytes2 = [dataCopy bytes];
+  v11 = [dataCopy length];
+  v12 = CCCrypt(0, 0, 0, bytes, v9, 0, bytes2, v11, dataOut, size, &size);
   if (v12)
   {
     v13 = v12;
@@ -600,10 +600,10 @@ LABEL_15:
   return v18;
 }
 
-- (void)saveCacheToDisk:(void *)a1
+- (void)saveCacheToDisk:(void *)disk
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (disk)
   {
     v12 = 0;
     v3 = [MEMORY[0x1E696AE40] dataWithPropertyList:a2 format:200 options:0 error:&v12];
@@ -625,9 +625,9 @@ LABEL_12:
     {
       if (isa_nsdata(v3))
       {
-        v7 = [a1 cacheFileURL];
+        cacheFileURL = [disk cacheFileURL];
         v11 = 0;
-        [v3 writeToURL:v7 options:1073741825 error:&v11];
+        [v3 writeToURL:cacheFileURL options:1073741825 error:&v11];
         v5 = v11;
 
         if (v5)
@@ -635,9 +635,9 @@ LABEL_12:
           v8 = ne_log_obj();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
           {
-            v10 = [a1 cacheFileURL];
+            cacheFileURL2 = [disk cacheFileURL];
             *buf = 138412546;
-            v14 = v10;
+            v14 = cacheFileURL2;
             v15 = 2112;
             v16 = v5;
             _os_log_error_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_ERROR, "Failed to write the serialized plist to %@: %@", buf, 0x16u);
@@ -680,8 +680,8 @@ LABEL_14:
   v25[0] = v3;
   v25[1] = v5;
   v24[2] = *MEMORY[0x1E697AE88];
-  v6 = [(NENetworkPropertiesCache *)self keychainIdentifier];
-  v25[2] = v6;
+  keychainIdentifier = [(NENetworkPropertiesCache *)self keychainIdentifier];
+  v25[2] = keychainIdentifier;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
   v8 = SecItemDelete(v7);
@@ -690,24 +690,24 @@ LABEL_14:
     v9 = ne_log_obj();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(NENetworkPropertiesCache *)self keychainIdentifier];
+      keychainIdentifier2 = [(NENetworkPropertiesCache *)self keychainIdentifier];
       *buf = 138412290;
-      v23 = v19;
+      v23 = keychainIdentifier2;
       _os_log_error_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_ERROR, "Failed to remove the %@ keychain item", buf, 0xCu);
     }
   }
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [(NENetworkPropertiesCache *)self cacheFileURL];
-  v12 = [v11 path];
-  v13 = [v10 fileExistsAtPath:v12];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  cacheFileURL = [(NENetworkPropertiesCache *)self cacheFileURL];
+  path = [cacheFileURL path];
+  v13 = [defaultManager fileExistsAtPath:path];
 
   if (v13)
   {
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
-    v15 = [(NENetworkPropertiesCache *)self cacheFileURL];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    cacheFileURL2 = [(NENetworkPropertiesCache *)self cacheFileURL];
     v21 = 0;
-    [v14 removeItemAtURL:v15 error:&v21];
+    [defaultManager2 removeItemAtURL:cacheFileURL2 error:&v21];
     v16 = v21;
 
     if (v16)
@@ -715,9 +715,9 @@ LABEL_14:
       v17 = ne_log_obj();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v20 = [(NENetworkPropertiesCache *)self cacheFileURL];
+        cacheFileURL3 = [(NENetworkPropertiesCache *)self cacheFileURL];
         *buf = 138412290;
-        v23 = v20;
+        v23 = cacheFileURL3;
         _os_log_error_impl(&dword_1BA83C000, v17, OS_LOG_TYPE_ERROR, "Failed to remove %@", buf, 0xCu);
       }
     }
@@ -733,10 +733,10 @@ LABEL_14:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setProperties:(id)a3 forNetworkPath:(id)a4
+- (void)setProperties:(id)properties forNetworkPath:(id)path
 {
-  v6 = a3;
-  v7 = [(NENetworkPropertiesCache *)self copyNetworkSignatureForPath:a4];
+  propertiesCopy = properties;
+  v7 = [(NENetworkPropertiesCache *)self copyNetworkSignatureForPath:path];
   if (v7)
   {
     os_unfair_lock_lock(&self->lock);
@@ -756,7 +756,7 @@ LABEL_14:
       v11 = [(NENetworkPropertiesCache *)self createCacheKeyFromSignature:v7];
       if (v11)
       {
-        [v9 setObject:v6 forKeyedSubscript:v11];
+        [v9 setObject:propertiesCopy forKeyedSubscript:v11];
         [(NENetworkPropertiesCache *)self saveCacheToDisk:v9];
       }
     }
@@ -775,13 +775,13 @@ LABEL_14:
   }
 }
 
-- (uint64_t)copyNetworkSignatureForPath:(uint64_t)a1
+- (uint64_t)copyNetworkSignatureForPath:(uint64_t)path
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (path && v3)
   {
     v6 = nw_path_copy_interface();
     v7 = v6;
@@ -853,20 +853,20 @@ LABEL_18:
   return v5;
 }
 
-- (id)createCacheKeyFromSignature:(void *)a1
+- (id)createCacheKeyFromSignature:(void *)signature
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (signature)
   {
     v13 = 0;
-    v4 = [(NENetworkPropertiesCache *)a1 fetchKey:?];
+    v4 = [(NENetworkPropertiesCache *)signature fetchKey:?];
     v5 = v13;
     if (v4 == -25300)
     {
-      [(NENetworkPropertiesCache *)a1 updateKeyWithCurrentKey:0 currentCache:?];
+      [(NENetworkPropertiesCache *)signature updateKeyWithCurrentKey:0 currentCache:?];
       v12 = v5;
-      v4 = [(NENetworkPropertiesCache *)a1 fetchKey:?];
+      v4 = [(NENetworkPropertiesCache *)signature fetchKey:?];
       v6 = v12;
 
       v5 = v6;
@@ -874,7 +874,7 @@ LABEL_18:
 
     if (v4)
     {
-      a1 = 0;
+      signature = 0;
     }
 
     else
@@ -885,24 +885,24 @@ LABEL_18:
       v9 = v8;
       if (v8)
       {
-        a1 = [v8 base64EncodedStringWithOptions:0];
+        signature = [v8 base64EncodedStringWithOptions:0];
       }
 
       else
       {
-        a1 = 0;
+        signature = 0;
       }
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return signature;
 }
 
-- (id)copyPropertiesForNetworkPath:(id)a3
+- (id)copyPropertiesForNetworkPath:(id)path
 {
-  v4 = [(NENetworkPropertiesCache *)self copyNetworkSignatureForPath:a3];
+  v4 = [(NENetworkPropertiesCache *)self copyNetworkSignatureForPath:path];
   if (v4)
   {
     os_unfair_lock_lock(&self->lock);

@@ -1,19 +1,19 @@
 @interface UISearchResultsTableView
 - (UISearchDisplayController)controller;
-- (UISearchResultsTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (UISearchResultsTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (double)_offsetForNoResultsMessage;
 - (void)_numberOfRowsDidChange;
-- (void)_setTopShadowView:(id)a3;
-- (void)setContentOffset:(CGPoint)a3;
+- (void)_setTopShadowView:(id)view;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation UISearchResultsTableView
 
-- (UISearchResultsTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (UISearchResultsTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = UISearchResultsTableView;
-  result = [(UITableView *)&v5 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(UITableView *)&v5 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_offsetForNoResultsMessage = -1.0;
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(UIView *)self bounds];
   if (v7 != x || v6 != y)
   {
@@ -61,11 +61,11 @@
   offsetForNoResultsMessage = self->_offsetForNoResultsMessage;
   if (offsetForNoResultsMessage < 0.0)
   {
-    v4 = [(UIView *)self window];
-    if (v4)
+    window = [(UIView *)self window];
+    if (window)
     {
-      +[UIKeyboard defaultFrameForInterfaceOrientation:](UIKeyboard, "defaultFrameForInterfaceOrientation:", [UIApp _sceneInterfaceOrientationFromWindow:v4]);
-      [v4 convertRect:0 fromWindow:?];
+      +[UIKeyboard defaultFrameForInterfaceOrientation:](UIKeyboard, "defaultFrameForInterfaceOrientation:", [UIApp _sceneInterfaceOrientationFromWindow:window]);
+      [window convertRect:0 fromWindow:?];
       [(UIView *)self convertRect:0 fromView:?];
       v6 = v5;
       v8 = v7;
@@ -159,15 +159,15 @@
   return offsetForNoResultsMessage;
 }
 
-- (void)_setTopShadowView:(id)a3
+- (void)_setTopShadowView:(id)view
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   topShadowView = self->_topShadowView;
-  if (topShadowView != v5)
+  if (topShadowView != viewCopy)
   {
     [(UIView *)topShadowView removeFromSuperview];
-    objc_storeStrong(&self->_topShadowView, a3);
+    objc_storeStrong(&self->_topShadowView, view);
     [(UIView *)self->_topShadowView setAutoresizingMask:2];
     [(UIView *)self frame];
     v8 = v7;
@@ -177,8 +177,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [(UIView *)self subviews];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    subviews = [(UIView *)self subviews];
+    v10 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (!v10)
     {
 
@@ -194,7 +194,7 @@ LABEL_4:
     {
       if (*v18 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(subviews);
       }
 
       v15 = *(*(&v17 + 1) + 8 * v14);
@@ -214,7 +214,7 @@ LABEL_4:
 
       if (v11 == ++v14)
       {
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v11)
         {
           goto LABEL_4;

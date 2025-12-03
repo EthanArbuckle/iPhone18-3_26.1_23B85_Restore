@@ -1,32 +1,32 @@
 @interface _CSStore
 + (void)initialize;
 - (BOOL)isReadOnly;
-- (_CSStore)initWithCoder:(id)a3;
-- (_CSStore)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (_CSStore)initWithError:(id *)a3;
+- (_CSStore)initWithCoder:(id)coder;
+- (_CSStore)initWithContentsOfURL:(id)l error:(id *)error;
+- (_CSStore)initWithError:(id *)error;
 - (id).cxx_construct;
 - (id)description;
-- (id)initByMovingStore:(void *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccessContext:(id)a3;
-- (void)setReadOnly:(BOOL)a3;
-- (void)setUnitIdentifierExhaustionHandler:(id)a3;
+- (id)initByMovingStore:(void *)store;
+- (id)mutableCopyWithZone:(_NSZone *)zone error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccessContext:(id)context;
+- (void)setReadOnly:(BOOL)only;
+- (void)setUnitIdentifierExhaustionHandler:(id)handler;
 @end
 
 @implementation _CSStore
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = getenv("CS_ENABLE_IO_LOGGING");
     if (v2)
     {
       v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v2];
-      v4 = [v3 BOOLValue];
+      bOOLValue = [v3 BOOLValue];
 
-      if (v4)
+      if (bOOLValue)
       {
         CSStore2::Writer::logIO = 1;
       }
@@ -98,10 +98,10 @@
   return self;
 }
 
-- (_CSStore)initWithCoder:(id)a3
+- (_CSStore)initWithCoder:(id)coder
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -115,8 +115,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"CSStore.mm" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"[aDecoder isKindOfClass:[NSXPCCoder class]]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CSStore.mm" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"[aDecoder isKindOfClass:[NSXPCCoder class]]"}];
 
   if (!self)
   {
@@ -125,7 +125,7 @@ LABEL_16:
 
 LABEL_3:
   v22 = 0;
-  v6 = v5;
+  v6 = coderCopy;
   v7 = @"XPCRepresentation";
   v23 = 0;
   if (!v6)
@@ -193,15 +193,15 @@ LABEL_17:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"CSStore.mm" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"[aCoder isKindOfClass:[NSXPCCoder class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CSStore.mm" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"[aCoder isKindOfClass:[NSXPCCoder class]]"}];
   }
 
   if (performConstantAssertions == 1)
@@ -213,7 +213,7 @@ LABEL_17:
     }
   }
 
-  v14 = v5;
+  v14 = coderCopy;
   v7 = @"XPCRepresentation";
   if (v14)
   {
@@ -261,7 +261,7 @@ LABEL_17:
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3 error:(id *)a4
+- (id)mutableCopyWithZone:(_NSZone *)zone error:(id *)error
 {
   v29[3] = *MEMORY[0x1E69E9840];
   if (performConstantAssertions == 1)
@@ -286,7 +286,7 @@ LABEL_17:
     v10 = 0;
   }
 
-  CSStore2::Store::CreateWithBytes(&v20, v9, v10, a4);
+  CSStore2::Store::CreateWithBytes(&v20, v9, v10, error);
   if (!v20)
   {
     goto LABEL_14;
@@ -307,7 +307,7 @@ LABEL_17:
   v11 = v23[5];
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x1E696ABC0];
       v28[0] = *MEMORY[0x1E696A278];
@@ -317,7 +317,7 @@ LABEL_17:
       v28[2] = @"FullTable";
       v29[2] = v11;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:3];
-      *a4 = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-9491 userInfo:v13];
+      *error = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-9491 userInfo:v13];
     }
 
     std::unique_ptr<CSStore2::Store>::reset[abi:nn200100](&v20, 0);
@@ -332,7 +332,7 @@ LABEL_17:
     v20[38] = self->_store.pedigree.family;
     *(v14 + 78) = v15;
     *(v14 + 316) = 1;
-    v16 = [objc_opt_class() allocWithZone:a3];
+    v16 = [objc_opt_class() allocWithZone:zone];
     v17 = [v16 initByMovingStore:v20];
   }
 
@@ -347,9 +347,9 @@ LABEL_14:
   return v17;
 }
 
-- (void)setReadOnly:(BOOL)a3
+- (void)setReadOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v23 = *MEMORY[0x1E69E9840];
   if (performMutatingAssertions == 1)
   {
@@ -368,9 +368,9 @@ LABEL_14:
     }
   }
 
-  if ((*&self->_store.flags & 1) != v3)
+  if ((*&self->_store.flags & 1) != onlyCopy)
   {
-    if (v3)
+    if (onlyCopy)
     {
       v7 = 1;
     }
@@ -412,15 +412,15 @@ LABEL_14:
       }
     }
 
-    *&self->_store.flags = *&self->_store.flags & 0xFE | v3;
+    *&self->_store.flags = *&self->_store.flags & 0xFE | onlyCopy;
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUnitIdentifierExhaustionHandler:(id)a3
+- (void)setUnitIdentifierExhaustionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (performMutatingAssertions == 1)
   {
     accessContext = self->_accessContext;
@@ -442,7 +442,7 @@ LABEL_14:
   v11[1] = 3221225472;
   v11[2] = __47___CSStore_setUnitIdentifierExhaustionHandler___block_invoke;
   v11[3] = &unk_1E7ED36C0;
-  v7 = v4;
+  v7 = handlerCopy;
   v12 = v7;
   v8 = v11;
   v9 = [v8 copy];
@@ -450,10 +450,10 @@ LABEL_14:
   self->_store.unitIdentifierExhaustionHandler = v9;
 }
 
-- (void)setAccessContext:(id)a3
+- (void)setAccessContext:(id)context
 {
-  v6 = a3;
-  objc_storeStrong(&self->_accessContext, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_accessContext, context);
   accessContext = self->_accessContext;
   if (accessContext && (*(*accessContext->_impl.__ptr_ + 40))(accessContext->_impl.__ptr_) && [_CSStore setAccessContext:]::once != -1)
   {
@@ -461,9 +461,9 @@ LABEL_14:
   }
 }
 
-- (_CSStore)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (_CSStore)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v4 = MEMORY[0x1EEE9AC00](self, a2, a3, a4);
+  v4 = MEMORY[0x1EEE9AC00](self, a2, l, error);
   v6 = v5;
   v7 = v4;
   v82 = *MEMORY[0x1E69E9840];
@@ -531,8 +531,8 @@ LABEL_27:
     goto LABEL_11;
   }
 
-  v38 = [v71 userInfo];
-  v39 = [v38 objectForKey:@"ZeroedRanges"];
+  userInfo = [v71 userInfo];
+  v39 = [userInfo objectForKey:@"ZeroedRanges"];
   v40 = v39 == 0;
 
   if (v40)
@@ -541,11 +541,11 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v41 = [v71 userInfo];
-  v72 = [v41 mutableCopy];
+  userInfo2 = [v71 userInfo];
+  v72 = [userInfo2 mutableCopy];
 
   v42 = v11;
-  v70 = [v11 bytes];
+  bytes = [v11 bytes];
   v43 = [v11 length];
   v69 = v10;
   v44 = v69;
@@ -578,7 +578,7 @@ LABEL_27:
 
     if (v49 <= v48 - v46)
     {
-      v52 = memcmp(&__ptr, (v70 + v46), v49);
+      v52 = memcmp(&__ptr, (bytes + v46), v49);
       if (!v52)
       {
         goto LABEL_43;
@@ -671,10 +671,10 @@ LABEL_59:
   }
 
   v65 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v66 = [v71 domain];
-  v67 = [v71 code];
+  domain = [v71 domain];
+  code = [v71 code];
   v68 = [v72 copy];
-  v13 = [v65 initWithDomain:v66 code:v67 userInfo:v68];
+  v13 = [v65 initWithDomain:domain code:code userInfo:v68];
 
   std::unique_ptr<CSStore2::Store>::reset[abi:nn200100](buf, 0);
 LABEL_8:
@@ -688,20 +688,20 @@ LABEL_11:
   {
     if (v13)
     {
-      v20 = [v13 userInfo];
+      userInfo3 = [v13 userInfo];
       v21 = *MEMORY[0x1E696A998];
-      v22 = [v20 objectForKeyedSubscript:*MEMORY[0x1E696A998]];
+      v22 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E696A998]];
       v23 = v22 == 0;
 
       if (v23)
       {
-        v24 = [v13 userInfo];
-        v25 = [v24 mutableCopy];
+        userInfo4 = [v13 userInfo];
+        v25 = [userInfo4 mutableCopy];
 
         [v25 setObject:v10 forKeyedSubscript:v21];
         v26 = MEMORY[0x1E696ABC0];
-        v27 = [v13 domain];
-        v28 = [v26 errorWithDomain:v27 code:objc_msgSend(v13 userInfo:{"code"), v25}];
+        domain2 = [v13 domain];
+        v28 = [v26 errorWithDomain:domain2 code:objc_msgSend(v13 userInfo:{"code"), v25}];
 
         v13 = v28;
       }
@@ -754,7 +754,7 @@ LABEL_24:
   return v32;
 }
 
-- (_CSStore)initWithError:(id *)a3
+- (_CSStore)initWithError:(id *)error
 {
   v9 = 0;
   CSStore2::Store::_Create(&v10, 0, 0, 0, 0, &v9);
@@ -762,7 +762,7 @@ LABEL_24:
   if (v10)
   {
     v6 = [(_CSStore *)self initByMovingStore:?];
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -772,7 +772,7 @@ LABEL_24:
   {
 
     v6 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -781,7 +781,7 @@ LABEL_24:
   if (!v6)
   {
     v7 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
 LABEL_7:
@@ -790,7 +790,7 @@ LABEL_7:
   return v6;
 }
 
-- (id)initByMovingStore:(void *)a3
+- (id)initByMovingStore:(void *)store
 {
   v21.receiver = self;
   v21.super_class = _CSStore;
@@ -798,7 +798,7 @@ LABEL_7:
   v5 = (v4 + 8);
   if (v4)
   {
-    v6 = v5 == a3;
+    v6 = v5 == store;
   }
 
   else
@@ -808,43 +808,43 @@ LABEL_7:
 
   if (!v6)
   {
-    objc_storeStrong(v5, *a3);
-    v7 = *a3;
-    *a3 = 0;
+    objc_storeStrong(v5, *store);
+    v7 = *store;
+    *store = 0;
 
-    v8 = *(a3 + 8);
-    v9 = *(a3 + 24);
-    v10 = *(a3 + 56);
-    *(v4 + 3) = *(a3 + 40);
+    v8 = *(store + 8);
+    v9 = *(store + 24);
+    v10 = *(store + 56);
+    *(v4 + 3) = *(store + 40);
     *(v4 + 4) = v10;
     *(v4 + 1) = v8;
     *(v4 + 2) = v9;
-    v11 = *(a3 + 72);
-    v12 = *(a3 + 88);
-    v13 = *(a3 + 120);
-    *(v4 + 7) = *(a3 + 104);
+    v11 = *(store + 72);
+    v12 = *(store + 88);
+    v13 = *(store + 120);
+    *(v4 + 7) = *(store + 104);
     *(v4 + 8) = v13;
     *(v4 + 5) = v11;
     *(v4 + 6) = v12;
-    v14 = *(a3 + 136);
-    v15 = *(a3 + 152);
-    v16 = *(a3 + 184);
-    *(v4 + 11) = *(a3 + 168);
+    v14 = *(store + 136);
+    v15 = *(store + 152);
+    v16 = *(store + 184);
+    *(v4 + 11) = *(store + 168);
     *(v4 + 12) = v16;
     *(v4 + 9) = v14;
     *(v4 + 10) = v15;
-    v17 = *(a3 + 200);
-    v18 = *(a3 + 216);
-    v19 = *(a3 + 248);
-    *(v4 + 15) = *(a3 + 232);
+    v17 = *(store + 200);
+    v18 = *(store + 216);
+    v19 = *(store + 248);
+    *(v4 + 15) = *(store + 232);
     *(v4 + 16) = v19;
     *(v4 + 13) = v17;
     *(v4 + 14) = v18;
-    *(v4 + 34) = *(a3 + 33);
-    *(v4 + 280) = *(a3 + 17);
+    *(v4 + 34) = *(store + 33);
+    *(v4 + 280) = *(store + 17);
     atomic_store(0, v4 + 37);
     atomic_store(0, v4 + 38);
-    *(v4 + 312) = *(a3 + 19);
+    *(v4 + 312) = *(store + 19);
   }
 
   return v4;

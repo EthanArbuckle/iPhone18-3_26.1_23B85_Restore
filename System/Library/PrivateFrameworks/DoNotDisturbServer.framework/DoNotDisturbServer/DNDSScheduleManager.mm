@@ -1,27 +1,27 @@
 @interface DNDSScheduleManager
-- (DNDSScheduleManager)initWithModeAssertionManager:(id)a3;
+- (DNDSScheduleManager)initWithModeAssertionManager:(id)manager;
 - (DNDSScheduleManagerDataSource)dataSource;
-- (id)_scheduleManagerClientIdentifierForModeIdentifier:(id)a3;
-- (void)_refreshWithScheduleSettings:(id)a3 modeIdentifier:(id)a4 currentScheduleAssertion:(id)a5 context:(id)a6;
-- (void)_refreshWithScheduleSettingsByModeIdentifier:(id)a3 context:(id)a4;
+- (id)_scheduleManagerClientIdentifierForModeIdentifier:(id)identifier;
+- (void)_refreshWithScheduleSettings:(id)settings modeIdentifier:(id)identifier currentScheduleAssertion:(id)assertion context:(id)context;
+- (void)_refreshWithScheduleSettingsByModeIdentifier:(id)identifier context:(id)context;
 - (void)refresh;
 @end
 
 @implementation DNDSScheduleManager
 
-- (DNDSScheduleManager)initWithModeAssertionManager:(id)a3
+- (DNDSScheduleManager)initWithModeAssertionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = DNDSScheduleManager;
   v6 = [(DNDSScheduleManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modeAssertionManager, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_modeAssertionManager, manager);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     currentScheduleSettingsByModeIdentifier = v7->_currentScheduleSettingsByModeIdentifier;
-    v7->_currentScheduleSettingsByModeIdentifier = v8;
+    v7->_currentScheduleSettingsByModeIdentifier = dictionary;
   }
 
   return v7;
@@ -32,7 +32,7 @@
   v9 = *MEMORY[0x277D85DE8];
   v3 = *(*a2 + 40);
   v5 = 138543618;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2114;
   v8 = v3;
   _os_log_error_impl(&dword_24912E000, log, OS_LOG_TYPE_ERROR, "Unable to update assertions for schedule: error=%{public}@, settings=%{public}@", &v5, 0x16u);
@@ -53,26 +53,26 @@ uint64_t __30__DNDSScheduleManager_refresh__block_invoke(uint64_t a1, void *a2)
   return 1;
 }
 
-- (void)_refreshWithScheduleSettingsByModeIdentifier:(id)a3 context:(id)a4
+- (void)_refreshWithScheduleSettingsByModeIdentifier:(id)identifier context:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 allKeys];
+  identifierCopy = identifier;
+  contextCopy = context;
+  allKeys = [identifierCopy allKeys];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __76__DNDSScheduleManager__refreshWithScheduleSettingsByModeIdentifier_context___block_invoke;
   v37[3] = &unk_278F8B508;
-  v9 = self;
+  selfCopy = self;
   v37[4] = self;
-  v10 = [v8 bs_map:v37];
+  v10 = [allKeys bs_map:v37];
 
   v27 = v10;
   [MEMORY[0x277D05938] predicateForModeAssertionsWithClientIdentifiers:v10];
-  v26 = v11 = v7;
-  v12 = [v7 modeAssertionsMatchingPredicate:?];
-  v30 = v6;
-  v13 = [v6 mutableCopy];
+  v26 = v11 = contextCopy;
+  v12 = [contextCopy modeAssertionsMatchingPredicate:?];
+  v30 = identifierCopy;
+  v13 = [identifierCopy mutableCopy];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -95,19 +95,19 @@ uint64_t __30__DNDSScheduleManager_refresh__block_invoke(uint64_t a1, void *a2)
         }
 
         v19 = *(*(&v33 + 1) + 8 * i);
-        v20 = [v19 details];
-        v21 = [v20 modeIdentifier];
+        details = [v19 details];
+        modeIdentifier = [details modeIdentifier];
 
-        if ([v21 isEqualToString:v17])
+        if ([modeIdentifier isEqualToString:v17])
         {
           v22 = v28;
 
-          v21 = v22;
+          modeIdentifier = v22;
         }
 
-        v23 = [v30 objectForKeyedSubscript:v21];
-        [(DNDSScheduleManager *)v9 _refreshWithScheduleSettings:v23 modeIdentifier:v21 currentScheduleAssertion:v19 context:v11];
-        [v13 setObject:0 forKeyedSubscript:v21];
+        v23 = [v30 objectForKeyedSubscript:modeIdentifier];
+        [(DNDSScheduleManager *)selfCopy _refreshWithScheduleSettings:v23 modeIdentifier:modeIdentifier currentScheduleAssertion:v19 context:v11];
+        [v13 setObject:0 forKeyedSubscript:modeIdentifier];
       }
 
       v15 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -120,7 +120,7 @@ uint64_t __30__DNDSScheduleManager_refresh__block_invoke(uint64_t a1, void *a2)
   v31[1] = 3221225472;
   v31[2] = __76__DNDSScheduleManager__refreshWithScheduleSettingsByModeIdentifier_context___block_invoke_2;
   v31[3] = &unk_278F8B530;
-  v31[4] = v9;
+  v31[4] = selfCopy;
   v32 = v11;
   v24 = v11;
   [v13 enumerateKeysAndObjectsUsingBlock:v31];
@@ -128,19 +128,19 @@ uint64_t __30__DNDSScheduleManager_refresh__block_invoke(uint64_t a1, void *a2)
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshWithScheduleSettings:(id)a3 modeIdentifier:(id)a4 currentScheduleAssertion:(id)a5 context:(id)a6
+- (void)_refreshWithScheduleSettings:(id)settings modeIdentifier:(id)identifier currentScheduleAssertion:(id)assertion context:(id)context
 {
   v73 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v61 = a4;
-  v62 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x277CBEAA8] distantFuture];
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  assertionCopy = assertion;
+  contextCopy = context;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v13 = v10;
+  v13 = settingsCopy;
   v14 = [v13 countByEnumeratingWithState:&v64 objects:v72 count:16];
   if (v14)
   {
@@ -163,12 +163,12 @@ uint64_t __30__DNDSScheduleManager_refresh__block_invoke(uint64_t a1, void *a2)
           v17 = 2;
         }
 
-        v20 = [v19 creationDate];
-        if ([v20 compare:v12] == -1)
+        creationDate = [v19 creationDate];
+        if ([creationDate compare:distantFuture] == -1)
         {
-          v21 = v20;
+          v21 = creationDate;
 
-          v12 = v21;
+          distantFuture = v21;
         }
       }
 
@@ -183,14 +183,14 @@ uint64_t __30__DNDSScheduleManager_refresh__block_invoke(uint64_t a1, void *a2)
     v17 = 1;
   }
 
-  v22 = v61;
-  v23 = [(NSMutableDictionary *)self->_currentScheduleSettingsByModeIdentifier objectForKeyedSubscript:v61];
-  if (![v23 isEqual:v13] || !v62 && v17 == 2 || v62 && v17 == 1)
+  v22 = identifierCopy;
+  v23 = [(NSMutableDictionary *)self->_currentScheduleSettingsByModeIdentifier objectForKeyedSubscript:identifierCopy];
+  if (![v23 isEqual:v13] || !assertionCopy && v17 == 2 || assertionCopy && v17 == 1)
   {
     v24 = [v13 copy];
-    [(NSMutableDictionary *)self->_currentScheduleSettingsByModeIdentifier setObject:v24 forKeyedSubscript:v61];
+    [(NSMutableDictionary *)self->_currentScheduleSettingsByModeIdentifier setObject:v24 forKeyedSubscript:identifierCopy];
 
-    v60 = [(DNDSScheduleManager *)self _scheduleManagerClientIdentifierForModeIdentifier:v61];
+    v60 = [(DNDSScheduleManager *)self _scheduleManagerClientIdentifierForModeIdentifier:identifierCopy];
     v25 = [objc_alloc(MEMORY[0x277D05988]) initWithClientIdentifier:v60 deviceIdentifier:0];
     v26 = v25;
     if (v17 == 2)
@@ -202,10 +202,10 @@ uint64_t __30__DNDSScheduleManager_refresh__block_invoke(uint64_t a1, void *a2)
       [v27 setLifetime:v28];
 
       v29 = *MEMORY[0x277D05830];
-      if (*MEMORY[0x277D05830] == v61 || v61 && v29 && [v61 isEqual:*MEMORY[0x277D05830]])
+      if (*MEMORY[0x277D05830] == identifierCopy || identifierCopy && v29 && [identifierCopy isEqual:*MEMORY[0x277D05830]])
       {
-        v30 = [v13 firstObject];
-        [v30 bedtimeBehaviorEnabledSetting];
+        firstObject = [v13 firstObject];
+        [firstObject bedtimeBehaviorEnabledSetting];
         v31 = DNDResolvedBedtimeBehaviorEnabledSetting();
 
         v32 = *MEMORY[0x277D05868];
@@ -217,23 +217,23 @@ uint64_t __30__DNDSScheduleManager_refresh__block_invoke(uint64_t a1, void *a2)
         v22 = v32;
       }
 
-      v61 = v22;
+      identifierCopy = v22;
       [v27 setModeIdentifier:{v22, v56}];
       [v27 setReason:2];
-      v33 = v12;
-      v34 = [v62 details];
-      if ([v34 isEqual:v27])
+      invalidationDate = distantFuture;
+      details = [assertionCopy details];
+      if ([details isEqual:v27])
       {
-        v35 = [v62 startDate];
-        v36 = [v35 isEqual:v33];
+        startDate = [assertionCopy startDate];
+        v36 = [startDate isEqual:invalidationDate];
 
         if (v36)
         {
-          v37 = v62;
+          v37 = assertionCopy;
           v26 = v57;
 LABEL_37:
 
-          v22 = v61;
+          v22 = identifierCopy;
           goto LABEL_38;
         }
       }
@@ -253,29 +253,29 @@ LABEL_37:
       v26 = v57;
       do
       {
-        v48 = v33;
+        v48 = invalidationDate;
         v49 = v43;
-        v43 = [v11 takeAssertionWithDetails:v63 source:v57 startDate:v33];
+        v43 = [contextCopy takeAssertionWithDetails:v63 source:v57 startDate:invalidationDate];
 
-        v50 = [v11 modeAssertionInvalidationsMatchingPredicate:v47];
-        v51 = [v50 firstObject];
-        v33 = [v51 invalidationDate];
+        v50 = [contextCopy modeAssertionInvalidationsMatchingPredicate:v47];
+        firstObject2 = [v50 firstObject];
+        invalidationDate = [firstObject2 invalidationDate];
 
-        v52 = [v43 assertions];
-        v53 = [v52 count];
+        assertions = [v43 assertions];
+        v53 = [assertions count];
       }
 
       while (!v53);
 
-      v37 = v62;
+      v37 = assertionCopy;
       v27 = v63;
       v23 = v59;
     }
 
     else
     {
-      v37 = v62;
-      if (!v62)
+      v37 = assertionCopy;
+      if (!assertionCopy)
       {
 LABEL_38:
 
@@ -283,20 +283,20 @@ LABEL_38:
       }
 
       v58 = v23;
-      v38 = v12;
-      [v62 UUID];
-      v39 = v11;
+      v38 = distantFuture;
+      [assertionCopy UUID];
+      v39 = contextCopy;
       v41 = v40 = v26;
       v70 = v41;
       v42 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
-      v33 = [DNDSModeAssertionInvalidationPredicate predicateForAssertionUUIDs:v42];
+      invalidationDate = [DNDSModeAssertionInvalidationPredicate predicateForAssertionUUIDs:v42];
 
       v26 = v40;
-      v11 = v39;
+      contextCopy = v39;
       v27 = v38;
       v23 = v58;
-      v43 = [DNDSModeAssertionInvalidationRequest requestWithPredicate:v33 requestDate:v27 source:v26 reason:3];
-      v44 = [v11 invalidateAssertionsForRequest:v43];
+      v43 = [DNDSModeAssertionInvalidationRequest requestWithPredicate:invalidationDate requestDate:v27 source:v26 reason:3];
+      v44 = [contextCopy invalidateAssertionsForRequest:v43];
     }
 
     goto LABEL_37;
@@ -310,17 +310,17 @@ LABEL_38:
     _os_log_impl(&dword_24912E000, v55, OS_LOG_TYPE_DEFAULT, "Existing schedule assertion does not need to change: settings=%{public}@", buf, 0xCu);
   }
 
-  v37 = v62;
+  v37 = assertionCopy;
 LABEL_39:
 
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_scheduleManagerClientIdentifierForModeIdentifier:(id)a3
+- (id)_scheduleManagerClientIdentifierForModeIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (*MEMORY[0x277D05830] == v3 || v3 && *MEMORY[0x277D05830] && ([v3 isEqual:?] & 1) != 0)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (*MEMORY[0x277D05830] == identifierCopy || identifierCopy && *MEMORY[0x277D05830] && ([identifierCopy isEqual:?] & 1) != 0)
   {
     v5 = @"com.apple.donotdisturb.private.schedule";
   }

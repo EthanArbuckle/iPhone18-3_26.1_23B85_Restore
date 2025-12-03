@@ -1,7 +1,7 @@
 @interface CSExattrCryptoService
 + (id)sharedService;
-- (void)computeUpdatedCryptoData:(id)a3 newParams:(id)a4 isPrivateMDAttributes:(BOOL)a5 doMergeArrayValues:(BOOL)a6 replyBlock:(id)a7;
-- (void)decryptAttributesWithData:(id)a3 withReply:(id)a4;
+- (void)computeUpdatedCryptoData:(id)data newParams:(id)params isPrivateMDAttributes:(BOOL)attributes doMergeArrayValues:(BOOL)values replyBlock:(id)block;
+- (void)decryptAttributesWithData:(id)data withReply:(id)reply;
 @end
 
 @implementation CSExattrCryptoService
@@ -16,23 +16,23 @@
   return qword_10001A250;
 }
 
-- (void)computeUpdatedCryptoData:(id)a3 newParams:(id)a4 isPrivateMDAttributes:(BOOL)a5 doMergeArrayValues:(BOOL)a6 replyBlock:(id)a7
+- (void)computeUpdatedCryptoData:(id)data newParams:(id)params isPrivateMDAttributes:(BOOL)attributes doMergeArrayValues:(BOOL)values replyBlock:(id)block
 {
   v8 = objc_autoreleasePoolPush();
   v9 = copyUpdatedData(+[MDPrivateXattrServices defaultServices]);
-  (*(a7 + 2))(a7, 0, 0, v9, 0);
+  (*(block + 2))(block, 0, 0, v9, 0);
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)decryptAttributesWithData:(id)a3 withReply:(id)a4
+- (void)decryptAttributesWithData:(id)data withReply:(id)reply
 {
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [a3 count]);
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [data count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [data countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -43,7 +43,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(data);
         }
 
         v11 = [+[MDPrivateXattrServices defaultServices](MDPrivateXattrServices "defaultServices")];
@@ -60,13 +60,13 @@
         [(NSMutableArray *)v6 addObject:v12];
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [data countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  (*(a4 + 2))(a4, 0, v6);
+  (*(reply + 2))(reply, 0, v6);
 }
 
 @end

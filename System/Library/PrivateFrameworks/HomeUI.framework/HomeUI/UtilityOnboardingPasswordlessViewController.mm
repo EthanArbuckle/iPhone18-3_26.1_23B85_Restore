@@ -1,11 +1,11 @@
 @interface UtilityOnboardingPasswordlessViewController
 - (Class)onboardingFlowClass;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (UtilityOnboardingPasswordlessViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (UtilityOnboardingPasswordlessViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)setDelegate:(id)a3;
+- (UtilityOnboardingPasswordlessViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (UtilityOnboardingPasswordlessViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UtilityOnboardingPasswordlessViewController
@@ -18,30 +18,30 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___UtilityOnboardingPasswordlessViewController_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D0FE7B0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for UtilityOnboardingPasswordlessViewController();
   v4 = v6.receiver;
-  [(UtilityOnboardingPasswordlessViewController *)&v6 viewWillAppear:v3];
-  v5 = [v4 headerView];
-  sub_20CEE70AC(v5);
+  [(UtilityOnboardingPasswordlessViewController *)&v6 viewWillAppear:appearCopy];
+  headerView = [v4 headerView];
+  sub_20CEE70AC(headerView);
 }
 
 - (Class)onboardingFlowClass
@@ -51,14 +51,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (UtilityOnboardingPasswordlessViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (UtilityOnboardingPasswordlessViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (UtilityOnboardingPasswordlessViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (UtilityOnboardingPasswordlessViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

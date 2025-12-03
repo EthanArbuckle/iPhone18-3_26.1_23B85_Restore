@@ -1,10 +1,10 @@
 @interface RTRoutineManager
-- (RTRoutineManager)initWithUniverse:(id)a3;
+- (RTRoutineManager)initWithUniverse:(id)universe;
 @end
 
 @implementation RTRoutineManager
 
-- (RTRoutineManager)initWithUniverse:(id)a3
+- (RTRoutineManager)initWithUniverse:(id)universe
 {
   v4 = +[RTRoutineManager defaultManager];
 

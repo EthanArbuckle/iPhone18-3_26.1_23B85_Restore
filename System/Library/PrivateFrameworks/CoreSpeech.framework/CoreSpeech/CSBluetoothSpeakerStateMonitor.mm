@@ -2,16 +2,16 @@
 + (id)sharedInstance;
 - (BOOL)isActive;
 - (CSBluetoothSpeakerStateMonitor)init;
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3;
-- (void)_didReceiveBluetoothSpeakerStateChangeNotification:(BOOL)a3;
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart;
+- (void)_didReceiveBluetoothSpeakerStateChangeNotification:(BOOL)notification;
 - (void)_fetchSpeakerStateActiveInfo;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSBluetoothSpeakerStateMonitor
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart
 {
   v5[0] = @"AVVoiceTriggerPort_BluetoothSpeaker";
   v5[1] = @"AVVoiceTriggerPort_BuiltinSpeaker";
@@ -22,9 +22,9 @@
   [v4 enableListeningOnPorts:v3 completionBlock:&stru_10024E998];
 }
 
-- (void)_didReceiveBluetoothSpeakerStateChangeNotification:(BOOL)a3
+- (void)_didReceiveBluetoothSpeakerStateChangeNotification:(BOOL)notification
 {
-  self->_isActive = a3;
+  self->_isActive = notification;
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100028EF0;
@@ -52,9 +52,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v5 = +[CSAVVoiceTriggerClientManager sharedVoiceTriggerClient];
   v9 = _NSConcreteStackBlock;

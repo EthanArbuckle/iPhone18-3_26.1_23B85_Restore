@@ -4,7 +4,7 @@
 - (void)_showPicker;
 - (void)beginEditing;
 - (void)dealloc;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation HKMedicalIDEditorPickerCell
@@ -37,8 +37,8 @@
     [(UIPickerView *)self->_picker setDataSource:self];
     [(UIPickerView *)self->_picker setDelegate:self];
     v6 = [HKHostingAreaLayoutView viewHostingView:self->_picker];
-    v7 = [(HKMedicalIDEditorCell *)self inputTextField];
-    [v7 setInputView:v6];
+    inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+    [inputTextField setInputView:v6];
 
     picker = self->_picker;
   }
@@ -46,14 +46,14 @@
   [(UIPickerView *)picker reloadAllComponents];
   [(UIPickerView *)self->_picker selectRow:self->_chosenValueIndex inComponent:0 animated:0];
   [(HKMedicalIDEditorPickerCell *)self reloadInputViews];
-  v8 = [(HKMedicalIDEditorCell *)self inputTextField];
-  [v8 becomeFirstResponder];
+  inputTextField2 = [(HKMedicalIDEditorCell *)self inputTextField];
+  [inputTextField2 becomeFirstResponder];
 }
 
 - (void)_hidePicker
 {
-  v2 = [(HKMedicalIDEditorCell *)self inputTextField];
-  [v2 resignFirstResponder];
+  inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+  [inputTextField resignFirstResponder];
 }
 
 - (void)dealloc
@@ -73,9 +73,9 @@
   [(HKMedicalIDEditorPickerCell *)self _showPicker];
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  self->_chosenValueIndex = [(UIPickerView *)self->_picker selectedRowInComponent:0, a4, a5];
+  self->_chosenValueIndex = [(UIPickerView *)self->_picker selectedRowInComponent:0, row, component];
 
   [(HKMedicalIDEditorCell *)self valueDidChange];
 }

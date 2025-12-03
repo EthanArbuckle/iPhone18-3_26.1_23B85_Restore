@@ -1,6 +1,6 @@
 @interface SnoutDatabaseTransaction
 - (_TtC20AttributionKitDaemon24SnoutDatabaseTransaction)init;
-- (_TtC20AttributionKitDaemon24SnoutDatabaseTransaction)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon24SnoutDatabaseTransaction)initWithConnection:(id)connection;
 @end
 
 @implementation SnoutDatabaseTransaction
@@ -12,11 +12,11 @@
   return [(SnoutDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon24SnoutDatabaseTransaction)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon24SnoutDatabaseTransaction)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(SnoutDatabaseSession *)&v5 initWithConnection:a3];
+  return [(SnoutDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

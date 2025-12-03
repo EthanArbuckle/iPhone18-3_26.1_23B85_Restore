@@ -3,49 +3,49 @@
 + (BOOL)currentProcessLacksPosterAPIAccess_impl;
 + (BOOL)shouldUseDirectAccess;
 + (OS_os_log)log;
-+ (id)implForAccessStrategy:(unint64_t)a3;
++ (id)implForAccessStrategy:(unint64_t)strategy;
 + (id)inMemoryStore;
 + (id)inProcessStore;
 + (id)xpcStore;
 + (void)currentProcessLacksPosterAPIAccess_impl;
 + (void)warnAboutLackOfPosterAPIAccess;
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeUpdateRequest:(id)a3 error:(id *)a4;
+- (BOOL)executeCreateRequest:(id)request error:(id *)error;
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error;
+- (BOOL)executeUpdateRequest:(id)request error:(id *)error;
 - (CNContactPosterDataStore)init;
-- (CNContactPosterDataStore)initWithAccessStrategy:(unint64_t)a3;
-- (CNContactPosterDataStore)initWithImpl:(id)a3;
-- (CNContactPosterDataStore)initWithStoreManager:(id)a3;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4;
+- (CNContactPosterDataStore)initWithAccessStrategy:(unint64_t)strategy;
+- (CNContactPosterDataStore)initWithImpl:(id)impl;
+- (CNContactPosterDataStore)initWithStoreManager:(id)manager;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (int64_t)countForFetchRequest:(id)request error:(id *)error;
 @end
 
 @implementation CNContactPosterDataStore
 
 - (CNContactPosterDataStore)init
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:22];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:22];
 
   if (v5)
   {
     if ([objc_opt_class() shouldUseDirectAccess])
     {
-      v6 = self;
+      selfCopy4 = self;
       v7 = 1;
     }
 
     else if ([objc_opt_class() currentProcessLacksPosterAPIAccess])
     {
       [objc_opt_class() warnAboutLackOfPosterAPIAccess];
-      v6 = self;
+      selfCopy4 = self;
       v7 = 4;
     }
 
     else
     {
-      v6 = self;
+      selfCopy4 = self;
       v7 = 0;
     }
   }
@@ -58,20 +58,20 @@
       [CNContactPosterDataStore init];
     }
 
-    v6 = self;
+    selfCopy4 = self;
     v7 = 3;
   }
 
-  v9 = [(CNContactPosterDataStore *)v6 initWithAccessStrategy:v7];
+  v9 = [(CNContactPosterDataStore *)selfCopy4 initWithAccessStrategy:v7];
 
   return v9;
 }
 
 + (BOOL)shouldUseDirectAccess
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 environment];
-  v4 = [v3 objectForKeyedSubscript:@"CONTACT_POSTER_API_DIRECT_ACCESS"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  environment = [processInfo environment];
+  v4 = [environment objectForKeyedSubscript:@"CONTACT_POSTER_API_DIRECT_ACCESS"];
   v5 = ([v4 _cn_caseInsensitiveIsEqual:@"YES"] & 1) != 0 || (objc_msgSend(v4, "_cn_caseInsensitiveIsEqual:", @"Y") & 1) != 0 || (objc_msgSend(v4, "_cn_caseInsensitiveIsEqual:", @"TRUE") & 1) != 0 || (objc_msgSend(v4, "_cn_caseInsensitiveIsEqual:", @"T") & 1) != 0 || objc_msgSend(v4, "integerValue") != 0;
 
   return v5;
@@ -80,12 +80,12 @@
 + (BOOL)currentProcessLacksPosterAPIAccess
 {
   v3 = +[CNTCC sharedInstance];
-  v4 = [v3 accessPreflight];
+  accessPreflight = [v3 accessPreflight];
 
-  if (v4 == 2)
+  if (accessPreflight == 2)
   {
 
-    return [a1 currentProcessLacksPosterAPIAccess_impl];
+    return [self currentProcessLacksPosterAPIAccess_impl];
   }
 
   else
@@ -94,7 +94,7 @@
     block[1] = 3221225472;
     block[2] = __62__CNContactPosterDataStore_currentProcessLacksPosterAPIAccess__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (currentProcessLacksPosterAPIAccess_cn_once_token_2 != -1)
     {
       dispatch_once(&currentProcessLacksPosterAPIAccess_cn_once_token_2, block);
@@ -113,9 +113,9 @@ uint64_t __62__CNContactPosterDataStore_currentProcessLacksPosterAPIAccess__bloc
 
 + (BOOL)currentProcessLacksPosterAPIAccess_impl
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 environment];
-  v4 = [v3 objectForKeyedSubscript:@"CN_UNIT_TESTING"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  environment = [processInfo environment];
+  v4 = [environment objectForKeyedSubscript:@"CN_UNIT_TESTING"];
   if ([v4 _cn_caseInsensitiveIsEqual:@"YES"] & 1) != 0 || (objc_msgSend(v4, "_cn_caseInsensitiveIsEqual:", @"Y") & 1) != 0 || (objc_msgSend(v4, "_cn_caseInsensitiveIsEqual:", @"TRUE") & 1) != 0 || (objc_msgSend(v4, "_cn_caseInsensitiveIsEqual:", @"T"))
   {
 
@@ -123,9 +123,9 @@ LABEL_6:
     return 0;
   }
 
-  v6 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  if (v6)
+  if (integerValue)
   {
     return 0;
   }
@@ -134,10 +134,10 @@ LABEL_6:
   v7 = sandbox_check();
   if (v7 == -1)
   {
-    v2 = +[CNContactPosterDataStore log];
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+    processInfo = +[CNContactPosterDataStore log];
+    if (os_log_type_enabled(processInfo, OS_LOG_TYPE_ERROR))
     {
-      +[(CNContactPosterDataStore *)v2];
+      +[(CNContactPosterDataStore *)processInfo];
     }
 
     goto LABEL_6;
@@ -169,21 +169,21 @@ uint64_t __31__CNContactPosterDataStore_log__block_invoke()
 
 + (id)inProcessStore
 {
-  v2 = [[a1 alloc] initWithAccessStrategy:1];
+  v2 = [[self alloc] initWithAccessStrategy:1];
 
   return v2;
 }
 
 + (id)xpcStore
 {
-  v2 = [[a1 alloc] initWithAccessStrategy:0];
+  v2 = [[self alloc] initWithAccessStrategy:0];
 
   return v2;
 }
 
 + (id)inMemoryStore
 {
-  v2 = [[a1 alloc] initWithAccessStrategy:2];
+  v2 = [[self alloc] initWithAccessStrategy:2];
 
   return v2;
 }
@@ -195,34 +195,34 @@ uint64_t __31__CNContactPosterDataStore_log__block_invoke()
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (CNContactPosterDataStore)initWithAccessStrategy:(unint64_t)a3
+- (CNContactPosterDataStore)initWithAccessStrategy:(unint64_t)strategy
 {
-  v4 = [objc_opt_class() implForAccessStrategy:a3];
+  v4 = [objc_opt_class() implForAccessStrategy:strategy];
   v5 = [(CNContactPosterDataStore *)self initWithImpl:v4];
 
   return v5;
 }
 
-- (CNContactPosterDataStore)initWithStoreManager:(id)a3
+- (CNContactPosterDataStore)initWithStoreManager:(id)manager
 {
-  v4 = a3;
-  v5 = [[CNContactPosterDataDirectAccess alloc] initWithStoreManager:v4];
+  managerCopy = manager;
+  v5 = [[CNContactPosterDataDirectAccess alloc] initWithStoreManager:managerCopy];
 
   v6 = [(CNContactPosterDataStore *)self initWithImpl:v5];
   return v6;
 }
 
-+ (id)implForAccessStrategy:(unint64_t)a3
++ (id)implForAccessStrategy:(unint64_t)strategy
 {
-  if (a3 <= 2)
+  if (strategy <= 2)
   {
-    if (a3 == 1)
+    if (strategy == 1)
     {
       v3 = CNContactPosterDataDirectAccess;
       goto LABEL_13;
     }
 
-    if (a3 == 2)
+    if (strategy == 2)
     {
       v4 = [CNContactPosterDataDirectAccess alloc];
       v5 = +[CNContactPosterDataPersistentStoreManager inMemoryStoreManager];
@@ -234,19 +234,19 @@ uint64_t __31__CNContactPosterDataStore_log__block_invoke()
     goto LABEL_12;
   }
 
-  if (a3 == 3)
+  if (strategy == 3)
   {
     v3 = CNContactPosterDataNoAccess;
     goto LABEL_13;
   }
 
-  if (a3 == 4)
+  if (strategy == 4)
   {
     v3 = CNContactPosterDataFailAccess;
     goto LABEL_13;
   }
 
-  if (a3 != 5)
+  if (strategy != 5)
   {
 LABEL_12:
     v3 = CNContactPosterDataXPCAccess;
@@ -261,25 +261,25 @@ LABEL_14:
   return v6;
 }
 
-- (CNContactPosterDataStore)initWithImpl:(id)a3
+- (CNContactPosterDataStore)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v10.receiver = self;
   v10.super_class = CNContactPosterDataStore;
   v6 = [(CNContactPosterDataStore *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -288,7 +288,7 @@ LABEL_14:
 
   impl = self->_impl;
   v16 = 0;
-  v9 = [(CNContactPosterDataStore *)impl executeFetchRequest:v6 error:&v16];
+  v9 = [(CNContactPosterDataStore *)impl executeFetchRequest:requestCopy error:&v16];
   v10 = v16;
   v11 = +[CNContactPosterDataStore log];
   v12 = v11;
@@ -309,19 +309,19 @@ LABEL_14:
       [CNContactPosterDataStore executeFetchRequest:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   return v9;
 }
 
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4
+- (int64_t)countForFetchRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -330,7 +330,7 @@ LABEL_14:
 
   impl = self->_impl;
   v11 = 0;
-  v8 = [(CNContactPosterDataStore *)impl countForFetchRequest:v5 error:&v11]!= 0;
+  v8 = [(CNContactPosterDataStore *)impl countForFetchRequest:requestCopy error:&v11]!= 0;
   v9 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -340,9 +340,9 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4
+- (BOOL)executeCreateRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -351,7 +351,7 @@ LABEL_14:
 
   impl = self->_impl;
   v10 = 0;
-  [(CNContactPosterDataStore *)impl executeCreateRequest:v5 error:&v10];
+  [(CNContactPosterDataStore *)impl executeCreateRequest:requestCopy error:&v10];
   v8 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -361,9 +361,9 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)executeUpdateRequest:(id)a3 error:(id *)a4
+- (BOOL)executeUpdateRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -372,7 +372,7 @@ LABEL_14:
 
   impl = self->_impl;
   v10 = 0;
-  [(CNContactPosterDataStore *)impl executeUpdateRequest:v5 error:&v10];
+  [(CNContactPosterDataStore *)impl executeUpdateRequest:requestCopy error:&v10];
   v8 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -382,9 +382,9 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -393,7 +393,7 @@ LABEL_14:
 
   impl = self->_impl;
   v10 = 0;
-  [(CNContactPosterDataStore *)impl executeDeleteRequest:v5 error:&v10];
+  [(CNContactPosterDataStore *)impl executeDeleteRequest:requestCopy error:&v10];
   v8 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -406,9 +406,9 @@ LABEL_14:
 + (void)currentProcessLacksPosterAPIAccess_impl
 {
   v4 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6996708] errorWithErrno];
+  errorWithErrno = [MEMORY[0x1E6996708] errorWithErrno];
   OUTLINED_FUNCTION_1();
-  _os_log_error_impl(&dword_1954A0000, a1, OS_LOG_TYPE_ERROR, "Error checking sandbox status, will assume current process is correctly sandboxed: %@", v3, 0xCu);
+  _os_log_error_impl(&dword_1954A0000, self, OS_LOG_TYPE_ERROR, "Error checking sandbox status, will assume current process is correctly sandboxed: %@", v3, 0xCu);
 }
 
 - (void)executeFetchRequest:error:.cold.1()

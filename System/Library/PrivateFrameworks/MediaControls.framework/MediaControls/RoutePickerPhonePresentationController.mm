@@ -1,6 +1,6 @@
 @interface RoutePickerPhonePresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC13MediaControls38RoutePickerPhonePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_TtC13MediaControls38RoutePickerPhonePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)containerViewWillLayoutSubviews;
 @end
 
@@ -8,12 +8,12 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
-  v3 = [(RoutePickerPhonePresentationController *)v2 containerView];
-  if (v3)
+  selfCopy = self;
+  containerView = [(RoutePickerPhonePresentationController *)selfCopy containerView];
+  if (containerView)
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = containerView;
+    [containerView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -46,25 +46,25 @@
   v7.super_class = type metadata accessor for RoutePickerPhonePresentationController();
   v2 = v7.receiver;
   [(RoutePickerPhonePresentationController *)&v7 containerViewWillLayoutSubviews];
-  v3 = [v2 containerView];
-  if (v3)
+  containerView = [v2 containerView];
+  if (containerView)
   {
-    v4 = v3;
-    v5 = [v2 presentedView];
-    if (v5)
+    v4 = containerView;
+    presentedView = [v2 presentedView];
+    if (presentedView)
     {
-      v6 = v5;
+      v6 = presentedView;
       [v4 bounds];
       [v6 setFrame_];
     }
   }
 }
 
-- (_TtC13MediaControls38RoutePickerPhonePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC13MediaControls38RoutePickerPhonePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for RoutePickerPhonePresentationController();
-  return [(RoutePickerPhonePresentationController *)&v7 initWithPresentedViewController:a3 presentingViewController:a4];
+  return [(RoutePickerPhonePresentationController *)&v7 initWithPresentedViewController:controller presentingViewController:viewController];
 }
 
 @end

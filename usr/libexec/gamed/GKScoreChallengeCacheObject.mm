@@ -1,7 +1,7 @@
 @interface GKScoreChallengeCacheObject
 - (BOOL)hasDetails;
 - (id)internalRepresentation;
-- (void)updateWithServerRepresentation:(id)a3;
+- (void)updateWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKScoreChallengeCacheObject
@@ -15,8 +15,8 @@
     return 0;
   }
 
-  v3 = [(GKScoreChallengeCacheObject *)self value];
-  v4 = v3 != 0;
+  value = [(GKScoreChallengeCacheObject *)self value];
+  v4 = value != 0;
 
   return v4;
 }
@@ -29,73 +29,73 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKScoreChallengeCacheObject internalRepresentation]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKScoreChallengeCacheObject internalRepresentation]", [v7 UTF8String], 4599);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKScoreChallengeCacheObject internalRepresentation]", [lastPathComponent UTF8String], 4599);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
   v23.receiver = self;
   v23.super_class = GKScoreChallengeCacheObject;
-  v9 = [(GKChallengeCacheObject *)&v23 internalRepresentation];
+  internalRepresentation = [(GKChallengeCacheObject *)&v23 internalRepresentation];
   v10 = +[GKScoreInternal internalRepresentation];
-  v11 = [(GKScoreChallengeCacheObject *)self identifier];
-  [v10 setLeaderboardIdentifier:v11];
+  identifier = [(GKScoreChallengeCacheObject *)self identifier];
+  [v10 setLeaderboardIdentifier:identifier];
 
-  v12 = [(GKScoreChallengeCacheObject *)self groupIdentifier];
-  [v10 setGroupLeaderboardIdentifier:v12];
+  groupIdentifier = [(GKScoreChallengeCacheObject *)self groupIdentifier];
+  [v10 setGroupLeaderboardIdentifier:groupIdentifier];
 
   [v10 setRank:{-[GKScoreChallengeCacheObject rank](self, "rank")}];
-  v13 = [(GKScoreChallengeCacheObject *)self value];
-  [v10 setValue:{objc_msgSend(v13, "longLongValue")}];
+  value = [(GKScoreChallengeCacheObject *)self value];
+  [v10 setValue:{objc_msgSend(value, "longLongValue")}];
 
-  v14 = [(GKScoreChallengeCacheObject *)self formattedValue];
-  [v10 setFormattedValue:v14];
+  formattedValue = [(GKScoreChallengeCacheObject *)self formattedValue];
+  [v10 setFormattedValue:formattedValue];
 
-  v15 = [(GKScoreChallengeCacheObject *)self date];
-  [v10 setDate:v15];
+  date = [(GKScoreChallengeCacheObject *)self date];
+  [v10 setDate:date];
 
-  v16 = [(GKScoreChallengeCacheObject *)self context];
-  [v10 setContext:{objc_msgSend(v16, "longLongValue")}];
+  context = [(GKScoreChallengeCacheObject *)self context];
+  [v10 setContext:{objc_msgSend(context, "longLongValue")}];
 
-  [v9 setScore:v10];
+  [internalRepresentation setScore:v10];
   v17 = +[GKLeaderboardInternal internalRepresentation];
-  v18 = [(GKScoreChallengeCacheObject *)self identifier];
-  [v17 setIdentifier:v18];
+  identifier2 = [(GKScoreChallengeCacheObject *)self identifier];
+  [v17 setIdentifier:identifier2];
 
-  v19 = [(GKScoreChallengeCacheObject *)self groupIdentifier];
-  [v17 setGroupIdentifier:v19];
+  groupIdentifier2 = [(GKScoreChallengeCacheObject *)self groupIdentifier];
+  [v17 setGroupIdentifier:groupIdentifier2];
 
-  v20 = [(GKScoreChallengeCacheObject *)self localizedTitle];
-  [v17 setLocalizedTitle:v20];
+  localizedTitle = [(GKScoreChallengeCacheObject *)self localizedTitle];
+  [v17 setLocalizedTitle:localizedTitle];
 
-  v21 = [(GKCacheObject *)self imageURLDictionary];
-  [v17 setIcons:v21];
+  imageURLDictionary = [(GKCacheObject *)self imageURLDictionary];
+  [v17 setIcons:imageURLDictionary];
 
-  [v9 setLeaderboard:v17];
+  [internalRepresentation setLeaderboard:v17];
 
-  return v9;
+  return internalRepresentation;
 }
 
-- (void)updateWithServerRepresentation:(id)a3
+- (void)updateWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v5, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v6 = +[NSThread callStackSymbols];
     v7 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKScoreChallengeCacheObject updateWithServerRepresentation:]", v6];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKScoreChallengeCacheObject updateWithServerRepresentation:]", [v9 UTF8String], 4627);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKScoreChallengeCacheObject updateWithServerRepresentation:]", [lastPathComponent UTF8String], 4627);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
   v28.receiver = self;
   v28.super_class = GKScoreChallengeCacheObject;
-  [(GKChallengeCacheObject *)&v28 updateWithServerRepresentation:v4];
-  v11 = [v4 objectForKey:@"score"];
+  [(GKChallengeCacheObject *)&v28 updateWithServerRepresentation:representationCopy];
+  v11 = [representationCopy objectForKey:@"score"];
   v12 = v11;
   if (v11)
   {
@@ -122,7 +122,7 @@
     [(GKScoreChallengeCacheObject *)self setContext:v20];
   }
 
-  v21 = [v4 objectForKeyedSubscript:@"leaderboard-category"];
+  v21 = [representationCopy objectForKeyedSubscript:@"leaderboard-category"];
   v22 = v21;
   if (v21)
   {

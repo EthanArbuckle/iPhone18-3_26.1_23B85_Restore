@@ -1,23 +1,23 @@
 @interface AAUISignInViewControllerTableFooterView
-- (AAUISignInViewControllerTableFooterView)initWithReuseIdentifier:(id)a3;
+- (AAUISignInViewControllerTableFooterView)initWithReuseIdentifier:(id)identifier;
 - (UIButton)continueButton;
 - (UIViewController)parentForPrivacyController;
 - (double)naturalHeight;
-- (void)addActionButtonStackView:(id)a3;
-- (void)addChildSignInButton:(id)a3;
-- (void)addContinueButton:(id)a3;
-- (void)addOtherButton:(id)a3;
-- (void)setExpandableViewToHeight:(double)a3;
-- (void)setPrivacyLinkIdentifiers:(id)a3;
+- (void)addActionButtonStackView:(id)view;
+- (void)addChildSignInButton:(id)button;
+- (void)addContinueButton:(id)button;
+- (void)addOtherButton:(id)button;
+- (void)setExpandableViewToHeight:(double)height;
+- (void)setPrivacyLinkIdentifiers:(id)identifiers;
 @end
 
 @implementation AAUISignInViewControllerTableFooterView
 
-- (AAUISignInViewControllerTableFooterView)initWithReuseIdentifier:(id)a3
+- (AAUISignInViewControllerTableFooterView)initWithReuseIdentifier:(id)identifier
 {
   v34.receiver = self;
   v34.super_class = AAUISignInViewControllerTableFooterView;
-  v3 = [(AAUISignInViewControllerTableFooterView *)&v34 initWithReuseIdentifier:a3];
+  v3 = [(AAUISignInViewControllerTableFooterView *)&v34 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = _AAUILogSystem();
@@ -41,96 +41,96 @@
 
     [(UIView *)v3->_expandableView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v3->_mainStack addArrangedSubview:v3->_expandableView];
-    v9 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
-    [v9 addSubview:v3->_mainStack];
+    contentView = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
+    [contentView addSubview:v3->_mainStack];
 
-    v10 = [(UIStackView *)v3->_mainStack leadingAnchor];
-    v11 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
-    v12 = [v11 leadingAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    leadingAnchor = [(UIStackView *)v3->_mainStack leadingAnchor];
+    contentView2 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v13 setActive:1];
 
-    v14 = [(UIStackView *)v3->_mainStack trailingAnchor];
-    v15 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
-    v16 = [v15 trailingAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    trailingAnchor = [(UIStackView *)v3->_mainStack trailingAnchor];
+    contentView3 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v17 setActive:1];
 
-    v18 = [(UIStackView *)v3->_mainStack topAnchor];
-    v19 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
-    v20 = [v19 topAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20 constant:15.0];
+    topAnchor = [(UIStackView *)v3->_mainStack topAnchor];
+    contentView4 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:15.0];
     [v21 setActive:1];
 
-    v22 = [(UIStackView *)v3->_mainStack bottomAnchor];
-    v23 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    bottomAnchor = [(UIStackView *)v3->_mainStack bottomAnchor];
+    contentView5 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v25 setActive:1];
 
-    v26 = [(UIView *)v3->_expandableView heightAnchor];
-    v27 = [v26 constraintGreaterThanOrEqualToConstant:10.0];
+    heightAnchor = [(UIView *)v3->_expandableView heightAnchor];
+    v27 = [heightAnchor constraintGreaterThanOrEqualToConstant:10.0];
     [v27 setActive:1];
 
-    v28 = [(UIView *)v3->_expandableView heightAnchor];
-    v29 = [v28 constraintEqualToConstant:0.0];
+    heightAnchor2 = [(UIView *)v3->_expandableView heightAnchor];
+    v29 = [heightAnchor2 constraintEqualToConstant:0.0];
     expandableHeight = v3->_expandableHeight;
     v3->_expandableHeight = v29;
 
-    v31 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
-    [v31 setNeedsLayout];
+    contentView6 = [(AAUISignInViewControllerTableFooterView *)v3 contentView];
+    [contentView6 setNeedsLayout];
   }
 
   return v3;
 }
 
-- (void)setPrivacyLinkIdentifiers:(id)a3
+- (void)setPrivacyLinkIdentifiers:(id)identifiers
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] && !self->_privacyLinkController)
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] && !self->_privacyLinkController)
   {
-    v5 = [MEMORY[0x1E69B7D50] linkWithBundleIdentifiers:v4];
+    v5 = [MEMORY[0x1E69B7D50] linkWithBundleIdentifiers:identifiersCopy];
     privacyLinkController = self->_privacyLinkController;
     self->_privacyLinkController = v5;
 
-    v7 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(OBPrivacyLinkController *)self->_privacyLinkController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     mainStack = self->_mainStack;
-    v9 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
-    [(UIStackView *)mainStack addArrangedSubview:v9];
+    view2 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
+    [(UIStackView *)mainStack addArrangedSubview:view2];
 
-    v10 = [(AAUISignInViewControllerTableFooterView *)self parentForPrivacyController];
-    [v10 addChildViewController:self->_privacyLinkController];
+    parentForPrivacyController = [(AAUISignInViewControllerTableFooterView *)self parentForPrivacyController];
+    [parentForPrivacyController addChildViewController:self->_privacyLinkController];
 
     v11 = self->_privacyLinkController;
-    v12 = [(AAUISignInViewControllerTableFooterView *)self parentForPrivacyController];
-    [(OBPrivacyLinkController *)v11 didMoveToParentViewController:v12];
+    parentForPrivacyController2 = [(AAUISignInViewControllerTableFooterView *)self parentForPrivacyController];
+    [(OBPrivacyLinkController *)v11 didMoveToParentViewController:parentForPrivacyController2];
 
-    v22 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
-    v21 = [v22 leadingAnchor];
-    v13 = [(UIStackView *)self->_mainStack leadingAnchor];
-    v14 = [v21 constraintEqualToAnchor:v13];
+    view3 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
+    leadingAnchor = [view3 leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)self->_mainStack leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v23[0] = v14;
-    v15 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
-    v16 = [v15 trailingAnchor];
-    v17 = [(UIStackView *)self->_mainStack trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    view4 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
+    trailingAnchor = [view4 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)self->_mainStack trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v23[1] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
 
     [(OBPrivacyLinkController *)self->_privacyLinkController setAccessibilityIdentifier:@"privacy-view"];
     [MEMORY[0x1E696ACD8] activateConstraints:v19];
-    v20 = [(AAUISignInViewControllerTableFooterView *)self contentView];
-    [v20 setNeedsLayout];
+    contentView = [(AAUISignInViewControllerTableFooterView *)self contentView];
+    [contentView setNeedsLayout];
   }
 }
 
-- (void)setExpandableViewToHeight:(double)a3
+- (void)setExpandableViewToHeight:(double)height
 {
   [(NSLayoutConstraint *)self->_expandableHeight setActive:0];
-  [(NSLayoutConstraint *)self->_expandableHeight setConstant:a3];
+  [(NSLayoutConstraint *)self->_expandableHeight setConstant:height];
   expandableHeight = self->_expandableHeight;
 
   [(NSLayoutConstraint *)expandableHeight setActive:1];
@@ -142,8 +142,8 @@
   v4 = *(MEMORY[0x1E69DE090] + 8);
   [(UIStackView *)self->_actionButtonStackView systemLayoutSizeFittingSize:*MEMORY[0x1E69DE090], v4];
   v6 = v5;
-  v7 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
-  [v7 systemLayoutSizeFittingSize:{v3, v4}];
+  view = [(OBPrivacyLinkController *)self->_privacyLinkController view];
+  [view systemLayoutSizeFittingSize:{v3, v4}];
   v9 = v8;
 
   [(UIStackView *)self->_continueButtonStackView systemLayoutSizeFittingSize:v3, v4];
@@ -156,35 +156,35 @@
   return v6 + 15.0 + v9 + v10 + v11;
 }
 
-- (void)addActionButtonStackView:(id)a3
+- (void)addActionButtonStackView:(id)view
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   if (!self->_actionButtonStackView)
   {
-    objc_storeStrong(&self->_actionButtonStackView, a3);
+    objc_storeStrong(&self->_actionButtonStackView, view);
     [(UIStackView *)self->_mainStack insertArrangedSubview:self->_actionButtonStackView atIndex:0];
-    v6 = [(UIStackView *)self->_actionButtonStackView leadingAnchor];
-    v7 = [(UIStackView *)self->_mainStack leadingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    leadingAnchor = [(UIStackView *)self->_actionButtonStackView leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)self->_mainStack leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v14[0] = v8;
-    v9 = [(UIStackView *)self->_actionButtonStackView trailingAnchor];
-    v10 = [(UIStackView *)self->_mainStack trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    trailingAnchor = [(UIStackView *)self->_actionButtonStackView trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)self->_mainStack trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v14[1] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v12];
-    v13 = [(AAUISignInViewControllerTableFooterView *)self contentView];
-    [v13 setNeedsLayout];
+    contentView = [(AAUISignInViewControllerTableFooterView *)self contentView];
+    [contentView setNeedsLayout];
   }
 }
 
-- (void)addContinueButton:(id)a3
+- (void)addContinueButton:(id)button
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(AAUISignInViewControllerTableFooterView *)self setContinueButton:v4];
+  buttonCopy = button;
+  [(AAUISignInViewControllerTableFooterView *)self setContinueButton:buttonCopy];
   if (!self->_continueButtonStackView)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCF90]);
@@ -199,8 +199,8 @@
     {
       v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
       [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v8 = [v7 heightAnchor];
-      v9 = [v8 constraintEqualToConstant:10.0];
+      heightAnchor = [v7 heightAnchor];
+      v9 = [heightAnchor constraintEqualToConstant:10.0];
 
       [v9 setActive:1];
       LODWORD(v10) = 1148846080;
@@ -208,50 +208,50 @@
       [(UIStackView *)self->_mainStack addArrangedSubview:v7];
     }
 
-    [(UIStackView *)self->_continueButtonStackView addArrangedSubview:v4];
+    [(UIStackView *)self->_continueButtonStackView addArrangedSubview:buttonCopy];
     [(UIStackView *)self->_mainStack addArrangedSubview:self->_continueButtonStackView];
-    v11 = [(UIStackView *)self->_continueButtonStackView leadingAnchor];
-    v12 = [(UIStackView *)self->_mainStack leadingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    leadingAnchor = [(UIStackView *)self->_continueButtonStackView leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)self->_mainStack leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v19[0] = v13;
-    v14 = [(UIStackView *)self->_continueButtonStackView trailingAnchor];
-    v15 = [(UIStackView *)self->_mainStack trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    trailingAnchor = [(UIStackView *)self->_continueButtonStackView trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)self->_mainStack trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v19[1] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v17];
-    v18 = [(AAUISignInViewControllerTableFooterView *)self contentView];
-    [v18 setNeedsLayout];
+    contentView = [(AAUISignInViewControllerTableFooterView *)self contentView];
+    [contentView setNeedsLayout];
   }
 }
 
-- (void)addChildSignInButton:(id)a3
+- (void)addChildSignInButton:(id)button
 {
   v4 = MEMORY[0x1E69DD250];
-  v5 = a3;
+  buttonCopy = button;
   v8 = objc_alloc_init(v4);
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [v8 heightAnchor];
-  v7 = [v6 constraintEqualToConstant:10.0];
+  heightAnchor = [v8 heightAnchor];
+  v7 = [heightAnchor constraintEqualToConstant:10.0];
   [v7 setActive:1];
 
   [(UIStackView *)self->_continueButtonStackView addArrangedSubview:v8];
-  [(UIStackView *)self->_continueButtonStackView addArrangedSubview:v5];
+  [(UIStackView *)self->_continueButtonStackView addArrangedSubview:buttonCopy];
 }
 
-- (void)addOtherButton:(id)a3
+- (void)addOtherButton:(id)button
 {
   v4 = MEMORY[0x1E69DD250];
-  v5 = a3;
+  buttonCopy = button;
   v8 = objc_alloc_init(v4);
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [v8 heightAnchor];
-  v7 = [v6 constraintEqualToConstant:10.0];
+  heightAnchor = [v8 heightAnchor];
+  v7 = [heightAnchor constraintEqualToConstant:10.0];
   [v7 setActive:1];
 
   [(UIStackView *)self->_continueButtonStackView addArrangedSubview:v8];
-  [(UIStackView *)self->_continueButtonStackView addArrangedSubview:v5];
+  [(UIStackView *)self->_continueButtonStackView addArrangedSubview:buttonCopy];
 }
 
 - (UIViewController)parentForPrivacyController

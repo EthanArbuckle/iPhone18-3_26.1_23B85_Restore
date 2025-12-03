@@ -1,27 +1,27 @@
 @interface VSViewServiceRemoteViewController
-- (VSViewServiceRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (VSViewServiceRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (VSViewServiceRemoteViewControllerDelegate)delegate;
-- (void)_didCancelRequest:(id)a3;
-- (void)_didChooseAdditionalProvidersForRequest:(id)a3;
-- (void)_didChooseProviderWithIdentifier:(id)a3 vetoHandler:(id)a4;
+- (void)_didCancelRequest:(id)request;
+- (void)_didChooseAdditionalProvidersForRequest:(id)request;
+- (void)_didChooseProviderWithIdentifier:(id)identifier vetoHandler:(id)handler;
 - (void)_dismissViewController;
 - (void)_presentViewController;
-- (void)_request:(id)a3 didFailWithError:(id)a4;
-- (void)_request:(id)a3 didFinishWithResponse:(id)a4;
+- (void)_request:(id)_request didFailWithError:(id)error;
+- (void)_request:(id)_request didFinishWithResponse:(id)response;
 - (void)dealloc;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation VSViewServiceRemoteViewController
 
-- (VSViewServiceRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VSViewServiceRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  nameCopy = name;
   VSRequireMainThread();
   v10.receiver = self;
   v10.super_class = VSViewServiceRemoteViewController;
-  v8 = [(VSViewServiceRemoteViewController *)&v10 initWithNibName:v7 bundle:v6];
+  v8 = [(VSViewServiceRemoteViewController *)&v10 initWithNibName:nameCopy bundle:bundleCopy];
 
   return v8;
 }
@@ -34,14 +34,14 @@
   [(VSViewServiceRemoteViewController *)&v3 dealloc];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v6.receiver = self;
   v6.super_class = VSViewServiceRemoteViewController;
-  v4 = a3;
-  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:v4];
+  errorCopy = error;
+  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:errorCopy];
   v5 = [(VSViewServiceRemoteViewController *)self delegate:v6.receiver];
-  [v5 viewServiceRemoteViewController:self didTerminateWithError:v4];
+  [v5 viewServiceRemoteViewController:self didTerminateWithError:errorCopy];
 }
 
 - (void)_presentViewController
@@ -55,8 +55,8 @@
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", &v6, 0xCu);
   }
 
-  v4 = [(VSViewServiceRemoteViewController *)self delegate];
-  [v4 presentViewServiceRemoteViewController:self];
+  delegate = [(VSViewServiceRemoteViewController *)self delegate];
+  [delegate presentViewServiceRemoteViewController:self];
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -72,17 +72,17 @@
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", &v6, 0xCu);
   }
 
-  v4 = [(VSViewServiceRemoteViewController *)self delegate];
-  [v4 dismissViewServiceRemoteViewController:self];
+  delegate = [(VSViewServiceRemoteViewController *)self delegate];
+  [delegate dismissViewServiceRemoteViewController:self];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_request:(id)a3 didFinishWithResponse:(id)a4
+- (void)_request:(id)_request didFinishWithResponse:(id)response
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  responseCopy = response;
+  _requestCopy = _request;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -91,17 +91,17 @@
     _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", &v11, 0xCu);
   }
 
-  v9 = [(VSViewServiceRemoteViewController *)self delegate];
-  [v9 viewServiceRemoteViewController:self request:v7 didFinishWithResponse:v6];
+  delegate = [(VSViewServiceRemoteViewController *)self delegate];
+  [delegate viewServiceRemoteViewController:self request:_requestCopy didFinishWithResponse:responseCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_request:(id)a3 didFailWithError:(id)a4
+- (void)_request:(id)_request didFailWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  _requestCopy = _request;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -110,16 +110,16 @@
     _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", &v11, 0xCu);
   }
 
-  v9 = [(VSViewServiceRemoteViewController *)self delegate];
-  [v9 viewServiceRemoteViewController:self request:v7 didFailWithError:v6];
+  delegate = [(VSViewServiceRemoteViewController *)self delegate];
+  [delegate viewServiceRemoteViewController:self request:_requestCopy didFailWithError:errorCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didChooseAdditionalProvidersForRequest:(id)a3
+- (void)_didChooseAdditionalProvidersForRequest:(id)request
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -128,16 +128,16 @@
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", &v8, 0xCu);
   }
 
-  v6 = [(VSViewServiceRemoteViewController *)self delegate];
-  [v6 viewServiceRemoteViewController:self didChooseAdditionalProvidersForRequest:v4];
+  delegate = [(VSViewServiceRemoteViewController *)self delegate];
+  [delegate viewServiceRemoteViewController:self didChooseAdditionalProvidersForRequest:requestCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didCancelRequest:(id)a3
+- (void)_didCancelRequest:(id)request
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -146,17 +146,17 @@
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", &v8, 0xCu);
   }
 
-  v6 = [(VSViewServiceRemoteViewController *)self delegate];
-  [v6 viewServiceRemoteViewController:self didCancelRequest:v4];
+  delegate = [(VSViewServiceRemoteViewController *)self delegate];
+  [delegate viewServiceRemoteViewController:self didCancelRequest:requestCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didChooseProviderWithIdentifier:(id)a3 vetoHandler:(id)a4
+- (void)_didChooseProviderWithIdentifier:(id)identifier vetoHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -165,8 +165,8 @@
     _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", &v11, 0xCu);
   }
 
-  v9 = [(VSViewServiceRemoteViewController *)self delegate];
-  [v9 viewServiceRemoteViewController:self didSelectProviderWithIdentifier:v7 vetoHandler:v6];
+  delegate = [(VSViewServiceRemoteViewController *)self delegate];
+  [delegate viewServiceRemoteViewController:self didSelectProviderWithIdentifier:identifierCopy vetoHandler:handlerCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }

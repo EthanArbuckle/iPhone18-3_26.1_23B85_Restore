@@ -1,14 +1,14 @@
 @interface _DKBundleIdentifier
-+ (id)withBundle:(id)a3;
++ (id)withBundle:(id)bundle;
 @end
 
 @implementation _DKBundleIdentifier
 
-+ (id)withBundle:(id)a3
++ (id)withBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [a1 type];
-  v6 = [_DKIdentifier identifierWithString:v4 type:v5];
+  bundleCopy = bundle;
+  type = [self type];
+  v6 = [_DKIdentifier identifierWithString:bundleCopy type:type];
 
   return v6;
 }

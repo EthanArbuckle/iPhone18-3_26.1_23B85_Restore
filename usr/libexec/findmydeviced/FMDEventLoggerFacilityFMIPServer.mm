@@ -1,44 +1,44 @@
 @interface FMDEventLoggerFacilityFMIPServer
 - (FMDURLSession)defaultSession;
-- (id)splunkifyDictionary:(id)a3;
-- (id)splunkifyObject:(id)a3 eventName:(id)a4;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)logEvent:(id)a3;
+- (id)splunkifyDictionary:(id)dictionary;
+- (id)splunkifyObject:(id)object eventName:(id)name;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)logEvent:(id)event;
 @end
 
 @implementation FMDEventLoggerFacilityFMIPServer
 
-- (void)logEvent:(id)a3
+- (void)logEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[FMSystemInfo sharedInstance];
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [v5 osVersion];
-  [(__CFString *)v6 fm_safelyMapKey:@"osVersion" toObject:v7];
+  osVersion = [v5 osVersion];
+  [(__CFString *)v6 fm_safelyMapKey:@"osVersion" toObject:osVersion];
 
-  v8 = [v5 serialNumber];
-  [(__CFString *)v6 fm_safelyMapKey:@"serialNumber" toObject:v8];
+  serialNumber = [v5 serialNumber];
+  [(__CFString *)v6 fm_safelyMapKey:@"serialNumber" toObject:serialNumber];
 
-  v9 = [v5 deviceUDID];
-  [(__CFString *)v6 fm_safelyMapKey:@"UDID" toObject:v9];
+  deviceUDID = [v5 deviceUDID];
+  [(__CFString *)v6 fm_safelyMapKey:@"UDID" toObject:deviceUDID];
 
-  v10 = [v5 osBuildVersion];
-  [(__CFString *)v6 fm_safelyMapKey:@"buildVersion" toObject:v10];
+  osBuildVersion = [v5 osBuildVersion];
+  [(__CFString *)v6 fm_safelyMapKey:@"buildVersion" toObject:osBuildVersion];
 
-  v11 = [v5 productType];
-  [(__CFString *)v6 fm_safelyMapKey:@"productVersion" toObject:v11];
+  productType = [v5 productType];
+  [(__CFString *)v6 fm_safelyMapKey:@"productVersion" toObject:productType];
 
   v12 = +[NSDate date];
   v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v12 fm_epoch]);
   [(__CFString *)v6 fm_safelyMapKey:@"timestamp" toObject:v13];
 
-  v14 = [v4 eventName];
-  [(__CFString *)v6 fm_safelyMapKey:@"eventName" toObject:v14];
+  eventName = [eventCopy eventName];
+  [(__CFString *)v6 fm_safelyMapKey:@"eventName" toObject:eventName];
 
-  v15 = [v4 userInfo];
-  v16 = [v4 eventName];
+  userInfo = [eventCopy userInfo];
+  eventName2 = [eventCopy eventName];
 
-  v17 = [(FMDEventLoggerFacilityFMIPServer *)self splunkifyObject:v15 eventName:v16];
+  v17 = [(FMDEventLoggerFacilityFMIPServer *)self splunkifyObject:userInfo eventName:eventName2];
   [(__CFString *)v6 fm_safelyMapKey:@"info" toObject:v17];
 
   v18 = sub_100002880();
@@ -69,8 +69,8 @@
 
       [v21 setAllHTTPHeaderFields:&off_1002E8E08];
       [v21 setHTTPMethod:@"POST"];
-      v23 = [(FMDEventLoggerFacilityFMIPServer *)self defaultSession];
-      v24 = [v23 dataTaskWithRequest:v21];
+      defaultSession = [(FMDEventLoggerFacilityFMIPServer *)self defaultSession];
+      v24 = [defaultSession dataTaskWithRequest:v21];
 
       [v24 resume];
     }
@@ -96,22 +96,22 @@
   return defaultSession;
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_100002880();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_10022EA5C(v5, v6);
+    sub_10022EA5C(errorCopy, v6);
   }
 
   defaultSession = self->_defaultSession;
   self->_defaultSession = 0;
 }
 
-- (id)splunkifyDictionary:(id)a3
+- (id)splunkifyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -124,37 +124,37 @@
   v7[3] = &unk_1002D1120;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (id)splunkifyObject:(id)a3 eventName:(id)a4
+- (id)splunkifyObject:(id)object eventName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 stringValue];
+    stringValue = [objectCopy stringValue];
 LABEL_7:
-    v9 = v8;
+    v9 = stringValue;
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    stringValue = objectCopy;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(FMDEventLoggerFacilityFMIPServer *)self splunkifyDictionary:v6];
+    stringValue = [(FMDEventLoggerFacilityFMIPServer *)self splunkifyDictionary:objectCopy];
     goto LABEL_7;
   }
 
@@ -173,7 +173,7 @@ LABEL_7:
     v13[3] = &unk_1002D1148;
     v13[4] = self;
     v13[5] = &v14;
-    [v6 enumerateObjectsUsingBlock:v13];
+    [objectCopy enumerateObjectsUsingBlock:v13];
     v9 = v15[5];
     _Block_object_dispose(&v14, 8);
   }
@@ -184,10 +184,10 @@ LABEL_7:
   }
 
 LABEL_8:
-  v10 = v7;
-  if (([v7 isEqualToString:&stru_1002DCE08] & 1) == 0)
+  v10 = nameCopy;
+  if (([nameCopy isEqualToString:&stru_1002DCE08] & 1) == 0)
   {
-    v10 = [v7 stringByAppendingString:{@", "}];
+    v10 = [nameCopy stringByAppendingString:{@", "}];
   }
 
   if (v9)

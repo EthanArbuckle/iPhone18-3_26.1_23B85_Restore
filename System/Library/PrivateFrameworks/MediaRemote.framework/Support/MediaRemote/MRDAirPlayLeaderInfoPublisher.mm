@@ -1,29 +1,29 @@
 @interface MRDAirPlayLeaderInfoPublisher
-- (BOOL)isValidOutputDevice:(id)a3;
+- (BOOL)isValidOutputDevice:(id)device;
 - (MRDAirPlayLeaderInfoPublisher)init;
-- (MRDAirPlayLeaderInfoPublisher)initWithOrigin:(id)a3 outputContext:(id)a4;
+- (MRDAirPlayLeaderInfoPublisher)initWithOrigin:(id)origin outputContext:(id)context;
 - (MRDeviceInfo)deviceInfo;
 - (id)currentData;
-- (void)handleDeviceInfoDidChange:(id)a3;
+- (void)handleDeviceInfoDidChange:(id)change;
 - (void)publish;
-- (void)publishToOutputDevices:(id)a3;
-- (void)setDeviceInfo:(id)a3;
+- (void)publishToOutputDevices:(id)devices;
+- (void)setDeviceInfo:(id)info;
 @end
 
 @implementation MRDAirPlayLeaderInfoPublisher
 
-- (MRDAirPlayLeaderInfoPublisher)initWithOrigin:(id)a3 outputContext:(id)a4
+- (MRDAirPlayLeaderInfoPublisher)initWithOrigin:(id)origin outputContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  originCopy = origin;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = MRDAirPlayLeaderInfoPublisher;
   v9 = [(MRDAirPlayLeaderInfoPublisher *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_origin, a3);
-    objc_storeStrong(&v10->_outputContext, a4);
+    objc_storeStrong(&v9->_origin, origin);
+    objc_storeStrong(&v10->_outputContext, context);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.MediaRemote.MRDAirPlayLeaderInfoPublisher", v11);
     workerQueue = v10->_workerQueue;
@@ -52,21 +52,21 @@
 
 - (MRDeviceInfo)deviceInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_deviceInfo;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_deviceInfo;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setDeviceInfo:(id)a3
+- (void)setDeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_deviceInfo;
-  v7 = v4;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_deviceInfo;
+  v7 = infoCopy;
   v11 = v7;
   if (v6 == v7)
   {
@@ -79,37 +79,37 @@
     if ((v8 & 1) == 0)
     {
       v9 = [(MRDeviceInfo *)v11 copy];
-      deviceInfo = v5->_deviceInfo;
-      v5->_deviceInfo = v9;
+      deviceInfo = selfCopy->_deviceInfo;
+      selfCopy->_deviceInfo = v9;
 
-      [(MRDAirPlayLeaderInfoPublisher *)v5 publish];
+      [(MRDAirPlayLeaderInfoPublisher *)selfCopy publish];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)handleDeviceInfoDidChange:(id)a3
+- (void)handleDeviceInfoDidChange:(id)change
 {
-  v10 = a3;
-  v4 = [v10 userInfo];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
   v5 = MRGetOriginFromUserInfo();
 
-  v6 = [(MRDAirPlayLeaderInfoPublisher *)self origin];
-  v7 = [v5 isEqual:v6];
+  origin = [(MRDAirPlayLeaderInfoPublisher *)self origin];
+  v7 = [v5 isEqual:origin];
 
   if (v7)
   {
-    v8 = [v10 userInfo];
+    userInfo2 = [changeCopy userInfo];
     v9 = MRGetDeviceInfoFromUserInfo();
     [(MRDAirPlayLeaderInfoPublisher *)self setDeviceInfo:v9];
   }
 }
 
-- (BOOL)isValidOutputDevice:(id)a3
+- (BOOL)isValidOutputDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceType] == 1 && objc_msgSend(v3, "deviceSubtype") != 1;
+  deviceCopy = device;
+  v4 = [deviceCopy deviceType] == 1 && objc_msgSend(deviceCopy, "deviceSubtype") != 1;
 
   return v4;
 }
@@ -117,31 +117,31 @@
 - (id)currentData
 {
   v3 = objc_alloc_init(_MRAirPlayLeaderInfoProtobuf);
-  v4 = [(MRDAirPlayLeaderInfoPublisher *)self deviceInfo];
-  v5 = [v4 protobuf];
-  [v3 setDeviceInfo:v5];
+  deviceInfo = [(MRDAirPlayLeaderInfoPublisher *)self deviceInfo];
+  protobuf = [deviceInfo protobuf];
+  [v3 setDeviceInfo:protobuf];
 
-  v6 = [v3 data];
+  data = [v3 data];
 
-  return v6;
+  return data;
 }
 
-- (void)publishToOutputDevices:(id)a3
+- (void)publishToOutputDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(MRDAirPlayLeaderInfoPublisher *)self workerQueue];
-  dispatch_assert_queue_V2(v5);
+  devicesCopy = devices;
+  workerQueue = [(MRDAirPlayLeaderInfoPublisher *)self workerQueue];
+  dispatch_assert_queue_V2(workerQueue);
 
-  if ([v4 count])
+  if ([devicesCopy count])
   {
-    v6 = [(MRDAirPlayLeaderInfoPublisher *)self currentData];
-    if (v6)
+    currentData = [(MRDAirPlayLeaderInfoPublisher *)self currentData];
+    if (currentData)
     {
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v7 = v4;
+      v7 = devicesCopy;
       v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
@@ -157,8 +157,8 @@
               objc_enumerationMutation(v7);
             }
 
-            v12 = [*(*(&v13 + 1) + 8 * v11) avOutputDevice];
-            [v12 setMediaRemoteData:v6 completionHandler:&stru_1004B95E0];
+            avOutputDevice = [*(*(&v13 + 1) + 8 * v11) avOutputDevice];
+            [avOutputDevice setMediaRemoteData:currentData completionHandler:&stru_1004B95E0];
 
             v11 = v11 + 1;
           }
@@ -175,13 +175,13 @@
 
 - (void)publish
 {
-  v3 = [(MRDAirPlayLeaderInfoPublisher *)self workerQueue];
+  workerQueue = [(MRDAirPlayLeaderInfoPublisher *)self workerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000912EC;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workerQueue, block);
 }
 
 @end

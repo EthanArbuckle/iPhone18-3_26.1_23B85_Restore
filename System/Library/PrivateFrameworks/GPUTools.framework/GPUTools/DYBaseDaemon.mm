@@ -1,7 +1,7 @@
 @interface DYBaseDaemon
 - (DYBaseDaemon)init;
 - (void)dealloc;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 - (void)invalidate;
 - (void)observeInferior;
 - (void)run;
@@ -150,28 +150,28 @@ uint64_t __19__DYBaseDaemon_run__block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  if ([a3 kind] == 4353)
+  if ([message kind] == 4353)
   {
     transport = self->_transport;
 
-    [(DYBaseSocketTransport *)transport relayMessageOverSecondarySharedMemoryTransport:a3 error:0];
+    [(DYBaseSocketTransport *)transport relayMessageOverSecondarySharedMemoryTransport:message error:0];
     return;
   }
 
-  v6 = [a3 kind];
-  if (v6 <= 1282)
+  kind = [message kind];
+  if (kind <= 1282)
   {
-    if (v6 == 264)
+    if (kind == 264)
     {
       self->_capturingInferior = 1;
       goto LABEL_29;
     }
 
-    if (v6 != 1280)
+    if (kind != 1280)
     {
-      if (v6 == 1281)
+      if (kind == 1281)
       {
         inferiorPid = self->_inferiorPid;
         if (inferiorPid >= 1)
@@ -196,12 +196,12 @@ uint64_t __19__DYBaseDaemon_run__block_invoke_3(uint64_t a1)
 LABEL_29:
       v18 = self->_transport;
 
-      [(DYBaseSocketTransport *)v18 relayMessageOverSharedMemoryTransport:a3 error:0];
+      [(DYBaseSocketTransport *)v18 relayMessageOverSharedMemoryTransport:message error:0];
       return;
     }
 
-    v24 = [a3 plistPayload];
-    if (!v24)
+    plistPayload = [message plistPayload];
+    if (!plistPayload)
     {
       [(DYBaseDaemon *)self terminate:1];
     }
@@ -216,7 +216,7 @@ LABEL_29:
       if (!v25)
       {
 LABEL_45:
-        -[DYBaseSocketTransport send:inReplyTo:error:](self->_transport, "send:inReplyTo:error:", [MEMORY[0x277D0AFE0] messageWithKind:1280 attributes:v19 objectPayload:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", v26)}], a3, 0);
+        -[DYBaseSocketTransport send:inReplyTo:error:](self->_transport, "send:inReplyTo:error:", [MEMORY[0x277D0AFE0] messageWithKind:1280 attributes:v19 objectPayload:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", v26)}], message, 0);
 LABEL_50:
 
         return;
@@ -226,7 +226,7 @@ LABEL_50:
     else
     {
       v36 = 0;
-      v26 = [(DYBaseDaemon *)self launchInferior:v24 finalEnvironment:&v36 error:target_task];
+      v26 = [(DYBaseDaemon *)self launchInferior:plistPayload finalEnvironment:&v36 error:target_task];
       if (v36)
       {
         [v19 setObject:v36 forKey:@"final environment"];
@@ -245,11 +245,11 @@ LABEL_50:
     goto LABEL_45;
   }
 
-  if (v6 > 1285)
+  if (kind > 1285)
   {
-    if (v6 != 1286)
+    if (kind != 1286)
     {
-      if (v6 == 1293)
+      if (kind == 1293)
       {
         v10 = self->_inferiorPid;
         if (v10)
@@ -305,7 +305,7 @@ LABEL_38:
           v23 = [v22 initWithKind:1286 attributes:v19 payload:0];
         }
 
-        [(DYBaseSocketTransport *)self->_transport send:v23 inReplyTo:a3 error:0];
+        [(DYBaseSocketTransport *)self->_transport send:v23 inReplyTo:message error:0];
 
         goto LABEL_50;
       }
@@ -313,10 +313,10 @@ LABEL_38:
 
     else
     {
-      v27 = [a3 plistPayload];
-      if ([v27 objectForKey:*MEMORY[0x277D0B208]])
+      plistPayload2 = [message plistPayload];
+      if ([plistPayload2 objectForKey:*MEMORY[0x277D0B208]])
       {
-        v28 = [objc_msgSend(v27 objectForKeyedSubscript:{*MEMORY[0x277D0B1E0]), "BOOLValue"}];
+        v28 = [objc_msgSend(plistPayload2 objectForKeyedSubscript:{*MEMORY[0x277D0B1E0]), "BOOLValue"}];
       }
 
       else
@@ -325,10 +325,10 @@ LABEL_38:
       }
 
       self->_shouldLoadCapture = v28;
-      self->_shouldLoadDiagnostics = [objc_msgSend(v27 objectForKeyedSubscript:{*MEMORY[0x277D0B1F0]), "BOOLValue"}];
-      v21 = [objc_msgSend(v27 objectForKey:{*MEMORY[0x277D0B1F8]), "mutableCopy"}];
+      self->_shouldLoadDiagnostics = [objc_msgSend(plistPayload2 objectForKeyedSubscript:{*MEMORY[0x277D0B1F0]), "BOOLValue"}];
+      v21 = [objc_msgSend(plistPayload2 objectForKey:{*MEMORY[0x277D0B1F8]), "mutableCopy"}];
       v32 = [v21 objectForKey:@"GPUTOOLS_LOAD_GTMTLCAPTURE"];
-      v33 = [v27 objectForKey:*MEMORY[0x277D0B218]];
+      v33 = [plistPayload2 objectForKey:*MEMORY[0x277D0B218]];
       [v32 intValue];
       DYSetGTMTLCaptureMode();
       [(DYBaseDaemon *)self createInferiorTransportAndSetEnvironment:v21 uniqueIdentifier:v33 error:target_task];
@@ -346,24 +346,24 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (v6 != 1283)
+  if (kind != 1283)
   {
-    if (v6 == 1284)
+    if (kind == 1284)
     {
-      v7 = [a3 plistPayload];
-      if (v7)
+      plistPayload3 = [message plistPayload];
+      if (plistPayload3)
       {
 
-        [(DYBaseDaemon *)self setApplications:v7];
+        [(DYBaseDaemon *)self setApplications:plistPayload3];
       }
 
       else
       {
-        v29 = [(DYBaseDaemon *)self getApplications];
-        v30 = [MEMORY[0x277D0AFE0] messageWithKind:1284 plistPayload:v29];
+        getApplications = [(DYBaseDaemon *)self getApplications];
+        v30 = [MEMORY[0x277D0AFE0] messageWithKind:1284 plistPayload:getApplications];
         v31 = self->_transport;
 
-        [(DYBaseSocketTransport *)v31 send:v30 inReplyTo:a3 error:0];
+        [(DYBaseSocketTransport *)v31 send:v30 inReplyTo:message error:0];
       }
 
       return;

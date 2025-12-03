@@ -1,26 +1,26 @@
 @interface AKBasicLoginContentViewControllerContainerView
-- (AKBasicLoginContentViewControllerContainerView)initWithFrame:(CGRect)a3;
+- (AKBasicLoginContentViewControllerContainerView)initWithFrame:(CGRect)frame;
 - (NSString)messageText;
 - (NSString)titleText;
 - (id)viewForLastBaselineLayout;
 - (void)_configureBannerImage;
 - (void)_configureMessageLabel;
-- (void)setBannerImage:(id)a3;
-- (void)setMessageText:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setBannerImage:(id)image;
+- (void)setMessageText:(id)text;
+- (void)setTitleText:(id)text;
 - (void)updateConstraints;
 @end
 
 @implementation AKBasicLoginContentViewControllerContainerView
 
-- (AKBasicLoginContentViewControllerContainerView)initWithFrame:(CGRect)a3
+- (AKBasicLoginContentViewControllerContainerView)initWithFrame:(CGRect)frame
 {
-  v17 = a3;
+  frameCopy = frame;
   v15 = a2;
   v16 = 0;
   v14.receiver = self;
   v14.super_class = AKBasicLoginContentViewControllerContainerView;
-  v12 = [(AKBasicLoginContentViewControllerContainerView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v12 = [(AKBasicLoginContentViewControllerContainerView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v16 = v12;
   objc_storeStrong(&v16, v12);
   if (v12)
@@ -35,9 +35,9 @@
 
     [(UILabel *)v16->_titleLabel setNumberOfLines:0];
     v10 = +[AKFeatureManager sharedManager];
-    v11 = [v10 isAuthKitSolariumFeatureEnabled];
+    isAuthKitSolariumFeatureEnabled = [v10 isAuthKitSolariumFeatureEnabled];
 
-    if (v11)
+    if (isAuthKitSolariumFeatureEnabled)
     {
       [(UILabel *)v16->_titleLabel setTextAlignment:4];
     }
@@ -47,7 +47,7 @@
       [(UILabel *)v16->_titleLabel setTextAlignment:1];
     }
 
-    v8 = [(AKBasicLoginContentViewControllerContainerView *)v16 titleText];
+    titleText = [(AKBasicLoginContentViewControllerContainerView *)v16 titleText];
     [(UILabel *)v16->_titleLabel setText:?];
 
     [(UILabel *)v16->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -79,13 +79,13 @@
 
 - (void)updateConstraints
 {
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
   [NSLayoutConstraint deactivateConstraints:self->_activeConstraints];
   v29 = 0;
-  if (v50->_messageText)
+  if (selfCopy->_messageText)
   {
-    v29 = [(NSString *)v50->_messageText length]!= 0;
+    v29 = [(NSString *)selfCopy->_messageText length]!= 0;
   }
 
   v48 = v29;
@@ -94,14 +94,14 @@
   v42 = 0;
   if (v29)
   {
-    v45 = _NSDictionaryOfVariableBindings(@"_titleLabel,_messageLabel", v50->_titleLabel, v50->_messageLabel, 0);
+    v45 = _NSDictionaryOfVariableBindings(@"_titleLabel,_messageLabel", selfCopy->_titleLabel, selfCopy->_messageLabel, 0);
     v44 = 1;
     v28 = v45;
   }
 
   else
   {
-    v43 = _NSDictionaryOfVariableBindings(@"_titleLabel", v50->_titleLabel, 0);
+    v43 = _NSDictionaryOfVariableBindings(@"_titleLabel", selfCopy->_titleLabel, 0);
     v42 = 1;
     v28 = v43;
   }
@@ -117,17 +117,17 @@
 
   v41 = &off_10000C780;
   v40 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleBody];
-  if (v50->_bannerView)
+  if (selfCopy->_bannerView)
   {
-    v39 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v50->_bannerView relatedBy:3 toItem:? attribute:? multiplier:? constant:?];
-    bannerView = v50->_bannerView;
-    titleLabel = v50->_titleLabel;
+    v39 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:selfCopy->_bannerView relatedBy:3 toItem:? attribute:? multiplier:? constant:?];
+    bannerView = selfCopy->_bannerView;
+    titleLabel = selfCopy->_titleLabel;
     [v40 scaledValueForValue:-36.0];
     v25 = +[UIScreen mainScreen];
     UIRoundToScreenScale();
     v38 = [NSLayoutConstraint constraintWithItem:bannerView attribute:11 relatedBy:0 toItem:titleLabel attribute:12 multiplier:1.0 constant:v2];
 
-    v37 = [NSLayoutConstraint constraintWithItem:v50->_bannerView attribute:9 relatedBy:0 toItem:v50 attribute:1.0 multiplier:0.0 constant:?];
+    v37 = [NSLayoutConstraint constraintWithItem:selfCopy->_bannerView attribute:9 relatedBy:0 toItem:selfCopy attribute:1.0 multiplier:0.0 constant:?];
     v26 = v47;
     v52[0] = v37;
     v52[1] = v39;
@@ -142,8 +142,8 @@
 
   else
   {
-    v20 = v50->_titleLabel;
-    v21 = v50;
+    v20 = selfCopy->_titleLabel;
+    v21 = selfCopy;
     [v40 scaledValueForValue:36.0];
     v22 = +[UIScreen mainScreen];
     UIRoundToScreenScale();
@@ -155,15 +155,15 @@
 
   if (v48)
   {
-    v12 = v50->_titleLabel;
-    messageLabel = v50->_messageLabel;
+    v12 = selfCopy->_titleLabel;
+    messageLabel = selfCopy->_messageLabel;
     [v40 scaledValueForValue:-20.0];
     v14 = +[UIScreen mainScreen];
     UIRoundToScreenScale();
     v35 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v12 relatedBy:? toItem:? attribute:? multiplier:? constant:?];
 
-    v15 = v50->_messageLabel;
-    v16 = v50;
+    v15 = selfCopy->_messageLabel;
+    v16 = selfCopy;
     [v40 scaledValueForValue:-24.0];
     v17 = +[UIScreen mainScreen];
     UIRoundToScreenScale();
@@ -181,8 +181,8 @@
 
   else
   {
-    v9 = v50->_titleLabel;
-    v10 = v50;
+    v9 = selfCopy->_titleLabel;
+    v10 = selfCopy;
     [v40 scaledValueForValue:-24.0];
     v11 = +[UIScreen mainScreen];
     UIRoundToScreenScale();
@@ -203,14 +203,14 @@
 
   [v47 addObjectsFromArray:v32];
   [NSLayoutConstraint activateConstraints:v47];
-  [(AKBasicLoginContentViewControllerContainerView *)v50 setContentCompressionResistancePriority:1 forAxis:?];
+  [(AKBasicLoginContentViewControllerContainerView *)selfCopy setContentCompressionResistancePriority:1 forAxis:?];
   LODWORD(v6) = 1144750080;
-  [(AKBasicLoginContentViewControllerContainerView *)v50 setContentCompressionResistancePriority:0 forAxis:v6];
+  [(AKBasicLoginContentViewControllerContainerView *)selfCopy setContentCompressionResistancePriority:0 forAxis:v6];
   v7 = [v47 copy];
-  activeConstraints = v50->_activeConstraints;
-  v50->_activeConstraints = v7;
+  activeConstraints = selfCopy->_activeConstraints;
+  selfCopy->_activeConstraints = v7;
 
-  v30.receiver = v50;
+  v30.receiver = selfCopy;
   v30.super_class = AKBasicLoginContentViewControllerContainerView;
   [(AKBasicLoginContentViewControllerContainerView *)&v30 updateConstraints];
   objc_storeStrong(&v32, 0);
@@ -227,7 +227,7 @@
     v5 = [UIImageView alloc];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = +[UIScreen mainScreen];
-    v7 = [(UIScreen *)v8 _defaultTraitCollection];
+    _defaultTraitCollection = [(UIScreen *)v8 _defaultTraitCollection];
     v6 = [UIImage imageNamed:@"AppleID" inBundle:v9 compatibleWithTraitCollection:?];
     v2 = [v5 initWithImage:?];
     bannerView = self->_bannerView;
@@ -256,78 +256,78 @@
 
 - (void)_configureMessageLabel
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v9 = 0;
   if (self->_messageText)
   {
-    v9 = [(NSString *)v13->_messageText length]!= 0;
+    v9 = [(NSString *)selfCopy->_messageText length]!= 0;
   }
 
   v11 = v9;
   if (v9)
   {
-    if (!v13->_messageLabel)
+    if (!selfCopy->_messageLabel)
     {
       v2 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-      messageLabel = v13->_messageLabel;
-      v13->_messageLabel = v2;
+      messageLabel = selfCopy->_messageLabel;
+      selfCopy->_messageLabel = v2;
 
       location = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote addingSymbolicTraits:0x8000 options:2];
       v6 = [UIFont fontWithDescriptor:location size:0.0];
-      [(UILabel *)v13->_messageLabel setFont:?];
+      [(UILabel *)selfCopy->_messageLabel setFont:?];
 
       v7 = +[AKFeatureManager sharedManager];
-      v8 = [v7 isAuthKitSolariumFeatureEnabled];
+      isAuthKitSolariumFeatureEnabled = [v7 isAuthKitSolariumFeatureEnabled];
 
-      if (v8)
+      if (isAuthKitSolariumFeatureEnabled)
       {
-        [(UILabel *)v13->_messageLabel setTextAlignment:4];
+        [(UILabel *)selfCopy->_messageLabel setTextAlignment:4];
       }
 
       else
       {
-        [(UILabel *)v13->_messageLabel setTextAlignment:1];
+        [(UILabel *)selfCopy->_messageLabel setTextAlignment:1];
       }
 
-      [(UILabel *)v13->_messageLabel setNumberOfLines:0];
-      [(UILabel *)v13->_messageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(UILabel *)selfCopy->_messageLabel setNumberOfLines:0];
+      [(UILabel *)selfCopy->_messageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
       LODWORD(v4) = 1055286886;
-      [(UILabel *)v13->_messageLabel _setHyphenationFactor:v4];
-      [(UILabel *)v13->_messageLabel setPreferredMaxLayoutWidth:238.0];
-      [(AKBasicLoginContentViewControllerContainerView *)v13 addSubview:v13->_messageLabel];
+      [(UILabel *)selfCopy->_messageLabel _setHyphenationFactor:v4];
+      [(UILabel *)selfCopy->_messageLabel setPreferredMaxLayoutWidth:238.0];
+      [(AKBasicLoginContentViewControllerContainerView *)selfCopy addSubview:selfCopy->_messageLabel];
       objc_storeStrong(&location, 0);
     }
 
-    v5 = [(AKBasicLoginContentViewControllerContainerView *)v13 messageText];
-    [(UILabel *)v13->_messageLabel setText:?];
+    messageText = [(AKBasicLoginContentViewControllerContainerView *)selfCopy messageText];
+    [(UILabel *)selfCopy->_messageLabel setText:?];
   }
 
   else
   {
-    if (v13->_messageLabel)
+    if (selfCopy->_messageLabel)
     {
-      [(UILabel *)v13->_messageLabel removeFromSuperview];
+      [(UILabel *)selfCopy->_messageLabel removeFromSuperview];
     }
 
-    objc_storeStrong(&v13->_messageLabel, 0);
+    objc_storeStrong(&selfCopy->_messageLabel, 0);
   }
 
-  [(AKBasicLoginContentViewControllerContainerView *)v13 setNeedsUpdateConstraints];
+  [(AKBasicLoginContentViewControllerContainerView *)selfCopy setNeedsUpdateConstraints];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   v3 = [location[0] copy];
-  titleText = v6->_titleText;
-  v6->_titleText = v3;
+  titleText = selfCopy->_titleText;
+  selfCopy->_titleText = v3;
 
-  [(UILabel *)v6->_titleLabel setText:v6->_titleText];
-  [(AKBasicLoginContentViewControllerContainerView *)v6 setNeedsUpdateConstraints];
+  [(UILabel *)selfCopy->_titleLabel setText:selfCopy->_titleText];
+  [(AKBasicLoginContentViewControllerContainerView *)selfCopy setNeedsUpdateConstraints];
   objc_storeStrong(location, 0);
 }
 
@@ -338,17 +338,17 @@
   return v2;
 }
 
-- (void)setMessageText:(id)a3
+- (void)setMessageText:(id)text
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   v3 = [location[0] copy];
-  messageText = v6->_messageText;
-  v6->_messageText = v3;
+  messageText = selfCopy->_messageText;
+  selfCopy->_messageText = v3;
 
-  [(AKBasicLoginContentViewControllerContainerView *)v6 _configureMessageLabel];
+  [(AKBasicLoginContentViewControllerContainerView *)selfCopy _configureMessageLabel];
   objc_storeStrong(location, 0);
 }
 
@@ -359,14 +359,14 @@
   return v2;
 }
 
-- (void)setBannerImage:(id)a3
+- (void)setBannerImage:(id)image
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_bannerImage, location[0]);
-  [(AKBasicLoginContentViewControllerContainerView *)v4 _configureBannerImage];
+  objc_storeStrong(location, image);
+  objc_storeStrong(&selfCopy->_bannerImage, location[0]);
+  [(AKBasicLoginContentViewControllerContainerView *)selfCopy _configureBannerImage];
   objc_storeStrong(location, 0);
 }
 

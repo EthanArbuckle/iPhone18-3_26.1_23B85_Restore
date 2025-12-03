@@ -1,33 +1,33 @@
 @interface PFPosterMedia
-- (BOOL)isEqual:(id)a3;
-- (PFPosterMedia)initWithAssetUUID:(id)a3;
-- (PFPosterMedia)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PFPosterMedia)initWithAssetUUID:(id)d;
+- (PFPosterMedia)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFPosterMedia
 
-- (PFPosterMedia)initWithCoder:(id)a3
+- (PFPosterMedia)initWithCoder:(id)coder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PFPosterMedia *)self init];
   if (v5)
   {
-    v5->_mediaType = [v4 decodeIntegerForKey:@"mediaType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetUUID"];
+    v5->_mediaType = [coderCopy decodeIntegerForKey:@"mediaType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetUUID"];
     assetUUID = v5->_assetUUID;
     v5->_assetUUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subpath"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subpath"];
     subpath = v5->_subpath;
     v5->_subpath = v8;
 
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"editConfiguration"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"editConfiguration"];
     editConfiguration = v5->_editConfiguration;
     v5->_editConfiguration = v10;
 
@@ -46,19 +46,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[PFPosterMedia mediaType](self forKey:{"mediaType"), @"mediaType"}];
-  v5 = [(PFPosterMedia *)self assetUUID];
-  [v4 encodeObject:v5 forKey:@"assetUUID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[PFPosterMedia mediaType](self forKey:{"mediaType"), @"mediaType"}];
+  assetUUID = [(PFPosterMedia *)self assetUUID];
+  [coderCopy encodeObject:assetUUID forKey:@"assetUUID"];
 
-  v6 = [(PFPosterMedia *)self subpath];
-  [v4 encodeObject:v6 forKey:@"subpath"];
+  subpath = [(PFPosterMedia *)self subpath];
+  [coderCopy encodeObject:subpath forKey:@"subpath"];
 
-  [v4 encodeInteger:-[PFPosterMedia version](self forKey:{"version"), @"version"}];
-  v7 = [(PFPosterMedia *)self editConfiguration];
-  [v4 encodeObject:v7 forKey:@"editConfiguration"];
+  [coderCopy encodeInteger:-[PFPosterMedia version](self forKey:{"version"), @"version"}];
+  editConfiguration = [(PFPosterMedia *)self editConfiguration];
+  [coderCopy encodeObject:editConfiguration forKey:@"editConfiguration"];
 }
 
 - (id)description
@@ -77,32 +77,32 @@
     v7 = off_1E7B64640[v6];
   }
 
-  v8 = [(PFPosterMedia *)self subpath];
-  v9 = [(PFPosterMedia *)self version];
-  v10 = [(PFPosterMedia *)self editConfiguration];
-  v11 = [v3 initWithFormat:@"<%@ %p; type: %@; subpath: %@; version: %lul, editConfig: %@>", v5, self, v7, v8, v9, v10];
+  subpath = [(PFPosterMedia *)self subpath];
+  version = [(PFPosterMedia *)self version];
+  editConfiguration = [(PFPosterMedia *)self editConfiguration];
+  v11 = [v3 initWithFormat:@"<%@ %p; type: %@; subpath: %@; version: %lul, editConfig: %@>", v5, self, v7, subpath, version, editConfiguration];
 
   return v11;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PFPosterMedia *)self mediaType];
-  v4 = [(PFPosterMedia *)self assetUUID];
-  v5 = v3 ^ (2 * [v4 hash]);
-  v6 = [(PFPosterMedia *)self subpath];
-  v7 = v5 ^ (4 * [v6 hash]);
+  mediaType = [(PFPosterMedia *)self mediaType];
+  assetUUID = [(PFPosterMedia *)self assetUUID];
+  v5 = mediaType ^ (2 * [assetUUID hash]);
+  subpath = [(PFPosterMedia *)self subpath];
+  v7 = v5 ^ (4 * [subpath hash]);
   v8 = v7 ^ (8 * [(PFPosterMedia *)self version]);
-  v9 = [(PFPosterMedia *)self editConfiguration];
-  v10 = v8 ^ (16 * [v9 hash]);
+  editConfiguration = [(PFPosterMedia *)self editConfiguration];
+  v10 = v8 ^ (16 * [editConfiguration hash]);
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -112,28 +112,28 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PFPosterMedia *)self mediaType];
-      if (v6 == [(PFPosterMedia *)v5 mediaType])
+      v5 = equalCopy;
+      mediaType = [(PFPosterMedia *)self mediaType];
+      if (mediaType == [(PFPosterMedia *)v5 mediaType])
       {
-        v7 = [(PFPosterMedia *)self assetUUID];
-        v8 = [(PFPosterMedia *)v5 assetUUID];
-        if (v7 == v8 || [v7 isEqual:v8])
+        assetUUID = [(PFPosterMedia *)self assetUUID];
+        assetUUID2 = [(PFPosterMedia *)v5 assetUUID];
+        if (assetUUID == assetUUID2 || [assetUUID isEqual:assetUUID2])
         {
-          v9 = [(PFPosterMedia *)self subpath];
-          v10 = [(PFPosterMedia *)v5 subpath];
-          if ((v9 == v10 || [v9 isEqual:v10]) && (v11 = -[PFPosterMedia version](self, "version"), v11 == -[PFPosterMedia version](v5, "version")))
+          subpath = [(PFPosterMedia *)self subpath];
+          subpath2 = [(PFPosterMedia *)v5 subpath];
+          if ((subpath == subpath2 || [subpath isEqual:subpath2]) && (v11 = -[PFPosterMedia version](self, "version"), v11 == -[PFPosterMedia version](v5, "version")))
           {
-            v12 = [(PFPosterMedia *)self editConfiguration];
-            v13 = [(PFPosterMedia *)v5 editConfiguration];
-            if (v12 == v13)
+            editConfiguration = [(PFPosterMedia *)self editConfiguration];
+            editConfiguration2 = [(PFPosterMedia *)v5 editConfiguration];
+            if (editConfiguration == editConfiguration2)
             {
               v14 = 1;
             }
 
             else
             {
-              v14 = [v12 isEqual:v13];
+              v14 = [editConfiguration isEqual:editConfiguration2];
             }
           }
 
@@ -164,9 +164,9 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithAssetUUID:", self->_assetUUID}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithAssetUUID:", self->_assetUUID}];
   *(v4 + 8) = self->_mediaType;
   objc_storeStrong((v4 + 16), self->_subpath);
   *(v4 + 32) = self->_version;
@@ -177,9 +177,9 @@
   return v4;
 }
 
-- (PFPosterMedia)initWithAssetUUID:(id)a3
+- (PFPosterMedia)initWithAssetUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = PFPosterMedia;
   v5 = [(PFPosterMedia *)&v10 init];
@@ -187,17 +187,17 @@
   if (v5)
   {
     [(PFPosterMedia *)v5 setMediaType:1];
-    [(PFPosterMedia *)v6 setAssetUUID:v4];
-    if (v4)
+    [(PFPosterMedia *)v6 setAssetUUID:dCopy];
+    if (dCopy)
     {
-      [(PFPosterMedia *)v6 setSubpath:v4];
+      [(PFPosterMedia *)v6 setSubpath:dCopy];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E696AFB0] UUID];
-      v8 = [v7 UUIDString];
-      [(PFPosterMedia *)v6 setSubpath:v8];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      [(PFPosterMedia *)v6 setSubpath:uUIDString];
     }
   }
 

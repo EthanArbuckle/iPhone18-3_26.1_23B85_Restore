@@ -1,41 +1,41 @@
 @interface DOCViewOptionsViewController
 - (_TtC26DocumentManagerExecutables28DOCViewOptionsViewController)init;
-- (_TtC26DocumentManagerExecutables28DOCViewOptionsViewController)initWithRootViewController:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (_TtC26DocumentManagerExecutables28DOCViewOptionsViewController)initWithRootViewController:(id)controller;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DOCViewOptionsViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  DOCViewOptionsViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  DOCViewOptionsViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  DOCViewOptionsViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  DOCViewOptionsViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v12.receiver = self;
   v12.super_class = swift_getObjectType();
   swift_unknownObjectRetain();
   v4 = v12.receiver;
-  [(DOCViewOptionsViewController *)&v12 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(DOCViewOptionsViewController *)&v12 preferredContentSizeDidChangeForChildContentContainer:container];
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables28DOCViewOptionsViewController_viewOptionsHostingController;
   [*&v4[OBJC_IVAR____TtC26DocumentManagerExecutables28DOCViewOptionsViewController_viewOptionsHostingController] preferredContentSize];
   v7 = v6;
-  v8 = [v4 navigationBar];
-  [v8 intrinsicContentSize];
+  navigationBar = [v4 navigationBar];
+  [navigationBar intrinsicContentSize];
   v10 = v9;
 
   [*&v4[v5] preferredContentSize];
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables28DOCViewOptionsViewController)initWithRootViewController:(id)a3
+- (_TtC26DocumentManagerExecutables28DOCViewOptionsViewController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -12,8 +12,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(NCMaterialCrossFadingView *)v2 layer];
-    [v4 setAllowsInPlaceFiltering:1];
+    layer = [(NCMaterialCrossFadingView *)v2 layer];
+    [layer setAllowsInPlaceFiltering:1];
   }
 
   return v3;

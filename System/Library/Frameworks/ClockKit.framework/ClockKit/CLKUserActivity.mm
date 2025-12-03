@@ -1,6 +1,6 @@
 @interface CLKUserActivity
-- (CLKUserActivity)initWithEncodedUserActivity:(id)a3;
-- (CLKUserActivity)initWithUserActivity:(id)a3;
+- (CLKUserActivity)initWithEncodedUserActivity:(id)activity;
+- (CLKUserActivity)initWithUserActivity:(id)activity;
 - (NSString)encodedUserActivity;
 - (NSUserActivity)userActivity;
 - (void)encodedUserActivity;
@@ -9,31 +9,31 @@
 
 @implementation CLKUserActivity
 
-- (CLKUserActivity)initWithUserActivity:(id)a3
+- (CLKUserActivity)initWithUserActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v9.receiver = self;
   v9.super_class = CLKUserActivity;
   v6 = [(CLKUserActivity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userActivity, a3);
+    objc_storeStrong(&v6->_userActivity, activity);
   }
 
   return v7;
 }
 
-- (CLKUserActivity)initWithEncodedUserActivity:(id)a3
+- (CLKUserActivity)initWithEncodedUserActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v9.receiver = self;
   v9.super_class = CLKUserActivity;
   v6 = [(CLKUserActivity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_encodedUserActivity, a3);
+    objc_storeStrong(&v6->_encodedUserActivity, activity);
   }
 
   return v7;
@@ -132,7 +132,7 @@ void __38__CLKUserActivity_encodedUserActivity__block_invoke(uint64_t a1, void *
 - (void)userActivity
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_error_impl(&dword_23702D000, a2, OS_LOG_TYPE_ERROR, "Failed to decode user activity %@", &v3, 0xCu);
@@ -141,7 +141,7 @@ void __38__CLKUserActivity_encodedUserActivity__block_invoke(uint64_t a1, void *
 - (void)encodedUserActivity
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_error_impl(&dword_23702D000, a2, OS_LOG_TYPE_ERROR, "Failed to encode user activity %@. Semaphore timed out.", &v3, 0xCu);

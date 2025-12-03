@@ -1,20 +1,20 @@
 @interface ATXInformationFeatureSet
-- (ATXInformationFeatureSet)initWithFeatureDictionary:(id)a3;
-- (double)valueForFeature:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXInformationFeatureSet)initWithFeatureDictionary:(id)dictionary;
+- (double)valueForFeature:(unint64_t)feature;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ATXInformationFeatureSet
 
-- (ATXInformationFeatureSet)initWithFeatureDictionary:(id)a3
+- (ATXInformationFeatureSet)initWithFeatureDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ATXInformationFeatureSet;
   v5 = [(ATXInformationFeatureSet *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     features = v5->_features;
     v5->_features = v6;
   }
@@ -22,18 +22,18 @@
   return v5;
 }
 
-- (double)valueForFeature:(unint64_t)a3
+- (double)valueForFeature:(unint64_t)feature
 {
-  if (a3 - 10 <= 0xFFFFFFFFFFFFFFF6)
+  if (feature - 10 <= 0xFFFFFFFFFFFFFFF6)
   {
     v5 = __atxlog_handle_gi();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(ATXInformationFeatureSet *)a3 valueForFeature:v5];
+      [(ATXInformationFeatureSet *)feature valueForFeature:v5];
     }
   }
 
-  v6 = [ATXInformationFeatureSetBuilder stringForInfoSuggestionFeature:a3];
+  v6 = [ATXInformationFeatureSetBuilder stringForInfoSuggestionFeature:feature];
   v7 = [(NSDictionary *)self->_features objectForKeyedSubscript:v6];
   [v7 doubleValue];
   v9 = v8;
@@ -41,9 +41,9 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   features = self->_features;
 
   return [v4 initWithFeatureDictionary:features];

@@ -1,23 +1,23 @@
 @interface PKPaymentProvisioningNonceResponse
-- (PKPaymentProvisioningNonceResponse)initWithData:(id)a3;
+- (PKPaymentProvisioningNonceResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentProvisioningNonceResponse
 
-- (PKPaymentProvisioningNonceResponse)initWithData:(id)a3
+- (PKPaymentProvisioningNonceResponse)initWithData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = PKPaymentProvisioningNonceResponse;
-  v3 = [(PKWebServiceResponse *)&v14 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v14 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKStringForKey:@"nonce"];
+      v6 = [jSONObject PKStringForKey:@"nonce"];
       nonce = v4->_nonce;
       v4->_nonce = v6;
 
@@ -32,7 +32,7 @@ LABEL_9:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v5;
+        v16 = jSONObject;
         _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Malformed response: no nonce %@", buf, 0xCu);
       }
     }

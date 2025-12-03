@@ -1,20 +1,20 @@
 @interface NPKProtoStandaloneCreditAccountCredential
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCurrentBalance:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCurrentBalance:(BOOL)balance;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandaloneCreditAccountCredential
 
-- (void)setHasCurrentBalance:(BOOL)a3
+- (void)setHasCurrentBalance:(BOOL)balance
 {
-  if (a3)
+  if (balance)
   {
     v3 = 2;
   }
@@ -33,40 +33,40 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandaloneCreditAccountCredential;
   v4 = [(NPKProtoStandaloneCreditAccountCredential *)&v8 description];
-  v5 = [(NPKProtoStandaloneCreditAccountCredential *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandaloneCreditAccountCredential *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   paymentCredential = self->_paymentCredential;
   if (paymentCredential)
   {
-    v5 = [(NPKProtoStandalonePaymentCredential *)paymentCredential dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"paymentCredential"];
+    dictionaryRepresentation = [(NPKProtoStandalonePaymentCredential *)paymentCredential dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"paymentCredential"];
   }
 
   paymentPass = self->_paymentPass;
   if (paymentPass)
   {
-    v7 = [(NPKProtoStandalonePaymentPass *)paymentPass dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"paymentPass"];
+    dictionaryRepresentation2 = [(NPKProtoStandalonePaymentPass *)paymentPass dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"paymentPass"];
   }
 
   currencyCode = self->_currencyCode;
   if (currencyCode)
   {
-    [v3 setObject:currencyCode forKey:@"currencyCode"];
+    [dictionary setObject:currencyCode forKey:@"currencyCode"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_currentBalance];
-    [v3 setObject:v10 forKey:@"currentBalance"];
+    [dictionary setObject:v10 forKey:@"currentBalance"];
 
     has = self->_has;
   }
@@ -74,21 +74,21 @@
   if (has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_creditLimit];
-    [v3 setObject:v11 forKey:@"creditLimit"];
+    [dictionary setObject:v11 forKey:@"creditLimit"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_paymentCredential)
   {
     [NPKProtoStandaloneCreditAccountCredential writeTo:];
   }
 
-  v9 = v4;
+  v9 = toCopy;
   PBDataWriterWriteSubmessage();
   if (self->_paymentPass)
   {
@@ -118,47 +118,47 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setPaymentCredential:self->_paymentCredential];
+  toCopy = to;
+  [toCopy setPaymentCredential:self->_paymentCredential];
   if (self->_paymentPass)
   {
-    [v5 setPaymentPass:?];
+    [toCopy setPaymentPass:?];
   }
 
   if (self->_currencyCode)
   {
-    [v5 setCurrencyCode:?];
+    [toCopy setCurrencyCode:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v5 + 2) = *&self->_currentBalance;
-    *(v5 + 48) |= 2u;
+    *(toCopy + 2) = *&self->_currentBalance;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v5 + 1) = *&self->_creditLimit;
-    *(v5 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_creditLimit;
+    *(toCopy + 48) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandalonePaymentCredential *)self->_paymentCredential copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandalonePaymentCredential *)self->_paymentCredential copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NPKProtoStandalonePaymentPass *)self->_paymentPass copyWithZone:a3];
+  v8 = [(NPKProtoStandalonePaymentPass *)self->_paymentPass copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v10 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -179,16 +179,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   paymentCredential = self->_paymentCredential;
-  if (paymentCredential | *(v4 + 4))
+  if (paymentCredential | *(equalCopy + 4))
   {
     if (![(NPKProtoStandalonePaymentCredential *)paymentCredential isEqual:?])
     {
@@ -197,7 +197,7 @@
   }
 
   paymentPass = self->_paymentPass;
-  if (paymentPass | *(v4 + 5))
+  if (paymentPass | *(equalCopy + 5))
   {
     if (![(NPKProtoStandalonePaymentPass *)paymentPass isEqual:?])
     {
@@ -206,7 +206,7 @@
   }
 
   currencyCode = self->_currencyCode;
-  if (currencyCode | *(v4 + 3))
+  if (currencyCode | *(equalCopy + 3))
   {
     if (![(NSString *)currencyCode isEqual:?])
     {
@@ -216,23 +216,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_currentBalance != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_currentBalance != *(equalCopy + 2))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_17:
     v8 = 0;
     goto LABEL_18;
   }
 
-  v8 = (*(v4 + 48) & 1) == 0;
+  v8 = (*(equalCopy + 48) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_creditLimit != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_creditLimit != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
@@ -320,12 +320,12 @@ LABEL_18:
   return v4 ^ v3 ^ v5 ^ v8 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   paymentCredential = self->_paymentCredential;
-  v6 = *(v4 + 4);
-  v10 = v4;
+  v6 = *(fromCopy + 4);
+  v10 = fromCopy;
   if (paymentCredential)
   {
     if (!v6)
@@ -346,10 +346,10 @@ LABEL_18:
     [(NPKProtoStandaloneCreditAccountCredential *)self setPaymentCredential:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
   paymentPass = self->_paymentPass;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (paymentPass)
   {
     if (!v8)
@@ -370,25 +370,25 @@ LABEL_7:
     [(NPKProtoStandaloneCreditAccountCredential *)self setPaymentPass:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_13:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoStandaloneCreditAccountCredential *)self setCurrencyCode:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  v9 = *(v4 + 48);
+  v9 = *(fromCopy + 48);
   if ((v9 & 2) != 0)
   {
-    self->_currentBalance = *(v4 + 2);
+    self->_currentBalance = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v9 = *(v4 + 48);
+    v9 = *(fromCopy + 48);
   }
 
   if (v9)
   {
-    self->_creditLimit = *(v4 + 1);
+    self->_creditLimit = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

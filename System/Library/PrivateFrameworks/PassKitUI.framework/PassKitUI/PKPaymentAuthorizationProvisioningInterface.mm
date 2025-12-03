@@ -1,25 +1,25 @@
 @interface PKPaymentAuthorizationProvisioningInterface
-- (PKPaymentAuthorizationProvisioningInterface)initWithConfiguration:(id)a3 delegate:(id)a4;
+- (PKPaymentAuthorizationProvisioningInterface)initWithConfiguration:(id)configuration delegate:(id)delegate;
 - (id)createPrimaryViewController;
 @end
 
 @implementation PKPaymentAuthorizationProvisioningInterface
 
-- (PKPaymentAuthorizationProvisioningInterface)initWithConfiguration:(id)a3 delegate:(id)a4
+- (PKPaymentAuthorizationProvisioningInterface)initWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PKPaymentAuthorizationProvisioningInterface;
   v9 = [(PKPaymentAuthorizationProvisioningInterface *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeWeak(&v10->_delegate, v8);
-    v11 = [(PKPaymentAuthorizationProvisioningInterface *)v10 createPrimaryViewController];
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    createPrimaryViewController = [(PKPaymentAuthorizationProvisioningInterface *)v10 createPrimaryViewController];
     primaryViewController = v10->_primaryViewController;
-    v10->_primaryViewController = v11;
+    v10->_primaryViewController = createPrimaryViewController;
   }
 
   return v10;
@@ -28,12 +28,12 @@
 - (id)createPrimaryViewController
 {
   v3 = objc_alloc(MEMORY[0x1E69B8D48]);
-  v4 = [MEMORY[0x1E69B8EF8] sharedService];
-  v5 = [v3 initWithWebService:v4];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v5 = [v3 initWithWebService:mEMORY[0x1E69B8EF8]];
 
-  v6 = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
-  v7 = [v6 supportedNetworks];
-  [v5 setAllowedPaymentNetworks:v7];
+  request = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
+  supportedNetworks = [request supportedNetworks];
+  [v5 setAllowedPaymentNetworks:supportedNetworks];
 
   v8 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:8 provisioningController:v5 groupsController:0];
   v9 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:8];

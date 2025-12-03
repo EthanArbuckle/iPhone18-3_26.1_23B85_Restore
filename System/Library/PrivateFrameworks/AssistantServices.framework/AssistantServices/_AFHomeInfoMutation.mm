@@ -1,6 +1,6 @@
 @interface _AFHomeInfoMutation
 - (BOOL)getActivityNotificationsEnabledForPersonalRequests;
-- (_AFHomeInfoMutation)initWithBase:(id)a3;
+- (_AFHomeInfoMutation)initWithBase:(id)base;
 - (id)getHomeIdentifier;
 @end
 
@@ -23,27 +23,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_homeIdentifier;
+    homeIdentifier = self->_homeIdentifier;
   }
 
   else
   {
-    v2 = [(AFHomeInfo *)self->_base homeIdentifier];
+    homeIdentifier = [(AFHomeInfo *)self->_base homeIdentifier];
   }
 
-  return v2;
+  return homeIdentifier;
 }
 
-- (_AFHomeInfoMutation)initWithBase:(id)a3
+- (_AFHomeInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFHomeInfoMutation;
   v6 = [(_AFHomeInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

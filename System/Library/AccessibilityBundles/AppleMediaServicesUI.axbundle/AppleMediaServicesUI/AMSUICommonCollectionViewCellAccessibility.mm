@@ -1,5 +1,5 @@
 @interface AMSUICommonCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,19 +7,19 @@
 
 @implementation AMSUICommonCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AMSUICommonCollectionViewCell" hasInstanceMethod:@"underlyingContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AMSUICommonCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AMSUICommonCollectionViewCell" hasInstanceMethod:@"underlyingContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AMSUICommonCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = [(AMSUICommonCollectionViewCellAccessibility *)self safeValueForKey:@"underlyingContentView"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -40,9 +40,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(AMSUICommonCollectionViewCellAccessibility *)self safeValueForKey:@"underlyingContentView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface ODRAssetDownloadRequest
 - (ODRAssetDownloadRequest)init;
-- (void)setExtractionProgress:(double)a3;
+- (void)setExtractionProgress:(double)progress;
 @end
 
 @implementation ODRAssetDownloadRequest
@@ -43,12 +43,12 @@
   return v2;
 }
 
-- (void)setExtractionProgress:(double)a3
+- (void)setExtractionProgress:(double)progress
 {
-  [(NSProgress *)self->_progress setCompletedUnitCount:(a3 * 1000.0)];
+  [(NSProgress *)self->_progress setCompletedUnitCount:(progress * 1000.0)];
   outOfBandTransferPromise = self->_outOfBandTransferPromise;
 
-  [(IXPromisedOutOfBandTransfer *)outOfBandTransferPromise setPercentComplete:a3];
+  [(IXPromisedOutOfBandTransfer *)outOfBandTransferPromise setPercentComplete:progress];
 }
 
 @end

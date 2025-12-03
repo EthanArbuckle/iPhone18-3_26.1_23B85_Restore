@@ -1,16 +1,16 @@
 @interface CKUnreadCountLabelCell
-- (CKUnreadCountLabelCell)initWithFrame:(CGRect)a3;
+- (CKUnreadCountLabelCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviewsForContents;
 @end
 
 @implementation CKUnreadCountLabelCell
 
-- (CKUnreadCountLabelCell)initWithFrame:(CGRect)a3
+- (CKUnreadCountLabelCell)initWithFrame:(CGRect)frame
 {
   v25 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = CKUnreadCountLabelCell;
-  v3 = [(CKTranscriptLabelCell *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptLabelCell *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -45,9 +45,9 @@
           v13 = *(*(&v18 + 1) + 8 * i);
           [(CKUnreadCountLabelCell *)v3 addSubview:v13];
           v14 = +[CKUIBehavior sharedBehaviors];
-          v15 = [v14 theme];
-          v16 = [v15 transcriptTextColor];
-          [v13 setBackgroundColor:v16];
+          theme = [v14 theme];
+          transcriptTextColor = [theme transcriptTextColor];
+          [v13 setBackgroundColor:transcriptTextColor];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
@@ -65,9 +65,9 @@
   v16.receiver = self;
   v16.super_class = CKUnreadCountLabelCell;
   [(CKTranscriptStampCell *)&v16 layoutSubviewsForContents];
-  v3 = [(CKTranscriptLabelCell *)self label];
+  label = [(CKTranscriptLabelCell *)self label];
   [(CKTranscriptStampCell *)self contentAlignmentRect];
-  [v3 sizeThatFits:{v4, v5}];
+  [label sizeThatFits:{v4, v5}];
   v7 = v6;
 
   [(CKUnreadCountLabelCell *)self frame];

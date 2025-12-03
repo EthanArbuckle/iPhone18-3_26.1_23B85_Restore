@@ -28,9 +28,9 @@
     if (objc_opt_isKindOfClass())
     {
       v8 = v6;
-      v9 = [v8 containingBundleRecord];
+      containingBundleRecord = [v8 containingBundleRecord];
       v10 = MEMORY[0x1E6963618];
-      v11 = [v9 URL];
+      v11 = [containingBundleRecord URL];
       v12 = [v10 bundleProxyForURL:v11];
 
       goto LABEL_12;

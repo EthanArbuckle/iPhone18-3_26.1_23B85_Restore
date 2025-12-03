@@ -1,24 +1,24 @@
 @interface UIWebOverflowContentView
-- (UIWebOverflowContentView)initWithLayer:(id)a3;
+- (UIWebOverflowContentView)initWithLayer:(id)layer;
 - (id)superview;
-- (void)_setCachedSubviews:(id)a3;
+- (void)_setCachedSubviews:(id)subviews;
 - (void)dealloc;
 - (void)fixUpViewAfterInsertion;
-- (void)replaceLayer:(id)a3;
+- (void)replaceLayer:(id)layer;
 @end
 
 @implementation UIWebOverflowContentView
 
-- (UIWebOverflowContentView)initWithLayer:(id)a3
+- (UIWebOverflowContentView)initWithLayer:(id)layer
 {
-  [a3 bounds];
+  [layer bounds];
   v8.receiver = self;
   v8.super_class = UIWebOverflowContentView;
   v5 = [(UIView *)&v8 initWithFrame:?];
   v6 = v5;
   if (v5)
   {
-    [(UIWebOverflowContentView *)v5 replaceLayer:a3];
+    [(UIWebOverflowContentView *)v5 replaceLayer:layer];
   }
 
   return v6;
@@ -32,27 +32,27 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)replaceLayer:(id)a3
+- (void)replaceLayer:(id)layer
 {
   [(UIView *)self _replaceLayer:?];
 
-  [(UIWebOverflowContentView *)self setWebLayer:a3];
+  [(UIWebOverflowContentView *)self setWebLayer:layer];
 }
 
 - (id)superview
 {
-  v2 = [(CALayer *)[(UIView *)self layer] superlayer];
-  if (!v2)
+  superlayer = [(CALayer *)[(UIView *)self layer] superlayer];
+  if (!superlayer)
   {
     return 0;
   }
 
-  v3 = v2;
+  superlayer2 = superlayer;
   while (1)
   {
-    if ([(CALayer *)v3 delegate])
+    if ([(CALayer *)superlayer2 delegate])
     {
-      [(CALayer *)v3 delegate];
+      [(CALayer *)superlayer2 delegate];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -60,14 +60,14 @@
       }
     }
 
-    v3 = [(CALayer *)v3 superlayer];
-    if (!v3)
+    superlayer2 = [(CALayer *)superlayer2 superlayer];
+    if (!superlayer2)
     {
       return 0;
     }
   }
 
-  return [(CALayer *)v3 delegate];
+  return [(CALayer *)superlayer2 delegate];
 }
 
 - (void)fixUpViewAfterInsertion
@@ -77,23 +77,23 @@
   [(UIView *)self _invalidateSubviewCache];
 }
 
-- (void)_setCachedSubviews:(id)a3
+- (void)_setCachedSubviews:(id)subviews
 {
   subviewCache = self->super._subviewCache;
-  if (subviewCache != a3)
+  if (subviewCache != subviews)
   {
 
     if ((*(&self->super._viewFlags + 1) & 8) != 0)
     {
-      v6 = 0;
+      subviewsCopy = 0;
     }
 
     else
     {
-      v6 = a3;
+      subviewsCopy = subviews;
     }
 
-    self->super._subviewCache = v6;
+    self->super._subviewCache = subviewsCopy;
   }
 }
 

@@ -13,8 +13,8 @@
   {
     if (a3)
     {
-      v10 = [a1 absoluteString];
-      [v10 af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
+      absoluteString = [self absoluteString];
+      [absoluteString af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
     }
 
     else
@@ -24,8 +24,8 @@
       strcpy(v12, "{NSURL=#@@^v^v}");
       (*v8)(v7, v12, 16);
       (*v8)(v7, AFSecurityDigestibleChunksProviderData, 4);
-      v9 = [a1 absoluteString];
-      [v9 af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
+      absoluteString2 = [self absoluteString];
+      [absoluteString2 af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
 
       (*v8)(v7, AFSecurityDigestibleChunksProviderEnd, 4);
     }

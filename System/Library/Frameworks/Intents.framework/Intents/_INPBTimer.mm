@@ -1,86 +1,86 @@
 @interface _INPBTimer
-- (BOOL)isEqual:(id)a3;
-- (_INPBTimer)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBTimer)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsState:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsState:(id)state;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasRemainingTime:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setState:(int)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasRemainingTime:(BOOL)time;
+- (void)setHasState:(BOOL)state;
+- (void)setHasType:(BOOL)type;
+- (void)setIdentifier:(id)identifier;
+- (void)setState:(int)state;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBTimer
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBTimer *)self hasDuration])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBTimer *)self duration];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"duration"];
+    [dictionary setObject:v5 forKeyedSubscript:@"duration"];
   }
 
   if (self->_identifier)
   {
-    v6 = [(_INPBTimer *)self identifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"identifier"];
+    identifier = [(_INPBTimer *)self identifier];
+    v7 = [identifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"identifier"];
   }
 
-  v8 = [(_INPBTimer *)self label];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"label"];
+  label = [(_INPBTimer *)self label];
+  dictionaryRepresentation = [label dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"label"];
 
   if ([(_INPBTimer *)self hasRemainingTime])
   {
     v10 = MEMORY[0x1E696AD98];
     [(_INPBTimer *)self remainingTime];
     v11 = [v10 numberWithDouble:?];
-    [v3 setObject:v11 forKeyedSubscript:@"remainingTime"];
+    [dictionary setObject:v11 forKeyedSubscript:@"remainingTime"];
   }
 
   if ([(_INPBTimer *)self hasState])
   {
-    v12 = [(_INPBTimer *)self state];
-    if (v12 >= 3)
+    state = [(_INPBTimer *)self state];
+    if (state >= 3)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", state];
     }
 
     else
     {
-      v13 = *(&off_1E72817C8 + v12);
+      v13 = *(&off_1E72817C8 + state);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"state"];
+    [dictionary setObject:v13 forKeyedSubscript:@"state"];
   }
 
   if ([(_INPBTimer *)self hasType])
   {
-    v14 = [(_INPBTimer *)self type];
-    if (v14 >= 3)
+    type = [(_INPBTimer *)self type];
+    if (type >= 3)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v15 = *(&off_1E72817E0 + v14);
+      v15 = *(&off_1E72817E0 + type);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"type"];
+    [dictionary setObject:v15 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,26 +176,26 @@
   return v9 ^ v8 ^ v10 ^ v16 ^ v17 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBTimer *)self hasDuration];
-  if (v5 != [v4 hasDuration])
+  hasDuration = [(_INPBTimer *)self hasDuration];
+  if (hasDuration != [equalCopy hasDuration])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBTimer *)self hasDuration])
   {
-    if ([v4 hasDuration])
+    if ([equalCopy hasDuration])
     {
       duration = self->_duration;
-      [v4 duration];
+      [equalCopy duration];
       if (duration != v7)
       {
         goto LABEL_16;
@@ -203,20 +203,20 @@
     }
   }
 
-  v8 = [(_INPBTimer *)self identifier];
-  v9 = [v4 identifier];
-  if ((v8 != 0) == (v9 == 0))
+  identifier = [(_INPBTimer *)self identifier];
+  identifier2 = [equalCopy identifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_15;
   }
 
-  v10 = [(_INPBTimer *)self identifier];
-  if (v10)
+  identifier3 = [(_INPBTimer *)self identifier];
+  if (identifier3)
   {
-    v11 = v10;
-    v12 = [(_INPBTimer *)self identifier];
-    v13 = [v4 identifier];
-    v14 = [v12 isEqual:v13];
+    v11 = identifier3;
+    identifier4 = [(_INPBTimer *)self identifier];
+    identifier5 = [equalCopy identifier];
+    v14 = [identifier4 isEqual:identifier5];
 
     if (!v14)
     {
@@ -228,22 +228,22 @@
   {
   }
 
-  v8 = [(_INPBTimer *)self label];
-  v9 = [v4 label];
-  if ((v8 != 0) == (v9 == 0))
+  identifier = [(_INPBTimer *)self label];
+  identifier2 = [equalCopy label];
+  if ((identifier != 0) == (identifier2 == 0))
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v15 = [(_INPBTimer *)self label];
-  if (v15)
+  label = [(_INPBTimer *)self label];
+  if (label)
   {
-    v16 = v15;
-    v17 = [(_INPBTimer *)self label];
-    v18 = [v4 label];
-    v19 = [v17 isEqual:v18];
+    v16 = label;
+    label2 = [(_INPBTimer *)self label];
+    label3 = [equalCopy label];
+    v19 = [label2 isEqual:label3];
 
     if (!v19)
     {
@@ -255,20 +255,20 @@ LABEL_15:
   {
   }
 
-  v22 = [(_INPBTimer *)self hasRemainingTime];
-  if (v22 == [v4 hasRemainingTime])
+  hasRemainingTime = [(_INPBTimer *)self hasRemainingTime];
+  if (hasRemainingTime == [equalCopy hasRemainingTime])
   {
-    if (!-[_INPBTimer hasRemainingTime](self, "hasRemainingTime") || ![v4 hasRemainingTime] || (remainingTime = self->_remainingTime, objc_msgSend(v4, "remainingTime"), remainingTime == v24))
+    if (!-[_INPBTimer hasRemainingTime](self, "hasRemainingTime") || ![equalCopy hasRemainingTime] || (remainingTime = self->_remainingTime, objc_msgSend(equalCopy, "remainingTime"), remainingTime == v24))
     {
-      v25 = [(_INPBTimer *)self hasState];
-      if (v25 == [v4 hasState])
+      hasState = [(_INPBTimer *)self hasState];
+      if (hasState == [equalCopy hasState])
       {
-        if (!-[_INPBTimer hasState](self, "hasState") || ![v4 hasState] || (state = self->_state, state == objc_msgSend(v4, "state")))
+        if (!-[_INPBTimer hasState](self, "hasState") || ![equalCopy hasState] || (state = self->_state, state == objc_msgSend(equalCopy, "state")))
         {
-          v27 = [(_INPBTimer *)self hasType];
-          if (v27 == [v4 hasType])
+          hasType = [(_INPBTimer *)self hasType];
+          if (hasType == [equalCopy hasType])
           {
-            if (!-[_INPBTimer hasType](self, "hasType") || ![v4 hasType] || (type = self->_type, type == objc_msgSend(v4, "type")))
+            if (!-[_INPBTimer hasType](self, "hasType") || ![equalCopy hasType] || (type = self->_type, type == objc_msgSend(equalCopy, "type")))
             {
               v20 = 1;
               goto LABEL_17;
@@ -286,7 +286,7 @@ LABEL_17:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBTimer allocWithZone:](_INPBTimer init];
   if ([(_INPBTimer *)self hasDuration])
@@ -295,10 +295,10 @@ LABEL_17:
     [(_INPBTimer *)v5 setDuration:?];
   }
 
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   [(_INPBTimer *)v5 setIdentifier:v6];
 
-  v7 = [(_INPBDataString *)self->_label copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_label copyWithZone:zone];
   [(_INPBTimer *)v5 setLabel:v7];
 
   if ([(_INPBTimer *)self hasRemainingTime])
@@ -320,52 +320,52 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBTimer *)self data];
+  coderCopy = coder;
+  data = [(_INPBTimer *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBTimer)initWithCoder:(id)a3
+- (_INPBTimer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBTimer *)self initWithData:v6];
+    self = [(_INPBTimer *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(_INPBTimer *)self hasDuration])
   {
     duration = self->_duration;
     PBDataWriterWriteDoubleField();
   }
 
-  v5 = [(_INPBTimer *)self identifier];
+  identifier = [(_INPBTimer *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_INPBTimer *)self label];
+  label = [(_INPBTimer *)self label];
 
-  if (v7)
+  if (label)
   {
-    v8 = [(_INPBTimer *)self label];
+    label2 = [(_INPBTimer *)self label];
     PBDataWriterWriteSubmessage();
   }
 
@@ -388,20 +388,20 @@ LABEL_17:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DEFAULT_TYPE"])
+  else if ([typeCopy isEqualToString:@"DEFAULT_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_TIMER"])
+  else if ([typeCopy isEqualToString:@"SLEEP_TIMER"])
   {
     v4 = 2;
   }
@@ -414,9 +414,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -429,10 +429,10 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7;
   }
@@ -440,24 +440,24 @@ LABEL_17:
   else
   {
     *&self->_has = has | 8;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TIMER_RUNNING"])
+  else if ([stateCopy isEqualToString:@"TIMER_RUNNING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TIMER_PAUSED"])
+  else if ([stateCopy isEqualToString:@"TIMER_PAUSED"])
   {
     v4 = 2;
   }
@@ -470,9 +470,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -485,10 +485,10 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (state == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -496,13 +496,13 @@ LABEL_17:
   else
   {
     *&self->_has = has | 4;
-    self->_state = a3;
+    self->_state = state;
   }
 }
 
-- (void)setHasRemainingTime:(BOOL)a3
+- (void)setHasRemainingTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -515,9 +515,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 

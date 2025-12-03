@@ -1,36 +1,36 @@
 @interface NEIKEv2InformationalPacket
-+ (NSObject)createDeleteResponse:(void *)a3 child:;
-+ (id)createInformationalResponse:(void *)a3 ikeSA:;
++ (NSObject)createDeleteResponse:(void *)response child:;
++ (id)createInformationalResponse:(void *)response ikeSA:;
 - (uint64_t)isDeleteChild;
 - (uint64_t)isDeleteIKE;
 - (uint64_t)isMOBIKE;
-- (uint64_t)validateDeleteChild:(uint64_t)a1;
-- (uint64_t)validateUpdateAddresses:(void *)a1;
+- (uint64_t)validateDeleteChild:(uint64_t)child;
+- (uint64_t)validateUpdateAddresses:(void *)addresses;
 - (void)filloutPayloads;
 - (void)gatherPayloads;
 @end
 
 @implementation NEIKEv2InformationalPacket
 
-+ (NSObject)createDeleteResponse:(void *)a3 child:
++ (NSObject)createDeleteResponse:(void *)response child:
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  responseCopy = response;
   objc_opt_self();
-  if (v5)
+  if (responseCopy)
   {
     v6 = [(NEIKEv2Packet *)[NEIKEv2InformationalPacket alloc] initResponse:v4];
     if (v6)
     {
       v7 = objc_alloc_init(NEIKEv2DeletePayload);
-      v8 = [v5 protocol];
+      protocol = [responseCopy protocol];
       if (v7)
       {
-        v7->_protocol = v8;
+        v7->_protocol = protocol;
       }
 
-      v18 = v5;
+      v18 = responseCopy;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
       if (v7)
       {
@@ -88,12 +88,12 @@ LABEL_13:
   return v13;
 }
 
-- (uint64_t)validateDeleteChild:(uint64_t)a1
+- (uint64_t)validateDeleteChild:(uint64_t)child
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v5 = v3;
-  if (a1)
+  if (child)
   {
     if (v3)
     {
@@ -101,7 +101,7 @@ LABEL_13:
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v6 = objc_getProperty(a1, v4, 88, 1);
+      v6 = objc_getProperty(child, v4, 88, 1);
       v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
@@ -128,7 +128,7 @@ LABEL_13:
             if (v14)
             {
 
-              a1 = 1;
+              child = 1;
               goto LABEL_16;
             }
           }
@@ -143,26 +143,26 @@ LABEL_13:
         }
       }
 
-      a1 = 0;
+      child = 0;
     }
 
     else
     {
-      a1 = [(NEIKEv2InformationalPacket *)a1 isDeleteChild];
+      child = [(NEIKEv2InformationalPacket *)child isDeleteChild];
     }
   }
 
 LABEL_16:
 
   v15 = *MEMORY[0x1E69E9840];
-  return a1;
+  return child;
 }
 
-+ (id)createInformationalResponse:(void *)a3 ikeSA:
++ (id)createInformationalResponse:(void *)response ikeSA:
 {
   v59 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  responseCopy = response;
   objc_opt_self();
   v7 = [(NEIKEv2Packet *)[NEIKEv2InformationalPacket alloc] initResponse:v4];
   if (!v7)
@@ -230,11 +230,11 @@ LABEL_16:
 LABEL_34:
     if (v12)
     {
-      v34 = [(NEIKEv2IKESA *)v5 initiatorSPI];
-      v37 = [(NEIKEv2IKESA *)v5 responderSPI];
-      if (v5)
+      initiatorSPI = [(NEIKEv2IKESA *)responseCopy initiatorSPI];
+      responderSPI = [(NEIKEv2IKESA *)responseCopy responderSPI];
+      if (responseCopy)
       {
-        v38 = objc_getProperty(v5, v36, 64, 1);
+        v38 = objc_getProperty(responseCopy, v36, 64, 1);
       }
 
       else
@@ -243,7 +243,7 @@ LABEL_34:
       }
 
       v39 = v38;
-      v16 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v34 responderSPI:v37 address:v39];
+      v16 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI responderSPI:responderSPI address:v39];
 
       if (![(NEIKEv2Packet *)v7 addNotification:v16 data:?])
       {
@@ -257,11 +257,11 @@ LABEL_34:
         goto LABEL_48;
       }
 
-      v41 = [(NEIKEv2IKESA *)v5 initiatorSPI];
-      v44 = [(NEIKEv2IKESA *)v5 responderSPI];
-      if (v5)
+      initiatorSPI2 = [(NEIKEv2IKESA *)responseCopy initiatorSPI];
+      responderSPI2 = [(NEIKEv2IKESA *)responseCopy responderSPI];
+      if (responseCopy)
       {
-        v45 = objc_getProperty(v5, v43, 72, 1);
+        v45 = objc_getProperty(responseCopy, v43, 72, 1);
       }
 
       else
@@ -270,7 +270,7 @@ LABEL_34:
       }
 
       v46 = v45;
-      ErrorInternal = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v41 responderSPI:v44 address:v46];
+      ErrorInternal = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI2 responderSPI:responderSPI2 address:v46];
 
       if (![(NEIKEv2Packet *)v7 addNotification:ErrorInternal data:?])
       {
@@ -289,9 +289,9 @@ LABEL_34:
     goto LABEL_50;
   }
 
-  if (v5)
+  if (responseCopy)
   {
-    v18 = v5[18];
+    v18 = responseCopy[18];
   }
 
   else
@@ -305,9 +305,9 @@ LABEL_34:
   {
     if (v19)
     {
-      v32 = [(NEIKEv2Packet *)v4 copyShortDescription];
+      copyShortDescription = [(NEIKEv2Packet *)v4 copyShortDescription];
       *buf = 138412290;
-      v57 = v32;
+      v57 = copyShortDescription;
       _os_log_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_DEFAULT, "%@ Ignoring request for device identity as peer is not authenticated", buf, 0xCu);
     }
 
@@ -316,21 +316,21 @@ LABEL_34:
 
   if (v19)
   {
-    v20 = [(NEIKEv2Packet *)v4 copyShortDescription];
+    copyShortDescription2 = [(NEIKEv2Packet *)v4 copyShortDescription];
     *buf = 138412290;
-    v57 = v20;
+    v57 = copyShortDescription2;
     _os_log_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_DEFAULT, "%@ Received request for device identity", buf, 0xCu);
   }
 
-  v22 = [(NEIKEv2IKESA *)v5 copyDeviceIdentityNotifyPayload];
-  if (!v22)
+  copyDeviceIdentityNotifyPayload = [(NEIKEv2IKESA *)responseCopy copyDeviceIdentityNotifyPayload];
+  if (!copyDeviceIdentityNotifyPayload)
   {
     v33 = ne_log_obj();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      v51 = [(NEIKEv2Packet *)v4 copyShortDescription];
+      copyShortDescription3 = [(NEIKEv2Packet *)v4 copyShortDescription];
       *buf = 138412290;
-      v57 = v51;
+      v57 = copyShortDescription3;
       _os_log_error_impl(&dword_1BA83C000, v33, OS_LOG_TYPE_ERROR, "%@ Failed to get device identity payload", buf, 0xCu);
     }
 
@@ -338,8 +338,8 @@ LABEL_34:
     goto LABEL_33;
   }
 
-  v16 = v22;
-  if ([(NEIKEv2Packet *)v7 addNotification:v22 data:?])
+  v16 = copyDeviceIdentityNotifyPayload;
+  if ([(NEIKEv2Packet *)v7 addNotification:copyDeviceIdentityNotifyPayload data:?])
   {
 LABEL_33:
 
@@ -354,7 +354,7 @@ LABEL_33:
   }
 
   ErrorInternal = NEIKEv2CreateErrorInternal(@"[packet addNotification:NEIKEv2NotifyTypeDeviceIdentity] failed", v24, v25, v26, v27, v28, v29, v30, v52);
-  [(NEIKEv2IKESA *)v5 setState:ErrorInternal error:?];
+  [(NEIKEv2IKESA *)responseCopy setState:ErrorInternal error:?];
 LABEL_48:
 
 LABEL_49:
@@ -366,12 +366,12 @@ LABEL_50:
   return v47;
 }
 
-- (uint64_t)validateUpdateAddresses:(void *)a1
+- (uint64_t)validateUpdateAddresses:(void *)addresses
 {
   v63 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v5 = v3;
-  if (!a1)
+  if (!addresses)
   {
     v36 = 0;
     goto LABEL_37;
@@ -392,13 +392,13 @@ LABEL_22:
     goto LABEL_36;
   }
 
-  if ([(NEIKEv2Packet *)a1 hasErrors])
+  if ([(NEIKEv2Packet *)addresses hasErrors])
   {
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v7 = objc_getProperty(a1, v6, 64, 1);
+    v7 = objc_getProperty(addresses, v6, 64, 1);
     v8 = [v7 countByEnumeratingWithState:&v54 objects:v62 count:16];
     if (v8)
     {
@@ -416,19 +416,19 @@ LABEL_22:
           v12 = *(*(&v54 + 1) + 8 * i);
           if (v12 && v12[1].isa - 1 <= 0x3FFE)
           {
-            v34 = [(NEIKEv2NotifyPayload *)v12 copyError];
+            copyError = [(NEIKEv2NotifyPayload *)v12 copyError];
             v35 = ne_log_obj();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
             {
-              v53 = [(NEIKEv2Packet *)a1 copyShortDescription];
+              copyShortDescription = [(NEIKEv2Packet *)addresses copyShortDescription];
               *buf = 138412546;
-              v59 = v53;
+              v59 = copyShortDescription;
               v60 = 2112;
-              v61 = v34;
+              v61 = copyError;
               _os_log_error_impl(&dword_1BA83C000, v35, OS_LOG_TYPE_ERROR, "%@ Update addresses received notify error %@", buf, 0x16u);
             }
 
-            [(NEIKEv2IKESA *)v5 setState:v34 error:?];
+            [(NEIKEv2IKESA *)v5 setState:copyError error:?];
             goto LABEL_22;
           }
         }
@@ -444,25 +444,25 @@ LABEL_22:
     }
   }
 
-  v7 = [(NEIKEv2Packet *)a1 copyNotification:?];
-  v13 = [(NEIKEv2Packet *)a1 copyNotification:?];
+  v7 = [(NEIKEv2Packet *)addresses copyNotification:?];
+  v13 = [(NEIKEv2Packet *)addresses copyNotification:?];
   v15 = v13;
   if (v7 && v13)
   {
-    v16 = [(NEIKEv2IKESA *)v5 initiatorSPI];
-    v18 = [(NEIKEv2IKESA *)v5 responderSPI];
+    initiatorSPI = [(NEIKEv2IKESA *)v5 initiatorSPI];
+    responderSPI = [(NEIKEv2IKESA *)v5 responderSPI];
     v20 = objc_getProperty(v5, v19, 72, 1);
-    v21 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v16 responderSPI:v18 address:v20];
+    v21 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI responderSPI:responderSPI address:v20];
 
-    v23 = [(NEIKEv2IKESA *)v5 initiatorSPI];
-    v25 = [(NEIKEv2IKESA *)v5 responderSPI];
+    initiatorSPI2 = [(NEIKEv2IKESA *)v5 initiatorSPI];
+    responderSPI2 = [(NEIKEv2IKESA *)v5 responderSPI];
     v27 = objc_getProperty(v5, v26, 64, 1);
-    v28 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:v23 responderSPI:v25 address:v27];
+    v28 = [NEIKEv2Crypto createNATDetectionHashForInitiatorSPI:initiatorSPI2 responderSPI:responderSPI2 address:v27];
 
     v30 = objc_getProperty(v7, v29, 40, 1);
-    LOBYTE(v25) = [v21 isEqualToData:v30];
+    LOBYTE(responderSPI2) = [v21 isEqualToData:v30];
 
-    if (v25)
+    if (responderSPI2)
     {
       v5[15] = 0;
       v31 = ne_log_obj();
@@ -471,9 +471,9 @@ LABEL_22:
         goto LABEL_24;
       }
 
-      v32 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription2 = [(NEIKEv2Packet *)addresses copyShortDescription];
       *buf = 138412290;
-      v59 = v32;
+      v59 = copyShortDescription2;
       v33 = "%@ Detected no incoming NAT";
     }
 
@@ -486,9 +486,9 @@ LABEL_22:
         goto LABEL_24;
       }
 
-      v32 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription2 = [(NEIKEv2Packet *)addresses copyShortDescription];
       *buf = 138412290;
-      v59 = v32;
+      v59 = copyShortDescription2;
       v33 = "%@ Detected incoming NAT";
     }
 
@@ -507,9 +507,9 @@ LABEL_24:
         goto LABEL_28;
       }
 
-      v41 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription3 = [(NEIKEv2Packet *)addresses copyShortDescription];
       *buf = 138412290;
-      v59 = v41;
+      v59 = copyShortDescription3;
       v42 = "%@ Detected no outgoing NAT";
     }
 
@@ -522,9 +522,9 @@ LABEL_24:
         goto LABEL_28;
       }
 
-      v41 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription3 = [(NEIKEv2Packet *)addresses copyShortDescription];
       *buf = 138412290;
-      v59 = v41;
+      v59 = copyShortDescription3;
       v42 = "%@ Detected outgoing NAT";
     }
 
@@ -608,8 +608,8 @@ LABEL_37:
         }
 
         v13 = *(*(&v37 + 1) + 8 * i);
-        v14 = [v13 type];
-        switch(v14)
+        type = [v13 type];
+        switch(type)
         {
           case '/':
             if (self)
@@ -636,7 +636,7 @@ LABEL_37:
             }
 
             v31 = v11[609];
-            v32 = self;
+            selfCopy3 = self;
             v33 = v20;
             goto LABEL_32;
           case ')':
@@ -656,7 +656,7 @@ LABEL_37:
               }
             }
 
-            v32 = self;
+            selfCopy3 = self;
             v33 = v20;
             v31 = 64;
             goto LABEL_32;
@@ -676,11 +676,11 @@ LABEL_37:
               if (self)
               {
 LABEL_31:
-                v32 = self;
+                selfCopy3 = self;
                 v33 = v20;
                 v31 = 56;
 LABEL_32:
-                objc_setProperty_atomic(v32, v19, v33, v31);
+                objc_setProperty_atomic(selfCopy3, v19, v33, v31);
               }
 
 LABEL_33:
@@ -694,12 +694,12 @@ LABEL_33:
               v26 = v11;
               v27 = v10;
               v28 = v9;
-              v29 = [(NEIKEv2Packet *)self copyShortDescription];
-              v30 = [v13 typeDescription];
+              copyShortDescription = [(NEIKEv2Packet *)self copyShortDescription];
+              typeDescription = [v13 typeDescription];
               *buf = v35;
-              v42 = v29;
+              v42 = copyShortDescription;
               v43 = 2112;
-              v44 = v30;
+              v44 = typeDescription;
               _os_log_impl(&dword_1BA83C000, v25, OS_LOG_TYPE_DEFAULT, "%@ ignoring unexpected %@ payload", buf, 0x16u);
 
               v9 = v28;
@@ -754,7 +754,7 @@ LABEL_33:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = objc_getProperty(a1, a2, 88, 1);
+  v2 = objc_getProperty(self, a2, 88, 1);
   v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
@@ -794,12 +794,12 @@ LABEL_12:
 
 - (uint64_t)isMOBIKE
 {
-  if (([(NEIKEv2Packet *)a1 hasNotification:?]& 1) != 0 || ([(NEIKEv2Packet *)a1 hasNotification:?]& 1) != 0 || ([(NEIKEv2Packet *)a1 hasNotification:?]& 1) != 0 || ([(NEIKEv2Packet *)a1 hasNotification:?]& 1) != 0)
+  if (([(NEIKEv2Packet *)self hasNotification:?]& 1) != 0 || ([(NEIKEv2Packet *)self hasNotification:?]& 1) != 0 || ([(NEIKEv2Packet *)self hasNotification:?]& 1) != 0 || ([(NEIKEv2Packet *)self hasNotification:?]& 1) != 0)
   {
     return 1;
   }
 
-  return [(NEIKEv2Packet *)a1 hasNotification:?];
+  return [(NEIKEv2Packet *)self hasNotification:?];
 }
 
 - (uint64_t)isDeleteChild
@@ -809,7 +809,7 @@ LABEL_12:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = objc_getProperty(a1, a2, 88, 1);
+  v2 = objc_getProperty(self, a2, 88, 1);
   v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {

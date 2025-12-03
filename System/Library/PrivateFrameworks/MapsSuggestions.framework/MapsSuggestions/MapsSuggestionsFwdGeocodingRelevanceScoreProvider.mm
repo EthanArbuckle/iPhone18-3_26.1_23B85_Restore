@@ -1,23 +1,23 @@
 @interface MapsSuggestionsFwdGeocodingRelevanceScoreProvider
-- (BOOL)relevanceScoreForNames:(id)a3 addresses:(id)a4 mapItems:(id)a5 completion:(id)a6;
+- (BOOL)relevanceScoreForNames:(id)names addresses:(id)addresses mapItems:(id)items completion:(id)completion;
 - (NSString)uniqueName;
-- (id)initDecoratingRelevanceScoreProvider:(id)a3 networkRequester:(id)a4;
+- (id)initDecoratingRelevanceScoreProvider:(id)provider networkRequester:(id)requester;
 @end
 
 @implementation MapsSuggestionsFwdGeocodingRelevanceScoreProvider
 
-- (id)initDecoratingRelevanceScoreProvider:(id)a3 networkRequester:(id)a4
+- (id)initDecoratingRelevanceScoreProvider:(id)provider networkRequester:(id)requester
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  requesterCopy = requester;
   v12.receiver = self;
   v12.super_class = MapsSuggestionsFwdGeocodingRelevanceScoreProvider;
   v9 = [(MapsSuggestionsFwdGeocodingRelevanceScoreProvider *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_networkRequester, a4);
-    objc_storeStrong(p_isa + 2, a3);
+    objc_storeStrong(&v9->_networkRequester, requester);
+    objc_storeStrong(p_isa + 2, provider);
   }
 
   return p_isa;
@@ -30,14 +30,14 @@
   return [v2 description];
 }
 
-- (BOOL)relevanceScoreForNames:(id)a3 addresses:(id)a4 mapItems:(id)a5 completion:(id)a6
+- (BOOL)relevanceScoreForNames:(id)names addresses:(id)addresses mapItems:(id)items completion:(id)completion
 {
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  namesCopy = names;
+  addressesCopy = addresses;
+  itemsCopy = items;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -99,26 +99,26 @@
       goto LABEL_16;
     }
 
-    v17 = [v10 copy];
+    v17 = [namesCopy copy];
 
-    v18 = [v11 copy];
-    v19 = [v12 copy];
+    v18 = [addressesCopy copy];
+    v19 = [itemsCopy copy];
 
     if (v19)
     {
-      v15 = [(MapsSuggestionsRelevanceScoreProvider *)self->_wrappedScoreProvider relevanceScoreForNames:v17 addresses:v18 mapItems:v19 completion:v13];
-      v12 = v19;
+      v15 = [(MapsSuggestionsRelevanceScoreProvider *)self->_wrappedScoreProvider relevanceScoreForNames:v17 addresses:v18 mapItems:v19 completion:completionCopy];
+      itemsCopy = v19;
 LABEL_36:
-      v11 = v18;
-      v10 = v17;
+      addressesCopy = v18;
+      namesCopy = v17;
       goto LABEL_17;
     }
 
     v20 = [v17 count];
     if (v20 != [v18 count])
     {
-      v12 = GEOFindOrCreateLog();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      itemsCopy = GEOFindOrCreateLog();
+      if (os_log_type_enabled(itemsCopy, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446978;
         v49 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsFwdGeocodingRelevanceScoreProvider.m";
@@ -128,7 +128,7 @@ LABEL_36:
         v53 = "[MapsSuggestionsFwdGeocodingRelevanceScoreProvider relevanceScoreForNames:addresses:mapItems:completion:]";
         v54 = 2082;
         v55 = "[names count] != [addresses count]";
-        _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Name and Address count did not match.", buf, 0x26u);
+        _os_log_impl(&dword_1C5126000, itemsCopy, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Name and Address count did not match.", buf, 0x26u);
       }
 
       v15 = 0;
@@ -145,8 +145,8 @@ LABEL_36:
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v11 = v18;
-    v21 = [v11 countByEnumeratingWithState:&v39 objects:v47 count:16];
+    addressesCopy = v18;
+    v21 = [addressesCopy countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v21)
     {
       v22 = *v40;
@@ -156,7 +156,7 @@ LABEL_36:
         {
           if (*v40 != v22)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(addressesCopy);
           }
 
           v24 = *(*(&v39 + 1) + 8 * i);
@@ -177,7 +177,7 @@ LABEL_36:
               _os_log_impl(&dword_1C5126000, v30, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Address is not of type CNPostalAddress!", buf, 0x26u);
             }
 
-            v31 = v11;
+            v31 = addressesCopy;
             goto LABEL_40;
           }
 
@@ -193,7 +193,7 @@ LABEL_36:
           [(MapsSuggestionsNetworkRequester *)networkRequester forwardGeocodePostalAddress:v24 completion:v35];
         }
 
-        v21 = [v11 countByEnumeratingWithState:&v39 objects:v47 count:16];
+        v21 = [addressesCopy countByEnumeratingWithState:&v39 objects:v47 count:16];
         if (v21)
         {
           continue;
@@ -214,7 +214,7 @@ LABEL_36:
         _os_log_impl(&dword_1C5126000, v28, OS_LOG_TYPE_ERROR, "Timeout on getting mapItems from Fwd Geo", buf, 2u);
       }
 
-      v12 = 0;
+      itemsCopy = 0;
       *(v44 + 24) = 0;
       v29 = v17;
     }
@@ -243,25 +243,25 @@ LABEL_36:
 
 LABEL_40:
 
-          v12 = 0;
+          itemsCopy = 0;
           v15 = 0;
           goto LABEL_46;
         }
 
-        v12 = [v33 copy];
+        itemsCopy = [v33 copy];
       }
 
       else
       {
-        v12 = 0;
+        itemsCopy = 0;
       }
     }
 
-    v15 = [(MapsSuggestionsRelevanceScoreProvider *)self->_wrappedScoreProvider relevanceScoreForNames:v29 addresses:v11 mapItems:v12 completion:v13];
+    v15 = [(MapsSuggestionsRelevanceScoreProvider *)self->_wrappedScoreProvider relevanceScoreForNames:v29 addresses:addressesCopy mapItems:itemsCopy completion:completionCopy];
 LABEL_46:
     _Block_object_dispose(&v43, 8);
 
-    v10 = v17;
+    namesCopy = v17;
     goto LABEL_17;
   }
 

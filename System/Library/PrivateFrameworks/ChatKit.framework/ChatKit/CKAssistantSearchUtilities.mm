@@ -1,21 +1,21 @@
 @interface CKAssistantSearchUtilities
-+ (__CFString)canonicalizeNumber:(__CFString *)a3;
-+ (id)getAddressesFromPeople:(id)a3;
++ (__CFString)canonicalizeNumber:(__CFString *)number;
++ (id)getAddressesFromPeople:(id)people;
 @end
 
 @implementation CKAssistantSearchUtilities
 
-+ (__CFString)canonicalizeNumber:(__CFString *)a3
++ (__CFString)canonicalizeNumber:(__CFString *)number
 {
-  if (!a3)
+  if (!number)
   {
     return 0;
   }
 
-  if (!CFStringHasPrefix(a3, @"+"))
+  if (!CFStringHasPrefix(number, @"+"))
   {
-    v6 = a3;
-    if ([(__CFString *)v6 _appearsToBePhoneNumber])
+    numberCopy = number;
+    if ([(__CFString *)numberCopy _appearsToBePhoneNumber])
     {
       v7 = IMPhoneNumberRefCopyForPhoneNumber();
       v5 = IMNormalizedPhoneNumberForCFPhoneNumberRef();
@@ -32,7 +32,7 @@
 
     else
     {
-      [(__CFString *)v6 _appearsToBeEmail];
+      [(__CFString *)numberCopy _appearsToBeEmail];
       v5 = IMNormalizeFormattedString();
       if (!v5)
       {
@@ -56,17 +56,17 @@ LABEL_11:
   return v5;
 }
 
-+ (id)getAddressesFromPeople:(id)a3
++ (id)getAddressesFromPeople:(id)people
 {
   v88 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v47 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
+  peopleCopy = people;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v3;
+  obj = peopleCopy;
   v51 = [obj countByEnumeratingWithState:&v72 objects:v87 count:16];
   if (v51)
   {
@@ -87,16 +87,16 @@ LABEL_11:
 
         v50 = v6;
         v8 = *(*(&v72 + 1) + 8 * v6);
-        v52 = [v8 internalGUID];
-        v9 = [v8 label];
-        if ([v9 isAddressBookLabel])
+        internalGUID = [v8 internalGUID];
+        label = [v8 label];
+        if ([label isAddressBookLabel])
         {
-          v10 = [v8 label];
+          label2 = [v8 label];
         }
 
         else
         {
-          v10 = 0;
+          label2 = 0;
         }
 
         if (IMOSLoggingEnabled())
@@ -107,17 +107,17 @@ LABEL_11:
             *buf = v46;
             *&buf[4] = v8;
             *&buf[12] = 2112;
-            *&buf[14] = v52;
+            *&buf[14] = internalGUID;
             *&buf[22] = 2112;
-            v81 = v10;
+            v81 = label2;
             _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Trying to find address for person %@ with internalGUID %@ and desiredLabel %@", buf, 0x20u);
           }
         }
 
-        if (v52)
+        if (internalGUID)
         {
-          v12 = [MEMORY[0x1E69A7FD0] sharedInstance];
-          v13 = [v12 fetchCNContactWithIdentifier:v52];
+          mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
+          v13 = [mEMORY[0x1E69A7FD0] fetchCNContactWithIdentifier:internalGUID];
 
           if (IMOSLoggingEnabled())
           {
@@ -131,7 +131,7 @@ LABEL_11:
                 v15 = @"NO";
               }
 
-              *&buf[4] = v52;
+              *&buf[4] = internalGUID;
               *&buf[12] = 2112;
               *&buf[14] = v15;
               _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Found record for internalGUID %@: %@", buf, 0x16u);
@@ -157,14 +157,14 @@ LABEL_11:
                 }
 
                 v57 = *(*(&v68 + 1) + 8 * i);
-                v59 = [v57 phoneNumbers];
-                if ([v59 count])
+                phoneNumbers = [v57 phoneNumbers];
+                if ([phoneNumbers count])
                 {
                   v66 = 0u;
                   v67 = 0u;
                   v64 = 0u;
                   v65 = 0u;
-                  v16 = v59;
+                  v16 = phoneNumbers;
                   v17 = [v16 countByEnumeratingWithState:&v64 objects:v85 count:16];
                   if (v17)
                   {
@@ -179,11 +179,11 @@ LABEL_11:
                         }
 
                         v20 = *(*(&v64 + 1) + 8 * j);
-                        v21 = [v20 value];
-                        v22 = [v21 stringValue];
+                        value = [v20 value];
+                        stringValue = [value stringValue];
 
-                        v23 = [v20 label];
-                        if (![v10 length] || objc_msgSend(v10, "isEqualToString:", v23))
+                        label3 = [v20 label];
+                        if (![label2 length] || objc_msgSend(label2, "isEqualToString:", label3))
                         {
                           if (IMOSLoggingEnabled())
                           {
@@ -191,19 +191,19 @@ LABEL_11:
                             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
                             {
                               *buf = 138412546;
-                              *&buf[4] = v22;
+                              *&buf[4] = stringValue;
                               *&buf[12] = 2112;
-                              *&buf[14] = v23;
+                              *&buf[14] = label3;
                               _os_log_impl(&dword_19020E000, v24, OS_LOG_TYPE_INFO, "Found number %@ for label %@", buf, 0x16u);
                             }
                           }
 
-                          if (v22)
+                          if (stringValue)
                           {
-                            v25 = [CKAssistantSearchUtilities canonicalizeNumber:v22];
+                            v25 = [CKAssistantSearchUtilities canonicalizeNumber:stringValue];
                             if (v25)
                             {
-                              [v4 addObject:v25];
+                              [array2 addObject:v25];
                             }
                           }
                         }
@@ -216,14 +216,14 @@ LABEL_11:
                   }
                 }
 
-                v58 = [v57 emailAddresses];
-                if ([v58 count])
+                emailAddresses = [v57 emailAddresses];
+                if ([emailAddresses count])
                 {
                   v62 = 0u;
                   v63 = 0u;
                   v60 = 0u;
                   v61 = 0u;
-                  v26 = v58;
+                  v26 = emailAddresses;
                   v27 = [v26 countByEnumeratingWithState:&v60 objects:v84 count:16];
                   if (v27)
                   {
@@ -238,9 +238,9 @@ LABEL_11:
                         }
 
                         v30 = *(*(&v60 + 1) + 8 * k);
-                        v31 = [v30 value];
-                        v32 = [v30 label];
-                        if (![v10 length] || objc_msgSend(v10, "isEqualToString:", v32))
+                        value2 = [v30 value];
+                        label4 = [v30 label];
+                        if (![label2 length] || objc_msgSend(label2, "isEqualToString:", label4))
                         {
                           if (IMOSLoggingEnabled())
                           {
@@ -248,19 +248,19 @@ LABEL_11:
                             if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
                             {
                               *buf = 138412546;
-                              *&buf[4] = v31;
+                              *&buf[4] = value2;
                               *&buf[12] = 2112;
-                              *&buf[14] = v32;
+                              *&buf[14] = label4;
                               _os_log_impl(&dword_19020E000, v33, OS_LOG_TYPE_INFO, "Found email %@ for label %@", buf, 0x16u);
                             }
                           }
 
-                          if (v31)
+                          if (value2)
                           {
-                            v34 = [CKAssistantSearchUtilities canonicalizeNumber:v31];
+                            v34 = [CKAssistantSearchUtilities canonicalizeNumber:value2];
                             if (v34)
                             {
-                              [v4 addObject:v34];
+                              [array2 addObject:v34];
                             }
                           }
                         }
@@ -286,7 +286,7 @@ LABEL_11:
           v81 = __Block_byref_object_copy__39;
           v82 = __Block_byref_object_dispose__39;
           v83 = 0;
-          v35 = v4;
+          v35 = array2;
           IMDPersistencePerformBlock();
           if (*(*&buf[8] + 40))
           {
@@ -305,7 +305,7 @@ LABEL_11:
               }
             }
 
-            [v47 addObject:*(*&buf[8] + 40)];
+            [array addObject:*(*&buf[8] + 40)];
           }
 
           else if ([v35 count])
@@ -316,17 +316,17 @@ LABEL_11:
               if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
               {
                 v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v35, "count")}];
-                v42 = [v35 firstObject];
+                firstObject = [v35 firstObject];
                 *v76 = 138412546;
                 v77 = v41;
                 v78 = 2112;
-                v79 = v42;
+                v79 = firstObject;
                 _os_log_impl(&dword_19020E000, v40, OS_LOG_TYPE_INFO, "Found %@ addresses for recipients, but no recent address, selecting first address %@", v76, 0x16u);
               }
             }
 
-            v43 = [v35 firstObject];
-            [v47 addObject:v43];
+            firstObject2 = [v35 firstObject];
+            [array addObject:firstObject2];
           }
 
           [v35 removeAllObjects];
@@ -360,12 +360,12 @@ LABEL_11:
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v47;
+      *&buf[4] = array;
       _os_log_impl(&dword_19020E000, v44, OS_LOG_TYPE_INFO, "getAddressesFromPeople returning addresses: %@", buf, 0xCu);
     }
   }
 
-  return v47;
+  return array;
 }
 
 void __53__CKAssistantSearchUtilities_getAddressesFromPeople___block_invoke(uint64_t a1)

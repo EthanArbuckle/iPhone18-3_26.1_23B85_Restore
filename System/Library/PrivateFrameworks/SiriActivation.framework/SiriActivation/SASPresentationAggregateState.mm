@@ -1,13 +1,13 @@
 @interface SASPresentationAggregateState
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SASPresentationAggregateState)initWithBuilder:(id)a3;
-- (SASPresentationAggregateState)initWithCanAcceptNewActivations:(BOOL)a3 didNewActivationAcceptanceChange:(BOOL)a4 requestState:(int64_t)a5;
-- (SASPresentationAggregateState)initWithCoder:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SASPresentationAggregateState)initWithBuilder:(id)builder;
+- (SASPresentationAggregateState)initWithCanAcceptNewActivations:(BOOL)activations didNewActivationAcceptanceChange:(BOOL)change requestState:(int64_t)state;
+- (SASPresentationAggregateState)initWithCoder:(id)coder;
 - (id)description;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SASPresentationAggregateState
@@ -58,23 +58,23 @@
   return v16;
 }
 
-- (SASPresentationAggregateState)initWithBuilder:(id)a3
+- (SASPresentationAggregateState)initWithBuilder:(id)builder
 {
-  v4 = [SASPresentationAggregateState newWithBuilder:a3];
+  v4 = [SASPresentationAggregateState newWithBuilder:builder];
 
   return v4;
 }
 
-- (SASPresentationAggregateState)initWithCanAcceptNewActivations:(BOOL)a3 didNewActivationAcceptanceChange:(BOOL)a4 requestState:(int64_t)a5
+- (SASPresentationAggregateState)initWithCanAcceptNewActivations:(BOOL)activations didNewActivationAcceptanceChange:(BOOL)change requestState:(int64_t)state
 {
   v9.receiver = self;
   v9.super_class = SASPresentationAggregateState;
   result = [(SASPresentationAggregateState *)&v9 init];
   if (result)
   {
-    result->_canAcceptNewActivations = a3;
-    result->_didNewActivationAcceptanceChange = a4;
-    result->_requestState = a5;
+    result->_canAcceptNewActivations = activations;
+    result->_didNewActivationAcceptanceChange = change;
+    result->_requestState = state;
   }
 
   return result;
@@ -92,10 +92,10 @@
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -105,7 +105,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       canAcceptNewActivations = self->_canAcceptNewActivations;
       if (canAcceptNewActivations == [(SASPresentationAggregateState *)v5 canAcceptNewActivations]&& (didNewActivationAcceptanceChange = self->_didNewActivationAcceptanceChange, didNewActivationAcceptanceChange == [(SASPresentationAggregateState *)v5 didNewActivationAcceptanceChange]))
       {
@@ -128,67 +128,67 @@
   return v9;
 }
 
-- (SASPresentationAggregateState)initWithCoder:(id)a3
+- (SASPresentationAggregateState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASPresentationAggregateState::canAcceptNewActivations"];
-  v6 = [v5 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASPresentationAggregateState::canAcceptNewActivations"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASPresentationAggregateState::didNewActivationAcceptanceChange"];
-  v8 = [v7 BOOLValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASPresentationAggregateState::didNewActivationAcceptanceChange"];
+  bOOLValue2 = [v7 BOOLValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASPresentationAggregateState::requestState"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASPresentationAggregateState::requestState"];
 
-  v10 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 
-  return [(SASPresentationAggregateState *)self initWithCanAcceptNewActivations:v6 didNewActivationAcceptanceChange:v8 requestState:v10];
+  return [(SASPresentationAggregateState *)self initWithCanAcceptNewActivations:bOOLValue didNewActivationAcceptanceChange:bOOLValue2 requestState:integerValue];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   canAcceptNewActivations = self->_canAcceptNewActivations;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithBool:canAcceptNewActivations];
-  [v6 encodeObject:v7 forKey:@"SASPresentationAggregateState::canAcceptNewActivations"];
+  [coderCopy encodeObject:v7 forKey:@"SASPresentationAggregateState::canAcceptNewActivations"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_didNewActivationAcceptanceChange];
-  [v6 encodeObject:v8 forKey:@"SASPresentationAggregateState::didNewActivationAcceptanceChange"];
+  [coderCopy encodeObject:v8 forKey:@"SASPresentationAggregateState::didNewActivationAcceptanceChange"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_requestState];
-  [v6 encodeObject:v9 forKey:@"SASPresentationAggregateState::requestState"];
+  [coderCopy encodeObject:v9 forKey:@"SASPresentationAggregateState::requestState"];
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SASPresentationAggregateStateMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SASPresentationAggregateStateMutation *)v4 generate];
+  generate = [(_SASPresentationAggregateStateMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SASPresentationAggregateStateMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SASPresentationAggregateStateMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SASPresentationAggregateStateMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SASPresentationAggregateState *)self copy];
+    generate = [(SASPresentationAggregateState *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
 @end

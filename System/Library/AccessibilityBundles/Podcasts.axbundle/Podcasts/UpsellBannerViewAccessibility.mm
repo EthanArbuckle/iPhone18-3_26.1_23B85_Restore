@@ -1,5 +1,5 @@
 @interface UpsellBannerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,17 +7,17 @@
 
 @implementation UpsellBannerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.UpsellBannerView" hasSwiftField:@"subscriptionNameAreaView" withSwiftType:"SubscriptionNameAreaView"];
-  [v3 validateClass:@"ShelfKitCollectionViews.SubscriptionNameAreaView" hasSwiftField:@"model" withSwiftType:"Optional<UpsellBanner>"];
-  [v3 validateClass:@"ShelfKit.UpsellBanner" hasSwiftField:@"subscriptionTitle" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"ShelfKitCollectionViews.SubscriptionNameAreaView" hasInstanceMethod:@"accessibilityChannelLinkButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ChevronButton" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.UpsellBannerView" hasSwiftField:@"shortTitleLabel" withSwiftType:"DynamicTypeLabel"];
-  [v3 validateClass:@"ShelfKitCollectionViews.UpsellBannerView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.UpsellBannerView" hasInstanceMethod:@"accessibilityBenefitButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.UpsellBannerView" hasSwiftField:@"subscriptionNameAreaView" withSwiftType:"SubscriptionNameAreaView"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.SubscriptionNameAreaView" hasSwiftField:@"model" withSwiftType:"Optional<UpsellBanner>"];
+  [validationsCopy validateClass:@"ShelfKit.UpsellBanner" hasSwiftField:@"subscriptionTitle" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.SubscriptionNameAreaView" hasInstanceMethod:@"accessibilityChannelLinkButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ChevronButton" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.UpsellBannerView" hasSwiftField:@"shortTitleLabel" withSwiftType:"DynamicTypeLabel"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.UpsellBannerView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.UpsellBannerView" hasInstanceMethod:@"accessibilityBenefitButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -35,8 +35,8 @@
   v10 = [(UpsellBannerViewAccessibility *)self safeValueForKey:@"accessibilitySubtitleLabel"];
   v11 = __UIAccessibilityCastAsClass();
 
-  v12 = [v9 text];
-  v15 = [v11 text];
+  text = [v9 text];
+  text2 = [v11 text];
   v13 = __UIAXStringForVariables();
 
   return v13;
@@ -51,11 +51,11 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(UpsellBannerViewAccessibility *)self safeValueForKey:@"accessibilityBenefitButton"];
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
 
-  return v3;
+  return array;
 }
 
 @end

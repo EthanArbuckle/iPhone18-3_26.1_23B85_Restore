@@ -1,20 +1,20 @@
 @interface PXSidebarImageLoader
 - (PXSidebarImageLoader)init;
-- (id)beginRequestForMediaProvider:(id)a3 mediaRequestIDs:(id)a4;
-- (int64_t)requestFolderImageWithAssets:(id)a3 imageSize:(CGSize)a4 traitCollection:(id)a5 completion:(id)a6;
-- (int64_t)requestImageForAsset:(id)a3 pixelSize:(CGSize)a4 completion:(id)a5;
-- (void)cancelImageRequest:(int64_t)a3;
-- (void)cancelRequestDetails:(id)a3;
+- (id)beginRequestForMediaProvider:(id)provider mediaRequestIDs:(id)ds;
+- (int64_t)requestFolderImageWithAssets:(id)assets imageSize:(CGSize)size traitCollection:(id)collection completion:(id)completion;
+- (int64_t)requestImageForAsset:(id)asset pixelSize:(CGSize)size completion:(id)completion;
+- (void)cancelImageRequest:(int64_t)request;
+- (void)cancelRequestDetails:(id)details;
 @end
 
 @implementation PXSidebarImageLoader
 
-- (int64_t)requestImageForAsset:(id)a3 pixelSize:(CGSize)a4 completion:(id)a5
+- (int64_t)requestImageForAsset:(id)asset pixelSize:(CGSize)size completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [off_1E77217B0 defaultManager];
-  v10 = [v9 imageProviderForAsset:v7];
+  assetCopy = asset;
+  completionCopy = completion;
+  defaultManager = [off_1E77217B0 defaultManager];
+  v10 = [defaultManager imageProviderForAsset:assetCopy];
 
   v11 = objc_alloc_init(off_1E7721750);
   [v11 setDeliveryMode:1];
@@ -49,11 +49,11 @@ void __66__PXSidebarImageLoader_requestImageForAsset_pixelSize_completion___bloc
   }
 }
 
-- (int64_t)requestFolderImageWithAssets:(id)a3 imageSize:(CGSize)a4 traitCollection:(id)a5 completion:(id)a6
+- (int64_t)requestFolderImageWithAssets:(id)assets imageSize:(CGSize)size traitCollection:(id)collection completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  assetsCopy = assets;
+  collectionCopy = collection;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v17[0] = 0;
   v17[1] = v17;
@@ -78,8 +78,8 @@ void __66__PXSidebarImageLoader_requestImageForAsset_pixelSize_completion___bloc
   v13[3] = &unk_1E7731580;
   objc_copyWeak(&v14, &location);
   v13[5] = v17;
-  v13[4] = v11;
-  PXSidebarRequestFolderImageForAssets(v9, v10, v15, v13);
+  v13[4] = completionCopy;
+  PXSidebarRequestFolderImageForAssets(assetsCopy, collectionCopy, v15, v13);
 }
 
 uint64_t __90__PXSidebarImageLoader_requestFolderImageWithAssets_imageSize_traitCollection_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -103,10 +103,10 @@ void __90__PXSidebarImageLoader_requestFolderImageWithAssets_imageSize_traitColl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)cancelImageRequest:(int64_t)a3
+- (void)cancelImageRequest:(int64_t)request
 {
   requestDetailsBySidebarImageRequestID = self->_requestDetailsBySidebarImageRequestID;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:request];
   v7 = [(NSMapTable *)requestDetailsBySidebarImageRequestID objectForKey:v5];
 
   v6 = v7;
@@ -117,22 +117,22 @@ void __90__PXSidebarImageLoader_requestFolderImageWithAssets_imageSize_traitColl
   }
 }
 
-- (void)cancelRequestDetails:(id)a3
+- (void)cancelRequestDetails:(id)details
 {
   requestDetailsBySidebarImageRequestID = self->_requestDetailsBySidebarImageRequestID;
   v4 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  v5 = [v4 numberWithInteger:{objc_msgSend(v6, "sidebarRequestID")}];
+  detailsCopy = details;
+  v5 = [v4 numberWithInteger:{objc_msgSend(detailsCopy, "sidebarRequestID")}];
   [(NSMapTable *)requestDetailsBySidebarImageRequestID removeObjectForKey:v5];
 
-  [v6 cancel];
+  [detailsCopy cancel];
 }
 
-- (id)beginRequestForMediaProvider:(id)a3 mediaRequestIDs:(id)a4
+- (id)beginRequestForMediaProvider:(id)provider mediaRequestIDs:(id)ds
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PXSidebarImageRequestDetails alloc] initWithMediaProvider:v7 mediaRequestIDs:v6];
+  dsCopy = ds;
+  providerCopy = provider;
+  v8 = [[PXSidebarImageRequestDetails alloc] initWithMediaProvider:providerCopy mediaRequestIDs:dsCopy];
 
   requestDetailsBySidebarImageRequestID = self->_requestDetailsBySidebarImageRequestID;
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PXSidebarImageRequestDetails sidebarRequestID](v8, "sidebarRequestID")}];
@@ -148,9 +148,9 @@ void __90__PXSidebarImageLoader_requestFolderImageWithAssets_imageSize_traitColl
   v2 = [(PXSidebarImageLoader *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     requestDetailsBySidebarImageRequestID = v2->_requestDetailsBySidebarImageRequestID;
-    v2->_requestDetailsBySidebarImageRequestID = v3;
+    v2->_requestDetailsBySidebarImageRequestID = strongToWeakObjectsMapTable;
   }
 
   return v2;

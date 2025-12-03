@@ -1,17 +1,17 @@
 @interface INIntentBoatReservationSlotValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation INIntentBoatReservationSlotValueTransformer
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   [objc_opt_class() reverseTransformedValueClass];
   if (objc_opt_isKindOfClass())
   {
-    v4 = INIntentSlotValueTransformFromBoatReservation(v3);
+    v4 = INIntentSlotValueTransformFromBoatReservation(valueCopy);
   }
 
   else
@@ -22,13 +22,13 @@
   return v4;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   [objc_opt_class() transformedValueClass];
   if (objc_opt_isKindOfClass())
   {
-    v4 = INIntentSlotValueTransformToBoatReservation(v3);
+    v4 = INIntentSlotValueTransformToBoatReservation(valueCopy);
   }
 
   else

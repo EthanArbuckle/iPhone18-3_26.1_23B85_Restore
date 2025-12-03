@@ -1,33 +1,33 @@
 @interface CAFPositionManager
-- (BOOL)_isVehicleLayoutKeyCharacteristic:(id)a3;
-- (BOOL)accessoryIsTracked:(id)a3;
+- (BOOL)_isVehicleLayoutKeyCharacteristic:(id)characteristic;
+- (BOOL)accessoryIsTracked:(id)tracked;
 - (CAFCar)car;
-- (CAFPositionManager)initWithCar:(id)a3;
+- (CAFPositionManager)initWithCar:(id)car;
 - (NSArray)vehicleLayoutKeys;
 - (id)_queue_positionedServices;
-- (id)servicesForVehicleLayoutKey:(id)a3;
-- (id)vehicleLayoutKeysFor:(Class)a3;
-- (unint64_t)_queue_stateForPositionedServices:(id)a3;
+- (id)servicesForVehicleLayoutKey:(id)key;
+- (id)vehicleLayoutKeysFor:(Class)for;
+- (unint64_t)_queue_stateForPositionedServices:(id)services;
 - (void)_queue_buildTrackingCache;
-- (void)_rebuildCacheIfNeededforReason:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)setState:(unint64_t)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)_rebuildCacheIfNeededforReason:(id)reason;
+- (void)registerObserver:(id)observer;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)setState:(unint64_t)state;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFPositionManager
 
-- (CAFPositionManager)initWithCar:(id)a3
+- (CAFPositionManager)initWithCar:(id)car
 {
-  v4 = a3;
+  carCopy = car;
   v19.receiver = self;
   v19.super_class = CAFPositionManager;
   v5 = [(CAFPositionManager *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_car, v4);
+    objc_storeWeak(&v5->_car, carCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_attr_make_with_qos_class(v7, QOS_CLASS_DEFAULT, 0);
 
@@ -55,18 +55,18 @@
   return v6;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5 = CAFPositionManagerLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v8 = NSStringFromCharacteristicState(self->_state);
-      v9 = NSStringFromCharacteristicState(a3);
+      v9 = NSStringFromCharacteristicState(state);
       v10 = 138543874;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v8;
       v14 = 2112;
@@ -74,9 +74,9 @@
       _os_log_debug_impl(&dword_231618000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ transitioning state from %@ to %@", &v10, 0x20u);
     }
 
-    self->_state = a3;
-    v6 = [(CAFPositionManager *)self observers];
-    [v6 positionManager:self didUpdateState:self->_state];
+    self->_state = state;
+    observers = [(CAFPositionManager *)self observers];
+    [observers positionManager:self didUpdateState:self->_state];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -90,14 +90,14 @@
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(CAFPositionManager *)self workQueue];
+  workQueue = [(CAFPositionManager *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__CAFPositionManager_vehicleLayoutKeys__block_invoke;
   v6[3] = &unk_27890D4F8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -114,25 +114,25 @@ void __39__CAFPositionManager_vehicleLayoutKeys__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)servicesForVehicleLayoutKey:(id)a3
+- (id)servicesForVehicleLayoutKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(CAFPositionManager *)self workQueue];
+  workQueue = [(CAFPositionManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__CAFPositionManager_servicesForVehicleLayoutKey___block_invoke;
   block[3] = &unk_27890D520;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = keyCopy;
+  dispatch_sync(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -149,27 +149,27 @@ void __50__CAFPositionManager_servicesForVehicleLayoutKey___block_invoke(uint64_
   *(v3 + 40) = v2;
 }
 
-- (id)vehicleLayoutKeysFor:(Class)a3
+- (id)vehicleLayoutKeysFor:(Class)for
 {
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)for isSubclassOfClass:objc_opt_class()])
   {
-    v5 = [(objc_class *)a3 serviceIdentifier];
+    serviceIdentifier = [(objc_class *)for serviceIdentifier];
     v13 = 0;
     v14 = &v13;
     v15 = 0x3032000000;
     v16 = __Block_byref_object_copy_;
     v17 = __Block_byref_object_dispose_;
     v18 = 0;
-    v6 = [(CAFPositionManager *)self workQueue];
+    workQueue = [(CAFPositionManager *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __43__CAFPositionManager_vehicleLayoutKeysFor___block_invoke;
     block[3] = &unk_27890D520;
-    v11 = v5;
+    v11 = serviceIdentifier;
     v12 = &v13;
     block[4] = self;
-    v7 = v5;
-    dispatch_sync(v6, block);
+    v7 = serviceIdentifier;
+    dispatch_sync(workQueue, block);
 
     v8 = v14[5];
     _Block_object_dispose(&v13, 8);
@@ -202,27 +202,27 @@ void __43__CAFPositionManager_vehicleLayoutKeysFor___block_invoke(uint64_t a1)
   objc_storeStrong((*(*(a1 + 48) + 8) + 40), v5);
 }
 
-- (BOOL)accessoryIsTracked:(id)a3
+- (BOOL)accessoryIsTracked:(id)tracked
 {
-  v4 = a3;
+  trackedCopy = tracked;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CAFPositionManager *)self workQueue];
+  workQueue = [(CAFPositionManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__CAFPositionManager_accessoryIsTracked___block_invoke;
   block[3] = &unk_27890D520;
-  v9 = v4;
+  v9 = trackedCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = trackedCopy;
+  dispatch_sync(workQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(trackedCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return trackedCopy;
 }
 
 void __41__CAFPositionManager_accessoryIsTracked___block_invoke(uint64_t a1)
@@ -232,32 +232,32 @@ void __41__CAFPositionManager_accessoryIsTracked___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v3 containsObject:v2];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFPositionManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFPositionManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFPositionManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFPositionManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)_rebuildCacheIfNeededforReason:(id)a3
+- (void)_rebuildCacheIfNeededforReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(CAFPositionManager *)self workQueue];
+  reasonCopy = reason;
+  workQueue = [(CAFPositionManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke;
   v7[3] = &unk_27890D548;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = reasonCopy;
+  v6 = reasonCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint64_t a1)
@@ -323,8 +323,8 @@ void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint
 - (id)_queue_positionedServices
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(CAFPositionManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(CAFPositionManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_opt_new();
   v26 = 0u;
@@ -332,11 +332,11 @@ void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint
   v28 = 0u;
   v29 = 0u;
   v5 = [(CAFPositionManager *)self car];
-  v6 = [v5 accessories];
-  v7 = [v6 allValues];
+  accessories = [v5 accessories];
+  allValues = [accessories allValues];
 
-  obj = v7;
-  v21 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  obj = allValues;
+  v21 = [allValues countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v21)
   {
     v20 = *v27;
@@ -354,10 +354,10 @@ void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = [v9 services];
-        v11 = [v10 allValues];
+        services = [v9 services];
+        allValues2 = [services allValues];
 
-        v12 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v12 = [allValues2 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v12)
         {
           v13 = v12;
@@ -368,7 +368,7 @@ void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint
             {
               if (*v23 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(allValues2);
               }
 
               v16 = *(*(&v22 + 1) + 8 * j);
@@ -384,7 +384,7 @@ void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v13 = [allValues2 countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v13);
@@ -405,8 +405,8 @@ void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint
 - (void)_queue_buildTrackingCache
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(CAFPositionManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(CAFPositionManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_opt_new();
   v5 = objc_opt_new();
@@ -415,9 +415,9 @@ void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v28 = self;
-  v7 = [(CAFPositionManager *)self positionedServices];
-  v8 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  selfCopy = self;
+  positionedServices = [(CAFPositionManager *)self positionedServices];
+  v8 = [positionedServices countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
     v9 = v8;
@@ -428,80 +428,80 @@ void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(positionedServices);
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        v13 = [v12 vehicleLayoutKey];
+        vehicleLayoutKey = [v12 vehicleLayoutKey];
 
-        if (v13)
+        if (vehicleLayoutKey)
         {
-          v14 = [v12 accessory];
-          v15 = [v14 uniqueIdentifier];
-          [v6 addObject:v15];
+          accessory = [v12 accessory];
+          uniqueIdentifier = [accessory uniqueIdentifier];
+          [v6 addObject:uniqueIdentifier];
 
-          v16 = [v12 vehicleLayoutKey];
-          v17 = [v4 objectForKeyedSubscript:v16];
+          vehicleLayoutKey2 = [v12 vehicleLayoutKey];
+          v17 = [v4 objectForKeyedSubscript:vehicleLayoutKey2];
 
           if (!v17)
           {
             v18 = objc_opt_new();
-            v19 = [v12 vehicleLayoutKey];
-            [v4 setObject:v18 forKeyedSubscript:v19];
+            vehicleLayoutKey3 = [v12 vehicleLayoutKey];
+            [v4 setObject:v18 forKeyedSubscript:vehicleLayoutKey3];
           }
 
-          v20 = [v12 vehicleLayoutKey];
-          v21 = [v4 objectForKeyedSubscript:v20];
+          vehicleLayoutKey4 = [v12 vehicleLayoutKey];
+          v21 = [v4 objectForKeyedSubscript:vehicleLayoutKey4];
           [v21 addObject:v12];
 
-          v22 = [objc_opt_class() serviceIdentifier];
-          v23 = [v5 objectForKeyedSubscript:v22];
+          serviceIdentifier = [objc_opt_class() serviceIdentifier];
+          v23 = [v5 objectForKeyedSubscript:serviceIdentifier];
 
           if (!v23)
           {
             v24 = objc_opt_new();
-            [v5 setObject:v24 forKeyedSubscript:v22];
+            [v5 setObject:v24 forKeyedSubscript:serviceIdentifier];
           }
 
-          v25 = [v5 objectForKeyedSubscript:v22];
-          v26 = [v12 vehicleLayoutKey];
-          [v25 addObject:v26];
+          v25 = [v5 objectForKeyedSubscript:serviceIdentifier];
+          vehicleLayoutKey5 = [v12 vehicleLayoutKey];
+          [v25 addObject:vehicleLayoutKey5];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v9 = [positionedServices countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v9);
   }
 
-  [(CAFPositionManager *)v28 setPositionedAccessories:v6];
-  [(CAFPositionManager *)v28 setServicesForVehicleLayoutKey:v4];
-  [(CAFPositionManager *)v28 setVehicleLayoutKeysForServiceType:v5];
+  [(CAFPositionManager *)selfCopy setPositionedAccessories:v6];
+  [(CAFPositionManager *)selfCopy setServicesForVehicleLayoutKey:v4];
+  [(CAFPositionManager *)selfCopy setVehicleLayoutKeysForServiceType:v5];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_queue_stateForPositionedServices:(id)a3
+- (unint64_t)_queue_stateForPositionedServices:(id)services
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CAFPositionManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  servicesCopy = services;
+  workQueue = [(CAFPositionManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v4 count])
+  if ([servicesCopy count])
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = v4;
+    v6 = servicesCopy;
     v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v7)
     {
       v8 = v7;
-      v21 = self;
-      v22 = v4;
+      selfCopy = self;
+      v22 = servicesCopy;
       v9 = *v24;
       v10 = 3;
       while (2)
@@ -514,30 +514,30 @@ void __53__CAFPositionManager__rebuildCacheIfNeededforReason___block_invoke(uint
           }
 
           v12 = *(*(&v23 + 1) + 8 * i);
-          v13 = [v12 vehicleLayoutKeyCharacteristic];
+          vehicleLayoutKeyCharacteristic = [v12 vehicleLayoutKeyCharacteristic];
 
-          if (v13)
+          if (vehicleLayoutKeyCharacteristic)
           {
-            v14 = [v12 vehicleLayoutKeyCharacteristic];
-            v15 = [v14 state];
+            vehicleLayoutKeyCharacteristic2 = [v12 vehicleLayoutKeyCharacteristic];
+            state = [vehicleLayoutKeyCharacteristic2 state];
 
-            if (v15 <= 6 && ((1 << v15) & 0x71) != 0)
+            if (state <= 6 && ((1 << state) & 0x71) != 0)
             {
               v17 = CAFPositionManagerLogging();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
               {
-                [(CAFPositionManager *)v21 _queue_stateForPositionedServices:v12, v17];
+                [(CAFPositionManager *)selfCopy _queue_stateForPositionedServices:v12, v17];
               }
 
               v10 = 6;
-              v4 = v22;
+              servicesCopy = v22;
               goto LABEL_21;
             }
           }
         }
 
         v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
-        v4 = v22;
+        servicesCopy = v22;
         if (v8)
         {
           continue;
@@ -564,19 +564,19 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)_isVehicleLayoutKeyCharacteristic:(id)a3
+- (BOOL)_isVehicleLayoutKeyCharacteristic:(id)characteristic
 {
-  v3 = [a3 typeName];
+  typeName = [characteristic typeName];
   v4 = +[CAFCharacteristicTypes characteristicNameByType];
   v5 = [v4 objectForKeyedSubscript:@"0x0000000036000065"];
-  v6 = [v3 isEqualToString:v5];
+  v6 = [typeName isEqualToString:v5];
 
   return v6;
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  if ([(CAFPositionManager *)self _isVehicleLayoutKeyCharacteristic:a4])
+  if ([(CAFPositionManager *)self _isVehicleLayoutKeyCharacteristic:characteristic])
   {
 
     [(CAFPositionManager *)self _rebuildCacheIfNeededforReason:@"Service Update"];

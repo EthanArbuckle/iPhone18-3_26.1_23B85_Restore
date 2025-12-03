@@ -1,9 +1,9 @@
 @interface NRRTCPairingReporter
 + (id)sharedInstance;
-+ (void)submitRTCPairingMetricWithMetricID:(id)a3 withCompletion:(id)a4;
++ (void)submitRTCPairingMetricWithMetricID:(id)d withCompletion:(id)completion;
 - (NRRTCPairingReporter)init;
-- (id)lastControllerPushed:(id)a3;
-- (void)assembleAndSubmitPairingMetricWithMetricID:(id)a3 withCompletion:(id)a4;
+- (id)lastControllerPushed:(id)pushed;
+- (void)assembleAndSubmitPairingMetricWithMetricID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation NRRTCPairingReporter
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000C1008;
   block[3] = &unk_1001756A8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001B3A48 != -1)
   {
     dispatch_once(&qword_1001B3A48, block);
@@ -41,18 +41,18 @@
   return v2;
 }
 
-+ (void)submitRTCPairingMetricWithMetricID:(id)a3 withCompletion:(id)a4
++ (void)submitRTCPairingMetricWithMetricID:(id)d withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = +[NRRTCPairingReporter sharedInstance];
-  [v7 assembleAndSubmitPairingMetricWithMetricID:v6 withCompletion:v5];
+  [v7 assembleAndSubmitPairingMetricWithMetricID:dCopy withCompletion:completionCopy];
 }
 
-- (void)assembleAndSubmitPairingMetricWithMetricID:(id)a3 withCompletion:(id)a4
+- (void)assembleAndSubmitPairingMetricWithMetricID:(id)d withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = nr_pairing_reporter_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
 
@@ -83,7 +83,7 @@
       }
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -123,7 +123,7 @@
     v40 = buf;
     v37 = v28;
     v38 = v29;
-    v39 = v7;
+    v39 = completionCopy;
     v31 = v29;
     v32 = v28;
     dispatch_async(queue, v36);
@@ -134,9 +134,9 @@
   }
 }
 
-- (id)lastControllerPushed:(id)a3
+- (id)lastControllerPushed:(id)pushed
 {
-  v3 = a3;
+  pushedCopy = pushed;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -157,7 +157,7 @@
   v10 = &v11;
   v7 = @"PushedControllerNumber";
   v8 = @"HoldControllerNumber";
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [pushedCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v12[5];
 
   _Block_object_dispose(&v11, 8);

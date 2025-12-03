@@ -1,151 +1,151 @@
 @interface TPSection
-- (BOOL)isHeaderFooterEmpty:(int64_t)a3;
-- (BOOL)isHeaderFooterVisible:(int64_t)a3;
-- (CGSize)targetSizeForImageData:(id)a3 associatedHint:(id)a4;
+- (BOOL)isHeaderFooterEmpty:(int64_t)empty;
+- (BOOL)isHeaderFooterVisible:(int64_t)visible;
+- (CGSize)targetSizeForImageData:(id)data associatedHint:(id)hint;
 - (NSArray)pageInfosForPropagation;
 - (NSArray)sectionTemplatePages;
 - (NSString)localizedPrettyDisplayStringLong;
 - (NSString)localizedPrettyDisplayStringShort;
 - (NSURL)url;
 - (TPPageTemplate)pageTemplate;
-- (TPSection)initWithContext:(id)a3;
-- (TPSection)initWithContext:(id)a3 section:(id)a4;
+- (TPSection)initWithContext:(id)context;
+- (TPSection)initWithContext:(id)context section:(id)section;
 - (TSWPStorage)parentStorage;
 - (id)allDrawables;
 - (id)childEnumerator;
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 - (id)objectUUIDPath;
-- (id)sectionTemplatePageOwningInfo:(id)a3;
-- (id)sectionTemplatePageOwningModel:(id)a3;
-- (void)acceptVisitor:(id)a3;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (id)sectionTemplatePageOwningInfo:(id)info;
+- (id)sectionTemplatePageOwningModel:(id)model;
+- (void)acceptVisitor:(id)visitor;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)i_clearPropertiesToDefaults;
-- (void)i_copyHeadersAndFootersFrom:(id)a3 dolcContext:(id)a4 withBlock:(id)a5;
-- (void)i_ensureHeaderFooterStoragesExistWithStylesheet:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_addAllDrawablesFromInfo:(id)a3 toMutableArray:(id)a4;
-- (void)p_unarchiveAndUpgrade:(id)a3 archive:(const void *)a4;
-- (void)p_upgradePageSizeAndMarginsFromObsoleteSettings:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setBackgroundFill:(id)a3;
-- (void)setInheritPreviousHeaderFooter:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setParentStorage:(id)a3;
-- (void)setSectionHyperlinkUUID:(id)a3;
-- (void)setSectionPageNumberKind:(unsigned int)a3;
-- (void)setSectionPageNumberStart:(unsigned int)a3;
-- (void)setSectionStartKind:(unsigned int)a3;
-- (void)setSectionTemplateEvenOddPagesDifferent:(BOOL)a3;
-- (void)setSectionTemplateFirstPageDifferent:(BOOL)a3;
-- (void)setSectionTemplateFirstPageHidesHeaderFooter:(BOOL)a3;
-- (void)setSectionTemplatePageForFirstPage:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)i_copyHeadersAndFootersFrom:(id)from dolcContext:(id)context withBlock:(id)block;
+- (void)i_ensureHeaderFooterStoragesExistWithStylesheet:(id)stylesheet;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_addAllDrawablesFromInfo:(id)info toMutableArray:(id)array;
+- (void)p_unarchiveAndUpgrade:(id)upgrade archive:(const void *)archive;
+- (void)p_upgradePageSizeAndMarginsFromObsoleteSettings:(id)settings;
+- (void)saveToArchiver:(id)archiver;
+- (void)setBackgroundFill:(id)fill;
+- (void)setInheritPreviousHeaderFooter:(BOOL)footer;
+- (void)setName:(id)name;
+- (void)setParentStorage:(id)storage;
+- (void)setSectionHyperlinkUUID:(id)d;
+- (void)setSectionPageNumberKind:(unsigned int)kind;
+- (void)setSectionPageNumberStart:(unsigned int)start;
+- (void)setSectionStartKind:(unsigned int)kind;
+- (void)setSectionTemplateEvenOddPagesDifferent:(BOOL)different;
+- (void)setSectionTemplateFirstPageDifferent:(BOOL)different;
+- (void)setSectionTemplateFirstPageHidesHeaderFooter:(BOOL)footer;
+- (void)setSectionTemplatePageForFirstPage:(id)page;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TPSection
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v10 = a3;
-  if (self->_name != v10)
+  nameCopy = name;
+  if (self->_name != nameCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8, v9);
-    objc_storeStrong(&self->_name, a3);
+    objc_storeStrong(&self->_name, name);
   }
 }
 
-- (void)setInheritPreviousHeaderFooter:(BOOL)a3
+- (void)setInheritPreviousHeaderFooter:(BOOL)footer
 {
-  if (self->_inheritPreviousHeaderFooter != a3)
+  if (self->_inheritPreviousHeaderFooter != footer)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_inheritPreviousHeaderFooter = a3;
+    self->_inheritPreviousHeaderFooter = footer;
   }
 }
 
-- (void)setSectionTemplateFirstPageDifferent:(BOOL)a3
+- (void)setSectionTemplateFirstPageDifferent:(BOOL)different
 {
-  if (self->_sectionTemplateFirstPageDifferent != a3)
+  if (self->_sectionTemplateFirstPageDifferent != different)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_sectionTemplateFirstPageDifferent = a3;
+    self->_sectionTemplateFirstPageDifferent = different;
   }
 }
 
-- (void)setSectionTemplateFirstPageHidesHeaderFooter:(BOOL)a3
+- (void)setSectionTemplateFirstPageHidesHeaderFooter:(BOOL)footer
 {
-  if (self->_sectionTemplateFirstPageHidesHeaderFooter != a3)
+  if (self->_sectionTemplateFirstPageHidesHeaderFooter != footer)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_sectionTemplateFirstPageHidesHeaderFooter = a3;
+    self->_sectionTemplateFirstPageHidesHeaderFooter = footer;
   }
 }
 
-- (void)setSectionTemplateEvenOddPagesDifferent:(BOOL)a3
+- (void)setSectionTemplateEvenOddPagesDifferent:(BOOL)different
 {
-  if (self->_sectionTemplateEvenOddPagesDifferent != a3)
+  if (self->_sectionTemplateEvenOddPagesDifferent != different)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_sectionTemplateEvenOddPagesDifferent = a3;
+    self->_sectionTemplateEvenOddPagesDifferent = different;
   }
 }
 
-- (void)setSectionStartKind:(unsigned int)a3
+- (void)setSectionStartKind:(unsigned int)kind
 {
-  if (self->_sectionStartKind != a3)
+  if (self->_sectionStartKind != kind)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_sectionStartKind = a3;
+    self->_sectionStartKind = kind;
   }
 }
 
-- (void)setSectionPageNumberKind:(unsigned int)a3
+- (void)setSectionPageNumberKind:(unsigned int)kind
 {
-  if (self->_sectionPageNumberKind != a3)
+  if (self->_sectionPageNumberKind != kind)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_sectionPageNumberKind = a3;
+    self->_sectionPageNumberKind = kind;
   }
 }
 
-- (void)setSectionPageNumberStart:(unsigned int)a3
+- (void)setSectionPageNumberStart:(unsigned int)start
 {
-  if (self->_sectionPageNumberStart != a3)
+  if (self->_sectionPageNumberStart != start)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_sectionPageNumberStart = a3;
+    self->_sectionPageNumberStart = start;
   }
 }
 
-- (TPSection)initWithContext:(id)a3 section:(id)a4
+- (TPSection)initWithContext:(id)context section:(id)section
 {
-  v6 = a3;
-  v7 = a4;
-  v13 = objc_msgSend_initWithContext_(self, v8, v9, v10, v11, v12, v6);
+  contextCopy = context;
+  sectionCopy = section;
+  v13 = objc_msgSend_initWithContext_(self, v8, v9, v10, v11, v12, contextCopy);
   v19 = v13;
-  if (v7 && v13)
+  if (sectionCopy && v13)
   {
-    v20 = objc_msgSend_inheritPreviousHeaderFooter(v7, v14, v15, v16, v17, v18);
+    v20 = objc_msgSend_inheritPreviousHeaderFooter(sectionCopy, v14, v15, v16, v17, v18);
     objc_msgSend_setInheritPreviousHeaderFooter_(v19, v21, v22, v23, v24, v25, v20);
-    PageDifferent = objc_msgSend_sectionTemplateFirstPageDifferent(v7, v26, v27, v28, v29, v30);
+    PageDifferent = objc_msgSend_sectionTemplateFirstPageDifferent(sectionCopy, v26, v27, v28, v29, v30);
     objc_msgSend_setSectionTemplateFirstPageDifferent_(v19, v32, v33, v34, v35, v36, PageDifferent);
-    PageHidesHeaderFooter = objc_msgSend_sectionTemplateFirstPageHidesHeaderFooter(v7, v37, v38, v39, v40, v41);
+    PageHidesHeaderFooter = objc_msgSend_sectionTemplateFirstPageHidesHeaderFooter(sectionCopy, v37, v38, v39, v40, v41);
     objc_msgSend_setSectionTemplateFirstPageHidesHeaderFooter_(v19, v43, v44, v45, v46, v47, PageHidesHeaderFooter);
-    v53 = objc_msgSend_sectionTemplateEvenOddPagesDifferent(v7, v48, v49, v50, v51, v52);
+    v53 = objc_msgSend_sectionTemplateEvenOddPagesDifferent(sectionCopy, v48, v49, v50, v51, v52);
     objc_msgSend_setSectionTemplateEvenOddPagesDifferent_(v19, v54, v55, v56, v57, v58, v53);
-    started = objc_msgSend_sectionStartKind(v7, v59, v60, v61, v62, v63);
+    started = objc_msgSend_sectionStartKind(sectionCopy, v59, v60, v61, v62, v63);
     objc_msgSend_setSectionStartKind_(v19, v65, v66, v67, v68, v69, started);
-    v75 = objc_msgSend_sectionPageNumberKind(v7, v70, v71, v72, v73, v74);
+    v75 = objc_msgSend_sectionPageNumberKind(sectionCopy, v70, v71, v72, v73, v74);
     objc_msgSend_setSectionPageNumberKind_(v19, v76, v77, v78, v79, v80, v75);
-    v86 = objc_msgSend_sectionPageNumberStart(v7, v81, v82, v83, v84, v85);
+    v86 = objc_msgSend_sectionPageNumberStart(sectionCopy, v81, v82, v83, v84, v85);
     objc_msgSend_setSectionPageNumberStart_(v19, v87, v88, v89, v90, v91, v86);
-    v97 = objc_msgSend_name(v7, v92, v93, v94, v95, v96);
+    v97 = objc_msgSend_name(sectionCopy, v92, v93, v94, v95, v96);
     objc_msgSend_setName_(v19, v98, v99, v100, v101, v102, v97);
 
-    v108 = objc_msgSend_backgroundFill(v7, v103, v104, v105, v106, v107);
+    v108 = objc_msgSend_backgroundFill(sectionCopy, v103, v104, v105, v106, v107);
     v114 = objc_msgSend_copy(v108, v109, v110, v111, v112, v113);
     objc_msgSend_setBackgroundFill_(v19, v115, v116, v117, v118, v119, v114);
 
@@ -153,7 +153,7 @@
     sectionTemplatePages = v19->_sectionTemplatePages;
     do
     {
-      v127 = objc_msgSend_copyWithContext_(*&v7[v125 * 8 + 64], v120, v121, v122, v123, v124, v6);
+      v127 = objc_msgSend_copyWithContext_(*&sectionCopy[v125 * 8 + 64], v120, v121, v122, v123, v124, contextCopy);
       v128 = sectionTemplatePages[v125];
       sectionTemplatePages[v125] = v127;
 
@@ -166,12 +166,12 @@
   return v19;
 }
 
-- (TPSection)initWithContext:(id)a3
+- (TPSection)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v41.receiver = self;
   v41.super_class = TPSection;
-  v5 = [(TPSection *)&v41 initWithContext:v4];
+  v5 = [(TPSection *)&v41 initWithContext:contextCopy];
   v6 = [TPSectionTemplatePage alloc];
   v12 = objc_msgSend_initWithSection_(v6, v7, v8, v9, v10, v11, v5);
   v13 = v5->_sectionTemplatePages[0];
@@ -212,11 +212,11 @@
   return v51;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   objc_msgSend_i_clearPropertiesToDefaults(self, v5, v6, v7, v8, v9);
-  v10 = v4;
+  v10 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v16 = objc_msgSend_messageWithDescriptor_(v10, v11, v12, v13, v14, v15, off_2812F85B8[26]);
 
@@ -541,11 +541,11 @@ LABEL_36:
   objc_msgSend_addFinalizeHandler_(v10, v181, v182, v183, v184, v185, v186);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v70 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithNewFunction_descriptor_(v70, v4, v5, v6, v7, v8, sub_275FD1EDC, off_2812F85B8[26]);
+  v9 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, v5, v6, v7, v8, sub_275FD1EDC, off_2812F85B8[26]);
 
   *(v9 + 171) = self->_inheritPreviousHeaderFooter;
   *(v9 + 204) = self->_sectionTemplateFirstPageDifferent;
@@ -580,7 +580,7 @@ LABEL_36:
       *(v9 + 104) = v21;
     }
 
-    objc_msgSend_setStrongReference_message_(v70, v10, v11, v12, v13, v14, v20, v21);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v10, v11, v12, v13, v14, v20, v21);
   }
 
   v23 = self->_sectionTemplatePages[1];
@@ -600,7 +600,7 @@ LABEL_36:
       *(v9 + 112) = v24;
     }
 
-    objc_msgSend_setStrongReference_message_(v70, v10, v11, v12, v13, v14, v23, v24);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v10, v11, v12, v13, v14, v23, v24);
   }
 
   v26 = self->_sectionTemplatePages[2];
@@ -620,12 +620,12 @@ LABEL_36:
       *(v9 + 120) = v27;
     }
 
-    objc_msgSend_setStrongReference_message_(v70, v10, v11, v12, v13, v14, v26, v27);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v10, v11, v12, v13, v14, v26, v27);
   }
 
   if (self->_backgroundFill)
   {
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v70, v10, v11, v12, v13, v14, 30, v9);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v10, v11, v12, v13, v14, 30, v9);
     backgroundFill = self->_backgroundFill;
     *(v9 + 16) |= 0x20u;
     v35 = *(v9 + 136);
@@ -641,7 +641,7 @@ LABEL_36:
       *(v9 + 136) = v35;
     }
 
-    objc_msgSend_saveToArchive_archiver_(backgroundFill, v29, v30, v31, v32, v33, v35, v70);
+    objc_msgSend_saveToArchive_archiver_(backgroundFill, v29, v30, v31, v32, v33, v35, archiverCopy);
     v42 = objc_msgSend_documentRoot(self, v37, v38, v39, v40, v41);
     v48 = objc_msgSend_settings(v42, v43, v44, v45, v46, v47);
     hasBody = objc_msgSend_hasBody(v48, v49, v50, v51, v52, v53);
@@ -652,7 +652,7 @@ LABEL_36:
       v60 = MEMORY[0x277D808C8];
     }
 
-    objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v70, v55, v56, v57, v58, v59, *MEMORY[0x277D808C0], *v60, @"TPPageBackgrounds");
+    objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(archiverCopy, v55, v56, v57, v58, v59, *MEMORY[0x277D808C0], *v60, @"TPPageBackgrounds");
   }
 
   sectionHyperlinkUUID = self->_sectionHyperlinkUUID;
@@ -673,16 +673,16 @@ LABEL_36:
     }
 
     objc_msgSend_tsp_saveToMessage_(sectionHyperlinkUUID, v10, v11, v12, v13, v14, v62);
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v70, v64, v65, v66, v67, v68, 31, v9);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v64, v65, v66, v67, v68, 31, v9);
   }
 
   v69 = objc_msgSend_UTF8String(self->_name, v10, v11, v12, v13, v14);
   sub_275FCE858(v9, v69);
 }
 
-- (BOOL)isHeaderFooterVisible:(int64_t)a3
+- (BOOL)isHeaderFooterVisible:(int64_t)visible
 {
-  if (a3)
+  if (visible)
   {
     return 1;
   }
@@ -729,7 +729,7 @@ LABEL_7:
   return 0;
 }
 
-- (BOOL)isHeaderFooterEmpty:(int64_t)a3
+- (BOOL)isHeaderFooterEmpty:(int64_t)empty
 {
   v8 = 0;
   v9 = 0;
@@ -740,7 +740,7 @@ LABEL_7:
     if (v11)
     {
       v12 = v11;
-      isHeaderFooterEmpty = objc_msgSend_isHeaderFooterEmpty_(v12, v13, v14, v15, v16, v17, a3);
+      isHeaderFooterEmpty = objc_msgSend_isHeaderFooterEmpty_(v12, v13, v14, v15, v16, v17, empty);
       goto LABEL_6;
     }
 
@@ -765,7 +765,7 @@ LABEL_7:
     }
   }
 
-  isHeaderFooterEmpty = objc_msgSend_isHeaderFooterEmpty_(v12, v37, v38, v39, v40, v41, a3);
+  isHeaderFooterEmpty = objc_msgSend_isHeaderFooterEmpty_(v12, v37, v38, v39, v40, v41, empty);
 LABEL_6:
   if (isHeaderFooterEmpty)
   {
@@ -775,13 +775,13 @@ LABEL_6:
   return v9;
 }
 
-- (void)setSectionHyperlinkUUID:(id)a3
+- (void)setSectionHyperlinkUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = TPSection;
   [(TPSection *)&v12 willModify];
-  v10 = objc_msgSend_copy(v4, v5, v6, v7, v8, v9);
+  v10 = objc_msgSend_copy(dCopy, v5, v6, v7, v8, v9);
   sectionHyperlinkUUID = self->_sectionHyperlinkUUID;
   self->_sectionHyperlinkUUID = v10;
 }
@@ -929,21 +929,21 @@ LABEL_9:
   return v60;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
-  v11 = objc_msgSend_initWithContext_section_(v5, v6, v7, v8, v9, v10, v4, self);
+  v11 = objc_msgSend_initWithContext_section_(v5, v6, v7, v8, v9, v10, contextCopy, self);
 
   return v11;
 }
 
-- (void)setSectionTemplatePageForFirstPage:(id)a3
+- (void)setSectionTemplatePageForFirstPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   objc_msgSend_willModify(self, v5, v6, v7, v8, v9);
   v10 = self->_sectionTemplatePages[0];
-  self->_sectionTemplatePages[0] = v4;
+  self->_sectionTemplatePages[0] = pageCopy;
 }
 
 - (TSWPStorage)parentStorage
@@ -953,10 +953,10 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)setParentStorage:(id)a3
+- (void)setParentStorage:(id)storage
 {
-  v30 = a3;
-  objc_storeWeak(&self->_parentStorage, v30);
+  storageCopy = storage;
+  objc_storeWeak(&self->_parentStorage, storageCopy);
   v9 = 0;
   sectionTemplatePages = self->_sectionTemplatePages;
   do
@@ -973,17 +973,17 @@ LABEL_9:
       v11 = sectionTemplatePages[v9];
     }
 
-    objc_msgSend_setParentStorage_(v11, v4, v5, v6, v7, v8, v30);
+    objc_msgSend_setParentStorage_(v11, v4, v5, v6, v7, v8, storageCopy);
     ++v9;
   }
 
   while (v9 != 3);
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v33 = a3;
-  v7 = a4;
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
   v12 = 0;
   sectionTemplatePages = self->_sectionTemplatePages;
   do
@@ -1000,17 +1000,17 @@ LABEL_9:
       v14 = sectionTemplatePages[v12];
     }
 
-    objc_msgSend_adoptStylesheet_withMapper_(v14, v6, v8, v9, v10, v11, v33, v7);
+    objc_msgSend_adoptStylesheet_withMapper_(v14, v6, v8, v9, v10, v11, stylesheetCopy, mapperCopy);
     ++v12;
   }
 
   while (v12 != 3);
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v33 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v12 = 0;
   sectionTemplatePages = self->_sectionTemplatePages;
   do
@@ -1027,18 +1027,18 @@ LABEL_9:
       v14 = sectionTemplatePages[v12];
     }
 
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v14, v6, v8, v9, v10, v11, v33, v7);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v14, v6, v8, v9, v10, v11, rootCopy, contextCopy);
     ++v12;
   }
 
   while (v12 != 3);
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v44 = a3;
-  v6 = a4;
-  v12 = objc_msgSend_context(v44, v7, v8, v9, v10, v11);
+  rootCopy = root;
+  contextCopy = context;
+  v12 = objc_msgSend_context(rootCopy, v7, v8, v9, v10, v11);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v13, v14, v15, v16, v17, v12);
 
   v23 = 0;
@@ -1057,16 +1057,16 @@ LABEL_9:
       v25 = sectionTemplatePages[v23];
     }
 
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v25, v18, v19, v20, v21, v22, v44, v6);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v25, v18, v19, v20, v21, v22, rootCopy, contextCopy);
     ++v23;
   }
 
   while (v23 != 3);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v36 = a3;
+  rootCopy = root;
   v8 = 0;
   sectionTemplatePages = self->_sectionTemplatePages;
   do
@@ -1083,18 +1083,18 @@ LABEL_9:
       v10 = sectionTemplatePages[v8];
     }
 
-    objc_msgSend_willBeRemovedFromDocumentRoot_(v10, v3, v4, v5, v6, v7, v36);
+    objc_msgSend_willBeRemovedFromDocumentRoot_(v10, v3, v4, v5, v6, v7, rootCopy);
     ++v8;
   }
 
   while (v8 != 3);
-  v29 = objc_msgSend_context(v36, v3, v4, v5, v6, v7);
+  v29 = objc_msgSend_context(rootCopy, v3, v4, v5, v6, v7);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v30, v31, v32, v33, v34, v29);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
-  v30 = a3;
+  rootCopy = root;
   v9 = 0;
   sectionTemplatePages = self->_sectionTemplatePages;
   do
@@ -1111,7 +1111,7 @@ LABEL_9:
       v11 = sectionTemplatePages[v9];
     }
 
-    objc_msgSend_wasRemovedFromDocumentRoot_(v11, v4, v5, v6, v7, v8, v30);
+    objc_msgSend_wasRemovedFromDocumentRoot_(v11, v4, v5, v6, v7, v8, rootCopy);
     ++v9;
   }
 
@@ -1156,7 +1156,7 @@ LABEL_9:
   return v7;
 }
 
-- (void)acceptVisitor:(id)a3
+- (void)acceptVisitor:(id)visitor
 {
   v9 = TSUProtocolCast();
   if (v9)
@@ -1165,7 +1165,7 @@ LABEL_9:
   }
 }
 
-- (CGSize)targetSizeForImageData:(id)a3 associatedHint:(id)a4
+- (CGSize)targetSizeForImageData:(id)data associatedHint:(id)hint
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
@@ -1182,42 +1182,42 @@ LABEL_9:
   return result;
 }
 
-- (void)i_ensureHeaderFooterStoragesExistWithStylesheet:(id)a3
+- (void)i_ensureHeaderFooterStoragesExistWithStylesheet:(id)stylesheet
 {
-  v4 = a3;
+  stylesheetCopy = stylesheet;
   v10 = 0;
   sectionTemplatePages = self->_sectionTemplatePages;
-  v19 = v4;
+  v19 = stylesheetCopy;
   do
   {
     v12 = sectionTemplatePages[v10];
-    v13 = objc_msgSend_headerAndFooterStyle(v4, v5, v6, v7, v8, v9);
+    v13 = objc_msgSend_headerAndFooterStyle(stylesheetCopy, v5, v6, v7, v8, v9);
     objc_msgSend_i_ensureHeaderFooterStoragesExistWithStylesheet_paragraphStyle_context_(v12, v14, v15, v16, v17, v18, v19, v13, 0);
 
     ++v10;
-    v4 = v19;
+    stylesheetCopy = v19;
   }
 
   while (v10 != 3);
 }
 
-- (void)i_copyHeadersAndFootersFrom:(id)a3 dolcContext:(id)a4 withBlock:(id)a5
+- (void)i_copyHeadersAndFootersFrom:(id)from dolcContext:(id)context withBlock:(id)block
 {
-  v28 = a3;
-  v8 = a4;
-  v10 = a5;
+  fromCopy = from;
+  contextCopy = context;
+  blockCopy = block;
   for (i = 0; i != 3; ++i)
   {
     v16 = objc_msgSend_sectionTemplatePageForType_(self, v9, v11, v12, v13, v14, i);
-    v22 = objc_msgSend_sectionTemplatePageForType_(v28, v17, v18, v19, v20, v21, i);
-    objc_msgSend_i_copyHeadersAndFootersFrom_dolcContext_withBlock_(v16, v23, v24, v25, v26, v27, v22, v8, v10);
+    v22 = objc_msgSend_sectionTemplatePageForType_(fromCopy, v17, v18, v19, v20, v21, i);
+    objc_msgSend_i_copyHeadersAndFootersFrom_dolcContext_withBlock_(v16, v23, v24, v25, v26, v27, v22, contextCopy, blockCopy);
   }
 }
 
-- (void)setBackgroundFill:(id)a3
+- (void)setBackgroundFill:(id)fill
 {
-  v38 = a3;
-  if (self->_backgroundFill != v38)
+  fillCopy = fill;
+  if (self->_backgroundFill != fillCopy)
   {
     objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
     objc_opt_class();
@@ -1231,14 +1231,14 @@ LABEL_9:
 
     v22 = objc_msgSend_null(MEMORY[0x277CBEB68], v10, v11, v12, v13, v14);
 
-    if (v22 == v38)
+    if (v22 == fillCopy)
     {
       v23 = 0;
     }
 
     else
     {
-      v23 = v38;
+      v23 = fillCopy;
     }
 
     backgroundFill = self->_backgroundFill;
@@ -1269,9 +1269,9 @@ LABEL_9:
   objc_msgSend_setBackgroundFill_(self, v42, v43, v44, v45, v46, 0);
 }
 
-- (void)p_unarchiveAndUpgrade:(id)a3 archive:(const void *)a4
+- (void)p_unarchiveAndUpgrade:(id)upgrade archive:(const void *)archive
 {
-  v6 = a3;
+  upgradeCopy = upgrade;
   objc_msgSend_willModifyForUpgrade(self, v7, v8, v9, v10, v11);
   objc_msgSend_i_clearPropertiesToDefaults(self, v12, v13, v14, v15, v16);
   v17 = [TPSectionTemplatePage alloc];
@@ -1318,7 +1318,7 @@ LABEL_9:
       goto LABEL_40;
     }
 
-    if (*(a4 + 8) != 3)
+    if (*(archive + 8) != 3)
     {
       goto LABEL_17;
     }
@@ -1358,7 +1358,7 @@ LABEL_13:
       LODWORD(v123) = v123 + 1;
       *(v73 + 1) = v72;
 LABEL_15:
-      TSP::Reference::CopyFrom(v72, *(*(a4 + 5) + v68));
+      TSP::Reference::CopyFrom(v72, *(*(archive + 5) + v68));
       v68 += 8;
     }
 
@@ -1368,13 +1368,13 @@ LABEL_15:
     v120[2] = sub_275FD08A4;
     v120[3] = &unk_27A6A8508;
     v121 = v49;
-    v74 = v6;
+    v74 = upgradeCopy;
     v75 = objc_opt_class();
     objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v74, v76, v77, v78, v79, v80, &v122, v75, 0, v120);
 
     sub_275FB56E8(&v122);
 LABEL_17:
-    if (*(a4 + 14) != 3)
+    if (*(archive + 14) != 3)
     {
       goto LABEL_28;
     }
@@ -1414,7 +1414,7 @@ LABEL_24:
       LODWORD(v123) = v123 + 1;
       *(v86 + 1) = v85;
 LABEL_26:
-      TSP::Reference::CopyFrom(v85, *(*(a4 + 8) + v81));
+      TSP::Reference::CopyFrom(v85, *(*(archive + 8) + v81));
       v81 += 8;
       if (v81 != 32)
       {
@@ -1429,13 +1429,13 @@ LABEL_26:
     v118[2] = sub_275FD0958;
     v118[3] = &unk_27A6A8508;
     v119 = v49;
-    v87 = v6;
+    v87 = upgradeCopy;
     v88 = objc_opt_class();
     objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v87, v89, v90, v91, v92, v93, &v122, v88, 0, v118);
 
     sub_275FB56E8(&v122);
 LABEL_28:
-    v94 = *(a4 + 20);
+    v94 = *(archive + 20);
     if (v94)
     {
       v122 = 0;
@@ -1462,7 +1462,7 @@ LABEL_28:
           LODWORD(v123) = v123 + 1;
           v99 = *&v124[2 * v97 + 2];
 LABEL_38:
-          TSP::Reference::CopyFrom(v99, *(*(a4 + 11) + v95));
+          TSP::Reference::CopyFrom(v99, *(*(archive + 11) + v95));
           v95 += 8;
           if (!--v94)
           {
@@ -1492,7 +1492,7 @@ LABEL_39:
       v116[2] = sub_275FD0A0C;
       v116[3] = &unk_27A6A8508;
       v117 = v49;
-      v101 = v6;
+      v101 = upgradeCopy;
       v102 = objc_opt_class();
       objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v101, v103, v104, v105, v106, v107, &v122, v102, 0, v116);
 
@@ -1507,18 +1507,18 @@ LABEL_40:
     v114[4] = self;
     v108 = v49;
     v115 = v108;
-    objc_msgSend_addFinalizeHandler_(v6, v109, v110, v111, v112, v113, v114);
+    objc_msgSend_addFinalizeHandler_(upgradeCopy, v109, v110, v111, v112, v113, v114);
   }
 }
 
-- (void)p_upgradePageSizeAndMarginsFromObsoleteSettings:(id)a3
+- (void)p_upgradePageSizeAndMarginsFromObsoleteSettings:(id)settings
 {
-  v259 = a3;
-  v9 = objc_msgSend_objectForKeyedSubscript_(v259, v4, v5, v6, v7, v8, @"obsolete_paper_width");
+  settingsCopy = settings;
+  v9 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v4, v5, v6, v7, v8, @"obsolete_paper_width");
 
   if (v9)
   {
-    v15 = objc_msgSend_objectForKeyedSubscript_(v259, v10, v11, v12, v13, v14, @"obsolete_paper_width");
+    v15 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v10, v11, v12, v13, v14, @"obsolete_paper_width");
     objc_msgSend_tsu_CGFloatValue(v15, v16, v17, v18, v19, v20);
     v22 = v21;
   }
@@ -1528,11 +1528,11 @@ LABEL_40:
     v22 = 0x4083200000000000;
   }
 
-  v23 = objc_msgSend_objectForKeyedSubscript_(v259, v10, v11, v12, v13, v14, @"obsolete_paper_height");
+  v23 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v10, v11, v12, v13, v14, @"obsolete_paper_height");
 
   if (v23)
   {
-    v29 = objc_msgSend_objectForKeyedSubscript_(v259, v24, v25, v26, v27, v28, @"obsolete_paper_height");
+    v29 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v24, v25, v26, v27, v28, @"obsolete_paper_height");
     objc_msgSend_tsu_CGFloatValue(v29, v30, v31, v32, v33, v34);
     v36 = v35;
   }
@@ -1542,10 +1542,10 @@ LABEL_40:
     v36 = 0x4088C00000000000;
   }
 
-  v38 = objc_msgSend_objectForKeyedSubscript_(v259, v24, v25, v26, v27, v28, @"obsolete_left_margin");
+  v38 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v24, v25, v26, v27, v28, @"obsolete_left_margin");
   if (v38)
   {
-    v43 = objc_msgSend_objectForKeyedSubscript_(v259, v37, v39, v40, v41, v42, @"obsolete_left_margin");
+    v43 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v37, v39, v40, v41, v42, @"obsolete_left_margin");
     objc_msgSend_tsu_CGFloatValue(v43, v44, v45, v46, v47, v48);
     v50 = v49;
   }
@@ -1555,10 +1555,10 @@ LABEL_40:
     v50 = 0x4052000000000000;
   }
 
-  v57 = objc_msgSend_objectForKeyedSubscript_(v259, v51, v52, v53, v54, v55, @"obsolete_right_margin");
+  v57 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v51, v52, v53, v54, v55, @"obsolete_right_margin");
   if (v57)
   {
-    v62 = objc_msgSend_objectForKeyedSubscript_(v259, v56, v58, v59, v60, v61, @"obsolete_right_margin");
+    v62 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v56, v58, v59, v60, v61, @"obsolete_right_margin");
     objc_msgSend_tsu_CGFloatValue(v62, v63, v64, v65, v66, v67);
     v69 = v68;
   }
@@ -1568,10 +1568,10 @@ LABEL_40:
     v69 = 0x4052000000000000;
   }
 
-  v76 = objc_msgSend_objectForKeyedSubscript_(v259, v70, v71, v72, v73, v74, @"obsolete_top_margin");
+  v76 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v70, v71, v72, v73, v74, @"obsolete_top_margin");
   if (v76)
   {
-    v81 = objc_msgSend_objectForKeyedSubscript_(v259, v75, v77, v78, v79, v80, @"obsolete_top_margin");
+    v81 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v75, v77, v78, v79, v80, @"obsolete_top_margin");
     objc_msgSend_tsu_CGFloatValue(v81, v82, v83, v84, v85, v86);
     v88 = v87;
   }
@@ -1581,10 +1581,10 @@ LABEL_40:
     v88 = 72.0;
   }
 
-  v95 = objc_msgSend_objectForKeyedSubscript_(v259, v89, v90, v91, v92, v93, @"obsolete_bottom_margin");
+  v95 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v89, v90, v91, v92, v93, @"obsolete_bottom_margin");
   if (v95)
   {
-    v100 = objc_msgSend_objectForKeyedSubscript_(v259, v94, v96, v97, v98, v99, @"obsolete_bottom_margin");
+    v100 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v94, v96, v97, v98, v99, @"obsolete_bottom_margin");
     objc_msgSend_tsu_CGFloatValue(v100, v101, v102, v103, v104, v105);
     v107 = v106;
   }
@@ -1594,10 +1594,10 @@ LABEL_40:
     v107 = 72.0;
   }
 
-  v114 = objc_msgSend_objectForKeyedSubscript_(v259, v108, v109, v110, v111, v112, @"obsolete_header_margin");
+  v114 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v108, v109, v110, v111, v112, @"obsolete_header_margin");
   if (v114)
   {
-    v119 = objc_msgSend_objectForKeyedSubscript_(v259, v113, v115, v116, v117, v118, @"obsolete_header_margin");
+    v119 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v113, v115, v116, v117, v118, @"obsolete_header_margin");
     objc_msgSend_tsu_CGFloatValue(v119, v120, v121, v122, v123, v124);
     v126 = v125;
   }
@@ -1607,10 +1607,10 @@ LABEL_40:
     v126 = 36.0;
   }
 
-  v133 = objc_msgSend_objectForKeyedSubscript_(v259, v127, v128, v129, v130, v131, @"obsolete_footer_margin");
+  v133 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v127, v128, v129, v130, v131, @"obsolete_footer_margin");
   if (v133)
   {
-    v138 = objc_msgSend_objectForKeyedSubscript_(v259, v132, v134, v135, v136, v137, @"obsolete_footer_margin");
+    v138 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v132, v134, v135, v136, v137, @"obsolete_footer_margin");
     objc_msgSend_tsu_CGFloatValue(v138, v139, v140, v141, v142, v143);
     v145 = v144;
   }
@@ -1620,14 +1620,14 @@ LABEL_40:
     v145 = 36.0;
   }
 
-  v151 = objc_msgSend_objectForKeyedSubscript_(v259, v146, v147, v148, v149, v150, @"obsolete_header_margin");
+  v151 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v146, v147, v148, v149, v150, @"obsolete_header_margin");
   if (v151)
   {
 
     goto LABEL_48;
   }
 
-  v162 = objc_msgSend_objectForKeyedSubscript_(v259, v152, v153, v154, v155, v156, @"obsolete_footer_margin");
+  v162 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v152, v153, v154, v155, v156, @"obsolete_footer_margin");
 
   if (!v162)
   {
@@ -1641,10 +1641,10 @@ LABEL_40:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v176, v177, v178, v179, v180);
     }
 
-    v182 = objc_msgSend_objectForKeyedSubscript_(v259, v157, v158, v159, v160, v161, @"obsolete_shows_header");
+    v182 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v157, v158, v159, v160, v161, @"obsolete_shows_header");
     if (v182)
     {
-      v187 = objc_msgSend_objectForKeyedSubscript_(v259, v181, v183, v184, v185, v186, @"obsolete_shows_header");
+      v187 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v181, v183, v184, v185, v186, @"obsolete_shows_header");
       v193 = objc_msgSend_BOOLValue(v187, v188, v189, v190, v191, v192);
     }
 
@@ -1653,10 +1653,10 @@ LABEL_40:
       v193 = 0;
     }
 
-    v200 = objc_msgSend_objectForKeyedSubscript_(v259, v194, v195, v196, v197, v198, @"obsolete_shows_footer");
+    v200 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v194, v195, v196, v197, v198, @"obsolete_shows_footer");
     if (v200)
     {
-      v205 = objc_msgSend_objectForKeyedSubscript_(v259, v199, v201, v202, v203, v204, @"obsolete_shows_footer");
+      v205 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v199, v201, v202, v203, v204, @"obsolete_shows_footer");
       v211 = objc_msgSend_BOOLValue(v205, v206, v207, v208, v209, v210);
     }
 
@@ -1669,10 +1669,10 @@ LABEL_40:
     if (v193)
     {
       v257 = v107;
-      v213 = objc_msgSend_objectForKeyedSubscript_(v259, v157, v158, v159, v160, v161, @"obsolete_header_padding");
+      v213 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v157, v158, v159, v160, v161, @"obsolete_header_padding");
       if (v213)
       {
-        v218 = objc_msgSend_objectForKeyedSubscript_(v259, v212, v214, v215, v216, v217, @"obsolete_header_padding");
+        v218 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v212, v214, v215, v216, v217, @"obsolete_header_padding");
         objc_msgSend_tsu_CGFloatValue(v218, v219, v220, v221, v222, v223);
         v225 = v224;
       }
@@ -1705,10 +1705,10 @@ LABEL_47:
       }
     }
 
-    v233 = objc_msgSend_objectForKeyedSubscript_(v259, v157, v158, v159, v160, v161, @"obsolete_footer_padding");
+    v233 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v157, v158, v159, v160, v161, @"obsolete_footer_padding");
     if (v233)
     {
-      v238 = objc_msgSend_objectForKeyedSubscript_(v259, v232, v234, v235, v236, v237, @"obsolete_footer_padding");
+      v238 = objc_msgSend_objectForKeyedSubscript_(settingsCopy, v232, v234, v235, v236, v237, @"obsolete_footer_padding");
       objc_msgSend_tsu_CGFloatValue(v238, v239, v240, v241, v242, v243);
       v245 = v244;
     }
@@ -1771,9 +1771,9 @@ LABEL_48:
   return v8;
 }
 
-- (id)sectionTemplatePageOwningModel:(id)a3
+- (id)sectionTemplatePageOwningModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v10 = 0;
   sectionTemplatePages = self->_sectionTemplatePages;
   while (1)
@@ -1790,7 +1790,7 @@ LABEL_48:
       v12 = sectionTemplatePages[v10];
     }
 
-    if (objc_msgSend_containsModelObject_(v12, v4, v6, v7, v8, v9, v5))
+    if (objc_msgSend_containsModelObject_(v12, v4, v6, v7, v8, v9, modelCopy))
     {
       break;
     }
@@ -1808,9 +1808,9 @@ LABEL_8:
   return v31;
 }
 
-- (id)sectionTemplatePageOwningInfo:(id)a3
+- (id)sectionTemplatePageOwningInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v10 = 0;
   sectionTemplatePages = self->_sectionTemplatePages;
   while (1)
@@ -1827,7 +1827,7 @@ LABEL_8:
       v12 = sectionTemplatePages[v10];
     }
 
-    if (objc_msgSend_containsInfo_(v12, v4, v6, v7, v8, v9, v5))
+    if (objc_msgSend_containsInfo_(v12, v4, v6, v7, v8, v9, infoCopy))
     {
       break;
     }
@@ -1845,18 +1845,18 @@ LABEL_8:
   return v31;
 }
 
-- (void)p_addAllDrawablesFromInfo:(id)a3 toMutableArray:(id)a4
+- (void)p_addAllDrawablesFromInfo:(id)info toMutableArray:(id)array
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  arrayCopy = array;
   v29 = &unk_288510940;
   v8 = TSUProtocolCast();
   objc_opt_class();
   v10 = TSUDynamicCast();
   if (v10)
   {
-    objc_msgSend_addObject_(v7, v9, v11, v12, v13, v14, v10, &unk_288510940);
+    objc_msgSend_addObject_(arrayCopy, v9, v11, v12, v13, v14, v10, &unk_288510940);
   }
 
   if (v8)
@@ -1879,7 +1879,7 @@ LABEL_8:
             objc_enumerationMutation(v15);
           }
 
-          objc_msgSend_p_addAllDrawablesFromInfo_toMutableArray_(self, v21, v23, v24, v25, v26, *(*(&v30 + 1) + 8 * i), v7, v29);
+          objc_msgSend_p_addAllDrawablesFromInfo_toMutableArray_(self, v21, v23, v24, v25, v26, *(*(&v30 + 1) + 8 * i), arrayCopy, v29);
         }
 
         v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v21, v23, v24, v25, v26, &v30, v34, 16);

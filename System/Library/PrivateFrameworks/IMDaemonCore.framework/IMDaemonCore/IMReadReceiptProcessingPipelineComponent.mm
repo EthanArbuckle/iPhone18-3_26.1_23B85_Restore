@@ -1,61 +1,61 @@
 @interface IMReadReceiptProcessingPipelineComponent
-- (IMReadReceiptProcessingPipelineComponent)initWithMessageStore:(id)a3 chatRegistry:(id)a4 recents:(id)a5 IDSService:(id)a6;
-- (id)runIndividuallyWithInput:(id)a3;
-- (void)_donateReadEventForChat:(id)a3;
+- (IMReadReceiptProcessingPipelineComponent)initWithMessageStore:(id)store chatRegistry:(id)registry recents:(id)recents IDSService:(id)service;
+- (id)runIndividuallyWithInput:(id)input;
+- (void)_donateReadEventForChat:(id)chat;
 @end
 
 @implementation IMReadReceiptProcessingPipelineComponent
 
-- (IMReadReceiptProcessingPipelineComponent)initWithMessageStore:(id)a3 chatRegistry:(id)a4 recents:(id)a5 IDSService:(id)a6
+- (IMReadReceiptProcessingPipelineComponent)initWithMessageStore:(id)store chatRegistry:(id)registry recents:(id)recents IDSService:(id)service
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  registryCopy = registry;
+  recentsCopy = recents;
+  serviceCopy = service;
   v18.receiver = self;
   v18.super_class = IMReadReceiptProcessingPipelineComponent;
   v15 = [(IMReadReceiptProcessingPipelineComponent *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_messageStore, a3);
-    objc_storeStrong(&v16->_chatRegistry, a4);
-    objc_storeStrong(&v16->_recents, a5);
-    objc_storeStrong(&v16->_service, a6);
+    objc_storeStrong(&v15->_messageStore, store);
+    objc_storeStrong(&v16->_chatRegistry, registry);
+    objc_storeStrong(&v16->_recents, recents);
+    objc_storeStrong(&v16->_service, service);
   }
 
   return v16;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v78 = *MEMORY[0x277D85DE8];
-  v60 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [v60 GUID];
+      gUID = [inputCopy GUID];
       *buf = 138412290;
-      v73 = v5;
+      v73 = gUID;
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "<IMReadReceiptProcessingPipelineComponent> Started processing for Message GUID: %@", buf, 0xCu);
     }
   }
 
   if (!IMGetCachedDomainBoolForKey())
   {
-    v9 = [v60 isFromDefaultPairedDevice];
-    v57 = [v60 isFromMe];
+    isFromDefaultPairedDevice = [inputCopy isFromDefaultPairedDevice];
+    isFromMe = [inputCopy isFromMe];
     if (IMOSLoggingEnabled())
     {
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v60 GUID];
-        v12 = v11;
+        gUID2 = [inputCopy GUID];
+        v12 = gUID2;
         v13 = @"NO";
-        if (v57)
+        if (isFromMe)
         {
           v14 = @"YES";
         }
@@ -66,10 +66,10 @@
         }
 
         *buf = 138412802;
-        v73 = v11;
+        v73 = gUID2;
         v74 = 2112;
         v75 = v14;
-        if (v9)
+        if (isFromDefaultPairedDevice)
         {
           v13 = @"YES";
         }
@@ -81,26 +81,26 @@
     }
 
     v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v15 = [v60 GUID];
-    v58 = [(IMDMessageStore *)self->_messageStore messageWithGUID:v15];
-    v16 = [v58 isFromMe];
-    v59 = [(IMDMessageStore *)self->_messageStore chatsForMessageGUID:v15];
+    gUID3 = [inputCopy GUID];
+    v58 = [(IMDMessageStore *)self->_messageStore messageWithGUID:gUID3];
+    isFromMe2 = [v58 isFromMe];
+    v59 = [(IMDMessageStore *)self->_messageStore chatsForMessageGUID:gUID3];
     if ([v59 count])
     {
-      if ((v16 | v57))
+      if ((isFromMe2 | isFromMe))
       {
         v17 = MEMORY[0x277CBEAA8];
-        v18 = [v60 timestamp];
-        v19 = [v17 __im_iMessageDateFromTimeStamp:v18];
+        timestamp = [inputCopy timestamp];
+        v19 = [v17 __im_iMessageDateFromTimeStamp:timestamp];
 
-        if (v57)
+        if (isFromMe)
         {
           v68 = 0u;
           v69 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v20 = v59;
-          v21 = [v20 countByEnumeratingWithState:&v66 objects:v71 count:16];
+          fromPushID = v59;
+          v21 = [fromPushID countByEnumeratingWithState:&v66 objects:v71 count:16];
           if (v21)
           {
             v22 = *v67;
@@ -110,7 +110,7 @@
               {
                 if (*v67 != v22)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(fromPushID);
                 }
 
                 v24 = *(*(&v66 + 1) + 8 * i);
@@ -120,20 +120,20 @@
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138412546;
-                    v73 = v15;
+                    v73 = gUID3;
                     v74 = 2112;
                     v75 = v24;
                     _os_log_impl(&dword_22B4CC000, v25, OS_LOG_TYPE_INFO, "Found chat to mark as read for messageID: %@ chat: %@", buf, 0x16u);
                   }
                 }
 
-                v26 = [(IMReadReceiptProcessingPipelineComponent *)self _markMessagesUpToGUID:v15 forChat:v24 messageIsFromMe:0 date:v19];
+                v26 = [(IMReadReceiptProcessingPipelineComponent *)self _markMessagesUpToGUID:gUID3 forChat:v24 messageIsFromMe:0 date:v19];
                 [v61 addObjectsFromArray:v26];
 
-                if (![v61 count] && !-[IMDMessageStore hasStoredMessageWithGUID:](self->_messageStore, "hasStoredMessageWithGUID:", v15))
+                if (![v61 count] && !-[IMDMessageStore hasStoredMessageWithGUID:](self->_messageStore, "hasStoredMessageWithGUID:", gUID3))
                 {
-                  [(IDSService *)self->_service _IMDTrackMetric:10401 ForMessageGUID:v15];
-                  [(IMDMessageStore *)self->_messageStore addMissingMessageReadReceipt:v15];
+                  [(IDSService *)self->_service _IMDTrackMetric:10401 ForMessageGUID:gUID3];
+                  [(IMDMessageStore *)self->_messageStore addMissingMessageReadReceipt:gUID3];
                   v38 = objc_alloc(MEMORY[0x277CCA9B8]);
                   v39 = [v38 initWithDomain:*MEMORY[0x277D18DF8] code:5 userInfo:0];
                   v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:v39];
@@ -142,7 +142,7 @@
                 }
               }
 
-              v21 = [v20 countByEnumeratingWithState:&v66 objects:v71 count:16];
+              v21 = [fromPushID countByEnumeratingWithState:&v66 objects:v71 count:16];
               if (v21)
               {
                 continue;
@@ -155,8 +155,8 @@
 
         else
         {
-          v33 = [v58 timeRead];
-          v34 = v33 == 0;
+          timeRead = [v58 timeRead];
+          v34 = timeRead == 0;
 
           if (!v34)
           {
@@ -165,17 +165,17 @@
               v35 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
               {
-                v36 = [v60 GUID];
-                v37 = [v58 timeRead];
+                gUID4 = [inputCopy GUID];
+                timeRead2 = [v58 timeRead];
                 *buf = 138412546;
-                v73 = v36;
+                v73 = gUID4;
                 v74 = 2112;
-                v75 = v37;
+                v75 = timeRead2;
                 _os_log_impl(&dword_22B4CC000, v35, OS_LOG_TYPE_INFO, "Dropping repeated read receipt for: %@ as it is not from me and the message was already read at %@", buf, 0x16u);
               }
             }
 
-            v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v60];
+            v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 LABEL_53:
 
             goto LABEL_73;
@@ -206,14 +206,14 @@ LABEL_53:
                   if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138412546;
-                    v73 = v15;
+                    v73 = gUID3;
                     v74 = 2112;
                     v75 = v44;
                     _os_log_impl(&dword_22B4CC000, v45, OS_LOG_TYPE_INFO, "Found chat to mark as read for messageID: %@ chat: %@", buf, 0x16u);
                   }
                 }
 
-                v46 = [(IMReadReceiptProcessingPipelineComponent *)self _markMessagesUpToGUID:v15 forChat:v44 messageIsFromMe:1 date:v19];
+                v46 = [(IMReadReceiptProcessingPipelineComponent *)self _markMessagesUpToGUID:gUID3 forChat:v44 messageIsFromMe:1 date:v19];
                 [v61 addObjectsFromArray:v46];
               }
 
@@ -223,14 +223,14 @@ LABEL_53:
             while (v41);
           }
 
-          v20 = [v60 fromPushID];
-          v47 = [v60 fromIdentifier];
-          v48 = v47;
-          if (v20 && v47)
+          fromPushID = [inputCopy fromPushID];
+          fromIdentifier = [inputCopy fromIdentifier];
+          v48 = fromIdentifier;
+          if (fromPushID && fromIdentifier)
           {
             recents = self->_recents;
-            v50 = [v47 _stripFZIDPrefix];
-            [(IMDRecentsController *)recents updateLatestActiveDestination:v20 ForHandle:v50 incomingType:1];
+            _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
+            [(IMDRecentsController *)recents updateLatestActiveDestination:fromPushID ForHandle:_stripFZIDPrefix incomingType:1];
 
             v51 = self->_recents;
             v52 = IMSingleObjectArray();
@@ -238,18 +238,18 @@ LABEL_53:
           }
         }
 
-        [v60 setMessageItems:v61];
-        v53 = [v59 firstObject];
-        [v60 setChat:v53];
+        [inputCopy setMessageItems:v61];
+        firstObject = [v59 firstObject];
+        [inputCopy setChat:firstObject];
 
-        if (v57)
+        if (isFromMe)
         {
-          [(IDSService *)self->_service _IMDTrackMetric:10400 ForMessageGUID:v15];
-          v54 = [v59 firstObject];
-          [(IMReadReceiptProcessingPipelineComponent *)self _donateReadEventForChat:v54];
+          [(IDSService *)self->_service _IMDTrackMetric:10400 ForMessageGUID:gUID3];
+          firstObject2 = [v59 firstObject];
+          [(IMReadReceiptProcessingPipelineComponent *)self _donateReadEventForChat:firstObject2];
         }
 
-        v32 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v60];
+        v32 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
       }
 
       else
@@ -259,17 +259,17 @@ LABEL_53:
           v29 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
-            v30 = [v58 sender];
-            v31 = [v60 fromIdentifier];
+            sender = [v58 sender];
+            fromIdentifier2 = [inputCopy fromIdentifier];
             *buf = 138412546;
-            v73 = v30;
+            v73 = sender;
             v74 = 2112;
-            v75 = v31;
+            v75 = fromIdentifier2;
             _os_log_impl(&dword_22B4CC000, v29, OS_LOG_TYPE_INFO, "Invalid receipt sender: read receipts cannot be sent for messages not from self (%@), receipt was sent from (%@)", buf, 0x16u);
           }
         }
 
-        v32 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v60];
+        v32 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
       }
 
       v8 = v32;
@@ -277,10 +277,10 @@ LABEL_53:
 
     else
     {
-      if (v57 && ![(IMDMessageStore *)self->_messageStore hasStoredMessageWithGUID:v15])
+      if (isFromMe && ![(IMDMessageStore *)self->_messageStore hasStoredMessageWithGUID:gUID3])
       {
-        [(IDSService *)self->_service _IMDTrackMetric:10401 ForMessageGUID:v15];
-        [(IMDMessageStore *)self->_messageStore addMissingMessageReadReceipt:v15];
+        [(IDSService *)self->_service _IMDTrackMetric:10401 ForMessageGUID:gUID3];
+        [(IMDMessageStore *)self->_messageStore addMissingMessageReadReceipt:gUID3];
       }
 
       v27 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -298,14 +298,14 @@ LABEL_73:
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v60 GUID];
+      gUID5 = [inputCopy GUID];
       *buf = 138412290;
-      v73 = v7;
+      v73 = gUID5;
       _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "    Ignoring read receipt for message: %@", buf, 0xCu);
     }
   }
 
-  v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v60];
+  v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 LABEL_74:
 
   v55 = *MEMORY[0x277D85DE8];
@@ -313,15 +313,15 @@ LABEL_74:
   return v8;
 }
 
-- (void)_donateReadEventForChat:(id)a3
+- (void)_donateReadEventForChat:(id)chat
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  chatCopy = chat;
+  v4 = chatCopy;
+  if (chatCopy)
   {
-    v5 = [v3 chatIdentifier];
-    v6 = [v5 copy];
+    chatIdentifier = [chatCopy chatIdentifier];
+    v6 = [chatIdentifier copy];
 
     if ([v6 length])
     {
@@ -339,9 +339,9 @@ LABEL_74:
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v4 guid];
+        guid = [v4 guid];
         *buf = 138412290;
-        v15 = v10;
+        v15 = guid;
         _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Cannot donate read receipt due to nil chat identifier for chat %@", buf, 0xCu);
       }
     }

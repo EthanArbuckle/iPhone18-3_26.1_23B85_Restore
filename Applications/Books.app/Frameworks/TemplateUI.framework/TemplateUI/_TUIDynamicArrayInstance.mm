@@ -1,30 +1,30 @@
 @interface _TUIDynamicArrayInstance
-- (BOOL)applyUpdatesForTransactionGroup:(id)a3 withBlock:(id)a4;
-- (BOOL)hasUpdatesForTransactionGroup:(id)a3;
-- (BOOL)optimizeUpdatesForTransactionGroup:(id)a3 block:(id)a4;
+- (BOOL)applyUpdatesForTransactionGroup:(id)group withBlock:(id)block;
+- (BOOL)hasUpdatesForTransactionGroup:(id)group;
+- (BOOL)optimizeUpdatesForTransactionGroup:(id)group block:(id)block;
 - (TUIDynamicArrayObserving)observer;
-- (_TUIDynamicArrayInstance)initWithArray:(id)a3 generation:(id)a4 count:(unint64_t)a5 observer:(id)a6;
+- (_TUIDynamicArrayInstance)initWithArray:(id)array generation:(id)generation count:(unint64_t)count observer:(id)observer;
 - (id)_dequeueUpdateGroup;
-- (id)_dequeueUpdateGroupForTransactionGroup:(id)a3;
-- (id)tui_objectAtIndex:(int64_t)a3;
-- (id)tui_subarrayWithStart:(int64_t)a3 end:(int64_t)a4;
-- (id)tui_valueForProperty:(id)a3;
-- (unint64_t)countForGeneration:(id)a3;
-- (void)enqueueUpdateGroup:(id)a3;
-- (void)fetchDataForIndexes:(id)a3 generation:(id)a4 block:(id)a5;
-- (void)fetchDataForRange:(_NSRange)a3 generation:(id)a4 block:(id)a5;
-- (void)objectsAtIndexes:(id)a3 block:(id)a4;
-- (void)objectsInRange:(_NSRange)a3 block:(id)a4;
-- (void)tui_unwwrapEnumeratorWithBlock:(id)a3;
+- (id)_dequeueUpdateGroupForTransactionGroup:(id)group;
+- (id)tui_objectAtIndex:(int64_t)index;
+- (id)tui_subarrayWithStart:(int64_t)start end:(int64_t)end;
+- (id)tui_valueForProperty:(id)property;
+- (unint64_t)countForGeneration:(id)generation;
+- (void)enqueueUpdateGroup:(id)group;
+- (void)fetchDataForIndexes:(id)indexes generation:(id)generation block:(id)block;
+- (void)fetchDataForRange:(_NSRange)range generation:(id)generation block:(id)block;
+- (void)objectsAtIndexes:(id)indexes block:(id)block;
+- (void)objectsInRange:(_NSRange)range block:(id)block;
+- (void)tui_unwwrapEnumeratorWithBlock:(id)block;
 @end
 
 @implementation _TUIDynamicArrayInstance
 
-- (_TUIDynamicArrayInstance)initWithArray:(id)a3 generation:(id)a4 count:(unint64_t)a5 observer:(id)a6
+- (_TUIDynamicArrayInstance)initWithArray:(id)array generation:(id)generation count:(unint64_t)count observer:(id)observer
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  arrayCopy = array;
+  generationCopy = generation;
+  observerCopy = observer;
   v19.receiver = self;
   v19.super_class = _TUIDynamicArrayInstance;
   v14 = [(_TUIDynamicArrayInstance *)&v19 init];
@@ -32,10 +32,10 @@
   if (v14)
   {
     v14->_accessLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v14->_array, a3);
-    objc_storeWeak(&v15->_observer, v13);
-    v15->_count = a5;
-    objc_storeStrong(&v15->_generation, a4);
+    objc_storeStrong(&v14->_array, array);
+    objc_storeWeak(&v15->_observer, observerCopy);
+    v15->_count = count;
+    objc_storeStrong(&v15->_generation, generation);
     v16 = objc_opt_new();
     updateGroups = v15->_updateGroups;
     v15->_updateGroups = v16;
@@ -44,10 +44,10 @@
   return v15;
 }
 
-- (BOOL)optimizeUpdatesForTransactionGroup:(id)a3 block:(id)a4
+- (BOOL)optimizeUpdatesForTransactionGroup:(id)group block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_accessLock);
   v8 = [(NSMutableArray *)self->_updateGroups count];
   if (v8)
@@ -56,11 +56,11 @@
     v10 = 0;
     while (1)
     {
-      if (v6)
+      if (groupCopy)
       {
         v11 = [(NSMutableArray *)self->_updateGroups objectAtIndexedSubscript:v10];
-        v12 = [v11 transaction];
-        v13 = [v6 containsTransaction:v12];
+        transaction = [v11 transaction];
+        v13 = [groupCopy containsTransaction:transaction];
 
         if (!v13)
         {
@@ -82,7 +82,7 @@
 
 LABEL_9:
     v14 = [(NSMutableArray *)self->_updateGroups subarrayWithRange:0, v10];
-    v15 = v7[2](v7, v14);
+    v15 = blockCopy[2](blockCopy, v14);
     v16 = v15;
     if (v14 != v15)
     {
@@ -111,9 +111,9 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)hasUpdatesForTransactionGroup:(id)a3
+- (BOOL)hasUpdatesForTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_accessLock);
   v16 = 0u;
   v17 = 0u;
@@ -134,10 +134,10 @@ LABEL_15:
           objc_enumerationMutation(v5);
         }
 
-        if (v4)
+        if (groupCopy)
         {
-          v10 = [*(*(&v14 + 1) + 8 * i) transaction];
-          v11 = [v4 containsTransaction:v10];
+          transaction = [*(*(&v14 + 1) + 8 * i) transaction];
+          v11 = [groupCopy containsTransaction:transaction];
 
           if ((v11 & 1) == 0)
           {
@@ -176,29 +176,29 @@ LABEL_13:
   os_unfair_lock_lock(&self->_accessLock);
   if ([(NSMutableArray *)self->_updateGroups count])
   {
-    v3 = [(NSMutableArray *)self->_updateGroups firstObject];
+    firstObject = [(NSMutableArray *)self->_updateGroups firstObject];
     [(NSMutableArray *)self->_updateGroups removeObjectAtIndex:0];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
   os_unfair_lock_unlock(&self->_accessLock);
 
-  return v3;
+  return firstObject;
 }
 
-- (id)_dequeueUpdateGroupForTransactionGroup:(id)a3
+- (id)_dequeueUpdateGroupForTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_accessLock);
   if ([(NSMutableArray *)self->_updateGroups count])
   {
-    v5 = [(NSMutableArray *)self->_updateGroups firstObject];
-    v6 = v5;
-    if (!v4 || ([v5 transaction], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v4, "containsTransaction:", v7), v7, v8))
+    firstObject = [(NSMutableArray *)self->_updateGroups firstObject];
+    v6 = firstObject;
+    if (!groupCopy || ([firstObject transaction], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(groupCopy, "containsTransaction:", v7), v7, v8))
     {
       [(NSMutableArray *)self->_updateGroups removeObjectAtIndex:0];
       goto LABEL_7;
@@ -212,26 +212,26 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)applyUpdatesForTransactionGroup:(id)a3 withBlock:(id)a4
+- (BOOL)applyUpdatesForTransactionGroup:(id)group withBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(_TUIDynamicArrayInstance *)self _dequeueUpdateGroupForTransactionGroup:a3];
+  blockCopy = block;
+  v7 = [(_TUIDynamicArrayInstance *)self _dequeueUpdateGroupForTransactionGroup:group];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 generation];
+    generation = [v7 generation];
     generation = self->_generation;
-    self->_generation = v9;
+    self->_generation = generation;
 
     self->_count = [v8 count];
-    if (v6)
+    if (blockCopy)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v11 = [v8 updates];
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      updates = [v8 updates];
+      v12 = [updates countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         v13 = v12;
@@ -243,15 +243,15 @@ LABEL_7:
           {
             if (*v18 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(updates);
             }
 
-            v6[2](v6, [*(*(&v17 + 1) + 8 * v15) kind], objc_msgSend(*(*(&v17 + 1) + 8 * v15), "oldIndex"), objc_msgSend(*(*(&v17 + 1) + 8 * v15), "newIndex"));
+            blockCopy[2](blockCopy, [*(*(&v17 + 1) + 8 * v15) kind], objc_msgSend(*(*(&v17 + 1) + 8 * v15), "oldIndex"), objc_msgSend(*(*(&v17 + 1) + 8 * v15), "newIndex"));
             v15 = v15 + 1;
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v13 = [updates countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v13);
@@ -262,66 +262,66 @@ LABEL_7:
   return v8 != 0;
 }
 
-- (void)objectsInRange:(_NSRange)a3 block:(id)a4
+- (void)objectsInRange:(_NSRange)range block:(id)block
 {
-  if (a4)
+  if (block)
   {
-    [(_TUIDynamicArrayInstance *)self fetchDataForRange:a3.location generation:a3.length block:self->_generation, a4];
+    [(_TUIDynamicArrayInstance *)self fetchDataForRange:range.location generation:range.length block:self->_generation, block];
   }
 }
 
-- (void)objectsAtIndexes:(id)a3 block:(id)a4
+- (void)objectsAtIndexes:(id)indexes block:(id)block
 {
-  if (a4)
+  if (block)
   {
-    [(_TUIDynamicArrayInstance *)self fetchDataForIndexes:a3 generation:self->_generation block:a4];
+    [(_TUIDynamicArrayInstance *)self fetchDataForIndexes:indexes generation:self->_generation block:block];
   }
 }
 
-- (void)enqueueUpdateGroup:(id)a3
+- (void)enqueueUpdateGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMutableArray *)self->_updateGroups addObject:v4];
+  [(NSMutableArray *)self->_updateGroups addObject:groupCopy];
   os_unfair_lock_unlock(&self->_accessLock);
   WeakRetained = objc_loadWeakRetained(&self->_observer);
-  v5 = [v4 transaction];
+  transaction = [groupCopy transaction];
 
-  [WeakRetained dynamicChanged:self transaction:v5];
+  [WeakRetained dynamicChanged:self transaction:transaction];
 }
 
-- (void)fetchDataForRange:(_NSRange)a3 generation:(id)a4 block:(id)a5
+- (void)fetchDataForRange:(_NSRange)range generation:(id)generation block:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   array = self->_array;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(TUIDynamicArray *)array dataProvider];
-  [v11 fetchDataForRange:location generation:length block:{v10, v9}];
+  blockCopy = block;
+  generationCopy = generation;
+  dataProvider = [(TUIDynamicArray *)array dataProvider];
+  [dataProvider fetchDataForRange:location generation:length block:{generationCopy, blockCopy}];
 }
 
-- (void)fetchDataForIndexes:(id)a3 generation:(id)a4 block:(id)a5
+- (void)fetchDataForIndexes:(id)indexes generation:(id)generation block:(id)block
 {
   array = self->_array;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(TUIDynamicArray *)array dataProvider];
-  [v11 fetchDataForIndexes:v10 generation:v9 block:v8];
+  blockCopy = block;
+  generationCopy = generation;
+  indexesCopy = indexes;
+  dataProvider = [(TUIDynamicArray *)array dataProvider];
+  [dataProvider fetchDataForIndexes:indexesCopy generation:generationCopy block:blockCopy];
 }
 
-- (unint64_t)countForGeneration:(id)a3
+- (unint64_t)countForGeneration:(id)generation
 {
   array = self->_array;
-  v4 = a3;
-  v5 = [(TUIDynamicArray *)array dataProvider];
-  v6 = [v5 countForGeneration:v4];
+  generationCopy = generation;
+  dataProvider = [(TUIDynamicArray *)array dataProvider];
+  v6 = [dataProvider countForGeneration:generationCopy];
 
   return v6;
 }
 
-- (id)tui_objectAtIndex:(int64_t)a3
+- (id)tui_objectAtIndex:(int64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -330,7 +330,7 @@ LABEL_7:
   v13 = sub_1392BC;
   v14 = 0;
   v5 = [(_TUIDynamicArrayInstance *)self count];
-  v6 = (v5 & (a3 >> 63)) + a3;
+  v6 = (v5 & (index >> 63)) + index;
   if (v6 >= 0 && v6 < v5)
   {
     [_TUIDynamicArrayInstance fetchDataForRange:"fetchDataForRange:generation:block:" generation:? block:?];
@@ -342,7 +342,7 @@ LABEL_7:
   return v7;
 }
 
-- (id)tui_subarrayWithStart:(int64_t)a3 end:(int64_t)a4
+- (id)tui_subarrayWithStart:(int64_t)start end:(int64_t)end
 {
   v7 = [(_TUIDynamicArrayInstance *)self count];
   v13 = 0;
@@ -351,7 +351,7 @@ LABEL_7:
   v16 = sub_1392AC;
   v17 = sub_1392BC;
   v18 = 0;
-  v8 = (v7 & (a3 >> 63)) + a3;
+  v8 = (v7 & (start >> 63)) + start;
   if (v8 < 0)
   {
     v9 = 0;
@@ -362,7 +362,7 @@ LABEL_7:
     v9 = 0;
     if (v8 < v7)
     {
-      v10 = (v7 & (a4 >> 63)) + a4;
+      v10 = (v7 & (end >> 63)) + end;
       if ((v10 & 0x8000000000000000) == 0 && v10 < v7 && v8 <= v10)
       {
         [_TUIDynamicArrayInstance fetchDataForRange:"fetchDataForRange:generation:block:" generation:? block:?];
@@ -377,23 +377,23 @@ LABEL_7:
   return v11;
 }
 
-- (void)tui_unwwrapEnumeratorWithBlock:(id)a3
+- (void)tui_unwwrapEnumeratorWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(_TUIDynamicArrayInstance *)self count];
   generation = self->_generation;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_139544;
   v8[3] = &unk_261398;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(_TUIDynamicArrayInstance *)self fetchDataForRange:0 generation:v5 block:generation, v8];
 }
 
-- (id)tui_valueForProperty:(id)a3
+- (id)tui_valueForProperty:(id)property
 {
-  if ([a3 isEqualToString:@"count"])
+  if ([property isEqualToString:@"count"])
   {
     v4 = [NSNumber numberWithUnsignedInteger:self->_count];
   }

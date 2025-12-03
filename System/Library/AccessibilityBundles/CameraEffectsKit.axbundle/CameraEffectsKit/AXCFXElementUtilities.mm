@@ -1,11 +1,11 @@
 @interface AXCFXElementUtilities
 + (id)sharedInstance;
-- (id)axElementForJTEffect:(id)a3 vc:(id)a4;
-- (void)_axRemoveEffect:(id)a3;
-- (void)_axRotateClockwise:(id)a3;
-- (void)_axRotateCounterClockwise:(id)a3;
-- (void)_axScaleDown:(id)a3;
-- (void)_axScaleUp:(id)a3;
+- (id)axElementForJTEffect:(id)effect vc:(id)vc;
+- (void)_axRemoveEffect:(id)effect;
+- (void)_axRotateClockwise:(id)clockwise;
+- (void)_axRotateCounterClockwise:(id)clockwise;
+- (void)_axScaleDown:(id)down;
+- (void)_axScaleUp:(id)up;
 @end
 
 @implementation AXCFXElementUtilities
@@ -29,25 +29,25 @@ uint64_t __39__AXCFXElementUtilities_sharedInstance__block_invoke()
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)axElementForJTEffect:(id)a3 vc:(id)a4
+- (id)axElementForJTEffect:(id)effect vc:(id)vc
 {
-  v5 = a3;
-  v6 = a4;
+  effectCopy = effect;
+  vcCopy = vc;
   v7 = MEMORY[0x29C2CEA90](@"JFXEffectEditingUtilities");
-  v8 = objc_initWeak(location, v5);
-  v9 = [v5 safeIntForKey:@"type"];
+  v8 = objc_initWeak(location, effectCopy);
+  v9 = [effectCopy safeIntForKey:@"type"];
 
   if (v9 == 2)
   {
-    v10 = [v6 safeUIViewForKey:@"view"];
+    v10 = [vcCopy safeUIViewForKey:@"view"];
     v11 = [[UIAccessibilityFunCamElement alloc] initWithAccessibilityContainer:v10];
-    objc_initWeak(&from, v6);
+    objc_initWeak(&from, vcCopy);
     v74[0] = MEMORY[0x29EDCA5F8];
     v74[1] = 3221225472;
     v74[2] = __49__AXCFXElementUtilities_axElementForJTEffect_vc___block_invoke;
     v74[3] = &unk_29F2ABDA0;
     objc_copyWeak(&v76, &from);
-    v12 = v5;
+    v12 = effectCopy;
     v75 = v12;
     [(UIAccessibilityFunCamElement *)v11 _setAccessibilityFrameBlock:v74];
     v72[0] = MEMORY[0x29EDCA5F8];
@@ -89,7 +89,7 @@ uint64_t __39__AXCFXElementUtilities_sharedInstance__block_invoke()
     _Block_object_dispose(&v59, 8);
     if (v15 == 1)
     {
-      objc_initWeak(&v59, v6);
+      objc_initWeak(&v59, vcCopy);
       v63[0] = MEMORY[0x29EDCA5F8];
       v63[1] = 3221225472;
       v63[2] = __49__AXCFXElementUtilities_axElementForJTEffect_vc___block_invoke_6;
@@ -115,47 +115,47 @@ uint64_t __39__AXCFXElementUtilities_sharedInstance__block_invoke()
     }
 
     v58 = v14;
-    v20 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v21 = [UIAccessibilityFunCamCustomAction alloc];
     v22 = accessibilityLocalizedString(@"increase.size.action");
     v23 = +[AXCFXElementUtilities sharedInstance];
     WeakRetained = objc_loadWeakRetained(location);
-    v25 = [(UIAccessibilityFunCamCustomAction *)v21 initWithName:v22 target:v23 selector:sel__axScaleUp_ effect:WeakRetained axElement:v11 vc:v6];
+    v25 = [(UIAccessibilityFunCamCustomAction *)v21 initWithName:v22 target:v23 selector:sel__axScaleUp_ effect:WeakRetained axElement:v11 vc:vcCopy];
 
-    [v20 addObject:v25];
+    [array addObject:v25];
     v57 = v25;
     v26 = [UIAccessibilityFunCamCustomAction alloc];
     v27 = accessibilityLocalizedString(@"decrease.size.action");
     v28 = +[AXCFXElementUtilities sharedInstance];
     v29 = objc_loadWeakRetained(location);
-    v30 = [(UIAccessibilityFunCamCustomAction *)v26 initWithName:v27 target:v28 selector:sel__axScaleDown_ effect:v29 axElement:v11 vc:v6];
+    v30 = [(UIAccessibilityFunCamCustomAction *)v26 initWithName:v27 target:v28 selector:sel__axScaleDown_ effect:v29 axElement:v11 vc:vcCopy];
 
-    [v20 addObject:v30];
+    [array addObject:v30];
     v55 = v30;
     v56 = v10;
     v31 = [UIAccessibilityFunCamCustomAction alloc];
     v32 = accessibilityLocalizedString(@"rotate.clockwise.action");
     v33 = +[AXCFXElementUtilities sharedInstance];
     v34 = objc_loadWeakRetained(location);
-    v35 = [(UIAccessibilityFunCamCustomAction *)v31 initWithName:v32 target:v33 selector:sel__axRotateClockwise_ effect:v34 axElement:v11 vc:v6];
+    v35 = [(UIAccessibilityFunCamCustomAction *)v31 initWithName:v32 target:v33 selector:sel__axRotateClockwise_ effect:v34 axElement:v11 vc:vcCopy];
 
-    [v20 addObject:v35];
+    [array addObject:v35];
     v54 = v35;
     v36 = [UIAccessibilityFunCamCustomAction alloc];
     v37 = accessibilityLocalizedString(@"rotate.counterclockwise.action");
     v38 = +[AXCFXElementUtilities sharedInstance];
     v39 = objc_loadWeakRetained(location);
-    v40 = [(UIAccessibilityFunCamCustomAction *)v36 initWithName:v37 target:v38 selector:sel__axRotateCounterClockwise_ effect:v39 axElement:v11 vc:v6];
+    v40 = [(UIAccessibilityFunCamCustomAction *)v36 initWithName:v37 target:v38 selector:sel__axRotateCounterClockwise_ effect:v39 axElement:v11 vc:vcCopy];
 
-    [v20 addObject:v40];
+    [array addObject:v40];
     v41 = [UIAccessibilityFunCamCustomAction alloc];
     v42 = accessibilityLocalizedString(@"remove.effect.action");
     v43 = +[AXCFXElementUtilities sharedInstance];
     v44 = objc_loadWeakRetained(location);
-    v45 = [(UIAccessibilityFunCamCustomAction *)v41 initWithName:v42 target:v43 selector:sel__axRemoveEffect_ effect:v44 axElement:v11 vc:v6];
+    v45 = [(UIAccessibilityFunCamCustomAction *)v41 initWithName:v42 target:v43 selector:sel__axRemoveEffect_ effect:v44 axElement:v11 vc:vcCopy];
 
-    [v20 addObject:v45];
-    [(UIAccessibilityFunCamElement *)v11 setAccessibilityCustomActions:v20];
+    [array addObject:v45];
+    [(UIAccessibilityFunCamElement *)v11 setAccessibilityCustomActions:array];
     LOBYTE(v59) = 0;
     objc_opt_class();
     v46 = objc_loadWeakRetained(location);
@@ -493,15 +493,15 @@ uint64_t __49__AXCFXElementUtilities_axElementForJTEffect_vc___block_invoke_6(ui
   return 1;
 }
 
-- (void)_axScaleUp:(id)a3
+- (void)_axScaleUp:(id)up
 {
-  v3 = a3;
-  v4 = [v3 effect];
-  v5 = [v4 safeIntForKey:@"type"];
+  upCopy = up;
+  effect = [upCopy effect];
+  v5 = [effect safeIntForKey:@"type"];
 
   if (v5 == 2)
   {
-    v13 = v3;
+    v13 = upCopy;
     AXPerformSafeBlock();
     v6 = [v13 vc];
     v7 = [v6 safeValueForKey:@"effectEditor"];
@@ -510,9 +510,9 @@ uint64_t __49__AXCFXElementUtilities_axElementForJTEffect_vc___block_invoke_6(ui
     v8 = v7;
     AXPerformSafeBlock();
     LODWORD(v7) = *MEMORY[0x29EDC7EA8];
-    v9 = [v13 axElement];
-    v10 = [v9 accessibilityValue];
-    UIAccessibilityPostNotification(v7, v10);
+    axElement = [v13 axElement];
+    accessibilityValue = [axElement accessibilityValue];
+    UIAccessibilityPostNotification(v7, accessibilityValue);
 
     v11 = v13;
     AXPerformSafeBlock();
@@ -552,15 +552,15 @@ void __36__AXCFXElementUtilities__axScaleUp___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)_axScaleDown:(id)a3
+- (void)_axScaleDown:(id)down
 {
-  v3 = a3;
-  v4 = [v3 effect];
-  v5 = [v4 safeIntForKey:@"type"];
+  downCopy = down;
+  effect = [downCopy effect];
+  v5 = [effect safeIntForKey:@"type"];
 
   if (v5 == 2)
   {
-    v13 = v3;
+    v13 = downCopy;
     AXPerformSafeBlock();
     v6 = [v13 vc];
     v7 = [v6 safeValueForKey:@"effectEditor"];
@@ -569,9 +569,9 @@ void __36__AXCFXElementUtilities__axScaleUp___block_invoke_3(uint64_t a1)
     v8 = v7;
     AXPerformSafeBlock();
     LODWORD(v7) = *MEMORY[0x29EDC7EA8];
-    v9 = [v13 axElement];
-    v10 = [v9 accessibilityValue];
-    UIAccessibilityPostNotification(v7, v10);
+    axElement = [v13 axElement];
+    accessibilityValue = [axElement accessibilityValue];
+    UIAccessibilityPostNotification(v7, accessibilityValue);
 
     v11 = v13;
     AXPerformSafeBlock();
@@ -611,15 +611,15 @@ void __38__AXCFXElementUtilities__axScaleDown___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)_axRotateClockwise:(id)a3
+- (void)_axRotateClockwise:(id)clockwise
 {
-  v3 = a3;
-  v4 = [v3 effect];
-  v5 = [v4 safeIntForKey:@"type"];
+  clockwiseCopy = clockwise;
+  effect = [clockwiseCopy effect];
+  v5 = [effect safeIntForKey:@"type"];
 
   if (v5 == 2)
   {
-    v13 = v3;
+    v13 = clockwiseCopy;
     AXPerformSafeBlock();
     v6 = [v13 vc];
     v7 = [v6 safeValueForKey:@"effectEditor"];
@@ -628,9 +628,9 @@ void __38__AXCFXElementUtilities__axScaleDown___block_invoke_3(uint64_t a1)
     v8 = v7;
     AXPerformSafeBlock();
     LODWORD(v7) = *MEMORY[0x29EDC7EA8];
-    v9 = [v13 axElement];
-    v10 = [v9 accessibilityValue];
-    UIAccessibilityPostNotification(v7, v10);
+    axElement = [v13 axElement];
+    accessibilityValue = [axElement accessibilityValue];
+    UIAccessibilityPostNotification(v7, accessibilityValue);
 
     v11 = v13;
     AXPerformSafeBlock();
@@ -670,15 +670,15 @@ void __44__AXCFXElementUtilities__axRotateClockwise___block_invoke_3(uint64_t a1
   }
 }
 
-- (void)_axRotateCounterClockwise:(id)a3
+- (void)_axRotateCounterClockwise:(id)clockwise
 {
-  v3 = a3;
-  v4 = [v3 effect];
-  v5 = [v4 safeIntForKey:@"type"];
+  clockwiseCopy = clockwise;
+  effect = [clockwiseCopy effect];
+  v5 = [effect safeIntForKey:@"type"];
 
   if (v5 == 2)
   {
-    v13 = v3;
+    v13 = clockwiseCopy;
     AXPerformSafeBlock();
     v6 = [v13 vc];
     v7 = [v6 safeValueForKey:@"effectEditor"];
@@ -687,9 +687,9 @@ void __44__AXCFXElementUtilities__axRotateClockwise___block_invoke_3(uint64_t a1
     v8 = v7;
     AXPerformSafeBlock();
     LODWORD(v7) = *MEMORY[0x29EDC7EA8];
-    v9 = [v13 axElement];
-    v10 = [v9 accessibilityValue];
-    UIAccessibilityPostNotification(v7, v10);
+    axElement = [v13 axElement];
+    accessibilityValue = [axElement accessibilityValue];
+    UIAccessibilityPostNotification(v7, accessibilityValue);
 
     v11 = v13;
     AXPerformSafeBlock();
@@ -729,15 +729,15 @@ void __51__AXCFXElementUtilities__axRotateCounterClockwise___block_invoke_3(uint
   }
 }
 
-- (void)_axRemoveEffect:(id)a3
+- (void)_axRemoveEffect:(id)effect
 {
-  v3 = a3;
-  v4 = [v3 effect];
-  v5 = [v4 safeIntForKey:@"type"];
+  effectCopy = effect;
+  effect = [effectCopy effect];
+  v5 = [effect safeIntForKey:@"type"];
 
   if (v5 == 2)
   {
-    v9 = v3;
+    v9 = effectCopy;
     AXPerformSafeBlock();
     v6 = [v9 vc];
     v7 = [v6 safeValueForKey:@"effectEditor"];

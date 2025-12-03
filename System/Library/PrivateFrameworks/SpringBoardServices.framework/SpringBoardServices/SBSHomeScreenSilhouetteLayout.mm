@@ -1,40 +1,40 @@
 @interface SBSHomeScreenSilhouetteLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSHomeScreenSilhouetteLayout)initWithBSXPCCoder:(id)a3;
-- (SBSHomeScreenSilhouetteLayout)initWithCoder:(id)a3;
-- (SBSHomeScreenSilhouetteLayout)initWithIcons:(id)a3 dock:(id)a4;
+- (SBSHomeScreenSilhouetteLayout)initWithBSXPCCoder:(id)coder;
+- (SBSHomeScreenSilhouetteLayout)initWithCoder:(id)coder;
+- (SBSHomeScreenSilhouetteLayout)initWithIcons:(id)icons dock:(id)dock;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSHomeScreenSilhouetteLayout
 
-- (SBSHomeScreenSilhouetteLayout)initWithIcons:(id)a3 dock:(id)a4
+- (SBSHomeScreenSilhouetteLayout)initWithIcons:(id)icons dock:(id)dock
 {
-  v6 = a3;
-  v7 = a4;
+  iconsCopy = icons;
+  dockCopy = dock;
   v12.receiver = self;
   v12.super_class = SBSHomeScreenSilhouetteLayout;
   v8 = [(SBSHomeScreenSilhouetteLayout *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [iconsCopy copy];
     icons = v8->_icons;
     v8->_icons = v9;
 
-    objc_storeStrong(&v8->_dock, a4);
+    objc_storeStrong(&v8->_dock, dock);
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -46,15 +46,15 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(SBSHomeScreenSilhouetteLayout *)self icons];
-      v9 = [(SBSHomeScreenSilhouetteLayout *)v7 icons];
+      v7 = equalCopy;
+      icons = [(SBSHomeScreenSilhouetteLayout *)self icons];
+      icons2 = [(SBSHomeScreenSilhouetteLayout *)v7 icons];
       v10 = BSEqualObjects();
 
       if (v10)
       {
-        v11 = [(SBSHomeScreenSilhouetteLayout *)self dock];
-        v12 = [(SBSHomeScreenSilhouetteLayout *)v7 dock];
+        dock = [(SBSHomeScreenSilhouetteLayout *)self dock];
+        dock2 = [(SBSHomeScreenSilhouetteLayout *)v7 dock];
         v13 = BSEqualObjects();
       }
 
@@ -75,10 +75,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SBSHomeScreenSilhouetteLayout *)self icons];
-  v4 = [v3 hash];
-  v5 = [(SBSHomeScreenSilhouetteLayout *)self dock];
-  v6 = [v5 hash];
+  icons = [(SBSHomeScreenSilhouetteLayout *)self icons];
+  v4 = [icons hash];
+  dock = [(SBSHomeScreenSilhouetteLayout *)self dock];
+  v6 = [dock hash];
 
   return v6 ^ v4;
 }
@@ -90,7 +90,7 @@
   v8 = 3221225472;
   v9 = __44__SBSHomeScreenSilhouetteLayout_description__block_invoke;
   v10 = &unk_1E735F7F0;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -99,63 +99,63 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SBSHomeScreenSilhouetteLayout *)self icons];
-  [v4 encodeObject:v5 forKey:@"icons"];
+  coderCopy = coder;
+  icons = [(SBSHomeScreenSilhouetteLayout *)self icons];
+  [coderCopy encodeObject:icons forKey:@"icons"];
 
-  v6 = [(SBSHomeScreenSilhouetteLayout *)self dock];
-  [v4 encodeObject:v6 forKey:@"dock"];
+  dock = [(SBSHomeScreenSilhouetteLayout *)self dock];
+  [coderCopy encodeObject:dock forKey:@"dock"];
 }
 
-- (SBSHomeScreenSilhouetteLayout)initWithCoder:(id)a3
+- (SBSHomeScreenSilhouetteLayout)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_self();
   v7 = [v4 setWithObject:v6];
-  v8 = [v5 decodeArrayOfObjectsOfClasses:v7 forKey:@"icons"];
+  v8 = [coderCopy decodeArrayOfObjectsOfClasses:v7 forKey:@"icons"];
 
   v9 = objc_opt_self();
-  v10 = [v5 decodeObjectOfClass:v9 forKey:@"dock"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"dock"];
 
   v11 = [(SBSHomeScreenSilhouetteLayout *)self initWithIcons:v8 dock:v10];
   return v11;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SBSHomeScreenSilhouetteLayout *)self icons];
-  [v4 encodeObject:v5 forKey:@"icons"];
+  coderCopy = coder;
+  icons = [(SBSHomeScreenSilhouetteLayout *)self icons];
+  [coderCopy encodeObject:icons forKey:@"icons"];
 
-  v6 = [(SBSHomeScreenSilhouetteLayout *)self dock];
-  [v4 encodeObject:v6 forKey:@"dock"];
+  dock = [(SBSHomeScreenSilhouetteLayout *)self dock];
+  [coderCopy encodeObject:dock forKey:@"dock"];
 }
 
-- (SBSHomeScreenSilhouetteLayout)initWithBSXPCCoder:(id)a3
+- (SBSHomeScreenSilhouetteLayout)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
   v6 = objc_opt_self();
-  v7 = [v4 decodeCollectionOfClass:v5 containingClass:v6 forKey:@"icons"];
+  v7 = [coderCopy decodeCollectionOfClass:v5 containingClass:v6 forKey:@"icons"];
 
   v8 = objc_opt_self();
-  v9 = [v4 decodeObjectOfClass:v8 forKey:@"dock"];
+  v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"dock"];
 
   v10 = [(SBSHomeScreenSilhouetteLayout *)self initWithIcons:v7 dock:v9];
   return v10;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v8 = a3;
-  v4 = [(SBSHomeScreenSilhouetteLayout *)self icons];
-  v5 = [v8 appendObject:v4 withName:@"icons"];
+  formatterCopy = formatter;
+  icons = [(SBSHomeScreenSilhouetteLayout *)self icons];
+  v5 = [formatterCopy appendObject:icons withName:@"icons"];
 
-  v6 = [(SBSHomeScreenSilhouetteLayout *)self dock];
-  v7 = [v8 appendObject:v6 withName:@"dock"];
+  dock = [(SBSHomeScreenSilhouetteLayout *)self dock];
+  v7 = [formatterCopy appendObject:dock withName:@"dock"];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface INJSONEncoderConfiguration
 - (INJSONEncoderConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation INJSONEncoderConfiguration
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(INJSONEncoderConfiguration);
   [(INJSONEncoderConfiguration *)v4 setLanguageCode:self->_languageCode];

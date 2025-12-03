@@ -1,19 +1,19 @@
 @interface AntBlockPowerLimitPolicyClientCamera
 - (id)constructXpcMessage;
 - (id)constructXpcMessagePolicyEntries;
-- (void)extractPolicy:(id)a3;
-- (void)extractPolicyEntries:(id)a3;
+- (void)extractPolicy:(id)policy;
+- (void)extractPolicyEntries:(id)entries;
 @end
 
 @implementation AntBlockPowerLimitPolicyClientCamera
 
-- (void)extractPolicyEntries:(id)a3
+- (void)extractPolicyEntries:(id)entries
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entriesCopy = entries;
+  v5 = entriesCopy;
+  if (entriesCopy)
   {
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Extracted %lu policies for client Camera %d", [v4 count], -[AntBlockPowerLimitPolicyClient mClient](self, "mClient"));
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Extracted %lu policies for client Camera %d", [entriesCopy count], -[AntBlockPowerLimitPolicyClient mClient](self, "mClient"));
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -36,11 +36,11 @@
           v11 = *(*(&v16 + 1) + 8 * i);
           v12 = objc_alloc_init(AntBlockPowerLimitCameraPolicy);
           [(AntBlockPowerLimitCameraPolicy *)v12 extractPolicy:v11];
-          v13 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+          mPolicy = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
 
           if (v12)
           {
-            v14 = v13 == 0;
+            v14 = mPolicy == 0;
           }
 
           else
@@ -50,8 +50,8 @@
 
           if (!v14)
           {
-            v15 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
-            [v15 addObject:v12];
+            mPolicy2 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+            [mPolicy2 addObject:v12];
           }
         }
 
@@ -75,8 +75,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  mPolicy = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+  v5 = [mPolicy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -87,14 +87,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mPolicy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) constructXpcMessage];
-        xpc_array_append_value(v3, v9);
+        constructXpcMessage = [*(*(&v11 + 1) + 8 * i) constructXpcMessage];
+        xpc_array_append_value(v3, constructXpcMessage);
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [mPolicy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -103,24 +103,24 @@
   return v3;
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
   v3.receiver = self;
   v3.super_class = AntBlockPowerLimitPolicyClientCamera;
-  [(AntBlockPowerLimitPolicyClient *)&v3 extractPolicy:a3];
+  [(AntBlockPowerLimitPolicyClient *)&v3 extractPolicy:policy];
 }
 
 - (id)constructXpcMessage
 {
   v5.receiver = self;
   v5.super_class = AntBlockPowerLimitPolicyClientCamera;
-  v3 = [(AntBlockPowerLimitPolicyClient *)&v5 constructXpcMessage];
-  if (v3)
+  constructXpcMessage = [(AntBlockPowerLimitPolicyClient *)&v5 constructXpcMessage];
+  if (constructXpcMessage)
   {
-    xpc_dictionary_set_uint64(v3, "kWCMCellularSetAntBlocking_CameraId", [(AntBlockPowerLimitPolicyClient *)self mClient]);
+    xpc_dictionary_set_uint64(constructXpcMessage, "kWCMCellularSetAntBlocking_CameraId", [(AntBlockPowerLimitPolicyClient *)self mClient]);
   }
 
-  return v3;
+  return constructXpcMessage;
 }
 
 @end

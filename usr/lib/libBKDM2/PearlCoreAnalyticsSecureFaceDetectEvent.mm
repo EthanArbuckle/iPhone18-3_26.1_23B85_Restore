@@ -1,8 +1,8 @@
 @interface PearlCoreAnalyticsSecureFaceDetectEvent
 - (BOOL)calculateAndCheckValues;
-- (BOOL)postEventExtendedBy:(id)a3;
-- (PearlCoreAnalyticsSecureFaceDetectEvent)initWithName:(id)a3;
-- (PearlCoreAnalyticsSecureFaceDetectEvent)initWithName:(id)a3 dictionary:(id)a4;
+- (BOOL)postEventExtendedBy:(id)by;
+- (PearlCoreAnalyticsSecureFaceDetectEvent)initWithName:(id)name;
+- (PearlCoreAnalyticsSecureFaceDetectEvent)initWithName:(id)name dictionary:(id)dictionary;
 - (void)calculateAndCheckValues;
 - (void)reset;
 - (void)updateStatus;
@@ -10,12 +10,12 @@
 
 @implementation PearlCoreAnalyticsSecureFaceDetectEvent
 
-- (PearlCoreAnalyticsSecureFaceDetectEvent)initWithName:(id)a3
+- (PearlCoreAnalyticsSecureFaceDetectEvent)initWithName:(id)name
 {
   v18[6] = *MEMORY[0x29EDCA608];
   v15.receiver = self;
   v15.super_class = PearlCoreAnalyticsSecureFaceDetectEvent;
-  v3 = [(PearlCoreAnalyticsEvent *)&v15 initWithName:a3];
+  v3 = [(PearlCoreAnalyticsEvent *)&v15 initWithName:name];
   v4 = v3;
   if (v3)
   {
@@ -44,10 +44,10 @@
   return v4;
 }
 
-- (PearlCoreAnalyticsSecureFaceDetectEvent)initWithName:(id)a3 dictionary:(id)a4
+- (PearlCoreAnalyticsSecureFaceDetectEvent)initWithName:(id)name dictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = [MEMORY[0x29EDB8E00] dictionaryWithDictionary:a4];
+  nameCopy = name;
+  v7 = [MEMORY[0x29EDB8E00] dictionaryWithDictionary:dictionary];
   v8 = [v7 objectForKey:@"sequenceStartDate"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -72,7 +72,7 @@ LABEL_9:
   [v7 removeObjectForKey:@"sequenceEndDate"];
   v14.receiver = self;
   v14.super_class = PearlCoreAnalyticsSecureFaceDetectEvent;
-  v10 = [(BiometricKitCoreAnalyticsEvent *)&v14 initWithName:v6 dictionary:v7];
+  v10 = [(BiometricKitCoreAnalyticsEvent *)&v14 initWithName:nameCopy dictionary:v7];
   v11 = v10;
   if (v10)
   {
@@ -86,7 +86,7 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)postEventExtendedBy:(id)a3
+- (BOOL)postEventExtendedBy:(id)by
 {
   if (__osLog)
   {
@@ -194,10 +194,10 @@ LABEL_5:
 
         else
         {
-          v12 = [(NSNumber *)self->_lastFeedback unsignedIntValue];
+          unsignedIntValue = [(NSNumber *)self->_lastFeedback unsignedIntValue];
           v13 = MEMORY[0x29EDBA070];
           v14 = ![(NSNumber *)self->_timeout BOOLValue];
-          if ((v12 & 8) != 0)
+          if ((unsignedIntValue & 8) != 0)
           {
             v15 = 15;
             v16 = 21;

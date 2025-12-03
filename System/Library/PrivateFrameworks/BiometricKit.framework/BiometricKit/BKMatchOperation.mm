@@ -1,20 +1,20 @@
 @interface BKMatchOperation
-- (BKMatchOperation)initWithDevice:(id)a3;
-- (id)matchResultInfoWithServerIdentity:(id)a3 details:(id)a4;
-- (id)optionsDictionaryWithError:(id *)a3;
+- (BKMatchOperation)initWithDevice:(id)device;
+- (id)matchResultInfoWithServerIdentity:(id)identity details:(id)details;
+- (id)optionsDictionaryWithError:(id *)error;
 - (void)dealloc;
-- (void)matchResult:(id)a3 details:(id)a4 client:(unint64_t)a5;
+- (void)matchResult:(id)result details:(id)details client:(unint64_t)client;
 - (void)operationInterrupted;
-- (void)processMatchFailReason:(int64_t)a3;
+- (void)processMatchFailReason:(int64_t)reason;
 @end
 
 @implementation BKMatchOperation
 
-- (BKMatchOperation)initWithDevice:(id)a3
+- (BKMatchOperation)initWithDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = BKMatchOperation;
-  v3 = [(BKOperation *)&v6 initWithDevice:a3];
+  v3 = [(BKOperation *)&v6 initWithDevice:device];
   v4 = v3;
   if (v3)
   {
@@ -41,11 +41,11 @@
   [(BKOperation *)&v3 operationInterrupted];
 }
 
-- (id)optionsDictionaryWithError:(id *)a3
+- (id)optionsDictionaryWithError:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = v5;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = dictionary;
   purpose = self->_purpose;
   if (purpose > 3)
   {
@@ -54,15 +54,15 @@
       case 4:
         if (!self->_credentialSet)
         {
-          [BKMatchOperation optionsDictionaryWithError:a3];
+          [BKMatchOperation optionsDictionaryWithError:error];
           goto LABEL_45;
         }
 
-        [v5 setObject:MEMORY[0x1E695E118] forKey:@"BKOptionMatchForUnlock"];
+        [dictionary setObject:MEMORY[0x1E695E118] forKey:@"BKOptionMatchForUnlock"];
         credentialSet = self->_credentialSet;
         goto LABEL_14;
       case 5:
-        [v5 setObject:MEMORY[0x1E695E118] forKey:@"BKOptionMatchForPreArm"];
+        [dictionary setObject:MEMORY[0x1E695E118] forKey:@"BKOptionMatchForPreArm"];
         if (self->_captureOnly)
         {
           v23 = [MEMORY[0x1E696AD98] numberWithBool:1];
@@ -90,10 +90,10 @@ LABEL_23:
 
         if (self->_selectedIdentities)
         {
-          v14 = [MEMORY[0x1E695DF70] array];
-          if (!v14)
+          array = [MEMORY[0x1E695DF70] array];
+          if (!array)
           {
-            [BKMatchOperation optionsDictionaryWithError:a3];
+            [BKMatchOperation optionsDictionaryWithError:error];
 LABEL_44:
 
             goto LABEL_45;
@@ -118,15 +118,15 @@ LABEL_44:
                   objc_enumerationMutation(v15);
                 }
 
-                v20 = [*(*(&v26 + 1) + 8 * i) serverIdentity];
-                if (!v20)
+                serverIdentity = [*(*(&v26 + 1) + 8 * i) serverIdentity];
+                if (!serverIdentity)
                 {
                   [BKMatchOperation optionsDictionaryWithError:];
                   goto LABEL_44;
                 }
 
-                v21 = v20;
-                [v14 addObject:v20];
+                v21 = serverIdentity;
+                [array addObject:serverIdentity];
               }
 
               v17 = [(NSArray *)v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -139,13 +139,13 @@ LABEL_44:
             }
           }
 
-          [v6 setObject:v14 forKey:@"BKOptionMatchSelectedIdentities"];
+          [v6 setObject:array forKey:@"BKOptionMatchSelectedIdentities"];
         }
 
         v22 = v6;
         goto LABEL_46;
       case 6:
-        [v5 setObject:MEMORY[0x1E695E118] forKey:@"BKOptionMatchBypassPasscodeBiolockout"];
+        [dictionary setObject:MEMORY[0x1E695E118] forKey:@"BKOptionMatchBypassPasscodeBiolockout"];
         credentialSet = self->_credentialSet;
         if (!credentialSet)
         {
@@ -182,7 +182,7 @@ LABEL_15:
       _os_log_impl(&dword_1C82AD000, v10, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", buf, 0x30u);
     }
 
-    setError(1, a3);
+    setError(1, error);
     goto LABEL_45;
   }
 
@@ -213,7 +213,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  [BKMatchOperation optionsDictionaryWithError:a3];
+  [BKMatchOperation optionsDictionaryWithError:error];
 LABEL_45:
   v22 = 0;
 LABEL_46:
@@ -241,22 +241,22 @@ void __44__BKMatchOperation_startBioOperation_reply___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)matchResultInfoWithServerIdentity:(id)a3 details:(id)a4
+- (id)matchResultInfoWithServerIdentity:(id)identity details:(id)details
 {
-  v6 = a4;
-  v7 = a3;
+  detailsCopy = details;
+  identityCopy = identity;
   v8 = [BKMatchResultInfo alloc];
-  v9 = [(BKOperation *)self device];
-  v10 = [(BKMatchResultInfo *)v8 initWithServerIdentity:v7 details:v6 device:v9];
+  device = [(BKOperation *)self device];
+  v10 = [(BKMatchResultInfo *)v8 initWithServerIdentity:identityCopy details:detailsCopy device:device];
 
   return v10;
 }
 
-- (void)matchResult:(id)a3 details:(id)a4 client:(unint64_t)a5
+- (void)matchResult:(id)result details:(id)details client:(unint64_t)client
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  resultCopy = result;
+  detailsCopy = details;
   kdebug_trace();
   v10 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
@@ -272,42 +272,42 @@ void __44__BKMatchOperation_startBioOperation_reply___block_invoke(uint64_t a1, 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     log = v11;
-    v28 = [v9 objectForKeyedSubscript:@"BKMatchDetailLockoutState"];
-    v12 = [v28 intValue];
-    v13 = [v9 objectForKeyedSubscript:@"BKMatchDetailUnlocked"];
-    v14 = [v13 BOOLValue];
-    v15 = [v9 objectForKeyedSubscript:@"BKMatchDetailCredentialAdded"];
-    v16 = [v15 BOOLValue];
-    [v9 objectForKeyedSubscript:@"BKMatchDetailResultIgnored"];
-    v18 = v17 = a5;
-    v19 = [v18 BOOLValue];
+    v28 = [detailsCopy objectForKeyedSubscript:@"BKMatchDetailLockoutState"];
+    intValue = [v28 intValue];
+    v13 = [detailsCopy objectForKeyedSubscript:@"BKMatchDetailUnlocked"];
+    bOOLValue = [v13 BOOLValue];
+    v15 = [detailsCopy objectForKeyedSubscript:@"BKMatchDetailCredentialAdded"];
+    bOOLValue2 = [v15 BOOLValue];
+    [detailsCopy objectForKeyedSubscript:@"BKMatchDetailResultIgnored"];
+    v18 = v17 = client;
+    bOOLValue3 = [v18 BOOLValue];
     *buf = 134219778;
-    v32 = v8;
+    v32 = resultCopy;
     v33 = 2112;
-    v34 = v8;
+    v34 = resultCopy;
     v35 = 2048;
-    v36 = v9;
+    v36 = detailsCopy;
     v37 = 1024;
-    v38 = v12;
+    v38 = intValue;
     v10 = MEMORY[0x1E69E9C10];
     v39 = 1024;
-    v40 = v14;
+    v40 = bOOLValue;
     v41 = 1024;
-    v42 = v16;
+    v42 = bOOLValue2;
     v43 = 1024;
-    v44 = v19;
+    v44 = bOOLValue3;
     v45 = 2048;
     v46 = v17;
     _os_log_impl(&dword_1C82AD000, log, OS_LOG_TYPE_DEFAULT, "BKMatchOperation::matchResult:withDictionary:client: %p(%@), %p(LockoutState:%d,Unlocked:%d,CredentialAdded:%d,Ignored:%d), %llu\n", buf, 0x42u);
   }
 
-  v20 = [(BKOperation *)self delegate];
+  delegate = [(BKOperation *)self delegate];
   v21 = objc_opt_respondsToSelector();
 
   if (v21)
   {
-    v22 = [(BKMatchOperation *)self matchResultInfoWithServerIdentity:v8 details:v9];
-    v23 = [(BKOperation *)self dispatchQueue];
+    v22 = [(BKMatchOperation *)self matchResultInfoWithServerIdentity:resultCopy details:detailsCopy];
+    dispatchQueue = [(BKOperation *)self dispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__BKMatchOperation_matchResult_details_client___block_invoke;
@@ -315,7 +315,7 @@ void __44__BKMatchOperation_startBioOperation_reply___block_invoke(uint64_t a1, 
     block[4] = self;
     v30 = v22;
     v24 = v22;
-    dispatch_async(v23, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   if (__osLogTrace)
@@ -345,10 +345,10 @@ void __47__BKMatchOperation_matchResult_details_client___block_invoke(uint64_t a
   [v2 matchOperation:*(a1 + 32) matchedWithResult:*(a1 + 40)];
 }
 
-- (void)processMatchFailReason:(int64_t)a3
+- (void)processMatchFailReason:(int64_t)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(BKOperation *)self delegate];
+  delegate = [(BKOperation *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -366,25 +366,25 @@ void __47__BKMatchOperation_matchResult_details_client___block_invoke(uint64_t a
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(BKOperation *)self delegate];
-      v10 = [(BKOperation *)self delegate];
+      delegate2 = [(BKOperation *)self delegate];
+      delegate3 = [(BKOperation *)self delegate];
       *buf = 134218498;
-      v15 = a3;
+      reasonCopy = reason;
       v16 = 2048;
-      v17 = v9;
+      v17 = delegate2;
       v18 = 2112;
-      v19 = v10;
+      v19 = delegate3;
       _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKMatchOperation::processMatchFailReason: %ld => delegate:%p(%@)\n", buf, 0x20u);
     }
 
-    v11 = [(BKOperation *)self dispatchQueue];
+    dispatchQueue = [(BKOperation *)self dispatchQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __43__BKMatchOperation_processMatchFailReason___block_invoke;
     v13[3] = &unk_1E8303D98;
     v13[4] = self;
-    v13[5] = a3;
-    dispatch_async(v11, v13);
+    v13[5] = reason;
+    dispatch_async(dispatchQueue, v13);
   }
 
   v12 = *MEMORY[0x1E69E9840];

@@ -1,19 +1,19 @@
 @interface SecItemCurrentItemData
-- (SecItemCurrentItemData)initWithPersistentRef:(id)a3;
+- (SecItemCurrentItemData)initWithPersistentRef:(id)ref;
 @end
 
 @implementation SecItemCurrentItemData
 
-- (SecItemCurrentItemData)initWithPersistentRef:(id)a3
+- (SecItemCurrentItemData)initWithPersistentRef:(id)ref
 {
-  v4 = a3;
+  refCopy = ref;
   v9.receiver = self;
   v9.super_class = SecItemCurrentItemData;
   v5 = [(SecItemCurrentItemData *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(SecItemCurrentItemData *)v5 setPersistentRef:v4];
+    [(SecItemCurrentItemData *)v5 setPersistentRef:refCopy];
     v7 = v6;
   }
 

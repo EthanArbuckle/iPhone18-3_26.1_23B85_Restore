@@ -1,27 +1,27 @@
 @interface EQKitMathMLParser
-- (BOOL)isElement:(int)a3 allowedInState:(int)a4;
-- (EQKitMathMLParser)initWithDocument:(_xmlDoc *)a3 node:(_xmlNode *)a4 source:(id)a5 environment:(id)a6;
+- (BOOL)isElement:(int)element allowedInState:(int)state;
+- (EQKitMathMLParser)initWithDocument:(_xmlDoc *)document node:(_xmlNode *)node source:(id)source environment:(id)environment;
 - (id).cxx_construct;
 - (id)parse;
-- (id)parseChildrenAsArrayFromXMLNode:(_xmlNode *)a3;
-- (id)parseChildrenAsNodeFromXMLNode:(_xmlNode *)a3;
-- (id)parseChildrenAsTokenContentFromXMLNode:(_xmlNode *)a3;
-- (id)parseNode:(_xmlNode *)a3;
+- (id)parseChildrenAsArrayFromXMLNode:(_xmlNode *)node;
+- (id)parseChildrenAsNodeFromXMLNode:(_xmlNode *)node;
+- (id)parseChildrenAsTokenContentFromXMLNode:(_xmlNode *)node;
+- (id)parseNode:(_xmlNode *)node;
 - (int)state;
 - (void)dealloc;
-- (void)parseAttributesForNode:(id)a3 withXMLNode:(_xmlNode *)a4;
+- (void)parseAttributesForNode:(id)node withXMLNode:(_xmlNode *)lNode;
 - (void)popState;
-- (void)reportError:(int64_t)a3 withNode:(_xmlNode *)a4;
+- (void)reportError:(int64_t)error withNode:(_xmlNode *)node;
 @end
 
 @implementation EQKitMathMLParser
 
-- (EQKitMathMLParser)initWithDocument:(_xmlDoc *)a3 node:(_xmlNode *)a4 source:(id)a5 environment:(id)a6
+- (EQKitMathMLParser)initWithDocument:(_xmlDoc *)document node:(_xmlNode *)node source:(id)source environment:(id)environment
 {
-  RootElement = a4;
-  if (a3 && !a4)
+  RootElement = node;
+  if (document && !node)
   {
-    RootElement = xmlDocGetRootElement(a3);
+    RootElement = xmlDocGetRootElement(document);
   }
 
   v14.receiver = self;
@@ -31,9 +31,9 @@
   if (v11)
   {
     v11->mRootNode = RootElement;
-    v11->mNS = xmlSearchNsByHref(a3, RootElement, "http://www.w3.org/1998/Math/MathML");
-    v12->mEnvironment = a6;
-    v12->mSource = a5;
+    v11->mNS = xmlSearchNsByHref(document, RootElement, "http://www.w3.org/1998/Math/MathML");
+    v12->mEnvironment = environment;
+    v12->mSource = source;
   }
 
   return v12;
@@ -46,20 +46,20 @@
   [(EQKitMathMLParser *)&v3 dealloc];
 }
 
-- (void)reportError:(int64_t)a3 withNode:(_xmlNode *)a4
+- (void)reportError:(int64_t)error withNode:(_xmlNode *)node
 {
   if (!self->mError)
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
     name = "";
-    if (a4 && a4->name)
+    if (node && node->name)
     {
-      name = a4->name;
+      name = node->name;
     }
 
     v11 = objc_msgSend_initWithUTF8String_(v7, v8, name, v9);
     v15 = objc_msgSend_mainBundle(MEMORY[0x277CCA8D8], v12, v13, v14);
-    if (a3 <= 6 && (v17 = objc_msgSend_localizedStringForKey_value_table_(v15, v16, off_27A680ED8[a3], &stru_2884CC9F8, 0)) != 0)
+    if (error <= 6 && (v17 = objc_msgSend_localizedStringForKey_value_table_(v15, v16, off_27A680ED8[error], &stru_2884CC9F8, 0)) != 0)
     {
       v20 = MEMORY[0x277CBEAC0];
       v21 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v18, v17, v19, v11);
@@ -72,7 +72,7 @@
     }
 
     v25 = objc_alloc(MEMORY[0x277CCA9B8]);
-    self->mError = objc_msgSend_initWithDomain_code_userInfo_(v25, v26, @"EQKitErrorDomain", a3, v24);
+    self->mError = objc_msgSend_initWithDomain_code_userInfo_(v25, v26, @"EQKitErrorDomain", error, v24);
   }
 }
 
@@ -104,12 +104,12 @@
   return v8;
 }
 
-- (id)parseChildrenAsArrayFromXMLNode:(_xmlNode *)a3
+- (id)parseChildrenAsArrayFromXMLNode:(_xmlNode *)node
 {
-  v6 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3, v3);
-  if (a3)
+  v6 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, node, v3);
+  if (node)
   {
-    for (i = a3->children; i; i = i->next)
+    for (i = node->children; i; i = i->next)
     {
       if (sub_275CB5B80(i))
       {
@@ -127,9 +127,9 @@
   return v6;
 }
 
-- (id)parseChildrenAsNodeFromXMLNode:(_xmlNode *)a3
+- (id)parseChildrenAsNodeFromXMLNode:(_xmlNode *)node
 {
-  result = objc_msgSend_parseChildrenAsArrayFromXMLNode_(self, a2, a3, v3);
+  result = objc_msgSend_parseChildrenAsArrayFromXMLNode_(self, a2, node, v3);
   if (result)
   {
     v8 = result;
@@ -150,10 +150,10 @@
   return result;
 }
 
-- (void)parseAttributesForNode:(id)a3 withXMLNode:(_xmlNode *)a4
+- (void)parseAttributesForNode:(id)node withXMLNode:(_xmlNode *)lNode
 {
-  v7 = objc_msgSend_mathMLAttributes(a3, a2, a3, a4);
-  properties = a4->properties;
+  v7 = objc_msgSend_mathMLAttributes(node, a2, node, lNode);
+  properties = lNode->properties;
   if (properties)
   {
     v9 = v7;
@@ -165,7 +165,7 @@
       ns = properties->ns;
       if (ns)
       {
-        v12 = ns == a4->ns;
+        v12 = ns == lNode->ns;
       }
 
       else
@@ -373,7 +373,7 @@ LABEL_63:
         while (v24);
         if (v25 != v10 && v13 >= v25[7])
         {
-          sub_275CB5D70(a4, properties, &__str);
+          sub_275CB5D70(lNode, properties, &__str);
           switch(v13)
           {
             case 1:
@@ -386,7 +386,7 @@ LABEL_63:
               }
 
               mAttributeCollection = self->mAttributeCollection;
-              __p[0] = a3;
+              __p[0] = node;
               LODWORD(__p[1]) = v13;
               *&v110 = __p;
               v37 = sub_275CD6E20(mAttributeCollection + 128, __p);
@@ -399,7 +399,7 @@ LABEL_63:
               }
 
               v75 = self->mAttributeCollection;
-              __p[0] = a3;
+              __p[0] = node;
               LODWORD(__p[1]) = 2;
               *&v110 = __p;
               v68 = sub_275CD6E20(v75 + 152, __p);
@@ -413,7 +413,7 @@ LABEL_63:
               }
 
               v76 = self->mAttributeCollection;
-              *&v110 = a3;
+              *&v110 = node;
               DWORD2(v110) = 3;
               sub_275CD72B0(v76, v76 + 248, __p, &v110);
               goto LABEL_148;
@@ -426,7 +426,7 @@ LABEL_63:
               }
 
               v77 = self->mAttributeCollection;
-              *&v110 = a3;
+              *&v110 = node;
               DWORD2(v110) = 4;
               sub_275CD72B0(v77, v77 + 272, __p, &v110);
               goto LABEL_148;
@@ -444,7 +444,7 @@ LABEL_63:
               }
 
               v36 = self->mAttributeCollection;
-              __p[0] = a3;
+              __p[0] = node;
               LODWORD(__p[1]) = v13;
               *&v110 = __p;
               v37 = sub_275CD6E20(v36 + 8, __p);
@@ -459,7 +459,7 @@ LABEL_90:
               }
 
               v74 = self->mAttributeCollection;
-              __p[0] = a3;
+              __p[0] = node;
               LODWORD(__p[1]) = 7;
               *&v110 = __p;
               v68 = sub_275CD6E20(v74 + 320, __p);
@@ -486,7 +486,7 @@ LABEL_90:
               if (v89)
               {
                 v90 = self->mAttributeCollection;
-                __p[0] = a3;
+                __p[0] = node;
                 LODWORD(__p[1]) = 9;
                 v111[0] = __p;
                 v91 = sub_275CD6F24(v90 + 296, __p);
@@ -507,7 +507,7 @@ LABEL_90:
               if (v110)
               {
                 v33 = self->mAttributeCollection;
-                __p[0] = a3;
+                __p[0] = node;
                 LODWORD(__p[1]) = v13;
                 v111[0] = __p;
                 v34 = sub_275CD6FC8(v33 + 32, __p);
@@ -543,7 +543,7 @@ LABEL_90:
               if (p_str->__r_.__value_.__r.__words[0] == 0x7974696E69666E69)
               {
                 v85 = self->mAttributeCollection;
-                __p[0] = a3;
+                __p[0] = node;
                 LODWORD(__p[1]) = 41;
                 v111[0] = __p;
                 v86 = sub_275CD6FC8(v85 + 32, __p);
@@ -556,7 +556,7 @@ LABEL_90:
             case 13:
             case 18:
             case 19:
-              sub_275CD5CEC(self->mAttributeCollection, &__str, v13, a3);
+              sub_275CD5CEC(self->mAttributeCollection, &__str, v13, node);
               goto LABEL_77;
             case 15:
               v66 = sub_275C95B44(&__str, 0);
@@ -566,7 +566,7 @@ LABEL_90:
               }
 
               v67 = self->mAttributeCollection;
-              __p[0] = a3;
+              __p[0] = node;
               LODWORD(__p[1]) = 15;
               *&v110 = __p;
               v68 = sub_275CD6E20(v67 + 344, __p);
@@ -579,7 +579,7 @@ LABEL_90:
               }
 
               v69 = self->mAttributeCollection;
-              __p[0] = a3;
+              __p[0] = node;
               LODWORD(__p[1]) = 17;
               *&v110 = __p;
               v68 = sub_275CD6E20(v69 + 368, __p);
@@ -587,7 +587,7 @@ LABEL_90:
             case 20:
               sub_275C96410(&__str, __p);
               v64 = self->mAttributeCollection;
-              *&v110 = a3;
+              *&v110 = node;
               DWORD2(v110) = 20;
               sub_275CD73B8(v64, v64 + 104, __p, &v110);
               *&v110 = __p;
@@ -600,7 +600,7 @@ LABEL_90:
               if (LOBYTE(v102) == 1)
               {
                 v41 = self->mAttributeCollection;
-                __p[0] = a3;
+                __p[0] = node;
                 LODWORD(__p[1]) = v13;
                 *&v110 = __p;
                 *(sub_275CD7174(v41 + 392, __p) + 48) = v40;
@@ -613,7 +613,7 @@ LABEL_90:
               if (LOBYTE(v102) == 1)
               {
                 v83 = self->mAttributeCollection;
-                __p[0] = a3;
+                __p[0] = node;
                 LODWORD(__p[1]) = 23;
                 *&v110 = __p;
                 *(sub_275CD7174(v83 + 416, __p) + 48) = v82;
@@ -628,7 +628,7 @@ LABEL_90:
               }
 
               v79 = self->mAttributeCollection;
-              *&v110 = a3;
+              *&v110 = node;
               DWORD2(v110) = 29;
               v111[0] = &v110;
               v43 = sub_275CD742C(v79 + 464, &v110);
@@ -641,7 +641,7 @@ LABEL_90:
               }
 
               v78 = self->mAttributeCollection;
-              *&v110 = a3;
+              *&v110 = node;
               DWORD2(v110) = 30;
               v111[0] = &v110;
               v43 = sub_275CD742C(v78 + 464, &v110);
@@ -654,7 +654,7 @@ LABEL_90:
               }
 
               v81 = self->mAttributeCollection;
-              *&v110 = a3;
+              *&v110 = node;
               DWORD2(v110) = 31;
               v111[0] = &v110;
               v43 = sub_275CD742C(v81 + 464, &v110);
@@ -668,7 +668,7 @@ LABEL_90:
               }
 
               v42 = self->mAttributeCollection;
-              *&v110 = a3;
+              *&v110 = node;
               DWORD2(v110) = v13;
               v111[0] = &v110;
               v43 = sub_275CD742C(v42 + 464, &v110);
@@ -685,7 +685,7 @@ LABEL_153:
               }
 
               v72 = self->mAttributeCollection;
-              *&v110 = a3;
+              *&v110 = node;
               DWORD2(v110) = 34;
               sub_275CD72B0(v72, v72 + 200, __p, &v110);
               goto LABEL_148;
@@ -709,7 +709,7 @@ LABEL_153:
                 if ((objc_msgSend_characterIsMember_(v60, v61, v56, v62) & 1) == 0)
                 {
                   v63 = self->mAttributeCollection;
-                  __p[0] = a3;
+                  __p[0] = node;
                   LODWORD(__p[1]) = 35;
                   *&v110 = __p;
                   *(sub_275CD74D0(v63 + 488, __p) + 48) = v56;
@@ -782,7 +782,7 @@ LABEL_188:
                   v95 = 1.0;
 LABEL_189:
                   v97 = self->mAttributeCollection;
-                  __p[0] = a3;
+                  __p[0] = node;
                   LODWORD(__p[1]) = 36;
                   *&v110 = __p;
                   v98 = sub_275CD6FC8(v97 + 32, __p);
@@ -819,7 +819,7 @@ LABEL_77:
               }
 
               v73 = self->mAttributeCollection;
-              __p[0] = a3;
+              __p[0] = node;
               LODWORD(__p[1]) = 37;
               *&v110 = __p;
               v68 = sub_275CD6E20(v73 + 176, __p);
@@ -832,7 +832,7 @@ LABEL_77:
               }
 
               v84 = self->mAttributeCollection;
-              __p[0] = a3;
+              __p[0] = node;
               LODWORD(__p[1]) = 38;
               *&v110 = __p;
               v68 = sub_275CD6E20(v84 + 512, __p);
@@ -847,7 +847,7 @@ LABEL_158:
               {
                 v44 = self->mAttributeCollection;
                 v45 = v102;
-                *&v110 = a3;
+                *&v110 = node;
                 DWORD2(v110) = 42;
                 v111[0] = &v110;
                 *(sub_275CD7174(v44 + 440, &v110) + 48) = v45;
@@ -875,7 +875,7 @@ LABEL_158:
               if (sub_275CBB1A8(&__str, __p))
               {
                 v70 = self->mAttributeCollection;
-                *&v110 = a3;
+                *&v110 = node;
                 DWORD2(v110) = 46;
                 sub_275CD706C(v70, v70 + 56, __p, &v110);
               }
@@ -890,7 +890,7 @@ LABEL_158:
               }
 
               v80 = self->mAttributeCollection;
-              *&v110 = a3;
+              *&v110 = node;
               DWORD2(v110) = 47;
               sub_275CD72B0(v80, v80 + 224, __p, &v110);
 LABEL_148:
@@ -912,7 +912,7 @@ LABEL_149:
 LABEL_70:
       if (v13 == 44)
       {
-        sub_275CB5D70(a4, properties, &__str);
+        sub_275CB5D70(lNode, properties, &__str);
 LABEL_72:
         size = HIBYTE(__str.__r_.__value_.__r.__words[2]);
         if ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) != 0)
@@ -928,7 +928,7 @@ LABEL_72:
           {
             v111[0] = CFRetain(v27);
             v29 = self->mAttributeCollection;
-            __p[0] = a3;
+            __p[0] = node;
             LODWORD(__p[1]) = 44;
             *&v110 = __p;
             v30 = sub_275CD756C(v29 + 536, __p);
@@ -949,23 +949,23 @@ LABEL_79:
   }
 }
 
-- (id)parseChildrenAsTokenContentFromXMLNode:(_xmlNode *)a3
+- (id)parseChildrenAsTokenContentFromXMLNode:(_xmlNode *)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v29 = 0;
   memset(&__str, 0, sizeof(__str));
   v27 = 0;
   v26 = 1;
-  if (!a3)
+  if (!node)
   {
     goto LABEL_20;
   }
 
-  children = a3->children;
+  children = node->children;
   if (!children)
   {
 LABEL_18:
-    LODWORD(v3) = 0;
+    LODWORD(nodeCopy) = 0;
     goto LABEL_20;
   }
 
@@ -991,7 +991,7 @@ LABEL_18:
 
     sub_275CD610C(&v29, &__str, &v27, &v26, 0);
     objc_msgSend_pushState_(self, v6, 1, v7);
-    v10 = objc_msgSend_parseNode_(self, v8, v3, v9);
+    v10 = objc_msgSend_parseNode_(self, v8, nodeCopy, v9);
     objc_msgSend_popState(self, v11, v12, v13);
     if (!v10)
     {
@@ -1015,10 +1015,10 @@ LABEL_17:
     }
   }
 
-  LODWORD(v3) = 1;
+  LODWORD(nodeCopy) = 1;
 LABEL_20:
   sub_275CD610C(&v29, &__str, &v27, &v26, 1);
-  if (v3)
+  if (nodeCopy)
   {
     v19 = 0;
     v20 = v29;
@@ -1039,11 +1039,11 @@ LABEL_20:
   return v19;
 }
 
-- (id)parseNode:(_xmlNode *)a3
+- (id)parseNode:(_xmlNode *)node
 {
-  if (sub_275CB5B58(a3, self->mNS))
+  if (sub_275CB5B58(node, self->mNS))
   {
-    name = a3->name;
+    name = node->name;
     if (name)
     {
       sub_275CA6274(__p, name);
@@ -1175,35 +1175,35 @@ LABEL_20:
               v15 = off_27A675760;
               break;
             default:
-              objc_msgSend_reportError_withNode_(self, v12, 2, a3);
+              objc_msgSend_reportError_withNode_(self, v12, 2, node);
               goto LABEL_9;
           }
 
           v16 = objc_alloc(*v15);
-          v18 = objc_msgSend_initFromXMLNode_parser_(v16, v17, a3, self);
+          v18 = objc_msgSend_initFromXMLNode_parser_(v16, v17, node, self);
           if (v18)
           {
             v13 = v18;
-            objc_msgSend_parseAttributesForNode_withXMLNode_(self, name, v18, a3);
+            objc_msgSend_parseAttributesForNode_withXMLNode_(self, name, v18, node);
             return v13;
           }
         }
 
         else
         {
-          objc_msgSend_reportError_withNode_(self, v12, 6, a3);
+          objc_msgSend_reportError_withNode_(self, v12, 6, node);
         }
       }
 
       else
       {
-        objc_msgSend_reportError_withNode_(self, v12, 3, a3);
+        objc_msgSend_reportError_withNode_(self, v12, 3, node);
       }
     }
   }
 
 LABEL_9:
-  objc_msgSend_reportError_withNode_(self, name, 4, a3);
+  objc_msgSend_reportError_withNode_(self, name, 4, node);
   return 0;
 }
 
@@ -1231,28 +1231,28 @@ LABEL_9:
   }
 }
 
-- (BOOL)isElement:(int)a3 allowedInState:(int)a4
+- (BOOL)isElement:(int)element allowedInState:(int)state
 {
-  v4 = (a3 - 25) < 2;
-  v5 = a3 == 27;
-  if (a4 != 3)
+  v4 = (element - 25) < 2;
+  v5 = element == 27;
+  if (state != 3)
   {
     v5 = 1;
   }
 
-  if (a4 != 2)
+  if (state != 2)
   {
     v4 = v5;
   }
 
-  v7 = a3 == 31 || a3 == 39;
-  v8 = a4 != 1 || v7;
-  if (!a4)
+  v7 = element == 31 || element == 39;
+  v8 = state != 1 || v7;
+  if (!state)
   {
-    v8 = (a3 - 28) < 0xFFFFFFFD;
+    v8 = (element - 28) < 0xFFFFFFFD;
   }
 
-  if (a4 <= 1)
+  if (state <= 1)
   {
     return v8;
   }

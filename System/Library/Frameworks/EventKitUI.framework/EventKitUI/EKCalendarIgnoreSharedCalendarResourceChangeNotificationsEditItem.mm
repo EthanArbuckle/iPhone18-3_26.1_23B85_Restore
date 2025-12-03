@@ -1,5 +1,5 @@
 @interface EKCalendarIgnoreSharedCalendarResourceChangeNotificationsEditItem
-- (BOOL)configureWithCalendar:(id)a3;
+- (BOOL)configureWithCalendar:(id)calendar;
 - (id)cellText;
 - (id)descriptionLabelText;
 - (id)headerTitle;
@@ -7,15 +7,15 @@
 
 @implementation EKCalendarIgnoreSharedCalendarResourceChangeNotificationsEditItem
 
-- (BOOL)configureWithCalendar:(id)a3
+- (BOOL)configureWithCalendar:(id)calendar
 {
   v6.receiver = self;
   v6.super_class = EKCalendarIgnoreSharedCalendarResourceChangeNotificationsEditItem;
-  v3 = a3;
-  [(EKCalendarEditItem *)&v6 configureWithCalendar:v3];
-  v4 = [v3 allowsIgnoringSharedEventChangeNotifications];
+  calendarCopy = calendar;
+  [(EKCalendarEditItem *)&v6 configureWithCalendar:calendarCopy];
+  allowsIgnoringSharedEventChangeNotifications = [calendarCopy allowsIgnoringSharedEventChangeNotifications];
 
-  return v4;
+  return allowsIgnoringSharedEventChangeNotifications;
 }
 
 - (id)cellText

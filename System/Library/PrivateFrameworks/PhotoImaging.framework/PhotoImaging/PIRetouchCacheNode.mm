@@ -1,21 +1,21 @@
 @interface PIRetouchCacheNode
-+ (id)nodeWithInput:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
-- (BOOL)_setupRenderRequest:(id)a3 error:(id *)a4;
-- (BOOL)_tryLoad:(id *)a3;
-- (BOOL)tryLoadPersistentURL:(id)a3 error:(id *)a4;
-- (PIRetouchCacheNode)initWithInputs:(id)a3 settings:(id)a4 subsampleFactor:(int64_t)a5;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_modifyEvaluatedGeometry:(id)a3;
++ (id)nodeWithInput:(id)input settings:(id)settings pipelineState:(id)state error:(id *)error;
+- (BOOL)_setupRenderRequest:(id)request error:(id *)error;
+- (BOOL)_tryLoad:(id *)load;
+- (BOOL)tryLoadPersistentURL:(id)l error:(id *)error;
+- (PIRetouchCacheNode)initWithInputs:(id)inputs settings:(id)settings subsampleFactor:(int64_t)factor;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_modifyEvaluatedGeometry:(id)geometry;
 - (id)baseIdentifier;
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 - (id)outputRegion;
 - (id)persistentURL;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
-- (void)_resolveSourceWithResponse:(id)a3;
-- (void)_updateDigest:(id)a3 forStroke:(id)a4;
-- (void)_updateInputRegion:(id)a3 outputRegion:(id)a4 forStroke:(id)a5 geometry:(id)a6;
-- (void)resolveWithInputImage:(id)a3 retouchStrokes:(id)a4 cacheKey:(id)a5;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
+- (void)_resolveSourceWithResponse:(id)response;
+- (void)_updateDigest:(id)digest forStroke:(id)stroke;
+- (void)_updateInputRegion:(id)region outputRegion:(id)outputRegion forStroke:(id)stroke geometry:(id)geometry;
+- (void)resolveWithInputImage:(id)image retouchStrokes:(id)strokes cacheKey:(id)key;
 @end
 
 @implementation PIRetouchCacheNode
@@ -58,8 +58,8 @@
       if (v11)
       {
         v14 = dispatch_get_specific(*v8);
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v14;
         v26 = 2114;
@@ -70,8 +70,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v13;
       _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -87,24 +87,24 @@
   return v4;
 }
 
-- (void)resolveWithInputImage:(id)a3 retouchStrokes:(id)a4 cacheKey:(id)a5
+- (void)resolveWithInputImage:(id)image retouchStrokes:(id)strokes cacheKey:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  keyCopy = key;
+  strokesCopy = strokes;
+  imageCopy = image;
   v11 = [PIRetouchSourceNode alloc];
-  v12 = [(NURenderNode *)self settings];
-  v13 = [v12 objectForKeyedSubscript:@"detectedFaces"];
-  v14 = [(PIRetouchSourceNode *)v11 initWithInputImage:v10 retouchStrokes:v9 detectedFaces:v13 cacheKey:v8];
+  settings = [(NURenderNode *)self settings];
+  v13 = [settings objectForKeyedSubscript:@"detectedFaces"];
+  v14 = [(PIRetouchSourceNode *)v11 initWithInputImage:imageCopy retouchStrokes:strokesCopy detectedFaces:v13 cacheKey:keyCopy];
 
   [(NUCacheNode *)self resolveWithSourceNode:v14 error:0];
 }
 
-- (void)_resolveSourceWithResponse:(id)a3
+- (void)_resolveSourceWithResponse:(id)response
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  responseCopy = response;
+  if (!responseCopy)
   {
     v13 = NUAssertLogger_6588();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -126,8 +126,8 @@
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v21;
         v29 = 2114;
@@ -138,8 +138,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -148,14 +148,14 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = responseCopy;
   v26 = 0;
-  v6 = [v4 result:&v26];
+  v6 = [responseCopy result:&v26];
   v7 = v26;
   if (v6)
   {
-    v8 = [(NURenderNode *)self settings];
-    v9 = [v8 objectForKeyedSubscript:@"strokes"];
+    settings = [(NURenderNode *)self settings];
+    v9 = [settings objectForKeyedSubscript:@"strokes"];
 
     baseStrokeIndex = self->_baseStrokeIndex;
     if (baseStrokeIndex)
@@ -165,8 +165,8 @@
       v9 = v11;
     }
 
-    v12 = [v6 image];
-    [(PIRetouchCacheNode *)self resolveWithInputImage:v12 retouchStrokes:v9 cacheKey:self->_outputKey];
+    image = [v6 image];
+    [(PIRetouchCacheNode *)self resolveWithInputImage:image retouchStrokes:v9 cacheKey:self->_outputKey];
   }
 
   else
@@ -175,11 +175,11 @@
   }
 }
 
-- (BOOL)_setupRenderRequest:(id)a3 error:(id *)a4
+- (BOOL)_setupRenderRequest:(id)request error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  requestCopy = request;
+  if (!error)
   {
     v13 = NUAssertLogger_6588();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -201,8 +201,8 @@
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v21;
         v28 = 2114;
@@ -213,8 +213,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -223,12 +223,12 @@
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x1E69B3A10] workingColorSpace];
-  [v7 setColorSpace:v8];
+  v7 = requestCopy;
+  workingColorSpace = [MEMORY[0x1E69B3A10] workingColorSpace];
+  [v7 setColorSpace:workingColorSpace];
 
-  v9 = [MEMORY[0x1E69B3BF0] RGBAh];
-  [v7 setPixelFormat:v9];
+  rGBAh = [MEMORY[0x1E69B3BF0] RGBAh];
+  [v7 setPixelFormat:rGBAh];
 
   [v7 setTileSize:{256, 256}];
   [v7 setName:@"PIRetouchCacheNode-setup"];
@@ -243,13 +243,13 @@
 
   else
   {
-    *a4 = [MEMORY[0x1E69B3A48] missingError:@"Missing input retouch region" object:0];
+    *error = [MEMORY[0x1E69B3A48] missingError:@"Missing input retouch region" object:0];
   }
 
   return inputRegion != 0;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
   v13.receiver = self;
   v13.super_class = PIRetouchCacheNode;
@@ -269,19 +269,19 @@
     v11 = v10;
 
     v7 = 0;
-    *a3 = v10;
+    *geometry = v10;
   }
 
   return v7;
 }
 
-- (id)_modifyEvaluatedGeometry:(id)a3
+- (id)_modifyEvaluatedGeometry:(id)geometry
 {
-  v3 = a3;
+  geometryCopy = geometry;
   v4 = objc_alloc(MEMORY[0x1E69B3B18]);
-  if (v3)
+  if (geometryCopy)
   {
-    [v3 extent];
+    [geometryCopy extent];
   }
 
   else
@@ -290,17 +290,17 @@
     v9 = 0u;
   }
 
-  v5 = [v3 orientation];
-  v6 = [v4 initWithExtent:&v8 renderScale:*MEMORY[0x1E69B3918] orientation:{*(MEMORY[0x1E69B3918] + 8), v5}];
+  orientation = [geometryCopy orientation];
+  v6 = [v4 initWithExtent:&v8 renderScale:*MEMORY[0x1E69B3918] orientation:{*(MEMORY[0x1E69B3918] + 8), orientation}];
 
   return v6;
 }
 
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  requestCopy = request;
+  if (!requestCopy)
   {
     v15 = NUAssertLogger_6588();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -322,8 +322,8 @@
         v23 = dispatch_get_specific(*v17);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v23;
         *&buf[12] = 2114;
@@ -334,8 +334,8 @@
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -345,10 +345,10 @@
     __break(1u);
   }
 
-  v7 = v6;
+  v7 = requestCopy;
   v8 = objc_alloc(MEMORY[0x1E69B39A0]);
-  v9 = [v7 composition];
-  v10 = [v8 initWithComposition:v9];
+  composition = [v7 composition];
+  v10 = [v8 initWithComposition:composition];
 
   [v10 setName:@"PIRetouchCacheNode-newRequest"];
   *buf = 0;
@@ -387,7 +387,7 @@
   else
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to generate retouch render request" object:self underlyingError:*(*&buf[8] + 40)];
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   _Block_object_dispose(&v33, 8);
@@ -407,32 +407,32 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (void)_updateInputRegion:(id)a3 outputRegion:(id)a4 forStroke:(id)a5 geometry:(id)a6
+- (void)_updateInputRegion:(id)region outputRegion:(id)outputRegion forStroke:(id)stroke geometry:(id)geometry
 {
-  v10 = a6;
-  v11 = a5;
-  v23 = a4;
-  v12 = a3;
-  v13 = [v11 objectForKeyedSubscript:@"sourceOffset"];
+  geometryCopy = geometry;
+  strokeCopy = stroke;
+  outputRegionCopy = outputRegion;
+  regionCopy = region;
+  v13 = [strokeCopy objectForKeyedSubscript:@"sourceOffset"];
   v14 = [v13 objectForKeyedSubscript:@"x"];
   v15 = [v13 objectForKeyedSubscript:@"y"];
   [v14 doubleValue];
   [v15 doubleValue];
   v39 = 0u;
   v40 = 0u;
-  if (v10)
+  if (geometryCopy)
   {
-    [v10 extent];
+    [geometryCopy extent];
   }
 
-  v16 = [PIRepairUtilities brushStrokeFromRetouchStrokeDictionary:v11];
+  v16 = [PIRepairUtilities brushStrokeFromRetouchStrokeDictionary:strokeCopy];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v17 = [v11 objectForKeyedSubscript:@"mode"];
+  v17 = [strokeCopy objectForKeyedSubscript:@"mode"];
 
   v18 = PIRetouchModeFromString(v17);
   if (v18 == 2)
@@ -506,21 +506,21 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
   v27 = v31;
   v28 = v32;
   NUPixelRectIntersection();
-  [v12 addRect:&v29];
+  [regionCopy addRect:&v29];
   v29 = 0u;
   v30 = 0u;
   v27 = v35;
   v28 = v36;
   NUAlignPixelRectToPixelGrid();
   NUPixelRectIntersection();
-  [v12 addRect:&v27];
+  [regionCopy addRect:&v27];
   v27 = 0u;
   v28 = 0u;
   v25 = v37;
   v26 = v38;
   NUAlignPixelRectToPixelGrid();
   NUPixelRectIntersection();
-  [v12 addRect:&v25];
+  [regionCopy addRect:&v25];
 
   v25 = 0u;
   v26 = 0u;
@@ -528,46 +528,46 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
   v24[1] = v38;
   NUAlignPixelRectToPixelGrid();
   NUPixelRectIntersection();
-  [v23 addRect:v24];
+  [outputRegionCopy addRect:v24];
 }
 
-- (void)_updateDigest:(id)a3 forStroke:(id)a4
+- (void)_updateDigest:(id)digest forStroke:(id)stroke
 {
-  v15 = a3;
-  v5 = a4;
-  [v15 addString:@"RetouchStroke{"];
-  v6 = [v5 objectForKeyedSubscript:@"sourceOffset"];
-  [v6 nu_updateDigest:v15];
-  [v15 addCString:{", "}];
-  v7 = [v5 objectForKeyedSubscript:@"radius"];
-  [v7 nu_updateDigest:v15];
+  digestCopy = digest;
+  strokeCopy = stroke;
+  [digestCopy addString:@"RetouchStroke{"];
+  v6 = [strokeCopy objectForKeyedSubscript:@"sourceOffset"];
+  [v6 nu_updateDigest:digestCopy];
+  [digestCopy addCString:{", "}];
+  v7 = [strokeCopy objectForKeyedSubscript:@"radius"];
+  [v7 nu_updateDigest:digestCopy];
 
-  [v15 addCString:{", "}];
-  v8 = [v5 objectForKeyedSubscript:@"softness"];
-  [v8 nu_updateDigest:v15];
+  [digestCopy addCString:{", "}];
+  v8 = [strokeCopy objectForKeyedSubscript:@"softness"];
+  [v8 nu_updateDigest:digestCopy];
 
-  [v15 addCString:{", "}];
-  v9 = [v5 objectForKeyedSubscript:@"opacity"];
-  [v9 nu_updateDigest:v15];
+  [digestCopy addCString:{", "}];
+  v9 = [strokeCopy objectForKeyedSubscript:@"opacity"];
+  [v9 nu_updateDigest:digestCopy];
 
-  [v15 addCString:{", "}];
-  v10 = [v5 objectForKeyedSubscript:@"points"];
+  [digestCopy addCString:{", "}];
+  v10 = [strokeCopy objectForKeyedSubscript:@"points"];
 
   v11 = [v10 count];
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
-  [v12 nu_updateDigest:v15];
+  [v12 nu_updateDigest:digestCopy];
   if (v11)
   {
-    [v15 addCString:{", "}];
+    [digestCopy addCString:{", "}];
     v13 = [v10 objectAtIndexedSubscript:0];
-    [v13 nu_updateDigest:v15];
+    [v13 nu_updateDigest:digestCopy];
 
-    [v15 addCString:{", "}];
+    [digestCopy addCString:{", "}];
     v14 = [v10 objectAtIndexedSubscript:v11 - 1];
-    [v14 nu_updateDigest:v15];
+    [v14 nu_updateDigest:digestCopy];
   }
 
-  [v15 addString:@"}"];
+  [digestCopy addString:@"}"];
 }
 
 - (id)baseIdentifier
@@ -576,17 +576,17 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
   if (!baseIdentifier)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69B3A38]);
-    v5 = [(NUCacheNode *)self inputNode];
-    [v5 nu_updateDigest:v4];
+    inputNode = [(NUCacheNode *)self inputNode];
+    [inputNode nu_updateDigest:v4];
 
     [v4 addString:@"subsample["];
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NUCacheNode subsampleFactor](self, "subsampleFactor")}];
     [v6 nu_updateDigest:v4];
 
     [v4 addString:@"]"];
-    v7 = [v4 stringValue];
+    stringValue = [v4 stringValue];
     v8 = self->_baseIdentifier;
-    self->_baseIdentifier = v7;
+    self->_baseIdentifier = stringValue;
 
     baseIdentifier = self->_baseIdentifier;
   }
@@ -594,7 +594,7 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
   return baseIdentifier;
 }
 
-- (BOOL)_tryLoad:(id *)a3
+- (BOOL)_tryLoad:(id *)load
 {
   v91 = *MEMORY[0x1E69E9840];
   if (self->_outputKey)
@@ -604,18 +604,18 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
 
   else
   {
-    v6 = [(NUCacheNode *)self inputNode];
-    v58 = [v6 outputImageGeometry:a3];
+    inputNode = [(NUCacheNode *)self inputNode];
+    v58 = [inputNode outputImageGeometry:load];
 
     if (v58)
     {
-      v7 = [(NURenderNode *)self settings];
-      v8 = [v7 objectForKeyedSubscript:@"strokes"];
+      settings = [(NURenderNode *)self settings];
+      v8 = [settings objectForKeyedSubscript:@"strokes"];
 
       v56 = [v8 count];
-      v9 = [(PIRetouchCacheNode *)self baseIdentifier];
+      baseIdentifier = [(PIRetouchCacheNode *)self baseIdentifier];
       v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v56 + 1];
-      [v10 addObject:v9];
+      [v10 addObject:baseIdentifier];
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
@@ -628,7 +628,7 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
         do
         {
           v14 = 0;
-          v15 = v9;
+          v15 = baseIdentifier;
           do
           {
             if (*v75 != v13)
@@ -640,11 +640,11 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
             v17 = objc_alloc_init(MEMORY[0x1E69B3A38]);
             [v15 nu_updateDigest:v17];
             [(PIRetouchCacheNode *)self _updateDigest:v17 forStroke:v16];
-            v9 = [v17 stringValue];
+            baseIdentifier = [v17 stringValue];
 
-            [v10 addObject:v9];
+            [v10 addObject:baseIdentifier];
             ++v14;
-            v15 = v9;
+            v15 = baseIdentifier;
           }
 
           while (v12 != v14);
@@ -657,8 +657,8 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
       v18 = objc_alloc_init(MEMORY[0x1E69B3BB0]);
       v19 = objc_alloc_init(MEMORY[0x1E69B3BB0]);
       v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v56 + 1];
-      v21 = [MEMORY[0x1E69B3C10] region];
-      [v20 addObject:v21];
+      region = [MEMORY[0x1E69B3C10] region];
+      [v20 addObject:region];
 
       v72 = 0u;
       v73 = 0u;
@@ -714,12 +714,12 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
       v60 = v55;
       v29 = v20;
       v61 = v29;
-      v62 = self;
+      selfCopy = self;
       v64 = &v66;
       v65 = v56;
       [v10 enumerateObjectsWithOptions:2 usingBlock:v59];
-      v30 = [*(*(&v84 + 1) + 40) validRegion];
-      v3 = [v30 includesRegion:v18];
+      validRegion = [*(*(&v84 + 1) + 40) validRegion];
+      v3 = [validRegion includesRegion:v18];
 
       if (v3)
       {
@@ -731,10 +731,10 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
         v31 = *MEMORY[0x1E69B3D80];
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [(NUCacheNode *)self subsampleFactor];
+          subsampleFactor = [(NUCacheNode *)self subsampleFactor];
           v33 = v67[3];
           *buf = 67109632;
-          v79 = v32;
+          v79 = subsampleFactor;
           v80 = 1024;
           v81 = v33;
           v82 = 1024;
@@ -744,7 +744,7 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
 
         outputKey = [*(*(&v84 + 1) + 40) immutableImageCopy];
         v35 = [obj subarrayWithRange:{v67[3], v56 - v67[3]}];
-        [(PIRetouchCacheNode *)self resolveWithInputImage:outputKey retouchStrokes:v35 cacheKey:v9];
+        [(PIRetouchCacheNode *)self resolveWithInputImage:outputKey retouchStrokes:v35 cacheKey:baseIdentifier];
         [*(*(&v84 + 1) + 40) endAccess];
       }
 
@@ -753,8 +753,8 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
         v37 = *(*(&v84 + 1) + 40);
         if (v37)
         {
-          v38 = [v37 validRegion];
-          v39 = [v18 regionByRemovingRegion:v38];
+          validRegion2 = [v37 validRegion];
+          v39 = [v18 regionByRemovingRegion:validRegion2];
           inputRegion = self->_inputRegion;
           self->_inputRegion = v39;
 
@@ -766,11 +766,11 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
           v41 = *MEMORY[0x1E69B3D80];
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
-            v42 = [(NUCacheNode *)self subsampleFactor];
+            subsampleFactor2 = [(NUCacheNode *)self subsampleFactor];
             v43 = v67[3];
             v44 = self->_inputRegion;
             *buf = 67109890;
-            v79 = v42;
+            v79 = subsampleFactor2;
             v80 = 1024;
             v81 = v43;
             v82 = 1024;
@@ -780,9 +780,9 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
             _os_log_impl(&dword_1C7694000, v41, OS_LOG_TYPE_DEFAULT, "Retouch intermediate #%d cache hit [partial] (stroke #%d out of %d), invalid region: %@", buf, 0x1Eu);
           }
 
-          v45 = [*(*(&v84 + 1) + 40) mutableImageCopy];
+          mutableImageCopy = [*(*(&v84 + 1) + 40) mutableImageCopy];
           inputImage = self->_inputImage;
-          self->_inputImage = v45;
+          self->_inputImage = mutableImageCopy;
 
           self->_baseStrokeIndex = v67[3];
           [*(*(&v84 + 1) + 40) endAccess];
@@ -798,9 +798,9 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
           v47 = *MEMORY[0x1E69B3D80];
           if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
           {
-            v48 = [(NUCacheNode *)self subsampleFactor];
+            subsampleFactor3 = [(NUCacheNode *)self subsampleFactor];
             *buf = 67109632;
-            v79 = v48;
+            v79 = subsampleFactor3;
             v80 = 1024;
             v81 = v56;
             v82 = 2048;
@@ -817,7 +817,7 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
           self->_inputImage = 0;
         }
 
-        v52 = v9;
+        v52 = baseIdentifier;
         outputKey = self->_outputKey;
         self->_outputKey = v52;
       }
@@ -836,7 +836,7 @@ void __64__PIRetouchCacheNode_newRenderRequestWithOriginalRequest_error___block_
       v36 = *MEMORY[0x1E69B3D80];
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
       {
-        v54 = *a3;
+        v54 = *load;
         LODWORD(v84) = 138543362;
         *(&v84 + 4) = v54;
         _os_log_error_impl(&dword_1C7694000, v36, OS_LOG_TYPE_ERROR, "Failed to load retouch geometry, error: %{public}@", &v84, 0xCu);
@@ -901,13 +901,13 @@ void __31__PIRetouchCacheNode__tryLoad___block_invoke(uint64_t a1, void *a2, uin
   }
 }
 
-+ (id)nodeWithInput:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
++ (id)nodeWithInput:(id)input settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!a6)
+  inputCopy = input;
+  settingsCopy = settings;
+  stateCopy = state;
+  if (!error)
   {
     v23 = NUAssertLogger_6588();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -918,7 +918,7 @@ void __31__PIRetouchCacheNode__tryLoad___block_invoke(uint64_t a1, void *a2, uin
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v25 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v27 = NUAssertLogger_6588();
     v28 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
@@ -926,11 +926,11 @@ void __31__PIRetouchCacheNode__tryLoad___block_invoke(uint64_t a1, void *a2, uin
     {
       if (v28)
       {
-        v41 = dispatch_get_specific(*v25);
+        v41 = dispatch_get_specific(*callStackSymbols);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v25 = [v42 callStackSymbols];
-        v44 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v42 callStackSymbols];
+        v44 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v57 = v41;
         v58 = 2114;
@@ -941,10 +941,10 @@ void __31__PIRetouchCacheNode__tryLoad___block_invoke(uint64_t a1, void *a2, uin
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v57 = v25;
+      v57 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -952,7 +952,7 @@ void __31__PIRetouchCacheNode__tryLoad___block_invoke(uint64_t a1, void *a2, uin
     goto LABEL_33;
   }
 
-  if (!v9)
+  if (!inputCopy)
   {
     v30 = NUAssertLogger_6588();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -963,7 +963,7 @@ void __31__PIRetouchCacheNode__tryLoad___block_invoke(uint64_t a1, void *a2, uin
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v25 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v32 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v27 = NUAssertLogger_6588();
     v33 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
@@ -971,10 +971,10 @@ void __31__PIRetouchCacheNode__tryLoad___block_invoke(uint64_t a1, void *a2, uin
     {
       if (v33)
       {
-        v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v57 = v25;
+        v57 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -987,11 +987,11 @@ LABEL_35:
 LABEL_33:
     if (v33)
     {
-      v45 = dispatch_get_specific(*v25);
+      v45 = dispatch_get_specific(*callStackSymbols);
       v46 = MEMORY[0x1E696AF00];
       v47 = v45;
-      v25 = [v46 callStackSymbols];
-      v48 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v46 callStackSymbols];
+      v48 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v57 = v45;
       v58 = 2114;
@@ -1002,7 +1002,7 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  if (!v10)
+  if (!settingsCopy)
   {
     v35 = NUAssertLogger_6588();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -1013,7 +1013,7 @@ LABEL_33:
       _os_log_error_impl(&dword_1C7694000, v35, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v25 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v37 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v27 = NUAssertLogger_6588();
     v38 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
@@ -1021,8 +1021,8 @@ LABEL_33:
     {
       if (v38)
       {
-        v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v40 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v57 = v40;
         _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1034,11 +1034,11 @@ LABEL_33:
 LABEL_36:
     if (v38)
     {
-      v49 = dispatch_get_specific(*v25);
+      v49 = dispatch_get_specific(*callStackSymbols);
       v50 = MEMORY[0x1E696AF00];
       v51 = v49;
-      v52 = [v50 callStackSymbols];
-      v53 = [v52 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v50 callStackSymbols];
+      v53 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v57 = v49;
       v58 = 2114;
@@ -1051,8 +1051,8 @@ LABEL_38:
     _NUAssertFailHandler();
   }
 
-  v12 = v11;
-  v13 = [v10 objectForKeyedSubscript:@"retouch"];
+  v12 = stateCopy;
+  v13 = [settingsCopy objectForKeyedSubscript:@"retouch"];
   v14 = v13;
   if (v13)
   {
@@ -1071,27 +1071,27 @@ LABEL_38:
         [v18 setObject:v19 forKey:@"detectedFaces"];
       }
 
-      v20 = [(NUCacheNode *)[PIRetouchCacheNode alloc] initWithInput:v9 settings:v18];
+      v20 = [(NUCacheNode *)[PIRetouchCacheNode alloc] initWithInput:inputCopy settings:v18];
       v21 = [(NUCacheNode *)[PIRetouchSubsampleCacheNode alloc] initWithInput:v20 settings:v18];
     }
 
     else
     {
       [MEMORY[0x1E69B3A48] missingError:@"Missing input strokes" object:v14];
-      *a6 = v21 = 0;
+      *error = v21 = 0;
     }
   }
 
   else
   {
-    [MEMORY[0x1E69B3A48] missingError:@"Missing retouch settings" object:v10];
-    *a6 = v21 = 0;
+    [MEMORY[0x1E69B3A48] missingError:@"Missing retouch settings" object:settingsCopy];
+    *error = v21 = 0;
   }
 
   return v21;
 }
 
-- (BOOL)tryLoadPersistentURL:(id)a3 error:(id *)a4
+- (BOOL)tryLoadPersistentURL:(id)l error:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -1115,7 +1115,7 @@ LABEL_38:
   v6 = *(v16 + 24);
   if ((v6 & 1) == 0)
   {
-    *a4 = v10[5];
+    *error = v10[5];
     v6 = *(v16 + 24);
   }
 
@@ -1135,21 +1135,21 @@ void __49__PIRetouchCacheNode_tryLoadPersistentURL_error___block_invoke(void *a1
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PIRetouchCacheNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v29 = NUAssertLogger_6588();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1171,8 +1171,8 @@ void __49__PIRetouchCacheNode_tryLoadPersistentURL_error___block_invoke(void *a1
         v37 = dispatch_get_specific(*v31);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v37;
         v48 = 2114;
@@ -1183,8 +1183,8 @@ void __49__PIRetouchCacheNode_tryLoadPersistentURL_error___block_invoke(void *a1
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v36;
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1193,12 +1193,12 @@ void __49__PIRetouchCacheNode_tryLoadPersistentURL_error___block_invoke(void *a1
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  if ([v9 evaluationMode] == 1 || !objc_msgSend(v10, "evaluationMode"))
+  v10 = stateCopy;
+  if ([stateCopy evaluationMode] == 1 || !objc_msgSend(v10, "evaluationMode"))
   {
     v45.receiver = self;
     v45.super_class = PIRetouchCacheNode;
-    v12 = [(NUCacheNode *)&v45 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    v12 = [(NUCacheNode *)&v45 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
     if (v12)
     {
       if ([(NURenderNode *)self isCached])
@@ -1232,23 +1232,23 @@ void __49__PIRetouchCacheNode_tryLoadPersistentURL_error___block_invoke(void *a1
           v18 = *(MEMORY[0x1E69B3918] + 8);
         }
 
-        v21 = [(PIRetouchCacheNode *)self retouchInputNode];
-        v22 = [v21 nodeByReplayingAgainstCache:v8 pipelineState:v19 error:a5];
+        retouchInputNode = [(PIRetouchCacheNode *)self retouchInputNode];
+        v22 = [retouchInputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:v19 error:error];
 
         if (v22)
         {
           v23 = -[PIRetouchCompositeNode initWithScale:sampleMode:input:retouch:]([PIRetouchCompositeNode alloc], "initWithScale:sampleMode:input:retouch:", v16, v18, [v10 sampleMode], v22, v12);
-          v11 = [MEMORY[0x1E69B3C28] nodeFromCache:v23 cache:v8];
+          v11 = [MEMORY[0x1E69B3C28] nodeFromCache:v23 cache:cacheCopy];
 
           [v11 setEvaluatedForMode:{objc_msgSend(v10, "evaluationMode")}];
           if ((NUScaleEqual() & 1) == 0)
           {
             v43 = objc_alloc(MEMORY[0x1E69B3C90]);
             v24 = v20;
-            v25 = [v10 scale];
-            v27 = [v43 initWithTargetScale:v25 effectiveScale:v26 sampleMode:v44 input:{v24, objc_msgSend(v10, "sampleMode"), v11}];
+            scale = [v10 scale];
+            v27 = [v43 initWithTargetScale:scale effectiveScale:v26 sampleMode:v44 input:{v24, objc_msgSend(v10, "sampleMode"), v11}];
 
-            v11 = [MEMORY[0x1E69B3C28] nodeFromCache:v27 cache:v8];
+            v11 = [MEMORY[0x1E69B3C28] nodeFromCache:v27 cache:cacheCopy];
 
             [v11 setEvaluatedForMode:{objc_msgSend(v10, "evaluationMode")}];
           }
@@ -1270,7 +1270,7 @@ void __49__PIRetouchCacheNode_tryLoadPersistentURL_error___block_invoke(void *a1
   else
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Cannot evaluate cache node" object:self];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   return v11;
@@ -1280,18 +1280,18 @@ void __49__PIRetouchCacheNode_tryLoadPersistentURL_error___block_invoke(void *a1
 {
   v3 = objc_alloc(MEMORY[0x1E695DFF8]);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NUCacheNode *)self cacheIdentifier];
-  v6 = [v4 stringWithFormat:@"x-cache-node://retouch/%@", v5];
+  cacheIdentifier = [(NUCacheNode *)self cacheIdentifier];
+  v6 = [v4 stringWithFormat:@"x-cache-node://retouch/%@", cacheIdentifier];
   v7 = [v3 initWithString:v6];
 
   return v7;
 }
 
-- (PIRetouchCacheNode)initWithInputs:(id)a3 settings:(id)a4 subsampleFactor:(int64_t)a5
+- (PIRetouchCacheNode)initWithInputs:(id)inputs settings:(id)settings subsampleFactor:(int64_t)factor
 {
   v9.receiver = self;
   v9.super_class = PIRetouchCacheNode;
-  v5 = [(NUCacheNode *)&v9 initWithInputs:a3 settings:a4 subsampleFactor:a5];
+  v5 = [(NUCacheNode *)&v9 initWithInputs:inputs settings:settings subsampleFactor:factor];
   v6 = dispatch_queue_create("PIRetouchCacheNode", 0);
   retouchQueue = v5->_retouchQueue;
   v5->_retouchQueue = v6;

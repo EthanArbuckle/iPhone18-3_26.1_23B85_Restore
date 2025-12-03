@@ -1,24 +1,24 @@
 @interface UIRemoteKeyboardWindow
-+ (id)remoteKeyboardWindowForScreen:(id)a3 create:(BOOL)a4;
++ (id)remoteKeyboardWindowForScreen:(id)screen create:(BOOL)create;
 - (BOOL)_isFullscreen;
 - (BOOL)_isHostedInAnotherProcess;
-- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (BOOL)isInternalWindow;
 - (BOOL)shouldAttachBindable;
 - (BOOL)shouldDetachBindable;
-- (id)_initBasicWithScreen:(id)a3 options:(id)a4;
-- (id)_initWithScreen:(id)a3 options:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_initBasicWithScreen:(id)screen options:(id)options;
+- (id)_initWithScreen:(id)screen options:(id)options;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)_orientationInSceneSpace;
 - (void)_configureAlphaIfNecessary;
 - (void)_resetScene;
-- (void)_setRotatableClient:(id)a3 toOrientation:(int64_t)a4 updateStatusBar:(BOOL)a5 duration:(double)a6 force:(BOOL)a7 isRotating:(BOOL)a8;
+- (void)_setRotatableClient:(id)client toOrientation:(int64_t)orientation updateStatusBar:(BOOL)bar duration:(double)duration force:(BOOL)force isRotating:(BOOL)rotating;
 - (void)attachBindable;
 - (void)dealloc;
 - (void)detachBindable;
 - (void)endDisablingInterfaceAutorotation;
 - (void)resetScene;
-- (void)setWindowLevel:(double)a3;
+- (void)setWindowLevel:(double)level;
 @end
 
 @implementation UIRemoteKeyboardWindow
@@ -52,8 +52,8 @@
         if (keyboardSceneLayer)
         {
           v6 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-          v7 = [v6 requiredScene];
-          LOBYTE(keyboardSceneLayer) = keyboardSceneLayer != v7;
+          requiredScene = [v6 requiredScene];
+          LOBYTE(keyboardSceneLayer) = keyboardSceneLayer != requiredScene;
         }
       }
     }
@@ -86,8 +86,8 @@
   else
   {
     v3 = objc_opt_class();
-    v4 = [(UIWindow *)self screen];
-    v5 = [v3 remoteKeyboardWindowForScreen:v4 create:0];
+    screen = [(UIWindow *)self screen];
+    v5 = [v3 remoteKeyboardWindowForScreen:screen create:0];
 
     if (v5 == self)
     {
@@ -108,8 +108,8 @@
   if (!*&self->_arePlaceholdersInitialised)
   {
     v3 = objc_alloc(MEMORY[0x1E699FB20]);
-    v4 = [(UIWindow *)self _boundContext];
-    v5 = [v3 initWithTrackingContext:v4];
+    _boundContext = [(UIWindow *)self _boundContext];
+    v5 = [v3 initWithTrackingContext:_boundContext];
     v6 = *&self->_arePlaceholdersInitialised;
     *&self->_arePlaceholdersInitialised = v5;
 
@@ -140,8 +140,8 @@
   if (!+[_UIRemoteKeyboards wantsUnassociatedWindowSceneForKeyboardWindow])
   {
     v10 = [UIScene _sceneForFBSScene:self->_keyboardSceneLayer];
-    v11 = [(UIWindow *)self windowScene];
-    [v11 _setSettingsScene:v10];
+    windowScene = [(UIWindow *)self windowScene];
+    [windowScene _setSettingsScene:v10];
   }
 
   [(FBSSceneLayer *)self->_keyboardSceneLayer attachLayer:*&self->_arePlaceholdersInitialised];
@@ -197,9 +197,9 @@ void __52__UIRemoteKeyboardWindow__configureAlphaIfNecessary__block_invoke()
   return [(UIWindow *)&v4 _orientationInSceneSpace];
 }
 
-+ (id)remoteKeyboardWindowForScreen:(id)a3 create:(BOOL)a4
++ (id)remoteKeyboardWindowForScreen:(id)screen create:(BOOL)create
 {
-  v6 = a3;
+  screenCopy = screen;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -218,12 +218,12 @@ void __52__UIRemoteKeyboardWindow__configureAlphaIfNecessary__block_invoke()
   v13[2] = __63__UIRemoteKeyboardWindow_remoteKeyboardWindowForScreen_create___block_invoke;
   v13[3] = &unk_1E70FD2A8;
   v16 = &v19;
-  v17 = a1;
-  v9 = v6;
+  selfCopy = self;
+  v9 = screenCopy;
   v14 = v9;
   v10 = v7;
   v15 = v10;
-  v18 = a4;
+  createCopy = create;
   [UIView performWithoutAnimation:v13];
   v11 = v20[5];
 
@@ -274,23 +274,23 @@ void __63__UIRemoteKeyboardWindow_remoteKeyboardWindowForScreen_create___block_i
   }
 }
 
-- (id)_initBasicWithScreen:(id)a3 options:(id)a4
+- (id)_initBasicWithScreen:(id)screen options:(id)options
 {
-  v5 = a3;
-  v6 = [_UIRemoteKeyboards keyboardWindowSceneForScreen:v5 create:1];
+  screenCopy = screen;
+  v6 = [_UIRemoteKeyboards keyboardWindowSceneForScreen:screenCopy create:1];
   if (!+[_UIRemoteKeyboards wantsUnassociatedWindowSceneForKeyboardWindow])
   {
-    v7 = [UIApp _keyWindowForScreen:v5];
-    v8 = [v7 windowScene];
+    v7 = [UIApp _keyWindowForScreen:screenCopy];
+    windowScene = [v7 windowScene];
 
-    if (!v8)
+    if (!windowScene)
     {
-      v8 = +[UIWindowScene _keyWindowScene];
-      v9 = [v8 screen];
+      windowScene = +[UIWindowScene _keyWindowScene];
+      screen = [windowScene screen];
 
-      if (v9 == v5)
+      if (screen == screenCopy)
       {
-        if (v8)
+        if (windowScene)
         {
           goto LABEL_7;
         }
@@ -300,16 +300,16 @@ void __63__UIRemoteKeyboardWindow_remoteKeyboardWindowForScreen_create___block_i
       {
       }
 
-      v8 = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:v5];
+      windowScene = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:screenCopy];
     }
 
 LABEL_7:
-    [v6 _setSettingsScene:v8];
+    [v6 _setSettingsScene:windowScene];
   }
 
   v10 = *MEMORY[0x1E695EFF8];
   v11 = *(MEMORY[0x1E695EFF8] + 8);
-  [v5 bounds];
+  [screenCopy bounds];
   v15.receiver = self;
   v15.super_class = UIRemoteKeyboardWindow;
   v12 = [(UITextEffectsWindow *)&v15 _initWithFrame:0 debugName:v6 windowScene:v10, v11];
@@ -322,21 +322,21 @@ LABEL_7:
   return v13;
 }
 
-- (id)_initWithScreen:(id)a3 options:(id)a4
+- (id)_initWithScreen:(id)screen options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(UIRemoteKeyboardWindow *)self _initBasicWithScreen:v7 options:v8];
+  screenCopy = screen;
+  optionsCopy = options;
+  v9 = [(UIRemoteKeyboardWindow *)self _initBasicWithScreen:screenCopy options:optionsCopy];
   v10 = v9;
   if (v9)
   {
-    [v9 setScreen:v7];
-    objc_storeStrong(v10 + 153, a3);
-    objc_storeStrong(v10 + 152, a4);
-    v11 = [v8 objectForKey:0x1EFB7BDD0];
+    [v9 setScreen:screenCopy];
+    objc_storeStrong(v10 + 153, screen);
+    objc_storeStrong(v10 + 152, options);
+    v11 = [optionsCopy objectForKey:0x1EFB7BDD0];
     *(v10 + 960) = [v11 BOOLValue];
 
-    [v10 _commonInitWithOptions:v8];
+    [v10 _commonInitWithOptions:optionsCopy];
     [v10 _configureAlphaIfNecessary];
     v12 = v10;
   }
@@ -386,75 +386,75 @@ void __42__UIRemoteKeyboardWindow_isInternalWindow__block_invoke()
   return 1;
 }
 
-- (void)setWindowLevel:(double)a3
+- (void)setWindowLevel:(double)level
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = -10000001.0;
+    level = -10000001.0;
   }
 
   else
   {
     v5 = dyld_program_sdk_at_least();
-    v6 = a3 >= 10000001.0 || v5 == 0;
+    v6 = level >= 10000001.0 || v5 == 0;
     if (!v6 && ![UIApp _isSpringBoard])
     {
-      a3 = 10000001.0;
+      level = 10000001.0;
     }
   }
 
   v7.receiver = self;
   v7.super_class = UIRemoteKeyboardWindow;
-  [(UIWindow *)&v7 setWindowLevel:a3];
+  [(UIWindow *)&v7 setWindowLevel:level];
 }
 
-- (void)_setRotatableClient:(id)a3 toOrientation:(int64_t)a4 updateStatusBar:(BOOL)a5 duration:(double)a6 force:(BOOL)a7 isRotating:(BOOL)a8
+- (void)_setRotatableClient:(id)client toOrientation:(int64_t)orientation updateStatusBar:(BOOL)bar duration:(double)duration force:(BOOL)force isRotating:(BOOL)rotating
 {
-  v8 = a8;
-  v9 = a7;
-  v11 = a5;
-  v14 = a3;
+  rotatingCopy = rotating;
+  forceCopy = force;
+  barCopy = bar;
+  clientCopy = client;
   v15 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-  v16 = [v15 snapshotting];
+  snapshotting = [v15 snapshotting];
 
-  if ((v16 & 1) == 0)
+  if ((snapshotting & 1) == 0)
   {
-    v17 = [(UITextEffectsWindow *)self rootViewController];
-    v18 = [v17 inhibitRotationAnimation];
-    v19 = 0.0;
-    if (!v18)
+    rootViewController = [(UITextEffectsWindow *)self rootViewController];
+    inhibitRotationAnimation = [rootViewController inhibitRotationAnimation];
+    durationCopy = 0.0;
+    if (!inhibitRotationAnimation)
     {
-      v19 = a6;
+      durationCopy = duration;
     }
 
     v20.receiver = self;
     v20.super_class = UIRemoteKeyboardWindow;
-    [(UIWindow *)&v20 _setRotatableClient:v14 toOrientation:a4 updateStatusBar:v11 duration:v9 force:v8 isRotating:v19];
+    [(UIWindow *)&v20 _setRotatableClient:clientCopy toOrientation:orientation updateStatusBar:barCopy duration:forceCopy force:rotatingCopy isRotating:durationCopy];
   }
 }
 
-- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v4 = +[UIWindow _applicationKeyWindow];
   if ([UIApp isFrontBoard])
   {
-    v5 = [v4 _overriddenInterfaceOrientation];
+    _overriddenInterfaceOrientation = [v4 _overriddenInterfaceOrientation];
   }
 
   else
   {
-    v5 = [v4 interfaceOrientation];
+    _overriddenInterfaceOrientation = [v4 interfaceOrientation];
   }
 
-  if (v5 == a3)
+  if (_overriddenInterfaceOrientation == orientation)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v4 _shouldAutorotateToInterfaceOrientation:a3];
+    v6 = [v4 _shouldAutorotateToInterfaceOrientation:orientation];
   }
 
   return v6;
@@ -495,13 +495,13 @@ void __42__UIRemoteKeyboardWindow_isInternalWindow__block_invoke()
   [v3 _lostWindow:self];
 
   v4 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-  v5 = [v4 keyboardWindow];
-  v6 = v5;
-  if (v5 == self)
+  keyboardWindow = [v4 keyboardWindow];
+  v6 = keyboardWindow;
+  if (keyboardWindow == self)
   {
     v7 = objc_opt_class();
-    v8 = [(UIWindow *)self screen];
-    v9 = [v7 remoteKeyboardWindowForScreen:v8 create:0];
+    screen = [(UIWindow *)self screen];
+    v9 = [v7 remoteKeyboardWindowForScreen:screen create:0];
 
     if (v9)
     {
@@ -522,11 +522,11 @@ LABEL_5:
   [(UITextEffectsWindow *)&v10 dealloc];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UIRemoteKeyboardWindow;
-  v5 = [(UIAutoRotatingWindow *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIAutoRotatingWindow *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self && _UIApplicationIsStickerPickerService() && +[UIKeyboard canShowEmojiKeyboardInsideStickerPickerService])
   {
     v6 = 0;

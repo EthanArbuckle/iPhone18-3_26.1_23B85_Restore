@@ -1,6 +1,6 @@
 @interface _CNUIUserActionExpanseTarget
 - (_CNUIUserActionExpanseTarget)init;
-- (id)actionsForContact:(id)a3 discoveringEnvironment:(id)a4;
+- (id)actionsForContact:(id)contact discoveringEnvironment:(id)environment;
 @end
 
 @implementation _CNUIUserActionExpanseTarget
@@ -13,14 +13,14 @@
   return [(CNUIUserActionTarget *)&v4 initWithName:@"Expanse" bundleIdentifier:v2 teamIdentifier:0];
 }
 
-- (id)actionsForContact:(id)a3 discoveringEnvironment:(id)a4
+- (id)actionsForContact:(id)contact discoveringEnvironment:(id)environment
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 idsContactPropertyResolver];
-  v9 = [v6 highLatencySchedulerProvider];
+  environmentCopy = environment;
+  contactCopy = contact;
+  idsContactPropertyResolver = [environmentCopy idsContactPropertyResolver];
+  highLatencySchedulerProvider = [environmentCopy highLatencySchedulerProvider];
 
-  v10 = [v8 resolveBestExpanseIDSPropertyForContact:v7 schedulerProvider:v9];
+  v10 = [idsContactPropertyResolver resolveBestExpanseIDSPropertyForContact:contactCopy schedulerProvider:highLatencySchedulerProvider];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;

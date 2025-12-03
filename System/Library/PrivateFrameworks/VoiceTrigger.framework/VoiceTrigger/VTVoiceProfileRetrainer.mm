@@ -1,39 +1,39 @@
 @interface VTVoiceProfileRetrainer
-- (BOOL)_updatePruningCookie:(id)a3;
+- (BOOL)_updatePruningCookie:(id)cookie;
 - (BOOL)pruneVoiceProfileIfNecessary;
-- (VTVoiceProfileRetrainer)initWithAnalyzer:(id)a3 languageCode:(id)a4 modelType:(unint64_t)a5 configPath:(id)a6 resourcePath:(id)a7;
-- (double)_computeSamplingMSEForUtts:(id)a3 withBeforeScores:(id)a4;
-- (id)_analyzeEnrollmentUtts:(id)a3 thresholdTrigger:(double)a4 thresholdSAT:(double)a5 thresholdTDSR:(double)a6 isUpdatingModel:(BOOL)a7 extraUtts:(id *)a8 discardUtts:(id *)a9 psrTimeout:(BOOL *)a10;
+- (VTVoiceProfileRetrainer)initWithAnalyzer:(id)analyzer languageCode:(id)code modelType:(unint64_t)type configPath:(id)path resourcePath:(id)resourcePath;
+- (double)_computeSamplingMSEForUtts:(id)utts withBeforeScores:(id)scores;
+- (id)_analyzeEnrollmentUtts:(id)utts thresholdTrigger:(double)trigger thresholdSAT:(double)t thresholdTDSR:(double)r isUpdatingModel:(BOOL)model extraUtts:(id *)extraUtts discardUtts:(id *)discardUtts psrTimeout:(BOOL *)self0;
 - (id)_getLastPruningCookie;
-- (unint64_t)_deleteUtterances:(id)a3;
+- (unint64_t)_deleteUtterances:(id)utterances;
 - (void)dealloc;
-- (void)retrainSATModelWithCompletion:(id)a3;
-- (void)textDependentSpeakerRecognizer:(id)a3 failedWithError:(id)a4;
-- (void)textDependentSpeakerRecognizer:(id)a3 hasSatScore:(float)a4;
+- (void)retrainSATModelWithCompletion:(id)completion;
+- (void)textDependentSpeakerRecognizer:(id)recognizer failedWithError:(id)error;
+- (void)textDependentSpeakerRecognizer:(id)recognizer hasSatScore:(float)score;
 @end
 
 @implementation VTVoiceProfileRetrainer
 
-- (void)textDependentSpeakerRecognizer:(id)a3 failedWithError:(id)a4
+- (void)textDependentSpeakerRecognizer:(id)recognizer failedWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  errorCopy = error;
   v8 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     satRetrainingTdSr = self->_satRetrainingTdSr;
     v15 = 138543874;
-    v16 = v6;
+    v16 = recognizerCopy;
     v17 = 2114;
     v18 = satRetrainingTdSr;
     v19 = 2114;
-    v20 = v7;
+    v20 = errorCopy;
     _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "tdSR: %{public}@, _tdSrForSatRetraining:%{public}@, ERROR: %{public}@", &v15, 0x20u);
   }
 
   v10 = self->_satRetrainingTdSr;
-  if (v10 == v6)
+  if (v10 == recognizerCopy)
   {
     [(VTTextDependentSpeakerRecognizer *)v10 deleteExistingSATModel];
     v12 = self->_satRetrainingTdSr;
@@ -61,23 +61,23 @@
   }
 }
 
-- (void)textDependentSpeakerRecognizer:(id)a3 hasSatScore:(float)a4
+- (void)textDependentSpeakerRecognizer:(id)recognizer hasSatScore:(float)score
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  recognizerCopy = recognizer;
   v7 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v6;
+    v10 = recognizerCopy;
     v11 = 2050;
-    v12 = a4;
+    scoreCopy = score;
     _os_log_impl(&dword_223A31000, v7, OS_LOG_TYPE_DEFAULT, "textDependentSpeakerRecognizer:hasSatScore: %{public}@: %{public}f, signalling now", &v9, 0x16u);
   }
 
-  if (self->_satRetrainingTdSr == v6)
+  if (self->_satRetrainingTdSr == recognizerCopy)
   {
-    self->_retrainTDSRScore = a4;
+    self->_retrainTDSRScore = score;
     dispatch_semaphore_signal(self->_satRetrainingTdSrSemaphore);
   }
 
@@ -87,17 +87,17 @@
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v6;
+      v10 = recognizerCopy;
       _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "ERR: textDependentSpeakerRecognizer called for unmanaged TD-SR instance: %{public}@", &v9, 0xCu);
     }
   }
 }
 
-- (id)_analyzeEnrollmentUtts:(id)a3 thresholdTrigger:(double)a4 thresholdSAT:(double)a5 thresholdTDSR:(double)a6 isUpdatingModel:(BOOL)a7 extraUtts:(id *)a8 discardUtts:(id *)a9 psrTimeout:(BOOL *)a10
+- (id)_analyzeEnrollmentUtts:(id)utts thresholdTrigger:(double)trigger thresholdSAT:(double)t thresholdTDSR:(double)r isUpdatingModel:(BOOL)model extraUtts:(id *)extraUtts discardUtts:(id *)discardUtts psrTimeout:(BOOL *)self0
 {
-  v89 = a7;
+  modelCopy = model;
   v127 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  uttsCopy = utts;
   inPropertyData = 0x40CF400000000000;
   v112 = xmmword_223B13210;
   v113 = xmmword_223B13220;
@@ -108,7 +108,7 @@
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v14 = v13;
+  v14 = uttsCopy;
   v15 = [v14 countByEnumeratingWithState:&v107 objects:v126 count:16];
   if (v15)
   {
@@ -165,10 +165,10 @@ LABEL_15:
           ExtAudioFileGetProperty(outExtAudioFile, 0x66666D74u, &ioPropertyDataSize, outPropertyData);
           ExtAudioFileSetProperty(outExtAudioFile, 0x63666D74u, 0x28u, &inPropertyData);
           v99 = [MEMORY[0x277CBEB28] dataWithLength:2048];
-          v23 = [v99 mutableBytes];
+          mutableBytes = [v99 mutableBytes];
           *&ioData.mNumberBuffers = 1;
           *&ioData.mBuffers[0].mNumberChannels = 0x80000000001;
-          ioData.mBuffers[0].mData = v23;
+          ioData.mBuffers[0].mData = mutableBytes;
           satRetrainingTdSr = self->_satRetrainingTdSr;
           if (satRetrainingTdSr)
           {
@@ -193,12 +193,12 @@ LABEL_15:
               [(VTTextDependentSpeakerRecognizer *)self->_satRetrainingTdSr endAudio];
               if (self->_satRetrainingTdSr)
               {
-                v39 = [MEMORY[0x277CBEAA8] date];
+                date = [MEMORY[0x277CBEAA8] date];
                 v40 = dispatch_time(0, 1000000000);
                 *&v41 = COERCE_DOUBLE(dispatch_semaphore_wait(self->_satRetrainingTdSrSemaphore, v40));
-                v96 = [MEMORY[0x277CBEAA8] date];
-                v97 = v39;
-                [v96 timeIntervalSinceDate:v39];
+                date2 = [MEMORY[0x277CBEAA8] date];
+                v97 = date;
+                [date2 timeIntervalSinceDate:date];
                 v43 = v42 * 1000.0;
                 v44 = VTLogContextFacilityVoiceTrigger;
                 if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -209,7 +209,7 @@ LABEL_15:
                   *buf = 134349568;
                   v115 = *&v41;
                   v116 = 2050;
-                  v117 = v43;
+                  triggerCopy2 = v43;
                   v118 = 2050;
                   v119 = v47;
                   _os_log_impl(&dword_223A31000, v46, OS_LOG_TYPE_DEFAULT, "TDSR:: Retraining: Done Waiting with timedOut=%{public}ld, tdPsrSATRetrainingWaitTimeMs: %{public}fms, _lastTdSpeakerRecognizerSATScore=%{public}f", buf, 0x20u);
@@ -227,9 +227,9 @@ LABEL_15:
                 {
                   [v49 logTdPsrSATRetrainingTimedOut];
 
-                  if (a10)
+                  if (timeout)
                   {
-                    *a10 = 1;
+                    *timeout = 1;
                   }
                 }
 
@@ -258,7 +258,7 @@ LABEL_41:
                       v63 = var0;
                       retrainTDSRScore = self->_retrainTDSRScore;
                       v65 = v59 * retrainTDSRScore + (1.0 - v59) * var0;
-                      if (v27->var4 < a4)
+                      if (v27->var4 < trigger)
                       {
 LABEL_56:
                         v66 = [MEMORY[0x277CCABB0] numberWithDouble:v65];
@@ -274,7 +274,7 @@ LABEL_56:
 
                       if (!self->_satRetrainingTdSr)
                       {
-                        if (*p_var0 < a5)
+                        if (*p_var0 < t)
                         {
                           goto LABEL_56;
                         }
@@ -284,7 +284,7 @@ LABEL_56:
 
                       if (v48)
                       {
-                        if (retrainTDSRScore < self->_retrainThresholdTDSR && v65 < a5)
+                        if (retrainTDSRScore < self->_retrainThresholdTDSR && v65 < t)
                         {
                           goto LABEL_56;
                         }
@@ -301,15 +301,15 @@ LABEL_64:
                           *buf = 138543874;
                           v115 = v21;
                           v116 = 2050;
-                          v117 = v69;
+                          triggerCopy2 = v69;
                           v118 = 2050;
                           v119 = v70;
                           _os_log_impl(&dword_223A31000, v68, OS_LOG_TYPE_DEFAULT, "Analyze of %{public}@ is successful with SAT score of %{public}.3f, uttSATScore=%{public}.3f", buf, 0x20u);
                         }
 
-                        if (v89)
+                        if (modelCopy)
                         {
-                          v71 = [(VTAnalyzerNDAPI *)self->_analyzer getSATVectorCount];
+                          getSATVectorCount = [(VTAnalyzerNDAPI *)self->_analyzer getSATVectorCount];
                           [(VTAnalyzerNDAPI *)self->_analyzer updateSAT];
                           v72 = self->_satRetrainingTdSr;
                           if (v48)
@@ -324,7 +324,7 @@ LABEL_64:
                             self->_satRetrainingTdSr = 0;
                           }
 
-                          if ([(VTAnalyzerNDAPI *)self->_analyzer getSATVectorCount]- v71 != 1)
+                          if ([(VTAnalyzerNDAPI *)self->_analyzer getSATVectorCount]- getSATVectorCount != 1)
                           {
                             v83 = VTLogContextFacilityVoiceTrigger;
                             if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
@@ -365,15 +365,15 @@ LABEL_71:
                             *buf = 134350336;
                             v115 = var4;
                             v116 = 2050;
-                            v117 = a4;
+                            triggerCopy2 = trigger;
                             v118 = 2050;
                             v119 = v79;
                             v120 = 2050;
-                            v121 = retrainThresholdTDSR;
+                            tCopy2 = retrainThresholdTDSR;
                             v122 = 2050;
                             v123 = v65;
                             v124 = 2050;
-                            v125 = a5;
+                            tCopy = t;
                             _os_log_error_impl(&dword_223A31000, v76, OS_LOG_TYPE_ERROR, "ERR: Utterance failed in retraining - triggerCondition:%{public}.3f(%{public}.3f) tdsr:%{public}.3f(%{public}.3f) combined:%{public}.3f(%{public}.3f)", buf, 0x3Eu);
                           }
                         }
@@ -384,11 +384,11 @@ LABEL_71:
                           *buf = v88;
                           v115 = v81;
                           v116 = 2050;
-                          v117 = a4;
+                          triggerCopy2 = trigger;
                           v118 = 2050;
                           v119 = v63;
                           v120 = 2050;
-                          v121 = a5;
+                          tCopy2 = t;
                           _os_log_error_impl(&dword_223A31000, v76, OS_LOG_TYPE_ERROR, "ERR: Utterance failed in retraining - triggerCondition:%{public}.3f(%{public}.3f) sat:%{public}.3f(%{public}.3f)", buf, 0x2Au);
                         }
                       }
@@ -414,7 +414,7 @@ LABEL_50:
                       *buf = 138543618;
                       v115 = v21;
                       v116 = 1026;
-                      LODWORD(v117) = j;
+                      LODWORD(triggerCopy2) = j;
                       v36 = v61;
                       v37 = "Processed file %{public}@... analyzed %{public}d bytes";
                       v38 = 18;
@@ -505,30 +505,30 @@ LABEL_6:
     while (v17);
   }
 
-  if (a8)
+  if (extraUtts)
   {
     v85 = v92;
-    *a8 = v92;
+    *extraUtts = v92;
   }
 
   v86 = v95;
-  if (a9)
+  if (discardUtts)
   {
     v86 = v95;
-    *a9 = v86;
+    *discardUtts = v86;
   }
 
   return v93;
 }
 
-- (unint64_t)_deleteUtterances:(id)a3
+- (unint64_t)_deleteUtterances:(id)utterances
 {
   v39 = *MEMORY[0x277D85DE8];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = a3;
+  obj = utterances;
   v3 = [obj countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v3)
   {
@@ -550,8 +550,8 @@ LABEL_6:
         v10 = *(*(&v30 + 1) + 8 * i);
         if (v10)
         {
-          v11 = [*(*(&v30 + 1) + 8 * i) stringByDeletingPathExtension];
-          v12 = [v11 stringByAppendingPathExtension:@"json"];
+          stringByDeletingPathExtension = [*(*(&v30 + 1) + 8 * i) stringByDeletingPathExtension];
+          v12 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"json"];
 
           v13 = VTLogContextFacilityVoiceTrigger;
           if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -562,9 +562,9 @@ LABEL_6:
           }
 
           v14 = v8;
-          v15 = [*(v8 + 2560) defaultManager];
+          defaultManager = [*(v8 + 2560) defaultManager];
           v29 = 0;
-          [v15 removeItemAtPath:v10 error:&v29];
+          [defaultManager removeItemAtPath:v10 error:&v29];
           v16 = v29;
 
           if (v16)
@@ -573,19 +573,19 @@ LABEL_6:
             if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
             {
               v18 = v17;
-              v19 = [v16 localizedDescription];
+              localizedDescription = [v16 localizedDescription];
               *buf = 138543618;
               v35 = v10;
               v36 = 2114;
-              v37 = v19;
+              v37 = localizedDescription;
               _os_log_impl(&dword_223A31000, v18, OS_LOG_TYPE_DEFAULT, "Couldn't delete training utterance at path %{public}@ %{public}@", buf, 0x16u);
             }
           }
 
           v8 = v14;
-          v20 = [*(v14 + 2560) defaultManager];
+          defaultManager2 = [*(v14 + 2560) defaultManager];
           v28 = v16;
-          [v20 removeItemAtPath:v12 error:&v28];
+          [defaultManager2 removeItemAtPath:v12 error:&v28];
           v21 = v28;
 
           if (v21)
@@ -594,11 +594,11 @@ LABEL_6:
             if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
             {
               v23 = v22;
-              v24 = [v21 localizedDescription];
+              localizedDescription2 = [v21 localizedDescription];
               *buf = 138543618;
               v35 = v12;
               v36 = 2114;
-              v37 = v24;
+              v37 = localizedDescription2;
               _os_log_impl(&dword_223A31000, v23, OS_LOG_TYPE_DEFAULT, "Couldn't delete training utterance at path %{public}@ %{public}@", buf, 0x16u);
             }
           }
@@ -621,17 +621,17 @@ LABEL_6:
   return v6;
 }
 
-- (double)_computeSamplingMSEForUtts:(id)a3 withBeforeScores:(id)a4
+- (double)_computeSamplingMSEForUtts:(id)utts withBeforeScores:(id)scores
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VTVoiceProfileRetrainer *)self _analyzeEnrollmentUtts:v6 thresholdTrigger:0 thresholdSAT:0 thresholdTDSR:0 isUpdatingModel:0 extraUtts:-INFINITY discardUtts:-INFINITY psrTimeout:-INFINITY];
+  uttsCopy = utts;
+  scoresCopy = scores;
+  v8 = [(VTVoiceProfileRetrainer *)self _analyzeEnrollmentUtts:uttsCopy thresholdTrigger:0 thresholdSAT:0 thresholdTDSR:0 isUpdatingModel:0 extraUtts:-INFINITY discardUtts:-INFINITY psrTimeout:-INFINITY];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v9 = v6;
+  v9 = uttsCopy;
   v10 = [v9 countByEnumeratingWithState:&v37 objects:v49 count:16];
   if (v10)
   {
@@ -651,7 +651,7 @@ LABEL_6:
         v16 = *(*(&v37 + 1) + 8 * i);
         if (v16)
         {
-          v17 = [v7 objectForKey:*(*(&v37 + 1) + 8 * i)];
+          v17 = [scoresCopy objectForKey:*(*(&v37 + 1) + 8 * i)];
           [v17 doubleValue];
           v19 = v18;
           v20 = [v8 objectForKey:v16];
@@ -662,7 +662,7 @@ LABEL_6:
           if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
           {
             v24 = v23;
-            v25 = [v7 objectForKey:v16];
+            v25 = [scoresCopy objectForKey:v16];
             [v25 doubleValue];
             v27 = v26;
             [v8 objectForKey:v16];
@@ -670,7 +670,7 @@ LABEL_6:
             v28 = v11;
             v29 = v13;
             v30 = v8;
-            v31 = v7;
+            v31 = scoresCopy;
             v33 = v32 = v9;
             [v33 doubleValue];
             *buf = 138544130;
@@ -684,7 +684,7 @@ LABEL_6:
             _os_log_impl(&dword_223A31000, v24, OS_LOG_TYPE_DEFAULT, "Error for %{public}@: %{public}.3f - %{public}.3f = %{public}.3f", buf, 0x2Au);
 
             v9 = v32;
-            v7 = v31;
+            scoresCopy = v31;
             v8 = v30;
             v13 = v29;
             v11 = v28;
@@ -716,14 +716,14 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)_updatePruningCookie:(id)a3
+- (BOOL)_updatePruningCookie:(id)cookie
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  cookieCopy = cookie;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = [VTSpeakerIdUtilities getProfileVersionFilePathForLanguageCode:self->_languageCode];
   v33 = 0;
-  if ([v5 fileExistsAtPath:v6 isDirectory:&v33])
+  if ([defaultManager fileExistsAtPath:v6 isDirectory:&v33])
   {
     if (v33)
     {
@@ -772,7 +772,7 @@ LABEL_7:
     }
 
     v17 = [v10 mutableCopy];
-    [v17 setObject:v4 forKeyedSubscript:@"VoiceProfilePruningCookie"];
+    [v17 setObject:cookieCopy forKeyedSubscript:@"VoiceProfilePruningCookie"];
     v18 = MEMORY[0x277CCAAA0];
     v19 = [v17 copy];
     v31 = 0;
@@ -797,7 +797,7 @@ LABEL_7:
     else
     {
       v30 = 0;
-      v22 = [v5 removeItemAtPath:v6 error:&v30];
+      v22 = [defaultManager removeItemAtPath:v6 error:&v30];
       v23 = v30;
       v21 = v23;
       if (v22)
@@ -867,10 +867,10 @@ LABEL_16:
 - (id)_getLastPruningCookie
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = [VTSpeakerIdUtilities getProfileVersionFilePathForLanguageCode:self->_languageCode];
   v14 = 0;
-  if (![v3 fileExistsAtPath:v4 isDirectory:&v14] || (v14 & 1) != 0)
+  if (![defaultManager fileExistsAtPath:v4 isDirectory:&v14] || (v14 & 1) != 0)
   {
     v5 = 0;
     goto LABEL_4;
@@ -930,8 +930,8 @@ LABEL_6:
   v100 = [VTSpeakerIdUtilities getExplicitEnrollmentUtterancesForType:1 forLanguageCode:self->_languageCode];
   v99 = [VTSpeakerIdUtilities getSortedImplicitEnrollmentUtterancesForType:1 forLanguageCode:self->_languageCode];
   v96 = [MEMORY[0x277CBEB18] arrayWithCapacity:self->_numRetentionUtterances];
-  v3 = [(VTVoiceProfileRetrainer *)self _getLastPruningCookie];
-  v4 = [(VTAnalyzerNDAPI *)self->_analyzer getVoiceProfilePruningCookie];
+  _getLastPruningCookie = [(VTVoiceProfileRetrainer *)self _getLastPruningCookie];
+  getVoiceProfilePruningCookie = [(VTAnalyzerNDAPI *)self->_analyzer getVoiceProfilePruningCookie];
   v121 = 0;
   v117 = 0;
   v118 = &v117;
@@ -941,17 +941,17 @@ LABEL_6:
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v123 = v4;
+    v123 = getVoiceProfilePruningCookie;
     v124 = 2114;
-    v125 = v3;
+    v125 = _getLastPruningCookie;
     _os_log_impl(&dword_223A31000, v5, OS_LOG_TYPE_DEFAULT, "Voice Profile pruning cookie from Asset %{public}@ lastCookie %{public}@", buf, 0x16u);
   }
 
-  if (v4)
+  if (getVoiceProfilePruningCookie)
   {
-    if (v3)
+    if (_getLastPruningCookie)
     {
-      v6 = [v3 isEqualToString:v4];
+      v6 = [_getLastPruningCookie isEqualToString:getVoiceProfilePruningCookie];
       v7 = VTLogContextFacilityVoiceTrigger;
       if (v6)
       {
@@ -1002,7 +1002,7 @@ LABEL_10:
         v10 = +[VTAggregator sharedAggregator];
         [v10 logVoiceProfilePruningFailureWithReasonCode:2];
 
-        if ([(VTVoiceProfileRetrainer *)self _updatePruningCookie:v4])
+        if ([(VTVoiceProfileRetrainer *)self _updatePruningCookie:getVoiceProfilePruningCookie])
         {
           goto LABEL_55;
         }
@@ -1073,7 +1073,7 @@ LABEL_10:
             }
 
             [(VTTextDependentSpeakerRecognizer *)self->_satRetrainingTdSr deleteExistingSATModel];
-            if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:v4])
+            if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:getVoiceProfilePruningCookie])
             {
               v25 = VTLogContextFacilityVoiceTrigger;
               if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
@@ -1142,7 +1142,7 @@ LABEL_10:
               }
 
               [(VTTextDependentSpeakerRecognizer *)self->_satRetrainingTdSr deleteExistingSATModel];
-              if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:v4])
+              if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:getVoiceProfilePruningCookie])
               {
                 v45 = VTLogContextFacilityVoiceTrigger;
                 if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
@@ -1187,11 +1187,11 @@ LABEL_10:
                   if ([v32 count])
                   {
                     [v32 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_24];
-                    v59 = [v32 allKeys];
-                    [(VTVoiceProfileRetrainer *)self _deleteUtterances:v59];
+                    allKeys = [v32 allKeys];
+                    [(VTVoiceProfileRetrainer *)self _deleteUtterances:allKeys];
                   }
 
-                  v33 = [v34 allKeys];
+                  allKeys2 = [v34 allKeys];
 
                   v60 = VTLogContextFacilityVoiceTrigger;
                   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -1200,7 +1200,7 @@ LABEL_10:
                     _os_log_impl(&dword_223A31000, v60, OS_LOG_TYPE_DEFAULT, "Pruning::----------------------------- Implicit sampling ---------------------------------------", buf, 2u);
                   }
 
-                  v61 = [v33 count];
+                  v61 = [allKeys2 count];
                   numRetentionUtterances = self->_numRetentionUtterances;
                   v86 = (v61 - 1 + numRetentionUtterances) / numRetentionUtterances;
                   if (!__CFADD__(v61 - 1, numRetentionUtterances))
@@ -1211,14 +1211,14 @@ LABEL_10:
                     for (i = -1; ; i = v88 - 1)
                     {
                       v88 = i;
-                      if ([v33 count] <= loga)
+                      if ([allKeys2 count] <= loga)
                       {
                         break;
                       }
 
                       if (loga % v86)
                       {
-                        v64 = [v33 objectAtIndexedSubscript:?];
+                        v64 = [allKeys2 objectAtIndexedSubscript:?];
                         [v95 addObject:v64];
                       }
 
@@ -1227,7 +1227,7 @@ LABEL_10:
                         ++v87;
                       }
 
-                      v65 = [v33 count];
+                      v65 = [allKeys2 count];
                       if (v85 > v87 && v85 - v87 >= v88 + v65)
                       {
                         break;
@@ -1241,7 +1241,7 @@ LABEL_10:
                   if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
                   {
                     logb = v66;
-                    v89 = [v33 count];
+                    v89 = [allKeys2 count];
                     v67 = self->_numRetentionUtterances;
                     v68 = [v95 count];
                     *buf = 134349824;
@@ -1258,7 +1258,7 @@ LABEL_10:
 
                   if (v95 && [v95 count])
                   {
-                    v69 = [MEMORY[0x277CBEB58] setWithArray:v33];
+                    v69 = [MEMORY[0x277CBEB58] setWithArray:allKeys2];
                     v90 = [MEMORY[0x277CBEB98] setWithArray:v95];
                     [v69 minusSet:v90];
                     log = [v69 allObjects];
@@ -1266,7 +1266,7 @@ LABEL_10:
 
                   else
                   {
-                    log = v33;
+                    log = allKeys2;
                     v69 = v96;
                   }
 
@@ -1301,8 +1301,8 @@ LABEL_10:
                     v76 = v26;
                     v102 = v76;
                     [v76 enumerateKeysAndObjectsUsingBlock:v101];
-                    v77 = [v76 allKeys];
-                    [(VTVoiceProfileRetrainer *)self _deleteUtterances:v77];
+                    allKeys3 = [v76 allKeys];
+                    [(VTVoiceProfileRetrainer *)self _deleteUtterances:allKeys3];
                   }
 
                   v78 = +[VTAggregator sharedAggregator];
@@ -1330,7 +1330,7 @@ LABEL_10:
                   v82 = +[VTAggregator sharedAggregator];
                   [v82 logProfileUpdateNumRetainedUttsPHS:{-[NSObject count](log, "count")}];
 
-                  if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:v4])
+                  if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:getVoiceProfilePruningCookie])
                   {
                     v83 = VTLogContextFacilityVoiceTrigger;
                     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
@@ -1375,7 +1375,7 @@ LABEL_10:
                 }
 
                 [(VTTextDependentSpeakerRecognizer *)self->_satRetrainingTdSr deleteExistingSATModel];
-                if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:v4])
+                if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:getVoiceProfilePruningCookie])
                 {
                   v58 = VTLogContextFacilityVoiceTrigger;
                   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
@@ -1388,7 +1388,7 @@ LABEL_10:
                 v21 = v105;
 LABEL_81:
 
-                v33 = 0;
+                allKeys2 = 0;
                 log = v96;
 LABEL_82:
 
@@ -1427,7 +1427,7 @@ LABEL_82:
               }
 
               [(VTTextDependentSpeakerRecognizer *)self->_satRetrainingTdSr deleteExistingSATModel];
-              if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:v4])
+              if (![(VTVoiceProfileRetrainer *)self _updatePruningCookie:getVoiceProfilePruningCookie])
               {
                 v49 = VTLogContextFacilityVoiceTrigger;
                 if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
@@ -1456,7 +1456,7 @@ LABEL_82:
         v31 = +[VTAggregator sharedAggregator];
         [v31 logVoiceProfilePruningFailureWithReasonCode:7];
 
-        if ([(VTVoiceProfileRetrainer *)self _updatePruningCookie:v4])
+        if ([(VTVoiceProfileRetrainer *)self _updatePruningCookie:getVoiceProfilePruningCookie])
         {
           goto LABEL_55;
         }
@@ -1482,7 +1482,7 @@ LABEL_82:
         v29 = +[VTAggregator sharedAggregator];
         [v29 logVoiceProfilePruningFailureWithReasonCode:3];
 
-        if ([(VTVoiceProfileRetrainer *)self _updatePruningCookie:v4])
+        if ([(VTVoiceProfileRetrainer *)self _updatePruningCookie:getVoiceProfilePruningCookie])
         {
           goto LABEL_55;
         }
@@ -1509,7 +1509,7 @@ LABEL_82:
       v13 = +[VTAggregator sharedAggregator];
       [v13 logVoiceProfilePruningFailureWithReasonCode:1];
 
-      if ([(VTVoiceProfileRetrainer *)self _updatePruningCookie:v4])
+      if ([(VTVoiceProfileRetrainer *)self _updatePruningCookie:getVoiceProfilePruningCookie])
       {
         goto LABEL_55;
       }
@@ -1540,7 +1540,7 @@ LABEL_55:
   v26 = 0;
   v27 = 0;
   v32 = 0;
-  v33 = 0;
+  allKeys2 = 0;
   v34 = 0;
   v35 = 0;
 LABEL_56:
@@ -1735,10 +1735,10 @@ void __55__VTVoiceProfileRetrainer_pruneVoiceProfileIfNecessary__block_invoke(ui
   }
 }
 
-- (void)retrainSATModelWithCompletion:(id)a3
+- (void)retrainSATModelWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [VTUtilities getAssetHashFromConfigPath:self->_configPath];
   v6 = [VTSpeakerIdUtilities getSATDirectoryForModelType:self->_modelType forLanguageCode:self->_languageCode];
   v7 = VTLogContextFacilityVoiceTrigger;
@@ -1755,9 +1755,9 @@ void __55__VTVoiceProfileRetrainer_pruneVoiceProfileIfNecessary__block_invoke(ui
   {
     analyzer = self->_analyzer;
     v11 = v9;
-    v12 = [(VTAnalyzerNDAPI *)analyzer getSATVectorCount];
+    getSATVectorCount = [(VTAnalyzerNDAPI *)analyzer getSATVectorCount];
     v29 = 67240192;
-    LODWORD(v30) = v12;
+    LODWORD(v30) = getSATVectorCount;
     _os_log_impl(&dword_223A31000, v11, OS_LOG_TYPE_DEFAULT, "re-initializeSAT after removing old invalidSATModel: %{public}d", &v29, 8u);
   }
 
@@ -1789,20 +1789,20 @@ void __55__VTVoiceProfileRetrainer_pruneVoiceProfileIfNecessary__block_invoke(ui
   {
     v20 = self->_satRetrainingTdSr;
     v21 = v19;
-    v22 = [(VTTextDependentSpeakerRecognizer *)v20 tdPsrCanProcessRequest];
+    tdPsrCanProcessRequest = [(VTTextDependentSpeakerRecognizer *)v20 tdPsrCanProcessRequest];
     v29 = 138543618;
     v30 = v20;
     v31 = 1026;
-    v32 = v22;
+    v32 = tdPsrCanProcessRequest;
     _os_log_impl(&dword_223A31000, v21, OS_LOG_TYPE_DEFAULT, "TDSR:: _satRetrainingTdSr: %{public}@, _satRetrainingTdSr.tdPsrCanProcessRequest: %{public}d", &v29, 0x12u);
   }
 
   v23 = self->_satRetrainingTdSr;
   if (v23)
   {
-    v24 = [(VTTextDependentSpeakerRecognizer *)v23 tdPsrCanProcessRequest];
+    tdPsrCanProcessRequest2 = [(VTTextDependentSpeakerRecognizer *)v23 tdPsrCanProcessRequest];
     v25 = VTLogContextFacilityVoiceTrigger;
-    if (v24)
+    if (tdPsrCanProcessRequest2)
     {
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
       {
@@ -1832,9 +1832,9 @@ void __55__VTVoiceProfileRetrainer_pruneVoiceProfileIfNecessary__block_invoke(ui
   }
 
 LABEL_19:
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 1, v27);
+    completionCopy[2](completionCopy, 1, v27);
   }
 }
 
@@ -1849,41 +1849,41 @@ LABEL_19:
   [(VTVoiceProfileRetrainer *)&v4 dealloc];
 }
 
-- (VTVoiceProfileRetrainer)initWithAnalyzer:(id)a3 languageCode:(id)a4 modelType:(unint64_t)a5 configPath:(id)a6 resourcePath:(id)a7
+- (VTVoiceProfileRetrainer)initWithAnalyzer:(id)analyzer languageCode:(id)code modelType:(unint64_t)type configPath:(id)path resourcePath:(id)resourcePath
 {
   v32 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  analyzerCopy = analyzer;
+  codeCopy = code;
+  pathCopy = path;
+  resourcePathCopy = resourcePath;
   v27.receiver = self;
   v27.super_class = VTVoiceProfileRetrainer;
   v17 = [(VTVoiceProfileRetrainer *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_analyzer, a3);
-    objc_storeStrong(&v18->_languageCode, a4);
-    v18->_modelType = a5;
-    objc_storeStrong(&v18->_configPath, a6);
-    objc_storeStrong(&v18->_resourcePath, a7);
-    [v13 getRetrainThresholdTrigger];
+    objc_storeStrong(&v17->_analyzer, analyzer);
+    objc_storeStrong(&v18->_languageCode, code);
+    v18->_modelType = type;
+    objc_storeStrong(&v18->_configPath, path);
+    objc_storeStrong(&v18->_resourcePath, resourcePath);
+    [analyzerCopy getRetrainThresholdTrigger];
     v18->_retrainThresholdTrigger = v19;
-    [v13 getRetrainExplicitUttThresholdSAT];
+    [analyzerCopy getRetrainExplicitUttThresholdSAT];
     v18->_retrainExplicitUttThresholdSAT = v20;
-    [v13 getRetrainExplicitUttThresholdTDSR];
+    [analyzerCopy getRetrainExplicitUttThresholdTDSR];
     v18->_retrainExplicitUttThresholdTDSR = v21;
-    [v13 getRetrainThresholdSAT];
+    [analyzerCopy getRetrainThresholdSAT];
     v18->_retrainThresholdSAT = v22;
-    [v13 getRetrainThresholdTDSR];
+    [analyzerCopy getRetrainThresholdTDSR];
     v18->_retrainThresholdTDSR = v23;
-    v18->_numRetentionUtterances = [v13 getVoiceProfilePruningNumRetentionUtterances];
+    v18->_numRetentionUtterances = [analyzerCopy getVoiceProfilePruningNumRetentionUtterances];
     v24 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       languageCode = v18->_languageCode;
       *buf = 134218242;
-      v29 = a5;
+      typeCopy = type;
       v30 = 2112;
       v31 = languageCode;
       _os_log_impl(&dword_223A31000, v24, OS_LOG_TYPE_DEFAULT, "Retrainer intialized for %lu on %@", buf, 0x16u);

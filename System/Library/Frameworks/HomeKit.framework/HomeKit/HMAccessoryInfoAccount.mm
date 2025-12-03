@@ -1,8 +1,8 @@
 @interface HMAccessoryInfoAccount
-- (BOOL)isEqual:(id)a3;
-- (HMAccessoryInfoAccount)initWithProtoData:(id)a3;
-- (HMAccessoryInfoAccount)initWithProtoPayload:(id)a3;
-- (HMAccessoryInfoAccount)initWithUsername:(id)a3 aaAltDSID:(id)a4 amsAltDSID:(id)a5 signedIn:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessoryInfoAccount)initWithProtoData:(id)data;
+- (HMAccessoryInfoAccount)initWithProtoPayload:(id)payload;
+- (HMAccessoryInfoAccount)initWithUsername:(id)username aaAltDSID:(id)d amsAltDSID:(id)iD signedIn:(BOOL)in;
 - (id)description;
 - (id)protoData;
 - (id)protoPayload;
@@ -13,22 +13,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMAccessoryInfoAccount *)self username];
-  v4 = [v3 hash];
+  username = [(HMAccessoryInfoAccount *)self username];
+  v4 = [username hash];
 
-  v5 = [(HMAccessoryInfoAccount *)self aaAltDSID];
-  v6 = [v5 hash] ^ v4;
+  aaAltDSID = [(HMAccessoryInfoAccount *)self aaAltDSID];
+  v6 = [aaAltDSID hash] ^ v4;
 
-  v7 = [(HMAccessoryInfoAccount *)self amsAltDSID];
-  v8 = [v7 hash];
+  amsAltDSID = [(HMAccessoryInfoAccount *)self amsAltDSID];
+  v8 = [amsAltDSID hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v14) = 1;
   }
@@ -38,7 +38,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -49,20 +49,20 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAccessoryInfoAccount *)self username];
-      v8 = [(HMAccessoryInfoAccount *)v6 username];
+      username = [(HMAccessoryInfoAccount *)self username];
+      username2 = [(HMAccessoryInfoAccount *)v6 username];
       if (HMFEqualObjects())
       {
-        v9 = [(HMAccessoryInfoAccount *)self aaAltDSID];
-        v10 = [(HMAccessoryInfoAccount *)v6 aaAltDSID];
+        aaAltDSID = [(HMAccessoryInfoAccount *)self aaAltDSID];
+        aaAltDSID2 = [(HMAccessoryInfoAccount *)v6 aaAltDSID];
         if (HMFEqualObjects())
         {
-          v11 = [(HMAccessoryInfoAccount *)self amsAltDSID];
-          v12 = [(HMAccessoryInfoAccount *)v6 amsAltDSID];
+          amsAltDSID = [(HMAccessoryInfoAccount *)self amsAltDSID];
+          amsAltDSID2 = [(HMAccessoryInfoAccount *)v6 amsAltDSID];
           if (HMFEqualObjects())
           {
-            v13 = [(HMAccessoryInfoAccount *)self signedIn];
-            v14 = v13 ^ [(HMAccessoryInfoAccount *)v6 signedIn]^ 1;
+            signedIn = [(HMAccessoryInfoAccount *)self signedIn];
+            v14 = signedIn ^ [(HMAccessoryInfoAccount *)v6 signedIn]^ 1;
           }
 
           else
@@ -92,46 +92,46 @@
   return v14;
 }
 
-- (HMAccessoryInfoAccount)initWithProtoData:(id)a3
+- (HMAccessoryInfoAccount)initWithProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [[HMAccessoryInfoProtoAccountInfoEvent alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[HMAccessoryInfoProtoAccountInfoEvent alloc] initWithData:dataCopy];
 
   v6 = [(HMAccessoryInfoAccount *)self initWithProtoPayload:v5];
   return v6;
 }
 
-- (HMAccessoryInfoAccount)initWithProtoPayload:(id)a3
+- (HMAccessoryInfoAccount)initWithProtoPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 username];
-  v6 = [v4 aaAltDSID];
-  v7 = [v4 amsAltDSID];
-  v8 = [v4 signedIn];
+  payloadCopy = payload;
+  username = [payloadCopy username];
+  aaAltDSID = [payloadCopy aaAltDSID];
+  amsAltDSID = [payloadCopy amsAltDSID];
+  signedIn = [payloadCopy signedIn];
 
-  v9 = [(HMAccessoryInfoAccount *)self initWithUsername:v5 aaAltDSID:v6 amsAltDSID:v7 signedIn:v8];
+  v9 = [(HMAccessoryInfoAccount *)self initWithUsername:username aaAltDSID:aaAltDSID amsAltDSID:amsAltDSID signedIn:signedIn];
   return v9;
 }
 
 - (id)protoData
 {
-  v2 = [(HMAccessoryInfoAccount *)self protoPayload];
-  v3 = [v2 data];
+  protoPayload = [(HMAccessoryInfoAccount *)self protoPayload];
+  data = [protoPayload data];
 
-  return v3;
+  return data;
 }
 
 - (id)protoPayload
 {
   v3 = objc_alloc_init(HMAccessoryInfoProtoAccountInfoEvent);
-  v4 = [(HMAccessoryInfoAccount *)self username];
-  [(HMAccessoryInfoProtoAccountInfoEvent *)v3 setUsername:v4];
+  username = [(HMAccessoryInfoAccount *)self username];
+  [(HMAccessoryInfoProtoAccountInfoEvent *)v3 setUsername:username];
 
-  v5 = [(HMAccessoryInfoAccount *)self aaAltDSID];
-  [(HMAccessoryInfoProtoAccountInfoEvent *)v3 setAaAltDSID:v5];
+  aaAltDSID = [(HMAccessoryInfoAccount *)self aaAltDSID];
+  [(HMAccessoryInfoProtoAccountInfoEvent *)v3 setAaAltDSID:aaAltDSID];
 
-  v6 = [(HMAccessoryInfoAccount *)self amsAltDSID];
-  [(HMAccessoryInfoProtoAccountInfoEvent *)v3 setAmsAltDSID:v6];
+  amsAltDSID = [(HMAccessoryInfoAccount *)self amsAltDSID];
+  [(HMAccessoryInfoProtoAccountInfoEvent *)v3 setAmsAltDSID:amsAltDSID];
 
   [(HMAccessoryInfoProtoAccountInfoEvent *)v3 setSignedIn:[(HMAccessoryInfoAccount *)self signedIn]];
 
@@ -142,29 +142,29 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HMAccessoryInfoAccount *)self username];
+  username = [(HMAccessoryInfoAccount *)self username];
   [(HMAccessoryInfoAccount *)self signedIn];
   v6 = HMFBooleanToString();
-  v7 = [v3 stringWithFormat:@"<%@: username = %@, signedIn = %@>", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@: username = %@, signedIn = %@>", v4, username, v6];
 
   return v7;
 }
 
-- (HMAccessoryInfoAccount)initWithUsername:(id)a3 aaAltDSID:(id)a4 amsAltDSID:(id)a5 signedIn:(BOOL)a6
+- (HMAccessoryInfoAccount)initWithUsername:(id)username aaAltDSID:(id)d amsAltDSID:(id)iD signedIn:(BOOL)in
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  usernameCopy = username;
+  dCopy = d;
+  iDCopy = iD;
   v17.receiver = self;
   v17.super_class = HMAccessoryInfoAccount;
   v14 = [(HMAccessoryInfoAccount *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_username, a3);
-    objc_storeStrong(&v15->_aaAltDSID, a4);
-    objc_storeStrong(&v15->_amsAltDSID, a5);
-    v15->_signedIn = a6;
+    objc_storeStrong(&v14->_username, username);
+    objc_storeStrong(&v15->_aaAltDSID, d);
+    objc_storeStrong(&v15->_amsAltDSID, iD);
+    v15->_signedIn = in;
   }
 
   return v15;

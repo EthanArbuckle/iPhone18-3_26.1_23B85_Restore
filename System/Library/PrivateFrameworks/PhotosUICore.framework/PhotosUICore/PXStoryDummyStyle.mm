@@ -1,18 +1,18 @@
 @interface PXStoryDummyStyle
 - ($D23540E3B197441F7781E3353E3BC035)transitionInfo;
 - (CGPoint)kenBurnsRelativeTransformOrigin;
-- (PXStoryDummyStyle)initWithConfiguration:(id)a3;
-- (void)setOutroDuration:(id *)a3;
-- (void)setTransitionInfo:(id *)a3;
+- (PXStoryDummyStyle)initWithConfiguration:(id)configuration;
+- (void)setOutroDuration:(id *)duration;
+- (void)setTransitionInfo:(id *)info;
 @end
 
 @implementation PXStoryDummyStyle
 
-- (void)setTransitionInfo:(id *)a3
+- (void)setTransitionInfo:(id *)info
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2.var1;
-  *&self->_transitionInfo.fallbackFromTransitionKind = *&a3->var3;
+  v3 = *&info->var0;
+  v4 = *&info->var2.var1;
+  *&self->_transitionInfo.fallbackFromTransitionKind = *&info->var3;
   *&self->_transitionInfo.orderOutTransition = v3;
   *&self->_transitionInfo.duration.timescale = v4;
 }
@@ -35,16 +35,16 @@
   return result;
 }
 
-- (void)setOutroDuration:(id *)a3
+- (void)setOutroDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_outroDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_outroDuration.epoch = duration->var3;
   *&self->_outroDuration.value = v3;
 }
 
-- (PXStoryDummyStyle)initWithConfiguration:(id)a3
+- (PXStoryDummyStyle)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PXStoryDummyStyle;
   v5 = [(PXStoryDummyStyle *)&v9 init];
@@ -56,7 +56,7 @@
     v5->_defaultSegmentDuration = 3.0;
     CMTimeMakeWithSeconds(&v8, 1.5, 600);
     v6->_outroDuration = v8;
-    (v4)[2](v4, v6);
+    (configurationCopy)[2](configurationCopy, v6);
   }
 
   return v6;

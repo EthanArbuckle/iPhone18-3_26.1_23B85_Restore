@@ -1,11 +1,11 @@
 @interface CACCommandDetailController
-- (id)_attributedStringDescriptionForCommandIdentifier:(id)a3 textViewWidth:(double)a4;
-- (id)_commandConfirmationRequired:(id)a3;
-- (id)_commandEnabled:(id)a3;
+- (id)_attributedStringDescriptionForCommandIdentifier:(id)identifier textViewWidth:(double)width;
+- (id)_commandConfirmationRequired:(id)required;
+- (id)_commandEnabled:(id)enabled;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_setCommandConfirmationRequired:(id)a3 specifier:(id)a4;
-- (void)_setCommandEnabled:(id)a3 specifier:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_setCommandConfirmationRequired:(id)required specifier:(id)specifier;
+- (void)_setCommandEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -51,62 +51,62 @@
   v6.receiver = self;
   v6.super_class = CACCommandDetailController;
   [(CACCommandDetailController *)&v6 viewDidLoad];
-  v3 = [(CACCommandDetailController *)self specifier];
-  v4 = [v3 propertyForKey:@"CACCommandItem"];
+  specifier = [(CACCommandDetailController *)self specifier];
+  v4 = [specifier propertyForKey:@"CACCommandItem"];
   commandItem = self->_commandItem;
   self->_commandItem = v4;
 
   [(CACCommandDetailController *)self reloadSpecifiers];
 }
 
-- (void)_setCommandEnabled:(id)a3 specifier:(id)a4
+- (void)_setCommandEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(CACCommandDetailController *)self commandItem];
-  [v6 setIsEnabled:v5];
+  bOOLValue = [enabled BOOLValue];
+  commandItem = [(CACCommandDetailController *)self commandItem];
+  [commandItem setIsEnabled:bOOLValue];
 
-  v7 = [(CACCommandDetailController *)self commandItem];
-  [v7 saveToPreferences];
+  commandItem2 = [(CACCommandDetailController *)self commandItem];
+  [commandItem2 saveToPreferences];
 }
 
-- (id)_commandEnabled:(id)a3
+- (id)_commandEnabled:(id)enabled
 {
-  v3 = [(CACCommandDetailController *)self commandItem];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabled]);
+  commandItem = [(CACCommandDetailController *)self commandItem];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [commandItem isEnabled]);
 
   return v4;
 }
 
-- (void)_setCommandConfirmationRequired:(id)a3 specifier:(id)a4
+- (void)_setCommandConfirmationRequired:(id)required specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(CACCommandDetailController *)self commandItem];
-  [v6 setIsConfirmationRequired:v5];
+  bOOLValue = [required BOOLValue];
+  commandItem = [(CACCommandDetailController *)self commandItem];
+  [commandItem setIsConfirmationRequired:bOOLValue];
 
-  v7 = [(CACCommandDetailController *)self commandItem];
-  [v7 saveToPreferences];
+  commandItem2 = [(CACCommandDetailController *)self commandItem];
+  [commandItem2 saveToPreferences];
 }
 
-- (id)_commandConfirmationRequired:(id)a3
+- (id)_commandConfirmationRequired:(id)required
 {
-  v3 = [(CACCommandDetailController *)self commandItem];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isConfirmationRequired]);
+  commandItem = [(CACCommandDetailController *)self commandItem];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [commandItem isConfirmationRequired]);
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CACCommandDetailController *)self specifierAtIndexPath:v7];
-  v9 = [v8 properties];
-  v10 = [v9 valueForKey:@"CACSpecifierIsAlternateKey"];
-  v11 = [v10 BOOLValue];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CACCommandDetailController *)self specifierAtIndexPath:pathCopy];
+  properties = [v8 properties];
+  v10 = [properties valueForKey:@"CACSpecifierIsAlternateKey"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = [v6 dequeueReusableCellWithIdentifier:@"DescriptionCellReuseIdentifier"];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:@"DescriptionCellReuseIdentifier"];
     if (!v12)
     {
       v12 = [[PSTableCell alloc] initWithStyle:0 reuseIdentifier:@"DescriptionCellReuseIdentifier"];
@@ -116,29 +116,29 @@
     [v12 setBackgroundColor:v13];
 
     [v12 setSeparatorInset:{0.0, -10000.0, 0.0, 10000.0}];
-    v14 = [v12 textLabel];
-    [v14 setNumberOfLines:0];
-    v15 = [(CACCommandDetailController *)self commandItem];
-    v16 = [v15 identifier];
-    [v6 frame];
-    v18 = [(CACCommandDetailController *)self _attributedStringDescriptionForCommandIdentifier:v16 textViewWidth:v17 + -5.0];
-    [v14 setAttributedText:v18];
+    textLabel = [v12 textLabel];
+    [textLabel setNumberOfLines:0];
+    commandItem = [(CACCommandDetailController *)self commandItem];
+    identifier = [commandItem identifier];
+    [viewCopy frame];
+    v18 = [(CACCommandDetailController *)self _attributedStringDescriptionForCommandIdentifier:identifier textViewWidth:v17 + -5.0];
+    [textLabel setAttributedText:v18];
   }
 
   else
   {
     v20.receiver = self;
     v20.super_class = CACCommandDetailController;
-    v12 = [(CACCommandDetailController *)&v20 tableView:v6 cellForRowAtIndexPath:v7];
+    v12 = [(CACCommandDetailController *)&v20 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   }
 
   return v12;
 }
 
-- (id)_attributedStringDescriptionForCommandIdentifier:(id)a3 textViewWidth:(double)a4
+- (id)_attributedStringDescriptionForCommandIdentifier:(id)identifier textViewWidth:(double)width
 {
   v105[0] = kSRCSCommandDescriptionsSectionTitleValue;
-  v87 = a3;
+  identifierCopy = identifier;
   v89 = +[UIFontMetrics defaultMetrics];
   v85 = [UIFont _opticalBoldSystemFontOfSize:16.0];
   v83 = [v89 scaledFontForFont:v85];
@@ -171,9 +171,9 @@
   v14 = [NSDictionary dictionaryWithObjects:v106 forKeys:v105 count:6];
 
   v86 = +[CACPreferences sharedPreferences];
-  v84 = [v86 bestLocaleIdentifier];
+  bestLocaleIdentifier = [v86 bestLocaleIdentifier];
   v15 = +[SRCSSpokenCommandUtilities sharedSpokenCommandUtilities];
-  v16 = [v15 commandStringsTableForLocaleIdentifier:v84];
+  v16 = [v15 commandStringsTableForLocaleIdentifier:bestLocaleIdentifier];
 
   v91[0] = _NSConcreteStackBlock;
   v91[1] = 3221225472;
@@ -184,7 +184,7 @@
   v17 = v14;
   v90 = v17;
   v18 = v16;
-  v19 = [v18 mutableAttributedStringCommandDescriptionForCommandIdentifier:v87 calculateDisplayedAttributedStringWidthBlock:v91];
+  v19 = [v18 mutableAttributedStringCommandDescriptionForCommandIdentifier:identifierCopy calculateDisplayedAttributedStringWidthBlock:v91];
 
   v20 = [v19 attribute:kSRCSCommandDescriptionsMaxParameterLengthPlaceholderAttributeName atIndex:0 longestEffectiveRange:0 inRange:{0, objc_msgSend(v19, "length")}];
   [v20 floatValue];
@@ -196,16 +196,16 @@
   v25 = v24;
 
   [v19 removeAttribute:kSRCSCommandDescriptionsMaxEmbeddedCommandLengthPlaceholderAttributeName range:{0, objc_msgSend(v19, "length")}];
-  v26 = (a4 * 0.3);
-  if (a4 * 0.3 <= v25)
+  v26 = (width * 0.3);
+  if (width * 0.3 <= v25)
   {
     v26 = v25;
   }
 
   v27 = v26 + 20;
-  if (v27 + 20.0 >= a4 * 0.7)
+  if (v27 + 20.0 >= width * 0.7)
   {
-    v28 = a4 * 0.7;
+    v28 = width * 0.7;
   }
 
   else
@@ -315,7 +315,7 @@
   v64 = [v63 mutableCopy];
 
   [v64 setFirstLineHeadIndent:15.0];
-  v65 = [[NSTextTab alloc] initWithTextAlignment:2 location:&__NSDictionary0__struct options:a4 + -20.0];
+  v65 = [[NSTextTab alloc] initWithTextAlignment:2 location:&__NSDictionary0__struct options:width + -20.0];
   v96 = v65;
   v66 = [NSArray arrayWithObjects:&v96 count:1];
   [v64 setTabStops:v66];

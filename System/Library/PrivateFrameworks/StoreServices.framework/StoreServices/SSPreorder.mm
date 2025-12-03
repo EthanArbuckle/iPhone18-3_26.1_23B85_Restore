@@ -1,29 +1,29 @@
 @interface SSPreorder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SSPreorder)initWithXPCEncoding:(id)a3;
-- (id)_initWithPersistentIdentifier:(int64_t)a3;
-- (id)copyReleaseDateStringWithStyle:(int64_t)a3;
+- (SSPreorder)initWithXPCEncoding:(id)encoding;
+- (id)_initWithPersistentIdentifier:(int64_t)identifier;
+- (id)copyReleaseDateStringWithStyle:(int64_t)style;
 - (id)copyXPCEncoding;
-- (void)_setArtistName:(id)a3;
-- (void)_setImageCollection:(id)a3;
-- (void)_setItemKind:(id)a3;
-- (void)_setReleaseDateString:(id)a3;
-- (void)_setStoreAccountIdentifier:(id)a3;
-- (void)_setTitle:(id)a3;
+- (void)_setArtistName:(id)name;
+- (void)_setImageCollection:(id)collection;
+- (void)_setItemKind:(id)kind;
+- (void)_setReleaseDateString:(id)string;
+- (void)_setStoreAccountIdentifier:(id)identifier;
+- (void)_setTitle:(id)title;
 - (void)dealloc;
 @end
 
 @implementation SSPreorder
 
-- (id)_initWithPersistentIdentifier:(int64_t)a3
+- (id)_initWithPersistentIdentifier:(int64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = SSPreorder;
   result = [(SSPreorder *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = identifier;
   }
 
   return result;
@@ -36,7 +36,7 @@
   [(SSPreorder *)&v3 dealloc];
 }
 
-- (id)copyReleaseDateStringWithStyle:(int64_t)a3
+- (id)copyReleaseDateStringWithStyle:(int64_t)style
 {
   StringWithDate = [(SSPreorder *)self releaseDateString];
   if (!StringWithDate)
@@ -45,7 +45,7 @@
     if (v6)
     {
       v7 = v6;
-      v8 = CFDateFormatterCreate(0, v6, a3, kCFDateFormatterNoStyle);
+      v8 = CFDateFormatterCreate(0, v6, style, kCFDateFormatterNoStyle);
       if (v8)
       {
         v9 = v8;
@@ -70,63 +70,63 @@
   return StringWithDate;
 }
 
-- (void)_setArtistName:(id)a3
+- (void)_setArtistName:(id)name
 {
   artistName = self->_artistName;
-  if (artistName != a3)
+  if (artistName != name)
   {
 
-    self->_artistName = [a3 copy];
+    self->_artistName = [name copy];
   }
 }
 
-- (void)_setImageCollection:(id)a3
+- (void)_setImageCollection:(id)collection
 {
   imageCollection = self->_imageCollection;
-  if (imageCollection != a3)
+  if (imageCollection != collection)
   {
 
-    self->_imageCollection = [a3 copy];
+    self->_imageCollection = [collection copy];
   }
 }
 
-- (void)_setItemKind:(id)a3
+- (void)_setItemKind:(id)kind
 {
   itemKind = self->_itemKind;
-  if (itemKind != a3)
+  if (itemKind != kind)
   {
 
-    self->_itemKind = [a3 copy];
+    self->_itemKind = [kind copy];
   }
 }
 
-- (void)_setReleaseDateString:(id)a3
+- (void)_setReleaseDateString:(id)string
 {
   releaseDateString = self->_releaseDateString;
-  if (releaseDateString != a3)
+  if (releaseDateString != string)
   {
 
-    self->_releaseDateString = [a3 copy];
+    self->_releaseDateString = [string copy];
   }
 }
 
-- (void)_setStoreAccountIdentifier:(id)a3
+- (void)_setStoreAccountIdentifier:(id)identifier
 {
   accountID = self->_accountID;
-  if (accountID != a3)
+  if (accountID != identifier)
   {
 
-    self->_accountID = a3;
+    self->_accountID = identifier;
   }
 }
 
-- (void)_setTitle:(id)a3
+- (void)_setTitle:(id)title
 {
   title = self->_title;
-  if (title != a3)
+  if (title != title)
   {
 
-    self->_title = [a3 copy];
+    self->_title = [title copy];
   }
 }
 
@@ -137,7 +137,7 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: (%lld, %@)", -[SSPreorder description](&v3, sel_description), self->_pid, self->_title];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -145,29 +145,29 @@
     return 0;
   }
 
-  v7 = [(SSPreorder *)self persistentIdentifier];
-  return v7 == [a3 persistentIdentifier];
+  persistentIdentifier = [(SSPreorder *)self persistentIdentifier];
+  return persistentIdentifier == [equal persistentIdentifier];
 }
 
-- (SSPreorder)initWithXPCEncoding:(id)a3
+- (SSPreorder)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v8.receiver = self;
     v8.super_class = SSPreorder;
     v5 = [(SSPreorder *)&v8 init];
     if (v5)
     {
-      v5->_artistName = SSXPCDictionaryCopyCFObject(a3, "0");
-      v5->_itemKind = SSXPCDictionaryCopyCFObject(a3, "2");
-      v5->_pid = xpc_dictionary_get_int64(a3, "3");
-      v5->_releaseDate = xpc_dictionary_get_double(a3, "4");
-      v5->_releaseDateString = SSXPCDictionaryCopyCFObject(a3, "5");
-      v5->_accountID = SSXPCDictionaryCopyCFObject(a3, "6");
-      v5->_itemID = xpc_dictionary_get_int64(a3, "7");
-      v5->_preorderID = xpc_dictionary_get_int64(a3, "8");
-      v5->_title = SSXPCDictionaryCopyCFObject(a3, "9");
-      value = xpc_dictionary_get_value(a3, "1");
+      v5->_artistName = SSXPCDictionaryCopyCFObject(encoding, "0");
+      v5->_itemKind = SSXPCDictionaryCopyCFObject(encoding, "2");
+      v5->_pid = xpc_dictionary_get_int64(encoding, "3");
+      v5->_releaseDate = xpc_dictionary_get_double(encoding, "4");
+      v5->_releaseDateString = SSXPCDictionaryCopyCFObject(encoding, "5");
+      v5->_accountID = SSXPCDictionaryCopyCFObject(encoding, "6");
+      v5->_itemID = xpc_dictionary_get_int64(encoding, "7");
+      v5->_preorderID = xpc_dictionary_get_int64(encoding, "8");
+      v5->_title = SSXPCDictionaryCopyCFObject(encoding, "9");
+      value = xpc_dictionary_get_value(encoding, "1");
       if (value)
       {
         v5->_imageCollection = [[SSItemImageCollection alloc] initWithXPCEncoding:value];
@@ -196,11 +196,11 @@
   xpc_dictionary_set_int64(v3, "7", self->_itemID);
   xpc_dictionary_set_int64(v3, "8", self->_preorderID);
   SSXPCDictionarySetCFObject(v3, "9", self->_title);
-  v4 = [(SSItemImageCollection *)self->_imageCollection copyXPCEncoding];
-  if (v4)
+  copyXPCEncoding = [(SSItemImageCollection *)self->_imageCollection copyXPCEncoding];
+  if (copyXPCEncoding)
   {
-    v5 = v4;
-    xpc_dictionary_set_value(v3, "1", v4);
+    v5 = copyXPCEncoding;
+    xpc_dictionary_set_value(v3, "1", copyXPCEncoding);
     xpc_release(v5);
   }
 

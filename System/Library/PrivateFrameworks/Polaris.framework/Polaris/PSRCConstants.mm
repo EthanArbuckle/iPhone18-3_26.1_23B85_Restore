@@ -1,9 +1,9 @@
 @interface PSRCConstants
-+ (BOOL)checkBufferConfigExistsForKey:(id)a3;
-+ (id)resourceIDForKey:(id)a3;
-+ (unsigned)getCameraDepthForKey:(id)a3;
-+ (unsigned)getReaderDepthForKey:(id)a3;
-+ (unsigned)getWriterDepthForKey:(id)a3;
++ (BOOL)checkBufferConfigExistsForKey:(id)key;
++ (id)resourceIDForKey:(id)key;
++ (unsigned)getCameraDepthForKey:(id)key;
++ (unsigned)getReaderDepthForKey:(id)key;
++ (unsigned)getWriterDepthForKey:(id)key;
 + (void)setUp;
 @end
 
@@ -28,91 +28,91 @@ void __22__PSRCConstants_setUp__block_invoke()
   bufferDict = v3;
 }
 
-+ (unsigned)getCameraDepthForKey:(id)a3
++ (unsigned)getCameraDepthForKey:(id)key
 {
-  v4 = a3;
-  [a1 setUp];
-  v5 = [bufferDict objectForKey:v4];
+  keyCopy = key;
+  [self setUp];
+  v5 = [bufferDict objectForKey:keyCopy];
 
   if (v5)
   {
-    v6 = [bufferDict objectForKeyedSubscript:v4];
+    v6 = [bufferDict objectForKeyedSubscript:keyCopy];
     v7 = [v6 objectForKey:@"cameraDepth"];
-    v8 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
 
-    return v8;
+    return unsignedIntValue;
   }
 
   else
   {
-    v10 = [(PSRCConstants *)&v13 getCameraDepthForKey:v4];
+    v10 = [(PSRCConstants *)&v13 getCameraDepthForKey:keyCopy];
     return [(PSRCConstants *)v10 getReaderDepthForKey:v11, v12];
   }
 }
 
-+ (unsigned)getReaderDepthForKey:(id)a3
++ (unsigned)getReaderDepthForKey:(id)key
 {
-  v4 = a3;
-  [a1 setUp];
-  v5 = [bufferDict objectForKey:v4];
+  keyCopy = key;
+  [self setUp];
+  v5 = [bufferDict objectForKey:keyCopy];
 
   if (v5)
   {
-    v6 = [bufferDict objectForKeyedSubscript:v4];
+    v6 = [bufferDict objectForKeyedSubscript:keyCopy];
     v7 = [v6 objectForKey:@"readerDepth"];
-    v8 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
 
-    return v8;
+    return unsignedIntValue;
   }
 
   else
   {
-    v10 = [(PSRCConstants *)&v13 getReaderDepthForKey:v4];
+    v10 = [(PSRCConstants *)&v13 getReaderDepthForKey:keyCopy];
     return [(PSRCConstants *)v10 getWriterDepthForKey:v11, v12];
   }
 }
 
-+ (unsigned)getWriterDepthForKey:(id)a3
++ (unsigned)getWriterDepthForKey:(id)key
 {
-  v4 = a3;
-  [a1 setUp];
-  v5 = [bufferDict objectForKey:v4];
+  keyCopy = key;
+  [self setUp];
+  v5 = [bufferDict objectForKey:keyCopy];
 
   if (v5)
   {
-    v6 = [bufferDict objectForKeyedSubscript:v4];
+    v6 = [bufferDict objectForKeyedSubscript:keyCopy];
     v7 = [v6 objectForKey:@"writerDepth"];
-    v8 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
 
-    return v8;
+    return unsignedIntValue;
   }
 
   else
   {
-    v10 = [(PSRCConstants *)&v13 getWriterDepthForKey:v4];
+    v10 = [(PSRCConstants *)&v13 getWriterDepthForKey:keyCopy];
     return [(PSRCConstants *)v10 checkBufferConfigExistsForKey:v11, v12];
   }
 }
 
-+ (BOOL)checkBufferConfigExistsForKey:(id)a3
++ (BOOL)checkBufferConfigExistsForKey:(id)key
 {
-  v4 = a3;
-  [a1 setUp];
-  v5 = [bufferDict objectForKey:v4];
+  keyCopy = key;
+  [self setUp];
+  v5 = [bufferDict objectForKey:keyCopy];
 
   return v5 != 0;
 }
 
-+ (id)resourceIDForKey:(id)a3
++ (id)resourceIDForKey:(id)key
 {
   v3 = resourceIDForKey__onceToken;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     +[PSRCConstants resourceIDForKey:];
   }
 
-  v5 = [resourceIDForKey__keyToIDMap objectForKeyedSubscript:v4];
+  v5 = [resourceIDForKey__keyToIDMap objectForKeyedSubscript:keyCopy];
 
   return v5;
 }

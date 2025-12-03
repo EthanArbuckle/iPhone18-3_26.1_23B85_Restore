@@ -1,41 +1,41 @@
 @interface HKFHIRIdentifierElement
-+ (id)identifierWithTypeCodings:(id)a3 value:(id)a4;
-+ (id)indexableKeyPathsWithPrefix:(id)a3;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)identifierWithTypeCodings:(id)codings value:(id)value;
++ (id)indexableKeyPathsWithPrefix:(id)prefix;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKConcept)type;
 - (HKFHIRIdentifierElement)init;
-- (HKFHIRIdentifierElement)initWithCoder:(id)a3;
-- (HKFHIRIdentifierElement)initWithTypeCodings:(id)a3 value:(id)a4;
+- (HKFHIRIdentifierElement)initWithCoder:(id)coder;
+- (HKFHIRIdentifierElement)initWithTypeCodings:(id)codings value:(id)value;
 - (HKMedicalCodingCollection)typeCodingCollection;
 - (NSString)description;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (unint64_t)hash;
-- (void)_setType:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRIdentifierElement
 
-+ (id)indexableKeyPathsWithPrefix:(id)a3
++ (id)indexableKeyPathsWithPrefix:(id)prefix
 {
   v10 = *MEMORY[0x1E69E9840];
   v9 = @"type";
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [v3 arrayWithObjects:&v9 count:1];
-  v6 = [HKConceptIndexUtilities keyPaths:v5 prefix:v4, v9, v10];
+  v6 = [HKConceptIndexUtilities keyPaths:v5 prefix:prefixCopy, v9, v10];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-+ (id)identifierWithTypeCodings:(id)a3 value:(id)a4
++ (id)identifierWithTypeCodings:(id)codings value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTypeCodings:v7 value:v6];
+  valueCopy = value;
+  codingsCopy = codings;
+  v8 = [[self alloc] initWithTypeCodings:codingsCopy value:valueCopy];
 
   return v8;
 }
@@ -50,16 +50,16 @@
   return 0;
 }
 
-- (HKFHIRIdentifierElement)initWithTypeCodings:(id)a3 value:(id)a4
+- (HKFHIRIdentifierElement)initWithTypeCodings:(id)codings value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  codingsCopy = codings;
+  valueCopy = value;
+  if (!codingsCopy)
   {
     [HKFHIRIdentifierElement initWithTypeCodings:a2 value:self];
   }
 
-  if (![v7 count])
+  if (![codingsCopy count])
   {
     [HKFHIRIdentifierElement initWithTypeCodings:a2 value:self];
   }
@@ -69,18 +69,18 @@
   v9 = [(HKFHIRIdentifierElement *)&v18 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [codingsCopy copy];
     typeCodings = v9->_typeCodings;
     v9->_typeCodings = v10;
 
-    v12 = [v8 copy];
+    v12 = [valueCopy copy];
     value = v9->_value;
     v9->_value = v12;
 
     if (v9->_typeCodings)
     {
-      v14 = [(HKFHIRIdentifierElement *)v9 typeCodingCollection];
-      v15 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v14];
+      typeCodingCollection = [(HKFHIRIdentifierElement *)v9 typeCodingCollection];
+      v15 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:typeCodingCollection];
       type = v9->_type;
       v9->_type = v15;
     }
@@ -94,18 +94,18 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKFHIRIdentifierElement *)self typeCodings];
-  v7 = [(HKFHIRIdentifierElement *)self type];
-  v8 = [(HKFHIRIdentifierElement *)self value];
-  v9 = [v3 stringWithFormat:@"<%@:%p typeCoding = %@, type = %@, value = %@>", v5, self, v6, v7, v8, 0];
+  typeCodings = [(HKFHIRIdentifierElement *)self typeCodings];
+  type = [(HKFHIRIdentifierElement *)self type];
+  value = [(HKFHIRIdentifierElement *)self value];
+  v9 = [v3 stringWithFormat:@"<%@:%p typeCoding = %@, type = %@, value = %@>", v5, self, typeCodings, type, value, 0];
 
   return v9;
 }
 
-- (HKFHIRIdentifierElement)initWithCoder:(id)a3
+- (HKFHIRIdentifierElement)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HKFHIRIdentifierElement;
   v5 = [(HKFHIRIdentifierElement *)&v18 init];
@@ -116,7 +116,7 @@
     v19[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"TypeCodings"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"TypeCodings"];
     typeCodings = v5->_typeCodings;
     v5->_typeCodings = v9;
 
@@ -126,11 +126,11 @@
       goto LABEL_6;
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
     value = v5->_value;
     v5->_value = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Type"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Type"];
     type = v5->_type;
     v5->_type = v13;
   }
@@ -142,23 +142,23 @@ LABEL_6:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKFHIRIdentifierElement *)self typeCodings];
-  [v4 encodeObject:v5 forKey:@"TypeCodings"];
+  coderCopy = coder;
+  typeCodings = [(HKFHIRIdentifierElement *)self typeCodings];
+  [coderCopy encodeObject:typeCodings forKey:@"TypeCodings"];
 
-  v6 = [(HKFHIRIdentifierElement *)self value];
-  [v4 encodeObject:v6 forKey:@"Value"];
+  value = [(HKFHIRIdentifierElement *)self value];
+  [coderCopy encodeObject:value forKey:@"Value"];
 
-  v7 = [(HKFHIRIdentifierElement *)self type];
-  [v4 encodeObject:v7 forKey:@"Type"];
+  type = [(HKFHIRIdentifierElement *)self type];
+  [coderCopy encodeObject:type forKey:@"Type"];
 }
 
 - (HKMedicalCodingCollection)typeCodingCollection
 {
-  v2 = [(HKFHIRIdentifierElement *)self typeCodings];
-  v3 = [HKMedicalCodingCollection collectionWithCodings:v2];
+  typeCodings = [(HKFHIRIdentifierElement *)self typeCodings];
+  v3 = [HKMedicalCodingCollection collectionWithCodings:typeCodings];
 
   return v3;
 }
@@ -173,17 +173,17 @@ LABEL_6:
 
   else
   {
-    v4 = [(HKFHIRIdentifierElement *)self typeCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    typeCodingCollection = [(HKFHIRIdentifierElement *)self typeCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:typeCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setType:(id)a3
+- (void)_setType:(id)type
 {
-  v4 = a3;
-  if (!v4)
+  typeCopy = type;
+  if (!typeCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -193,25 +193,25 @@ LABEL_6:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [typeCopy copy];
   type = self->_type;
   self->_type = v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HKFHIRIdentifierElement *)self typeCodings];
-  v4 = [v3 hash];
-  v5 = [(HKFHIRIdentifierElement *)self value];
-  v6 = [v5 hash];
+  typeCodings = [(HKFHIRIdentifierElement *)self typeCodings];
+  v4 = [typeCodings hash];
+  value = [(HKFHIRIdentifierElement *)self value];
+  v6 = [value hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -221,26 +221,26 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKFHIRIdentifierElement *)self typeCodings];
-      v7 = [(HKFHIRIdentifierElement *)v5 typeCodings];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      typeCodings = [(HKFHIRIdentifierElement *)self typeCodings];
+      typeCodings2 = [(HKFHIRIdentifierElement *)v5 typeCodings];
+      v8 = typeCodings2;
+      if (typeCodings == typeCodings2)
       {
       }
 
       else
       {
-        v9 = [(HKFHIRIdentifierElement *)v5 typeCodings];
-        if (!v9)
+        typeCodings3 = [(HKFHIRIdentifierElement *)v5 typeCodings];
+        if (!typeCodings3)
         {
           goto LABEL_14;
         }
 
-        v10 = v9;
-        v11 = [(HKFHIRIdentifierElement *)self typeCodings];
-        v12 = [(HKFHIRIdentifierElement *)v5 typeCodings];
-        v13 = [v11 isEqual:v12];
+        v10 = typeCodings3;
+        typeCodings4 = [(HKFHIRIdentifierElement *)self typeCodings];
+        typeCodings5 = [(HKFHIRIdentifierElement *)v5 typeCodings];
+        v13 = [typeCodings4 isEqual:typeCodings5];
 
         if (!v13)
         {
@@ -248,10 +248,10 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKFHIRIdentifierElement *)self value];
-      v15 = [(HKFHIRIdentifierElement *)v5 value];
-      v8 = v15;
-      if (v6 == v15)
+      typeCodings = [(HKFHIRIdentifierElement *)self value];
+      value = [(HKFHIRIdentifierElement *)v5 value];
+      v8 = value;
+      if (typeCodings == value)
       {
 
 LABEL_17:
@@ -259,13 +259,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v16 = [(HKFHIRIdentifierElement *)v5 value];
-      if (v16)
+      value2 = [(HKFHIRIdentifierElement *)v5 value];
+      if (value2)
       {
-        v17 = v16;
-        v18 = [(HKFHIRIdentifierElement *)self value];
-        v19 = [(HKFHIRIdentifierElement *)v5 value];
-        v20 = [v18 isEqualToString:v19];
+        v17 = value2;
+        value3 = [(HKFHIRIdentifierElement *)self value];
+        value4 = [(HKFHIRIdentifierElement *)v5 value];
+        v20 = [value3 isEqualToString:value4];
 
         if (v20)
         {
@@ -292,11 +292,11 @@ LABEL_19:
   return v14;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isEqualToString:@"type"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"type"])
   {
     v7 = [HKMedicalCodingCollection collectionWithCodings:self->_typeCodings];
     v8 = [HKIndexableObject indexableObjectWithObject:v7];
@@ -309,7 +309,7 @@ LABEL_19:
     v10 = MEMORY[0x1E696ABC0];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 hk_assignError:a4 code:3 format:{@"%@ does not support codings for key path %@", v12, v6}];
+    [v10 hk_assignError:error code:3 format:{@"%@ does not support codings for key path %@", v12, pathCopy}];
 
     v9 = 0;
   }
@@ -319,14 +319,14 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 isEqualToString:@"type"];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [pathCopy isEqualToString:@"type"];
   if (v10)
   {
-    v11 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], self->_typeCodings != 0, v9, a5);
+    v11 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], self->_typeCodings != 0, pathCopy, error);
 
     if (!v11)
     {
@@ -334,9 +334,9 @@ LABEL_19:
       goto LABEL_7;
     }
 
-    v12 = [v8 firstObject];
-    v9 = [v12 object];
-    v13 = [v9 copy];
+    firstObject = [conceptsCopy firstObject];
+    pathCopy = [firstObject object];
+    v13 = [pathCopy copy];
     type = self->_type;
     self->_type = v13;
   }
@@ -345,8 +345,8 @@ LABEL_19:
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = objc_opt_class();
-    v12 = NSStringFromClass(v16);
-    [v15 hk_assignError:a5 code:3 format:{@"%@ does not support restoring concepts for key path %@", v12, v9}];
+    firstObject = NSStringFromClass(v16);
+    [v15 hk_assignError:error code:3 format:{@"%@ does not support restoring concepts for key path %@", firstObject, pathCopy}];
   }
 
 LABEL_7:

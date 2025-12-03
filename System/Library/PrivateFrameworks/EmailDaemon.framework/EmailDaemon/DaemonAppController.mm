@@ -7,22 +7,22 @@
 + (void)run;
 - (BOOL)_isAppForeground;
 - (DaemonAppController)init;
-- (id)messageSummaryLoaderForMessage:(id)a3;
+- (id)messageSummaryLoaderForMessage:(id)message;
 - (void)_callMobileMailAppRemovalService;
 - (void)_configureAnalytics;
 - (void)_delayedStartupTasks;
 - (void)_registerServices;
 - (void)_setupSnapshotInvalidation;
 - (void)_start;
-- (void)autofetchAccount:(id)a3 mailboxUid:(id)a4;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
+- (void)autofetchAccount:(id)account mailboxUid:(id)uid;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
 - (void)dealloc;
 - (void)registerXPCActivityForResettingXPCAlarms;
-- (void)resetPushStateWithCompletion:(id)a3;
+- (void)resetPushStateWithCompletion:(id)completion;
 - (void)scheduleDelayedStartupTasks;
 - (void)systemDidWake;
 - (void)systemWillSleep;
-- (void)vipManager:(id)a3 hasVIPNotificationsEnabledWithCompletion:(id)a4;
+- (void)vipManager:(id)manager hasVIPNotificationsEnabledWithCompletion:(id)completion;
 @end
 
 @implementation DaemonAppController
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000E7D0;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001854F8 != -1)
   {
     dispatch_once(&qword_1001854F8, block);
@@ -100,7 +100,7 @@ LABEL_8:
     qword_100185500 = v12;
 
     [qword_100185500 _start];
-    v14 = 0;
+    _startNonAcceptingServer = 0;
     v15 = 0;
     goto LABEL_15;
   }
@@ -112,10 +112,10 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Mail app is not installed, switching to EDNonAcceptingServer", &v19, 2u);
   }
 
-  [a1 _unregisterAllXPCActivities];
-  [a1 _unregisterPushTopics];
-  [a1 _deregisterBackgroundTasks];
-  v14 = [a1 _startNonAcceptingServer];
+  [self _unregisterAllXPCActivities];
+  [self _unregisterPushTopics];
+  [self _deregisterBackgroundTasks];
+  _startNonAcceptingServer = [self _startNonAcceptingServer];
   v15 = objc_opt_new();
   v17 = +[LSApplicationWorkspace defaultWorkspace];
   [v17 addObserver:v15];
@@ -142,13 +142,13 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
   v7 = +[DaemonAppController log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [NSNumber numberWithInteger:a4];
-    v9 = [NSNumber numberWithInteger:a3];
+    v8 = [NSNumber numberWithInteger:state];
+    v9 = [NSNumber numberWithInteger:changed];
     v10 = 138412546;
     v11 = v8;
     v12 = 2112;
@@ -156,7 +156,7 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Content protection state changed from %@ to %@", &v10, 0x16u);
   }
 
-  if (!a3)
+  if (!changed)
   {
     EFUnregisterContentProtectionObserver();
     dispatch_semaphore_signal(self->_contentProtectionSemaphore);
@@ -260,9 +260,9 @@ LABEL_15:
       [*(v2 + 25) beginSyncing];
     }
 
-    v29 = [*(v2 + 2) persistence];
+    persistence = [*(v2 + 2) persistence];
     v30 = *(v2 + 4);
-    *(v2 + 4) = v29;
+    *(v2 + 4) = persistence;
 
     [*(v2 + 4) setAccountsProvider:v23];
     v31 = [EDVIPManager alloc];
@@ -278,8 +278,8 @@ LABEL_15:
     *(v2 + 9) = v35;
 
     v37 = [MFRemoteSearchProvider_iOS alloc];
-    v38 = [*(v2 + 4) messagePersistence];
-    v39 = [(MFRemoteSearchProvider_iOS *)v37 initWithMessagePersistence:v38];
+    messagePersistence = [*(v2 + 4) messagePersistence];
+    v39 = [(MFRemoteSearchProvider_iOS *)v37 initWithMessagePersistence:messagePersistence];
     v40 = *(v2 + 10);
     *(v2 + 10) = v39;
 
@@ -302,29 +302,29 @@ LABEL_15:
     v94 = objc_retainBlock(v105);
     [*(v2 + 4) setUpWithMailboxProvider:*(v2 + 9) remoteSearchProvider:*(v2 + 10) serverMessagesIndexerProvider:v94];
     v43 = [MFMailPurgeableStorage alloc];
-    v44 = [v2 accountsProvider];
-    v45 = [(MFMailPurgeableStorage *)v43 initWithAccountsProvider:v44];
+    accountsProvider = [v2 accountsProvider];
+    v45 = [(MFMailPurgeableStorage *)v43 initWithAccountsProvider:accountsProvider];
     [v2 setPurgeableStorage:v45];
 
     v46 = [MFMailPurgeableStorageMonitor alloc];
-    v47 = [v2 purgeableStorage];
-    v48 = [(MFMailPurgeableStorageMonitor *)v46 initWithPurgeableStorage:v47];
+    purgeableStorage = [v2 purgeableStorage];
+    v48 = [(MFMailPurgeableStorageMonitor *)v46 initWithPurgeableStorage:purgeableStorage];
     [v2 setPurgeableStorageMonitor:v48];
 
     v49 = [MFMessageRuleLibraryHook alloc];
-    v50 = [*(v2 + 4) messageChangeManager];
-    v51 = [(MFMessageRuleLibraryHook *)v49 initWithMessageChangeManager:v50];
+    messageChangeManager = [*(v2 + 4) messageChangeManager];
+    v51 = [(MFMessageRuleLibraryHook *)v49 initWithMessageChangeManager:messageChangeManager];
     v52 = *(v2 + 3);
     *(v2 + 3) = v51;
 
-    v53 = [*(v2 + 4) hookRegistry];
-    [v53 registerMessageChangeHookResponder:*(v2 + 3)];
+    hookRegistry = [*(v2 + 4) hookRegistry];
+    [hookRegistry registerMessageChangeHookResponder:*(v2 + 3)];
 
-    v54 = [*(v2 + 4) messagePersistence];
-    [v54 setSummaryLoaderProvider:v2];
+    messagePersistence2 = [*(v2 + 4) messagePersistence];
+    [messagePersistence2 setSummaryLoaderProvider:v2];
     v55 = [OutgoingMessageRepository_iOS alloc];
-    v56 = [*(v2 + 4) messageChangeManager];
-    v57 = [(OutgoingMessageRepository_iOS *)v55 initWithMessagePersistence:v54 messageChangeManager:v56];
+    messageChangeManager2 = [*(v2 + 4) messageChangeManager];
+    v57 = [(OutgoingMessageRepository_iOS *)v55 initWithMessagePersistence:messagePersistence2 messageChangeManager:messageChangeManager2];
 
     objc_storeStrong(v2 + 35, v57);
     v58 = [[MFListUnsubscribeHandler_iOS alloc] initWithOutgoingMessageRepository:v57];
@@ -340,30 +340,30 @@ LABEL_15:
     v96[2] = sub_10000FD78;
     v96[3] = &unk_100156868;
     v98 = buf;
-    v59 = v54;
+    v59 = messagePersistence2;
     v97 = v59;
     v60 = objc_retainBlock(v96);
     [MFLibraryCompressionActivityManager scheduleLibraryCompressionIfNeededRequiringClassA:v60];
     [MFMarkLibraryPurgeableActivityManager scheduleIfNeededRequiringClassA:v60];
-    v61 = [(MFPersistence_iOS *)v3->_persistence blockedSenderManager];
+    blockedSenderManager = [(MFPersistence_iOS *)v3->_persistence blockedSenderManager];
     blockedSenderManager = v3->_blockedSenderManager;
-    v3->_blockedSenderManager = v61;
+    v3->_blockedSenderManager = blockedSenderManager;
 
-    v63 = [(MFPersistence_iOS *)v3->_persistence vipManager];
-    [VIPManager setBackingManager:v63];
+    vipManager = [(MFPersistence_iOS *)v3->_persistence vipManager];
+    [VIPManager setBackingManager:vipManager];
 
     MFRegisterPowerObserver();
     v64 = objc_alloc_init(EMCoreAnalyticsCollector);
     coreAnalyticsCollector = v3->_coreAnalyticsCollector;
     v3->_coreAnalyticsCollector = v64;
 
-    v66 = [(MFPersistence_iOS *)v3->_persistence categoryPersistence];
-    v67 = [v66 analyticsLogger];
+    categoryPersistence = [(MFPersistence_iOS *)v3->_persistence categoryPersistence];
+    analyticsLogger = [categoryPersistence analyticsLogger];
     categoryCoreAnalyticsLogger = v3->_categoryCoreAnalyticsLogger;
-    v3->_categoryCoreAnalyticsLogger = v67;
+    v3->_categoryCoreAnalyticsLogger = analyticsLogger;
 
-    v69 = [(MFPersistence_iOS *)v3->_persistence accountsProvider];
-    [(EDCategoryCoreAnalyticsLogger *)v3->_categoryCoreAnalyticsLogger setAccountsProvider:v69];
+    accountsProvider2 = [(MFPersistence_iOS *)v3->_persistence accountsProvider];
+    [(EDCategoryCoreAnalyticsLogger *)v3->_categoryCoreAnalyticsLogger setAccountsProvider:accountsProvider2];
 
     v70 = +[DaemonAppController log];
     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
@@ -373,16 +373,16 @@ LABEL_15:
     }
 
     v71 = [FavoritesPersistence alloc];
-    v72 = [(MFPersistence_iOS *)v3->_persistence conversationPersistence];
-    v73 = [(MFPersistence_iOS *)v3->_persistence mailboxPersistence];
-    v74 = [(FavoritesPersistence *)v71 initWithConversationSubscriptionProvider:v72 accountsProvider:v23 mailboxPersistence:v73 daemonInterface:0 analyticsCollector:v3->_coreAnalyticsCollector];
+    conversationPersistence = [(MFPersistence_iOS *)v3->_persistence conversationPersistence];
+    mailboxPersistence = [(MFPersistence_iOS *)v3->_persistence mailboxPersistence];
+    v74 = [(FavoritesPersistence *)v71 initWithConversationSubscriptionProvider:conversationPersistence accountsProvider:v23 mailboxPersistence:mailboxPersistence daemonInterface:0 analyticsCollector:v3->_coreAnalyticsCollector];
     favoritesPersistence = v3->_favoritesPersistence;
     v3->_favoritesPersistence = v74;
 
     v76 = [DaemonFetchController alloc];
     v77 = v3->_favoritesPersistence;
-    v78 = [(MFPersistence_iOS *)v3->_persistence hookRegistry];
-    v79 = [(DaemonFetchController *)v76 initWithAccountsProvider:v23 favoritesPersistence:v77 hookRegistry:v78];
+    hookRegistry2 = [(MFPersistence_iOS *)v3->_persistence hookRegistry];
+    v79 = [(DaemonFetchController *)v76 initWithAccountsProvider:v23 favoritesPersistence:v77 hookRegistry:hookRegistry2];
     fetchController = v3->_fetchController;
     v3->_fetchController = v79;
 
@@ -391,17 +391,17 @@ LABEL_15:
     v3->_userNotificationCenterController = v81;
 
     [(MFUserNotificationCenterController *)v3->_userNotificationCenterController addSettingsObserver:v3->_favoritesPersistence];
-    v83 = [(MFPersistence_iOS *)v3->_persistence remindMeNotificationController];
-    v84 = [v83 addRemindMeObserver:v3->_userNotificationCenterController];
+    remindMeNotificationController = [(MFPersistence_iOS *)v3->_persistence remindMeNotificationController];
+    v84 = [remindMeNotificationController addRemindMeObserver:v3->_userNotificationCenterController];
 
     v85 = objc_alloc_init(MFTrashCompactor);
     trashCompactor = v3->_trashCompactor;
     v3->_trashCompactor = v85;
 
     v87 = [EDSendLaterUpdateController alloc];
-    v88 = [(MFPersistence_iOS *)v3->_persistence hookRegistry];
-    v89 = [(MFPersistence_iOS *)v3->_persistence alarmScheduler];
-    v90 = [v87 initWithHookRegistry:v88 messagePersistence:v59 outgoingRepository:v57 alarmScheduler:v89];
+    hookRegistry3 = [(MFPersistence_iOS *)v3->_persistence hookRegistry];
+    alarmScheduler = [(MFPersistence_iOS *)v3->_persistence alarmScheduler];
+    v90 = [v87 initWithHookRegistry:hookRegistry3 messagePersistence:v59 outgoingRepository:v57 alarmScheduler:alarmScheduler];
     sendLaterUpdateController = v3->_sendLaterUpdateController;
     v3->_sendLaterUpdateController = v90;
 
@@ -464,22 +464,22 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Starting up UserNotificationCenterController.", buf, 2u);
   }
 
-  v5 = [(DaemonAppController *)self userNotificationCenterController];
-  [v5 start];
+  userNotificationCenterController = [(DaemonAppController *)self userNotificationCenterController];
+  [userNotificationCenterController start];
 
   v6 = +[MFUserSyncStakeholder sharedStakeholder];
   v7 = +[MFUserProfileProvider_iOS defaultProvider];
   v8 = +[VIPManager defaultInstance];
   v9 = [MFCategorySubsystem_iOS alloc];
   persistence = self->_persistence;
-  v11 = [(DaemonAppController *)self categoryCoreAnalyticsLogger];
-  v12 = [v9 initWithPersistence:persistence userProfileProvider:v7 vipManager:v8 sourceApplicationBundleIdentifier:kMFMobileMailBundleIdentifier categorizationAnalyticsLogger:v11];
+  categoryCoreAnalyticsLogger = [(DaemonAppController *)self categoryCoreAnalyticsLogger];
+  v12 = [v9 initWithPersistence:persistence userProfileProvider:v7 vipManager:v8 sourceApplicationBundleIdentifier:kMFMobileMailBundleIdentifier categorizationAnalyticsLogger:categoryCoreAnalyticsLogger];
   [(DaemonAppController *)self setCategorySubsystem:v12];
 
   v13 = [DaemonInterfaceFactory alloc];
   v14 = self->_persistence;
-  v15 = [(DaemonAppController *)self categorySubsystem];
-  v16 = [(DaemonInterfaceFactory *)v13 initWithPersistence:v14 categorySubsystem:v15 sharedFetchController:self->_fetchController];
+  categorySubsystem = [(DaemonAppController *)self categorySubsystem];
+  v16 = [(DaemonInterfaceFactory *)v13 initWithPersistence:v14 categorySubsystem:categorySubsystem sharedFetchController:self->_fetchController];
 
   v17 = [[EDServer alloc] initWithDaemonInterfaceFactory:v16];
   server = self->_server;
@@ -522,9 +522,9 @@ LABEL_15:
 - (BOOL)_isAppForeground
 {
   v2 = +[MFAppStateMonitor sharedInstance];
-  v3 = [v2 isVisible];
+  isVisible = [v2 isVisible];
 
-  return v3;
+  return isVisible;
 }
 
 + (void)_unregisterAllXPCActivities
@@ -580,73 +580,73 @@ LABEL_15:
   [v4 shutdown];
 }
 
-- (void)resetPushStateWithCompletion:(id)a3
+- (void)resetPushStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v3 = +[AutoFetchController sharedController];
-  [v3 resetPushStateWithCompletion:v4];
+  [v3 resetPushStateWithCompletion:completionCopy];
 }
 
-- (void)autofetchAccount:(id)a3 mailboxUid:(id)a4
+- (void)autofetchAccount:(id)account mailboxUid:(id)uid
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  accountCopy = account;
+  uidCopy = uid;
+  v7 = uidCopy;
+  if (uidCopy)
   {
-    v8 = v6;
+    primaryMailboxUid = uidCopy;
   }
 
   else
   {
-    v8 = [v5 primaryMailboxUid];
+    primaryMailboxUid = [accountCopy primaryMailboxUid];
   }
 
-  v9 = v8;
+  v9 = primaryMailboxUid;
   v10 = MFAutoFetchLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v5 ef_publicDescription];
+    ef_publicDescription = [accountCopy ef_publicDescription];
     v20 = 138543362;
-    v21 = v11;
+    v21 = ef_publicDescription;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Autofetching after abort %{public}@", &v20, 0xCu);
   }
 
-  v12 = [v5 storeForMailboxUid:v9];
-  v13 = [MessageBodyLoader loaderForAccount:v5];
+  v12 = [accountCopy storeForMailboxUid:v9];
+  v13 = [MessageBodyLoader loaderForAccount:accountCopy];
   [v13 beginAddingNewMessagesForStore:v12];
 
   if (([v12 fetchMobileSynchronously:{objc_msgSend(v12, "fetchWindow")}] & 0x8000000000000000) != 0)
   {
-    v14 = [v5 connectionError];
-    if (!v14)
+    connectionError = [accountCopy connectionError];
+    if (!connectionError)
     {
       v18 = +[MFActivityMonitor currentMonitor];
-      v14 = [v18 error];
+      connectionError = [v18 error];
     }
 
     v15 = MFLogGeneral();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v14 ef_publicDescription];
-      sub_1000D0874(v19, &v20, v15);
+      ef_publicDescription2 = [connectionError ef_publicDescription];
+      sub_1000D0874(ef_publicDescription2, &v20, v15);
     }
   }
 
   else
   {
-    v14 = +[MailPersistentStorage sharedStorage];
+    connectionError = +[MailPersistentStorage sharedStorage];
     v15 = +[NSDate date];
-    v16 = [v12 mailbox];
-    v17 = [v16 URLString];
-    [v14 setFetchDate:v15 forSource:v17];
+    mailbox = [v12 mailbox];
+    uRLString = [mailbox URLString];
+    [connectionError setFetchDate:v15 forSource:uRLString];
   }
 }
 
-- (id)messageSummaryLoaderForMessage:(id)a3
+- (id)messageSummaryLoaderForMessage:(id)message
 {
-  v3 = a3;
-  v4 = [[MessageSummaryLoader alloc] initWithMessage:v3];
+  messageCopy = message;
+  v4 = [[MessageSummaryLoader alloc] initWithMessage:messageCopy];
 
   return v4;
 }
@@ -675,8 +675,8 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Performing delayed startup tasks.", v39, 2u);
   }
 
-  v4 = [(DaemonAppController *)self serverMessagesIndexerFuture];
-  [v4 result];
+  serverMessagesIndexerFuture = [(DaemonAppController *)self serverMessagesIndexerFuture];
+  [serverMessagesIndexerFuture result];
 
   v5 = +[MFPowerController sharedInstance];
   [v5 startListeningForBatterySaverNotifications];
@@ -684,28 +684,28 @@ LABEL_15:
   v6 = +[MFVIPSendersLibrary defaultInstance];
   [v6 checkForAddressBookChanges];
 
-  v7 = [(MFPersistence_iOS *)self->_persistence conversationPersistence];
-  [v7 initializeConversationManagerAndPerformInitialSync];
+  conversationPersistence = [(MFPersistence_iOS *)self->_persistence conversationPersistence];
+  [conversationPersistence initializeConversationManagerAndPerformInitialSync];
 
   v8 = [AppBadgeController alloc];
-  v9 = [(MFPersistence_iOS *)self->_persistence messagePersistence];
-  v10 = [(MFPersistence_iOS *)self->_persistence hookRegistry];
+  messagePersistence = [(MFPersistence_iOS *)self->_persistence messagePersistence];
+  hookRegistry = [(MFPersistence_iOS *)self->_persistence hookRegistry];
   mailboxProvider = self->_mailboxProvider;
   focusController = self->_focusController;
   v13 = [MSBucketBarConfigurationController alloc];
   v14 = objc_alloc_init(MSUserDefaultsBucketBarConfigurationProvider);
   v15 = [v13 initWithProvider:v14];
-  v16 = [(AppBadgeController *)v8 initWithMessagePersistence:v9 hookRegistry:v10 mailboxProvider:mailboxProvider focusController:focusController bucketBarController:v15];
+  v16 = [(AppBadgeController *)v8 initWithMessagePersistence:messagePersistence hookRegistry:hookRegistry mailboxProvider:mailboxProvider focusController:focusController bucketBarController:v15];
   badgeController = self->_badgeController;
   self->_badgeController = v16;
 
   [(MFUserNotificationCenterController *)self->_userNotificationCenterController addSettingsObserver:self->_badgeController];
   v18 = [MFApplicationShortcutProvider alloc];
-  v19 = [(DaemonAppController *)self accountsProvider];
+  accountsProvider = [(DaemonAppController *)self accountsProvider];
   favoritesPersistence = self->_favoritesPersistence;
-  v21 = [(MFPersistence_iOS *)self->_persistence messagePersistence];
-  v22 = [(MFPersistence_iOS *)self->_persistence hookRegistry];
-  v23 = [(MFApplicationShortcutProvider *)v18 initWithAccountsProvider:v19 favoritesPersistence:favoritesPersistence messagePersistence:v21 hookRegistry:v22];
+  messagePersistence2 = [(MFPersistence_iOS *)self->_persistence messagePersistence];
+  hookRegistry2 = [(MFPersistence_iOS *)self->_persistence hookRegistry];
+  v23 = [(MFApplicationShortcutProvider *)v18 initWithAccountsProvider:accountsProvider favoritesPersistence:favoritesPersistence messagePersistence:messagePersistence2 hookRegistry:hookRegistry2];
   appShortcutProvider = self->_appShortcutProvider;
   self->_appShortcutProvider = v23;
 
@@ -721,16 +721,16 @@ LABEL_15:
   v27 = [EDWidgetUpdateController alloc];
   v40 = MFWidgetKindMessages;
   v28 = [NSArray arrayWithObjects:&v40 count:1];
-  v29 = [(MFPersistence_iOS *)self->_persistence hookRegistry];
-  v30 = [v27 initWithWidgetBundleIdentifier:MFMobileMailWidgetBundleIdentifier widgetKindIdentifiers:v28 hookRegistry:v29];
+  hookRegistry3 = [(MFPersistence_iOS *)self->_persistence hookRegistry];
+  v30 = [v27 initWithWidgetBundleIdentifier:MFMobileMailWidgetBundleIdentifier widgetKindIdentifiers:v28 hookRegistry:hookRegistry3];
   widgetUpdateController = self->_widgetUpdateController;
   self->_widgetUpdateController = v30;
 
   v32 = +[MFDeliveryQueue sharedDeliveryQueue];
   [(DaemonAppController *)self _setupSnapshotInvalidation];
   [(MFPersistence_iOS *)self->_persistence scheduleRecurringActivity];
-  v33 = [(MFPersistence_iOS *)self->_persistence remindMeNotificationController];
-  [v33 performDelayedTasks];
+  remindMeNotificationController = [(MFPersistence_iOS *)self->_persistence remindMeNotificationController];
+  [remindMeNotificationController performDelayedTasks];
 
   +[EMInternalPreferences registerForDefaultChanges];
   +[EMServerConfiguration refreshAsync];
@@ -750,8 +750,8 @@ LABEL_15:
   }
 
   [(DaemonAppController *)self _configureAnalytics];
-  v37 = [(DaemonAppController *)self categorySubsystem];
-  [v37 start];
+  categorySubsystem = [(DaemonAppController *)self categorySubsystem];
+  [categorySubsystem start];
 
   _os_feature_enabled_impl();
   EDCategoryPowerLogDidCreateInstance();
@@ -788,32 +788,32 @@ LABEL_15:
   [v2 makeObjectsPerformSelector:"systemWillSleep"];
 }
 
-- (void)vipManager:(id)a3 hasVIPNotificationsEnabledWithCompletion:(id)a4
+- (void)vipManager:(id)manager hasVIPNotificationsEnabledWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   systemUserNotificationCenter = self->_systemUserNotificationCenter;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100011B4C;
   v8[3] = &unk_100156940;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(MFSystemUserNotificationCenter *)systemUserNotificationCenter getNotificationSettingsForTopicsWithCompletionHandler:v8];
 }
 
 - (void)_setupSnapshotInvalidation
 {
   v3 = [DaemonSnapshotInvalidator alloc];
-  v4 = [(MFPersistence_iOS *)self->_persistence hookRegistry];
+  hookRegistry = [(MFPersistence_iOS *)self->_persistence hookRegistry];
   server = self->_server;
-  v6 = [(DaemonAppController *)self focusController];
-  v7 = [(DaemonSnapshotInvalidator *)v3 initWithApplicationBundleIdentifier:kMFMobileMailBundleIdentifier hookRegistry:v4 remoteClientsProvider:server focusController:v6];
+  focusController = [(DaemonAppController *)self focusController];
+  v7 = [(DaemonSnapshotInvalidator *)v3 initWithApplicationBundleIdentifier:kMFMobileMailBundleIdentifier hookRegistry:hookRegistry remoteClientsProvider:server focusController:focusController];
   [(DaemonAppController *)self setSnapshotInvalidator:v7];
 
   v8 = +[EFDevice currentDevice];
-  LODWORD(v6) = [v8 isInternal];
+  LODWORD(focusController) = [v8 isInternal];
 
-  if (v6)
+  if (focusController)
   {
     objc_initWeak(&location, self);
     v25[0] = _NSConcreteStackBlock;
@@ -856,8 +856,8 @@ LABEL_15:
   v3 = objc_alloc_init(MFSMIMEConfigurationProvider);
   v4 = [EDMailAnalyticsCollector alloc];
   coreAnalyticsCollector = self->_coreAnalyticsCollector;
-  v6 = [(MFPersistence_iOS *)self->_persistence messagePersistence];
-  v7 = [v4 initWithAnalyticsCollector:coreAnalyticsCollector smimeConfigurationProvider:v3 messagePersistence:v6];
+  messagePersistence = [(MFPersistence_iOS *)self->_persistence messagePersistence];
+  v7 = [v4 initWithAnalyticsCollector:coreAnalyticsCollector smimeConfigurationProvider:v3 messagePersistence:messagePersistence];
   mailAnalyticsCollector = self->_mailAnalyticsCollector;
   self->_mailAnalyticsCollector = v7;
 

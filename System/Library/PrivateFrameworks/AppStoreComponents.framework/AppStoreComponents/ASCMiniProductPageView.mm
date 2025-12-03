@@ -2,62 +2,62 @@
 - (ASCLockup)lockup;
 - (ASCLockupRequest)request;
 - (ASCLockupViewGroup)group;
-- (ASCMiniProductPageView)initWithCoder:(id)a3;
-- (ASCMiniProductPageView)initWithFrame:(CGRect)a3;
+- (ASCMiniProductPageView)initWithCoder:(id)coder;
+- (ASCMiniProductPageView)initWithFrame:(CGRect)frame;
 - (ASCMiniProductPageViewDelegate)delegate;
 - (BOOL)showsPlaceholderContent;
 - (CGSize)intrinsicContentSize;
 - (CGSize)preferredIconSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)loadingColor;
 - (UIViewController)presentingViewController;
 - (id)makeLayout;
-- (void)didSelectMediaView:(id)a3 forEvent:(id)a4;
+- (void)didSelectMediaView:(id)view forEvent:(id)event;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)lockupPresenterDidBeginRequest;
-- (void)lockupPresenterDidFailRequestWithError:(id)a3;
+- (void)lockupPresenterDidFailRequestWithError:(id)error;
 - (void)lockupPresenterDidFinishRequest;
 - (void)presentDescriptionViewController;
-- (void)presentScreenshotsViewControllerWithSelectedIndex:(unint64_t)a3;
+- (void)presentScreenshotsViewControllerWithSelectedIndex:(unint64_t)index;
 - (void)presentingViewController;
-- (void)setAgeRating:(id)a3;
-- (void)setBackgroundColor:(id)a3;
+- (void)setAgeRating:(id)rating;
+- (void)setBackgroundColor:(id)color;
 - (void)setDataChanged;
-- (void)setDelegate:(id)a3;
-- (void)setDescription:(id)a3;
-- (void)setGroup:(id)a3;
-- (void)setIconImage:(id)a3 withDecoration:(id)a4;
-- (void)setLoading:(BOOL)a3;
-- (void)setLoadingColor:(id)a3;
-- (void)setLockup:(id)a3;
-- (void)setMetadata:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setDescription:(id)description;
+- (void)setGroup:(id)group;
+- (void)setIconImage:(id)image withDecoration:(id)decoration;
+- (void)setLoading:(BOOL)loading;
+- (void)setLoadingColor:(id)color;
+- (void)setLockup:(id)lockup;
+- (void)setMetadata:(id)metadata;
 - (void)setNumberOfLines;
-- (void)setPrefersRightToLeftLayout:(BOOL)a3;
-- (void)setRequest:(id)a3;
-- (void)setShowsPlaceholderContent:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setPrefersRightToLeftLayout:(BOOL)layout;
+- (void)setRequest:(id)request;
+- (void)setShowsPlaceholderContent:(BOOL)content;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation ASCMiniProductPageView
 
-- (ASCMiniProductPageView)initWithFrame:(CGRect)a3
+- (ASCMiniProductPageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v61[1] = *MEMORY[0x277D85DE8];
   +[ASCEligibility assertCurrentProcessEligibility];
   v60.receiver = self;
   v60.super_class = ASCMiniProductPageView;
-  v8 = [(ASCMiniProductPageView *)&v60 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(ASCMiniProductPageView *)&v60 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    [(ASCMiniProductPageView *)v8 setLayoutMargins:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
+    [(ASCMiniProductPageView *)height setLayoutMargins:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
     [(ASCMiniProductPageView *)v9 setInsetsLayoutMarginsFromSafeArea:0];
     [(ASCMiniProductPageView *)v9 setClipsToBounds:1];
     v10 = [ASCArtworkView alloc];
@@ -124,17 +124,17 @@
     [(ASCSkeletonLabel *)v9->_metadataLabel setAdjustsFontForContentSizeCategory:1];
     [(ASCSkeletonLabel *)v9->_subtitleLabel setAdjustsFontForContentSizeCategory:1];
     [(ASCExpandableLabel *)v9->_descriptionLabel setAdjustsFontForContentSizeCategory:1];
-    v40 = [MEMORY[0x277D75348] labelColor];
-    [(ASCMiniProductPageTitleView *)v9->_titleView setTextColor:v40];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(ASCMiniProductPageTitleView *)v9->_titleView setTextColor:labelColor];
 
-    v41 = [MEMORY[0x277D75348] labelColor];
-    [(ASCSkeletonLabel *)v9->_subtitleLabel setTextColor:v41];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    [(ASCSkeletonLabel *)v9->_subtitleLabel setTextColor:labelColor2];
 
-    v42 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(ASCSkeletonLabel *)v9->_metadataLabel setTextColor:v42];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(ASCSkeletonLabel *)v9->_metadataLabel setTextColor:secondaryLabelColor];
 
-    v43 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(ASCExpandableLabel *)v9->_descriptionLabel setTextColor:v43];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(ASCExpandableLabel *)v9->_descriptionLabel setTextColor:secondaryLabelColor2];
 
     [(ASCMiniProductPageView *)v9 setNumberOfLines];
     v44 = +[ASCSemanticColor loading];
@@ -172,8 +172,8 @@
     [(ASCMiniProductPageView *)v9 addSubview:v9->_descriptionLabel];
     [(ASCMiniProductPageView *)v9 addSubview:v9->_mediaView];
     [(ASCExpandableLabel *)v9->_descriptionLabel setUserInteractionEnabled:1];
-    v50 = [(ASCExpandableLabel *)v9->_descriptionLabel moreButton];
-    [v50 addTarget:v9 action:sel_didSelectDescriptionLabel forControlEvents:64];
+    moreButton = [(ASCExpandableLabel *)v9->_descriptionLabel moreButton];
+    [moreButton addTarget:v9 action:sel_didSelectDescriptionLabel forControlEvents:64];
 
     [(ASCMiniProductPageMediaView *)v9->_mediaView setUserInteractionEnabled:1];
     [(ASCMiniProductPageMediaView *)v9->_mediaView addTarget:v9 action:sel_didSelectMediaView_forEvent_ forControlEvents:64];
@@ -209,7 +209,7 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (ASCMiniProductPageView)initWithCoder:(id)a3
+- (ASCMiniProductPageView)initWithCoder:(id)coder
 {
   [(ASCMiniProductPageView *)self doesNotRecognizeSelector:a2];
 
@@ -238,10 +238,10 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(ASCMiniProductPageView *)self layoutMargins];
   v10 = v6;
   v11 = v7;
@@ -267,9 +267,9 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
     v15 = 0.0;
   }
 
-  v16 = [(ASCMiniProductPageView *)self makeLayout];
-  v17 = [(UIView *)self asc_layoutTraitEnvironment];
-  [v16 measuredSizeFittingSize:v17 inTraitEnvironment:{v14, v15}];
+  makeLayout = [(ASCMiniProductPageView *)self makeLayout];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [makeLayout measuredSizeFittingSize:asc_layoutTraitEnvironment inTraitEnvironment:{v14, v15}];
   v19 = v18;
   v21 = v20;
 
@@ -295,24 +295,24 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
   v14 = v6 + v13;
   v16 = v8 - (v11 + v15);
   v18 = v10 - (v13 + v17);
-  v19 = [(ASCMiniProductPageView *)self makeLayout];
-  v20 = [(UIView *)self asc_layoutTraitEnvironment];
-  [v19 placeChildrenRelativeToRect:v20 inTraitEnvironment:{v12, v14, v16, v18}];
+  makeLayout = [(ASCMiniProductPageView *)self makeLayout];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [makeLayout placeChildrenRelativeToRect:asc_layoutTraitEnvironment inTraitEnvironment:{v12, v14, v16, v18}];
 
-  v21 = [(ASCMiniProductPageView *)self mediaPresenter];
-  [v21 viewDidLayoutSubviews];
+  mediaPresenter = [(ASCMiniProductPageView *)self mediaPresenter];
+  [mediaPresenter viewDidLayoutSubviews];
 }
 
 - (id)makeLayout
 {
-  v3 = [(ASCMiniProductPageView *)self traitCollection];
-  v4 = [(ASCMiniProductPageView *)self iconArtworkView];
-  v5 = [(ASCMiniProductPageView *)self titleView];
-  v6 = [(ASCMiniProductPageView *)self subtitleLabel];
-  v7 = [(ASCMiniProductPageView *)self metadataLabel];
-  v8 = [(ASCMiniProductPageView *)self descriptionLabel];
-  v9 = [(ASCMiniProductPageView *)self mediaView];
-  v10 = [__ASCLayoutProxy miniProductPageLayoutWithTraitCollection:v3 iconArtwork:v4 title:v5 subtitle:v6 metadata:v7 description:v8 screenshots:v9];
+  traitCollection = [(ASCMiniProductPageView *)self traitCollection];
+  iconArtworkView = [(ASCMiniProductPageView *)self iconArtworkView];
+  titleView = [(ASCMiniProductPageView *)self titleView];
+  subtitleLabel = [(ASCMiniProductPageView *)self subtitleLabel];
+  metadataLabel = [(ASCMiniProductPageView *)self metadataLabel];
+  descriptionLabel = [(ASCMiniProductPageView *)self descriptionLabel];
+  mediaView = [(ASCMiniProductPageView *)self mediaView];
+  v10 = [__ASCLayoutProxy miniProductPageLayoutWithTraitCollection:traitCollection iconArtwork:iconArtworkView title:titleView subtitle:subtitleLabel metadata:metadataLabel description:descriptionLabel screenshots:mediaView];
 
   return v10;
 }
@@ -333,28 +333,28 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
   [(ASCMiniProductPageView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = ASCMiniProductPageView;
-  v4 = a3;
-  [(ASCMiniProductPageView *)&v7 setBackgroundColor:v4];
+  colorCopy = color;
+  [(ASCMiniProductPageView *)&v7 setBackgroundColor:colorCopy];
   v5 = [(ASCMiniProductPageView *)self titleView:v7.receiver];
-  [v5 setBackgroundColor:v4];
+  [v5 setBackgroundColor:colorCopy];
 
-  v6 = [(ASCMiniProductPageView *)self descriptionLabel];
-  [v6 setBackgroundColor:v4];
+  descriptionLabel = [(ASCMiniProductPageView *)self descriptionLabel];
+  [descriptionLabel setBackgroundColor:colorCopy];
 }
 
 - (void)setNumberOfLines
 {
-  v3 = [(ASCMiniProductPageView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(ASCMiniProductPageView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v6 = [(ASCMiniProductPageView *)self titleView];
-  v7 = [v6 textContainer];
-  v8 = v7;
+  titleView = [(ASCMiniProductPageView *)self titleView];
+  textContainer = [titleView textContainer];
+  v8 = textContainer;
   v9 = !IsAccessibilityCategory;
   if (IsAccessibilityCategory)
   {
@@ -387,69 +387,69 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
     v13 = 3;
   }
 
-  [v7 setMaximumNumberOfLines:v10];
+  [textContainer setMaximumNumberOfLines:v10];
 
-  v14 = [(ASCMiniProductPageView *)self subtitleLabel];
-  [v14 setNumberOfLines:v11];
+  subtitleLabel = [(ASCMiniProductPageView *)self subtitleLabel];
+  [subtitleLabel setNumberOfLines:v11];
 
-  v15 = [(ASCMiniProductPageView *)self metadataLabel];
-  [v15 setNumberOfLines:v12];
+  metadataLabel = [(ASCMiniProductPageView *)self metadataLabel];
+  [metadataLabel setNumberOfLines:v12];
 
-  v16 = [(ASCMiniProductPageView *)self descriptionLabel];
-  [v16 setNumberOfLines:v13];
+  descriptionLabel = [(ASCMiniProductPageView *)self descriptionLabel];
+  [descriptionLabel setNumberOfLines:v13];
 }
 
 - (ASCLockup)lockup
 {
-  v2 = [(ASCMiniProductPageView *)self lockupPresenter];
-  v3 = [v2 lockup];
+  lockupPresenter = [(ASCMiniProductPageView *)self lockupPresenter];
+  lockup = [lockupPresenter lockup];
 
-  return v3;
+  return lockup;
 }
 
-- (void)setLockup:(id)a3
+- (void)setLockup:(id)lockup
 {
-  v4 = a3;
-  v5 = [(ASCMiniProductPageView *)self lockupPresenter];
-  [v5 setLockup:v4];
+  lockupCopy = lockup;
+  lockupPresenter = [(ASCMiniProductPageView *)self lockupPresenter];
+  [lockupPresenter setLockup:lockupCopy];
 }
 
 - (ASCLockupViewGroup)group
 {
-  v2 = [(ASCMiniProductPageView *)self lockupPresenter];
-  v3 = [v2 group];
+  lockupPresenter = [(ASCMiniProductPageView *)self lockupPresenter];
+  group = [lockupPresenter group];
 
-  return v3;
+  return group;
 }
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(ASCMiniProductPageView *)self lockupPresenter];
-  [v5 setGroup:v4];
+  groupCopy = group;
+  lockupPresenter = [(ASCMiniProductPageView *)self lockupPresenter];
+  [lockupPresenter setGroup:groupCopy];
 }
 
 - (ASCLockupRequest)request
 {
-  v2 = [(ASCMiniProductPageView *)self lockupPresenter];
-  v3 = [v2 request];
+  lockupPresenter = [(ASCMiniProductPageView *)self lockupPresenter];
+  request = [lockupPresenter request];
 
-  return v3;
+  return request;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ASCMiniProductPageView *)self lockupPresenter];
-  [v5 setRequest:v4];
+  requestCopy = request;
+  lockupPresenter = [(ASCMiniProductPageView *)self lockupPresenter];
+  [lockupPresenter setRequest:requestCopy];
 }
 
 - (void)lockupPresenterDidBeginRequest
 {
   if (*&self->_delegateRespondsTo)
   {
-    v4 = [(ASCMiniProductPageView *)self delegate];
-    [v4 miniProductPageViewDidBeginRequest:self];
+    delegate = [(ASCMiniProductPageView *)self delegate];
+    [delegate miniProductPageViewDidBeginRequest:self];
   }
 }
 
@@ -457,27 +457,27 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
 {
   if ((*&self->_delegateRespondsTo & 2) != 0)
   {
-    v4 = [(ASCMiniProductPageView *)self delegate];
-    [v4 miniProductPageViewDidFinishRequest:self];
+    delegate = [(ASCMiniProductPageView *)self delegate];
+    [delegate miniProductPageViewDidFinishRequest:self];
   }
 }
 
-- (void)lockupPresenterDidFailRequestWithError:(id)a3
+- (void)lockupPresenterDidFailRequestWithError:(id)error
 {
   if ((*&self->_delegateRespondsTo & 4) != 0)
   {
-    v5 = a3;
-    v6 = [(ASCMiniProductPageView *)self delegate];
-    [v6 miniProductPageView:self didFailRequestWithError:v5];
+    errorCopy = error;
+    delegate = [(ASCMiniProductPageView *)self delegate];
+    [delegate miniProductPageView:self didFailRequestWithError:errorCopy];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v12 = a3;
-  objc_storeWeak(&self->_delegate, v12);
-  v4 = v12;
-  if (v12)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  v4 = delegateCopy;
+  if (delegateCopy)
   {
     *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
@@ -536,7 +536,7 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
 
     *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xDF | v9;
     v10 = (objc_opt_respondsToSelector() & 1) == 0;
-    v4 = v12;
+    v4 = delegateCopy;
     if (v10)
     {
       v11 = 0;
@@ -556,36 +556,36 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShowsPlaceholderContent:(BOOL)a3
+- (void)setShowsPlaceholderContent:(BOOL)content
 {
-  v3 = a3;
-  v4 = [(ASCMiniProductPageView *)self lockupPresenter];
-  [v4 setShowsPlaceholderContent:v3];
+  contentCopy = content;
+  lockupPresenter = [(ASCMiniProductPageView *)self lockupPresenter];
+  [lockupPresenter setShowsPlaceholderContent:contentCopy];
 }
 
 - (BOOL)showsPlaceholderContent
 {
-  v2 = [(ASCMiniProductPageView *)self lockupPresenter];
-  v3 = [v2 showsPlaceholderContent];
+  lockupPresenter = [(ASCMiniProductPageView *)self lockupPresenter];
+  showsPlaceholderContent = [lockupPresenter showsPlaceholderContent];
 
-  return v3;
+  return showsPlaceholderContent;
 }
 
 - (UIColor)loadingColor
 {
-  v2 = [(ASCMiniProductPageView *)self titleView];
-  v3 = [v2 skeletonColor];
+  titleView = [(ASCMiniProductPageView *)self titleView];
+  skeletonColor = [titleView skeletonColor];
 
-  return v3;
+  return skeletonColor;
 }
 
-- (void)setLoadingColor:(id)a3
+- (void)setLoadingColor:(id)color
 {
-  v4 = a3;
-  v13 = v4;
-  if (v4)
+  colorCopy = color;
+  v13 = colorCopy;
+  if (colorCopy)
   {
-    v5 = v4;
+    v5 = colorCopy;
   }
 
   else
@@ -594,87 +594,87 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
   }
 
   v6 = v5;
-  v7 = [(ASCMiniProductPageView *)self titleView];
-  [v7 setSkeletonColor:v6];
+  titleView = [(ASCMiniProductPageView *)self titleView];
+  [titleView setSkeletonColor:v6];
 
-  v8 = [(ASCMiniProductPageView *)self subtitleLabel];
-  [v8 setSkeletonColor:v6];
+  subtitleLabel = [(ASCMiniProductPageView *)self subtitleLabel];
+  [subtitleLabel setSkeletonColor:v6];
 
-  v9 = [(ASCMiniProductPageView *)self metadataLabel];
-  [v9 setSkeletonColor:v6];
+  metadataLabel = [(ASCMiniProductPageView *)self metadataLabel];
+  [metadataLabel setSkeletonColor:v6];
 
-  v10 = [(ASCMiniProductPageView *)self descriptionLabel];
-  [v10 setSkeletonColor:v6];
+  descriptionLabel = [(ASCMiniProductPageView *)self descriptionLabel];
+  [descriptionLabel setSkeletonColor:v6];
 
-  v11 = [(ASCMiniProductPageView *)self iconArtworkView];
-  [v11 setPlaceholderColor:v6];
+  iconArtworkView = [(ASCMiniProductPageView *)self iconArtworkView];
+  [iconArtworkView setPlaceholderColor:v6];
 
-  v12 = [(ASCMiniProductPageView *)self mediaView];
-  [v12 setPlaceholderColor:v6];
+  mediaView = [(ASCMiniProductPageView *)self mediaView];
+  [mediaView setPlaceholderColor:v6];
 }
 
-- (void)setIconImage:(id)a3 withDecoration:(id)a4
+- (void)setIconImage:(id)image withDecoration:(id)decoration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASCMiniProductPageView *)self iconArtworkView];
-  [v8 setImage:v7];
+  decorationCopy = decoration;
+  imageCopy = image;
+  iconArtworkView = [(ASCMiniProductPageView *)self iconArtworkView];
+  [iconArtworkView setImage:imageCopy];
 
-  v9 = [(ASCMiniProductPageView *)self iconArtworkView];
-  [v9 setDecoration:v6];
+  iconArtworkView2 = [(ASCMiniProductPageView *)self iconArtworkView];
+  [iconArtworkView2 setDecoration:decorationCopy];
 
   [(ASCMiniProductPageView *)self setDataChanged];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ASCMiniProductPageView *)self titleView];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleView = [(ASCMiniProductPageView *)self titleView];
+  [titleView setText:titleCopy];
 
   [(ASCMiniProductPageView *)self setDataChanged];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(ASCMiniProductPageView *)self subtitleLabel];
-  [v5 setText:v4];
+  subtitleCopy = subtitle;
+  subtitleLabel = [(ASCMiniProductPageView *)self subtitleLabel];
+  [subtitleLabel setText:subtitleCopy];
 
   [(ASCMiniProductPageView *)self setDataChanged];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(ASCMiniProductPageView *)self metadataLabel];
-  [v5 setText:v4];
+  metadataCopy = metadata;
+  metadataLabel = [(ASCMiniProductPageView *)self metadataLabel];
+  [metadataLabel setText:metadataCopy];
 
   [(ASCMiniProductPageView *)self setDataChanged];
 }
 
-- (void)setDescription:(id)a3
+- (void)setDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(ASCMiniProductPageView *)self descriptionLabel];
-  [v5 setText:v4];
+  descriptionCopy = description;
+  descriptionLabel = [(ASCMiniProductPageView *)self descriptionLabel];
+  [descriptionLabel setText:descriptionCopy];
 
   [(ASCMiniProductPageView *)self setDataChanged];
 }
 
-- (void)setAgeRating:(id)a3
+- (void)setAgeRating:(id)rating
 {
-  v4 = a3;
-  v5 = [(ASCMiniProductPageView *)self titleView];
-  v6 = [v5 ageRatingView];
-  [v6 setText:v4];
+  ratingCopy = rating;
+  titleView = [(ASCMiniProductPageView *)self titleView];
+  ageRatingView = [titleView ageRatingView];
+  [ageRatingView setText:ratingCopy];
 
   [(ASCMiniProductPageView *)self setDataChanged];
 }
 
-- (void)setPrefersRightToLeftLayout:(BOOL)a3
+- (void)setPrefersRightToLeftLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
     v4 = 4;
   }
@@ -689,45 +689,45 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
   [(ASCMiniProductPageView *)self setDataChanged];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  v3 = a3;
-  if (a3)
+  loadingCopy = loading;
+  if (loading)
   {
     v5 = [ASCContentSkeleton fractionalSkeleton:0.76];
-    v6 = [(ASCMiniProductPageView *)self titleView];
-    [v6 setSkeleton:v5];
+    titleView = [(ASCMiniProductPageView *)self titleView];
+    [titleView setSkeleton:v5];
 
     v7 = [ASCContentSkeleton fractionalSkeleton:0.24];
-    v8 = [(ASCMiniProductPageView *)self subtitleLabel];
-    [v8 setSkeleton:v7];
+    subtitleLabel = [(ASCMiniProductPageView *)self subtitleLabel];
+    [subtitleLabel setSkeleton:v7];
 
     v9 = [ASCContentSkeleton fractionalSkeleton:0.24];
-    v10 = [(ASCMiniProductPageView *)self metadataLabel];
-    [v10 setSkeleton:v9];
+    metadataLabel = [(ASCMiniProductPageView *)self metadataLabel];
+    [metadataLabel setSkeleton:v9];
 
-    v11 = [ASCContentSkeleton fractionalSkeleton:1.0];
-    v12 = [(ASCMiniProductPageView *)self descriptionLabel];
-    [v12 setSkeleton:v11];
+    descriptionLabel2 = [ASCContentSkeleton fractionalSkeleton:1.0];
+    descriptionLabel = [(ASCMiniProductPageView *)self descriptionLabel];
+    [descriptionLabel setSkeleton:descriptionLabel2];
   }
 
   else
   {
-    v13 = [(ASCMiniProductPageView *)self titleView];
-    [v13 setSkeleton:0];
+    titleView2 = [(ASCMiniProductPageView *)self titleView];
+    [titleView2 setSkeleton:0];
 
-    v14 = [(ASCMiniProductPageView *)self subtitleLabel];
-    [v14 setSkeleton:0];
+    subtitleLabel2 = [(ASCMiniProductPageView *)self subtitleLabel];
+    [subtitleLabel2 setSkeleton:0];
 
-    v15 = [(ASCMiniProductPageView *)self metadataLabel];
-    [v15 setSkeleton:0];
+    metadataLabel2 = [(ASCMiniProductPageView *)self metadataLabel];
+    [metadataLabel2 setSkeleton:0];
 
-    v11 = [(ASCMiniProductPageView *)self descriptionLabel];
-    [v11 setSkeleton:0];
+    descriptionLabel2 = [(ASCMiniProductPageView *)self descriptionLabel];
+    [descriptionLabel2 setSkeleton:0];
   }
 
-  v16 = [(ASCMiniProductPageView *)self mediaView];
-  [v16 setShowsPlaceholderContent:v3];
+  mediaView = [(ASCMiniProductPageView *)self mediaView];
+  [mediaView setShowsPlaceholderContent:loadingCopy];
 
   [(ASCMiniProductPageView *)self setDataChanged];
 }
@@ -743,29 +743,29 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
 - (UIViewController)presentingViewController
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(ASCMiniProductPageView *)self delegate];
-  v4 = [v3 presentingViewControllerForMiniProductPageView:self];
+  delegate = [(ASCMiniProductPageView *)self delegate];
+  v4 = [delegate presentingViewControllerForMiniProductPageView:self];
 
   if (v4)
   {
-    v5 = v4;
+    rootViewController = v4;
   }
 
   else
   {
-    v6 = [(ASCMiniProductPageView *)self window];
-    v5 = [v6 rootViewController];
+    window = [(ASCMiniProductPageView *)self window];
+    rootViewController = [window rootViewController];
 
-    if (v5)
+    if (rootViewController)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&dword_21571A000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Mini Product Page view %@ is presenting from root view controller", &v9, 0xCu);
       }
 
-      v7 = v5;
+      v7 = rootViewController;
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -774,19 +774,19 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
     }
   }
 
-  return v5;
+  return rootViewController;
 }
 
-- (void)presentScreenshotsViewControllerWithSelectedIndex:(unint64_t)a3
+- (void)presentScreenshotsViewControllerWithSelectedIndex:(unint64_t)index
 {
   v5 = [ASCMiniProductPageMediaViewController alloc];
-  v6 = [(ASCMiniProductPageView *)self mediaView];
-  v7 = [v6 screenshots];
-  v8 = [(ASCMiniProductPageMediaViewController *)v5 initWithScreenshots:v7 selectedIndex:a3];
+  mediaView = [(ASCMiniProductPageView *)self mediaView];
+  screenshots = [mediaView screenshots];
+  v8 = [(ASCMiniProductPageMediaViewController *)v5 initWithScreenshots:screenshots selectedIndex:index];
 
   v9 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v8];
-  v10 = [(ASCMiniProductPageView *)self presentingViewController];
-  if (v10)
+  presentingViewController = [(ASCMiniProductPageView *)self presentingViewController];
+  if (presentingViewController)
   {
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x277D85DD0];
@@ -794,8 +794,8 @@ id __40__ASCMiniProductPageView_initWithFrame___block_invoke(uint64_t a1)
     v11[2] = __76__ASCMiniProductPageView_presentScreenshotsViewControllerWithSelectedIndex___block_invoke;
     v11[3] = &unk_2781CCE48;
     objc_copyWeak(v12, &location);
-    v12[1] = a3;
-    [v10 presentViewController:v9 animated:1 completion:v11];
+    v12[1] = index;
+    [presentingViewController presentViewController:v9 animated:1 completion:v11];
     objc_destroyWeak(v12);
     objc_destroyWeak(&location);
   }
@@ -817,13 +817,13 @@ void __76__ASCMiniProductPageView_presentScreenshotsViewControllerWithSelectedIn
 - (void)presentDescriptionViewController
 {
   v3 = [ASCMiniProductPageDescriptionViewController alloc];
-  v4 = [(ASCMiniProductPageView *)self miniProductPagePresenter];
-  v5 = [v4 description];
+  miniProductPagePresenter = [(ASCMiniProductPageView *)self miniProductPagePresenter];
+  v5 = [miniProductPagePresenter description];
   v6 = [(ASCMiniProductPageDescriptionViewController *)v3 initWithText:v5];
 
   v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v6];
-  v8 = [(ASCMiniProductPageView *)self presentingViewController];
-  if (v8)
+  presentingViewController = [(ASCMiniProductPageView *)self presentingViewController];
+  if (presentingViewController)
   {
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x277D85DD0];
@@ -831,7 +831,7 @@ void __76__ASCMiniProductPageView_presentScreenshotsViewControllerWithSelectedIn
     v9[2] = __58__ASCMiniProductPageView_presentDescriptionViewController__block_invoke;
     v9[3] = &unk_2781CBD28;
     objc_copyWeak(&v10, &location);
-    [v8 presentViewController:v7 animated:1 completion:v9];
+    [presentingViewController presentViewController:v7 animated:1 completion:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
@@ -850,22 +850,22 @@ void __58__ASCMiniProductPageView_presentDescriptionViewController__block_invoke
   }
 }
 
-- (void)didSelectMediaView:(id)a3 forEvent:(id)a4
+- (void)didSelectMediaView:(id)view forEvent:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 allTouches];
-  v8 = [v7 anyObject];
+  viewCopy = view;
+  allTouches = [event allTouches];
+  anyObject = [allTouches anyObject];
 
-  [v8 locationInView:v6];
+  [anyObject locationInView:viewCopy];
   v10 = v9;
   v12 = v11;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = [v6 imageViews];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  imageViews = [viewCopy imageViews];
+  v14 = [imageViews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v14)
   {
     v15 = v14;
@@ -880,7 +880,7 @@ void __58__ASCMiniProductPageView_presentDescriptionViewController__block_invoke
       {
         if (*v21 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(imageViews);
         }
 
         [*(*(&v20 + 1) + 8 * v18) frame];
@@ -897,7 +897,7 @@ void __58__ASCMiniProductPageView_presentDescriptionViewController__block_invoke
       }
 
       while (v15 != v18);
-      v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v15 = [imageViews countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v15)
       {
         continue;
@@ -928,7 +928,7 @@ LABEL_12:
 {
   v3 = *MEMORY[0x277D85DE8];
   v1 = 138412290;
-  v2 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21571A000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Mini Product Page view %@ could not find view controller to present from.", &v1, 0xCu);
 }
 

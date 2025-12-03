@@ -1,19 +1,19 @@
 @interface AMSUIPurchaseSIWATask
-- (AMSUIPurchaseSIWATask)initWithPurchaseSIWA:(id)a3 presentingWindow:(id)a4 bag:(id)a5;
+- (AMSUIPurchaseSIWATask)initWithPurchaseSIWA:(id)a presentingWindow:(id)window bag:(id)bag;
 @end
 
 @implementation AMSUIPurchaseSIWATask
 
-- (AMSUIPurchaseSIWATask)initWithPurchaseSIWA:(id)a3 presentingWindow:(id)a4 bag:(id)a5
+- (AMSUIPurchaseSIWATask)initWithPurchaseSIWA:(id)a presentingWindow:(id)window bag:(id)bag
 {
-  v9 = a4;
+  windowCopy = window;
   v13.receiver = self;
   v13.super_class = AMSUIPurchaseSIWATask;
-  v10 = [(AMSPurchaseSIWATask *)&v13 initWithPurchaseSIWA:a3 bag:a5];
+  v10 = [(AMSPurchaseSIWATask *)&v13 initWithPurchaseSIWA:a bag:bag];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_presentingWindow, a4);
+    objc_storeStrong(&v10->_presentingWindow, window);
   }
 
   return v11;

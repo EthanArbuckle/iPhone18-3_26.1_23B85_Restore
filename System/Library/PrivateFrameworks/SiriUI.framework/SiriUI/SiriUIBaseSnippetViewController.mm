@@ -11,39 +11,39 @@
   sashItem = self->_sashItem;
   if (!sashItem)
   {
-    v4 = [(SiriUIBaseSnippetViewController *)self snippet];
-    v5 = [v4 sash];
+    snippet = [(SiriUIBaseSnippetViewController *)self snippet];
+    sash = [snippet sash];
 
-    if (v5)
+    if (sash)
     {
-      v6 = [v5 applicationBundleIdentifier];
-      v7 = [v5 title];
-      v8 = [v5 backgroundColor];
-      v9 = [v5 textColor];
-      v10 = [v5 image];
-      if ([v6 isEqualToString:@"com.apple.mobilesafari"])
+      applicationBundleIdentifier = [sash applicationBundleIdentifier];
+      title = [sash title];
+      backgroundColor = [sash backgroundColor];
+      textColor = [sash textColor];
+      image = [sash image];
+      if ([applicationBundleIdentifier isEqualToString:@"com.apple.mobilesafari"])
       {
         v11 = +[SiriUIUtilities defaultBrowserBundleIdentifier];
 
-        v6 = v11;
+        applicationBundleIdentifier = v11;
       }
 
-      v47 = v10;
-      if (v6)
+      v47 = image;
+      if (applicationBundleIdentifier)
       {
-        v46 = v9;
-        if ([v6 isEqualToString:@"com.apple.ApplePayCash"])
+        v46 = textColor;
+        if ([applicationBundleIdentifier isEqualToString:@"com.apple.ApplePayCash"])
         {
           v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           [MEMORY[0x277D755B8] imageNamed:@"ApplePay" inBundle:v12];
-          v14 = v13 = v8;
+          v14 = v13 = backgroundColor;
           [MEMORY[0x277D759A0] mainScreen];
-          v16 = v15 = v7;
+          v16 = v15 = title;
           [v16 scale];
           v17 = [v14 _applicationIconImageForFormat:5 precomposed:0 scale:?];
 
-          v7 = v15;
-          v8 = v13;
+          title = v15;
+          backgroundColor = v13;
           v18 = [(SiriSharedUISashItem *)[SiriUISashItem alloc] initWithTitle:v15 image:v17];
           v19 = self->_sashItem;
           self->_sashItem = v18;
@@ -51,7 +51,7 @@
 
         else
         {
-          v21 = [(SiriSharedUISashItem *)[SiriUISashItem alloc] initWithApplicationBundleIdentifier:v6];
+          v21 = [(SiriSharedUISashItem *)[SiriUISashItem alloc] initWithApplicationBundleIdentifier:applicationBundleIdentifier];
           v12 = v21;
           if (v21)
           {
@@ -67,49 +67,49 @@
           self->_sashItem = v22;
         }
 
-        v10 = v47;
+        image = v47;
 LABEL_17:
 
-        if (v7)
+        if (title)
         {
-          [(SiriUISashItem *)self->_sashItem setTitle:v7];
+          [(SiriUISashItem *)self->_sashItem setTitle:title];
         }
 
-        if (!v10)
+        if (!image)
         {
           goto LABEL_25;
         }
 
-        v25 = [v47 resourceUrl];
-        v26 = [v25 isFileURL];
+        resourceUrl = [v47 resourceUrl];
+        isFileURL = [resourceUrl isFileURL];
 
-        if (v26)
+        if (isFileURL)
         {
-          v44 = v7;
-          v45 = v8;
+          v44 = title;
+          v45 = backgroundColor;
           v43 = self->_sashItem;
           v27 = MEMORY[0x277D755B8];
-          v28 = [v47 resourceUrl];
-          v29 = [v28 path];
-          v30 = [v29 lastPathComponent];
+          resourceUrl2 = [v47 resourceUrl];
+          path = [resourceUrl2 path];
+          lastPathComponent = [path lastPathComponent];
           v31 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v32 = [v27 imageNamed:v30 inBundle:v31 compatibleWithTraitCollection:0];
+          v32 = [v27 imageNamed:lastPathComponent inBundle:v31 compatibleWithTraitCollection:0];
           [(SiriUISashItem *)v43 setImage:v32];
 
-          v7 = v44;
+          title = v44;
         }
 
         else
         {
-          v33 = [v47 imageData];
+          imageData = [v47 imageData];
 
-          if (!v33)
+          if (!imageData)
           {
 LABEL_25:
-            if (v8)
+            if (backgroundColor)
             {
               v36 = self->_sashItem;
-              v37 = [MEMORY[0x277D75348] siriui_colorWithAceColor:v8];
+              v37 = [MEMORY[0x277D75348] siriui_colorWithAceColor:backgroundColor];
               [(SiriSharedUISashItem *)v36 setBackgroundColor:v37];
             }
 
@@ -122,28 +122,28 @@ LABEL_25:
 
             [(SiriSharedUISashItem *)self->_sashItem setRequestsExtraPadding:1];
             v40 = self->_sashItem;
-            v41 = [v5 commands];
-            [(SiriSharedUISashItem *)v40 setCommands:v41];
+            commands = [sash commands];
+            [(SiriSharedUISashItem *)v40 setCommands:commands];
 
             sashItem = self->_sashItem;
             goto LABEL_30;
           }
 
-          v45 = v8;
+          v45 = backgroundColor;
           v34 = self->_sashItem;
           v35 = MEMORY[0x277D755B8];
-          v28 = [v47 imageData];
-          v29 = [v35 imageWithData:v28];
-          [(SiriUISashItem *)v34 setImage:v29];
+          resourceUrl2 = [v47 imageData];
+          path = [v35 imageWithData:resourceUrl2];
+          [(SiriUISashItem *)v34 setImage:path];
         }
 
-        v8 = v45;
+        backgroundColor = v45;
         goto LABEL_25;
       }
 
-      if (v7 | v10)
+      if (title | image)
       {
-        v46 = v9;
+        v46 = textColor;
         v20 = objc_alloc_init(SiriUISashItem);
         v12 = self->_sashItem;
         self->_sashItem = v20;
@@ -164,8 +164,8 @@ LABEL_31:
 
 - (BOOL)hasSash
 {
-  v2 = [(SiriUIBaseSnippetViewController *)self sashItem];
-  v3 = v2 != 0;
+  sashItem = [(SiriUIBaseSnippetViewController *)self sashItem];
+  v3 = sashItem != 0;
 
   return v3;
 }

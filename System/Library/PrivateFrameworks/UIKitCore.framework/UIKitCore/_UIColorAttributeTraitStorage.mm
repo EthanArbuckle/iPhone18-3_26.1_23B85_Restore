@@ -1,47 +1,47 @@
 @interface _UIColorAttributeTraitStorage
-- (_UIColorAttributeTraitStorage)initWithCoder:(id)a3;
-- (_UIColorAttributeTraitStorage)initWithObject:(id)a3 keyPath:(id)a4 color:(id)a5;
+- (_UIColorAttributeTraitStorage)initWithCoder:(id)coder;
+- (_UIColorAttributeTraitStorage)initWithObject:(id)object keyPath:(id)path color:(id)color;
 - (id)_propertyDescriptionString;
-- (void)applyRecordsMatchingTraitCollection:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyRecordsMatchingTraitCollection:(id)collection;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIColorAttributeTraitStorage
 
-- (_UIColorAttributeTraitStorage)initWithObject:(id)a3 keyPath:(id)a4 color:(id)a5
+- (_UIColorAttributeTraitStorage)initWithObject:(id)object keyPath:(id)path color:(id)color
 {
-  v9 = a5;
+  colorCopy = color;
   v13.receiver = self;
   v13.super_class = _UIColorAttributeTraitStorage;
-  v10 = [(_UITraitStorage *)&v13 initWithObject:a3 keyPath:a4];
+  v10 = [(_UITraitStorage *)&v13 initWithObject:object keyPath:path];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_namedColor, a5);
+    objc_storeStrong(&v10->_namedColor, color);
   }
 
   return v11;
 }
 
-- (void)applyRecordsMatchingTraitCollection:(id)a3
+- (void)applyRecordsMatchingTraitCollection:(id)collection
 {
-  v4 = a3;
-  v7 = [(_UITraitStorage *)self object];
-  v5 = [(_UICoreUICatalogColorWrapper *)self->_namedColor _uikit_valueForTraitCollection:v4];
+  collectionCopy = collection;
+  object = [(_UITraitStorage *)self object];
+  v5 = [(_UICoreUICatalogColorWrapper *)self->_namedColor _uikit_valueForTraitCollection:collectionCopy];
 
-  v6 = [(_UITraitStorage *)self keyPath];
-  [v7 _uikit_applyValueFromTraitStorage:v5 forKeyPath:v6];
+  keyPath = [(_UITraitStorage *)self keyPath];
+  [object _uikit_applyValueFromTraitStorage:v5 forKeyPath:keyPath];
 }
 
-- (_UIColorAttributeTraitStorage)initWithCoder:(id)a3
+- (_UIColorAttributeTraitStorage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _UIColorAttributeTraitStorage;
-  v5 = [(_UITraitStorage *)&v9 initWithCoder:v4];
+  v5 = [(_UITraitStorage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UINamedColor"];
+    v6 = [coderCopy decodeObjectForKey:@"UINamedColor"];
     namedColor = v5->_namedColor;
     v5->_namedColor = v6;
   }
@@ -49,13 +49,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIColorAttributeTraitStorage;
-  v4 = a3;
-  [(_UITraitStorage *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_namedColor forKey:{@"UINamedColor", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(_UITraitStorage *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_namedColor forKey:{@"UINamedColor", v5.receiver, v5.super_class}];
 }
 
 - (id)_propertyDescriptionString
@@ -63,8 +63,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v7.receiver = self;
   v7.super_class = _UIColorAttributeTraitStorage;
-  v4 = [(_UITraitStorage *)&v7 _propertyDescriptionString];
-  v5 = [v3 stringWithFormat:@"%@, namedColor=%@", v4, self->_namedColor];
+  _propertyDescriptionString = [(_UITraitStorage *)&v7 _propertyDescriptionString];
+  v5 = [v3 stringWithFormat:@"%@, namedColor=%@", _propertyDescriptionString, self->_namedColor];
 
   return v5;
 }

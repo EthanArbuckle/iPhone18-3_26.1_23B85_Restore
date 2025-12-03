@@ -2,13 +2,13 @@
 + (OS_os_log)logCategory;
 + (OS_os_log)oversizeLogCategory;
 - (BOOL)preflightImport;
-- (JaliscoUpdateOperation)initWithConfiguration:(id)a3 reason:(int64_t)a4 clientIdentity:(id)a5;
-- (JaliscoUpdateOperation)initWithReason:(int64_t)a3;
+- (JaliscoUpdateOperation)initWithConfiguration:(id)configuration reason:(int64_t)reason clientIdentity:(id)identity;
+- (JaliscoUpdateOperation)initWithReason:(int64_t)reason;
 - (id)newImporter;
 - (id)queryFilterPercentEscaped;
 - (int64_t)localDatabaseRevision;
 - (void)cancel;
-- (void)handleSuccess:(int64_t)a3;
+- (void)handleSuccess:(int64_t)success;
 - (void)main;
 - (void)performUpdate;
 @end
@@ -23,14 +23,14 @@
   v10 = [v3 initWithName:v5];
 
   [v10 beginTransaction];
-  v6 = [(CloudLibraryOperation *)self musicLibrary];
-  v7 = [(CloudLibraryOperation *)self clientIdentity];
-  [v6 setClientIdentity:v7];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  [musicLibrary setClientIdentity:clientIdentity];
 
   [(JaliscoUpdateOperation *)self performUpdate];
-  v8 = [(CloudLibraryOperation *)self musicLibrary];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
   v9 = MSVTCCIdentityForCurrentProcess();
-  [v8 setClientIdentity:v9];
+  [musicLibrary2 setClientIdentity:v9];
 
   [v10 endTransaction];
 }
@@ -40,12 +40,12 @@
   [(JaliscoUpdateOperation *)self beginPerformUpdate];
   if (![(JaliscoUpdateOperation *)self preflightImport])
   {
-    v4 = [objc_opt_class() logCategory];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    logCategory = [objc_opt_class() logCategory];
+    if (os_log_type_enabled(logCategory, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v45 = self;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - No library for import.", buf, 0xCu);
+      selfCopy8 = self;
+      _os_log_impl(&_mh_execute_header, logCategory, OS_LOG_TYPE_DEFAULT, "%{public}@ - No library for import.", buf, 0xCu);
     }
 
     goto LABEL_9;
@@ -57,7 +57,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v45 = self;
+      selfCopy8 = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping initial import on non standalone wOS platform", buf, 0xCu);
     }
 
@@ -72,31 +72,31 @@
     return;
   }
 
-  v6 = [(CloudLibraryOperation *)self error];
+  error = [(CloudLibraryOperation *)self error];
 
-  if (!v6)
+  if (!error)
   {
     if (v5)
     {
-      v9 = [(JaliscoUpdateOperation *)self localDatabaseRevision];
-      v10 = [objc_opt_class() logCategory];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      localDatabaseRevision = [(JaliscoUpdateOperation *)self localDatabaseRevision];
+      logCategory2 = [objc_opt_class() logCategory];
+      if (os_log_type_enabled(logCategory2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v45 = self;
+        selfCopy8 = self;
         v46 = 1024;
-        LODWORD(v47) = v9;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - On-disk database revision: %u", buf, 0x12u);
+        LODWORD(v47) = localDatabaseRevision;
+        _os_log_impl(&_mh_execute_header, logCategory2, OS_LOG_TYPE_DEFAULT, "%{public}@ - On-disk database revision: %u", buf, 0x12u);
       }
 
-      v11 = [(JaliscoUpdateOperation *)self newImporter];
+      newImporter = [(JaliscoUpdateOperation *)self newImporter];
       importer = self->_importer;
-      self->_importer = v11;
+      self->_importer = newImporter;
 
-      v13 = [(JaliscoImporter *)self->_importer needsUpdateForTokens];
-      if ((v9 != v5) | v13 & 1)
+      needsUpdateForTokens = [(JaliscoImporter *)self->_importer needsUpdateForTokens];
+      if ((localDatabaseRevision != v5) | needsUpdateForTokens & 1)
       {
-        if (v13)
+        if (needsUpdateForTokens)
         {
           [(JaliscoImporter *)self->_importer clearNeedsUpdateForTokens];
         }
@@ -105,20 +105,20 @@
         [v14 systemUptime];
         v16 = v15;
 
-        v17 = [objc_opt_class() logCategory];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+        logCategory3 = [objc_opt_class() logCategory];
+        if (os_log_type_enabled(logCategory3, OS_LOG_TYPE_DEFAULT))
         {
           v18 = self->_importer;
           v19 = objc_opt_class();
           v20 = self->_importer;
           *buf = 138543874;
-          v45 = self;
+          selfCopy8 = self;
           v46 = 2114;
           v47 = v19;
           v48 = 2048;
           v49 = v20;
           v21 = v19;
-          _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ - Importer: <%{public}@ %p>", buf, 0x20u);
+          _os_log_impl(&_mh_execute_header, logCategory3, OS_LOG_TYPE_DEFAULT, "%{public}@ - Importer: <%{public}@ %p>", buf, 0x20u);
         }
 
         v40 = 0;
@@ -128,7 +128,7 @@
         v22 = dispatch_semaphore_create(0);
         [ICDPowerEventLogger logEvent:self->_powerEventBeginName payload:self->_powerEventPayload];
         v23 = self->_importer;
-        v24 = [(CloudLibraryOperation *)self clientIdentity];
+        clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
         v37[0] = _NSConcreteStackBlock;
         v37[1] = 3221225472;
         v37[2] = sub_100100D4C;
@@ -137,7 +137,7 @@
         v37[4] = self;
         v25 = v22;
         v38 = v25;
-        [(JaliscoImporter *)v23 importTracksUpToRevision:v5 clientIdentity:v24 withCompletionHandler:v37];
+        [(JaliscoImporter *)v23 importTracksUpToRevision:v5 clientIdentity:clientIdentity withCompletionHandler:v37];
 
         dispatch_semaphore_wait(v25, 0xFFFFFFFFFFFFFFFFLL);
         [ICDPowerEventLogger logEvent:self->_powerEventEndName payload:self->_powerEventPayload];
@@ -145,14 +145,14 @@
         [v26 systemUptime];
         v28 = v27;
 
-        v29 = [objc_opt_class() logCategory];
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+        logCategory4 = [objc_opt_class() logCategory];
+        if (os_log_type_enabled(logCategory4, OS_LOG_TYPE_DEFAULT))
         {
           v30 = self->_importer;
           v31 = objc_opt_class();
           v32 = self->_importer;
           *buf = 138544130;
-          v45 = self;
+          selfCopy8 = self;
           v46 = 2114;
           v47 = v31;
           v48 = 2048;
@@ -160,7 +160,7 @@
           v50 = 2048;
           v51 = v28 - v16;
           v33 = v31;
-          _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ - <%{public}@ %p> required: %gs to process", buf, 0x2Au);
+          _os_log_impl(&_mh_execute_header, logCategory4, OS_LOG_TYPE_DEFAULT, "%{public}@ - <%{public}@ %p> required: %gs to process", buf, 0x2Au);
         }
 
         if (([(JaliscoUpdateOperation *)self isCancelled]& 1) != 0)
@@ -186,12 +186,12 @@
 
       else
       {
-        v35 = [objc_opt_class() logCategory];
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+        logCategory5 = [objc_opt_class() logCategory];
+        if (os_log_type_enabled(logCategory5, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v45 = self;
-          _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%{public}@ - On-disk database revision is the same as the server revision, skipping update...", buf, 0xCu);
+          selfCopy8 = self;
+          _os_log_impl(&_mh_execute_header, logCategory5, OS_LOG_TYPE_DEFAULT, "%{public}@ - On-disk database revision is the same as the server revision, skipping update...", buf, 0xCu);
         }
 
         [(CloudLibraryOperation *)self setStatus:1];
@@ -203,12 +203,12 @@
       goto LABEL_10;
     }
 
-    v4 = [objc_opt_class() logCategory];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    logCategory = [objc_opt_class() logCategory];
+    if (os_log_type_enabled(logCategory, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v45 = self;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - No database revision to update to.", buf, 0xCu);
+      selfCopy8 = self;
+      _os_log_impl(&_mh_execute_header, logCategory, OS_LOG_TYPE_DEFAULT, "%{public}@ - No database revision to update to.", buf, 0xCu);
     }
 
 LABEL_9:
@@ -219,21 +219,21 @@ LABEL_10:
     return;
   }
 
-  v7 = [objc_opt_class() logCategory];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  logCategory6 = [objc_opt_class() logCategory];
+  if (os_log_type_enabled(logCategory6, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(CloudLibraryOperation *)self error];
+    error2 = [(CloudLibraryOperation *)self error];
     *buf = 138543618;
-    v45 = self;
+    selfCopy8 = self;
     v46 = 2114;
-    v47 = v8;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@ - Received error when doing an update request: %{public}@", buf, 0x16u);
+    v47 = error2;
+    _os_log_impl(&_mh_execute_header, logCategory6, OS_LOG_TYPE_ERROR, "%{public}@ - Received error when doing an update request: %{public}@", buf, 0x16u);
   }
 
   [(CloudLibraryOperation *)self setStatus:2];
 }
 
-- (void)handleSuccess:(int64_t)a3
+- (void)handleSuccess:(int64_t)success
 {
   v5 = +[NSAssertionHandler currentHandler];
   [v5 handleFailureInMethod:a2 object:self file:@"JaliscoUpdateOperation.m" lineNumber:133 description:@"Must Subclass"];
@@ -276,12 +276,12 @@ LABEL_10:
   v5.receiver = self;
   v5.super_class = JaliscoUpdateOperation;
   [(JaliscoUpdateOperation *)&v5 cancel];
-  v3 = [objc_opt_class() logCategory];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  logCategory = [objc_opt_class() logCategory];
+  if (os_log_type_enabled(logCategory, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
-    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ - Cancelling update...", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&_mh_execute_header, logCategory, OS_LOG_TYPE_DEFAULT, "%{public}@ - Cancelling update...", buf, 0xCu);
   }
 
   v4 = [[NSError alloc] initWithDomain:@"JaliscoImporterErrorDomain" code:-2 userInfo:0];
@@ -291,27 +291,27 @@ LABEL_10:
   [(JaliscoImporter *)self->_importer cancel];
 }
 
-- (JaliscoUpdateOperation)initWithConfiguration:(id)a3 reason:(int64_t)a4 clientIdentity:(id)a5
+- (JaliscoUpdateOperation)initWithConfiguration:(id)configuration reason:(int64_t)reason clientIdentity:(id)identity
 {
   v21.receiver = self;
   v21.super_class = JaliscoUpdateOperation;
-  v6 = [(CloudLibraryOperation *)&v21 initWithConfiguration:a3 clientIdentity:a5];
+  v6 = [(CloudLibraryOperation *)&v21 initWithConfiguration:configuration clientIdentity:identity];
   v7 = v6;
   if (v6)
   {
-    v8 = [(JaliscoUpdateOperation *)v6 localDatabaseRevision];
-    [(JaliscoUpdateOperation *)v7 setInitialImport:v8 == 0];
-    [(JaliscoUpdateOperation *)v7 setReason:a4];
+    localDatabaseRevision = [(JaliscoUpdateOperation *)v6 localDatabaseRevision];
+    [(JaliscoUpdateOperation *)v7 setInitialImport:localDatabaseRevision == 0];
+    [(JaliscoUpdateOperation *)v7 setReason:reason];
     powerEventBeginName = v7->_powerEventBeginName;
     v7->_powerEventBeginName = @"UpdateOperationBegin";
 
     powerEventEndName = v7->_powerEventEndName;
     v7->_powerEventEndName = @"UpdateOperationEnd";
 
-    if (v8)
+    if (localDatabaseRevision)
     {
       v22[0] = @"reason";
-      v11 = [NSNumber numberWithInteger:a4];
+      v11 = [NSNumber numberWithInteger:reason];
       v22[1] = @"class";
       v23[0] = v11;
       v12 = objc_opt_class();
@@ -325,7 +325,7 @@ LABEL_10:
     else
     {
       v24[0] = @"reason";
-      v11 = [NSNumber numberWithInteger:a4];
+      v11 = [NSNumber numberWithInteger:reason];
       v25[0] = v11;
       v24[1] = @"class";
       v17 = objc_opt_class();
@@ -346,11 +346,11 @@ LABEL_10:
   return v7;
 }
 
-- (JaliscoUpdateOperation)initWithReason:(int64_t)a3
+- (JaliscoUpdateOperation)initWithReason:(int64_t)reason
 {
   v5 = objc_opt_new();
   v6 = MSVTCCIdentityForCurrentProcess();
-  v7 = [(JaliscoUpdateOperation *)self initWithConfiguration:v5 clientIdentity:v6 reason:a3];
+  v7 = [(JaliscoUpdateOperation *)self initWithConfiguration:v5 clientIdentity:v6 reason:reason];
 
   return v7;
 }
@@ -364,7 +364,7 @@ LABEL_10:
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:a1 file:@"JaliscoUpdateOperation.m" lineNumber:36 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"JaliscoUpdateOperation"}];
+    [v6 handleFailureInMethod:a2 object:self file:@"JaliscoUpdateOperation.m" lineNumber:36 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"JaliscoUpdateOperation"}];
   }
 
   return &_os_log_default;
@@ -379,7 +379,7 @@ LABEL_10:
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:a1 file:@"JaliscoUpdateOperation.m" lineNumber:31 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"JaliscoUpdateOperation"}];
+    [v6 handleFailureInMethod:a2 object:self file:@"JaliscoUpdateOperation.m" lineNumber:31 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"JaliscoUpdateOperation"}];
   }
 
   return &_os_log_default;

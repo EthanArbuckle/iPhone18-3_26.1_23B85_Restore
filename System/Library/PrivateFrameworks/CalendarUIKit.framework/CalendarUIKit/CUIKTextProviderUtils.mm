@@ -2,7 +2,7 @@
 + (BOOL)designatorRequiresWhitespace;
 + (BOOL)dropLeftRedundantDesignator;
 + (BOOL)smallCapsAllowed;
-+ (id)timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)a3 designatorRequiresWhitespace:(BOOL)a4;
++ (id)timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)format designatorRequiresWhitespace:(BOOL)whitespace;
 - (CUIKTextProviderUtils)init;
 @end
 
@@ -51,11 +51,11 @@
   return v2;
 }
 
-+ (id)timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)a3 designatorRequiresWhitespace:(BOOL)a4
++ (id)timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)format designatorRequiresWhitespace:(BOOL)whitespace
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [MEMORY[0x1E696AB78] _componentsFromFormatString:v5];
+  formatCopy = format;
+  [MEMORY[0x1E696AB78] _componentsFromFormatString:formatCopy];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -64,8 +64,8 @@
   if (v7)
   {
     v8 = v7;
-    v36 = a4;
-    v37 = v5;
+    whitespaceCopy = whitespace;
+    v37 = formatCopy;
     v9 = 0;
     v10 = *v41;
     v11 = *MEMORY[0x1E695D900];
@@ -104,7 +104,7 @@ LABEL_3:
         }
 
         v18 = v6;
-        v5 = v37;
+        formatCopy = v37;
         goto LABEL_35;
       }
     }
@@ -115,7 +115,7 @@ LABEL_3:
       goto LABEL_29;
     }
 
-    if (v36)
+    if (whitespaceCopy)
     {
       v20 = 0;
     }
@@ -129,8 +129,8 @@ LABEL_3:
         if ([v22 BOOLValue])
         {
           v23 = [v21 objectForKeyedSubscript:v12];
-          v24 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v25 = [v23 stringByTrimmingCharactersInSet:v24];
+          whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v25 = [v23 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
           v20 = [v25 length] == 0;
           v19 = v38;
@@ -154,8 +154,8 @@ LABEL_3:
         if ([v27 BOOLValue])
         {
           v28 = [v26 objectForKeyedSubscript:v12];
-          v29 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v30 = [v28 stringByTrimmingCharactersInSet:v29];
+          whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v30 = [v28 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
           v31 = [v30 length] == 0;
           v19 = v38;
@@ -199,14 +199,14 @@ LABEL_30:
 
       v18 = v33;
 
-      v5 = [MEMORY[0x1E696AB78] _formatStringFromComponents:v18];
+      formatCopy = [MEMORY[0x1E696AB78] _formatStringFromComponents:v18];
 
       v6 = v37;
       goto LABEL_35;
     }
 
 LABEL_29:
-    v5 = v37;
+    formatCopy = v37;
     goto LABEL_36;
   }
 
@@ -215,9 +215,9 @@ LABEL_35:
 
   v6 = v18;
 LABEL_36:
-  v34 = v5;
+  v34 = formatCopy;
 
-  return v5;
+  return formatCopy;
 }
 
 @end

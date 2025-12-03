@@ -1,5 +1,5 @@
 @interface SYDocumentWorkflowsService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SYDocumentWorkflowsService)init;
 - (void)beginListeningToConnections;
 - (void)dealloc;
@@ -48,9 +48,9 @@
 
 - (void)beginListeningToConnections
 {
-  v3 = [(SYDocumentWorkflowsService *)self listener];
+  listener = [(SYDocumentWorkflowsService *)self listener];
 
-  if (!v3)
+  if (!listener)
   {
     v4 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -60,55 +60,55 @@
     }
 
     v5 = objc_alloc(MEMORY[0x277CCAE98]);
-    v6 = [objc_opt_class() serviceName];
-    v7 = [v5 initWithMachServiceName:v6];
+    serviceName = [objc_opt_class() serviceName];
+    v7 = [v5 initWithMachServiceName:serviceName];
     [(SYDocumentWorkflowsService *)self setListener:v7];
 
-    v8 = [(SYDocumentWorkflowsService *)self listener];
-    v9 = [(SYDocumentWorkflowsService *)self serviceQueue];
-    [v8 _setQueue:v9];
+    listener2 = [(SYDocumentWorkflowsService *)self listener];
+    serviceQueue = [(SYDocumentWorkflowsService *)self serviceQueue];
+    [listener2 _setQueue:serviceQueue];
 
-    v10 = [(SYDocumentWorkflowsService *)self listener];
-    [v10 setDelegate:self];
+    listener3 = [(SYDocumentWorkflowsService *)self listener];
+    [listener3 setDelegate:self];
 
-    v11 = [(SYDocumentWorkflowsService *)self listener];
-    [v11 resume];
+    listener4 = [(SYDocumentWorkflowsService *)self listener];
+    [listener4 resume];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SYDocumentWorkflowsService *)self listener];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  listener = [(SYDocumentWorkflowsService *)self listener];
 
-  if (v8 == v6)
+  if (listener == listenerCopy)
   {
-    v9 = [(SYDocumentWorkflowsService *)self serviceQueue];
-    [v7 _setQueue:v9];
+    serviceQueue = [(SYDocumentWorkflowsService *)self serviceQueue];
+    [connectionCopy _setQueue:serviceQueue];
 
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2838F6570];
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
     v11 = [[SYDocumentWorkflowsServiceHandle alloc] initWithRepository:self->_repository];
-    [v7 setExportedObject:v11];
+    [connectionCopy setExportedObject:v11];
 
-    [v7 resume];
+    [connectionCopy resume];
   }
 
   v12 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15[0] = 67109376;
-    v15[1] = [v7 processIdentifier];
+    v15[1] = [connectionCopy processIdentifier];
     v16 = 1024;
-    v17 = v8 == v6;
+    v17 = listener == listenerCopy;
     _os_log_impl(&dword_225901000, v12, OS_LOG_TYPE_DEFAULT, "Service should accept new connection from PID: %d, accepted: %d", v15, 0xEu);
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v8 == v6;
+  return listener == listenerCopy;
 }
 
 @end

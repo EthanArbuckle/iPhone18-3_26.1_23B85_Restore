@@ -1,9 +1,9 @@
 @interface PCEventWorkout
 - (PCEventWorkout)init;
-- (PCEventWorkout)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PCEventWorkout)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PCEventWorkout
@@ -15,40 +15,40 @@
   return [(PCEventWorkout *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   workoutType = self->_workoutType;
-  v5 = a3;
-  [v5 encodeObject:workoutType forKey:@"workoutType"];
-  [v5 encodeObject:self->_workoutLocationStart forKey:@"workoutLocationStart"];
-  [v5 encodeInteger:self->_workoutSessionLocationType forKey:@"workoutSessionLocationType"];
-  [v5 encodeInteger:self->_workoutSwimmingLocationType forKey:@"workoutSwimmingLocationType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:workoutType forKey:@"workoutType"];
+  [coderCopy encodeObject:self->_workoutLocationStart forKey:@"workoutLocationStart"];
+  [coderCopy encodeInteger:self->_workoutSessionLocationType forKey:@"workoutSessionLocationType"];
+  [coderCopy encodeInteger:self->_workoutSwimmingLocationType forKey:@"workoutSwimmingLocationType"];
 }
 
-- (PCEventWorkout)initWithCoder:(id)a3
+- (PCEventWorkout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PCEventWorkout;
   v5 = [(PCEventWorkout *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workoutType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workoutType"];
     workoutType = v5->_workoutType;
     v5->_workoutType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workoutLocationStart"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workoutLocationStart"];
     workoutLocationStart = v5->_workoutLocationStart;
     v5->_workoutLocationStart = v8;
 
-    v5->_workoutSessionLocationType = [v4 decodeIntegerForKey:@"workoutSessionLocationType"];
-    v5->_workoutSwimmingLocationType = [v4 decodeIntegerForKey:@"workoutSwimmingLocationType"];
+    v5->_workoutSessionLocationType = [coderCopy decodeIntegerForKey:@"workoutSessionLocationType"];
+    v5->_workoutSwimmingLocationType = [coderCopy decodeIntegerForKey:@"workoutSwimmingLocationType"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PCEventWorkout);
   objc_storeStrong(&v4->_workoutType, self->_workoutType);
@@ -65,8 +65,8 @@
   v5 = NSStringFromClass(v4);
   workoutType = self->_workoutType;
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  v8 = [(NSUUID *)self->_hkObjectIdentifier UUIDString];
-  v9 = [v3 stringWithFormat:@"<%@ workoutType:%@, sourceBundleIdentifier:%@, hkObjectIdentifier:%@, workoutSessionLocationType:%d, workoutSwimmingLocationType:%d>", v5, workoutType, sourceBundleIdentifier, v8, self->_workoutSessionLocationType, self->_workoutSwimmingLocationType];
+  uUIDString = [(NSUUID *)self->_hkObjectIdentifier UUIDString];
+  v9 = [v3 stringWithFormat:@"<%@ workoutType:%@, sourceBundleIdentifier:%@, hkObjectIdentifier:%@, workoutSessionLocationType:%d, workoutSwimmingLocationType:%d>", v5, workoutType, sourceBundleIdentifier, uUIDString, self->_workoutSessionLocationType, self->_workoutSwimmingLocationType];
 
   return v9;
 }

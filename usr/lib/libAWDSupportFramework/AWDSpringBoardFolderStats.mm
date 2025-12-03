@@ -1,18 +1,18 @@
 @interface AWDSpringBoardFolderStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unint64_t)numberOfFoldersPerPageAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)numberOfFoldersPerPageAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumberOfPagesInRootFolder:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTotalNumberOfFolders:(BOOL)a3;
-- (void)setHasTotalNumberOfIconsInDock:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumberOfPagesInRootFolder:(BOOL)folder;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTotalNumberOfFolders:(BOOL)folders;
+- (void)setHasTotalNumberOfIconsInDock:(BOOL)dock;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSpringBoardFolderStats
@@ -25,9 +25,9 @@
   [(AWDSpringBoardFolderStats *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTotalNumberOfFolders:(BOOL)a3
+- (void)setHasTotalNumberOfFolders:(BOOL)folders
 {
-  if (a3)
+  if (folders)
   {
     v3 = 8;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumberOfPagesInRootFolder:(BOOL)a3
+- (void)setHasNumberOfPagesInRootFolder:(BOOL)folder
 {
-  if (a3)
+  if (folder)
   {
     v3 = 2;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTotalNumberOfIconsInDock:(BOOL)a3
+- (void)setHasTotalNumberOfIconsInDock:(BOOL)dock
 {
-  if (a3)
+  if (dock)
   {
     v3 = 16;
   }
@@ -85,16 +85,16 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (unint64_t)numberOfFoldersPerPageAtIndex:(unint64_t)a3
+- (unint64_t)numberOfFoldersPerPageAtIndex:(unint64_t)index
 {
   p_numberOfFoldersPerPages = &self->_numberOfFoldersPerPages;
   count = self->_numberOfFoldersPerPages.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_numberOfFoldersPerPages->list[a3];
+  return p_numberOfFoldersPerPages->list[index];
 }
 
 - (id)description
@@ -106,11 +106,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -129,7 +129,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalNumberOfFolders), @"totalNumberOfFolders"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalNumberOfFolders), @"totalNumberOfFolders"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -140,7 +140,7 @@ LABEL_4:
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalNumberOfIconsInDock), @"totalNumberOfIconsInDock"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalNumberOfIconsInDock), @"totalNumberOfIconsInDock"}];
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_7;
@@ -150,7 +150,7 @@ LABEL_11:
   }
 
 LABEL_10:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numberOfPagesInRootFolder), @"numberOfPagesInRootFolder"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numberOfPagesInRootFolder), @"numberOfPagesInRootFolder"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -161,15 +161,15 @@ LABEL_5:
   if (has)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numberOfFoldersInDock), @"numberOfFoldersInDock"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numberOfFoldersInDock), @"numberOfFoldersInDock"}];
   }
 
 LABEL_7:
-  [v3 setObject:PBRepeatedUInt64NSArray() forKey:@"numberOfFoldersPerPage"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt64NSArray() forKey:@"numberOfFoldersPerPage"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -249,13 +249,13 @@ LABEL_7:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 6) = self->_timestamp;
-    *(a3 + 72) |= 4u;
+    *(to + 6) = self->_timestamp;
+    *(to + 72) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -274,8 +274,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 7) = self->_totalNumberOfFolders;
-  *(a3 + 72) |= 8u;
+  *(to + 7) = self->_totalNumberOfFolders;
+  *(to + 72) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -286,8 +286,8 @@ LABEL_4:
     }
 
 LABEL_15:
-    *(a3 + 8) = self->_totalNumberOfIconsInDock;
-    *(a3 + 72) |= 0x10u;
+    *(to + 8) = self->_totalNumberOfIconsInDock;
+    *(to + 72) |= 0x10u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_7;
@@ -297,8 +297,8 @@ LABEL_15:
   }
 
 LABEL_14:
-  *(a3 + 5) = self->_numberOfPagesInRootFolder;
-  *(a3 + 72) |= 2u;
+  *(to + 5) = self->_numberOfPagesInRootFolder;
+  *(to + 72) |= 2u;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -309,29 +309,29 @@ LABEL_5:
   if (has)
   {
 LABEL_6:
-    *(a3 + 4) = self->_numberOfFoldersInDock;
-    *(a3 + 72) |= 1u;
+    *(to + 4) = self->_numberOfFoldersInDock;
+    *(to + 72) |= 1u;
   }
 
 LABEL_7:
   if ([(AWDSpringBoardFolderStats *)self numberOfFoldersPerPagesCount])
   {
-    [a3 clearNumberOfFoldersPerPages];
-    v6 = [(AWDSpringBoardFolderStats *)self numberOfFoldersPerPagesCount];
-    if (v6)
+    [to clearNumberOfFoldersPerPages];
+    numberOfFoldersPerPagesCount = [(AWDSpringBoardFolderStats *)self numberOfFoldersPerPagesCount];
+    if (numberOfFoldersPerPagesCount)
     {
-      v7 = v6;
+      v7 = numberOfFoldersPerPagesCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addNumberOfFoldersPerPage:{-[AWDSpringBoardFolderStats numberOfFoldersPerPageAtIndex:](self, "numberOfFoldersPerPageAtIndex:", i)}];
+        [to addNumberOfFoldersPerPage:{-[AWDSpringBoardFolderStats numberOfFoldersPerPageAtIndex:](self, "numberOfFoldersPerPageAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 4) != 0)
@@ -400,75 +400,75 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 72);
+  v5 = *(equal + 72);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 72) & 4) == 0 || self->_timestamp != *(a3 + 6))
+    if ((*(equal + 72) & 4) == 0 || self->_timestamp != *(equal + 6))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 72) & 4) != 0)
+  else if ((*(equal + 72) & 4) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 72) & 8) == 0 || self->_totalNumberOfFolders != *(a3 + 7))
+    if ((*(equal + 72) & 8) == 0 || self->_totalNumberOfFolders != *(equal + 7))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 72) & 8) != 0)
+  else if ((*(equal + 72) & 8) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 72) & 2) == 0 || self->_numberOfPagesInRootFolder != *(a3 + 5))
+    if ((*(equal + 72) & 2) == 0 || self->_numberOfPagesInRootFolder != *(equal + 5))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 72) & 2) != 0)
+  else if ((*(equal + 72) & 2) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 72) & 0x10) == 0 || self->_totalNumberOfIconsInDock != *(a3 + 8))
+    if ((*(equal + 72) & 0x10) == 0 || self->_totalNumberOfIconsInDock != *(equal + 8))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 72) & 0x10) != 0)
+  else if ((*(equal + 72) & 0x10) != 0)
   {
     return 0;
   }
 
   if (*&self->_has)
   {
-    if ((*(a3 + 72) & 1) == 0 || self->_numberOfFoldersInDock != *(a3 + 4))
+    if ((*(equal + 72) & 1) == 0 || self->_numberOfFoldersInDock != *(equal + 4))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 72))
+  else if (*(equal + 72))
   {
     return 0;
   }
@@ -544,14 +544,14 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ PBRepeatedUInt64Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if ((v5 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 6);
+    self->_timestamp = *(from + 6);
     *&self->_has |= 4u;
-    v5 = *(a3 + 72);
+    v5 = *(from + 72);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -564,14 +564,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 72) & 8) == 0)
+  else if ((*(from + 72) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_totalNumberOfFolders = *(a3 + 7);
+  self->_totalNumberOfFolders = *(from + 7);
   *&self->_has |= 8u;
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -584,9 +584,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_numberOfPagesInRootFolder = *(a3 + 5);
+  self->_numberOfPagesInRootFolder = *(from + 5);
   *&self->_has |= 2u;
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -599,23 +599,23 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_totalNumberOfIconsInDock = *(a3 + 8);
+  self->_totalNumberOfIconsInDock = *(from + 8);
   *&self->_has |= 0x10u;
-  if (*(a3 + 72))
+  if (*(from + 72))
   {
 LABEL_6:
-    self->_numberOfFoldersInDock = *(a3 + 4);
+    self->_numberOfFoldersInDock = *(from + 4);
     *&self->_has |= 1u;
   }
 
 LABEL_7:
-  v6 = [a3 numberOfFoldersPerPagesCount];
-  if (v6)
+  numberOfFoldersPerPagesCount = [from numberOfFoldersPerPagesCount];
+  if (numberOfFoldersPerPagesCount)
   {
-    v7 = v6;
+    v7 = numberOfFoldersPerPagesCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDSpringBoardFolderStats addNumberOfFoldersPerPage:](self, "addNumberOfFoldersPerPage:", [a3 numberOfFoldersPerPageAtIndex:i]);
+      -[AWDSpringBoardFolderStats addNumberOfFoldersPerPage:](self, "addNumberOfFoldersPerPage:", [from numberOfFoldersPerPageAtIndex:i]);
     }
   }
 }

@@ -6,8 +6,8 @@
 
 - (BOOL)accessibilityCollectionViewBehavesLikeUIViewAccessibility
 {
-  v3 = [(FitnessUI_UICollectionViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXFIUIPageViewControllerCollectionView"];
+  accessibilityIdentifier = [(FitnessUI_UICollectionViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXFIUIPageViewControllerCollectionView"];
 
   if (v4)
   {

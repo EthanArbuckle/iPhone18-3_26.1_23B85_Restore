@@ -1,11 +1,11 @@
 @interface TransparentNotifierViewController
-- (_TtC21JournalingSuggestions33TransparentNotifierViewController)initWithCoder:(id)a3;
-- (_TtC21JournalingSuggestions33TransparentNotifierViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21JournalingSuggestions33TransparentNotifierViewController)initWithCoder:(id)coder;
+- (_TtC21JournalingSuggestions33TransparentNotifierViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation TransparentNotifierViewController
 
-- (_TtC21JournalingSuggestions33TransparentNotifierViewController)initWithCoder:(id)a3
+- (_TtC21JournalingSuggestions33TransparentNotifierViewController)initWithCoder:(id)coder
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s7Combine9PublishedVySbGMd, &_s7Combine9PublishedVySbGMR);
   v5 = *(v4 - 8);
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC21JournalingSuggestions33TransparentNotifierViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21JournalingSuggestions33TransparentNotifierViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

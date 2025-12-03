@@ -1,8 +1,8 @@
 @interface AUPeakLimiterViewController
-- (void)knobReleasedWithNotification:(id)a3;
+- (void)knobReleasedWithNotification:(id)notification;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -10,37 +10,37 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_23715C0E0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_2371605F0();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = objc_opt_self();
-  v6 = self;
-  v7 = [v5 defaultCenter];
-  [v7 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v8.receiver = v6;
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for AUPeakLimiterViewController();
-  [(AUAppleViewControllerBase *)&v8 viewWillDisappear:v3];
+  [(AUAppleViewControllerBase *)&v8 viewWillDisappear:disappearCopy];
 }
 
-- (void)knobReleasedWithNotification:(id)a3
+- (void)knobReleasedWithNotification:(id)notification
 {
   v4 = sub_23719631C();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4, v6);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2371962FC();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_23715BD9C();
   sub_23717E58C();
 
@@ -49,7 +49,7 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23715FB0C();
 }
 

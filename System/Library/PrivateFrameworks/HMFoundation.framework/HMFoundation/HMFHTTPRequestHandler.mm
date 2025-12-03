@@ -1,6 +1,6 @@
 @interface HMFHTTPRequestHandler
 - (HMFHTTPRequestHandler)init;
-- (HMFHTTPRequestHandler)initWithMethodPredicate:(id)a3 URLPredicate:(id)a4 matchBlock:(id)a5;
+- (HMFHTTPRequestHandler)initWithMethodPredicate:(id)predicate URLPredicate:(id)lPredicate matchBlock:(id)block;
 @end
 
 @implementation HMFHTTPRequestHandler
@@ -18,23 +18,23 @@
   objc_exception_throw(v7);
 }
 
-- (HMFHTTPRequestHandler)initWithMethodPredicate:(id)a3 URLPredicate:(id)a4 matchBlock:(id)a5
+- (HMFHTTPRequestHandler)initWithMethodPredicate:(id)predicate URLPredicate:(id)lPredicate matchBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  predicateCopy = predicate;
+  lPredicateCopy = lPredicate;
+  blockCopy = block;
+  if (!predicateCopy)
   {
     v20 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy4 = self;
     v21 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_17;
     }
 
-    v22 = HMFGetLogIdentifier(v18);
+    v22 = HMFGetLogIdentifier(selfCopy4);
     *buf = 138543362;
     v28 = v22;
     v23 = "%{public}@Parameter is requred: 'methodPredicate'";
@@ -44,48 +44,48 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (![HMFHTTPRequestHandler _isValidMethodPrediate:v8])
+  if (![HMFHTTPRequestHandler _isValidMethodPrediate:predicateCopy])
   {
     v20 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy4 = self;
     v21 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_17;
     }
 
-    v22 = HMFGetLogIdentifier(v18);
+    v22 = HMFGetLogIdentifier(selfCopy4);
     *buf = 138543362;
     v28 = v22;
     v23 = "%{public}@Invalid method predicate";
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!lPredicateCopy)
   {
     v20 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy4 = self;
     v21 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_17;
     }
 
-    v22 = HMFGetLogIdentifier(v18);
+    v22 = HMFGetLogIdentifier(selfCopy4);
     *buf = 138543362;
     v28 = v22;
     v23 = "%{public}@Parameter is requred: 'URLPredicate'";
     goto LABEL_16;
   }
 
-  if (![HMFHTTPRequestHandler _isValidURLPredicate:v9])
+  if (![HMFHTTPRequestHandler _isValidURLPredicate:lPredicateCopy])
   {
     v20 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy4 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = HMFGetLogIdentifier(v18);
+      v22 = HMFGetLogIdentifier(selfCopy4);
       *buf = 138543362;
       v28 = v22;
       v23 = "%{public}@Invalid URL predicate";
@@ -104,21 +104,21 @@ LABEL_17:
   v11 = [(HMFHTTPRequestHandler *)&v26 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [predicateCopy copy];
     methodPredicate = v11->_methodPredicate;
     v11->_methodPredicate = v12;
 
-    v14 = [v9 copy];
+    v14 = [lPredicateCopy copy];
     URLPredicate = v11->_URLPredicate;
     v11->_URLPredicate = v14;
 
-    v16 = [v10 copy];
+    v16 = [blockCopy copy];
     matchBlock = v11->_matchBlock;
     v11->_matchBlock = v16;
   }
 
-  v18 = v11;
-  v19 = v18;
+  selfCopy4 = v11;
+  v19 = selfCopy4;
 LABEL_18:
 
   v24 = *MEMORY[0x277D85DE8];

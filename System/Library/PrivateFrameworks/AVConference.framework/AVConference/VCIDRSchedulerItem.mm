@@ -1,8 +1,8 @@
 @interface VCIDRSchedulerItem
 - (VCIDRSchedulerItem)init;
 - (id)description;
-- (int64_t)compareBudget:(id)a3;
-- (void)addStream:(id)a3;
+- (int64_t)compareBudget:(id)budget;
+- (void)addStream:(id)stream;
 - (void)dealloc;
 @end
 
@@ -32,33 +32,33 @@
   [(VCIDRSchedulerItem *)&v3 dealloc];
 }
 
-- (void)addStream:(id)a3
+- (void)addStream:(id)stream
 {
   [(NSMutableArray *)self->_streams addObject:?];
   weightFactor = self->_weightFactor;
-  if (weightFactor <= [a3 weightFactor])
+  if (weightFactor <= [stream weightFactor])
   {
-    v6 = [a3 weightFactor];
+    weightFactor = [stream weightFactor];
   }
 
   else
   {
-    v6 = self->_weightFactor;
+    weightFactor = self->_weightFactor;
   }
 
-  self->_weightFactor = v6;
+  self->_weightFactor = weightFactor;
 }
 
-- (int64_t)compareBudget:(id)a3
+- (int64_t)compareBudget:(id)budget
 {
   budgetInCaptureFrames = self->_budgetInCaptureFrames;
-  if (budgetInCaptureFrames > [a3 budgetInCaptureFrames])
+  if (budgetInCaptureFrames > [budget budgetInCaptureFrames])
   {
     return -1;
   }
 
   v7 = self->_budgetInCaptureFrames;
-  return v7 != [a3 budgetInCaptureFrames];
+  return v7 != [budget budgetInCaptureFrames];
 }
 
 - (id)description

@@ -1,14 +1,14 @@
 @interface PFXArchive
-- (BOOL)copyEntry:(id)a3 toFile:(id)a4;
+- (BOOL)copyEntry:(id)entry toFile:(id)file;
 - (BOOL)isEPUB;
 - (NSString)perUserRootFolder;
 - (NSString)rootFolder;
-- (PFXArchive)initWithPath:(id)a3 allowArchive:(BOOL)a4;
-- (id)createDataWithName:(id)a3 error:(id *)a4;
-- (id)decryptEntryWithName:(id)a3 error:(id *)a4;
+- (PFXArchive)initWithPath:(id)path allowArchive:(BOOL)archive;
+- (id)createDataWithName:(id)name error:(id *)error;
+- (id)decryptEntryWithName:(id)name error:(id *)error;
 - (id)entries;
-- (id)entriesWithinFolder:(id)a3;
-- (id)entryWithName:(id)a3;
+- (id)entriesWithinFolder:(id)folder;
+- (id)entryWithName:(id)name;
 - (id)fontObfuscationInfo;
 - (void)checkEncryption;
 - (void)dealloc;
@@ -16,9 +16,9 @@
 
 @implementation PFXArchive
 
-- (PFXArchive)initWithPath:(id)a3 allowArchive:(BOOL)a4
+- (PFXArchive)initWithPath:(id)path allowArchive:(BOOL)archive
 {
-  v4 = a4;
+  archiveCopy = archive;
   v11.receiver = self;
   v11.super_class = PFXArchive;
   v6 = [(PFXArchive *)&v11 init];
@@ -29,17 +29,17 @@
     {
       if (v10 == 1)
       {
-        v7 = a3;
+        pathCopy = path;
         v8 = 8;
 LABEL_5:
-        *(&v6->super.isa + v8) = v7;
-        v6->mRootPath = a3;
+        *(&v6->super.isa + v8) = pathCopy;
+        v6->mRootPath = path;
         return v6;
       }
 
-      if (v4 && [SFUZipArchive isZipArchiveAtPath:a3])
+      if (archiveCopy && [SFUZipArchive isZipArchiveAtPath:path])
       {
-        v7 = [[SFUZipArchive alloc] initWithPath:a3 collapseCommonRootDirectory:0];
+        pathCopy = [[SFUZipArchive alloc] initWithPath:path collapseCommonRootDirectory:0];
         v8 = 24;
         goto LABEL_5;
       }
@@ -58,9 +58,9 @@ LABEL_5:
 
 - (BOOL)isEPUB
 {
-  v2 = [[(NSString *)self->mRootPath pathExtension] lowercaseString];
+  lowercaseString = [[(NSString *)self->mRootPath pathExtension] lowercaseString];
 
-  return [@"epub" isEqualToString:v2];
+  return [@"epub" isEqualToString:lowercaseString];
 }
 
 - (NSString)rootFolder
@@ -141,7 +141,7 @@ LABEL_5:
   return [(PFDContext *)mDrmContext fontObfuscation];
 }
 
-- (id)decryptEntryWithName:(id)a3 error:(id *)a4
+- (id)decryptEntryWithName:(id)name error:(id *)error
 {
   if (!self->mEncryptionChecked)
   {
@@ -152,40 +152,40 @@ LABEL_5:
   if (mDrmContext)
   {
 
-    return [(PFDContext *)mDrmContext dataRepresentationForEntryName:a3 error:a4];
+    return [(PFDContext *)mDrmContext dataRepresentationForEntryName:name error:error];
   }
 
   else
   {
-    if (([a3 hasPrefix:@"/"] & 1) == 0)
+    if (([name hasPrefix:@"/"] & 1) == 0)
     {
-      a3 = [@"/" stringByAppendingString:a3];
+      name = [@"/" stringByAppendingString:name];
     }
 
-    return [(PFXArchive *)self entryWithName:a3];
+    return [(PFXArchive *)self entryWithName:name];
   }
 }
 
-- (id)entryWithName:(id)a3
+- (id)entryWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   mFolderRoot = self->mFolderRoot;
   if (!mFolderRoot)
   {
     if (self->mZipArchive)
     {
-      if ([a3 hasPrefix:@"/"])
+      if ([name hasPrefix:@"/"])
       {
-        v3 = [v3 substringFromIndex:1];
+        nameCopy = [nameCopy substringFromIndex:1];
       }
 
-      v8 = [(SFUZipArchive *)self->mZipArchive entryWithName:v3];
+      v8 = [(SFUZipArchive *)self->mZipArchive entryWithName:nameCopy];
       if (v8)
       {
-        v9 = [v8 data];
-        if (v9)
+        data = [v8 data];
+        if (data)
         {
-          v7 = [[SFUMemoryDataRepresentation alloc] initWithDataNoCopy:v9];
+          v7 = [[SFUMemoryDataRepresentation alloc] initWithDataNoCopy:data];
           goto LABEL_10;
         }
       }
@@ -194,7 +194,7 @@ LABEL_5:
     return 0;
   }
 
-  v6 = [(NSString *)mFolderRoot stringByAppendingPathComponent:a3];
+  v6 = [(NSString *)mFolderRoot stringByAppendingPathComponent:name];
   if (![+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
   {
     return 0;
@@ -206,14 +206,14 @@ LABEL_10:
   return v7;
 }
 
-- (id)createDataWithName:(id)a3 error:(id *)a4
+- (id)createDataWithName:(id)name error:(id *)error
 {
   if (!self->mFolderRoot)
   {
     return 0;
   }
 
-  v4 = [(PFXArchive *)self decryptEntryWithName:a3 error:a4];
+  v4 = [(PFXArchive *)self decryptEntryWithName:name error:error];
   if (v4)
   {
     v5 = objc_alloc_init(NSMutableData);
@@ -231,23 +231,23 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)copyEntry:(id)a3 toFile:(id)a4
+- (BOOL)copyEntry:(id)entry toFile:(id)file
 {
   if (!self->mFolderRoot)
   {
     return 0;
   }
 
-  v5 = [(PFXArchive *)self entryWithName:a3];
+  v5 = [(PFXArchive *)self entryWithName:entry];
   v6 = +[NSFileManager defaultManager];
   if (!-[NSFileManager fileExistsAtPath:](v6, "fileExistsAtPath:", [v5 path]))
   {
     return 0;
   }
 
-  v7 = [v5 path];
+  path = [v5 path];
 
-  return [(NSFileManager *)v6 copyItemAtPath:v7 toPath:a4 error:0];
+  return [(NSFileManager *)v6 copyItemAtPath:path toPath:file error:0];
 }
 
 - (id)entries
@@ -272,15 +272,15 @@ LABEL_10:
   return result;
 }
 
-- (id)entriesWithinFolder:(id)a3
+- (id)entriesWithinFolder:(id)folder
 {
-  v4 = [(PFXArchive *)self entries];
+  entries = [(PFXArchive *)self entries];
   v5 = objc_alloc_init(NSMutableArray);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [entries countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -291,17 +291,17 @@ LABEL_10:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entries);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if (![v10 rangeOfString:a3])
+        if (![v10 rangeOfString:folder])
         {
           [v5 addObject:v10];
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [entries countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

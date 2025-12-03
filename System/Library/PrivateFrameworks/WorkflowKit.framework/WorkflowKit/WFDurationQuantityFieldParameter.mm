@@ -1,16 +1,16 @@
 @interface WFDurationQuantityFieldParameter
-+ (BOOL)unitStringIsDurationUnit:(id)a3;
-+ (id)stateForDuration:(double)a3 possibleUnits:(id)a4;
-+ (unint64_t)calendarUnitFromUnitString:(id)a3;
-+ (unint64_t)possibleCalendarUnitsForUnits:(id)a3;
++ (BOOL)unitStringIsDurationUnit:(id)unit;
++ (id)stateForDuration:(double)duration possibleUnits:(id)units;
++ (unint64_t)calendarUnitFromUnitString:(id)string;
++ (unint64_t)possibleCalendarUnitsForUnits:(id)units;
 - (BOOL)isTimePickerParameter;
-- (BOOL)parameterStateIsValid:(id)a3;
-- (WFDurationQuantityFieldParameter)initWithDefinition:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
+- (WFDurationQuantityFieldParameter)initWithDefinition:(id)definition;
 - (id)defaultSerializedRepresentation;
-- (id)localizedLabelForPossibleUnit:(id)a3 magnitude:(id)a4 style:(unint64_t)a5;
-- (id)stateForDuration:(double)a3;
+- (id)localizedLabelForPossibleUnit:(id)unit magnitude:(id)magnitude style:(unint64_t)style;
+- (id)stateForDuration:(double)duration;
 - (unint64_t)possibleCalendarUnits;
-- (void)setPossibleCalendarUnits:(unint64_t)a3;
+- (void)setPossibleCalendarUnits:(unint64_t)units;
 @end
 
 @implementation WFDurationQuantityFieldParameter
@@ -19,17 +19,17 @@
 {
   v3 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"hr", @"min", @"sec", 0}];
   v4 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v5 = [(WFQuantityFieldParameter *)self possibleUnits];
-  v6 = [v4 initWithArray:v5];
+  possibleUnits = [(WFQuantityFieldParameter *)self possibleUnits];
+  v6 = [v4 initWithArray:possibleUnits];
 
-  LOBYTE(v5) = [v6 isEqualToSet:v3];
-  return v5;
+  LOBYTE(possibleUnits) = [v6 isEqualToSet:v3];
+  return possibleUnits;
 }
 
 - (id)defaultSerializedRepresentation
 {
-  v3 = [(WFParameter *)self definition];
-  v4 = [v3 objectForKey:@"DefaultUnit"];
+  definition = [(WFParameter *)self definition];
+  v4 = [definition objectForKey:@"DefaultUnit"];
   v5 = objc_opt_class();
   v6 = WFEnforceClass_1501(v4, v5);
   v7 = v6;
@@ -41,8 +41,8 @@
 
   v9 = v8;
 
-  v10 = [(WFParameter *)self definition];
-  v11 = [v10 objectForKey:@"DefaultValue"];
+  definition2 = [(WFParameter *)self definition];
+  v11 = [definition2 objectForKey:@"DefaultValue"];
   v12 = objc_opt_class();
   v13 = WFEnforceClass_1501(v11, v12);
 
@@ -57,67 +57,67 @@
   }
 
   v15 = [[WFQuantityParameterState alloc] initWithMagnitudeState:v14 unitString:v9];
-  v16 = [(WFQuantityParameterState *)v15 serializedRepresentation];
+  serializedRepresentation = [(WFQuantityParameterState *)v15 serializedRepresentation];
 
-  return v16;
+  return serializedRepresentation;
 }
 
-- (id)stateForDuration:(double)a3
+- (id)stateForDuration:(double)duration
 {
   v5 = objc_opt_class();
-  v6 = [(WFQuantityFieldParameter *)self possibleUnits];
-  v7 = [v5 stateForDuration:v6 possibleUnits:a3];
+  possibleUnits = [(WFQuantityFieldParameter *)self possibleUnits];
+  v7 = [v5 stateForDuration:possibleUnits possibleUnits:duration];
 
   return v7;
 }
 
-- (id)localizedLabelForPossibleUnit:(id)a3 magnitude:(id)a4 style:(unint64_t)a5
+- (id)localizedLabelForPossibleUnit:(id)unit magnitude:(id)magnitude style:(unint64_t)style
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"sec"])
+  unitCopy = unit;
+  magnitudeCopy = magnitude;
+  if ([unitCopy isEqualToString:@"sec"])
   {
     v8 = @"seconds";
 LABEL_11:
     v9 = MEMORY[0x1E696AEC0];
     v10 = WFLocalizedPluralString(v8);
-    v11 = [v9 localizedStringWithFormat:v10, objc_msgSend(v7, "intValue")];
+    v11 = [v9 localizedStringWithFormat:v10, objc_msgSend(magnitudeCopy, "intValue")];
 
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:@"min"])
+  if ([unitCopy isEqualToString:@"min"])
   {
     v8 = @"minutes";
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:@"hr"])
+  if ([unitCopy isEqualToString:@"hr"])
   {
     v8 = @"hours";
     goto LABEL_11;
   }
 
   v8 = @"days";
-  if ([v6 isEqualToString:@"days"])
+  if ([unitCopy isEqualToString:@"days"])
   {
     goto LABEL_11;
   }
 
   v8 = @"weeks";
-  if ([v6 isEqualToString:@"weeks"])
+  if ([unitCopy isEqualToString:@"weeks"])
   {
     goto LABEL_11;
   }
 
   v8 = @"months";
-  if ([v6 isEqualToString:@"months"])
+  if ([unitCopy isEqualToString:@"months"])
   {
     goto LABEL_11;
   }
 
   v8 = @"years";
-  if ([v6 isEqualToString:@"years"])
+  if ([unitCopy isEqualToString:@"years"])
   {
     goto LABEL_11;
   }
@@ -128,15 +128,15 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v3 = a3;
-  v4 = [v3 unitString];
-  if (v4)
+  validCopy = valid;
+  unitString = [validCopy unitString];
+  if (unitString)
   {
     v5 = WFDurationQuantityPossibleUnits();
-    v6 = [v3 unitString];
-    v7 = [v5 containsObject:v6];
+    unitString2 = [validCopy unitString];
+    v7 = [v5 containsObject:unitString2];
   }
 
   else
@@ -147,17 +147,17 @@ LABEL_12:
   return v7;
 }
 
-- (void)setPossibleCalendarUnits:(unint64_t)a3
+- (void)setPossibleCalendarUnits:(unint64_t)units
 {
-  v3 = a3;
+  unitsCopy = units;
   v5 = objc_opt_new();
-  if ((v3 & 0x80) != 0)
+  if ((unitsCopy & 0x80) != 0)
   {
     [v5 addObject:@"sec"];
-    if ((v3 & 0x40) == 0)
+    if ((unitsCopy & 0x40) == 0)
     {
 LABEL_3:
-      if ((v3 & 0x20) == 0)
+      if ((unitsCopy & 0x20) == 0)
       {
         goto LABEL_4;
       }
@@ -166,16 +166,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 0x40) == 0)
+  else if ((unitsCopy & 0x40) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"min"];
-  if ((v3 & 0x20) == 0)
+  if ((unitsCopy & 0x20) == 0)
   {
 LABEL_4:
-    if ((v3 & 0x10) == 0)
+    if ((unitsCopy & 0x10) == 0)
     {
       goto LABEL_5;
     }
@@ -185,10 +185,10 @@ LABEL_4:
 
 LABEL_14:
   [v5 addObject:@"hr"];
-  if ((v3 & 0x10) == 0)
+  if ((unitsCopy & 0x10) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x2000) == 0)
+    if ((unitsCopy & 0x2000) == 0)
     {
       goto LABEL_6;
     }
@@ -198,10 +198,10 @@ LABEL_5:
 
 LABEL_15:
   [v5 addObject:@"days"];
-  if ((v3 & 0x2000) == 0)
+  if ((unitsCopy & 0x2000) == 0)
   {
 LABEL_6:
-    if ((v3 & 8) == 0)
+    if ((unitsCopy & 8) == 0)
     {
       goto LABEL_7;
     }
@@ -211,10 +211,10 @@ LABEL_6:
 
 LABEL_16:
   [v5 addObject:@"weeks"];
-  if ((v3 & 8) == 0)
+  if ((unitsCopy & 8) == 0)
   {
 LABEL_7:
-    if ((v3 & 4) == 0)
+    if ((unitsCopy & 4) == 0)
     {
       goto LABEL_9;
     }
@@ -224,7 +224,7 @@ LABEL_7:
 
 LABEL_17:
   [v5 addObject:@"months"];
-  if ((v3 & 4) != 0)
+  if ((unitsCopy & 4) != 0)
   {
 LABEL_8:
     [v5 addObject:@"years"];
@@ -237,23 +237,23 @@ LABEL_9:
 - (unint64_t)possibleCalendarUnits
 {
   v3 = objc_opt_class();
-  v4 = [(WFQuantityFieldParameter *)self possibleUnits];
-  v5 = [v3 possibleCalendarUnitsForUnits:v4];
+  possibleUnits = [(WFQuantityFieldParameter *)self possibleUnits];
+  v5 = [v3 possibleCalendarUnitsForUnits:possibleUnits];
 
   return v5;
 }
 
-- (WFDurationQuantityFieldParameter)initWithDefinition:(id)a3
+- (WFDurationQuantityFieldParameter)initWithDefinition:(id)definition
 {
   v12[4] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = WFDurationQuantityFieldParameter;
-  v3 = [(WFQuantityFieldParameter *)&v11 initWithDefinition:a3];
+  v3 = [(WFQuantityFieldParameter *)&v11 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {
-    v5 = [(WFQuantityFieldParameter *)v3 possibleUnits];
-    v6 = [v5 count];
+    possibleUnits = [(WFQuantityFieldParameter *)v3 possibleUnits];
+    v6 = [possibleUnits count];
 
     if (!v6)
     {
@@ -272,22 +272,22 @@ LABEL_9:
   return v4;
 }
 
-+ (id)stateForDuration:(double)a3 possibleUnits:(id)a4
++ (id)stateForDuration:(double)duration possibleUnits:(id)units
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v7 dateByAddingTimeInterval:a3];
-  v9 = [a1 possibleCalendarUnitsForUnits:v6];
-  v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v11 = [v10 components:v9 fromDate:v7 toDate:v8 options:0];
+  unitsCopy = units;
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [date dateByAddingTimeInterval:duration];
+  v9 = [self possibleCalendarUnitsForUnits:unitsCopy];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v11 = [currentCalendar components:v9 fromDate:date toDate:v8 options:0];
 
-  v12 = [v6 firstObject];
+  firstObject = [unitsCopy firstObject];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = v6;
+  v13 = unitsCopy;
   v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v14)
   {
@@ -307,14 +307,14 @@ LABEL_9:
         v19 = [objc_opt_class() calendarUnitFromUnitString:v18];
         if ([v11 valueForComponent:v19])
         {
-          v21 = [MEMORY[0x1E695DEE8] currentCalendar];
+          currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
           v8 = v30;
-          v22 = [v21 components:v19 fromDate:v7 toDate:v30 options:0];
+          v22 = [currentCalendar2 components:v19 fromDate:date toDate:v30 options:0];
 
           v20 = [v22 valueForComponent:v19];
           v23 = v18;
 
-          v12 = v23;
+          firstObject = v23;
           goto LABEL_12;
         }
       }
@@ -340,50 +340,50 @@ LABEL_9:
 LABEL_12:
 
   v24 = [MEMORY[0x1E696AD98] numberWithInteger:v20];
-  v25 = [v24 stringValue];
+  stringValue = [v24 stringValue];
 
-  v26 = [[WFNumberStringSubstitutableState alloc] initWithValue:v25];
-  v27 = [[WFQuantityParameterState alloc] initWithMagnitudeState:v26 unitString:v12];
+  v26 = [[WFNumberStringSubstitutableState alloc] initWithValue:stringValue];
+  v27 = [[WFQuantityParameterState alloc] initWithMagnitudeState:v26 unitString:firstObject];
 
   v28 = *MEMORY[0x1E69E9840];
 
   return v27;
 }
 
-+ (unint64_t)calendarUnitFromUnitString:(id)a3
++ (unint64_t)calendarUnitFromUnitString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"sec"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"sec"])
   {
     v4 = 128;
   }
 
-  else if ([v3 isEqualToString:@"min"])
+  else if ([stringCopy isEqualToString:@"min"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"hr"])
+  else if ([stringCopy isEqualToString:@"hr"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"days"])
+  else if ([stringCopy isEqualToString:@"days"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"weeks"])
+  else if ([stringCopy isEqualToString:@"weeks"])
   {
     v4 = 0x2000;
   }
 
-  else if ([v3 isEqualToString:@"months"])
+  else if ([stringCopy isEqualToString:@"months"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"years"])
+  else if ([stringCopy isEqualToString:@"years"])
   {
     v4 = 4;
   }
@@ -396,24 +396,24 @@ LABEL_12:
   return v4;
 }
 
-+ (BOOL)unitStringIsDurationUnit:(id)a3
++ (BOOL)unitStringIsDurationUnit:(id)unit
 {
-  v3 = a3;
+  unitCopy = unit;
   v4 = WFDurationQuantityPossibleUnits();
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:unitCopy];
 
   return v5;
 }
 
-+ (unint64_t)possibleCalendarUnitsForUnits:(id)a3
++ (unint64_t)possibleCalendarUnitsForUnits:(id)units
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  unitsCopy = units;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [unitsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -425,7 +425,7 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(unitsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -465,7 +465,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [unitsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

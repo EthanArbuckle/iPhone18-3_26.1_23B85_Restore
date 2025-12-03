@@ -1,6 +1,6 @@
 @interface AAIdentityStore
 - (AAIdentityStore)init;
-- (void)fetchIdentityFor:(ACAccount *)a3 completionHandler:(id)a4;
+- (void)fetchIdentityFor:(ACAccount *)for completionHandler:(id)handler;
 @end
 
 @implementation AAIdentityStore
@@ -20,14 +20,14 @@
   return [(AAIdentityStore *)&v6 init];
 }
 
-- (void)fetchIdentityFor:(ACAccount *)a3 completionHandler:(id)a4
+- (void)fetchIdentityFor:(ACAccount *)for completionHandler:(id)handler
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB980B10, &qword_1B70709A0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x1EEE9AC00]();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = for;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1B70558A0();
@@ -42,8 +42,8 @@
   v14[3] = 0;
   v14[4] = &unk_1B70709C0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_1B700AC44(0, 0, v9, &unk_1B70709D0, v14);
 }
 

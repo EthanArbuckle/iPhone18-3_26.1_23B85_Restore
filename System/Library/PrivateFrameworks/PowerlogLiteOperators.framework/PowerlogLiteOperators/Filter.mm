@@ -1,20 +1,20 @@
 @interface Filter
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProtocol:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProtocol:(BOOL)protocol;
+- (void)writeTo:(id)to;
 @end
 
 @implementation Filter
 
-- (void)setHasProtocol:(BOOL)a3
+- (void)setHasProtocol:(BOOL)protocol
 {
-  if (a3)
+  if (protocol)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = Filter;
   v4 = [(Filter *)&v8 description];
-  v5 = [(Filter *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(Filter *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_protocol];
-    [v3 setObject:v5 forKey:@"protocol"];
+    [dictionary setObject:v5 forKey:@"protocol"];
 
     has = self->_has;
   }
@@ -54,22 +54,22 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_port];
-    [v3 setObject:v6 forKey:@"port"];
+    [dictionary setObject:v6 forKey:@"port"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     protocol = self->_protocol;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -77,31 +77,31 @@
   {
     port = self->_port;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_protocol;
-    *(v4 + 16) |= 2u;
+    toCopy[3] = self->_protocol;
+    *(toCopy + 16) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[2] = self->_port;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_port;
+    *(toCopy + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -119,33 +119,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0 || self->_protocol != *(v4 + 3))
+    if ((*(equalCopy + 16) & 2) == 0 || self->_protocol != *(equalCopy + 3))
     {
       goto LABEL_11;
     }
   }
 
-  else if ((*(v4 + 16) & 2) != 0)
+  else if ((*(equalCopy + 16) & 2) != 0)
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_port != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_port != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
@@ -184,20 +184,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if ((v5 & 2) != 0)
   {
-    self->_protocol = *(v4 + 3);
+    self->_protocol = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if (v5)
   {
-    self->_port = *(v4 + 2);
+    self->_port = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

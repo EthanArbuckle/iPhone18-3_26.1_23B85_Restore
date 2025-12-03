@@ -3,17 +3,17 @@
 - (CLLocation)lastLocation;
 - (VLFLocationManager)init;
 - (void)_stopLocationUpdatesFromTimer;
-- (void)addObserver:(id)a3;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation VLFLocationManager
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -55,15 +55,15 @@
     }
   }
 
-  if ([v7 count])
+  if ([locationsCopy count])
   {
-    v27 = v7;
-    v28 = v6;
+    v27 = locationsCopy;
+    v28 = managerCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = v7;
+    v11 = locationsCopy;
     v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v12)
     {
@@ -82,10 +82,10 @@
           v17 = sub_10006D1CC();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
-            v18 = [v16 isCoordinateFused];
+            isCoordinateFused = [v16 isCoordinateFused];
             *buf = 138478083;
             v19 = @"NO";
-            if (v18)
+            if (isCoordinateFused)
             {
               v19 = @"YES";
             }
@@ -100,8 +100,8 @@
           os_unfair_lock_lock(&self->_lastLocationLock);
           objc_storeStrong(&self->_lastLocation, v16);
           os_unfair_lock_unlock(&self->_lastLocationLock);
-          v21 = [(VLFLocationManager *)self observers];
-          [v21 locationManager:self didUpdateLocation:v16];
+          observers = [(VLFLocationManager *)self observers];
+          [observers locationManager:self didUpdateLocation:v16];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -110,30 +110,30 @@
       while (v13);
     }
 
-    v7 = v27;
-    v6 = v28;
+    locationsCopy = v27;
+    managerCopy = v28;
   }
 }
 
 - (void)_stopLocationUpdatesFromTimer
 {
   os_unfair_lock_lock(&self->_observingLock);
-  v3 = [(VLFLocationManager *)self stopLocationUpdatesTimer];
+  stopLocationUpdatesTimer = [(VLFLocationManager *)self stopLocationUpdatesTimer];
 
-  if (v3)
+  if (stopLocationUpdatesTimer)
   {
     [(VLFLocationManager *)self setStopLocationUpdatesTimer:0];
-    v4 = [(VLFLocationManager *)self locationManager];
-    [v4 stopUpdatingLocation];
+    locationManager = [(VLFLocationManager *)self locationManager];
+    [locationManager stopUpdatingLocation];
   }
 
   os_unfair_lock_unlock(&self->_observingLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v5 = sub_10006D1CC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -143,21 +143,21 @@
       *buf = 138412546;
       v23 = v7;
       v24 = 2048;
-      v25 = v4;
+      v25 = observerCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Removing observer: <%@: %p>", buf, 0x16u);
     }
 
     os_unfair_lock_lock(&self->_observingLock);
-    v8 = [(VLFLocationManager *)self observers];
-    v9 = [v8 hasObservers];
+    observers = [(VLFLocationManager *)self observers];
+    hasObservers = [observers hasObservers];
 
-    v10 = [(VLFLocationManager *)self observers];
-    [v10 unregisterObserver:v4];
+    observers2 = [(VLFLocationManager *)self observers];
+    [observers2 unregisterObserver:observerCopy];
 
-    v11 = [(VLFLocationManager *)self observers];
-    v12 = [v11 hasObservers];
+    observers3 = [(VLFLocationManager *)self observers];
+    hasObservers2 = [observers3 hasObservers];
 
-    if (v9 != v12)
+    if (hasObservers != hasObservers2)
     {
       v13 = sub_10006D1CC();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -220,10 +220,10 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v5 = sub_10006D1CC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -233,33 +233,33 @@
       v20 = 138412546;
       v21 = v7;
       v22 = 2048;
-      v23 = v4;
+      v23 = observerCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Adding observer: <%@: %p>", &v20, 0x16u);
     }
 
     os_unfair_lock_lock(&self->_observingLock);
-    v8 = [(VLFLocationManager *)self observers];
-    v9 = [v8 hasObservers];
+    observers = [(VLFLocationManager *)self observers];
+    hasObservers = [observers hasObservers];
 
-    v10 = [(VLFLocationManager *)self observers];
-    [v10 registerObserver:v4];
+    observers2 = [(VLFLocationManager *)self observers];
+    [observers2 registerObserver:observerCopy];
 
-    v11 = [(VLFLocationManager *)self observers];
-    v12 = [v11 hasObservers];
+    observers3 = [(VLFLocationManager *)self observers];
+    hasObservers2 = [observers3 hasObservers];
 
-    v13 = [(VLFLocationManager *)self stopLocationUpdatesTimer];
+    stopLocationUpdatesTimer = [(VLFLocationManager *)self stopLocationUpdatesTimer];
 
     [(VLFLocationManager *)self setStopLocationUpdatesTimer:0];
-    if (v9 != v12)
+    if (hasObservers != hasObservers2)
     {
-      v14 = sub_10006D1CC();
-      v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-      if (v13)
+      locationManager = sub_10006D1CC();
+      v15 = os_log_type_enabled(locationManager, OS_LOG_TYPE_INFO);
+      if (stopLocationUpdatesTimer)
       {
         if (v15)
         {
           LOWORD(v20) = 0;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Got the first observer but the location disable timer never fired; keeping location updates going", &v20, 2u);
+          _os_log_impl(&_mh_execute_header, locationManager, OS_LOG_TYPE_INFO, "Got the first observer but the location disable timer never fired; keeping location updates going", &v20, 2u);
         }
       }
 
@@ -268,11 +268,11 @@
         if (v15)
         {
           LOWORD(v20) = 0;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Got the first observer; start updating location", &v20, 2u);
+          _os_log_impl(&_mh_execute_header, locationManager, OS_LOG_TYPE_INFO, "Got the first observer; start updating location", &v20, 2u);
         }
 
-        v14 = [(VLFLocationManager *)self locationManager];
-        [v14 startUpdatingLocation];
+        locationManager = [(VLFLocationManager *)self locationManager];
+        [locationManager startUpdatingLocation];
       }
     }
 

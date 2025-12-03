@@ -16,7 +16,7 @@
   if (v6)
   {
     v7 = [v14 objectForKey:v5];
-    [a1 setFont:v7];
+    [self setFont:v7];
   }
 
   v8 = *MEMORY[0x277D740C0];
@@ -25,7 +25,7 @@
   if (v9)
   {
     v10 = [v14 objectForKey:v8];
-    [a1 setTextColor:v10];
+    [self setTextColor:v10];
   }
 
   v11 = *MEMORY[0x277D74068];
@@ -34,26 +34,26 @@
   if (v12)
   {
     v13 = [v14 objectForKey:v11];
-    [a1 setBackgroundColor:v13];
+    [self setBackgroundColor:v13];
   }
 }
 
 - (BOOL)MPU_automaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts
 {
-  v1 = [a1 MPU_contentSizeUpdater];
-  v2 = v1 != 0;
+  mPU_contentSizeUpdater = [self MPU_contentSizeUpdater];
+  v2 = mPU_contentSizeUpdater != 0;
 
   return v2;
 }
 
 - (void)MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:()MPUAdditions
 {
-  if ([a1 MPU_automaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts] != a3)
+  if ([self MPU_automaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts] != a3)
   {
     if (a3)
     {
       value = objc_alloc_init(MPUTextContainerContentSizeUpdater);
-      [(MPUTextContainerContentSizeUpdater *)value setTextContainer:a1];
+      [(MPUTextContainerContentSizeUpdater *)value setTextContainer:self];
     }
 
     else
@@ -61,7 +61,7 @@
       value = 0;
     }
 
-    objc_setAssociatedObject(a1, &_MPULabelContentSizeUpdaterKey, value, 1);
+    objc_setAssociatedObject(self, &_MPULabelContentSizeUpdaterKey, value, 1);
   }
 }
 

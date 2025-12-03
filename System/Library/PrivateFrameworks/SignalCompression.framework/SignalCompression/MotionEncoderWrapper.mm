@@ -1,8 +1,8 @@
 @interface MotionEncoderWrapper
-- (MotionEncoderWrapper)initWithAttributeCount:(unsigned int)a3 componentCount:(unsigned int)a4 quantization:(unsigned int)a5;
+- (MotionEncoderWrapper)initWithAttributeCount:(unsigned int)count componentCount:(unsigned int)componentCount quantization:(unsigned int)quantization;
 - (id).cxx_construct;
 - (id)motionEncoderWrapperLogSharedInstance;
-- (unint64_t)encodeFrameInternal:(const int *)a3 outputEncodedBuffer:(char *)a4 outputBufferLength:(unint64_t)a5 type:(unint64_t *)a6 encodeError:(unint64_t *)a7;
+- (unint64_t)encodeFrameInternal:(const int *)internal outputEncodedBuffer:(char *)buffer outputBufferLength:(unint64_t)length type:(unint64_t *)type encodeError:(unint64_t *)error;
 - (void)dealloc;
 @end
 
@@ -27,9 +27,9 @@ void __61__MotionEncoderWrapper_motionEncoderWrapperLogSharedInstance__block_inv
   [MotionEncoderWrapper motionEncoderWrapperLogSharedInstance]::sharedInstance = v0;
 }
 
-- (MotionEncoderWrapper)initWithAttributeCount:(unsigned int)a3 componentCount:(unsigned int)a4 quantization:(unsigned int)a5
+- (MotionEncoderWrapper)initWithAttributeCount:(unsigned int)count componentCount:(unsigned int)componentCount quantization:(unsigned int)quantization
 {
-  v5 = a5;
+  quantizationCopy = quantization;
   v42 = *MEMORY[0x277D85DE8];
   v35.receiver = self;
   v35.super_class = MotionEncoderWrapper;
@@ -40,9 +40,9 @@ void __61__MotionEncoderWrapper_motionEncoderWrapperLogSharedInstance__block_inv
     goto LABEL_31;
   }
 
-  v8->_componentsPerAttribute = a4;
-  v8->_attributeCount = a3;
-  v8->_quantization = v5;
+  v8->_componentsPerAttribute = componentCount;
+  v8->_attributeCount = count;
+  v8->_quantization = quantizationCopy;
   v10 = operator new(8uLL);
   gcl::motion::Encoder::Encoder(v10);
   v9->encoder = v10;
@@ -51,10 +51,10 @@ void __61__MotionEncoderWrapper_motionEncoderWrapperLogSharedInstance__block_inv
   v11 = gcl::motion::Encoder::encodeSequenceParameterSet(v9->encoder, v9->_attributeCount, v9->_componentsPerAttribute, __p, v33 - __p, &v9->encParametersLength);
   if (v11)
   {
-    v12 = [(MotionEncoderWrapper *)v9 motionEncoderWrapperLogSharedInstance];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    motionEncoderWrapperLogSharedInstance = [(MotionEncoderWrapper *)v9 motionEncoderWrapperLogSharedInstance];
+    if (os_log_type_enabled(motionEncoderWrapperLogSharedInstance, OS_LOG_TYPE_ERROR))
     {
-      [MotionEncoderWrapper initWithAttributeCount:v12 componentCount:? quantization:?];
+      [MotionEncoderWrapper initWithAttributeCount:motionEncoderWrapperLogSharedInstance componentCount:? quantization:?];
     }
 
     encoder = v9->encoder;
@@ -104,7 +104,7 @@ void __61__MotionEncoderWrapper_motionEncoderWrapperLogSharedInstance__block_inv
         v22 = 0;
       }
 
-      v22[v18] = v5;
+      v22[v18] = quantizationCopy;
       v16 = &v22[v18 + 1];
       memcpy(v22, v17, v18);
       __p = v22;
@@ -118,7 +118,7 @@ void __61__MotionEncoderWrapper_motionEncoderWrapperLogSharedInstance__block_inv
 
     else
     {
-      *v33 = v5;
+      *v33 = quantizationCopy;
       v16 = (v15 + 1);
     }
 
@@ -145,8 +145,8 @@ void __61__MotionEncoderWrapper_motionEncoderWrapperLogSharedInstance__block_inv
       std::vector<unsigned char>::__append(&v9->_bitstream, v25 - v27);
     }
 
-    v28 = [(MotionEncoderWrapper *)v9 motionEncoderWrapperLogSharedInstance];
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+    motionEncoderWrapperLogSharedInstance2 = [(MotionEncoderWrapper *)v9 motionEncoderWrapperLogSharedInstance];
+    if (os_log_type_enabled(motionEncoderWrapperLogSharedInstance2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109632;
       v37 = 0;
@@ -154,7 +154,7 @@ void __61__MotionEncoderWrapper_motionEncoderWrapperLogSharedInstance__block_inv
       v39 = 3;
       v40 = 1024;
       v41 = 0;
-      _os_log_impl(&dword_26606F000, v28, OS_LOG_TYPE_DEFAULT, "Local Encoder version is %d %d %d", buf, 0x14u);
+      _os_log_impl(&dword_26606F000, motionEncoderWrapperLogSharedInstance2, OS_LOG_TYPE_DEFAULT, "Local Encoder version is %d %d %d", buf, 0x14u);
     }
   }
 
@@ -193,27 +193,27 @@ LABEL_31:
   [(MotionEncoderWrapper *)&v5 dealloc];
 }
 
-- (unint64_t)encodeFrameInternal:(const int *)a3 outputEncodedBuffer:(char *)a4 outputBufferLength:(unint64_t)a5 type:(unint64_t *)a6 encodeError:(unint64_t *)a7
+- (unint64_t)encodeFrameInternal:(const int *)internal outputEncodedBuffer:(char *)buffer outputBufferLength:(unint64_t)length type:(unint64_t *)type encodeError:(unint64_t *)error
 {
-  if (!a3)
+  if (!internal)
   {
-    *a7 = 1;
-    v13 = [(MotionEncoderWrapper *)self motionEncoderWrapperLogSharedInstance:0];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    *error = 1;
+    motionEncoderWrapperLogSharedInstance = [(MotionEncoderWrapper *)self motionEncoderWrapperLogSharedInstance:0];
+    if (os_log_type_enabled(motionEncoderWrapperLogSharedInstance, OS_LOG_TYPE_ERROR))
     {
-      [MotionEncoderWrapper encodeFrameInternal:v13 outputEncodedBuffer:? outputBufferLength:? type:? encodeError:?];
+      [MotionEncoderWrapper encodeFrameInternal:motionEncoderWrapperLogSharedInstance outputEncodedBuffer:? outputBufferLength:? type:? encodeError:?];
     }
 
     goto LABEL_8;
   }
 
-  if (!a4 || (componentsPerAttribute = self->_componentsPerAttribute, attributeCount = self->_attributeCount, a5 < 4 * attributeCount * componentsPerAttribute))
+  if (!buffer || (componentsPerAttribute = self->_componentsPerAttribute, attributeCount = self->_attributeCount, length < 4 * attributeCount * componentsPerAttribute))
   {
-    *a7 = 1;
-    v13 = [(MotionEncoderWrapper *)self motionEncoderWrapperLogSharedInstance];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    *error = 1;
+    motionEncoderWrapperLogSharedInstance = [(MotionEncoderWrapper *)self motionEncoderWrapperLogSharedInstance];
+    if (os_log_type_enabled(motionEncoderWrapperLogSharedInstance, OS_LOG_TYPE_ERROR))
     {
-      [MotionEncoderWrapper encodeFrameInternal:a4 outputEncodedBuffer:a5 outputBufferLength:v13 type:? encodeError:?];
+      [MotionEncoderWrapper encodeFrameInternal:buffer outputEncodedBuffer:length outputBufferLength:motionEncoderWrapperLogSharedInstance type:? encodeError:?];
     }
 
 LABEL_8:
@@ -224,17 +224,17 @@ LABEL_8:
   __p = 0;
   v28 = 0;
   v29 = 0;
-  std::vector<int>::__init_with_size[abi:ne200100]<int const*,int const*>(&__p, a3, &a3[componentsPerAttribute * attributeCount], componentsPerAttribute * attributeCount);
-  if (*a6 == 1)
+  std::vector<int>::__init_with_size[abi:ne200100]<int const*,int const*>(&__p, internal, &internal[componentsPerAttribute * attributeCount], componentsPerAttribute * attributeCount);
+  if (*type == 1)
   {
     LODWORD(v19) = 1;
   }
 
-  else if (*a6 == 2)
+  else if (*type == 2)
   {
     frameCount = self->_frameCount;
     v19 = frameCount % self->_intraFramePeriod != 0;
-    *a6 = v19;
+    *type = v19;
     self->_frameCount = frameCount + 1;
   }
 
@@ -248,14 +248,14 @@ LABEL_8:
   v24 = 257;
   quantization = self->_quantization;
   v22 = 0;
-  v20 = gcl::motion::Encoder::encodeFrame(self->encoder, a3, v19, a4, a5, &v22, &v23);
+  v20 = gcl::motion::Encoder::encodeFrame(self->encoder, internal, v19, buffer, length, &v22, &v23);
   if (v20)
   {
-    *a7 = 2;
-    v21 = [(MotionEncoderWrapper *)self motionEncoderWrapperLogSharedInstance];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    *error = 2;
+    motionEncoderWrapperLogSharedInstance2 = [(MotionEncoderWrapper *)self motionEncoderWrapperLogSharedInstance];
+    if (os_log_type_enabled(motionEncoderWrapperLogSharedInstance2, OS_LOG_TYPE_ERROR))
     {
-      [MotionEncoderWrapper encodeFrameInternal:v20 outputEncodedBuffer:v21 outputBufferLength:? type:? encodeError:?];
+      [MotionEncoderWrapper encodeFrameInternal:v20 outputEncodedBuffer:motionEncoderWrapperLogSharedInstance2 outputBufferLength:? type:? encodeError:?];
     }
 
     v14 = 0;

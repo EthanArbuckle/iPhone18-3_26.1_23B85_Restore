@@ -1,12 +1,12 @@
 @interface RDMigrationClient
-- (void)reachabilityChangedWithNotification:(id)a3;
+- (void)reachabilityChangedWithNotification:(id)notification;
 @end
 
 @implementation RDMigrationClient
 
-- (void)reachabilityChangedWithNotification:(id)a3
+- (void)reachabilityChangedWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
   sub_10031D5C0();
 }

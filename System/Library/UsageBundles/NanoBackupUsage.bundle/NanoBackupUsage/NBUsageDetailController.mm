@@ -2,7 +2,7 @@
 - (id)specifiers;
 - (void)deleteAllBackups;
 - (void)loadView;
-- (void)setEditable:(BOOL)a3;
+- (void)setEditable:(BOOL)editable;
 - (void)showDeleteAllAlert;
 @end
 
@@ -22,17 +22,17 @@
   if (!v3)
   {
     v30 = OBJC_IVAR___PSListController__specifiers;
-    v31 = self;
+    selfCopy = self;
     v36.receiver = self;
     v36.super_class = NBUsageDetailController;
-    v4 = [(NBUsageDetailController *)&v36 specifiers];
-    v5 = [v4 mutableCopy];
+    specifiers = [(NBUsageDetailController *)&v36 specifiers];
+    v5 = [specifiers mutableCopy];
 
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"NANO_BACKUPS" value:&stru_8480 table:@"Localization"];
-    v29 = v6;
-    [v6 setName:v8];
+    v29 = firstObject;
+    [firstObject setName:v8];
 
     v34 = 0u;
     v35 = 0u;
@@ -61,8 +61,8 @@
           if (v18)
           {
             [v17 setProperty:objc_opt_class() forKey:v14];
-            v19 = [v18 nanoBackup];
-            [v17 setProperty:v19 forKey:@"NBBackup"];
+            nanoBackup = [v18 nanoBackup];
+            [v17 setProperty:nanoBackup forKey:@"NBBackup"];
           }
         }
 
@@ -73,29 +73,29 @@
       while (v11);
     }
 
-    deleteButtonSpecifiers = v31->_deleteButtonSpecifiers;
+    deleteButtonSpecifiers = selfCopy->_deleteButtonSpecifiers;
     if (!deleteButtonSpecifiers)
     {
       v21 = [NSBundle bundleForClass:objc_opt_class()];
       v22 = [v21 localizedStringForKey:@"REMOVE_ALL_BUTTON" value:&stru_8480 table:@"Localization"];
-      v23 = [PSSpecifier deleteButtonSpecifierWithName:v22 target:v31 action:"showDeleteAllAlert"];
+      v23 = [PSSpecifier deleteButtonSpecifierWithName:v22 target:selfCopy action:"showDeleteAllAlert"];
 
       [v23 setProperty:@"DELETE_BUTTON" forKey:PSIDKey];
       v24 = [PSSpecifier groupSpecifierWithName:0];
       v37[0] = v24;
       v37[1] = v23;
       v25 = [NSArray arrayWithObjects:v37 count:2];
-      v26 = v31->_deleteButtonSpecifiers;
-      v31->_deleteButtonSpecifiers = v25;
+      v26 = selfCopy->_deleteButtonSpecifiers;
+      selfCopy->_deleteButtonSpecifiers = v25;
 
-      deleteButtonSpecifiers = v31->_deleteButtonSpecifiers;
+      deleteButtonSpecifiers = selfCopy->_deleteButtonSpecifiers;
     }
 
     [v9 addObjectsFromArray:deleteButtonSpecifiers];
-    v27 = *&v31->PSUsageBundleDetailController_opaque[v30];
-    *&v31->PSUsageBundleDetailController_opaque[v30] = v9;
+    v27 = *&selfCopy->PSUsageBundleDetailController_opaque[v30];
+    *&selfCopy->PSUsageBundleDetailController_opaque[v30] = v9;
 
-    v3 = *&v31->PSUsageBundleDetailController_opaque[v30];
+    v3 = *&selfCopy->PSUsageBundleDetailController_opaque[v30];
   }
 
   return v3;
@@ -129,14 +129,14 @@
   [(NBUsageDetailController *)self presentViewController:self->_deleteAllAlertController animated:1 completion:0];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  v3 = a3;
+  editableCopy = editable;
   v7.receiver = self;
   v7.super_class = NBUsageDetailController;
   [(NBUsageDetailController *)&v7 setEditable:?];
   v5 = [(NBUsageDetailController *)self specifierForID:@"DELETE_BUTTON"];
-  v6 = [NSNumber numberWithBool:!v3];
+  v6 = [NSNumber numberWithBool:!editableCopy];
   [v5 setProperty:v6 forKey:PSEnabledKey];
 
   [(NBUsageDetailController *)self reloadSpecifier:v5 animated:0];
@@ -171,11 +171,11 @@
     dispatch_apply(v6, v5, block);
   }
 
-  v7 = [(NBUsageDetailController *)self parentController];
-  [v7 reloadSpecifiers];
+  parentController = [(NBUsageDetailController *)self parentController];
+  [parentController reloadSpecifiers];
 
-  v8 = [(NBUsageDetailController *)self rootController];
-  v9 = [v8 popViewControllerAnimated:1];
+  rootController = [(NBUsageDetailController *)self rootController];
+  v9 = [rootController popViewControllerAnimated:1];
 
   _Block_object_dispose(&v13, 8);
 }

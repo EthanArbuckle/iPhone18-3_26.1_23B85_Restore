@@ -6,8 +6,8 @@
 
 - (void)action
 {
-  v2 = [(SUUICountdownViewTimerTarget *)self actionBlock];
-  v2[2]();
+  actionBlock = [(SUUICountdownViewTimerTarget *)self actionBlock];
+  actionBlock[2]();
 }
 
 @end

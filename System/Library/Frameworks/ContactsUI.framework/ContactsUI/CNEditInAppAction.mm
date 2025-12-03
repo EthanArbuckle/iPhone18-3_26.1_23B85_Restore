@@ -1,7 +1,7 @@
 @interface CNEditInAppAction
-- (CNEditInAppAction)initWithContact:(id)a3 activityManager:(id)a4;
+- (CNEditInAppAction)initWithContact:(id)contact activityManager:(id)manager;
 - (id)title;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNEditInAppAction
@@ -14,23 +14,23 @@
   return v3;
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v5 = [(CNEditInAppAction *)self activityManager];
-  v4 = [(CNContactAction *)self contact];
-  [v5 publishRequestToEditContact:v4];
+  activityManager = [(CNEditInAppAction *)self activityManager];
+  contact = [(CNContactAction *)self contact];
+  [activityManager publishRequestToEditContact:contact];
 }
 
-- (CNEditInAppAction)initWithContact:(id)a3 activityManager:(id)a4
+- (CNEditInAppAction)initWithContact:(id)contact activityManager:(id)manager
 {
-  v7 = a4;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = CNEditInAppAction;
-  v8 = [(CNContactAction *)&v12 initWithContact:a3];
+  v8 = [(CNContactAction *)&v12 initWithContact:contact];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_activityManager, a4);
+    objc_storeStrong(&v8->_activityManager, manager);
     v10 = v9;
   }
 

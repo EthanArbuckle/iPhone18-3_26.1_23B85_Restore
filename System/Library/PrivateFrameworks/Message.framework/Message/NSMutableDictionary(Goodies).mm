@@ -19,14 +19,14 @@
     v3 = @"NO";
   }
 
-  return [a1 setObject:v3 forKey:?];
+  return [self setObject:v3 forKey:?];
 }
 
 - (void)mf_setInteger:()Goodies forKey:
 {
   v7 = a4;
   v6 = [MEMORY[0x1E696AD98] numberWithInt:a3];
-  [a1 setObject:v6 forKey:v7];
+  [self setObject:v6 forKey:v7];
 }
 
 - (void)mf_addObject:()Goodies forKey:
@@ -40,7 +40,7 @@
     v9 = [v7 copy];
 
     v8 = v9;
-    CFDictionaryAddValue(a1, v9, v6);
+    CFDictionaryAddValue(self, v9, v6);
   }
 
   else
@@ -62,11 +62,11 @@
 - (id)mf_objectForKey:()Goodies ofClass:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (!v7)
   {
     v7 = objc_alloc_init(a4);
-    [a1 setObject:v7 forKey:v6];
+    [self setObject:v7 forKey:v6];
   }
 
   return v7;

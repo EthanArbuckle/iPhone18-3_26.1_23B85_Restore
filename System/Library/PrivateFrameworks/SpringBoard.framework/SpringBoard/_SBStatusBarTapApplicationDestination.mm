@@ -1,9 +1,9 @@
 @interface _SBStatusBarTapApplicationDestination
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)bundleIdentifier;
 - (SBWindowScene)windowScene;
-- (_SBStatusBarTapApplicationDestination)initWithApplication:(id)a3 sceneIdentifier:(id)a4 windowScene:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_SBStatusBarTapApplicationDestination)initWithApplication:(id)application sceneIdentifier:(id)identifier windowScene:(id)scene;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -12,35 +12,35 @@
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(SBApplication *)self->_application bundleIdentifier];
-  v3 = [v2 copy];
+  bundleIdentifier = [(SBApplication *)self->_application bundleIdentifier];
+  v3 = [bundleIdentifier copy];
 
   return v3;
 }
 
-- (_SBStatusBarTapApplicationDestination)initWithApplication:(id)a3 sceneIdentifier:(id)a4 windowScene:(id)a5
+- (_SBStatusBarTapApplicationDestination)initWithApplication:(id)application sceneIdentifier:(id)identifier windowScene:(id)scene
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  sceneCopy = scene;
   v17.receiver = self;
   v17.super_class = _SBStatusBarTapApplicationDestination;
   v12 = [(_SBStatusBarTapApplicationDestination *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_application, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_application, application);
+    v14 = [identifierCopy copy];
     sceneIdentifier = v13->_sceneIdentifier;
     v13->_sceneIdentifier = v14;
 
-    objc_storeWeak(&v13->_windowScene, v11);
+    objc_storeWeak(&v13->_windowScene, sceneCopy);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   application = self->_application;
@@ -51,22 +51,22 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     application = self->_application;
-    v6 = [v4 application];
-    if ([(SBApplication *)application isEqual:v6])
+    application = [equalCopy application];
+    if ([(SBApplication *)application isEqual:application])
     {
-      v7 = [v4 sceneIdentifier];
+      sceneIdentifier = [equalCopy sceneIdentifier];
       if (BSEqualObjects())
       {
         WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-        v9 = [v4 windowScene];
-        v10 = [WeakRetained isEqual:v9];
+        windowScene = [equalCopy windowScene];
+        v10 = [WeakRetained isEqual:windowScene];
       }
 
       else
@@ -103,11 +103,11 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(_SBStatusBarTapApplicationDestination *)self bundleIdentifier];
+  bundleIdentifier = [(_SBStatusBarTapApplicationDestination *)self bundleIdentifier];
   sceneIdentifier = self->_sceneIdentifier;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v8 = [WeakRetained _sceneIdentifier];
-  v9 = [v3 stringWithFormat:@"<%@:%p application:%@, sceneID:%@, windowScene:%@>", v4, self, v5, sceneIdentifier, v8];
+  _sceneIdentifier = [WeakRetained _sceneIdentifier];
+  v9 = [v3 stringWithFormat:@"<%@:%p application:%@, sceneID:%@, windowScene:%@>", v4, self, bundleIdentifier, sceneIdentifier, _sceneIdentifier];
 
   return v9;
 }

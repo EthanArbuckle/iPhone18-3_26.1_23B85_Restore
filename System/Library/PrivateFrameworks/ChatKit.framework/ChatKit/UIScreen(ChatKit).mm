@@ -10,7 +10,7 @@
   block[1] = 3221225472;
   block[2] = __42__UIScreen_ChatKit__ck_screenSizeCategory__block_invoke;
   block[3] = &unk_1E72EBA18;
-  block[4] = a1;
+  block[4] = self;
   if (ck_screenSizeCategory_onceToken != -1)
   {
     dispatch_once(&ck_screenSizeCategory_onceToken, block);

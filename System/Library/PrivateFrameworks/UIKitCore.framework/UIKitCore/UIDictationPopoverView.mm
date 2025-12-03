@@ -1,21 +1,21 @@
 @interface UIDictationPopoverView
 + (CGSize)viewSize;
 - (CGSize)intrinsicContentSize;
-- (UIDictationPopoverView)initWithFrame:(CGRect)a3;
-- (id)buttonImageNamed:(id)a3;
-- (id)languageButtons:(BOOL)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)cancelButtonPressed:(id)a3;
-- (void)centerButtonPressed:(id)a3;
+- (UIDictationPopoverView)initWithFrame:(CGRect)frame;
+- (id)buttonImageNamed:(id)named;
+- (id)languageButtons:(BOOL)buttons;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)centerButtonPressed:(id)pressed;
 - (void)clearLanguageButtons;
-- (void)keyboardButtonPressed:(id)a3;
-- (void)languageButtonPressed:(id)a3 withEvent:(id)a4;
+- (void)keyboardButtonPressed:(id)pressed;
+- (void)languageButtonPressed:(id)pressed withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)returnToKeyboard;
-- (void)setState:(int)a3;
-- (void)startButtonPressed:(id)a3;
-- (void)stopButtonPressed:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setState:(int)state;
+- (void)startButtonPressed:(id)pressed;
+- (void)stopButtonPressed:(id)pressed;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIDictationPopoverView
@@ -39,20 +39,20 @@
   return result;
 }
 
-- (id)buttonImageNamed:(id)a3
+- (id)buttonImageNamed:(id)named
 {
-  v3 = [UIImage systemImageNamed:a3];
+  v3 = [UIImage systemImageNamed:named];
   v4 = +[UIColor systemGrayColor];
   v5 = [v3 imageWithTintColor:v4 renderingMode:1];
 
   return v5;
 }
 
-- (UIDictationPopoverView)initWithFrame:(CGRect)a3
+- (UIDictationPopoverView)initWithFrame:(CGRect)frame
 {
   v44.receiver = self;
   v44.super_class = UIDictationPopoverView;
-  v3 = [(UIDictationView *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIDictationView *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIButton buttonWithType:0];
@@ -130,9 +130,9 @@
     [(UIView *)v3->_cancelButton bounds];
     [(UIButton *)v3->_keyboardButton setFrame:?];
     [(UIView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v29 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     languageButtons = v3->_languageButtons;
-    v3->_languageButtons = v29;
+    v3->_languageButtons = array;
 
     [(UIDictationView *)v3 removeBackgroundView];
     v31 = v3->_cancelButton;
@@ -163,21 +163,21 @@
   return v3;
 }
 
-- (void)keyboardButtonPressed:(id)a3
+- (void)keyboardButtonPressed:(id)pressed
 {
   self->_popoverPage = 1;
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 containerRootController];
-  v6 = [v5 placement];
-  v7 = [v6 showsKeyboard];
+  containerRootController = [v4 containerRootController];
+  placement = [containerRootController placement];
+  showsKeyboard = [placement showsKeyboard];
 
   v8 = +[UIKeyboardImpl activeInstance];
-  [v8 setKeyboardMinimizedByDictation:v7];
+  [v8 setKeyboardMinimizedByDictation:showsKeyboard];
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)startButtonPressed:(id)a3
+- (void)startButtonPressed:(id)pressed
 {
   self->_popoverPage = 0;
   v4 = +[UIDictationController sharedInstance];
@@ -188,7 +188,7 @@
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)stopButtonPressed:(id)a3
+- (void)stopButtonPressed:(id)pressed
 {
   self->_popoverPage = 1;
   [(UIDictationView *)self setSwitchingLanguage:1];
@@ -198,36 +198,36 @@
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)centerButtonPressed:(id)a3
+- (void)centerButtonPressed:(id)pressed
 {
-  v7 = a3;
+  pressedCopy = pressed;
   if (+[UIDictationController isRunning])
   {
     if (!self->_popoverPage)
     {
       v4 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v5 = [v4 preferencesActions];
-      v6 = [v5 BOOLForPreferenceKey:@"ShowKeyboardButtonOnDictationPopover"];
+      preferencesActions = [v4 preferencesActions];
+      v6 = [preferencesActions BOOLForPreferenceKey:@"ShowKeyboardButtonOnDictationPopover"];
 
       if (v6)
       {
-        [(UIDictationPopoverView *)self stopButtonPressed:v7];
+        [(UIDictationPopoverView *)self stopButtonPressed:pressedCopy];
       }
 
       else
       {
-        [(UIDictationPopoverView *)self cancelButtonPressed:v7];
+        [(UIDictationPopoverView *)self cancelButtonPressed:pressedCopy];
       }
     }
   }
 
   else
   {
-    [(UIDictationPopoverView *)self startButtonPressed:v7];
+    [(UIDictationPopoverView *)self startButtonPressed:pressedCopy];
   }
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
   self->_popoverPage = 0;
   [(UIDictationView *)self setSwitchingLanguage:0];
@@ -245,9 +245,9 @@
 {
   if (self->_languageView)
   {
-    v3 = [(UIView *)self->_cancelButton superview];
+    superview = [(UIView *)self->_cancelButton superview];
 
-    if (v3 != self)
+    if (superview != self)
     {
       [(UIView *)self addSubview:self->_cancelButton];
       [(UIView *)self bounds];
@@ -266,25 +266,25 @@
   }
 }
 
-- (id)languageButtons:(BOOL)a3
+- (id)languageButtons:(BOOL)buttons
 {
-  v25 = a3;
+  buttonsCopy = buttons;
   v33 = *MEMORY[0x1E69E9840];
   v4 = [UIView alloc];
   v5 = [(UIView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = +[UIKeyboardInputMode dictationInputMode];
-  v7 = [v6 currentInputModeForDictation];
-  v27 = [v7 dictationLanguage];
+  currentInputModeForDictation = [v6 currentInputModeForDictation];
+  dictationLanguage = [currentInputModeForDictation dictationLanguage];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
   v8 = +[UIKeyboardInputModeController sharedInputModeController];
-  v9 = [v8 enabledDictationLanguages];
+  enabledDictationLanguages = [v8 enabledDictationLanguages];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  obj = enabledDictationLanguages;
+  v10 = [enabledDictationLanguages countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -305,7 +305,7 @@
         v18 = [v17 indicatorIconForDictationLanguage:v15 scaleFactor:1.0];
         [v16 setImage:v18 forState:0];
 
-        if ([v15 isEqualToString:v27])
+        if ([v15 isEqualToString:dictationLanguage])
         {
           +[UIColor blueColor];
         }
@@ -337,7 +337,7 @@
     v13 = 0.0;
   }
 
-  if (v25)
+  if (buttonsCopy)
   {
     [(UIView *)v5 addSubview:self->_cancelButton];
     [(UIView *)self->_cancelButton frame];
@@ -354,17 +354,17 @@
   return v5;
 }
 
-- (void)languageButtonPressed:(id)a3 withEvent:(id)a4
+- (void)languageButtonPressed:(id)pressed withEvent:(id)event
 {
-  v5 = a3;
+  pressedCopy = pressed;
   v6 = +[UIDictationController sharedInstance];
   [v6 setReasonType:28];
 
-  if ([(UIButton *)self->_languageButton isEqual:v5])
+  if ([(UIButton *)self->_languageButton isEqual:pressedCopy])
   {
     v7 = +[UIKeyboardInputModeController sharedInputModeController];
-    v8 = [v7 enabledDictationLanguages];
-    v9 = [v8 count];
+    enabledDictationLanguages = [v7 enabledDictationLanguages];
+    v9 = [enabledDictationLanguages count];
 
     if (v9 < 5)
     {
@@ -404,14 +404,14 @@
   else
   {
     v16 = +[UIDictationController sharedInstance];
-    v17 = [v16 state];
+    state = [v16 state];
 
-    if (!v17)
+    if (!state)
     {
       self->_popoverPage = 0;
       v18 = +[UIKeyboardInputModeController sharedInputModeController];
-      v19 = [v18 enabledDictationLanguages];
-      v20 = [v19 objectAtIndex:{-[NSMutableArray indexOfObject:](self->_languageButtons, "indexOfObject:", v5)}];
+      enabledDictationLanguages2 = [v18 enabledDictationLanguages];
+      v20 = [enabledDictationLanguages2 objectAtIndex:{-[NSMutableArray indexOfObject:](self->_languageButtons, "indexOfObject:", pressedCopy)}];
 
       [(UIDictationPopoverView *)self clearLanguageButtons];
       v21 = +[UIDictationController sharedInstance];
@@ -432,10 +432,10 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
   return [v2 setContentOffset:{v4 - v5, 0.0}];
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  v3 = *&a3;
-  if (a3 == 2)
+  v3 = *&state;
+  if (state == 2)
   {
     if (!self->super._flamesView)
     {
@@ -445,8 +445,8 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
       v9 = v8;
       v11 = v10;
       v13 = v12;
-      v14 = [objc_opt_self() mainScreen];
-      v15 = [v5 initWithFrame:v14 screen:2 fidelity:{v7, v9, v11, v13}];
+      mainScreen = [objc_opt_self() mainScreen];
+      v15 = [v5 initWithFrame:mainScreen screen:2 fidelity:{v7, v9, v11, v13}];
       flamesView = self->super._flamesView;
       self->super._flamesView = v15;
 
@@ -454,29 +454,29 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
       [(SUICFlamesView *)self->super._flamesView setMode:1];
       [(UIView *)self insertSubview:self->super._flamesView belowSubview:self->_centerButton];
       [(SUICFlamesView *)self->super._flamesView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v17 = [(SUICFlamesView *)self->super._flamesView leadingAnchor];
-      v18 = [(UIView *)self->_centerButton leadingAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
+      leadingAnchor = [(SUICFlamesView *)self->super._flamesView leadingAnchor];
+      leadingAnchor2 = [(UIView *)self->_centerButton leadingAnchor];
+      v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v19 setActive:1];
 
-      v20 = [(SUICFlamesView *)self->super._flamesView trailingAnchor];
-      v21 = [(UIView *)self->_centerButton trailingAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      trailingAnchor = [(SUICFlamesView *)self->super._flamesView trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_centerButton trailingAnchor];
+      v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v22 setActive:1];
 
-      v23 = [(SUICFlamesView *)self->super._flamesView leadingAnchor];
-      v24 = [(UIView *)self->_centerButton leadingAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      leadingAnchor3 = [(SUICFlamesView *)self->super._flamesView leadingAnchor];
+      leadingAnchor4 = [(UIView *)self->_centerButton leadingAnchor];
+      v25 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       [v25 setActive:1];
 
-      v26 = [(SUICFlamesView *)self->super._flamesView topAnchor];
-      v27 = [(UIView *)self->_centerButton topAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27];
+      topAnchor = [(SUICFlamesView *)self->super._flamesView topAnchor];
+      topAnchor2 = [(UIView *)self->_centerButton topAnchor];
+      v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v28 setActive:1];
 
-      v29 = [(SUICFlamesView *)self->super._flamesView bottomAnchor];
-      v30 = [(UIView *)self->_centerButton bottomAnchor];
-      v31 = [v29 constraintEqualToAnchor:v30];
+      bottomAnchor = [(SUICFlamesView *)self->super._flamesView bottomAnchor];
+      bottomAnchor2 = [(UIView *)self->_centerButton bottomAnchor];
+      v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v31 setActive:1];
     }
 
@@ -493,11 +493,11 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
       [v33 textInputTraits];
     }
     v35 = ;
-    v36 = [v35 insertionPointColor];
+    insertionPointColor = [v35 insertionPointColor];
 
-    if (v36)
+    if (insertionPointColor)
     {
-      [(SUICFlamesView *)self->super._flamesView setDictationColor:v36];
+      [(SUICFlamesView *)self->super._flamesView setDictationColor:insertionPointColor];
     }
 
     else
@@ -512,7 +512,7 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
     [(UIView *)self setNeedsLayout];
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
     [(UIDictationPopoverView *)self clearLanguageButtons];
     self->_popoverPage = 0;
@@ -542,8 +542,8 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
   [v4 enumerateObjectsUsingBlock:&__block_literal_global_381_0];
 
   v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v6 = [v5 preferencesActions];
-  v7 = [v6 BOOLForPreferenceKey:@"ShowKeyboardButtonOnDictationPopover"];
+  preferencesActions = [v5 preferencesActions];
+  v7 = [preferencesActions BOOLForPreferenceKey:@"ShowKeyboardButtonOnDictationPopover"];
 
   [(UIView *)self->_centerButton setHidden:0];
   [(UIView *)self->_languageButton bounds];
@@ -554,8 +554,8 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
   [objc_opt_class() viewSize];
   [(UIView *)self setFrame:v11, v13, v14, v15];
   v16 = +[UIKeyboardInputModeController sharedInputModeController];
-  v17 = [v16 enabledDictationLanguages];
-  -[UIView setHidden:](self->_languageButton, "setHidden:", [v17 count] < 2);
+  enabledDictationLanguages = [v16 enabledDictationLanguages];
+  -[UIView setHidden:](self->_languageButton, "setHidden:", [enabledDictationLanguages count] < 2);
 
   popoverPage = self->_popoverPage;
   if (popoverPage == 1)
@@ -568,12 +568,12 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
     {
       [(UIView *)self->_keyboardButton setHidden:0];
       v23 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v24 = [v23 containerRootController];
-      v25 = [v24 placement];
-      v26 = [v25 showsKeyboard];
+      containerRootController = [v23 containerRootController];
+      placement = [containerRootController placement];
+      showsKeyboard = [placement showsKeyboard];
 
       v27 = 22;
-      if (v26)
+      if (showsKeyboard)
       {
         v27 = 23;
       }
@@ -581,10 +581,10 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
       [(UIButton *)self->_keyboardButton setImage:*(&self->super.super.super.super.isa + OBJC_IVAR___UIKeyboardDicationBackground__gradient[v27]) forState:0];
     }
 
-    v28 = [(UIView *)self->_languageButton isHidden];
-    v29 = [(UIView *)self->_keyboardButton isHidden];
-    v30 = v29;
-    if (v28)
+    isHidden = [(UIView *)self->_languageButton isHidden];
+    isHidden2 = [(UIView *)self->_keyboardButton isHidden];
+    v30 = isHidden2;
+    if (isHidden)
     {
       [(UIView *)self->_languageButton center];
       if (v30)
@@ -598,7 +598,7 @@ uint64_t __58__UIDictationPopoverView_languageButtonPressed_withEvent___block_in
       [(UIView *)self->_keyboardButton setCenter:?];
     }
 
-    else if (!v29)
+    else if (!isHidden2)
     {
       [(UIView *)self bounds];
       v33 = v32;
@@ -648,11 +648,11 @@ LABEL_23:
   }
 
   v40 = +[UIKeyboardImpl activeInstance];
-  v41 = [v40 activeDictationLanguage];
+  activeDictationLanguage = [v40 activeDictationLanguage];
 
   v42 = self->_languageButton;
   v43 = +[UIKeyboardInputMode dictationInputMode];
-  v44 = [v43 indicatorIconForDictationLanguage:v41 scaleFactor:1.0];
+  v44 = [v43 indicatorIconForDictationLanguage:activeDictationLanguage scaleFactor:1.0];
   [(UIButton *)v42 setImage:v44 forState:0];
 
   v31 = 0;
@@ -670,10 +670,10 @@ LABEL_24:
   [(UIButton *)self->_centerButton setFrame:v9, 0.0, v47 - v9, 40.0];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  if (!v4)
+  windowCopy = window;
+  if (!windowCopy)
   {
     [(UIDictationView *)self setSwitchingLanguage:0];
     [(SUICFlamesView *)self->super._flamesView removeFromSuperview];
@@ -698,9 +698,9 @@ LABEL_24:
   else
   {
     v7 = +[UIKeyboardImpl sharedInstance];
-    v8 = [v7 isDictationPopoverPresented];
+    isDictationPopoverPresented = [v7 isDictationPopoverPresented];
 
-    if (!v8)
+    if (!isDictationPopoverPresented)
     {
       goto LABEL_10;
     }
@@ -711,9 +711,9 @@ LABEL_24:
   self->_popoverPage = v5;
 LABEL_10:
   v9 = +[UIDictationController activeInstance];
-  v10 = [v9 state];
+  state = [v9 state];
 
-  if (v10 == 2)
+  if (state == 2)
   {
     [(UIDictationPopoverView *)self setState:2];
   }
@@ -721,7 +721,7 @@ LABEL_10:
 LABEL_12:
   v11.receiver = self;
   v11.super_class = UIDictationPopoverView;
-  [(UIView *)&v11 willMoveToWindow:v4];
+  [(UIView *)&v11 willMoveToWindow:windowCopy];
 }
 
 - (void)returnToKeyboard
@@ -730,9 +730,9 @@ LABEL_12:
   if (self->_popoverPage != 1)
   {
     v3 = +[UIDictationController sharedInstance];
-    v4 = [v3 shouldSuppressSoftwareKeyboard];
+    shouldSuppressSoftwareKeyboard = [v3 shouldSuppressSoftwareKeyboard];
 
-    if (v4)
+    if (shouldSuppressSoftwareKeyboard)
     {
       v5 = +[UIDictationController sharedInstance];
       [v5 resignFirstResponderWhenIdleIfNeeded];
@@ -744,32 +744,32 @@ LABEL_12:
   [(UIDictationView *)&v6 returnToKeyboard];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = [a3 view];
+  view = [interaction view];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = 0;
+    imageView = 0;
     goto LABEL_11;
   }
 
-  v5 = [v4 imageView];
-  if (!v5)
+  imageView = [view imageView];
+  if (!imageView)
   {
 LABEL_11:
     v25 = 0;
     goto LABEL_12;
   }
 
-  v6 = [[UITargetedPreview alloc] initWithView:v5];
-  [v4 bounds];
+  v6 = [[UITargetedPreview alloc] initWithView:imageView];
+  [view bounds];
   v8 = v7;
   v10 = v9;
-  [v5 frame];
+  [imageView frame];
   v12 = v11;
   v14 = v13;
-  [v5 bounds];
+  [imageView bounds];
   v17 = v10 - v16;
   v18 = 0.0;
   if (v10 - v16 < 0.0)

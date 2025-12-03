@@ -18,7 +18,7 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     sub_29E6D1908(v4);
 
     sub_29E751758();

@@ -7,7 +7,7 @@
 - (id)imageProvider;
 - (id)socialLayerHighlightProvider;
 - (void)_handleDataSourceChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXContentSyndicationMockCMMDataSourceManager
@@ -19,9 +19,9 @@
   return v2;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PXContentSyndicationMockCMMDataSourceManagerContext == a5)
+  if ((change & 1) != 0 && PXContentSyndicationMockCMMDataSourceManagerContext == context)
   {
     [(PXContentSyndicationMockCMMDataSourceManager *)self _handleDataSourceChange];
   }
@@ -29,18 +29,18 @@
 
 - (void)_handleDataSourceChange
 {
-  v3 = [(PXContentSyndicationMockCMMDataSourceManager *)self cmmDataSourceManager];
-  v12 = [v3 dataSource];
+  cmmDataSourceManager = [(PXContentSyndicationMockCMMDataSourceManager *)self cmmDataSourceManager];
+  dataSource = [cmmDataSourceManager dataSource];
 
-  v4 = [[PXContentSyndicationMockCMMDataSource alloc] initWithCMMDataSource:v12];
-  v5 = [(PXContentSyndicationMockCMMDataSourceManager *)self cmmDataSourceManager];
-  v6 = [(PXSectionedDataSourceManager *)self dataSource];
-  v7 = [v6 cmmDataSource];
-  v8 = [v5 changeDetailsFromDataSource:v7 toDataSource:v12];
+  v4 = [[PXContentSyndicationMockCMMDataSource alloc] initWithCMMDataSource:dataSource];
+  cmmDataSourceManager2 = [(PXContentSyndicationMockCMMDataSourceManager *)self cmmDataSourceManager];
+  dataSource2 = [(PXSectionedDataSourceManager *)self dataSource];
+  cmmDataSource = [dataSource2 cmmDataSource];
+  v8 = [cmmDataSourceManager2 changeDetailsFromDataSource:cmmDataSource toDataSource:dataSource];
 
   v9 = [off_1E77218B0 alloc];
-  v10 = [(PXSectionedDataSourceManager *)self dataSource];
-  v11 = [v9 initWithSectionedDataSourceChangeDetails:v8 withFromDataSourceIdentifier:objc_msgSend(v10 toDataSourceIdentifier:{"identifier"), -[PXContentSyndicationMockCMMDataSource identifier](v4, "identifier")}];
+  dataSource3 = [(PXSectionedDataSourceManager *)self dataSource];
+  v11 = [v9 initWithSectionedDataSourceChangeDetails:v8 withFromDataSourceIdentifier:objc_msgSend(dataSource3 toDataSourceIdentifier:{"identifier"), -[PXContentSyndicationMockCMMDataSource identifier](v4, "identifier")}];
 
   [(PXSectionedDataSourceManager *)self setDataSource:v4 changeDetails:v11];
 }
@@ -52,10 +52,10 @@
   self->_cmmDataSourceManager = v3;
 
   [(PXSectionedDataSourceManager *)self->_cmmDataSourceManager registerChangeObserver:self context:PXContentSyndicationMockCMMDataSourceManagerContext];
-  v5 = [(PXContentSyndicationMockCMMDataSourceManager *)self cmmDataSourceManager];
-  v6 = [v5 dataSource];
+  cmmDataSourceManager = [(PXContentSyndicationMockCMMDataSourceManager *)self cmmDataSourceManager];
+  dataSource = [cmmDataSourceManager dataSource];
 
-  v7 = [[PXContentSyndicationMockCMMDataSource alloc] initWithCMMDataSource:v6];
+  v7 = [[PXContentSyndicationMockCMMDataSource alloc] initWithCMMDataSource:dataSource];
 
   return v7;
 }
@@ -63,15 +63,15 @@
 - (id)createAssetsDataSourceManager
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+  librarySpecificFetchOptions = [mEMORY[0x1E69789A8] librarySpecificFetchOptions];
 
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  [v3 setSortDescriptors:v5];
+  [librarySpecificFetchOptions setSortDescriptors:v5];
 
-  v6 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:v3];
+  v6 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v7 = PXContentSyndicationAssetsDataSourceManagerForAssetCollectionFetchResult(v6);
 
   return v7;
@@ -97,8 +97,8 @@
   imageProvider = self->_imageProvider;
   if (!imageProvider)
   {
-    v4 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
-    v5 = PXContentSyndicationImageProviderForPhotoLibrary(v4);
+    mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+    v5 = PXContentSyndicationImageProviderForPhotoLibrary(mEMORY[0x1E69789A8]);
     v6 = self->_imageProvider;
     self->_imageProvider = v5;
 
@@ -113,8 +113,8 @@
   assetFetchResultProvider = self->_assetFetchResultProvider;
   if (!assetFetchResultProvider)
   {
-    v4 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
-    v5 = PXContentSyndicationAssetFetchResultProviderForPhotoLibrary(v4);
+    mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+    v5 = PXContentSyndicationAssetFetchResultProviderForPhotoLibrary(mEMORY[0x1E69789A8]);
     v6 = self->_assetFetchResultProvider;
     self->_assetFetchResultProvider = v5;
 
@@ -127,21 +127,21 @@
 - (id)allAssetsFetchResult
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
-  if (!v2)
+  mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+  if (!mEMORY[0x1E69789A8])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PHFetchResult<PHAsset *> *_AllPhotosFetchResultForPhotoLibrary(PHPhotoLibrary *__strong)"];
-    [v8 handleFailureInFunction:v9 file:@"PXContentSyndicationMockCMMDataSource.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    [currentHandler handleFailureInFunction:v9 file:@"PXContentSyndicationMockCMMDataSource.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v3 = [v2 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [mEMORY[0x1E69789A8] librarySpecificFetchOptions];
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:1];
   v10[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
-  [v3 setInternalSortDescriptors:v5];
-  v6 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v3];
+  [librarySpecificFetchOptions setInternalSortDescriptors:v5];
+  v6 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
 
   return v6;
 }

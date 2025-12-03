@@ -3,11 +3,11 @@
 - (MPSCNNBinaryFullyConnected)initWithDevice:(id)device;
 - (MPSCNNBinaryFullyConnected)initWithDevice:(id)device convolutionData:(id)convolutionData outputBiasTerms:(const float *)outputBiasTerms outputScaleTerms:(const float *)outputScaleTerms inputBiasTerms:(const float *)inputBiasTerms inputScaleTerms:(const float *)inputScaleTerms type:(MPSCNNBinaryConvolutionType)type flags:(MPSCNNBinaryConvolutionFlags)flags;
 - (MPSCNNBinaryFullyConnected)initWithDevice:(id)device convolutionData:(id)convolutionData scaleValue:(float)scaleValue type:(MPSCNNBinaryConvolutionType)type flags:(MPSCNNBinaryConvolutionFlags)flags;
-- (MPSCNNBinaryFullyConnected)initWithDeviceImpl:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const unsigned int *)a5 outputBiasTerms:(const float *)a6 outputScaleTerms:(const float *)a7 inputBiasTerms:(const float *)a8 inputScaleTerms:(const float *)a9 type:(unint64_t)a10 flags:(unint64_t)a11;
-- (MPSCNNBinaryFullyConnected)initWithDeviceImpl:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const unsigned int *)a5 scaleValue:(float)a6 type:(unint64_t)a7 flags:(unint64_t)a8;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSCNNBinaryFullyConnected)initWithDeviceImpl:(id)impl convolutionDescriptor:(id)descriptor kernelWeights:(const unsigned int *)weights outputBiasTerms:(const float *)terms outputScaleTerms:(const float *)scaleTerms inputBiasTerms:(const float *)biasTerms inputScaleTerms:(const float *)inputScaleTerms type:(unint64_t)self0 flags:(unint64_t)self1;
+- (MPSCNNBinaryFullyConnected)initWithDeviceImpl:(id)impl convolutionDescriptor:(id)descriptor kernelWeights:(const unsigned int *)weights scaleValue:(float)value type:(unint64_t)type flags:(unint64_t)flags;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNBinaryFullyConnected
@@ -24,12 +24,12 @@
   return 0;
 }
 
-- (MPSCNNBinaryFullyConnected)initWithDeviceImpl:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const unsigned int *)a5 scaleValue:(float)a6 type:(unint64_t)a7 flags:(unint64_t)a8
+- (MPSCNNBinaryFullyConnected)initWithDeviceImpl:(id)impl convolutionDescriptor:(id)descriptor kernelWeights:(const unsigned int *)weights scaleValue:(float)value type:(unint64_t)type flags:(unint64_t)flags
 {
-  result = objc_msgSend_initWithDeviceImpl_convolutionDescriptor_kernelWeights_outputBiasTerms_outputScaleTerms_inputBiasTerms_inputScaleTerms_type_flags_(self, a2, a3, a4, a5, 0, 0, 0, 0, a7, a8);
+  result = objc_msgSend_initWithDeviceImpl_convolutionDescriptor_kernelWeights_outputBiasTerms_outputScaleTerms_inputBiasTerms_inputScaleTerms_type_flags_(self, a2, impl, descriptor, weights, 0, 0, 0, 0, type, flags);
   if (result)
   {
-    result->super._outputScaleValue = a6;
+    result->super._outputScaleValue = value;
   }
 
   return result;
@@ -50,55 +50,55 @@
   return v39;
 }
 
-- (MPSCNNBinaryFullyConnected)initWithDeviceImpl:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const unsigned int *)a5 outputBiasTerms:(const float *)a6 outputScaleTerms:(const float *)a7 inputBiasTerms:(const float *)a8 inputScaleTerms:(const float *)a9 type:(unint64_t)a10 flags:(unint64_t)a11
+- (MPSCNNBinaryFullyConnected)initWithDeviceImpl:(id)impl convolutionDescriptor:(id)descriptor kernelWeights:(const unsigned int *)weights outputBiasTerms:(const float *)terms outputScaleTerms:(const float *)scaleTerms inputBiasTerms:(const float *)biasTerms inputScaleTerms:(const float *)inputScaleTerms type:(unint64_t)self0 flags:(unint64_t)self1
 {
-  if (*(a4 + 8) != 1)
+  if (*(descriptor + 8) != 1)
   {
-    v12 = self;
-    v13 = a4;
+    selfCopy = self;
+    descriptorCopy = descriptor;
     v14 = MTLReportFailureTypeEnabled();
-    a4 = v13;
+    descriptor = descriptorCopy;
     v15 = v14;
-    self = v12;
+    self = selfCopy;
     if (v15)
     {
       MTLReportFailure();
-      self = v12;
-      a4 = v13;
+      self = selfCopy;
+      descriptor = descriptorCopy;
     }
   }
 
-  if (*(a4 + 6) != 1)
+  if (*(descriptor + 6) != 1)
   {
-    v16 = self;
-    v17 = a4;
+    selfCopy2 = self;
+    descriptorCopy2 = descriptor;
     v18 = MTLReportFailureTypeEnabled();
-    a4 = v17;
+    descriptor = descriptorCopy2;
     v19 = v18;
-    self = v16;
+    self = selfCopy2;
     if (v19)
     {
       MTLReportFailure();
-      self = v16;
-      a4 = v17;
+      self = selfCopy2;
+      descriptor = descriptorCopy2;
     }
   }
 
-  if (*(a4 + 7) != 1)
+  if (*(descriptor + 7) != 1)
   {
-    v20 = self;
+    selfCopy3 = self;
     v21 = MTLReportFailureTypeEnabled();
-    self = v20;
+    self = selfCopy3;
     if (v21)
     {
       MTLReportFailure();
-      self = v20;
+      self = selfCopy3;
     }
   }
 
   v22.receiver = self;
   v22.super_class = MPSCNNBinaryFullyConnected;
-  result = [MPSCNNBinaryConvolution initWithDeviceImpl:sel_initWithDeviceImpl_convolutionDescriptor_kernelWeights_outputBiasTerms_outputScaleTerms_inputBiasTerms_inputScaleTerms_type_flags_ convolutionDescriptor:a9 kernelWeights:a10 outputBiasTerms:a11 outputScaleTerms:? inputBiasTerms:? inputScaleTerms:? type:? flags:?];
+  result = [MPSCNNBinaryConvolution initWithDeviceImpl:sel_initWithDeviceImpl_convolutionDescriptor_kernelWeights_outputBiasTerms_outputScaleTerms_inputBiasTerms_inputScaleTerms_type_flags_ convolutionDescriptor:inputScaleTerms kernelWeights:type outputBiasTerms:flags outputScaleTerms:? inputBiasTerms:? inputScaleTerms:? type:? flags:?];
   if (result)
   {
     result->super.super._encode = sub_239D70B04;
@@ -158,19 +158,19 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSCNNBinaryFullyConnected;
-  [(MPSCNNBinaryConvolution *)&v3 encodeWithCoder:a3];
+  [(MPSCNNBinaryConvolution *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSCNNBinaryFullyConnected;
-  result = [(MPSCNNBinaryConvolution *)&v5 copyWithZone:a3 device:a4];
+  result = [(MPSCNNBinaryConvolution *)&v5 copyWithZone:zone device:device];
   *(result + 36) = sub_239D70B04;
   *(result + 38) = result;
   return result;

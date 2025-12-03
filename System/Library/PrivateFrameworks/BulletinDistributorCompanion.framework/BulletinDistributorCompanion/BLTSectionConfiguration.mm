@@ -1,24 +1,24 @@
 @interface BLTSectionConfiguration
-- (BLTSectionConfiguration)initWithWatchKitAppList:(id)a3;
+- (BLTSectionConfiguration)initWithWatchKitAppList:(id)list;
 - (BLTSectionConfigurationDelegate)delegate;
-- (BOOL)override:(id)a3 appliesToConfigurationForSectionID:(id)a4;
-- (BOOL)shouldSectionIDSettingsAlwaysSync:(id)a3;
+- (BOOL)override:(id)override appliesToConfigurationForSectionID:(id)d;
+- (BOOL)shouldSectionIDSettingsAlwaysSync:(id)sync;
 - (void)_waitForWatchKitAppListLoaded;
-- (void)watchKitAppList:(id)a3 added:(id)a4 removed:(id)a5;
+- (void)watchKitAppList:(id)list added:(id)added removed:(id)removed;
 @end
 
 @implementation BLTSectionConfiguration
 
-- (BLTSectionConfiguration)initWithWatchKitAppList:(id)a3
+- (BLTSectionConfiguration)initWithWatchKitAppList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v14.receiver = self;
   v14.super_class = BLTSectionConfiguration;
   v6 = [(BLTSectionConfigurationInternal *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_watchKitAppList, a3);
+    objc_storeStrong(&v6->_watchKitAppList, list);
     [(BLTWatchKitAppList *)v7->_watchKitAppList setDelegate:v7];
     v8 = objc_alloc_init(MEMORY[0x277CCA928]);
     watchKitAppListLoadedCondition = v7->_watchKitAppListLoadedCondition;
@@ -56,19 +56,19 @@ uint64_t __51__BLTSectionConfiguration_initWithWatchKitAppList___block_invoke(ui
   _os_log_error_impl(&dword_241FB3000, log, OS_LOG_TYPE_ERROR, "Timed out waiting for watchkit app list to load", buf, 2u);
 }
 
-- (void)watchKitAppList:(id)a3 added:(id)a4 removed:(id)a5
+- (void)watchKitAppList:(id)list added:(id)added removed:(id)removed
 {
-  v7 = a5;
-  v8 = a4;
+  removedCopy = removed;
+  addedCopy = added;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained sectionConfiguration:self addedSectionIDs:v8 removedSectionIDs:v7];
+  [WeakRetained sectionConfiguration:self addedSectionIDs:addedCopy removedSectionIDs:removedCopy];
 }
 
-- (BOOL)shouldSectionIDSettingsAlwaysSync:(id)a3
+- (BOOL)shouldSectionIDSettingsAlwaysSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   [(BLTSectionConfiguration *)self _waitForWatchKitAppListLoaded];
-  v5 = [(BLTWatchKitAppList *)self->_watchKitAppList watchKitAppDefinitionWithBundleID:v4];
+  v5 = [(BLTWatchKitAppList *)self->_watchKitAppList watchKitAppDefinitionWithBundleID:syncCopy];
   if ([v5 isInstalled])
   {
     v6 = 1;
@@ -78,25 +78,25 @@ uint64_t __51__BLTSectionConfiguration_initWithWatchKitAppList___block_invoke(ui
   {
     v8.receiver = self;
     v8.super_class = BLTSectionConfiguration;
-    v6 = [(BLTSectionConfigurationInternal *)&v8 shouldSectionIDSettingsAlwaysSync:v4];
+    v6 = [(BLTSectionConfigurationInternal *)&v8 shouldSectionIDSettingsAlwaysSync:syncCopy];
   }
 
   return v6;
 }
 
-- (BOOL)override:(id)a3 appliesToConfigurationForSectionID:(id)a4
+- (BOOL)override:(id)override appliesToConfigurationForSectionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF3400]];
-  v9 = [v8 BOOLValue];
+  overrideCopy = override;
+  dCopy = d;
+  v8 = [overrideCopy objectForKeyedSubscript:*MEMORY[0x277CF3400]];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF33F8]];
-    v11 = [v10 BOOLValue];
+    v10 = [overrideCopy objectForKeyedSubscript:*MEMORY[0x277CF33F8]];
+    bOOLValue2 = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue2)
     {
       v12 = 0;
     }
@@ -106,7 +106,7 @@ uint64_t __51__BLTSectionConfiguration_initWithWatchKitAppList___block_invoke(ui
       v12 = 2;
     }
 
-    v13 = [(BLTSectionConfigurationInternal *)self setCoordinationType:v12 sectionID:v7];
+    v13 = [(BLTSectionConfigurationInternal *)self setCoordinationType:v12 sectionID:dCopy];
   }
 
   else

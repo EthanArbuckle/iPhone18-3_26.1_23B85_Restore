@@ -1,46 +1,46 @@
 @interface EKStructuredLocationSemanticIdentifierGenerator
-+ (id)semanticIdentifierForLocationWithTitle:(id)a3 address:(id)a4 mapKitHandle:(id)a5 contactLabel:(id)a6 latitude:(id)a7 longitude:(id)a8 radius:(id)a9;
++ (id)semanticIdentifierForLocationWithTitle:(id)title address:(id)address mapKitHandle:(id)handle contactLabel:(id)label latitude:(id)latitude longitude:(id)longitude radius:(id)radius;
 @end
 
 @implementation EKStructuredLocationSemanticIdentifierGenerator
 
-+ (id)semanticIdentifierForLocationWithTitle:(id)a3 address:(id)a4 mapKitHandle:(id)a5 contactLabel:(id)a6 latitude:(id)a7 longitude:(id)a8 radius:(id)a9
++ (id)semanticIdentifierForLocationWithTitle:(id)title address:(id)address mapKitHandle:(id)handle contactLabel:(id)label latitude:(id)latitude longitude:(id)longitude radius:(id)radius
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (!(v14 | v15))
+  titleCopy = title;
+  addressCopy = address;
+  handleCopy = handle;
+  labelCopy = label;
+  latitudeCopy = latitude;
+  longitudeCopy = longitude;
+  radiusCopy = radius;
+  if (!(titleCopy | addressCopy))
   {
-    if (v16)
+    if (handleCopy)
     {
-      v24 = [v16 base64EncodedStringWithOptions:0];
+      v24 = [handleCopy base64EncodedStringWithOptions:0];
     }
 
-    else if (v17)
+    else if (labelCopy)
     {
-      v24 = v17;
+      v24 = labelCopy;
     }
 
     else
     {
       v23 = 0;
-      if (!v18 || !v19)
+      if (!latitudeCopy || !longitudeCopy)
       {
         goto LABEL_18;
       }
 
       v25 = MEMORY[0x1E696AEC0];
-      [v18 floatValue];
+      [latitudeCopy floatValue];
       v27 = v26;
-      [v19 floatValue];
+      [longitudeCopy floatValue];
       v29 = v28;
-      if (v20)
+      if (radiusCopy)
       {
-        [v20 floatValue];
+        [radiusCopy floatValue];
         [v25 stringWithFormat:@"%f:%f:%f", *&v27, *&v29, v30];
       }
 
@@ -55,16 +55,16 @@
     goto LABEL_18;
   }
 
-  v21 = [MEMORY[0x1E696AD60] string];
-  v22 = v21;
-  if (v14)
+  string = [MEMORY[0x1E696AD60] string];
+  v22 = string;
+  if (titleCopy)
   {
-    [v21 appendFormat:@"TITLE=%@;", v14];
+    [string appendFormat:@"TITLE=%@;", titleCopy];
   }
 
-  if (v15)
+  if (addressCopy)
   {
-    [v22 appendFormat:@"ADDRESS=%@;", v15];
+    [v22 appendFormat:@"ADDRESS=%@;", addressCopy];
   }
 
   v23 = [v22 copy];

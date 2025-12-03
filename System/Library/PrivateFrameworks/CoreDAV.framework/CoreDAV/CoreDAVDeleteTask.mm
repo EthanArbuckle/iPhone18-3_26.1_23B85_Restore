@@ -1,7 +1,7 @@
 @interface CoreDAVDeleteTask
 - (id)additionalHeaderValues;
 - (id)description;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CoreDAVDeleteTask
@@ -14,8 +14,8 @@
   v4 = [(CoreDAVActionBackedTask *)&v7 description];
   [v3 appendFormat:@"[%@ ", v4];
 
-  v5 = [(CoreDAVDeleteTask *)self previousETag];
-  [v3 appendFormat:@"| Previous ETag: [%@]", v5];
+  previousETag = [(CoreDAVDeleteTask *)self previousETag];
+  [v3 appendFormat:@"| Previous ETag: [%@]", previousETag];
 
   [v3 appendFormat:@"]"];
 
@@ -27,26 +27,26 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7.receiver = self;
   v7.super_class = CoreDAVDeleteTask;
-  v4 = [(CoreDAVTask *)&v7 additionalHeaderValues];
-  [v3 addEntriesFromDictionary:v4];
+  additionalHeaderValues = [(CoreDAVTask *)&v7 additionalHeaderValues];
+  [v3 addEntriesFromDictionary:additionalHeaderValues];
 
-  v5 = [(CoreDAVDeleteTask *)self previousETag];
-  if (v5)
+  previousETag = [(CoreDAVDeleteTask *)self previousETag];
+  if (previousETag)
   {
-    [v3 setObject:v5 forKey:@"If-Match"];
+    [v3 setObject:previousETag forKey:@"If-Match"];
   }
 
   return v3;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    if ([v4 code] == 1)
+    if ([errorCopy code] == 1)
     {
       v6 = +[CoreDAVLogging sharedLogging];
       WeakRetained = objc_loadWeakRetained(&self->super.super._accountInfoProvider);
@@ -58,8 +58,8 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v25 = objc_opt_class();
-          v10 = v25;
+          selfCopy = objc_opt_class();
+          v10 = selfCopy;
           v11 = "%{public}@ cancelled";
           v12 = v9;
           v13 = OS_LOG_TYPE_INFO;
@@ -76,12 +76,12 @@ LABEL_16:
 
     else
     {
-      v15 = [v5 domain];
-      if ([v15 isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
+      domain = [v5 domain];
+      if ([domain isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
       {
-        v16 = [v5 code];
+        code = [v5 code];
 
-        if (v16 == 404)
+        if (code == 404)
         {
           v8 = +[CoreDAVLogging sharedLogging];
           v17 = objc_loadWeakRetained(&self->super.super._accountInfoProvider);
@@ -90,7 +90,7 @@ LABEL_16:
           if (v9 && os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v25 = self;
+            selfCopy = self;
             _os_log_impl(&dword_2452FB000, v9, OS_LOG_TYPE_INFO, "Tried to delete an unknown resource.  Swallowing this error %@", buf, 0xCu);
           }
 
@@ -114,10 +114,10 @@ LABEL_16:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v25 = objc_opt_class();
+          selfCopy = objc_opt_class();
           v26 = 2112;
           v27 = v5;
-          v10 = v25;
+          v10 = selfCopy;
           v11 = "%{public}@ failed: %@";
           v12 = v9;
           v13 = OS_LOG_TYPE_ERROR;
@@ -130,13 +130,13 @@ LABEL_17:
     }
   }
 
-  v19 = [(CoreDAVTask *)self delegate];
+  delegate = [(CoreDAVTask *)self delegate];
   v20 = objc_opt_respondsToSelector();
 
   if (v20)
   {
-    v21 = [(CoreDAVTask *)self delegate];
-    [v21 deleteTask:self completedWithError:v5];
+    delegate2 = [(CoreDAVTask *)self delegate];
+    [delegate2 deleteTask:self completedWithError:v5];
 
     [(CoreDAVTask *)self setDelegate:0];
   }

@@ -1,6 +1,6 @@
 @interface CNContactSuggestionsViewController
 + (id)os_log;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)useAccessibleLayout;
 - (CGSize)avatarSize;
 - (CNContactSuggestionsViewController)init;
@@ -11,20 +11,20 @@
 - (double)estimatedHeight;
 - (double)verticalSpacing;
 - (id)compositionalLayout;
-- (id)filterResults:(id)a3;
+- (id)filterResults:(id)results;
 - (void)buildCollectionView;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)fetchContacts;
 - (void)fetchContactsIfNeeded;
 - (void)fetchIgnoredContactIdentifiersIfNeeded;
-- (void)imageForContact:(id)a3 imageUpdateBlock:(id)a4;
-- (void)setAllowsMultiSelection:(BOOL)a3;
-- (void)setCellStateSelected:(BOOL)a3 forContact:(id)a4 animated:(BOOL)a5;
-- (void)setContacts:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)imageForContact:(id)contact imageUpdateBlock:(id)block;
+- (void)setAllowsMultiSelection:(BOOL)selection;
+- (void)setCellStateSelected:(BOOL)selected forContact:(id)contact animated:(BOOL)animated;
+- (void)setContacts:(id)contacts;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CNContactSuggestionsViewController
@@ -36,47 +36,47 @@
   return WeakRetained;
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNContactSuggestionsViewController *)self contacts];
-  v7 = [v5 item];
+  pathCopy = path;
+  contacts = [(CNContactSuggestionsViewController *)self contacts];
+  item = [pathCopy item];
 
-  v9 = [v6 objectAtIndexedSubscript:v7];
+  v9 = [contacts objectAtIndexedSubscript:item];
 
-  v8 = [(CNContactSuggestionsViewController *)self delegate];
-  [v8 suggestionsController:self didDeselectContact:v9];
+  delegate = [(CNContactSuggestionsViewController *)self delegate];
+  [delegate suggestionsController:self didDeselectContact:v9];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CNContactSuggestionsViewController *)self contacts];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+  viewCopy = view;
+  pathCopy = path;
+  contacts = [(CNContactSuggestionsViewController *)self contacts];
+  v8 = [contacts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v9 = [(CNContactSuggestionsViewController *)self delegate];
-  [v9 suggestionsController:self didSelectContact:v8];
+  delegate = [(CNContactSuggestionsViewController *)self delegate];
+  [delegate suggestionsController:self didSelectContact:v8];
 
   if (![(CNContactSuggestionsViewController *)self allowsMultiSelection])
   {
-    [v10 deselectItemAtIndexPath:v6 animated:1];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNContactSuggestionsViewController *)self delegate];
+  pathCopy = path;
+  delegate = [(CNContactSuggestionsViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNContactSuggestionsViewController *)self contacts];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
+    contacts = [(CNContactSuggestionsViewController *)self contacts];
+    v9 = [contacts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-    v10 = [(CNContactSuggestionsViewController *)self delegate];
-    v11 = [v10 suggestionsController:self shouldSelectContact:v9 atIndexPath:v5];
+    delegate2 = [(CNContactSuggestionsViewController *)self delegate];
+    v11 = [delegate2 suggestionsController:self shouldSelectContact:v9 atIndexPath:pathCopy];
   }
 
   else
@@ -87,30 +87,30 @@
   return v11;
 }
 
-- (void)setCellStateSelected:(BOOL)a3 forContact:(id)a4 animated:(BOOL)a5
+- (void)setCellStateSelected:(BOOL)selected forContact:(id)contact animated:(BOOL)animated
 {
-  if (a4)
+  if (contact)
   {
-    v5 = a5;
-    v6 = a3;
-    v8 = a4;
-    v9 = [(CNContactSuggestionsViewController *)self identifiersToIndexPath];
-    v10 = [v8 identifier];
+    animatedCopy = animated;
+    selectedCopy = selected;
+    contactCopy = contact;
+    identifiersToIndexPath = [(CNContactSuggestionsViewController *)self identifiersToIndexPath];
+    identifier = [contactCopy identifier];
 
-    v13 = [v9 objectForKeyedSubscript:v10];
+    v13 = [identifiersToIndexPath objectForKeyedSubscript:identifier];
 
     if (v13)
     {
-      v11 = [(CNContactSuggestionsViewController *)self collectionView];
-      v12 = v11;
-      if (v6)
+      collectionView = [(CNContactSuggestionsViewController *)self collectionView];
+      v12 = collectionView;
+      if (selectedCopy)
       {
-        [v11 selectItemAtIndexPath:v13 animated:v5 scrollPosition:0];
+        [collectionView selectItemAtIndexPath:v13 animated:animatedCopy scrollPosition:0];
       }
 
       else
       {
-        [v11 deselectItemAtIndexPath:v13 animated:v5];
+        [collectionView deselectItemAtIndexPath:v13 animated:animatedCopy];
       }
     }
   }
@@ -124,10 +124,10 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CNContactSuggestionsViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  collectionView = [(CNContactSuggestionsViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -138,16 +138,16 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [(CNContactSuggestionsViewController *)self contacts];
-        v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v10, "item")}];
+        contacts = [(CNContactSuggestionsViewController *)self contacts];
+        v12 = [contacts objectAtIndexedSubscript:{objc_msgSend(v10, "item")}];
         [v3 addObject:v12];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -156,14 +156,14 @@
   return v3;
 }
 
-- (void)imageForContact:(id)a3 imageUpdateBlock:(id)a4
+- (void)imageForContact:(id)contact imageUpdateBlock:(id)block
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNContactSuggestionsViewController *)self avatarRenderer];
+  contactCopy = contact;
+  blockCopy = block;
+  avatarRenderer = [(CNContactSuggestionsViewController *)self avatarRenderer];
 
-  if (!v8)
+  if (!avatarRenderer)
   {
     v9 = [CNAvatarImageRenderer alloc];
     v10 = [CNAvatarImageRendererSettings defaultSettingsWithCacheSize:8];
@@ -174,23 +174,23 @@
   [(CNContactSuggestionsViewController *)self avatarSize];
   v13 = v12;
   v15 = v14;
-  v16 = [(CNContactSuggestionsViewController *)self traitCollection];
-  v17 = [v16 layoutDirection] == 1;
+  traitCollection = [(CNContactSuggestionsViewController *)self traitCollection];
+  v17 = [traitCollection layoutDirection] == 1;
 
-  v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v18 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v20 = [CNAvatarImageRenderingScope scopeWithPointSize:v17 scale:0 rightToLeft:v13 style:v15, v19];
 
-  v21 = [(CNContactSuggestionsViewController *)self avatarRenderer];
-  v27[0] = v6;
+  avatarRenderer2 = [(CNContactSuggestionsViewController *)self avatarRenderer];
+  v27[0] = contactCopy;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock___block_invoke;
   v25[3] = &unk_1E74E4E10;
-  v26 = v7;
-  v23 = v7;
-  v24 = [v21 renderAvatarsForContacts:v22 scope:v20 imageHandler:v25];
+  v26 = blockCopy;
+  v23 = blockCopy;
+  v24 = [avatarRenderer2 renderAvatarsForContacts:v22 scope:v20 imageHandler:v25];
 }
 
 void __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock___block_invoke(uint64_t a1, void *a2)
@@ -233,8 +233,8 @@ void __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock__
     v3 = 4.0;
   }
 
-  v4 = [(CNContactSuggestionsViewController *)self contacts];
-  v5 = ceil([v4 count] / v3);
+  contacts = [(CNContactSuggestionsViewController *)self contacts];
+  v5 = ceil([contacts count] / v3);
 
   [(CNContactSuggestionsViewController *)self sectionInsets];
   v7 = v6;
@@ -287,15 +287,15 @@ void __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock__
     v6 = 4.0;
   }
 
-  v7 = [(CNContactSuggestionsViewController *)self contacts];
-  v8 = ceil([v7 count] / v6);
+  contacts = [(CNContactSuggestionsViewController *)self contacts];
+  v8 = ceil([contacts count] / v6);
 
-  LODWORD(v7) = [(CNContactSuggestionsViewController *)self useAccessibleLayout];
-  v9 = [(CNContactSuggestionsViewController *)self view];
-  [v9 bounds];
+  LODWORD(contacts) = [(CNContactSuggestionsViewController *)self useAccessibleLayout];
+  view = [(CNContactSuggestionsViewController *)self view];
+  [view bounds];
   Height = CGRectGetHeight(v27);
   v11 = -(v5 + 10.0);
-  if (v7)
+  if (contacts)
   {
     v11 = -44.0;
   }
@@ -322,8 +322,8 @@ void __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock__
     v17 = v18;
   }
 
-  v19 = [(CNContactSuggestionsViewController *)self view];
-  [v19 bounds];
+  view2 = [(CNContactSuggestionsViewController *)self view];
+  [view2 bounds];
   v20 = CGRectGetWidth(v28) - v17;
   [(CNContactSuggestionsViewController *)self horizontalSectionPadding];
   v22 = (v20 - v21) / v6;
@@ -333,9 +333,9 @@ void __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock__
     v22 = v16;
   }
 
-  v23 = [(CNContactSuggestionsViewController *)self useAccessibleLayout];
+  useAccessibleLayout = [(CNContactSuggestionsViewController *)self useAccessibleLayout];
   v24 = 80.0;
-  if (v23)
+  if (useAccessibleLayout)
   {
     v24 = 60.0;
   }
@@ -354,8 +354,8 @@ void __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock__
 - (double)estimatedHeight
 {
   v3 = *MEMORY[0x1E6996530];
-  v4 = [(CNContactSuggestionsViewController *)self contacts];
-  LOBYTE(v3) = (*(v3 + 16))(v3, v4);
+  contacts = [(CNContactSuggestionsViewController *)self contacts];
+  LOBYTE(v3) = (*(v3 + 16))(v3, contacts);
 
   result = 0.0;
   if ((v3 & 1) == 0)
@@ -370,8 +370,8 @@ void __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock__
       v6 = 4.0;
     }
 
-    v7 = [(CNContactSuggestionsViewController *)self contacts];
-    v8 = ceil([v7 count] / v6);
+    contacts2 = [(CNContactSuggestionsViewController *)self contacts];
+    v8 = ceil([contacts2 count] / v6);
 
     v9 = +[CNUIFontRepository contactSuggestionsNameFont];
     [v9 lineHeight];
@@ -388,8 +388,8 @@ void __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock__
       v13 = (v6 + -1.0) * 20.0;
     }
 
-    v14 = [(CNContactSuggestionsViewController *)self view];
-    [v14 bounds];
+    view = [(CNContactSuggestionsViewController *)self view];
+    [view bounds];
     v15 = CGRectGetWidth(v22) - v13;
     [(CNContactSuggestionsViewController *)self horizontalSectionPadding];
     v17 = (v15 - v16) / v6;
@@ -409,74 +409,74 @@ void __71__CNContactSuggestionsViewController_imageForContact_imageUpdateBlock__
   return result;
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_contacts != v5)
+  contactsCopy = contacts;
+  if (self->_contacts != contactsCopy)
   {
-    objc_storeStrong(&self->_contacts, a3);
-    v6 = [(CNContactSuggestionsViewController *)self delegate];
+    objc_storeStrong(&self->_contacts, contacts);
+    delegate = [(CNContactSuggestionsViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CNContactSuggestionsViewController *)self delegate];
+      delegate2 = [(CNContactSuggestionsViewController *)self delegate];
       [(CNContactSuggestionsViewController *)self estimatedHeight];
-      [v8 suggestionsController:self didChangeToHeight:?];
+      [delegate2 suggestionsController:self didChangeToHeight:?];
     }
 
-    v9 = [(CNContactSuggestionsViewController *)self identifiersToIndexPath];
-    [v9 removeAllObjects];
+    identifiersToIndexPath = [(CNContactSuggestionsViewController *)self identifiersToIndexPath];
+    [identifiersToIndexPath removeAllObjects];
 
-    if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0 && [(NSArray *)v5 count])
+    if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0 && [(NSArray *)contactsCopy count])
     {
       v10 = 0;
       do
       {
-        v11 = [(NSArray *)v5 objectAtIndexedSubscript:v10];
+        v11 = [(NSArray *)contactsCopy objectAtIndexedSubscript:v10];
         v12 = [MEMORY[0x1E696AC88] indexPathForRow:v10 inSection:0];
-        v13 = [(CNContactSuggestionsViewController *)self identifiersToIndexPath];
-        v14 = [v11 identifier];
-        [v13 setObject:v12 forKeyedSubscript:v14];
+        identifiersToIndexPath2 = [(CNContactSuggestionsViewController *)self identifiersToIndexPath];
+        identifier = [v11 identifier];
+        [identifiersToIndexPath2 setObject:v12 forKeyedSubscript:identifier];
 
         ++v10;
       }
 
-      while (v10 < [(NSArray *)v5 count]);
+      while (v10 < [(NSArray *)contactsCopy count]);
     }
 
     v15 = objc_alloc_init(MEMORY[0x1E69955A0]);
-    if ([(NSArray *)v5 count])
+    if ([(NSArray *)contactsCopy count])
     {
       v19[0] = @"Main";
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
       [v15 appendSectionsWithIdentifiers:v16];
 
-      v17 = [(CNContactSuggestionsViewController *)self contacts];
-      [v15 appendItemsWithIdentifiers:v17];
+      contacts = [(CNContactSuggestionsViewController *)self contacts];
+      [v15 appendItemsWithIdentifiers:contacts];
     }
 
-    v18 = [(CNContactSuggestionsViewController *)self diffableDataSource];
-    [v18 applySnapshot:v15 animatingDifferences:1 completion:0];
+    diffableDataSource = [(CNContactSuggestionsViewController *)self diffableDataSource];
+    [diffableDataSource applySnapshot:v15 animatingDifferences:1 completion:0];
   }
 }
 
-- (id)filterResults:(id)a3
+- (id)filterResults:(id)results
 {
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __52__CNContactSuggestionsViewController_filterResults___block_invoke;
   v13[3] = &unk_1E74E7880;
   v13[4] = self;
-  v4 = [a3 _cn_filter:v13];
+  v4 = [results _cn_filter:v13];
   [(CNContactSuggestionsViewController *)self fetchIgnoredContactIdentifiersIfNeeded];
-  v5 = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
-  if (v5)
+  ignoredContactIdentifiers = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
+  if (ignoredContactIdentifiers)
   {
-    v6 = v5;
-    v7 = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
-    v8 = [v7 count];
+    v6 = ignoredContactIdentifiers;
+    ignoredContactIdentifiers2 = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
+    v8 = [ignoredContactIdentifiers2 count];
 
     if (v8)
     {
@@ -529,16 +529,16 @@ uint64_t __52__CNContactSuggestionsViewController_filterResults___block_invoke_2
 
 - (void)fetchIgnoredContactIdentifiersIfNeeded
 {
-  v3 = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
-  if (!v3 || (v4 = v3, -[CNContactSuggestionsViewController ignoredContactIdentifiers](self, "ignoredContactIdentifiers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, !v6))
+  ignoredContactIdentifiers = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
+  if (!ignoredContactIdentifiers || (v4 = ignoredContactIdentifiers, -[CNContactSuggestionsViewController ignoredContactIdentifiers](self, "ignoredContactIdentifiers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, !v6))
   {
-    v7 = [(CNContactSuggestionsViewController *)self delegate];
+    delegate = [(CNContactSuggestionsViewController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v10 = [(CNContactSuggestionsViewController *)self delegate];
-      v9 = [v10 ignoredContactIdentifiersForSuggestionsController:self];
+      delegate2 = [(CNContactSuggestionsViewController *)self delegate];
+      v9 = [delegate2 ignoredContactIdentifiersForSuggestionsController:self];
       [(CNContactSuggestionsViewController *)self setIgnoredContactIdentifiers:v9];
     }
   }
@@ -546,23 +546,23 @@ uint64_t __52__CNContactSuggestionsViewController_filterResults___block_invoke_2
 
 - (void)fetchContacts
 {
-  v3 = [(CNContactSuggestionsViewController *)self overrideSuggestedContacts];
+  overrideSuggestedContacts = [(CNContactSuggestionsViewController *)self overrideSuggestedContacts];
 
-  if (v3)
+  if (overrideSuggestedContacts)
   {
-    v15 = [(CNContactSuggestionsViewController *)self overrideSuggestedContacts];
-    v4 = [(CNContactSuggestionsViewController *)self filterResults:v15];
+    overrideSuggestedContacts2 = [(CNContactSuggestionsViewController *)self overrideSuggestedContacts];
+    v4 = [(CNContactSuggestionsViewController *)self filterResults:overrideSuggestedContacts2];
     [(CNContactSuggestionsViewController *)self setContacts:v4];
   }
 
   else
   {
     [(CNContactSuggestionsViewController *)self fetchIgnoredContactIdentifiersIfNeeded];
-    v5 = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
-    if (v5)
+    ignoredContactIdentifiers = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
+    if (ignoredContactIdentifiers)
     {
-      v6 = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
-      v7 = [v6 count];
+      ignoredContactIdentifiers2 = [(CNContactSuggestionsViewController *)self ignoredContactIdentifiers];
+      v7 = [ignoredContactIdentifiers2 count];
     }
 
     else
@@ -577,9 +577,9 @@ uint64_t __52__CNContactSuggestionsViewController_filterResults___block_invoke_2
     v24 = __Block_byref_object_copy__29366;
     v25 = __Block_byref_object_dispose__29367;
     v26 = 0;
-    v9 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v10 = [v9 schedulerProvider];
-    v11 = [v10 immediateScheduler];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    schedulerProvider = [currentEnvironment schedulerProvider];
+    immediateScheduler = [schedulerProvider immediateScheduler];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __51__CNContactSuggestionsViewController_fetchContacts__block_invoke;
@@ -588,8 +588,8 @@ uint64_t __52__CNContactSuggestionsViewController_filterResults___block_invoke_2
     v12 = v8;
     v20 = v7;
     v17 = v12;
-    v18 = self;
-    [v11 performBlock:v16 qualityOfService:4];
+    selfCopy = self;
+    [immediateScheduler performBlock:v16 qualityOfService:4];
 
     if (v22[5])
     {
@@ -625,45 +625,45 @@ void __51__CNContactSuggestionsViewController_fetchContacts__block_invoke(uint64
 
 - (void)fetchContactsIfNeeded
 {
-  v3 = [(CNContactSuggestionsViewController *)self contacts];
+  contacts = [(CNContactSuggestionsViewController *)self contacts];
 
-  if (!v3)
+  if (!contacts)
   {
 
     [(CNContactSuggestionsViewController *)self fetchContacts];
   }
 }
 
-- (void)setAllowsMultiSelection:(BOOL)a3
+- (void)setAllowsMultiSelection:(BOOL)selection
 {
-  if (self->_allowsMultiSelection != a3)
+  if (self->_allowsMultiSelection != selection)
   {
-    v3 = a3;
-    self->_allowsMultiSelection = a3;
-    v5 = [(CNContactSuggestionsViewController *)self collectionView];
+    selectionCopy = selection;
+    self->_allowsMultiSelection = selection;
+    collectionView = [(CNContactSuggestionsViewController *)self collectionView];
 
-    if (v5)
+    if (collectionView)
     {
-      v6 = [(CNContactSuggestionsViewController *)self collectionView];
-      [v6 setAllowsMultipleSelection:v3];
+      collectionView2 = [(CNContactSuggestionsViewController *)self collectionView];
+      [collectionView2 setAllowsMultipleSelection:selectionCopy];
     }
   }
 }
 
 - (void)buildCollectionView
 {
-  v3 = [(CNContactSuggestionsViewController *)self compositionalLayout];
-  [(CNContactSuggestionsViewController *)self setLayout:v3];
+  compositionalLayout = [(CNContactSuggestionsViewController *)self compositionalLayout];
+  [(CNContactSuggestionsViewController *)self setLayout:compositionalLayout];
 
   v4 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v5 = [(CNContactSuggestionsViewController *)self view];
-  [v5 bounds];
+  view = [(CNContactSuggestionsViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(CNContactSuggestionsViewController *)self layout];
-  v15 = [v4 initWithFrame:v14 collectionViewLayout:{v7, v9, v11, v13}];
+  layout = [(CNContactSuggestionsViewController *)self layout];
+  v15 = [v4 initWithFrame:layout collectionViewLayout:{v7, v9, v11, v13}];
 
   [v15 setDelegate:self];
   objc_initWeak(&location, self);
@@ -696,8 +696,8 @@ void __51__CNContactSuggestionsViewController_fetchContacts__block_invoke(uint64
 
   [v15 setScrollEnabled:0];
   [v15 setAllowsMultipleSelection:{-[CNContactSuggestionsViewController allowsMultiSelection](self, "allowsMultiSelection")}];
-  v23 = [(CNContactSuggestionsViewController *)self view];
-  [v23 addSubview:v15];
+  view2 = [(CNContactSuggestionsViewController *)self view];
+  [view2 addSubview:v15];
 
   [v15 setAutoresizingMask:18];
   [(CNContactSuggestionsViewController *)self setCollectionView:v15];
@@ -815,20 +815,20 @@ id __57__CNContactSuggestionsViewController_buildCollectionView__block_invoke_3(
   return v24;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CNContactSuggestionsViewController;
-  v7 = a4;
-  [(CNContactSuggestionsViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CNContactSuggestionsViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__CNContactSuggestionsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E74E3CC8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __89__CNContactSuggestionsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -849,47 +849,47 @@ void __89__CNContactSuggestionsViewController_viewWillTransitionToSize_withTrans
   [v7 reloadData];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v16.receiver = self;
   v16.super_class = CNContactSuggestionsViewController;
-  v4 = a3;
-  [(CNContactSuggestionsViewController *)&v16 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CNContactSuggestionsViewController *)&v16 traitCollectionDidChange:changeCopy];
   v5 = [(CNContactSuggestionsViewController *)self traitCollection:v16.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [(CNContactSuggestionsViewController *)self delegate];
+    delegate = [(CNContactSuggestionsViewController *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(CNContactSuggestionsViewController *)self delegate];
+      delegate2 = [(CNContactSuggestionsViewController *)self delegate];
       [(CNContactSuggestionsViewController *)self estimatedHeight];
-      [v10 suggestionsController:self didChangeToHeight:?];
+      [delegate2 suggestionsController:self didChangeToHeight:?];
     }
 
-    v11 = [(CNContactSuggestionsViewController *)self compositionalLayout];
-    [(CNContactSuggestionsViewController *)self setLayout:v11];
+    compositionalLayout = [(CNContactSuggestionsViewController *)self compositionalLayout];
+    [(CNContactSuggestionsViewController *)self setLayout:compositionalLayout];
 
-    v12 = [(CNContactSuggestionsViewController *)self collectionView];
-    v13 = [(CNContactSuggestionsViewController *)self layout];
-    [v12 setCollectionViewLayout:v13 animated:1];
+    collectionView = [(CNContactSuggestionsViewController *)self collectionView];
+    layout = [(CNContactSuggestionsViewController *)self layout];
+    [collectionView setCollectionViewLayout:layout animated:1];
 
-    v14 = [(CNContactSuggestionsViewController *)self collectionView];
-    [v14 setContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    collectionView2 = [(CNContactSuggestionsViewController *)self collectionView];
+    [collectionView2 setContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
-    v15 = [(CNContactSuggestionsViewController *)self collectionView];
-    [v15 reloadData];
+    collectionView3 = [(CNContactSuggestionsViewController *)self collectionView];
+    [collectionView3 reloadData];
   }
 }
 
 - (BOOL)useAccessibleLayout
 {
   v9[5] = *MEMORY[0x1E69E9840];
-  v2 = [(CNContactSuggestionsViewController *)self traitCollection];
+  traitCollection = [(CNContactSuggestionsViewController *)self traitCollection];
   v3 = *MEMORY[0x1E69DDC38];
   v9[0] = *MEMORY[0x1E69DDC40];
   v9[1] = v3;
@@ -898,8 +898,8 @@ void __89__CNContactSuggestionsViewController_viewWillTransitionToSize_withTrans
   v9[3] = v4;
   v9[4] = *MEMORY[0x1E69DDC20];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:5];
-  v6 = [v2 preferredContentSizeCategory];
-  v7 = [v5 containsObject:v6];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v7 = [v5 containsObject:preferredContentSizeCategory];
 
   return v7;
 }
@@ -910,17 +910,17 @@ void __89__CNContactSuggestionsViewController_viewWillTransitionToSize_withTrans
   v8.super_class = CNContactSuggestionsViewController;
   [(CNContactSuggestionsViewController *)&v8 viewDidLoad];
   v3 = +[CNUIColorRepository contactSuggestionsBackgroundColor];
-  v4 = [(CNContactSuggestionsViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(CNContactSuggestionsViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(CNContactSuggestionsViewController *)self view];
-  [v5 setInsetsLayoutMarginsFromSafeArea:0];
+  view2 = [(CNContactSuggestionsViewController *)self view];
+  [view2 setInsetsLayoutMarginsFromSafeArea:0];
 
-  v6 = [(CNContactSuggestionsViewController *)self view];
-  [v6 setClipsToBounds:1];
+  view3 = [(CNContactSuggestionsViewController *)self view];
+  [view3 setClipsToBounds:1];
 
-  v7 = [(CNContactSuggestionsViewController *)self view];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [(CNContactSuggestionsViewController *)self view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(CNContactSuggestionsViewController *)self buildCollectionView];
   [(CNContactSuggestionsViewController *)self fetchContactsIfNeeded];

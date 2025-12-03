@@ -1,22 +1,22 @@
 @interface AFLocationSnapshot
-- (id)initWithLocation:(id)a3 locationManagerState:(ADLocationManagerState)a4;
+- (id)initWithLocation:(id)location locationManagerState:(ADLocationManagerState)state;
 @end
 
 @implementation AFLocationSnapshot
 
-- (id)initWithLocation:(id)a3 locationManagerState:(ADLocationManagerState)a4
+- (id)initWithLocation:(id)location locationManagerState:(ADLocationManagerState)state
 {
-  accuracyAuthorization = a4.accuracyAuthorization;
-  if (a4.locationServicesEnabled)
+  accuracyAuthorization = state.accuracyAuthorization;
+  if (state.locationServicesEnabled)
   {
-    if (a4.authorizationStatus > 2uLL)
+    if (state.authorizationStatus > 2uLL)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = *(&unk_1003F0438 + ((*&a4.locationServicesEnabled >> 29) & 0x7FFFFFFF8));
+      v5 = *(&unk_1003F0438 + ((*&state.locationServicesEnabled >> 29) & 0x7FFFFFFF8));
     }
   }
 
@@ -25,20 +25,20 @@
     v5 = 2;
   }
 
-  v6 = a3;
-  [v6 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v7 = [NSNumber numberWithDouble:?];
-  [v6 coordinate];
+  [locationCopy coordinate];
   v9 = [NSNumber numberWithDouble:v8];
-  [v6 altitude];
+  [locationCopy altitude];
   v10 = [NSNumber numberWithDouble:?];
-  [v6 course];
+  [locationCopy course];
   v11 = [NSNumber numberWithDouble:?];
-  [v6 speed];
+  [locationCopy speed];
   v12 = [NSNumber numberWithDouble:?];
-  [v6 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   v13 = [NSNumber numberWithDouble:?];
-  [v6 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v15 = v14;
 
   v16 = [NSNumber numberWithDouble:v15];

@@ -1,33 +1,33 @@
 @interface TPPBPolicyDocument
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCategoriesByView:(id)a3;
-- (void)addInheritedExcludedViews:(id)a3;
-- (void)addIntroducersByCategory:(id)a3;
-- (void)addKeyViewMapping:(id)a3;
-- (void)addModelToCategory:(id)a3;
-- (void)addPiggybackViews:(id)a3;
-- (void)addPriorityViews:(id)a3;
-- (void)addRedactions:(id)a3;
-- (void)addUserControllableViews:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCategoriesByView:(id)view;
+- (void)addInheritedExcludedViews:(id)views;
+- (void)addIntroducersByCategory:(id)category;
+- (void)addKeyViewMapping:(id)mapping;
+- (void)addModelToCategory:(id)category;
+- (void)addPiggybackViews:(id)views;
+- (void)addPriorityViews:(id)views;
+- (void)addRedactions:(id)redactions;
+- (void)addUserControllableViews:(id)views;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TPPBPolicyDocument
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v97 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 88))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 88))
   {
-    self->_policyVersion = *(v4 + 1);
+    self->_policyVersion = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -35,7 +35,7 @@
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   v7 = [v6 countByEnumeratingWithState:&v84 objects:v96 count:16];
   if (v7)
   {
@@ -327,24 +327,24 @@
   return v9 ^ v11 ^ [(NSMutableArray *)self->_inheritedExcludedViews hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = *(v4 + 88);
+  v5 = *(equalCopy + 88);
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_policyVersion != *(v4 + 1))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_policyVersion != *(equalCopy + 1))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
 LABEL_25:
     v15 = 0;
@@ -352,13 +352,13 @@ LABEL_25:
   }
 
   modelToCategorys = self->_modelToCategorys;
-  if (modelToCategorys | *(v4 + 6) && ![(NSMutableArray *)modelToCategorys isEqual:?])
+  if (modelToCategorys | *(equalCopy + 6) && ![(NSMutableArray *)modelToCategorys isEqual:?])
   {
     goto LABEL_25;
   }
 
   categoriesByViews = self->_categoriesByViews;
-  if (categoriesByViews | *(v4 + 2))
+  if (categoriesByViews | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)categoriesByViews isEqual:?])
     {
@@ -367,7 +367,7 @@ LABEL_25:
   }
 
   introducersByCategorys = self->_introducersByCategorys;
-  if (introducersByCategorys | *(v4 + 4))
+  if (introducersByCategorys | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)introducersByCategorys isEqual:?])
     {
@@ -376,7 +376,7 @@ LABEL_25:
   }
 
   redactions = self->_redactions;
-  if (redactions | *(v4 + 9))
+  if (redactions | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)redactions isEqual:?])
     {
@@ -385,7 +385,7 @@ LABEL_25:
   }
 
   keyViewMappings = self->_keyViewMappings;
-  if (keyViewMappings | *(v4 + 5))
+  if (keyViewMappings | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)keyViewMappings isEqual:?])
     {
@@ -394,7 +394,7 @@ LABEL_25:
   }
 
   userControllableViews = self->_userControllableViews;
-  if (userControllableViews | *(v4 + 10))
+  if (userControllableViews | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)userControllableViews isEqual:?])
     {
@@ -403,7 +403,7 @@ LABEL_25:
   }
 
   piggybackViews = self->_piggybackViews;
-  if (piggybackViews | *(v4 + 7))
+  if (piggybackViews | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)piggybackViews isEqual:?])
     {
@@ -412,7 +412,7 @@ LABEL_25:
   }
 
   priorityViews = self->_priorityViews;
-  if (priorityViews | *(v4 + 8))
+  if (priorityViews | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)priorityViews isEqual:?])
     {
@@ -421,7 +421,7 @@ LABEL_25:
   }
 
   inheritedExcludedViews = self->_inheritedExcludedViews;
-  if (inheritedExcludedViews | *(v4 + 3))
+  if (inheritedExcludedViews | *(equalCopy + 3))
   {
     v15 = [(NSMutableArray *)inheritedExcludedViews isEqual:?];
   }
@@ -436,10 +436,10 @@ LABEL_26:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v108 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -467,7 +467,7 @@ LABEL_26:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v95 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v95 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addModelToCategory:v12];
 
         ++v11;
@@ -500,7 +500,7 @@ LABEL_26:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v91 + 1) + 8 * v17) copyWithZone:a3];
+        v18 = [*(*(&v91 + 1) + 8 * v17) copyWithZone:zone];
         [v6 addCategoriesByView:v18];
 
         ++v17;
@@ -533,7 +533,7 @@ LABEL_26:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v87 + 1) + 8 * v23) copyWithZone:a3];
+        v24 = [*(*(&v87 + 1) + 8 * v23) copyWithZone:zone];
         [v6 addIntroducersByCategory:v24];
 
         ++v23;
@@ -566,7 +566,7 @@ LABEL_26:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v83 + 1) + 8 * v29) copyWithZone:a3];
+        v30 = [*(*(&v83 + 1) + 8 * v29) copyWithZone:zone];
         [v6 addRedactions:v30];
 
         ++v29;
@@ -599,7 +599,7 @@ LABEL_26:
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v79 + 1) + 8 * v35) copyWithZone:a3];
+        v36 = [*(*(&v79 + 1) + 8 * v35) copyWithZone:zone];
         [v6 addKeyViewMapping:v36];
 
         ++v35;
@@ -632,7 +632,7 @@ LABEL_26:
           objc_enumerationMutation(v37);
         }
 
-        v42 = [*(*(&v75 + 1) + 8 * v41) copyWithZone:a3];
+        v42 = [*(*(&v75 + 1) + 8 * v41) copyWithZone:zone];
         [v6 addUserControllableViews:v42];
 
         ++v41;
@@ -665,7 +665,7 @@ LABEL_26:
           objc_enumerationMutation(v43);
         }
 
-        v48 = [*(*(&v71 + 1) + 8 * v47) copyWithZone:a3];
+        v48 = [*(*(&v71 + 1) + 8 * v47) copyWithZone:zone];
         [v6 addPiggybackViews:v48];
 
         ++v47;
@@ -698,7 +698,7 @@ LABEL_26:
           objc_enumerationMutation(v49);
         }
 
-        v54 = [*(*(&v67 + 1) + 8 * v53) copyWithZone:a3];
+        v54 = [*(*(&v67 + 1) + 8 * v53) copyWithZone:zone];
         [v6 addPriorityViews:v54];
 
         ++v53;
@@ -731,7 +731,7 @@ LABEL_26:
           objc_enumerationMutation(v55);
         }
 
-        v60 = [*(*(&v63 + 1) + 8 * v59) copyWithZone:{a3, v63}];
+        v60 = [*(*(&v63 + 1) + 8 * v59) copyWithZone:{zone, v63}];
         [v6 addInheritedExcludedViews:v60];
 
         ++v59;
@@ -748,23 +748,23 @@ LABEL_26:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_policyVersion;
-    *(v4 + 88) |= 1u;
+    toCopy[1] = self->_policyVersion;
+    *(toCopy + 88) |= 1u;
   }
 
-  v41 = v4;
+  v41 = toCopy;
   if ([(TPPBPolicyDocument *)self modelToCategorysCount])
   {
     [v41 clearModelToCategorys];
-    v5 = [(TPPBPolicyDocument *)self modelToCategorysCount];
-    if (v5)
+    modelToCategorysCount = [(TPPBPolicyDocument *)self modelToCategorysCount];
+    if (modelToCategorysCount)
     {
-      v6 = v5;
+      v6 = modelToCategorysCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(TPPBPolicyDocument *)self modelToCategoryAtIndex:i];
@@ -776,10 +776,10 @@ LABEL_26:
   if ([(TPPBPolicyDocument *)self categoriesByViewsCount])
   {
     [v41 clearCategoriesByViews];
-    v9 = [(TPPBPolicyDocument *)self categoriesByViewsCount];
-    if (v9)
+    categoriesByViewsCount = [(TPPBPolicyDocument *)self categoriesByViewsCount];
+    if (categoriesByViewsCount)
     {
-      v10 = v9;
+      v10 = categoriesByViewsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(TPPBPolicyDocument *)self categoriesByViewAtIndex:j];
@@ -791,10 +791,10 @@ LABEL_26:
   if ([(TPPBPolicyDocument *)self introducersByCategorysCount])
   {
     [v41 clearIntroducersByCategorys];
-    v13 = [(TPPBPolicyDocument *)self introducersByCategorysCount];
-    if (v13)
+    introducersByCategorysCount = [(TPPBPolicyDocument *)self introducersByCategorysCount];
+    if (introducersByCategorysCount)
     {
-      v14 = v13;
+      v14 = introducersByCategorysCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(TPPBPolicyDocument *)self introducersByCategoryAtIndex:k];
@@ -806,10 +806,10 @@ LABEL_26:
   if ([(TPPBPolicyDocument *)self redactionsCount])
   {
     [v41 clearRedactions];
-    v17 = [(TPPBPolicyDocument *)self redactionsCount];
-    if (v17)
+    redactionsCount = [(TPPBPolicyDocument *)self redactionsCount];
+    if (redactionsCount)
     {
-      v18 = v17;
+      v18 = redactionsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(TPPBPolicyDocument *)self redactionsAtIndex:m];
@@ -821,10 +821,10 @@ LABEL_26:
   if ([(TPPBPolicyDocument *)self keyViewMappingsCount])
   {
     [v41 clearKeyViewMappings];
-    v21 = [(TPPBPolicyDocument *)self keyViewMappingsCount];
-    if (v21)
+    keyViewMappingsCount = [(TPPBPolicyDocument *)self keyViewMappingsCount];
+    if (keyViewMappingsCount)
     {
-      v22 = v21;
+      v22 = keyViewMappingsCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(TPPBPolicyDocument *)self keyViewMappingAtIndex:n];
@@ -836,10 +836,10 @@ LABEL_26:
   if ([(TPPBPolicyDocument *)self userControllableViewsCount])
   {
     [v41 clearUserControllableViews];
-    v25 = [(TPPBPolicyDocument *)self userControllableViewsCount];
-    if (v25)
+    userControllableViewsCount = [(TPPBPolicyDocument *)self userControllableViewsCount];
+    if (userControllableViewsCount)
     {
-      v26 = v25;
+      v26 = userControllableViewsCount;
       for (ii = 0; ii != v26; ++ii)
       {
         v28 = [(TPPBPolicyDocument *)self userControllableViewsAtIndex:ii];
@@ -851,10 +851,10 @@ LABEL_26:
   if ([(TPPBPolicyDocument *)self piggybackViewsCount])
   {
     [v41 clearPiggybackViews];
-    v29 = [(TPPBPolicyDocument *)self piggybackViewsCount];
-    if (v29)
+    piggybackViewsCount = [(TPPBPolicyDocument *)self piggybackViewsCount];
+    if (piggybackViewsCount)
     {
-      v30 = v29;
+      v30 = piggybackViewsCount;
       for (jj = 0; jj != v30; ++jj)
       {
         v32 = [(TPPBPolicyDocument *)self piggybackViewsAtIndex:jj];
@@ -866,10 +866,10 @@ LABEL_26:
   if ([(TPPBPolicyDocument *)self priorityViewsCount])
   {
     [v41 clearPriorityViews];
-    v33 = [(TPPBPolicyDocument *)self priorityViewsCount];
-    if (v33)
+    priorityViewsCount = [(TPPBPolicyDocument *)self priorityViewsCount];
+    if (priorityViewsCount)
     {
-      v34 = v33;
+      v34 = priorityViewsCount;
       for (kk = 0; kk != v34; ++kk)
       {
         v36 = [(TPPBPolicyDocument *)self priorityViewsAtIndex:kk];
@@ -881,10 +881,10 @@ LABEL_26:
   if ([(TPPBPolicyDocument *)self inheritedExcludedViewsCount])
   {
     [v41 clearInheritedExcludedViews];
-    v37 = [(TPPBPolicyDocument *)self inheritedExcludedViewsCount];
-    if (v37)
+    inheritedExcludedViewsCount = [(TPPBPolicyDocument *)self inheritedExcludedViewsCount];
+    if (inheritedExcludedViewsCount)
     {
-      v38 = v37;
+      v38 = inheritedExcludedViewsCount;
       for (mm = 0; mm != v38; ++mm)
       {
         v40 = [(TPPBPolicyDocument *)self inheritedExcludedViewsAtIndex:mm];
@@ -894,10 +894,10 @@ LABEL_26:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v106 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     policyVersion = self->_policyVersion;
@@ -1198,11 +1198,11 @@ LABEL_26:
 - (id)dictionaryRepresentation
 {
   v71 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_policyVersion];
-    [v3 setObject:v4 forKey:@"policyVersion"];
+    [dictionary setObject:v4 forKey:@"policyVersion"];
   }
 
   if ([(NSMutableArray *)self->_modelToCategorys count])
@@ -1227,8 +1227,8 @@ LABEL_26:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v62 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v62 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v62 objects:v70 count:16];
@@ -1237,7 +1237,7 @@ LABEL_26:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"modelToCategory"];
+    [dictionary setObject:v5 forKey:@"modelToCategory"];
   }
 
   if ([(NSMutableArray *)self->_categoriesByViews count])
@@ -1262,8 +1262,8 @@ LABEL_26:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v58 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v58 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v58 objects:v69 count:16];
@@ -1272,7 +1272,7 @@ LABEL_26:
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"categoriesByView"];
+    [dictionary setObject:v12 forKey:@"categoriesByView"];
   }
 
   if ([(NSMutableArray *)self->_introducersByCategorys count])
@@ -1297,8 +1297,8 @@ LABEL_26:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v54 + 1) + 8 * k) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v54 + 1) + 8 * k) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v54 objects:v68 count:16];
@@ -1307,7 +1307,7 @@ LABEL_26:
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"introducersByCategory"];
+    [dictionary setObject:v19 forKey:@"introducersByCategory"];
   }
 
   if ([(NSMutableArray *)self->_redactions count])
@@ -1332,8 +1332,8 @@ LABEL_26:
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v50 + 1) + 8 * m) dictionaryRepresentation];
-          [v26 addObject:v32];
+          dictionaryRepresentation4 = [*(*(&v50 + 1) + 8 * m) dictionaryRepresentation];
+          [v26 addObject:dictionaryRepresentation4];
         }
 
         v29 = [(NSMutableArray *)v27 countByEnumeratingWithState:&v50 objects:v67 count:16];
@@ -1342,7 +1342,7 @@ LABEL_26:
       while (v29);
     }
 
-    [v3 setObject:v26 forKey:@"redactions"];
+    [dictionary setObject:v26 forKey:@"redactions"];
   }
 
   if ([(NSMutableArray *)self->_keyViewMappings count])
@@ -1367,8 +1367,8 @@ LABEL_26:
             objc_enumerationMutation(v34);
           }
 
-          v39 = [*(*(&v46 + 1) + 8 * n) dictionaryRepresentation];
-          [v33 addObject:v39];
+          dictionaryRepresentation5 = [*(*(&v46 + 1) + 8 * n) dictionaryRepresentation];
+          [v33 addObject:dictionaryRepresentation5];
         }
 
         v36 = [(NSMutableArray *)v34 countByEnumeratingWithState:&v46 objects:v66 count:16];
@@ -1377,36 +1377,36 @@ LABEL_26:
       while (v36);
     }
 
-    [v3 setObject:v33 forKey:@"keyViewMapping"];
+    [dictionary setObject:v33 forKey:@"keyViewMapping"];
   }
 
   userControllableViews = self->_userControllableViews;
   if (userControllableViews)
   {
-    [v3 setObject:userControllableViews forKey:@"user_controllable_views"];
+    [dictionary setObject:userControllableViews forKey:@"user_controllable_views"];
   }
 
   piggybackViews = self->_piggybackViews;
   if (piggybackViews)
   {
-    [v3 setObject:piggybackViews forKey:@"piggyback_views"];
+    [dictionary setObject:piggybackViews forKey:@"piggyback_views"];
   }
 
   priorityViews = self->_priorityViews;
   if (priorityViews)
   {
-    [v3 setObject:priorityViews forKey:@"priority_views"];
+    [dictionary setObject:priorityViews forKey:@"priority_views"];
   }
 
   inheritedExcludedViews = self->_inheritedExcludedViews;
   if (inheritedExcludedViews)
   {
-    [v3 setObject:inheritedExcludedViews forKey:@"inherited_excluded_views"];
+    [dictionary setObject:inheritedExcludedViews forKey:@"inherited_excluded_views"];
   }
 
   v44 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1415,172 +1415,172 @@ LABEL_26:
   v8.receiver = self;
   v8.super_class = TPPBPolicyDocument;
   v4 = [(TPPBPolicyDocument *)&v8 description];
-  v5 = [(TPPBPolicyDocument *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(TPPBPolicyDocument *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addInheritedExcludedViews:(id)a3
+- (void)addInheritedExcludedViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   inheritedExcludedViews = self->_inheritedExcludedViews;
-  v8 = v4;
+  v8 = viewsCopy;
   if (!inheritedExcludedViews)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_inheritedExcludedViews;
     self->_inheritedExcludedViews = v6;
 
-    v4 = v8;
+    viewsCopy = v8;
     inheritedExcludedViews = self->_inheritedExcludedViews;
   }
 
-  [(NSMutableArray *)inheritedExcludedViews addObject:v4];
+  [(NSMutableArray *)inheritedExcludedViews addObject:viewsCopy];
 }
 
-- (void)addPriorityViews:(id)a3
+- (void)addPriorityViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   priorityViews = self->_priorityViews;
-  v8 = v4;
+  v8 = viewsCopy;
   if (!priorityViews)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_priorityViews;
     self->_priorityViews = v6;
 
-    v4 = v8;
+    viewsCopy = v8;
     priorityViews = self->_priorityViews;
   }
 
-  [(NSMutableArray *)priorityViews addObject:v4];
+  [(NSMutableArray *)priorityViews addObject:viewsCopy];
 }
 
-- (void)addPiggybackViews:(id)a3
+- (void)addPiggybackViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   piggybackViews = self->_piggybackViews;
-  v8 = v4;
+  v8 = viewsCopy;
   if (!piggybackViews)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_piggybackViews;
     self->_piggybackViews = v6;
 
-    v4 = v8;
+    viewsCopy = v8;
     piggybackViews = self->_piggybackViews;
   }
 
-  [(NSMutableArray *)piggybackViews addObject:v4];
+  [(NSMutableArray *)piggybackViews addObject:viewsCopy];
 }
 
-- (void)addUserControllableViews:(id)a3
+- (void)addUserControllableViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   userControllableViews = self->_userControllableViews;
-  v8 = v4;
+  v8 = viewsCopy;
   if (!userControllableViews)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_userControllableViews;
     self->_userControllableViews = v6;
 
-    v4 = v8;
+    viewsCopy = v8;
     userControllableViews = self->_userControllableViews;
   }
 
-  [(NSMutableArray *)userControllableViews addObject:v4];
+  [(NSMutableArray *)userControllableViews addObject:viewsCopy];
 }
 
-- (void)addKeyViewMapping:(id)a3
+- (void)addKeyViewMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   keyViewMappings = self->_keyViewMappings;
-  v8 = v4;
+  v8 = mappingCopy;
   if (!keyViewMappings)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_keyViewMappings;
     self->_keyViewMappings = v6;
 
-    v4 = v8;
+    mappingCopy = v8;
     keyViewMappings = self->_keyViewMappings;
   }
 
-  [(NSMutableArray *)keyViewMappings addObject:v4];
+  [(NSMutableArray *)keyViewMappings addObject:mappingCopy];
 }
 
-- (void)addRedactions:(id)a3
+- (void)addRedactions:(id)redactions
 {
-  v4 = a3;
+  redactionsCopy = redactions;
   redactions = self->_redactions;
-  v8 = v4;
+  v8 = redactionsCopy;
   if (!redactions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_redactions;
     self->_redactions = v6;
 
-    v4 = v8;
+    redactionsCopy = v8;
     redactions = self->_redactions;
   }
 
-  [(NSMutableArray *)redactions addObject:v4];
+  [(NSMutableArray *)redactions addObject:redactionsCopy];
 }
 
-- (void)addIntroducersByCategory:(id)a3
+- (void)addIntroducersByCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   introducersByCategorys = self->_introducersByCategorys;
-  v8 = v4;
+  v8 = categoryCopy;
   if (!introducersByCategorys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_introducersByCategorys;
     self->_introducersByCategorys = v6;
 
-    v4 = v8;
+    categoryCopy = v8;
     introducersByCategorys = self->_introducersByCategorys;
   }
 
-  [(NSMutableArray *)introducersByCategorys addObject:v4];
+  [(NSMutableArray *)introducersByCategorys addObject:categoryCopy];
 }
 
-- (void)addCategoriesByView:(id)a3
+- (void)addCategoriesByView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   categoriesByViews = self->_categoriesByViews;
-  v8 = v4;
+  v8 = viewCopy;
   if (!categoriesByViews)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_categoriesByViews;
     self->_categoriesByViews = v6;
 
-    v4 = v8;
+    viewCopy = v8;
     categoriesByViews = self->_categoriesByViews;
   }
 
-  [(NSMutableArray *)categoriesByViews addObject:v4];
+  [(NSMutableArray *)categoriesByViews addObject:viewCopy];
 }
 
-- (void)addModelToCategory:(id)a3
+- (void)addModelToCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   modelToCategorys = self->_modelToCategorys;
-  v8 = v4;
+  v8 = categoryCopy;
   if (!modelToCategorys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_modelToCategorys;
     self->_modelToCategorys = v6;
 
-    v4 = v8;
+    categoryCopy = v8;
     modelToCategorys = self->_modelToCategorys;
   }
 
-  [(NSMutableArray *)modelToCategorys addObject:v4];
+  [(NSMutableArray *)modelToCategorys addObject:categoryCopy];
 }
 
 @end

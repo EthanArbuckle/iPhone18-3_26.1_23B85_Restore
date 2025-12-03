@@ -126,7 +126,7 @@
   v72 = [MEMORY[0x1E696AD98] numberWithFloat:v71];
   *&v73 = v64;
   v74 = [v65 arrayWithObjects:{inputScale, v68, v70, v72, objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", v73), 0}];
-  v75 = [(CIRippleTransition *)self _CIRippleTransition];
+  _CIRippleTransition = [(CIRippleTransition *)self _CIRippleTransition];
   v83[0] = MEMORY[0x1E69E9820];
   v83[1] = 3221225472;
   v83[2] = __33__CIRippleTransition_outputImage__block_invoke;
@@ -140,7 +140,7 @@
   v84[3] = self->inputCenter;
   v84[4] = [CIVector vectorWithX:v79 Y:(1.0 / v9) Z:0.333333343 W:v82];
   v84[5] = [CIVector vectorWithX:v81 Y:v80];
-  return [v75 applyWithExtent:v83 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v84, 6), v57, v58, v59, v60}];
+  return [_CIRippleTransition applyWithExtent:v83 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v84, 6), v57, v58, v59, v60}];
 }
 
 double __33__CIRippleTransition_outputImage__block_invoke(uint64_t a1, unsigned int a2, CGFloat a3, CGFloat a4, CGFloat a5, CGFloat a6)

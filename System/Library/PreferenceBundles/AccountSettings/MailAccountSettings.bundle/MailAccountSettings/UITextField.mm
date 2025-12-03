@@ -1,27 +1,27 @@
 @interface UITextField
-- (void)setCursorPosition:(unint64_t)a3;
+- (void)setCursorPosition:(unint64_t)position;
 @end
 
 @implementation UITextField
 
-- (void)setCursorPosition:(unint64_t)a3
+- (void)setCursorPosition:(unint64_t)position
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (position != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(UITextField *)self text];
-    v6 = [v5 length];
+    text = [(UITextField *)self text];
+    v6 = [text length];
 
-    if (v6 >= a3)
+    if (v6 >= position)
     {
-      v7 = a3;
+      positionCopy = position;
     }
 
     else
     {
-      v7 = v6;
+      positionCopy = v6;
     }
 
-    [(UITextField *)self setSelectionRange:v7, 0];
+    [(UITextField *)self setSelectionRange:positionCopy, 0];
   }
 }
 

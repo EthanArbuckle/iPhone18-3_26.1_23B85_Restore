@@ -1,22 +1,22 @@
 @interface EKEventOccurrences
-- (BOOL)isEqual:(id)a3;
-- (EKEventOccurrences)initWithObjectID:(id)a3 dates:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (EKEventOccurrences)initWithObjectID:(id)d dates:(id)dates;
 @end
 
 @implementation EKEventOccurrences
 
-- (EKEventOccurrences)initWithObjectID:(id)a3 dates:(id)a4
+- (EKEventOccurrences)initWithObjectID:(id)d dates:(id)dates
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  datesCopy = dates;
   v14.receiver = self;
   v14.super_class = EKEventOccurrences;
   v9 = [(EKEventOccurrences *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_objectID, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_objectID, d);
+    v11 = [datesCopy copy];
     startDates = v10->_startDates;
     v10->_startDates = v11;
   }
@@ -24,10 +24,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -37,7 +37,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       if ([(EKObjectID *)self->_objectID isEqual:v7->_objectID])
       {
         v6 = [(NSArray *)self->_startDates isEqual:v7->_startDates];

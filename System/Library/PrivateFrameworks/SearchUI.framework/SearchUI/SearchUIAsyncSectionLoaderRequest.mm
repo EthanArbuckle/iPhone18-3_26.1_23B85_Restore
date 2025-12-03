@@ -1,21 +1,21 @@
 @interface SearchUIAsyncSectionLoaderRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation SearchUIAsyncSectionLoaderRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SearchUIAsyncSectionLoaderRequest *)self identifier];
-    v7 = [v5 identifier];
+    v5 = equalCopy;
+    identifier = [(SearchUIAsyncSectionLoaderRequest *)self identifier];
+    identifier2 = [v5 identifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -28,8 +28,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SearchUIAsyncSectionLoaderRequest *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(SearchUIAsyncSectionLoaderRequest *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

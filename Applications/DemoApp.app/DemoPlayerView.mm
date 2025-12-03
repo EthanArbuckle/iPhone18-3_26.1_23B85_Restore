@@ -1,23 +1,23 @@
 @interface DemoPlayerView
 - (AVPlayer)player;
-- (void)setPlayer:(id)a3;
+- (void)setPlayer:(id)player;
 @end
 
 @implementation DemoPlayerView
 
 - (AVPlayer)player
 {
-  v2 = [(DemoPlayerView *)self layer];
-  v3 = [v2 player];
+  layer = [(DemoPlayerView *)self layer];
+  player = [layer player];
 
-  return v3;
+  return player;
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(DemoPlayerView *)self layer];
-  [v5 setPlayer:v4];
+  playerCopy = player;
+  layer = [(DemoPlayerView *)self layer];
+  [layer setPlayer:playerCopy];
 }
 
 @end

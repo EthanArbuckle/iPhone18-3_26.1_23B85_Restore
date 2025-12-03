@@ -1,44 +1,44 @@
 @interface SFMessageAttachment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFMessageAttachment)initWithCoder:(id)a3;
-- (SFMessageAttachment)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFMessageAttachment)initWithCoder:(id)coder;
+- (SFMessageAttachment)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFMessageAttachment
 
 - (unint64_t)hash
 {
-  v3 = [(SFMessageAttachment *)self type];
+  type = [(SFMessageAttachment *)self type];
   v4 = [(SFMessageAttachment *)self url];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(SFMessageAttachment *)self linkMetadata];
-  v7 = [v6 hash];
-  v8 = [(SFMessageAttachment *)self photosLibraryImage];
-  v9 = v7 ^ [v8 hash];
+  v5 = [v4 hash] ^ type;
+  linkMetadata = [(SFMessageAttachment *)self linkMetadata];
+  v7 = [linkMetadata hash];
+  photosLibraryImage = [(SFMessageAttachment *)self photosLibraryImage];
+  v9 = v7 ^ [photosLibraryImage hash];
 
   return v5 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if ([(SFMessageAttachment *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFMessageAttachment *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFMessageAttachment *)self type];
-      if (v7 != [(SFMessageAttachment *)v6 type])
+      v6 = equalCopy;
+      type = [(SFMessageAttachment *)self type];
+      if (type != [(SFMessageAttachment *)v6 type])
       {
         v12 = 0;
 LABEL_33:
@@ -70,33 +70,33 @@ LABEL_32:
         v32 = v11;
       }
 
-      v13 = [(SFMessageAttachment *)self linkMetadata];
-      v14 = [(SFMessageAttachment *)v6 linkMetadata];
-      v15 = v14;
-      if ((v13 != 0) == (v14 == 0))
+      linkMetadata = [(SFMessageAttachment *)self linkMetadata];
+      linkMetadata2 = [(SFMessageAttachment *)v6 linkMetadata];
+      v15 = linkMetadata2;
+      if ((linkMetadata != 0) == (linkMetadata2 == 0))
       {
 
         v12 = 0;
         goto LABEL_29;
       }
 
-      v16 = [(SFMessageAttachment *)self linkMetadata];
-      if (v16)
+      linkMetadata3 = [(SFMessageAttachment *)self linkMetadata];
+      if (linkMetadata3)
       {
-        v26 = v13;
-        v17 = [(SFMessageAttachment *)self linkMetadata];
-        v28 = [(SFMessageAttachment *)v6 linkMetadata];
-        v29 = v17;
-        if (![v17 isEqual:?])
+        v26 = linkMetadata;
+        linkMetadata4 = [(SFMessageAttachment *)self linkMetadata];
+        linkMetadata5 = [(SFMessageAttachment *)v6 linkMetadata];
+        v29 = linkMetadata4;
+        if (![linkMetadata4 isEqual:?])
         {
           v12 = 0;
-          v13 = v26;
+          linkMetadata = v26;
           goto LABEL_27;
         }
 
-        v30 = v16;
+        v30 = linkMetadata3;
         v31 = v3;
-        v13 = v26;
+        linkMetadata = v26;
       }
 
       else
@@ -105,13 +105,13 @@ LABEL_32:
         v31 = v3;
       }
 
-      v18 = [(SFMessageAttachment *)self photosLibraryImage];
-      v19 = [(SFMessageAttachment *)v6 photosLibraryImage];
-      if ((v18 != 0) == (v19 == 0))
+      photosLibraryImage = [(SFMessageAttachment *)self photosLibraryImage];
+      photosLibraryImage2 = [(SFMessageAttachment *)v6 photosLibraryImage];
+      if ((photosLibraryImage != 0) == (photosLibraryImage2 == 0))
       {
 
         v12 = 0;
-        v16 = v30;
+        linkMetadata3 = v30;
         v3 = v31;
         if (!v30)
         {
@@ -121,16 +121,16 @@ LABEL_32:
 
       else
       {
-        v25 = v18;
-        v27 = v19;
-        v20 = [(SFMessageAttachment *)self photosLibraryImage];
-        v16 = v30;
-        if (v20)
+        v25 = photosLibraryImage;
+        v27 = photosLibraryImage2;
+        photosLibraryImage3 = [(SFMessageAttachment *)self photosLibraryImage];
+        linkMetadata3 = v30;
+        if (photosLibraryImage3)
         {
-          v24 = v20;
-          v23 = [(SFMessageAttachment *)self photosLibraryImage];
-          v21 = [(SFMessageAttachment *)v6 photosLibraryImage];
-          v12 = [v23 isEqual:?];
+          v24 = photosLibraryImage3;
+          photosLibraryImage4 = [(SFMessageAttachment *)self photosLibraryImage];
+          photosLibraryImage5 = [(SFMessageAttachment *)v6 photosLibraryImage];
+          v12 = [photosLibraryImage4 isEqual:?];
         }
 
         else
@@ -171,20 +171,20 @@ LABEL_34:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setType:{-[SFMessageAttachment type](self, "type")}];
   v5 = [(SFMessageAttachment *)self url];
   v6 = [v5 copy];
   [v4 setUrl:v6];
 
-  v7 = [(SFMessageAttachment *)self linkMetadata];
-  v8 = [v7 copy];
+  linkMetadata = [(SFMessageAttachment *)self linkMetadata];
+  v8 = [linkMetadata copy];
   [v4 setLinkMetadata:v8];
 
-  v9 = [(SFMessageAttachment *)self photosLibraryImage];
-  v10 = [v9 copy];
+  photosLibraryImage = [(SFMessageAttachment *)self photosLibraryImage];
+  v10 = [photosLibraryImage copy];
   [v4 setPhotosLibraryImage:v10];
 
   return v4;
@@ -193,31 +193,31 @@ LABEL_34:
 - (NSData)jsonData
 {
   v2 = [[_SFPBMessageAttachment alloc] initWithFacade:self];
-  v3 = [(_SFPBMessageAttachment *)v2 jsonData];
+  jsonData = [(_SFPBMessageAttachment *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBMessageAttachment alloc] initWithFacade:self];
-  v3 = [(_SFPBMessageAttachment *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBMessageAttachment *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBMessageAttachment alloc] initWithFacade:self];
-  v5 = [(_SFPBMessageAttachment *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBMessageAttachment *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFMessageAttachment)initWithCoder:(id)a3
+- (SFMessageAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBMessageAttachment alloc] initWithData:v5];
   v7 = [(SFMessageAttachment *)self initWithProtobuf:v6];
@@ -225,43 +225,43 @@ LABEL_34:
   return v7;
 }
 
-- (SFMessageAttachment)initWithProtobuf:(id)a3
+- (SFMessageAttachment)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v17.receiver = self;
   v17.super_class = SFMessageAttachment;
   v5 = [(SFMessageAttachment *)&v17 init];
   if (v5)
   {
-    if ([v4 type])
+    if ([protobufCopy type])
     {
-      -[SFMessageAttachment setType:](v5, "setType:", [v4 type]);
+      -[SFMessageAttachment setType:](v5, "setType:", [protobufCopy type]);
     }
 
-    v6 = [v4 url];
+    v6 = [protobufCopy url];
 
     if (v6)
     {
-      v7 = [v4 url];
+      v7 = [protobufCopy url];
       v8 = _SFPBURLHandwrittenTranslator(v7);
       [(SFMessageAttachment *)v5 setUrl:v8];
     }
 
-    v9 = [v4 linkMetadata];
+    linkMetadata = [protobufCopy linkMetadata];
 
-    if (v9)
+    if (linkMetadata)
     {
-      v10 = [v4 linkMetadata];
-      [(SFMessageAttachment *)v5 setLinkMetadata:v10];
+      linkMetadata2 = [protobufCopy linkMetadata];
+      [(SFMessageAttachment *)v5 setLinkMetadata:linkMetadata2];
     }
 
-    v11 = [v4 photosLibraryImage];
+    photosLibraryImage = [protobufCopy photosLibraryImage];
 
-    if (v11)
+    if (photosLibraryImage)
     {
       v12 = [SFPhotosLibraryImage alloc];
-      v13 = [v4 photosLibraryImage];
-      v14 = [(SFPhotosLibraryImage *)v12 initWithProtobuf:v13];
+      photosLibraryImage2 = [protobufCopy photosLibraryImage];
+      v14 = [(SFPhotosLibraryImage *)v12 initWithProtobuf:photosLibraryImage2];
       [(SFMessageAttachment *)v5 setPhotosLibraryImage:v14];
     }
 

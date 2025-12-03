@@ -1,19 +1,19 @@
 @interface TSDDefaultPartitionerPrintingSettings
-- (BOOL)isEqual:(id)a3;
-- (TSDDefaultPartitionerPrintingSettings)initWithCanvas:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSDDefaultPartitionerPrintingSettings)initWithCanvas:(id)canvas;
 @end
 
 @implementation TSDDefaultPartitionerPrintingSettings
 
-- (TSDDefaultPartitionerPrintingSettings)initWithCanvas:(id)a3
+- (TSDDefaultPartitionerPrintingSettings)initWithCanvas:(id)canvas
 {
-  v4 = a3;
+  canvasCopy = canvas;
   v20.receiver = self;
   v20.super_class = TSDDefaultPartitionerPrintingSettings;
   v7 = [(TSDDefaultPartitionerPrintingSettings *)&v20 init];
   if (v7)
   {
-    if (!v4)
+    if (!canvasCopy)
     {
       v8 = MEMORY[0x277D81150];
       v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSDDefaultPartitionerPrintingSettings initWithCanvas:]");
@@ -23,19 +23,19 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
     }
 
-    v7->_isPrinting = objc_msgSend_isPrinting(v4, v5, v6);
-    v7->_isDrawingIntoPDF = objc_msgSend_isDrawingIntoPDF(v4, v15, v16);
-    v7->_shouldSuppressBackgrounds = objc_msgSend_shouldSuppressBackgrounds(v4, v17, v18);
+    v7->_isPrinting = objc_msgSend_isPrinting(canvasCopy, v5, v6);
+    v7->_isDrawingIntoPDF = objc_msgSend_isDrawingIntoPDF(canvasCopy, v15, v16);
+    v7->_shouldSuppressBackgrounds = objc_msgSend_shouldSuppressBackgrounds(canvasCopy, v17, v18);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     objc_opt_class();
     v7 = TSUCheckedDynamicCast();

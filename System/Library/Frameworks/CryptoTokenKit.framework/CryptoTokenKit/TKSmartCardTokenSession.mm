@@ -1,7 +1,7 @@
 @interface TKSmartCardTokenSession
 - (TKSmartCard)smartCard;
-- (TKSmartCardTokenSession)initWithToken:(id)a3;
-- (id)getSmartCardWithError:(id *)a3;
+- (TKSmartCardTokenSession)initWithToken:(id)token;
+- (id)getSmartCardWithError:(id *)error;
 - (id)name;
 - (void)beginRequest;
 - (void)endRequest;
@@ -9,18 +9,18 @@
 
 @implementation TKSmartCardTokenSession
 
-- (TKSmartCardTokenSession)initWithToken:(id)a3
+- (TKSmartCardTokenSession)initWithToken:(id)token
 {
   v9.receiver = self;
   v9.super_class = TKSmartCardTokenSession;
-  v3 = [(TKTokenSession *)&v9 initWithToken:a3];
+  v3 = [(TKTokenSession *)&v9 initWithToken:token];
   v4 = v3;
   if (v3)
   {
-    v5 = [(TKTokenSession *)v3 token];
-    v6 = [v5 smartCard];
+    token = [(TKTokenSession *)v3 token];
+    smartCard = [token smartCard];
     smartCard = v4->_smartCard;
-    v4->_smartCard = v6;
+    v4->_smartCard = smartCard;
   }
 
   return v4;
@@ -53,16 +53,16 @@
   return v6;
 }
 
-- (id)getSmartCardWithError:(id *)a3
+- (id)getSmartCardWithError:(id *)error
 {
-  v5 = [(TKTokenSession *)self token];
+  token = [(TKTokenSession *)self token];
   v6 = TK_LOG_token_1();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [(TKSmartCardTokenSession *)self getSmartCardWithError:v6];
   }
 
-  v7 = [v5 AID];
+  v7 = [token AID];
   v8 = v7;
   if (!v7 || self->_hasSession)
   {
@@ -72,9 +72,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [v5 proprietaryCardUsage];
+  proprietaryCardUsage = [token proprietaryCardUsage];
 
-  if (v11)
+  if (proprietaryCardUsage)
   {
     goto LABEL_6;
   }
@@ -91,7 +91,7 @@ LABEL_6:
       [(TKSmartCardTokenSession *)v14 getSmartCardWithError:v19];
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -100,7 +100,7 @@ LABEL_6:
   }
 
   v15 = self->_smartCard;
-  v16 = [v5 AID];
+  v16 = [token AID];
   v22 = v14;
   v17 = [(TKSmartCard *)v15 selectApplication:v16 error:&v22];
   v18 = v22;
@@ -120,11 +120,11 @@ LABEL_6:
 
   [(TKSmartCard *)self->_smartCard endSession];
   v14 = v18;
-  if (a3)
+  if (error)
   {
 LABEL_17:
     v20 = v14;
-    *a3 = v14;
+    *error = v14;
   }
 
 LABEL_18:
@@ -150,10 +150,10 @@ LABEL_7:
 
 - (id)name
 {
-  v2 = [(TKSmartCard *)self->_smartCard slot];
-  v3 = [v2 name];
+  slot = [(TKSmartCard *)self->_smartCard slot];
+  name = [slot name];
 
-  return v3;
+  return name;
 }
 
 - (void)getSmartCardWithError:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

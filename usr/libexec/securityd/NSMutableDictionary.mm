@@ -1,14 +1,14 @@
 @interface NSMutableDictionary
-- (id)extractObjectForKey:(id)a3;
+- (id)extractObjectForKey:(id)key;
 @end
 
 @implementation NSMutableDictionary
 
-- (id)extractObjectForKey:(id)a3
+- (id)extractObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self objectForKey:v4];
-  [(NSMutableDictionary *)self removeObjectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self objectForKey:keyCopy];
+  [(NSMutableDictionary *)self removeObjectForKey:keyCopy];
 
   return v5;
 }

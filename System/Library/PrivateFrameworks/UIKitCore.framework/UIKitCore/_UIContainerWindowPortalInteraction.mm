@@ -1,17 +1,17 @@
 @interface _UIContainerWindowPortalInteraction
-- (BOOL)_isSwiftUI:(id)a3;
-- (BOOL)_viewIsVisibleInContainer:(id)a3;
-- (CGRect)_unionFrameForView:(id)a3;
+- (BOOL)_isSwiftUI:(id)i;
+- (BOOL)_viewIsVisibleInContainer:(id)container;
+- (CGRect)_unionFrameForView:(id)view;
 - (UIView)view;
 - (UIWindow)containerWindow;
 - (id)_makePortalView;
 - (id)_visibleViewContainer;
-- (void)_setPortalViewEnabled:(BOOL)a3;
+- (void)_setPortalViewEnabled:(BOOL)enabled;
 - (void)_viewVisibilityDidChange;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 - (void)ensureVisibilityInContainerWindow;
-- (void)setEnabled:(BOOL)a3;
-- (void)willMoveToView:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIContainerWindowPortalInteraction
@@ -28,36 +28,36 @@
   if (self->_portalViewEnabled)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v4 = [WeakRetained isHidden];
+    isHidden = [WeakRetained isHidden];
 
-    if ((v4 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
       if (self->_attemptsToUseAncestorViewContainer || (v5 = objc_loadWeakRetained(&self->_view), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_isRemoteKeyboardWindow"), v6, v5, v7))
       {
         [(_UIContainerWindowPortalInteraction *)self _visibleViewContainer];
-        v24 = v8 = 0.0;
+        containerWindow2 = v8 = 0.0;
         if (self->_shouldAdjustZPositionToMatchAncestorViewContainer)
         {
-          v9 = [(_UIContainerWindowPortalInteraction *)self containerWindow];
+          containerWindow = [(_UIContainerWindowPortalInteraction *)self containerWindow];
 
-          if (v24 != v9)
+          if (containerWindow2 != containerWindow)
           {
             v10 = objc_loadWeakRetained(&self->_view);
-            v11 = [v10 layer];
-            [v11 zPosition];
+            layer = [v10 layer];
+            [layer zPosition];
             v8 = v12;
 
             v13 = objc_loadWeakRetained(&self->_view);
-            v14 = [v13 superview];
+            superview = [v13 superview];
 
-            for (i = v14 == v24; v14 && v14 != v24; i = v14 == v24)
+            for (i = superview == containerWindow2; superview && superview != containerWindow2; i = superview == containerWindow2)
             {
-              v16 = v14;
-              v17 = [v14 layer];
-              [v17 zPosition];
+              v16 = superview;
+              layer2 = [superview layer];
+              [layer2 zPosition];
               v8 = v8 + v18;
 
-              v14 = [v16 superview];
+              superview = [v16 superview];
             }
 
             if (!i)
@@ -70,28 +70,28 @@
 
       else
       {
-        v24 = [(_UIContainerWindowPortalInteraction *)self containerWindow];
+        containerWindow2 = [(_UIContainerWindowPortalInteraction *)self containerWindow];
         v8 = 0.0;
       }
 
-      v19 = [(UIView *)self->_portalView superview];
+      superview2 = [(UIView *)self->_portalView superview];
 
-      v20 = v24;
-      if (v24 != v19)
+      v20 = containerWindow2;
+      if (containerWindow2 != superview2)
       {
         [(UIView *)self->_portalView removeFromSuperview];
-        v21 = [(_UIContainerWindowPortalInteraction *)self _makePortalView];
+        _makePortalView = [(_UIContainerWindowPortalInteraction *)self _makePortalView];
         portalView = self->_portalView;
-        self->_portalView = v21;
+        self->_portalView = _makePortalView;
 
-        [v24 addSubview:self->_portalView];
-        v20 = v24;
+        [containerWindow2 addSubview:self->_portalView];
+        v20 = containerWindow2;
         if (self->_shouldAdjustZPositionToMatchAncestorViewContainer && v8 > 0.0)
         {
-          v23 = [(UIView *)self->_portalView layer];
-          [v23 setZPosition:v8];
+          layer3 = [(UIView *)self->_portalView layer];
+          [layer3 setZPosition:v8];
 
-          v20 = v24;
+          v20 = containerWindow2;
         }
       }
     }
@@ -102,20 +102,20 @@
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
-  if (!WeakRetained || (v4 = objc_loadWeakRetained(&self->_view), [v4 keyboardSceneDelegate], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "containerWindow"), v6 = objc_claimAutoreleasedReturnValue(), v5, v4, !v6))
+  if (!WeakRetained || (v4 = objc_loadWeakRetained(&self->_view), [v4 keyboardSceneDelegate], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "containerWindow"), containerWindow = objc_claimAutoreleasedReturnValue(), v5, v4, !containerWindow))
   {
     v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v6 = [v7 containerWindow];
+    containerWindow = [v7 containerWindow];
   }
 
-  return v6;
+  return containerWindow;
 }
 
-- (CGRect)_unionFrameForView:(id)a3
+- (CGRect)_unionFrameForView:(id)view
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  [v3 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   x = v4;
   y = v6;
   width = v8;
@@ -124,8 +124,8 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [v3 subviews];
-  v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  subviews = [viewCopy subviews];
+  v13 = [subviews countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
     v14 = v13;
@@ -137,7 +137,7 @@
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v25 + 1) + 8 * v16) frame];
@@ -158,7 +158,7 @@
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v14 = [subviews countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v14);
@@ -175,14 +175,14 @@
   return result;
 }
 
-- (BOOL)_viewIsVisibleInContainer:(id)a3
+- (BOOL)_viewIsVisibleInContainer:(id)container
 {
-  if (!a3)
+  if (!container)
   {
     return 0;
   }
 
-  v4 = a3;
+  containerCopy = container;
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [(_UIContainerWindowPortalInteraction *)self _unionFrameForView:WeakRetained];
   v7 = v6;
@@ -191,13 +191,13 @@
   v13 = v12;
 
   v14 = objc_loadWeakRetained(&self->_view);
-  [v4 convertRect:v14 fromView:{v7, v9, v11, v13}];
+  [containerCopy convertRect:v14 fromView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v4 visibleBounds];
+  [containerCopy visibleBounds];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -215,46 +215,46 @@
   return CGRectContainsRect(*&v31, *&v35);
 }
 
-- (BOOL)_isSwiftUI:(id)a3
+- (BOOL)_isSwiftUI:(id)i
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundlePath];
+  bundlePath = [v3 bundlePath];
 
-  LOBYTE(v3) = [v4 containsString:@"SwiftUI"];
+  LOBYTE(v3) = [bundlePath containsString:@"SwiftUI"];
   return v3;
 }
 
 - (id)_visibleViewContainer
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v4 = [WeakRetained superview];
+  superview = [WeakRetained superview];
 
-  if (v4)
+  if (superview)
   {
     do
     {
-      if ([(_UIContainerWindowPortalInteraction *)self _viewIsVisibleInContainer:v4]&& ![(_UIContainerWindowPortalInteraction *)self _isSwiftUI:v4])
+      if ([(_UIContainerWindowPortalInteraction *)self _viewIsVisibleInContainer:superview]&& ![(_UIContainerWindowPortalInteraction *)self _isSwiftUI:superview])
       {
         break;
       }
 
-      v5 = [v4 superview];
+      v4Superview = [superview superview];
 
-      v4 = v5;
+      superview = v4Superview;
     }
 
-    while (v5);
+    while (v4Superview);
   }
 
-  [v4 safeAreaInsets];
+  [superview safeAreaInsets];
   if (v6 > 0.0)
   {
-    v7 = [v4 _viewControllerForAncestor];
-    v8 = [v7 navigationController];
-    v9 = v8;
-    if (v8)
+    _viewControllerForAncestor = [superview _viewControllerForAncestor];
+    navigationController = [_viewControllerForAncestor navigationController];
+    v9 = navigationController;
+    if (navigationController)
     {
-      v10 = [v8 navigationBar];
+      navigationBar = [navigationController navigationBar];
       v11 = objc_loadWeakRetained(&self->_view);
       [(_UIContainerWindowPortalInteraction *)self _unionFrameForView:v11];
       v13 = v12;
@@ -263,53 +263,53 @@
       v19 = v18;
 
       v20 = objc_loadWeakRetained(&self->_view);
-      [v10 convertRect:v20 fromView:{v13, v15, v17, v19}];
+      [navigationBar convertRect:v20 fromView:{v13, v15, v17, v19}];
       v22 = v21;
       v24 = v23;
       v26 = v25;
       v28 = v27;
 
-      [v10 bounds];
+      [navigationBar bounds];
       v39.origin.x = v22;
       v39.origin.y = v24;
       v39.size.width = v26;
       v39.size.height = v28;
       if (CGRectIntersectsRect(v38, v39))
       {
-        v29 = [v10 superview];
+        superview2 = [navigationBar superview];
 
-        v4 = v29;
+        superview = superview2;
       }
     }
   }
 
-  v30 = [(UIView *)v4 __viewDelegate];
+  __viewDelegate = [(UIView *)superview __viewDelegate];
   v31 = objc_opt_respondsToSelector();
 
   if (v31)
   {
-    v32 = [(UIView *)v4 __viewDelegate];
-    v33 = [v32 _containerForContainerWindowPortalInteraction];
+    __viewDelegate2 = [(UIView *)superview __viewDelegate];
+    _containerForContainerWindowPortalInteraction = [__viewDelegate2 _containerForContainerWindowPortalInteraction];
 
-    if (v33)
+    if (_containerForContainerWindowPortalInteraction)
     {
-      v34 = v33;
+      v34 = _containerForContainerWindowPortalInteraction;
 
-      v4 = v34;
+      superview = v34;
     }
   }
 
-  if (!v4)
+  if (!superview)
   {
-    v4 = [(_UIContainerWindowPortalInteraction *)self containerWindow];
-    if (!v4)
+    superview = [(_UIContainerWindowPortalInteraction *)self containerWindow];
+    if (!superview)
     {
       v35 = objc_loadWeakRetained(&self->_view);
-      v4 = [v35 window];
+      superview = [v35 window];
     }
   }
 
-  return v4;
+  return superview;
 }
 
 - (id)_makePortalView
@@ -335,17 +335,17 @@
   return v5;
 }
 
-- (void)_setPortalViewEnabled:(BOOL)a3
+- (void)_setPortalViewEnabled:(BOOL)enabled
 {
-  if (self->_portalViewEnabled != a3)
+  if (self->_portalViewEnabled != enabled)
   {
-    self->_portalViewEnabled = a3;
-    if (a3 && (WeakRetained = objc_loadWeakRetained(&self->_view), v5 = [WeakRetained isHidden], WeakRetained, (v5 & 1) == 0))
+    self->_portalViewEnabled = enabled;
+    if (enabled && (WeakRetained = objc_loadWeakRetained(&self->_view), v5 = [WeakRetained isHidden], WeakRetained, (v5 & 1) == 0))
     {
       [(UIView *)self->_portalView removeFromSuperview];
-      v7 = [(_UIContainerWindowPortalInteraction *)self _makePortalView];
+      _makePortalView = [(_UIContainerWindowPortalInteraction *)self _makePortalView];
       portalView = self->_portalView;
-      self->_portalView = v7;
+      self->_portalView = _makePortalView;
 
       [(_UIContainerWindowPortalInteraction *)self ensureVisibilityInContainerWindow];
     }
@@ -359,21 +359,21 @@
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
 
     [(_UIContainerWindowPortalInteraction *)self _setPortalViewEnabled:0];
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = obj;
@@ -390,16 +390,16 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_enabled = a3;
+  enabledCopy = enabled;
+  self->_enabled = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   if (WeakRetained)
   {
 
-    [(_UIContainerWindowPortalInteraction *)self _setPortalViewEnabled:v3];
+    [(_UIContainerWindowPortalInteraction *)self _setPortalViewEnabled:enabledCopy];
   }
 }
 

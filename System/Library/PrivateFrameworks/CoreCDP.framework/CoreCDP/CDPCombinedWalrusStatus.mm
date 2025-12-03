@@ -1,36 +1,36 @@
 @interface CDPCombinedWalrusStatus
-- (CDPCombinedWalrusStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CDPCombinedWalrusStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CDPCombinedWalrusStatus
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   octagonWalrusStatus = self->_octagonWalrusStatus;
-  v5 = a3;
-  [v5 encodeInteger:octagonWalrusStatus forKey:@"_octagonWalrusStatus"];
-  [v5 encodeInteger:self->_pcsWalrusStatus forKey:@"_pcsWalrusStatus"];
-  [v5 encodeInteger:self->_escrowWalrusStatus forKey:@"_escrowWalrusStatus"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:octagonWalrusStatus forKey:@"_octagonWalrusStatus"];
+  [coderCopy encodeInteger:self->_pcsWalrusStatus forKey:@"_pcsWalrusStatus"];
+  [coderCopy encodeInteger:self->_escrowWalrusStatus forKey:@"_escrowWalrusStatus"];
 }
 
-- (CDPCombinedWalrusStatus)initWithCoder:(id)a3
+- (CDPCombinedWalrusStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CDPCombinedWalrusStatus *)self init];
   if (v5)
   {
-    v5->_octagonWalrusStatus = [v4 decodeIntegerForKey:@"_octagonWalrusStatus"];
-    v5->_pcsWalrusStatus = [v4 decodeIntegerForKey:@"_pcsWalrusStatus"];
-    v5->_escrowWalrusStatus = [v4 decodeIntegerForKey:@"_escrowWalrusStatus"];
+    v5->_octagonWalrusStatus = [coderCopy decodeIntegerForKey:@"_octagonWalrusStatus"];
+    v5->_pcsWalrusStatus = [coderCopy decodeIntegerForKey:@"_pcsWalrusStatus"];
+    v5->_escrowWalrusStatus = [coderCopy decodeIntegerForKey:@"_escrowWalrusStatus"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(CDPCombinedWalrusStatus);
   *(result + 1) = self->_octagonWalrusStatus;

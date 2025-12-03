@@ -24,8 +24,8 @@
 {
   v7 = objc_alloc_init(DDRScheduler);
   [(DDRScheduler *)v7 configureTasks];
-  v3 = [(DDRScheduler *)v7 scheduledTasks];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  scheduledTasks = [(DDRScheduler *)v7 scheduledTasks];
+  v4 = [NSMutableArray arrayWithArray:scheduledTasks];
 
   v5 = objc_opt_new();
   [v4 addObject:v5];
@@ -36,8 +36,8 @@
 
 - (id)scheduledTasks
 {
-  v2 = [(DDRSchedulerResetSceneUnderstandingData *)self resetTasks];
-  v3 = [v2 copy];
+  resetTasks = [(DDRSchedulerResetSceneUnderstandingData *)self resetTasks];
+  v3 = [resetTasks copy];
 
   return v3;
 }

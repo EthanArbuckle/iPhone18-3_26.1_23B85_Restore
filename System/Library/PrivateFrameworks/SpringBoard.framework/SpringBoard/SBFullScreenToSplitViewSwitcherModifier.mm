@@ -1,15 +1,15 @@
 @interface SBFullScreenToSplitViewSwitcherModifier
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (SBFullScreenToSplitViewSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5;
-- (double)backgroundOpacityForIndex:(unint64_t)a3;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (SBFullScreenToSplitViewSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout;
+- (double)backgroundOpacityForIndex:(unint64_t)index;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)homeScreenDimmingAlpha;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSceneReadyEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
@@ -17,22 +17,22 @@
 
 @implementation SBFullScreenToSplitViewSwitcherModifier
 
-- (SBFullScreenToSplitViewSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5
+- (SBFullScreenToSplitViewSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout
 {
-  v10 = a4;
-  v11 = a5;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v16.receiver = self;
   v16.super_class = SBFullScreenToSplitViewSwitcherModifier;
-  v12 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:a3];
+  v12 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:d];
   if (v12)
   {
-    if (v10)
+    if (layoutCopy)
     {
-      if (v11)
+      if (appLayoutCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v12->_existingAppLayout, a4);
-        v13 = [v11 leafAppLayoutForRole:2];
+        objc_storeStrong(&v12->_existingAppLayout, layout);
+        v13 = [appLayoutCopy leafAppLayoutForRole:2];
         incomingAppLayout = v12->_incomingAppLayout;
         v12->_incomingAppLayout = v13;
 
@@ -44,7 +44,7 @@ LABEL_4:
     else
     {
       [SBFullScreenToSplitViewSwitcherModifier initWithTransitionID:a2 fromAppLayout:v12 toAppLayout:?];
-      if (v11)
+      if (appLayoutCopy)
       {
         goto LABEL_4;
       }
@@ -63,22 +63,22 @@ LABEL_5:
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToSplitViewSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:10 updateMode:4];
-  v4 = SBAppendSwitcherModifierResponse(v3, v2);
+  v4 = SBAppendSwitcherModifierResponse(v3, transitionWillBegin);
 
   return v4;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v13.receiver = self;
   v13.super_class = SBFullScreenToSplitViewSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v13 handleSceneReadyEvent:v4];
-  v6 = [v4 appLayout];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v13 handleSceneReadyEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
 
-  if ([v6 containsAllItemsFromAppLayout:self->_existingAppLayout])
+  if ([appLayout containsAllItemsFromAppLayout:self->_existingAppLayout])
   {
     if (self->_blurExistingDisplayItem)
     {
@@ -102,38 +102,38 @@ LABEL_5:
   return v10;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SBFullScreenToSplitViewSwitcherModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v13 animationAttributesForLayoutElement:v4];
-  if (self->_existingAppLayout == v4)
+  v5 = [(SBTransitionSwitcherModifier *)&v13 animationAttributesForLayoutElement:elementCopy];
+  if (self->_existingAppLayout == elementCopy)
   {
-    v11 = [(SBFullScreenToSplitViewSwitcherModifier *)self entityRemovalSettings];
-    v7 = [v11 medusaDeleteIntentAnimationSettings];
+    entityRemovalSettings = [(SBFullScreenToSplitViewSwitcherModifier *)self entityRemovalSettings];
+    medusaDeleteIntentAnimationSettings = [entityRemovalSettings medusaDeleteIntentAnimationSettings];
 
     v8 = [v5 mutableCopy];
-    v10 = [v7 toBeMadeFullscreenFrameAnimationSettings];
-    [v8 setLayoutSettings:v10];
+    toBeMadeFullscreenFrameAnimationSettings = [medusaDeleteIntentAnimationSettings toBeMadeFullscreenFrameAnimationSettings];
+    [v8 setLayoutSettings:toBeMadeFullscreenFrameAnimationSettings];
   }
 
   else
   {
-    if (self->_incomingAppLayout != v4)
+    if (self->_incomingAppLayout != elementCopy)
     {
       goto LABEL_6;
     }
 
-    v6 = [(SBFullScreenToSplitViewSwitcherModifier *)self entityRemovalSettings];
-    v7 = [v6 medusaDeleteIntentAnimationSettings];
+    entityRemovalSettings2 = [(SBFullScreenToSplitViewSwitcherModifier *)self entityRemovalSettings];
+    medusaDeleteIntentAnimationSettings = [entityRemovalSettings2 medusaDeleteIntentAnimationSettings];
 
     v8 = [v5 mutableCopy];
-    v9 = [v7 toBeRemovedScaleAnimationSettings];
-    [v8 setScaleSettings:v9];
+    toBeRemovedScaleAnimationSettings = [medusaDeleteIntentAnimationSettings toBeRemovedScaleAnimationSettings];
+    [v8 setScaleSettings:toBeRemovedScaleAnimationSettings];
 
-    v10 = [v7 toBeRemovedAlphaAnimationSettings];
-    [v8 setOpacitySettings:v10];
+    toBeMadeFullscreenFrameAnimationSettings = [medusaDeleteIntentAnimationSettings toBeRemovedAlphaAnimationSettings];
+    [v8 setOpacitySettings:toBeMadeFullscreenFrameAnimationSettings];
   }
 
   v5 = v8;
@@ -142,9 +142,9 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  if (self->_existingAppLayout == a4)
+  if (self->_existingAppLayout == layout)
   {
     return 1;
   }
@@ -153,12 +153,12 @@ LABEL_6:
   v9 = v5;
   v7.receiver = self;
   v7.super_class = SBFullScreenToSplitViewSwitcherModifier;
-  return [(SBFullScreenToSplitViewSwitcherModifier *)&v7 isLayoutRoleMatchMovedToScene:a3 inAppLayout:?];
+  return [(SBFullScreenToSplitViewSwitcherModifier *)&v7 isLayoutRoleMatchMovedToScene:scene inAppLayout:?];
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  if (self->_existingAppLayout == a4)
+  if (self->_existingAppLayout == layout)
   {
     return self->_blurExistingDisplayItem;
   }
@@ -169,51 +169,51 @@ LABEL_6:
     v10 = v5;
     v8.receiver = self;
     v8.super_class = SBFullScreenToSplitViewSwitcherModifier;
-    return [(SBFullScreenToSplitViewSwitcherModifier *)&v8 isLayoutRoleBlurred:a3 inAppLayout:?];
+    return [(SBFullScreenToSplitViewSwitcherModifier *)&v8 isLayoutRoleBlurred:blurred inAppLayout:?];
   }
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
-  v7 = [(SBFullScreenToSplitViewSwitcherModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a4];
+  appLayouts = [(SBFullScreenToSplitViewSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
   v9 = 1.0;
   if (([v8 isEqual:self->_existingAppLayout] & 1) == 0)
   {
     v12.receiver = self;
     v12.super_class = SBFullScreenToSplitViewSwitcherModifier;
-    [(SBFullScreenToSplitViewSwitcherModifier *)&v12 shadowOpacityForLayoutRole:a3 atIndex:a4];
+    [(SBFullScreenToSplitViewSwitcherModifier *)&v12 shadowOpacityForLayoutRole:role atIndex:index];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v14.receiver = self;
   v14.super_class = SBFullScreenToSplitViewSwitcherModifier;
-  v6 = a4;
-  [(SBFullScreenToSplitViewSwitcherModifier *)&v14 blurDelayForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBFullScreenToSplitViewSwitcherModifier *)&v14 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
   existingAppLayout = self->_existingAppLayout;
 
-  if (existingAppLayout == v6)
+  if (existingAppLayout == layoutCopy)
   {
     v10 = [(SBFullScreenToSplitViewSwitcherModifier *)self switcherSettings:v14.receiver];
-    v11 = [v10 animationSettings];
-    [v11 resizeBlurDelay];
+    animationSettings = [v10 animationSettings];
+    [animationSettings resizeBlurDelay];
     v8 = v12;
   }
 
   return v8;
 }
 
-- (double)backgroundOpacityForIndex:(unint64_t)a3
+- (double)backgroundOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenToSplitViewSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenToSplitViewSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_existingAppLayout)
   {
@@ -224,21 +224,21 @@ LABEL_6:
   {
     v10.receiver = self;
     v10.super_class = SBFullScreenToSplitViewSwitcherModifier;
-    [(SBFullScreenToSplitViewSwitcherModifier *)&v10 backgroundOpacityForIndex:a3];
+    [(SBFullScreenToSplitViewSwitcherModifier *)&v10 backgroundOpacityForIndex:index];
     v8 = v7;
   }
 
   return v8;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if (self->_incomingAppLayout == v8 && [(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
+  layoutCopy = layout;
+  if (self->_incomingAppLayout == layoutCopy && [(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
   {
-    v9 = [(SBFullScreenToSplitViewSwitcherModifier *)self entityRemovalSettings];
-    v10 = [v9 medusaDeleteIntentAnimationSettings];
-    [v10 toBeRemovedFinalAlpha];
+    entityRemovalSettings = [(SBFullScreenToSplitViewSwitcherModifier *)self entityRemovalSettings];
+    medusaDeleteIntentAnimationSettings = [entityRemovalSettings medusaDeleteIntentAnimationSettings];
+    [medusaDeleteIntentAnimationSettings toBeRemovedFinalAlpha];
     v12 = v11;
   }
 
@@ -246,21 +246,21 @@ LABEL_6:
   {
     v15.receiver = self;
     v15.super_class = SBFullScreenToSplitViewSwitcherModifier;
-    [(SBFullScreenToSplitViewSwitcherModifier *)&v15 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBFullScreenToSplitViewSwitcherModifier *)&v15 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v12 = v13;
   }
 
   return v12;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if (self->_incomingAppLayout == v6 && [(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
+  layoutCopy = layout;
+  if (self->_incomingAppLayout == layoutCopy && [(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
   {
-    v7 = [(SBFullScreenToSplitViewSwitcherModifier *)self entityRemovalSettings];
-    v8 = [v7 medusaDeleteIntentAnimationSettings];
-    [v8 toBeRemovedFinalScale];
+    entityRemovalSettings = [(SBFullScreenToSplitViewSwitcherModifier *)self entityRemovalSettings];
+    medusaDeleteIntentAnimationSettings = [entityRemovalSettings medusaDeleteIntentAnimationSettings];
+    [medusaDeleteIntentAnimationSettings toBeRemovedFinalScale];
     v10 = v9;
   }
 
@@ -268,7 +268,7 @@ LABEL_6:
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenToSplitViewSwitcherModifier;
-    [(SBFullScreenToSplitViewSwitcherModifier *)&v13 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(SBFullScreenToSplitViewSwitcherModifier *)&v13 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v10 = v11;
   }
 
@@ -279,8 +279,8 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToSplitViewSwitcherModifier;
-  v3 = [(SBFullScreenToSplitViewSwitcherModifier *)&v6 topMostLayoutElements];
-  v4 = [v3 sb_arrayByInsertingOrMovingObject:self->_existingAppLayout toIndex:0];
+  topMostLayoutElements = [(SBFullScreenToSplitViewSwitcherModifier *)&v6 topMostLayoutElements];
+  v4 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:self->_existingAppLayout toIndex:0];
 
   return v4;
 }
@@ -289,17 +289,17 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToSplitViewSwitcherModifier;
-  v3 = [(SBFullScreenToSplitViewSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_incomingAppLayout];
+  visibleAppLayouts = [(SBFullScreenToSplitViewSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_incomingAppLayout];
 
   return v4;
 }
 
 - (double)homeScreenDimmingAlpha
 {
-  v2 = [(SBTransitionSwitcherModifier *)self transitionPhase];
+  transitionPhase = [(SBTransitionSwitcherModifier *)self transitionPhase];
   result = 1.0;
-  if (v2 == 1)
+  if (transitionPhase == 1)
   {
     return 0.0;
   }

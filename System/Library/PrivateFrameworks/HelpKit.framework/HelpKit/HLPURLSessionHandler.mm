@@ -1,18 +1,18 @@
 @interface HLPURLSessionHandler
 + (id)sharedInstance;
 - (HLPURLSessionHandler)init;
-- (id)URLSessionManagerSessionConfiguration:(id)a3;
-- (id)URLSessionManagerSessionOperationQueue:(id)a3;
-- (id)cacheControllerForDataType:(int64_t)a3;
-- (id)processJSONFormattedDataForCDSError:(id)a3;
-- (void)URLSessionManagerDidReceiveChallenge:(id)a3 completionHandler:(id)a4;
-- (void)URLSessionManagerRequestCompleted:(id)a3 sessionTask:(id)a4;
-- (void)sessionTask:(id)a3 didCompleteWithError:(id)a4;
-- (void)sessionTask:(id)a3 didFinishDownloadingToURL:(id)a4;
-- (void)sessionTask:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)sessionTask:(id)a3 didReceiveResponse:(id)a4 completionHandler:(id)a5;
-- (void)sessionTask:(id)a3 willCacheResponse:(id)a4 completionHandler:(id)a5;
-- (void)sessionTask:(id)a3 willPerformHTTPRedirection:(id)a4 newRequest:(id)a5 completionHandler:(id)a6;
+- (id)URLSessionManagerSessionConfiguration:(id)configuration;
+- (id)URLSessionManagerSessionOperationQueue:(id)queue;
+- (id)cacheControllerForDataType:(int64_t)type;
+- (id)processJSONFormattedDataForCDSError:(id)error;
+- (void)URLSessionManagerDidReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSessionManagerRequestCompleted:(id)completed sessionTask:(id)task;
+- (void)sessionTask:(id)task didCompleteWithError:(id)error;
+- (void)sessionTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)sessionTask:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)sessionTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)sessionTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler;
+- (void)sessionTask:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation HLPURLSessionHandler
@@ -53,22 +53,22 @@ uint64_t __38__HLPURLSessionHandler_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)cacheControllerForDataType:(int64_t)a3
+- (id)cacheControllerForDataType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
-    v5 = 0;
+    sharedInstance = 0;
   }
 
   else
   {
-    v5 = [(__objc2_class *)*off_279707590[a3 - 1] sharedInstance];
+    sharedInstance = [(__objc2_class *)*off_279707590[type - 1] sharedInstance];
   }
 
-  return v5;
+  return sharedInstance;
 }
 
-- (id)URLSessionManagerSessionOperationQueue:(id)a3
+- (id)URLSessionManagerSessionOperationQueue:(id)queue
 {
   v3 = objc_alloc_init(MEMORY[0x277CCABD8]);
   [v3 setMaxConcurrentOperationCount:4];
@@ -76,17 +76,17 @@ uint64_t __38__HLPURLSessionHandler_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)URLSessionManagerSessionConfiguration:(id)a3
+- (id)URLSessionManagerSessionConfiguration:(id)configuration
 {
   v3 = [objc_alloc(MEMORY[0x277CCACD8]) initWithMemoryCapacity:0 diskCapacity:26214400 diskPath:@"com.apple.helpkit"];
   [MEMORY[0x277CCACD8] setSharedURLCache:v3];
-  v4 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [v4 setURLCache:v3];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  [defaultSessionConfiguration setURLCache:v3];
 
-  return v4;
+  return defaultSessionConfiguration;
 }
 
-- (void)URLSessionManagerRequestCompleted:(id)a3 sessionTask:(id)a4
+- (void)URLSessionManagerRequestCompleted:(id)completed sessionTask:(id)task
 {
   if (gNetworkActivityIndicatorCount >= 1)
   {
@@ -94,13 +94,13 @@ uint64_t __38__HLPURLSessionHandler_sharedInstance__block_invoke()
   }
 }
 
-- (void)sessionTask:(id)a3 willCacheResponse:(id)a4 completionHandler:(id)a5
+- (void)sessionTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler
 {
-  v10 = a4;
-  v8 = a5;
-  if (-[NSIndexSet containsIndex:](self->_excludeCachingDataTypes, "containsIndex:", [a3 dataType]))
+  responseCopy = response;
+  handlerCopy = handler;
+  if (-[NSIndexSet containsIndex:](self->_excludeCachingDataTypes, "containsIndex:", [task dataType]))
   {
-    v9 = v10;
+    v9 = responseCopy;
   }
 
   else
@@ -108,31 +108,31 @@ uint64_t __38__HLPURLSessionHandler_sharedInstance__block_invoke()
     v9 = 0;
   }
 
-  (v8)[2](v8, v9);
+  (handlerCopy)[2](handlerCopy, v9);
 }
 
-- (void)sessionTask:(id)a3 willPerformHTTPRedirection:(id)a4 newRequest:(id)a5 completionHandler:(id)a6
+- (void)sessionTask:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (self->_shouldDisallowOffsiteRedirects && ([v12 URL], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "host"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "hasSuffix:", @".apple.com"), v15, v14, (v16 & 1) == 0))
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
+  if (self->_shouldDisallowOffsiteRedirects && ([requestCopy URL], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "host"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "hasSuffix:", @".apple.com"), v15, v14, (v16 & 1) == 0))
   {
     v18 = HLPLogForCategory(1uLL);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v12 URL];
-      v20 = [v19 absoluteString];
+      v19 = [requestCopy URL];
+      absoluteString = [v19 absoluteString];
       v24 = 138412290;
-      v25 = v20;
+      v25 = absoluteString;
       _os_log_impl(&dword_2522BC000, v18, OS_LOG_TYPE_DEFAULT, "Rejecting off-site redirect: %@", &v24, 0xCu);
     }
 
     v21 = [MEMORY[0x277CBEBC0] URLWithString:@"about:blank"];
     v22 = [MEMORY[0x277CCAD20] requestWithURL:v21];
-    v13[2](v13, v22);
+    handlerCopy[2](handlerCopy, v22);
   }
 
   else
@@ -140,34 +140,34 @@ uint64_t __38__HLPURLSessionHandler_sharedInstance__block_invoke()
     v17 = HLPLogForCategory(1uLL);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      [HLPURLSessionHandler sessionTask:v11 willPerformHTTPRedirection:v12 newRequest:v17 completionHandler:?];
+      [HLPURLSessionHandler sessionTask:redirectionCopy willPerformHTTPRedirection:requestCopy newRequest:v17 completionHandler:?];
     }
 
-    v13[2](v13, v12);
+    handlerCopy[2](handlerCopy, requestCopy);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)processJSONFormattedDataForCDSError:(id)a3
+- (id)processJSONFormattedDataForCDSError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 objectForKeyedSubscript:@"errorDetail"];
+    v4 = [errorCopy objectForKeyedSubscript:@"errorDetail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = [v4 objectForKey:@"errorCode"];
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
 
       v7 = [v4 objectForKey:@"errorMessage"];
       v8 = v7;
       v9 = 0;
-      if (v6 >= 1 && v7)
+      if (integerValue >= 1 && v7)
       {
-        v9 = [MEMORY[0x277CCA9B8] errorWithDomain:v7 code:v6 userInfo:0];
+        v9 = [MEMORY[0x277CCA9B8] errorWithDomain:v7 code:integerValue userInfo:0];
       }
     }
 
@@ -185,24 +185,24 @@ uint64_t __38__HLPURLSessionHandler_sharedInstance__block_invoke()
   return v9;
 }
 
-- (void)sessionTask:(id)a3 didFinishDownloadingToURL:(id)a4
+- (void)sessionTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dataType];
-  v9 = [(HLPURLSessionHandler *)self cacheControllerForDataType:v8];
-  v10 = [v6 identifier];
-  v11 = [v9 dataCacheForIdentifier:v10];
-  v12 = [v6 downloadTaskTotalBytes];
+  taskCopy = task;
+  lCopy = l;
+  dataType = [taskCopy dataType];
+  v9 = [(HLPURLSessionHandler *)self cacheControllerForDataType:dataType];
+  identifier = [taskCopy identifier];
+  v11 = [v9 dataCacheForIdentifier:identifier];
+  downloadTaskTotalBytes = [taskCopy downloadTaskTotalBytes];
   if (v9)
   {
-    v24 = v12;
+    v24 = downloadTaskTotalBytes;
     v25 = v11;
-    v13 = [v6 response];
-    v14 = [v13 statusCode];
+    response = [taskCopy response];
+    statusCode = [response statusCode];
 
-    v15 = v7;
-    if (v8 == 1)
+    v15 = lCopy;
+    if (dataType == 1)
     {
       v16 = [v9 formattedDataWithFileURL:v15];
       v17 = [(HLPURLSessionHandler *)self processJSONFormattedDataForCDSError:v16];
@@ -218,24 +218,24 @@ uint64_t __38__HLPURLSessionHandler_sharedInstance__block_invoke()
       v16 = 0;
     }
 
-    if (v14 != 200)
+    if (statusCode != 200)
     {
-      v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"Unknown error" code:v14 userInfo:0];
+      v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"Unknown error" code:statusCode userInfo:0];
     }
 
 LABEL_9:
     if (v17)
     {
-      [v6 setDataError:v17];
+      [taskCopy setDataError:v17];
       v21 = v15;
     }
 
     else
     {
-      if ([(HLPURLSessionHandler *)self shouldCacheToDiskForSessionTask:v6])
+      if ([(HLPURLSessionHandler *)self shouldCacheToDiskForSessionTask:taskCopy])
       {
-        v23 = [v6 lastModified];
-        v21 = [v9 saveFileURL:v15 identifier:v10 fileSize:v24 lastModified:v23 dataCache:v25];
+        lastModified = [taskCopy lastModified];
+        v21 = [v9 saveFileURL:v15 identifier:identifier fileSize:v24 lastModified:lastModified dataCache:v25];
 
         v22 = HLPLogForCategory(1uLL);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -249,16 +249,16 @@ LABEL_9:
         v21 = v15;
       }
 
-      if (v8 != 1)
+      if (dataType != 1)
       {
         v20 = [v9 formattedDataWithFileURL:v21];
 
-        if (v8 == 4 && !self->_shouldIgnoreInMemoryCaching)
+        if (dataType == 4 && !self->_shouldIgnoreInMemoryCaching)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v9 addInMemoryCacheForImage:v20 identifier:v10 cost:v24];
+            [v9 addInMemoryCacheForImage:v20 identifier:identifier cost:v24];
           }
         }
 
@@ -274,31 +274,31 @@ LABEL_18:
   }
 
   v18 = MEMORY[0x277CBEA90];
-  v19 = [v7 path];
-  v20 = [v18 dataWithContentsOfFile:v19];
+  path = [lCopy path];
+  v20 = [v18 dataWithContentsOfFile:path];
 
 LABEL_19:
-  [v6 setFormattedData:v20];
+  [taskCopy setFormattedData:v20];
 }
 
-- (void)sessionTask:(id)a3 didReceiveResponse:(id)a4 completionHandler:(id)a5
+- (void)sessionTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 dataType];
-  v12 = [(HLPURLSessionHandler *)self shouldCacheToDiskForSessionTask:v8];
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  dataType = [taskCopy dataType];
+  v12 = [(HLPURLSessionHandler *)self shouldCacheToDiskForSessionTask:taskCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v13 = v9;
-  [v8 setResponse:v13];
-  v14 = [v8 task];
-  v15 = [v14 currentRequest];
-  v16 = [(HLPURLSessionHandler *)self respectCachingForRequest:v15];
+  v13 = responseCopy;
+  [taskCopy setResponse:v13];
+  task = [taskCopy task];
+  currentRequest = [task currentRequest];
+  v16 = [(HLPURLSessionHandler *)self respectCachingForRequest:currentRequest];
 
   if (!v12 || !v16)
   {
@@ -317,20 +317,20 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v17 = [v13 allHeaderFields];
-  v18 = [v17 objectForKeyedSubscript:@"Last-Modified"];
+  allHeaderFields = [v13 allHeaderFields];
+  v18 = [allHeaderFields objectForKeyedSubscript:@"Last-Modified"];
 
-  [v8 setLastModified:v18];
-  if (v18 && ![(NSIndexSet *)self->_excludeCachingDataTypes containsIndex:v11])
+  [taskCopy setLastModified:v18];
+  if (v18 && ![(NSIndexSet *)self->_excludeCachingDataTypes containsIndex:dataType])
   {
-    v19 = [(HLPURLSessionHandler *)self cacheControllerForDataType:v11];
-    v20 = [v8 identifier];
-    v21 = [v19 dataCacheForIdentifier:v20];
+    v19 = [(HLPURLSessionHandler *)self cacheControllerForDataType:dataType];
+    identifier = [taskCopy identifier];
+    v21 = [v19 dataCacheForIdentifier:identifier];
 
     if (v21)
     {
-      v22 = [v21 lastModified];
-      v23 = [v22 isEqualToString:v18];
+      lastModified = [v21 lastModified];
+      v23 = [lastModified isEqualToString:v18];
 
       if (v23)
       {
@@ -342,10 +342,10 @@ LABEL_11:
 
         v25 = [v19 cacheFileURLForDataCache:v21];
         v26 = [v19 formattedDataWithFileURL:v25];
-        [v8 setFormattedData:v26];
+        [taskCopy setFormattedData:v26];
 
         v27 = 1;
-        [v8 setIsCacheData:1];
+        [taskCopy setIsCacheData:1];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __73__HLPURLSessionHandler_sessionTask_didReceiveResponse_completionHandler___block_invoke;
@@ -361,13 +361,13 @@ LABEL_11:
     }
   }
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if ((dataType & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v31 = [v13 allHeaderFields];
-    v32 = [v31 objectForKeyedSubscript:@"Content-Type"];
+    allHeaderFields2 = [v13 allHeaderFields];
+    v32 = [allHeaderFields2 objectForKeyedSubscript:@"Content-Type"];
 
-    LOBYTE(v31) = [v32 containsString:@"text/html"];
-    if (v31)
+    LOBYTE(allHeaderFields2) = [v32 containsString:@"text/html"];
+    if (allHeaderFields2)
     {
       v27 = 0;
 LABEL_20:
@@ -384,7 +384,7 @@ LABEL_20:
 LABEL_14:
   v27 = 0;
 LABEL_15:
-  v10[2](v10, v30, v27);
+  handlerCopy[2](handlerCopy, v30, v27);
 }
 
 uint64_t __73__HLPURLSessionHandler_sessionTask_didReceiveResponse_completionHandler___block_invoke(uint64_t a1)
@@ -397,80 +397,80 @@ uint64_t __73__HLPURLSessionHandler_sessionTask_didReceiveResponse_completionHan
   return [v3 updateCache];
 }
 
-- (void)sessionTask:(id)a3 didCompleteWithError:(id)a4
+- (void)sessionTask:(id)task didCompleteWithError:(id)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 task];
+  taskCopy = task;
+  errorCopy = error;
+  task = [taskCopy task];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 response];
-    v10 = [v9 statusCode];
+    response = [taskCopy response];
+    statusCode = [response statusCode];
 
-    v11 = [v8 response];
+    response2 = [task response];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [v8 response];
-      v14 = [v13 allHeaderFields];
-      v15 = [v14 objectForKeyedSubscript:@"Last-Modified"];
-      [v6 setLastModified:v15];
+      response3 = [task response];
+      allHeaderFields = [response3 allHeaderFields];
+      v15 = [allHeaderFields objectForKeyedSubscript:@"Last-Modified"];
+      [taskCopy setLastModified:v15];
     }
 
     else
     {
-      v13 = 0;
+      response3 = 0;
     }
 
-    v16 = [v6 dataTaskData];
-    v17 = [v6 task];
-    v18 = [v17 originalRequest];
+    dataTaskData = [taskCopy dataTaskData];
+    task2 = [taskCopy task];
+    originalRequest = [task2 originalRequest];
 
-    v19 = [(HLPURLSessionHandler *)self respectCachingForRequest:v18];
-    if (v6 && v19 && [v13 statusCode] != 404)
+    v19 = [(HLPURLSessionHandler *)self respectCachingForRequest:originalRequest];
+    if (taskCopy && v19 && [response3 statusCode] != 404)
     {
-      v20 = [v13 statusCode] == 200 && v7 == 0;
-      if (!v20 && v18)
+      v20 = [response3 statusCode] == 200 && errorCopy == 0;
+      if (!v20 && originalRequest)
       {
-        v44 = self;
-        v21 = v16;
-        v22 = [MEMORY[0x277CCACD8] sharedURLCache];
-        v23 = [v22 cachedResponseForRequest:v18];
+        selfCopy = self;
+        v21 = dataTaskData;
+        mEMORY[0x277CCACD8] = [MEMORY[0x277CCACD8] sharedURLCache];
+        v23 = [mEMORY[0x277CCACD8] cachedResponseForRequest:originalRequest];
 
-        v24 = [v23 response];
+        response4 = [v23 response];
         objc_opt_class();
         v25 = objc_opt_isKindOfClass();
 
         if (v25)
         {
-          v26 = [v23 response];
+          response5 = [v23 response];
 
-          if ([v26 statusCode] == 200)
+          if ([response5 statusCode] == 200)
           {
-            v27 = [v23 data];
+            data = [v23 data];
 
-            if (v27)
+            if (data)
             {
-              v10 = [v26 statusCode];
+              statusCode = [response5 statusCode];
               v28 = HLPLogForCategory(1uLL);
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
               {
-                v29 = [v18 URL];
+                v29 = [originalRequest URL];
                 *buf = 138412290;
                 v50 = v29;
                 _os_log_impl(&dword_2522BC000, v28, OS_LOG_TYPE_DEFAULT, "Using cache data for request: %@", buf, 0xCu);
               }
 
               v30 = MEMORY[0x277CBEB28];
-              v31 = [v23 data];
-              v32 = [v30 dataWithData:v31];
+              data2 = [v23 data];
+              v32 = [v30 dataWithData:data2];
 
-              [v6 setDataTaskData:v32];
-              [v6 setIsCacheData:v32 != 0];
+              [taskCopy setDataTaskData:v32];
+              [taskCopy setIsCacheData:v32 != 0];
               v21 = v32;
             }
           }
@@ -478,19 +478,19 @@ uint64_t __73__HLPURLSessionHandler_sessionTask_didReceiveResponse_completionHan
 
         else
         {
-          v26 = v13;
+          response5 = response3;
         }
 
-        v13 = v26;
-        v16 = v21;
-        self = v44;
+        response3 = response5;
+        dataTaskData = v21;
+        self = selfCopy;
       }
     }
 
-    if (v10 == 200)
+    if (statusCode == 200)
     {
       v33 = 0;
-      if (!v6)
+      if (!taskCopy)
       {
         goto LABEL_37;
       }
@@ -498,51 +498,51 @@ uint64_t __73__HLPURLSessionHandler_sessionTask_didReceiveResponse_completionHan
 
     else
     {
-      v33 = [MEMORY[0x277CCA9B8] errorWithDomain:@"Unknown error" code:v10 userInfo:0];
-      if (!v6)
+      v33 = [MEMORY[0x277CCA9B8] errorWithDomain:@"Unknown error" code:statusCode userInfo:0];
+      if (!taskCopy)
       {
 LABEL_37:
-        [v6 setDataError:v33];
+        [taskCopy setDataError:v33];
 
         goto LABEL_38;
       }
     }
 
-    if ([v16 length])
+    if ([dataTaskData length])
     {
-      v45 = v16;
-      v34 = [v6 dataType];
-      v35 = [v6 dataError];
+      v45 = dataTaskData;
+      dataType = [taskCopy dataType];
+      dataError = [taskCopy dataError];
 
-      if (!v35 || v34 == 1)
+      if (!dataError || dataType == 1)
       {
-        v36 = [v6 dataType];
-        v43 = [(HLPURLSessionHandler *)self cacheControllerForDataType:v36];
+        dataType2 = [taskCopy dataType];
+        v43 = [(HLPURLSessionHandler *)self cacheControllerForDataType:dataType2];
         v37 = [v43 formattedDataWithData:v45];
-        if (v34 == 1)
+        if (dataType == 1)
         {
           v38 = [(HLPURLSessionHandler *)self processJSONFormattedDataForCDSError:v37];
 
           v33 = v38;
         }
 
-        if (v36 == 4 && !self->_shouldIgnoreInMemoryCaching)
+        if (dataType2 == 4 && !self->_shouldIgnoreInMemoryCaching)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v39 = [v6 identifier];
-            [v43 addInMemoryCacheForImage:v37 identifier:v39 cost:{objc_msgSend(v45, "length")}];
+            identifier = [taskCopy identifier];
+            [v43 addInMemoryCacheForImage:v37 identifier:identifier cost:{objc_msgSend(v45, "length")}];
           }
         }
 
         if (v37)
         {
-          [v6 setFormattedData:v37];
+          [taskCopy setFormattedData:v37];
         }
       }
 
-      v16 = v45;
+      dataTaskData = v45;
     }
 
     goto LABEL_37;
@@ -553,10 +553,10 @@ LABEL_38:
   block[1] = 3221225472;
   block[2] = __57__HLPURLSessionHandler_sessionTask_didCompleteWithError___block_invoke;
   block[3] = &unk_279706F08;
-  v47 = v7;
-  v48 = v8;
-  v40 = v8;
-  v41 = v7;
+  v47 = errorCopy;
+  v48 = task;
+  v40 = task;
+  v41 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v42 = *MEMORY[0x277D85DE8];
@@ -598,17 +598,17 @@ void __57__HLPURLSessionHandler_sessionTask_didCompleteWithError___block_invoke(
   }
 }
 
-- (void)URLSessionManagerDidReceiveChallenge:(id)a3 completionHandler:(id)a4
+- (void)URLSessionManagerDidReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v9 = a3;
-  v5 = a4;
-  if (+[HLPCommonDefines isInternalBuild](HLPCommonDefines, "isInternalBuild") && [v9 previousFailureCount] < 4)
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  if (+[HLPCommonDefines isInternalBuild](HLPCommonDefines, "isInternalBuild") && [challengeCopy previousFailureCount] < 4)
   {
-    v6 = [v9 proposedCredential];
-    if (v6)
+    proposedCredential = [challengeCopy proposedCredential];
+    if (proposedCredential)
     {
       v7 = 0;
-      v8 = v6;
+      v8 = proposedCredential;
     }
 
     else
@@ -617,30 +617,30 @@ void __57__HLPURLSessionHandler_sessionTask_didCompleteWithError___block_invoke(
       v8 = 0;
     }
 
-    (v5)[2](v5, v7, v8);
+    (handlerCopy)[2](handlerCopy, v7, v8);
   }
 
   else
   {
-    v5[2](v5, 3, 0);
+    handlerCopy[2](handlerCopy, 3, 0);
   }
 }
 
-- (void)sessionTask:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)sessionTask:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__HLPURLSessionHandler_sessionTask_didReceiveChallenge_completionHandler___block_invoke;
   block[3] = &unk_279707570;
-  v15 = v7;
-  v16 = v9;
-  v14 = v8;
-  v10 = v7;
-  v11 = v8;
-  v12 = v9;
+  v15 = taskCopy;
+  v16 = handlerCopy;
+  v14 = challengeCopy;
+  v10 = taskCopy;
+  v11 = challengeCopy;
+  v12 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

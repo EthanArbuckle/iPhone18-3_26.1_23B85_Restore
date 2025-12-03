@@ -1,15 +1,15 @@
 @interface IMAVPlayerVideoViewController
 - (IMAVPlayer)im_player;
-- (IMAVPlayerVideoViewController)initWithPlayer:(id)a3;
+- (IMAVPlayerVideoViewController)initWithPlayer:(id)player;
 - (void)mediaItemDidChange;
 - (void)playbackSpeedDidChange;
 @end
 
 @implementation IMAVPlayerVideoViewController
 
-- (IMAVPlayerVideoViewController)initWithPlayer:(id)a3
+- (IMAVPlayerVideoViewController)initWithPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   if ([MEMORY[0x277D3DB60] platformSupportsVideo])
   {
     v12.receiver = self;
@@ -18,40 +18,40 @@
     v6 = v5;
     if (v5)
     {
-      [(IMAVPlayerVideoViewController *)v5 setIm_player:v4];
+      [(IMAVPlayerVideoViewController *)v5 setIm_player:playerCopy];
       [(IMAVPlayerVideoViewController *)v6 setAllowsPictureInPicturePlayback:1];
       [(IMAVPlayerVideoViewController *)v6 setUpdatesNowPlayingInfoCenter:0];
       [(IMAVPlayerVideoViewController *)v6 setCanPausePlaybackWhenExitingFullScreen:0];
       [(IMAVPlayerVideoViewController *)v6 setCanIncludePlaybackControlsWhenInline:0];
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 addObserver:v6 selector:sel_mediaItemDidChange name:@"IMMediaPlayerNotification_MediaItemDidChange" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel_mediaItemDidChange name:@"IMMediaPlayerNotification_MediaItemDidChange" object:0];
 
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v8 addObserver:v6 selector:sel_playbackSpeedDidChange name:@"IMAVPlayerNotification_PlaybackSpeedChanged" object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v6 selector:sel_playbackSpeedDidChange name:@"IMAVPlayerNotification_PlaybackSpeedChanged" object:0];
     }
 
     v9 = +[IMAVPlayer availableSpeeds];
     [(IMAVPlayerVideoViewController *)v6 setSpeeds:v9];
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)mediaItemDidChange
 {
-  v3 = [(IMAVPlayerVideoViewController *)self im_player];
-  v4 = [v3 currentItem];
-  v5 = [v4 isVideo];
+  im_player = [(IMAVPlayerVideoViewController *)self im_player];
+  currentItem = [im_player currentItem];
+  isVideo = [currentItem isVideo];
 
-  if ((v5 & 1) == 0)
+  if ((isVideo & 1) == 0)
   {
 
     [(IMAVPlayerVideoViewController *)self exitFullScreenWithCompletion:&__block_literal_global_4];
@@ -60,15 +60,15 @@
 
 - (void)playbackSpeedDidChange
 {
-  v3 = [(IMAVPlayerVideoViewController *)self im_player];
-  v4 = [v3 playbackSpeed];
+  im_player = [(IMAVPlayerVideoViewController *)self im_player];
+  playbackSpeed = [im_player playbackSpeed];
 
-  [IMAVPlayer rateForPlaybackSpeed:v4];
+  [IMAVPlayer rateForPlaybackSpeed:playbackSpeed];
   v6 = v5;
-  v9 = [(IMAVPlayerVideoViewController *)self im_player];
-  v7 = [v9 player];
+  im_player2 = [(IMAVPlayerVideoViewController *)self im_player];
+  player = [im_player2 player];
   LODWORD(v8) = v6;
-  [v7 setDefaultRate:v8];
+  [player setDefaultRate:v8];
 }
 
 - (IMAVPlayer)im_player

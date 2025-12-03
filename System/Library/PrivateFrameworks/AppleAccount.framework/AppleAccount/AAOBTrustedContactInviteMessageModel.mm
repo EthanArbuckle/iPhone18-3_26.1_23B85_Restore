@@ -1,17 +1,17 @@
 @interface AAOBTrustedContactInviteMessageModel
-- (AAOBTrustedContactInviteMessageModel)initWithCoder:(id)a3;
-- (AAOBTrustedContactInviteMessageModel)initWithType:(unint64_t)a3 recipientHandle:(id)a4 messageURL:(id)a5;
+- (AAOBTrustedContactInviteMessageModel)initWithCoder:(id)coder;
+- (AAOBTrustedContactInviteMessageModel)initWithType:(unint64_t)type recipientHandle:(id)handle messageURL:(id)l;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAOBTrustedContactInviteMessageModel
 
-- (AAOBTrustedContactInviteMessageModel)initWithType:(unint64_t)a3 recipientHandle:(id)a4 messageURL:(id)a5
+- (AAOBTrustedContactInviteMessageModel)initWithType:(unint64_t)type recipientHandle:(id)handle messageURL:(id)l
 {
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  lCopy = l;
   v37.receiver = self;
   v37.super_class = AAOBTrustedContactInviteMessageModel;
   v11 = [(AAOBTrustedContactInviteMessageModel *)&v37 init];
@@ -32,7 +32,7 @@
     primaryButton = v11->_primaryButton;
     v11->_primaryButton = v19;
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v21 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
       v22 = [v21 localizedStringForKey:@"CUSTODIAN_MESSAGES_ADDED_TEXT" value:0 table:@"Localizable"];
@@ -76,79 +76,79 @@
     bubbleText = v11->_bubbleText;
     v11->_bubbleText = v34;
 
-    objc_storeStrong(&v11->_recipientHandle, a4);
-    objc_storeStrong(&v11->_messageURL, a5);
+    objc_storeStrong(&v11->_recipientHandle, handle);
+    objc_storeStrong(&v11->_messageURL, l);
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   imageName = self->_imageName;
-  v5 = a3;
-  [v5 encodeObject:imageName forKey:@"_imageName"];
-  [v5 encodeObject:self->_title forKey:@"_title"];
-  [v5 encodeObject:self->_detailText forKey:@"_detailText"];
-  [v5 encodeObject:self->_primaryButton forKey:@" _primaryButton"];
-  [v5 encodeObject:self->_secondaryButton forKey:@"_secondaryButton"];
-  [v5 encodeObject:self->_helpLinkTitle forKey:@"_helpLinkTitle"];
-  [v5 encodeObject:self->_helpLinkURL forKey:@"_helpLinkURL"];
-  [v5 encodeObject:self->_ownerHandle forKey:@"_ownerHandle"];
-  [v5 encodeObject:self->_recipientHandle forKey:@"_recipientHandle"];
-  [v5 encodeObject:self->_bubbleText forKey:@"_bubbleText"];
-  [v5 encodeObject:self->_messageURL forKey:@"_messageURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:imageName forKey:@"_imageName"];
+  [coderCopy encodeObject:self->_title forKey:@"_title"];
+  [coderCopy encodeObject:self->_detailText forKey:@"_detailText"];
+  [coderCopy encodeObject:self->_primaryButton forKey:@" _primaryButton"];
+  [coderCopy encodeObject:self->_secondaryButton forKey:@"_secondaryButton"];
+  [coderCopy encodeObject:self->_helpLinkTitle forKey:@"_helpLinkTitle"];
+  [coderCopy encodeObject:self->_helpLinkURL forKey:@"_helpLinkURL"];
+  [coderCopy encodeObject:self->_ownerHandle forKey:@"_ownerHandle"];
+  [coderCopy encodeObject:self->_recipientHandle forKey:@"_recipientHandle"];
+  [coderCopy encodeObject:self->_bubbleText forKey:@"_bubbleText"];
+  [coderCopy encodeObject:self->_messageURL forKey:@"_messageURL"];
 }
 
-- (AAOBTrustedContactInviteMessageModel)initWithCoder:(id)a3
+- (AAOBTrustedContactInviteMessageModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = AAOBTrustedContactInviteMessageModel;
   v5 = [(AAOBTrustedContactInviteMessageModel *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imageName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imageName"];
     imageName = v5->_imageName;
     v5->_imageName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_detailText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_detailText"];
     detailText = v5->_detailText;
     v5->_detailText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@" _primaryButton"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@" _primaryButton"];
     primaryButton = v5->_primaryButton;
     v5->_primaryButton = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_secondaryButton"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_secondaryButton"];
     secondaryButton = v5->_secondaryButton;
     v5->_secondaryButton = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkTitle"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkTitle"];
     helpLinkTitle = v5->_helpLinkTitle;
     v5->_helpLinkTitle = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkURL"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkURL"];
     helpLinkURL = v5->_helpLinkURL;
     v5->_helpLinkURL = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ownerHandle"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ownerHandle"];
     ownerHandle = v5->_ownerHandle;
     v5->_ownerHandle = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recipientHandle"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recipientHandle"];
     recipientHandle = v5->_recipientHandle;
     v5->_recipientHandle = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bubbleText"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bubbleText"];
     bubbleText = v5->_bubbleText;
     v5->_bubbleText = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_messageURL"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_messageURL"];
     messageURL = v5->_messageURL;
     v5->_messageURL = v26;
   }
@@ -156,7 +156,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AAOBTrustedContactInviteMessageModel);
   v5 = [(NSString *)self->_imageName copy];
@@ -209,18 +209,18 @@
 - (NSString)description
 {
   v14 = MEMORY[0x1E696AEC0];
-  v16 = [(AAOBTrustedContactInviteMessageModel *)self imageName];
-  v3 = [(AAOBTrustedContactInviteMessageModel *)self title];
-  v4 = [(AAOBTrustedContactInviteMessageModel *)self detailText];
-  v5 = [(AAOBTrustedContactInviteMessageModel *)self primaryButton];
-  v6 = [(AAOBTrustedContactInviteMessageModel *)self secondaryButton];
-  v7 = [(AAOBTrustedContactInviteMessageModel *)self helpLinkTitle];
-  v8 = [(AAOBTrustedContactInviteMessageModel *)self helpLinkURL];
-  v9 = [(AAOBTrustedContactInviteMessageModel *)self ownerHandle];
-  v10 = [(AAOBTrustedContactInviteMessageModel *)self recipientHandle];
-  v11 = [(AAOBTrustedContactInviteMessageModel *)self messageURL];
-  v12 = [v11 absoluteString];
-  v15 = [v14 stringWithFormat:@"imageName: %@\ntitle: %@\ndetailText: %@\nprimaryButton: %@\nsecondaryButton: %@\nhelpLinkTitle: %@\nhelpLinkURL: %@\nownerHandle: %@\nrecipientHandle: %@\n  messageURL: %@\n", v16, v3, v4, v5, v6, v7, v8, v9, v10, v12];
+  imageName = [(AAOBTrustedContactInviteMessageModel *)self imageName];
+  title = [(AAOBTrustedContactInviteMessageModel *)self title];
+  detailText = [(AAOBTrustedContactInviteMessageModel *)self detailText];
+  primaryButton = [(AAOBTrustedContactInviteMessageModel *)self primaryButton];
+  secondaryButton = [(AAOBTrustedContactInviteMessageModel *)self secondaryButton];
+  helpLinkTitle = [(AAOBTrustedContactInviteMessageModel *)self helpLinkTitle];
+  helpLinkURL = [(AAOBTrustedContactInviteMessageModel *)self helpLinkURL];
+  ownerHandle = [(AAOBTrustedContactInviteMessageModel *)self ownerHandle];
+  recipientHandle = [(AAOBTrustedContactInviteMessageModel *)self recipientHandle];
+  messageURL = [(AAOBTrustedContactInviteMessageModel *)self messageURL];
+  absoluteString = [messageURL absoluteString];
+  v15 = [v14 stringWithFormat:@"imageName: %@\ntitle: %@\ndetailText: %@\nprimaryButton: %@\nsecondaryButton: %@\nhelpLinkTitle: %@\nhelpLinkURL: %@\nownerHandle: %@\nrecipientHandle: %@\n  messageURL: %@\n", imageName, title, detailText, primaryButton, secondaryButton, helpLinkTitle, helpLinkURL, ownerHandle, recipientHandle, absoluteString];
 
   return v15;
 }

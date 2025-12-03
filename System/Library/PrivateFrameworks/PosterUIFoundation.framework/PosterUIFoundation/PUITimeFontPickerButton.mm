@@ -1,16 +1,16 @@
 @interface PUITimeFontPickerButton
-- (PUITimeFontPickerButton)initWithFrame:(CGRect)a3;
-- (void)configureWithFont:(id)a3 text:(id)a4;
+- (PUITimeFontPickerButton)initWithFrame:(CGRect)frame;
+- (void)configureWithFont:(id)font text:(id)text;
 @end
 
 @implementation PUITimeFontPickerButton
 
-- (PUITimeFontPickerButton)initWithFrame:(CGRect)a3
+- (PUITimeFontPickerButton)initWithFrame:(CGRect)frame
 {
   v19[3] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = PUITimeFontPickerButton;
-  v3 = [(PUIStylePickerButton *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUIStylePickerButton *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -21,17 +21,17 @@
     [(UILabel *)v3->_contentLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PUITimeFontPickerButton *)v3 addSubview:v3->_contentLabel];
     v16 = MEMORY[0x1E696ACD8];
-    v17 = [(UILabel *)v3->_contentLabel topAnchor];
-    v6 = [(PUITimeFontPickerButton *)v3 topAnchor];
-    v7 = [v17 constraintEqualToAnchor:v6];
+    topAnchor = [(UILabel *)v3->_contentLabel topAnchor];
+    topAnchor2 = [(PUITimeFontPickerButton *)v3 topAnchor];
+    v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v19[0] = v7;
-    v8 = [(UILabel *)v3->_contentLabel centerXAnchor];
-    v9 = [(PUITimeFontPickerButton *)v3 centerXAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    centerXAnchor = [(UILabel *)v3->_contentLabel centerXAnchor];
+    centerXAnchor2 = [(PUITimeFontPickerButton *)v3 centerXAnchor];
+    v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v19[1] = v10;
-    v11 = [(UILabel *)v3->_contentLabel bottomAnchor];
-    v12 = [(PUITimeFontPickerButton *)v3 bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    bottomAnchor = [(UILabel *)v3->_contentLabel bottomAnchor];
+    bottomAnchor2 = [(PUITimeFontPickerButton *)v3 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v19[2] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
     [v16 activateConstraints:v14];
@@ -40,18 +40,18 @@
   return v3;
 }
 
-- (void)configureWithFont:(id)a3 text:(id)a4
+- (void)configureWithFont:(id)font text:(id)text
 {
   v9.receiver = self;
   v9.super_class = PUITimeFontPickerButton;
-  [(PUIStyleFontPickerButton *)&v9 configureWithFont:a3 text:a4];
-  v5 = [(PUITimeFontPickerButton *)self contentLabel];
-  v6 = [(PUIStyleFontPickerButton *)self contentFont];
-  [v5 setFont:v6];
+  [(PUIStyleFontPickerButton *)&v9 configureWithFont:font text:text];
+  contentLabel = [(PUITimeFontPickerButton *)self contentLabel];
+  contentFont = [(PUIStyleFontPickerButton *)self contentFont];
+  [contentLabel setFont:contentFont];
 
-  v7 = [(PUITimeFontPickerButton *)self contentLabel];
-  v8 = [(PUIStyleFontPickerButton *)self contentText];
-  [v7 setText:v8];
+  contentLabel2 = [(PUITimeFontPickerButton *)self contentLabel];
+  contentText = [(PUIStyleFontPickerButton *)self contentText];
+  [contentLabel2 setText:contentText];
 }
 
 @end

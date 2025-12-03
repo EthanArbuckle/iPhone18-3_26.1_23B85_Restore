@@ -1,5 +1,5 @@
 @interface FindMyHandleWaypointRequest
-- (BOOL)isEquivalentToOtherRequest:(id)a3;
+- (BOOL)isEquivalentToOtherRequest:(id)request;
 - (CLLocationCoordinate2D)coordinate;
 - (CNContact)contact;
 - (MKMapItem)mapItemForLocationComparison;
@@ -7,20 +7,20 @@
 - (NSString)waypointName;
 - (NSString)waypointNameWhenEditing;
 - (_TtC4Maps27FindMyHandleWaypointRequest)init;
-- (_TtC4Maps27FindMyHandleWaypointRequest)initWithHandle:(id)a3 location:(id)a4;
-- (id)copyWithZone:(void *)a3;
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (id)waypointIconWithScale:(double)a3;
-- (void)recordRAPInformation:(id)a3;
+- (_TtC4Maps27FindMyHandleWaypointRequest)initWithHandle:(id)handle location:(id)location;
+- (id)copyWithZone:(void *)zone;
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler;
+- (id)waypointIconWithScale:(double)scale;
+- (void)recordRAPInformation:(id)information;
 @end
 
 @implementation FindMyHandleWaypointRequest
 
-- (_TtC4Maps27FindMyHandleWaypointRequest)initWithHandle:(id)a3 location:(id)a4
+- (_TtC4Maps27FindMyHandleWaypointRequest)initWithHandle:(id)handle location:(id)location
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_1000D067C(v5, a4);
+  handleCopy = handle;
+  locationCopy = location;
+  v7 = sub_1000D067C(handleCopy, location);
 
   return v7;
 }
@@ -46,27 +46,27 @@
 
 - (MKMapItem)mapItemForLocationComparison
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000CDAFC();
 
   return v3;
 }
 
-- (BOOL)isEquivalentToOtherRequest:(id)a3
+- (BOOL)isEquivalentToOtherRequest:(id)request
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_1000CDD54(a3);
+  selfCopy = self;
+  v6 = sub_1000CDD54(request);
   swift_unknownObjectRelease();
 
   return v6 & 1;
 }
 
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler
 {
-  v10 = _Block_copy(a4);
-  v11 = _Block_copy(a5);
-  v12 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(completionHandler);
+  v12 = _Block_copy(activityHandler);
   if (v10)
   {
     *(swift_allocObject() + 16) = v10;
@@ -87,9 +87,9 @@
     v14 = 0;
   }
 
-  v15 = a3;
-  v16 = self;
-  v17 = sub_1000D0728(a3, sub_1000D2C9C, v13, v12, v14);
+  traitsCopy = traits;
+  selfCopy = self;
+  v17 = sub_1000D0728(traits, sub_1000D2C9C, v13, v12, v14);
   sub_1000588AC(v12);
 
   sub_1000588AC(v10);
@@ -97,25 +97,25 @@
   return v17;
 }
 
-- (void)recordRAPInformation:(id)a3
+- (void)recordRAPInformation:(id)information
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000CE874(v4);
+  informationCopy = information;
+  selfCopy = self;
+  sub_1000CE874(informationCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   ObjectType = swift_getObjectType();
   v5 = *(&self->super.isa + OBJC_IVAR____TtC4Maps27FindMyHandleWaypointRequest_handle);
   v6 = *(&self->super.isa + OBJC_IVAR____TtC4Maps27FindMyHandleWaypointRequest_location);
   v7 = objc_allocWithZone(ObjectType);
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   v10 = v5;
   v11 = sub_1000D067C(v10, v6);
 
-  v12 = *(&v9->super.isa + OBJC_IVAR____TtC4Maps27FindMyHandleWaypointRequest_cachedLoadResult);
+  v12 = *(&selfCopy->super.isa + OBJC_IVAR____TtC4Maps27FindMyHandleWaypointRequest_cachedLoadResult);
   v13 = v12;
 
   v14 = *&v11[OBJC_IVAR____TtC4Maps27FindMyHandleWaypointRequest_cachedLoadResult];
@@ -124,17 +124,17 @@
   return v11;
 }
 
-- (id)waypointIconWithScale:(double)a3
+- (id)waypointIconWithScale:(double)scale
 {
-  v4 = self;
-  v5 = sub_1000CED48(a3);
+  selfCopy = self;
+  v5 = sub_1000CED48(scale);
 
   return v5;
 }
 
 - (NSString)waypointName
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032785C();
 
   v3 = String._bridgeToObjectiveC()();
@@ -144,7 +144,7 @@
 
 - (NSString)waypointNameWhenEditing
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003277E8();
   if (!v3)
   {
@@ -158,7 +158,7 @@
 
 - (CNContact)contact
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100327DCC();
 
   return v3;
@@ -171,7 +171,7 @@
   v5 = __chkstk_darwin(v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   (*(v4 + 16))(v7, *(&self->super.isa + OBJC_IVAR____TtC4Maps27FindMyHandleWaypointRequest_handle) + OBJC_IVAR____TtC4Maps16MapsFindMyHandle_handle, v3, v5);
-  v8 = self;
+  selfCopy = self;
   Handle.identifier.getter();
   (*(v4 + 8))(v7, v3);
 

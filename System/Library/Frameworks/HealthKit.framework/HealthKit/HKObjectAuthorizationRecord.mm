@@ -1,11 +1,11 @@
 @interface HKObjectAuthorizationRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKObjectAuthorizationRecord)init;
-- (HKObjectAuthorizationRecord)initWithCoder:(id)a3;
-- (HKObjectAuthorizationRecord)initWithObjectUUID:(id)a3 sourceUUID:(id)a4 sessionUUID:(id)a5 status:(int64_t)a6 modificationDate:(double)a7;
+- (HKObjectAuthorizationRecord)initWithCoder:(id)coder;
+- (HKObjectAuthorizationRecord)initWithObjectUUID:(id)d sourceUUID:(id)iD sessionUUID:(id)uID status:(int64_t)status modificationDate:(double)date;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKObjectAuthorizationRecord
@@ -34,20 +34,20 @@
   return v3;
 }
 
-- (HKObjectAuthorizationRecord)initWithObjectUUID:(id)a3 sourceUUID:(id)a4 sessionUUID:(id)a5 status:(int64_t)a6 modificationDate:(double)a7
+- (HKObjectAuthorizationRecord)initWithObjectUUID:(id)d sourceUUID:(id)iD sessionUUID:(id)uID status:(int64_t)status modificationDate:(double)date
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
   v16 = [(HKObjectAuthorizationRecord *)self init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_objectUUID, a3);
-    objc_storeStrong(&v17->_sourceUUID, a4);
-    objc_storeStrong(&v17->_sessionUUID, a5);
-    v17->_status = a6;
-    v17->_modificationDate = a7;
+    objc_storeStrong(&v16->_objectUUID, d);
+    objc_storeStrong(&v17->_sourceUUID, iD);
+    objc_storeStrong(&v17->_sessionUUID, uID);
+    v17->_status = status;
+    v17->_modificationDate = date;
   }
 
   return v17;
@@ -56,12 +56,12 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSUUID *)self->_objectUUID UUIDString];
-  v5 = [(NSUUID *)self->_sourceUUID UUIDString];
-  v6 = [(NSUUID *)self->_sessionUUID UUIDString];
+  uUIDString = [(NSUUID *)self->_objectUUID UUIDString];
+  uUIDString2 = [(NSUUID *)self->_sourceUUID UUIDString];
+  uUIDString3 = [(NSUUID *)self->_sessionUUID UUIDString];
   status = self->_status;
   v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:self->_modificationDate];
-  v9 = [v3 stringWithFormat:@"<Object: %@ Source: %@ Session: %@ Status: %ld Mod: %@>", v4, v5, v6, status, v8];
+  v9 = [v3 stringWithFormat:@"<Object: %@ Source: %@ Session: %@ Status: %ld Mod: %@>", uUIDString, uUIDString2, uUIDString3, status, v8];
 
   return v9;
 }
@@ -73,19 +73,19 @@
   return v4 ^ [(NSUUID *)self->_sessionUUID hash]^ self->_status ^ self->_modificationDate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v11 = (objc_opt_isKindOfClass() & 1) != 0 && ((sourceUUID = self->_sourceUUID, v6 = *(v4 + 2), sourceUUID == v6) || v6 && [(NSUUID *)sourceUUID isEqual:?]) && ((objectUUID = self->_objectUUID, v8 = *(v4 + 1), objectUUID == v8) || v8 && [(NSUUID *)objectUUID isEqual:?]) && ((sessionUUID = self->_sessionUUID, v10 = *(v4 + 3), sessionUUID == v10) || v10 && [(NSUUID *)sessionUUID isEqual:?]) && self->_status == *(v4 + 4) && self->_modificationDate == v4[5];
+  v11 = (objc_opt_isKindOfClass() & 1) != 0 && ((sourceUUID = self->_sourceUUID, v6 = *(equalCopy + 2), sourceUUID == v6) || v6 && [(NSUUID *)sourceUUID isEqual:?]) && ((objectUUID = self->_objectUUID, v8 = *(equalCopy + 1), objectUUID == v8) || v8 && [(NSUUID *)objectUUID isEqual:?]) && ((sessionUUID = self->_sessionUUID, v10 = *(equalCopy + 3), sessionUUID == v10) || v10 && [(NSUUID *)sessionUUID isEqual:?]) && self->_status == *(equalCopy + 4) && self->_modificationDate == equalCopy[5];
 
   return v11;
 }
 
-- (HKObjectAuthorizationRecord)initWithCoder:(id)a3
+- (HKObjectAuthorizationRecord)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = HKObjectAuthorizationRecord;
   v5 = [(HKObjectAuthorizationRecord *)&v23 init];
@@ -94,17 +94,17 @@
     goto LABEL_5;
   }
 
-  [v4 decodeDoubleForKey:@"mod"];
+  [coderCopy decodeDoubleForKey:@"mod"];
   v5->_modificationDate = v6;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
   sourceUUID = v5->_sourceUUID;
   v5->_sourceUUID = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"oid"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"oid"];
   objectUUID = v5->_objectUUID;
   v5->_objectUUID = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionid"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionid"];
   sessionUUID = v5->_sessionUUID;
   v5->_sessionUUID = v11;
 
@@ -130,7 +130,7 @@
     goto LABEL_12;
   }
 
-  v13 = [v4 decodeIntegerForKey:@"stat"];
+  v13 = [coderCopy decodeIntegerForKey:@"stat"];
   v5->_status = v13;
   if (v13 >= 3)
   {
@@ -154,15 +154,15 @@ LABEL_13:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceUUID = self->_sourceUUID;
-  v5 = a3;
-  [v5 encodeObject:sourceUUID forKey:@"sid"];
-  [v5 encodeObject:self->_objectUUID forKey:@"oid"];
-  [v5 encodeObject:self->_sessionUUID forKey:@"sessionid"];
-  [v5 encodeInteger:self->_status forKey:@"stat"];
-  [v5 encodeDouble:@"mod" forKey:self->_modificationDate];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourceUUID forKey:@"sid"];
+  [coderCopy encodeObject:self->_objectUUID forKey:@"oid"];
+  [coderCopy encodeObject:self->_sessionUUID forKey:@"sessionid"];
+  [coderCopy encodeInteger:self->_status forKey:@"stat"];
+  [coderCopy encodeDouble:@"mod" forKey:self->_modificationDate];
 }
 
 - (void)initWithCoder:(NSObject *)a3 .cold.1(uint64_t a1, uint64_t *a2, NSObject *a3)

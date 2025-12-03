@@ -36,8 +36,8 @@
 - (void)updateWithNewReporterID
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6958468] sharedInstance];
-  v4 = [v3 reporterID];
+  mEMORY[0x1E6958468] = [MEMORY[0x1E6958468] sharedInstance];
+  reporterID = [mEMORY[0x1E6958468] reporterID];
 
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -45,12 +45,12 @@
     *buf = 136315394;
     *&buf[4] = "[CSAdamSpeechMetricsManager updateWithNewReporterID]";
     *&buf[12] = 2048;
-    *&buf[14] = v4;
+    *&buf[14] = reporterID;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s New reporterId is generated: %lld", buf, 0x16u);
   }
 
   memset(buf, 0, sizeof(buf));
-  if (v4)
+  if (reporterID)
   {
     operator new();
   }

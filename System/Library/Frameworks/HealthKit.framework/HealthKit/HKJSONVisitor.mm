@@ -1,28 +1,28 @@
 @interface HKJSONVisitor
-+ (id)visitorWithJSONObject:(id)a3 delegate:(id)a4 error:(id *)a5;
++ (id)visitorWithJSONObject:(id)object delegate:(id)delegate error:(id *)error;
 - (NSString)lastKeyPathComponent;
-- (id)valueForKeyPath:(id)a3;
-- (int64_t)_traverseJSONObject:(id)a3;
-- (int64_t)_visitArray:(id)a3;
-- (int64_t)_visitDictionary:(id)a3;
-- (int64_t)_visitPrimitive:(id)a3;
+- (id)valueForKeyPath:(id)path;
+- (int64_t)_traverseJSONObject:(id)object;
+- (int64_t)_visitArray:(id)array;
+- (int64_t)_visitDictionary:(id)dictionary;
+- (int64_t)_visitPrimitive:(id)primitive;
 @end
 
 @implementation HKJSONVisitor
 
-+ (id)visitorWithJSONObject:(id)a3 delegate:(id)a4 error:(id *)a5
++ (id)visitorWithJSONObject:(id)object delegate:(id)delegate error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = objc_alloc_init(a1);
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v9])
+  objectCopy = object;
+  delegateCopy = delegate;
+  v11 = objc_alloc_init(self);
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:objectCopy])
   {
-    objc_storeStrong(v11 + 2, a3);
-    objc_storeWeak(v11 + 1, v10);
+    objc_storeStrong(v11 + 2, object);
+    objc_storeWeak(v11 + 1, delegateCopy);
     v11[5] = 0x7FFFFFFFFFFFFFFFLL;
-    v12 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
     v13 = v11[3];
-    v11[3] = v12;
+    v11[3] = string;
 
     v14 = v11[4];
     v11[4] = MEMORY[0x1E695E0F0];
@@ -32,7 +32,7 @@
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:@"JSONObject is not valid JSON"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"JSONObject is not valid JSON"];
     v15 = 0;
   }
 
@@ -42,19 +42,19 @@
 - (NSString)lastKeyPathComponent
 {
   v2 = [(NSString *)self->_currentKeyPath componentsSeparatedByString:@"."];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 length];
+  pathCopy = path;
+  v5 = [pathCopy length];
   JSONObject = self->_JSONObject;
   if (v5)
   {
-    v7 = [JSONObject valueForKeyPath:v4];
+    v7 = [JSONObject valueForKeyPath:pathCopy];
   }
 
   else
@@ -67,10 +67,10 @@
   return v8;
 }
 
-- (int64_t)_traverseJSONObject:(id)a3
+- (int64_t)_traverseJSONObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     [HKJSONVisitor _traverseJSONObject:];
   }
@@ -78,7 +78,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HKJSONVisitor *)self _visitDictionary:v4];
+    v5 = [(HKJSONVisitor *)self _visitDictionary:objectCopy];
   }
 
   else
@@ -86,12 +86,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HKJSONVisitor *)self _visitArray:v4];
+      v5 = [(HKJSONVisitor *)self _visitArray:objectCopy];
     }
 
     else
     {
-      v5 = [(HKJSONVisitor *)self _visitPrimitive:v4];
+      v5 = [(HKJSONVisitor *)self _visitPrimitive:objectCopy];
     }
   }
 
@@ -100,12 +100,12 @@
   return v6;
 }
 
-- (int64_t)_visitDictionary:(id)a3
+- (int64_t)_visitDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v30 = v4;
+  v30 = dictionaryCopy;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKJSONVisitor _visitDictionary:];
@@ -115,7 +115,7 @@
   if (objc_opt_respondsToSelector())
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v6 performSelector:sel_visitor_willVisitDictionary_ withObject:self withObject:v4];
+    v7 = [v6 performSelector:sel_visitor_willVisitDictionary_ withObject:self withObject:dictionaryCopy];
 
     if (!v7)
     {
@@ -139,8 +139,8 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = [v4 allKeys];
-  v11 = [v10 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v12)
@@ -233,10 +233,10 @@ LABEL_26:
   return v7;
 }
 
-- (int64_t)_visitArray:(id)a3
+- (int64_t)_visitArray:(id)array
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -247,7 +247,7 @@ LABEL_26:
   if (objc_opt_respondsToSelector())
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v6 performSelector:sel_visitor_willVisitArray_ withObject:self withObject:v4];
+    v7 = [v6 performSelector:sel_visitor_willVisitArray_ withObject:self withObject:arrayCopy];
 
     if (!v7)
     {
@@ -271,14 +271,14 @@ LABEL_26:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = v4;
+  v9 = arrayCopy;
   v10 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = 0;
     v13 = *v31;
-    v28 = v4;
+    v28 = arrayCopy;
     while (2)
     {
       for (i = 0; i != v11; ++i)
@@ -302,7 +302,7 @@ LABEL_26:
         {
           objc_autoreleasePoolPop(v16);
           p_allKeyPathComponents = &self->_allKeyPathComponents;
-          v4 = v28;
+          arrayCopy = v28;
           goto LABEL_20;
         }
 
@@ -311,7 +311,7 @@ LABEL_26:
           objc_autoreleasePoolPop(v16);
 
           v7 = 0;
-          v4 = v28;
+          arrayCopy = v28;
           goto LABEL_27;
         }
 
@@ -321,7 +321,7 @@ LABEL_26:
 
       v11 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
       p_allKeyPathComponents = &self->_allKeyPathComponents;
-      v4 = v28;
+      arrayCopy = v28;
       if (v11)
       {
         continue;
@@ -371,9 +371,9 @@ LABEL_28:
   return v7;
 }
 
-- (int64_t)_visitPrimitive:(id)a3
+- (int64_t)_visitPrimitive:(id)primitive
 {
-  v4 = a3;
+  primitiveCopy = primitive;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -392,7 +392,7 @@ LABEL_28:
   if (objc_opt_respondsToSelector())
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v6 performSelector:sel_visitor_visitPrimitive_ withObject:self withObject:v4];
+    v7 = [v6 performSelector:sel_visitor_visitPrimitive_ withObject:self withObject:primitiveCopy];
   }
 
   else

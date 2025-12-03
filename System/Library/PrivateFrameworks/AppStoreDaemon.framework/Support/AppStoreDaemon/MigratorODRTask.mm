@@ -1,16 +1,16 @@
 @interface MigratorODRTask
-- (MigratorODRTask)initWithConfiguration:(id)a3;
+- (MigratorODRTask)initWithConfiguration:(id)configuration;
 - (id)copyConfiguration;
 - (void)main;
 @end
 
 @implementation MigratorODRTask
 
-- (MigratorODRTask)initWithConfiguration:(id)a3
+- (MigratorODRTask)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = MigratorODRTask;
-  return [(MigratorTask *)&v4 initWithConfiguration:a3];
+  return [(MigratorTask *)&v4 initWithConfiguration:configuration];
 }
 
 - (id)copyConfiguration

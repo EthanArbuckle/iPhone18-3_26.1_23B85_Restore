@@ -1,32 +1,32 @@
 @interface SKFSTaskMessageHandler
 - (NSError)error;
-- (SKFSTaskMessageHandler)initWithProgress:(id)a3 dispatchGroup:(id)a4;
-- (void)completed:(id)a3 replyHandler:(id)a4;
-- (void)getLocalizationSetup:(id)a3;
-- (void)logMessage:(id)a3;
-- (void)setError:(id)a3;
+- (SKFSTaskMessageHandler)initWithProgress:(id)progress dispatchGroup:(id)group;
+- (void)completed:(id)completed replyHandler:(id)handler;
+- (void)getLocalizationSetup:(id)setup;
+- (void)logMessage:(id)message;
+- (void)setError:(id)error;
 @end
 
 @implementation SKFSTaskMessageHandler
 
-- (SKFSTaskMessageHandler)initWithProgress:(id)a3 dispatchGroup:(id)a4
+- (SKFSTaskMessageHandler)initWithProgress:(id)progress dispatchGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
+  progressCopy = progress;
+  groupCopy = group;
   v14.receiver = self;
   v14.super_class = SKFSTaskMessageHandler;
   v9 = [(SKFSTaskMessageHandler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_progress, a3);
-    objc_storeStrong(&v10->_group, a4);
+    objc_storeStrong(&v9->_progress, progress);
+    objc_storeStrong(&v10->_group, group);
     error = v10->_error;
     v10->_error = 0;
 
     v10->_taskDone = 0;
-    v12 = [(SKFSTaskMessageHandler *)v10 group];
-    dispatch_group_enter(v12);
+    group = [(SKFSTaskMessageHandler *)v10 group];
+    dispatch_group_enter(group);
   }
 
   return v10;
@@ -34,31 +34,31 @@
 
 - (NSError)error
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_error;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_error;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v6)
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (errorCopy)
   {
-    objc_storeStrong(&v5->_error, a3);
+    objc_storeStrong(&selfCopy->_error, error);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)completed:(id)a3 replyHandler:(id)a4
+- (void)completed:(id)completed replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  handlerCopy = handler;
   if ([(SKFSTaskMessageHandler *)self taskDone])
   {
     v8 = +[SKBaseManager sharedManager];
@@ -67,13 +67,13 @@
     v9 = sub_10000BFD0();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v10 = [(SKFSTaskMessageHandler *)self taskID];
+      taskID = [(SKFSTaskMessageHandler *)self taskID];
       v16 = 136315650;
       v17 = "[SKFSTaskMessageHandler completed:replyHandler:]";
       v18 = 2112;
-      v19 = v10;
+      v19 = taskID;
       v20 = 2112;
-      v21 = v6;
+      v21 = completedCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "%s: Reached an extra completion callback for task %@, error %@", &v16, 0x20u);
     }
   }
@@ -83,46 +83,46 @@
     v11 = sub_10000BFD0();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(SKFSTaskMessageHandler *)self taskID];
-      v13 = v12;
+      taskID2 = [(SKFSTaskMessageHandler *)self taskID];
+      v13 = taskID2;
       v14 = &stru_10004A890;
       v16 = 136315650;
       v17 = "[SKFSTaskMessageHandler completed:replyHandler:]";
       v18 = 2112;
-      if (v6)
+      if (completedCopy)
       {
-        v14 = v6;
+        v14 = completedCopy;
       }
 
-      v19 = v12;
+      v19 = taskID2;
       v20 = 2112;
       v21 = v14;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: Task %@ done %@", &v16, 0x20u);
     }
 
-    [(SKFSTaskMessageHandler *)self setError:v6];
-    v15 = [(SKFSTaskMessageHandler *)self group];
-    dispatch_group_leave(v15);
+    [(SKFSTaskMessageHandler *)self setError:completedCopy];
+    group = [(SKFSTaskMessageHandler *)self group];
+    dispatch_group_leave(group);
 
     self->_taskDone = 1;
   }
 
-  v7[2](v7, 0, v6);
+  handlerCopy[2](handlerCopy, 0, completedCopy);
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SKFSTaskMessageHandler *)self progress];
-  [v5 setLocalizedAdditionalDescription:v4];
+  messageCopy = message;
+  progress = [(SKFSTaskMessageHandler *)self progress];
+  [progress setLocalizedAdditionalDescription:messageCopy];
 }
 
-- (void)getLocalizationSetup:(id)a3
+- (void)getLocalizationSetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   v6 = +[NSLocale currentLocale];
   v5 = +[NSLocale preferredLanguages];
-  (*(a3 + 2))(v4, v6, v5, 0);
+  (*(setup + 2))(setupCopy, v6, v5, 0);
 }
 
 @end

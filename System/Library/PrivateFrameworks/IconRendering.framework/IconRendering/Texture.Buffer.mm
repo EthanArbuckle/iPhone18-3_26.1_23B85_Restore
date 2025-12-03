@@ -1,6 +1,6 @@
 @interface Texture.Buffer
 - (_TtCV13IconRendering7Texture6Buffer)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (id)map;
 - (void)dealloc;
 @end
@@ -11,7 +11,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtCV13IconRendering7Texture6Buffer_bytes);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     MEMORY[0x1B2730CA0](v4, -1, -1);
@@ -52,9 +52,9 @@
   return self;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B1615304(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);

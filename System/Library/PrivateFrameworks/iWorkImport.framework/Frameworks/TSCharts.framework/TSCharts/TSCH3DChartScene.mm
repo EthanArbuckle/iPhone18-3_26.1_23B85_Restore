@@ -1,7 +1,7 @@
 @interface TSCH3DChartScene
-+ (void)addObjectsToSceneWithSceneInfo:(id)a3;
++ (void)addObjectsToSceneWithSceneInfo:(id)info;
 - ($6BF1DF173A55784CAE4B3BED4B6FCF3F)layoutSettings;
-- (TSCH3DChartScene)initWithSceneInfo:(id)a3;
+- (TSCH3DChartScene)initWithSceneInfo:(id)info;
 - (void)addAllLabelsToScene;
 - (void)addAllObjectsToScene;
 - (void)addChartTitlesToScene;
@@ -12,23 +12,23 @@
 
 @implementation TSCH3DChartScene
 
-+ (void)addObjectsToSceneWithSceneInfo:(id)a3
++ (void)addObjectsToSceneWithSceneInfo:(id)info
 {
-  v14 = a3;
-  v4 = [a1 alloc];
-  v9 = objc_msgSend_initWithSceneInfo_(v4, v5, v6, v7, v8, v14);
+  infoCopy = info;
+  v4 = [self alloc];
+  v9 = objc_msgSend_initWithSceneInfo_(v4, v5, v6, v7, v8, infoCopy);
   objc_msgSend_addAllObjectsToScene(v9, v10, v11, v12, v13);
 }
 
-- (TSCH3DChartScene)initWithSceneInfo:(id)a3
+- (TSCH3DChartScene)initWithSceneInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = TSCH3DChartScene;
   v6 = [(TSCH3DChartScene *)&v13 init];
   if (v6)
   {
-    v10 = objc_msgSend_copy(v4, v5, v7, v8, v9);
+    v10 = objc_msgSend_copy(infoCopy, v5, v7, v8, v9);
     sceneInfo = v6->_sceneInfo;
     v6->_sceneInfo = v10;
   }

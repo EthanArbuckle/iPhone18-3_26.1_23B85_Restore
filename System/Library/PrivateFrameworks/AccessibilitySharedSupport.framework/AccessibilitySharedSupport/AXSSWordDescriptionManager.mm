@@ -3,7 +3,7 @@
 - (NSManagedObjectContext)managedObjectContext;
 - (NSManagedObjectModel)managedObjectModel;
 - (NSPersistentStoreCoordinator)persistentStoreCoordinator;
-- (id)descriptionOfWord:(id)a3 forLanguage:(id)a4;
+- (id)descriptionOfWord:(id)word forLanguage:(id)language;
 - (id)languageCode;
 @end
 
@@ -29,8 +29,8 @@ void __52__AXSSWordDescriptionManager_zh_descriptionForWord___block_invoke(uint6
     +[AXSSWordDescriptionManager sharedInstance];
   }
 
-  v3 = a1;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = sharedInstance___sharedInstances;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -45,7 +45,7 @@ void __52__AXSSWordDescriptionManager_zh_descriptionForWord___block_invoke(uint6
     [v8 setObject:v7 forKey:v10];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -57,11 +57,11 @@ uint64_t __44__AXSSWordDescriptionManager_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)descriptionOfWord:(id)a3 forLanguage:(id)a4
+- (id)descriptionOfWord:(id)word forLanguage:(id)language
 {
-  v5 = a3;
-  v6 = a4;
-  if ([(__CFString *)v6 hasPrefix:@"ja"])
+  wordCopy = word;
+  languageCopy = language;
+  if ([(__CFString *)languageCopy hasPrefix:@"ja"])
   {
     v7 = +[AXSSWordDescriptionManager_ja sharedInstance];
     v8 = v7;
@@ -71,17 +71,17 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (([(__CFString *)v6 hasPrefix:@"zh"]& 1) != 0 || [(__CFString *)v6 hasPrefix:@"yue"])
+  if (([(__CFString *)languageCopy hasPrefix:@"zh"]& 1) != 0 || [(__CFString *)languageCopy hasPrefix:@"yue"])
   {
     v7 = +[AXSSWordDescriptionManager_zh sharedInstance];
     v8 = v7;
-    v9 = v6;
+    v9 = languageCopy;
     goto LABEL_6;
   }
 
   v8 = 0;
 LABEL_7:
-  v10 = [v8 descriptionForWord:v5];
+  v10 = [v8 descriptionForWord:wordCopy];
 
   return v10;
 }
@@ -91,14 +91,14 @@ LABEL_7:
   managedObjectContext = self->_managedObjectContext;
   if (!managedObjectContext)
   {
-    v4 = [(AXSSWordDescriptionManager *)self persistentStoreCoordinator];
-    if (v4)
+    persistentStoreCoordinator = [(AXSSWordDescriptionManager *)self persistentStoreCoordinator];
+    if (persistentStoreCoordinator)
     {
       v5 = [objc_alloc(MEMORY[0x1E695D628]) initWithConcurrencyType:2];
       v6 = self->_managedObjectContext;
       self->_managedObjectContext = v5;
 
-      [(NSManagedObjectContext *)self->_managedObjectContext setPersistentStoreCoordinator:v4];
+      [(NSManagedObjectContext *)self->_managedObjectContext setPersistentStoreCoordinator:persistentStoreCoordinator];
     }
 
     managedObjectContext = self->_managedObjectContext;
@@ -109,16 +109,16 @@ LABEL_7:
 
 - (id)languageCode
 {
-  v2 = [(AXSSWordDescriptionManager *)self languageDialectCode];
-  v3 = [v2 rangeOfString:@"-"];
+  languageDialectCode = [(AXSSWordDescriptionManager *)self languageDialectCode];
+  v3 = [languageDialectCode rangeOfString:@"-"];
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [v2 substringToIndex:v3];
+    v4 = [languageDialectCode substringToIndex:v3];
 
-    v2 = v4;
+    languageDialectCode = v4;
   }
 
-  return v2;
+  return languageDialectCode;
 }
 
 - (NSPersistentStoreCoordinator)persistentStoreCoordinator
@@ -126,10 +126,10 @@ LABEL_7:
   persistentStoreCoordinator = self->_persistentStoreCoordinator;
   if (!persistentStoreCoordinator)
   {
-    v4 = [(AXSSWordDescriptionManager *)self managedObjectModel];
-    v5 = [(AXSSWordDescriptionManager *)self languageCode];
-    v6 = v5;
-    if (v4 && [(__CFString *)v5 length])
+    managedObjectModel = [(AXSSWordDescriptionManager *)self managedObjectModel];
+    languageCode = [(AXSSWordDescriptionManager *)self languageCode];
+    v6 = languageCode;
+    if (managedObjectModel && [(__CFString *)languageCode length])
     {
       if ([(__CFString *)v6 isEqualToString:@"yue"])
       {
@@ -143,7 +143,7 @@ LABEL_7:
 
       if (v9)
       {
-        v10 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:v4];
+        v10 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:managedObjectModel];
         v11 = self->_persistentStoreCoordinator;
         self->_persistentStoreCoordinator = v10;
 
@@ -164,8 +164,8 @@ LABEL_7:
           v21 = self->_persistentStoreCoordinator;
           self->_persistentStoreCoordinator = 0;
 
-          v22 = [v20 localizedDescription];
-          NSLog(&cfstr_SErrorAddingPe.isa, "[AXSSWordDescriptionManager persistentStoreCoordinator]", v22);
+          localizedDescription = [v20 localizedDescription];
+          NSLog(&cfstr_SErrorAddingPe.isa, "[AXSSWordDescriptionManager persistentStoreCoordinator]", localizedDescription);
         }
       }
     }
@@ -181,16 +181,16 @@ LABEL_7:
   managedObjectModel = self->_managedObjectModel;
   if (!managedObjectModel)
   {
-    v4 = [(AXSSWordDescriptionManager *)self languageCode];
-    if ([(__CFString *)v4 length])
+    languageCode = [(AXSSWordDescriptionManager *)self languageCode];
+    if ([(__CFString *)languageCode length])
     {
-      if ([(__CFString *)v4 isEqualToString:@"yue"])
+      if ([(__CFString *)languageCode isEqualToString:@"yue"])
       {
 
-        v4 = @"zh";
+        languageCode = @"zh";
       }
 
-      v5 = [@"AXWordDescriptionsData_" stringByAppendingString:v4];
+      v5 = [@"AXWordDescriptionsData_" stringByAppendingString:languageCode];
       v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v7 = [v6 URLForResource:v5 withExtension:@"momd"];
 

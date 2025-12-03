@@ -1,20 +1,20 @@
 @interface PXFloatingCardPresentationController
 - (PXFloatingCardContainer)containerViewController;
-- (PXFloatingCardPresentationController)initWithContainerViewController:(id)a3;
+- (PXFloatingCardPresentationController)initWithContainerViewController:(id)controller;
 - (PXFloatingCardPresentationControllerDelegate)delegate;
 - (PXFloatingCardViewController)cardViewController;
-- (double)availableHeightForCardViewController:(id)a3;
-- (void)_addChildViewController:(id)a3 toParentViewController:(id)a4;
+- (double)availableHeightForCardViewController:(id)controller;
+- (void)_addChildViewController:(id)controller toParentViewController:(id)viewController;
 - (void)_applyLayout;
-- (void)_removeChildViewControllerFromParent:(id)a3;
-- (void)cardViewController:(id)a3 didUpdateHeight:(double)a4;
-- (void)cardViewController:(id)a3 didUpdatePosition:(unint64_t)a4;
-- (void)dimAnimated:(BOOL)a3;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)floatingCardViewControllerDismissTapped:(id)a3;
-- (void)gestureCoordinatorDidBeginInteraction:(id)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4;
-- (void)setLayout:(id)a3 animated:(BOOL)a4;
+- (void)_removeChildViewControllerFromParent:(id)parent;
+- (void)cardViewController:(id)controller didUpdateHeight:(double)height;
+- (void)cardViewController:(id)controller didUpdatePosition:(unint64_t)position;
+- (void)dimAnimated:(BOOL)animated;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)floatingCardViewControllerDismissTapped:(id)tapped;
+- (void)gestureCoordinatorDidBeginInteraction:(id)interaction;
+- (void)presentViewController:(id)controller animated:(BOOL)animated;
+- (void)setLayout:(id)layout animated:(BOOL)animated;
 @end
 
 @implementation PXFloatingCardPresentationController
@@ -40,78 +40,78 @@
   return WeakRetained;
 }
 
-- (void)floatingCardViewControllerDismissTapped:(id)a3
+- (void)floatingCardViewControllerDismissTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(PXFloatingCardPresentationController *)self delegate];
-  [v5 presentationController:self dismissTappedForViewController:v4];
+  tappedCopy = tapped;
+  delegate = [(PXFloatingCardPresentationController *)self delegate];
+  [delegate presentationController:self dismissTappedForViewController:tappedCopy];
 }
 
-- (void)cardViewController:(id)a3 didUpdatePosition:(unint64_t)a4
+- (void)cardViewController:(id)controller didUpdatePosition:(unint64_t)position
 {
-  v5 = [(PXFloatingCardPresentationController *)self layout];
-  [v5 didUpdateCardPosition:a4];
+  layout = [(PXFloatingCardPresentationController *)self layout];
+  [layout didUpdateCardPosition:position];
 }
 
-- (void)cardViewController:(id)a3 didUpdateHeight:(double)a4
+- (void)cardViewController:(id)controller didUpdateHeight:(double)height
 {
-  v5 = [(PXFloatingCardPresentationController *)self layout];
-  [v5 didUpdateCardHeight:a4];
+  layout = [(PXFloatingCardPresentationController *)self layout];
+  [layout didUpdateCardHeight:height];
 }
 
-- (void)gestureCoordinatorDidBeginInteraction:(id)a3
+- (void)gestureCoordinatorDidBeginInteraction:(id)interaction
 {
-  v5 = [(PXFloatingCardPresentationController *)self containerViewController];
-  v3 = [v5 view];
-  v4 = [v3 window];
-  [v4 endEditing:1];
+  containerViewController = [(PXFloatingCardPresentationController *)self containerViewController];
+  view = [containerViewController view];
+  window = [view window];
+  [window endEditing:1];
 }
 
-- (double)availableHeightForCardViewController:(id)a3
+- (double)availableHeightForCardViewController:(id)controller
 {
-  v3 = [(PXFloatingCardPresentationController *)self containerViewController];
-  v4 = [v3 view];
-  v5 = [v4 safeAreaLayoutGuide];
+  containerViewController = [(PXFloatingCardPresentationController *)self containerViewController];
+  view = [containerViewController view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
 
-  [v5 layoutFrame];
+  [safeAreaLayoutGuide layoutFrame];
   v7 = v6 + -30.0;
 
   return v7;
 }
 
-- (void)_removeChildViewControllerFromParent:(id)a3
+- (void)_removeChildViewControllerFromParent:(id)parent
 {
-  v4 = a3;
-  [v4 willMoveToParentViewController:0];
-  v3 = [v4 view];
-  [v3 removeFromSuperview];
+  parentCopy = parent;
+  [parentCopy willMoveToParentViewController:0];
+  view = [parentCopy view];
+  [view removeFromSuperview];
 
-  [v4 removeFromParentViewController];
+  [parentCopy removeFromParentViewController];
 }
 
-- (void)_addChildViewController:(id)a3 toParentViewController:(id)a4
+- (void)_addChildViewController:(id)controller toParentViewController:(id)viewController
 {
-  v5 = a4;
-  v8 = a3;
-  [v5 addChildViewController:v8];
-  v6 = [v5 view];
-  v7 = [v8 view];
-  [v6 addSubview:v7];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  [viewControllerCopy addChildViewController:controllerCopy];
+  view = [viewControllerCopy view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  [v8 didMoveToParentViewController:v5];
+  [controllerCopy didMoveToParentViewController:viewControllerCopy];
 }
 
-- (void)setLayout:(id)a3 animated:(BOOL)a4
+- (void)setLayout:(id)layout animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_layout != v7)
+  animatedCopy = animated;
+  layoutCopy = layout;
+  if (self->_layout != layoutCopy)
   {
-    objc_storeStrong(&self->_layout, a3);
-    v8 = [(PXFloatingCardPresentationController *)self gestureCoordinator];
-    [v8 setLayout:v7];
+    objc_storeStrong(&self->_layout, layout);
+    gestureCoordinator = [(PXFloatingCardPresentationController *)self gestureCoordinator];
+    [gestureCoordinator setLayout:layoutCopy];
 
-    if (v4)
+    if (animatedCopy)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -128,21 +128,21 @@
   }
 }
 
-- (void)dimAnimated:(BOOL)a3
+- (void)dimAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(PXFloatingCardPresentationController *)self cardViewController];
-  v5 = v4;
-  if (v4)
+  animatedCopy = animated;
+  cardViewController = [(PXFloatingCardPresentationController *)self cardViewController];
+  v5 = cardViewController;
+  if (cardViewController)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __52__PXFloatingCardPresentationController_dimAnimated___block_invoke;
     aBlock[3] = &unk_1E774C648;
-    v12 = v4;
+    v12 = cardViewController;
     v6 = _Block_copy(aBlock);
     v7 = v6;
-    if (v3)
+    if (animatedCopy)
     {
       v8 = MEMORY[0x1E69DD250];
       v9[0] = MEMORY[0x1E69E9820];
@@ -166,19 +166,19 @@ void __52__PXFloatingCardPresentationController_dimAnimated___block_invoke(uint6
   [v1 setAlpha:0.699999988];
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(PXFloatingCardPresentationController *)self isPresenting])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXFloatingCardPresentationController.m" lineNumber:86 description:@"Attempting to dismiss a floating card while one is not presented."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFloatingCardPresentationController.m" lineNumber:86 description:@"Attempting to dismiss a floating card while one is not presented."];
   }
 
   [(PXFloatingCardPresentationController *)self setIsPresenting:0];
-  v6 = [(PXFloatingCardPresentationController *)self cardViewController];
+  cardViewController = [(PXFloatingCardPresentationController *)self cardViewController];
 
-  if (v6)
+  if (cardViewController)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -187,11 +187,11 @@ void __52__PXFloatingCardPresentationController_dimAnimated___block_invoke(uint6
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
     v8 = v7;
-    if (v3)
+    if (animatedCopy)
     {
-      v9 = [(PXFloatingCardPresentationController *)self cardViewController];
-      v10 = [v9 view];
-      [v10 frame];
+      cardViewController2 = [(PXFloatingCardPresentationController *)self cardViewController];
+      view = [cardViewController2 view];
+      [view frame];
       v12 = v11;
       v14 = v13;
       v16 = v15;
@@ -251,29 +251,29 @@ void __56__PXFloatingCardPresentationController_dismissAnimated___block_invoke_2
 
 - (void)_applyLayout
 {
-  v3 = [(PXFloatingCardPresentationController *)self layout];
-  [v3 width];
+  layout = [(PXFloatingCardPresentationController *)self layout];
+  [layout width];
   v5 = v4;
-  [v3 initialHeight];
+  [layout initialHeight];
   v7 = v6;
-  v8 = [(PXFloatingCardPresentationController *)self cardViewController];
-  [v8 setSize:{v5, v7}];
+  cardViewController = [(PXFloatingCardPresentationController *)self cardViewController];
+  [cardViewController setSize:{v5, v7}];
 
   v9 = MEMORY[0x1E69DD250];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __52__PXFloatingCardPresentationController__applyLayout__block_invoke;
   v17 = &unk_1E774C620;
-  v18 = self;
-  v19 = v3;
-  v10 = v3;
+  selfCopy = self;
+  v19 = layout;
+  v10 = layout;
   [v9 performWithoutAnimation:&v14];
   v11 = [(PXFloatingCardPresentationController *)self cardViewController:v14];
-  v12 = [v11 view];
-  [v12 setAutoresizingMask:33];
+  view = [v11 view];
+  [view setAutoresizingMask:33];
 
-  v13 = [(PXFloatingCardPresentationController *)self gestureCoordinator];
-  [v13 layoutDidChange];
+  gestureCoordinator = [(PXFloatingCardPresentationController *)self gestureCoordinator];
+  [gestureCoordinator layoutDidChange];
 }
 
 void __52__PXFloatingCardPresentationController__applyLayout__block_invoke(uint64_t a1)
@@ -287,21 +287,21 @@ void __52__PXFloatingCardPresentationController__applyLayout__block_invoke(uint6
   [v7 setCenter:{v3, v5}];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4
+- (void)presentViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if ([(PXFloatingCardPresentationController *)self isPresenting])
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PXFloatingCardPresentationController.m" lineNumber:45 description:@"Attempting to present a floating card while one is already being presented."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFloatingCardPresentationController.m" lineNumber:45 description:@"Attempting to present a floating card while one is already being presented."];
   }
 
   [(PXFloatingCardPresentationController *)self setIsPresenting:1];
-  v8 = [[PXFloatingCardViewController alloc] initWithContentViewController:v7];
+  v8 = [[PXFloatingCardViewController alloc] initWithContentViewController:controllerCopy];
   [(PXFloatingCardViewController *)v8 setDelegate:self];
   [(PXFloatingCardPresentationController *)self setCardViewController:v8];
-  if (v4)
+  if (animatedCopy)
   {
     v9 = 0.0;
   }
@@ -311,35 +311,35 @@ void __52__PXFloatingCardPresentationController__applyLayout__block_invoke(uint6
     v9 = 1.0;
   }
 
-  v10 = [(PXFloatingCardPresentationController *)self cardViewController];
-  v11 = [v10 view];
-  [v11 setAlpha:v9];
+  cardViewController = [(PXFloatingCardPresentationController *)self cardViewController];
+  view = [cardViewController view];
+  [view setAlpha:v9];
 
-  v12 = [(PXFloatingCardPresentationController *)self containerViewController];
-  [(PXFloatingCardPresentationController *)self _addChildViewController:v8 toParentViewController:v12];
+  containerViewController = [(PXFloatingCardPresentationController *)self containerViewController];
+  [(PXFloatingCardPresentationController *)self _addChildViewController:v8 toParentViewController:containerViewController];
 
-  v13 = [v7 view];
+  view2 = [controllerCopy view];
 
-  v14 = [v13 backgroundColor];
-  v15 = [(PXFloatingCardPresentationController *)self cardViewController];
-  v16 = [v15 grabberFooterView];
-  [v16 setBackgroundColor:v14];
+  backgroundColor = [view2 backgroundColor];
+  cardViewController2 = [(PXFloatingCardPresentationController *)self cardViewController];
+  grabberFooterView = [cardViewController2 grabberFooterView];
+  [grabberFooterView setBackgroundColor:backgroundColor];
 
   v17 = [PXFloatingCardGestureCoordinator alloc];
-  v18 = [(PXFloatingCardPresentationController *)self cardViewController];
-  v19 = [(PXFloatingCardPresentationController *)self layout];
-  v20 = [(PXFloatingCardGestureCoordinator *)v17 initWithCardViewController:v18 layout:v19];
+  cardViewController3 = [(PXFloatingCardPresentationController *)self cardViewController];
+  layout = [(PXFloatingCardPresentationController *)self layout];
+  v20 = [(PXFloatingCardGestureCoordinator *)v17 initWithCardViewController:cardViewController3 layout:layout];
   [(PXFloatingCardPresentationController *)self setGestureCoordinator:v20];
 
-  v21 = [(PXFloatingCardPresentationController *)self gestureCoordinator];
-  [v21 setDelegate:self];
+  gestureCoordinator = [(PXFloatingCardPresentationController *)self gestureCoordinator];
+  [gestureCoordinator setDelegate:self];
 
   [(PXFloatingCardPresentationController *)self _applyLayout];
-  if (v4)
+  if (animatedCopy)
   {
-    v22 = [(PXFloatingCardPresentationController *)self cardViewController];
-    v23 = [v22 view];
-    [v23 frame];
+    cardViewController4 = [(PXFloatingCardPresentationController *)self cardViewController];
+    view3 = [cardViewController4 view];
+    [view3 frame];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -354,9 +354,9 @@ void __52__PXFloatingCardPresentationController__applyLayout__block_invoke(uint6
     y = v41.origin.y;
     width = v41.size.width;
     height = v41.size.height;
-    v36 = [(PXFloatingCardPresentationController *)self cardViewController];
-    v37 = [v36 view];
-    [v37 setFrame:{x, y, width, height}];
+    cardViewController5 = [(PXFloatingCardPresentationController *)self cardViewController];
+    view4 = [cardViewController5 view];
+    [view4 setFrame:{x, y, width, height}];
 
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
@@ -386,16 +386,16 @@ void __71__PXFloatingCardPresentationController_presentViewController_animated__
   [v8 setFrame:{v4, v5, v6, v7}];
 }
 
-- (PXFloatingCardPresentationController)initWithContainerViewController:(id)a3
+- (PXFloatingCardPresentationController)initWithContainerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = PXFloatingCardPresentationController;
   v5 = [(PXFloatingCardPresentationController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_containerViewController, v4);
+    objc_storeWeak(&v5->_containerViewController, controllerCopy);
   }
 
   return v6;

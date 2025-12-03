@@ -1,14 +1,14 @@
 @interface FMPlusSignButton
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (_TtC6FindMy16FMPlusSignButton)initWithCoder:(id)a3;
-- (_TtC6FindMy16FMPlusSignButton)initWithFrame:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (_TtC6FindMy16FMPlusSignButton)initWithCoder:(id)coder;
+- (_TtC6FindMy16FMPlusSignButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation FMPlusSignButton
 
-- (_TtC6FindMy16FMPlusSignButton)initWithCoder:(id)a3
+- (_TtC6FindMy16FMPlusSignButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC6FindMy16FMPlusSignButton_isRTLLanguage) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -18,26 +18,26 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000EEAD0();
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = type metadata accessor for FMPlusSignButton();
   v25.receiver = self;
   v25.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(FMPlusSignButton *)&v25 titleRectForContentRect:x, y, width, height];
   v13 = v12;
   v15 = v14;
-  if (*(&v9->super.super.super.super.super.isa + OBJC_IVAR____TtC6FindMy16FMPlusSignButton_isRTLLanguage) == 1)
+  if (*(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC6FindMy16FMPlusSignButton_isRTLLanguage) == 1)
   {
-    v24.receiver = v9;
+    v24.receiver = selfCopy;
     v24.super_class = v8;
     [(FMPlusSignButton *)&v24 imageRectForContentRect:x, y, width, height];
     v17 = v16;
@@ -64,12 +64,12 @@
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21.receiver = self;
   v21.super_class = type metadata accessor for FMPlusSignButton();
   v7 = v21.receiver;
@@ -105,7 +105,7 @@
   return result;
 }
 
-- (_TtC6FindMy16FMPlusSignButton)initWithFrame:(CGRect)a3
+- (_TtC6FindMy16FMPlusSignButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

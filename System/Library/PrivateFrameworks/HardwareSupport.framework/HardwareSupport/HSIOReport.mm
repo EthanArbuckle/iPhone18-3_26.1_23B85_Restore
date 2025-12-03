@@ -1,19 +1,19 @@
 @interface HSIOReport
-+ (id)report:(id *)a3;
-+ (id)reportWithOnlySimpleChannels:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReport:(id)a3;
-- (HSIOReport)initWithReportDictionary:(id)a3;
++ (id)report:(id *)report;
++ (id)reportWithOnlySimpleChannels:(id *)channels;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReport:(id)report;
+- (HSIOReport)initWithReportDictionary:(id)dictionary;
 - (NSArray)channelDescriptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)reportByFilteringChannels:(id)a3;
+- (id)reportByFilteringChannels:(id)channels;
 - (unint64_t)hash;
 @end
 
 @implementation HSIOReport
 
-+ (id)report:(id *)a3
++ (id)report:(id *)report
 {
   v4 = IOReportCopyAllChannels();
   if (v4)
@@ -26,11 +26,11 @@
   else
   {
     v6 = 0;
-    if (a3)
+    if (report)
     {
       v8 = 0;
       v7 = 0;
-      *a3 = 0;
+      *report = 0;
     }
 
     else
@@ -42,25 +42,25 @@
   return v7;
 }
 
-- (HSIOReport)initWithReportDictionary:(id)a3
+- (HSIOReport)initWithReportDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = HSIOReport;
   v6 = [(HSIOReport *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reportDictionary, a3);
+    objc_storeStrong(&v6->_reportDictionary, dictionary);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   Aggregate = IOReportCreateAggregate();
-  v6 = [(HSIOReport *)self reportDictionary];
+  reportDictionary = [(HSIOReport *)self reportDictionary];
   v7 = IOReportMergeChannels();
 
   if (v7)
@@ -77,7 +77,7 @@
 
   else
   {
-    v14 = [objc_opt_class() allocWithZone:a3];
+    v14 = [objc_opt_class() allocWithZone:zone];
     v8 = [Aggregate copy];
     v13 = [v14 initWithReportDictionary:v8];
   }
@@ -87,16 +87,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HSIOReport *)self channelDescriptions];
-  v3 = [v2 hash];
+  channelDescriptions = [(HSIOReport *)self channelDescriptions];
+  v3 = [channelDescriptions hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -104,17 +104,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSIOReport *)self isEqualToReport:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSIOReport *)self isEqualToReport:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToReport:(id)a3
+- (BOOL)isEqualToReport:(id)report
 {
-  v4 = [a3 channelDescriptions];
-  v5 = [(HSIOReport *)self channelDescriptions];
-  v6 = [v4 isEqual:v5];
+  channelDescriptions = [report channelDescriptions];
+  channelDescriptions2 = [(HSIOReport *)self channelDescriptions];
+  v6 = [channelDescriptions isEqual:channelDescriptions2];
 
   return v6;
 }
@@ -128,12 +128,12 @@
   v4 = [(HSIOReport *)&v13 description];
   v14[0] = @"channel count";
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(HSIOReport *)self channelDescriptions];
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+  channelDescriptions = [(HSIOReport *)self channelDescriptions];
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(channelDescriptions, "count")}];
   v14[1] = @"channel descriptions";
   v15[0] = v7;
-  v8 = [(HSIOReport *)self channelDescriptions];
-  v15[1] = v8;
+  channelDescriptions2 = [(HSIOReport *)self channelDescriptions];
+  v15[1] = channelDescriptions2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
   v10 = [v3 stringWithFormat:@"%@ %@", v4, v9];
 
@@ -147,10 +147,10 @@
   channelDescriptions = self->_channelDescriptions;
   if (!channelDescriptions)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(HSIOReport *)self reportDictionary];
-    v10 = v4;
-    v6 = v4;
+    array = [MEMORY[0x277CBEB18] array];
+    reportDictionary = [(HSIOReport *)self reportDictionary];
+    v10 = array;
+    v6 = array;
     IOReportIterate();
 
     v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_1];
@@ -181,15 +181,15 @@ uint64_t __33__HSIOReport_channelDescriptions__block_invoke_2(uint64_t a1, void 
   return v7;
 }
 
-- (id)reportByFilteringChannels:(id)a3
+- (id)reportByFilteringChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   v5 = [(HSIOReport *)self copy];
-  v6 = [v5 reportDictionary];
-  v7 = [v6 mutableCopy];
+  reportDictionary = [v5 reportDictionary];
+  v7 = [reportDictionary mutableCopy];
 
-  v13 = v4;
-  v8 = v4;
+  v13 = channelsCopy;
+  v8 = channelsCopy;
   IOReportPrune();
   v9 = objc_alloc(objc_opt_class());
   v10 = [v7 copy];
@@ -214,7 +214,7 @@ uint64_t __40__HSIOReport_reportByFilteringChannels___block_invoke(uint64_t a1, 
   return v4;
 }
 
-+ (id)reportWithOnlySimpleChannels:(id *)a3
++ (id)reportWithOnlySimpleChannels:(id *)channels
 {
   v4 = IOReportCopyChannelsOfFormat();
   if (v4)
@@ -227,11 +227,11 @@ uint64_t __40__HSIOReport_reportByFilteringChannels___block_invoke(uint64_t a1, 
   else
   {
     v6 = 0;
-    if (a3)
+    if (channels)
     {
       v8 = 0;
       v7 = 0;
-      *a3 = 0;
+      *channels = 0;
     }
 
     else

@@ -1,15 +1,15 @@
 @interface CKDPShareAcceptRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)publicKeyVersion;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAcceptedInProcess:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAcceptedInProcess:(BOOL)process;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPShareAcceptRequest
@@ -39,9 +39,9 @@
   }
 }
 
-- (void)setHasAcceptedInProcess:(BOOL)a3
+- (void)setHasAcceptedInProcess:(BOOL)process
 {
-  if (a3)
+  if (process)
   {
     v3 = 2;
   }
@@ -127,44 +127,44 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_shareId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_etag)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_selfAddedPcs)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_publicKey)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_protectionInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_participantId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -172,7 +172,7 @@
   {
     publicKeyVersion = self->_publicKeyVersion;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -180,97 +180,97 @@
   {
     acceptedInProcess = self->_acceptedInProcess;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   shareId = self->_shareId;
-  v13 = v4;
+  v13 = toCopy;
   if (shareId)
   {
-    objc_msgSend_setShareId_(v4, v5, shareId);
-    v4 = v13;
+    objc_msgSend_setShareId_(toCopy, v5, shareId);
+    toCopy = v13;
   }
 
   etag = self->_etag;
   if (etag)
   {
     objc_msgSend_setEtag_(v13, v5, etag);
-    v4 = v13;
+    toCopy = v13;
   }
 
   selfAddedPcs = self->_selfAddedPcs;
   if (selfAddedPcs)
   {
     objc_msgSend_setSelfAddedPcs_(v13, v5, selfAddedPcs);
-    v4 = v13;
+    toCopy = v13;
   }
 
   publicKey = self->_publicKey;
   if (publicKey)
   {
     objc_msgSend_setPublicKey_(v13, v5, publicKey);
-    v4 = v13;
+    toCopy = v13;
   }
 
   protectionInfo = self->_protectionInfo;
   if (protectionInfo)
   {
     objc_msgSend_setProtectionInfo_(v13, v5, protectionInfo);
-    v4 = v13;
+    toCopy = v13;
   }
 
   participantId = self->_participantId;
   if (participantId)
   {
     objc_msgSend_setParticipantId_(v13, v5, participantId);
-    v4 = v13;
+    toCopy = v13;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 10) = self->_publicKeyVersion;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 10) = self->_publicKeyVersion;
+    *(toCopy + 68) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 64) = self->_acceptedInProcess;
-    *(v4 + 68) |= 2u;
+    *(toCopy + 64) = self->_acceptedInProcess;
+    *(toCopy + 68) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_shareId, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_shareId, v11, zone);
   v13 = *(v10 + 56);
   *(v10 + 56) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_etag, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_etag, v14, zone);
   v16 = *(v10 + 8);
   *(v10 + 8) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_selfAddedPcs, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_selfAddedPcs, v17, zone);
   v19 = *(v10 + 48);
   *(v10 + 48) = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_publicKey, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_publicKey, v20, zone);
   v22 = *(v10 + 32);
   *(v10 + 32) = v21;
 
-  v24 = objc_msgSend_copyWithZone_(self->_protectionInfo, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_protectionInfo, v23, zone);
   v25 = *(v10 + 24);
   *(v10 + 24) = v24;
 
-  v27 = objc_msgSend_copyWithZone_(self->_participantId, v26, a3);
+  v27 = objc_msgSend_copyWithZone_(self->_participantId, v26, zone);
   v28 = *(v10 + 16);
   *(v10 + 16) = v27;
 
@@ -291,17 +291,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_21;
   }
 
   shareId = self->_shareId;
-  v9 = v4[7];
+  v9 = equalCopy[7];
   if (shareId | v9)
   {
     if (!objc_msgSend_isEqual_(shareId, v7, v9))
@@ -311,7 +311,7 @@
   }
 
   etag = self->_etag;
-  v11 = v4[1];
+  v11 = equalCopy[1];
   if (etag | v11)
   {
     if (!objc_msgSend_isEqual_(etag, v7, v11))
@@ -321,7 +321,7 @@
   }
 
   selfAddedPcs = self->_selfAddedPcs;
-  v13 = v4[6];
+  v13 = equalCopy[6];
   if (selfAddedPcs | v13)
   {
     if (!objc_msgSend_isEqual_(selfAddedPcs, v7, v13))
@@ -331,7 +331,7 @@
   }
 
   publicKey = self->_publicKey;
-  v15 = v4[4];
+  v15 = equalCopy[4];
   if (publicKey | v15)
   {
     if (!objc_msgSend_isEqual_(publicKey, v7, v15))
@@ -341,7 +341,7 @@
   }
 
   protectionInfo = self->_protectionInfo;
-  v17 = v4[3];
+  v17 = equalCopy[3];
   if (protectionInfo | v17)
   {
     if (!objc_msgSend_isEqual_(protectionInfo, v7, v17))
@@ -351,7 +351,7 @@
   }
 
   participantId = self->_participantId;
-  v19 = v4[2];
+  v19 = equalCopy[2];
   if (participantId | v19)
   {
     if (!objc_msgSend_isEqual_(participantId, v7, v19))
@@ -362,21 +362,21 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_publicKeyVersion != *(v4 + 10))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_publicKeyVersion != *(equalCopy + 10))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_21;
   }
 
-  v20 = (*(v4 + 68) & 2) == 0;
+  v20 = (*(equalCopy + 68) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0)
+    if ((*(equalCopy + 68) & 2) == 0)
     {
 LABEL_21:
       v20 = 0;
@@ -385,13 +385,13 @@ LABEL_21:
 
     if (self->_acceptedInProcess)
     {
-      if ((v4[8] & 1) == 0)
+      if ((equalCopy[8] & 1) == 0)
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(v4 + 64))
+    else if (*(equalCopy + 64))
     {
       goto LABEL_21;
     }
@@ -436,12 +436,12 @@ LABEL_3:
   return v7 ^ v4 ^ v10 ^ v13 ^ v16 ^ v19 ^ v20 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   shareId = self->_shareId;
-  v6 = *(v4 + 7);
-  v16 = v4;
+  v6 = *(fromCopy + 7);
+  v16 = fromCopy;
   if (shareId)
   {
     if (!v6)
@@ -449,7 +449,7 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(shareId, v4, v6);
+    objc_msgSend_mergeFrom_(shareId, fromCopy, v6);
   }
 
   else
@@ -459,20 +459,20 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    objc_msgSend_setShareId_(self, v4, v6);
+    objc_msgSend_setShareId_(self, fromCopy, v6);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_7:
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   if (v7)
   {
-    objc_msgSend_setEtag_(self, v4, v7);
-    v4 = v16;
+    objc_msgSend_setEtag_(self, fromCopy, v7);
+    fromCopy = v16;
   }
 
   selfAddedPcs = self->_selfAddedPcs;
-  v9 = *(v4 + 6);
+  v9 = *(fromCopy + 6);
   if (selfAddedPcs)
   {
     if (!v9)
@@ -480,7 +480,7 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    objc_msgSend_mergeFrom_(selfAddedPcs, v4, v9);
+    objc_msgSend_mergeFrom_(selfAddedPcs, fromCopy, v9);
   }
 
   else
@@ -490,13 +490,13 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    objc_msgSend_setSelfAddedPcs_(self, v4, v9);
+    objc_msgSend_setSelfAddedPcs_(self, fromCopy, v9);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_15:
   publicKey = self->_publicKey;
-  v11 = *(v4 + 4);
+  v11 = *(fromCopy + 4);
   if (publicKey)
   {
     if (!v11)
@@ -504,7 +504,7 @@ LABEL_15:
       goto LABEL_21;
     }
 
-    objc_msgSend_mergeFrom_(publicKey, v4, v11);
+    objc_msgSend_mergeFrom_(publicKey, fromCopy, v11);
   }
 
   else
@@ -514,13 +514,13 @@ LABEL_15:
       goto LABEL_21;
     }
 
-    objc_msgSend_setPublicKey_(self, v4, v11);
+    objc_msgSend_setPublicKey_(self, fromCopy, v11);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_21:
   protectionInfo = self->_protectionInfo;
-  v13 = *(v4 + 3);
+  v13 = *(fromCopy + 3);
   if (protectionInfo)
   {
     if (!v13)
@@ -528,7 +528,7 @@ LABEL_21:
       goto LABEL_27;
     }
 
-    objc_msgSend_mergeFrom_(protectionInfo, v4, v13);
+    objc_msgSend_mergeFrom_(protectionInfo, fromCopy, v13);
   }
 
   else
@@ -538,29 +538,29 @@ LABEL_21:
       goto LABEL_27;
     }
 
-    objc_msgSend_setProtectionInfo_(self, v4, v13);
+    objc_msgSend_setProtectionInfo_(self, fromCopy, v13);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_27:
-  v14 = *(v4 + 2);
+  v14 = *(fromCopy + 2);
   if (v14)
   {
-    objc_msgSend_setParticipantId_(self, v4, v14);
-    v4 = v16;
+    objc_msgSend_setParticipantId_(self, fromCopy, v14);
+    fromCopy = v16;
   }
 
-  v15 = *(v4 + 68);
+  v15 = *(fromCopy + 68);
   if (v15)
   {
-    self->_publicKeyVersion = *(v4 + 10);
+    self->_publicKeyVersion = *(fromCopy + 10);
     *&self->_has |= 1u;
-    v15 = *(v4 + 68);
+    v15 = *(fromCopy + 68);
   }
 
   if ((v15 & 2) != 0)
   {
-    self->_acceptedInProcess = *(v4 + 64);
+    self->_acceptedInProcess = *(fromCopy + 64);
     *&self->_has |= 2u;
   }
 

@@ -1,10 +1,10 @@
 @interface APSDecayTimer
-- (APSDecayTimer)initWithHourlyCostThreshold:(unint64_t)a3 costMaximum:(unint64_t)a4 identifier:(id)a5;
+- (APSDecayTimer)initWithHourlyCostThreshold:(unint64_t)threshold costMaximum:(unint64_t)maximum identifier:(id)identifier;
 - (void)_clearDecayTimer;
 - (void)_decayCost;
 - (void)_decayTimerFired;
 - (void)_handleSignificantTimeChange;
-- (void)addCost:(unint64_t)a3;
+- (void)addCost:(unint64_t)cost;
 - (void)dealloc;
 @end
 
@@ -20,7 +20,7 @@
     {
       identifier = self->_identifier;
       *buf = 138412802;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
       v23 = identifier;
       v24 = 2048;
@@ -73,7 +73,7 @@ LABEL_11:
     {
       v19 = self->_decayTimer;
       *buf = 138412546;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
       v23 = v19;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ scheduled decay timer %@", buf, 0x16u);
@@ -81,24 +81,24 @@ LABEL_11:
   }
 }
 
-- (APSDecayTimer)initWithHourlyCostThreshold:(unint64_t)a3 costMaximum:(unint64_t)a4 identifier:(id)a5
+- (APSDecayTimer)initWithHourlyCostThreshold:(unint64_t)threshold costMaximum:(unint64_t)maximum identifier:(id)identifier
 {
-  v8 = a5;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = APSDecayTimer;
   v9 = [(APSDecayTimer *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    v9->_maxCost = a4;
-    v9->_hourlyCostThreshold = a3;
+    v9->_maxCost = maximum;
+    v9->_hourlyCostThreshold = threshold;
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v10, sub_1000B45C8, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     v12 = objc_alloc_init(NSDate);
     lastCostDecayAdjustment = v10->_lastCostDecayAdjustment;
     v10->_lastCostDecayAdjustment = v12;
 
-    v14 = [v8 copy];
+    v14 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v14;
   }
@@ -116,10 +116,10 @@ LABEL_11:
   [(APSDecayTimer *)&v4 dealloc];
 }
 
-- (void)addCost:(unint64_t)a3
+- (void)addCost:(unint64_t)cost
 {
   [(APSDecayTimer *)self _decayCost];
-  maxCost = self->_currentCost + a3;
+  maxCost = self->_currentCost + cost;
   if (maxCost >= self->_maxCost)
   {
     maxCost = self->_maxCost;
@@ -134,7 +134,7 @@ LABEL_11:
   {
     identifier = self->_identifier;
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = identifier;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@:%@ Resetting cost due to significant time change note", &v6, 0x16u);
@@ -153,7 +153,7 @@ LABEL_11:
   {
     identifier = self->_identifier;
     v4 = 138412546;
-    v5 = self;
+    selfCopy = self;
     v6 = 2112;
     v7 = identifier;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@:%@ decay timer fired", &v4, 0x16u);

@@ -2,71 +2,71 @@
 - (NSArray)urls;
 - (NSArray)vasPasses;
 - (NSArray)vasProtocol;
-- (SPRReadParameters)initWithCoder:(id)a3;
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasPasses:(id)a4 urls:(id)a5 amount:(id *)a6 currencyCode:(id)a7 transactionType:(unsigned __int8)a8 merchantCategoryCode:(id)a9 interfaceDeviceSerial:(id)a10 kernelToken:(id)a11 timeoutReadPay:(int64_t)a12 timeoutReadVas:(int64_t)a13;
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasPasses:(id)a4 urls:(id)a5 amount:(id *)a6 currencyCode:(id)a7 transactionType:(unsigned __int8)a8 merchantCategoryCode:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12;
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasRequests:(id)a4 amount:(id *)a5 currencyCode:(id)a6 transactionType:(unsigned __int8)a7 merchantCategoryCode:(id)a8 interfaceDeviceSerial:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12;
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasRequests:(id)a4 amount:(id *)a5 currencyCode:(id)a6 transactionType:(unsigned __int8)a7 merchantCategoryCode:(id)a8 interfaceDeviceSerial:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12 transactionId:(id)a13 preferredSchemes:(id)a14;
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasRequests:(id)a4 amount:(id *)a5 currencyCode:(id)a6 transactionType:(unsigned __int8)a7 merchantCategoryCode:(id)a8 interfaceDeviceSerial:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12 transactionId:(id)a13 schemePreference:(id)a14;
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasRequests:(id)a4 amount:(id *)a5 currencyCode:(id)a6 transactionType:(unsigned __int8)a7 merchantCategoryCode:(id)a8 interfaceDeviceSerial:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12 transactionUUID:(id)a13 preferredSchemes:(id)a14 vtid:(id)a15 bundleID:(id)a16;
+- (SPRReadParameters)initWithCoder:(id)coder;
+- (SPRReadParameters)initWithMode:(int64_t)mode vasPasses:(id)passes urls:(id)urls amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)self0 kernelToken:(id)self1 timeoutReadPay:(int64_t)self2 timeoutReadVas:(int64_t)self3;
+- (SPRReadParameters)initWithMode:(int64_t)mode vasPasses:(id)passes urls:(id)urls amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2;
+- (SPRReadParameters)initWithMode:(int64_t)mode vasRequests:(id)requests amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)serial kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2;
+- (SPRReadParameters)initWithMode:(int64_t)mode vasRequests:(id)requests amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)serial kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2 transactionId:(id)self3 preferredSchemes:(id)self4;
+- (SPRReadParameters)initWithMode:(int64_t)mode vasRequests:(id)requests amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)serial kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2 transactionId:(id)self3 schemePreference:(id)self4;
+- (SPRReadParameters)initWithMode:(int64_t)mode vasRequests:(id)requests amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)serial kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2 transactionUUID:(id)self3 preferredSchemes:(id)self4 vtid:(id)self5 bundleID:(id)self6;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPRReadParameters
 
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasRequests:(id)a4 amount:(id *)a5 currencyCode:(id)a6 transactionType:(unsigned __int8)a7 merchantCategoryCode:(id)a8 interfaceDeviceSerial:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12 transactionUUID:(id)a13 preferredSchemes:(id)a14 vtid:(id)a15 bundleID:(id)a16
+- (SPRReadParameters)initWithMode:(int64_t)mode vasRequests:(id)requests amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)serial kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2 transactionUUID:(id)self3 preferredSchemes:(id)self4 vtid:(id)self5 bundleID:(id)self6
 {
-  v20 = a4;
-  v21 = a6;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a13;
-  v44 = a14;
-  v46 = a15;
-  v47 = a16;
+  requestsCopy = requests;
+  codeCopy = code;
+  categoryCodeCopy = categoryCode;
+  serialCopy = serial;
+  tokenCopy = token;
+  dCopy = d;
+  schemesCopy = schemes;
+  vtidCopy = vtid;
+  iDCopy = iD;
   vasRequests = self->_vasRequests;
-  self->_mode = a3;
-  self->_vasRequests = v20;
-  v49 = v20;
+  self->_mode = mode;
+  self->_vasRequests = requestsCopy;
+  v49 = requestsCopy;
 
-  v27 = *a5;
-  *&self->_amount._mantissa[6] = *&a5->var5[6];
+  v27 = *amount;
+  *&self->_amount._mantissa[6] = *&amount->var5[6];
   *&self->_amount = v27;
   currencyCode = self->_currencyCode;
-  self->_currencyCode = v21;
-  v29 = v21;
+  self->_currencyCode = codeCopy;
+  v29 = codeCopy;
 
-  self->_transactionType = a7;
+  self->_transactionType = type;
   merchantCategoryCode = self->_merchantCategoryCode;
-  self->_merchantCategoryCode = v22;
-  v31 = v22;
+  self->_merchantCategoryCode = categoryCodeCopy;
+  v31 = categoryCodeCopy;
 
   interfaceDeviceSerial = self->_interfaceDeviceSerial;
-  self->_interfaceDeviceSerial = v23;
-  v33 = v23;
+  self->_interfaceDeviceSerial = serialCopy;
+  v33 = serialCopy;
 
   kernelToken = self->_kernelToken;
-  self->_kernelToken = v24;
-  v35 = v24;
+  self->_kernelToken = tokenCopy;
+  v35 = tokenCopy;
 
-  self->_timeoutReadPay = a11;
-  self->_timeoutReadVas = a12;
+  self->_timeoutReadPay = pay;
+  self->_timeoutReadVas = vas;
   transactionUUID = self->_transactionUUID;
-  self->_transactionUUID = v25;
-  v37 = v25;
+  self->_transactionUUID = dCopy;
+  v37 = dCopy;
 
   preferredSchemes = self->_preferredSchemes;
-  self->_preferredSchemes = v44;
-  v39 = v44;
+  self->_preferredSchemes = schemesCopy;
+  v39 = schemesCopy;
 
   vtid = self->_vtid;
-  self->_vtid = v46;
-  v41 = v46;
+  self->_vtid = vtidCopy;
+  v41 = vtidCopy;
 
   bundleID = self->_bundleID;
-  self->_bundleID = v47;
+  self->_bundleID = iDCopy;
 
   return self;
 }
@@ -147,21 +147,21 @@
   return v59;
 }
 
-- (SPRReadParameters)initWithCoder:(id)a3
+- (SPRReadParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_mode = objc_msgSend_decodeIntegerForKey_(v4, v5, @"mode", v6, v7);
+  coderCopy = coder;
+  self->_mode = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"mode", v6, v7);
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v14 = objc_msgSend_setWithObjects_(v8, v11, v9, v12, v13, v10, 0);
-  v17 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v15, v14, @"vasRequests", v16);
+  v17 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v15, v14, @"vasRequests", v16);
   vasRequests = self->_vasRequests;
   self->_vasRequests = v17;
 
-  if (v4)
+  if (coderCopy)
   {
-    objc_msgSend_decodeDecimalForKey_(v4, v19, @"amount", v20, v21);
+    objc_msgSend_decodeDecimalForKey_(coderCopy, v19, @"amount", v20, v21);
   }
 
   else
@@ -173,35 +173,35 @@
   *&self->_amount = v83;
   *&self->_amount._mantissa[6] = v84;
   v22 = objc_opt_class();
-  v25 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v23, v22, @"currencyCode", v24);
+  v25 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v23, v22, @"currencyCode", v24);
   currencyCode = self->_currencyCode;
   self->_currencyCode = v25;
 
-  self->_transactionType = objc_msgSend_decodeIntegerForKey_(v4, v27, @"transactionType", v28, v29);
+  self->_transactionType = objc_msgSend_decodeIntegerForKey_(coderCopy, v27, @"transactionType", v28, v29);
   v30 = objc_opt_class();
-  v33 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v31, v30, @"merchantCategoryCode", v32);
+  v33 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v31, v30, @"merchantCategoryCode", v32);
   merchantCategoryCode = self->_merchantCategoryCode;
   self->_merchantCategoryCode = v33;
 
   v35 = objc_opt_class();
-  v38 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v36, v35, @"interfaceDeviceSerial", v37);
+  v38 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v36, v35, @"interfaceDeviceSerial", v37);
   interfaceDeviceSerial = self->_interfaceDeviceSerial;
   self->_interfaceDeviceSerial = v38;
 
   v40 = objc_opt_class();
-  v43 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v41, v40, @"kernelToken", v42);
+  v43 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v41, v40, @"kernelToken", v42);
   kernelToken = self->_kernelToken;
   self->_kernelToken = v43;
 
-  self->_timeoutReadPay = objc_msgSend_decodeIntegerForKey_(v4, v45, @"timeoutReadPay", v46, v47);
-  self->_timeoutReadVas = objc_msgSend_decodeIntegerForKey_(v4, v48, @"timeoutReadVas", v49, v50);
+  self->_timeoutReadPay = objc_msgSend_decodeIntegerForKey_(coderCopy, v45, @"timeoutReadPay", v46, v47);
+  self->_timeoutReadVas = objc_msgSend_decodeIntegerForKey_(coderCopy, v48, @"timeoutReadVas", v49, v50);
   v51 = objc_opt_class();
-  v54 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v52, v51, @"transactionUUID", v53);
+  v54 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v52, v51, @"transactionUUID", v53);
   transactionUUID = self->_transactionUUID;
   self->_transactionUUID = v54;
 
   v56 = objc_opt_class();
-  v59 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v57, v56, @"schemePreference", v58);
+  v59 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v57, v56, @"schemePreference", v58);
   schemePreference = self->_schemePreference;
   self->_schemePreference = v59;
 
@@ -209,43 +209,43 @@
   v62 = objc_opt_class();
   v63 = objc_opt_class();
   v67 = objc_msgSend_setWithObjects_(v61, v64, v62, v65, v66, v63, 0);
-  v70 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v68, v67, @"preferredSchemes", v69);
+  v70 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v68, v67, @"preferredSchemes", v69);
   preferredSchemes = self->_preferredSchemes;
   self->_preferredSchemes = v70;
 
   v72 = objc_opt_class();
-  v75 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v73, v72, @"vtid", v74);
+  v75 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v73, v72, @"vtid", v74);
   vtid = self->_vtid;
   self->_vtid = v75;
 
   v77 = objc_opt_class();
-  v80 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v78, v77, @"bundleID", v79);
+  v80 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v78, v77, @"bundleID", v79);
   bundleID = self->_bundleID;
   self->_bundleID = v80;
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mode = self->_mode;
-  v5 = a3;
-  objc_msgSend_encodeInteger_forKey_(v5, v6, mode, @"mode", v7);
-  objc_msgSend_encodeObject_forKey_(v5, v8, self->_vasRequests, @"vasRequests", v9);
+  coderCopy = coder;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, mode, @"mode", v7);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_vasRequests, @"vasRequests", v9);
   amount = self->_amount;
-  objc_msgSend_encodeDecimal_forKey_(v5, v10, &amount, @"amount", v11);
-  objc_msgSend_encodeObject_forKey_(v5, v12, self->_currencyCode, @"currencyCode", v13);
-  objc_msgSend_encodeInteger_forKey_(v5, v14, self->_transactionType, @"transactionType", v15);
-  objc_msgSend_encodeObject_forKey_(v5, v16, self->_merchantCategoryCode, @"merchantCategoryCode", v17);
-  objc_msgSend_encodeObject_forKey_(v5, v18, self->_interfaceDeviceSerial, @"interfaceDeviceSerial", v19);
-  objc_msgSend_encodeObject_forKey_(v5, v20, self->_kernelToken, @"kernelToken", v21);
-  objc_msgSend_encodeInteger_forKey_(v5, v22, self->_timeoutReadPay, @"timeoutReadPay", v23);
-  objc_msgSend_encodeInteger_forKey_(v5, v24, self->_timeoutReadVas, @"timeoutReadVas", v25);
-  objc_msgSend_encodeObject_forKey_(v5, v26, self->_transactionUUID, @"transactionUUID", v27);
-  objc_msgSend_encodeObject_forKey_(v5, v28, self->_schemePreference, @"schemePreference", v29);
-  objc_msgSend_encodeObject_forKey_(v5, v30, self->_preferredSchemes, @"preferredSchemes", v31);
-  objc_msgSend_encodeObject_forKey_(v5, v32, self->_vtid, @"vtid", v33);
-  objc_msgSend_encodeObject_forKey_(v5, v34, self->_bundleID, @"bundleID", v35);
+  objc_msgSend_encodeDecimal_forKey_(coderCopy, v10, &amount, @"amount", v11);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, self->_currencyCode, @"currencyCode", v13);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v14, self->_transactionType, @"transactionType", v15);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, self->_merchantCategoryCode, @"merchantCategoryCode", v17);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v18, self->_interfaceDeviceSerial, @"interfaceDeviceSerial", v19);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, self->_kernelToken, @"kernelToken", v21);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v22, self->_timeoutReadPay, @"timeoutReadPay", v23);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v24, self->_timeoutReadVas, @"timeoutReadVas", v25);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v26, self->_transactionUUID, @"transactionUUID", v27);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, self->_schemePreference, @"schemePreference", v29);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v30, self->_preferredSchemes, @"preferredSchemes", v31);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, self->_vtid, @"vtid", v33);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v34, self->_bundleID, @"bundleID", v35);
 }
 
 - (NSArray)vasProtocol
@@ -368,98 +368,98 @@
   return v11;
 }
 
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasPasses:(id)a4 urls:(id)a5 amount:(id *)a6 currencyCode:(id)a7 transactionType:(unsigned __int8)a8 merchantCategoryCode:(id)a9 interfaceDeviceSerial:(id)a10 kernelToken:(id)a11 timeoutReadPay:(int64_t)a12 timeoutReadVas:(int64_t)a13
+- (SPRReadParameters)initWithMode:(int64_t)mode vasPasses:(id)passes urls:(id)urls amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)self0 kernelToken:(id)self1 timeoutReadPay:(int64_t)self2 timeoutReadVas:(int64_t)self3
 {
-  v37 = a8;
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a7;
-  v21 = sub_26A941058(a4, a5);
+  typeCopy = type;
+  tokenCopy = token;
+  serialCopy = serial;
+  categoryCodeCopy = categoryCode;
+  codeCopy = code;
+  v21 = sub_26A941058(passes, urls);
   v26 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v22, v23, v24, v25);
   v31 = objc_msgSend_description(v26, v27, v28, v29, v30);
-  v38 = *a6;
-  Vas_transactionId_schemePreference = objc_msgSend_initWithMode_vasRequests_amount_currencyCode_transactionType_merchantCategoryCode_interfaceDeviceSerial_kernelToken_timeoutReadPay_timeoutReadVas_transactionId_schemePreference_(self, v32, a3, v21, &v38, v20, v37, v19, v18, v17, a12, a13, v31, 0);
+  v38 = *amount;
+  Vas_transactionId_schemePreference = objc_msgSend_initWithMode_vasRequests_amount_currencyCode_transactionType_merchantCategoryCode_interfaceDeviceSerial_kernelToken_timeoutReadPay_timeoutReadVas_transactionId_schemePreference_(self, v32, mode, v21, &v38, codeCopy, typeCopy, categoryCodeCopy, serialCopy, tokenCopy, pay, vas, v31, 0);
 
   return Vas_transactionId_schemePreference;
 }
 
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasPasses:(id)a4 urls:(id)a5 amount:(id *)a6 currencyCode:(id)a7 transactionType:(unsigned __int8)a8 merchantCategoryCode:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12
+- (SPRReadParameters)initWithMode:(int64_t)mode vasPasses:(id)passes urls:(id)urls amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2
 {
-  v36 = a8;
-  v16 = a10;
-  v17 = a9;
-  v18 = a7;
-  v19 = sub_26A941058(a4, a5);
+  typeCopy = type;
+  tokenCopy = token;
+  categoryCodeCopy = categoryCode;
+  codeCopy = code;
+  v19 = sub_26A941058(passes, urls);
   v20 = objc_opt_new();
   v25 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v21, v22, v23, v24);
   v30 = objc_msgSend_description(v25, v26, v27, v28, v29);
-  v37 = *a6;
-  Vas_transactionId_schemePreference = objc_msgSend_initWithMode_vasRequests_amount_currencyCode_transactionType_merchantCategoryCode_interfaceDeviceSerial_kernelToken_timeoutReadPay_timeoutReadVas_transactionId_schemePreference_(self, v31, a3, v19, &v37, v18, v36, v17, v20, v16, a11, a12, v30, 0);
+  v37 = *amount;
+  Vas_transactionId_schemePreference = objc_msgSend_initWithMode_vasRequests_amount_currencyCode_transactionType_merchantCategoryCode_interfaceDeviceSerial_kernelToken_timeoutReadPay_timeoutReadVas_transactionId_schemePreference_(self, v31, mode, v19, &v37, codeCopy, typeCopy, categoryCodeCopy, v20, tokenCopy, pay, vas, v30, 0);
 
   return Vas_transactionId_schemePreference;
 }
 
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasRequests:(id)a4 amount:(id *)a5 currencyCode:(id)a6 transactionType:(unsigned __int8)a7 merchantCategoryCode:(id)a8 interfaceDeviceSerial:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12
+- (SPRReadParameters)initWithMode:(int64_t)mode vasRequests:(id)requests amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)serial kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2
 {
-  v37 = a7;
+  typeCopy = type;
   v16 = MEMORY[0x277CCAD78];
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a6;
-  v21 = a4;
+  tokenCopy = token;
+  serialCopy = serial;
+  categoryCodeCopy = categoryCode;
+  codeCopy = code;
+  requestsCopy = requests;
   v26 = objc_msgSend_UUID(v16, v22, v23, v24, v25);
   v31 = objc_msgSend_description(v26, v27, v28, v29, v30);
-  v38 = *a5;
-  Vas_transactionId_schemePreference = objc_msgSend_initWithMode_vasRequests_amount_currencyCode_transactionType_merchantCategoryCode_interfaceDeviceSerial_kernelToken_timeoutReadPay_timeoutReadVas_transactionId_schemePreference_(self, v32, a3, v21, &v38, v20, v37, v19, v18, v17, a11, a12, v31, 0);
+  v38 = *amount;
+  Vas_transactionId_schemePreference = objc_msgSend_initWithMode_vasRequests_amount_currencyCode_transactionType_merchantCategoryCode_interfaceDeviceSerial_kernelToken_timeoutReadPay_timeoutReadVas_transactionId_schemePreference_(self, v32, mode, requestsCopy, &v38, codeCopy, typeCopy, categoryCodeCopy, serialCopy, tokenCopy, pay, vas, v31, 0);
 
   return Vas_transactionId_schemePreference;
 }
 
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasRequests:(id)a4 amount:(id *)a5 currencyCode:(id)a6 transactionType:(unsigned __int8)a7 merchantCategoryCode:(id)a8 interfaceDeviceSerial:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12 transactionId:(id)a13 schemePreference:(id)a14
+- (SPRReadParameters)initWithMode:(int64_t)mode vasRequests:(id)requests amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)serial kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2 transactionId:(id)self3 schemePreference:(id)self4
 {
-  v19 = a4;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  requestsCopy = requests;
+  codeCopy = code;
+  categoryCodeCopy = categoryCode;
+  serialCopy = serial;
+  tokenCopy = token;
   vasRequests = self->_vasRequests;
-  self->_mode = a3;
-  self->_vasRequests = v19;
-  v25 = v19;
-  v26 = a14;
-  v27 = a13;
+  self->_mode = mode;
+  self->_vasRequests = requestsCopy;
+  v25 = requestsCopy;
+  preferenceCopy = preference;
+  idCopy = id;
 
-  v28 = *a5;
-  *&self->_amount._mantissa[6] = *&a5->var5[6];
+  v28 = *amount;
+  *&self->_amount._mantissa[6] = *&amount->var5[6];
   *&self->_amount = v28;
   currencyCode = self->_currencyCode;
-  self->_currencyCode = v20;
-  v30 = v20;
+  self->_currencyCode = codeCopy;
+  v30 = codeCopy;
 
-  self->_transactionType = a7;
+  self->_transactionType = type;
   merchantCategoryCode = self->_merchantCategoryCode;
-  self->_merchantCategoryCode = v21;
-  v32 = v21;
+  self->_merchantCategoryCode = categoryCodeCopy;
+  v32 = categoryCodeCopy;
 
   interfaceDeviceSerial = self->_interfaceDeviceSerial;
-  self->_interfaceDeviceSerial = v22;
-  v34 = v22;
+  self->_interfaceDeviceSerial = serialCopy;
+  v34 = serialCopy;
 
   kernelToken = self->_kernelToken;
-  self->_kernelToken = v23;
-  v36 = v23;
+  self->_kernelToken = tokenCopy;
+  v36 = tokenCopy;
 
-  self->_timeoutReadPay = a11;
-  self->_timeoutReadVas = a12;
+  self->_timeoutReadPay = pay;
+  self->_timeoutReadVas = vas;
   v37 = objc_alloc(MEMORY[0x277CCAD78]);
-  v41 = objc_msgSend_initWithUUIDString_(v37, v38, v27, v39, v40);
+  v41 = objc_msgSend_initWithUUIDString_(v37, v38, idCopy, v39, v40);
 
   transactionUUID = self->_transactionUUID;
   self->_transactionUUID = v41;
 
-  v46 = objc_msgSend_arrayWithObjects_(MEMORY[0x277CBEA60], v43, v26, v44, v45, 0);
+  v46 = objc_msgSend_arrayWithObjects_(MEMORY[0x277CBEA60], v43, preferenceCopy, v44, v45, 0);
 
   preferredSchemes = self->_preferredSchemes;
   self->_preferredSchemes = v46;
@@ -467,50 +467,50 @@
   return self;
 }
 
-- (SPRReadParameters)initWithMode:(int64_t)a3 vasRequests:(id)a4 amount:(id *)a5 currencyCode:(id)a6 transactionType:(unsigned __int8)a7 merchantCategoryCode:(id)a8 interfaceDeviceSerial:(id)a9 kernelToken:(id)a10 timeoutReadPay:(int64_t)a11 timeoutReadVas:(int64_t)a12 transactionId:(id)a13 preferredSchemes:(id)a14
+- (SPRReadParameters)initWithMode:(int64_t)mode vasRequests:(id)requests amount:(id *)amount currencyCode:(id)code transactionType:(unsigned __int8)type merchantCategoryCode:(id)categoryCode interfaceDeviceSerial:(id)serial kernelToken:(id)self0 timeoutReadPay:(int64_t)self1 timeoutReadVas:(int64_t)self2 transactionId:(id)self3 preferredSchemes:(id)self4
 {
-  v19 = a4;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a14;
+  requestsCopy = requests;
+  codeCopy = code;
+  categoryCodeCopy = categoryCode;
+  serialCopy = serial;
+  tokenCopy = token;
+  schemesCopy = schemes;
   vasRequests = self->_vasRequests;
-  self->_mode = a3;
-  self->_vasRequests = v19;
-  v26 = v19;
-  v27 = a13;
+  self->_mode = mode;
+  self->_vasRequests = requestsCopy;
+  v26 = requestsCopy;
+  idCopy = id;
 
-  v28 = *a5;
-  *&self->_amount._mantissa[6] = *&a5->var5[6];
+  v28 = *amount;
+  *&self->_amount._mantissa[6] = *&amount->var5[6];
   *&self->_amount = v28;
   currencyCode = self->_currencyCode;
-  self->_currencyCode = v20;
-  v30 = v20;
+  self->_currencyCode = codeCopy;
+  v30 = codeCopy;
 
-  self->_transactionType = a7;
+  self->_transactionType = type;
   merchantCategoryCode = self->_merchantCategoryCode;
-  self->_merchantCategoryCode = v21;
-  v32 = v21;
+  self->_merchantCategoryCode = categoryCodeCopy;
+  v32 = categoryCodeCopy;
 
   interfaceDeviceSerial = self->_interfaceDeviceSerial;
-  self->_interfaceDeviceSerial = v22;
-  v34 = v22;
+  self->_interfaceDeviceSerial = serialCopy;
+  v34 = serialCopy;
 
   kernelToken = self->_kernelToken;
-  self->_kernelToken = v23;
-  v36 = v23;
+  self->_kernelToken = tokenCopy;
+  v36 = tokenCopy;
 
-  self->_timeoutReadPay = a11;
-  self->_timeoutReadVas = a12;
+  self->_timeoutReadPay = pay;
+  self->_timeoutReadVas = vas;
   v37 = objc_alloc(MEMORY[0x277CCAD78]);
-  v41 = objc_msgSend_initWithUUIDString_(v37, v38, v27, v39, v40);
+  v41 = objc_msgSend_initWithUUIDString_(v37, v38, idCopy, v39, v40);
 
   transactionUUID = self->_transactionUUID;
   self->_transactionUUID = v41;
 
   preferredSchemes = self->_preferredSchemes;
-  self->_preferredSchemes = v24;
+  self->_preferredSchemes = schemesCopy;
 
   return self;
 }

@@ -1,50 +1,50 @@
 @interface AVTAvatarListViewItem
-- (AVTAvatarListViewItem)initWithView:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVTAvatarListViewItem)initWithView:(id)view;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)downcastWithRecordHandler:(id)a3 imageHandler:(id)a4 viewHandler:(id)a5;
+- (void)downcastWithRecordHandler:(id)handler imageHandler:(id)imageHandler viewHandler:(id)viewHandler;
 @end
 
 @implementation AVTAvatarListViewItem
 
-- (AVTAvatarListViewItem)initWithView:(id)a3
+- (AVTAvatarListViewItem)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = AVTAvatarListViewItem;
   v6 = [(AVTAvatarListViewItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
   }
 
   return v7;
 }
 
-- (void)downcastWithRecordHandler:(id)a3 imageHandler:(id)a4 viewHandler:(id)a5
+- (void)downcastWithRecordHandler:(id)handler imageHandler:(id)imageHandler viewHandler:(id)viewHandler
 {
-  if (a5)
+  if (viewHandler)
   {
-    (*(a5 + 2))(a5, self);
+    (*(viewHandler + 2))(viewHandler, self);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v4}];
+      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", equalCopy}];
     }
 
-    v5 = [v4 view];
-    v6 = [(AVTAvatarListViewItem *)self view];
-    v7 = v5 == v6;
+    view = [equalCopy view];
+    view2 = [(AVTAvatarListViewItem *)self view];
+    v7 = view == view2;
   }
 
   else
@@ -57,8 +57,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AVTAvatarListViewItem *)self view];
-  v3 = [v2 hash];
+  view = [(AVTAvatarListViewItem *)self view];
+  v3 = [view hash];
 
   return v3;
 }

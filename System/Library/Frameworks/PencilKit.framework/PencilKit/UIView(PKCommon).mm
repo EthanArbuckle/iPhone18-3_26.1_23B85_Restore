@@ -6,10 +6,10 @@
 
 - (BOOL)_pk_useCompactLayout
 {
-  v2 = [a1 traitCollection];
-  v3 = [a1 window];
-  v4 = [v3 windowScene];
-  v5 = PKUseCompactSize(v2, v4);
+  traitCollection = [self traitCollection];
+  window = [self window];
+  windowScene = [window windowScene];
+  v5 = PKUseCompactSize(traitCollection, windowScene);
 
   return v5;
 }

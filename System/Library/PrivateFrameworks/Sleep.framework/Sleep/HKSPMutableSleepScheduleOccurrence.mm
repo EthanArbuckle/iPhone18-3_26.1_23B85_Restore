@@ -1,42 +1,42 @@
 @interface HKSPMutableSleepScheduleOccurrence
 - (HKSPAlarmConfiguration)alarmConfiguration;
 - (HKSPMutableSleepScheduleOccurrence)init;
-- (HKSPMutableSleepScheduleOccurrence)initWithCoder:(id)a3;
-- (HKSPMutableSleepScheduleOccurrence)initWithTemplateOccurrence:(id)a3;
+- (HKSPMutableSleepScheduleOccurrence)initWithCoder:(id)coder;
+- (HKSPMutableSleepScheduleOccurrence)initWithTemplateOccurrence:(id)occurrence;
 - (HKSPSleepScheduleDayOccurrence)backingOccurrence;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromObject:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromObject:(id)object;
 - (id)mutableCopy;
 - (unint64_t)weekdays;
-- (void)applyHourAndMinuteFromBedtimeComponents:(id)a3 wakeUpComponents:(id)a4 gregorianCalendar:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyHourAndMinuteFromBedtimeComponents:(id)components wakeUpComponents:(id)upComponents gregorianCalendar:(id)calendar;
+- (void)encodeWithCoder:(id)coder;
 - (void)freeze;
-- (void)setAlarmConfiguration:(id)a3;
-- (void)setBackingOccurrence:(id)a3;
-- (void)setBedtimeComponents:(id)a3;
-- (void)setWakeUpComponents:(id)a3;
-- (void)setWeekdays:(unint64_t)a3;
+- (void)setAlarmConfiguration:(id)configuration;
+- (void)setBackingOccurrence:(id)occurrence;
+- (void)setBedtimeComponents:(id)components;
+- (void)setWakeUpComponents:(id)components;
+- (void)setWeekdays:(unint64_t)weekdays;
 - (void)turnOffAlarm;
-- (void)turnOffWeekdays:(unint64_t)a3;
+- (void)turnOffWeekdays:(unint64_t)weekdays;
 - (void)turnOnAlarm;
-- (void)turnOnWeekdays:(unint64_t)a3;
+- (void)turnOnWeekdays:(unint64_t)weekdays;
 @end
 
 @implementation HKSPMutableSleepScheduleOccurrence
 
-- (void)setBackingOccurrence:(id)a3
+- (void)setBackingOccurrence:(id)occurrence
 {
-  v14 = a3;
-  v4 = [objc_opt_class() allProperties];
-  v5 = HKSPPropertiesByIdentifier(v4);
+  occurrenceCopy = occurrence;
+  allProperties = [objc_opt_class() allProperties];
+  v5 = HKSPPropertiesByIdentifier(allProperties);
   v6 = [v5 objectForKeyedSubscript:@"HKSPOccurrenceBackingOccurrence"];
 
   v7 = [(HKSPObject *)self->_originalObject hksp_valueForProperty:v6];
   if (!NAEqualObjects() || [(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPOccurrenceBackingOccurrence"])
   {
-    v8 = [v6 isRelationshipProperty];
+    isRelationshipProperty = [v6 isRelationshipProperty];
     v9 = off_279C73598;
-    if (!v8)
+    if (!isRelationshipProperty)
     {
       v9 = off_279C734F8;
     }
@@ -44,15 +44,15 @@
     v10 = *v9;
     v11 = objc_opt_class();
     changeSet = self->_changeSet;
-    v13 = [[v11 alloc] initWithProperty:v6 changedValue:v14 originalValue:v7];
+    v13 = [[v11 alloc] initWithProperty:v6 changedValue:occurrenceCopy originalValue:v7];
     [(HKSPChangeSet *)changeSet addChange:v13];
   }
 }
 
 - (HKSPSleepScheduleDayOccurrence)backingOccurrence
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPOccurrenceBackingOccurrence"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPOccurrenceBackingOccurrence"])
@@ -69,21 +69,21 @@
   return v6;
 }
 
-- (void)setWeekdays:(unint64_t)a3
+- (void)setWeekdays:(unint64_t)weekdays
 {
-  v5 = [objc_opt_class() allProperties];
-  v6 = HKSPPropertiesByIdentifier(v5);
+  allProperties = [objc_opt_class() allProperties];
+  v6 = HKSPPropertiesByIdentifier(allProperties);
   v14 = [v6 objectForKeyedSubscript:@"HKSPOccurrenceWeekdays"];
 
   v7 = [(HKSPObject *)self->_originalObject hksp_valueForProperty:v14];
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  if (v8 != a3 || [(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPOccurrenceWeekdays"])
+  if (unsignedIntegerValue != weekdays || [(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPOccurrenceWeekdays"])
   {
     changeSet = self->_changeSet;
     v10 = [HKSPChange alloc];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:weekdays];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
     v13 = [(HKSPChange *)v10 initWithProperty:v14 changedValue:v11 originalValue:v12];
     [(HKSPChangeSet *)changeSet addChange:v13];
   }
@@ -91,8 +91,8 @@
 
 - (unint64_t)weekdays
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPOccurrenceWeekdays"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPOccurrenceWeekdays"])
@@ -105,9 +105,9 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (HKSPMutableSleepScheduleOccurrence)init
@@ -131,14 +131,14 @@
   return v2;
 }
 
-- (id)initFromObject:(id)a3
+- (id)initFromObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HKSPSleepScheduleOccurrence.m" lineNumber:405 description:@"object must be a subclass"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPSleepScheduleOccurrence.m" lineNumber:405 description:@"object must be a subclass"];
   }
 
   v14.receiver = self;
@@ -146,7 +146,7 @@
   v6 = [(HKSPSleepScheduleOccurrence *)&v14 init];
   if (v6)
   {
-    v7 = [v5 copyWithZone:0];
+    v7 = [objectCopy copyWithZone:0];
     originalObject = v6->_originalObject;
     v6->_originalObject = v7;
 
@@ -160,19 +160,19 @@
   return v6;
 }
 
-- (HKSPMutableSleepScheduleOccurrence)initWithCoder:(id)a3
+- (HKSPMutableSleepScheduleOccurrence)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = HKSPMutableSleepScheduleOccurrence;
   v5 = [(HKSPSleepScheduleOccurrence *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKSPOriginalObject"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKSPOriginalObject"];
     originalObject = v5->_originalObject;
     v5->_originalObject = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKSPChangeSet"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKSPChangeSet"];
     changeSet = v5->_changeSet;
     v5->_changeSet = v8;
 
@@ -182,37 +182,37 @@
   return v5;
 }
 
-- (HKSPMutableSleepScheduleOccurrence)initWithTemplateOccurrence:(id)a3
+- (HKSPMutableSleepScheduleOccurrence)initWithTemplateOccurrence:(id)occurrence
 {
-  v4 = a3;
+  occurrenceCopy = occurrence;
   v5 = [(HKSPMutableSleepScheduleOccurrence *)self init];
   if (v5)
   {
-    v6 = [v4 bedtimeComponents];
-    [(HKSPMutableSleepScheduleOccurrence *)v5 setBedtimeComponents:v6];
+    bedtimeComponents = [occurrenceCopy bedtimeComponents];
+    [(HKSPMutableSleepScheduleOccurrence *)v5 setBedtimeComponents:bedtimeComponents];
 
-    v7 = [v4 wakeUpComponents];
-    [(HKSPMutableSleepScheduleOccurrence *)v5 setWakeUpComponents:v7];
+    wakeUpComponents = [occurrenceCopy wakeUpComponents];
+    [(HKSPMutableSleepScheduleOccurrence *)v5 setWakeUpComponents:wakeUpComponents];
 
-    -[HKSPMutableSleepScheduleOccurrence setWeekdays:](v5, "setWeekdays:", [v4 weekdays]);
+    -[HKSPMutableSleepScheduleOccurrence setWeekdays:](v5, "setWeekdays:", [occurrenceCopy weekdays]);
     v8 = [HKSPMutableAlarmConfiguration alloc];
-    v9 = [v4 alarmConfiguration];
-    v10 = [(HKSPMutableAlarmConfiguration *)v8 initWithTemplateAlarmConfiguration:v9];
+    alarmConfiguration = [occurrenceCopy alarmConfiguration];
+    v10 = [(HKSPMutableAlarmConfiguration *)v8 initWithTemplateAlarmConfiguration:alarmConfiguration];
     [(HKSPMutableSleepScheduleOccurrence *)v5 setAlarmConfiguration:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originalObject = self->_originalObject;
-  v5 = a3;
-  [v5 encodeObject:originalObject forKey:@"HKSPOriginalObject"];
-  [v5 encodeObject:self->_changeSet forKey:@"HKSPChangeSet"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originalObject forKey:@"HKSPOriginalObject"];
+  [coderCopy encodeObject:self->_changeSet forKey:@"HKSPChangeSet"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HKSPSleepScheduleOccurrence alloc];
 
@@ -222,15 +222,15 @@
 - (id)mutableCopy
 {
   v3 = objc_alloc_init(objc_opt_class());
-  v4 = [(HKSPMutableSleepScheduleOccurrence *)self originalObject];
-  v5 = [v4 copyWithZone:0];
+  originalObject = [(HKSPMutableSleepScheduleOccurrence *)self originalObject];
+  v5 = [originalObject copyWithZone:0];
   v6 = v3[4];
   v3[4] = v5;
 
-  v7 = [(HKSPMutableSleepScheduleOccurrence *)self changeSet];
-  v8 = [v7 deepCopy];
+  changeSet = [(HKSPMutableSleepScheduleOccurrence *)self changeSet];
+  deepCopy = [changeSet deepCopy];
   v9 = v3[5];
-  v3[5] = v8;
+  v3[5] = deepCopy;
 
   return v3;
 }
@@ -244,24 +244,24 @@
   [(HKSPMutableSleepScheduleOccurrence *)self revert];
 }
 
-- (void)turnOnWeekdays:(unint64_t)a3
+- (void)turnOnWeekdays:(unint64_t)weekdays
 {
-  v4 = [(HKSPMutableSleepScheduleOccurrence *)self weekdays]| a3;
+  v4 = [(HKSPMutableSleepScheduleOccurrence *)self weekdays]| weekdays;
 
   [(HKSPMutableSleepScheduleOccurrence *)self setWeekdays:v4];
 }
 
-- (void)turnOffWeekdays:(unint64_t)a3
+- (void)turnOffWeekdays:(unint64_t)weekdays
 {
-  v4 = [(HKSPMutableSleepScheduleOccurrence *)self weekdays]& ~a3;
+  v4 = [(HKSPMutableSleepScheduleOccurrence *)self weekdays]& ~weekdays;
 
   [(HKSPMutableSleepScheduleOccurrence *)self setWeekdays:v4];
 }
 
 - (void)turnOnAlarm
 {
-  v3 = [(HKSPMutableSleepScheduleOccurrence *)self alarmConfiguration];
-  v4 = [v3 mutableCopy];
+  alarmConfiguration = [(HKSPMutableSleepScheduleOccurrence *)self alarmConfiguration];
+  v4 = [alarmConfiguration mutableCopy];
 
   [v4 setEnabled:1];
   [(HKSPMutableSleepScheduleOccurrence *)self setAlarmConfiguration:v4];
@@ -269,75 +269,75 @@
 
 - (void)turnOffAlarm
 {
-  v3 = [(HKSPMutableSleepScheduleOccurrence *)self alarmConfiguration];
-  v4 = [v3 mutableCopy];
+  alarmConfiguration = [(HKSPMutableSleepScheduleOccurrence *)self alarmConfiguration];
+  v4 = [alarmConfiguration mutableCopy];
 
   [v4 setEnabled:0];
   [(HKSPMutableSleepScheduleOccurrence *)self setAlarmConfiguration:v4];
 }
 
-- (void)setWakeUpComponents:(id)a3
+- (void)setWakeUpComponents:(id)components
 {
-  v4 = a3;
-  v5 = [(HKSPMutableSleepScheduleOccurrence *)self backingOccurrence];
-  v6 = [v5 mutableCopy];
+  componentsCopy = components;
+  backingOccurrence = [(HKSPMutableSleepScheduleOccurrence *)self backingOccurrence];
+  v6 = [backingOccurrence mutableCopy];
 
-  [v6 setWakeUpComponents:v4];
+  [v6 setWakeUpComponents:componentsCopy];
   [(HKSPMutableSleepScheduleOccurrence *)self setBackingOccurrence:v6];
 }
 
-- (void)setBedtimeComponents:(id)a3
+- (void)setBedtimeComponents:(id)components
 {
-  v4 = a3;
-  v5 = [(HKSPMutableSleepScheduleOccurrence *)self backingOccurrence];
-  v6 = [v5 mutableCopy];
+  componentsCopy = components;
+  backingOccurrence = [(HKSPMutableSleepScheduleOccurrence *)self backingOccurrence];
+  v6 = [backingOccurrence mutableCopy];
 
-  [v6 setBedtimeComponents:v4];
+  [v6 setBedtimeComponents:componentsCopy];
   [(HKSPMutableSleepScheduleOccurrence *)self setBackingOccurrence:v6];
 }
 
 - (HKSPAlarmConfiguration)alarmConfiguration
 {
-  v2 = [(HKSPMutableSleepScheduleOccurrence *)self backingOccurrence];
-  v3 = [v2 alarmConfiguration];
-  v4 = [v3 mutableCopy];
+  backingOccurrence = [(HKSPMutableSleepScheduleOccurrence *)self backingOccurrence];
+  alarmConfiguration = [backingOccurrence alarmConfiguration];
+  v4 = [alarmConfiguration mutableCopy];
 
   return v4;
 }
 
-- (void)setAlarmConfiguration:(id)a3
+- (void)setAlarmConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(HKSPMutableSleepScheduleOccurrence *)self backingOccurrence];
-  v6 = [v5 mutableCopy];
+  configurationCopy = configuration;
+  backingOccurrence = [(HKSPMutableSleepScheduleOccurrence *)self backingOccurrence];
+  v6 = [backingOccurrence mutableCopy];
 
-  [v6 setAlarmConfiguration:v4];
+  [v6 setAlarmConfiguration:configurationCopy];
   [(HKSPMutableSleepScheduleOccurrence *)self setBackingOccurrence:v6];
 }
 
-- (void)applyHourAndMinuteFromBedtimeComponents:(id)a3 wakeUpComponents:(id)a4 gregorianCalendar:(id)a5
+- (void)applyHourAndMinuteFromBedtimeComponents:(id)components wakeUpComponents:(id)upComponents gregorianCalendar:(id)calendar
 {
-  v23 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v23)
+  componentsCopy = components;
+  upComponentsCopy = upComponents;
+  calendarCopy = calendar;
+  if (!componentsCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HKSPSleepScheduleOccurrence.m" lineNumber:506 description:{@"Invalid parameter not satisfying: %@", @"bedtimeComponents != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPSleepScheduleOccurrence.m" lineNumber:506 description:{@"Invalid parameter not satisfying: %@", @"bedtimeComponents != nil"}];
 
-    if (v9)
+    if (upComponentsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HKSPSleepScheduleOccurrence.m" lineNumber:507 description:{@"Invalid parameter not satisfying: %@", @"wakeUpComponents != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HKSPSleepScheduleOccurrence.m" lineNumber:507 description:{@"Invalid parameter not satisfying: %@", @"wakeUpComponents != nil"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!upComponentsCopy)
   {
     goto LABEL_14;
   }
@@ -345,30 +345,30 @@ LABEL_14:
 LABEL_3:
   if ([(HKSPSleepScheduleOccurrence *)self isSingleDayOverride]&& ([(HKSPSleepScheduleOccurrence *)self wakeUpComponents], (v11 = objc_claimAutoreleasedReturnValue()) != 0) && (v12 = v11, [(HKSPSleepScheduleOccurrence *)self bedtimeComponents], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
   {
-    v14 = [(HKSPSleepScheduleOccurrence *)self wakeUpComponents];
-    v15 = [v14 copy];
+    wakeUpComponents = [(HKSPSleepScheduleOccurrence *)self wakeUpComponents];
+    v15 = [wakeUpComponents copy];
 
-    [v15 setHour:{objc_msgSend(v9, "hour")}];
-    [v15 setMinute:{objc_msgSend(v9, "minute")}];
-    v16 = [v10 dateFromComponents:v15];
+    [v15 setHour:{objc_msgSend(upComponentsCopy, "hour")}];
+    [v15 setMinute:{objc_msgSend(upComponentsCopy, "minute")}];
+    v16 = [calendarCopy dateFromComponents:v15];
     if (v16)
     {
       v17 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-      [v17 setHour:{objc_msgSend(v23, "hour")}];
-      [v17 setMinute:{objc_msgSend(v23, "minute")}];
-      v18 = [v10 hksp_previousDateBeforeDate:v16 matchingComponents:v17];
-      v19 = [v10 components:124 fromDate:v16];
+      [v17 setHour:{objc_msgSend(componentsCopy, "hour")}];
+      [v17 setMinute:{objc_msgSend(componentsCopy, "minute")}];
+      v18 = [calendarCopy hksp_previousDateBeforeDate:v16 matchingComponents:v17];
+      v19 = [calendarCopy components:124 fromDate:v16];
       [(HKSPMutableSleepScheduleOccurrence *)self setWakeUpComponents:v19];
 
-      v20 = [v10 components:124 fromDate:v18];
+      v20 = [calendarCopy components:124 fromDate:v18];
       [(HKSPMutableSleepScheduleOccurrence *)self setBedtimeComponents:v20];
     }
   }
 
   else
   {
-    [(HKSPMutableSleepScheduleOccurrence *)self setBedtimeComponents:v23];
-    [(HKSPMutableSleepScheduleOccurrence *)self setWakeUpComponents:v9];
+    [(HKSPMutableSleepScheduleOccurrence *)self setBedtimeComponents:componentsCopy];
+    [(HKSPMutableSleepScheduleOccurrence *)self setWakeUpComponents:upComponentsCopy];
   }
 }
 

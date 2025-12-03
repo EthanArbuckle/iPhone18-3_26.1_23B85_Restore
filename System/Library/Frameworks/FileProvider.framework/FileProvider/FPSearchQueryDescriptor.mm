@@ -1,52 +1,52 @@
 @interface FPSearchQueryDescriptor
-- (BOOL)isEqualToItemQueryDescriptor:(id)a3;
+- (BOOL)isEqualToItemQueryDescriptor:(id)descriptor;
 - (id)_scopes;
-- (id)queryStringForMountPoint:(id)a3;
+- (id)queryStringForMountPoint:(id)point;
 - (unint64_t)hash;
-- (void)augmentQueryContext:(id)a3;
+- (void)augmentQueryContext:(id)context;
 @end
 
 @implementation FPSearchQueryDescriptor
 
-- (id)queryStringForMountPoint:(id)a3
+- (id)queryStringForMountPoint:(id)point
 {
-  v4 = [(FPSearchQueryDescriptor *)self searchQueryString];
-  if (v4 && (v5 = v4, -[FPSearchQueryDescriptor searchQueryString](self, "searchQueryString"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:&stru_1F1F94B20], v6, v5, (v7 & 1) == 0))
+  searchQueryString = [(FPSearchQueryDescriptor *)self searchQueryString];
+  if (searchQueryString && (v5 = searchQueryString, -[FPSearchQueryDescriptor searchQueryString](self, "searchQueryString"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:&stru_1F1F94B20], v6, v5, (v7 & 1) == 0))
   {
-    v9 = [(FPSpotlightQueryDescriptor *)self settings];
-    v10 = [v9 allowedFileTypes];
+    settings = [(FPSpotlightQueryDescriptor *)self settings];
+    allowedFileTypes = [settings allowedFileTypes];
 
-    v11 = [(FPSpotlightQueryDescriptor *)self settings];
-    v12 = [v11 excludedFileTypes];
-    v13 = v12;
+    settings2 = [(FPSpotlightQueryDescriptor *)self settings];
+    excludedFileTypes = [settings2 excludedFileTypes];
+    v13 = excludedFileTypes;
     v14 = MEMORY[0x1E695E0F0];
-    if (v12)
+    if (excludedFileTypes)
     {
-      v14 = v12;
+      v14 = excludedFileTypes;
     }
 
     v15 = v14;
 
     v16 = *MEMORY[0x1E6982DC8];
-    v17 = [*MEMORY[0x1E6982DC8] identifier];
-    v18 = [v10 containsObject:v17];
+    identifier = [*MEMORY[0x1E6982DC8] identifier];
+    v18 = [allowedFileTypes containsObject:identifier];
 
     if ((v18 & 1) == 0)
     {
-      v19 = [v16 identifier];
-      v20 = [v10 arrayByAddingObject:v19];
+      identifier2 = [v16 identifier];
+      v20 = [allowedFileTypes arrayByAddingObject:identifier2];
 
-      v10 = v20;
+      allowedFileTypes = v20;
     }
 
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [(FPSearchQueryDescriptor *)self searchQueryString];
-    v23 = [(FPSpotlightQueryDescriptor *)self settings];
-    v24 = [v23 allowedProviders];
-    v25 = FPFileProviderOriginatedItemsQueryStringFragment(v24);
-    v26 = FPContentTypeQueryStringForFileTypes(v10, v15);
+    searchQueryString2 = [(FPSearchQueryDescriptor *)self searchQueryString];
+    settings3 = [(FPSpotlightQueryDescriptor *)self settings];
+    allowedProviders = [settings3 allowedProviders];
+    v25 = FPFileProviderOriginatedItemsQueryStringFragment(allowedProviders);
+    v26 = FPContentTypeQueryStringForFileTypes(allowedFileTypes, v15);
 
-    v8 = [v21 stringWithFormat:@"((%@) && %@ && %@)", v22, v25, v26];
+    v8 = [v21 stringWithFormat:@"((%@) && %@ && %@)", searchQueryString2, v25, v26];
   }
 
   else
@@ -57,56 +57,56 @@
   return v8;
 }
 
-- (void)augmentQueryContext:(id)a3
+- (void)augmentQueryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = FPSearchQueryDescriptor;
-  [(FPSpotlightQueryDescriptor *)&v12 augmentQueryContext:v4];
-  v5 = [(FPSearchQueryDescriptor *)self _scopes];
-  [v4 setScopes:v5];
+  [(FPSpotlightQueryDescriptor *)&v12 augmentQueryContext:contextCopy];
+  _scopes = [(FPSearchQueryDescriptor *)self _scopes];
+  [contextCopy setScopes:_scopes];
 
-  v6 = [(FPSpotlightQueryDescriptor *)self settings];
-  v7 = [v6 searchQuery];
-  v8 = [v7 keyboardLanguage];
+  settings = [(FPSpotlightQueryDescriptor *)self settings];
+  searchQuery = [settings searchQuery];
+  keyboardLanguage = [searchQuery keyboardLanguage];
 
-  if (v8)
+  if (keyboardLanguage)
   {
-    v9 = [(FPSpotlightQueryDescriptor *)self settings];
-    v10 = [v9 searchQuery];
-    v11 = [v10 keyboardLanguage];
-    [v4 setKeyboardLanguage:v11];
+    settings2 = [(FPSpotlightQueryDescriptor *)self settings];
+    searchQuery2 = [settings2 searchQuery];
+    keyboardLanguage2 = [searchQuery2 keyboardLanguage];
+    [contextCopy setKeyboardLanguage:keyboardLanguage2];
   }
 }
 
 - (id)_scopes
 {
-  v2 = [(FPSpotlightQueryDescriptor *)self settings];
-  v3 = [v2 searchQuery];
-  v4 = [v3 csQueryScopes];
+  settings = [(FPSpotlightQueryDescriptor *)self settings];
+  searchQuery = [settings searchQuery];
+  csQueryScopes = [searchQuery csQueryScopes];
 
-  return v4;
+  return csQueryScopes;
 }
 
-- (BOOL)isEqualToItemQueryDescriptor:(id)a3
+- (BOOL)isEqualToItemQueryDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v11.receiver = self;
   v11.super_class = FPSearchQueryDescriptor;
-  if ([(FPSpotlightQueryDescriptor *)&v11 isEqualToItemQueryDescriptor:v4])
+  if ([(FPSpotlightQueryDescriptor *)&v11 isEqualToItemQueryDescriptor:descriptorCopy])
   {
-    v5 = [(FPSearchQueryDescriptor *)self _scopes];
-    v6 = [v4 _scopes];
-    if (v5 == v6)
+    _scopes = [(FPSearchQueryDescriptor *)self _scopes];
+    _scopes2 = [descriptorCopy _scopes];
+    if (_scopes == _scopes2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(FPSearchQueryDescriptor *)self _scopes];
-      v8 = [v4 _scopes];
-      v9 = [v7 isEqual:v8];
+      _scopes3 = [(FPSearchQueryDescriptor *)self _scopes];
+      _scopes4 = [descriptorCopy _scopes];
+      v9 = [_scopes3 isEqual:_scopes4];
     }
   }
 
@@ -123,9 +123,9 @@
   v3 = [(FPSearchQueryDescriptor *)self queryStringForMountPoint:@"FPQueryCollectionDefaultMountPointIdentifier"];
   v4 = [v3 hash];
 
-  v5 = [(FPSpotlightQueryDescriptor *)self desiredCount];
-  v6 = [(FPSearchQueryDescriptor *)self _scopes];
-  v7 = v5 ^ [v6 hash];
+  desiredCount = [(FPSpotlightQueryDescriptor *)self desiredCount];
+  _scopes = [(FPSearchQueryDescriptor *)self _scopes];
+  v7 = desiredCount ^ [_scopes hash];
 
   return v7 ^ v4;
 }

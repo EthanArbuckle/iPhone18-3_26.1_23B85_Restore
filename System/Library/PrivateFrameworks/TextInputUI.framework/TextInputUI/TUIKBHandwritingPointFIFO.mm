@@ -1,7 +1,7 @@
 @interface TUIKBHandwritingPointFIFO
-- (TUIKBHandwritingPointFIFO)initWithFIFO:(id)a3;
+- (TUIKBHandwritingPointFIFO)initWithFIFO:(id)o;
 - (void)clear;
-- (void)emitPoint:(id *)a3;
+- (void)emitPoint:(id *)point;
 - (void)flush;
 @end
 
@@ -9,35 +9,35 @@
 
 - (void)clear
 {
-  v2 = [(TUIKBHandwritingPointFIFO *)self nextFIFO];
-  [v2 clear];
+  nextFIFO = [(TUIKBHandwritingPointFIFO *)self nextFIFO];
+  [nextFIFO clear];
 }
 
 - (void)flush
 {
-  v2 = [(TUIKBHandwritingPointFIFO *)self nextFIFO];
-  [v2 flush];
+  nextFIFO = [(TUIKBHandwritingPointFIFO *)self nextFIFO];
+  [nextFIFO flush];
 }
 
-- (void)emitPoint:(id *)a3
+- (void)emitPoint:(id *)point
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
-  v9 = [(TUIKBHandwritingPointFIFO *)self nextFIFO];
-  [v9 addPoint:{v8, v7, v6}];
+  nextFIFO = [(TUIKBHandwritingPointFIFO *)self nextFIFO];
+  [nextFIFO addPoint:{v8, v7, v6}];
 }
 
-- (TUIKBHandwritingPointFIFO)initWithFIFO:(id)a3
+- (TUIKBHandwritingPointFIFO)initWithFIFO:(id)o
 {
-  v4 = a3;
+  oCopy = o;
   v8.receiver = self;
   v8.super_class = TUIKBHandwritingPointFIFO;
   v5 = [(TUIKBHandwritingPointFIFO *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TUIKBHandwritingPointFIFO *)v5 setNextFIFO:v4];
+    [(TUIKBHandwritingPointFIFO *)v5 setNextFIFO:oCopy];
   }
 
   return v6;

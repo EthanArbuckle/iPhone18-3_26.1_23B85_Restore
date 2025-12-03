@@ -1,13 +1,13 @@
 @interface HomeKitSchemaHKClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (HomeKitSchemaHKAccessoryOperationReported)homeKitAccessoryOperationReported;
 - (HomeKitSchemaHKAudioTopologyReported)audioTopologyReported;
-- (HomeKitSchemaHKClientEvent)initWithDictionary:(id)a3;
-- (HomeKitSchemaHKClientEvent)initWithJSON:(id)a3;
+- (HomeKitSchemaHKClientEvent)initWithDictionary:(id)dictionary;
+- (HomeKitSchemaHKClientEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -16,22 +16,22 @@
 - (unint64_t)hash;
 - (void)deleteAudioTopologyReported;
 - (void)deleteHomeKitAccessoryOperationReported;
-- (void)setAudioTopologyReported:(id)a3;
-- (void)setHomeKitAccessoryOperationReported:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAudioTopologyReported:(id)reported;
+- (void)setHomeKitAccessoryOperationReported:(id)reported;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HomeKitSchemaHKClientEvent
 
-- (HomeKitSchemaHKClientEvent)initWithDictionary:(id)a3
+- (HomeKitSchemaHKClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = HomeKitSchemaHKClientEvent;
   v5 = [(HomeKitSchemaHKClientEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(HomeKitSchemaHKClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"homeKitAccessoryOperationReported"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"homeKitAccessoryOperationReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(HomeKitSchemaHKClientEvent *)v5 setHomeKitAccessoryOperationReported:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"audioTopologyReported"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"audioTopologyReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,30 +61,30 @@
   return v5;
 }
 
-- (HomeKitSchemaHKClientEvent)initWithJSON:(id)a3
+- (HomeKitSchemaHKClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HomeKitSchemaHKClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(HomeKitSchemaHKClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(HomeKitSchemaHKClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -97,58 +97,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_audioTopologyReported)
   {
-    v4 = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    audioTopologyReported = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
+    dictionaryRepresentation = [audioTopologyReported dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"audioTopologyReported"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioTopologyReported"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"audioTopologyReported"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioTopologyReported"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v7 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    eventMetadata = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
+    dictionaryRepresentation2 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"eventMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_homeKitAccessoryOperationReported)
   {
-    v10 = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    homeKitAccessoryOperationReported = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
+    dictionaryRepresentation3 = [homeKitAccessoryOperationReported dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"homeKitAccessoryOperationReported"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"homeKitAccessoryOperationReported"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"homeKitAccessoryOperationReported"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"homeKitAccessoryOperationReported"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,34 +158,34 @@
   return v4 ^ [(HomeKitSchemaHKAudioTopologyReported *)self->_audioTopologyReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -197,20 +197,20 @@
   {
   }
 
-  v6 = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
-  v7 = [v4 homeKitAccessoryOperationReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
+  eventMetadata2 = [equalCopy homeKitAccessoryOperationReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
-  if (v13)
+  homeKitAccessoryOperationReported = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
+  if (homeKitAccessoryOperationReported)
   {
-    v14 = v13;
-    v15 = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
-    v16 = [v4 homeKitAccessoryOperationReported];
-    v17 = [v15 isEqual:v16];
+    v14 = homeKitAccessoryOperationReported;
+    homeKitAccessoryOperationReported2 = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
+    homeKitAccessoryOperationReported3 = [equalCopy homeKitAccessoryOperationReported];
+    v17 = [homeKitAccessoryOperationReported2 isEqual:homeKitAccessoryOperationReported3];
 
     if (!v17)
     {
@@ -222,12 +222,12 @@
   {
   }
 
-  v6 = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
-  v7 = [v4 audioTopologyReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
+  eventMetadata2 = [equalCopy audioTopologyReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v18 = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
-    if (!v18)
+    audioTopologyReported = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
+    if (!audioTopologyReported)
     {
 
 LABEL_21:
@@ -235,10 +235,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
-    v21 = [v4 audioTopologyReported];
-    v22 = [v20 isEqual:v21];
+    v19 = audioTopologyReported;
+    audioTopologyReported2 = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
+    audioTopologyReported3 = [equalCopy audioTopologyReported];
+    v22 = [audioTopologyReported2 isEqual:audioTopologyReported3];
 
     if (v22)
     {
@@ -258,34 +258,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
+    eventMetadata2 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
+  homeKitAccessoryOperationReported = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
 
-  if (v6)
+  if (homeKitAccessoryOperationReported)
   {
-    v7 = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
+    homeKitAccessoryOperationReported2 = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
+  audioTopologyReported = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (audioTopologyReported)
   {
-    v10 = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
+    audioTopologyReported2 = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -314,21 +314,21 @@ LABEL_19:
   return v3;
 }
 
-- (void)setAudioTopologyReported:(id)a3
+- (void)setAudioTopologyReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   homeKitAccessoryOperationReported = self->_homeKitAccessoryOperationReported;
   self->_homeKitAccessoryOperationReported = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!reportedCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   audioTopologyReported = self->_audioTopologyReported;
-  self->_audioTopologyReported = v4;
+  self->_audioTopologyReported = reportedCopy;
 }
 
 - (void)deleteHomeKitAccessoryOperationReported
@@ -356,33 +356,33 @@ LABEL_19:
   return v3;
 }
 
-- (void)setHomeKitAccessoryOperationReported:(id)a3
+- (void)setHomeKitAccessoryOperationReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   audioTopologyReported = self->_audioTopologyReported;
   self->_audioTopologyReported = 0;
 
   v6 = 100;
-  if (!v4)
+  if (!reportedCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   homeKitAccessoryOperationReported = self->_homeKitAccessoryOperationReported;
-  self->_homeKitAccessoryOperationReported = v4;
+  self->_homeKitAccessoryOperationReported = reportedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(HomeKitSchemaHKClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(HomeKitSchemaHKClientEvent *)self whichEvent_Type];
   v3 = @"com.apple.aiml.siri.homekit.HKClientEvent";
-  if (v2 == 101)
+  if (whichEvent_Type == 101)
   {
     v3 = @"com.apple.aiml.siri.homekit.HKClientEvent.HKAudioTopologyReported";
   }
 
-  if (v2 == 100)
+  if (whichEvent_Type == 100)
   {
     return @"com.apple.aiml.siri.homekit.HKClientEvent.HKAccessoryOperationReported";
   }
@@ -393,35 +393,35 @@ LABEL_19:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = HomeKitSchemaHKClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(HomeKitSchemaHKClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  homeKitAccessoryOperationReported = [(HomeKitSchemaHKClientEvent *)self homeKitAccessoryOperationReported];
+  v10 = [homeKitAccessoryOperationReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(HomeKitSchemaHKClientEvent *)self deleteHomeKitAccessoryOperationReported];
   }
 
-  v12 = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  audioTopologyReported = [(HomeKitSchemaHKClientEvent *)self audioTopologyReported];
+  v13 = [audioTopologyReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(HomeKitSchemaHKClientEvent *)self deleteAudioTopologyReported];
   }
@@ -439,82 +439,82 @@ LABEL_19:
 
 - (int)componentName
 {
-  v2 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
-  v3 = [v2 hkId];
+  eventMetadata = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
+  hkId = [eventMetadata hkId];
 
-  if (v3)
+  if (hkId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [hkId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [hkId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 39;
+        LODWORD(value) = 39;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
-  v3 = [v2 hkId];
+  eventMetadata = [(HomeKitSchemaHKClientEvent *)self eventMetadata];
+  hkId = [eventMetadata hkId];
 
-  if (!v3)
+  if (!hkId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [hkId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [hkId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = hkId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(HomeKitSchemaHKClientEvent *)self whichEvent_Type];
-  if (v3 == 100)
+  whichEvent_Type = [(HomeKitSchemaHKClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type == 100)
   {
     v4 = &OBJC_IVAR___HomeKitSchemaHKClientEvent__homeKitAccessoryOperationReported;
     goto LABEL_5;
   }
 
-  if (v3 == 101)
+  if (whichEvent_Type == 101)
   {
     v4 = &OBJC_IVAR___HomeKitSchemaHKClientEvent__audioTopologyReported;
 LABEL_5:
@@ -528,15 +528,15 @@ LABEL_7:
   return v5;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
   v3 = @"audioTopologyReported";
-  if (a3 != 101)
+  if (tag != 101)
   {
     v3 = 0;
   }
 
-  if (a3 == 100)
+  if (tag == 100)
   {
     return @"homeKitAccessoryOperationReported";
   }

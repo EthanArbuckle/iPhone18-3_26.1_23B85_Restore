@@ -1,5 +1,5 @@
 @interface VideosPosterCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsDeletable;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
@@ -8,33 +8,33 @@
 
 @implementation VideosPosterCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosCollectionViewController"];
-  [v3 validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"editingButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"showCloudIcon" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"badgeCount" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"VideosArtworkView" hasInstanceMethod:@"placeholderTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosCollectionViewController"];
+  [validationsCopy validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"editingButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"showCloudIcon" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"badgeCount" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"VideosArtworkView" hasInstanceMethod:@"placeholderTitle" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_axIsDeletable
 {
   v2 = [(VideosPosterCollectionViewCellAccessibility *)self safeValueForKey:@"editingButton"];
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(VideosPosterCollectionViewCellAccessibility *)self safeValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(VideosPosterCollectionViewCellAccessibility *)self safeValueForKey:@"subtitleLabel"];
-  v20 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   if (![v6 length])

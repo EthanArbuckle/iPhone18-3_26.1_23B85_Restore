@@ -1,21 +1,21 @@
 @interface TSCHChartNonRep
 - (CGRect)outerShadowFrame;
 - (TSCHChartLayout)chartLayout;
-- (TSCHChartNonRep)initWithChartInfo:(id)a3;
+- (TSCHChartNonRep)initWithChartInfo:(id)info;
 - (id)geometry;
-- (id)renderGroupIndexSetForSeriesIndex:(unint64_t)a3;
+- (id)renderGroupIndexSetForSeriesIndex:(unint64_t)index;
 - (id)renderSeriesIndexSet;
 - (id)renderers;
 - (void)clearRenderers;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation TSCHChartNonRep
 
-- (TSCHChartNonRep)initWithChartInfo:(id)a3
+- (TSCHChartNonRep)initWithChartInfo:(id)info
 {
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "[TSCHChartNonRep initWithChartInfo:]");
@@ -31,7 +31,7 @@
   v29 = v24;
   if (v24)
   {
-    objc_msgSend_setChartInfo_(v24, v25, v26, v27, v28, v5);
+    objc_msgSend_setChartInfo_(v24, v25, v26, v27, v28, infoCopy);
   }
 
   return v29;
@@ -72,21 +72,21 @@
 
 - (id)renderers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  renderers = v2->_renderers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  renderers = selfCopy->_renderers;
   if (!renderers)
   {
-    v8 = objc_msgSend_chartLayout(v2, v3, v4, v5, v6);
-    v13 = objc_msgSend_renderersWithRep_(v8, v9, v10, v11, v12, v2);
-    v14 = v2->_renderers;
-    v2->_renderers = v13;
+    v8 = objc_msgSend_chartLayout(selfCopy, v3, v4, v5, v6);
+    v13 = objc_msgSend_renderersWithRep_(v8, v9, v10, v11, v12, selfCopy);
+    v14 = selfCopy->_renderers;
+    selfCopy->_renderers = v13;
 
-    renderers = v2->_renderers;
+    renderers = selfCopy->_renderers;
   }
 
   v15 = renderers;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
@@ -133,12 +133,12 @@
   return v21;
 }
 
-- (id)renderGroupIndexSetForSeriesIndex:(unint64_t)a3
+- (id)renderGroupIndexSetForSeriesIndex:(unint64_t)index
 {
   v7 = MEMORY[0x277CCAA78];
   v8 = objc_msgSend_chartLayout(self, a2, v3, v4, v5);
   v13 = objc_msgSend_model(v8, v9, v10, v11, v12);
-  v18 = objc_msgSend_numberOfGroupsInSeriesAtIndex_(v13, v14, v15, v16, v17, a3);
+  v18 = objc_msgSend_numberOfGroupsInSeriesAtIndex_(v13, v14, v15, v16, v17, index);
   v23 = objc_msgSend_indexSetWithIndexesInRange_(v7, v19, v20, v21, v22, 0, v18);
 
   return v23;
@@ -164,10 +164,10 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v50 = *MEMORY[0x277D85DE8];
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   x = ClipBoundingBox.origin.x;
   y = ClipBoundingBox.origin.y;
   width = ClipBoundingBox.size.width;
@@ -198,7 +198,7 @@
           objc_enumerationMutation(v32);
         }
 
-        objc_msgSend_renderIntoContext_visible_(*(*(&v45 + 1) + 8 * v41++), v38, x, y, width, a3, height);
+        objc_msgSend_renderIntoContext_visible_(*(*(&v45 + 1) + 8 * v41++), v38, x, y, width, context, height);
       }
 
       while (v39 != v41);

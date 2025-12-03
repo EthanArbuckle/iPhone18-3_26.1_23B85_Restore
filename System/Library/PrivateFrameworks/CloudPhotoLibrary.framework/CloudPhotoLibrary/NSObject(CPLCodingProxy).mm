@@ -33,7 +33,7 @@
   v4[2] = __52__NSObject_CPLCodingProxy___cplPropertyAttributeMap__block_invoke_2;
   v4[3] = &unk_1E861DA80;
   v4[4] = &v5;
-  v4[5] = a1;
+  v4[5] = self;
   dispatch_sync(_cplPropertyAttributeMap_lock, v4);
   v2 = v6[5];
   _Block_object_dispose(&v5, 8);
@@ -43,16 +43,16 @@
 
 - (id)cplDeepCopy
 {
-  if ([a1 conformsToProtocol:&unk_1F57F3060])
+  if ([self conformsToProtocol:&unk_1F57F3060])
   {
 
-    return [a1 copy];
+    return [self copy];
   }
 
   else
   {
 
-    return a1;
+    return self;
   }
 }
 
@@ -79,9 +79,9 @@
       }
     }
 
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/NSObject+CPLCodingProxy.m"];
-    [v26 handleFailureInMethod:a2 object:a1 file:v27 lineNumber:962 description:{@"Trying to copy properties from an instance of %@ to an instance of %@", objc_opt_class(), v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v27 lineNumber:962 description:{@"Trying to copy properties from an instance of %@ to an instance of %@", objc_opt_class(), v12}];
 
     abort();
   }
@@ -92,26 +92,26 @@
   v34[3] = &unk_1E861DB98;
   v13 = v11;
   v36 = v13;
-  v34[4] = a1;
+  v34[4] = self;
   v14 = v10;
   v35 = v14;
   v15 = MEMORY[0x1E128EBA0](v34);
-  v16 = [v12 _cplPropertyAttributeMap];
+  _cplPropertyAttributeMap = [v12 _cplPropertyAttributeMap];
   if (v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
-    v18 = [v9 allObjects];
-    v19 = [v16 objectsForKeys:v18 notFoundMarker:v17];
+    null = [MEMORY[0x1E695DFB0] null];
+    allObjects = [v9 allObjects];
+    v19 = [_cplPropertyAttributeMap objectsForKeys:allObjects notFoundMarker:null];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __77__NSObject_CPLCodingProxy___cplCopyProperties_fromOtherObject_withCopyBlock___block_invoke_2;
     v28[3] = &unk_1E861DB70;
-    v30 = v18;
+    v30 = allObjects;
     v31 = v15;
-    v29 = v17;
-    v20 = v18;
+    v29 = null;
+    v20 = allObjects;
     v21 = v15;
-    v22 = v17;
+    v22 = null;
     [v19 enumerateObjectsUsingBlock:v28];
   }
 
@@ -123,7 +123,7 @@
     v32[3] = &unk_1E861DB48;
     v33 = v15;
     v22 = v15;
-    [v16 enumerateKeysAndObjectsUsingBlock:v32];
+    [_cplPropertyAttributeMap enumerateKeysAndObjectsUsingBlock:v32];
     v21 = v33;
   }
 
@@ -138,24 +138,24 @@
   v20[1] = 3221225472;
   v20[2] = __47__NSObject_CPLCodingProxy__cplClearProperties___block_invoke;
   v20[3] = &unk_1E861DB20;
-  v20[4] = a1;
+  v20[4] = self;
   v6 = MEMORY[0x1E128EBA0](v20);
-  v7 = [v5 _cplPropertyAttributeMap];
+  _cplPropertyAttributeMap = [v5 _cplPropertyAttributeMap];
   if (v4)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
-    v9 = [v4 allObjects];
-    v10 = [v7 objectsForKeys:v9 notFoundMarker:v8];
+    null = [MEMORY[0x1E695DFB0] null];
+    allObjects = [v4 allObjects];
+    v10 = [_cplPropertyAttributeMap objectsForKeys:allObjects notFoundMarker:null];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __47__NSObject_CPLCodingProxy__cplClearProperties___block_invoke_2;
     v14[3] = &unk_1E861DB70;
-    v16 = v9;
+    v16 = allObjects;
     v17 = v6;
-    v15 = v8;
-    v11 = v9;
+    v15 = null;
+    v11 = allObjects;
     v12 = v6;
-    v13 = v8;
+    v13 = null;
     [v10 enumerateObjectsUsingBlock:v14];
   }
 
@@ -167,7 +167,7 @@
     v18[3] = &unk_1E861DB48;
     v19 = v6;
     v13 = v6;
-    [v7 enumerateKeysAndObjectsUsingBlock:v18];
+    [_cplPropertyAttributeMap enumerateKeysAndObjectsUsingBlock:v18];
     v12 = v19;
   }
 }
@@ -179,15 +179,15 @@
   v9 = 0x2020000000;
   v10 = -1;
   v2 = objc_opt_class();
-  v3 = [v2 _cplPropertyAttributeMap];
+  _cplPropertyAttributeMap = [v2 _cplPropertyAttributeMap];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__NSObject_CPLCodingProxy__cplHash__block_invoke;
   v6[3] = &unk_1E861DAF8;
-  v6[4] = a1;
+  v6[4] = self;
   v6[5] = &v7;
   v6[6] = v2;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [_cplPropertyAttributeMap enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v8[3];
 
   _Block_object_dispose(&v7, 8);
@@ -200,7 +200,7 @@
   v11 = a4;
   v12 = a5;
   v13 = a6;
-  if (v11 == a1)
+  if (v11 == self)
   {
     v17 = 1;
   }
@@ -220,7 +220,7 @@
         v15 = [v12 shouldCompareAllProperties] ^ 1;
       }
 
-      v16 = [v14 _cplPropertyAttributeMap];
+      _cplPropertyAttributeMap = [v14 _cplPropertyAttributeMap];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __95__NSObject_CPLCodingProxy__cplProperties_areEqualToPropertiesOf_diffTracker_withEqualityBlock___block_invoke;
@@ -228,12 +228,12 @@
       v20 = v10;
       v26 = v14;
       v24 = v13;
-      v21 = a1;
+      selfCopy = self;
       v22 = v11;
       v25 = &v28;
       v23 = v12;
       v27 = v15;
-      [v16 enumerateKeysAndObjectsUsingBlock:v19];
+      [_cplPropertyAttributeMap enumerateKeysAndObjectsUsingBlock:v19];
       v17 = *(v29 + 24);
 
       _Block_object_dispose(&v28, 8);
@@ -252,29 +252,29 @@
 - (void)cplDecodePropertiesFromCoder:()CPLCodingProxy
 {
   v4 = a3;
-  v5 = [objc_opt_class() _cplPropertyAttributeMap];
+  _cplPropertyAttributeMap = [objc_opt_class() _cplPropertyAttributeMap];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__NSObject_CPLCodingProxy__cplDecodePropertiesFromCoder___block_invoke;
   v7[3] = &unk_1E861DAA8;
   v8 = v4;
-  v9 = a1;
+  selfCopy = self;
   v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  [_cplPropertyAttributeMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 - (void)cplEncodePropertiesWithCoder:()CPLCodingProxy
 {
   v4 = a3;
-  v5 = [objc_opt_class() _cplPropertyAttributeMap];
+  _cplPropertyAttributeMap = [objc_opt_class() _cplPropertyAttributeMap];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__NSObject_CPLCodingProxy__cplEncodePropertiesWithCoder___block_invoke;
   v7[3] = &unk_1E861DAA8;
-  v7[4] = a1;
+  v7[4] = self;
   v8 = v4;
   v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  [_cplPropertyAttributeMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 + (id)cplAllPropertyNames
@@ -300,7 +300,7 @@
   block[3] = &unk_1E861DBC0;
   block[4] = &v5;
   block[5] = v11;
-  block[6] = a1;
+  block[6] = self;
   dispatch_sync(cplAllPropertyNames_lock, block);
   v2 = v6[5];
   _Block_object_dispose(&v5, 8);
@@ -318,9 +318,9 @@
     v2 = __CPLCodingOSLogDomain();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
-      v3 = [a1 _cplPropertyAttributeMap];
+      _cplPropertyAttributeMap = [self _cplPropertyAttributeMap];
       v5 = 138412290;
-      v6 = v3;
+      v6 = _cplPropertyAttributeMap;
       _os_log_impl(&dword_1DC05A000, v2, OS_LOG_TYPE_DEBUG, "%@", &v5, 0xCu);
     }
   }
@@ -332,11 +332,11 @@
 {
   v69 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
-    [objc_msgSend(a1 "superclass")];
+    [objc_msgSend(self "superclass")];
     outCount = 0;
-    v5 = class_copyPropertyList(a1, &outCount);
+    v5 = class_copyPropertyList(self, &outCount);
     v6 = v5;
     if (!outCount)
     {
@@ -346,13 +346,13 @@
     v7 = 0;
     v48 = v5;
     v49 = v4;
-    v53 = a1;
+    selfCopy = self;
     while (1)
     {
       v8 = objc_autoreleasePoolPush();
       v9 = v6[v7];
       aSelectorName = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:property_getName(v9) encoding:4];
-      if ([a1 cplShouldIgnorePropertyForCoding:?])
+      if ([self cplShouldIgnorePropertyForCoding:?])
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -360,7 +360,7 @@
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v61 = a1;
+            selfCopy3 = self;
             v62 = 2112;
             v63 = aSelectorName;
             _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_DEBUG, "Ignoring %@.%@ for coding", buf, 0x16u);
@@ -410,7 +410,7 @@
             {
               v22 = [v19 substringFromIndex:1];
               v28 = NSSelectorFromString(&v22->isa);
-              MethodImplementation = class_getMethodImplementation(a1, v28);
+              MethodImplementation = class_getMethodImplementation(self, v28);
               [(CPLCodingPropertyEntry *)v12 setPropertyGetter:v28];
               [(CPLCodingPropertyEntry *)v12 setPropertyGetterIMP:MethodImplementation];
               goto LABEL_26;
@@ -428,7 +428,7 @@
             {
               v22 = [v19 substringFromIndex:1];
               v25 = NSSelectorFromString(&v22->isa);
-              v26 = class_getMethodImplementation(a1, v25);
+              v26 = class_getMethodImplementation(self, v25);
               [(CPLCodingPropertyEntry *)v12 setPropertySetter:v25];
               [(CPLCodingPropertyEntry *)v12 setPropertySetterIMP:v26];
 LABEL_26:
@@ -469,7 +469,7 @@ LABEL_26:
             if ([v19 length] > 3)
             {
               [v19 substringWithRange:{3, objc_msgSend(v19, "length") - 4}];
-              v31 = v30 = a1;
+              v31 = v30 = self;
               v32 = NSClassFromString(v31);
               v33 = [v30 cplAdditionalSecureClassesForProperty:aSelectorName];
               if ((_CPLSilentLogging & 1) == 0)
@@ -478,7 +478,7 @@ LABEL_26:
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138413058;
-                  v61 = v53;
+                  selfCopy3 = selfCopy;
                   v62 = 2112;
                   v63 = aSelectorName;
                   v64 = 2112;
@@ -509,7 +509,7 @@ LABEL_26:
                 [(CPLCodingPropertyEntry *)v12 setPropertyClasses:v33];
               }
 
-              a1 = v53;
+              self = selfCopy;
             }
 
             else if ((_CPLSilentLogging & 1) == 0)
@@ -518,7 +518,7 @@ LABEL_26:
               if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
-                v61 = a1;
+                selfCopy3 = self;
                 v62 = 2112;
                 v63 = aSelectorName;
                 _os_log_impl(&dword_1DC05A000, v22, OS_LOG_TYPE_ERROR, "Ignoring %@.%@ for coding as its type is too generic", buf, 0x16u);
@@ -543,7 +543,7 @@ LABEL_48:
       if (![(CPLCodingPropertyEntry *)v12 propertyGetter])
       {
         v37 = NSSelectorFromString(aSelectorName);
-        v38 = class_getMethodImplementation(a1, v37);
+        v38 = class_getMethodImplementation(self, v37);
         [(CPLCodingPropertyEntry *)v12 setPropertyGetter:v37];
         [(CPLCodingPropertyEntry *)v12 setPropertyGetterIMP:v38];
       }
@@ -558,21 +558,21 @@ LABEL_48:
         v42 = [v39 initWithFormat:@"set%c%@:", v40, v41];
 
         v43 = NSSelectorFromString(v42);
-        v44 = class_getMethodImplementation(a1, v43);
+        v44 = class_getMethodImplementation(self, v43);
         [(CPLCodingPropertyEntry *)v12 setPropertySetter:v43];
         [(CPLCodingPropertyEntry *)v12 setPropertySetterIMP:v44];
       }
 
       if (![v16 length])
       {
-        v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_%@", aSelectorName];
+        aSelectorName = [MEMORY[0x1E696AEC0] stringWithFormat:@"_%@", aSelectorName];
 
-        v16 = v45;
+        v16 = aSelectorName;
       }
 
       if ([v16 length])
       {
-        InstanceVariable = class_getInstanceVariable(a1, [v16 UTF8String]);
+        InstanceVariable = class_getInstanceVariable(self, [v16 UTF8String]);
         if (InstanceVariable)
         {
           [(CPLCodingPropertyEntry *)v12 setIvar:InstanceVariable];

@@ -1,13 +1,13 @@
 @interface ShapeCell
 - (BOOL)_accessibilityCellIsSelected;
-- (_TtC19HealthMedicationsUI9ShapeCell)initWithCoder:(id)a3;
+- (_TtC19HealthMedicationsUI9ShapeCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ShapeCell
 
-- (_TtC19HealthMedicationsUI9ShapeCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI9ShapeCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI9ShapeCell____lazy_storage___shapeView) = 0;
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI9ShapeCell_item;
@@ -21,7 +21,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_22835C9EC();
 }
 
@@ -44,7 +44,7 @@
 
 - (BOOL)_accessibilityCellIsSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22835D770();
 
   return v3 & 1;

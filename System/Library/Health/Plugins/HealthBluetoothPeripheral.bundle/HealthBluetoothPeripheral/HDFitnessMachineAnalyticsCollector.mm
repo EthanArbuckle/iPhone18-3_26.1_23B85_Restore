@@ -1,9 +1,9 @@
 @interface HDFitnessMachineAnalyticsCollector
 - (HDFitnessMachineAnalyticsCollector)init;
-- (void)setFitnessMachineType:(unint64_t)a3 manufacturer:(id)a4;
+- (void)setFitnessMachineType:(unint64_t)type manufacturer:(id)manufacturer;
 - (void)userIsAuthorized;
-- (void)workoutEndedSubmitMetricsWith:(id)a3;
-- (void)workoutFailedWithError:(id)a3;
+- (void)workoutEndedSubmitMetricsWith:(id)with;
+- (void)workoutFailedWithError:(id)error;
 @end
 
 @implementation HDFitnessMachineAnalyticsCollector
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (void)setFitnessMachineType:(unint64_t)a3 manufacturer:(id)a4
+- (void)setFitnessMachineType:(unint64_t)type manufacturer:(id)manufacturer
 {
-  v6 = [a4 lowercaseString];
+  lowercaseString = [manufacturer lowercaseString];
   v7 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  v8 = [lowercaseString stringByTrimmingCharactersInSet:v7];
 
   if (![(__CFString *)v8 length])
   {
@@ -34,13 +34,13 @@
     v8 = @"unspecified";
   }
 
-  [(HDGymKitWorkoutAnalyticEvent *)self->_gymKitWorkoutEvent setFitnessMachineType:a3];
+  [(HDGymKitWorkoutAnalyticEvent *)self->_gymKitWorkoutEvent setFitnessMachineType:type];
   [(HDGymKitWorkoutAnalyticEvent *)self->_gymKitWorkoutEvent setManufacturer:v8];
 }
 
-- (void)workoutFailedWithError:(id)a3
+- (void)workoutFailedWithError:(id)error
 {
-  v4 = sub_27CF4(self, a3);
+  v4 = sub_27CF4(self, error);
   gymKitWorkoutEvent = self->_gymKitWorkoutEvent;
 
   [(HDGymKitWorkoutAnalyticEvent *)gymKitWorkoutEvent setWorkoutEndErrorCode:v4];
@@ -48,16 +48,16 @@
 
 - (void)userIsAuthorized
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 8) timerValue];
+    timerValue = [*(self + 8) timerValue];
 
-    if (v2)
+    if (timerValue)
     {
-      v3 = [*(a1 + 8) elapsedSeconds];
-      v4 = *(a1 + 16);
+      elapsedSeconds = [*(self + 8) elapsedSeconds];
+      v4 = *(self + 16);
 
-      [v4 setTimeToBeginExperience:v3];
+      [v4 setTimeToBeginExperience:elapsedSeconds];
     }
 
     else
@@ -73,14 +73,14 @@
   }
 }
 
-- (void)workoutEndedSubmitMetricsWith:(id)a3
+- (void)workoutEndedSubmitMetricsWith:(id)with
 {
   gymKitWorkoutEvent = self->_gymKitWorkoutEvent;
-  v5 = a3;
+  withCopy = with;
   [(HDGymKitWorkoutAnalyticEvent *)gymKitWorkoutEvent fitnessMachineType];
   v7 = _HKStringForFitnessMachineType();
-  v6 = [(HDGymKitWorkoutAnalyticEvent *)self->_gymKitWorkoutEvent manufacturer];
-  [v5 workout_reportGymKitWorkoutWithFitnessMachineType:v7 manufacturer:v6 timeToBeginExperience:-[HDGymKitWorkoutAnalyticEvent timeToBeginExperience](self->_gymKitWorkoutEvent workoutEndError:{"timeToBeginExperience"), -[HDGymKitWorkoutAnalyticEvent workoutEndErrorCode](self->_gymKitWorkoutEvent, "workoutEndErrorCode")}];
+  manufacturer = [(HDGymKitWorkoutAnalyticEvent *)self->_gymKitWorkoutEvent manufacturer];
+  [withCopy workout_reportGymKitWorkoutWithFitnessMachineType:v7 manufacturer:manufacturer timeToBeginExperience:-[HDGymKitWorkoutAnalyticEvent timeToBeginExperience](self->_gymKitWorkoutEvent workoutEndError:{"timeToBeginExperience"), -[HDGymKitWorkoutAnalyticEvent workoutEndErrorCode](self->_gymKitWorkoutEvent, "workoutEndErrorCode")}];
 
   sub_27BBC(self);
 }

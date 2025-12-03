@@ -1,28 +1,28 @@
 @interface RTVisitStore
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_fetchVisitsWithOptions:(id)a3 handler:(id)a4;
-- (void)_purgeVisitsPredating:(id)a3 handler:(id)a4;
-- (void)_storeVisit:(id)a3 handler:(id)a4;
-- (void)fetchVisitsWithOptions:(id)a3 handler:(id)a4;
-- (void)purgeVisitsPredating:(id)a3 handler:(id)a4;
-- (void)storeVisit:(id)a3 handler:(id)a4;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_fetchVisitsWithOptions:(id)options handler:(id)handler;
+- (void)_purgeVisitsPredating:(id)predating handler:(id)handler;
+- (void)_storeVisit:(id)visit handler:(id)handler;
+- (void)fetchVisitsWithOptions:(id)options handler:(id)handler;
+- (void)purgeVisitsPredating:(id)predating handler:(id)handler;
+- (void)storeVisit:(id)visit handler:(id)handler;
 @end
 
 @implementation RTVisitStore
 
-- (void)_fetchVisitsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchVisitsWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __48__RTVisitStore__fetchVisitsWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v14 = v7;
+    v14 = optionsCopy;
     v16 = a2;
-    v9 = v8;
+    v9 = handlerCopy;
     v15 = v9;
     v10 = _Block_copy(aBlock);
     v11[0] = MEMORY[0x277D85DD0];
@@ -215,84 +215,84 @@ void __48__RTVisitStore__fetchVisitsWithOptions_handler___block_invoke(uint64_t 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchVisitsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchVisitsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTVisitStore_fetchVisitsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_storeVisit:(id)a3 handler:(id)a4
+- (void)_storeVisit:(id)visit handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  visitCopy = visit;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  handlerCopy = handler;
+  visitCopy2 = visit;
+  v9 = [v6 arrayWithObjects:&visitCopy count:1];
 
-  [(RTStore *)self storeWritableObjects:v9 handler:v7, v10, v11];
+  [(RTStore *)self storeWritableObjects:v9 handler:handlerCopy, visitCopy, v11];
 }
 
-- (void)storeVisit:(id)a3 handler:(id)a4
+- (void)storeVisit:(id)visit handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  visitCopy = visit;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__RTVisitStore_storeVisit_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = visitCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = visitCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgeVisitsPredating:(id)a3 handler:(id)a4
+- (void)_purgeVisitsPredating:(id)predating handler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"detectionDate";
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  predatingCopy = predating;
   v10 = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
   v12[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [(RTStore *)self purgePredating:v7 predicateMappings:v9 handler:v6];
+  [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
 }
 
-- (void)purgeVisitsPredating:(id)a3 handler:(id)a4
+- (void)purgeVisitsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__RTVisitStore_purgeVisitsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -302,10 +302,10 @@ void __48__RTVisitStore__fetchVisitsWithOptions_handler___block_invoke(uint64_t 
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

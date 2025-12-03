@@ -1,30 +1,30 @@
 @interface ICMusicLibraryRecommendationController
 + (ICMusicLibraryRecommendationController)sharedLibraryRecommendationController;
-- (BOOL)_setupCacheDirectoryStructureWithPath:(id)a3;
+- (BOOL)_setupCacheDirectoryStructureWithPath:(id)path;
 - (ICMusicLibraryRecommendationController)init;
 - (id)_cacheDirectoryPath;
-- (id)_createLocalNotificationDictionaryForRecommendationResult:(id)a3 storePlatformMetadata:(id)a4 recommendationID:(id)a5 identifier:(id)a6;
+- (id)_createLocalNotificationDictionaryForRecommendationResult:(id)result storePlatformMetadata:(id)metadata recommendationID:(id)d identifier:(id)identifier;
 - (id)_getNetworkConstraints;
-- (id)_optInMessageContentForPriorityMessageContent:(id)a3;
+- (id)_optInMessageContentForPriorityMessageContent:(id)content;
 - (id)_retrievePreviousRecommendationMatchesFromCache;
 - (id)_storeRequestContext;
-- (id)_wrapAndCacheResponseModelWithCompiledMLModel:(id)a3;
-- (void)_cacheMatchedRecommendations:(id)a3;
+- (id)_wrapAndCacheResponseModelWithCompiledMLModel:(id)model;
+- (void)_cacheMatchedRecommendations:(id)recommendations;
 - (void)_cleanupExpiredApplicationMessages;
 - (void)_clearMLModelCache;
 - (void)_clearRecommendationsData;
-- (void)_computeLibraryRecommendationWithResponse:(id)a3 completionHandler:(id)a4;
-- (void)_createApplicationMessagesForResult:(id)a3 artistNewContentResponse:(id)a4 completion:(id)a5;
-- (void)_fetchRecommendationsSetAndModelWithCompletionHandler:(id)a3;
-- (void)_handleNewArtistContentResponseNotification:(id)a3;
-- (void)_handleRecommendationsResponseModel:(id)a3 completion:(id)a4;
-- (void)_optInMessageForPriorityMessage:(id)a3 completion:(id)a4;
+- (void)_computeLibraryRecommendationWithResponse:(id)response completionHandler:(id)handler;
+- (void)_createApplicationMessagesForResult:(id)result artistNewContentResponse:(id)response completion:(id)completion;
+- (void)_fetchRecommendationsSetAndModelWithCompletionHandler:(id)handler;
+- (void)_handleNewArtistContentResponseNotification:(id)notification;
+- (void)_handleRecommendationsResponseModel:(id)model completion:(id)completion;
+- (void)_optInMessageForPriorityMessage:(id)message completion:(id)completion;
 - (void)_performRecommendationsRequest;
 - (void)_performRecommendationsUpdate;
 - (void)_updateOptInIfNecessary;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeNetworkType:(id)a3;
-- (void)handleAccountStateChange:(id)a3;
+- (void)environmentMonitorDidChangeNetworkType:(id)type;
+- (void)handleAccountStateChange:(id)change;
 - (void)scheduleRecommendationsRefreshTimer;
 - (void)startSystemService;
 - (void)stopSystemService;
@@ -32,13 +32,13 @@
 
 @implementation ICMusicLibraryRecommendationController
 
-- (id)_createLocalNotificationDictionaryForRecommendationResult:(id)a3 storePlatformMetadata:(id)a4 recommendationID:(id)a5 identifier:(id)a6
+- (id)_createLocalNotificationDictionaryForRecommendationResult:(id)result storePlatformMetadata:(id)metadata recommendationID:(id)d identifier:(id)identifier
 {
-  v8 = a4;
-  v66 = a5;
-  v9 = a6;
+  metadataCopy = metadata;
+  dCopy = d;
+  identifierCopy = identifier;
   v54 = +[NSMutableDictionary dictionary];
-  v10 = [v8 storeAdamID];
+  storeAdamID = [metadataCopy storeAdamID];
   v55 = ICBundleIdentifierForSystemApplicationType();
   v11 = +[NSBundle mediaPlayerBundle];
   v12 = [v11 localizedStringForKey:@"NEW_ALBUM_NOTIFICATION_TITLE" value:&stru_1001E0388 table:@"MediaPlayer"];
@@ -46,11 +46,11 @@
   v13 = +[NSBundle mediaPlayerBundle];
   v14 = [v13 localizedStringForKey:@"NEW_ALBUM_NOTIFICATION_BODY_FORMAT" value:&stru_1001E0388 table:@"MediaPlayer"];
 
-  v15 = [v8 name];
-  v59 = v8;
-  v16 = [v8 artistName];
+  name = [metadataCopy name];
+  v59 = metadataCopy;
+  artistName = [metadataCopy artistName];
   v62 = v14;
-  v17 = [NSString stringWithFormat:v14, v15, v16];
+  v17 = [NSString stringWithFormat:v14, name, artistName];
 
   v77[0] = @"title";
   v77[1] = @"body";
@@ -64,23 +64,23 @@
   v76[0] = &off_1001ED738;
   v75[0] = @"_tp";
   v75[1] = @"_url";
-  v18 = [NSString stringWithFormat:@"https://itunes.apple.com/album/id%lld?itsct=NonSubsNewContentRelease&itscg=10100", v10];
+  v18 = [NSString stringWithFormat:@"https://itunes.apple.com/album/id%lld?itsct=NonSubsNewContentRelease&itscg=10100", storeAdamID];
   v76[1] = v18;
   v75[2] = @"_mt";
   v74[0] = @"tap";
   v73[0] = @"actionType";
   v73[1] = @"actionUrl";
-  v19 = [NSString stringWithFormat:@"https://itunes.apple.com/album/id%lld?itsct=NonSubsNewContentRelease&itscg=10100", v10];
+  v19 = [NSString stringWithFormat:@"https://itunes.apple.com/album/id%lld?itsct=NonSubsNewContentRelease&itscg=10100", storeAdamID];
   v74[1] = v19;
   v74[2] = @"notificationAction";
   v73[2] = @"eventType";
   v73[3] = @"eventVersion";
   v74[3] = &off_1001ED738;
-  v74[4] = v9;
+  v74[4] = identifierCopy;
   v73[4] = @"notificationId";
   v73[5] = @"targetType";
   v74[5] = @"notification";
-  v74[6] = v66;
+  v74[6] = dCopy;
   v73[6] = @"recoId";
   v73[7] = @"topic";
   v74[7] = @"xp_amp_notifications";
@@ -101,27 +101,27 @@
   v23 = [v22 localizedStringForKey:@"NEW_ALBUM_NOTIFICATION_GOTO_BUTTON_TITLE" value:&stru_1001E0388 table:@"MediaPlayer"];
   v72[0] = v23;
   v71[1] = @"_url";
-  v24 = [NSString stringWithFormat:@"https://itunes.apple.com/album/id%lld?itsct=NonSubsNewContentRelease&itscg=10100", v10];
+  v24 = [NSString stringWithFormat:@"https://itunes.apple.com/album/id%lld?itsct=NonSubsNewContentRelease&itscg=10100", storeAdamID];
   v72[1] = v24;
   v71[2] = @"_mt";
   v70[0] = @"goToAlbum";
   v69[0] = @"actionType";
   v69[1] = @"actionUrl";
-  v25 = [NSString stringWithFormat:@"https://itunes.apple.com/album/id%lld?itsct=NonSubsNewContentRelease&itscg=10100", v10];
+  v25 = [NSString stringWithFormat:@"https://itunes.apple.com/album/id%lld?itsct=NonSubsNewContentRelease&itscg=10100", storeAdamID];
   v70[1] = v25;
   v70[2] = @"notificationAction";
   v69[2] = @"eventType";
   v69[3] = @"eventVersion";
   v70[3] = &off_1001ED738;
-  v70[4] = v9;
-  v64 = v9;
+  v70[4] = identifierCopy;
+  v64 = identifierCopy;
   v69[4] = @"notificationId";
   v69[5] = @"targetId";
   v70[5] = @"AmpMusic.Notifications.NewRelease.Buttons.GoToAlbum";
   v70[6] = @"button";
   v69[6] = @"targetType";
   v69[7] = @"recoId";
-  v70[7] = v66;
+  v70[7] = dCopy;
   v70[8] = @"xp_amp_notifications";
   v69[8] = @"topic";
   v69[9] = @"app";
@@ -144,8 +144,8 @@
 
   if (v30)
   {
-    v31 = [v30 stringValue];
-    [v54 setObject:v31 forKey:@"_ds"];
+    stringValue = [v30 stringValue];
+    [v54 setObject:stringValue forKey:@"_ds"];
   }
 
   else
@@ -153,16 +153,16 @@
     [v54 setObject:@"0" forKey:@"_ds"];
   }
 
-  v32 = [v59 artworkInfos];
-  v33 = [v32 firstObject];
+  artworkInfos = [v59 artworkInfos];
+  firstObject = [artworkInfos firstObject];
 
-  v56 = v33;
-  v34 = [v33 artworkURLWithSize:ICStoreArtworkInfoCropStyleBoundedBox cropStyle:ICStoreArtworkInfoImageFormatJPEG format:{210.0, 210.0}];
+  v56 = firstObject;
+  v34 = [firstObject artworkURLWithSize:ICStoreArtworkInfoCropStyleBoundedBox cropStyle:ICStoreArtworkInfoImageFormatJPEG format:{210.0, 210.0}];
   v35 = v34;
   if (v34)
   {
-    v36 = [v34 absoluteString];
-    [v54 setObject:v36 forKey:@"_au"];
+    absoluteString = [v34 absoluteString];
+    [v54 setObject:absoluteString forKey:@"_au"];
   }
 
   [v54 setObject:&off_1001ED750 forKey:@"_it"];
@@ -177,15 +177,15 @@
   }
 
   [v54 setObject:v37 forKey:@"_ex"];
-  v38 = [NSString stringWithFormat:@"ams_%@", v9];
-  [v54 setObject:v38 forKey:@"_id"];
+  identifierCopy = [NSString stringWithFormat:@"ams_%@", identifierCopy];
+  [v54 setObject:identifierCopy forKey:@"_id"];
 
   [v54 setObject:v55 forKey:@"_bid"];
-  v39 = [v59 releaseDate];
-  if (v39)
+  releaseDate = [v59 releaseDate];
+  if (releaseDate)
   {
     v40 = +[NSDate now];
-    v41 = [v39 compare:v40];
+    v41 = [releaseDate compare:v40];
 
     if (v41 == 1)
     {
@@ -197,7 +197,7 @@
       v44 = [NSTimeZone timeZoneForSecondsFromGMT:0];
       [v42 setTimeZone:v44];
 
-      v45 = [v42 stringFromDate:v39];
+      v45 = [v42 stringFromDate:releaseDate];
       [v54 setObject:v45 forKey:@"_st"];
     }
   }
@@ -207,9 +207,9 @@
   v68[0] = @"notificationRequest";
   v68[1] = &off_1001ED738;
   v67[2] = @"isExplicit";
-  v46 = [v59 isExplicit];
+  isExplicit = [v59 isExplicit];
   v47 = @"0";
-  if (v46)
+  if (isExplicit)
   {
     v47 = @"1";
   }
@@ -217,16 +217,16 @@
   v68[2] = v47;
   v67[3] = @"language";
   v48 = +[ICDeviceInfo currentDeviceInfo];
-  v49 = [v48 currentLocale];
-  v50 = v49;
+  currentLocale = [v48 currentLocale];
+  v50 = currentLocale;
   v51 = &stru_1001E0388;
-  if (v49)
+  if (currentLocale)
   {
-    v51 = v49;
+    v51 = currentLocale;
   }
 
   v68[3] = v51;
-  v68[4] = v9;
+  v68[4] = identifierCopy;
   v67[4] = @"notificationId";
   v67[5] = @"notificationType";
   v68[5] = @"Content";
@@ -234,7 +234,7 @@
   v67[6] = @"platformId";
   v67[7] = @"platformName";
   v68[7] = @"P84";
-  v68[8] = v66;
+  v68[8] = dCopy;
   v67[8] = @"recoId";
   v67[9] = @"topic";
   v68[9] = @"xp_amp_notifications";
@@ -263,61 +263,61 @@
   [v4 messageEntriesForBundleIdentifier:v5 completion:v6];
 }
 
-- (void)_optInMessageForPriorityMessage:(id)a3 completion:(id)a4
+- (void)_optInMessageForPriorityMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = +[ICInAppMessageManager sharedManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000CABC4;
   v11[3] = &unk_1001DD260;
-  v12 = v6;
-  v13 = v7;
+  v12 = messageCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = messageCopy;
+  v10 = completionCopy;
   [v8 messageEntryWithIdentifier:@"non-subscriber-notification-content-opt-in" bundleIdentifier:@"com.apple.amp.inappmessages.private" completion:v11];
 }
 
-- (id)_optInMessageContentForPriorityMessageContent:(id)a3
+- (id)_optInMessageContentForPriorityMessageContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = objc_alloc_init(ICIAMMessageContent);
   [v4 setIdentifier:@"album-lockup"];
   v5 = objc_alloc_init(ICIAMParameter);
   [v5 setKey:@"albumTitle"];
-  v6 = [v3 title];
-  [v5 setValue:v6];
+  title = [contentCopy title];
+  [v5 setValue:title];
 
   v7 = objc_alloc_init(ICIAMParameter);
   [v7 setKey:@"artistName"];
-  v8 = [v3 subtitle];
-  [v7 setValue:v8];
+  subtitle = [contentCopy subtitle];
+  [v7 setValue:subtitle];
 
   [v4 addContentParameters:v5];
   [v4 addContentParameters:v7];
-  v9 = [v3 images];
+  images = [contentCopy images];
 
-  v10 = [v9 firstObject];
-  [v4 addImages:v10];
+  firstObject = [images firstObject];
+  [v4 addImages:firstObject];
 
   return v4;
 }
 
-- (void)_createApplicationMessagesForResult:(id)a3 artistNewContentResponse:(id)a4 completion:(id)a5
+- (void)_createApplicationMessagesForResult:(id)result artistNewContentResponse:(id)response completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  responseCopy = response;
+  completionCopy = completion;
   v11 = objc_alloc_init(ICStorePlatformRequest);
-  v12 = [(ICMusicLibraryRecommendationController *)self _storeRequestContext];
-  [v11 setRequestContext:v12];
+  _storeRequestContext = [(ICMusicLibraryRecommendationController *)self _storeRequestContext];
+  [v11 setRequestContext:_storeRequestContext];
 
-  v13 = [v8 adamID];
-  v14 = [v13 stringValue];
+  adamID = [resultCopy adamID];
+  stringValue = [adamID stringValue];
 
-  v26 = v14;
+  v26 = stringValue;
   v15 = [NSArray arrayWithObjects:&v26 count:1];
   [v11 setItemIdentifiers:v15];
 
@@ -327,15 +327,15 @@
   v21[1] = 3221225472;
   v21[2] = sub_1000CB0EC;
   v21[3] = &unk_1001DD238;
-  v24 = v9;
-  v25 = v10;
+  v24 = responseCopy;
+  v25 = completionCopy;
   v21[4] = self;
-  v22 = v14;
-  v23 = v8;
-  v16 = v9;
-  v17 = v8;
-  v18 = v14;
-  v19 = v10;
+  v22 = stringValue;
+  v23 = resultCopy;
+  v16 = responseCopy;
+  v17 = resultCopy;
+  v18 = stringValue;
+  v19 = completionCopy;
   v20 = [v11 performWithResponseHandler:v21];
 }
 
@@ -348,7 +348,7 @@
   v6[2] = sub_1000CCAB4;
   v6[3] = &unk_1001DE8A0;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   [v4 messageEntriesForBundleIdentifier:v5 completion:v6];
 }
@@ -360,14 +360,14 @@
   v4 = +[ICUserIdentity activeAccount];
   v5 = [v3 DSIDForUserIdentity:v4 outError:0];
 
-  v6 = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
-  v7 = [NSURL fileURLWithPath:v6];
+  _cacheDirectoryPath = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
+  v7 = [NSURL fileURLWithPath:_cacheDirectoryPath];
   v8 = [v7 URLByAppendingPathComponent:@"musicRecommendationsData"];
   v9 = [NSDictionary dictionaryWithContentsOfURL:v8];
   v10 = [v9 mutableCopy];
 
-  v11 = [v5 stringValue];
-  v12 = [v10 objectForKey:v11];
+  stringValue = [v5 stringValue];
+  v12 = [v10 objectForKey:stringValue];
 
   v13 = [v12 valueForKey:@"matchedAdamIDs"];
   os_unfair_lock_unlock(&self->_lock);
@@ -389,9 +389,9 @@
 - (id)_cacheDirectoryPath
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"Caches/com.apple.iTunesCloud/LibraryRecommendations/ResourceCache"];
+  v4 = [firstObject stringByAppendingPathComponent:@"Caches/com.apple.iTunesCloud/LibraryRecommendations/ResourceCache"];
 
   return v4;
 }
@@ -411,11 +411,11 @@
   return v2;
 }
 
-- (id)_wrapAndCacheResponseModelWithCompiledMLModel:(id)a3
+- (id)_wrapAndCacheResponseModelWithCompiledMLModel:(id)model
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 hasModel])
+  modelCopy = model;
+  v5 = modelCopy;
+  if (!modelCopy || ![modelCopy hasModel])
   {
     v13 = 0;
     v14 = 0;
@@ -425,19 +425,19 @@ LABEL_7:
   }
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
-  v8 = [NSURL fileURLWithPath:v7];
+  _cacheDirectoryPath = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
+  v8 = [NSURL fileURLWithPath:_cacheDirectoryPath];
   v40 = [v8 URLByAppendingPathComponent:@"serializedRecommendationsResponse"];
   v39 = [v8 URLByAppendingPathComponent:@"compiledMLModel.mlmodelc"];
-  v38 = v7;
-  v37 = [(ICMusicLibraryRecommendationController *)self _setupCacheDirectoryStructureWithPath:v7];
+  v38 = _cacheDirectoryPath;
+  v37 = [(ICMusicLibraryRecommendationController *)self _setupCacheDirectoryStructureWithPath:_cacheDirectoryPath];
   if (v37)
   {
-    v34 = [v5 data];
-    v35 = [v5 model];
+    data = [v5 data];
+    model = [v5 model];
     v9 = [v8 URLByAppendingPathComponent:@"modelDataBlob.bin"];
-    v10 = [v9 path];
-    v11 = [v6 fileExistsAtPath:v10];
+    path = [v9 path];
+    v11 = [v6 fileExistsAtPath:path];
 
     if (v11)
     {
@@ -451,9 +451,9 @@ LABEL_7:
       v12 = 0;
     }
 
-    v17 = [v9 path];
+    path2 = [v9 path];
     v47 = v12;
-    [v35 writeToFile:v17 options:1 error:&v47];
+    [model writeToFile:path2 options:1 error:&v47];
     v18 = v47;
 
     v46 = v18;
@@ -475,8 +475,8 @@ LABEL_7:
       [NSException raise:NSInternalInconsistencyException format:@"MLModel modelWithContentsOfURL failed with error %@", v20];
     }
 
-    v22 = [v39 path];
-    v23 = [v6 fileExistsAtPath:v22];
+    path3 = [v39 path];
+    v23 = [v6 fileExistsAtPath:path3];
 
     if (v23)
     {
@@ -494,8 +494,8 @@ LABEL_7:
 
     v25 = *v24;
 
-    v26 = [v40 path];
-    v27 = [v6 fileExistsAtPath:v26];
+    path4 = [v40 path];
+    v27 = [v6 fileExistsAtPath:path4];
 
     if (v27)
     {
@@ -509,17 +509,17 @@ LABEL_7:
       v13 = v25;
     }
 
-    v28 = [v40 path];
-    [v34 writeToFile:v28 atomically:1];
+    path5 = [v40 path];
+    [data writeToFile:path5 atomically:1];
 
-    v29 = [v9 path];
-    v30 = [v6 fileExistsAtPath:v29];
+    path6 = [v9 path];
+    v30 = [v6 fileExistsAtPath:path6];
 
     if (v30)
     {
-      v31 = [v9 path];
+      path7 = [v9 path];
       v41 = v13;
-      [v6 removeItemAtPath:v31 error:&v41];
+      [v6 removeItemAtPath:path7 error:&v41];
       v32 = v41;
 
       v13 = v32;
@@ -546,12 +546,12 @@ LABEL_8:
   return v15;
 }
 
-- (BOOL)_setupCacheDirectoryStructureWithPath:(id)a3
+- (BOOL)_setupCacheDirectoryStructureWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[NSFileManager defaultManager];
   v13 = 0;
-  if ([v5 fileExistsAtPath:v4 isDirectory:&v13])
+  if ([v5 fileExistsAtPath:pathCopy isDirectory:&v13])
   {
     if (v13)
     {
@@ -560,7 +560,7 @@ LABEL_8:
     }
 
     v12 = 0;
-    [v5 removeItemAtPath:v4 error:&v12];
+    [v5 removeItemAtPath:pathCopy error:&v12];
     v7 = v12;
   }
 
@@ -571,7 +571,7 @@ LABEL_8:
 
   v11 = v7;
   v6 = 1;
-  [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v11];
+  [v5 createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v11];
   v8 = v11;
 
   if (v8)
@@ -580,7 +580,7 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@ failed to create cache directory structure err=%{public}@", buf, 0x16u);
@@ -597,11 +597,11 @@ LABEL_10:
 - (void)_clearMLModelCache
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
-  v5 = [NSURL fileURLWithPath:v4];
+  _cacheDirectoryPath = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
+  v5 = [NSURL fileURLWithPath:_cacheDirectoryPath];
   v6 = [v5 URLByAppendingPathComponent:@"compiledMLModel.mlmodelc"];
-  v7 = [v6 path];
-  v8 = [v3 fileExistsAtPath:v7];
+  path = [v6 path];
+  v8 = [v3 fileExistsAtPath:path];
 
   if (v8)
   {
@@ -614,7 +614,7 @@ LABEL_10:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v13 = self;
+        selfCopy = self;
         v14 = 2114;
         v15 = v9;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}@ Failed to remove cached MLModel. err=%{public}@", buf, 0x16u);
@@ -623,33 +623,33 @@ LABEL_10:
   }
 }
 
-- (void)_fetchRecommendationsSetAndModelWithCompletionHandler:(id)a3
+- (void)_fetchRecommendationsSetAndModelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [ICMusicLibraryRecommendationsRequest alloc];
-  v6 = [(ICMusicLibraryRecommendationController *)self _storeRequestContext];
-  v7 = [(ICMusicLibraryRecommendationsRequest *)v5 initWithStoreRequestContext:v6 params:&off_1001EE408];
+  _storeRequestContext = [(ICMusicLibraryRecommendationController *)self _storeRequestContext];
+  v7 = [(ICMusicLibraryRecommendationsRequest *)v5 initWithStoreRequestContext:_storeRequestContext params:&off_1001EE408];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000CDA5C;
   v9[3] = &unk_1001DD180;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(ICMusicLibraryRecommendationsRequest *)v7 performRequestWithResponseHandler:v9];
 }
 
-- (void)_computeLibraryRecommendationWithResponse:(id)a3 completionHandler:(id)a4
+- (void)_computeLibraryRecommendationWithResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 responseModel];
+  responseCopy = response;
+  handlerCopy = handler;
+  responseModel = [responseCopy responseModel];
   v9 = os_log_create("com.apple.amp.itunescloudd", "LibraryRecommendations");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Beginning Affininity Analysis using MLModel.", buf, 0xCu);
   }
 
@@ -659,34 +659,34 @@ LABEL_10:
   v14[2] = sub_1000CDCD8;
   v14[3] = &unk_1001DD158;
   v14[4] = self;
-  v15 = v6;
-  v16 = v8;
-  v17 = v7;
-  v11 = v8;
-  v12 = v6;
-  v13 = v7;
+  v15 = responseCopy;
+  v16 = responseModel;
+  v17 = handlerCopy;
+  v11 = responseModel;
+  v12 = responseCopy;
+  v13 = handlerCopy;
   [(ICMusicLibraryArtistAffinityAnalyzer *)affinityAnalyzer performLibraryAnalysisFromResponse:v11 withCompletionHandler:v14];
 }
 
-- (void)_handleRecommendationsResponseModel:(id)a3 completion:(id)a4
+- (void)_handleRecommendationsResponseModel:(id)model completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.itunescloudd", "LibraryRecommendations");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 artistContentsCount];
-    v10 = [v6 recoId];
+    artistContentsCount = [modelCopy artistContentsCount];
+    recoId = [modelCopy recoId];
     *buf = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = v9;
+    v18 = artistContentsCount;
     v19 = 2112;
-    v20 = v10;
+    v20 = recoId;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Received New Release Recommendations response, %lu new release albums, recoID: %@.", buf, 0x20u);
   }
 
-  v11 = [(ICMusicLibraryRecommendationController *)self _wrapAndCacheResponseModelWithCompiledMLModel:v6];
+  v11 = [(ICMusicLibraryRecommendationController *)self _wrapAndCacheResponseModelWithCompiledMLModel:modelCopy];
   if (v11)
   {
     v12[0] = _NSConcreteStackBlock;
@@ -694,14 +694,14 @@ LABEL_10:
     v12[2] = sub_1000CE430;
     v12[3] = &unk_1001DD130;
     v12[4] = self;
-    v14 = v7;
-    v13 = v6;
+    v14 = completionCopy;
+    v13 = modelCopy;
     [(ICMusicLibraryRecommendationController *)self _computeLibraryRecommendationWithResponse:v11 completionHandler:v12];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -711,7 +711,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating recommendations", buf, 0xCu);
   }
 
@@ -729,7 +729,7 @@ LABEL_10:
 {
   [(ICMusicLibraryRecommendationController *)self _cleanupExpiredApplicationMessages];
   self->_failedToPerformAnalysis = 0;
-  v3 = [(ICMusicLibraryRecommendationController *)self _getNetworkConstraints];
+  _getNetworkConstraints = [(ICMusicLibraryRecommendationController *)self _getNetworkConstraints];
   v4 = +[ICEnvironmentMonitor sharedMonitor];
   if ([v4 isWiFiAssociated])
   {
@@ -737,9 +737,9 @@ LABEL_10:
 
   else
   {
-    v5 = [v3 shouldAllowDataForCellularNetworkTypes];
+    shouldAllowDataForCellularNetworkTypes = [_getNetworkConstraints shouldAllowDataForCellularNetworkTypes];
 
-    if ((v5 & 1) == 0)
+    if ((shouldAllowDataForCellularNetworkTypes & 1) == 0)
     {
 LABEL_8:
       self->_failedToPerformAnalysis = 1;
@@ -748,15 +748,15 @@ LABEL_8:
   }
 
   v6 = +[ICPrivacyInfo sharedPrivacyInfo];
-  v7 = [v6 privacyAcknowledgementRequiredForMusic];
+  privacyAcknowledgementRequiredForMusic = [v6 privacyAcknowledgementRequiredForMusic];
 
-  if (v7)
+  if (privacyAcknowledgementRequiredForMusic)
   {
     v8 = os_log_create("com.apple.amp.itunescloudd", "LibraryRecommendations");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping recommendations update because the user needs to accept the privacy notice", buf, 0xCu);
     }
 
@@ -769,25 +769,25 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Will not perform recommendations update. The user has disabled Apple Music.", buf, 0xCu);
     }
   }
 
   else
   {
-    if ([v3 shouldAllowDataForCellularNetworkTypes])
+    if ([_getNetworkConstraints shouldAllowDataForCellularNetworkTypes])
     {
       v10 = +[ICEnvironmentMonitor sharedMonitor];
-      v11 = [v10 isWiFiAssociated];
+      isWiFiAssociated = [v10 isWiFiAssociated];
 
-      if ((v11 & 1) == 0)
+      if ((isWiFiAssociated & 1) == 0)
       {
         v12 = os_log_create("com.apple.amp.itunescloudd", "LibraryRecommendations");
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v15 = self;
+          selfCopy3 = self;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing recommendations update on cellular network", buf, 0xCu);
         }
       }
@@ -805,12 +805,12 @@ LABEL_8:
 LABEL_19:
 }
 
-- (void)_cacheMatchedRecommendations:(id)a3
+- (void)_cacheMatchedRecommendations:(id)recommendations
 {
-  v4 = a3;
+  recommendationsCopy = recommendations;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
-  v6 = [NSURL fileURLWithPath:v5];
+  _cacheDirectoryPath = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
+  v6 = [NSURL fileURLWithPath:_cacheDirectoryPath];
   v7 = +[ICUserIdentityStore defaultIdentityStore];
   v8 = +[ICUserIdentity activeAccount];
   v9 = [v7 DSIDForUserIdentity:v8 outError:0];
@@ -826,19 +826,19 @@ LABEL_19:
       v12 = objc_alloc_init(NSMutableDictionary);
     }
 
-    v13 = [v9 stringValue];
-    v14 = [v12 objectForKey:v13];
+    stringValue = [v9 stringValue];
+    v14 = [v12 objectForKey:stringValue];
 
     if (!v14)
     {
       v14 = objc_alloc_init(NSMutableDictionary);
-      v15 = [v9 stringValue];
-      [v12 setObject:v14 forKey:v15];
+      stringValue2 = [v9 stringValue];
+      [v12 setObject:v14 forKey:stringValue2];
     }
 
     v25 = v9;
     v16 = [v14 valueForKey:@"matchedAdamIDs"];
-    v26 = v5;
+    v26 = _cacheDirectoryPath;
     if (v16)
     {
       [NSMutableSet setWithArray:v16];
@@ -846,15 +846,15 @@ LABEL_19:
 
     else
     {
-      +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+      +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [recommendationsCopy count]);
     }
     v17 = ;
-    v18 = v4;
+    v18 = recommendationsCopy;
     v19 = v17;
     v20 = v18;
     [v17 addObjectsFromArray:?];
-    v21 = [v19 allObjects];
-    [v14 setObject:v21 forKey:@"matchedAdamIDs"];
+    allObjects = [v19 allObjects];
+    [v14 setObject:allObjects forKey:@"matchedAdamIDs"];
 
     v27 = 0;
     v22 = [v12 writeToURL:v10 error:&v27];
@@ -865,7 +865,7 @@ LABEL_19:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v29 = self;
+        selfCopy2 = self;
         v30 = 2114;
         v31 = v23;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%{public}@ Failed to write to disk the matched recommendations. err=%{public}@", buf, 0x16u);
@@ -874,9 +874,9 @@ LABEL_19:
 
     os_unfair_lock_unlock(&self->_lock);
 
-    v4 = v20;
+    recommendationsCopy = v20;
     v9 = v25;
-    v5 = v26;
+    _cacheDirectoryPath = v26;
   }
 
   else
@@ -885,9 +885,9 @@ LABEL_19:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
-      v31 = v5;
+      v31 = _cacheDirectoryPath;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}@ Cache Directory URL is nil failed to cache recommendations data with path received: %{public}@", buf, 0x16u);
     }
   }
@@ -895,8 +895,8 @@ LABEL_19:
 
 - (void)_clearRecommendationsData
 {
-  v3 = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
-  v4 = [NSURL URLWithString:v3];
+  _cacheDirectoryPath = [(ICMusicLibraryRecommendationController *)self _cacheDirectoryPath];
+  v4 = [NSURL URLWithString:_cacheDirectoryPath];
   v5 = v4;
   if (v4)
   {
@@ -904,19 +904,19 @@ LABEL_19:
     v7 = [v5 URLByAppendingPathComponent:@"compiledMLModel.mlmodelc"];
     v8 = [v5 URLByAppendingPathComponent:@"musicRecommendationsData"];
     v9 = +[NSFileManager defaultManager];
-    v10 = [v6 path];
+    path = [v6 path];
     v18 = 0;
-    [v9 removeItemAtPath:v10 error:&v18];
+    [v9 removeItemAtPath:path error:&v18];
     v11 = v18;
 
-    v12 = [v7 path];
+    path2 = [v7 path];
     v17 = v11;
-    [v9 removeItemAtPath:v12 error:&v17];
+    [v9 removeItemAtPath:path2 error:&v17];
     v13 = v17;
 
-    v14 = [v8 path];
+    path3 = [v8 path];
     v16 = v13;
-    [v9 removeItemAtPath:v14 error:&v16];
+    [v9 removeItemAtPath:path3 error:&v16];
     v15 = v16;
   }
 
@@ -926,9 +926,9 @@ LABEL_19:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
-      v22 = v3;
+      v22 = _cacheDirectoryPath;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%{public}@ Cache Directory URL is nil failed to clear cached recommendations data with path received: %{public}@", buf, 0x16u);
     }
 
@@ -936,10 +936,10 @@ LABEL_19:
   }
 }
 
-- (void)_handleNewArtistContentResponseNotification:(id)a3
+- (void)_handleNewArtistContentResponseNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"ICMusicLibraryRecommendationsHandleNewArtistContentFilePath"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"ICMusicLibraryRecommendationsHandleNewArtistContentFilePath"];
 
   v6 = +[NSFileManager defaultManager];
   if ([v6 fileExistsAtPath:v5])
@@ -954,7 +954,7 @@ LABEL_19:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v14 = self;
+        selfCopy = self;
         v15 = 2114;
         v16 = v5;
         v17 = 2114;
@@ -976,30 +976,30 @@ LABEL_19:
   }
 }
 
-- (void)environmentMonitorDidChangeNetworkType:(id)a3
+- (void)environmentMonitorDidChangeNetworkType:(id)type
 {
-  v9 = a3;
-  v4 = [(ICMusicLibraryRecommendationController *)self _getNetworkConstraints];
+  typeCopy = type;
+  _getNetworkConstraints = [(ICMusicLibraryRecommendationController *)self _getNetworkConstraints];
   v5 = +[NSDate now];
   [v5 timeIntervalSince1970];
   if (self->_failedToPerformAnalysis)
   {
     v7 = v6;
     lastTimePeriodicXPCFired = self->_lastTimePeriodicXPCFired;
-    if (([v9 networkType] > 999 || objc_msgSend(v4, "shouldAllowDataForCellularNetworkTypes")) && v7 - lastTimePeriodicXPCFired >= self->_refreshIntervalFromBag * 0.7)
+    if (([typeCopy networkType] > 999 || objc_msgSend(_getNetworkConstraints, "shouldAllowDataForCellularNetworkTypes")) && v7 - lastTimePeriodicXPCFired >= self->_refreshIntervalFromBag * 0.7)
     {
       [(ICMusicLibraryRecommendationController *)self _performRecommendationsUpdate];
     }
   }
 }
 
-- (void)handleAccountStateChange:(id)a3
+- (void)handleAccountStateChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userIdentityStore];
-  v6 = [v4 userIdentity];
+  changeCopy = change;
+  userIdentityStore = [changeCopy userIdentityStore];
+  userIdentity = [changeCopy userIdentity];
 
-  v7 = [v5 DSIDForUserIdentity:v6 outError:0];
+  v7 = [userIdentityStore DSIDForUserIdentity:userIdentity outError:0];
 
   if (v7)
   {
@@ -1024,21 +1024,21 @@ LABEL_19:
 
 LABEL_7:
     v7 = +[ICURLBagProvider sharedBagProvider];
-    v8 = [(ICMusicLibraryRecommendationController *)self _storeRequestContext];
+    _storeRequestContext = [(ICMusicLibraryRecommendationController *)self _storeRequestContext];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000D0168;
     v9[3] = &unk_1001DD040;
     v9[4] = self;
-    [v7 getBagForRequestContext:v8 forceRefetch:0 withCompletionHandler:v9];
+    [v7 getBagForRequestContext:_storeRequestContext forceRefetch:0 withCompletionHandler:v9];
 
     return;
   }
 
   v4 = +[ICDefaults standardDefaults];
-  v5 = [v4 shouldForceLibraryRecommendationAnalysis];
+  shouldForceLibraryRecommendationAnalysis = [v4 shouldForceLibraryRecommendationAnalysis];
 
-  if (!v5)
+  if (!shouldForceLibraryRecommendationAnalysis)
   {
     goto LABEL_7;
   }
@@ -1047,7 +1047,7 @@ LABEL_7:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Forcing library recommendation analysis without a timer.", buf, 0xCu);
   }
 
@@ -1062,7 +1062,7 @@ LABEL_7:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Stopping system service...", &v9, 0xCu);
     }
 
@@ -1095,7 +1095,7 @@ LABEL_7:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting system service...", buf, 0xCu);
   }
 

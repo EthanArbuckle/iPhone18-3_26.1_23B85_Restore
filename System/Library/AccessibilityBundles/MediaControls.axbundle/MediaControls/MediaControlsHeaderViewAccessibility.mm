@@ -1,5 +1,5 @@
 @interface MediaControlsHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityCombinedTitleElement;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,23 +8,23 @@
 
 @implementation MediaControlsHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"routingButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"doneButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"routeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"primaryMarqueeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"secondaryMarqueeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"style" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"launchNowPlayingAppButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsPanelViewController"];
-  [v3 validateClass:@"MPRouteLabel"];
-  [v3 validateClass:@"MPRouteLabel" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"routingButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"doneButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"routeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"primaryMarqueeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"secondaryMarqueeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"style" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MediaControlsHeaderView" hasInstanceMethod:@"launchNowPlayingAppButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsPanelViewController"];
+  [validationsCopy validateClass:@"MPRouteLabel"];
+  [validationsCopy validateClass:@"MPRouteLabel" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -147,7 +147,7 @@ uint64_t __82__MediaControlsHeaderViewAccessibility__accessibilityLoadAccessibil
 
 - (id)accessibilityElements
 {
-  v3 = [(MediaControlsHeaderViewAccessibility *)self _accessibilityCombinedTitleElement];
+  _accessibilityCombinedTitleElement = [(MediaControlsHeaderViewAccessibility *)self _accessibilityCombinedTitleElement];
   v4 = [(MediaControlsHeaderViewAccessibility *)self safeUIViewForKey:@"primaryMarqueeView"];
   v5 = [(MediaControlsHeaderViewAccessibility *)self safeUIViewForKey:@"secondaryMarqueeView"];
   objc_opt_class();
@@ -157,7 +157,7 @@ uint64_t __82__MediaControlsHeaderViewAccessibility__accessibilityLoadAccessibil
   v8 = [v7 mutableCopy];
   [v8 removeObject:v4];
   [v8 removeObject:v5];
-  [v8 insertObject:v3 atIndex:0];
+  [v8 insertObject:_accessibilityCombinedTitleElement atIndex:0];
 
   return v8;
 }
@@ -196,13 +196,13 @@ uint64_t __82__MediaControlsHeaderViewAccessibility__accessibilityLoadAccessibil
     objc_copyWeak(&v8, &location);
     v7[4] = self;
     [v3 _setAccessibilityHintBlock:v7];
-    v4 = [v3 accessibilityTraits];
+    accessibilityTraits = [v3 accessibilityTraits];
     v6[0] = MEMORY[0x29EDCA5F8];
     v6[1] = 3221225472;
     v6[2] = __74__MediaControlsHeaderViewAccessibility__accessibilityCombinedTitleElement__block_invoke_4;
     v6[3] = &unk_29F2CF2E8;
     v6[4] = self;
-    v6[5] = v4;
+    v6[5] = accessibilityTraits;
     [v3 _setAccessibilityTraitsBlock:v6];
     [(MediaControlsHeaderViewAccessibility *)self _accessibilitySetRetainedValue:v3 forKey:@"combinedTitleElement"];
     objc_destroyWeak(&v8);

@@ -1,16 +1,16 @@
 @interface _UIKeyboardIndirectTextSelectionGestureState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)translation;
-- (_UIKeyboardIndirectTextSelectionGestureState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIKeyboardIndirectTextSelectionGestureState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIKeyboardIndirectTextSelectionGestureState
 
-- (_UIKeyboardIndirectTextSelectionGestureState)initWithCoder:(id)a3
+- (_UIKeyboardIndirectTextSelectionGestureState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -20,49 +20,49 @@
   v5 = [(_UIKeyboardIndirectTextSelectionGestureState *)&v9 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntForKey:@"Type"];
-    v5->_state = [v4 decodeIntForKey:@"State"];
-    [v4 decodeCGPointForKey:@"Translation"];
+    v5->_type = [coderCopy decodeIntForKey:@"Type"];
+    v5->_state = [coderCopy decodeIntForKey:@"State"];
+    [coderCopy decodeCGPointForKey:@"Translation"];
     v5->_translation.x = v6;
     v5->_translation.y = v7;
-    v5->_flickDirection = [v4 decodeIntForKey:@"FlickDirection"];
-    v5->_isShiftKeyBeingHeld = [v4 decodeBoolForKey:@"Shift"];
-    v5->_touchCount = [v4 decodeIntForKey:@"TouchCount"];
+    v5->_flickDirection = [coderCopy decodeIntForKey:@"FlickDirection"];
+    v5->_isShiftKeyBeingHeld = [coderCopy decodeBoolForKey:@"Shift"];
+    v5->_touchCount = [coderCopy decodeIntForKey:@"TouchCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  if (([v6 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
 
-  [v6 encodeInt:LODWORD(self->_type) forKey:@"Type"];
-  [v6 encodeInt:LODWORD(self->_state) forKey:@"State"];
-  [v6 encodeCGPoint:@"Translation" forKey:{self->_translation.x, self->_translation.y}];
-  [v6 encodeInt:LODWORD(self->_flickDirection) forKey:@"FlickDirection"];
+  [coderCopy encodeInt:LODWORD(self->_type) forKey:@"Type"];
+  [coderCopy encodeInt:LODWORD(self->_state) forKey:@"State"];
+  [coderCopy encodeCGPoint:@"Translation" forKey:{self->_translation.x, self->_translation.y}];
+  [coderCopy encodeInt:LODWORD(self->_flickDirection) forKey:@"FlickDirection"];
   if (self->_isShiftKeyBeingHeld)
   {
-    [v6 encodeBool:1 forKey:@"Shift"];
+    [coderCopy encodeBool:1 forKey:@"Shift"];
   }
 
   touchCount = self->_touchCount;
-  v5 = v6;
+  v5 = coderCopy;
   if (touchCount)
   {
-    [v6 encodeInt:touchCount forKey:@"TouchCount"];
-    v5 = v6;
+    [coderCopy encodeInt:touchCount forKey:@"TouchCount"];
+    v5 = coderCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
     goto LABEL_13;
@@ -75,15 +75,15 @@
     goto LABEL_13;
   }
 
-  v5 = v4;
-  v6 = [(_UIKeyboardIndirectTextSelectionGestureState *)self type];
-  if (v6 != [(_UIKeyboardIndirectTextSelectionGestureState *)v5 type])
+  v5 = equalCopy;
+  type = [(_UIKeyboardIndirectTextSelectionGestureState *)self type];
+  if (type != [(_UIKeyboardIndirectTextSelectionGestureState *)v5 type])
   {
     goto LABEL_9;
   }
 
-  v7 = [(_UIKeyboardIndirectTextSelectionGestureState *)self state];
-  if (v7 != [(_UIKeyboardIndirectTextSelectionGestureState *)v5 state])
+  state = [(_UIKeyboardIndirectTextSelectionGestureState *)self state];
+  if (state != [(_UIKeyboardIndirectTextSelectionGestureState *)v5 state])
   {
     goto LABEL_9;
   }
@@ -98,11 +98,11 @@
     goto LABEL_10;
   }
 
-  v15 = [(_UIKeyboardIndirectTextSelectionGestureState *)self flickDirection];
-  if (v15 == [(_UIKeyboardIndirectTextSelectionGestureState *)v5 flickDirection]&& (v16 = [(_UIKeyboardIndirectTextSelectionGestureState *)self isShiftKeyBeingHeld], v16 == [(_UIKeyboardIndirectTextSelectionGestureState *)v5 isShiftKeyBeingHeld]))
+  flickDirection = [(_UIKeyboardIndirectTextSelectionGestureState *)self flickDirection];
+  if (flickDirection == [(_UIKeyboardIndirectTextSelectionGestureState *)v5 flickDirection]&& (v16 = [(_UIKeyboardIndirectTextSelectionGestureState *)self isShiftKeyBeingHeld], v16 == [(_UIKeyboardIndirectTextSelectionGestureState *)v5 isShiftKeyBeingHeld]))
   {
-    v18 = [(_UIKeyboardIndirectTextSelectionGestureState *)self touchCount];
-    v13 = v18 == [(_UIKeyboardIndirectTextSelectionGestureState *)v5 touchCount];
+    touchCount = [(_UIKeyboardIndirectTextSelectionGestureState *)self touchCount];
+    v13 = touchCount == [(_UIKeyboardIndirectTextSelectionGestureState *)v5 touchCount];
   }
 
   else

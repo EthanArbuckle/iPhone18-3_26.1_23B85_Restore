@@ -1,39 +1,39 @@
 @interface CMIOExtensionSessionStream
-+ (id)sessionStreamWithPropertyStates:(id)a3 provider:(id)a4;
-- (CMIOExtensionSessionStream)initWithPropertyStates:(id)a3 provider:(id)a4;
++ (id)sessionStreamWithPropertyStates:(id)states provider:(id)provider;
+- (CMIOExtensionSessionStream)initWithPropertyStates:(id)states provider:(id)provider;
 - (NSArray)formats;
 - (NSSet)availableProperties;
-- (id)cachedPropertyStateForProperty:(id)a3;
-- (id)cachedPropertyStatesForProperties:(id)a3;
-- (id)copySample:(BOOL *)a3 streamID:(id)a4 error:(id *)a5;
+- (id)cachedPropertyStateForProperty:(id)property;
+- (id)cachedPropertyStatesForProperties:(id)properties;
+- (id)copySample:(BOOL *)sample streamID:(id)d error:(id *)error;
 - (id)description;
-- (void)captureAsyncStillImage:(int64_t)a3 options:(id)a4 reply:(id)a5;
+- (void)captureAsyncStillImage:(int64_t)image options:(id)options reply:(id)reply;
 - (void)completeTransaction;
 - (void)dealloc;
-- (void)enqueueReactionEffect:(id)a3 reply:(id)a4;
-- (void)propertyStatesForProperties:(id)availableProperties reply:(id)a4;
-- (void)receivedSample:(id)a3 streamID:(id)a4;
-- (void)receivedScheduledOutput:(id)a3 streamID:(id)a4;
-- (void)setActiveFormatIndex:(unint64_t)a3 reply:(id)a4;
-- (void)setPropertyValues:(id)a3 reply:(id)a4;
-- (void)startStream:(id)a3;
-- (void)stopStream:(id)a3;
-- (void)updatePropertyStates:(id)a3 streamID:(id)a4;
+- (void)enqueueReactionEffect:(id)effect reply:(id)reply;
+- (void)propertyStatesForProperties:(id)availableProperties reply:(id)reply;
+- (void)receivedSample:(id)sample streamID:(id)d;
+- (void)receivedScheduledOutput:(id)output streamID:(id)d;
+- (void)setActiveFormatIndex:(unint64_t)index reply:(id)reply;
+- (void)setPropertyValues:(id)values reply:(id)reply;
+- (void)startStream:(id)stream;
+- (void)stopStream:(id)stream;
+- (void)updatePropertyStates:(id)states streamID:(id)d;
 @end
 
 @implementation CMIOExtensionSessionStream
 
-+ (id)sessionStreamWithPropertyStates:(id)a3 provider:(id)a4
++ (id)sessionStreamWithPropertyStates:(id)states provider:(id)provider
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithPropertyStates:a3 provider:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithPropertyStates:states provider:provider];
 
   return v4;
 }
 
-- (CMIOExtensionSessionStream)initWithPropertyStates:(id)a3 provider:(id)a4
+- (CMIOExtensionSessionStream)initWithPropertyStates:(id)states provider:(id)provider
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (states && provider)
   {
     v18.receiver = self;
     v18.super_class = CMIOExtensionSessionStream;
@@ -48,24 +48,24 @@
       v17[2] = __62__CMIOExtensionSessionStream_initWithPropertyStates_provider___block_invoke;
       v17[3] = &unk_27885C010;
       v17[4] = v8;
-      v7->_availableProperties = [a3 keysOfEntriesPassingTest:v17];
-      v7->_localizedName = [objc_msgSend(a3 objectForKeyedSubscript:{0x284358E78), "value"}];
-      v9 = [objc_msgSend(a3 objectForKeyedSubscript:{0x284358E98), "value"}];
+      v7->_availableProperties = [states keysOfEntriesPassingTest:v17];
+      v7->_localizedName = [objc_msgSend(states objectForKeyedSubscript:{0x284358E78), "value"}];
+      v9 = [objc_msgSend(states objectForKeyedSubscript:{0x284358E98), "value"}];
       v7->_streamID = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
-      v7->_direction = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{0x284358EB8), "value"), "integerValue"}];
-      v10 = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{0x284358ED8), "value"), "integerValue"}];
+      v7->_direction = [objc_msgSend(objc_msgSend(states objectForKeyedSubscript:{0x284358EB8), "value"), "integerValue"}];
+      v10 = [objc_msgSend(objc_msgSend(states objectForKeyedSubscript:{0x284358ED8), "value"), "integerValue"}];
       v7->_clockType = v10;
       if (v10 == 2)
       {
-        v7->_customClockConfiguration = [objc_msgSend(a3 objectForKeyedSubscript:{0x284358EF8), "value"}];
+        v7->_customClockConfiguration = [objc_msgSend(states objectForKeyedSubscript:{0x284358EF8), "value"}];
       }
 
-      v7->_formats = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{0x284358F18), "attributes"), "validValues"}];
-      v11 = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{@"CMIOExtensionPropertyStreamActiveFormatIndex", "value"), "unsignedIntegerValue"}];
+      v7->_formats = [objc_msgSend(objc_msgSend(states objectForKeyedSubscript:{0x284358F18), "attributes"), "validValues"}];
+      v11 = [objc_msgSend(objc_msgSend(states objectForKeyedSubscript:{@"CMIOExtensionPropertyStreamActiveFormatIndex", "value"), "unsignedIntegerValue"}];
       v7->_activeFormatIndex = v11;
       v7->_activeFormatMediaType = CMFormatDescriptionGetMediaType([-[NSArray objectAtIndexedSubscript:](v7->_formats objectAtIndexedSubscript:{v11), "formatDescription"}]);
-      v7->_propertyStates = [a3 mutableCopy];
-      objc_storeWeak(&v7->_provider, a4);
+      v7->_propertyStates = [states mutableCopy];
+      objc_storeWeak(&v7->_provider, provider);
       v7->_description = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<CMIOExtensionSessionStream: ID %@>", v7->_streamID];
       if (CMIOModuleLogLevel_once != -1)
       {
@@ -130,7 +130,7 @@
         v11 = 2080;
         v12 = "[CMIOExtensionSessionStream dealloc]";
         v13 = 2112;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
@@ -149,7 +149,7 @@
   return v2;
 }
 
-- (void)updatePropertyStates:(id)a3 streamID:(id)a4
+- (void)updatePropertyStates:(id)states streamID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -172,18 +172,18 @@
         v15 = 2080;
         v16 = "[CMIOExtensionSessionStream updatePropertyStates:streamID:]";
         v17 = 2112;
-        v18 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v7, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v11, 0x26u);
       }
     }
   }
 
-  if ([a3 count])
+  if ([states count])
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_propertyStates addEntriesFromDictionary:a3];
+    [(NSMutableDictionary *)self->_propertyStates addEntriesFromDictionary:states];
     os_unfair_lock_unlock(&self->_lock);
-    v8 = [a3 objectForKeyedSubscript:@"CMIOExtensionPropertyStreamActiveFormatIndex"];
+    v8 = [states objectForKeyedSubscript:@"CMIOExtensionPropertyStreamActiveFormatIndex"];
     if (v8)
     {
       v9 = [objc_msgSend(v8 "value")];
@@ -192,13 +192,13 @@
       [objc_loadWeak(&self->_delegate) stream:self activeFormatIndexChanged:v9];
     }
 
-    [objc_loadWeak(&self->_delegate) stream:self propertiesChanged:a3];
+    [objc_loadWeak(&self->_delegate) stream:self propertiesChanged:states];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedSample:(id)a3 streamID:(id)a4
+- (void)receivedSample:(id)sample streamID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -221,19 +221,19 @@
         v13 = 2080;
         v14 = "[CMIOExtensionSessionStream receivedSample:streamID:]";
         v15 = 2112;
-        v16 = self;
+        selfCopy = self;
         v17 = 2112;
-        v18 = a3;
+        sampleCopy = sample;
         _os_log_impl(&dword_22EA08000, v7, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, sample %@", &v9, 0x30u);
       }
     }
   }
 
-  [objc_loadWeak(&self->_delegate) stream:self receivedSampleBuffer:{objc_msgSend(a3, "sampleBuffer")}];
+  [objc_loadWeak(&self->_delegate) stream:self receivedSampleBuffer:{objc_msgSend(sample, "sampleBuffer")}];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copySample:(BOOL *)a3 streamID:(id)a4 error:(id *)a5
+- (id)copySample:(BOOL *)sample streamID:(id)d error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -256,15 +256,15 @@
         v19 = 2080;
         v20 = "[CMIOExtensionSessionStream copySample:streamID:error:]";
         v21 = 2112;
-        v22 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v15, 0x26u);
       }
     }
   }
 
-  *a3 = 0;
-  *a5 = 0;
-  v10 = [objc_loadWeak(&self->_delegate) stream:self copySampleBuffer:a3 error:a5];
+  *sample = 0;
+  *error = 0;
+  v10 = [objc_loadWeak(&self->_delegate) stream:self copySampleBuffer:sample error:error];
   if (v10)
   {
     v11 = v10;
@@ -281,7 +281,7 @@
   return v12;
 }
 
-- (void)receivedScheduledOutput:(id)a3 streamID:(id)a4
+- (void)receivedScheduledOutput:(id)output streamID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -304,13 +304,13 @@
         v13 = 2080;
         v14 = "[CMIOExtensionSessionStream receivedScheduledOutput:streamID:]";
         v15 = 2112;
-        v16 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v7, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v9, 0x26u);
       }
     }
   }
 
-  [objc_loadWeak(&self->_delegate) stream:self scheduledOutputChanged:a3];
+  [objc_loadWeak(&self->_delegate) stream:self scheduledOutputChanged:output];
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -321,15 +321,15 @@
   return v2;
 }
 
-- (id)cachedPropertyStateForProperty:(id)a3
+- (id)cachedPropertyStateForProperty:(id)property
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_propertyStates objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_propertyStates objectForKey:property];
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (id)cachedPropertyStatesForProperties:(id)a3
+- (id)cachedPropertyStatesForProperties:(id)properties
 {
   v30 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -352,20 +352,20 @@
         v26 = 2080;
         v27 = "[CMIOExtensionSessionStream cachedPropertyStatesForProperties:]";
         v28 = 2112;
-        v29 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
-  if (a3)
+  if (properties)
   {
     v7 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v8 = [properties countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -376,7 +376,7 @@
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(properties);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
@@ -389,7 +389,7 @@
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [properties countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -409,7 +409,7 @@
   return v14;
 }
 
-- (void)propertyStatesForProperties:(id)availableProperties reply:(id)a4
+- (void)propertyStatesForProperties:(id)availableProperties reply:(id)reply
 {
   v25 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -432,7 +432,7 @@
         v21 = 2080;
         v22 = "[CMIOExtensionSessionStream propertyStatesForProperties:reply:]";
         v23 = 2112;
-        v24 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
@@ -443,18 +443,18 @@
     availableProperties = self->_availableProperties;
   }
 
-  v9 = [objc_loadWeak(&self->_provider) hostContext];
-  if (v9)
+  hostContext = [objc_loadWeak(&self->_provider) hostContext];
+  if (hostContext)
   {
-    v10 = v9;
-    v11 = [(NSUUID *)self->_streamID UUIDString];
+    v10 = hostContext;
+    uUIDString = [(NSUUID *)self->_streamID UUIDString];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __64__CMIOExtensionSessionStream_propertyStatesForProperties_reply___block_invoke;
     v14[3] = &unk_27885C038;
     v14[4] = self;
-    v14[5] = a4;
-    [v10 streamPropertyStatesWithStreamID:v11 properties:availableProperties reply:v14];
+    v14[5] = reply;
+    [v10 streamPropertyStatesWithStreamID:uUIDString properties:availableProperties reply:v14];
   }
 
   else
@@ -462,7 +462,7 @@
     v12 = *MEMORY[0x277CCA590];
     v15 = *MEMORY[0x277CCA450];
     v16 = @"Invalid session";
-    (*(a4 + 2))(a4, 0, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
+    (*(reply + 2))(reply, 0, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -482,7 +482,7 @@ uint64_t __64__CMIOExtensionSessionStream_propertyStatesForProperties_reply___bl
   return v4();
 }
 
-- (void)setPropertyValues:(id)a3 reply:(id)a4
+- (void)setPropertyValues:(id)values reply:(id)reply
 {
   v27 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -505,25 +505,25 @@ uint64_t __64__CMIOExtensionSessionStream_propertyStatesForProperties_reply___bl
         v21 = 2080;
         v22 = "[CMIOExtensionSessionStream setPropertyValues:reply:]";
         v23 = 2112;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = a3;
+        valuesCopy = values;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, propertyValues %@", buf, 0x30u);
       }
     }
   }
 
-  v9 = [objc_loadWeak(&self->_provider) hostContext];
-  if (v9)
+  hostContext = [objc_loadWeak(&self->_provider) hostContext];
+  if (hostContext)
   {
-    v10 = v9;
-    v11 = [(NSUUID *)self->_streamID UUIDString];
+    v10 = hostContext;
+    uUIDString = [(NSUUID *)self->_streamID UUIDString];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __54__CMIOExtensionSessionStream_setPropertyValues_reply___block_invoke;
     v14[3] = &unk_27885C060;
-    v14[4] = a4;
-    [v10 setStreamPropertyValuesWithStreamID:v11 propertyValues:a3 reply:v14];
+    v14[4] = reply;
+    [v10 setStreamPropertyValuesWithStreamID:uUIDString propertyValues:values reply:v14];
   }
 
   else
@@ -531,7 +531,7 @@ uint64_t __64__CMIOExtensionSessionStream_propertyStatesForProperties_reply___bl
     v12 = *MEMORY[0x277CCA590];
     v15 = *MEMORY[0x277CCA450];
     v16 = @"Invalid session";
-    (*(a4 + 2))(a4, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
+    (*(reply + 2))(reply, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -544,7 +544,7 @@ uint64_t __64__CMIOExtensionSessionStream_propertyStatesForProperties_reply___bl
   return v2;
 }
 
-- (void)setActiveFormatIndex:(unint64_t)a3 reply:(id)a4
+- (void)setActiveFormatIndex:(unint64_t)index reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -567,15 +567,15 @@ uint64_t __64__CMIOExtensionSessionStream_propertyStatesForProperties_reply___bl
         v29 = 2080;
         v30 = "[CMIOExtensionSessionStream setActiveFormatIndex:reply:]";
         v31 = 2112;
-        v32 = self;
+        selfCopy = self;
         v33 = 1024;
-        v34 = a3;
+        indexCopy = index;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %d", buf, 0x2Cu);
       }
     }
   }
 
-  if ([(NSArray *)self->_formats count]<= a3)
+  if ([(NSArray *)self->_formats count]<= index)
   {
     v13 = CMIOLog();
     if (v13 && os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -593,8 +593,8 @@ uint64_t __64__CMIOExtensionSessionStream_propertyStatesForProperties_reply___bl
     goto LABEL_15;
   }
 
-  v9 = [objc_loadWeak(&self->_provider) hostContext];
-  if (!v9)
+  hostContext = [objc_loadWeak(&self->_provider) hostContext];
+  if (!hostContext)
   {
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277CCA590];
@@ -604,21 +604,21 @@ uint64_t __64__CMIOExtensionSessionStream_propertyStatesForProperties_reply___bl
     v17 = &v22;
     v18 = &v21;
 LABEL_15:
-    (*(a4 + 2))(a4, [v14 errorWithDomain:v15 code:-50 userInfo:{objc_msgSend(v16, "dictionaryWithObjects:forKeys:count:", v17, v18, 1)}]);
+    (*(reply + 2))(reply, [v14 errorWithDomain:v15 code:-50 userInfo:{objc_msgSend(v16, "dictionaryWithObjects:forKeys:count:", v17, v18, 1)}]);
     goto LABEL_16;
   }
 
-  v10 = v9;
-  v11 = [MEMORY[0x277CBEAC0] dictionaryWithObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", a3), @"CMIOExtensionPropertyStreamActiveFormatIndex"}];
-  v12 = [(NSUUID *)self->_streamID UUIDString];
+  v10 = hostContext;
+  v11 = [MEMORY[0x277CBEAC0] dictionaryWithObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", index), @"CMIOExtensionPropertyStreamActiveFormatIndex"}];
+  uUIDString = [(NSUUID *)self->_streamID UUIDString];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __57__CMIOExtensionSessionStream_setActiveFormatIndex_reply___block_invoke;
   v20[3] = &unk_27885C088;
-  v20[5] = a4;
-  v20[6] = a3;
+  v20[5] = reply;
+  v20[6] = index;
   v20[4] = self;
-  [v10 setStreamPropertyValuesWithStreamID:v12 propertyValues:v11 reply:v20];
+  [v10 setStreamPropertyValuesWithStreamID:uUIDString propertyValues:v11 reply:v20];
 LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -642,7 +642,7 @@ uint64_t __57__CMIOExtensionSessionStream_setActiveFormatIndex_reply___block_inv
   return (*(a1[5] + 16))();
 }
 
-- (void)startStream:(id)a3
+- (void)startStream:(id)stream
 {
   v23 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -665,25 +665,25 @@ uint64_t __57__CMIOExtensionSessionStream_setActiveFormatIndex_reply___block_inv
         v19 = 2080;
         v20 = "[CMIOExtensionSessionStream startStream:]";
         v21 = 2112;
-        v22 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
-  v7 = [objc_loadWeak(&self->_provider) hostContext];
-  if (v7)
+  hostContext = [objc_loadWeak(&self->_provider) hostContext];
+  if (hostContext)
   {
-    v8 = v7;
+    v8 = hostContext;
     self->_streaming = 1;
-    v9 = [(NSUUID *)self->_streamID UUIDString];
+    uUIDString = [(NSUUID *)self->_streamID UUIDString];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __42__CMIOExtensionSessionStream_startStream___block_invoke;
     v12[3] = &unk_27885C0B0;
     v12[4] = self;
-    v12[5] = a3;
-    [v8 startStreamWithStreamID:v9 reply:v12];
+    v12[5] = stream;
+    [v8 startStreamWithStreamID:uUIDString reply:v12];
   }
 
   else
@@ -691,7 +691,7 @@ uint64_t __57__CMIOExtensionSessionStream_setActiveFormatIndex_reply___block_inv
     v10 = *MEMORY[0x277CCA590];
     v13 = *MEMORY[0x277CCA450];
     v14 = @"Invalid session";
-    (*(a3 + 2))(a3, [MEMORY[0x277CCA9B8] errorWithDomain:v10 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v14, &v13, 1)}]);
+    (*(stream + 2))(stream, [MEMORY[0x277CCA9B8] errorWithDomain:v10 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v14, &v13, 1)}]);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -713,7 +713,7 @@ uint64_t __42__CMIOExtensionSessionStream_startStream___block_invoke(uint64_t a1
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)stopStream:(id)a3
+- (void)stopStream:(id)stream
 {
   v23 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -736,24 +736,24 @@ uint64_t __42__CMIOExtensionSessionStream_startStream___block_invoke(uint64_t a1
         v19 = 2080;
         v20 = "[CMIOExtensionSessionStream stopStream:]";
         v21 = 2112;
-        v22 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
-  v7 = [objc_loadWeak(&self->_provider) hostContext];
-  if (v7)
+  hostContext = [objc_loadWeak(&self->_provider) hostContext];
+  if (hostContext)
   {
-    v8 = v7;
+    v8 = hostContext;
     self->_streaming = 0;
-    v9 = [(NSUUID *)self->_streamID UUIDString];
+    uUIDString = [(NSUUID *)self->_streamID UUIDString];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __41__CMIOExtensionSessionStream_stopStream___block_invoke;
     v12[3] = &unk_27885C060;
-    v12[4] = a3;
-    [v8 stopStreamWithStreamID:v9 reply:v12];
+    v12[4] = stream;
+    [v8 stopStreamWithStreamID:uUIDString reply:v12];
   }
 
   else
@@ -761,7 +761,7 @@ uint64_t __42__CMIOExtensionSessionStream_startStream___block_invoke(uint64_t a1
     v10 = *MEMORY[0x277CCA590];
     v13 = *MEMORY[0x277CCA450];
     v14 = @"Invalid session";
-    (*(a3 + 2))(a3, [MEMORY[0x277CCA9B8] errorWithDomain:v10 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v14, &v13, 1)}]);
+    (*(stream + 2))(stream, [MEMORY[0x277CCA9B8] errorWithDomain:v10 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v14, &v13, 1)}]);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -784,7 +784,7 @@ uint64_t __41__CMIOExtensionSessionStream_stopStream___block_invoke(uint64_t a1,
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)captureAsyncStillImage:(int64_t)a3 options:(id)a4 reply:(id)a5
+- (void)captureAsyncStillImage:(int64_t)image options:(id)options reply:(id)reply
 {
   v27 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -807,23 +807,23 @@ uint64_t __41__CMIOExtensionSessionStream_stopStream___block_invoke(uint64_t a1,
         v23 = 2080;
         v24 = "[CMIOExtensionSessionStream captureAsyncStillImage:options:reply:]";
         v25 = 2112;
-        v26 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
-  v11 = [objc_loadWeak(&self->_provider) hostContext];
-  if (v11)
+  hostContext = [objc_loadWeak(&self->_provider) hostContext];
+  if (hostContext)
   {
-    v12 = v11;
-    v13 = [(NSUUID *)self->_streamID UUIDString];
+    v12 = hostContext;
+    uUIDString = [(NSUUID *)self->_streamID UUIDString];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __67__CMIOExtensionSessionStream_captureAsyncStillImage_options_reply___block_invoke;
     v16[3] = &unk_27885C0D8;
-    v16[4] = a5;
-    [v12 captureAsyncStillImageWithStreamID:v13 uniqueID:a3 options:a4 reply:v16];
+    v16[4] = reply;
+    [v12 captureAsyncStillImageWithStreamID:uUIDString uniqueID:image options:options reply:v16];
   }
 
   else
@@ -831,7 +831,7 @@ uint64_t __41__CMIOExtensionSessionStream_stopStream___block_invoke(uint64_t a1,
     v14 = *MEMORY[0x277CCA590];
     v17 = *MEMORY[0x277CCA450];
     v18 = @"Invalid session";
-    (*(a5 + 2))(a5, 0, [MEMORY[0x277CCA9B8] errorWithDomain:v14 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v18, &v17, 1)}]);
+    (*(reply + 2))(reply, 0, [MEMORY[0x277CCA9B8] errorWithDomain:v14 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v18, &v17, 1)}]);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -862,7 +862,7 @@ uint64_t __67__CMIOExtensionSessionStream_captureAsyncStillImage_options_reply__
   }
 }
 
-- (void)enqueueReactionEffect:(id)a3 reply:(id)a4
+- (void)enqueueReactionEffect:(id)effect reply:(id)reply
 {
   v22 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -885,16 +885,16 @@ uint64_t __67__CMIOExtensionSessionStream_captureAsyncStillImage_options_reply__
         v18 = 2080;
         v19 = "[CMIOExtensionSessionStream enqueueReactionEffect:reply:]";
         v20 = 2112;
-        v21 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
-  v9 = [objc_loadWeak(&self->_provider) hostContext];
-  if (v9)
+  hostContext = [objc_loadWeak(&self->_provider) hostContext];
+  if (hostContext)
   {
-    [v9 enqueueReactionEffect:-[NSUUID UUIDString](self->_streamID reactionType:"UUIDString") reply:{a3, a4}];
+    [hostContext enqueueReactionEffect:-[NSUUID UUIDString](self->_streamID reactionType:"UUIDString") reply:{effect, reply}];
   }
 
   else
@@ -902,7 +902,7 @@ uint64_t __67__CMIOExtensionSessionStream_captureAsyncStillImage_options_reply__
     v10 = *MEMORY[0x277CCA590];
     v12 = *MEMORY[0x277CCA450];
     v13 = @"Invalid session";
-    (*(a4 + 2))(a4, [MEMORY[0x277CCA9B8] errorWithDomain:v10 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
+    (*(reply + 2))(reply, [MEMORY[0x277CCA9B8] errorWithDomain:v10 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
   }
 
   v11 = *MEMORY[0x277D85DE8];

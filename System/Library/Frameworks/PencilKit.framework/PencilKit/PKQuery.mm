@@ -1,21 +1,21 @@
 @interface PKQuery
-- (PKQuery)initWithRecognitionSessionManager:(id)a3;
+- (PKQuery)initWithRecognitionSessionManager:(id)manager;
 - (PKRecognitionSessionManager)sessionManager;
 - (id)delegate;
 @end
 
 @implementation PKQuery
 
-- (PKQuery)initWithRecognitionSessionManager:(id)a3
+- (PKQuery)initWithRecognitionSessionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = PKQuery;
   v5 = [(PKQuery *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sessionManager, v4);
+    objc_storeWeak(&v5->_sessionManager, managerCopy);
   }
 
   return v6;

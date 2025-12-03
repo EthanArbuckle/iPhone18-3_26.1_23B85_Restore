@@ -1,10 +1,10 @@
 @interface LPFetcherGroup
-- (LPFetcherGroup)initWithPolicy:(int64_t)a3 configuration:(id)a4 description:(id)a5 completionHandler:(id)a6;
+- (LPFetcherGroup)initWithPolicy:(int64_t)policy configuration:(id)configuration description:(id)description completionHandler:(id)handler;
 - (id)_responsesRespectingPolicy;
 - (unint64_t)numberOfActiveFetches;
-- (void)_addFetcher:(id)a3 atIndex:(unint64_t)a4;
+- (void)_addFetcher:(id)fetcher atIndex:(unint64_t)index;
 - (void)_completed;
-- (void)appendFetcher:(id)a3;
+- (void)appendFetcher:(id)fetcher;
 - (void)cancel;
 - (void)evaluateCompleteness;
 - (void)startFetchesIfNeeded;
@@ -12,11 +12,11 @@
 
 @implementation LPFetcherGroup
 
-- (LPFetcherGroup)initWithPolicy:(int64_t)a3 configuration:(id)a4 description:(id)a5 completionHandler:(id)a6
+- (LPFetcherGroup)initWithPolicy:(int64_t)policy configuration:(id)configuration description:(id)description completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  configurationCopy = configuration;
+  descriptionCopy = description;
+  handlerCopy = handler;
   v30.receiver = self;
   v30.super_class = LPFetcherGroup;
   v13 = [(LPFetcherGroup *)&v30 init];
@@ -25,23 +25,23 @@
   if (v13)
   {
     v13->_loggingID = ++initWithPolicy_configuration_description_completionHandler__nextLoggingID;
-    v13->_responsePolicy = a3;
-    v16 = [v10 copy];
+    v13->_responsePolicy = policy;
+    v16 = [configurationCopy copy];
     configuration = v15->_configuration;
     v15->_configuration = v16;
 
-    v18 = _Block_copy(v12);
+    v18 = _Block_copy(handlerCopy);
     completionHandler = v15->_completionHandler;
     v15->_completionHandler = v18;
 
-    objc_storeStrong(&v14->_description, a5);
+    objc_storeStrong(&v14->_description, description);
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     tasks = v15->_tasks;
     v15->_tasks = v20;
 
-    v22 = [(LPFetcherConfiguration *)v15->_configuration webViewForProcessSharing];
+    webViewForProcessSharing = [(LPFetcherConfiguration *)v15->_configuration webViewForProcessSharing];
 
-    if (!v22)
+    if (!webViewForProcessSharing)
     {
       v23 = objc_alloc(MEMORY[0x1E69853A0]);
       v24 = +[LPMetadataProvider _copyDefaultWebViewConfiguration];
@@ -49,8 +49,8 @@
       [(LPFetcherConfiguration *)v15->_configuration setWebViewForProcessSharing:v25];
     }
 
-    v26 = [(LPFetcherConfiguration *)v15->_configuration rootEvent];
-    v27 = [v26 childWithType:1 subtitle:v11];
+    rootEvent = [(LPFetcherConfiguration *)v15->_configuration rootEvent];
+    v27 = [rootEvent childWithType:1 subtitle:descriptionCopy];
     [(LPFetcherConfiguration *)v15->_configuration setRootEvent:v27];
 
     v28 = v15;
@@ -59,10 +59,10 @@
   return v15;
 }
 
-- (void)_addFetcher:(id)a3 atIndex:(unint64_t)a4
+- (void)_addFetcher:(id)fetcher atIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  fetcherCopy = fetcher;
   if (self->_done)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Trying to add a fetcher to an already-complete LPFetcherGroup."];
@@ -74,30 +74,30 @@
   }
 
   v7 = objc_alloc_init(LPFetcherGroupTask);
-  [(LPFetcherGroupTask *)v7 setFetcher:v6];
+  [(LPFetcherGroupTask *)v7 setFetcher:fetcherCopy];
   v8 = LPLogChannelFetching();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     loggingID = self->_loggingID;
-    v10 = [v6 _loggingID];
+    _loggingID = [fetcherCopy _loggingID];
     description = self->_description;
     v12[0] = 67109634;
     v12[1] = loggingID;
     v13 = 1024;
-    v14 = v10;
+    v14 = _loggingID;
     v15 = 2112;
     v16 = description;
     _os_log_impl(&dword_1AE886000, v8, OS_LOG_TYPE_DEFAULT, "LPFetcherGroup<%d>: adding LPFetcher<%d> for %@", v12, 0x18u);
   }
 
-  [(NSMutableArray *)self->_tasks insertObject:v7 atIndex:a4];
+  [(NSMutableArray *)self->_tasks insertObject:v7 atIndex:index];
   [(LPFetcherGroup *)self startFetchesIfNeeded];
 }
 
-- (void)appendFetcher:(id)a3
+- (void)appendFetcher:(id)fetcher
 {
-  v4 = a3;
-  [(LPFetcherGroup *)self _addFetcher:v4 atIndex:[(NSMutableArray *)self->_tasks count]];
+  fetcherCopy = fetcher;
+  [(LPFetcherGroup *)self _addFetcher:fetcherCopy atIndex:[(NSMutableArray *)self->_tasks count]];
 }
 
 - (unint64_t)numberOfActiveFetches
@@ -125,8 +125,8 @@
         v7 = *(*(&v11 + 1) + 8 * i);
         if ([v7 hasStarted])
         {
-          v8 = [v7 response];
-          v9 = v8 == 0;
+          response = [v7 response];
+          v9 = response == 0;
 
           v3 += v9;
         }
@@ -146,7 +146,7 @@
   v17 = *MEMORY[0x1E69E9840];
   if (!self->_done)
   {
-    v3 = [(LPFetcherGroup *)self numberOfActiveFetches];
+    numberOfActiveFetches = [(LPFetcherGroup *)self numberOfActiveFetches];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -168,13 +168,13 @@
           v8 = *(*(&v12 + 1) + 8 * i);
           if (([v8 hasStarted] & 1) == 0)
           {
-            if (v3 > 5)
+            if (numberOfActiveFetches > 5)
             {
               goto LABEL_12;
             }
 
             [v8 setHasStarted:1];
-            v9 = [v8 fetcher];
+            fetcher = [v8 fetcher];
             configuration = self->_configuration;
             v11[0] = MEMORY[0x1E69E9820];
             v11[1] = 3221225472;
@@ -182,9 +182,9 @@
             v11[3] = &unk_1E7A37158;
             v11[4] = v8;
             v11[5] = self;
-            [v9 fetchWithConfiguration:configuration completionHandler:v11];
+            [fetcher fetchWithConfiguration:configuration completionHandler:v11];
 
-            ++v3;
+            ++numberOfActiveFetches;
           }
         }
 
@@ -247,18 +247,18 @@ LABEL_16:
             break;
           }
 
-          v19 = [v17 response];
-          v20 = v19 == 0;
+          response = [v17 response];
+          v20 = response == 0;
 
           if (!v20)
           {
-            v21 = [v17 response];
-            v22 = [v21 state];
+            response2 = [v17 response];
+            state = [response2 state];
 
-            if (v22 == 2)
+            if (state == 2)
             {
-              v23 = [v17 response];
-              [v2 addObject:v23];
+              response3 = [v17 response];
+              [v2 addObject:response3];
             }
           }
 
@@ -303,18 +303,18 @@ LABEL_16:
             }
 
             v9 = *(*(&v42 + 1) + 8 * i);
-            v10 = [v9 response];
-            v11 = v10 == 0;
+            response4 = [v9 response];
+            v11 = response4 == 0;
 
             if (!v11)
             {
-              v12 = [v9 response];
-              v13 = [v12 state];
+              response5 = [v9 response];
+              state2 = [response5 state];
 
-              if (v13 == 2)
+              if (state2 == 2)
               {
-                v32 = [v9 response];
-                v48 = v32;
+                response6 = [v9 response];
+                v48 = response6;
                 v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
 
                 goto LABEL_39;
@@ -361,16 +361,16 @@ LABEL_16:
           }
 
           v27 = *(*(&v34 + 1) + 8 * j);
-          v28 = [v27 response];
-          if (v28)
+          response7 = [v27 response];
+          if (response7)
           {
-            v29 = [v27 response];
-            v30 = [v29 state] == 2;
+            response8 = [v27 response];
+            v30 = [response8 state] == 2;
 
             if (v30)
             {
-              v31 = [v27 response];
-              [v2 addObject:v31];
+              response9 = [v27 response];
+              [v2 addObject:response9];
             }
           }
         }

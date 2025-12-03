@@ -320,9 +320,9 @@
 + (BMCoreDuetStream)coreDuetStream
 {
   v2 = [BMCoreDuetStream alloc];
-  v3 = [get_DKKnowledgeStoreClass_0() userKnowledgeStore];
-  v4 = [get_CDClientContextClass_0() userContext];
-  v5 = [(BMCoreDuetStream *)v2 initWithKnowledgeStore:v3 clientContext:v4 identifier:@"CoreDuetStream"];
+  userKnowledgeStore = [get_DKKnowledgeStoreClass_0() userKnowledgeStore];
+  userContext = [get_CDClientContextClass_0() userContext];
+  v5 = [(BMCoreDuetStream *)v2 initWithKnowledgeStore:userKnowledgeStore clientContext:userContext identifier:@"CoreDuetStream"];
 
   return v5;
 }
@@ -330,9 +330,9 @@
 + (BMCoreDuetStream)coreDuetSystemStream
 {
   v2 = [BMCoreDuetStream alloc];
-  v3 = [get_DKKnowledgeStoreClass_0() knowledgeStore];
-  v4 = [get_CDClientContextClass_0() userContext];
-  v5 = [(BMCoreDuetStream *)v2 initWithKnowledgeStore:v3 clientContext:v4 identifier:@"CoreDuetSystemStream"];
+  knowledgeStore = [get_DKKnowledgeStoreClass_0() knowledgeStore];
+  userContext = [get_CDClientContextClass_0() userContext];
+  v5 = [(BMCoreDuetStream *)v2 initWithKnowledgeStore:knowledgeStore clientContext:userContext identifier:@"CoreDuetSystemStream"];
 
   return v5;
 }

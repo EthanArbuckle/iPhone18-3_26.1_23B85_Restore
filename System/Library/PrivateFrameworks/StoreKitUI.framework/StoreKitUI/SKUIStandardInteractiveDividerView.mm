@@ -1,16 +1,16 @@
 @interface SKUIStandardInteractiveDividerView
-- (SKUIStandardInteractiveDividerView)initWithFrame:(CGRect)a3;
+- (SKUIStandardInteractiveDividerView)initWithFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
 @implementation SKUIStandardInteractiveDividerView
 
-- (SKUIStandardInteractiveDividerView)initWithFrame:(CGRect)a3
+- (SKUIStandardInteractiveDividerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIStandardInteractiveDividerView initWithFrame:];
@@ -18,12 +18,12 @@
 
   v12.receiver = self;
   v12.super_class = SKUIStandardInteractiveDividerView;
-  v8 = [(SKUIStandardInteractiveDividerView *)&v12 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIStandardInteractiveDividerView *)&v12 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v10 = [(SKUIStandardInteractiveDividerView *)v8 tintColor];
-    [(SKUIStandardInteractiveDividerView *)v9 setBackgroundColor:v10];
+    tintColor = [(SKUIStandardInteractiveDividerView *)height tintColor];
+    [(SKUIStandardInteractiveDividerView *)v9 setBackgroundColor:tintColor];
   }
 
   return v9;
@@ -34,8 +34,8 @@
   v4.receiver = self;
   v4.super_class = SKUIStandardInteractiveDividerView;
   [(SKUIStandardInteractiveDividerView *)&v4 tintColorDidChange];
-  v3 = [(SKUIStandardInteractiveDividerView *)self tintColor];
-  [(SKUIStandardInteractiveDividerView *)self setBackgroundColor:v3];
+  tintColor = [(SKUIStandardInteractiveDividerView *)self tintColor];
+  [(SKUIStandardInteractiveDividerView *)self setBackgroundColor:tintColor];
 }
 
 - (void)initWithFrame:.cold.1()

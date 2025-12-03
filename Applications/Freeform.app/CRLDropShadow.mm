@@ -1,33 +1,33 @@
 @interface CRLDropShadow
-- (BOOL)isEqual:(id)a3;
-- (CGImage)newShadowImageForRep:(id)a3 withUnscaledSize:(CGSize)a4 viewScale:(double)a5 drawSelector:(SEL)a6 unflipped:(BOOL)a7;
-- (CGRect)boundsForRep:(id)a3;
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3;
-- (CRLDropShadow)initWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGImage)newShadowImageForRep:(id)rep withUnscaledSize:(CGSize)size viewScale:(double)scale drawSelector:(SEL)selector unflipped:(BOOL)unflipped;
+- (CGRect)boundsForRep:(id)rep;
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep;
+- (CRLDropShadow)initWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newShadowClampedForSwatches;
 - (unint64_t)hash;
 @end
 
 @implementation CRLDropShadow
 
-- (CRLDropShadow)initWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8
+- (CRLDropShadow)initWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
   v9.receiver = self;
   v9.super_class = CRLDropShadow;
-  return [(CRLShadow *)&v9 i_initWithOpacity:a7 color:a8 angle:a6 offset:a3 radius:a4 enabled:a5];
+  return [(CRLShadow *)&v9 i_initWithOpacity:color color:enabled angle:opacity offset:angle radius:offset enabled:radius];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6)
   {
@@ -51,7 +51,7 @@
   return [(CRLShadow *)&v3 hash];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRLMutableDropShadow alloc];
   [(CRLShadow *)self angle];
@@ -62,8 +62,8 @@
   v10 = v9;
   [(CRLShadow *)self opacity];
   v12 = v11;
-  v13 = [(CRLShadow *)self color];
-  v14 = [(CRLDropShadow *)v4 initWithAngle:v13 offset:[(CRLShadow *)self isEnabled] radius:v6 opacity:v8 color:v10 enabled:v12];
+  color = [(CRLShadow *)self color];
+  v14 = [(CRLDropShadow *)v4 initWithAngle:color offset:[(CRLShadow *)self isEnabled] radius:v6 opacity:v8 color:v10 enabled:v12];
 
   return v14;
 }
@@ -89,16 +89,16 @@
   v13 = v12;
   [(CRLShadow *)self opacity];
   v15 = v14;
-  v16 = [(CRLShadow *)self color];
-  v17 = [(CRLDropShadow *)v11 initWithAngle:v16 offset:[(CRLShadow *)self isEnabled] radius:v13 opacity:v10 color:v8 enabled:v15];
+  color = [(CRLShadow *)self color];
+  v17 = [(CRLDropShadow *)v11 initWithAngle:color offset:[(CRLShadow *)self isEnabled] radius:v13 opacity:v10 color:v8 enabled:v15];
 
   return v17;
 }
 
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep
 {
-  v3 = [a3 layout];
-  [v3 shadowedNaturalBoundsWithoutOffset];
+  layout = [rep layout];
+  [layout shadowedNaturalBoundsWithoutOffset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -115,10 +115,10 @@
   return result;
 }
 
-- (CGRect)boundsForRep:(id)a3
+- (CGRect)boundsForRep:(id)rep
 {
-  v3 = [a3 layout];
-  [v3 shadowedNaturalBoundsWithoutOffset];
+  layout = [rep layout];
+  [layout shadowedNaturalBoundsWithoutOffset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -135,13 +135,13 @@
   return result;
 }
 
-- (CGImage)newShadowImageForRep:(id)a3 withUnscaledSize:(CGSize)a4 viewScale:(double)a5 drawSelector:(SEL)a6 unflipped:(BOOL)a7
+- (CGImage)newShadowImageForRep:(id)rep withUnscaledSize:(CGSize)size viewScale:(double)scale drawSelector:(SEL)selector unflipped:(BOOL)unflipped
 {
-  v7 = a7;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = fmin(a5, 1.0);
+  unflippedCopy = unflipped;
+  height = size.height;
+  width = size.width;
+  repCopy = rep;
+  v14 = fmin(scale, 1.0);
   v15 = sub_10011F340(width, height, v14);
   v17 = sub_100122154(v15, v16);
   v19 = v18;
@@ -160,20 +160,20 @@
       if (v32 > 0.0 && ceil(fmax(v19, v27)) > 0.0)
       {
         v33 = v25;
-        v34 = [(CRLShadow *)self color];
-        v35 = [v34 CGColor];
+        color = [(CRLShadow *)self color];
+        cGColor = [color CGColor];
 
         v36 = sub_10050DF80(11, v31, v29);
         if (v36)
         {
           v37 = v36;
-          v77 = a6;
-          v38 = [v13 layout];
-          v39 = v38;
-          v40 = v35;
-          if (v38)
+          selectorCopy = selector;
+          layout = [repCopy layout];
+          v39 = layout;
+          v40 = cGColor;
+          if (layout)
           {
-            [v38 transformInRoot];
+            [layout transformInRoot];
           }
 
           else
@@ -186,29 +186,29 @@
           v41 = sub_100139980(&v79);
           sub_10050F218(v37, v41);
 
-          v42 = [v13 canvas];
-          v43 = [v42 isPrinting];
-          v44 = [v13 canvas];
-          v45 = [v44 isDrawingIntoPDF];
-          v46 = [v13 canvas];
-          [v46 contentsScale];
-          sub_10050DE7C(v37, v43, v45, 1, 0, v47);
+          canvas = [repCopy canvas];
+          isPrinting = [canvas isPrinting];
+          canvas2 = [repCopy canvas];
+          isDrawingIntoPDF = [canvas2 isDrawingIntoPDF];
+          canvas3 = [repCopy canvas];
+          [canvas3 contentsScale];
+          sub_10050DE7C(v37, isPrinting, isDrawingIntoPDF, 1, 0, v47);
 
           [(CRLShadow *)self radius];
           v49 = v14 * v48;
           CGContextTranslateCTM(v37, -v30, -v33);
           CGContextTranslateCTM(v37, -(v32 + v14 * 10.0), -0.0);
-          if (v7)
+          if (unflippedCopy)
           {
             v80 = 0u;
             v81 = 0u;
             v79 = 0u;
-            v50 = [v13 layout];
-            v51 = [v50 geometry];
-            v52 = v51;
-            if (v51)
+            layout2 = [repCopy layout];
+            geometry = [layout2 geometry];
+            v52 = geometry;
+            if (geometry)
             {
-              [v51 transform];
+              [geometry transform];
             }
 
             else
@@ -242,14 +242,14 @@
           CGContextSetShadowWithColor(v37, v82, v49, v40);
           CGContextTranslateCTM(v37, v49, v49);
           CGContextScaleCTM(v37, v14, v14);
-          if ([v13 canDrawShadowInOneStepWithChildren:1])
+          if ([repCopy canDrawShadowInOneStepWithChildren:1])
           {
-            [v13 performSelector:v77 withObject:v37];
+            [repCopy performSelector:selectorCopy withObject:v37];
           }
 
           else
           {
-            [v13 naturalBounds];
+            [repCopy naturalBounds];
             v54 = v53;
             v56 = v55;
             sub_10011ECB4();
@@ -262,11 +262,11 @@
               v64 = v62 / v60;
               v65 = CGLayerCreateWithContext(v37, *&v61, 0);
               Context = CGLayerGetContext(v65);
-              v67 = [v13 layout];
-              v68 = v67;
-              if (v67)
+              layout3 = [repCopy layout];
+              v68 = layout3;
+              if (layout3)
               {
-                [v67 transformInRoot];
+                [layout3 transformInRoot];
               }
 
               else
@@ -279,16 +279,16 @@
               v69 = sub_100139980(&v79);
               sub_10050F218(Context, v69);
 
-              v70 = [v13 canvas];
-              v71 = [v70 isPrinting];
-              v72 = [v13 canvas];
-              v73 = [v72 isDrawingIntoPDF];
-              v74 = [v13 canvas];
-              [v74 contentsScale];
-              sub_10050DE7C(Context, v71, v73, 0, 0, v75);
+              canvas4 = [repCopy canvas];
+              isPrinting2 = [canvas4 isPrinting];
+              canvas5 = [repCopy canvas];
+              isDrawingIntoPDF2 = [canvas5 isDrawingIntoPDF];
+              canvas6 = [repCopy canvas];
+              [canvas6 contentsScale];
+              sub_10050DE7C(Context, isPrinting2, isDrawingIntoPDF2, 0, 0, v75);
 
               CGContextScaleCTM(Context, v63, v64);
-              [v13 performSelector:v77 withObject:Context];
+              [repCopy performSelector:selectorCopy withObject:Context];
               sub_10050D814(Context);
               v83.origin.x = sub_10011ECB4();
               CGContextDrawLayerInRect(v37, v83, v65);

@@ -1,11 +1,11 @@
 @interface TTRIRemindersBoardTipHeaderView
-- (_TtC9Reminders31TTRIRemindersBoardTipHeaderView)initWithArrangedSubviews:(id)a3;
-- (_TtC9Reminders31TTRIRemindersBoardTipHeaderView)initWithCoder:(id)a3;
+- (_TtC9Reminders31TTRIRemindersBoardTipHeaderView)initWithArrangedSubviews:(id)subviews;
+- (_TtC9Reminders31TTRIRemindersBoardTipHeaderView)initWithCoder:(id)coder;
 @end
 
 @implementation TTRIRemindersBoardTipHeaderView
 
-- (_TtC9Reminders31TTRIRemindersBoardTipHeaderView)initWithCoder:(id)a3
+- (_TtC9Reminders31TTRIRemindersBoardTipHeaderView)initWithCoder:(id)coder
 {
   v3 = &self->NUIContainerBoxView_opaque[OBJC_IVAR____TtC9Reminders31TTRIRemindersBoardTipHeaderView_contentConfiguration];
   *v3 = 0u;
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC9Reminders31TTRIRemindersBoardTipHeaderView)initWithArrangedSubviews:(id)a3
+- (_TtC9Reminders31TTRIRemindersBoardTipHeaderView)initWithArrangedSubviews:(id)subviews
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

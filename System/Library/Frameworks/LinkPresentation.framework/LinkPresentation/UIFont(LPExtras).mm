@@ -7,8 +7,8 @@
 
 - (uint64_t)_lp_CSSFontWeight
 {
-  v1 = [a1 fontDescriptor];
-  v2 = CTFontDescriptorCopyAttribute(v1, *MEMORY[0x1E6965668]);
+  fontDescriptor = [self fontDescriptor];
+  v2 = CTFontDescriptorCopyAttribute(fontDescriptor, *MEMORY[0x1E6965668]);
   [v2 floatValue];
   v4 = v3;
 
@@ -20,22 +20,22 @@
 
 - (uint64_t)_lp_symbolWeight
 {
-  if (([a1 traits] & 2) != 0)
+  if (([self traits] & 2) != 0)
   {
     return 7;
   }
 
-  if (([a1 traits] & 4) != 0)
+  if (([self traits] & 4) != 0)
   {
     return 2;
   }
 
-  if (([a1 traits] & 8) != 0)
+  if (([self traits] & 8) != 0)
   {
     return 3;
   }
 
-  if (([a1 traits] & 0x10) != 0)
+  if (([self traits] & 0x10) != 0)
   {
     return 1;
   }

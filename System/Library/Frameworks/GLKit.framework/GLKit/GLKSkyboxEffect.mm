@@ -2,7 +2,7 @@
 - (GLKSkyboxEffect)init;
 - (GLKVector3)center;
 - (id)description;
-- (void)createAndBindVAOWithPositions:(float *)a3 texCoords:(float *)a4;
+- (void)createAndBindVAOWithPositions:(float *)positions texCoords:(float *)coords;
 - (void)dealloc;
 - (void)draw;
 - (void)prepareToDraw;
@@ -44,7 +44,7 @@
   return v3;
 }
 
-- (void)createAndBindVAOWithPositions:(float *)a3 texCoords:(float *)a4
+- (void)createAndBindVAOWithPositions:(float *)positions texCoords:(float *)coords
 {
   params = 0;
   glGetIntegerv(0x8894u, &params);
@@ -60,13 +60,13 @@
     glBindVertexArrayOES();
     glGenBuffers(1, &self->_texCoordVBO);
     glBindBuffer(0x8892u, self->_texCoordVBO);
-    glBufferData(0x8892u, 288, a4, 0x88E8u);
+    glBufferData(0x8892u, 288, coords, 0x88E8u);
     glVertexAttribPointer(3u, 3, 0x1406u, 0, 0, 0);
   }
 
   glGenBuffers(1, &self->_positionVBO);
   glBindBuffer(0x8892u, self->_positionVBO);
-  glBufferData(0x8892u, 288, a3, 0x88E8u);
+  glBufferData(0x8892u, 288, positions, 0x88E8u);
   glVertexAttribPointer(0, 3, 0x1406u, 0, 0, 0);
   glBindBuffer(0x8892u, params);
 }

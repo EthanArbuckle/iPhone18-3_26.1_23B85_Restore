@@ -1,42 +1,42 @@
 @interface NPDPassLibrary
-- (NPDPassLibrary)initWithConnection:(id)a3;
+- (NPDPassLibrary)initWithConnection:(id)connection;
 - (NPDPassLibraryDelegate)delegate;
-- (void)broadcastCatalogChanged:(id)a3 withNewPasses:(id)a4 states:(id)a5;
-- (void)broadcastPassAdded:(id)a3;
-- (void)broadcastPassRemoved:(id)a3;
-- (void)broadcastPassUpdated:(id)a3;
+- (void)broadcastCatalogChanged:(id)changed withNewPasses:(id)passes states:(id)states;
+- (void)broadcastPassAdded:(id)added;
+- (void)broadcastPassRemoved:(id)removed;
+- (void)broadcastPassUpdated:(id)updated;
 - (void)serviceResumed;
 - (void)serviceSuspended;
 @end
 
 @implementation NPDPassLibrary
 
-- (NPDPassLibrary)initWithConnection:(id)a3
+- (NPDPassLibrary)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = NPDPassLibrary;
   v5 = [(NPDPassLibrary *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    [(NPDPassLibrary *)v5 setConnection:v4];
-    v7 = [[NPKPassLibraryFilter alloc] initWithConnection:v4];
+    [(NPDPassLibrary *)v5 setConnection:connectionCopy];
+    v7 = [[NPKPassLibraryFilter alloc] initWithConnection:connectionCopy];
     [(NPDPassLibrary *)v6 setFilter:v7];
 
-    v8 = [v4 valueForEntitlement:@"application-identifier"];
+    v8 = [connectionCopy valueForEntitlement:@"application-identifier"];
     v9 = [v8 copy];
     remoteProcessApplicationIdentifier = v6->_remoteProcessApplicationIdentifier;
     v6->_remoteProcessApplicationIdentifier = v9;
 
-    v6->_remoteProcessIdentifier = [v4 processIdentifier];
+    v6->_remoteProcessIdentifier = [connectionCopy processIdentifier];
     v11 = PKPassLibraryInterface();
-    v12 = [(NPDPassLibrary *)v6 connection];
-    [v12 setRemoteObjectInterface:v11];
+    connection = [(NPDPassLibrary *)v6 connection];
+    [connection setRemoteObjectInterface:v11];
 
     v13 = PDPassLibraryInterface();
-    v14 = [(NPDPassLibrary *)v6 connection];
-    [v14 setExportedInterface:v13];
+    connection2 = [(NPDPassLibrary *)v6 connection];
+    [connection2 setExportedInterface:v13];
 
     [(NPDPassLibrary *)v6 setServiceActive:1];
     v15 = dispatch_queue_create("com.apple.NanoPassKit.NPDPassLibrary", 0);
@@ -48,29 +48,29 @@
 
 - (void)serviceResumed
 {
-  v3 = [(NPDPassLibrary *)self queue];
+  queue = [(NPDPassLibrary *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003943C;
   block[3] = &unk_100071000;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)serviceSuspended
 {
-  v3 = [(NPDPassLibrary *)self queue];
+  queue = [(NPDPassLibrary *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000394D0;
   block[3] = &unk_100071000;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)broadcastPassAdded:(id)a3
+- (void)broadcastPassAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -80,30 +80,30 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = addedCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Pass added: %@", buf, 0xCu);
     }
   }
 
-  v8 = [(NPDPassLibrary *)self filter];
-  v9 = [v8 allowAccessToPass:v4];
+  filter = [(NPDPassLibrary *)self filter];
+  v9 = [filter allowAccessToPass:addedCopy];
 
   if (v9)
   {
-    v10 = [(NPDPassLibrary *)self queue];
+    queue = [(NPDPassLibrary *)self queue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100039650;
     v11[3] = &unk_100070E90;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v10, v11);
+    v12 = addedCopy;
+    dispatch_async(queue, v11);
   }
 }
 
-- (void)broadcastPassUpdated:(id)a3
+- (void)broadcastPassUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -113,30 +113,30 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = updatedCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Pass updated: %@", buf, 0xCu);
     }
   }
 
-  v8 = [(NPDPassLibrary *)self filter];
-  v9 = [v8 allowAccessToPass:v4];
+  filter = [(NPDPassLibrary *)self filter];
+  v9 = [filter allowAccessToPass:updatedCopy];
 
   if (v9)
   {
-    v10 = [(NPDPassLibrary *)self queue];
+    queue = [(NPDPassLibrary *)self queue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000399A4;
     v11[3] = &unk_100070E90;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v10, v11);
+    v12 = updatedCopy;
+    dispatch_async(queue, v11);
   }
 }
 
-- (void)broadcastPassRemoved:(id)a3
+- (void)broadcastPassRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -146,32 +146,32 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = removedCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Pass removed: %@", buf, 0xCu);
     }
   }
 
-  v8 = [(NPDPassLibrary *)self filter];
-  v9 = [v8 allowAccessToPass:v4];
+  filter = [(NPDPassLibrary *)self filter];
+  v9 = [filter allowAccessToPass:removedCopy];
 
   if (v9)
   {
-    v10 = [(NPDPassLibrary *)self queue];
+    queue = [(NPDPassLibrary *)self queue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100039CF8;
     v11[3] = &unk_100070E90;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v10, v11);
+    v12 = removedCopy;
+    dispatch_async(queue, v11);
   }
 }
 
-- (void)broadcastCatalogChanged:(id)a3 withNewPasses:(id)a4 states:(id)a5
+- (void)broadcastCatalogChanged:(id)changed withNewPasses:(id)passes states:(id)states
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changedCopy = changed;
+  passesCopy = passes;
+  statesCopy = states;
   v11 = pk_General_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -181,27 +181,27 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v8;
+      v23 = changedCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Notice: Catalog changed: %@", buf, 0xCu);
     }
   }
 
-  v14 = [(NPDPassLibrary *)self filter];
-  v15 = [v14 allowlist];
-  v16 = [v15 passesAllAccess];
+  filter = [(NPDPassLibrary *)self filter];
+  allowlist = [filter allowlist];
+  passesAllAccess = [allowlist passesAllAccess];
 
-  if (v16)
+  if (passesAllAccess)
   {
-    v17 = [(NPDPassLibrary *)self queue];
+    queue = [(NPDPassLibrary *)self queue];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10003A0A8;
     v18[3] = &unk_100071400;
     v18[4] = self;
-    v19 = v8;
-    v20 = v9;
-    v21 = v10;
-    dispatch_async(v17, v18);
+    v19 = changedCopy;
+    v20 = passesCopy;
+    v21 = statesCopy;
+    dispatch_async(queue, v18);
   }
 }
 

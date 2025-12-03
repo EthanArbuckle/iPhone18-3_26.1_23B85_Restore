@@ -1,26 +1,26 @@
 @interface RoutePlanningError
-- (BOOL)_buildOutOfCoverageErrorStringsForError:(id)a3 transportType:(unint64_t)a4 origin:(id)a5 destination:(id)a6;
-- (RoutePlanningError)initWithError:(id)a3 transportType:(unint64_t)a4 origin:(id)a5 destination:(id)a6;
-- (void)_buildErrorStringsFromError:(id)a3 transportType:(unint64_t)a4 origin:(id)a5 destination:(id)a6;
-- (void)_updateRegularDirectionsFallbackVisibilityWithError:(id)a3 transportType:(unint64_t)a4;
-- (void)_updateRoutingAppsVisibilityWithError:(id)a3 transportType:(unint64_t)a4;
+- (BOOL)_buildOutOfCoverageErrorStringsForError:(id)error transportType:(unint64_t)type origin:(id)origin destination:(id)destination;
+- (RoutePlanningError)initWithError:(id)error transportType:(unint64_t)type origin:(id)origin destination:(id)destination;
+- (void)_buildErrorStringsFromError:(id)error transportType:(unint64_t)type origin:(id)origin destination:(id)destination;
+- (void)_updateRegularDirectionsFallbackVisibilityWithError:(id)error transportType:(unint64_t)type;
+- (void)_updateRoutingAppsVisibilityWithError:(id)error transportType:(unint64_t)type;
 @end
 
 @implementation RoutePlanningError
 
-- (void)_updateRegularDirectionsFallbackVisibilityWithError:(id)a3 transportType:(unint64_t)a4
+- (void)_updateRegularDirectionsFallbackVisibilityWithError:(id)error transportType:(unint64_t)type
 {
-  v6 = a3;
-  if (a4 == 1)
+  errorCopy = error;
+  if (type == 1)
   {
-    v11 = v6;
-    if ([v6 _mapkit_isDirectionsError])
+    v11 = errorCopy;
+    if ([errorCopy _mapkit_isDirectionsError])
     {
-      v7 = [v11 userInfo];
-      v8 = [v7 objectForKeyedSubscript:MKDirectionsErrorCodeKey];
-      v9 = [v8 integerValue];
+      userInfo = [v11 userInfo];
+      v8 = [userInfo objectForKeyedSubscript:MKDirectionsErrorCodeKey];
+      integerValue = [v8 integerValue];
 
-      v10 = (v9 - 18) < 3;
+      v10 = (integerValue - 18) < 3;
     }
 
     else
@@ -29,7 +29,7 @@
     }
 
     self->_errorViewShouldShowRegularDirectionsFallback = v10;
-    v6 = v11;
+    errorCopy = v11;
   }
 
   else
@@ -38,29 +38,29 @@
   }
 }
 
-- (void)_updateRoutingAppsVisibilityWithError:(id)a3 transportType:(unint64_t)a4
+- (void)_updateRoutingAppsVisibilityWithError:(id)error transportType:(unint64_t)type
 {
-  v9 = [v10 _mapkit_isDirectionsError] && ((objc_msgSend(v10, "userInfo"), v6 = v10 = a3;
+  v9 = [v10 _mapkit_isDirectionsError] && ((objc_msgSend(v10, "userInfo"), v6 = v10 = error;
   self->_errorViewShouldShowRoutingApps = v9;
 }
 
-- (BOOL)_buildOutOfCoverageErrorStringsForError:(id)a3 transportType:(unint64_t)a4 origin:(id)a5 destination:(id)a6
+- (BOOL)_buildOutOfCoverageErrorStringsForError:(id)error transportType:(unint64_t)type origin:(id)origin destination:(id)destination
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
+  errorCopy = error;
+  originCopy = origin;
+  destinationCopy = destination;
+  v13 = destinationCopy;
   v14 = 0;
-  if (a4 == 8 && v11 && v12)
+  if (type == 8 && originCopy && destinationCopy)
   {
-    if ([v10 _mapkit_isDirectionsError] && GEOConfigGetBOOL() && (objc_msgSend(v10, "userInfo"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "objectForKeyedSubscript:", MKDirectionsErrorCodeKey), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "integerValue"), v16, v15, (v17 & 0xFFFFFFFFFFFFFFFELL) == 8))
+    if ([errorCopy _mapkit_isDirectionsError] && GEOConfigGetBOOL() && (objc_msgSend(errorCopy, "userInfo"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "objectForKeyedSubscript:", MKDirectionsErrorCodeKey), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "integerValue"), v16, v15, (v17 & 0xFFFFFFFFFFFFFFFELL) == 8))
     {
       v18 = +[NSBundle mainBundle];
       v19 = [v18 localizedStringForKey:@"Cycling Directions Not Available [Title]" value:@"localized string not found" table:0];
       errorTitle = self->_errorTitle;
       self->_errorTitle = v19;
 
-      v21 = sub_100655390(v11);
+      v21 = sub_100655390(originCopy);
       v22 = sub_100655390(v13);
       v23 = v22;
       if (v21)
@@ -126,17 +126,17 @@
   return v14;
 }
 
-- (void)_buildErrorStringsFromError:(id)a3 transportType:(unint64_t)a4 origin:(id)a5 destination:(id)a6
+- (void)_buildErrorStringsFromError:(id)error transportType:(unint64_t)type origin:(id)origin destination:(id)destination
 {
-  v10 = a3;
-  v57 = a5;
-  v56 = a6;
-  v11 = [v10 domain];
-  v12 = [v10 userInfo];
-  v13 = [v12 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+  errorCopy = error;
+  originCopy = origin;
+  destinationCopy = destination;
+  domain = [errorCopy domain];
+  userInfo = [errorCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
 
-  v14 = [v10 userInfo];
-  v15 = [v14 objectForKeyedSubscript:NSLocalizedFailureReasonErrorKey];
+  userInfo2 = [errorCopy userInfo];
+  v15 = [userInfo2 objectForKeyedSubscript:NSLocalizedFailureReasonErrorKey];
 
   v16 = MKCurrentNetworkConnectionFailureDiagnosis();
   if (v16 > 1)
@@ -202,13 +202,13 @@ LABEL_18:
   }
 
 LABEL_10:
-  if ([(RoutePlanningError *)self _buildOutOfCoverageErrorStringsForError:v10 transportType:a4 origin:v57 destination:v56])
+  if ([(RoutePlanningError *)self _buildOutOfCoverageErrorStringsForError:errorCopy transportType:type origin:originCopy destination:destinationCopy])
   {
     goto LABEL_51;
   }
 
 LABEL_20:
-  if ([v11 isEqualToString:MNErrorDomain] && objc_msgSend(v10, "code") == 3)
+  if ([domain isEqualToString:MNErrorDomain] && objc_msgSend(errorCopy, "code") == 3)
   {
     v25 = +[NSBundle mainBundle];
     v26 = [v25 localizedStringForKey:@"RoutePlanningError_NilWaypoints_Title" value:@"localized string not found" table:0];
@@ -221,7 +221,7 @@ LABEL_20:
 
   else
   {
-    if (![v11 isEqualToString:NSURLErrorDomain])
+    if (![domain isEqualToString:NSURLErrorDomain])
     {
       goto LABEL_26;
     }
@@ -233,7 +233,7 @@ LABEL_20:
   v15 = v28;
   v13 = v26;
 LABEL_26:
-  if (([v11 isEqualToString:kCFErrorDomainCFNetwork] & 1) != 0 || -[RoutePlanningError errorCode](self, "errorCode") == 2 || -[RoutePlanningError errorCode](self, "errorCode") == 22)
+  if (([domain isEqualToString:kCFErrorDomainCFNetwork] & 1) != 0 || -[RoutePlanningError errorCode](self, "errorCode") == 2 || -[RoutePlanningError errorCode](self, "errorCode") == 22)
   {
     BOOL = GEOConfigGetBOOL();
     v30 = +[NSBundle mainBundle];
@@ -270,7 +270,7 @@ LABEL_26:
     v13 = v33;
   }
 
-  else if (([v11 isEqualToString:kCLErrorDomain] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", MKLocationErrorDomain))
+  else if (([domain isEqualToString:kCLErrorDomain] & 1) != 0 || objc_msgSend(domain, "isEqualToString:", MKLocationErrorDomain))
   {
     v44 = +[MKLocationManager sharedLocationManager];
     v58 = 0;
@@ -282,17 +282,17 @@ LABEL_26:
       v47 = +[NSBundle mainBundle];
       v13 = [v47 localizedStringForKey:@"Current Location Not Available" value:@"localized string not found" table:0];
 
-      v48 = +[NSBundle mainBundle];
-      [v48 localizedStringForKey:@"Your current location cannot be determined at this time." value:@"localized string not found" table:0];
+      userInfo4 = +[NSBundle mainBundle];
+      [userInfo4 localizedStringForKey:@"Your current location cannot be determined at this time." value:@"localized string not found" table:0];
     }
 
     else
     {
-      v53 = [v46 userInfo];
-      v13 = [v53 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+      userInfo3 = [v46 userInfo];
+      v13 = [userInfo3 objectForKeyedSubscript:NSLocalizedDescriptionKey];
 
-      v48 = [v46 userInfo];
-      [v48 objectForKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
+      userInfo4 = [v46 userInfo];
+      [userInfo4 objectForKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
     }
     v54 = ;
 
@@ -307,19 +307,19 @@ LABEL_26:
     v35 = 0;
   }
 
-  if (v10 && GEOConfigGetBOOL())
+  if (errorCopy && GEOConfigGetBOOL())
   {
-    v36 = [v10 userInfo];
-    v37 = [v36 objectForKeyedSubscript:MKErrorDirectionsErrorInfoKey];
+    userInfo5 = [errorCopy userInfo];
+    v37 = [userInfo5 objectForKeyedSubscript:MKErrorDirectionsErrorInfoKey];
 
-    v38 = [v37 internalServerErrors];
-    v39 = [v38 count];
+    internalServerErrors = [v37 internalServerErrors];
+    v39 = [internalServerErrors count];
 
     if (v39)
     {
-      v40 = [v37 internalServerErrors];
-      v41 = [v40 firstObject];
-      v42 = [NSString stringWithFormat:@"[Internal Only] %@", v41];
+      internalServerErrors2 = [v37 internalServerErrors];
+      firstObject = [internalServerErrors2 firstObject];
+      v42 = [NSString stringWithFormat:@"[Internal Only] %@", firstObject];
 
       if (v35)
       {
@@ -347,26 +347,26 @@ LABEL_26:
 LABEL_51:
 }
 
-- (RoutePlanningError)initWithError:(id)a3 transportType:(unint64_t)a4 origin:(id)a5 destination:(id)a6
+- (RoutePlanningError)initWithError:(id)error transportType:(unint64_t)type origin:(id)origin destination:(id)destination
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  errorCopy = error;
+  originCopy = origin;
+  destinationCopy = destination;
   v19.receiver = self;
   v19.super_class = RoutePlanningError;
   v13 = [(RoutePlanningError *)&v19 init];
   if (v13)
   {
-    v14 = [v10 userInfo];
-    v15 = [v14 objectForKeyedSubscript:MKDirectionsErrorCodeKey];
+    userInfo = [errorCopy userInfo];
+    v15 = [userInfo objectForKeyedSubscript:MKDirectionsErrorCodeKey];
     -[RoutePlanningError setErrorCode:](v13, "setErrorCode:", [v15 integerValue]);
 
-    [(RoutePlanningError *)v13 _buildErrorStringsFromError:v10 transportType:a4 origin:v11 destination:v12];
-    [(RoutePlanningError *)v13 _updateRoutingAppsVisibilityWithError:v10 transportType:a4];
-    [(RoutePlanningError *)v13 _updateRegularDirectionsFallbackVisibilityWithError:v10 transportType:a4];
-    v16 = [v10 _mapkit_transitIncident];
+    [(RoutePlanningError *)v13 _buildErrorStringsFromError:errorCopy transportType:type origin:originCopy destination:destinationCopy];
+    [(RoutePlanningError *)v13 _updateRoutingAppsVisibilityWithError:errorCopy transportType:type];
+    [(RoutePlanningError *)v13 _updateRegularDirectionsFallbackVisibilityWithError:errorCopy transportType:type];
+    _mapkit_transitIncident = [errorCopy _mapkit_transitIncident];
     incidentMessage = v13->_incidentMessage;
-    v13->_incidentMessage = v16;
+    v13->_incidentMessage = _mapkit_transitIncident;
   }
 
   return v13;

@@ -1,31 +1,31 @@
 @interface RCConfigurationFetchResult
-- (RCConfigurationFetchResult)initWithTaskIdentifier:(id)a3 configurationDataByRequestKey:(id)a4 treatmentIDs:(id)a5 segmentSetIDs:(id)a6 error:(id)a7;
+- (RCConfigurationFetchResult)initWithTaskIdentifier:(id)identifier configurationDataByRequestKey:(id)key treatmentIDs:(id)ds segmentSetIDs:(id)iDs error:(id)error;
 @end
 
 @implementation RCConfigurationFetchResult
 
-- (RCConfigurationFetchResult)initWithTaskIdentifier:(id)a3 configurationDataByRequestKey:(id)a4 treatmentIDs:(id)a5 segmentSetIDs:(id)a6 error:(id)a7
+- (RCConfigurationFetchResult)initWithTaskIdentifier:(id)identifier configurationDataByRequestKey:(id)key treatmentIDs:(id)ds segmentSetIDs:(id)iDs error:(id)error
 {
-  v13 = a3;
-  v19 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  keyCopy = key;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  errorCopy = error;
   v20.receiver = self;
   v20.super_class = RCConfigurationFetchResult;
   v17 = [(RCConfigurationFetchResult *)&v20 init];
   if (v17)
   {
-    if (!v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+    if (!identifierCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [RCConfigurationFetchResult initWithTaskIdentifier:configurationDataByRequestKey:treatmentIDs:segmentSetIDs:error:];
     }
 
-    objc_storeStrong(&v17->_taskIdentifier, a3);
-    objc_storeStrong(&v17->_configurationDataByRequestKey, a4);
-    objc_storeStrong(&v17->_treatmentIDs, a5);
-    objc_storeStrong(&v17->_segmentSetIDs, a6);
-    objc_storeStrong(&v17->_error, a7);
+    objc_storeStrong(&v17->_taskIdentifier, identifier);
+    objc_storeStrong(&v17->_configurationDataByRequestKey, key);
+    objc_storeStrong(&v17->_treatmentIDs, ds);
+    objc_storeStrong(&v17->_segmentSetIDs, iDs);
+    objc_storeStrong(&v17->_error, error);
   }
 
   return v17;

@@ -1,8 +1,8 @@
 @interface CRLBidirectionalGeometricOperator
 - (CRLBidirectionalGeometricOperator)init;
-- (id)valueForKey:(id)a3 swapped:(BOOL)a4;
-- (void)executeBidirectionalOperation:(id)a3;
-- (void)setOrientationDependentValueForKey:(id)a3 withStandardValue:(id)a4 andSwappedValue:(id)a5;
+- (id)valueForKey:(id)key swapped:(BOOL)swapped;
+- (void)executeBidirectionalOperation:(id)operation;
+- (void)setOrientationDependentValueForKey:(id)key withStandardValue:(id)value andSwappedValue:(id)swappedValue;
 @end
 
 @implementation CRLBidirectionalGeometricOperator
@@ -34,36 +34,36 @@
   return v2;
 }
 
-- (void)setOrientationDependentValueForKey:(id)a3 withStandardValue:(id)a4 andSwappedValue:(id)a5
+- (void)setOrientationDependentValueForKey:(id)key withStandardValue:(id)value andSwappedValue:(id)swappedValue
 {
   mStandardValues = self->mStandardValues;
-  v9 = a5;
-  v10 = a3;
-  [(NSMutableDictionary *)mStandardValues setValue:a4 forKey:v10];
-  [(NSMutableDictionary *)self->mSwappedValues setValue:v9 forKey:v10];
+  swappedValueCopy = swappedValue;
+  keyCopy = key;
+  [(NSMutableDictionary *)mStandardValues setValue:value forKey:keyCopy];
+  [(NSMutableDictionary *)self->mSwappedValues setValue:swappedValueCopy forKey:keyCopy];
 }
 
-- (void)executeBidirectionalOperation:(id)a3
+- (void)executeBidirectionalOperation:(id)operation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1004642D4;
   v4[3] = &unk_101864D40;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  operationCopy = operation;
+  v3 = operationCopy;
   dispatch_apply(2uLL, 0, v4);
 }
 
-- (id)valueForKey:(id)a3 swapped:(BOOL)a4
+- (id)valueForKey:(id)key swapped:(BOOL)swapped
 {
   v4 = 8;
-  if (a4)
+  if (swapped)
   {
     v4 = 16;
   }
 
-  v5 = [*(&self->super.isa + v4) valueForKey:a3];
+  v5 = [*(&self->super.isa + v4) valueForKey:key];
 
   return v5;
 }

@@ -1,5 +1,5 @@
 @interface CachedGeocoder.CacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtCC15SafetyMonitorUI14CachedGeocoder8CacheKey)init;
 - (int64_t)hash;
 @end
@@ -8,17 +8,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CachedGeocoder.CacheKey.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_264785BA4();
     swift_unknownObjectRelease();
@@ -27,7 +27,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CachedGeocoder.CacheKey.isEqual(_:)(v8);

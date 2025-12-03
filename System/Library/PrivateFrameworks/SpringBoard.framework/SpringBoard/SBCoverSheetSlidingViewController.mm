@@ -1,86 +1,86 @@
 @interface SBCoverSheetSlidingViewController
-- (BOOL)_isAnyGestureActivelyRecognized:(BOOL)a3;
-- (BOOL)_isPresentingAnyInterstitialForGestureRecognizer:(id)a3;
-- (BOOL)_isPresentingInterstitialForGestureRecognizer:(id)a3;
+- (BOOL)_isAnyGestureActivelyRecognized:(BOOL)recognized;
+- (BOOL)_isPresentingAnyInterstitialForGestureRecognizer:(id)recognizer;
+- (BOOL)_isPresentingInterstitialForGestureRecognizer:(id)recognizer;
 - (BOOL)_isPresentingInterstitialWhileOffScreen;
 - (BOOL)_isTransitioning;
-- (BOOL)_mathForGestureRecognizerPointsDown:(id)a3 position:(double *)a4 velocity:(double *)a5 instantVelocity:(double *)a6 averageVelocity:(double *)a7;
-- (BOOL)_shouldEndPresentedForEndingGestureRecognizer:(id)a3;
-- (BOOL)_shouldRubberBandForGestureRecognizer:(id)a3;
-- (BOOL)canTransitionToPresented:(BOOL)a3;
+- (BOOL)_mathForGestureRecognizerPointsDown:(id)down position:(double *)position velocity:(double *)velocity instantVelocity:(double *)instantVelocity averageVelocity:(double *)averageVelocity;
+- (BOOL)_shouldEndPresentedForEndingGestureRecognizer:(id)recognizer;
+- (BOOL)_shouldRubberBandForGestureRecognizer:(id)recognizer;
+- (BOOL)canTransitionToPresented:(BOOL)presented;
 - (BOOL)isBottomMostSlider;
 - (BOOL)isDismissGestureActive;
 - (BOOL)isPresentGestureActive;
 - (BOOL)isPresentingDismissableOffScreenInterstitial;
 - (BOOL)shouldAutorotate;
-- (CGPoint)_adjustedTouchLocationForCurrentDismissalMode:(CGPoint)a3;
-- (CGPoint)_averageVelocityForGesture:(id)a3;
-- (CGPoint)_finalLocationForTransitionToPresented:(BOOL)a3;
-- (CGPoint)_locationForGesture:(id)a3;
-- (CGPoint)_velocityForGesture:(id)a3;
+- (CGPoint)_adjustedTouchLocationForCurrentDismissalMode:(CGPoint)mode;
+- (CGPoint)_averageVelocityForGesture:(id)gesture;
+- (CGPoint)_finalLocationForTransitionToPresented:(BOOL)presented;
+- (CGPoint)_locationForGesture:(id)gesture;
+- (CGPoint)_velocityForGesture:(id)gesture;
 - (CGPoint)lastGestureVelocity;
 - (CGPoint)lastTouchLocation;
 - (CGRect)_contentViewFrame;
-- (CGRect)_updatePositionViewForProgress:(double)a3 velocity:(double)a4 forPresentationValue:(BOOL)a5;
+- (CGRect)_updatePositionViewForProgress:(double)progress velocity:(double)velocity forPresentationValue:(BOOL)value;
 - (CSCoverSheetTransitionSettings)transitionSettings;
-- (SBCoverSheetSlidingViewController)initWithContentViewController:(id)a3 canBePulledDown:(BOOL)a4 canBePulledUp:(BOOL)a5 dismissalPreemptingGestureRecognizer:(id)a6;
+- (SBCoverSheetSlidingViewController)initWithContentViewController:(id)controller canBePulledDown:(BOOL)down canBePulledUp:(BOOL)up dismissalPreemptingGestureRecognizer:(id)recognizer;
 - (SBCoverSheetSlidingViewControllerDelegate)delegate;
 - (double)_viewVelocity;
 - (id)_grabberRecognizer;
 - (id)activeGestureRecognizer;
 - (id)coverSheetIdentifier;
-- (id)stringForPresentationState:(int64_t)a3;
+- (id)stringForPresentationState:(int64_t)state;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_addSystemGestureRecognizerIfUntracked:(id)a3 withType:(unint64_t)a4;
+- (void)_addSystemGestureRecognizerIfUntracked:(id)untracked withType:(unint64_t)type;
 - (void)_addSystemGestureRecognizers;
-- (void)_animationTickForPresentationValue:(BOOL)a3;
-- (void)_beginTransitionFromAppeared:(BOOL)a3;
-- (void)_cancelTransitionForGesture:(id)a3;
+- (void)_animationTickForPresentationValue:(BOOL)value;
+- (void)_beginTransitionFromAppeared:(BOOL)appeared;
+- (void)_cancelTransitionForGesture:(id)gesture;
 - (void)_createProperties;
-- (void)_dismissCoverSheetAnimated:(BOOL)a3 forcingTransition:(BOOL)a4 ignoringPreflightRequirements:(BOOL)a5 withCompletion:(id)a6;
-- (void)_dismissGestureBeganWithGestureRecognizer:(id)a3;
-- (void)_dismissGestureChangedWithGestureRecognizer:(id)a3;
+- (void)_dismissCoverSheetAnimated:(BOOL)animated forcingTransition:(BOOL)transition ignoringPreflightRequirements:(BOOL)requirements withCompletion:(id)completion;
+- (void)_dismissGestureBeganWithGestureRecognizer:(id)recognizer;
+- (void)_dismissGestureChangedWithGestureRecognizer:(id)recognizer;
 - (void)_dismissInterstitialForTransitionIfNeeded;
-- (void)_endTransitionToAppeared:(BOOL)a3;
-- (void)_finishTransitionToPresented:(BOOL)a3 forcingTransition:(BOOL)a4 ignoringPreflightRequirements:(BOOL)a5 animated:(BOOL)a6 withCompletion:(id)a7;
-- (void)_handleDismissGesture:(id)a3;
-- (void)_handleIndirectPresentGesture:(id)a3;
-- (void)_handlePresentGesture:(id)a3;
-- (void)_logDismissGestureState:(int64_t)a3 forAddendumGesture:(BOOL)a4;
-- (void)_logPresentGestureState:(int64_t)a3;
-- (void)_performAppFlyInToPresented:(BOOL)a3 animated:(BOOL)a4 velocity:(double)a5;
-- (void)_performTransitionToDismissed:(BOOL)a3 velocity:(double)a4;
-- (void)_presentCoverSheetAnimated:(BOOL)a3 forcingTransition:(BOOL)a4 forUserGesture:(BOOL)a5 withCompletion:(id)a6;
-- (void)_presentGestureBeganWithGestureRecognizer:(id)a3;
-- (void)_presentOrDismissGestureChangedWithGestureRecognizer:(id)a3;
-- (void)_presentOrDismissGestureEndedWithGestureRecognizer:(id)a3;
+- (void)_endTransitionToAppeared:(BOOL)appeared;
+- (void)_finishTransitionToPresented:(BOOL)presented forcingTransition:(BOOL)transition ignoringPreflightRequirements:(BOOL)requirements animated:(BOOL)animated withCompletion:(id)completion;
+- (void)_handleDismissGesture:(id)gesture;
+- (void)_handleIndirectPresentGesture:(id)gesture;
+- (void)_handlePresentGesture:(id)gesture;
+- (void)_logDismissGestureState:(int64_t)state forAddendumGesture:(BOOL)gesture;
+- (void)_logPresentGestureState:(int64_t)state;
+- (void)_performAppFlyInToPresented:(BOOL)presented animated:(BOOL)animated velocity:(double)velocity;
+- (void)_performTransitionToDismissed:(BOOL)dismissed velocity:(double)velocity;
+- (void)_presentCoverSheetAnimated:(BOOL)animated forcingTransition:(BOOL)transition forUserGesture:(BOOL)gesture withCompletion:(id)completion;
+- (void)_presentGestureBeganWithGestureRecognizer:(id)recognizer;
+- (void)_presentOrDismissGestureChangedWithGestureRecognizer:(id)recognizer;
+- (void)_presentOrDismissGestureEndedWithGestureRecognizer:(id)recognizer;
 - (void)_removeSystemGestureRecognizers;
 - (void)_resetScalingForTransitionIfNeeded;
-- (void)_setCornerRounded:(BOOL)a3;
-- (void)_startCatchupAnimationWithDuration:(double)a3 completion:(id)a4;
-- (void)_studyLogForCompletionOfTransitionToPresented:(BOOL)a3;
-- (void)_studyLogForGestureRecognizerState:(int64_t)a3 bounds:(CGRect)a4 position:(double)a5 velocity:(double)a6;
-- (void)_transitionTickForPresentationValue:(BOOL)a3;
-- (void)_transitionToPresentationState:(int64_t)a3 forUserGesture:(BOOL)a4 withVelocity:(double)a5 animated:(BOOL)a6;
-- (void)_transitionToViewControllerAppearState:(int)a3 ifNeeded:(BOOL)a4 forUserGesture:(BOOL)a5;
-- (void)_updateCoverSheetDismissSettings:(id)a3;
-- (void)_updateForLocation:(CGPoint)a3 interactive:(BOOL)a4;
-- (void)_updateHomeGestureSettings:(id)a3;
-- (void)_updateTransitionProgress:(double)a3 velocity:(double)a4 forPresentationValue:(BOOL)a5;
+- (void)_setCornerRounded:(BOOL)rounded;
+- (void)_startCatchupAnimationWithDuration:(double)duration completion:(id)completion;
+- (void)_studyLogForCompletionOfTransitionToPresented:(BOOL)presented;
+- (void)_studyLogForGestureRecognizerState:(int64_t)state bounds:(CGRect)bounds position:(double)position velocity:(double)velocity;
+- (void)_transitionTickForPresentationValue:(BOOL)value;
+- (void)_transitionToPresentationState:(int64_t)state forUserGesture:(BOOL)gesture withVelocity:(double)velocity animated:(BOOL)animated;
+- (void)_transitionToViewControllerAppearState:(int)state ifNeeded:(BOOL)needed forUserGesture:(BOOL)gesture;
+- (void)_updateCoverSheetDismissSettings:(id)settings;
+- (void)_updateForLocation:(CGPoint)location interactive:(BOOL)interactive;
+- (void)_updateHomeGestureSettings:(id)settings;
+- (void)_updateTransitionProgress:(double)progress velocity:(double)velocity forPresentationValue:(BOOL)value;
 - (void)dealloc;
 - (void)invalidate;
 - (void)loadView;
-- (void)setBackgroundView:(id)a3;
-- (void)setCompletionBlock:(id)a3;
-- (void)setCompletionGroup:(id)a3;
-- (void)setDismissGesturesEnabled:(BOOL)a3;
-- (void)setDismissalSlidingMode:(int64_t)a3;
-- (void)setPresented:(BOOL)a3 forcingTransition:(BOOL)a4 ignoringPreflightRequirements:(BOOL)a5 forUserGesture:(BOOL)a6 animated:(BOOL)a7 withCompletion:(id)a8;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setBackgroundView:(id)view;
+- (void)setCompletionBlock:(id)block;
+- (void)setCompletionGroup:(id)group;
+- (void)setDismissGesturesEnabled:(BOOL)enabled;
+- (void)setDismissalSlidingMode:(int64_t)mode;
+- (void)setPresented:(BOOL)presented forcingTransition:(BOOL)transition ignoringPreflightRequirements:(BOOL)requirements forUserGesture:(BOOL)gesture animated:(BOOL)animated withCompletion:(id)completion;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBCoverSheetSlidingViewController
@@ -108,23 +108,23 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(SBCoverSheetSlidingViewControllerContentViewController *)self->_contentViewController view];
-    [v11 setFrame:{v4, v6, v8, v10}];
+    view = [(SBCoverSheetSlidingViewControllerContentViewController *)self->_contentViewController view];
+    [view setFrame:{v4, v6, v8, v10}];
 
     [(UIView *)self->_backgroundView setFrame:v4, v6, v8, v10];
   }
 
-  v22 = [(SBCoverSheetSlidingViewController *)self positionView];
-  v12 = [(SBCoverSheetSlidingViewController *)self view];
-  [v12 bounds];
+  positionView = [(SBCoverSheetSlidingViewController *)self positionView];
+  view2 = [(SBCoverSheetSlidingViewController *)self view];
+  [view2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  [v22 setFrame:{v14, v16, v18, v20}];
-  v21 = [(CSLockScreenSettings *)self->_lockScreenSettings coverSheetDismissGestureSettings];
-  [(SBCoverSheetSlidingViewController *)self _updateCoverSheetDismissSettings:v21];
+  [positionView setFrame:{v14, v16, v18, v20}];
+  coverSheetDismissGestureSettings = [(CSLockScreenSettings *)self->_lockScreenSettings coverSheetDismissGestureSettings];
+  [(SBCoverSheetSlidingViewController *)self _updateCoverSheetDismissSettings:coverSheetDismissGestureSettings];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -145,8 +145,8 @@
 
     else
     {
-      v6 = [MEMORY[0x277D75418] currentDevice];
-      v5 = [v6 userInterfaceIdiom] == 1;
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      v5 = [currentDevice userInterfaceIdiom] == 1;
     }
 
     if (v5)
@@ -163,16 +163,16 @@
 
 - (BOOL)_isTransitioning
 {
-  v2 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v3 = [v2 syntheticAppearState];
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  syntheticAppearState = [systemGesturesDelegate syntheticAppearState];
 
-  return (v3 & 0xFFFFFFFD) == 1;
+  return (syntheticAppearState & 0xFFFFFFFD) == 1;
 }
 
 - (double)_viewVelocity
 {
-  v3 = [(SBCoverSheetSlidingViewController *)self activeGestureRecognizer];
-  if (v3)
+  activeGestureRecognizer = [(SBCoverSheetSlidingViewController *)self activeGestureRecognizer];
+  if (activeGestureRecognizer)
   {
     v4 = -self->_lastGestureVelocity.y;
   }
@@ -182,8 +182,8 @@
     v4 = 0.0;
   }
 
-  v5 = [(SBCoverSheetSlidingViewController *)self positionView];
-  [v5 frame];
+  positionView = [(SBCoverSheetSlidingViewController *)self positionView];
+  [positionView frame];
   Height = CGRectGetHeight(v8);
 
   return fmin(fmax(v4 / Height, -10.0), 10.0);
@@ -191,53 +191,53 @@
 
 - (id)activeGestureRecognizer
 {
-  v3 = [(SBCoverSheetSlidingViewController *)self dismissGestureRecognizer];
-  v4 = [(SBCoverSheetSlidingViewController *)self dismissAddendumGestureRecognizer];
-  v5 = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
-  v6 = [(SBCoverSheetSlidingViewController *)self indirectPresentGestureRecognizer];
-  v7 = [(SBCoverSheetSlidingViewController *)self indirectDismissGestureRecognizer];
-  v8 = [(SBCoverSheetSlidingViewController *)self scrunchDismissGestureRecognizer];
-  if (([v4 state] - 1) > 2)
+  dismissGestureRecognizer = [(SBCoverSheetSlidingViewController *)self dismissGestureRecognizer];
+  dismissAddendumGestureRecognizer = [(SBCoverSheetSlidingViewController *)self dismissAddendumGestureRecognizer];
+  _grabberRecognizer = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
+  indirectPresentGestureRecognizer = [(SBCoverSheetSlidingViewController *)self indirectPresentGestureRecognizer];
+  indirectDismissGestureRecognizer = [(SBCoverSheetSlidingViewController *)self indirectDismissGestureRecognizer];
+  scrunchDismissGestureRecognizer = [(SBCoverSheetSlidingViewController *)self scrunchDismissGestureRecognizer];
+  if (([dismissAddendumGestureRecognizer state] - 1) > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v4;
+    v9 = dismissAddendumGestureRecognizer;
   }
 
-  if (([v3 state] - 1) <= 2)
+  if (([dismissGestureRecognizer state] - 1) <= 2)
   {
-    v10 = v3;
+    v10 = dismissGestureRecognizer;
 
     v9 = v10;
   }
 
-  if (([v5 state] - 1) <= 2)
+  if (([_grabberRecognizer state] - 1) <= 2)
   {
-    v11 = v5;
+    v11 = _grabberRecognizer;
 
     v9 = v11;
   }
 
-  if (([v6 state] - 1) <= 2)
+  if (([indirectPresentGestureRecognizer state] - 1) <= 2)
   {
-    v12 = v6;
+    v12 = indirectPresentGestureRecognizer;
 
     v9 = v12;
   }
 
-  if (([v7 state] - 1) <= 2)
+  if (([indirectDismissGestureRecognizer state] - 1) <= 2)
   {
-    v13 = v7;
+    v13 = indirectDismissGestureRecognizer;
 
     v9 = v13;
   }
 
-  if (([v8 state] - 1) <= 2)
+  if (([scrunchDismissGestureRecognizer state] - 1) <= 2)
   {
-    v14 = v8;
+    v14 = scrunchDismissGestureRecognizer;
 
     v9 = v14;
   }
@@ -253,18 +253,18 @@ void __54__SBCoverSheetSlidingViewController__createProperties__block_invoke_2(u
 
 - (id)_grabberRecognizer
 {
-  v2 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v3 = [v2 presentGestureRecognizer];
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  presentGestureRecognizer = [systemGesturesDelegate presentGestureRecognizer];
 
-  return v3;
+  return presentGestureRecognizer;
 }
 
 - (void)_resetScalingForTransitionIfNeeded
 {
   if (self->_dismissalTransformMode == 2)
   {
-    v4 = [(SBCoverSheetSlidingViewController *)self positionView];
-    [v4 resetContentScalingAnimated:1];
+    positionView = [(SBCoverSheetSlidingViewController *)self positionView];
+    [positionView resetContentScalingAnimated:1];
 
     [(SBCoverSheetSlidingViewController *)self _viewVelocity];
 
@@ -280,10 +280,10 @@ void __54__SBCoverSheetSlidingViewController__createProperties__block_invoke(uin
 
 - (void)_dismissInterstitialForTransitionIfNeeded
 {
-  v3 = [(SBCoverSheetSlidingViewController *)self delegate];
-  if ([v3 coverSheetSlidingViewControllerIsDisplayingInterstitial:self] && self->_currentPresentationState != 1)
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+  if ([delegate coverSheetSlidingViewControllerIsDisplayingInterstitial:self] && self->_currentPresentationState != 1)
   {
-    [v3 coverSheetSlidingViewControllerCleanupInterstitialTransition:self];
+    [delegate coverSheetSlidingViewControllerCleanupInterstitialTransition:self];
   }
 }
 
@@ -299,10 +299,10 @@ void __54__SBCoverSheetSlidingViewController__createProperties__block_invoke_3(u
   [WeakRetained _transitionTickForPresentationValue:0];
 }
 
-- (SBCoverSheetSlidingViewController)initWithContentViewController:(id)a3 canBePulledDown:(BOOL)a4 canBePulledUp:(BOOL)a5 dismissalPreemptingGestureRecognizer:(id)a6
+- (SBCoverSheetSlidingViewController)initWithContentViewController:(id)controller canBePulledDown:(BOOL)down canBePulledUp:(BOOL)up dismissalPreemptingGestureRecognizer:(id)recognizer
 {
-  v11 = a3;
-  v12 = a6;
+  controllerCopy = controller;
+  recognizerCopy = recognizer;
   v39.receiver = self;
   v39.super_class = SBCoverSheetSlidingViewController;
   v13 = [(SBCoverSheetSlidingViewController *)&v39 init];
@@ -315,25 +315,25 @@ void __54__SBCoverSheetSlidingViewController__createProperties__block_invoke_3(u
     v14->_homeGestureSettings = v15;
 
     [(PTSettings *)v14->_homeGestureSettings addKeyObserver:v14];
-    v17 = [MEMORY[0x277D02C20] rootSettings];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
     lockScreenSettings = v14->_lockScreenSettings;
-    v14->_lockScreenSettings = v17;
+    v14->_lockScreenSettings = rootSettings;
 
     [(CSLockScreenSettings *)v14->_lockScreenSettings addKeyObserver:v14];
-    v19 = [(CSLockScreenSettings *)v14->_lockScreenSettings coverSheetDismissGestureSettings];
-    [v19 addKeyObserver:v14];
+    coverSheetDismissGestureSettings = [(CSLockScreenSettings *)v14->_lockScreenSettings coverSheetDismissGestureSettings];
+    [coverSheetDismissGestureSettings addKeyObserver:v14];
 
     v14->_dismissalSlidingMode = 1;
     v14->_dismissalTransformMode = 1;
-    objc_storeStrong(&v14->_contentViewController, a3);
-    v20 = [MEMORY[0x277CF0CA8] sharedInstance];
-    v21 = [v20 homeButtonType];
+    objc_storeStrong(&v14->_contentViewController, controller);
+    mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+    homeButtonType = [mEMORY[0x277CF0CA8] homeButtonType];
 
     v22 = _os_feature_enabled_impl();
-    v23 = [(CSLockScreenSettings *)v14->_lockScreenSettings coverSheetDismissGestureSettings];
-    v24 = v22 | ~[v23 usesGrapeFlags];
+    coverSheetDismissGestureSettings2 = [(CSLockScreenSettings *)v14->_lockScreenSettings coverSheetDismissGestureSettings];
+    v24 = v22 | ~[coverSheetDismissGestureSettings2 usesGrapeFlags];
 
-    if (v21 == 2)
+    if (homeButtonType == 2)
     {
       v25 = 5;
     }
@@ -358,10 +358,10 @@ void __54__SBCoverSheetSlidingViewController__createProperties__block_invoke_3(u
     [(SBScreenEdgePanGestureRecognizer *)v14->_dismissAddendumGestureRecognizer setAllowedTouchTypes:&unk_28336E118];
     [(SBScreenEdgePanGestureRecognizer *)v14->_dismissAddendumGestureRecognizer sbf_setPencilTouchesAllowed:v22];
     [(SBCoverSheetSlidingViewController *)v14 _updateHomeGestureSettings:v14->_homeGestureSettings];
-    v30 = [(CSLockScreenSettings *)v14->_lockScreenSettings coverSheetDismissGestureSettings];
-    [(SBCoverSheetSlidingViewController *)v14 _updateCoverSheetDismissSettings:v30];
+    coverSheetDismissGestureSettings3 = [(CSLockScreenSettings *)v14->_lockScreenSettings coverSheetDismissGestureSettings];
+    [(SBCoverSheetSlidingViewController *)v14 _updateCoverSheetDismissSettings:coverSheetDismissGestureSettings3];
 
-    v31 = [[SBCoverSheetSystemGesturesDelegate alloc] initWithViewController:v14 dismissGestureRecognizer:v14->_dismissGestureRecognizer dismissAddendumGestureRecognizer:v14->_dismissAddendumGestureRecognizer dismissalPreemptingGestureRecognizer:v12];
+    v31 = [[SBCoverSheetSystemGesturesDelegate alloc] initWithViewController:v14 dismissGestureRecognizer:v14->_dismissGestureRecognizer dismissAddendumGestureRecognizer:v14->_dismissAddendumGestureRecognizer dismissalPreemptingGestureRecognizer:recognizerCopy];
     v32 = [[SBIndirectPanGestureRecognizer alloc] initWithTarget:v14 action:sel__handleDismissGesture_ edges:4];
     indirectDismissGestureRecognizer = v14->_indirectDismissGestureRecognizer;
     v14->_indirectDismissGestureRecognizer = v32;
@@ -401,8 +401,8 @@ void __54__SBCoverSheetSlidingViewController__createProperties__block_invoke_3(u
     [(SBScreenEdgePanGestureRecognizer *)v14->_dismissGestureRecognizer setDelegate:v31];
     [(SBScreenEdgePanGestureRecognizer *)v14->_dismissAddendumGestureRecognizer setDelegate:v31];
     [(SBCoverSheetSlidingViewController *)v14 _createProperties];
-    v14->_canBePulledDown = a4;
-    v14->_canBePulledUp = a5;
+    v14->_canBePulledDown = down;
+    v14->_canBePulledUp = up;
     [(SBCoverSheetSlidingViewController *)v14 _addSystemGestureRecognizers];
     v14->_latestTransitionedPresentationState = 1;
     v14->_currentPresentationState = 1;
@@ -440,65 +440,65 @@ double __134__SBCoverSheetSlidingViewController_initWithContentViewController_ca
   [(BSInvalidatable *)suppressTouchCancellation invalidate];
 }
 
-- (void)setPresented:(BOOL)a3 forcingTransition:(BOOL)a4 ignoringPreflightRequirements:(BOOL)a5 forUserGesture:(BOOL)a6 animated:(BOOL)a7 withCompletion:(id)a8
+- (void)setPresented:(BOOL)presented forcingTransition:(BOOL)transition ignoringPreflightRequirements:(BOOL)requirements forUserGesture:(BOOL)gesture animated:(BOOL)animated withCompletion:(id)completion
 {
-  if (a3)
+  if (presented)
   {
-    [(SBCoverSheetSlidingViewController *)self _presentCoverSheetAnimated:a7 forcingTransition:a4 forUserGesture:a6 withCompletion:a8];
+    [(SBCoverSheetSlidingViewController *)self _presentCoverSheetAnimated:animated forcingTransition:transition forUserGesture:gesture withCompletion:completion];
   }
 
   else
   {
-    [(SBCoverSheetSlidingViewController *)self _dismissCoverSheetAnimated:a7 forcingTransition:a4 ignoringPreflightRequirements:a5 withCompletion:a8];
+    [(SBCoverSheetSlidingViewController *)self _dismissCoverSheetAnimated:animated forcingTransition:transition ignoringPreflightRequirements:requirements withCompletion:completion];
   }
 }
 
-- (BOOL)canTransitionToPresented:(BOOL)a3
+- (BOOL)canTransitionToPresented:(BOOL)presented
 {
-  v3 = a3;
-  v4 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v5 = v4;
-  if (v3)
+  presentedCopy = presented;
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  v5 = systemGesturesDelegate;
+  if (presentedCopy)
   {
-    v6 = [v4 isPresentGestureAllowedToBegin];
+    isPresentGestureAllowedToBegin = [systemGesturesDelegate isPresentGestureAllowedToBegin];
   }
 
   else
   {
-    v6 = [v4 isDismissGestureAllowedToBegin];
+    isPresentGestureAllowedToBegin = [systemGesturesDelegate isDismissGestureAllowedToBegin];
   }
 
-  v7 = v6;
+  v7 = isPresentGestureAllowedToBegin;
 
   return v7;
 }
 
 - (BOOL)isPresentGestureActive
 {
-  v2 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v3 = [v2 isPresentGestureActive];
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  isPresentGestureActive = [systemGesturesDelegate isPresentGestureActive];
 
-  return v3;
+  return isPresentGestureActive;
 }
 
 - (BOOL)isDismissGestureActive
 {
-  v2 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v3 = [v2 isDismissGestureActive];
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  isDismissGestureActive = [systemGesturesDelegate isDismissGestureActive];
 
-  return v3;
+  return isDismissGestureActive;
 }
 
-- (void)setDismissalSlidingMode:(int64_t)a3
+- (void)setDismissalSlidingMode:(int64_t)mode
 {
-  if (self->_dismissalSlidingMode != a3)
+  if (self->_dismissalSlidingMode != mode)
   {
-    if (a3 != 1 && (SBHomeGestureEnabled() & 1) == 0)
+    if (mode != 1 && (SBHomeGestureEnabled() & 1) == 0)
     {
       [SBCoverSheetSlidingViewController setDismissalSlidingMode:];
     }
 
-    self->_dismissalSlidingMode = a3;
+    self->_dismissalSlidingMode = mode;
     if ([(SBCoverSheetSlidingViewController *)self isDismissGestureActive])
     {
       p_dismissAddendumGestureRecognizer = &self->_dismissAddendumGestureRecognizer;
@@ -544,47 +544,47 @@ void __61__SBCoverSheetSlidingViewController_setDismissalSlidingMode___block_inv
   [WeakRetained coverSheetSlidingViewControllerCleanupInterstitialTransition:*(a1 + 32)];
 }
 
-- (BOOL)_isAnyGestureActivelyRecognized:(BOOL)a3
+- (BOOL)_isAnyGestureActivelyRecognized:(BOOL)recognized
 {
-  if (!a3)
+  if (!recognized)
   {
-    v4 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-    self->_anyGestureActivelyRecognizedCache = [v4 isAnyGestureActivelyRecognized];
+    systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+    self->_anyGestureActivelyRecognizedCache = [systemGesturesDelegate isAnyGestureActivelyRecognized];
   }
 
   return self->_anyGestureActivelyRecognizedCache;
 }
 
-- (void)setDismissGesturesEnabled:(BOOL)a3
+- (void)setDismissGesturesEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SBCoverSheetSlidingViewController *)self dismissGestureRecognizer];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  dismissGestureRecognizer = [(SBCoverSheetSlidingViewController *)self dismissGestureRecognizer];
+  [dismissGestureRecognizer setEnabled:enabledCopy];
 
-  v6 = [(SBCoverSheetSlidingViewController *)self dismissAddendumGestureRecognizer];
-  [v6 setEnabled:v3];
+  dismissAddendumGestureRecognizer = [(SBCoverSheetSlidingViewController *)self dismissAddendumGestureRecognizer];
+  [dismissAddendumGestureRecognizer setEnabled:enabledCopy];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   if (CSFeatureEnabled())
   {
     backgroundView = self->_backgroundView;
-    if (backgroundView != v7)
+    if (backgroundView != viewCopy)
     {
       [(UIView *)backgroundView removeFromSuperview];
-      objc_storeStrong(&self->_backgroundView, a3);
-      v6 = [(SBCoverSheetSlidingViewController *)self viewIfLoaded];
-      [v6 insertSubview:v7 atIndex:0];
+      objc_storeStrong(&self->_backgroundView, view);
+      viewIfLoaded = [(SBCoverSheetSlidingViewController *)self viewIfLoaded];
+      [viewIfLoaded insertSubview:viewCopy atIndex:0];
     }
   }
 }
 
 - (CGRect)_contentViewFrame
 {
-  v3 = [(SBCoverSheetSlidingViewController *)self view];
-  [v3 bounds];
+  view = [(SBCoverSheetSlidingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -613,14 +613,14 @@ void __61__SBCoverSheetSlidingViewController_setDismissalSlidingMode___block_inv
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D65F80]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v15 = [v3 initWithFrame:?];
 
   [v15 setAutoresizingMask:18];
   [v15 setOpaque:0];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v15 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v15 setBackgroundColor:clearColor];
 
   v6 = [SBCoverSheetPositionView alloc];
   [v15 bounds];
@@ -635,13 +635,13 @@ void __61__SBCoverSheetSlidingViewController_setDismissalSlidingMode___block_inv
   [v15 bounds];
   [(SBCoverSheetPositionView *)v9 setFrame:?];
   [(SBCoverSheetSlidingViewController *)self setView:v15];
-  v10 = [(SBCoverSheetSlidingViewControllerContentViewController *)self->_contentViewController view];
+  view = [(SBCoverSheetSlidingViewControllerContentViewController *)self->_contentViewController view];
   [(SBCoverSheetSlidingViewController *)self _contentViewFrame];
-  [v10 setFrame:?];
+  [view setFrame:?];
 
   contentViewController = self->_contentViewController;
-  v12 = [(SBCoverSheetPositionView *)self->_positionView contentView];
-  [(SBCoverSheetSlidingViewController *)self bs_addChildViewController:contentViewController withSuperview:v12];
+  contentView = [(SBCoverSheetPositionView *)self->_positionView contentView];
+  [(SBCoverSheetSlidingViewController *)self bs_addChildViewController:contentViewController withSuperview:contentView];
 
   if (CSFeatureEnabled())
   {
@@ -652,8 +652,8 @@ void __61__SBCoverSheetSlidingViewController_setDismissalSlidingMode___block_inv
     }
   }
 
-  v14 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  [v14 setSyntheticAppearState:0];
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  [systemGesturesDelegate setSyntheticAppearState:0];
 }
 
 - (void)viewDidLoad
@@ -682,34 +682,34 @@ uint64_t __48__SBCoverSheetSlidingViewController_viewDidLoad__block_invoke(uint6
   return [MEMORY[0x277D75D18] _performWithoutRetargetingAnimations:v2];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = SBCoverSheetSlidingViewController;
-  [(SBCoverSheetSlidingViewController *)&v7 viewWillAppear:a3];
-  v4 = [(SBCoverSheetSlidingViewControllerContentViewController *)self->_contentViewController view];
-  v5 = [(SBCoverSheetPositionView *)self->_positionView contentView];
-  v6 = [v4 superview];
+  [(SBCoverSheetSlidingViewController *)&v7 viewWillAppear:appear];
+  view = [(SBCoverSheetSlidingViewControllerContentViewController *)self->_contentViewController view];
+  contentView = [(SBCoverSheetPositionView *)self->_positionView contentView];
+  superview = [view superview];
 
-  if (v6 != v5)
+  if (superview != contentView)
   {
-    [v5 bounds];
-    [v4 setFrame:?];
-    [v5 addSubview:v4];
+    [contentView bounds];
+    [view setFrame:?];
+    [contentView addSubview:view];
   }
 
   [(SBCoverSheetSlidingViewController *)self _addSystemGestureRecognizers];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SBCoverSheetSlidingViewController;
-  [(SBCoverSheetSlidingViewController *)&v6 viewDidAppear:a3];
-  v4 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v5 = [v4 syntheticAppearState];
+  [(SBCoverSheetSlidingViewController *)&v6 viewDidAppear:appear];
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  syntheticAppearState = [systemGesturesDelegate syntheticAppearState];
 
-  if (!v5)
+  if (!syntheticAppearState)
   {
     if (CSFeatureEnabled())
     {
@@ -737,25 +737,25 @@ uint64_t __48__SBCoverSheetSlidingViewController_viewDidLoad__block_invoke(uint6
 
 - (BOOL)isBottomMostSlider
 {
-  v2 = self;
-  v3 = [(SBCoverSheetSlidingViewController *)self delegate];
-  LOBYTE(v2) = [v3 hasContentUnderCoverSheetSlidingViewController:v2];
+  selfCopy = self;
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate hasContentUnderCoverSheetSlidingViewController:selfCopy];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (BOOL)isPresentingDismissableOffScreenInterstitial
 {
-  v3 = [(SBCoverSheetSlidingViewController *)self _isPresentingInterstitialWhileOffScreen];
-  if (v3)
+  _isPresentingInterstitialWhileOffScreen = [(SBCoverSheetSlidingViewController *)self _isPresentingInterstitialWhileOffScreen];
+  if (_isPresentingInterstitialWhileOffScreen)
   {
-    v4 = [(SBCoverSheetSlidingViewController *)self delegate];
-    v5 = [v4 coverSheetSlidingViewControllerIsInterstitialDismissalAllowed:self];
+    delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+    v5 = [delegate coverSheetSlidingViewControllerIsInterstitialDismissalAllowed:self];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_isPresentingInterstitialWhileOffScreen) = v5;
   }
 
-  return v3;
+  return _isPresentingInterstitialWhileOffScreen;
 }
 
 - (id)coverSheetIdentifier
@@ -765,18 +765,18 @@ uint64_t __48__SBCoverSheetSlidingViewController_viewDidLoad__block_invoke(uint6
   return NSStringFromClass(v2);
 }
 
-- (void)_presentCoverSheetAnimated:(BOOL)a3 forcingTransition:(BOOL)a4 forUserGesture:(BOOL)a5 withCompletion:(id)a6
+- (void)_presentCoverSheetAnimated:(BOOL)animated forcingTransition:(BOOL)transition forUserGesture:(BOOL)gesture withCompletion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
+  gestureCopy = gesture;
+  transitionCopy = transition;
+  animatedCopy = animated;
   v18 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  completionCopy = completion;
   v11 = SBLogCoverSheet();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"not ";
-    if (v8)
+    if (animatedCopy)
     {
       v13 = &stru_283094718;
     }
@@ -786,7 +786,7 @@ uint64_t __48__SBCoverSheetSlidingViewController_viewDidLoad__block_invoke(uint6
       v13 = @"not ";
     }
 
-    if (v6)
+    if (gestureCopy)
     {
       v12 = &stru_283094718;
     }
@@ -800,29 +800,29 @@ uint64_t __48__SBCoverSheetSlidingViewController_viewDidLoad__block_invoke(uint6
 
   if (CSFeatureEnabled())
   {
-    [(SBCoverSheetSlidingViewController *)self _transitionToPresentationState:2 forUserGesture:0 withVelocity:v8 animated:0.0];
+    [(SBCoverSheetSlidingViewController *)self _transitionToPresentationState:2 forUserGesture:0 withVelocity:animatedCopy animated:0.0];
   }
 
   else
   {
-    [(SBCoverSheetSlidingViewController *)self _transitionToViewControllerAppearState:1 forUserGesture:v6];
+    [(SBCoverSheetSlidingViewController *)self _transitionToViewControllerAppearState:1 forUserGesture:gestureCopy];
   }
 
-  [(SBCoverSheetSlidingViewController *)self _finishTransitionToPresented:1 forcingTransition:v7 ignoringPreflightRequirements:0 animated:v8 withCompletion:v10];
+  [(SBCoverSheetSlidingViewController *)self _finishTransitionToPresented:1 forcingTransition:transitionCopy ignoringPreflightRequirements:0 animated:animatedCopy withCompletion:completionCopy];
 }
 
-- (void)_dismissCoverSheetAnimated:(BOOL)a3 forcingTransition:(BOOL)a4 ignoringPreflightRequirements:(BOOL)a5 withCompletion:(id)a6
+- (void)_dismissCoverSheetAnimated:(BOOL)animated forcingTransition:(BOOL)transition ignoringPreflightRequirements:(BOOL)requirements withCompletion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
+  requirementsCopy = requirements;
+  transitionCopy = transition;
+  animatedCopy = animated;
   v17 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  completionCopy = completion;
   v11 = SBLogCoverSheet();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"not ";
-    if (v8)
+    if (animatedCopy)
     {
       v12 = &stru_283094718;
     }
@@ -834,7 +834,7 @@ uint64_t __48__SBCoverSheetSlidingViewController_viewDidLoad__block_invoke(uint6
 
   if (CSFeatureEnabled())
   {
-    [(SBCoverSheetSlidingViewController *)self _transitionToPresentationState:3 forUserGesture:0 withVelocity:v8 animated:0.0];
+    [(SBCoverSheetSlidingViewController *)self _transitionToPresentationState:3 forUserGesture:0 withVelocity:animatedCopy animated:0.0];
   }
 
   else
@@ -842,34 +842,34 @@ uint64_t __48__SBCoverSheetSlidingViewController_viewDidLoad__block_invoke(uint6
     [(SBCoverSheetSlidingViewController *)self _transitionToViewControllerAppearState:3];
   }
 
-  v13 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v14 = [v13 syntheticAppearState];
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  syntheticAppearState = [systemGesturesDelegate syntheticAppearState];
 
-  [(SBCoverSheetSlidingViewController *)self _finishTransitionToPresented:(v14 - 1) < 2 forcingTransition:v7 ignoringPreflightRequirements:v6 animated:v8 withCompletion:v10];
+  [(SBCoverSheetSlidingViewController *)self _finishTransitionToPresented:(syntheticAppearState - 1) < 2 forcingTransition:transitionCopy ignoringPreflightRequirements:requirementsCopy animated:animatedCopy withCompletion:completionCopy];
 }
 
-- (void)_handlePresentGesture:(id)a3
+- (void)_handlePresentGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 state];
-  v6 = [(SBScreenEdgePanGestureRecognizer *)self->_dismissGestureRecognizer state];
-  v7 = [(SBScreenEdgePanGestureRecognizer *)self->_dismissAddendumGestureRecognizer state];
-  if ((v6 - 1) <= 1)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  state2 = [(SBScreenEdgePanGestureRecognizer *)self->_dismissGestureRecognizer state];
+  state3 = [(SBScreenEdgePanGestureRecognizer *)self->_dismissAddendumGestureRecognizer state];
+  if ((state2 - 1) <= 1)
   {
     [SBCoverSheetSlidingViewController _handlePresentGesture:];
   }
 
-  if ((v7 - 1) <= 1)
+  if ((state3 - 1) <= 1)
   {
     [SBCoverSheetSlidingViewController _handlePresentGesture:];
   }
 
-  [(SBCoverSheetSlidingViewController *)self _logPresentGestureState:v5];
-  if (v5 > 3)
+  [(SBCoverSheetSlidingViewController *)self _logPresentGestureState:state];
+  if (state > 3)
   {
-    if ((v5 - 4) < 2)
+    if ((state - 4) < 2)
     {
-      [(SBCoverSheetSlidingViewController *)self _cancelTransitionForGesture:v4];
+      [(SBCoverSheetSlidingViewController *)self _cancelTransitionForGesture:gestureCopy];
     }
 
 LABEL_12:
@@ -877,17 +877,17 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (v5 != 1)
+  if (state != 1)
   {
-    if (v5 == 2)
+    if (state == 2)
     {
-      [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureChangedWithGestureRecognizer:v4];
+      [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureChangedWithGestureRecognizer:gestureCopy];
       goto LABEL_17;
     }
 
-    if (v5 == 3)
+    if (state == 3)
     {
-      [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureEndedWithGestureRecognizer:v4];
+      [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureEndedWithGestureRecognizer:gestureCopy];
     }
 
     goto LABEL_12;
@@ -900,127 +900,127 @@ LABEL_12:
     self->_suppressTouchCancellation = v8;
   }
 
-  [(SBCoverSheetSlidingViewController *)self _presentGestureBeganWithGestureRecognizer:v4];
+  [(SBCoverSheetSlidingViewController *)self _presentGestureBeganWithGestureRecognizer:gestureCopy];
   v10 = MEMORY[0x277D75D18];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__SBCoverSheetSlidingViewController__handlePresentGesture___block_invoke;
   v11[3] = &unk_2783A92D8;
   v11[4] = self;
-  v12 = v4;
+  v12 = gestureCopy;
   [v10 _performWithoutRetargetingAnimations:v11];
 
 LABEL_17:
 }
 
-- (void)_handleIndirectPresentGesture:(id)a3
+- (void)_handleIndirectPresentGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if ((v5 - 4) < 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 4) < 2)
   {
     self->_indirectPresentGestureCalledBegin = 0;
-    [(SBCoverSheetSlidingViewController *)self _cancelTransitionForGesture:v4];
+    [(SBCoverSheetSlidingViewController *)self _cancelTransitionForGesture:gestureCopy];
   }
 
-  else if (v5 == 3)
+  else if (state == 3)
   {
     self->_indirectPresentGestureCalledBegin = 0;
-    [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureEndedWithGestureRecognizer:v4];
+    [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureEndedWithGestureRecognizer:gestureCopy];
   }
 
-  else if (v5 == 2)
+  else if (state == 2)
   {
     if (self->_indirectPresentGestureCalledBegin)
     {
-      [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureChangedWithGestureRecognizer:v4];
+      [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureChangedWithGestureRecognizer:gestureCopy];
     }
 
     else
     {
-      v6 = [(SBCoverSheetSlidingViewController *)self view];
-      [v4 translationInView:v6];
+      view = [(SBCoverSheetSlidingViewController *)self view];
+      [gestureCopy translationInView:view];
       v8 = v7;
 
       if (v8 != 0.0)
       {
         self->_indirectPresentGestureCalledBegin = 1;
-        [(SBCoverSheetSlidingViewController *)self _presentGestureBeganWithGestureRecognizer:v4];
+        [(SBCoverSheetSlidingViewController *)self _presentGestureBeganWithGestureRecognizer:gestureCopy];
         v9 = MEMORY[0x277D75D18];
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
         v10[2] = __67__SBCoverSheetSlidingViewController__handleIndirectPresentGesture___block_invoke;
         v10[3] = &unk_2783A92D8;
         v10[4] = self;
-        v11 = v4;
+        v11 = gestureCopy;
         [v9 _performWithoutRetargetingAnimations:v10];
       }
     }
   }
 }
 
-- (void)_handleDismissGesture:(id)a3
+- (void)_handleDismissGesture:(id)gesture
 {
-  v8 = a3;
-  v4 = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
-  v5 = [v4 state];
+  gestureCopy = gesture;
+  _grabberRecognizer = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
+  state = [_grabberRecognizer state];
 
-  v6 = [(SBScreenEdgePanGestureRecognizer *)v8 state];
-  if ((v5 - 1) <= 1)
+  state2 = [(SBScreenEdgePanGestureRecognizer *)gestureCopy state];
+  if ((state - 1) <= 1)
   {
     [SBCoverSheetSlidingViewController _handleDismissGesture:];
   }
 
-  [(SBCoverSheetSlidingViewController *)self _logDismissGestureState:v6 forAddendumGesture:self->_dismissAddendumGestureRecognizer == v8];
-  if (v6 > 3)
+  [(SBCoverSheetSlidingViewController *)self _logDismissGestureState:state2 forAddendumGesture:self->_dismissAddendumGestureRecognizer == gestureCopy];
+  if (state2 > 3)
   {
-    v7 = v8;
-    if ((v6 - 4) >= 2)
+    v7 = gestureCopy;
+    if ((state2 - 4) >= 2)
     {
       goto LABEL_13;
     }
 
-    [(SBCoverSheetSlidingViewController *)self _cancelTransitionForGesture:v8];
+    [(SBCoverSheetSlidingViewController *)self _cancelTransitionForGesture:gestureCopy];
   }
 
   else
   {
-    if (v6 == 1)
+    if (state2 == 1)
     {
-      [(SBCoverSheetSlidingViewController *)self _dismissGestureBeganWithGestureRecognizer:v8];
+      [(SBCoverSheetSlidingViewController *)self _dismissGestureBeganWithGestureRecognizer:gestureCopy];
     }
 
     else
     {
-      v7 = v8;
-      if (v6 != 2)
+      v7 = gestureCopy;
+      if (state2 != 2)
       {
-        if (v6 != 3)
+        if (state2 != 3)
         {
           goto LABEL_13;
         }
 
-        [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureEndedWithGestureRecognizer:v8];
+        [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureEndedWithGestureRecognizer:gestureCopy];
         goto LABEL_12;
       }
     }
 
-    [(SBCoverSheetSlidingViewController *)self _dismissGestureChangedWithGestureRecognizer:v8];
+    [(SBCoverSheetSlidingViewController *)self _dismissGestureChangedWithGestureRecognizer:gestureCopy];
   }
 
 LABEL_12:
-  v7 = v8;
+  v7 = gestureCopy;
 LABEL_13:
 }
 
-- (void)_presentGestureBeganWithGestureRecognizer:(id)a3
+- (void)_presentGestureBeganWithGestureRecognizer:(id)recognizer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBCoverSheetSlidingViewController *)self currentPresentationState];
-  if (v5 != 7)
+  recognizerCopy = recognizer;
+  currentPresentationState = [(SBCoverSheetSlidingViewController *)self currentPresentationState];
+  if (currentPresentationState != 7)
   {
-    v6 = v5;
+    v6 = currentPresentationState;
     v7 = SBLogDashBoard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -1034,22 +1034,22 @@ LABEL_13:
     [(SBCoverSheetSlidingViewController *)self _transitionToPresentationState:7 forUserGesture:0 withVelocity:0 animated:?];
   }
 
-  v9 = [(SBCoverSheetSlidingViewController *)self delegate];
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 coverSheetSlidingViewControllerUserPresentGestureBegan:self];
+    [delegate coverSheetSlidingViewControllerUserPresentGestureBegan:self];
   }
 
-  if (self->_indirectPresentGestureRecognizer == v4)
+  if (self->_indirectPresentGestureRecognizer == recognizerCopy)
   {
-    [(SBCoverSheetSlidingViewController *)self _locationForGesture:v4];
+    [(SBCoverSheetSlidingViewController *)self _locationForGesture:recognizerCopy];
     self->_initialTouchOffsetFromScreenEdge = fmax(v10, 0.0);
   }
 
   v11 = +[SBReachabilityManager sharedInstance];
-  v12 = [v11 reachabilityModeActive];
+  reachabilityModeActive = [v11 reachabilityModeActive];
 
-  if (v12)
+  if (reachabilityModeActive)
   {
     self->_performingCatchUpForPresentation = 1;
     [(SBCoverSheetSlidingViewController *)self _startCatchupAnimationWithDuration:0 completion:0.35];
@@ -1075,24 +1075,24 @@ LABEL_13:
   }
 
   v16 = +[SBReachabilityManager sharedInstance];
-  v17 = [v16 reachabilityModeActive];
+  reachabilityModeActive2 = [v16 reachabilityModeActive];
 
-  if (v17)
+  if (reachabilityModeActive2)
   {
     v18 = +[SBReachabilityManager sharedInstance];
     [v18 deactivateReachability];
   }
 }
 
-- (void)_dismissGestureBeganWithGestureRecognizer:(id)a3
+- (void)_dismissGestureBeganWithGestureRecognizer:(id)recognizer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBCoverSheetSlidingViewController *)self currentPresentationState];
-  if (v5 != 1)
+  recognizerCopy = recognizer;
+  currentPresentationState = [(SBCoverSheetSlidingViewController *)self currentPresentationState];
+  if (currentPresentationState != 1)
   {
-    v6 = v5;
-    if (![(SBCoverSheetSlidingViewController *)self _isPresentingAnyInterstitialForGestureRecognizer:v4])
+    v6 = currentPresentationState;
+    if (![(SBCoverSheetSlidingViewController *)self _isPresentingAnyInterstitialForGestureRecognizer:recognizerCopy])
     {
       v7 = SBLogDashBoard();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1109,18 +1109,18 @@ LABEL_13:
   }
 
   [(SBCoverSheetSlidingViewController *)self _handleDismissGestureBegan];
-  v9 = [(SBCoverSheetSlidingViewController *)self delegate];
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 coverSheetSlidingViewControllerUserDismissGestureBegan:self];
+    [delegate coverSheetSlidingViewControllerUserDismissGestureBegan:self];
   }
 
-  if (self->_indirectDismissGestureRecognizer == v4)
+  if (self->_indirectDismissGestureRecognizer == recognizerCopy)
   {
-    v10 = [(SBCoverSheetSlidingViewController *)self view];
-    [v10 bounds];
+    view = [(SBCoverSheetSlidingViewController *)self view];
+    [view bounds];
     Height = CGRectGetHeight(v26);
-    [(SBCoverSheetSlidingViewController *)self _locationForGesture:v4];
+    [(SBCoverSheetSlidingViewController *)self _locationForGesture:recognizerCopy];
     v13 = Height - v12;
 
     self->_initialTouchOffsetFromScreenEdge = fmax(v13, 0.0);
@@ -1146,9 +1146,9 @@ LABEL_13:
     [(SBCoverSheetSlidingViewController *)self _transitionToViewControllerAppearState:3 ifNeeded:0 forUserGesture:1];
   }
 
-  if (![(SBCoverSheetSlidingViewController *)self _isPresentingAnyInterstitialForGestureRecognizer:v4])
+  if (![(SBCoverSheetSlidingViewController *)self _isPresentingAnyInterstitialForGestureRecognizer:recognizerCopy])
   {
-    [(SBCoverSheetSlidingViewController *)self _velocityForGesture:v4];
+    [(SBCoverSheetSlidingViewController *)self _velocityForGesture:recognizerCopy];
     v18 = v17;
     v19 = SBLogCoverSheet();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -1156,26 +1156,26 @@ LABEL_13:
       [SBCoverSheetSlidingViewController _dismissGestureBeganWithGestureRecognizer:];
     }
 
-    v20 = [(SBCoverSheetSlidingViewController *)self positionView];
+    positionView = [(SBCoverSheetSlidingViewController *)self positionView];
     v21 = [MEMORY[0x277CCAE60] valueWithCGPoint:{0.0, v18}];
-    [v20 _setVelocity:v21 forKey:@"position"];
+    [positionView _setVelocity:v21 forKey:@"position"];
 
     self->_performingCatchUpForPresentation = 0;
     [(SBCoverSheetSlidingViewController *)self _startCatchupAnimationWithDuration:0 completion:0.2];
   }
 }
 
-- (void)_presentOrDismissGestureChangedWithGestureRecognizer:(id)a3
+- (void)_presentOrDismissGestureChangedWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  [(SBCoverSheetSlidingViewController *)self _locationForGesture:v4];
+  recognizerCopy = recognizer;
+  [(SBCoverSheetSlidingViewController *)self _locationForGesture:recognizerCopy];
   v6 = v5;
   v8 = v7;
   [(SBCoverSheetSlidingViewController *)self setLastTouchLocation:?];
-  if ([(SBCoverSheetSlidingViewController *)self _isPresentingAnyInterstitialForGestureRecognizer:v4])
+  if ([(SBCoverSheetSlidingViewController *)self _isPresentingAnyInterstitialForGestureRecognizer:recognizerCopy])
   {
-    v9 = SBLogCoverSheet();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    view = SBLogCoverSheet();
+    if (os_log_type_enabled(view, OS_LOG_TYPE_DEBUG))
     {
       [SBCoverSheetSlidingViewController _presentOrDismissGestureChangedWithGestureRecognizer:];
     }
@@ -1183,23 +1183,23 @@ LABEL_13:
 
   else
   {
-    v9 = [(SBCoverSheetSlidingViewController *)self view];
-    [(SBIndirectPanGestureRecognizer *)v4 translationInView:v9];
+    view = [(SBCoverSheetSlidingViewController *)self view];
+    [(SBIndirectPanGestureRecognizer *)recognizerCopy translationInView:view];
     v11 = v10;
     v13 = v12;
-    [(SBIndirectPanGestureRecognizer *)v4 velocityInView:v9];
+    [(SBIndirectPanGestureRecognizer *)recognizerCopy velocityInView:view];
     v15 = v14;
     v17 = v16;
     [(SBCoverSheetSlidingViewController *)self setLastGestureVelocity:?];
     v18 = +[SBAssistantController sharedInstance];
     [v18 dismissAssistantViewInEverySceneIfNecessaryForGestureTranslation:v11 velocity:{v13, v15, v17}];
 
-    if ([(SBCoverSheetSlidingViewController *)self _shouldRubberBandForGestureRecognizer:v4])
+    if ([(SBCoverSheetSlidingViewController *)self _shouldRubberBandForGestureRecognizer:recognizerCopy])
     {
       [(CSLockScreenSettings *)self->_lockScreenSettings unlockPasscodeThreshold];
       v20 = v19;
       indirectDismissGestureRecognizer = self->_indirectDismissGestureRecognizer;
-      if (indirectDismissGestureRecognizer == v4 && [(SBIndirectPanGestureRecognizer *)indirectDismissGestureRecognizer currentInputType]== 1)
+      if (indirectDismissGestureRecognizer == recognizerCopy && [(SBIndirectPanGestureRecognizer *)indirectDismissGestureRecognizer currentInputType]== 1)
       {
         [(SBIndirectPanGestureRecognizer *)self->_indirectDismissGestureRecognizer activationRecognitionDistance];
         v23 = v22;
@@ -1207,8 +1207,8 @@ LABEL_13:
         v20 = v23 - v24;
       }
 
-      v25 = [(SBCoverSheetSlidingViewController *)self view];
-      [v25 bounds];
+      view2 = [(SBCoverSheetSlidingViewController *)self view];
+      [view2 bounds];
       v27 = v26 - v8;
 
       v28 = v27 >= v20;
@@ -1219,8 +1219,8 @@ LABEL_13:
 
       else
       {
-        v29 = [(SBCoverSheetSlidingViewController *)self delegate];
-        [v29 coverSheetSlidingViewControllerDidPassRubberBandThreshold:self];
+        delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+        [delegate coverSheetSlidingViewControllerDidPassRubberBandThreshold:self];
 
         [(SBCoverSheetSlidingViewController *)self _finalLocationForTransitionToPresented:1];
       }
@@ -1251,10 +1251,10 @@ LABEL_13:
         _os_log_impl(&dword_21ED4E000, v32, OS_LOG_TYPE_INFO, "Cancelling dismiss gesture for rubber band threshold passed.", v34, 2u);
       }
 
-      [(SBIndirectPanGestureRecognizer *)v4 setEnabled:0];
-      [(SBIndirectPanGestureRecognizer *)v4 setEnabled:1];
+      [(SBIndirectPanGestureRecognizer *)recognizerCopy setEnabled:0];
+      [(SBIndirectPanGestureRecognizer *)recognizerCopy setEnabled:1];
       v33 = self->_indirectDismissGestureRecognizer;
-      if (v33 == v4)
+      if (v33 == recognizerCopy)
       {
         [(SBIndirectPanGestureRecognizer *)v33 setPausedUntilTouchedUpOrMovedAwayFromEdge:1];
       }
@@ -1262,14 +1262,14 @@ LABEL_13:
   }
 }
 
-- (void)_dismissGestureChangedWithGestureRecognizer:(id)a3
+- (void)_dismissGestureChangedWithGestureRecognizer:(id)recognizer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(SBCoverSheetSlidingViewController *)self _locationForGesture:v4];
+  recognizerCopy = recognizer;
+  [(SBCoverSheetSlidingViewController *)self _locationForGesture:recognizerCopy];
   v6 = v5;
-  v7 = [(SBCoverSheetSlidingViewController *)self view];
-  [v7 bounds];
+  view = [(SBCoverSheetSlidingViewController *)self view];
+  [view bounds];
   Height = CGRectGetHeight(v15);
 
   v9 = (Height - v6) / Height;
@@ -1281,24 +1281,24 @@ LABEL_13:
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "_dismissGestureChangedWithGestureRecognizer gestureProgress: %.2f", &v12, 0xCu);
   }
 
-  if ([(SBCoverSheetSlidingViewController *)self _isPresentingAnyInterstitialForGestureRecognizer:v4])
+  if ([(SBCoverSheetSlidingViewController *)self _isPresentingAnyInterstitialForGestureRecognizer:recognizerCopy])
   {
-    v11 = [(SBCoverSheetSlidingViewController *)self delegate];
-    [v11 coverSheetSlidingViewController:self dismissGestureChangedWithProgress:v9];
+    delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+    [delegate coverSheetSlidingViewController:self dismissGestureChangedWithProgress:v9];
   }
 
-  [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureChangedWithGestureRecognizer:v4];
+  [(SBCoverSheetSlidingViewController *)self _presentOrDismissGestureChangedWithGestureRecognizer:recognizerCopy];
 }
 
-- (void)_presentOrDismissGestureEndedWithGestureRecognizer:(id)a3
+- (void)_presentOrDismissGestureEndedWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if (self->_indirectPresentGestureRecognizer == v4 || self->_indirectDismissGestureRecognizer == v4)
+  recognizerCopy = recognizer;
+  if (self->_indirectPresentGestureRecognizer == recognizerCopy || self->_indirectDismissGestureRecognizer == recognizerCopy)
   {
     self->_initialTouchOffsetFromScreenEdge = 0.0;
   }
 
-  v17 = v4;
+  v17 = recognizerCopy;
   [(SBFFrameRateAssertion *)self->_frameRateAssertion invalidate];
   frameRateAssertion = self->_frameRateAssertion;
   self->_frameRateAssertion = 0;
@@ -1341,8 +1341,8 @@ LABEL_6:
 
       else if (v8 == self->_indirectDismissGestureRecognizer)
       {
-        v15 = [(SBCoverSheetSlidingViewController *)self view];
-        [v15 bounds];
+        view = [(SBCoverSheetSlidingViewController *)self view];
+        [view bounds];
         v16 = CGRectGetHeight(v19) + -80.0;
 
         if (v14 <= v16)
@@ -1376,8 +1376,8 @@ LABEL_7:
 
   else if ([(SBCoverSheetSlidingViewController *)self _isPresentingAnyInterstitialForGestureRecognizer:v17])
   {
-    v10 = [(SBCoverSheetSlidingViewController *)self delegate];
-    [v10 coverSheetSlidingViewControllerDidEndDismissGestureOverInterstitial:self];
+    delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+    [delegate coverSheetSlidingViewControllerDidEndDismissGestureOverInterstitial:self];
   }
 
   else
@@ -1386,20 +1386,20 @@ LABEL_7:
   }
 }
 
-- (void)_finishTransitionToPresented:(BOOL)a3 forcingTransition:(BOOL)a4 ignoringPreflightRequirements:(BOOL)a5 animated:(BOOL)a6 withCompletion:(id)a7
+- (void)_finishTransitionToPresented:(BOOL)presented forcingTransition:(BOOL)transition ignoringPreflightRequirements:(BOOL)requirements animated:(BOOL)animated withCompletion:(id)completion
 {
-  v7 = a6;
-  v9 = a4;
-  v10 = a3;
+  animatedCopy = animated;
+  transitionCopy = transition;
+  presentedCopy = presented;
   v60 = *MEMORY[0x277D85DE8];
-  v36 = a7;
-  if (self->_dismissalSlidingMode != 1 && !v10)
+  completionCopy = completion;
+  if (self->_dismissalSlidingMode != 1 && !presentedCopy)
   {
     [SBCoverSheetSlidingViewController _finishTransitionToPresented:forcingTransition:ignoringPreflightRequirements:animated:withCompletion:];
   }
 
-  v12 = [(SBCoverSheetSlidingViewController *)self delegate];
-  if (!v10 && (objc_opt_respondsToSelector() & 1) != 0 && ([v12 coverSheetSlidingViewControllerShouldAllowDismissal:self] & 1) == 0)
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+  if (!presentedCopy && (objc_opt_respondsToSelector() & 1) != 0 && ([delegate coverSheetSlidingViewControllerShouldAllowDismissal:self] & 1) == 0)
   {
     v19 = v37;
     [(SBCoverSheetSlidingViewController *)self _presentCoverSheetAnimated:1 forUserGesture:0 withCompletion:v37];
@@ -1411,14 +1411,14 @@ LABEL_7:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = @"Not ";
-    if (v7)
+    if (animatedCopy)
     {
       v15 = &stru_283094718;
     }
 
     *buf = 138412802;
     *&buf[4] = v15;
-    if (v10)
+    if (presentedCopy)
     {
       v16 = @"presented";
     }
@@ -1439,18 +1439,18 @@ LABEL_7:
   {
     if (objc_opt_respondsToSelector())
     {
-      [v12 coverSheetSlidingViewController:self committingToEndPresented:v10];
-      [(SBCoverSheetSlidingViewController *)self _commitTransitionToAppeared:v10 animated:v7];
+      [delegate coverSheetSlidingViewController:self committingToEndPresented:presentedCopy];
+      [(SBCoverSheetSlidingViewController *)self _commitTransitionToAppeared:presentedCopy animated:animatedCopy];
     }
 
     goto LABEL_25;
   }
 
-  if (!v9)
+  if (!transitionCopy)
   {
-    if (!a5)
+    if (!requirements)
     {
-      if (v10 || ([v12 coverSheetSlidingViewControllerPerformExternalUnlockIfNeeded:self] & 1) == 0 && (objc_msgSend(v12, "coverSheetSlidingViewControllerPerformInterstitialTransitionIfNeeded:", self) & 1) == 0)
+      if (presentedCopy || ([delegate coverSheetSlidingViewControllerPerformExternalUnlockIfNeeded:self] & 1) == 0 && (objc_msgSend(delegate, "coverSheetSlidingViewControllerPerformInterstitialTransitionIfNeeded:", self) & 1) == 0)
       {
         goto LABEL_17;
       }
@@ -1459,7 +1459,7 @@ LABEL_7:
     }
 
     [(SBCoverSheetSlidingViewController *)self _viewVelocity];
-    [(SBCoverSheetSlidingViewController *)self _transitionToPresentationState:4 forUserGesture:0 withVelocity:v7 animated:?];
+    [(SBCoverSheetSlidingViewController *)self _transitionToPresentationState:4 forUserGesture:0 withVelocity:animatedCopy animated:?];
     v18 = 0;
     goto LABEL_26;
   }
@@ -1468,11 +1468,11 @@ LABEL_7:
 LABEL_17:
   if (objc_opt_respondsToSelector())
   {
-    [v12 coverSheetSlidingViewController:self committingToEndPresented:v10];
-    [(SBCoverSheetSlidingViewController *)self _commitTransitionToAppeared:v10 animated:v7];
+    [delegate coverSheetSlidingViewController:self committingToEndPresented:presentedCopy];
+    [(SBCoverSheetSlidingViewController *)self _commitTransitionToAppeared:presentedCopy animated:animatedCopy];
   }
 
-  if (v10)
+  if (presentedCopy)
   {
     v17 = 6;
   }
@@ -1483,7 +1483,7 @@ LABEL_17:
   }
 
   [(SBCoverSheetSlidingViewController *)self _viewVelocity];
-  [(SBCoverSheetSlidingViewController *)self _transitionToPresentationState:v17 forUserGesture:0 withVelocity:v7 animated:?];
+  [(SBCoverSheetSlidingViewController *)self _transitionToPresentationState:v17 forUserGesture:0 withVelocity:animatedCopy animated:?];
   [(SBCoverSheetSlidingViewController *)self _dismissInterstitialForTransitionIfNeeded];
 LABEL_25:
   v18 = 1;
@@ -1494,7 +1494,7 @@ LABEL_26:
   v50[1] = 3221225472;
   v50[2] = __138__SBCoverSheetSlidingViewController__finishTransitionToPresented_forcingTransition_ignoringPreflightRequirements_animated_withCompletion___block_invoke;
   v50[3] = &unk_2783B3068;
-  if (v10)
+  if (presentedCopy)
   {
     v21 = 1;
   }
@@ -1504,23 +1504,23 @@ LABEL_26:
     v21 = 7;
   }
 
-  v54 = v10;
+  v54 = presentedCopy;
   v50[4] = self;
   v53 = v13;
-  v55 = v7;
+  v55 = animatedCopy;
   v56 = v18;
   v51 = v37;
   v52 = v21;
   v22 = MEMORY[0x223D6F7F0](v50);
-  [(SBCoverSheetSlidingViewController *)self _finalLocationForTransitionToPresented:v10];
+  [(SBCoverSheetSlidingViewController *)self _finalLocationForTransitionToPresented:presentedCopy];
   v24 = v23;
   v26 = v25;
   if (latestTransitionedPresentationState != v21)
   {
-    [(SBCoverSheetSlidingViewController *)self _willTranslateToPresented:v10];
+    [(SBCoverSheetSlidingViewController *)self _willTranslateToPresented:presentedCopy];
   }
 
-  if (v7)
+  if (animatedCopy)
   {
     [(SBCoverSheetSlidingViewController *)self _viewVelocity];
     v28 = v27;
@@ -1539,24 +1539,24 @@ LABEL_26:
     v31 = CSFeatureEnabled();
     if (v18 && v31)
     {
-      [v12 coverSheetSlidingViewController:self prepareToAnimateIconFlyInForPresenting:v10 withVelocity:v28];
-      [(SBCoverSheetSlidingViewController *)self _performAppFlyInToPresented:v10 animated:1 velocity:v28];
+      [delegate coverSheetSlidingViewController:self prepareToAnimateIconFlyInForPresenting:presentedCopy withVelocity:v28];
+      [(SBCoverSheetSlidingViewController *)self _performAppFlyInToPresented:presentedCopy animated:1 velocity:v28];
     }
 
-    v32 = [(CSLockScreenSettings *)self->_lockScreenSettings coverSheetTransitionsSettings];
-    v33 = [(SBCoverSheetSlidingViewController *)self transitionSettings];
-    v34 = [v33 transitionStyle];
+    coverSheetTransitionsSettings = [(CSLockScreenSettings *)self->_lockScreenSettings coverSheetTransitionsSettings];
+    transitionSettings = [(SBCoverSheetSlidingViewController *)self transitionSettings];
+    transitionStyle = [transitionSettings transitionStyle];
 
-    if (v34 == 1)
+    if (transitionStyle == 1)
     {
-      [v32 inPlaceDamping];
-      [v32 inPlaceResponse];
+      [coverSheetTransitionsSettings inPlaceDamping];
+      [coverSheetTransitionsSettings inPlaceResponse];
     }
 
     else
     {
-      [v32 damping];
-      [v32 response];
+      [coverSheetTransitionsSettings damping];
+      [coverSheetTransitionsSettings response];
     }
 
     v19 = v37;
@@ -1573,14 +1573,14 @@ LABEL_26:
     v47 = v18;
     v46[7] = latestTransitionedPresentationState;
     v46[8] = v21;
-    v48 = v10;
+    v48 = presentedCopy;
     *&v46[9] = v28;
     [MEMORY[0x277D75D18] _animateUsingSpringWithTension:0 friction:v46 interactive:v22 animations:*buf completion:0.0];
   }
 
   else
   {
-    [(SBCoverSheetSlidingViewController *)self _performAppFlyInToPresented:v10 animated:0 velocity:-1.0];
+    [(SBCoverSheetSlidingViewController *)self _performAppFlyInToPresented:presentedCopy animated:0 velocity:-1.0];
     v35 = MEMORY[0x277D75D18];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
@@ -1592,7 +1592,7 @@ LABEL_26:
     v44 = v18;
     v42 = latestTransitionedPresentationState;
     v43 = v21;
-    v45 = v10;
+    v45 = presentedCopy;
     v39 = v22;
     [v35 _performWithoutRetargetingAnimations:v38];
   }
@@ -1819,12 +1819,12 @@ uint64_t __138__SBCoverSheetSlidingViewController__finishTransitionToPresented_f
   return v2();
 }
 
-- (void)_performTransitionToDismissed:(BOOL)a3 velocity:(double)a4
+- (void)_performTransitionToDismissed:(BOOL)dismissed velocity:(double)velocity
 {
-  v5 = a3;
+  dismissedCopy = dismissed;
   if (CSFeatureEnabled())
   {
-    if (v5)
+    if (dismissedCopy)
     {
       v7 = 1.0;
     }
@@ -1834,20 +1834,20 @@ uint64_t __138__SBCoverSheetSlidingViewController__finishTransitionToPresented_f
       v7 = 0.0;
     }
 
-    [(UIViewFloatAnimatableProperty *)self->_transitionProperty setVelocity:a4];
+    [(UIViewFloatAnimatableProperty *)self->_transitionProperty setVelocity:velocity];
     transitionProperty = self->_transitionProperty;
 
     [(UIViewFloatAnimatableProperty *)transitionProperty setValue:v7];
   }
 }
 
-- (void)_performAppFlyInToPresented:(BOOL)a3 animated:(BOOL)a4 velocity:(double)a5
+- (void)_performAppFlyInToPresented:(BOOL)presented animated:(BOOL)animated velocity:(double)velocity
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  presentedCopy = presented;
   if (CSFeatureEnabled())
   {
-    v8 = [(SBCoverSheetSlidingViewController *)self delegate];
+    delegate = [(SBCoverSheetSlidingViewController *)self delegate];
     v11[0] = 0;
     v11[1] = v11;
     v11[2] = 0x3032000000;
@@ -1866,7 +1866,7 @@ uint64_t __138__SBCoverSheetSlidingViewController__finishTransitionToPresented_f
     v9[2] = __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animated_velocity___block_invoke_116;
     v9[3] = &unk_2783A8CE0;
     v9[4] = self;
-    [v8 coverSheetSlidingViewController:self performIconFlyInForPresenting:v6 animated:v5 beginBlock:v10 endBlock:v9];
+    [delegate coverSheetSlidingViewController:self performIconFlyInForPresenting:presentedCopy animated:animatedCopy beginBlock:v10 endBlock:v9];
     _Block_object_dispose(v11, 8);
   }
 }
@@ -1907,14 +1907,14 @@ void __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animate
   }
 }
 
-- (CGPoint)_finalLocationForTransitionToPresented:(BOOL)a3
+- (CGPoint)_finalLocationForTransitionToPresented:(BOOL)presented
 {
-  v3 = a3;
-  v4 = [(SBCoverSheetSlidingViewController *)self view];
-  v5 = v4;
-  if (v3)
+  presentedCopy = presented;
+  view = [(SBCoverSheetSlidingViewController *)self view];
+  v5 = view;
+  if (presentedCopy)
   {
-    [v4 bounds];
+    [view bounds];
     Height = CGRectGetHeight(v10);
   }
 
@@ -1930,53 +1930,53 @@ void __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animate
   return result;
 }
 
-- (void)_cancelTransitionForGesture:(id)a3
+- (void)_cancelTransitionForGesture:(id)gesture
 {
-  if (self->_indirectPresentGestureRecognizer == a3 || self->_indirectDismissGestureRecognizer == a3)
+  if (self->_indirectPresentGestureRecognizer == gesture || self->_indirectDismissGestureRecognizer == gesture)
   {
     self->_initialTouchOffsetFromScreenEdge = 0.0;
   }
 
   frameRateAssertion = self->_frameRateAssertion;
-  v5 = a3;
+  gestureCopy = gesture;
   [(SBFFrameRateAssertion *)frameRateAssertion invalidate];
   v6 = self->_frameRateAssertion;
   self->_frameRateAssertion = 0;
 
-  v7 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  if ([v7 syntheticAppearState] == 3)
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  if ([systemGesturesDelegate syntheticAppearState] == 3)
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-    v8 = [v9 syntheticAppearState] == 2;
+    systemGesturesDelegate2 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+    v8 = [systemGesturesDelegate2 syntheticAppearState] == 2;
   }
 
-  v10 = [(SBCoverSheetSlidingViewController *)self _shouldRubberBandForGestureRecognizer:v5];
+  v10 = [(SBCoverSheetSlidingViewController *)self _shouldRubberBandForGestureRecognizer:gestureCopy];
 
   [(SBCoverSheetSlidingViewController *)self _finishTransitionToPresented:v10 || v8 animated:1 withCompletion:0];
 }
 
-- (CGPoint)_locationForGesture:(id)a3
+- (CGPoint)_locationForGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBCoverSheetSlidingViewController *)self view];
-  [(SBIndirectPanGestureRecognizer *)v4 locationInView:v5];
+  gestureCopy = gesture;
+  view = [(SBCoverSheetSlidingViewController *)self view];
+  [(SBIndirectPanGestureRecognizer *)gestureCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  if (self->_indirectPresentGestureRecognizer == v4)
+  if (self->_indirectPresentGestureRecognizer == gestureCopy)
   {
     v9 = fmax(v9 - self->_initialTouchOffsetFromScreenEdge, 0.0);
   }
 
-  else if (self->_indirectDismissGestureRecognizer == v4)
+  else if (self->_indirectDismissGestureRecognizer == gestureCopy)
   {
-    v10 = [(SBCoverSheetSlidingViewController *)self view];
-    [v10 bounds];
+    view2 = [(SBCoverSheetSlidingViewController *)self view];
+    [view2 bounds];
     Height = CGRectGetHeight(v15);
 
     if (Height >= v9 + self->_initialTouchOffsetFromScreenEdge)
@@ -1997,11 +1997,11 @@ void __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animate
   return result;
 }
 
-- (CGPoint)_velocityForGesture:(id)a3
+- (CGPoint)_velocityForGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBCoverSheetSlidingViewController *)self view];
-  [v4 velocityInView:v5];
+  gestureCopy = gesture;
+  view = [(SBCoverSheetSlidingViewController *)self view];
+  [gestureCopy velocityInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -2012,28 +2012,28 @@ void __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animate
   return result;
 }
 
-- (CGPoint)_averageVelocityForGesture:(id)a3
+- (CGPoint)_averageVelocityForGesture:(id)gesture
 {
-  [a3 averageTouchVelocityOverTimeDuration:0.0416666667];
+  [gesture averageTouchVelocityOverTimeDuration:0.0416666667];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)_adjustedTouchLocationForCurrentDismissalMode:(CGPoint)a3
+- (CGPoint)_adjustedTouchLocationForCurrentDismissalMode:(CGPoint)mode
 {
-  y = a3.y;
-  x = a3.x;
+  y = mode.y;
+  x = mode.x;
   if (self->_dismissalSlidingMode == 2)
   {
     [(CSLockScreenSettings *)self->_lockScreenSettings unlockRubberBandThreshold];
     v7 = v6;
-    v8 = [(SBCoverSheetSlidingViewController *)self view];
-    [v8 bounds];
+    view = [(SBCoverSheetSlidingViewController *)self view];
+    [view bounds];
     v10 = v9 - y;
 
-    v11 = [(SBCoverSheetSlidingViewController *)self view];
-    [v11 bounds];
+    view2 = [(SBCoverSheetSlidingViewController *)self view];
+    [view2 bounds];
     y = v12 - v7 * (1.0 - 1.0 / (v10 / v7 * 0.55 + 1.0));
   }
 
@@ -2044,13 +2044,13 @@ void __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animate
   return result;
 }
 
-- (BOOL)_shouldRubberBandForGestureRecognizer:(id)a3
+- (BOOL)_shouldRubberBandForGestureRecognizer:(id)recognizer
 {
   dismissalSlidingMode = self->_dismissalSlidingMode;
-  v5 = a3;
-  v6 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v7 = [v6 dismissGestures];
-  v8 = [v7 containsObject:v5];
+  recognizerCopy = recognizer;
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  dismissGestures = [systemGesturesDelegate dismissGestures];
+  v8 = [dismissGestures containsObject:recognizerCopy];
 
   if (dismissalSlidingMode == 2)
   {
@@ -2063,56 +2063,56 @@ void __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animate
   }
 }
 
-- (BOOL)_shouldEndPresentedForEndingGestureRecognizer:(id)a3
+- (BOOL)_shouldEndPresentedForEndingGestureRecognizer:(id)recognizer
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(__CFString *)v4 state]!= 3)
+  recognizerCopy = recognizer;
+  if ([(__CFString *)recognizerCopy state]!= 3)
   {
     [SBCoverSheetSlidingViewController _shouldEndPresentedForEndingGestureRecognizer:];
   }
 
-  v5 = [(SBCoverSheetSlidingViewController *)self view];
+  view = [(SBCoverSheetSlidingViewController *)self view];
   v17 = 0;
   v18 = 0;
   v15 = 0;
   v16 = 0;
-  v6 = [(SBCoverSheetSlidingViewController *)self _mathForGestureRecognizerPointsDown:v4 position:&v18 velocity:&v17 instantVelocity:&v16 averageVelocity:&v15];
-  if ([(SBCoverSheetSlidingViewController *)self _shouldRubberBandForGestureRecognizer:v4])
+  v6 = [(SBCoverSheetSlidingViewController *)self _mathForGestureRecognizerPointsDown:recognizerCopy position:&v18 velocity:&v17 instantVelocity:&v16 averageVelocity:&v15];
+  if ([(SBCoverSheetSlidingViewController *)self _shouldRubberBandForGestureRecognizer:recognizerCopy])
   {
     v7 = SBLogCoverSheet();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = recognizerCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Rubber banding to presented for gesture: %@", buf, 0xCu);
     }
 
     v6 = 1;
   }
 
-  if ([(SBCoverSheetSlidingViewController *)self _isPresentingInterstitialForGestureRecognizer:v4])
+  if ([(SBCoverSheetSlidingViewController *)self _isPresentingInterstitialForGestureRecognizer:recognizerCopy])
   {
     v8 = SBLogCoverSheet();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = recognizerCopy;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Finishing presented because presenting interstitial for gesture: %@", buf, 0xCu);
     }
 
     v6 = 1;
   }
 
-  v9 = [(__CFString *)v4 state];
-  [v5 bounds];
-  [SBCoverSheetSlidingViewController _studyLogForGestureRecognizerState:"_studyLogForGestureRecognizerState:bounds:position:velocity:" bounds:v9 position:? velocity:?];
+  state = [(__CFString *)recognizerCopy state];
+  [view bounds];
+  [SBCoverSheetSlidingViewController _studyLogForGestureRecognizerState:"_studyLogForGestureRecognizerState:bounds:position:velocity:" bounds:state position:? velocity:?];
   v10 = SBLogCoverSheet();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
+    _grabberRecognizer = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
     v12 = @"Dismiss";
-    if (v11 == v4)
+    if (_grabberRecognizer == recognizerCopy)
     {
       v12 = @"Present";
     }
@@ -2139,77 +2139,77 @@ void __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animate
   return v6;
 }
 
-- (BOOL)_mathForGestureRecognizerPointsDown:(id)a3 position:(double *)a4 velocity:(double *)a5 instantVelocity:(double *)a6 averageVelocity:(double *)a7
+- (BOOL)_mathForGestureRecognizerPointsDown:(id)down position:(double *)position velocity:(double *)velocity instantVelocity:(double *)instantVelocity averageVelocity:(double *)averageVelocity
 {
-  v12 = a3;
-  v13 = [(SBCoverSheetSlidingViewController *)self view];
-  [(SBCoverSheetSlidingViewController *)self _locationForGesture:v12];
+  downCopy = down;
+  view = [(SBCoverSheetSlidingViewController *)self view];
+  [(SBCoverSheetSlidingViewController *)self _locationForGesture:downCopy];
   v15 = v14;
-  [(SBCoverSheetSlidingViewController *)self _velocityForGesture:v12];
+  [(SBCoverSheetSlidingViewController *)self _velocityForGesture:downCopy];
   v17 = v16;
   v18 = 0.0;
   v19 = v16;
   if (objc_opt_respondsToSelector())
   {
-    [(SBCoverSheetSlidingViewController *)self _averageVelocityForGesture:v12];
+    [(SBCoverSheetSlidingViewController *)self _averageVelocityForGesture:downCopy];
     v19 = v20;
     v18 = v20;
   }
 
-  [v13 bounds];
+  [view bounds];
   v21 = v15 + v19 * 0.15 > CGRectGetHeight(v23) * 0.6 && v19 >= *&SBCoverSheetMinimumYVelocityForDismissal;
-  [v13 bounds];
+  [view bounds];
   if (v15 > CGRectGetHeight(v24) - *&SBCoverSheetMinimumYDistanceForDismissal)
   {
     v21 = 1;
   }
 
-  if (a4)
+  if (position)
   {
-    *a4 = v15;
+    *position = v15;
   }
 
-  if (a6)
+  if (instantVelocity)
   {
-    *a6 = v17;
+    *instantVelocity = v17;
   }
 
-  if (a7)
+  if (averageVelocity)
   {
-    *a7 = v18;
+    *averageVelocity = v18;
   }
 
-  if (a5)
+  if (velocity)
   {
-    *a5 = v19;
+    *velocity = v19;
   }
 
   return v21;
 }
 
-- (BOOL)_isPresentingInterstitialForGestureRecognizer:(id)a3
+- (BOOL)_isPresentingInterstitialForGestureRecognizer:(id)recognizer
 {
   v4 = self->_dismissalSlidingMode == 3;
-  v5 = a3;
-  v6 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v7 = [v6 dismissGestures];
-  v8 = [v7 containsObject:v5];
+  recognizerCopy = recognizer;
+  systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  dismissGestures = [systemGesturesDelegate dismissGestures];
+  v8 = [dismissGestures containsObject:recognizerCopy];
 
   return v4 & v8;
 }
 
-- (BOOL)_isPresentingAnyInterstitialForGestureRecognizer:(id)a3
+- (BOOL)_isPresentingAnyInterstitialForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(SBCoverSheetSlidingViewController *)self _isPresentingInterstitialWhileOffScreen]|| [(SBCoverSheetSlidingViewController *)self _isPresentingInterstitialForGestureRecognizer:v4];
+  recognizerCopy = recognizer;
+  v5 = [(SBCoverSheetSlidingViewController *)self _isPresentingInterstitialWhileOffScreen]|| [(SBCoverSheetSlidingViewController *)self _isPresentingInterstitialForGestureRecognizer:recognizerCopy];
 
   return v5;
 }
 
 - (BOOL)_isPresentingInterstitialWhileOffScreen
 {
-  v3 = [(SBCoverSheetSlidingViewController *)self delegate];
-  v4 = [v3 coverSheetSlidingViewControllerIsDisplayingInterstitial:self];
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+  v4 = [delegate coverSheetSlidingViewControllerIsDisplayingInterstitial:self];
 
   if (!v4 || (self->_currentPresentationState - 3) > 1)
   {
@@ -2219,24 +2219,24 @@ void __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animate
   return CSFeatureEnabled();
 }
 
-- (void)_logPresentGestureState:(int64_t)a3
+- (void)_logPresentGestureState:(int64_t)state
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_presentGestureState != a3)
+  if (self->_presentGestureState != state)
   {
-    self->_presentGestureState = a3;
-    v3 = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
+    self->_presentGestureState = state;
+    _grabberRecognizer = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
     v4 = SBLogCoverSheet();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v3 sb_stringForState];
-      v6 = [v3 view];
-      [v3 locationInView:v6];
+      sb_stringForState = [_grabberRecognizer sb_stringForState];
+      view = [_grabberRecognizer view];
+      [_grabberRecognizer locationInView:view];
       v8 = v7;
-      v9 = [v3 view];
-      [v3 velocityInView:v9];
+      view2 = [_grabberRecognizer view];
+      [_grabberRecognizer velocityInView:view2];
       v11 = 138543874;
-      v12 = v5;
+      v12 = sb_stringForState;
       v13 = 2048;
       v14 = v8;
       v15 = 2048;
@@ -2246,29 +2246,29 @@ void __83__SBCoverSheetSlidingViewController__performAppFlyInToPresented_animate
   }
 }
 
-- (void)_logDismissGestureState:(int64_t)a3 forAddendumGesture:(BOOL)a4
+- (void)_logDismissGestureState:(int64_t)state forAddendumGesture:(BOOL)gesture
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (self->_dismissGestureState != a3)
+  if (self->_dismissGestureState != state)
   {
-    v4 = a4;
-    self->_dismissGestureState = a3;
+    gestureCopy = gesture;
+    self->_dismissGestureState = state;
     v6 = SBLogCoverSheet();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (gestureCopy)
     {
       if (v7)
       {
-        v8 = [(UIGestureRecognizer *)self->_dismissAddendumGestureRecognizer sb_stringForState];
+        sb_stringForState = [(UIGestureRecognizer *)self->_dismissAddendumGestureRecognizer sb_stringForState];
         dismissAddendumGestureRecognizer = self->_dismissAddendumGestureRecognizer;
-        v10 = [(SBScreenEdgePanGestureRecognizer *)dismissAddendumGestureRecognizer view];
-        [(SBScreenEdgePanGestureRecognizer *)dismissAddendumGestureRecognizer locationInView:v10];
+        view = [(SBScreenEdgePanGestureRecognizer *)dismissAddendumGestureRecognizer view];
+        [(SBScreenEdgePanGestureRecognizer *)dismissAddendumGestureRecognizer locationInView:view];
         v12 = v11;
         v13 = self->_dismissAddendumGestureRecognizer;
-        v14 = [(SBScreenEdgePanGestureRecognizer *)v13 view];
-        [(SBScreenEdgePanGestureRecognizer *)v13 velocityInView:v14];
+        view2 = [(SBScreenEdgePanGestureRecognizer *)v13 view];
+        [(SBScreenEdgePanGestureRecognizer *)v13 velocityInView:view2];
         v22 = 138543874;
-        v23 = v8;
+        v23 = sb_stringForState;
         v24 = 2048;
         v25 = v12;
         v26 = 2048;
@@ -2281,16 +2281,16 @@ LABEL_7:
 
     else if (v7)
     {
-      v8 = [(UIGestureRecognizer *)self->_dismissGestureRecognizer sb_stringForState];
+      sb_stringForState = [(UIGestureRecognizer *)self->_dismissGestureRecognizer sb_stringForState];
       dismissGestureRecognizer = self->_dismissGestureRecognizer;
-      v10 = [(SBScreenEdgePanGestureRecognizer *)dismissGestureRecognizer view];
-      [(SBScreenEdgePanGestureRecognizer *)dismissGestureRecognizer locationInView:v10];
+      view = [(SBScreenEdgePanGestureRecognizer *)dismissGestureRecognizer view];
+      [(SBScreenEdgePanGestureRecognizer *)dismissGestureRecognizer locationInView:view];
       v19 = v18;
       v20 = self->_dismissGestureRecognizer;
-      v14 = [(SBScreenEdgePanGestureRecognizer *)v20 view];
-      [(SBScreenEdgePanGestureRecognizer *)v20 velocityInView:v14];
+      view2 = [(SBScreenEdgePanGestureRecognizer *)v20 view];
+      [(SBScreenEdgePanGestureRecognizer *)v20 velocityInView:view2];
       v22 = 138543874;
-      v23 = v8;
+      v23 = sb_stringForState;
       v24 = 2048;
       v25 = v19;
       v26 = 2048;
@@ -2301,31 +2301,31 @@ LABEL_7:
   }
 }
 
-- (void)_beginTransitionFromAppeared:(BOOL)a3
+- (void)_beginTransitionFromAppeared:(BOOL)appeared
 {
-  v3 = a3;
+  appearedCopy = appeared;
   v9 = *MEMORY[0x277D85DE8];
   v5 = SBLogCoverSheet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v3;
+    v8[1] = appearedCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[SBCoverSheetSlidingViewController _beginTransitionFromAppeared:]", v8, 8u);
   }
 
   [(SBCoverSheetSlidingViewController *)self _setCornerRounded:self->_roundsCorners];
-  v6 = [(SBCoverSheetSlidingViewController *)self view];
-  [v6 setNeedsLayout];
-  [v6 layoutIfNeeded];
+  view = [(SBCoverSheetSlidingViewController *)self view];
+  [view setNeedsLayout];
+  [view layoutIfNeeded];
   v7 = dispatch_group_create();
   [(SBCoverSheetSlidingViewController *)self setCompletionGroup:v7];
 }
 
-- (void)_updateForLocation:(CGPoint)a3 interactive:(BOOL)a4
+- (void)_updateForLocation:(CGPoint)location interactive:(BOOL)interactive
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  interactiveCopy = interactive;
+  y = location.y;
+  x = location.x;
   v22 = *MEMORY[0x277D85DE8];
   v8 = SBLogCoverSheet();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -2335,17 +2335,17 @@ LABEL_7:
     *&buf[12] = 2048;
     *&buf[14] = y;
     *&buf[22] = 1024;
-    LODWORD(v19) = v4;
+    LODWORD(v19) = interactiveCopy;
     _os_log_debug_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEBUG, "updateForLocation: %.2f, %.2f, %{BOOL}d", buf, 0x1Cu);
   }
 
-  v9 = [(SBCoverSheetSlidingViewController *)self view];
-  [v9 bounds];
+  view = [(SBCoverSheetSlidingViewController *)self view];
+  [view bounds];
   v11 = v10;
 
-  v12 = [(SBCoverSheetSlidingViewController *)self progressProperty];
+  progressProperty = [(SBCoverSheetSlidingViewController *)self progressProperty];
   v13 = 1.0 - y / v11;
-  [v12 setValue:v13];
+  [progressProperty setValue:v13];
 
   if ((CSFeatureEnabled() & 1) == 0)
   {
@@ -2356,7 +2356,7 @@ LABEL_7:
     v19 = __Block_byref_object_copy__38;
     v20 = __Block_byref_object_dispose__38;
     v21 = 0;
-    v15 = [(SBCoverSheetSlidingViewController *)self delegate];
+    delegate = [(SBCoverSheetSlidingViewController *)self delegate];
     v16[5] = buf;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -2369,7 +2369,7 @@ LABEL_7:
     v16[2] = __68__SBCoverSheetSlidingViewController__updateForLocation_interactive___block_invoke_131;
     v16[3] = &unk_2783A8CE0;
     v16[4] = self;
-    [v15 coverSheetSlidingViewController:self animateForGestureActive:v14 withProgress:v17 beginBlock:v16 endBlock:v13];
+    [delegate coverSheetSlidingViewController:self animateForGestureActive:v14 withProgress:v17 beginBlock:v16 endBlock:v13];
 
     _Block_object_dispose(buf, 8);
   }
@@ -2411,33 +2411,33 @@ void __68__SBCoverSheetSlidingViewController__updateForLocation_interactive___bl
   }
 }
 
-- (void)_endTransitionToAppeared:(BOOL)a3
+- (void)_endTransitionToAppeared:(BOOL)appeared
 {
-  v3 = a3;
+  appearedCopy = appeared;
   v6 = *MEMORY[0x277D85DE8];
   [(SBCoverSheetSlidingViewController *)self _setCornerRounded:0];
   v4 = SBLogCoverSheet();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = v3;
+    v5[1] = appearedCopy;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "[SBCoverSheetSlidingViewController _endTransitionToAppeared:]", v5, 8u);
   }
 }
 
-- (CGRect)_updatePositionViewForProgress:(double)a3 velocity:(double)a4 forPresentationValue:(BOOL)a5
+- (CGRect)_updatePositionViewForProgress:(double)progress velocity:(double)velocity forPresentationValue:(BOOL)value
 {
-  v5 = a5;
-  v9 = [(SBCoverSheetSlidingViewController *)self view];
-  [v9 bounds];
+  valueCopy = value;
+  view = [(SBCoverSheetSlidingViewController *)self view];
+  [view bounds];
   v11 = v10;
 
-  v12 = v11 - a3 * v11;
-  v13 = -(a4 * v11);
-  v14 = [(SBCoverSheetSlidingViewController *)self transitionSettings];
-  v15 = [v14 transitionStyle];
+  v12 = v11 - progress * v11;
+  v13 = -(velocity * v11);
+  transitionSettings = [(SBCoverSheetSlidingViewController *)self transitionSettings];
+  transitionStyle = [transitionSettings transitionStyle];
 
-  if (v15 == 1)
+  if (transitionStyle == 1)
   {
     v16 = v11;
   }
@@ -2447,7 +2447,7 @@ void __68__SBCoverSheetSlidingViewController__updateForLocation_interactive___bl
     v16 = v12;
   }
 
-  if (v15 == 1)
+  if (transitionStyle == 1)
   {
     v17 = *MEMORY[0x277CBF348];
   }
@@ -2457,7 +2457,7 @@ void __68__SBCoverSheetSlidingViewController__updateForLocation_interactive___bl
     v17 = 0.0;
   }
 
-  if (v15 == 1)
+  if (transitionStyle == 1)
   {
     v18 = *(MEMORY[0x277CBF348] + 8);
   }
@@ -2468,12 +2468,12 @@ void __68__SBCoverSheetSlidingViewController__updateForLocation_interactive___bl
   }
 
   v19 = [(SBCoverSheetSlidingViewController *)self positionView:*MEMORY[0x277CBF348]];
-  [v19 positionContentForTouchAtLocation:self->_dismissalTransformMode withVelocity:v5 transformMode:0.0 forPresentationValue:{v16, v17, v18}];
+  [v19 positionContentForTouchAtLocation:self->_dismissalTransformMode withVelocity:valueCopy transformMode:0.0 forPresentationValue:{v16, v17, v18}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  [(SBCoverSheetSlidingViewController *)self _positionSubviewsForContentFrame:v5 forPresentationValue:?];
+  [(SBCoverSheetSlidingViewController *)self _positionSubviewsForContentFrame:valueCopy forPresentationValue:?];
 
   v28 = v21;
   v29 = v23;
@@ -2486,31 +2486,31 @@ void __68__SBCoverSheetSlidingViewController__updateForLocation_interactive___bl
   return result;
 }
 
-- (void)_setCornerRounded:(BOOL)a3
+- (void)_setCornerRounded:(BOOL)rounded
 {
-  v3 = a3;
-  v4 = [(SBCoverSheetSlidingViewController *)self positionView];
-  v9 = [v4 contentView];
+  roundedCopy = rounded;
+  positionView = [(SBCoverSheetSlidingViewController *)self positionView];
+  contentView = [positionView contentView];
 
   v5 = 0.0;
-  if (v3)
+  if (roundedCopy)
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    v7 = [v6 traitCollection];
-    [v7 displayCornerRadius];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    [traitCollection displayCornerRadius];
     v5 = v8;
   }
 
-  [v9 _setContinuousCornerRadius:v5];
-  [v9 setClipsToBounds:v3];
+  [contentView _setContinuousCornerRadius:v5];
+  [contentView setClipsToBounds:roundedCopy];
 }
 
-- (void)_animationTickForPresentationValue:(BOOL)a3
+- (void)_animationTickForPresentationValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v43 = *MEMORY[0x277D85DE8];
   progressProperty = self->_progressProperty;
-  if (a3)
+  if (value)
   {
     [(UIViewFloatAnimatableProperty *)progressProperty presentationValue];
     v7 = v6;
@@ -2550,7 +2550,7 @@ void __68__SBCoverSheetSlidingViewController__updateForLocation_interactive___bl
   }
 
   v15 = trailingIndicatorAnimationViewVelocityY;
-  if (v3)
+  if (valueCopy)
   {
     [(UIViewFloatAnimatableProperty *)self->_progressProperty velocity];
     v17 = v16;
@@ -2580,18 +2580,18 @@ void __68__SBCoverSheetSlidingViewController__updateForLocation_interactive___bl
     v39 = 2048;
     v40 = trailingIndicatorAnimationViewVelocityY;
     v41 = 1024;
-    v42 = v3;
+    v42 = valueCopy;
     _os_log_debug_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEBUG, "animation ticked with progress: %.2f catchup: %.2f adjustedProgress: %.2f velocity: %.2f forPresentationValue: %{BOOL}d", location, 0x30u);
   }
 
-  [(SBCoverSheetSlidingViewController *)self _animationTickedWithProgress:v3 velocity:v14 forPresentationValue:v15];
+  [(SBCoverSheetSlidingViewController *)self _animationTickedWithProgress:valueCopy velocity:v14 forPresentationValue:v15];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(SBCoverSheetSlidingViewController *)self _isAnyGestureActivelyRecognized:v3];
-  v31 = [(SBCoverSheetSlidingViewController *)self delegate];
-  [v31 coverSheetSlidingViewController:self animationTickedWithProgress:-[SBCoverSheetSlidingViewController _appearState](self velocity:"_appearState") == 1 isPresenting:v30 coverSheetFrame:v3 gestureActive:v14 forPresentationValue:{trailingIndicatorAnimationViewVelocityY, v23, v25, v27, v29}];
+  v30 = [(SBCoverSheetSlidingViewController *)self _isAnyGestureActivelyRecognized:valueCopy];
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+  [delegate coverSheetSlidingViewController:self animationTickedWithProgress:-[SBCoverSheetSlidingViewController _appearState](self velocity:"_appearState") == 1 isPresenting:v30 coverSheetFrame:valueCopy gestureActive:v14 forPresentationValue:{trailingIndicatorAnimationViewVelocityY, v23, v25, v27, v29}];
 }
 
 void __72__SBCoverSheetSlidingViewController__animationTickForPresentationValue___block_invoke(uint64_t a1)
@@ -2610,12 +2610,12 @@ void __72__SBCoverSheetSlidingViewController__animationTickForPresentationValue_
   }
 }
 
-- (void)_transitionTickForPresentationValue:(BOOL)a3
+- (void)_transitionTickForPresentationValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v19 = *MEMORY[0x277D85DE8];
   transitionProperty = self->_transitionProperty;
-  if (a3)
+  if (value)
   {
     [(UIViewFloatAnimatableProperty *)transitionProperty presentationValue];
     v7 = v6;
@@ -2648,11 +2648,11 @@ void __72__SBCoverSheetSlidingViewController__animationTickForPresentationValue_
     v15 = 2048;
     v16 = trailingIndicatorTransitionViewVelocityY;
     v17 = 1024;
-    v18 = v3;
+    v18 = valueCopy;
     _os_log_debug_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEBUG, "transition ticked with progress: %.2f velocity: %.2f forPresentationValue: %{BOOL}d", location, 0x1Cu);
   }
 
-  [(SBCoverSheetSlidingViewController *)self _updateTransitionProgress:v3 velocity:v7 forPresentationValue:trailingIndicatorTransitionViewVelocityY];
+  [(SBCoverSheetSlidingViewController *)self _updateTransitionProgress:valueCopy velocity:v7 forPresentationValue:trailingIndicatorTransitionViewVelocityY];
 }
 
 void __73__SBCoverSheetSlidingViewController__transitionTickForPresentationValue___block_invoke(uint64_t a1)
@@ -2671,19 +2671,19 @@ void __73__SBCoverSheetSlidingViewController__transitionTickForPresentationValue
   }
 }
 
-- (void)_updateTransitionProgress:(double)a3 velocity:(double)a4 forPresentationValue:(BOOL)a5
+- (void)_updateTransitionProgress:(double)progress velocity:(double)velocity forPresentationValue:(BOOL)value
 {
-  v5 = a5;
-  v9 = [(SBCoverSheetSlidingViewController *)self positionView];
-  v10 = [v9 contentView];
-  [v10 frame];
+  valueCopy = value;
+  positionView = [(SBCoverSheetSlidingViewController *)self positionView];
+  contentView = [positionView contentView];
+  [contentView frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [(SBCoverSheetSlidingViewController *)self delegate];
-  [v19 coverSheetSlidingViewController:self transitionTickedWithProgress:-[SBCoverSheetSlidingViewController _appearState](self velocity:"_appearState") == 1 isPresenting:0 coverSheetFrame:v5 gestureActive:a3 forPresentationValue:{a4, v12, v14, v16, v18}];
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+  [delegate coverSheetSlidingViewController:self transitionTickedWithProgress:-[SBCoverSheetSlidingViewController _appearState](self velocity:"_appearState") == 1 isPresenting:0 coverSheetFrame:valueCopy gestureActive:progress forPresentationValue:{velocity, v12, v14, v16, v18}];
 }
 
 - (void)_createProperties
@@ -2755,9 +2755,9 @@ void __73__SBCoverSheetSlidingViewController__transitionTickForPresentationValue
   objc_destroyWeak(&location);
 }
 
-- (void)_startCatchupAnimationWithDuration:(double)a3 completion:(id)a4
+- (void)_startCatchupAnimationWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = SBLogCoverSheet();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2782,9 +2782,9 @@ void __73__SBCoverSheetSlidingViewController__transitionTickForPresentationValue
   v11[1] = 3221225472;
   v11[2] = __83__SBCoverSheetSlidingViewController__startCatchupAnimationWithDuration_completion___block_invoke_3;
   v11[3] = &unk_2783AE778;
-  v12 = v6;
-  v10 = v6;
-  [v9 _animateUsingSpringWithDampingRatio:0 response:v13 tracking:v11 initialDampingRatio:1.0 initialResponse:a3 dampingRatioSmoothing:0.0 responseSmoothing:0.0 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v9 _animateUsingSpringWithDampingRatio:0 response:v13 tracking:v11 initialDampingRatio:1.0 initialResponse:duration dampingRatioSmoothing:0.0 responseSmoothing:0.0 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
 }
 
 uint64_t __83__SBCoverSheetSlidingViewController__startCatchupAnimationWithDuration_completion___block_invoke(uint64_t a1)
@@ -2810,23 +2810,23 @@ uint64_t __83__SBCoverSheetSlidingViewController__startCatchupAnimationWithDurat
   return result;
 }
 
-- (void)_transitionToViewControllerAppearState:(int)a3 ifNeeded:(BOOL)a4 forUserGesture:(BOOL)a5
+- (void)_transitionToViewControllerAppearState:(int)state ifNeeded:(BOOL)needed forUserGesture:(BOOL)gesture
 {
-  v5 = a5;
-  v6 = a4;
-  v30 = [(SBCoverSheetSlidingViewController *)self delegate];
-  if (a3 <= 1)
+  gestureCopy = gesture;
+  neededCopy = needed;
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
+  if (state <= 1)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         [(SBCoverSheetSlidingViewController *)self setCompletionBlock:0];
         dismissalSlidingMode = self->_dismissalSlidingMode;
-        if (v6)
+        if (neededCopy)
         {
-          v10 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-          v11 = [v10 syntheticAppearState] == 3;
+          systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+          v11 = [systemGesturesDelegate syntheticAppearState] == 3;
         }
 
         else
@@ -2834,26 +2834,26 @@ uint64_t __83__SBCoverSheetSlidingViewController__startCatchupAnimationWithDurat
           v11 = 1;
         }
 
-        v22 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        v23 = [v22 syntheticAppearState];
+        systemGesturesDelegate2 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        syntheticAppearState = [systemGesturesDelegate2 syntheticAppearState];
 
-        v24 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        v25 = [v24 syntheticAppearState];
+        systemGesturesDelegate3 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        syntheticAppearState2 = [systemGesturesDelegate3 syntheticAppearState];
 
-        v26 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        [v26 setSyntheticAppearState:1];
+        systemGesturesDelegate4 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        [systemGesturesDelegate4 setSyntheticAppearState:1];
 
         if (v11)
         {
           if (dismissalSlidingMode == 2)
           {
-            [v30 coverSheetSlidingViewControllerPrepareForRubberBandedPresentationTransition:self];
+            [delegate coverSheetSlidingViewControllerPrepareForRubberBandedPresentationTransition:self];
           }
 
           else
           {
-            [v30 coverSheetSlidingViewController:self prepareForPresentationTransitionForUserGesture:v5];
-            if (!v23 || v25 == 3)
+            [delegate coverSheetSlidingViewController:self prepareForPresentationTransitionForUserGesture:gestureCopy];
+            if (!syntheticAppearState || syntheticAppearState2 == 3)
             {
               [(SBCoverSheetSlidingViewController *)self _beginTransitionFromAppeared:0];
             }
@@ -2869,63 +2869,63 @@ uint64_t __83__SBCoverSheetSlidingViewController__startCatchupAnimationWithDurat
       [SBCoverSheetSlidingViewController _transitionToViewControllerAppearState:ifNeeded:forUserGesture:];
     }
 
-    [(SBCoverSheetSlidingViewController *)self _transitionToViewControllerAppearState:3 ifNeeded:1 forUserGesture:v5];
-    v14 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-    [v14 setSyntheticAppearState:0];
+    [(SBCoverSheetSlidingViewController *)self _transitionToViewControllerAppearState:3 ifNeeded:1 forUserGesture:gestureCopy];
+    systemGesturesDelegate5 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+    [systemGesturesDelegate5 setSyntheticAppearState:0];
 
-    [v30 coverSheetSlidingViewControllerCleanupDismissalTransition:self];
-    v15 = self;
+    [delegate coverSheetSlidingViewControllerCleanupDismissalTransition:self];
+    selfCopy2 = self;
     v16 = 0;
 LABEL_31:
-    [(SBCoverSheetSlidingViewController *)v15 _endTransitionToAppeared:v16];
+    [(SBCoverSheetSlidingViewController *)selfCopy2 _endTransitionToAppeared:v16];
     goto LABEL_32;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       goto LABEL_32;
     }
 
-    [(SBCoverSheetSlidingViewController *)self _transitionToViewControllerAppearState:1 ifNeeded:1 forUserGesture:v5];
-    v12 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-    [v12 setSyntheticAppearState:2];
+    [(SBCoverSheetSlidingViewController *)self _transitionToViewControllerAppearState:1 ifNeeded:1 forUserGesture:gestureCopy];
+    systemGesturesDelegate6 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+    [systemGesturesDelegate6 setSyntheticAppearState:2];
 
     v13 = self->_dismissalSlidingMode;
     switch(v13)
     {
       case 3:
-        [v30 coverSheetSlidingViewControllerCleanupInterstitialTransition:self];
+        [delegate coverSheetSlidingViewControllerCleanupInterstitialTransition:self];
         goto LABEL_32;
       case 2:
-        [v30 coverSheetSlidingViewControllerCleanupRubberBandedPresentationTransition:self];
+        [delegate coverSheetSlidingViewControllerCleanupRubberBandedPresentationTransition:self];
         break;
       case 1:
-        [v30 coverSheetSlidingViewControllerCleanupPresentationTransition:self];
+        [delegate coverSheetSlidingViewControllerCleanupPresentationTransition:self];
         break;
       default:
         goto LABEL_32;
     }
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 1;
     goto LABEL_31;
   }
 
   [(SBCoverSheetSlidingViewController *)self setCompletionBlock:0];
-  v17 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v18 = [v17 syntheticAppearState];
+  systemGesturesDelegate7 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  syntheticAppearState3 = [systemGesturesDelegate7 syntheticAppearState];
 
-  v19 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-  v20 = [v19 syntheticAppearState];
+  systemGesturesDelegate8 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+  syntheticAppearState4 = [systemGesturesDelegate8 syntheticAppearState];
 
-  if (v6)
+  if (neededCopy)
   {
-    v21 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-    [v21 setSyntheticAppearState:3];
+    systemGesturesDelegate9 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+    [systemGesturesDelegate9 setSyntheticAppearState:3];
 
-    if (v18 != 1 && v20 != 2)
+    if (syntheticAppearState3 != 1 && syntheticAppearState4 != 2)
     {
       goto LABEL_32;
     }
@@ -2933,125 +2933,125 @@ LABEL_31:
 
   else
   {
-    v27 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-    [v27 setSyntheticAppearState:3];
+    systemGesturesDelegate10 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+    [systemGesturesDelegate10 setSyntheticAppearState:3];
   }
 
-  [v30 coverSheetSlidingViewController:self prepareForDismissalTransitionForReversingTransition:v18 == 1 forUserGesture:v5];
+  [delegate coverSheetSlidingViewController:self prepareForDismissalTransitionForReversingTransition:syntheticAppearState3 == 1 forUserGesture:gestureCopy];
   v28 = self->_dismissalSlidingMode;
-  if (v20 == 2 && v28 != 3)
+  if (syntheticAppearState4 == 2 && v28 != 3)
   {
     [(SBCoverSheetSlidingViewController *)self _beginTransitionFromAppeared:1];
   }
 
   if ((v28 & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v29 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-    [v29 setSyntheticAppearState:2];
+    systemGesturesDelegate11 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+    [systemGesturesDelegate11 setSyntheticAppearState:2];
   }
 
 LABEL_32:
 }
 
-- (id)stringForPresentationState:(int64_t)a3
+- (id)stringForPresentationState:(int64_t)state
 {
-  if (a3 > 7)
+  if (state > 7)
   {
     return @"fully presented";
   }
 
   else
   {
-    return off_2783B30F8[a3];
+    return off_2783B30F8[state];
   }
 }
 
-- (void)_transitionToPresentationState:(int64_t)a3 forUserGesture:(BOOL)a4 withVelocity:(double)a5 animated:(BOOL)a6
+- (void)_transitionToPresentationState:(int64_t)state forUserGesture:(BOOL)gesture withVelocity:(double)velocity animated:(BOOL)animated
 {
-  v6 = a6;
-  v8 = a4;
+  animatedCopy = animated;
+  gestureCopy = gesture;
   v37 = *MEMORY[0x277D85DE8];
   CSFeatureEnabled();
   v11 = SBLogCoverSheet();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(SBCoverSheetSlidingViewController *)self stringForPresentationState:a3];
+    v12 = [(SBCoverSheetSlidingViewController *)self stringForPresentationState:state];
     v35 = 138412290;
     v36 = v12;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "SBCoverSheetSlidingViewController transitioning to presentation state %@", &v35, 0xCu);
   }
 
-  v13 = [(SBCoverSheetSlidingViewController *)self delegate];
+  delegate = [(SBCoverSheetSlidingViewController *)self delegate];
   currentPresentationState = self->_currentPresentationState;
-  [v13 coverSheetSlidingViewController:self willChangePresentationState:a3 forUserGesture:v8 withVelocity:v6 animated:a5];
-  if (a3 <= 3)
+  [delegate coverSheetSlidingViewController:self willChangePresentationState:state forUserGesture:gestureCopy withVelocity:animatedCopy animated:velocity];
+  if (state <= 3)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
-        v30 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        v31 = [v30 syntheticAppearState];
+        systemGesturesDelegate = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        syntheticAppearState = [systemGesturesDelegate syntheticAppearState];
 
-        v32 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        v33 = [v32 syntheticAppearState];
+        systemGesturesDelegate2 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        syntheticAppearState2 = [systemGesturesDelegate2 syntheticAppearState];
 
-        v34 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        [v34 setSyntheticAppearState:1];
+        systemGesturesDelegate3 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        [systemGesturesDelegate3 setSyntheticAppearState:1];
 
-        if (v33 != 3 && v31)
+        if (syntheticAppearState2 != 3 && syntheticAppearState)
         {
           goto LABEL_26;
         }
 
-        [v13 coverSheetSlidingViewController:self prepareForPresentationTransitionForUserGesture:v8];
-        if (v31)
+        [delegate coverSheetSlidingViewController:self prepareForPresentationTransitionForUserGesture:gestureCopy];
+        if (syntheticAppearState)
         {
           goto LABEL_26;
         }
 
-        v23 = self;
+        selfCopy2 = self;
         v24 = 0;
       }
 
       else
       {
-        if (a3 != 3)
+        if (state != 3)
         {
           goto LABEL_26;
         }
 
-        v18 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        v19 = [v18 syntheticAppearState];
+        systemGesturesDelegate4 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        syntheticAppearState3 = [systemGesturesDelegate4 syntheticAppearState];
 
-        v20 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        v21 = [v20 syntheticAppearState];
+        systemGesturesDelegate5 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        syntheticAppearState4 = [systemGesturesDelegate5 syntheticAppearState];
 
-        v22 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        [v22 setSyntheticAppearState:3];
+        systemGesturesDelegate6 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        [systemGesturesDelegate6 setSyntheticAppearState:3];
 
-        if (v19 != 1 && v21 != 2)
+        if (syntheticAppearState3 != 1 && syntheticAppearState4 != 2)
         {
           goto LABEL_26;
         }
 
-        [v13 coverSheetSlidingViewController:self prepareForDismissalTransitionForReversingTransition:v19 == 1 forUserGesture:v8];
-        if (v21 != 2)
+        [delegate coverSheetSlidingViewController:self prepareForDismissalTransitionForReversingTransition:syntheticAppearState3 == 1 forUserGesture:gestureCopy];
+        if (syntheticAppearState4 != 2)
         {
           goto LABEL_26;
         }
 
-        v23 = self;
+        selfCopy2 = self;
         v24 = 1;
       }
 
-      [(SBCoverSheetSlidingViewController *)v23 _beginTransitionFromAppeared:v24];
+      [(SBCoverSheetSlidingViewController *)selfCopy2 _beginTransitionFromAppeared:v24];
       goto LABEL_26;
     }
 
     self->_latestTransitionedPresentationState = 1;
-    v28 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-    [v28 setSyntheticAppearState:2];
+    systemGesturesDelegate7 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+    [systemGesturesDelegate7 setSyntheticAppearState:2];
 
     dismissalSlidingMode = self->_dismissalSlidingMode;
     switch(dismissalSlidingMode)
@@ -3073,8 +3073,8 @@ LABEL_32:
 
         goto LABEL_25;
       case 1:
-        [v13 coverSheetSlidingViewControllerCleanupPresentationTransition:self];
-        v26 = self;
+        [delegate coverSheetSlidingViewControllerCleanupPresentationTransition:self];
+        selfCopy4 = self;
         v27 = 1;
         goto LABEL_17;
     }
@@ -3082,49 +3082,49 @@ LABEL_32:
 
   else
   {
-    if (a3 <= 5)
+    if (state <= 5)
     {
-      if (a3 != 4)
+      if (state != 4)
       {
-        v15 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-        v16 = v15;
+        systemGesturesDelegate8 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+        v16 = systemGesturesDelegate8;
         v17 = 0;
 LABEL_24:
-        [v15 setSyntheticAppearState:v17];
+        [systemGesturesDelegate8 setSyntheticAppearState:v17];
 LABEL_25:
 
         goto LABEL_26;
       }
 
-      [v13 coverSheetSlidingViewControllerCleanupDismissalTransition:self];
+      [delegate coverSheetSlidingViewControllerCleanupDismissalTransition:self];
       goto LABEL_26;
     }
 
-    if (a3 == 6)
+    if (state == 6)
     {
-      v15 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-      v16 = v15;
+      systemGesturesDelegate8 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+      v16 = systemGesturesDelegate8;
       v17 = 2;
       goto LABEL_24;
     }
 
-    if (a3 == 7)
+    if (state == 7)
     {
       self->_latestTransitionedPresentationState = 7;
-      v25 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
-      [v25 setSyntheticAppearState:0];
+      systemGesturesDelegate9 = [(SBCoverSheetSlidingViewController *)self systemGesturesDelegate];
+      [systemGesturesDelegate9 setSyntheticAppearState:0];
 
-      [v13 coverSheetSlidingViewControllerCleanupDismissalTransition:self];
-      v26 = self;
+      [delegate coverSheetSlidingViewControllerCleanupDismissalTransition:self];
+      selfCopy4 = self;
       v27 = 0;
 LABEL_17:
-      [(SBCoverSheetSlidingViewController *)v26 _endTransitionToAppeared:v27];
+      [(SBCoverSheetSlidingViewController *)selfCopy4 _endTransitionToAppeared:v27];
     }
   }
 
 LABEL_26:
-  self->_currentPresentationState = a3;
-  [v13 coverSheetSlidingViewController:self didChangePresentationStateWithPreviousState:currentPresentationState];
+  self->_currentPresentationState = state;
+  [delegate coverSheetSlidingViewController:self didChangePresentationStateWithPreviousState:currentPresentationState];
 }
 
 - (void)_addSystemGestureRecognizers
@@ -3158,8 +3158,8 @@ LABEL_26:
 - (void)_removeSystemGestureRecognizers
 {
   v3 = +[SBSystemGestureManager mainDisplayManager];
-  v4 = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
-  [v3 removeGestureRecognizer:v4];
+  _grabberRecognizer = [(SBCoverSheetSlidingViewController *)self _grabberRecognizer];
+  [v3 removeGestureRecognizer:_grabberRecognizer];
 
   v5 = +[SBSystemGestureManager mainDisplayManager];
   [v5 removeGestureRecognizer:self->_dismissGestureRecognizer];
@@ -3177,90 +3177,90 @@ LABEL_26:
   [v9 removeGestureRecognizer:self->_indirectPresentGestureRecognizer];
 }
 
-- (void)_addSystemGestureRecognizerIfUntracked:(id)a3 withType:(unint64_t)a4
+- (void)_addSystemGestureRecognizerIfUntracked:(id)untracked withType:(unint64_t)type
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  untrackedCopy = untracked;
   v6 = +[SBSystemGestureManager mainDisplayManager];
-  if ([v6 isSystemGestureRecognizer:v5])
+  if ([v6 isSystemGestureRecognizer:untrackedCopy])
   {
     v7 = SBLogCoverSheet();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v5;
+      v9 = untrackedCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "Ignoring attempt to add CoverSheet system gesture: %@ because it is already tracked.", &v8, 0xCu);
     }
   }
 
   else
   {
-    [v6 addGestureRecognizer:v5 withType:a4];
+    [v6 addGestureRecognizer:untrackedCopy withType:type];
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v7 = a3;
-  v5 = [(CSLockScreenSettings *)self->_lockScreenSettings coverSheetDismissGestureSettings];
+  settingsCopy = settings;
+  coverSheetDismissGestureSettings = [(CSLockScreenSettings *)self->_lockScreenSettings coverSheetDismissGestureSettings];
 
-  v6 = v7;
-  if (v5 == v7)
+  v6 = settingsCopy;
+  if (coverSheetDismissGestureSettings == settingsCopy)
   {
-    [(SBCoverSheetSlidingViewController *)self _updateCoverSheetDismissSettings:v7];
-    v6 = v7;
+    [(SBCoverSheetSlidingViewController *)self _updateCoverSheetDismissSettings:settingsCopy];
+    v6 = settingsCopy;
   }
 }
 
-- (void)_updateHomeGestureSettings:(id)a3
+- (void)_updateHomeGestureSettings:(id)settings
 {
-  v3 = a3;
-  [v3 minimumYDistanceForHomeOrAppSwitcher];
+  settingsCopy = settings;
+  [settingsCopy minimumYDistanceForHomeOrAppSwitcher];
   *&SBCoverSheetMinimumYDistanceForDismissal = v4 * SBMainScreenPointsPerMillimeter();
-  [v3 minimumYVelocityForHome];
+  [settingsCopy minimumYVelocityForHome];
   v6 = v5;
 
   *&SBCoverSheetMinimumYVelocityForDismissal = v6 * SBMainScreenPointsPerMillimeter();
 }
 
-- (void)_updateCoverSheetDismissSettings:(id)a3
+- (void)_updateCoverSheetDismissSettings:(id)settings
 {
   dismissGestureRecognizer = self->_dismissGestureRecognizer;
-  v5 = a3;
-  [v5 edgeRegionSize];
+  settingsCopy = settings;
+  [settingsCopy edgeRegionSize];
   [(UIScreenEdgePanGestureRecognizer *)dismissGestureRecognizer _setEdgeRegionSize:?];
   v6 = self->_dismissGestureRecognizer;
-  [v5 edgeRegionSize];
+  [settingsCopy edgeRegionSize];
   [(UIScreenEdgePanGestureRecognizer *)v6 _setBottomEdgeRegionSize:?];
-  -[SBScreenEdgePanGestureRecognizer setEnabled:](self->_dismissAddendumGestureRecognizer, "setEnabled:", [v5 extendSwipeUpRegion]);
+  -[SBScreenEdgePanGestureRecognizer setEnabled:](self->_dismissAddendumGestureRecognizer, "setEnabled:", [settingsCopy extendSwipeUpRegion]);
   dismissAddendumGestureRecognizer = self->_dismissAddendumGestureRecognizer;
-  [v5 extendedEdgeRegionSize];
+  [settingsCopy extendedEdgeRegionSize];
   [(UIScreenEdgePanGestureRecognizer *)dismissAddendumGestureRecognizer _setEdgeRegionSize:?];
   v8 = self->_dismissAddendumGestureRecognizer;
-  [v5 extendedEdgeRegionSize];
+  [settingsCopy extendedEdgeRegionSize];
   v10 = v9;
 
   [(UIScreenEdgePanGestureRecognizer *)v8 _setBottomEdgeRegionSize:v10];
 }
 
-- (void)setCompletionGroup:(id)a3
+- (void)setCompletionGroup:(id)group
 {
-  v5 = a3;
-  if (self->_completionGroup != v5)
+  groupCopy = group;
+  if (self->_completionGroup != groupCopy)
   {
-    v6 = v5;
+    v6 = groupCopy;
     [(SBCoverSheetSlidingViewController *)self setCompletionBlock:0];
-    objc_storeStrong(&self->_completionGroup, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_completionGroup, group);
+    groupCopy = v6;
   }
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   completionBlock = self->_completionBlock;
-  if (completionBlock != v4)
+  if (completionBlock != blockCopy)
   {
     if (completionBlock)
     {
@@ -3276,7 +3276,7 @@ LABEL_26:
       dispatch_block_cancel(self->_completionBlock);
     }
 
-    v8 = [v4 copy];
+    v8 = [blockCopy copy];
     v9 = self->_completionBlock;
     self->_completionBlock = v8;
 
@@ -3291,25 +3291,25 @@ LABEL_26:
   }
 }
 
-- (void)_studyLogForGestureRecognizerState:(int64_t)a3 bounds:(CGRect)a4 position:(double)a5 velocity:(double)a6
+- (void)_studyLogForGestureRecognizerState:(int64_t)state bounds:(CGRect)bounds position:(double)position velocity:(double)velocity
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = [MEMORY[0x277D6A798] sharedInstance];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __97__SBCoverSheetSlidingViewController__studyLogForGestureRecognizerState_bounds_position_velocity___block_invoke;
   v14[3] = &__block_descriptor_88_e5__8__0l;
-  v14[4] = a3;
-  *&v14[5] = a5;
-  *&v14[6] = a6;
+  v14[4] = state;
+  *&v14[5] = position;
+  *&v14[6] = velocity;
   *&v14[7] = x;
   *&v14[8] = y;
   *&v14[9] = width;
   *&v14[10] = height;
-  [v13 logBlock:v14];
+  [mEMORY[0x277D6A798] logBlock:v14];
 }
 
 id __97__SBCoverSheetSlidingViewController__studyLogForGestureRecognizerState_bounds_position_velocity___block_invoke(uint64_t a1)
@@ -3348,88 +3348,88 @@ id __97__SBCoverSheetSlidingViewController__studyLogForGestureRecognizerState_bo
   return v11;
 }
 
-- (void)_studyLogForCompletionOfTransitionToPresented:(BOOL)a3
+- (void)_studyLogForCompletionOfTransitionToPresented:(BOOL)presented
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D6A798] sharedInstance];
-  v6 = [v5 isEnabled];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
+  isEnabled = [mEMORY[0x277D6A798] isEnabled];
 
-  if (v6)
+  if (isEnabled)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    [v7 setObject:@"SBCoverSheetSlidingViewController" forKeyedSubscript:@"LogSource"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:@"SBCoverSheetSlidingViewController" forKeyedSubscript:@"LogSource"];
     v8 = @"VisibleUI";
   }
 
   else
   {
     v8 = 0;
-    v7 = 0;
+    dictionary = 0;
   }
 
-  v9 = [MEMORY[0x277D75128] sharedApplication];
-  v10 = [v9 activeInterfaceOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  activeInterfaceOrientation = [mEMORY[0x277D75128] activeInterfaceOrientation];
 
-  v11 = [(UIViewController *)self _sbWindowScene];
-  v12 = [v11 switcherController];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  switcherController = [_sbWindowScene switcherController];
 
-  if (a3)
+  if (presented)
   {
     v13 = @"CoverSheet";
     goto LABEL_20;
   }
 
   IsActive = SBWorkspaceSpringBoardIsActive();
-  v15 = [v12 unlockedEnvironmentMode];
-  v16 = v15 == 2;
+  unlockedEnvironmentMode = [switcherController unlockedEnvironmentMode];
+  v16 = unlockedEnvironmentMode == 2;
   if (IsActive)
   {
-    if (v15 != 2)
+    if (unlockedEnvironmentMode != 2)
     {
       v13 = @"HomeScreen";
       goto LABEL_20;
     }
 
-    v17 = v12;
+    v17 = switcherController;
   }
 
   else
   {
-    v17 = v12;
+    v17 = switcherController;
     if (!v16)
     {
-      v19 = [v12 layoutStatePrimaryElement];
-      v20 = [v19 workspaceEntity];
-      v21 = [v20 applicationSceneEntity];
-      v22 = [v21 sceneHandle];
+      layoutStatePrimaryElement = [switcherController layoutStatePrimaryElement];
+      workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+      applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+      sceneHandle = [applicationSceneEntity sceneHandle];
 
-      v23 = [v22 application];
-      v24 = [v23 bundleIdentifier];
-      v25 = v24;
+      application = [sceneHandle application];
+      bundleIdentifier = [application bundleIdentifier];
+      v25 = bundleIdentifier;
       v26 = @"Unknown";
-      if (v24)
+      if (bundleIdentifier)
       {
-        v26 = v24;
+        v26 = bundleIdentifier;
       }
 
       v13 = v26;
 
-      v27 = [v22 currentInterfaceOrientation];
-      if (v6)
+      currentInterfaceOrientation = [sceneHandle currentInterfaceOrientation];
+      if (isEnabled)
       {
-        v28 = [MEMORY[0x277CCABB0] numberWithInteger:v27];
-        [v7 setObject:v28 forKeyedSubscript:@"AppInterfaceOrientation"];
+        v28 = [MEMORY[0x277CCABB0] numberWithInteger:currentInterfaceOrientation];
+        [dictionary setObject:v28 forKeyedSubscript:@"AppInterfaceOrientation"];
       }
 
       goto LABEL_18;
     }
   }
 
-  v18 = [v17 interfaceOrientation];
-  if (v6)
+  interfaceOrientation = [v17 interfaceOrientation];
+  if (isEnabled)
   {
-    v22 = [MEMORY[0x277CCABB0] numberWithInteger:v18];
-    [v7 setObject:v22 forKeyedSubscript:@"SwitcherInterfaceOrientation"];
+    sceneHandle = [MEMORY[0x277CCABB0] numberWithInteger:interfaceOrientation];
+    [dictionary setObject:sceneHandle forKeyedSubscript:@"SwitcherInterfaceOrientation"];
     v13 = @"AppSwitcher";
 LABEL_18:
 
@@ -3455,17 +3455,17 @@ LABEL_20:
     _os_log_impl(&dword_21ED4E000, v29, OS_LOG_TYPE_INFO, "Visible UI change seen by Cover Sheet: transition to %@ (SB interface orientation: %@, switcher interface orientation: %@,  app interface orientation: %@)", buf, 0x2Au);
   }
 
-  if (v6)
+  if (isEnabled)
   {
-    v33 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
-    [v7 setObject:v33 forKeyedSubscript:@"SBInterfaceOrientation"];
+    v33 = [MEMORY[0x277CCABB0] numberWithInteger:activeInterfaceOrientation];
+    [dictionary setObject:v33 forKeyedSubscript:@"SBInterfaceOrientation"];
 
-    [v7 setObject:v13 forKeyedSubscript:v8];
-    v34 = [MEMORY[0x277D6A798] sharedInstance];
+    [dictionary setObject:v13 forKeyedSubscript:v8];
+    mEMORY[0x277D6A798]2 = [MEMORY[0x277D6A798] sharedInstance];
     v36 = @"VisibleUIChanged";
-    v37 = v7;
+    v37 = dictionary;
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-    [v34 log:v35];
+    [mEMORY[0x277D6A798]2 log:v35];
   }
 }
 

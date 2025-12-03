@@ -1,21 +1,21 @@
 @interface UserActivityTrackingInfo
 - (NSString)description;
 - (_TtC7SwiftUI24UserActivityTrackingInfo)init;
-- (void)userActivityWillSave:(id)a3;
+- (void)userActivityWillSave:(id)save;
 @end
 
 @implementation UserActivityTrackingInfo
 
-- (void)userActivityWillSave:(id)a3
+- (void)userActivityWillSave:(id)save
 {
-  v4 = a3;
-  v5 = self;
-  UserActivityTrackingInfo.userActivityWillSave(_:)(v4);
+  saveCopy = save;
+  selfCopy = self;
+  UserActivityTrackingInfo.userActivityWillSave(_:)(saveCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UserActivityTrackingInfo.description.getter();
   v5 = v4;
 

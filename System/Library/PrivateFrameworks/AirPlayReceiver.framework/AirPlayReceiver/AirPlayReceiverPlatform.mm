@@ -1,37 +1,37 @@
 @interface AirPlayReceiverPlatform
-+ (void)_setMediaAVAudioSessionActiveSync:(unsigned __int8)a3;
-- (int)_updateVolume:(float)a3 andMute:(unsigned __int8)a4 becauseVolumeChanged:(unsigned __int8)a5;
-- (void)_avSystemControllerActiveAudioRouteChanged:(id)a3;
-- (void)_avSystemControllerConnectionDied:(id)a3;
-- (void)_avSystemControllerMuteChanged:(id)a3;
-- (void)_avSystemControllerVolumeChanged:(id)a3;
-- (void)_avSystemControllerVolumeConfigChanged:(id)a3;
++ (void)_setMediaAVAudioSessionActiveSync:(unsigned __int8)sync;
+- (int)_updateVolume:(float)volume andMute:(unsigned __int8)mute becauseVolumeChanged:(unsigned __int8)changed;
+- (void)_avSystemControllerActiveAudioRouteChanged:(id)changed;
+- (void)_avSystemControllerConnectionDied:(id)died;
+- (void)_avSystemControllerMuteChanged:(id)changed;
+- (void)_avSystemControllerVolumeChanged:(id)changed;
+- (void)_avSystemControllerVolumeConfigChanged:(id)changed;
 - (void)_fetchInitialStates;
-- (void)_handleAVAudioSessionInterruption:(id)a3;
-- (void)_handleAVAudioSessionServicesLost:(id)a3;
-- (void)_handleAVAudioSessionServicesReset:(id)a3;
-- (void)_handleNowPlayingAppStartedPlaying:(id)a3;
+- (void)_handleAVAudioSessionInterruption:(id)interruption;
+- (void)_handleAVAudioSessionServicesLost:(id)lost;
+- (void)_handleAVAudioSessionServicesReset:(id)reset;
+- (void)_handleNowPlayingAppStartedPlaying:(id)playing;
 - (void)_handleVolumeControlTypeChange;
 - (void)_registerAVSystemControllerNotifications;
-- (void)_setMediaAVAudioSessionActive:(unsigned __int8)a3;
-- (void)_startNowPlayingSessionAsync:(OpaqueAPReceiverRequestProcessor *)a3;
+- (void)_setMediaAVAudioSessionActive:(unsigned __int8)active;
+- (void)_startNowPlayingSessionAsync:(OpaqueAPReceiverRequestProcessor *)async;
 - (void)_unregisterAVSystemControllerNotifications;
-- (void)_updateMediaSessionActivationStateBasedOnMediaAudioActiveState:(unsigned __int8)a3 andVideoActiveState:(unsigned __int8)a4;
-- (void)handleMRCommand:(unsigned int)a3 translatedAPCommand:(unsigned int)a4 withOptions:(__CFDictionary *)a5;
-- (void)setIsAmbientAudioActive:(unsigned __int8)a3;
-- (void)setIsMediaAudioActive:(unsigned __int8)a3;
-- (void)setIsScreenActive:(unsigned __int8)a3;
-- (void)setIsVideoActive:(unsigned __int8)a3;
-- (void)setMainMediaReceiverSession:(OpaqueAPReceiverRequestProcessor *)a3;
-- (void)setReceiverSessionCountAndUpdateStateIfNeeded:(unint64_t)a3;
-- (void)setShouldHandleMRCommands:(unsigned __int8)a3;
-- (void)updateActiveSessionRegistration:(AirPlayReceiverSessionPrivate *)a3 regType:(int)a4 regOp:(int)a5;
+- (void)_updateMediaSessionActivationStateBasedOnMediaAudioActiveState:(unsigned __int8)state andVideoActiveState:(unsigned __int8)activeState;
+- (void)handleMRCommand:(unsigned int)command translatedAPCommand:(unsigned int)pCommand withOptions:(__CFDictionary *)options;
+- (void)setIsAmbientAudioActive:(unsigned __int8)active;
+- (void)setIsMediaAudioActive:(unsigned __int8)active;
+- (void)setIsScreenActive:(unsigned __int8)active;
+- (void)setIsVideoActive:(unsigned __int8)active;
+- (void)setMainMediaReceiverSession:(OpaqueAPReceiverRequestProcessor *)session;
+- (void)setReceiverSessionCountAndUpdateStateIfNeeded:(unint64_t)needed;
+- (void)setShouldHandleMRCommands:(unsigned __int8)commands;
+- (void)updateActiveSessionRegistration:(AirPlayReceiverSessionPrivate *)registration regType:(int)type regOp:(int)op;
 - (void)updateMRNowPlayingAppStateForSinglePrimary;
 @end
 
 @implementation AirPlayReceiverPlatform
 
-- (void)_updateMediaSessionActivationStateBasedOnMediaAudioActiveState:(unsigned __int8)a3 andVideoActiveState:(unsigned __int8)a4
+- (void)_updateMediaSessionActivationStateBasedOnMediaAudioActiveState:(unsigned __int8)state andVideoActiveState:(unsigned __int8)activeState
 {
   if (self->_state.isMediaAudioActive)
   {
@@ -43,7 +43,7 @@
     v5 = self->_state.isVideoActive != 0;
   }
 
-  v6 = (a4 | a3) != 0;
+  v6 = (activeState | state) != 0;
   if (v5 != v6)
   {
     if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
@@ -59,7 +59,7 @@
   }
 }
 
-- (void)_handleAVAudioSessionServicesLost:(id)a3
+- (void)_handleAVAudioSessionServicesLost:(id)lost
 {
   if (gLogCategory_AirPlayReceiverPlatform <= 60 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
@@ -71,9 +71,9 @@
   AirPlayReceiverServerControl(server, 0, @"partnerProcessDeath", @"MediaServices", 0, 0);
 }
 
-- (void)_handleAVAudioSessionServicesReset:(id)a3
+- (void)_handleAVAudioSessionServicesReset:(id)reset
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   if (gLogCategory_AirPlayReceiverPlatform <= 60 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -83,21 +83,21 @@
   [+[APAVAudioSessionManager mediaSessionManager](APAVAudioSessionManager resetSession];
   [+[APAVAudioSessionManager mediaSessionManager](APAVAudioSessionManager setUpSessionWithIsMixable:"setUpSessionWithIsMixable:", self->_server->var41 != 0];
   v5 = *MEMORY[0x277CB8068];
-  [v4 removeObserver:self name:*MEMORY[0x277CB8068] object:{-[APAVAudioSessionManager session](+[APAVAudioSessionManager ambientSessionManager](APAVAudioSessionManager, "ambientSessionManager"), "session")}];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8068] object:{-[APAVAudioSessionManager session](+[APAVAudioSessionManager ambientSessionManager](APAVAudioSessionManager, "ambientSessionManager"), "session")}];
   [+[APAVAudioSessionManager ambientSessionManager](APAVAudioSessionManager resetSession];
   [+[APAVAudioSessionManager ambientSessionManager](APAVAudioSessionManager setUpSessionWithIsMixable:"setUpSessionWithIsMixable:", 1];
-  v6 = [+[APAVAudioSessionManager ambientSessionManager](APAVAudioSessionManager session];
+  session = [+[APAVAudioSessionManager ambientSessionManager](APAVAudioSessionManager session];
 
-  [v4 addObserver:self selector:sel__handleAVAudioSessionInterruption_ name:v5 object:v6];
+  [defaultCenter addObserver:self selector:sel__handleAVAudioSessionInterruption_ name:v5 object:session];
 }
 
-- (void)_handleAVAudioSessionInterruption:(id)a3
+- (void)_handleAVAudioSessionInterruption:(id)interruption
 {
   keys[1] = *MEMORY[0x277D85DE8];
-  v5 = [a3 userInfo];
-  v6 = [objc_msgSend(v5 objectForKeyedSubscript:{*MEMORY[0x277CB8080]), "unsignedIntegerValue"}];
-  v7 = [a3 userInfo];
-  v8 = [objc_msgSend(v7 objectForKeyedSubscript:{*MEMORY[0x277CB8070]), "unsignedIntegerValue"}];
+  userInfo = [interruption userInfo];
+  v6 = [objc_msgSend(userInfo objectForKeyedSubscript:{*MEMORY[0x277CB8080]), "unsignedIntegerValue"}];
+  userInfo2 = [interruption userInfo];
+  v8 = [objc_msgSend(userInfo2 objectForKeyedSubscript:{*MEMORY[0x277CB8070]), "unsignedIntegerValue"}];
   if (v6 == 1)
   {
     v9 = 0;
@@ -117,7 +117,7 @@ LABEL_5:
   v11 = 0;
   v9 = 1;
 LABEL_7:
-  if ([objc_msgSend(a3 "object")])
+  if ([objc_msgSend(interruption "object")])
   {
     v12 = 0;
     v13 = @"Media";
@@ -126,7 +126,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if ([objc_msgSend(a3 "object")])
+  if ([objc_msgSend(interruption "object")])
   {
     v12 = 0;
     v13 = @"Ambient";
@@ -301,15 +301,15 @@ LABEL_19:
   }
 }
 
-- (void)setShouldHandleMRCommands:(unsigned __int8)a3
+- (void)setShouldHandleMRCommands:(unsigned __int8)commands
 {
-  v3 = a3;
-  if (self->_state.isHandlingMRCommands != a3 && !self->_useMediaRemotePerPlayerAPI)
+  commandsCopy = commands;
+  if (self->_state.isHandlingMRCommands != commands && !self->_useMediaRemotePerPlayerAPI)
   {
     if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
     {
       v5 = "in to";
-      if (!v3)
+      if (!commandsCopy)
       {
         v5 = "out of";
       }
@@ -318,32 +318,32 @@ LABEL_19:
       LogPrintF();
     }
 
-    if (v3)
+    if (commandsCopy)
     {
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
 
-    [(AirPlayReceiverMediaRemoteHelper *)self->_mediaRemoteHelper setDelegate:v6, v7];
+    [(AirPlayReceiverMediaRemoteHelper *)self->_mediaRemoteHelper setDelegate:selfCopy, v7];
   }
 
-  self->_state.isHandlingMRCommands = v3;
+  self->_state.isHandlingMRCommands = commandsCopy;
 }
 
-- (void)setIsScreenActive:(unsigned __int8)a3
+- (void)setIsScreenActive:(unsigned __int8)active
 {
-  if (self->_state.isScreenActive != a3)
+  if (self->_state.isScreenActive != active)
   {
     if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
 
-    self->_state.isScreenActive = a3;
+    self->_state.isScreenActive = active;
     if (!APSMultiPrimariesEnabled())
     {
 
@@ -352,15 +352,15 @@ LABEL_19:
   }
 }
 
-- (void)setIsVideoActive:(unsigned __int8)a3
+- (void)setIsVideoActive:(unsigned __int8)active
 {
   isVideoActive = self->_state.isVideoActive;
-  if (isVideoActive == a3)
+  if (isVideoActive == active)
   {
     return;
   }
 
-  v4 = a3;
+  activeCopy = active;
   if (gLogCategory_AirPlayReceiverPlatform <= 50)
   {
     if (gLogCategory_AirPlayReceiverPlatform == -1)
@@ -374,36 +374,36 @@ LABEL_19:
     }
 
     v6 = isVideoActive;
-    v7 = v4;
+    v7 = activeCopy;
     LogPrintF();
   }
 
 LABEL_6:
-  if (v4)
+  if (activeCopy)
   {
     APSEnsureCanInitiatePlayback();
   }
 
-  [(AirPlayReceiverPlatform *)self _updateMediaSessionActivationStateBasedOnMediaAudioActiveState:self->_state.isMediaAudioActive andVideoActiveState:v4, v6, v7];
-  self->_state.isVideoActive = v4;
+  [(AirPlayReceiverPlatform *)self _updateMediaSessionActivationStateBasedOnMediaAudioActiveState:self->_state.isMediaAudioActive andVideoActiveState:activeCopy, v6, v7];
+  self->_state.isVideoActive = activeCopy;
 }
 
-- (void)setIsMediaAudioActive:(unsigned __int8)a3
+- (void)setIsMediaAudioActive:(unsigned __int8)active
 {
   isMediaAudioActive = self->_state.isMediaAudioActive;
-  if (isMediaAudioActive == a3)
+  if (isMediaAudioActive == active)
   {
     return;
   }
 
-  v4 = a3;
+  activeCopy = active;
   if (gLogCategory_AirPlayReceiverPlatform <= 50)
   {
     if (gLogCategory_AirPlayReceiverPlatform != -1)
     {
 LABEL_4:
       v6 = isMediaAudioActive;
-      v7 = v4;
+      v7 = activeCopy;
       LogPrintF();
       goto LABEL_6;
     }
@@ -416,8 +416,8 @@ LABEL_4:
   }
 
 LABEL_6:
-  [(AirPlayReceiverPlatform *)self _updateMediaSessionActivationStateBasedOnMediaAudioActiveState:v4 andVideoActiveState:self->_state.isVideoActive, v6, v7];
-  self->_state.isMediaAudioActive = v4;
+  [(AirPlayReceiverPlatform *)self _updateMediaSessionActivationStateBasedOnMediaAudioActiveState:activeCopy andVideoActiveState:self->_state.isVideoActive, v6, v7];
+  self->_state.isMediaAudioActive = activeCopy;
   if (!APSMultiPrimariesEnabled())
   {
 
@@ -425,14 +425,14 @@ LABEL_6:
   }
 }
 
-- (void)setIsAmbientAudioActive:(unsigned __int8)a3
+- (void)setIsAmbientAudioActive:(unsigned __int8)active
 {
   isAmbientAudioActive = self->_state.isAmbientAudioActive;
-  if (isAmbientAudioActive != a3)
+  if (isAmbientAudioActive != active)
   {
     v10[5] = v3;
     v10[6] = v4;
-    v6 = a3;
+    activeCopy = active;
     if (gLogCategory_AirPlayReceiverPlatform > 50)
     {
       goto LABEL_6;
@@ -444,7 +444,7 @@ LABEL_6:
       {
 LABEL_6:
         v10[0] = 0;
-        if ([+[APAVAudioSessionManager setActive:v8], "setActive:error:", v6 != 0, v10])
+        if ([+[APAVAudioSessionManager setActive:v8], "setActive:error:", activeCopy != 0, v10])
         {
           if (gLogCategory_AirPlayReceiverPlatform > 50 || gLogCategory_AirPlayReceiverPlatform == -1 && !_LogCategory_Initialize())
           {
@@ -459,8 +459,8 @@ LABEL_6:
 
         LogPrintF();
 LABEL_16:
-        _NotifyIsPlayingAmbientAudio(v6);
-        self->_state.isAmbientAudioActive = v6;
+        _NotifyIsPlayingAmbientAudio(activeCopy);
+        self->_state.isAmbientAudioActive = activeCopy;
         return;
       }
 
@@ -468,13 +468,13 @@ LABEL_16:
     }
 
     v8 = isAmbientAudioActive;
-    v9 = v6;
+    v9 = activeCopy;
     LogPrintF();
     goto LABEL_6;
   }
 }
 
-- (void)setMainMediaReceiverSession:(OpaqueAPReceiverRequestProcessor *)a3
+- (void)setMainMediaReceiverSession:(OpaqueAPReceiverRequestProcessor *)session
 {
   if (!APSMultiPrimariesEnabled())
   {
@@ -489,7 +489,7 @@ LABEL_16:
 
   p_mainMediaReceiverSession = &self->_state.nowPlaying.multiPrimaries.mainMediaReceiverSession;
   mainMediaReceiverSession = self->_state.nowPlaying.multiPrimaries.mainMediaReceiverSession;
-  if (mainMediaReceiverSession == a3)
+  if (mainMediaReceiverSession == session)
   {
     goto LABEL_36;
   }
@@ -500,7 +500,7 @@ LABEL_16:
     {
 LABEL_5:
       v12 = mainMediaReceiverSession;
-      v13 = a3;
+      sessionCopy = session;
       LogPrintF();
       goto LABEL_7;
     }
@@ -522,7 +522,7 @@ LABEL_7:
       self->_state.nowPlaying.singlePrimary.isAirPlayReceiverMRNowPlayingApp = 0;
     }
 
-    if (!a3)
+    if (!session)
     {
       v7 = *p_mainMediaReceiverSession;
       goto LABEL_27;
@@ -533,7 +533,7 @@ LABEL_7:
       self->_state.nowPlaying.singlePrimary.isAirPlayReceiverMRNowPlayingApp = 1;
       if (APSIsWHAParallelSetupProcessingEnabled())
       {
-        [(AirPlayReceiverPlatform *)self _startNowPlayingSessionAsync:a3];
+        [(AirPlayReceiverPlatform *)self _startNowPlayingSessionAsync:session];
       }
 
       else
@@ -550,7 +550,7 @@ LABEL_7:
         v9 = *(*(CMBaseObjectGetVTable() + 16) + 72);
         if (v9)
         {
-          v9(a3, @"nowPlayingSessionStartDurationMs", Int64);
+          v9(session, @"nowPlayingSessionStartDurationMs", Int64);
         }
 
         [(AirPlayReceiverMediaRemoteHelper *)self->_mediaRemoteHelper startNowPlayingSession:v12];
@@ -560,7 +560,7 @@ LABEL_7:
         v11 = *(*(CMBaseObjectGetVTable() + 16) + 72);
         if (v11)
         {
-          v11(a3, @"nowPlayingSessionStartDurationMs", v10);
+          v11(session, @"nowPlayingSessionStartDurationMs", v10);
         }
 
         [(AirPlayReceiverMediaRemoteHelper *)self->_mediaRemoteHelper associateNowPlayingSessionWithAudioSession:self->_state.mediaAVAudioSessionID];
@@ -575,14 +575,14 @@ LABEL_7:
 LABEL_36:
   v7 = self->_state.nowPlaying.multiPrimaries.mainMediaReceiverSession;
   p_mainMediaReceiverSession = &self->_state.nowPlaying.multiPrimaries.mainMediaReceiverSession;
-  if (a3)
+  if (session)
   {
 LABEL_26:
-    CFRetain(a3);
+    CFRetain(session);
   }
 
 LABEL_27:
-  *p_mainMediaReceiverSession = a3;
+  *p_mainMediaReceiverSession = session;
   if (v7)
   {
 
@@ -590,7 +590,7 @@ LABEL_27:
   }
 }
 
-- (void)_startNowPlayingSessionAsync:(OpaqueAPReceiverRequestProcessor *)a3
+- (void)_startNowPlayingSessionAsync:(OpaqueAPReceiverRequestProcessor *)async
 {
   mediaRemoteHelper = self->_mediaRemoteHelper;
   mediaAVAudioSessionID = self->_state.mediaAVAudioSessionID;
@@ -604,8 +604,8 @@ LABEL_27:
       LogPrintF();
     }
 
-    v7 = [v6[6] startNowPlayingSessionTask];
-    [v7 setNotCompleted];
+    startNowPlayingSessionTask = [v6[6] startNowPlayingSessionTask];
+    [startNowPlayingSessionTask setNotCompleted];
     CFRetain(v6);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -613,7 +613,7 @@ LABEL_27:
     v9[3] = &unk_278C5FC20;
     v9[5] = mediaRemoteHelper;
     v9[6] = v6;
-    v9[4] = v7;
+    v9[4] = startNowPlayingSessionTask;
     v10 = mediaAVAudioSessionID;
     [(AirPlayReceiverMediaRemoteHelper *)mediaRemoteHelper startNowPlayingSessionWithCompletion:v9];
     CFRelease(v6);
@@ -689,10 +689,10 @@ void __56__AirPlayReceiverPlatform__startNowPlayingSessionAsync___block_invoke_2
   }
 }
 
-- (void)setReceiverSessionCountAndUpdateStateIfNeeded:(unint64_t)a3
+- (void)setReceiverSessionCountAndUpdateStateIfNeeded:(unint64_t)needed
 {
   receiverSessionCount = self->_state.receiverSessionCount;
-  if (receiverSessionCount != a3)
+  if (receiverSessionCount != needed)
   {
     cf[5] = v3;
     cf[6] = v4;
@@ -701,15 +701,15 @@ void __56__AirPlayReceiverPlatform__startNowPlayingSessionAsync___block_invoke_2
       if (gLogCategory_AirPlayReceiverPlatform != -1 || (v8 = _LogCategory_Initialize(), receiverSessionCount = self->_state.receiverSessionCount, v8))
       {
         v10 = receiverSessionCount;
-        v11 = a3;
+        neededCopy = needed;
         LogPrintF();
         receiverSessionCount = self->_state.receiverSessionCount;
       }
     }
 
-    if (!a3 || !receiverSessionCount)
+    if (!needed || !receiverSessionCount)
     {
-      if (a3)
+      if (needed)
       {
         if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
         {
@@ -719,10 +719,10 @@ void __56__AirPlayReceiverPlatform__startNowPlayingSessionAsync___block_invoke_2
         APSEnsureCanInitiatePlayback();
       }
 
-      [(AirPlayReceiverPlatform *)self _setMediaAVAudioSessionActive:a3 != 0, v10, v11];
+      [(AirPlayReceiverPlatform *)self _setMediaAVAudioSessionActive:needed != 0, v10, neededCopy];
     }
 
-    if (APSIsAPMSpeaker() && (APSIsMemberOfHTGroup() || APSIsMemberOfStereoPair()) && a3 && self->_state.receiverSessionCount > a3 && !self->_useMediaRemotePerPlayerAPI)
+    if (APSIsAPMSpeaker() && (APSIsMemberOfHTGroup() || APSIsMemberOfStereoPair()) && needed && self->_state.receiverSessionCount > needed && !self->_useMediaRemotePerPlayerAPI)
     {
       cf[0] = 0;
       APReceiverSessionManagerCopyAirPlaySessionWithAttribute(self->_server->var34, 4, 0, cf);
@@ -737,7 +737,7 @@ void __56__AirPlayReceiverPlatform__startNowPlayingSessionAsync___block_invoke_2
         LogPrintF();
       }
 
-      [(AirPlayReceiverMediaRemoteHelper *)self->_mediaRemoteHelper setMRPlaybackState:3, v10, v11];
+      [(AirPlayReceiverMediaRemoteHelper *)self->_mediaRemoteHelper setMRPlaybackState:3, v10, neededCopy];
       v9 = cf[0];
       if (cf[0])
       {
@@ -746,7 +746,7 @@ LABEL_27:
       }
     }
 
-    self->_state.receiverSessionCount = a3;
+    self->_state.receiverSessionCount = needed;
     if (!APSMultiPrimariesEnabled())
     {
       [(AirPlayReceiverPlatform *)self updateMRNowPlayingAppStateForSinglePrimary];
@@ -754,9 +754,9 @@ LABEL_27:
   }
 }
 
-- (void)_setMediaAVAudioSessionActive:(unsigned __int8)a3
+- (void)_setMediaAVAudioSessionActive:(unsigned __int8)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = APSIsWHAParallelSetupProcessingEnabled();
   if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
@@ -771,7 +771,7 @@ LABEL_27:
     block[2] = __57__AirPlayReceiverPlatform__setMediaAVAudioSessionActive___block_invoke;
     block[3] = &unk_278C5FB50;
     block[4] = self;
-    v9 = v3;
+    v9 = activeCopy;
     dispatch_async(mediaAVAudioSessionActivationQueue, block);
   }
 
@@ -779,7 +779,7 @@ LABEL_27:
   {
     v7 = objc_opt_class();
 
-    [v7 _setMediaAVAudioSessionActiveSync:v3];
+    [v7 _setMediaAVAudioSessionActiveSync:activeCopy];
   }
 }
 
@@ -791,30 +791,30 @@ uint64_t __57__AirPlayReceiverPlatform__setMediaAVAudioSessionActive___block_inv
   return [v2 _setMediaAVAudioSessionActiveSync:v3];
 }
 
-- (void)updateActiveSessionRegistration:(AirPlayReceiverSessionPrivate *)a3 regType:(int)a4 regOp:(int)a5
+- (void)updateActiveSessionRegistration:(AirPlayReceiverSessionPrivate *)registration regType:(int)type regOp:(int)op
 {
-  if (a4 <= 3 && (v6 = (&self->super.isa + (8 * a4)), (v7 = v6[2]) != 0))
+  if (type <= 3 && (v6 = (&self->super.isa + (8 * type)), (v7 = v6[2]) != 0))
   {
     Count = CFSetGetCount(v6[2]);
-    if (a5)
+    if (op)
     {
-      CFSetRemoveValue(v7, a3);
+      CFSetRemoveValue(v7, registration);
     }
 
     else
     {
-      CFSetAddValue(v7, a3);
+      CFSetAddValue(v7, registration);
     }
 
     [(AirPlayReceiverPlatform *)self setIsAmbientAudioActive:CFSetGetCount(self->_state.auxAudioSessions) > 0];
     [(AirPlayReceiverPlatform *)self setIsMediaAudioActive:CFSetGetCount(self->_state.mediaAudioSessions) > 0];
     [(AirPlayReceiverPlatform *)self setIsVideoActive:CFSetGetCount(self->_state.mediaVideoSessions) > 0];
     [(AirPlayReceiverPlatform *)self setIsScreenActive:CFSetGetCount(self->_state.screenSessions) > 0];
-    if (Count != CFSetGetCount(v7) && a3->var11 == 128)
+    if (Count != CFSetGetCount(v7) && registration->var11 == 128)
     {
-      if (a5)
+      if (op)
       {
-        if (a5 != 1)
+        if (op != 1)
         {
           return;
         }
@@ -868,42 +868,42 @@ uint64_t __57__AirPlayReceiverPlatform__setMediaAVAudioSessionActive___block_inv
 
 - (void)_unregisterAVSystemControllerNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
-    v5 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
-  [v3 removeObserver:self name:*MEMORY[0x277D26B00] object:{0, v5}];
-  [v3 removeObserver:self name:*MEMORY[0x277D26D40] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D26DE8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D26BF0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D26B00] object:{0, selfCopy}];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D26D40] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D26DE8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D26BF0] object:0];
   v4 = *MEMORY[0x277D26B88];
 
-  [v3 removeObserver:self name:v4 object:0];
+  [defaultCenter removeObserver:self name:v4 object:0];
 }
 
 - (void)_registerAVSystemControllerNotifications
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
   if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
-    v13 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = MEMORY[0x277D26B00];
   v7 = MEMORY[0x277D26D40];
   v8 = *MEMORY[0x277D26D40];
   v16[0] = *MEMORY[0x277D26B00];
   v16[1] = v8;
-  [v5 addObjectsFromArray:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v16, 2)}];
-  [v3 addObserver:self selector:sel__avSystemControllerActiveAudioRouteChanged_ name:*v6 object:v4];
-  [v3 addObserver:self selector:sel__avSystemControllerConnectionDied_ name:*v7 object:v4];
+  [array addObjectsFromArray:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v16, 2)}];
+  [defaultCenter addObserver:self selector:sel__avSystemControllerActiveAudioRouteChanged_ name:*v6 object:mEMORY[0x277D26E58]];
+  [defaultCenter addObserver:self selector:sel__avSystemControllerConnectionDied_ name:*v7 object:mEMORY[0x277D26E58]];
   if (APSIsAPMSpeaker())
   {
     if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
@@ -916,12 +916,12 @@ uint64_t __57__AirPlayReceiverPlatform__setMediaAVAudioSessionActive___block_inv
     v11 = *MEMORY[0x277D26BF0];
     v15[0] = *MEMORY[0x277D26DE8];
     v15[1] = v11;
-    [v5 addObjectsFromArray:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v15, 2)}];
-    [v3 addObserver:self selector:sel__avSystemControllerVolumeChanged_ name:*v9 object:v4];
-    [v3 addObserver:self selector:sel__avSystemControllerMuteChanged_ name:*v10 object:v4];
+    [array addObjectsFromArray:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v15, 2)}];
+    [defaultCenter addObserver:self selector:sel__avSystemControllerVolumeChanged_ name:*v9 object:mEMORY[0x277D26E58]];
+    [defaultCenter addObserver:self selector:sel__avSystemControllerMuteChanged_ name:*v10 object:mEMORY[0x277D26E58]];
   }
 
-  if ([v4 currentRouteHasVolumeControl])
+  if ([mEMORY[0x277D26E58] currentRouteHasVolumeControl])
   {
     if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
     {
@@ -930,18 +930,18 @@ uint64_t __57__AirPlayReceiverPlatform__setMediaAVAudioSessionActive___block_inv
 
     v12 = MEMORY[0x277D26B88];
     v14 = *MEMORY[0x277D26B88];
-    [v5 addObjectsFromArray:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v14, 1)}];
-    [v3 addObserver:self selector:sel__avSystemControllerVolumeConfigChanged_ name:*v12 object:v4];
+    [array addObjectsFromArray:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v14, 1)}];
+    [defaultCenter addObserver:self selector:sel__avSystemControllerVolumeConfigChanged_ name:*v12 object:mEMORY[0x277D26E58]];
   }
 
-  [v4 setAttribute:v5 forKey:*MEMORY[0x277D26DD0] error:0];
+  [mEMORY[0x277D26E58] setAttribute:array forKey:*MEMORY[0x277D26DD0] error:0];
 }
 
 - (void)_fetchInitialStates
 {
   if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
-    v4 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
@@ -951,8 +951,8 @@ uint64_t __57__AirPlayReceiverPlatform__setMediaAVAudioSessionActive___block_inv
     self->_state.volumeSliderValue = _GetHWVolumeSliderValue();
     APSVolumeConvertSliderValueToDB();
     CFObjectSetPropertyDouble();
-    v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    self->_state.isMuted = [objc_msgSend(v3 attributeForKey:{*MEMORY[0x277D26BE8]), "BOOLValue"}];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+    self->_state.isMuted = [objc_msgSend(mEMORY[0x277D26E58] attributeForKey:{*MEMORY[0x277D26BE8]), "BOOLValue"}];
     CFObjectSetProperty();
     if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
     {
@@ -961,10 +961,10 @@ uint64_t __57__AirPlayReceiverPlatform__setMediaAVAudioSessionActive___block_inv
   }
 }
 
-- (void)_avSystemControllerActiveAudioRouteChanged:(id)a3
+- (void)_avSystemControllerActiveAudioRouteChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [objc_msgSend(v4 objectForKeyedSubscript:{*MEMORY[0x277D26B08]), "BOOLValue"}];
+  userInfo = [changed userInfo];
+  v5 = [objc_msgSend(userInfo objectForKeyedSubscript:{*MEMORY[0x277D26B08]), "BOOLValue"}];
   if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -1006,11 +1006,11 @@ void __70__AirPlayReceiverPlatform__avSystemControllerActiveAudioRouteChanged___
   }
 }
 
-- (void)_avSystemControllerConnectionDied:(id)a3
+- (void)_avSystemControllerConnectionDied:(id)died
 {
   if (gLogCategory_AirPlayReceiverPlatform <= 90 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
-    v5 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
@@ -1025,11 +1025,11 @@ void __70__AirPlayReceiverPlatform__avSystemControllerActiveAudioRouteChanged___
   dispatch_sync(var15, block);
 }
 
-- (void)_avSystemControllerMuteChanged:(id)a3
+- (void)_avSystemControllerMuteChanged:(id)changed
 {
   HWVolumeSliderValue = _GetHWVolumeSliderValue();
-  v5 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v6 = [objc_msgSend(v5 attributeForKey:{*MEMORY[0x277D26BE8]), "BOOLValue"}];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v6 = [objc_msgSend(mEMORY[0x277D26E58] attributeForKey:{*MEMORY[0x277D26BE8]), "BOOLValue"}];
   *&v7 = HWVolumeSliderValue;
   [(AirPlayReceiverPlatform *)self _updateVolume:v6 andMute:0 becauseVolumeChanged:v7];
   var15 = self->_server->var15;
@@ -1043,14 +1043,14 @@ void __70__AirPlayReceiverPlatform__avSystemControllerActiveAudioRouteChanged___
   CFObjectSetProperty();
 }
 
-- (void)_avSystemControllerVolumeChanged:(id)a3
+- (void)_avSystemControllerVolumeChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  if ([objc_msgSend(v4 objectForKeyedSubscript:{*MEMORY[0x277D26B30]), "isEqual:", @"Audio/Video"}])
+  userInfo = [changed userInfo];
+  if ([objc_msgSend(userInfo objectForKeyedSubscript:{*MEMORY[0x277D26B30]), "isEqual:", @"Audio/Video"}])
   {
     HWVolumeSliderValue = _GetHWVolumeSliderValue();
-    v6 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    v7 = [objc_msgSend(v6 attributeForKey:{*MEMORY[0x277D26BE8]), "BOOLValue"}];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+    v7 = [objc_msgSend(mEMORY[0x277D26E58] attributeForKey:{*MEMORY[0x277D26BE8]), "BOOLValue"}];
     *&v8 = HWVolumeSliderValue;
     [(AirPlayReceiverPlatform *)self _updateVolume:v7 andMute:1 becauseVolumeChanged:v8];
     var15 = self->_server->var15;
@@ -1073,10 +1073,10 @@ float __60__AirPlayReceiverPlatform__avSystemControllerVolumeChanged___block_inv
   return result;
 }
 
-- (int)_updateVolume:(float)a3 andMute:(unsigned __int8)a4 becauseVolumeChanged:(unsigned __int8)a5
+- (int)_updateVolume:(float)volume andMute:(unsigned __int8)mute becauseVolumeChanged:(unsigned __int8)changed
 {
-  v5 = a5;
-  v6 = a4;
+  changedCopy = changed;
+  muteCopy = mute;
   if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -1096,7 +1096,7 @@ float __60__AirPlayReceiverPlatform__avSystemControllerVolumeChanged___block_inv
     {
       v11 = *MEMORY[0x277CBED28];
       v12 = *MEMORY[0x277CBED10];
-      if (v6)
+      if (muteCopy)
       {
         v13 = *MEMORY[0x277CBED28];
       }
@@ -1107,7 +1107,7 @@ float __60__AirPlayReceiverPlatform__avSystemControllerVolumeChanged___block_inv
       }
 
       CFDictionarySetValue(v9, @"isMuted", v13);
-      if (v5)
+      if (changedCopy)
       {
         v14 = v11;
       }
@@ -1144,10 +1144,10 @@ float __60__AirPlayReceiverPlatform__avSystemControllerVolumeChanged___block_inv
   return v15;
 }
 
-- (void)_avSystemControllerVolumeConfigChanged:(id)a3
+- (void)_avSystemControllerVolumeConfigChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  [objc_msgSend(v4 objectForKeyedSubscript:{*MEMORY[0x277D26B30]), "BOOLValue"}];
+  userInfo = [changed userInfo];
+  [objc_msgSend(userInfo objectForKeyedSubscript:{*MEMORY[0x277D26B30]), "BOOLValue"}];
   if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -1156,14 +1156,14 @@ float __60__AirPlayReceiverPlatform__avSystemControllerVolumeChanged___block_inv
   [(AirPlayReceiverPlatform *)self _handleVolumeControlTypeChange];
 }
 
-- (void)_handleNowPlayingAppStartedPlaying:(id)a3
+- (void)_handleNowPlayingAppStartedPlaying:(id)playing
 {
-  v5 = [objc_msgSend(objc_msgSend(a3 "userInfo")];
-  v6 = [objc_msgSend(a3 "userInfo")];
-  v7 = [objc_msgSend(objc_msgSend(a3 "userInfo")];
+  v5 = [objc_msgSend(objc_msgSend(playing "userInfo")];
+  v6 = [objc_msgSend(playing "userInfo")];
+  v7 = [objc_msgSend(objc_msgSend(playing "userInfo")];
   if (v5 != getpid() && v7 && !self->_server->var41)
   {
-    v8 = self;
+    selfCopy = self;
     v9 = v6;
     var15 = self->_server->var15;
     block[0] = MEMORY[0x277D85DD0];
@@ -1196,12 +1196,12 @@ void __62__AirPlayReceiverPlatform__handleNowPlayingAppStartedPlaying___block_in
   v3 = *(a1 + 40);
 }
 
-- (void)handleMRCommand:(unsigned int)a3 translatedAPCommand:(unsigned int)a4 withOptions:(__CFDictionary *)a5
+- (void)handleMRCommand:(unsigned int)command translatedAPCommand:(unsigned int)pCommand withOptions:(__CFDictionary *)options
 {
   CFRetain(self->_server);
-  if (a5)
+  if (options)
   {
-    CFRetain(a5);
+    CFRetain(options);
   }
 
   var15 = self->_server->var15;
@@ -1209,10 +1209,10 @@ void __62__AirPlayReceiverPlatform__handleNowPlayingAppStartedPlaying___block_in
   block[1] = 3221225472;
   block[2] = __75__AirPlayReceiverPlatform_handleMRCommand_translatedAPCommand_withOptions___block_invoke;
   block[3] = &unk_278C5FAD8;
-  v11 = a3;
-  v12 = a4;
+  commandCopy = command;
+  pCommandCopy = pCommand;
   block[4] = self;
-  block[5] = a5;
+  block[5] = options;
   dispatch_async(var15, block);
 }
 
@@ -1248,14 +1248,14 @@ void __75__AirPlayReceiverPlatform_handleMRCommand_translatedAPCommand_withOptio
   }
 }
 
-+ (void)_setMediaAVAudioSessionActiveSync:(unsigned __int8)a3
++ (void)_setMediaAVAudioSessionActiveSync:(unsigned __int8)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v6 = 0;
   if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
   {
     v4 = "";
-    if (!v3)
+    if (!syncCopy)
     {
       v4 = "de";
     }
@@ -1264,7 +1264,7 @@ void __75__AirPlayReceiverPlatform_handleMRCommand_translatedAPCommand_withOptio
     LogPrintF();
   }
 
-  if ([+[APAVAudioSessionManager setActive:v5]error:"setActive:error:", v3 != 0, &v6])
+  if ([+[APAVAudioSessionManager setActive:v5]error:"setActive:error:", syncCopy != 0, &v6])
   {
     if (gLogCategory_AirPlayReceiverPlatform <= 50 && (gLogCategory_AirPlayReceiverPlatform != -1 || _LogCategory_Initialize()))
     {

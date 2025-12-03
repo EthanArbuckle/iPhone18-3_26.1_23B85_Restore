@@ -1,5 +1,5 @@
 @interface CDRichComplicationCornerTextCustomView
-- (CDRichComplicationCornerTextCustomView)initWithFontFallback:(int64_t)a3;
+- (CDRichComplicationCornerTextCustomView)initWithFontFallback:(int64_t)fallback;
 - (double)_outerViewDiameter;
 - (id)_outerView;
 - (void)layoutSubviews;
@@ -7,17 +7,17 @@
 
 @implementation CDRichComplicationCornerTextCustomView
 
-- (CDRichComplicationCornerTextCustomView)initWithFontFallback:(int64_t)a3
+- (CDRichComplicationCornerTextCustomView)initWithFontFallback:(int64_t)fallback
 {
   v8.receiver = self;
   v8.super_class = CDRichComplicationCornerTextCustomView;
-  v3 = [(CDRichComplicationCornerBaseTextView *)&v8 initWithFontFallback:a3];
+  v3 = [(CDRichComplicationCornerBaseTextView *)&v8 initWithFontFallback:fallback];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CDRichComplicationCornerTextCustomView *)v3 _outerView];
+    _outerView = [(CDRichComplicationCornerTextCustomView *)v3 _outerView];
     outerView = v4->_outerView;
-    v4->_outerView = v5;
+    v4->_outerView = _outerView;
 
     [(CDRichComplicationCornerTextCustomView *)v4 addSubview:v4->_outerView];
   }
@@ -30,15 +30,15 @@
   v21.receiver = self;
   v21.super_class = CDRichComplicationCornerTextCustomView;
   [(CDRichComplicationCornerBaseTextView *)&v21 layoutSubviews];
-  v3 = [(CDRichComplicationView *)self device];
-  [CDRichComplicationCornerUtilities cornerGaugeCustomViewRectWithPosition:[(CDRichComplicationCornerView *)self cornerComplicationPosition] forDevice:v3];
+  device = [(CDRichComplicationView *)self device];
+  [CDRichComplicationCornerUtilities cornerGaugeCustomViewRectWithPosition:[(CDRichComplicationCornerView *)self cornerComplicationPosition] forDevice:device];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CDRichComplicationView *)self device];
-  v13 = ___LayoutConstants_block_invoke(v12, v12);
+  device2 = [(CDRichComplicationView *)self device];
+  v13 = ___LayoutConstants_block_invoke(device2, device2);
   v15 = v14;
 
   outerView = self->_outerView;
@@ -55,8 +55,8 @@
 
 - (double)_outerViewDiameter
 {
-  v3 = [(CDRichComplicationView *)self device];
-  [CDRichComplicationCornerUtilities cornerGaugeCustomViewRectWithPosition:[(CDRichComplicationCornerView *)self cornerComplicationPosition] forDevice:v3];
+  device = [(CDRichComplicationView *)self device];
+  [CDRichComplicationCornerUtilities cornerGaugeCustomViewRectWithPosition:[(CDRichComplicationCornerView *)self cornerComplicationPosition] forDevice:device];
   v5 = v4;
 
   return v5;

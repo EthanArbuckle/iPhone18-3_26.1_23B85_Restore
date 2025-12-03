@@ -1,12 +1,12 @@
 @interface MAHandleEndNavigation
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation MAHandleEndNavigation
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [SACommandFailed alloc];
   v6 = [v5 initWithErrorCode:SALocalSearchNavigationNotRunningErrorCode];
   v7 = +[MKMapService sharedService];
@@ -23,16 +23,16 @@
   [v9 initializeBrokerConnectionIfNeeded];
   if (![v9 canReceiveMessages] || objc_msgSend(v9, "isMapsBackgroundTaskSuspended"))
   {
-    v10 = [v6 dictionary];
-    v4[2](v4, v10);
+    dictionary = [v6 dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_11FD8;
   v12[3] = &unk_34B30;
-  v13 = v4;
-  v11 = v4;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [v9 endNavigationWithCompletion:v12];
 }
 

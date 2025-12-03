@@ -26,8 +26,8 @@
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:v12 file:@"_UITableViewDropCoordinator.m" lineNumber:441 description:{@"Invalid parameter not satisfying: %@", @"insertionIndexPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v12 file:@"_UITableViewDropCoordinator.m" lineNumber:441 description:{@"Invalid parameter not satisfying: %@", @"insertionIndexPath != nil"}];
 
     if (v11)
     {
@@ -35,14 +35,14 @@
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:v12 file:@"_UITableViewDropCoordinator.m" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"reuseIdentifier != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:v12 file:@"_UITableViewDropCoordinator.m" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"reuseIdentifier != nil"}];
 
 LABEL_4:
   if (rowHeight <= 0.0 && rowHeight != -1.0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:v12 file:@"_UITableViewDropCoordinator.m" lineNumber:443 description:@"Invalid row height provided for the placeholder. Value must be greater than zero or UITableViewAutomaticDimension."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:v12 file:@"_UITableViewDropCoordinator.m" lineNumber:443 description:@"Invalid row height provided for the placeholder. Value must be greater than zero or UITableViewAutomaticDimension."];
   }
 
   objc_storeStrong(&v12->_insertionIndexPath, insertionIndexPath);

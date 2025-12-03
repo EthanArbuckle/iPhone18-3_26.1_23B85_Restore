@@ -1,7 +1,7 @@
 @interface PROConcretePlugIn
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)plugInClass;
-- (PROConcretePlugIn)initWithDictionary:(id)a3 bundle:(id)a4 delegate:(id)a5 pluginKitPlug:(id)a6;
+- (PROConcretePlugIn)initWithDictionary:(id)dictionary bundle:(id)bundle delegate:(id)delegate pluginKitPlug:(id)plug;
 - (id)description;
 - (id)displayName;
 - (id)helpURL;
@@ -15,7 +15,7 @@
 
 @implementation PROConcretePlugIn
 
-- (PROConcretePlugIn)initWithDictionary:(id)a3 bundle:(id)a4 delegate:(id)a5 pluginKitPlug:(id)a6
+- (PROConcretePlugIn)initWithDictionary:(id)dictionary bundle:(id)bundle delegate:(id)delegate pluginKitPlug:(id)plug
 {
   v42.receiver = self;
   v42.super_class = PROConcretePlugIn;
@@ -25,10 +25,10 @@
     return v10;
   }
 
-  v10->infoDictionary = [a3 copy];
-  v10->bundle = a4;
-  v10->delegate = a5;
-  v10->pluginKitPlug = a6;
+  v10->infoDictionary = [dictionary copy];
+  v10->bundle = bundle;
+  v10->delegate = delegate;
+  v10->pluginKitPlug = plug;
   v10->entirelyOutOfProcess = [(NSBundle *)v10->bundle objectForInfoDictionaryKey:@"PlugInKit"]!= 0;
   v10->_isBlocked = 0;
   v11 = [(NSDictionary *)v10->infoDictionary objectForKey:@"uuid"];
@@ -39,21 +39,21 @@
     delegate = v10->delegate;
     v38 = objc_opt_class();
     v36 = MalformedKeyError(v10, @"uuid", v38, v10->infoDictionary);
-    v35 = delegate;
+    delegateCopy = delegate;
     goto LABEL_26;
   }
 
   v10->uuidRef = CFUUIDCreateFromString(*MEMORY[0x277CBECE8], v11);
   v41 = 0;
   v13 = objc_opt_class();
-  if (!RequiredKeyIsPresent(v10, @"uuid", v13, a3, &v41) || (v14 = objc_opt_class(), !RequiredKeyIsPresent(v10, @"displayName", v14, a3, &v41)) || (v15 = objc_opt_class(), !RequiredKeyIsPresent(v10, @"className", v15, a3, &v41)) || (v16 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"group", v16, a3, &v41)) || (v17 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"protocolNames", v17, a3, &v41)) || (v18 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"infoString", v18, a3, &v41)) || (v19 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"iconFileName", v19, a3, &v41)) || (v20 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"helpURL", v20, a3, &v41)) || (v21 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"vendorName", v21, a3, &v41)) || (v22 = objc_opt_class(), (OptionalKeyIsWellFormed(v10, @"version", v22, a3, &v41) & 1) == 0) && (v23 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"version", v23, a3, &v41)) || (v24 = objc_opt_class(), (OptionalKeyIsWellFormed(v10, @"stringsFileName", v24, a3, &v41) & 1) == 0))
+  if (!RequiredKeyIsPresent(v10, @"uuid", v13, dictionary, &v41) || (v14 = objc_opt_class(), !RequiredKeyIsPresent(v10, @"displayName", v14, dictionary, &v41)) || (v15 = objc_opt_class(), !RequiredKeyIsPresent(v10, @"className", v15, dictionary, &v41)) || (v16 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"group", v16, dictionary, &v41)) || (v17 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"protocolNames", v17, dictionary, &v41)) || (v18 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"infoString", v18, dictionary, &v41)) || (v19 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"iconFileName", v19, dictionary, &v41)) || (v20 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"helpURL", v20, dictionary, &v41)) || (v21 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"vendorName", v21, dictionary, &v41)) || (v22 = objc_opt_class(), (OptionalKeyIsWellFormed(v10, @"version", v22, dictionary, &v41) & 1) == 0) && (v23 = objc_opt_class(), !OptionalKeyIsWellFormed(v10, @"version", v23, dictionary, &v41)) || (v24 = objc_opt_class(), (OptionalKeyIsWellFormed(v10, @"stringsFileName", v24, dictionary, &v41) & 1) == 0))
   {
-    v35 = v10->delegate;
+    delegateCopy = v10->delegate;
     v36 = v41;
     goto LABEL_26;
   }
 
-  v25 = [a3 objectForKey:@"group"];
+  v25 = [dictionary objectForKey:@"group"];
   if (v25)
   {
     v26 = v25;
@@ -76,20 +76,20 @@
     v33 = objc_opt_class();
     v34 = @"group";
 LABEL_29:
-    v36 = MalformedKeyError(v10, v34, v33, a3);
-    v35 = v32;
+    v36 = MalformedKeyError(v10, v34, v33, dictionary);
+    delegateCopy = v32;
 LABEL_26:
-    [(PROPlugInDelegate *)v35 plugInCouldNotInitialize:v36];
+    [(PROPlugInDelegate *)delegateCopy plugInCouldNotInitialize:v36];
     v39 = v10;
     return 0;
   }
 
 LABEL_19:
-  v30 = [a3 objectForKey:@"protocolNames"];
+  v30 = [dictionary objectForKey:@"protocolNames"];
   if (v30)
   {
-    v31 = [v30 objectEnumerator];
-    while ([v31 nextObject])
+    objectEnumerator = [v30 objectEnumerator];
+    while ([objectEnumerator nextObject])
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -119,19 +119,19 @@ LABEL_19:
   [(PROConcretePlugIn *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if (objc_opt_respondsToSelector())
   {
 
-    return [(PROConcretePlugIn *)self isEqualToPlugIn:a3];
+    return [(PROConcretePlugIn *)self isEqualToPlugIn:equal];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PROConcretePlugIn;
-    return [(PROConcretePlugIn *)&v6 isEqual:a3];
+    return [(PROConcretePlugIn *)&v6 isEqual:equal];
   }
 }
 
@@ -161,17 +161,17 @@ LABEL_19:
   }
 
   *&self->plugInFlags = plugInFlags | 1;
-  v4 = [(PROConcretePlugIn *)self className];
+  className = [(PROConcretePlugIn *)self className];
   v11 = 0;
   if ([(NSBundle *)self->bundle loadAndReturnError:&v11])
   {
-    result = NSClassFromString(v4);
+    result = NSClassFromString(className);
     if (result)
     {
       return result;
     }
 
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{self, @"PROPlugIn", v4, @"ClassName", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"Plug-In failed to find the plug-in's class.", &stru_2872E16E0, @"PROPlug", *MEMORY[0x277CCA450], 0}];
+    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{self, @"PROPlugIn", className, @"ClassName", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"Plug-In failed to find the plug-in's class.", &stru_2872E16E0, @"PROPlug", *MEMORY[0x277CCA450], 0}];
     v7 = MEMORY[0x277CCA9B8];
     v8 = -601;
   }
@@ -253,24 +253,24 @@ LABEL_19:
     v4 = [(NSDictionary *)self->infoDictionary objectForKey:@"helpURL"];
     if (!v4)
     {
-      v5 = [(PROConcretePlugIn *)self displayName];
+      displayName = [(PROConcretePlugIn *)self displayName];
       goto LABEL_10;
     }
 
-    v5 = v4;
-    if ([v4 rangeOfString:@"://"] == 0x7FFFFFFFFFFFFFFFLL || (result = objc_msgSend(objc_msgSend(MEMORY[0x277CBEBC0], "allocWithZone:", -[PROConcretePlugIn zone](self, "zone")), "initWithString:", v5), (self->helpURL = result) == 0))
+    displayName = v4;
+    if ([v4 rangeOfString:@"://"] == 0x7FFFFFFFFFFFFFFFLL || (result = objc_msgSend(objc_msgSend(MEMORY[0x277CBEBC0], "allocWithZone:", -[PROConcretePlugIn zone](self, "zone")), "initWithString:", displayName), (self->helpURL = result) == 0))
     {
-      v6 = [v5 pathExtension];
-      if ([(__CFString *)v6 length])
+      pathExtension = [displayName pathExtension];
+      if ([(__CFString *)pathExtension length])
       {
-        v5 = [v5 stringByDeletingPathExtension];
+        displayName = [displayName stringByDeletingPathExtension];
         goto LABEL_11;
       }
 
 LABEL_10:
-      v6 = @"html";
+      pathExtension = @"html";
 LABEL_11:
-      v7 = [(NSBundle *)self->bundle pathForResource:v5 ofType:v6];
+      v7 = [(NSBundle *)self->bundle pathForResource:displayName ofType:pathExtension];
       if (v7)
       {
         result = [objc_msgSend(MEMORY[0x277CBEBC0] allocWithZone:{-[PROConcretePlugIn zone](self, "zone")), "initFileURLWithPath:", v7}];

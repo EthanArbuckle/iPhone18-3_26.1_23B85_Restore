@@ -1,18 +1,18 @@
 @interface PanicAndCrashHistoryInputs
-- (BOOL)_applyAppBundleFilters:(id)a3;
-- (BOOL)_applyLabelsMap:(id)a3;
-- (BOOL)_applylogLineTypes:(id)a3;
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)_applyAppBundleFilters:(id)filters;
+- (BOOL)_applyLabelsMap:(id)map;
+- (BOOL)_applylogLineTypes:(id)types;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation PanicAndCrashHistoryInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(PanicAndCrashHistoryInputs *)self _applylogLineTypes:v4];
-  v9 = v5 | [(PanicAndCrashHistoryInputs *)self _applyAppBundleFilters:v4];
-  v6 = [v4 dk_dictionaryFromKey:@"logLineReturnLabels" defaultValue:&__NSDictionary0__struct failed:&v9];
+  parametersCopy = parameters;
+  v5 = [(PanicAndCrashHistoryInputs *)self _applylogLineTypes:parametersCopy];
+  v9 = v5 | [(PanicAndCrashHistoryInputs *)self _applyAppBundleFilters:parametersCopy];
+  v6 = [parametersCopy dk_dictionaryFromKey:@"logLineReturnLabels" defaultValue:&__NSDictionary0__struct failed:&v9];
 
   v7 = [(PanicAndCrashHistoryInputs *)self _applyLabelsMap:v6];
   LOBYTE(self) = ((v9 | v7) & 1) == 0;
@@ -21,13 +21,13 @@
   return self;
 }
 
-- (BOOL)_applylogLineTypes:(id)a3
+- (BOOL)_applylogLineTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v22 = 0;
   v5 = objc_opt_class();
   v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
-  v7 = [v4 dk_arrayFromKey:@"logLineTypes" types:v6 maxLength:0x7FFFFFFFFFFFFFFFLL defaultValue:&off_1000085E0 failed:&v22 validator:&stru_1000081F0];
+  v7 = [typesCopy dk_arrayFromKey:@"logLineTypes" types:v6 maxLength:0x7FFFFFFFFFFFFFFFLL defaultValue:&off_1000085E0 failed:&v22 validator:&stru_1000081F0];
 
   v8 = +[NSMutableSet set];
   v18 = 0u;
@@ -61,8 +61,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v14 stringValue];
-            [v8 addObject:v15];
+            stringValue = [v14 stringValue];
+            [v8 addObject:stringValue];
           }
         }
       }
@@ -79,12 +79,12 @@
   return v16;
 }
 
-- (BOOL)_applyAppBundleFilters:(id)a3
+- (BOOL)_applyAppBundleFilters:(id)filters
 {
   v9 = 0;
-  v4 = a3;
+  filtersCopy = filters;
   v5 = [NSSet setWithObjects:objc_opt_class(), 0];
-  v6 = [v4 dk_arrayFromKey:@"appBundleFilter" types:v5 maxLength:0x7FFFFFFFFFFFFFFFLL defaultValue:&off_1000085F8 failed:&v9 validator:&stru_100008210];
+  v6 = [filtersCopy dk_arrayFromKey:@"appBundleFilter" types:v5 maxLength:0x7FFFFFFFFFFFFFFFLL defaultValue:&off_1000085F8 failed:&v9 validator:&stru_100008210];
 
   v7 = [[NSSet alloc] initWithArray:v6];
   [(PanicAndCrashHistoryInputs *)self setApplicationFilters:v7];
@@ -93,9 +93,9 @@
   return self;
 }
 
-- (BOOL)_applyLabelsMap:(id)a3
+- (BOOL)_applyLabelsMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   +[NSMutableDictionary dictionary];
   v14 = 0;
   v15 = &v14;
@@ -107,7 +107,7 @@
   v11 = &unk_100008238;
   v5 = v13 = &v14;
   v12 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v8];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:&v8];
   v6 = *(v15 + 24);
   if ((v6 & 1) == 0)
   {

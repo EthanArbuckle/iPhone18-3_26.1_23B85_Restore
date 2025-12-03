@@ -1,7 +1,7 @@
 @interface RDXPCActivity
 + (void)initialize;
 - (BOOL)deferIfNeeded;
-- (RDXPCActivity)initWithName:(id)a3 criteria:(id)a4;
+- (RDXPCActivity)initWithName:(id)name criteria:(id)criteria;
 - (id)description;
 - (void)dealloc;
 - (void)markCompleted;
@@ -11,21 +11,21 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B2A8 = os_log_create("com.apple.SensorKit", "RDXPCActivity");
   }
 }
 
-- (RDXPCActivity)initWithName:(id)a3 criteria:(id)a4
+- (RDXPCActivity)initWithName:(id)name criteria:(id)criteria
 {
   v8.receiver = self;
   v8.super_class = RDXPCActivity;
   v6 = [(RDXPCActivity *)&v8 init];
   if (v6)
   {
-    v6->_name = a3;
-    v6->_criteria = a4;
+    v6->_name = name;
+    v6->_criteria = criteria;
   }
 
   return v6;

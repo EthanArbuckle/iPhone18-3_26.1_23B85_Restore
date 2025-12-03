@@ -1,17 +1,17 @@
 @interface BMHomeKitClientAccessoryControl
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMHomeKitClientAccessoryControl)initWithBase:(id)a3 accessoryUniqueIdentifier:(id)a4 accessoryState:(id)a5 serviceUniqueIdentifier:(id)a6 serviceType:(id)a7 characteristicType:(id)a8 serviceGroupUniqueIdentifier:(id)a9 zoneUniqueIdentifiers:(id)a10 roomUniqueIdentifier:(id)a11 accessoryName:(id)a12 serviceName:(id)a13 roomName:(id)a14 serviceGroupName:(id)a15 zoneNames:(id)a16 homeName:(id)a17;
-- (BMHomeKitClientAccessoryControl)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMHomeKitClientAccessoryControl)initWithBase:(id)base accessoryUniqueIdentifier:(id)identifier accessoryState:(id)state serviceUniqueIdentifier:(id)uniqueIdentifier serviceType:(id)type characteristicType:(id)characteristicType serviceGroupUniqueIdentifier:(id)groupUniqueIdentifier zoneUniqueIdentifiers:(id)self0 roomUniqueIdentifier:(id)self1 accessoryName:(id)self2 serviceName:(id)self3 roomName:(id)self4 serviceGroupName:(id)self5 zoneNames:(id)self6 homeName:(id)self7;
+- (BMHomeKitClientAccessoryControl)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_zoneNamesJSONArray;
 - (id)_zoneUniqueIdentifiersJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMHomeKitClientAccessoryControl
@@ -56,25 +56,25 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMHomeKitClientAccessoryControl *)self base];
-    v7 = [v5 base];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    base = [(BMHomeKitClientAccessoryControl *)self base];
+    base2 = [v5 base];
+    v8 = base2;
+    if (base == base2)
     {
     }
 
     else
     {
-      v9 = [(BMHomeKitClientAccessoryControl *)self base];
-      v10 = [v5 base];
-      v11 = [v9 isEqual:v10];
+      base3 = [(BMHomeKitClientAccessoryControl *)self base];
+      base4 = [v5 base];
+      v11 = [base3 isEqual:base4];
 
       if (!v11)
       {
@@ -82,18 +82,18 @@
       }
     }
 
-    v13 = [(BMHomeKitClientAccessoryControl *)self accessoryUniqueIdentifier];
-    v14 = [v5 accessoryUniqueIdentifier];
-    v15 = v14;
-    if (v13 == v14)
+    accessoryUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self accessoryUniqueIdentifier];
+    accessoryUniqueIdentifier2 = [v5 accessoryUniqueIdentifier];
+    v15 = accessoryUniqueIdentifier2;
+    if (accessoryUniqueIdentifier == accessoryUniqueIdentifier2)
     {
     }
 
     else
     {
-      v16 = [(BMHomeKitClientAccessoryControl *)self accessoryUniqueIdentifier];
-      v17 = [v5 accessoryUniqueIdentifier];
-      v18 = [v16 isEqual:v17];
+      accessoryUniqueIdentifier3 = [(BMHomeKitClientAccessoryControl *)self accessoryUniqueIdentifier];
+      accessoryUniqueIdentifier4 = [v5 accessoryUniqueIdentifier];
+      v18 = [accessoryUniqueIdentifier3 isEqual:accessoryUniqueIdentifier4];
 
       if (!v18)
       {
@@ -101,18 +101,18 @@
       }
     }
 
-    v19 = [(BMHomeKitClientAccessoryControl *)self accessoryState];
-    v20 = [v5 accessoryState];
-    v21 = v20;
-    if (v19 == v20)
+    accessoryState = [(BMHomeKitClientAccessoryControl *)self accessoryState];
+    accessoryState2 = [v5 accessoryState];
+    v21 = accessoryState2;
+    if (accessoryState == accessoryState2)
     {
     }
 
     else
     {
-      v22 = [(BMHomeKitClientAccessoryControl *)self accessoryState];
-      v23 = [v5 accessoryState];
-      v24 = [v22 isEqual:v23];
+      accessoryState3 = [(BMHomeKitClientAccessoryControl *)self accessoryState];
+      accessoryState4 = [v5 accessoryState];
+      v24 = [accessoryState3 isEqual:accessoryState4];
 
       if (!v24)
       {
@@ -120,18 +120,18 @@
       }
     }
 
-    v25 = [(BMHomeKitClientAccessoryControl *)self serviceUniqueIdentifier];
-    v26 = [v5 serviceUniqueIdentifier];
-    v27 = v26;
-    if (v25 == v26)
+    serviceUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self serviceUniqueIdentifier];
+    serviceUniqueIdentifier2 = [v5 serviceUniqueIdentifier];
+    v27 = serviceUniqueIdentifier2;
+    if (serviceUniqueIdentifier == serviceUniqueIdentifier2)
     {
     }
 
     else
     {
-      v28 = [(BMHomeKitClientAccessoryControl *)self serviceUniqueIdentifier];
-      v29 = [v5 serviceUniqueIdentifier];
-      v30 = [v28 isEqual:v29];
+      serviceUniqueIdentifier3 = [(BMHomeKitClientAccessoryControl *)self serviceUniqueIdentifier];
+      serviceUniqueIdentifier4 = [v5 serviceUniqueIdentifier];
+      v30 = [serviceUniqueIdentifier3 isEqual:serviceUniqueIdentifier4];
 
       if (!v30)
       {
@@ -139,18 +139,18 @@
       }
     }
 
-    v31 = [(BMHomeKitClientAccessoryControl *)self serviceType];
-    v32 = [v5 serviceType];
-    v33 = v32;
-    if (v31 == v32)
+    serviceType = [(BMHomeKitClientAccessoryControl *)self serviceType];
+    serviceType2 = [v5 serviceType];
+    v33 = serviceType2;
+    if (serviceType == serviceType2)
     {
     }
 
     else
     {
-      v34 = [(BMHomeKitClientAccessoryControl *)self serviceType];
-      v35 = [v5 serviceType];
-      v36 = [v34 isEqual:v35];
+      serviceType3 = [(BMHomeKitClientAccessoryControl *)self serviceType];
+      serviceType4 = [v5 serviceType];
+      v36 = [serviceType3 isEqual:serviceType4];
 
       if (!v36)
       {
@@ -158,18 +158,18 @@
       }
     }
 
-    v37 = [(BMHomeKitClientAccessoryControl *)self characteristicType];
-    v38 = [v5 characteristicType];
-    v39 = v38;
-    if (v37 == v38)
+    characteristicType = [(BMHomeKitClientAccessoryControl *)self characteristicType];
+    characteristicType2 = [v5 characteristicType];
+    v39 = characteristicType2;
+    if (characteristicType == characteristicType2)
     {
     }
 
     else
     {
-      v40 = [(BMHomeKitClientAccessoryControl *)self characteristicType];
-      v41 = [v5 characteristicType];
-      v42 = [v40 isEqual:v41];
+      characteristicType3 = [(BMHomeKitClientAccessoryControl *)self characteristicType];
+      characteristicType4 = [v5 characteristicType];
+      v42 = [characteristicType3 isEqual:characteristicType4];
 
       if (!v42)
       {
@@ -177,18 +177,18 @@
       }
     }
 
-    v43 = [(BMHomeKitClientAccessoryControl *)self serviceGroupUniqueIdentifier];
-    v44 = [v5 serviceGroupUniqueIdentifier];
-    v45 = v44;
-    if (v43 == v44)
+    serviceGroupUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self serviceGroupUniqueIdentifier];
+    serviceGroupUniqueIdentifier2 = [v5 serviceGroupUniqueIdentifier];
+    v45 = serviceGroupUniqueIdentifier2;
+    if (serviceGroupUniqueIdentifier == serviceGroupUniqueIdentifier2)
     {
     }
 
     else
     {
-      v46 = [(BMHomeKitClientAccessoryControl *)self serviceGroupUniqueIdentifier];
-      v47 = [v5 serviceGroupUniqueIdentifier];
-      v48 = [v46 isEqual:v47];
+      serviceGroupUniqueIdentifier3 = [(BMHomeKitClientAccessoryControl *)self serviceGroupUniqueIdentifier];
+      serviceGroupUniqueIdentifier4 = [v5 serviceGroupUniqueIdentifier];
+      v48 = [serviceGroupUniqueIdentifier3 isEqual:serviceGroupUniqueIdentifier4];
 
       if (!v48)
       {
@@ -196,18 +196,18 @@
       }
     }
 
-    v49 = [(BMHomeKitClientAccessoryControl *)self zoneUniqueIdentifiers];
-    v50 = [v5 zoneUniqueIdentifiers];
-    v51 = v50;
-    if (v49 == v50)
+    zoneUniqueIdentifiers = [(BMHomeKitClientAccessoryControl *)self zoneUniqueIdentifiers];
+    zoneUniqueIdentifiers2 = [v5 zoneUniqueIdentifiers];
+    v51 = zoneUniqueIdentifiers2;
+    if (zoneUniqueIdentifiers == zoneUniqueIdentifiers2)
     {
     }
 
     else
     {
-      v52 = [(BMHomeKitClientAccessoryControl *)self zoneUniqueIdentifiers];
-      v53 = [v5 zoneUniqueIdentifiers];
-      v54 = [v52 isEqual:v53];
+      zoneUniqueIdentifiers3 = [(BMHomeKitClientAccessoryControl *)self zoneUniqueIdentifiers];
+      zoneUniqueIdentifiers4 = [v5 zoneUniqueIdentifiers];
+      v54 = [zoneUniqueIdentifiers3 isEqual:zoneUniqueIdentifiers4];
 
       if (!v54)
       {
@@ -215,18 +215,18 @@
       }
     }
 
-    v55 = [(BMHomeKitClientAccessoryControl *)self roomUniqueIdentifier];
-    v56 = [v5 roomUniqueIdentifier];
-    v57 = v56;
-    if (v55 == v56)
+    roomUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self roomUniqueIdentifier];
+    roomUniqueIdentifier2 = [v5 roomUniqueIdentifier];
+    v57 = roomUniqueIdentifier2;
+    if (roomUniqueIdentifier == roomUniqueIdentifier2)
     {
     }
 
     else
     {
-      v58 = [(BMHomeKitClientAccessoryControl *)self roomUniqueIdentifier];
-      v59 = [v5 roomUniqueIdentifier];
-      v60 = [v58 isEqual:v59];
+      roomUniqueIdentifier3 = [(BMHomeKitClientAccessoryControl *)self roomUniqueIdentifier];
+      roomUniqueIdentifier4 = [v5 roomUniqueIdentifier];
+      v60 = [roomUniqueIdentifier3 isEqual:roomUniqueIdentifier4];
 
       if (!v60)
       {
@@ -234,18 +234,18 @@
       }
     }
 
-    v61 = [(BMHomeKitClientAccessoryControl *)self accessoryName];
-    v62 = [v5 accessoryName];
-    v63 = v62;
-    if (v61 == v62)
+    accessoryName = [(BMHomeKitClientAccessoryControl *)self accessoryName];
+    accessoryName2 = [v5 accessoryName];
+    v63 = accessoryName2;
+    if (accessoryName == accessoryName2)
     {
     }
 
     else
     {
-      v64 = [(BMHomeKitClientAccessoryControl *)self accessoryName];
-      v65 = [v5 accessoryName];
-      v66 = [v64 isEqual:v65];
+      accessoryName3 = [(BMHomeKitClientAccessoryControl *)self accessoryName];
+      accessoryName4 = [v5 accessoryName];
+      v66 = [accessoryName3 isEqual:accessoryName4];
 
       if (!v66)
       {
@@ -253,18 +253,18 @@
       }
     }
 
-    v67 = [(BMHomeKitClientAccessoryControl *)self serviceName];
-    v68 = [v5 serviceName];
-    v69 = v68;
-    if (v67 == v68)
+    serviceName = [(BMHomeKitClientAccessoryControl *)self serviceName];
+    serviceName2 = [v5 serviceName];
+    v69 = serviceName2;
+    if (serviceName == serviceName2)
     {
     }
 
     else
     {
-      v70 = [(BMHomeKitClientAccessoryControl *)self serviceName];
-      v71 = [v5 serviceName];
-      v72 = [v70 isEqual:v71];
+      serviceName3 = [(BMHomeKitClientAccessoryControl *)self serviceName];
+      serviceName4 = [v5 serviceName];
+      v72 = [serviceName3 isEqual:serviceName4];
 
       if (!v72)
       {
@@ -272,18 +272,18 @@
       }
     }
 
-    v73 = [(BMHomeKitClientAccessoryControl *)self roomName];
-    v74 = [v5 roomName];
-    v75 = v74;
-    if (v73 == v74)
+    roomName = [(BMHomeKitClientAccessoryControl *)self roomName];
+    roomName2 = [v5 roomName];
+    v75 = roomName2;
+    if (roomName == roomName2)
     {
     }
 
     else
     {
-      v76 = [(BMHomeKitClientAccessoryControl *)self roomName];
-      v77 = [v5 roomName];
-      v78 = [v76 isEqual:v77];
+      roomName3 = [(BMHomeKitClientAccessoryControl *)self roomName];
+      roomName4 = [v5 roomName];
+      v78 = [roomName3 isEqual:roomName4];
 
       if (!v78)
       {
@@ -291,18 +291,18 @@
       }
     }
 
-    v79 = [(BMHomeKitClientAccessoryControl *)self serviceGroupName];
-    v80 = [v5 serviceGroupName];
-    v81 = v80;
-    if (v79 == v80)
+    serviceGroupName = [(BMHomeKitClientAccessoryControl *)self serviceGroupName];
+    serviceGroupName2 = [v5 serviceGroupName];
+    v81 = serviceGroupName2;
+    if (serviceGroupName == serviceGroupName2)
     {
     }
 
     else
     {
-      v82 = [(BMHomeKitClientAccessoryControl *)self serviceGroupName];
-      v83 = [v5 serviceGroupName];
-      v84 = [v82 isEqual:v83];
+      serviceGroupName3 = [(BMHomeKitClientAccessoryControl *)self serviceGroupName];
+      serviceGroupName4 = [v5 serviceGroupName];
+      v84 = [serviceGroupName3 isEqual:serviceGroupName4];
 
       if (!v84)
       {
@@ -310,18 +310,18 @@
       }
     }
 
-    v85 = [(BMHomeKitClientAccessoryControl *)self zoneNames];
-    v86 = [v5 zoneNames];
-    v87 = v86;
-    if (v85 == v86)
+    zoneNames = [(BMHomeKitClientAccessoryControl *)self zoneNames];
+    zoneNames2 = [v5 zoneNames];
+    v87 = zoneNames2;
+    if (zoneNames == zoneNames2)
     {
     }
 
     else
     {
-      v88 = [(BMHomeKitClientAccessoryControl *)self zoneNames];
-      v89 = [v5 zoneNames];
-      v90 = [v88 isEqual:v89];
+      zoneNames3 = [(BMHomeKitClientAccessoryControl *)self zoneNames];
+      zoneNames4 = [v5 zoneNames];
+      v90 = [zoneNames3 isEqual:zoneNames4];
 
       if (!v90)
       {
@@ -333,18 +333,18 @@ LABEL_58:
       }
     }
 
-    v92 = [(BMHomeKitClientAccessoryControl *)self homeName];
-    v93 = [v5 homeName];
-    if (v92 == v93)
+    homeName = [(BMHomeKitClientAccessoryControl *)self homeName];
+    homeName2 = [v5 homeName];
+    if (homeName == homeName2)
     {
       v12 = 1;
     }
 
     else
     {
-      v94 = [(BMHomeKitClientAccessoryControl *)self homeName];
-      v95 = [v5 homeName];
-      v12 = [v94 isEqual:v95];
+      homeName3 = [(BMHomeKitClientAccessoryControl *)self homeName];
+      homeName4 = [v5 homeName];
+      v12 = [homeName3 isEqual:homeName4];
     }
 
     goto LABEL_58;
@@ -359,183 +359,183 @@ LABEL_59:
 - (id)jsonDictionary
 {
   v56[15] = *MEMORY[0x1E69E9840];
-  v3 = [(BMHomeKitClientAccessoryControl *)self base];
-  v4 = [v3 jsonDictionary];
+  base = [(BMHomeKitClientAccessoryControl *)self base];
+  jsonDictionary = [base jsonDictionary];
 
-  v5 = [(BMHomeKitClientAccessoryControl *)self accessoryUniqueIdentifier];
-  v6 = [(BMHomeKitClientAccessoryControl *)self accessoryState];
-  v7 = [v6 jsonDictionary];
+  accessoryUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self accessoryUniqueIdentifier];
+  accessoryState = [(BMHomeKitClientAccessoryControl *)self accessoryState];
+  jsonDictionary2 = [accessoryState jsonDictionary];
 
-  v8 = [(BMHomeKitClientAccessoryControl *)self serviceUniqueIdentifier];
-  v9 = [(BMHomeKitClientAccessoryControl *)self serviceType];
-  v10 = [(BMHomeKitClientAccessoryControl *)self characteristicType];
-  v11 = [(BMHomeKitClientAccessoryControl *)self serviceGroupUniqueIdentifier];
-  v12 = [(BMHomeKitClientAccessoryControl *)self _zoneUniqueIdentifiersJSONArray];
-  v13 = [(BMHomeKitClientAccessoryControl *)self roomUniqueIdentifier];
-  v54 = [(BMHomeKitClientAccessoryControl *)self accessoryName];
-  v53 = [(BMHomeKitClientAccessoryControl *)self serviceName];
-  v52 = [(BMHomeKitClientAccessoryControl *)self roomName];
-  v51 = [(BMHomeKitClientAccessoryControl *)self serviceGroupName];
-  v50 = [(BMHomeKitClientAccessoryControl *)self _zoneNamesJSONArray];
-  v14 = [(BMHomeKitClientAccessoryControl *)self homeName];
+  serviceUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self serviceUniqueIdentifier];
+  serviceType = [(BMHomeKitClientAccessoryControl *)self serviceType];
+  characteristicType = [(BMHomeKitClientAccessoryControl *)self characteristicType];
+  serviceGroupUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self serviceGroupUniqueIdentifier];
+  _zoneUniqueIdentifiersJSONArray = [(BMHomeKitClientAccessoryControl *)self _zoneUniqueIdentifiersJSONArray];
+  roomUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self roomUniqueIdentifier];
+  accessoryName = [(BMHomeKitClientAccessoryControl *)self accessoryName];
+  serviceName = [(BMHomeKitClientAccessoryControl *)self serviceName];
+  roomName = [(BMHomeKitClientAccessoryControl *)self roomName];
+  serviceGroupName = [(BMHomeKitClientAccessoryControl *)self serviceGroupName];
+  _zoneNamesJSONArray = [(BMHomeKitClientAccessoryControl *)self _zoneNamesJSONArray];
+  homeName = [(BMHomeKitClientAccessoryControl *)self homeName];
   v55[0] = @"base";
-  v15 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v42 = v15;
-  v56[0] = v15;
+  v42 = null;
+  v56[0] = null;
   v55[1] = @"accessoryUniqueIdentifier";
-  v16 = v5;
-  if (!v5)
+  null2 = accessoryUniqueIdentifier;
+  if (!accessoryUniqueIdentifier)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41 = v16;
-  v56[1] = v16;
+  v41 = null2;
+  v56[1] = null2;
   v55[2] = @"accessoryState";
-  v17 = v7;
-  if (!v7)
+  null3 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v17;
-  v56[2] = v17;
+  v40 = null3;
+  v56[2] = null3;
   v55[3] = @"serviceUniqueIdentifier";
-  v18 = v8;
-  if (!v8)
+  null4 = serviceUniqueIdentifier;
+  if (!serviceUniqueIdentifier)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39 = v18;
-  v56[3] = v18;
+  v39 = null4;
+  v56[3] = null4;
   v55[4] = @"serviceType";
-  v19 = v9;
-  if (!v9)
+  null5 = serviceType;
+  if (!serviceType)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v19;
-  v56[4] = v19;
+  v38 = null5;
+  v56[4] = null5;
   v55[5] = @"characteristicType";
-  v20 = v10;
-  if (!v10)
+  null6 = characteristicType;
+  if (!characteristicType)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v20;
-  v56[5] = v20;
+  v37 = null6;
+  v56[5] = null6;
   v55[6] = @"serviceGroupUniqueIdentifier";
-  v21 = v11;
-  if (!v11)
+  null7 = serviceGroupUniqueIdentifier;
+  if (!serviceGroupUniqueIdentifier)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v21;
-  v56[6] = v21;
+  v36 = null7;
+  v56[6] = null7;
   v55[7] = @"zoneUniqueIdentifiers";
-  v22 = v12;
-  if (!v12)
+  null8 = _zoneUniqueIdentifiersJSONArray;
+  if (!_zoneUniqueIdentifiersJSONArray)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45 = v13;
-  v35 = v22;
-  v56[7] = v22;
+  v45 = roomUniqueIdentifier;
+  v35 = null8;
+  v56[7] = null8;
   v55[8] = @"roomUniqueIdentifier";
-  v23 = v13;
-  if (!v13)
+  null9 = roomUniqueIdentifier;
+  if (!roomUniqueIdentifier)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v49 = v14;
-  v33 = v23;
-  v56[8] = v23;
+  v49 = homeName;
+  v33 = null9;
+  v56[8] = null9;
   v55[9] = @"accessoryName";
-  v24 = v54;
-  if (!v54)
+  null10 = accessoryName;
+  if (!accessoryName)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v47 = v9;
-  v48 = v8;
-  v56[9] = v24;
+  v47 = serviceType;
+  v48 = serviceUniqueIdentifier;
+  v56[9] = null10;
   v55[10] = @"serviceName";
-  v25 = v53;
-  if (!v53)
+  null11 = serviceName;
+  if (!serviceName)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46 = v10;
-  v44 = v4;
-  v56[10] = v25;
+  v46 = characteristicType;
+  v44 = jsonDictionary;
+  v56[10] = null11;
   v55[11] = @"roomName";
-  v26 = v52;
-  if (!v52)
+  null12 = roomName;
+  if (!roomName)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v5;
-  v56[11] = v26;
+  v27 = accessoryUniqueIdentifier;
+  v56[11] = null12;
   v55[12] = @"serviceGroupName";
-  v28 = v51;
-  if (!v51)
+  null13 = serviceGroupName;
+  if (!serviceGroupName)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56[12] = v28;
+  v56[12] = null13;
   v55[13] = @"zoneNames";
-  v29 = v50;
-  if (!v50)
+  null14 = _zoneNamesJSONArray;
+  if (!_zoneNamesJSONArray)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56[13] = v29;
+  v56[13] = null14;
   v55[14] = @"homeName";
-  v30 = v49;
+  null15 = v49;
   if (!v49)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56[14] = v30;
+  v56[14] = null15;
   v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:{15, v33}];
   if (!v49)
   {
   }
 
-  if (!v50)
+  if (!_zoneNamesJSONArray)
   {
   }
 
-  if (!v51)
+  if (!serviceGroupName)
   {
   }
 
-  if (!v52)
+  if (!roomName)
   {
   }
 
-  if (!v53)
+  if (!serviceName)
   {
   }
 
-  if (!v54)
+  if (!accessoryName)
   {
   }
 
@@ -543,9 +543,9 @@ LABEL_59:
   {
   }
 
-  if (v12)
+  if (_zoneUniqueIdentifiersJSONArray)
   {
-    if (v11)
+    if (serviceGroupUniqueIdentifier)
     {
       goto LABEL_47;
     }
@@ -554,7 +554,7 @@ LABEL_59:
   else
   {
 
-    if (v11)
+    if (serviceGroupUniqueIdentifier)
     {
 LABEL_47:
       if (v46)
@@ -595,7 +595,7 @@ LABEL_59:
   if (v48)
   {
 LABEL_50:
-    if (v7)
+    if (jsonDictionary2)
     {
       goto LABEL_51;
     }
@@ -605,7 +605,7 @@ LABEL_50:
 
 LABEL_60:
 
-  if (v7)
+  if (jsonDictionary2)
   {
 LABEL_51:
     if (v27)
@@ -652,8 +652,8 @@ LABEL_53:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMHomeKitClientAccessoryControl *)self zoneNames];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  zoneNames = [(BMHomeKitClientAccessoryControl *)self zoneNames];
+  v5 = [zoneNames countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -664,13 +664,13 @@ LABEL_53:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(zoneNames);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [zoneNames countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -689,8 +689,8 @@ LABEL_53:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMHomeKitClientAccessoryControl *)self zoneUniqueIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  zoneUniqueIdentifiers = [(BMHomeKitClientAccessoryControl *)self zoneUniqueIdentifiers];
+  v5 = [zoneUniqueIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -701,13 +701,13 @@ LABEL_53:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(zoneUniqueIdentifiers);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [zoneUniqueIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -718,11 +718,11 @@ LABEL_53:
   return v3;
 }
 
-- (BMHomeKitClientAccessoryControl)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMHomeKitClientAccessoryControl)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v241[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v191 = [v6 objectForKeyedSubscript:@"base"];
+  dictionaryCopy = dictionary;
+  v191 = [dictionaryCopy objectForKeyedSubscript:@"base"];
   if (!v191 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -738,29 +738,29 @@ LABEL_53:
     v20 = v201;
     if (v20)
     {
-      if (a4)
+      if (error)
       {
         v20 = v20;
-        *a4 = v20;
+        *error = v20;
       }
 
-      a4 = 0;
+      error = 0;
       goto LABEL_177;
     }
 
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"accessoryUniqueIdentifier"];
-    v187 = self;
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"accessoryUniqueIdentifier"];
+    errorCopy7 = self;
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v35 = v8;
           v36 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v37 = a4;
+          errorCopy = error;
           v38 = v7;
           v39 = *MEMORY[0x1E698F240];
           v238 = *MEMORY[0x1E696A578];
@@ -772,8 +772,8 @@ LABEL_4:
           v42 = v39;
           v7 = v38;
           v188 = 0;
-          a4 = 0;
-          *v37 = [v41 initWithDomain:v42 code:2 userInfo:v40];
+          error = 0;
+          *errorCopy = [v41 initWithDomain:v42 code:2 userInfo:v40];
           goto LABEL_174;
         }
 
@@ -791,7 +791,7 @@ LABEL_176:
       v188 = 0;
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"accessoryState"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"accessoryState"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v186 = 0;
@@ -808,18 +808,18 @@ LABEL_176:
       v23 = v200;
       if (v23)
       {
-        if (a4)
+        if (error)
         {
           v23 = v23;
-          *a4 = v23;
+          *error = v23;
         }
 
-        a4 = 0;
+        error = 0;
         goto LABEL_173;
       }
 
 LABEL_10:
-      v10 = [v6 objectForKeyedSubscript:@"serviceUniqueIdentifier"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"serviceUniqueIdentifier"];
       v183 = v10;
       v184 = v8;
       if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -827,13 +827,13 @@ LABEL_10:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v51 = objc_alloc(MEMORY[0x1E696ABC0]);
             v52 = v7;
             v53 = *MEMORY[0x1E698F240];
             v234 = *MEMORY[0x1E696A578];
-            v54 = a4;
+            errorCopy2 = error;
             v55 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"serviceUniqueIdentifier"];
             v235 = v55;
             v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v235 forKeys:&v234 count:1];
@@ -842,8 +842,8 @@ LABEL_10:
             v57 = v53;
             v7 = v52;
             v182 = 0;
-            a4 = 0;
-            *v54 = [v56 initWithDomain:v57 code:2 userInfo:v12];
+            error = 0;
+            *errorCopy2 = [v56 initWithDomain:v57 code:2 userInfo:v12];
             goto LABEL_171;
           }
 
@@ -859,19 +859,19 @@ LABEL_10:
         v182 = 0;
       }
 
-      v12 = [v6 objectForKeyedSubscript:@"serviceType"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"serviceType"];
       if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v63 = objc_alloc(MEMORY[0x1E696ABC0]);
             v64 = v7;
             v65 = *MEMORY[0x1E698F240];
             v232 = *MEMORY[0x1E696A578];
-            v66 = a4;
+            errorCopy3 = error;
             v67 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"serviceType"];
             v233 = v67;
             v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v233 forKeys:&v232 count:1];
@@ -881,8 +881,8 @@ LABEL_10:
             v7 = v64;
             v70 = v67;
             v55 = 0;
-            a4 = 0;
-            *v66 = [v68 initWithDomain:v69 code:2 userInfo:v13];
+            error = 0;
+            *errorCopy3 = [v68 initWithDomain:v69 code:2 userInfo:v13];
             goto LABEL_170;
           }
 
@@ -898,7 +898,7 @@ LABEL_10:
         v181 = 0;
       }
 
-      v13 = [v6 objectForKeyedSubscript:@"characteristicType"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"characteristicType"];
       if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         v43 = v13;
@@ -906,13 +906,13 @@ LABEL_10:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v73 = objc_alloc(MEMORY[0x1E696ABC0]);
             v74 = v7;
             v75 = *MEMORY[0x1E698F240];
             v230 = *MEMORY[0x1E696A578];
-            v76 = a4;
+            errorCopy4 = error;
             v77 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"characteristicType"];
             v231 = v77;
             v78 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v231 forKeys:&v230 count:1];
@@ -921,8 +921,8 @@ LABEL_10:
             v81 = v75;
             v7 = v74;
             v70 = 0;
-            a4 = 0;
-            *v76 = [v79 initWithDomain:v81 code:2 userInfo:v78];
+            error = 0;
+            *errorCopy4 = [v79 initWithDomain:v81 code:2 userInfo:v78];
             v12 = v44;
             v13 = v43;
             v14 = v78;
@@ -945,14 +945,14 @@ LABEL_10:
         v178 = 0;
       }
 
-      v14 = [v6 objectForKeyedSubscript:@"serviceGroupUniqueIdentifier"];
-      v179 = a4;
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"serviceGroupUniqueIdentifier"];
+      errorCopy5 = error;
       if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v83 = v13;
             v84 = v12;
@@ -970,9 +970,9 @@ LABEL_10:
             v190 = v88;
             v90 = [v89 initWithDomain:v87 code:2 userInfo:?];
             v177 = 0;
-            a4 = 0;
+            error = 0;
             v55 = v181;
-            *v179 = v90;
+            *errorCopy5 = v90;
             v70 = v178;
 
             goto LABEL_168;
@@ -994,9 +994,9 @@ LABEL_10:
         v177 = 0;
       }
 
-      v15 = [v6 objectForKeyedSubscript:@"zoneUniqueIdentifiers"];
-      v16 = [MEMORY[0x1E695DFB0] null];
-      v17 = [v15 isEqual:v16];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"zoneUniqueIdentifiers"];
+      null = [MEMORY[0x1E695DFB0] null];
+      v17 = [v15 isEqual:null];
 
       v175 = v14;
       v176 = v9;
@@ -1015,7 +1015,7 @@ LABEL_10:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
               v91 = objc_alloc(MEMORY[0x1E696ABC0]);
               v92 = *MEMORY[0x1E698F240];
@@ -1026,9 +1026,9 @@ LABEL_10:
               v94 = v92;
               v9 = v176;
               v95 = [v91 initWithDomain:v94 code:2 userInfo:v93];
-              v96 = a4;
-              a4 = 0;
-              *v96 = v95;
+              errorCopy6 = error;
+              error = 0;
+              *errorCopy6 = v95;
               v82 = v93;
               v7 = v174;
               v55 = v181;
@@ -1071,7 +1071,7 @@ LABEL_10:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              if (v179)
+              if (errorCopy5)
               {
                 v58 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v59 = *MEMORY[0x1E698F240];
@@ -1085,8 +1085,8 @@ LABEL_73:
                 v168 = v60;
                 v55 = v181;
                 v70 = v178;
-                a4 = 0;
-                *v179 = [v61 initWithDomain:v62 code:2 userInfo:?];
+                error = 0;
+                *errorCopy5 = [v61 initWithDomain:v62 code:2 userInfo:?];
                 v171 = v15;
                 v9 = v176;
                 v12 = v19;
@@ -1098,7 +1098,7 @@ LABEL_73:
               }
 
 LABEL_77:
-              a4 = 0;
+              error = 0;
               v82 = v15;
               v9 = v176;
               v12 = v19;
@@ -1113,7 +1113,7 @@ LABEL_77:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (v179)
+              if (errorCopy5)
               {
                 v71 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v72 = *MEMORY[0x1E698F240];
@@ -1138,7 +1138,7 @@ LABEL_77:
         while (v29);
       }
 
-      v33 = [v6 objectForKeyedSubscript:@"roomUniqueIdentifier"];
+      v33 = [dictionaryCopy objectForKeyedSubscript:@"roomUniqueIdentifier"];
       v170 = v33;
       if (v33)
       {
@@ -1155,10 +1155,10 @@ LABEL_77:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v179)
+            if (!errorCopy5)
             {
               v171 = 0;
-              a4 = 0;
+              error = 0;
               v12 = v19;
               v55 = v181;
               v13 = v18;
@@ -1178,8 +1178,8 @@ LABEL_77:
             v9 = v176;
             v166 = v120;
             v171 = 0;
-            a4 = 0;
-            *v179 = [v118 initWithDomain:v121 code:2 userInfo:?];
+            error = 0;
+            *errorCopy5 = [v118 initWithDomain:v121 code:2 userInfo:?];
             goto LABEL_151;
           }
 
@@ -1194,7 +1194,7 @@ LABEL_77:
       }
 
       v12 = v19;
-      v97 = [v6 objectForKeyedSubscript:@"accessoryName"];
+      v97 = [dictionaryCopy objectForKeyedSubscript:@"accessoryName"];
       v13 = v18;
       v166 = v97;
       if (!v97)
@@ -1218,7 +1218,7 @@ LABEL_77:
       {
         v169 = v98;
 LABEL_95:
-        v99 = [v6 objectForKeyedSubscript:@"serviceName"];
+        v99 = [dictionaryCopy objectForKeyedSubscript:@"serviceName"];
         v164 = v99;
         if (!v99 || (v100 = v99, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
@@ -1231,7 +1231,7 @@ LABEL_95:
         {
           v165 = v100;
 LABEL_98:
-          v101 = [v6 objectForKeyedSubscript:@"roomName"];
+          v101 = [dictionaryCopy objectForKeyedSubscript:@"roomName"];
           v162 = v101;
           if (!v101 || (v102 = v101, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -1244,15 +1244,15 @@ LABEL_98:
           {
             v163 = v102;
 LABEL_101:
-            v103 = [v6 objectForKeyedSubscript:@"serviceGroupName"];
+            v103 = [dictionaryCopy objectForKeyedSubscript:@"serviceGroupName"];
             v160 = v103;
             if (!v103 || (v104 = v103, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v161 = 0;
 LABEL_104:
-              v105 = [v6 objectForKeyedSubscript:@"zoneNames"];
-              v106 = [MEMORY[0x1E695DFB0] null];
-              v107 = [v105 isEqual:v106];
+              v105 = [dictionaryCopy objectForKeyedSubscript:@"zoneNames"];
+              null2 = [MEMORY[0x1E695DFB0] null];
+              v107 = [v105 isEqual:null2];
 
               if (v107)
               {
@@ -1270,7 +1270,7 @@ LABEL_104:
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
                     obj = v105;
-                    if (v179)
+                    if (errorCopy5)
                     {
                       v146 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v147 = *MEMORY[0x1E698F240];
@@ -1280,8 +1280,8 @@ LABEL_104:
                       v148 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v210 forKeys:&v209 count:1];
                       v149 = [v146 initWithDomain:v147 code:2 userInfo:v148];
                       v141 = v148;
-                      a4 = 0;
-                      *v179 = v149;
+                      error = 0;
+                      *errorCopy5 = v149;
                       v7 = v174;
                       v9 = v176;
                       v55 = v181;
@@ -1289,7 +1289,7 @@ LABEL_104:
                       goto LABEL_157;
                     }
 
-                    a4 = 0;
+                    error = 0;
                     v7 = v174;
                     v9 = v176;
                     v55 = v181;
@@ -1335,12 +1335,12 @@ LABEL_115:
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (v179)
+                  if (errorCopy5)
                   {
                     v127 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v128 = *MEMORY[0x1E698F240];
                     v204 = *MEMORY[0x1E696A578];
-                    v126 = v179;
+                    v126 = errorCopy5;
                     v159 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"zoneNames"];
                     v205 = v159;
                     v129 = MEMORY[0x1E695DF20];
@@ -1363,12 +1363,12 @@ LABEL_115:
 
 LABEL_122:
 
-                  v115 = [v6 objectForKeyedSubscript:@"homeName"];
+                  v115 = [dictionaryCopy objectForKeyedSubscript:@"homeName"];
                   v159 = v115;
                   if (!v115)
                   {
                     v117 = 0;
-                    v150 = v187;
+                    v150 = errorCopy7;
                     v7 = v174;
                     v9 = v176;
                     v12 = v109;
@@ -1400,16 +1400,16 @@ LABEL_122:
                     v55 = v181;
                     v13 = v108;
 LABEL_154:
-                    v150 = v187;
+                    v150 = errorCopy7;
 LABEL_155:
                     v180 = v117;
-                    a4 = [(BMHomeKitClientAccessoryControl *)v150 initWithBase:v7 accessoryUniqueIdentifier:v188 accessoryState:v186 serviceUniqueIdentifier:v182 serviceType:v55 characteristicType:v70 serviceGroupUniqueIdentifier:v177 zoneUniqueIdentifiers:v189 roomUniqueIdentifier:v171 accessoryName:v169 serviceName:v165 roomName:v163 serviceGroupName:v161 zoneNames:v172 homeName:v117];
-                    v187 = a4;
+                    error = [(BMHomeKitClientAccessoryControl *)v150 initWithBase:v7 accessoryUniqueIdentifier:v188 accessoryState:v186 serviceUniqueIdentifier:v182 serviceType:v55 characteristicType:v70 serviceGroupUniqueIdentifier:v177 zoneUniqueIdentifiers:v189 roomUniqueIdentifier:v171 accessoryName:v169 serviceName:v165 roomName:v163 serviceGroupName:v161 zoneNames:v172 homeName:v117];
+                    errorCopy7 = error;
                   }
 
                   else
                   {
-                    if (v179)
+                    if (errorCopy5)
                     {
                       v153 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v154 = *MEMORY[0x1E698F240];
@@ -1421,13 +1421,13 @@ LABEL_155:
                       v7 = v174;
                       v158 = v154;
                       v9 = v176;
-                      *v179 = [v157 initWithDomain:v158 code:2 userInfo:v156];
+                      *errorCopy5 = [v157 initWithDomain:v158 code:2 userInfo:v156];
 
                       v70 = v178;
                     }
 
                     v180 = 0;
-                    a4 = 0;
+                    error = 0;
                     v55 = v181;
                     v13 = v108;
                   }
@@ -1470,8 +1470,8 @@ LABEL_174:
                 }
               }
 
-              v126 = v179;
-              if (v179)
+              v126 = errorCopy5;
+              if (errorCopy5)
               {
                 v127 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v128 = *MEMORY[0x1E698F240];
@@ -1485,7 +1485,7 @@ LABEL_140:
                 v136 = [v129 dictionaryWithObjects:v130 forKeys:v131 count:1];
                 *v126 = [v127 initWithDomain:v128 code:2 userInfo:v136];
 
-                a4 = 0;
+                error = 0;
                 v180 = obj;
                 v7 = v174;
                 v9 = v176;
@@ -1497,7 +1497,7 @@ LABEL_140:
               }
 
 LABEL_143:
-              a4 = 0;
+              error = 0;
               v141 = obj;
               v9 = v176;
               v12 = v109;
@@ -1518,7 +1518,7 @@ LABEL_143:
 
             v18 = v13;
             v19 = v12;
-            if (v179)
+            if (errorCopy5)
             {
               v142 = objc_alloc(MEMORY[0x1E696ABC0]);
               v143 = *MEMORY[0x1E698F240];
@@ -1530,8 +1530,8 @@ LABEL_143:
               v9 = v176;
               v173 = v144;
               v161 = 0;
-              a4 = 0;
-              *v179 = [v142 initWithDomain:v145 code:2 userInfo:?];
+              error = 0;
+              *errorCopy5 = [v142 initWithDomain:v145 code:2 userInfo:?];
               v55 = v181;
               v13 = v18;
               v70 = v178;
@@ -1542,7 +1542,7 @@ LABEL_143:
             }
 
             v161 = 0;
-            a4 = 0;
+            error = 0;
 LABEL_184:
             v12 = v19;
             v55 = v181;
@@ -1555,7 +1555,7 @@ LABEL_184:
 
           v18 = v13;
           v19 = v12;
-          if (v179)
+          if (errorCopy5)
           {
             v137 = objc_alloc(MEMORY[0x1E696ABC0]);
             v138 = *MEMORY[0x1E698F240];
@@ -1567,13 +1567,13 @@ LABEL_184:
             v9 = v176;
             v160 = v139;
             v163 = 0;
-            a4 = 0;
-            *v179 = [v137 initWithDomain:v140 code:2 userInfo:?];
+            error = 0;
+            *errorCopy5 = [v137 initWithDomain:v140 code:2 userInfo:?];
             goto LABEL_184;
           }
 
           v163 = 0;
-          a4 = 0;
+          error = 0;
 LABEL_182:
           v12 = v19;
           v55 = v181;
@@ -1586,7 +1586,7 @@ LABEL_182:
 
         v18 = v13;
         v19 = v12;
-        if (v179)
+        if (errorCopy5)
         {
           v132 = objc_alloc(MEMORY[0x1E696ABC0]);
           v133 = *MEMORY[0x1E698F240];
@@ -1598,13 +1598,13 @@ LABEL_182:
           v9 = v176;
           v162 = v134;
           v165 = 0;
-          a4 = 0;
-          *v179 = [v132 initWithDomain:v135 code:2 userInfo:?];
+          error = 0;
+          *errorCopy5 = [v132 initWithDomain:v135 code:2 userInfo:?];
           goto LABEL_182;
         }
 
         v165 = 0;
-        a4 = 0;
+        error = 0;
 LABEL_180:
         v12 = v19;
         v55 = v181;
@@ -1617,7 +1617,7 @@ LABEL_180:
 
       v18 = v13;
       v19 = v12;
-      if (v179)
+      if (errorCopy5)
       {
         v122 = objc_alloc(MEMORY[0x1E696ABC0]);
         v123 = *MEMORY[0x1E698F240];
@@ -1629,13 +1629,13 @@ LABEL_180:
         v9 = v176;
         v164 = v124;
         v169 = 0;
-        a4 = 0;
-        *v179 = [v122 initWithDomain:v125 code:2 userInfo:?];
+        error = 0;
+        *errorCopy5 = [v122 initWithDomain:v125 code:2 userInfo:?];
         goto LABEL_180;
       }
 
       v169 = 0;
-      a4 = 0;
+      error = 0;
 LABEL_151:
       v12 = v19;
       v55 = v181;
@@ -1646,7 +1646,7 @@ LABEL_151:
       goto LABEL_163;
     }
 
-    if (a4)
+    if (error)
     {
       v185 = v8;
       v45 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1660,20 +1660,20 @@ LABEL_151:
       v8 = v185;
       v50 = v47;
       v7 = v46;
-      *a4 = [v49 initWithDomain:v50 code:2 userInfo:v48];
+      *error = [v49 initWithDomain:v50 code:2 userInfo:v48];
 
-      a4 = 0;
+      error = 0;
       v21 = v9;
       goto LABEL_174;
     }
 
 LABEL_175:
 
-    self = v187;
+    self = errorCopy7;
     goto LABEL_176;
   }
 
-  if (a4)
+  if (error)
   {
     v24 = objc_alloc(MEMORY[0x1E696ABC0]);
     v25 = *MEMORY[0x1E698F240];
@@ -1682,34 +1682,34 @@ LABEL_175:
     v241[0] = v7;
     v188 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v241 forKeys:&v240 count:1];
     v26 = [v24 initWithDomain:v25 code:2 userInfo:?];
-    v27 = a4;
-    a4 = 0;
-    *v27 = v26;
+    errorCopy8 = error;
+    error = 0;
+    *errorCopy8 = v26;
 LABEL_177:
   }
 
   v151 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMHomeKitClientAccessoryControl *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_base)
   {
     v26 = 0;
     PBDataWriterPlaceMark();
-    [(BMHomeKitBase *)self->_base writeTo:v4];
+    [(BMHomeKitBase *)self->_base writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1722,7 +1722,7 @@ LABEL_177:
   {
     v26 = 0;
     PBDataWriterPlaceMark();
-    [(BMHomeKitAccessoryState *)self->_accessoryState writeTo:v4];
+    [(BMHomeKitAccessoryState *)self->_accessoryState writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1843,9 +1843,9 @@ LABEL_177:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMHomeKitClientAccessoryControl;
   v5 = [(BMEventBase *)&v35 init];
@@ -1858,8 +1858,8 @@ LABEL_48:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 >= [v4 length])
+  position = [fromCopy position];
+  if (position >= [fromCopy length])
   {
 LABEL_46:
     v28 = [v6 copy];
@@ -1870,8 +1870,8 @@ LABEL_46:
     zoneNames = v5->_zoneNames;
     v5->_zoneNames = v30;
 
-    v32 = [v4 hasError];
-    if (v32)
+    hasError = [fromCopy hasError];
+    if (hasError)
     {
       goto LABEL_47;
     }
@@ -1881,7 +1881,7 @@ LABEL_46:
 
   while (2)
   {
-    if ([v4 hasError])
+    if ([fromCopy hasError])
     {
       goto LABEL_46;
     }
@@ -1892,18 +1892,18 @@ LABEL_46:
     while (1)
     {
       LOBYTE(v36) = 0;
-      v12 = [v4 position] + 1;
-      if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+      v12 = [fromCopy position] + 1;
+      if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
       {
-        v14 = [v4 data];
-        [v14 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+        data = [fromCopy data];
+        [data getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v11 |= (v36 & 0x7F) << v9;
@@ -1920,9 +1920,9 @@ LABEL_46:
       }
     }
 
-    v16 = [v4 hasError] ? 0 : v11;
+    v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-    if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+    if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
     {
       goto LABEL_46;
     }
@@ -1937,7 +1937,7 @@ LABEL_16:
           goto LABEL_50;
         }
 
-        v17 = [[BMHomeKitBase alloc] initByReadFrom:v4];
+        v17 = [[BMHomeKitBase alloc] initByReadFrom:fromCopy];
         if (!v17)
         {
           goto LABEL_50;
@@ -1957,7 +1957,7 @@ LABEL_16:
           goto LABEL_50;
         }
 
-        v17 = [[BMHomeKitAccessoryState alloc] initByReadFrom:v4];
+        v17 = [[BMHomeKitAccessoryState alloc] initByReadFrom:fromCopy];
         if (!v17)
         {
           goto LABEL_50;
@@ -2041,8 +2041,8 @@ LABEL_44:
         if (PBReaderSkipValueWithTag())
         {
 LABEL_45:
-          v27 = [v4 position];
-          if (v27 >= [v4 length])
+          position2 = [fromCopy position];
+          if (position2 >= [fromCopy length])
           {
             goto LABEL_46;
           }
@@ -2064,67 +2064,67 @@ LABEL_49:
 - (NSString)description
 {
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(BMHomeKitClientAccessoryControl *)self base];
-  v13 = [(BMHomeKitClientAccessoryControl *)self accessoryUniqueIdentifier];
-  v20 = [(BMHomeKitClientAccessoryControl *)self accessoryState];
-  v19 = [(BMHomeKitClientAccessoryControl *)self serviceUniqueIdentifier];
-  v18 = [(BMHomeKitClientAccessoryControl *)self serviceType];
-  v17 = [(BMHomeKitClientAccessoryControl *)self characteristicType];
-  v3 = [(BMHomeKitClientAccessoryControl *)self serviceGroupUniqueIdentifier];
-  v4 = [(BMHomeKitClientAccessoryControl *)self zoneUniqueIdentifiers];
-  v5 = [(BMHomeKitClientAccessoryControl *)self roomUniqueIdentifier];
-  v6 = [(BMHomeKitClientAccessoryControl *)self accessoryName];
-  v12 = [(BMHomeKitClientAccessoryControl *)self serviceName];
-  v7 = [(BMHomeKitClientAccessoryControl *)self roomName];
-  v8 = [(BMHomeKitClientAccessoryControl *)self serviceGroupName];
-  v9 = [(BMHomeKitClientAccessoryControl *)self zoneNames];
-  v10 = [(BMHomeKitClientAccessoryControl *)self homeName];
-  v16 = [v15 initWithFormat:@"BMHomeKitClientAccessoryControl with base: %@, accessoryUniqueIdentifier: %@, accessoryState: %@, serviceUniqueIdentifier: %@, serviceType: %@, characteristicType: %@, serviceGroupUniqueIdentifier: %@, zoneUniqueIdentifiers: %@, roomUniqueIdentifier: %@, accessoryName: %@, serviceName: %@, roomName: %@, serviceGroupName: %@, zoneNames: %@, homeName: %@", v14, v13, v20, v19, v18, v17, v3, v4, v5, v6, v12, v7, v8, v9, v10];
+  base = [(BMHomeKitClientAccessoryControl *)self base];
+  accessoryUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self accessoryUniqueIdentifier];
+  accessoryState = [(BMHomeKitClientAccessoryControl *)self accessoryState];
+  serviceUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self serviceUniqueIdentifier];
+  serviceType = [(BMHomeKitClientAccessoryControl *)self serviceType];
+  characteristicType = [(BMHomeKitClientAccessoryControl *)self characteristicType];
+  serviceGroupUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self serviceGroupUniqueIdentifier];
+  zoneUniqueIdentifiers = [(BMHomeKitClientAccessoryControl *)self zoneUniqueIdentifiers];
+  roomUniqueIdentifier = [(BMHomeKitClientAccessoryControl *)self roomUniqueIdentifier];
+  accessoryName = [(BMHomeKitClientAccessoryControl *)self accessoryName];
+  serviceName = [(BMHomeKitClientAccessoryControl *)self serviceName];
+  roomName = [(BMHomeKitClientAccessoryControl *)self roomName];
+  serviceGroupName = [(BMHomeKitClientAccessoryControl *)self serviceGroupName];
+  zoneNames = [(BMHomeKitClientAccessoryControl *)self zoneNames];
+  homeName = [(BMHomeKitClientAccessoryControl *)self homeName];
+  v16 = [v15 initWithFormat:@"BMHomeKitClientAccessoryControl with base: %@, accessoryUniqueIdentifier: %@, accessoryState: %@, serviceUniqueIdentifier: %@, serviceType: %@, characteristicType: %@, serviceGroupUniqueIdentifier: %@, zoneUniqueIdentifiers: %@, roomUniqueIdentifier: %@, accessoryName: %@, serviceName: %@, roomName: %@, serviceGroupName: %@, zoneNames: %@, homeName: %@", base, accessoryUniqueIdentifier, accessoryState, serviceUniqueIdentifier, serviceType, characteristicType, serviceGroupUniqueIdentifier, zoneUniqueIdentifiers, roomUniqueIdentifier, accessoryName, serviceName, roomName, serviceGroupName, zoneNames, homeName];
 
   return v16;
 }
 
-- (BMHomeKitClientAccessoryControl)initWithBase:(id)a3 accessoryUniqueIdentifier:(id)a4 accessoryState:(id)a5 serviceUniqueIdentifier:(id)a6 serviceType:(id)a7 characteristicType:(id)a8 serviceGroupUniqueIdentifier:(id)a9 zoneUniqueIdentifiers:(id)a10 roomUniqueIdentifier:(id)a11 accessoryName:(id)a12 serviceName:(id)a13 roomName:(id)a14 serviceGroupName:(id)a15 zoneNames:(id)a16 homeName:(id)a17
+- (BMHomeKitClientAccessoryControl)initWithBase:(id)base accessoryUniqueIdentifier:(id)identifier accessoryState:(id)state serviceUniqueIdentifier:(id)uniqueIdentifier serviceType:(id)type characteristicType:(id)characteristicType serviceGroupUniqueIdentifier:(id)groupUniqueIdentifier zoneUniqueIdentifiers:(id)self0 roomUniqueIdentifier:(id)self1 accessoryName:(id)self2 serviceName:(id)self3 roomName:(id)self4 serviceGroupName:(id)self5 zoneNames:(id)self6 homeName:(id)self7
 {
-  v43 = a3;
-  v31 = a4;
-  v42 = a4;
-  v32 = a5;
-  v41 = a5;
-  v33 = a6;
-  v40 = a6;
-  v39 = a7;
-  v38 = a8;
-  v37 = a9;
-  v36 = a10;
-  v35 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
-  v25 = a15;
-  v26 = a16;
-  v27 = a17;
+  baseCopy = base;
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  stateCopy = state;
+  stateCopy2 = state;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  uniqueIdentifierCopy2 = uniqueIdentifier;
+  typeCopy = type;
+  characteristicTypeCopy = characteristicType;
+  groupUniqueIdentifierCopy = groupUniqueIdentifier;
+  identifiersCopy = identifiers;
+  roomUniqueIdentifierCopy = roomUniqueIdentifier;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
+  roomNameCopy = roomName;
+  groupNameCopy = groupName;
+  namesCopy = names;
+  homeNameCopy = homeName;
   v44.receiver = self;
   v44.super_class = BMHomeKitClientAccessoryControl;
   v28 = [(BMEventBase *)&v44 init];
   if (v28)
   {
     v28->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v28->_base, a3);
-    objc_storeStrong(&v28->_accessoryUniqueIdentifier, v31);
-    objc_storeStrong(&v28->_accessoryState, v32);
-    objc_storeStrong(&v28->_serviceUniqueIdentifier, v33);
-    objc_storeStrong(&v28->_serviceType, a7);
-    objc_storeStrong(&v28->_characteristicType, a8);
-    objc_storeStrong(&v28->_serviceGroupUniqueIdentifier, a9);
-    objc_storeStrong(&v28->_zoneUniqueIdentifiers, a10);
-    objc_storeStrong(&v28->_roomUniqueIdentifier, a11);
-    objc_storeStrong(&v28->_accessoryName, a12);
-    objc_storeStrong(&v28->_serviceName, a13);
-    objc_storeStrong(&v28->_roomName, a14);
-    objc_storeStrong(&v28->_serviceGroupName, a15);
-    objc_storeStrong(&v28->_zoneNames, a16);
-    objc_storeStrong(&v28->_homeName, a17);
+    objc_storeStrong(&v28->_base, base);
+    objc_storeStrong(&v28->_accessoryUniqueIdentifier, identifierCopy);
+    objc_storeStrong(&v28->_accessoryState, stateCopy);
+    objc_storeStrong(&v28->_serviceUniqueIdentifier, uniqueIdentifierCopy);
+    objc_storeStrong(&v28->_serviceType, type);
+    objc_storeStrong(&v28->_characteristicType, characteristicType);
+    objc_storeStrong(&v28->_serviceGroupUniqueIdentifier, groupUniqueIdentifier);
+    objc_storeStrong(&v28->_zoneUniqueIdentifiers, identifiers);
+    objc_storeStrong(&v28->_roomUniqueIdentifier, roomUniqueIdentifier);
+    objc_storeStrong(&v28->_accessoryName, name);
+    objc_storeStrong(&v28->_serviceName, serviceName);
+    objc_storeStrong(&v28->_roomName, roomName);
+    objc_storeStrong(&v28->_serviceGroupName, groupName);
+    objc_storeStrong(&v28->_zoneNames, names);
+    objc_storeStrong(&v28->_homeName, homeName);
   }
 
   return v28;
@@ -2208,24 +2208,24 @@ id __42__BMHomeKitClientAccessoryControl_columns__block_invoke(uint64_t a1, void
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
-    if (a4 != 1)
+    if (version != 1)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMHomeKitClientAccessoryControl;
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMHomeKitClientAccessoryControl_v0;
   }
 
@@ -2233,7 +2233,7 @@ id __42__BMHomeKitClientAccessoryControl_columns__block_invoke(uint64_t a1, void
   v9 = v8;
   if (v8)
   {
-    *(v8 + 16) = a4;
+    *(v8 + 16) = version;
   }
 
 LABEL_9:

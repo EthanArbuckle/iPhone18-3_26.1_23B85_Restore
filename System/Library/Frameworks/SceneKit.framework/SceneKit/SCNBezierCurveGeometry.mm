@@ -1,26 +1,26 @@
 @interface SCNBezierCurveGeometry
-- (SCNBezierCurveGeometry)initWithCGPath:(__n128)a3 transform:(__n128)a4;
-- (SCNBezierCurveGeometry)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNBezierCurveGeometry)initWithCGPath:(__n128)path transform:(__n128)transform;
+- (SCNBezierCurveGeometry)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)presentationGeometry;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNBezierCurveGeometry
 
-- (SCNBezierCurveGeometry)initWithCGPath:(__n128)a3 transform:(__n128)a4
+- (SCNBezierCurveGeometry)initWithCGPath:(__n128)path transform:(__n128)transform
 {
   v9 = C3DBezierCurveGeometryCreate();
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = SCNBezierCurveGeometry;
   v10 = [(SCNGeometry *)&v16 initWithGeometryRef:v9];
   if (v10)
   {
     v10->_cgPath = MEMORY[0x21CF06E30](a7);
     *&v10[1].super.super.isa = a2;
-    *(&v10[1].super + 1) = a3;
-    *&v10[1].super._elements = a4;
+    *(&v10[1].super + 1) = path;
+    *&v10[1].super._elements = transform;
     *&v10[1].super._materials = a5;
     C3DBezierCurveGeometrySetPath(v9, v10->_cgPath);
   }
@@ -43,19 +43,19 @@
   [(SCNGeometry *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithCGPath:self->_cgPath];
   [v4 _setupObjCModelFrom:self];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = SCNBezierCurveGeometry;
   [(SCNGeometry *)&v9 encodeWithCoder:?];
-  SCNEncodeCGPathForKey(a3, self->_cgPath, @"path");
+  SCNEncodeCGPathForKey(coder, self->_cgPath, @"path");
   v5 = *(&self[1].super + 1);
   v6 = *&self[1].super._elements;
   v7 = *&self[1].super._materials;
@@ -63,10 +63,10 @@
   v8[1] = v5;
   v8[2] = v6;
   v8[3] = v7;
-  SCNEncodeSCNMatrix4(a3, @"transform", v8);
+  SCNEncodeSCNMatrix4(coder, @"transform", v8);
 }
 
-- (SCNBezierCurveGeometry)initWithCoder:(id)a3
+- (SCNBezierCurveGeometry)initWithCoder:(id)coder
 {
   v27.receiver = self;
   v27.super_class = SCNBezierCurveGeometry;
@@ -75,8 +75,8 @@
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    v6 = SCNDecodeCGPathForKey(a3, @"path");
-    SCNDecodeSCNMatrix4(a3, @"transform", v26);
+    v6 = SCNDecodeCGPathForKey(coder, @"path");
+    SCNDecodeSCNMatrix4(coder, @"transform", v26);
     v15 = v26[1];
     v17 = v26[0];
     v11 = v26[3];
@@ -97,7 +97,7 @@
     *&v4[1].super._elements = v13;
     *&v4[1].super._materials = v11;
     v8 = [(SCNGeometry *)v4 geometryRef:v11];
-    v9 = [(SCNGeometry *)v4 sceneRef];
+    sceneRef = [(SCNGeometry *)v4 sceneRef];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __40__SCNBezierCurveGeometry_initWithCoder___block_invoke;
@@ -108,7 +108,7 @@
     v21 = v16;
     v22 = v14;
     v23 = v12;
-    [SCNTransaction postCommandWithContext:v9 object:v4 applyBlock:v19];
+    [SCNTransaction postCommandWithContext:sceneRef object:v4 applyBlock:v19];
     [SCNTransaction setImmediateMode:v5];
   }
 

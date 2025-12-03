@@ -29,7 +29,7 @@
 - (UIScrollView)tui_feedProxyScrollView
 {
   sub_194800();
-  v3 = self;
+  selfCopy = self;
   sub_19C668();
   if (v6)
   {

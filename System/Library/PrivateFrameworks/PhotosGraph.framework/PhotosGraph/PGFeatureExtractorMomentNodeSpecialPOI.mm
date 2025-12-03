@@ -1,21 +1,21 @@
 @interface PGFeatureExtractorMomentNodeSpecialPOI
 - (id)featureNames;
-- (id)floatMatrixWithEntities:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatMatrixWithEntities:(id)entities progressReporter:(id)reporter error:(id *)error;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorMomentNodeSpecialPOI
 
-- (id)floatMatrixWithEntities:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)floatMatrixWithEntities:(id)entities progressReporter:(id)reporter error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  entitiesCopy = entities;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v8 = v6;
+  v8 = entitiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v9)
   {
@@ -40,8 +40,8 @@
   }
 
   v13 = [v7 count];
-  v14 = [(PGFeatureExtractorMomentNodeSpecialPOI *)self featureNames];
-  v15 = [v14 count];
+  featureNames = [(PGFeatureExtractorMomentNodeSpecialPOI *)self featureNames];
+  v15 = [featureNames count];
 
   v16 = [MEMORY[0x277D22C60] zerosWithRows:v13 columns:v15];
   v31 = 0u;
@@ -66,8 +66,8 @@
 
         v22 = *(*(&v31 + 1) + 8 * j);
         v23 = [PGSpecialPOIResolver alloc];
-        v24 = [v22 array];
-        v25 = [(PGSpecialPOIResolver *)v23 initWithMomentNodes:v24];
+        array = [v22 array];
+        v25 = [(PGSpecialPOIResolver *)v23 initWithMomentNodes:array];
 
         if ([(PGSpecialPOIResolver *)v25 momentsContainSpecialPOI:1 withMomentRatio:1.0])
         {
@@ -95,13 +95,13 @@
   return v16;
 }
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
+  entityCopy = entity;
   v6 = [PGSpecialPOIResolver alloc];
-  v7 = [v5 array];
+  array = [entityCopy array];
 
-  v8 = [(PGSpecialPOIResolver *)v6 initWithMomentNodes:v7];
+  v8 = [(PGSpecialPOIResolver *)v6 initWithMomentNodes:array];
   v9 = [MEMORY[0x277D22C68] zerosOfCount:{-[PGFeatureExtractorMomentNodeSpecialPOI featureLength](self, "featureLength")}];
   if ([(PGSpecialPOIResolver *)v8 momentsContainSpecialPOI:1 withMomentRatio:1.0])
   {

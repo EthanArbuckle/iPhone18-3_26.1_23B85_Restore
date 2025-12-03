@@ -1,16 +1,16 @@
 @interface PETEventTracker
-- (BOOL)_validatePropertyValues:(id)a3;
-- (PETEventTracker)initWithFeatureId:(id)a3 registerProperties:(id)a4 propertySubsets:(id)a5;
-- (id)_stringifiedPropertiesForEvent:(id)a3 propertyValueArray:(id)a4;
+- (BOOL)_validatePropertyValues:(id)values;
+- (PETEventTracker)initWithFeatureId:(id)id registerProperties:(id)properties propertySubsets:(id)subsets;
+- (id)_stringifiedPropertiesForEvent:(id)event propertyValueArray:(id)array;
 - (id)getKeyValueDict;
-- (id)getValueForKey:(id)a3;
-- (void)_checkCardinalityForEvent:(id)a3;
+- (id)getValueForKey:(id)key;
+- (void)_checkCardinalityForEvent:(id)event;
 - (void)_checkInTestingMode;
-- (void)_checkKeyLengthForEvent:(id)a3 metaData:(id)a4;
-- (void)_checkPropertySubsets:(id)a3;
-- (void)_logValue:(id)a3 forEvent:(id)a4 stringifiedProperties:(id)a5 metaData:(id)a6;
-- (void)_setValue:(id)a3 forEvent:(id)a4 stringifiedProperties:(id)a5 metaData:(id)a6;
-- (void)_trackEvent:(id)a3 withPropertyValues:(id)a4 value:(id)a5 overwrite:(BOOL)a6;
+- (void)_checkKeyLengthForEvent:(id)event metaData:(id)data;
+- (void)_checkPropertySubsets:(id)subsets;
+- (void)_logValue:(id)value forEvent:(id)event stringifiedProperties:(id)properties metaData:(id)data;
+- (void)_setValue:(id)value forEvent:(id)event stringifiedProperties:(id)properties metaData:(id)data;
+- (void)_trackEvent:(id)event withPropertyValues:(id)values value:(id)value overwrite:(BOOL)overwrite;
 - (void)disableTestingMode;
 - (void)enableTestingMode;
 @end
@@ -20,18 +20,18 @@
 - (void)disableTestingMode
 {
   self->_testingMode = 0;
-  v3 = [(PETEventTracker *)self _defaultLoggingOutlet];
+  _defaultLoggingOutlet = [(PETEventTracker *)self _defaultLoggingOutlet];
   loggingOutlet = self->_loggingOutlet;
-  self->_loggingOutlet = v3;
+  self->_loggingOutlet = _defaultLoggingOutlet;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)getValueForKey:(id)a3
+- (id)getValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(PETEventTracker *)self _checkInTestingMode];
-  v5 = [(PETLoggingOutlet *)self->_loggingOutlet getValueForKey:v4];
+  v5 = [(PETLoggingOutlet *)self->_loggingOutlet getValueForKey:keyCopy];
 
   return v5;
 }
@@ -63,30 +63,30 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_stringifiedPropertiesForEvent:(id)a3 propertyValueArray:(id)a4
+- (id)_stringifiedPropertiesForEvent:(id)event propertyValueArray:(id)array
 {
-  v5 = a4;
+  arrayCopy = array;
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_registeredProperties, "count")}];
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_registeredProperties, "count")}];
-  v8 = [(PETEventTracker *)self registeredProperties];
-  if ([v5 count])
+  registeredProperties = [(PETEventTracker *)self registeredProperties];
+  if ([arrayCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v5 objectAtIndexedSubscript:v9];
-      v11 = [v8 objectAtIndexedSubscript:v9];
-      v12 = [v11 name];
-      [v6 addObject:v12];
+      v10 = [arrayCopy objectAtIndexedSubscript:v9];
+      v11 = [registeredProperties objectAtIndexedSubscript:v9];
+      name = [v11 name];
+      [v6 addObject:name];
 
-      v13 = [v8 objectAtIndexedSubscript:v9];
+      v13 = [registeredProperties objectAtIndexedSubscript:v9];
       v14 = [v13 _loggingKeyStringRepresentationForValue:v10];
       [v7 addObject:v14];
 
       ++v9;
     }
 
-    while (v9 < [v5 count]);
+    while (v9 < [arrayCopy count]);
   }
 
   v15 = [[PETStringPairs alloc] initWithKeys:v6 values:v7];
@@ -94,26 +94,26 @@
   return v15;
 }
 
-- (BOOL)_validatePropertyValues:(id)a3
+- (BOOL)_validatePropertyValues:(id)values
 {
-  v4 = a3;
-  v5 = [v4 count];
+  valuesCopy = values;
+  v5 = [valuesCopy count];
   if (v5 != [(NSArray *)self->_registeredProperties count])
   {
     v6 = MEMORY[0x1E695DF30];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"passed number of properties %tu is not equal to the defined number %tu", objc_msgSend(v4, "count"), -[NSArray count](self->_registeredProperties, "count")];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"passed number of properties %tu is not equal to the defined number %tu", objc_msgSend(valuesCopy, "count"), -[NSArray count](self->_registeredProperties, "count")];
     v8 = [v6 exceptionWithName:@"PETEventTrackingException" reason:v7 userInfo:0];
 
     [v8 raise];
   }
 
-  if ([v4 count])
+  if ([valuesCopy count])
   {
     v9 = 0;
     do
     {
       v10 = [(NSArray *)self->_registeredProperties objectAtIndexedSubscript:v9];
-      v11 = [v4 objectAtIndexedSubscript:v9];
+      v11 = [valuesCopy objectAtIndexedSubscript:v9];
       v12 = [v10 isValidValue:v11];
 
       if ((v12 & 1) == 0)
@@ -124,7 +124,7 @@
       ++v9;
     }
 
-    while ([v4 count] > v9);
+    while ([valuesCopy count] > v9);
   }
 
   else
@@ -135,7 +135,7 @@
   return v12;
 }
 
-- (void)_setValue:(id)a3 forEvent:(id)a4 stringifiedProperties:(id)a5 metaData:(id)a6
+- (void)_setValue:(id)value forEvent:(id)event stringifiedProperties:(id)properties metaData:(id)data
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -146,7 +146,7 @@
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Subclasses must implement setValueforEvent"];
 }
 
-- (void)_logValue:(id)a3 forEvent:(id)a4 stringifiedProperties:(id)a5 metaData:(id)a6
+- (void)_logValue:(id)value forEvent:(id)event stringifiedProperties:(id)properties metaData:(id)data
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -157,42 +157,42 @@
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Subclasses must implement logValueforEvent"];
 }
 
-- (void)_trackEvent:(id)a3 withPropertyValues:(id)a4 value:(id)a5 overwrite:(BOOL)a6
+- (void)_trackEvent:(id)event withPropertyValues:(id)values value:(id)value overwrite:(BOOL)overwrite
 {
-  v30 = a6;
+  overwriteCopy = overwrite;
   v43 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v31 = a5;
+  eventCopy = event;
+  valuesCopy = values;
+  valueCopy = value;
   v11 = objc_autoreleasePoolPush();
-  if (![v9 length])
+  if (![eventCopy length])
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:@"PETEventTrackingException" reason:@"Parameter 'event' must have a valid non-zero length value" userInfo:0];
     [v12 raise];
   }
 
-  if ([(PETEventTracker *)self _validatePropertyValues:v10])
+  if ([(PETEventTracker *)self _validatePropertyValues:valuesCopy])
   {
-    v13 = [(PETEventTracker *)self _stringifiedPropertiesForEvent:v9 propertyValueArray:v10];
-    v14 = [(PETEventTracker *)self _keyMetadataForEvent:v9];
+    v13 = [(PETEventTracker *)self _stringifiedPropertiesForEvent:eventCopy propertyValueArray:valuesCopy];
+    v14 = [(PETEventTracker *)self _keyMetadataForEvent:eventCopy];
     v27 = v11;
-    v28 = v10;
-    v15 = v9;
-    if (v30)
+    v28 = valuesCopy;
+    v15 = eventCopy;
+    if (overwriteCopy)
     {
-      [(PETEventTracker *)self _setValue:v31 forEvent:v9 stringifiedProperties:v13 metaData:v14];
+      [(PETEventTracker *)self _setValue:valueCopy forEvent:eventCopy stringifiedProperties:v13 metaData:v14];
     }
 
     else
     {
-      [(PETEventTracker *)self _logValue:v31 forEvent:v9 stringifiedProperties:v13 metaData:v14];
+      [(PETEventTracker *)self _logValue:valueCopy forEvent:eventCopy stringifiedProperties:v13 metaData:v14];
     }
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v17 = self;
+    selfCopy = self;
     obj = self->_propertySubsets;
     v18 = [(NSArray *)obj countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v18)
@@ -212,14 +212,14 @@
           v23 = objc_autoreleasePoolPush();
           v24 = [v13 subsetForKeys:v22];
           v25 = [[PETStringPairs alloc] initWithKeys:&unk_1F5AB6D20 values:&unk_1F5AB6D38];
-          if (v30)
+          if (overwriteCopy)
           {
-            [(PETEventTracker *)v17 _setValue:v31 forEvent:v15 stringifiedProperties:v24 metaData:v25];
+            [(PETEventTracker *)selfCopy _setValue:valueCopy forEvent:v15 stringifiedProperties:v24 metaData:v25];
           }
 
           else
           {
-            [(PETEventTracker *)v17 _logValue:v31 forEvent:v15 stringifiedProperties:v24 metaData:v25];
+            [(PETEventTracker *)selfCopy _logValue:valueCopy forEvent:v15 stringifiedProperties:v24 metaData:v25];
           }
 
           objc_autoreleasePoolPop(v23);
@@ -231,9 +231,9 @@
       while (v19);
     }
 
-    v9 = v15;
+    eventCopy = v15;
     v11 = v27;
-    v10 = v28;
+    valuesCopy = v28;
   }
 
   else
@@ -242,15 +242,15 @@
     {
       registeredProperties = self->_registeredProperties;
       *buf = 138412802;
-      v38 = v9;
+      v38 = eventCopy;
       v39 = 2112;
-      v40 = v10;
+      v40 = valuesCopy;
       v41 = 2112;
       v42 = registeredProperties;
       _os_log_impl(&dword_1DF726000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Invalid property values passed in for event: %@, values: %@, registeredProperties: %@", buf, 0x20u);
     }
 
-    [(PETLoggingOutlet *)self->_loggingOutlet logErrorForEvent:v9 featureId:self->_featureId reason:@"bad_prop"];
+    [(PETLoggingOutlet *)self->_loggingOutlet logErrorForEvent:eventCopy featureId:self->_featureId reason:@"bad_prop"];
   }
 
   objc_autoreleasePoolPop(v11);
@@ -258,14 +258,14 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkPropertySubsets:(id)a3
+- (void)_checkPropertySubsets:(id)subsets
 {
   v48 = *MEMORY[0x1E69E9840];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = a3;
+  obj = subsets;
   v28 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v28)
   {
@@ -336,8 +336,8 @@ LABEL_15:
                     objc_enumerationMutation(v16);
                   }
 
-                  v21 = [*(*(&v33 + 1) + 8 * v20) name];
-                  v22 = [v15 isEqualToString:v21];
+                  name = [*(*(&v33 + 1) + 8 * v20) name];
+                  v22 = [v15 isEqualToString:name];
 
                   if (v22)
                   {
@@ -392,14 +392,14 @@ LABEL_21:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkKeyLengthForEvent:(id)a3 metaData:(id)a4
+- (void)_checkKeyLengthForEvent:(id)event metaData:(id)data
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  dataCopy = data;
   if ([MEMORY[0x1E69C5CF8] isInternalBuild])
   {
-    v24 = v7;
+    v24 = dataCopy;
     context = objc_autoreleasePoolPush();
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_registeredProperties, "count")}];
     v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_registeredProperties, "count")}];
@@ -423,11 +423,11 @@ LABEL_21:
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [v15 name];
-          [v8 addObject:v16];
+          name = [v15 name];
+          [v8 addObject:name];
 
-          v17 = [v15 longestValueString];
-          [v9 addObject:v17];
+          longestValueString = [v15 longestValueString];
+          [v9 addObject:longestValueString];
         }
 
         v12 = [(NSArray *)v10 countByEnumeratingWithState:&v25 objects:v37 count:16];
@@ -437,14 +437,14 @@ LABEL_21:
     }
 
     v18 = [[PETStringPairs alloc] initWithKeys:v8 values:v9];
-    v7 = v24;
-    v19 = [PETLoggingUtils keyStringForEvent:v6 featureId:self->_featureId stringifiedProperties:v18 metaData:v24];
+    dataCopy = v24;
+    v19 = [PETLoggingUtils keyStringForEvent:eventCopy featureId:self->_featureId stringifiedProperties:v18 metaData:v24];
     if ([v19 length] >= 0x100 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       featureId = self->_featureId;
       v21 = [v19 length];
       *buf = 138413058;
-      v30 = v6;
+      v30 = eventCopy;
       v31 = 2112;
       v32 = featureId;
       v33 = 2048;
@@ -460,10 +460,10 @@ LABEL_21:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkCardinalityForEvent:(id)a3
+- (void)_checkCardinalityForEvent:(id)event
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   if ([MEMORY[0x1E69C5CF8] isInternalBuild])
   {
     v15 = 0u;
@@ -498,7 +498,7 @@ LABEL_21:
       {
         featureId = self->_featureId;
         *buf = 138412802;
-        v18 = v4;
+        v18 = eventCopy;
         v19 = 2112;
         v20 = featureId;
         v21 = 2048;
@@ -515,41 +515,41 @@ LABEL_21:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (PETEventTracker)initWithFeatureId:(id)a3 registerProperties:(id)a4 propertySubsets:(id)a5
+- (PETEventTracker)initWithFeatureId:(id)id registerProperties:(id)properties propertySubsets:(id)subsets
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  propertiesCopy = properties;
+  subsetsCopy = subsets;
   v24.receiver = self;
   v24.super_class = PETEventTracker;
   v11 = [(PETEventTracker *)&v24 init];
   if (v11)
   {
-    if (![PETEventStringValidator stringIsValid:v8])
+    if (![PETEventStringValidator stringIsValid:idCopy])
     {
       v12 = MEMORY[0x1E695DF30];
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"featureId may only contain [a-zA-Z0-9_] and may not be prefixed with _: %@", v8];
-      v14 = [v12 exceptionWithName:@"PETEventTrackingException" reason:v13 userInfo:0];
+      idCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"featureId may only contain [a-zA-Z0-9_] and may not be prefixed with _: %@", idCopy];
+      v14 = [v12 exceptionWithName:@"PETEventTrackingException" reason:idCopy userInfo:0];
 
       [v14 raise];
     }
 
-    v15 = [v8 copy];
+    v15 = [idCopy copy];
     featureId = v11->_featureId;
     v11->_featureId = v15;
 
-    v17 = [v9 copy];
+    v17 = [propertiesCopy copy];
     registeredProperties = v11->_registeredProperties;
     v11->_registeredProperties = v17;
 
-    [(PETEventTracker *)v11 _checkPropertySubsets:v10];
-    v19 = [v10 copy];
+    [(PETEventTracker *)v11 _checkPropertySubsets:subsetsCopy];
+    v19 = [subsetsCopy copy];
     propertySubsets = v11->_propertySubsets;
     v11->_propertySubsets = v19;
 
-    v21 = [(PETEventTracker *)v11 _defaultLoggingOutlet];
+    _defaultLoggingOutlet = [(PETEventTracker *)v11 _defaultLoggingOutlet];
     loggingOutlet = v11->_loggingOutlet;
-    v11->_loggingOutlet = v21;
+    v11->_loggingOutlet = _defaultLoggingOutlet;
 
     v11->_testingMode = 0;
   }

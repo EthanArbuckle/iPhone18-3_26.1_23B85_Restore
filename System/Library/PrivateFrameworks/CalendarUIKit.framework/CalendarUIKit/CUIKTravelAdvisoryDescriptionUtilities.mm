@@ -1,21 +1,21 @@
 @interface CUIKTravelAdvisoryDescriptionUtilities
-+ (BOOL)shouldIncludeTravelAdvisoryDescription:(id)a3;
++ (BOOL)shouldIncludeTravelAdvisoryDescription:(id)description;
 @end
 
 @implementation CUIKTravelAdvisoryDescriptionUtilities
 
-+ (BOOL)shouldIncludeTravelAdvisoryDescription:(id)a3
++ (BOOL)shouldIncludeTravelAdvisoryDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = +[CUIKLogSubsystem defaultCategory];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(CUIKTravelAdvisoryDescriptionUtilities *)v3 shouldIncludeTravelAdvisoryDescription:v4];
+    [(CUIKTravelAdvisoryDescriptionUtilities *)descriptionCopy shouldIncludeTravelAdvisoryDescription:v4];
   }
 
   [MEMORY[0x1E6966B28] minimumAllowableTravelTime];
   v6 = v5;
-  if ([v3 travelState] == 5)
+  if ([descriptionCopy travelState] == 5)
   {
     v7 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -28,7 +28,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([MEMORY[0x1E6966B28] travelStateIndicatesTravelingTowardDestination:{objc_msgSend(v3, "travelState")}])
+  if ([MEMORY[0x1E6966B28] travelStateIndicatesTravelingTowardDestination:{objc_msgSend(descriptionCopy, "travelState")}])
   {
     v7 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -39,9 +39,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (![CUIKTravelAdvisoryUtilities doesHypothesisSatisfyMinimumAllowableTravelTime:v3 minimumAllowableTravelTime:v6])
+  if (![CUIKTravelAdvisoryUtilities doesHypothesisSatisfyMinimumAllowableTravelTime:descriptionCopy minimumAllowableTravelTime:v6])
   {
-    [v3 estimatedTravelTime];
+    [descriptionCopy estimatedTravelTime];
     v31 = v30;
     v7 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))

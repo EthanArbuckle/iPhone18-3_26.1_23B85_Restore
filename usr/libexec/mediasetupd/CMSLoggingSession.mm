@@ -2,29 +2,29 @@
 - (CMSLogger)belongedLogger;
 - (id)eventDurations;
 - (id)eventOccurance;
-- (id)initForType:(id)a3 withMetadata:(id)a4;
+- (id)initForType:(id)type withMetadata:(id)metadata;
 - (void)_endSession;
 - (void)dealloc;
-- (void)recordEvent:(id)a3;
-- (void)recordEvent:(id)a3 occuredAt:(id)a4;
+- (void)recordEvent:(id)event;
+- (void)recordEvent:(id)event occuredAt:(id)at;
 @end
 
 @implementation CMSLoggingSession
 
-- (id)initForType:(id)a3 withMetadata:(id)a4
+- (id)initForType:(id)type withMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = CMSLoggingSession;
   v8 = [(CMSLoggingSession *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typeCopy copy];
     sessionType = v8->_sessionType;
     v8->_sessionType = v9;
 
-    objc_storeStrong(&v8->_metadata, a4);
+    objc_storeStrong(&v8->_metadata, metadata);
     v11 = objc_opt_new();
     events = v8->events;
     v8->events = v11;
@@ -33,10 +33,10 @@
   return v8;
 }
 
-- (void)recordEvent:(id)a3 occuredAt:(id)a4
+- (void)recordEvent:(id)event occuredAt:(id)at
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  atCopy = at;
   if (self->_sessionEnded)
   {
     NSLog(@"Error: CMSLoggerSession has ended already. %s", "[CMSLoggingSession recordEvent:occuredAt:]");
@@ -50,9 +50,9 @@
     block[2] = sub_1000329C4;
     block[3] = &unk_100052128;
     block[4] = self;
-    v9 = v6;
+    v9 = eventCopy;
     v11 = v9;
-    v12 = v7;
+    v12 = atCopy;
     dispatch_async(v8, block);
 
     if ([v9 isEqualToString:@"End"])
@@ -62,11 +62,11 @@
   }
 }
 
-- (void)recordEvent:(id)a3
+- (void)recordEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[NSDate date];
-  [(CMSLoggingSession *)self recordEvent:v4 occuredAt:v5];
+  [(CMSLoggingSession *)self recordEvent:eventCopy occuredAt:v5];
 }
 
 - (id)eventDurations
@@ -74,10 +74,10 @@
   v3 = objc_opt_new();
   if ([(NSMutableArray *)self->events count]>= 2)
   {
-    v4 = [(NSMutableArray *)self->events firstObject];
+    firstObject = [(NSMutableArray *)self->events firstObject];
     if ([(NSMutableArray *)self->events count]< 2)
     {
-      v6 = v4;
+      v6 = firstObject;
     }
 
     else
@@ -86,29 +86,29 @@
       do
       {
         v6 = [(NSMutableArray *)self->events objectAtIndexedSubscript:v5];
-        v7 = [v4 eventType];
-        v8 = [v6 eventType];
-        v9 = [NSString stringWithFormat:@"%@-%@", v7, v8];
+        eventType = [firstObject eventType];
+        eventType2 = [v6 eventType];
+        v9 = [NSString stringWithFormat:@"%@-%@", eventType, eventType2];
 
-        v10 = [v6 timestamp];
-        v11 = [v4 timestamp];
-        [v10 timeIntervalSinceDate:v11];
+        timestamp = [v6 timestamp];
+        timestamp2 = [firstObject timestamp];
+        [timestamp timeIntervalSinceDate:timestamp2];
         v13 = v12;
 
         v14 = [v3 objectForKeyedSubscript:v9];
 
         if (v14)
         {
-          v15 = [v4 eventType];
-          v16 = [v6 eventType];
-          NSLog(@"Warning: CMSLogger currently only support every edge on the FSM only go though once. We have passed %@ -> %@ before. The newer measurement will be used right now %s", v15, v16, "[CMSLoggingSession eventDurations]");
+          eventType3 = [firstObject eventType];
+          eventType4 = [v6 eventType];
+          NSLog(@"Warning: CMSLogger currently only support every edge on the FSM only go though once. We have passed %@ -> %@ before. The newer measurement will be used right now %s", eventType3, eventType4, "[CMSLoggingSession eventDurations]");
         }
 
         v17 = [NSNumber numberWithDouble:v13];
         [v3 setObject:v17 forKeyedSubscript:v9];
 
         ++v5;
-        v4 = v6;
+        firstObject = v6;
       }
 
       while ([(NSMutableArray *)self->events count]> v5);
@@ -141,8 +141,8 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 eventType];
-        v11 = [v3 objectForKeyedSubscript:v10];
+        eventType = [v9 eventType];
+        v11 = [v3 objectForKeyedSubscript:eventType];
 
         if (v11)
         {
@@ -154,8 +154,8 @@
           v12 = &off_100053988;
         }
 
-        v13 = [v9 eventType];
-        [v3 setObject:v12 forKeyedSubscript:v13];
+        eventType2 = [v9 eventType];
+        [v3 setObject:v12 forKeyedSubscript:eventType2];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];

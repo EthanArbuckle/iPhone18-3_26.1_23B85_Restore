@@ -1,6 +1,6 @@
 @interface MFIntentMailbox
 + (BOOL)supportsSecureCoding;
-- (MFIntentMailbox)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (MFIntentMailbox)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation MFIntentMailbox
@@ -13,16 +13,16 @@
   return sub_10007CEB8() & 1;
 }
 
-- (MFIntentMailbox)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (MFIntentMailbox)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
-  _objc_retain(a5);
-  if (a3)
+  _objc_retain(identifier);
+  _objc_retain(string);
+  _objc_retain(hint);
+  if (identifier)
   {
     v16 = sub_10007D868();
     v17 = v5;
-    _objc_release(a3);
+    _objc_release(identifier);
     v18 = v16;
     v19 = v17;
   }
@@ -35,11 +35,11 @@
 
   v14 = sub_10007D868();
   v15 = v6;
-  if (a5)
+  if (hint)
   {
     v10 = sub_10007D868();
     v11 = v7;
-    _objc_release(a5);
+    _objc_release(hint);
     v12 = v10;
     v13 = v11;
   }
@@ -51,7 +51,7 @@
   }
 
   v9 = MFIntentMailbox.init(identifier:display:pronunciationHint:)(v18, v19, v14, v15, v12, v13);
-  _objc_release(a4);
+  _objc_release(string);
   return v9;
 }
 

@@ -1,13 +1,13 @@
 @interface FLSchemaFLClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (FLSchemaFLActionEvaluationContext)evaluationContext;
-- (FLSchemaFLClientEvent)initWithDictionary:(id)a3;
-- (FLSchemaFLClientEvent)initWithJSON:(id)a3;
+- (FLSchemaFLClientEvent)initWithDictionary:(id)dictionary;
+- (FLSchemaFLClientEvent)initWithJSON:(id)n;
 - (FLSchemaFLInteractionDonationContext)donationContext;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -16,22 +16,22 @@
 - (unint64_t)hash;
 - (void)deleteDonationContext;
 - (void)deleteEvaluationContext;
-- (void)setDonationContext:(id)a3;
-- (void)setEvaluationContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDonationContext:(id)context;
+- (void)setEvaluationContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLSchemaFLClientEvent
 
-- (FLSchemaFLClientEvent)initWithDictionary:(id)a3
+- (FLSchemaFLClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = FLSchemaFLClientEvent;
   v5 = [(FLSchemaFLClientEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(FLSchemaFLClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"evaluationContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"evaluationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(FLSchemaFLClientEvent *)v5 setEvaluationContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"donationContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"donationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,30 +61,30 @@
   return v5;
 }
 
-- (FLSchemaFLClientEvent)initWithJSON:(id)a3
+- (FLSchemaFLClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLSchemaFLClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLSchemaFLClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLSchemaFLClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -97,58 +97,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_donationContext)
   {
-    v4 = [(FLSchemaFLClientEvent *)self donationContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    donationContext = [(FLSchemaFLClientEvent *)self donationContext];
+    dictionaryRepresentation = [donationContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"donationContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"donationContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"donationContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"donationContext"];
     }
   }
 
   if (self->_evaluationContext)
   {
-    v7 = [(FLSchemaFLClientEvent *)self evaluationContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    evaluationContext = [(FLSchemaFLClientEvent *)self evaluationContext];
+    dictionaryRepresentation2 = [evaluationContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"evaluationContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"evaluationContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"evaluationContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"evaluationContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v10 = [(FLSchemaFLClientEvent *)self eventMetadata];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    eventMetadata = [(FLSchemaFLClientEvent *)self eventMetadata];
+    dictionaryRepresentation3 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"eventMetadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,34 +158,34 @@
   return v4 ^ [(FLSchemaFLInteractionDonationContext *)self->_donationContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(FLSchemaFLClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLSchemaFLClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(FLSchemaFLClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(FLSchemaFLClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(FLSchemaFLClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(FLSchemaFLClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -197,20 +197,20 @@
   {
   }
 
-  v6 = [(FLSchemaFLClientEvent *)self evaluationContext];
-  v7 = [v4 evaluationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLSchemaFLClientEvent *)self evaluationContext];
+  eventMetadata2 = [equalCopy evaluationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(FLSchemaFLClientEvent *)self evaluationContext];
-  if (v13)
+  evaluationContext = [(FLSchemaFLClientEvent *)self evaluationContext];
+  if (evaluationContext)
   {
-    v14 = v13;
-    v15 = [(FLSchemaFLClientEvent *)self evaluationContext];
-    v16 = [v4 evaluationContext];
-    v17 = [v15 isEqual:v16];
+    v14 = evaluationContext;
+    evaluationContext2 = [(FLSchemaFLClientEvent *)self evaluationContext];
+    evaluationContext3 = [equalCopy evaluationContext];
+    v17 = [evaluationContext2 isEqual:evaluationContext3];
 
     if (!v17)
     {
@@ -222,12 +222,12 @@
   {
   }
 
-  v6 = [(FLSchemaFLClientEvent *)self donationContext];
-  v7 = [v4 donationContext];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(FLSchemaFLClientEvent *)self donationContext];
+  eventMetadata2 = [equalCopy donationContext];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v18 = [(FLSchemaFLClientEvent *)self donationContext];
-    if (!v18)
+    donationContext = [(FLSchemaFLClientEvent *)self donationContext];
+    if (!donationContext)
     {
 
 LABEL_21:
@@ -235,10 +235,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(FLSchemaFLClientEvent *)self donationContext];
-    v21 = [v4 donationContext];
-    v22 = [v20 isEqual:v21];
+    v19 = donationContext;
+    donationContext2 = [(FLSchemaFLClientEvent *)self donationContext];
+    donationContext3 = [equalCopy donationContext];
+    v22 = [donationContext2 isEqual:donationContext3];
 
     if (v22)
     {
@@ -258,34 +258,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(FLSchemaFLClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(FLSchemaFLClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(FLSchemaFLClientEvent *)self eventMetadata];
+    eventMetadata2 = [(FLSchemaFLClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(FLSchemaFLClientEvent *)self evaluationContext];
+  evaluationContext = [(FLSchemaFLClientEvent *)self evaluationContext];
 
-  if (v6)
+  if (evaluationContext)
   {
-    v7 = [(FLSchemaFLClientEvent *)self evaluationContext];
+    evaluationContext2 = [(FLSchemaFLClientEvent *)self evaluationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(FLSchemaFLClientEvent *)self donationContext];
+  donationContext = [(FLSchemaFLClientEvent *)self donationContext];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (donationContext)
   {
-    v10 = [(FLSchemaFLClientEvent *)self donationContext];
+    donationContext2 = [(FLSchemaFLClientEvent *)self donationContext];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -314,21 +314,21 @@ LABEL_19:
   return v3;
 }
 
-- (void)setDonationContext:(id)a3
+- (void)setDonationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   evaluationContext = self->_evaluationContext;
   self->_evaluationContext = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   donationContext = self->_donationContext;
-  self->_donationContext = v4;
+  self->_donationContext = contextCopy;
 }
 
 - (void)deleteEvaluationContext
@@ -356,33 +356,33 @@ LABEL_19:
   return v3;
 }
 
-- (void)setEvaluationContext:(id)a3
+- (void)setEvaluationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   donationContext = self->_donationContext;
   self->_donationContext = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   evaluationContext = self->_evaluationContext;
-  self->_evaluationContext = v4;
+  self->_evaluationContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(FLSchemaFLClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(FLSchemaFLClientEvent *)self whichEvent_Type];
   v3 = @"com.apple.aiml.siri.fl.FLClientEvent";
-  if (v2 == 102)
+  if (whichEvent_Type == 102)
   {
     v3 = @"com.apple.aiml.siri.fl.FLClientEvent.FLInteractionDonationContext";
   }
 
-  if (v2 == 101)
+  if (whichEvent_Type == 101)
   {
     return @"com.apple.aiml.siri.fl.FLClientEvent.FLActionEvaluationContext";
   }
@@ -393,35 +393,35 @@ LABEL_19:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = FLSchemaFLClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLSchemaFLClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(FLSchemaFLClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLSchemaFLClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(FLSchemaFLClientEvent *)self evaluationContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  evaluationContext = [(FLSchemaFLClientEvent *)self evaluationContext];
+  v10 = [evaluationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLSchemaFLClientEvent *)self deleteEvaluationContext];
   }
 
-  v12 = [(FLSchemaFLClientEvent *)self donationContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  donationContext = [(FLSchemaFLClientEvent *)self donationContext];
+  v13 = [donationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(FLSchemaFLClientEvent *)self deleteDonationContext];
   }
@@ -439,82 +439,82 @@ LABEL_19:
 
 - (int)componentName
 {
-  v2 = [(FLSchemaFLClientEvent *)self eventMetadata];
-  v3 = [v2 flId];
+  eventMetadata = [(FLSchemaFLClientEvent *)self eventMetadata];
+  flId = [eventMetadata flId];
 
-  if (v3)
+  if (flId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [flId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [flId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 54;
+        LODWORD(value) = 54;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(FLSchemaFLClientEvent *)self eventMetadata];
-  v3 = [v2 flId];
+  eventMetadata = [(FLSchemaFLClientEvent *)self eventMetadata];
+  flId = [eventMetadata flId];
 
-  if (!v3)
+  if (!flId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [flId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [flId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = flId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(FLSchemaFLClientEvent *)self whichEvent_Type];
-  if (v3 == 101)
+  whichEvent_Type = [(FLSchemaFLClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type == 101)
   {
     v4 = &OBJC_IVAR___FLSchemaFLClientEvent__evaluationContext;
     goto LABEL_5;
   }
 
-  if (v3 == 102)
+  if (whichEvent_Type == 102)
   {
     v4 = &OBJC_IVAR___FLSchemaFLClientEvent__donationContext;
 LABEL_5:
@@ -528,15 +528,15 @@ LABEL_7:
   return v5;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
   v3 = @"donationContext";
-  if (a3 != 102)
+  if (tag != 102)
   {
     v3 = 0;
   }
 
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"evaluationContext";
   }

@@ -1,28 +1,28 @@
 @interface OBHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axNavigationControllerParent;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)extendedInitWithTitle:(id)a3 detailText:(id)a4;
-- (void)setDetailText:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)extendedInitWithTitle:(id)title detailText:(id)text;
+- (void)setDetailText:(id)text;
+- (void)setTitle:(id)title;
 @end
 
 @implementation OBHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"OBHeaderView" hasInstanceMethod:@"headerLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OBHeaderView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OBHeaderView" hasInstanceMethod:@"extendedInitWithTitle:detailText:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"OBHeaderView" hasInstanceMethod:@"setTitle:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"OBHeaderView" hasInstanceMethod:@"headerLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OBHeaderView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OBHeaderView" hasInstanceMethod:@"extendedInitWithTitle:detailText:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"OBHeaderView" hasInstanceMethod:@"setTitle:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)extendedInitWithTitle:(id)a3 detailText:(id)a4
+- (void)extendedInitWithTitle:(id)title detailText:(id)text
 {
   v5.receiver = self;
   v5.super_class = OBHeaderViewAccessibility;
-  [(OBHeaderViewAccessibility *)&v5 extendedInitWithTitle:a3 detailText:a4];
+  [(OBHeaderViewAccessibility *)&v5 extendedInitWithTitle:title detailText:text];
   [(OBHeaderViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -37,49 +37,49 @@
   [v5 setAccessibilityTraits:v4 | v3];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v14 = 0;
   objc_opt_class();
   v5 = [(OBHeaderViewAccessibility *)self safeValueForKey:@"headerLabel"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 text];
-  if (!v7)
+  text = [v6 text];
+  if (!text)
   {
     goto LABEL_4;
   }
 
-  v8 = v7;
-  v9 = [v6 text];
-  if ([v9 isEqualToString:v4])
+  v8 = text;
+  text2 = [v6 text];
+  if ([text2 isEqualToString:titleCopy])
   {
 
 LABEL_4:
     v13.receiver = self;
     v13.super_class = OBHeaderViewAccessibility;
-    [(OBHeaderViewAccessibility *)&v13 setTitle:v4];
+    [(OBHeaderViewAccessibility *)&v13 setTitle:titleCopy];
     goto LABEL_5;
   }
 
-  v10 = [v4 length];
+  v10 = [titleCopy length];
 
   v13.receiver = self;
   v13.super_class = OBHeaderViewAccessibility;
-  [(OBHeaderViewAccessibility *)&v13 setTitle:v4];
+  [(OBHeaderViewAccessibility *)&v13 setTitle:titleCopy];
   if (v10)
   {
-    v11 = [(OBHeaderViewAccessibility *)self _axNavigationControllerParent];
-    if ([v11 _isTransitioning])
+    _axNavigationControllerParent = [(OBHeaderViewAccessibility *)self _axNavigationControllerParent];
+    if ([_axNavigationControllerParent _isTransitioning])
     {
     }
 
     else
     {
-      v12 = [v6 window];
+      window = [v6 window];
 
-      if (v12)
+      if (window)
       {
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v6);
       }
@@ -89,49 +89,49 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v14 = 0;
   objc_opt_class();
   v5 = [(OBHeaderViewAccessibility *)self safeValueForKey:@"detailLabel"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 text];
-  if (!v7)
+  text = [v6 text];
+  if (!text)
   {
     goto LABEL_4;
   }
 
-  v8 = v7;
-  v9 = [v6 text];
-  if ([v9 isEqualToString:v4])
+  v8 = text;
+  text2 = [v6 text];
+  if ([text2 isEqualToString:textCopy])
   {
 
 LABEL_4:
     v13.receiver = self;
     v13.super_class = OBHeaderViewAccessibility;
-    [(OBHeaderViewAccessibility *)&v13 setDetailText:v4];
+    [(OBHeaderViewAccessibility *)&v13 setDetailText:textCopy];
     goto LABEL_5;
   }
 
-  v10 = [v4 length];
+  v10 = [textCopy length];
 
   v13.receiver = self;
   v13.super_class = OBHeaderViewAccessibility;
-  [(OBHeaderViewAccessibility *)&v13 setDetailText:v4];
+  [(OBHeaderViewAccessibility *)&v13 setDetailText:textCopy];
   if (v10)
   {
-    v11 = [(OBHeaderViewAccessibility *)self _axNavigationControllerParent];
-    if ([v11 _isTransitioning])
+    _axNavigationControllerParent = [(OBHeaderViewAccessibility *)self _axNavigationControllerParent];
+    if ([_axNavigationControllerParent _isTransitioning])
     {
     }
 
     else
     {
-      v12 = [v6 window];
+      window = [v6 window];
 
-      if (v12)
+      if (window)
       {
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v6);
       }
@@ -144,10 +144,10 @@ LABEL_5:
 - (id)_axNavigationControllerParent
 {
   v2 = [(OBHeaderViewAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_0 startWithSelf:0];
-  v3 = [v2 _accessibilityViewController];
-  v4 = [v3 navigationController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
+  navigationController = [_accessibilityViewController navigationController];
 
-  return v4;
+  return navigationController;
 }
 
 BOOL __58__OBHeaderViewAccessibility__axNavigationControllerParent__block_invoke(uint64_t a1, void *a2)

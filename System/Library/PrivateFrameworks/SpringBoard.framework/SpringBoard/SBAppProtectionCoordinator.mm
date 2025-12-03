@@ -1,14 +1,14 @@
 @interface SBAppProtectionCoordinator
 + (BOOL)isEnabled;
 - (SBAppProtectionCoordinator)init;
-- (id)assistantForApplication:(id)a3;
+- (id)assistantForApplication:(id)application;
 - (void)_updateShouldHide;
-- (void)appProtectionAssistantShouldHideDidChange:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)applicationsChanged:(id)a3;
+- (void)appProtectionAssistantShouldHideDidChange:(id)change;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)applicationsChanged:(id)changed;
 - (void)dealloc;
-- (void)noteAllScenesDismissedForAssistant:(id)a3;
-- (void)noteSceneWillBecomeForegroundVisibleForAssistant:(id)a3;
+- (void)noteAllScenesDismissedForAssistant:(id)assistant;
+- (void)noteSceneWillBecomeForegroundVisibleForAssistant:(id)assistant;
 @end
 
 @implementation SBAppProtectionCoordinator
@@ -36,8 +36,8 @@ void __34__SBAppProtectionCoordinator_init__block_invoke(uint64_t a1)
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_bundleIdentifiersToAssistants allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_bundleIdentifiersToAssistants allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -49,14 +49,14 @@ void __34__SBAppProtectionCoordinator_init__block_invoke(uint64_t a1)
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) _updateShouldHide];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -77,11 +77,11 @@ void __34__SBAppProtectionCoordinator_init__block_invoke(uint64_t a1)
     v2->_systemAppOutlet = v4;
 
     [(APSystemAppOutlet *)v2->_systemAppOutlet resume];
-    v6 = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
-    v7 = [v6 addMonitor:v2 subjectMask:2];
+    subjectMonitorRegistry = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
+    v7 = [subjectMonitorRegistry addMonitor:v2 subjectMask:2];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel_applicationsChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_applicationsChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 
     objc_initWeak(&location, v2);
     v9 = MEMORY[0x277CF0BD0];
@@ -113,11 +113,11 @@ void __34__SBAppProtectionCoordinator_init__block_invoke(uint64_t a1)
   [(SBAppProtectionCoordinator *)&v3 dealloc];
 }
 
-- (void)applicationsChanged:(id)a3
+- (void)applicationsChanged:(id)changed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBInstalledApplicationsRemovedBundleIDs"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"SBInstalledApplicationsRemovedBundleIDs"];
 
   if (v5)
   {
@@ -155,90 +155,90 @@ void __34__SBAppProtectionCoordinator_init__block_invoke(uint64_t a1)
   }
 }
 
-- (id)assistantForApplication:(id)a3
+- (id)assistantForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   bundleIdentifiersToAssistants = self->_bundleIdentifiersToAssistants;
   if (!bundleIdentifiersToAssistants)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v7 = self->_bundleIdentifiersToAssistants;
-    self->_bundleIdentifiersToAssistants = v6;
+    self->_bundleIdentifiersToAssistants = dictionary;
 
     bundleIdentifiersToAssistants = self->_bundleIdentifiersToAssistants;
   }
 
-  v8 = [v4 bundleIdentifier];
-  v9 = [(NSMutableDictionary *)bundleIdentifiersToAssistants objectForKey:v8];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v9 = [(NSMutableDictionary *)bundleIdentifiersToAssistants objectForKey:bundleIdentifier];
 
-  if (v4 && !v9)
+  if (applicationCopy && !v9)
   {
-    v9 = [[SBApplicationAppProtectionAssistant alloc] initWithApplication:v4];
+    v9 = [[SBApplicationAppProtectionAssistant alloc] initWithApplication:applicationCopy];
     [(SBApplicationAppProtectionAssistant *)v9 setOwningCoordinator:self];
     systemAppOutlet = self->_systemAppOutlet;
-    v11 = [(SBApplicationAppProtectionAssistant *)v9 appProtectionApplication];
-    [(SBApplicationAppProtectionAssistant *)v9 setShouldShield:[(APSystemAppOutlet *)systemAppOutlet shouldShieldLaunchOfApplication:v11]];
+    appProtectionApplication = [(SBApplicationAppProtectionAssistant *)v9 appProtectionApplication];
+    [(SBApplicationAppProtectionAssistant *)v9 setShouldShield:[(APSystemAppOutlet *)systemAppOutlet shouldShieldLaunchOfApplication:appProtectionApplication]];
 
     [(SBApplicationAppProtectionAssistant *)v9 addObserver:self];
     v12 = self->_bundleIdentifiersToAssistants;
-    v13 = [v4 bundleIdentifier];
-    [(NSMutableDictionary *)v12 setObject:v9 forKey:v13];
+    bundleIdentifier2 = [applicationCopy bundleIdentifier];
+    [(NSMutableDictionary *)v12 setObject:v9 forKey:bundleIdentifier2];
   }
 
   return v9;
 }
 
-- (void)noteAllScenesDismissedForAssistant:(id)a3
+- (void)noteAllScenesDismissedForAssistant:(id)assistant
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assistantCopy = assistant;
   v5 = SBLogAppProtection();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     systemAppOutlet = self->_systemAppOutlet;
-    v7 = [v4 appProtectionApplication];
+    appProtectionApplication = [assistantCopy appProtectionApplication];
     v10 = 138543618;
     v11 = systemAppOutlet;
     v12 = 2112;
-    v13 = v7;
+    v13 = appProtectionApplication;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Informing %{public}@ that %@ will become background as far as we know", &v10, 0x16u);
   }
 
   v8 = self->_systemAppOutlet;
-  v9 = [v4 appProtectionApplication];
-  [(APSystemAppOutlet *)v8 noteAllScenesDismissedForApplication:v9];
+  appProtectionApplication2 = [assistantCopy appProtectionApplication];
+  [(APSystemAppOutlet *)v8 noteAllScenesDismissedForApplication:appProtectionApplication2];
 }
 
-- (void)noteSceneWillBecomeForegroundVisibleForAssistant:(id)a3
+- (void)noteSceneWillBecomeForegroundVisibleForAssistant:(id)assistant
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assistantCopy = assistant;
   v5 = SBLogAppProtection();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     systemAppOutlet = self->_systemAppOutlet;
-    v7 = [v4 appProtectionApplication];
+    appProtectionApplication = [assistantCopy appProtectionApplication];
     v10 = 138543618;
     v11 = systemAppOutlet;
     v12 = 2112;
-    v13 = v7;
+    v13 = appProtectionApplication;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Informing %{public}@ that %@ will become foreground visible", &v10, 0x16u);
   }
 
   v8 = self->_systemAppOutlet;
-  v9 = [v4 appProtectionApplication];
-  [(APSystemAppOutlet *)v8 noteSceneWillBecomeForegroundVisibleForApplication:v9];
+  appProtectionApplication2 = [assistantCopy appProtectionApplication];
+  [(APSystemAppOutlet *)v8 noteSceneWillBecomeForegroundVisibleForApplication:appProtectionApplication2];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [changedCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -249,12 +249,12 @@ void __34__SBAppProtectionCoordinator_init__block_invoke(uint64_t a1)
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changedCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [MEMORY[0x277CEBEB8] hiddenMetaSubject];
-        LODWORD(v9) = [v9 isEqual:v10];
+        hiddenMetaSubject = [MEMORY[0x277CEBEB8] hiddenMetaSubject];
+        LODWORD(v9) = [v9 isEqual:hiddenMetaSubject];
 
         if (v9)
         {
@@ -262,18 +262,18 @@ void __34__SBAppProtectionCoordinator_init__block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [changedCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)appProtectionAssistantShouldHideDidChange:(id)a3
+- (void)appProtectionAssistantShouldHideDidChange:(id)change
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = [MEMORY[0x277CCAB88] notificationWithName:@"SBAppProtectionCoordinatorHiddenAppsDidChange" object:self];
-  [v5 postNotification:v4];
+  [defaultCenter postNotification:v4];
 }
 
 @end

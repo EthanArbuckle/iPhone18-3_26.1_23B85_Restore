@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __28__SSLockdown_sharedInstance__block_invoke;
   block[3] = &unk_1E84AC408;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_sInstanceGuard != -1)
   {
     dispatch_once(&sharedInstance_sInstanceGuard, block);
@@ -41,15 +41,15 @@ id __28__SSLockdown_sharedInstance__block_invoke()
   {
     if (SSDeviceIsAppleTV())
     {
-      v5 = [v3 uppercaseString];
+      uppercaseString = [v3 uppercaseString];
     }
 
     else
     {
-      v5 = v3;
+      uppercaseString = v3;
     }
 
-    v6 = CFRetain(v5);
+    v6 = CFRetain(uppercaseString);
   }
 
   else

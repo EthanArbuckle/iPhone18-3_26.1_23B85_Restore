@@ -2,26 +2,26 @@
 + (Class)invalidationContextClass;
 - (BOOL)canBeEdited;
 - (BOOL)isEditing;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
-- (id)_decorationViewForLayoutAttributes:(id)a3;
-- (id)indexPathsToDeleteForDecorationViewOfKind:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)invalidateLayoutWithContext:(id)a3;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (id)_decorationViewForLayoutAttributes:(id)attributes;
+- (id)indexPathsToDeleteForDecorationViewOfKind:(id)kind;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)invalidateLayoutWithContext:(id)context;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
-- (void)setEditing:(BOOL)a3;
+- (void)setEditing:(BOOL)editing;
 @end
 
 @implementation CompositeCollectionViewLayout
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_BE1D8();
 }
 
@@ -29,7 +29,7 @@
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC12NowPlayingUI29CompositeCollectionViewLayout_layoutData))
   {
-    v2 = self;
+    selfCopy = self;
 
     *&v3 = COERCE_DOUBLE(sub_B793C());
     if (v7)
@@ -58,13 +58,13 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_BE4C8(x, y, width, height);
   v9 = v8;
 
@@ -82,15 +82,15 @@
   return v10.super.isa;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_140C2C();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v8 = self;
-  sub_C1480(v7, 0, 0, 0, v8);
+  selfCopy = self;
+  sub_C1480(v7, 0, 0, 0, selfCopy);
   v10 = v9;
 
   (*(v5 + 8))(v7, v4);
@@ -98,7 +98,7 @@
   return v10;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_140C2C();
   v6 = *(v5 - 8);
@@ -107,7 +107,7 @@
   v9 = sub_1448DC();
   v11 = v10;
   sub_140BAC();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_BECD4(v9, v11, v8);
 
   (*(v6 + 8))(v8, v5);
@@ -115,7 +115,7 @@
   return v13;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_140C2C();
   v6 = *(v5 - 8);
@@ -124,8 +124,8 @@
   v9 = sub_1448DC();
   v11 = v10;
   sub_140BAC();
-  v12 = self;
-  sub_C2A0C(v8, 1, v9, v11, v12, v9, v11, &selRef_layoutAttributesForSupplementaryViewOfKind_atIndexPath_);
+  selfCopy = self;
+  sub_C2A0C(v8, 1, v9, v11, selfCopy, v9, v11, &selRef_layoutAttributesForSupplementaryViewOfKind_atIndexPath_);
   v14 = v13;
 
   (*(v6 + 8))(v8, v5);
@@ -133,21 +133,21 @@
   return v14;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   sub_2B860(0, &qword_1C6A78);
   v5 = sub_1449DC();
   v7.receiver = self;
   v7.super_class = type metadata accessor for CompositeCollectionViewLayout();
-  v6 = self;
-  [(CompositeCollectionViewLayout *)&v7 prepareForCollectionViewUpdates:a3];
-  *(&v6->super.super.isa + OBJC_IVAR____TtC12NowPlayingUI29CompositeCollectionViewLayout_currentCollectionViewUpdates) = v5;
+  selfCopy = self;
+  [(CompositeCollectionViewLayout *)&v7 prepareForCollectionViewUpdates:updates];
+  *(&selfCopy->super.super.isa + OBJC_IVAR____TtC12NowPlayingUI29CompositeCollectionViewLayout_currentCollectionViewUpdates) = v5;
 }
 
-- (id)indexPathsToDeleteForDecorationViewOfKind:(id)a3
+- (id)indexPathsToDeleteForDecorationViewOfKind:(id)kind
 {
   sub_1448DC();
-  v4 = self;
+  selfCopy = self;
   sub_BF270();
 
   sub_140C2C();
@@ -163,49 +163,49 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_BFA1C(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_BFA1C(contextCopy);
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_C0060(x, y, width, height);
 
   return v8 & 1;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_C0638(x, y, width, height);
 
   return v8;
 }
 
-- (id)_decorationViewForLayoutAttributes:(id)a3
+- (id)_decorationViewForLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_C0B6C(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6 = sub_C0B6C(attributesCopy);
 
   return v6;
 }
 
 - (BOOL)canBeEdited
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_C116C();
 
   return v3 & 1;
@@ -213,26 +213,26 @@
 
 - (BOOL)isEditing
 {
-  v2 = self;
-  v3 = [(CompositeCollectionViewLayout *)v2 collectionView];
-  if (v3)
+  selfCopy = self;
+  collectionView = [(CompositeCollectionViewLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v4 = v3;
-    v5 = [v3 mt_isEditing];
+    v4 = collectionView;
+    mt_isEditing = [collectionView mt_isEditing];
   }
 
   else
   {
-    v5 = 0;
+    mt_isEditing = 0;
   }
 
-  return v5;
+  return mt_isEditing;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v4 = self;
-  sub_C1350(a3);
+  selfCopy = self;
+  sub_C1350(editing);
 }
 
 @end

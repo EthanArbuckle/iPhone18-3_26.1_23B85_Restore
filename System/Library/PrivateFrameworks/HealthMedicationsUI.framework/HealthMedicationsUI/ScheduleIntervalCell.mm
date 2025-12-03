@@ -1,16 +1,16 @@
 @interface ScheduleIntervalCell
-- (_TtC19HealthMedicationsUI20ScheduleIntervalCell)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI20ScheduleIntervalCell)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI20ScheduleIntervalCell)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI20ScheduleIntervalCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ScheduleIntervalCell
 
-- (_TtC19HealthMedicationsUI20ScheduleIntervalCell)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI20ScheduleIntervalCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20ScheduleIntervalCell____lazy_storage___frequencyTitleLabel) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20ScheduleIntervalCell____lazy_storage___timesStackView) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20ScheduleIntervalCell____lazy_storage___dosesStackView) = 0;
@@ -22,13 +22,13 @@
   *(v8 + 4) = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(ScheduleIntervalCell *)&v12 initWithFrame:x, y, width, height];
+  height = [(ScheduleIntervalCell *)&v12 initWithFrame:x, y, width, height];
   sub_2282C9838();
 
-  return v10;
+  return height;
 }
 
-- (_TtC19HealthMedicationsUI20ScheduleIntervalCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI20ScheduleIntervalCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20ScheduleIntervalCell____lazy_storage___frequencyTitleLabel) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20ScheduleIntervalCell____lazy_storage___timesStackView) = 0;

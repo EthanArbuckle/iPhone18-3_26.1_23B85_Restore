@@ -1,8 +1,8 @@
 @interface XRSecureUnarchiveFromDataTransformer
 + (id)whitelistedClassesForTransforming;
-+ (void)addWhitelistedClass:(Class)a3;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
++ (void)addWhitelistedClass:(Class)class;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation XRSecureUnarchiveFromDataTransformer
@@ -28,9 +28,9 @@
   return v10;
 }
 
-+ (void)addWhitelistedClass:(Class)a3
++ (void)addWhitelistedClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     os_unfair_lock_lock(&unk_27EE86838);
     v7 = qword_27EE86830;
@@ -46,7 +46,7 @@
       v7 = qword_27EE86830;
     }
 
-    v16 = objc_msgSend_setByAddingObject_(v7, v4, a3, v5, v6);
+    v16 = objc_msgSend_setByAddingObject_(v7, v4, class, v5, v6);
     v17 = qword_27EE86830;
     qword_27EE86830 = v16;
 
@@ -54,15 +54,15 @@
   }
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (valueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = MEMORY[0x277CCAAC8];
     v9 = objc_msgSend_whitelistedClassesForTransforming(XRSecureUnarchiveFromDataTransformer, v4, v5, v6, v7);
     v14 = 0;
-    v11 = objc_msgSend_xr_unarchiveSecureCodingObjectFromData_ofClasses_withError_(v8, v10, v3, v9, &v14);
+    v11 = objc_msgSend_xr_unarchiveSecureCodingObjectFromData_ofClasses_withError_(v8, v10, valueCopy, v9, &v14);
     v12 = v14;
 
     if (v12)
@@ -79,13 +79,13 @@
   return v11;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
-  if (objc_msgSend_conformsToProtocol_(v3, v4, &unk_285A4AF80, v5, v6))
+  valueCopy = value;
+  if (objc_msgSend_conformsToProtocol_(valueCopy, v4, &unk_285A4AF80, v5, v6))
   {
     v13 = 0;
-    v9 = objc_msgSend_xr_archiveSecureCodingObject_withError_(MEMORY[0x277CCAAB0], v7, v3, &v13, v8);
+    v9 = objc_msgSend_xr_archiveSecureCodingObject_withError_(MEMORY[0x277CCAAB0], v7, valueCopy, &v13, v8);
     v10 = v13;
     v11 = v10;
     if (v10)

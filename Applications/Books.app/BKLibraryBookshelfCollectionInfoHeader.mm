@@ -1,57 +1,57 @@
 @interface BKLibraryBookshelfCollectionInfoHeader
-+ (double)_cachedHeight:(id)a3 withDataSource:(id)a4;
-+ (void)adjustHeight:(id)a3 withDataSource:(id)a4;
++ (double)_cachedHeight:(id)height withDataSource:(id)source;
++ (void)adjustHeight:(id)height withDataSource:(id)source;
 - (BKLibraryActionHandler)actionHandler;
-- (BKLibraryBookshelfCollectionInfoHeader)initWithFrame:(CGRect)a3;
+- (BKLibraryBookshelfCollectionInfoHeader)initWithFrame:(CGRect)frame;
 - (BKLibraryBookshelfSupplementaryDataSource)dataSource;
-- (id)bookTypeStringFromBookType:(signed __int16)a3 count:(unint64_t)a4;
+- (id)bookTypeStringFromBookType:(signed __int16)type count:(unint64_t)count;
 - (id)importStatusString;
 - (id)libraryUploadStatusPresentingViewController;
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (void)_delayedHideCloudStatus;
-- (void)_mocWillSave:(id)a3;
-- (void)_ownershipDidChange:(id)a3;
+- (void)_mocWillSave:(id)save;
+- (void)_ownershipDidChange:(id)change;
 - (void)_updateMetricsForUploadStatusViewController;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)controllerDidChangeContent:(id)content;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)networkReachabilityChanged:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setActionHandler:(id)a3;
-- (void)setDataSource:(id)a3;
+- (void)networkReachabilityChanged:(id)changed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setActionHandler:(id)handler;
+- (void)setDataSource:(id)source;
 - (void)sortModeDidChange;
 - (void)updateAndLayoutCloudButtonAnimated;
 - (void)updateCloudButton;
 - (void)updateCounts;
-- (void)uploadProgressButtonPressed:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)uploadProgressButtonPressed:(id)pressed;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation BKLibraryBookshelfCollectionInfoHeader
 
-+ (double)_cachedHeight:(id)a3 withDataSource:(id)a4
++ (double)_cachedHeight:(id)height withDataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
+  heightCopy = height;
+  sourceCopy = source;
   if (qword_100AF76E0 != -1)
   {
     sub_10079084C();
   }
 
-  v7 = [v5 mainHeaderMetrics];
-  v8 = [v7 collectionInfoLabelFontAttributes];
-  v9 = [TUIFontSpec attributedStringWith:@" " attributes:v8];
+  mainHeaderMetrics = [heightCopy mainHeaderMetrics];
+  collectionInfoLabelFontAttributes = [mainHeaderMetrics collectionInfoLabelFontAttributes];
+  v9 = [TUIFontSpec attributedStringWith:@" " attributes:collectionInfoLabelFontAttributes];
 
-  v10 = [v7 cloudButtonFontAttributes];
-  v11 = [TUIFontSpec attributedStringWith:@" " attributes:v10];
+  cloudButtonFontAttributes = [mainHeaderMetrics cloudButtonFontAttributes];
+  v11 = [TUIFontSpec attributedStringWith:@" " attributes:cloudButtonFontAttributes];
 
-  [v7 collectionInfoHeaderVerticalMargin];
+  [mainHeaderMetrics collectionInfoHeaderVerticalMargin];
   v13 = v12;
-  [v7 cloudButtonSpacing];
+  [mainHeaderMetrics cloudButtonSpacing];
   v15 = 0;
   if (v9 && v11 && (v16 = v14, v37[0] = @"attributedInfoText", v37[1] = @"attributedCloudText", v38[0] = v9, v38[1] = v11, v37[2] = @"vertMargin", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v13), v17 = objc_claimAutoreleasedReturnValue(), v38[2] = v17, v37[3] = @"spacing", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v16), v18 = objc_claimAutoreleasedReturnValue(), v38[3] = v18, +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v38, v37, 4), v15 = objc_claimAutoreleasedReturnValue(), v18, v17, [qword_100AF76E8 objectForKeyedSubscript:v15], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -67,16 +67,16 @@
     v23 = objc_alloc_init(IMTouchInsetsButton);
     [v23 setContentEdgeInsets:{0.0, 0.0, 0.0, -1.0}];
     [v23 setAttributedTitle:v11 forState:0];
-    [v5 frame];
+    [heightCopy frame];
     v25 = v24;
     v27 = v26;
     [v20 sizeThatFits:{v24, v26}];
     v29 = v28;
     [v23 sizeThatFits:{v25, v27}];
     v31 = v29 + v30;
-    [v7 collectionInfoHeaderVerticalMargin];
+    [mainHeaderMetrics collectionInfoHeaderVerticalMargin];
     v33 = v31 + v32 * 2.0;
-    [v7 cloudButtonSpacing];
+    [mainHeaderMetrics cloudButtonSpacing];
     v22 = ceil(v34 + v33);
     if (v15)
     {
@@ -88,25 +88,25 @@
   return v22;
 }
 
-+ (void)adjustHeight:(id)a3 withDataSource:(id)a4
++ (void)adjustHeight:(id)height withDataSource:(id)source
 {
-  v6 = a4;
-  v15 = a3;
-  [v15 frame];
+  sourceCopy = source;
+  heightCopy = height;
+  [heightCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [a1 _cachedHeight:v15 withDataSource:v6];
+  [self _cachedHeight:heightCopy withDataSource:sourceCopy];
   v14 = v13;
 
-  [v15 setFrame:{v8, v10, v12, v14}];
+  [heightCopy setFrame:{v8, v10, v12, v14}];
 }
 
-- (BKLibraryBookshelfCollectionInfoHeader)initWithFrame:(CGRect)a3
+- (BKLibraryBookshelfCollectionInfoHeader)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = BKLibraryBookshelfCollectionInfoHeader;
-  v3 = [(BKLibraryBookshelfCollectionInfoHeader *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKLibraryBookshelfCollectionInfoHeader *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -156,14 +156,14 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
-  [v4 removeObserver:self forKeyPath:@"sortMode" context:off_100ACEB98];
+  dataSource = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
+  [dataSource removeObserver:self forKeyPath:@"sortMode" context:off_100ACEB98];
 
   if ([(BKLibraryBookshelfCollectionInfoHeader *)self isObservingPropertyChanges])
   {
     v5 = +[BKLibraryAssetStatusController sharedController];
-    v6 = [v5 uploadAssets];
-    [v6 removeObserver:self forKeyPath:@"arrangedObjects" context:off_100ACEBA0];
+    uploadAssets = [v5 uploadAssets];
+    [uploadAssets removeObserver:self forKeyPath:@"arrangedObjects" context:off_100ACEBA0];
     [v5 removeObserver:self forKeyPath:@"uploadStatus" context:off_100ACEBA8];
     v7 = +[BKLibraryImportStatusController sharedController];
     [v7 removeObserver:self forKeyPath:@"totalImportOperationsProcessed" context:off_100ACEBB0];
@@ -172,12 +172,12 @@
   uploadProgressNavigationController = self->_uploadProgressNavigationController;
   if (uploadProgressNavigationController)
   {
-    v9 = [(UINavigationController *)uploadProgressNavigationController popoverPresentationController];
-    [v9 setDelegate:0];
+    popoverPresentationController = [(UINavigationController *)uploadProgressNavigationController popoverPresentationController];
+    [popoverPresentationController setDelegate:0];
 
-    v10 = [(BKLibraryBookshelfCollectionInfoHeader *)self actionHandler];
-    v11 = [v10 presentationController];
-    [v11 dismissViewControllerAnimated:0 completion:0];
+    actionHandler = [(BKLibraryBookshelfCollectionInfoHeader *)self actionHandler];
+    presentationController = [actionHandler presentationController];
+    [presentationController dismissViewControllerAnimated:0 completion:0];
   }
 
   v12.receiver = self;
@@ -185,18 +185,18 @@
   [(BKLibraryBookshelfCollectionInfoHeader *)&v12 dealloc];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfCollectionInfoHeader *)self window];
-  v6 = v5;
-  if (v4 && !v5)
+  windowCopy = window;
+  window = [(BKLibraryBookshelfCollectionInfoHeader *)self window];
+  v6 = window;
+  if (windowCopy && !window)
   {
     if (![(BKLibraryBookshelfCollectionInfoHeader *)self isObservingPropertyChanges])
     {
       v7 = +[BKLibraryAssetStatusController sharedController];
-      v8 = [v7 uploadAssets];
-      [v8 addObserver:self forKeyPath:@"arrangedObjects" options:1 context:off_100ACEBA0];
+      uploadAssets = [v7 uploadAssets];
+      [uploadAssets addObserver:self forKeyPath:@"arrangedObjects" options:1 context:off_100ACEBA0];
       [v7 addObserver:self forKeyPath:@"uploadStatus" options:1 context:off_100ACEBA8];
       v9 = +[BKLibraryImportStatusController sharedController];
       [v9 addObserver:self forKeyPath:@"totalImportOperationsProcessed" options:1 context:off_100ACEBB0];
@@ -207,9 +207,9 @@
     goto LABEL_10;
   }
 
-  if (v4 || !v5)
+  if (windowCopy || !window)
   {
-    if (v4)
+    if (windowCopy)
     {
 LABEL_10:
       [(BKLibraryBookshelfCollectionInfoHeader *)self updateCounts];
@@ -221,8 +221,8 @@ LABEL_10:
   else if ([(BKLibraryBookshelfCollectionInfoHeader *)self isObservingPropertyChanges])
   {
     v10 = +[BKLibraryAssetStatusController sharedController];
-    v11 = [v10 uploadAssets];
-    [v11 removeObserver:self forKeyPath:@"arrangedObjects" context:off_100ACEBA0];
+    uploadAssets2 = [v10 uploadAssets];
+    [uploadAssets2 removeObserver:self forKeyPath:@"arrangedObjects" context:off_100ACEBA0];
     [v10 removeObserver:self forKeyPath:@"uploadStatus" context:off_100ACEBA8];
     v12 = +[BKLibraryImportStatusController sharedController];
     [v12 removeObserver:self forKeyPath:@"totalImportOperationsProcessed" context:off_100ACEBB0];
@@ -232,15 +232,15 @@ LABEL_10:
 
   v13.receiver = self;
   v13.super_class = BKLibraryBookshelfCollectionInfoHeader;
-  [(BKLibraryBookshelfCollectionInfoHeader *)&v13 willMoveToWindow:v4];
+  [(BKLibraryBookshelfCollectionInfoHeader *)&v13 willMoveToWindow:windowCopy];
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  objc_storeWeak(&self->_actionHandler, a3);
-  v4 = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
-  [v4 removeTarget:0 action:0 forControlEvents:64];
-  [v4 addTarget:self action:"uploadProgressButtonPressed:" forControlEvents:64];
+  objc_storeWeak(&self->_actionHandler, handler);
+  cloudButton = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
+  [cloudButton removeTarget:0 action:0 forControlEvents:64];
+  [cloudButton addTarget:self action:"uploadProgressButtonPressed:" forControlEvents:64];
 }
 
 - (void)layoutSubviews
@@ -253,11 +253,11 @@ LABEL_10:
   v25 = v5;
   v7 = v6;
   v9 = v8;
-  v10 = [(BKLibraryBookshelfCollectionInfoHeader *)self infoLabel];
-  v11 = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
-  [v10 sizeThatFits:{v7, v9}];
+  infoLabel = [(BKLibraryBookshelfCollectionInfoHeader *)self infoLabel];
+  cloudButton = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
+  [infoLabel sizeThatFits:{v7, v9}];
   v13 = v12;
-  [v11 sizeThatFits:{v7, v9}];
+  [cloudButton sizeThatFits:{v7, v9}];
   v26 = v14;
   v16 = v15;
   if ([(BKLibraryBookshelfCollectionInfoHeader *)self wantsCloudButton])
@@ -270,12 +270,12 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v19 = [(BKLibraryBookshelfCollectionInfoHeader *)self waitingForCloudButtonHideDelay];
+  waitingForCloudButtonHideDelay = [(BKLibraryBookshelfCollectionInfoHeader *)self waitingForCloudButtonHideDelay];
   [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButtonSpacing];
   v18 = v20;
   v21 = 0.0;
   v22 = v13;
-  if (v19)
+  if (waitingForCloudButtonHideDelay)
   {
     goto LABEL_4;
   }
@@ -286,48 +286,48 @@ LABEL_5:
   v28.size.width = v7;
   v28.size.height = v9;
   v23 = floor((CGRectGetHeight(v28) - v22) * 0.5);
-  [v11 setAlpha:v21];
+  [cloudButton setAlpha:v21];
   v29.origin.x = v4;
   v29.origin.y = v25;
   v29.size.width = v7;
   v29.size.height = v9;
-  [v10 setFrame:{v4, v23, CGRectGetWidth(v29), v13}];
+  [infoLabel setFrame:{v4, v23, CGRectGetWidth(v29), v13}];
   v30.origin.x = v4;
   v30.origin.y = v25;
   v30.size.width = v7;
   v30.size.height = v9;
-  [v11 setFrame:{v4, v18 + v13 + v23, CGRectGetWidth(v30), v16}];
+  [cloudButton setFrame:{v4, v18 + v13 + v23, CGRectGetWidth(v30), v16}];
   v31.origin.x = v4;
   v31.origin.y = v25;
   v31.size.width = v7;
   v31.size.height = v9;
   Width = CGRectGetWidth(v31);
-  [v11 setTouchInsets:{0.0, (Width - v26) * 0.5, 0.0, (Width - v26) * 0.5}];
+  [cloudButton setTouchInsets:{0.0, (Width - v26) * 0.5, 0.0, (Width - v26) * 0.5}];
 }
 
 - (id)importStatusString
 {
   v2 = +[BKLibraryImportStatusController sharedController];
-  v3 = [v2 totalImportOperations];
-  v4 = [v2 completedImportOperations];
-  v5 = [v2 failedImportOperations];
+  totalImportOperations = [v2 totalImportOperations];
+  completedImportOperations = [v2 completedImportOperations];
+  failedImportOperations = [v2 failedImportOperations];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Importing: %ld of %ld. Failed: %ld" value:&stru_100A30A68 table:0];
 
-  if (v3)
+  if (totalImportOperations)
   {
-    v3 = [NSString stringWithFormat:v7, v4, v3, v5];
+    totalImportOperations = [NSString stringWithFormat:v7, completedImportOperations, totalImportOperations, failedImportOperations];
   }
 
-  return v3;
+  return totalImportOperations;
 }
 
 - (void)updateCloudButton
 {
-  v9 = [(BKLibraryBookshelfCollectionInfoHeader *)self importStatusString];
-  if ([v9 length])
+  importStatusString = [(BKLibraryBookshelfCollectionInfoHeader *)self importStatusString];
+  if ([importStatusString length])
   {
-    v3 = v9;
+    v3 = importStatusString;
   }
 
   else
@@ -340,11 +340,11 @@ LABEL_5:
   v10 = v3;
   if ([v3 length])
   {
-    v5 = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
-    v6 = [(BKLibraryBookshelfCollectionInfoHeader *)self mainHeaderMetrics];
-    v7 = [v6 cloudButtonFontAttributes];
-    v8 = [TUIFontSpec attributedStringWith:v10 attributes:v7];
-    [v5 setAttributedTitle:v8 forState:0];
+    cloudButton = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
+    mainHeaderMetrics = [(BKLibraryBookshelfCollectionInfoHeader *)self mainHeaderMetrics];
+    cloudButtonFontAttributes = [mainHeaderMetrics cloudButtonFontAttributes];
+    v8 = [TUIFontSpec attributedStringWith:v10 attributes:cloudButtonFontAttributes];
+    [cloudButton setAttributedTitle:v8 forState:0];
 
     [(BKLibraryBookshelfCollectionInfoHeader *)self setWantsCloudButton:1];
     [(BKLibraryBookshelfCollectionInfoHeader *)self setWaitingForCloudButtonHideDelay:0];
@@ -368,9 +368,9 @@ LABEL_5:
   if ([(BKLibraryBookshelfCollectionInfoHeader *)self waitingForCloudButtonHideDelay])
   {
     [(BKLibraryBookshelfCollectionInfoHeader *)self setWaitingForCloudButtonHideDelay:0];
-    v3 = [(BKLibraryBookshelfCollectionInfoHeader *)self superview];
+    superview = [(BKLibraryBookshelfCollectionInfoHeader *)self superview];
 
-    if (v3)
+    if (superview)
     {
 
       [(BKLibraryBookshelfCollectionInfoHeader *)self updateAndLayoutCloudButtonAnimated];
@@ -378,40 +378,40 @@ LABEL_5:
   }
 }
 
-- (id)bookTypeStringFromBookType:(signed __int16)a3 count:(unint64_t)a4
+- (id)bookTypeStringFromBookType:(signed __int16)type count:(unint64_t)count
 {
   v6 = +[NSBundle mainBundle];
   v7 = v6;
-  if ((a3 - 1) > 3u)
+  if ((type - 1) > 3u)
   {
     v8 = @"%lu unknown";
   }
 
   else
   {
-    v8 = *(&off_100A08030 + (a3 - 1));
+    v8 = *(&off_100A08030 + (type - 1));
   }
 
   v9 = [v6 localizedStringForKey:v8 value:&stru_100A30A68 table:0];
 
-  v10 = [NSString localizedStringWithFormat:v9, a4];
+  v10 = [NSString localizedStringWithFormat:v9, count];
 
   return v10;
 }
 
 - (void)updateCounts
 {
-  v2 = self;
+  selfCopy = self;
   if ([(BKLibraryBookshelfCollectionInfoHeader *)self isSeriesCollection])
   {
     v3 = +[BKLibraryManager defaultManager];
     v79 = 0;
     v80 = 0;
-    v4 = [(BKLibraryBookshelfCollectionInfoHeader *)v2 dataSource];
-    v5 = [v4 seriesID];
+    dataSource = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy dataSource];
+    seriesID = [dataSource seriesID];
 
-    v6 = [v3 uiChildContext];
-    [v3 countOfSeriesLibraryAssetsWithSeriesID:v5 total:&v80 purchased:&v79 context:v6];
+    uiChildContext = [v3 uiChildContext];
+    [v3 countOfSeriesLibraryAssetsWithSeriesID:seriesID total:&v80 purchased:&v79 context:uiChildContext];
 
     if (v79)
     {
@@ -428,13 +428,13 @@ LABEL_5:
         v8 = [v56 localizedStringForKey:@"You’ve purchased %@ of %@ books in this series." value:&stru_100A30A68 table:0];
 
         v44 = [NSString stringWithFormat:v8, v11, v15];
-        v57 = [(BKLibraryBookshelfCollectionInfoHeader *)v2 mainHeaderMetrics];
-        v58 = [v57 collectionInfoLabelFontAttributes];
-        v59 = [TUIFontSpec attributedStringWith:v44 attributes:v58];
+        mainHeaderMetrics = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy mainHeaderMetrics];
+        collectionInfoLabelFontAttributes = [mainHeaderMetrics collectionInfoLabelFontAttributes];
+        v59 = [TUIFontSpec attributedStringWith:v44 attributes:collectionInfoLabelFontAttributes];
 
         [v59 size];
         v61 = v60;
-        [(BKLibraryBookshelfCollectionInfoHeader *)v2 bounds];
+        [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy bounds];
         if (v61 > CGRectGetWidth(v85))
         {
           v62 = +[NSBundle mainBundle];
@@ -452,13 +452,13 @@ LABEL_5:
       v7 = +[NSBundle mainBundle];
       v8 = [v7 localizedStringForKey:@"You’ve purchased all the books in this series." value:&stru_100A30A68 table:0];
 
-      v9 = [(BKLibraryBookshelfCollectionInfoHeader *)v2 mainHeaderMetrics];
-      v10 = [v9 collectionInfoLabelFontAttributes];
-      v11 = [TUIFontSpec attributedStringWith:v8 attributes:v10];
+      mainHeaderMetrics2 = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy mainHeaderMetrics];
+      collectionInfoLabelFontAttributes2 = [mainHeaderMetrics2 collectionInfoLabelFontAttributes];
+      v11 = [TUIFontSpec attributedStringWith:v8 attributes:collectionInfoLabelFontAttributes2];
 
       [v11 size];
       v13 = v12;
-      [(BKLibraryBookshelfCollectionInfoHeader *)v2 bounds];
+      [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy bounds];
       if (v13 > CGRectGetWidth(v82))
       {
         v14 = +[NSBundle mainBundle];
@@ -477,13 +477,13 @@ LABEL_45:
       v39 = +[NSBundle mainBundle];
       v8 = [v39 localizedStringForKey:@"You haven’t purchased any books in this series." value:&stru_100A30A68 table:0];
 
-      v40 = [(BKLibraryBookshelfCollectionInfoHeader *)v2 mainHeaderMetrics];
-      v41 = [v40 collectionInfoLabelFontAttributes];
-      v11 = [TUIFontSpec attributedStringWith:v8 attributes:v41];
+      mainHeaderMetrics3 = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy mainHeaderMetrics];
+      collectionInfoLabelFontAttributes3 = [mainHeaderMetrics3 collectionInfoLabelFontAttributes];
+      v11 = [TUIFontSpec attributedStringWith:v8 attributes:collectionInfoLabelFontAttributes3];
 
       [v11 size];
       v43 = v42;
-      [(BKLibraryBookshelfCollectionInfoHeader *)v2 bounds];
+      [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy bounds];
       if (v43 > CGRectGetWidth(v83))
       {
         v14 = +[NSBundle mainBundle];
@@ -493,10 +493,10 @@ LABEL_45:
       }
     }
 
-    v65 = [(BKLibraryBookshelfCollectionInfoHeader *)v2 mainHeaderMetrics];
-    v66 = [v65 collectionInfoLabelFontAttributes];
-    v67 = [TUIFontSpec attributedStringWith:v8 attributes:v66];
-    [(UILabel *)v2->_infoLabel setAttributedText:v67];
+    mainHeaderMetrics4 = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy mainHeaderMetrics];
+    collectionInfoLabelFontAttributes4 = [mainHeaderMetrics4 collectionInfoLabelFontAttributes];
+    v67 = [TUIFontSpec attributedStringWith:v8 attributes:collectionInfoLabelFontAttributes4];
+    [(UILabel *)selfCopy->_infoLabel setAttributedText:v67];
 
     goto LABEL_47;
   }
@@ -505,9 +505,9 @@ LABEL_45:
   v3 = [v17 localizedStringForKey:@" value:" table:{&stru_100A30A68, 0}];
 
   v18 = +[NSMutableArray array];
-  v19 = [(BKLibraryBookshelfCollectionInfoHeader *)v2 frc];
-  v20 = [v19 sections];
-  v21 = [v20 mutableCopy];
+  v19 = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy frc];
+  sections = [v19 sections];
+  v21 = [sections mutableCopy];
 
   v77 = 0u;
   v78 = 0u;
@@ -520,7 +520,7 @@ LABEL_45:
     v24 = v23;
     v69 = v3;
     v71 = v18;
-    v68 = v2;
+    v68 = selfCopy;
     v73 = 0;
     v74 = 0;
     v72 = 0;
@@ -538,49 +538,49 @@ LABEL_45:
         }
 
         v30 = *(*(&v75 + 1) + 8 * i);
-        v31 = [v30 numberOfObjects];
-        v32 = [v30 name];
-        v33 = [v32 integerValue];
+        numberOfObjects = [v30 numberOfObjects];
+        name = [v30 name];
+        integerValue = [name integerValue];
 
-        if (v33 <= 3)
+        if (integerValue <= 3)
         {
-          if ((v33 - 1) < 2)
+          if ((integerValue - 1) < 2)
           {
             goto LABEL_19;
           }
 
-          if (v33 == 3)
+          if (integerValue == 3)
           {
-            v73 += v31;
+            v73 += numberOfObjects;
             goto LABEL_22;
           }
 
           goto LABEL_20;
         }
 
-        if (v33 == 4)
+        if (integerValue == 4)
         {
 LABEL_19:
-          v26 += v31;
+          v26 += numberOfObjects;
           goto LABEL_22;
         }
 
-        if (v33 != 5)
+        if (integerValue != 5)
         {
-          if (v33 == 6)
+          if (integerValue == 6)
           {
-            v72 += v31;
+            v72 += numberOfObjects;
             goto LABEL_22;
           }
 
 LABEL_20:
-          v74 += v31;
+          v74 += numberOfObjects;
           goto LABEL_22;
         }
 
-        v25 += v31;
+        v25 += numberOfObjects;
 LABEL_22:
-        v27 += v31;
+        v27 += numberOfObjects;
       }
 
       v24 = [v22 countByEnumeratingWithState:&v75 objects:v81 count:16];
@@ -593,7 +593,7 @@ LABEL_22:
           [v71 addObject:v34];
         }
 
-        v2 = v68;
+        selfCopy = v68;
         if (v25)
         {
           v35 = [(BKLibraryBookshelfCollectionInfoHeader *)v68 bookTypeStringFromBookType:4 count:v25];
@@ -632,39 +632,39 @@ LABEL_38:
 
 LABEL_39:
   v8 = [v18 componentsJoinedByString:v3];
-  v45 = [(BKLibraryBookshelfCollectionInfoHeader *)v2 mainHeaderMetrics];
-  v46 = [v45 collectionInfoLabelFontAttributes];
-  v47 = [TUIFontSpec attributedStringWith:v8 attributes:v46];
+  mainHeaderMetrics5 = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy mainHeaderMetrics];
+  collectionInfoLabelFontAttributes5 = [mainHeaderMetrics5 collectionInfoLabelFontAttributes];
+  v47 = [TUIFontSpec attributedStringWith:v8 attributes:collectionInfoLabelFontAttributes5];
 
   [v47 size];
   v49 = v48;
-  [(BKLibraryBookshelfCollectionInfoHeader *)v2 bounds];
+  [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy bounds];
   if (v49 > CGRectGetWidth(v84))
   {
-    v50 = [(BKLibraryBookshelfCollectionInfoHeader *)v2 bookTypeStringFromBookType:1 count:v27];
+    v50 = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy bookTypeStringFromBookType:1 count:v27];
 
-    v51 = [(BKLibraryBookshelfCollectionInfoHeader *)v2 mainHeaderMetrics];
-    v52 = [v51 collectionInfoLabelFontAttributes];
-    v53 = [TUIFontSpec attributedStringWith:v50 attributes:v52];
+    mainHeaderMetrics6 = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy mainHeaderMetrics];
+    collectionInfoLabelFontAttributes6 = [mainHeaderMetrics6 collectionInfoLabelFontAttributes];
+    v53 = [TUIFontSpec attributedStringWith:v50 attributes:collectionInfoLabelFontAttributes6];
 
     v47 = v53;
     v8 = v50;
   }
 
-  [(UILabel *)v2->_infoLabel setAttributedText:v47];
+  [(UILabel *)selfCopy->_infoLabel setAttributedText:v47];
 
 LABEL_47:
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v35.receiver = self;
   v35.super_class = BKLibraryBookshelfCollectionInfoHeader;
-  [(BKLibraryBookshelfCollectionInfoHeader *)&v35 applyLayoutAttributes:v4];
-  v5 = v4;
-  v6 = [(BKLibraryBookshelfCollectionInfoHeader *)self attrs];
-  v7 = [v6 isEqual:v5];
+  [(BKLibraryBookshelfCollectionInfoHeader *)&v35 applyLayoutAttributes:attributesCopy];
+  v5 = attributesCopy;
+  attrs = [(BKLibraryBookshelfCollectionInfoHeader *)self attrs];
+  v7 = [attrs isEqual:v5];
 
   if ((v7 & 1) == 0)
   {
@@ -672,67 +672,67 @@ LABEL_47:
     v8 = +[UIApplication sharedApplication];
     -[BKLibraryBookshelfCollectionInfoHeader setIsRTL:](self, "setIsRTL:", [v8 userInterfaceLayoutDirection] == 1);
 
-    v9 = [(BKLibraryBookshelfCollectionInfoHeader *)self infoLabel];
-    v10 = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
-    v11 = [(BKLibraryBookshelfCollectionInfoHeader *)self attrs];
-    v12 = [v11 layoutDebugMode];
+    infoLabel = [(BKLibraryBookshelfCollectionInfoHeader *)self infoLabel];
+    cloudButton = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
+    attrs2 = [(BKLibraryBookshelfCollectionInfoHeader *)self attrs];
+    layoutDebugMode = [attrs2 layoutDebugMode];
 
-    if (v12)
+    if (layoutDebugMode)
     {
       v13 = +[UIColor redColor];
       v14 = [v13 colorWithAlphaComponent:0.2];
-      v15 = [v14 CGColor];
-      v16 = [(BKLibraryBookshelfCollectionInfoHeader *)self layer];
-      [v16 setBorderColor:v15];
+      cGColor = [v14 CGColor];
+      layer = [(BKLibraryBookshelfCollectionInfoHeader *)self layer];
+      [layer setBorderColor:cGColor];
 
-      v17 = [(BKLibraryBookshelfCollectionInfoHeader *)self layer];
+      layer2 = [(BKLibraryBookshelfCollectionInfoHeader *)self layer];
       v18 = 0.5;
-      [v17 setBorderWidth:0.5];
+      [layer2 setBorderWidth:0.5];
 
       v19 = +[UIColor redColor];
       v20 = [v19 colorWithAlphaComponent:0.2];
-      v21 = [v20 CGColor];
-      v22 = [v9 layer];
-      [v22 setBorderColor:v21];
+      cGColor2 = [v20 CGColor];
+      layer3 = [infoLabel layer];
+      [layer3 setBorderColor:cGColor2];
 
-      v23 = [v9 layer];
-      [v23 setBorderWidth:0.5];
+      layer4 = [infoLabel layer];
+      [layer4 setBorderWidth:0.5];
 
-      v24 = +[UIColor redColor];
-      v25 = [v24 colorWithAlphaComponent:0.2];
-      v26 = [v25 CGColor];
-      v27 = [v10 layer];
-      [v27 setBorderColor:v26];
+      layer7 = +[UIColor redColor];
+      v25 = [layer7 colorWithAlphaComponent:0.2];
+      cGColor3 = [v25 CGColor];
+      layer5 = [cloudButton layer];
+      [layer5 setBorderColor:cGColor3];
     }
 
     else
     {
-      v28 = [(BKLibraryBookshelfCollectionInfoHeader *)self layer];
+      layer6 = [(BKLibraryBookshelfCollectionInfoHeader *)self layer];
       v18 = 0.0;
-      [v28 setBorderWidth:0.0];
+      [layer6 setBorderWidth:0.0];
 
-      v24 = [v9 layer];
-      [v24 setBorderWidth:0.0];
+      layer7 = [infoLabel layer];
+      [layer7 setBorderWidth:0.0];
     }
 
-    v29 = [v10 layer];
-    [v29 setBorderWidth:v18];
+    layer8 = [cloudButton layer];
+    [layer8 setBorderWidth:v18];
 
-    v30 = [(BKLibraryBookshelfCollectionInfoHeader *)self attrs];
-    v31 = [v30 mainHeaderMetrics];
+    attrs3 = [(BKLibraryBookshelfCollectionInfoHeader *)self attrs];
+    mainHeaderMetrics = [attrs3 mainHeaderMetrics];
 
-    [(BKLibraryBookshelfCollectionInfoHeader *)self setMainHeaderMetrics:v31];
-    v32 = [(BKLibraryBookshelfCollectionInfoHeader *)self backgroundColor];
-    v33 = [v31 headerBackgroundColor];
+    [(BKLibraryBookshelfCollectionInfoHeader *)self setMainHeaderMetrics:mainHeaderMetrics];
+    backgroundColor = [(BKLibraryBookshelfCollectionInfoHeader *)self backgroundColor];
+    headerBackgroundColor = [mainHeaderMetrics headerBackgroundColor];
 
-    if (v32 != v33)
+    if (backgroundColor != headerBackgroundColor)
     {
-      v34 = [v31 headerBackgroundColor];
-      [(BKLibraryBookshelfCollectionInfoHeader *)self setBackgroundColor:v34];
+      headerBackgroundColor2 = [mainHeaderMetrics headerBackgroundColor];
+      [(BKLibraryBookshelfCollectionInfoHeader *)self setBackgroundColor:headerBackgroundColor2];
     }
 
-    [v10 setContentHorizontalAlignment:0];
-    [v31 cloudButtonSpacing];
+    [cloudButton setContentHorizontalAlignment:0];
+    [mainHeaderMetrics cloudButtonSpacing];
     [(BKLibraryBookshelfCollectionInfoHeader *)self setCloudButtonSpacing:?];
     [(BKLibraryBookshelfCollectionInfoHeader *)self updateCloudButton];
     [(BKLibraryBookshelfCollectionInfoHeader *)self updateCounts];
@@ -740,49 +740,49 @@ LABEL_47:
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   if (WeakRetained != obj)
   {
     v5 = +[BKLibraryManager defaultManager];
     v6 = +[NSNotificationCenter defaultCenter];
-    v7 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
-    [v7 removeObserver:self forKeyPath:@"sortMode" context:off_100ACEB98];
+    dataSource = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
+    [dataSource removeObserver:self forKeyPath:@"sortMode" context:off_100ACEB98];
 
-    v8 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
+    dataSource2 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
 
-    if (v8)
+    if (dataSource2)
     {
       [v6 removeObserver:self name:BKLibraryOwnershipDidChangeNotification object:v5];
     }
 
     objc_storeWeak(&self->_dataSource, obj);
-    v9 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
-    -[BKLibraryBookshelfCollectionInfoHeader setIsSeriesCollection:](self, "setIsSeriesCollection:", [v9 collectionIsSeries]);
+    dataSource3 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
+    -[BKLibraryBookshelfCollectionInfoHeader setIsSeriesCollection:](self, "setIsSeriesCollection:", [dataSource3 collectionIsSeries]);
 
-    v10 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
-    if (v10)
+    dataSource4 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
+    if (dataSource4)
     {
-      v11 = v10;
-      v12 = [(BKLibraryBookshelfCollectionInfoHeader *)self isSeriesCollection];
+      v11 = dataSource4;
+      isSeriesCollection = [(BKLibraryBookshelfCollectionInfoHeader *)self isSeriesCollection];
 
-      if (v12)
+      if (isSeriesCollection)
       {
         [v6 addObserver:self selector:"_ownershipDidChange:" name:BKLibraryOwnershipDidChangeNotification object:v5];
       }
     }
 
-    v13 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
-    [v13 addObserver:self forKeyPath:@"sortMode" options:0 context:off_100ACEB98];
+    dataSource5 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
+    [dataSource5 addObserver:self forKeyPath:@"sortMode" options:0 context:off_100ACEB98];
 
     [(BKLibraryBookshelfCollectionInfoHeader *)self sortModeDidChange];
   }
 }
 
-- (void)_ownershipDidChange:(id)a3
+- (void)_ownershipDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -792,32 +792,32 @@ LABEL_47:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_mocWillSave:(id)a3
+- (void)_mocWillSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   if (![(BKLibraryBookshelfCollectionInfoHeader *)self isSeriesCollection])
   {
     v5 = [(BKLibraryBookshelfCollectionInfoHeader *)self frc];
-    v6 = [v5 fetchRequest];
-    v7 = [v6 entityName];
-    v8 = [v7 isEqualToString:@"BKCollectionMember"];
+    fetchRequest = [v5 fetchRequest];
+    entityName = [fetchRequest entityName];
+    v8 = [entityName isEqualToString:@"BKCollectionMember"];
 
     if (v8)
     {
-      v9 = [v4 object];
-      [v9 updatedObjects];
+      object = [saveCopy object];
+      [object updatedObjects];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v10 = v31 = 0u;
       v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
-      v12 = v10;
+      coalescedReloadData = v10;
       if (v11)
       {
         v13 = v11;
-        v25 = v9;
-        v26 = v4;
-        v27 = self;
+        v25 = object;
+        v26 = saveCopy;
+        selfCopy = self;
         v14 = *v29;
         while (2)
         {
@@ -829,23 +829,23 @@ LABEL_47:
             }
 
             v16 = *(*(&v28 + 1) + 8 * i);
-            v17 = [v16 entity];
-            v18 = [v17 name];
-            v19 = [v18 isEqualToString:@"BKLibraryAsset"];
+            entity = [v16 entity];
+            name = [entity name];
+            v19 = [name isEqualToString:@"BKLibraryAsset"];
 
             if (v19)
             {
-              v20 = [v16 changedValues];
-              v21 = [v20 allKeys];
-              v22 = [NSSet setWithArray:v21];
-              v23 = [(BKLibraryBookshelfCollectionInfoHeader *)v27 propertiesOfInterest];
-              v24 = [v22 intersectsSet:v23];
+              changedValues = [v16 changedValues];
+              allKeys = [changedValues allKeys];
+              v22 = [NSSet setWithArray:allKeys];
+              propertiesOfInterest = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy propertiesOfInterest];
+              v24 = [v22 intersectsSet:propertiesOfInterest];
 
               if (v24)
               {
 
-                v12 = [(BKLibraryBookshelfCollectionInfoHeader *)v27 coalescedReloadData];
-                [v12 signalWithCompletion:&stru_100A08010];
+                coalescedReloadData = [(BKLibraryBookshelfCollectionInfoHeader *)selfCopy coalescedReloadData];
+                [coalescedReloadData signalWithCompletion:&stru_100A08010];
                 goto LABEL_14;
               }
             }
@@ -860,10 +860,10 @@ LABEL_47:
           break;
         }
 
-        v12 = v10;
+        coalescedReloadData = v10;
 LABEL_14:
-        v9 = v25;
-        v4 = v26;
+        object = v25;
+        saveCopy = v26;
       }
     }
   }
@@ -881,25 +881,25 @@ LABEL_14:
 
   else
   {
-    v3 = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
-    v4 = [v3 currentSortMode];
+    dataSource = [(BKLibraryBookshelfCollectionInfoHeader *)self dataSource];
+    currentSortMode = [dataSource currentSortMode];
 
-    v5 = [v4 predicate];
+    predicate = [currentSortMode predicate];
     v6 = [(BKLibraryBookshelfCollectionInfoHeader *)self frc];
-    v7 = [v6 fetchRequest];
-    v8 = [v7 predicate];
-    v9 = [v5 isEqual:v8];
+    fetchRequest = [v6 fetchRequest];
+    predicate2 = [fetchRequest predicate];
+    v9 = [predicate isEqual:predicate2];
 
     if ((v9 & 1) == 0)
     {
       v10 = [NSFetchRequest alloc];
-      v11 = [v4 entityName];
-      v12 = [v10 initWithEntityName:v11];
+      entityName = [currentSortMode entityName];
+      v12 = [v10 initWithEntityName:entityName];
 
-      v13 = [v4 entityName];
-      v14 = [v13 isEqualToString:@"BKLibraryAsset"];
+      entityName2 = [currentSortMode entityName];
+      v14 = [entityName2 isEqualToString:@"BKLibraryAsset"];
 
-      [v12 setPredicate:v5];
+      [v12 setPredicate:predicate];
       if (v14)
       {
         v15 = @"contentType";
@@ -917,8 +917,8 @@ LABEL_14:
 
       v18 = [NSFetchedResultsController alloc];
       v19 = +[BKLibraryManager defaultManager];
-      v20 = [v19 uiChildContext];
-      v21 = [v18 initWithFetchRequest:v12 managedObjectContext:v20 sectionNameKeyPath:v15 cacheName:0];
+      uiChildContext = [v19 uiChildContext];
+      v21 = [v18 initWithFetchRequest:v12 managedObjectContext:uiChildContext sectionNameKeyPath:v15 cacheName:0];
       [(BKLibraryBookshelfCollectionInfoHeader *)self setFrc:v21];
 
       v22 = [(BKLibraryBookshelfCollectionInfoHeader *)self frc];
@@ -934,7 +934,7 @@ LABEL_14:
   }
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   [(BKLibraryBookshelfCollectionInfoHeader *)self updateCounts];
   [(BKLibraryBookshelfCollectionInfoHeader *)self updateCloudButton];
@@ -945,8 +945,8 @@ LABEL_14:
 - (void)updateAndLayoutCloudButtonAnimated
 {
   [(BKLibraryBookshelfCollectionInfoHeader *)self updateCloudButton];
-  v3 = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
-  [v3 layoutIfNeeded];
+  cloudButton = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
+  [cloudButton layoutIfNeeded];
 
   [(BKLibraryBookshelfCollectionInfoHeader *)self setNeedsLayout];
   v4[0] = _NSConcreteStackBlock;
@@ -957,12 +957,12 @@ LABEL_14:
   [UIView animateWithDuration:v4 animations:0.3];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_100ACEB98 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_100ACEB98 == context)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -975,7 +975,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (off_100ACEBA0 == a6)
+  if (off_100ACEBA0 == context)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -986,7 +986,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (off_100ACEBA8 == a6)
+  if (off_100ACEBA8 == context)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -997,7 +997,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (off_100ACEBB0 == a6)
+  if (off_100ACEBB0 == context)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1010,11 +1010,11 @@ LABEL_10:
 
   v14.receiver = self;
   v14.super_class = BKLibraryBookshelfCollectionInfoHeader;
-  [(BKLibraryBookshelfCollectionInfoHeader *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(BKLibraryBookshelfCollectionInfoHeader *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_11:
 }
 
-- (void)networkReachabilityChanged:(id)a3
+- (void)networkReachabilityChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1027,101 +1027,101 @@ LABEL_11:
 - (void)_updateMetricsForUploadStatusViewController
 {
   objc_opt_class();
-  v3 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
-  v4 = [v3 topViewController];
+  uploadProgressNavigationController = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+  topViewController = [uploadProgressNavigationController topViewController];
   v6 = BUDynamicCast();
 
-  v5 = [(BKLibraryBookshelfCollectionInfoHeader *)self mainHeaderMetrics];
-  [v6 setMainHeaderMetrics:v5];
+  mainHeaderMetrics = [(BKLibraryBookshelfCollectionInfoHeader *)self mainHeaderMetrics];
+  [v6 setMainHeaderMetrics:mainHeaderMetrics];
 }
 
-- (void)uploadProgressButtonPressed:(id)a3
+- (void)uploadProgressButtonPressed:(id)pressed
 {
   if ([(BKLibraryBookshelfCollectionInfoHeader *)self wantsCloudButton])
   {
-    v4 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+    uploadProgressNavigationController = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
 
-    if (!v4)
+    if (!uploadProgressNavigationController)
     {
       v5 = [BKLibraryUploadStatusViewController alloc];
-      v6 = [(BKLibraryBookshelfCollectionInfoHeader *)self mainHeaderMetrics];
-      v27 = [(BKLibraryUploadStatusViewController *)v5 initWithMetrics:v6];
+      mainHeaderMetrics = [(BKLibraryBookshelfCollectionInfoHeader *)self mainHeaderMetrics];
+      v27 = [(BKLibraryUploadStatusViewController *)v5 initWithMetrics:mainHeaderMetrics];
 
       [(BKLibraryUploadStatusViewController *)v27 setDelegate:self];
       v7 = [[BKLibraryUploadStatusNavigationController alloc] initWithRootViewController:v27];
       [(BKLibraryBookshelfCollectionInfoHeader *)self setUploadProgressNavigationController:v7];
 
-      v8 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
-      [v8 setModalPresentationStyle:7];
+      uploadProgressNavigationController2 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+      [uploadProgressNavigationController2 setModalPresentationStyle:7];
 
-      v9 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
-      v10 = [v9 popoverPresentationController];
+      uploadProgressNavigationController3 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+      popoverPresentationController = [uploadProgressNavigationController3 popoverPresentationController];
 
-      [v10 setDelegate:self];
-      v11 = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
-      [v10 setSourceView:v11];
-      [v11 bounds];
+      [popoverPresentationController setDelegate:self];
+      cloudButton = [(BKLibraryBookshelfCollectionInfoHeader *)self cloudButton];
+      [popoverPresentationController setSourceView:cloudButton];
+      [cloudButton bounds];
       v13 = v12;
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      [v11 touchInsets];
-      [v10 setSourceRect:{v13 + v23, v15 + v20, v17 - (v23 + v21), v19 - (v20 + v22)}];
-      v24 = [(BKLibraryBookshelfCollectionInfoHeader *)self actionHandler];
-      v25 = [v24 presentationController];
-      v26 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
-      [v25 presentViewController:v26 animated:1 completion:0];
+      [cloudButton touchInsets];
+      [popoverPresentationController setSourceRect:{v13 + v23, v15 + v20, v17 - (v23 + v21), v19 - (v20 + v22)}];
+      actionHandler = [(BKLibraryBookshelfCollectionInfoHeader *)self actionHandler];
+      presentationController = [actionHandler presentationController];
+      uploadProgressNavigationController4 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+      [presentationController presentViewController:uploadProgressNavigationController4 animated:1 completion:0];
     }
   }
 }
 
 - (id)libraryUploadStatusPresentingViewController
 {
-  v2 = [(BKLibraryBookshelfCollectionInfoHeader *)self actionHandler];
-  v3 = [v2 presentationController];
+  actionHandler = [(BKLibraryBookshelfCollectionInfoHeader *)self actionHandler];
+  presentationController = [actionHandler presentationController];
 
-  return v3;
+  return presentationController;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v6 = a3;
-  v4 = [v6 presentedViewController];
-  v5 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
+  uploadProgressNavigationController = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
 
-  if (v4 == v5)
+  if (presentedViewController == uploadProgressNavigationController)
   {
-    [v6 setDelegate:0];
+    [dismissCopy setDelegate:0];
     [(BKLibraryBookshelfCollectionInfoHeader *)self setUploadProgressNavigationController:0];
   }
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
-  v4 = [a3 presentedViewController];
-  v5 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+  presentedViewController = [presentation presentedViewController];
+  uploadProgressNavigationController = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
 
-  if (v4 == v5)
+  if (presentedViewController == uploadProgressNavigationController)
   {
     objc_opt_class();
-    v6 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
-    v7 = [v6 topViewController];
+    uploadProgressNavigationController2 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+    topViewController = [uploadProgressNavigationController2 topViewController];
     v8 = BUDynamicCast();
 
     [v8 setPresentedInPopover:1];
   }
 }
 
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style
 {
-  v5 = [a3 presentedViewController];
-  v6 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+  presentedViewController = [controller presentedViewController];
+  uploadProgressNavigationController = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
 
-  if (v5 == v6)
+  if (presentedViewController == uploadProgressNavigationController)
   {
     objc_opt_class();
-    v7 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
-    v8 = [v7 topViewController];
+    uploadProgressNavigationController2 = [(BKLibraryBookshelfCollectionInfoHeader *)self uploadProgressNavigationController];
+    topViewController = [uploadProgressNavigationController2 topViewController];
     v9 = BUDynamicCast();
 
     [v9 setPresentedInPopover:0];
@@ -1130,18 +1130,18 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  if (!a4)
+  if (!collection)
   {
     return 0;
   }
 
-  v4 = a4;
-  v5 = [v4 horizontalSizeClass];
-  v6 = [v4 verticalSizeClass];
+  collectionCopy = collection;
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  verticalSizeClass = [collectionCopy verticalSizeClass];
 
-  if (v6 == 1 || v5 == 1)
+  if (verticalSizeClass == 1 || horizontalSizeClass == 1)
   {
     return 0;
   }

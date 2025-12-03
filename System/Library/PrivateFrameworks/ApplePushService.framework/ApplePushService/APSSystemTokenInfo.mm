@@ -1,12 +1,12 @@
 @interface APSSystemTokenInfo
-+ (id)systemTokenInfoFromData:(id)a3;
-- (APSSystemTokenInfo)initWithCoder:(id)a3;
-- (APSSystemTokenInfo)initWithDictionary:(id)a3;
-- (APSSystemTokenInfo)initWithSystemToken:(id)a3 type:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)systemTokenInfoFromData:(id)data;
+- (APSSystemTokenInfo)initWithCoder:(id)coder;
+- (APSSystemTokenInfo)initWithDictionary:(id)dictionary;
+- (APSSystemTokenInfo)initWithSystemToken:(id)token type:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)serializeSystemTokenInfo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APSSystemTokenInfo
@@ -14,8 +14,8 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(APSSystemTokenInfo *)self systemToken];
-  [v3 setObject:v4 forKey:off_1001BC798[0]];
+  systemToken = [(APSSystemTokenInfo *)self systemToken];
+  [v3 setObject:systemToken forKey:off_1001BC798[0]];
 
   v5 = [NSNumber numberWithInteger:[(APSSystemTokenInfo *)self tokenType]];
   [v3 setObject:v5 forKey:off_1001BC7A0];
@@ -23,21 +23,21 @@
   return v3;
 }
 
-- (APSSystemTokenInfo)initWithDictionary:(id)a3
+- (APSSystemTokenInfo)initWithDictionary:(id)dictionary
 {
   v4 = off_1001BC798[0];
-  v5 = a3;
-  v6 = [v5 objectForKey:v4];
-  v7 = [v5 objectForKey:off_1001BC7A0];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:v4];
+  v7 = [dictionaryCopy objectForKey:off_1001BC7A0];
 
   v8 = -[APSSystemTokenInfo initWithSystemToken:type:](self, "initWithSystemToken:type:", v6, [v7 integerValue]);
   return v8;
 }
 
-- (APSSystemTokenInfo)initWithSystemToken:(id)a3 type:(int64_t)a4
+- (APSSystemTokenInfo)initWithSystemToken:(id)token type:(int64_t)type
 {
-  v7 = a3;
-  if (v7)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v12.receiver = self;
     v12.super_class = APSSystemTokenInfo;
@@ -45,20 +45,20 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_systemToken, a3);
-      v9->_tokenType = a4;
+      objc_storeStrong(&v8->_systemToken, token);
+      v9->_tokenType = type;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)serializeSystemTokenInfo
@@ -66,33 +66,33 @@
   v3 = +[APSLog courier];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(APSSystemTokenInfo *)self systemToken];
+    systemToken = [(APSSystemTokenInfo *)self systemToken];
     v9 = 138412546;
-    v10 = v4;
+    v10 = systemToken;
     v11 = 2048;
-    v12 = [(APSSystemTokenInfo *)self tokenType];
+    tokenType = [(APSSystemTokenInfo *)self tokenType];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "APSSystemTokenInfo Serializing system token info to store in keychain, token: %@, type: %ld", &v9, 0x16u);
   }
 
-  v5 = [(APSSystemTokenInfo *)self dictionaryRepresentation];
-  v6 = [v5 copy];
+  dictionaryRepresentation = [(APSSystemTokenInfo *)self dictionaryRepresentation];
+  v6 = [dictionaryRepresentation copy];
 
   v7 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
 
   return v7;
 }
 
-+ (id)systemTokenInfoFromData:(id)a3
++ (id)systemTokenInfoFromData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_opt_class();
     v5 = objc_opt_class();
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v4, v5, v6, objc_opt_class(), 0];
     v16 = 0;
-    v8 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v7 fromData:v3 error:&v16];
+    v8 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v7 fromData:dataCopy error:&v16];
     v9 = v16;
 
     if (v9)
@@ -124,11 +124,11 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v3;
+        v18 = dataCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Did not find APSSystemTokenInfo in keychain, token was stored as data directly: %@", buf, 0xCu);
       }
 
-      v12 = [[APSSystemTokenInfo alloc] initWithSystemToken:v3 type:2];
+      v12 = [[APSSystemTokenInfo alloc] initWithSystemToken:dataCopy type:2];
     }
 
     v14 = v12;
@@ -149,33 +149,33 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(APSSystemTokenInfo *)self systemToken];
-  [v4 encodeObject:v5 forKey:off_1001BC798[0]];
+  coderCopy = coder;
+  systemToken = [(APSSystemTokenInfo *)self systemToken];
+  [coderCopy encodeObject:systemToken forKey:off_1001BC798[0]];
 
   v6 = [NSNumber numberWithInteger:[(APSSystemTokenInfo *)self tokenType]];
-  [v4 encodeObject:v6 forKey:off_1001BC7A0];
+  [coderCopy encodeObject:v6 forKey:off_1001BC7A0];
 }
 
-- (APSSystemTokenInfo)initWithCoder:(id)a3
+- (APSSystemTokenInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:off_1001BC798[0]];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:off_1001BC7A0];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:off_1001BC798[0]];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:off_1001BC7A0];
 
-  v7 = [v6 integerValue];
-  v8 = [(APSSystemTokenInfo *)self initWithSystemToken:v5 type:v7];
+  integerValue = [v6 integerValue];
+  v8 = [(APSSystemTokenInfo *)self initWithSystemToken:v5 type:integerValue];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [APSSystemTokenInfo alloc];
-  v5 = [(APSSystemTokenInfo *)self systemToken];
-  v6 = [(APSSystemTokenInfo *)v4 initWithSystemToken:v5 type:[(APSSystemTokenInfo *)self tokenType]];
+  systemToken = [(APSSystemTokenInfo *)self systemToken];
+  v6 = [(APSSystemTokenInfo *)v4 initWithSystemToken:systemToken type:[(APSSystemTokenInfo *)self tokenType]];
 
   return v6;
 }

@@ -1,11 +1,11 @@
 @interface VCSignedHistogram
-- (BOOL)merge:(id)a3;
-- (void)addValue:(unsigned int)a3 withIncrement:(unsigned int)a4;
+- (BOOL)merge:(id)merge;
+- (void)addValue:(unsigned int)value withIncrement:(unsigned int)increment;
 @end
 
 @implementation VCSignedHistogram
 
-- (void)addValue:(unsigned int)a3 withIncrement:(unsigned int)a4
+- (void)addValue:(unsigned int)value withIncrement:(unsigned int)increment
 {
   v4 = self->super._bucketCount - 1;
   if (self->super._bucketCount == 1)
@@ -16,7 +16,7 @@
   else
   {
     v5 = 0;
-    while (self->_signedRanges[v5] < a3)
+    while (self->_signedRanges[v5] < value)
     {
       if (v4 == ++v5)
       {
@@ -29,20 +29,20 @@ LABEL_8:
     v4 = v4;
   }
 
-  self->super._buckets[v4] += a4;
+  self->super._buckets[v4] += increment;
 }
 
-- (BOOL)merge:(id)a3
+- (BOOL)merge:(id)merge
 {
   signedRanges = self->_signedRanges;
-  if (signedRanges != [a3 signedRanges])
+  if (signedRanges != [merge signedRanges])
   {
     return 0;
   }
 
   v7.receiver = self;
   v7.super_class = VCSignedHistogram;
-  return [(VCHistogram *)&v7 merge:a3];
+  return [(VCHistogram *)&v7 merge:merge];
 }
 
 - (void)initWithType:(void *)a1 bucketValues:(int)a2 .cold.1(void *a1, int a2)

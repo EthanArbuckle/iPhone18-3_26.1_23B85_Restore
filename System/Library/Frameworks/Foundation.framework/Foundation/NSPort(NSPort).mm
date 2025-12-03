@@ -12,20 +12,20 @@
 
 + (id)allocWithZone:()NSPort
 {
-  if (MEMORY[0x1E695DFC8] == a1)
+  if (MEMORY[0x1E695DFC8] == self)
   {
     return [MEMORY[0x1E695DF60] allocWithZone:?];
   }
 
   else
   {
-    return NSAllocateObject(a1, 0, a3);
+    return NSAllocateObject(self, 0, a3);
   }
 }
 
 + (id)port
 {
-  v1 = [objc_allocWithZone(a1) init];
+  v1 = [objc_allocWithZone(self) init];
 
   return v1;
 }
@@ -41,14 +41,14 @@
 {
   v4 = NSClassFromString(@"NSPort");
 
-  NSRequestConcreteImplementation(a1, a2, v4);
+  NSRequestConcreteImplementation(self, a2, v4);
 }
 
 - (void)setDelegate:()NSPort
 {
   v4 = NSClassFromString(@"NSPort");
 
-  NSRequestConcreteImplementation(a1, a2, v4);
+  NSRequestConcreteImplementation(self, a2, v4);
 }
 
 - (void)classForCoder
@@ -61,7 +61,7 @@
 - (uint64_t)initWithCoder:()NSPort
 {
   v3 = *MEMORY[0x1E69E9840];
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = NSPort_0;
   objc_msgSendSuper2(&v2, sel_dealloc);
   return 0;

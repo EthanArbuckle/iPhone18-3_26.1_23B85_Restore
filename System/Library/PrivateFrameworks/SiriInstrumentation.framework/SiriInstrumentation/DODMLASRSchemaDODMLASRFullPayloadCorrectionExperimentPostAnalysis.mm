@@ -1,27 +1,27 @@
 @interface DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasTrueRegressions:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasTrueRegressions:(BOOL)regressions;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis
 
-- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis;
   v5 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"asrOutputToUserEdit"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"asrOutputToUserEdit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)v5 setAsrOutputToUserEdit:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"asrFullPayloadCorrectedToUserEdit"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"asrFullPayloadCorrectedToUserEdit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,14 +37,14 @@
       [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)v5 setAsrFullPayloadCorrectedToUserEdit:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"trueCorrections"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"trueCorrections"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis setTrueCorrections:](v5, "setTrueCorrections:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"trueRegressions"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"trueRegressions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,36 +93,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_asrFullPayloadCorrectedToUserEdit)
   {
-    v4 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    asrFullPayloadCorrectedToUserEdit = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
+    dictionaryRepresentation = [asrFullPayloadCorrectedToUserEdit dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"asrFullPayloadCorrectedToUserEdit"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"asrFullPayloadCorrectedToUserEdit"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"asrFullPayloadCorrectedToUserEdit"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"asrFullPayloadCorrectedToUserEdit"];
     }
   }
 
   if (self->_asrOutputToUserEdit)
   {
-    v7 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    asrOutputToUserEdit = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
+    dictionaryRepresentation2 = [asrOutputToUserEdit dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"asrOutputToUserEdit"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"asrOutputToUserEdit"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"asrOutputToUserEdit"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"asrOutputToUserEdit"];
     }
   }
 
@@ -130,7 +130,7 @@
   if (has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis trueCorrections](self, "trueCorrections")}];
-    [v3 setObject:v11 forKeyedSubscript:@"trueCorrections"];
+    [dictionary setObject:v11 forKeyedSubscript:@"trueCorrections"];
 
     has = self->_has;
   }
@@ -138,12 +138,12 @@
   if ((has & 2) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis trueRegressions](self, "trueRegressions")}];
-    [v3 setObject:v12 forKeyedSubscript:@"trueRegressions"];
+    [dictionary setObject:v12 forKeyedSubscript:@"trueRegressions"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -174,28 +174,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
-  v6 = [v4 asrOutputToUserEdit];
-  if ((v5 != 0) == (v6 == 0))
+  asrOutputToUserEdit = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
+  asrOutputToUserEdit2 = [equalCopy asrOutputToUserEdit];
+  if ((asrOutputToUserEdit != 0) == (asrOutputToUserEdit2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
-  if (v7)
+  asrOutputToUserEdit3 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
+  if (asrOutputToUserEdit3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
-    v10 = [v4 asrOutputToUserEdit];
-    v11 = [v9 isEqual:v10];
+    v8 = asrOutputToUserEdit3;
+    asrOutputToUserEdit4 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
+    asrOutputToUserEdit5 = [equalCopy asrOutputToUserEdit];
+    v11 = [asrOutputToUserEdit4 isEqual:asrOutputToUserEdit5];
 
     if (!v11)
     {
@@ -207,22 +207,22 @@ LABEL_3:
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
-  v6 = [v4 asrFullPayloadCorrectedToUserEdit];
-  if ((v5 != 0) == (v6 == 0))
+  asrOutputToUserEdit = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
+  asrOutputToUserEdit2 = [equalCopy asrFullPayloadCorrectedToUserEdit];
+  if ((asrOutputToUserEdit != 0) == (asrOutputToUserEdit2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
-  if (v12)
+  asrFullPayloadCorrectedToUserEdit = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
+  if (asrFullPayloadCorrectedToUserEdit)
   {
-    v13 = v12;
-    v14 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
-    v15 = [v4 asrFullPayloadCorrectedToUserEdit];
-    v16 = [v14 isEqual:v15];
+    v13 = asrFullPayloadCorrectedToUserEdit;
+    asrFullPayloadCorrectedToUserEdit2 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
+    asrFullPayloadCorrectedToUserEdit3 = [equalCopy asrFullPayloadCorrectedToUserEdit];
+    v16 = [asrFullPayloadCorrectedToUserEdit2 isEqual:asrFullPayloadCorrectedToUserEdit3];
 
     if (!v16)
     {
@@ -235,25 +235,25 @@ LABEL_11:
   }
 
   has = self->_has;
-  v20 = v4[32];
+  v20 = equalCopy[32];
   if ((*&has & 1) == (v20 & 1))
   {
     if (*&has)
     {
       trueCorrections = self->_trueCorrections;
-      if (trueCorrections != [v4 trueCorrections])
+      if (trueCorrections != [equalCopy trueCorrections])
       {
         goto LABEL_12;
       }
 
       has = self->_has;
-      v20 = v4[32];
+      v20 = equalCopy[32];
     }
 
     v22 = (*&has >> 1) & 1;
     if (v22 == ((v20 >> 1) & 1))
     {
-      if (!v22 || (trueRegressions = self->_trueRegressions, trueRegressions == [v4 trueRegressions]))
+      if (!v22 || (trueRegressions = self->_trueRegressions, trueRegressions == [equalCopy trueRegressions]))
       {
         v17 = 1;
         goto LABEL_13;
@@ -268,22 +268,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
+  toCopy = to;
+  asrOutputToUserEdit = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
 
-  if (v4)
+  if (asrOutputToUserEdit)
   {
-    v5 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
+    asrOutputToUserEdit2 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
+  asrFullPayloadCorrectedToUserEdit = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
 
-  if (v6)
+  if (asrFullPayloadCorrectedToUserEdit)
   {
-    v7 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
+    asrFullPayloadCorrectedToUserEdit2 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
     PBDataWriterWriteSubmessage();
   }
 
@@ -294,17 +294,17 @@ LABEL_13:
     has = self->_has;
   }
 
-  v9 = v10;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasTrueRegressions:(BOOL)a3
+- (void)setHasTrueRegressions:(BOOL)regressions
 {
-  if (a3)
+  if (regressions)
   {
     v3 = 2;
   }
@@ -317,26 +317,26 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  asrOutputToUserEdit = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrOutputToUserEdit];
+  v7 = [asrOutputToUserEdit applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self deleteAsrOutputToUserEdit];
   }
 
-  v9 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  asrFullPayloadCorrectedToUserEdit = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self asrFullPayloadCorrectedToUserEdit];
+  v10 = [asrFullPayloadCorrectedToUserEdit applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentPostAnalysis *)self deleteAsrFullPayloadCorrectedToUserEdit];
   }

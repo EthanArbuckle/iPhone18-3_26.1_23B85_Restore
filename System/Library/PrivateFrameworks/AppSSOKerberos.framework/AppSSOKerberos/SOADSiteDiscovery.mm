@@ -1,27 +1,27 @@
 @interface SOADSiteDiscovery
-- (SOADSiteDiscovery)initWithRealm:(id)a3;
-- (void)discoverADInfoUsingSourceAppBundleIdentifier:(id)a3 auditTokenData:(id)a4 requireTLSForLDAP:(BOOL)a5 withCompletion:(id)a6;
-- (void)performNetworkConnectionUsingService:(id)a3 orHost:(id)a4 port:(unsigned __int16)a5 inBackground:(BOOL)a6 completion:(id)a7;
+- (SOADSiteDiscovery)initWithRealm:(id)realm;
+- (void)discoverADInfoUsingSourceAppBundleIdentifier:(id)identifier auditTokenData:(id)data requireTLSForLDAP:(BOOL)p withCompletion:(id)completion;
+- (void)performNetworkConnectionUsingService:(id)service orHost:(id)host port:(unsigned __int16)port inBackground:(BOOL)background completion:(id)completion;
 @end
 
 @implementation SOADSiteDiscovery
 
-- (SOADSiteDiscovery)initWithRealm:(id)a3
+- (SOADSiteDiscovery)initWithRealm:(id)realm
 {
-  v5 = a3;
+  realmCopy = realm;
   v14.receiver = self;
   v14.super_class = SOADSiteDiscovery;
   v6 = [(SOADSiteDiscovery *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_realm, a3);
+    objc_storeStrong(&v6->_realm, realm);
     v8 = objc_opt_new();
     queue = v7->_queue;
     v7->_queue = v8;
 
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.appsso.Kerberos.ldap.%@", v5];
-    [(NSOperationQueue *)v7->_queue setName:v10];
+    realmCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.appsso.Kerberos.ldap.%@", realmCopy];
+    [(NSOperationQueue *)v7->_queue setName:realmCopy];
 
     [(NSOperationQueue *)v7->_queue setMaxConcurrentOperationCount:1];
     v11 = objc_alloc_init(SODNSSRVQuery);
@@ -32,11 +32,11 @@
   return v7;
 }
 
-- (void)discoverADInfoUsingSourceAppBundleIdentifier:(id)a3 auditTokenData:(id)a4 requireTLSForLDAP:(BOOL)a5 withCompletion:(id)a6
+- (void)discoverADInfoUsingSourceAppBundleIdentifier:(id)identifier auditTokenData:(id)data requireTLSForLDAP:(BOOL)p withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  dataCopy = data;
+  completionCopy = completion;
   v13 = SO_LOG_SOADSiteDiscovery();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -50,8 +50,8 @@
   v25[4] = __Block_byref_object_dispose_;
   v26 = 0;
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(SOADSiteDiscovery *)self realm];
-  v16 = [v14 stringWithFormat:@"_ldap._tcp.%@", v15];
+  realm = [(SOADSiteDiscovery *)self realm];
+  v16 = [v14 stringWithFormat:@"_ldap._tcp.%@", realm];
 
   v17 = [(SOADSiteDiscovery *)self dns];
   v20[0] = MEMORY[0x277D85DD0];
@@ -59,13 +59,13 @@
   v20[2] = __114__SOADSiteDiscovery_discoverADInfoUsingSourceAppBundleIdentifier_auditTokenData_requireTLSForLDAP_withCompletion___block_invoke;
   v20[3] = &unk_278C92F50;
   v20[4] = self;
-  v18 = v10;
-  v24 = a5;
+  v18 = identifierCopy;
+  pCopy = p;
   v21 = v18;
   v23 = v25;
-  v19 = v12;
+  v19 = completionCopy;
   v22 = v19;
-  [v17 lookupSRVWithQuery:v16 bundleIdentifier:v18 auditTokenData:v11 completion:v20];
+  [v17 lookupSRVWithQuery:v16 bundleIdentifier:v18 auditTokenData:dataCopy completion:v20];
 
   _Block_object_dispose(v25, 8);
 }
@@ -248,14 +248,14 @@ void __120__SOADSiteDiscovery_performLDAPPingUsingSite_bundleIdentifier_auditTok
   }
 }
 
-- (void)performNetworkConnectionUsingService:(id)a3 orHost:(id)a4 port:(unsigned __int16)a5 inBackground:(BOOL)a6 completion:(id)a7
+- (void)performNetworkConnectionUsingService:(id)service orHost:(id)host port:(unsigned __int16)port inBackground:(BOOL)background completion:(id)completion
 {
-  v8 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
-  v13 = v12;
-  if (v10 | v11)
+  backgroundCopy = background;
+  serviceCopy = service;
+  hostCopy = host;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (serviceCopy | hostCopy)
   {
     v27 = 0;
     v28 = &v27;
@@ -268,20 +268,20 @@ void __120__SOADSiteDiscovery_performLDAPPingUsingSite_bundleIdentifier_auditTok
     v25[2] = 0x2020000000;
     v26 = 0;
     secure_tcp = nw_parameters_create_secure_tcp(*MEMORY[0x277CD9238], *MEMORY[0x277CD9230]);
-    if (v8)
+    if (backgroundCopy)
     {
       nw_parameters_set_traffic_class();
     }
 
-    if (v10)
+    if (serviceCopy)
     {
-      [v10 UTF8String];
+      [serviceCopy UTF8String];
       srv = nw_endpoint_create_srv();
     }
 
     else
     {
-      [v11 UTF8String];
+      [hostCopy UTF8String];
       srv = nw_endpoint_create_host_with_numeric_port();
     }
 
@@ -310,7 +310,7 @@ void __120__SOADSiteDiscovery_performLDAPPingUsingSite_bundleIdentifier_auditTok
 
   else
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

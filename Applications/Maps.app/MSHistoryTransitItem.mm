@@ -1,23 +1,23 @@
 @interface MSHistoryTransitItem
 - (GEOTransitLineItem)lineItem;
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6;
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item;
 @end
 
 @implementation MSHistoryTransitItem
 
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item
 {
-  if (a6)
+  if (item)
   {
-    (*(a6 + 2))(a6, self);
+    (*(item + 2))(item, self);
   }
 }
 
 - (GEOTransitLineItem)lineItem
 {
   v3 = [MSPTransitStorageLineItem alloc];
-  v4 = [(MSHistoryTransitItem *)self transitLineStorage];
-  v5 = [v3 initWithData:v4];
+  transitLineStorage = [(MSHistoryTransitItem *)self transitLineStorage];
+  v5 = [v3 initWithData:transitLineStorage];
 
   return v5;
 }

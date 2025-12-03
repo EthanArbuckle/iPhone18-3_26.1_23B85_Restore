@@ -1,25 +1,25 @@
 @interface SKMountOperation
-+ (BOOL)mountWithDisk:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)resolveWithPath:(id)a3 error:(id *)a4;
++ (BOOL)mountWithDisk:(id)disk options:(id)options error:(id *)error;
++ (id)resolveWithPath:(id)path error:(id *)error;
 - (BOOL)force;
-- (BOOL)toOperateWithDisk:(id)a3;
-- (BOOL)validateMountOptionsWithDisk:(id)a3 error:(id *)a4;
-- (BOOL)validateMountPointWithConnection:(id)a3 error:(id *)a4;
-- (SKMountOperation)initWithDisk:(id)a3 options:(id)a4 connection:(id)a5 completionBlock:(id)a6;
-- (id)copyMountURLWithDisk:(id)a3;
+- (BOOL)toOperateWithDisk:(id)disk;
+- (BOOL)validateMountOptionsWithDisk:(id)disk error:(id *)error;
+- (BOOL)validateMountPointWithConnection:(id)connection error:(id *)error;
+- (SKMountOperation)initWithDisk:(id)disk options:(id)options connection:(id)connection completionBlock:(id)block;
+- (id)copyMountURLWithDisk:(id)disk;
 - (id)description;
-- (id)filterEFIWithDisks:(id)a3;
+- (id)filterEFIWithDisks:(id)disks;
 - (id)newPerformOperation;
 @end
 
 @implementation SKMountOperation
 
-+ (id)resolveWithPath:(id)a3 error:(id *)a4
++ (id)resolveWithPath:(id)path error:(id *)error
 {
-  v5 = [a3 UTF8String];
-  if (v5)
+  uTF8String = [path UTF8String];
+  if (uTF8String)
   {
-    if (realpath_DARWIN_EXTSN(v5, v10))
+    if (realpath_DARWIN_EXTSN(uTF8String, v10))
     {
       v6 = [NSString stringWithUTF8String:v10];
       goto LABEL_7;
@@ -35,29 +35,29 @@
     v8 = 22;
   }
 
-  v6 = [SKError nilWithPOSIXCode:v8 debugDescription:v7 error:a4];
+  v6 = [SKError nilWithPOSIXCode:v8 debugDescription:v7 error:error];
 LABEL_7:
 
   return v6;
 }
 
-- (SKMountOperation)initWithDisk:(id)a3 options:(id)a4 connection:(id)a5 completionBlock:(id)a6
+- (SKMountOperation)initWithDisk:(id)disk options:(id)options connection:(id)connection completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  diskCopy = disk;
+  connectionCopy = connection;
+  blockCopy = block;
   v48.receiver = self;
   v48.super_class = SKMountOperation;
-  v13 = [(SKBaseDiskArbOperation *)&v48 initWithTarget:v10 options:a4 callbackBlock:v12];
+  v13 = [(SKBaseDiskArbOperation *)&v48 initWithTarget:diskCopy options:options callbackBlock:blockCopy];
   if (v13)
   {
     v14 = +[NSMutableArray array];
     mountArgs = v13->_mountArgs;
     v13->_mountArgs = v14;
 
-    if (v11)
+    if (connectionCopy)
     {
-      v16 = [v11 uid];
+      v16 = [connectionCopy uid];
     }
 
     else
@@ -66,9 +66,9 @@ LABEL_7:
     }
 
     v13->_clientUID = v16;
-    v18 = [(SKBaseDiskArbOperation *)v13 options];
-    v19 = [v18 objectForKeyedSubscript:kSKAPFSDiskMountIgnoreGroup];
-    v20 = [(SKBaseDiskArbOperation *)v13 disksForOperationWithTarget:v10 ignoreGroup:sub_100010328(v19)];
+    options = [(SKBaseDiskArbOperation *)v13 options];
+    v19 = [options objectForKeyedSubscript:kSKAPFSDiskMountIgnoreGroup];
+    v20 = [(SKBaseDiskArbOperation *)v13 disksForOperationWithTarget:diskCopy ignoreGroup:sub_100010328(v19)];
 
     v21 = [(SKMountOperation *)v13 filterEFIWithDisks:v20];
     disksToMount = v13->_disksToMount;
@@ -78,10 +78,10 @@ LABEL_7:
     {
       if ([(NSSet *)v13->_disksToMount count]== 1)
       {
-        v23 = [(NSSet *)v13->_disksToMount anyObject];
-        v24 = [v23 mountPoint];
+        anyObject = [(NSSet *)v13->_disksToMount anyObject];
+        mountPoint = [anyObject mountPoint];
 
-        if (v24)
+        if (mountPoint)
         {
           v25 = sub_10000BFD0();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -89,23 +89,23 @@ LABEL_7:
             *buf = 136315394;
             v50 = "[SKMountOperation initWithDisk:options:connection:completionBlock:]";
             v51 = 2112;
-            v52 = v23;
+            v52 = anyObject;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%s: %@ is already mounted, returning success", buf, 0x16u);
           }
 
-          v17 = [objc_opt_class() nilWithBlock:v12 error:0];
+          v17 = [objc_opt_class() nilWithBlock:blockCopy error:0];
 
           goto LABEL_37;
         }
       }
 
       v47 = 0;
-      v29 = [(SKMountOperation *)v13 validateMountOptionsWithDisk:v10 error:&v47];
+      v29 = [(SKMountOperation *)v13 validateMountOptionsWithDisk:diskCopy error:&v47];
       v27 = v47;
       if (v29)
       {
-        v30 = [(SKBaseDiskArbOperation *)v13 options];
-        v31 = [v30 objectForKeyedSubscript:kSKDiskMountOptionMountPoint];
+        options2 = [(SKBaseDiskArbOperation *)v13 options];
+        v31 = [options2 objectForKeyedSubscript:kSKDiskMountOptionMountPoint];
 
         if (!v31)
         {
@@ -129,7 +129,7 @@ LABEL_27:
           v37 = [SKError errorWithPOSIXCode:22 debugDescription:v35 error:0];
 LABEL_28:
           v38 = v37;
-          v17 = [v34 nilWithBlock:v12 error:v37];
+          v17 = [v34 nilWithBlock:blockCopy error:v37];
 
 LABEL_35:
           goto LABEL_36;
@@ -144,24 +144,24 @@ LABEL_35:
 
         if (!v13->_mountPoint)
         {
-          v17 = [objc_opt_class() nilWithBlock:v12 error:v40];
+          v17 = [objc_opt_class() nilWithBlock:blockCopy error:v40];
           v27 = v40;
           goto LABEL_35;
         }
 
         v45 = v40;
-        v42 = [(SKMountOperation *)v13 validateMountPointWithConnection:v11 error:&v45];
+        v42 = [(SKMountOperation *)v13 validateMountPointWithConnection:connectionCopy error:&v45];
         v27 = v45;
 
         if ((v42 & 1) == 0)
         {
-          v43 = [objc_opt_class() nilWithBlock:v12 error:v27];
+          v43 = [objc_opt_class() nilWithBlock:blockCopy error:v27];
         }
 
         else
         {
 LABEL_32:
-          if (-[SKMountOperation authenticateOnInit](v13, "authenticateOnInit") && ([v11 authorizeRequestForRoot] & 1) == 0)
+          if (-[SKMountOperation authenticateOnInit](v13, "authenticateOnInit") && ([connectionCopy authorizeRequestForRoot] & 1) == 0)
           {
             v34 = objc_opt_class();
             v37 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
@@ -190,7 +190,7 @@ LABEL_32:
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%s: Nothing to mount on recursive mount, returning success", buf, 0xCu);
         }
 
-        v17 = [objc_opt_class() nilWithBlock:v12 error:0];
+        v17 = [objc_opt_class() nilWithBlock:blockCopy error:0];
         goto LABEL_37;
       }
 
@@ -199,7 +199,7 @@ LABEL_32:
       v28 = v26;
     }
 
-    v17 = [v28 nilWithBlock:v12 error:v27];
+    v17 = [v28 nilWithBlock:blockCopy error:v27];
 LABEL_36:
 
 LABEL_37:
@@ -212,15 +212,15 @@ LABEL_38:
   return v17;
 }
 
-- (id)filterEFIWithDisks:(id)a3
+- (id)filterEFIWithDisks:(id)disks
 {
-  v4 = a3;
+  disksCopy = disks;
   v5 = +[NSMutableSet set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = disksCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v7)
   {
@@ -239,26 +239,26 @@ LABEL_38:
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
-        v13 = [v12 type];
-        v14 = [v13 isEqualToString:kSKDiskTypeEFI];
+        type = [v12 type];
+        v14 = [type isEqualToString:kSKDiskTypeEFI];
 
         if (v14 && -[SKMountOperation clientUID](self, "clientUID") && (v15 = -[SKMountOperation clientUID](self, "clientUID"), v15 != [v12 ownerUID]))
         {
           v16 = sub_10000BFD0();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [(SKMountOperation *)self clientUID];
+            clientUID = [(SKMountOperation *)self clientUID];
             [v12 diskIdentifier];
             v19 = v18 = v6;
-            v20 = [v12 ownerUID];
+            ownerUID = [v12 ownerUID];
             *buf = v23;
             v29 = "[SKMountOperation filterEFIWithDisks:]";
             v30 = 1024;
-            v31 = v17;
+            v31 = clientUID;
             v32 = 2114;
             v33 = v19;
             v34 = 1024;
-            v35 = v20;
+            v35 = ownerUID;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: Client uid %d, skipping EFI partition %{public}@ owned by uid %d", buf, 0x22u);
 
             v6 = v18;
@@ -284,37 +284,37 @@ LABEL_38:
   return v5;
 }
 
-- (BOOL)toOperateWithDisk:(id)a3
+- (BOOL)toOperateWithDisk:(id)disk
 {
-  v3 = a3;
+  diskCopy = disk;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 role];
-    if ([v4 isEqualToString:kSKDiskRoleVirtualMemory])
+    role = [diskCopy role];
+    if ([role isEqualToString:kSKDiskRoleVirtualMemory])
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v6 = [v3 role];
-      if ([v6 isEqualToString:kSKDiskRoleBooter])
+      role2 = [diskCopy role];
+      if ([role2 isEqualToString:kSKDiskRoleBooter])
       {
         LOBYTE(v5) = 0;
       }
 
       else
       {
-        v7 = [v3 role];
-        if ([v7 isEqualToString:kSKDiskRoleRecovery])
+        role3 = [diskCopy role];
+        if ([role3 isEqualToString:kSKDiskRoleRecovery])
         {
           LOBYTE(v5) = 0;
         }
 
         else
         {
-          v5 = [v3 isLocked] ^ 1;
+          v5 = [diskCopy isLocked] ^ 1;
         }
       }
     }
@@ -328,49 +328,49 @@ LABEL_38:
   return v5;
 }
 
-+ (BOOL)mountWithDisk:(id)a3 options:(id)a4 error:(id *)a5
++ (BOOL)mountWithDisk:(id)disk options:(id)options error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[SKMountOperation alloc] initWithDisk:v8 options:v7 connection:0 completionBlock:0];
+  optionsCopy = options;
+  diskCopy = disk;
+  v9 = [[SKMountOperation alloc] initWithDisk:diskCopy options:optionsCopy connection:0 completionBlock:0];
 
-  v10 = [(SKMountOperation *)v9 newPerformOperation];
-  if (a5)
+  newPerformOperation = [(SKMountOperation *)v9 newPerformOperation];
+  if (error)
   {
-    v10 = v10;
-    *a5 = v10;
+    newPerformOperation = newPerformOperation;
+    *error = newPerformOperation;
   }
 
-  v11 = v10 == 0;
+  v11 = newPerformOperation == 0;
 
   return v11;
 }
 
-- (id)copyMountURLWithDisk:(id)a3
+- (id)copyMountURLWithDisk:(id)disk
 {
-  v4 = a3;
-  v5 = [(SKMountOperation *)self mountPoint];
+  diskCopy = disk;
+  mountPoint = [(SKMountOperation *)self mountPoint];
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v4 isLiveFSAPFSDisk])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([diskCopy isLiveFSAPFSDisk])
   {
     goto LABEL_46;
   }
 
-  v6 = [v4 filesystem];
-  if (v6)
+  filesystem = [diskCopy filesystem];
+  if (filesystem)
   {
-    v7 = [v4 filesystem];
-    if ([v7 isExtension])
+    filesystem2 = [diskCopy filesystem];
+    if ([filesystem2 isExtension])
     {
-      v8 = [v4 filesystem];
-      v9 = [v8 majorType];
-      if ([v9 isEqualToString:@"apfs"])
+      filesystem3 = [diskCopy filesystem];
+      majorType = [filesystem3 majorType];
+      if ([majorType isEqualToString:@"apfs"])
       {
-        if ([v4 isExternal])
+        if ([diskCopy isExternal])
         {
-          v10 = [v4 filesystem];
-          v11 = [v10 majorType];
-          v12 = [v11 isEqualToString:@"apfs"];
+          filesystem4 = [diskCopy filesystem];
+          majorType2 = [filesystem4 majorType];
+          v12 = [majorType2 isEqualToString:@"apfs"];
         }
 
         else
@@ -396,12 +396,12 @@ LABEL_38:
     v12 = 0;
   }
 
-  if (v5 || (v12 & 1) != 0)
+  if (mountPoint || (v12 & 1) != 0)
   {
 LABEL_38:
-    if (v5)
+    if (mountPoint)
     {
-      v33 = [NSURL fileURLWithPath:v5];
+      v33 = [NSURL fileURLWithPath:mountPoint];
       goto LABEL_47;
     }
 
@@ -410,22 +410,22 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v13 = [v4 volumeName];
-  v39 = v4;
-  if (v13)
+  volumeName = [diskCopy volumeName];
+  v39 = diskCopy;
+  if (volumeName)
   {
-    v14 = [v4 volumeName];
+    volumeName2 = [diskCopy volumeName];
   }
 
   else
   {
-    v14 = @"untitled";
+    volumeName2 = @"untitled";
   }
 
-  v15 = v14;
-  v5 = [NSString stringWithFormat:@"%@/%@", @"/private/var/mnt", v14];
+  v15 = volumeName2;
+  mountPoint = [NSString stringWithFormat:@"%@/%@", @"/private/var/mnt", volumeName2];
   v16 = +[NSFileManager defaultManager];
-  if ([v16 fileExistsAtPath:v5])
+  if ([v16 fileExistsAtPath:mountPoint])
   {
     v17 = 2;
     while (v17 != 100)
@@ -434,14 +434,14 @@ LABEL_46:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v45 = v5;
+        v45 = mountPoint;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Mountpoint %@ already exists, trying a different mountpoint", buf, 0xCu);
       }
 
       v19 = [NSString stringWithFormat:@"%@/%@_%d", @"/private/var/mnt", v15, v17];
 
       v17 = (v17 + 1);
-      v5 = v19;
+      mountPoint = v19;
       if (([v16 fileExistsAtPath:v19] & 1) == 0)
       {
         goto LABEL_27;
@@ -455,28 +455,28 @@ LABEL_46:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v45 = v4;
+      v45 = diskCopy;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_FAULT, "Failed to find a free mountpoint for %@", buf, 0xCu);
     }
 
     goto LABEL_46;
   }
 
-  v19 = v5;
+  v19 = mountPoint;
 LABEL_27:
   v20 = sub_10000BFD0();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v4 diskIdentifier];
+    diskIdentifier = [diskCopy diskIdentifier];
     *buf = 138412546;
-    v45 = v21;
+    v45 = diskIdentifier;
     v46 = 2112;
     v47 = v19;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Mounting %@ to %@", buf, 0x16u);
   }
 
-  v22 = [v4 diskIdentifier];
-  v23 = [NSString stringWithFormat:@"/dev/%@", v22];
+  diskIdentifier2 = [diskCopy diskIdentifier];
+  v23 = [NSString stringWithFormat:@"/dev/%@", diskIdentifier2];
 
   v41 = 0;
   v24 = [v16 attributesOfItemAtPath:v23 error:&v41];
@@ -517,8 +517,8 @@ LABEL_27:
     if (v31)
     {
 
-      v5 = v19;
-      v4 = v39;
+      mountPoint = v19;
+      diskCopy = v39;
       goto LABEL_38;
     }
 
@@ -533,8 +533,8 @@ LABEL_27:
     }
 
     v33 = 0;
-    v5 = v19;
-    v4 = v39;
+    mountPoint = v19;
+    diskCopy = v39;
   }
 
   else
@@ -550,7 +550,7 @@ LABEL_27:
     }
 
     v33 = 0;
-    v5 = v19;
+    mountPoint = v19;
   }
 
 LABEL_47:
@@ -558,11 +558,11 @@ LABEL_47:
   return v33;
 }
 
-- (BOOL)validateMountOptionsWithDisk:(id)a3 error:(id *)a4
+- (BOOL)validateMountOptionsWithDisk:(id)disk error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SKBaseDiskArbOperation *)self options];
-  v8 = [v7 objectForKeyedSubscript:kSKDiskMountOptionToolOptions];
+  diskCopy = disk;
+  options = [(SKBaseDiskArbOperation *)self options];
+  v8 = [options objectForKeyedSubscript:kSKDiskMountOptionToolOptions];
 
   if (!v8)
   {
@@ -579,38 +579,38 @@ LABEL_47:
   {
     v9 = @"Too many mount options";
 LABEL_6:
-    v10 = [SKError failWithPOSIXCode:22 debugDescription:v9 error:a4];
+    v10 = [SKError failWithPOSIXCode:22 debugDescription:v9 error:error];
     goto LABEL_26;
   }
 
   v11 = [NSMutableArray arrayWithArray:v8];
   [(SKMountOperation *)self setMountArgs:v11];
 
-  v12 = [(SKMountOperation *)self mountArgs];
-  v13 = [v12 count];
+  mountArgs = [(SKMountOperation *)self mountArgs];
+  v13 = [mountArgs count];
 
   if (v13)
   {
     v14 = 0;
     do
     {
-      v15 = [(SKMountOperation *)self mountArgs];
-      v16 = [v15 objectAtIndexedSubscript:v14];
-      v17 = [v16 lowercaseString];
-      v18 = [v17 hasPrefix:@"-o"];
+      mountArgs2 = [(SKMountOperation *)self mountArgs];
+      v16 = [mountArgs2 objectAtIndexedSubscript:v14];
+      lowercaseString = [v16 lowercaseString];
+      v18 = [lowercaseString hasPrefix:@"-o"];
 
       if (v18)
       {
-        v19 = [(SKMountOperation *)self mountArgs];
-        v20 = [v19 objectAtIndexedSubscript:v14];
+        mountArgs3 = [(SKMountOperation *)self mountArgs];
+        v20 = [mountArgs3 objectAtIndexedSubscript:v14];
         v21 = [v20 substringFromIndex:2];
-        v22 = [(SKMountOperation *)self mountArgs];
-        [v22 setObject:v21 atIndexedSubscript:v14];
+        mountArgs4 = [(SKMountOperation *)self mountArgs];
+        [mountArgs4 setObject:v21 atIndexedSubscript:v14];
       }
 
       ++v14;
-      v23 = [(SKMountOperation *)self mountArgs];
-      v24 = [v23 count];
+      mountArgs5 = [(SKMountOperation *)self mountArgs];
+      v24 = [mountArgs5 count];
     }
 
     while (v14 < v24);
@@ -626,26 +626,26 @@ LABEL_25:
   v27 = 0;
   while (1)
   {
-    v28 = [(SKMountOperation *)self mountArgs];
-    v29 = [v28 objectAtIndexedSubscript:v27];
-    v30 = [v29 lowercaseString];
+    mountArgs6 = [(SKMountOperation *)self mountArgs];
+    v29 = [mountArgs6 objectAtIndexedSubscript:v27];
+    lowercaseString2 = [v29 lowercaseString];
 
-    if ([v6 isTrusted])
+    if ([diskCopy isTrusted])
     {
-      if (sub_10000384C(v30, @"noowners"))
+      if (sub_10000384C(lowercaseString2, @"noowners"))
       {
         break;
       }
     }
 
-    if ([v6 isTrusted] && (sub_10000384C(v30, @"noperm") & 1) != 0 || (objc_msgSend(v6, "isTrusted") & 1) == 0 && (sub_10000384C(v30, @"suid") & 1) != 0 || (objc_msgSend(v6, "isTrusted") & 1) == 0 && sub_10000384C(v30, @"dev"))
+    if ([diskCopy isTrusted] && (sub_10000384C(lowercaseString2, @"noperm") & 1) != 0 || (objc_msgSend(diskCopy, "isTrusted") & 1) == 0 && (sub_10000384C(lowercaseString2, @"suid") & 1) != 0 || (objc_msgSend(diskCopy, "isTrusted") & 1) == 0 && sub_10000384C(lowercaseString2, @"dev"))
     {
       break;
     }
 
     ++v27;
-    v31 = [(SKMountOperation *)self mountArgs];
-    v32 = [v31 count];
+    mountArgs7 = [(SKMountOperation *)self mountArgs];
+    v32 = [mountArgs7 count];
 
     v10 = 1;
     if (v27 >= v32)
@@ -657,16 +657,16 @@ LABEL_25:
   v34 = sub_10000BFD0();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [(SKMountOperation *)self clientUID];
-    v36 = [v6 diskIdentifier];
+    clientUID = [(SKMountOperation *)self clientUID];
+    diskIdentifier = [diskCopy diskIdentifier];
     v37 = 136315906;
     v38 = "[SKMountOperation validateMountOptionsWithDisk:error:]";
     v39 = 1024;
-    v40 = v35;
+    v40 = clientUID;
     v41 = 2112;
-    v42 = v36;
+    v42 = diskIdentifier;
     v43 = 2112;
-    v44 = v30;
+    v44 = lowercaseString2;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%s: Client %d asks to mount %@ with %@ option", &v37, 0x26u);
   }
 
@@ -677,35 +677,35 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)validateMountPointWithConnection:(id)a3 error:(id *)a4
+- (BOOL)validateMountPointWithConnection:(id)connection error:(id *)error
 {
-  v7 = [(SKMountOperation *)self mountPoint];
-  if (!sub_1000101BC(v7))
+  mountPoint = [(SKMountOperation *)self mountPoint];
+  if (!sub_1000101BC(mountPoint))
   {
 
     goto LABEL_10;
   }
 
-  v8 = [(SKMountOperation *)self mountPoint];
-  v9 = [v8 fileSystemRepresentation];
+  mountPoint2 = [(SKMountOperation *)self mountPoint];
+  fileSystemRepresentation = [mountPoint2 fileSystemRepresentation];
 
-  if (!v9)
+  if (!fileSystemRepresentation)
   {
 LABEL_10:
     v16 = sub_10000BFD0();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(SKMountOperation *)self mountPoint];
+      mountPoint3 = [(SKMountOperation *)self mountPoint];
       v35.st_dev = 138412290;
-      *&v35.st_mode = v17;
+      *&v35.st_mode = mountPoint3;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Invalid mount point %@", &v35, 0xCu);
     }
 
     v15 = 22;
-    return [SKError failWithPOSIXCode:v15 error:a4];
+    return [SKError failWithPOSIXCode:v15 error:error];
   }
 
-  if (!a3)
+  if (!connection)
   {
     v21 = sub_10000BFD0();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -714,7 +714,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Unknown audit token, denying use of mount point", &v35, 2u);
     }
 
-    return [SKError failWithSKErrorCode:102 error:a4];
+    return [SKError failWithSKErrorCode:102 error:error];
   }
 
   if (![(SKMountOperation *)self clientUID])
@@ -723,8 +723,8 @@ LABEL_10:
   }
 
   memset(&v35, 0, sizeof(v35));
-  v10 = [(SKMountOperation *)self mountPoint];
-  v11 = stat([v10 fileSystemRepresentation], &v35);
+  mountPoint4 = [(SKMountOperation *)self mountPoint];
+  v11 = stat([mountPoint4 fileSystemRepresentation], &v35);
 
   if (v11)
   {
@@ -732,33 +732,33 @@ LABEL_10:
     v13 = sub_10000BFD0();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(SKMountOperation *)self mountPoint];
+      mountPoint5 = [(SKMountOperation *)self mountPoint];
       v27 = 136315650;
       v28 = "[SKMountOperation validateMountPointWithConnection:error:]";
       v29 = 2112;
-      v30 = v14;
+      v30 = mountPoint5;
       v31 = 1024;
-      v32 = v12;
+      clientUID2 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s: Stat failed on %@, errno %d", &v27, 0x1Cu);
     }
 
     v15 = v12;
-    return [SKError failWithPOSIXCode:v15 error:a4];
+    return [SKError failWithPOSIXCode:v15 error:error];
   }
 
-  v22 = [(SKMountOperation *)self clientUID];
-  if (v22 != v35.st_uid)
+  clientUID = [(SKMountOperation *)self clientUID];
+  if (clientUID != v35.st_uid)
   {
     v25 = sub_10000BFD0();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(SKMountOperation *)self mountPoint];
+      mountPoint6 = [(SKMountOperation *)self mountPoint];
       v27 = 136315906;
       v28 = "[SKMountOperation validateMountPointWithConnection:error:]";
       v29 = 2112;
-      v30 = v26;
+      v30 = mountPoint6;
       v31 = 1024;
-      v32 = [(SKMountOperation *)self clientUID];
+      clientUID2 = [(SKMountOperation *)self clientUID];
       v33 = 1024;
       st_uid = v35.st_uid;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%s: Client is not the owner of %@. clientUID = %d, path_info.st_uid = %d, asking for permission", &v27, 0x22u);
@@ -774,11 +774,11 @@ LABEL_20:
     v23 = sub_10000BFD0();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(SKMountOperation *)self mountPoint];
+      mountPoint7 = [(SKMountOperation *)self mountPoint];
       v35.st_dev = 136315394;
       *&v35.st_mode = "[SKMountOperation validateMountPointWithConnection:error:]";
       WORD2(v35.st_ino) = 2112;
-      *(&v35.st_ino + 6) = v24;
+      *(&v35.st_ino + 6) = mountPoint7;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s: Client is allowed to mount to %@", &v35, 0x16u);
     }
 
@@ -791,23 +791,23 @@ LABEL_20:
 - (id)newPerformOperation
 {
   memset(v99, 0, 512);
-  v3 = [(SKMountOperation *)self mountArgs];
-  v4 = [v3 count];
+  mountArgs = [(SKMountOperation *)self mountArgs];
+  v4 = [mountArgs count];
 
   group = dispatch_group_create();
   if (v4)
   {
     for (i = 0; i != v4; i = i + 1)
     {
-      v6 = [(SKMountOperation *)self mountArgs];
-      v7 = [v6 objectAtIndexedSubscript:i];
+      mountArgs2 = [(SKMountOperation *)self mountArgs];
+      v7 = [mountArgs2 objectAtIndexedSubscript:i];
       v99[i] = v7;
     }
   }
 
   v8 = [NSMutableArray alloc];
-  v9 = [(SKMountOperation *)self disksToMount];
-  v53 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  disksToMount = [(SKMountOperation *)self disksToMount];
+  v53 = [v8 initWithCapacity:{objc_msgSend(disksToMount, "count")}];
 
   v64 = 0u;
   v65 = 0u;
@@ -817,12 +817,12 @@ LABEL_20:
   v10 = [obj countByEnumeratingWithState:&v62 objects:v98 count:16];
   if (!v10)
   {
-    v12 = 0;
+    newDAError = 0;
     goto LABEL_41;
   }
 
   v11 = v10;
-  v12 = 0;
+  newDAError = 0;
   v13 = *v63;
   v14 = v99;
   if (!v4)
@@ -844,9 +844,9 @@ LABEL_20:
       }
 
       v16 = *(*(&v62 + 1) + 8 * v15);
-      v17 = [v16 mountPoint];
+      mountPoint = [v16 mountPoint];
 
-      if (!v17)
+      if (!mountPoint)
       {
         v19 = [NSString stringWithFormat:@"Mount of %@", v16];
         [(SKBaseDiskArbOperation *)self setCurrentOperationName:v19];
@@ -858,20 +858,20 @@ LABEL_20:
           goto LABEL_18;
         }
 
-        v22 = [(SKBaseDiskArbOperation *)self options];
-        v23 = [v22 objectForKeyedSubscript:kSKDiskMountOptionRestore];
+        options = [(SKBaseDiskArbOperation *)self options];
+        v23 = [options objectForKeyedSubscript:kSKDiskMountOptionRestore];
         v24 = sub_100010328(v23);
 
         v13 = v52;
         if (v24)
         {
-          v25 = [v21 mountPoint];
-          v26 = [NSURL fileURLWithPath:v25];
+          mountPoint2 = [v21 mountPoint];
+          daDisk2 = [NSURL fileURLWithPath:mountPoint2];
 
-          v27 = [v26 path];
-          v28 = [v27 hasPrefix:@"/Volumes"];
+          path = [daDisk2 path];
+          v28 = [path hasPrefix:@"/Volumes"];
 
-          v49 = v12;
+          v49 = newDAError;
           if (v28)
           {
             v18 = 0;
@@ -879,10 +879,10 @@ LABEL_20:
 
           else
           {
-            v18 = v26;
+            v18 = daDisk2;
           }
 
-          v29 = [v21 mountFlags];
+          mountFlags = [v21 mountFlags];
           v96 = 0u;
           v97 = 0u;
           v94 = 0u;
@@ -914,7 +914,7 @@ LABEL_20:
           v68 = 0u;
           v69 = 0u;
           memset(buf, 0, sizeof(buf));
-          v30 = [v29 count];
+          v30 = [mountFlags count];
           if (v30 >= 0x3F)
           {
             v31 = 63;
@@ -930,7 +930,7 @@ LABEL_20:
             v32 = 0;
             do
             {
-              v33 = [v29 objectAtIndexedSubscript:v32];
+              v33 = [mountFlags objectAtIndexedSubscript:v32];
               v34 = buf;
               buf[v32] = v33;
 
@@ -945,25 +945,25 @@ LABEL_20:
             v34 = 0;
           }
 
-          v35 = [v16 daDisk];
-          DADiskMountWithArguments(v35, v18, 2u, sub_100017B5C, self, v34);
+          daDisk = [v16 daDisk];
+          DADiskMountWithArguments(daDisk, v18, 2u, sub_100017B5C, self, v34);
 
-          v12 = v49;
+          newDAError = v49;
           v13 = v52;
         }
 
         else
         {
 LABEL_18:
-          v26 = [v16 daDisk];
-          DADiskMountWithArguments(v26, v20, 2u, sub_100017B5C, self, arguments);
+          daDisk2 = [v16 daDisk];
+          DADiskMountWithArguments(daDisk2, v20, 2u, sub_100017B5C, self, arguments);
           v18 = v20;
         }
 
         v11 = v54;
         if (![(SKBaseDiskArbOperation *)self completeDiskArbOp])
         {
-          if (v12)
+          if (newDAError)
           {
             if (v18)
             {
@@ -973,12 +973,12 @@ LABEL_18:
 
           else
           {
-            v12 = [(SKBaseDiskArbOperation *)self newDAError];
+            newDAError = [(SKBaseDiskArbOperation *)self newDAError];
             if (v18)
             {
 LABEL_32:
-              v36 = [(__CFURL *)v18 path];
-              [(SKBaseDiskArbOperation *)self removeWithMountPoint:v36];
+              path2 = [(__CFURL *)v18 path];
+              [(SKBaseDiskArbOperation *)self removeWithMountPoint:path2];
             }
           }
         }
@@ -1011,7 +1011,7 @@ LABEL_34:
 
   while (v37);
 LABEL_41:
-  v50 = v12;
+  v50 = newDAError;
 
   v60 = 0u;
   v61 = 0u;
@@ -1049,9 +1049,9 @@ LABEL_41:
   }
 
   dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
-  v45 = [(SKBaseDiskArbOperation *)self recursive];
+  recursive = [(SKBaseDiskArbOperation *)self recursive];
   v46 = v50;
-  if (v45)
+  if (recursive)
   {
     if ([v38 count])
     {
@@ -1071,8 +1071,8 @@ LABEL_41:
 
 - (BOOL)force
 {
-  v2 = [(SKBaseDiskArbOperation *)self options];
-  v3 = [v2 objectForKeyedSubscript:kSKDiskMountOptionForce];
+  options = [(SKBaseDiskArbOperation *)self options];
+  v3 = [options objectForKeyedSubscript:kSKDiskMountOptionForce];
   v4 = sub_100010328(v3);
 
   return v4;
@@ -1080,9 +1080,9 @@ LABEL_41:
 
 - (id)description
 {
-  v3 = [(SKMountOperation *)self disksToMount];
-  v4 = [(SKBaseDiskArbOperation *)self options];
-  v5 = [NSString stringWithFormat:@"Mount Operation for %@ with %@", v3, v4];
+  disksToMount = [(SKMountOperation *)self disksToMount];
+  options = [(SKBaseDiskArbOperation *)self options];
+  v5 = [NSString stringWithFormat:@"Mount Operation for %@ with %@", disksToMount, options];
 
   return v5;
 }

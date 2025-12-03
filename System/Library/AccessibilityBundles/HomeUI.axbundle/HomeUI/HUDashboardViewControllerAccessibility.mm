@@ -1,18 +1,18 @@
 @interface HUDashboardViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation HUDashboardViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUDashboardContext" hasInstanceMethod:@"accessoryTypeGroup" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUDashboardContext" hasInstanceMethod:@"room" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUDashboardContext" hasInstanceMethod:@"home" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUDashboardViewController" hasInstanceMethod:@"navigationAnnounceButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUDashboardContext" hasInstanceMethod:@"accessoryTypeGroup" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUDashboardContext" hasInstanceMethod:@"room" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUDashboardContext" hasInstanceMethod:@"home" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUDashboardViewController" hasInstanceMethod:@"navigationAnnounceButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

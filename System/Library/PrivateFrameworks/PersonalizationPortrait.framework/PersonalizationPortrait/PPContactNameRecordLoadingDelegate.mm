@@ -1,9 +1,9 @@
 @interface PPContactNameRecordLoadingDelegate
-- (PPContactNameRecordLoadingDelegate)initWithName:(id)a3;
+- (PPContactNameRecordLoadingDelegate)initWithName:(id)name;
 - (id)description;
-- (unsigned)recentRecordLoadingHandler:(id)a3;
+- (unsigned)recentRecordLoadingHandler:(id)handler;
 - (unsigned)recentRecordLoadingSetup;
-- (unsigned)recordLoadingHandler:(id)a3;
+- (unsigned)recordLoadingHandler:(id)handler;
 - (unsigned)recordLoadingSetup;
 - (void)recentRecordLoadingCompletion;
 - (void)recordLoadingCompletion;
@@ -30,12 +30,12 @@
   }
 }
 
-- (unsigned)recentRecordLoadingHandler:(id)a3
+- (unsigned)recentRecordLoadingHandler:(id)handler
 {
   recentContactNameRecordsHandler = self->_recentContactNameRecordsHandler;
   if (recentContactNameRecordsHandler)
   {
-    LOBYTE(recentContactNameRecordsHandler) = recentContactNameRecordsHandler[2](recentContactNameRecordsHandler, a3);
+    LOBYTE(recentContactNameRecordsHandler) = recentContactNameRecordsHandler[2](recentContactNameRecordsHandler, handler);
   }
 
   return recentContactNameRecordsHandler;
@@ -61,12 +61,12 @@
   }
 }
 
-- (unsigned)recordLoadingHandler:(id)a3
+- (unsigned)recordLoadingHandler:(id)handler
 {
   contactNameRecordsHandler = self->_contactNameRecordsHandler;
   if (contactNameRecordsHandler)
   {
-    LOBYTE(contactNameRecordsHandler) = contactNameRecordsHandler[2](contactNameRecordsHandler, a3);
+    LOBYTE(contactNameRecordsHandler) = contactNameRecordsHandler[2](contactNameRecordsHandler, handler);
   }
 
   return contactNameRecordsHandler;
@@ -92,11 +92,11 @@
   return v2;
 }
 
-- (PPContactNameRecordLoadingDelegate)initWithName:(id)a3
+- (PPContactNameRecordLoadingDelegate)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = PPContactNameRecordLoadingDelegate;
-  return [(PPRecordLoadingDelegate *)&v4 initWithName:a3];
+  return [(PPRecordLoadingDelegate *)&v4 initWithName:name];
 }
 
 @end

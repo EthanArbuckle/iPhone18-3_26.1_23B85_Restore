@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneIndexFilterLeafReader_FilterTermsEnum
 - (id)attributes;
 - (id)next;
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)term;
 - (int)docFreq;
 - (int64_t)ord;
 - (int64_t)totalTermFreq;
 - (void)dealloc;
-- (void)seekExactWithLong:(int64_t)a3;
+- (void)seekExactWithLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneIndexFilterLeafReader_FilterTermsEnum
@@ -23,7 +23,7 @@
   return [(OrgApacheLuceneIndexTermsEnum *)in attributes];
 }
 
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   in = self->in_;
   if (!in)
@@ -31,10 +31,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexTermsEnum *)in seekCeilWithOrgApacheLuceneUtilBytesRef:a3];
+  return [(OrgApacheLuceneIndexTermsEnum *)in seekCeilWithOrgApacheLuceneUtilBytesRef:ref];
 }
 
-- (void)seekExactWithLong:(int64_t)a3
+- (void)seekExactWithLong:(int64_t)long
 {
   in = self->in_;
   if (!in)
@@ -42,7 +42,7 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneIndexTermsEnum *)in seekExactWithLong:a3];
+  [(OrgApacheLuceneIndexTermsEnum *)in seekExactWithLong:long];
 }
 
 - (id)next

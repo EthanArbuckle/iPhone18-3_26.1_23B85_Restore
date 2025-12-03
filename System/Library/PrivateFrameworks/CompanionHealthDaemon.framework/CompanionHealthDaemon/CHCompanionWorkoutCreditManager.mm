@@ -1,33 +1,33 @@
 @interface CHCompanionWorkoutCreditManager
-- (BOOL)_queue_generateAndSaveSamplesForIntervals:(id)a3 withExerciseMinuteTable:(id)a4 standHourTable:(id)a5 standMinuteTable:(id)a6 moveMinuteTable:(id)a7 error:(id)a8;
-- (CHCompanionWorkoutCreditManager)initWithProfile:(id)a3;
-- (id)_queue_samplesForType:(id)a3 fromStartTime:(id)a4 toEndTime:(id)a5;
+- (BOOL)_queue_generateAndSaveSamplesForIntervals:(id)intervals withExerciseMinuteTable:(id)table standHourTable:(id)hourTable standMinuteTable:(id)minuteTable moveMinuteTable:(id)moveMinuteTable error:(id)error;
+- (CHCompanionWorkoutCreditManager)initWithProfile:(id)profile;
+- (id)_queue_samplesForType:(id)type fromStartTime:(id)time toEndTime:(id)endTime;
 - (id)_queue_userLocalProtectedDomain;
 - (id)_queue_workoutAnchor;
-- (id)_queue_workoutsSinceAnchor:(id *)a3 error:(id)a4;
+- (id)_queue_workoutsSinceAnchor:(id *)anchor error:(id)error;
 - (void)_queue_fastForwardAnchor;
 - (void)_queue_performWorkoutCreditFixup;
 - (void)_queue_processWorkouts;
-- (void)_queue_setWorkoutAnchor:(id)a3;
+- (void)_queue_setWorkoutAnchor:(id)anchor;
 - (void)dealloc;
 - (void)performWorkoutCreditFixup;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 - (void)stopObservingWorkouts;
 @end
 
 @implementation CHCompanionWorkoutCreditManager
 
-- (CHCompanionWorkoutCreditManager)initWithProfile:(id)a3
+- (CHCompanionWorkoutCreditManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v14.receiver = self;
   v14.super_class = CHCompanionWorkoutCreditManager;
   v5 = [(CHCompanionWorkoutCreditManager *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -35,9 +35,9 @@
     anchor = v6->_anchor;
     v6->_anchor = 0;
 
-    v10 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
+    hk_gregorianCalendarWithUTCTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
     calendar = v6->_calendar;
-    v6->_calendar = v10;
+    v6->_calendar = hk_gregorianCalendarWithUTCTimeZone;
 
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
     [WeakRetained registerProfileReadyObserver:v6 queue:0];
@@ -85,20 +85,20 @@ void __60__CHCompanionWorkoutCreditManager_performWorkoutCreditFixup__block_invo
 - (void)stopObservingWorkouts
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained dataManager];
-  v4 = [MEMORY[0x277CCD720] workoutType];
-  [v3 removeObserver:self forDataType:v4];
+  dataManager = [WeakRetained dataManager];
+  workoutType = [MEMORY[0x277CCD720] workoutType];
+  [dataManager removeObserver:self forDataType:workoutType];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
-  v5 = [MEMORY[0x277CCD720] workoutType];
-  [v4 addObserver:self forDataType:v5];
+  dataManager = [WeakRetained dataManager];
+  workoutType = [MEMORY[0x277CCD720] workoutType];
+  [dataManager addObserver:self forDataType:workoutType];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC330];
@@ -125,7 +125,7 @@ void __60__CHCompanionWorkoutCreditManager_performWorkoutCreditFixup__block_invo
   v5 = 2048;
   v6 = 0x404E000000000000;
   v7 = 2114;
-  v8 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_243CCD000, a2, OS_LOG_TYPE_ERROR, "Failed to get accessibility assertion for %{public}@ with %lf second timeout with error %{public}@", &v3, 0x20u);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -153,7 +153,7 @@ uint64_t __57__CHCompanionWorkoutCreditManager__queue_processWorkouts__block_inv
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138543618;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_243CCD000, log, OS_LOG_TYPE_ERROR, "[CWCM] Error:%{public}@ reading anchor data from domain: %@", &v4, 0x16u);
@@ -164,9 +164,9 @@ uint64_t __57__CHCompanionWorkoutCreditManager__queue_processWorkouts__block_inv
 {
   v20 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(CHCompanionWorkoutCreditManager *)self _queue_userLocalProtectedDomain];
+  _queue_userLocalProtectedDomain = [(CHCompanionWorkoutCreditManager *)self _queue_userLocalProtectedDomain];
   v13 = 0;
-  v5 = [v4 numberForKey:@"companionWorkoutCreditAnchorKey" error:&v13];
+  v5 = [_queue_userLocalProtectedDomain numberForKey:@"companionWorkoutCreditAnchorKey" error:&v13];
   v6 = v13;
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC330];
@@ -201,14 +201,14 @@ uint64_t __57__CHCompanionWorkoutCreditManager__queue_processWorkouts__block_inv
   return v5;
 }
 
-- (void)_queue_setWorkoutAnchor:(id)a3
+- (void)_queue_setWorkoutAnchor:(id)anchor
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  anchorCopy = anchor;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(CHCompanionWorkoutCreditManager *)self _queue_userLocalProtectedDomain];
+  _queue_userLocalProtectedDomain = [(CHCompanionWorkoutCreditManager *)self _queue_userLocalProtectedDomain];
   v10 = 0;
-  [v5 setNumber:v4 forKey:@"companionWorkoutCreditAnchorKey" error:&v10];
+  [_queue_userLocalProtectedDomain setNumber:anchorCopy forKey:@"companionWorkoutCreditAnchorKey" error:&v10];
   v6 = v10;
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC330];
@@ -220,9 +220,9 @@ uint64_t __57__CHCompanionWorkoutCreditManager__queue_processWorkouts__block_inv
       *buf = 138543874;
       v12 = v6;
       v13 = 2112;
-      v14 = v5;
+      v14 = _queue_userLocalProtectedDomain;
       v15 = 2112;
-      v16 = v4;
+      v16 = anchorCopy;
       _os_log_error_impl(&dword_243CCD000, v7, OS_LOG_TYPE_ERROR, "[CWCM] Error:%{public}@ saving data into key value domain. %@: %@", buf, 0x20u);
     }
   }
@@ -230,7 +230,7 @@ uint64_t __57__CHCompanionWorkoutCreditManager__queue_processWorkouts__block_inv
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = anchorCopy;
     _os_log_impl(&dword_243CCD000, v7, OS_LOG_TYPE_INFO, "[CWCM] Anchor saved: %@", buf, 0xCu);
   }
 
@@ -306,22 +306,22 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)_queue_generateAndSaveSamplesForIntervals:(id)a3 withExerciseMinuteTable:(id)a4 standHourTable:(id)a5 standMinuteTable:(id)a6 moveMinuteTable:(id)a7 error:(id)a8
+- (BOOL)_queue_generateAndSaveSamplesForIntervals:(id)intervals withExerciseMinuteTable:(id)table standHourTable:(id)hourTable standMinuteTable:(id)minuteTable moveMinuteTable:(id)moveMinuteTable error:(id)error
 {
   v144 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v131 = a4;
-  v15 = a5;
-  v16 = a6;
-  v128 = a7;
-  v114 = a8;
+  intervalsCopy = intervals;
+  tableCopy = table;
+  hourTableCopy = hourTable;
+  minuteTableCopy = minuteTable;
+  moveMinuteTableCopy = moveMinuteTable;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   v130 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v137 = 0u;
   v138 = 0u;
   v139 = 0u;
   v140 = 0u;
-  obj = v14;
+  obj = intervalsCopy;
   v117 = [obj countByEnumeratingWithState:&v137 objects:v143 count:16];
   if (v117)
   {
@@ -330,8 +330,8 @@ LABEL_9:
     v126 = *MEMORY[0x277CCC940];
     v127 = *MEMORY[0x277CCB8E0];
     v17 = 0.0;
-    v129 = v15;
-    v118 = v16;
+    v129 = hourTableCopy;
+    v118 = minuteTableCopy;
     do
     {
       v18 = 0;
@@ -344,26 +344,26 @@ LABEL_9:
 
         v124 = v18;
         v19 = *(*(&v137 + 1) + 8 * v18);
-        v20 = [v19 dateInterval];
-        v21 = [v20 startDate];
-        [v21 timeIntervalSinceReferenceDate];
+        dateInterval = [v19 dateInterval];
+        startDate = [dateInterval startDate];
+        [startDate timeIntervalSinceReferenceDate];
         v23 = v22;
 
         v121 = v23;
         v24 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v23];
-        v25 = [v19 dateInterval];
-        v26 = [v25 endDate];
-        [v26 timeIntervalSinceReferenceDate];
+        dateInterval2 = [v19 dateInterval];
+        endDate = [dateInterval2 endDate];
+        [endDate timeIntervalSinceReferenceDate];
         v28 = v27;
 
         v119 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v28];
         v120 = v24;
         v123 = [NSCalendar components:"components:fromDate:toDate:options:" fromDate:128 toDate:v24 options:?];
-        v29 = [v123 second];
-        v30 = floor(v29 / 60.0);
-        v31 = [v19 dateInterval];
-        v32 = [v31 startDate];
-        [v32 timeIntervalSinceReferenceDate];
+        second = [v123 second];
+        v30 = floor(second / 60.0);
+        dateInterval3 = [v19 dateInterval];
+        startDate2 = [dateInterval3 startDate];
+        [startDate2 timeIntervalSinceReferenceDate];
         v34 = floor(v33 / 60.0) * 60.0;
 
         v132 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v34];
@@ -374,36 +374,36 @@ LABEL_9:
           {
             v36 = [(NSCalendar *)self->_calendar dateByAddingUnit:64 value:v35 toDate:v132 options:0];
             v37 = [v36 dateByAddingTimeInterval:60.0];
-            v38 = [v131 objectForKey:v36];
+            v38 = [tableCopy objectForKey:v36];
             if (!v38)
             {
               v39 = MEMORY[0x277CCD7E8];
-              v40 = [MEMORY[0x277CCDAB0] minuteUnit];
-              v41 = [v39 quantityWithUnit:v40 doubleValue:1.0];
+              minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+              v41 = [v39 quantityWithUnit:minuteUnit doubleValue:1.0];
 
               v42 = MEMORY[0x277CCD800];
-              v43 = [MEMORY[0x277CCD830] briskMinuteDataType];
-              v44 = [v42 quantitySampleWithType:v43 quantity:v41 startDate:v36 endDate:v37];
+              briskMinuteDataType = [MEMORY[0x277CCD830] briskMinuteDataType];
+              v44 = [v42 quantitySampleWithType:briskMinuteDataType quantity:v41 startDate:v36 endDate:v37];
 
-              [v131 setObject:v44 forKey:v36];
+              [tableCopy setObject:v44 forKey:v36];
               [v130 addObject:v44];
             }
 
             if ([v19 activityMoveMode] == 2)
             {
-              v45 = [v128 objectForKey:v36];
+              v45 = [moveMinuteTableCopy objectForKey:v36];
               if (!v45)
               {
                 v46 = MEMORY[0x277CCD7E8];
-                v47 = [MEMORY[0x277CCDAB0] minuteUnit];
-                v48 = [v46 quantityWithUnit:v47 doubleValue:1.0];
+                minuteUnit2 = [MEMORY[0x277CCDAB0] minuteUnit];
+                v48 = [v46 quantityWithUnit:minuteUnit2 doubleValue:1.0];
 
                 v49 = MEMORY[0x277CCD800];
                 v50 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v125];
                 v51 = [v49 quantitySampleWithType:v50 quantity:v48 startDate:v36 endDate:v37];
 
-                v15 = v129;
-                [v128 setObject:v51 forKey:v36];
+                hourTableCopy = v129;
+                [moveMinuteTableCopy setObject:v51 forKey:v36];
                 [v130 addObject:v51];
               }
             }
@@ -412,7 +412,7 @@ LABEL_9:
           }
 
           while (v30 > v35);
-          v16 = v118;
+          minuteTableCopy = v118;
           if (v30 > 0.0)
           {
             v52 = 0;
@@ -424,14 +424,14 @@ LABEL_9:
               if (!v55)
               {
                 v56 = MEMORY[0x277CCD7E8];
-                v57 = [MEMORY[0x277CCDAB0] minuteUnit];
-                v58 = [v56 quantityWithUnit:v57 doubleValue:1.0];
+                minuteUnit3 = [MEMORY[0x277CCDAB0] minuteUnit];
+                v58 = [v56 quantityWithUnit:minuteUnit3 doubleValue:1.0];
 
                 v59 = MEMORY[0x277CCD800];
                 v60 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v126];
                 v61 = [v59 quantitySampleWithType:v60 quantity:v58 startDate:v53 endDate:v54];
 
-                v15 = v129;
+                hourTableCopy = v129;
                 [v118 setObject:v61 forKey:v53];
                 [v130 addObject:v61];
               }
@@ -443,40 +443,40 @@ LABEL_9:
           }
         }
 
-        v62 = v17 + v29 - v30 * 60.0;
+        v62 = v17 + second - v30 * 60.0;
         v17 = v62;
         if (v62 >= 60.0)
         {
           v63 = [v132 dateByAddingTimeInterval:60.0];
-          v64 = [v131 objectForKey:v132];
+          v64 = [tableCopy objectForKey:v132];
           if (!v64)
           {
             v65 = MEMORY[0x277CCD7E8];
-            v66 = [MEMORY[0x277CCDAB0] minuteUnit];
-            v67 = [v65 quantityWithUnit:v66 doubleValue:1.0];
+            minuteUnit4 = [MEMORY[0x277CCDAB0] minuteUnit];
+            v67 = [v65 quantityWithUnit:minuteUnit4 doubleValue:1.0];
 
             v68 = MEMORY[0x277CCD800];
-            v69 = [MEMORY[0x277CCD830] briskMinuteDataType];
-            v70 = [v68 quantitySampleWithType:v69 quantity:v67 startDate:v132 endDate:v63];
+            briskMinuteDataType2 = [MEMORY[0x277CCD830] briskMinuteDataType];
+            v70 = [v68 quantitySampleWithType:briskMinuteDataType2 quantity:v67 startDate:v132 endDate:v63];
 
-            [v131 setObject:v70 forKey:v132];
+            [tableCopy setObject:v70 forKey:v132];
             [v130 addObject:v70];
           }
 
           if ([v19 activityMoveMode] == 2)
           {
-            v71 = [v128 objectForKey:v132];
+            v71 = [moveMinuteTableCopy objectForKey:v132];
             if (!v71)
             {
               v72 = MEMORY[0x277CCD7E8];
-              v73 = [MEMORY[0x277CCDAB0] minuteUnit];
-              v74 = [v72 quantityWithUnit:v73 doubleValue:1.0];
+              minuteUnit5 = [MEMORY[0x277CCDAB0] minuteUnit];
+              v74 = [v72 quantityWithUnit:minuteUnit5 doubleValue:1.0];
 
               v75 = MEMORY[0x277CCD800];
               v76 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v125];
               v77 = [v75 quantitySampleWithType:v76 quantity:v74 startDate:v132 endDate:v63];
 
-              [v128 setObject:v77 forKey:v132];
+              [moveMinuteTableCopy setObject:v77 forKey:v132];
               [v130 addObject:v77];
             }
           }
@@ -488,19 +488,19 @@ LABEL_9:
         {
           v17 = v17 + -300.0;
           v80 = [v132 dateByAddingTimeInterval:v17];
-          v81 = [v16 objectForKey:v132];
+          v81 = [minuteTableCopy objectForKey:v132];
           v79 = v120;
           if (!v81)
           {
             v82 = MEMORY[0x277CCD7E8];
-            v83 = [MEMORY[0x277CCDAB0] minuteUnit];
-            v84 = [v82 quantityWithUnit:v83 doubleValue:1.0];
+            minuteUnit6 = [MEMORY[0x277CCDAB0] minuteUnit];
+            v84 = [v82 quantityWithUnit:minuteUnit6 doubleValue:1.0];
 
             v85 = MEMORY[0x277CCD800];
             v86 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v126];
             v87 = [v85 quantitySampleWithType:v86 quantity:v84 startDate:v132 endDate:v80];
 
-            [v16 setObject:v87 forKey:v132];
+            [minuteTableCopy setObject:v87 forKey:v132];
             [v130 addObject:v87];
           }
 
@@ -519,22 +519,22 @@ LABEL_9:
 
         v122 = v89;
         v90 = [(NSCalendar *)self->_calendar components:32 fromDate:v88 toDate:v89 options:0];
-        v91 = [v90 hour];
-        if (v91 >= 1)
+        hour = [v90 hour];
+        if (hour >= 1)
         {
-          v92 = v91;
+          v92 = hour;
           for (i = 0; i != v92; ++i)
           {
             v94 = [(NSCalendar *)self->_calendar dateByAddingUnit:32 value:i toDate:v88 options:0];
             v95 = [v94 dateByAddingTimeInterval:3600.0];
-            v96 = [v15 objectForKey:v94];
+            v96 = [hourTableCopy objectForKey:v94];
             if (!v96)
             {
               v97 = MEMORY[0x277CCD0B0];
               v98 = [MEMORY[0x277CCD720] categoryTypeForIdentifier:v127];
               v99 = [v97 categorySampleWithType:v98 value:0 startDate:v94 endDate:v95];
 
-              v15 = v129;
+              hourTableCopy = v129;
               [v129 setObject:v99 forKey:v94];
               [v130 addObject:v99];
             }
@@ -542,7 +542,7 @@ LABEL_9:
         }
 
         v18 = v124 + 1;
-        v16 = v118;
+        minuteTableCopy = v118;
       }
 
       while (v124 + 1 != v117);
@@ -570,8 +570,8 @@ LABEL_9:
     WeakRetained = objc_loadWeakRetained(&self->_profile);
     v106 = MEMORY[0x277D10690];
     v107 = WeakRetained;
-    v108 = [v107 database];
-    v136 = v114;
+    database = [v107 database];
+    v136 = errorCopy;
     v133[0] = MEMORY[0x277D85DD0];
     v133[1] = 3221225472;
     v133[2] = __155__CHCompanionWorkoutCreditManager__queue_generateAndSaveSamplesForIntervals_withExerciseMinuteTable_standHourTable_standMinuteTable_moveMinuteTable_error___block_invoke;
@@ -579,7 +579,7 @@ LABEL_9:
     v134 = v107;
     v135 = v130;
     v109 = v107;
-    v110 = [v106 performWriteTransactionWithHealthDatabase:v108 error:&v136 block:v133];
+    v110 = [v106 performWriteTransactionWithHealthDatabase:database error:&v136 block:v133];
     v111 = v136;
   }
 
@@ -597,7 +597,7 @@ LABEL_9:
       v110 = 1;
     }
 
-    v111 = v114;
+    v111 = errorCopy;
   }
 
   v112 = *MEMORY[0x277D85DE8];
@@ -623,13 +623,13 @@ uint64_t __155__CHCompanionWorkoutCreditManager__queue_generateAndSaveSamplesFor
   return v8;
 }
 
-- (id)_queue_samplesForType:(id)a3 fromStartTime:(id)a4 toEndTime:(id)a5
+- (id)_queue_samplesForType:(id)type fromStartTime:(id)time toEndTime:(id)endTime
 {
   v41[3] = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  endTimeCopy = endTime;
+  timeCopy = time;
+  typeCopy = type;
   dispatch_assert_queue_V2(queue);
   v12 = MEMORY[0x277D10B18];
   v13 = *MEMORY[0x277D104B0];
@@ -655,7 +655,7 @@ uint64_t __155__CHCompanionWorkoutCreditManager__queue_generateAndSaveSamplesFor
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v33 = 0;
   v34 = 0;
-  v26 = [v24 samplesWithType:v11 profile:WeakRetained encodingOptions:0 predicate:v23 limit:0 anchor:&v34 error:&v33];
+  v26 = [v24 samplesWithType:typeCopy profile:WeakRetained encodingOptions:0 predicate:v23 limit:0 anchor:&v34 error:&v33];
 
   v27 = v34;
   v28 = v33;
@@ -688,11 +688,11 @@ uint64_t __155__CHCompanionWorkoutCreditManager__queue_generateAndSaveSamplesFor
   return v30;
 }
 
-- (id)_queue_workoutsSinceAnchor:(id *)a3 error:(id)a4
+- (id)_queue_workoutsSinceAnchor:(id *)anchor error:(id)error
 {
   v27[2] = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v7 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(queue);
   v25 = HDDataEntityPredicateForOriginProductType();
   v8 = HDDataEntityPredicateForOriginProductType();
@@ -703,18 +703,18 @@ uint64_t __155__CHCompanionWorkoutCreditManager__queue_generateAndSaveSamplesFor
   v11 = [v9 predicateMatchingAnyPredicates:v10];
 
   calendar = self->_calendar;
-  v13 = [MEMORY[0x277CBEAA8] date];
-  v14 = [(NSCalendar *)calendar dateByAddingUnit:16 value:-1 toDate:v13 options:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v14 = [(NSCalendar *)calendar dateByAddingUnit:16 value:-1 toDate:date options:0];
 
   v15 = [(NSCalendar *)self->_calendar startOfDayForDate:v14];
   v16 = HDSampleEntityPredicateForEndDate();
 
   v17 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v11 otherPredicate:v16];
   v18 = MEMORY[0x277D10980];
-  v19 = [MEMORY[0x277CCD720] workoutType];
+  workoutType = [MEMORY[0x277CCD720] workoutType];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v26 = v7;
-  v21 = [v18 samplesWithType:v19 profile:WeakRetained encodingOptions:0 predicate:v17 limit:0 anchor:a3 error:&v26];
+  v26 = errorCopy;
+  v21 = [v18 samplesWithType:workoutType profile:WeakRetained encodingOptions:0 predicate:v17 limit:0 anchor:anchor error:&v26];
   v22 = v26;
 
   v23 = *MEMORY[0x277D85DE8];

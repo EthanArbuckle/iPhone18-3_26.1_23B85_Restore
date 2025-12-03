@@ -1,10 +1,10 @@
 @interface AUAudioUnit_XH
 - (id)speechSynthesisOutputMetadataBlock;
-- (void)_internalInitWithExtension:(id)a3 componentDescription:(AudioComponentDescription *)a4 instance:(OpaqueAudioComponentInstance *)a5 completion:(id)a6;
-- (void)_open:(id)a3 completion:(id)a4;
+- (void)_internalInitWithExtension:(id)extension componentDescription:(AudioComponentDescription *)description instance:(OpaqueAudioComponentInstance *)instance completion:(id)completion;
+- (void)_open:(id)_open completion:(id)completion;
 - (void)dealloc;
-- (void)requestViewControllerWithCompletionHandler:(id)a3;
-- (void)setSpeechSynthesisOutputMetadataBlock:(id)a3;
+- (void)requestViewControllerWithCompletionHandler:(id)handler;
+- (void)setSpeechSynthesisOutputMetadataBlock:(id)block;
 @end
 
 @implementation AUAudioUnit_XH
@@ -16,23 +16,23 @@
   return v2;
 }
 
-- (void)setSpeechSynthesisOutputMetadataBlock:(id)a3
+- (void)setSpeechSynthesisOutputMetadataBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(AUAudioUnit *)self componentDescription];
   if (v7 == 1635087216)
   {
-    v5 = _Block_copy(v4);
+    v5 = _Block_copy(blockCopy);
     speechSynthesisOutputMetadataBlock = self->_speechSynthesisOutputMetadataBlock;
     self->_speechSynthesisOutputMetadataBlock = v5;
   }
 }
 
-- (void)requestViewControllerWithCompletionHandler:(id)a3
+- (void)requestViewControllerWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(AUAudioUnit *)self cachedViewController];
-  v5[2](v5, v4);
+  handlerCopy = handler;
+  cachedViewController = [(AUAudioUnit *)self cachedViewController];
+  handlerCopy[2](handlerCopy, cachedViewController);
 }
 
 - (void)dealloc
@@ -64,17 +64,17 @@
   [(AUAudioUnit_XPC *)&v9 dealloc];
 }
 
-- (void)_open:(id)a3 completion:(id)a4
+- (void)_open:(id)_open completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 copyWithZone:0];
+  _openCopy = _open;
+  completionCopy = completion;
+  v8 = [_openCopy copyWithZone:0];
   requestIdentifier = self->_requestIdentifier;
   self->_requestIdentifier = v8;
 
   v10 = CADeprecated::TSingleton<AUExtensionInstanceMap>::instance();
   v11 = self->_requestIdentifier;
-  v12 = self;
+  selfCopy = self;
   v13 = *v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -82,28 +82,28 @@
   block[3] = &unk_1E72C16F0;
   v22 = v11;
   v23 = v10;
-  v21 = v12;
+  v21 = selfCopy;
   v14 = v11;
-  v15 = v12;
+  v15 = selfCopy;
   dispatch_sync(v13, block);
 
   v16 = [v15[123] _extensionContextForUUID:self->_requestIdentifier];
   [v16 setExtension:v15[123]];
-  v17 = [v16 delegate];
-  [v17 setAudioUnit:v15];
+  delegate = [v16 delegate];
+  [delegate setAudioUnit:v15];
 
-  v18 = [v16 xpcConnection];
+  xpcConnection = [v16 xpcConnection];
   v19.receiver = v15;
   v19.super_class = AUAudioUnit_XH;
-  [(AUAudioUnit_XPC *)&v19 _doOpen:v18 completion:v7];
+  [(AUAudioUnit_XPC *)&v19 _doOpen:xpcConnection completion:completionCopy];
 }
 
-- (void)_internalInitWithExtension:(id)a3 componentDescription:(AudioComponentDescription *)a4 instance:(OpaqueAudioComponentInstance *)a5 completion:(id)a6
+- (void)_internalInitWithExtension:(id)extension componentDescription:(AudioComponentDescription *)description instance:(OpaqueAudioComponentInstance *)instance completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  objc_storeStrong(&self->_extension, a3);
-  [(AUAudioUnit_XPC *)self _setComponentInstance:a5];
+  extensionCopy = extension;
+  completionCopy = completion;
+  objc_storeStrong(&self->_extension, extension);
+  [(AUAudioUnit_XPC *)self _setComponentInstance:instance];
   v12 = CADeprecated::TSingleton<AUExtensionInstanceMap>::instance();
   v13 = self->_extension;
   v14 = *v12;
@@ -116,8 +116,8 @@
   v15 = v13;
   dispatch_sync(v14, &block);
 
-  v16 = [(NSExtension *)self->_extension extensionPointIdentifier];
-  LODWORD(v14) = [v16 isEqualToString:@"com.apple.AudioUnit-UI"];
+  extensionPointIdentifier = [(NSExtension *)self->_extension extensionPointIdentifier];
+  LODWORD(v14) = [extensionPointIdentifier isEqualToString:@"com.apple.AudioUnit-UI"];
 
   objc_initWeak(&location, self);
   [(AUAudioUnit_XH *)self setStrongInstance:self];
@@ -126,7 +126,7 @@
   aBlock[2] = __86__AUAudioUnit_XH__internalInitWithExtension_componentDescription_instance_completion___block_invoke;
   aBlock[3] = &unk_1E72C13E8;
   objc_copyWeak(&v31, &location);
-  v17 = v11;
+  v17 = completionCopy;
   v30 = v17;
   v18 = _Block_copy(aBlock);
   completionBlock = self->_completionBlock;

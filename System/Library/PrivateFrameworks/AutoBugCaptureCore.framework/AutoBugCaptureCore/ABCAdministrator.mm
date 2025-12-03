@@ -7,17 +7,17 @@
 - (void)administrativelyEnableAutoBugCapture;
 - (void)continueStartingAutoBugCapture;
 - (void)deregisterIDS;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)persistentStoreControllerReadyForUse:(id)a3;
-- (void)prepareLogArchiveDirectory:(id)a3 uid:(id)a4 gid:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)persistentStoreControllerReadyForUse:(id)use;
+- (void)prepareLogArchiveDirectory:(id)directory uid:(id)uid gid:(id)gid;
 - (void)registerIDS;
 - (void)scheduleDiagnosticsMaintenanceActivity;
 - (void)shutdown;
-- (void)startAutoBugCaptureAdministrative:(BOOL)a3 parameters:(id)a4;
+- (void)startAutoBugCaptureAdministrative:(BOOL)administrative parameters:(id)parameters;
 - (void)startEssentialServices;
 - (void)startUploadTaskScheduler;
 - (void)startup;
-- (void)stopAutoBugCapture:(BOOL)a3;
+- (void)stopAutoBugCapture:(BOOL)capture;
 - (void)stopEssentialServices;
 - (void)stopUploadTaskScheduler;
 @end
@@ -85,7 +85,7 @@ uint64_t __34__ABCAdministrator_sharedInstance__block_invoke_3()
   return v2;
 }
 
-- (void)persistentStoreControllerReadyForUse:(id)a3
+- (void)persistentStoreControllerReadyForUse:(id)use
 {
   adminQueue = self->adminQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -113,8 +113,8 @@ uint64_t __34__ABCAdministrator_sharedInstance__block_invoke_3()
   diagTransport = self->diagTransport;
   self->diagTransport = v5;
 
-  v7 = [(ABCAdministrator *)self configurationManager];
-  [v7 addObserver:self forKeyPath:@"autoBugCaptureEnabled" options:1 context:0];
+  configurationManager = [(ABCAdministrator *)self configurationManager];
+  [configurationManager addObserver:self forKeyPath:@"autoBugCaptureEnabled" options:1 context:0];
 
   v8 = adminLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -144,13 +144,13 @@ uint64_t __34__ABCAdministrator_sharedInstance__block_invoke_3()
     self->diagTransport = 0;
   }
 
-  v5 = [(ABCAdministrator *)self configurationManager];
-  [v5 removeObserver:self forKeyPath:@"autoBugCaptureEnabled" context:0];
+  configurationManager = [(ABCAdministrator *)self configurationManager];
+  [configurationManager removeObserver:self forKeyPath:@"autoBugCaptureEnabled" context:0];
 
   [(ABCAdministrator *)self setConfigurationManager:0];
-  v6 = [(ABCAdministrator *)self cacheDeleteHandler];
+  cacheDeleteHandler = [(ABCAdministrator *)self cacheDeleteHandler];
 
-  if (v6)
+  if (cacheDeleteHandler)
   {
     v7 = adminLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -165,9 +165,9 @@ uint64_t __34__ABCAdministrator_sharedInstance__block_invoke_3()
 
 - (id)getDiagnosticLiaison
 {
-  v3 = [(ABCAdministrator *)self diagnosticLiaison];
+  diagnosticLiaison = [(ABCAdministrator *)self diagnosticLiaison];
 
-  if (!v3)
+  if (!diagnosticLiaison)
   {
     v4 = objc_alloc_init(DiagnosticLiaison);
     [(ABCAdministrator *)self setDiagnosticLiaison:v4];
@@ -178,29 +178,29 @@ uint64_t __34__ABCAdministrator_sharedInstance__block_invoke_3()
 
 - (void)registerIDS
 {
-  v3 = [(ABCAdministrator *)self configurationManager];
-  v4 = [v3 autoBugCaptureAvailable];
+  configurationManager = [(ABCAdministrator *)self configurationManager];
+  autoBugCaptureAvailable = [configurationManager autoBugCaptureAvailable];
 
-  if (v4)
+  if (autoBugCaptureAvailable)
   {
-    v5 = [(ABCAdministrator *)self getDiagnosticLiaison];
-    [v5 registerAdministrativeTransports];
+    getDiagnosticLiaison = [(ABCAdministrator *)self getDiagnosticLiaison];
+    [getDiagnosticLiaison registerAdministrativeTransports];
   }
 }
 
 - (void)deregisterIDS
 {
-  v3 = [(ABCAdministrator *)self diagnosticLiaison];
+  diagnosticLiaison = [(ABCAdministrator *)self diagnosticLiaison];
 
-  if (v3)
+  if (diagnosticLiaison)
   {
-    v4 = [(ABCAdministrator *)self diagnosticLiaison];
+    diagnosticLiaison2 = [(ABCAdministrator *)self diagnosticLiaison];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __33__ABCAdministrator_deregisterIDS__block_invoke;
     v5[3] = &unk_278CEFE88;
     v5[4] = self;
-    [v4 unregisterAllTransports:v5];
+    [diagnosticLiaison2 unregisterAllTransports:v5];
   }
 }
 
@@ -237,10 +237,10 @@ uint64_t __58__ABCAdministrator_scheduleDiagnosticsMaintenanceActivity__block_in
 
 - (void)startUploadTaskScheduler
 {
-  v3 = [(ABCConfigurationManager *)self->_configurationManager cloudKitEnabled];
+  cloudKitEnabled = [(ABCConfigurationManager *)self->_configurationManager cloudKitEnabled];
   v4 = adminLogHandle();
   v5 = v4;
-  if (v3)
+  if (cloudKitEnabled)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -317,35 +317,35 @@ LABEL_10:
       _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEFAULT, "Administratively disabling AutoBugCapture", v8, 2u);
     }
 
-    v6 = [(ABCAdministrator *)self storageManager];
-    [v6 purgeAttachmentsForAllCases];
+    storageManager = [(ABCAdministrator *)self storageManager];
+    [storageManager purgeAttachmentsForAllCases];
 
-    v7 = [(ABCAdministrator *)self caseManager];
-    [v7 resetDiagnosticCaseStorage];
+    caseManager = [(ABCAdministrator *)self caseManager];
+    [caseManager resetDiagnosticCaseStorage];
 
     [(ABCAdministrator *)self stopAutoBugCapture:1];
   }
 }
 
-- (void)startAutoBugCaptureAdministrative:(BOOL)a3 parameters:(id)a4
+- (void)startAutoBugCaptureAdministrative:(BOOL)administrative parameters:(id)parameters
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  parametersCopy = parameters;
   v7 = adminLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v22 = v6;
+    v22 = parametersCopy;
     _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_INFO, "Starting AutoBugCapture with parameters: %@", buf, 0xCu);
   }
 
   if ([(ABCAdministrator *)self autoBugCaptureState]<= 1)
   {
     [(ABCAdministrator *)self setAutoBugCaptureState:2];
-    v8 = [(ABCConfigurationManager *)self->_configurationManager logArchivePath];
+    logArchivePath = [(ABCConfigurationManager *)self->_configurationManager logArchivePath];
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[ABCConfigurationManager logArchiveUID](self->_configurationManager, "logArchiveUID")}];
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[ABCConfigurationManager logArchiveGID](self->_configurationManager, "logArchiveGID")}];
-    [(ABCAdministrator *)self prepareLogArchiveDirectory:v8 uid:v9 gid:v10];
+    [(ABCAdministrator *)self prepareLogArchiveDirectory:logArchivePath uid:v9 gid:v10];
 
     v11 = adminLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -355,22 +355,22 @@ LABEL_10:
     }
 
     v12 = [ABCPersistentStoreController alloc];
-    v13 = [(ABCAdministrator *)self configurationManager];
-    v14 = [v13 databaseContainerPath];
-    v15 = [(ABCPersistentStoreController *)v12 initWithDirectory:v14];
+    configurationManager = [(ABCAdministrator *)self configurationManager];
+    databaseContainerPath = [configurationManager databaseContainerPath];
+    v15 = [(ABCPersistentStoreController *)v12 initWithDirectory:databaseContainerPath];
     [(ABCAdministrator *)self setStoreController:v15];
 
-    v16 = [(ABCAdministrator *)self storeController];
-    [v16 setDelegate:self];
+    storeController = [(ABCAdministrator *)self storeController];
+    [storeController setDelegate:self];
 
-    v17 = [(ABCAdministrator *)self getDiagnosticLiaison];
+    getDiagnosticLiaison = [(ABCAdministrator *)self getDiagnosticLiaison];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __65__ABCAdministrator_startAutoBugCaptureAdministrative_parameters___block_invoke;
     v19[3] = &unk_278CF08F8;
-    v20 = a3;
+    administrativeCopy = administrative;
     v19[4] = self;
-    [v17 registerAutoBugCaptureTransports:v19];
+    [getDiagnosticLiaison registerAutoBugCaptureTransports:v19];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -416,14 +416,14 @@ void __65__ABCAdministrator_startAutoBugCaptureAdministrative_parameters___block
     }
 
     v4 = [DiagnosticCaseManager alloc];
-    v5 = [(ABCAdministrator *)self storeController];
-    v6 = [v5 workspace];
-    v7 = [(ABCAdministrator *)self diagnosticLiaison];
-    v8 = [(DiagnosticCaseManager *)v4 initWithWorkspace:v6 liaison:v7];
+    storeController = [(ABCAdministrator *)self storeController];
+    workspace = [storeController workspace];
+    diagnosticLiaison = [(ABCAdministrator *)self diagnosticLiaison];
+    v8 = [(DiagnosticCaseManager *)v4 initWithWorkspace:workspace liaison:diagnosticLiaison];
     [(ABCAdministrator *)self setCaseManager:v8];
 
-    v9 = [(ABCAdministrator *)self caseManager];
-    [v9 forceCloseDiagnosticCaseStorage];
+    caseManager = [(ABCAdministrator *)self caseManager];
+    [caseManager forceCloseDiagnosticCaseStorage];
 
     v10 = adminLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -443,47 +443,47 @@ void __65__ABCAdministrator_startAutoBugCaptureAdministrative_parameters___block
     }
 
     v13 = [DiagnosticStorageManager alloc];
-    v14 = [(ABCAdministrator *)self storeController];
-    v15 = [(ABCConfigurationManager *)self->_configurationManager logArchivePath];
-    v16 = [(DiagnosticStorageManager *)v13 initWithPersistentStoreController:v14 logArchiveDirectory:v15];
+    storeController2 = [(ABCAdministrator *)self storeController];
+    logArchivePath = [(ABCConfigurationManager *)self->_configurationManager logArchivePath];
+    v16 = [(DiagnosticStorageManager *)v13 initWithPersistentStoreController:storeController2 logArchiveDirectory:logArchivePath];
     [(ABCAdministrator *)self setStorageManager:v16];
 
-    v17 = [(ABCAdministrator *)self storageManager];
-    v18 = [(ABCAdministrator *)self caseManager];
-    [v18 setStorageDelegate:v17];
+    storageManager = [(ABCAdministrator *)self storageManager];
+    caseManager2 = [(ABCAdministrator *)self caseManager];
+    [caseManager2 setStorageDelegate:storageManager];
 
-    v19 = [(ABCAdministrator *)self cacheDeleteHandler];
+    cacheDeleteHandler = [(ABCAdministrator *)self cacheDeleteHandler];
 
     v20 = adminLogHandle();
-    v21 = v20;
-    if (v19)
+    cacheDeleteHandler3 = v20;
+    if (cacheDeleteHandler)
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *v38 = 0;
-        _os_log_impl(&dword_241804000, v21, OS_LOG_TYPE_DEFAULT, "Configuring CacheDelete handler with storage management", v38, 2u);
+        _os_log_impl(&dword_241804000, cacheDeleteHandler3, OS_LOG_TYPE_DEFAULT, "Configuring CacheDelete handler with storage management", v38, 2u);
       }
 
-      v22 = [(ABCAdministrator *)self storageManager];
-      v23 = [(ABCAdministrator *)self cacheDeleteHandler];
-      [v23 setStorageManager:v22];
+      storageManager2 = [(ABCAdministrator *)self storageManager];
+      cacheDeleteHandler2 = [(ABCAdministrator *)self cacheDeleteHandler];
+      [cacheDeleteHandler2 setStorageManager:storageManager2];
 
-      v21 = [(ABCAdministrator *)self cacheDeleteHandler];
-      [v21 initCacheDeletePurgeMonitor];
+      cacheDeleteHandler3 = [(ABCAdministrator *)self cacheDeleteHandler];
+      [cacheDeleteHandler3 initCacheDeletePurgeMonitor];
     }
 
     else if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *v38 = 0;
-      _os_log_impl(&dword_241804000, v21, OS_LOG_TYPE_ERROR, "CacheDelete handler is unexpectedly nil", v38, 2u);
+      _os_log_impl(&dword_241804000, cacheDeleteHandler3, OS_LOG_TYPE_ERROR, "CacheDelete handler is unexpectedly nil", v38, 2u);
     }
 
-    v24 = [(ABCAdministrator *)self configurationManager];
-    v25 = [v24 cloudKitEnabled];
+    configurationManager = [(ABCAdministrator *)self configurationManager];
+    cloudKitEnabled = [configurationManager cloudKitEnabled];
 
     v26 = adminLogHandle();
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
-    if (v25)
+    if (cloudKitEnabled)
     {
       if (v27)
       {
@@ -492,9 +492,9 @@ void __65__ABCAdministrator_startAutoBugCaptureAdministrative_parameters___block
       }
 
       v28 = [CloudKitUploadController alloc];
-      v29 = [(ABCAdministrator *)self storeController];
-      v30 = [v29 workspace];
-      v31 = [(CloudKitUploadController *)v28 initWithWorkspace:v30];
+      storeController3 = [(ABCAdministrator *)self storeController];
+      workspace2 = [storeController3 workspace];
+      v31 = [(CloudKitUploadController *)v28 initWithWorkspace:workspace2];
       uploadController = self->_uploadController;
       self->_uploadController = v31;
 
@@ -539,9 +539,9 @@ void __65__ABCAdministrator_startAutoBugCaptureAdministrative_parameters___block
   }
 }
 
-- (void)stopAutoBugCapture:(BOOL)a3
+- (void)stopAutoBugCapture:(BOOL)capture
 {
-  v3 = a3;
+  captureCopy = capture;
   v5 = adminLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -576,14 +576,14 @@ void __65__ABCAdministrator_startAutoBugCaptureAdministrative_parameters___block
     _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_INFO, "Stopping persistent storage", v21, 2u);
   }
 
-  v11 = [(ABCAdministrator *)self storeController];
-  [v11 shutdown];
+  storeController = [(ABCAdministrator *)self storeController];
+  [storeController shutdown];
 
   [(ABCAdministrator *)self setStoreController:0];
-  if (v3)
+  if (captureCopy)
   {
-    v12 = [(ABCAdministrator *)self diagnosticLiaison];
-    [v12 remotelyDisableAutoBugCapture:&__block_literal_global_34];
+    diagnosticLiaison = [(ABCAdministrator *)self diagnosticLiaison];
+    [diagnosticLiaison remotelyDisableAutoBugCapture:&__block_literal_global_34];
 
     [(ABCAdministrator *)self stopUploadTaskScheduler];
   }
@@ -623,15 +623,15 @@ void __65__ABCAdministrator_startAutoBugCaptureAdministrative_parameters___block
   [(ABCAdministrator *)self setAutoBugCaptureState:1];
 }
 
-- (void)prepareLogArchiveDirectory:(id)a3 uid:(id)a4 gid:(id)a5
+- (void)prepareLogArchiveDirectory:(id)directory uid:(id)uid gid:(id)gid
 {
   v72 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  uidCopy = uid;
+  gidCopy = gid;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v61 = 0;
-  v11 = [v10 fileExistsAtPath:v7 isDirectory:&v61];
+  v11 = [defaultManager fileExistsAtPath:directoryCopy isDirectory:&v61];
   if (v61)
   {
     v12 = v11;
@@ -650,7 +650,7 @@ void __65__ABCAdministrator_startAutoBugCaptureAdministrative_parameters___block
   if ((v61 & 1) == 0)
   {
     v60 = 0;
-    v14 = [v10 removeItemAtPath:v7 error:&v60];
+    v14 = [defaultManager removeItemAtPath:directoryCopy error:&v60];
     v15 = v60;
     if (v14)
     {
@@ -658,7 +658,7 @@ void __65__ABCAdministrator_startAutoBugCaptureAdministrative_parameters___block
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v69 = v7;
+        v69 = directoryCopy;
         v17 = "Successfully removed file at %@";
         v18 = v16;
         v19 = OS_LOG_TYPE_DEFAULT;
@@ -675,11 +675,11 @@ LABEL_17:
       {
         if (v20)
         {
-          v21 = [v15 localizedFailureReason];
+          localizedFailureReason = [v15 localizedFailureReason];
           *buf = 138412546;
-          v69 = v7;
+          v69 = directoryCopy;
           v70 = 2112;
-          v71 = v21;
+          v71 = localizedFailureReason;
           _os_log_impl(&dword_241804000, v16, OS_LOG_TYPE_ERROR, "Failed to remove file at %@. (%@)", buf, 0x16u);
         }
 
@@ -689,7 +689,7 @@ LABEL_17:
       if (v20)
       {
         *buf = 138412290;
-        v69 = v7;
+        v69 = directoryCopy;
         v17 = "Failed to remove file at %@";
         v18 = v16;
         v19 = OS_LOG_TYPE_ERROR;
@@ -714,21 +714,21 @@ LABEL_19:
   {
     v13 = 0;
 LABEL_32:
-    v29 = [v10 attributesOfItemAtPath:v7 error:0];
+    v29 = [defaultManager attributesOfItemAtPath:directoryCopy error:0];
     v30 = v29;
     if (v29)
     {
-      v55 = [v29 filePosixPermissions];
+      filePosixPermissions = [v29 filePosixPermissions];
       v31 = [v30 objectForKeyedSubscript:*MEMORY[0x277CCA158]];
       v32 = *MEMORY[0x277CCA118];
       v33 = [v30 objectForKeyedSubscript:*MEMORY[0x277CCA118]];
-      v34 = [v31 isEqual:v8];
+      v34 = [v31 isEqual:uidCopy];
       v56 = v33;
-      v35 = [v33 isEqual:v9];
-      v36 = [&unk_28537A050 shortValue];
-      if (!v34 || !v35 || v55 != v36)
+      v35 = [v33 isEqual:gidCopy];
+      shortValue = [&unk_28537A050 shortValue];
+      if (!v34 || !v35 || filePosixPermissions != shortValue)
       {
-        v53 = v36;
+        v53 = shortValue;
         v54 = v31;
         v37 = storageLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -747,10 +747,10 @@ LABEL_32:
           else
           {
             v64 = v32;
-            v65 = v9;
+            v65 = gidCopy;
             v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
             v58 = 0;
-            v41 = [v10 setAttributes:v40 ofItemAtPath:v7 error:&v58];
+            v41 = [defaultManager setAttributes:v40 ofItemAtPath:directoryCopy error:&v58];
             v38 = v58;
 
             v42 = adminLogHandle();
@@ -759,25 +759,25 @@ LABEL_32:
             {
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
               {
-                v44 = [v9 shortValue];
+                shortValue2 = [gidCopy shortValue];
                 *buf = 67109120;
-                LODWORD(v69) = v44;
+                LODWORD(v69) = shortValue2;
                 _os_log_impl(&dword_241804000, v43, OS_LOG_TYPE_DEFAULT, "Repaired group ownership to %d", buf, 8u);
               }
             }
 
             else if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
             {
-              v45 = [v38 localizedFailureReason];
+              localizedFailureReason2 = [v38 localizedFailureReason];
               *buf = 138412546;
-              v69 = v7;
+              v69 = directoryCopy;
               v70 = 2112;
-              v71 = v45;
+              v71 = localizedFailureReason2;
               _os_log_impl(&dword_241804000, v43, OS_LOG_TYPE_ERROR, "Unable to fix group for %@: %@", buf, 0x16u);
             }
           }
 
-          if (v55 == v53)
+          if (filePosixPermissions == v53)
           {
             v39 = v38;
           }
@@ -788,7 +788,7 @@ LABEL_32:
             v63 = &unk_28537A050;
             v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
             v57 = v38;
-            v47 = [v10 setAttributes:v46 ofItemAtPath:v7 error:&v57];
+            v47 = [defaultManager setAttributes:v46 ofItemAtPath:directoryCopy error:&v57];
             v39 = v57;
 
             v48 = adminLogHandle();
@@ -797,20 +797,20 @@ LABEL_32:
             {
               if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
               {
-                v50 = [&unk_28537A050 shortValue];
+                shortValue3 = [&unk_28537A050 shortValue];
                 *buf = 67109120;
-                LODWORD(v69) = v50;
+                LODWORD(v69) = shortValue3;
                 _os_log_impl(&dword_241804000, v49, OS_LOG_TYPE_DEFAULT, "Repaired permission to %od", buf, 8u);
               }
             }
 
             else if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
             {
-              v51 = [v39 localizedFailureReason];
+              localizedFailureReason3 = [v39 localizedFailureReason];
               *buf = 138412546;
-              v69 = v7;
+              v69 = directoryCopy;
               v70 = 2112;
-              v71 = v51;
+              v71 = localizedFailureReason3;
               _os_log_impl(&dword_241804000, v49, OS_LOG_TYPE_ERROR, "Unable to fix permission for %@: %@", buf, 0x16u);
             }
           }
@@ -822,7 +822,7 @@ LABEL_32:
           if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v69 = v7;
+            v69 = directoryCopy;
             _os_log_impl(&dword_241804000, v39, OS_LOG_TYPE_ERROR, "Incorrect ownership for %@. (Log collection may not work correctly)", buf, 0xCu);
           }
         }
@@ -840,12 +840,12 @@ LABEL_22:
   v66[0] = *MEMORY[0x277CCA180];
   v66[1] = v23;
   v67[0] = &unk_28537A050;
-  v67[1] = v8;
+  v67[1] = uidCopy;
   v66[2] = *MEMORY[0x277CCA118];
-  v67[2] = v9;
+  v67[2] = gidCopy;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:3];
   v59 = 0;
-  v25 = [v10 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:v24 error:&v59];
+  v25 = [defaultManager createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:v24 error:&v59];
   v13 = v59;
   if (v25)
   {
@@ -859,11 +859,11 @@ LABEL_22:
   {
     if (v27)
     {
-      v28 = [v13 localizedFailureReason];
+      localizedFailureReason4 = [v13 localizedFailureReason];
       *buf = 138412546;
-      v69 = v7;
+      v69 = directoryCopy;
       v70 = 2112;
-      v71 = v28;
+      v71 = localizedFailureReason4;
       _os_log_impl(&dword_241804000, v26, OS_LOG_TYPE_ERROR, "Failed to create log archive directory at %@. (%@)", buf, 0x16u);
     }
 
@@ -878,7 +878,7 @@ LABEL_22:
     if (v27)
     {
       *buf = 138412290;
-      v69 = v7;
+      v69 = directoryCopy;
       _os_log_impl(&dword_241804000, v26, OS_LOG_TYPE_ERROR, "Failed to create log archive directory at %@", buf, 0xCu);
     }
 
@@ -894,14 +894,14 @@ LABEL_60:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  changeCopy = change;
   v10 = *MEMORY[0x277CCA2F0];
-  v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-  if ([v8 isEqualToString:@"autoBugCaptureEnabled"])
+  v11 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+  if ([pathCopy isEqualToString:@"autoBugCaptureEnabled"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -918,9 +918,9 @@ LABEL_60:
       _os_log_impl(&dword_241804000, v15, OS_LOG_TYPE_DEFAULT, "KVO: autoBugCaptureEnabled is %d", buf, 8u);
     }
 
-    v16 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
     adminQueue = self->adminQueue;
-    if (v16)
+    if (bOOLValue)
     {
       v18 = v21;
       v21[0] = MEMORY[0x277D85DD0];
@@ -947,9 +947,9 @@ LABEL_60:
     v12 = adminLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v9 objectForKeyedSubscript:v10];
+      v13 = [changeCopy objectForKeyedSubscript:v10];
       *buf = 138412546;
-      v23 = v8;
+      v23 = pathCopy;
       v24 = 2112;
       v25 = v13;
       _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_DEBUG, "KVO: unknown keypath (%@) observed with value %@", buf, 0x16u);
@@ -1032,14 +1032,14 @@ uint64_t __28__ABCAdministrator_shutdown__block_invoke(uint64_t a1)
   [v3 setObject:v5 forKeyedSubscript:@"serviceState"];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(ABCAdministrator *)self configurationManager];
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "arbitratorDailyCountLimit")}];
+  configurationManager = [(ABCAdministrator *)self configurationManager];
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(configurationManager, "arbitratorDailyCountLimit")}];
   [v3 setObject:v8 forKeyedSubscript:@"dailyCaseLimit"];
 
-  v9 = [(ABCAdministrator *)self configurationManager];
-  LODWORD(v7) = [v9 disableAPIRateLimit];
+  configurationManager2 = [(ABCAdministrator *)self configurationManager];
+  LODWORD(configurationManager) = [configurationManager2 disableAPIRateLimit];
 
-  if (v7)
+  if (configurationManager)
   {
     [v3 setObject:&unk_28537A068 forKeyedSubscript:@"apiRateLimit"];
     [v3 setObject:&unk_28537A068 forKeyedSubscript:@"apiLimitWindow"];
@@ -1048,30 +1048,30 @@ uint64_t __28__ABCAdministrator_shutdown__block_invoke(uint64_t a1)
   else
   {
     v10 = MEMORY[0x277CCABB0];
-    v11 = [(ABCAdministrator *)self configurationManager];
-    [v11 apiRateLimit];
+    configurationManager3 = [(ABCAdministrator *)self configurationManager];
+    [configurationManager3 apiRateLimit];
     v12 = [v10 numberWithDouble:?];
     [v3 setObject:v12 forKeyedSubscript:@"apiRateLimit"];
 
     v13 = MEMORY[0x277CCABB0];
-    v14 = [(ABCAdministrator *)self configurationManager];
-    [v14 apiLimitWindow];
+    configurationManager4 = [(ABCAdministrator *)self configurationManager];
+    [configurationManager4 apiLimitWindow];
     v15 = [v13 numberWithDouble:?];
     [v3 setObject:v15 forKeyedSubscript:@"apiLimitWindow"];
   }
 
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(ABCAdministrator *)self configurationManager];
-  v18 = [v16 numberWithBool:{objc_msgSend(v17, "cloudKitEnabled")}];
+  configurationManager5 = [(ABCAdministrator *)self configurationManager];
+  v18 = [v16 numberWithBool:{objc_msgSend(configurationManager5, "cloudKitEnabled")}];
   [v3 setObject:v18 forKeyedSubscript:@"ckEnabled"];
 
-  v19 = [(ABCAdministrator *)self configurationManager];
-  LODWORD(v17) = [v19 cloudKitEnabled];
+  configurationManager6 = [(ABCAdministrator *)self configurationManager];
+  LODWORD(configurationManager5) = [configurationManager6 cloudKitEnabled];
 
-  if (v17)
+  if (configurationManager5)
   {
-    v20 = [(ABCAdministrator *)self configurationManager];
-    if ([v20 cloudKitSandboxEnvironment])
+    configurationManager7 = [(ABCAdministrator *)self configurationManager];
+    if ([configurationManager7 cloudKitSandboxEnvironment])
     {
       v21 = @"Sandbox";
     }
@@ -1083,85 +1083,85 @@ uint64_t __28__ABCAdministrator_shutdown__block_invoke(uint64_t a1)
 
     [v3 setObject:v21 forKeyedSubscript:@"ckEnvironment"];
 
-    v22 = [(ABCAdministrator *)self configurationManager];
-    v23 = [v22 cloudKitContainerIdentifier];
-    [v3 setObject:v23 forKeyedSubscript:@"ckContainerID"];
+    configurationManager8 = [(ABCAdministrator *)self configurationManager];
+    cloudKitContainerIdentifier = [configurationManager8 cloudKitContainerIdentifier];
+    [v3 setObject:cloudKitContainerIdentifier forKeyedSubscript:@"ckContainerID"];
 
-    v24 = [(ABCAdministrator *)self configurationManager];
-    v25 = [v24 cloudKitInvernessService];
-    [v3 setObject:v25 forKeyedSubscript:@"ckInvernessID"];
+    configurationManager9 = [(ABCAdministrator *)self configurationManager];
+    cloudKitInvernessService = [configurationManager9 cloudKitInvernessService];
+    [v3 setObject:cloudKitInvernessService forKeyedSubscript:@"ckInvernessID"];
 
     v26 = MEMORY[0x277CCABB0];
-    v27 = [(ABCAdministrator *)self configurationManager];
-    [v27 cloudKitTimeoutIntervalForResource];
+    configurationManager10 = [(ABCAdministrator *)self configurationManager];
+    [configurationManager10 cloudKitTimeoutIntervalForResource];
     v28 = [v26 numberWithDouble:?];
     [v3 setObject:v28 forKeyedSubscript:@"ckTimeoutForResource"];
 
     v29 = MEMORY[0x277CCABB0];
-    v30 = [(ABCAdministrator *)self configurationManager];
-    [v30 cloudKitTimeoutIntervalForRequest];
+    configurationManager11 = [(ABCAdministrator *)self configurationManager];
+    [configurationManager11 cloudKitTimeoutIntervalForRequest];
     v31 = [v29 numberWithDouble:?];
     [v3 setObject:v31 forKeyedSubscript:@"ckTimeoutForRequest"];
 
     v32 = MEMORY[0x277CCABB0];
-    v33 = [(ABCAdministrator *)self configurationManager];
-    v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(v33, "cloudKitFallbackMaximumLogCount")}];
+    configurationManager12 = [(ABCAdministrator *)self configurationManager];
+    v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(configurationManager12, "cloudKitFallbackMaximumLogCount")}];
     [v3 setObject:v34 forKeyedSubscript:@"ckUploadFallbackCount"];
 
     v35 = MEMORY[0x277CCABB0];
-    v36 = [(ABCAdministrator *)self configurationManager];
-    v37 = [v35 numberWithUnsignedInteger:{objc_msgSend(v36, "maxCaseSummaryPerSubmission")}];
+    configurationManager13 = [(ABCAdministrator *)self configurationManager];
+    v37 = [v35 numberWithUnsignedInteger:{objc_msgSend(configurationManager13, "maxCaseSummaryPerSubmission")}];
     [v3 setObject:v37 forKeyedSubscript:@"ckSummaryMaxPerSubmission"];
 
     v38 = MEMORY[0x277CCABB0];
-    v39 = [(ABCAdministrator *)self configurationManager];
-    v40 = [v38 numberWithUnsignedInteger:{objc_msgSend(v39, "submittedCaseSummaryRetentionDays")}];
+    configurationManager14 = [(ABCAdministrator *)self configurationManager];
+    v40 = [v38 numberWithUnsignedInteger:{objc_msgSend(configurationManager14, "submittedCaseSummaryRetentionDays")}];
     [v3 setObject:v40 forKeyedSubscript:@"ckSummarySubRetDays"];
 
     v41 = MEMORY[0x277CCABB0];
-    v42 = [(ABCAdministrator *)self configurationManager];
-    v43 = [v41 numberWithUnsignedInteger:{objc_msgSend(v42, "unsubmittedCaseSummaryRetentionDays")}];
+    configurationManager15 = [(ABCAdministrator *)self configurationManager];
+    v43 = [v41 numberWithUnsignedInteger:{objc_msgSend(configurationManager15, "unsubmittedCaseSummaryRetentionDays")}];
     [v3 setObject:v43 forKeyedSubscript:@"ckSummaryUnsubRetDays"];
   }
 
   v44 = MEMORY[0x277CCABB0];
-  v45 = [(ABCAdministrator *)self configurationManager];
-  v46 = [v44 numberWithBool:{objc_msgSend(v45, "submitToDiagnosticPipeline")}];
+  configurationManager16 = [(ABCAdministrator *)self configurationManager];
+  v46 = [v44 numberWithBool:{objc_msgSend(configurationManager16, "submitToDiagnosticPipeline")}];
   [v3 setObject:v46 forKeyedSubscript:@"dpSubmission"];
 
   v47 = MEMORY[0x277CCABB0];
-  v48 = [(ABCAdministrator *)self configurationManager];
-  [v48 diagnosticPipelineSubmissionRate];
+  configurationManager17 = [(ABCAdministrator *)self configurationManager];
+  [configurationManager17 diagnosticPipelineSubmissionRate];
   v49 = [v47 numberWithDouble:?];
   [v3 setObject:v49 forKeyedSubscript:@"dpSubmissionRate"];
 
-  v50 = [(ABCAdministrator *)self configurationManager];
-  LODWORD(v48) = [v50 arbitratorDisableDampening];
+  configurationManager18 = [(ABCAdministrator *)self configurationManager];
+  LODWORD(configurationManager17) = [configurationManager18 arbitratorDisableDampening];
 
-  if (v48)
+  if (configurationManager17)
   {
     [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"overrideDisableDampening"];
   }
 
-  v51 = [(ABCAdministrator *)self configurationManager];
-  v52 = [v51 disable_internal_build];
-  [v3 setObject:v52 forKeyedSubscript:@"overrideDisableInternalBuild"];
+  configurationManager19 = [(ABCAdministrator *)self configurationManager];
+  disable_internal_build = [configurationManager19 disable_internal_build];
+  [v3 setObject:disable_internal_build forKeyedSubscript:@"overrideDisableInternalBuild"];
 
-  v53 = [(ABCAdministrator *)self configurationManager];
-  v54 = [v53 carrier_seed_flag];
-  [v3 setObject:v54 forKeyedSubscript:@"overrideCarrierSeed"];
+  configurationManager20 = [(ABCAdministrator *)self configurationManager];
+  carrier_seed_flag = [configurationManager20 carrier_seed_flag];
+  [v3 setObject:carrier_seed_flag forKeyedSubscript:@"overrideCarrierSeed"];
 
-  v55 = [(ABCAdministrator *)self configurationManager];
-  v56 = [v55 seed_flag];
-  [v3 setObject:v56 forKeyedSubscript:@"overrideSeedBuild"];
+  configurationManager21 = [(ABCAdministrator *)self configurationManager];
+  seed_flag = [configurationManager21 seed_flag];
+  [v3 setObject:seed_flag forKeyedSubscript:@"overrideSeedBuild"];
 
-  v57 = [(ABCAdministrator *)self configurationManager];
-  v58 = [v57 vendor_flag];
-  [v3 setObject:v58 forKeyedSubscript:@"overrideVendorBuild"];
+  configurationManager22 = [(ABCAdministrator *)self configurationManager];
+  vendor_flag = [configurationManager22 vendor_flag];
+  [v3 setObject:vendor_flag forKeyedSubscript:@"overrideVendorBuild"];
 
-  v59 = [(ABCAdministrator *)self configurationManager];
-  v60 = [v59 npi_flag];
-  [v3 setObject:v60 forKeyedSubscript:@"overrideNPI"];
+  configurationManager23 = [(ABCAdministrator *)self configurationManager];
+  npi_flag = [configurationManager23 npi_flag];
+  [v3 setObject:npi_flag forKeyedSubscript:@"overrideNPI"];
 
   v61 = +[SystemProperties sharedInstance];
   v62 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v61, "internalBuild")}];
@@ -1180,22 +1180,22 @@ uint64_t __28__ABCAdministrator_shutdown__block_invoke(uint64_t a1)
   [v3 setObject:v66 forKeyedSubscript:@"seedBuild"];
 
   v67 = MEMORY[0x277CCABB0];
-  v68 = [(ABCAdministrator *)self configurationManager];
-  v69 = [v67 numberWithBool:{objc_msgSend(v68, "isAutomatedDeviceGroup")}];
+  configurationManager24 = [(ABCAdministrator *)self configurationManager];
+  v69 = [v67 numberWithBool:{objc_msgSend(configurationManager24, "isAutomatedDeviceGroup")}];
   [v3 setObject:v69 forKeyedSubscript:@"automatedDeviceGroup"];
 
   v70 = MEMORY[0x277CCABB0];
-  v71 = [(ABCAdministrator *)self configurationManager];
-  v72 = [v70 numberWithBool:{objc_msgSend(v71, "hasAppleEmail")}];
+  configurationManager25 = [(ABCAdministrator *)self configurationManager];
+  v72 = [v70 numberWithBool:{objc_msgSend(configurationManager25, "hasAppleEmail")}];
   [v3 setObject:v72 forKeyedSubscript:@"hasAppleEmail"];
 
   v73 = MEMORY[0x277CCABB0];
-  v74 = [(ABCAdministrator *)self configurationManager];
-  v75 = [v73 numberWithBool:{objc_msgSend(v74, "isCarryDevice")}];
+  configurationManager26 = [(ABCAdministrator *)self configurationManager];
+  v75 = [v73 numberWithBool:{objc_msgSend(configurationManager26, "isCarryDevice")}];
   [v3 setObject:v75 forKeyedSubscript:@"carryDevice"];
 
-  v76 = [(ABCAdministrator *)self caseManager];
-  [v76 addToInternalStateDictionary:v3];
+  caseManager = [(ABCAdministrator *)self caseManager];
+  [caseManager addToInternalStateDictionary:v3];
 
   return v3;
 }

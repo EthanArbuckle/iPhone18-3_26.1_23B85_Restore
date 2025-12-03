@@ -1,9 +1,9 @@
 @interface MTShadowView
 - ($850582C412A153471A31AA7BEC9075BC)shadowAttributes;
-- (CGRect)frameWithContentWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTShadowView)initWithShadowAttributes:(id *)a3 maskCornerRadius:(double)a4;
-- (MTShadowView)initWithShadowAttributes:(id *)a3 maskCornerRadius:(double)a4 continuousCorners:(BOOL)a5;
+- (CGRect)frameWithContentWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTShadowView)initWithShadowAttributes:(id *)attributes maskCornerRadius:(double)radius;
+- (MTShadowView)initWithShadowAttributes:(id *)attributes maskCornerRadius:(double)radius continuousCorners:(BOOL)corners;
 - (UIEdgeInsets)shadowOutsets;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateShadowOutsetsIfNecessary;
@@ -11,17 +11,17 @@
 - (void)_validateImage;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setShadowColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setShadowColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MTShadowView
 
 - (void)didMoveToSuperview
 {
-  v3 = [(MTShadowView *)self superview];
+  superview = [(MTShadowView *)self superview];
 
-  if (v3)
+  if (superview)
   {
 
     [(MTShadowView *)self _updateShadowVisualStyling];
@@ -49,8 +49,8 @@
   {
     v3 = MEMORY[0x277D755B8];
     p_shadowAttributes = &self->_shadowAttributes;
-    v5 = [(MTShadowView *)self traitCollection];
-    [v5 displayScale];
+    traitCollection = [(MTShadowView *)self traitCollection];
+    [traitCollection displayScale];
     v6 = *&p_shadowAttributes->offset.height;
     v11[0] = *&p_shadowAttributes->opacity;
     v11[1] = v6;
@@ -72,14 +72,14 @@
 
 - (void)_validateImage
 {
-  v3 = [(MTShadowView *)self image];
+  image = [(MTShadowView *)self image];
 
-  v4 = [(MTShadowView *)self image];
-  [v4 scale];
+  image2 = [(MTShadowView *)self image];
+  [image2 scale];
   v6 = v5;
 
-  v7 = [(MTShadowView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(MTShadowView *)self traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
   [(MTShadowView *)self bounds];
@@ -88,7 +88,7 @@
   [(MTShadowView *)self shadowOutsets];
   v16 = v11 - (v14 + v15);
   v19 = v13 - (v17 + v18);
-  if (!v3 || v6 != v9 || (MTDimensionsForContinuousCornerRadiusInBounds(), v26 = v21, v27 = v20, MTResizableAreaForCornerDimensionsInBounds(), MTDimensionsForContinuousCornerRadiusInBounds(), MTResizableAreaForCornerDimensionsInBounds(), !BSSizeEqualToSize()) || (BSSizeEqualToSize() & 1) == 0)
+  if (!image || v6 != v9 || (MTDimensionsForContinuousCornerRadiusInBounds(), v26 = v21, v27 = v20, MTResizableAreaForCornerDimensionsInBounds(), MTDimensionsForContinuousCornerRadiusInBounds(), MTResizableAreaForCornerDimensionsInBounds(), !BSSizeEqualToSize()) || (BSSizeEqualToSize() & 1) == 0)
   {
     self->_maskSizeForCurrentImage.width = v16;
     self->_maskSizeForCurrentImage.height = v19;
@@ -102,7 +102,7 @@
   }
 }
 
-- (MTShadowView)initWithShadowAttributes:(id *)a3 maskCornerRadius:(double)a4 continuousCorners:(BOOL)a5
+- (MTShadowView)initWithShadowAttributes:(id *)attributes maskCornerRadius:(double)radius continuousCorners:(BOOL)corners
 {
   v13.receiver = self;
   v13.super_class = MTShadowView;
@@ -110,32 +110,32 @@
   v9 = v8;
   if (v8)
   {
-    v10 = *&a3->var1.height;
-    *(v8 + 584) = *&a3->var0;
+    v10 = *&attributes->var1.height;
+    *(v8 + 584) = *&attributes->var0;
     *(v8 + 600) = v10;
-    *(v8 + 67) = a4;
-    v8[528] = a5;
-    v11 = [v8 layer];
-    [v11 setAllowsHitTesting:0];
+    *(v8 + 67) = radius;
+    v8[528] = corners;
+    layer = [v8 layer];
+    [layer setAllowsHitTesting:0];
   }
 
   return v9;
 }
 
-- (MTShadowView)initWithShadowAttributes:(id *)a3 maskCornerRadius:(double)a4
+- (MTShadowView)initWithShadowAttributes:(id *)attributes maskCornerRadius:(double)radius
 {
-  v4 = *&a3->var1.height;
-  v6[0] = *&a3->var0;
+  v4 = *&attributes->var1.height;
+  v6[0] = *&attributes->var0;
   v6[1] = v4;
-  return [(MTShadowView *)self initWithShadowAttributes:v6 maskCornerRadius:1 continuousCorners:a4];
+  return [(MTShadowView *)self initWithShadowAttributes:v6 maskCornerRadius:1 continuousCorners:radius];
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [colorCopy copy];
     shadowColor = self->_shadowColor;
     self->_shadowColor = v4;
 
@@ -143,12 +143,12 @@
   }
 }
 
-- (CGRect)frameWithContentWithFrame:(CGRect)a3
+- (CGRect)frameWithContentWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MTShadowView *)self shadowOutsets];
   v7 = v11.n128_f64[0];
   v8 = v12.n128_f64[0];
@@ -167,7 +167,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   BSRectWithSize();
   [(MTShadowView *)self frameWithContentWithFrame:?];
@@ -186,16 +186,16 @@
   [(MTShadowView *)self _updateShadowVisualStyling];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = MTShadowView;
-  [(MTShadowView *)&v12 traitCollectionDidChange:v4];
-  v5 = [(MTShadowView *)self traitCollection];
-  [v5 displayScale];
+  [(MTShadowView *)&v12 traitCollectionDidChange:changeCopy];
+  traitCollection = [(MTShadowView *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (v7 != v9)
@@ -207,7 +207,7 @@
   }
 
   v11 = [MEMORY[0x277D75D28] bs_nextViewControllerForView:self];
-  [v11 bs_traitCollectionDidChange:v4 forManagedTraitEnvironment:self];
+  [v11 bs_traitCollectionDidChange:changeCopy forManagedTraitEnvironment:self];
 }
 
 - (void)_updateShadowVisualStyling
@@ -223,10 +223,10 @@
   else
   {
     [(MTShadowView *)self setTintColor:0];
-    v4 = [(MTShadowView *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(MTShadowView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v6 = @"platterVibrantShadowLight";
-    if (v5 == 2)
+    if (userInterfaceStyle == 2)
     {
       v6 = @"platterVibrantShadowDark";
     }

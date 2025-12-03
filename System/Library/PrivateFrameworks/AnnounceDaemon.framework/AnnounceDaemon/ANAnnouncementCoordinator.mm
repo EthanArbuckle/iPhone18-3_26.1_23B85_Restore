@@ -4,51 +4,51 @@
 - (ANAnnouncementCoordinator)init;
 - (ANParticipant)localParticipant;
 - (ANRemotePlaybackStatusProvider)remotePlaybackStatusProvider;
-- (BOOL)_removeAnnouncementManagerForIdentifier:(id)a3;
-- (BOOL)_removePlaybackManagerForIdentifier:(id)a3;
+- (BOOL)_removeAnnouncementManagerForIdentifier:(id)identifier;
+- (BOOL)_removePlaybackManagerForIdentifier:(id)identifier;
 - (NSSet)scanningDeviceCandidates;
-- (id)_createAnnouncementManagerForIdentifier:(id)a3;
-- (id)_createPlaybackManagerForIdentifier:(id)a3;
-- (id)_endpointIDForAnnouncementManager:(id)a3;
-- (id)_endpointIDForPlaybackManager:(id)a3;
-- (id)allAnnouncementsSortedByReceiptForEndpointID:(id)a3;
-- (id)announcementForID:(id)a3 endpointID:(id)a4;
-- (id)announcementsForGroupID:(id)a3 endpointID:(id)a4;
-- (id)announcementsForIDs:(id)a3 endpointID:(id)a4;
-- (id)announcementsForPlaybackManager:(id)a3;
-- (id)lastPlayedAnnouncementInfoForEndpointID:(id)a3;
-- (id)playbackManager:(id)a3 announcementsForIdentifiers:(id)a4;
-- (id)resolveIdentifier:(id)a3;
-- (unint64_t)playbackStateForEndpointID:(id)a3;
-- (void)_executeBlockForDelegates:(id)a3;
-- (void)_handleReceivedAnnouncement:(id)a3;
+- (id)_createAnnouncementManagerForIdentifier:(id)identifier;
+- (id)_createPlaybackManagerForIdentifier:(id)identifier;
+- (id)_endpointIDForAnnouncementManager:(id)manager;
+- (id)_endpointIDForPlaybackManager:(id)manager;
+- (id)allAnnouncementsSortedByReceiptForEndpointID:(id)d;
+- (id)announcementForID:(id)d endpointID:(id)iD;
+- (id)announcementsForGroupID:(id)d endpointID:(id)iD;
+- (id)announcementsForIDs:(id)ds endpointID:(id)d;
+- (id)announcementsForPlaybackManager:(id)manager;
+- (id)lastPlayedAnnouncementInfoForEndpointID:(id)d;
+- (id)playbackManager:(id)manager announcementsForIdentifiers:(id)identifiers;
+- (id)resolveIdentifier:(id)identifier;
+- (unint64_t)playbackStateForEndpointID:(id)d;
+- (void)_executeBlockForDelegates:(id)delegates;
+- (void)_handleReceivedAnnouncement:(id)announcement;
 - (void)_initializeManagers;
-- (void)_notifyDidReceiveAnnouncement:(id)a3 forEndpointID:(id)a4;
-- (void)_removeManagersForIdentifier:(id)a3;
-- (void)addAnnouncement:(id)a3 forEndpointID:(id)a4 completion:(id)a5;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)announcementManager:(id)a3 announcements:(id)a4 didChangeForGroupID:(id)a5;
+- (void)_notifyDidReceiveAnnouncement:(id)announcement forEndpointID:(id)d;
+- (void)_removeManagersForIdentifier:(id)identifier;
+- (void)addAnnouncement:(id)announcement forEndpointID:(id)d completion:(id)completion;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)announcementManager:(id)manager announcements:(id)announcements didChangeForGroupID:(id)d;
 - (void)cleanForExit;
-- (void)cleanUpOldAnnouncementsForPlaybackManager:(id)a3;
-- (void)companionDidPlayAnnouncement:(id)a3;
-- (void)failedToDeliverAnnouncement:(id)a3 error:(id)a4;
-- (void)mockAnnouncement:(id)a3 playbackDeadline:(id)a4 sentHandler:(id)a5;
-- (void)pauseAllTimersForEndpointID:(id)a3;
-- (void)performPlaybackCommand:(id)a3 endpointID:(id)a4 completionHandler:(id)a5;
-- (void)playbackManager:(id)a3 didFinishPlayingAnnouncement:(id)a4 withOptions:(unint64_t)a5;
-- (void)playbackManager:(id)a3 didStartPlayingAnnouncement:(id)a4;
-- (void)playbackManager:(id)a3 didStartPlayingAnnouncementsAtMachAbsoluteTime:(unint64_t)a4;
-- (void)playbackManager:(id)a3 didUpdatePlaybackInfo:(id)a4;
-- (void)playbackManager:(id)a3 didUpdatePlaybackState:(unint64_t)a4 announcement:(id)a5;
-- (void)playbackManagerDidFinishPlayingAnnouncements:(id)a3;
-- (void)receivedAnnouncement:(id)a3;
-- (void)removeOldAnnouncementsForEndpointID:(id)a3;
-- (void)resetAllTimersForEndpointID:(id)a3;
-- (void)resumeAllTimersForEndpointID:(id)a3;
-- (void)sendRequest:(id)a3 sentHandler:(id)a4;
-- (void)setPlaybackStartedForAnnouncement:(id)a3 endpointID:(id)a4;
-- (void)setPlaybackStoppedForAnnouncement:(id)a3 endpointID:(id)a4;
-- (void)updateAnnouncement:(id)a3 statusFlags:(unint64_t)a4 endpointID:(id)a5;
+- (void)cleanUpOldAnnouncementsForPlaybackManager:(id)manager;
+- (void)companionDidPlayAnnouncement:(id)announcement;
+- (void)failedToDeliverAnnouncement:(id)announcement error:(id)error;
+- (void)mockAnnouncement:(id)announcement playbackDeadline:(id)deadline sentHandler:(id)handler;
+- (void)pauseAllTimersForEndpointID:(id)d;
+- (void)performPlaybackCommand:(id)command endpointID:(id)d completionHandler:(id)handler;
+- (void)playbackManager:(id)manager didFinishPlayingAnnouncement:(id)announcement withOptions:(unint64_t)options;
+- (void)playbackManager:(id)manager didStartPlayingAnnouncement:(id)announcement;
+- (void)playbackManager:(id)manager didStartPlayingAnnouncementsAtMachAbsoluteTime:(unint64_t)time;
+- (void)playbackManager:(id)manager didUpdatePlaybackInfo:(id)info;
+- (void)playbackManager:(id)manager didUpdatePlaybackState:(unint64_t)state announcement:(id)announcement;
+- (void)playbackManagerDidFinishPlayingAnnouncements:(id)announcements;
+- (void)receivedAnnouncement:(id)announcement;
+- (void)removeOldAnnouncementsForEndpointID:(id)d;
+- (void)resetAllTimersForEndpointID:(id)d;
+- (void)resumeAllTimersForEndpointID:(id)d;
+- (void)sendRequest:(id)request sentHandler:(id)handler;
+- (void)setPlaybackStartedForAnnouncement:(id)announcement endpointID:(id)d;
+- (void)setPlaybackStoppedForAnnouncement:(id)announcement endpointID:(id)d;
+- (void)updateAnnouncement:(id)announcement statusFlags:(unint64_t)flags endpointID:(id)d;
 @end
 
 @implementation ANAnnouncementCoordinator
@@ -110,7 +110,7 @@
   block[1] = 3221225472;
   block[2] = __46__ANAnnouncementCoordinator_sharedCoordinator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCoordinator_onceToken != -1)
   {
     dispatch_once(&sharedCoordinator_onceToken, block);
@@ -151,13 +151,13 @@ uint64_t __50__ANAnnouncementCoordinator_localDeviceIdentifier__block_invoke()
 
 - (void)_initializeManagers
 {
-  v3 = [(ANAnnouncementCoordinator *)self queue];
+  queue = [(ANAnnouncementCoordinator *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__ANAnnouncementCoordinator__initializeManagers__block_invoke;
   block[3] = &unk_278C86910;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __48__ANAnnouncementCoordinator__initializeManagers__block_invoke(uint64_t a1)
@@ -193,79 +193,79 @@ void __48__ANAnnouncementCoordinator__initializeManagers__block_invoke(uint64_t 
   }
 }
 
-- (id)_createAnnouncementManagerForIdentifier:(id)a3
+- (id)_createAnnouncementManagerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(ANAnnouncementCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [ANAnnouncementManager managerWithEndpointID:v4];
+  v6 = [ANAnnouncementManager managerWithEndpointID:identifierCopy];
   [v6 setDelegate:self];
-  v7 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  [v7 setObject:v6 forKeyedSubscript:v4];
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  [announcementManagers setObject:v6 forKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)_removeAnnouncementManagerForIdentifier:(id)a3
+- (BOOL)_removeAnnouncementManagerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(ANAnnouncementCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v7 = [announcementManagers objectForKeyedSubscript:identifierCopy];
 
   if (v7)
   {
     [v7 setDelegate:0];
     [v7 removeAllAnnouncements];
-    v8 = [(ANAnnouncementCoordinator *)self announcementManagers];
-    [v8 setObject:0 forKeyedSubscript:v4];
+    announcementManagers2 = [(ANAnnouncementCoordinator *)self announcementManagers];
+    [announcementManagers2 setObject:0 forKeyedSubscript:identifierCopy];
   }
 
   return v7 != 0;
 }
 
-- (id)_createPlaybackManagerForIdentifier:(id)a3
+- (id)_createPlaybackManagerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(ANAnnouncementCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [ANPlaybackManager managerWithEndpointID:v4];
+  v6 = [ANPlaybackManager managerWithEndpointID:identifierCopy];
   [v6 setDelegate:self];
   [v6 setDataSource:self];
-  v7 = [(ANAnnouncementCoordinator *)self playbackManagers];
-  [v7 setObject:v6 forKeyedSubscript:v4];
+  playbackManagers = [(ANAnnouncementCoordinator *)self playbackManagers];
+  [playbackManagers setObject:v6 forKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)_removePlaybackManagerForIdentifier:(id)a3
+- (BOOL)_removePlaybackManagerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(ANAnnouncementCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ANAnnouncementCoordinator *)self playbackManagers];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  playbackManagers = [(ANAnnouncementCoordinator *)self playbackManagers];
+  v7 = [playbackManagers objectForKeyedSubscript:identifierCopy];
 
   if (v7)
   {
     [v7 setDelegate:0];
     [v7 setDataSource:0];
-    v8 = [(ANAnnouncementCoordinator *)self playbackManagers];
-    [v8 setObject:0 forKeyedSubscript:v4];
+    playbackManagers2 = [(ANAnnouncementCoordinator *)self playbackManagers];
+    [playbackManagers2 setObject:0 forKeyedSubscript:identifierCopy];
   }
 
   return v7 != 0;
 }
 
-- (void)_removeManagersForIdentifier:(id)a3
+- (void)_removeManagersForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(ANAnnouncementCoordinator *)self _removeAnnouncementManagerForIdentifier:v4])
+  identifierCopy = identifier;
+  if ([(ANAnnouncementCoordinator *)self _removeAnnouncementManagerForIdentifier:identifierCopy])
   {
     v5 = [(ANAnnouncementCoordinator *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -275,7 +275,7 @@ void __48__ANAnnouncementCoordinator__initializeManagers__block_invoke(uint64_t 
     }
   }
 
-  if ([(ANAnnouncementCoordinator *)self _removePlaybackManagerForIdentifier:v4])
+  if ([(ANAnnouncementCoordinator *)self _removePlaybackManagerForIdentifier:identifierCopy])
   {
     v6 = [(ANAnnouncementCoordinator *)self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -286,16 +286,16 @@ void __48__ANAnnouncementCoordinator__initializeManagers__block_invoke(uint64_t 
   }
 }
 
-- (id)_endpointIDForAnnouncementManager:(id)a3
+- (id)_endpointIDForAnnouncementManager:(id)manager
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v6 = [announcementManagers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -306,21 +306,21 @@ void __48__ANAnnouncementCoordinator__initializeManagers__block_invoke(uint64_t 
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(announcementManagers);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(ANAnnouncementCoordinator *)self announcementManagers];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        announcementManagers2 = [(ANAnnouncementCoordinator *)self announcementManagers];
+        v12 = [announcementManagers2 objectForKeyedSubscript:v10];
 
-        if (v12 == v4)
+        if (v12 == managerCopy)
         {
           v13 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [announcementManagers countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -338,16 +338,16 @@ LABEL_11:
   return v13;
 }
 
-- (id)_endpointIDForPlaybackManager:(id)a3
+- (id)_endpointIDForPlaybackManager:(id)manager
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v6 = [announcementManagers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -358,21 +358,21 @@ LABEL_11:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(announcementManagers);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(ANAnnouncementCoordinator *)self playbackManagers];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        playbackManagers = [(ANAnnouncementCoordinator *)self playbackManagers];
+        v12 = [playbackManagers objectForKeyedSubscript:v10];
 
-        if (v12 == v4)
+        if (v12 == managerCopy)
         {
           v13 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [announcementManagers countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -390,42 +390,42 @@ LABEL_11:
   return v13;
 }
 
-- (void)_handleReceivedAnnouncement:(id)a3
+- (void)_handleReceivedAnnouncement:(id)announcement
 {
   v64 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v4 = [(ANAnnouncementCoordinator *)self queue];
-  dispatch_assert_queue_V2(v4);
+  announcementCopy = announcement;
+  queue = [(ANAnnouncementCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = +[ANHomeManager shared];
-  v39 = [v5 currentAccessory];
+  currentAccessory = [v5 currentAccessory];
 
-  if (v39)
+  if (currentAccessory)
   {
     memset(&v57, 0, sizeof(v57));
     HostTimeClock = CMClockGetHostTimeClock();
     CMClockGetTime(&v57, HostTimeClock);
     [MEMORY[0x277CEABE0] machTimeToSeconds:mach_absolute_time()];
     v8 = v7;
-    v9 = [v43 playbackDeadline];
-    [v9 timeIntervalSinceNow];
+    playbackDeadline = [announcementCopy playbackDeadline];
+    [playbackDeadline timeIntervalSinceNow];
     v11 = v10;
-    v12 = [MEMORY[0x277CEAB80] sharedInstance];
+    mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
     v13 = *MEMORY[0x277CEA840];
-    v14 = [v12 numberForDefault:*MEMORY[0x277CEA840]];
+    v14 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA840]];
     [v14 doubleValue];
     if (v11 <= v15)
     {
-      v16 = [MEMORY[0x277CEAB80] sharedInstance];
-      v20 = [v16 numberForDefault:v13];
+      mEMORY[0x277CEAB80]2 = [MEMORY[0x277CEAB80] sharedInstance];
+      v20 = [mEMORY[0x277CEAB80]2 numberForDefault:v13];
       [v20 doubleValue];
       v18 = v21;
     }
 
     else
     {
-      v16 = [v43 playbackDeadline];
-      [v16 timeIntervalSinceNow];
+      mEMORY[0x277CEAB80]2 = [announcementCopy playbackDeadline];
+      [mEMORY[0x277CEAB80]2 timeIntervalSinceNow];
       v18 = v17;
     }
 
@@ -433,22 +433,22 @@ LABEL_11:
     lhs = v57;
     CMTimeAdd(&location, &lhs, &rhs);
     v57 = location;
-    [v43 setMachStartTime:{objc_msgSend(MEMORY[0x277CEABE0], "secondsToMachTime:", v8 + v18)}];
+    [announcementCopy setMachStartTime:{objc_msgSend(MEMORY[0x277CEABE0], "secondsToMachTime:", v8 + v18)}];
     location = v57;
-    [v43 setCmStartTime:&location];
+    [announcementCopy setCmStartTime:&location];
     v22 = [(ANAnnouncementCoordinator *)self log];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       value = v57.value;
-      v24 = [v43 machStartTime];
+      machStartTime = [announcementCopy machStartTime];
       LODWORD(location.value) = 134218240;
       *(&location.value + 4) = value;
       LOWORD(location.flags) = 2048;
-      *(&location.flags + 2) = v24;
+      *(&location.flags + 2) = machStartTime;
       _os_log_impl(&dword_23F525000, v22, OS_LOG_TYPE_DEFAULT, "Did Set Announcement CM Start Time = %lld, Mach Start Time = %llu", &location, 0x16u);
     }
 
-    [MEMORY[0x277CBEB18] arrayWithObject:v39];
+    [MEMORY[0x277CBEB18] arrayWithObject:currentAccessory];
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
@@ -467,22 +467,22 @@ LABEL_11:
           }
 
           v26 = *(*(&v51 + 1) + 8 * i);
-          v27 = [v26 an_supportsAnnounce];
-          v28 = [v26 an_isAnnounceEnabled];
-          v29 = [v43 location];
-          v30 = [v29 containsAccessory:v26];
+          an_supportsAnnounce = [v26 an_supportsAnnounce];
+          an_isAnnounceEnabled = [v26 an_isAnnounceEnabled];
+          location = [announcementCopy location];
+          v30 = [location containsAccessory:v26];
 
-          v31 = [v43 isAnnouncerInSameRoomAsAccessory:v26];
+          v31 = [announcementCopy isAnnouncerInSameRoomAsAccessory:v26];
           v32 = [(ANAnnouncementCoordinator *)self log];
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [v26 name];
+            name = [v26 name];
             LODWORD(location.value) = 138413314;
-            *(&location.value + 4) = v33;
+            *(&location.value + 4) = name;
             LOWORD(location.flags) = 1024;
-            *(&location.flags + 2) = v27;
+            *(&location.flags + 2) = an_supportsAnnounce;
             WORD1(location.epoch) = 1024;
-            HIDWORD(location.epoch) = v28;
+            HIDWORD(location.epoch) = an_isAnnounceEnabled;
             v59 = 1024;
             v60 = v30;
             v61 = 1024;
@@ -490,7 +490,7 @@ LABEL_11:
             _os_log_impl(&dword_23F525000, v32, OS_LOG_TYPE_DEFAULT, "HomePod: %@ Supports Announce = %d, Announce Enabled = %d, In Announcement Location = %d, In Same Room as Announcer = %d", &location, 0x24u);
           }
 
-          if (v31 & 1 | ((v27 & v28 & v30 & 1) == 0))
+          if (v31 & 1 | ((an_supportsAnnounce & an_isAnnounceEnabled & v30 & 1) == 0))
           {
             v34 = [(ANAnnouncementCoordinator *)self log];
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -504,7 +504,7 @@ LABEL_11:
           else
           {
             v35 = +[ANAnnouncementCoordinator localDeviceIdentifier];
-            v36 = [v43 copy];
+            v36 = [announcementCopy copy];
             objc_initWeak(&location, self);
             v47[0] = MEMORY[0x277D85DD0];
             v47[1] = 3221225472;
@@ -538,7 +538,7 @@ LABEL_11:
     v44[2] = __57__ANAnnouncementCoordinator__handleReceivedAnnouncement___block_invoke_19;
     v44[3] = &unk_278C86DF0;
     objc_copyWeak(&v46, &location);
-    v45 = v43;
+    v45 = announcementCopy;
     [(ANAnnouncementCoordinator *)self addAnnouncement:v45 forEndpointID:v19 completion:v44];
 
     objc_destroyWeak(&v46);
@@ -583,22 +583,22 @@ void __57__ANAnnouncementCoordinator__handleReceivedAnnouncement___block_invoke_
   }
 }
 
-- (void)_notifyDidReceiveAnnouncement:(id)a3 forEndpointID:(id)a4
+- (void)_notifyDidReceiveAnnouncement:(id)announcement forEndpointID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ANAnnouncementCoordinator *)self queue];
-  dispatch_assert_queue_V2(v8);
+  announcementCopy = announcement;
+  dCopy = d;
+  queue = [(ANAnnouncementCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__ANAnnouncementCoordinator__notifyDidReceiveAnnouncement_forEndpointID___block_invoke;
   v11[3] = &unk_278C86E18;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = announcementCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = announcementCopy;
   [(ANAnnouncementCoordinator *)self _executeBlockForDelegates:v11];
 }
 
@@ -614,18 +614,18 @@ void __73__ANAnnouncementCoordinator__notifyDidReceiveAnnouncement_forEndpointID
   }
 }
 
-- (void)_executeBlockForDelegates:(id)a3
+- (void)_executeBlockForDelegates:(id)delegates
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self queue];
+  delegatesCopy = delegates;
+  queue = [(ANAnnouncementCoordinator *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ANAnnouncementCoordinator__executeBlockForDelegates___block_invoke;
   v7[3] = &unk_278C86840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegatesCopy;
+  v6 = delegatesCopy;
+  dispatch_async(queue, v7);
 }
 
 void __55__ANAnnouncementCoordinator__executeBlockForDelegates___block_invoke(uint64_t a1)
@@ -681,24 +681,24 @@ void __55__ANAnnouncementCoordinator__executeBlockForDelegates___block_invoke(ui
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)announcementManager:(id)a3 announcements:(id)a4 didChangeForGroupID:(id)a5
+- (void)announcementManager:(id)manager announcements:(id)announcements didChangeForGroupID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ANAnnouncementCoordinator *)self queue];
+  managerCopy = manager;
+  announcementsCopy = announcements;
+  dCopy = d;
+  queue = [(ANAnnouncementCoordinator *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__ANAnnouncementCoordinator_announcementManager_announcements_didChangeForGroupID___block_invoke;
   v15[3] = &unk_278C86690;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = managerCopy;
+  v17 = announcementsCopy;
+  v18 = dCopy;
+  v12 = dCopy;
+  v13 = announcementsCopy;
+  v14 = managerCopy;
+  dispatch_async(queue, v15);
 }
 
 void __83__ANAnnouncementCoordinator_announcementManager_announcements_didChangeForGroupID___block_invoke(uint64_t a1)
@@ -728,68 +728,68 @@ void __83__ANAnnouncementCoordinator_announcementManager_announcements_didChange
   }
 }
 
-- (void)receivedAnnouncement:(id)a3
+- (void)receivedAnnouncement:(id)announcement
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self queue];
+  announcementCopy = announcement;
+  queue = [(ANAnnouncementCoordinator *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ANAnnouncementCoordinator_receivedAnnouncement___block_invoke;
   v7[3] = &unk_278C86378;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = announcementCopy;
+  v6 = announcementCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)failedToDeliverAnnouncement:(id)a3 error:(id)a4
+- (void)failedToDeliverAnnouncement:(id)announcement error:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  announcementCopy = announcement;
+  errorCopy = error;
   v8 = [(ANAnnouncementCoordinator *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v7;
+    v12 = errorCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = announcementCopy;
     _os_log_impl(&dword_23F525000, v8, OS_LOG_TYPE_DEFAULT, "Failed to Deliver Announcement with Error %@, %@", &v11, 0x16u);
   }
 
-  if ([v6 isRelayRequest])
+  if ([announcementCopy isRelayRequest])
   {
     v9 = +[ANUserNotificationController sharedController];
-    [v9 postSendFailureNotificationForAnnouncement:v6];
+    [v9 postSendFailureNotificationForAnnouncement:announcementCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)companionDidPlayAnnouncement:(id)a3
+- (void)companionDidPlayAnnouncement:(id)announcement
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  announcementCopy = announcement;
   v5 = [(ANAnnouncementCoordinator *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = announcementCopy;
     _os_log_impl(&dword_23F525000, v5, OS_LOG_TYPE_DEFAULT, "Announcement was played on remote device: %@", &v15, 0xCu);
   }
 
-  v6 = [(ANAnnouncementCoordinator *)self playbackManagers];
+  playbackManagers = [(ANAnnouncementCoordinator *)self playbackManagers];
   v7 = +[ANAnnouncementCoordinator localDeviceIdentifier];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [playbackManagers objectForKeyedSubscript:v7];
 
   if (v8)
   {
-    v9 = [(ANAnnouncementCoordinator *)self remotePlaybackStatusProvider];
-    if (v9)
+    remotePlaybackStatusProvider = [(ANAnnouncementCoordinator *)self remotePlaybackStatusProvider];
+    if (remotePlaybackStatusProvider)
     {
-      v10 = [(ANAnnouncementCoordinator *)self remotePlaybackStatusProvider];
+      remotePlaybackStatusProvider2 = [(ANAnnouncementCoordinator *)self remotePlaybackStatusProvider];
       v11 = +[ANAnnouncementCoordinator localDeviceIdentifier];
-      v12 = [v10 isExternalPlaybackActiveForEndpointID:v11];
+      v12 = [remotePlaybackStatusProvider2 isExternalPlaybackActiveForEndpointID:v11];
     }
 
     else
@@ -797,51 +797,51 @@ void __83__ANAnnouncementCoordinator_announcementManager_announcements_didChange
       v12 = 0;
     }
 
-    v13 = [v8 playbackState];
-    if ((v12 & 1) == 0 && v13 != 1)
+    playbackState = [v8 playbackState];
+    if ((v12 & 1) == 0 && playbackState != 1)
     {
-      [v8 updatePlaybackForAnnouncementID:v4 options:4];
+      [v8 updatePlaybackForAnnouncementID:announcementCopy options:4];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playbackManager:(id)a3 didStartPlayingAnnouncement:(id)a4
+- (void)playbackManager:(id)manager didStartPlayingAnnouncement:(id)announcement
 {
-  v11 = a4;
-  v6 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:a3];
+  announcementCopy = announcement;
+  v6 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:manager];
   if (v6)
   {
-    v7 = [(ANAnnouncementCoordinator *)self announcementForID:v11 endpointID:v6];
+    v7 = [(ANAnnouncementCoordinator *)self announcementForID:announcementCopy endpointID:v6];
     if (v7)
     {
       [(ANAnnouncementCoordinator *)self updateAnnouncement:v7 statusFlags:4 endpointID:v6];
     }
 
-    v8 = [(ANAnnouncementCoordinator *)self siriRRDonation];
-    [v8 makePlaybackDonationWithAnnouncementID:v11];
+    siriRRDonation = [(ANAnnouncementCoordinator *)self siriRRDonation];
+    [siriRRDonation makePlaybackDonationWithAnnouncementID:announcementCopy];
 
     v9 = [MEMORY[0x277CEAB90] getEffectiveNotificationNameFromNotificationName:*MEMORY[0x277CEABF8] endpointID:v6];
-    v10 = [(ANAnnouncementCoordinator *)self playbackStatePublisher];
-    [v10 publishState:1 name:v9];
+    playbackStatePublisher = [(ANAnnouncementCoordinator *)self playbackStatePublisher];
+    [playbackStatePublisher publishState:1 name:v9];
   }
 }
 
-- (void)playbackManager:(id)a3 didFinishPlayingAnnouncement:(id)a4 withOptions:(unint64_t)a5
+- (void)playbackManager:(id)manager didFinishPlayingAnnouncement:(id)announcement withOptions:(unint64_t)options
 {
-  v5 = a5;
-  v22 = a3;
-  v8 = a4;
-  v9 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:v22];
+  optionsCopy = options;
+  managerCopy = manager;
+  announcementCopy = announcement;
+  v9 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:managerCopy];
   if (v9)
   {
-    if ((v5 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
-      v10 = [(ANAnnouncementCoordinator *)self announcementForID:v8 endpointID:v9];
+      v10 = [(ANAnnouncementCoordinator *)self announcementForID:announcementCopy endpointID:v9];
       if (v10)
       {
-        if ((v5 & 2) != 0)
+        if ((optionsCopy & 2) != 0)
         {
           v11 = 2;
         }
@@ -852,42 +852,42 @@ void __83__ANAnnouncementCoordinator_announcementManager_announcements_didChange
         }
 
         [(ANAnnouncementCoordinator *)self updateAnnouncement:v10 statusFlags:v11 endpointID:v9];
-        v12 = [v22 endpointID];
-        v13 = [ANAnalyticsContext contextWithEndpointID:v12];
+        endpointID = [managerCopy endpointID];
+        v13 = [ANAnalyticsContext contextWithEndpointID:endpointID];
 
         v14 = +[ANAnalytics shared];
         v15 = [MEMORY[0x277CBEAA8] now];
-        v16 = [v10 creationTimestamp];
-        [v15 timeIntervalSinceDate:v16];
-        [v14 announcementFinishedPlaying:v10 withTime:objc_msgSend(v22 ofGroupCount:"playbackItemCount") context:{v13, v17}];
+        creationTimestamp = [v10 creationTimestamp];
+        [v15 timeIntervalSinceDate:creationTimestamp];
+        [v14 announcementFinishedPlaying:v10 withTime:objc_msgSend(managerCopy ofGroupCount:"playbackItemCount") context:{v13, v17}];
       }
 
-      if ((v5 & 8) != 0 && [v9 an_isLocalDevice])
+      if ((optionsCopy & 8) != 0 && [v9 an_isLocalDevice])
       {
-        v18 = [(ANAnnouncementCoordinator *)self companionConnection];
-        [v18 broadcastAnnouncementPlayed:v8];
+        companionConnection = [(ANAnnouncementCoordinator *)self companionConnection];
+        [companionConnection broadcastAnnouncementPlayed:announcementCopy];
       }
     }
 
-    v19 = [(ANAnnouncementCoordinator *)self siriRRDonation];
-    [v19 makePlaybackDonationWithAnnouncementID:v8];
+    siriRRDonation = [(ANAnnouncementCoordinator *)self siriRRDonation];
+    [siriRRDonation makePlaybackDonationWithAnnouncementID:announcementCopy];
 
     v20 = [MEMORY[0x277CEAB90] getEffectiveNotificationNameFromNotificationName:*MEMORY[0x277CEABF8] endpointID:v9];
-    v21 = [(ANAnnouncementCoordinator *)self playbackStatePublisher];
-    [v21 publishState:0 name:v20];
+    playbackStatePublisher = [(ANAnnouncementCoordinator *)self playbackStatePublisher];
+    [playbackStatePublisher publishState:0 name:v20];
   }
 }
 
-- (void)playbackManager:(id)a3 didUpdatePlaybackState:(unint64_t)a4 announcement:(id)a5
+- (void)playbackManager:(id)manager didUpdatePlaybackState:(unint64_t)state announcement:(id)announcement
 {
-  v8 = a5;
-  v9 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:a3];
+  announcementCopy = announcement;
+  v9 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:manager];
   if (v9)
   {
-    if (v8)
+    if (announcementCopy)
     {
-      v10 = [(ANAnnouncementCoordinator *)self siriRRDonation];
-      [v10 makePlaybackDonationWithAnnouncementID:v8];
+      siriRRDonation = [(ANAnnouncementCoordinator *)self siriRRDonation];
+      [siriRRDonation makePlaybackDonationWithAnnouncementID:announcementCopy];
     }
 
     v11[0] = MEMORY[0x277D85DD0];
@@ -895,7 +895,7 @@ void __83__ANAnnouncementCoordinator_announcementManager_announcements_didChange
     v11[2] = __81__ANAnnouncementCoordinator_playbackManager_didUpdatePlaybackState_announcement___block_invoke;
     v11[3] = &unk_278C86E68;
     v11[4] = self;
-    v13 = a4;
+    stateCopy = state;
     v12 = v9;
     [(ANAnnouncementCoordinator *)self _executeBlockForDelegates:v11];
   }
@@ -910,9 +910,9 @@ void __81__ANAnnouncementCoordinator_playbackManager_didUpdatePlaybackState_anno
   }
 }
 
-- (void)playbackManager:(id)a3 didStartPlayingAnnouncementsAtMachAbsoluteTime:(unint64_t)a4
+- (void)playbackManager:(id)manager didStartPlayingAnnouncementsAtMachAbsoluteTime:(unint64_t)time
 {
-  v6 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:a3];
+  v6 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:manager];
   v7 = v6;
   if (v6)
   {
@@ -921,7 +921,7 @@ void __81__ANAnnouncementCoordinator_playbackManager_didUpdatePlaybackState_anno
     v8[2] = __92__ANAnnouncementCoordinator_playbackManager_didStartPlayingAnnouncementsAtMachAbsoluteTime___block_invoke;
     v8[3] = &unk_278C86E68;
     v8[4] = self;
-    v10 = a4;
+    timeCopy = time;
     v9 = v6;
     [(ANAnnouncementCoordinator *)self _executeBlockForDelegates:v8];
   }
@@ -936,9 +936,9 @@ void __92__ANAnnouncementCoordinator_playbackManager_didStartPlayingAnnouncement
   }
 }
 
-- (void)playbackManagerDidFinishPlayingAnnouncements:(id)a3
+- (void)playbackManagerDidFinishPlayingAnnouncements:(id)announcements
 {
-  v4 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:a3];
+  v4 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:announcements];
   v5 = v4;
   if (v4)
   {
@@ -961,10 +961,10 @@ void __74__ANAnnouncementCoordinator_playbackManagerDidFinishPlayingAnnouncement
   }
 }
 
-- (void)playbackManager:(id)a3 didUpdatePlaybackInfo:(id)a4
+- (void)playbackManager:(id)manager didUpdatePlaybackInfo:(id)info
 {
-  v6 = a4;
-  v7 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:a3];
+  infoCopy = info;
+  v7 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:manager];
   if (v7)
   {
     v8[0] = MEMORY[0x277D85DD0];
@@ -972,7 +972,7 @@ void __74__ANAnnouncementCoordinator_playbackManagerDidFinishPlayingAnnouncement
     v8[2] = __67__ANAnnouncementCoordinator_playbackManager_didUpdatePlaybackInfo___block_invoke;
     v8[3] = &unk_278C86E18;
     v8[4] = self;
-    v9 = v6;
+    v9 = infoCopy;
     v10 = v7;
     [(ANAnnouncementCoordinator *)self _executeBlockForDelegates:v8];
   }
@@ -987,17 +987,17 @@ void __67__ANAnnouncementCoordinator_playbackManager_didUpdatePlaybackInfo___blo
   }
 }
 
-- (void)cleanUpOldAnnouncementsForPlaybackManager:(id)a3
+- (void)cleanUpOldAnnouncementsForPlaybackManager:(id)manager
 {
-  v8 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:a3];
+  v8 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:manager];
   if (v8)
   {
-    v4 = [(ANAnnouncementCoordinator *)self remotePlaybackStatusProvider];
-    if (v4)
+    remotePlaybackStatusProvider = [(ANAnnouncementCoordinator *)self remotePlaybackStatusProvider];
+    if (remotePlaybackStatusProvider)
     {
-      v5 = v4;
-      v6 = [(ANAnnouncementCoordinator *)self remotePlaybackStatusProvider];
-      v7 = [v6 isExternalPlaybackActiveForEndpointID:v8];
+      v5 = remotePlaybackStatusProvider;
+      remotePlaybackStatusProvider2 = [(ANAnnouncementCoordinator *)self remotePlaybackStatusProvider];
+      v7 = [remotePlaybackStatusProvider2 isExternalPlaybackActiveForEndpointID:v8];
 
       if (v7)
       {
@@ -1007,9 +1007,9 @@ void __67__ANAnnouncementCoordinator_playbackManager_didUpdatePlaybackInfo___blo
   }
 }
 
-- (id)announcementsForPlaybackManager:(id)a3
+- (id)announcementsForPlaybackManager:(id)manager
 {
-  v4 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:a3];
+  v4 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:manager];
   if (v4)
   {
     v5 = [(ANAnnouncementCoordinator *)self allAnnouncementsSortedByReceiptForEndpointID:v4];
@@ -1023,13 +1023,13 @@ void __67__ANAnnouncementCoordinator_playbackManager_didUpdatePlaybackInfo___blo
   return v5;
 }
 
-- (id)playbackManager:(id)a3 announcementsForIdentifiers:(id)a4
+- (id)playbackManager:(id)manager announcementsForIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:a3];
+  identifiersCopy = identifiers;
+  v7 = [(ANAnnouncementCoordinator *)self _endpointIDForPlaybackManager:manager];
   if (v7)
   {
-    v8 = [(ANAnnouncementCoordinator *)self announcementsForIDs:v6 endpointID:v7];
+    v8 = [(ANAnnouncementCoordinator *)self announcementsForIDs:identifiersCopy endpointID:v7];
   }
 
   else
@@ -1047,21 +1047,21 @@ void __67__ANAnnouncementCoordinator_playbackManager_didUpdatePlaybackInfo___blo
   return WeakRetained;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ANAnnouncementCoordinator *)self queue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queue = [(ANAnnouncementCoordinator *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__ANAnnouncementCoordinator_ANAnnouncementCoordinatorDelegate__addDelegate_queue___block_invoke;
   block[3] = &unk_278C86668;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  selfCopy = self;
+  v14 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = queueCopy;
+  dispatch_async(queue, block);
 }
 
 void __82__ANAnnouncementCoordinator_ANAnnouncementCoordinatorDelegate__addDelegate_queue___block_invoke(uint64_t a1)
@@ -1084,25 +1084,25 @@ void __82__ANAnnouncementCoordinator_ANAnnouncementCoordinatorDelegate__addDeleg
 
 - (ANParticipant)localParticipant
 {
-  v2 = [(ANAnnouncementCoordinator *)self messenger];
-  v3 = [v2 localParticipant];
+  messenger = [(ANAnnouncementCoordinator *)self messenger];
+  localParticipant = [messenger localParticipant];
 
-  return v3;
+  return localParticipant;
 }
 
 - (NSSet)scanningDeviceCandidates
 {
-  v2 = [(ANAnnouncementCoordinator *)self messenger];
-  v3 = [v2 getScanningDeviceCandidates];
+  messenger = [(ANAnnouncementCoordinator *)self messenger];
+  getScanningDeviceCandidates = [messenger getScanningDeviceCandidates];
 
-  return v3;
+  return getScanningDeviceCandidates;
 }
 
-- (void)sendRequest:(id)a3 sentHandler:(id)a4
+- (void)sendRequest:(id)request sentHandler:(id)handler
 {
   v6 = MEMORY[0x277CEABE0];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   if (([v6 isHomeAppInstalled] & 1) == 0)
   {
     v9 = [(ANAnnouncementCoordinator *)self log];
@@ -1112,37 +1112,37 @@ void __82__ANAnnouncementCoordinator_ANAnnouncementCoordinatorDelegate__addDeleg
     }
   }
 
-  v10 = [(ANAnnouncementCoordinator *)self messenger];
-  [v10 sendRequest:v8 sentHandler:v7];
+  messenger = [(ANAnnouncementCoordinator *)self messenger];
+  [messenger sendRequest:requestCopy sentHandler:handlerCopy];
 }
 
-- (void)mockAnnouncement:(id)a3 playbackDeadline:(id)a4 sentHandler:(id)a5
+- (void)mockAnnouncement:(id)announcement playbackDeadline:(id)deadline sentHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ANAnnouncementCoordinator *)self messenger];
-  [v11 mockAnnouncement:v10 playbackDeadline:v9 sentHandler:v8];
+  handlerCopy = handler;
+  deadlineCopy = deadline;
+  announcementCopy = announcement;
+  messenger = [(ANAnnouncementCoordinator *)self messenger];
+  [messenger mockAnnouncement:announcementCopy playbackDeadline:deadlineCopy sentHandler:handlerCopy];
 }
 
-- (void)addAnnouncement:(id)a3 forEndpointID:(id)a4 completion:(id)a5
+- (void)addAnnouncement:(id)announcement forEndpointID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ANAnnouncementCoordinator *)self queue];
+  announcementCopy = announcement;
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(ANAnnouncementCoordinator *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __105__ANAnnouncementCoordinator_ANAnnouncementManagement_Internal__addAnnouncement_forEndpointID_completion___block_invoke;
   v15[3] = &unk_278C86EB8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = announcementCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = announcementCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v15);
 }
 
 void __105__ANAnnouncementCoordinator_ANAnnouncementManagement_Internal__addAnnouncement_forEndpointID_completion___block_invoke(uint64_t a1)
@@ -1159,18 +1159,18 @@ void __105__ANAnnouncementCoordinator_ANAnnouncementManagement_Internal__addAnno
   [v3 addAnnouncement:*(a1 + 48) completionHandler:*(a1 + 56)];
 }
 
-- (id)announcementsForGroupID:(id)a3 endpointID:(id)a4
+- (id)announcementsForGroupID:(id)d endpointID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v9 = [(ANAnnouncementCoordinator *)self resolveIdentifier:v7];
+  dCopy = d;
+  iDCopy = iD;
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v9 = [(ANAnnouncementCoordinator *)self resolveIdentifier:iDCopy];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [announcementManagers objectForKeyedSubscript:v9];
 
   if (v10)
   {
-    v11 = [v10 announcementsForGroupID:v6];
+    v11 = [v10 announcementsForGroupID:dCopy];
   }
 
   else
@@ -1181,18 +1181,18 @@ void __105__ANAnnouncementCoordinator_ANAnnouncementManagement_Internal__addAnno
   return v11;
 }
 
-- (id)announcementForID:(id)a3 endpointID:(id)a4
+- (id)announcementForID:(id)d endpointID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v9 = [(ANAnnouncementCoordinator *)self resolveIdentifier:v7];
+  dCopy = d;
+  iDCopy = iD;
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v9 = [(ANAnnouncementCoordinator *)self resolveIdentifier:iDCopy];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [announcementManagers objectForKeyedSubscript:v9];
 
   if (v10)
   {
-    v11 = [v10 announcementForID:v6];
+    v11 = [v10 announcementForID:dCopy];
   }
 
   else
@@ -1203,39 +1203,39 @@ void __105__ANAnnouncementCoordinator_ANAnnouncementManagement_Internal__addAnno
   return v11;
 }
 
-- (id)allAnnouncementsSortedByReceiptForEndpointID:(id)a3
+- (id)allAnnouncementsSortedByReceiptForEndpointID:(id)d
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:v4];
+  dCopy = d;
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:dCopy];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [announcementManagers objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    v8 = [v7 allAnnouncementsSortedByReceipt];
+    allAnnouncementsSortedByReceipt = [v7 allAnnouncementsSortedByReceipt];
   }
 
   else
   {
-    v8 = MEMORY[0x277CBEBF8];
+    allAnnouncementsSortedByReceipt = MEMORY[0x277CBEBF8];
   }
 
-  return v8;
+  return allAnnouncementsSortedByReceipt;
 }
 
-- (id)announcementsForIDs:(id)a3 endpointID:(id)a4
+- (id)announcementsForIDs:(id)ds endpointID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v9 = [(ANAnnouncementCoordinator *)self resolveIdentifier:v7];
+  dsCopy = ds;
+  dCopy = d;
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v9 = [(ANAnnouncementCoordinator *)self resolveIdentifier:dCopy];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [announcementManagers objectForKeyedSubscript:v9];
 
   if (v10)
   {
-    v11 = [v10 announcementsForIDs:v6];
+    v11 = [v10 announcementsForIDs:dsCopy];
   }
 
   else
@@ -1246,56 +1246,56 @@ void __105__ANAnnouncementCoordinator_ANAnnouncementManagement_Internal__addAnno
   return v11;
 }
 
-- (void)updateAnnouncement:(id)a3 statusFlags:(unint64_t)a4 endpointID:(id)a5
+- (void)updateAnnouncement:(id)announcement statusFlags:(unint64_t)flags endpointID:(id)d
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v11 = [(ANAnnouncementCoordinator *)self resolveIdentifier:v8];
+  dCopy = d;
+  announcementCopy = announcement;
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v11 = [(ANAnnouncementCoordinator *)self resolveIdentifier:dCopy];
 
-  v12 = [v10 objectForKeyedSubscript:v11];
+  v12 = [announcementManagers objectForKeyedSubscript:v11];
 
-  [v12 updateAnnouncement:v9 statusFlags:a4];
+  [v12 updateAnnouncement:announcementCopy statusFlags:flags];
 }
 
-- (void)removeOldAnnouncementsForEndpointID:(id)a3
+- (void)removeOldAnnouncementsForEndpointID:(id)d
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:v4];
+  dCopy = d;
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:dCopy];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [announcementManagers objectForKeyedSubscript:v6];
 
   [v7 removeOldAnnouncements];
 }
 
 - (void)cleanForExit
 {
-  v3 = [(ANAnnouncementCoordinator *)self messenger];
-  [v3 cleanForExit];
+  messenger = [(ANAnnouncementCoordinator *)self messenger];
+  [messenger cleanForExit];
 
-  v4 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  [v4 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_208];
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  [announcementManagers enumerateKeysAndObjectsUsingBlock:&__block_literal_global_208];
 }
 
-- (void)performPlaybackCommand:(id)a3 endpointID:(id)a4 completionHandler:(id)a5
+- (void)performPlaybackCommand:(id)command endpointID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ANAnnouncementCoordinator *)self queue];
+  commandCopy = command;
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(ANAnnouncementCoordinator *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __91__ANAnnouncementCoordinator_Playback__performPlaybackCommand_endpointID_completionHandler___block_invoke;
   v15[3] = &unk_278C86EB8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = commandCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = commandCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v15);
 }
 
 void __91__ANAnnouncementCoordinator_Playback__performPlaybackCommand_endpointID_completionHandler___block_invoke(uint64_t a1)
@@ -1327,25 +1327,25 @@ void __91__ANAnnouncementCoordinator_Playback__performPlaybackCommand_endpointID
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lastPlayedAnnouncementInfoForEndpointID:(id)a3
+- (id)lastPlayedAnnouncementInfoForEndpointID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__4;
   v16 = __Block_byref_object_dispose__4;
   v17 = 0;
-  v5 = [(ANAnnouncementCoordinator *)self queue];
+  queue = [(ANAnnouncementCoordinator *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__ANAnnouncementCoordinator_Playback__lastPlayedAnnouncementInfoForEndpointID___block_invoke;
   block[3] = &unk_278C86640;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1378,23 +1378,23 @@ void __79__ANAnnouncementCoordinator_Playback__lastPlayedAnnouncementInfoForEndp
   }
 }
 
-- (unint64_t)playbackStateForEndpointID:(id)a3
+- (unint64_t)playbackStateForEndpointID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(ANAnnouncementCoordinator *)self queue];
+  queue = [(ANAnnouncementCoordinator *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__ANAnnouncementCoordinator_Playback__playbackStateForEndpointID___block_invoke;
   block[3] = &unk_278C86640;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -1422,21 +1422,21 @@ uint64_t __66__ANAnnouncementCoordinator_Playback__playbackStateForEndpointID___
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setPlaybackStartedForAnnouncement:(id)a3 endpointID:(id)a4
+- (void)setPlaybackStartedForAnnouncement:(id)announcement endpointID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ANAnnouncementCoordinator *)self queue];
+  announcementCopy = announcement;
+  dCopy = d;
+  queue = [(ANAnnouncementCoordinator *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__ANAnnouncementCoordinator_Playback__setPlaybackStartedForAnnouncement_endpointID___block_invoke;
   block[3] = &unk_278C86668;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = announcementCopy;
+  v9 = announcementCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __84__ANAnnouncementCoordinator_Playback__setPlaybackStartedForAnnouncement_endpointID___block_invoke(uint64_t a1)
@@ -1448,21 +1448,21 @@ void __84__ANAnnouncementCoordinator_Playback__setPlaybackStartedForAnnouncement
   [v4 updatePlaybackForAnnouncementID:*(a1 + 48) options:1];
 }
 
-- (void)setPlaybackStoppedForAnnouncement:(id)a3 endpointID:(id)a4
+- (void)setPlaybackStoppedForAnnouncement:(id)announcement endpointID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ANAnnouncementCoordinator *)self queue];
+  announcementCopy = announcement;
+  dCopy = d;
+  queue = [(ANAnnouncementCoordinator *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__ANAnnouncementCoordinator_Playback__setPlaybackStoppedForAnnouncement_endpointID___block_invoke;
   block[3] = &unk_278C86668;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = announcementCopy;
+  v9 = announcementCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __84__ANAnnouncementCoordinator_Playback__setPlaybackStoppedForAnnouncement_endpointID___block_invoke(uint64_t a1)
@@ -1474,46 +1474,46 @@ void __84__ANAnnouncementCoordinator_Playback__setPlaybackStoppedForAnnouncement
   [v4 updatePlaybackForAnnouncementID:*(a1 + 48) options:12];
 }
 
-- (void)pauseAllTimersForEndpointID:(id)a3
+- (void)pauseAllTimersForEndpointID:(id)d
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:v4];
+  dCopy = d;
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:dCopy];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [announcementManagers objectForKeyedSubscript:v6];
 
   [v7 pauseAllTimers];
 }
 
-- (void)resumeAllTimersForEndpointID:(id)a3
+- (void)resumeAllTimersForEndpointID:(id)d
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:v4];
+  dCopy = d;
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:dCopy];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [announcementManagers objectForKeyedSubscript:v6];
 
   [v7 resumeAllTimers];
 }
 
-- (void)resetAllTimersForEndpointID:(id)a3
+- (void)resetAllTimersForEndpointID:(id)d
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementCoordinator *)self announcementManagers];
-  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:v4];
+  dCopy = d;
+  announcementManagers = [(ANAnnouncementCoordinator *)self announcementManagers];
+  v6 = [(ANAnnouncementCoordinator *)self resolveIdentifier:dCopy];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [announcementManagers objectForKeyedSubscript:v6];
 
   [v7 resetAllTimers];
 }
 
-- (id)resolveIdentifier:(id)a3
+- (id)resolveIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy)
   {
-    v5 = v3;
+    v5 = identifierCopy;
   }
 
   else

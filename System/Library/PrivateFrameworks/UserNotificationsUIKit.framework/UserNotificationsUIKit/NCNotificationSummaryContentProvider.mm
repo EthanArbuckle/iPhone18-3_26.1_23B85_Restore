@@ -1,45 +1,45 @@
 @interface NCNotificationSummaryContentProvider
-+ (id)summaryContentProviderOfType:(unint64_t)a3 notificationRequests:(id)a4;
-- (BOOL)_shouldShowContentForNotificationRequest:(id)a3;
++ (id)summaryContentProviderOfType:(unint64_t)type notificationRequests:(id)requests;
+- (BOOL)_shouldShowContentForNotificationRequest:(id)request;
 - (NSArray)summaryIconViews;
 - (NSString)summary;
-- (id)_communicationAvatarForNotificationRequest:(id)a3;
-- (id)_iconViewForNotificationRequest:(id)a3;
-- (id)_summaryIconViewForNotificationRequest:(id)a3;
-- (id)_summaryStringForCommunicationNotificationRequest:(id)a3;
-- (id)_summaryStringForNotificationRequest:(id)a3;
-- (void)setDeviceAuthenticated:(BOOL)a3;
-- (void)setNotificationRequests:(id)a3;
-- (void)setTitlesForSectionListsInSummary:(id)a3;
+- (id)_communicationAvatarForNotificationRequest:(id)request;
+- (id)_iconViewForNotificationRequest:(id)request;
+- (id)_summaryIconViewForNotificationRequest:(id)request;
+- (id)_summaryStringForCommunicationNotificationRequest:(id)request;
+- (id)_summaryStringForNotificationRequest:(id)request;
+- (void)setDeviceAuthenticated:(BOOL)authenticated;
+- (void)setNotificationRequests:(id)requests;
+- (void)setTitlesForSectionListsInSummary:(id)summary;
 @end
 
 @implementation NCNotificationSummaryContentProvider
 
-+ (id)summaryContentProviderOfType:(unint64_t)a3 notificationRequests:(id)a4
++ (id)summaryContentProviderOfType:(unint64_t)type notificationRequests:(id)requests
 {
-  v5 = a4;
-  if (a3 > 3)
+  requestsCopy = requests;
+  if (type > 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = objc_alloc_init(*off_2783724D8[a3]);
+    v6 = objc_alloc_init(*off_2783724D8[type]);
   }
 
-  [v6 setNotificationRequests:v5];
+  [v6 setNotificationRequests:requestsCopy];
 
   return v6;
 }
 
-- (void)setNotificationRequests:(id)a3
+- (void)setNotificationRequests:(id)requests
 {
-  v5 = a3;
+  requestsCopy = requests;
   p_notificationRequests = &self->_notificationRequests;
-  if (self->_notificationRequests != v5)
+  if (self->_notificationRequests != requestsCopy)
   {
-    objc_storeStrong(p_notificationRequests, a3);
+    objc_storeStrong(p_notificationRequests, requests);
     summaryTitle = self->_summaryTitle;
     self->_summaryTitle = 0;
 
@@ -59,12 +59,12 @@
   MEMORY[0x2821F96F8](p_notificationRequests);
 }
 
-- (void)setTitlesForSectionListsInSummary:(id)a3
+- (void)setTitlesForSectionListsInSummary:(id)summary
 {
-  v7 = a3;
+  summaryCopy = summary;
   if (![(NSArray *)self->_titlesForSectionListsInSummary isEqualToArray:?])
   {
-    v4 = [v7 copy];
+    v4 = [summaryCopy copy];
     titlesForSectionListsInSummary = self->_titlesForSectionListsInSummary;
     self->_titlesForSectionListsInSummary = v4;
 
@@ -73,11 +73,11 @@
   }
 }
 
-- (void)setDeviceAuthenticated:(BOOL)a3
+- (void)setDeviceAuthenticated:(BOOL)authenticated
 {
-  if (self->_deviceAuthenticated != a3)
+  if (self->_deviceAuthenticated != authenticated)
   {
-    self->_deviceAuthenticated = a3;
+    self->_deviceAuthenticated = authenticated;
     self->_summary = 0;
     MEMORY[0x2821F96F8]();
   }
@@ -88,7 +88,7 @@
   p_summary = &self->_summary;
   if (!self->_summary && ([(NSArray *)self->_notificationRequests count]|| [(NSArray *)self->_titlesForSectionListsInSummary count]))
   {
-    v4 = [(NCNotificationSummaryContentProvider *)self maxNumberOfSummaryItems];
+    maxNumberOfSummaryItems = [(NCNotificationSummaryContentProvider *)self maxNumberOfSummaryItems];
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6 = [(NSArray *)self->_titlesForSectionListsInSummary copy];
     v7 = v6;
@@ -113,8 +113,8 @@
     v30 = __Block_byref_object_copy__10;
     v31 = __Block_byref_object_dispose__10;
     v32 = &stru_282FE84F8;
-    v11 = v10 - v4;
-    if (v10 <= v4)
+    v11 = v10 - maxNumberOfSummaryItems;
+    if (v10 <= maxNumberOfSummaryItems)
     {
       v12 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:v9];
       v13 = v28[5];
@@ -129,7 +129,7 @@
       v26[3] = &unk_278372470;
       v26[4] = &v27;
       v26[5] = v10;
-      v26[6] = v4;
+      v26[6] = maxNumberOfSummaryItems;
       [v9 enumerateObjectsUsingBlock:v26];
     }
 
@@ -226,7 +226,7 @@ void __47__NCNotificationSummaryContentProvider_summary__block_invoke_6(void *a1
 {
   if (!self->_summaryIconViews && [(NSArray *)self->_notificationRequests count]&& ![(NCNotificationSummaryContentProvider *)self hideSummaryIconViews])
   {
-    v5 = [(NCNotificationSummaryContentProvider *)self maxNumberOfSummaryItems];
+    maxNumberOfSummaryItems = [(NCNotificationSummaryContentProvider *)self maxNumberOfSummaryItems];
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     notificationRequests = self->_notificationRequests;
@@ -237,8 +237,8 @@ void __47__NCNotificationSummaryContentProvider_summary__block_invoke_6(void *a1
     v9 = v6;
     v14 = v9;
     v15 = v7;
-    v16 = self;
-    v17 = v5;
+    selfCopy = self;
+    v17 = maxNumberOfSummaryItems;
     v10 = v7;
     [(NSArray *)notificationRequests enumerateObjectsUsingBlock:v13];
     summaryIconViews = self->_summaryIconViews;
@@ -300,17 +300,17 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)_shouldShowContentForNotificationRequest:(id)a3
+- (BOOL)_shouldShowContentForNotificationRequest:(id)request
 {
-  v4 = [a3 options];
-  v5 = [v4 contentPreviewSetting];
+  options = [request options];
+  contentPreviewSetting = [options contentPreviewSetting];
 
-  if (!v5)
+  if (!contentPreviewSetting)
   {
     return 1;
   }
 
-  if (v5 != 1)
+  if (contentPreviewSetting != 1)
   {
     return 0;
   }
@@ -318,30 +318,30 @@ LABEL_7:
   return [(NCNotificationSummaryContentProvider *)self isDeviceAuthenticated];
 }
 
-- (id)_summaryStringForNotificationRequest:(id)a3
+- (id)_summaryStringForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 content];
-  v6 = [v5 title];
+  requestCopy = request;
+  content = [requestCopy content];
+  title = [content title];
 
-  if ([(NCNotificationSummaryContentProvider *)self _shouldShowContentForNotificationRequest:v4]&& v6)
+  if ([(NCNotificationSummaryContentProvider *)self _shouldShowContentForNotificationRequest:requestCopy]&& title)
   {
-    v7 = v6;
+    defaultHeader = title;
   }
 
   else
   {
-    v8 = [v4 content];
-    v7 = [v8 defaultHeader];
+    content2 = [requestCopy content];
+    defaultHeader = [content2 defaultHeader];
   }
 
-  return v7;
+  return defaultHeader;
 }
 
-- (id)_summaryIconViewForNotificationRequest:(id)a3
+- (id)_summaryIconViewForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NCNotificationSummaryContentProvider *)self _communicationAvatarForNotificationRequest:v4];
+  requestCopy = request;
+  v5 = [(NCNotificationSummaryContentProvider *)self _communicationAvatarForNotificationRequest:requestCopy];
   v6 = v5;
   if (v5)
   {
@@ -350,7 +350,7 @@ LABEL_7:
 
   else
   {
-    v7 = [(NCNotificationSummaryContentProvider *)self _iconViewForNotificationRequest:v4];
+    v7 = [(NCNotificationSummaryContentProvider *)self _iconViewForNotificationRequest:requestCopy];
   }
 
   v8 = v7;
@@ -358,46 +358,46 @@ LABEL_7:
   return v8;
 }
 
-- (id)_iconViewForNotificationRequest:(id)a3
+- (id)_iconViewForNotificationRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 subordinateIconRecipe];
-  v5 = v4;
-  if (v4)
+  requestCopy = request;
+  subordinateIconRecipe = [requestCopy subordinateIconRecipe];
+  v5 = subordinateIconRecipe;
+  if (subordinateIconRecipe)
   {
-    v6 = v4;
+    iconRecipe = subordinateIconRecipe;
   }
 
   else
   {
-    v6 = [v3 iconRecipe];
+    iconRecipe = [requestCopy iconRecipe];
   }
 
-  v7 = v6;
+  v7 = iconRecipe;
 
   v8 = [NCBadgedIconDescription alloc];
-  v9 = [v3 topLevelSectionIdentifier];
-  v10 = [(NCBadgedIconDescription *)v8 initWithBundleIdentifier:v9 prominentIconDescription:v7 subordinateIconRecipe:0 badgeText:0];
+  topLevelSectionIdentifier = [requestCopy topLevelSectionIdentifier];
+  v10 = [(NCBadgedIconDescription *)v8 initWithBundleIdentifier:topLevelSectionIdentifier prominentIconDescription:v7 subordinateIconRecipe:0 badgeText:0];
 
   v11 = [[NCBadgedIconView alloc] initWithBadgedIconDescription:v10 pointSize:38.0];
 
   return v11;
 }
 
-- (id)_communicationAvatarForNotificationRequest:(id)a3
+- (id)_communicationAvatarForNotificationRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 content];
-  v5 = [v4 communicationContext];
+  requestCopy = request;
+  content = [requestCopy content];
+  communicationContext = [content communicationContext];
 
-  v6 = [v3 topLevelSectionIdentifier];
-  v7 = [v5 isAvatarImagePossibleForBundleIdentifier:v6];
+  topLevelSectionIdentifier = [requestCopy topLevelSectionIdentifier];
+  v7 = [communicationContext isAvatarImagePossibleForBundleIdentifier:topLevelSectionIdentifier];
 
   if (v7)
   {
     v8 = [NCAvatarView alloc];
-    v9 = [v3 topLevelSectionIdentifier];
-    v10 = [(NCAvatarView *)v8 initWithBundleIdentifier:v9 communicationContext:v5 pointSize:38.0];
+    topLevelSectionIdentifier2 = [requestCopy topLevelSectionIdentifier];
+    v10 = [(NCAvatarView *)v8 initWithBundleIdentifier:topLevelSectionIdentifier2 communicationContext:communicationContext pointSize:38.0];
 
     [(NCAvatarView *)v10 setMaterialBacked:1];
   }
@@ -410,23 +410,23 @@ LABEL_7:
   return v10;
 }
 
-- (id)_summaryStringForCommunicationNotificationRequest:(id)a3
+- (id)_summaryStringForCommunicationNotificationRequest:(id)request
 {
-  v4 = a3;
-  if (-[NCNotificationSummaryContentProvider _shouldShowContentForNotificationRequest:](self, "_shouldShowContentForNotificationRequest:", v4) && ([v4 content], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isCommunicationType"), v5, v6))
+  requestCopy = request;
+  if (-[NCNotificationSummaryContentProvider _shouldShowContentForNotificationRequest:](self, "_shouldShowContentForNotificationRequest:", requestCopy) && ([requestCopy content], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isCommunicationType"), v5, v6))
   {
-    v7 = [v4 content];
-    v8 = [v7 communicationContext];
+    content = [requestCopy content];
+    communicationContext = [content communicationContext];
 
-    v9 = [v8 preferredSenderSummary];
+    preferredSenderSummary = [communicationContext preferredSenderSummary];
   }
 
   else
   {
-    v9 = 0;
+    preferredSenderSummary = 0;
   }
 
-  return v9;
+  return preferredSenderSummary;
 }
 
 @end

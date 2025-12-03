@@ -1,18 +1,18 @@
 @interface MLROnDemandPlugin
-+ (id)_createXPCConnection:(id)a3 error:(id *)a4;
-+ (id)_locateWithExtensionID:(id)a3;
++ (id)_createXPCConnection:(id)connection error:(id *)error;
++ (id)_locateWithExtensionID:(id)d;
 + (id)onDemandPluginIDs;
-+ (id)synchronouslyPerformTask:(id)a3 forPluginID:(id)a4 error:(id *)a5;
-+ (void)_performTask:(id)a3 forPluginID:(id)a4 isSynchronous:(BOOL)a5 completionHandler:(id)a6;
++ (id)synchronouslyPerformTask:(id)task forPluginID:(id)d error:(id *)error;
++ (void)_performTask:(id)task forPluginID:(id)d isSynchronous:(BOOL)synchronous completionHandler:(id)handler;
 @end
 
 @implementation MLROnDemandPlugin
 
-+ (id)_locateWithExtensionID:(id)a3
++ (id)_locateWithExtensionID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = [MEMORY[0x277CC5DF8] extensionPointIdentifierQuery:@"com.apple.mlruntime.extension-point-ondemand"];
     [MEMORY[0x277CC5E00] executeQuery:v4];
@@ -34,8 +34,8 @@
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 bundleIdentifier];
-          v11 = [v10 isEqualToString:v3];
+          bundleIdentifier = [v9 bundleIdentifier];
+          v11 = [bundleIdentifier isEqualToString:dCopy];
 
           if (v11)
           {
@@ -67,61 +67,61 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_createXPCConnection:(id)a3 error:(id *)a4
++ (id)_createXPCConnection:(id)connection error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = [a1 _locateWithExtensionID:a3];
+  v5 = [self _locateWithExtensionID:connection];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 makeXPCConnectionWithError:a4];
-    if (a4)
+    error = [v5 makeXPCConnectionWithError:error];
+    if (error)
     {
       v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2868BD320];
-      [a4 setRemoteObjectInterface:v7];
+      [error setRemoteObjectInterface:v7];
 
-      [a4 resume];
+      [error resume];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = MEMORY[0x277CCA9B8];
     v9 = *MEMORY[0x277D05640];
     v13 = *MEMORY[0x277CCA450];
     v14[0] = @"Fail to find matched plugin.";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a4 = [v8 errorWithDomain:v9 code:8013 userInfo:v10];
+    *error = [v8 errorWithDomain:v9 code:8013 userInfo:v10];
 
-    a4 = 0;
+    error = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-+ (void)_performTask:(id)a3 forPluginID:(id)a4 isSynchronous:(BOOL)a5 completionHandler:(id)a6
++ (void)_performTask:(id)task forPluginID:(id)d isSynchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  [MEMORY[0x277D055F0] sendEventEvaluationSessionStartForBundleID:v11];
+  synchronousCopy = synchronous;
+  taskCopy = task;
+  dCopy = d;
+  handlerCopy = handler;
+  [MEMORY[0x277D055F0] sendEventEvaluationSessionStartForBundleID:dCopy];
   v32 = 0;
-  v13 = [a1 _createXPCConnection:v11 error:&v32];
+  v13 = [self _createXPCConnection:dCopy error:&v32];
   v14 = v32;
   if (v13)
   {
-    if (v7)
+    if (synchronousCopy)
     {
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __78__MLROnDemandPlugin__performTask_forPluginID_isSynchronous_completionHandler___block_invoke;
       v29[3] = &unk_279840AB8;
       v15 = &v30;
-      v30 = v11;
-      v31 = v7;
+      v30 = dCopy;
+      v31 = synchronousCopy;
       v16 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v29];
     }
 
@@ -132,15 +132,15 @@ LABEL_12:
       v26[2] = __78__MLROnDemandPlugin__performTask_forPluginID_isSynchronous_completionHandler___block_invoke_57;
       v26[3] = &unk_279840AB8;
       v15 = &v27;
-      v27 = v11;
+      v27 = dCopy;
       v28 = 0;
       v16 = [v13 remoteObjectProxyWithErrorHandler:v26];
     }
 
     v18 = v16;
 
-    v19 = [MEMORY[0x277CCAC38] processInfo];
-    [v19 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v21 = v20;
 
     v22[0] = MEMORY[0x277D85DD0];
@@ -148,26 +148,26 @@ LABEL_12:
     v22[2] = __78__MLROnDemandPlugin__performTask_forPluginID_isSynchronous_completionHandler___block_invoke_59;
     v22[3] = &unk_279840AE0;
     v25 = v21;
-    v23 = v11;
-    v24 = v12;
-    [v18 performTask:v10 completionHandler:v22];
+    v23 = dCopy;
+    v24 = handlerCopy;
+    [v18 performTask:taskCopy completionHandler:v22];
   }
 
   else
   {
-    v17 = [MEMORY[0x277D05600] coreChannel];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    coreChannel = [MEMORY[0x277D05600] coreChannel];
+    if (os_log_type_enabled(coreChannel, OS_LOG_TYPE_ERROR))
     {
       +[MLROnDemandPlugin _performTask:forPluginID:isSynchronous:completionHandler:];
     }
 
-    if (v12)
+    if (handlerCopy)
     {
-      (*(v12 + 2))(v12, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
 
-    [MEMORY[0x277D055F0] sendEventEvaluationSessionFinishForBundleID:v11 success:0];
-    [MEMORY[0x277D055F0] sendEventErrorForBundleID:v11 error:v14];
+    [MEMORY[0x277D055F0] sendEventEvaluationSessionFinishForBundleID:dCopy success:0];
+    [MEMORY[0x277D055F0] sendEventErrorForBundleID:dCopy error:v14];
   }
 }
 
@@ -229,10 +229,10 @@ void __78__MLROnDemandPlugin__performTask_forPluginID_isSynchronous_completionHa
   }
 }
 
-+ (id)synchronouslyPerformTask:(id)a3 forPluginID:(id)a4 error:(id *)a5
++ (id)synchronouslyPerformTask:(id)task forPluginID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  taskCopy = task;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -251,13 +251,13 @@ void __78__MLROnDemandPlugin__performTask_forPluginID_isSynchronous_completionHa
   v13[3] = &unk_279840B08;
   v13[4] = &v20;
   v13[5] = &v14;
-  [a1 _performTask:v8 forPluginID:v9 isSynchronous:1 completionHandler:v13];
-  if (a5)
+  [self _performTask:taskCopy forPluginID:dCopy isSynchronous:1 completionHandler:v13];
+  if (error)
   {
     v10 = v21[5];
     if (v10)
     {
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -284,7 +284,7 @@ void __64__MLROnDemandPlugin_synchronouslyPerformTask_forPluginID_error___block_
   v18 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CC5DF8] extensionPointIdentifierQuery:@"com.apple.mlruntime.extension-point-ondemand"];
   v3 = [MEMORY[0x277CC5E00] executeQuery:v2];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -304,8 +304,8 @@ void __64__MLROnDemandPlugin_synchronouslyPerformTask_forPluginID_error___block_
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        [v4 addObject:v10];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        [array addObject:bundleIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -316,7 +316,7 @@ void __64__MLROnDemandPlugin_synchronouslyPerformTask_forPluginID_error___block_
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 + (void)_performTask:forPluginID:isSynchronous:completionHandler:.cold.1()

@@ -1,31 +1,31 @@
 @interface UISegmentedControlSpringLoadedBehavior
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4;
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context;
 @end
 
 @implementation UISegmentedControlSpringLoadedBehavior
 
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context
 {
-  v5 = a4;
-  v6 = [a3 view];
-  v7 = [v5 targetItem];
-  if (v7)
+  contextCopy = context;
+  view = [interaction view];
+  targetItem = [contextCopy targetItem];
+  if (targetItem)
   {
-    v8 = [v5 targetItem];
-    v9 = [v8 integerValue];
+    targetItem2 = [contextCopy targetItem];
+    integerValue = [targetItem2 integerValue];
   }
 
   else
   {
-    v9 = -1;
+    integerValue = -1;
   }
 
-  [v5 locationInView:v6];
-  v10 = [v6 _closestSegmentIndexAtPoint:?];
-  if (v9 != v10)
+  [contextCopy locationInView:view];
+  v10 = [view _closestSegmentIndexAtPoint:?];
+  if (integerValue != v10)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
-    [v5 setTargetItem:v11];
+    [contextCopy setTargetItem:v11];
 LABEL_9:
     LOBYTE(v12) = 0;
     goto LABEL_10;
@@ -37,7 +37,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v11 = [v6 _segmentAtIndex:?];
+  v11 = [view _segmentAtIndex:?];
   if (![v11 isUserInteractionEnabled])
   {
     goto LABEL_9;

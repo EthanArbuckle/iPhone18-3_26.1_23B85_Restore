@@ -1,17 +1,17 @@
 @interface BLJaliscoServerItem
-- (id)initIntoManagedObjectContext:(id)a3;
+- (id)initIntoManagedObjectContext:(id)context;
 @end
 
 @implementation BLJaliscoServerItem
 
-- (id)initIntoManagedObjectContext:(id)a3
+- (id)initIntoManagedObjectContext:(id)context
 {
   v4 = MEMORY[0x277CBE408];
-  v5 = a3;
-  v6 = [v4 entityForName:@"BLJaliscoServerItem" inManagedObjectContext:v5];
+  contextCopy = context;
+  v6 = [v4 entityForName:@"BLJaliscoServerItem" inManagedObjectContext:contextCopy];
   v9.receiver = self;
   v9.super_class = BLJaliscoServerItem;
-  v7 = [(BLJaliscoServerItem *)&v9 initWithEntity:v6 insertIntoManagedObjectContext:v5];
+  v7 = [(BLJaliscoServerItem *)&v9 initWithEntity:v6 insertIntoManagedObjectContext:contextCopy];
 
   return v7;
 }

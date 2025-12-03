@@ -1,29 +1,29 @@
 @interface HDMCAnalysisScheduler
-- (HDMCAnalysisScheduler)initWithDaemon:(id)a3 analysisManager:(id)a4 settingsManager:(id)a5;
-- (double)_delayUntilNextAnalysisSchedulingWindowStartDateAfterDate:(id)a3;
-- (void)_handleActivity:(id)a3 forceRescheduleOnCheckIn:(BOOL)a4;
-- (void)_registerActivityAfterCompletion:(BOOL)a3;
+- (HDMCAnalysisScheduler)initWithDaemon:(id)daemon analysisManager:(id)manager settingsManager:(id)settingsManager;
+- (double)_delayUntilNextAnalysisSchedulingWindowStartDateAfterDate:(id)date;
+- (void)_handleActivity:(id)activity forceRescheduleOnCheckIn:(BOOL)in;
+- (void)_registerActivityAfterCompletion:(BOOL)completion;
 - (void)_runAnalysis;
-- (void)daemonReady:(id)a3;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
 @end
 
 @implementation HDMCAnalysisScheduler
 
-- (HDMCAnalysisScheduler)initWithDaemon:(id)a3 analysisManager:(id)a4 settingsManager:(id)a5
+- (HDMCAnalysisScheduler)initWithDaemon:(id)daemon analysisManager:(id)manager settingsManager:(id)settingsManager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  daemonCopy = daemon;
+  managerCopy = manager;
+  settingsManagerCopy = settingsManager;
   v14.receiver = self;
   v14.super_class = HDMCAnalysisScheduler;
   v11 = [(HDMCAnalysisScheduler *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_analysisManager, a4);
-    objc_storeStrong(&v12->_settingsManager, a5);
-    [v8 registerDaemonReadyObserver:v12 queue:0];
+    objc_storeStrong(&v11->_analysisManager, manager);
+    objc_storeStrong(&v12->_settingsManager, settingsManager);
+    [daemonCopy registerDaemonReadyObserver:v12 queue:0];
   }
 
   return v12;
@@ -37,7 +37,7 @@
   [(HDMCAnalysisScheduler *)&v3 dealloc];
 }
 
-- (void)_registerActivityAfterCompletion:(BOOL)a3
+- (void)_registerActivityAfterCompletion:(BOOL)completion
 {
   objc_initWeak(&location, self);
   v4 = *MEMORY[0x277D86238];
@@ -46,7 +46,7 @@
   handler[2] = __58__HDMCAnalysisScheduler__registerActivityAfterCompletion___block_invoke;
   handler[3] = &unk_27865AE58;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  completionCopy = completion;
   xpc_activity_register("com.apple.Health.menstrualcycles.analysisupdates", v4, handler);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -59,12 +59,12 @@ void __58__HDMCAnalysisScheduler__registerActivityAfterCompletion___block_invoke
   [WeakRetained _handleActivity:v3 forceRescheduleOnCheckIn:*(a1 + 40)];
 }
 
-- (void)_handleActivity:(id)a3 forceRescheduleOnCheckIn:(BOOL)a4
+- (void)_handleActivity:(id)activity forceRescheduleOnCheckIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  state = xpc_activity_get_state(v6);
+  activityCopy = activity;
+  state = xpc_activity_get_state(activityCopy);
   if (state == 2)
   {
     [(HDMCAnalysisScheduler *)self _runAnalysis];
@@ -86,7 +86,7 @@ void __58__HDMCAnalysisScheduler__registerActivityAfterCompletion___block_invoke
     v8 = state;
     if (!state)
     {
-      v9 = xpc_activity_copy_criteria(v6);
+      v9 = xpc_activity_copy_criteria(activityCopy);
       v10 = v9;
       v11 = MEMORY[0x277D86250];
       if (v9)
@@ -97,7 +97,7 @@ void __58__HDMCAnalysisScheduler__registerActivityAfterCompletion___block_invoke
         v14 = os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_INFO);
         if (int64)
         {
-          if (!v4)
+          if (!inCopy)
           {
             if (v14)
             {
@@ -160,11 +160,11 @@ LABEL_18:
       xpc_dictionary_set_string(v21, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
       xpc_dictionary_set_BOOL(v21, *MEMORY[0x277D86230], 1);
       xpc_dictionary_set_BOOL(v21, *MEMORY[0x277D86360], 0);
-      v22 = [MEMORY[0x277CBEAA8] date];
-      [(HDMCAnalysisScheduler *)self _delayUntilNextAnalysisSchedulingWindowStartDateAfterDate:v22];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(HDMCAnalysisScheduler *)self _delayUntilNextAnalysisSchedulingWindowStartDateAfterDate:date];
       xpc_dictionary_set_int64(v21, *v11, v23);
       xpc_dictionary_set_int64(v21, *MEMORY[0x277D86270], 3600);
-      xpc_activity_set_criteria(v6, v21);
+      xpc_activity_set_criteria(activityCopy, v21);
 
       v10 = v21;
 LABEL_20:
@@ -185,16 +185,16 @@ LABEL_21:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_delayUntilNextAnalysisSchedulingWindowStartDateAfterDate:(id)a3
+- (double)_delayUntilNextAnalysisSchedulingWindowStartDateAfterDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [(HKMCSettingsManager *)self->_settingsManager hdmc_nextAnalysisSchedulingWindowStartDateAfterDate:v4 calendar:v5];
+  dateCopy = date;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [(HKMCSettingsManager *)self->_settingsManager hdmc_nextAnalysisSchedulingWindowStartDateAfterDate:dateCopy calendar:currentCalendar];
   v7 = v6;
   if (v6)
   {
-    [v6 timeIntervalSinceDate:v4];
+    [v6 timeIntervalSinceDate:dateCopy];
     v9 = v8;
   }
 
@@ -209,9 +209,9 @@ LABEL_21:
       v15 = 138543874;
       v16 = objc_opt_class();
       v17 = 2114;
-      v18 = v4;
+      v18 = dateCopy;
       v19 = 2114;
-      v20 = v5;
+      v20 = currentCalendar;
       v14 = v16;
       _os_log_fault_impl(&dword_2293D1000, v13, OS_LOG_TYPE_FAULT, "[%{public}@] Next date to schedule analysis after %{public}@ should not be nil, calendar: %{public}@", &v15, 0x20u);
     }
@@ -224,7 +224,7 @@ LABEL_21:
 - (void)_runAnalysis
 {
   v12 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = OUTLINED_FUNCTION_0(v2);
   OUTLINED_FUNCTION_1(&dword_2293D1000, v4, v5, "[%{public}@] Error running analysis from XPC activity: %{public}@", v6, v7, v8, v9, v11);
@@ -232,7 +232,7 @@ LABEL_21:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();

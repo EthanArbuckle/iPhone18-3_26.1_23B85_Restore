@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (SBFRemoteBasebandLoggingManager)init;
 - (void)_notifyObservers;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBFRemoteBasebandLoggingManager
@@ -44,11 +44,11 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = v2->_cellularLogging;
-        v9 = [(CellularLogging *)v8 isLoggingStarted];
+        isLoggingStarted = [(CellularLogging *)v8 isLoggingStarted];
         *buf = 134218240;
         *&buf[4] = v8;
         *&buf[12] = 1024;
-        *&buf[14] = v9;
+        *&buf[14] = isLoggingStarted;
         _os_log_impl(&dword_1BEA11000, v7, OS_LOG_TYPE_DEFAULT, "SBFRemoteBasebandLoggingManager %p initialized, log collection status is %{BOOL}d", buf, 0x12u);
       }
     }
@@ -86,12 +86,12 @@ uint64_t __49__SBFRemoteBasebandLoggingManager_sharedInstance__block_invoke()
 - (void)_notifyObservers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(SBFRemoteBasebandLoggingManager *)self isLogCollectionEnabled];
+  isLogCollectionEnabled = [(SBFRemoteBasebandLoggingManager *)self isLogCollectionEnabled];
   v4 = SBLogCellularLogCollection();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = v3;
+    v16 = isLogCollectionEnabled;
     _os_log_impl(&dword_1BEA11000, v4, OS_LOG_TYPE_DEFAULT, "Remote Baseband Log Collection Status changed to %{BOOL}d, notifying observers", buf, 8u);
   }
 
@@ -99,8 +99,8 @@ uint64_t __49__SBFRemoteBasebandLoggingManager_sharedInstance__block_invoke()
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(SBFRemoteBasebandLoggingManager *)self observers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  observers = [(SBFRemoteBasebandLoggingManager *)self observers];
+  v6 = [observers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -112,32 +112,32 @@ uint64_t __49__SBFRemoteBasebandLoggingManager_sharedInstance__block_invoke()
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) remoteBasebandLogCollectionStateDidChange:v3];
+        [*(*(&v10 + 1) + 8 * v9++) remoteBasebandLogCollectionStateDidChange:isLogCollectionEnabled];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [observers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SBFRemoteBasebandLoggingManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(SBFRemoteBasebandLoggingManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SBFRemoteBasebandLoggingManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(SBFRemoteBasebandLoggingManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 @end

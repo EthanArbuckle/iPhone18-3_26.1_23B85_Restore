@@ -1,27 +1,27 @@
 @interface MUPlaceRibbonItemView
-- (MUPlaceRibbonItemView)initWithFrame:(CGRect)a3;
+- (MUPlaceRibbonItemView)initWithFrame:(CGRect)frame;
 - (void)_handleTap;
-- (void)_setAXIdentifierWithItemType:(id)a3;
+- (void)_setAXIdentifierWithItemType:(id)type;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
 - (void)_updateGestureRecognizers;
 - (void)_updateValueText;
-- (void)ribbonItemViewModelDidUpdate:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)ribbonItemViewModelDidUpdate:(id)update;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUPlaceRibbonItemView
 
-- (void)ribbonItemViewModelDidUpdate:(id)a3
+- (void)ribbonItemViewModelDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(MUPlaceRibbonItemView *)self invalidationHandler];
+  updateCopy = update;
+  invalidationHandler = [(MUPlaceRibbonItemView *)self invalidationHandler];
 
-  if (v5)
+  if (invalidationHandler)
   {
-    v6 = [(MUPlaceRibbonItemView *)self invalidationHandler];
-    v6[2]();
+    invalidationHandler2 = [(MUPlaceRibbonItemView *)self invalidationHandler];
+    invalidationHandler2[2]();
   }
 
   objc_initWeak(&location, self);
@@ -48,12 +48,12 @@ void __54__MUPlaceRibbonItemView_ribbonItemViewModelDidUpdate___block_invoke(uin
   }
 }
 
-- (void)_setAXIdentifierWithItemType:(id)a3
+- (void)_setAXIdentifierWithItemType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
-    v5 = v4;
+    v5 = typeCopy;
   }
 
   else
@@ -68,33 +68,33 @@ void __54__MUPlaceRibbonItemView_ribbonItemViewModelDidUpdate___block_invoke(uin
 
 - (void)_handleTap
 {
-  v3 = [(MUPlaceRibbonItemView *)self actionHandler];
+  actionHandler = [(MUPlaceRibbonItemView *)self actionHandler];
 
-  if (v3)
+  if (actionHandler)
   {
-    v4 = [(MUPlaceRibbonItemView *)self actionHandler];
-    v4[2](v4, self);
+    actionHandler2 = [(MUPlaceRibbonItemView *)self actionHandler];
+    actionHandler2[2](actionHandler2, self);
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v6 = a3;
+  modelCopy = model;
   if (![(MUPlaceRibbonItemViewModel *)self->_viewModel isEqual:?])
   {
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(MUPlaceRibbonItemViewModel *)self->_viewModel setUpdateDelegate:self];
     [(MUPlaceRibbonItemView *)self _updateAppearance];
-    v5 = [(MUPlaceRibbonItemViewModel *)self->_viewModel typeStringForAX];
-    [(MUPlaceRibbonItemView *)self _setAXIdentifierWithItemType:v5];
+    typeStringForAX = [(MUPlaceRibbonItemViewModel *)self->_viewModel typeStringForAX];
+    [(MUPlaceRibbonItemView *)self _setAXIdentifierWithItemType:typeStringForAX];
   }
 }
 
 - (void)_updateValueText
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlaceRibbonItemViewModel *)self->_viewModel valueStringProvider];
-  v4 = v3[2]();
+  valueStringProvider = [(MUPlaceRibbonItemViewModel *)self->_viewModel valueStringProvider];
+  v4 = valueStringProvider[2]();
 
   if ([v4 length])
   {
@@ -111,8 +111,8 @@ void __54__MUPlaceRibbonItemView_ribbonItemViewModelDidUpdate___block_invoke(uin
     }
 
     [(MULabelViewProtocol *)self->_valueLabel setAttributedText:v4];
-    v8 = [v4 string];
-    [(MULabelViewProtocol *)self->_valueLabel setAccessibilityLabel:v8];
+    string = [v4 string];
+    [(MULabelViewProtocol *)self->_valueLabel setAccessibilityLabel:string];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -120,9 +120,9 @@ void __54__MUPlaceRibbonItemView_ribbonItemViewModelDidUpdate___block_invoke(uin
 
 - (void)_updateGestureRecognizers
 {
-  v3 = [(MUPlaceRibbonItemViewModel *)self->_viewModel isTappable];
+  isTappable = [(MUPlaceRibbonItemViewModel *)self->_viewModel isTappable];
   tapRecognizer = self->_tapRecognizer;
-  if (v3)
+  if (isTappable)
   {
     if (!tapRecognizer)
     {
@@ -162,50 +162,50 @@ void __54__MUPlaceRibbonItemView_ribbonItemViewModelDidUpdate___block_invoke(uin
 
 - (void)_updateAppearance
 {
-  v3 = [(MUPlaceRibbonItemViewModel *)self->_viewModel titleStringProvider];
+  titleStringProvider = [(MUPlaceRibbonItemViewModel *)self->_viewModel titleStringProvider];
 
-  if (v3)
+  if (titleStringProvider)
   {
-    v4 = [(MUPlaceRibbonItemViewModel *)self->_viewModel titleStringProvider];
-    v5 = v4[2]();
+    titleStringProvider2 = [(MUPlaceRibbonItemViewModel *)self->_viewModel titleStringProvider];
+    v5 = titleStringProvider2[2]();
     [(MULabelViewProtocol *)self->_titleLabel setAttributedText:v5];
   }
 
-  v6 = [(MUPlaceRibbonItemViewModel *)self->_viewModel valueStringProvider];
+  valueStringProvider = [(MUPlaceRibbonItemViewModel *)self->_viewModel valueStringProvider];
 
-  if (v6)
+  if (valueStringProvider)
   {
     [(MUPlaceRibbonItemView *)self _updateValueText];
   }
 
-  v7 = [(MUPlaceRibbonItemViewModel *)self->_viewModel preferredAccessibilityValue];
-  v8 = [v7 length];
+  preferredAccessibilityValue = [(MUPlaceRibbonItemViewModel *)self->_viewModel preferredAccessibilityValue];
+  v8 = [preferredAccessibilityValue length];
 
   if (v8)
   {
-    v9 = [(MUPlaceRibbonItemViewModel *)self->_viewModel preferredAccessibilityValue];
-    [(MULabelViewProtocol *)self->_valueLabel setAccessibilityLabel:v9];
+    preferredAccessibilityValue2 = [(MUPlaceRibbonItemViewModel *)self->_viewModel preferredAccessibilityValue];
+    [(MULabelViewProtocol *)self->_valueLabel setAccessibilityLabel:preferredAccessibilityValue2];
   }
 
   [(NSLayoutConstraint *)self->_titleLabelLeadingConstraint setActive:0];
-  v10 = [(MUPlaceRibbonItemViewModel *)self->_viewModel shouldCenterContents];
+  shouldCenterContents = [(MUPlaceRibbonItemViewModel *)self->_viewModel shouldCenterContents];
   titleLabel = self->_titleLabel;
-  if (v10)
+  if (shouldCenterContents)
   {
     [(MULabelViewProtocol *)titleLabel setTextAlignment:1];
     [(MULabelViewProtocol *)self->_valueLabel setTextAlignment:1];
-    v12 = [(MULabelViewProtocol *)self->_titleLabel trailingAnchor];
-    v13 = [(MUPlaceRibbonItemView *)self trailingAnchor];
-    [v12 constraintEqualToAnchor:v13];
+    trailingAnchor = [(MULabelViewProtocol *)self->_titleLabel trailingAnchor];
+    trailingAnchor2 = [(MUPlaceRibbonItemView *)self trailingAnchor];
+    [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   }
 
   else
   {
     [(MULabelViewProtocol *)titleLabel setTextAlignment:0];
     [(MULabelViewProtocol *)self->_valueLabel setTextAlignment:0];
-    v12 = [(MULabelViewProtocol *)self->_titleLabel trailingAnchor];
-    v13 = [(MUPlaceRibbonItemView *)self trailingAnchor];
-    [v12 constraintLessThanOrEqualToAnchor:v13];
+    trailingAnchor = [(MULabelViewProtocol *)self->_titleLabel trailingAnchor];
+    trailingAnchor2 = [(MUPlaceRibbonItemView *)self trailingAnchor];
+    [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   }
   v14 = ;
   titleLabelLeadingConstraint = self->_titleLabelLeadingConstraint;
@@ -220,44 +220,44 @@ void __54__MUPlaceRibbonItemView_ribbonItemViewModelDidUpdate___block_invoke(uin
 {
   v34[8] = *MEMORY[0x1E69E9840];
   valueLabel = self->_valueLabel;
-  v4 = self;
-  v5 = [(MULabelViewProtocol *)valueLabel topAnchor];
-  v6 = [(MULabelViewProtocol *)v4->_titleLabel bottomAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6 constant:2.0];
+  selfCopy = self;
+  topAnchor = [(MULabelViewProtocol *)valueLabel topAnchor];
+  bottomAnchor = [(MULabelViewProtocol *)selfCopy->_titleLabel bottomAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:2.0];
 
   LODWORD(v8) = 1148829696;
   v28 = v7;
   [v7 setPriority:v8];
   v24 = MEMORY[0x1E696ACD8];
-  v33 = [(MULabelViewProtocol *)v4->_titleLabel leadingAnchor];
-  v32 = [(MUPlaceRibbonItemView *)v4 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32 constant:0.0];
+  leadingAnchor = [(MULabelViewProtocol *)selfCopy->_titleLabel leadingAnchor];
+  leadingAnchor2 = [(MUPlaceRibbonItemView *)selfCopy leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   v34[0] = v31;
-  v30 = [(MULabelViewProtocol *)v4->_titleLabel trailingAnchor];
-  v29 = [(MUPlaceRibbonItemView *)v4 trailingAnchor];
-  v27 = [v30 constraintLessThanOrEqualToAnchor:v29 constant:0.0];
+  trailingAnchor = [(MULabelViewProtocol *)selfCopy->_titleLabel trailingAnchor];
+  trailingAnchor2 = [(MUPlaceRibbonItemView *)selfCopy trailingAnchor];
+  v27 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:0.0];
   v34[1] = v27;
-  v26 = [(MULabelViewProtocol *)v4->_titleLabel topAnchor];
-  v25 = [(MUPlaceRibbonItemView *)v4 topAnchor];
-  v23 = [v26 constraintEqualToAnchor:v25];
+  topAnchor2 = [(MULabelViewProtocol *)selfCopy->_titleLabel topAnchor];
+  topAnchor3 = [(MUPlaceRibbonItemView *)selfCopy topAnchor];
+  v23 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v34[2] = v23;
   v34[3] = v7;
-  v22 = [(MULabelViewProtocol *)self->_valueLabel topAnchor];
-  v21 = [(MULabelViewProtocol *)v4->_titleLabel bottomAnchor];
-  v20 = [v22 constraintGreaterThanOrEqualToAnchor:v21 constant:2.0];
+  topAnchor4 = [(MULabelViewProtocol *)self->_valueLabel topAnchor];
+  bottomAnchor2 = [(MULabelViewProtocol *)selfCopy->_titleLabel bottomAnchor];
+  v20 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:2.0];
   v34[4] = v20;
-  v9 = [(MULabelViewProtocol *)self->_valueLabel leadingAnchor];
-  v10 = [(MUPlaceRibbonItemView *)v4 leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:0.0];
+  leadingAnchor3 = [(MULabelViewProtocol *)self->_valueLabel leadingAnchor];
+  leadingAnchor4 = [(MUPlaceRibbonItemView *)selfCopy leadingAnchor];
+  v11 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:0.0];
   v34[5] = v11;
-  v12 = [(MULabelViewProtocol *)self->_valueLabel trailingAnchor];
-  v13 = [(MUPlaceRibbonItemView *)v4 trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:0.0];
+  trailingAnchor3 = [(MULabelViewProtocol *)self->_valueLabel trailingAnchor];
+  trailingAnchor4 = [(MUPlaceRibbonItemView *)selfCopy trailingAnchor];
+  v14 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:0.0];
   v34[6] = v14;
-  v15 = [(MULabelViewProtocol *)self->_valueLabel bottomAnchor];
-  v16 = [(MUPlaceRibbonItemView *)v4 bottomAnchor];
+  bottomAnchor3 = [(MULabelViewProtocol *)self->_valueLabel bottomAnchor];
+  bottomAnchor4 = [(MUPlaceRibbonItemView *)selfCopy bottomAnchor];
 
-  v17 = [v15 constraintLessThanOrEqualToAnchor:v16];
+  v17 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
   v34[7] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:8];
   [v24 activateConstraints:v18];
@@ -287,7 +287,7 @@ void __54__MUPlaceRibbonItemView_ribbonItemViewModelDidUpdate___block_invoke(uin
   MURegisterForButtonShapeEnablementChanges(self, sel__updateValueText);
 }
 
-- (MUPlaceRibbonItemView)initWithFrame:(CGRect)a3
+- (MUPlaceRibbonItemView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MUPlaceRibbonItemView;
@@ -297,8 +297,8 @@ void __54__MUPlaceRibbonItemView_ribbonItemViewModelDidUpdate___block_invoke(uin
   {
     [(MUPlaceRibbonItemView *)v3 _setupSubviews];
     [(MUPlaceRibbonItemView *)v4 _setupConstraints];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__updateAppearance name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__updateAppearance name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v4;

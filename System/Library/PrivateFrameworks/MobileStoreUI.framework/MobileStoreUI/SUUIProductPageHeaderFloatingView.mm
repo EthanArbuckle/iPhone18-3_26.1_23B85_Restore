@@ -1,32 +1,32 @@
 @interface SUUIProductPageHeaderFloatingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIProductPageHeaderFloatingView)initWithSectionTitles:(id)a3 isPad:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIProductPageHeaderFloatingView)initWithSectionTitles:(id)titles isPad:(BOOL)pad;
 - (void)_reloadBackdropView;
 - (void)layoutSubviews;
-- (void)setBackdropAlpha:(double)a3;
-- (void)setColorScheme:(id)a3;
+- (void)setBackdropAlpha:(double)alpha;
+- (void)setColorScheme:(id)scheme;
 @end
 
 @implementation SUUIProductPageHeaderFloatingView
 
-- (SUUIProductPageHeaderFloatingView)initWithSectionTitles:(id)a3 isPad:(BOOL)a4
+- (SUUIProductPageHeaderFloatingView)initWithSectionTitles:(id)titles isPad:(BOOL)pad
 {
-  v6 = a3;
+  titlesCopy = titles;
   v19.receiver = self;
   v19.super_class = SUUIProductPageHeaderFloatingView;
   v7 = [(SUUIProductPageHeaderFloatingView *)&v19 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v7)
   {
-    v8 = [[SUUIProductPageSegmentedControl alloc] initWithItems:v6];
+    v8 = [[SUUIProductPageSegmentedControl alloc] initWithItems:titlesCopy];
     sectionControl = v7->_sectionControl;
     v7->_sectionControl = &v8->super;
 
     [(UISegmentedControl *)v7->_sectionControl setSelectedSegmentIndex:0];
     v10 = v7->_sectionControl;
-    v11 = [(SUUIColorScheme *)v7->_colorScheme secondaryTextColor];
-    if (v11)
+    secondaryTextColor = [(SUUIColorScheme *)v7->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UISegmentedControl *)v10 setTintColor:v11];
+      [(UISegmentedControl *)v10 setTintColor:secondaryTextColor];
     }
 
     else
@@ -41,10 +41,10 @@
     v7->_separatorView = v13;
 
     v15 = v7->_separatorView;
-    v16 = [(SUUIColorScheme *)v7->_colorScheme primaryTextColor];
-    if (v16)
+    primaryTextColor = [(SUUIColorScheme *)v7->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UIView *)v15 setBackgroundColor:v16];
+      [(UIView *)v15 setBackgroundColor:primaryTextColor];
     }
 
     else
@@ -54,36 +54,36 @@
     }
 
     [(SUUIProductPageHeaderFloatingView *)v7 addSubview:v7->_separatorView];
-    v7->_isPad = a4;
+    v7->_isPad = pad;
     [(SUUIProductPageHeaderFloatingView *)v7 _reloadBackdropView];
   }
 
   return v7;
 }
 
-- (void)setBackdropAlpha:(double)a3
+- (void)setBackdropAlpha:(double)alpha
 {
   [(SUUIProductPageHeaderFloatingView *)self backdropAlpha];
-  if (v5 != a3)
+  if (v5 != alpha)
   {
     backdropAlphaView = self->_backdropAlphaView;
 
-    [(UIView *)backdropAlphaView setAlpha:a3];
+    [(UIView *)backdropAlphaView setAlpha:alpha];
   }
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v12 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     sectionControl = self->_sectionControl;
-    v7 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v7)
+    secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UISegmentedControl *)sectionControl setTintColor:v7];
+      [(UISegmentedControl *)sectionControl setTintColor:secondaryTextColor];
     }
 
     else
@@ -93,10 +93,10 @@
     }
 
     separatorView = self->_separatorView;
-    v10 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v10)
+    primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UIView *)separatorView setBackgroundColor:v10];
+      [(UIView *)separatorView setBackgroundColor:primaryTextColor];
     }
 
     else
@@ -106,7 +106,7 @@
     }
 
     [(SUUIProductPageHeaderFloatingView *)self _reloadBackdropView];
-    v5 = v12;
+    schemeCopy = v12;
   }
 }
 
@@ -140,8 +140,8 @@
   if (separatorView)
   {
     [(UIView *)separatorView frame];
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v17 = 1.0 / v16;
 
     [(UIView *)self->_separatorView setFrame:0.0, v10 - v17, v8, v17];
@@ -161,10 +161,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UISegmentedControl *)self->_sectionControl sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(UISegmentedControl *)self->_sectionControl sizeThatFits:fits.width, fits.height];
   v5 = v4 + 20.0;
   v6 = width;
   result.height = v5;
@@ -184,11 +184,11 @@
     backdropAlphaView = self->_backdropAlphaView;
     self->_backdropAlphaView = 0;
 
-    v5 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-    if (!v5)
+    backgroundColor = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+    if (!backgroundColor)
     {
-      v6 = [MEMORY[0x277D75348] whiteColor];
-      [(SUUIProductPageHeaderFloatingView *)self setBackgroundColor:v6];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(SUUIProductPageHeaderFloatingView *)self setBackgroundColor:whiteColor];
 
       goto LABEL_14;
     }
@@ -212,25 +212,25 @@
       self->_backdropAlphaView = v9;
 
       v11 = self->_backdropAlphaView;
-      v12 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-      if (v12)
+      backgroundColor2 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+      if (backgroundColor2)
       {
-        [(UIView *)v11 setBackgroundColor:v12];
+        [(UIView *)v11 setBackgroundColor:backgroundColor2];
       }
 
       else
       {
-        v13 = [MEMORY[0x277D75348] whiteColor];
-        [(UIView *)v11 setBackgroundColor:v13];
+        whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+        [(UIView *)v11 setBackgroundColor:whiteColor2];
       }
 
       [(SUUIProductPageHeaderFloatingView *)self insertSubview:self->_backdropAlphaView atIndex:1];
     }
 
-    v5 = [MEMORY[0x277D75348] clearColor];
+    backgroundColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  [(SUUIProductPageHeaderFloatingView *)self setBackgroundColor:v5];
+  [(SUUIProductPageHeaderFloatingView *)self setBackgroundColor:backgroundColor];
 LABEL_14:
 
   [(SUUIProductPageHeaderFloatingView *)self setNeedsLayout];

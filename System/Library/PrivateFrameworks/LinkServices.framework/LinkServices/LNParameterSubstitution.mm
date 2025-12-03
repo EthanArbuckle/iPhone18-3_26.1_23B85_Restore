@@ -1,60 +1,60 @@
 @interface LNParameterSubstitution
-- (LNParameterSubstitution)initWithCoder:(id)a3;
-- (LNParameterSubstitution)initWithParameterIdentifier:(id)a3 substitutionValues:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (LNParameterSubstitution)initWithCoder:(id)coder;
+- (LNParameterSubstitution)initWithParameterIdentifier:(id)identifier substitutionValues:(id)values;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNParameterSubstitution
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNParameterSubstitution *)self parameterIdentifier];
-  [v4 encodeObject:v5 forKey:@"parameterIdentifier"];
+  coderCopy = coder;
+  parameterIdentifier = [(LNParameterSubstitution *)self parameterIdentifier];
+  [coderCopy encodeObject:parameterIdentifier forKey:@"parameterIdentifier"];
 
-  v6 = [(LNParameterSubstitution *)self substitutionValues];
-  [v4 encodeObject:v6 forKey:@"substitutionValues"];
+  substitutionValues = [(LNParameterSubstitution *)self substitutionValues];
+  [coderCopy encodeObject:substitutionValues forKey:@"substitutionValues"];
 }
 
-- (LNParameterSubstitution)initWithCoder:(id)a3
+- (LNParameterSubstitution)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"substitutionValues"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"substitutionValues"];
 
     if (v9)
     {
       self = [(LNParameterSubstitution *)self initWithParameterIdentifier:v5 substitutionValues:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (LNParameterSubstitution)initWithParameterIdentifier:(id)a3 substitutionValues:(id)a4
+- (LNParameterSubstitution)initWithParameterIdentifier:(id)identifier substitutionValues:(id)values
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  valuesCopy = values;
+  v9 = valuesCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (valuesCopy)
     {
       goto LABEL_3;
     }
@@ -62,8 +62,8 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNParameterSubstitution.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"parameterIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNParameterSubstitution.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"parameterIdentifier"}];
 
     if (v9)
     {
@@ -71,8 +71,8 @@
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNParameterSubstitution.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"substitutionValues"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNParameterSubstitution.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"substitutionValues"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -80,7 +80,7 @@ LABEL_3:
   v10 = [(LNParameterSubstitution *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     parameterIdentifier = v10->_parameterIdentifier;
     v10->_parameterIdentifier = v11;
 

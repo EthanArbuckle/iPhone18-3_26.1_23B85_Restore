@@ -5,8 +5,8 @@
 - (UIImage)activityImage;
 - (UIViewController)activityViewController;
 - (_TtC8Freeform22CRLSendACopyActivity_i)init;
-- (void)prepareWithActivityItems:(id)a3;
-- (void)setCollaborationItem:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
+- (void)setCollaborationItem:(id)item;
 @end
 
 @implementation CRLSendACopyActivity_i
@@ -40,14 +40,14 @@
   return v4;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform22CRLSendACopyActivity_i_activityItems) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
 - (UIViewController)activityViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D2778();
 
   return v3;
@@ -60,9 +60,9 @@
   return v2;
 }
 
-- (void)setCollaborationItem:(id)a3
+- (void)setCollaborationItem:(id)item
 {
-  *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform22CRLSendACopyActivity_i_collaborationItem) = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform22CRLSendACopyActivity_i_collaborationItem) = item;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();

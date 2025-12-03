@@ -1,77 +1,77 @@
 @interface SUSearchFieldController
 - (BOOL)_focusTransientViewController;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
-- (BOOL)searchBarShouldEndEditing:(id)a3;
-- (SUSearchFieldController)initWithContentsController:(id)a3;
-- (SUSearchFieldController)initWithContentsController:(id)a3 clientInterface:(id)a4 style:(int64_t)a5;
-- (SUSearchFieldController)initWithContentsController:(id)a3 style:(int64_t)a4;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
+- (BOOL)searchBarShouldEndEditing:(id)editing;
+- (SUSearchFieldController)initWithContentsController:(id)controller;
+- (SUSearchFieldController)initWithContentsController:(id)controller clientInterface:(id)interface style:(int64_t)style;
+- (SUSearchFieldController)initWithContentsController:(id)controller style:(int64_t)style;
 - (UISearchBar)searchBar;
 - (id)_cancelButtonView;
 - (id)_defaultSearchTerm;
 - (id)_newBlankStorePageViewController;
 - (id)_newSearchBar;
-- (id)_newSearchDisplayControllerWithContentsController:(id)a3;
+- (id)_newSearchDisplayControllerWithContentsController:(id)controller;
 - (id)_newTransientViewController;
-- (id)_searchGroupForSearchKind:(id)a3;
+- (id)_searchGroupForSearchKind:(id)kind;
 - (id)_targetViewController;
-- (id)newRequestPropertiesWithSearchTerm:(id)a3 kind:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)newRequestPropertiesWithSearchTerm:(id)term kind:(id)kind;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_cancelCompletionsOperation;
 - (void)_fetchCompletions;
-- (void)_fetchResultsForTerm:(id)a3 URL:(id)a4;
-- (void)_fetchResultsForURLRequestProperties:(id)a3;
-- (void)_reloadCompletionsForSearchString:(id)a3;
+- (void)_fetchResultsForTerm:(id)term URL:(id)l;
+- (void)_fetchResultsForURLRequestProperties:(id)properties;
+- (void)_reloadCompletionsForSearchString:(id)string;
 - (void)_reloadSearchBar;
-- (void)_resizeSearchBarForOrientation:(int64_t)a3;
-- (void)_saveSearchTermToDefaults:(id)a3;
-- (void)_savedSearchTermChangedNotification:(id)a3;
-- (void)_sendOnXEventWithTerm:(id)a3 URL:(id)a4 completionBlock:(id)a5;
+- (void)_resizeSearchBarForOrientation:(int64_t)orientation;
+- (void)_saveSearchTermToDefaults:(id)defaults;
+- (void)_savedSearchTermChangedNotification:(id)notification;
+- (void)_sendOnXEventWithTerm:(id)term URL:(id)l completionBlock:(id)block;
 - (void)_showDimmerView;
 - (void)_tearDownDimmerView;
 - (void)dealloc;
-- (void)handleSearchURL:(id)a3 withSourceApplication:(id)a4 sourceURL:(id)a5;
-- (void)operation:(id)a3 failedWithError:(id)a4;
-- (void)operation:(id)a3 finishedWithOutput:(id)a4;
-- (void)operationDidFinish:(id)a3;
-- (void)scriptDidChangeTextForField:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)searchBarWillRemoveFromSuperview:(id)a3;
-- (void)setSearchFieldConfiguration:(id)a3;
-- (void)setSearchFieldStyle:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)handleSearchURL:(id)l withSourceApplication:(id)application sourceURL:(id)rL;
+- (void)operation:(id)operation failedWithError:(id)error;
+- (void)operation:(id)operation finishedWithOutput:(id)output;
+- (void)operationDidFinish:(id)finish;
+- (void)scriptDidChangeTextForField:(id)field;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)searchBarWillRemoveFromSuperview:(id)superview;
+- (void)setSearchFieldConfiguration:(id)configuration;
+- (void)setSearchFieldStyle:(int64_t)style;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SUSearchFieldController
 
-- (SUSearchFieldController)initWithContentsController:(id)a3
+- (SUSearchFieldController)initWithContentsController:(id)controller
 {
   v5 = +[SUClientDispatch clientInterface];
 
-  return [(SUSearchFieldController *)self initWithContentsController:a3 clientInterface:v5];
+  return [(SUSearchFieldController *)self initWithContentsController:controller clientInterface:v5];
 }
 
-- (SUSearchFieldController)initWithContentsController:(id)a3 style:(int64_t)a4
+- (SUSearchFieldController)initWithContentsController:(id)controller style:(int64_t)style
 {
   v7 = +[SUClientDispatch clientInterface];
 
-  return [(SUSearchFieldController *)self initWithContentsController:a3 clientInterface:v7 style:a4];
+  return [(SUSearchFieldController *)self initWithContentsController:controller clientInterface:v7 style:style];
 }
 
-- (SUSearchFieldController)initWithContentsController:(id)a3 clientInterface:(id)a4 style:(int64_t)a5
+- (SUSearchFieldController)initWithContentsController:(id)controller clientInterface:(id)interface style:(int64_t)style
 {
   v12.receiver = self;
   v12.super_class = SUSearchFieldController;
   v8 = [(SUSearchFieldController *)&v12 init];
   if (v8)
   {
-    v8->_clientInterface = a4;
-    v8->_searchFieldStyle = a5;
+    v8->_clientInterface = interface;
+    v8->_searchFieldStyle = style;
     v9 = objc_alloc_init(SUScriptTextFieldDelegate);
     v8->_textFieldDelegate = v9;
     [(SUScriptTextFieldDelegate *)v9 addDelegate:v8];
-    v10 = [(SUSearchFieldController *)v8 _newSearchDisplayControllerWithContentsController:a3];
+    v10 = [(SUSearchFieldController *)v8 _newSearchDisplayControllerWithContentsController:controller];
     v8->_searchController = v10;
     [(UISearchDisplayController *)v10 setDelegate:v8];
     [(UISearchDisplayController *)v8->_searchController setSearchResultsDataSource:v8];
@@ -105,11 +105,11 @@
   [(SUSearchFieldController *)&v3 dealloc];
 }
 
-- (void)handleSearchURL:(id)a3 withSourceApplication:(id)a4 sourceURL:(id)a5
+- (void)handleSearchURL:(id)l withSourceApplication:(id)application sourceURL:(id)rL
 {
-  v7 = a3;
+  lCopy = l;
   v27 = *MEMORY[0x1E69E9840];
-  v9 = [a3 copyQueryStringDictionaryWithUnescapedValues:1];
+  v9 = [l copyQueryStringDictionaryWithUnescapedValues:1];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -118,9 +118,9 @@
   if (v10)
   {
     v11 = v10;
-    v19 = v7;
-    v20 = a4;
-    v21 = self;
+    v19 = lCopy;
+    applicationCopy = application;
+    selfCopy = self;
     v12 = 0;
     v13 = 0;
     v14 = *v23;
@@ -151,22 +151,22 @@
     while (v11);
     if (v12)
     {
-      self = v21;
-      [(SUSearchDisplayController *)v21->_searchController _noEventSetSearchFieldText:v12];
-      v7 = v19;
-      a4 = v20;
+      self = selfCopy;
+      [(SUSearchDisplayController *)selfCopy->_searchController _noEventSetSearchFieldText:v12];
+      lCopy = v19;
+      application = applicationCopy;
       if (![v19 host])
       {
-        v17 = [(SUSearchFieldController *)v21 newRequestPropertiesWithSearchTerm:v12 kind:v13];
+        v17 = [(SUSearchFieldController *)selfCopy newRequestPropertiesWithSearchTerm:v12 kind:v13];
         goto LABEL_21;
       }
     }
 
     else
     {
-      v7 = v19;
-      a4 = v20;
-      self = v21;
+      lCopy = v19;
+      application = applicationCopy;
+      self = selfCopy;
       if (![v19 host])
       {
         goto LABEL_23;
@@ -174,29 +174,29 @@
     }
   }
 
-  else if (![v7 host])
+  else if (![lCopy host])
   {
     goto LABEL_23;
   }
 
-  v17 = -[SUSearchFieldConfiguration URLRequestPropertiesWithBaseURL:forNetworkType:](self->_configuration, "URLRequestPropertiesWithBaseURL:forNetworkType:", v7, [objc_msgSend(MEMORY[0x1E69E4778] "sharedInstance")]);
+  v17 = -[SUSearchFieldConfiguration URLRequestPropertiesWithBaseURL:forNetworkType:](self->_configuration, "URLRequestPropertiesWithBaseURL:forNetworkType:", lCopy, [objc_msgSend(MEMORY[0x1E69E4778] "sharedInstance")]);
 LABEL_21:
   v18 = v17;
   if (v17)
   {
-    [v17 setValue:a5 forHTTPHeaderField:@"referer"];
-    [v18 setValue:a4 forHTTPHeaderField:@"ref-user-agent"];
+    [v17 setValue:rL forHTTPHeaderField:@"referer"];
+    [v18 setValue:application forHTTPHeaderField:@"ref-user-agent"];
     [(SUSearchFieldController *)self _fetchResultsForURLRequestProperties:v18];
   }
 
 LABEL_23:
 }
 
-- (id)newRequestPropertiesWithSearchTerm:(id)a3 kind:(id)a4
+- (id)newRequestPropertiesWithSearchTerm:(id)term kind:(id)kind
 {
   v7 = -[SUSearchFieldConfiguration searchURLRequestPropertiesForNetworkType:](self->_configuration, "searchURLRequestPropertiesForNetworkType:", [objc_msgSend(MEMORY[0x1E69E4778] "sharedInstance")]);
-  [v7 setValue:-[SUSearchFieldController _searchGroupForSearchKind:](self forRequestParameter:{"_searchGroupForSearchKind:", a4), @"group"}];
-  [v7 setValue:a3 forRequestParameter:@"term"];
+  [v7 setValue:-[SUSearchFieldController _searchGroupForSearchKind:](self forRequestParameter:{"_searchGroupForSearchKind:", kind), @"group"}];
+  [v7 setValue:term forRequestParameter:@"term"];
   v8 = v7;
   return v7;
 }
@@ -214,29 +214,29 @@ LABEL_23:
   return result;
 }
 
-- (void)setSearchFieldConfiguration:(id)a3
+- (void)setSearchFieldConfiguration:(id)configuration
 {
   configuration = self->_configuration;
-  if (configuration != a3)
+  if (configuration != configuration)
   {
 
-    self->_configuration = [a3 copy];
+    self->_configuration = [configuration copy];
 
     [(SUSearchFieldController *)self _reloadSearchBar];
   }
 }
 
-- (void)setSearchFieldStyle:(int64_t)a3
+- (void)setSearchFieldStyle:(int64_t)style
 {
-  if (self->_searchFieldStyle != a3)
+  if (self->_searchFieldStyle != style)
   {
-    v7 = [(UISearchDisplayController *)self->_searchController searchContentsController];
-    self->_searchFieldStyle = a3;
+    searchContentsController = [(UISearchDisplayController *)self->_searchController searchContentsController];
+    self->_searchFieldStyle = style;
     [(UISearchDisplayController *)self->_searchController setDelegate:0];
     [(UISearchDisplayController *)self->_searchController setSearchResultsDataSource:self];
     [(UISearchDisplayController *)self->_searchController setSearchResultsDelegate:self];
 
-    v6 = [(SUSearchFieldController *)self _newSearchDisplayControllerWithContentsController:v7];
+    v6 = [(SUSearchFieldController *)self _newSearchDisplayControllerWithContentsController:searchContentsController];
     self->_searchController = v6;
     [(UISearchDisplayController *)v6 setDelegate:self];
     [(UISearchDisplayController *)self->_searchController setSearchResultsDataSource:self];
@@ -245,57 +245,57 @@ LABEL_23:
   }
 }
 
-- (void)operation:(id)a3 failedWithError:(id)a4
+- (void)operation:(id)operation failedWithError:(id)error
 {
-  [(ISStoreURLOperation *)self->_completionsOperation setDelegate:0, a4];
+  [(ISStoreURLOperation *)self->_completionsOperation setDelegate:0, error];
 
   self->_completionsOperation = 0;
 }
 
-- (void)operation:(id)a3 finishedWithOutput:(id)a4
+- (void)operation:(id)operation finishedWithOutput:(id)output
 {
-  self->_completions = [a4 completionItems];
-  v6 = [(UISearchDisplayController *)self->_searchController searchResultsTableView];
+  self->_completions = [output completionItems];
+  searchResultsTableView = [(UISearchDisplayController *)self->_searchController searchResultsTableView];
 
-  [(UITableView *)v6 reloadData];
+  [(UITableView *)searchResultsTableView reloadData];
 }
 
-- (void)operationDidFinish:(id)a3
+- (void)operationDidFinish:(id)finish
 {
   [(ISStoreURLOperation *)self->_completionsOperation setDelegate:0];
 
   self->_completionsOperation = 0;
 }
 
-- (void)scriptDidChangeTextForField:(id)a3
+- (void)scriptDidChangeTextForField:(id)field
 {
-  v4 = [(UISearchBar *)self->_searchBar text];
+  text = [(UISearchBar *)self->_searchBar text];
 
-  [(SUSearchFieldController *)self _saveSearchTermToDefaults:v4];
+  [(SUSearchFieldController *)self _saveSearchTermToDefaults:text];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = [(UISearchDisplayController *)self->_searchController searchContentsController:a3];
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
+  v5 = [(UISearchDisplayController *)self->_searchController searchContentsController:bar];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v6 sendAction:sel_iTunesStoreUI_searchFieldControllerDidChange_ to:v5 from:a3 forEvent:0];
+  [mEMORY[0x1E69DC668] sendAction:sel_iTunesStoreUI_searchFieldControllerDidChange_ to:v5 from:bar forEvent:0];
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = [a3 text];
-  [(SUSearchDisplayController *)self->_searchController _noEventSetSearchFieldText:v4];
+  text = [clicked text];
+  [(SUSearchDisplayController *)self->_searchController _noEventSetSearchFieldText:text];
   [(SUSearchDisplayController *)self->_searchController setActive:0 animated:1];
-  [(SUSearchFieldController *)self _saveSearchTermToDefaults:v4];
-  if ([v4 length])
+  [(SUSearchFieldController *)self _saveSearchTermToDefaults:text];
+  if ([text length])
   {
 
-    [(SUSearchFieldController *)self _fetchResultsForTerm:v4 URL:0];
+    [(SUSearchFieldController *)self _fetchResultsForTerm:text URL:0];
   }
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   if ([objc_msgSend(MEMORY[0x1E69DC938] currentDevice] == 1)
   {
@@ -310,7 +310,7 @@ LABEL_23:
   return 1;
 }
 
-- (BOOL)searchBarShouldEndEditing:(id)a3
+- (BOOL)searchBarShouldEndEditing:(id)editing
 {
   if (self->_dimmerView)
   {
@@ -331,14 +331,14 @@ LABEL_23:
   return 1;
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = [(UISearchBar *)self->_searchBar text];
+  text = [(UISearchBar *)self->_searchBar text];
 
-  [(SUSearchFieldController *)self _saveSearchTermToDefaults:v4];
+  [(SUSearchFieldController *)self _saveSearchTermToDefaults:text];
 }
 
-- (void)searchBarWillRemoveFromSuperview:(id)a3
+- (void)searchBarWillRemoveFromSuperview:(id)superview
 {
   hasLoadedSearchResultsTableView = self->_hasLoadedSearchResultsTableView;
   searchController = self->_searchController;
@@ -358,13 +358,13 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(UITableView *)[(UISearchDisplayController *)searchController searchResultsTableView] window];
+  window = [(UITableView *)[(UISearchDisplayController *)searchController searchResultsTableView] window];
   if (![(UISearchDisplayController *)self->_searchController isActive])
   {
     return;
   }
 
-  if (!v6)
+  if (!window)
   {
     goto LABEL_6;
   }
@@ -375,69 +375,69 @@ LABEL_7:
   [(SUSearchDisplayController *)v7 setActive:0 animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"a"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"a"];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"a"];
   }
 
-  v7 = -[NSArray objectAtIndex:](self->_completions, "objectAtIndex:", [a4 row]);
-  v8 = [v7 alternateTitle];
-  if (![v8 length])
+  v7 = -[NSArray objectAtIndex:](self->_completions, "objectAtIndex:", [path row]);
+  alternateTitle = [v7 alternateTitle];
+  if (![alternateTitle length])
   {
-    v8 = [v7 title];
+    alternateTitle = [v7 title];
   }
 
   [objc_msgSend(v6 "textLabel")];
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = -[NSArray objectAtIndex:](self->_completions, "objectAtIndex:", [a4 row]);
-  v6 = [v5 title];
-  [(SUSearchDisplayController *)self->_searchController _noEventSetSearchFieldText:v6];
+  v5 = -[NSArray objectAtIndex:](self->_completions, "objectAtIndex:", [path row]);
+  title = [v5 title];
+  [(SUSearchDisplayController *)self->_searchController _noEventSetSearchFieldText:title];
   [(SUSearchDisplayController *)self->_searchController setActive:0 animated:1];
-  [(SUSearchFieldController *)self _saveSearchTermToDefaults:v6];
+  [(SUSearchFieldController *)self _saveSearchTermToDefaults:title];
   v7 = [v5 URL];
 
-  [(SUSearchFieldController *)self _fetchResultsForTerm:v6 URL:v7];
+  [(SUSearchFieldController *)self _fetchResultsForTerm:title URL:v7];
 }
 
-- (void)_savedSearchTermChangedNotification:(id)a3
+- (void)_savedSearchTermChangedNotification:(id)notification
 {
-  if ([objc_msgSend(objc_msgSend(objc_msgSend(a3 "object")])
+  if ([objc_msgSend(objc_msgSend(objc_msgSend(notification "object")])
   {
     searchController = self->_searchController;
-    v5 = [(SUSearchFieldController *)self _defaultSearchTerm];
+    _defaultSearchTerm = [(SUSearchFieldController *)self _defaultSearchTerm];
 
-    [(SUSearchDisplayController *)searchController _noEventSetSearchFieldText:v5];
+    [(SUSearchDisplayController *)searchController _noEventSetSearchFieldText:_defaultSearchTerm];
   }
 }
 
 - (id)_cancelButtonView
 {
-  v2 = [(UISearchDisplayController *)self->_searchController searchContentsController];
-  if (!v2)
+  searchContentsController = [(UISearchDisplayController *)self->_searchController searchContentsController];
+  if (!searchContentsController)
   {
     return 0;
   }
 
-  v3 = [(UIViewController *)v2 navigationItem];
-  if (sel_isEqual(sel_cancelTransientViewController_, [(UIBarButtonItem *)[(UINavigationItem *)v3 leftBarButtonItem] action]))
+  navigationItem = [(UIViewController *)searchContentsController navigationItem];
+  if (sel_isEqual(sel_cancelTransientViewController_, [(UIBarButtonItem *)[(UINavigationItem *)navigationItem leftBarButtonItem] action]))
   {
 
-    return [(UINavigationItem *)v3 customLeftView];
+    return [(UINavigationItem *)navigationItem customLeftView];
   }
 
-  if (!sel_isEqual(sel_cancelTransientViewController_, [(UIBarButtonItem *)[(UINavigationItem *)v3 rightBarButtonItem] action]))
+  if (!sel_isEqual(sel_cancelTransientViewController_, [(UIBarButtonItem *)[(UINavigationItem *)navigationItem rightBarButtonItem] action]))
   {
     return 0;
   }
 
-  return [(UINavigationItem *)v3 customRightView];
+  return [(UINavigationItem *)navigationItem customRightView];
 }
 
 - (void)_cancelCompletionsOperation
@@ -455,9 +455,9 @@ LABEL_7:
   if (result)
   {
     v3 = result;
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v4 objectForKey:v3];
+    return [standardUserDefaults objectForKey:v3];
   }
 
   return result;
@@ -466,8 +466,8 @@ LABEL_7:
 - (void)_fetchCompletions
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:a2 object:0];
-  v3 = [(UISearchBar *)[(SUSearchFieldController *)self searchBar] text];
-  if ([(NSString *)v3 length])
+  text = [(UISearchBar *)[(SUSearchFieldController *)self searchBar] text];
+  if ([(NSString *)text length])
   {
     v4 = objc_alloc_init(MEMORY[0x1E69E47E0]);
     self->_completionsOperation = v4;
@@ -475,25 +475,25 @@ LABEL_7:
     [(ISStoreURLOperation *)self->_completionsOperation setDelegate:self];
     [(ISStoreURLOperation *)self->_completionsOperation setShouldMessageMainThread:1];
     v5 = -[SUSearchFieldConfiguration hintsURLRequestPropertiesForNetworkType:](self->_configuration, "hintsURLRequestPropertiesForNetworkType:", [objc_msgSend(MEMORY[0x1E69E4778] "sharedInstance")]);
-    [v5 setValue:v3 forRequestParameter:@"q"];
+    [v5 setValue:text forRequestParameter:@"q"];
     [(ISStoreURLOperation *)self->_completionsOperation setRequestProperties:v5];
-    v6 = [MEMORY[0x1E69E4798] mainQueue];
+    mainQueue = [MEMORY[0x1E69E4798] mainQueue];
     completionsOperation = self->_completionsOperation;
 
-    [v6 addOperation:completionsOperation];
+    [mainQueue addOperation:completionsOperation];
   }
 }
 
-- (void)_fetchResultsForTerm:(id)a3 URL:(id)a4
+- (void)_fetchResultsForTerm:(id)term URL:(id)l
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __52__SUSearchFieldController__fetchResultsForTerm_URL___block_invoke;
   v4[3] = &unk_1E8166438;
-  v4[4] = a4;
+  v4[4] = l;
   v4[5] = self;
-  v4[6] = a3;
-  [(SUSearchFieldController *)self _sendOnXEventWithTerm:a3 URL:a4 completionBlock:v4];
+  v4[6] = term;
+  [(SUSearchFieldController *)self _sendOnXEventWithTerm:term URL:l completionBlock:v4];
 }
 
 void __52__SUSearchFieldController__fetchResultsForTerm_URL___block_invoke(uint64_t a1, char a2)
@@ -517,55 +517,55 @@ void __52__SUSearchFieldController__fetchResultsForTerm_URL___block_invoke(uint6
   }
 }
 
-- (void)_fetchResultsForURLRequestProperties:(id)a3
+- (void)_fetchResultsForURLRequestProperties:(id)properties
 {
-  v6 = [(SUSearchFieldController *)self _targetViewController];
-  if (!v6)
+  _targetViewController = [(SUSearchFieldController *)self _targetViewController];
+  if (!_targetViewController)
   {
     [(SUSearchFieldController *)a2 _fetchResultsForURLRequestProperties:?];
   }
 
-  [v6 reloadWithURLRequestProperties:a3];
+  [_targetViewController reloadWithURLRequestProperties:properties];
 }
 
 - (BOOL)_focusTransientViewController
 {
-  v3 = [(UIViewController *)[(UISearchDisplayController *)self->_searchController searchContentsController] tabBarController];
+  tabBarController = [(UIViewController *)[(UISearchDisplayController *)self->_searchController searchContentsController] tabBarController];
   if (!__SharedTransientViewController)
   {
     goto LABEL_6;
   }
 
-  v4 = v3;
-  v5 = [(UITabBarController *)v3 transientViewController];
-  if (v5 == __SharedTransientViewController)
+  v4 = tabBarController;
+  transientViewController = [(UITabBarController *)tabBarController transientViewController];
+  if (transientViewController == __SharedTransientViewController)
   {
     goto LABEL_6;
   }
 
-  v6 = [__SharedTransientViewController topViewController];
+  topViewController = [__SharedTransientViewController topViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 searchFieldController];
-  if (v7)
+  searchFieldController = [topViewController searchFieldController];
+  if (searchFieldController)
   {
-    if ([objc_msgSend(v7 "searchFieldConfiguration")] == 2)
+    if ([objc_msgSend(searchFieldController "searchFieldConfiguration")] == 2)
     {
 LABEL_6:
-      LOBYTE(v7) = 0;
-      return v7;
+      LOBYTE(searchFieldController) = 0;
+      return searchFieldController;
     }
 
-    v8 = self;
+    selfCopy = self;
     [(UITabBarController *)v4 setTransientViewController:__SharedTransientViewController animated:0];
-    LOBYTE(v7) = 1;
+    LOBYTE(searchFieldController) = 1;
   }
 
-  return v7;
+  return searchFieldController;
 }
 
 - (id)_newBlankStorePageViewController
@@ -585,9 +585,9 @@ LABEL_6:
   return v4;
 }
 
-- (id)_newSearchDisplayControllerWithContentsController:(id)a3
+- (id)_newSearchDisplayControllerWithContentsController:(id)controller
 {
-  v4 = [(UISearchDisplayController *)[SUSearchDisplayController alloc] initWithSearchBar:[(SUSearchFieldController *)self searchBar] contentsController:a3];
+  v4 = [(UISearchDisplayController *)[SUSearchDisplayController alloc] initWithSearchBar:[(SUSearchFieldController *)self searchBar] contentsController:controller];
   [(UISearchDisplayController *)v4 _setAllowDisablingNavigationBarHiding:1];
   [(UISearchDisplayController *)v4 setAutomaticallyShowsNoResultsMessage:0];
   [(UISearchDisplayController *)v4 setDimTableViewOnEmptySearchString:1];
@@ -613,18 +613,18 @@ LABEL_6:
 
 - (id)_newTransientViewController
 {
-  v3 = [(UIViewController *)[(UISearchDisplayController *)self->_searchController searchContentsController] section];
-  v4 = [(SUSearchFieldController *)self _newBlankStorePageViewController];
-  v5 = [[SUNavigationController alloc] initWithSection:v3 rootViewController:v4];
-  -[SUNavigationController setClientInterface:](v5, "setClientInterface:", [v4 clientInterface]);
+  section = [(UIViewController *)[(UISearchDisplayController *)self->_searchController searchContentsController] section];
+  _newBlankStorePageViewController = [(SUSearchFieldController *)self _newBlankStorePageViewController];
+  v5 = [[SUNavigationController alloc] initWithSection:section rootViewController:_newBlankStorePageViewController];
+  -[SUNavigationController setClientInterface:](v5, "setClientInterface:", [_newBlankStorePageViewController clientInterface]);
 
   return v5;
 }
 
-- (void)_reloadCompletionsForSearchString:(id)a3
+- (void)_reloadCompletionsForSearchString:(id)string
 {
   [(SUSearchFieldController *)self _cancelCompletionsOperation];
-  if ([a3 length])
+  if ([string length])
   {
 
     [(SUSearchFieldController *)self performSelector:sel__fetchCompletions withObject:0 afterDelay:0.3];
@@ -646,7 +646,7 @@ LABEL_6:
   }
 
   v3 = _UIApplicationUsesLegacyUI();
-  v4 = [(UISearchBar *)self->_searchBar searchField];
+  searchField = [(UISearchBar *)self->_searchBar searchField];
   if (v3)
   {
     if (self->_searchFieldStyle)
@@ -656,8 +656,8 @@ LABEL_6:
       [(UISearchBar *)self->_searchBar setImage:0 forSearchBarIcon:1 state:0];
       [(UISearchBar *)self->_searchBar setImage:0 forSearchBarIcon:0 state:0];
       [(UISearchBar *)self->_searchBar setPositionAdjustment:1 forSearchBarIcon:0.0, 1.0];
-      [v4 setShadowColor:0];
-      v5 = [MEMORY[0x1E69DC888] blackColor];
+      [searchField setShadowColor:0];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
     }
 
     else
@@ -671,17 +671,17 @@ LABEL_6:
       -[UISearchBar setImage:forSearchBarIcon:state:](self->_searchBar, "setImage:forSearchBarIcon:state:", [MEMORY[0x1E69DCAB8] imageNamed:@"UISearchBarResultsList" inBundle:v8], 3, 0);
       -[UISearchBar setImage:forSearchBarIcon:state:](self->_searchBar, "setImage:forSearchBarIcon:state:", [MEMORY[0x1E69DCAB8] imageNamed:@"UISearchBarResultsListPressed" inBundle:v8], 3, 1);
       -[UISearchBar setImage:forSearchBarIcon:state:](self->_searchBar, "setImage:forSearchBarIcon:state:", [MEMORY[0x1E69DCAB8] imageNamed:@"UISearchBarSearch" inBundle:v8], 0, 0);
-      [v4 setShadowColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.08, 1.0)}];
-      [v4 setShadowOffset:{0.0, -1.0}];
-      v5 = [MEMORY[0x1E69DC888] colorWithWhite:0.73 alpha:1.0];
+      [searchField setShadowColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.08, 1.0)}];
+      [searchField setShadowOffset:{0.0, -1.0}];
+      blackColor = [MEMORY[0x1E69DC888] colorWithWhite:0.73 alpha:1.0];
     }
 
-    [v4 setTextColor:v5];
+    [searchField setTextColor:blackColor];
   }
 
   else
   {
-    [v4 setFont:{objc_msgSend(MEMORY[0x1E69DB878], "systemFontOfSize:", 14.0)}];
+    [searchField setFont:{objc_msgSend(MEMORY[0x1E69DB878], "systemFontOfSize:", 14.0)}];
     searchBar = self->_searchBar;
     if (self->_searchFieldStyle)
     {
@@ -711,13 +711,13 @@ LABEL_6:
   [(UISearchBar *)v9 setDrawsBackground:v10];
 }
 
-- (void)_resizeSearchBarForOrientation:(int64_t)a3
+- (void)_resizeSearchBarForOrientation:(int64_t)orientation
 {
   [(SUSearchFieldConfiguration *)self->_configuration widthForOrientation:?];
   v6 = v5;
   if (v5 < 0.00000011920929)
   {
-    [+[SUSearchFieldConfiguration defaultConfigurationWithClientInterface:](SUSearchFieldConfiguration defaultConfigurationWithClientInterface:{self->_clientInterface), "widthForOrientation:", a3}];
+    [+[SUSearchFieldConfiguration defaultConfigurationWithClientInterface:](SUSearchFieldConfiguration defaultConfigurationWithClientInterface:{self->_clientInterface), "widthForOrientation:", orientation}];
     v6 = v7;
   }
 
@@ -726,92 +726,92 @@ LABEL_6:
   v11 = v10;
   [(UISearchBar *)self->_searchBar sizeThatFits:v6, 0.0];
   [(UISearchBar *)self->_searchBar setFrame:v9, v11, v12, v13];
-  v14 = [(UISearchBar *)self->_searchBar superview];
+  superview = [(UISearchBar *)self->_searchBar superview];
 
-  [v14 setNeedsLayout];
+  [superview setNeedsLayout];
 }
 
-- (void)_saveSearchTermToDefaults:(id)a3
+- (void)_saveSearchTermToDefaults:(id)defaults
 {
-  v5 = [(SUSearchFieldConfiguration *)self->_configuration userDefaultsKey];
-  if (v5)
+  userDefaultsKey = [(SUSearchFieldConfiguration *)self->_configuration userDefaultsKey];
+  if (userDefaultsKey)
   {
-    v6 = v5;
-    v7 = [a3 length];
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = userDefaultsKey;
+    v7 = [defaults length];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     if (v7)
     {
-      [v8 setObject:a3 forKey:v6];
+      [standardUserDefaults setObject:defaults forKey:v6];
     }
 
     else
     {
-      [v8 removeObjectForKey:v6];
+      [standardUserDefaults removeObjectForKey:v6];
     }
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v9 postNotificationName:@"SUSearchFieldControllerSavedSearchTermNotification" object:self];
+    [defaultCenter postNotificationName:@"SUSearchFieldControllerSavedSearchTermNotification" object:self];
   }
 }
 
-- (id)_searchGroupForSearchKind:(id)a3
+- (id)_searchGroupForSearchKind:(id)kind
 {
-  if ([a3 isEqualToString:@"epubBook"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"metaEbook") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"ibook") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"ibookTextbook"))
+  if ([kind isEqualToString:@"epubBook"] & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", @"metaEbook") & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", @"ibook") & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", @"ibookTextbook"))
   {
     return @"ebook";
   }
 
-  if ([a3 isEqualToString:@"book"])
+  if ([kind isEqualToString:@"book"])
   {
     return @"audiobook";
   }
 
-  if ([a3 isEqualToString:@"iMix"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"itunesMix") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"mix") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"preorderAlbum"))
+  if ([kind isEqualToString:@"iMix"] & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", @"itunesMix") & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", @"mix") & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", @"preorderAlbum"))
   {
     return @"album";
   }
 
-  if ([a3 isEqualToString:@"shortFilm"])
+  if ([kind isEqualToString:@"shortFilm"])
   {
     return @"movie";
   }
 
-  if ([a3 isEqualToString:@"tvEpisode"])
+  if ([kind isEqualToString:@"tvEpisode"])
   {
     return @"tvSeason";
   }
 
-  if ([a3 isEqualToString:@"podcastEpisode"])
+  if ([kind isEqualToString:@"podcastEpisode"])
   {
     return @"podcast";
   }
 
-  if ([a3 isEqualToString:@"tone"])
+  if ([kind isEqualToString:@"tone"])
   {
     return @"ringtone";
   }
 
-  if ([a3 isEqualToString:@"course"])
+  if ([kind isEqualToString:@"course"])
   {
     return @"iTunesUCourse";
   }
 
-  return a3;
+  return kind;
 }
 
-- (void)_sendOnXEventWithTerm:(id)a3 URL:(id)a4 completionBlock:(id)a5
+- (void)_sendOnXEventWithTerm:(id)term URL:(id)l completionBlock:(id)block
 {
   v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{@"search", @"type", 0}];
   v10 = v9;
-  if (a3)
+  if (term)
   {
-    [v9 setObject:a3 forKey:@"term"];
+    [v9 setObject:term forKey:@"term"];
   }
 
-  if (a4)
+  if (l)
   {
-    [v10 setObject:objc_msgSend(a4 forKey:{"absoluteString"), @"url"}];
+    [v10 setObject:objc_msgSend(l forKey:{"absoluteString"), @"url"}];
   }
 
   clientInterface = self->_clientInterface;
@@ -819,7 +819,7 @@ LABEL_6:
   v12[1] = 3221225472;
   v12[2] = __69__SUSearchFieldController__sendOnXEventWithTerm_URL_completionBlock___block_invoke;
   v12[3] = &unk_1E8164A48;
-  v12[4] = a5;
+  v12[4] = block;
   [(SUClientInterface *)clientInterface _dispatchXEvent:v10 withCompletionBlock:v12];
 }
 
@@ -851,25 +851,25 @@ void __69__SUSearchFieldController__sendOnXEventWithTerm_URL_completionBlock___b
 
     if (![(UIControl *)dimmerView superview])
     {
-      v5 = [(UISearchDisplayController *)self->_searchController searchContentsController];
+      searchContentsController = [(UISearchDisplayController *)self->_searchController searchContentsController];
       [(UIControl *)self->_dimmerView setAlpha:0.0];
-      v6 = [(UIViewController *)v5 parentViewController];
-      if (v6)
+      parentViewController = [(UIViewController *)searchContentsController parentViewController];
+      if (parentViewController)
       {
-        v7 = [(UIViewController *)v6 view];
-        v8 = [(UIViewController *)v5 view];
-        [(UIView *)v8 frame];
-        [(UIView *)v7 convertRect:[(UIView *)v8 superview] fromView:v9, v10, v11, v12];
+        view = [(UIViewController *)parentViewController view];
+        view2 = [(UIViewController *)searchContentsController view];
+        [(UIView *)view2 frame];
+        [(UIView *)view convertRect:[(UIView *)view2 superview] fromView:v9, v10, v11, v12];
       }
 
       else
       {
-        v7 = [(UIViewController *)v5 view];
-        [(UIView *)v7 bounds];
+        view = [(UIViewController *)searchContentsController view];
+        [(UIView *)view bounds];
       }
 
       [(UIControl *)self->_dimmerView setFrame:?];
-      [(UIView *)v7 addSubview:self->_dimmerView];
+      [(UIView *)view addSubview:self->_dimmerView];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __42__SUSearchFieldController__showDimmerView__block_invoke;
@@ -890,37 +890,37 @@ uint64_t __42__SUSearchFieldController__showDimmerView__block_invoke(uint64_t a1
 
 - (id)_targetViewController
 {
-  v3 = [(UISearchDisplayController *)self->_searchController searchContentsController];
+  searchContentsController = [(UISearchDisplayController *)self->_searchController searchContentsController];
   if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] == 1)
   {
     if (__SharedTransientViewController)
     {
-      v4 = [(SUSearchFieldController *)self _newBlankStorePageViewController];
-      [__SharedTransientViewController setViewControllers:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", v4, 0)}];
+      _newBlankStorePageViewController = [(SUSearchFieldController *)self _newBlankStorePageViewController];
+      [__SharedTransientViewController setViewControllers:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", _newBlankStorePageViewController, 0)}];
 
-      v5 = __SharedTransientViewController;
+      _newTransientViewController = __SharedTransientViewController;
     }
 
     else
     {
-      v5 = [(SUSearchFieldController *)self _newTransientViewController];
-      __SharedTransientViewController = v5;
+      _newTransientViewController = [(SUSearchFieldController *)self _newTransientViewController];
+      __SharedTransientViewController = _newTransientViewController;
     }
 
-    v6 = [v5 topViewController];
+    topViewController = [_newTransientViewController topViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v6 embeddedViewController];
+      topViewController = [topViewController embeddedViewController];
     }
 
-    v7 = self;
-    v8 = [(UIViewController *)v3 tabBarController];
-    [(UITabBarController *)v8 setTransientViewController:__SharedTransientViewController animated:0];
-    return v6;
+    selfCopy = self;
+    tabBarController = [(UIViewController *)searchContentsController tabBarController];
+    [(UITabBarController *)tabBarController setTransientViewController:__SharedTransientViewController animated:0];
+    return topViewController;
   }
 
-  return v3;
+  return searchContentsController;
 }
 
 - (void)_tearDownDimmerView

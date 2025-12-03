@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector_$2
-- (OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector_$2)initWithOrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector:(id)a3 withOrgApacheLuceneSearchLeafFieldComparatorArray:(id)a4 withIntArray:(id)a5;
+- (OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector_$2)initWithOrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector:(id)collector withOrgApacheLuceneSearchLeafFieldComparatorArray:(id)array withIntArray:(id)intArray;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector_$2
 
-- (OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector_$2)initWithOrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector:(id)a3 withOrgApacheLuceneSearchLeafFieldComparatorArray:(id)a4 withIntArray:(id)a5
+- (OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector_$2)initWithOrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector:(id)collector withOrgApacheLuceneSearchLeafFieldComparatorArray:(id)array withIntArray:(id)intArray
 {
-  JreStrongAssign(&self->this$0_, a3);
-  sub_100094EC0(self, a4, a5);
+  JreStrongAssign(&self->this$0_, collector);
+  sub_100094EC0(self, array, intArray);
   return self;
 }
 

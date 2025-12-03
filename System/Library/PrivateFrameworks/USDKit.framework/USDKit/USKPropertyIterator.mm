@@ -1,12 +1,12 @@
 @interface USKPropertyIterator
-- (USKPropertyIterator)initWithProperties:(const void *)a3;
+- (USKPropertyIterator)initWithProperties:(const void *)properties;
 - (id).cxx_construct;
 - (id)nextObject;
 @end
 
 @implementation USKPropertyIterator
 
-- (USKPropertyIterator)initWithProperties:(const void *)a3
+- (USKPropertyIterator)initWithProperties:(const void *)properties
 {
   v9.receiver = self;
   v9.super_class = USKPropertyIterator;
@@ -15,9 +15,9 @@
   if (v4)
   {
     p_properties = &v4->_properties;
-    if (&v5->_properties != a3)
+    if (&v5->_properties != properties)
     {
-      sub_270366DD8(p_properties, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 5);
+      sub_270366DD8(p_properties, *properties, *(properties + 1), (*(properties + 1) - *properties) >> 5);
     }
 
     v5->_it.__i_ = v5->_properties.__begin_;

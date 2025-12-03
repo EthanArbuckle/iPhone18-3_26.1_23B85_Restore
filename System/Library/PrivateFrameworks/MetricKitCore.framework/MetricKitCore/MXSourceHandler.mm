@@ -1,35 +1,35 @@
 @interface MXSourceHandler
-- (BOOL)writeDiagnosticReport:(id)a3 atAppContainerPath:(id)a4 forClient:(id)a5 withError:(id *)a6;
-- (MXSourceHandler)initWithSourceDataCacher:(id)a3 andDeliveryDataCacher:(id)a4 andSourcePathUtil:(id)a5 andBundleUtil:(id)a6 andDiagnosticServices:(id)a7 andDelegate:(id)a8;
+- (BOOL)writeDiagnosticReport:(id)report atAppContainerPath:(id)path forClient:(id)client withError:(id *)error;
+- (MXSourceHandler)initWithSourceDataCacher:(id)cacher andDeliveryDataCacher:(id)dataCacher andSourcePathUtil:(id)util andBundleUtil:(id)bundleUtil andDiagnosticServices:(id)services andDelegate:(id)delegate;
 - (MXSourceHandlerDelegate)delegate;
-- (void)_removeDeliveredPayloadForSourceID:(int64_t)a3 atDate:(id)a4;
-- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)a3;
-- (void)handleDiagnosticDataWithPayload:(id)a3;
-- (void)handleMetricDataWithPayload:(id)a3;
+- (void)_removeDeliveredPayloadForSourceID:(int64_t)d atDate:(id)date;
+- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)client;
+- (void)handleDiagnosticDataWithPayload:(id)payload;
+- (void)handleMetricDataWithPayload:(id)payload;
 @end
 
 @implementation MXSourceHandler
 
-- (MXSourceHandler)initWithSourceDataCacher:(id)a3 andDeliveryDataCacher:(id)a4 andSourcePathUtil:(id)a5 andBundleUtil:(id)a6 andDiagnosticServices:(id)a7 andDelegate:(id)a8
+- (MXSourceHandler)initWithSourceDataCacher:(id)cacher andDeliveryDataCacher:(id)dataCacher andSourcePathUtil:(id)util andBundleUtil:(id)bundleUtil andDiagnosticServices:(id)services andDelegate:(id)delegate
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  cacherCopy = cacher;
+  dataCacherCopy = dataCacher;
+  utilCopy = util;
+  bundleUtilCopy = bundleUtil;
+  servicesCopy = services;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = MXSourceHandler;
   v18 = [(MXSourceHandler *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_sourceDataCacher, a3);
-    objc_storeStrong(&v19->_deliveryDataCacher, a4);
-    objc_storeStrong(&v19->_sourcePathUtil, a5);
-    objc_storeStrong(&v19->_diagnosticServices, a7);
-    objc_storeStrong(&v19->_bundleUtil, a6);
-    objc_storeWeak(&v19->_delegate, v17);
+    objc_storeStrong(&v18->_sourceDataCacher, cacher);
+    objc_storeStrong(&v19->_deliveryDataCacher, dataCacher);
+    objc_storeStrong(&v19->_sourcePathUtil, util);
+    objc_storeStrong(&v19->_diagnosticServices, services);
+    objc_storeStrong(&v19->_bundleUtil, bundleUtil);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
     v20 = os_log_create("com.apple.metrickit", "source.handler");
     logHandle = v19->_logHandle;
     v19->_logHandle = v20;
@@ -43,42 +43,42 @@
   return v19;
 }
 
-- (void)handleMetricDataWithPayload:(id)a3
+- (void)handleMetricDataWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(MXSourceHandler *)self sourceDataCacher];
-  v6 = [v5 saveToSourceDirectoryWithMetricSourcePayload:v4];
+  payloadCopy = payload;
+  sourceDataCacher = [(MXSourceHandler *)self sourceDataCacher];
+  v6 = [sourceDataCacher saveToSourceDirectoryWithMetricSourcePayload:payloadCopy];
 
   if (v6)
   {
-    v7 = [(MXSourceHandler *)self delegate];
-    [v7 metricPayloadDidCacheToSourceDirectory];
+    delegate = [(MXSourceHandler *)self delegate];
+    [delegate metricPayloadDidCacheToSourceDirectory];
   }
 }
 
-- (void)handleDiagnosticDataWithPayload:(id)a3
+- (void)handleDiagnosticDataWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(MXSourceHandler *)self sourceDataCacher];
-  v6 = [v5 saveToSourceDirectoryWithDiagnosticSourcePayload:v4];
+  payloadCopy = payload;
+  sourceDataCacher = [(MXSourceHandler *)self sourceDataCacher];
+  v6 = [sourceDataCacher saveToSourceDirectoryWithDiagnosticSourcePayload:payloadCopy];
 
   if (v6)
   {
-    v7 = [(MXSourceHandler *)self delegate];
-    [v7 diagnosticPayloadDidCacheToSourceDirectory];
+    delegate = [(MXSourceHandler *)self delegate];
+    [delegate diagnosticPayloadDidCacheToSourceDirectory];
 
-    v8 = [v4 bundleID];
-    v9 = [(MXBundleUtilProtocol *)self->_bundleUtil isAppExtensionFromBundleID:v8];
+    bundleID = [payloadCopy bundleID];
+    v9 = [(MXBundleUtilProtocol *)self->_bundleUtil isAppExtensionFromBundleID:bundleID];
     if (v9)
     {
-      v10 = [(MXBundleUtilProtocol *)self->_bundleUtil mainAppBundleIDforExtension:v8];
+      v10 = [(MXBundleUtilProtocol *)self->_bundleUtil mainAppBundleIDforExtension:bundleID];
       v11 = v10;
       if (!v10)
       {
         logHandle = self->_logHandle;
         if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
         {
-          [(MXSourceHandler *)v8 handleDiagnosticDataWithPayload:?];
+          [(MXSourceHandler *)bundleID handleDiagnosticDataWithPayload:?];
         }
 
 LABEL_10:
@@ -90,25 +90,25 @@ LABEL_10:
     else
     {
       v11 = 0;
-      v10 = v8;
+      v10 = bundleID;
     }
 
-    v13 = [(MXSourceHandler *)self diagnosticServices];
-    v14 = [v4 datestamp];
-    v15 = [v13 diagnosticPayloadForClient:v8 isExtension:v9 andMainAppBundleID:v11 andDate:v14];
+    diagnosticServices = [(MXSourceHandler *)self diagnosticServices];
+    datestamp = [payloadCopy datestamp];
+    v15 = [diagnosticServices diagnosticPayloadForClient:bundleID isExtension:v9 andMainAppBundleID:v11 andDate:datestamp];
 
     v16 = v10;
-    v17 = [(MXSourceHandler *)self deliveryDataCacher];
-    LODWORD(v14) = [v17 saveDiagnostic:v15 toDeliveryDirectoryForBundleID:v16];
+    deliveryDataCacher = [(MXSourceHandler *)self deliveryDataCacher];
+    LODWORD(datestamp) = [deliveryDataCacher saveDiagnostic:v15 toDeliveryDirectoryForBundleID:v16];
 
-    if (v14)
+    if (datestamp)
     {
-      v18 = [v4 sourceID];
-      v19 = [v4 datestamp];
-      [(MXSourceHandler *)self _removeDeliveredPayloadForSourceID:v18 atDate:v19];
+      sourceID = [payloadCopy sourceID];
+      datestamp2 = [payloadCopy datestamp];
+      [(MXSourceHandler *)self _removeDeliveredPayloadForSourceID:sourceID atDate:datestamp2];
 
-      v20 = [(MXSourceHandler *)self deliveryDataCacher];
-      [v20 notifyDataAvailableForDelivery];
+      deliveryDataCacher2 = [(MXSourceHandler *)self deliveryDataCacher];
+      [deliveryDataCacher2 notifyDataAvailableForDelivery];
     }
 
     goto LABEL_10;
@@ -117,29 +117,29 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)a3
+- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(MXSourceHandler *)self diagnosticServices];
-  [v5 cleanServiceDiagnosticsDirectoriesForClient:v4];
+  clientCopy = client;
+  diagnosticServices = [(MXSourceHandler *)self diagnosticServices];
+  [diagnosticServices cleanServiceDiagnosticsDirectoriesForClient:clientCopy];
 }
 
-- (BOOL)writeDiagnosticReport:(id)a3 atAppContainerPath:(id)a4 forClient:(id)a5 withError:(id *)a6
+- (BOOL)writeDiagnosticReport:(id)report atAppContainerPath:(id)path forClient:(id)client withError:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(MXSourceHandler *)self deliveryDataCacher];
-  LOBYTE(a6) = [v13 writeDiagnosticReport:v12 atAppContainerPath:v11 forClient:v10 withError:a6];
+  clientCopy = client;
+  pathCopy = path;
+  reportCopy = report;
+  deliveryDataCacher = [(MXSourceHandler *)self deliveryDataCacher];
+  LOBYTE(error) = [deliveryDataCacher writeDiagnosticReport:reportCopy atAppContainerPath:pathCopy forClient:clientCopy withError:error];
 
-  return a6;
+  return error;
 }
 
-- (void)_removeDeliveredPayloadForSourceID:(int64_t)a3 atDate:(id)a4
+- (void)_removeDeliveredPayloadForSourceID:(int64_t)d atDate:(id)date
 {
-  v6 = a4;
-  v7 = [(MXSourceHandler *)self sourcePathUtil];
-  [v7 removeDeliveredDiagnosticsForSourceID:a3 forDate:v6];
+  dateCopy = date;
+  sourcePathUtil = [(MXSourceHandler *)self sourcePathUtil];
+  [sourcePathUtil removeDeliveredDiagnosticsForSourceID:d forDate:dateCopy];
 }
 
 - (MXSourceHandlerDelegate)delegate

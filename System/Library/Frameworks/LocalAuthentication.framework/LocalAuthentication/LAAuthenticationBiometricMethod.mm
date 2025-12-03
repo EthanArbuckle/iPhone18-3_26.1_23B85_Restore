@@ -1,47 +1,47 @@
 @interface LAAuthenticationBiometricMethod
 - (BOOL)start;
-- (LAAuthenticationBiometricMethod)initWithConfiguration:(id)a3;
-- (unint64_t)lockoutStateFromError:(id)a3;
-- (void)distributeBiometricFeedback:(int64_t)a3;
+- (LAAuthenticationBiometricMethod)initWithConfiguration:(id)configuration;
+- (unint64_t)lockoutStateFromError:(id)error;
+- (void)distributeBiometricFeedback:(int64_t)feedback;
 - (void)distributeStateChange;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
 - (void)runBiometricOperation;
 - (void)terminate;
 @end
 
 @implementation LAAuthenticationBiometricMethod
 
-- (unint64_t)lockoutStateFromError:(id)a3
+- (unint64_t)lockoutStateFromError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if (![v4 isEqualToString:@"com.apple.LocalAuthentication"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"com.apple.LocalAuthentication"])
   {
 
     goto LABEL_6;
   }
 
-  v5 = [v3 code];
+  code = [errorCopy code];
 
-  if (v5 != -8)
+  if (code != -8)
   {
 LABEL_6:
     v9 = 0;
     goto LABEL_7;
   }
 
-  v6 = [v3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"Subcode"];
-  v8 = [v7 integerValue];
+  userInfo = [errorCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"Subcode"];
+  integerValue = [v7 integerValue];
 
-  if ((v8 - 1) >= 5)
+  if ((integerValue - 1) >= 5)
   {
     v9 = 4;
   }
 
   else
   {
-    v9 = qword_1A7888DB8[v8 - 1];
+    v9 = qword_1A7888DB8[integerValue - 1];
   }
 
 LABEL_7:
@@ -49,24 +49,24 @@ LABEL_7:
   return v9;
 }
 
-- (LAAuthenticationBiometricMethod)initWithConfiguration:(id)a3
+- (LAAuthenticationBiometricMethod)initWithConfiguration:(id)configuration
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v33.receiver = self;
   v33.super_class = LAAuthenticationBiometricMethod;
-  v5 = [(LAAuthenticationMethod *)&v33 initWithConfiguration:v4];
+  v5 = [(LAAuthenticationMethod *)&v33 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [v4 authenticationContext];
-    v7 = v6;
-    if (!v6)
+    authenticationContext = [configurationCopy authenticationContext];
+    v7 = authenticationContext;
+    if (!authenticationContext)
     {
       v7 = objc_alloc_init(LAContext);
     }
 
     objc_storeStrong(&v5->_context, v7);
-    if (!v6)
+    if (!authenticationContext)
     {
     }
 
@@ -74,12 +74,12 @@ LABEL_7:
     [(LAAuthenticationBiometricMethod *)v5 setCurrentState:v8];
 
     v5->_isDevicePresent = 1;
-    v9 = [(LAAuthenticationBiometricMethod *)v5 context];
+    context = [(LAAuthenticationBiometricMethod *)v5 context];
     v36 = &unk_1F1A6FC50;
     v37[0] = MEMORY[0x1E695E118];
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v32 = 0;
-    v11 = [v9 evaluatePolicy:1 options:v10 error:&v32];
+    v11 = [context evaluatePolicy:1 options:v10 error:&v32];
     v12 = v32;
     v13 = v12;
     if (v11)
@@ -96,12 +96,12 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    v23 = [v12 domain];
-    if ([v23 isEqualToString:@"com.apple.LocalAuthentication"])
+    domain = [v12 domain];
+    if ([domain isEqualToString:@"com.apple.LocalAuthentication"])
     {
-      v24 = [v13 code];
+      code = [v13 code];
 
-      if (v24 == -1004)
+      if (code == -1004)
       {
         goto LABEL_8;
       }
@@ -117,20 +117,20 @@ LABEL_8:
       [LAAuthenticationBiometricMethod initWithConfiguration:];
     }
 
-    v26 = [v13 domain];
-    v27 = [v26 isEqualToString:@"com.apple.LocalAuthentication"];
+    domain2 = [v13 domain];
+    v27 = [domain2 isEqualToString:@"com.apple.LocalAuthentication"];
 
     if (!v27)
     {
       goto LABEL_11;
     }
 
-    v28 = [v13 code];
-    if (v28 > -7)
+    code2 = [v13 code];
+    if (code2 > -7)
     {
-      if (v28 != -5)
+      if (code2 != -5)
       {
-        if (v28 == -6)
+        if (code2 == -6)
         {
 LABEL_29:
           v5->_isDevicePresent = 0;
@@ -152,32 +152,32 @@ LABEL_26:
 
     else
     {
-      if (v28 == -8)
+      if (code2 == -8)
       {
         v5->_isEnrolled = 1;
         v30 = [(LAAuthenticationBiometricMethod *)v5 lockoutStateFromError:v13];
-        v31 = [(LAAuthenticationBiometricMethod *)v5 currentState];
-        [v31 setLockoutState:v30];
+        currentState = [(LAAuthenticationBiometricMethod *)v5 currentState];
+        [currentState setLockoutState:v30];
 
         goto LABEL_11;
       }
 
-      if (v28 != -7)
+      if (code2 != -7)
       {
         goto LABEL_26;
       }
     }
 
 LABEL_11:
-    v15 = [(LAAuthenticationBiometricMethod *)v5 context];
-    v16 = [v15 biometryType] == 1;
-    v17 = [(LAAuthenticationBiometricMethod *)v5 currentState];
-    [v17 setIsTouchID:v16];
+    context2 = [(LAAuthenticationBiometricMethod *)v5 context];
+    v16 = [context2 biometryType] == 1;
+    currentState2 = [(LAAuthenticationBiometricMethod *)v5 currentState];
+    [currentState2 setIsTouchID:v16];
 
-    v18 = [(LAAuthenticationBiometricMethod *)v5 context];
-    v19 = [v18 biometryType] == 2;
-    v20 = [(LAAuthenticationBiometricMethod *)v5 currentState];
-    [v20 setIsFaceID:v19];
+    context3 = [(LAAuthenticationBiometricMethod *)v5 context];
+    v19 = [context3 biometryType] == 2;
+    currentState3 = [(LAAuthenticationBiometricMethod *)v5 currentState];
+    [currentState3 setIsFaceID:v19];
 
     v5->_isAllowed = v5->_isEnrolled;
   }
@@ -188,19 +188,19 @@ LABEL_11:
 
 - (BOOL)start
 {
-  v3 = [(LAAuthenticationBiometricMethod *)self isDevicePresent];
-  if (v3)
+  isDevicePresent = [(LAAuthenticationBiometricMethod *)self isDevicePresent];
+  if (isDevicePresent)
   {
-    v3 = [(LAAuthenticationBiometricMethod *)self isEnrolled];
-    if (v3)
+    isDevicePresent = [(LAAuthenticationBiometricMethod *)self isEnrolled];
+    if (isDevicePresent)
     {
-      v3 = [(LAAuthenticationBiometricMethod *)self isAllowed];
-      if (v3)
+      isDevicePresent = [(LAAuthenticationBiometricMethod *)self isAllowed];
+      if (isDevicePresent)
       {
         v7.receiver = self;
         v7.super_class = LAAuthenticationBiometricMethod;
-        v3 = [(LAAuthenticationMethod *)&v7 start];
-        if (v3)
+        isDevicePresent = [(LAAuthenticationMethod *)&v7 start];
+        if (isDevicePresent)
         {
           v6[0] = MEMORY[0x1E69E9820];
           v6[1] = 3221225472;
@@ -208,17 +208,17 @@ LABEL_11:
           v6[3] = &unk_1E77CC060;
           v6[4] = self;
           [(LAAuthenticationMethod *)self forEachObserverWithProtocol:&unk_1F1A74C48 selector:sel_authenticationMethod_didStartWithState_ invoke:v6];
-          v4 = [(LAAuthenticationBiometricMethod *)self context];
-          [v4 setUiDelegate:self];
+          context = [(LAAuthenticationBiometricMethod *)self context];
+          [context setUiDelegate:self];
 
           [(LAAuthenticationBiometricMethod *)self runBiometricOperation];
-          LOBYTE(v3) = 1;
+          LOBYTE(isDevicePresent) = 1;
         }
       }
     }
   }
 
-  return v3;
+  return isDevicePresent;
 }
 
 void __40__LAAuthenticationBiometricMethod_start__block_invoke(uint64_t a1, void *a2)
@@ -229,14 +229,14 @@ void __40__LAAuthenticationBiometricMethod_start__block_invoke(uint64_t a1, void
   [v3 authenticationMethod:v2 didStartWithState:v4];
 }
 
-- (void)distributeBiometricFeedback:(int64_t)a3
+- (void)distributeBiometricFeedback:(int64_t)feedback
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __63__LAAuthenticationBiometricMethod_distributeBiometricFeedback___block_invoke;
   v3[3] = &unk_1E77CC088;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = feedback;
   [(LAAuthenticationMethod *)self forEachObserverWithProtocol:&unk_1F1A74D28 selector:sel_authenticationBiometricsMethod_didReceiveFeedback_ invoke:v3];
 }
 
@@ -260,18 +260,18 @@ void __56__LAAuthenticationBiometricMethod_distributeStateChange__block_invoke(u
 
 - (void)runBiometricOperation
 {
-  v3 = [(LAAuthenticationBiometricMethod *)self currentState];
-  v4 = [v3 lockoutState];
+  currentState = [(LAAuthenticationBiometricMethod *)self currentState];
+  lockoutState = [currentState lockoutState];
 
-  if (!v4)
+  if (!lockoutState)
   {
-    v5 = [(LAAuthenticationBiometricMethod *)self context];
+    context = [(LAAuthenticationBiometricMethod *)self context];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __56__LAAuthenticationBiometricMethod_runBiometricOperation__block_invoke;
     v6[3] = &unk_1E77CC0D8;
     v6[4] = self;
-    [v5 evaluatePolicy:1 options:MEMORY[0x1E695E0F8] reply:v6];
+    [context evaluatePolicy:1 options:MEMORY[0x1E695E0F8] reply:v6];
   }
 }
 
@@ -334,53 +334,53 @@ void __56__LAAuthenticationBiometricMethod_runBiometricOperation__block_invoke(u
   }
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
-  v7 = a4;
+  paramsCopy = params;
   v8 = LA_LOG_laabio();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [LAAuthenticationBiometricMethod event:params:reply:];
   }
 
-  v9 = [(LAAuthenticationBiometricMethod *)self currentState];
-  v10 = [v9 isUserPresent];
+  currentState = [(LAAuthenticationBiometricMethod *)self currentState];
+  isUserPresent = [currentState isUserPresent];
 
-  if (a3 > 6)
+  if (event > 6)
   {
-    if (a3 == 7)
+    if (event == 7)
     {
-      v17 = [v7 objectForKeyedSubscript:&unk_1F1A6FC80];
+      v17 = [paramsCopy objectForKeyedSubscript:&unk_1F1A6FC80];
       v12 = v17;
       if (!v17)
       {
         goto LABEL_46;
       }
 
-      v18 = [v17 integerValue];
-      if (v18 <= 0xD)
+      integerValue = [v17 integerValue];
+      if (integerValue <= 0xD)
       {
-        if (((1 << v18) & 0x3EFC) != 0)
+        if (((1 << integerValue) & 0x3EFC) != 0)
         {
           goto LABEL_46;
         }
 
-        if (v18 == 1)
+        if (integerValue == 1)
         {
           goto LABEL_29;
         }
 
-        if (v18 == 8)
+        if (integerValue == 8)
         {
-          v15 = self;
+          selfCopy13 = self;
           v16 = 13;
 LABEL_45:
-          [(LAAuthenticationBiometricMethod *)v15 distributeBiometricFeedback:v16];
+          [(LAAuthenticationBiometricMethod *)selfCopy13 distributeBiometricFeedback:v16];
           goto LABEL_46;
         }
       }
 
-      if (v18)
+      if (integerValue)
       {
         v19 = LA_LOG_laabio();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -392,65 +392,65 @@ LABEL_45:
       }
 
 LABEL_31:
-      v10 = 1;
+      isUserPresent = 1;
       goto LABEL_46;
     }
 
-    if (a3 == 12)
+    if (event == 12)
     {
-      v14 = [v7 objectForKeyedSubscript:&unk_1F1A6FC98];
+      v14 = [paramsCopy objectForKeyedSubscript:&unk_1F1A6FC98];
       v12 = v14;
       if (v14)
       {
         switch([v14 integerValue])
         {
           case 1:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 12;
             goto LABEL_45;
           case 2:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 0;
             goto LABEL_45;
           case 3:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 1;
             goto LABEL_45;
           case 4:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 2;
             goto LABEL_45;
           case 5:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 3;
             goto LABEL_45;
           case 6:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 4;
             goto LABEL_45;
           case 7:
           case 11:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 5;
             goto LABEL_45;
           case 8:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 6;
             goto LABEL_45;
           case 9:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 7;
             goto LABEL_45;
           case 10:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 8;
             goto LABEL_45;
           case 12:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 10;
             goto LABEL_45;
           case 13:
-            v15 = self;
+            selfCopy13 = self;
             v16 = 11;
             goto LABEL_45;
           default:
@@ -477,31 +477,31 @@ LABEL_16:
     goto LABEL_46;
   }
 
-  if (!a3)
+  if (!event)
   {
     goto LABEL_47;
   }
 
-  if (a3 != 1)
+  if (event != 1)
   {
     goto LABEL_16;
   }
 
-  v11 = [v7 objectForKeyedSubscript:&unk_1F1A6FC68];
+  v11 = [paramsCopy objectForKeyedSubscript:&unk_1F1A6FC68];
   v12 = v11;
   if (!v11)
   {
     goto LABEL_46;
   }
 
-  v13 = [v11 integerValue];
-  if (v13 <= 2)
+  integerValue2 = [v11 integerValue];
+  if (integerValue2 <= 2)
   {
-    if (v13)
+    if (integerValue2)
     {
-      if (v13 != 1)
+      if (integerValue2 != 1)
       {
-        if (v13 == 2)
+        if (integerValue2 == 2)
         {
           goto LABEL_46;
         }
@@ -519,16 +519,16 @@ LABEL_52:
       }
 
 LABEL_29:
-      v10 = 0;
+      isUserPresent = 0;
       goto LABEL_46;
     }
 
     goto LABEL_31;
   }
 
-  if ((v13 - 4) >= 9)
+  if ((integerValue2 - 4) >= 9)
   {
-    if (v13 == 3)
+    if (integerValue2 == 3)
     {
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
@@ -545,13 +545,13 @@ LABEL_29:
 LABEL_46:
 
 LABEL_47:
-  v20 = [(LAAuthenticationBiometricMethod *)self currentState];
-  v21 = [v20 isUserPresent];
+  currentState2 = [(LAAuthenticationBiometricMethod *)self currentState];
+  isUserPresent2 = [currentState2 isUserPresent];
 
-  if (v10 != v21)
+  if (isUserPresent != isUserPresent2)
   {
-    v22 = [(LAAuthenticationBiometricMethod *)self currentState];
-    [v22 setIsUserPresent:v10];
+    currentState3 = [(LAAuthenticationBiometricMethod *)self currentState];
+    [currentState3 setIsUserPresent:isUserPresent];
 
     [(LAAuthenticationBiometricMethod *)self distributeStateChange];
   }
@@ -559,8 +559,8 @@ LABEL_47:
 
 - (void)terminate
 {
-  v3 = [(LAAuthenticationBiometricMethod *)self context];
-  [v3 invalidate];
+  context = [(LAAuthenticationBiometricMethod *)self context];
+  [context invalidate];
 
   v4.receiver = self;
   v4.super_class = LAAuthenticationBiometricMethod;

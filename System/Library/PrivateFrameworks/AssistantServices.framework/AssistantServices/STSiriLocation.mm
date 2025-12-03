@@ -1,7 +1,7 @@
 @interface STSiriLocation
 - (NSString)description;
-- (STSiriLocation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (STSiriLocation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSiriLocation
@@ -31,42 +31,42 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   addressBookID = self->_addressBookID;
-  v5 = a3;
-  [v5 encodeObject:addressBookID forKey:@"kSTSiriLocationAddressBookIDKey"];
-  [v5 encodeObject:self->_addressLabel forKey:@"kSTSiriLocationAddressLabelKey"];
-  [v5 encodeObject:self->_contactName forKey:@"kSTSiriLocationContactNameKey"];
-  [v5 encodeObject:self->_geoResult forKey:@"kSTSiriLocationGeoResultKey"];
-  [v5 encodeInteger:self->_resultType forKey:@"kSTSiriLocationResultTypeKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:addressBookID forKey:@"kSTSiriLocationAddressBookIDKey"];
+  [coderCopy encodeObject:self->_addressLabel forKey:@"kSTSiriLocationAddressLabelKey"];
+  [coderCopy encodeObject:self->_contactName forKey:@"kSTSiriLocationContactNameKey"];
+  [coderCopy encodeObject:self->_geoResult forKey:@"kSTSiriLocationGeoResultKey"];
+  [coderCopy encodeInteger:self->_resultType forKey:@"kSTSiriLocationResultTypeKey"];
 }
 
-- (STSiriLocation)initWithCoder:(id)a3
+- (STSiriLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = STSiriLocation;
   v5 = [(STSiriLocation *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSTSiriLocationAddressBookIDKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSTSiriLocationAddressBookIDKey"];
     addressBookID = v5->_addressBookID;
     v5->_addressBookID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSTSiriLocationAddressLabelKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSTSiriLocationAddressLabelKey"];
     addressLabel = v5->_addressLabel;
     v5->_addressLabel = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSTSiriLocationContactNameKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSTSiriLocationContactNameKey"];
     contactName = v5->_contactName;
     v5->_contactName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSTSiriLocationGeoResultKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSTSiriLocationGeoResultKey"];
     geoResult = v5->_geoResult;
     v5->_geoResult = v12;
 
-    v5->_resultType = [v4 decodeIntegerForKey:@"kSTSiriLocationResultTypeKey"];
+    v5->_resultType = [coderCopy decodeIntegerForKey:@"kSTSiriLocationResultTypeKey"];
   }
 
   return v5;

@@ -1,11 +1,11 @@
 @interface RSDriftDetectionSignal
 - (RSDriftDetectionSignal)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RSDriftDetectionSignal
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(RSDriftDetectionSignal);
   *(result + 2) = self->_type;

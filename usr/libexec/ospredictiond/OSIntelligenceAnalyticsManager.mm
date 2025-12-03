@@ -1,22 +1,22 @@
 @interface OSIntelligenceAnalyticsManager
 + (id)currentBootSessionUUID;
-+ (id)logWithCategory:(id)a3;
-+ (id)sharedInstanceWithTrialClient:(id)a3 withNamespace:(id)a4;
-+ (int)bucketLuxValue:(int)a3;
-- (OSIntelligenceAnalyticsManager)initWithTrialClient:(id)a3 withNamespace:(id)a4;
++ (id)logWithCategory:(id)category;
++ (id)sharedInstanceWithTrialClient:(id)client withNamespace:(id)namespace;
++ (int)bucketLuxValue:(int)value;
+- (OSIntelligenceAnalyticsManager)initWithTrialClient:(id)client withNamespace:(id)namespace;
 - (void)handleNewExitState;
-- (void)handleNewInterruptNotificationStart:(BOOL)a3;
-- (void)handleNewSPNState:(unint64_t)a3;
+- (void)handleNewInterruptNotificationStart:(BOOL)start;
+- (void)handleNewSPNState:(unint64_t)state;
 - (void)queryHistoricalInactivityState;
-- (void)saveNextAlarmInterval:(id)a3 nextDNDInterval:(id)a4 predictionInterval:(id)a5 recommendedWait:(id)a6 deadlineSetter:(id)a7 modelConfidenceLevel:(int64_t)a8 withPredictor:(id)a9;
+- (void)saveNextAlarmInterval:(id)interval nextDNDInterval:(id)dInterval predictionInterval:(id)predictionInterval recommendedWait:(id)wait deadlineSetter:(id)setter modelConfidenceLevel:(int64_t)level withPredictor:(id)predictor;
 @end
 
 @implementation OSIntelligenceAnalyticsManager
 
-+ (id)logWithCategory:(id)a3
++ (id)logWithCategory:(id)category
 {
-  v3 = [NSString stringWithFormat:@"inactivity.%@", a3];
-  v4 = os_log_create("com.apple.osintelligence", [v3 UTF8String]);
+  category = [NSString stringWithFormat:@"inactivity.%@", category];
+  v4 = os_log_create("com.apple.osintelligence", [category UTF8String]);
 
   return v4;
 }
@@ -33,10 +33,10 @@
   return v3;
 }
 
-- (OSIntelligenceAnalyticsManager)initWithTrialClient:(id)a3 withNamespace:(id)a4
+- (OSIntelligenceAnalyticsManager)initWithTrialClient:(id)client withNamespace:(id)namespace
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  namespaceCopy = namespace;
   v38.receiver = self;
   v38.super_class = OSIntelligenceAnalyticsManager;
   v9 = [(OSIntelligenceAnalyticsManager *)&v38 init];
@@ -63,14 +63,14 @@
     motionMonitor = v9->_motionMonitor;
     v9->_motionMonitor = v19;
 
-    objc_storeStrong(&v9->_trialClient, a3);
-    objc_storeStrong(&v9->_trialNamespace, a4);
+    objc_storeStrong(&v9->_trialClient, client);
+    objc_storeStrong(&v9->_trialNamespace, namespace);
     v9->_dataLock._os_unfair_lock_opaque = 0;
     v21 = [(NSUserDefaults *)v9->_defaults stringForKey:@"lastBootUUID"];
     v22 = +[OSIntelligenceAnalyticsManager currentBootSessionUUID];
     [(NSUserDefaults *)v9->_defaults setObject:v22 forKey:@"lastBootUUID"];
     v23 = [v22 isEqualToString:v21] ^ 1;
-    v24 = [(OSIntelligenceAnalyticsManager *)v9 queue];
+    queue = [(OSIntelligenceAnalyticsManager *)v9 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002AA98;
@@ -78,7 +78,7 @@
     v25 = v9;
     v36 = v25;
     v37 = v23;
-    dispatch_sync(v24, block);
+    dispatch_sync(queue, block);
 
     out_token = 0;
     v26 = dispatch_get_global_queue(-32768, 0);
@@ -102,19 +102,19 @@
   return v9;
 }
 
-+ (id)sharedInstanceWithTrialClient:(id)a3 withNamespace:(id)a4
++ (id)sharedInstanceWithTrialClient:(id)client withNamespace:(id)namespace
 {
-  v6 = a3;
+  clientCopy = client;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002B108;
   block[3] = &unk_1000951E8;
-  v15 = a4;
-  v16 = a1;
-  v14 = v6;
+  namespaceCopy = namespace;
+  selfCopy = self;
+  v14 = clientCopy;
   v7 = qword_1000B6A68;
-  v8 = v15;
-  v9 = v6;
+  v8 = namespaceCopy;
+  v9 = clientCopy;
   if (v7 != -1)
   {
     dispatch_once(&qword_1000B6A68, block);
@@ -126,11 +126,11 @@
   return v10;
 }
 
-- (void)handleNewSPNState:(unint64_t)a3
+- (void)handleNewSPNState:(unint64_t)state
 {
   v5 = +[NSDate now];
   v6 = v5;
-  if (!a3)
+  if (!state)
   {
     v13 = [(NSMutableDictionary *)self->_analytics objectForKeyedSubscript:@"disabledDate"];
 
@@ -159,7 +159,7 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     [v5 timeIntervalSinceReferenceDate];
     v10 = [NSNumber numberWithDouble:?];
@@ -171,7 +171,7 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
     goto LABEL_19;
   }
@@ -255,7 +255,7 @@ LABEL_19:
   v33 = +[OSIntelligenceAnalyticsManager log];
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = [NSNumber numberWithUnsignedLongLong:a3];
+    v34 = [NSNumber numberWithUnsignedLongLong:state];
     v35 = self->_analytics;
     v37 = 138412546;
     v38 = v34;
@@ -329,14 +329,14 @@ LABEL_19:
   }
 }
 
-- (void)saveNextAlarmInterval:(id)a3 nextDNDInterval:(id)a4 predictionInterval:(id)a5 recommendedWait:(id)a6 deadlineSetter:(id)a7 modelConfidenceLevel:(int64_t)a8 withPredictor:(id)a9
+- (void)saveNextAlarmInterval:(id)interval nextDNDInterval:(id)dInterval predictionInterval:(id)predictionInterval recommendedWait:(id)wait deadlineSetter:(id)setter modelConfidenceLevel:(int64_t)level withPredictor:(id)predictor
 {
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  predictorCopy = predictor;
+  setterCopy = setter;
+  waitCopy = wait;
+  predictionIntervalCopy = predictionInterval;
+  dIntervalCopy = dInterval;
+  intervalCopy = interval;
   os_unfair_lock_lock(&self->_dataLock);
   currentData = self->_currentData;
   if (currentData)
@@ -352,28 +352,28 @@ LABEL_19:
   v24 = self->_currentData;
   self->_currentData = v23;
 
-  [(NSMutableDictionary *)self->_currentData setObject:v21 forKeyedSubscript:@"nextAlarmInterval"];
-  [(NSMutableDictionary *)self->_currentData setObject:v20 forKeyedSubscript:@"nextDNDInterval"];
+  [(NSMutableDictionary *)self->_currentData setObject:intervalCopy forKeyedSubscript:@"nextAlarmInterval"];
+  [(NSMutableDictionary *)self->_currentData setObject:dIntervalCopy forKeyedSubscript:@"nextDNDInterval"];
 
-  [(NSMutableDictionary *)self->_currentData setObject:v19 forKeyedSubscript:@"prediction"];
-  [(NSMutableDictionary *)self->_currentData setObject:v18 forKeyedSubscript:@"recommendedWait"];
+  [(NSMutableDictionary *)self->_currentData setObject:predictionIntervalCopy forKeyedSubscript:@"prediction"];
+  [(NSMutableDictionary *)self->_currentData setObject:waitCopy forKeyedSubscript:@"recommendedWait"];
 
-  v25 = [v16 predictorType];
-  [(NSMutableDictionary *)self->_currentData setObject:v25 forKeyedSubscript:@"predictorType"];
+  predictorType = [predictorCopy predictorType];
+  [(NSMutableDictionary *)self->_currentData setObject:predictorType forKeyedSubscript:@"predictorType"];
 
-  v26 = [v16 queryingMechanism];
-  [(NSMutableDictionary *)self->_currentData setObject:v26 forKeyedSubscript:@"queryingMechanism"];
+  queryingMechanism = [predictorCopy queryingMechanism];
+  [(NSMutableDictionary *)self->_currentData setObject:queryingMechanism forKeyedSubscript:@"queryingMechanism"];
 
-  [v16 longThreshold];
+  [predictorCopy longThreshold];
   v27 = [NSNumber numberWithDouble:?];
   [(NSMutableDictionary *)self->_currentData setObject:v27 forKeyedSubscript:@"longThreshold"];
 
-  v28 = [v16 modelVersion];
+  modelVersion = [predictorCopy modelVersion];
 
-  [(NSMutableDictionary *)self->_currentData setObject:v28 forKeyedSubscript:@"modelVersion"];
-  [(NSMutableDictionary *)self->_currentData setObject:v17 forKeyedSubscript:@"deadlineSetter"];
+  [(NSMutableDictionary *)self->_currentData setObject:modelVersion forKeyedSubscript:@"modelVersion"];
+  [(NSMutableDictionary *)self->_currentData setObject:setterCopy forKeyedSubscript:@"deadlineSetter"];
 
-  v29 = [NSNumber numberWithInteger:a8];
+  v29 = [NSNumber numberWithInteger:level];
   [(NSMutableDictionary *)self->_currentData setObject:v29 forKeyedSubscript:@"modelConfidenceLevel"];
 
   [(NSUserDefaults *)self->_defaults setObject:self->_currentData forKey:@"currentData"];
@@ -389,14 +389,14 @@ LABEL_19:
   os_unfair_lock_unlock(&self->_dataLock);
 }
 
-- (void)handleNewInterruptNotificationStart:(BOOL)a3
+- (void)handleNewInterruptNotificationStart:(BOOL)start
 {
-  v3 = a3;
+  startCopy = start;
   v5 = +[NSDate now];
   [v5 timeIntervalSinceReferenceDate];
   p_analytics = &self->_analytics;
   analytics = self->_analytics;
-  if (!v3)
+  if (!startCopy)
   {
     v18 = v6;
     v19 = [(NSMutableDictionary *)analytics objectForKeyedSubscript:@"interruption"];
@@ -883,15 +883,15 @@ LABEL_67:
       if (v26)
       {
         v27 = [(NSMutableDictionary *)self->_analytics objectForKeyedSubscript:@"startLuxValue"];
-        v28 = [v27 intValue];
+        intValue = [v27 intValue];
       }
 
       else
       {
-        v28 = 0xFFFFFFFFLL;
+        intValue = 0xFFFFFFFFLL;
       }
 
-      v29 = [NSNumber numberWithInt:v28];
+      v29 = [NSNumber numberWithInt:intValue];
       [v9 setObject:v29 forKeyedSubscript:@"entryAmbientLightLevel"];
 
       v30 = [(NSMutableDictionary *)self->_analytics objectForKeyedSubscript:@"startMotionValue"];
@@ -997,9 +997,9 @@ LABEL_67:
   }
 }
 
-+ (int)bucketLuxValue:(int)a3
++ (int)bucketLuxValue:(int)value
 {
-  if (a3 < 0x3D)
+  if (value < 0x3D)
   {
     v3 = 6;
   }
@@ -1009,7 +1009,7 @@ LABEL_67:
     v3 = 7;
   }
 
-  if (a3 >= 0x29)
+  if (value >= 0x29)
   {
     v4 = v3;
   }
@@ -1019,7 +1019,7 @@ LABEL_67:
     v4 = 5;
   }
 
-  if (a3 >= 0x15)
+  if (value >= 0x15)
   {
     v5 = v4;
   }
@@ -1029,7 +1029,7 @@ LABEL_67:
     v5 = 4;
   }
 
-  if (a3 >= 0xB)
+  if (value >= 0xB)
   {
     v6 = v5;
   }
@@ -1039,7 +1039,7 @@ LABEL_67:
     v6 = 3;
   }
 
-  if (a3 >= 6)
+  if (value >= 6)
   {
     v7 = v6;
   }
@@ -1049,7 +1049,7 @@ LABEL_67:
     v7 = 2;
   }
 
-  if (a3)
+  if (value)
   {
     v8 = v7;
   }
@@ -1059,7 +1059,7 @@ LABEL_67:
     v8 = 1;
   }
 
-  if (a3 >= 0)
+  if (value >= 0)
   {
     return v8;
   }

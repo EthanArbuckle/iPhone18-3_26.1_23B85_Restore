@@ -1,12 +1,12 @@
 @interface AppEventCollectionViewCell
-- (_TtC8AppStore26AppEventCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore26AppEventCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AppEventCollectionViewCell
 
-- (_TtC8AppStore26AppEventCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore26AppEventCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore26AppEventCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -42,7 +42,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D31D4();
 }
 

@@ -1,24 +1,24 @@
 @interface ATXPBBiomeProactiveSuggestionUIFeedbackResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEngagedSuggestions:(id)a3;
-- (void)addRejectedSuggestions:(id)a3;
-- (void)addShownSuggestions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSessionEndDate:(BOOL)a3;
-- (void)setHasSessionStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEngagedSuggestions:(id)suggestions;
+- (void)addRejectedSuggestions:(id)suggestions;
+- (void)addShownSuggestions:(id)suggestions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSessionEndDate:(BOOL)date;
+- (void)setHasSessionStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBBiomeProactiveSuggestionUIFeedbackResult
 
-- (void)setHasSessionStartDate:(BOOL)a3
+- (void)setHasSessionStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSessionEndDate:(BOOL)a3
+- (void)setHasSessionEndDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -46,58 +46,58 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addShownSuggestions:(id)a3
+- (void)addShownSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   shownSuggestions = self->_shownSuggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!shownSuggestions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_shownSuggestions;
     self->_shownSuggestions = v6;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     shownSuggestions = self->_shownSuggestions;
   }
 
-  [(NSMutableArray *)shownSuggestions addObject:v4];
+  [(NSMutableArray *)shownSuggestions addObject:suggestionsCopy];
 }
 
-- (void)addEngagedSuggestions:(id)a3
+- (void)addEngagedSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   engagedSuggestions = self->_engagedSuggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!engagedSuggestions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_engagedSuggestions;
     self->_engagedSuggestions = v6;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     engagedSuggestions = self->_engagedSuggestions;
   }
 
-  [(NSMutableArray *)engagedSuggestions addObject:v4];
+  [(NSMutableArray *)engagedSuggestions addObject:suggestionsCopy];
 }
 
-- (void)addRejectedSuggestions:(id)a3
+- (void)addRejectedSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   rejectedSuggestions = self->_rejectedSuggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!rejectedSuggestions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_rejectedSuggestions;
     self->_rejectedSuggestions = v6;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     rejectedSuggestions = self->_rejectedSuggestions;
   }
 
-  [(NSMutableArray *)rejectedSuggestions addObject:v4];
+  [(NSMutableArray *)rejectedSuggestions addObject:suggestionsCopy];
 }
 
 - (id)description
@@ -106,8 +106,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBBiomeProactiveSuggestionUIFeedbackResult;
   v4 = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)&v8 description];
-  v5 = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -115,12 +115,12 @@
 - (id)dictionaryRepresentation
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   sessionId = self->_sessionId;
   if (sessionId)
   {
-    [v3 setObject:sessionId forKey:@"sessionId"];
+    [dictionary setObject:sessionId forKey:@"sessionId"];
   }
 
   blendingUICacheUpdateUUID = self->_blendingUICacheUpdateUUID;
@@ -184,8 +184,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v44 objects:v50 count:16];
@@ -219,8 +219,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v40 + 1) + 8 * j) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation2 = [*(*(&v40 + 1) + 8 * j) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation2];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -254,8 +254,8 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v36 + 1) + 8 * k) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation3 = [*(*(&v36 + 1) + 8 * k) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation3];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v36 objects:v48 count:16];
@@ -272,10 +272,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_sessionId)
   {
     PBDataWriterWriteStringField();
@@ -406,61 +406,61 @@
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (self->_sessionId)
   {
-    [v4 setSessionId:?];
-    v4 = v18;
+    [toCopy setSessionId:?];
+    toCopy = v18;
   }
 
   if (self->_blendingUICacheUpdateUUID)
   {
     [v18 setBlendingUICacheUpdateUUID:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_clientModelId)
   {
     [v18 setClientModelId:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_clientModelCacheCreationDate;
-    *(v4 + 88) |= 1u;
+    *(toCopy + 1) = *&self->_clientModelCacheCreationDate;
+    *(toCopy + 88) |= 1u;
   }
 
   if (self->_consumerSubType)
   {
     [v18 setConsumerSubType:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_sessionStartDate;
-    *(v4 + 88) |= 4u;
+    *(toCopy + 3) = *&self->_sessionStartDate;
+    *(toCopy + 88) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_sessionEndDate;
-    *(v4 + 88) |= 2u;
+    *(toCopy + 2) = *&self->_sessionEndDate;
+    *(toCopy + 88) |= 2u;
   }
 
   if ([(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self shownSuggestionsCount])
   {
     [v18 clearShownSuggestions];
-    v6 = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self shownSuggestionsCount];
-    if (v6)
+    shownSuggestionsCount = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self shownSuggestionsCount];
+    if (shownSuggestionsCount)
     {
-      v7 = v6;
+      v7 = shownSuggestionsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self shownSuggestionsAtIndex:i];
@@ -472,10 +472,10 @@
   if ([(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self engagedSuggestionsCount])
   {
     [v18 clearEngagedSuggestions];
-    v10 = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self engagedSuggestionsCount];
-    if (v10)
+    engagedSuggestionsCount = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self engagedSuggestionsCount];
+    if (engagedSuggestionsCount)
     {
-      v11 = v10;
+      v11 = engagedSuggestionsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self engagedSuggestionsAtIndex:j];
@@ -487,10 +487,10 @@
   if ([(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self rejectedSuggestionsCount])
   {
     [v18 clearRejectedSuggestions];
-    v14 = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self rejectedSuggestionsCount];
-    if (v14)
+    rejectedSuggestionsCount = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self rejectedSuggestionsCount];
+    if (rejectedSuggestionsCount)
     {
-      v15 = v14;
+      v15 = rejectedSuggestionsCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self rejectedSuggestionsAtIndex:k];
@@ -500,19 +500,19 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sessionId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sessionId copyWithZone:zone];
   v7 = *(v5 + 72);
   *(v5 + 72) = v6;
 
-  v8 = [(NSString *)self->_blendingUICacheUpdateUUID copyWithZone:a3];
+  v8 = [(NSString *)self->_blendingUICacheUpdateUUID copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_clientModelId copyWithZone:a3];
+  v10 = [(NSString *)self->_clientModelId copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -522,7 +522,7 @@
     *(v5 + 88) |= 1u;
   }
 
-  v12 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v12 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
@@ -559,7 +559,7 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v43 + 1) + 8 * i) copyWithZone:a3];
+        v20 = [*(*(&v43 + 1) + 8 * i) copyWithZone:zone];
         [v5 addShownSuggestions:v20];
       }
 
@@ -588,7 +588,7 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v39 + 1) + 8 * j) copyWithZone:a3];
+        v26 = [*(*(&v39 + 1) + 8 * j) copyWithZone:zone];
         [v5 addEngagedSuggestions:v26];
       }
 
@@ -617,7 +617,7 @@
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v35 + 1) + 8 * k) copyWithZone:{a3, v35}];
+        v32 = [*(*(&v35 + 1) + 8 * k) copyWithZone:{zone, v35}];
         [v5 addRejectedSuggestions:v32];
       }
 
@@ -631,16 +631,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
   sessionId = self->_sessionId;
-  if (sessionId | *(v4 + 9))
+  if (sessionId | *(equalCopy + 9))
   {
     if (![(NSString *)sessionId isEqual:?])
     {
@@ -649,7 +649,7 @@
   }
 
   blendingUICacheUpdateUUID = self->_blendingUICacheUpdateUUID;
-  if (blendingUICacheUpdateUUID | *(v4 + 4))
+  if (blendingUICacheUpdateUUID | *(equalCopy + 4))
   {
     if (![(NSString *)blendingUICacheUpdateUUID isEqual:?])
     {
@@ -658,7 +658,7 @@
   }
 
   clientModelId = self->_clientModelId;
-  if (clientModelId | *(v4 + 5))
+  if (clientModelId | *(equalCopy + 5))
   {
     if (![(NSString *)clientModelId isEqual:?])
     {
@@ -667,22 +667,22 @@
   }
 
   has = self->_has;
-  v9 = *(v4 + 88);
+  v9 = *(equalCopy + 88);
   if (has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_clientModelCacheCreationDate != *(v4 + 1))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_clientModelCacheCreationDate != *(equalCopy + 1))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_32;
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 6))
+  if (consumerSubType | *(equalCopy + 6))
   {
     if (![(NSString *)consumerSubType isEqual:?])
     {
@@ -694,41 +694,41 @@ LABEL_32:
     has = self->_has;
   }
 
-  v11 = *(v4 + 88);
+  v11 = *(equalCopy + 88);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 88) & 4) == 0 || self->_sessionStartDate != *(v4 + 3))
+    if ((*(equalCopy + 88) & 4) == 0 || self->_sessionStartDate != *(equalCopy + 3))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 88) & 4) != 0)
+  else if ((*(equalCopy + 88) & 4) != 0)
   {
     goto LABEL_32;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_sessionEndDate != *(v4 + 2))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_sessionEndDate != *(equalCopy + 2))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   shownSuggestions = self->_shownSuggestions;
-  if (shownSuggestions | *(v4 + 10) && ![(NSMutableArray *)shownSuggestions isEqual:?])
+  if (shownSuggestions | *(equalCopy + 10) && ![(NSMutableArray *)shownSuggestions isEqual:?])
   {
     goto LABEL_32;
   }
 
   engagedSuggestions = self->_engagedSuggestions;
-  if (engagedSuggestions | *(v4 + 7))
+  if (engagedSuggestions | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)engagedSuggestions isEqual:?])
     {
@@ -737,7 +737,7 @@ LABEL_32:
   }
 
   rejectedSuggestions = self->_rejectedSuggestions;
-  if (rejectedSuggestions | *(v4 + 8))
+  if (rejectedSuggestions | *(equalCopy + 8))
   {
     v15 = [(NSMutableArray *)rejectedSuggestions isEqual:?];
   }
@@ -864,47 +864,47 @@ LABEL_33:
   return v23 ^ v25 ^ [(NSMutableArray *)self->_rejectedSuggestions hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 9))
+  fromCopy = from;
+  if (*(fromCopy + 9))
   {
     [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self setSessionId:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self setBlendingUICacheUpdateUUID:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self setClientModelId:?];
   }
 
-  if (*(v4 + 88))
+  if (*(fromCopy + 88))
   {
-    self->_clientModelCacheCreationDate = *(v4 + 1);
+    self->_clientModelCacheCreationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ATXPBBiomeProactiveSuggestionUIFeedbackResult *)self setConsumerSubType:?];
   }
 
-  v5 = *(v4 + 88);
+  v5 = *(fromCopy + 88);
   if ((v5 & 4) != 0)
   {
-    self->_sessionStartDate = *(v4 + 3);
+    self->_sessionStartDate = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 88);
+    v5 = *(fromCopy + 88);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_sessionEndDate = *(v4 + 2);
+    self->_sessionEndDate = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
@@ -912,7 +912,7 @@ LABEL_33:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = *(v4 + 10);
+  v6 = *(fromCopy + 10);
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {
@@ -940,7 +940,7 @@ LABEL_33:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = *(v4 + 7);
+  v11 = *(fromCopy + 7);
   v12 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v12)
   {
@@ -968,7 +968,7 @@ LABEL_33:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = *(v4 + 8);
+  v16 = *(fromCopy + 8);
   v17 = [v16 countByEnumeratingWithState:&v22 objects:v34 count:16];
   if (v17)
   {

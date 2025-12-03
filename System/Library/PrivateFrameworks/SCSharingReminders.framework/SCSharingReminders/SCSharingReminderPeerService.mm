@@ -2,8 +2,8 @@
 + (id)interface;
 - (id)initConnection;
 - (void)disconnect;
-- (void)handleSignals:(id)a3 completion:(id)a4;
-- (void)userOpenedSafetyCheckWithCompletion:(id)a3;
+- (void)handleSignals:(id)signals completion:(id)completion;
+- (void)userOpenedSafetyCheckWithCompletion:(id)completion;
 @end
 
 @implementation SCSharingReminderPeerService
@@ -19,8 +19,8 @@
     xpcConnection = v2->_xpcConnection;
     v2->_xpcConnection = v3;
 
-    v5 = [objc_opt_class() interface];
-    [(NSXPCConnection *)v2->_xpcConnection setRemoteObjectInterface:v5];
+    interface = [objc_opt_class() interface];
+    [(NSXPCConnection *)v2->_xpcConnection setRemoteObjectInterface:interface];
 
     [(NSXPCConnection *)v2->_xpcConnection setInterruptionHandler:&__block_literal_global_5];
     [(NSXPCConnection *)v2->_xpcConnection setInvalidationHandler:&__block_literal_global_3];
@@ -59,21 +59,21 @@ void __46__SCSharingReminderPeerService_initConnection__block_invoke_1()
   return v2;
 }
 
-- (void)userOpenedSafetyCheckWithCompletion:(id)a3
+- (void)userOpenedSafetyCheckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(SCSharingReminderPeerService *)self xpcConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 userOpenedSafetyCheckWithCompletion:v4];
+  completionCopy = completion;
+  xpcConnection = [(SCSharingReminderPeerService *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy userOpenedSafetyCheckWithCompletion:completionCopy];
 }
 
-- (void)handleSignals:(id)a3 completion:(id)a4
+- (void)handleSignals:(id)signals completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SCSharingReminderPeerService *)self xpcConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 handleSignals:v7 completion:v6];
+  completionCopy = completion;
+  signalsCopy = signals;
+  xpcConnection = [(SCSharingReminderPeerService *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy handleSignals:signalsCopy completion:completionCopy];
 }
 
 - (void)disconnect

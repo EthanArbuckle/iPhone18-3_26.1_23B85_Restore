@@ -1,5 +1,5 @@
 @interface OTSOSUpdatePreapprovalsOperation
-- (OTSOSUpdatePreapprovalsOperation)initWithDependencies:(id)a3 intendedState:(id)a4 sosNotPresentState:(id)a5 errorState:(id)a6;
+- (OTSOSUpdatePreapprovalsOperation)initWithDependencies:(id)dependencies intendedState:(id)state sosNotPresentState:(id)presentState errorState:(id)errorState;
 - (void)groupStart;
 @end
 
@@ -8,11 +8,11 @@
 - (void)groupStart
 {
   objc_initWeak(&location, self);
-  v3 = [(OTSOSUpdatePreapprovalsOperation *)self deps];
-  v4 = [v3 sosAdapter];
-  v5 = [v4 sosEnabled];
+  deps = [(OTSOSUpdatePreapprovalsOperation *)self deps];
+  sosAdapter = [deps sosAdapter];
+  sosEnabled = [sosAdapter sosEnabled];
 
-  if (v5)
+  if (sosEnabled)
   {
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
@@ -22,13 +22,13 @@
     v6 = [NSBlockOperation blockOperationWithBlock:v24];
     [(OTSOSUpdatePreapprovalsOperation *)self setFinishedOp:v6];
 
-    v7 = [(OTSOSUpdatePreapprovalsOperation *)self finishedOp];
-    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v7];
+    finishedOp = [(OTSOSUpdatePreapprovalsOperation *)self finishedOp];
+    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
-    v8 = [(OTSOSUpdatePreapprovalsOperation *)self deps];
-    v9 = [v8 sosAdapter];
+    deps2 = [(OTSOSUpdatePreapprovalsOperation *)self deps];
+    sosAdapter2 = [deps2 sosAdapter];
     v23 = 0;
-    v10 = [OTSOSAdapterHelpers peerPublicSigningKeySPKIsForCircle:v9 error:&v23];
+    v10 = [OTSOSAdapterHelpers peerPublicSigningKeySPKIsForCircle:sosAdapter2 error:&v23];
     v11 = v23;
 
     if (!v10 || v11)
@@ -42,11 +42,11 @@
       }
 
       [(CKKSResultOperation *)self setError:v11];
-      v19 = [(OTSOSUpdatePreapprovalsOperation *)self sosNotPresentState];
-      [(OTSOSUpdatePreapprovalsOperation *)self setNextState:v19];
+      sosNotPresentState = [(OTSOSUpdatePreapprovalsOperation *)self sosNotPresentState];
+      [(OTSOSUpdatePreapprovalsOperation *)self setNextState:sosNotPresentState];
 
-      v20 = [(OTSOSUpdatePreapprovalsOperation *)self finishedOp];
-      [(CKKSGroupOperation *)self runBeforeGroupFinished:v20];
+      finishedOp2 = [(OTSOSUpdatePreapprovalsOperation *)self finishedOp];
+      [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp2];
     }
 
     else
@@ -59,16 +59,16 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Updating SOS preapproved keys to %@", buf, 0xCu);
       }
 
-      v13 = [(OTSOSUpdatePreapprovalsOperation *)self deps];
-      v14 = [v13 cuttlefishXPCWrapper];
-      v15 = [(OTSOSUpdatePreapprovalsOperation *)self deps];
-      v16 = [v15 activeAccount];
+      deps3 = [(OTSOSUpdatePreapprovalsOperation *)self deps];
+      cuttlefishXPCWrapper = [deps3 cuttlefishXPCWrapper];
+      deps4 = [(OTSOSUpdatePreapprovalsOperation *)self deps];
+      activeAccount = [deps4 activeAccount];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100123080;
       v21[3] = &unk_100337810;
       objc_copyWeak(&v22, &location);
-      [v14 setPreapprovedKeysWithSpecificUser:v16 preapprovedKeys:v10 reply:v21];
+      [cuttlefishXPCWrapper setPreapprovedKeysWithSpecificUser:activeAccount preapprovedKeys:v10 reply:v21];
 
       objc_destroyWeak(&v22);
     }
@@ -89,22 +89,22 @@
   objc_destroyWeak(&location);
 }
 
-- (OTSOSUpdatePreapprovalsOperation)initWithDependencies:(id)a3 intendedState:(id)a4 sosNotPresentState:(id)a5 errorState:(id)a6
+- (OTSOSUpdatePreapprovalsOperation)initWithDependencies:(id)dependencies intendedState:(id)state sosNotPresentState:(id)presentState errorState:(id)errorState
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  presentStateCopy = presentState;
+  errorStateCopy = errorState;
   v18.receiver = self;
   v18.super_class = OTSOSUpdatePreapprovalsOperation;
   v15 = [(CKKSGroupOperation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deps, a3);
-    objc_storeStrong(&v16->_intendedState, a4);
-    objc_storeStrong(&v16->_sosNotPresentState, a5);
-    objc_storeStrong(&v16->_nextState, a6);
+    objc_storeStrong(&v15->_deps, dependencies);
+    objc_storeStrong(&v16->_intendedState, state);
+    objc_storeStrong(&v16->_sosNotPresentState, presentState);
+    objc_storeStrong(&v16->_nextState, errorState);
   }
 
   return v16;

@@ -1,26 +1,26 @@
 @interface CKBrowserAppManagerViewController
-- (BOOL)appAllowedByScreenTimeWithBundleIdentifier:(id)a3;
+- (BOOL)appAllowedByScreenTimeWithBundleIdentifier:(id)identifier;
 - (CKBrowserAppManagerViewControllerDelegate)delegate;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)browserAppManagerDidSelectPlugin:(id)a3;
-- (void)delegate_BrowserAppManagerDidSelectPlugin:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)browserAppManagerDidSelectPlugin:(id)plugin;
+- (void)delegate_BrowserAppManagerDidSelectPlugin:(id)plugin;
 - (void)dismiss;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKBrowserAppManagerViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CKBrowserAppManagerViewController;
-  [(CKBrowserViewController *)&v5 viewWillAppear:a3];
-  v4 = [(CKBrowserAppManagerViewController *)self presentationController];
-  [v4 setDelegate:self];
+  [(CKBrowserViewController *)&v5 viewWillAppear:appear];
+  presentationController = [(CKBrowserAppManagerViewController *)self presentationController];
+  [presentationController setDelegate:self];
 }
 
 - (void)viewDidLoad
@@ -28,7 +28,7 @@
   v10.receiver = self;
   v10.super_class = CKBrowserAppManagerViewController;
   [(CKBrowserAppManagerViewController *)&v10 viewDidLoad];
-  v3 = [(CKBrowserAppManagerViewController *)self view];
+  view = [(CKBrowserAppManagerViewController *)self view];
   v4 = objc_alloc_init(CKAppManagerViewController);
   appViewController = self->_appViewController;
   self->_appViewController = v4;
@@ -38,41 +38,41 @@
   navController = self->_navController;
   self->_navController = v6;
 
-  v8 = [(UINavigationController *)self->_navController view];
-  v9 = [(CKBrowserAppManagerViewController *)self view];
-  [v9 bounds];
-  [v8 setFrame:?];
+  view2 = [(UINavigationController *)self->_navController view];
+  view3 = [(CKBrowserAppManagerViewController *)self view];
+  [view3 bounds];
+  [view2 setFrame:?];
 
-  [v8 setAutoresizingMask:18];
-  [v3 addSubview:v8];
+  [view2 setAutoresizingMask:18];
+  [view addSubview:view2];
   [(CKBrowserAppManagerViewController *)self addChildViewController:self->_navController];
   [(UINavigationController *)self->_navController didMoveToParentViewController:self];
 }
 
-- (BOOL)appAllowedByScreenTimeWithBundleIdentifier:(id)a3
+- (BOOL)appAllowedByScreenTimeWithBundleIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 1;
   }
 
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = IMSharedDowntimeController();
-  v5 = [v4 allowedToShowAppExtensionWithBundleIdentifier:v3];
+  v5 = [v4 allowedToShowAppExtensionWithBundleIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (void)browserAppManagerDidSelectPlugin:(id)a3
+- (void)browserAppManagerDidSelectPlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   [(CKBrowserAppManagerViewController *)self dismiss];
-  v5 = [v4 appBundle];
-  v6 = [v5 bundleIdentifier];
+  appBundle = [pluginCopy appBundle];
+  bundleIdentifier = [appBundle bundleIdentifier];
 
-  if ([(CKBrowserAppManagerViewController *)self appAllowedByScreenTimeWithBundleIdentifier:v6])
+  if ([(CKBrowserAppManagerViewController *)self appAllowedByScreenTimeWithBundleIdentifier:bundleIdentifier])
   {
-    [(CKBrowserAppManagerViewController *)self delegate_BrowserAppManagerDidSelectPlugin:v4];
+    [(CKBrowserAppManagerViewController *)self delegate_BrowserAppManagerDidSelectPlugin:pluginCopy];
   }
 
   else
@@ -80,30 +80,30 @@
     v7 = IMLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CKBrowserAppManagerViewController *)v6 browserAppManagerDidSelectPlugin:v7];
+      [(CKBrowserAppManagerViewController *)bundleIdentifier browserAppManagerDidSelectPlugin:v7];
     }
   }
 }
 
-- (void)delegate_BrowserAppManagerDidSelectPlugin:(id)a3
+- (void)delegate_BrowserAppManagerDidSelectPlugin:(id)plugin
 {
-  v4 = a3;
-  v5 = [(CKBrowserAppManagerViewController *)self delegate];
-  [v5 browserAppManagerDidSelectPlugin:v4];
+  pluginCopy = plugin;
+  delegate = [(CKBrowserAppManagerViewController *)self delegate];
+  [delegate browserAppManagerDidSelectPlugin:pluginCopy];
 }
 
 - (void)dismiss
 {
-  v2 = [(CKBrowserViewController *)self sendDelegate];
-  [v2 dismiss];
+  sendDelegate = [(CKBrowserViewController *)self sendDelegate];
+  [sendDelegate dismiss];
 
   v3 = +[CKBalloonPluginManager sharedInstance];
   [v3 invalidateAppManagerPlugin];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v5 = a3;
+  controllerCopy = controller;
   NSClassFromString(&cfstr_Ckfullscreenbr.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -120,9 +120,9 @@
   return v7;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   NSClassFromString(&cfstr_Ckfullscreenbr.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -139,15 +139,15 @@
   return v5;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceViewControllerCopy = sourceViewController;
   NSClassFromString(&cfstr_Ckfullscreenbr.isa);
   if (objc_opt_isKindOfClass())
   {
-    v11 = [[CKBrowserFullscreenRevealPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v9];
+    v11 = [[CKBrowserFullscreenRevealPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
     objc_initWeak(&location, self);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -173,10 +173,10 @@ void __132__CKBrowserAppManagerViewController_presentationControllerForPresented
   [WeakRetained dismiss];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = [(CKBrowserViewController *)self sendDelegate];
-  [v3 dismissAndReloadInputViews:1];
+  sendDelegate = [(CKBrowserViewController *)self sendDelegate];
+  [sendDelegate dismissAndReloadInputViews:1];
 }
 
 - (CKBrowserAppManagerViewControllerDelegate)delegate

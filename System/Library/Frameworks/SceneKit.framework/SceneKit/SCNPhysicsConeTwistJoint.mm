@@ -3,14 +3,14 @@
 + (SCNPhysicsConeTwistJoint)jointWithBodyA:(SCNPhysicsBody *)bodyA frameA:(SCNMatrix4 *)frameA bodyB:(SCNPhysicsBody *)bodyB frameB:(SCNMatrix4 *)frameB;
 - (SCNMatrix4)frameA;
 - (SCNMatrix4)frameB;
-- (SCNPhysicsConeTwistJoint)initWithBody:(id)a3 frame:(SCNMatrix4 *)a4;
-- (SCNPhysicsConeTwistJoint)initWithBodyA:(id)a3 frameA:(SCNMatrix4 *)a4 bodyB:(id)a5 frameB:(SCNMatrix4 *)a6;
-- (SCNPhysicsConeTwistJoint)initWithCoder:(id)a3;
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4;
-- (void)_copyDefinition:(id *)a3;
-- (void)_willRemoveFromPhysicsWorld:(id)a3;
+- (SCNPhysicsConeTwistJoint)initWithBody:(id)body frame:(SCNMatrix4 *)frame;
+- (SCNPhysicsConeTwistJoint)initWithBodyA:(id)a frameA:(SCNMatrix4 *)frameA bodyB:(id)b frameB:(SCNMatrix4 *)frameB;
+- (SCNPhysicsConeTwistJoint)initWithCoder:(id)coder;
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition;
+- (void)_copyDefinition:(id *)definition;
+- (void)_willRemoveFromPhysicsWorld:(id)world;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setFrameA:(SCNMatrix4 *)frameA;
 - (void)setFrameB:(SCNMatrix4 *)frameB;
 - (void)setMaximumAngularLimit1:(CGFloat)maximumAngularLimit1;
@@ -33,26 +33,26 @@
   [(SCNPhysicsConeTwistJoint *)&v4 dealloc];
 }
 
-- (SCNPhysicsConeTwistJoint)initWithBodyA:(id)a3 frameA:(SCNMatrix4 *)a4 bodyB:(id)a5 frameB:(SCNMatrix4 *)a6
+- (SCNPhysicsConeTwistJoint)initWithBodyA:(id)a frameA:(SCNMatrix4 *)frameA bodyB:(id)b frameB:(SCNMatrix4 *)frameB
 {
   v18.receiver = self;
   v18.super_class = SCNPhysicsConeTwistJoint;
   v10 = [(SCNPhysicsConeTwistJoint *)&v18 init];
   if (v10)
   {
-    *(v10 + 1) = a3;
-    v11 = *&a4->m11;
-    v12 = *&a4->m21;
-    v13 = *&a4->m31;
-    *(v10 + 4) = *&a4->m41;
+    *(v10 + 1) = a;
+    v11 = *&frameA->m11;
+    v12 = *&frameA->m21;
+    v13 = *&frameA->m31;
+    *(v10 + 4) = *&frameA->m41;
     *(v10 + 3) = v13;
     *(v10 + 2) = v12;
     *(v10 + 1) = v11;
-    *(v10 + 10) = a5;
-    v14 = *&a6->m41;
-    v16 = *&a6->m11;
-    v15 = *&a6->m21;
-    *(v10 + 120) = *&a6->m31;
+    *(v10 + 10) = b;
+    v14 = *&frameB->m41;
+    v16 = *&frameB->m11;
+    v15 = *&frameB->m21;
+    *(v10 + 120) = *&frameB->m31;
     *(v10 + 136) = v14;
     *(v10 + 88) = v16;
     *(v10 + 104) = v15;
@@ -63,18 +63,18 @@
   return v10;
 }
 
-- (SCNPhysicsConeTwistJoint)initWithBody:(id)a3 frame:(SCNMatrix4 *)a4
+- (SCNPhysicsConeTwistJoint)initWithBody:(id)body frame:(SCNMatrix4 *)frame
 {
   v11.receiver = self;
   v11.super_class = SCNPhysicsConeTwistJoint;
   v6 = [(SCNPhysicsConeTwistJoint *)&v11 init];
   if (v6)
   {
-    v6->_definition.bodyA = a3;
-    v7 = *&a4->m11;
-    v8 = *&a4->m21;
-    v9 = *&a4->m31;
-    *&v6->_definition.frameA.m41 = *&a4->m41;
+    v6->_definition.bodyA = body;
+    v7 = *&frame->m11;
+    v8 = *&frame->m21;
+    v9 = *&frame->m31;
+    *&v6->_definition.frameA.m41 = *&frame->m41;
     *&v6->_definition.frameA.m31 = v9;
     *&v6->_definition.frameA.m21 = v8;
     *&v6->_definition.frameA.m11 = v7;
@@ -85,7 +85,7 @@
 
 + (SCNPhysicsConeTwistJoint)jointWithBodyA:(SCNPhysicsBody *)bodyA frameA:(SCNMatrix4 *)frameA bodyB:(SCNPhysicsBody *)bodyB frameB:(SCNMatrix4 *)frameB
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v11 = *&frameA->m21;
   v17[0] = *&frameA->m11;
   v17[1] = v11;
@@ -103,7 +103,7 @@
 
 + (SCNPhysicsConeTwistJoint)jointWithBody:(SCNPhysicsBody *)body frame:(SCNMatrix4 *)frame
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = *&frame->m21;
   v10[0] = *&frame->m11;
   v10[1] = v7;
@@ -399,35 +399,35 @@ double __49__SCNPhysicsConeTwistJoint_setMaximumTwistAngle___block_invoke(uint64
   return result;
 }
 
-- (void)_copyDefinition:(id *)a3
+- (void)_copyDefinition:(id *)definition
 {
   v4 = *&self->_definition.frameA.m13;
   v3 = *&self->_definition.frameA.m23;
-  *a3->var0 = *&self->_definition.bodyA;
-  *&a3->var0[16] = v4;
-  *&a3->var0[32] = v3;
+  *definition->var0 = *&self->_definition.bodyA;
+  *&definition->var0[16] = v4;
+  *&definition->var0[32] = v3;
   v5 = *&self->_definition.frameB.m21;
   v7 = *&self->_definition.frameA.m33;
   v6 = *&self->_definition.frameA.m43;
-  *&a3->var0[80] = *&self->_definition.frameB.m11;
-  *&a3->var0[96] = v5;
-  *&a3->var0[48] = v7;
-  *&a3->var0[64] = v6;
+  *&definition->var0[80] = *&self->_definition.frameB.m11;
+  *&definition->var0[96] = v5;
+  *&definition->var0[48] = v7;
+  *&definition->var0[64] = v6;
   v9 = *&self->_definition.frameB.m41;
   v8 = *&self->_definition.maximumAngularLimit1;
   v10 = *&self->_definition.frameB.m31;
-  *&a3->var0[160] = self->_definition.maximumTwistAngle;
-  *&a3->var0[128] = v9;
-  *&a3->var0[144] = v8;
-  *&a3->var0[112] = v10;
+  *&definition->var0[160] = self->_definition.maximumTwistAngle;
+  *&definition->var0[128] = v9;
+  *&definition->var0[144] = v8;
+  *&definition->var0[112] = v10;
 }
 
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition
 {
   world = self->_world;
   if (world)
   {
-    v8 = world == a3;
+    v8 = world == world;
   }
 
   else
@@ -444,34 +444,34 @@ double __49__SCNPhysicsConeTwistJoint_setMaximumTwistAngle___block_invoke(uint64
     }
   }
 
-  self->_world = a3;
-  v10 = *&a4->var0[144];
-  v16[8] = *&a4->var0[128];
+  self->_world = world;
+  v10 = *&definition->var0[144];
+  v16[8] = *&definition->var0[128];
   v16[9] = v10;
-  v17 = *&a4->var0[160];
-  v11 = *&a4->var0[80];
-  v16[4] = *&a4->var0[64];
+  v17 = *&definition->var0[160];
+  v11 = *&definition->var0[80];
+  v16[4] = *&definition->var0[64];
   v16[5] = v11;
-  v12 = *&a4->var0[112];
-  v16[6] = *&a4->var0[96];
+  v12 = *&definition->var0[112];
+  v16[6] = *&definition->var0[96];
   v16[7] = v12;
-  v13 = *&a4->var0[16];
-  v16[0] = *a4->var0;
+  v13 = *&definition->var0[16];
+  v16[0] = *definition->var0;
   v16[1] = v13;
-  v14 = *&a4->var0[48];
-  v16[2] = *&a4->var0[32];
+  v14 = *&definition->var0[48];
+  v16[2] = *&definition->var0[32];
   v16[3] = v14;
   self->_constraint = _createConstraintFromDefinition(v16);
-  v15 = [a3 _handle];
-  (*(*v15 + 112))(v15, self->_constraint, 0);
+  _handle = [world _handle];
+  (*(*_handle + 112))(_handle, self->_constraint, 0);
 }
 
-- (void)_willRemoveFromPhysicsWorld:(id)a3
+- (void)_willRemoveFromPhysicsWorld:(id)world
 {
   if (self->_constraint)
   {
-    v4 = [a3 _handle];
-    (*(*v4 + 120))(v4, self->_constraint);
+    _handle = [world _handle];
+    (*(*_handle + 120))(_handle, self->_constraint);
     constraint = self->_constraint;
     if (constraint)
     {
@@ -483,7 +483,7 @@ double __49__SCNPhysicsConeTwistJoint_setMaximumTwistAngle___block_invoke(uint64
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNPhysicsConeTwistJoint;
@@ -491,17 +491,17 @@ double __49__SCNPhysicsConeTwistJoint_setMaximumTwistAngle___block_invoke(uint64
   p_definition = &self->_definition;
   if (p_definition->bodyA)
   {
-    [a3 encodeObject:p_definition->bodyA forKey:@"bodyA"];
+    [coder encodeObject:p_definition->bodyA forKey:@"bodyA"];
   }
 
   bodyB = p_definition->bodyB;
   if (bodyB)
   {
-    [a3 encodeObject:bodyB forKey:@"bodyB"];
+    [coder encodeObject:bodyB forKey:@"bodyB"];
   }
 }
 
-- (SCNPhysicsConeTwistJoint)initWithCoder:(id)a3
+- (SCNPhysicsConeTwistJoint)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNPhysicsConeTwistJoint;
@@ -510,8 +510,8 @@ double __49__SCNPhysicsConeTwistJoint_setMaximumTwistAngle___block_invoke(uint64
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    v4->_definition.bodyA = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bodyA"];
-    v4->_definition.bodyB = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bodyB"];
+    v4->_definition.bodyA = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bodyA"];
+    v4->_definition.bodyB = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bodyB"];
     [SCNTransaction setImmediateMode:v5];
   }
 

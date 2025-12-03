@@ -1,19 +1,19 @@
 @interface SBIdleTimerGlobalStateMonitor
 + (SBIdleTimerGlobalStateMonitor)sharedInstance;
-- (id)_BOOLMonitorForProperty:(id)a3 inDefaults:(id)a4 fetchingWith:(id)a5;
+- (id)_BOOLMonitorForProperty:(id)property inDefaults:(id)defaults fetchingWith:(id)with;
 - (id)_init;
-- (id)_initWithLocalDefaults:(id)a3 profileConnection:(id)a4 pocketStateMonitor:(id)a5 uiController:(id)a6 idleTimerService:(id)a7 thermalBlockProvider:(id)a8 backlightController:(id)a9;
+- (id)_initWithLocalDefaults:(id)defaults profileConnection:(id)connection pocketStateMonitor:(id)monitor uiController:(id)controller idleTimerService:(id)service thermalBlockProvider:(id)provider backlightController:(id)backlightController;
 - (id)_stateCaptureDescription;
-- (id)_timeIntervalMonitorForProperty:(id)a3 inDefaults:(id)a4 fetchingWith:(id)a5;
+- (id)_timeIntervalMonitorForProperty:(id)property inDefaults:(id)defaults fetchingWith:(id)with;
 - (void)_addStateCaptureHandlers;
 - (void)_updateAutoDimDisabled;
 - (void)_updateFaceDownOnTable;
-- (void)_updateObserversForReason:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateObserversForReason:(id)reason;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)idleTimerGlobalSettingMonitor:(id)a3 changedForReason:(id)a4;
-- (void)idleTimerServiceTimeoutAssertionsDidChange:(id)a3 fromClient:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)idleTimerGlobalSettingMonitor:(id)monitor changedForReason:(id)reason;
+- (void)idleTimerServiceTimeoutAssertionsDidChange:(id)change fromClient:(id)client;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBIdleTimerGlobalStateMonitor
@@ -37,16 +37,16 @@ void __47__SBIdleTimerGlobalStateMonitor_sharedInstance__block_invoke()
   sharedInstance_monitor_1 = v0;
 }
 
-- (id)_initWithLocalDefaults:(id)a3 profileConnection:(id)a4 pocketStateMonitor:(id)a5 uiController:(id)a6 idleTimerService:(id)a7 thermalBlockProvider:(id)a8 backlightController:(id)a9
+- (id)_initWithLocalDefaults:(id)defaults profileConnection:(id)connection pocketStateMonitor:(id)monitor uiController:(id)controller idleTimerService:(id)service thermalBlockProvider:(id)provider backlightController:(id)backlightController
 {
   v76[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v58 = a4;
-  v17 = a5;
-  v59 = a6;
-  v18 = a7;
-  v19 = a8;
-  v57 = a9;
+  defaultsCopy = defaults;
+  connectionCopy = connection;
+  monitorCopy = monitor;
+  controllerCopy = controller;
+  serviceCopy = service;
+  providerCopy = provider;
+  backlightControllerCopy = backlightController;
   v75.receiver = self;
   v75.super_class = SBIdleTimerGlobalStateMonitor;
   v20 = [(SBIdleTimerGlobalStateMonitor *)&v75 init];
@@ -54,64 +54,64 @@ void __47__SBIdleTimerGlobalStateMonitor_sharedInstance__block_invoke()
   if (v20)
   {
     v20->_observerLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v20->_backlightController, a9);
+    objc_storeStrong(&v20->_backlightController, backlightController);
     [(SBBacklightController *)v21->_backlightController addObserver:v21];
-    objc_storeStrong(&v21->_idleTimerService, a7);
-    [v18 setDelegate:v21];
-    objc_storeStrong(&v21->_thermalBlockProvider, a8);
-    [v19 addThermalObserver:v21];
-    v21->_thermalBlocked = [v19 isThermalBlocked];
-    objc_storeStrong(&v21->_localDefaults, a3);
+    objc_storeStrong(&v21->_idleTimerService, service);
+    [serviceCopy setDelegate:v21];
+    objc_storeStrong(&v21->_thermalBlockProvider, provider);
+    [providerCopy addThermalObserver:v21];
+    v21->_thermalBlocked = [providerCopy isThermalBlocked];
+    objc_storeStrong(&v21->_localDefaults, defaults);
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"dontLockEver"];
-    v23 = [v16 securityDefaults];
+    securityDefaults = [defaultsCopy securityDefaults];
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection_pocketStateMonitor_uiController_idleTimerService_thermalBlockProvider_backlightController___block_invoke;
     v73[3] = &unk_2783C1B30;
-    v24 = v16;
+    v24 = defaultsCopy;
     v74 = v24;
-    v25 = [(SBIdleTimerGlobalStateMonitor *)v21 _BOOLMonitorForProperty:v22 inDefaults:v23 fetchingWith:v73];
+    v25 = [(SBIdleTimerGlobalStateMonitor *)v21 _BOOLMonitorForProperty:v22 inDefaults:securityDefaults fetchingWith:v73];
     dontLockEver = v21->_dontLockEver;
     v21->_dontLockEver = v25;
 
     v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"dontDimOrLockWhileConnectedToPower"];
-    v28 = [v24 idleTimerDefaults];
+    idleTimerDefaults = [v24 idleTimerDefaults];
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection_pocketStateMonitor_uiController_idleTimerService_thermalBlockProvider_backlightController___block_invoke_2;
     v71[3] = &unk_2783C1B58;
     v29 = v24;
     v72 = v29;
-    v30 = [(SBIdleTimerGlobalStateMonitor *)v21 _BOOLMonitorForProperty:v27 inDefaults:v28 fetchingWith:v71];
+    v30 = [(SBIdleTimerGlobalStateMonitor *)v21 _BOOLMonitorForProperty:v27 inDefaults:idleTimerDefaults fetchingWith:v71];
     dontDimOrLockOnAC = v21->_dontDimOrLockOnAC;
     v21->_dontDimOrLockOnAC = v30;
 
     v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"disableAttentionAwareness"];
-    v33 = [v29 idleTimerDefaults];
+    idleTimerDefaults2 = [v29 idleTimerDefaults];
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
     v69[2] = __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection_pocketStateMonitor_uiController_idleTimerService_thermalBlockProvider_backlightController___block_invoke_3;
     v69[3] = &unk_2783C1B58;
     v34 = v29;
     v70 = v34;
-    v35 = [(SBIdleTimerGlobalStateMonitor *)v21 _BOOLMonitorForProperty:v32 inDefaults:v33 fetchingWith:v69];
+    v35 = [(SBIdleTimerGlobalStateMonitor *)v21 _BOOLMonitorForProperty:v32 inDefaults:idleTimerDefaults2 fetchingWith:v69];
     disableAttentionAwareness = v21->_disableAttentionAwareness;
     v21->_disableAttentionAwareness = v35;
 
     v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"minimumLockscreenIdleTime"];
-    v38 = [v34 idleTimerDefaults];
+    idleTimerDefaults3 = [v34 idleTimerDefaults];
     v67[0] = MEMORY[0x277D85DD0];
     v67[1] = 3221225472;
     v67[2] = __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection_pocketStateMonitor_uiController_idleTimerService_thermalBlockProvider_backlightController___block_invoke_4;
     v67[3] = &unk_2783C1B80;
     v39 = v34;
     v68 = v39;
-    v40 = [(SBIdleTimerGlobalStateMonitor *)v21 _timeIntervalMonitorForProperty:v37 inDefaults:v38 fetchingWith:v67];
+    v40 = [(SBIdleTimerGlobalStateMonitor *)v21 _timeIntervalMonitorForProperty:v37 inDefaults:idleTimerDefaults3 fetchingWith:v67];
     minimumLockscreenIdleTime = v21->_minimumLockscreenIdleTime;
     v21->_minimumLockscreenIdleTime = v40;
 
     objc_initWeak(&location, v21);
-    v42 = [v39 idleTimerDefaults];
+    idleTimerDefaults4 = [v39 idleTimerDefaults];
     v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"disableAutoDim"];
     v76[0] = v43;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v76 count:1];
@@ -121,7 +121,7 @@ void __47__SBIdleTimerGlobalStateMonitor_sharedInstance__block_invoke()
     v64[2] = __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection_pocketStateMonitor_uiController_idleTimerService_thermalBlockProvider_backlightController___block_invoke_5;
     v64[3] = &unk_2783A8C68;
     objc_copyWeak(&v65, &location);
-    v46 = [v42 observeDefaults:v44 onQueue:MEMORY[0x277D85CD0] withBlock:v64];
+    v46 = [idleTimerDefaults4 observeDefaults:v44 onQueue:MEMORY[0x277D85CD0] withBlock:v64];
 
     [(SBIdleTimerGlobalStateMonitor *)v21 _updateAutoDimDisabled];
     v47 = [[_SBIdleTimerGlobalBoolSettingMonitor alloc] initWithLabel:@"BatterySaverMode" delegate:v21 updatingForNotification:@"SBBatterySaverModeDidChangeNotification" fetchingWith:&__block_literal_global_30_5];
@@ -133,7 +133,7 @@ void __47__SBIdleTimerGlobalStateMonitor_sharedInstance__block_invoke()
     v62[1] = 3221225472;
     v62[2] = __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection_pocketStateMonitor_uiController_idleTimerService_thermalBlockProvider_backlightController___block_invoke_7;
     v62[3] = &unk_2783ACE58;
-    v63 = v59;
+    v63 = controllerCopy;
     v50 = [(_SBIdleTimerGlobalBoolSettingMonitor *)v49 initWithLabel:@"OnACPower" delegate:v21 updatingForNotification:@"SBUIACStatusChangedNotification" fetchingWith:v62];
     onACPowerMonitor = v21->_onACPowerMonitor;
     v21->_onACPowerMonitor = v50;
@@ -144,13 +144,13 @@ void __47__SBIdleTimerGlobalStateMonitor_sharedInstance__block_invoke()
     v60[1] = 3221225472;
     v60[2] = __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection_pocketStateMonitor_uiController_idleTimerService_thermalBlockProvider_backlightController___block_invoke_8;
     v60[3] = &unk_2783C1BA8;
-    v61 = v58;
+    v61 = connectionCopy;
     v54 = [(_SBIdleTimerGlobalNumericSettingMonitor *)v52 initWithLabel:@"AutoLockTimeout" delegate:v21 updatingForNotification:v53 fetchingWith:v60];
     autoLockTimeoutMonitor = v21->_autoLockTimeoutMonitor;
     v21->_autoLockTimeoutMonitor = v54;
 
-    [v17 addObserver:v21];
-    v21->_pocketState = [v17 pocketState];
+    [monitorCopy addObserver:v21];
+    v21->_pocketState = [monitorCopy pocketState];
     [(SBIdleTimerGlobalStateMonitor *)v21 _updateFaceDownOnTable];
     [(SBIdleTimerGlobalStateMonitor *)v21 _addStateCaptureHandlers];
 
@@ -219,21 +219,21 @@ id __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection
 - (id)_init
 {
   v3 = +[SBDefaults localDefaults];
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v5 = +[SBPocketStateMonitor sharedInstance];
   v6 = +[SBUIController sharedInstance];
   v7 = +[SBIdleTimerService sharedInstance];
   v8 = +[SBThermalController sharedInstance];
   v9 = +[SBBacklightController sharedInstance];
-  v10 = [(SBIdleTimerGlobalStateMonitor *)self _initWithLocalDefaults:v3 profileConnection:v4 pocketStateMonitor:v5 uiController:v6 idleTimerService:v7 thermalBlockProvider:v8 backlightController:v9];
+  v10 = [(SBIdleTimerGlobalStateMonitor *)self _initWithLocalDefaults:v3 profileConnection:mEMORY[0x277D262A0] pocketStateMonitor:v5 uiController:v6 idleTimerService:v7 thermalBlockProvider:v8 backlightController:v9];
 
   return v10;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   stateCaptureAssertion = self->_stateCaptureAssertion;
   if (stateCaptureAssertion)
@@ -248,31 +248,31 @@ id __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection
   [(SBIdleTimerGlobalStateMonitor *)&v6 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_assert_not_owner(&self->_observerLock);
   os_unfair_lock_lock(&self->_observerLock);
   observers = self->_observers;
   if (!observers)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v6 = self->_observers;
-    self->_observers = v5;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v7];
+  [(NSHashTable *)observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_assert_not_owner(&self->_observerLock);
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   if (![(NSHashTable *)self->_observers count])
   {
@@ -283,15 +283,15 @@ id __164__SBIdleTimerGlobalStateMonitor__initWithLocalDefaults_profileConnection
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)idleTimerGlobalSettingMonitor:(id)a3 changedForReason:(id)a4
+- (void)idleTimerGlobalSettingMonitor:(id)monitor changedForReason:(id)reason
 {
-  v5 = a4;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalStateMonitor idleTimerGlobalSettingMonitor:changedForReason:];
   }
 
-  [(SBIdleTimerGlobalStateMonitor *)self _updateObserversForReason:v5];
+  [(SBIdleTimerGlobalStateMonitor *)self _updateObserversForReason:reasonCopy];
 }
 
 uint64_t __90__SBIdleTimerGlobalStateMonitor_backlightController_didTransitionToBacklightState_source___block_invoke(uint64_t a1)
@@ -329,10 +329,10 @@ uint64_t __80__SBIdleTimerGlobalStateMonitor_pocketStateMonitor_pocketStateDidCh
   return result;
 }
 
-- (void)idleTimerServiceTimeoutAssertionsDidChange:(id)a3 fromClient:(id)a4
+- (void)idleTimerServiceTimeoutAssertionsDidChange:(id)change fromClient:(id)client
 {
-  v5 = a4;
-  v4 = v5;
+  clientCopy = client;
+  v4 = clientCopy;
   BSDispatchMain();
 }
 
@@ -376,10 +376,10 @@ uint64_t __59__SBIdleTimerGlobalStateMonitor_thermalBlockStatusChanged___block_i
   }
 }
 
-- (void)_updateObserversForReason:(id)a3
+- (void)_updateObserversForReason:(id)reason
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_assert_not_owner(&self->_observerLock);
   os_unfair_lock_lock(&self->_observerLock);
   v5 = [(NSHashTable *)self->_observers copy];
@@ -404,7 +404,7 @@ uint64_t __59__SBIdleTimerGlobalStateMonitor_thermalBlockStatusChanged___block_i
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) idleTimerGlobalStateMonitor:self changedForReason:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) idleTimerGlobalStateMonitor:self changedForReason:{reasonCopy, v11}];
       }
 
       while (v8 != v10);
@@ -417,22 +417,22 @@ uint64_t __59__SBIdleTimerGlobalStateMonitor_thermalBlockStatusChanged___block_i
 
 - (void)_updateAutoDimDisabled
 {
-  v3 = [(SBLocalDefaults *)self->_localDefaults idleTimerDefaults];
-  v4 = [v3 disableAutoDim];
+  idleTimerDefaults = [(SBLocalDefaults *)self->_localDefaults idleTimerDefaults];
+  disableAutoDim = [idleTimerDefaults disableAutoDim];
 
-  if (self->_autoDimDisabled != v4)
+  if (self->_autoDimDisabled != disableAutoDim)
   {
-    self->_autoDimDisabled = v4;
+    self->_autoDimDisabled = disableAutoDim;
 
     [(SBIdleTimerGlobalStateMonitor *)self _updateObserversForReason:@"AutoDimDisable"];
   }
 }
 
-- (id)_BOOLMonitorForProperty:(id)a3 inDefaults:(id)a4 fetchingWith:(id)a5
+- (id)_BOOLMonitorForProperty:(id)property inDefaults:(id)defaults fetchingWith:(id)with
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  defaultsCopy = defaults;
+  withCopy = with;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
@@ -448,13 +448,13 @@ uint64_t __59__SBIdleTimerGlobalStateMonitor_thermalBlockStatusChanged___block_i
   v26[1] = 3221225472;
   v26[2] = __81__SBIdleTimerGlobalStateMonitor__BOOLMonitorForProperty_inDefaults_fetchingWith___block_invoke;
   v26[3] = &unk_2783C1BD0;
-  v13 = v10;
+  v13 = withCopy;
   v29 = v13;
-  v14 = v9;
+  v14 = defaultsCopy;
   v27 = v14;
   v30 = v34;
   v31 = v36;
-  v15 = v8;
+  v15 = propertyCopy;
   v28 = v15;
   objc_copyWeak(&v32, &location);
   v16 = [v14 observeDefault:v15 onQueue:v11 withBlock:v26];
@@ -523,11 +523,11 @@ uint64_t __81__SBIdleTimerGlobalStateMonitor__BOOLMonitorForProperty_inDefaults_
   return *(*(a1[7] + 8) + 24);
 }
 
-- (id)_timeIntervalMonitorForProperty:(id)a3 inDefaults:(id)a4 fetchingWith:(id)a5
+- (id)_timeIntervalMonitorForProperty:(id)property inDefaults:(id)defaults fetchingWith:(id)with
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  defaultsCopy = defaults;
+  withCopy = with;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
@@ -543,13 +543,13 @@ uint64_t __81__SBIdleTimerGlobalStateMonitor__BOOLMonitorForProperty_inDefaults_
   v26[1] = 3221225472;
   v26[2] = __89__SBIdleTimerGlobalStateMonitor__timeIntervalMonitorForProperty_inDefaults_fetchingWith___block_invoke;
   v26[3] = &unk_2783C1BD0;
-  v13 = v10;
+  v13 = withCopy;
   v29 = v13;
-  v14 = v9;
+  v14 = defaultsCopy;
   v27 = v14;
   v30 = v34;
   v31 = v36;
-  v15 = v8;
+  v15 = propertyCopy;
   v28 = v15;
   objc_copyWeak(&v32, &location);
   v16 = [v14 observeDefault:v15 onQueue:v11 withBlock:v26];
@@ -677,12 +677,12 @@ __CFString *__57__SBIdleTimerGlobalStateMonitor__addStateCaptureHandlers__block_
   v9 = __57__SBIdleTimerGlobalStateMonitor__stateCaptureDescription__block_invoke;
   v10 = &unk_2783A92D8;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendBodySectionWithName:0 multilinePrefix:0 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
 id __57__SBIdleTimerGlobalStateMonitor__stateCaptureDescription__block_invoke(uint64_t a1)

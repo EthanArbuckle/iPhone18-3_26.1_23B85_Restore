@@ -1,53 +1,53 @@
 @interface IAPDataLogger
-+ (id)sanitizeString:(id)a3;
-+ (void)AggAccAttach:(id)a3 WithManufacturer:(id)a4;
-+ (void)AggAccDetach:(id)a3 WithManufacturer:(id)a4 AndConnectionTime:(unint64_t)a5;
-+ (void)PowerlogAccAttach:(id)a3;
-+ (void)PowerlogAccDetach:(id)a3 AndConnectionTime:(unint64_t)a4;
++ (id)sanitizeString:(id)string;
++ (void)AggAccAttach:(id)attach WithManufacturer:(id)manufacturer;
++ (void)AggAccDetach:(id)detach WithManufacturer:(id)manufacturer AndConnectionTime:(unint64_t)time;
++ (void)PowerlogAccAttach:(id)attach;
++ (void)PowerlogAccDetach:(id)detach AndConnectionTime:(unint64_t)time;
 @end
 
 @implementation IAPDataLogger
 
-+ (id)sanitizeString:(id)a3
++ (id)sanitizeString:(id)string
 {
   v4 = objc_alloc_init(NSMutableCharacterSet);
   [v4 formUnionWithCharacterSet:{+[NSCharacterSet letterCharacterSet](NSCharacterSet, "letterCharacterSet")}];
   [v4 formUnionWithCharacterSet:{+[NSCharacterSet decimalDigitCharacterSet](NSCharacterSet, "decimalDigitCharacterSet")}];
   [v4 addCharactersInString:@"_-.!"];
-  v5 = [[NSString alloc] initWithData:objc_msgSend(a3 encoding:{"dataUsingEncoding:allowLossyConversion:", 1, 1), 1}];
+  v5 = [[NSString alloc] initWithData:objc_msgSend(string encoding:{"dataUsingEncoding:allowLossyConversion:", 1, 1), 1}];
   v6 = [objc_msgSend(v5 componentsSeparatedByCharactersInSet:{objc_msgSend(v4, "invertedSet")), "componentsJoinedByString:", &stru_100119FF8}];
 
   return v6;
 }
 
-+ (void)AggAccAttach:(id)a3 WithManufacturer:(id)a4
++ (void)AggAccAttach:(id)attach WithManufacturer:(id)manufacturer
 {
-  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"accessory.attach.%@.%@", [a1 sanitizeString:a4], objc_msgSend(a1, "sanitizeString:", a3));
+  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"accessory.attach.%@.%@", [self sanitizeString:manufacturer], objc_msgSend(self, "sanitizeString:", attach));
 
   _ADClientAddValueForScalarKey(v4, 1);
 }
 
-+ (void)AggAccDetach:(id)a3 WithManufacturer:(id)a4 AndConnectionTime:(unint64_t)a5
++ (void)AggAccDetach:(id)detach WithManufacturer:(id)manufacturer AndConnectionTime:(unint64_t)time
 {
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"accessory.usage.%@.%@", [a1 sanitizeString:a4], objc_msgSend(a1, "sanitizeString:", a3));
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"accessory.usage.%@.%@", [self sanitizeString:manufacturer], objc_msgSend(self, "sanitizeString:", detach));
   v10.tv_sec = 0xAAAAAAAAAAAAAAAALL;
   *&v10.tv_usec = 0xAAAAAAAAAAAAAAAALL;
   v8 = gettimeofday(&v10, 0);
-  if (v10.tv_sec < a5)
+  if (v10.tv_sec < time)
   {
     __break(0x5515u);
   }
 
   else
   {
-    v9.n128_f64[0] = [a1 sanitizeData:v10.tv_sec - a5];
+    v9.n128_f64[0] = [self sanitizeData:v10.tv_sec - time];
     v8 = v7;
   }
 
   _ADClientPushValueForDistributionKey(v8, v9);
 }
 
-+ (void)PowerlogAccAttach:(id)a3
++ (void)PowerlogAccAttach:(id)attach
 {
   v16[0] = IAPAppAccessoryNameKey;
   v16[1] = IAPAppAccessoryManufacturerKey;
@@ -78,9 +78,9 @@
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
-        if ([a3 objectForKey:v10])
+        if ([attach objectForKey:v10])
         {
-          [v5 setObject:objc_msgSend(a3 forKey:{"objectForKey:", v10), v10}];
+          [v5 setObject:objc_msgSend(attach forKey:{"objectForKey:", v10), v10}];
         }
       }
 
@@ -94,7 +94,7 @@
   PLLogRegisteredEvent();
 }
 
-+ (void)PowerlogAccDetach:(id)a3 AndConnectionTime:(unint64_t)a4
++ (void)PowerlogAccDetach:(id)detach AndConnectionTime:(unint64_t)time
 {
   v20[0] = IAPAppAccessoryNameKey;
   v20[1] = IAPAppAccessoryManufacturerKey;
@@ -125,9 +125,9 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([a3 objectForKey:v12])
+        if ([detach objectForKey:v12])
         {
-          [v7 setObject:objc_msgSend(a3 forKey:{"objectForKey:", v12), v12}];
+          [v7 setObject:objc_msgSend(detach forKey:{"objectForKey:", v12), v12}];
         }
       }
 
@@ -140,13 +140,13 @@
   v14.tv_sec = 0xAAAAAAAAAAAAAAAALL;
   *&v14.tv_usec = 0xAAAAAAAAAAAAAAAALL;
   gettimeofday(&v14, 0);
-  if (v14.tv_sec < a4)
+  if (v14.tv_sec < time)
   {
     __break(0x5515u);
   }
 
-  v13 = [NSNumber numberWithLong:v14.tv_sec - a4];
-  [v7 setObject:v13 forKey:IAPAppAccessoryUsageTimeInSecsKey];
+  time = [NSNumber numberWithLong:v14.tv_sec - time];
+  [v7 setObject:time forKey:IAPAppAccessoryUsageTimeInSecsKey];
   [v7 setObject:&__kCFBooleanFalse forKey:IAPAppAccessoryConnectedKey];
   PLLogRegisteredEvent();
 }

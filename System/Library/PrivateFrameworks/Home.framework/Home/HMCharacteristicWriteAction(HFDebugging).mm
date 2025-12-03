@@ -7,15 +7,15 @@
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
   v4 = [a3 copyWithOutputStyle:1];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &off_28258AC30;
   v5 = objc_msgSendSuper2(&v10, sel_hf_stateDumpBuilderWithContext_, v4);
-  v6 = [a1 characteristic];
+  characteristic = [self characteristic];
   v7 = [v4 copyWithDetailLevel:0];
-  [v5 appendObject:v6 withName:@"characteristic" context:v7];
+  [v5 appendObject:characteristic withName:@"characteristic" context:v7];
 
-  v8 = [a1 targetValue];
-  [v5 setObject:v8 forKeyedSubscript:@"value"];
+  targetValue = [self targetValue];
+  [v5 setObject:targetValue forKeyedSubscript:@"value"];
 
   return v5;
 }

@@ -1,33 +1,33 @@
 @interface CNMeCardSharingSettingsNameEditorViewController
-- (CNMeCardSharingSettingsNameEditorViewController)initWithTextFields:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (CNMeCardSharingSettingsNameEditorViewController)initWithTextFields:(id)fields;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)setUpCollectionView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CNMeCardSharingSettingsNameEditorViewController
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[CNMeCardSharingSettingsNameEditingCell cellIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(CNMeCardSharingSettingsNameEditorViewController *)self textFields];
-  v11 = [v6 row];
+  textFields = [(CNMeCardSharingSettingsNameEditorViewController *)self textFields];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [textFields objectAtIndexedSubscript:v11];
   [v9 setTextField:v12];
 
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(CNMeCardSharingSettingsNameEditorViewController *)self textFields:a3];
+  v4 = [(CNMeCardSharingSettingsNameEditorViewController *)self textFields:view];
   v5 = [v4 count];
 
   return v5;
@@ -38,8 +38,8 @@
   v11 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:2];
   v3 = [MEMORY[0x1E69DC808] layoutWithListConfiguration:v11];
   v4 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v5 = [(CNMeCardSharingSettingsNameEditorViewController *)self view];
-  [v5 frame];
+  view = [(CNMeCardSharingSettingsNameEditorViewController *)self view];
+  [view frame];
   v6 = [v4 initWithFrame:v3 collectionViewLayout:?];
 
   [v6 setAutoresizingMask:18];
@@ -51,20 +51,20 @@
   [v6 registerClass:v7 forCellWithReuseIdentifier:v8];
 
   [(CNMeCardSharingSettingsNameEditorViewController *)self setCollectionView:v6];
-  v9 = [(CNMeCardSharingSettingsNameEditorViewController *)self view];
-  v10 = [(CNMeCardSharingSettingsNameEditorViewController *)self collectionView];
-  [v9 addSubview:v10];
+  view2 = [(CNMeCardSharingSettingsNameEditorViewController *)self view];
+  collectionView = [(CNMeCardSharingSettingsNameEditorViewController *)self collectionView];
+  [view2 addSubview:collectionView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CNMeCardSharingSettingsNameEditorViewController;
-  [(CNMeCardSharingSettingsNameEditorViewController *)&v6 viewWillAppear:a3];
-  v4 = [(CNMeCardSharingSettingsNameEditorViewController *)self textFields];
-  v5 = [v4 firstObject];
+  [(CNMeCardSharingSettingsNameEditorViewController *)&v6 viewWillAppear:appear];
+  textFields = [(CNMeCardSharingSettingsNameEditorViewController *)self textFields];
+  firstObject = [textFields firstObject];
 
-  [v5 becomeFirstResponder];
+  [firstObject becomeFirstResponder];
 }
 
 - (void)viewDidLoad
@@ -75,9 +75,9 @@
   [(CNMeCardSharingSettingsNameEditorViewController *)self setUpCollectionView];
 }
 
-- (CNMeCardSharingSettingsNameEditorViewController)initWithTextFields:(id)a3
+- (CNMeCardSharingSettingsNameEditorViewController)initWithTextFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   v5 = [(CNMeCardSharingSettingsNameEditorViewController *)self init];
   if (v5)
   {
@@ -86,10 +86,10 @@
     [(CNMeCardSharingSettingsNameEditorViewController *)v5 setTitle:v7];
 
     v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v5 action:sel_doneTapped];
-    v9 = [(CNMeCardSharingSettingsNameEditorViewController *)v5 navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [(CNMeCardSharingSettingsNameEditorViewController *)v5 navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
 
-    [(CNMeCardSharingSettingsNameEditorViewController *)v5 setTextFields:v4];
+    [(CNMeCardSharingSettingsNameEditorViewController *)v5 setTextFields:fieldsCopy];
     v10 = v5;
   }
 

@@ -1,15 +1,15 @@
 @interface PhotoKitFetchResultFirstAssetModel.Proxy
 - (_TtCC12PhotosUICore34PhotoKitFetchResultFirstAssetModelP33_7A638B2861AEEAE35A983DCD609E6EC05Proxy)init;
-- (id)prepareForPhotoLibraryChange:(id)a3;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
+- (id)prepareForPhotoLibraryChange:(id)change;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
 @end
 
 @implementation PhotoKitFetchResultFirstAssetModel.Proxy
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   v6 = sub_1A3FEEF4C();
 
   if (v6)
@@ -25,9 +25,9 @@
   return v7;
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     v6 = sub_1A524C3E4();
   }
@@ -37,8 +37,8 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
+  queueCopy = queue;
+  selfCopy = self;
   sub_1A3FEF728(v6);
 }
 

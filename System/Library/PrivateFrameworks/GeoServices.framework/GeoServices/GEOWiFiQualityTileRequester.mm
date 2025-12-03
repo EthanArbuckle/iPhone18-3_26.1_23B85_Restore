@@ -1,6 +1,6 @@
 @interface GEOWiFiQualityTileRequester
 - (void)cancel;
-- (void)dataURLSession:(id)a3 didCompleteTask:(id)a4;
+- (void)dataURLSession:(id)session didCompleteTask:(id)task;
 @end
 
 @implementation GEOWiFiQualityTileRequester
@@ -12,14 +12,14 @@
   self->_task = 0;
 }
 
-- (void)dataURLSession:(id)a3 didCompleteTask:(id)a4
+- (void)dataURLSession:(id)session didCompleteTask:(id)task
 {
-  v5 = a4;
-  v6 = [v5 error];
+  taskCopy = task;
+  error = [taskCopy error];
 
-  if (v6)
+  if (error)
   {
-    v7 = [v5 error];
+    error2 = [taskCopy error];
     v8 = 0;
     v9 = 0;
   }
@@ -28,42 +28,42 @@
   {
     v18 = 0;
     v19 = 0;
-    v10 = [v5 didValidateEntityTagForData:&v19 entityTag:&v18];
+    v10 = [taskCopy didValidateEntityTagForData:&v19 entityTag:&v18];
     v9 = v19;
     v8 = v18;
     if (v10)
     {
-      v7 = 0;
+      error2 = 0;
     }
 
     else
     {
-      v11 = [v5 receivedData];
+      receivedData = [taskCopy receivedData];
 
-      if (v11)
+      if (receivedData)
       {
-        v12 = [v5 receivedData];
+        receivedData2 = [taskCopy receivedData];
 
-        v13 = [v5 entityTag];
+        entityTag = [taskCopy entityTag];
 
-        v7 = 0;
-        v8 = v13;
-        v9 = v12;
+        error2 = 0;
+        v8 = entityTag;
+        v9 = receivedData2;
       }
 
       else
       {
-        v7 = [NSError GEOErrorWithCode:-8 reason:@"unexpected empty data"];
+        error2 = [NSError GEOErrorWithCode:-8 reason:@"unexpected empty data"];
       }
     }
   }
 
   (*(self->_completion + 2))();
-  v14 = [objc_opt_class() requestKind];
-  v15 = [self->_auditToken bundleIdForNetworkAttribution];
-  v16 = [v5 error];
-  v17 = [v5 clientMetrics];
-  [GEONetworkEventDataRecorder recordNetworkEventDataForDataRequestKind:v14 usedBackgroundURL:&__kCFBooleanFalse requestAppIdentifier:v15 appMajorVersion:0 appMinorVersion:0 error:v16 clientMetrics:v17 additionalStates:0];
+  requestKind = [objc_opt_class() requestKind];
+  bundleIdForNetworkAttribution = [self->_auditToken bundleIdForNetworkAttribution];
+  error3 = [taskCopy error];
+  clientMetrics = [taskCopy clientMetrics];
+  [GEONetworkEventDataRecorder recordNetworkEventDataForDataRequestKind:requestKind usedBackgroundURL:&__kCFBooleanFalse requestAppIdentifier:bundleIdForNetworkAttribution appMajorVersion:0 appMinorVersion:0 error:error3 clientMetrics:clientMetrics additionalStates:0];
 }
 
 @end

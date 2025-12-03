@@ -1,17 +1,17 @@
 @interface PKSqueezePaletteStrokeWeightButton
-- (double)initWithStrokeWeight:(void *)a1;
+- (double)initWithStrokeWeight:(void *)weight;
 @end
 
 @implementation PKSqueezePaletteStrokeWeightButton
 
-- (double)initWithStrokeWeight:(void *)a1
+- (double)initWithStrokeWeight:(void *)weight
 {
-  if (!a1)
+  if (!weight)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = weight;
   v9.super_class = PKSqueezePaletteStrokeWeightButton;
   v3 = objc_msgSendSuper2(&v9, sel_init);
   v4 = v3;

@@ -1,37 +1,37 @@
 @interface CNFRegAlias
 - (BOOL)isDeviceAlias;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocalPhoneNumberAlias;
 - (BOOL)isPhoneNumberAliasOnPhoneNumberAccount;
 - (BOOL)isTemporaryPhoneNumberAlias;
 - (BOOL)validate;
-- (CNFRegAlias)initWithAccount:(id)a3 alias:(id)a4;
+- (CNFRegAlias)initWithAccount:(id)account alias:(id)alias;
 - (NSDate)expirationDate;
 - (NSString)displayName;
 - (NSString)identifier;
 - (id)description;
-- (int64_t)localizedCaseInsensitiveCompare:(id)a3;
+- (int64_t)localizedCaseInsensitiveCompare:(id)compare;
 - (int64_t)type;
 - (int64_t)validationErrorReason;
 - (int64_t)validationStatus;
 - (unint64_t)hash;
-- (void)setDisplayName:(id)a3;
+- (void)setDisplayName:(id)name;
 @end
 
 @implementation CNFRegAlias
 
-- (CNFRegAlias)initWithAccount:(id)a3 alias:(id)a4
+- (CNFRegAlias)initWithAccount:(id)account alias:(id)alias
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  aliasCopy = alias;
   v11.receiver = self;
   v11.super_class = CNFRegAlias;
   v8 = [(CNFRegAlias *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CNFRegAlias *)v8 setAlias:v7];
-    [(CNFRegAlias *)v9 setAccount:v6];
+    [(CNFRegAlias *)v8 setAlias:aliasCopy];
+    [(CNFRegAlias *)v9 setAccount:accountCopy];
   }
 
   return v9;
@@ -40,34 +40,34 @@
 - (NSString)identifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMAccount *)self->_account uniqueID];
-  v5 = [v3 stringWithFormat:@"%@:%@", v4, self->_alias];
+  uniqueID = [(IMAccount *)self->_account uniqueID];
+  v5 = [v3 stringWithFormat:@"%@:%@", uniqueID, self->_alias];
 
   return v5;
 }
 
 - (int64_t)type
 {
-  v3 = [(CNFRegAlias *)self account];
-  if (v3)
+  account = [(CNFRegAlias *)self account];
+  if (account)
   {
-    v4 = [(CNFRegAlias *)self account];
-    v5 = [(CNFRegAlias *)self alias];
-    v6 = [v4 typeForAlias:v5];
+    account2 = [(CNFRegAlias *)self account];
+    alias = [(CNFRegAlias *)self alias];
+    givenAliasType = [account2 typeForAlias:alias];
   }
 
   else
   {
-    v6 = [(CNFRegAlias *)self givenAliasType];
+    givenAliasType = [(CNFRegAlias *)self givenAliasType];
   }
 
-  return v6;
+  return givenAliasType;
 }
 
 - (BOOL)isPhoneNumberAliasOnPhoneNumberAccount
 {
-  v3 = [(CNFRegAlias *)self account];
-  v4 = [v3 accountType] == 2 && -[CNFRegAlias type](self, "type") == 2;
+  account = [(CNFRegAlias *)self account];
+  v4 = [account accountType] == 2 && -[CNFRegAlias type](self, "type") == 2;
 
   return v4;
 }
@@ -79,22 +79,22 @@
     return 1;
   }
 
-  v4 = [(CNFRegAlias *)self account];
-  v5 = [v4 objectForKey:*MEMORY[0x277D18AA8]];
+  account = [(CNFRegAlias *)self account];
+  v5 = [account objectForKey:*MEMORY[0x277D18AA8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  v7 = [(CNFRegAlias *)self account];
-  v2 = ([v7 accountType] == 2) & v6;
+  account2 = [(CNFRegAlias *)self account];
+  v2 = ([account2 accountType] == 2) & bOOLValue;
 
   return v2;
 }
@@ -111,8 +111,8 @@
 
     else
     {
-      v5 = [(CNFRegAlias *)self account];
-      v6 = [v5 objectForKey:*MEMORY[0x277D18AA0]];
+      account = [(CNFRegAlias *)self account];
+      v6 = [account objectForKey:*MEMORY[0x277D18AA0]];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -139,28 +139,28 @@
 
 - (BOOL)isDeviceAlias
 {
-  v2 = [(CNFRegAlias *)self account];
-  v3 = v2 == 0;
+  account = [(CNFRegAlias *)self account];
+  v3 = account == 0;
 
   return v3;
 }
 
 - (BOOL)validate
 {
-  v3 = [(CNFRegAlias *)self account];
-  v4 = [(CNFRegAlias *)self alias];
-  v5 = [v3 validateAlias:v4];
+  account = [(CNFRegAlias *)self account];
+  alias = [(CNFRegAlias *)self alias];
+  v5 = [account validateAlias:alias];
 
   return v5;
 }
 
 - (int64_t)validationStatus
 {
-  v3 = [(CNFRegAlias *)self account];
-  v4 = [(CNFRegAlias *)self alias];
-  if ([v3 hasAlias:v4])
+  account = [(CNFRegAlias *)self account];
+  alias = [(CNFRegAlias *)self alias];
+  if ([account hasAlias:alias])
   {
-    v5 = [v3 validationStatusForAlias:v4];
+    v5 = [account validationStatusForAlias:alias];
   }
 
   else
@@ -173,11 +173,11 @@
 
 - (int64_t)validationErrorReason
 {
-  v3 = [(CNFRegAlias *)self account];
-  v4 = [(CNFRegAlias *)self alias];
-  if ([v3 hasAlias:v4] && objc_msgSend(v3, "validationStatusForAlias:", v4) == -1)
+  account = [(CNFRegAlias *)self account];
+  alias = [(CNFRegAlias *)self alias];
+  if ([account hasAlias:alias] && objc_msgSend(account, "validationStatusForAlias:", alias) == -1)
   {
-    v5 = [v3 validationErrorReasonForAlias:v4];
+    v5 = [account validationErrorReasonForAlias:alias];
   }
 
   else
@@ -193,8 +193,8 @@
   displayName = self->_displayName;
   if (!displayName)
   {
-    v4 = [(CNFRegAlias *)self alias];
-    v5 = CNFRegFormattedPhoneNumberForString(v4);
+    alias = [(CNFRegAlias *)self alias];
+    v5 = CNFRegFormattedPhoneNumberForString(alias);
     v6 = [v5 copy];
     v7 = self->_displayName;
     self->_displayName = v6;
@@ -205,11 +205,11 @@
   return displayName;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  if (self->_displayName != a3)
+  if (self->_displayName != name)
   {
-    v7 = CNFRegFormattedPhoneNumberForString(a3);
+    v7 = CNFRegFormattedPhoneNumberForString(name);
     v5 = [v7 copy];
     displayName = self->_displayName;
     self->_displayName = v5;
@@ -218,12 +218,12 @@
 
 - (id)description
 {
-  v3 = [(CNFRegAlias *)self isDeviceAlias];
+  isDeviceAlias = [(CNFRegAlias *)self isDeviceAlias];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(CNFRegAlias *)self type];
-  v6 = [(CNFRegAlias *)self alias];
-  v7 = v6;
-  if (v3)
+  type = [(CNFRegAlias *)self type];
+  alias = [(CNFRegAlias *)self alias];
+  v7 = alias;
+  if (isDeviceAlias)
   {
     if ([(CNFRegAlias *)self isSelectedDeviceAlias])
     {
@@ -235,35 +235,35 @@
       v8 = @"NO";
     }
 
-    v9 = [(CNFRegAlias *)self deviceAliasIdentifier];
-    v10 = [v4 stringWithFormat:@"<CNFRegAlias:%p> {Type:%ld, Alias:%@, Selected: %@, DeviceId: %@}", self, v5, v7, v8, v9];
+    deviceAliasIdentifier = [(CNFRegAlias *)self deviceAliasIdentifier];
+    v10 = [v4 stringWithFormat:@"<CNFRegAlias:%p> {Type:%ld, Alias:%@, Selected: %@, DeviceId: %@}", self, type, v7, v8, deviceAliasIdentifier];
   }
 
   else
   {
-    v10 = [v4 stringWithFormat:@"<CNFRegAlias:%p> {Type:%ld, Alias:%@}", self, v5, v6];
+    v10 = [v4 stringWithFormat:@"<CNFRegAlias:%p> {Type:%ld, Alias:%@}", self, type, alias];
   }
 
   return v10;
 }
 
-- (int64_t)localizedCaseInsensitiveCompare:(id)a3
+- (int64_t)localizedCaseInsensitiveCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CNFRegAlias *)self alias];
-  v6 = [v5 _appearsToBePhoneNumber];
+  compareCopy = compare;
+  alias = [(CNFRegAlias *)self alias];
+  _appearsToBePhoneNumber = [alias _appearsToBePhoneNumber];
 
-  v7 = [v4 alias];
-  v8 = [v7 _appearsToBePhoneNumber];
+  alias2 = [compareCopy alias];
+  _appearsToBePhoneNumber2 = [alias2 _appearsToBePhoneNumber];
 
-  if (v6 == v8)
+  if (_appearsToBePhoneNumber == _appearsToBePhoneNumber2)
   {
-    v10 = [(CNFRegAlias *)self alias];
-    v11 = [v4 alias];
-    v9 = [v10 localizedCaseInsensitiveCompare:v11];
+    alias3 = [(CNFRegAlias *)self alias];
+    alias4 = [compareCopy alias];
+    v9 = [alias3 localizedCaseInsensitiveCompare:alias4];
   }
 
-  else if (v6)
+  else if (_appearsToBePhoneNumber)
   {
     v9 = -1;
   }
@@ -278,16 +278,16 @@
 
 - (BOOL)isLocalPhoneNumberAlias
 {
-  v2 = [(CNFRegAlias *)self alias];
+  alias = [(CNFRegAlias *)self alias];
   v3 = CNFRegLocalPhoneNumberDisplayString();
-  v4 = [v2 isEqualToIgnoringCase:v3];
+  v4 = [alias isEqualToIgnoringCase:v3];
 
   if (v4)
   {
     goto LABEL_4;
   }
 
-  v5 = CNFRegFormattedPhoneNumberForString(v2);
+  v5 = CNFRegFormattedPhoneNumberForString(alias);
   v6 = CNFRegLocalPhoneNumberDisplayString();
   v7 = [v5 isEqualToIgnoringCase:v6];
 
@@ -299,7 +299,7 @@
   v8 = CommunicationsSetupUIBundle();
   v9 = CNFRegStringTableName();
   v10 = [v8 localizedStringForKey:@"YOUR_NUMBER_STRING" value:&stru_2856D3978 table:v9];
-  v11 = [v2 isEqualToIgnoringCase:v10];
+  v11 = [alias isEqualToIgnoringCase:v10];
 
   if (v11)
   {
@@ -309,18 +309,18 @@ LABEL_4:
 
   else
   {
-    v12 = [v2 isEqualToIgnoringCase:*MEMORY[0x277D19478]];
+    v12 = [alias isEqualToIgnoringCase:*MEMORY[0x277D19478]];
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v19.receiver = self;
   v19.super_class = CNFRegAlias;
-  if (![(CNFRegAlias *)&v19 isEqual:v4])
+  if (![(CNFRegAlias *)&v19 isEqual:equalCopy])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -329,51 +329,51 @@ LABEL_4:
       goto LABEL_14;
     }
 
-    v6 = v4;
-    v7 = [(CNFRegAlias *)self alias];
-    if (v7)
+    v6 = equalCopy;
+    alias = [(CNFRegAlias *)self alias];
+    if (alias)
     {
     }
 
     else
     {
-      v8 = [v6 alias];
+      alias2 = [v6 alias];
 
-      if (!v8)
+      if (!alias2)
       {
         v11 = 1;
 LABEL_9:
-        v12 = [(CNFRegAlias *)self account];
-        if (v12)
+        account = [(CNFRegAlias *)self account];
+        if (account)
         {
         }
 
         else
         {
-          v13 = [v6 account];
+          account2 = [v6 account];
 
-          if (!v13)
+          if (!account2)
           {
 LABEL_13:
-            v17 = [(CNFRegAlias *)self type];
-            v5 = (v17 == [v6 type]) & v11;
+            type = [(CNFRegAlias *)self type];
+            v5 = (type == [v6 type]) & v11;
 
             goto LABEL_14;
           }
         }
 
-        v14 = [(CNFRegAlias *)self account];
-        v15 = [v6 account];
-        v16 = [v14 isEqual:v15];
+        account3 = [(CNFRegAlias *)self account];
+        account4 = [v6 account];
+        v16 = [account3 isEqual:account4];
 
         v11 &= v16;
         goto LABEL_13;
       }
     }
 
-    v9 = [(CNFRegAlias *)self alias];
-    v10 = [v6 alias];
-    v11 = [v9 isEqual:v10];
+    alias3 = [(CNFRegAlias *)self alias];
+    alias4 = [v6 alias];
+    v11 = [alias3 isEqual:alias4];
 
     goto LABEL_9;
   }
@@ -386,12 +386,12 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(CNFRegAlias *)self type];
-  v4 = [(CNFRegAlias *)self alias];
-  v5 = [v4 hash] + 961 * v3;
+  type = [(CNFRegAlias *)self type];
+  alias = [(CNFRegAlias *)self alias];
+  v5 = [alias hash] + 961 * type;
 
-  v6 = [(CNFRegAlias *)self account];
-  v7 = [v6 hash] - v5 + 32 * v5;
+  account = [(CNFRegAlias *)self account];
+  v7 = [account hash] - v5 + 32 * v5;
 
   return v7;
 }

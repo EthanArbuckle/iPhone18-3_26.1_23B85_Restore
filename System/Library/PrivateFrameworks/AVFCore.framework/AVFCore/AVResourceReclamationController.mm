@@ -2,18 +2,18 @@
 + (id)defaultController;
 - (AVResourceReclamationController)init;
 - (AVResourceReclamationEvent)mostRecentReclamationEvent;
-- (BOOL)ensureIntegrityOfResourcesCreatedSince:(id)a3;
+- (BOOL)ensureIntegrityOfResourcesCreatedSince:(id)since;
 - (BOOL)isEnrolled;
-- (id)addReclamationEventObserver:(id)a3;
+- (id)addReclamationEventObserver:(id)observer;
 - (id)registerForPurgeNotification;
-- (id)takeAssertionPreventingResourceReclamationWithReason:(id)a3;
-- (void)_releaseResourceReclamationAssertion:(id)a3;
-- (void)_removeObserverToken:(id)a3;
+- (id)takeAssertionPreventingResourceReclamationWithReason:(id)reason;
+- (void)_releaseResourceReclamationAssertion:(id)assertion;
+- (void)_removeObserverToken:(id)token;
 - (void)_resetEnrollmentTestOnly;
 - (void)dealloc;
-- (void)ensureIntegrityOfResourcesCreatedSince:(id)a3 completionHandler:(id)a4;
-- (void)handlePurgedNotification:(id)a3;
-- (void)informReclamationEvent:(id)a3 toObservers:(id)a4;
+- (void)ensureIntegrityOfResourcesCreatedSince:(id)since completionHandler:(id)handler;
+- (void)handlePurgedNotification:(id)notification;
+- (void)informReclamationEvent:(id)event toObservers:(id)observers;
 - (void)permitReclamationWhileSuspended;
 @end
 
@@ -137,14 +137,14 @@ uint64_t __89__AVResourceReclamationController_AVResourceReclamation__permitRecl
 - (id)registerForPurgeNotification
 {
   objc_initWeak(&location, self);
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v3 = *MEMORY[0x1E69633A8];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__AVResourceReclamationController_AVResourceReclamation__registerForPurgeNotification__block_invoke;
   v6[3] = &unk_1E7460BB0;
   objc_copyWeak(&v7, &location);
-  v4 = [v2 addObserverForName:v3 object:0 queue:0 usingBlock:v6];
+  v4 = [defaultCenter addObserverForName:v3 object:0 queue:0 usingBlock:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
   return v4;
@@ -192,7 +192,7 @@ uint64_t __59__AVResourceReclamationController__resetEnrollmentTestOnly__block_i
   return result;
 }
 
-- (void)handlePurgedNotification:(id)a3
+- (void)handlePurgedNotification:(id)notification
 {
   v19 = *MEMORY[0x1E69E9840];
   v13 = 0;
@@ -200,9 +200,9 @@ uint64_t __59__AVResourceReclamationController__resetEnrollmentTestOnly__block_i
   v15 = 0x3052000000;
   v16 = __Block_byref_object_copy__18;
   v17 = __Block_byref_object_dispose__18;
-  v18 = [MEMORY[0x1E695DF70] array];
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E6963398]];
+  array = [MEMORY[0x1E695DF70] array];
+  userInfo = [notification userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E6963398]];
   if (v6)
   {
     if (dword_1ED5AC258)
@@ -288,7 +288,7 @@ uint64_t __86__AVResourceReclamationController_AVResourceReclamation__registerFo
   }
 }
 
-- (id)addReclamationEventObserver:(id)a3
+- (id)addReclamationEventObserver:(id)observer
 {
   v7 = 0;
   v8 = &v7;
@@ -302,7 +302,7 @@ uint64_t __86__AVResourceReclamationController_AVResourceReclamation__registerFo
   block[2] = __86__AVResourceReclamationController_AVResourceReclamation__addReclamationEventObserver___block_invoke;
   block[3] = &unk_1E7460F30;
   block[4] = self;
-  block[5] = a3;
+  block[5] = observer;
   block[6] = &v7;
   dispatch_sync(stateQueue, block);
   v4 = v8[5];
@@ -319,7 +319,7 @@ AVResourceReclamationEventObserverToken *__86__AVResourceReclamationController_A
   return result;
 }
 
-- (void)_removeObserverToken:(id)a3
+- (void)_removeObserverToken:(id)token
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -327,7 +327,7 @@ AVResourceReclamationEventObserverToken *__86__AVResourceReclamationController_A
   v4[2] = __79__AVResourceReclamationController_AVResourceReclamation___removeObserverToken___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = token;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -339,16 +339,16 @@ uint64_t __79__AVResourceReclamationController_AVResourceReclamation___removeObs
   return [v1 removeObjectForKey:v2];
 }
 
-- (void)informReclamationEvent:(id)a3 toObservers:(id)a4
+- (void)informReclamationEvent:(id)event toObservers:(id)observers
 {
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__AVResourceReclamationController_AVResourceReclamation__informReclamationEvent_toObservers___block_invoke;
   block[3] = &unk_1E7460E90;
-  block[4] = a4;
+  block[4] = observers;
   block[5] = self;
-  block[6] = a3;
+  block[6] = event;
   dispatch_async(callbackQueue, block);
 }
 
@@ -377,14 +377,14 @@ uint64_t __93__AVResourceReclamationController_AVResourceReclamation__informRecl
   return result;
 }
 
-- (BOOL)ensureIntegrityOfResourcesCreatedSince:(id)a3
+- (BOOL)ensureIntegrityOfResourcesCreatedSince:(id)since
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(AVResourceReclamationController *)self mostRecentReclamationEvent];
-  if (!v4)
+  mostRecentReclamationEvent = [(AVResourceReclamationController *)self mostRecentReclamationEvent];
+  if (!mostRecentReclamationEvent)
   {
     v5 = 0;
-    if (a3)
+    if (since)
     {
       goto LABEL_3;
     }
@@ -392,8 +392,8 @@ uint64_t __93__AVResourceReclamationController_AVResourceReclamation__informRecl
     return v5 == 0;
   }
 
-  v5 = [-[AVResourceReclamationEvent eventIdentifier](v4 "eventIdentifier")];
-  if (!a3)
+  v5 = [-[AVResourceReclamationEvent eventIdentifier](mostRecentReclamationEvent "eventIdentifier")];
+  if (!since)
   {
     return v5 == 0;
   }
@@ -406,18 +406,18 @@ LABEL_3:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  return v5 <= [objc_msgSend(a3 eventIdentifier];
+  return v5 <= [objc_msgSend(since eventIdentifier];
 }
 
-- (void)ensureIntegrityOfResourcesCreatedSince:(id)a3 completionHandler:(id)a4
+- (void)ensureIntegrityOfResourcesCreatedSince:(id)since completionHandler:(id)handler
 {
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __115__AVResourceReclamationController_AVResourceReclamation__ensureIntegrityOfResourcesCreatedSince_completionHandler___block_invoke;
   block[3] = &unk_1E7463CC8;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = since;
+  block[6] = handler;
   block[4] = self;
   dispatch_async(callbackQueue, block);
 }
@@ -431,7 +431,7 @@ uint64_t __115__AVResourceReclamationController_AVResourceReclamation__ensureInt
   return v3(v1, v2);
 }
 
-- (void)_releaseResourceReclamationAssertion:(id)a3
+- (void)_releaseResourceReclamationAssertion:(id)assertion
 {
   v9 = 0;
   v10 = &v9;
@@ -446,7 +446,7 @@ uint64_t __115__AVResourceReclamationController_AVResourceReclamation__ensureInt
     block[1] = 3221225472;
     block[2] = __95__AVResourceReclamationController_AVResourceReclamation___releaseResourceReclamationAssertion___block_invoke;
     block[3] = &unk_1E7461068;
-    block[5] = a3;
+    block[5] = assertion;
     block[6] = &v9;
     block[4] = self;
     dispatch_sync(stateQueue, block);
@@ -481,7 +481,7 @@ void __95__AVResourceReclamationController_AVResourceReclamation___releaseResour
   v2 = *(*(*(a1 + 32) + 8) + 40);
 }
 
-- (id)takeAssertionPreventingResourceReclamationWithReason:(id)a3
+- (id)takeAssertionPreventingResourceReclamationWithReason:(id)reason
 {
   v24 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -494,7 +494,7 @@ void __95__AVResourceReclamationController_AVResourceReclamation___releaseResour
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  if (![(AVResourceReclamationController *)self isEnrolled]|| (figSetterQueue = self->_figSetterQueue, block[0] = MEMORY[0x1E69E9820], block[1] = 3221225472, block[2] = __111__AVResourceReclamationController_AVResourceReclamation__takeAssertionPreventingResourceReclamationWithReason___block_invoke, block[3] = &unk_1E7460E68, block[4] = a3, block[5] = &v14, dispatch_sync(figSetterQueue, block), *(v15 + 6)))
+  if (![(AVResourceReclamationController *)self isEnrolled]|| (figSetterQueue = self->_figSetterQueue, block[0] = MEMORY[0x1E69E9820], block[1] = 3221225472, block[2] = __111__AVResourceReclamationController_AVResourceReclamation__takeAssertionPreventingResourceReclamationWithReason___block_invoke, block[3] = &unk_1E7460E68, block[4] = reason, block[5] = &v14, dispatch_sync(figSetterQueue, block), *(v15 + 6)))
   {
     v8 = 0;
   }
@@ -506,7 +506,7 @@ void __95__AVResourceReclamationController_AVResourceReclamation___releaseResour
     v12[1] = 3221225472;
     v12[2] = __111__AVResourceReclamationController_AVResourceReclamation__takeAssertionPreventingResourceReclamationWithReason___block_invoke_2;
     v12[3] = &unk_1E7461068;
-    v12[5] = a3;
+    v12[5] = reason;
     v12[6] = &v18;
     v12[4] = self;
     dispatch_sync(stateQueue, v12);

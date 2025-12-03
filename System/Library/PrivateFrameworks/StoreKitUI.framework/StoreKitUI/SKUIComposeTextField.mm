@@ -1,21 +1,21 @@
 @interface SKUIComposeTextField
-+ (id)labelFontForStyle:(int64_t)a3;
-- (BOOL)textField:(id)a3 shouldInsertText:(id)a4 replacingRange:(_NSRange)a5;
-- (SKUIComposeTextField)initWithConfiguration:(id)a3 style:(int64_t)a4;
++ (id)labelFontForStyle:(int64_t)style;
+- (BOOL)textField:(id)field shouldInsertText:(id)text replacingRange:(_NSRange)range;
+- (SKUIComposeTextField)initWithConfiguration:(id)configuration style:(int64_t)style;
 - (id)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_textChanged:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_textChanged:(id)changed;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation SKUIComposeTextField
 
-- (SKUIComposeTextField)initWithConfiguration:(id)a3 style:(int64_t)a4
+- (SKUIComposeTextField)initWithConfiguration:(id)configuration style:(int64_t)style
 {
-  v7 = a3;
+  configurationCopy = configuration;
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:44.0];
   v26.receiver = self;
   v26.super_class = SKUIComposeTextField;
@@ -23,20 +23,20 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    v10->_style = a4;
-    v11 = [objc_opt_class() labelFontForStyle:a4];
-    v12 = [(SKUIComposeTextFieldConfiguration *)v10->_configuration label];
-    if (v12)
+    objc_storeStrong(&v9->_configuration, configuration);
+    v10->_style = style;
+    v11 = [objc_opt_class() labelFontForStyle:style];
+    label = [(SKUIComposeTextFieldConfiguration *)v10->_configuration label];
+    if (label)
     {
       v13 = objc_alloc_init(MEMORY[0x277D756B8]);
       label = v10->_label;
       v10->_label = v13;
 
       [(UILabel *)v10->_label setFont:v11];
-      [(UILabel *)v10->_label setText:v12];
+      [(UILabel *)v10->_label setText:label];
       v15 = v10->_label;
-      v16 = [objc_opt_class() labelColorForStyle:a4];
+      v16 = [objc_opt_class() labelColorForStyle:style];
       [(UILabel *)v15 setTextColor:v16];
 
       [(UILabel *)v10->_label sizeToFit];
@@ -58,18 +58,18 @@
 
     [(UITextField *)v10->_textField setKeyboardType:0];
     v21 = v10->_textField;
-    v22 = [v7 placeholder];
-    [(UITextField *)v21 setPlaceholder:v22];
+    placeholder = [configurationCopy placeholder];
+    [(UITextField *)v21 setPlaceholder:placeholder];
 
     [(UITextField *)v10->_textField setClipsToBounds:0];
-    v23 = [(SKUIComposeTextFieldConfiguration *)v10->_configuration value];
-    [(SKUIComposeTextField *)v10 setText:v23];
+    value = [(SKUIComposeTextFieldConfiguration *)v10->_configuration value];
+    [(SKUIComposeTextField *)v10 setText:value];
 
     [(SKUIComposeTextField *)v10 addSubview:v10->_textField];
     [(UITextField *)v10->_textField sizeToFit];
     [(UITextField *)v10->_textField setHoverStyle:0];
-    v24 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SKUIComposeTextField *)v10 setBackgroundColor:v24];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SKUIComposeTextField *)v10 setBackgroundColor:systemBackgroundColor];
   }
 
   return v10;
@@ -83,26 +83,26 @@
   [(SKUIComposeTextField *)&v3 dealloc];
 }
 
-+ (id)labelFontForStyle:(int64_t)a3
++ (id)labelFontForStyle:(int64_t)style
 {
   v3 = MEMORY[0x277D74300];
-  [MEMORY[0x277CDD370] PPMScaledValueUsingValue:{a3, 17.0}];
+  [MEMORY[0x277CDD370] PPMScaledValueUsingValue:{style, 17.0}];
 
   return [v3 systemFontOfSize:?];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v7 = a3;
-  v4 = [v7 length];
+  textCopy = text;
+  v4 = [textCopy length];
   if (v4 <= [(SKUIComposeTextFieldConfiguration *)self->_configuration maxLength])
   {
-    v6 = v7;
+    v6 = textCopy;
   }
 
   else
   {
-    v5 = [v7 substringToIndex:{-[SKUIComposeTextFieldConfiguration maxLength](self->_configuration, "maxLength")}];
+    v5 = [textCopy substringToIndex:{-[SKUIComposeTextFieldConfiguration maxLength](self->_configuration, "maxLength")}];
 
     v6 = v5;
   }
@@ -112,10 +112,10 @@
   self->_currentTextLength = [v8 length];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v4 = 0.0;
-  if (![(SKUIComposeTextFieldConfiguration *)self->_configuration columnIndex:a3.origin.x])
+  if (![(SKUIComposeTextFieldConfiguration *)self->_configuration columnIndex:rect.origin.x])
   {
     [MEMORY[0x277CDD370] PPMScaledValueUsingValue:15.0];
     v4 = v5;
@@ -131,18 +131,18 @@
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [MEMORY[0x277D75348] labelColor];
-  v22 = [v21 colorWithAlphaComponent:0.2];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v22 = [labelColor colorWithAlphaComponent:0.2];
   [v22 set];
 
-  v23 = [(SKUIComposeTextField *)self effectiveUserInterfaceLayoutDirection];
-  v24 = v23;
+  effectiveUserInterfaceLayoutDirection = [(SKUIComposeTextField *)self effectiveUserInterfaceLayoutDirection];
+  v24 = effectiveUserInterfaceLayoutDirection;
   if (v7 > 0.0)
   {
     v25 = v18 - v4;
     v26 = 0;
     v27 = v4;
-    if (v23 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v27 = CGRectWithFlippedOriginRelativeToBoundingRect(v4, 0.0, v25, v7, v46, v16, v18, v20);
       v7 = v28;
@@ -204,11 +204,11 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SKUIComposeTextField;
-  v5 = [(SKUIComposeTextField *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SKUIComposeTextField *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
     v6 = self->_textField;
@@ -226,7 +226,7 @@
   v36 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(SKUIComposeTextField *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(SKUIComposeTextField *)self effectiveUserInterfaceLayoutDirection];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:15.0];
   label = self->_label;
   if (label)
@@ -245,7 +245,7 @@
     MaxX = CGRectGetMaxX(v38);
     [MEMORY[0x277CDD370] PPMScaledValueUsingValue:4.0];
     v21 = v20;
-    if (v9 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v17 = CGRectWithFlippedOriginRelativeToBoundingRect(v17, v18, v13, v15, v36, v35, v6, v8);
       v18 = v22;
@@ -268,7 +268,7 @@
   v29 = floorf(v28);
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:15.0];
   v31 = v6 - v30 - v25;
-  if (v9 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v25 = CGRectWithFlippedOriginRelativeToBoundingRect(v25, v29, v31, v27, v36, v35, v6, v8);
     v29 = v32;
@@ -280,11 +280,11 @@
   [(UITextField *)textField setFrame:v25, v29, v31, v27];
 }
 
-- (BOOL)textField:(id)a3 shouldInsertText:(id)a4 replacingRange:(_NSRange)a5
+- (BOOL)textField:(id)field shouldInsertText:(id)text replacingRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   if (self->_currentTextLength <= location + length)
   {
     currentTextLength = location + length;
@@ -297,26 +297,26 @@
 
   if ([(SKUIComposeTextFieldConfiguration *)self->_configuration maxLength])
   {
-    v10 = [(SKUIComposeTextFieldConfiguration *)self->_configuration maxLength];
+    maxLength = [(SKUIComposeTextFieldConfiguration *)self->_configuration maxLength];
   }
 
   else
   {
-    v10 = 0x7FFFFFFFFFFFFFFFLL;
+    maxLength = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = [v8 length] - length + currentTextLength;
-  if (v11 <= v10)
+  v11 = [textCopy length] - length + currentTextLength;
+  if (v11 <= maxLength)
   {
     self->_currentTextLength = v11 & ~(v11 >> 63);
   }
 
-  v12 = v11 <= v10;
+  v12 = v11 <= maxLength;
 
   return v12;
 }
 
-- (void)_textChanged:(id)a3
+- (void)_textChanged:(id)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeTextFieldValidityChanged:self];

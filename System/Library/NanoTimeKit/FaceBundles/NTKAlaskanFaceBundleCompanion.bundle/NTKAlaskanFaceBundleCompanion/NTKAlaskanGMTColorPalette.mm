@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(NTKAlaskanGMTColorPalette *)v4 lightTickColor];
+    lightTickColor = [(NTKAlaskanGMTColorPalette *)v4 lightTickColor];
     CLKUIConvertToRGBfFromUIColor_fast();
 
     CLKUIConvertRGBtoLAB();
@@ -32,15 +32,15 @@
   if ([(NTKAlaskanGMTColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKAlaskanGMTColorPalette *)self paletteAtIndex:1];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = NTKColorWithRGBA();
+    primaryColor = NTKColorWithRGBA();
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_nightDialColor
@@ -48,20 +48,20 @@
   if ([(NTKAlaskanGMTColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKAlaskanGMTColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKAlaskanGMTColorPalette *)self primaryColor];
+    primaryColor = [(NTKAlaskanGMTColorPalette *)self primaryColor];
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_outerMarkersColor
 {
-  v3 = [(NTKAlaskanGMTColorPalette *)self nightDialColor];
+  nightDialColor = [(NTKAlaskanGMTColorPalette *)self nightDialColor];
   CLKUIConvertToRGBfFromUIColor_fast();
 
   CLKUIConvertRGBtoLAB();
@@ -90,15 +90,15 @@
   if ([(NTKAlaskanGMTColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKAlaskanGMTColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 cornerComplicationInnerTextColor];
+    cornerComplicationInnerTextColor = [v3 cornerComplicationInnerTextColor];
   }
 
   else
   {
-    v4 = [(NTKAlaskanGMTColorPalette *)self nightDialColor];
+    cornerComplicationInnerTextColor = [(NTKAlaskanGMTColorPalette *)self nightDialColor];
   }
 
-  return v4;
+  return cornerComplicationInnerTextColor;
 }
 
 @end

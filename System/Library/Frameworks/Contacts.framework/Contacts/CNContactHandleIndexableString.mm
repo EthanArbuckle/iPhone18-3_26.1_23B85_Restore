@@ -1,60 +1,60 @@
 @interface CNContactHandleIndexableString
-+ (id)equivalenceStrategyWithString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNContactHandleIndexableString)initWithCoder:(id)a3;
-- (CNContactHandleIndexableString)initWithFullString:(id)a3 indexKey:(id)a4 equivalenceStrategy:(id)a5;
-- (CNContactHandleIndexableString)initWithString:(id)a3;
++ (id)equivalenceStrategyWithString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (CNContactHandleIndexableString)initWithCoder:(id)coder;
+- (CNContactHandleIndexableString)initWithFullString:(id)string indexKey:(id)key equivalenceStrategy:(id)strategy;
+- (CNContactHandleIndexableString)initWithString:(id)string;
 - (id)description;
 @end
 
 @implementation CNContactHandleIndexableString
 
-- (CNContactHandleIndexableString)initWithString:(id)a3
+- (CNContactHandleIndexableString)initWithString:(id)string
 {
-  v4 = a3;
-  v5 = [objc_opt_class() equivalenceStrategyWithString:v4];
-  v6 = [objc_opt_class() indexKeyForString:v4];
-  v7 = [(CNContactHandleIndexableString *)self initWithFullString:v4 indexKey:v6 equivalenceStrategy:v5];
+  stringCopy = string;
+  v5 = [objc_opt_class() equivalenceStrategyWithString:stringCopy];
+  v6 = [objc_opt_class() indexKeyForString:stringCopy];
+  v7 = [(CNContactHandleIndexableString *)self initWithFullString:stringCopy indexKey:v6 equivalenceStrategy:v5];
 
   return v7;
 }
 
-- (CNContactHandleIndexableString)initWithFullString:(id)a3 indexKey:(id)a4 equivalenceStrategy:(id)a5
+- (CNContactHandleIndexableString)initWithFullString:(id)string indexKey:(id)key equivalenceStrategy:(id)strategy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  keyCopy = key;
+  strategyCopy = strategy;
   v18.receiver = self;
   v18.super_class = CNContactHandleIndexableString;
   v11 = [(CNContactHandleIndexableString *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [stringCopy copy];
     stringValue = v11->_stringValue;
     v11->_stringValue = v12;
 
-    v14 = [v9 copy];
+    v14 = [keyCopy copy];
     indexKey = v11->_indexKey;
     v11->_indexKey = v14;
 
-    objc_storeStrong(&v11->_equivalenceStrategy, a5);
+    objc_storeStrong(&v11->_equivalenceStrategy, strategy);
     v16 = v11;
   }
 
   return v11;
 }
 
-+ (id)equivalenceStrategyWithString:(id)a3
++ (id)equivalenceStrategyWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 _cn_containsSubstring:@"@"])
+  stringCopy = string;
+  if ([stringCopy _cn_containsSubstring:@"@"])
   {
-    v4 = [[_CNContactEmailAddressEquivalence alloc] initWithEmailAddress:v3];
+    v4 = [[_CNContactEmailAddressEquivalence alloc] initWithEmailAddress:stringCopy];
   }
 
   else
   {
-    v4 = [[_CNContactPhoneNumberEquivalence alloc] initWithPhoneNumberString:v3];
+    v4 = [[_CNContactPhoneNumberEquivalence alloc] initWithPhoneNumberString:stringCopy];
   }
 
   v5 = v4;
@@ -68,18 +68,18 @@
   v4 = [v3 appendName:@"string" object:self->_stringValue];
   v5 = [v3 appendName:@"indexKey" object:self->_indexKey];
   v6 = [v3 appendName:@"equivalence strategy" object:self->_equivalenceStrategy];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (stringValue = self->_stringValue, stringValue | v4->_stringValue) && ![(NSString *)stringValue isEqual:?]|| (indexKey = self->_indexKey, indexKey | v4->_indexKey) && ![(NSString *)indexKey isEqual:?])
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (stringValue = self->_stringValue, stringValue | equalCopy->_stringValue) && ![(NSString *)stringValue isEqual:?]|| (indexKey = self->_indexKey, indexKey | equalCopy->_indexKey) && ![(NSString *)indexKey isEqual:?])
     {
       v7 = 0;
     }
@@ -88,10 +88,10 @@
   return v7;
 }
 
-- (CNContactHandleIndexableString)initWithCoder:(id)a3
+- (CNContactHandleIndexableString)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
 
   v6 = [(CNContactHandleIndexableString *)self initWithString:v5];
   return v6;

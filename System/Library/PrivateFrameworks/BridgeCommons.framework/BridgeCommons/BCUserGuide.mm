@@ -1,6 +1,6 @@
 @interface BCUserGuide
 - (BCUserGuide)init;
-- (id)getUserGuideViewWithTitle:(id)a3;
+- (id)getUserGuideViewWithTitle:(id)title;
 @end
 
 @implementation BCUserGuide
@@ -12,10 +12,10 @@
   return [(BCUserGuide *)&v3 init];
 }
 
-- (id)getUserGuideViewWithTitle:(id)a3
+- (id)getUserGuideViewWithTitle:(id)title
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  titleCopy = title;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -43,14 +43,14 @@
   }
 
   v7 = *v4;
-  v8 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v9 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v10 = [v8 getAllDevicesWithArchivedAltAccountDevicesMatching:v9];
-  v11 = [v10 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v10 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v10 firstObject];
 
-  if (v11)
+  if (firstObject)
   {
-    v12 = [v11 valueForProperty:*MEMORY[0x277D2BC20]];
+    v12 = [firstObject valueForProperty:*MEMORY[0x277D2BC20]];
 
     v7 = v12;
   }
@@ -83,7 +83,7 @@
 
   v15 = v14;
   _Block_object_dispose(&v20, 8);
-  v16 = [v14 helpViewControllerWithTitle:v3 identifier:@"watch" version:{v7, v20}];
+  v16 = [v14 helpViewControllerWithTitle:titleCopy identifier:@"watch" version:{v7, v20}];
   [v16 setShowTopicViewOnLoad:1];
   v17 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v16];
 

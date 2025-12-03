@@ -1,32 +1,32 @@
 @interface EKICSPreviewListController
-- (EKICSPreviewListController)initWithModel:(id)a3;
+- (EKICSPreviewListController)initWithModel:(id)model;
 - (EKICSPreviewListDelegate)listDelegate;
 - (id)_timeZone;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)buildSections;
 - (void)dealloc;
-- (void)importAllPressed:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setOverrideCalendarColor:(CGColor *)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)importAllPressed:(id)pressed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setOverrideCalendarColor:(CGColor *)color;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateImportButton;
 - (void)viewDidLoad;
 @end
 
 @implementation EKICSPreviewListController
 
-- (EKICSPreviewListController)initWithModel:(id)a3
+- (EKICSPreviewListController)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v13.receiver = self;
   v13.super_class = EKICSPreviewListController;
   v6 = [(EKICSPreviewListController *)&v13 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     [(EKICSPreviewModel *)v7->_model addObserver:v7 forKeyPath:@"importedEvents" options:0 context:0];
     v8 = MEMORY[0x1E696AEC0];
     v9 = EventKitUIBundle();
@@ -55,36 +55,36 @@
   [(EKICSPreviewListController *)&v10 viewDidLoad];
   [(EKICSPreviewListController *)self buildSections];
   [(EKICSPreviewListController *)self updateImportButton];
-  v3 = [(EKICSPreviewListController *)self tableView];
-  [v3 setSeparatorStyle:0];
-  [v3 setAllowsSelection:self->_allowsSubitems];
+  tableView = [(EKICSPreviewListController *)self tableView];
+  [tableView setSeparatorStyle:0];
+  [tableView setAllowsSelection:self->_allowsSubitems];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forCellReuseIdentifier:v6];
+  [tableView registerClass:v4 forCellReuseIdentifier:v6];
 
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v3 registerClass:v7 forCellReuseIdentifier:v9];
+  [tableView registerClass:v7 forCellReuseIdentifier:v9];
 
-  [v3 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"PreviewListControllerHeaderReuseIdentifier"];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"PreviewListControllerHeaderReuseIdentifier"];
 }
 
 - (void)updateImportButton
 {
   if (self->_allowsImport && [(EKICSPreviewModel *)self->_model unimportedEventCount])
   {
-    v3 = [(EKICSPreviewListController *)self navigationItem];
-    v4 = [v3 rightBarButtonItem];
+    navigationItem = [(EKICSPreviewListController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    if (v4)
+    if (rightBarButtonItem)
     {
       return;
     }
 
-    v5 = [(EKICSPreviewModel *)self->_model importedEvents];
-    v6 = [v5 count];
+    importedEvents = [(EKICSPreviewModel *)self->_model importedEvents];
+    v6 = [importedEvents count];
 
     if (v6)
     {
@@ -93,65 +93,65 @@
       v9 = [v8 localizedStringForKey:@"Add (%@)" value:&stru_1F4EF6790 table:0];
       [(EKICSPreviewModel *)self->_model unimportedEventCount];
       v10 = CUIKLocalizedStringForInteger();
-      v13 = [v7 localizedStringWithFormat:v9, v10];
+      navigationItem3 = [v7 localizedStringWithFormat:v9, v10];
     }
 
     else
     {
       v8 = EventKitUIBundle();
-      v13 = [v8 localizedStringForKey:@"Add All" value:&stru_1F4EF6790 table:0];
+      navigationItem3 = [v8 localizedStringForKey:@"Add All" value:&stru_1F4EF6790 table:0];
     }
 
-    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v13 style:2 target:self action:sel_importAllPressed_];
-    v12 = [(EKICSPreviewListController *)self navigationItem];
-    [v12 setRightBarButtonItem:v11];
+    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:navigationItem3 style:2 target:self action:sel_importAllPressed_];
+    navigationItem2 = [(EKICSPreviewListController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v11];
   }
 
   else
   {
-    v13 = [(EKICSPreviewListController *)self navigationItem];
-    [v13 setRightBarButtonItem:0];
+    navigationItem3 = [(EKICSPreviewListController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:0];
   }
 }
 
-- (void)importAllPressed:(id)a3
+- (void)importAllPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_listDelegate);
   [WeakRetained icsPreviewListControllerDidRequestImportAll:self];
 }
 
-- (void)setOverrideCalendarColor:(CGColor *)a3
+- (void)setOverrideCalendarColor:(CGColor *)color
 {
-  if (self->_overrideCalendarColor != a3)
+  if (self->_overrideCalendarColor != color)
   {
-    self->_overrideCalendarColor = a3;
-    v4 = [(EKICSPreviewListController *)self tableView];
-    [v4 reloadData];
+    self->_overrideCalendarColor = color;
+    tableView = [(EKICSPreviewListController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  [(EKICSPreviewListController *)self buildSections:a3];
-  v7 = [(EKICSPreviewListController *)self tableView];
-  [v7 reloadData];
+  [(EKICSPreviewListController *)self buildSections:path];
+  tableView = [(EKICSPreviewListController *)self tableView];
+  [tableView reloadData];
 
   [(EKICSPreviewListController *)self updateImportButton];
 }
 
 - (id)_timeZone
 {
-  v2 = [(EKICSPreviewModel *)self->_model eventStore];
-  v3 = [v2 timeZone];
+  eventStore = [(EKICSPreviewModel *)self->_model eventStore];
+  timeZone = [eventStore timeZone];
 
-  return v3;
+  return timeZone;
 }
 
 - (void)buildSections
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(EKICSPreviewModel *)self->_model allEvents];
-  v4 = [v3 mutableCopy];
+  allEvents = [(EKICSPreviewModel *)self->_model allEvents];
+  v4 = [allEvents mutableCopy];
 
   [v4 sortUsingComparator:&__block_literal_global_16];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
@@ -179,14 +179,14 @@
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 startDate];
-        v14 = [(EKICSPreviewListController *)self _timeZone];
-        v15 = [v13 dateForStartOfDayInTimeZone:v14];
+        startDate = [v12 startDate];
+        _timeZone = [(EKICSPreviewListController *)self _timeZone];
+        v15 = [startDate dateForStartOfDayInTimeZone:_timeZone];
 
         if (v9)
         {
-          v16 = [v9 date];
-          v17 = [v15 isEqualToDate:v16];
+          date = [v9 date];
+          v17 = [v15 isEqualToDate:date];
 
           if (v17)
           {
@@ -253,56 +253,56 @@ uint64_t __43__EKICSPreviewListController_buildSections__block_invoke(uint64_t a
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   sections = self->_sections;
-  v7 = a3;
-  v8 = [(NSMutableArray *)sections objectAtIndex:a4];
-  v9 = [v8 date];
-  v10 = [(EKICSPreviewListController *)self _timeZone];
+  viewCopy = view;
+  v8 = [(NSMutableArray *)sections objectAtIndex:section];
+  date = [v8 date];
+  _timeZone = [(EKICSPreviewListController *)self _timeZone];
   v14 = 0;
   v15 = 0;
-  v11 = [EKUIListViewHeader headerWithTableView:v7 reuseIdentifier:@"PreviewListControllerHeaderReuseIdentifier" date:v9 timeZone:v10 currentYearStart:&v15 currentYearEnd:&v14];
+  v11 = [EKUIListViewHeader headerWithTableView:viewCopy reuseIdentifier:@"PreviewListControllerHeaderReuseIdentifier" date:date timeZone:_timeZone currentYearStart:&v15 currentYearEnd:&v14];
 
   v12 = v15;
 
   return v11;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 events];
-  v6 = [v5 count];
+  v4 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+  events = [v4 events];
+  v6 = [events count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [v7 section]);
-  v9 = [v8 events];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [pathCopy section]);
+  events = [v8 events];
+  v10 = [events objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   overrideCalendarColor = self->_overrideCalendarColor;
   if (overrideCalendarColor)
   {
-    v12 = [v10 calendar];
-    [v12 setCGColor:overrideCalendarColor];
+    calendar = [v10 calendar];
+    [calendar setCGColor:overrideCalendarColor];
   }
 
-  v13 = [v8 date];
-  v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v15 = [(EKICSPreviewListController *)self _timeZone];
-  [v14 setTimeZone:v15];
+  date = [v8 date];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  _timeZone = [(EKICSPreviewListController *)self _timeZone];
+  [currentCalendar setTimeZone:_timeZone];
 
   if ([v10 isAllDay])
   {
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v18 = [v6 dequeueReusableCellWithIdentifier:v17 forIndexPath:v7];
+    v18 = [viewCopy dequeueReusableCellWithIdentifier:v17 forIndexPath:pathCopy];
 
     [v18 updateWithEvent:v10 dimmed:0];
   }
@@ -311,29 +311,29 @@ uint64_t __43__EKICSPreviewListController_buildSections__block_invoke(uint64_t a
   {
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v18 = [v6 dequeueReusableCellWithIdentifier:v20 forIndexPath:v7];
+    v18 = [viewCopy dequeueReusableCellWithIdentifier:v20 forIndexPath:pathCopy];
 
-    v21 = [v10 startDate];
-    v22 = [v10 endDateUnadjustedForLegacyClients];
-    v23 = [v14 cal_isMultidayEventForUIWithStartDate:v21 endDate:v22];
+    startDate = [v10 startDate];
+    endDateUnadjustedForLegacyClients = [v10 endDateUnadjustedForLegacyClients];
+    v23 = [currentCalendar cal_isMultidayEventForUIWithStartDate:startDate endDate:endDateUnadjustedForLegacyClients];
 
-    [v18 updateWithEvent:v10 isMultiday:v23 occurrenceStartDate:v13 dimmed:0];
+    [v18 updateWithEvent:v10 isMultiday:v23 occurrenceStartDate:date dimmed:0];
   }
 
   return v18;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   if (self->_allowsSubitems)
   {
     sections = self->_sections;
-    v7 = a4;
-    v8 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v7 section]);
-    v9 = [v8 events];
-    v10 = [v7 row];
+    pathCopy = path;
+    v8 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+    events = [v8 events];
+    v10 = [pathCopy row];
 
-    v16 = [v9 objectAtIndex:v10];
+    v16 = [events objectAtIndex:v10];
 
     if (v16)
     {

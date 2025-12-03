@@ -1,16 +1,16 @@
 @interface FCUICustomModeHeaderView
-- (FCUICustomModeHeaderView)initWithFrame:(CGRect)a3;
-- (void)configureHeaderWithImage:(id)a3 text:(id)a4 delegate:(id)a5;
+- (FCUICustomModeHeaderView)initWithFrame:(CGRect)frame;
+- (void)configureHeaderWithImage:(id)image text:(id)text delegate:(id)delegate;
 - (void)prepareForReuse;
 @end
 
 @implementation FCUICustomModeHeaderView
 
-- (FCUICustomModeHeaderView)initWithFrame:(CGRect)a3
+- (FCUICustomModeHeaderView)initWithFrame:(CGRect)frame
 {
   v59.receiver = self;
   v59.super_class = FCUICustomModeHeaderView;
-  v3 = [(FCUICustomModeHeaderView *)&v59 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FCUICustomModeHeaderView *)&v59 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -68,53 +68,53 @@
     [(UITextField *)v4->_textField _setContinuousCornerRadius:8.0];
     [(FCUICustomModeHeaderView *)v4 addSubview:v4->_textField];
     v28 = objc_alloc_init(NSMutableArray);
-    v29 = [(UIView *)v4->_imageBackgroundView topAnchor];
-    v30 = [(FCUICustomModeHeaderView *)v4 topAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:16.0];
+    topAnchor = [(UIView *)v4->_imageBackgroundView topAnchor];
+    topAnchor2 = [(FCUICustomModeHeaderView *)v4 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
     [v28 addObject:v31];
 
-    v32 = [(UIView *)v4->_imageBackgroundView centerXAnchor];
-    v33 = [(FCUICustomModeHeaderView *)v4 centerXAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    centerXAnchor = [(UIView *)v4->_imageBackgroundView centerXAnchor];
+    centerXAnchor2 = [(FCUICustomModeHeaderView *)v4 centerXAnchor];
+    v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v28 addObject:v34];
 
-    v35 = [(UIView *)v4->_imageBackgroundView heightAnchor];
-    v36 = [v35 constraintEqualToConstant:92.0];
+    heightAnchor = [(UIView *)v4->_imageBackgroundView heightAnchor];
+    v36 = [heightAnchor constraintEqualToConstant:92.0];
     [v28 addObject:v36];
 
-    v37 = [(UIView *)v4->_imageBackgroundView widthAnchor];
-    v38 = [v37 constraintEqualToConstant:92.0];
+    widthAnchor = [(UIView *)v4->_imageBackgroundView widthAnchor];
+    v38 = [widthAnchor constraintEqualToConstant:92.0];
     [v28 addObject:v38];
 
-    v39 = [(UIImageView *)v4->_iconImageView centerXAnchor];
-    v40 = [(UIView *)v4->_imageBackgroundView centerXAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    centerXAnchor3 = [(UIImageView *)v4->_iconImageView centerXAnchor];
+    centerXAnchor4 = [(UIView *)v4->_imageBackgroundView centerXAnchor];
+    v41 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v28 addObject:v41];
 
-    v42 = [(UIImageView *)v4->_iconImageView centerYAnchor];
-    v43 = [(UIView *)v4->_imageBackgroundView centerYAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    centerYAnchor = [(UIImageView *)v4->_iconImageView centerYAnchor];
+    centerYAnchor2 = [(UIView *)v4->_imageBackgroundView centerYAnchor];
+    v44 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v28 addObject:v44];
 
     [v20 pointSize];
     v46 = v45 + 32.0;
-    v47 = [(UITextField *)v4->_textField heightAnchor];
-    v48 = [v47 constraintEqualToConstant:v46];
+    heightAnchor2 = [(UITextField *)v4->_textField heightAnchor];
+    v48 = [heightAnchor2 constraintEqualToConstant:v46];
     [v28 addObject:v48];
 
-    v49 = [(UITextField *)v4->_textField leadingAnchor];
-    v50 = [(FCUICustomModeHeaderView *)v4 leadingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:16.0];
+    leadingAnchor = [(UITextField *)v4->_textField leadingAnchor];
+    leadingAnchor2 = [(FCUICustomModeHeaderView *)v4 leadingAnchor];
+    v51 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     [v28 addObject:v51];
 
-    v52 = [(FCUICustomModeHeaderView *)v4 trailingAnchor];
-    v53 = [(UITextField *)v4->_textField trailingAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:16.0];
+    trailingAnchor = [(FCUICustomModeHeaderView *)v4 trailingAnchor];
+    trailingAnchor2 = [(UITextField *)v4->_textField trailingAnchor];
+    v54 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:16.0];
     [v28 addObject:v54];
 
-    v55 = [(FCUICustomModeHeaderView *)v4 bottomAnchor];
-    v56 = [(UITextField *)v4->_textField bottomAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56 constant:32.0];
+    bottomAnchor = [(FCUICustomModeHeaderView *)v4 bottomAnchor];
+    bottomAnchor2 = [(UITextField *)v4->_textField bottomAnchor];
+    v57 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:32.0];
     [v28 addObject:v57];
 
     [NSLayoutConstraint activateConstraints:v28];
@@ -133,15 +133,15 @@
   [(UIImageView *)self->_iconImageView setImage:0];
 }
 
-- (void)configureHeaderWithImage:(id)a3 text:(id)a4 delegate:(id)a5
+- (void)configureHeaderWithImage:(id)image text:(id)text delegate:(id)delegate
 {
   iconImageView = self->_iconImageView;
-  v10 = a5;
-  v9 = a4;
-  [(UIImageView *)iconImageView setImage:a3];
-  [(UITextField *)self->_textField setText:v9];
+  delegateCopy = delegate;
+  textCopy = text;
+  [(UIImageView *)iconImageView setImage:image];
+  [(UITextField *)self->_textField setText:textCopy];
 
-  [(UITextField *)self->_textField setDelegate:v10];
+  [(UITextField *)self->_textField setDelegate:delegateCopy];
 }
 
 @end

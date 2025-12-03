@@ -1,25 +1,25 @@
 @interface PUInteractivePinchDismissalController
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (id)pinchedTiledTracker:(id)a3 finalLayoutInfoForInitialLayoutInfo:(id)a4;
-- (void)_handlePinchGestureRecognizer:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (id)pinchedTiledTracker:(id)tracker finalLayoutInfoForInitialLayoutInfo:(id)info;
+- (void)_handlePinchGestureRecognizer:(id)recognizer;
 - (void)dealloc;
-- (void)updateGestureRecognizersWithHostingView:(id)a3;
+- (void)updateGestureRecognizersWithHostingView:(id)view;
 @end
 
 @implementation PUInteractivePinchDismissalController
 
-- (id)pinchedTiledTracker:(id)a3 finalLayoutInfoForInitialLayoutInfo:(id)a4
+- (id)pinchedTiledTracker:(id)tracker finalLayoutInfoForInitialLayoutInfo:(id)info
 {
-  v5 = a4;
-  v6 = [(PUInteractiveDismissalController *)self tilingViewControllerTransition];
-  if ([v6 hasStarted])
+  infoCopy = info;
+  tilingViewControllerTransition = [(PUInteractiveDismissalController *)self tilingViewControllerTransition];
+  if ([tilingViewControllerTransition hasStarted])
   {
-    v7 = [(PUInteractiveDismissalController *)self tilingView];
-    v8 = [v7 layout];
-    v9 = [v5 indexPath];
-    v10 = [v5 tileKind];
-    v11 = [v8 layoutInfoForTileWithIndexPath:v9 kind:v10];
+    tilingView = [(PUInteractiveDismissalController *)self tilingView];
+    layout = [tilingView layout];
+    indexPath = [infoCopy indexPath];
+    tileKind = [infoCopy tileKind];
+    v11 = [layout layoutInfoForTileWithIndexPath:indexPath kind:tileKind];
   }
 
   else
@@ -30,13 +30,13 @@
   return v11;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUInteractivePinchDismissalController *)self _pinchGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  _pinchGestureRecognizer = [(PUInteractivePinchDismissalController *)self _pinchGestureRecognizer];
 
-  if (v8 != v7)
+  if (_pinchGestureRecognizer != recognizerCopy)
   {
 
 LABEL_7:
@@ -53,7 +53,7 @@ LABEL_7:
   }
 
   v17 = 0;
-  v10 = [v6 px_isPinchGestureRecognizerOfScrollView:&v17];
+  v10 = [gestureRecognizerCopy px_isPinchGestureRecognizerOfScrollView:&v17];
   v11 = v17;
   v12 = v11;
   if (v10)
@@ -68,16 +68,16 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(PUInteractivePinchDismissalController *)self _pinchGestureRecognizer];
+  beginCopy = begin;
+  _pinchGestureRecognizer = [(PUInteractivePinchDismissalController *)self _pinchGestureRecognizer];
 
-  if (v5 == v4)
+  if (_pinchGestureRecognizer == beginCopy)
   {
-    if ([(PUInteractiveDismissalController *)self canBeginDismissalAtLocationFromProvider:v5])
+    if ([(PUInteractiveDismissalController *)self canBeginDismissalAtLocationFromProvider:_pinchGestureRecognizer])
     {
-      [v5 velocity];
+      [_pinchGestureRecognizer velocity];
       v6 = v7 < 0.0;
     }
 
@@ -95,24 +95,24 @@ LABEL_8:
   return v6;
 }
 
-- (void)_handlePinchGestureRecognizer:(id)a3
+- (void)_handlePinchGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [v4 state];
-  v6 = [(PUInteractivePinchDismissalController *)self _pinchedTileTracker];
-  v7 = [(PUInteractivePinchDismissalController *)self _scaleDirectionValueFilter];
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  _pinchedTileTracker = [(PUInteractivePinchDismissalController *)self _pinchedTileTracker];
+  _scaleDirectionValueFilter = [(PUInteractivePinchDismissalController *)self _scaleDirectionValueFilter];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __71__PUInteractivePinchDismissalController__handlePinchGestureRecognizer___block_invoke;
   v21 = &unk_1E7B78178;
-  v8 = v6;
+  v8 = _pinchedTileTracker;
   v22 = v8;
-  v9 = v7;
+  v9 = _scaleDirectionValueFilter;
   v23 = v9;
   v10 = _Block_copy(&v18);
-  if ((v5 - 3) >= 3)
+  if ((state - 3) >= 3)
   {
-    if (v5 == 2)
+    if (state == 2)
     {
       if ([(PUInteractivePinchDismissalController *)self _isHandlingPinchGestureRecognizer:v18])
       {
@@ -125,7 +125,7 @@ LABEL_8:
 
         else
         {
-          [v4 scale];
+          [recognizerCopy scale];
           v16 = v15;
           [(PUValueFilter *)v9 setInputValue:?];
           v14 = 1.0 - v16 + 1.0 - v16;
@@ -135,13 +135,13 @@ LABEL_8:
       }
     }
 
-    else if (v5 == 1 && ![(PUInteractivePinchDismissalController *)self _isHandlingPinchGestureRecognizer:v18])
+    else if (state == 1 && ![(PUInteractivePinchDismissalController *)self _isHandlingPinchGestureRecognizer:v18])
     {
       [(PUInteractivePinchDismissalController *)self _setHandlingPinchGestureRecognizer:1];
-      v11 = [(PUInteractiveDismissalController *)self tilingView];
-      if (v11)
+      tilingView = [(PUInteractiveDismissalController *)self tilingView];
+      if (tilingView)
       {
-        v12 = [[PUPinchedTileTracker alloc] initWithPinchGestureRecognizer:v4 tilingView:v11 direction:2];
+        v12 = [[PUPinchedTileTracker alloc] initWithPinchGestureRecognizer:recognizerCopy tilingView:tilingView direction:2];
 
         [(PUPinchedTileTracker *)v12 setDelegate:self];
         [(PUInteractivePinchDismissalController *)self _setPinchedTileTracker:v12];
@@ -196,40 +196,40 @@ uint64_t __71__PUInteractivePinchDismissalController__handlePinchGestureRecogniz
   }
 }
 
-- (void)updateGestureRecognizersWithHostingView:(id)a3
+- (void)updateGestureRecognizersWithHostingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = PUInteractivePinchDismissalController;
-  [(PUInteractiveDismissalController *)&v10 updateGestureRecognizersWithHostingView:v4];
+  [(PUInteractiveDismissalController *)&v10 updateGestureRecognizersWithHostingView:viewCopy];
   if (![(PUInteractivePinchDismissalController *)self _isHandlingPinchGestureRecognizer])
   {
-    v5 = [(PUInteractivePinchDismissalController *)self _pinchGestureRecognizer];
-    v6 = v5;
-    if (v4)
+    _pinchGestureRecognizer = [(PUInteractivePinchDismissalController *)self _pinchGestureRecognizer];
+    v6 = _pinchGestureRecognizer;
+    if (viewCopy)
     {
-      if (!v5)
+      if (!_pinchGestureRecognizer)
       {
         v6 = [objc_alloc(MEMORY[0x1E69DCD80]) initWithTarget:self action:sel__handlePinchGestureRecognizer_];
         [v6 setDelegate:self];
         [(PUInteractivePinchDismissalController *)self _setPinchGestureRecognizer:v6];
       }
 
-      v7 = [v6 view];
+      view = [v6 view];
 
-      if (v7 != v4)
+      if (view != viewCopy)
       {
-        v8 = [v6 view];
-        [v8 removeGestureRecognizer:v6];
+        view2 = [v6 view];
+        [view2 removeGestureRecognizer:v6];
 
-        [v4 addGestureRecognizer:v6];
+        [viewCopy addGestureRecognizer:v6];
       }
     }
 
-    else if (v5)
+    else if (_pinchGestureRecognizer)
     {
-      v9 = [v5 view];
-      [v9 removeGestureRecognizer:v6];
+      view3 = [_pinchGestureRecognizer view];
+      [view3 removeGestureRecognizer:v6];
 
       [(PUInteractivePinchDismissalController *)self _setPinchGestureRecognizer:0];
     }

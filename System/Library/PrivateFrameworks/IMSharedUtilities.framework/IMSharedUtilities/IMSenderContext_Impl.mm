@@ -1,12 +1,12 @@
 @interface IMSenderContext_Impl
 + (id)businessChatContext;
-+ (id)contextWithKnownSender:(BOOL)a3;
-+ (id)contextWithKnownSender:(BOOL)a3 serviceName:(id)a4;
++ (id)contextWithKnownSender:(BOOL)sender;
++ (id)contextWithKnownSender:(BOOL)sender serviceName:(id)name;
 - (BOOL)isTrustedSender;
 - (IMSenderContext_Impl)init;
-- (IMSenderContext_Impl)initWithCoder:(id)a3;
+- (IMSenderContext_Impl)initWithCoder:(id)coder;
 - (NSString)serviceName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMSenderContext_Impl
@@ -40,11 +40,11 @@
   return v2;
 }
 
-+ (id)contextWithKnownSender:(BOOL)a3
++ (id)contextWithKnownSender:(BOOL)sender
 {
   v4 = type metadata accessor for SenderContext();
   v5 = objc_allocWithZone(v4);
-  v5[OBJC_IVAR___IMSenderContext_Impl_isKnownSender] = a3;
+  v5[OBJC_IVAR___IMSenderContext_Impl_isKnownSender] = sender;
   v5[OBJC_IVAR___IMSenderContext_Impl_isFromMe] = 0;
   v6 = &v5[OBJC_IVAR___IMSenderContext_Impl_serviceName];
   *v6 = 0;
@@ -74,9 +74,9 @@
   return v8;
 }
 
-+ (id)contextWithKnownSender:(BOOL)a3 serviceName:(id)a4
++ (id)contextWithKnownSender:(BOOL)sender serviceName:(id)name
 {
-  if (a4)
+  if (name)
   {
     v5 = sub_1A88C82E8();
     v7 = v6;
@@ -90,7 +90,7 @@
 
   v8 = type metadata accessor for SenderContext();
   v9 = objc_allocWithZone(v8);
-  v9[OBJC_IVAR___IMSenderContext_Impl_isKnownSender] = a3;
+  v9[OBJC_IVAR___IMSenderContext_Impl_isKnownSender] = sender;
   v9[OBJC_IVAR___IMSenderContext_Impl_isFromMe] = 0;
   v10 = &v9[OBJC_IVAR___IMSenderContext_Impl_serviceName];
   *v10 = v5;
@@ -102,17 +102,17 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A87A5ED0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1A87A5ED0(coderCopy);
 }
 
-- (IMSenderContext_Impl)initWithCoder:(id)a3
+- (IMSenderContext_Impl)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1A87A6204(v3);
+  coderCopy = coder;
+  v4 = sub_1A87A6204(coderCopy);
 
   return v4;
 }

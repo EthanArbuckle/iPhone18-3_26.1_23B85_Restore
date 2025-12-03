@@ -1,10 +1,10 @@
 @interface VMUCallTreeRoot
-- (VMUCallTreeRoot)initWithCallGraphFile:(id)a3 fileHeader:(id *)a4 topFunctionsList:(id *)a5 binaryImagesList:(id *)a6 error:(id *)a7;
-- (VMUCallTreeRoot)initWithSymbolicator:(_CSTypeRef)a3 sampler:(id)a4 options:(unint64_t)a5;
-- (id)addBacktrace:(id)a3 count:(unsigned int)a4 numBytes:(unint64_t)a5;
-- (id)addChildWithName:(id)a3 address:(unint64_t)a4 count:(unsigned int)a5 numBytes:(unint64_t)a6 toNode:(id)a7;
-- (id)chargeSystemLibrariesToCallersAndKeepBoundaries:(BOOL)a3;
-- (id)descriptionStringForAddress:(unint64_t)a3 atTime:(unint64_t)a4 leafFrame:(BOOL)a5 startOfRecursion:(BOOL)a6;
+- (VMUCallTreeRoot)initWithCallGraphFile:(id)file fileHeader:(id *)header topFunctionsList:(id *)list binaryImagesList:(id *)imagesList error:(id *)error;
+- (VMUCallTreeRoot)initWithSymbolicator:(_CSTypeRef)symbolicator sampler:(id)sampler options:(unint64_t)options;
+- (id)addBacktrace:(id)backtrace count:(unsigned int)count numBytes:(unint64_t)bytes;
+- (id)addChildWithName:(id)name address:(unint64_t)address count:(unsigned int)count numBytes:(unint64_t)bytes toNode:(id)node;
+- (id)chargeSystemLibrariesToCallersAndKeepBoundaries:(BOOL)boundaries;
+- (id)descriptionStringForAddress:(unint64_t)address atTime:(unint64_t)time leafFrame:(BOOL)frame startOfRecursion:(BOOL)recursion;
 - (void)addChildCountsIntoNode;
 - (void)allBacktracesHaveBeenAdded;
 - (void)dealloc;
@@ -12,9 +12,9 @@
 
 @implementation VMUCallTreeRoot
 
-- (VMUCallTreeRoot)initWithSymbolicator:(_CSTypeRef)a3 sampler:(id)a4 options:(unint64_t)a5
+- (VMUCallTreeRoot)initWithSymbolicator:(_CSTypeRef)symbolicator sampler:(id)sampler options:(unint64_t)options
 {
-  v8 = a4;
+  samplerCopy = sampler;
   v20.receiver = self;
   v20.super_class = VMUCallTreeRoot;
   v9 = [(VMUCallTreeRoot *)&v20 init];
@@ -26,8 +26,8 @@
 
     v10->_symbolicator._opaque_1 = CSRetain();
     v10->_symbolicator._opaque_2 = v12;
-    objc_storeStrong(&v10->_sampler, a4);
-    v10->_options = a5;
+    objc_storeStrong(&v10->_sampler, sampler);
+    v10->_options = options;
     v13 = objc_opt_new();
     uniqueNodeNames = v10->_uniqueNodeNames;
     v10->_uniqueNodeNames = v13;
@@ -62,15 +62,15 @@
   [(VMUCallTreeNode *)&v3 dealloc];
 }
 
-- (id)descriptionStringForAddress:(unint64_t)a3 atTime:(unint64_t)a4 leafFrame:(BOOL)a5 startOfRecursion:(BOOL)a6
+- (id)descriptionStringForAddress:(unint64_t)address atTime:(unint64_t)time leafFrame:(BOOL)frame startOfRecursion:(BOOL)recursion
 {
-  v57 = a6;
+  recursionCopy = recursion;
   v64 = *MEMORY[0x1E69E9840];
   v9 = [(VMUStackLogReader *)self->_stackLogReader vmuVMRegionForAddress:?];
-  v54 = a5;
-  if (!a5)
+  frameCopy = frame;
+  if (!frame)
   {
-    v10 = a3 + ((self->_options >> 7) & 1) - 1;
+    v10 = address + ((self->_options >> 7) & 1) - 1;
   }
 
   p_symbolicator = &self->_symbolicator;
@@ -137,7 +137,7 @@
           }
 
           v25 = *(*(&v59 + 1) + 8 * i);
-          v26 = a3 - [v25 range];
+          v26 = address - [v25 range];
           if (v26 < v27)
           {
             if (*(v25 + 104) == 234)
@@ -177,7 +177,7 @@ LABEL_26:
   v29 = p_symbolicator->_opaque_2;
   CSSymbolicatorGetSymbolWithAddressAtTime();
   v30 = CSSymbolGetName();
-  if (v30 && ([MEMORY[0x1E696AEC0] stringWithUTF8String:v30], (v31 = objc_claimAutoreleasedReturnValue()) != 0) || (stackLogReader = self->_stackLogReader) != 0 && (-[VMUStackLogReader functionNameForPCaddress:](stackLogReader, "functionNameForPCaddress:", a3), (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v30 && ([MEMORY[0x1E696AEC0] stringWithUTF8String:v30], (v31 = objc_claimAutoreleasedReturnValue()) != 0) || (stackLogReader = self->_stackLogReader) != 0 && (-[VMUStackLogReader functionNameForPCaddress:](stackLogReader, "functionNameForPCaddress:", address), (v31 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v33 = v31;
     v34 = VMUSimplifyCPlusPlusSymbolName(v31);
@@ -186,24 +186,24 @@ LABEL_26:
     if ((options & 0x20) != 0 || (options & 0x40) != 0 && isSystemPath(v52))
     {
       v55 = 0;
-      v36 = 0;
+      range2 = 0;
       Range = 0;
       v53 = 1;
-      v38 = v57;
+      v38 = recursionCopy;
       goto LABEL_50;
     }
 
     Range = CSSymbolGetRange();
     if (!Range)
     {
-      Range = [(VMUStackLogReader *)self->_stackLogReader functionRangeContainingPCaddress:a3];
+      Range = [(VMUStackLogReader *)self->_stackLogReader functionRangeContainingPCaddress:address];
     }
 
-    v40 = 0;
-    v38 = v57;
-    if (v54)
+    range = 0;
+    v38 = recursionCopy;
+    if (frameCopy)
     {
-      v36 = @"0";
+      range2 = @"0";
       v53 = 1;
       goto LABEL_48;
     }
@@ -216,18 +216,18 @@ LABEL_26:
   Range = CSSymbolOwnerGetBaseAddress();
   if (Range)
   {
-    v38 = v57;
+    v38 = recursionCopy;
 LABEL_39:
     v39 = @"0x%qx";
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%qx", Range];
+    range = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%qx", Range];
 LABEL_45:
-    v36 = [MEMORY[0x1E696AEC0] stringWithFormat:v39, a3 - Range];
+    range2 = [MEMORY[0x1E696AEC0] stringWithFormat:v39, address - Range];
     v53 = 0;
-    Range = a3;
+    Range = address;
     goto LABEL_48;
   }
 
-  v38 = v57;
+  v38 = recursionCopy;
   if (v58)
   {
     Range = v58[1];
@@ -239,11 +239,11 @@ LABEL_45:
   }
 
   v53 = 0;
-  v36 = 0;
-  v40 = 0;
-  Range = a3;
+  range2 = 0;
+  range = 0;
+  Range = address;
 LABEL_48:
-  v55 = v40;
+  v55 = range;
   if (Range)
   {
     Range = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%qx", Range];
@@ -266,17 +266,17 @@ LABEL_50:
     {
       if ((v43 & 2) != 0)
       {
-        [(VMUStackLogReader *)v44 sourcePathForPCaddress:a3];
+        [(VMUStackLogReader *)v44 sourcePathForPCaddress:address];
       }
 
       else
       {
-        [(VMUStackLogReader *)v44 sourceFileNameForPCaddress:a3];
+        [(VMUStackLogReader *)v44 sourceFileNameForPCaddress:address];
       }
       v51 = ;
       if (v51)
       {
-        v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  %@:%u", v42, v51, -[VMUStackLogReader sourceLineNumberForPCaddress:](self->_stackLogReader, "sourceLineNumberForPCaddress:", a3)];
+        v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  %@:%u", v42, v51, -[VMUStackLogReader sourceLineNumberForPCaddress:](self->_stackLogReader, "sourceLineNumberForPCaddress:", address)];
       }
 
       else
@@ -312,7 +312,7 @@ LABEL_50:
 
   v46 = v42;
 LABEL_61:
-  v18 = [(VMUCallTreeNode *)self nameWithStringsForSymbol:v34 library:v56 loadAddress:v55 offset:v36 address:Range suffix:v46];
+  v18 = [(VMUCallTreeNode *)self nameWithStringsForSymbol:v34 library:v56 loadAddress:v55 offset:range2 address:Range suffix:v46];
   if (v53)
   {
     v47 = self->_uniqueNodeNames;
@@ -333,69 +333,69 @@ LABEL_66:
   return v18;
 }
 
-- (id)addBacktrace:(id)a3 count:(unsigned int)a4 numBytes:(unint64_t)a5
+- (id)addBacktrace:(id)backtrace count:(unsigned int)count numBytes:(unint64_t)bytes
 {
-  v8 = a3;
-  v9 = [v8 backtraceLength];
-  if (v9)
+  backtraceCopy = backtrace;
+  backtraceLength = [backtraceCopy backtraceLength];
+  if (backtraceLength)
   {
-    v10 = v9;
-    v11 = self;
+    v10 = backtraceLength;
+    selfCopy = self;
     context = objc_autoreleasePoolPush();
     key = 0;
-    options = v11->_options;
-    v11->super._count += a4;
-    v11->super._numBytes += a5;
-    v13 = v11;
+    options = selfCopy->_options;
+    selfCopy->super._count += count;
+    selfCopy->super._numBytes += bytes;
+    v13 = selfCopy;
     v39 = options;
     if ((options & 4) == 0)
     {
-      sampler = v11->_sampler;
+      sampler = selfCopy->_sampler;
       if (sampler)
       {
-        v15 = [(VMUSampler *)sampler threadDescriptionStringForBacktrace:v8 returnedAddress:&key];
+        v15 = [(VMUSampler *)sampler threadDescriptionStringForBacktrace:backtraceCopy returnedAddress:&key];
         v16 = 2;
-        v17 = key;
+        thread = key;
       }
 
       else
       {
-        if (!v11->_threadPortToNameMap)
+        if (!selfCopy->_threadPortToNameMap)
         {
           v18 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:1282 valueOptions:0];
-          threadPortToNameMap = v11->_threadPortToNameMap;
-          v11->_threadPortToNameMap = v18;
+          threadPortToNameMap = selfCopy->_threadPortToNameMap;
+          selfCopy->_threadPortToNameMap = v18;
         }
 
-        v17 = [v8 thread];
-        v15 = NSMapGet(v11->_threadPortToNameMap, v17);
+        thread = [backtraceCopy thread];
+        v15 = NSMapGet(selfCopy->_threadPortToNameMap, thread);
         if (!v15)
         {
-          v15 = [MEMORY[0x1E696AD60] stringWithFormat:@"Thread_%x", v17];
-          NSMapInsert(v11->_threadPortToNameMap, v17, v15);
+          v15 = [MEMORY[0x1E696AD60] stringWithFormat:@"Thread_%x", thread];
+          NSMapInsert(selfCopy->_threadPortToNameMap, thread, v15);
         }
 
-        key = v17;
+        key = thread;
         v16 = 1;
       }
 
-      v13 = [(VMUCallTreeNode *)v11 findOrAddChildWithName:v15 address:v17 nodeSearchType:v16 isLeafNode:0];
+      v13 = [(VMUCallTreeNode *)selfCopy findOrAddChildWithName:v15 address:thread nodeSearchType:v16 isLeafNode:0];
 
-      *(v13 + 40) += a4;
-      *(v13 + 32) += a5;
+      *(v13 + 40) += count;
+      *(v13 + 32) += bytes;
     }
 
-    v20 = [v8 backtrace];
-    v36 = v8;
-    [v8 timestamp];
+    backtrace = [backtraceCopy backtrace];
+    v36 = backtraceCopy;
+    [backtraceCopy timestamp];
     v21 = (v10 - 1);
     if (v10 - 1 >= 0)
     {
-      v37 = a4;
-      v38 = a5;
+      countCopy = count;
+      bytesCopy = bytes;
       v22 = 0;
       v23 = v21 + 1;
-      v24 = (v20 + 8 * v21);
+      v24 = (backtrace + 8 * v21);
       while (1)
       {
         v25 = *v24;
@@ -427,9 +427,9 @@ LABEL_45:
 LABEL_19:
       if (v23 == 1)
       {
-        v26 = (v11->_options & 0x20) == 0;
+        v26 = (selfCopy->_options & 0x20) == 0;
         v27 = &OBJC_IVAR___VMUCallTreeRoot__addressToSymbolNameMap;
-        if ((v11->_options & 0x20) == 0)
+        if ((selfCopy->_options & 0x20) == 0)
         {
           v27 = &OBJC_IVAR___VMUCallTreeRoot__addressToLeafSymbolNameMap;
         }
@@ -441,7 +441,7 @@ LABEL_19:
         v27 = &OBJC_IVAR___VMUCallTreeRoot__addressToSymbolNameMap;
       }
 
-      v28 = *(&v11->super.super.isa + *v27);
+      v28 = *(&selfCopy->super.super.isa + *v27);
       v29 = NSMapGet(v28, key);
       if (!v29)
       {
@@ -461,7 +461,7 @@ LABEL_19:
           v30 = *(v24 - 1) == key;
         }
 
-        v31 = [VMUCallTreeRoot descriptionStringForAddress:v11 atTime:"descriptionStringForAddress:atTime:leafFrame:startOfRecursion:" leafFrame:? startOfRecursion:?];
+        v31 = [VMUCallTreeRoot descriptionStringForAddress:selfCopy atTime:"descriptionStringForAddress:atTime:leafFrame:startOfRecursion:" leafFrame:? startOfRecursion:?];
         if (v31)
         {
           v29 = v31;
@@ -511,15 +511,15 @@ LABEL_42:
       v32 = [v13 findOrAddChildWithName:v29 address:key nodeSearchType:1 isLeafNode:0];
 
 LABEL_43:
-      *(v32 + 40) += v37;
-      *(v32 + 32) += v38;
+      *(v32 + 40) += countCopy;
+      *(v32 + 32) += bytesCopy;
       v13 = v32;
       goto LABEL_44;
     }
 
 LABEL_47:
     objc_autoreleasePoolPop(context);
-    v8 = v36;
+    backtraceCopy = v36;
   }
 
   else
@@ -530,11 +530,11 @@ LABEL_47:
   return v13;
 }
 
-- (id)addChildWithName:(id)a3 address:(unint64_t)a4 count:(unsigned int)a5 numBytes:(unint64_t)a6 toNode:(id)a7
+- (id)addChildWithName:(id)name address:(unint64_t)address count:(unsigned int)count numBytes:(unint64_t)bytes toNode:(id)node
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [(NSMutableSet *)self->_uniqueNodeNames member:v12];
+  nameCopy = name;
+  nodeCopy = node;
+  v14 = [(NSMutableSet *)self->_uniqueNodeNames member:nameCopy];
   if (v14)
   {
     v15 = v14;
@@ -543,14 +543,14 @@ LABEL_47:
 
   else
   {
-    [(NSMutableSet *)self->_uniqueNodeNames addObject:v12];
-    v15 = v12;
+    [(NSMutableSet *)self->_uniqueNodeNames addObject:nameCopy];
+    v15 = nameCopy;
     v16 = 0;
   }
 
-  v17 = [v13 findOrAddChildWithName:v15 address:a4 nodeSearchType:v16 isLeafNode:a4 != 0];
-  *(v17 + 40) += a5;
-  *(v17 + 32) += a6;
+  v17 = [nodeCopy findOrAddChildWithName:v15 address:address nodeSearchType:v16 isLeafNode:address != 0];
+  *(v17 + 40) += count;
+  *(v17 + 32) += bytes;
 
   return v17;
 }
@@ -566,12 +566,12 @@ LABEL_47:
 LABEL_11:
       v11 = [v15 objectAtIndexedSubscript:v4];
       v12 = *(v11 + 32);
-      v13 = [v11 parent];
-      v13[4] += v12;
+      parent = [v11 parent];
+      parent[4] += v12;
 
       LODWORD(v12) = *(v11 + 40);
-      v14 = [v11 parent];
-      v14[10] += v12;
+      parent2 = [v11 parent];
+      parent2[10] += v12;
 
       v3 = v15;
       --v4;
@@ -587,10 +587,10 @@ LABEL_11:
   {
     v4 = v2;
     v5 = [v3 objectAtIndexedSubscript:v2];
-    v6 = [v5 numChildren];
-    if (v6)
+    numChildren = [v5 numChildren];
+    if (numChildren)
     {
-      v7 = v6;
+      v7 = numChildren;
       v8 = 0;
       do
       {
@@ -618,23 +618,23 @@ LABEL_11:
 LABEL_12:
 }
 
-- (VMUCallTreeRoot)initWithCallGraphFile:(id)a3 fileHeader:(id *)a4 topFunctionsList:(id *)a5 binaryImagesList:(id *)a6 error:(id *)a7
+- (VMUCallTreeRoot)initWithCallGraphFile:(id)file fileHeader:(id *)header topFunctionsList:(id *)list binaryImagesList:(id *)imagesList error:(id *)error
 {
   v105[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  if (a4)
+  fileCopy = file;
+  if (header)
   {
-    *a4 = 0;
+    *header = 0;
   }
 
-  if (a5)
+  if (list)
   {
-    *a5 = 0;
+    *list = 0;
   }
 
-  if (a6)
+  if (imagesList)
   {
-    *a6 = 0;
+    *imagesList = 0;
   }
 
   v13 = [(VMUCallTreeRoot *)self initWithSymbolicator:0 sampler:0 options:0, 0];
@@ -645,85 +645,85 @@ LABEL_12:
   }
 
   v14 = v13;
-  v15 = [v12 fileSystemRepresentation];
-  v92 = fopen(v15, "re");
+  fileSystemRepresentation = [fileCopy fileSystemRepresentation];
+  v92 = fopen(fileSystemRepresentation, "re");
   if (!v92)
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"couldn't open %s for reading call tree\n", v15];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"couldn't open %s for reading call tree\n", fileSystemRepresentation];
     v19 = MEMORY[0x1E696ABC0];
     v104 = *MEMORY[0x1E696A578];
     v105[0] = v18;
-    v93 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:&v104 count:1];
+    string2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:&v104 count:1];
     v20 = [v19 errorWithDomain:@"VMUCallTreeRoot" code:1 userInfo:?];
     v17 = 0;
-    if (a7)
+    if (error)
     {
-      *a7 = v20;
+      *error = v20;
     }
 
     goto LABEL_42;
   }
 
-  v74 = v15;
-  if (a4)
+  v74 = fileSystemRepresentation;
+  if (header)
   {
-    v16 = [MEMORY[0x1E696AD60] string];
-    if (a5)
+    string = [MEMORY[0x1E696AD60] string];
+    if (list)
     {
       goto LABEL_11;
     }
 
 LABEL_17:
-    v93 = 0;
-    if (a6)
+    string2 = 0;
+    if (imagesList)
     {
       goto LABEL_12;
     }
 
 LABEL_18:
-    v91 = 0;
+    string3 = 0;
     goto LABEL_19;
   }
 
-  v16 = 0;
-  if (!a5)
+  string = 0;
+  if (!list)
   {
     goto LABEL_17;
   }
 
 LABEL_11:
-  v93 = [MEMORY[0x1E696AD60] string];
-  if (!a6)
+  string2 = [MEMORY[0x1E696AD60] string];
+  if (!imagesList)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  v91 = [MEMORY[0x1E696AD60] string];
+  string3 = [MEMORY[0x1E696AD60] string];
 LABEL_19:
-  v88 = a4;
-  v89 = a5;
-  v76 = a7;
-  v77 = a6;
-  v78 = v12;
-  v79 = v16;
+  headerCopy = header;
+  listCopy = list;
+  errorCopy = error;
+  imagesListCopy = imagesList;
+  v78 = fileCopy;
+  v79 = string;
   v87 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v14, 0}];
-  v21 = v14;
-  name = v21->super._name;
-  v21->super._name = &stru_1F461F9C8;
+  lastObject = v14;
+  name = lastObject->super._name;
+  lastObject->super._name = &stru_1F461F9C8;
 
   v90 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v84 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v86 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
   v83 = objc_msgSend(MEMORY[0x1E696AB08], "characterSetWithCharactersInString:", @"(");
   v80 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@""]);
-  v82 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
   v99 = 0;
   v23 = v92;
-  v81 = v21;
+  v81 = lastObject;
   if (feof(v92))
   {
-    v24 = 0;
+    lastObject2 = 0;
     v25 = 0;
     v26 = 0;
     v27 = 0;
@@ -737,14 +737,14 @@ LABEL_19:
   v42 = 0;
   v71 = 1;
   v73 = 1;
-  v43 = v21;
+  v43 = lastObject;
   while (1)
   {
     v27 = fgetln(v23, &v99);
     if (!v27)
     {
-      v24 = v42;
-      v21 = v43;
+      lastObject2 = v42;
+      lastObject = v43;
       v26 = v41;
       goto LABEL_21;
     }
@@ -765,7 +765,7 @@ LABEL_19:
 
     if (!strncmp(v27, "Total number in stack", 0x15uLL) || v25 == 1 && v99 <= 1)
     {
-      [v93 appendString:v46];
+      [string2 appendString:v46];
       v25 = 2;
       goto LABEL_63;
     }
@@ -779,13 +779,13 @@ LABEL_19:
     {
       if (v25 == 2)
       {
-        [v93 appendString:v46];
+        [string2 appendString:v46];
       }
 
       else
       {
 LABEL_62:
-        [v91 appendString:v46];
+        [string3 appendString:v46];
         v25 = 3;
       }
 
@@ -793,8 +793,8 @@ LABEL_63:
 
       objc_autoreleasePoolPop(v44);
       v26 = v41;
-      v21 = v43;
-      v24 = v42;
+      lastObject = v43;
+      lastObject2 = v42;
       goto LABEL_64;
     }
 
@@ -810,7 +810,7 @@ LABEL_63:
     [v47 setCharactersToBeSkipped:0];
     v98 = 0;
     v75 = v47;
-    [v47 scanUpToCharactersFromSet:v84 intoString:&v98];
+    [v47 scanUpToCharactersFromSet:decimalDigitCharacterSet intoString:&v98];
     v72 = v98;
     v48 = [v72 length];
     if (v48 < 4)
@@ -824,27 +824,27 @@ LABEL_63:
       do
       {
         [v87 removeLastObject];
-        v21 = [v87 lastObject];
+        lastObject = [v87 lastObject];
 
         [v90 removeLastObject];
-        v24 = [v90 lastObject];
+        lastObject2 = [v90 lastObject];
 
-        v43 = v21;
-        v42 = v24;
+        v43 = lastObject;
+        v42 = lastObject2;
       }
 
-      while (v49 <= [v24 length]);
+      while (v49 <= [lastObject2 length]);
     }
 
     else
     {
-      v24 = v42;
-      v21 = v43;
+      lastObject2 = v42;
+      lastObject = v43;
     }
 
     v97 = 0;
     v23 = v92;
-    if (![v75 scanInteger:&v97] || v97 < 1 || !objc_msgSend(v75, "scanCharactersFromSet:intoString:", v86, 0))
+    if (![v75 scanInteger:&v97] || v97 < 1 || !objc_msgSend(v75, "scanCharactersFromSet:intoString:", whitespaceCharacterSet, 0))
     {
       goto LABEL_106;
     }
@@ -891,8 +891,8 @@ LABEL_79:
 LABEL_105:
 
 LABEL_106:
-            v42 = v24;
-            v43 = v21;
+            v42 = lastObject2;
+            v43 = lastObject;
 LABEL_107:
 
             v25 = 1;
@@ -903,7 +903,7 @@ LABEL_107:
       }
 
       v57 = *&v94;
-      if (![v50 scanCharactersFromSet:v80 intoString:0] || !objc_msgSend(v50, "scanCharactersFromSet:intoString:", v86, 0))
+      if (![v50 scanCharactersFromSet:v80 intoString:0] || !objc_msgSend(v50, "scanCharactersFromSet:intoString:", whitespaceCharacterSet, 0))
       {
         goto LABEL_105;
       }
@@ -912,16 +912,16 @@ LABEL_107:
     }
 
 LABEL_83:
-    v58 = [v50 scanLocation];
+    scanLocation = [v50 scanLocation];
     v95 = 0;
-    [v50 scanUpToCharactersFromSet:v82 intoString:&v95];
+    [v50 scanUpToCharactersFromSet:newlineCharacterSet intoString:&v95];
     v59 = v95;
     v60 = [v59 length];
     if (v60)
     {
       if (!v51)
       {
-        v69 = v58;
+        v69 = scanLocation;
         v61 = v81->_uniqueNodeNames;
         v62 = v59;
         v59 = [(NSMutableSet *)v61 member:v62];
@@ -937,9 +937,9 @@ LABEL_83:
 
       if (([v59 isEqualToString:kVMURootNodeNameForMallocCallTrees[0]] & 1) == 0)
       {
-        v69 = v58;
+        v69 = scanLocation;
 LABEL_93:
-        v63 = [(VMUCallTreeNode *)v21 findOrAddChildWithName:v59 address:0 nodeSearchType:0 isLeafNode:0];
+        v63 = [(VMUCallTreeNode *)lastObject findOrAddChildWithName:v59 address:0 nodeSearchType:0 isLeafNode:0];
         v64 = v63;
         if (v63)
         {
@@ -979,14 +979,14 @@ LABEL_93:
             v81->super._numBytes += v51;
           }
 
-          v24 = v67;
-          v21 = v66;
+          lastObject2 = v67;
+          lastObject = v66;
           v64 = v70;
         }
 
         v25 = 1;
-        v42 = v24;
-        v43 = v21;
+        v42 = lastObject2;
+        v43 = lastObject;
         v41 = v75;
         goto LABEL_63;
       }
@@ -1007,8 +1007,8 @@ LABEL_93:
 
 LABEL_64:
     v41 = v26;
-    v43 = v21;
-    v42 = v24;
+    v43 = lastObject;
+    v42 = lastObject2;
     if (feof(v23))
     {
       goto LABEL_21;
@@ -1020,8 +1020,8 @@ LABEL_64:
 LABEL_114:
 
   objc_autoreleasePoolPop(v44);
-  v24 = v42;
-  v21 = v43;
+  lastObject2 = v42;
+  lastObject = v43;
   v26 = v75;
 LABEL_21:
   fclose(v23);
@@ -1031,30 +1031,30 @@ LABEL_21:
     [(VMUCallTreeRoot *)v81 allBacktracesHaveBeenAdded];
     v18 = v79;
     v29 = v90;
-    if (v88)
+    if (headerCopy)
     {
       v30 = v79;
-      *v88 = v79;
+      *headerCopy = v79;
     }
 
-    v12 = v78;
-    if (v89)
+    fileCopy = v78;
+    if (listCopy)
     {
-      *v89 = v93;
+      *listCopy = string2;
     }
 
-    if (v77)
+    if (imagesListCopy)
     {
-      v31 = v91;
-      *v77 = v91;
-      objc_storeStrong(&v81->_binaryImagesDescription, v91);
+      v31 = string3;
+      *imagesListCopy = string3;
+      objc_storeStrong(&v81->_binaryImagesDescription, string3);
     }
 
     goto LABEL_41;
   }
 
-  v33 = v88;
-  v32 = v89;
+  v33 = headerCopy;
+  v32 = listCopy;
   v29 = v90;
   if (v85)
   {
@@ -1066,8 +1066,8 @@ LABEL_21:
       v103 = v34;
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
       v37 = [v35 errorWithDomain:@"VMUCallTreeRoot" code:1 userInfo:v36];
-      v38 = v76;
-      if (v76)
+      v38 = errorCopy;
+      if (errorCopy)
       {
         goto LABEL_32;
       }
@@ -1075,7 +1075,7 @@ LABEL_21:
 
     else
     {
-      v38 = v76;
+      v38 = errorCopy;
       if (v27[v99 - 1] == 10)
       {
         v27[v99 - 1] = 0;
@@ -1087,15 +1087,15 @@ LABEL_21:
       v101 = v34;
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
       v37 = [v68 errorWithDomain:@"VMUCallTreeRoot" code:1 userInfo:v36];
-      if (v76)
+      if (errorCopy)
       {
 LABEL_32:
         *v38 = v37;
       }
     }
 
-    v33 = v88;
-    v32 = v89;
+    v33 = headerCopy;
+    v32 = listCopy;
     v29 = v90;
   }
 
@@ -1104,16 +1104,16 @@ LABEL_32:
     *v33 = 0;
   }
 
-  v12 = v78;
+  fileCopy = v78;
   v18 = v79;
   if (v32)
   {
     *v32 = 0;
   }
 
-  if (v77)
+  if (imagesListCopy)
   {
-    *v77 = 0;
+    *imagesListCopy = 0;
   }
 
   v28 = 0;
@@ -1129,23 +1129,23 @@ LABEL_43:
   return v17;
 }
 
-- (id)chargeSystemLibrariesToCallersAndKeepBoundaries:(BOOL)a3
+- (id)chargeSystemLibrariesToCallersAndKeepBoundaries:(BOOL)boundaries
 {
-  v3 = a3;
+  boundariesCopy = boundaries;
   v27 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  if (v4->_binaryImagesDescription)
+  selfCopy = self;
+  if (selfCopy->_binaryImagesDescription)
   {
-    v21 = v3;
+    v21 = boundariesCopy;
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    binaryImages = v4->_binaryImages;
+    binaryImages = selfCopy->_binaryImages;
     if (!binaryImages)
     {
-      v7 = [VMUProcessDescription parseBinaryImagesDescription:v4->_binaryImagesDescription];
-      v8 = v4->_binaryImages;
-      v4->_binaryImages = v7;
+      v7 = [VMUProcessDescription parseBinaryImagesDescription:selfCopy->_binaryImagesDescription];
+      v8 = selfCopy->_binaryImages;
+      selfCopy->_binaryImages = v7;
 
-      binaryImages = v4->_binaryImages;
+      binaryImages = selfCopy->_binaryImages;
     }
 
     v24 = 0u;
@@ -1195,14 +1195,14 @@ LABEL_43:
       v17 = 0;
     }
 
-    v18 = [(VMUCallTreeNode *)v4 chargeLibrariesInSet:v5 toCaller:0 parentLibrary:v17];
+    v18 = [(VMUCallTreeNode *)selfCopy chargeLibrariesInSet:v5 toCaller:0 parentLibrary:v17];
 
-    v4 = v18;
+    selfCopy = v18;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return selfCopy;
 }
 
 @end

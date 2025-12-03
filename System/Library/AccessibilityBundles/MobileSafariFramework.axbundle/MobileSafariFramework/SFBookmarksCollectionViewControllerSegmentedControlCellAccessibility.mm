@@ -1,19 +1,19 @@
 @interface SFBookmarksCollectionViewControllerSegmentedControlCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation SFBookmarksCollectionViewControllerSegmentedControlCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFBookmarksCollectionViewControllerSegmentedControlCell" hasSwiftField:@"segmentedControl" withSwiftType:"UISegmentedControl"];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"updateConfigurationUsingState:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UISegmentedControl" hasInstanceMethod:@"_segmentAtIndex:" withFullSignature:{"@", "i", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFBookmarksCollectionViewControllerSegmentedControlCell" hasSwiftField:@"segmentedControl" withSwiftType:"UISegmentedControl"];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"updateConfigurationUsingState:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UISegmentedControl" hasInstanceMethod:@"_segmentAtIndex:" withFullSignature:{"@", "i", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -57,11 +57,11 @@
   }
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v4.receiver = self;
   v4.super_class = SFBookmarksCollectionViewControllerSegmentedControlCellAccessibility;
-  [(SFBookmarksCollectionViewControllerSegmentedControlCellAccessibility *)&v4 updateConfigurationUsingState:a3];
+  [(SFBookmarksCollectionViewControllerSegmentedControlCellAccessibility *)&v4 updateConfigurationUsingState:state];
   [(SFBookmarksCollectionViewControllerSegmentedControlCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

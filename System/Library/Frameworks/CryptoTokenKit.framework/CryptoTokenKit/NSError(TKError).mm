@@ -13,7 +13,7 @@
   v7 = a4;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v9 = [a1 _errorWithCode:a3 userInfo:v8];
+  v9 = [self _errorWithCode:a3 userInfo:v8];
 
   v10 = *MEMORY[0x1E69E9840];
 

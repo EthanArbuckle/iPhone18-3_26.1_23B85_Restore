@@ -1,14 +1,14 @@
 @interface PXPhotosZoomableOverlayController
-- (BOOL)canHandleObjectReference:(id)a3;
+- (BOOL)canHandleObjectReference:(id)reference;
 - (NSArray)availableLenses;
 - (PXPhotosLensControlItem)currentLens;
 - (PXPhotosOverlayControllerDelegate)delegate;
 - (PXPhotosViewModel)photosViewModel;
 - (PXPhotosZoomableOverlayController)init;
 - (id)overlayLayoutProvider;
-- (void)setCurrentLens:(id)a3;
-- (void)setOverlayLayoutProvider:(id)a3;
-- (void)setPhotosViewModel:(id)a3;
+- (void)setCurrentLens:(id)lens;
+- (void)setOverlayLayoutProvider:(id)provider;
+- (void)setPhotosViewModel:(id)model;
 @end
 
 @implementation PXPhotosZoomableOverlayController
@@ -37,9 +37,9 @@
   return v4;
 }
 
-- (void)setOverlayLayoutProvider:(id)a3
+- (void)setOverlayLayoutProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -57,7 +57,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1A3C33378(v7);
 }
 
@@ -87,14 +87,14 @@
   return *(self + v3);
 }
 
-- (void)setPhotosViewModel:(id)a3
+- (void)setPhotosViewModel:(id)model
 {
   v5 = OBJC_IVAR___PXPhotosZoomableOverlayController_photosViewModel;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = model;
+  modelCopy = model;
+  selfCopy = self;
   sub_1A494B760(v6);
 }
 
@@ -106,14 +106,14 @@
   return v2;
 }
 
-- (void)setCurrentLens:(id)a3
+- (void)setCurrentLens:(id)lens
 {
   v5 = OBJC_IVAR___PXPhotosZoomableOverlayController_currentLens;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = lens;
   swift_unknownObjectRetain_n();
-  v7 = self;
+  selfCopy = self;
   sub_1A494BCB0(v6);
   swift_unknownObjectRelease();
 
@@ -128,7 +128,7 @@
   return Strong;
 }
 
-- (BOOL)canHandleObjectReference:(id)a3
+- (BOOL)canHandleObjectReference:(id)reference
 {
   swift_unknownObjectRetain();
   sub_1A524E0B4();

@@ -1,26 +1,26 @@
 @interface KmlXpcService
-- (void)queueCrossPlatformSharingMessage:(id)a3 forInvitationIdentifier:(id)a4 fromMailboxIdentifier:(id)a5 callback:(id)a6;
-- (void)queueManagementSession:(id)a3 callback:(id)a4;
-- (void)queueOwnerPairingSession:(id)a3 callback:(id)a4;
-- (void)queueSharingSession:(id)a3 callback:(id)a4;
-- (void)registerCrossPlatformTestMessageOverIDSHandler:(id)a3;
-- (void)registerCrossPlatformTestMessageSendHandler:(id)a3;
-- (void)registerFriendSideInvitationUnusableHandler:(id)a3;
-- (void)registerFriendSidePasscodeRetryRequestHandler:(id)a3;
-- (void)registerFriendSideSharingTestCompletion:(id)a3;
-- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)a3;
-- (void)registerOwnerSideInvitationRequestHandler:(id)a3;
-- (void)registerOwnerSideSharingTestInvitations:(id)a3 callback:(id)a4;
-- (void)sendCrossPlatformTestData:(id)a3 toIdsIdentifier:(id)a4;
+- (void)queueCrossPlatformSharingMessage:(id)message forInvitationIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier callback:(id)callback;
+- (void)queueManagementSession:(id)session callback:(id)callback;
+- (void)queueOwnerPairingSession:(id)session callback:(id)callback;
+- (void)queueSharingSession:(id)session callback:(id)callback;
+- (void)registerCrossPlatformTestMessageOverIDSHandler:(id)handler;
+- (void)registerCrossPlatformTestMessageSendHandler:(id)handler;
+- (void)registerFriendSideInvitationUnusableHandler:(id)handler;
+- (void)registerFriendSidePasscodeRetryRequestHandler:(id)handler;
+- (void)registerFriendSideSharingTestCompletion:(id)completion;
+- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)handler;
+- (void)registerOwnerSideInvitationRequestHandler:(id)handler;
+- (void)registerOwnerSideSharingTestInvitations:(id)invitations callback:(id)callback;
+- (void)sendCrossPlatformTestData:(id)data toIdsIdentifier:(id)identifier;
 - (void)unregisterSharingTestHandlers;
 @end
 
 @implementation KmlXpcService
 
-- (void)queueOwnerPairingSession:(id)a3 callback:(id)a4
+- (void)queueOwnerPairingSession:(id)session callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  callbackCopy = callback;
   v8 = +[NSXPCConnection currentConnection];
   v9 = KmlLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -36,9 +36,9 @@
   v20 = 0;
   if ([v10 numberOfPairingSessionsQueued] < 6)
   {
-    v17 = [(KmlSession *)[KmlOwnerPairingSession alloc] initWithRemoteObject:v6 connection:v8 andQueue:self->_workQueue];
-    v18 = [v8 userInfo];
-    v19 = [v18 objectForKeyedSubscript:@"ProxyObjects"];
+    v17 = [(KmlSession *)[KmlOwnerPairingSession alloc] initWithRemoteObject:sessionCopy connection:v8 andQueue:self->_workQueue];
+    userInfo = [v8 userInfo];
+    v19 = [userInfo objectForKeyedSubscript:@"ProxyObjects"];
     [v19 addObject:v17];
     [v10 addNewSession:v17 firstInQueue:&v20];
 
@@ -71,13 +71,13 @@
     v17 = 0;
   }
 
-  v7[2](v7, v17, v16 & 1, v15);
+  callbackCopy[2](callbackCopy, v17, v16 & 1, v15);
 }
 
-- (void)queueSharingSession:(id)a3 callback:(id)a4
+- (void)queueSharingSession:(id)session callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  sessionCopy = session;
   v8 = +[NSXPCConnection currentConnection];
   v9 = KmlLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -89,20 +89,20 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s : %i : ", &v14, 0x12u);
   }
 
-  v10 = [(KmlSession *)[KmlKeySharingSession alloc] initWithRemoteObject:v7 connection:v8 andQueue:self->_workQueue];
-  v11 = [v8 userInfo];
-  v12 = [v11 objectForKeyedSubscript:@"ProxyObjects"];
+  v10 = [(KmlSession *)[KmlKeySharingSession alloc] initWithRemoteObject:sessionCopy connection:v8 andQueue:self->_workQueue];
+  userInfo = [v8 userInfo];
+  v12 = [userInfo objectForKeyedSubscript:@"ProxyObjects"];
   [v12 addObject:v10];
   v13 = +[KeyManagementLibrary sharedLibrary];
   LOBYTE(v14) = 0;
   [v13 addNewSession:v10 firstInQueue:&v14];
-  (*(v6 + 2))(v6, v10, v14, 0);
+  (*(callbackCopy + 2))(callbackCopy, v10, v14, 0);
 }
 
-- (void)queueManagementSession:(id)a3 callback:(id)a4
+- (void)queueManagementSession:(id)session callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  sessionCopy = session;
   v8 = +[NSXPCConnection currentConnection];
   v9 = KmlLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -114,22 +114,22 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s : %i : ", &v14, 0x12u);
   }
 
-  v10 = [(KmlSession *)[KmlKeyManagementSession alloc] initWithRemoteObject:v7 connection:v8 andQueue:self->_workQueue];
-  v11 = [v8 userInfo];
-  v12 = [v11 objectForKeyedSubscript:@"ProxyObjects"];
+  v10 = [(KmlSession *)[KmlKeyManagementSession alloc] initWithRemoteObject:sessionCopy connection:v8 andQueue:self->_workQueue];
+  userInfo = [v8 userInfo];
+  v12 = [userInfo objectForKeyedSubscript:@"ProxyObjects"];
   [v12 addObject:v10];
   v13 = +[KeyManagementLibrary sharedLibrary];
   LOBYTE(v14) = 0;
   [v13 addNewSession:v10 firstInQueue:&v14];
-  (*(v6 + 2))(v6, v10, v14, 0);
+  (*(callbackCopy + 2))(callbackCopy, v10, v14, 0);
 }
 
-- (void)queueCrossPlatformSharingMessage:(id)a3 forInvitationIdentifier:(id)a4 fromMailboxIdentifier:(id)a5 callback:(id)a6
+- (void)queueCrossPlatformSharingMessage:(id)message forInvitationIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier callback:(id)callback
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  callbackCopy = callback;
+  mailboxIdentifierCopy = mailboxIdentifier;
+  identifierCopy = identifier;
+  messageCopy = message;
   v13 = KmlLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -141,15 +141,15 @@
   }
 
   v14 = sub_10037E00C();
-  sub_1003CD3F8(v14, v12, v11, v10);
+  sub_1003CD3F8(v14, messageCopy, identifierCopy, mailboxIdentifierCopy);
 
-  v9[2](v9, 0);
+  callbackCopy[2](callbackCopy, 0);
 }
 
-- (void)registerOwnerSideSharingTestInvitations:(id)a3 callback:(id)a4
+- (void)registerOwnerSideSharingTestInvitations:(id)invitations callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  invitationsCopy = invitations;
+  callbackCopy = callback;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -165,16 +165,16 @@
   v12[1] = 3221225472;
   v12[2] = sub_10036AB14;
   v12[3] = &unk_1004C0F00;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = invitationsCopy;
+  v14 = callbackCopy;
+  v10 = callbackCopy;
+  v11 = invitationsCopy;
   dispatch_async(workQueue, v12);
 }
 
-- (void)registerOwnerSideInvitationRequestHandler:(id)a3
+- (void)registerOwnerSideInvitationRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -190,14 +190,14 @@
   block[1] = 3221225472;
   block[2] = sub_10036AD28;
   block[3] = &unk_1004C1188;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)a3
+- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -213,14 +213,14 @@
   block[1] = 3221225472;
   block[2] = sub_10036AF3C;
   block[3] = &unk_1004C1188;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)registerFriendSideSharingTestCompletion:(id)a3
+- (void)registerFriendSideSharingTestCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -236,14 +236,14 @@
   block[1] = 3221225472;
   block[2] = sub_10036B150;
   block[3] = &unk_1004C1188;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)registerFriendSideInvitationUnusableHandler:(id)a3
+- (void)registerFriendSideInvitationUnusableHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -259,14 +259,14 @@
   block[1] = 3221225472;
   block[2] = sub_10036B364;
   block[3] = &unk_1004C1188;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)registerCrossPlatformTestMessageOverIDSHandler:(id)a3
+- (void)registerCrossPlatformTestMessageOverIDSHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -282,14 +282,14 @@
   block[1] = 3221225472;
   block[2] = sub_10036B578;
   block[3] = &unk_1004C1188;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)registerCrossPlatformTestMessageSendHandler:(id)a3
+- (void)registerCrossPlatformTestMessageSendHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -305,15 +305,15 @@
   block[1] = 3221225472;
   block[2] = sub_10036B78C;
   block[3] = &unk_1004C1188;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)sendCrossPlatformTestData:(id)a3 toIdsIdentifier:(id)a4
+- (void)sendCrossPlatformTestData:(id)data toIdsIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -329,16 +329,16 @@
   v12[1] = 3221225472;
   v12[2] = sub_10036B9C0;
   v12[3] = &unk_1004C22F0;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = dataCopy;
+  v14 = identifierCopy;
+  v10 = identifierCopy;
+  v11 = dataCopy;
   dispatch_async(workQueue, v12);
 }
 
-- (void)registerFriendSidePasscodeRetryRequestHandler:(id)a3
+- (void)registerFriendSidePasscodeRetryRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -354,8 +354,8 @@
   block[1] = 3221225472;
   block[2] = sub_10036BBD4;
   block[3] = &unk_1004C1188;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(workQueue, block);
 }
 

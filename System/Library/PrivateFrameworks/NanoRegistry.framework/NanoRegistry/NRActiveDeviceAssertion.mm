@@ -2,7 +2,7 @@
 - (BOOL)isActive;
 - (NRDevice)device;
 - (id)description;
-- (id)initWithDevice:(void *)a3 identifier:;
+- (id)initWithDevice:(void *)device identifier:;
 - (void)_invalidate;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,29 +10,29 @@
 
 @implementation NRActiveDeviceAssertion
 
-- (id)initWithDevice:(void *)a3 identifier:
+- (id)initWithDevice:(void *)device identifier:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  deviceCopy = device;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = NRActiveDeviceAssertion;
     v8 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.nanoregistry.activeDeviceAssertion.%p", a1];
+      objc_storeStrong(self + 2, device);
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.nanoregistry.activeDeviceAssertion.%p", self];
       v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v11 = dispatch_queue_create([v9 UTF8String], v10);
-      v12 = a1[3];
-      a1[3] = v11;
+      v12 = self[3];
+      self[3] = v11;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -45,10 +45,10 @@
 
 - (void)_invalidate
 {
-  if (a1)
+  if (self)
   {
     v2 = +[NRPairedDeviceRegistry sharedInstance];
-    [v2 _invalidateActiveDeviceAssertionWithIdentifier:*(a1 + 16)];
+    [v2 _invalidateActiveDeviceAssertionWithIdentifier:*(self + 16)];
   }
 }
 

@@ -7,14 +7,14 @@
 
 - (uint64_t)sb_canDrawWhileLocked
 {
-  v2 = [a1 bundle];
-  if (v2)
+  bundle = [self bundle];
+  if (bundle)
   {
     v3 = MEMORY[0x277CF0B98];
-    [a1 auditToken];
+    [self auditToken];
     v4 = [v3 tokenFromAuditToken:&v8];
     v5 = [v4 hasEntitlement:@"com.apple.QuartzCore.secure-mode"];
-    v6 = v5 & [a1 sb_showsViewsWhileLockedForBundle:v2];
+    v6 = v5 & [self sb_showsViewsWhileLockedForBundle:bundle];
   }
 
   else
@@ -28,7 +28,7 @@
 - (uint64_t)sb_showsViewsWhileLockedForBundle:()SpringBoard
 {
   v4 = a3;
-  v5 = objc_getAssociatedObject(a1, "com.apple.SpringBoardFramework.RBSProcess.showsViewsWhileLocked");
+  v5 = objc_getAssociatedObject(self, "com.apple.SpringBoardFramework.RBSProcess.showsViewsWhileLocked");
   if (!v5)
   {
     v6 = [v4 bundleInfoValueForKey:@"UIApplicationShowsViewsWhileLocked"];
@@ -56,17 +56,17 @@
 
     if (!v5)
     {
-      v10 = 0;
+      bOOLValue = 0;
       goto LABEL_10;
     }
 
-    objc_setAssociatedObject(a1, "com.apple.SpringBoardFramework.RBSProcess.showsViewsWhileLocked", v5, 1);
+    objc_setAssociatedObject(self, "com.apple.SpringBoardFramework.RBSProcess.showsViewsWhileLocked", v5, 1);
   }
 
-  v10 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
 LABEL_10:
-  return v10;
+  return bOOLValue;
 }
 
 @end

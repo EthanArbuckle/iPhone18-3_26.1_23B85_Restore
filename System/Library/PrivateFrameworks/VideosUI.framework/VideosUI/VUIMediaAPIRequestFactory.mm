@@ -1,18 +1,18 @@
 @interface VUIMediaAPIRequestFactory
-+ (id)_urlParameterForExtend:(id)a3;
-+ (id)_urlParameterTypeFilterWithTypes:(id)a3;
-+ (id)_urlParameterWithGenreFilter:(id)a3;
-+ (id)_urlRequestWithURLString:(id)a3;
-+ (id)episodesRequestWithShowIdentifier:(id)a3 withOwnerIdentifier:(id)a4;
++ (id)_urlParameterForExtend:(id)extend;
++ (id)_urlParameterTypeFilterWithTypes:(id)types;
++ (id)_urlParameterWithGenreFilter:(id)filter;
++ (id)_urlRequestWithURLString:(id)string;
++ (id)episodesRequestWithShowIdentifier:(id)identifier withOwnerIdentifier:(id)ownerIdentifier;
 + (id)familyMembersRequest;
-+ (id)genresRequestForVUIFamilySharingGenre:(id)a3 withOwnerIdentifier:(id)a4;
-+ (id)genresRequestForVUIFamilySharingGenreIDsFilter:(id)a3 withOwnerIdentifier:(id)a4;
-+ (id)genresRequestWithOwnerIdentifier:(id)a3;
-+ (id)moviesPurchasesRequestWithOwnerIdentifier:(id)a3 sortType:(unint64_t)a4;
-+ (id)recentPurchasesRequestWithOwnerIdentifier:(id)a3;
-+ (id)seasonsRequestWithShowIdentifier:(id)a3 withOwnerIdentifier:(id)a4;
-+ (id)showsPurchasesRequestWithOwnerIdentifier:(id)a3 sortType:(unint64_t)a4;
-+ (void)_addTypeFilterToURL:(id *)a3 forRequest:(id)a4;
++ (id)genresRequestForVUIFamilySharingGenre:(id)genre withOwnerIdentifier:(id)identifier;
++ (id)genresRequestForVUIFamilySharingGenreIDsFilter:(id)filter withOwnerIdentifier:(id)identifier;
++ (id)genresRequestWithOwnerIdentifier:(id)identifier;
++ (id)moviesPurchasesRequestWithOwnerIdentifier:(id)identifier sortType:(unint64_t)type;
++ (id)recentPurchasesRequestWithOwnerIdentifier:(id)identifier;
++ (id)seasonsRequestWithShowIdentifier:(id)identifier withOwnerIdentifier:(id)ownerIdentifier;
++ (id)showsPurchasesRequestWithOwnerIdentifier:(id)identifier sortType:(unint64_t)type;
++ (void)_addTypeFilterToURL:(id *)l forRequest:(id)request;
 @end
 
 @implementation VUIMediaAPIRequestFactory
@@ -26,10 +26,10 @@
   return v3;
 }
 
-+ (id)recentPurchasesRequestWithOwnerIdentifier:(id)a3
++ (id)recentPurchasesRequestWithOwnerIdentifier:(id)identifier
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"https://amp-api.videos.apple.com/v1/"];
   [v4 appendString:@"me/purchases"];
   v5 = +[VUIMediaAPIRequestFactory _urlParameterForAdditionalParameters];
@@ -54,9 +54,9 @@
   v14 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v13];
   [v4 appendString:v14];
 
-  if (v3)
+  if (identifierCopy)
   {
-    v15 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:v3];
+    v15 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:identifierCopy];
     v16 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v15];
     [v4 appendString:v16];
   }
@@ -73,10 +73,10 @@
   return v20;
 }
 
-+ (id)moviesPurchasesRequestWithOwnerIdentifier:(id)a3 sortType:(unint64_t)a4
++ (id)moviesPurchasesRequestWithOwnerIdentifier:(id)identifier sortType:(unint64_t)type
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"https://amp-api.videos.apple.com/v1/"];
   [v6 appendString:@"me/purchases"];
   v7 = +[VUIMediaAPIRequestFactory _urlParameterForAdditionalParameters];
@@ -92,12 +92,12 @@
   [v6 appendString:v11];
 
   v12 = @"name";
-  if (a4 == 3)
+  if (type == 3)
   {
     v12 = @"mostRecent";
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v13 = @"artistName";
   }
@@ -116,9 +116,9 @@
   v18 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v17];
   [v6 appendString:v18];
 
-  if (v5)
+  if (identifierCopy)
   {
-    v19 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:v5];
+    v19 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:identifierCopy];
     v20 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v19];
     [v6 appendString:v20];
   }
@@ -139,12 +139,12 @@
   return v26;
 }
 
-+ (id)seasonsRequestWithShowIdentifier:(id)a3 withOwnerIdentifier:(id)a4
++ (id)seasonsRequestWithShowIdentifier:(id)identifier withOwnerIdentifier:(id)ownerIdentifier
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  ownerIdentifierCopy = ownerIdentifier;
   v6 = MEMORY[0x1E696AD60];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [[v6 alloc] initWithString:@"https://amp-api.videos.apple.com/v1/"];
   v9 = +[VUIMediaAPIRequestFactory _purchasesEpisodesEndpoint];
   [v8 appendString:v9];
@@ -155,7 +155,7 @@
   v11 = +[VUIMediaAPIRequestFactory _urlParameterWithSharedPurchases];
   [v8 appendString:v11];
 
-  v12 = [VUIMediaAPIRequestFactory _urlParameterFilterWithShowIdentifier:v7];
+  v12 = [VUIMediaAPIRequestFactory _urlParameterFilterWithShowIdentifier:identifierCopy];
 
   v13 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v12];
   [v8 appendString:v13];
@@ -165,9 +165,9 @@
   v16 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v15];
   [v8 appendString:v16];
 
-  if (v5)
+  if (ownerIdentifierCopy)
   {
-    v17 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:v5];
+    v17 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:ownerIdentifierCopy];
     v18 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v17];
     [v8 appendString:v18];
   }
@@ -188,12 +188,12 @@
   return v24;
 }
 
-+ (id)episodesRequestWithShowIdentifier:(id)a3 withOwnerIdentifier:(id)a4
++ (id)episodesRequestWithShowIdentifier:(id)identifier withOwnerIdentifier:(id)ownerIdentifier
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  ownerIdentifierCopy = ownerIdentifier;
   v6 = MEMORY[0x1E696AD60];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [[v6 alloc] initWithString:@"https://amp-api.videos.apple.com/v1/"];
   v9 = +[VUIMediaAPIRequestFactory _purchasesEpisodesEndpoint];
   [v8 appendString:v9];
@@ -210,7 +210,7 @@
   v14 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v13];
   [v8 appendString:v14];
 
-  v15 = [VUIMediaAPIRequestFactory _urlParameterFilterWithShowIdentifier:v7];
+  v15 = [VUIMediaAPIRequestFactory _urlParameterFilterWithShowIdentifier:identifierCopy];
 
   v16 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v15];
   [v8 appendString:v16];
@@ -220,9 +220,9 @@
   v19 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v18];
   [v8 appendString:v19];
 
-  if (v5)
+  if (ownerIdentifierCopy)
   {
-    v20 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:v5];
+    v20 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:ownerIdentifierCopy];
     v21 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v20];
     [v8 appendString:v21];
   }
@@ -247,10 +247,10 @@
   return v29;
 }
 
-+ (id)showsPurchasesRequestWithOwnerIdentifier:(id)a3 sortType:(unint64_t)a4
++ (id)showsPurchasesRequestWithOwnerIdentifier:(id)identifier sortType:(unint64_t)type
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"https://amp-api.videos.apple.com/v1/"];
   [v6 appendString:@"me/purchases"];
   v7 = +[VUIMediaAPIRequestFactory _urlParameterForAdditionalParameters];
@@ -266,12 +266,12 @@
   [v6 appendString:v11];
 
   v12 = @"artistName";
-  if (a4 == 3)
+  if (type == 3)
   {
     v12 = @"mostRecent";
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v13 = @"name";
   }
@@ -290,9 +290,9 @@
   v18 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v17];
   [v6 appendString:v18];
 
-  if (v5)
+  if (identifierCopy)
   {
-    v19 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:v5];
+    v19 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:identifierCopy];
     v20 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v19];
     [v6 appendString:v20];
   }
@@ -309,12 +309,12 @@
   return v24;
 }
 
-+ (id)genresRequestForVUIFamilySharingGenre:(id)a3 withOwnerIdentifier:(id)a4
++ (id)genresRequestForVUIFamilySharingGenre:(id)genre withOwnerIdentifier:(id)identifier
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x1E696AD60];
-  v7 = a3;
+  genreCopy = genre;
   v8 = [[v6 alloc] initWithString:@"https://amp-api.videos.apple.com/v1/"];
   [v8 appendString:@"me/purchases"];
   v9 = +[VUIMediaAPIRequestFactory _urlParameterForAdditionalParameters];
@@ -326,7 +326,7 @@
   v11 = [VUIMediaAPIRequestFactory _urlParameterTypeFilterWithTypes:v10];
   [v8 appendString:v11];
 
-  v12 = [VUIMediaAPIRequestFactory _urlParameterWithGenreFilter:v7];
+  v12 = [VUIMediaAPIRequestFactory _urlParameterWithGenreFilter:genreCopy];
 
   v13 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v12];
   [v8 appendString:v13];
@@ -340,9 +340,9 @@
   v18 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v17];
   [v8 appendString:v18];
 
-  if (v5)
+  if (identifierCopy)
   {
-    v19 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:v5];
+    v19 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:identifierCopy];
     v20 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v19];
     [v8 appendString:v20];
   }
@@ -359,12 +359,12 @@
   return v24;
 }
 
-+ (id)genresRequestForVUIFamilySharingGenreIDsFilter:(id)a3 withOwnerIdentifier:(id)a4
++ (id)genresRequestForVUIFamilySharingGenreIDsFilter:(id)filter withOwnerIdentifier:(id)identifier
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x1E696AD60];
-  v7 = a3;
+  filterCopy = filter;
   v8 = [[v6 alloc] initWithString:@"https://amp-api.videos.apple.com/v1/"];
   [v8 appendString:@"me/purchases"];
   v9 = +[VUIMediaAPIRequestFactory _urlParameterForAdditionalParameters];
@@ -376,7 +376,7 @@
   v11 = [VUIMediaAPIRequestFactory _urlParameterTypeFilterWithTypes:v10];
   [v8 appendString:v11];
 
-  v12 = [VUIMediaAPIRequestFactory _urlParameterWithGenreIDsFilter:v7];
+  v12 = [VUIMediaAPIRequestFactory _urlParameterWithGenreIDsFilter:filterCopy];
 
   v13 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v12];
   [v8 appendString:v13];
@@ -390,9 +390,9 @@
   v18 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v17];
   [v8 appendString:v18];
 
-  if (v5)
+  if (identifierCopy)
   {
-    v19 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:v5];
+    v19 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:identifierCopy];
     v20 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v19];
     [v8 appendString:v20];
   }
@@ -409,10 +409,10 @@
   return v24;
 }
 
-+ (id)genresRequestWithOwnerIdentifier:(id)a3
++ (id)genresRequestWithOwnerIdentifier:(id)identifier
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"https://amp-api.videos.apple.com/v1/"];
   [v4 appendString:@"me/purchases/genres"];
   v5 = +[VUIMediaAPIRequestFactory _urlParameterForAdditionalParameters];
@@ -428,9 +428,9 @@
   v9 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v8];
   [v4 appendString:v9];
 
-  if (v3)
+  if (identifierCopy)
   {
-    v10 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:v3];
+    v10 = [VUIMediaAPIRequestFactory _urlParameterWithOwnerIdentifier:identifierCopy];
     v11 = [VUIMediaAPIRequestFactory _urlAddAdditionalParameter:v10];
     [v4 appendString:v11];
   }
@@ -451,19 +451,19 @@
   return v17;
 }
 
-+ (void)_addTypeFilterToURL:(id *)a3 forRequest:(id)a4
++ (void)_addTypeFilterToURL:(id *)l forRequest:(id)request
 {
-  v20 = a3;
+  lCopy = l;
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  requestCopy = request;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v21 = v4;
-  v6 = [v4 mediaEntityTypes];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v21 = requestCopy;
+  mediaEntityTypes = [requestCopy mediaEntityTypes];
+  v7 = [mediaEntityTypes countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -475,7 +475,7 @@
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mediaEntityTypes);
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
@@ -522,7 +522,7 @@ LABEL_14:
       }
 
       while (v8 != v10);
-      v18 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v18 = [mediaEntityTypes countByEnumeratingWithState:&v22 objects:v26 count:16];
       v8 = v18;
     }
 
@@ -530,27 +530,27 @@ LABEL_14:
   }
 
   v19 = [VUIMediaAPIRequestFactory _urlParameterTypeFilterWithTypes:v5];
-  [*v20 appendString:v19];
+  [*lCopy appendString:v19];
 }
 
-+ (id)_urlRequestWithURLString:(id)a3
++ (id)_urlRequestWithURLString:(id)string
 {
-  v3 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+  v3 = [MEMORY[0x1E695DFF8] URLWithString:string];
   v4 = [MEMORY[0x1E696AF68] requestWithURL:v3];
 
   return v4;
 }
 
-+ (id)_urlParameterTypeFilterWithTypes:(id)a3
++ (id)_urlParameterTypeFilterWithTypes:(id)types
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = typesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -623,17 +623,17 @@ LABEL_9:
   return v16;
 }
 
-+ (id)_urlParameterWithGenreFilter:(id)a3
++ (id)_urlParameterWithGenreFilter:(id)filter
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  filterCopy = filter;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 genreIdentifiers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  genreIdentifiers = [filterCopy genreIdentifiers];
+  v6 = [genreIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -644,7 +644,7 @@ LABEL_9:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(genreIdentifiers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -656,7 +656,7 @@ LABEL_9:
         [v4 appendString:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [genreIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -667,9 +667,9 @@ LABEL_9:
   return v11;
 }
 
-+ (id)_urlParameterForExtend:(id)a3
++ (id)_urlParameterForExtend:(id)extend
 {
-  v3 = [a3 componentsJoinedByString:{@", "}];
+  v3 = [extend componentsJoinedByString:{@", "}];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=%@", @"extend", v3];
 
   return v4;

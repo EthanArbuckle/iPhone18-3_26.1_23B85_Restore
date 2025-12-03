@@ -1,6 +1,6 @@
 @interface AVAppStoreBehaviorContext
 - (AVAppStoreBehavior)behavior;
-- (AVAppStoreBehaviorContext)initWithAVKitOwner:(id)a3;
+- (AVAppStoreBehaviorContext)initWithAVKitOwner:(id)owner;
 - (AVPlayerViewController)playerViewController;
 - (void)_toggleControlsGenerationIfPossible;
 @end
@@ -24,9 +24,9 @@
 - (void)_toggleControlsGenerationIfPossible
 {
   WeakRetained = objc_loadWeakRetained(&self->_behavior);
-  v4 = [WeakRetained prefersFirstGenerationControlsWhenEmbeddedInline];
+  prefersFirstGenerationControlsWhenEmbeddedInline = [WeakRetained prefersFirstGenerationControlsWhenEmbeddedInline];
 
-  if (v4)
+  if (prefersFirstGenerationControlsWhenEmbeddedInline)
   {
     v5 = +[AVKitGlobalSettings shared];
     if ([v5 thirdGenerationControlsEnabled])
@@ -40,9 +40,9 @@
     }
 
     v7 = objc_loadWeakRetained(&self->_playerViewController);
-    v8 = [v7 controlsGeneration];
+    controlsGeneration = [v7 controlsGeneration];
 
-    if (v8)
+    if (controlsGeneration)
     {
       v9 = 0;
     }
@@ -57,16 +57,16 @@
   }
 }
 
-- (AVAppStoreBehaviorContext)initWithAVKitOwner:(id)a3
+- (AVAppStoreBehaviorContext)initWithAVKitOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v8.receiver = self;
   v8.super_class = AVAppStoreBehaviorContext;
   v5 = [(AVAppStoreBehaviorContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playerViewController, v4);
+    objc_storeWeak(&v5->_playerViewController, ownerCopy);
   }
 
   return v6;

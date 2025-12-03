@@ -1,8 +1,8 @@
 @interface PSDSwitchAssertionManager
 - (PSDSwitchAssertionManager)init;
 - (void)dealloc;
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5;
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4;
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block;
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session;
 @end
 
 @implementation PSDSwitchAssertionManager
@@ -35,10 +35,10 @@
   [(PSDSwitchAssertionManager *)&v4 dealloc];
 }
 
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session
 {
-  v5 = a4;
-  if ([v5 syncSessionType] != 1)
+  sessionCopy = session;
+  if ([sessionCopy syncSessionType] != 1)
   {
     v6 = psy_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -54,8 +54,8 @@
     }
 
     v9 = +[PSYRegistrySingleton registry];
-    v10 = [v5 pairingIdentifier];
-    v11 = [v9 deviceForPairingID:v10];
+    pairingIdentifier = [sessionCopy pairingIdentifier];
+    v11 = [v9 deviceForPairingID:pairingIdentifier];
 
     v12 = psy_log();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -100,9 +100,9 @@ LABEL_13:
   }
 }
 
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   if (self->_assertion)
   {
     v7 = psy_log();
@@ -122,7 +122,7 @@ LABEL_13:
     self->_assertion = 0;
   }
 
-  v6[2](v6);
+  blockCopy[2](blockCopy);
 }
 
 @end

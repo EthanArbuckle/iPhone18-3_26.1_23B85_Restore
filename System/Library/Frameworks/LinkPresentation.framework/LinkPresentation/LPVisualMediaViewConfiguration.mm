@@ -1,12 +1,12 @@
 @interface LPVisualMediaViewConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation LPVisualMediaViewConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPVisualMediaViewConfiguration allocWithZone:a3];
+  v4 = [LPVisualMediaViewConfiguration allocWithZone:zone];
   if (v4)
   {
     [(LPVisualMediaViewConfiguration *)v4 setDisablePlayback:[(LPVisualMediaViewConfiguration *)self disablePlayback]];

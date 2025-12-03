@@ -1,7 +1,7 @@
 @interface VerifiableHealthRecordsParsingServiceServer
 - (_TtC19HealthRecordsDaemon43VerifiableHealthRecordsParsingServiceServer)init;
 - (id)exportedInterface;
-- (void)remote_parseDataSource:(id)a3 options:(unint64_t)a4 completion:(id)a5;
+- (void)remote_parseDataSource:(id)source options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation VerifiableHealthRecordsParsingServiceServer
@@ -13,14 +13,14 @@
   return result;
 }
 
-- (void)remote_parseDataSource:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)remote_parseDataSource:(id)source options:(unint64_t)options completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = self;
-  sub_251B2DB64(v10, a4, sub_251B2E650, v9);
+  sourceCopy = source;
+  selfCopy = self;
+  sub_251B2DB64(sourceCopy, options, sub_251B2E650, v9);
 }
 
 - (id)exportedInterface

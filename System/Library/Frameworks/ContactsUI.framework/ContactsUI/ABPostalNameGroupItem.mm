@@ -1,23 +1,23 @@
 @interface ABPostalNameGroupItem
 - (SEL)setter;
-- (void)setSetter:(SEL)a3;
+- (void)setSetter:(SEL)setter;
 @end
 
 @implementation ABPostalNameGroupItem
 
-- (void)setSetter:(SEL)a3
+- (void)setSetter:(SEL)setter
 {
-  if (a3)
+  if (setter)
   {
-    v3 = a3;
+    setterCopy = setter;
   }
 
   else
   {
-    v3 = 0;
+    setterCopy = 0;
   }
 
-  self->_setter = v3;
+  self->_setter = setterCopy;
 }
 
 - (SEL)setter

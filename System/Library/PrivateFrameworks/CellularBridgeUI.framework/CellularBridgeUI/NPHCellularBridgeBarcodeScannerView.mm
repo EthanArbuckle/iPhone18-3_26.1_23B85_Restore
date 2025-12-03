@@ -1,12 +1,12 @@
 @interface NPHCellularBridgeBarcodeScannerView
-- (NPHCellularBridgeBarcodeScannerView)initWithDelegate:(id)a3;
+- (NPHCellularBridgeBarcodeScannerView)initWithDelegate:(id)delegate;
 - (void)_changeCameraConfiguration;
-- (void)autoExposeAtPoint:(CGPoint)a3;
-- (void)autoFocusAtPoint:(CGPoint)a3;
+- (void)autoExposeAtPoint:(CGPoint)point;
+- (void)autoFocusAtPoint:(CGPoint)point;
 - (void)dealloc;
-- (void)handleRuntimeError:(id)a3;
+- (void)handleRuntimeError:(id)error;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)setupCameraSession;
 - (void)startRunning;
 - (void)stopRunning;
@@ -14,14 +14,14 @@
 
 @implementation NPHCellularBridgeBarcodeScannerView
 
-- (NPHCellularBridgeBarcodeScannerView)initWithDelegate:(id)a3
+- (NPHCellularBridgeBarcodeScannerView)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = NPHCellularBridgeBarcodeScannerView;
   result = [(NPHCellularBridgeBarcodeScannerView *)&v5 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (result)
   {
-    result->_delegate = a3;
+    result->_delegate = delegate;
   }
 
   return result;
@@ -34,8 +34,8 @@
     [(AVCaptureSession *)self->_captureSession removeObserver:self forKeyPath:@"running" context:@"NPHCaptureSessionRunningContext"];
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   metadataQueue = self->_metadataQueue;
   self->_metadataQueue = 0;
@@ -45,16 +45,16 @@
   [(NPHCellularBridgeBarcodeScannerView *)&v5 dealloc];
 }
 
-- (void)handleRuntimeError:(id)a3
+- (void)handleRuntimeError:(id)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 userInfo];
+    userInfo = [errorCopy userInfo];
     *buf = 138412290;
-    v10 = v6;
+    v10 = userInfo;
     _os_log_impl(&dword_243333000, v5, OS_LOG_TYPE_DEFAULT, "########### Capture failed because of runtime error (%@)", buf, 0xCu);
   }
 
@@ -149,8 +149,8 @@ void __58__NPHCellularBridgeBarcodeScannerView_handleRuntimeError___block_invoke
           self->_previewLayer = v17;
 
           [(AVCaptureVideoPreviewLayer *)self->_previewLayer setVideoGravity:*MEMORY[0x277CE5DD8]];
-          v19 = [(NPHCellularBridgeBarcodeScannerView *)self layer];
-          [v19 insertSublayer:self->_previewLayer atIndex:0];
+          layer = [(NPHCellularBridgeBarcodeScannerView *)self layer];
+          [layer insertSublayer:self->_previewLayer atIndex:0];
 
           [(AVCaptureSession *)self->_captureSession commitConfiguration];
           [(AVCaptureSession *)self->_captureSession addObserver:self forKeyPath:@"running" options:1 context:@"NPHCaptureSessionRunningContext"];
@@ -201,15 +201,15 @@ LABEL_19:
   v4.receiver = self;
   v4.super_class = NPHCellularBridgeBarcodeScannerView;
   [(NPHCellularBridgeBarcodeScannerView *)&v4 layoutSubviews];
-  v3 = [(AVCaptureVideoPreviewLayer *)self->_previewLayer superlayer];
-  [v3 bounds];
+  superlayer = [(AVCaptureVideoPreviewLayer *)self->_previewLayer superlayer];
+  [superlayer bounds];
   [(AVCaptureVideoPreviewLayer *)self->_previewLayer setFrame:?];
 }
 
 - (void)startRunning
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handleRuntimeError_ name:*MEMORY[0x277CE59C0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleRuntimeError_ name:*MEMORY[0x277CE59C0] object:0];
 
   if (self->_canUseCamera)
   {
@@ -227,26 +227,26 @@ LABEL_19:
     [(AVCaptureSession *)self->_captureSession stopRunning];
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CE59C0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE59C0] object:0];
 }
 
-- (void)autoFocusAtPoint:(CGPoint)a3
+- (void)autoFocusAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AVCaptureDeviceInput *)self->_deviceInput device];
-  if ([v6 isFocusPointOfInterestSupported] && objc_msgSend(v6, "isFocusModeSupported:", 1))
+  y = point.y;
+  x = point.x;
+  device = [(AVCaptureDeviceInput *)self->_deviceInput device];
+  if ([device isFocusPointOfInterestSupported] && objc_msgSend(device, "isFocusModeSupported:", 1))
   {
     [(AVCaptureVideoPreviewLayer *)self->_previewLayer captureDevicePointOfInterestForPoint:x, y];
     v8 = v7;
     v10 = v9;
     v13 = 0;
-    if ([v6 lockForConfiguration:&v13])
+    if ([device lockForConfiguration:&v13])
     {
-      [v6 setFocusPointOfInterest:{v8, v10}];
-      [v6 setFocusMode:1];
-      [v6 unlockForConfiguration];
+      [device setFocusPointOfInterest:{v8, v10}];
+      [device setFocusMode:1];
+      [device unlockForConfiguration];
     }
 
     else
@@ -261,22 +261,22 @@ LABEL_19:
   }
 }
 
-- (void)autoExposeAtPoint:(CGPoint)a3
+- (void)autoExposeAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AVCaptureDeviceInput *)self->_deviceInput device];
-  if ([v6 isFocusPointOfInterestSupported] && objc_msgSend(v6, "isExposureModeSupported:", 2))
+  y = point.y;
+  x = point.x;
+  device = [(AVCaptureDeviceInput *)self->_deviceInput device];
+  if ([device isFocusPointOfInterestSupported] && objc_msgSend(device, "isExposureModeSupported:", 2))
   {
     [(AVCaptureVideoPreviewLayer *)self->_previewLayer captureDevicePointOfInterestForPoint:x, y];
     v8 = v7;
     v10 = v9;
     v13 = 0;
-    if ([v6 lockForConfiguration:&v13])
+    if ([device lockForConfiguration:&v13])
     {
-      [v6 setExposurePointOfInterest:{v8, v10}];
-      [v6 setExposureMode:2];
-      [v6 unlockForConfiguration];
+      [device setExposurePointOfInterest:{v8, v10}];
+      [device setExposureMode:2];
+      [device unlockForConfiguration];
     }
 
     else
@@ -295,48 +295,48 @@ LABEL_19:
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v3 = [(AVCaptureDeviceInput *)self->_deviceInput device];
+  device = [(AVCaptureDeviceInput *)self->_deviceInput device];
   v5 = 0;
-  [v3 lockForConfiguration:&v5];
+  [device lockForConfiguration:&v5];
   v4 = v5;
-  if ([v3 isFocusModeSupported:2])
+  if ([device isFocusModeSupported:2])
   {
-    [v3 setFocusPointOfInterest:{0.5, 0.5}];
-    [v3 setFocusMode:2];
+    [device setFocusPointOfInterest:{0.5, 0.5}];
+    [device setFocusMode:2];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 isAutoFocusRangeRestrictionSupported])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [device isAutoFocusRangeRestrictionSupported])
   {
-    [v3 setAutoFocusRangeRestriction:1];
+    [device setAutoFocusRangeRestriction:1];
   }
 
-  if ([v3 isWhiteBalanceModeSupported:2])
+  if ([device isWhiteBalanceModeSupported:2])
   {
-    [v3 setWhiteBalanceMode:2];
+    [device setWhiteBalanceMode:2];
   }
 
-  if ([v3 isExposureModeSupported:2])
+  if ([device isExposureModeSupported:2])
   {
-    [v3 setExposurePointOfInterest:{0.5, 0.5}];
-    [v3 setExposureMode:2];
+    [device setExposurePointOfInterest:{0.5, 0.5}];
+    [device setExposureMode:2];
   }
 
-  [v3 unlockForConfiguration];
+  [device unlockForConfiguration];
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == @"NPHCaptureSessionRunningContext")
+  changeCopy = change;
+  if (context == @"NPHCaptureSessionRunningContext")
   {
-    if ([a3 isEqual:@"running"])
+    if ([path isEqual:@"running"])
     {
       delegate = self->_delegate;
       if (objc_opt_respondsToSelector())
       {
         v12 = self->_delegate;
-        v13 = [v10 objectForKey:*MEMORY[0x277CCA2F0]];
+        v13 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
         -[NPHCellularBridgeBarcodeScannerCaptureDelegate captureSession:isRunning:](v12, "captureSession:isRunning:", self, [v13 BOOLValue]);
       }
     }
@@ -346,7 +346,7 @@ LABEL_19:
   {
     v14.receiver = self;
     v14.super_class = NPHCellularBridgeBarcodeScannerView;
-    [(NPHCellularBridgeBarcodeScannerView *)&v14 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    [(NPHCellularBridgeBarcodeScannerView *)&v14 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
   }
 }
 

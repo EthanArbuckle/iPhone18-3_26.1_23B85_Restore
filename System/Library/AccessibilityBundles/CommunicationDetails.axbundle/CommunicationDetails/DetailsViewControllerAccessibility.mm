@@ -1,5 +1,5 @@
 @interface DetailsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
@@ -7,11 +7,11 @@
 
 @implementation DetailsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CommunicationDetails.DetailsViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CommunicationDetails.DetailsViewController" hasSwiftField:@"posterViewController" withSwiftType:"Optional<UIHostingController<PosterBackgroundView>>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CommunicationDetails.DetailsViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CommunicationDetails.DetailsViewController" hasSwiftField:@"posterViewController" withSwiftType:"Optional<UIHostingController<PosterBackgroundView>>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -23,13 +23,13 @@
   v7 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
+  view = [v3 view];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __80__DetailsViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v5[3] = &unk_29F2B4058;
   objc_copyWeak(&v6, &location);
-  [v4 setAccessibilityElementsBlock:v5];
+  [view setAccessibilityElementsBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -70,12 +70,12 @@ id __80__DetailsViewControllerAccessibility__accessibilityLoadAccessibilityInfor
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 navigationController];
+  navigationController = [v2 navigationController];
 
-  if (v3)
+  if (navigationController)
   {
-    v4 = [v2 navigationController];
-    v5 = [v4 popViewControllerAnimated:1];
+    navigationController2 = [v2 navigationController];
+    v5 = [navigationController2 popViewControllerAnimated:1];
   }
 
   else

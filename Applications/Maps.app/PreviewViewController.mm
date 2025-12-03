@@ -1,33 +1,33 @@
 @interface PreviewViewController
 - (void)_updatePreview;
-- (void)dragAndDropPreviewDidUpdate:(id)a3;
-- (void)setLabelMarker:(id)a3 searchresult:(id)a4 mapView:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)dragAndDropPreviewDidUpdate:(id)update;
+- (void)setLabelMarker:(id)marker searchresult:(id)searchresult mapView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation PreviewViewController
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PreviewViewController;
-  [(PreviewViewController *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[PreviewViewController traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(PreviewViewController *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[PreviewViewController traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(PreviewViewController *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(PreviewViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(UIImageView *)self->_imageSourceView setImage:0];
       [(PreviewViewController *)self _updatePreview];
@@ -39,31 +39,31 @@
 {
   v3 = [DragAndDropPreview alloc];
   dragItem = self->_dragItem;
-  v5 = [(PreviewViewController *)self traitCollection];
-  v6 = [(DragAndDropPreview *)v3 initWithDragAndDropMapItem:dragItem traitCollection:v5];
+  traitCollection = [(PreviewViewController *)self traitCollection];
+  v6 = [(DragAndDropPreview *)v3 initWithDragAndDropMapItem:dragItem traitCollection:traitCollection];
   previewView = self->_previewView;
   self->_previewView = v6;
 
   [(DragAndDropPreview *)self->_previewView setContentUpdateDelegate:self];
-  v8 = [(DragAndDropPreview *)self->_previewView renderPreviewImage];
-  v9 = [v8 image];
+  renderPreviewImage = [(DragAndDropPreview *)self->_previewView renderPreviewImage];
+  image = [renderPreviewImage image];
 
-  [v9 size];
+  [image size];
   [(PreviewViewController *)self setPreferredContentSize:?];
 }
 
-- (void)setLabelMarker:(id)a3 searchresult:(id)a4 mapView:(id)a5
+- (void)setLabelMarker:(id)marker searchresult:(id)searchresult mapView:(id)view
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v17 coordinate];
+  markerCopy = marker;
+  searchresultCopy = searchresult;
+  viewCopy = view;
+  [markerCopy coordinate];
   v11 = v10;
-  [v17 coordinate];
+  [markerCopy coordinate];
   v13 = CLLocationCoordinate2DMake(v11, v12);
-  if (v17)
+  if (markerCopy)
   {
-    v14 = v17;
+    v14 = markerCopy;
 LABEL_5:
     v15 = [DragAndDropMapItem dragAndDropItemWithObject:v14];
     dragItem = self->_dragItem;
@@ -72,31 +72,31 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v8)
+  if (searchresultCopy)
   {
-    v14 = v8;
+    v14 = searchresultCopy;
     goto LABEL_5;
   }
 
 LABEL_6:
-  [(DragAndDropMapItem *)self->_dragItem setSourceView:v9];
+  [(DragAndDropMapItem *)self->_dragItem setSourceView:viewCopy];
   [(DragAndDropMapItem *)self->_dragItem setSourceCoordinate:v13.latitude, v13.longitude];
   [(PreviewViewController *)self _updatePreview];
 }
 
-- (void)dragAndDropPreviewDidUpdate:(id)a3
+- (void)dragAndDropPreviewDidUpdate:(id)update
 {
-  if (self->_previewView == a3)
+  if (self->_previewView == update)
   {
-    v5 = [a3 renderPreviewImage];
-    v9 = [v5 image];
+    renderPreviewImage = [update renderPreviewImage];
+    image = [renderPreviewImage image];
 
-    [(UIImageView *)self->_imageSourceView setImage:v9];
-    [v9 size];
+    [(UIImageView *)self->_imageSourceView setImage:image];
+    [image size];
     v7 = v6;
-    [v9 size];
+    [image size];
     [(UIImageView *)self->_imageSourceView setFrame:0.0, 0.0, v7, v8];
-    [v9 size];
+    [image size];
     [(PreviewViewController *)self setPreferredContentSize:?];
   }
 }
@@ -112,8 +112,8 @@ LABEL_6:
 
   [(UIImageView *)self->_imageSourceView setOpaque:0];
   [(UIImageView *)self->_imageSourceView setUserInteractionEnabled:0];
-  v5 = [(PreviewViewController *)self view];
-  [v5 addSubview:self->_imageSourceView];
+  view = [(PreviewViewController *)self view];
+  [view addSubview:self->_imageSourceView];
 }
 
 @end

@@ -1,79 +1,79 @@
 @interface ICAppURLUtilities
-+ (BOOL)isLaunchingQuickNoteViaPencil:(id)a3;
-+ (BOOL)isNewNoteURL:(id)a3;
-+ (BOOL)isQuickNoteModeURL:(id)a3;
-+ (BOOL)isShowDefaultCloudFolderURL:(id)a3;
-+ (BOOL)isShowDefaultFolderURL:(id)a3;
-+ (BOOL)isShowFolderListURL:(id)a3;
-+ (BOOL)isShowFolderURL:(id)a3 options:(unint64_t)a4;
-+ (BOOL)isShowHTMLFolderURL:(id)a3 options:(unint64_t)a4;
-+ (BOOL)isShowHTMLNoteURL:(id)a3;
-+ (BOOL)isShowLegacyNoteURL:(id)a3;
-+ (BOOL)isShowNoteFocusedInFolderURL:(id)a3;
-+ (BOOL)isShowNoteURL:(id)a3 options:(unint64_t)a4;
-+ (BOOL)isShowPaperURL:(id)a3;
-+ (BOOL)isShowRecentlyDeletedFolderURL:(id)a3;
-+ (BOOL)isShowSmartFoldersHelpURL:(id)a3;
-+ (BOOL)isSystemPaperURL:(id)a3;
-+ (BOOL)isTranscriptionDonationURL:(id)a3;
-+ (BOOL)isTranscriptionDonationURLPositive:(id)a3;
-+ (BOOL)quickNoteURLIsContinuing:(id)a3;
-+ (BOOL)quickNoteURLShouldShowList:(id)a3;
-+ (BOOL)quickNoteURLShouldShowShareSheet:(id)a3;
-+ (BOOL)quickNoteURLShouldShowiCloudShareSheet:(id)a3;
-+ (id)NotesAppIDForNoteMentionedInURL:(id)a3;
-+ (id)URLForAttributedString:(id)a3 range:(_NSRange)a4;
-+ (id)URLWithSchemeForString:(id)a3;
-+ (id)accountFromACAccountIDInURL:(id)a3 context:(id)a4;
-+ (id)appURLForContainingFolderWithNoteFocused:(id)a3;
++ (BOOL)isLaunchingQuickNoteViaPencil:(id)pencil;
++ (BOOL)isNewNoteURL:(id)l;
++ (BOOL)isQuickNoteModeURL:(id)l;
++ (BOOL)isShowDefaultCloudFolderURL:(id)l;
++ (BOOL)isShowDefaultFolderURL:(id)l;
++ (BOOL)isShowFolderListURL:(id)l;
++ (BOOL)isShowFolderURL:(id)l options:(unint64_t)options;
++ (BOOL)isShowHTMLFolderURL:(id)l options:(unint64_t)options;
++ (BOOL)isShowHTMLNoteURL:(id)l;
++ (BOOL)isShowLegacyNoteURL:(id)l;
++ (BOOL)isShowNoteFocusedInFolderURL:(id)l;
++ (BOOL)isShowNoteURL:(id)l options:(unint64_t)options;
++ (BOOL)isShowPaperURL:(id)l;
++ (BOOL)isShowRecentlyDeletedFolderURL:(id)l;
++ (BOOL)isShowSmartFoldersHelpURL:(id)l;
++ (BOOL)isSystemPaperURL:(id)l;
++ (BOOL)isTranscriptionDonationURL:(id)l;
++ (BOOL)isTranscriptionDonationURLPositive:(id)positive;
++ (BOOL)quickNoteURLIsContinuing:(id)continuing;
++ (BOOL)quickNoteURLShouldShowList:(id)list;
++ (BOOL)quickNoteURLShouldShowShareSheet:(id)sheet;
++ (BOOL)quickNoteURLShouldShowiCloudShareSheet:(id)sheet;
++ (id)NotesAppIDForNoteMentionedInURL:(id)l;
++ (id)URLForAttributedString:(id)string range:(_NSRange)range;
++ (id)URLWithSchemeForString:(id)string;
++ (id)accountFromACAccountIDInURL:(id)l context:(id)context;
++ (id)appURLForContainingFolderWithNoteFocused:(id)focused;
 + (id)appURLForDefaultFolder;
-+ (id)appURLForFolder:(id)a3;
++ (id)appURLForFolder:(id)folder;
 + (id)appURLForFolderList;
-+ (id)appURLForHTMLFolder:(id)a3;
-+ (id)appURLForHTMLNote:(id)a3;
-+ (id)appURLForNote:(id)a3 inFolder:(id)a4;
++ (id)appURLForHTMLFolder:(id)folder;
++ (id)appURLForHTMLNote:(id)note;
++ (id)appURLForNote:(id)note inFolder:(id)folder;
 + (id)appURLForShowPaper;
 + (id)appURLForShowSmartFoldersHelp;
-+ (id)appURLForTranscriptionDonationForAttachmentIdentifier:(id)a3 isPositive:(BOOL)a4;
-+ (id)attachmentForTranscriptionDonationURL:(id)a3 managedObjectContext:(id)a4;
-+ (id)attachmentIdentifierFromQuickNoteURL:(id)a3;
-+ (id)contentOffsetFromQuickNoteURL:(id)a3;
-+ (id)defaultCloudFolderForACAccountInURL:(id)a3 context:(id)a4;
-+ (id)defaultCloudFolderURLForACAccountID:(id)a3;
-+ (id)detectedURLInString:(id)a3 allowNonLinkCharacters:(BOOL)a4;
-+ (id)entityURIForNote:(id)a3;
-+ (id)firstQueryItemInURL:(id)a3 andHost:(id)a4 andQueryItemName:(id)a5;
-+ (id)folderIdentifierForShowNoteURL:(id)a3;
-+ (id)modernNoteIdentifierFromEntityURI:(id)a3;
-+ (id)noteIdentifierFromNotesAppURL:(id)a3;
-+ (id)noteIdentifierFromQuickNoteURL:(id)a3;
-+ (id)objectIDForHTMLFolderEntityURI:(id)a3 context:(id)a4;
-+ (id)objectIDForHTMLFolderMentionedInURL:(id)a3 options:(unint64_t)a4 context:(id)a5;
-+ (id)objectIDForModernFolderEntityURI:(id)a3 noteContext:(id)a4;
-+ (id)objectIDForModernFolderMentionedInURL:(id)a3 options:(unint64_t)a4 noteContext:(id)a5;
-+ (id)objectIDURIRepresentationForFolderMentionedInLegacyShowFolderURL:(id)a3;
-+ (id)objectIDURIRepresentationForFolderMentionedInLegacyShowHTMLFolderURL:(id)a3;
-+ (id)objectIDURIRepresentationForHTMLNoteEntityURI:(id)a3 context:(id)a4;
-+ (id)objectIDURIRepresentationForHTMLNoteMentionedInURL:(id)a3;
-+ (id)predicateForFolderWithNoteFocusedInURL:(id)a3;
-+ (id)predicateForNotesMentionedInURL:(id)a3;
-+ (id)predicateForNotesMentionedInURL:(id)a3 action:(id)a4 queryItemName:(id)a5;
-+ (id)predicateForNotesWithIdentifier:(id)a3;
-+ (id)predicateForVisibleNotesMentionedInURL:(id)a3;
-+ (id)recentlyDeletedFolderForACAccountInURL:(id)a3 context:(id)a4;
-+ (id)recentlyDeletedFolderURLForACAccountID:(id)a3;
++ (id)appURLForTranscriptionDonationForAttachmentIdentifier:(id)identifier isPositive:(BOOL)positive;
++ (id)attachmentForTranscriptionDonationURL:(id)l managedObjectContext:(id)context;
++ (id)attachmentIdentifierFromQuickNoteURL:(id)l;
++ (id)contentOffsetFromQuickNoteURL:(id)l;
++ (id)defaultCloudFolderForACAccountInURL:(id)l context:(id)context;
++ (id)defaultCloudFolderURLForACAccountID:(id)d;
++ (id)detectedURLInString:(id)string allowNonLinkCharacters:(BOOL)characters;
++ (id)entityURIForNote:(id)note;
++ (id)firstQueryItemInURL:(id)l andHost:(id)host andQueryItemName:(id)name;
++ (id)folderIdentifierForShowNoteURL:(id)l;
++ (id)modernNoteIdentifierFromEntityURI:(id)i;
++ (id)noteIdentifierFromNotesAppURL:(id)l;
++ (id)noteIdentifierFromQuickNoteURL:(id)l;
++ (id)objectIDForHTMLFolderEntityURI:(id)i context:(id)context;
++ (id)objectIDForHTMLFolderMentionedInURL:(id)l options:(unint64_t)options context:(id)context;
++ (id)objectIDForModernFolderEntityURI:(id)i noteContext:(id)context;
++ (id)objectIDForModernFolderMentionedInURL:(id)l options:(unint64_t)options noteContext:(id)context;
++ (id)objectIDURIRepresentationForFolderMentionedInLegacyShowFolderURL:(id)l;
++ (id)objectIDURIRepresentationForFolderMentionedInLegacyShowHTMLFolderURL:(id)l;
++ (id)objectIDURIRepresentationForHTMLNoteEntityURI:(id)i context:(id)context;
++ (id)objectIDURIRepresentationForHTMLNoteMentionedInURL:(id)l;
++ (id)predicateForFolderWithNoteFocusedInURL:(id)l;
++ (id)predicateForNotesMentionedInURL:(id)l;
++ (id)predicateForNotesMentionedInURL:(id)l action:(id)action queryItemName:(id)name;
++ (id)predicateForNotesWithIdentifier:(id)identifier;
++ (id)predicateForVisibleNotesMentionedInURL:(id)l;
++ (id)recentlyDeletedFolderForACAccountInURL:(id)l context:(id)context;
++ (id)recentlyDeletedFolderURLForACAccountID:(id)d;
 + (id)referralURLForSnapshotBackgroundTask;
-+ (id)urlByAppendingACAccountIDToURL:(id)a3 acAccountID:(id)a4;
++ (id)urlByAppendingACAccountIDToURL:(id)l acAccountID:(id)d;
 + (id)urlForNewNote;
-+ (id)urlForQuickNoteWithOptions:(id)a3;
++ (id)urlForQuickNoteWithOptions:(id)options;
 @end
 
 @implementation ICAppURLUtilities
 
-+ (id)predicateForVisibleNotesMentionedInURL:(id)a3
++ (id)predicateForVisibleNotesMentionedInURL:(id)l
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [a1 predicateForNotesMentionedInURL:a3];
+  v3 = [self predicateForNotesMentionedInURL:l];
   v4 = +[ICCloudSyncingObject predicateForUnmarkedForDeletionObjects];
   v5 = v4;
   v6 = 0;
@@ -89,11 +89,11 @@
   return v6;
 }
 
-+ (id)predicateForNotesMentionedInURL:(id)a3
++ (id)predicateForNotesMentionedInURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 scheme];
-  v6 = ICIsNotesURLScheme(v5);
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v6 = ICIsNotesURLScheme(scheme);
 
   if (!v6)
   {
@@ -101,21 +101,21 @@
     goto LABEL_9;
   }
 
-  v7 = [a1 modernNoteIdentifierFromEntityURI:v4];
+  v7 = [self modernNoteIdentifierFromEntityURI:lCopy];
   if ([v7 length])
   {
-    v8 = [a1 predicateForNotesWithIdentifier:v7];
+    v8 = [self predicateForNotesWithIdentifier:v7];
   }
 
   else
   {
-    if (![a1 isShowNoteURL:v4 options:1])
+    if (![self isShowNoteURL:lCopy options:1])
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    v8 = [a1 predicateForNotesMentionedInURL:v4 action:@"showNote"];
+    v8 = [self predicateForNotesMentionedInURL:lCopy action:@"showNote"];
   }
 
   v9 = v8;
@@ -126,14 +126,14 @@ LABEL_9:
   return v9;
 }
 
-+ (id)predicateForNotesMentionedInURL:(id)a3 action:(id)a4 queryItemName:(id)a5
++ (id)predicateForNotesMentionedInURL:(id)l action:(id)action queryItemName:(id)name
 {
-  v6 = [a1 firstQueryItemInURL:a3 andHost:a4 andQueryItemName:a5];
+  v6 = [self firstQueryItemInURL:l andHost:action andQueryItemName:name];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 value];
-    v9 = [a1 predicateForNotesWithIdentifier:v8];
+    value = [v6 value];
+    v9 = [self predicateForNotesWithIdentifier:value];
   }
 
   else
@@ -144,12 +144,12 @@ LABEL_9:
   return v9;
 }
 
-+ (id)predicateForNotesWithIdentifier:(id)a3
++ (id)predicateForNotesWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (isValidIdentifier(v3))
+  identifierCopy = identifier;
+  if (isValidIdentifier(identifierCopy))
   {
-    v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K ==[c] %@", @"identifier", v3];
+    identifierCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K ==[c] %@", @"identifier", identifierCopy];
   }
 
   else
@@ -157,31 +157,31 @@ LABEL_9:
     v5 = os_log_create("com.apple.notes", "Application");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(ICAppURLUtilities *)v3 predicateForNotesWithIdentifier:v5, v6, v7, v8, v9, v10, v11];
+      [(ICAppURLUtilities *)identifierCopy predicateForNotesWithIdentifier:v5, v6, v7, v8, v9, v10, v11];
     }
 
-    v4 = 0;
+    identifierCopy = 0;
   }
 
-  return v4;
+  return identifierCopy;
 }
 
-+ (id)appURLForHTMLNote:(id)a3
++ (id)appURLForHTMLNote:(id)note
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (note)
   {
     v3 = MEMORY[0x277CCACE0];
-    v4 = a3;
+    noteCopy = note;
     v5 = objc_alloc_init(v3);
     [v5 setScheme:@"applenotes"];
     [v5 setHost:@"showHTMLNote"];
     v6 = MEMORY[0x277CCAD18];
-    v7 = [v4 objectID];
+    objectID = [noteCopy objectID];
 
-    v8 = [v7 URIRepresentation];
-    v9 = [v8 absoluteString];
-    v10 = [v6 queryItemWithName:@"objectIDURI" value:v9];
+    uRIRepresentation = [objectID URIRepresentation];
+    absoluteString = [uRIRepresentation absoluteString];
+    v10 = [v6 queryItemWithName:@"objectIDURI" value:absoluteString];
     v14[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     [v5 setQueryItems:v11];
@@ -197,17 +197,17 @@ LABEL_9:
   return v12;
 }
 
-+ (id)objectIDURIRepresentationForHTMLNoteMentionedInURL:(id)a3
++ (id)objectIDURIRepresentationForHTMLNoteMentionedInURL:(id)l
 {
-  v4 = a3;
-  if ([a1 isShowHTMLNoteURL:v4])
+  lCopy = l;
+  if ([self isShowHTMLNoteURL:lCopy])
   {
-    v5 = [a1 firstQueryItemInURL:v4 andHost:@"showHTMLNote" andQueryItemName:@"objectIDURI"];
+    v5 = [self firstQueryItemInURL:lCopy andHost:@"showHTMLNote" andQueryItemName:@"objectIDURI"];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 value];
-      v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
+      value = [v5 value];
+      v8 = [MEMORY[0x277CBEBC0] URLWithString:value];
     }
 
     else
@@ -224,21 +224,21 @@ LABEL_9:
   return v8;
 }
 
-+ (id)appURLForFolder:(id)a3
++ (id)appURLForFolder:(id)folder
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 identifier];
-  if ([v4 length])
+  folderCopy = folder;
+  identifier = [folderCopy identifier];
+  if ([identifier length])
   {
     v5 = objc_alloc_init(MEMORY[0x277CCACE0]);
     [v5 setScheme:@"applenotes"];
     [v5 setHost:@"showFolder"];
     v6 = MEMORY[0x277CCAD18];
-    v7 = [v3 objectID];
-    v8 = [v7 URIRepresentation];
-    v9 = [v8 absoluteString];
-    v10 = [v6 queryItemWithName:@"objectIDURI" value:v9];
+    objectID = [folderCopy objectID];
+    uRIRepresentation = [objectID URIRepresentation];
+    absoluteString = [uRIRepresentation absoluteString];
+    v10 = [v6 queryItemWithName:@"objectIDURI" value:absoluteString];
     v14[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     [v5 setQueryItems:v11];
@@ -254,18 +254,18 @@ LABEL_9:
   return v12;
 }
 
-+ (id)objectIDForModernFolderMentionedInURL:(id)a3 options:(unint64_t)a4 noteContext:(id)a5
++ (id)objectIDForModernFolderMentionedInURL:(id)l options:(unint64_t)options noteContext:(id)context
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ((v6 & 1) != 0 || ([a1 objectIDForModernFolderEntityURI:v8 noteContext:v9], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  optionsCopy = options;
+  lCopy = l;
+  contextCopy = context;
+  if ((optionsCopy & 1) != 0 || ([self objectIDForModernFolderEntityURI:lCopy noteContext:contextCopy], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v12 = [a1 objectIDURIRepresentationForFolderMentionedInLegacyShowFolderURL:v8];
+    v12 = [self objectIDURIRepresentationForFolderMentionedInLegacyShowFolderURL:lCopy];
     if (v12)
     {
-      v13 = [v9 persistentStoreCoordinator];
-      v11 = [v13 managedObjectIDForURIRepresentation:v12];
+      persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+      v11 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v12];
     }
 
     else
@@ -283,20 +283,20 @@ LABEL_9:
   return v11;
 }
 
-+ (id)objectIDURIRepresentationForFolderMentionedInLegacyShowFolderURL:(id)a3
++ (id)objectIDURIRepresentationForFolderMentionedInLegacyShowFolderURL:(id)l
 {
-  v4 = a3;
-  if ([a1 isShowFolderURL:v4 options:1])
+  lCopy = l;
+  if ([self isShowFolderURL:lCopy options:1])
   {
-    v5 = [a1 firstQueryItemInURL:v4 andHost:@"showFolder" andQueryItemName:@"objectIDURI"];
-    v6 = [v5 value];
-    v7 = [v6 length];
+    v5 = [self firstQueryItemInURL:lCopy andHost:@"showFolder" andQueryItemName:@"objectIDURI"];
+    value = [v5 value];
+    v7 = [value length];
 
     if (v7)
     {
       v8 = MEMORY[0x277CBEBC0];
-      v9 = [v5 value];
-      v10 = [v8 URLWithString:v9];
+      value2 = [v5 value];
+      v10 = [v8 URLWithString:value2];
     }
 
     else
@@ -313,22 +313,22 @@ LABEL_9:
   return v10;
 }
 
-+ (id)appURLForHTMLFolder:(id)a3
++ (id)appURLForHTMLFolder:(id)folder
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (folder)
   {
     v3 = MEMORY[0x277CCACE0];
-    v4 = a3;
+    folderCopy = folder;
     v5 = objc_alloc_init(v3);
     [v5 setScheme:@"applenotes"];
     [v5 setHost:@"showHTMLFolder"];
     v6 = MEMORY[0x277CCAD18];
-    v7 = [v4 objectID];
+    objectID = [folderCopy objectID];
 
-    v8 = [v7 URIRepresentation];
-    v9 = [v8 absoluteString];
-    v10 = [v6 queryItemWithName:@"objectIDURI" value:v9];
+    uRIRepresentation = [objectID URIRepresentation];
+    absoluteString = [uRIRepresentation absoluteString];
+    v10 = [v6 queryItemWithName:@"objectIDURI" value:absoluteString];
     v14[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     [v5 setQueryItems:v11];
@@ -344,19 +344,19 @@ LABEL_9:
   return v12;
 }
 
-+ (id)objectIDForHTMLFolderMentionedInURL:(id)a3 options:(unint64_t)a4 context:(id)a5
++ (id)objectIDForHTMLFolderMentionedInURL:(id)l options:(unint64_t)options context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a1 objectIDForHTMLFolderEntityURI:v7 context:v8];
+  lCopy = l;
+  contextCopy = context;
+  v9 = [self objectIDForHTMLFolderEntityURI:lCopy context:contextCopy];
   if (!v9)
   {
-    v10 = [a1 objectIDURIRepresentationForFolderMentionedInLegacyShowHTMLFolderURL:v7];
+    v10 = [self objectIDURIRepresentationForFolderMentionedInLegacyShowHTMLFolderURL:lCopy];
     if (v10)
     {
-      v11 = [v8 managedObjectContext];
-      v12 = [v11 persistentStoreCoordinator];
-      v9 = [v12 managedObjectIDForURIRepresentation:v10];
+      managedObjectContext = [contextCopy managedObjectContext];
+      persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+      v9 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v10];
     }
 
     else
@@ -368,17 +368,17 @@ LABEL_9:
   return v9;
 }
 
-+ (id)objectIDURIRepresentationForFolderMentionedInLegacyShowHTMLFolderURL:(id)a3
++ (id)objectIDURIRepresentationForFolderMentionedInLegacyShowHTMLFolderURL:(id)l
 {
-  v4 = a3;
-  if ([a1 isShowHTMLFolderURL:v4 options:1])
+  lCopy = l;
+  if ([self isShowHTMLFolderURL:lCopy options:1])
   {
-    v5 = [a1 firstQueryItemInURL:v4 andHost:@"showHTMLFolder" andQueryItemName:@"objectIDURI"];
+    v5 = [self firstQueryItemInURL:lCopy andHost:@"showHTMLFolder" andQueryItemName:@"objectIDURI"];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 value];
-      v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
+      value = [v5 value];
+      v8 = [MEMORY[0x277CBEBC0] URLWithString:value];
     }
 
     else
@@ -425,19 +425,19 @@ LABEL_9:
   return v3;
 }
 
-+ (BOOL)isShowFolderListURL:(id)a3
++ (BOOL)isShowFolderListURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      v8 = [v7 ic_isCaseInsensitiveEqualToString:@"showFolderList"];
+      host = [v4 host];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"showFolderList"];
     }
 
     else
@@ -454,19 +454,19 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)isShowDefaultFolderURL:(id)a3
++ (BOOL)isShowDefaultFolderURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      v8 = [v7 ic_isCaseInsensitiveEqualToString:@"showDefaultFolder"];
+      host = [v4 host];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"showDefaultFolder"];
     }
 
     else
@@ -483,22 +483,22 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)isShowFolderURL:(id)a3 options:(unint64_t)a4
++ (BOOL)isShowFolderURL:(id)l options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  optionsCopy = options;
+  lCopy = l;
+  if (lCopy)
   {
-    if ((v4 & 1) != 0 || ([a1 isModernFolderEntityURI:v6] & 1) == 0)
+    if ((optionsCopy & 1) != 0 || ([self isModernFolderEntityURI:lCopy] & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCACE0] componentsWithURL:v6 resolvingAgainstBaseURL:1];
-      v9 = [v8 scheme];
-      v10 = ICIsNotesURLScheme(v9);
+      v8 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+      scheme = [v8 scheme];
+      v10 = ICIsNotesURLScheme(scheme);
 
       if (v10)
       {
-        v11 = [v8 host];
-        v7 = [v11 ic_isCaseInsensitiveEqualToString:@"showFolder"];
+        host = [v8 host];
+        v7 = [host ic_isCaseInsensitiveEqualToString:@"showFolder"];
       }
 
       else
@@ -521,22 +521,22 @@ LABEL_9:
   return v7;
 }
 
-+ (BOOL)isShowRecentlyDeletedFolderURL:(id)a3
++ (BOOL)isShowRecentlyDeletedFolderURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:1];
+  v3 = [MEMORY[0x277CCACE0] componentsWithURL:l resolvingAgainstBaseURL:1];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 scheme];
-    if (ICIsNotesURLScheme(v5))
+    scheme = [v3 scheme];
+    if (ICIsNotesURLScheme(scheme))
     {
-      v6 = [v4 host];
-      v7 = [v6 ic_isCaseInsensitiveEqualToString:@"showRecentlyDeletedFolder"];
+      host = [v4 host];
+      v7 = [host ic_isCaseInsensitiveEqualToString:@"showRecentlyDeletedFolder"];
     }
 
     else
@@ -553,43 +553,43 @@ LABEL_9:
   return v7;
 }
 
-+ (id)recentlyDeletedFolderURLForACAccountID:(id)a3
++ (id)recentlyDeletedFolderURLForACAccountID:(id)d
 {
   v4 = MEMORY[0x277CCACE0];
-  v5 = a3;
+  dCopy = d;
   v6 = objc_alloc_init(v4);
   [v6 setScheme:@"applenotes"];
   [v6 setHost:@"showRecentlyDeletedFolder"];
   v7 = [v6 URL];
-  v8 = [a1 urlByAppendingACAccountIDToURL:v7 acAccountID:v5];
+  v8 = [self urlByAppendingACAccountIDToURL:v7 acAccountID:dCopy];
 
   return v8;
 }
 
-+ (id)recentlyDeletedFolderForACAccountInURL:(id)a3 context:(id)a4
++ (id)recentlyDeletedFolderForACAccountInURL:(id)l context:(id)context
 {
-  v4 = [a1 accountFromACAccountIDInURL:a3 context:a4];
-  v5 = [v4 trashFolder];
+  v4 = [self accountFromACAccountIDInURL:l context:context];
+  trashFolder = [v4 trashFolder];
 
-  return v5;
+  return trashFolder;
 }
 
-+ (BOOL)isShowDefaultCloudFolderURL:(id)a3
++ (BOOL)isShowDefaultCloudFolderURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:1];
+  v3 = [MEMORY[0x277CCACE0] componentsWithURL:l resolvingAgainstBaseURL:1];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 scheme];
-    if (ICIsNotesURLScheme(v5))
+    scheme = [v3 scheme];
+    if (ICIsNotesURLScheme(scheme))
     {
-      v6 = [v4 host];
-      v7 = [v6 ic_isCaseInsensitiveEqualToString:@"showDefaultCloudFolder"];
+      host = [v4 host];
+      v7 = [host ic_isCaseInsensitiveEqualToString:@"showDefaultCloudFolder"];
     }
 
     else
@@ -606,43 +606,43 @@ LABEL_9:
   return v7;
 }
 
-+ (id)defaultCloudFolderURLForACAccountID:(id)a3
++ (id)defaultCloudFolderURLForACAccountID:(id)d
 {
   v4 = MEMORY[0x277CCACE0];
-  v5 = a3;
+  dCopy = d;
   v6 = objc_alloc_init(v4);
   [v6 setScheme:@"applenotes"];
   [v6 setHost:@"showDefaultCloudFolder"];
   v7 = [v6 URL];
-  v8 = [a1 urlByAppendingACAccountIDToURL:v7 acAccountID:v5];
+  v8 = [self urlByAppendingACAccountIDToURL:v7 acAccountID:dCopy];
 
   return v8;
 }
 
-+ (id)defaultCloudFolderForACAccountInURL:(id)a3 context:(id)a4
++ (id)defaultCloudFolderForACAccountInURL:(id)l context:(id)context
 {
-  v4 = [a1 accountFromACAccountIDInURL:a3 context:a4];
-  v5 = [v4 defaultFolder];
+  v4 = [self accountFromACAccountIDInURL:l context:context];
+  defaultFolder = [v4 defaultFolder];
 
-  return v5;
+  return defaultFolder;
 }
 
-+ (BOOL)isShowHTMLFolderURL:(id)a3 options:(unint64_t)a4
++ (BOOL)isShowHTMLFolderURL:(id)l options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  optionsCopy = options;
+  lCopy = l;
+  if (lCopy)
   {
-    if ((v4 & 1) != 0 || ([a1 isHTMLFolderEntityURI:v6] & 1) == 0)
+    if ((optionsCopy & 1) != 0 || ([self isHTMLFolderEntityURI:lCopy] & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCACE0] componentsWithURL:v6 resolvingAgainstBaseURL:1];
-      v9 = [v8 scheme];
-      v10 = ICIsNotesURLScheme(v9);
+      v8 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+      scheme = [v8 scheme];
+      v10 = ICIsNotesURLScheme(scheme);
 
       if (v10)
       {
-        v11 = [v8 host];
-        v7 = [v11 ic_isCaseInsensitiveEqualToString:@"showHTMLFolder"];
+        host = [v8 host];
+        v7 = [host ic_isCaseInsensitiveEqualToString:@"showHTMLFolder"];
       }
 
       else
@@ -665,22 +665,22 @@ LABEL_9:
   return v7;
 }
 
-+ (BOOL)isShowNoteURL:(id)a3 options:(unint64_t)a4
++ (BOOL)isShowNoteURL:(id)l options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  optionsCopy = options;
+  lCopy = l;
+  if (lCopy)
   {
-    if ((v4 & 1) != 0 || ([a1 isModernNoteEntityURI:v6] & 1) == 0)
+    if ((optionsCopy & 1) != 0 || ([self isModernNoteEntityURI:lCopy] & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCACE0] componentsWithURL:v6 resolvingAgainstBaseURL:1];
-      v9 = [v8 scheme];
-      v10 = ICIsNotesURLScheme(v9);
+      v8 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+      scheme = [v8 scheme];
+      v10 = ICIsNotesURLScheme(scheme);
 
       if (v10)
       {
-        v11 = [v8 host];
-        v7 = [v11 ic_isCaseInsensitiveEqualToString:@"showNote"];
+        host = [v8 host];
+        v7 = [host ic_isCaseInsensitiveEqualToString:@"showNote"];
       }
 
       else
@@ -703,36 +703,36 @@ LABEL_9:
   return v7;
 }
 
-+ (id)folderIdentifierForShowNoteURL:(id)a3
++ (id)folderIdentifierForShowNoteURL:(id)l
 {
-  v4 = a3;
-  if (v4 && [a1 isShowNoteURL:v4])
+  lCopy = l;
+  if (lCopy && [self isShowNoteURL:lCopy])
   {
-    v5 = [a1 firstQueryItemInURL:v4 andHost:@"showNote" andQueryItemName:@"folderIdentifier"];
-    v6 = [v5 value];
+    v5 = [self firstQueryItemInURL:lCopy andHost:@"showNote" andQueryItemName:@"folderIdentifier"];
+    value = [v5 value];
   }
 
   else
   {
-    v6 = 0;
+    value = 0;
   }
 
-  return v6;
+  return value;
 }
 
-+ (BOOL)isShowLegacyNoteURL:(id)a3
++ (BOOL)isShowLegacyNoteURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      v8 = [v7 ic_isCaseInsensitiveEqualToString:@"showLegacyNote"];
+      host = [v4 host];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"showLegacyNote"];
     }
 
     else
@@ -749,19 +749,19 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)isShowHTMLNoteURL:(id)a3
++ (BOOL)isShowHTMLNoteURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      v8 = [v7 ic_isCaseInsensitiveEqualToString:@"showHTMLNote"];
+      host = [v4 host];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"showHTMLNote"];
     }
 
     else
@@ -778,19 +778,19 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)isShowSmartFoldersHelpURL:(id)a3
++ (BOOL)isShowSmartFoldersHelpURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      v8 = [v7 ic_isCaseInsensitiveEqualToString:@"showSmartFoldersHelp"];
+      host = [v4 host];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"showSmartFoldersHelp"];
     }
 
     else
@@ -807,14 +807,14 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)isSystemPaperURL:(id)a3
++ (BOOL)isSystemPaperURL:(id)l
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (l)
   {
-    v3 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:1];
-    v4 = [v3 scheme];
-    v5 = ICIsNotesURLScheme(v4);
+    v3 = [MEMORY[0x277CCACE0] componentsWithURL:l resolvingAgainstBaseURL:1];
+    scheme = [v3 scheme];
+    v5 = ICIsNotesURLScheme(scheme);
 
     if (v5)
     {
@@ -822,8 +822,8 @@ LABEL_9:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v6 = [v3 queryItems];
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      queryItems = [v3 queryItems];
+      v7 = [queryItems countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         v8 = v7;
@@ -834,15 +834,15 @@ LABEL_9:
           {
             if (*v17 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(queryItems);
             }
 
             v11 = *(*(&v16 + 1) + 8 * i);
-            v12 = [v11 name];
-            if ([v12 ic_isCaseInsensitiveEqualToString:@"displayMode"])
+            name = [v11 name];
+            if ([name ic_isCaseInsensitiveEqualToString:@"displayMode"])
             {
-              v13 = [v11 value];
-              v14 = [v13 containsString:@"paper"];
+              value = [v11 value];
+              v14 = [value containsString:@"paper"];
 
               if (v14)
               {
@@ -856,7 +856,7 @@ LABEL_9:
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v8 = [queryItems countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v8);
@@ -885,19 +885,19 @@ LABEL_16:
   return v3;
 }
 
-+ (BOOL)isNewNoteURL:(id)a3
++ (BOOL)isNewNoteURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      v8 = [v7 ic_isCaseInsensitiveEqualToString:@"newNote"];
+      host = [v4 host];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"newNote"];
     }
 
     else
@@ -914,19 +914,19 @@ LABEL_16:
   return v8;
 }
 
-+ (BOOL)isTranscriptionDonationURL:(id)a3
++ (BOOL)isTranscriptionDonationURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      v8 = [v7 ic_isCaseInsensitiveEqualToString:@"transcriptionFeedback"];
+      host = [v4 host];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"transcriptionFeedback"];
     }
 
     else
@@ -943,31 +943,31 @@ LABEL_16:
   return v8;
 }
 
-+ (BOOL)isTranscriptionDonationURLPositive:(id)a3
++ (BOOL)isTranscriptionDonationURLPositive:(id)positive
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  positiveCopy = positive;
+  if (positiveCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:positiveCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      if ([v7 ic_isCaseInsensitiveEqualToString:@"transcriptionFeedback"])
+      host = [v4 host];
+      if ([host ic_isCaseInsensitiveEqualToString:@"transcriptionFeedback"])
       {
         v22 = 0u;
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v8 = [v4 queryItems];
-        v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        queryItems = [v4 queryItems];
+        v9 = [queryItems countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v9)
         {
           v10 = v9;
-          v19 = v7;
+          v19 = host;
           v11 = *v21;
           while (2)
           {
@@ -975,23 +975,23 @@ LABEL_16:
             {
               if (*v21 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(queryItems);
               }
 
               v13 = *(*(&v20 + 1) + 8 * i);
-              v14 = [v13 name];
-              v15 = [v14 ic_isCaseInsensitiveEqualToString:@"isPositive"];
+              name = [v13 name];
+              v15 = [name ic_isCaseInsensitiveEqualToString:@"isPositive"];
 
               if (v15)
               {
-                v17 = [v13 value];
-                v16 = [v17 isEqual:@"1"];
+                value = [v13 value];
+                v16 = [value isEqual:@"1"];
 
                 goto LABEL_17;
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+            v10 = [queryItems countByEnumeratingWithState:&v20 objects:v24 count:16];
             if (v10)
             {
               continue;
@@ -1002,7 +1002,7 @@ LABEL_16:
 
           v16 = 0;
 LABEL_17:
-          v7 = v19;
+          host = v19;
         }
 
         else
@@ -1031,33 +1031,33 @@ LABEL_17:
   return v16;
 }
 
-+ (id)attachmentForTranscriptionDonationURL:(id)a3 managedObjectContext:(id)a4
++ (id)attachmentForTranscriptionDonationURL:(id)l managedObjectContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  lCopy = l;
+  contextCopy = context;
+  if (lCopy)
   {
-    v7 = [MEMORY[0x277CCACE0] componentsWithURL:v5 resolvingAgainstBaseURL:1];
-    v8 = [v7 scheme];
-    v9 = ICIsNotesURLScheme(v8);
+    v7 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v7 scheme];
+    v9 = ICIsNotesURLScheme(scheme);
 
     if (v9)
     {
-      v10 = [v7 host];
-      if ([v10 ic_isCaseInsensitiveEqualToString:@"transcriptionFeedback"])
+      host = [v7 host];
+      if ([host ic_isCaseInsensitiveEqualToString:@"transcriptionFeedback"])
       {
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v11 = [v7 queryItems];
-        v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        queryItems = [v7 queryItems];
+        v12 = [queryItems countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v12)
         {
           v13 = v12;
-          v22 = v10;
-          v23 = v6;
+          v22 = host;
+          v23 = contextCopy;
           v14 = *v25;
           while (2)
           {
@@ -1065,24 +1065,24 @@ LABEL_17:
             {
               if (*v25 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(queryItems);
               }
 
               v16 = *(*(&v24 + 1) + 8 * i);
-              v17 = [v16 name];
-              v18 = [v17 ic_isCaseInsensitiveEqualToString:@"attachmentID"];
+              name = [v16 name];
+              v18 = [name ic_isCaseInsensitiveEqualToString:@"attachmentID"];
 
               if (v18)
               {
-                v20 = [v16 value];
-                v6 = v23;
-                v19 = [(ICBaseAttachment *)ICAttachment attachmentWithIdentifier:v20 context:v23];
+                value = [v16 value];
+                contextCopy = v23;
+                v19 = [(ICBaseAttachment *)ICAttachment attachmentWithIdentifier:value context:v23];
 
                 goto LABEL_17;
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+            v13 = [queryItems countByEnumeratingWithState:&v24 objects:v28 count:16];
             if (v13)
             {
               continue;
@@ -1092,9 +1092,9 @@ LABEL_17:
           }
 
           v19 = 0;
-          v6 = v23;
+          contextCopy = v23;
 LABEL_17:
-          v10 = v22;
+          host = v22;
         }
 
         else
@@ -1123,16 +1123,16 @@ LABEL_17:
   return v19;
 }
 
-+ (id)appURLForTranscriptionDonationForAttachmentIdentifier:(id)a3 isPositive:(BOOL)a4
++ (id)appURLForTranscriptionDonationForAttachmentIdentifier:(id)identifier isPositive:(BOOL)positive
 {
-  v4 = a4;
+  positiveCopy = positive;
   v14[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCACE0];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(v5);
   [v7 setScheme:@"applenotes"];
   [v7 setHost:@"transcriptionFeedback"];
-  if (v4)
+  if (positiveCopy)
   {
     v8 = @"1";
   }
@@ -1144,7 +1144,7 @@ LABEL_17:
 
   v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"isPositive" value:v8];
   v14[0] = v9;
-  v10 = [MEMORY[0x277CCAD18] queryItemWithName:@"attachmentID" value:v6];
+  v10 = [MEMORY[0x277CCAD18] queryItemWithName:@"attachmentID" value:identifierCopy];
 
   v14[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
@@ -1165,19 +1165,19 @@ LABEL_17:
   return v3;
 }
 
-+ (BOOL)isShowPaperURL:(id)a3
++ (BOOL)isShowPaperURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      v8 = [v7 ic_isCaseInsensitiveEqualToString:@"showPaper"];
+      host = [v4 host];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"showPaper"];
     }
 
     else
@@ -1194,19 +1194,19 @@ LABEL_17:
   return v8;
 }
 
-+ (BOOL)isShowNoteFocusedInFolderURL:(id)a3
++ (BOOL)isShowNoteFocusedInFolderURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = ICIsNotesURLScheme(v5);
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    v6 = ICIsNotesURLScheme(scheme);
 
     if (v6)
     {
-      v7 = [v4 host];
-      v8 = [v7 ic_isCaseInsensitiveEqualToString:@"focusNoteInFolder"];
+      host = [v4 host];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"focusNoteInFolder"];
     }
 
     else
@@ -1223,16 +1223,16 @@ LABEL_17:
   return v8;
 }
 
-+ (id)appURLForContainingFolderWithNoteFocused:(id)a3
++ (id)appURLForContainingFolderWithNoteFocused:(id)focused
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 identifier];
-  if ([v3 length])
+  identifier = [focused identifier];
+  if ([identifier length])
   {
     v4 = objc_alloc_init(MEMORY[0x277CCACE0]);
     [v4 setScheme:@"applenotes"];
     [v4 setHost:@"focusNoteInFolder"];
-    v5 = [MEMORY[0x277CCAD18] queryItemWithName:@"identifier" value:v3];
+    v5 = [MEMORY[0x277CCAD18] queryItemWithName:@"identifier" value:identifier];
     v9[0] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     [v4 setQueryItems:v6];
@@ -1248,34 +1248,34 @@ LABEL_17:
   return v7;
 }
 
-+ (id)appURLForNote:(id)a3 inFolder:(id)a4
++ (id)appURLForNote:(id)note inFolder:(id)folder
 {
-  v5 = a4;
-  v6 = [a3 identifier];
-  if ([v6 length])
+  folderCopy = folder;
+  identifier = [note identifier];
+  if ([identifier length])
   {
     v7 = objc_alloc_init(MEMORY[0x277CCACE0]);
     [v7 setScheme:@"applenotes"];
     [v7 setHost:@"showNote"];
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"identifier" value:v6];
-    [v8 addObject:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"identifier" value:identifier];
+    [array addObject:v9];
 
-    if (v5)
+    if (folderCopy)
     {
-      v10 = [v5 identifier];
-      v11 = [v10 length];
+      identifier2 = [folderCopy identifier];
+      v11 = [identifier2 length];
 
       if (v11)
       {
         v12 = MEMORY[0x277CCAD18];
-        v13 = [v5 identifier];
-        v14 = [v12 queryItemWithName:@"folderIdentifier" value:v13];
-        [v8 addObject:v14];
+        identifier3 = [folderCopy identifier];
+        v14 = [v12 queryItemWithName:@"folderIdentifier" value:identifier3];
+        [array addObject:v14];
       }
     }
 
-    v15 = [v8 copy];
+    v15 = [array copy];
     [v7 setQueryItems:v15];
 
     v16 = [v7 URL];
@@ -1289,12 +1289,12 @@ LABEL_17:
   return v16;
 }
 
-+ (id)predicateForFolderWithNoteFocusedInURL:(id)a3
++ (id)predicateForFolderWithNoteFocusedInURL:(id)l
 {
-  v4 = a3;
-  if ([a1 isShowNoteFocusedInFolderURL:v4])
+  lCopy = l;
+  if ([self isShowNoteFocusedInFolderURL:lCopy])
   {
-    v5 = [a1 predicateForNotesMentionedInURL:v4 action:@"focusNoteInFolder"];
+    v5 = [self predicateForNotesMentionedInURL:lCopy action:@"focusNoteInFolder"];
   }
 
   else
@@ -1305,19 +1305,19 @@ LABEL_17:
   return v5;
 }
 
-+ (id)urlForQuickNoteWithOptions:(id)a3
++ (id)urlForQuickNoteWithOptions:(id)options
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v4 setScheme:@"applenotes"];
   [v4 setHost:@"quicknote"];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v3;
+  v6 = optionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -1336,7 +1336,7 @@ LABEL_17:
         v12 = MEMORY[0x277CCAD18];
         v13 = [v6 objectForKeyedSubscript:{v11, v17}];
         v14 = [v12 queryItemWithName:v11 value:v13];
-        [v5 addObject:v14];
+        [array addObject:v14];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -1345,24 +1345,24 @@ LABEL_17:
     while (v8);
   }
 
-  [v4 setQueryItems:v5];
+  [v4 setQueryItems:array];
   v15 = [v4 URL];
 
   return v15;
 }
 
-+ (BOOL)isQuickNoteModeURL:(id)a3
++ (BOOL)isQuickNoteModeURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 scheme];
-    v6 = [v4 host];
-    v7 = [v4 scheme];
-    if ((ICIsNotesURLScheme(v7) & 1) != 0 || [v5 ic_isCaseInsensitiveEqualToString:@"mobilenotes-quicknote"])
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v4 scheme];
+    host = [v4 host];
+    scheme2 = [v4 scheme];
+    if ((ICIsNotesURLScheme(scheme2) & 1) != 0 || [scheme ic_isCaseInsensitiveEqualToString:@"mobilenotes-quicknote"])
     {
-      v8 = [v6 ic_isCaseInsensitiveEqualToString:@"quicknote"];
+      v8 = [host ic_isCaseInsensitiveEqualToString:@"quicknote"];
     }
 
     else
@@ -1379,12 +1379,12 @@ LABEL_17:
   return v8;
 }
 
-+ (BOOL)isLaunchingQuickNoteViaPencil:(id)a3
++ (BOOL)isLaunchingQuickNoteViaPencil:(id)pencil
 {
-  v3 = a3;
-  if ([objc_opt_class() isQuickNoteModeURL:v3])
+  pencilCopy = pencil;
+  if ([objc_opt_class() isQuickNoteModeURL:pencilCopy])
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:pencilCopy resolvingAgainstBaseURL:1];
     v5 = [v4 ic_BOOLValueForQueryItemWithKey:@"launchedByPencil"];
   }
 
@@ -1396,12 +1396,12 @@ LABEL_17:
   return v5;
 }
 
-+ (BOOL)quickNoteURLShouldShowList:(id)a3
++ (BOOL)quickNoteURLShouldShowList:(id)list
 {
-  v3 = a3;
-  if ([objc_opt_class() isQuickNoteModeURL:v3])
+  listCopy = list;
+  if ([objc_opt_class() isQuickNoteModeURL:listCopy])
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:listCopy resolvingAgainstBaseURL:0];
     v5 = [v4 ic_BOOLValueForQueryItemWithKey:@"showList"];
   }
 
@@ -1413,12 +1413,12 @@ LABEL_17:
   return v5;
 }
 
-+ (BOOL)quickNoteURLShouldShowShareSheet:(id)a3
++ (BOOL)quickNoteURLShouldShowShareSheet:(id)sheet
 {
-  v3 = a3;
-  if ([objc_opt_class() isQuickNoteModeURL:v3])
+  sheetCopy = sheet;
+  if ([objc_opt_class() isQuickNoteModeURL:sheetCopy])
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:sheetCopy resolvingAgainstBaseURL:0];
     v5 = [v4 ic_BOOLValueForQueryItemWithKey:@"showShareSheet"];
   }
 
@@ -1430,12 +1430,12 @@ LABEL_17:
   return v5;
 }
 
-+ (BOOL)quickNoteURLShouldShowiCloudShareSheet:(id)a3
++ (BOOL)quickNoteURLShouldShowiCloudShareSheet:(id)sheet
 {
-  v3 = a3;
-  if ([objc_opt_class() isQuickNoteModeURL:v3])
+  sheetCopy = sheet;
+  if ([objc_opt_class() isQuickNoteModeURL:sheetCopy])
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:sheetCopy resolvingAgainstBaseURL:0];
     v5 = [v4 ic_BOOLValueForQueryItemWithKey:@"showiCloudShareSheet"];
   }
 
@@ -1447,12 +1447,12 @@ LABEL_17:
   return v5;
 }
 
-+ (id)attachmentIdentifierFromQuickNoteURL:(id)a3
++ (id)attachmentIdentifierFromQuickNoteURL:(id)l
 {
-  v3 = a3;
-  if ([objc_opt_class() isQuickNoteModeURL:v3])
+  lCopy = l;
+  if ([objc_opt_class() isQuickNoteModeURL:lCopy])
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
     v5 = [v4 ic_stringValueForQueryItemWithKey:@"attachment"];
     if (!isValidIdentifier(v5))
     {
@@ -1475,12 +1475,12 @@ LABEL_17:
   return v5;
 }
 
-+ (id)noteIdentifierFromQuickNoteURL:(id)a3
++ (id)noteIdentifierFromQuickNoteURL:(id)l
 {
-  v3 = a3;
-  if ([objc_opt_class() isQuickNoteModeURL:v3])
+  lCopy = l;
+  if ([objc_opt_class() isQuickNoteModeURL:lCopy])
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
     v5 = [v4 ic_stringValueForQueryItemWithKey:@"note"];
     if (!isValidIdentifier(v5))
     {
@@ -1503,18 +1503,18 @@ LABEL_17:
   return v5;
 }
 
-+ (id)contentOffsetFromQuickNoteURL:(id)a3
++ (id)contentOffsetFromQuickNoteURL:(id)l
 {
-  v3 = a3;
-  if ([objc_opt_class() isQuickNoteModeURL:v3])
+  lCopy = l;
+  if ([objc_opt_class() isQuickNoteModeURL:lCopy])
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
     v5 = [v4 ic_queryItemWithKey:@"contentOffsetY"];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 value];
-      [v7 doubleValue];
+      value = [v5 value];
+      [value doubleValue];
       v9 = v8;
 
       v10 = [MEMORY[0x277CCAE60] valueWithCGPoint:{0.0, v9}];
@@ -1534,12 +1534,12 @@ LABEL_17:
   return v10;
 }
 
-+ (BOOL)quickNoteURLIsContinuing:(id)a3
++ (BOOL)quickNoteURLIsContinuing:(id)continuing
 {
-  v3 = a3;
-  if ([objc_opt_class() isQuickNoteModeURL:v3])
+  continuingCopy = continuing;
+  if ([objc_opt_class() isQuickNoteModeURL:continuingCopy])
   {
-    v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v4 = [MEMORY[0x277CCACE0] componentsWithURL:continuingCopy resolvingAgainstBaseURL:0];
     v5 = [v4 ic_BOOLValueForQueryItemWithKey:@"continuing"];
   }
 
@@ -1551,21 +1551,21 @@ LABEL_17:
   return v5;
 }
 
-+ (id)firstQueryItemInURL:(id)a3 andHost:(id)a4 andQueryItemName:(id)a5
++ (id)firstQueryItemInURL:(id)l andHost:(id)host andQueryItemName:(id)name
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if (a3)
+  hostCopy = host;
+  nameCopy = name;
+  if (l)
   {
-    v9 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:1];
-    v10 = [v9 scheme];
-    v11 = ICIsNotesURLScheme(v10);
+    v9 = [MEMORY[0x277CCACE0] componentsWithURL:l resolvingAgainstBaseURL:1];
+    scheme = [v9 scheme];
+    v11 = ICIsNotesURLScheme(scheme);
 
     if (v11)
     {
-      v12 = [v9 host];
-      v13 = [v12 ic_isCaseInsensitiveEqualToString:v7];
+      host = [v9 host];
+      v13 = [host ic_isCaseInsensitiveEqualToString:hostCopy];
 
       if (v13)
       {
@@ -1573,8 +1573,8 @@ LABEL_17:
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v14 = [v9 queryItems];
-        v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        queryItems = [v9 queryItems];
+        v15 = [queryItems countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v15)
         {
           v16 = v15;
@@ -1585,12 +1585,12 @@ LABEL_6:
           {
             if (*v26 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(queryItems);
             }
 
             v19 = *(*(&v25 + 1) + 8 * v18);
-            v20 = [v19 name];
-            v21 = [v20 ic_isCaseInsensitiveEqualToString:v8];
+            name = [v19 name];
+            v21 = [name ic_isCaseInsensitiveEqualToString:nameCopy];
 
             if (v21)
             {
@@ -1599,7 +1599,7 @@ LABEL_6:
 
             if (v16 == ++v18)
             {
-              v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+              v16 = [queryItems countByEnumeratingWithState:&v25 objects:v29 count:16];
               if (v16)
               {
                 goto LABEL_6;
@@ -1625,7 +1625,7 @@ LABEL_12:
         v23 = os_log_create("com.apple.notes", "Application");
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          [ICAppURLUtilities firstQueryItemInURL:v8 andHost:v9 andQueryItemName:v23];
+          [ICAppURLUtilities firstQueryItemInURL:nameCopy andHost:v9 andQueryItemName:v23];
         }
       }
 
@@ -1634,7 +1634,7 @@ LABEL_12:
         v23 = os_log_create("com.apple.notes", "Application");
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          [ICAppURLUtilities firstQueryItemInURL:v7 andHost:v9 andQueryItemName:v23];
+          [ICAppURLUtilities firstQueryItemInURL:hostCopy andHost:v9 andQueryItemName:v23];
         }
       }
     }
@@ -1651,14 +1651,14 @@ LABEL_22:
   return v22;
 }
 
-+ (id)urlByAppendingACAccountIDToURL:(id)a3 acAccountID:(id)a4
++ (id)urlByAppendingACAccountIDToURL:(id)l acAccountID:(id)d
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:1];
-  if (v5)
+  dCopy = d;
+  v6 = [MEMORY[0x277CCACE0] componentsWithURL:l resolvingAgainstBaseURL:1];
+  if (dCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"acAccountID" value:v5];
+    v7 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"acAccountID" value:dCopy];
     v11[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     [v6 setQueryItems:v8];
@@ -1669,17 +1669,17 @@ LABEL_22:
   return v9;
 }
 
-+ (id)accountFromACAccountIDInURL:(id)a3 context:(id)a4
++ (id)accountFromACAccountIDInURL:(id)l context:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:1];
+  contextCopy = context;
+  v6 = [MEMORY[0x277CCACE0] componentsWithURL:l resolvingAgainstBaseURL:1];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v6 queryItems];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  queryItems = [v6 queryItems];
+  v8 = [queryItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1690,12 +1690,12 @@ LABEL_3:
     {
       if (*v19 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(queryItems);
       }
 
       v12 = *(*(&v18 + 1) + 8 * v11);
-      v13 = [v12 name];
-      v14 = [v13 ic_isCaseInsensitiveEqualToString:@"acAccountID"];
+      name = [v12 name];
+      v14 = [name ic_isCaseInsensitiveEqualToString:@"acAccountID"];
 
       if (v14)
       {
@@ -1704,7 +1704,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [queryItems countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -1714,21 +1714,21 @@ LABEL_3:
       }
     }
 
-    v15 = [v12 value];
+    value = [v12 value];
 
-    if (!v15)
+    if (!value)
     {
       goto LABEL_12;
     }
 
-    v16 = [ICAccount accountWithIdentifier:v15 context:v5];
+    v16 = [ICAccount accountWithIdentifier:value context:contextCopy];
   }
 
   else
   {
 LABEL_9:
 
-    v15 = 0;
+    value = 0;
 LABEL_12:
     v16 = 0;
   }
@@ -1746,13 +1746,13 @@ LABEL_12:
   return v3;
 }
 
-+ (id)URLForAttributedString:(id)a3 range:(_NSRange)a4
++ (id)URLForAttributedString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  stringCopy = string;
+  v7 = stringCopy;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1767,12 +1767,12 @@ LABEL_12:
     v20[2] = __50__ICAppURLUtilities_URLForAttributedString_range___block_invoke;
     v20[3] = &unk_278195358;
     v20[4] = &v21;
-    [v6 enumerateAttribute:v8 inRange:location options:length usingBlock:{0, v20}];
+    [stringCopy enumerateAttribute:v8 inRange:location options:length usingBlock:{0, v20}];
   }
 
   else
   {
-    if (location < [v6 length])
+    if (location < [stringCopy length])
     {
       v9 = [v7 attribute:*MEMORY[0x277D740E8] atIndex:location effectiveRange:0];
       v10 = v22[5];
@@ -1859,34 +1859,34 @@ void __50__ICAppURLUtilities_URLForAttributedString_range___block_invoke(uint64_
   }
 }
 
-+ (id)URLWithSchemeForString:(id)a3
++ (id)URLWithSchemeForString:(id)string
 {
   v3 = MEMORY[0x277CCACE0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4];
-  v6 = [v5 scheme];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithString:stringCopy];
+  scheme = [v5 scheme];
 
-  if (v6)
+  if (scheme)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v4];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
   {
-    [ICAppURLUtilities detectedURLInString:v4 allowNonLinkCharacters:1];
+    [ICAppURLUtilities detectedURLInString:stringCopy allowNonLinkCharacters:1];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)noteIdentifierFromNotesAppURL:(id)a3
++ (id)noteIdentifierFromNotesAppURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 scheme], v5 = objc_claimAutoreleasedReturnValue(), v6 = ICIsNotesURLScheme(v5), v5, v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([lCopy scheme], v5 = objc_claimAutoreleasedReturnValue(), v6 = ICIsNotesURLScheme(v5), v5, v6))
   {
-    v7 = [a1 modernNoteIdentifierFromEntityURI:v4];
+    v7 = [self modernNoteIdentifierFromEntityURI:lCopy];
     if ([v7 length])
     {
       v8 = v7;
@@ -1894,7 +1894,7 @@ void __50__ICAppURLUtilities_URLForAttributedString_range___block_invoke(uint64_
 
     else
     {
-      v8 = NotesAppGUIDForNoteMentionedInURL(v4);
+      v8 = NotesAppGUIDForNoteMentionedInURL(lCopy);
     }
 
     v9 = v8;
@@ -1908,22 +1908,22 @@ void __50__ICAppURLUtilities_URLForAttributedString_range___block_invoke(uint64_
   return v9;
 }
 
-+ (id)NotesAppIDForNoteMentionedInURL:(id)a3
++ (id)NotesAppIDForNoteMentionedInURL:(id)l
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ((ICIsNotesURLScheme(v4) & 1) == 0)
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ((ICIsNotesURLScheme(scheme) & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v5 = [v3 host];
-  if (![v5 ic_isCaseInsensitiveEqualToString:@"showNote"])
+  host = [lCopy host];
+  if (![host ic_isCaseInsensitiveEqualToString:@"showNote"])
   {
-    v7 = [v3 host];
-    v8 = [v7 ic_isCaseInsensitiveEqualToString:@"showHTMLNote"];
+    host2 = [lCopy host];
+    v8 = [host2 ic_isCaseInsensitiveEqualToString:@"showHTMLNote"];
 
     if (v8)
     {
@@ -1936,13 +1936,13 @@ LABEL_5:
   }
 
 LABEL_7:
-  v9 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+  v9 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [v9 queryItems];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  queryItems = [v9 queryItems];
+  v11 = [queryItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1953,12 +1953,12 @@ LABEL_9:
     {
       if (*v22 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(queryItems);
       }
 
       v15 = *(*(&v21 + 1) + 8 * v14);
-      v16 = [v15 name];
-      v17 = [v16 ic_isCaseInsensitiveEqualToString:@"identifier"];
+      name = [v15 name];
+      v17 = [name ic_isCaseInsensitiveEqualToString:@"identifier"];
 
       if (v17)
       {
@@ -1967,7 +1967,7 @@ LABEL_9:
 
       if (v12 == ++v14)
       {
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [queryItems countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v12)
         {
           goto LABEL_9;
@@ -1977,16 +1977,16 @@ LABEL_9:
       }
     }
 
-    v18 = [v15 value];
+    value = [v15 value];
 
-    if (!v18)
+    if (!value)
     {
       goto LABEL_20;
     }
 
-    if (isValidIdentifier(v18))
+    if (isValidIdentifier(value))
     {
-      v19 = v18;
+      v19 = value;
     }
 
     else
@@ -1999,7 +1999,7 @@ LABEL_9:
   {
 LABEL_15:
 
-    v18 = 0;
+    value = 0;
 LABEL_20:
     v19 = 0;
   }
@@ -2011,18 +2011,18 @@ LABEL_22:
   return v6;
 }
 
-+ (id)detectedURLInString:(id)a3 allowNonLinkCharacters:(BOOL)a4
++ (id)detectedURLInString:(id)string allowNonLinkCharacters:(BOOL)characters
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stringCopy = string;
   v26 = 0;
   v6 = [MEMORY[0x277CCA948] dataDetectorWithTypes:32 error:&v26];
   v7 = v26;
   if (v6)
   {
-    v8 = [v5 ic_range];
+    ic_range = [stringCopy ic_range];
     v10 = v9;
-    [v6 matchesInString:v5 options:0 range:{v8, v9}];
+    [v6 matchesInString:stringCopy options:0 range:{ic_range, v9}];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -2043,7 +2043,7 @@ LABEL_22:
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
-          if (!a4 && (v8 != [*(*(&v22 + 1) + 8 * i) range] || v10 != v17))
+          if (!characters && (ic_range != [*(*(&v22 + 1) + 8 * i) range] || v10 != v17))
           {
             continue;
           }
@@ -2087,13 +2087,13 @@ LABEL_20:
   return v19;
 }
 
-+ (id)entityURIForNote:(id)a3
++ (id)entityURIForNote:(id)note
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA41D40);
   MEMORY[0x28223BE20](v4 - 8);
   v6 = &v14 - v5;
-  v7 = a3;
-  static ICAppURLUtilities.entityURI(for:)(v7, v6);
+  noteCopy = note;
+  static ICAppURLUtilities.entityURI(for:)(noteCopy, v6);
 
   v8 = sub_2150A3750();
   v9 = *(v8 - 8);
@@ -2109,7 +2109,7 @@ LABEL_20:
   return v11;
 }
 
-+ (id)objectIDURIRepresentationForHTMLNoteEntityURI:(id)a3 context:(id)a4
++ (id)objectIDURIRepresentationForHTMLNoteEntityURI:(id)i context:(id)context
 {
   v5 = sub_2150A3750();
   v6 = *(v5 - 8);
@@ -2120,7 +2120,7 @@ LABEL_20:
   v11 = &v17 - v10;
   sub_2150A36F0();
   swift_unknownObjectRetain();
-  static ICAppURLUtilities.objectIDURIRepresentation(forHTMLNoteEntityURI:context:)(a4, v11);
+  static ICAppURLUtilities.objectIDURIRepresentation(forHTMLNoteEntityURI:context:)(context, v11);
   swift_unknownObjectRelease();
   v12 = *(v6 + 8);
   v12(v8, v5);
@@ -2136,7 +2136,7 @@ LABEL_20:
   return v14;
 }
 
-+ (id)modernNoteIdentifierFromEntityURI:(id)a3
++ (id)modernNoteIdentifierFromEntityURI:(id)i
 {
   v3 = sub_2150A3750();
   v4 = *(v3 - 8);
@@ -2159,12 +2159,12 @@ LABEL_20:
   return v9;
 }
 
-+ (id)objectIDForHTMLFolderEntityURI:(id)a3 context:(id)a4
++ (id)objectIDForHTMLFolderEntityURI:(id)i context:(id)context
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA41D40);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (i)
   {
     sub_2150A36F0();
     v9 = sub_2150A3750();
@@ -2178,19 +2178,19 @@ LABEL_20:
   }
 
   swift_unknownObjectRetain();
-  v11 = _sSo17ICAppURLUtilitiesC11NotesSharedE8objectID22forHTMLFolderEntityURI7contextSo015NSManagedObjectF0CSg10Foundation3URLVSg_So15ICLegacyContext_ptFZ_0(v8, a4);
+  v11 = _sSo17ICAppURLUtilitiesC11NotesSharedE8objectID22forHTMLFolderEntityURI7contextSo015NSManagedObjectF0CSg10Foundation3URLVSg_So15ICLegacyContext_ptFZ_0(v8, context);
   swift_unknownObjectRelease();
   sub_214F302D4(v8, &qword_27CA41D40);
 
   return v11;
 }
 
-+ (id)objectIDForModernFolderEntityURI:(id)a3 noteContext:(id)a4
++ (id)objectIDForModernFolderEntityURI:(id)i noteContext:(id)context
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA41D40);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v14 - v7;
-  if (a3)
+  if (i)
   {
     sub_2150A36F0();
     v9 = sub_2150A3750();
@@ -2203,8 +2203,8 @@ LABEL_20:
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = a4;
-  v12 = _sSo17ICAppURLUtilitiesC11NotesSharedE8objectID24forModernFolderEntityURI11noteContextSo015NSManagedObjectF0CSg10Foundation3URLVSg_So06ICNoteM0CtFZ_0(v8, v11);
+  contextCopy = context;
+  v12 = _sSo17ICAppURLUtilitiesC11NotesSharedE8objectID24forModernFolderEntityURI11noteContextSo015NSManagedObjectF0CSg10Foundation3URLVSg_So06ICNoteM0CtFZ_0(v8, contextCopy);
 
   sub_214F302D4(v8, &qword_27CA41D40);
 

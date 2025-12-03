@@ -1,12 +1,12 @@
 @interface APPBElement
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBElement
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = APPBElement;
   v3 = [(APPBElement *)&v7 description];
-  v4 = [(APPBElement *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBElement *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -34,8 +34,8 @@
   asset = self->_asset;
   if (asset)
   {
-    v6 = [(APPBAsset *)asset dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"asset"];
+    dictionaryRepresentation = [(APPBAsset *)asset dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"asset"];
   }
 
   caption = self->_caption;
@@ -53,8 +53,8 @@
   ctaButton = self->_ctaButton;
   if (ctaButton)
   {
-    v10 = [(APPBButton *)ctaButton dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"ctaButton"];
+    dictionaryRepresentation2 = [(APPBButton *)ctaButton dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"ctaButton"];
   }
 
   actionURL = self->_actionURL;
@@ -66,129 +66,129 @@
   style = self->_style;
   if (style)
   {
-    v13 = [(APPBStyle *)style dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"style"];
+    dictionaryRepresentation3 = [(APPBStyle *)style dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"style"];
   }
 
   action = self->_action;
   if (action)
   {
-    v15 = [(APPBAdAction *)action dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"action"];
+    dictionaryRepresentation4 = [(APPBAdAction *)action dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"action"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_asset)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_caption)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_accessCaption)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_ctaButton)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_actionURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_style)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_action)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[14] = self->_elementID;
-    *(v4 + 72) |= 1u;
+    toCopy[14] = self->_elementID;
+    *(toCopy + 72) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_asset)
   {
-    [v4 setAsset:?];
-    v4 = v5;
+    [toCopy setAsset:?];
+    toCopy = v5;
   }
 
   if (self->_caption)
   {
     [v5 setCaption:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_accessCaption)
   {
     [v5 setAccessCaption:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_ctaButton)
   {
     [v5 setCtaButton:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_actionURL)
   {
     [v5 setActionURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_style)
   {
     [v5 setStyle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_action)
   {
     [v5 setAction:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -196,54 +196,54 @@
     *(v5 + 72) |= 1u;
   }
 
-  v7 = [(APPBAsset *)self->_asset copyWithZone:a3];
+  v7 = [(APPBAsset *)self->_asset copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(NSString *)self->_caption copyWithZone:a3];
+  v9 = [(NSString *)self->_caption copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
-  v11 = [(NSString *)self->_accessCaption copyWithZone:a3];
+  v11 = [(NSString *)self->_accessCaption copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
-  v13 = [(APPBButton *)self->_ctaButton copyWithZone:a3];
+  v13 = [(APPBButton *)self->_ctaButton copyWithZone:zone];
   v14 = v6[6];
   v6[6] = v13;
 
-  v15 = [(NSString *)self->_actionURL copyWithZone:a3];
+  v15 = [(NSString *)self->_actionURL copyWithZone:zone];
   v16 = v6[3];
   v6[3] = v15;
 
-  v17 = [(APPBStyle *)self->_style copyWithZone:a3];
+  v17 = [(APPBStyle *)self->_style copyWithZone:zone];
   v18 = v6[8];
   v6[8] = v17;
 
-  v19 = [(APPBAdAction *)self->_action copyWithZone:a3];
+  v19 = [(APPBAdAction *)self->_action copyWithZone:zone];
   v20 = v6[2];
   v6[2] = v19;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_elementID != *(v4 + 14))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_elementID != *(equalCopy + 14))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_21:
     v12 = 0;
@@ -251,13 +251,13 @@ LABEL_21:
   }
 
   asset = self->_asset;
-  if (asset | *(v4 + 4) && ![(APPBAsset *)asset isEqual:?])
+  if (asset | *(equalCopy + 4) && ![(APPBAsset *)asset isEqual:?])
   {
     goto LABEL_21;
   }
 
   caption = self->_caption;
-  if (caption | *(v4 + 5))
+  if (caption | *(equalCopy + 5))
   {
     if (![(NSString *)caption isEqual:?])
     {
@@ -266,7 +266,7 @@ LABEL_21:
   }
 
   accessCaption = self->_accessCaption;
-  if (accessCaption | *(v4 + 1))
+  if (accessCaption | *(equalCopy + 1))
   {
     if (![(NSString *)accessCaption isEqual:?])
     {
@@ -275,7 +275,7 @@ LABEL_21:
   }
 
   ctaButton = self->_ctaButton;
-  if (ctaButton | *(v4 + 6))
+  if (ctaButton | *(equalCopy + 6))
   {
     if (![(APPBButton *)ctaButton isEqual:?])
     {
@@ -284,7 +284,7 @@ LABEL_21:
   }
 
   actionURL = self->_actionURL;
-  if (actionURL | *(v4 + 3))
+  if (actionURL | *(equalCopy + 3))
   {
     if (![(NSString *)actionURL isEqual:?])
     {
@@ -293,7 +293,7 @@ LABEL_21:
   }
 
   style = self->_style;
-  if (style | *(v4 + 8))
+  if (style | *(equalCopy + 8))
   {
     if (![(APPBStyle *)style isEqual:?])
     {
@@ -302,7 +302,7 @@ LABEL_21:
   }
 
   action = self->_action;
-  if (action | *(v4 + 2))
+  if (action | *(equalCopy + 2))
   {
     v12 = [(APPBAdAction *)action isEqual:?];
   }
@@ -338,13 +338,13 @@ LABEL_22:
   return v9 ^ [(APPBAdAction *)self->_action hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 72))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 72))
   {
-    self->_elementID = *(v4 + 14);
+    self->_elementID = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 

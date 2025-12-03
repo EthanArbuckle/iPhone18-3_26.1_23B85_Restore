@@ -6,16 +6,16 @@
 
 + (id)supportedCodings
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    while (v1 != objc_opt_class())
+    selfCopy = self;
+    while (selfCopy != objc_opt_class())
     {
-      AssociatedObject = objc_getAssociatedObject(v1, sel_supportedCodings);
-      Superclass = class_getSuperclass(v1);
+      AssociatedObject = objc_getAssociatedObject(selfCopy, sel_supportedCodings);
+      Superclass = class_getSuperclass(selfCopy);
       if (!AssociatedObject)
       {
-        v1 = Superclass;
+        selfCopy = Superclass;
         if (Superclass)
         {
           continue;

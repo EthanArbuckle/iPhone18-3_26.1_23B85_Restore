@@ -1,24 +1,24 @@
 @interface CRLWPiOSTextDraggingContext
-- (CRLWPiOSTextDraggingContext)initWithEditorController:(id)a3 sourceSelectionPath:(id)a4 changeCount:(unint64_t)a5 reverseSelectionPath:(id)a6;
+- (CRLWPiOSTextDraggingContext)initWithEditorController:(id)controller sourceSelectionPath:(id)path changeCount:(unint64_t)count reverseSelectionPath:(id)selectionPath;
 @end
 
 @implementation CRLWPiOSTextDraggingContext
 
-- (CRLWPiOSTextDraggingContext)initWithEditorController:(id)a3 sourceSelectionPath:(id)a4 changeCount:(unint64_t)a5 reverseSelectionPath:(id)a6
+- (CRLWPiOSTextDraggingContext)initWithEditorController:(id)controller sourceSelectionPath:(id)path changeCount:(unint64_t)count reverseSelectionPath:(id)selectionPath
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  controllerCopy = controller;
+  pathCopy = path;
+  selectionPathCopy = selectionPath;
   v17.receiver = self;
   v17.super_class = CRLWPiOSTextDraggingContext;
   v14 = [(CRLWPiOSTextDraggingContext *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_editorController, a3);
-    objc_storeStrong(&v15->_sourceSelectionPath, a4);
-    v15->_changeCount = a5;
-    objc_storeStrong(&v15->_reverseSelectionPath, a6);
+    objc_storeStrong(&v14->_editorController, controller);
+    objc_storeStrong(&v15->_sourceSelectionPath, path);
+    v15->_changeCount = count;
+    objc_storeStrong(&v15->_reverseSelectionPath, selectionPath);
   }
 
   return v15;

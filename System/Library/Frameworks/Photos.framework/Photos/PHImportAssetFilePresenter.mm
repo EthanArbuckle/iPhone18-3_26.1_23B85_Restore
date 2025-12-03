@@ -1,23 +1,23 @@
 @interface PHImportAssetFilePresenter
-- (PHImportAssetFilePresenter)initWithPrimaryURL:(id)a3 presentedURL:(id)a4;
+- (PHImportAssetFilePresenter)initWithPrimaryURL:(id)l presentedURL:(id)rL;
 @end
 
 @implementation PHImportAssetFilePresenter
 
-- (PHImportAssetFilePresenter)initWithPrimaryURL:(id)a3 presentedURL:(id)a4
+- (PHImportAssetFilePresenter)initWithPrimaryURL:(id)l presentedURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  lCopy = l;
+  rLCopy = rL;
+  v9 = rLCopy;
   v10 = 0;
-  if (v7 && v8)
+  if (lCopy && rLCopy)
   {
     v11 = [(PHImportAssetFilePresenter *)self init];
     v10 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_primaryPresentedItemURL, a3);
-      objc_storeStrong(&v10->_presentedItemURL, a4);
+      objc_storeStrong(&v11->_primaryPresentedItemURL, l);
+      objc_storeStrong(&v10->_presentedItemURL, rL);
       v12 = objc_opt_new();
       self = v10->_presentedItemOperationQueue;
       v10->_presentedItemOperationQueue = v12;

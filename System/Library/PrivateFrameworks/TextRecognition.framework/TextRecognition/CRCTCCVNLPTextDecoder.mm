@@ -1,33 +1,33 @@
 @interface CRCTCCVNLPTextDecoder
-+ (id)_cvnlpDecodingResultByRerankingCandidates:(id)a3 decodingLocale:(id)a4;
-+ (unint64_t)_disambiguatedScriptForString:(id)a3;
-+ (void)_adjustBeamSearchResults:(id *)a3 tokens:(id)a4 greedyCandidateString:(id)a5 greedyCandidateTokens:(id)a6 decodingLocale:(id)a7;
-- (AdditiveCombiningBeamScorer<CoreRecognition::decoder::CombinedBeamState>)_createBeamScorerWithBundle:(SEL)a3 beamSearchConfig:(id)a4 lmConfig:(id)a5;
-- (BOOL)_decodeSingleFeatureWithInfo:(id)a3 decodingLocale:(id)a4 greedyDecoder:(id)a5 greedyConfig:(id)a6 beamSearchConfig:(id)a7 imageSize:(CGSize)a8 useCharacterBoxes:(BOOL)a9 lmConfig:(id)a10 error:(id *)a11;
++ (id)_cvnlpDecodingResultByRerankingCandidates:(id)candidates decodingLocale:(id)locale;
++ (unint64_t)_disambiguatedScriptForString:(id)string;
++ (void)_adjustBeamSearchResults:(id *)results tokens:(id)tokens greedyCandidateString:(id)string greedyCandidateTokens:(id)candidateTokens decodingLocale:(id)locale;
+- (AdditiveCombiningBeamScorer<CoreRecognition::decoder::CombinedBeamState>)_createBeamScorerWithBundle:(SEL)bundle beamSearchConfig:(id)config lmConfig:(id)lmConfig;
+- (BOOL)_decodeSingleFeatureWithInfo:(id)info decodingLocale:(id)locale greedyDecoder:(id)decoder greedyConfig:(id)config beamSearchConfig:(id)searchConfig imageSize:(CGSize)size useCharacterBoxes:(BOOL)boxes lmConfig:(id)self0 error:(id *)self1;
 - (BOOL)_shouldUseCharacterDecodingToken;
-- (BOOL)_wordLMShouldFilterCandidate:(id)a3 inLocale:(id)a4 lmConfig:(id)a5;
+- (BOOL)_wordLMShouldFilterCandidate:(id)candidate inLocale:(id)locale lmConfig:(id)config;
 - (BOOL)shouldUseModernizedDecoder;
-- (CRCTCCVNLPTextDecoder)initWithConfiguration:(id)a3 model:(id)a4 error:(id *)a5;
+- (CRCTCCVNLPTextDecoder)initWithConfiguration:(id)configuration model:(id)model error:(id *)error;
 - (CVNLPTextDecodingPruningPolicy)pruningPolicy;
 - (id).cxx_construct;
 - (id)_commitActionBehavior;
-- (id)_cvnlpDecodingResultForActivationMatrix:(id)a3 decodingLocale:(id)a4 beamSearchConfig:(id)a5 lmConfig:(id)a6 error:(id *)a7;
-- (id)_cvnlpGreedyModernizedDecodingResultForActivationMatrix:(const void *)a3;
-- (id)_cvnlpModernizedDecodingResultForActivationMatrix:(const void *)a3 decodingLocale:(id)a4 beamSearchConfig:(id)a5 lmConfig:(id)a6 error:(id *)a7;
-- (void)_buildActivationMatrices:(id)a3;
-- (void)_create2DArraysFromInputArray:(id)a3 classSize:(unint64_t *)a4 outputArrays:(void *)a5;
-- (void)_populateTransientResultGreedyDecodingResultsForFeatureInfo:(id)a3;
+- (id)_cvnlpDecodingResultForActivationMatrix:(id)matrix decodingLocale:(id)locale beamSearchConfig:(id)config lmConfig:(id)lmConfig error:(id *)error;
+- (id)_cvnlpGreedyModernizedDecodingResultForActivationMatrix:(const void *)matrix;
+- (id)_cvnlpModernizedDecodingResultForActivationMatrix:(const void *)matrix decodingLocale:(id)locale beamSearchConfig:(id)config lmConfig:(id)lmConfig error:(id *)error;
+- (void)_buildActivationMatrices:(id)matrices;
+- (void)_create2DArraysFromInputArray:(id)array classSize:(unint64_t *)size outputArrays:(void *)arrays;
+- (void)_populateTransientResultGreedyDecodingResultsForFeatureInfo:(id)info;
 - (void)dealloc;
 - (void)releaseUnusedResources;
 @end
 
 @implementation CRCTCCVNLPTextDecoder
 
-- (CRCTCCVNLPTextDecoder)initWithConfiguration:(id)a3 model:(id)a4 error:(id *)a5
+- (CRCTCCVNLPTextDecoder)initWithConfiguration:(id)configuration model:(id)model error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v54 = a4;
+  configurationCopy = configuration;
+  modelCopy = model;
   v66.receiver = self;
   v66.super_class = CRCTCCVNLPTextDecoder;
   v10 = [(CRCTCCVNLPTextDecoder *)&v66 init];
@@ -38,15 +38,15 @@ LABEL_46:
     goto LABEL_50;
   }
 
-  v55 = [v9 locale];
+  locale = [configurationCopy locale];
   v11 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:?];
   locale = v10->_locale;
   v10->_locale = v11;
 
-  v13 = [v9 decodeWithLM];
-  if (v55)
+  decodeWithLM = [configurationCopy decodeWithLM];
+  if (locale)
   {
-    v14 = v13;
+    v14 = decodeWithLM;
   }
 
   else
@@ -56,8 +56,8 @@ LABEL_46:
 
   if (v14 == 1)
   {
-    v15 = [objc_opt_class() lmSupportedLanguages];
-    v10->_shouldUseLM = [v15 containsObject:v55];
+    lmSupportedLanguages = [objc_opt_class() lmSupportedLanguages];
+    v10->_shouldUseLM = [lmSupportedLanguages containsObject:locale];
     p_shouldUseLM = &v10->_shouldUseLM;
   }
 
@@ -67,10 +67,10 @@ LABEL_46:
     p_shouldUseLM = &v10->_shouldUseLM;
   }
 
-  v10->_shouldUseFalsePositiveFiltering = [v9 falsePositiveFilteringDisabled] ^ 1;
-  objc_storeStrong(&v10->_configuration, a3);
+  v10->_shouldUseFalsePositiveFiltering = [configurationCopy falsePositiveFilteringDisabled] ^ 1;
+  objc_storeStrong(&v10->_configuration, configuration);
   *&v10->_shouldReverseActivationMatrix = 0;
-  if (v55 && [CRImageReader languageIsArabic:v55])
+  if (locale && [CRImageReader languageIsArabic:locale])
   {
     *&v10->_shouldReverseActivationMatrix = 257;
     v17 = objc_alloc_init(CRBiDiTransform);
@@ -78,14 +78,14 @@ LABEL_46:
     v10->_bidiTransform = v17;
   }
 
-  objc_storeStrong(&v10->_model, a4);
-  v19 = [(CRTextSequenceRecognizerModel *)v10->_model codemapArray];
-  v10->_codemapArray = v19;
-  if (v19)
+  objc_storeStrong(&v10->_model, model);
+  codemapArray = [(CRTextSequenceRecognizerModel *)v10->_model codemapArray];
+  v10->_codemapArray = codemapArray;
+  if (codemapArray)
   {
-    v20 = [(CRTextSequenceRecognizerModel *)v10->_model codemapSize];
-    v10->_codemapSize = v20;
-    v53 = unicodeArrayToNSStringArray(v10->_codemapArray, v20);
+    codemapSize = [(CRTextSequenceRecognizerModel *)v10->_model codemapSize];
+    v10->_codemapSize = codemapSize;
+    v53 = unicodeArrayToNSStringArray(v10->_codemapArray, codemapSize);
     v21 = [MEMORY[0x1E695DFB8] orderedSetWithArray:?];
     characterObservations = v10->_characterObservations;
     v10->_characterObservations = v21;
@@ -102,7 +102,7 @@ LABEL_46:
       if (v23)
       {
         v24 = *v63;
-        v56 = v9;
+        v56 = configurationCopy;
         do
         {
           for (i = 0; i != v23; ++i)
@@ -113,8 +113,8 @@ LABEL_46:
             }
 
             v26 = *(*(&v62 + 1) + 8 * i);
-            v27 = [(CRCTCCVNLPTextDecoder *)v10 characterObservations];
-            v28 = [v27 indexOfObject:v26];
+            characterObservations = [(CRCTCCVNLPTextDecoder *)v10 characterObservations];
+            v28 = [characterObservations indexOfObject:v26];
 
             if (v28 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -161,7 +161,7 @@ LABEL_46:
                   operator delete(begin);
                 }
 
-                v9 = v56;
+                configurationCopy = v56;
               }
 
               else
@@ -182,8 +182,8 @@ LABEL_46:
     }
 
     v40 = MEMORY[0x1E695DFA8];
-    v41 = [(NSLocale *)v10->_locale localeIdentifier];
-    v42 = [v40 setWithObject:v41];
+    localeIdentifier = [(NSLocale *)v10->_locale localeIdentifier];
+    v42 = [v40 setWithObject:localeIdentifier];
     subscribedLocales = v10->_subscribedLocales;
     v10->_subscribedLocales = v42;
 
@@ -212,7 +212,7 @@ LABEL_46:
             [v49 addSubscriber:v10 forLocale:v48];
           }
 
-          if ([v9 filterWithLM])
+          if ([configurationCopy filterWithLM])
           {
             v50 = +[CRLanguageResourcesManager postProcessManager];
             [v50 addSubscriber:v10 forLocale:v48];
@@ -228,9 +228,9 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [CRImageReader errorWithErrorCode:-8];
+    *error = [CRImageReader errorWithErrorCode:-8];
   }
 
   v51 = 0;
@@ -298,23 +298,23 @@ LABEL_50:
 
 - (BOOL)shouldUseModernizedDecoder
 {
-  v2 = [(CRCTCCVNLPTextDecoder *)self model];
-  v3 = [v2 outputFormatVersion];
-  v4 = [v3 intValue] == 2;
+  model = [(CRCTCCVNLPTextDecoder *)self model];
+  outputFormatVersion = [model outputFormatVersion];
+  v4 = [outputFormatVersion intValue] == 2;
 
   return v4;
 }
 
-- (void)_buildActivationMatrices:(id)a3
+- (void)_buildActivationMatrices:(id)matrices
 {
-  v4 = a3;
-  v5 = [v4 textFeatureInfo];
-  v70 = v5;
-  v6 = [v5 firstObject];
-  v8 = v6;
-  if (v6)
+  matricesCopy = matrices;
+  textFeatureInfo = [matricesCopy textFeatureInfo];
+  v70 = textFeatureInfo;
+  firstObject = [textFeatureInfo firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    Property = objc_getProperty(v6, v7, 80, 1);
+    Property = objc_getProperty(firstObject, v7, 80, 1);
   }
 
   else
@@ -329,23 +329,23 @@ LABEL_50:
     v95 = 0;
     v96 = 0;
     v97 = 0;
-    v66 = v4;
-    [(CRCTCCVNLPTextDecoder *)self _create2DArraysFromInputArray:v4 classSize:&self->_codemapSize outputArrays:&v95];
-    v11 = [(CRCTCCVNLPTextDecoder *)self model];
-    v68 = [v11 ctcBlankLabelIndex];
+    v66 = matricesCopy;
+    [(CRCTCCVNLPTextDecoder *)self _create2DArraysFromInputArray:matricesCopy classSize:&self->_codemapSize outputArrays:&v95];
+    model = [(CRCTCCVNLPTextDecoder *)self model];
+    ctcBlankLabelIndex = [model ctcBlankLabelIndex];
 
     v93 = 0uLL;
     v94 = 0;
     [(CRCTCCVNLPTextDecoder *)self pruningPolicy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v12 = [(CRCTCCVNLPTextDecoder *)self shouldUseModernizedDecoder];
+    shouldUseModernizedDecoder = [(CRCTCCVNLPTextDecoder *)self shouldUseModernizedDecoder];
     v13 = v95;
     if (v96 != v95)
     {
       v14 = 0;
       v15 = 0xCF3CF3CF3CF3CF3DLL * ((v96 - v95) >> 3);
-      v67 = v12;
+      v67 = shouldUseModernizedDecoder;
       do
       {
         v16 = &v13[168 * v14];
@@ -397,14 +397,14 @@ LABEL_50:
           v90 = v34;
           v91 = v35;
           v89 = v33;
-          v36 = [(CRCTCCVNLPTextDecoder *)self characterObservations];
+          characterObservations = [(CRCTCCVNLPTextDecoder *)self characterObservations];
           v71 = v93;
           *&v72 = v94;
-          v37 = [v18 initWithBuffer:&v98 indexBuffer:&v82 domainType:v67 characterObservations:v36 blankIndex:v68 pruningPolicy:&v71];
+          v37 = [v18 initWithBuffer:&v98 indexBuffer:&v82 domainType:v67 characterObservations:characterObservations blankIndex:ctcBlankLabelIndex pruningPolicy:&v71];
 
           v38 = [CRCVNLPTransientResult alloc];
-          v39 = [(CRCTCCVNLPTextDecoder *)self configuration];
-          v40 = [v39 locale];
+          configuration = [(CRCTCCVNLPTextDecoder *)self configuration];
+          locale = [configuration locale];
           v89 = *(v16 + 7);
           v90 = *(v16 + 8);
           v91 = *(v16 + 9);
@@ -428,7 +428,7 @@ LABEL_50:
           v72 = *(v19 + 1);
           v73 = *(v19 + 2);
           v41 = v37;
-          v42 = v40;
+          locale2 = locale;
           if (v38)
           {
             v106 = v90;
@@ -442,8 +442,8 @@ LABEL_50:
             v99 = v83;
             v100 = v84;
             v101 = v85;
-            v5 = v70;
-            v43 = [(CRCVNLPTransientResult *)v38 initWithActivationMatrix:v41 decodingLocale:v42 activationsBuffer:&v98];
+            textFeatureInfo = v70;
+            v43 = [(CRCVNLPTransientResult *)v38 initWithActivationMatrix:v41 decodingLocale:locale2 activationsBuffer:&v98];
             v38 = v43;
             if (v43)
             {
@@ -473,10 +473,10 @@ LABEL_50:
 
           else
           {
-            v5 = v70;
+            textFeatureInfo = v70;
           }
 
-          v50 = [v5 objectAtIndexedSubscript:v14 >> 1];
+          v50 = [textFeatureInfo objectAtIndexedSubscript:v14 >> 1];
           v52 = v50;
           if (v50)
           {
@@ -506,14 +506,14 @@ LABEL_50:
           v106 = v60;
           v107 = v61;
           v105 = v59;
-          v62 = [(CRCTCCVNLPTextDecoder *)self characterObservations];
+          characterObservations2 = [(CRCTCCVNLPTextDecoder *)self characterObservations];
           v82 = v93;
           *&v83 = v94;
-          v41 = [v53 initWithBuffer:&v98 domainType:v67 characterObservations:v62 blankIndex:v68 pruningPolicy:&v82];
+          v41 = [v53 initWithBuffer:&v98 domainType:v67 characterObservations:characterObservations2 blankIndex:ctcBlankLabelIndex pruningPolicy:&v82];
 
           v63 = [CRCVNLPTransientResult alloc];
-          v39 = [(CRCTCCVNLPTextDecoder *)self configuration];
-          v42 = [v39 locale];
+          configuration = [(CRCTCCVNLPTextDecoder *)self configuration];
+          locale2 = [configuration locale];
           v105 = *(v16 + 7);
           v106 = *(v16 + 8);
           v107 = *(v16 + 9);
@@ -525,8 +525,8 @@ LABEL_50:
           v98 = *v16;
           v99 = *(v16 + 1);
           v100 = *(v16 + 2);
-          v38 = [(CRCVNLPTransientResult *)v63 initWithActivationMatrix:v41 decodingLocale:v42 activationsBuffer:&v98];
-          v5 = v70;
+          v38 = [(CRCVNLPTransientResult *)v63 initWithActivationMatrix:v41 decodingLocale:locale2 activationsBuffer:&v98];
+          textFeatureInfo = v70;
           v64 = [v70 objectAtIndexedSubscript:v14];
           v52 = v64;
           if (v64)
@@ -551,16 +551,16 @@ LABEL_50:
       operator delete(v13);
     }
 
-    v4 = v66;
+    matricesCopy = v66;
   }
 }
 
-- (void)_create2DArraysFromInputArray:(id)a3 classSize:(unint64_t *)a4 outputArrays:(void *)a5
+- (void)_create2DArraysFromInputArray:(id)array classSize:(unint64_t *)size outputArrays:(void *)arrays
 {
-  v69 = a3;
+  arrayCopy = array;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v8 = v69;
+  v8 = arrayCopy;
   v9 = v8;
   v85 = isKindOfClass;
   v70 = v8;
@@ -568,7 +568,7 @@ LABEL_50:
   {
     if (v8)
     {
-      [v8 output:v69 label:? prob:?map];
+      [v8 output:arrayCopy label:? prob:?map];
       v82 = v113;
       v103 = v116;
       v104 = v117;
@@ -607,7 +607,7 @@ LABEL_50:
 
   else if (v8)
   {
-    [v8 output:v69 label:? prob:?map];
+    [v8 output:arrayCopy label:? prob:?map];
     v82 = v113;
     v103 = v116;
     v104 = v117;
@@ -640,18 +640,18 @@ LABEL_50:
     v82 = 0;
   }
 
-  v106 = [v70 textFeatureInfo];
+  textFeatureInfo = [v70 textFeatureInfo];
   if (isKindOfClass)
   {
-    v11 = 2 * [v106 count];
+    v11 = 2 * [textFeatureInfo count];
   }
 
   else
   {
-    v11 = [v106 count];
+    v11 = [textFeatureInfo count];
   }
 
-  std::vector<espresso_buffer_t>::resize(a5, v11);
+  std::vector<espresso_buffer_t>::resize(arrays, v11);
   if ([(CRCTCCVNLPTextDecoder *)self shouldUseModernizedDecoder])
   {
     v12 = v103 * v105 * v104 * v10;
@@ -678,10 +678,10 @@ LABEL_50:
 
   v17 = 0;
   v83 = isKindOfClass & 1;
-  while (v17 < [v106 count])
+  while (v17 < [textFeatureInfo count])
   {
-    v18 = [v106 objectAtIndexedSubscript:v17];
-    v19 = [(CRFeatureSequenceRecognitionInfo *)v18 featureImageSize];
+    v18 = [textFeatureInfo objectAtIndexedSubscript:v17];
+    featureImageSize = [(CRFeatureSequenceRecognitionInfo *)v18 featureImageSize];
     if (v18)
     {
       v20 = v18[2];
@@ -692,18 +692,18 @@ LABEL_50:
       v20 = 0.0;
     }
 
-    v21 = [(CRCTCCVNLPTextDecoder *)self model];
-    v22 = [v21 outputWidthDownscale];
-    [v22 floatValue];
+    model = [(CRCTCCVNLPTextDecoder *)self model];
+    outputWidthDownscale = [model outputWidthDownscale];
+    [outputWidthDownscale floatValue];
     v24 = v23;
-    v25 = [(CRCTCCVNLPTextDecoder *)self model];
-    v26 = [v25 outputWidthOffset];
-    [v26 floatValue];
+    model2 = [(CRCTCCVNLPTextDecoder *)self model];
+    outputWidthOffset = [model2 outputWidthOffset];
+    [outputWidthOffset floatValue];
     v28 = v27;
 
-    v29 = [(CRCTCCVNLPTextDecoder *)self model];
-    v30 = [v29 outputFormatVersion];
-    v31 = [v30 intValue] == 1;
+    model3 = [(CRCTCCVNLPTextDecoder *)self model];
+    outputFormatVersion = [model3 outputFormatVersion];
+    v31 = [outputFormatVersion intValue] == 1;
 
     v32 = v84;
     v34 = v104;
@@ -711,15 +711,15 @@ LABEL_50:
     v35 = v103;
     v37 = v100;
     v36 = v101;
-    v38 = (ceil(v19 * v20 / v24) + v28 + 2.0);
+    v38 = (ceil(featureImageSize * v20 / v24) + v28 + 2.0);
     v40 = v98;
     v39 = v99;
     v41 = v97;
     if (!v31)
     {
       v42 = [(CRCTCCVNLPTextDecoder *)self model:v104];
-      v43 = [v42 outputFormatVersion];
-      v44 = [v43 intValue] == 2;
+      outputFormatVersion2 = [v42 outputFormatVersion];
+      v44 = [outputFormatVersion2 intValue] == 2;
 
       if (!v44)
       {
@@ -767,7 +767,7 @@ LABEL_50:
     v48 = v37;
     v38 = v5;
 LABEL_29:
-    v49 = *a5 + 168 * (v17 << v83);
+    v49 = *arrays + 168 * (v17 << v83);
     v93 = v33;
     v94 = v46;
     *v49 = v46;
@@ -799,9 +799,9 @@ LABEL_29:
       goto LABEL_35;
     }
 
-    v50 = [(CRCTCCVNLPTextDecoder *)self model];
-    v51 = [v50 outputFormatVersion];
-    v52 = [v51 intValue] == 1;
+    model4 = [(CRCTCCVNLPTextDecoder *)self model];
+    outputFormatVersion3 = [model4 outputFormatVersion];
+    v52 = [outputFormatVersion3 intValue] == 1;
 
     v53 = v97;
     v54 = v98;
@@ -817,8 +817,8 @@ LABEL_29:
     }
 
     v61 = [(CRCTCCVNLPTextDecoder *)self model:v103];
-    v62 = [v61 outputFormatVersion];
-    v63 = [v62 intValue] == 2;
+    outputFormatVersion4 = [v61 outputFormatVersion];
+    v63 = [outputFormatVersion4 intValue] == 2;
 
     v54 = v80;
     v53 = v81;
@@ -851,7 +851,7 @@ LABEL_33:
       v67 = v71 + 4 * v45;
     }
 
-    v68 = *a5 + 168 * (v17 << v83);
+    v68 = *arrays + 168 * (v17 << v83);
     *(v68 + 184) = v109;
     *(v68 + 200) = v110;
     *(v68 + 216) = v107;
@@ -885,12 +885,12 @@ LABEL_35:
   }
 }
 
-- (void)_populateTransientResultGreedyDecodingResultsForFeatureInfo:(id)a3
+- (void)_populateTransientResultGreedyDecodingResultsForFeatureInfo:(id)info
 {
   v39 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v4 = [(CRCTCCVNLPTextDecoder *)self model];
-  v5 = [v4 ctcBlankLabelIndex];
+  infoCopy = info;
+  model = [(CRCTCCVNLPTextDecoder *)self model];
+  ctcBlankLabelIndex = [model ctcBlankLabelIndex];
 
   v17 = 0;
   v16 = &unk_1F2BAF938;
@@ -900,7 +900,7 @@ LABEL_35:
   std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&__p, self->_spaceLabels.__begin_, self->_spaceLabels.__end_, self->_spaceLabels.__end_ - self->_spaceLabels.__begin_);
   LOBYTE(v21) = 0;
   v30[0] = &unk_1F2BAFBC0;
-  v30[1] = v5;
+  v30[1] = ctcBlankLabelIndex;
   v32 = 0;
   v31 = &unk_1F2BAF938;
   v33 = 0;
@@ -922,7 +922,7 @@ LABEL_35:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v13;
+  obj = infoCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v38 count:16];
   if (v7)
   {
@@ -995,15 +995,15 @@ id __85__CRCTCCVNLPTextDecoder__populateTransientResultGreedyDecodingResultsForF
   return v4;
 }
 
-- (BOOL)_wordLMShouldFilterCandidate:(id)a3 inLocale:(id)a4 lmConfig:(id)a5
+- (BOOL)_wordLMShouldFilterCandidate:(id)candidate inLocale:(id)locale lmConfig:(id)config
 {
   v49 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 fullString];
-  v13 = [v9 fullString];
-  v14 = [v13 length];
+  candidateCopy = candidate;
+  localeCopy = locale;
+  configCopy = config;
+  fullString = [candidateCopy fullString];
+  fullString2 = [candidateCopy fullString];
+  v14 = [fullString2 length];
   if (v14 > 0x80)
   {
     v15 = 128;
@@ -1011,11 +1011,11 @@ id __85__CRCTCCVNLPTextDecoder__populateTransientResultGreedyDecodingResultsForF
 
   else
   {
-    v5 = [v9 fullString];
-    v15 = [v5 length];
+    fullString3 = [candidateCopy fullString];
+    v15 = [fullString3 length];
   }
 
-  v16 = [v12 substringWithRange:{0, v15}];
+  v16 = [fullString substringWithRange:{0, v15}];
   if (v14 <= 0x80)
   {
   }
@@ -1023,12 +1023,12 @@ id __85__CRCTCCVNLPTextDecoder__populateTransientResultGreedyDecodingResultsForF
   v17 = [v16 length];
   if (self->_shouldUseLM || [(CRCTCCVNLPTextDecoder *)self shouldUseModernizedDecoder])
   {
-    [v9 activationScore];
+    [candidateCopy activationScore];
   }
 
   else
   {
-    [v9 activationScore];
+    [candidateCopy activationScore];
     v19 = v31;
     if (!v17)
     {
@@ -1040,7 +1040,7 @@ id __85__CRCTCCVNLPTextDecoder__populateTransientResultGreedyDecodingResultsForF
 
   v19 = v18;
 LABEL_10:
-  if (v17 < [v11 filteringMinimumLength] || (objc_msgSend(v11, "filteringActivationThreshold"), v20 = v19, v21 <= v20))
+  if (v17 < [configCopy filteringMinimumLength] || (objc_msgSend(configCopy, "filteringActivationThreshold"), v20 = v19, v21 <= v20))
   {
     v25 = 0;
   }
@@ -1059,21 +1059,21 @@ LABEL_10:
     v35 = &v37;
     v36 = v17;
     v34 = v16;
-    [v22 lockResourcesForLocale:v10 sender:self block:v33];
+    [v22 lockResourcesForLocale:localeCopy sender:self block:v33];
     v23 = v38[6];
-    [v11 lmThresholdForLength:v17];
+    [configCopy lmThresholdForLength:v17];
     v25 = v23 < v24;
     if (v23 < v24)
     {
       v26 = CROSLogForCategory(3);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [(CRCTCCVNLPTextDecoder *)self configuration];
-        v28 = [v27 locale];
-        [v9 activationScore];
+        configuration = [(CRCTCCVNLPTextDecoder *)self configuration];
+        locale = [configuration locale];
+        [candidateCopy activationScore];
         v29 = v38[6];
         *buf = 138413058;
-        v42 = v28;
+        v42 = locale;
         v43 = 2048;
         v44 = v17;
         v45 = 2048;
@@ -1105,16 +1105,16 @@ void __72__CRCTCCVNLPTextDecoder__wordLMShouldFilterCandidate_inLocale_lmConfig_
   }
 }
 
-+ (unint64_t)_disambiguatedScriptForString:(id)a3
++ (unint64_t)_disambiguatedScriptForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = 0;
   v5 = 0;
   v6 = 0;
   v7 = 0;
-  while ([v3 length] > v4)
+  while ([stringCopy length] > v4)
   {
-    v8 = [v3 characterAtIndex:v4];
+    v8 = [stringCopy characterAtIndex:v4];
     if ((v8 - 1024) > 0x12F)
     {
       v9.i16[0] = v8;
@@ -1156,18 +1156,18 @@ void __72__CRCTCCVNLPTextDecoder__wordLMShouldFilterCandidate_inLocale_lmConfig_
 
 - (BOOL)_shouldUseCharacterDecodingToken
 {
-  v3 = [(CRCTCCVNLPTextDecoder *)self model];
-  if ([v3 supportCharacterBoxes])
+  model = [(CRCTCCVNLPTextDecoder *)self model];
+  if ([model supportCharacterBoxes])
   {
-    v4 = [(CRCTCCVNLPTextDecoder *)self shouldUseLM];
+    shouldUseLM = [(CRCTCCVNLPTextDecoder *)self shouldUseLM];
   }
 
   else
   {
-    v4 = 0;
+    shouldUseLM = 0;
   }
 
-  return v4;
+  return shouldUseLM;
 }
 
 - (id)_commitActionBehavior
@@ -1186,12 +1186,12 @@ void __72__CRCTCCVNLPTextDecoder__wordLMShouldFilterCandidate_inLocale_lmConfig_
   return v2;
 }
 
-- (id)_cvnlpDecodingResultForActivationMatrix:(id)a3 decodingLocale:(id)a4 beamSearchConfig:(id)a5 lmConfig:(id)a6 error:(id *)a7
+- (id)_cvnlpDecodingResultForActivationMatrix:(id)matrix decodingLocale:(id)locale beamSearchConfig:(id)config lmConfig:(id)lmConfig error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  matrixCopy = matrix;
+  localeCopy = locale;
+  configCopy = config;
+  lmConfigCopy = lmConfig;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -1203,17 +1203,17 @@ void __72__CRCTCCVNLPTextDecoder__wordLMShouldFilterCandidate_inLocale_lmConfig_
   aBlock[2] = __112__CRCTCCVNLPTextDecoder__cvnlpDecodingResultForActivationMatrix_decodingLocale_beamSearchConfig_lmConfig_error___block_invoke;
   aBlock[3] = &unk_1E7BC37E0;
   aBlock[4] = self;
-  v16 = v15;
+  v16 = lmConfigCopy;
   v26 = v16;
-  v17 = v12;
+  v17 = matrixCopy;
   v27 = v17;
   v29 = &v30;
-  v18 = v14;
+  v18 = configCopy;
   v28 = v18;
   v19 = _Block_copy(aBlock);
   v20 = +[CRLanguageResourcesManager sharedManager];
-  v21 = [v20 lockResourcesForLocale:v13 sender:self block:v19];
-  if (a7)
+  v21 = [v20 lockResourcesForLocale:localeCopy sender:self block:v19];
+  if (error)
   {
     v22 = v21;
   }
@@ -1231,7 +1231,7 @@ void __72__CRCTCCVNLPTextDecoder__wordLMShouldFilterCandidate_inLocale_lmConfig_
   else
   {
     [CRImageReader errorWithErrorCode:-6];
-    *a7 = v23 = 0;
+    *error = v23 = 0;
   }
 
   _Block_object_dispose(&v30, 8);
@@ -1253,10 +1253,10 @@ void __112__CRCTCCVNLPTextDecoder__cvnlpDecodingResultForActivationMatrix_decodi
   *(v7 + 40) = v6;
 }
 
-- (AdditiveCombiningBeamScorer<CoreRecognition::decoder::CombinedBeamState>)_createBeamScorerWithBundle:(SEL)a3 beamSearchConfig:(id)a4 lmConfig:(id)a5
+- (AdditiveCombiningBeamScorer<CoreRecognition::decoder::CombinedBeamState>)_createBeamScorerWithBundle:(SEL)bundle beamSearchConfig:(id)config lmConfig:(id)lmConfig
 {
-  v10 = a4;
-  v65 = a5;
+  configCopy = config;
+  lmConfigCopy = lmConfig;
   v11 = a6;
   *&retstr->var1 = xmmword_1B42B0140;
   retstr->var0 = &unk_1F2BAF8F0;
@@ -1272,14 +1272,14 @@ void __112__CRCTCCVNLPTextDecoder__cvnlpDecodingResultForActivationMatrix_decodi
     std::vector<float>::__vallocate[abi:ne200100](&__p, codemapSize);
   }
 
-  v13 = [(CRCTCCVNLPTextDecoder *)self characterObservations];
-  v64 = [v13 indexOfObject:@" "];
+  characterObservations = [(CRCTCCVNLPTextDecoder *)self characterObservations];
+  v64 = [characterObservations indexOfObject:@" "];
 
-  v14 = [v11 characterLMWeight];
-  if (v14)
+  characterLMWeight = [v11 characterLMWeight];
+  if (characterLMWeight)
   {
-    v15 = [v11 characterLMWeight];
-    [v15 doubleValue];
+    characterLMWeight2 = [v11 characterLMWeight];
+    [characterLMWeight2 doubleValue];
     v17 = v16 <= 0.0;
   }
 
@@ -1288,37 +1288,37 @@ void __112__CRCTCCVNLPTextDecoder__cvnlpDecodingResultForActivationMatrix_decodi
     v17 = 1;
   }
 
-  if ([v10 lmCharacterLanguageModel] != 0 && !v17)
+  if ([configCopy lmCharacterLanguageModel] != 0 && !v17)
   {
-    v20 = [v10 lmCharacterLanguageModel];
-    v21 = v20;
-    if (v20)
+    lmCharacterLanguageModel = [configCopy lmCharacterLanguageModel];
+    v21 = lmCharacterLanguageModel;
+    if (lmCharacterLanguageModel)
     {
-      CFRetain(v20);
+      CFRetain(lmCharacterLanguageModel);
     }
 
     cf = v21;
     operator new();
   }
 
-  if ([v10 cvnlpCharacterLanguageModel] != 0 && !v17)
+  if ([configCopy cvnlpCharacterLanguageModel] != 0 && !v17)
   {
-    v18 = [v10 cvnlpCharacterLanguageModel];
-    v19 = v18;
-    if (v18)
+    cvnlpCharacterLanguageModel = [configCopy cvnlpCharacterLanguageModel];
+    v19 = cvnlpCharacterLanguageModel;
+    if (cvnlpCharacterLanguageModel)
     {
-      CFRetain(v18);
+      CFRetain(cvnlpCharacterLanguageModel);
     }
 
     cf = v19;
     operator new();
   }
 
-  if ([v65 pruneProblematicMixedScriptWordPaths])
+  if ([lmConfigCopy pruneProblematicMixedScriptWordPaths])
   {
-    v22 = [v10 locale];
-    v23 = [v22 localeIdentifier];
-    v24 = [CRImageReader languageIsArabic:v23];
+    locale = [configCopy locale];
+    localeIdentifier = [locale localeIdentifier];
+    v24 = [CRImageReader languageIsArabic:localeIdentifier];
 
     if (v24)
     {
@@ -1340,17 +1340,17 @@ void __112__CRCTCCVNLPTextDecoder__cvnlpDecodingResultForActivationMatrix_decodi
       operator new();
     }
 
-    v25 = [v10 locale];
-    v26 = [v25 localeIdentifier];
-    if ([CRImageReader languageIsLatin:v26])
+    locale2 = [configCopy locale];
+    localeIdentifier2 = [locale2 localeIdentifier];
+    if ([CRImageReader languageIsLatin:localeIdentifier2])
     {
 
       goto LABEL_22;
     }
 
-    v27 = [v10 locale];
-    v28 = [v27 localeIdentifier];
-    v29 = [CRImageReader languageIsCyrillic:v28];
+    locale3 = [configCopy locale];
+    localeIdentifier3 = [locale3 localeIdentifier];
+    v29 = [CRImageReader languageIsCyrillic:localeIdentifier3];
 
     if (v29)
     {
@@ -1374,23 +1374,23 @@ LABEL_22:
     }
   }
 
-  v30 = [v11 lexiconWeight];
-  if (v30)
+  lexiconWeight = [v11 lexiconWeight];
+  if (lexiconWeight)
   {
-    v31 = [v11 lexiconWeight];
-    [v31 doubleValue];
+    lexiconWeight2 = [v11 lexiconWeight];
+    [lexiconWeight2 doubleValue];
     v33 = v32;
 
     if (v33 > 0.0)
     {
       memset(&v74, 0, sizeof(v74));
-      if ([v10 staticLexicon])
+      if ([configCopy staticLexicon])
       {
-        v34 = [v10 staticLexicon];
-        v35 = v34;
-        if (v34)
+        staticLexicon = [configCopy staticLexicon];
+        v35 = staticLexicon;
+        if (staticLexicon)
         {
-          CFRetain(v34);
+          CFRetain(staticLexicon);
         }
 
         v75 = v35;
@@ -1442,18 +1442,18 @@ LABEL_22:
         v74.__end_ = v42;
       }
 
-      v45 = [(CRCTCCVNLPTextDecoder *)self configuration];
-      v46 = [v45 customWords];
-      if (v46)
+      configuration = [(CRCTCCVNLPTextDecoder *)self configuration];
+      customWords = [configuration customWords];
+      if (customWords)
       {
-        v47 = [(CRCTCCVNLPTextDecoder *)self configuration];
-        v48 = [v47 customWords];
+        configuration2 = [(CRCTCCVNLPTextDecoder *)self configuration];
+        customWords2 = [configuration2 customWords];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v49 = [v10 isCustomWordsSupported];
+          isCustomWordsSupported = [configCopy isCustomWordsSupported];
 
-          if (!v49)
+          if (!isCustomWordsSupported)
           {
 LABEL_51:
             if (v74.__begin_ != v74.__end_)
@@ -1466,15 +1466,15 @@ LABEL_51:
             goto LABEL_54;
           }
 
-          v45 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self isKindOfClass: %@", objc_opt_class(), &retstr->var3, &unk_1F2BAF8F0, v64];
-          v50 = [(CRCTCCVNLPTextDecoder *)self configuration];
-          v51 = [v50 customWords];
-          v46 = [v51 filteredArrayUsingPredicate:v45];
+          configuration = [MEMORY[0x1E696AE18] predicateWithFormat:@"self isKindOfClass: %@", objc_opt_class(), &retstr->var3, &unk_1F2BAF8F0, v64];
+          configuration3 = [(CRCTCCVNLPTextDecoder *)self configuration];
+          customWords3 = [configuration3 customWords];
+          customWords = [customWords3 filteredArrayUsingPredicate:configuration];
 
-          if ([v46 count])
+          if ([customWords count])
           {
-            v52 = [(CRCTCCVNLPTextDecoder *)self locale];
-            v53 = [CRLanguageUtils createDynamicLexicon:v46 forLocale:v52 error:0];
+            locale4 = [(CRCTCCVNLPTextDecoder *)self locale];
+            v53 = [CRLanguageUtils createDynamicLexicon:customWords forLocale:locale4 error:0];
             cf = v53;
             end = v74.__end_;
             if (v74.__end_ >= v74.__end_cap_.__value_)
@@ -1504,30 +1504,30 @@ LABEL_51:
   }
 
 LABEL_54:
-  if ([v10 wordLanguageModel])
+  if ([configCopy wordLanguageModel])
   {
-    v55 = [v11 wordLMWeight];
-    if (v55)
+    wordLMWeight = [v11 wordLMWeight];
+    if (wordLMWeight)
     {
-      v56 = [v11 wordLMWeight];
-      [v56 doubleValue];
+      wordLMWeight2 = [v11 wordLMWeight];
+      [wordLMWeight2 doubleValue];
       v58 = v57;
 
       if (v58 > 0.0)
       {
-        v59 = [v10 wordLanguageModel];
-        v60 = v59;
-        if (v59)
+        wordLanguageModel = [configCopy wordLanguageModel];
+        v60 = wordLanguageModel;
+        if (wordLanguageModel)
         {
-          CFRetain(v59);
+          CFRetain(wordLanguageModel);
         }
 
         cf = v60;
-        v61 = [v10 wordTokenizer];
-        v62 = v61;
-        if (v61)
+        wordTokenizer = [configCopy wordTokenizer];
+        v62 = wordTokenizer;
+        if (wordTokenizer)
         {
-          CFRetain(v61);
+          CFRetain(wordTokenizer);
         }
 
         v74.__begin_ = v62;
@@ -1545,23 +1545,23 @@ LABEL_54:
   return result;
 }
 
-- (id)_cvnlpGreedyModernizedDecodingResultForActivationMatrix:(const void *)a3
+- (id)_cvnlpGreedyModernizedDecodingResultForActivationMatrix:(const void *)matrix
 {
-  v5 = [(CRCTCCVNLPTextDecoder *)self model];
-  v6 = [v5 ctcBlankLabelIndex];
+  model = [(CRCTCCVNLPTextDecoder *)self model];
+  ctcBlankLabelIndex = [model ctcBlankLabelIndex];
 
   v25 = 0uLL;
   v26 = 0;
   if ([(CRCTCCVNLPTextDecoder *)self _shouldUseCharacterDecodingToken])
   {
     v14 = &unk_1F2BAFB98;
-    v15 = v6;
+    v15 = ctcBlankLabelIndex;
     v17 = 0;
     v16 = &unk_1F2BAF7F0;
     v22 = 0;
     v23 = 0;
     v24 = 0;
-    CoreRecognition::decoder::CTCGreedyDecoder<CoreRecognition::decoder::CharacterSegmentedPathBuilder<CoreRecognition::decoder::BaseState>>::decode(&v14, a3, &v9);
+    CoreRecognition::decoder::CTCGreedyDecoder<CoreRecognition::decoder::CharacterSegmentedPathBuilder<CoreRecognition::decoder::BaseState>>::decode(&v14, matrix, &v9);
     std::vector<CoreRecognition::decoder::DecodingPath>::__vdeallocate(&v25);
     v25 = v9;
     v26 = __p;
@@ -1580,7 +1580,7 @@ LABEL_54:
     v12 = 0;
     std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&__p, self->_spaceLabels.__begin_, self->_spaceLabels.__end_, self->_spaceLabels.__end_ - self->_spaceLabels.__begin_);
     v13 = 0;
-    v15 = v6;
+    v15 = ctcBlankLabelIndex;
     v14 = &unk_1F2BAFBC0;
     v17 = 0;
     v16 = &unk_1F2BAF938;
@@ -1599,7 +1599,7 @@ LABEL_54:
     v22 = 0;
     v23 = 0;
     v24 = 0;
-    CoreRecognition::decoder::CTCGreedyDecoder<CoreRecognition::decoder::SpaceSegmentedPathBuilder<CoreRecognition::decoder::BaseState>>::decode(&v14, a3, &v9);
+    CoreRecognition::decoder::CTCGreedyDecoder<CoreRecognition::decoder::SpaceSegmentedPathBuilder<CoreRecognition::decoder::BaseState>>::decode(&v14, matrix, &v9);
     std::vector<CoreRecognition::decoder::DecodingPath>::__vdeallocate(&v25);
     v25 = v9;
     v26 = __p;
@@ -1636,11 +1636,11 @@ id __81__CRCTCCVNLPTextDecoder__cvnlpGreedyModernizedDecodingResultForActivation
   return v4;
 }
 
-- (id)_cvnlpModernizedDecodingResultForActivationMatrix:(const void *)a3 decodingLocale:(id)a4 beamSearchConfig:(id)a5 lmConfig:(id)a6 error:(id *)a7
+- (id)_cvnlpModernizedDecodingResultForActivationMatrix:(const void *)matrix decodingLocale:(id)locale beamSearchConfig:(id)config lmConfig:(id)lmConfig error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  localeCopy = locale;
+  configCopy = config;
+  lmConfigCopy = lmConfig;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -1652,16 +1652,16 @@ id __81__CRCTCCVNLPTextDecoder__cvnlpGreedyModernizedDecodingResultForActivation
   aBlock[2] = __122__CRCTCCVNLPTextDecoder__cvnlpModernizedDecodingResultForActivationMatrix_decodingLocale_beamSearchConfig_lmConfig_error___block_invoke;
   aBlock[3] = &unk_1E7BC3808;
   aBlock[4] = self;
-  v15 = v13;
+  v15 = configCopy;
   v24 = v15;
-  v16 = v14;
+  v16 = lmConfigCopy;
   v26 = &v28;
-  v27 = a3;
+  matrixCopy = matrix;
   v25 = v16;
   v17 = _Block_copy(aBlock);
   v18 = +[CRLanguageResourcesManager sharedManager];
-  v19 = [v18 lockResourcesForLocale:v12 sender:self block:v17];
-  if (a7)
+  v19 = [v18 lockResourcesForLocale:localeCopy sender:self block:v17];
+  if (error)
   {
     v20 = v19;
   }
@@ -1679,7 +1679,7 @@ id __81__CRCTCCVNLPTextDecoder__cvnlpGreedyModernizedDecodingResultForActivation
   else
   {
     [CRImageReader errorWithErrorCode:-6];
-    *a7 = v21 = 0;
+    *error = v21 = 0;
   }
 
   _Block_object_dispose(&v28, 8);
@@ -1819,28 +1819,28 @@ id __122__CRCTCCVNLPTextDecoder__cvnlpModernizedDecodingResultForActivationMatri
   return v4;
 }
 
-+ (id)_cvnlpDecodingResultByRerankingCandidates:(id)a3 decodingLocale:(id)a4
++ (id)_cvnlpDecodingResultByRerankingCandidates:(id)candidates decodingLocale:(id)locale
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v32 = a4;
-  v34 = v5;
-  v6 = [v5 candidates];
-  v33 = [v6 mutableCopy];
+  candidatesCopy = candidates;
+  localeCopy = locale;
+  v34 = candidatesCopy;
+  candidates = [candidatesCopy candidates];
+  v33 = [candidates mutableCopy];
 
-  if ([CRImageReader languageIsLatin:v32])
+  if ([CRImageReader languageIsLatin:localeCopy])
   {
-    v7 = [v5 candidates];
-    v8 = [v7 lastObject];
-    v9 = [v8 tokens];
-    v35 = [v9 count];
+    candidates2 = [candidatesCopy candidates];
+    lastObject = [candidates2 lastObject];
+    tokens = [lastObject tokens];
+    v35 = [tokens count];
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v10 = [v5 candidates];
-    v11 = [v10 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    candidates3 = [candidatesCopy candidates];
+    v11 = [candidates3 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (!v11)
     {
 LABEL_10:
@@ -1857,8 +1857,8 @@ LABEL_10:
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v17 = [v34 candidates];
-        v18 = [v17 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        candidates4 = [v34 candidates];
+        v18 = [candidates4 countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v18)
         {
           v36 = 0;
@@ -1873,22 +1873,22 @@ LABEL_10:
             {
               if (*v38 != v21)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(candidates4);
               }
 
-              v23 = [*(*(&v37 + 1) + 8 * v22) tokens];
-              v24 = [v23 objectAtIndexedSubscript:v16];
-              v25 = [v24 string];
+              tokens2 = [*(*(&v37 + 1) + 8 * v22) tokens];
+              v24 = [tokens2 objectAtIndexedSubscript:v16];
+              string = [v24 string];
 
-              if ([v25 length] < 0x11 || objc_msgSend(v25, "length") > 0x13 || objc_msgSend(v25, "characterAtIndex:", 0) != 49 || objc_msgSend(v25, "characterAtIndex:", 1) != 90 && objc_msgSend(v25, "characterAtIndex:", 1) != 50 && objc_msgSend(v25, "characterAtIndex:", 1) != 55)
+              if ([string length] < 0x11 || objc_msgSend(string, "length") > 0x13 || objc_msgSend(string, "characterAtIndex:", 0) != 49 || objc_msgSend(string, "characterAtIndex:", 1) != 90 && objc_msgSend(string, "characterAtIndex:", 1) != 50 && objc_msgSend(string, "characterAtIndex:", 1) != 55)
               {
 
                 goto LABEL_31;
               }
 
-              if ([v25 length] == 18)
+              if ([string length] == 18)
               {
-                v26 = [v25 characterAtIndex:1] == 90 && v20 != 0;
+                v26 = [string characterAtIndex:1] == 90 && v20 != 0;
                 v27 = v36;
                 if (v26)
                 {
@@ -1904,7 +1904,7 @@ LABEL_10:
             }
 
             while (v18 != v22);
-            v18 = [v17 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            v18 = [candidates4 countByEnumeratingWithState:&v37 objects:v45 count:16];
             v20 = v31;
             if (v18)
             {
@@ -1943,11 +1943,11 @@ LABEL_4:
     {
       if (*v42 != v12)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(candidates3);
       }
 
-      v14 = [*(*(&v41 + 1) + 8 * v13) tokens];
-      v15 = [v14 count] == v35;
+      tokens3 = [*(*(&v41 + 1) + 8 * v13) tokens];
+      v15 = [tokens3 count] == v35;
 
       if (!v15)
       {
@@ -1956,7 +1956,7 @@ LABEL_4:
 
       if (v11 == ++v13)
       {
-        v11 = [v10 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v11 = [candidates3 countByEnumeratingWithState:&v41 objects:v46 count:16];
         if (!v11)
         {
           goto LABEL_10;
@@ -1973,45 +1973,45 @@ LABEL_37:
   return v28;
 }
 
-+ (void)_adjustBeamSearchResults:(id *)a3 tokens:(id)a4 greedyCandidateString:(id)a5 greedyCandidateTokens:(id)a6 decodingLocale:(id)a7
++ (void)_adjustBeamSearchResults:(id *)results tokens:(id)tokens greedyCandidateString:(id)string greedyCandidateTokens:(id)candidateTokens decodingLocale:(id)locale
 {
-  v36 = a4;
-  v11 = a5;
-  v35 = a6;
-  v29 = v11;
-  v34 = a7;
-  v30 = [CRTextDecodingUtils adjustedBeamSearchDecodedString:*a3 greedyDecodedString:v11 decodingLocale:?];
-  if (([v30 isEqualToString:*a3] & 1) == 0)
+  tokensCopy = tokens;
+  stringCopy = string;
+  candidateTokensCopy = candidateTokens;
+  v29 = stringCopy;
+  localeCopy = locale;
+  v30 = [CRTextDecodingUtils adjustedBeamSearchDecodedString:*results greedyDecodedString:stringCopy decodingLocale:?];
+  if (([v30 isEqualToString:*results] & 1) == 0)
   {
     v12 = 0;
-    *a3 = v30;
-    while (v12 < [v36 count])
+    *results = v30;
+    while (v12 < [tokensCopy count])
     {
-      v13 = [v36 objectAtIndexedSubscript:v12];
-      v14 = [v13 string];
-      v15 = [v35 objectAtIndexedSubscript:v12];
-      v16 = [v15 string];
-      v17 = [CRTextDecodingUtils adjustedBeamSearchDecodedString:v14 greedyDecodedString:v16 decodingLocale:v34];
+      v13 = [tokensCopy objectAtIndexedSubscript:v12];
+      string = [v13 string];
+      v15 = [candidateTokensCopy objectAtIndexedSubscript:v12];
+      string2 = [v15 string];
+      v17 = [CRTextDecodingUtils adjustedBeamSearchDecodedString:string greedyDecodedString:string2 decodingLocale:localeCopy];
 
-      v18 = [v36 objectAtIndexedSubscript:v12];
-      v19 = [v18 string];
-      LOBYTE(v16) = [v17 isEqualToString:v19];
+      v18 = [tokensCopy objectAtIndexedSubscript:v12];
+      string3 = [v18 string];
+      LOBYTE(string2) = [v17 isEqualToString:string3];
 
-      if ((v16 & 1) == 0)
+      if ((string2 & 1) == 0)
       {
         v20 = objc_alloc(MEMORY[0x1E6992028]);
-        v33 = [v36 objectAtIndexedSubscript:v12];
-        v32 = [v33 score];
-        v31 = [v36 objectAtIndexedSubscript:v12];
-        v21 = [v31 alignmentScore];
-        v22 = [v36 objectAtIndexedSubscript:v12];
-        v23 = [v22 activationRange];
+        v33 = [tokensCopy objectAtIndexedSubscript:v12];
+        score = [v33 score];
+        v31 = [tokensCopy objectAtIndexedSubscript:v12];
+        alignmentScore = [v31 alignmentScore];
+        v22 = [tokensCopy objectAtIndexedSubscript:v12];
+        activationRange = [v22 activationRange];
         v25 = v24;
-        v26 = [v36 objectAtIndexedSubscript:v12];
-        v27 = [v26 terminatingCharacter];
-        v28 = [v20 initWithString:v17 score:v32 alignmentScore:v21 activationRange:v23 terminatingCharacter:{v25, v27}];
+        v26 = [tokensCopy objectAtIndexedSubscript:v12];
+        terminatingCharacter = [v26 terminatingCharacter];
+        v28 = [v20 initWithString:v17 score:score alignmentScore:alignmentScore activationRange:activationRange terminatingCharacter:{v25, terminatingCharacter}];
 
-        [v36 replaceObjectAtIndex:v12 withObject:v28];
+        [tokensCopy replaceObjectAtIndex:v12 withObject:v28];
       }
 
       ++v12;
@@ -2019,16 +2019,16 @@ LABEL_37:
   }
 }
 
-- (BOOL)_decodeSingleFeatureWithInfo:(id)a3 decodingLocale:(id)a4 greedyDecoder:(id)a5 greedyConfig:(id)a6 beamSearchConfig:(id)a7 imageSize:(CGSize)a8 useCharacterBoxes:(BOOL)a9 lmConfig:(id)a10 error:(id *)a11
+- (BOOL)_decodeSingleFeatureWithInfo:(id)info decodingLocale:(id)locale greedyDecoder:(id)decoder greedyConfig:(id)config beamSearchConfig:(id)searchConfig imageSize:(CGSize)size useCharacterBoxes:(BOOL)boxes lmConfig:(id)self0 error:(id *)self1
 {
-  v285 = a9;
+  boxesCopy = boxes;
   v359 = *MEMORY[0x1E69E9840];
-  selfa = a3;
-  v298 = a4;
-  v278 = a5;
-  v277 = a6;
-  v279 = a7;
-  v281 = a10;
+  selfa = info;
+  localeCopy = locale;
+  decoderCopy = decoder;
+  configCopy = config;
+  searchConfigCopy = searchConfig;
+  lmConfigCopy = lmConfig;
   if (qword_1ED960330 != -1)
   {
     dispatch_once(&qword_1ED960330, &__block_literal_global_35);
@@ -2042,12 +2042,12 @@ LABEL_37:
   }
 
   v282 = Property;
-  v18 = [v282 greedyDecodingResult];
+  greedyDecodingResult = [v282 greedyDecodingResult];
 
-  v326 = self;
-  if (v18)
+  selfCopy = self;
+  if (greedyDecodingResult)
   {
-    v287 = 0;
+    timestepCount = 0;
   }
 
   else if ([(CRCTCCVNLPTextDecoder *)self shouldUseModernizedDecoder])
@@ -2061,7 +2061,7 @@ LABEL_37:
     v21 = v20;
     [(CRCVNLPTransientResult *)v355 modernizedActivationMatrix];
 
-    v287 = *v355;
+    timestepCount = *v355;
     if ([(CRCTCCVNLPTextDecoder *)self shouldReverseActivationMatrix])
     {
       CoreRecognition::decoder::ActivationMatrix::reverseInTime(v355);
@@ -2092,42 +2092,42 @@ LABEL_37:
     }
 
     v24 = v23;
-    v25 = [v24 activationMatrix];
-    [v278 setActivationMatrix:v25];
+    activationMatrix = [v24 activationMatrix];
+    [decoderCopy setActivationMatrix:activationMatrix];
 
-    v26 = [v278 activationMatrix];
-    v287 = [v26 timestepCount];
+    activationMatrix2 = [decoderCopy activationMatrix];
+    timestepCount = [activationMatrix2 timestepCount];
 
-    v27 = [v278 greedyDecodingResultWithConfiguration:v277];
+    v27 = [decoderCopy greedyDecodingResultWithConfiguration:configCopy];
     [v282 setGreedyDecodingResult:v27];
   }
 
   if ([(CRCTCCVNLPTextDecoder *)self shouldUseLM])
   {
-    v28 = [(CRCTCCVNLPTextDecoder *)self subscribedLocales];
-    objc_sync_enter(v28);
-    v29 = [(CRCTCCVNLPTextDecoder *)self subscribedLocales];
-    v30 = [v29 containsObject:v298];
+    subscribedLocales = [(CRCTCCVNLPTextDecoder *)self subscribedLocales];
+    objc_sync_enter(subscribedLocales);
+    subscribedLocales2 = [(CRCTCCVNLPTextDecoder *)self subscribedLocales];
+    v30 = [subscribedLocales2 containsObject:localeCopy];
 
     if ((v30 & 1) == 0)
     {
-      v31 = [(CRCTCCVNLPTextDecoder *)self subscribedLocales];
-      [v31 addObject:v298];
+      subscribedLocales3 = [(CRCTCCVNLPTextDecoder *)self subscribedLocales];
+      [subscribedLocales3 addObject:localeCopy];
 
       v32 = +[CRLanguageResourcesManager sharedManager];
-      [v32 addSubscriber:self forLocale:v298];
+      [v32 addSubscriber:self forLocale:localeCopy];
 
-      v33 = [(CRCTCCVNLPTextDecoder *)self configuration];
-      v34 = [v33 filterWithLM];
+      configuration = [(CRCTCCVNLPTextDecoder *)self configuration];
+      filterWithLM = [configuration filterWithLM];
 
-      if (v34)
+      if (filterWithLM)
       {
         v35 = +[CRLanguageResourcesManager postProcessManager];
-        [v35 addSubscriber:self forLocale:v298];
+        [v35 addSubscriber:self forLocale:localeCopy];
       }
     }
 
-    objc_sync_exit(v28);
+    objc_sync_exit(subscribedLocales);
 
     if ([(CRCTCCVNLPTextDecoder *)self shouldUseModernizedDecoder])
     {
@@ -2140,9 +2140,9 @@ LABEL_37:
       v38 = v37;
       [(CRCVNLPTransientResult *)v355 modernizedActivationMatrix];
 
-      v287 = *v355;
+      timestepCount = *v355;
       v350 = 0;
-      v39 = [(CRCTCCVNLPTextDecoder *)self _cvnlpModernizedDecodingResultForActivationMatrix:v355 decodingLocale:v298 beamSearchConfig:v279 lmConfig:v281 error:&v350];
+      v39 = [(CRCTCCVNLPTextDecoder *)self _cvnlpModernizedDecodingResultForActivationMatrix:v355 decodingLocale:localeCopy beamSearchConfig:searchConfigCopy lmConfig:lmConfigCopy error:&v350];
       v283 = v350;
       if (v357)
       {
@@ -2166,43 +2166,43 @@ LABEL_37:
       }
 
       v41 = v40;
-      v42 = [v41 activationMatrix];
+      activationMatrix3 = [v41 activationMatrix];
 
-      v287 = [v42 timestepCount];
+      timestepCount = [activationMatrix3 timestepCount];
       v349 = 0;
-      v39 = [(CRCTCCVNLPTextDecoder *)self _cvnlpDecodingResultForActivationMatrix:v42 decodingLocale:v298 beamSearchConfig:v279 lmConfig:v281 error:&v349];
+      v39 = [(CRCTCCVNLPTextDecoder *)self _cvnlpDecodingResultForActivationMatrix:activationMatrix3 decodingLocale:localeCopy beamSearchConfig:searchConfigCopy lmConfig:lmConfigCopy error:&v349];
       v283 = v349;
     }
 
-    v284 = [CRCTCCVNLPTextDecoder _cvnlpDecodingResultByRerankingCandidates:v39 decodingLocale:v298];
+    greedyDecodingResult2 = [CRCTCCVNLPTextDecoder _cvnlpDecodingResultByRerankingCandidates:v39 decodingLocale:localeCopy];
   }
 
   else
   {
-    v284 = [v282 greedyDecodingResult];
+    greedyDecodingResult2 = [v282 greedyDecodingResult];
     v283 = 0;
   }
 
-  v43 = v284;
-  if (v284)
+  v43 = greedyDecodingResult2;
+  if (greedyDecodingResult2)
   {
-    v280 = [v284 candidates];
-    v301 = [(CRCTCCVNLPTextDecoder *)self _shouldUseCharacterDecodingToken];
-    if (![v280 count])
+    candidates = [greedyDecodingResult2 candidates];
+    _shouldUseCharacterDecodingToken = [(CRCTCCVNLPTextDecoder *)self _shouldUseCharacterDecodingToken];
+    if (![candidates count])
     {
-      v47 = v280;
+      v47 = candidates;
 LABEL_230:
 
-      v43 = v284;
+      v43 = greedyDecodingResult2;
       goto LABEL_231;
     }
 
-    v296 = [MEMORY[0x1E695DF70] array];
-    if (v285)
+    array = [MEMORY[0x1E695DF70] array];
+    if (boxesCopy)
     {
-      v44 = [v280 firstObject];
-      [v44 tokens];
-      if (v301)
+      firstObject = [candidates firstObject];
+      [firstObject tokens];
+      if (_shouldUseCharacterDecodingToken)
         v45 = {;
         v46 = [CRTextDecodingUtils wordTokensFromCharacterTokens:v45];
       }
@@ -2231,11 +2231,11 @@ LABEL_230:
             }
 
             v52 = *(*(&v345 + 1) + 8 * i);
-            v53 = [v52 fullString];
-            if ([v53 hasPrefix:@" "])
+            fullString = [v52 fullString];
+            if ([fullString hasPrefix:@" "])
             {
-              v54 = [v52 fullString];
-              v55 = [v54 length] > 1;
+              fullString2 = [v52 fullString];
+              v55 = [fullString2 length] > 1;
 
               if (v55)
               {
@@ -2256,7 +2256,7 @@ LABEL_230:
         while (v49);
       }
 
-      if (v301)
+      if (_shouldUseCharacterDecodingToken)
       {
         v56 = v48;
       }
@@ -2266,7 +2266,7 @@ LABEL_230:
         v56 = [CRTextDecodingUtils graphemeClusterTokensFromTokens:v48];
       }
 
-      v48 = [CRTextDecodingUtils filteredTokensFromTokens:v56 falsePositiveFiltering:[(CRCTCCVNLPTextDecoder *)v326 shouldUseFalsePositiveFiltering] keepWhitespaceToken:[(CRCTCCVNLPTextDecoder *)v326 _shouldUseCharacterDecodingToken]];
+      v48 = [CRTextDecodingUtils filteredTokensFromTokens:v56 falsePositiveFiltering:[(CRCTCCVNLPTextDecoder *)selfCopy shouldUseFalsePositiveFiltering] keepWhitespaceToken:[(CRCTCCVNLPTextDecoder *)selfCopy _shouldUseCharacterDecodingToken]];
       v58 = selfa;
       if (selfa)
       {
@@ -2274,23 +2274,23 @@ LABEL_230:
       }
 
       v59 = v58;
-      v60 = [v59 activationMatrix];
-      v311 = [CRTextDecodingUtils characterRangesForTokens:v48 fromActivation:v60 usingCharacterTokens:[(CRCTCCVNLPTextDecoder *)v326 _shouldUseCharacterDecodingToken]];
+      activationMatrix4 = [v59 activationMatrix];
+      v311 = [CRTextDecodingUtils characterRangesForTokens:v48 fromActivation:activationMatrix4 usingCharacterTokens:[(CRCTCCVNLPTextDecoder *)selfCopy _shouldUseCharacterDecodingToken]];
 
-      if (v301)
+      if (_shouldUseCharacterDecodingToken)
       {
-        v61 = [v311 firstObject];
-        v301 = [v61 count] == 0;
+        firstObject2 = [v311 firstObject];
+        _shouldUseCharacterDecodingToken = [firstObject2 count] == 0;
       }
 
       else
       {
-        v301 = 0;
+        _shouldUseCharacterDecodingToken = 0;
       }
 
 LABEL_62:
 
-      self = v326;
+      self = selfCopy;
     }
 
     else
@@ -2298,35 +2298,35 @@ LABEL_62:
       v311 = 0;
     }
 
-    v62 = [(CRCTCCVNLPTextDecoder *)self configuration];
-    if ([v62 filterWithLM])
+    configuration2 = [(CRCTCCVNLPTextDecoder *)self configuration];
+    if ([configuration2 filterWithLM])
     {
-      v63 = [v280 objectAtIndexedSubscript:0];
-      v64 = [(CRCTCCVNLPTextDecoder *)self _wordLMShouldFilterCandidate:v63 inLocale:v298 lmConfig:v281];
+      v63 = [candidates objectAtIndexedSubscript:0];
+      v64 = [(CRCTCCVNLPTextDecoder *)self _wordLMShouldFilterCandidate:v63 inLocale:localeCopy lmConfig:lmConfigCopy];
 
       if (!v64)
       {
         goto LABEL_67;
       }
 
-      v62 = v280;
-      v280 = MEMORY[0x1E695E0F0];
+      configuration2 = candidates;
+      candidates = MEMORY[0x1E695E0F0];
     }
 
 LABEL_67:
-    v289 = [v298 isEqualToString:@"uk-UA"];
-    v297 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v65 = [v282 greedyDecodingResult];
-    v66 = [v65 candidates];
-    v300 = [v66 firstObject];
+    v289 = [localeCopy isEqualToString:@"uk-UA"];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    greedyDecodingResult3 = [v282 greedyDecodingResult];
+    candidates2 = [greedyDecodingResult3 candidates];
+    firstObject3 = [candidates2 firstObject];
 
     v343 = 0u;
     v344 = 0u;
     v341 = 0u;
     v342 = 0u;
-    obj = v280;
+    obj = candidates;
     v67 = [obj countByEnumeratingWithState:&v341 objects:v353 count:16];
-    v68 = v326;
+    v68 = selfCopy;
     v69 = off_1E7BC1000;
     if (v67)
     {
@@ -2344,7 +2344,7 @@ LABEL_67:
           }
 
           v70 = *(*(&v341 + 1) + 8 * j);
-          v324 = [v70 tokens];
+          tokens = [v70 tokens];
           [v70 score];
           v72 = v71;
           newValue = [v70 fullString];
@@ -2368,50 +2368,50 @@ LABEL_67:
 
           if ([(CRCTCCVNLPTextDecoder *)v68 shouldUseLM])
           {
-            v77 = [v324 count];
-            v78 = [v300 tokens];
-            LODWORD(v77) = v77 == [v78 count];
+            v77 = [tokens count];
+            tokens2 = [firstObject3 tokens];
+            LODWORD(v77) = v77 == [tokens2 count];
 
             if (v77)
             {
-              v79 = [v324 mutableCopy];
+              v79 = [tokens mutableCopy];
               v340 = newValue;
-              v80 = [v300 fullString];
-              v81 = [v300 tokens];
-              [CRCTCCVNLPTextDecoder _adjustBeamSearchResults:&v340 tokens:v79 greedyCandidateString:v80 greedyCandidateTokens:v81 decodingLocale:v298];
+              fullString3 = [firstObject3 fullString];
+              tokens3 = [firstObject3 tokens];
+              [CRCTCCVNLPTextDecoder _adjustBeamSearchResults:&v340 tokens:v79 greedyCandidateString:fullString3 greedyCandidateTokens:tokens3 decodingLocale:localeCopy];
               v82 = v340;
 
               v83 = v79;
               newValue = v82;
-              v324 = v83;
+              tokens = v83;
             }
 
-            v68 = v326;
+            v68 = selfCopy;
             v69 = off_1E7BC1000;
           }
 
           v84 = v69[21];
           v85 = [MEMORY[0x1E696AD98] numberWithDouble:v72];
-          v86 = [(CRCTCCVNLPTextDecoder *)v68 configuration];
-          [v86 precisionThreshold];
+          configuration3 = [(CRCTCCVNLPTextDecoder *)v68 configuration];
+          [configuration3 precisionThreshold];
           LODWORD(v84) = [(__objc2_class *)v84 validateProbability:v85 precisionThreshold:[(CRCTCCVNLPTextDecoder *)v68 shouldUseLM] withLM:v87];
 
           if (v84)
           {
-            [newValue stringByTrimmingCharactersInSet:v297];
-            v302 = v88 = v326;
+            [newValue stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+            v302 = v88 = selfCopy;
             if ([v302 length])
             {
-              if ([(CRCTCCVNLPTextDecoder *)v326 _shouldUseCharacterDecodingToken])
+              if ([(CRCTCCVNLPTextDecoder *)selfCopy _shouldUseCharacterDecodingToken])
               {
-                v89 = [CRTextDecodingUtils graphemeClusterTokensFromTokens:v324];
+                v89 = [CRTextDecodingUtils graphemeClusterTokensFromTokens:tokens];
 
-                v324 = v89;
-                v88 = v326;
+                tokens = v89;
+                v88 = selfCopy;
               }
 
-              v90 = [CRTextDecodingUtils filteredTokensFromTokens:v324 falsePositiveFiltering:[(CRCTCCVNLPTextDecoder *)v88 shouldUseFalsePositiveFiltering] keepWhitespaceToken:[(CRCTCCVNLPTextDecoder *)v326 _shouldUseCharacterDecodingToken]];
-              v315 = [CRTextDecodingUtils tokenSequenceStringForTokens:v90 usingCharacterTokens:[(CRCTCCVNLPTextDecoder *)v326 _shouldUseCharacterDecodingToken]];
+              v90 = [CRTextDecodingUtils filteredTokensFromTokens:tokens falsePositiveFiltering:[(CRCTCCVNLPTextDecoder *)v88 shouldUseFalsePositiveFiltering] keepWhitespaceToken:[(CRCTCCVNLPTextDecoder *)selfCopy _shouldUseCharacterDecodingToken]];
+              v315 = [CRTextDecodingUtils tokenSequenceStringForTokens:v90 usingCharacterTokens:[(CRCTCCVNLPTextDecoder *)selfCopy _shouldUseCharacterDecodingToken]];
               v91 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v90, "count")}];
               v338 = 0u;
               v339 = 0u;
@@ -2433,14 +2433,14 @@ LABEL_67:
                     }
 
                     v97 = *(*(&v336 + 1) + 8 * k);
-                    v98 = [v97 string];
-                    v99 = [v98 length];
+                    string = [v97 string];
+                    v99 = [string length];
 
                     v100 = [MEMORY[0x1E696B098] valueWithRange:{v94, v99}];
                     [v91 addObject:v100];
 
-                    v101 = [v97 fullString];
-                    v102 = [v101 length];
+                    fullString4 = [v97 fullString];
+                    v102 = [fullString4 length];
 
                     v94 += v102;
                   }
@@ -2452,24 +2452,24 @@ LABEL_67:
               }
 
               v103 = off_1E7BC1000;
-              if ([(CRCTCCVNLPTextDecoder *)v326 shouldReverseActivationMatrix])
+              if ([(CRCTCCVNLPTextDecoder *)selfCopy shouldReverseActivationMatrix])
               {
-                v104 = [CRTextDecodingUtils reversedTokens:v92 numTimeSteps:v287];
+                v104 = [CRTextDecodingUtils reversedTokens:v92 numTimeSteps:timestepCount];
 
                 v92 = v104;
               }
 
-              if (v301 | ![(CRCTCCVNLPTextDecoder *)v326 _shouldUseCharacterDecodingToken])
+              if (_shouldUseCharacterDecodingToken | ![(CRCTCCVNLPTextDecoder *)selfCopy _shouldUseCharacterDecodingToken])
               {
-                v105 = [CRTextDecodingUtils tokenDelimiterRangesForTokens:v92 usingCharacterTokens:[(CRCTCCVNLPTextDecoder *)v326 _shouldUseCharacterDecodingToken]];
+                v105 = [CRTextDecodingUtils tokenDelimiterRangesForTokens:v92 usingCharacterTokens:[(CRCTCCVNLPTextDecoder *)selfCopy _shouldUseCharacterDecodingToken]];
               }
 
               else
               {
                 v106 = [CRTextDecodingUtils wordTokensFromCharacterTokens:v92];
-                v107 = [CRTextDecodingUtils filteredTokensFromTokens:v106 falsePositiveFiltering:[(CRCTCCVNLPTextDecoder *)v326 shouldUseFalsePositiveFiltering] keepWhitespaceToken:0];
-                v108 = [obj firstObject];
-                v109 = v312 == v108;
+                v107 = [CRTextDecodingUtils filteredTokensFromTokens:v106 falsePositiveFiltering:[(CRCTCCVNLPTextDecoder *)selfCopy shouldUseFalsePositiveFiltering] keepWhitespaceToken:0];
+                firstObject4 = [obj firstObject];
+                v109 = v312 == firstObject4;
 
                 if (v109)
                 {
@@ -2480,8 +2480,8 @@ LABEL_67:
                   }
 
                   v112 = v111;
-                  v113 = [v112 activationMatrix];
-                  v114 = [CRTextDecodingUtils characterRangesForTokens:v107 fromActivation:v113 usingCharacterTokens:0];
+                  activationMatrix5 = [v112 activationMatrix];
+                  v114 = [CRTextDecodingUtils characterRangesForTokens:v107 fromActivation:activationMatrix5 usingCharacterTokens:0];
 
                   v311 = v114;
                 }
@@ -2491,35 +2491,35 @@ LABEL_67:
 
               if ([v105 count])
               {
-                if ([(CRCTCCVNLPTextDecoder *)v326 shouldUseFalsePositiveFiltering])
+                if ([(CRCTCCVNLPTextDecoder *)selfCopy shouldUseFalsePositiveFiltering])
                 {
-                  v115 = [MEMORY[0x1E696AB08] _crUnknownScriptCharacterSet];
-                  v116 = [v315 rangeOfCharacterFromSet:v115] != 0x7FFFFFFFFFFFFFFFLL;
+                  _crUnknownScriptCharacterSet = [MEMORY[0x1E696AB08] _crUnknownScriptCharacterSet];
+                  v116 = [v315 rangeOfCharacterFromSet:_crUnknownScriptCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
 
                   v293 |= v116;
                 }
 
-                if ([CRImageReader languageIsChinese:v298])
+                if ([CRImageReader languageIsChinese:localeCopy])
                 {
-                  v117 = [MEMORY[0x1E696AB08] _crJapaneseKoreanAsUnknownScriptCharacterSet];
-                  v118 = [v315 rangeOfCharacterFromSet:v117] == 0x7FFFFFFFFFFFFFFFLL;
+                  _crJapaneseKoreanAsUnknownScriptCharacterSet = [MEMORY[0x1E696AB08] _crJapaneseKoreanAsUnknownScriptCharacterSet];
+                  v118 = [v315 rangeOfCharacterFromSet:_crJapaneseKoreanAsUnknownScriptCharacterSet] == 0x7FFFFFFFFFFFFFFFLL;
 
                   if (!v118)
                   {
-                    v119 = [MEMORY[0x1E696AB08] _crJapaneseKoreanAsUnknownScriptCharacterSet];
-                    v120 = [v315 componentsSeparatedByCharactersInSet:v119];
+                    _crJapaneseKoreanAsUnknownScriptCharacterSet2 = [MEMORY[0x1E696AB08] _crJapaneseKoreanAsUnknownScriptCharacterSet];
+                    v120 = [v315 componentsSeparatedByCharactersInSet:_crJapaneseKoreanAsUnknownScriptCharacterSet2];
                     v121 = [v120 count];
 
                     v74 = v74 * fmax((v121 - 1) * -0.1 + 1.0, 0.1);
                   }
                 }
 
-                if ([(CRCTCCVNLPTextDecoder *)v326 isLocaleRTL])
+                if ([(CRCTCCVNLPTextDecoder *)selfCopy isLocaleRTL])
                 {
                   v355[0] = 1;
-                  v122 = [(CRCTCCVNLPTextDecoder *)v326 bidiTransform];
+                  bidiTransform = [(CRCTCCVNLPTextDecoder *)selfCopy bidiTransform];
                   v335 = 0;
-                  v123 = [v122 transformVisualToLogical:v315 visualDirectionality:2 logicalBaseDirectionality:v294 baseDirectionalityPredictionMode:1 outTokenizedLogicalOrderIndexes:0 outReorderingPermutation:&v335 outMirroredVisualString:0 outLogicalBaseDirection:v355];
+                  v123 = [bidiTransform transformVisualToLogical:v315 visualDirectionality:2 logicalBaseDirectionality:v294 baseDirectionalityPredictionMode:1 outTokenizedLogicalOrderIndexes:0 outReorderingPermutation:&v335 outMirroredVisualString:0 outLogicalBaseDirection:v355];
                   v124 = v335;
 
                   if (!v294)
@@ -2542,30 +2542,30 @@ LABEL_67:
 
                 if (v289)
                 {
-                  v129 = [v315 _crReplacedUkrainianApostrophes];
+                  _crReplacedUkrainianApostrophes = [v315 _crReplacedUkrainianApostrophes];
 
-                  v315 = v129;
+                  v315 = _crReplacedUkrainianApostrophes;
                 }
 
-                if (!(v301 | ![(CRCTCCVNLPTextDecoder *)v326 _shouldUseCharacterDecodingToken]))
+                if (!(_shouldUseCharacterDecodingToken | ![(CRCTCCVNLPTextDecoder *)selfCopy _shouldUseCharacterDecodingToken]))
                 {
-                  v130 = [v315 combinedTokenSequenceString];
+                  combinedTokenSequenceString = [v315 combinedTokenSequenceString];
 
-                  v315 = v130;
+                  v315 = combinedTokenSequenceString;
                 }
 
-                if ([CRImageReader languageSupportsFullWidthPunctuation:v298])
+                if ([CRImageReader languageSupportsFullWidthPunctuation:localeCopy])
                 {
                   v131 = [(__objc2_class *)v103[21] halfWidthToFullWidthNormalizationForTextString:v315];
 
                   v315 = v131;
                 }
 
-                if ([(CRCTCCVNLPTextDecoder *)v326 isLocaleRTL])
+                if ([(CRCTCCVNLPTextDecoder *)selfCopy isLocaleRTL])
                 {
-                  v132 = [v315 _crStringByRemovingInvalidArabicDiacritics];
+                  _crStringByRemovingInvalidArabicDiacritics = [v315 _crStringByRemovingInvalidArabicDiacritics];
 
-                  v133 = [CRBiDiTransform rearrangeNumericRunsInLogicalString:v132 layoutDirection:v294];
+                  v133 = [CRBiDiTransform rearrangeNumericRunsInLogicalString:_crStringByRemovingInvalidArabicDiacritics layoutDirection:v294];
 
                   v315 = v133;
                 }
@@ -2590,7 +2590,7 @@ LABEL_67:
                   }
                 }
 
-                [v296 addObject:v134];
+                [array addObject:v134];
               }
 
               else
@@ -2600,7 +2600,7 @@ LABEL_67:
             }
           }
 
-          v68 = v326;
+          v68 = selfCopy;
           v69 = off_1E7BC1000;
         }
 
@@ -2617,10 +2617,10 @@ LABEL_67:
     }
 
     os_unfair_lock_lock(&_MergedGlobals_40);
-    v141 = v326;
-    if ([(CRCTCCVNLPTextDecoder *)v326 isLocaleRTL])
+    v141 = selfCopy;
+    if ([(CRCTCCVNLPTextDecoder *)selfCopy isLocaleRTL])
     {
-      if (!v294 && [v296 count])
+      if (!v294 && [array count])
       {
         v143 = CROSLogForCategory(0);
         if (os_log_type_enabled(v143, OS_LOG_TYPE_FAULT))
@@ -2629,7 +2629,7 @@ LABEL_67:
           _os_log_impl(&dword_1B40D2000, v143, OS_LOG_TYPE_FAULT, "Unexpectedly unknown layout direction!", v355, 2u);
         }
 
-        v141 = v326;
+        v141 = selfCopy;
       }
 
       v144 = selfa;
@@ -2657,34 +2657,34 @@ LABEL_67:
       v148 = objc_getProperty(selfa, v146, 64, 1);
       [v148 activationProbability];
       v150 = v149;
-      v151 = [v296 firstObject];
-      v152 = v151 ? v151[2] : 0.0;
+      firstObject5 = [array firstObject];
+      v152 = firstObject5 ? firstObject5[2] : 0.0;
       v153 = v150 < v152;
 
-      v141 = v326;
+      v141 = selfCopy;
       if (!v153)
       {
         v167 = objc_opt_new();
 
         newValuea = 0;
-        v296 = v167;
-        v141 = v326;
+        array = v167;
+        v141 = selfCopy;
         goto LABEL_155;
       }
     }
 
 LABEL_145:
-    if ([v296 count])
+    if ([array count])
     {
       v154 = [CRMutableRecognizedTextRegion alloc];
-      v155 = [selfa lineRegion];
-      newValuea = [(CRRecognizedTextRegion *)v154 initWithType:2 detectedLineRegion:v155];
+      lineRegion = [selfa lineRegion];
+      newValuea = [(CRRecognizedTextRegion *)v154 initWithType:2 detectedLineRegion:lineRegion];
 
-      v156 = [v296 firstObject];
-      v158 = v156;
-      if (v156)
+      firstObject6 = [array firstObject];
+      v158 = firstObject6;
+      if (firstObject6)
       {
-        v159 = objc_getProperty(v156, v157, 24, 1);
+        v159 = objc_getProperty(firstObject6, v157, 24, 1);
       }
 
       else
@@ -2695,11 +2695,11 @@ LABEL_145:
       v160 = v159;
       [(CRRecognizedTextRegion *)newValuea setText:v160];
 
-      v161 = [v296 firstObject];
-      v162 = v161;
-      if (v161)
+      firstObject7 = [array firstObject];
+      v162 = firstObject7;
+      if (firstObject7)
       {
-        v163 = *(v161 + 16);
+        v163 = *(firstObject7 + 16);
       }
 
       else
@@ -2709,11 +2709,11 @@ LABEL_145:
 
       [(CRRecognizedTextRegion *)newValuea setActivationProbability:v163];
 
-      v164 = [v296 firstObject];
-      v165 = v164;
-      if (v164)
+      firstObject8 = [array firstObject];
+      v165 = firstObject8;
+      if (firstObject8)
       {
-        v166 = *(v164 + 8);
+        v166 = *(firstObject8 + 8);
       }
 
       else
@@ -2723,8 +2723,8 @@ LABEL_145:
 
       [(CRRecognizedTextRegion *)newValuea setConfidence:v166];
 
-      [(CRRecognizedTextRegion *)newValuea setLocale:v298];
-      v141 = v326;
+      [(CRRecognizedTextRegion *)newValuea setLocale:localeCopy];
+      v141 = selfCopy;
     }
 
     else
@@ -2733,10 +2733,10 @@ LABEL_145:
     }
 
 LABEL_155:
-    v288 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v296, "count")}];
-    v168 = [(CRCTCCVNLPTextDecoder *)v141 model];
-    [v168 wordBoxesOffsets];
-    if (v301)
+    v288 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(array, "count")}];
+    model = [(CRCTCCVNLPTextDecoder *)v141 model];
+    [model wordBoxesOffsets];
+    if (_shouldUseCharacterDecodingToken)
     {
       v171 = v170;
     }
@@ -2748,9 +2748,9 @@ LABEL_155:
 
     v172 = 0;
     v286 = v171;
-    while (v172 < [v296 count])
+    while (v172 < [array count])
     {
-      v173 = [v296 objectAtIndexedSubscript:v172];
+      v173 = [array objectAtIndexedSubscript:v172];
       v175 = v173;
       if (v173)
       {
@@ -2763,8 +2763,8 @@ LABEL_155:
       }
 
       v325 = v176;
-      v177 = [(CRRecognizedTextRegion *)newValuea boundingQuad];
-      [v177 baselineAngle];
+      boundingQuad = [(CRRecognizedTextRegion *)newValuea boundingQuad];
+      [boundingQuad baselineAngle];
       v319 = v178;
 
       if (v175)
@@ -2791,28 +2791,28 @@ LABEL_155:
       }
 
       v316 = v182;
-      v313 = [(CRFeatureSequenceRecognitionInfo *)selfa featureImageSize];
+      featureImageSize = [(CRFeatureSequenceRecognitionInfo *)selfa featureImageSize];
       v309 = v183;
-      v305 = [(CRFeatureSequenceRecognitionInfo *)selfa bounds];
+      bounds = [(CRFeatureSequenceRecognitionInfo *)selfa bounds];
       v185 = v184;
       v187 = v186;
       v189 = v188;
-      v190 = [(CRFeatureSequenceRecognitionInfo *)selfa rotatedROI];
+      rotatedROI = [(CRFeatureSequenceRecognitionInfo *)selfa rotatedROI];
       v192 = v191;
       v194 = v193;
       v196 = v195;
-      v197 = [(CRCTCCVNLPTextDecoder *)v326 model];
-      v198 = [(CRCTCCVNLPTextDecoder *)v326 configuration];
-      v199 = [(CRCTCCVNLPTextDecoder *)v326 model];
-      [v199 wordBoxesOffsets];
+      model2 = [(CRCTCCVNLPTextDecoder *)selfCopy model];
+      configuration4 = [(CRCTCCVNLPTextDecoder *)selfCopy configuration];
+      model3 = [(CRCTCCVNLPTextDecoder *)selfCopy model];
+      [model3 wordBoxesOffsets];
       v201 = v200;
-      v202 = [(CRCTCCVNLPTextDecoder *)v326 model];
-      [v202 wordBoxesOffsets];
+      model4 = [(CRCTCCVNLPTextDecoder *)selfCopy model];
+      [model4 wordBoxesOffsets];
       v203 = v319;
       v303 = -v203;
       *&v275 = -v203;
       LODWORD(v204) = v316;
-      [CRTextDecodingUtils getWordBoundariesForWhiteSpaceRanges:v181 topPoints:&v334 bottomPoints:&v333 imageSize:v197 scale:v198 featureImageSize:a8.width rect:a8.height rotatedRoi:v204 radians:v313 model:v309 configuration:*&v305 paddingLeft:v185 paddingRight:v187 rangeOffset:v189, *&v190, v192, v194, v196, v275, v201, v205, *&v286];
+      [CRTextDecodingUtils getWordBoundariesForWhiteSpaceRanges:v181 topPoints:&v334 bottomPoints:&v333 imageSize:model2 scale:configuration4 featureImageSize:size.width rect:size.height rotatedRoi:v204 radians:featureImageSize model:v309 configuration:*&bounds paddingLeft:v185 paddingRight:v187 rangeOffset:v189, *&rotatedROI, v192, v194, v196, v275, v201, v205, *&v286];
       v306 = v334;
       v310 = v333;
 
@@ -2827,7 +2827,7 @@ LABEL_155:
       }
 
       v208 = v207;
-      v209 = [(CRRecognizedTextRegion *)newValuea createSubregionsForString:v325 topWhiteSpacePoints:v306 bottomWhiteSpacePoints:v310 hasBoundarySpacePoints:1 hasCharacterAndWordBoundaries:v301 tokenPermutation:v208];
+      v209 = [(CRRecognizedTextRegion *)newValuea createSubregionsForString:v325 topWhiteSpacePoints:v306 bottomWhiteSpacePoints:v310 hasBoundarySpacePoints:1 hasCharacterAndWordBoundaries:_shouldUseCharacterDecodingToken tokenPermutation:v208];
 
       if (v175)
       {
@@ -2877,16 +2877,16 @@ LABEL_155:
               }
 
               v222 = *(*(&v329 + 1) + 8 * m);
-              v223 = [v222 unsignedIntegerValue];
-              if (v223 >= [v209 count])
+              unsignedIntegerValue = [v222 unsignedIntegerValue];
+              if (unsignedIntegerValue >= [v209 count])
               {
                 v225 = CROSLogForCategory(3);
                 if (os_log_type_enabled(v225, OS_LOG_TYPE_ERROR))
                 {
-                  v226 = [v222 unsignedIntegerValue];
+                  unsignedIntegerValue2 = [v222 unsignedIntegerValue];
                   v227 = [v209 count];
                   *v355 = 134218498;
-                  *&v355[4] = v226;
+                  *&v355[4] = unsignedIntegerValue2;
                   *&v355[12] = 2048;
                   *&v355[14] = v227;
                   *&v355[22] = 2112;
@@ -2917,24 +2917,24 @@ LABEL_185:
         v209 = v228;
       }
 
-      if (!v285 || v301)
+      if (!boxesCopy || _shouldUseCharacterDecodingToken)
       {
         v229 = v209;
       }
 
       else
       {
-        v230 = [MEMORY[0x1E695DF70] array];
-        v231 = [(CRCTCCVNLPTextDecoder *)v326 model];
-        [v231 characterBoxesOffsets];
+        array2 = [MEMORY[0x1E695DF70] array];
+        model5 = [(CRCTCCVNLPTextDecoder *)selfCopy model];
+        [model5 characterBoxesOffsets];
         v295 = v232;
 
-        v233 = [(CRCTCCVNLPTextDecoder *)v326 model];
-        [v233 characterBoxesOffsets];
+        model6 = [(CRCTCCVNLPTextDecoder *)selfCopy model];
+        [model6 characterBoxesOffsets];
         v291 = v234;
 
-        v235 = [(CRCTCCVNLPTextDecoder *)v326 model];
-        [v235 characterBoxesOffsets];
+        model7 = [(CRCTCCVNLPTextDecoder *)selfCopy model];
+        [model7 characterBoxesOffsets];
         v290 = v236;
 
         for (n = 0; n < [v209 count]; ++n)
@@ -2942,9 +2942,9 @@ LABEL_185:
           if (v172 || ![v311 count] || n >= objc_msgSend(v311, "count"))
           {
             v238 = [v209 objectAtIndexedSubscript:n];
-            v239 = [v238 createCharacterSubFeaturesTopWhiteSpacePoints:0 bottomWhiteSpacePoints:0 falsePositiveFiltering:{-[CRCTCCVNLPTextDecoder shouldUseFalsePositiveFiltering](v326, "shouldUseFalsePositiveFiltering")}];
+            v239 = [v238 createCharacterSubFeaturesTopWhiteSpacePoints:0 bottomWhiteSpacePoints:0 falsePositiveFiltering:{-[CRCTCCVNLPTextDecoder shouldUseFalsePositiveFiltering](selfCopy, "shouldUseFalsePositiveFiltering")}];
 
-            [v230 addObjectsFromArray:v239];
+            [array2 addObjectsFromArray:v239];
           }
 
           else
@@ -2963,40 +2963,40 @@ LABEL_185:
             }
 
             v321 = v241;
-            v242 = [(CRFeatureSequenceRecognitionInfo *)selfa featureImageSize];
+            featureImageSize2 = [(CRFeatureSequenceRecognitionInfo *)selfa featureImageSize];
             v314 = v243;
-            v317 = v242;
-            v244 = [(CRFeatureSequenceRecognitionInfo *)selfa bounds];
+            v317 = featureImageSize2;
+            bounds2 = [(CRFeatureSequenceRecognitionInfo *)selfa bounds];
             v246 = v245;
             v248 = v247;
             v250 = v249;
-            v251 = [(CRFeatureSequenceRecognitionInfo *)selfa rotatedROI];
+            rotatedROI2 = [(CRFeatureSequenceRecognitionInfo *)selfa rotatedROI];
             v253 = v252;
             v255 = v254;
             v257 = v256;
-            v258 = [(CRCTCCVNLPTextDecoder *)v326 model];
-            v259 = [(CRCTCCVNLPTextDecoder *)v326 configuration];
+            model8 = [(CRCTCCVNLPTextDecoder *)selfCopy model];
+            configuration5 = [(CRCTCCVNLPTextDecoder *)selfCopy configuration];
             *&v275 = v303;
             LODWORD(v260) = v321;
-            [CRTextDecodingUtils getCharacterBoundariesForActivationRanges:v240 topPoints:&v328 bottomPoints:&v327 imageSize:v258 scale:v259 featureImageSize:a8.width rect:a8.height rotatedRoi:v260 radians:v317 model:v314 configuration:*&v244 paddingLeft:v246 paddingRight:v248 rangeOffset:v250, *&v251, v253, v255, v257, v275, v295, v291, v290];
+            [CRTextDecodingUtils getCharacterBoundariesForActivationRanges:v240 topPoints:&v328 bottomPoints:&v327 imageSize:model8 scale:configuration5 featureImageSize:size.width rect:size.height rotatedRoi:v260 radians:v317 model:v314 configuration:*&bounds2 paddingLeft:v246 paddingRight:v248 rangeOffset:v250, *&rotatedROI2, v253, v255, v257, v275, v295, v291, v290];
             v239 = v328;
             v261 = v327;
 
             v262 = [v209 objectAtIndexedSubscript:n];
-            v263 = [v262 createCharacterSubFeaturesTopWhiteSpacePoints:v239 bottomWhiteSpacePoints:v261 falsePositiveFiltering:{-[CRCTCCVNLPTextDecoder shouldUseFalsePositiveFiltering](v326, "shouldUseFalsePositiveFiltering")}];
+            v263 = [v262 createCharacterSubFeaturesTopWhiteSpacePoints:v239 bottomWhiteSpacePoints:v261 falsePositiveFiltering:{-[CRCTCCVNLPTextDecoder shouldUseFalsePositiveFiltering](selfCopy, "shouldUseFalsePositiveFiltering")}];
 
-            [v230 addObjectsFromArray:v263];
+            [array2 addObjectsFromArray:v263];
           }
         }
 
-        v229 = v230;
+        v229 = array2;
       }
 
-      if (v301)
+      if (_shouldUseCharacterDecodingToken)
       {
-        v264 = [v325 combinedTokenSequenceString];
+        combinedTokenSequenceString2 = [v325 combinedTokenSequenceString];
 
-        v325 = v264;
+        v325 = combinedTokenSequenceString2;
       }
 
       v265 = [(CRMutableRecognizedTextRegion *)newValuea mutableCopy];
@@ -3024,7 +3024,7 @@ LABEL_185:
       }
 
       [v265 setActivationProbability:v267];
-      [v265 setWhitespaceInjected:{v301 | objc_msgSend(v265, "whitespaceInjected")}];
+      [v265 setWhitespaceInjected:{_shouldUseCharacterDecodingToken | objc_msgSend(v265, "whitespaceInjected")}];
       if (selfa && *(selfa + 9))
       {
         [v265 setLayoutDirection:?];
@@ -3032,7 +3032,7 @@ LABEL_185:
 
       if (v293)
       {
-        if (!v285 || (v268 = [v311 count], v269 = @" ", !v268))
+        if (!boxesCopy || (v268 = [v311 count], v269 = @" ", !v268))
         {
           v269 = &stru_1F2BB4348;
         }
@@ -3042,11 +3042,11 @@ LABEL_185:
 
       if (!v172)
       {
-        v270 = [v265 subregions];
-        [(CRRecognizedTextRegion *)newValuea setSubregions:v270];
+        subregions = [v265 subregions];
+        [(CRRecognizedTextRegion *)newValuea setSubregions:subregions];
 
-        v271 = [v265 text];
-        [(CRRecognizedTextRegion *)newValuea setText:v271];
+        text = [v265 text];
+        [(CRRecognizedTextRegion *)newValuea setText:text];
 
         -[CRRecognizedTextRegion setWhitespaceInjected:](newValuea, "setWhitespaceInjected:", [v265 whitespaceInjected]);
         if (selfa)
@@ -3078,20 +3078,20 @@ LABEL_185:
 LABEL_231:
 
   objc_autoreleasePoolPop(context);
-  if (v284 && a11 && v283)
+  if (greedyDecodingResult2 && error && v283)
   {
     v273 = v283;
-    *a11 = v283;
+    *error = v283;
   }
 
-  return v284 != 0;
+  return greedyDecodingResult2 != 0;
 }
 
 - (void)releaseUnusedResources
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(CRCTCCVNLPTextDecoder *)self subscribedLocales];
-  objc_sync_enter(v3);
+  subscribedLocales = [(CRCTCCVNLPTextDecoder *)self subscribedLocales];
+  objc_sync_enter(subscribedLocales);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -3134,7 +3134,7 @@ LABEL_231:
     while (v5);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(subscribedLocales);
 }
 
 - (id).cxx_construct

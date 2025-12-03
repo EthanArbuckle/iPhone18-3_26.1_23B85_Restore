@@ -1,65 +1,65 @@
 @interface SessionSceneDelegate
 - (_TtC18ActivityProgressUI20SessionSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SessionSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC18ActivityProgressUI20SessionSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC18ActivityProgressUI20SessionSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC18ActivityProgressUI20SessionSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100004F50(v8, v9);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100004F50(sceneCopy, sessionCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_100005A8C(v4, "SessionSceneDelegate: sceneDidDisconnect with role: %s, activity identifier: %s");
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_100005A8C(disconnectCopy, "SessionSceneDelegate: sceneDidDisconnect with role: %s, activity identifier: %s");
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000057D8(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_1000057D8(activeCopy);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_100005A8C(v4, "SessionSceneDelegate: sceneWillResignActive with role: %s, activity identifier: %s");
+  activeCopy = active;
+  selfCopy = self;
+  sub_100005A8C(activeCopy, "SessionSceneDelegate: sceneWillResignActive with role: %s, activity identifier: %s");
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_100005A8C(v4, "SessionSceneDelegate: sceneWillEnterForeground with role: %s, activity identifier: %s");
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_100005A8C(foregroundCopy, "SessionSceneDelegate: sceneWillEnterForeground with role: %s, activity identifier: %s");
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_100005A8C(v4, "SessionSceneDelegate: sceneDidEnterBackground with role: %s, activity identifier: %s");
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_100005A8C(backgroundCopy, "SessionSceneDelegate: sceneDidEnterBackground with role: %s, activity identifier: %s");
 }
 
 - (_TtC18ActivityProgressUI20SessionSceneDelegate)init

@@ -1,18 +1,18 @@
 @interface MPSImageHistogramSpecification
 - (MPSImageHistogramInfo)histogramInfo;
 - (MPSImageHistogramSpecification)initWithCoder:(NSCoder *)aDecoder device:(id)device;
-- (MPSImageHistogramSpecification)initWithDevice:(id)a3;
+- (MPSImageHistogramSpecification)initWithDevice:(id)device;
 - (MPSImageHistogramSpecification)initWithDevice:(id)device histogramInfo:(const MPSImageHistogramInfo *)histogramInfo;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
 - (void)encodeTransformToCommandBuffer:(id)commandBuffer sourceTexture:(id)source sourceHistogram:(id)sourceHistogram sourceHistogramOffset:(NSUInteger)sourceHistogramOffset desiredHistogram:(id)desiredHistogram desiredHistogramOffset:(NSUInteger)desiredHistogramOffset;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageHistogramSpecification
 
-- (MPSImageHistogramSpecification)initWithDevice:(id)a3
+- (MPSImageHistogramSpecification)initWithDevice:(id)device
 {
   v11[1] = 1;
   v12 = 0u;
@@ -20,7 +20,7 @@
   __asm { FMOV            V0.4S, #1.0 }
 
   v13 = _Q0;
-  return objc_msgSend_initWithDevice_histogramInfo_(self, a2, a3, v11, v3, v4);
+  return objc_msgSend_initWithDevice_histogramInfo_(self, a2, device, v11, v3, v4);
 }
 
 - (MPSImageHistogramInfo)histogramInfo
@@ -249,39 +249,39 @@ LABEL_13:
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@\n\tHistogram Entries:  %lu\n\tHistogram for Alpha: %d \n\tminPixelValue: %f %f %f %f\n\tmaxPixelValue: %f %f %f %f\n\tInternal Transform Buffer: %p", v6, v7, v8, v4, self->histogramEntries, self->histogramAlpha, COERCE_FLOAT(*&self->minPixelValue[7]), COERCE_FLOAT(HIDWORD(*&self->minPixelValue[7])), COERCE_FLOAT(*&self->minPixelValue[15]), COERCE_FLOAT(HIDWORD(*&self->minPixelValue[7])), COERCE_FLOAT(*&self->maxPixelValue[7]), COERCE_FLOAT(HIDWORD(*&self->maxPixelValue[7])), COERCE_FLOAT(*&self->maxPixelValue[15]), COERCE_FLOAT(HIDWORD(*&self->maxPixelValue[7])), *&self->encodeTransform);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v51.receiver = self;
   v51.super_class = MPSImageHistogramSpecification;
   [(MPSUnaryImageKernel *)&v51 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, v4->histogramEntries, @"MPSImageHistogramSpecification.histogramEntries", v6, v7);
-  objc_msgSend_encodeBool_forKey_(a3, v8, v4->histogramAlpha, @"MPSImageHistogramSpecification.histogramAlpha", v9, v10);
-  LODWORD(v11) = *&v4->minPixelValue[7];
-  objc_msgSend_encodeFloat_forKey_(a3, v12, @"MPSImageHistogramSpecification.minPixelValueX", v13, v14, v15, v11);
-  LODWORD(v16) = *&v4->minPixelValue[11];
-  objc_msgSend_encodeFloat_forKey_(a3, v17, @"MPSImageHistogramSpecification.minPixelValueY", v18, v19, v20, v16);
-  LODWORD(v21) = *&v4->minPixelValue[15];
-  objc_msgSend_encodeFloat_forKey_(a3, v22, @"MPSImageHistogramSpecification.minPixelValueZ", v23, v24, v25, v21);
-  LODWORD(v26) = *&v4->maxPixelValue[3];
-  objc_msgSend_encodeFloat_forKey_(a3, v27, @"MPSImageHistogramSpecification.minPixelValueW", v28, v29, v30, v26);
-  v4 = (v4 + 240);
-  LODWORD(v31) = v4->super.super.super.isa;
-  objc_msgSend_encodeFloat_forKey_(a3, v32, @"MPSImageHistogramSpecification.maxPixelValueX", v33, v34, v35, v31);
-  LODWORD(v36) = HIDWORD(v4->super.super.super.isa);
-  objc_msgSend_encodeFloat_forKey_(a3, v37, @"MPSImageHistogramSpecification.maxPixelValueY", v38, v39, v40, v36);
-  LODWORD(v41) = v4->super.super._options;
-  objc_msgSend_encodeFloat_forKey_(a3, v42, @"MPSImageHistogramSpecification.maxPixelValueZ", v43, v44, v45, v41);
-  LODWORD(v46) = HIDWORD(v4->super.super._options);
-  objc_msgSend_encodeFloat_forKey_(a3, v47, @"MPSImageHistogramSpecification.maxPixelValueW", v48, v49, v50, v46);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, selfCopy->histogramEntries, @"MPSImageHistogramSpecification.histogramEntries", v6, v7);
+  objc_msgSend_encodeBool_forKey_(coder, v8, selfCopy->histogramAlpha, @"MPSImageHistogramSpecification.histogramAlpha", v9, v10);
+  LODWORD(v11) = *&selfCopy->minPixelValue[7];
+  objc_msgSend_encodeFloat_forKey_(coder, v12, @"MPSImageHistogramSpecification.minPixelValueX", v13, v14, v15, v11);
+  LODWORD(v16) = *&selfCopy->minPixelValue[11];
+  objc_msgSend_encodeFloat_forKey_(coder, v17, @"MPSImageHistogramSpecification.minPixelValueY", v18, v19, v20, v16);
+  LODWORD(v21) = *&selfCopy->minPixelValue[15];
+  objc_msgSend_encodeFloat_forKey_(coder, v22, @"MPSImageHistogramSpecification.minPixelValueZ", v23, v24, v25, v21);
+  LODWORD(v26) = *&selfCopy->maxPixelValue[3];
+  objc_msgSend_encodeFloat_forKey_(coder, v27, @"MPSImageHistogramSpecification.minPixelValueW", v28, v29, v30, v26);
+  selfCopy = (selfCopy + 240);
+  LODWORD(v31) = selfCopy->super.super.super.isa;
+  objc_msgSend_encodeFloat_forKey_(coder, v32, @"MPSImageHistogramSpecification.maxPixelValueX", v33, v34, v35, v31);
+  LODWORD(v36) = HIDWORD(selfCopy->super.super.super.isa);
+  objc_msgSend_encodeFloat_forKey_(coder, v37, @"MPSImageHistogramSpecification.maxPixelValueY", v38, v39, v40, v36);
+  LODWORD(v41) = selfCopy->super.super._options;
+  objc_msgSend_encodeFloat_forKey_(coder, v42, @"MPSImageHistogramSpecification.maxPixelValueZ", v43, v44, v45, v41);
+  LODWORD(v46) = HIDWORD(selfCopy->super.super._options);
+  objc_msgSend_encodeFloat_forKey_(coder, v47, @"MPSImageHistogramSpecification.maxPixelValueW", v48, v49, v50, v46);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v40.receiver = self;
   v40.super_class = MPSImageHistogramSpecification;
-  v5 = [(MPSUnaryImageKernel *)&v40 copyWithZone:a3 device:a4];
+  v5 = [(MPSUnaryImageKernel *)&v40 copyWithZone:zone device:device];
   v11 = v5;
   if (v5)
   {

@@ -1,19 +1,19 @@
 @interface CNGameCenterAddFriendAction
 + (id)os_log;
-- (CNGameCenterAddFriendAction)initWithContact:(id)a3;
+- (CNGameCenterAddFriendAction)initWithContact:(id)contact;
 - (NSArray)contactCardActionMenuItems;
-- (id)actionTitleForContact:(id)a3;
+- (id)actionTitleForContact:(id)contact;
 - (id)addFriendsMenuProvider;
-- (id)contactPerHandleForContact:(id)a3;
+- (id)contactPerHandleForContact:(id)contact;
 - (id)title;
-- (void)addContactAsFriend:(id)a3;
-- (void)addContactToFriendSuggestionsDenylistWithProxy:(id)a3 completion:(id)a4;
-- (void)createInviteFriendViewControllerForContact:(id)a3 completionHandler:(id)a4;
-- (void)fetchContactAssociationIDWithProxy:(id)a3 completion:(id)a4;
-- (void)inviteViaMessages:(id)a3;
-- (void)performActionWithSender:(id)a3;
-- (void)sendInvitationViaPushToContactAssociationID:(id)a3 withProxy:(id)a4 completion:(id)a5;
-- (void)supportsFriendingViaPushWithProxy:(id)a3 completion:(id)a4;
+- (void)addContactAsFriend:(id)friend;
+- (void)addContactToFriendSuggestionsDenylistWithProxy:(id)proxy completion:(id)completion;
+- (void)createInviteFriendViewControllerForContact:(id)contact completionHandler:(id)handler;
+- (void)fetchContactAssociationIDWithProxy:(id)proxy completion:(id)completion;
+- (void)inviteViaMessages:(id)messages;
+- (void)performActionWithSender:(id)sender;
+- (void)sendInvitationViaPushToContactAssociationID:(id)d withProxy:(id)proxy completion:(id)completion;
+- (void)supportsFriendingViaPushWithProxy:(id)proxy completion:(id)completion;
 @end
 
 @implementation CNGameCenterAddFriendAction
@@ -26,8 +26,8 @@
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(CNContactAction *)self contact];
-  v4 = [(CNGameCenterAddFriendAction *)self contactPerHandleForContact:v3];
+  contact = [(CNContactAction *)self contact];
+  v4 = [(CNGameCenterAddFriendAction *)self contactPerHandleForContact:contact];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__CNGameCenterAddFriendAction_contactCardActionMenuItems__block_invoke;
@@ -120,38 +120,38 @@ void __53__CNGameCenterAddFriendAction_addFriendsMenuProvider__block_invoke_30(u
   }
 }
 
-- (id)actionTitleForContact:(id)a3
+- (id)actionTitleForContact:(id)contact
 {
-  v3 = a3;
-  v4 = [v3 phoneNumbers];
-  v5 = [v4 firstObject];
-  v6 = [v5 value];
-  v7 = [v6 stringValue];
+  contactCopy = contact;
+  phoneNumbers = [contactCopy phoneNumbers];
+  firstObject = [phoneNumbers firstObject];
+  value = [firstObject value];
+  stringValue = [value stringValue];
 
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
-    v8 = [v3 emailAddresses];
-    v9 = [v8 firstObject];
-    v10 = [v9 value];
+    emailAddresses = [contactCopy emailAddresses];
+    firstObject2 = [emailAddresses firstObject];
+    value2 = [firstObject2 value];
   }
 
   else
   {
-    v10 = v7;
+    value2 = stringValue;
   }
 
-  return v10;
+  return value2;
 }
 
-- (id)contactPerHandleForContact:(id)a3
+- (id)contactPerHandleForContact:(id)contact
 {
-  v3 = a3;
-  v4 = [v3 phoneNumbers];
-  v5 = [v4 _cn_map:&__block_literal_global_26];
+  contactCopy = contact;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v5 = [phoneNumbers _cn_map:&__block_literal_global_26];
 
-  v6 = [v3 emailAddresses];
+  emailAddresses = [contactCopy emailAddresses];
 
-  v7 = [v6 _cn_map:&__block_literal_global_29];
+  v7 = [emailAddresses _cn_map:&__block_literal_global_29];
 
   v8 = [v5 arrayByAddingObjectsFromArray:v7];
 
@@ -186,11 +186,11 @@ id __58__CNGameCenterAddFriendAction_contactPerHandleForContact___block_invoke(u
   return v4;
 }
 
-- (void)createInviteFriendViewControllerForContact:(id)a3 completionHandler:(id)a4
+- (void)createInviteFriendViewControllerForContact:(id)contact completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -209,31 +209,31 @@ id __58__CNGameCenterAddFriendAction_contactPerHandleForContact___block_invoke(u
 
   v8 = v7;
   _Block_object_dispose(&v14, 8);
-  v18[0] = v5;
+  v18[0] = contactCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __92__CNGameCenterAddFriendAction_createInviteFriendViewControllerForContact_completionHandler___block_invoke;
   v11[3] = &unk_1E74E18E8;
-  v12 = v6;
-  v10 = v6;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [v7 makeViewControllerForInviteWithRecipients:v9 chatGUID:0 resultHandler:v11];
 }
 
-- (void)addContactToFriendSuggestionsDenylistWithProxy:(id)a3 completion:(id)a4
+- (void)addContactToFriendSuggestionsDenylistWithProxy:(id)proxy completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 utilityServicePrivate];
-  v8 = [(CNContactAction *)self contact];
-  v9 = [v8 identifier];
+  completionCopy = completion;
+  utilityServicePrivate = [proxy utilityServicePrivate];
+  contact = [(CNContactAction *)self contact];
+  identifier = [contact identifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __89__CNGameCenterAddFriendAction_addContactToFriendSuggestionsDenylistWithProxy_completion___block_invoke;
   v11[3] = &unk_1E74E65F0;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v7 denyContact:v9 handler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [utilityServicePrivate denyContact:identifier handler:v11];
 }
 
 void __89__CNGameCenterAddFriendAction_addContactToFriendSuggestionsDenylistWithProxy_completion___block_invoke(uint64_t a1, void *a2)
@@ -252,19 +252,19 @@ void __89__CNGameCenterAddFriendAction_addContactToFriendSuggestionsDenylistWith
   [v5 performBlock:v8];
 }
 
-- (void)sendInvitationViaPushToContactAssociationID:(id)a3 withProxy:(id)a4 completion:(id)a5
+- (void)sendInvitationViaPushToContactAssociationID:(id)d withProxy:(id)proxy completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 friendServicePrivate];
+  completionCopy = completion;
+  dCopy = d;
+  friendServicePrivate = [proxy friendServicePrivate];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __96__CNGameCenterAddFriendAction_sendInvitationViaPushToContactAssociationID_withProxy_completion___block_invoke;
   v12[3] = &unk_1E74E65F0;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
-  [v10 sendFriendInvitationWithPlayerID:0 contactAssociationID:v9 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [friendServicePrivate sendFriendInvitationWithPlayerID:0 contactAssociationID:dCopy completion:v12];
 }
 
 void __96__CNGameCenterAddFriendAction_sendInvitationViaPushToContactAssociationID_withProxy_completion___block_invoke(uint64_t a1, void *a2)
@@ -283,22 +283,22 @@ void __96__CNGameCenterAddFriendAction_sendInvitationViaPushToContactAssociation
   [v5 performBlock:v8];
 }
 
-- (void)fetchContactAssociationIDWithProxy:(id)a3 completion:(id)a4
+- (void)fetchContactAssociationIDWithProxy:(id)proxy completion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 profileServicePrivate];
-  v8 = [(CNContactAction *)self contact];
-  v13[0] = v8;
+  completionCopy = completion;
+  profileServicePrivate = [proxy profileServicePrivate];
+  contact = [(CNContactAction *)self contact];
+  v13[0] = contact;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__CNGameCenterAddFriendAction_fetchContactAssociationIDWithProxy_completion___block_invoke;
   v11[3] = &unk_1E74E18C0;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v7 getContactAssociationIDsForContacts:v9 shouldRefresh:1 completionHandler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [profileServicePrivate getContactAssociationIDsForContacts:v9 shouldRefresh:1 completionHandler:v11];
 }
 
 void __77__CNGameCenterAddFriendAction_fetchContactAssociationIDWithProxy_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -329,23 +329,23 @@ void __77__CNGameCenterAddFriendAction_fetchContactAssociationIDWithProxy_comple
   [v10 performBlock:v13];
 }
 
-- (void)supportsFriendingViaPushWithProxy:(id)a3 completion:(id)a4
+- (void)supportsFriendingViaPushWithProxy:(id)proxy completion:(id)completion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 profileServicePrivate];
-  v8 = [(CNContactAction *)self contact];
-  v9 = [v8 identifier];
-  v14[0] = v9;
+  completionCopy = completion;
+  profileServicePrivate = [proxy profileServicePrivate];
+  contact = [(CNContactAction *)self contact];
+  identifier = [contact identifier];
+  v14[0] = identifier;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__CNGameCenterAddFriendAction_supportsFriendingViaPushWithProxy_completion___block_invoke;
   v12[3] = &unk_1E74E1898;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v7 filterForContactIDsSupportingFriendingViaPushFromContactIDs:v10 withCompletion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [profileServicePrivate filterForContactIDsSupportingFriendingViaPushFromContactIDs:v10 withCompletion:v12];
 }
 
 void __76__CNGameCenterAddFriendAction_supportsFriendingViaPushWithProxy_completion___block_invoke(uint64_t a1, void *a2)
@@ -375,16 +375,16 @@ void __76__CNGameCenterAddFriendAction_supportsFriendingViaPushWithProxy_complet
   [v9 performBlock:v10];
 }
 
-- (void)inviteViaMessages:(id)a3
+- (void)inviteViaMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49__CNGameCenterAddFriendAction_inviteViaMessages___block_invoke;
   v5[3] = &unk_1E74E1848;
   objc_copyWeak(&v6, &location);
-  [(CNGameCenterAddFriendAction *)self createInviteFriendViewControllerForContact:v4 completionHandler:v5];
+  [(CNGameCenterAddFriendAction *)self createInviteFriendViewControllerForContact:messagesCopy completionHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -412,9 +412,9 @@ void __49__CNGameCenterAddFriendAction_inviteViaMessages___block_invoke(uint64_t
   }
 }
 
-- (void)addContactAsFriend:(id)a3
+- (void)addContactAsFriend:(id)friend
 {
-  v4 = a3;
+  friendCopy = friend;
   if (_os_feature_enabled_impl())
   {
     v22 = 0;
@@ -453,8 +453,8 @@ void __49__CNGameCenterAddFriendAction_inviteViaMessages___block_invoke(uint64_t
 
     v8 = v7;
     _Block_object_dispose(&v22, 8);
-    v9 = [v7 currentLocalPlayer];
-    v10 = [v5 proxyForPlayer:v9];
+    currentLocalPlayer = [v7 currentLocalPlayer];
+    v10 = [v5 proxyForPlayer:currentLocalPlayer];
 
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x1E69E9820];
@@ -462,8 +462,8 @@ void __49__CNGameCenterAddFriendAction_inviteViaMessages___block_invoke(uint64_t
     v12[2] = __50__CNGameCenterAddFriendAction_addContactAsFriend___block_invoke;
     v12[3] = &unk_1E74E1820;
     objc_copyWeak(&v16, &location);
-    v13 = v4;
-    v14 = self;
+    v13 = friendCopy;
+    selfCopy = self;
     v11 = v10;
     v15 = v11;
     [(CNGameCenterAddFriendAction *)self supportsFriendingViaPushWithProxy:v11 completion:v12];
@@ -474,7 +474,7 @@ void __49__CNGameCenterAddFriendAction_inviteViaMessages___block_invoke(uint64_t
 
   else
   {
-    [(CNGameCenterAddFriendAction *)self inviteViaMessages:v4];
+    [(CNGameCenterAddFriendAction *)self inviteViaMessages:friendCopy];
   }
 }
 
@@ -608,10 +608,10 @@ LABEL_6:
   }
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = [(CNContactAction *)self contact];
-  [(CNGameCenterAddFriendAction *)self addContactAsFriend:v4];
+  contact = [(CNContactAction *)self contact];
+  [(CNGameCenterAddFriendAction *)self addContactAsFriend:contact];
 }
 
 - (id)title
@@ -622,17 +622,17 @@ LABEL_6:
   return v3;
 }
 
-- (CNGameCenterAddFriendAction)initWithContact:(id)a3
+- (CNGameCenterAddFriendAction)initWithContact:(id)contact
 {
   v9.receiver = self;
   v9.super_class = CNGameCenterAddFriendAction;
-  v3 = [(CNContactAction *)&v9 initWithContact:a3];
+  v3 = [(CNContactAction *)&v9 initWithContact:contact];
   if (v3)
   {
     v4 = +[CNUIContactsEnvironment currentEnvironment];
-    v5 = [v4 defaultSchedulerProvider];
+    defaultSchedulerProvider = [v4 defaultSchedulerProvider];
     schedulerProvider = v3->_schedulerProvider;
-    v3->_schedulerProvider = v5;
+    v3->_schedulerProvider = defaultSchedulerProvider;
 
     v7 = v3;
   }

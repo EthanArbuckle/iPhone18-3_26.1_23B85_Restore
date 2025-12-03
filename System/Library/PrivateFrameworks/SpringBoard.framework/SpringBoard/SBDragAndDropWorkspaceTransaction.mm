@@ -1,9 +1,9 @@
 @interface SBDragAndDropWorkspaceTransaction
-+ (BOOL)_shouldTrackLocationOfDropSession:(id)a3 forSwitcherController:(id)a4 isCurrentlyTracking:(BOOL)a5;
-+ (BOOL)isDragOverFullscreenRegionAtLocation:(CGPoint)a3 inBounds:(CGRect)a4;
-+ (CGRect)sourceSceneInterfaceOrientedBoundsForDropSession:(id)a3 switcherController:(id)a4;
++ (BOOL)_shouldTrackLocationOfDropSession:(id)session forSwitcherController:(id)controller isCurrentlyTracking:(BOOL)tracking;
++ (BOOL)isDragOverFullscreenRegionAtLocation:(CGPoint)location inBounds:(CGRect)bounds;
++ (CGRect)sourceSceneInterfaceOrientedBoundsForDropSession:(id)session switcherController:(id)controller;
 + (CGSize)prototypeSettingsFullscreenActivationRegionSize;
-+ (UIEdgeInsets)_screenInsetsForUIDragDropSession:(id)a3;
++ (UIEdgeInsets)_screenInsetsForUIDragDropSession:(id)session;
 + (double)prototypeSettingsContentDraggingCommandeerInsetForUniversalControl;
 + (double)prototypeSettingsContentDraggingCommandeerWidth;
 + (double)prototypeSettingsContentDraggingFloatingActivationWidth;
@@ -11,79 +11,79 @@
 + (double)prototypeSettingsSideActivationGutterSize;
 + (double)prototypeSettingsWindowTearOffDraggingFloatingActivationWidth;
 + (double)prototypeSettingsWindowTearOffDraggingSideActivationWidth;
-+ (unint64_t)screenEdgeForDragOverSideGutterRegionsAtLocation:(CGPoint)a3 inBounds:(CGRect)a4 totalContentDragGutterWidth:(double)a5 screenInsets:(UIEdgeInsets)a6;
-- (BOOL)_handleSessionDidUpdate:(id)a3;
-- (BOOL)canInterruptForTransitionRequest:(id)a3;
-- (BOOL)matchesUIDragDropSession:(id)a3;
++ (unint64_t)screenEdgeForDragOverSideGutterRegionsAtLocation:(CGPoint)location inBounds:(CGRect)bounds totalContentDragGutterWidth:(double)width screenInsets:(UIEdgeInsets)insets;
+- (BOOL)_handleSessionDidUpdate:(id)update;
+- (BOOL)canInterruptForTransitionRequest:(id)request;
+- (BOOL)matchesUIDragDropSession:(id)session;
 - (CGRect)_platterFrameInSwitcherView;
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4;
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity;
 - (CGSize)_defaultReferenceSizeForSceneView;
-- (CGSize)_platterSizeForDropAction:(int64_t)a3 proposedDropLayoutState:(id)a4 setDown:(BOOL)a5;
-- (CGSize)_platterSizeForSwitcherDropContext:(id)a3 setDown:(BOOL)a4;
-- (SBDragAndDropWorkspaceTransaction)initWithTransitionRequest:(id)a3 switcherController:(id)a4 dropSession:(id)a5 delegate:(id)a6;
+- (CGSize)_platterSizeForDropAction:(int64_t)action proposedDropLayoutState:(id)state setDown:(BOOL)down;
+- (CGSize)_platterSizeForSwitcherDropContext:(id)context setDown:(BOOL)down;
+- (SBDragAndDropWorkspaceTransaction)initWithTransitionRequest:(id)request switcherController:(id)controller dropSession:(id)session delegate:(id)delegate;
 - (double)_platterScale;
-- (double)_platterScaleForSwitcherDropContext:(id)a3;
-- (double)_platterSourceViewScaleForSetDropAction:(int64_t)a3 setDown:(BOOL)a4;
-- (id)_cornerRadiusConfigurationForDropAction:(int64_t)a3 proposedDropLayoutState:(id)a4 setDown:(BOOL)a5 mode:(unint64_t)a6;
-- (id)_cornerRadiusForSwitcherDragContext:(id)a3 setDown:(BOOL)a4 sourceViewScale:(double)a5;
-- (id)_createPlatterPreviewForApplication:(id)a3 withSourceView:(id)a4 dropSession:(id)a5;
-- (id)_currentGestureEventForGesture:(id)a3;
-- (id)_dragPreviewForDroppingItem:(id)a3 withDefault:(id)a4;
-- (id)_dropInteraction:(id)a3 customSpringAnimationBehaviorForDroppingItem:(id)a4;
+- (double)_platterScaleForSwitcherDropContext:(id)context;
+- (double)_platterSourceViewScaleForSetDropAction:(int64_t)action setDown:(BOOL)down;
+- (id)_cornerRadiusConfigurationForDropAction:(int64_t)action proposedDropLayoutState:(id)state setDown:(BOOL)down mode:(unint64_t)mode;
+- (id)_cornerRadiusForSwitcherDragContext:(id)context setDown:(BOOL)down sourceViewScale:(double)scale;
+- (id)_createPlatterPreviewForApplication:(id)application withSourceView:(id)view dropSession:(id)session;
+- (id)_currentGestureEventForGesture:(id)gesture;
+- (id)_dragPreviewForDroppingItem:(id)item withDefault:(id)default;
+- (id)_dropInteraction:(id)interaction customSpringAnimationBehaviorForDroppingItem:(id)item;
 - (id)_iconManager;
-- (id)_transitionRequestForDropAction:(int64_t)a3;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)layoutStateForApplicationTransitionContext:(id)a3;
-- (int64_t)_layoutRoleForDropAction:(int64_t)a3;
-- (void)_addChildWorkspaceTransaction:(id)a3;
+- (id)_transitionRequestForDropAction:(int64_t)action;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)layoutStateForApplicationTransitionContext:(id)context;
+- (int64_t)_layoutRoleForDropAction:(int64_t)action;
+- (void)_addChildWorkspaceTransaction:(id)transaction;
 - (void)_begin;
-- (void)_childTransactionDidComplete:(id)a3;
+- (void)_childTransactionDidComplete:(id)complete;
 - (void)_cleanUpAndCompleteTransactionIfNecessary;
-- (void)_commitRecencyModelUpdateForDropContext:(id)a3;
-- (void)_configurePlatterPreview:(id)a3 forSceneHandle:(id)a4 completion:(id)a5;
+- (void)_commitRecencyModelUpdateForDropContext:(id)context;
+- (void)_configurePlatterPreview:(id)preview forSceneHandle:(id)handle completion:(id)completion;
 - (void)_didComplete;
-- (void)_didInterruptWithReason:(id)a3;
-- (void)_displayLinkDidUpdate:(id)a3;
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3;
+- (void)_didInterruptWithReason:(id)reason;
+- (void)_displayLinkDidUpdate:(id)update;
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging;
 - (void)_endDragAndDropFluidGesture;
-- (void)_getPlatterDiffuseShadowParameters:(SBDragPreviewShadowParameters *)a3 rimShadowParameters:(SBDragPreviewShadowParameters *)a4 diffuseFilters:(id *)a5 rimFilters:(id *)a6 forDropAction:(int64_t)a7 setDown:(BOOL)a8 mode:(unint64_t)a9 userInterfaceStyle:(int64_t)a10;
-- (void)_handleSessionDidEnd:(id)a3;
-- (void)_handleSessionDidPerformDrop:(id)a3;
-- (void)_handleWillAnimateDropWithAnimator:(id)a3;
+- (void)_getPlatterDiffuseShadowParameters:(SBDragPreviewShadowParameters *)parameters rimShadowParameters:(SBDragPreviewShadowParameters *)shadowParameters diffuseFilters:(id *)filters rimFilters:(id *)rimFilters forDropAction:(int64_t)action setDown:(BOOL)down mode:(unint64_t)mode userInterfaceStyle:(int64_t)self0;
+- (void)_handleSessionDidEnd:(id)end;
+- (void)_handleSessionDidPerformDrop:(id)drop;
+- (void)_handleWillAnimateDropWithAnimator:(id)animator;
 - (void)_interruptForDragExitedDropZoneIfNecessary;
-- (void)_noteSwitcherDropAnimationCompletedIfNeededWithContext:(id)a3;
+- (void)_noteSwitcherDropAnimationCompletedIfNeededWithContext:(id)context;
 - (void)_runFinalLayoutStateTransaction;
 - (void)_setupPlatterPreviewForContentDrag;
 - (void)_uncommandeerContentDrag;
-- (void)_updateActiveSourceViewProviderWithDragState:(unint64_t)a3;
-- (void)_updateAnchorPointForPlatterPreview:(id)a3 dragPreview:(id)a4 withSourceViewBounds:(CGRect)a5 location:(CGPoint)a6;
-- (void)_updateCurrentDropActionForSession:(id)a3;
+- (void)_updateActiveSourceViewProviderWithDragState:(unint64_t)state;
+- (void)_updateAnchorPointForPlatterPreview:(id)preview dragPreview:(id)dragPreview withSourceViewBounds:(CGRect)bounds location:(CGPoint)location;
+- (void)_updateCurrentDropActionForSession:(id)session;
 - (void)_updateCurrentDropActionProposedLayoutState;
-- (void)_updateForWindowDragForSession:(id)a3;
-- (void)_updatePlatterPreviewForSetDown:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateForWindowDragForSession:(id)session;
+- (void)_updatePlatterPreviewForSetDown:(BOOL)down animated:(BOOL)animated;
 - (void)_updatePlatterPreviewWithUpdatedSourceView;
 - (void)_updatePlatterViewBlurForDropCompletion;
-- (void)_willInterruptForTransitionRequest:(id)a3;
-- (void)_willInterruptWithReason:(id)a3;
+- (void)_willInterruptForTransitionRequest:(id)request;
+- (void)_willInterruptWithReason:(id)reason;
 - (void)dealloc;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionDidMove:(id)a4;
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4;
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
-- (void)transaction:(id)a3 didCommitSceneUpdate:(id)a4;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionDidMove:(id)move;
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop;
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
+- (void)transaction:(id)transaction didCommitSceneUpdate:(id)update;
 @end
 
 @implementation SBDragAndDropWorkspaceTransaction
 
-+ (UIEdgeInsets)_screenInsetsForUIDragDropSession:(id)a3
++ (UIEdgeInsets)_screenInsetsForUIDragDropSession:(id)session
 {
   v4 = SBFSafeProtocolCast();
   v5 = 0.0;
@@ -91,18 +91,18 @@
   if ([v4 _drivenByPointer])
   {
     v7 = +[SBWorkspace mainWorkspace];
-    v8 = [v7 universalControlServer];
-    v9 = [v8 externalProcessActiveOnScreenEdges];
+    universalControlServer = [v7 universalControlServer];
+    externalProcessActiveOnScreenEdges = [universalControlServer externalProcessActiveOnScreenEdges];
 
-    if ((v9 & 2) != 0)
+    if ((externalProcessActiveOnScreenEdges & 2) != 0)
     {
-      [a1 prototypeSettingsContentDraggingCommandeerInsetForUniversalControl];
+      [self prototypeSettingsContentDraggingCommandeerInsetForUniversalControl];
       v6 = v10;
     }
 
-    if ((v9 & 8) != 0)
+    if ((externalProcessActiveOnScreenEdges & 8) != 0)
     {
-      [a1 prototypeSettingsContentDraggingCommandeerInsetForUniversalControl];
+      [self prototypeSettingsContentDraggingCommandeerInsetForUniversalControl];
       v5 = v11;
     }
   }
@@ -118,21 +118,21 @@
   return result;
 }
 
-+ (BOOL)_shouldTrackLocationOfDropSession:(id)a3 forSwitcherController:(id)a4 isCurrentlyTracking:(BOOL)a5
++ (BOOL)_shouldTrackLocationOfDropSession:(id)session forSwitcherController:(id)controller isCurrentlyTracking:(BOOL)tracking
 {
-  v5 = a5;
+  trackingCopy = tracking;
   v144[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 uiDragDropSession];
-  v11 = [v8 localContext];
-  v12 = [v11 startLocation];
+  sessionCopy = session;
+  controllerCopy = controller;
+  uiDragDropSession = [sessionCopy uiDragDropSession];
+  localContext = [sessionCopy localContext];
+  startLocation = [localContext startLocation];
 
-  if (v12 == 8 || (SBApplicationDropSessionGetDragItem(v10), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+  if (startLocation == 8 || (SBApplicationDropSessionGetDragItem(uiDragDropSession), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
-    v14 = [v9 contentViewController];
+    contentViewController = [controllerCopy contentViewController];
     v15 = objc_opt_class();
-    v16 = v14;
+    v16 = contentViewController;
     if (v15)
     {
       if (objc_opt_isKindOfClass())
@@ -153,26 +153,26 @@
 
     v18 = v17;
 
-    v19 = [v18 view];
-    v20 = [v19 window];
-    v21 = [v20 screen];
-    v22 = [v21 fixedCoordinateSpace];
+    view = [v18 view];
+    window = [view window];
+    screen = [window screen];
+    fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-    v23 = [v18 view];
-    [v10 locationInView:v23];
+    view2 = [v18 view];
+    [uiDragDropSession locationInView:view2];
     v25 = v24;
     v27 = v26;
 
-    v28 = [v18 view];
-    [v28 convertPoint:v22 toCoordinateSpace:{v25, v27}];
+    view3 = [v18 view];
+    [view3 convertPoint:fixedCoordinateSpace toCoordinateSpace:{v25, v27}];
     v112 = v30;
     v113 = v29;
 
     v144[0] = *MEMORY[0x277D78028];
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v144 count:1];
-    LODWORD(v20) = [v10 hasItemsConformingToTypeIdentifiers:v31];
+    LODWORD(window) = [uiDragDropSession hasItemsConformingToTypeIdentifiers:v31];
 
-    if (v20 && ([SBApp notificationDispatcher], v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "bannerDestination"), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v33, "presentedBannerScreenFrame"), v150 = CGRectInset(v149, -50.0, -50.0), x = v150.origin.x, y = v150.origin.y, width = v150.size.width, height = v150.size.height, v33, v32, v151.origin.x = x, v151.origin.y = y, v151.size.width = width, v151.size.height = height, v145.y = v112, v145.x = v113, CGRectContainsPoint(v151, v145)) || (objc_msgSend(v18, "view"), v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v38, "bounds"), v40 = v39, v42 = v41, v44 = v43, v46 = v45, v38, UIRectInset(), v146.x = v25, v146.y = v27, !CGRectContainsPoint(v152, v146)))
+    if (window && ([SBApp notificationDispatcher], v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "bannerDestination"), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v33, "presentedBannerScreenFrame"), v150 = CGRectInset(v149, -50.0, -50.0), x = v150.origin.x, y = v150.origin.y, width = v150.size.width, height = v150.size.height, v33, v32, v151.origin.x = x, v151.origin.y = y, v151.size.width = width, v151.size.height = height, v145.y = v112, v145.x = v113, CGRectContainsPoint(v151, v145)) || (objc_msgSend(v18, "view"), v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v38, "bounds"), v40 = v39, v42 = v41, v44 = v43, v46 = v45, v38, UIRectInset(), v146.x = v25, v146.y = v27, !CGRectContainsPoint(v152, v146)))
     {
       v54 = 0;
 LABEL_64:
@@ -180,54 +180,54 @@ LABEL_64:
       goto LABEL_65;
     }
 
-    v47 = [v9 windowManagementContext];
-    v48 = [v47 isChamoisOrFlexibleWindowing];
+    windowManagementContext = [controllerCopy windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-    if (!v48)
+    if (!isChamoisOrFlexibleWindowing)
     {
 LABEL_29:
-      v58 = [a1 isDragOverFullscreenRegionAtLocation:v25 inBounds:{v27, v40, v42, v44, v46}];
+      v58 = [self isDragOverFullscreenRegionAtLocation:v25 inBounds:{v27, v40, v42, v44, v46}];
       v138[0] = MEMORY[0x277D85DD0];
       v138[1] = 3221225472;
       v138[2] = __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_forSwitcherController_isCurrentlyTracking___block_invoke;
       v138[3] = &unk_2783BA210;
-      v140 = a1;
+      selfCopy = self;
       v141 = v25;
       v142 = v27;
-      v139 = v10;
+      v139 = uiDragDropSession;
       v111 = MEMORY[0x223D6F7F0](v138);
-      v59 = [v8 dropZones];
-      if (v59)
+      dropZones = [sessionCopy dropZones];
+      if (dropZones)
       {
-        if (v59 != 2)
+        if (dropZones != 2)
         {
-          if (v59 != 1)
+          if (dropZones != 1)
           {
 LABEL_55:
             v54 = 0;
             goto LABEL_63;
           }
 
-          v60 = [v9 windowManagementContext];
-          v61 = [v60 isFlexibleWindowingEnabled];
+          windowManagementContext2 = [controllerCopy windowManagementContext];
+          isFlexibleWindowingEnabled = [windowManagementContext2 isFlexibleWindowingEnabled];
 
-          if (v61)
+          if (isFlexibleWindowingEnabled)
           {
-            [a1 prototypeSettingsContentDraggingSideActivationWidth];
+            [self prototypeSettingsContentDraggingSideActivationWidth];
           }
 
           else
           {
-            if (v5)
+            if (trackingCopy)
             {
-              [a1 prototypeSettingsContentDraggingSideActivationWidth];
+              [self prototypeSettingsContentDraggingSideActivationWidth];
               v72 = v71;
-              [a1 prototypeSettingsContentDraggingFloatingActivationWidth];
+              [self prototypeSettingsContentDraggingFloatingActivationWidth];
               v63.n128_f64[0] = v72 + v73;
 LABEL_41:
               if ((v58 & 1) != 0 || v111[2](v40, v42, v44, v46, v63))
               {
-                v74 = [v9 layoutState];
+                layoutState = [controllerCopy layoutState];
                 v132 = 0;
                 v133 = &v132;
                 v134 = 0x3032000000;
@@ -246,34 +246,34 @@ LABEL_41:
                 v119[2] = __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_forSwitcherController_isCurrentlyTracking___block_invoke_81;
                 v119[3] = &unk_2783BA238;
                 v122 = &v132;
-                v108 = v74;
+                v108 = layoutState;
                 v120 = v108;
                 v124 = v25;
                 v125 = v27;
-                v121 = v9;
+                v121 = controllerCopy;
                 v123 = &v126;
                 SBLayoutRoleEnumerateValidRoles(v119);
-                v76 = [MEMORY[0x277D0AAD8] sharedInstance];
-                v77 = [v133[5] uniqueIdentifier];
-                v109 = [v76 sceneWithIdentifier:v77];
+                mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+                uniqueIdentifier = [v133[5] uniqueIdentifier];
+                v109 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:uniqueIdentifier];
 
                 if (v109 && ([v109 clientSettings], v78 = objc_claimAutoreleasedReturnValue(), v79 = objc_msgSend(v78, "isUISubclass"), v78, v79))
                 {
-                  v80 = [v18 view];
-                  [v80 convertRect:v22 toCoordinateSpace:{v127[4], v127[5], v127[6], v127[7]}];
+                  view4 = [v18 view];
+                  [view4 convertRect:fixedCoordinateSpace toCoordinateSpace:{v127[4], v127[5], v127[6], v127[7]}];
                   v82 = v81;
                   v84 = v83;
                   v86 = v85;
                   v88 = v87;
 
-                  v89 = [v109 clientSettings];
-                  [v89 multitaskingDragExclusionRects];
+                  clientSettings = [v109 clientSettings];
+                  [clientSettings multitaskingDragExclusionRects];
                   v117 = 0u;
                   v118 = 0u;
                   v115 = 0u;
                   obj = v116 = 0u;
                   v90 = [obj countByEnumeratingWithState:&v115 objects:v143 count:16];
-                  v107 = v89;
+                  v107 = clientSettings;
                   if (v90)
                   {
                     v91 = *v116;
@@ -291,8 +291,8 @@ LABEL_41:
                         v96 = v95;
                         v98 = v97;
                         v100 = v99;
-                        v101 = [SBSceneLayoutCoordinateSpace coordinateSpaceForFrame:v22 withinCoordinateSpace:v82, v84, v86, v88];
-                        [v101 convertRect:v22 toCoordinateSpace:{v94, v96, v98, v100}];
+                        v101 = [SBSceneLayoutCoordinateSpace coordinateSpaceForFrame:fixedCoordinateSpace withinCoordinateSpace:v82, v84, v86, v88];
+                        [v101 convertRect:fixedCoordinateSpace toCoordinateSpace:{v94, v96, v98, v100}];
                         v102 = v156.origin.x;
                         v103 = v156.origin.y;
                         v104 = v156.size.width;
@@ -342,18 +342,18 @@ LABEL_61:
               goto LABEL_55;
             }
 
-            [a1 prototypeSettingsContentDraggingCommandeerWidth];
+            [self prototypeSettingsContentDraggingCommandeerWidth];
           }
 
           v63.n128_u64[0] = v62;
           goto LABEL_41;
         }
 
-        [a1 prototypeSettingsWindowTearOffDraggingSideActivationWidth];
+        [self prototypeSettingsWindowTearOffDraggingSideActivationWidth];
         v114 = v64;
-        [a1 prototypeSettingsWindowTearOffDraggingFloatingActivationWidth];
+        [self prototypeSettingsWindowTearOffDraggingFloatingActivationWidth];
         v66 = v65;
-        [a1 sourceSceneInterfaceOrientedBoundsForDropSession:v8 switcherController:v9];
+        [self sourceSceneInterfaceOrientedBoundsForDropSession:sessionCopy switcherController:controllerCopy];
         v67 = v154.origin.x;
         v68 = v154.origin.y;
         v69 = v154.size.width;
@@ -380,17 +380,17 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    v49 = [v9 windowManagementContext];
-    if ([v49 isAutomaticStageCreationEnabled])
+    windowManagementContext3 = [controllerCopy windowManagementContext];
+    if ([windowManagementContext3 isAutomaticStageCreationEnabled])
     {
-      v50 = [v18 prefersStripHiddenAndDisabled];
+      prefersStripHiddenAndDisabled = [v18 prefersStripHiddenAndDisabled];
 
-      if ((v50 & 1) != 0 || ![v18 _areContinuousExposeStripsUnoccluded])
+      if ((prefersStripHiddenAndDisabled & 1) != 0 || ![v18 _areContinuousExposeStripsUnoccluded])
       {
         v53 = 0;
 LABEL_22:
-        v55 = [v8 dropZones];
-        if (v55 == 1)
+        dropZones2 = [sessionCopy dropZones];
+        if (dropZones2 == 1)
         {
           v56 = [v18 _itemContainerAtLocation:0 environment:{v25, v27}];
           v57 = v56;
@@ -406,7 +406,7 @@ LABEL_22:
           }
         }
 
-        else if (!v55)
+        else if (!dropZones2)
         {
           v54 = !v53;
           goto LABEL_64;
@@ -415,8 +415,8 @@ LABEL_22:
         goto LABEL_29;
       }
 
-      v49 = [v18 windowingConfiguration];
-      [v49 stripWidth];
+      windowManagementContext3 = [v18 windowingConfiguration];
+      [windowManagementContext3 stripWidth];
       v52 = v51;
       if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
       {
@@ -505,30 +505,30 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
   }
 }
 
-+ (CGRect)sourceSceneInterfaceOrientedBoundsForDropSession:(id)a3 switcherController:(id)a4
++ (CGRect)sourceSceneInterfaceOrientedBoundsForDropSession:(id)session switcherController:(id)controller
 {
-  v5 = a4;
-  v6 = [a3 systemSession];
-  v7 = [v6 info];
+  controllerCopy = controller;
+  systemSession = [session systemSession];
+  info = [systemSession info];
 
   v8 = +[SBApplicationController sharedInstance];
-  v9 = [v8 applicationWithPid:{objc_msgSend(v7, "processIdentifier")}];
+  v9 = [v8 applicationWithPid:{objc_msgSend(info, "processIdentifier")}];
 
-  v10 = [v5 windowScene];
-  v11 = [v10 sceneManager];
+  windowScene = [controllerCopy windowScene];
+  sceneManager = [windowScene sceneManager];
 
-  v12 = [v9 bundleIdentifier];
-  v13 = [v7 sceneIdentifier];
-  v14 = [v11 sceneIdentifierForBundleIdentifier:v12 uniqueIdentifier:v13];
+  bundleIdentifier = [v9 bundleIdentifier];
+  sceneIdentifier = [info sceneIdentifier];
+  v14 = [sceneManager sceneIdentifierForBundleIdentifier:bundleIdentifier uniqueIdentifier:sceneIdentifier];
 
-  v15 = [v5 layoutState];
-  v16 = [v15 elementWithIdentifier:v14];
+  layoutState = [controllerCopy layoutState];
+  v16 = [layoutState elementWithIdentifier:v14];
   v17 = v16;
   if (v16)
   {
     if ([v16 layoutRole] == 3)
     {
-      [v5 frameForFloatingAppLayoutInInterfaceOrientation:objc_msgSend(v15 floatingConfiguration:{"interfaceOrientation"), objc_msgSend(v15, "floatingConfiguration")}];
+      [controllerCopy frameForFloatingAppLayoutInInterfaceOrientation:objc_msgSend(layoutState floatingConfiguration:{"interfaceOrientation"), objc_msgSend(layoutState, "floatingConfiguration")}];
       v19 = v18;
       v21 = v20;
       v23 = v22;
@@ -537,10 +537,10 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
 
     else
     {
-      v26 = [v5 interfaceOrientationForLayoutElement:v17];
-      v27 = [v17 layoutRole];
-      v28 = [v15 appLayout];
-      [v5 frameForItemWithRole:v27 inMainAppLayout:v28 interfaceOrientation:v26];
+      v26 = [controllerCopy interfaceOrientationForLayoutElement:v17];
+      layoutRole = [v17 layoutRole];
+      appLayout = [layoutState appLayout];
+      [controllerCopy frameForItemWithRole:layoutRole inMainAppLayout:appLayout interfaceOrientation:v26];
       v19 = v29;
       v21 = v30;
       v23 = v31;
@@ -567,11 +567,11 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
   return result;
 }
 
-+ (BOOL)isDragOverFullscreenRegionAtLocation:(CGPoint)a3 inBounds:(CGRect)a4
++ (BOOL)isDragOverFullscreenRegionAtLocation:(CGPoint)location inBounds:(CGRect)bounds
 {
-  y = a3.y;
-  x = a3.x;
-  [a1 prototypeSettingsFullscreenActivationRegionSize];
+  y = location.y;
+  x = location.x;
+  [self prototypeSettingsFullscreenActivationRegionSize];
   SBRectWithSize();
   UIRectCenteredXInRect();
   v10 = x;
@@ -580,19 +580,19 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-+ (unint64_t)screenEdgeForDragOverSideGutterRegionsAtLocation:(CGPoint)a3 inBounds:(CGRect)a4 totalContentDragGutterWidth:(double)a5 screenInsets:(UIEdgeInsets)a6
++ (unint64_t)screenEdgeForDragOverSideGutterRegionsAtLocation:(CGPoint)location inBounds:(CGRect)bounds totalContentDragGutterWidth:(double)width screenInsets:(UIEdgeInsets)insets
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.x;
-  v12 = a6.left + CGRectGetMinX(a4);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = location.x;
+  v12 = insets.left + CGRectGetMinX(bounds);
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
   v19.size.height = height;
-  v13 = CGRectGetMinX(v19) + a5;
+  v13 = CGRectGetMinX(v19) + width;
   if (v11 > v12 && v11 < v13)
   {
     return 2;
@@ -602,12 +602,12 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
   v20.origin.y = y;
   v20.size.width = width;
   v20.size.height = height;
-  v15 = CGRectGetMaxX(v20) - a6.right;
+  v15 = CGRectGetMaxX(v20) - insets.right;
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
-  v16 = CGRectGetMaxX(v21) - a5;
+  v16 = CGRectGetMaxX(v21) - width;
   if (v11 >= v15 || v11 <= v16)
   {
     return 0;
@@ -619,22 +619,22 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
   }
 }
 
-- (SBDragAndDropWorkspaceTransaction)initWithTransitionRequest:(id)a3 switcherController:(id)a4 dropSession:(id)a5 delegate:(id)a6
+- (SBDragAndDropWorkspaceTransaction)initWithTransitionRequest:(id)request switcherController:(id)controller dropSession:(id)session delegate:(id)delegate
 {
   v76 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  obj = a4;
-  v67 = a5;
-  v64 = a6;
+  requestCopy = request;
+  obj = controller;
+  sessionCopy = session;
+  delegateCopy = delegate;
   v74.receiver = self;
   v74.super_class = SBDragAndDropWorkspaceTransaction;
-  v62 = v10;
-  v11 = [(SBMainWorkspaceTransaction *)&v74 initWithTransitionRequest:v10];
+  v62 = requestCopy;
+  v11 = [(SBMainWorkspaceTransaction *)&v74 initWithTransitionRequest:requestCopy];
   if (v11)
   {
-    v12 = [obj contentViewController];
+    contentViewController = [obj contentViewController];
     v13 = objc_opt_class();
-    v14 = v12;
+    v14 = contentViewController;
     if (v13)
     {
       if (objc_opt_isKindOfClass())
@@ -655,14 +655,14 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
 
     v61 = v15;
 
-    v16 = [obj windowScene];
-    v65 = [v16 sceneManager];
+    windowScene = [obj windowScene];
+    sceneManager = [windowScene sceneManager];
 
     objc_storeWeak(v11 + 26, obj);
     objc_storeWeak(v11 + 27, v61);
-    objc_storeWeak(v11 + 28, v65);
-    objc_storeWeak(v11 + 29, v64);
-    objc_storeStrong(v11 + 33, a5);
+    objc_storeWeak(v11 + 28, sceneManager);
+    objc_storeWeak(v11 + 29, delegateCopy);
+    objc_storeStrong(v11 + 33, session);
     *(v11 + 34) = 0;
     *(v11 + 39) = 0;
     *(v11 + 344) = SBInvalidSize;
@@ -675,34 +675,34 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
     *(v11 + 58) = v19;
 
     v21 = +[SBAppSwitcherDomain rootSettings];
-    v22 = [v21 windowingSettings];
+    windowingSettings = [v21 windowingSettings];
     v23 = *(v11 + 59);
-    *(v11 + 59) = v22;
+    *(v11 + 59) = windowingSettings;
 
-    v24 = [obj layoutState];
+    layoutState = [obj layoutState];
     v25 = *(v11 + 30);
-    *(v11 + 30) = v24;
+    *(v11 + 30) = layoutState;
 
     objc_storeStrong(v11 + 31, *(v11 + 30));
-    v63 = [v67 application];
-    if (!v63)
+    application = [sessionCopy application];
+    if (!application)
     {
       [SBDragAndDropWorkspaceTransaction initWithTransitionRequest:switcherController:dropSession:delegate:];
     }
 
     v26 = +[SBDraggingSystemManager sharedInstance];
-    v27 = [v67 allowsCommandeering];
-    v28 = [v67 systemSession];
+    allowsCommandeering = [sessionCopy allowsCommandeering];
+    systemSession = [sessionCopy systemSession];
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
-    [v26 setCommandeered:v27 forDraggingSystemSession:v28 forReason:v30];
+    [v26 setCommandeered:allowsCommandeering forDraggingSystemSession:systemSession forReason:v30];
 
-    v60 = [v67 sceneIdentity];
-    v31 = [v65 displayIdentity];
-    v59 = [SBApplicationSceneHandleRequest defaultRequestForApplication:v63 sceneIdentity:v60 displayIdentity:v31];
+    sceneIdentity = [sessionCopy sceneIdentity];
+    displayIdentity = [sceneManager displayIdentity];
+    v59 = [SBApplicationSceneHandleRequest defaultRequestForApplication:application sceneIdentity:sceneIdentity displayIdentity:displayIdentity];
 
     v32 = objc_opt_class();
-    v33 = [v65 fetchOrCreateApplicationSceneHandleForRequest:v59];
+    v33 = [sceneManager fetchOrCreateApplicationSceneHandleForRequest:v59];
     v34 = SBSafeCast(v32, v33);
     v35 = *(v11 + 35);
     *(v11 + 35) = v34;
@@ -712,8 +712,8 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
       [SBDragAndDropWorkspaceTransaction initWithTransitionRequest:switcherController:dropSession:delegate:];
     }
 
-    v36 = [*(v11 + 33) localContext];
-    v37 = [v36 startLocation] == 8;
+    localContext = [*(v11 + 33) localContext];
+    v37 = [localContext startLocation] == 8;
 
     if (v37)
     {
@@ -721,8 +721,8 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v38 = [*(v11 + 31) elements];
-      v39 = [v38 countByEnumeratingWithState:&v70 objects:v75 count:16];
+      elements = [*(v11 + 31) elements];
+      v39 = [elements countByEnumeratingWithState:&v70 objects:v75 count:16];
       if (v39)
       {
         v40 = *v71;
@@ -732,13 +732,13 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
           {
             if (*v71 != v40)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(elements);
             }
 
             v42 = *(*(&v70 + 1) + 8 * i);
-            v43 = [v42 uniqueIdentifier];
-            v44 = [*(v11 + 35) sceneIdentifier];
-            v45 = [v43 isEqualToString:v44];
+            uniqueIdentifier = [v42 uniqueIdentifier];
+            sceneIdentifier = [*(v11 + 35) sceneIdentifier];
+            v45 = [uniqueIdentifier isEqualToString:sceneIdentifier];
 
             if (v45)
             {
@@ -747,7 +747,7 @@ void __113__SBDragAndDropWorkspaceTransaction__shouldTrackLocationOfDropSession_
             }
           }
 
-          v39 = [v38 countByEnumeratingWithState:&v70 objects:v75 count:16];
+          v39 = [elements countByEnumeratingWithState:&v70 objects:v75 count:16];
           if (v39)
           {
             continue;
@@ -765,12 +765,12 @@ LABEL_22:
     }
 
     v48 = objc_opt_class();
-    v49 = [v67 localContext];
-    v50 = [v49 portaledPreview];
-    v51 = SBSafeCast(v48, v50);
+    localContext2 = [sessionCopy localContext];
+    portaledPreview = [localContext2 portaledPreview];
+    v51 = SBSafeCast(v48, portaledPreview);
 
     objc_storeStrong(v11 + 51, v51);
-    v52 = [v67 uiDragDropSession];
+    uiDragDropSession = [sessionCopy uiDragDropSession];
     v53 = SBFSafeProtocolCast();
 
     if (v53)
@@ -846,7 +846,7 @@ id __103__SBDragAndDropWorkspaceTransaction_initWithTransitionRequest_switcherCo
     v15 = v2;
     v16 = v3;
     v5 = self->_dropSession;
-    v6 = [(SBApplicationDropSession *)v5 uiDragDropSession];
+    uiDragDropSession = [(SBApplicationDropSession *)v5 uiDragDropSession];
     v7 = SBFSafeProtocolCast();
 
     v8 = SBApplicationDropSessionGetDragItem(v7);
@@ -1020,12 +1020,12 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
   return v4;
 }
 
-- (BOOL)matchesUIDragDropSession:(id)a3
+- (BOOL)matchesUIDragDropSession:(id)session
 {
-  v4 = a3;
-  v5 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+  sessionCopy = session;
+  uiDragDropSession = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
 
-  if (v5 == v4)
+  if (uiDragDropSession == sessionCopy)
   {
     v9 = 1;
   }
@@ -1033,30 +1033,30 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
   else
   {
     v6 = SBFSafeProtocolCast();
-    v7 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
-    v8 = [v6 localDragSession];
-    v9 = v7 == v8;
+    uiDragDropSession2 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+    localDragSession = [v6 localDragSession];
+    v9 = uiDragDropSession2 == localDragSession;
   }
 
   return v9;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"SBDragAndDropWorkspaceTransaction.m" lineNumber:666 description:{@"%s shouldn't be forwarded to %@", "-[SBDragAndDropWorkspaceTransaction dragInteraction:itemsForBeginningSession:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDragAndDropWorkspaceTransaction.m" lineNumber:666 description:{@"%s shouldn't be forwarded to %@", "-[SBDragAndDropWorkspaceTransaction dragInteraction:itemsForBeginningSession:]", v8}];
 
   return 0;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v7 = a5;
-  v8 = a3;
+  sessionCopy = session;
+  interactionCopy = interaction;
   v9 = objc_opt_class();
-  v10 = SBSafeCast(v9, v8);
+  v10 = SBSafeCast(v9, interactionCopy);
 
   if (!v10)
   {
@@ -1064,22 +1064,22 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
   }
 
   v11 = self->_dropSession;
-  v12 = [(SBApplicationDropSession *)v11 application];
-  v13 = [v10 sourceViewProvider];
-  v14 = [v13 sourceView];
-  v15 = [(SBDragAndDropWorkspaceTransaction *)self _createPlatterPreviewForApplication:v12 withSourceView:v14 dropSession:v11];
-  v16 = [v13 initialCornerRadiusConfiguration];
-  [(SBAppPlatterDragPreview *)v15 setCornerRadiusConfiguration:v16];
+  application = [(SBApplicationDropSession *)v11 application];
+  sourceViewProvider = [v10 sourceViewProvider];
+  sourceView = [sourceViewProvider sourceView];
+  v15 = [(SBDragAndDropWorkspaceTransaction *)self _createPlatterPreviewForApplication:application withSourceView:sourceView dropSession:v11];
+  initialCornerRadiusConfiguration = [sourceViewProvider initialCornerRadiusConfiguration];
+  [(SBAppPlatterDragPreview *)v15 setCornerRadiusConfiguration:initialCornerRadiusConfiguration];
 
-  [v13 initialDiffuseShadowParameters];
+  [sourceViewProvider initialDiffuseShadowParameters];
   [(SBAppPlatterDragPreview *)v15 setDiffuseShadowParameters:?];
-  [v13 initialRimShadowParameters];
+  [sourceViewProvider initialRimShadowParameters];
   [(SBAppPlatterDragPreview *)v15 setRimShadowParameters:?];
-  v17 = [v13 initialDiffuseShadowFilters];
-  [(SBAppPlatterDragPreview *)v15 setDiffuseShadowFilters:v17];
+  initialDiffuseShadowFilters = [sourceViewProvider initialDiffuseShadowFilters];
+  [(SBAppPlatterDragPreview *)v15 setDiffuseShadowFilters:initialDiffuseShadowFilters];
 
-  v18 = [v13 initialRimShadowFilters];
-  [(SBAppPlatterDragPreview *)v15 setRimShadowFilters:v18];
+  initialRimShadowFilters = [sourceViewProvider initialRimShadowFilters];
+  [(SBAppPlatterDragPreview *)v15 setRimShadowFilters:initialRimShadowFilters];
 
   [(SBAppPlatterDragPreview *)v15 setDragState:1];
   [(SBAppPlatterDragPreview *)v15 layoutIfNeeded];
@@ -1088,64 +1088,64 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
   v20 = v15;
 
   activeSourceViewProvider = self->_activeSourceViewProvider;
-  self->_activeSourceViewProvider = v13;
-  v22 = v13;
+  self->_activeSourceViewProvider = sourceViewProvider;
+  v22 = sourceViewProvider;
 
   [(SBDragAndDropWorkspaceTransaction *)self _updateActiveSourceViewProviderWithDragState:1];
-  v23 = [(SBApplicationDropSession *)v11 localContext];
-  [v23 setPortaledPreview:v20];
+  localContext = [(SBApplicationDropSession *)v11 localContext];
+  [localContext setPortaledPreview:v20];
 
   v24 = objc_alloc(MEMORY[0x277D75B88]);
   v25 = [v24 initWithView:v20];
   [v25 set_springboardPlatterStyle:1];
-  [v7 locationInView:v14];
+  [sessionCopy locationInView:sourceView];
 
-  [v14 bounds];
+  [sourceView bounds];
   [SBDragAndDropWorkspaceTransaction _updateAnchorPointForPlatterPreview:"_updateAnchorPointForPlatterPreview:dragPreview:withSourceViewBounds:location:" dragPreview:v20 withSourceViewBounds:v25 location:?];
 
   return v25;
 }
 
-- (void)dragInteraction:(id)a3 sessionDidMove:(id)a4
+- (void)dragInteraction:(id)interaction sessionDidMove:(id)move
 {
-  v5 = a4;
+  moveCopy = move;
   if (!self->_beganTrackingDropSession && !self->_performedDrop)
   {
-    v6 = v5;
-    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidUpdate:v5];
-    v5 = v6;
+    v6 = moveCopy;
+    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidUpdate:moveCopy];
+    moveCopy = v6;
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  v8 = a4;
-  v7 = [(SBDragAndDropWorkspaceTransaction *)self isInterrupted];
-  if (!a5 && (v7 & 1) == 0)
+  sessionCopy = session;
+  isInterrupted = [(SBDragAndDropWorkspaceTransaction *)self isInterrupted];
+  if (!operation && (isInterrupted & 1) == 0)
   {
-    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidPerformDrop:v8];
+    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidPerformDrop:sessionCopy];
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v8 = a4;
-  v7 = [(SBDragAndDropWorkspaceTransaction *)self isInterrupted];
-  if (!a5 && (v7 & 1) == 0)
+  sessionCopy = session;
+  isInterrupted = [(SBDragAndDropWorkspaceTransaction *)self isInterrupted];
+  if (!operation && (isInterrupted & 1) == 0)
   {
-    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidEnd:v8];
+    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidEnd:sessionCopy];
   }
 
-  [(SBAppPlatterDragPreview *)self->_activePlatterPreview draggingSourceDroppedWithOperation:a5];
+  [(SBAppPlatterDragPreview *)self->_activePlatterPreview draggingSourceDroppedWithOperation:operation];
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  defaultCopy = default;
   if (([(SBDragAndDropWorkspaceTransaction *)self isInterrupted]& 1) == 0 && [(SBDragAndDropWorkspaceTransaction *)self _layoutRoleForDropAction:self->_currentDropAction])
   {
-    v9 = [(SBDragAndDropWorkspaceTransaction *)self _dragPreviewForDroppingItem:v7 withDefault:v8];
+    v9 = [(SBDragAndDropWorkspaceTransaction *)self _dragPreviewForDroppingItem:itemCopy withDefault:defaultCopy];
   }
 
   else
@@ -1156,36 +1156,36 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
   return v9;
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   if (([(SBDragAndDropWorkspaceTransaction *)self isInterrupted]& 1) == 0 && [(SBDragAndDropWorkspaceTransaction *)self _layoutRoleForDropAction:self->_currentDropAction])
   {
-    [(SBDragAndDropWorkspaceTransaction *)self _handleWillAnimateDropWithAnimator:v6];
+    [(SBDragAndDropWorkspaceTransaction *)self _handleWillAnimateDropWithAnimator:animatorCopy];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __88__SBDragAndDropWorkspaceTransaction_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke;
     v7[3] = &unk_2783ACA48;
     v7[4] = self;
-    [v6 addCompletion:v7];
+    [animatorCopy addCompletion:v7];
   }
 }
 
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging
 {
   [(SBAppPlatterDragPreview *)self->_activePlatterPreview draggingSourceCancelAnimationCompleted];
-  v4 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
-  [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidEnd:v4];
+  uiDragDropSession = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+  [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidEnd:uiDragDropSession];
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
   self->_beganTrackingDropSession = 1;
-  v5 = a4;
-  v6 = [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidUpdate:v5];
-  v7 = [v5 allowsMoveOperation];
+  updateCopy = update;
+  v6 = [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidUpdate:updateCopy];
+  allowsMoveOperation = [updateCopy allowsMoveOperation];
 
-  if (v7)
+  if (allowsMoveOperation)
   {
     v8 = 3;
   }
@@ -1212,25 +1212,25 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
   return v11;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
   if (!self->_performedDrop)
   {
-    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidUpdate:a4];
+    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidUpdate:exit];
   }
 }
 
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop
 {
-  if (([(SBDragAndDropWorkspaceTransaction *)self isInterrupted:a3]& 1) == 0)
+  if (([(SBDragAndDropWorkspaceTransaction *)self isInterrupted:interaction]& 1) == 0)
   {
     self->_sessionState = 2;
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
-  v7 = a4;
+  endCopy = end;
   if (([(SBDragAndDropWorkspaceTransaction *)self isInterrupted]& 1) == 0)
   {
     if (!self->_performedDrop)
@@ -1243,20 +1243,20 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
 
       objc_storeStrong(&self->_finalLayoutState, self->_currentLayoutState);
       WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-      v6 = [(SBWorkspaceTransitionRequest *)self->super.super._transitionRequest applicationContext];
-      [WeakRetained performTransitionWithContext:v6 animated:1 completion:0];
+      applicationContext = [(SBWorkspaceTransitionRequest *)self->super.super._transitionRequest applicationContext];
+      [WeakRetained performTransitionWithContext:applicationContext animated:1 completion:0];
 
       [(SBDragAndDropWorkspaceTransaction *)self _cleanUpAndCompleteTransactionIfNecessary];
     }
 
-    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidEnd:v7];
+    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidEnd:endCopy];
   }
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  defaultCopy = default;
   if (([(SBDragAndDropWorkspaceTransaction *)self isInterrupted]& 1) != 0)
   {
     v9 = 0;
@@ -1264,33 +1264,33 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
 
   else
   {
-    v9 = [(SBDragAndDropWorkspaceTransaction *)self _dragPreviewForDroppingItem:v7 withDefault:v8];
+    v9 = [(SBDragAndDropWorkspaceTransaction *)self _dragPreviewForDroppingItem:itemCopy withDefault:defaultCopy];
   }
 
   return v9;
 }
 
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   if (([(SBDragAndDropWorkspaceTransaction *)self isInterrupted]& 1) == 0)
   {
-    [(SBDragAndDropWorkspaceTransaction *)self _handleWillAnimateDropWithAnimator:v6];
+    [(SBDragAndDropWorkspaceTransaction *)self _handleWillAnimateDropWithAnimator:animatorCopy];
   }
 }
 
-- (id)_dropInteraction:(id)a3 customSpringAnimationBehaviorForDroppingItem:(id)a4
+- (id)_dropInteraction:(id)interaction customSpringAnimationBehaviorForDroppingItem:(id)item
 {
   currentDropAction = self->_currentDropAction;
   medusaSettings = self->_medusaSettings;
   if (currentDropAction == 10)
   {
-    [(SBMedusaSettings *)medusaSettings switcherCardDropAnimationSettings:a3];
+    [(SBMedusaSettings *)medusaSettings switcherCardDropAnimationSettings:interaction];
   }
 
   else
   {
-    [(SBMedusaSettings *)medusaSettings dropAnimationSettings:a3];
+    [(SBMedusaSettings *)medusaSettings dropAnimationSettings:interaction];
   }
   v6 = ;
 
@@ -1305,23 +1305,23 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
   }
 }
 
-- (BOOL)_handleSessionDidUpdate:(id)a3
+- (BOOL)_handleSessionDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-  v6 = [WeakRetained maximumNumberOfScenesOnStage];
-  v7 = [(SBMainDisplayLayoutState *)self->_initialLayoutState appLayout];
-  v8 = [v7 allItems];
+  maximumNumberOfScenesOnStage = [WeakRetained maximumNumberOfScenesOnStage];
+  appLayout = [(SBMainDisplayLayoutState *)self->_initialLayoutState appLayout];
+  allItems = [appLayout allItems];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __61__SBDragAndDropWorkspaceTransaction__handleSessionDidUpdate___block_invoke;
   v28[3] = &unk_2783A8C90;
-  v29 = v7;
-  v9 = v7;
-  v10 = [v8 bs_filter:v28];
+  v29 = appLayout;
+  v9 = appLayout;
+  v10 = [allItems bs_filter:v28];
   v11 = [v10 count];
 
-  if (v11 >= v6 && [(SBSwitcherWindowingSettings *)self->_windowingSettings rejectDropsWhenStageIsFull])
+  if (v11 >= maximumNumberOfScenesOnStage && [(SBSwitcherWindowingSettings *)self->_windowingSettings rejectDropsWhenStageIsFull])
   {
     goto LABEL_8;
   }
@@ -1337,8 +1337,8 @@ uint64_t __71__SBDragAndDropWorkspaceTransaction__setupPlatterPreviewForContentD
     if (self->_dragExitedDropZone != (v12 ^ 1))
     {
       self->_dragExitedDropZone = v15;
-      v16 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
-      v17 = SBApplicationDropSessionGetDragItem(v16);
+      uiDragDropSession = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+      v17 = SBApplicationDropSessionGetDragItem(uiDragDropSession);
 
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
@@ -1362,14 +1362,14 @@ LABEL_8:
   else
   {
     self->_sessionState = 1;
-    v19 = [WeakRetained view];
-    [v4 locationInView:v19];
+    view = [WeakRetained view];
+    [updateCopy locationInView:view];
     v21 = v20;
     v23 = v22;
 
     [(SBTouchHistory *)self->_touchHistory updateWithLocation:v21 timestamp:v23, CACurrentMediaTime()];
-    [(SBDragAndDropWorkspaceTransaction *)self _updateForWindowDragForSession:v4];
-    [(SBDragAndDropWorkspaceTransaction *)self _updateCurrentDropActionForSession:v4];
+    [(SBDragAndDropWorkspaceTransaction *)self _updateForWindowDragForSession:updateCopy];
+    [(SBDragAndDropWorkspaceTransaction *)self _updateCurrentDropActionForSession:updateCopy];
     [(SBDragAndDropWorkspaceTransaction *)self _updatePlatterPreviewForSetDown:0 animated:1];
     [(SBFluidSwitcherGesture *)self->_dragAndDropGesture _setState:2];
     v24 = objc_loadWeakRetained(&self->_delegate);
@@ -1423,18 +1423,18 @@ LABEL_6:
   return v2;
 }
 
-- (void)_commitRecencyModelUpdateForDropContext:(id)a3
+- (void)_commitRecencyModelUpdateForDropContext:(id)context
 {
-  if (a3)
+  if (context)
   {
     self->_needsSwitcherDropAnimationCompletedNotification = 1;
-    v4 = a3;
+    contextCopy = context;
     WeakRetained = objc_loadWeakRetained(&self->_switcherController);
-    [WeakRetained _performSwitcherDropWithContext:v4];
+    [WeakRetained _performSwitcherDropWithContext:contextCopy];
   }
 }
 
-- (void)_handleSessionDidPerformDrop:(id)a3
+- (void)_handleSessionDidPerformDrop:(id)drop
 {
   if (([(SBDragAndDropWorkspaceTransaction *)self isInterrupted]& 1) == 0)
   {
@@ -1468,11 +1468,11 @@ LABEL_6:
       if (![(SBWorkspaceTransitionRequest *)self->_dropTransitionRequest isFinalized])
       {
         [(SBMainWorkspaceTransitionRequest *)self->_dropTransitionRequest finalize];
-        v10 = [(SBWorkspaceTransitionRequest *)self->_dropTransitionRequest applicationContext];
-        v11 = [v10 layoutState];
+        applicationContext = [(SBWorkspaceTransitionRequest *)self->_dropTransitionRequest applicationContext];
+        layoutState = [applicationContext layoutState];
 
         finalLayoutState = self->_finalLayoutState;
-        self->_finalLayoutState = v11;
+        self->_finalLayoutState = layoutState;
       }
     }
 
@@ -1484,10 +1484,10 @@ LABEL_6:
   }
 }
 
-- (id)_dragPreviewForDroppingItem:(id)a3 withDefault:(id)a4
+- (id)_dragPreviewForDroppingItem:(id)item withDefault:(id)default
 {
   currentDropAction = self->_currentDropAction;
-  v6 = a4;
+  defaultCopy = default;
   v7 = [(SBDragAndDropWorkspaceTransaction *)self _layoutRoleForDropAction:currentDropAction];
   if (!v7)
   {
@@ -1495,9 +1495,9 @@ LABEL_6:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-  v9 = [WeakRetained view];
-  v10 = [(SBWorkspaceTransaction *)self windowScene];
-  v11 = [v10 switcherController];
+  view = [WeakRetained view];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
 
   v12 = self->_currentDropAction;
   if (v12 != 10)
@@ -1505,16 +1505,16 @@ LABEL_6:
 LABEL_9:
     if (v12 == 9)
     {
-      v18 = [(SBLayoutState *)self->_finalLayoutState interfaceOrientation];
-      v19 = v11;
-      v20 = 4;
+      interfaceOrientation = [(SBLayoutState *)self->_finalLayoutState interfaceOrientation];
+      v19 = switcherController;
+      floatingConfiguration = 4;
     }
 
     else if (v12 == 8)
     {
-      v18 = [(SBLayoutState *)self->_finalLayoutState interfaceOrientation];
-      v19 = v11;
-      v20 = 3;
+      interfaceOrientation = [(SBLayoutState *)self->_finalLayoutState interfaceOrientation];
+      v19 = switcherController;
+      floatingConfiguration = 3;
     }
 
     else
@@ -1522,19 +1522,19 @@ LABEL_9:
       finalLayoutState = self->_finalLayoutState;
       if (v7 != 3)
       {
-        v23 = [(SBMainDisplayLayoutState *)finalLayoutState appLayout];
-        [v11 frameForItemWithRole:v7 inMainAppLayout:v23 interfaceOrientation:{-[SBLayoutState interfaceOrientation](self->_finalLayoutState, "interfaceOrientation")}];
+        appLayout = [(SBMainDisplayLayoutState *)finalLayoutState appLayout];
+        [switcherController frameForItemWithRole:v7 inMainAppLayout:appLayout interfaceOrientation:{-[SBLayoutState interfaceOrientation](self->_finalLayoutState, "interfaceOrientation")}];
 
         goto LABEL_19;
       }
 
-      v22 = [(SBLayoutState *)finalLayoutState interfaceOrientation];
-      v20 = [(SBMainDisplayLayoutState *)self->_finalLayoutState floatingConfiguration];
-      v19 = v11;
-      v18 = v22;
+      interfaceOrientation2 = [(SBLayoutState *)finalLayoutState interfaceOrientation];
+      floatingConfiguration = [(SBMainDisplayLayoutState *)self->_finalLayoutState floatingConfiguration];
+      v19 = switcherController;
+      interfaceOrientation = interfaceOrientation2;
     }
 
-    [v19 frameForFloatingAppLayoutInInterfaceOrientation:v18 floatingConfiguration:v20];
+    [v19 frameForFloatingAppLayoutInInterfaceOrientation:interfaceOrientation floatingConfiguration:floatingConfiguration];
     goto LABEL_19;
   }
 
@@ -1545,16 +1545,16 @@ LABEL_9:
   }
 
   v13 = self->_currentSwitcherDropRegionContext;
-  v14 = [(SBSwitcherDropRegionContext *)v13 currentDropRegion];
-  if (v14 <= 7)
+  currentDropRegion = [(SBSwitcherDropRegionContext *)v13 currentDropRegion];
+  if (currentDropRegion <= 7)
   {
-    if (((1 << v14) & 0x78) != 0)
+    if (((1 << currentDropRegion) & 0x78) != 0)
     {
-      v15 = [(SBSwitcherDropRegionContext *)v13 finalTargetAppLayout];
-      v16 = [(SBSwitcherDropRegionContext *)v13 draggingLeafAppLayout];
-      v17 = [v16 itemForLayoutRole:1];
+      finalTargetAppLayout = [(SBSwitcherDropRegionContext *)v13 finalTargetAppLayout];
+      draggingLeafAppLayout = [(SBSwitcherDropRegionContext *)v13 draggingLeafAppLayout];
+      v17 = [draggingLeafAppLayout itemForLayoutRole:1];
 
-      [WeakRetained scaledFrameForLayoutRole:objc_msgSend(v15 inAppLayout:{"layoutRoleForItem:", v17), v15}];
+      [WeakRetained scaledFrameForLayoutRole:objc_msgSend(finalTargetAppLayout inAppLayout:{"layoutRoleForItem:", v17), finalTargetAppLayout}];
     }
 
     else
@@ -1570,26 +1570,26 @@ LABEL_19:
   v29[0] = *MEMORY[0x277CBF2C0];
   v29[1] = v25;
   v29[2] = *(MEMORY[0x277CBF2C0] + 32);
-  v26 = [v24 initWithContainer:v9 center:v29 transform:?];
-  v27 = [v6 retargetedPreviewWithTarget:v26];
+  v26 = [v24 initWithContainer:view center:v29 transform:?];
+  v27 = [defaultCopy retargetedPreviewWithTarget:v26];
 
   [v27 set_springboardPlatterStyle:1];
 
   return v27;
 }
 
-- (void)_handleWillAnimateDropWithAnimator:(id)a3
+- (void)_handleWillAnimateDropWithAnimator:(id)animator
 {
-  v4 = a3;
+  animatorCopy = animator;
   [(SBDragAndDropWorkspaceTransaction *)self addMilestone:@"SBDragAndDropAppActivationDropAnimationMilestone"];
-  v5 = [(SBWorkspaceTransaction *)self windowScene];
-  v6 = [v5 floatingDockController];
-  [v6 dismissFloatingDockIfPresentedAnimated:1 completionHandler:0];
-  v7 = [MEMORY[0x277D66210] sharedInstance];
-  [v7 dismissAppIconForceTouchControllers:0];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  floatingDockController = [windowScene floatingDockController];
+  [floatingDockController dismissFloatingDockIfPresentedAnimated:1 completionHandler:0];
+  mEMORY[0x277D66210] = [MEMORY[0x277D66210] sharedInstance];
+  [mEMORY[0x277D66210] dismissAppIconForceTouchControllers:0];
 
-  v8 = [(SBDragAndDropWorkspaceTransaction *)self _iconManager];
-  [v8 dismissIconShareSheets];
+  _iconManager = [(SBDragAndDropWorkspaceTransaction *)self _iconManager];
+  [_iconManager dismissIconShareSheets];
 
   [(SBDragAndDropWorkspaceTransaction *)self addMilestone:@"SBDragAndDropAppActivationWaitingToAddToAppsTransactionMilestone"];
   v10[0] = MEMORY[0x277D85DD0];
@@ -1597,13 +1597,13 @@ LABEL_19:
   v10[2] = __72__SBDragAndDropWorkspaceTransaction__handleWillAnimateDropWithAnimator___block_invoke;
   v10[3] = &unk_2783A8C18;
   v10[4] = self;
-  [v4 addAnimations:v10];
+  [animatorCopy addAnimations:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__SBDragAndDropWorkspaceTransaction__handleWillAnimateDropWithAnimator___block_invoke_3;
   v9[3] = &unk_2783ACA48;
   v9[4] = self;
-  [v4 addCompletion:v9];
+  [animatorCopy addCompletion:v9];
 }
 
 void __72__SBDragAndDropWorkspaceTransaction__handleWillAnimateDropWithAnimator___block_invoke(uint64_t a1)
@@ -1648,7 +1648,7 @@ void *__72__SBDragAndDropWorkspaceTransaction__handleWillAnimateDropWithAnimator
   return result;
 }
 
-- (void)_handleSessionDidEnd:(id)a3
+- (void)_handleSessionDidEnd:(id)end
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = *MEMORY[0x277D67518];
@@ -1656,14 +1656,14 @@ void *__72__SBDragAndDropWorkspaceTransaction__handleWillAnimateDropWithAnimator
   v13[0] = v4;
   v12[1] = *MEMORY[0x277D67510];
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(SBApplicationDropSession *)self->_dropSession localContext];
-  v7 = [v5 numberWithInteger:{objc_msgSend(v6, "startLocation")}];
+  localContext = [(SBApplicationDropSession *)self->_dropSession localContext];
+  v7 = [v5 numberWithInteger:{objc_msgSend(localContext, "startLocation")}];
   v13[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v9 = MEMORY[0x277D65DD0];
   v10 = v8;
-  v11 = [v9 sharedInstance];
-  [v11 emitEvent:32 withPayload:v10];
+  sharedInstance = [v9 sharedInstance];
+  [sharedInstance emitEvent:32 withPayload:v10];
 
   self->_sessionState = 2;
   [(SBDragAndDropWorkspaceTransaction *)self _uncommandeerContentDrag];
@@ -1671,43 +1671,43 @@ void *__72__SBDragAndDropWorkspaceTransaction__handleWillAnimateDropWithAnimator
   [(SBDragAndDropWorkspaceTransaction *)self removeMilestone:@"SBDragAndDropAppActivationDraggingMilestone"];
 }
 
-- (void)_noteSwitcherDropAnimationCompletedIfNeededWithContext:(id)a3
+- (void)_noteSwitcherDropAnimationCompletedIfNeededWithContext:(id)context
 {
   if (self->_needsSwitcherDropAnimationCompletedNotification)
   {
     self->_needsSwitcherDropAnimationCompletedNotification = 0;
-    v5 = a3;
+    contextCopy = context;
     WeakRetained = objc_loadWeakRetained(&self->_switcherController);
-    [WeakRetained _noteSwitcherDropAnimationCompletedWithContext:v5];
+    [WeakRetained _noteSwitcherDropAnimationCompletedWithContext:contextCopy];
   }
 }
 
 - (void)_uncommandeerContentDrag
 {
-  v3 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
-  v8 = SBApplicationDropSessionGetDragItem(v3);
+  uiDragDropSession = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+  v8 = SBApplicationDropSessionGetDragItem(uiDragDropSession);
 
   [v8 setPreviewProvider:0];
   v4 = +[SBDraggingSystemManager sharedInstance];
-  v5 = [(SBApplicationDropSession *)self->_dropSession systemSession];
+  systemSession = [(SBApplicationDropSession *)self->_dropSession systemSession];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v4 setCommandeered:0 forDraggingSystemSession:v5 forReason:v7];
+  [v4 setCommandeered:0 forDraggingSystemSession:systemSession forReason:v7];
 }
 
-- (void)_displayLinkDidUpdate:(id)a3
+- (void)_displayLinkDidUpdate:(id)update
 {
-  v4 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+  uiDragDropSession = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
   [(SBDragAndDropWorkspaceTransaction *)self _updateForWindowDragForSession:?];
   if (self->_windowDragEnteredPlatterZone)
   {
-    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidUpdate:v4];
+    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidUpdate:uiDragDropSession];
   }
 }
 
-- (void)_updateForWindowDragForSession:(id)a3
+- (void)_updateForWindowDragForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (self->_layoutElementForWindowDrag && !self->_windowDragEnteredPlatterZone)
   {
     if (!self->_displayLinkForWindowDrag)
@@ -1718,26 +1718,26 @@ void *__72__SBDragAndDropWorkspaceTransaction__handleWillAnimateDropWithAnimator
 
       [(CADisplayLink *)self->_displayLinkForWindowDrag setPaused:0];
       v7 = self->_displayLinkForWindowDrag;
-      v8 = [MEMORY[0x277CBEB88] mainRunLoop];
-      [(CADisplayLink *)v7 addToRunLoop:v8 forMode:*MEMORY[0x277CBE738]];
+      mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+      [(CADisplayLink *)v7 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
       self->_windowDragPauseCounter = 0;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-    v10 = [WeakRetained view];
-    [v10 bounds];
+    view = [WeakRetained view];
+    [view bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    [v4 locationInView:v10];
+    [sessionCopy locationInView:view];
     v20 = v19;
     v22 = v21;
     [objc_opt_class() prototypeSettingsContentDraggingCommandeerWidth];
     v24 = v23;
     [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:0.0416666667];
-    if (BSFloatLessThanFloat() && (([objc_opt_class() isDragOverFullscreenRegionAtLocation:v20 inBounds:{v22, v12, v14, v16, v18}] & 1) != 0 || -[SBLayoutElement layoutRole](self->_layoutElementForWindowDrag, "layoutRole") == 3 && (v25 = objc_opt_class(), objc_msgSend(objc_opt_class(), "_screenInsetsForUIDragDropSession:", v4), objc_msgSend(v25, "screenEdgeForDragOverSideGutterRegionsAtLocation:inBounds:totalContentDragGutterWidth:screenInsets:", v20, v22, v12, v14, v16, v18, v24, v26, v27, v28, v29))))
+    if (BSFloatLessThanFloat() && (([objc_opt_class() isDragOverFullscreenRegionAtLocation:v20 inBounds:{v22, v12, v14, v16, v18}] & 1) != 0 || -[SBLayoutElement layoutRole](self->_layoutElementForWindowDrag, "layoutRole") == 3 && (v25 = objc_opt_class(), objc_msgSend(objc_opt_class(), "_screenInsetsForUIDragDropSession:", sessionCopy), objc_msgSend(v25, "screenEdgeForDragOverSideGutterRegionsAtLocation:inBounds:totalContentDragGutterWidth:screenInsets:", v20, v22, v12, v14, v16, v18, v24, v26, v27, v28, v29))))
     {
       ++self->_windowDragPauseCounter;
     }
@@ -1772,10 +1772,10 @@ LABEL_23:
 
     v33 = objc_alloc_init(SBWorkspaceApplicationSceneTransitionContext);
     [(SBWorkspaceTransitionContext *)v33 setAnimationDisabled:1];
-    v34 = [(SBLayoutElement *)self->_layoutElementForWindowDrag layoutRole];
-    v35 = v34;
-    v69 = v10;
-    if (v34 == 1)
+    layoutRole = [(SBLayoutElement *)self->_layoutElementForWindowDrag layoutRole];
+    v35 = layoutRole;
+    v69 = view;
+    if (layoutRole == 1)
     {
       v36 = [SBPreviousWorkspaceEntity entityWithPreviousLayoutRole:2];
       [(SBWorkspaceApplicationSceneTransitionContext *)v33 setEntity:v36 forLayoutRole:1];
@@ -1786,9 +1786,9 @@ LABEL_23:
 
     else
     {
-      if (v34 != 2)
+      if (layoutRole != 2)
       {
-        if (v34 == 3)
+        if (layoutRole == 3)
         {
           v64 = +[(SBWorkspaceEntity *)SBPreviousWorkspaceEntity];
           [(SBWorkspaceApplicationSceneTransitionContext *)v33 setEntity:v64 forLayoutRole:1];
@@ -1799,7 +1799,7 @@ LABEL_23:
 
         else
         {
-          if (v34 != 4)
+          if (layoutRole != 4)
           {
             goto LABEL_20;
           }
@@ -1822,32 +1822,32 @@ LABEL_19:
         [(SBWorkspaceApplicationSceneTransitionContext *)v42 setEntity:v43 forLayoutRole:v41];
 
 LABEL_20:
-        v44 = [(SBWorkspaceTransaction *)self transitionRequest];
-        v45 = [v44 workspace];
-        v46 = [v44 displayConfiguration];
-        v47 = [v45 createRequestWithOptions:0 displayConfiguration:v46];
+        transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+        workspace = [transitionRequest workspace];
+        displayConfiguration = [transitionRequest displayConfiguration];
+        v47 = [workspace createRequestWithOptions:0 displayConfiguration:displayConfiguration];
 
-        [v47 setSource:{objc_msgSend(v44, "source")}];
+        [v47 setSource:{objc_msgSend(transitionRequest, "source")}];
         [v47 setEventLabel:@"DragAndDropAppActivation"];
         [v47 setApplicationContext:v33];
         [v47 finalize];
         objc_storeStrong(&self->super.super._transitionRequest, v47);
-        v48 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-        [v48 beginTransitionForWorkspaceTransaction:self];
+        layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+        [layoutStateTransitionCoordinator beginTransitionForWorkspaceTransaction:self];
 
         v49 = SBLayoutRoleSetAppLayout();
-        LODWORD(v46) = [v49 containsRole:{-[SBLayoutElement layoutRole](self->_layoutElementForWindowDrag, "layoutRole")}];
+        LODWORD(displayConfiguration) = [v49 containsRole:{-[SBLayoutElement layoutRole](self->_layoutElementForWindowDrag, "layoutRole")}];
 
-        if (v46)
+        if (displayConfiguration)
         {
-          v50 = [v47 applicationContext];
-          v51 = [v50 layoutState];
-          v52 = [v51 elementWithRole:1];
+          applicationContext = [v47 applicationContext];
+          layoutState = [applicationContext layoutState];
+          v52 = [layoutState elementWithRole:1];
 
-          v53 = [v52 workspaceEntity];
-          v54 = [v53 applicationSceneEntity];
+          workspaceEntity = [v52 workspaceEntity];
+          applicationSceneEntity = [workspaceEntity applicationSceneEntity];
 
-          v55 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:v54 transitionRequest:v47];
+          v55 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:applicationSceneEntity transitionRequest:v47];
           sceneUpdateTransactionForWindowDrag = self->_sceneUpdateTransactionForWindowDrag;
           self->_sceneUpdateTransactionForWindowDrag = v55;
 
@@ -1860,19 +1860,19 @@ LABEL_20:
           [v57 sb_performBlockAfterCATransactionSynchronizedCommit:v70];
         }
 
-        v58 = [v47 applicationContext];
-        v59 = [v58 layoutState];
+        applicationContext2 = [v47 applicationContext];
+        layoutState2 = [applicationContext2 layoutState];
         currentLayoutState = self->_currentLayoutState;
-        self->_currentLayoutState = v59;
+        self->_currentLayoutState = layoutState2;
 
         v61 = objc_loadWeakRetained(&self->_delegate);
-        v62 = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
-        [v61 dragAndDropTransaction:self didPlatterizeWindowDragWithSceneIdentifier:v62];
+        sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
+        [v61 dragAndDropTransaction:self didPlatterizeWindowDragWithSceneIdentifier:sceneIdentifier];
 
-        v63 = [(SBWorkspaceTransitionRequest *)self->super.super._transitionRequest applicationContext];
-        [WeakRetained performTransitionWithContext:v63 animated:1 completion:0];
+        applicationContext3 = [(SBWorkspaceTransitionRequest *)self->super.super._transitionRequest applicationContext];
+        [WeakRetained performTransitionWithContext:applicationContext3 animated:1 completion:0];
 
-        v10 = v69;
+        view = v69;
         goto LABEL_23;
       }
 
@@ -1900,25 +1900,25 @@ LABEL_24:
   if (v4 && ([(SBAppPlatterDragPreview *)v3 mode]!= 2 || [(SBAppPlatterDragPreview *)v3 isAnimatingPlatterViewAlpha]))
   {
     [(SBDragAndDropWorkspaceTransaction *)self addMilestone:@"SBDragAndDropAppActivationPlatterFadeOutMilestone"];
-    v5 = [(SBAppPlatterDragSourceViewProviding *)v4 containerViewForBlurContentView];
-    v6 = [(SBAppPlatterDragPreview *)v3 platterView];
-    v7 = [v6 iconView];
-    v8 = [v7 imageView];
-    [v8 setHidden:0];
+    containerViewForBlurContentView = [(SBAppPlatterDragSourceViewProviding *)v4 containerViewForBlurContentView];
+    platterView = [(SBAppPlatterDragPreview *)v3 platterView];
+    iconView = [platterView iconView];
+    imageView = [iconView imageView];
+    [imageView setHidden:0];
 
-    v9 = [v6 layer];
-    [v9 setZPosition:1.79769313e308];
+    layer = [platterView layer];
+    [layer setZPosition:1.79769313e308];
 
-    [v5 addSubview:v6];
-    [v5 bounds];
-    [v6 setBounds:?];
+    [containerViewForBlurContentView addSubview:platterView];
+    [containerViewForBlurContentView bounds];
+    [platterView setBounds:?];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __76__SBDragAndDropWorkspaceTransaction__updatePlatterViewBlurForDropCompletion__block_invoke;
     v11[3] = &unk_2783A92D8;
     v11[4] = self;
-    v12 = v6;
-    v10 = v6;
+    v12 = platterView;
+    v10 = platterView;
     [(SBAppPlatterDragPreview *)v3 setPlatterViewAlphaAnimationCompletionBlock:v11];
   }
 }
@@ -1935,16 +1935,16 @@ uint64_t __76__SBDragAndDropWorkspaceTransaction__updatePlatterViewBlurForDropCo
 {
   [(SBMedusaSettings *)self->_medusaSettings iconPlatterScale];
   v4 = v3;
-  v5 = [(SBApplicationDropSession *)self->_dropSession localContext];
-  if ([v5 startLocation] == 8)
+  localContext = [(SBApplicationDropSession *)self->_dropSession localContext];
+  if ([localContext startLocation] == 8)
   {
   }
 
   else
   {
-    v6 = [(SBApplicationDropSession *)self->_dropSession isWindowTearOff];
+    isWindowTearOff = [(SBApplicationDropSession *)self->_dropSession isWindowTearOff];
 
-    if (!v6)
+    if (!isWindowTearOff)
     {
       currentDropAction = self->_currentDropAction;
       goto LABEL_9;
@@ -1977,10 +1977,10 @@ LABEL_9:
 
 LABEL_11:
   v10 = +[SBPlatformController sharedInstance];
-  v11 = [v10 isiPadMini];
+  isiPadMini = [v10 isiPadMini];
 
   result = v4 / 0.9;
-  if (!v11)
+  if (!isiPadMini)
   {
     return v4;
   }
@@ -1988,27 +1988,27 @@ LABEL_11:
   return result;
 }
 
-- (double)_platterScaleForSwitcherDropContext:(id)a3
+- (double)_platterScaleForSwitcherDropContext:(id)context
 {
   medusaSettings = self->_medusaSettings;
-  v5 = a3;
+  contextCopy = context;
   [(SBMedusaSettings *)medusaSettings cardPlatterScale];
   v7 = v6;
-  v8 = [v5 draggingLeafAppLayout];
-  v9 = [v8 environment];
+  draggingLeafAppLayout = [contextCopy draggingLeafAppLayout];
+  environment = [draggingLeafAppLayout environment];
 
-  v10 = [v5 currentDropRegion];
-  v11 = [v5 intersectingAppLayout];
+  currentDropRegion = [contextCopy currentDropRegion];
+  intersectingAppLayout = [contextCopy intersectingAppLayout];
 
-  v12 = [v11 environment];
-  if (v9 == 2)
+  environment2 = [intersectingAppLayout environment];
+  if (environment == 2)
   {
-    v13 = v10;
+    v13 = currentDropRegion;
   }
 
   else
   {
-    v13 = v12;
+    v13 = environment2;
   }
 
   if (v13 != 2)
@@ -2022,31 +2022,31 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)_platterSizeForDropAction:(int64_t)a3 proposedDropLayoutState:(id)a4 setDown:(BOOL)a5
+- (CGSize)_platterSizeForDropAction:(int64_t)action proposedDropLayoutState:(id)state setDown:(BOOL)down
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(SBWorkspaceTransaction *)self windowScene];
-  v10 = [v9 switcherController];
+  downCopy = down;
+  stateCopy = state;
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
 
-  v11 = [v10 windowManagementContext];
-  v12 = [v11 isChamoisOrFlexibleWindowing];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
   v13 = *MEMORY[0x277CBF3A8];
   v14 = *(MEMORY[0x277CBF3A8] + 8);
-  if (!v12)
+  if (!isChamoisOrFlexibleWindowing)
   {
-    if (a3 > 4)
+    if (action > 4)
     {
-      if ((a3 - 6) < 4)
+      if ((action - 6) < 4)
       {
-        [v10 frameForFloatingAppLayoutInInterfaceOrientation:objc_msgSend(v8 floatingConfiguration:{"interfaceOrientation"), objc_msgSend(v8, "floatingConfiguration")}];
+        [switcherController frameForFloatingAppLayoutInInterfaceOrientation:objc_msgSend(stateCopy floatingConfiguration:{"interfaceOrientation"), objc_msgSend(stateCopy, "floatingConfiguration")}];
         v13 = v19;
         v14 = v20;
         goto LABEL_16;
       }
 
-      if (a3 != 5)
+      if (action != 5)
       {
         goto LABEL_12;
       }
@@ -2054,23 +2054,23 @@ LABEL_11:
 
     else
     {
-      if ((a3 - 1) < 2)
+      if ((action - 1) < 2)
       {
 LABEL_8:
         v18 = &SBLayoutRolePrimary;
 LABEL_15:
         v23 = *v18;
-        v24 = [v8 appLayout];
-        [v10 frameForItemWithRole:v23 inMainAppLayout:v24 interfaceOrientation:{objc_msgSend(v8, "interfaceOrientation")}];
+        appLayout = [stateCopy appLayout];
+        [switcherController frameForItemWithRole:v23 inMainAppLayout:appLayout interfaceOrientation:{objc_msgSend(stateCopy, "interfaceOrientation")}];
         v13 = v25;
         v14 = v26;
 
         goto LABEL_16;
       }
 
-      if (a3 != 3)
+      if (action != 3)
       {
-        if (a3 != 4)
+        if (action != 4)
         {
           goto LABEL_16;
         }
@@ -2083,10 +2083,10 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ((a3 - 1) < 5)
+  if ((action - 1) < 5)
   {
-    v15 = [v8 appLayout];
-    [v10 frameForItemWithRole:1 inMainAppLayout:v15 interfaceOrientation:{objc_msgSend(v8, "interfaceOrientation")}];
+    appLayout2 = [stateCopy appLayout];
+    [switcherController frameForItemWithRole:1 inMainAppLayout:appLayout2 interfaceOrientation:{objc_msgSend(stateCopy, "interfaceOrientation")}];
     v13 = v16;
     v14 = v17;
 
@@ -2094,15 +2094,15 @@ LABEL_15:
   }
 
 LABEL_12:
-  if (a3 == 10)
+  if (action == 10)
   {
-    [(SBDragAndDropWorkspaceTransaction *)self _platterSizeForSwitcherDropContext:self->_currentSwitcherDropRegionContext setDown:v5];
+    [(SBDragAndDropWorkspaceTransaction *)self _platterSizeForSwitcherDropContext:self->_currentSwitcherDropRegionContext setDown:downCopy];
     v13 = v21;
     v14 = v22;
   }
 
 LABEL_16:
-  if (!v5)
+  if (!downCopy)
   {
     [(SBDragAndDropWorkspaceTransaction *)self _platterScale];
     v14 = v14 * v27;
@@ -2116,38 +2116,38 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)_platterSizeForSwitcherDropContext:(id)a3 setDown:(BOOL)a4
+- (CGSize)_platterSizeForSwitcherDropContext:(id)context setDown:(BOOL)down
 {
-  v4 = a4;
-  v6 = a3;
+  downCopy = down;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-  v8 = [v6 draggingLeafAppLayout];
-  v9 = [v6 currentDropRegion];
-  v10 = [v6 currentDropAction];
-  if (v4)
+  draggingLeafAppLayout = [contextCopy draggingLeafAppLayout];
+  currentDropRegion = [contextCopy currentDropRegion];
+  currentDropAction = [contextCopy currentDropAction];
+  if (downCopy)
   {
-    v11 = [WeakRetained appLayouts];
+    appLayouts = [WeakRetained appLayouts];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __80__SBDragAndDropWorkspaceTransaction__platterSizeForSwitcherDropContext_setDown___block_invoke;
     v25[3] = &unk_2783A8CB8;
-    v26 = v8;
-    v8 = [v11 bs_firstObjectPassingTest:v25];
+    v26 = draggingLeafAppLayout;
+    draggingLeafAppLayout = [appLayouts bs_firstObjectPassingTest:v25];
   }
 
-  v12 = [(SBWorkspaceTransaction *)self windowScene];
-  v13 = [v12 switcherController];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
 
-  v14 = [WeakRetained switcherInterfaceOrientation];
-  if ([v8 environment] == 1 || v10 == 3)
+  switcherInterfaceOrientation = [WeakRetained switcherInterfaceOrientation];
+  if ([draggingLeafAppLayout environment] == 1 || currentDropAction == 3)
   {
-    [v13 frameForItemWithRole:1 inMainAppLayout:v8 interfaceOrientation:v14];
+    [switcherController frameForItemWithRole:1 inMainAppLayout:draggingLeafAppLayout interfaceOrientation:switcherInterfaceOrientation];
     goto LABEL_8;
   }
 
-  if ([v8 environment] == 2)
+  if ([draggingLeafAppLayout environment] == 2)
   {
-    [v13 frameForFloatingAppLayoutInInterfaceOrientation:v14 floatingConfiguration:2];
+    [switcherController frameForFloatingAppLayoutInInterfaceOrientation:switcherInterfaceOrientation floatingConfiguration:2];
 LABEL_8:
     v17 = v15;
     v18 = v16;
@@ -2157,13 +2157,13 @@ LABEL_8:
   v17 = *MEMORY[0x277CBF3A8];
   v18 = *(MEMORY[0x277CBF3A8] + 8);
 LABEL_10:
-  if (v9 <= 7)
+  if (currentDropRegion <= 7)
   {
-    if (((1 << v9) & 0x8D) != 0)
+    if (((1 << currentDropRegion) & 0x8D) != 0)
     {
-      if (v10 == 3)
+      if (currentDropAction == 3)
       {
-        [v6 targetRect];
+        [contextCopy targetRect];
         v17 = v19;
         v18 = v20;
         goto LABEL_19;
@@ -2173,9 +2173,9 @@ LABEL_10:
       SBTransformedSizeWithScale();
     }
 
-    else if (((1 << v9) & 0x70) != 0)
+    else if (((1 << currentDropRegion) & 0x70) != 0)
     {
-      [v6 scaledIntersectingAppLayoutSize];
+      [contextCopy scaledIntersectingAppLayoutSize];
     }
 
     else
@@ -2207,28 +2207,28 @@ uint64_t __80__SBDragAndDropWorkspaceTransaction__platterSizeForSwitcherDropCont
   return v6;
 }
 
-- (double)_platterSourceViewScaleForSetDropAction:(int64_t)a3 setDown:(BOOL)a4
+- (double)_platterSourceViewScaleForSetDropAction:(int64_t)action setDown:(BOOL)down
 {
-  v4 = a4;
+  downCopy = down;
   [(SBAppPlatterDragPreview *)self->_activePlatterPreview sourceViewScale];
-  if (!v4)
+  if (!downCopy)
   {
     return v7;
   }
 
   v8 = 1.0;
-  if (a3 == 10)
+  if (action == 10)
   {
     WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-    v10 = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
-    v11 = [WeakRetained appLayouts];
+    sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
+    appLayouts = [WeakRetained appLayouts];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __85__SBDragAndDropWorkspaceTransaction__platterSourceViewScaleForSetDropAction_setDown___block_invoke;
     v16[3] = &unk_2783A8CB8;
-    v17 = v10;
-    v12 = v10;
-    v13 = [v11 bs_firstObjectPassingTest:v16];
+    v17 = sceneIdentifier;
+    v12 = sceneIdentifier;
+    v13 = [appLayouts bs_firstObjectPassingTest:v16];
 
     [WeakRetained contentPageViewScaleForAppLayout:v13];
     v8 = v14;
@@ -2237,17 +2237,17 @@ uint64_t __80__SBDragAndDropWorkspaceTransaction__platterSizeForSwitcherDropCont
   return v8;
 }
 
-- (id)_cornerRadiusConfigurationForDropAction:(int64_t)a3 proposedDropLayoutState:(id)a4 setDown:(BOOL)a5 mode:(unint64_t)a6
+- (id)_cornerRadiusConfigurationForDropAction:(int64_t)action proposedDropLayoutState:(id)state setDown:(BOOL)down mode:(unint64_t)mode
 {
-  v7 = a5;
+  downCopy = down;
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  if (a6 != 2 && !v7)
+  stateCopy = state;
+  if (mode != 2 && !downCopy)
   {
     v11 = 0.0;
-    if ((a3 - 1) <= 9)
+    if ((action - 1) <= 9)
     {
-      v11 = dbl_21F8A7278[a3 - 1];
+      v11 = dbl_21F8A7278[action - 1];
     }
 
     v12 = objc_alloc(MEMORY[0x277CF0BE8]);
@@ -2255,23 +2255,23 @@ uint64_t __80__SBDragAndDropWorkspaceTransaction__platterSizeForSwitcherDropCont
     goto LABEL_10;
   }
 
-  v14 = [(SBDragAndDropWorkspaceTransaction *)self _layoutRoleForDropAction:a3];
+  v14 = [(SBDragAndDropWorkspaceTransaction *)self _layoutRoleForDropAction:action];
   v15 = v14;
-  if (a6 == 2 && !self->_layoutElementForWindowDrag)
+  if (mode == 2 && !self->_layoutElementForWindowDrag)
   {
     activeSourceViewProvider = self->_activeSourceViewProvider;
     if (activeSourceViewProvider)
     {
-      v17 = [(SBAppPlatterDragSourceViewProviding *)activeSourceViewProvider initialCornerRadiusConfiguration];
+      initialCornerRadiusConfiguration = [(SBAppPlatterDragSourceViewProviding *)activeSourceViewProvider initialCornerRadiusConfiguration];
       goto LABEL_11;
     }
 
     v12 = objc_alloc(MEMORY[0x277CF0BE8]);
     v13 = 10.0;
 LABEL_10:
-    v17 = [v12 initWithCornerRadius:v13];
+    initialCornerRadiusConfiguration = [v12 initWithCornerRadius:v13];
 LABEL_11:
-    v18 = v17;
+    v18 = initialCornerRadiusConfiguration;
     goto LABEL_12;
   }
 
@@ -2283,10 +2283,10 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v20 = [v10 elementWithRole:v14];
-  v18 = SBDefaultCornerRadiusConfigurationForElementInLayoutState(v20, v10);
+  v20 = [stateCopy elementWithRole:v14];
+  v18 = SBDefaultCornerRadiusConfigurationForElementInLayoutState(v20, stateCopy);
 
-  if (a6 == 2 && !v7)
+  if (mode == 2 && !downCopy)
   {
     [v18 topLeft];
     v22 = v21;
@@ -2314,43 +2314,43 @@ LABEL_12:
   return v18;
 }
 
-- (id)_cornerRadiusForSwitcherDragContext:(id)a3 setDown:(BOOL)a4 sourceViewScale:(double)a5
+- (id)_cornerRadiusForSwitcherDragContext:(id)context setDown:(BOOL)down sourceViewScale:(double)scale
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v6)
+  downCopy = down;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (downCopy)
   {
-    v10 = [v8 finalTargetAppLayout];
-    v11 = [v9 draggingLeafAppLayout];
+    finalTargetAppLayout = [contextCopy finalTargetAppLayout];
+    draggingLeafAppLayout = [v9 draggingLeafAppLayout];
 
-    v12 = [v11 itemForLayoutRole:1];
-    v13 = [v10 layoutRoleForItem:v12];
+    v12 = [draggingLeafAppLayout itemForLayoutRole:1];
+    v13 = [finalTargetAppLayout layoutRoleForItem:v12];
   }
 
   else
   {
-    v10 = [v8 draggingAppLayout];
+    finalTargetAppLayout = [contextCopy draggingAppLayout];
 
     v13 = 1;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-  [WeakRetained cornerRadiiForLayoutRole:v13 inAppLayout:v10];
+  [WeakRetained cornerRadiiForLayoutRole:v13 inAppLayout:finalTargetAppLayout];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [objc_alloc(MEMORY[0x277CF0BE8]) initWithTopLeft:v16 * a5 bottomLeft:v18 * a5 bottomRight:v20 * a5 topRight:v22 * a5];
+  scale = [objc_alloc(MEMORY[0x277CF0BE8]) initWithTopLeft:v16 * scale bottomLeft:v18 * scale bottomRight:v20 * scale topRight:v22 * scale];
 
-  return v23;
+  return scale;
 }
 
-- (void)_getPlatterDiffuseShadowParameters:(SBDragPreviewShadowParameters *)a3 rimShadowParameters:(SBDragPreviewShadowParameters *)a4 diffuseFilters:(id *)a5 rimFilters:(id *)a6 forDropAction:(int64_t)a7 setDown:(BOOL)a8 mode:(unint64_t)a9 userInterfaceStyle:(int64_t)a10
+- (void)_getPlatterDiffuseShadowParameters:(SBDragPreviewShadowParameters *)parameters rimShadowParameters:(SBDragPreviewShadowParameters *)shadowParameters diffuseFilters:(id *)filters rimFilters:(id *)rimFilters forDropAction:(int64_t)action setDown:(BOOL)down mode:(unint64_t)mode userInterfaceStyle:(int64_t)self0
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  if (a9 == 2)
+  if (mode == 2)
   {
     if (!self->_layoutElementForWindowDrag)
     {
@@ -2365,8 +2365,8 @@ LABEL_12:
       v29 = v28;
       v31 = v30;
       v33 = v32;
-      v34 = [(SBAppPlatterDragSourceViewProviding *)v17 initialDiffuseShadowFilters];
-      v35 = [(SBAppPlatterDragSourceViewProviding *)v17 initialRimShadowFilters];
+      initialDiffuseShadowFilters = [(SBAppPlatterDragSourceViewProviding *)v17 initialDiffuseShadowFilters];
+      initialRimShadowFilters = [(SBAppPlatterDragSourceViewProviding *)v17 initialRimShadowFilters];
 LABEL_27:
 
       goto LABEL_28;
@@ -2374,9 +2374,9 @@ LABEL_27:
 
 LABEL_5:
     v17 = self->_medusaSettings;
-    if ([(SBDragAndDropWorkspaceTransaction *)self _layoutRoleForDropAction:a7]== 3)
+    if ([(SBDragAndDropWorkspaceTransaction *)self _layoutRoleForDropAction:action]== 3)
     {
-      if (a10 == 2)
+      if (style == 2)
       {
         [(SBAppPlatterDragSourceViewProviding *)v17 coronaDiffuseShadowOpacity];
       }
@@ -2389,9 +2389,9 @@ LABEL_5:
       v19 = v36;
       [(SBAppPlatterDragSourceViewProviding *)v17 diffuseShadowRadius];
       v21 = v38;
-      v39 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+      userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
       [(SBAppPlatterDragSourceViewProviding *)v17 diffuseShadowOffsetHorizontal];
-      if (v39 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v40 = -v40;
       }
@@ -2408,7 +2408,7 @@ LABEL_5:
 
       [(SBAppPlatterDragSourceViewProviding *)v17 diffuseShadowOffsetVertical];
       v25 = v41;
-      if (a10 == 2)
+      if (style == 2)
       {
         [(SBAppPlatterDragSourceViewProviding *)v17 coronaRimShadowOpacity];
         v27 = v42;
@@ -2434,9 +2434,9 @@ LABEL_5:
         [v45 setValue:v53 forKey:@"inputColorMatrix"];
 
         v58[0] = v45;
-        v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:1];
+        initialDiffuseShadowFilters = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:1];
         v57 = v45;
-        v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
+        initialRimShadowFilters = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
 
         goto LABEL_27;
       }
@@ -2445,10 +2445,10 @@ LABEL_5:
     else
     {
       v23 = 0.0;
-      if (a9 != 2 || a8)
+      if (mode != 2 || down)
       {
-        v35 = 0;
-        v34 = 0;
+        initialRimShadowFilters = 0;
+        initialDiffuseShadowFilters = 0;
         v33 = 0.0;
         v31 = 0.0;
         v29 = 0.0;
@@ -2471,23 +2471,23 @@ LABEL_5:
     v27 = v51;
     [(SBAppPlatterDragSourceViewProviding *)v17 rimShadowRadius];
     v29 = v52;
-    v35 = 0;
-    v34 = 0;
+    initialRimShadowFilters = 0;
+    initialDiffuseShadowFilters = 0;
     v31 = *MEMORY[0x277CBF3A8];
     v33 = *(MEMORY[0x277CBF3A8] + 8);
     goto LABEL_27;
   }
 
-  if (a8)
+  if (down)
   {
     goto LABEL_5;
   }
 
-  v37 = a7 - 1;
+  v37 = action - 1;
   v33 = 0.0;
-  v35 = 0;
-  v34 = 0;
-  if ((a7 - 1) > 9)
+  initialRimShadowFilters = 0;
+  initialDiffuseShadowFilters = 0;
+  if ((action - 1) > 9)
   {
     v31 = 0.0;
     v29 = 0.0;
@@ -2510,39 +2510,39 @@ LABEL_5:
   }
 
 LABEL_28:
-  if (a3)
+  if (parameters)
   {
-    a3->shadowOpacity = v19;
-    a3->shadowRadius = v21;
-    a3->shadowOffset.width = v23;
-    a3->shadowOffset.height = v25;
+    parameters->shadowOpacity = v19;
+    parameters->shadowRadius = v21;
+    parameters->shadowOffset.width = v23;
+    parameters->shadowOffset.height = v25;
   }
 
-  if (a4)
+  if (shadowParameters)
   {
-    a4->shadowOpacity = v27;
-    a4->shadowRadius = v29;
-    a4->shadowOffset.width = v31;
-    a4->shadowOffset.height = v33;
+    shadowParameters->shadowOpacity = v27;
+    shadowParameters->shadowRadius = v29;
+    shadowParameters->shadowOffset.width = v31;
+    shadowParameters->shadowOffset.height = v33;
   }
 
-  if (a5)
+  if (filters)
   {
-    v54 = v34;
-    *a5 = v34;
+    v54 = initialDiffuseShadowFilters;
+    *filters = initialDiffuseShadowFilters;
   }
 
-  if (a6)
+  if (rimFilters)
   {
-    v55 = v35;
-    *a6 = v35;
+    v55 = initialRimShadowFilters;
+    *rimFilters = initialRimShadowFilters;
   }
 }
 
-- (void)_updatePlatterPreviewForSetDown:(BOOL)a3 animated:(BOOL)a4
+- (void)_updatePlatterPreviewForSetDown:(BOOL)down animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  downCopy = down;
   if (([(SBDragAndDropWorkspaceTransaction *)self isInterrupted]& 1) != 0)
   {
     return;
@@ -2554,12 +2554,12 @@ LABEL_28:
   if (self->_dragExitedDropZone)
   {
     WeakRetained = objc_loadWeakRetained(&self->_switcherController);
-    v11 = [WeakRetained windowManagementContext];
-    if ([v11 isChamoisOrFlexibleWindowing])
+    windowManagementContext = [WeakRetained windowManagementContext];
+    if ([windowManagementContext isChamoisOrFlexibleWindowing])
     {
-      v12 = [(SBApplicationDropSession *)self->_dropSession dropZones];
+      dropZones = [(SBApplicationDropSession *)self->_dropSession dropZones];
 
-      if (!v12)
+      if (!dropZones)
       {
         v13 = 0;
         goto LABEL_12;
@@ -2582,26 +2582,26 @@ LABEL_11:
 
   if (!currentDropAction)
   {
-    v43 = [(SBApplicationDropSession *)self->_dropSession localContext];
-    v44 = [v43 startLocation];
+    localContext = [(SBApplicationDropSession *)self->_dropSession localContext];
+    startLocation = [localContext startLocation];
 
-    if (v44 == 8)
+    if (startLocation == 8)
     {
       v14 = 7;
       v45 = [(SBDragAndDropWorkspaceTransaction *)self _transitionRequestForDropAction:7];
       [v45 finalize];
-      v46 = [v45 applicationContext];
-      v47 = [v46 layoutState];
+      applicationContext = [v45 applicationContext];
+      layoutState = [applicationContext layoutState];
       v48 = v9;
-      v9 = v47;
+      v9 = layoutState;
 
       v13 = 1;
     }
 
     else
     {
-      v57 = [(SBAppPlatterDragPreview *)v7 sourceView];
-      v13 = v57 != 0;
+      sourceView = [(SBAppPlatterDragPreview *)v7 sourceView];
+      v13 = sourceView != 0;
 
       v14 = 0;
     }
@@ -2632,7 +2632,7 @@ LABEL_13:
     }
   }
 
-  v60 = v4;
+  v60 = animatedCopy;
   if (self->_sessionState == 2)
   {
     v58 = v14;
@@ -2646,8 +2646,8 @@ LABEL_13:
 
     v19 = finalLayoutState;
     v20 = objc_loadWeakRetained(&self->_switcherContentController);
-    v21 = [(SBMainDisplayLayoutState *)v19 appLayout];
-    v22 = [v20 _isAppLayoutBlurred:v21];
+    appLayout = [(SBMainDisplayLayoutState *)v19 appLayout];
+    v22 = [v20 _isAppLayoutBlurred:appLayout];
 
     if (self->_layoutStateTransitionCompleted || self->_currentWorkspaceTransaction)
     {
@@ -2672,9 +2672,9 @@ LABEL_13:
 
   if (v13 == 1)
   {
-    v25 = [(SBAppPlatterDragPreview *)v7 platterView];
+    platterView = [(SBAppPlatterDragPreview *)v7 platterView];
 
-    if (!v25)
+    if (!platterView)
     {
       objc_initWeak(location, self);
       draggingApplicationSceneHandle = self->_draggingApplicationSceneHandle;
@@ -2683,26 +2683,26 @@ LABEL_13:
       v83[2] = __78__SBDragAndDropWorkspaceTransaction__updatePlatterPreviewForSetDown_animated___block_invoke;
       v83[3] = &unk_2783B1A70;
       objc_copyWeak(&v84, location);
-      v85 = v5;
+      v85 = downCopy;
       [(SBDragAndDropWorkspaceTransaction *)self _configurePlatterPreview:v7 forSceneHandle:draggingApplicationSceneHandle completion:v83];
       objc_destroyWeak(&v84);
       objc_destroyWeak(location);
     }
   }
 
-  [(SBDragAndDropWorkspaceTransaction *)self _platterSourceViewScaleForSetDropAction:currentDropAction setDown:v5];
+  [(SBDragAndDropWorkspaceTransaction *)self _platterSourceViewScaleForSetDropAction:currentDropAction setDown:downCopy];
   v28 = v27;
-  [(SBDragAndDropWorkspaceTransaction *)self _platterSizeForDropAction:v14 proposedDropLayoutState:v9 setDown:v5];
+  [(SBDragAndDropWorkspaceTransaction *)self _platterSizeForDropAction:v14 proposedDropLayoutState:v9 setDown:downCopy];
   v30 = v29;
   v32 = v31;
   if (self->_currentDropAction == 10)
   {
-    [(SBDragAndDropWorkspaceTransaction *)self _cornerRadiusForSwitcherDragContext:self->_currentSwitcherDropRegionContext setDown:v5 sourceViewScale:v28];
+    [(SBDragAndDropWorkspaceTransaction *)self _cornerRadiusForSwitcherDragContext:self->_currentSwitcherDropRegionContext setDown:downCopy sourceViewScale:v28];
   }
 
   else
   {
-    [(SBDragAndDropWorkspaceTransaction *)self _cornerRadiusConfigurationForDropAction:v14 proposedDropLayoutState:v9 setDown:v5 mode:v13];
+    [(SBDragAndDropWorkspaceTransaction *)self _cornerRadiusConfigurationForDropAction:v14 proposedDropLayoutState:v9 setDown:downCopy mode:v13];
   }
   v33 = ;
   *location = 0u;
@@ -2711,12 +2711,12 @@ LABEL_13:
   v80 = 0u;
   v77 = 0;
   v78 = 0;
-  v34 = [(SBAppPlatterDragPreview *)v7 traitCollection];
-  -[SBDragAndDropWorkspaceTransaction _getPlatterDiffuseShadowParameters:rimShadowParameters:diffuseFilters:rimFilters:forDropAction:setDown:mode:userInterfaceStyle:](self, "_getPlatterDiffuseShadowParameters:rimShadowParameters:diffuseFilters:rimFilters:forDropAction:setDown:mode:userInterfaceStyle:", location, &v79, &v78, &v77, v14, v5, v13, [v34 userInterfaceStyle]);
+  traitCollection = [(SBAppPlatterDragPreview *)v7 traitCollection];
+  -[SBDragAndDropWorkspaceTransaction _getPlatterDiffuseShadowParameters:rimShadowParameters:diffuseFilters:rimFilters:forDropAction:setDown:mode:userInterfaceStyle:](self, "_getPlatterDiffuseShadowParameters:rimShadowParameters:diffuseFilters:rimFilters:forDropAction:setDown:mode:userInterfaceStyle:", location, &v79, &v78, &v77, v14, downCopy, v13, [traitCollection userInterfaceStyle]);
   v35 = v78;
   v36 = v77;
 
-  if (v5)
+  if (downCopy)
   {
     v37 = 3;
   }
@@ -2744,20 +2744,20 @@ LABEL_13:
   v38 = 0.0;
   if (self->_finalLayoutState)
   {
-    v39 = [(SBLayoutState *)self->_currentLayoutState interfaceOrientation];
-    v40 = [(SBLayoutState *)self->_finalLayoutState interfaceOrientation];
-    if (v39 != v40)
+    interfaceOrientation = [(SBLayoutState *)self->_currentLayoutState interfaceOrientation];
+    interfaceOrientation2 = [(SBLayoutState *)self->_finalLayoutState interfaceOrientation];
+    if (interfaceOrientation != interfaceOrientation2)
     {
       v41 = 0.0;
       v42 = 0.0;
-      if (v40 != 1)
+      if (interfaceOrientation2 != 1)
       {
-        if (v40 == 3)
+        if (interfaceOrientation2 == 3)
         {
           v42 = 1.57079633;
         }
 
-        else if (v40 == 4)
+        else if (interfaceOrientation2 == 4)
         {
           v42 = -1.57079633;
         }
@@ -2765,21 +2765,21 @@ LABEL_13:
         else
         {
           v42 = 3.14159265;
-          if (v40 != 2)
+          if (interfaceOrientation2 != 2)
           {
             v42 = 0.0;
           }
         }
       }
 
-      if (v39 != 1)
+      if (interfaceOrientation != 1)
       {
-        if (v39 == 3)
+        if (interfaceOrientation == 3)
         {
           v41 = 1.57079633;
         }
 
-        else if (v39 == 4)
+        else if (interfaceOrientation == 4)
         {
           v41 = -1.57079633;
         }
@@ -2787,7 +2787,7 @@ LABEL_13:
         else
         {
           v41 = 3.14159265;
-          if (v39 != 2)
+          if (interfaceOrientation != 2)
           {
             v41 = 0.0;
           }
@@ -2831,8 +2831,8 @@ LABEL_13:
   if (v60)
   {
     v55 = MEMORY[0x277D75D18];
-    v56 = [(SBMedusaSettings *)self->_medusaSettings platterAnimationSettings];
-    [v55 _animateUsingSpringBehavior:v56 tracking:0 animations:v53 completion:v54];
+    platterAnimationSettings = [(SBMedusaSettings *)self->_medusaSettings platterAnimationSettings];
+    [v55 _animateUsingSpringBehavior:platterAnimationSettings tracking:0 animations:v53 completion:v54];
   }
 
   else
@@ -2880,17 +2880,17 @@ uint64_t __78__SBDragAndDropWorkspaceTransaction__updatePlatterPreviewForSetDown
 - (void)_updatePlatterPreviewWithUpdatedSourceView
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (void)_updateActiveSourceViewProviderWithDragState:(unint64_t)a3
+- (void)_updateActiveSourceViewProviderWithDragState:(unint64_t)state
 {
   activeSourceViewProvider = self->_activeSourceViewProvider;
   if (activeSourceViewProvider)
   {
-    [(SBAppPlatterDragSourceViewProviding *)activeSourceViewProvider setDragging:a3 > 1];
+    [(SBAppPlatterDragSourceViewProviding *)activeSourceViewProvider setDragging:state > 1];
   }
 }
 
@@ -2899,7 +2899,7 @@ uint64_t __78__SBDragAndDropWorkspaceTransaction__updatePlatterPreviewForSetDown
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"newChildTransaction != nil"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     *buf = 138544642;
@@ -2922,71 +2922,71 @@ uint64_t __78__SBDragAndDropWorkspaceTransaction__updatePlatterPreviewForSetDown
   __break(0);
 }
 
-- (void)_addChildWorkspaceTransaction:(id)a3
+- (void)_addChildWorkspaceTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = self->_currentWorkspaceTransaction;
   if (v5)
   {
-    v6 = [(SBWorkspaceTransaction *)v4 transitionRequest];
-    [(SBWorkspaceTransaction *)v5 interruptForTransitionRequest:v6];
+    transitionRequest = [(SBWorkspaceTransaction *)transactionCopy transitionRequest];
+    [(SBWorkspaceTransaction *)v5 interruptForTransitionRequest:transitionRequest];
   }
 
   v7 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(SBDragAndDropWorkspaceTransaction *)v4 _addChildWorkspaceTransaction:v7];
+    [(SBDragAndDropWorkspaceTransaction *)transactionCopy _addChildWorkspaceTransaction:v7];
   }
 
   currentWorkspaceTransaction = self->_currentWorkspaceTransaction;
-  self->_currentWorkspaceTransaction = v4;
-  v9 = v4;
+  self->_currentWorkspaceTransaction = transactionCopy;
+  v9 = transactionCopy;
 
   [(SBDragAndDropWorkspaceTransaction *)self addChildTransaction:v9];
 }
 
-- (id)_currentGestureEventForGesture:(id)a3
+- (id)_currentGestureEventForGesture:(id)gesture
 {
-  v4 = SBGestureModifierPhaseForGestureState([a3 state]);
+  v4 = SBGestureModifierPhaseForGestureState([gesture state]);
   WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-  v6 = [WeakRetained view];
+  view = [WeakRetained view];
 
-  v7 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+  uiDragDropSession = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
   v8 = [SBDragAndDropGestureSwitcherModifierEvent alloc];
   gestureID = self->_gestureID;
-  v10 = [(SBFluidSwitcherGesture *)self->_dragAndDropGesture selectedAppLayout];
-  v11 = [(SBGestureSwitcherModifierEvent *)v8 initWithGestureID:gestureID selectedAppLayout:v10 gestureType:6 phase:v4];
+  selectedAppLayout = [(SBFluidSwitcherGesture *)self->_dragAndDropGesture selectedAppLayout];
+  v11 = [(SBGestureSwitcherModifierEvent *)v8 initWithGestureID:gestureID selectedAppLayout:selectedAppLayout gestureType:6 phase:v4];
 
-  [v7 locationInView:v6];
+  [uiDragDropSession locationInView:view];
   [(SBGestureSwitcherModifierEvent *)v11 setLocationInContainerView:?];
   [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:0.0166666667];
   [(SBGestureSwitcherModifierEvent *)v11 setVelocityInContainerView:?];
   [(SBGestureSwitcherModifierEvent *)v11 setTouchHistoryProvider:self->_touchHistory];
   [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setDropAction:self->_currentDropAction];
-  v12 = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
-  [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setDraggedSceneIdentifier:v12];
+  sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
+  [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setDraggedSceneIdentifier:sceneIdentifier];
 
   if (self->_currentSwitcherDropRegionContext)
   {
-    v13 = [(SBFluidSwitcherGesture *)self->_dragAndDropGesture selectedLayoutRole];
+    selectedLayoutRole = [(SBFluidSwitcherGesture *)self->_dragAndDropGesture selectedLayoutRole];
   }
 
   else
   {
-    v13 = [(SBLayoutElement *)self->_layoutElementForWindowDrag layoutRole];
+    selectedLayoutRole = [(SBLayoutElement *)self->_layoutElementForWindowDrag layoutRole];
   }
 
-  [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setDraggedSceneLayoutRole:v13];
+  [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setDraggedSceneLayoutRole:selectedLayoutRole];
   [(SBDragAndDropWorkspaceTransaction *)self _platterFrameInSwitcherView];
   [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setPlatterViewFrame:?];
   [(SBDragAndDropWorkspaceTransaction *)self _platterScale];
   [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setPlatterScale:?];
   [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setSwitcherDropRegionContext:self->_currentSwitcherDropRegionContext];
-  v14 = [(SBApplicationDropSession *)self->_dropSession localContext];
-  -[SBDragAndDropGestureSwitcherModifierEvent setWindowDrag:](v11, "setWindowDrag:", [v14 startLocation] == 8);
+  localContext = [(SBApplicationDropSession *)self->_dropSession localContext];
+  -[SBDragAndDropGestureSwitcherModifierEvent setWindowDrag:](v11, "setWindowDrag:", [localContext startLocation] == 8);
 
-  v15 = [(SBApplicationDropSession *)self->_dropSession localContext];
-  -[SBDragAndDropGestureSwitcherModifierEvent setSwitcherDrag:](v11, "setSwitcherDrag:", [v15 startLocation] == 11);
+  localContext2 = [(SBApplicationDropSession *)self->_dropSession localContext];
+  -[SBDragAndDropGestureSwitcherModifierEvent setSwitcherDrag:](v11, "setSwitcherDrag:", [localContext2 startLocation] == 11);
 
   [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setPreviewHasLifted:self->_windowLiftAnimationCompleted];
   [(SBDragAndDropGestureSwitcherModifierEvent *)v11 setPlatterized:self->_windowDragEnteredPlatterZone];
@@ -2997,8 +2997,8 @@ uint64_t __78__SBDragAndDropWorkspaceTransaction__updatePlatterPreviewForSetDown
 
   else
   {
-    v16 = [(SBDragAndDropWorkspaceTransaction *)self error];
-    [(SBGestureSwitcherModifierEvent *)v11 setCanceled:v16 != 0];
+    error = [(SBDragAndDropWorkspaceTransaction *)self error];
+    [(SBGestureSwitcherModifierEvent *)v11 setCanceled:error != 0];
   }
 
   return v11;
@@ -3010,9 +3010,9 @@ uint64_t __78__SBDragAndDropWorkspaceTransaction__updatePlatterPreviewForSetDown
   v45.super_class = SBDragAndDropWorkspaceTransaction;
   [(SBDragAndDropWorkspaceTransaction *)&v45 _begin];
   v3 = +[SBKeyboardSuppressionManager sharedInstance];
-  v4 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v5 = [v4 displayIdentity];
-  [v3 startSuppressingKeyboardWithReason:@"medusa-drag" predicate:0 displayIdentity:v5];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  displayIdentity = [transitionRequest displayIdentity];
+  [v3 startSuppressingKeyboardWithReason:@"medusa-drag" predicate:0 displayIdentity:displayIdentity];
 
   v6 = [SBApp deviceOrientationUpdateDeferralAssertionWithReason:@"SBDragAndDropAppActivationDisableRotationReason"];
   deferOrientationUpdatesForDragAndDropAssertion = self->_deferOrientationUpdatesForDragAndDropAssertion;
@@ -3020,15 +3020,15 @@ uint64_t __78__SBDragAndDropWorkspaceTransaction__updatePlatterPreviewForSetDown
 
   self->_performedDrop = 0;
   [(SBDragAndDropWorkspaceTransaction *)self addMilestone:@"SBDragAndDropAppActivationDraggingMilestone"];
-  v8 = [SBApp transactionForDismissingSearchTransientOverlay];
-  if (v8)
+  transactionForDismissingSearchTransientOverlay = [SBApp transactionForDismissingSearchTransientOverlay];
+  if (transactionForDismissingSearchTransientOverlay)
   {
-    [(SBDragAndDropWorkspaceTransaction *)self addChildTransaction:v8 withSchedulingPolicy:0];
+    [(SBDragAndDropWorkspaceTransaction *)self addChildTransaction:transactionForDismissingSearchTransientOverlay withSchedulingPolicy:0];
   }
 
-  v9 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   gestureID = self->_gestureID;
-  self->_gestureID = v9;
+  self->_gestureID = uUID;
 
   if (!self->_currentDropActionProposedLayoutState)
   {
@@ -3050,18 +3050,18 @@ uint64_t __78__SBDragAndDropWorkspaceTransaction__updatePlatterPreviewForSetDown
   layoutElementForWindowDrag = self->_layoutElementForWindowDrag;
   if (layoutElementForWindowDrag)
   {
-    v16 = [(SBLayoutElement *)layoutElementForWindowDrag layoutRole];
+    layoutRole = [(SBLayoutElement *)layoutElementForWindowDrag layoutRole];
     currentLayoutState = self->_currentLayoutState;
-    if (v16 == 3)
+    if (layoutRole == 3)
     {
-      v18 = [(SBMainDisplayLayoutState *)currentLayoutState floatingAppLayout];
-      [v18 anyLeafAppLayout];
+      floatingAppLayout = [(SBMainDisplayLayoutState *)currentLayoutState floatingAppLayout];
+      [floatingAppLayout anyLeafAppLayout];
     }
 
     else
     {
-      v18 = [(SBMainDisplayLayoutState *)currentLayoutState appLayout];
-      [v18 leafAppLayoutForRole:{-[SBLayoutElement layoutRole](self->_layoutElementForWindowDrag, "layoutRole")}];
+      floatingAppLayout = [(SBMainDisplayLayoutState *)currentLayoutState appLayout];
+      [floatingAppLayout leafAppLayoutForRole:{-[SBLayoutElement layoutRole](self->_layoutElementForWindowDrag, "layoutRole")}];
     }
     v22 = ;
     goto LABEL_12;
@@ -3069,24 +3069,24 @@ uint64_t __78__SBDragAndDropWorkspaceTransaction__updatePlatterPreviewForSetDown
 
   if ([(SBMainDisplayLayoutState *)self->_currentLayoutState unlockedEnvironmentMode]== 2)
   {
-    v19 = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
-    v20 = [WeakRetained appLayouts];
+    sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
+    appLayouts = [WeakRetained appLayouts];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __43__SBDragAndDropWorkspaceTransaction__begin__block_invoke_2;
     v40[3] = &unk_2783A8CB8;
-    v21 = v19;
+    v21 = sceneIdentifier;
     v41 = v21;
-    v22 = [v20 bs_firstObjectPassingTest:v40];
+    v22 = [appLayouts bs_firstObjectPassingTest:v40];
 
-    v23 = [v22 allItems];
+    allItems = [v22 allItems];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __43__SBDragAndDropWorkspaceTransaction__begin__block_invoke_3;
     v38[3] = &unk_2783A8C90;
-    v18 = v21;
-    v39 = v18;
-    v24 = [v23 bs_firstObjectPassingTest:v38];
+    floatingAppLayout = v21;
+    v39 = floatingAppLayout;
+    v24 = [allItems bs_firstObjectPassingTest:v38];
 
     -[SBFluidSwitcherGesture _setSelectedLayoutRole:](self->_dragAndDropGesture, "_setSelectedLayoutRole:", [v22 layoutRoleForItem:v24]);
 LABEL_12:
@@ -3096,24 +3096,24 @@ LABEL_12:
 
   v22 = 0;
 LABEL_13:
-  v25 = [(SBMainDisplayLayoutState *)self->_initialLayoutState appLayout];
-  v26 = [(SBApplicationDropSession *)self->_dropSession sceneIdentity];
-  v27 = [v26 identifier];
-  self->_draggingExistingItemFromActiveLayoutState = [v25 containsItemWithUniqueIdentifier:v27];
+  appLayout = [(SBMainDisplayLayoutState *)self->_initialLayoutState appLayout];
+  sceneIdentity = [(SBApplicationDropSession *)self->_dropSession sceneIdentity];
+  identifier = [sceneIdentity identifier];
+  self->_draggingExistingItemFromActiveLayoutState = [appLayout containsItemWithUniqueIdentifier:identifier];
 
   [(SBFluidSwitcherGesture *)self->_dragAndDropGesture _setSelectedAppLayout:v22];
   [(SBFluidSwitcherGesture *)self->_dragAndDropGesture _setState:1];
   if (self->_layoutElementForWindowDrag)
   {
-    v28 = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
-    v29 = [WeakRetained appLayouts];
+    sceneIdentifier2 = [(SBDeviceApplicationSceneHandle *)self->_draggingApplicationSceneHandle sceneIdentifier];
+    appLayouts2 = [WeakRetained appLayouts];
     v33 = MEMORY[0x277D85DD0];
     v34 = 3221225472;
     v35 = __43__SBDragAndDropWorkspaceTransaction__begin__block_invoke_4;
     v36 = &unk_2783A8CB8;
-    v30 = v28;
+    v30 = sceneIdentifier2;
     v37 = v30;
-    v31 = [v29 bs_firstObjectPassingTest:&v33];
+    v31 = [appLayouts2 bs_firstObjectPassingTest:&v33];
 
     if (v31)
     {
@@ -3165,8 +3165,8 @@ BOOL __43__SBDragAndDropWorkspaceTransaction__begin__block_invoke_4(uint64_t a1,
 {
   if ([(SBDragAndDropWorkspaceTransaction *)self isInterrupted])
   {
-    v3 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
-    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidEnd:v3];
+    uiDragDropSession = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+    [(SBDragAndDropWorkspaceTransaction *)self _handleSessionDidEnd:uiDragDropSession];
   }
 
   [(SBDragAndDropWorkspaceTransaction *)self _endDragAndDropFluidGesture];
@@ -3179,12 +3179,12 @@ BOOL __43__SBDragAndDropWorkspaceTransaction__begin__block_invoke_4(uint64_t a1,
 
   [(SBAppPlatterDragPreview *)self->_activePlatterPreview invalidateSourceView];
   [(SBAppPlatterDragSourceViewProviding *)self->_activeSourceViewProvider setDragging:0];
-  v6 = [(SBMainWorkspaceTransitionRequest *)self->_dropTransitionRequest completionBlock];
+  completionBlock = [(SBMainWorkspaceTransitionRequest *)self->_dropTransitionRequest completionBlock];
 
-  if (v6)
+  if (completionBlock)
   {
-    v7 = [(SBMainWorkspaceTransitionRequest *)self->_dropTransitionRequest completionBlock];
-    v7[2](v7, 1);
+    completionBlock2 = [(SBMainWorkspaceTransitionRequest *)self->_dropTransitionRequest completionBlock];
+    completionBlock2[2](completionBlock2, 1);
   }
 
   v8.receiver = self;
@@ -3209,14 +3209,14 @@ BOOL __43__SBDragAndDropWorkspaceTransaction__begin__block_invoke_4(uint64_t a1,
   }
 }
 
-- (void)_childTransactionDidComplete:(id)a3
+- (void)_childTransactionDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v7.receiver = self;
   v7.super_class = SBDragAndDropWorkspaceTransaction;
-  [(SBDragAndDropWorkspaceTransaction *)&v7 _childTransactionDidComplete:v4];
+  [(SBDragAndDropWorkspaceTransaction *)&v7 _childTransactionDidComplete:completeCopy];
   currentWorkspaceTransaction = self->_currentWorkspaceTransaction;
-  if (currentWorkspaceTransaction == v4)
+  if (currentWorkspaceTransaction == completeCopy)
   {
     self->_currentWorkspaceTransaction = 0;
 
@@ -3226,7 +3226,7 @@ BOOL __43__SBDragAndDropWorkspaceTransaction__begin__block_invoke_4(uint64_t a1,
   }
 
   sceneUpdateTransactionForWindowDrag = self->_sceneUpdateTransactionForWindowDrag;
-  if (sceneUpdateTransactionForWindowDrag == v4)
+  if (sceneUpdateTransactionForWindowDrag == completeCopy)
   {
     self->_sceneUpdateTransactionForWindowDrag = 0;
 
@@ -3235,7 +3235,7 @@ LABEL_5:
   }
 }
 
-- (BOOL)canInterruptForTransitionRequest:(id)a3
+- (BOOL)canInterruptForTransitionRequest:(id)request
 {
   if (([(SBDragAndDropWorkspaceTransaction *)self isComplete]& 1) != 0 || ([(SBDragAndDropWorkspaceTransaction *)self isInterrupted]& 1) != 0 || self->_layoutElementForWindowDrag && (!self->_windowDragEnteredPlatterZone || self->_sceneUpdateTransactionForWindowDrag) && !self->_performedDrop || self->_currentDropAction == 10 && !self->_dropAnimationCompleted || ([(SBDragAndDropWorkspaceTransaction *)self isWaitingForMilestone:@"SBDragAndDropAppActivationPlatterFadeOutMilestone"]& 1) != 0 || ([(SBDragAndDropWorkspaceTransaction *)self isWaitingForMilestone:@"SBDragAndDropAppActivationWaitingToAddToAppsTransactionMilestone"]& 1) != 0)
   {
@@ -3248,28 +3248,28 @@ LABEL_5:
   }
 }
 
-- (void)_willInterruptWithReason:(id)a3
+- (void)_willInterruptWithReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = SBDragAndDropWorkspaceTransaction;
-  [(SBDragAndDropWorkspaceTransaction *)&v5 _willInterruptWithReason:a3];
+  [(SBDragAndDropWorkspaceTransaction *)&v5 _willInterruptWithReason:reason];
   [(SBDragAndDropWorkspaceTransaction *)self _endDragAndDropFluidGesture];
-  v4 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-  if ([v4 isTransitioning])
+  layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+  if ([layoutStateTransitionCoordinator isTransitioning])
   {
-    [v4 willEndTransition];
-    [v4 endTransitionWithError:0];
+    [layoutStateTransitionCoordinator willEndTransition];
+    [layoutStateTransitionCoordinator endTransitionWithError:0];
   }
 }
 
-- (void)_willInterruptForTransitionRequest:(id)a3
+- (void)_willInterruptForTransitionRequest:(id)request
 {
   v7.receiver = self;
   v7.super_class = SBDragAndDropWorkspaceTransaction;
-  v4 = a3;
-  [(SBWorkspaceTransaction *)&v7 _willInterruptForTransitionRequest:v4];
+  requestCopy = request;
+  [(SBWorkspaceTransaction *)&v7 _willInterruptForTransitionRequest:requestCopy];
   v5 = objc_opt_class();
-  v6 = SBSafeCast(v5, v4);
+  v6 = SBSafeCast(v5, requestCopy);
 
   if ([v6 source] == 27 || self->_performedDrop)
   {
@@ -3277,19 +3277,19 @@ LABEL_5:
   }
 }
 
-- (void)_didInterruptWithReason:(id)a3
+- (void)_didInterruptWithReason:(id)reason
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v7.receiver = self;
   v7.super_class = SBDragAndDropWorkspaceTransaction;
-  [(SBDragAndDropWorkspaceTransaction *)&v7 _didInterruptWithReason:v4];
+  [(SBDragAndDropWorkspaceTransaction *)&v7 _didInterruptWithReason:reasonCopy];
   self->_sessionState = 2;
   if (!self->_performedDrop)
   {
     objc_storeStrong(&self->_finalLayoutState, self->_currentLayoutState);
-    v5 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
-    [(SBDragAndDropWorkspaceTransaction *)self _updateCurrentDropActionForSession:v5];
+    uiDragDropSession = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+    [(SBDragAndDropWorkspaceTransaction *)self _updateCurrentDropActionForSession:uiDragDropSession];
 
     [(SBDragAndDropWorkspaceTransaction *)self _cleanUpAndCompleteTransactionIfNecessary];
   }
@@ -3298,25 +3298,25 @@ LABEL_5:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = v4;
+    v9 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "SBAppDrop transaction did interrupt for reason: %{public}@", buf, 0xCu);
   }
 }
 
 - (CGRect)_platterFrameInSwitcherView
 {
-  v3 = [(SBWorkspaceTransaction *)self windowScene];
-  v4 = [v3 switcherController];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
 
-  v5 = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
+  uiDragDropSession = [(SBApplicationDropSession *)self->_dropSession uiDragDropSession];
   WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-  v7 = [WeakRetained view];
-  [v5 locationInView:v7];
+  view = [WeakRetained view];
+  [uiDragDropSession locationInView:view];
 
-  [v4 frameForFloatingAppLayoutInInterfaceOrientation:-[SBLayoutState interfaceOrientation](self->_currentLayoutState floatingConfiguration:{"interfaceOrientation"), 2}];
+  [switcherController frameForFloatingAppLayoutInInterfaceOrientation:-[SBLayoutState interfaceOrientation](self->_currentLayoutState floatingConfiguration:{"interfaceOrientation"), 2}];
   v8 = self->_activePlatterPreview;
-  v9 = [(SBAppPlatterDragPreview *)v8 platterView];
-  [v9 bounds];
+  platterView = [(SBAppPlatterDragPreview *)v8 platterView];
+  [platterView bounds];
 
   [(SBDragAndDropWorkspaceTransaction *)self _platterScale];
   SBRectWithSize();
@@ -3341,40 +3341,40 @@ LABEL_5:
   return result;
 }
 
-- (void)_updateCurrentDropActionForSession:(id)a3
+- (void)_updateCurrentDropActionForSession:(id)session
 {
   v193 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_switcherController);
   v6 = objc_loadWeakRetained(&self->_switcherContentController);
-  v7 = [v6 view];
-  v169 = [WeakRetained windowScene];
-  v8 = [WeakRetained windowManagementContext];
-  v9 = [v8 isChamoisOrFlexibleWindowing];
+  view = [v6 view];
+  windowScene = [WeakRetained windowScene];
+  windowManagementContext = [WeakRetained windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  v170 = self;
-  rect = v9;
-  if (v9 && [(SBMainDisplayLayoutState *)self->_initialLayoutState unlockedEnvironmentMode]== 3)
+  selfCopy = self;
+  rect = isChamoisOrFlexibleWindowing;
+  if (isChamoisOrFlexibleWindowing && [(SBMainDisplayLayoutState *)self->_initialLayoutState unlockedEnvironmentMode]== 3)
   {
     v10 = WeakRetained;
-    v11 = v4;
-    v12 = [(SBMainDisplayLayoutState *)self->_initialLayoutState appLayout];
-    v13 = [v6 visibleItemContainers];
-    v14 = [v12 leafAppLayoutForRole:1];
-    v15 = [v13 objectForKey:v14];
+    v11 = sessionCopy;
+    appLayout = [(SBMainDisplayLayoutState *)self->_initialLayoutState appLayout];
+    visibleItemContainers = [v6 visibleItemContainers];
+    v14 = [appLayout leafAppLayoutForRole:1];
+    v15 = [visibleItemContainers objectForKey:v14];
     [v15 frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    v24 = [v12 itemForLayoutRole:2];
+    v24 = [appLayout itemForLayoutRole:2];
 
     if (v24)
     {
-      v25 = [v6 visibleItemContainers];
-      v26 = [v12 leafAppLayoutForRole:2];
-      v27 = [v25 objectForKey:v26];
+      visibleItemContainers2 = [v6 visibleItemContainers];
+      v26 = [appLayout leafAppLayoutForRole:2];
+      v27 = [visibleItemContainers2 objectForKey:v26];
       [v27 frame];
       v29 = v28;
       v31 = v30;
@@ -3382,27 +3382,27 @@ LABEL_5:
       v21 = v31 + v29 - (v17 + v21);
     }
 
-    v4 = v11;
+    sessionCopy = v11;
     WeakRetained = v10;
   }
 
   else
   {
-    [v7 bounds];
+    [view bounds];
     v17 = v32;
     v19 = v33;
     v21 = v34;
     v23 = v35;
   }
 
-  [v4 locationInView:v7];
+  [sessionCopy locationInView:view];
   v37 = v36;
   v39 = v38;
   [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:0.0416666667];
   v41 = v40;
   v43 = v42;
-  v44 = [(SBDragAndDropWorkspaceTransaction *)self isInterrupted];
-  if (!self->_dragExitedDropZone && !((self->_activePlatterPreview == 0) | v44 & 1))
+  isInterrupted = [(SBDragAndDropWorkspaceTransaction *)self isInterrupted];
+  if (!self->_dragExitedDropZone && !((self->_activePlatterPreview == 0) | isInterrupted & 1))
   {
     v160 = v43;
     v161 = v41;
@@ -3413,28 +3413,28 @@ LABEL_5:
     v48 = v19;
     v49 = v23;
     v50 = WeakRetained;
-    v51 = [(SBApplicationDropSession *)self->_dropSession localContext];
-    v52 = [v51 startLocation];
+    localContext = [(SBApplicationDropSession *)self->_dropSession localContext];
+    startLocation = [localContext startLocation];
 
-    v53 = [v169 floatingDockController];
-    [v53 floatingDockScreenFrame];
+    floatingDockController = [windowScene floatingDockController];
+    [floatingDockController floatingDockScreenFrame];
     v55 = v54;
     v57 = v56;
     v59 = v58;
     v61 = v60;
 
-    v62 = [v169 screen];
-    v63 = [v62 fixedCoordinateSpace];
-    [v7 convertRect:v63 fromCoordinateSpace:{v55, v57, v59, v61}];
+    screen = [windowScene screen];
+    fixedCoordinateSpace = [screen fixedCoordinateSpace];
+    [view convertRect:fixedCoordinateSpace fromCoordinateSpace:{v55, v57, v59, v61}];
     v65 = v64;
     v67 = v66;
     v69 = v68;
     v71 = v70;
 
-    if (v52 == 8 || (v197.origin.x = v65, v197.origin.y = v67, v197.size.width = v69, v197.size.height = v71, v194.x = v47, v194.y = v46, !CGRectContainsPoint(v197, v194)))
+    if (startLocation == 8 || (v197.origin.x = v65, v197.origin.y = v67, v197.size.width = v69, v197.size.height = v71, v194.x = v47, v194.y = v46, !CGRectContainsPoint(v197, v194)))
     {
-      v72 = [(SBDragAndDropWorkspaceTransaction *)self _iconManager];
-      v73 = [v72 hasOpenFolderInLocation:*MEMORY[0x277D66690]];
+      _iconManager = [(SBDragAndDropWorkspaceTransaction *)self _iconManager];
+      v73 = [_iconManager hasOpenFolderInLocation:*MEMORY[0x277D66690]];
 
       WeakRetained = v50;
       if (v73)
@@ -3478,12 +3478,12 @@ LABEL_19:
 
   v45 = 0;
 LABEL_20:
-  v167 = v7;
+  v167 = view;
   v168 = v6;
   if ([(SBMainDisplayLayoutState *)self->_currentLayoutState unlockedEnvironmentMode]== 3)
   {
-    v75 = [(SBMainDisplayLayoutState *)self->_currentLayoutState appLayout];
-    v76 = [v75 itemForLayoutRole:4];
+    appLayout2 = [(SBMainDisplayLayoutState *)self->_currentLayoutState appLayout];
+    v76 = [appLayout2 itemForLayoutRole:4];
 
     if (v76)
     {
@@ -3494,37 +3494,37 @@ LABEL_20:
       }
 
       v78 = 0;
-      v79 = self;
+      selfCopy3 = self;
       goto LABEL_114;
     }
   }
 
   if (v45)
   {
-    v157 = v4;
-    v80 = [WeakRetained windowManagementContext];
-    v81 = [WeakRetained displayIdentity];
+    v157 = sessionCopy;
+    windowManagementContext2 = [WeakRetained windowManagementContext];
+    displayIdentity = [WeakRetained displayIdentity];
     v82 = +[SBPlatformController sharedInstance];
-    v154 = [v82 isMedusaCapable];
+    isMedusaCapable = [v82 isMedusaCapable];
 
-    v83 = [WeakRetained windowManagementContext];
-    v152 = [v83 baseStyle];
+    windowManagementContext3 = [WeakRetained windowManagementContext];
+    baseStyle = [windowManagementContext3 baseStyle];
 
     v156 = WeakRetained;
-    v84 = [WeakRetained windowManagementContext];
-    v150 = [v84 isMedusaEnabled];
+    windowManagementContext4 = [WeakRetained windowManagementContext];
+    isMedusaEnabled = [windowManagementContext4 isMedusaEnabled];
 
-    v85 = [(SBApplicationSceneHandle *)v170->_draggingApplicationSceneHandle application];
-    v172 = v81;
-    v153 = [v85 supportsMultiWindowLayoutsForSwitcherWindowManagementContext:v80 displayIdentity:v81];
+    application = [(SBApplicationSceneHandle *)selfCopy->_draggingApplicationSceneHandle application];
+    v172 = displayIdentity;
+    v153 = [application supportsMultiWindowLayoutsForSwitcherWindowManagementContext:windowManagementContext2 displayIdentity:displayIdentity];
 
     v190 = 0u;
     v191 = 0u;
     v188 = 0u;
     v189 = 0u;
-    v86 = [(SBLayoutState *)v170->_currentLayoutState elements];
-    v87 = [v86 countByEnumeratingWithState:&v188 objects:v192 count:16];
-    v88 = v80;
+    elements = [(SBLayoutState *)selfCopy->_currentLayoutState elements];
+    v87 = [elements countByEnumeratingWithState:&v188 objects:v192 count:16];
+    v88 = windowManagementContext2;
     v159 = v23;
     if (v87)
     {
@@ -3537,27 +3537,27 @@ LABEL_20:
         {
           if (*v189 != v90)
           {
-            objc_enumerationMutation(v86);
+            objc_enumerationMutation(elements);
           }
 
           v93 = *(*(&v188 + 1) + 8 * i);
           if ([v93 layoutRole] != 3)
           {
-            v94 = [v93 workspaceEntity];
-            v95 = [v94 applicationSceneEntity];
+            workspaceEntity = [v93 workspaceEntity];
+            applicationSceneEntity = [workspaceEntity applicationSceneEntity];
 
-            if (v95)
+            if (applicationSceneEntity)
             {
-              v96 = [v95 application];
-              v97 = [v96 supportsMultiWindowLayoutsForSwitcherWindowManagementContext:v80 displayIdentity:v172];
+              application2 = [applicationSceneEntity application];
+              v97 = [application2 supportsMultiWindowLayoutsForSwitcherWindowManagementContext:windowManagementContext2 displayIdentity:v172];
 
               v91 &= v97;
-              v80 = v88;
+              windowManagementContext2 = v88;
             }
           }
         }
 
-        v89 = [v86 countByEnumeratingWithState:&v188 objects:v192 count:16];
+        v89 = [elements countByEnumeratingWithState:&v188 objects:v192 count:16];
       }
 
       while (v89);
@@ -3580,36 +3580,36 @@ LABEL_20:
     v158 = v19;
     v99 = v17;
     v101 = v100 + v100;
-    [(SBLayoutState *)v170->_currentLayoutState interfaceOrientation];
+    [(SBLayoutState *)selfCopy->_currentLayoutState interfaceOrientation];
     SBLayoutDefaultSideLayoutElementWidth();
     v102 = v39;
     v104 = v103;
-    [(SBDragAndDropWorkspaceTransaction *)v170 _platterScale];
+    [(SBDragAndDropWorkspaceTransaction *)selfCopy _platterScale];
     v106 = v101 + v104 * v105 * 0.5;
     if (rect)
     {
-      v107 = [(SBApplicationDropSession *)v170->_dropSession dropZones];
+      dropZones = [(SBApplicationDropSession *)selfCopy->_dropSession dropZones];
       WeakRetained = v156;
-      if (!v152)
+      if (!baseStyle)
       {
         v78 = v98;
-        v79 = v170;
+        selfCopy3 = selfCopy;
         v77 = v88;
         goto LABEL_66;
       }
 
       v77 = v88;
-      if ((v154 & v91 & v153) == 1)
+      if ((isMedusaCapable & v91 & v153) == 1)
       {
-        v108 = v107;
-        v78 = v107 < 2;
-        if (v107 <= 1 && !v98)
+        v108 = dropZones;
+        v78 = dropZones < 2;
+        if (dropZones <= 1 && !v98)
         {
           v199.origin.x = v99;
           v199.origin.y = v158;
           v199.size.width = v21;
           v199.size.height = v23;
-          v79 = v170;
+          selfCopy3 = selfCopy;
           if (v37 < v106 + CGRectGetMinX(v199))
           {
             if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -3646,11 +3646,11 @@ LABEL_66:
             {
               if (([v77 isAutomaticStageCreationEnabled]& 1) == 0)
               {
-                draggingApplicationSceneHandle = v79->_draggingApplicationSceneHandle;
+                draggingApplicationSceneHandle = selfCopy3->_draggingApplicationSceneHandle;
                 if (draggingApplicationSceneHandle)
                 {
-                  v121 = [(SBApplicationSceneHandle *)draggingApplicationSceneHandle displayItemRepresentation];
-                  if (([v156 _isDisplayItemFullScreen:v121 preferredAttributes:0] & ((v78 & 0xFFFFFFFFFFFFFFFELL) == 4)) != 0)
+                  displayItemRepresentation = [(SBApplicationSceneHandle *)draggingApplicationSceneHandle displayItemRepresentation];
+                  if (([v156 _isDisplayItemFullScreen:displayItemRepresentation preferredAttributes:0] & ((v78 & 0xFFFFFFFFFFFFFFFELL) == 4)) != 0)
                   {
                     v78 = 1;
                   }
@@ -3669,14 +3669,14 @@ LABEL_66:
 
           else
           {
-            v129 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+            userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
             v201.origin.x = v99;
             v201.origin.y = v158;
             v201.size.width = v21;
             v201.size.height = v23;
             MidX = CGRectGetMidX(v201);
             v131 = v37 < MidX;
-            if (v129 == 1)
+            if (userInterfaceLayoutDirection == 1)
             {
               v131 = v37 >= MidX;
             }
@@ -3699,15 +3699,15 @@ LABEL_66:
         v78 = 1;
       }
 
-      v79 = v170;
+      selfCopy3 = selfCopy;
       goto LABEL_66;
     }
 
-    v109 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection2 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v149 = v21 * 0.5;
     v151 = v37 + v162 * 0.15;
     v110 = v151 < v21 * 0.5;
-    if (v109 == 1)
+    if (userInterfaceLayoutDirection2 == 1)
     {
       v110 = v151 >= v21 * 0.5;
     }
@@ -3726,7 +3726,7 @@ LABEL_66:
     v176[1] = 3221225472;
     v176[2] = __72__SBDragAndDropWorkspaceTransaction__updateCurrentDropActionForSession___block_invoke;
     v176[3] = &unk_2783BA300;
-    v176[4] = v170;
+    v176[4] = selfCopy;
     WeakRetained = v156;
     recta = v156;
     v177 = recta;
@@ -3739,7 +3739,7 @@ LABEL_66:
     v184 = v106;
     v186 = v98;
     v185 = v78;
-    v187 = v152 != 0;
+    v187 = baseStyle != 0;
     v111 = MEMORY[0x223D6F7F0](v176);
     v174[0] = MEMORY[0x277D85DD0];
     v174[1] = 3221225472;
@@ -3747,14 +3747,14 @@ LABEL_66:
     v174[3] = &unk_2783BA328;
     *&v174[5] = v37;
     *&v174[6] = v102;
-    v174[4] = v170;
+    v174[4] = selfCopy;
     v175 = v98;
     v112 = MEMORY[0x223D6F7F0](v174);
     v173[0] = MEMORY[0x277D85DD0];
     v173[1] = 3221225472;
     v173[2] = __72__SBDragAndDropWorkspaceTransaction__updateCurrentDropActionForSession___block_invoke_3;
     v173[3] = &unk_2783BA350;
-    v173[4] = v170;
+    v173[4] = selfCopy;
     *&v173[5] = v162;
     v173[6] = v43;
     *&v173[7] = v99;
@@ -3765,11 +3765,11 @@ LABEL_66:
     *&v173[12] = v102;
     v113 = v102;
     v114 = MEMORY[0x223D6F7F0](v173);
-    v115 = [(SBApplicationDropSession *)v170->_dropSession dropZones];
-    if ((v154 & v153) != 1)
+    dropZones2 = [(SBApplicationDropSession *)selfCopy->_dropSession dropZones];
+    if ((isMedusaCapable & v153) != 1)
     {
       v78 = 1;
-      v79 = v170;
+      selfCopy3 = selfCopy;
       v77 = v88;
       v116 = v112;
       v117 = v111;
@@ -3780,10 +3780,10 @@ LABEL_66:
     if (v91)
     {
       v116 = v112;
-      if (v115 == 2)
+      if (dropZones2 == 2)
       {
         v117 = v111;
-        if (v152)
+        if (baseStyle)
         {
           [objc_opt_class() prototypeSettingsWindowTearOffDraggingSideActivationWidth];
           v126 = v125;
@@ -3791,18 +3791,18 @@ LABEL_66:
           if (v98)
           {
             v78 = 1;
-            v79 = v170;
+            selfCopy3 = selfCopy;
           }
 
           else
           {
             v163 = v127;
-            [objc_opt_class() sourceSceneInterfaceOrientedBoundsForDropSession:v170->_dropSession switcherController:recta];
+            [objc_opt_class() sourceSceneInterfaceOrientedBoundsForDropSession:selfCopy->_dropSession switcherController:recta];
             x = v202.origin.x;
             y = v202.origin.y;
             width = v202.size.width;
             rectb = v202.size.height;
-            v79 = v170;
+            selfCopy3 = selfCopy;
             if (CGRectIsNull(v202) || (v203.origin.x = x, v203.origin.y = y, v203.size.width = width, v203.size.height = rectb, v196.x = v37, v196.y = v113, !CGRectContainsPoint(v203, v196)))
             {
               v135 = (*(v111 + 16))(v111);
@@ -3827,18 +3827,18 @@ LABEL_66:
             v78 = 1;
           }
 
-          v79 = v170;
+          selfCopy3 = selfCopy;
         }
 
         goto LABEL_112;
       }
 
       v117 = v111;
-      if (v115 == 1)
+      if (dropZones2 == 1)
       {
-        if (v152)
+        if (baseStyle)
         {
-          v79 = v170;
+          selfCopy3 = selfCopy;
           [objc_opt_class() prototypeSettingsContentDraggingSideActivationWidth];
           v123 = v122;
           [objc_opt_class() prototypeSettingsContentDraggingFloatingActivationWidth];
@@ -3854,13 +3854,13 @@ LABEL_66:
 
       else
       {
-        if (!v115)
+        if (!dropZones2)
         {
-          v79 = v170;
-          if (![(SBMainDisplayLayoutState *)v170->_currentLayoutState isFloatingSwitcherVisible])
+          selfCopy3 = selfCopy;
+          if (![(SBMainDisplayLayoutState *)selfCopy->_currentLayoutState isFloatingSwitcherVisible])
           {
-            layoutElementForWindowDrag = v170->_layoutElementForWindowDrag;
-            if (!layoutElementForWindowDrag || v170->_windowDragEnteredPlatterZone)
+            layoutElementForWindowDrag = selfCopy->_layoutElementForWindowDrag;
+            if (!layoutElementForWindowDrag || selfCopy->_windowDragEnteredPlatterZone)
             {
               v119 = (*(v111 + 16))(v111);
 LABEL_86:
@@ -3904,19 +3904,19 @@ LABEL_78:
         v78 = 0;
       }
 
-      v79 = v170;
+      selfCopy3 = selfCopy;
       goto LABEL_112;
     }
 
     v116 = v112;
     if (v98)
     {
-      v79 = v170;
+      selfCopy3 = selfCopy;
       v117 = v111;
-      if (v170->_layoutElementForWindowDrag)
+      if (selfCopy->_layoutElementForWindowDrag)
       {
         v78 = 1;
-        if (v170->_windowDragEnteredPlatterZone || ((v150 ^ 1) & 1) != 0)
+        if (selfCopy->_windowDragEnteredPlatterZone || ((isMedusaEnabled ^ 1) & 1) != 0)
         {
           goto LABEL_112;
         }
@@ -3927,9 +3927,9 @@ LABEL_78:
 
     else
     {
-      v79 = v170;
+      selfCopy3 = selfCopy;
       v117 = v111;
-      if (v150)
+      if (isMedusaEnabled)
       {
         goto LABEL_78;
       }
@@ -3939,43 +3939,43 @@ LABEL_78:
 LABEL_112:
 
 LABEL_113:
-    v4 = v157;
+    sessionCopy = v157;
 LABEL_114:
 
     goto LABEL_115;
   }
 
   v78 = 0;
-  v79 = self;
+  selfCopy3 = self;
 LABEL_115:
-  if (-[SBMainDisplayLayoutState unlockedEnvironmentMode](v79->_currentLayoutState, "unlockedEnvironmentMode") == 2 && (-[SBApplicationDropSession localContext](v79->_dropSession, "localContext"), v136 = objc_claimAutoreleasedReturnValue(), v137 = [v136 startLocation], v136, v137 == 11) && v79->_dragAndDropGesture)
+  if (-[SBMainDisplayLayoutState unlockedEnvironmentMode](selfCopy3->_currentLayoutState, "unlockedEnvironmentMode") == 2 && (-[SBApplicationDropSession localContext](selfCopy3->_dropSession, "localContext"), v136 = objc_claimAutoreleasedReturnValue(), v137 = [v136 startLocation], v136, v137 == 11) && selfCopy3->_dragAndDropGesture)
   {
-    v138 = [(SBApplicationDropSession *)v79->_dropSession uiDragDropSession];
-    v139 = [v168 view];
-    [v138 locationInView:v139];
+    uiDragDropSession = [(SBApplicationDropSession *)selfCopy3->_dropSession uiDragDropSession];
+    view2 = [v168 view];
+    [uiDragDropSession locationInView:view2];
     v141 = v140;
     v143 = v142;
 
-    v144 = [(SBFluidSwitcherGesture *)v79->_dragAndDropGesture selectedLayoutRole];
-    v145 = [(SBFluidSwitcherGesture *)v79->_dragAndDropGesture selectedAppLayout];
-    v146 = [v168 _switcherDropRegionContextForDraggingLayoutRole:v144 inAppLayout:v145 atLocation:{v141, v143}];
+    selectedLayoutRole = [(SBFluidSwitcherGesture *)selfCopy3->_dragAndDropGesture selectedLayoutRole];
+    selectedAppLayout = [(SBFluidSwitcherGesture *)selfCopy3->_dragAndDropGesture selectedAppLayout];
+    v146 = [v168 _switcherDropRegionContextForDraggingLayoutRole:selectedLayoutRole inAppLayout:selectedAppLayout atLocation:{v141, v143}];
 
-    currentSwitcherDropRegionContext = v79->_currentSwitcherDropRegionContext;
-    v79->_currentSwitcherDropRegionContext = v146;
+    currentSwitcherDropRegionContext = selfCopy3->_currentSwitcherDropRegionContext;
+    selfCopy3->_currentSwitcherDropRegionContext = v146;
 
     v78 = 10;
   }
 
   else
   {
-    v138 = v79->_currentSwitcherDropRegionContext;
-    v79->_currentSwitcherDropRegionContext = 0;
+    uiDragDropSession = selfCopy3->_currentSwitcherDropRegionContext;
+    selfCopy3->_currentSwitcherDropRegionContext = 0;
   }
 
-  if (v79->_currentDropAction != v78)
+  if (selfCopy3->_currentDropAction != v78)
   {
-    v79->_currentDropAction = v78;
-    [(SBDragAndDropWorkspaceTransaction *)v79 _updateCurrentDropActionProposedLayoutState];
+    selfCopy3->_currentDropAction = v78;
+    [(SBDragAndDropWorkspaceTransaction *)selfCopy3 _updateCurrentDropActionProposedLayoutState];
   }
 }
 
@@ -4324,15 +4324,15 @@ uint64_t __72__SBDragAndDropWorkspaceTransaction__updateCurrentDropActionForSess
   }
 }
 
-- (id)_transitionRequestForDropAction:(int64_t)a3
+- (id)_transitionRequestForDropAction:(int64_t)action
 {
-  v5 = self;
+  selfCopy = self;
   v140[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_switcherController);
-  v7 = [WeakRetained switcherCoordinator];
-  v8 = [WeakRetained contentViewController];
+  switcherCoordinator = [WeakRetained switcherCoordinator];
+  contentViewController = [WeakRetained contentViewController];
   v9 = objc_opt_class();
-  v10 = v8;
+  v10 = contentViewController;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -4353,58 +4353,58 @@ uint64_t __72__SBDragAndDropWorkspaceTransaction__updateCurrentDropActionForSess
 
   v12 = v11;
 
-  v13 = [(SBWorkspaceTransaction *)v5 transitionRequest];
-  v14 = [v13 workspace];
-  v15 = [v13 displayConfiguration];
-  v16 = [v14 createRequestWithOptions:0 displayConfiguration:v15];
+  transitionRequest = [(SBWorkspaceTransaction *)selfCopy transitionRequest];
+  workspace = [transitionRequest workspace];
+  displayConfiguration = [transitionRequest displayConfiguration];
+  v16 = [workspace createRequestWithOptions:0 displayConfiguration:displayConfiguration];
 
-  v115 = v13;
-  [v16 setSource:{objc_msgSend(v13, "source")}];
+  v115 = transitionRequest;
+  [v16 setSource:{objc_msgSend(transitionRequest, "source")}];
   [v16 setEventLabel:@"DragAndDropAppActivation"];
   v17 = objc_alloc_init(SBWorkspaceApplicationSceneTransitionContext);
-  [(SBWorkspaceApplicationSceneTransitionContext *)v17 setDelegate:v5];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v17 setDelegate:selfCopy];
   v112 = v16;
   [v16 setApplicationContext:v17];
-  v18 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationSceneHandle:v5->_draggingApplicationSceneHandle];
-  v19 = [(SBApplicationDropSession *)v5->_dropSession launchActions];
-  [(SBApplicationSceneEntity *)v18 addActions:v19];
+  v18 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationSceneHandle:selfCopy->_draggingApplicationSceneHandle];
+  launchActions = [(SBApplicationDropSession *)selfCopy->_dropSession launchActions];
+  [(SBApplicationSceneEntity *)v18 addActions:launchActions];
 
-  v20 = [(SBApplicationDropSession *)v5->_dropSession activationSettings];
-  [(SBWorkspaceEntity *)v18 applyActivationSettings:v20];
+  activationSettings = [(SBApplicationDropSession *)selfCopy->_dropSession activationSettings];
+  [(SBWorkspaceEntity *)v18 applyActivationSettings:activationSettings];
 
   v134[0] = MEMORY[0x277D85DD0];
   v134[1] = 3221225472;
   v134[2] = __69__SBDragAndDropWorkspaceTransaction__transitionRequestForDropAction___block_invoke;
   v134[3] = &unk_2783B3258;
-  v134[4] = v5;
+  v134[4] = selfCopy;
   v134[5] = a2;
   v117 = MEMORY[0x223D6F7F0](v134);
-  v21 = [(SBApplicationDropSession *)v5->_dropSession uiDragDropSession];
-  v22 = [v12 view];
-  [v21 locationInView:v22];
+  uiDragDropSession = [(SBApplicationDropSession *)selfCopy->_dropSession uiDragDropSession];
+  view = [v12 view];
+  [uiDragDropSession locationInView:view];
   v24 = v23;
   v26 = v25;
 
   v119 = v12;
-  v27 = [v12 view];
-  [v27 bounds];
+  view2 = [v12 view];
+  [view2 bounds];
   v32 = [(SBDisplayItemLayoutAttributes *)v24 normalizedPointForPoint:v26 inBounds:v28, v29, v30, v31];
   v34 = v33;
 
   v118 = WeakRetained;
-  v35 = [WeakRetained windowManagementContext];
-  v36 = [v35 isChamoisOrFlexibleWindowing];
+  windowManagementContext = [WeakRetained windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  v120 = v5;
-  v121 = v7;
-  v116 = a3;
+  v120 = selfCopy;
+  v121 = switcherCoordinator;
+  actionCopy = action;
   v122 = v17;
   v123 = v18;
-  if (a3 == 1)
+  if (action == 1)
   {
     v37 = 0.5;
     v38 = 0.5;
-    if (v36)
+    if (isChamoisOrFlexibleWindowing)
     {
       goto LABEL_8;
     }
@@ -4412,17 +4412,17 @@ uint64_t __72__SBDragAndDropWorkspaceTransaction__updateCurrentDropActionForSess
 
   v38 = v32;
   v37 = v34;
-  if (a3 > 4)
+  if (action > 4)
   {
-    if (a3 <= 7)
+    if (action <= 7)
     {
-      if (a3 != 5)
+      if (action != 5)
       {
         v43 = +[(SBWorkspaceEntity *)SBPreviousWorkspaceEntity];
         [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntities:MEMORY[0x277CBEBF8] withPolicy:1 centerEntity:v43 floatingEntity:v18];
 
         v44 = v17;
-        if (a3 == 6)
+        if (action == 6)
         {
           v45 = 1;
         }
@@ -4435,7 +4435,7 @@ uint64_t __72__SBDragAndDropWorkspaceTransaction__updateCurrentDropActionForSess
         goto LABEL_39;
       }
 
-      if (v36)
+      if (isChamoisOrFlexibleWindowing)
       {
         v136 = v18;
         v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v136 count:1];
@@ -4443,8 +4443,8 @@ uint64_t __72__SBDragAndDropWorkspaceTransaction__updateCurrentDropActionForSess
         goto LABEL_37;
       }
 
-      layoutElementForWindowDrag = v5->_layoutElementForWindowDrag;
-      if (!layoutElementForWindowDrag || v5->_windowDragEnteredPlatterZone)
+      layoutElementForWindowDrag = selfCopy->_layoutElementForWindowDrag;
+      if (!layoutElementForWindowDrag || selfCopy->_windowDragEnteredPlatterZone)
       {
         v73 = 1;
         v77 = [SBPreviousWorkspaceEntity entityWithPreviousLayoutRole:1];
@@ -4452,19 +4452,19 @@ uint64_t __72__SBDragAndDropWorkspaceTransaction__updateCurrentDropActionForSess
 
         [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntity:v18 forLayoutRole:2];
 LABEL_49:
-        if (v5->_layoutElementForWindowDrag && (SBLayoutRoleSetAppLayout(), v78 = objc_claimAutoreleasedReturnValue(), v79 = [v78 containsRole:{-[SBLayoutElement layoutRole](v5->_layoutElementForWindowDrag, "layoutRole")}], v78, v79))
+        if (selfCopy->_layoutElementForWindowDrag && (SBLayoutRoleSetAppLayout(), v78 = objc_claimAutoreleasedReturnValue(), v79 = [v78 containsRole:{-[SBLayoutElement layoutRole](selfCopy->_layoutElementForWindowDrag, "layoutRole")}], v78, v79))
         {
-          if ([(SBLayoutElement *)v5->_layoutElementForWindowDrag layoutRole]== v73)
+          if ([(SBLayoutElement *)selfCopy->_layoutElementForWindowDrag layoutRole]== v73)
           {
-            v80 = v117[2](v117, [(SBMainDisplayLayoutState *)v5->_initialLayoutState spaceConfiguration], [(SBLayoutState *)v5->_initialLayoutState interfaceOrientation]);
+            spaceConfiguration = v117[2](v117, [(SBMainDisplayLayoutState *)selfCopy->_initialLayoutState spaceConfiguration], [(SBLayoutState *)selfCopy->_initialLayoutState interfaceOrientation]);
           }
 
           else
           {
-            v80 = [(SBMainDisplayLayoutState *)v5->_initialLayoutState spaceConfiguration];
+            spaceConfiguration = [(SBMainDisplayLayoutState *)selfCopy->_initialLayoutState spaceConfiguration];
           }
 
-          v82 = v80;
+          v82 = spaceConfiguration;
           v81 = v17;
         }
 
@@ -4486,15 +4486,15 @@ LABEL_49:
 
         v18 = v123;
         [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntity:v123 forLayoutRole:2];
-        v89 = [(SBMainDisplayLayoutState *)v5->_currentLayoutState spaceConfiguration];
-        currentLayoutState = v5->_currentLayoutState;
+        spaceConfiguration2 = [(SBMainDisplayLayoutState *)selfCopy->_currentLayoutState spaceConfiguration];
+        currentLayoutState = selfCopy->_currentLayoutState;
         goto LABEL_62;
       }
 
       goto LABEL_63;
     }
 
-    switch(a3)
+    switch(action)
     {
       case 8:
         v44 = v17;
@@ -4505,26 +4505,26 @@ LABEL_49:
         v45 = 4;
         break;
       case 10:
-        v48 = v5->_currentSwitcherDropRegionContext;
-        v49 = [(SBSwitcherDropRegionContext *)v48 currentDropRegion];
-        v50 = [(SBSwitcherDropRegionContext *)v48 draggingLeafAppLayout];
-        v51 = [v12 appLayouts];
+        v48 = selfCopy->_currentSwitcherDropRegionContext;
+        currentDropRegion = [(SBSwitcherDropRegionContext *)v48 currentDropRegion];
+        draggingLeafAppLayout = [(SBSwitcherDropRegionContext *)v48 draggingLeafAppLayout];
+        appLayouts = [v12 appLayouts];
         v132[0] = MEMORY[0x277D85DD0];
         v132[1] = 3221225472;
         v132[2] = __69__SBDragAndDropWorkspaceTransaction__transitionRequestForDropAction___block_invoke_2;
         v132[3] = &unk_2783A8CB8;
-        v52 = v50;
+        v52 = draggingLeafAppLayout;
         v133 = v52;
-        v53 = [v51 bs_firstObjectPassingTest:v132];
+        v53 = [appLayouts bs_firstObjectPassingTest:v132];
 
-        if ((v49 & 0xFFFFFFFFFFFFFFFELL) == 4)
+        if ((currentDropRegion & 0xFFFFFFFFFFFFFFFELL) == 4)
         {
           [v53 itemForLayoutRole:1];
           obja = v48;
           v55 = v54 = v52;
           v56 = [v53 itemForLayoutRole:2];
-          v57 = [v7 _entityForDisplayItem:v55 switcherController:WeakRetained];
-          v58 = [v7 _entityForDisplayItem:v56 switcherController:WeakRetained];
+          v57 = [switcherCoordinator _entityForDisplayItem:v55 switcherController:WeakRetained];
+          v58 = [switcherCoordinator _entityForDisplayItem:v56 switcherController:WeakRetained];
           [(SBWorkspaceApplicationSceneTransitionContext *)v122 setEntity:v57 forLayoutRole:1];
           [(SBWorkspaceApplicationSceneTransitionContext *)v122 setEntity:v58 forLayoutRole:2];
           v59 = v55;
@@ -4535,12 +4535,12 @@ LABEL_49:
 
         else
         {
-          if (v49 == 6)
+          if (currentDropRegion == 6)
           {
             [v53 itemForLayoutRole:1];
             objb = v48;
             v84 = v83 = v52;
-            v56 = [v7 _entityForDisplayItem:v84 switcherController:WeakRetained];
+            v56 = [switcherCoordinator _entityForDisplayItem:v84 switcherController:WeakRetained];
             [(SBWorkspaceApplicationSceneTransitionContext *)v122 setEntity:v56 forLayoutRole:3];
             v85 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
             [(SBWorkspaceApplicationSceneTransitionContext *)v122 setEntity:v85 forLayoutRole:1];
@@ -4557,17 +4557,17 @@ LABEL_49:
           else
           {
             v18 = v123;
-            if (v49 != 3)
+            if (currentDropRegion != 3)
             {
 LABEL_57:
               [(SBWorkspaceApplicationSceneTransitionContext *)v122 setRequestedUnlockedEnvironmentMode:2];
 
-              v5 = v120;
+              selfCopy = v120;
               goto LABEL_70;
             }
 
             v59 = [v53 itemForLayoutRole:1];
-            v56 = [v7 _entityForDisplayItem:v59 switcherController:WeakRetained];
+            v56 = [switcherCoordinator _entityForDisplayItem:v59 switcherController:WeakRetained];
             [(SBWorkspaceApplicationSceneTransitionContext *)v122 setEntity:v56 forLayoutRole:1];
             v74 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
             [(SBWorkspaceApplicationSceneTransitionContext *)v122 setEntity:v74 forLayoutRole:2];
@@ -4589,9 +4589,9 @@ LABEL_39:
     goto LABEL_70;
   }
 
-  if (a3 > 1)
+  if (action > 1)
   {
-    if (a3 == 2)
+    if (action == 2)
     {
       v139[0] = v18;
       v60 = [SBPreviousWorkspaceEntity entityWithPreviousLayoutRole:2];
@@ -4602,9 +4602,9 @@ LABEL_39:
 
     else
     {
-      if (a3 != 3)
+      if (action != 3)
       {
-        if (v36)
+        if (isChamoisOrFlexibleWindowing)
         {
           v137 = v18;
           v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v137 count:1];
@@ -4629,14 +4629,14 @@ LABEL_69:
           goto LABEL_70;
         }
 
-        v70 = v5->_layoutElementForWindowDrag;
-        if (!v70 || v5->_windowDragEnteredPlatterZone)
+        v70 = selfCopy->_layoutElementForWindowDrag;
+        if (!v70 || selfCopy->_windowDragEnteredPlatterZone)
         {
           [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntity:v18 forLayoutRole:1];
-          v71 = [(SBLayoutState *)v5->_currentLayoutState elementWithRole:1];
-          v72 = [v71 workspaceEntity];
+          v71 = [(SBLayoutState *)selfCopy->_currentLayoutState elementWithRole:1];
+          workspaceEntity = [v71 workspaceEntity];
           v73 = 2;
-          [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntity:v72 forLayoutRole:2];
+          [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntity:workspaceEntity forLayoutRole:2];
 
           goto LABEL_49;
         }
@@ -4644,22 +4644,22 @@ LABEL_69:
         if ([(SBLayoutElement *)v70 layoutRole]== 2)
         {
           [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntity:v18 forLayoutRole:1];
-          v87 = [(SBLayoutState *)v5->_currentLayoutState elementWithRole:1];
-          v88 = [v87 workspaceEntity];
-          [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntity:v88 forLayoutRole:2];
+          v87 = [(SBLayoutState *)selfCopy->_currentLayoutState elementWithRole:1];
+          workspaceEntity2 = [v87 workspaceEntity];
+          [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntity:workspaceEntity2 forLayoutRole:2];
 
           v18 = v123;
-          v89 = [(SBMainDisplayLayoutState *)v5->_currentLayoutState spaceConfiguration];
-          currentLayoutState = v5->_currentLayoutState;
+          spaceConfiguration2 = [(SBMainDisplayLayoutState *)selfCopy->_currentLayoutState spaceConfiguration];
+          currentLayoutState = selfCopy->_currentLayoutState;
 LABEL_62:
-          v92 = v117[2](v117, v89, [(SBLayoutState *)currentLayoutState interfaceOrientation]);
+          spaceConfiguration3 = v117[2](v117, spaceConfiguration2, [(SBLayoutState *)currentLayoutState interfaceOrientation]);
 LABEL_64:
-          [(SBWorkspaceApplicationSceneTransitionContext *)v17 setRequestedSpaceConfiguration:v92];
+          [(SBWorkspaceApplicationSceneTransitionContext *)v17 setRequestedSpaceConfiguration:spaceConfiguration3];
           goto LABEL_68;
         }
 
 LABEL_63:
-        v92 = [(SBMainDisplayLayoutState *)v5->_currentLayoutState spaceConfiguration];
+        spaceConfiguration3 = [(SBMainDisplayLayoutState *)selfCopy->_currentLayoutState spaceConfiguration];
         goto LABEL_64;
       }
 
@@ -4680,7 +4680,7 @@ LABEL_34:
     goto LABEL_70;
   }
 
-  if (!a3)
+  if (!action)
   {
     v60 = +[(SBWorkspaceEntity *)SBPreviousWorkspaceEntity];
     v61 = +[(SBWorkspaceEntity *)SBPreviousWorkspaceEntity];
@@ -4688,7 +4688,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (a3 == 1)
+  if (action == 1)
   {
 LABEL_8:
     v140[0] = v18;
@@ -4697,7 +4697,7 @@ LABEL_8:
     [(SBWorkspaceApplicationSceneTransitionContext *)v17 setEntities:v39 withPolicy:0 centerEntity:0 floatingEntity:v40];
 
     v18 = v123;
-    if (!v36)
+    if (!isChamoisOrFlexibleWindowing)
     {
       goto LABEL_70;
     }
@@ -4711,16 +4711,16 @@ LABEL_8:
   }
 
 LABEL_70:
-  v114 = [(SBApplicationDropSession *)v5->_dropSession localContext];
-  v113 = [v7 _recentAppLayoutsController];
-  v93 = [(SBApplicationSceneEntity *)v18 application];
-  v124 = [v93 bundleIdentifier];
+  localContext = [(SBApplicationDropSession *)selfCopy->_dropSession localContext];
+  _recentAppLayoutsController = [switcherCoordinator _recentAppLayoutsController];
+  application = [(SBApplicationSceneEntity *)v18 application];
+  bundleIdentifier = [application bundleIdentifier];
 
   v130 = 0u;
   v131 = 0u;
   v128 = 0u;
   v129 = 0u;
-  obj = [(SBLayoutState *)v5->_currentLayoutState elements];
+  obj = [(SBLayoutState *)selfCopy->_currentLayoutState elements];
   v94 = [obj countByEnumeratingWithState:&v128 objects:v135 count:16];
   if (v94)
   {
@@ -4736,15 +4736,15 @@ LABEL_70:
           objc_enumerationMutation(obj);
         }
 
-        v99 = [*(*(&v128 + 1) + 8 * i) workspaceEntity];
+        workspaceEntity3 = [*(*(&v128 + 1) + 8 * i) workspaceEntity];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v100 = objc_opt_class();
-          v101 = SBSafeCast(v100, v99);
-          v102 = [v101 application];
-          v103 = [v102 bundleIdentifier];
-          v104 = [v103 isEqualToString:v124];
+          v101 = SBSafeCast(v100, workspaceEntity3);
+          application2 = [v101 application];
+          bundleIdentifier2 = [application2 bundleIdentifier];
+          v104 = [bundleIdentifier2 isEqualToString:bundleIdentifier];
 
           v96 += v104;
         }
@@ -4761,23 +4761,23 @@ LABEL_70:
     v96 = 0;
   }
 
-  v105 = [v114 startLocation];
-  v106 = [(SBApplicationDropSession *)v120->_dropSession launchActions];
-  v107 = [v106 count];
+  startLocation = [localContext startLocation];
+  launchActions2 = [(SBApplicationDropSession *)v120->_dropSession launchActions];
+  v107 = [launchActions2 count];
 
-  v108 = [(SBApplicationDropSession *)v120->_dropSession dropZones];
-  if (!v107 && v105 != 12 && (v105 & 0xFFFFFFFFFFFFFFFELL) != 8 && v116 && !v108)
+  dropZones = [(SBApplicationDropSession *)v120->_dropSession dropZones];
+  if (!v107 && startLocation != 12 && (startLocation & 0xFFFFFFFFFFFFFFFELL) != 8 && actionCopy && !dropZones)
   {
-    v109 = [v113 recentDisplayItemsForBundleIdentifier:v124 includingHiddenAppLayouts:0];
+    v109 = [_recentAppLayoutsController recentDisplayItemsForBundleIdentifier:bundleIdentifier includingHiddenAppLayouts:0];
     if ([v109 count] >= 2)
     {
       v110 = [v109 count];
-      if (v116 == 1 && v110 - v96 >= 2)
+      if (actionCopy == 1 && v110 - v96 >= 2)
       {
-        [(SBWorkspaceApplicationSceneTransitionContext *)v122 setRequestedAppExposeBundleID:v124];
+        [(SBWorkspaceApplicationSceneTransitionContext *)v122 setRequestedAppExposeBundleID:bundleIdentifier];
       }
 
-      else if (v116 != 1)
+      else if (actionCopy != 1)
       {
         [(SBWorkspaceApplicationSceneTransitionContext *)v122 setRequestedWindowPickerRole:[(SBWorkspaceEntity *)v123 layoutRole]];
       }
@@ -4843,22 +4843,22 @@ uint64_t __69__SBDragAndDropWorkspaceTransaction__transitionRequestForDropAction
   if (BSSizeEqualToSize())
   {
     v22 = a2;
-    v5 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-    v25 = [v5 sceneEntityFrameProvider];
+    layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+    sceneEntityFrameProvider = [layoutStateTransitionCoordinator sceneEntityFrameProvider];
 
     v6 = [(SBDragAndDropWorkspaceTransaction *)self _transitionRequestForDropAction:4];
     [v6 finalize];
     v24 = v6;
-    v7 = [v6 applicationContext];
-    v8 = [v7 layoutState];
+    applicationContext = [v6 applicationContext];
+    layoutState = [applicationContext layoutState];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v23 = v8;
-    v9 = [v8 elements];
-    v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v23 = layoutState;
+    elements = [layoutState elements];
+    v10 = [elements countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v10)
     {
       v11 = v10;
@@ -4869,16 +4869,16 @@ LABEL_4:
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(elements);
         }
 
-        v14 = [*(*(&v26 + 1) + 8 * v13) workspaceEntity];
-        v15 = [v14 applicationSceneEntity];
+        workspaceEntity = [*(*(&v26 + 1) + 8 * v13) workspaceEntity];
+        applicationSceneEntity = [workspaceEntity applicationSceneEntity];
 
-        if (v15)
+        if (applicationSceneEntity)
         {
-          v16 = [v15 sceneHandle];
-          v17 = [v16 isEqual:self->_draggingApplicationSceneHandle];
+          sceneHandle = [applicationSceneEntity sceneHandle];
+          v17 = [sceneHandle isEqual:self->_draggingApplicationSceneHandle];
 
           if (v17)
           {
@@ -4888,7 +4888,7 @@ LABEL_4:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v11 = [elements countByEnumeratingWithState:&v26 objects:v30 count:16];
           if (v11)
           {
             goto LABEL_4;
@@ -4903,12 +4903,12 @@ LABEL_4:
     {
 LABEL_11:
 
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:v22 object:self file:@"SBDragAndDropWorkspaceTransaction.m" lineNumber:2801 description:@"workspaceEntity must be present in layout state"];
-      v15 = 0;
+      elements = [MEMORY[0x277CCA890] currentHandler];
+      [elements handleFailureInMethod:v22 object:self file:@"SBDragAndDropWorkspaceTransaction.m" lineNumber:2801 description:@"workspaceEntity must be present in layout state"];
+      applicationSceneEntity = 0;
     }
 
-    [v25 sceneEntityFrameForWorkspaceEntity:v15 inLayoutState:v23];
+    [sceneEntityFrameProvider sceneEntityFrameForWorkspaceEntity:applicationSceneEntity inLayoutState:v23];
     p_cachedDefaultReferenceSizeForSceneView->width = v18;
     p_cachedDefaultReferenceSizeForSceneView->height = v19;
   }
@@ -4935,35 +4935,35 @@ LABEL_11:
   [(SBDragAndDropWorkspaceTransaction *)self _updatePlatterPreviewForSetDown:0 animated:1];
 }
 
-- (void)_configurePlatterPreview:(id)a3 forSceneHandle:(id)a4 completion:(id)a5
+- (void)_configurePlatterPreview:(id)preview forSceneHandle:(id)handle completion:(id)completion
 {
-  v30 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v30 platterView];
+  previewCopy = preview;
+  handleCopy = handle;
+  completionCopy = completion;
+  platterView = [previewCopy platterView];
 
-  if (!v10)
+  if (!platterView)
   {
-    v11 = [v30 sourceView];
-    if (v11)
+    sourceView = [previewCopy sourceView];
+    if (sourceView)
     {
-      [v30 configurePlatterForSceneHandle:v8 withTargetView:v11 completion:v9];
+      [previewCopy configurePlatterForSceneHandle:handleCopy withTargetView:sourceView completion:completionCopy];
     }
 
     else
     {
       v12 = [(SBDeviceApplicationScenePlaceholderContentContext *)[SBMutableDeviceApplicationScenePlaceholderContentContext alloc] initWithActivationSettings:0];
       [(SBDeviceApplicationScenePlaceholderContentContext *)v12 setPreferredContentType:1];
-      v13 = [(SBLayoutState *)self->_currentLayoutState interfaceOrientation];
+      interfaceOrientation = [(SBLayoutState *)self->_currentLayoutState interfaceOrientation];
       currentLayoutState = self->_currentLayoutState;
-      v15 = [v8 sceneIdentifier];
-      v16 = [(SBLayoutState *)currentLayoutState interfaceOrientationForElementIdentifier:v15];
+      sceneIdentifier = [handleCopy sceneIdentifier];
+      v16 = [(SBLayoutState *)currentLayoutState interfaceOrientationForElementIdentifier:sceneIdentifier];
 
-      v17 = [(SBWorkspaceTransaction *)self displayConfiguration];
-      [v17 pointScale];
+      displayConfiguration = [(SBWorkspaceTransaction *)self displayConfiguration];
+      [displayConfiguration pointScale];
       v19 = v18;
 
-      v20 = [v8 mostRecentSceneSnapshotsForScale:v16 launchingOrientation:v19];
+      v20 = [handleCopy mostRecentSceneSnapshotsForScale:v16 launchingOrientation:v19];
       [(SBDragAndDropWorkspaceTransaction *)self _defaultReferenceSizeForSceneView];
       v22 = v21;
       v24 = v23;
@@ -4971,18 +4971,18 @@ LABEL_11:
       {
         v25 = [v20 sortedArrayUsingComparator:&__block_literal_global_226];
 
-        v26 = [v25 firstObject];
-        [v26 referenceSize];
+        firstObject = [v25 firstObject];
+        [firstObject referenceSize];
         v22 = v27;
         v24 = v28;
 
         v20 = v25;
       }
 
-      v29 = [v8 newSceneViewWithReferenceSize:v16 contentOrientation:v13 containerOrientation:0 hostRequester:{v22, v24}];
+      v29 = [handleCopy newSceneViewWithReferenceSize:v16 contentOrientation:interfaceOrientation containerOrientation:0 hostRequester:{v22, v24}];
       [v29 setPlaceholderContentContext:v12];
       [v29 setDisplayMode:2 animationFactory:0 completion:0];
-      [v30 configurePlatterForSceneHandle:v8 withTargetView:v29 completion:v9];
+      [previewCopy configurePlatterForSceneHandle:handleCopy withTargetView:v29 completion:completionCopy];
     }
   }
 }
@@ -5004,23 +5004,23 @@ uint64_t __88__SBDragAndDropWorkspaceTransaction__configurePlatterPreview_forSce
   return v15;
 }
 
-- (void)_updateAnchorPointForPlatterPreview:(id)a3 dragPreview:(id)a4 withSourceViewBounds:(CGRect)a5 location:(CGPoint)a6
+- (void)_updateAnchorPointForPlatterPreview:(id)preview dragPreview:(id)dragPreview withSourceViewBounds:(CGRect)bounds location:(CGPoint)location
 {
-  y = a6.y;
-  x = a6.x;
-  height = a5.size.height;
-  width = a5.size.width;
+  y = location.y;
+  x = location.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v25 = self->_medusaSettings;
   layoutElementForWindowDrag = self->_layoutElementForWindowDrag;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(SBLayoutElement *)layoutElementForWindowDrag layoutRole];
-  if (v16 == 3)
+  dragPreviewCopy = dragPreview;
+  previewCopy = preview;
+  layoutRole = [(SBLayoutElement *)layoutElementForWindowDrag layoutRole];
+  if (layoutRole == 3)
   {
     goto LABEL_2;
   }
 
-  v18 = v16;
+  v18 = layoutRole;
   v19 = SBSpaceConfigurationForSpaceConfigurationAndInterfaceOrientation([(SBMainDisplayLayoutState *)self->_currentLayoutState spaceConfiguration], [(SBLayoutState *)self->_currentLayoutState interfaceOrientation]);
   if (v19 == 2)
   {
@@ -5076,25 +5076,25 @@ LABEL_11:
     y = v24;
   }
 
-  [v14 setLiftAnchorPoint:{v23, y}];
+  [dragPreviewCopy setLiftAnchorPoint:{v23, y}];
 
-  [v15 setAnchorPoint:{v23 / width, y / height}];
+  [previewCopy setAnchorPoint:{v23 / width, y / height}];
 }
 
-- (int64_t)_layoutRoleForDropAction:(int64_t)a3
+- (int64_t)_layoutRoleForDropAction:(int64_t)action
 {
   result = 0;
-  if (a3 > 4)
+  if (action > 4)
   {
-    if ((a3 - 6) < 4)
+    if ((action - 6) < 4)
     {
       v5 = &SBLayoutRoleFloating;
       return *v5;
     }
 
-    if (a3 != 5)
+    if (action != 5)
     {
-      if (a3 != 10)
+      if (action != 10)
       {
         return result;
       }
@@ -5109,9 +5109,9 @@ LABEL_14:
     return *v5;
   }
 
-  if (a3 > 2)
+  if (action > 2)
   {
-    if (a3 != 3)
+    if (action != 3)
     {
       goto LABEL_13;
     }
@@ -5119,12 +5119,12 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ((a3 - 1) < 2)
+  if ((action - 1) < 2)
   {
     goto LABEL_13;
   }
 
-  if (!a3)
+  if (!action)
   {
     layoutElementForWindowDrag = self->_layoutElementForWindowDrag;
     if (layoutElementForWindowDrag)
@@ -5139,61 +5139,61 @@ LABEL_14:
   return result;
 }
 
-- (id)_createPlatterPreviewForApplication:(id)a3 withSourceView:(id)a4 dropSession:(id)a5
+- (id)_createPlatterPreviewForApplication:(id)application withSourceView:(id)view dropSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBDragAndDropWorkspaceTransaction *)self _iconManager];
-  v12 = [v11 iconModel];
-  if ([v8 isWebApplication])
+  applicationCopy = application;
+  viewCopy = view;
+  sessionCopy = session;
+  _iconManager = [(SBDragAndDropWorkspaceTransaction *)self _iconManager];
+  iconModel = [_iconManager iconModel];
+  if ([applicationCopy isWebApplication])
   {
-    v13 = [v10 localContext];
-    v14 = [v13 draggedSceneIdentifier];
+    localContext = [sessionCopy localContext];
+    draggedSceneIdentifier = [localContext draggedSceneIdentifier];
 
-    v15 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:v14];
-    v16 = [v12 leafIconForIdentifier:v15];
+    v15 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:draggedSceneIdentifier];
+    v16 = [iconModel leafIconForIdentifier:v15];
   }
 
   else
   {
-    v14 = [v8 bundleIdentifier];
-    v16 = [v12 applicationIconForBundleIdentifier:v14];
+    draggedSceneIdentifier = [applicationCopy bundleIdentifier];
+    v16 = [iconModel applicationIconForBundleIdentifier:draggedSceneIdentifier];
   }
 
   if (!v16)
   {
-    [SBDragAndDropWorkspaceTransaction _createPlatterPreviewForApplication:v8 withSourceView:? dropSession:?];
+    [SBDragAndDropWorkspaceTransaction _createPlatterPreviewForApplication:applicationCopy withSourceView:? dropSession:?];
   }
 
   v17 = [objc_alloc(MEMORY[0x277D663F0]) initWithConfigurationOptions:6];
   [v17 setLocation:*MEMORY[0x277D666D0]];
-  v18 = [v11 listLayoutProvider];
-  [v17 setListLayoutProvider:v18];
+  listLayoutProvider = [_iconManager listLayoutProvider];
+  [v17 setListLayoutProvider:listLayoutProvider];
 
-  [v17 setDelegate:v11];
+  [v17 setDelegate:_iconManager];
   [v17 setIcon:v16];
   [v17 setEnabled:0];
-  v19 = [[SBAppPlatterDragPreview alloc] initWithReferenceIconView:v17 sourceView:v9];
+  v19 = [[SBAppPlatterDragPreview alloc] initWithReferenceIconView:v17 sourceView:viewCopy];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __100__SBDragAndDropWorkspaceTransaction__createPlatterPreviewForApplication_withSourceView_dropSession___block_invoke;
   v32[3] = &unk_2783B5AF0;
-  v20 = v11;
+  v20 = _iconManager;
   v33 = v20;
   [(SBAppPlatterDragPreview *)v19 setCleanUpHandler:v32];
-  v21 = [v20 iconDragManager];
-  v22 = [(SBWorkspaceTransaction *)self windowScene];
-  [v21 addPlatterViewToMedusaDragOffscreenWindow:v19 forWindowScene:v22];
+  iconDragManager = [v20 iconDragManager];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  [iconDragManager addPlatterViewToMedusaDragOffscreenWindow:v19 forWindowScene:windowScene];
 
-  if (v9)
+  if (viewCopy)
   {
-    [v9 bounds];
+    [viewCopy bounds];
     UIRectGetCenter();
     v24 = v23;
     v26 = v25;
-    v27 = [(SBAppPlatterDragPreview *)v19 window];
-    v28 = v9;
+    window = [(SBAppPlatterDragPreview *)v19 window];
+    v28 = viewCopy;
   }
 
   else
@@ -5201,11 +5201,11 @@ LABEL_14:
     [v17 iconImageCenter];
     v24 = v29;
     v26 = v30;
-    v27 = [v17 window];
+    window = [v17 window];
     v28 = v17;
   }
 
-  [v28 convertPoint:v27 toView:{v24, v26}];
+  [v28 convertPoint:window toView:{v24, v26}];
   [(SBAppPlatterDragPreview *)v19 setCenter:?];
 
   return v19;
@@ -5223,37 +5223,37 @@ void __100__SBDragAndDropWorkspaceTransaction__createPlatterPreviewForApplicatio
 {
   v6 = [(SBDragAndDropWorkspaceTransaction *)self _transitionRequestForDropAction:self->_currentDropAction];
   [v6 finalize];
-  v3 = [v6 applicationContext];
-  v4 = [v3 layoutState];
+  applicationContext = [v6 applicationContext];
+  layoutState = [applicationContext layoutState];
   currentDropActionProposedLayoutState = self->_currentDropActionProposedLayoutState;
-  self->_currentDropActionProposedLayoutState = v4;
+  self->_currentDropActionProposedLayoutState = layoutState;
 }
 
 - (id)_iconManager
 {
-  v2 = [(SBWorkspaceTransaction *)self windowScene];
-  v3 = [v2 homeScreenController];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  homeScreenController = [windowScene homeScreenController];
 
-  v4 = [v3 iconManager];
+  iconManager = [homeScreenController iconManager];
 
-  return v4;
+  return iconManager;
 }
 
-- (id)layoutStateForApplicationTransitionContext:(id)a3
+- (id)layoutStateForApplicationTransitionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-  v6 = [v5 layoutStateForApplicationTransitionContext:v4];
+  contextCopy = context;
+  layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+  v6 = [layoutStateTransitionCoordinator layoutStateForApplicationTransitionContext:contextCopy];
 
   return v6;
 }
 
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 request];
-  [v7 applicationTransitionContext:v6 frameForApplicationSceneEntity:v5];
+  entityCopy = entity;
+  contextCopy = context;
+  request = [contextCopy request];
+  [request applicationTransitionContext:contextCopy frameForApplicationSceneEntity:entityCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -5270,12 +5270,12 @@ void __100__SBDragAndDropWorkspaceTransaction__createPlatterPreviewForApplicatio
   return result;
 }
 
-- (void)transaction:(id)a3 didCommitSceneUpdate:(id)a4
+- (void)transaction:(id)transaction didCommitSceneUpdate:(id)update
 {
-  v5 = a3;
+  transactionCopy = transaction;
   if ([(NSMutableSet *)self->_pendingSceneUpdatesTransactions count])
   {
-    [(NSMutableSet *)self->_pendingSceneUpdatesTransactions removeObject:v5];
+    [(NSMutableSet *)self->_pendingSceneUpdatesTransactions removeObject:transactionCopy];
     if (![(NSMutableSet *)self->_pendingSceneUpdatesTransactions count])
     {
       [(SBDragAndDropWorkspaceTransaction *)self _updatePlatterPreviewForSetDown:1 animated:1];

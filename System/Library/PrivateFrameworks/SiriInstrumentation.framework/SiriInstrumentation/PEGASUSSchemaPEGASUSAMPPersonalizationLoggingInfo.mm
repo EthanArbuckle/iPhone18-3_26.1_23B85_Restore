@@ -1,51 +1,51 @@
 @interface PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addPersonalizedItemInfo:(id)a3;
-- (void)setHasIsPersonalizedSession:(BOOL)a3;
-- (void)setHasIsPersonalizedSessionAffected:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPersonalizedItemInfo:(id)info;
+- (void)setHasIsPersonalizedSession:(BOOL)session;
+- (void)setHasIsPersonalizedSessionAffected:(BOOL)affected;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo
 
-- (PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo;
   v5 = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isPersonalizationEligible"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isPersonalizationEligible"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo setIsPersonalizationEligible:](v5, "setIsPersonalizationEligible:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isPersonalizedSession"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isPersonalizedSession"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo setIsPersonalizedSession:](v5, "setIsPersonalizedSession:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isPersonalizedSessionAffected"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isPersonalizedSessionAffected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo setIsPersonalizedSessionAffected:](v5, "setIsPersonalizedSessionAffected:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"personalizedItemInfo"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"personalizedItemInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,30 +95,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -132,12 +132,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo isPersonalizationEligible](self, "isPersonalizationEligible")}];
-    [v3 setObject:v15 forKeyedSubscript:@"isPersonalizationEligible"];
+    [dictionary setObject:v15 forKeyedSubscript:@"isPersonalizationEligible"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -158,19 +158,19 @@ LABEL_3:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo isPersonalizedSession](self, "isPersonalizedSession")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isPersonalizedSession"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isPersonalizedSession"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo isPersonalizedSessionAffected](self, "isPersonalizedSessionAffected")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isPersonalizedSessionAffected"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isPersonalizedSessionAffected"];
   }
 
 LABEL_5:
   if ([(NSArray *)self->_personalizedItemInfos count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -190,16 +190,16 @@ LABEL_5:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -209,12 +209,12 @@ LABEL_5:
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"personalizedItemInfo"];
+    [dictionary setObject:array forKeyedSubscript:@"personalizedItemInfo"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v17];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v17];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -257,16 +257,16 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSArray *)self->_personalizedItemInfos hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -275,13 +275,13 @@ LABEL_4:
   if (*&has)
   {
     isPersonalizationEligible = self->_isPersonalizationEligible;
-    if (isPersonalizationEligible != [v4 isPersonalizationEligible])
+    if (isPersonalizationEligible != [equalCopy isPersonalizationEligible])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -290,27 +290,27 @@ LABEL_4:
     if (v8)
     {
       isPersonalizedSession = self->_isPersonalizedSession;
-      if (isPersonalizedSession != [v4 isPersonalizedSession])
+      if (isPersonalizedSession != [equalCopy isPersonalizedSession])
       {
         goto LABEL_18;
       }
 
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
     }
 
     v10 = (*&has >> 2) & 1;
     if (v10 == ((v6 >> 2) & 1))
     {
-      if (!v10 || (isPersonalizedSessionAffected = self->_isPersonalizedSessionAffected, isPersonalizedSessionAffected == [v4 isPersonalizedSessionAffected]))
+      if (!v10 || (isPersonalizedSessionAffected = self->_isPersonalizedSessionAffected, isPersonalizedSessionAffected == [equalCopy isPersonalizedSessionAffected]))
       {
-        v12 = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self personalizedItemInfos];
-        v13 = [v4 personalizedItemInfos];
-        v14 = v13;
-        if ((v12 != 0) != (v13 == 0))
+        personalizedItemInfos = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self personalizedItemInfos];
+        personalizedItemInfos2 = [equalCopy personalizedItemInfos];
+        v14 = personalizedItemInfos2;
+        if ((personalizedItemInfos != 0) != (personalizedItemInfos2 == 0))
         {
-          v15 = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self personalizedItemInfos];
-          if (!v15)
+          personalizedItemInfos3 = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self personalizedItemInfos];
+          if (!personalizedItemInfos3)
           {
 
 LABEL_21:
@@ -318,10 +318,10 @@ LABEL_21:
             goto LABEL_19;
           }
 
-          v16 = v15;
-          v17 = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self personalizedItemInfos];
-          v18 = [v4 personalizedItemInfos];
-          v19 = [v17 isEqual:v18];
+          v16 = personalizedItemInfos3;
+          personalizedItemInfos4 = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self personalizedItemInfos];
+          personalizedItemInfos5 = [equalCopy personalizedItemInfos];
+          v19 = [personalizedItemInfos4 isEqual:personalizedItemInfos5];
 
           if (v19)
           {
@@ -343,10 +343,10 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -406,27 +406,27 @@ LABEL_5:
   }
 }
 
-- (void)addPersonalizedItemInfo:(id)a3
+- (void)addPersonalizedItemInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   personalizedItemInfos = self->_personalizedItemInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!personalizedItemInfos)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_personalizedItemInfos;
-    self->_personalizedItemInfos = v6;
+    self->_personalizedItemInfos = array;
 
-    v4 = v8;
+    infoCopy = v8;
     personalizedItemInfos = self->_personalizedItemInfos;
   }
 
-  [(NSArray *)personalizedItemInfos addObject:v4];
+  [(NSArray *)personalizedItemInfos addObject:infoCopy];
 }
 
-- (void)setHasIsPersonalizedSessionAffected:(BOOL)a3
+- (void)setHasIsPersonalizedSessionAffected:(BOOL)affected
 {
-  if (a3)
+  if (affected)
   {
     v3 = 4;
   }
@@ -439,9 +439,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsPersonalizedSession:(BOOL)a3
+- (void)setHasIsPersonalizedSession:(BOOL)session
 {
-  if (a3)
+  if (session)
   {
     v3 = 2;
   }
@@ -454,14 +454,14 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self personalizedItemInfos:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self setPersonalizedItemInfos:v7];
 

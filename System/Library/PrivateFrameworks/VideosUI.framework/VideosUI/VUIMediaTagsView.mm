@@ -1,88 +1,88 @@
 @interface VUIMediaTagsView
-+ (id)tagsViewWithMetadata:(id)a3 layout:(id)a4 existingView:(id)a5;
-- (BOOL)_shouldApplyTintColor:(id)a3 forImage:(id)a4;
++ (id)tagsViewWithMetadata:(id)metadata layout:(id)layout existingView:(id)view;
+- (BOOL)_shouldApplyTintColor:(id)color forImage:(id)image;
 - (BOOL)elementsArePlacedOnIndividualLines;
-- (CGSize)_layoutSubviewsForSize:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)_layoutSubviewsForSize:(CGSize)size computationOnly:(BOOL)only;
 - (CGSize)intrinsicContentSize;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (VUIMediaTagsView)initWithFrame:(CGRect)a3 layout:(id)a4;
-- (double)_rightMarginForView:(id)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (VUIMediaTagsView)initWithFrame:(CGRect)frame layout:(id)layout;
+- (double)_rightMarginForView:(id)view;
 - (double)_totalSubviewsWidth;
-- (double)bottomMarginToLabel:(id)a3 withBaselineMargin:(double)a4;
-- (double)bottomMarginWithBaselineMargin:(double)a3;
+- (double)bottomMarginToLabel:(id)label withBaselineMargin:(double)margin;
+- (double)bottomMarginWithBaselineMargin:(double)margin;
 - (double)firstBaselineOffsetFromTop;
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4;
-- (double)topMarginWithBaselineMargin:(double)a3;
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin;
+- (double)topMarginWithBaselineMargin:(double)margin;
 - (double)vui_baselineOffsetFromBottom;
 - (id)_firstLabelSubview;
-- (id)_newGenresLabel:(id)a3 textLayout:(id)a4;
-- (id)_newImageViewAsSubview:(BOOL)a3;
-- (id)_newLabelAsSubview:(id)a3 textLayout:(id)a4;
-- (id)_newLabelAsSubview:(id)a3 withAttributedString:(id)a4 textLayout:(id)a5;
-- (id)_newRentalExpirationlabel:(id)a3 exisitingLabel:(id)a4;
-- (id)_newTextBadgeViewAsSubview:(id)a3 layout:(id)a4 withString:(id)a5;
-- (id)_textLayoutForKey:(id)a3;
+- (id)_newGenresLabel:(id)label textLayout:(id)layout;
+- (id)_newImageViewAsSubview:(BOOL)subview;
+- (id)_newLabelAsSubview:(id)subview textLayout:(id)layout;
+- (id)_newLabelAsSubview:(id)subview withAttributedString:(id)string textLayout:(id)layout;
+- (id)_newRentalExpirationlabel:(id)expirationlabel exisitingLabel:(id)label;
+- (id)_newTextBadgeViewAsSubview:(id)subview layout:(id)layout withString:(id)string;
+- (id)_textLayoutForKey:(id)key;
 - (id)pinnedBrandLinkButtonView;
 - (void)_addGenreLabelAndSeparator;
 - (void)_adjustGenresLabelWidthIfNeeded;
-- (void)_adjustViewsPositionFor:(id)a3 preferredSize:(CGSize)a4;
-- (void)_adjustViewsPositionFor:(id)a3 topPadding:(double)a4;
-- (void)_adjustViewsPositionVerticallyCenteredFor:(id)a3 preferredSize:(CGSize)a4;
+- (void)_adjustViewsPositionFor:(id)for preferredSize:(CGSize)size;
+- (void)_adjustViewsPositionFor:(id)for topPadding:(double)padding;
+- (void)_adjustViewsPositionVerticallyCenteredFor:(id)for preferredSize:(CGSize)size;
 - (void)_removeGenreLabelAndSeparator;
-- (void)_removeSeparatorsFromGroupsIfNeeded:(BOOL)a3;
-- (void)_updateAppearanceWithUserInterfaceStyle:(unint64_t)a3;
-- (void)_updateImageAppearanceWithUserInterfaceStyle:(unint64_t)a3;
+- (void)_removeSeparatorsFromGroupsIfNeeded:(BOOL)needed;
+- (void)_updateAppearanceWithUserInterfaceStyle:(unint64_t)style;
+- (void)_updateImageAppearanceWithUserInterfaceStyle:(unint64_t)style;
 - (void)contrastSettingsDidChange;
 - (void)dealloc;
-- (void)setTotalSubviewsWidth:(double)a3;
+- (void)setTotalSubviewsWidth:(double)width;
 - (void)transparencySettingsDidChange;
-- (void)updateWithMetadata:(id)a3;
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5;
+- (void)updateWithMetadata:(id)metadata;
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation VUIMediaTagsView
 
-+ (id)tagsViewWithMetadata:(id)a3 layout:(id)a4 existingView:(id)a5
++ (id)tagsViewWithMetadata:(id)metadata layout:(id)layout existingView:(id)view
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  layoutCopy = layout;
+  viewCopy = view;
+  metadataCopy = metadata;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = viewCopy;
   }
 
   else
   {
     v11 = [VUIMediaTagsView alloc];
-    v10 = [(VUIMediaTagsView *)v11 initWithFrame:v7 layout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    v10 = [(VUIMediaTagsView *)v11 initWithFrame:layoutCopy layout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 
   v12 = v10;
-  v13 = [[VUIMediaTagsViewHelper alloc] initWithContentMetadata:v9 additionalMetadata:0];
+  v13 = [[VUIMediaTagsViewHelper alloc] initWithContentMetadata:metadataCopy additionalMetadata:0];
 
-  v14 = [(VUIMediaTagsViewHelper *)v13 tagsViewDictionary];
-  [(VUIMediaTagsView *)v12 updateWithMetadata:v14];
+  tagsViewDictionary = [(VUIMediaTagsViewHelper *)v13 tagsViewDictionary];
+  [(VUIMediaTagsView *)v12 updateWithMetadata:tagsViewDictionary];
 
   return v12;
 }
 
-- (VUIMediaTagsView)initWithFrame:(CGRect)a3 layout:(id)a4
+- (VUIMediaTagsView)initWithFrame:(CGRect)frame layout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v37[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  layoutCopy = layout;
   v34.receiver = self;
   v34.super_class = VUIMediaTagsView;
-  v11 = [(VUIMediaTagsView *)&v34 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(VUIMediaTagsView *)&v34 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_tagsViewLayout, a4);
+    objc_storeStrong(&height->_tagsViewLayout, layout);
     viewsMap = v12->_viewsMap;
     v12->_viewsMap = MEMORY[0x1E695E0F8];
 
@@ -91,13 +91,13 @@
 
     v12->_isSelected = 0;
     [(VUIMediaTagsView *)v12 setVuiClipsToBounds:1];
-    v15 = [(VUIMediaTagsViewLayout *)v12->_tagsViewLayout compositingFilter];
+    compositingFilter = [(VUIMediaTagsViewLayout *)v12->_tagsViewLayout compositingFilter];
 
-    if (v15)
+    if (compositingFilter)
     {
-      v16 = [(VUIMediaTagsViewLayout *)v12->_tagsViewLayout compositingFilter];
-      v17 = [(VUIMediaTagsView *)v12 layer];
-      [v17 setCompositingFilter:v16];
+      compositingFilter2 = [(VUIMediaTagsViewLayout *)v12->_tagsViewLayout compositingFilter];
+      layer = [(VUIMediaTagsView *)v12 layer];
+      [layer setCompositingFilter:compositingFilter2];
     }
 
     [(VUIMediaTagsView *)v12 setAccessibilityTraits:*MEMORY[0x1E69DDA18] | *MEMORY[0x1E69DD9D0]];
@@ -129,11 +129,11 @@
     objc_copyWeak(&v28, &location);
     [(VUIMediaTagsView *)v12 vui_registerForTraitChanges:v20 withHandler:&v24];
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v12 selector:sel_contrastSettingsDidChange name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel_contrastSettingsDidChange name:*MEMORY[0x1E69DD8B8] object:0];
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v12 selector:sel_transparencySettingsDidChange name:*MEMORY[0x1E69DD920] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v12 selector:sel_transparencySettingsDidChange name:*MEMORY[0x1E69DD920] object:0];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&v30);
@@ -174,40 +174,40 @@ void __41__VUIMediaTagsView_initWithFrame_layout___block_invoke_3(uint64_t a1)
   [WeakRetained invalidateIntrinsicContentSize];
 }
 
-- (void)setTotalSubviewsWidth:(double)a3
+- (void)setTotalSubviewsWidth:(double)width
 {
-  if (self->_totalSubviewsWidth != a3)
+  if (self->_totalSubviewsWidth != width)
   {
-    self->_totalSubviewsWidth = a3;
+    self->_totalSubviewsWidth = width;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD8B8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD8B8] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
 
   v5.receiver = self;
   v5.super_class = VUIMediaTagsView;
   [(VUIMediaTagsView *)&v5 dealloc];
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  v8 = [(VUIMediaTagsView *)self tagsViewLayout];
-  [v8 maxWidth];
+  onlyCopy = only;
+  height = subviews.height;
+  width = subviews.width;
+  tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+  [tagsViewLayout maxWidth];
   v10 = v9;
 
   if (v10 > 0.0)
   {
-    v11 = [(VUIMediaTagsView *)self tagsViewLayout];
-    [v11 maxWidth];
+    tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+    [tagsViewLayout2 maxWidth];
     v13 = v12;
 
     if (width >= v13)
@@ -218,23 +218,23 @@ void __41__VUIMediaTagsView_initWithFrame_layout___block_invoke_3(uint64_t a1)
 
   v16.receiver = self;
   v16.super_class = VUIMediaTagsView;
-  [(VUIMediaTagsView *)&v16 vui_layoutSubviews:v4 computationOnly:width, height];
-  [(VUIMediaTagsView *)self _layoutSubviewsForSize:v4 computationOnly:width, height];
+  [(VUIMediaTagsView *)&v16 vui_layoutSubviews:onlyCopy computationOnly:width, height];
+  [(VUIMediaTagsView *)self _layoutSubviewsForSize:onlyCopy computationOnly:width, height];
   result.height = v15;
   result.width = v14;
   return result;
 }
 
-- (CGSize)_layoutSubviewsForSize:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)_layoutSubviewsForSize:(CGSize)size computationOnly:(BOOL)only
 {
-  v237 = a4;
-  height = a3.height;
-  width = a3.width;
+  onlyCopy = only;
+  height = size.height;
+  width = size.width;
   v329 = *MEMORY[0x1E69E9840];
-  v226 = [(VUIMediaTagsView *)self elementsArePlacedOnIndividualLines];
-  v257 = self;
-  v6 = [(VUIMediaTagsView *)self tagsViewLayout];
-  v233 = [v6 orphanAvoidance];
+  elementsArePlacedOnIndividualLines = [(VUIMediaTagsView *)self elementsArePlacedOnIndividualLines];
+  selfCopy = self;
+  tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+  orphanAvoidance = [tagsViewLayout orphanAvoidance];
 
   v322 = 0;
   v323 = &v322;
@@ -279,36 +279,36 @@ void __41__VUIMediaTagsView_initWithFrame_layout___block_invoke_3(uint64_t a1)
   v304[1] = v304;
   v304[2] = 0x2020000000;
   v304[3] = 0;
-  v8 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-  v9 = [v8 isWrappingAllowed];
+  tagsViewLayout2 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+  isWrappingAllowed = [tagsViewLayout2 isWrappingAllowed];
 
-  v10 = v257;
-  if ((v9 & 1) == 0)
+  v10 = selfCopy;
+  if ((isWrappingAllowed & 1) == 0)
   {
-    [(VUIMediaTagsView *)v257 totalSubviewsWidth];
+    [(VUIMediaTagsView *)selfCopy totalSubviewsWidth];
     if (v11 <= width)
     {
-      [(VUIMediaTagsView *)v257 _addGenreLabelAndSeparator];
+      [(VUIMediaTagsView *)selfCopy _addGenreLabelAndSeparator];
     }
 
     else
     {
-      [(VUIMediaTagsView *)v257 _removeGenreLabelAndSeparator];
+      [(VUIMediaTagsView *)selfCopy _removeGenreLabelAndSeparator];
     }
   }
 
   if (_os_feature_enabled_impl())
   {
-    v12 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-    v13 = [v12 adjustGenresToFit];
+    tagsViewLayout3 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+    adjustGenresToFit = [tagsViewLayout3 adjustGenresToFit];
 
-    v10 = v257;
-    if (v13)
+    v10 = selfCopy;
+    if (adjustGenresToFit)
     {
-      [(VUIMediaTagsView *)v257 totalSubviewsWidth];
+      [(VUIMediaTagsView *)selfCopy totalSubviewsWidth];
       if (v14 > width)
       {
-        [(VUIMediaTagsView *)v257 _adjustGenresLabelWidthIfNeeded];
+        [(VUIMediaTagsView *)selfCopy _adjustGenresLabelWidthIfNeeded];
       }
     }
   }
@@ -348,7 +348,7 @@ void __41__VUIMediaTagsView_initWithFrame_layout___block_invoke_3(uint64_t a1)
   v278 = 0x3032000000;
   v279 = __Block_byref_object_copy__15;
   v280 = __Block_byref_object_dispose__15;
-  v281 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+  weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
   objc_initWeak(&location, v10);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -357,14 +357,14 @@ void __41__VUIMediaTagsView_initWithFrame_layout___block_invoke_3(uint64_t a1)
   objc_copyWeak(v272, &location);
   v272[1] = *&width;
   v272[2] = *&height;
-  v273 = v226;
+  v273 = elementsArePlacedOnIndividualLines;
   aBlock[6] = v312;
   aBlock[7] = &v306;
-  v274 = v237;
+  v274 = onlyCopy;
   aBlock[8] = &v318;
   aBlock[9] = v302;
   aBlock[5] = &v322;
-  aBlock[4] = v257;
+  aBlock[4] = selfCopy;
   aBlock[10] = v304;
   aBlock[11] = v305;
   aBlock[12] = v316;
@@ -374,28 +374,28 @@ void __41__VUIMediaTagsView_initWithFrame_layout___block_invoke_3(uint64_t a1)
   aBlock[16] = &v282;
   aBlock[17] = &v288;
   v236 = _Block_copy(aBlock);
-  v15 = v257;
-  [(VUIMediaTagsView *)v257 bounds];
+  v15 = selfCopy;
+  [(VUIMediaTagsView *)selfCopy bounds];
   v246 = v17;
   v248 = v16;
   v250 = v18;
   rect = v19;
-  v228 = [(VUIMediaTagsView *)v257 pinnedBrandLinkButtonView];
-  if (v228)
+  pinnedBrandLinkButtonView = [(VUIMediaTagsView *)selfCopy pinnedBrandLinkButtonView];
+  if (pinnedBrandLinkButtonView)
   {
-    [(VUIMediaTagsView *)v257 bounds];
-    [v228 vui_sizeThatFits:{v20, v21}];
+    [(VUIMediaTagsView *)selfCopy bounds];
+    [pinnedBrandLinkButtonView vui_sizeThatFits:{v20, v21}];
     v23 = v22;
-    v24 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-    [v24 badgeMargin];
+    tagsViewLayout4 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+    [tagsViewLayout4 badgeMargin];
     v26 = v25;
 
-    v27 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-    [v27 badgeMargin];
+    tagsViewLayout5 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+    [tagsViewLayout5 badgeMargin];
     v29 = v28;
 
     v250 = v250 - v23 - v26 - v29;
-    v15 = v257;
+    v15 = selfCopy;
   }
 
   v229 = 0;
@@ -406,16 +406,16 @@ void __41__VUIMediaTagsView_initWithFrame_layout___block_invoke_3(uint64_t a1)
   v30 = 0.0;
   while (1)
   {
-    v31 = [(VUIMediaTagsView *)v15 groupedSubviews];
-    v32 = v229 < [v31 count];
+    groupedSubviews = [(VUIMediaTagsView *)v15 groupedSubviews];
+    v32 = v229 < [groupedSubviews count];
 
     if (!v32)
     {
       break;
     }
 
-    v33 = [(VUIMediaTagsView *)v257 groupedSubviews];
-    v34 = [v33 objectAtIndexedSubscript:v229];
+    groupedSubviews2 = [(VUIMediaTagsView *)selfCopy groupedSubviews];
+    v34 = [groupedSubviews2 objectAtIndexedSubscript:v229];
 
     v269 = 0u;
     v270 = 0u;
@@ -438,7 +438,7 @@ void __41__VUIMediaTagsView_initWithFrame_layout___block_invoke_3(uint64_t a1)
           }
 
           v38 = *(*(&v267 + 1) + 8 * v37);
-          v39 = [obja firstObject];
+          firstObject = [obja firstObject];
 
           v40 = 0.0;
           if ([v38 isHidden])
@@ -454,7 +454,7 @@ LABEL_19:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(VUIMediaTagsView *)v257 _rightMarginForView:v38];
+            [(VUIMediaTagsView *)selfCopy _rightMarginForView:v38];
             v40 = v45;
             v46 = [v38 tag];
             if ((v46 - 101) < 0xA)
@@ -462,21 +462,21 @@ LABEL_19:
               v36 |= 0x327u >> (v46 - 101);
             }
 
-            v47 = v236[2](v236, v38, v36 & 1, v39 == v38, [(VUIMediaTagsView *)v257 vuiIsRTL], v40, 0.0, 0.0, v248, v246, v250, rect);
+            v47 = v236[2](v236, v38, v36 & 1, firstObject == v38, [(VUIMediaTagsView *)selfCopy vuiIsRTL], v40, 0.0, 0.0, v248, v246, v250, rect);
             v44 = v47;
             v43 = v48;
             v42 = v49;
             v41 = v50;
-            if (v237)
+            if (onlyCopy)
             {
-              if (!v233)
+              if (!orphanAvoidance)
               {
                 goto LABEL_76;
               }
 
               v51 = v277[5];
-              v52 = [MEMORY[0x1E696B098] valueWithCGRect:{v47, v48, v49, v50}];
-              [v51 setObject:v52 forKey:v38];
+              image = [MEMORY[0x1E696B098] valueWithCGRect:{v47, v48, v49, v50}];
+              [v51 setObject:image forKey:v38];
               goto LABEL_75;
             }
 
@@ -491,7 +491,7 @@ LABEL_19:
               v42 = v42 - v81;
             }
 
-            if ([(VUIMediaTagsView *)v257 vuiIsRTL])
+            if ([(VUIMediaTagsView *)selfCopy vuiIsRTL])
             {
 LABEL_38:
               VUIRectWithFlippedOriginRelativeToBoundingRect();
@@ -513,31 +513,31 @@ LABEL_97:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v53 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-            [v53 badgeMargin];
+            tagsViewLayout6 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+            [tagsViewLayout6 badgeMargin];
             v40 = v54;
 
             v55 = [v38 tag];
             v56 = MEMORY[0x1E69DF6D0];
-            v57 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-            [v57 badgeMaxHeight];
+            tagsViewLayout7 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+            [tagsViewLayout7 badgeMaxHeight];
             v59 = v58;
-            v60 = [(VUIMediaTagsView *)v257 vuiTraitCollection];
-            v61 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-            [v56 scaleContentSizeValue:v60 forTraitCollection:objc_msgSend(v61 maximumContentSizeCategory:{"badgeMaxContentSizeCategory"), v59}];
+            vuiTraitCollection = [(VUIMediaTagsView *)selfCopy vuiTraitCollection];
+            tagsViewLayout8 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+            [v56 scaleContentSizeValue:vuiTraitCollection forTraitCollection:objc_msgSend(tagsViewLayout8 maximumContentSizeCategory:{"badgeMaxContentSizeCategory"), v59}];
             v63 = v62;
 
-            v52 = [v38 image];
-            [v52 size];
+            image = [v38 image];
+            [image size];
             v64 = 0.0;
             if (v65 > 0.0)
             {
-              [v52 size];
+              [image size];
               if (v66 > 0.0)
               {
-                [v52 size];
+                [image size];
                 v68 = v67;
-                [v52 size];
+                [image size];
                 v64 = v68 / v69;
               }
             }
@@ -546,8 +546,8 @@ LABEL_97:
             {
               if (v55 == 109)
               {
-                v121 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-                [v121 immersiveMargin];
+                tagsViewLayout9 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+                [tagsViewLayout9 immersiveMargin];
                 v40 = v122;
               }
 
@@ -557,12 +557,12 @@ LABEL_97:
                 {
                   if (v55 == 111)
                   {
-                    v99 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-                    [v99 entitlementCueMargin];
+                    tagsViewLayout10 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+                    [tagsViewLayout10 entitlementCueMargin];
                     v40 = v100;
 
-                    v101 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-                    [v101 entitlementCueImageSize];
+                    tagsViewLayout11 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+                    [tagsViewLayout11 entitlementCueImageSize];
                     v103 = v102;
                     v63 = v104;
 
@@ -580,8 +580,8 @@ LABEL_97:
                   goto LABEL_69;
                 }
 
-                v125 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-                [v125 highMotionMargin];
+                tagsViewLayout12 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+                [tagsViewLayout12 highMotionMargin];
                 v40 = v126;
               }
             }
@@ -591,14 +591,14 @@ LABEL_97:
               switch(v55)
               {
                 case 'e':
-                  v119 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-                  [v119 commonSenseMargin];
+                  tagsViewLayout13 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+                  [tagsViewLayout13 commonSenseMargin];
                   v40 = v120;
 
                   break;
                 case 'f':
-                  v123 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-                  [v123 tomatoMeterMargin];
+                  tagsViewLayout14 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+                  [tagsViewLayout14 tomatoMeterMargin];
                   v40 = v124;
 
                   break;
@@ -606,14 +606,14 @@ LABEL_97:
                   break;
                 default:
 LABEL_69:
-                  v127 = v236[2](v236, v38, v36 & 1, v39 == v38, [(VUIMediaTagsView *)v257 vuiIsRTL], v40, v63, v64, v248, v246, v250, rect);
+                  v127 = v236[2](v236, v38, v36 & 1, firstObject == v38, [(VUIMediaTagsView *)selfCopy vuiIsRTL], v40, v63, v64, v248, v246, v250, rect);
                   v44 = v127;
                   v43 = v128;
                   v42 = v129;
                   v41 = v130;
-                  if (v237)
+                  if (onlyCopy)
                   {
-                    if (v233)
+                    if (orphanAvoidance)
                     {
                       v131 = v277[5];
                       v132 = [MEMORY[0x1E696B098] valueWithCGRect:{v127, v128, v129, v130}];
@@ -623,12 +623,12 @@ LABEL_69:
 
                   else
                   {
-                    v133 = [(VUIMediaTagsView *)v257 vuiIsRTL];
+                    vuiIsRTL = [(VUIMediaTagsView *)selfCopy vuiIsRTL];
                     v134 = v41;
                     v135 = v42;
                     v136 = v43;
                     v137 = v44;
-                    if (v133)
+                    if (vuiIsRTL)
                     {
                       VUIRectWithFlippedOriginRelativeToBoundingRect();
                     }
@@ -649,25 +649,25 @@ LABEL_75:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v70 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-            [v70 textBadgeMargin];
+            tagsViewLayout15 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+            [tagsViewLayout15 textBadgeMargin];
             v40 = v71;
 
-            v44 = v236[2](v236, v38, v36 & 1, v39 == v38, [(VUIMediaTagsView *)v257 vuiIsRTL], v40, 0.0, 0.0, v248, v246, v250, rect);
+            v44 = v236[2](v236, v38, v36 & 1, firstObject == v38, [(VUIMediaTagsView *)selfCopy vuiIsRTL], v40, 0.0, 0.0, v248, v246, v250, rect);
             v43 = v72;
             v42 = v73;
             v41 = v74;
-            if (v237)
+            if (onlyCopy)
             {
               goto LABEL_76;
             }
 
-            v75 = [(VUIMediaTagsView *)v257 vuiIsRTL];
+            vuiIsRTL2 = [(VUIMediaTagsView *)selfCopy vuiIsRTL];
             v76 = v41;
             v77 = v42;
             v78 = v43;
             v79 = v44;
-            if (v75)
+            if (vuiIsRTL2)
             {
               goto LABEL_38;
             }
@@ -677,12 +677,12 @@ LABEL_75:
 
           if ([v38 tag] == 111)
           {
-            v82 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-            [v82 entitlementCueMargin];
+            tagsViewLayout16 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+            [tagsViewLayout16 entitlementCueMargin];
             v40 = v83;
 
-            v84 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-            [v84 entitlementCueImageSize];
+            tagsViewLayout17 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+            [tagsViewLayout17 entitlementCueImageSize];
             v86 = v85;
             v88 = v87;
 
@@ -693,18 +693,18 @@ LABEL_75:
               v88 = v90;
             }
 
-            v44 = v236[2](v236, v38, 1, v39 == v38, [(VUIMediaTagsView *)v257 vuiIsRTL], v40, v88, v86 / v88, v248, v246, v250, rect);
+            v44 = v236[2](v236, v38, 1, firstObject == v38, [(VUIMediaTagsView *)selfCopy vuiIsRTL], v40, v88, v86 / v88, v248, v246, v250, rect);
             v43 = v91;
             v42 = v92;
             v41 = v93;
-            if (!v237)
+            if (!onlyCopy)
             {
-              v94 = [(VUIMediaTagsView *)v257 vuiIsRTL];
+              vuiIsRTL3 = [(VUIMediaTagsView *)selfCopy vuiIsRTL];
               v95 = v41;
               v96 = v42;
               v97 = v43;
               v98 = v44;
-              if (v94)
+              if (vuiIsRTL3)
               {
                 VUIRectWithFlippedOriginRelativeToBoundingRect();
               }
@@ -722,24 +722,24 @@ LABEL_75:
               goto LABEL_19;
             }
 
-            v107 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-            [v107 badgeMargin];
+            tagsViewLayout18 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+            [tagsViewLayout18 badgeMargin];
             v40 = v108;
 
-            [(VUIMediaTagsView *)v257 bounds];
-            v113 = v236[2](v236, v38, v36 & 1, v39 == v38, [(VUIMediaTagsView *)v257 vuiIsRTL], v40, 0.0, 0.0, v109, v110, v111, v112);
+            [(VUIMediaTagsView *)selfCopy bounds];
+            v113 = v236[2](v236, v38, v36 & 1, firstObject == v38, [(VUIMediaTagsView *)selfCopy vuiIsRTL], v40, 0.0, 0.0, v109, v110, v111, v112);
             v44 = v113;
             v43 = v114;
             v42 = v115;
             v41 = v116;
-            if (!v237)
+            if (!onlyCopy)
             {
               v117 = CGRectGetMaxX(*&v113);
-              [(VUIMediaTagsView *)v257 bounds];
+              [(VUIMediaTagsView *)selfCopy bounds];
               v118 = v117 - CGRectGetMaxX(v332);
               if (v118 > 0.0)
               {
-                if (v228)
+                if (pinnedBrandLinkButtonView)
                 {
                   v44 = v44 - v118;
                 }
@@ -750,14 +750,14 @@ LABEL_75:
                 }
               }
 
-              v147 = [(VUIMediaTagsView *)v257 vuiIsRTL];
+              vuiIsRTL4 = [(VUIMediaTagsView *)selfCopy vuiIsRTL];
               v76 = v41;
               v77 = v42;
               v78 = v43;
               v79 = v44;
-              if (v147)
+              if (vuiIsRTL4)
               {
-                [(VUIMediaTagsView *)v257 bounds:v44];
+                [(VUIMediaTagsView *)selfCopy bounds:v44];
                 VUIRectWithFlippedOriginRelativeToBoundingRect();
               }
 
@@ -766,11 +766,11 @@ LABEL_75:
           }
 
 LABEL_76:
-          v138 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-          v139 = [v138 alignBadgeVertically];
+          tagsViewLayout19 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+          alignBadgeVertically = [tagsViewLayout19 alignBadgeVertically];
           if (v43 < 0.0)
           {
-            v140 = v139;
+            v140 = alignBadgeVertically;
           }
 
           else
@@ -831,9 +831,9 @@ LABEL_76:
       while (v148);
     }
 
-    v149 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-    [v149 groupMargin];
-    if (v226)
+    tagsViewLayout20 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+    [tagsViewLayout20 groupMargin];
+    if (elementsArePlacedOnIndividualLines)
     {
       v319[3] = v150 + v319[3];
 
@@ -846,7 +846,7 @@ LABEL_76:
     }
 
     ++v229;
-    v15 = v257;
+    v15 = selfCopy;
   }
 
   v266[0] = MEMORY[0x1E69E9820];
@@ -855,24 +855,24 @@ LABEL_76:
   v266[3] = &unk_1E8732F08;
   v266[4] = &v276;
   v152 = _Block_copy(v266);
-  v153 = v257;
-  if ((v233 & 1) == 0 || [v289[5] count] < 2 || -[VUIMediaTagsView elementsArePlacedOnIndividualLines](v257, "elementsArePlacedOnIndividualLines") || !v237)
+  v153 = selfCopy;
+  if ((orphanAvoidance & 1) == 0 || [v289[5] count] < 2 || -[VUIMediaTagsView elementsArePlacedOnIndividualLines](selfCopy, "elementsArePlacedOnIndividualLines") || !onlyCopy)
   {
     goto LABEL_106;
   }
 
-  v172 = [v289[5] lastObject];
-  if ([v172 count] > 1 || !objc_msgSend(v172, "count"))
+  lastObject = [v289[5] lastObject];
+  if ([lastObject count] > 1 || !objc_msgSend(lastObject, "count"))
   {
     *obj = *(v295 + 2);
 
     goto LABEL_143;
   }
 
-  v254 = [v172 firstObject];
+  firstObject2 = [lastObject firstObject];
   v173 = [v289[5] objectAtIndexedSubscript:{objc_msgSend(v289[5], "count") - 2}];
   v174 = [v173 mutableCopy];
-  v251 = [v172 mutableCopy];
+  v251 = [lastObject mutableCopy];
   v175 = 0;
   v176 = [v173 count] - 1;
   if (v176 < 0)
@@ -930,13 +930,13 @@ LABEL_150:
   v232 = v192;
   v227 = v193;
   v225 = v194;
-  v195 = [v174 lastObject];
-  obj[0] = COERCE_ID(v152[2](v152, v195));
+  lastObject2 = [v174 lastObject];
+  obj[0] = COERCE_ID(v152[2](v152, lastObject2));
   v247 = v197;
   v249 = v196;
   v199 = v198;
 
-  v200 = v152[2](v152, v254);
+  v200 = v152[2](v152, firstObject2);
   recta = v201;
   v234 = v203;
   v235 = v202;
@@ -991,7 +991,7 @@ LABEL_150:
   v243 = MinY + 0.0;
   if (objc_opt_isKindOfClass())
   {
-    [(VUIMediaTagsView *)v257 _rightMarginForView:v178];
+    [(VUIMediaTagsView *)selfCopy _rightMarginForView:v178];
     v206 = v206 + v207;
 LABEL_160:
     v213 = v243;
@@ -1004,13 +1004,13 @@ LABEL_160:
     goto LABEL_160;
   }
 
-  [(VUIMediaTagsView *)v257 _rightMarginForView:v178];
+  [(VUIMediaTagsView *)selfCopy _rightMarginForView:v178];
   v209 = v208;
-  v210 = [(VUIMediaTagsView *)v257 tagsViewLayout];
-  v211 = [v210 alignBadgeVertically];
+  tagsViewLayout21 = [(VUIMediaTagsView *)selfCopy tagsViewLayout];
+  alignBadgeVertically2 = [tagsViewLayout21 alignBadgeVertically];
 
   v206 = v206 + v209;
-  if (!v211)
+  if (!alignBadgeVertically2)
   {
     goto LABEL_160;
   }
@@ -1029,7 +1029,7 @@ LABEL_161:
   v241 = v213;
   if (v175)
   {
-    [(VUIMediaTagsView *)v257 _rightMarginForView:v175];
+    [(VUIMediaTagsView *)selfCopy _rightMarginForView:v175];
     v215 = v214;
     [v251 insertObject:v178 atIndex:1];
     v230 = v206;
@@ -1107,17 +1107,17 @@ LABEL_174:
   v184 = 1;
 LABEL_175:
 
-  v153 = v257;
+  v153 = selfCopy;
   if (!v184)
   {
     goto LABEL_143;
   }
 
 LABEL_106:
-  v154 = [(VUIMediaTagsView *)v153 tagsViewLayout];
-  v155 = [v154 alignBadgeVertically];
+  tagsViewLayout22 = [(VUIMediaTagsView *)v153 tagsViewLayout];
+  alignBadgeVertically3 = [tagsViewLayout22 alignBadgeVertically];
 
-  if (v155 && !v237 && v30 < 0.0)
+  if (alignBadgeVertically3 && !onlyCopy && v30 < 0.0)
   {
     v264 = 0u;
     v265 = 0u;
@@ -1175,30 +1175,30 @@ LABEL_106:
     }
   }
 
-  v166 = v257;
-  [(VUIMediaTagsViewLayout *)v257->_tagsViewLayout padding];
+  v166 = selfCopy;
+  [(VUIMediaTagsViewLayout *)selfCopy->_tagsViewLayout padding];
   v168 = v167;
-  if (!v237)
+  if (!onlyCopy)
   {
-    [(VUIMediaTagsView *)v257 _adjustViewsPositionFor:v289[5] preferredSize:v295[4], v295[5]];
+    [(VUIMediaTagsView *)selfCopy _adjustViewsPositionFor:v289[5] preferredSize:v295[4], v295[5]];
     if ([v289[5] count])
     {
-      v169 = [v289[5] lastObject];
-      if ([v169 count] < 2)
+      lastObject3 = [v289[5] lastObject];
+      if ([lastObject3 count] < 2)
       {
 
-        v166 = v257;
+        v166 = selfCopy;
       }
 
       else
       {
-        v170 = [v169 lastObject];
-        v171 = [v170 tag] == 108;
+        v169LastObject = [lastObject3 lastObject];
+        v171 = [v169LastObject tag] == 108;
 
-        v166 = v257;
+        v166 = selfCopy;
         if (v171)
         {
-          [(VUIMediaTagsView *)v257 _adjustViewsPositionVerticallyCenteredFor:v289[5] preferredSize:v295[4], v295[5]];
+          [(VUIMediaTagsView *)selfCopy _adjustViewsPositionVerticallyCenteredFor:v289[5] preferredSize:v295[4], v295[5]];
         }
       }
     }
@@ -1893,38 +1893,38 @@ double __59__VUIMediaTagsView__layoutSubviewsForSize_computationOnly___block_inv
 
 - (id)pinnedBrandLinkButtonView
 {
-  v3 = [(VUIMediaTagsView *)self traitCollection];
-  v4 = [v3 isAXEnabled];
+  traitCollection = [(VUIMediaTagsView *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  if (v4)
+  if (isAXEnabled)
   {
     v5 = 0;
     goto LABEL_6;
   }
 
-  v6 = [(VUIMediaTagsView *)self tagsViewLayout];
-  v7 = [v6 type];
+  tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+  type = [tagsViewLayout type];
 
-  v8 = [(VUIMediaTagsView *)self tagsViewLayout];
-  if ([v8 isWrappingAllowed])
+  tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+  if ([tagsViewLayout2 isWrappingAllowed])
   {
     goto LABEL_4;
   }
 
-  v10 = [(VUIMediaTagsView *)self tagsViewLayout];
-  v11 = [v10 centerAlign];
+  tagsViewLayout3 = [(VUIMediaTagsView *)self tagsViewLayout];
+  centerAlign = [tagsViewLayout3 centerAlign];
 
   v5 = 0;
-  if ((v11 & 1) == 0 && (v7 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  if ((centerAlign & 1) == 0 && (type & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
-    v12 = [(VUIMediaTagsView *)self groupedSubviews];
-    v13 = [v12 lastObject];
-    v8 = [v13 lastObject];
+    groupedSubviews = [(VUIMediaTagsView *)self groupedSubviews];
+    lastObject = [groupedSubviews lastObject];
+    tagsViewLayout2 = [lastObject lastObject];
 
-    if ([v8 tag] == 108)
+    if ([tagsViewLayout2 tag] == 108)
     {
-      v8 = v8;
-      v5 = v8;
+      tagsViewLayout2 = tagsViewLayout2;
+      v5 = tagsViewLayout2;
       goto LABEL_5;
     }
 
@@ -1938,23 +1938,23 @@ LABEL_6:
   return v5;
 }
 
-- (void)_adjustViewsPositionFor:(id)a3 preferredSize:(CGSize)a4
+- (void)_adjustViewsPositionFor:(id)for preferredSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(VUIMediaTagsView *)self tagsViewLayout];
-  v8 = [v7 centerAlign];
+  forCopy = for;
+  tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+  centerAlign = [tagsViewLayout centerAlign];
 
-  if (v8 && [v6 count])
+  if (centerAlign && [forCopy count])
   {
-    v9 = [(VUIMediaTagsView *)self vuiTraitCollection];
-    if ([v9 isAXEnabled])
+    vuiTraitCollection = [(VUIMediaTagsView *)self vuiTraitCollection];
+    if ([vuiTraitCollection isAXEnabled])
     {
-      v10 = [(VUIMediaTagsView *)self tagsViewLayout];
-      v11 = [v10 centerAlignOnAX];
+      tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+      centerAlignOnAX = [tagsViewLayout2 centerAlignOnAX];
 
-      if (!v11)
+      if (!centerAlignOnAX)
       {
         goto LABEL_34;
       }
@@ -1964,13 +1964,13 @@ LABEL_6:
     {
     }
 
-    v12 = [(VUIMediaTagsView *)self vuiIsRTL];
+    vuiIsRTL = [(VUIMediaTagsView *)self vuiIsRTL];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v40 = v6;
-    v13 = v6;
+    v40 = forCopy;
+    v13 = forCopy;
     v14 = [v13 countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v14)
     {
@@ -2003,9 +2003,9 @@ LABEL_6:
                 v25 = [v20 objectAtIndexedSubscript:--v24];
                 if (([v25 isHidden] & 1) == 0)
                 {
-                  v26 = [v25 superview];
+                  superview = [v25 superview];
 
-                  if (v26)
+                  if (superview)
                   {
                     break;
                   }
@@ -2036,7 +2036,7 @@ LABEL_20:
           {
             v31 = v30;
             v32 = width - (v21 + v22);
-            if (v12)
+            if (vuiIsRTL)
             {
               v32 = v22;
             }
@@ -2044,7 +2044,7 @@ LABEL_20:
             v33 = v32 * 0.5;
             v34 = *v42;
             v35 = -(v32 * 0.5);
-            if (v12)
+            if (vuiIsRTL)
             {
               v36 = v35;
             }
@@ -2081,23 +2081,23 @@ LABEL_20:
       while (v15);
     }
 
-    v6 = v40;
+    forCopy = v40;
   }
 
 LABEL_34:
 }
 
-- (void)_adjustViewsPositionVerticallyCenteredFor:(id)a3 preferredSize:(CGSize)a4
+- (void)_adjustViewsPositionVerticallyCenteredFor:(id)for preferredSize:(CGSize)size
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] == 1)
+  forCopy = for;
+  if ([forCopy count] == 1)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = v4;
+    v5 = forCopy;
     v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v6)
     {
@@ -2152,18 +2152,18 @@ LABEL_34:
   }
 }
 
-- (void)_adjustViewsPositionFor:(id)a3 topPadding:(double)a4
+- (void)_adjustViewsPositionFor:(id)for topPadding:(double)padding
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 count];
-  if (a4 > 0.0 && v6 != 0)
+  forCopy = for;
+  v6 = [forCopy count];
+  if (padding > 0.0 && v6 != 0)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = v5;
+    v8 = forCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v9)
     {
@@ -2218,15 +2218,15 @@ LABEL_34:
   }
 }
 
-- (double)topMarginWithBaselineMargin:(double)a3
+- (double)topMarginWithBaselineMargin:(double)margin
 {
   v37 = *MEMORY[0x1E69E9840];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = [(VUIMediaTagsView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  subviews = [(VUIMediaTagsView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2238,14 +2238,14 @@ LABEL_34:
       {
         if (*v32 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v31 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v10 topMarginWithBaselineMargin:a3];
+          [v10 topMarginWithBaselineMargin:margin];
           goto LABEL_19;
         }
 
@@ -2253,7 +2253,7 @@ LABEL_34:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v7)
       {
         continue;
@@ -2266,8 +2266,8 @@ LABEL_34:
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
-  v5 = [(VUIMediaTagsView *)self subviews:0];
-  v11 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  subviews = [(VUIMediaTagsView *)self subviews:0];
+  v11 = [subviews countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2279,23 +2279,23 @@ LABEL_34:
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [(VUIMediaTagsView *)self tagsViewLayout];
-          [v18 badgeMaxHeight];
+          tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+          [tagsViewLayout badgeMaxHeight];
           v20 = v19;
 
           v21 = MEMORY[0x1E69DF6D0];
-          v22 = [(VUIMediaTagsView *)self vuiTraitCollection];
-          v23 = [(VUIMediaTagsView *)self tagsViewLayout];
-          [v21 scaleContentSizeValue:v22 forTraitCollection:objc_msgSend(v23 maximumContentSizeCategory:{"badgeMaxContentSizeCategory"), v20}];
+          vuiTraitCollection = [(VUIMediaTagsView *)self vuiTraitCollection];
+          tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+          [v21 scaleContentSizeValue:vuiTraitCollection forTraitCollection:objc_msgSend(tagsViewLayout2 maximumContentSizeCategory:{"badgeMaxContentSizeCategory"), v20}];
           v25 = v24;
 
-          v17 = a3 - v25;
+          v17 = margin - v25;
           goto LABEL_21;
         }
 
@@ -2303,7 +2303,7 @@ LABEL_34:
       }
 
       while (v12 != v14);
-      v12 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v12 = [subviews countByEnumeratingWithState:&v27 objects:v35 count:16];
       if (v12)
       {
         continue;
@@ -2314,8 +2314,8 @@ LABEL_34:
   }
 
   v15 = MEMORY[0x1E69DF6D0];
-  v5 = [(VUIMediaTagsView *)self vuiTraitCollection];
-  [v15 scaleContentSizeValue:v5 forTraitCollection:a3];
+  subviews = [(VUIMediaTagsView *)self vuiTraitCollection];
+  [v15 scaleContentSizeValue:subviews forTraitCollection:margin];
 LABEL_19:
   v17 = v16;
 LABEL_21:
@@ -2323,15 +2323,15 @@ LABEL_21:
   return v17;
 }
 
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(VUIMediaTagsView *)self _firstLabelSubview];
-  v8 = v7;
-  if (v7)
+  labelCopy = label;
+  _firstLabelSubview = [(VUIMediaTagsView *)self _firstLabelSubview];
+  v8 = _firstLabelSubview;
+  if (_firstLabelSubview)
   {
-    [v7 topMarginToLabel:v6 withBaselineMargin:a4];
+    [_firstLabelSubview topMarginToLabel:labelCopy withBaselineMargin:margin];
     v10 = v9;
   }
 
@@ -2358,17 +2358,17 @@ LABEL_21:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v19 = [(VUIMediaTagsView *)self tagsViewLayout];
-            [v19 badgeMaxHeight];
+            tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+            [tagsViewLayout badgeMaxHeight];
             v21 = v20;
 
             v22 = MEMORY[0x1E69DF6D0];
-            v23 = [(VUIMediaTagsView *)self vuiTraitCollection];
-            v24 = [(VUIMediaTagsView *)self tagsViewLayout];
-            [v22 scaleContentSizeValue:v23 forTraitCollection:objc_msgSend(v24 maximumContentSizeCategory:{"badgeMaxContentSizeCategory"), v21}];
+            vuiTraitCollection = [(VUIMediaTagsView *)self vuiTraitCollection];
+            tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+            [v22 scaleContentSizeValue:vuiTraitCollection forTraitCollection:objc_msgSend(tagsViewLayout2 maximumContentSizeCategory:{"badgeMaxContentSizeCategory"), v21}];
             v26 = v25;
 
-            [v6 bottomMarginWithBaselineMargin:a4];
+            [labelCopy bottomMarginWithBaselineMargin:margin];
             v10 = v27 - v26;
 
             goto LABEL_13;
@@ -2386,8 +2386,8 @@ LABEL_21:
     }
 
     v16 = MEMORY[0x1E69DF6D0];
-    v17 = [(VUIMediaTagsView *)self vuiTraitCollection];
-    [v16 scaleContentSizeValue:v17 forTraitCollection:a4];
+    vuiTraitCollection2 = [(VUIMediaTagsView *)self vuiTraitCollection];
+    [v16 scaleContentSizeValue:vuiTraitCollection2 forTraitCollection:margin];
     v10 = v18;
   }
 
@@ -2398,11 +2398,11 @@ LABEL_13:
 
 - (double)firstBaselineOffsetFromTop
 {
-  v2 = [(VUIMediaTagsView *)self _firstLabelSubview];
-  v3 = v2;
-  if (v2)
+  _firstLabelSubview = [(VUIMediaTagsView *)self _firstLabelSubview];
+  v3 = _firstLabelSubview;
+  if (_firstLabelSubview)
   {
-    [v2 vuiBaselineHeight];
+    [_firstLabelSubview vuiBaselineHeight];
     v5 = v4;
   }
 
@@ -2416,11 +2416,11 @@ LABEL_13:
 
 - (double)vui_baselineOffsetFromBottom
 {
-  v2 = [(VUIMediaTagsView *)self _firstLabelSubview];
-  v3 = v2;
-  if (v2)
+  _firstLabelSubview = [(VUIMediaTagsView *)self _firstLabelSubview];
+  v3 = _firstLabelSubview;
+  if (_firstLabelSubview)
   {
-    [v2 vui_baselineOffsetFromBottom];
+    [_firstLabelSubview vui_baselineOffsetFromBottom];
     v5 = v4;
   }
 
@@ -2432,67 +2432,67 @@ LABEL_13:
   return v5;
 }
 
-- (double)bottomMarginToLabel:(id)a3 withBaselineMargin:(double)a4
+- (double)bottomMarginToLabel:(id)label withBaselineMargin:(double)margin
 {
-  v6 = a3;
-  v7 = [(VUIMediaTagsView *)self _firstLabelSubview];
-  [v6 topMarginToLabel:v7 withBaselineMargin:a4];
+  labelCopy = label;
+  _firstLabelSubview = [(VUIMediaTagsView *)self _firstLabelSubview];
+  [labelCopy topMarginToLabel:_firstLabelSubview withBaselineMargin:margin];
   v9 = v8;
 
   return v9;
 }
 
-- (double)bottomMarginWithBaselineMargin:(double)a3
+- (double)bottomMarginWithBaselineMargin:(double)margin
 {
-  v5 = [(VUIMediaTagsView *)self _firstLabelSubview];
-  v6 = v5;
-  if (v5)
+  _firstLabelSubview = [(VUIMediaTagsView *)self _firstLabelSubview];
+  v6 = _firstLabelSubview;
+  if (_firstLabelSubview)
   {
-    [v5 bottomMarginWithBaselineMargin:a3];
+    [_firstLabelSubview bottomMarginWithBaselineMargin:margin];
     v8 = v7;
   }
 
   else
   {
     v9 = MEMORY[0x1E69DF6D0];
-    v10 = [(VUIMediaTagsView *)self vuiTraitCollection];
-    [v9 scaleContentSizeValue:v10 forTraitCollection:a3];
+    vuiTraitCollection = [(VUIMediaTagsView *)self vuiTraitCollection];
+    [v9 scaleContentSizeValue:vuiTraitCollection forTraitCollection:margin];
     v8 = v11;
   }
 
   return v8;
 }
 
-- (void)updateWithMetadata:(id)a3
+- (void)updateWithMetadata:(id)metadata
 {
   v103 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v74 = v4;
+  metadataCopy = metadata;
+  v74 = metadataCopy;
   val = self;
-  if (![v4 count])
+  if (![metadataCopy count])
   {
-    v42 = [(VUIMediaTagsView *)self viewsMap];
-    v43 = [v42 allValues];
-    [v43 makeObjectsPerformSelector:sel_removeFromSuperview];
+    viewsMap = [(VUIMediaTagsView *)self viewsMap];
+    allValues = [viewsMap allValues];
+    [allValues makeObjectsPerformSelector:sel_removeFromSuperview];
 
     [(VUIMediaTagsView *)self setViewsMap:MEMORY[0x1E695E0F8]];
     [(VUIMediaTagsView *)self setGroupedSubviews:MEMORY[0x1E695E0F0]];
-    v44 = [(VUIMediaTagsView *)self vuiTraitCollection];
-    v45 = [v44 userInterfaceStyle];
+    vuiTraitCollection = [(VUIMediaTagsView *)self vuiTraitCollection];
+    userInterfaceStyle = [vuiTraitCollection userInterfaceStyle];
 
-    v46 = self;
-    [(VUIMediaTagsView *)self _updateImageAppearanceWithUserInterfaceStyle:v45];
+    selfCopy = self;
+    [(VUIMediaTagsView *)self _updateImageAppearanceWithUserInterfaceStyle:userInterfaceStyle];
     goto LABEL_125;
   }
 
-  v69 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v59 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v5 = [(VUIMediaTagsView *)self viewsMap];
-  v6 = [v5 allKeys];
-  v68 = [v6 mutableCopy];
+  v69 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(metadataCopy, "count")}];
+  v59 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(metadataCopy, "count")}];
+  viewsMap2 = [(VUIMediaTagsView *)self viewsMap];
+  allKeys = [viewsMap2 allKeys];
+  v68 = [allKeys mutableCopy];
 
-  v7 = [(VUIMediaTagsView *)self viewsMap];
-  v8 = [v7 mutableCopy];
+  viewsMap3 = [(VUIMediaTagsView *)self viewsMap];
+  v8 = [viewsMap3 mutableCopy];
 
   v71 = v8;
   [v8 removeObjectForKey:VUIMediaTagKeySeparator];
@@ -2513,8 +2513,8 @@ LABEL_13:
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v9 = [(VUIMediaTagsView *)self tagsViewLayout];
-  obj = [v9 groupedKeys];
+  tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+  obj = [tagsViewLayout groupedKeys];
 
   v61 = [obj countByEnumeratingWithState:&v89 objects:v102 count:16];
   if (!v61)
@@ -2562,20 +2562,20 @@ LABEL_13:
           v16 = _Block_copy(aBlock);
           if ([v14 isEqualToString:VUIMediaTagKeySeparator])
           {
-            v17 = [(VUIMediaTagsView *)val tagsViewLayout];
-            v18 = [v17 textLayout];
+            tagsViewLayout2 = [(VUIMediaTagsView *)val tagsViewLayout];
+            textLayout = [tagsViewLayout2 textLayout];
 
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) != 0 && v16[2](v16))
             {
-              v19 = [(VUIMediaTagsView *)val _newLabelAsSubview:0 textLayout:v18];
+              v19 = [(VUIMediaTagsView *)val _newLabelAsSubview:0 textLayout:textLayout];
               goto LABEL_32;
             }
 
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) != 0 && v16[2](v16))
             {
-              v19 = [(VUIMediaTagsView *)val _newLabelAsSubview:0 withAttributedString:v13 textLayout:v18];
+              v19 = [(VUIMediaTagsView *)val _newLabelAsSubview:0 withAttributedString:v13 textLayout:textLayout];
               goto LABEL_32;
             }
 
@@ -2594,13 +2594,13 @@ LABEL_35:
               if (objc_opt_isKindOfClass())
               {
                 v22 = v12;
-                v23 = v13;
-                v24 = [v22 expirationDate];
-                v25 = [v23 isEqual:v24];
+                string2 = v13;
+                expirationDate = [v22 expirationDate];
+                v25 = [string2 isEqual:expirationDate];
 
                 if ((v25 & 1) == 0)
                 {
-                  [v22 setExpirationDate:v23];
+                  [v22 setExpirationDate:string2];
                   [v22 setHidden:0];
                   goto LABEL_38;
                 }
@@ -2612,15 +2612,15 @@ LABEL_35:
               if (objc_opt_isKindOfClass())
               {
                 v26 = v12;
-                v23 = v13;
-                v27 = [v72 objectForKeyedSubscript:VUIMediaTagKeyGenreSeparator];
-                if (!v27)
+                string2 = v13;
+                string = [v72 objectForKeyedSubscript:VUIMediaTagKeyGenreSeparator];
+                if (!string)
                 {
-                  v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@ ", @"·"];
+                  string = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@ ", @"·"];
                 }
 
-                [v26 setGenres:v23];
-                [v26 setGenreSeparator:v27];
+                [v26 setGenres:string2];
+                [v26 setGenreSeparator:string];
                 [v26 update];
                 [v26 setLabelName:v14];
 LABEL_58:
@@ -2637,26 +2637,26 @@ LABEL_58:
                 v65 = v13;
                 if (isKindOfClass)
                 {
-                  v29 = [v66 vuiAttributedText];
-                  v27 = [v29 string];
+                  vuiAttributedText = [v66 vuiAttributedText];
+                  string = [vuiAttributedText string];
 
                   v30 = [(VUIMediaTagsView *)val _textLayoutForKey:v14];
                   v31 = [v30 attributedStringWithAttributedString:v65 view:val updateTextColor:0];
-                  v23 = [v65 string];
+                  string2 = [v65 string];
                 }
 
                 else
                 {
-                  v27 = [v66 vuiText];
+                  string = [v66 vuiText];
                   v62 = v16;
                   v30 = [(VUIMediaTagsView *)val _textLayoutForKey:v14];
                   v37 = [v30 attributedStringWithString:v65 view:val];
-                  v23 = v65;
+                  string2 = v65;
                   v31 = v37;
                   v16 = v62;
                 }
 
-                if (([v23 isEqual:v27] & 1) == 0)
+                if (([string2 isEqual:string] & 1) == 0)
                 {
                   [v66 setVuiAttributedText:v31];
                   v64 = 1;
@@ -2674,15 +2674,15 @@ LABEL_58:
                 if (objc_opt_isKindOfClass())
                 {
                   v32 = v12;
-                  v23 = v13;
-                  v33 = [v32 image];
-                  v34 = [v23 isEqual:v33];
+                  string2 = v13;
+                  image = [v32 image];
+                  v34 = [string2 isEqual:image];
 
                   if ((v34 & 1) == 0)
                   {
-                    [v32 setImage:v23];
-                    v35 = [v23 vuiAccessibilityLabel];
-                    [v32 vui_setAccessibilityText:v35];
+                    [v32 setImage:string2];
+                    vuiAccessibilityLabel = [string2 vuiAccessibilityLabel];
+                    [v32 vui_setAccessibilityText:vuiAccessibilityLabel];
 
                     [v32 vui_isAccessibilityElement:1];
                     [v32 setHidden:0];
@@ -2788,18 +2788,18 @@ LABEL_69:
             {
               if ([v14 isEqualToString:VUIMediaTagKeyLiveTextBadge])
               {
-                v20 = [(VUIMediaTagsView *)val tagsViewLayout];
-                [v20 liveTextBadgeLayout];
+                tagsViewLayout3 = [(VUIMediaTagsView *)val tagsViewLayout];
+                [tagsViewLayout3 liveTextBadgeLayout];
               }
 
               else
               {
-                v20 = [(VUIMediaTagsView *)val tagsViewLayout];
-                [v20 timeTextBadgeLayout];
+                tagsViewLayout3 = [(VUIMediaTagsView *)val tagsViewLayout];
+                [tagsViewLayout3 timeTextBadgeLayout];
               }
-              v18 = ;
+              textLayout = ;
 
-              v19 = [(VUIMediaTagsView *)val _newTextBadgeViewAsSubview:v12 layout:v18 withString:v13];
+              v19 = [(VUIMediaTagsView *)val _newTextBadgeViewAsSubview:v12 layout:textLayout withString:v13];
               goto LABEL_32;
             }
           }
@@ -2816,8 +2816,8 @@ LABEL_69:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) != 0 && v16[2](v16))
               {
-                v18 = [(VUIMediaTagsView *)val _textLayoutForKey:v14];
-                v36 = [(VUIMediaTagsView *)val _newLabelAsSubview:0 textLayout:v18];
+                textLayout = [(VUIMediaTagsView *)val _textLayoutForKey:v14];
+                v36 = [(VUIMediaTagsView *)val _newLabelAsSubview:0 textLayout:textLayout];
               }
 
               else
@@ -2853,8 +2853,8 @@ LABEL_69:
                   goto LABEL_34;
                 }
 
-                v18 = [(VUIMediaTagsView *)val _textLayoutForKey:v14];
-                v36 = [(VUIMediaTagsView *)val _newLabelAsSubview:0 withAttributedString:v13 textLayout:v18];
+                textLayout = [(VUIMediaTagsView *)val _textLayoutForKey:v14];
+                v36 = [(VUIMediaTagsView *)val _newLabelAsSubview:0 withAttributedString:v13 textLayout:textLayout];
               }
 
               v21 = v36;
@@ -2863,8 +2863,8 @@ LABEL_69:
 
             if (v16[2](v16))
             {
-              v18 = [(VUIMediaTagsView *)val _textLayoutForKey:v14];
-              v19 = [(VUIMediaTagsView *)val _newGenresLabel:v12 textLayout:v18];
+              textLayout = [(VUIMediaTagsView *)val _textLayoutForKey:v14];
+              v19 = [(VUIMediaTagsView *)val _newGenresLabel:v12 textLayout:textLayout];
 LABEL_32:
               v21 = v19;
 
@@ -2917,8 +2917,8 @@ LABEL_116:
         }
 
         v51 = *(*(&v77 + 1) + 8 * k);
-        v52 = [(VUIMediaTagsView *)val viewsMap];
-        v53 = [v52 objectForKeyedSubscript:v51];
+        viewsMap4 = [(VUIMediaTagsView *)val viewsMap];
+        v53 = [viewsMap4 objectForKeyedSubscript:v51];
         [v53 removeFromSuperview];
       }
 
@@ -2935,15 +2935,15 @@ LABEL_116:
   _Block_object_dispose(&v93, 8);
 
   _Block_object_dispose(v99, 8);
-  v55 = [(VUIMediaTagsView *)val vuiTraitCollection];
-  v56 = [v55 userInterfaceStyle];
+  vuiTraitCollection2 = [(VUIMediaTagsView *)val vuiTraitCollection];
+  userInterfaceStyle2 = [vuiTraitCollection2 userInterfaceStyle];
 
-  [(VUIMediaTagsView *)val _updateImageAppearanceWithUserInterfaceStyle:v56];
-  v46 = val;
+  [(VUIMediaTagsView *)val _updateImageAppearanceWithUserInterfaceStyle:userInterfaceStyle2];
+  selfCopy = val;
   if ((v64 & 1) == 0)
   {
 LABEL_125:
-    [(VUIMediaTagsView *)v46 totalSubviewsWidth];
+    [(VUIMediaTagsView *)selfCopy totalSubviewsWidth];
     if (v57 == 0.0)
     {
       goto LABEL_126;
@@ -3054,16 +3054,16 @@ LABEL_8:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [MEMORY[0x1E69DCEB0] vui_main];
-  [v3 vui_bounds];
+  vui_main = [MEMORY[0x1E69DCEB0] vui_main];
+  [vui_main vui_bounds];
   v5 = v4;
 
-  v6 = [(VUIMediaTagsView *)self tagsViewLayout];
-  [v6 maxWidth];
+  tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+  [tagsViewLayout maxWidth];
   v8 = v7;
 
-  v9 = [(VUIMediaTagsView *)self tagsViewLayout];
-  if ([v9 isWrappingAllowed] && v8 > 0.0)
+  tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+  if ([tagsViewLayout2 isWrappingAllowed] && v8 > 0.0)
   {
 
     if (v5 > v8)
@@ -3090,13 +3090,13 @@ LABEL_8:
   v9 = __Block_byref_object_copy__15;
   v10 = __Block_byref_object_dispose__15;
   v11 = 0;
-  v2 = [(VUIMediaTagsView *)self subviews];
+  subviews = [(VUIMediaTagsView *)self subviews];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__VUIMediaTagsView__firstLabelSubview__block_invoke;
   v5[3] = &unk_1E8732150;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [subviews enumerateObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -3115,94 +3115,94 @@ void __38__VUIMediaTagsView__firstLabelSubview__block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)_textLayoutForKey:(id)a3
+- (id)_textLayoutForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(VUIMediaTagsView *)self tagsViewLayout];
-  v6 = [v5 textLayout];
-  if ([v4 isEqualToString:VUIMediaTagKeyImmersiveText])
+  keyCopy = key;
+  tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+  textLayout = [tagsViewLayout textLayout];
+  if ([keyCopy isEqualToString:VUIMediaTagKeyImmersiveText])
   {
-    v7 = [v5 immersiveTextLayout];
+    immersiveTextLayout = [tagsViewLayout immersiveTextLayout];
   }
 
   else
   {
-    if (![v4 isEqualToString:VUIMediaTagKeyHighMotionText])
+    if (![keyCopy isEqualToString:VUIMediaTagKeyHighMotionText])
     {
       goto LABEL_6;
     }
 
-    v7 = [v5 highMotionTextLayout];
+    immersiveTextLayout = [tagsViewLayout highMotionTextLayout];
   }
 
-  v8 = v7;
+  v8 = immersiveTextLayout;
 
-  v6 = v8;
+  textLayout = v8;
 LABEL_6:
 
-  return v6;
+  return textLayout;
 }
 
-- (id)_newLabelAsSubview:(id)a3 textLayout:(id)a4
+- (id)_newLabelAsSubview:(id)subview textLayout:(id)layout
 {
-  v5 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:a4 existingLabel:a3];
+  v5 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:layout existingLabel:subview];
   [(VUIMediaTagsView *)self vui_addSubview:v5 oldView:0];
   return v5;
 }
 
-- (id)_newLabelAsSubview:(id)a3 withAttributedString:(id)a4 textLayout:(id)a5
+- (id)_newLabelAsSubview:(id)subview withAttributedString:(id)string textLayout:(id)layout
 {
-  v6 = [VUILabel labelWithAttributedString:a4 textLayout:a5 existingLabel:a3];
+  v6 = [VUILabel labelWithAttributedString:string textLayout:layout existingLabel:subview];
   [(VUIMediaTagsView *)self vui_addSubview:v6 oldView:0];
   return v6;
 }
 
-- (id)_newGenresLabel:(id)a3 textLayout:(id)a4
+- (id)_newGenresLabel:(id)label textLayout:(id)layout
 {
-  v5 = [(VUILabel *)VUIGenresLabel labelWithString:&stru_1F5DB25C0 textLayout:a4 existingLabel:a3];
+  v5 = [(VUILabel *)VUIGenresLabel labelWithString:&stru_1F5DB25C0 textLayout:layout existingLabel:label];
   [(VUIMediaTagsView *)self vui_addSubview:v5 oldView:0];
   return v5;
 }
 
-- (BOOL)_shouldApplyTintColor:(id)a3 forImage:(id)a4
+- (BOOL)_shouldApplyTintColor:(id)color forImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:VUIMediaTagKeyRatingImage])
+  colorCopy = color;
+  imageCopy = image;
+  if ([colorCopy isEqualToString:VUIMediaTagKeyRatingImage])
   {
-    LOBYTE(v7) = [v6 renderingMode] == 2;
+    LOBYTE(v7) = [imageCopy renderingMode] == 2;
   }
 
-  else if ([v5 isEqualToString:VUIMediaTagKeyCommonSenseImage] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", VUIMediaTagKeyCommonSenseDarkImage) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", VUIMediaTagKeyTomatoFreshnessImage) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", VUIMediaTagKeyItunesExtras))
+  else if ([colorCopy isEqualToString:VUIMediaTagKeyCommonSenseImage] & 1) != 0 || (objc_msgSend(colorCopy, "isEqualToString:", VUIMediaTagKeyCommonSenseDarkImage) & 1) != 0 || (objc_msgSend(colorCopy, "isEqualToString:", VUIMediaTagKeyTomatoFreshnessImage) & 1) != 0 || (objc_msgSend(colorCopy, "isEqualToString:", VUIMediaTagKeyItunesExtras))
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v7 = [v5 isEqualToString:VUIMediaTagKeyEntitlementCue] ^ 1;
+    v7 = [colorCopy isEqualToString:VUIMediaTagKeyEntitlementCue] ^ 1;
   }
 
   return v7;
 }
 
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  self->_isSelected = v6;
-  v9 = [(VUIMediaTagsView *)self vuiTraitCollection];
-  -[VUIMediaTagsView _updateImageAppearanceWithUserInterfaceStyle:](self, "_updateImageAppearanceWithUserInterfaceStyle:", [v9 vuiUserInterfaceStyle]);
+  coordinatorCopy = coordinator;
+  self->_isSelected = selectedCopy;
+  vuiTraitCollection = [(VUIMediaTagsView *)self vuiTraitCollection];
+  -[VUIMediaTagsView _updateImageAppearanceWithUserInterfaceStyle:](self, "_updateImageAppearanceWithUserInterfaceStyle:", [vuiTraitCollection vuiUserInterfaceStyle]);
   if (_os_feature_enabled_impl())
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(VUIMediaTagsView *)self subviews];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subviews = [(VUIMediaTagsView *)self subviews];
+    v11 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -3214,21 +3214,21 @@ LABEL_6:
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subviews);
           }
 
           v15 = *(*(&v16 + 1) + 8 * v14);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v15 vui_setSelected:v6 animated:v5 withAnimationCoordinator:v8];
+            [v15 vui_setSelected:selectedCopy animated:animatedCopy withAnimationCoordinator:coordinatorCopy];
           }
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -3236,15 +3236,15 @@ LABEL_6:
   }
 }
 
-- (id)_newImageViewAsSubview:(BOOL)a3
+- (id)_newImageViewAsSubview:(BOOL)subview
 {
-  v3 = a3;
+  subviewCopy = subview;
   v5 = objc_opt_new();
-  if (v3)
+  if (subviewCopy)
   {
-    v6 = [(VUIMediaTagsView *)self tagsViewLayout];
-    v7 = [v6 badgeTintColor];
-    [v5 _setTintColor:v7];
+    tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+    badgeTintColor = [tagsViewLayout badgeTintColor];
+    [v5 _setTintColor:badgeTintColor];
   }
 
   [v5 setVuiContentMode:1];
@@ -3252,17 +3252,17 @@ LABEL_6:
   return v5;
 }
 
-- (id)_newTextBadgeViewAsSubview:(id)a3 layout:(id)a4 withString:(id)a5
+- (id)_newTextBadgeViewAsSubview:(id)subview layout:(id)layout withString:(id)string
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [VUITextBadgeView badgeWithLayout:v8 existing:a3];
-  v11 = [v8 textLayout];
+  layoutCopy = layout;
+  stringCopy = string;
+  v10 = [VUITextBadgeView badgeWithLayout:layoutCopy existing:subview];
+  textLayout = [layoutCopy textLayout];
 
-  if (v11)
+  if (textLayout)
   {
-    v12 = [v8 textLayout];
-    v13 = [v12 attributedStringWithString:v9];
+    textLayout2 = [layoutCopy textLayout];
+    v13 = [textLayout2 attributedStringWithString:stringCopy];
 
     [v10 setAttributedTitle:v13];
   }
@@ -3272,21 +3272,21 @@ LABEL_6:
   return v10;
 }
 
-- (id)_newRentalExpirationlabel:(id)a3 exisitingLabel:(id)a4
+- (id)_newRentalExpirationlabel:(id)expirationlabel exisitingLabel:(id)label
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 conformsToProtocol:&unk_1F5EA1998])
+  expirationlabelCopy = expirationlabel;
+  labelCopy = label;
+  v8 = labelCopy;
+  if (labelCopy && [labelCopy conformsToProtocol:&unk_1F5EA1998])
   {
     [v8 setDelegate:0];
   }
 
-  if (v6)
+  if (expirationlabelCopy)
   {
-    v9 = [(VUIMediaTagsView *)self tagsViewLayout];
-    v10 = [v9 rentalExpirationTextLayout];
-    v11 = [VUIRentalExpirationLabel labelWithExpirationDate:v6 textLayout:v10 existingLabel:v8 locStringPrefix:@"EXPIRATION_IN"];
+    tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+    rentalExpirationTextLayout = [tagsViewLayout rentalExpirationTextLayout];
+    v11 = [VUIRentalExpirationLabel labelWithExpirationDate:expirationlabelCopy textLayout:rentalExpirationTextLayout existingLabel:v8 locStringPrefix:@"EXPIRATION_IN"];
 
     [v11 setDelegate:self];
     [(VUIMediaTagsView *)self vui_addSubview:v11 oldView:0];
@@ -3302,57 +3302,57 @@ LABEL_6:
 
 - (BOOL)elementsArePlacedOnIndividualLines
 {
-  v3 = [(VUIMediaTagsView *)self tagsViewLayout];
-  if ([v3 type] != 4)
+  tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+  if ([tagsViewLayout type] != 4)
   {
 
 LABEL_5:
-    v7 = [(VUIMediaTagsView *)self tagsViewLayout];
-    if ([v7 type] != 21)
+    tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+    if ([tagsViewLayout2 type] != 21)
     {
-      v8 = [(VUIMediaTagsView *)self tagsViewLayout];
-      if ([v8 type] != 20)
+      tagsViewLayout3 = [(VUIMediaTagsView *)self tagsViewLayout];
+      if ([tagsViewLayout3 type] != 20)
       {
-        v9 = [(VUIMediaTagsView *)self tagsViewLayout];
-        if ([v9 type] != 19)
+        tagsViewLayout4 = [(VUIMediaTagsView *)self tagsViewLayout];
+        if ([tagsViewLayout4 type] != 19)
         {
-          v10 = [(VUIMediaTagsView *)self tagsViewLayout];
-          if ([v10 type] != 18)
+          tagsViewLayout5 = [(VUIMediaTagsView *)self tagsViewLayout];
+          if ([tagsViewLayout5 type] != 18)
           {
-            v12 = [(VUIMediaTagsView *)self tagsViewLayout];
-            v13 = [v12 type];
+            tagsViewLayout6 = [(VUIMediaTagsView *)self tagsViewLayout];
+            type = [tagsViewLayout6 type];
 
-            if (v13 == 3)
+            if (type == 3)
             {
               return 0;
             }
 
-            v14 = [(VUIMediaTagsView *)self tagsViewLayout];
-            v15 = [v14 type];
+            tagsViewLayout7 = [(VUIMediaTagsView *)self tagsViewLayout];
+            type2 = [tagsViewLayout7 type];
 
-            if (v15 == 24)
+            if (type2 == 24)
             {
               return 0;
             }
 
-            v7 = [(VUIMediaTagsView *)self traitCollection];
-            v6 = [v7 isAXEnabled];
+            tagsViewLayout2 = [(VUIMediaTagsView *)self traitCollection];
+            isAXEnabled = [tagsViewLayout2 isAXEnabled];
 LABEL_13:
 
-            return v6;
+            return isAXEnabled;
           }
         }
       }
     }
 
-    v6 = 0;
+    isAXEnabled = 0;
     goto LABEL_13;
   }
 
-  v4 = [(VUIMediaTagsView *)self traitCollection];
-  v5 = [v4 isAXSmallEnabled];
+  traitCollection = [(VUIMediaTagsView *)self traitCollection];
+  isAXSmallEnabled = [traitCollection isAXSmallEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((isAXSmallEnabled & 1) == 0)
   {
     goto LABEL_5;
   }
@@ -3360,68 +3360,68 @@ LABEL_13:
   return 0;
 }
 
-- (void)_updateImageAppearanceWithUserInterfaceStyle:(unint64_t)a3
+- (void)_updateImageAppearanceWithUserInterfaceStyle:(unint64_t)style
 {
-  v4 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [(VUIMediaTagsViewLayout *)self->_tagsViewLayout badgeTintColor];
+  badgeTintColor = [(VUIMediaTagsViewLayout *)self->_tagsViewLayout badgeTintColor];
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v6 = [(VUIMediaTagsViewLayout *)v4->_tagsViewLayout highContrastBadgeTintColor];
-    v7 = v6;
-    if (v6)
+    highContrastBadgeTintColor = [(VUIMediaTagsViewLayout *)selfCopy->_tagsViewLayout highContrastBadgeTintColor];
+    v7 = highContrastBadgeTintColor;
+    if (highContrastBadgeTintColor)
     {
-      v8 = v6;
+      v8 = highContrastBadgeTintColor;
     }
 
     else
     {
-      v8 = [(VUIMediaTagsView *)v4 _accessibilityHigherContrastTintColorForColor:v5];
+      v8 = [(VUIMediaTagsView *)selfCopy _accessibilityHigherContrastTintColorForColor:badgeTintColor];
     }
 
     v9 = v8;
 
-    v5 = v9;
+    badgeTintColor = v9;
   }
 
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v10 = [v5 colorByRemovingTransparency];
+    colorByRemovingTransparency = [badgeTintColor colorByRemovingTransparency];
 
-    v5 = v10;
+    badgeTintColor = colorByRemovingTransparency;
   }
 
-  if (v4->_isSelected)
+  if (selfCopy->_isSelected)
   {
-    v11 = [(VUIMediaTagsViewLayout *)v4->_tagsViewLayout highlightColor];
+    highlightColor = [(VUIMediaTagsViewLayout *)selfCopy->_tagsViewLayout highlightColor];
 
-    v24 = v11;
+    v24 = highlightColor;
   }
 
   else
   {
-    v24 = v5;
+    v24 = badgeTintColor;
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [(VUIMediaTagsView *)v4 subviews];
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  subviews = [(VUIMediaTagsView *)selfCopy subviews];
+  v13 = [subviews countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v28;
-    v25 = v4;
-    v26 = a3;
+    v25 = selfCopy;
+    styleCopy = style;
     do
     {
       for (i = 0; i != v14; ++i)
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(subviews);
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
@@ -3431,14 +3431,14 @@ LABEL_13:
           v18 = v17;
           if ([v18 tag] == 101)
           {
-            if (a3 == 2)
+            if (style == 2)
             {
-              [(VUIMediaTagsView *)v4 commonSenseLightImage];
+              [(VUIMediaTagsView *)selfCopy commonSenseLightImage];
             }
 
             else
             {
-              [(VUIMediaTagsView *)v4 commonSenseDarkImage];
+              [(VUIMediaTagsView *)selfCopy commonSenseDarkImage];
             }
             v20 = ;
             [v18 setImage:v20];
@@ -3447,22 +3447,22 @@ LABEL_13:
 
           if ([v18 tag] != 102)
           {
-            v19 = [(VUIMediaTagsView *)v4 viewsMap];
-            v20 = [v19 allKeysForObject:v18];
+            viewsMap = [(VUIMediaTagsView *)selfCopy viewsMap];
+            v20 = [viewsMap allKeysForObject:v18];
 
             if (v20 && [v20 count])
             {
-              v21 = [v20 firstObject];
-              v22 = [v18 image];
-              v23 = [(VUIMediaTagsView *)v4 _shouldApplyTintColor:v21 forImage:v22];
+              firstObject = [v20 firstObject];
+              image = [v18 image];
+              v23 = [(VUIMediaTagsView *)selfCopy _shouldApplyTintColor:firstObject forImage:image];
 
               if (v23)
               {
                 [v18 _setTintColor:v24];
               }
 
-              v4 = v25;
-              a3 = v26;
+              selfCopy = v25;
+              style = styleCopy;
             }
 
 LABEL_28:
@@ -3472,27 +3472,27 @@ LABEL_28:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v14 = [subviews countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)_updateAppearanceWithUserInterfaceStyle:(unint64_t)a3
+- (void)_updateAppearanceWithUserInterfaceStyle:(unint64_t)style
 {
-  [(VUIMediaTagsView *)self _updateImageAppearanceWithUserInterfaceStyle:a3];
+  [(VUIMediaTagsView *)self _updateImageAppearanceWithUserInterfaceStyle:style];
 
   [(VUIMediaTagsView *)self _removeSeparatorsFromGroupsIfNeeded:0];
 }
 
-- (void)_removeSeparatorsFromGroupsIfNeeded:(BOOL)a3
+- (void)_removeSeparatorsFromGroupsIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  if ([(VUIMediaTagsView *)self elementsArePlacedOnIndividualLines]|| v3)
+  neededCopy = needed;
+  if ([(VUIMediaTagsView *)self elementsArePlacedOnIndividualLines]|| neededCopy)
   {
-    v5 = [(VUIMediaTagsView *)self viewsMap];
-    v31 = [v5 mutableCopy];
+    viewsMap = [(VUIMediaTagsView *)self viewsMap];
+    v31 = [viewsMap mutableCopy];
 
     v30 = [v31 objectForKeyedSubscript:VUIMediaTagKeySeparator];
     [v30 removeFromSuperview];
@@ -3500,24 +3500,24 @@ LABEL_28:
     v6 = [v31 copy];
     [(VUIMediaTagsView *)self setViewsMap:v6];
 
-    v7 = [(VUIMediaTagsView *)self groupedSubviews];
-    v8 = [v7 mutableCopy];
+    groupedSubviews = [(VUIMediaTagsView *)self groupedSubviews];
+    v8 = [groupedSubviews mutableCopy];
 
-    v9 = [(VUIMediaTagsView *)self groupedSubviews];
-    v10 = [v9 count];
+    groupedSubviews2 = [(VUIMediaTagsView *)self groupedSubviews];
+    v10 = [groupedSubviews2 count];
 
     if (v10)
     {
       v11 = 0;
       do
       {
-        v12 = [(VUIMediaTagsView *)self groupedSubviews];
-        v13 = [v12 objectAtIndexedSubscript:v11];
+        groupedSubviews3 = [(VUIMediaTagsView *)self groupedSubviews];
+        v13 = [groupedSubviews3 objectAtIndexedSubscript:v11];
         v14 = [v13 mutableCopy];
 
         v15 = objc_opt_new();
-        v16 = [(VUIMediaTagsView *)self groupedSubviews];
-        v17 = [v16 objectAtIndexedSubscript:v11];
+        groupedSubviews4 = [(VUIMediaTagsView *)self groupedSubviews];
+        v17 = [groupedSubviews4 objectAtIndexedSubscript:v11];
         v18 = [v17 count];
 
         if (v18)
@@ -3525,8 +3525,8 @@ LABEL_28:
           v19 = 0;
           do
           {
-            v20 = [(VUIMediaTagsView *)self groupedSubviews];
-            v21 = [v20 objectAtIndexedSubscript:v11];
+            groupedSubviews5 = [(VUIMediaTagsView *)self groupedSubviews];
+            v21 = [groupedSubviews5 objectAtIndexedSubscript:v11];
             v22 = [v21 objectAtIndexedSubscript:v19];
 
             if ([v22 tag] == 100)
@@ -3536,8 +3536,8 @@ LABEL_28:
             }
 
             ++v19;
-            v23 = [(VUIMediaTagsView *)self groupedSubviews];
-            v24 = [v23 objectAtIndexedSubscript:v11];
+            groupedSubviews6 = [(VUIMediaTagsView *)self groupedSubviews];
+            v24 = [groupedSubviews6 objectAtIndexedSubscript:v11];
             v25 = [v24 count];
           }
 
@@ -3553,8 +3553,8 @@ LABEL_28:
         [v8 setObject:v14 atIndexedSubscript:v11];
 
         ++v11;
-        v27 = [(VUIMediaTagsView *)self groupedSubviews];
-        v28 = [v27 count];
+        groupedSubviews7 = [(VUIMediaTagsView *)self groupedSubviews];
+        v28 = [groupedSubviews7 count];
       }
 
       while (v11 < v28);
@@ -3589,17 +3589,17 @@ LABEL_28:
   v8 = 0.0;
   while (1)
   {
-    v9 = [(VUIMediaTagsView *)self groupedSubviews];
+    groupedSubviews = [(VUIMediaTagsView *)self groupedSubviews];
     v58 = v4;
-    v10 = v4 < [v9 count];
+    v10 = v4 < [groupedSubviews count];
 
     if (!v10)
     {
       break;
     }
 
-    v11 = [(VUIMediaTagsView *)self groupedSubviews];
-    v12 = [v11 objectAtIndexedSubscript:v58];
+    groupedSubviews2 = [(VUIMediaTagsView *)self groupedSubviews];
+    v12 = [groupedSubviews2 objectAtIndexedSubscript:v58];
 
     v64 = 0u;
     v65 = 0u;
@@ -3644,25 +3644,25 @@ LABEL_10:
           [(VUIMediaTagsView *)self _rightMarginForView:v15];
           v17 = v26;
           v27 = MEMORY[0x1E69DF6D0];
-          v28 = [(VUIMediaTagsView *)self tagsViewLayout];
-          [v28 badgeMaxHeight];
+          tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+          [tagsViewLayout badgeMaxHeight];
           v30 = v29;
-          v31 = [(VUIMediaTagsView *)self vuiTraitCollection];
-          v32 = [(VUIMediaTagsView *)self tagsViewLayout];
-          [v27 scaleContentSizeValue:v31 forTraitCollection:objc_msgSend(v32 maximumContentSizeCategory:{"badgeMaxContentSizeCategory"), v30}];
+          vuiTraitCollection = [(VUIMediaTagsView *)self vuiTraitCollection];
+          tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+          [v27 scaleContentSizeValue:vuiTraitCollection forTraitCollection:objc_msgSend(tagsViewLayout2 maximumContentSizeCategory:{"badgeMaxContentSizeCategory"), v30}];
           v34 = v33;
 
-          v35 = [v15 image];
-          [v35 size];
+          image = [v15 image];
+          [image size];
           v36 = 0.0;
           if (v37 > 0.0)
           {
-            [v35 size];
+            [image size];
             if (v38 > 0.0)
             {
-              [v35 size];
+              [image size];
               v40 = v39;
-              [v35 size];
+              [image size];
               v36 = v40 / v41;
             }
           }
@@ -3682,8 +3682,8 @@ LABEL_10:
             v23 = v45;
             v24 = v46;
             v25 = v47;
-            v48 = [(VUIMediaTagsView *)self tagsViewLayout];
-            [v48 textBadgeMargin];
+            tagsViewLayout3 = [(VUIMediaTagsView *)self tagsViewLayout];
+            [tagsViewLayout3 textBadgeMargin];
             v17 = v49;
           }
 
@@ -3699,8 +3699,8 @@ LABEL_10:
               v50 = [v15 tag];
               if (v50 == 108)
               {
-                v51 = [(VUIMediaTagsView *)self tagsViewLayout];
-                [v51 badgeMargin];
+                tagsViewLayout4 = [(VUIMediaTagsView *)self tagsViewLayout];
+                [tagsViewLayout4 badgeMargin];
 LABEL_25:
                 v17 = v52;
               }
@@ -3710,8 +3710,8 @@ LABEL_25:
                 v17 = 5.0;
                 if (v50 == 111)
                 {
-                  v51 = [(VUIMediaTagsView *)self tagsViewLayout];
-                  [v51 entitlementCueMargin];
+                  tagsViewLayout4 = [(VUIMediaTagsView *)self tagsViewLayout];
+                  [tagsViewLayout4 entitlementCueMargin];
                   goto LABEL_25;
                 }
               }
@@ -3741,8 +3741,8 @@ LABEL_22:
     v8 = v17 + MaxX;
 LABEL_29:
 
-    v55 = [(VUIMediaTagsView *)self tagsViewLayout];
-    [v55 groupMargin];
+    tagsViewLayout5 = [(VUIMediaTagsView *)self tagsViewLayout];
+    [tagsViewLayout5 groupMargin];
     v68[3] = v56 + v68[3];
 
     v4 = v58 + 1;
@@ -3786,26 +3786,26 @@ double __39__VUIMediaTagsView__totalSubviewsWidth__block_invoke(uint64_t a1, voi
   return v14;
 }
 
-- (double)_rightMarginForView:(id)a3
+- (double)_rightMarginForView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 tag];
+  viewCopy = view;
+  v5 = [viewCopy tag];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [(VUIMediaTagsView *)self tagsViewLayout];
-      [v15 badgeMargin];
+      tagsViewLayout = [(VUIMediaTagsView *)self tagsViewLayout];
+      [tagsViewLayout badgeMargin];
       v9 = v16;
 
       if (v5 <= 108)
       {
         if (v5 == 101)
         {
-          v17 = [(VUIMediaTagsView *)self tagsViewLayout];
-          [v17 commonSenseMargin];
+          tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+          [tagsViewLayout2 commonSenseMargin];
         }
 
         else
@@ -3815,8 +3815,8 @@ double __39__VUIMediaTagsView__totalSubviewsWidth__block_invoke(uint64_t a1, voi
             goto LABEL_25;
           }
 
-          v17 = [(VUIMediaTagsView *)self tagsViewLayout];
-          [v17 tomatoMeterMargin];
+          tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+          [tagsViewLayout2 tomatoMeterMargin];
         }
       }
 
@@ -3825,16 +3825,16 @@ double __39__VUIMediaTagsView__totalSubviewsWidth__block_invoke(uint64_t a1, voi
         switch(v5)
         {
           case 'm':
-            v17 = [(VUIMediaTagsView *)self tagsViewLayout];
-            [v17 immersiveMargin];
+            tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+            [tagsViewLayout2 immersiveMargin];
             break;
           case 'n':
-            v17 = [(VUIMediaTagsView *)self tagsViewLayout];
-            [v17 highMotionMargin];
+            tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+            [tagsViewLayout2 highMotionMargin];
             break;
           case 'o':
-            v17 = [(VUIMediaTagsView *)self tagsViewLayout];
-            [v17 entitlementCueMargin];
+            tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+            [tagsViewLayout2 entitlementCueMargin];
             break;
           default:
             goto LABEL_25;
@@ -3847,8 +3847,8 @@ double __39__VUIMediaTagsView__totalSubviewsWidth__block_invoke(uint64_t a1, voi
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [(VUIMediaTagsView *)self tagsViewLayout];
-        [v17 textBadgeMargin];
+        tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+        [tagsViewLayout2 textBadgeMargin];
       }
 
       else
@@ -3859,8 +3859,8 @@ double __39__VUIMediaTagsView__totalSubviewsWidth__block_invoke(uint64_t a1, voi
           goto LABEL_25;
         }
 
-        v17 = [(VUIMediaTagsView *)self tagsViewLayout];
-        [v17 badgeMargin];
+        tagsViewLayout2 = [(VUIMediaTagsView *)self tagsViewLayout];
+        [tagsViewLayout2 badgeMargin];
       }
     }
 
@@ -3869,13 +3869,13 @@ double __39__VUIMediaTagsView__totalSubviewsWidth__block_invoke(uint64_t a1, voi
     goto LABEL_25;
   }
 
-  v6 = [(VUIMediaTagsView *)self tagsViewLayout];
-  v7 = [v6 textLayout];
-  [v7 margin];
+  tagsViewLayout3 = [(VUIMediaTagsView *)self tagsViewLayout];
+  textLayout = [tagsViewLayout3 textLayout];
+  [textLayout margin];
   v9 = v8;
 
-  v10 = [(VUIMediaTagsView *)self tagsViewLayout];
-  [v10 separatorMargin];
+  tagsViewLayout4 = [(VUIMediaTagsView *)self tagsViewLayout];
+  [tagsViewLayout4 separatorMargin];
   v12 = v11;
 
   v13 = _os_feature_enabled_impl();
@@ -3901,22 +3901,22 @@ LABEL_25:
 
 - (void)_removeGenreLabelAndSeparator
 {
-  v3 = [(VUIMediaTagsView *)self subviews];
-  v4 = [v3 count];
+  subviews = [(VUIMediaTagsView *)self subviews];
+  v4 = [subviews count];
 
   if (v4)
   {
     v5 = 0;
     while (1)
     {
-      v6 = [(VUIMediaTagsView *)self subviews];
-      v15 = [v6 objectAtIndexedSubscript:v5];
+      subviews2 = [(VUIMediaTagsView *)self subviews];
+      v15 = [subviews2 objectAtIndexedSubscript:v5];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v15 labelName];
-        v8 = [v7 isEqualToString:VUIMediaTagKeyGenre];
+        labelName = [v15 labelName];
+        v8 = [labelName isEqualToString:VUIMediaTagKeyGenre];
 
         if (v8)
         {
@@ -3942,22 +3942,22 @@ LABEL_25:
 
 - (void)_addGenreLabelAndSeparator
 {
-  v3 = [(VUIMediaTagsView *)self subviews];
-  v4 = [v3 count];
+  subviews = [(VUIMediaTagsView *)self subviews];
+  v4 = [subviews count];
 
   if (v4)
   {
     v5 = 0;
     while (1)
     {
-      v6 = [(VUIMediaTagsView *)self subviews];
-      v9 = [v6 objectAtIndexedSubscript:v5];
+      subviews2 = [(VUIMediaTagsView *)self subviews];
+      v9 = [subviews2 objectAtIndexedSubscript:v5];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v9 labelName];
-        v8 = [v7 isEqualToString:VUIMediaTagKeyGenre];
+        labelName = [v9 labelName];
+        v8 = [labelName isEqualToString:VUIMediaTagKeyGenre];
 
         if (v8)
         {
@@ -3979,22 +3979,22 @@ LABEL_25:
 
 - (void)_adjustGenresLabelWidthIfNeeded
 {
-  v3 = [(VUIMediaTagsView *)self subviews];
-  v4 = [v3 count];
+  subviews = [(VUIMediaTagsView *)self subviews];
+  v4 = [subviews count];
 
   if (v4)
   {
     v5 = 0;
     while (1)
     {
-      v6 = [(VUIMediaTagsView *)self subviews];
-      v21 = [v6 objectAtIndexedSubscript:v5];
+      subviews2 = [(VUIMediaTagsView *)self subviews];
+      v21 = [subviews2 objectAtIndexedSubscript:v5];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v21 labelName];
-        v8 = [v7 isEqualToString:VUIMediaTagKeyGenres];
+        labelName = [v21 labelName];
+        v8 = [labelName isEqualToString:VUIMediaTagKeyGenres];
 
         if (v8)
         {
@@ -4045,14 +4045,14 @@ LABEL_6:
 
 - (void)contrastSettingsDidChange
 {
-  v3 = [(VUIMediaTagsView *)self vuiTraitCollection];
-  -[VUIMediaTagsView _updateImageAppearanceWithUserInterfaceStyle:](self, "_updateImageAppearanceWithUserInterfaceStyle:", [v3 vuiUserInterfaceStyle]);
+  vuiTraitCollection = [(VUIMediaTagsView *)self vuiTraitCollection];
+  -[VUIMediaTagsView _updateImageAppearanceWithUserInterfaceStyle:](self, "_updateImageAppearanceWithUserInterfaceStyle:", [vuiTraitCollection vuiUserInterfaceStyle]);
 }
 
 - (void)transparencySettingsDidChange
 {
-  v3 = [(VUIMediaTagsView *)self vuiTraitCollection];
-  -[VUIMediaTagsView _updateImageAppearanceWithUserInterfaceStyle:](self, "_updateImageAppearanceWithUserInterfaceStyle:", [v3 vuiUserInterfaceStyle]);
+  vuiTraitCollection = [(VUIMediaTagsView *)self vuiTraitCollection];
+  -[VUIMediaTagsView _updateImageAppearanceWithUserInterfaceStyle:](self, "_updateImageAppearanceWithUserInterfaceStyle:", [vuiTraitCollection vuiUserInterfaceStyle]);
 }
 
 @end

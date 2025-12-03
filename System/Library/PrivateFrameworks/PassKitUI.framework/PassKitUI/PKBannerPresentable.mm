@@ -3,13 +3,13 @@
 - (NSString)requesterIdentifier;
 - (void)_finish;
 - (void)_revoke;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4;
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3;
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason;
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable;
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable;
 @end
 
 @implementation PKBannerPresentable
@@ -30,23 +30,23 @@ void __43__PKBannerPresentable__postWithCompletion___block_invoke(uint64_t a1, v
 - (void)_revoke
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 25) & 1) == 0)
+  if (self && (*(self + 25) & 1) == 0)
   {
-    *(a1 + 25) = 1;
-    if (*(a1 + 26) != 1)
+    *(self + 25) = 1;
+    if (*(self + 26) != 1)
     {
 LABEL_11:
-      [*(a1 + 40) setPresentable:0];
-      [*(a1 + 40) revoked];
-      [(PKBannerPresentable *)a1 _finish];
+      [*(self + 40) setPresentable:0];
+      [*(self + 40) revoked];
+      [(PKBannerPresentable *)self _finish];
       return;
     }
 
-    *(a1 + 26) = 0;
-    v2 = [(PKBannerPresentationManager *)*(a1 + 8) _source];
-    v3 = *(a1 + 16);
+    *(self + 26) = 0;
+    _source = [(PKBannerPresentationManager *)*(self + 8) _source];
+    v3 = *(self + 16);
     v11 = 0;
-    v4 = [v2 revokePresentableWithRequestIdentifier:v3 reason:@"dismiss" animated:1 userInfo:0 error:&v11];
+    v4 = [_source revokePresentableWithRequestIdentifier:v3 reason:@"dismiss" animated:1 userInfo:0 error:&v11];
     v5 = v11;
 
     v6 = PKLogFacilityTypeGetObject();
@@ -56,7 +56,7 @@ LABEL_11:
       if (v7)
       {
         *buf = 134217984;
-        v13 = a1;
+        selfCopy2 = self;
         v8 = "PKBannerPresentable (%p): revoked.";
         v9 = v6;
         v10 = 12;
@@ -68,7 +68,7 @@ LABEL_9:
     else if (v7)
     {
       *buf = 134218242;
-      v13 = a1;
+      selfCopy2 = self;
       v14 = 2112;
       v15 = v5;
       v8 = "PKBannerPresentable (%p): failed to revoke - %@.";
@@ -83,19 +83,19 @@ LABEL_9:
 
 - (void)_finish
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v2 = *(self + 48);
+    *(self + 48) = 0;
 
-    v3 = *(a1 + 56);
+    v3 = *(self + 56);
     if (v3)
     {
       v5 = _Block_copy(v3);
-      v4 = *(a1 + 56);
-      *(a1 + 56) = 0;
+      v4 = *(self + 56);
+      *(self + 56) = 0;
 
-      v5[2](v5, a1, *(a1 + 24));
+      v5[2](v5, self, *(self + 24));
     }
   }
 }
@@ -116,21 +116,21 @@ LABEL_9:
   return v4;
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   if (objc_opt_respondsToSelector())
   {
-    [(PKBannerViewController *)self->_viewController presentableWillAppearAsBanner:v4];
+    [(PKBannerViewController *)self->_viewController presentableWillAppearAsBanner:bannerCopy];
   }
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
-  v7 = a3;
+  bannerCopy = banner;
   if (objc_opt_respondsToSelector())
   {
-    [(PKBannerViewController *)self->_viewController presentableDidAppearAsBanner:v7];
+    [(PKBannerViewController *)self->_viewController presentableDidAppearAsBanner:bannerCopy];
   }
 
   didStartHandler = self->_didStartHandler;
@@ -144,11 +144,11 @@ LABEL_9:
   }
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   if (self->_needsRevoke)
   {
     self->_needsRevoke = 0;
@@ -156,38 +156,38 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218242;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v7;
+      v12 = reasonCopy;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKBannerPresentable (%p): implicitly revoked due to disappearance - %@.", &v9, 0x16u);
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(PKBannerViewController *)self->_viewController presentableWillDisappearAsBanner:v6 withReason:v7];
+    [(PKBannerViewController *)self->_viewController presentableWillDisappearAsBanner:bannerCopy withReason:reasonCopy];
   }
 
   [(PKBannerPresentable *)self _finish];
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v7 = a3;
-  v6 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   if (objc_opt_respondsToSelector())
   {
-    [(PKBannerViewController *)self->_viewController presentableDidDisappearAsBanner:v7 withReason:v6];
+    [(PKBannerViewController *)self->_viewController presentableDidDisappearAsBanner:bannerCopy withReason:reasonCopy];
   }
 
   [(PKBannerPresentable *)self _revoke];
 }
 
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   if (self->_needsRevoke)
   {
     self->_needsRevoke = 0;
@@ -195,36 +195,36 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218242;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v7;
+      v12 = reasonCopy;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKBannerPresentable (%p): implicitly revoked due to appearance failure - %@.", &v9, 0x16u);
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(PKBannerViewController *)self->_viewController presentableWillNotAppearAsBanner:v6 withReason:v7];
+    [(PKBannerViewController *)self->_viewController presentableWillNotAppearAsBanner:bannerCopy withReason:reasonCopy];
   }
 
   [(PKBannerPresentable *)self _revoke];
 }
 
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   if (objc_opt_respondsToSelector())
   {
-    [(PKBannerViewController *)self->_viewController userInteractionWillBeginForBannerForPresentable:v4];
+    [(PKBannerViewController *)self->_viewController userInteractionWillBeginForBannerForPresentable:presentableCopy];
   }
 }
 
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   if (objc_opt_respondsToSelector())
   {
-    [(PKBannerViewController *)self->_viewController userInteractionDidEndForBannerForPresentable:v4];
+    [(PKBannerViewController *)self->_viewController userInteractionDidEndForBannerForPresentable:presentableCopy];
   }
 }
 

@@ -1,20 +1,20 @@
 @interface WebUndoStep
-+ (id)stepWithUndoStep:(void *)a3;
-- (WebUndoStep)initWithUndoStep:(void *)a3;
++ (id)stepWithUndoStep:(void *)step;
+- (WebUndoStep)initWithUndoStep:(void *)step;
 - (void)dealloc;
 @end
 
 @implementation WebUndoStep
 
-- (WebUndoStep)initWithUndoStep:(void *)a3
+- (WebUndoStep)initWithUndoStep:(void *)step
 {
   v8.receiver = self;
   v8.super_class = WebUndoStep;
   result = [(WebUndoStep *)&v8 init];
   if (result)
   {
-    v5 = *a3;
-    *a3 = 0;
+    v5 = *step;
+    *step = 0;
     m_ptr = result->m_step.m_ptr;
     result->m_step.m_ptr = v5;
     if (m_ptr)
@@ -47,9 +47,9 @@
   }
 }
 
-+ (id)stepWithUndoStep:(void *)a3
++ (id)stepWithUndoStep:(void *)step
 {
-  result = [[WebUndoStep alloc] initWithUndoStep:a3];
+  result = [[WebUndoStep alloc] initWithUndoStep:step];
   if (result)
   {
     v4 = result;

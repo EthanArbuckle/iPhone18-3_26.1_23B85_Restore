@@ -1,11 +1,11 @@
 @interface FMPFSKBTRangingNode
 - (_TtC11FMFindingUI19FMPFSKBTRangingNode)init;
-- (_TtC11FMFindingUI19FMPFSKBTRangingNode)initWithCoder:(id)a3;
+- (_TtC11FMFindingUI19FMPFSKBTRangingNode)initWithCoder:(id)coder;
 @end
 
 @implementation FMPFSKBTRangingNode
 
-- (_TtC11FMFindingUI19FMPFSKBTRangingNode)initWithCoder:(id)a3
+- (_TtC11FMFindingUI19FMPFSKBTRangingNode)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC11FMFindingUI19FMPFSKBTRangingNode_rangeDotNode;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for FMPFSKBTRangeDotNode()) init];

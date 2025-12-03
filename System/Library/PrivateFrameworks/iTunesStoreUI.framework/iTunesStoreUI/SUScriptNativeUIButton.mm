@@ -1,5 +1,5 @@
 @interface SUScriptNativeUIButton
-+ (id)objectWithDefaultButtonForScriptButton:(id)a3;
++ (id)objectWithDefaultButtonForScriptButton:(id)button;
 - (UIEdgeInsets)imageInsets;
 - (id)image;
 - (id)title;
@@ -7,10 +7,10 @@
 - (void)connectButtonAction;
 - (void)destroyNativeObject;
 - (void)disconnectButtonAction;
-- (void)setImage:(id)a3;
-- (void)setImageInsets:(UIEdgeInsets)a3;
-- (void)setTag:(int64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setImageInsets:(UIEdgeInsets)insets;
+- (void)setTag:(int64_t)tag;
+- (void)setTitle:(id)title;
 - (void)setupNativeObject;
 @end
 
@@ -18,16 +18,16 @@
 
 - (id)image
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  return [v2 imageForState:0];
+  return [object imageForState:0];
 }
 
 - (UIEdgeInsets)imageInsets
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v2 imageEdgeInsets];
+  [object imageEdgeInsets];
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -35,65 +35,65 @@
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v4 setImage:a3 forState:0];
+  [object setImage:image forState:0];
 }
 
-- (void)setImageInsets:(UIEdgeInsets)a3
+- (void)setImageInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(SUScriptNativeObject *)self object];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  object = [(SUScriptNativeObject *)self object];
 
-  [v7 setImageEdgeInsets:{top, left, bottom, right}];
+  [object setImageEdgeInsets:{top, left, bottom, right}];
 }
 
-- (void)setTag:(int64_t)a3
+- (void)setTag:(int64_t)tag
 {
-  v4 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v4 setTag:a3];
+  [object setTag:tag];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v4 setTitle:a3 forState:0];
+  [object setTitle:title forState:0];
 }
 
 - (int64_t)tag
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  return [v2 tag];
+  return [object tag];
 }
 
 - (id)title
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  return [v2 titleForState:0];
+  return [object titleForState:0];
 }
 
-+ (id)objectWithDefaultButtonForScriptButton:(id)a3
++ (id)objectWithDefaultButtonForScriptButton:(id)button
 {
-  v4 = [a3 copyObjectForScriptFromPoolWithClass:objc_opt_class()];
-  v5 = [a1 objectWithNativeObject:v4];
+  v4 = [button copyObjectForScriptFromPoolWithClass:objc_opt_class()];
+  v5 = [self objectWithNativeObject:v4];
 
   return v5;
 }
 
 - (void)connectButtonAction
 {
-  v3 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v3 addTarget:self action:sel_buttonAction_ forControlEvents:64];
+  [object addTarget:self action:sel_buttonAction_ forControlEvents:64];
 }
 
 - (void)destroyNativeObject
@@ -106,9 +106,9 @@
 
 - (void)disconnectButtonAction
 {
-  v3 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v3 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  [object removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 }
 
 - (void)setupNativeObject

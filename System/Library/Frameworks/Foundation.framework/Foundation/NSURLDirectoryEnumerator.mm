@@ -1,5 +1,5 @@
 @interface NSURLDirectoryEnumerator
-- (NSURLDirectoryEnumerator)initWithURL:(id)a3 includingPropertiesForKeys:(id)a4 options:(unint64_t)a5 errorHandler:(id)a6;
+- (NSURLDirectoryEnumerator)initWithURL:(id)l includingPropertiesForKeys:(id)keys options:(unint64_t)options errorHandler:(id)handler;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -38,10 +38,10 @@
       self->isPostOrderDirectory = 0;
       if (self->_errorHandler)
       {
-        v4 = [cf userInfo];
-        if (![v4 objectForKey:@"NSURL"])
+        userInfo = [cf userInfo];
+        if (![userInfo objectForKey:@"NSURL"])
         {
-          v5 = [v4 objectForKey:@"NSFilePath"];
+          v5 = [userInfo objectForKey:@"NSFilePath"];
           if (v5)
           {
             [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:1];
@@ -71,34 +71,34 @@
   return v9[0];
 }
 
-- (NSURLDirectoryEnumerator)initWithURL:(id)a3 includingPropertiesForKeys:(id)a4 options:(unint64_t)a5 errorHandler:(id)a6
+- (NSURLDirectoryEnumerator)initWithURL:(id)l includingPropertiesForKeys:(id)keys options:(unint64_t)options errorHandler:(id)handler
 {
-  if (!a4 && !a5)
+  if (!keys && !options)
   {
-    a4 = [MEMORY[0x1E695DEC8] arrayWithObject:*MEMORY[0x1E695EB68]];
+    keys = [MEMORY[0x1E695DEC8] arrayWithObject:*MEMORY[0x1E695EB68]];
   }
 
-  v10 = (a5 & 1 | (8 * ((a5 >> 1) & 1)) | (a5 >> 1) & 2) ^ 1;
-  if ((a5 & 8) != 0)
+  v10 = (options & 1 | (8 * ((options >> 1) & 1)) | (options >> 1) & 2) ^ 1;
+  if ((options & 8) != 0)
   {
     v10 |= 0x30uLL;
   }
 
-  v11 = MEMORY[0x1865CEC90](*MEMORY[0x1E695E4A8], a3, a5 & 0x80000000 | (((a5 >> 4) & 1) << 6) | v10, a4);
+  v11 = MEMORY[0x1865CEC90](*MEMORY[0x1E695E4A8], l, options & 0x80000000 | (((options >> 4) & 1) << 6) | v10, keys);
   self->_enumerator = v11;
   if (v11)
   {
-    if (a6)
+    if (handler)
     {
-      v12 = a6;
+      handlerCopy = handler;
     }
 
     else
     {
-      v12 = &__block_literal_global_230;
+      handlerCopy = &__block_literal_global_230;
     }
 
-    [(NSURLDirectoryEnumerator *)self setErrorHandler:v12];
+    [(NSURLDirectoryEnumerator *)self setErrorHandler:handlerCopy];
     self->shouldContinue = 1;
   }
 

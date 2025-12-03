@@ -1,5 +1,5 @@
 @interface CKInlineStickerBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsAttachedToOutgoingMessage;
 - (id)_axBalloonContentDescription;
 - (id)accessibilityCustomActions;
@@ -9,31 +9,31 @@
 
 @implementation CKInlineStickerBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKInlineStickerBalloonView" isKindOfClass:@"CKBalloonImageView"];
-  [v3 validateClass:@"CKBalloonImageView" hasInstanceMethod:@"stickerAccessibilityDescription" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKInlineStickerBalloonView" isKindOfClass:@"CKBalloonImageView"];
+  [validationsCopy validateClass:@"CKBalloonImageView" hasInstanceMethod:@"stickerAccessibilityDescription" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   if ([(CKInlineStickerBalloonViewAccessibility *)self _axIsAttachedToOutgoingMessage])
   {
-    v3 = [(CKInlineStickerBalloonViewAccessibility *)self _axBalloonContentDescription];
-    v4 = accessibilityLocalizedString(@"sticker.attached");
+    _axBalloonContentDescription = [(CKInlineStickerBalloonViewAccessibility *)self _axBalloonContentDescription];
+    _axMessageSender = accessibilityLocalizedString(@"sticker.attached");
     v5 = __UIAXStringForVariables();
   }
 
   else
   {
     objc_opt_class();
-    v3 = __UIAccessibilityCastAsSafeCategory();
-    v4 = [v3 _axMessageSender];
-    v6 = [(CKInlineStickerBalloonViewAccessibility *)self _axBalloonContentDescription];
-    v7 = [v3 _axStickerDescription];
-    v8 = [v3 _axAcknowledgmentDescription];
-    v10 = [v3 _axMessageTime];
+    _axBalloonContentDescription = __UIAccessibilityCastAsSafeCategory();
+    _axMessageSender = [_axBalloonContentDescription _axMessageSender];
+    _axBalloonContentDescription2 = [(CKInlineStickerBalloonViewAccessibility *)self _axBalloonContentDescription];
+    _axStickerDescription = [_axBalloonContentDescription _axStickerDescription];
+    _axAcknowledgmentDescription = [_axBalloonContentDescription _axAcknowledgmentDescription];
+    _axMessageTime = [_axBalloonContentDescription _axMessageTime];
     v5 = __UIAXStringForVariables();
   }
 
@@ -64,7 +64,7 @@
 {
   v6.receiver = self;
   v6.super_class = CKInlineStickerBalloonViewAccessibility;
-  v3 = [(CKInlineStickerBalloonViewAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(CKInlineStickerBalloonViewAccessibility *)&v6 accessibilityTraits];
   if ([(CKInlineStickerBalloonViewAccessibility *)self _axIsAttachedToOutgoingMessage])
   {
     v4 = ~*MEMORY[0x29EDC7F70];
@@ -75,7 +75,7 @@
     v4 = -1;
   }
 
-  return v4 & v3;
+  return v4 & accessibilityTraits;
 }
 
 - (id)_axBalloonContentDescription
@@ -100,8 +100,8 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsSafeCategory();
-  v3 = [v2 _axChatItemForBalloon];
-  v4 = v3 == 0;
+  _axChatItemForBalloon = [v2 _axChatItemForBalloon];
+  v4 = _axChatItemForBalloon == 0;
 
   return v4;
 }

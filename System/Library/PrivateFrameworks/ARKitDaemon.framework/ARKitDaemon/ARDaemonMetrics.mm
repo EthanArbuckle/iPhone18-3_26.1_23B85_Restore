@@ -1,12 +1,12 @@
 @interface ARDaemonMetrics
 + (id)sharedDaemonMetrics;
 - (ARDaemonMetrics)init;
-- (BOOL)_removeServiceForClient:(id)a3 serviceName:(id)a4;
-- (void)_addServiceForClient:(id)a3 serviceName:(id)a4;
-- (void)_reportDaemonHeartbeatForSessionUUID:(id)a3 daemonUpTimeExcludingSleepMinutes:(unint64_t)a4 daemonUpTimeIncludingSleepMinutes:(unint64_t)a5 systemUpTimeMinutes:(unint64_t)a6 memoryFootprintInBytes:(unint64_t)a7;
-- (void)reportMemoryFootprintInBytes:(unint64_t)a3;
-- (void)reportServiceAddedWithName:(id)a3 clientBundleIdentifier:(id)a4;
-- (void)reportServiceRemovedWithName:(id)a3 clientBundleIdentifier:(id)a4;
+- (BOOL)_removeServiceForClient:(id)client serviceName:(id)name;
+- (void)_addServiceForClient:(id)client serviceName:(id)name;
+- (void)_reportDaemonHeartbeatForSessionUUID:(id)d daemonUpTimeExcludingSleepMinutes:(unint64_t)minutes daemonUpTimeIncludingSleepMinutes:(unint64_t)sleepMinutes systemUpTimeMinutes:(unint64_t)timeMinutes memoryFootprintInBytes:(unint64_t)bytes;
+- (void)reportMemoryFootprintInBytes:(unint64_t)bytes;
+- (void)reportServiceAddedWithName:(id)name clientBundleIdentifier:(id)identifier;
+- (void)reportServiceRemovedWithName:(id)name clientBundleIdentifier:(id)identifier;
 @end
 
 @implementation ARDaemonMetrics
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __38__ARDaemonMetrics_sharedDaemonMetrics__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDaemonMetrics_onceToken != -1)
   {
     dispatch_once(&sharedDaemonMetrics_onceToken, block);
@@ -61,7 +61,7 @@ uint64_t __38__ARDaemonMetrics_sharedDaemonMetrics__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)reportMemoryFootprintInBytes:(unint64_t)a3
+- (void)reportMemoryFootprintInBytes:(unint64_t)bytes
 {
   reportingQueue = self->_reportingQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -69,7 +69,7 @@ uint64_t __38__ARDaemonMetrics_sharedDaemonMetrics__block_invoke(uint64_t a1)
   v4[2] = __48__ARDaemonMetrics_reportMemoryFootprintInBytes___block_invoke;
   v4[3] = &unk_278BCBC68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = bytes;
   dispatch_async(reportingQueue, v4);
 }
 
@@ -85,12 +85,12 @@ uint64_t __48__ARDaemonMetrics_reportMemoryFootprintInBytes___block_invoke(uint6
   return result;
 }
 
-- (void)reportServiceRemovedWithName:(id)a3 clientBundleIdentifier:(id)a4
+- (void)reportServiceRemovedWithName:(id)name clientBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  nameCopy = name;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (identifierCopy)
   {
     reportingQueue = self->_reportingQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -98,8 +98,8 @@ uint64_t __48__ARDaemonMetrics_reportMemoryFootprintInBytes___block_invoke(uint6
     block[2] = __71__ARDaemonMetrics_reportServiceRemovedWithName_clientBundleIdentifier___block_invoke;
     block[3] = &unk_278BCBC90;
     block[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = identifierCopy;
+    v12 = nameCopy;
     dispatch_async(reportingQueue, block);
   }
 }
@@ -204,12 +204,12 @@ LABEL_17:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportServiceAddedWithName:(id)a3 clientBundleIdentifier:(id)a4
+- (void)reportServiceAddedWithName:(id)name clientBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  nameCopy = name;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (identifierCopy)
   {
     reportingQueue = self->_reportingQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -217,8 +217,8 @@ LABEL_17:
     block[2] = __69__ARDaemonMetrics_reportServiceAddedWithName_clientBundleIdentifier___block_invoke;
     block[3] = &unk_278BCBC90;
     block[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = identifierCopy;
+    v12 = nameCopy;
     dispatch_async(reportingQueue, block);
   }
 }
@@ -236,21 +236,21 @@ void *__69__ARDaemonMetrics_reportServiceAddedWithName_clientBundleIdentifier___
   return result;
 }
 
-- (void)_reportDaemonHeartbeatForSessionUUID:(id)a3 daemonUpTimeExcludingSleepMinutes:(unint64_t)a4 daemonUpTimeIncludingSleepMinutes:(unint64_t)a5 systemUpTimeMinutes:(unint64_t)a6 memoryFootprintInBytes:(unint64_t)a7
+- (void)_reportDaemonHeartbeatForSessionUUID:(id)d daemonUpTimeExcludingSleepMinutes:(unint64_t)minutes daemonUpTimeIncludingSleepMinutes:(unint64_t)sleepMinutes systemUpTimeMinutes:(unint64_t)timeMinutes memoryFootprintInBytes:(unint64_t)bytes
 {
-  v10 = (vcvts_n_f32_u64(a7, 0xAuLL) * 0.00097656);
-  v11 = a3;
+  v10 = (vcvts_n_f32_u64(bytes, 0xAuLL) * 0.00097656);
+  dCopy = d;
   v17 = objc_opt_new();
-  v12 = [v11 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  [v17 setObject:v12 forKeyedSubscript:@"sessionUUID"];
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  [v17 setObject:uUIDString forKeyedSubscript:@"sessionUUID"];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:minutes];
   [v17 setObject:v13 forKeyedSubscript:@"daemonUpTimeExcludingSleepMinutes"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sleepMinutes];
   [v17 setObject:v14 forKeyedSubscript:@"daemonUpTimeIncludingSleepMinutes"];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:timeMinutes];
   [v17 setObject:v15 forKeyedSubscript:@"systemUpTimeMinutes"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
@@ -259,49 +259,49 @@ void *__69__ARDaemonMetrics_reportServiceAddedWithName_clientBundleIdentifier___
   ARCoreAnalyticsEventCreateAndReport();
 }
 
-- (void)_addServiceForClient:(id)a3 serviceName:(id)a4
+- (void)_addServiceForClient:(id)client serviceName:(id)name
 {
-  v19 = a3;
+  clientCopy = client;
   activeServiceCountPerClient = self->_activeServiceCountPerClient;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)activeServiceCountPerClient objectForKey:v19];
+  nameCopy = name;
+  v8 = [(NSMutableDictionary *)activeServiceCountPerClient objectForKey:clientCopy];
 
   if (!v8)
   {
     v9 = self->_activeServiceCountPerClient;
-    v10 = [MEMORY[0x277CCA980] zero];
-    [(NSMutableDictionary *)v9 setObject:v10 forKey:v19];
+    zero = [MEMORY[0x277CCA980] zero];
+    [(NSMutableDictionary *)v9 setObject:zero forKey:clientCopy];
   }
 
   v11 = self->_activeServiceCountPerClient;
-  v12 = [(NSMutableDictionary *)v11 objectForKey:v19];
+  v12 = [(NSMutableDictionary *)v11 objectForKey:clientCopy];
   v13 = [MEMORY[0x277CCA980] one];
   v14 = [v12 decimalNumberByAdding:v13];
-  [(NSMutableDictionary *)v11 setObject:v14 forKey:v19];
+  [(NSMutableDictionary *)v11 setObject:v14 forKey:clientCopy];
 
-  v15 = [(NSMutableDictionary *)self->_allServicesUsedPerClient objectForKey:v19];
+  v15 = [(NSMutableDictionary *)self->_allServicesUsedPerClient objectForKey:clientCopy];
 
   if (!v15)
   {
     allServicesUsedPerClient = self->_allServicesUsedPerClient;
     v17 = objc_opt_new();
-    [(NSMutableDictionary *)allServicesUsedPerClient setObject:v17 forKey:v19];
+    [(NSMutableDictionary *)allServicesUsedPerClient setObject:v17 forKey:clientCopy];
   }
 
-  v18 = [(NSMutableDictionary *)self->_allServicesUsedPerClient objectForKey:v19];
-  [v18 addObject:v7];
+  v18 = [(NSMutableDictionary *)self->_allServicesUsedPerClient objectForKey:clientCopy];
+  [v18 addObject:nameCopy];
 }
 
-- (BOOL)_removeServiceForClient:(id)a3 serviceName:(id)a4
+- (BOOL)_removeServiceForClient:(id)client serviceName:(id)name
 {
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)self->_activeServiceCountPerClient objectForKey:v5];
+  clientCopy = client;
+  v6 = [(NSMutableDictionary *)self->_activeServiceCountPerClient objectForKey:clientCopy];
   if (v6)
   {
     v7 = [MEMORY[0x277CCA980] one];
     v8 = [v6 decimalNumberBySubtracting:v7];
 
-    [(NSMutableDictionary *)self->_activeServiceCountPerClient setObject:v8 forKey:v5];
+    [(NSMutableDictionary *)self->_activeServiceCountPerClient setObject:v8 forKey:clientCopy];
     v9 = [v8 intValue] < 1;
   }
 

@@ -1,13 +1,13 @@
 @interface ResponseListenerWrapper
-- (void)didReceiveResponse:(id)a3 reply:(id)a4;
-- (void)wakeUpWithReply:(id)a3;
+- (void)didReceiveResponse:(id)response reply:(id)reply;
+- (void)wakeUpWithReply:(id)reply;
 @end
 
 @implementation ResponseListenerWrapper
 
-- (void)wakeUpWithReply:(id)a3
+- (void)wakeUpWithReply:(id)reply
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reply);
   _Block_copy(v3);
 
   sub_2258DC488(v3);
@@ -15,13 +15,13 @@
   _Block_release(v3);
 }
 
-- (void)didReceiveResponse:(id)a3 reply:(id)a4
+- (void)didReceiveResponse:(id)response reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   _Block_copy(v6);
-  v7 = a3;
+  responseCopy = response;
 
-  sub_2258DC580(v7, self, v6);
+  sub_2258DC580(responseCopy, self, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

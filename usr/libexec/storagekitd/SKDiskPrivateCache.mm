@@ -1,6 +1,6 @@
 @interface SKDiskPrivateCache
 - (SKDiskPrivateCache)init;
-- (id)copyHumanIOContentWithMediaDict:(id)a3 isWholeDisk:(BOOL)a4;
+- (id)copyHumanIOContentWithMediaDict:(id)dict isWholeDisk:(BOOL)disk;
 @end
 
 @implementation SKDiskPrivateCache
@@ -18,36 +18,36 @@
   return result;
 }
 
-- (id)copyHumanIOContentWithMediaDict:(id)a3 isWholeDisk:(BOOL)a4
+- (id)copyHumanIOContentWithMediaDict:(id)dict isWholeDisk:(BOOL)disk
 {
-  v4 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"Content"];
+  diskCopy = disk;
+  v6 = [dict objectForKeyedSubscript:@"Content"];
   [(SKDiskPrivateCache *)self setRawIOContent:v6];
 
-  v7 = [(SKDiskPrivateCache *)self rawIOContent];
+  rawIOContent = [(SKDiskPrivateCache *)self rawIOContent];
 
-  if (!v7)
+  if (!rawIOContent)
   {
     return 0;
   }
 
-  if (v4)
+  if (diskCopy)
   {
-    v8 = [(SKDiskPrivateCache *)self rawIOContent];
+    rawIOContent2 = [(SKDiskPrivateCache *)self rawIOContent];
   }
 
   else
   {
     v10 = [SKIOMedia alloc];
-    v11 = [(SKDiskPrivateCache *)self wholeDADisk];
-    v12 = [(SKIOMedia *)v10 initWithDADisk:v11];
+    wholeDADisk = [(SKDiskPrivateCache *)self wholeDADisk];
+    v12 = [(SKIOMedia *)v10 initWithDADisk:wholeDADisk];
 
-    v8 = [(SKIOObject *)v12 copyPropertyWithClass:objc_opt_class() key:@"Content"];
+    rawIOContent2 = [(SKIOObject *)v12 copyPropertyWithClass:objc_opt_class() key:@"Content"];
   }
 
-  if (sub_1000101BC(v8))
+  if (sub_1000101BC(rawIOContent2))
   {
-    v13 = v8;
+    v13 = rawIOContent2;
     if ([v13 isEqualToString:@"Apple_partition_scheme"])
     {
       v14 = 1;
@@ -77,7 +77,7 @@
   [(SKDiskPrivateCache *)self setSchemeID:v14];
   if ([(SKDiskPrivateCache *)self schemeID]== 512)
   {
-    if (v4)
+    if (diskCopy)
     {
       v15 = 0;
       v16 = 0;
@@ -85,13 +85,13 @@
       {
         v17 = v16;
         v18 = word_10003F440[v15];
-        v19 = [(SKDiskPrivateCache *)self rawIOContent];
+        rawIOContent3 = [(SKDiskPrivateCache *)self rawIOContent];
         v16 = MKTypeToHuman();
 
         if (v16)
         {
-          v20 = [(SKDiskPrivateCache *)self rawIOContent];
-          v21 = [v16 isEqualToString:v20];
+          rawIOContent4 = [(SKDiskPrivateCache *)self rawIOContent];
+          v21 = [v16 isEqualToString:rawIOContent4];
 
           if (!v21)
           {
@@ -112,8 +112,8 @@
       }
 
 LABEL_25:
-      v23 = [(SKDiskPrivateCache *)self rawIOContent];
-      v24 = [v16 isEqualToString:v23];
+      rawIOContent5 = [(SKDiskPrivateCache *)self rawIOContent];
+      v24 = [v16 isEqualToString:rawIOContent5];
 
       if (!v24)
       {
@@ -129,7 +129,7 @@ LABEL_25:
   else
   {
     [(SKDiskPrivateCache *)self schemeID];
-    v22 = [(SKDiskPrivateCache *)self rawIOContent];
+    rawIOContent6 = [(SKDiskPrivateCache *)self rawIOContent];
     v16 = MKTypeToHuman();
 
     if (v16)
@@ -139,22 +139,22 @@ LABEL_25:
   }
 
 LABEL_28:
-  v25 = [(SKDiskPrivateCache *)self rawIOContent];
-  v26 = [&off_10004BE98 objectForKey:v25];
+  rawIOContent7 = [(SKDiskPrivateCache *)self rawIOContent];
+  v26 = [&off_10004BE98 objectForKey:rawIOContent7];
 
   v16 = v26;
 LABEL_29:
   if (sub_1000101BC(v16))
   {
-    v27 = v16;
+    rawIOContent8 = v16;
   }
 
   else
   {
-    v27 = [(SKDiskPrivateCache *)self rawIOContent];
+    rawIOContent8 = [(SKDiskPrivateCache *)self rawIOContent];
   }
 
-  v9 = v27;
+  v9 = rawIOContent8;
 
   return v9;
 }

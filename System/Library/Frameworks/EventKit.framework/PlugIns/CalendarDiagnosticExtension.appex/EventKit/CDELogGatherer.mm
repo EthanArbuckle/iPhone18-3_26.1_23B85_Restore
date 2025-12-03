@@ -1,9 +1,9 @@
 @interface CDELogGatherer
 - (CDELogGatherer)init;
 - (NSArray)attachments;
-- (void)diagnosticsCollector:(id)a3 createdOutputFiles:(id)a4;
-- (void)diagnosticsCollector:(id)a3 finishedWithError:(id)a4;
-- (void)gatherLogsWithCompletion:(id)a3;
+- (void)diagnosticsCollector:(id)collector createdOutputFiles:(id)files;
+- (void)diagnosticsCollector:(id)collector finishedWithError:(id)error;
+- (void)gatherLogsWithCompletion:(id)completion;
 @end
 
 @implementation CDELogGatherer
@@ -38,9 +38,9 @@
   return v3;
 }
 
-- (void)gatherLogsWithCompletion:(id)a3
+- (void)gatherLogsWithCompletion:(id)completion
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(completion);
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 
@@ -50,33 +50,33 @@
   [v6 collectDiagnostics];
 }
 
-- (void)diagnosticsCollector:(id)a3 createdOutputFiles:(id)a4
+- (void)diagnosticsCollector:(id)collector createdOutputFiles:(id)files
 {
-  v5 = a4;
+  filesCopy = files;
   v6 = +[CalendarDiagnosticExtension log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = filesCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Got a batch of files: %@", &v7, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_attachments addObjectsFromArray:v5];
+  [(NSMutableArray *)self->_attachments addObjectsFromArray:filesCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)diagnosticsCollector:(id)a3 finishedWithError:(id)a4
+- (void)diagnosticsCollector:(id)collector finishedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  collectorCopy = collector;
+  errorCopy = error;
   v8 = +[CalendarDiagnosticExtension log];
   v9 = v8;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100001528(v7, v9);
+      sub_100001528(errorCopy, v9);
     }
   }
 

@@ -1,24 +1,24 @@
 @interface SBAnimationCompletionDodgingModifierEvent
-- (SBAnimationCompletionDodgingModifierEvent)initWithIdentifier:(id)a3 finished:(BOOL)a4 retargeted:(BOOL)a5;
+- (SBAnimationCompletionDodgingModifierEvent)initWithIdentifier:(id)identifier finished:(BOOL)finished retargeted:(BOOL)retargeted;
 - (id)description;
 @end
 
 @implementation SBAnimationCompletionDodgingModifierEvent
 
-- (SBAnimationCompletionDodgingModifierEvent)initWithIdentifier:(id)a3 finished:(BOOL)a4 retargeted:(BOOL)a5
+- (SBAnimationCompletionDodgingModifierEvent)initWithIdentifier:(id)identifier finished:(BOOL)finished retargeted:(BOOL)retargeted
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SBAnimationCompletionDodgingModifierEvent;
   v9 = [(SBAnimationCompletionDodgingModifierEvent *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    v9->_finished = a4;
-    v9->_retargeted = a5;
+    v9->_finished = finished;
+    v9->_retargeted = retargeted;
   }
 
   return v9;

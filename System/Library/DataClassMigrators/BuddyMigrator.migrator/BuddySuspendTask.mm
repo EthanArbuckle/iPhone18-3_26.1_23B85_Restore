@@ -1,8 +1,8 @@
 @interface BuddySuspendTask
-+ (BOOL)hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:(id)a3;
++ (BOOL)hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:(id)backup;
 - (BuddySuspendTask)init;
-- (void)_attemptPreheat:(unint64_t)a3;
-- (void)accountWasAdded:(id)a3;
+- (void)_attemptPreheat:(unint64_t)preheat;
+- (void)accountWasAdded:(id)added;
 - (void)preheat;
 @end
 
@@ -31,22 +31,22 @@
   return v2;
 }
 
-+ (BOOL)hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:(id)a3
++ (BOOL)hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:(id)backup
 {
-  v3 = a3;
+  backupCopy = backup;
   v4 = +[NSLocale currentLocale];
-  v5 = [v4 countryCode];
-  v6 = [v5 isEqualToString:@"RU"];
+  countryCode = [v4 countryCode];
+  v6 = [countryCode isEqualToString:@"RU"];
 
   if (!v6)
   {
     goto LABEL_5;
   }
 
-  v7 = [v3 objectForKey:@"AppStorePresented" includeCache:0];
-  v8 = [v7 BOOLValue];
+  v7 = [backupCopy objectForKey:@"AppStorePresented" includeCache:0];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8 & 1) != 0 || (+[BYManagedAppleIDBootstrap isMultiUser](BYManagedAppleIDBootstrap, "isMultiUser") & 1) != 0 || (+[MCProfileConnection sharedConnection](MCProfileConnection, "sharedConnection"), v9 = objc_claimAutoreleasedReturnValue(), [v9 skipSetupKeys], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", kMCCCSkipAppStore), v10, v9, (v11))
+  if (bOOLValue & 1) != 0 || (+[BYManagedAppleIDBootstrap isMultiUser](BYManagedAppleIDBootstrap, "isMultiUser") & 1) != 0 || (+[MCProfileConnection sharedConnection](MCProfileConnection, "sharedConnection"), v9 = objc_claimAutoreleasedReturnValue(), [v9 skipSetupKeys], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", kMCCCSkipAppStore), v10, v9, (v11))
   {
 LABEL_5:
     v12 = 0;
@@ -72,8 +72,8 @@ LABEL_5:
     [(BuddySuspendTask *)self setBag:v4];
   }
 
-  v5 = [(BuddySuspendTask *)self launchURL];
-  if (!v5 || (v6 = v5, [(BuddySuspendTask *)self message], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  launchURL = [(BuddySuspendTask *)self launchURL];
+  if (!launchURL || (v6 = launchURL, [(BuddySuspendTask *)self message], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
     v8 = _BYLoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -83,21 +83,21 @@ LABEL_5:
     }
   }
 
-  v9 = [(BuddySuspendTask *)self preheatQueue];
+  preheatQueue = [(BuddySuspendTask *)self preheatQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_8248;
   block[3] = &unk_28BB0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(preheatQueue, block);
 }
 
-- (void)_attemptPreheat:(unint64_t)a3
+- (void)_attemptPreheat:(unint64_t)preheat
 {
-  v5 = [(BuddySuspendTask *)self preheatQueue];
-  dispatch_assert_queue_V2(v5);
+  preheatQueue = [(BuddySuspendTask *)self preheatQueue];
+  dispatch_assert_queue_V2(preheatQueue);
 
-  if (a3)
+  if (preheat)
   {
     v38 = 0;
     v39 = &v38;
@@ -135,9 +135,9 @@ LABEL_5:
     else
     {
       v9 = [(BuddySuspendTask *)self bag];
-      v10 = [v9 getAppStoreURL];
+      getAppStoreURL = [v9 getAppStoreURL];
       v32 = 0;
-      v11 = [v10 valueWithError:&v32];
+      v11 = [getAppStoreURL valueWithError:&v32];
       v7 = v32;
 
       if (v7 || !v11)
@@ -153,8 +153,8 @@ LABEL_5:
 
           else if (v7)
           {
-            v10 = [v7 domain];
-            v23 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v10, [v7 code]);
+            getAppStoreURL = [v7 domain];
+            v23 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", getAppStoreURL, [v7 code]);
             v22 = 1;
           }
 
@@ -198,10 +198,10 @@ LABEL_5:
 
     else
     {
-      v14 = [(BuddySuspendTask *)self bag];
-      v15 = [v14 getAppStoreMessage];
+      domain = [(BuddySuspendTask *)self bag];
+      getAppStoreMessage = [domain getAppStoreMessage];
       v29 = v7;
-      v16 = [v15 valueWithError:&v29];
+      v16 = [getAppStoreMessage valueWithError:&v29];
       v13 = v29;
 
       if (v13)
@@ -213,8 +213,8 @@ LABEL_5:
           v25 = v13;
           if ((v24 & 1) == 0)
           {
-            v14 = [v13 domain];
-            v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v14, [v13 code]);
+            domain = [v13 domain];
+            v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v13 code]);
           }
 
           *buf = 138543362;
@@ -273,14 +273,14 @@ LABEL_29:
     }
 
     v20 = dispatch_time(0, 10000000000);
-    v21 = [(BuddySuspendTask *)self preheatQueue];
+    preheatQueue2 = [(BuddySuspendTask *)self preheatQueue];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_894C;
     v26[3] = &unk_28C28;
     v26[4] = self;
-    v26[5] = a3;
-    dispatch_after(v20, v21, v26);
+    v26[5] = preheat;
+    dispatch_after(v20, preheatQueue2, v26);
 
     goto LABEL_32;
   }
@@ -292,7 +292,7 @@ LABEL_29:
   }
 }
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -301,13 +301,13 @@ LABEL_29:
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Detected store account addition; attempting to preheat suspend task (if needed)", buf, 2u);
   }
 
-  v5 = [(BuddySuspendTask *)self preheatQueue];
+  preheatQueue = [(BuddySuspendTask *)self preheatQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_8A2C;
   block[3] = &unk_28BB0;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(preheatQueue, block);
 }
 
 @end

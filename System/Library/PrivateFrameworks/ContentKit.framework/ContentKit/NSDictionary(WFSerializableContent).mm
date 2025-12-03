@@ -9,7 +9,7 @@
 {
   v4[1] = *MEMORY[0x277D85DE8];
   v3 = @"link.contentkit.dictionary";
-  v4[0] = a1;
+  v4[0] = self;
   v1 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v4 forKeys:&v3 count:1];
 
   return v1;

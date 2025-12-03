@@ -1,46 +1,46 @@
 @interface BKLaunchOperationQueue
-- (BKLaunchOperationQueue)initWithName:(id)a3 signpostLog:(id)a4 targetQueue:(id)a5 activate:(BOOL)a6;
-- (void)addOperationWithBlock:(id)a3;
+- (BKLaunchOperationQueue)initWithName:(id)name signpostLog:(id)log targetQueue:(id)queue activate:(BOOL)activate;
+- (void)addOperationWithBlock:(id)block;
 - (void)dealloc;
-- (void)setQosClass:(unsigned int)a3;
+- (void)setQosClass:(unsigned int)class;
 - (void)waitUntilAllOperationsAreFinished;
 @end
 
 @implementation BKLaunchOperationQueue
 
-- (BKLaunchOperationQueue)initWithName:(id)a3 signpostLog:(id)a4 targetQueue:(id)a5 activate:(BOOL)a6
+- (BKLaunchOperationQueue)initWithName:(id)name signpostLog:(id)log targetQueue:(id)queue activate:(BOOL)activate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  nameCopy = name;
+  logCopy = log;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = BKLaunchOperationQueue;
   v14 = [(BKLaunchOperationQueue *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v15->_signpostLog, a4);
-    v15->_signpostID = os_signpost_id_make_with_pointer(v12, v15);
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v15->_signpostLog, log);
+    v15->_signpostID = os_signpost_id_make_with_pointer(logCopy, v15);
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_attr_make_with_qos_class(v16, QOS_CLASS_UNSPECIFIED, 0);
 
-    if (!a6)
+    if (!activate)
     {
       v18 = dispatch_queue_attr_make_initially_inactive(v17);
 
       v17 = v18;
     }
 
-    v19 = [v11 UTF8String];
-    if (v13)
+    uTF8String = [nameCopy UTF8String];
+    if (queueCopy)
     {
-      v20 = dispatch_queue_create_with_target_V2(v19, v17, v13);
+      v20 = dispatch_queue_create_with_target_V2(uTF8String, v17, queueCopy);
     }
 
     else
     {
-      v20 = dispatch_queue_create(v19, v17);
+      v20 = dispatch_queue_create(uTF8String, v17);
     }
 
     underlyingQueue = v15->_underlyingQueue;
@@ -61,9 +61,9 @@
   [(BKLaunchOperationQueue *)&v3 dealloc];
 }
 
-- (void)setQosClass:(unsigned int)a3
+- (void)setQosClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   os_unfair_lock_lock(&self->_lock);
   qosClass = self->_qosClass;
   if (qosClass != v3)
@@ -72,10 +72,10 @@
     if (v3)
     {
       v6 = [NSString stringWithFormat:@"%@@0x%x", self->_name, v3];
-      v7 = [v6 UTF8String];
+      uTF8String = [v6 UTF8String];
       v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v9 = dispatch_queue_attr_make_with_qos_class(v8, v3, 0);
-      v10 = dispatch_queue_create_with_target_V2(v7, v9, self->_underlyingQueue);
+      v10 = dispatch_queue_create_with_target_V2(uTF8String, v9, self->_underlyingQueue);
       activeQueue = self->_activeQueue;
       self->_activeQueue = v10;
     }
@@ -96,9 +96,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addOperationWithBlock:(id)a3
+- (void)addOperationWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   activeQueue = self->_activeQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -106,8 +106,8 @@
   v7[2] = sub_1001C5C60;
   v7[3] = &unk_100A03788;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(activeQueue, v7);
   self->_hasNewBlocks = 1;
   os_unfair_lock_unlock(&self->_lock);

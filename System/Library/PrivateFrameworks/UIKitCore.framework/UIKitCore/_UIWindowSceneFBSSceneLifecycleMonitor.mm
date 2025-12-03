@@ -1,9 +1,9 @@
 @interface _UIWindowSceneFBSSceneLifecycleMonitor
-- (_UIWindowSceneFBSSceneLifecycleMonitor)initWithScene:(id)a3;
+- (_UIWindowSceneFBSSceneLifecycleMonitor)initWithScene:(id)scene;
 - (id)_windowScene;
 - (int64_t)currentActivationState;
 - (void)didEnterBackground;
-- (void)transitionToTargetState:(id)a3 fromState:(id)a4 withTransitionContext:(id)a5 preparations:(id)a6;
+- (void)transitionToTargetState:(id)state fromState:(id)fromState withTransitionContext:(id)context preparations:(id)preparations;
 - (void)willBecomeActive;
 @end
 
@@ -25,9 +25,9 @@
 
   else
   {
-    v5 = [(_UISceneLifecycleMonitor *)self _scene];
-    v6 = [v5 _effectiveSettings];
-    v7 = [UIScene _activationStateFromSceneSettings:v6];
+    _scene = [(_UISceneLifecycleMonitor *)self _scene];
+    _effectiveSettings = [_scene _effectiveSettings];
+    v7 = [UIScene _activationStateFromSceneSettings:_effectiveSettings];
 
     return v7;
   }
@@ -38,25 +38,25 @@
   v6.receiver = self;
   v6.super_class = _UIWindowSceneFBSSceneLifecycleMonitor;
   [(_UISceneLifecycleMonitor *)&v6 willBecomeActive];
-  v3 = [(_UIWindowSceneFBSSceneLifecycleMonitor *)self _windowScene];
-  if (([(UIScene *)v3 _systemShellOwnsInterfaceOrientation]& 1) == 0)
+  _windowScene = [(_UIWindowSceneFBSSceneLifecycleMonitor *)self _windowScene];
+  if (([(UIScene *)_windowScene _systemShellOwnsInterfaceOrientation]& 1) == 0)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __58___UIWindowSceneFBSSceneLifecycleMonitor_willBecomeActive__block_invoke;
     v4[3] = &unk_1E70F3590;
-    v5 = v3;
+    v5 = _windowScene;
     [v5 _enqueuePostSettingsUpdateResponseBlock:v4 inPhase:0x1EFB174D0];
   }
 }
 
 - (id)_windowScene
 {
-  v2 = [(_UISceneLifecycleMonitor *)self _scene];
+  _scene = [(_UISceneLifecycleMonitor *)self _scene];
   v3 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v2;
+    v4 = _scene;
   }
 
   else
@@ -74,23 +74,23 @@
   v6.receiver = self;
   v6.super_class = _UIWindowSceneFBSSceneLifecycleMonitor;
   [(_UISceneLifecycleMonitor *)&v6 didEnterBackground];
-  v3 = [(_UIWindowSceneFBSSceneLifecycleMonitor *)self _windowScene];
-  if (([(UIScene *)v3 _systemShellOwnsInterfaceOrientation]& 1) == 0)
+  _windowScene = [(_UIWindowSceneFBSSceneLifecycleMonitor *)self _windowScene];
+  if (([(UIScene *)_windowScene _systemShellOwnsInterfaceOrientation]& 1) == 0)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __60___UIWindowSceneFBSSceneLifecycleMonitor_didEnterBackground__block_invoke;
     v4[3] = &unk_1E70F3590;
-    v5 = v3;
+    v5 = _windowScene;
     [v5 _enqueuePostSettingsUpdateResponseBlock:v4 inPhase:0x1EFB174D0];
   }
 }
 
-- (_UIWindowSceneFBSSceneLifecycleMonitor)initWithScene:(id)a3
+- (_UIWindowSceneFBSSceneLifecycleMonitor)initWithScene:(id)scene
 {
   v7.receiver = self;
   v7.super_class = _UIWindowSceneFBSSceneLifecycleMonitor;
-  v3 = [(_UISceneLifecycleMonitor *)&v7 initWithScene:a3];
+  v3 = [(_UISceneLifecycleMonitor *)&v7 initWithScene:scene];
   v4 = v3;
   if (v3)
   {
@@ -104,36 +104,36 @@
   return v4;
 }
 
-- (void)transitionToTargetState:(id)a3 fromState:(id)a4 withTransitionContext:(id)a5 preparations:(id)a6
+- (void)transitionToTargetState:(id)state fromState:(id)fromState withTransitionContext:(id)context preparations:(id)preparations
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  stateCopy = state;
+  fromStateCopy = fromState;
+  contextCopy = context;
+  preparationsCopy = preparations;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
   v49 = __Block_byref_object_copy__23;
   v50 = __Block_byref_object_dispose__23;
-  v51 = [(_UISceneLifecycleMonitor *)self _scene];
+  _scene = [(_UISceneLifecycleMonitor *)self _scene];
   if (([v47[5] _hasLifecycle] & 1) == 0)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
-    [v28 handleFailureInMethod:a2 object:self file:@"_UISceneLifecycleMonitor.m" lineNumber:151 description:{@"attemmpting to use %@ for invalid frame subtype: %@ that doesn't expect lifecycle", v30, v32}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneLifecycleMonitor.m" lineNumber:151 description:{@"attemmpting to use %@ for invalid frame subtype: %@ that doesn't expect lifecycle", v30, v32}];
   }
 
-  v15 = [v47[5] _FBSScene];
-  v16 = [UIScene _activationStateFromSceneSettings:v12];
-  v33 = v15;
-  v34 = v13;
+  _FBSScene = [v47[5] _FBSScene];
+  v16 = [UIScene _activationStateFromSceneSettings:fromStateCopy];
+  v33 = _FBSScene;
+  v34 = contextCopy;
   v17 = a2;
-  v35 = v12;
-  v18 = v11;
-  v19 = _UISceneLifecycleCompositeActionMaskFromStateToState__staticStateMap[4 * v16 + 5 + [UIScene _activationStateFromSceneSettings:v11]];
+  v35 = fromStateCopy;
+  v18 = stateCopy;
+  v19 = _UISceneLifecycleCompositeActionMaskFromStateToState__staticStateMap[4 * v16 + 5 + [UIScene _activationStateFromSceneSettings:stateCopy]];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __111___UIWindowSceneFBSSceneLifecycleMonitor_transitionToTargetState_fromState_withTransitionContext_preparations___block_invoke;
@@ -169,9 +169,9 @@
   v41 = v17;
   v26 = _Block_copy(v36);
   v27 = v26;
-  if (v14)
+  if (preparationsCopy)
   {
-    v14[2](v14, v26);
+    preparationsCopy[2](preparationsCopy, v26);
   }
 
   else

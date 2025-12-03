@@ -1,13 +1,13 @@
 @interface SBApplicationLaunchNotifyAlertItem
-- (SBApplicationLaunchNotifyAlertItem)initWithApplication:(id)a3;
+- (SBApplicationLaunchNotifyAlertItem)initWithApplication:(id)application;
 @end
 
 @implementation SBApplicationLaunchNotifyAlertItem
 
-- (SBApplicationLaunchNotifyAlertItem)initWithApplication:(id)a3
+- (SBApplicationLaunchNotifyAlertItem)initWithApplication:(id)application
 {
-  v6 = a3;
-  if (!v6)
+  applicationCopy = application;
+  if (!applicationCopy)
   {
     [(SBApplicationLaunchNotifyAlertItem *)a2 initWithApplication:?];
   }
@@ -18,7 +18,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_application, a3);
+    objc_storeStrong(&v7->_application, application);
     [(SBAlertItem *)v8 setAllowInCar:0];
     [(SBAlertItem *)v8 setAllowMessageInCar:0];
   }

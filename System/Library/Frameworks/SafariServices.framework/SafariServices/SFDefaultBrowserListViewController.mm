@@ -1,18 +1,18 @@
 @interface SFDefaultBrowserListViewController
-- (void)setNavigationEnabled:(BOOL)a3;
+- (void)setNavigationEnabled:(BOOL)enabled;
 @end
 
 @implementation SFDefaultBrowserListViewController
 
-- (void)setNavigationEnabled:(BOOL)a3
+- (void)setNavigationEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(OBBaseWelcomeController *)self navigationItem];
-  [v5 setHidesBackButton:v3 ^ 1];
+  enabledCopy = enabled;
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:enabledCopy ^ 1];
 
-  v7 = [(SFDefaultBrowserListViewController *)self navigationController];
-  v6 = [v7 interactivePopGestureRecognizer];
-  [v6 setEnabled:v3];
+  navigationController = [(SFDefaultBrowserListViewController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:enabledCopy];
 }
 
 @end

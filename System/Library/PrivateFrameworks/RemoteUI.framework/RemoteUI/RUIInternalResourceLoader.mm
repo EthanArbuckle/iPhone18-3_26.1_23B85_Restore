@@ -1,16 +1,16 @@
 @interface RUIInternalResourceLoader
 + (RUIInternalResourceLoader)shared;
-- (void)loadWithCompletionHandler:(id)a3;
+- (void)loadWithCompletionHandler:(id)handler;
 @end
 
 @implementation RUIInternalResourceLoader
 
-- (void)loadWithCompletionHandler:(id)a3
+- (void)loadWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD9D6B8);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -26,7 +26,7 @@
   v12[3] = 0;
   v12[4] = &unk_21BA953D8;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_21B9DA5B0(0, 0, v7, &unk_21BA953E8, v12);
 }
 

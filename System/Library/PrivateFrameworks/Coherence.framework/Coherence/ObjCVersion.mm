@@ -1,21 +1,21 @@
 @interface ObjCVersion
-- (BOOL)contains:(id)a3;
-- (BOOL)hasDeltaTo:(id)a3;
+- (BOOL)contains:(id)contains;
+- (BOOL)hasDeltaTo:(id)to;
 - (BOOL)hasTemporaryComponents;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)sortedUUIDs;
 - (NSString)description;
 - (_TtC9Coherence11ObjCVersion)init;
 - (id)copy;
-- (id)temporaryComponentsWithExcluding:(id)a3;
-- (int64_t)compareTo:(id)a3;
+- (id)temporaryComponentsWithExcluding:(id)excluding;
+- (int64_t)compareTo:(id)to;
 - (int64_t)maxCounter;
-- (void)apply:(id)a3;
-- (void)insertWithRange:(_NSRange)a3 replica:(id)a4;
-- (void)merge:(id)a3;
-- (void)subtract:(id)a3;
-- (void)subtractWithRange:(_NSRange)a3 replica:(id)a4;
+- (void)apply:(id)apply;
+- (void)insertWithRange:(_NSRange)range replica:(id)replica;
+- (void)merge:(id)merge;
+- (void)subtract:(id)subtract;
+- (void)subtractWithRange:(_NSRange)range replica:(id)replica;
 @end
 
 @implementation ObjCVersion
@@ -33,7 +33,7 @@
 
 - (NSArray)sortedUUIDs
 {
-  v2 = self;
+  selfCopy = self;
   sub_1ADDEE708();
 
   sub_1AE23BFEC();
@@ -42,37 +42,37 @@
   return v3;
 }
 
-- (id)temporaryComponentsWithExcluding:(id)a3
+- (id)temporaryComponentsWithExcluding:(id)excluding
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1ADE003BC(a3);
+  excludingCopy = excluding;
+  selfCopy = self;
+  v7 = sub_1ADE003BC(excluding);
 
   return v7;
 }
 
-- (void)subtract:(id)a3
+- (void)subtract:(id)subtract
 {
-  v5 = (a3 + OBJC_IVAR____TtC9Coherence11ObjCVersion_version);
+  v5 = (subtract + OBJC_IVAR____TtC9Coherence11ObjCVersion_version);
   swift_beginAccess();
   v6 = *v5;
   v7 = v5[1];
   swift_beginAccess();
-  v8 = a3;
-  v9 = self;
+  subtractCopy = subtract;
+  selfCopy = self;
 
   sub_1ADE00714(v10);
   sub_1ADE00714(v6);
   swift_endAccess();
 }
 
-- (void)insertWithRange:(_NSRange)a3 replica:(id)a4
+- (void)insertWithRange:(_NSRange)range replica:(id)replica
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = self;
-  sub_1ADE0D908(location, length, v7);
+  length = range.length;
+  location = range.location;
+  replicaCopy = replica;
+  selfCopy = self;
+  sub_1ADE0D908(location, length, replicaCopy);
 }
 
 - (BOOL)isEmpty
@@ -91,7 +91,7 @@
   v7 = OBJC_IVAR____TtC9Coherence11ObjCVersion_version;
   swift_beginAccess();
   v8 = *(&self->super.isa + v7);
-  v9 = self;
+  selfCopy = self;
 
   sub_1ADF62304(v10, v6);
 
@@ -118,9 +118,9 @@
   return *(*(v2 + 1) + 16) != 0;
 }
 
-- (BOOL)hasDeltaTo:(id)a3
+- (BOOL)hasDeltaTo:(id)to
 {
-  v5 = (a3 + OBJC_IVAR____TtC9Coherence11ObjCVersion_version);
+  v5 = (to + OBJC_IVAR____TtC9Coherence11ObjCVersion_version);
   swift_beginAccess();
   v6 = *v5;
   v7 = v5[1];
@@ -128,8 +128,8 @@
   swift_beginAccess();
   v9 = *v8;
   v10 = v8[1];
-  v11 = a3;
-  v12 = self;
+  toCopy = to;
+  selfCopy = self;
 
   if (sub_1ADF637A8(v7, v10))
   {
@@ -144,19 +144,19 @@
   return v13 & 1;
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
   v5 = (self + OBJC_IVAR____TtC9Coherence11ObjCVersion_version);
   swift_beginAccess();
   v6 = *v5;
   v7 = v5[1];
-  v8 = (a3 + OBJC_IVAR____TtC9Coherence11ObjCVersion_version);
+  v8 = (to + OBJC_IVAR____TtC9Coherence11ObjCVersion_version);
   swift_beginAccess();
   v9 = *v8;
   v10 = v8[1];
   v15 = 0;
-  v11 = a3;
-  v12 = self;
+  toCopy = to;
+  selfCopy = self;
 
   sub_1ADF6457C(v13, &v15, v7);
   sub_1ADF6457C(v9, &v15, v6);
@@ -164,11 +164,11 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1AE23D83C();
     swift_unknownObjectRelease();
@@ -177,7 +177,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1AE22718C(v8);
@@ -203,7 +203,7 @@
   v11 = *(v8 + 1);
   *v8 = v5;
   *(v8 + 1) = v4;
-  v12 = self;
+  selfCopy = self;
 
   v15.receiver = v7;
   v15.super_class = v6;
@@ -212,39 +212,39 @@
   return v13;
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1AE227454(v4);
+  containsCopy = contains;
+  selfCopy = self;
+  LOBYTE(self) = sub_1AE227454(containsCopy);
 
   return self & 1;
 }
 
-- (void)subtractWithRange:(_NSRange)a3 replica:(id)a4
+- (void)subtractWithRange:(_NSRange)range replica:(id)replica
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = self;
-  sub_1AE227E4C(location, length, v7);
+  length = range.length;
+  location = range.location;
+  replicaCopy = replica;
+  selfCopy = self;
+  sub_1AE227E4C(location, length, replicaCopy);
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AE2280DC(v4);
+  mergeCopy = merge;
+  selfCopy = self;
+  sub_1AE2280DC(mergeCopy);
 }
 
-- (void)apply:(id)a3
+- (void)apply:(id)apply
 {
-  v5 = *(a3 + OBJC_IVAR____TtC9Coherence11ObjCRenames_renames);
-  v6 = *(a3 + OBJC_IVAR____TtC9Coherence11ObjCRenames_renames + 8);
-  v7 = *(a3 + OBJC_IVAR____TtC9Coherence11ObjCRenames_renames + 16);
+  v5 = *(apply + OBJC_IVAR____TtC9Coherence11ObjCRenames_renames);
+  v6 = *(apply + OBJC_IVAR____TtC9Coherence11ObjCRenames_renames + 8);
+  v7 = *(apply + OBJC_IVAR____TtC9Coherence11ObjCRenames_renames + 16);
   swift_beginAccess();
-  v8 = a3;
-  v9 = self;
+  applyCopy = apply;
+  selfCopy = self;
 
   sub_1ADDF8898(v5, v6, v7);
   swift_endAccess();

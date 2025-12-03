@@ -2,18 +2,18 @@
 + (BOOL)isSmartSiriVolumeAvailable;
 + (id)sharedController;
 - (AudioStreamBasicDescription)getLPCMAudioStreamBasicDescription;
-- (BOOL)_activateAudioSessionWithReason:(unint64_t)a3 delay:(double)a4 delayRequested:(BOOL)a5 error:(id *)a6;
-- (BOOL)_activateAudioSessionWithReason:(unint64_t)a3 error:(id *)a4;
+- (BOOL)_activateAudioSessionWithReason:(unint64_t)reason delay:(double)delay delayRequested:(BOOL)requested error:(id *)error;
+- (BOOL)_activateAudioSessionWithReason:(unint64_t)reason error:(id *)error;
 - (BOOL)_canDelayStopRecording;
 - (BOOL)_canPlayTwoShotFeedbackDuringMediaPlayback;
-- (BOOL)_considerSmartRoutingForAudioRecordContext:(id)a3;
-- (BOOL)_createAudioProviderFromXPCWithContext:(id)a3;
+- (BOOL)_considerSmartRoutingForAudioRecordContext:(id)context;
+- (BOOL)_createAudioProviderFromXPCWithContext:(id)context;
 - (BOOL)_currentConfigurationSupportsDucking;
-- (BOOL)_doActivateAudioSessionWithReason:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_fetchAudioProviderWithContext:(id)a3;
+- (BOOL)_doActivateAudioSessionWithReason:(unint64_t)reason error:(id *)error;
+- (BOOL)_fetchAudioProviderWithContext:(id)context;
 - (BOOL)_fetchLastTriggerInfo;
 - (BOOL)_isDelayedDuckingSupportedContext;
-- (BOOL)_isDuckingAvailableRoute:(id)a3;
+- (BOOL)_isDuckingAvailableRoute:(id)route;
 - (BOOL)_isHubRequestTV;
 - (BOOL)_isRecordRouteBuiltinMic;
 - (BOOL)_isRecordRouteStudioDisplay;
@@ -23,35 +23,35 @@
 - (BOOL)_shouldSetStartSampleCount;
 - (BOOL)_shouldSetStartSampleCountForRTS;
 - (BOOL)_shouldTrackLaunchLatency;
-- (BOOL)_shouldUseLanguageDetector:(id)a3;
+- (BOOL)_shouldUseLanguageDetector:(id)detector;
 - (BOOL)_shouldUseSoundPlaybackMonitors;
 - (BOOL)_shouldUseSpeakerRecognitionProxy;
 - (BOOL)_supportsHybridSDSD;
-- (BOOL)initializeRecordSessionWithRecordContext:(id)a3;
+- (BOOL)initializeRecordSessionWithRecordContext:(id)context;
 - (BOOL)isRecording;
 - (BOOL)isSmartSiriVolumeAvailable;
-- (BOOL)playAlertSoundForType:(int64_t)a3;
-- (BOOL)playRecordStartingAlertAndResetEndpointerWithAlertOverride:(int64_t)a3;
-- (BOOL)prepareRecordWithSettings:(id)a3 error:(id *)a4;
+- (BOOL)playAlertSoundForType:(int64_t)type;
+- (BOOL)playRecordStartingAlertAndResetEndpointerWithAlertOverride:(int64_t)override;
+- (BOOL)prepareRecordWithSettings:(id)settings error:(id *)error;
 - (BOOL)prewarmAudioSession;
-- (BOOL)setCurrentRecordContext:(id)a3 error:(id *)a4;
-- (BOOL)startRecordingWithSettings:(id)a3 error:(id *)a4;
+- (BOOL)setCurrentRecordContext:(id)context error:(id *)error;
+- (BOOL)startRecordingWithSettings:(id)settings error:(id *)error;
 - (CSLanguageDetectorDelegate)languageDetectorDelegate;
 - (CSSpeakerIdentificationDelegate)speakerIdDelegate;
-- (CSSpeechController)initWithEndpointId:(id)a3;
-- (CSSpeechController)initWithEndpointId:(id)a3 xpcClientFactory:(id)a4 endpointAnalyzer:(id)a5 continuousVoiceTrigger:(id)a6 siriVolumeController:(id)a7 mediaPlayingMonitor:(id)a8 alarmMonitor:(id)a9 timerMonitor:(id)a10 audioSessionController:(id)a11 supportPhatic:(BOOL)a12 supportHearstVoiceTrigger:(BOOL)a13 supportTriagleModeSessionActivationRetry:(BOOL)a14 supportSessionActivateDelay:(BOOL)a15 supportsDuckingOnSpeakerEvaluator:(id)a16;
+- (CSSpeechController)initWithEndpointId:(id)id;
+- (CSSpeechController)initWithEndpointId:(id)id xpcClientFactory:(id)factory endpointAnalyzer:(id)analyzer continuousVoiceTrigger:(id)trigger siriVolumeController:(id)controller mediaPlayingMonitor:(id)monitor alarmMonitor:(id)alarmMonitor timerMonitor:(id)self0 audioSessionController:(id)self1 supportPhatic:(BOOL)self2 supportHearstVoiceTrigger:(BOOL)self3 supportTriagleModeSessionActivationRetry:(BOOL)self4 supportSessionActivateDelay:(BOOL)self5 supportsDuckingOnSpeakerEvaluator:(id)self6;
 - (CSSpeechControllerDelegate)delegate;
-- (float)getVolumeForTTSType:(unint64_t)a3;
-- (id)_contextToString:(id)a3;
+- (float)getVolumeForTTSType:(unint64_t)type;
+- (id)_contextToString:(id)string;
 - (id)_createAlarmMonitor;
 - (id)_createMediaPlayingMonitor;
 - (id)_createTimerMonitor;
 - (id)_fetchFallbackAudioSessionReleaseProviding;
-- (id)_getSerialQueueWithName:(id)a3 targetQueue:(id)a4;
+- (id)_getSerialQueueWithName:(id)name targetQueue:(id)queue;
 - (id)_getSpeechIdentifier;
-- (id)_languageDetectorOptionFromSettings:(id)a3;
-- (id)_mapScoresToSharedSiriId:(id)a3;
-- (id)_processSpeakerRecognitionResult:(id)a3;
+- (id)_languageDetectorOptionFromSettings:(id)settings;
+- (id)_mapScoresToSharedSiriId:(id)id;
+- (id)_processSpeakerRecognitionResult:(id)result;
 - (id)audioDeviceInfo;
 - (id)endpointerModelVersion;
 - (id)playbackRoute;
@@ -60,81 +60,81 @@
 - (id)recordSettings;
 - (id)voiceTriggerInfo;
 - (int64_t)_currentAudioRecorderSampleRate;
-- (unint64_t)_calculateEstimatedSpeechEndHostTimeWithStopOptions:(id)a3;
+- (unint64_t)_calculateEstimatedSpeechEndHostTimeWithStopOptions:(id)options;
 - (unint64_t)alertStartTime;
 - (unint64_t)outputReferenceChannel;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)CSSpeakerRecognitionAssetDownloadMonitor:(id)a3 didInstallNewAsset:(BOOL)a4 assetProviderType:(unint64_t)a5;
-- (void)CSXPCClient:(id)a3 didDisconnect:(BOOL)a4;
-- (void)_audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)_cancelPendingAudioSessionActivateForReason:(id)a3;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)CSSpeakerRecognitionAssetDownloadMonitor:(id)monitor didInstallNewAsset:(BOOL)asset assetProviderType:(unint64_t)type;
+- (void)CSXPCClient:(id)client didDisconnect:(BOOL)disconnect;
+- (void)_audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)_cancelPendingAudioSessionActivateForReason:(id)reason;
 - (void)_createAudioPowerMeterIfNeeded;
 - (void)_createLanguageDetectorIfNeeded;
-- (void)_deviceAudioLoggingWithFileWriter:(id)a3;
-- (void)_didStopForReason:(int64_t)a3;
+- (void)_deviceAudioLoggingWithFileWriter:(id)writer;
+- (void)_didStopForReason:(int64_t)reason;
 - (void)_fetchMetricsAndLog;
 - (void)_initializeAlarmState;
 - (void)_initializeMediaPlayingState;
 - (void)_initializeTimerState;
-- (void)_logRecordingStopErrorIfNeeded:(int64_t)a3;
-- (void)_performPendingAudioSessionActivateForReason:(id)a3;
+- (void)_logRecordingStopErrorIfNeeded:(int64_t)needed;
+- (void)_performPendingAudioSessionActivateForReason:(id)reason;
 - (void)_refreshSpeakerRecognitionAssets;
-- (void)_scheduleActivateAudioSessionWithDelay:(double)a3 sessionActivateReason:(unint64_t)a4 scheduleReason:(id)a5 validator:(id)a6 completion:(id)a7;
-- (void)_setAlarmIsPlaying:(BOOL)a3;
+- (void)_scheduleActivateAudioSessionWithDelay:(double)delay sessionActivateReason:(unint64_t)reason scheduleReason:(id)scheduleReason validator:(id)validator completion:(id)completion;
+- (void)_setAlarmIsPlaying:(BOOL)playing;
 - (void)_setSoundPlayingState;
-- (void)_setTimerIsPlaying:(BOOL)a3;
-- (void)_setupAudioProviderFromXPC:(id)a3;
+- (void)_setTimerIsPlaying:(BOOL)playing;
+- (void)_setupAudioProviderFromXPC:(id)c;
 - (void)_setupDownsamplerIfNeeded;
 - (void)_setupSpeakerRecognitionController;
-- (void)_startFeedbackForTwoShotAtTime:(double)a3;
-- (void)_startTwoShotFeedbackDecisionForDetectionAtTime:(double)a3;
+- (void)_startFeedbackForTwoShotAtTime:(double)time;
+- (void)_startTwoShotFeedbackDecisionForDetectionAtTime:(double)time;
 - (void)_teardownAudioProviderIfNeeded;
-- (void)_updateRecordContextIfNeeded:(id)a3;
-- (void)audioAlertProvidingDidFinishAlertPlayback:(id)a3 ofType:(int64_t)a4 error:(id)a5;
-- (void)audioConverterDidConvertPackets:(id)a3 packets:(id)a4 durationInSec:(float)a5 timestamp:(unint64_t)a6 arrivalTimestampToAudioRecorder:(unint64_t)a7;
-- (void)audioDecoderDidDecodePackets:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 timestamp:(unint64_t)a7 arrivalTimestampToAudioRecorder:(unint64_t)a8 wasBuffered:(BOOL)a9 receivedNumChannels:(unsigned int)a10;
-- (void)audioSessionController:(id)a3 didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)a4;
-- (void)audioSessionProvider:(id)a3 didChangeContext:(BOOL)a4;
-- (void)audioSessionProvider:(id)a3 didSetAudioSessionActive:(BOOL)a4;
-- (void)audioSessionProvider:(id)a3 providerInvalidated:(BOOL)a4;
-- (void)audioSessionProvider:(id)a3 willSetAudioSessionActive:(BOOL)a4;
-- (void)audioSessionProviderBeginInterruption:(id)a3;
-- (void)audioSessionProviderBeginInterruption:(id)a3 withContext:(id)a4;
-- (void)audioSessionProviderEndInterruption:(id)a3;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 audioChunkForTVAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didHardwareConfigurationChange:(int64_t)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
+- (void)_updateRecordContextIfNeeded:(id)needed;
+- (void)audioAlertProvidingDidFinishAlertPlayback:(id)playback ofType:(int64_t)type error:(id)error;
+- (void)audioConverterDidConvertPackets:(id)packets packets:(id)a4 durationInSec:(float)sec timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder;
+- (void)audioDecoderDidDecodePackets:(id)packets audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder wasBuffered:(BOOL)buffered receivedNumChannels:(unsigned int)self0;
+- (void)audioSessionController:(id)controller didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)info;
+- (void)audioSessionProvider:(id)provider didChangeContext:(BOOL)context;
+- (void)audioSessionProvider:(id)provider didSetAudioSessionActive:(BOOL)active;
+- (void)audioSessionProvider:(id)provider providerInvalidated:(BOOL)invalidated;
+- (void)audioSessionProvider:(id)provider willSetAudioSessionActive:(BOOL)active;
+- (void)audioSessionProviderBeginInterruption:(id)interruption;
+- (void)audioSessionProviderBeginInterruption:(id)interruption withContext:(id)context;
+- (void)audioSessionProviderEndInterruption:(id)interruption;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider audioChunkForTVAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didHardwareConfigurationChange:(int64_t)change;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
 - (void)beginWaitingForMyriad;
 - (void)cancelCurrentLanguageDetectorRequest;
-- (void)clockAlarmObserver:(id)a3 alarmDidDismiss:(id)a4;
-- (void)clockAlarmObserver:(id)a3 alarmDidFire:(id)a4;
-- (void)clockTimerObserver:(id)a3 timerDidDismiss:(id)a4;
-- (void)clockTimerObserver:(id)a3 timerDidFire:(id)a4;
-- (void)continuousVoiceTrigger:(id)a3 detectedSilenceAfterVoiceTriggerAt:(double)a4;
-- (void)continuousVoiceTrigger:(id)a3 detectedVoiceTriggerResult:(id)a4;
-- (void)detectedTwoShotAtTime:(double)a3;
-- (void)didFinishSpeakerRecognition:(id)a3;
-- (void)didReceiveSpeakerRecognitionScoreCard:(id)a3;
-- (void)didTTSVolumeChange:(id)a3 forReason:(unint64_t)a4;
-- (void)endWaitingForMyriadWithDecision:(unint64_t)a3;
-- (void)fetchAudioMetricsWithCompletion:(id)a3;
-- (void)getMitigationDecisionForRCId:(unint64_t)a3 requestId:(id)a4 completion:(id)a5;
-- (void)handleStopRecordingRequestWithOptions:(id)a3;
+- (void)clockAlarmObserver:(id)observer alarmDidDismiss:(id)dismiss;
+- (void)clockAlarmObserver:(id)observer alarmDidFire:(id)fire;
+- (void)clockTimerObserver:(id)observer timerDidDismiss:(id)dismiss;
+- (void)clockTimerObserver:(id)observer timerDidFire:(id)fire;
+- (void)continuousVoiceTrigger:(id)trigger detectedSilenceAfterVoiceTriggerAt:(double)at;
+- (void)continuousVoiceTrigger:(id)trigger detectedVoiceTriggerResult:(id)result;
+- (void)detectedTwoShotAtTime:(double)time;
+- (void)didFinishSpeakerRecognition:(id)recognition;
+- (void)didReceiveSpeakerRecognitionScoreCard:(id)card;
+- (void)didTTSVolumeChange:(id)change forReason:(unint64_t)reason;
+- (void)endWaitingForMyriadWithDecision:(unint64_t)decision;
+- (void)fetchAudioMetricsWithCompletion:(id)completion;
+- (void)getMitigationDecisionForRCId:(unint64_t)id requestId:(id)requestId completion:(id)completion;
+- (void)handleStopRecordingRequestWithOptions:(id)options;
 - (void)keywordDetectorDidDetectKeyword;
-- (void)nowPlayingObserver:(id)a3 playbackStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5 lastPlayingDate:(id)a6;
+- (void)nowPlayingObserver:(id)observer playbackStateDidChangeFrom:(int64_t)from to:(int64_t)to lastPlayingDate:(id)date;
 - (void)preheat;
 - (void)releaseAudioSession;
-- (void)releaseAudioSession:(unint64_t)a3;
+- (void)releaseAudioSession:(unint64_t)session;
 - (void)reset;
 - (void)resetAudioSession;
-- (void)setLanguageDetectorInteractionID:(id)a3;
-- (void)setSmartSiriVolumePercentage:(float)a3;
-- (void)speakerRecognitionController:(id)a3 hasSpeakerInfo:(id)a4;
-- (void)speakerRecognitionFinishedProcessing:(id)a3 withFinalSpeakerInfo:(id)a4;
+- (void)setLanguageDetectorInteractionID:(id)d;
+- (void)setSmartSiriVolumePercentage:(float)percentage;
+- (void)speakerRecognitionController:(id)controller hasSpeakerInfo:(id)info;
+- (void)speakerRecognitionFinishedProcessing:(id)processing withFinalSpeakerInfo:(id)info;
 - (void)startController;
-- (void)stopRecordingWithOptions:(id)a3;
-- (void)voiceTriggerAssetHandler:(id)a3 endpointId:(id)a4 didChangeCachedAsset:(id)a5;
+- (void)stopRecordingWithOptions:(id)options;
+- (void)voiceTriggerAssetHandler:(id)handler endpointId:(id)id didChangeCachedAsset:(id)asset;
 @end
 
 @implementation CSSpeechController
@@ -156,14 +156,14 @@
 - (id)audioDeviceInfo
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(CSSpeechController *)self streamProvider];
-  v3 = [v2 audioDeviceInfo];
+  streamProvider = [(CSSpeechController *)self streamProvider];
+  audioDeviceInfo = [streamProvider audioDeviceInfo];
 
   v4 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [v3 description];
+    v6 = [audioDeviceInfo description];
     v9 = 136315394;
     v10 = "[CSSpeechController audioDeviceInfo]";
     v11 = 2114;
@@ -173,15 +173,15 @@
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return audioDeviceInfo;
 }
 
 - (unint64_t)alertStartTime
 {
-  v2 = [(CSSpeechController *)self alertProvider];
-  v3 = [v2 alertStartTime];
+  alertProvider = [(CSSpeechController *)self alertProvider];
+  alertStartTime = [alertProvider alertStartTime];
 
-  return v3;
+  return alertStartTime;
 }
 
 - (BOOL)_isHubRequestTV
@@ -200,8 +200,8 @@
   v28[6] = *MEMORY[0x277D85DE8];
   if ([(CSSpeechController *)self _isHubRequestTV])
   {
-    v3 = [(CSSpeechController *)self streamProvider];
-    v4 = [v3 recordSettings];
+    streamProvider = [(CSSpeechController *)self streamProvider];
+    recordSettings = [streamProvider recordSettings];
   }
 
   else
@@ -215,8 +215,8 @@
       v27[1] = v6;
       v7 = MEMORY[0x277CCABB0];
       [MEMORY[0x277D016E0] inputRecordingSampleRateNarrowBand];
-      v3 = [v7 numberWithFloat:?];
-      v28[1] = v3;
+      streamProvider = [v7 numberWithFloat:?];
+      v28[1] = streamProvider;
       v27[2] = *MEMORY[0x277CB8288];
       v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(MEMORY[0x277D016E0], "inputRecordingSampleBitDepth")}];
       v9 = *MEMORY[0x277CB82A0];
@@ -242,8 +242,8 @@
       v25[1] = v15;
       v16 = MEMORY[0x277CCABB0];
       [MEMORY[0x277D016E0] inputRecordingSampleRate];
-      v3 = [v16 numberWithFloat:?];
-      v26[1] = v3;
+      streamProvider = [v16 numberWithFloat:?];
+      v26[1] = streamProvider;
       v25[2] = *MEMORY[0x277CB8288];
       v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(MEMORY[0x277D016E0], "inputRecordingSampleBitDepth")}];
       v17 = *MEMORY[0x277CB82A0];
@@ -261,12 +261,12 @@
       v14 = v25;
     }
 
-    v4 = [v12 dictionaryWithObjects:v13 forKeys:v14 count:6];
+    recordSettings = [v12 dictionaryWithObjects:v13 forKeys:v14 count:6];
   }
 
   if (self->_supportPhatic)
   {
-    v20 = [v4 mutableCopy];
+    v20 = [recordSettings mutableCopy];
     v21 = self->_isMediaPlaying || self->_isTimerPlaying || self->_isAlarmPlaying;
     v22 = [MEMORY[0x277CCABB0] numberWithInt:v21];
     [v20 setObject:v22 forKey:@"CSSpeechRecordSettingsKey_isDucking"];
@@ -274,7 +274,7 @@
 
   else
   {
-    v20 = v4;
+    v20 = recordSettings;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -291,11 +291,11 @@
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(CSSpeechController *)self recordRoute];
+      recordRoute = [(CSSpeechController *)self recordRoute];
       v13 = 136315394;
       v14 = "[CSSpeechController _createAudioPowerMeterIfNeeded]";
       v15 = 2114;
-      v16 = v10;
+      v16 = recordRoute;
       _os_log_impl(&dword_222E4D000, v9, OS_LOG_TYPE_DEFAULT, "%s We don't need Audio Power Meter with record route %{public}@", &v13, 0x16u);
     }
 
@@ -308,11 +308,11 @@
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(CSSpeechController *)self recordRoute];
+      recordRoute2 = [(CSSpeechController *)self recordRoute];
       v13 = 136315394;
       v14 = "[CSSpeechController _createAudioPowerMeterIfNeeded]";
       v15 = 2114;
-      v16 = v5;
+      v16 = recordRoute2;
       _os_log_impl(&dword_222E4D000, v4, OS_LOG_TYPE_DEFAULT, "%s Creating Audio Power Meter with record route %{public}@", &v13, 0x16u);
     }
 
@@ -330,8 +330,8 @@
 - (id)recordRoute
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(CSSpeechController *)self streamProvider];
-  v3 = [v2 recordRoute];
+  streamProvider = [(CSSpeechController *)self streamProvider];
+  recordRoute = [streamProvider recordRoute];
 
   v4 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -339,25 +339,25 @@
     v7 = 136315394;
     v8 = "[CSSpeechController recordRoute]";
     v9 = 2114;
-    v10 = v3;
+    v10 = recordRoute;
     _os_log_impl(&dword_222E4D000, v4, OS_LOG_TYPE_DEFAULT, "%s %{public}@", &v7, 0x16u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return recordRoute;
 }
 
 - (BOOL)_currentConfigurationSupportsDucking
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(CSSpeechController *)self streamProvider];
+  streamProvider = [(CSSpeechController *)self streamProvider];
 
-  if (v3)
+  if (streamProvider)
   {
-    v4 = [(CSSpeechController *)self streamProvider];
+    streamProvider2 = [(CSSpeechController *)self streamProvider];
     v15 = 0;
-    v5 = [v4 supportsDuckingOnCurrentRouteWithError:&v15];
+    v5 = [streamProvider2 supportsDuckingOnCurrentRouteWithError:&v15];
     v6 = v15;
 
     v7 = MEMORY[0x277D015C0];
@@ -377,11 +377,11 @@
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR))
       {
         v13 = v9;
-        v14 = [v6 localizedDescription];
+        localizedDescription = [v6 localizedDescription];
         *buf = 136315394;
         v17 = "[CSSpeechController _currentConfigurationSupportsDucking]";
         v18 = 2112;
-        v19 = v14;
+        v19 = localizedDescription;
         _os_log_error_impl(&dword_222E4D000, v13, OS_LOG_TYPE_ERROR, "%s Failed due to error %@.", buf, 0x16u);
       }
     }
@@ -535,7 +535,7 @@ void __41__CSSpeechController__fetchMetricsAndLog__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)clockTimerObserver:(id)a3 timerDidDismiss:(id)a4
+- (void)clockTimerObserver:(id)observer timerDidDismiss:(id)dismiss
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -562,7 +562,7 @@ uint64_t __57__CSSpeechController_clockTimerObserver_timerDidDismiss___block_inv
   return result;
 }
 
-- (void)clockTimerObserver:(id)a3 timerDidFire:(id)a4
+- (void)clockTimerObserver:(id)observer timerDidFire:(id)fire
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -589,7 +589,7 @@ uint64_t __54__CSSpeechController_clockTimerObserver_timerDidFire___block_invoke
   return result;
 }
 
-- (void)clockAlarmObserver:(id)a3 alarmDidDismiss:(id)a4
+- (void)clockAlarmObserver:(id)observer alarmDidDismiss:(id)dismiss
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -616,7 +616,7 @@ uint64_t __57__CSSpeechController_clockAlarmObserver_alarmDidDismiss___block_inv
   return result;
 }
 
-- (void)clockAlarmObserver:(id)a3 alarmDidFire:(id)a4
+- (void)clockAlarmObserver:(id)observer alarmDidFire:(id)fire
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -643,7 +643,7 @@ uint64_t __54__CSSpeechController_clockAlarmObserver_alarmDidFire___block_invoke
   return result;
 }
 
-- (void)nowPlayingObserver:(id)a3 playbackStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5 lastPlayingDate:(id)a6
+- (void)nowPlayingObserver:(id)observer playbackStateDidChangeFrom:(int64_t)from to:(int64_t)to lastPlayingDate:(id)date
 {
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -651,7 +651,7 @@ uint64_t __54__CSSpeechController_clockAlarmObserver_alarmDidFire___block_invoke
   v7[2] = __87__CSSpeechController_nowPlayingObserver_playbackStateDidChangeFrom_to_lastPlayingDate___block_invoke;
   v7[3] = &unk_2784C6EC0;
   v7[4] = self;
-  v7[5] = a5;
+  v7[5] = to;
   dispatch_async(queue, v7);
 }
 
@@ -687,11 +687,11 @@ uint64_t __87__CSSpeechController_nowPlayingObserver_playbackStateDidChangeFrom_
   return result;
 }
 
-- (void)_setTimerIsPlaying:(BOOL)a3
+- (void)_setTimerIsPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   v16 = *MEMORY[0x277D85DE8];
-  self->_isTimerPlaying = a3;
+  self->_isTimerPlaying = playing;
   v5 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
   {
@@ -699,24 +699,24 @@ uint64_t __87__CSSpeechController_nowPlayingObserver_playbackStateDidChangeFrom_
     v10 = 136315651;
     v11 = "[CSSpeechController _setTimerIsPlaying:]";
     v12 = 1026;
-    v13 = v3;
+    v13 = playingCopy;
     v14 = 2113;
     v15 = endpointId;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s Timer is playing: %{public}d on accessory: %{private}@", &v10, 0x1Cu);
   }
 
-  v7 = [MEMORY[0x277D01788] sharedPreferences];
-  v8 = [(NSUUID *)self->_endpointId UUIDString];
-  [v7 setIsTimerPlayingOnAccessory:v8 isTimerPlaying:self->_isTimerPlaying];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  uUIDString = [(NSUUID *)self->_endpointId UUIDString];
+  [mEMORY[0x277D01788] setIsTimerPlayingOnAccessory:uUIDString isTimerPlaying:self->_isTimerPlaying];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAlarmIsPlaying:(BOOL)a3
+- (void)_setAlarmIsPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   v16 = *MEMORY[0x277D85DE8];
-  self->_isAlarmPlaying = a3;
+  self->_isAlarmPlaying = playing;
   v5 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
   {
@@ -724,15 +724,15 @@ uint64_t __87__CSSpeechController_nowPlayingObserver_playbackStateDidChangeFrom_
     v10 = 136315651;
     v11 = "[CSSpeechController _setAlarmIsPlaying:]";
     v12 = 1026;
-    v13 = v3;
+    v13 = playingCopy;
     v14 = 2113;
     v15 = endpointId;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s Alarm is playing: %{public}d on accessory: %{private}@", &v10, 0x1Cu);
   }
 
-  v7 = [MEMORY[0x277D01788] sharedPreferences];
-  v8 = [(NSUUID *)self->_endpointId UUIDString];
-  [v7 setIsAlarmPlayingOnAccessory:v8 isAlarmPlaying:self->_isAlarmPlaying];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  uUIDString = [(NSUUID *)self->_endpointId UUIDString];
+  [mEMORY[0x277D01788] setIsAlarmPlayingOnAccessory:uUIDString isAlarmPlaying:self->_isAlarmPlaying];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -781,17 +781,17 @@ uint64_t __87__CSSpeechController_nowPlayingObserver_playbackStateDidChangeFrom_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  changedCopy = changed;
   v6 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[CSSpeechController CSLanguageCodeUpdateMonitor:didReceiveLanguageCodeChanged:]";
     v12 = 2114;
-    v13 = v5;
+    v13 = changedCopy;
     _os_log_impl(&dword_222E4D000, v6, OS_LOG_TYPE_DEFAULT, "%s _currentLanguageCode changed: %{public}@", buf, 0x16u);
   }
 
@@ -806,17 +806,17 @@ uint64_t __87__CSSpeechController_nowPlayingObserver_playbackStateDidChangeFrom_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CSXPCClient:(id)a3 didDisconnect:(BOOL)a4
+- (void)CSXPCClient:(id)client didDisconnect:(BOOL)disconnect
 {
-  v5 = a3;
+  clientCopy = client;
   contextResetQueue = self->_contextResetQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__CSSpeechController_CSXPCClient_didDisconnect___block_invoke;
   block[3] = &unk_2784C6FA8;
-  v11 = v5;
-  v12 = self;
-  v7 = v5;
+  v11 = clientCopy;
+  selfCopy = self;
+  v7 = clientCopy;
   dispatch_async(contextResetQueue, block);
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -857,33 +857,33 @@ void __48__CSSpeechController_CSXPCClient_didDisconnect___block_invoke(uint64_t 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)voiceTriggerAssetHandler:(id)a3 endpointId:(id)a4 didChangeCachedAsset:(id)a5
+- (void)voiceTriggerAssetHandler:(id)handler endpointId:(id)id didChangeCachedAsset:(id)asset
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  idCopy = id;
+  assetCopy = asset;
   endpointId = self->_endpointId;
   if (endpointId)
   {
-    v12 = [(NSUUID *)endpointId UUIDString];
-    if ([v12 isEqualToString:v9])
+    uUIDString = [(NSUUID *)endpointId UUIDString];
+    if ([uUIDString isEqualToString:idCopy])
     {
 
 LABEL_7:
-      [(CSContinuousVoiceTrigger *)self->_continuousVoiceTrigger setAsset:v10];
+      [(CSContinuousVoiceTrigger *)self->_continuousVoiceTrigger setAsset:assetCopy];
       queue = self->_queue;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __79__CSSpeechController_voiceTriggerAssetHandler_endpointId_didChangeCachedAsset___block_invoke;
       v15[3] = &unk_2784C6FA8;
       v15[4] = self;
-      v16 = v10;
+      v16 = assetCopy;
       dispatch_async(queue, v15);
 
       goto LABEL_8;
     }
 
-    v13 = v9 | self->_endpointId;
+    v13 = idCopy | self->_endpointId;
 
     if (!v13)
     {
@@ -891,7 +891,7 @@ LABEL_7:
     }
   }
 
-  else if (!v9)
+  else if (!idCopy)
   {
     goto LABEL_7;
   }
@@ -899,7 +899,7 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)CSSpeakerRecognitionAssetDownloadMonitor:(id)a3 didInstallNewAsset:(BOOL)a4 assetProviderType:(unint64_t)a5
+- (void)CSSpeakerRecognitionAssetDownloadMonitor:(id)monitor didInstallNewAsset:(BOOL)asset assetProviderType:(unint64_t)type
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -928,14 +928,14 @@ void __100__CSSpeechController_CSSpeakerRecognitionAssetDownloadMonitor_didInsta
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_mapScoresToSharedSiriId:(id)a3
+- (id)_mapScoresToSharedSiriId:(id)id
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v5 = MEMORY[0x277CBEB38];
-  if ([v4 count])
+  if ([idCopy count])
   {
-    v6 = [v4 count];
+    v6 = [idCopy count];
   }
 
   else
@@ -948,7 +948,7 @@ void __100__CSSpeechController_CSSpeakerRecognitionAssetDownloadMonitor_didInsta
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v4;
+  v8 = idCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v9)
   {
@@ -990,13 +990,13 @@ void __100__CSSpeechController_CSSpeakerRecognitionAssetDownloadMonitor_didInsta
         v21 = v20;
         if (v20)
         {
-          v22 = [v20 siriProfileId];
+          siriProfileId = [v20 siriProfileId];
 
           v23 = [MEMORY[0x277CCABB0] numberWithInteger:v19];
-          if (v22)
+          if (siriProfileId)
           {
-            v24 = [v21 siriProfileId];
-            [v7 setObject:v23 forKey:v24];
+            siriProfileId2 = [v21 siriProfileId];
+            [v7 setObject:v23 forKey:siriProfileId2];
 
             goto LABEL_21;
           }
@@ -1033,13 +1033,13 @@ LABEL_21:
   return v26;
 }
 
-- (id)_processSpeakerRecognitionResult:(id)a3
+- (id)_processSpeakerRecognitionResult:(id)result
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  resultCopy = result;
+  v5 = [resultCopy mutableCopy];
   v6 = *MEMORY[0x277D654D0];
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277D654D0]];
+  v7 = [resultCopy objectForKeyedSubscript:*MEMORY[0x277D654D0]];
 
   v8 = [(CSSpeechController *)self _mapScoresToSharedSiriId:v7];
 
@@ -1069,15 +1069,15 @@ LABEL_21:
     if (v12)
     {
       v13 = [(NSDictionary *)self->_lastVoiceTriggerInfo objectForKeyedSubscript:v11];
-      v14 = [v13 integerValue];
+      integerValue = [v13 integerValue];
     }
 
     else
     {
-      v14 = 0;
+      integerValue = 0;
     }
 
-    v15 = [CSUserIdentityClassifier classifyUserIdentityFor:v9 withScores:v8 withAsset:self->_asset withPhId:v14];
+    v15 = [CSUserIdentityClassifier classifyUserIdentityFor:v9 withScores:v8 withAsset:self->_asset withPhId:integerValue];
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
     [v5 setObject:v16 forKeyedSubscript:@"userIdentityClassification"];
 
@@ -1116,17 +1116,17 @@ LABEL_21:
   return v21;
 }
 
-- (void)didFinishSpeakerRecognition:(id)a3
+- (void)didFinishSpeakerRecognition:(id)recognition
 {
-  v4 = a3;
+  recognitionCopy = recognition;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__CSSpeechController_didFinishSpeakerRecognition___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recognitionCopy;
+  v6 = recognitionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1182,17 +1182,17 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveSpeakerRecognitionScoreCard:(id)a3
+- (void)didReceiveSpeakerRecognitionScoreCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__CSSpeechController_didReceiveSpeakerRecognitionScoreCard___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cardCopy;
+  v6 = cardCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1229,20 +1229,20 @@ void __60__CSSpeechController_didReceiveSpeakerRecognitionScoreCard___block_invo
   }
 }
 
-- (void)speakerRecognitionFinishedProcessing:(id)a3 withFinalSpeakerInfo:(id)a4
+- (void)speakerRecognitionFinishedProcessing:(id)processing withFinalSpeakerInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  processingCopy = processing;
+  infoCopy = info;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__CSSpeechController_speakerRecognitionFinishedProcessing_withFinalSpeakerInfo___block_invoke;
   block[3] = &unk_2784C6EE8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = processingCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = processingCopy;
   dispatch_async(queue, block);
 }
 
@@ -1345,20 +1345,20 @@ LABEL_15:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)speakerRecognitionController:(id)a3 hasSpeakerInfo:(id)a4
+- (void)speakerRecognitionController:(id)controller hasSpeakerInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__CSSpeechController_speakerRecognitionController_hasSpeakerInfo___block_invoke;
   block[3] = &unk_2784C6EE8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controllerCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = controllerCopy;
   dispatch_async(queue, block);
 }
 
@@ -1488,7 +1488,7 @@ LABEL_14:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endWaitingForMyriadWithDecision:(unint64_t)a3
+- (void)endWaitingForMyriadWithDecision:(unint64_t)decision
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D015C0];
@@ -1497,13 +1497,13 @@ LABEL_14:
     v7 = 136315394;
     v8 = "[CSSpeechController endWaitingForMyriadWithDecision:]";
     v9 = 2048;
-    v10 = a3;
+    decisionCopy = decision;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s Received Myriad finished with decision: %tu", &v7, 0x16u);
   }
 
   if ([MEMORY[0x277D018F8] shouldDelayTwoShotFeedbackForMyriadDecision])
   {
-    self->_myriadPreventingTwoShotFeedback = a3 > 1;
+    self->_myriadPreventingTwoShotFeedback = decision > 1;
     dispatch_group_leave(self->_twoShotAudibleFeedbackDecisionGroup);
   }
 
@@ -1529,17 +1529,17 @@ LABEL_14:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLanguageDetectorInteractionID:(id)a3
+- (void)setLanguageDetectorInteractionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__CSSpeechController_setLanguageDetectorInteractionID___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1571,7 +1571,7 @@ uint64_t __58__CSSpeechController_cancelCurrentLanguageDetectorRequest__block_in
   return result;
 }
 
-- (void)setSmartSiriVolumePercentage:(float)a3
+- (void)setSmartSiriVolumePercentage:(float)percentage
 {
   if (!self->_endpointId)
   {
@@ -1581,20 +1581,20 @@ uint64_t __58__CSSpeechController_cancelCurrentLanguageDetectorRequest__block_in
   }
 }
 
-- (float)getVolumeForTTSType:(unint64_t)a3
+- (float)getVolumeForTTSType:(unint64_t)type
 {
   if (self->_endpointId)
   {
     return -1000.0;
   }
 
-  v5 = [(CSSmartSiriVolumeController *)self->_volumeController getVolumeForTTSType:a3 withContext:0];
+  v5 = [(CSSmartSiriVolumeController *)self->_volumeController getVolumeForTTSType:type withContext:0];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 debugLogPath];
+    debugLogPath = [v5 debugLogPath];
     ssvLogFilePath = self->_ssvLogFilePath;
-    self->_ssvLogFilePath = v7;
+    self->_ssvLogFilePath = debugLogPath;
 
     [v6 volumeEstimate];
     v3 = v9;
@@ -1624,13 +1624,13 @@ uint64_t __58__CSSpeechController_cancelCurrentLanguageDetectorRequest__block_in
   if ([MEMORY[0x277D018F8] supportHybridEndpointer])
   {
     v3 = MEMORY[0x277D018F8];
-    v4 = [(NSUUID *)self->_endpointId UUIDString];
-    v5 = [v3 getSiriLanguageWithEndpointId:v4 fallbackLanguage:@"en-US"];
+    uUIDString = [(NSUUID *)self->_endpointId UUIDString];
+    v5 = [v3 getSiriLanguageWithEndpointId:uUIDString fallbackLanguage:@"en-US"];
 
     if (self->_isAsrOnDevice)
     {
       v6 = *MEMORY[0x277D015C0];
-      v7 = @"3";
+      endpointerModelVersion = @"3";
       if (!os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
       {
 LABEL_20:
@@ -1645,7 +1645,7 @@ LABEL_20:
     {
       if (!AFShouldRunAsrOnServerForUOD())
       {
-        v7 = [(CSEndpointAnalyzer *)self->_endpointAnalyzer endpointerModelVersion];
+        endpointerModelVersion = [(CSEndpointAnalyzer *)self->_endpointAnalyzer endpointerModelVersion];
         v6 = *MEMORY[0x277D015C0];
         if (!os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
         {
@@ -1655,13 +1655,13 @@ LABEL_20:
         *buf = 136315394;
         v17 = "[CSSpeechController endpointerModelVersion]";
         v18 = 2114;
-        v19 = v7;
+        v19 = endpointerModelVersion;
         v8 = "%s Queried endpointerModelVersion: %{public}@";
         goto LABEL_5;
       }
 
       v6 = *MEMORY[0x277D015C0];
-      v7 = @"3";
+      endpointerModelVersion = @"3";
       if (!os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_20;
@@ -1684,7 +1684,7 @@ LABEL_5:
     v13 = os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT);
     if (v11)
     {
-      v7 = @"4";
+      endpointerModelVersion = @"4";
       if (v13)
       {
         *buf = 136315394;
@@ -1698,7 +1698,7 @@ LABEL_18:
 
     else
     {
-      v7 = @"3";
+      endpointerModelVersion = @"3";
       if (v13)
       {
         *buf = 136315394;
@@ -1720,11 +1720,11 @@ LABEL_18:
     _os_log_impl(&dword_222E4D000, v9, OS_LOG_TYPE_DEFAULT, "%s endpointerModelVersion called when HEP is not supported", buf, 0xCu);
   }
 
-  v7 = @"NA";
+  endpointerModelVersion = @"NA";
 LABEL_21:
   v14 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return endpointerModelVersion;
 }
 
 - (BOOL)_canPlayTwoShotFeedbackDuringMediaPlayback
@@ -1739,14 +1739,14 @@ LABEL_21:
   return [(CSAudioRecordContext *)audioRecordContext isHearstVoiceTriggered];
 }
 
-- (id)_contextToString:(id)a3
+- (id)_contextToString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277CB8310]];
-    v5 = [v4 unsignedIntValue];
+    v4 = [string objectForKeyedSubscript:*MEMORY[0x277CB8310]];
+    unsignedIntValue = [v4 unsignedIntValue];
 
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c%c%c%c", (v5 >> 24), (v5 << 8 >> 24), (v5 >> 8), v5];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c%c%c%c", (unsignedIntValue >> 24), (unsignedIntValue << 8 >> 24), (unsignedIntValue >> 8), unsignedIntValue];
   }
 
   else
@@ -1757,27 +1757,27 @@ LABEL_21:
   return v6;
 }
 
-- (void)_deviceAudioLoggingWithFileWriter:(id)a3
+- (void)_deviceAudioLoggingWithFileWriter:(id)writer
 {
-  if (a3)
+  if (writer)
   {
     v4 = MEMORY[0x277D01620];
-    v5 = a3;
-    v6 = [(CSSpeechController *)self _getSpeechIdentifier];
-    [v4 generateDeviceAudioLogging:v5 speechId:v6];
+    writerCopy = writer;
+    _getSpeechIdentifier = [(CSSpeechController *)self _getSpeechIdentifier];
+    [v4 generateDeviceAudioLogging:writerCopy speechId:_getSpeechIdentifier];
   }
 }
 
 - (id)_getSpeechIdentifier
 {
   v2 = _AFPreferencesValueForKey();
-  v3 = [v2 allKeys];
-  v4 = [v3 count];
+  allKeys = [v2 allKeys];
+  v4 = [allKeys count];
 
   if (v4)
   {
-    v5 = [v2 allKeys];
-    v6 = [v5 objectAtIndex:0];
+    allKeys2 = [v2 allKeys];
+    v6 = [allKeys2 objectAtIndex:0];
     v7 = CSKeychainValueForAccountAndKey(v6, @"Speech Identifier");
 
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v7 encoding:4];
@@ -1793,45 +1793,45 @@ LABEL_21:
 
 - (id)_fetchFallbackAudioSessionReleaseProviding
 {
-  v2 = [(CSXPCClientFactory *)self->_xpcClientFactory clientForFallbackAudioSessionReleaseProviding];
-  [v2 connect];
+  clientForFallbackAudioSessionReleaseProviding = [(CSXPCClientFactory *)self->_xpcClientFactory clientForFallbackAudioSessionReleaseProviding];
+  [clientForFallbackAudioSessionReleaseProviding connect];
 
-  return v2;
+  return clientForFallbackAudioSessionReleaseProviding;
 }
 
-- (void)_setupAudioProviderFromXPC:(id)a3
+- (void)_setupAudioProviderFromXPC:(id)c
 {
-  v10 = a3;
-  [(CSSpeechController *)self setStreamProvider:v10];
-  [(CSSpeechController *)self setSessionProvider:v10];
-  [(CSSpeechController *)self setAlertProvider:v10];
-  [(CSSpeechController *)self setAudioMeterProvider:v10];
-  [(CSSpeechController *)self setAudioMetricProvider:v10];
-  v4 = [(CSSpeechController *)self sessionProvider];
-  [v4 setAudioSessionDelegate:self];
+  cCopy = c;
+  [(CSSpeechController *)self setStreamProvider:cCopy];
+  [(CSSpeechController *)self setSessionProvider:cCopy];
+  [(CSSpeechController *)self setAlertProvider:cCopy];
+  [(CSSpeechController *)self setAudioMeterProvider:cCopy];
+  [(CSSpeechController *)self setAudioMetricProvider:cCopy];
+  sessionProvider = [(CSSpeechController *)self sessionProvider];
+  [sessionProvider setAudioSessionDelegate:self];
 
-  v5 = [(CSSpeechController *)self alertProvider];
-  [v5 setAudioAlertDelegate:self];
+  alertProvider = [(CSSpeechController *)self alertProvider];
+  [alertProvider setAudioAlertDelegate:self];
 
-  v6 = [(CSSpeechController *)self _isHubRequestTV];
+  _isHubRequestTV = [(CSSpeechController *)self _isHubRequestTV];
   continuousVoiceTrigger = self->_continuousVoiceTrigger;
-  if (v6)
+  if (_isHubRequestTV)
   {
-    v8 = [MEMORY[0x277D016B8] sharedInstance];
-    v9 = [v8 defaultConverter];
-    [(CSContinuousVoiceTrigger *)continuousVoiceTrigger setAudioTimeConverter:v9];
+    mEMORY[0x277D016B8] = [MEMORY[0x277D016B8] sharedInstance];
+    defaultConverter = [mEMORY[0x277D016B8] defaultConverter];
+    [(CSContinuousVoiceTrigger *)continuousVoiceTrigger setAudioTimeConverter:defaultConverter];
   }
 
   else
   {
-    [(CSContinuousVoiceTrigger *)continuousVoiceTrigger setAudioTimeConverter:v10];
+    [(CSContinuousVoiceTrigger *)continuousVoiceTrigger setAudioTimeConverter:cCopy];
   }
 }
 
-- (BOOL)_createAudioProviderFromXPCWithContext:(id)a3
+- (BOOL)_createAudioProviderFromXPCWithContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   xpcClient = self->_xpcClient;
   if (xpcClient)
   {
@@ -1853,8 +1853,8 @@ LABEL_21:
       _os_log_impl(&dword_222E4D000, v8, OS_LOG_TYPE_DEFAULT, "%s Creating xpcClient", &v17, 0xCu);
     }
 
-    v9 = [(CSXPCClientFactory *)self->_xpcClientFactory clientForAudioProviding];
-    if (!v9)
+    clientForAudioProviding = [(CSXPCClientFactory *)self->_xpcClientFactory clientForAudioProviding];
+    if (!clientForAudioProviding)
     {
       v14 = *v7;
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR))
@@ -1867,8 +1867,8 @@ LABEL_21:
       goto LABEL_16;
     }
 
-    v10 = v9;
-    [(CSSpeechController *)self setXpcClient:v9];
+    v10 = clientForAudioProviding;
+    [(CSSpeechController *)self setXpcClient:clientForAudioProviding];
     [v10 setDelegate:self];
   }
 
@@ -1884,7 +1884,7 @@ LABEL_21:
   [(CSSpeechController *)self _setupAudioProviderFromXPC:self->_xpcClient];
   [(CSXPCClient *)self->_xpcClient connect];
   v6 = 1;
-  if (![(CSXPCClient *)self->_xpcClient prepareAudioProviderWithContext:v4 clientType:1 error:0])
+  if (![(CSXPCClient *)self->_xpcClient prepareAudioProviderWithContext:contextCopy clientType:1 error:0])
   {
     v13 = *v11;
     if (os_log_type_enabled(*v11, OS_LOG_TYPE_ERROR))
@@ -1905,15 +1905,15 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)_fetchAudioProviderWithContext:(id)a3
+- (BOOL)_fetchAudioProviderWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_contextResetQueue);
   xpcClient = self->_xpcClient;
   if (xpcClient && [(CSXPCClient *)xpcClient isConnected])
   {
     v6 = 1;
-    if (![(CSXPCClient *)self->_xpcClient prepareAudioProviderWithContext:v4 clientType:1 error:0])
+    if (![(CSXPCClient *)self->_xpcClient prepareAudioProviderWithContext:contextCopy clientType:1 error:0])
     {
       [(CSSpeechController *)self _teardownAudioProviderIfNeeded];
       v6 = 0;
@@ -1922,26 +1922,26 @@ LABEL_17:
 
   else
   {
-    v6 = [(CSSpeechController *)self _createAudioProviderFromXPCWithContext:v4];
+    v6 = [(CSSpeechController *)self _createAudioProviderFromXPCWithContext:contextCopy];
   }
 
   return v6;
 }
 
-- (void)_logRecordingStopErrorIfNeeded:(int64_t)a3
+- (void)_logRecordingStopErrorIfNeeded:(int64_t)needed
 {
-  if (a3 == -11786)
+  if (needed == -11786)
   {
-    v4 = [MEMORY[0x277D018F8] supportNonInterruptibleSiri];
-    v5 = [MEMORY[0x277D01708] sharedInstance];
-    v7 = v5;
+    supportNonInterruptibleSiri = [MEMORY[0x277D018F8] supportNonInterruptibleSiri];
+    mEMORY[0x277D01708] = [MEMORY[0x277D01708] sharedInstance];
+    v7 = mEMORY[0x277D01708];
     v6 = MEMORY[0x277D01A20];
-    if (!v4)
+    if (!supportNonInterruptibleSiri)
     {
       v6 = MEMORY[0x277D019C0];
     }
 
-    [v5 submitAudioIssueReport:*v6];
+    [mEMORY[0x277D01708] submitAudioIssueReport:*v6];
   }
 }
 
@@ -1987,26 +1987,26 @@ LABEL_17:
   }
 }
 
-- (void)getMitigationDecisionForRCId:(unint64_t)a3 requestId:(id)a4 completion:(id)a5
+- (void)getMitigationDecisionForRCId:(unint64_t)id requestId:(id)requestId completion:(id)completion
 {
-  v9 = a4;
-  v8 = a5;
+  requestIdCopy = requestId;
+  completionCopy = completion;
   if ([(CSSpeechController *)self _shouldRunHybridSDSDMitigation])
   {
-    [(CSRCHandlingXPCClient *)self->_rcHandlingClient getMitigationDecisionForRCIdWithCompletion:a3 requestId:v9 completion:v8];
+    [(CSRCHandlingXPCClient *)self->_rcHandlingClient getMitigationDecisionForRCIdWithCompletion:id requestId:requestIdCopy completion:completionCopy];
   }
 
   else
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
 - (BOOL)_shouldRunHybridSDSDMitigation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
   v5 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -2023,7 +2023,7 @@ LABEL_17:
     v18 = 2112;
     v19 = rcHandlingClient;
     v20 = 2112;
-    v21 = v4;
+    v21 = languageCode;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s _isHybridUODEnabled: %d, _endpointId: %@, _rcHandlingClient: %@, languageCode: %@", &v12, 0x30u);
   }
 
@@ -2035,35 +2035,35 @@ LABEL_17:
 
 - (int64_t)_currentAudioRecorderSampleRate
 {
-  v2 = [(CSSpeechController *)self streamProvider];
-  v3 = [v2 recordSettings];
+  streamProvider = [(CSSpeechController *)self streamProvider];
+  recordSettings = [streamProvider recordSettings];
 
-  if (v3 && ([v3 objectForKeyedSubscript:*MEMORY[0x277CB82E0]], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (recordSettings && ([recordSettings objectForKeyedSubscript:*MEMORY[0x277CB82E0]], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
     [MEMORY[0x277D016E0] inputRecordingSampleRate];
-    v6 = v7;
+    unsignedIntegerValue = v7;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)fetchAudioMetricsWithCompletion:(id)a3
+- (void)fetchAudioMetricsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   contextResetQueue = self->_contextResetQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__CSSpeechController_fetchAudioMetricsWithCompletion___block_invoke;
   v7[3] = &unk_2784C6E98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(contextResetQueue, v7);
 }
 
@@ -2114,7 +2114,7 @@ void __53__CSSpeechController_keywordDetectorDidDetectKeyword__block_invoke(uint
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)detectedTwoShotAtTime:(double)a3
+- (void)detectedTwoShotAtTime:(double)time
 {
   kdebug_trace();
   queue = self->_queue;
@@ -2122,7 +2122,7 @@ void __53__CSSpeechController_keywordDetectorDidDetectKeyword__block_invoke(uint
   v6[1] = 3221225472;
   v6[2] = __44__CSSpeechController_detectedTwoShotAtTime___block_invoke;
   v6[3] = &unk_2784C6EC0;
-  *&v6[5] = a3;
+  *&v6[5] = time;
   v6[4] = self;
   dispatch_async(queue, v6);
 }
@@ -2154,7 +2154,7 @@ _BYTE *__44__CSSpeechController_detectedTwoShotAtTime___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)_startTwoShotFeedbackDecisionForDetectionAtTime:(double)a3
+- (void)_startTwoShotFeedbackDecisionForDetectionAtTime:(double)time
 {
   v12 = *MEMORY[0x277D85DE8];
   self->_hasRequestedTwoShotFeedback = 1;
@@ -2179,7 +2179,7 @@ _BYTE *__44__CSSpeechController_detectedTwoShotAtTime___block_invoke(uint64_t a1
     block[3] = &unk_2784C50A0;
     block[4] = self;
     block[5] = buf;
-    *&block[6] = a3;
+    *&block[6] = time;
     dispatch_async(audibleFeedbackQueue, block);
     _Block_object_dispose(buf, 8);
   }
@@ -2192,11 +2192,11 @@ _BYTE *__44__CSSpeechController_detectedTwoShotAtTime___block_invoke(uint64_t a1
       *buf = 136315394;
       *&buf[4] = "[CSSpeechController _startTwoShotFeedbackDecisionForDetectionAtTime:]";
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = time;
       _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s Starting two shot feedback at: %lf", buf, 0x16u);
     }
 
-    [(CSSpeechController *)self _startFeedbackForTwoShotAtTime:a3];
+    [(CSSpeechController *)self _startFeedbackForTwoShotAtTime:time];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -2249,7 +2249,7 @@ void __70__CSSpeechController__startTwoShotFeedbackDecisionForDetectionAtTime___
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)continuousVoiceTrigger:(id)a3 detectedSilenceAfterVoiceTriggerAt:(double)a4
+- (void)continuousVoiceTrigger:(id)trigger detectedSilenceAfterVoiceTriggerAt:(double)at
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2258,7 +2258,7 @@ void __70__CSSpeechController__startTwoShotFeedbackDecisionForDetectionAtTime___
   block[3] = &unk_2784C6430;
   block[4] = self;
   block[5] = a2;
-  *&block[6] = a4;
+  *&block[6] = at;
   dispatch_async(queue, block);
 }
 
@@ -2449,16 +2449,16 @@ LABEL_38:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)continuousVoiceTrigger:(id)a3 detectedVoiceTriggerResult:(id)a4
+- (void)continuousVoiceTrigger:(id)trigger detectedVoiceTriggerResult:(id)result
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && (v9 = *MEMORY[0x277D01EA0], [v7 objectForKeyedSubscript:*MEMORY[0x277D01EA0]], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  triggerCopy = trigger;
+  resultCopy = result;
+  v8 = resultCopy;
+  if (resultCopy && (v9 = *MEMORY[0x277D01EA0], [resultCopy objectForKeyedSubscript:*MEMORY[0x277D01EA0]], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     v11 = [v8 objectForKeyedSubscript:v9];
-    v12 = [v11 unsignedLongLongValue];
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
 
     if (CSIsHorseman() && !self->_endpointId)
     {
@@ -2468,7 +2468,7 @@ LABEL_38:
 
     else
     {
-      [CSMyriadPHash notifyHashlessTrigger:v12];
+      [CSMyriadPHash notifyHashlessTrigger:unsignedLongLongValue];
     }
   }
 
@@ -2504,7 +2504,7 @@ LABEL_38:
   v20 = __Block_byref_object_copy__8402;
   v21 = __Block_byref_object_dispose__8403;
   v22 = 0;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -2513,11 +2513,11 @@ LABEL_38:
   v13[4] = self;
   v13[5] = &buf;
   dispatch_async_and_wait(queue, v13);
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v8 = *v3;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    [v7 timeIntervalSinceDate:v5];
+    [date2 timeIntervalSinceDate:date];
     *v14 = 136315394;
     v15 = "[CSSpeechController voiceTriggerInfo]";
     v16 = 2050;
@@ -2569,7 +2569,7 @@ void __38__CSSpeechController_voiceTriggerInfo__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)playRecordStartingAlertAndResetEndpointerWithAlertOverride:(int64_t)a3
+- (BOOL)playRecordStartingAlertAndResetEndpointerWithAlertOverride:(int64_t)override
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D015C0];
@@ -2578,18 +2578,18 @@ void __38__CSSpeechController_voiceTriggerInfo__block_invoke(uint64_t a1)
     v10 = 136315394;
     v11 = "[CSSpeechController playRecordStartingAlertAndResetEndpointerWithAlertOverride:]";
     v12 = 2048;
-    v13 = a3;
+    overrideCopy = override;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s playing start recording alert with override: %lu", &v10, 0x16u);
   }
 
-  v6 = [(CSSpeechController *)self alertProvider];
-  v7 = [v6 playRecordStartingAlertAndResetEndpointerWithAlertOverride:a3];
+  alertProvider = [(CSSpeechController *)self alertProvider];
+  v7 = [alertProvider playRecordStartingAlertAndResetEndpointerWithAlertOverride:override];
 
   v8 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (BOOL)playAlertSoundForType:(int64_t)a3
+- (BOOL)playAlertSoundForType:(int64_t)type
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D015C0];
@@ -2600,17 +2600,17 @@ void __38__CSSpeechController_voiceTriggerInfo__block_invoke(uint64_t a1)
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v10, 0xCu);
   }
 
-  v6 = [(CSSpeechController *)self alertProvider];
-  v7 = [v6 playAlertSoundForType:a3];
+  alertProvider = [(CSSpeechController *)self alertProvider];
+  v7 = [alertProvider playAlertSoundForType:type];
 
   v8 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (void)audioConverterDidConvertPackets:(id)a3 packets:(id)a4 durationInSec:(float)a5 timestamp:(unint64_t)a6 arrivalTimestampToAudioRecorder:(unint64_t)a7
+- (void)audioConverterDidConvertPackets:(id)packets packets:(id)a4 durationInSec:(float)sec timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder
 {
   v27 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  packetsCopy = packets;
   v12 = a4;
   if (self->_isSiriClientListening)
   {
@@ -2619,10 +2619,10 @@ void __38__CSSpeechController_voiceTriggerInfo__block_invoke(uint64_t a1)
       self->_didDeliverFirstSpeechPacket = 1;
       if (!self->_audioDeviceInfoImpl)
       {
-        v13 = [(CSSpeechController *)self streamProvider];
-        v14 = [v13 audioDeviceInfo];
+        streamProvider = [(CSSpeechController *)self streamProvider];
+        audioDeviceInfo = [streamProvider audioDeviceInfo];
         audioDeviceInfoImpl = self->_audioDeviceInfoImpl;
-        self->_audioDeviceInfoImpl = v14;
+        self->_audioDeviceInfoImpl = audioDeviceInfo;
       }
     }
 
@@ -2633,8 +2633,8 @@ void __38__CSSpeechController_voiceTriggerInfo__block_invoke(uint64_t a1)
     v20 = v18;
     if (v17)
     {
-      *&v19 = a5;
-      [v18 speechControllerRecordBufferAvailable:self buffers:v12 durationInSec:a6 recordedAt:self->_audioDeviceInfoImpl audioDeviceInfo:v19];
+      *&v19 = sec;
+      [v18 speechControllerRecordBufferAvailable:self buffers:v12 durationInSec:timestamp recordedAt:self->_audioDeviceInfoImpl audioDeviceInfo:v19];
 LABEL_11:
 
       goto LABEL_12;
@@ -2645,8 +2645,8 @@ LABEL_11:
     if (v22)
     {
       v20 = objc_loadWeakRetained(&self->_delegate);
-      *&v23 = a5;
-      [v20 speechControllerRecordBufferAvailable:self buffers:v12 durationInSec:a6 recordedAt:v23];
+      *&v23 = sec;
+      [v20 speechControllerRecordBufferAvailable:self buffers:v12 durationInSec:timestamp recordedAt:v23];
       goto LABEL_11;
     }
   }
@@ -2671,13 +2671,13 @@ LABEL_12:
 {
   if (!self->_downsampler)
   {
-    v4 = [MEMORY[0x277D01660] downsampler];
+    downsampler = [MEMORY[0x277D01660] downsampler];
     downsampler = self->_downsampler;
-    self->_downsampler = v4;
+    self->_downsampler = downsampler;
   }
 }
 
-- (void)didTTSVolumeChange:(id)a3 forReason:(unint64_t)a4
+- (void)didTTSVolumeChange:(id)change forReason:(unint64_t)reason
 {
   v14 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D015C0];
@@ -2686,7 +2686,7 @@ LABEL_12:
     *buf = 136315394;
     v11 = "[CSSpeechController didTTSVolumeChange:forReason:]";
     v12 = 2048;
-    v13 = a4;
+    reasonCopy = reason;
     _os_log_impl(&dword_222E4D000, v6, OS_LOG_TYPE_DEFAULT, "%s SmartSiriVolume update reason: %lu", buf, 0x16u);
   }
 
@@ -2696,7 +2696,7 @@ LABEL_12:
   v9[2] = __51__CSSpeechController_didTTSVolumeChange_forReason___block_invoke;
   v9[3] = &unk_2784C6EC0;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = reason;
   dispatch_async(queue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -2724,7 +2724,7 @@ void __51__CSSpeechController_didTTSVolumeChange_forReason___block_invoke(uint64
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionProvider:(id)a3 didSetAudioSessionActive:(BOOL)a4
+- (void)audioSessionProvider:(id)provider didSetAudioSessionActive:(BOOL)active
 {
   v13 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D015C0];
@@ -2741,7 +2741,7 @@ void __51__CSSpeechController_didTTSVolumeChange_forReason___block_invoke(uint64
   v9[2] = __68__CSSpeechController_audioSessionProvider_didSetAudioSessionActive___block_invoke;
   v9[3] = &unk_2784C6390;
   v9[4] = self;
-  v10 = a4;
+  activeCopy = active;
   dispatch_async(queue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -2770,7 +2770,7 @@ void __68__CSSpeechController_audioSessionProvider_didSetAudioSessionActive___bl
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionProvider:(id)a3 willSetAudioSessionActive:(BOOL)a4
+- (void)audioSessionProvider:(id)provider willSetAudioSessionActive:(BOOL)active
 {
   v13 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D015C0];
@@ -2787,7 +2787,7 @@ void __68__CSSpeechController_audioSessionProvider_didSetAudioSessionActive___bl
   v9[2] = __69__CSSpeechController_audioSessionProvider_willSetAudioSessionActive___block_invoke;
   v9[3] = &unk_2784C6390;
   v9[4] = self;
-  v10 = a4;
+  activeCopy = active;
   dispatch_async(queue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -2815,7 +2815,7 @@ void __69__CSSpeechController_audioSessionProvider_willSetAudioSessionActive___b
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionProviderEndInterruption:(id)a3
+- (void)audioSessionProviderEndInterruption:(id)interruption
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D015C0];
@@ -2859,10 +2859,10 @@ void __58__CSSpeechController_audioSessionProviderEndInterruption___block_invoke
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionProviderBeginInterruption:(id)a3 withContext:(id)a4
+- (void)audioSessionProviderBeginInterruption:(id)interruption withContext:(id)context
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  contextCopy = context;
   v6 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
   {
@@ -2877,8 +2877,8 @@ void __58__CSSpeechController_audioSessionProviderEndInterruption___block_invoke
   v10[2] = __72__CSSpeechController_audioSessionProviderBeginInterruption_withContext___block_invoke;
   v10[3] = &unk_2784C6FA8;
   v10[4] = self;
-  v11 = v5;
-  v8 = v5;
+  v11 = contextCopy;
+  v8 = contextCopy;
   dispatch_async(queue, v10);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -2907,7 +2907,7 @@ void __72__CSSpeechController_audioSessionProviderBeginInterruption_withContext_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionProviderBeginInterruption:(id)a3
+- (void)audioSessionProviderBeginInterruption:(id)interruption
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D015C0];
@@ -2951,10 +2951,10 @@ void __60__CSSpeechController_audioSessionProviderBeginInterruption___block_invo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioAlertProvidingDidFinishAlertPlayback:(id)a3 ofType:(int64_t)a4 error:(id)a5
+- (void)audioAlertProvidingDidFinishAlertPlayback:(id)playback ofType:(int64_t)type error:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  errorCopy = error;
   v8 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
   {
@@ -2968,10 +2968,10 @@ void __60__CSSpeechController_audioSessionProviderBeginInterruption___block_invo
   block[1] = 3221225472;
   block[2] = __77__CSSpeechController_audioAlertProvidingDidFinishAlertPlayback_ofType_error___block_invoke;
   block[3] = &unk_2784C6998;
-  v13 = v7;
-  v14 = a4;
+  v13 = errorCopy;
+  typeCopy = type;
   block[4] = self;
-  v10 = v7;
+  v10 = errorCopy;
   dispatch_async(queue, block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -3000,7 +3000,7 @@ void __77__CSSpeechController_audioAlertProvidingDidFinishAlertPlayback_ofType_e
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionController:(id)a3 didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)a4
+- (void)audioSessionController:(id)controller didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)info
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D015C0];
@@ -3014,7 +3014,7 @@ void __77__CSSpeechController_audioAlertProvidingDidFinishAlertPlayback_ofType_e
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionProvider:(id)a3 didChangeContext:(BOOL)a4
+- (void)audioSessionProvider:(id)provider didChangeContext:(BOOL)context
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D015C0];
@@ -3028,7 +3028,7 @@ void __77__CSSpeechController_audioAlertProvidingDidFinishAlertPlayback_ofType_e
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionProvider:(id)a3 providerInvalidated:(BOOL)a4
+- (void)audioSessionProvider:(id)provider providerInvalidated:(BOOL)invalidated
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3067,7 +3067,7 @@ uint64_t __63__CSSpeechController_audioSessionProvider_providerInvalidated___blo
   return result;
 }
 
-- (void)audioStreamProvider:(id)a3 didHardwareConfigurationChange:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didHardwareConfigurationChange:(int64_t)change
 {
   v12 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D015C0];
@@ -3084,7 +3084,7 @@ uint64_t __63__CSSpeechController_audioSessionProvider_providerInvalidated___blo
   v9[2] = __73__CSSpeechController_audioStreamProvider_didHardwareConfigurationChange___block_invoke;
   v9[3] = &unk_2784C6EC0;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = change;
   dispatch_async(queue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -3112,21 +3112,21 @@ void __73__CSSpeechController_audioStreamProvider_didHardwareConfigurationChange
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioDecoderDidDecodePackets:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 timestamp:(unint64_t)a7 arrivalTimestampToAudioRecorder:(unint64_t)a8 wasBuffered:(BOOL)a9 receivedNumChannels:(unsigned int)a10
+- (void)audioDecoderDidDecodePackets:(id)packets audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder wasBuffered:(BOOL)buffered receivedNumChannels:(unsigned int)self0
 {
   v12 = MEMORY[0x277D016B8];
-  v13 = a5;
-  v14 = [v12 sharedInstance];
-  v15 = [v14 defaultConverter];
-  [v15 processSampleCount:self->_decoderProcessedSampleCountForTV hostTime:a7];
+  bufferCopy = buffer;
+  sharedInstance = [v12 sharedInstance];
+  defaultConverter = [sharedInstance defaultConverter];
+  [defaultConverter processSampleCount:self->_decoderProcessedSampleCountForTV hostTime:timestamp];
 
-  v16 = ([v13 length] >> 1) / a10;
+  v16 = ([bufferCopy length] >> 1) / channels;
   v17 = objc_alloc(MEMORY[0x277D01600]);
-  v18 = [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
+  inputRecordingSampleByteDepth = [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
   decoderProcessedSampleCountForTV = self->_decoderProcessedSampleCountForTV;
   LOBYTE(v23) = [MEMORY[0x277D016E0] inputRecordingIsFloat];
-  LOBYTE(v22) = a9;
-  v25 = [v17 initWithData:v13 numChannels:a10 numSamples:v16 sampleByteDepth:v18 startSampleCount:decoderProcessedSampleCountForTV hostTime:a7 arrivalHostTimeToAudioRecorder:a8 wasBuffered:v22 remoteVAD:0 isFloat:v23];
+  LOBYTE(v22) = buffered;
+  v25 = [v17 initWithData:bufferCopy numChannels:channels numSamples:v16 sampleByteDepth:inputRecordingSampleByteDepth startSampleCount:decoderProcessedSampleCountForTV hostTime:timestamp arrivalHostTimeToAudioRecorder:recorder wasBuffered:v22 remoteVAD:0 isFloat:v23];
 
   [(CSContinuousVoiceTrigger *)self->_continuousVoiceTrigger processAudioSamples:v25];
   if ([MEMORY[0x277D018F8] supportsEndpointingOnATV])
@@ -3137,24 +3137,24 @@ void __73__CSSpeechController_audioStreamProvider_didHardwareConfigurationChange
   if (CSIsTV())
   {
     speakerRecognitionController = self->_speakerRecognitionController;
-    v21 = [v25 data];
-    -[SSRSpeakerRecognitionController processAudio:withNumberOfSamples:](speakerRecognitionController, "processAudio:withNumberOfSamples:", v21, [v25 numSamples]);
+    data = [v25 data];
+    -[SSRSpeakerRecognitionController processAudio:withNumberOfSamples:](speakerRecognitionController, "processAudio:withNumberOfSamples:", data, [v25 numSamples]);
   }
 
   self->_decoderProcessedSampleCountForTV += v16;
 }
 
-- (void)audioStreamProvider:(id)a3 audioChunkForTVAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioChunkForTVAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__CSSpeechController_audioStreamProvider_audioChunkForTVAvailable___block_invoke;
   v8[3] = &unk_2784C6FA8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = availableCopy;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
@@ -3243,11 +3243,11 @@ LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)_audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
   v96 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  availableCopy = available;
   if (self->_didDeliverLastBuffer)
   {
     v8 = *MEMORY[0x277D015C0];
@@ -3259,7 +3259,7 @@ LABEL_15:
       v88 = 1024;
       *v89 = 1;
       *&v89[4] = 2048;
-      *&v89[6] = [v7 numSamples];
+      *&v89[6] = [availableCopy numSamples];
       _os_log_impl(&dword_222E4D000, v9, OS_LOG_TYPE_DEFAULT, "%s _didDeliverLastPacket=%d. Dropping Audio packets of size=%lu", buf, 0x1Cu);
     }
 
@@ -3268,24 +3268,24 @@ LABEL_15:
 
   if (![(CSSpeechController *)self hasPerformedDelayedStop]&& [(CSAudioStopStreamOption *)self->_requestedStopRecordingOptions expectedStopHostTime]&& [(CSSpeechController *)self canPerformDelayedStop])
   {
-    v10 = self->_numTrailingSamplesAfterSchedulingStop + [v7 numSamples];
+    v10 = self->_numTrailingSamplesAfterSchedulingStop + [availableCopy numSamples];
     self->_numTrailingSamplesAfterSchedulingStop = v10;
     v11 = MEMORY[0x277D015C0];
     v12 = *MEMORY[0x277D015C0];
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v7 hostTime];
-      v15 = [v7 numSamples];
+      hostTime = [availableCopy hostTime];
+      numSamples = [availableCopy numSamples];
       requestedStopRecordingOptions = self->_requestedStopRecordingOptions;
       numTrailingSamplesAfterSchedulingStop = self->_numTrailingSamplesAfterSchedulingStop;
       maxAllowedTrailingSamplesAfterSchedulingStop = self->_maxAllowedTrailingSamplesAfterSchedulingStop;
       *buf = 136316418;
       v87 = "[CSSpeechController _audioStreamProvider:audioBufferAvailable:]";
       v88 = 2050;
-      *v89 = v14;
+      *v89 = hostTime;
       *&v89[8] = 2050;
-      *&v89[10] = v15;
+      *&v89[10] = numSamples;
       v90 = 2114;
       v91 = requestedStopRecordingOptions;
       v92 = 2050;
@@ -3313,19 +3313,19 @@ LABEL_64:
       goto LABEL_65;
     }
 
-    v20 = [v7 hostTime];
-    if (v20 >= [(CSAudioStopStreamOption *)self->_requestedStopRecordingOptions expectedStopHostTime])
+    hostTime2 = [availableCopy hostTime];
+    if (hostTime2 >= [(CSAudioStopStreamOption *)self->_requestedStopRecordingOptions expectedStopHostTime])
     {
       v72 = *v11;
       if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
       {
         v73 = v72;
-        v74 = [v7 hostTime];
+        hostTime3 = [availableCopy hostTime];
         v75 = self->_requestedStopRecordingOptions;
         *buf = 136315650;
         v87 = "[CSSpeechController _audioStreamProvider:audioBufferAvailable:]";
         v88 = 2050;
-        *v89 = v74;
+        *v89 = hostTime3;
         *&v89[8] = 2114;
         *&v89[10] = v75;
         _os_log_impl(&dword_222E4D000, v73, OS_LOG_TYPE_DEFAULT, "%s STOPRECORDING: chunk.hostTime=%{public}llu >= stopOptions=%{public}@", buf, 0x20u);
@@ -3345,22 +3345,22 @@ LABEL_64:
   _audioStreamProvider_audioBufferAvailable__heartbeat_CORESPEECH_SPEECH_MANAGER_LPCM_RECORD_BUFFER_AVAILABLE = v21 + 1;
   if (self->_isSiriClientListening)
   {
-    v82 = v7;
-    v22 = v7;
-    v23 = [v22 data];
-    v24 = v23;
+    v82 = availableCopy;
+    v22 = availableCopy;
+    data = [v22 data];
+    v24 = data;
     if ([MEMORY[0x277D016E0] inputRecordingIsFloat])
     {
-      v24 = [MEMORY[0x277D01760] convertToShortLPCMBufFromFloatLPCMBuf:v23];
+      v24 = [MEMORY[0x277D01760] convertToShortLPCMBufFromFloatLPCMBuf:data];
     }
 
-    -[CSAudioZeroCounter getZeroStatisticsFromBuffer:entireSamples:](self->_continuousZeroCounter, "getZeroStatisticsFromBuffer:entireSamples:", v23, [v23 length] / objc_msgSend(v22, "sampleByteDepth"));
+    -[CSAudioZeroCounter getZeroStatisticsFromBuffer:entireSamples:](self->_continuousZeroCounter, "getZeroStatisticsFromBuffer:entireSamples:", data, [data length] / objc_msgSend(v22, "sampleByteDepth"));
     -[CSSpeechEndHostTimeEstimator addNumSamples:hostTime:](self->_speechEndHostTimeEstimator, "addNumSamples:hostTime:", [v22 numSamples], objc_msgSend(v22, "hostTime"));
-    v25 = [MEMORY[0x277D016E0] inputRecordingIsFloat];
+    inputRecordingIsFloat = [MEMORY[0x277D016E0] inputRecordingIsFloat];
     powerMeter = self->_powerMeter;
-    if (v25)
+    if (inputRecordingIsFloat)
     {
-      -[CSAudioPowerMeter processFloatBuffer:stride:inFrameToProcess:](powerMeter, "processFloatBuffer:stride:inFrameToProcess:", [v23 bytes], 1, objc_msgSend(v22, "numSamples"));
+      -[CSAudioPowerMeter processFloatBuffer:stride:inFrameToProcess:](powerMeter, "processFloatBuffer:stride:inFrameToProcess:", [data bytes], 1, objc_msgSend(v22, "numSamples"));
     }
 
     else
@@ -3381,50 +3381,50 @@ LABEL_64:
 
     if (self->_shouldUseLanguageDetectorForCurrentRequest)
     {
-      -[CSLanguageDetector addSamples:numSamples:](self->_languageDetector, "addSamples:numSamples:", v23, [v22 numSamples]);
+      -[CSLanguageDetector addSamples:numSamples:](self->_languageDetector, "addSamples:numSamples:", data, [v22 numSamples]);
     }
 
-    v81 = v23;
+    v81 = data;
     v85 = v24;
     if (self->_isNarrowBand)
     {
       downsampler = self->_downsampler;
-      v32 = [v22 data];
-      v33 = [(CSAudioSampleRateConverter *)downsampler convertSampleRateOfBuffer:v32];
+      data2 = [v22 data];
+      data3 = [(CSAudioSampleRateConverter *)downsampler convertSampleRateOfBuffer:data2];
 
-      v80 = v6;
+      v80 = providerCopy;
       if ([MEMORY[0x277D016E0] inputRecordingIsFloat])
       {
-        v34 = [MEMORY[0x277D01760] convertToShortLPCMBufFromFloatLPCMBuf:v33];
+        v34 = [MEMORY[0x277D01760] convertToShortLPCMBufFromFloatLPCMBuf:data3];
       }
 
       else
       {
-        v34 = v33;
+        v34 = data3;
       }
 
       v79 = v34;
-      v36 = [v33 length];
+      v36 = [data3 length];
       v84 = v36 / [v22 sampleByteDepth];
       v37 = objc_alloc(MEMORY[0x277D01600]);
-      v38 = [v22 sampleByteDepth];
-      v39 = [v22 startSampleCount];
-      v40 = [v22 hostTime];
-      v41 = [v22 arrivalHostTimeToAudioRecorder];
-      v42 = [v22 wasBuffered];
-      v43 = [v22 remoteVAD];
+      sampleByteDepth = [v22 sampleByteDepth];
+      startSampleCount = [v22 startSampleCount];
+      hostTime4 = [v22 hostTime];
+      arrivalHostTimeToAudioRecorder = [v22 arrivalHostTimeToAudioRecorder];
+      wasBuffered = [v22 wasBuffered];
+      remoteVAD = [v22 remoteVAD];
       LOBYTE(v78) = [v22 isFloat];
-      LOBYTE(v77) = v42;
-      v83 = [v37 initWithData:v33 numChannels:1 numSamples:v84 sampleByteDepth:v38 startSampleCount:v39 hostTime:v40 arrivalHostTimeToAudioRecorder:v41 wasBuffered:v77 remoteVAD:v43 isFloat:v78];
+      LOBYTE(v77) = wasBuffered;
+      v83 = [v37 initWithData:data3 numChannels:1 numSamples:v84 sampleByteDepth:sampleByteDepth startSampleCount:startSampleCount hostTime:hostTime4 arrivalHostTimeToAudioRecorder:arrivalHostTimeToAudioRecorder wasBuffered:v77 remoteVAD:remoteVAD isFloat:v78];
 
       v35 = v79;
-      v6 = v80;
+      providerCopy = v80;
       v24 = v85;
     }
 
     else
     {
-      v33 = [v22 data];
+      data3 = [v22 data];
       v35 = v24;
       v83 = v22;
     }
@@ -3446,7 +3446,7 @@ LABEL_64:
     _audioStreamProvider_audioBufferAvailable__heartbeat_CORESPEECH_OPUS_ENCODING_BEGIN = v44 + 1;
     if (!self->_isAsrOnDevice)
     {
-      -[CSAudioConverter addSamples:timestamp:arrivalTimestampToAudioRecorder:](self->_audioConverter, "addSamples:timestamp:arrivalTimestampToAudioRecorder:", v33, [v22 hostTime], objc_msgSend(v22, "arrivalHostTimeToAudioRecorder"));
+      -[CSAudioConverter addSamples:timestamp:arrivalTimestampToAudioRecorder:](self->_audioConverter, "addSamples:timestamp:arrivalTimestampToAudioRecorder:", data3, [v22 hostTime], objc_msgSend(v22, "arrivalHostTimeToAudioRecorder"));
     }
 
     v45 = _audioStreamProvider_audioBufferAvailable__heartbeat_CORESPEECH_OPUS_ENCODING_END;
@@ -3457,7 +3457,7 @@ LABEL_64:
     }
 
     _audioStreamProvider_audioBufferAvailable__heartbeat_CORESPEECH_OPUS_ENCODING_END = v45 + 1;
-    v46 = v33;
+    v46 = data3;
     v47 = v46;
     if ([MEMORY[0x277D016E0] inputRecordingIsFloat])
     {
@@ -3506,8 +3506,8 @@ LABEL_49:
         }
 
         serverLoggingWriter = self->_serverLoggingWriter;
-        v60 = [v22 data];
-        -[CSSelectiveChannelAudioFileWriter addSamples:numSamples:](serverLoggingWriter, "addSamples:numSamples:", [v60 bytes], objc_msgSend(v22, "numSamples"));
+        data4 = [v22 data];
+        -[CSSelectiveChannelAudioFileWriter addSamples:numSamples:](serverLoggingWriter, "addSamples:numSamples:", [data4 bytes], objc_msgSend(v22, "numSamples"));
 
         if (![(CSSpeechController *)self hasPerformedDelayedStop])
         {
@@ -3516,9 +3516,9 @@ LABEL_49:
             if ([(CSSpeechController *)self canPerformDelayedStop])
             {
               v61 = MEMORY[0x277D01798];
-              v62 = [v22 numSamples];
+              numSamples2 = [v22 numSamples];
               [MEMORY[0x277D016E0] inputRecordingSampleRate];
-              *&v64 = v62 / v63;
+              *&v64 = numSamples2 / v63;
               v65 = [v61 secondsToHostTime:v64];
               v66 = [v22 hostTime] + v65;
               if (v66 >= [(CSAudioStopStreamOption *)self->_requestedStopRecordingOptions expectedStopHostTime])
@@ -3528,12 +3528,12 @@ LABEL_49:
                 if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
                 {
                   v69 = v68;
-                  v70 = [v22 hostTime];
+                  hostTime5 = [v22 hostTime];
                   v71 = self->_requestedStopRecordingOptions;
                   *buf = 136315650;
                   v87 = "[CSSpeechController _audioStreamProvider:audioBufferAvailable:]";
                   v88 = 2050;
-                  *v89 = v70 + v65;
+                  *v89 = hostTime5 + v65;
                   *&v89[8] = 2114;
                   *&v89[10] = v71;
                   _os_log_impl(&dword_222E4D000, v69, OS_LOG_TYPE_DEFAULT, "%s STOPRECORDING: chunk.endHostTime=%{public}llu >= stopOptions=%{public}@", buf, 0x20u);
@@ -3547,7 +3547,7 @@ LABEL_49:
           }
         }
 
-        v7 = v82;
+        availableCopy = v82;
         goto LABEL_65;
       }
 
@@ -3571,14 +3571,14 @@ LABEL_65:
   v76 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v26 = a3;
-  v6 = a4;
-  v7 = [v6 numSamples];
-  if (v7 >= 1)
+  providerCopy = provider;
+  availableCopy = available;
+  numSamples = [availableCopy numSamples];
+  if (numSamples >= 1)
   {
-    v8 = v7;
+    v8 = numSamples;
     v9 = 0;
     do
     {
@@ -3595,15 +3595,15 @@ LABEL_65:
         v11 = v16 * v17;
       }
 
-      v18 = [v6 subChunkFrom:v9 numSamples:{v11, v26}];
-      v19 = [v6 remoteVAD];
+      v18 = [availableCopy subChunkFrom:v9 numSamples:{v11, providerCopy}];
+      remoteVAD = [availableCopy remoteVAD];
 
-      if (v19)
+      if (remoteVAD)
       {
         [MEMORY[0x277D016E0] remoteVADDuration];
         v21 = v20;
         [MEMORY[0x277D016E0] inputRecordingSampleRate];
-        v23 = [v6 remoteVADSubChunkFrom:v9 numSamples:v11 numAudioSamplesPerRemoteVAD:(v21 * v22)];
+        v23 = [availableCopy remoteVADSubChunkFrom:v9 numSamples:v11 numAudioSamplesPerRemoteVAD:(v21 * v22)];
         [v18 setRemoteVAD:v23];
       }
 
@@ -3615,7 +3615,7 @@ LABEL_65:
       block[2] = __63__CSSpeechController_audioStreamProvider_audioBufferAvailable___block_invoke;
       block[3] = &unk_2784C6EE8;
       block[4] = self;
-      v28 = v26;
+      v28 = providerCopy;
       v29 = v18;
       v25 = v18;
       dispatch_async(queue, block);
@@ -3627,7 +3627,7 @@ LABEL_65:
   }
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   v12 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D015C0];
@@ -3644,7 +3644,7 @@ LABEL_65:
   v9[2] = __68__CSSpeechController_audioStreamProvider_didStopStreamUnexpectedly___block_invoke;
   v9[3] = &unk_2784C6EC0;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = unexpectedly;
   dispatch_async(queue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -3658,14 +3658,14 @@ uint64_t __68__CSSpeechController_audioStreamProvider_didStopStreamUnexpectedly_
   return [v2 _logRecordingStopErrorIfNeeded:v3];
 }
 
-- (BOOL)_isDuckingAvailableRoute:(id)a3
+- (BOOL)_isDuckingAvailableRoute:(id)route
 {
-  v3 = a3;
+  routeCopy = route;
   if (!CSIsIOS())
   {
     if (CSIsWatch())
     {
-      if ([v3 isEqualToString:*MEMORY[0x277CB8320]])
+      if ([routeCopy isEqualToString:*MEMORY[0x277CB8320]])
       {
         goto LABEL_6;
       }
@@ -3680,30 +3680,30 @@ uint64_t __68__CSSpeechController_audioStreamProvider_didStopStreamUnexpectedly_
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CB8320]])
+  if ([routeCopy isEqualToString:*MEMORY[0x277CB8320]])
   {
 LABEL_6:
     v4 = 1;
     goto LABEL_9;
   }
 
-  v4 = [v3 isEqualToString:*MEMORY[0x277CB8348]];
+  v4 = [routeCopy isEqualToString:*MEMORY[0x277CB8348]];
 LABEL_9:
 
   return v4;
 }
 
-- (void)_didStopForReason:(int64_t)a3
+- (void)_didStopForReason:(int64_t)reason
 {
   v80 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (reason == 2)
   {
-    v5 = 0;
+    reasonCopy = 0;
   }
 
   else
   {
-    v5 = a3;
+    reasonCopy = reason;
   }
 
   v6 = *MEMORY[0x277D015C0];
@@ -3712,33 +3712,33 @@ LABEL_9:
     *buf = 136315394;
     v73 = "[CSSpeechController _didStopForReason:]";
     v74 = 2050;
-    v75 = v5;
+    v75 = reasonCopy;
     _os_log_impl(&dword_222E4D000, v6, OS_LOG_TYPE_DEFAULT, "%s Reason : %{public}ld", buf, 0x16u);
   }
 
   if ([(CSAudioStopStreamOption *)self->_requestedStopRecordingOptions stopRecordingReason]== 3)
   {
-    v7 = 0;
+    estimatedSpeechEndHostTime = 0;
   }
 
   else if ([(CSSpeechController *)self _shouldCalculateEstimatedSpeechEndHostTimeFromCachedEPMetrics])
   {
-    v8 = [(CSEndpointAnalyzer *)self->_endpointAnalyzer cachedEndpointerMetrics];
+    cachedEndpointerMetrics = [(CSEndpointAnalyzer *)self->_endpointAnalyzer cachedEndpointerMetrics];
     speechEndHostTimeEstimator = self->_speechEndHostTimeEstimator;
-    [v8 trailingSilenceDurationAtEndpoint];
+    [cachedEndpointerMetrics trailingSilenceDurationAtEndpoint];
     [(CSSpeechEndHostTimeEstimator *)speechEndHostTimeEstimator notifyTrailingSilenceDurationAtEndpoint:?];
-    v10 = [v8 additionalMetrics];
-    v11 = [v10 objectForKey:@"lastAudioChunkHostTime"];
-    v12 = [v11 unsignedLongLongValue];
+    additionalMetrics = [cachedEndpointerMetrics additionalMetrics];
+    v11 = [additionalMetrics objectForKey:@"lastAudioChunkHostTime"];
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
 
-    v7 = [(CSSpeechEndHostTimeEstimator *)self->_speechEndHostTimeEstimator estimatedSpeechEndHostTimeWithLastAudioChunkHostTime:v12];
+    estimatedSpeechEndHostTime = [(CSSpeechEndHostTimeEstimator *)self->_speechEndHostTimeEstimator estimatedSpeechEndHostTimeWithLastAudioChunkHostTime:unsignedLongLongValue];
     v13 = *MEMORY[0x277D015C0];
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v73 = "[CSSpeechController _didStopForReason:]";
       v74 = 2112;
-      v75 = v8;
+      v75 = cachedEndpointerMetrics;
       _os_log_impl(&dword_222E4D000, v13, OS_LOG_TYPE_DEFAULT, "%s SpeechEndEstimation using cached EP metrics : %@", buf, 0x16u);
     }
   }
@@ -3756,10 +3756,10 @@ LABEL_9:
     v15 = self->_speechEndHostTimeEstimator;
     [(CSAudioStopStreamOption *)self->_requestedStopRecordingOptions trailingSilenceDurationAtEndpoint];
     [(CSSpeechEndHostTimeEstimator *)v15 notifyTrailingSilenceDurationAtEndpoint:?];
-    v7 = [(CSSpeechEndHostTimeEstimator *)self->_speechEndHostTimeEstimator estimatedSpeechEndHostTime];
+    estimatedSpeechEndHostTime = [(CSSpeechEndHostTimeEstimator *)self->_speechEndHostTimeEstimator estimatedSpeechEndHostTime];
   }
 
-  [(CSEndpointAnalyzer *)self->_endpointAnalyzer recordingStoppedForReason:v5];
+  [(CSEndpointAnalyzer *)self->_endpointAnalyzer recordingStoppedForReason:reasonCopy];
   [(SSRSpeakerRecognitionController *)self->_speakerRecognitionController endAudio];
   if ([(CSSpeechController *)self _shouldUseSpeakerRecognitionProxy])
   {
@@ -3798,7 +3798,7 @@ LABEL_9:
     if (v20)
     {
       v21 = objc_loadWeakRetained(&self->_delegate);
-      [v21 speechControllerDidDeliverLastBuffer:self forReason:v5 estimatedSpeechEndHostTime:v7];
+      [v21 speechControllerDidDeliverLastBuffer:self forReason:reasonCopy estimatedSpeechEndHostTime:estimatedSpeechEndHostTime];
     }
   }
 
@@ -3807,12 +3807,12 @@ LABEL_9:
 
   if (v23)
   {
-    if (v5 != 1)
+    if (reasonCopy != 1)
     {
-      v24 = [(CSSpeechController *)self streamProvider];
-      v25 = [v24 audioDeviceInfo];
+      streamProvider = [(CSSpeechController *)self streamProvider];
+      audioDeviceInfo = [streamProvider audioDeviceInfo];
       audioDeviceInfoImpl = self->_audioDeviceInfoImpl;
-      self->_audioDeviceInfoImpl = v25;
+      self->_audioDeviceInfoImpl = audioDeviceInfo;
     }
 
     v27 = *MEMORY[0x277D015C0];
@@ -3824,7 +3824,7 @@ LABEL_9:
       *buf = 136315906;
       v73 = "[CSSpeechController _didStopForReason:]";
       v74 = 2050;
-      v75 = v7;
+      v75 = estimatedSpeechEndHostTime;
       v76 = 2050;
       v77 = v29;
       v78 = 2114;
@@ -3833,7 +3833,7 @@ LABEL_9:
     }
 
     v31 = objc_loadWeakRetained(&self->_delegate);
-    [v31 speechControllerDidStopRecording:self audioDeviceInfo:self->_audioDeviceInfoImpl forReason:v5 estimatedSpeechEndHostTime:v7];
+    [v31 speechControllerDidStopRecording:self audioDeviceInfo:self->_audioDeviceInfoImpl forReason:reasonCopy estimatedSpeechEndHostTime:estimatedSpeechEndHostTime];
   }
 
   else
@@ -3854,14 +3854,14 @@ LABEL_9:
       *buf = 136315650;
       v73 = "[CSSpeechController _didStopForReason:]";
       v74 = 2050;
-      v75 = v7;
+      v75 = estimatedSpeechEndHostTime;
       v76 = 2050;
       v77 = v36;
       _os_log_impl(&dword_222E4D000, v35, OS_LOG_TYPE_DEFAULT, "%s SpeechEndEstimation: Reporting didStop with estimated speech end : %{public}llu, at: %{public}llu", buf, 0x20u);
     }
 
     v31 = objc_loadWeakRetained(&self->_delegate);
-    [v31 speechControllerDidStopRecording:self forReason:v5 estimatedSpeechEndHostTime:v7];
+    [v31 speechControllerDidStopRecording:self forReason:reasonCopy estimatedSpeechEndHostTime:estimatedSpeechEndHostTime];
   }
 
 LABEL_37:
@@ -3873,38 +3873,38 @@ LABEL_37:
     [(CSPlainAudioFileWriter *)self->_audioFileWriter addContextKey:@"ssvmeta" fromMetaFile:self->_ssvLogFilePath];
   }
 
-  [(CSUncompressedAudioLogging *)self->_uncompressedAudioLogging endAudioWithCancellation:a3 != 0 completion:0];
+  [(CSUncompressedAudioLogging *)self->_uncompressedAudioLogging endAudioWithCancellation:reason != 0 completion:0];
   uncompressedAudioLogging = self->_uncompressedAudioLogging;
   self->_uncompressedAudioLogging = 0;
 
   [(CSSelectiveChannelAudioFileWriter *)self->_serverLoggingWriter endAudio];
   [(CSSpeechController *)self _deviceAudioLoggingWithFileWriter:self->_serverLoggingWriter];
   continuousZeroCounter = self->_continuousZeroCounter;
-  v40 = [MEMORY[0x277D01960] sharedAggregator];
-  [(CSAudioZeroCounter *)continuousZeroCounter stopCountingZeroStatisticsWithReporter:v40];
+  mEMORY[0x277D01960] = [MEMORY[0x277D01960] sharedAggregator];
+  [(CSAudioZeroCounter *)continuousZeroCounter stopCountingZeroStatisticsWithReporter:mEMORY[0x277D01960]];
 
   [(CSAudioPowerMeter *)self->_powerMeter reset];
-  v41 = [MEMORY[0x277D01880] sharedInstance];
-  [v41 notifyDidStopStream:0 withEventUUID:self->_recordEventUUID];
+  mEMORY[0x277D01880] = [MEMORY[0x277D01880] sharedInstance];
+  [mEMORY[0x277D01880] notifyDidStopStream:0 withEventUUID:self->_recordEventUUID];
 
   if ([(CSSpeechController *)self _isHubRequestTV])
   {
     [(NSMutableDictionary *)self->_decodersForTV removeAllObjects];
   }
 
-  v42 = [(CSSpeechController *)self recordRoute];
-  v43 = [(CSSpeechController *)self _isDuckingAvailableRoute:v42];
+  recordRoute = [(CSSpeechController *)self recordRoute];
+  v43 = [(CSSpeechController *)self _isDuckingAvailableRoute:recordRoute];
 
   if (!v43)
   {
-    v44 = [MEMORY[0x277D01628] sharedMonitor];
-    v45 = [v44 playingApps];
+    mEMORY[0x277D01628] = [MEMORY[0x277D01628] sharedMonitor];
+    playingApps = [mEMORY[0x277D01628] playingApps];
 
     v46 = *MEMORY[0x277D015C0];
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
     {
       v47 = v46;
-      v48 = [v45 count];
+      v48 = [playingApps count];
       *buf = 136315394;
       v73 = "[CSSpeechController _didStopForReason:]";
       v74 = 1024;
@@ -3916,7 +3916,7 @@ LABEL_37:
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v49 = v45;
+    v49 = playingApps;
     v50 = [v49 countByEnumeratingWithState:&v67 objects:v71 count:16];
     if (v50)
     {
@@ -3934,13 +3934,13 @@ LABEL_37:
           }
 
           v55 = *(*(&v67 + 1) + 8 * i);
-          v56 = [v55 appName];
-          v57 = [v55 version];
+          appName = [v55 appName];
+          version = [v55 version];
           v58 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:self->_requestMHUUID];
           v59 = v58;
-          if (v56)
+          if (appName)
           {
-            v60 = v57 == 0;
+            v60 = version == 0;
           }
 
           else
@@ -3950,23 +3950,23 @@ LABEL_37:
 
           if (!v60 && v58 != 0)
           {
-            v62 = self;
+            selfCopy = self;
             v63 = *MEMORY[0x277D015C0];
             if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
             {
               *buf = v66;
               v73 = "[CSSpeechController _didStopForReason:]";
               v74 = 2112;
-              v75 = v56;
+              v75 = appName;
               v76 = 2112;
-              v77 = v57;
+              v77 = version;
               _os_log_impl(&dword_222E4D000, v63, OS_LOG_TYPE_DEFAULT, "%s name : %@, version : %@", buf, 0x20u);
             }
 
-            v64 = [MEMORY[0x277D01738] sharedLogger];
-            [v64 logMHApplicationPlaybackAttemptedWithMHUUID:v59 withAppBundleName:v56 withAppBundleVersion:v57];
+            mEMORY[0x277D01738] = [MEMORY[0x277D01738] sharedLogger];
+            [mEMORY[0x277D01738] logMHApplicationPlaybackAttemptedWithMHUUID:v59 withAppBundleName:appName withAppBundleVersion:version];
 
-            self = v62;
+            self = selfCopy;
           }
         }
 
@@ -3983,8 +3983,8 @@ LABEL_37:
 - (id)playbackRoute
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(CSSpeechController *)self streamProvider];
-  v3 = [v2 playbackRoute];
+  streamProvider = [(CSSpeechController *)self streamProvider];
+  playbackRoute = [streamProvider playbackRoute];
 
   v4 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -3992,20 +3992,20 @@ LABEL_37:
     v7 = 136315394;
     v8 = "[CSSpeechController playbackRoute]";
     v9 = 2114;
-    v10 = v3;
+    v10 = playbackRoute;
     _os_log_impl(&dword_222E4D000, v4, OS_LOG_TYPE_DEFAULT, "%s %{public}@", &v7, 0x16u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return playbackRoute;
 }
 
 - (id)recordDeviceInfo
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(CSSpeechController *)self streamProvider];
-  v3 = [v2 recordDeviceInfo];
+  streamProvider = [(CSSpeechController *)self streamProvider];
+  recordDeviceInfo = [streamProvider recordDeviceInfo];
 
   v4 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -4013,28 +4013,28 @@ LABEL_37:
     v7 = 136315394;
     v8 = "[CSSpeechController recordDeviceInfo]";
     v9 = 2114;
-    v10 = v3;
+    v10 = recordDeviceInfo;
     _os_log_impl(&dword_222E4D000, v4, OS_LOG_TYPE_DEFAULT, "%s %{public}@", &v7, 0x16u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return recordDeviceInfo;
 }
 
 - (BOOL)_canDelayStopRecording
 {
-  v2 = [(CSSpeechController *)self streamProvider];
-  v3 = [v2 recordRoute];
+  streamProvider = [(CSSpeechController *)self streamProvider];
+  recordRoute = [streamProvider recordRoute];
 
-  if ([v3 isEqualToString:*MEMORY[0x277CB8190]])
+  if ([recordRoute isEqualToString:*MEMORY[0x277CB8190]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x277CB81B8]];
+    v4 = [recordRoute isEqualToString:*MEMORY[0x277CB81B8]];
   }
 
   return v4;
@@ -4042,52 +4042,52 @@ LABEL_37:
 
 - (BOOL)_isRecordRouteStudioDisplay
 {
-  v2 = [(CSSpeechController *)self streamProvider];
-  v3 = [v2 recordRoute];
-  v4 = [v3 isEqualToString:*MEMORY[0x277CB81B8]];
+  streamProvider = [(CSSpeechController *)self streamProvider];
+  recordRoute = [streamProvider recordRoute];
+  v4 = [recordRoute isEqualToString:*MEMORY[0x277CB81B8]];
 
   return v4;
 }
 
 - (BOOL)_isRecordRouteBuiltinMic
 {
-  v2 = [(CSSpeechController *)self streamProvider];
-  v3 = [v2 recordRoute];
-  v4 = [v3 isEqualToString:*MEMORY[0x277CB8190]];
+  streamProvider = [(CSSpeechController *)self streamProvider];
+  recordRoute = [streamProvider recordRoute];
+  v4 = [recordRoute isEqualToString:*MEMORY[0x277CB8190]];
 
   return v4;
 }
 
 - (BOOL)isRecording
 {
-  v2 = [(CSSpeechController *)self audioStream];
-  v3 = [v2 isStreaming];
+  audioStream = [(CSSpeechController *)self audioStream];
+  isStreaming = [audioStream isStreaming];
 
-  return v3;
+  return isStreaming;
 }
 
-- (unint64_t)_calculateEstimatedSpeechEndHostTimeWithStopOptions:(id)a3
+- (unint64_t)_calculateEstimatedSpeechEndHostTimeWithStopOptions:(id)options
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if ([(CSSpeechController *)self _shouldCalculateEstimatedSpeechEndHostTimeFromCachedEPMetrics])
   {
-    v5 = [(CSEndpointAnalyzer *)self->_endpointAnalyzer cachedEndpointerMetrics];
+    cachedEndpointerMetrics = [(CSEndpointAnalyzer *)self->_endpointAnalyzer cachedEndpointerMetrics];
     speechEndHostTimeEstimator = self->_speechEndHostTimeEstimator;
-    [v5 trailingSilenceDurationAtEndpoint];
+    [cachedEndpointerMetrics trailingSilenceDurationAtEndpoint];
     [(CSSpeechEndHostTimeEstimator *)speechEndHostTimeEstimator notifyTrailingSilenceDurationAtEndpoint:?];
-    v7 = [v5 additionalMetrics];
-    v8 = [v7 objectForKey:@"lastAudioChunkHostTime"];
-    v9 = [v8 unsignedLongLongValue];
+    additionalMetrics = [cachedEndpointerMetrics additionalMetrics];
+    v8 = [additionalMetrics objectForKey:@"lastAudioChunkHostTime"];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-    v10 = [(CSSpeechEndHostTimeEstimator *)self->_speechEndHostTimeEstimator estimatedSpeechEndHostTimeWithLastAudioChunkHostTime:v9];
+    estimatedSpeechEndHostTime = [(CSSpeechEndHostTimeEstimator *)self->_speechEndHostTimeEstimator estimatedSpeechEndHostTimeWithLastAudioChunkHostTime:unsignedLongLongValue];
     v11 = *MEMORY[0x277D015C0];
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
     {
       v15 = 136315394;
       v16 = "[CSSpeechController _calculateEstimatedSpeechEndHostTimeWithStopOptions:]";
       v17 = 2112;
-      v18 = v5;
+      v18 = cachedEndpointerMetrics;
       _os_log_impl(&dword_222E4D000, v11, OS_LOG_TYPE_DEFAULT, "%s Send estimatedSpeechEndHostTime using cached EP metrics : %@", &v15, 0x16u);
     }
   }
@@ -4095,39 +4095,39 @@ LABEL_37:
   else
   {
     v12 = self->_speechEndHostTimeEstimator;
-    [v4 trailingSilenceDurationAtEndpoint];
+    [optionsCopy trailingSilenceDurationAtEndpoint];
     [(CSSpeechEndHostTimeEstimator *)v12 notifyTrailingSilenceDurationAtEndpoint:?];
-    v10 = [(CSSpeechEndHostTimeEstimator *)self->_speechEndHostTimeEstimator estimatedSpeechEndHostTime];
+    estimatedSpeechEndHostTime = [(CSSpeechEndHostTimeEstimator *)self->_speechEndHostTimeEstimator estimatedSpeechEndHostTime];
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v10;
+  return estimatedSpeechEndHostTime;
 }
 
 - (BOOL)_shouldCalculateEstimatedSpeechEndHostTimeFromCachedEPMetrics
 {
-  v3 = [MEMORY[0x277D018F8] isContinuousConversationSupported];
-  if (v3)
+  isContinuousConversationSupported = [MEMORY[0x277D018F8] isContinuousConversationSupported];
+  if (isContinuousConversationSupported)
   {
     audioRecordContext = self->_audioRecordContext;
 
-    LOBYTE(v3) = [(CSAudioRecordContext *)audioRecordContext isContinuousConversation];
+    LOBYTE(isContinuousConversationSupported) = [(CSAudioRecordContext *)audioRecordContext isContinuousConversation];
   }
 
-  return v3;
+  return isContinuousConversationSupported;
 }
 
-- (void)stopRecordingWithOptions:(id)a3
+- (void)stopRecordingWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__CSSpeechController_stopRecordingWithOptions___block_invoke;
   v7[3] = &unk_2784C6FA8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = optionsCopy;
+  selfCopy = self;
+  v6 = optionsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -4250,10 +4250,10 @@ uint64_t __47__CSSpeechController_stopRecordingWithOptions___block_invoke_2(uint
   return result;
 }
 
-- (void)handleStopRecordingRequestWithOptions:(id)a3
+- (void)handleStopRecordingRequestWithOptions:(id)options
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   v6 = MEMORY[0x277D015C0];
   v7 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -4261,7 +4261,7 @@ uint64_t __47__CSSpeechController_stopRecordingWithOptions___block_invoke_2(uint
     *buf = 136315394;
     v18 = "[CSSpeechController handleStopRecordingRequestWithOptions:]";
     v19 = 2112;
-    v20 = v5;
+    v20 = optionsCopy;
     _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s options :%@", buf, 0x16u);
   }
 
@@ -4269,20 +4269,20 @@ uint64_t __47__CSSpeechController_stopRecordingWithOptions___block_invoke_2(uint
   v8 = NSStringFromSelector(a2);
   [(CSSpeechController *)self _cancelPendingAudioSessionActivateForReason:v8];
 
-  v9 = [(CSSpeechController *)self audioStream];
+  audioStream = [(CSSpeechController *)self audioStream];
 
-  if (v9)
+  if (audioStream)
   {
-    v10 = [MEMORY[0x277D01880] sharedInstance];
-    [v10 notifyWillStopStream:0 reason:0 withEventUUID:self->_recordEventUUID];
+    mEMORY[0x277D01880] = [MEMORY[0x277D01880] sharedInstance];
+    [mEMORY[0x277D01880] notifyWillStopStream:0 reason:0 withEventUUID:self->_recordEventUUID];
 
-    v11 = [(CSSpeechController *)self audioStream];
+    audioStream2 = [(CSSpeechController *)self audioStream];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __60__CSSpeechController_handleStopRecordingRequestWithOptions___block_invoke;
     v16[3] = &unk_2784C6DA8;
     v16[4] = self;
-    [v11 stopAudioStreamWithOption:v5 completion:v16];
+    [audioStream2 stopAudioStreamWithOption:optionsCopy completion:v16];
   }
 
   else
@@ -4366,16 +4366,16 @@ void __60__CSSpeechController_handleStopRecordingRequestWithOptions___block_invo
   return v5 & 1;
 }
 
-- (BOOL)_shouldUseLanguageDetector:(id)a3
+- (BOOL)_shouldUseLanguageDetector:(id)detector
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  detectorCopy = detector;
+  v4 = detectorCopy;
+  if (!detectorCopy)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorDictationLanguages"];
+  v5 = [detectorCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorDictationLanguages"];
   if (!v5)
   {
     goto LABEL_6;
@@ -4418,7 +4418,7 @@ LABEL_6:
   }
 }
 
-- (void)_startFeedbackForTwoShotAtTime:(double)a3
+- (void)_startFeedbackForTwoShotAtTime:(double)time
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = NSStringFromSelector(a2);
@@ -4474,7 +4474,7 @@ LABEL_15:
     }
 
     v18 = 2050;
-    v19 = a3;
+    timeCopy = time;
     v20 = 2114;
     v21 = v10;
     _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s Two shot is detected at time %{public}.3f, should notify? [%{public}@]", &v16, 0x20u);
@@ -4483,7 +4483,7 @@ LABEL_15:
   if (self->_twoShotNotificationEnabled)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained speechControllerDidDetectVoiceTriggerTwoShot:self atTime:1 wantsAudibleFeedback:a3];
+    [WeakRetained speechControllerDidDetectVoiceTriggerTwoShot:self atTime:1 wantsAudibleFeedback:time];
   }
 
 LABEL_16:
@@ -4492,23 +4492,23 @@ LABEL_16:
 
 - (BOOL)_shouldUseSpeakerRecognitionProxy
 {
-  v2 = CSIsCommunalDevice();
-  if (v2)
+  isAttentiveSiriEnabled = CSIsCommunalDevice();
+  if (isAttentiveSiriEnabled)
   {
-    v2 = [MEMORY[0x277D018F8] isAttentiveSiriEnabled];
-    if (v2)
+    isAttentiveSiriEnabled = [MEMORY[0x277D018F8] isAttentiveSiriEnabled];
+    if (isAttentiveSiriEnabled)
     {
-      LOBYTE(v2) = [MEMORY[0x277D018F8] shouldDisableSpeakerRecognition] ^ 1;
+      LOBYTE(isAttentiveSiriEnabled) = [MEMORY[0x277D018F8] shouldDisableSpeakerRecognition] ^ 1;
     }
   }
 
-  return v2;
+  return isAttentiveSiriEnabled;
 }
 
-- (BOOL)startRecordingWithSettings:(id)a3 error:(id *)a4
+- (BOOL)startRecordingWithSettings:(id)settings error:(id *)error
 {
   v69 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  settingsCopy = settings;
   v7 = MEMORY[0x277D015C0];
   v8 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -4516,7 +4516,7 @@ LABEL_16:
     *buf = 136315394;
     *&buf[4] = "[CSSpeechController startRecordingWithSettings:error:]";
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = settingsCopy;
     _os_log_impl(&dword_222E4D000, v8, OS_LOG_TYPE_DEFAULT, "%s settings : %{public}@", buf, 0x16u);
   }
 
@@ -4526,18 +4526,18 @@ LABEL_16:
   mach_absolute_time();
   kdebug_trace();
   v10 = *MEMORY[0x277CB8350];
-  v11 = [v6 objectForKey:*MEMORY[0x277CB8350]];
+  v11 = [settingsCopy objectForKey:*MEMORY[0x277CB8350]];
 
   if (v11)
   {
     v12 = mach_absolute_time();
-    v13 = [v6 objectForKey:v10];
-    v14 = [v13 unsignedLongLongValue];
+    v13 = [settingsCopy objectForKey:v10];
+    unsignedLongLongValue = [v13 unsignedLongLongValue];
 
     v15 = *v7;
     v16 = *v7;
-    v17 = v12 - v14;
-    if (v12 >= v14)
+    v17 = v12 - unsignedLongLongValue;
+    if (v12 >= unsignedLongLongValue)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
@@ -4554,7 +4554,7 @@ LABEL_16:
 
     else if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v18 = v14 - v12;
+      v18 = unsignedLongLongValue - v12;
       v19 = MEMORY[0x277D01798];
       v20 = v15;
       [v19 hostTimeToSeconds:v18];
@@ -4579,7 +4579,7 @@ LABEL_16:
   block[3] = &unk_2784C5948;
   block[4] = self;
   v60 = buf;
-  v26 = v6;
+  v26 = settingsCopy;
   v59 = v26;
   dispatch_async_and_wait(queue, block);
   v27 = self->_queue;
@@ -4668,7 +4668,7 @@ LABEL_16:
 
   else
   {
-    if (![(CSSpeechController *)self _activateAudioSessionWithReason:2 delay:v31 delayRequested:a4 error:v32])
+    if (![(CSSpeechController *)self _activateAudioSessionWithReason:2 delay:v31 delayRequested:error error:v32])
     {
       v39 = *v7;
       if (!os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR))
@@ -4689,9 +4689,9 @@ LABEL_38:
     v38 = 0;
   }
 
-  v42 = [(CSSpeechController *)self audioStream];
+  audioStream = [(CSSpeechController *)self audioStream];
 
-  if (!v42)
+  if (!audioStream)
   {
     v39 = *v7;
     if (!os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR))
@@ -4705,15 +4705,15 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v43 = [MEMORY[0x277CCAD78] UUID];
-  v44 = [v43 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   recordEventUUID = self->_recordEventUUID;
-  self->_recordEventUUID = v44;
+  self->_recordEventUUID = uUIDString;
 
-  v46 = [MEMORY[0x277D01880] sharedInstance];
-  [v46 notifyWillStartStreamWithContext:self->_audioRecordContext option:*(*&buf[8] + 40) withEventUUID:self->_recordEventUUID];
+  mEMORY[0x277D01880] = [MEMORY[0x277D01880] sharedInstance];
+  [mEMORY[0x277D01880] notifyWillStartStreamWithContext:self->_audioRecordContext option:*(*&buf[8] + 40) withEventUUID:self->_recordEventUUID];
 
-  v47 = [(CSSpeechController *)self audioStream];
+  audioStream2 = [(CSSpeechController *)self audioStream];
   v48 = *(*&buf[8] + 40);
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
@@ -4724,7 +4724,7 @@ LABEL_38:
   v54 = v31;
   v52[4] = self;
   v52[5] = buf;
-  [v47 startAudioStreamWithOption:v48 completion:v52];
+  [audioStream2 startAudioStreamWithOption:v48 completion:v52];
 
   v49 = 1;
 LABEL_36:
@@ -5500,13 +5500,13 @@ LABEL_17:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_languageDetectorOptionFromSettings:(id)a3
+- (id)_languageDetectorOptionFromSettings:(id)settings
 {
-  if (a3)
+  if (settings)
   {
-    v3 = a3;
+    settingsCopy = settings;
     v4 = objc_alloc_init(CSLanguageDetectorOption);
-    v5 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorDictationLanguages"];
+    v5 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorDictationLanguages"];
     v6 = objc_opt_class();
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
@@ -5516,7 +5516,7 @@ LABEL_17:
     v67 = v7;
     v68 = v5;
     __58__CSSpeechController__languageDetectorOptionFromSettings___block_invoke(v5, v6, v66);
-    v8 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorCurrentKeyboard"];
+    v8 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorCurrentKeyboard"];
     v9 = objc_opt_class();
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
@@ -5526,7 +5526,7 @@ LABEL_17:
     v64 = v10;
     v65 = v8;
     __58__CSSpeechController__languageDetectorOptionFromSettings___block_invoke(v8, v9, v63);
-    v11 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorWasLanguageToggled"];
+    v11 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorWasLanguageToggled"];
     v12 = objc_opt_class();
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
@@ -5536,7 +5536,7 @@ LABEL_17:
     v61 = v13;
     v62 = v11;
     __58__CSSpeechController__languageDetectorOptionFromSettings___block_invoke(v11, v12, v60);
-    v14 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorMultilingualKeyboardLanguages"];
+    v14 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorMultilingualKeyboardLanguages"];
     v15 = objc_opt_class();
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
@@ -5546,7 +5546,7 @@ LABEL_17:
     v58 = v16;
     v59 = v14;
     __58__CSSpeechController__languageDetectorOptionFromSettings___block_invoke(v14, v15, v57);
-    v17 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorKeyboardConvoLanguagePriors"];
+    v17 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorKeyboardConvoLanguagePriors"];
     v18 = objc_opt_class();
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
@@ -5556,7 +5556,7 @@ LABEL_17:
     v55 = v19;
     v56 = v17;
     __58__CSSpeechController__languageDetectorOptionFromSettings___block_invoke(v17, v18, v54);
-    v20 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorKeyboardGlobalLanguagePriors"];
+    v20 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorKeyboardGlobalLanguagePriors"];
     v21 = objc_opt_class();
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
@@ -5566,7 +5566,7 @@ LABEL_17:
     v52 = v22;
     v53 = v20;
     __58__CSSpeechController__languageDetectorOptionFromSettings___block_invoke(v20, v21, v51);
-    v23 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorPreviousMessageLanguage"];
+    v23 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorPreviousMessageLanguage"];
     v24 = objc_opt_class();
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
@@ -5576,7 +5576,7 @@ LABEL_17:
     v49 = v25;
     v50 = v23;
     __58__CSSpeechController__languageDetectorOptionFromSettings___block_invoke(v23, v24, v48);
-    v26 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorGlobalLastKeyboardUsed"];
+    v26 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorGlobalLastKeyboardUsed"];
     v27 = objc_opt_class();
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
@@ -5586,7 +5586,7 @@ LABEL_17:
     v46 = v28;
     v47 = v26;
     __58__CSSpeechController__languageDetectorOptionFromSettings___block_invoke(v26, v27, v45);
-    v29 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorDictationLanguagePriors"];
+    v29 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorDictationLanguagePriors"];
     v30 = objc_opt_class();
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
@@ -5596,7 +5596,7 @@ LABEL_17:
     v43 = v31;
     v44 = v29;
     __58__CSSpeechController__languageDetectorOptionFromSettings___block_invoke(v29, v30, v42);
-    v32 = [v3 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorConversationalMessages"];
+    v32 = [settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_LanguageDetectorConversationalMessages"];
 
     v33 = objc_opt_class();
     v39[0] = MEMORY[0x277D85DD0];
@@ -5651,17 +5651,17 @@ uint64_t __58__CSSpeechController__languageDetectorOptionFromSettings___block_in
   if ((![MEMORY[0x277D018F8] isAttentiveSiriEnabled] || self->_endpointId) && CSIsCommunalDevice())
   {
     v3 = MEMORY[0x277D018F8];
-    v4 = [(NSUUID *)self->_endpointId UUIDString];
-    v5 = [v3 getSiriLanguageWithEndpointId:v4 fallbackLanguage:@"en-US"];
+    uUIDString = [(NSUUID *)self->_endpointId UUIDString];
+    v5 = [v3 getSiriLanguageWithEndpointId:uUIDString fallbackLanguage:@"en-US"];
 
     v6 = +[CSVoiceTriggerAssetHandler sharedHandlerDisabledOnDeviceCompilation];
-    v7 = [(NSUUID *)self->_endpointId UUIDString];
+    uUIDString2 = [(NSUUID *)self->_endpointId UUIDString];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __56__CSSpeechController__setupSpeakerRecognitionController__block_invoke;
     v44[3] = &unk_2784C6B78;
     v44[4] = self;
-    [v6 getVoiceTriggerAssetWithEndpointId:v7 completion:v44];
+    [v6 getVoiceTriggerAssetWithEndpointId:uUIDString2 completion:v44];
 
     v8 = [(SSRVoiceProfileManager *)self->_voiceProfileManager provisionedVoiceProfilesForAppDomain:*MEMORY[0x277D65450] withLocale:v5];
     v9 = v8;
@@ -5691,9 +5691,9 @@ uint64_t __58__CSSpeechController__languageDetectorOptionFromSettings___block_in
       }
     }
 
-    v12 = [(CSAudioRecordContext *)self->_audioRecordContext isBuiltInVoiceTriggered];
+    isBuiltInVoiceTriggered = [(CSAudioRecordContext *)self->_audioRecordContext isBuiltInVoiceTriggered];
     v13 = 4.0;
-    if (v12)
+    if (isBuiltInVoiceTriggered)
     {
       lastVoiceTriggerInfo = self->_lastVoiceTriggerInfo;
       if (lastVoiceTriggerInfo)
@@ -5728,7 +5728,7 @@ uint64_t __58__CSSpeechController__languageDetectorOptionFromSettings___block_in
 
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      if (v12)
+      if (isBuiltInVoiceTriggered)
       {
         v22 = @"VT";
       }
@@ -5793,11 +5793,11 @@ uint64_t __58__CSSpeechController__languageDetectorOptionFromSettings___block_in
       if (os_log_type_enabled(*v19, OS_LOG_TYPE_ERROR))
       {
         v37 = v40;
-        v38 = [v33 localizedDescription];
+        localizedDescription = [v33 localizedDescription];
         *buf = 136315394;
         v46 = "[CSSpeechController _setupSpeakerRecognitionController]";
         v47 = 2112;
-        v48 = v38;
+        v48 = localizedDescription;
         v39 = "%s ERR: Failed to create SSR context with error %@";
         goto LABEL_42;
       }
@@ -5820,11 +5820,11 @@ uint64_t __58__CSSpeechController__languageDetectorOptionFromSettings___block_in
       if (os_log_type_enabled(*v19, OS_LOG_TYPE_ERROR))
       {
         v37 = v36;
-        v38 = [v33 localizedDescription];
+        localizedDescription = [v33 localizedDescription];
         *buf = 136315394;
         v46 = "[CSSpeechController _setupSpeakerRecognitionController]";
         v47 = 2112;
-        v48 = v38;
+        v48 = localizedDescription;
         v39 = "%s ERR: Failed to create SSR controller with error %@";
 LABEL_42:
         _os_log_error_impl(&dword_222E4D000, v37, OS_LOG_TYPE_ERROR, v39, buf, 0x16u);
@@ -5898,10 +5898,10 @@ void __56__CSSpeechController__setupSpeakerRecognitionController__block_invoke_2
   v17 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D018F8] supportsSpeakerRecognitionAssets])
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v4 = MEMORY[0x277D018F8];
-    v5 = [(NSUUID *)self->_endpointId UUIDString];
-    v6 = [v4 getSiriLanguageWithEndpointId:v5 fallbackLanguage:@"en-US"];
+    uUIDString = [(NSUUID *)self->_endpointId UUIDString];
+    v6 = [v4 getSiriLanguageWithEndpointId:uUIDString fallbackLanguage:@"en-US"];
 
     v7 = *MEMORY[0x277D015C0];
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -5913,16 +5913,16 @@ void __56__CSSpeechController__setupSpeakerRecognitionController__block_invoke_2
       _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s languageCode:%@", &v13, 0x16u);
     }
 
-    v8 = [MEMORY[0x277D65380] sharedManager];
-    v9 = [v8 allInstalledSpeakerRecognitionAssetsForLanguage:v6];
+    mEMORY[0x277D65380] = [MEMORY[0x277D65380] sharedManager];
+    v9 = [mEMORY[0x277D65380] allInstalledSpeakerRecognitionAssetsForLanguage:v6];
 
     if (v9)
     {
-      [(NSArray *)v3 addObjectsFromArray:v9];
+      [(NSArray *)array addObjectsFromArray:v9];
     }
 
     ssrAssets = self->_ssrAssets;
-    self->_ssrAssets = v3;
+    self->_ssrAssets = array;
   }
 
   else
@@ -5972,7 +5972,7 @@ void __56__CSSpeechController__setupSpeakerRecognitionController__block_invoke_2
   }
 }
 
-- (void)releaseAudioSession:(unint64_t)a3
+- (void)releaseAudioSession:(unint64_t)session
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D015C0];
@@ -5983,18 +5983,18 @@ void __56__CSSpeechController__setupSpeakerRecognitionController__block_invoke_2
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v6 = [(CSSpeechController *)self sessionProvider];
+  sessionProvider = [(CSSpeechController *)self sessionProvider];
 
-  if (v6)
+  if (sessionProvider)
   {
-    v7 = [(CSSpeechController *)self sessionProvider];
-    [v7 deactivateAudioSession:a3 error:0];
+    sessionProvider2 = [(CSSpeechController *)self sessionProvider];
+    [sessionProvider2 deactivateAudioSession:session error:0];
   }
 
   else
   {
-    v7 = [(CSSpeechController *)self _fetchFallbackAudioSessionReleaseProviding];
-    [v7 fallbackDeactivateAudioSession:a3 error:0];
+    sessionProvider2 = [(CSSpeechController *)self _fetchFallbackAudioSessionReleaseProviding];
+    [sessionProvider2 fallbackDeactivateAudioSession:session error:0];
   }
 
   queue = self->_queue;
@@ -6029,18 +6029,18 @@ _BYTE *__42__CSSpeechController_releaseAudioSession___block_invoke(uint64_t a1)
     _os_log_impl(&dword_222E4D000, v3, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v4 = [(CSSpeechController *)self sessionProvider];
+  sessionProvider = [(CSSpeechController *)self sessionProvider];
 
-  if (v4)
+  if (sessionProvider)
   {
-    v5 = [(CSSpeechController *)self sessionProvider];
-    [v5 deactivateAudioSession:0 error:0];
+    sessionProvider2 = [(CSSpeechController *)self sessionProvider];
+    [sessionProvider2 deactivateAudioSession:0 error:0];
   }
 
   else
   {
-    v5 = [(CSSpeechController *)self _fetchFallbackAudioSessionReleaseProviding];
-    [v5 fallbackDeactivateAudioSession:0 error:0];
+    sessionProvider2 = [(CSSpeechController *)self _fetchFallbackAudioSessionReleaseProviding];
+    [sessionProvider2 fallbackDeactivateAudioSession:0 error:0];
   }
 
   queue = self->_queue;
@@ -6110,8 +6110,8 @@ _BYTE *__41__CSSpeechController_releaseAudioSession__block_invoke(uint64_t a1)
     _os_log_impl(&dword_222E4D000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v4 = [(CSSpeechController *)self sessionProvider];
-  v5 = [v4 prewarmAudioSessionWithError:0];
+  sessionProvider = [(CSSpeechController *)self sessionProvider];
+  v5 = [sessionProvider prewarmAudioSessionWithError:0];
 
   v6 = *MEMORY[0x277D85DE8];
   return v5;
@@ -6131,16 +6131,16 @@ _BYTE *__41__CSSpeechController_releaseAudioSession__block_invoke(uint64_t a1)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setCurrentRecordContext:(id)a3 error:(id *)a4
+- (BOOL)setCurrentRecordContext:(id)context error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x277D015C0];
   v8 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 description];
+    v10 = [contextCopy description];
     *buf = 136315394;
     *&buf[4] = "[CSSpeechController setCurrentRecordContext:error:]";
     *&buf[12] = 2114;
@@ -6154,7 +6154,7 @@ _BYTE *__41__CSSpeechController_releaseAudioSession__block_invoke(uint64_t a1)
   v40 = 0;
   if ([MEMORY[0x277D018F8] supportHomeKitAccessory])
   {
-    [(CSSpeechController *)self _updateRecordContextIfNeeded:v6];
+    [(CSSpeechController *)self _updateRecordContextIfNeeded:contextCopy];
   }
 
   queue = self->_queue;
@@ -6163,19 +6163,19 @@ _BYTE *__41__CSSpeechController_releaseAudioSession__block_invoke(uint64_t a1)
   block[2] = __52__CSSpeechController_setCurrentRecordContext_error___block_invoke;
   block[3] = &unk_2784C6FA8;
   block[4] = self;
-  v12 = v6;
+  v12 = contextCopy;
   v36 = v12;
   dispatch_async_and_wait(queue, block);
   if ([v12 isTriggeredFromHearst])
   {
-    v13 = [v12 deviceId];
-    v14 = v13 == 0;
+    deviceId = [v12 deviceId];
+    v14 = deviceId == 0;
 
     if (v14)
     {
       v15 = +[CSOpportuneSpeakListenerDeviceManager sharedManager];
-      v16 = [v15 deviceId];
-      [v12 setDeviceId:v16];
+      deviceId2 = [v15 deviceId];
+      [v12 setDeviceId:deviceId2];
     }
   }
 
@@ -6183,17 +6183,17 @@ _BYTE *__41__CSSpeechController_releaseAudioSession__block_invoke(uint64_t a1)
   {
     if ([v12 type] == 14 || objc_msgSend(v12, "type") == 5)
     {
-      v20 = [(CSSpeechController *)self streamProvider];
+      streamProvider = [(CSSpeechController *)self streamProvider];
 
-      if (v20)
+      if (streamProvider)
       {
-        v21 = [(CSSpeechController *)self streamProvider];
+        streamProvider2 = [(CSSpeechController *)self streamProvider];
         v34 = 0;
-        v22 = [v21 setCurrentContext:v12 error:&v34];
+        v22 = [streamProvider2 setCurrentContext:v12 error:&v34];
         v18 = v34;
         *(*&buf[8] + 24) = v22;
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_22;
         }
@@ -6226,7 +6226,7 @@ _BYTE *__41__CSSpeechController_releaseAudioSession__block_invoke(uint64_t a1)
     }
 
     v18 = 0;
-    if (!a4)
+    if (!error)
     {
 LABEL_22:
       v19 = *(*&buf[8] + 24);
@@ -6235,7 +6235,7 @@ LABEL_22:
 
 LABEL_21:
     v25 = v18;
-    *a4 = v18;
+    *error = v18;
     goto LABEL_22;
   }
 
@@ -6270,12 +6270,12 @@ uint64_t __52__CSSpeechController_setCurrentRecordContext_error___block_invoke_2
   return result;
 }
 
-- (void)_updateRecordContextIfNeeded:(id)a3
+- (void)_updateRecordContextIfNeeded:(id)needed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_endpointId && ([v4 isAudioRecordTypeSupportedByRemora] & 1) == 0)
+  neededCopy = needed;
+  v5 = neededCopy;
+  if (self->_endpointId && ([neededCopy isAudioRecordTypeSupportedByRemora] & 1) == 0)
   {
     v6 = *MEMORY[0x277D015C0];
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_FAULT))
@@ -6289,14 +6289,14 @@ uint64_t __52__CSSpeechController_setCurrentRecordContext_error___block_invoke_2
     }
 
     [v5 setType:18];
-    v7 = [(NSUUID *)self->_endpointId UUIDString];
-    [v5 setDeviceId:v7];
+    uUIDString = [(NSUUID *)self->_endpointId UUIDString];
+    [v5 setDeviceId:uUIDString];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_doActivateAudioSessionWithReason:(unint64_t)a3 error:(id *)a4
+- (BOOL)_doActivateAudioSessionWithReason:(unint64_t)reason error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277D015C0];
@@ -6308,9 +6308,9 @@ uint64_t __52__CSSpeechController_setCurrentRecordContext_error___block_invoke_2
     _os_log_impl(&dword_222E4D000, v8, OS_LOG_TYPE_DEFAULT, "%s Activating audio session now", buf, 0xCu);
   }
 
-  v9 = [(CSSpeechController *)self sessionProvider];
+  sessionProvider = [(CSSpeechController *)self sessionProvider];
 
-  if (v9)
+  if (sessionProvider)
   {
     if ([(CSAudioRecordContext *)self->_audioRecordContext isDictation])
     {
@@ -6322,23 +6322,23 @@ uint64_t __52__CSSpeechController_setCurrentRecordContext_error___block_invoke_2
       v10 = 1;
     }
 
-    if (a3 == 3)
+    if (reason == 3)
     {
       if (self->_isSiriClientListening)
       {
-        a3 = 4;
+        reason = 4;
       }
 
       else
       {
-        a3 = 3;
+        reason = 3;
       }
     }
 
-    v11 = [(CSSpeechController *)self sessionProvider];
+    sessionProvider2 = [(CSSpeechController *)self sessionProvider];
     bundleIdFromDictation = self->_bundleIdFromDictation;
     v21 = 0;
-    v13 = [v11 activateAudioSessionWithReason:a3 dynamicAttribute:v10 bundleID:bundleIdFromDictation error:&v21];
+    v13 = [sessionProvider2 activateAudioSessionWithReason:reason dynamicAttribute:v10 bundleID:bundleIdFromDictation error:&v21];
     v14 = v21;
 
     v15 = *v7;
@@ -6357,11 +6357,11 @@ uint64_t __52__CSSpeechController_setCurrentRecordContext_error___block_invoke_2
       _os_log_impl(&dword_222E4D000, v15, OS_LOG_TYPE_DEFAULT, "%s AudioSession activated successfully ? %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_16:
       v17 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -6377,7 +6377,7 @@ LABEL_16:
 
     LOBYTE(v13) = 0;
     v14 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_16;
     }
@@ -6387,18 +6387,18 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)_activateAudioSessionWithReason:(unint64_t)a3 error:(id *)a4
+- (BOOL)_activateAudioSessionWithReason:(unint64_t)reason error:(id *)error
 {
   v7 = NSStringFromSelector(a2);
   [(CSSpeechController *)self _cancelPendingAudioSessionActivateForReason:v7];
 
-  return [(CSSpeechController *)self _doActivateAudioSessionWithReason:a3 error:a4];
+  return [(CSSpeechController *)self _doActivateAudioSessionWithReason:reason error:error];
 }
 
-- (void)_performPendingAudioSessionActivateForReason:(id)a3
+- (void)_performPendingAudioSessionActivateForReason:(id)reason
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   pendingAudioSessionActivationToken = self->_pendingAudioSessionActivationToken;
   if (pendingAudioSessionActivationToken)
   {
@@ -6411,7 +6411,7 @@ LABEL_16:
       v20 = 2114;
       v21 = pendingAudioSessionActivationToken;
       v22 = 2114;
-      v23 = v4;
+      v23 = reasonCopy;
       _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s Delayed audio session activate: Consumed token %{public}@ in advance for reason %{public}@.", buf, 0x20u);
       pendingAudioSessionActivationToken = self->_pendingAudioSessionActivationToken;
     }
@@ -6426,7 +6426,7 @@ LABEL_16:
       *buf = 136315394;
       v19 = "[CSSpeechController _performPendingAudioSessionActivateForReason:]";
       v20 = 2114;
-      v21 = v4;
+      v21 = reasonCopy;
       _os_log_impl(&dword_222E4D000, v9, OS_LOG_TYPE_DEFAULT, "%s Delayed audio session activate: Activating audio session for reason %{public}@.", buf, 0x16u);
     }
 
@@ -6442,7 +6442,7 @@ LABEL_16:
         *buf = 136315650;
         v19 = "[CSSpeechController _performPendingAudioSessionActivateForReason:]";
         v20 = 2114;
-        v21 = v4;
+        v21 = reasonCopy;
         v22 = 2112;
         v23 = v12;
         _os_log_error_impl(&dword_222E4D000, v13, OS_LOG_TYPE_ERROR, "%s Delayed audio session activate: Failed to activate audio session for reason %{public}@ due to error %@.", buf, 0x20u);
@@ -6454,7 +6454,7 @@ LABEL_16:
       *buf = 136315394;
       v19 = "[CSSpeechController _performPendingAudioSessionActivateForReason:]";
       v20 = 2114;
-      v21 = v4;
+      v21 = reasonCopy;
       _os_log_impl(&dword_222E4D000, v13, OS_LOG_TYPE_DEFAULT, "%s Delayed audio session activate: Successfully activate audio session for reason %{public}@.", buf, 0x16u);
     }
 
@@ -6470,10 +6470,10 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelPendingAudioSessionActivateForReason:(id)a3
+- (void)_cancelPendingAudioSessionActivateForReason:(id)reason
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   pendingAudioSessionActivationToken = self->_pendingAudioSessionActivationToken;
   if (pendingAudioSessionActivationToken)
   {
@@ -6485,7 +6485,7 @@ LABEL_16:
       v12 = 2114;
       v13 = pendingAudioSessionActivationToken;
       v14 = 2114;
-      v15 = v4;
+      v15 = reasonCopy;
       _os_log_impl(&dword_222E4D000, v6, OS_LOG_TYPE_DEFAULT, "%s Delayed audio session activate: Cancelled token %{public}@ for reason %{public}@.", &v10, 0x20u);
       pendingAudioSessionActivationToken = self->_pendingAudioSessionActivationToken;
     }
@@ -6506,22 +6506,22 @@ LABEL_16:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleActivateAudioSessionWithDelay:(double)a3 sessionActivateReason:(unint64_t)a4 scheduleReason:(id)a5 validator:(id)a6 completion:(id)a7
+- (void)_scheduleActivateAudioSessionWithDelay:(double)delay sessionActivateReason:(unint64_t)reason scheduleReason:(id)scheduleReason validator:(id)validator completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  [(CSSpeechController *)self _cancelPendingAudioSessionActivateForReason:v12];
+  scheduleReasonCopy = scheduleReason;
+  validatorCopy = validator;
+  completionCopy = completion;
+  [(CSSpeechController *)self _cancelPendingAudioSessionActivateForReason:scheduleReasonCopy];
   v15 = objc_alloc_init(MEMORY[0x277CCAD78]);
   objc_storeStrong(&self->_pendingAudioSessionActivationToken, v15);
-  self->_pendingAudioSessionActivationReason = a4;
-  v16 = [v14 copy];
+  self->_pendingAudioSessionActivationReason = reason;
+  v16 = [completionCopy copy];
 
   pendingAudioSessionActivationCompletion = self->_pendingAudioSessionActivationCompletion;
   self->_pendingAudioSessionActivationCompletion = v16;
 
-  v18 = dispatch_time(0, (a3 * 1000000000.0));
+  v18 = dispatch_time(0, (delay * 1000000000.0));
   queue = self->_queue;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -6530,12 +6530,12 @@ LABEL_16:
   v25[4] = self;
   v20 = v15;
   v26 = v20;
-  v29 = a3;
-  v21 = v12;
+  delayCopy = delay;
+  v21 = scheduleReasonCopy;
   v27 = v21;
-  v22 = v13;
+  v22 = validatorCopy;
   v28 = v22;
-  v30 = a4;
+  reasonCopy = reason;
   dispatch_after(v18, queue, v25);
   v23 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -6545,7 +6545,7 @@ LABEL_16:
     v33 = 2114;
     v34 = v20;
     v35 = 2050;
-    v36 = a3;
+    delayCopy2 = delay;
     v37 = 2114;
     v38 = v21;
     _os_log_impl(&dword_222E4D000, v23, OS_LOG_TYPE_DEFAULT, "%s Delayed active audio session: Scheduled new token %{public}@ with %{public}f seconds delay for reason %{public}@.", buf, 0x2Au);
@@ -6692,9 +6692,9 @@ LABEL_21:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_activateAudioSessionWithReason:(unint64_t)a3 delay:(double)a4 delayRequested:(BOOL)a5 error:(id *)a6
+- (BOOL)_activateAudioSessionWithReason:(unint64_t)reason delay:(double)delay delayRequested:(BOOL)requested error:(id *)error
 {
-  v7 = a5;
+  requestedCopy = requested;
   v54 = *MEMORY[0x277D85DE8];
   v44 = 0;
   v45 = &v44;
@@ -6713,7 +6713,7 @@ LABEL_21:
   v37[4] = self;
   v37[5] = &v44;
   v37[6] = &v38;
-  v37[7] = a3;
+  v37[7] = reason;
   v12 = MEMORY[0x223DD26C0](v37);
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -6722,7 +6722,7 @@ LABEL_21:
   v36[4] = self;
   v36[5] = &v44;
   v36[6] = &v38;
-  v36[7] = a3;
+  v36[7] = reason;
   v13 = MEMORY[0x223DD26C0](v36);
   if (!self->_supportSessionActivateDelay)
   {
@@ -6741,31 +6741,31 @@ LABEL_21:
       _os_log_impl(&dword_222E4D000, v15, OS_LOG_TYPE_DEFAULT, "%s Device supports ducking on speaker output we should check config.", buf, 0xCu);
     }
 
-    v16 = [(CSSpeechController *)self _currentConfigurationSupportsDucking];
+    _currentConfigurationSupportsDucking = [(CSSpeechController *)self _currentConfigurationSupportsDucking];
   }
 
   else
   {
-    v16 = 1;
+    _currentConfigurationSupportsDucking = 1;
   }
 
-  v17 = [(CSSpeechController *)self _isDelayedDuckingSupportedContext]&& v16;
+  v17 = [(CSSpeechController *)self _isDelayedDuckingSupportedContext]&& _currentConfigurationSupportsDucking;
   v18 = v12;
   if (v17 != 1)
   {
     goto LABEL_23;
   }
 
-  if (a4 <= -1.0)
+  if (delay <= -1.0)
   {
 LABEL_19:
     *(v45 + 24) = 1;
     goto LABEL_24;
   }
 
-  if (a4 <= 0.0)
+  if (delay <= 0.0)
   {
-    if (v7)
+    if (requestedCopy)
     {
       v18 = v13;
     }
@@ -6790,9 +6790,9 @@ LABEL_23:
   }
 
   v20 = [(NSDictionary *)self->_lastVoiceTriggerInfo objectForKeyedSubscript:*MEMORY[0x277D01EA0]];
-  v21 = [v20 unsignedLongLongValue];
+  unsignedLongLongValue = [v20 unsignedLongLongValue];
 
-  [MEMORY[0x277D01798] hostTimeToTimeInterval:mach_absolute_time() - v21];
+  [MEMORY[0x277D01798] hostTimeToTimeInterval:mach_absolute_time() - unsignedLongLongValue];
   v23 = v22;
   v24 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -6800,21 +6800,21 @@ LABEL_23:
     *buf = 136315650;
     v49 = "[CSSpeechController _activateAudioSessionWithReason:delay:delayRequested:error:]";
     v50 = 2050;
-    v51 = a4;
+    delayCopy = delay;
     v52 = 2050;
     v53 = v23;
     _os_log_impl(&dword_222E4D000, v24, OS_LOG_TYPE_DEFAULT, "%s duckingDelayedTime = %{public}f, timeIntervalSinceLastTriggerEnd = %{public}lf", buf, 0x20u);
   }
 
-  if (v23 < a4)
+  if (v23 < delay)
   {
     endpointAnalyzer = self->_endpointAnalyzer;
     v26 = +[CSAssetManager sharedManager];
-    v27 = [v26 currentLanguageCode];
-    [(CSEndpointAnalyzer *)endpointAnalyzer logFeaturesWithEvent:@"com.apple.corespeech.ducking" locale:v27];
+    currentLanguageCode = [v26 currentLanguageCode];
+    [(CSEndpointAnalyzer *)endpointAnalyzer logFeaturesWithEvent:@"com.apple.corespeech.ducking" locale:currentLanguageCode];
 
     v28 = NSStringFromSelector(a2);
-    v29 = a4 - v23;
+    v29 = delay - v23;
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __81__CSSpeechController__activateAudioSessionWithReason_delay_delayRequested_error___block_invoke_245;
@@ -6825,7 +6825,7 @@ LABEL_23:
     v34[2] = __81__CSSpeechController__activateAudioSessionWithReason_delay_delayRequested_error___block_invoke_2;
     v34[3] = &__block_descriptor_40_e20_v20__0B8__NSError_12l;
     *&v34[4] = v29;
-    [(CSSpeechController *)self _scheduleActivateAudioSessionWithDelay:a3 sessionActivateReason:v28 scheduleReason:v35 validator:v34 completion:v29];
+    [(CSSpeechController *)self _scheduleActivateAudioSessionWithDelay:reason sessionActivateReason:v28 scheduleReason:v35 validator:v34 completion:v29];
 
     v30 = *MEMORY[0x277D015C0];
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -6833,7 +6833,7 @@ LABEL_23:
       *buf = 136315394;
       v49 = "[CSSpeechController _activateAudioSessionWithReason:delay:delayRequested:error:]";
       v50 = 2050;
-      v51 = v29;
+      delayCopy = v29;
       _os_log_impl(&dword_222E4D000, v30, OS_LOG_TYPE_DEFAULT, "%s Scheduled activateAudioSession with %{public}f seconds delay in prepareRecordWithSettings.", buf, 0x16u);
     }
 
@@ -6842,9 +6842,9 @@ LABEL_23:
 
   v13[2](v13);
 LABEL_24:
-  if (a6)
+  if (error)
   {
-    *a6 = v39[5];
+    *error = v39[5];
   }
 
   v31 = *(v45 + 24);
@@ -6974,9 +6974,9 @@ void __81__CSSpeechController__activateAudioSessionWithReason_delay_delayRequest
 - (BOOL)_fetchLastTriggerInfo
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(CSSpeechController *)self xpcClient];
+  xpcClient = [(CSSpeechController *)self xpcClient];
 
-  if (v3)
+  if (xpcClient)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -6998,7 +6998,7 @@ void __81__CSSpeechController__activateAudioSessionWithReason_delay_delayRequest
     }
   }
 
-  result = v3 != 0;
+  result = xpcClient != 0;
   v7 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -7049,10 +7049,10 @@ uint64_t __43__CSSpeechController__fetchLastTriggerInfo__block_invoke_2(uint64_t
   return result;
 }
 
-- (BOOL)prepareRecordWithSettings:(id)a3 error:(id *)a4
+- (BOOL)prepareRecordWithSettings:(id)settings error:(id *)error
 {
   v107 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  settingsCopy = settings;
   v7 = MEMORY[0x277D015C0];
   v8 = *MEMORY[0x277D015C0];
   v9 = &off_222FB8000;
@@ -7061,30 +7061,30 @@ uint64_t __43__CSSpeechController__fetchLastTriggerInfo__block_invoke_2(uint64_t
     *buf = 136315394;
     v102 = "[CSSpeechController prepareRecordWithSettings:error:]";
     v103 = 2114;
-    v104 = v6;
+    v104 = settingsCopy;
     _os_log_impl(&dword_222E4D000, v8, OS_LOG_TYPE_DEFAULT, "%s settings : %{public}@", buf, 0x16u);
   }
 
   kdebug_trace();
-  if (!v6)
+  if (!settingsCopy)
   {
     goto LABEL_7;
   }
 
-  v10 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_DictationRequestAppBundleID"];
+  v10 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_DictationRequestAppBundleID"];
   if (!v10)
   {
     goto LABEL_8;
   }
 
   v11 = v10;
-  v12 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_DictationRequestAppBundleID"];
+  v12 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_DictationRequestAppBundleID"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_DictationRequestAppBundleID"];
+    v10 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_DictationRequestAppBundleID"];
   }
 
   else
@@ -7104,15 +7104,15 @@ LABEL_8:
 
   v15 = 0;
   v16 = 0.0;
-  if (v6 && self->_supportSessionActivateDelay)
+  if (settingsCopy && self->_supportSessionActivateDelay)
   {
-    v17 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveDelay"];
+    v17 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveDelay"];
     objc_opt_class();
     v18 = objc_opt_isKindOfClass();
 
     if (v18)
     {
-      v19 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveDelay"];
+      v19 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveDelay"];
       [v19 floatValue];
       v16 = v20;
 
@@ -7132,21 +7132,21 @@ LABEL_8:
   block[3] = &unk_2784C6FD0;
   block[4] = self;
   dispatch_async_and_wait(contextResetQueue, block);
-  v22 = [(CSSpeechController *)self sessionProvider];
+  sessionProvider = [(CSSpeechController *)self sessionProvider];
 
-  if (v22)
+  if (sessionProvider)
   {
-    v23 = [(CSSpeechController *)self audioRecordContext];
-    v24 = [(CSSpeechController *)self _considerSmartRoutingForAudioRecordContext:v23];
+    audioRecordContext = [(CSSpeechController *)self audioRecordContext];
+    v24 = [(CSSpeechController *)self _considerSmartRoutingForAudioRecordContext:audioRecordContext];
 
-    v25 = [(CSSpeechController *)self sessionProvider];
-    [v25 enableSmartRoutingConsideration:v24];
+    sessionProvider2 = [(CSSpeechController *)self sessionProvider];
+    [sessionProvider2 enableSmartRoutingConsideration:v24];
   }
 
-  v26 = [(CSSpeechController *)self sessionProvider];
+  sessionProvider3 = [(CSSpeechController *)self sessionProvider];
 
-  v93 = a4;
-  if (!v26)
+  errorCopy = error;
+  if (!sessionProvider3)
   {
     v31 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR))
@@ -7154,7 +7154,7 @@ LABEL_8:
       *buf = 136315138;
       v102 = "[CSSpeechController prepareRecordWithSettings:error:]";
       _os_log_error_impl(&dword_222E4D000, v31, OS_LOG_TYPE_ERROR, "%s Session Provider does not exist", buf, 0xCu);
-      if (!v6)
+      if (!settingsCopy)
       {
         goto LABEL_31;
       }
@@ -7163,7 +7163,7 @@ LABEL_8:
     }
 
 LABEL_25:
-    if (!v6)
+    if (!settingsCopy)
     {
       goto LABEL_31;
     }
@@ -7171,12 +7171,12 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!v6 || !self->_supportHearstVoiceTrigger)
+  if (!settingsCopy || !self->_supportHearstVoiceTrigger)
   {
     goto LABEL_25;
   }
 
-  v27 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
+  v27 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
   objc_opt_class();
   v28 = objc_opt_isKindOfClass();
 
@@ -7185,10 +7185,10 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v29 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
-  v30 = [v29 integerValue];
+  v29 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
+  integerValue = [v29 integerValue];
 
-  if (v30 == 2)
+  if (integerValue == 2)
   {
     if (([(CSAudioRecordContext *)self->_audioRecordContext isTriggeredFromHearst]& 1) == 0)
     {
@@ -7198,33 +7198,33 @@ LABEL_25:
 
   else
   {
-    v36 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
-    v37 = [v36 integerValue];
+    v36 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
+    integerValue2 = [v36 integerValue];
 
-    if (v37 != 3)
+    if (integerValue2 != 3)
     {
       goto LABEL_26;
     }
   }
 
-  v38 = [(CSSpeechController *)self sessionProvider];
-  [v38 enableMiniDucking:v30 == 2];
+  sessionProvider4 = [(CSSpeechController *)self sessionProvider];
+  [sessionProvider4 enableMiniDucking:integerValue == 2];
 
 LABEL_26:
-  v32 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
+  v32 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
   objc_opt_class();
   v33 = objc_opt_isKindOfClass();
 
   if (v33)
   {
-    v34 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
-    v35 = [v34 integerValue];
+    v34 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_AudioSessionActiveReason"];
+    integerValue3 = [v34 integerValue];
 
     goto LABEL_32;
   }
 
 LABEL_31:
-  v35 = 0;
+  integerValue3 = 0;
 LABEL_32:
   if (([(CSSpeechController *)self _shouldFetchVoiceTriggerInfo]|| [(CSSpeechController *)self _shouldFetchRaiseToSpeakInfo]) && ![(CSSpeechController *)self _fetchLastTriggerInfo])
   {
@@ -7235,7 +7235,7 @@ LABEL_32:
   else
   {
     v99 = 0;
-    v39 = [(CSSpeechController *)self _activateAudioSessionWithReason:v35 delay:v15 delayRequested:&v99 error:v16];
+    v39 = [(CSSpeechController *)self _activateAudioSessionWithReason:integerValue3 delay:v15 delayRequested:&v99 error:v16];
     v40 = v99;
   }
 
@@ -7246,16 +7246,16 @@ LABEL_32:
     goto LABEL_46;
   }
 
-  v43 = [v40 domain];
-  if (([v43 isEqualToString:*MEMORY[0x277CCA590]] & 1) == 0)
+  domain = [v40 domain];
+  if (([domain isEqualToString:*MEMORY[0x277CCA590]] & 1) == 0)
   {
 
     goto LABEL_45;
   }
 
-  v44 = [v40 code];
+  code = [v40 code];
 
-  if (v44 != -11795)
+  if (code != -11795)
   {
 LABEL_45:
     v42 = 0;
@@ -7278,13 +7278,13 @@ LABEL_45:
   v98[4] = self;
   dispatch_async_and_wait(v46, v98);
   v97 = v40;
-  v42 = [(CSSpeechController *)self _activateAudioSessionWithReason:v35 error:&v97];
+  v42 = [(CSSpeechController *)self _activateAudioSessionWithReason:integerValue3 error:&v97];
   v47 = v97;
 
   v40 = v47;
 LABEL_46:
-  v48 = [(CSAudioRecordContext *)self->_audioRecordContext isContinuousConversation];
-  if (v48)
+  isContinuousConversation = [(CSAudioRecordContext *)self->_audioRecordContext isContinuousConversation];
+  if (isContinuousConversation)
   {
     v49 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
@@ -7301,14 +7301,14 @@ LABEL_46:
     goto LABEL_79;
   }
 
-  v50 = [(CSSpeechController *)self audioStream];
-  if (v50)
+  audioStream = [(CSSpeechController *)self audioStream];
+  if (audioStream)
   {
-    v51 = v50;
-    v52 = [(CSSpeechController *)self audioStream];
-    v53 = [v52 isStreaming];
+    v51 = audioStream;
+    audioStream2 = [(CSSpeechController *)self audioStream];
+    isStreaming = [audioStream2 isStreaming];
 
-    if (v53)
+    if (isStreaming)
     {
       v54 = *v7;
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
@@ -7323,21 +7323,21 @@ LABEL_46:
     }
   }
 
-  v56 = [(CSSpeechController *)self audioStream];
+  audioStream3 = [(CSSpeechController *)self audioStream];
 
-  if (v56)
+  if (audioStream3)
   {
     v57 = MEMORY[0x277D016A0];
-    v58 = [(CSSpeechController *)self audioRecordContext];
-    v59 = [v57 defaultRequestWithContext:v58];
+    audioRecordContext2 = [(CSSpeechController *)self audioRecordContext];
+    v59 = [v57 defaultRequestWithContext:audioRecordContext2];
 
     [v59 setClientIdentity:1];
-    [v59 setRequestSkipClientMonitorUpdate:v48];
+    [v59 setRequestSkipClientMonitorUpdate:isContinuousConversation];
     [v59 setRequestRecordModeLock:1];
     [v59 setRequestListeningMicIndicatorLock:1];
-    v60 = [(CSSpeechController *)self audioStream];
+    audioStream4 = [(CSSpeechController *)self audioStream];
     v96 = 0;
-    v55 = [v60 prepareAudioStreamSyncWithRequest:v59 error:&v96];
+    v55 = [audioStream4 prepareAudioStreamSyncWithRequest:v59 error:&v96];
     v61 = v96;
 
     v62 = *v7;
@@ -7359,36 +7359,36 @@ LABEL_78:
     }
 
     v64 = v62;
-    v65 = [v61 localizedDescription];
+    localizedDescription = [v61 localizedDescription];
     *buf = 136315650;
     v102 = "[CSSpeechController prepareRecordWithSettings:error:]";
     v103 = 2114;
     v104 = v63;
     v9 = &off_222FB8000;
     v105 = 2114;
-    v106 = v65;
+    v106 = localizedDescription;
     _os_log_impl(&dword_222E4D000, v64, OS_LOG_TYPE_DEFAULT, "%s Prepare audio stream succeeded ? %{public}@, error - %{public}@", buf, 0x20u);
 
     goto LABEL_76;
   }
 
-  v66 = [(CSSpeechController *)self streamProvider];
+  streamProvider = [(CSSpeechController *)self streamProvider];
 
-  if (v66)
+  if (streamProvider)
   {
     v67 = MEMORY[0x277D016A0];
-    v68 = [(CSSpeechController *)self audioRecordContext];
-    v59 = [v67 defaultRequestWithContext:v68];
+    audioRecordContext3 = [(CSSpeechController *)self audioRecordContext];
+    v59 = [v67 defaultRequestWithContext:audioRecordContext3];
 
     [v59 setClientIdentity:1];
-    [v59 setRequestSkipClientMonitorUpdate:v48];
+    [v59 setRequestSkipClientMonitorUpdate:isContinuousConversation];
     [v59 setRequestRecordModeLock:1];
     [v59 setRequestListeningMicIndicatorLock:1];
-    v69 = [(CSSpeechController *)self streamProvider];
+    streamProvider2 = [(CSSpeechController *)self streamProvider];
     v70 = objc_opt_class();
     v71 = NSStringFromClass(v70);
     v95 = 0;
-    v64 = [v69 audioStreamWithRequest:v59 streamName:v71 error:&v95];
+    v64 = [streamProvider2 audioStreamWithRequest:v59 streamName:v71 error:&v95];
     v61 = v95;
 
     v7 = MEMORY[0x277D015C0];
@@ -7406,14 +7406,14 @@ LABEL_78:
       }
 
       v74 = v72;
-      v75 = [v61 localizedDescription];
+      localizedDescription2 = [v61 localizedDescription];
       *buf = 136315650;
       v102 = "[CSSpeechController prepareRecordWithSettings:error:]";
       v103 = 2114;
       v104 = v73;
       v9 = &off_222FB8000;
       v105 = 2114;
-      v106 = v75;
+      v106 = localizedDescription2;
       _os_log_impl(&dword_222E4D000, v74, OS_LOG_TYPE_DEFAULT, "%s audioStreamWithRequest succeeded ? %{public}@, error - %{public}@", buf, 0x20u);
 
       v7 = MEMORY[0x277D015C0];
@@ -7433,11 +7433,11 @@ LABEL_77:
     if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
     {
       v91 = v78;
-      v92 = [v61 localizedDescription];
+      localizedDescription3 = [v61 localizedDescription];
       *buf = 136315394;
       v102 = "[CSSpeechController prepareRecordWithSettings:error:]";
       v103 = 2114;
-      v104 = v92;
+      v104 = localizedDescription3;
       _os_log_error_impl(&dword_222E4D000, v91, OS_LOG_TYPE_ERROR, "%s Failed to get audioStream : %{public}@", buf, 0x16u);
     }
 
@@ -7462,26 +7462,26 @@ LABEL_76:
   v55 = 0;
   v40 = v77;
 LABEL_79:
-  v80 = [(CSSpeechController *)self streamProvider];
-  self->_isNarrowBand = [v80 isNarrowBand];
+  streamProvider3 = [(CSSpeechController *)self streamProvider];
+  self->_isNarrowBand = [streamProvider3 isNarrowBand];
 
   if (self->_isNarrowBand)
   {
     [(CSSpeechController *)self _setupDownsamplerIfNeeded];
   }
 
-  if (v6)
+  if (settingsCopy)
   {
-    v81 = [(__CFString *)v6 objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_asrOnDevice"];
-    v82 = [v81 BOOLValue];
+    v81 = [(__CFString *)settingsCopy objectForKeyedSubscript:@"CSSpeechRecordSettingsKey_asrOnDevice"];
+    bOOLValue = [v81 BOOLValue];
   }
 
   else
   {
-    v82 = 0;
+    bOOLValue = 0;
   }
 
-  if (!v55 || (v82 & 1) != 0)
+  if (!v55 || (bOOLValue & 1) != 0)
   {
     v84 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
@@ -7505,10 +7505,10 @@ LABEL_79:
   }
 
   kdebug_trace();
-  if (v93)
+  if (errorCopy)
   {
     v85 = v40;
-    *v93 = v40;
+    *errorCopy = v40;
   }
 
   if (v55)
@@ -7559,16 +7559,16 @@ void __54__CSSpeechController_prepareRecordWithSettings_error___block_invoke_224
   [v1 _fetchAudioProviderWithContext:v2];
 }
 
-- (BOOL)_considerSmartRoutingForAudioRecordContext:(id)a3
+- (BOOL)_considerSmartRoutingForAudioRecordContext:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   if (![MEMORY[0x277D018F8] supportsHearstSmartRoutingImprovements])
   {
     goto LABEL_13;
   }
 
-  if ([v3 isHearstDoubleTapTriggered])
+  if ([contextCopy isHearstDoubleTapTriggered])
   {
     v4 = *MEMORY[0x277D015C0];
     if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
@@ -7584,9 +7584,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![v3 isHearstVoiceTriggered])
+  if (![contextCopy isHearstVoiceTriggered])
   {
-    [v3 speechEvent];
+    [contextCopy speechEvent];
     if (AFSpeechEventIsSmartRoutingEligible())
     {
       v4 = *MEMORY[0x277D015C0];
@@ -7649,13 +7649,13 @@ LABEL_14:
   else
   {
     v6 = +[CSVoiceTriggerAssetHandler sharedHandlerDisabledOnDeviceCompilation];
-    v7 = [(NSUUID *)self->_endpointId UUIDString];
+    uUIDString = [(NSUUID *)self->_endpointId UUIDString];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __37__CSSpeechController_startController__block_invoke;
     v10[3] = &unk_2784C6B78;
     v10[4] = self;
-    [v6 getVoiceTriggerAssetWithEndpointId:v7 completion:v10];
+    [v6 getVoiceTriggerAssetWithEndpointId:uUIDString completion:v10];
 
     v8 = +[CSVoiceTriggerAssetHandler sharedHandlerDisabledOnDeviceCompilation];
     [v8 registerObserver:self];
@@ -7705,22 +7705,22 @@ void __37__CSSpeechController_startController__block_invoke(uint64_t a1, void *a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)initializeRecordSessionWithRecordContext:(id)a3
+- (BOOL)initializeRecordSessionWithRecordContext:(id)context
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = *MEMORY[0x277D015C0];
   if (os_log_type_enabled(*MEMORY[0x277D015C0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[CSSpeechController initializeRecordSessionWithRecordContext:]";
     v11 = 2114;
-    v12 = v4;
+    v12 = contextCopy;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s Record Context: %{public}@", &v9, 0x16u);
   }
 
   kdebug_trace();
-  v6 = [(CSSpeechController *)self setCurrentRecordContext:v4 error:0];
+  v6 = [(CSSpeechController *)self setCurrentRecordContext:contextCopy error:0];
   kdebug_trace();
 
   v7 = *MEMORY[0x277D85DE8];
@@ -7859,8 +7859,8 @@ uint64_t __50__CSSpeechController__initializeMediaPlayingState__block_invoke_2(u
   if (self->_endpointId)
   {
     v2 = objc_alloc(MEMORY[0x277D5E1C8]);
-    v3 = [MEMORY[0x277CEF2C8] currentContext];
-    v4 = [v2 initWithInstanceContext:v3];
+    currentContext = [MEMORY[0x277CEF2C8] currentContext];
+    v4 = [v2 initWithInstanceContext:currentContext];
   }
 
   else
@@ -7876,8 +7876,8 @@ uint64_t __50__CSSpeechController__initializeMediaPlayingState__block_invoke_2(u
   if (self->_endpointId)
   {
     v2 = objc_alloc(MEMORY[0x277D5E1C0]);
-    v3 = [MEMORY[0x277CEF2C8] currentContext];
-    v4 = [v2 initWithInstanceContext:v3];
+    currentContext = [MEMORY[0x277CEF2C8] currentContext];
+    v4 = [v2 initWithInstanceContext:currentContext];
   }
 
   else
@@ -7901,8 +7901,8 @@ uint64_t __50__CSSpeechController__initializeMediaPlayingState__block_invoke_2(u
   v9 = self->_mediaPlayingObserverQueue;
   if (endpointId)
   {
-    v10 = [MEMORY[0x277CEF2C8] currentContext];
-    v11 = [v8 initWithQueue:v9 instanceContext:v10];
+    currentContext = [MEMORY[0x277CEF2C8] currentContext];
+    v11 = [v8 initWithQueue:v9 instanceContext:currentContext];
   }
 
   else
@@ -7923,17 +7923,17 @@ uint64_t __50__CSSpeechController__initializeMediaPlayingState__block_invoke_2(u
   return MEMORY[0x2821416B0]();
 }
 
-- (id)_getSerialQueueWithName:(id)a3 targetQueue:(id)a4
+- (id)_getSerialQueueWithName:(id)name targetQueue:(id)queue
 {
-  v5 = a4;
-  if (v5)
+  queueCopy = queue;
+  if (queueCopy)
   {
-    v6 = dispatch_queue_create_with_target_V2([a3 UTF8String], 0, v5);
+    v6 = dispatch_queue_create_with_target_V2([name UTF8String], 0, queueCopy);
   }
 
   else
   {
-    v6 = [MEMORY[0x277D018F8] getSerialQueueWithQOS:33 name:a3 fixedPriority:*MEMORY[0x277D019B0]];
+    v6 = [MEMORY[0x277D018F8] getSerialQueueWithQOS:33 name:name fixedPriority:*MEMORY[0x277D019B0]];
   }
 
   v7 = v6;
@@ -7941,18 +7941,18 @@ uint64_t __50__CSSpeechController__initializeMediaPlayingState__block_invoke_2(u
   return v7;
 }
 
-- (CSSpeechController)initWithEndpointId:(id)a3 xpcClientFactory:(id)a4 endpointAnalyzer:(id)a5 continuousVoiceTrigger:(id)a6 siriVolumeController:(id)a7 mediaPlayingMonitor:(id)a8 alarmMonitor:(id)a9 timerMonitor:(id)a10 audioSessionController:(id)a11 supportPhatic:(BOOL)a12 supportHearstVoiceTrigger:(BOOL)a13 supportTriagleModeSessionActivationRetry:(BOOL)a14 supportSessionActivateDelay:(BOOL)a15 supportsDuckingOnSpeakerEvaluator:(id)a16
+- (CSSpeechController)initWithEndpointId:(id)id xpcClientFactory:(id)factory endpointAnalyzer:(id)analyzer continuousVoiceTrigger:(id)trigger siriVolumeController:(id)controller mediaPlayingMonitor:(id)monitor alarmMonitor:(id)alarmMonitor timerMonitor:(id)self0 audioSessionController:(id)self1 supportPhatic:(BOOL)self2 supportHearstVoiceTrigger:(BOOL)self3 supportTriagleModeSessionActivationRetry:(BOOL)self4 supportSessionActivateDelay:(BOOL)self5 supportsDuckingOnSpeakerEvaluator:(id)self6
 {
-  v93 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a7;
-  v92 = a8;
-  v26 = a9;
-  v27 = a10;
-  v28 = a11;
-  v29 = a16;
+  idCopy = id;
+  factoryCopy = factory;
+  analyzerCopy = analyzer;
+  triggerCopy = trigger;
+  controllerCopy = controller;
+  monitorCopy = monitor;
+  alarmMonitorCopy = alarmMonitor;
+  timerMonitorCopy = timerMonitor;
+  sessionControllerCopy = sessionController;
+  evaluatorCopy = evaluator;
   v96.receiver = self;
   v96.super_class = CSSpeechController;
   v30 = [(CSSpeechController *)&v96 init];
@@ -7961,19 +7961,19 @@ uint64_t __50__CSSpeechController__initializeMediaPlayingState__block_invoke_2(u
     goto LABEL_59;
   }
 
-  v90 = v28;
-  v91 = v29;
-  v88 = v27;
-  v31 = v26;
-  v32 = v25;
-  v33 = v24;
-  v34 = v23;
-  v35 = v22;
+  v90 = sessionControllerCopy;
+  v91 = evaluatorCopy;
+  v88 = timerMonitorCopy;
+  v31 = alarmMonitorCopy;
+  v32 = controllerCopy;
+  v33 = triggerCopy;
+  v34 = analyzerCopy;
+  v35 = factoryCopy;
   CSLogInitIfNeeded();
-  v30->_supportPhatic = a12;
-  v30->_supportHearstVoiceTrigger = a13;
-  v30->_supportTriagleModeSessionActivationRetry = a14;
-  v30->_supportSessionActivateDelay = a15;
+  v30->_supportPhatic = phatic;
+  v30->_supportHearstVoiceTrigger = voiceTrigger;
+  v30->_supportTriagleModeSessionActivationRetry = retry;
+  v30->_supportSessionActivateDelay = delay;
   if ([MEMORY[0x277D018F8] supportsDispatchWorkloop])
   {
     v36 = 0;
@@ -7998,30 +7998,30 @@ uint64_t __50__CSSpeechController__initializeMediaPlayingState__block_invoke_2(u
   bundleIdFromDictation = v30->_bundleIdFromDictation;
   v30->_bundleIdFromDictation = 0;
 
-  v42 = [v93 copy];
+  v42 = [idCopy copy];
   endpointId = v30->_endpointId;
   v30->_endpointId = v42;
 
-  v22 = v35;
-  v23 = v34;
+  factoryCopy = v35;
+  analyzerCopy = v34;
   if (v34)
   {
     v44 = v34;
     endpointAnalyzer = v30->_endpointAnalyzer;
     v30->_endpointAnalyzer = v44;
-    v24 = v33;
-    v25 = v32;
-    v26 = v31;
-    v27 = v88;
+    triggerCopy = v33;
+    controllerCopy = v32;
+    alarmMonitorCopy = v31;
+    timerMonitorCopy = v88;
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v24 = v33;
-  v25 = v32;
-  v26 = v31;
-  v27 = v88;
+  triggerCopy = v33;
+  controllerCopy = v32;
+  alarmMonitorCopy = v31;
+  timerMonitorCopy = v88;
   if (!CSIsTV() || ([MEMORY[0x277D018F8] supportsEndpointingOnATV] & 1) != 0 || objc_msgSend(MEMORY[0x277D018F8], "supportHomeKitAccessory") && v30->_endpointId)
   {
     v46 = [CSEndpointerFactory endpointAnalyzer:v30->_endpointId != 0];
@@ -8038,8 +8038,8 @@ LABEL_13:
     v30->_rcHandlingClient = v47;
   }
 
-  v49 = [MEMORY[0x277D01788] sharedPreferences];
-  v30->_twoShotNotificationEnabled = [v49 twoShotNotificationEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  v30->_twoShotNotificationEnabled = [mEMORY[0x277D01788] twoShotNotificationEnabled];
 
   if (CSIsInternalBuild())
   {
@@ -8051,7 +8051,7 @@ LABEL_13:
     continuousZeroCounter = v30->_continuousZeroCounter;
     v30->_continuousZeroCounter = v54;
 
-    v28 = v90;
+    sessionControllerCopy = v90;
   }
 
   if (v30->_supportPhatic)
@@ -8067,51 +8067,51 @@ LABEL_13:
 
   if ([(CSSpeechController *)v30 _shouldUseSoundPlaybackMonitors])
   {
-    if (v92)
+    if (monitorCopy)
     {
-      v60 = v92;
+      _createMediaPlayingMonitor = monitorCopy;
     }
 
     else
     {
-      v60 = [(CSSpeechController *)v30 _createMediaPlayingMonitor];
+      _createMediaPlayingMonitor = [(CSSpeechController *)v30 _createMediaPlayingMonitor];
     }
 
     mediaPlayingMonitor = v30->_mediaPlayingMonitor;
-    v30->_mediaPlayingMonitor = v60;
+    v30->_mediaPlayingMonitor = _createMediaPlayingMonitor;
 
     [(CSSpeechController *)v30 _initializeMediaPlayingState];
-    if (v26)
+    if (alarmMonitorCopy)
     {
-      v62 = v26;
+      _createAlarmMonitor = alarmMonitorCopy;
     }
 
     else
     {
-      v62 = [(CSSpeechController *)v30 _createAlarmMonitor];
+      _createAlarmMonitor = [(CSSpeechController *)v30 _createAlarmMonitor];
     }
 
     alarmMonitor = v30->_alarmMonitor;
-    v30->_alarmMonitor = v62;
+    v30->_alarmMonitor = _createAlarmMonitor;
 
     [(CSSpeechController *)v30 _initializeAlarmState];
-    if (v27)
+    if (timerMonitorCopy)
     {
-      v64 = v27;
+      _createTimerMonitor = timerMonitorCopy;
     }
 
     else
     {
-      v64 = [(CSSpeechController *)v30 _createTimerMonitor];
+      _createTimerMonitor = [(CSSpeechController *)v30 _createTimerMonitor];
     }
 
     timerMonitor = v30->_timerMonitor;
-    v30->_timerMonitor = v64;
+    v30->_timerMonitor = _createTimerMonitor;
 
     [(CSSpeechController *)v30 _initializeTimerState];
-    v66 = [MEMORY[0x277D01968] sharedInstance];
+    mEMORY[0x277D01968] = [MEMORY[0x277D01968] sharedInstance];
     volumeMonitor = v30->_volumeMonitor;
-    v30->_volumeMonitor = v66;
+    v30->_volumeMonitor = mEMORY[0x277D01968];
 
     [(CSVolumeMonitor *)v30->_volumeMonitor addObserver:v30];
   }
@@ -8123,9 +8123,9 @@ LABEL_13:
     v30->_speechEndHostTimeEstimator = v68;
   }
 
-  if (v25)
+  if (controllerCopy)
   {
-    v70 = v25;
+    v70 = controllerCopy;
 LABEL_35:
     volumeController = v30->_volumeController;
     v30->_volumeController = v70;
@@ -8141,9 +8141,9 @@ LABEL_35:
   }
 
 LABEL_38:
-  if (v24)
+  if (triggerCopy)
   {
-    v72 = v24;
+    v72 = triggerCopy;
 LABEL_42:
     continuousVoiceTrigger = v30->_continuousVoiceTrigger;
     v30->_continuousVoiceTrigger = v72;
@@ -8162,9 +8162,9 @@ LABEL_43:
   if ([(CSSpeechController *)v30 _isHubRequestTV])
   {
     v30->_decoderProcessedSampleCountForTV = 0;
-    v74 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     decodersForTV = v30->_decodersForTV;
-    v30->_decodersForTV = v74;
+    v30->_decodersForTV = dictionary;
   }
 
   v30->_isAudioSessionActivated = 0;
@@ -8178,13 +8178,13 @@ LABEL_43:
   voiceProfileManager = v30->_voiceProfileManager;
   v30->_voiceProfileManager = v77;
 
-  v79 = [MEMORY[0x277D017D8] sharedInstance];
-  [v79 addObserver:v30];
+  mEMORY[0x277D017D8] = [MEMORY[0x277D017D8] sharedInstance];
+  [mEMORY[0x277D017D8] addObserver:v30];
 
   v30->_setupStarted = 0;
-  if (v22)
+  if (factoryCopy)
   {
-    v80 = v22;
+    v80 = factoryCopy;
   }
 
   else
@@ -8195,9 +8195,9 @@ LABEL_43:
   xpcClientFactory = v30->_xpcClientFactory;
   v30->_xpcClientFactory = v80;
 
-  if (v28)
+  if (sessionControllerCopy)
   {
-    v82 = v28;
+    v82 = sessionControllerCopy;
   }
 
   else
@@ -8229,18 +8229,18 @@ LABEL_43:
   v95 = v30;
   dispatch_async(v86, block);
 
-  v29 = v91;
+  evaluatorCopy = v91;
 LABEL_59:
 
   return v30;
 }
 
-- (CSSpeechController)initWithEndpointId:(id)a3
+- (CSSpeechController)initWithEndpointId:(id)id
 {
   v4 = MEMORY[0x277D018F8];
-  v5 = a3;
-  v6 = [v4 supportPhatic];
-  v7 = [MEMORY[0x277D018F8] supportHearstVoiceTrigger];
+  idCopy = id;
+  supportPhatic = [v4 supportPhatic];
+  supportHearstVoiceTrigger = [MEMORY[0x277D018F8] supportHearstVoiceTrigger];
   if (CSIsIOS())
   {
     v8 = CSIsHorseman() ^ 1;
@@ -8253,9 +8253,9 @@ LABEL_59:
 
   BYTE3(v11) = [MEMORY[0x277D018F8] supportSessionActivateDelay];
   BYTE2(v11) = v8;
-  BYTE1(v11) = v7;
-  LOBYTE(v11) = v6;
-  v9 = [CSSpeechController initWithEndpointId:"initWithEndpointId:xpcClientFactory:endpointAnalyzer:continuousVoiceTrigger:siriVolumeController:mediaPlayingMonitor:alarmMonitor:timerMonitor:audioSessionController:supportPhatic:supportHearstVoiceTrigger:supportTriagleModeSessionActivationRetry:supportSessionActivateDelay:supportsDuckingOnSpeakerEvaluator:" xpcClientFactory:v5 endpointAnalyzer:0 continuousVoiceTrigger:0 siriVolumeController:0 mediaPlayingMonitor:0 alarmMonitor:0 timerMonitor:0 audioSessionController:0 supportPhatic:0 supportHearstVoiceTrigger:v11 supportTriagleModeSessionActivationRetry:0 supportSessionActivateDelay:? supportsDuckingOnSpeakerEvaluator:?];
+  BYTE1(v11) = supportHearstVoiceTrigger;
+  LOBYTE(v11) = supportPhatic;
+  v9 = [CSSpeechController initWithEndpointId:"initWithEndpointId:xpcClientFactory:endpointAnalyzer:continuousVoiceTrigger:siriVolumeController:mediaPlayingMonitor:alarmMonitor:timerMonitor:audioSessionController:supportPhatic:supportHearstVoiceTrigger:supportTriagleModeSessionActivationRetry:supportSessionActivateDelay:supportsDuckingOnSpeakerEvaluator:" xpcClientFactory:idCopy endpointAnalyzer:0 continuousVoiceTrigger:0 siriVolumeController:0 mediaPlayingMonitor:0 alarmMonitor:0 timerMonitor:0 audioSessionController:0 supportPhatic:0 supportHearstVoiceTrigger:v11 supportTriagleModeSessionActivationRetry:0 supportSessionActivateDelay:? supportsDuckingOnSpeakerEvaluator:?];
 
   return v9;
 }

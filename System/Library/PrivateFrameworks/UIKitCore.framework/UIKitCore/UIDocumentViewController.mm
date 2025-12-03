@@ -1,18 +1,18 @@
 @interface UIDocumentViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (UIBarButtonItemGroup)undoRedoItemGroup;
 - (UIDocumentViewController)initWithDocument:(UIDocument *)document;
 - (UIDocumentViewControllerLaunchOptions)launchOptions;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
 - (dispatch_queue_t)documentBackgroundQueue;
 - (id)documentMovedPopover;
 - (id)undoManager;
-- (void)_closeDocumentIfNecessary:(id)a3 completionHandler:(id)a4;
-- (void)_documentDidMoveToWritableLocation:(id)a3;
+- (void)_closeDocumentIfNecessary:(id)necessary completionHandler:(id)handler;
+- (void)_documentDidMoveToWritableLocation:(id)location;
 - (void)_documentDidOpen;
-- (void)_documentStateChanged:(id)a3;
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4;
-- (void)_localizedNameChanged:(id)a3;
+- (void)_documentStateChanged:(id)changed;
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector;
+- (void)_localizedNameChanged:(id)changed;
 - (void)_performDocumentUnavailableConfigurationUpdate;
 - (void)_performOpenByClosingExistingDocument;
 - (void)_registerDocumentAssociation;
@@ -24,32 +24,32 @@
 - (void)_updateNavigationItem;
 - (void)_updateUndoManagerBinding;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)open:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)open:(id)open;
 - (void)openDocumentWithCompletionHandler:(void *)completionHandler;
-- (void)redo:(id)a3;
+- (void)redo:(id)redo;
 - (void)setDocument:(UIDocument *)document;
-- (void)setLaunchOptions:(id)a3;
-- (void)setView:(id)a3;
-- (void)undo:(id)a3;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)setLaunchOptions:(id)options;
+- (void)setView:(id)view;
+- (void)undo:(id)undo;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation UIDocumentViewController
 
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = self;
-  UIDocumentViewController._intelligenceCollectContent(in:collector:)(v9, x, y, width, height);
+  height = in.size.height;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
+  collectorCopy = collector;
+  selfCopy = self;
+  UIDocumentViewController._intelligenceCollectContent(in:collector:)(collectorCopy, x, y, width, height);
 }
 
 - (UIDocumentViewController)initWithDocument:(UIDocument *)document
@@ -70,26 +70,26 @@
   {
     [(UIDocumentViewController *)self _unregisterDocumentObservers];
     [(UIDocumentViewController *)self _unregisterDocumentAssociation];
-    v5 = [(UIDocumentViewController *)self document];
-    [(UIDocumentViewController *)self _closeDocumentIfNecessary:v5 completionHandler:0];
+    document = [(UIDocumentViewController *)self document];
+    [(UIDocumentViewController *)self _closeDocumentIfNecessary:document completionHandler:0];
 
     *&self->_flags &= ~2u;
     objc_storeStrong(&self->_document, document);
     [(UIDocumentViewController *)self _registerDocumentObservers];
     [(UIDocumentViewController *)self _registerDocumentAssociation];
     [(UIDocumentViewController *)self _updateUndoManagerBinding];
-    v6 = [(UIDocument *)document userActivity];
-    [(UIViewController *)self setUserActivity:v6];
+    userActivity = [(UIDocument *)document userActivity];
+    [(UIViewController *)self setUserActivity:userActivity];
 
-    v7 = [(UIDocumentViewController *)self launchOptions];
-    [(UIDocumentViewControllerLaunchOptions *)v7 _documentDidChange];
+    launchOptions = [(UIDocumentViewController *)self launchOptions];
+    [(UIDocumentViewControllerLaunchOptions *)launchOptions _documentDidChange];
 
     [(UIDocumentViewController *)self _updateNavigationItem];
     [(UIDocumentViewController *)self _setNeedsUpdateDocumentUnavailableConfiguration];
-    v8 = [(UIViewController *)self _appearState];
+    _appearState = [(UIViewController *)self _appearState];
     if (document)
     {
-      if ((v8 - 1) <= 1)
+      if ((_appearState - 1) <= 1)
       {
 
         [(UIDocumentViewController *)self openDocumentWithCompletionHandler:&__block_literal_global_6_8];
@@ -100,7 +100,7 @@
 
 - (void)_setNeedsUpdateDocumentUnavailableConfiguration
 {
-  if (a1)
+  if (self)
   {
     if (qword_1ED49A470 != -1)
     {
@@ -109,24 +109,24 @@
 
     if (_MergedGlobals_27_1 == 1)
     {
-      a1[992] |= 4u;
-      v2 = [a1 view];
-      [v2 setNeedsLayout];
+      self[992] |= 4u;
+      view = [self view];
+      [view setNeedsLayout];
     }
 
     else
     {
 
-      [a1 setNeedsUpdateContentUnavailableConfiguration];
+      [self setNeedsUpdateContentUnavailableConfiguration];
     }
   }
 }
 
 - (void)openDocumentWithCompletionHandler:(void *)completionHandler
 {
-  v5 = [(UIDocumentViewController *)self document];
-  v6 = v5;
-  if (!v5)
+  document = [(UIDocumentViewController *)self document];
+  v6 = document;
+  if (!document)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -140,7 +140,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v5 documentState] != 1)
+  if ([document documentState] != 1)
   {
     [(UIDocumentViewController *)self _documentDidOpen];
     block[0] = MEMORY[0x1E69E9820];
@@ -154,7 +154,7 @@ LABEL_6:
   }
 
   objc_initWeak(&location, self);
-  v7 = [(UIDocumentViewController *)self documentBackgroundQueue];
+  documentBackgroundQueue = [(UIDocumentViewController *)self documentBackgroundQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__UIDocumentViewController_openDocumentWithCompletionHandler___block_invoke_3;
@@ -162,7 +162,7 @@ LABEL_6:
   v11 = v6;
   objc_copyWeak(&v13, &location);
   v12 = completionHandler;
-  dispatch_async(v7, v10);
+  dispatch_async(documentBackgroundQueue, v10);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -193,13 +193,13 @@ uint64_t __62__UIDocumentViewController_openDocumentWithCompletionHandler___bloc
 
 - (dispatch_queue_t)documentBackgroundQueue
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1016);
+    v2 = *(self + 1016);
     if (!v2)
     {
       v2 = dispatch_queue_create("com.apple.uikit.documentviewcontroller", 0);
-      objc_storeStrong((a1 + 1016), v2);
+      objc_storeStrong((self + 1016), v2);
     }
   }
 
@@ -284,24 +284,24 @@ uint64_t __62__UIDocumentViewController_openDocumentWithCompletionHandler___bloc
   }
 }
 
-- (void)_closeDocumentIfNecessary:(id)a3 completionHandler:(id)a4
+- (void)_closeDocumentIfNecessary:(id)necessary completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = [(UIDocumentViewController *)&self->super.super.super.isa documentMovedPopover];
-  v8 = v7;
-  if (v7)
+  documentMovedPopover = [(UIDocumentViewController *)&self->super.super.super.isa documentMovedPopover];
+  v8 = documentMovedPopover;
+  if (documentMovedPopover)
   {
-    v9 = [v7 presentingViewController];
+    presentingViewController = [documentMovedPopover presentingViewController];
 
-    if (v9)
+    if (presentingViewController)
     {
       [v8 dismissViewControllerAnimated:1 completion:0];
     }
   }
 
-  if (a3 && [a3 documentState] != 1)
+  if (necessary && [necessary documentState] != 1)
   {
-    objc_getAssociatedObject(a3, &_UIDocumentAssociatedDocumentViewControllers);
+    objc_getAssociatedObject(necessary, &_UIDocumentAssociatedDocumentViewControllers);
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -327,7 +327,7 @@ uint64_t __62__UIDocumentViewController_openDocumentWithCompletionHandler___bloc
             v20[1] = 3221225472;
             v20[2] = __72__UIDocumentViewController__closeDocumentIfNecessary_completionHandler___block_invoke_2;
             v20[3] = &unk_1E70F0F78;
-            v20[4] = a4;
+            v20[4] = handler;
             dispatch_async(MEMORY[0x1E69E96A0], v20);
             v16 = v10;
             goto LABEL_17;
@@ -347,15 +347,15 @@ uint64_t __62__UIDocumentViewController_openDocumentWithCompletionHandler___bloc
       }
     }
 
-    v15 = [(UIDocumentViewController *)self documentBackgroundQueue];
+    documentBackgroundQueue = [(UIDocumentViewController *)self documentBackgroundQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __72__UIDocumentViewController__closeDocumentIfNecessary_completionHandler___block_invoke_3;
     v17[3] = &unk_1E70FCE28;
-    v17[4] = a3;
-    v18 = v15;
-    v19 = a4;
-    v16 = v15;
+    v17[4] = necessary;
+    v18 = documentBackgroundQueue;
+    handlerCopy = handler;
+    v16 = documentBackgroundQueue;
     dispatch_async(v16, v17);
 
 LABEL_17:
@@ -367,7 +367,7 @@ LABEL_17:
     block[1] = 3221225472;
     block[2] = __72__UIDocumentViewController__closeDocumentIfNecessary_completionHandler___block_invoke;
     block[3] = &unk_1E70F0F78;
-    block[4] = a4;
+    block[4] = handler;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -471,9 +471,9 @@ uint64_t __72__UIDocumentViewController__closeDocumentIfNecessary_completionHand
   return result;
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = [(UIDocumentViewController *)self document];
+  document = [(UIDocumentViewController *)self document];
   if (self)
   {
     v5 = *&self->_flags & 1;
@@ -490,7 +490,7 @@ uint64_t __72__UIDocumentViewController__closeDocumentIfNecessary_completionHand
   }
 
   v6 = 0;
-  if (((_MergedGlobals_27_1 | v5) & 1) == 0 && !v4)
+  if (((_MergedGlobals_27_1 | v5) & 1) == 0 && !document)
   {
     v6 = +[UIContentUnavailableConfiguration emptyConfiguration];
     v7 = [UIImage systemImageNamed:@"doc"];
@@ -503,16 +503,16 @@ uint64_t __72__UIDocumentViewController__closeDocumentIfNecessary_completionHand
     [v6 setSecondaryText:v9];
 
     v10 = +[UIColor systemBackgroundColor];
-    v11 = [v6 background];
-    [v11 setBackgroundColor:v10];
+    background = [v6 background];
+    [background setBackgroundColor:v10];
 
-    v12 = [(UIViewController *)self navigationController];
-    v13 = v12;
-    if (!v12 || [v12 isNavigationBarHidden])
+    navigationController = [(UIViewController *)self navigationController];
+    v13 = navigationController;
+    if (!navigationController || [navigationController isNavigationBarHidden])
     {
       v14 = _UILocalizedString(@"com.apple.documents.backaction", @"The title of the back button in a document based app that leads back to the document view controller.", @"Documents");
-      v15 = [v6 button];
-      [v15 setTitle:v14];
+      button = [v6 button];
+      [button setTitle:v14];
 
       objc_initWeak(&location, self);
       v18 = MEMORY[0x1E69E9820];
@@ -521,8 +521,8 @@ uint64_t __72__UIDocumentViewController__closeDocumentIfNecessary_completionHand
       v21 = &unk_1E70F7450;
       objc_copyWeak(&v22, &location);
       v16 = [UIAction actionWithHandler:&v18];
-      v17 = [v6 buttonProperties];
-      [v17 setPrimaryAction:v16];
+      buttonProperties = [v6 buttonProperties];
+      [buttonProperties setPrimaryAction:v16];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(&location);
@@ -543,8 +543,8 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
   if ((*&self->_flags & 4) != 0)
   {
     *&self->_flags &= ~4u;
-    v9 = [(UIDocumentViewController *)self launchOptions];
-    v4 = [(UIDocumentViewControllerLaunchOptions *)v9 _documentUnavailableConfiguration];
+    launchOptions = [(UIDocumentViewController *)self launchOptions];
+    _documentUnavailableConfiguration = [(UIDocumentViewControllerLaunchOptions *)launchOptions _documentUnavailableConfiguration];
     v5 = self->_launchViewController;
     if (!v5)
     {
@@ -561,9 +561,9 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
       else
       {
         v6 = [_UIDocumentLaunchViewController alloc];
-        v7 = [(UIDocumentViewController *)self launchOptions];
-        v8 = [(UIDocumentViewControllerLaunchOptions *)v7 _documentUnavailableConfiguration];
-        v5 = [(_UIDocumentLaunchViewController *)v6 initWithConfiguration:v8];
+        launchOptions2 = [(UIDocumentViewController *)self launchOptions];
+        _documentUnavailableConfiguration2 = [(UIDocumentViewControllerLaunchOptions *)launchOptions2 _documentUnavailableConfiguration];
+        v5 = [(_UIDocumentLaunchViewController *)v6 initWithConfiguration:_documentUnavailableConfiguration2];
 
         [(UIViewController *)self addChildViewController:v5];
         [(_UIDocumentLaunchViewController *)v5 didMoveToParentViewController:self];
@@ -571,7 +571,7 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
       }
     }
 
-    [(_UIDocumentLaunchViewController *)v5 setConfiguration:v4];
+    [(_UIDocumentLaunchViewController *)v5 setConfiguration:_documentUnavailableConfiguration];
   }
 }
 
@@ -596,20 +596,20 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
   return v3;
 }
 
-- (void)setLaunchOptions:(id)a3
+- (void)setLaunchOptions:(id)options
 {
   launchOptions = self->_launchOptions;
-  if (launchOptions != a3 && (*(&self->super._viewControllerFlags + 4) & 0x80) == 0)
+  if (launchOptions != options && (*(&self->super._viewControllerFlags + 4) & 0x80) == 0)
   {
     if (launchOptions)
     {
       objc_storeWeak(&launchOptions->__documentViewController, 0);
     }
 
-    objc_storeStrong(&self->_launchOptions, a3);
-    if (a3)
+    objc_storeStrong(&self->_launchOptions, options);
+    if (options)
     {
-      objc_storeWeak(a3 + 18, self);
+      objc_storeWeak(options + 18, self);
     }
 
     [(UIDocumentViewController *)self _setNeedsUpdateDocumentUnavailableConfiguration];
@@ -618,52 +618,52 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
 
 - (void)_registerDocumentObservers
 {
-  v6 = [(UIDocumentViewController *)self document];
-  self->_lastKnownState = [v6 documentState];
-  if (v6)
+  document = [(UIDocumentViewController *)self document];
+  self->_lastKnownState = [document documentState];
+  if (document)
   {
-    [v6 addObserver:self forKeyPath:@"undoManager" options:1 context:&unk_1ED49A46A];
-    [v6 addObserver:self forKeyPath:@"fileURL" options:1 context:&unk_1ED49A46C];
-    [v6 addObserver:self forKeyPath:@"userActivity" options:1 context:&unk_1ED49A46E];
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:self selector:sel__documentStateChanged_ name:@"UIDocumentStateChangedNotification" object:v6];
+    [document addObserver:self forKeyPath:@"undoManager" options:1 context:&unk_1ED49A46A];
+    [document addObserver:self forKeyPath:@"fileURL" options:1 context:&unk_1ED49A46C];
+    [document addObserver:self forKeyPath:@"userActivity" options:1 context:&unk_1ED49A46E];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__documentStateChanged_ name:@"UIDocumentStateChangedNotification" object:document];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__localizedNameChanged_ name:@"UIDocumentLocalizedNameChangedNotification" object:v6];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__localizedNameChanged_ name:@"UIDocumentLocalizedNameChangedNotification" object:document];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__documentDidMoveToWritableLocation_ name:@"UIDocumentDidMoveToWritableLocationNotification" object:v6];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel__documentDidMoveToWritableLocation_ name:@"UIDocumentDidMoveToWritableLocationNotification" object:document];
   }
 }
 
 - (void)_unregisterDocumentObservers
 {
-  v3 = [(UIDocumentViewController *)self document];
-  if (v3)
+  document = [(UIDocumentViewController *)self document];
+  if (document)
   {
-    v7 = v3;
-    [v3 removeObserver:self forKeyPath:@"undoManager" context:&unk_1ED49A46A];
+    v7 = document;
+    [document removeObserver:self forKeyPath:@"undoManager" context:&unk_1ED49A46A];
     [v7 removeObserver:self forKeyPath:@"fileURL" context:&unk_1ED49A46C];
     [v7 removeObserver:self forKeyPath:@"userActivity" context:&unk_1ED49A46E];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:@"UIDocumentStateChangedNotification" object:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIDocumentStateChangedNotification" object:v7];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:@"UIDocumentLocalizedNameChangedNotification" object:v7];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:@"UIDocumentLocalizedNameChangedNotification" object:v7];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"UIDocumentDidMoveToWritableLocationNotification" object:v7];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 removeObserver:self name:@"UIDocumentDidMoveToWritableLocationNotification" object:v7];
 
-    v3 = v7;
+    document = v7;
   }
 }
 
-- (void)_documentStateChanged:(id)a3
+- (void)_documentStateChanged:(id)changed
 {
-  v5 = [(UIDocumentViewController *)self document];
-  v6 = [a3 object];
+  document = [(UIDocumentViewController *)self document];
+  object = [changed object];
 
-  if (v6 != v5)
+  if (object != document)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -686,11 +686,11 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
     }
   }
 
-  v7 = [a3 object];
+  object2 = [changed object];
 
-  if (v7 == v5)
+  if (object2 == document)
   {
-    v8 = [v5 documentState];
+    documentState = [document documentState];
     if (self)
     {
       lastKnownState = self->_lastKnownState;
@@ -701,13 +701,13 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
       LOBYTE(lastKnownState) = 0;
     }
 
-    self->_lastKnownState = v8;
-    v10 = lastKnownState ^ v8;
-    v11 = [(UIDocumentViewController *)self launchOptions];
-    v12 = v11;
+    self->_lastKnownState = documentState;
+    v10 = lastKnownState ^ documentState;
+    launchOptions = [(UIDocumentViewController *)self launchOptions];
+    v12 = launchOptions;
     if (v10)
     {
-      [(UIDocumentViewControllerLaunchOptions *)v11 _documentCloseStateDidChange];
+      [(UIDocumentViewControllerLaunchOptions *)launchOptions _documentCloseStateDidChange];
     }
 
     if ((v10 & 0x10) != 0)
@@ -717,12 +717,12 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
   }
 }
 
-- (void)_localizedNameChanged:(id)a3
+- (void)_localizedNameChanged:(id)changed
 {
-  v5 = [(UIDocumentViewController *)self document];
-  v6 = [a3 object];
+  document = [(UIDocumentViewController *)self document];
+  object = [changed object];
 
-  if (v6 != v5)
+  if (object != document)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -745,20 +745,20 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
     }
   }
 
-  v7 = [a3 object];
+  object2 = [changed object];
 
-  if (v7 == v5)
+  if (object2 == document)
   {
     [(UIDocumentViewController *)self _updateNavigationItem];
   }
 }
 
-- (void)_documentDidMoveToWritableLocation:(id)a3
+- (void)_documentDidMoveToWritableLocation:(id)location
 {
-  v5 = [(UIDocumentViewController *)self document];
-  v6 = [a3 object];
+  document = [(UIDocumentViewController *)self document];
+  object = [location object];
 
-  if (v6 != v5)
+  if (object != document)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -781,31 +781,31 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
     }
   }
 
-  v7 = [a3 object];
+  object2 = [location object];
 
-  if (v7 == v5)
+  if (object2 == document)
   {
-    v8 = [(UIViewController *)self navigationItem];
-    v9 = [v8 _navigationBar];
-    v10 = v9;
-    if (v9)
+    navigationItem = [(UIViewController *)self navigationItem];
+    _navigationBar = [navigationItem _navigationBar];
+    v10 = _navigationBar;
+    if (_navigationBar)
     {
-      v11 = v9;
+      navigationBar = _navigationBar;
     }
 
     else
     {
-      v12 = [(UIViewController *)self navigationController];
-      v11 = [v12 navigationBar];
+      navigationController = [(UIViewController *)self navigationController];
+      navigationBar = [navigationController navigationBar];
     }
 
-    v13 = [v11 topItem];
-    v14 = [v13 _stackEntry];
-    v15 = [v14 activeLayout];
-    v16 = v15;
-    if (v15)
+    topItem = [navigationBar topItem];
+    _stackEntry = [topItem _stackEntry];
+    activeLayout = [_stackEntry activeLayout];
+    v16 = activeLayout;
+    if (activeLayout)
     {
-      v17 = *(v15 + 128);
+      v17 = *(activeLayout + 128);
     }
 
     else
@@ -815,33 +815,33 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
 
     v18 = v17;
 
-    v19 = [v18 layout];
-    v20 = [v19 titleControl];
+    layout = [v18 layout];
+    titleControl = [layout titleControl];
 
-    if (v20)
+    if (titleControl)
     {
-      v21 = [(UIDocumentViewController *)&self->super.super.super.isa documentMovedPopover];
-      v22 = v21;
-      if (v21)
+      documentMovedPopover = [(UIDocumentViewController *)&self->super.super.super.isa documentMovedPopover];
+      v22 = documentMovedPopover;
+      if (documentMovedPopover)
       {
-        v23 = [v21 presentingViewController];
+        presentingViewController = [documentMovedPopover presentingViewController];
 
-        if (v23)
+        if (presentingViewController)
         {
           [v22 dismissViewControllerAnimated:1 completion:0];
         }
       }
 
       v24 = [_UIDocumentMovedPopoverViewController alloc];
-      v25 = [v5 fileURL];
-      v26 = [(_UIDocumentMovedPopoverViewController *)v24 initWithFileURL:v25];
+      fileURL = [document fileURL];
+      v26 = [(_UIDocumentMovedPopoverViewController *)v24 initWithFileURL:fileURL];
 
       [(UIViewController *)v26 setModalPresentationStyle:7];
-      v27 = [(UIViewController *)v26 popoverPresentationController];
-      [v27 _setAllowDismissalTapsToPassThrough:1];
-      [v27 setPermittedArrowDirections:1];
-      [v27 setSourceView:v20];
-      [v27 setDelegate:v26];
+      popoverPresentationController = [(UIViewController *)v26 popoverPresentationController];
+      [popoverPresentationController _setAllowDismissalTapsToPassThrough:1];
+      [popoverPresentationController setPermittedArrowDirections:1];
+      [popoverPresentationController setSourceView:titleControl];
+      [popoverPresentationController setDelegate:v26];
       [(UIViewController *)self presentViewController:v26 animated:1 completion:0];
       if (self)
       {
@@ -851,7 +851,7 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -859,7 +859,7 @@ void __76__UIDocumentViewController_updateContentUnavailableConfigurationUsingSt
   aBlock[2] = __75__UIDocumentViewController_observeValueForKeyPath_ofObject_change_context___block_invoke;
   aBlock[3] = &unk_1E70F8DC8;
   objc_copyWeak(v9, &location);
-  v9[1] = a6;
+  v9[1] = context;
   v7 = _Block_copy(aBlock);
   if (pthread_main_np() == 1)
   {
@@ -914,11 +914,11 @@ LABEL_9:
 
 - (void)_registerDocumentAssociation
 {
-  v3 = [(UIDocumentViewController *)self document];
-  if (v3)
+  document = [(UIDocumentViewController *)self document];
+  if (document)
   {
-    object = v3;
-    v4 = objc_getAssociatedObject(v3, &_UIDocumentAssociatedDocumentViewControllers);
+    object = document;
+    v4 = objc_getAssociatedObject(document, &_UIDocumentAssociatedDocumentViewControllers);
     if (!v4)
     {
       v4 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:1];
@@ -927,47 +927,47 @@ LABEL_9:
 
     [v4 addObject:self];
 
-    v3 = object;
+    document = object;
   }
 }
 
 - (void)_unregisterDocumentAssociation
 {
-  v3 = [(UIDocumentViewController *)self document];
-  if (v3)
+  document = [(UIDocumentViewController *)self document];
+  if (document)
   {
-    v5 = v3;
-    v4 = objc_getAssociatedObject(v3, &_UIDocumentAssociatedDocumentViewControllers);
+    v5 = document;
+    v4 = objc_getAssociatedObject(document, &_UIDocumentAssociatedDocumentViewControllers);
     [v4 removeObject:self];
 
-    v3 = v5;
+    document = v5;
   }
 }
 
 - (void)_updateNavigationItem
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIDocumentViewController *)self document];
-  v4 = [(UIViewController *)self navigationItem];
-  [v4 setStyle:2];
-  [v4 setLargeTitleDisplayMode:2];
-  [v4 setTitleMenuProvider:&__block_literal_global_65_2];
-  if (v3)
+  document = [(UIDocumentViewController *)self document];
+  navigationItem = [(UIViewController *)self navigationItem];
+  [navigationItem setStyle:2];
+  [navigationItem setLargeTitleDisplayMode:2];
+  [navigationItem setTitleMenuProvider:&__block_literal_global_65_2];
+  if (document)
   {
-    v5 = [v3 localizedName];
-    [v4 setTitle:v5];
+    localizedName = [document localizedName];
+    [navigationItem setTitle:localizedName];
 
-    [v4 setRenameDelegate:v3];
+    [navigationItem setRenameDelegate:document];
     v6 = objc_alloc(MEMORY[0x1E696ACA0]);
-    v7 = [v3 fileURL];
-    v8 = [v6 initWithContentsOfURL:v7];
+    fileURL = [document fileURL];
+    v8 = [v6 initWithContentsOfURL:fileURL];
 
-    v9 = [v3 localizedName];
-    [v8 setSuggestedName:v9];
+    localizedName2 = [document localizedName];
+    [v8 setSuggestedName:localizedName2];
 
     v10 = [UIDocumentProperties alloc];
-    v11 = [v3 fileURL];
-    v12 = [(UIDocumentProperties *)v10 initWithURL:v11];
+    fileURL2 = [document fileURL];
+    v12 = [(UIDocumentProperties *)v10 initWithURL:fileURL2];
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -983,7 +983,7 @@ LABEL_9:
     v28 = v13;
     v14 = v13;
     [(UIDocumentProperties *)v12 setActivityViewControllerProvider:v27];
-    [v4 setDocumentProperties:v12];
+    [navigationItem setDocumentProperties:v12];
   }
 
   if (*&self->_flags)
@@ -1006,23 +1006,23 @@ LABEL_7:
     v24 = &unk_1E70F7450;
     objc_copyWeak(&v25, &location);
     v15 = [UIAction actionWithHandler:&v21];
-    [v4 setBackAction:{v15, v21, v22, v23, v24}];
+    [navigationItem setBackAction:{v15, v21, v22, v23, v24}];
 
-    [v4 setLeadingItemGroups:MEMORY[0x1E695E0F0]];
+    [navigationItem setLeadingItemGroups:MEMORY[0x1E695E0F0]];
     objc_destroyWeak(&v25);
     objc_destroyWeak(&location);
   }
 
   else
   {
-    [v4 setBackAction:0];
+    [navigationItem setBackAction:0];
     v16 = [UIBarButtonItem alloc];
     v17 = _UILocalizedString(@"com.apple.documents.backaction", @"The title of the back button in a document based app that leads back to the document view controller.", @"Documents");
     v18 = [(UIBarButtonItem *)v16 initWithTitle:v17 image:0 target:self action:sel_open_ menu:0];
-    v19 = [(UIBarButtonItem *)v18 creatingFixedGroup];
-    v31[0] = v19;
+    creatingFixedGroup = [(UIBarButtonItem *)v18 creatingFixedGroup];
+    v31[0] = creatingFixedGroup;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-    [v4 setLeadingItemGroups:v20];
+    [navigationItem setLeadingItemGroups:v20];
   }
 
   [(UIDocumentViewController *)self navigationItemDidUpdate];
@@ -1055,16 +1055,16 @@ void __49__UIDocumentViewController__updateNavigationItem__block_invoke_4(uint64
   [WeakRetained _performOpenByClosingExistingDocument];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v7 = [(UIDocumentViewController *)self document];
-  v8 = v7;
-  if (sel_undo_ == a3)
+  document = [(UIDocumentViewController *)self document];
+  v8 = document;
+  if (sel_undo_ == action)
   {
-    if (v7)
+    if (document)
     {
-      v10 = [v7 undoManager];
-      if (![v10 canUndo])
+      undoManager = [document undoManager];
+      if (![undoManager canUndo])
       {
 LABEL_10:
         v9 = 0;
@@ -1083,12 +1083,12 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  if (sel_redo_ == a3)
+  if (sel_redo_ == action)
   {
-    if (v7)
+    if (document)
     {
-      v10 = [v7 undoManager];
-      if (![v10 canRedo])
+      undoManager = [document undoManager];
+      if (![undoManager canRedo])
       {
         goto LABEL_10;
       }
@@ -1099,9 +1099,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (sel_open_ == a3)
+  if (sel_open_ == action)
   {
-    if (v7)
+    if (document)
     {
       v9 = 1;
     }
@@ -1121,7 +1121,7 @@ LABEL_12:
   {
     v12.receiver = self;
     v12.super_class = UIDocumentViewController;
-    v9 = [(UIViewController *)&v12 canPerformAction:a3 withSender:a4];
+    v9 = [(UIViewController *)&v12 canPerformAction:action withSender:sender];
   }
 
 LABEL_18:
@@ -1129,21 +1129,21 @@ LABEL_18:
   return v9 & 1;
 }
 
-- (void)undo:(id)a3
+- (void)undo:(id)undo
 {
-  v4 = [(UIDocumentViewController *)self document];
-  v3 = [v4 undoManager];
-  [v3 undo];
+  document = [(UIDocumentViewController *)self document];
+  undoManager = [document undoManager];
+  [undoManager undo];
 }
 
-- (void)redo:(id)a3
+- (void)redo:(id)redo
 {
-  v4 = [(UIDocumentViewController *)self document];
-  v3 = [v4 undoManager];
-  [v3 redo];
+  document = [(UIDocumentViewController *)self document];
+  undoManager = [document undoManager];
+  [undoManager redo];
 }
 
-- (void)open:(id)a3
+- (void)open:(id)open
 {
   if (qword_1ED49A470 != -1)
   {
@@ -1152,11 +1152,11 @@ LABEL_18:
 
   if (_MergedGlobals_27_1 == 1)
   {
-    v4 = [(UIViewController *)self _window];
-    v5 = [v4 windowScene];
-    v6 = [v5 _enhancedWindowingEnabled];
+    _window = [(UIViewController *)self _window];
+    windowScene = [_window windowScene];
+    _enhancedWindowingEnabled = [windowScene _enhancedWindowingEnabled];
 
-    if (v6 && [UIApp supportsMultipleScenes] && (-[UIDocumentViewController launchOptions](self, "launchOptions"), v7 = objc_claimAutoreleasedReturnValue(), isDocumentViewControllerConsideredRootView = -[UIDocumentViewControllerLaunchOptions _isDocumentViewControllerConsideredRootViewController](v7), v7, isDocumentViewControllerConsideredRootView))
+    if (_enhancedWindowingEnabled && [UIApp supportsMultipleScenes] && (-[UIDocumentViewController launchOptions](self, "launchOptions"), v7 = objc_claimAutoreleasedReturnValue(), isDocumentViewControllerConsideredRootView = -[UIDocumentViewControllerLaunchOptions _isDocumentViewControllerConsideredRootViewController](v7), v7, isDocumentViewControllerConsideredRootView))
     {
       objc_initWeak(&location, self);
       v9 = UIApp;
@@ -1181,8 +1181,8 @@ LABEL_18:
 
   else
   {
-    v11 = [(UIDocumentViewController *)self launchOptions];
-    [(UIDocumentViewControllerLaunchOptions *)v11 _presentBrowserViewController];
+    launchOptions = [(UIDocumentViewController *)self launchOptions];
+    [(UIDocumentViewControllerLaunchOptions *)launchOptions _presentBrowserViewController];
   }
 }
 
@@ -1199,7 +1199,7 @@ void __33__UIDocumentViewController_open___block_invoke(uint64_t a1)
 
 - (void)_performOpenByClosingExistingDocument
 {
-  v3 = [(UIDocumentViewController *)self document];
+  document = [(UIDocumentViewController *)self document];
   v4 = *&self->_flags & 1;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
@@ -1207,7 +1207,7 @@ void __33__UIDocumentViewController_open___block_invoke(uint64_t a1)
   v6[2] = __65__UIDocumentViewController__performOpenByClosingExistingDocument__block_invoke;
   v6[3] = &unk_1E710B248;
   objc_copyWeak(&v8, &location);
-  v5 = v3;
+  v5 = document;
   v7 = v5;
   v9 = v4;
   [(UIDocumentViewController *)self _closeDocumentIfNecessary:v5 completionHandler:v6];
@@ -1238,10 +1238,10 @@ void __65__UIDocumentViewController__performOpenByClosingExistingDocument__block
 
 - (id)undoManager
 {
-  v2 = [(UIDocumentViewController *)self document];
-  v3 = [v2 undoManager];
+  document = [(UIDocumentViewController *)self document];
+  undoManager = [document undoManager];
 
-  return v3;
+  return undoManager;
 }
 
 - (UIBarButtonItemGroup)undoRedoItemGroup
@@ -1288,20 +1288,20 @@ void __65__UIDocumentViewController__performOpenByClosingExistingDocument__block
   v5 = self->_undoManagerBinding;
   self->_undoManagerBinding = 0;
 
-  v6 = [(UIDocumentViewController *)self document];
-  v7 = [v6 undoManager];
-  if (v7)
+  document = [(UIDocumentViewController *)self document];
+  undoManager = [document undoManager];
+  if (undoManager)
   {
     v8 = [_UIBarButtonItemActionBinding alloc];
-    v9 = [(UIDocumentViewController *)self undoRedoItemGroup];
-    v10 = [v9 barButtonItems];
+    undoRedoItemGroup = [(UIDocumentViewController *)self undoRedoItemGroup];
+    barButtonItems = [undoRedoItemGroup barButtonItems];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __53__UIDocumentViewController__updateUndoManagerBinding__block_invoke;
     v15 = &unk_1E710B270;
-    v16 = v7;
-    v17 = v6;
-    v11 = [(_UIBarButtonItemActionBinding *)v8 initWithBarButtonItems:v10 registerObservers:&v12 unregisterObservers:&__block_literal_global_110];
+    v16 = undoManager;
+    v17 = document;
+    v11 = [(_UIBarButtonItemActionBinding *)v8 initWithBarButtonItems:barButtonItems registerObservers:&v12 unregisterObservers:&__block_literal_global_110];
 
     objc_storeStrong(&self->_undoManagerBinding, v11);
     [(_UIBarButtonItemActionBinding *)v11 startMonitoring:v12];
@@ -1333,33 +1333,33 @@ void __53__UIDocumentViewController__updateUndoManagerBinding__block_invoke_2(ui
   v5.super_class = UIDocumentViewController;
   [(UIViewController *)&v5 loadView];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(UIViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(UIViewController *)self view];
+  [view setBackgroundColor:v3];
 
   [(UIDocumentViewController *)self _updateNavigationItem];
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = [(UIViewController *)self viewIfLoaded];
+  viewIfLoaded = [(UIViewController *)self viewIfLoaded];
   v6.receiver = self;
   v6.super_class = UIDocumentViewController;
-  [(UIViewController *)&v6 setView:a3];
-  if (v5 != a3)
+  [(UIViewController *)&v6 setView:view];
+  if (viewIfLoaded != view)
   {
     [(UIDocumentViewController *)self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v5.receiver = self;
   v5.super_class = UIDocumentViewController;
-  [(UIViewController *)&v5 viewIsAppearing:a3];
+  [(UIViewController *)&v5 viewIsAppearing:appearing];
   [(UIDocumentViewController *)self _updateIsPresentedFromDocumentBrowser];
-  v4 = [(UIDocumentViewController *)self document];
+  document = [(UIDocumentViewController *)self document];
 
-  if (v4)
+  if (document)
   {
     [(UIDocumentViewController *)self openDocumentWithCompletionHandler:&__block_literal_global_118];
   }
@@ -1378,16 +1378,16 @@ void __53__UIDocumentViewController__updateUndoManagerBinding__block_invoke_2(ui
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = UIDocumentViewController;
   [(UIViewController *)&v6 didMoveToParentViewController:?];
   [(UIDocumentViewController *)self _updateIsPresentedFromDocumentBrowser];
-  if (!a3)
+  if (!controller)
   {
-    v5 = [(UIDocumentViewController *)self document];
-    [v5 autosaveWithCompletionHandler:0];
+    document = [(UIDocumentViewController *)self document];
+    [document autosaveWithCompletionHandler:0];
   }
 }
 
@@ -1401,7 +1401,7 @@ void __53__UIDocumentViewController__updateUndoManagerBinding__block_invoke_2(ui
 
 - (void)_updateIsPresentedFromDocumentBrowser
 {
-  v2 = self;
+  selfCopy = self;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -1420,11 +1420,11 @@ void __53__UIDocumentViewController__updateUndoManagerBinding__block_invoke_2(ui
 
   v4 = v3;
   _Block_object_dispose(&v12, 8);
-  v5 = v2;
+  v5 = selfCopy;
   while (1)
   {
-    v6 = [v5 presentingViewController];
-    if (v6)
+    presentingViewController = [v5 presentingViewController];
+    if (presentingViewController)
     {
       if (objc_opt_isKindOfClass())
       {
@@ -1432,13 +1432,13 @@ void __53__UIDocumentViewController__updateUndoManagerBinding__block_invoke_2(ui
       }
     }
 
-    v7 = [v5 parentViewController];
+    parentViewController = [v5 parentViewController];
 
-    v5 = v7;
-    if (!v7)
+    v5 = parentViewController;
+    if (!parentViewController)
     {
-      p_flags = &v2->_flags;
-      flags = v2->_flags;
+      p_flags = &selfCopy->_flags;
+      flags = selfCopy->_flags;
       if ((flags & 1) == 0)
       {
         goto LABEL_12;
@@ -1449,8 +1449,8 @@ void __53__UIDocumentViewController__updateUndoManagerBinding__block_invoke_2(ui
     }
   }
 
-  p_flags = &v2->_flags;
-  flags = v2->_flags;
+  p_flags = &selfCopy->_flags;
+  flags = selfCopy->_flags;
   if (flags)
   {
     goto LABEL_12;
@@ -1459,25 +1459,25 @@ void __53__UIDocumentViewController__updateUndoManagerBinding__block_invoke_2(ui
   v10 = 1;
 LABEL_11:
   *p_flags = flags & 0xFE | v10;
-  [(UIDocumentViewController *)v2 _updateNavigationItem];
-  [(UIDocumentViewController *)v2 _setNeedsUpdateDocumentUnavailableConfiguration];
+  [(UIDocumentViewController *)selfCopy _updateNavigationItem];
+  [(UIDocumentViewController *)selfCopy _setNeedsUpdateDocumentUnavailableConfiguration];
 LABEL_12:
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  v7 = [(UIViewController *)self navigationController];
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  navigationController = [(UIViewController *)self navigationController];
+  if (navigationController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    *a4 = 1;
-    [v7 _contentOverlayInsets];
+    *absolute = 1;
+    [navigationController _contentOverlayInsets];
   }
 
   else
   {
     v20.receiver = self;
     v20.super_class = UIDocumentViewController;
-    [(UIViewController *)&v20 _edgeInsetsForChildViewController:a3 insetsAreAbsolute:a4];
+    [(UIViewController *)&v20 _edgeInsetsForChildViewController:controller insetsAreAbsolute:absolute];
   }
 
   v12 = v8;
@@ -1502,8 +1502,8 @@ LABEL_12:
   [(UIViewController *)self->_launchViewController removeFromParentViewController];
   [(UIDocumentViewController *)self _unregisterDocumentObservers];
   [(UIDocumentViewController *)self _unregisterDocumentAssociation];
-  v3 = [(UIDocumentViewController *)self document];
-  [(UIDocumentViewController *)self _closeDocumentIfNecessary:v3 completionHandler:0];
+  document = [(UIDocumentViewController *)self document];
+  [(UIDocumentViewController *)self _closeDocumentIfNecessary:document completionHandler:0];
 
   v4.receiver = self;
   v4.super_class = UIDocumentViewController;

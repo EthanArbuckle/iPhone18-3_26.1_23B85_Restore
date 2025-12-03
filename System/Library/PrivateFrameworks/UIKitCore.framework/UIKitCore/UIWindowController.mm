@@ -1,46 +1,46 @@
 @interface UIWindowController
-+ (id)windowControllerForWindow:(id)a3;
-- (CGPoint)_adjustOrigin:(CGPoint)result givenOtherOrigin:(CGPoint)a4 forTransition:(int)a5;
-- (CGPoint)_originForViewController:(id)a3 orientation:(int64_t)a4 actualStatusBarHeight:(double)a5 fullScreenLayout:(BOOL)a6 inWindow:(id)a7;
-- (CGPoint)transitionView:(id)a3 beginOriginForToView:(id)a4 forTransition:(int)a5 defaultOrigin:(CGPoint)a6;
-- (CGPoint)transitionView:(id)a3 endOriginForFromView:(id)a4 forTransition:(int)a5 defaultOrigin:(CGPoint)a6;
-- (CGPoint)transitionView:(id)a3 endOriginForToView:(id)a4 forTransition:(int)a5 defaultOrigin:(CGPoint)a6;
-- (CGRect)_boundsForViewController:(id)a3 transition:(int)a4 orientation:(int64_t)a5 fullScreenLayout:(BOOL)a6 inWindow:(id)a7;
-- (CGSize)_flipSize:(CGSize)a3;
++ (id)windowControllerForWindow:(id)window;
+- (CGPoint)_adjustOrigin:(CGPoint)result givenOtherOrigin:(CGPoint)origin forTransition:(int)transition;
+- (CGPoint)_originForViewController:(id)controller orientation:(int64_t)orientation actualStatusBarHeight:(double)height fullScreenLayout:(BOOL)layout inWindow:(id)window;
+- (CGPoint)transitionView:(id)view beginOriginForToView:(id)toView forTransition:(int)transition defaultOrigin:(CGPoint)origin;
+- (CGPoint)transitionView:(id)view endOriginForFromView:(id)fromView forTransition:(int)transition defaultOrigin:(CGPoint)origin;
+- (CGPoint)transitionView:(id)view endOriginForToView:(id)toView forTransition:(int)transition defaultOrigin:(CGPoint)origin;
+- (CGRect)_boundsForViewController:(id)controller transition:(int)transition orientation:(int64_t)orientation fullScreenLayout:(BOOL)layout inWindow:(id)window;
+- (CGSize)_flipSize:(CGSize)size;
 - (UIWindow)window;
-- (void)_prepareKeyboardForTransition:(int)a3 fromView:(id)a4;
-- (void)_transition:(int)a3 fromViewController:(id)a4 toViewController:(id)a5 target:(id)a6 didFinish:(int64_t)a7 animation:(id)a8;
-- (void)_transplantView:(id)a3 toSuperview:(id)a4 atIndex:(unint64_t)a5;
+- (void)_prepareKeyboardForTransition:(int)transition fromView:(id)view;
+- (void)_transition:(int)_transition fromViewController:(id)controller toViewController:(id)viewController target:(id)target didFinish:(int64_t)finish animation:(id)animation;
+- (void)_transplantView:(id)view toSuperview:(id)superview atIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)transitionView:(id)a3 startCustomTransitionWithDuration:(double)a4;
-- (void)transitionViewDidCancel:(id)a3 fromView:(id)a4 toView:(id)a5;
-- (void)transitionViewDidComplete:(id)a3 fromView:(id)a4 toView:(id)a5 removeFromView:(BOOL)a6;
-- (void)transitionViewDidStart:(id)a3;
+- (void)transitionView:(id)view startCustomTransitionWithDuration:(double)duration;
+- (void)transitionViewDidCancel:(id)cancel fromView:(id)view toView:(id)toView;
+- (void)transitionViewDidComplete:(id)complete fromView:(id)view toView:(id)toView removeFromView:(BOOL)fromView;
+- (void)transitionViewDidStart:(id)start;
 @end
 
 @implementation UIWindowController
 
-+ (id)windowControllerForWindow:(id)a3
++ (id)windowControllerForWindow:(id)window
 {
-  v3 = a3;
-  if (v3)
+  windowCopy = window;
+  if (windowCopy)
   {
     v4 = __windowToWindowControllerMapTable;
     if (!__windowToWindowControllerMapTable)
     {
-      v5 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
       v6 = __windowToWindowControllerMapTable;
-      __windowToWindowControllerMapTable = v5;
+      __windowToWindowControllerMapTable = weakToStrongObjectsMapTable;
 
       v4 = __windowToWindowControllerMapTable;
     }
 
-    v7 = [v4 objectForKey:v3];
+    v7 = [v4 objectForKey:windowCopy];
     if (!v7)
     {
       v7 = objc_alloc_init(UIWindowController);
-      [(UIWindowController *)v7 setWindow:v3];
-      [__windowToWindowControllerMapTable setObject:v7 forKey:v3];
+      [(UIWindowController *)v7 setWindow:windowCopy];
+      [__windowToWindowControllerMapTable setObject:v7 forKey:windowCopy];
     }
   }
 
@@ -57,9 +57,9 @@
   transitionView = self->_transitionView;
   if (transitionView)
   {
-    v4 = [(UIViewController *)self->_fromViewController view];
-    v5 = [(UIViewController *)self->_toViewController view];
-    [(UIWindowController *)self transitionViewDidComplete:transitionView fromView:v4 toView:v5 removeFromView:1];
+    view = [(UIViewController *)self->_fromViewController view];
+    view2 = [(UIViewController *)self->_toViewController view];
+    [(UIWindowController *)self transitionViewDidComplete:transitionView fromView:view toView:view2 removeFromView:1];
   }
 
   v6.receiver = self;
@@ -67,11 +67,11 @@
   [(UIWindowController *)&v6 dealloc];
 }
 
-- (CGPoint)_originForViewController:(id)a3 orientation:(int64_t)a4 actualStatusBarHeight:(double)a5 fullScreenLayout:(BOOL)a6 inWindow:(id)a7
+- (CGPoint)_originForViewController:(id)controller orientation:(int64_t)orientation actualStatusBarHeight:(double)height fullScreenLayout:(BOOL)layout inWindow:(id)window
 {
-  v11 = a3;
-  v12 = a7;
-  if (a6)
+  controllerCopy = controller;
+  windowCopy = window;
+  if (layout)
   {
     v13 = *MEMORY[0x1E695EFF8];
     v14 = *(MEMORY[0x1E695EFF8] + 8);
@@ -79,14 +79,14 @@
 
   else
   {
-    v15 = [(UIWindowController *)self window];
-    v16 = __UIStatusBarManagerForWindow(v15);
-    [v16 defaultStatusBarHeightInOrientation:a4];
+    window = [(UIWindowController *)self window];
+    v16 = __UIStatusBarManagerForWindow(window);
+    [v16 defaultStatusBarHeightInOrientation:orientation];
     v18 = v17;
 
-    if (v12)
+    if (windowCopy)
     {
-      [v12 screen];
+      [windowCopy screen];
     }
 
     else
@@ -94,7 +94,7 @@
       [objc_opt_self() mainScreen];
     }
     v19 = ;
-    [v19 _applicationFrameForInterfaceOrientation:a4 usingStatusbarHeight:v18];
+    [v19 _applicationFrameForInterfaceOrientation:orientation usingStatusbarHeight:v18];
     v13 = v20;
     v14 = v21;
   }
@@ -111,27 +111,27 @@
   return result;
 }
 
-- (CGSize)_flipSize:(CGSize)a3
+- (CGSize)_flipSize:(CGSize)size
 {
-  width = a3.width;
-  height = a3.height;
+  width = size.width;
+  height = size.height;
   v5 = width;
   result.height = v5;
   result.width = height;
   return result;
 }
 
-- (CGRect)_boundsForViewController:(id)a3 transition:(int)a4 orientation:(int64_t)a5 fullScreenLayout:(BOOL)a6 inWindow:(id)a7
+- (CGRect)_boundsForViewController:(id)controller transition:(int)transition orientation:(int64_t)orientation fullScreenLayout:(BOOL)layout inWindow:(id)window
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = v12;
-  if (!v12)
+  controllerCopy = controller;
+  windowCopy = window;
+  v13 = windowCopy;
+  if (!windowCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_window);
-    v23 = [WeakRetained _isHostedInAnotherProcess];
+    _isHostedInAnotherProcess = [WeakRetained _isHostedInAnotherProcess];
 
-    if (v23)
+    if (_isHostedInAnotherProcess)
     {
       v24 = objc_loadWeakRetained(&self->_window);
       [v24 bounds];
@@ -143,16 +143,16 @@
       goto LABEL_17;
     }
 
-    if (a6)
+    if (layout)
     {
-      v29 = [objc_opt_self() mainScreen];
+      mainScreen = [objc_opt_self() mainScreen];
       goto LABEL_10;
     }
 
 LABEL_11:
-    v35 = [(UIWindowController *)self window];
-    v36 = __UIStatusBarManagerForWindow(v35);
-    [v36 defaultStatusBarHeightInOrientation:a5];
+    window = [(UIWindowController *)self window];
+    v36 = __UIStatusBarManagerForWindow(window);
+    [v36 defaultStatusBarHeightInOrientation:orientation];
     v38 = v37;
 
     if (v13)
@@ -165,7 +165,7 @@ LABEL_11:
       [objc_opt_self() mainScreen];
     }
     v39 = ;
-    [v39 _applicationFrameForInterfaceOrientation:a5 usingStatusbarHeight:v38];
+    [v39 _applicationFrameForInterfaceOrientation:orientation usingStatusbarHeight:v38];
     v19 = v40;
     v21 = v41;
 
@@ -174,7 +174,7 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if ([v12 _isHostedInAnotherProcess])
+  if ([windowCopy _isHostedInAnotherProcess])
   {
     [v13 bounds];
     v15 = v14;
@@ -184,22 +184,22 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if (!a6)
+  if (!layout)
   {
     goto LABEL_11;
   }
 
-  v29 = [v13 screen];
+  mainScreen = [v13 screen];
 LABEL_10:
-  v30 = v29;
-  [v29 bounds];
+  v30 = mainScreen;
+  [mainScreen bounds];
   v15 = v31;
   v17 = v32;
   v19 = v33;
   v21 = v34;
 
 LABEL_15:
-  if ((a5 - 3) <= 1)
+  if ((orientation - 3) <= 1)
   {
     [(UIWindowController *)self _flipSize:v19, v21];
     v19 = v42;
@@ -219,29 +219,29 @@ LABEL_17:
   return result;
 }
 
-- (void)_prepareKeyboardForTransition:(int)a3 fromView:(id)a4
+- (void)_prepareKeyboardForTransition:(int)transition fromView:(id)view
 {
-  v4 = *&a3;
-  v12 = a4;
+  v4 = *&transition;
+  viewCopy = view;
   [objc_opt_class() durationForTransition:v4];
   v6 = v5;
-  v7 = [v12 keyboardSceneDelegate];
+  keyboardSceneDelegate = [viewCopy keyboardSceneDelegate];
   if ((UIKeyboardAutomaticIsOffScreen() & 1) == 0)
   {
-    v8 = [v7 responder];
-    v9 = [v12 _containsResponder:v8];
+    responder = [keyboardSceneDelegate responder];
+    v9 = [viewCopy _containsResponder:responder];
 
     if (v9)
     {
-      [v7 _beginIgnoringReloadInputViews];
-      [v7 setAutomaticAppearanceInternalEnabled:0];
-      [v12 endEditing:1];
-      [v7 setAutomaticAppearanceInternalEnabled:1];
-      [v7 _endIgnoringReloadInputViews];
+      [keyboardSceneDelegate _beginIgnoringReloadInputViews];
+      [keyboardSceneDelegate setAutomaticAppearanceInternalEnabled:0];
+      [viewCopy endEditing:1];
+      [keyboardSceneDelegate setAutomaticAppearanceInternalEnabled:1];
+      [keyboardSceneDelegate _endIgnoringReloadInputViews];
       v10 = [UIViewController _keyboardDirectionForTransition:v4];
-      if ([v7 currentState] != 2)
+      if ([keyboardSceneDelegate currentState] != 2)
       {
-        [v7 forceOrderOutAutomaticToDirection:v10 withDuration:v6];
+        [keyboardSceneDelegate forceOrderOutAutomaticToDirection:v10 withDuration:v6];
       }
     }
   }
@@ -249,19 +249,19 @@ LABEL_17:
   if (v4)
   {
     v11 = [UIInputViewAnimationStyleDirectional animationStyleAnimated:1 duration:[UIViewController _keyboardDirectionForTransition:v4] outDirection:v6];
-    [v7 pushAnimationStyle:v11];
+    [keyboardSceneDelegate pushAnimationStyle:v11];
   }
 }
 
-- (void)_transplantView:(id)a3 toSuperview:(id)a4 atIndex:(unint64_t)a5
+- (void)_transplantView:(id)view toSuperview:(id)superview atIndex:(unint64_t)index
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 keyboardSceneDelegate];
-  [v9 setAutomaticAppearanceInternalEnabled:0];
+  superviewCopy = superview;
+  viewCopy = view;
+  keyboardSceneDelegate = [superviewCopy keyboardSceneDelegate];
+  [keyboardSceneDelegate setAutomaticAppearanceInternalEnabled:0];
   objc_opt_self();
   ++__disablePromoteDescendantToFirstResponderCount;
-  [v7 insertSubview:v8 atIndex:a5];
+  [superviewCopy insertSubview:viewCopy atIndex:index];
 
   objc_opt_self();
   if (__disablePromoteDescendantToFirstResponderCount)
@@ -269,35 +269,35 @@ LABEL_17:
     --__disablePromoteDescendantToFirstResponderCount;
   }
 
-  [v9 setAutomaticAppearanceInternalEnabled:1];
+  [keyboardSceneDelegate setAutomaticAppearanceInternalEnabled:1];
 }
 
-- (void)_transition:(int)a3 fromViewController:(id)a4 toViewController:(id)a5 target:(id)a6 didFinish:(int64_t)a7 animation:(id)a8
+- (void)_transition:(int)_transition fromViewController:(id)controller toViewController:(id)viewController target:(id)target didFinish:(int64_t)finish animation:(id)animation
 {
   v238[1] = *MEMORY[0x1E69E9840];
-  v186 = a4;
-  v185 = a5;
-  v170 = a6;
-  v173 = a8;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  targetCopy = target;
+  animationCopy = animation;
   if (self->_currentTransition)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UIWindowController.m" lineNumber:237 description:{@"Attempting to begin a modal transition from %@ to %@ while a transition is already in progress. Wait for viewDidAppear/viewDidDisappear to know the current transition has completed", v186, v185}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWindowController.m" lineNumber:237 description:{@"Attempting to begin a modal transition from %@ to %@ while a transition is already in progress. Wait for viewDidAppear/viewDidDisappear to know the current transition has completed", controllerCopy, viewControllerCopy}];
 
-    if (self->_fromViewController == v186 && self->_toViewController == v185)
+    if (self->_fromViewController == controllerCopy && self->_toViewController == viewControllerCopy)
     {
       goto LABEL_215;
     }
   }
 
-  v14 = [(UIViewController *)v185 modalPresentationStyle];
-  v15 = [(UIViewController *)v186 modalPresentationStyle];
-  v16 = [(UIViewController *)v186 interfaceOrientation];
-  if (!a3 && v14 != 4)
+  modalPresentationStyle = [(UIViewController *)viewControllerCopy modalPresentationStyle];
+  modalPresentationStyle2 = [(UIViewController *)controllerCopy modalPresentationStyle];
+  interfaceOrientation = [(UIViewController *)controllerCopy interfaceOrientation];
+  if (!_transition && modalPresentationStyle != 4)
   {
     v183 = 0;
     v164 = 0;
-    v17 = 0;
+    _transitionController = 0;
 LABEL_11:
     v157 = 0;
     v172 = 0;
@@ -305,9 +305,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v17 = [(UIWindowController *)self _transitionController];
+  _transitionController = [(UIWindowController *)self _transitionController];
 
-  if (!v17)
+  if (!_transitionController)
   {
     v183 = 0;
     v164 = 0;
@@ -317,7 +317,7 @@ LABEL_11:
   v18 = objc_opt_class();
   v19 = objc_opt_class();
   v20 = objc_alloc_init(_UIViewControllerOneToOneTransitionContext);
-  [(_UIViewControllerTransitionContext *)v20 _setAnimator:v17];
+  [(_UIViewControllerTransitionContext *)v20 _setAnimator:_transitionController];
   v183 = v20;
   if (v18 == v19)
   {
@@ -338,9 +338,9 @@ LABEL_11:
 
 LABEL_12:
   v22 = 3;
-  if (v14 != 15)
+  if (modalPresentationStyle != 15)
   {
-    v22 = v14;
+    v22 = modalPresentationStyle;
   }
 
   if (v22 == 4)
@@ -348,20 +348,20 @@ LABEL_12:
     v22 = v21;
   }
 
-  if (v15 == 4)
+  if (modalPresentationStyle2 == 4)
   {
     v23 = v21;
   }
 
   else
   {
-    v23 = v15;
+    v23 = modalPresentationStyle2;
   }
 
   self->_toModalStyle = v22;
   v180 = v22;
   v177 = v23;
-  val = v17;
+  val = _transitionController;
   if (self->_presenting)
   {
     if (v22 != 3 && v22 != 18)
@@ -374,8 +374,8 @@ LABEL_26:
     }
 
 LABEL_25:
-    v26 = [(UIViewController *)v186 view];
-    v27 = [v26 superview];
+    view = [(UIViewController *)controllerCopy view];
+    superview = [view superview];
     objc_opt_class();
     v24 = objc_opt_isKindOfClass() ^ 1;
 
@@ -391,12 +391,12 @@ LABEL_25:
   v182 = 0;
   v24 = 0;
 LABEL_27:
-  v28 = [(UIWindowController *)self window];
-  v163 = [v28 _delegateViewController];
+  window = [(UIWindowController *)self window];
+  _delegateViewController = [window _delegateViewController];
   if (self->_presenting)
   {
-    v29 = [(UIViewController *)v186 presentingViewController];
-    if (v29)
+    presentingViewController = [(UIViewController *)controllerCopy presentingViewController];
+    if (presentingViewController)
     {
       isKindOfClass = 0;
       v31 = v180;
@@ -404,8 +404,8 @@ LABEL_27:
 
     else
     {
-      v32 = [(UIViewController *)v186 _rootAncestorViewController];
-      if (v163 == v32)
+      _rootAncestorViewController = [(UIViewController *)controllerCopy _rootAncestorViewController];
+      if (_delegateViewController == _rootAncestorViewController)
       {
         isKindOfClass = 0;
       }
@@ -422,7 +422,7 @@ LABEL_27:
 
   else
   {
-    isKindOfClass = v163 == v186;
+    isKindOfClass = _delegateViewController == controllerCopy;
     v31 = v180;
   }
 
@@ -430,10 +430,10 @@ LABEL_27:
   v160 = !(v24 & 1);
   if (!v160 && !v182)
   {
-    v33 = [(UIViewController *)v185 definesPresentationContext];
-    if (v31 == 3 && v33)
+    definesPresentationContext = [(UIViewController *)viewControllerCopy definesPresentationContext];
+    if (v31 == 3 && definesPresentationContext)
     {
-      [(UIViewController *)v186 setDefinesPresentationContext:[(UIViewController *)v186 _isPresentationContextByDefault]];
+      [(UIViewController *)controllerCopy setDefinesPresentationContext:[(UIViewController *)controllerCopy _isPresentationContextByDefault]];
     }
   }
 
@@ -443,23 +443,23 @@ LABEL_27:
     {
       if (!v31)
       {
-        v34 = [(UIViewController *)v186 _existingView];
-        v35 = [v34 superview];
-        [v35 frame];
+        _existingView = [(UIViewController *)controllerCopy _existingView];
+        superview2 = [_existingView superview];
+        [superview2 frame];
         v37 = v36;
 
         if (v37 != 0.0)
         {
-          v38 = [v28 _delegateViewController];
-          [v28 _addRotationViewController:v38];
-          if (v185)
+          _delegateViewController2 = [window _delegateViewController];
+          [window _addRotationViewController:_delegateViewController2];
+          if (viewControllerCopy)
           {
-            objc_storeWeak(&v185->_previousRootViewController, v38);
+            objc_storeWeak(&viewControllerCopy->_previousRootViewController, _delegateViewController2);
           }
 
-          [v28 _setDelegateViewController:v185];
-          v38[47] &= ~0x80uLL;
-          *&v185->_viewControllerFlags |= 0x80uLL;
+          [window _setDelegateViewController:viewControllerCopy];
+          _delegateViewController2[47] &= ~0x80uLL;
+          *&viewControllerCopy->_viewControllerFlags |= 0x80uLL;
 LABEL_53:
         }
       }
@@ -467,50 +467,50 @@ LABEL_53:
 
     else if (!v177)
     {
-      v38 = [(UIViewController *)&v186->super.super.isa _previousRootViewController];
-      if (v38)
+      _delegateViewController2 = [(UIViewController *)&controllerCopy->super.super.isa _previousRootViewController];
+      if (_delegateViewController2)
       {
-        [v28 _removeRotationViewController:v38];
-        [v28 _setDelegateViewController:v38];
-        v39 = v38;
+        [window _removeRotationViewController:_delegateViewController2];
+        [window _setDelegateViewController:_delegateViewController2];
+        v39 = _delegateViewController2;
 
         *&v39->_viewControllerFlags |= 0x80uLL;
-        v163 = v39;
+        _delegateViewController = v39;
       }
 
-      *&v186->_viewControllerFlags &= ~0x80uLL;
+      *&controllerCopy->_viewControllerFlags &= ~0x80uLL;
       goto LABEL_53;
     }
   }
 
-  v40 = [UIApp _statusBarOrientationForWindow:v28];
-  if (v24 & 1) == 0 && (([(UIViewController *)v186 _ancestorViewControllerIsInPopover]| isKindOfClass))
+  v40 = [UIApp _statusBarOrientationForWindow:window];
+  if (v24 & 1) == 0 && (([(UIViewController *)controllerCopy _ancestorViewControllerIsInPopover]| isKindOfClass))
   {
-    v16 = v40;
+    interfaceOrientation = v40;
   }
 
-  v41 = [v28 screen];
-  v42 = [v41 _isEmbeddedScreen];
+  screen = [window screen];
+  _isEmbeddedScreen = [screen _isEmbeddedScreen];
 
-  if (v42)
+  if (_isEmbeddedScreen)
   {
-    v43 = v185;
-    v44 = [(UIViewController *)v185 _preferredInterfaceOrientationForPresentationInWindow:v28 fromInterfaceOrientation:v16];
+    v43 = viewControllerCopy;
+    v44 = [(UIViewController *)viewControllerCopy _preferredInterfaceOrientationForPresentationInWindow:window fromInterfaceOrientation:interfaceOrientation];
   }
 
   else
   {
-    v44 = [UIApp _statusBarOrientationForWindow:v28];
-    v43 = v185;
+    v44 = [UIApp _statusBarOrientationForWindow:window];
+    v43 = viewControllerCopy;
   }
 
-  if ((isKindOfClass & 1) != 0 && ([v28 _shouldAutorotateToInterfaceOrientation:v44] & 1) == 0)
+  if ((isKindOfClass & 1) != 0 && ([window _shouldAutorotateToInterfaceOrientation:v44] & 1) == 0)
   {
-    v44 = v16;
+    v44 = interfaceOrientation;
     if (v43)
     {
-      v43->_lastKnownInterfaceOrientation = v16;
-      v44 = v16;
+      v43->_lastKnownInterfaceOrientation = interfaceOrientation;
+      v44 = interfaceOrientation;
     }
   }
 
@@ -526,26 +526,26 @@ LABEL_53:
 
   else
   {
-    v53 = [(UIViewController *)v186 _rootAncestorViewController];
-    v45 = v163 == v53;
+    _rootAncestorViewController2 = [(UIViewController *)controllerCopy _rootAncestorViewController];
+    v45 = _delegateViewController == _rootAncestorViewController2;
 
-    v43 = v185;
+    v43 = viewControllerCopy;
   }
 
-  [v28 _setRotatableClient:v43 toOrientation:v44 updateStatusBar:v45 duration:0 force:0 isRotating:0.0];
-  v46 = [MEMORY[0x1E696AD88] defaultCenter];
+  [window _setRotatableClient:v43 toOrientation:v44 updateStatusBar:v45 duration:0 force:0 isRotating:0.0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v237 = 0x1EFB92210;
   v47 = [MEMORY[0x1E696AD98] numberWithInteger:v44];
   v238[0] = v47;
   v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v238 forKeys:&v237 count:1];
-  [v46 postNotificationName:0x1EFB921F0 object:v28 userInfo:v48];
+  [defaultCenter postNotificationName:0x1EFB921F0 object:window userInfo:v48];
 
   if (isKindOfClass)
   {
     v49 = +[UIDevice currentDevice];
-    v50 = [v49 userInterfaceIdiom];
+    userInterfaceIdiom = [v49 userInterfaceIdiom];
 
-    v51 = (v50 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v51 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
   }
 
   else
@@ -559,7 +559,7 @@ LABEL_53:
     goto LABEL_89;
   }
 
-  if ([(UIViewController *)v185 _isModalSheet])
+  if ([(UIViewController *)viewControllerCopy _isModalSheet])
   {
     v52 = 1;
 LABEL_80:
@@ -573,8 +573,8 @@ LABEL_80:
     goto LABEL_80;
   }
 
-  v54 = [(UIViewController *)v186 _popoverController];
-  if (v54)
+  _popoverController = [(UIViewController *)controllerCopy _popoverController];
+  if (_popoverController)
   {
     v55 = v180 == 0;
   }
@@ -594,7 +594,7 @@ LABEL_89:
     goto LABEL_103;
   }
 
-  if ([(UIViewController *)v186 _isModalSheet])
+  if ([(UIViewController *)controllerCopy _isModalSheet])
   {
     v57 = 1;
 LABEL_95:
@@ -608,8 +608,8 @@ LABEL_95:
     goto LABEL_95;
   }
 
-  v58 = [(UIViewController *)v185 _popoverController];
-  if (v58)
+  _popoverController2 = [(UIViewController *)viewControllerCopy _popoverController];
+  if (_popoverController2)
   {
     v59 = v177 == 0;
   }
@@ -623,7 +623,7 @@ LABEL_95:
   v166 = v60;
 
 LABEL_103:
-  v61 = 0;
+  _visibleView = 0;
   v62 = self->_presenting;
   v158 = v180 == 18;
   v159 = v62;
@@ -640,7 +640,7 @@ LABEL_103:
     v64 = self->_presenting;
     if (v180 != 4 || !v62)
     {
-      v61 = [(UIViewController *)v186 _visibleView];
+      _visibleView = [(UIViewController *)controllerCopy _visibleView];
 
       v64 = self->_presenting;
     }
@@ -649,26 +649,26 @@ LABEL_103:
   if (v180 != 3 && v64 && v177 == 3)
   {
 
-    v61 = 0;
+    _visibleView = 0;
   }
 
   if (v179)
   {
-    v65 = [(UIViewController *)v186 view];
+    view2 = [(UIViewController *)controllerCopy view];
 
-    v61 = v65;
+    _visibleView = view2;
   }
 
-  if ((v178 & 1) != 0 || !v61)
+  if ((v178 & 1) != 0 || !_visibleView)
   {
-    v66 = [(UIViewController *)v186 view];
-    v67 = [v66 window];
+    view3 = [(UIViewController *)controllerCopy view];
+    window2 = [view3 window];
   }
 
   else
   {
-    v66 = [v61 superview];
-    v67 = v66;
+    view3 = [_visibleView superview];
+    window2 = view3;
   }
 
   v167 = v182 || v63;
@@ -677,47 +677,47 @@ LABEL_103:
   {
     if (self->_presenting)
     {
-      v68 = v186;
+      v68 = controllerCopy;
     }
 
     else
     {
-      v68 = v185;
+      v68 = viewControllerCopy;
     }
 
-    v69 = [(UIViewController *)v68 customTransitioningView];
-    v175 = [v69 superview];
+    customTransitioningView = [(UIViewController *)v68 customTransitioningView];
+    superview3 = [customTransitioningView superview];
 
     if (self->_presenting)
     {
-      v70 = v186;
+      v70 = controllerCopy;
     }
 
     else
     {
-      v70 = v185;
+      v70 = viewControllerCopy;
     }
 
-    v71 = [(UIViewController *)v70 customTransitioningView];
-    objc_storeStrong(&self->_transitionView, v71);
+    customTransitioningView2 = [(UIViewController *)v70 customTransitioningView];
+    objc_storeStrong(&self->_transitionView, customTransitioningView2);
   }
 
   else
   {
-    v175 = v67;
+    superview3 = window2;
   }
 
   v72 = v44;
-  v74 = v178 && (v73 = [(UIViewController *)v186 _preferredInterfaceOrientationGivenCurrentOrientation:v44], v72 = v44, v73 == v44) || v16 == v72;
-  v75 = [(UIWindowController *)self _interactionController];
-  v76 = v75 == 0;
+  v74 = v178 && (v73 = [(UIViewController *)controllerCopy _preferredInterfaceOrientationGivenCurrentOrientation:v44], v72 = v44, v73 == v44) || interfaceOrientation == v72;
+  _interactionController = [(UIWindowController *)self _interactionController];
+  v76 = _interactionController == 0;
 
   if (v76)
   {
     [UIApp beginIgnoringInteractionEvents];
   }
 
-  [v175 bounds];
+  [superview3 bounds];
   if (!self->_transitionView)
   {
     v81 = v77;
@@ -732,24 +732,24 @@ LABEL_103:
     [(UITransitionView *)self->_transitionView setDelegate:self];
     if (v179)
     {
-      if ([(UIViewController *)v186 _isModalSheet]|| [(UIViewController *)v185 _isModalSheet])
+      if ([(UIViewController *)controllerCopy _isModalSheet]|| [(UIViewController *)viewControllerCopy _isModalSheet])
       {
-        v87 = [(UIView *)self->_transitionView layer];
-        v88 = [(UIViewController *)v186 view];
-        v89 = [v88 layer];
-        [v89 cornerRadius];
-        [v87 setCornerRadius:?];
+        layer = [(UIView *)self->_transitionView layer];
+        view4 = [(UIViewController *)controllerCopy view];
+        layer2 = [view4 layer];
+        [layer2 cornerRadius];
+        [layer setCornerRadius:?];
 
-        v90 = [(UIViewController *)v186 view];
-        v91 = [v90 layer];
-        [v87 setMasksToBounds:{objc_msgSend(v91, "masksToBounds")}];
+        view5 = [(UIViewController *)controllerCopy view];
+        layer3 = [view5 layer];
+        [layer setMasksToBounds:{objc_msgSend(layer3, "masksToBounds")}];
       }
     }
   }
 
-  v92 = [(UIWindowController *)self _interactionController];
+  _interactionController2 = [(UIWindowController *)self _interactionController];
 
-  if (v92)
+  if (_interactionController2)
   {
     [(UITransitionView *)self->_transitionView setIgnoresInteractionEvents:0];
   }
@@ -779,13 +779,13 @@ LABEL_103:
   *&v235.c = vrndaq_f64(*&v235.c);
   *&v235.tx = vrndaq_f64(*&v235.tx);
   v236 = v235;
-  v94 = [v28 _isHostedInAnotherProcess];
+  _isHostedInAnotherProcess = [window _isHostedInAnotherProcess];
   [(UIView *)self->_transitionView bounds];
   v96 = v95;
   v98 = v97;
   width = v99;
   height = v101;
-  v103 = v167 & ~v181 & (v94 ^ 1) & (v44 != 1 && v74);
+  v103 = v167 & ~v181 & (_isHostedInAnotherProcess ^ 1) & (v44 != 1 && v74);
   if (!(v179 & 1 | ((v103 & 1) == 0)))
   {
     memset(&v235, 0, sizeof(v235));
@@ -801,47 +801,47 @@ LABEL_103:
     [(UITransitionView *)self->_transitionView setBounds:v96, v98];
     v234 = v236;
     [(UIView *)self->_transitionView setTransform:&v234];
-    if (v28)
+    if (window)
     {
-      if (!v28[62])
+      if (!window[62])
       {
-        v28[62] = v44;
+        window[62] = v44;
       }
     }
   }
 
-  v104 = [(UIView *)self->_transitionView superview];
-  v105 = v104 == 0;
+  superview4 = [(UIView *)self->_transitionView superview];
+  v105 = superview4 == 0;
 
   if (v105)
   {
     if ((v178 | v174))
     {
-      [v175 addSubview:self->_transitionView];
+      [superview3 addSubview:self->_transitionView];
     }
 
     else
     {
-      v106 = [v175 subviews];
-      v107 = [v106 indexOfObjectIdenticalTo:v61];
+      subviews = [superview3 subviews];
+      v107 = [subviews indexOfObjectIdenticalTo:_visibleView];
 
-      [v175 insertSubview:self->_transitionView atIndex:v107];
+      [superview3 insertSubview:self->_transitionView atIndex:v107];
     }
   }
 
   if (v166 & 1 | (!v182 && v177 == 17))
   {
-    v108 = 0;
+    _visibleView2 = 0;
   }
 
   else
   {
-    v108 = [(UIViewController *)v185 _visibleView];
+    _visibleView2 = [(UIViewController *)viewControllerCopy _visibleView];
   }
 
   if ((v167 & (v182 || v160) & 1) == 0)
   {
-    v109 = [(UIViewController *)v185 view];
+    view6 = [(UIViewController *)viewControllerCopy view];
 LABEL_164:
 
     if (v103)
@@ -854,11 +854,11 @@ LABEL_164:
 
   if (v180 == 3 && !v182 && v177 != 3)
   {
-    v109 = 0;
+    view6 = 0;
     goto LABEL_164;
   }
 
-  v109 = v108;
+  view6 = _visibleView2;
   if (v103)
   {
 LABEL_168:
@@ -869,15 +869,15 @@ LABEL_168:
     v161 = v110;
     *&v235.tx = *(MEMORY[0x1E695EFD0] + 32);
     v156 = *&v235.tx;
-    [v61 setTransform:&v235];
+    [_visibleView setTransform:&v235];
     v111 = self->_transitionView;
-    [v61 center];
-    [(UIView *)v111 convertPoint:v175 fromView:?];
-    [v61 setCenter:?];
+    [_visibleView center];
+    [(UIView *)v111 convertPoint:superview3 fromView:?];
+    [_visibleView setCenter:?];
     *&v235.a = v168;
     *&v235.c = v161;
     *&v235.tx = v156;
-    [v109 setTransform:&v235];
+    [view6 setTransform:&v235];
     goto LABEL_169;
   }
 
@@ -892,9 +892,9 @@ LABEL_169:
   *&v235.b = &v235;
   *&v235.c = 0x2020000000;
   LOBYTE(v235.d) = 1;
-  if (!((v61 == 0) | v165 & 1))
+  if (!((_visibleView == 0) | v165 & 1))
   {
-    [(UIWindowController *)self _transplantView:v61 toSuperview:self->_transitionView atIndex:0];
+    [(UIWindowController *)self _transplantView:_visibleView toSuperview:self->_transitionView atIndex:0];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -908,56 +908,56 @@ LABEL_169:
   v231 = v179;
   v221 = v44;
   v222 = v180;
-  v112 = v185;
+  v112 = viewControllerCopy;
   v215 = v112;
-  v113 = v61;
+  v113 = _visibleView;
   v216 = v113;
-  v114 = v109;
+  v114 = view6;
   v217 = v114;
-  v228 = a3;
+  _transitionCopy = _transition;
   v223 = v96;
   v224 = v98;
   v225 = width;
   v226 = height;
-  v169 = v175;
+  v169 = superview3;
   v218 = v169;
-  v176 = v28;
+  v176 = window;
   v219 = v176;
-  v232 = v94;
+  v232 = _isHostedInAnotherProcess;
   v227 = v236;
   v233 = v172;
   v115 = _Block_copy(aBlock);
   v115[2]();
-  v116 = [(UIView *)self->_transitionView window];
-  v117 = __UIStatusBarManagerForWindow(v116);
+  window3 = [(UIView *)self->_transitionView window];
+  v117 = __UIStatusBarManagerForWindow(window3);
   [v117 statusBarHeight];
   v119 = v118;
 
   self->_needsDidDisappear = 0;
-  v120 = a3 == 13 || v158 && v159;
+  v120 = _transition == 13 || v158 && v159;
   if ((((v178 | v181) | v174) & 1) == 0 && (v120 & 1) == 0)
   {
-    [(UIViewController *)v186 beginAppearanceTransition:0 animated:a3 != 0];
+    [(UIViewController *)controllerCopy beginAppearanceTransition:0 animated:_transition != 0];
     self->_needsDidDisappear = 1;
   }
 
   self->_needsDidAppear = 0;
-  if (!(v165 & 1 | v166 & 1 | (!v182 && v177 == 17)) && a3 != 14 && (v182 || v177 != 18))
+  if (!(v165 & 1 | v166 & 1 | (!v182 && v177 == 17)) && _transition != 14 && (v182 || v177 != 18))
   {
-    [(UIViewController *)v112 beginAppearanceTransition:1 animated:a3 != 0];
+    [(UIViewController *)v112 beginAppearanceTransition:1 animated:_transition != 0];
     self->_needsDidAppear = 1;
   }
 
-  v121 = [(UIView *)self->_transitionView window];
-  v122 = __UIStatusBarManagerForWindow(v121);
+  window4 = [(UIView *)self->_transitionView window];
+  v122 = __UIStatusBarManagerForWindow(window4);
   [v122 statusBarHeight];
   v124 = v123;
 
   if (v119 != v124)
   {
     (v115[2])(v115);
-    v125 = [(UIView *)self->_transitionView window];
-    v126 = __UIStatusBarManagerForWindow(v125);
+    window5 = [(UIView *)self->_transitionView window];
+    v126 = __UIStatusBarManagerForWindow(window5);
     [v126 statusBarHeight];
     v119 = v127;
   }
@@ -967,26 +967,26 @@ LABEL_169:
     [v176 _updateToInterfaceOrientation:v44 duration:0 force:0.0];
   }
 
-  v128 = [(UIWindowController *)self _interactionController];
-  v129 = v128 != 0;
+  _interactionController3 = [(UIWindowController *)self _interactionController];
+  v129 = _interactionController3 != 0;
 
-  v130 = (a3 != 14) & ((v181 | v174 | v120) ^ 1);
+  v130 = (_transition != 14) & ((v181 | v174 | v120) ^ 1);
   if (v164)
   {
     [(UIWindowController *)self _setInteractiveTransition:0];
-    if (v128)
+    if (_interactionController3)
     {
       [(UIWindowController *)self _setInteractiveTransition:1];
     }
 
     if (v182)
     {
-      v131 = v180;
+      view7 = v180;
     }
 
     else
     {
-      v131 = v177;
+      view7 = v177;
     }
 
     if ((v157 & 1) == 0)
@@ -996,10 +996,10 @@ LABEL_169:
       [val setRemoveFromView:v130];
     }
 
-    [(_UIViewControllerTransitionContext *)v183 _setPresentationStyle:v131];
+    [(_UIViewControllerTransitionContext *)v183 _setPresentationStyle:view7];
     [(_UIViewControllerTransitionContext *)v183 _setIsPresentation:v181];
-    [(_UIViewControllerTransitionContext *)v183 _setIsAnimated:a3 != 0];
-    [(_UIViewControllerOneToOneTransitionContext *)v183 _setFromViewController:v186];
+    [(_UIViewControllerTransitionContext *)v183 _setIsAnimated:_transition != 0];
+    [(_UIViewControllerOneToOneTransitionContext *)v183 _setFromViewController:controllerCopy];
     [(_UIViewControllerOneToOneTransitionContext *)v183 _setToViewController:v112];
     [(_UIViewControllerTransitionContext *)v183 _setContainerView:self->_transitionView];
     v132 = MEMORY[0x1E695F058];
@@ -1013,8 +1013,8 @@ LABEL_169:
 
     else
     {
-      v131 = [(UIViewController *)v112 view];
-      [v131 frame];
+      view7 = [(UIViewController *)v112 view];
+      [view7 frame];
     }
 
     [(_UIViewControllerOneToOneTransitionContext *)v183 _setToEndFrame:v133, v134, v135, v136];
@@ -1022,8 +1022,8 @@ LABEL_169:
     {
     }
 
-    v137 = [(UIViewController *)v186 view];
-    [v137 frame];
+    view8 = [(UIViewController *)controllerCopy view];
+    [view8 frame];
     [(_UIViewControllerOneToOneTransitionContext *)v183 _setFromStartFrame:?];
 
     v138 = *v132;
@@ -1033,8 +1033,8 @@ LABEL_169:
     [(_UIViewControllerOneToOneTransitionContext *)v183 _setToStartFrame:*v132, v139, v140, v141];
     if ((v130 & 1) == 0)
     {
-      v137 = [(UIViewController *)v186 view];
-      [v137 frame];
+      view8 = [(UIViewController *)controllerCopy view];
+      [view8 frame];
       v138 = v142;
       v139 = v143;
       v140 = v144;
@@ -1046,19 +1046,19 @@ LABEL_169:
     {
     }
 
-    v146 = [(UIWindowController *)self _interactionController];
-    [(_UIViewControllerTransitionContext *)v183 _setInteractor:v146];
+    _interactionController4 = [(UIWindowController *)self _interactionController];
+    [(_UIViewControllerTransitionContext *)v183 _setInteractor:_interactionController4];
 
     [v176 beginDisablingInterfaceAutorotation];
-    if (v173)
+    if (animationCopy)
     {
-      v147 = [(_UIViewControllerTransitionContext *)v183 _transitionCoordinator];
+      _transitionCoordinator = [(_UIViewControllerTransitionContext *)v183 _transitionCoordinator];
       v212[0] = MEMORY[0x1E69E9820];
       v212[1] = 3221225472;
       v212[2] = __97__UIWindowController__transition_fromViewController_toViewController_target_didFinish_animation___block_invoke_2;
       v212[3] = &unk_1E70F3770;
-      v213 = v173;
-      [v147 animateAlongsideTransition:v212 completion:0];
+      v213 = animationCopy;
+      [_transitionCoordinator animateAlongsideTransition:v212 completion:0];
     }
 
     objc_initWeak(&v234, val);
@@ -1074,7 +1074,7 @@ LABEL_169:
     objc_copyWeak(&v209, &v234);
     v208 = v176;
     [(_UIViewControllerTransitionContext *)v183 _setCompletionHandler:v205];
-    if (v128)
+    if (_interactionController3)
     {
       [(_UIViewControllerTransitionContext *)v183 _addInteractiveUpdateHandler:&__block_literal_global_158];
       [(_UIViewControllerTransitionContext *)v183 _setTransitionIsCompleting:0];
@@ -1084,16 +1084,16 @@ LABEL_169:
     objc_destroyWeak(&v234);
   }
 
-  else if (v173)
+  else if (animationCopy)
   {
-    v173[2]();
+    animationCopy[2]();
   }
 
   v187[0] = MEMORY[0x1E69E9820];
   v187[1] = 3221225472;
   v187[2] = __97__UIWindowController__transition_fromViewController_toViewController_target_didFinish_animation___block_invoke_5;
   v187[3] = &unk_1E7104808;
-  v198 = a3;
+  _transitionCopy2 = _transition;
   v187[4] = self;
   v196 = v119;
   v148 = v115;
@@ -1104,10 +1104,10 @@ LABEL_169:
   v189 = v150;
   v199 = v181;
   v190 = v112;
-  v191 = v186;
+  v191 = controllerCopy;
   v200 = v130;
-  v192 = v170;
-  v197 = a7;
+  v192 = targetCopy;
+  finishCopy = finish;
   v151 = v114;
   v193 = v151;
   v201 = v172;
@@ -1119,7 +1119,7 @@ LABEL_169:
   v153 = _Block_copy(v187);
   v154 = v153;
   v155 = v164 ^ 1;
-  if ((a3 & 0xFFFFFFFE) == 0xA)
+  if ((_transition & 0xFFFFFFFE) == 0xA)
   {
     v155 = 0;
   }
@@ -1549,9 +1549,9 @@ LABEL_21:
   }
 }
 
-- (void)transitionViewDidStart:(id)a3
+- (void)transitionViewDidStart:(id)start
 {
-  if (self->_transitionView == a3 && ![(UIViewController *)self->_toViewController _containsFirstResponder])
+  if (self->_transitionView == start && ![(UIViewController *)self->_toViewController _containsFirstResponder])
   {
     toViewController = self->_toViewController;
 
@@ -1559,22 +1559,22 @@ LABEL_21:
   }
 }
 
-- (void)transitionViewDidCancel:(id)a3 fromView:(id)a4 toView:(id)a5
+- (void)transitionViewDidCancel:(id)cancel fromView:(id)view toView:(id)toView
 {
-  v28 = a3;
-  v7 = a4;
-  v8 = [v28 superview];
-  v9 = [(UIWindowController *)self _transitionController];
+  cancelCopy = cancel;
+  viewCopy = view;
+  superview = [cancelCopy superview];
+  _transitionController = [(UIWindowController *)self _transitionController];
   if (![(UIWindowController *)self _isInteractiveTransition])
   {
     goto LABEL_35;
   }
 
-  if (v9)
+  if (_transitionController)
   {
-    v10 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:v9];
+    v10 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:_transitionController];
     v11 = [v10 presentationStyle] == 4;
-    if (!v7)
+    if (!viewCopy)
     {
       goto LABEL_8;
     }
@@ -1584,7 +1584,7 @@ LABEL_21:
   {
     v11 = 0;
     v10 = 0;
-    if (!v7)
+    if (!viewCopy)
     {
       goto LABEL_8;
     }
@@ -1592,11 +1592,11 @@ LABEL_21:
 
   if (!v11)
   {
-    v12 = [v28 superview];
-    v13 = [v12 subviews];
-    v14 = [v13 indexOfObjectIdenticalTo:v28];
+    superview2 = [cancelCopy superview];
+    subviews = [superview2 subviews];
+    v14 = [subviews indexOfObjectIdenticalTo:cancelCopy];
 
-    [(UIWindowController *)self _transplantView:v7 toSuperview:v8 atIndex:v14];
+    [(UIWindowController *)self _transplantView:viewCopy toSuperview:superview atIndex:v14];
   }
 
 LABEL_8:
@@ -1605,9 +1605,9 @@ LABEL_8:
     [v10 _setContainerView:0];
   }
 
-  v15 = [(UITransitionView *)self->_transitionView delegate];
+  delegate = [(UITransitionView *)self->_transitionView delegate];
 
-  if (v15 == self)
+  if (delegate == self)
   {
     [(UITransitionView *)self->_transitionView setDelegate:0];
     if (v11)
@@ -1621,7 +1621,7 @@ LABEL_8:
   if (!v11)
   {
 LABEL_12:
-    [v28 removeFromSuperview];
+    [cancelCopy removeFromSuperview];
   }
 
 LABEL_13:
@@ -1709,31 +1709,31 @@ LABEL_13:
   [(UIViewController *)v18 setPerformingModalTransition:0];
   [(UIViewController *)v19 setPerformingModalTransition:0];
   [(UIViewController *)v18 _windowControllerTransitionDidCancel];
-  v27 = [v8 keyboardSceneDelegate];
-  [v27 popAnimationStyle];
+  keyboardSceneDelegate = [superview keyboardSceneDelegate];
+  [keyboardSceneDelegate popAnimationStyle];
 
 LABEL_35:
 }
 
-- (void)transitionViewDidComplete:(id)a3 fromView:(id)a4 toView:(id)a5 removeFromView:(BOOL)a6
+- (void)transitionViewDidComplete:(id)complete fromView:(id)view toView:(id)toView removeFromView:(BOOL)fromView
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(UIWindowController *)self _transitionController];
-  v43 = [(UIWindowController *)self _isInteractiveTransition];
-  v46 = v12;
-  if (v13)
+  fromViewCopy = fromView;
+  completeCopy = complete;
+  viewCopy = view;
+  toViewCopy = toView;
+  _transitionController = [(UIWindowController *)self _transitionController];
+  _isInteractiveTransition = [(UIWindowController *)self _isInteractiveTransition];
+  v46 = toViewCopy;
+  if (_transitionController)
   {
-    v14 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:v13];
-    v15 = [v14 presentationStyle];
-    v47 = [v10 superview];
-    if (v15 == 4)
+    v14 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:_transitionController];
+    presentationStyle = [v14 presentationStyle];
+    superview = [completeCopy superview];
+    if (presentationStyle == 4)
     {
       v16 = 0;
-      LOBYTE(v12) = 1;
-      if (!v11)
+      LOBYTE(toViewCopy) = 1;
+      if (!viewCopy)
       {
         goto LABEL_27;
       }
@@ -1744,19 +1744,19 @@ LABEL_35:
 
   else
   {
-    v47 = [v10 superview];
+    superview = [completeCopy superview];
     v14 = 0;
   }
 
-  if (v10)
+  if (completeCopy)
   {
-    [v10 transform];
+    [completeCopy transform];
     if (CGAffineTransformIsIdentity(&v49))
     {
       goto LABEL_12;
     }
 
-    [v10 transform];
+    [completeCopy transform];
   }
 
   else
@@ -1771,15 +1771,15 @@ LABEL_35:
   }
 
   v49 = v48[1];
-  [v12 setTransform:&v49];
-  [v12 center];
-  [v47 convertPoint:v10 fromView:?];
-  [v12 setCenter:?];
+  [toViewCopy setTransform:&v49];
+  [toViewCopy center];
+  [superview convertPoint:completeCopy fromView:?];
+  [toViewCopy setCenter:?];
 LABEL_12:
-  if (!v12)
+  if (!toViewCopy)
   {
     v16 = 0;
-    if (!v11)
+    if (!viewCopy)
     {
       goto LABEL_27;
     }
@@ -1787,40 +1787,40 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v17 = [v10 superview];
-  v18 = [v17 subviews];
-  v16 = [v18 indexOfObjectIdenticalTo:v10];
+  superview2 = [completeCopy superview];
+  subviews = [superview2 subviews];
+  v16 = [subviews indexOfObjectIdenticalTo:completeCopy];
 
-  [(UIWindowController *)self _transplantView:v12 toSuperview:v47 atIndex:v16];
-  v19 = [v10 superview];
+  [(UIWindowController *)self _transplantView:toViewCopy toSuperview:superview atIndex:v16];
+  superview3 = [completeCopy superview];
   objc_opt_class();
-  LOBYTE(v18) = objc_opt_isKindOfClass();
+  LOBYTE(subviews) = objc_opt_isKindOfClass();
 
-  if (v18)
+  if (subviews)
   {
-    v20 = [v10 superview];
-    [v20 setContentView:v12];
+    superview4 = [completeCopy superview];
+    [superview4 setContentView:toViewCopy];
 
-    v21 = [(UIViewController *)self->_fromViewController dropShadowView];
-    [(UIViewController *)self->_toViewController setDropShadowView:v21];
+    dropShadowView = [(UIViewController *)self->_fromViewController dropShadowView];
+    [(UIViewController *)self->_toViewController setDropShadowView:dropShadowView];
 
     [(UIViewController *)self->_fromViewController setDropShadowView:0];
   }
 
-  LOBYTE(v12) = 0;
-  if (v11)
+  LOBYTE(toViewCopy) = 0;
+  if (viewCopy)
   {
 LABEL_18:
-    if (!v6 && ([(UIViewController *)self->_toViewController modalTransitionStyle]== UIModalTransitionStylePartialCurl || [(UIViewController *)self->_toViewController modalPresentationStyle]== 18))
+    if (!fromViewCopy && ([(UIViewController *)self->_toViewController modalTransitionStyle]== UIModalTransitionStylePartialCurl || [(UIViewController *)self->_toViewController modalPresentationStyle]== 18))
     {
       if ([(UIViewController *)self->_toViewController modalTransitionStyle]== UIModalTransitionStylePartialCurl)
       {
         ++v16;
       }
 
-      if (v10)
+      if (completeCopy)
       {
-        [v10 transform];
+        [completeCopy transform];
       }
 
       else
@@ -1829,31 +1829,31 @@ LABEL_18:
       }
 
       v49 = v48[0];
-      [v11 setTransform:&v49];
-      [(UIWindowController *)self _transplantView:v11 toSuperview:v47 atIndex:v16];
-      [v11 center];
-      [v47 convertPoint:v10 fromView:?];
-      [v11 setCenter:?];
+      [viewCopy setTransform:&v49];
+      [(UIWindowController *)self _transplantView:viewCopy toSuperview:superview atIndex:v16];
+      [viewCopy center];
+      [superview convertPoint:completeCopy fromView:?];
+      [viewCopy setCenter:?];
     }
   }
 
 LABEL_27:
-  v22 = [(UIViewController *)self->_fromViewController currentAction];
+  currentAction = [(UIViewController *)self->_fromViewController currentAction];
   [(UITransitionView *)self->_transitionView _curlUpRevealedHeight];
-  if (v22)
+  if (currentAction)
   {
-    v22[4] = v23;
+    currentAction[4] = v23;
   }
 
-  if ((v12 & 1) == 0)
+  if ((toViewCopy & 1) == 0)
   {
-    v24 = v10;
+    v24 = completeCopy;
     goto LABEL_34;
   }
 
-  if (v11 && v6)
+  if (viewCopy && fromViewCopy)
   {
-    v24 = v11;
+    v24 = viewCopy;
 LABEL_34:
     [v24 removeFromSuperview];
   }
@@ -1863,15 +1863,15 @@ LABEL_34:
     [v14 _setContainerView:0];
   }
 
-  v45 = v13;
-  v25 = [(UITransitionView *)self->_transitionView delegate];
+  v45 = _transitionController;
+  delegate = [(UITransitionView *)self->_transitionView delegate];
 
-  if (v25 == self)
+  if (delegate == self)
   {
     [(UITransitionView *)self->_transitionView setDelegate:0];
   }
 
-  v44 = v11;
+  v44 = viewCopy;
   transitionView = self->_transitionView;
   self->_transitionView = 0;
 
@@ -1890,8 +1890,8 @@ LABEL_34:
   currentTransition = self->_currentTransition;
   if (objc_opt_respondsToSelector())
   {
-    v33 = [(UIViewController *)v28 _completionBlock];
-    v34 = _Block_copy(v33);
+    _completionBlock = [(UIViewController *)v28 _completionBlock];
+    v34 = _Block_copy(_completionBlock);
   }
 
   else
@@ -1958,8 +1958,8 @@ LABEL_34:
   if (presenting)
   {
     [(UIViewController *)v31 _presentingViewControllerDidChange:v30];
-    v41 = [(UIViewController *)&v30->super.super.isa _modalPreservedFirstResponder];
-    [v41 _becomeFirstResponderWhenPossible];
+    _modalPreservedFirstResponder = [(UIViewController *)&v30->super.super.isa _modalPreservedFirstResponder];
+    [_modalPreservedFirstResponder _becomeFirstResponderWhenPossible];
   }
 
   else
@@ -1972,44 +1972,44 @@ LABEL_34:
     v34[2](v34, 1);
   }
 
-  v42 = [v47 keyboardSceneDelegate];
-  [v42 popAnimationStyle];
+  keyboardSceneDelegate = [superview keyboardSceneDelegate];
+  [keyboardSceneDelegate popAnimationStyle];
 
-  if (!v43)
+  if (!_isInteractiveTransition)
   {
     [UIApp endIgnoringInteractionEvents];
   }
 }
 
-- (CGPoint)_adjustOrigin:(CGPoint)result givenOtherOrigin:(CGPoint)a4 forTransition:(int)a5
+- (CGPoint)_adjustOrigin:(CGPoint)result givenOtherOrigin:(CGPoint)origin forTransition:(int)transition
 {
-  if ((a5 - 1) >= 2)
+  if ((transition - 1) >= 2)
   {
-    if (((1 << a5) & 0x1C1388) == 0)
+    if (((1 << transition) & 0x1C1388) == 0)
     {
-      a4.x = result.x;
+      origin.x = result.x;
     }
 
-    if (a5 <= 0x14)
+    if (transition <= 0x14)
     {
-      result.x = a4.x;
+      result.x = origin.x;
     }
 
-    a4.y = result.y;
+    origin.y = result.y;
   }
 
-  y = a4.y;
+  y = origin.y;
   result.y = y;
   return result;
 }
 
-- (void)transitionView:(id)a3 startCustomTransitionWithDuration:(double)a4
+- (void)transitionView:(id)view startCustomTransitionWithDuration:(double)duration
 {
-  v6 = a3;
+  viewCopy = view;
   currentTransition = self->_currentTransition;
   if (currentTransition == 17)
   {
-    v9 = v6;
+    v9 = viewCopy;
     v8 = 48;
   }
 
@@ -2020,21 +2020,21 @@ LABEL_34:
       goto LABEL_6;
     }
 
-    v9 = v6;
+    v9 = viewCopy;
     v8 = 56;
   }
 
-  [*(&self->super.isa + v8) _startPresentCustomTransitionWithDuration:a4];
-  v6 = v9;
+  [*(&self->super.isa + v8) _startPresentCustomTransitionWithDuration:duration];
+  viewCopy = v9;
 LABEL_6:
 }
 
-- (CGPoint)transitionView:(id)a3 endOriginForFromView:(id)a4 forTransition:(int)a5 defaultOrigin:(CGPoint)a6
+- (CGPoint)transitionView:(id)view endOriginForFromView:(id)fromView forTransition:(int)transition defaultOrigin:(CGPoint)origin
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = *&a5;
-  [a4 frame];
+  y = origin.y;
+  x = origin.x;
+  v8 = *&transition;
+  [fromView frame];
 
   [(UIWindowController *)self _adjustOrigin:v8 givenOtherOrigin:x forTransition:y, v10, v11];
   result.y = v13;
@@ -2042,13 +2042,13 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)transitionView:(id)a3 beginOriginForToView:(id)a4 forTransition:(int)a5 defaultOrigin:(CGPoint)a6
+- (CGPoint)transitionView:(id)view beginOriginForToView:(id)toView forTransition:(int)transition defaultOrigin:(CGPoint)origin
 {
   x = self->_beginOriginForToView.x;
   y = self->_beginOriginForToView.y;
   if (x == 1.79769313e308 && y == 1.79769313e308)
   {
-    [(UIWindowController *)self _adjustOrigin:*&a5 givenOtherOrigin:a4 forTransition:a6.x, a6.y, self->_endOriginForToView.x, self->_endOriginForToView.y, v6, v7];
+    [(UIWindowController *)self _adjustOrigin:*&transition givenOtherOrigin:toView forTransition:origin.x, origin.y, self->_endOriginForToView.x, self->_endOriginForToView.y, v6, v7];
     x = v11;
     y = v12;
   }
@@ -2060,13 +2060,13 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)transitionView:(id)a3 endOriginForToView:(id)a4 forTransition:(int)a5 defaultOrigin:(CGPoint)a6
+- (CGPoint)transitionView:(id)view endOriginForToView:(id)toView forTransition:(int)transition defaultOrigin:(CGPoint)origin
 {
-  y = a6.y;
-  x = a6.x;
-  v9 = a3;
-  v10 = [v9 keyboardSceneDelegate];
-  [v10 visibleFrameInView:0];
+  y = origin.y;
+  x = origin.x;
+  viewCopy = view;
+  keyboardSceneDelegate = [viewCopy keyboardSceneDelegate];
+  [keyboardSceneDelegate visibleFrameInView:0];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -2076,12 +2076,12 @@ LABEL_6:
   {
     if (self->_presenting && ((toModalStyle = self->_toModalStyle, toModalStyle == 16) || toModalStyle == 2) && (v30.origin.x = v12, v30.origin.y = v14, v30.size.width = v16, v30.size.height = v18, !CGRectIsEmpty(v30)) && ([(UIViewController *)self->_toViewController interfaceOrientation]- 3) <= 1)
     {
-      [v9 bounds];
+      [viewCopy bounds];
       v22 = v21;
       [(UIViewController *)self->_toViewController formSheetSize];
       x = (v22 - v23) * 0.5;
-      v24 = [v9 window];
-      v25 = __UIStatusBarManagerForWindow(v24);
+      window = [viewCopy window];
+      v25 = __UIStatusBarManagerForWindow(window);
       [v25 defaultStatusBarHeightInOrientation:1];
       y = v26;
     }

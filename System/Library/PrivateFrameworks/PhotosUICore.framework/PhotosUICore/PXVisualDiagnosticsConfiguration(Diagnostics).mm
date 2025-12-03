@@ -7,11 +7,11 @@
 - (void)collectTapToRadarDiagnosticsIntoContainer:()Diagnostics
 {
   v4 = a3;
-  v5 = [a1 name];
-  v6 = v5;
-  if (v5)
+  name = [self name];
+  v6 = name;
+  if (name)
   {
-    v7 = v5;
+    v7 = name;
   }
 
   else
@@ -29,7 +29,7 @@
   v13 = v8;
   v9 = v8;
   v10 = v4;
-  [PXVisualDiagnosticsFactory requestVisualDiagnosticsPDFDocumentURLWithConfiguration:a1 resultHandler:v11];
+  [PXVisualDiagnosticsFactory requestVisualDiagnosticsPDFDocumentURLWithConfiguration:self resultHandler:v11];
 }
 
 @end

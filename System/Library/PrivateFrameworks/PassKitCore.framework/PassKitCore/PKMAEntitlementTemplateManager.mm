@@ -1,8 +1,8 @@
 @interface PKMAEntitlementTemplateManager
 - (PKMAEntitlementTemplateManager)init;
-- (id)_templatesFromAssetBundle:(id)a3;
+- (id)_templatesFromAssetBundle:(id)bundle;
 - (id)cachedEntitlementTemplates;
-- (void)entitlementTemplates:(id)a3;
+- (void)entitlementTemplates:(id)templates;
 @end
 
 @implementation PKMAEntitlementTemplateManager
@@ -30,17 +30,17 @@
   return v4;
 }
 
-- (void)entitlementTemplates:(id)a3
+- (void)entitlementTemplates:(id)templates
 {
-  v4 = a3;
+  templatesCopy = templates;
   mobileAssetManager = self->_mobileAssetManager;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__PKMAEntitlementTemplateManager_entitlementTemplates___block_invoke;
   v7[3] = &unk_1E79C84E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = templatesCopy;
+  v6 = templatesCopy;
   [(PKMobileAssetManager *)mobileAssetManager dynamicAssetWithIdentifier:@"EntitlementTemplates.General" parameters:0 timeout:20 completion:v7];
 }
 
@@ -74,14 +74,14 @@ void __55__PKMAEntitlementTemplateManager_entitlementTemplates___block_invoke(ui
   }
 }
 
-- (id)_templatesFromAssetBundle:(id)a3
+- (id)_templatesFromAssetBundle:(id)bundle
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  bundleCopy = bundle;
+  v4 = bundleCopy;
+  if (bundleCopy)
   {
-    v5 = [v3 URLsForResourcesWithExtension:@"json" subdirectory:0];
+    v5 = [bundleCopy URLsForResourcesWithExtension:@"json" subdirectory:0];
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v47 = 0u;
     v48 = 0u;

@@ -1,16 +1,16 @@
 @interface OBIconTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (OBIconTextViewAccessibility)initWithIcon:(id)a3 iconSize:(CGSize)a4 text:(id)a5 dataDetectorTypes:(unint64_t)a6;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (OBIconTextViewAccessibility)initWithIcon:(id)icon iconSize:(CGSize)size text:(id)text dataDetectorTypes:(unint64_t)types;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation OBIconTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"OBIconTextView" hasInstanceVariable:@"_textView" withType:"UITextView"];
-  [v3 validateClass:@"OBIconTextView" hasInstanceMethod:@"initWithIcon:iconSize:text:dataDetectorTypes:" withFullSignature:{"@", "{CGSize=dd}", "@", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"OBIconTextView" hasInstanceVariable:@"_textView" withType:"UITextView"];
+  [validationsCopy validateClass:@"OBIconTextView" hasInstanceMethod:@"initWithIcon:iconSize:text:dataDetectorTypes:" withFullSignature:{"@", "{CGSize=dd}", "@", "Q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,11 +22,11 @@
   [v3 _accessibilitySetTextViewShouldBreakUpParagraphs:1];
 }
 
-- (OBIconTextViewAccessibility)initWithIcon:(id)a3 iconSize:(CGSize)a4 text:(id)a5 dataDetectorTypes:(unint64_t)a6
+- (OBIconTextViewAccessibility)initWithIcon:(id)icon iconSize:(CGSize)size text:(id)text dataDetectorTypes:(unint64_t)types
 {
   v8.receiver = self;
   v8.super_class = OBIconTextViewAccessibility;
-  v6 = [(OBIconTextViewAccessibility *)&v8 initWithIcon:a3 iconSize:a5 text:a6 dataDetectorTypes:a4.width, a4.height];
+  v6 = [(OBIconTextViewAccessibility *)&v8 initWithIcon:icon iconSize:text text:types dataDetectorTypes:size.width, size.height];
   [(OBIconTextViewAccessibility *)v6 _accessibilityLoadAccessibilityInformation];
 
   return v6;

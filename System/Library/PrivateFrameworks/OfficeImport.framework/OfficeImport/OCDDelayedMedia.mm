@@ -1,18 +1,18 @@
 @interface OCDDelayedMedia
-- (BOOL)saveMediaToFile:(id)a3;
+- (BOOL)saveMediaToFile:(id)file;
 @end
 
 @implementation OCDDelayedMedia
 
-- (BOOL)saveMediaToFile:(id)a3
+- (BOOL)saveMediaToFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   if ([(OCDDelayedNode *)self isLoaded])
   {
     v5 = 1;
   }
 
-  else if ([(OCDDelayedNodeContext *)self->super.mDelayedContext saveDelayedMedia:self toFile:v4])
+  else if ([(OCDDelayedNodeContext *)self->super.mDelayedContext saveDelayedMedia:self toFile:fileCopy])
   {
     mDelayedContext = self->super.mDelayedContext;
     self->super.mDelayedContext = 0;

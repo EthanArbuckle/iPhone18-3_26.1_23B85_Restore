@@ -1,14 +1,14 @@
 @interface MRExpanseManager
 + (MRExpanseManager)sharedManager;
-- (BOOL)activeActivityExistsForBundle:(id)a3;
-- (BOOL)canAddTelevisionWithRouteIdentifierToSession:(id)a3;
-- (BOOL)deviceIsActiveTelevision:(id)a3;
+- (BOOL)activeActivityExistsForBundle:(id)bundle;
+- (BOOL)canAddTelevisionWithRouteIdentifierToSession:(id)session;
+- (BOOL)deviceIsActiveTelevision:(id)television;
 - (BOOL)expanseHandoffSupported;
 - (BOOL)expanseSessionActive;
 - (BOOL)expanseSessionHasActiveActivity;
 - (BOOL)expanseSessionHasRemoteActivity;
 - (BOOL)expanseSessionHasScreenSharingActivity;
-- (MRExpanseManager)initWithQueue:(id)a3;
+- (MRExpanseManager)initWithQueue:(id)queue;
 - (NSString)activeTelevisionRouteID;
 - (id)activeConversation;
 - (void)_handleConversationStateChanged;
@@ -18,15 +18,15 @@
 - (void)_notifyObserversThatExpanseSessionLeft;
 - (void)_notifyObserversThatTelevisionJoinedSession;
 - (void)_notifyObserversThatTelevisionLeftSession;
-- (void)addObserver:(id)a3;
-- (void)addTelevisionWithRouteIdentifierToSession:(id)a3 completion:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)addTelevisionWithRouteIdentifierToSession:(id)session completion:(id)completion;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation;
 - (void)dealloc;
-- (void)neighborhoodActivityConduit:(id)a3 splitSessionEnded:(id)a4;
-- (void)neighborhoodActivityConduit:(id)a3 splitSessionStarted:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)removeTelevisionWithRouteIdentifierFromSession:(id)a3 completion:(id)a4;
-- (void)serverDisconnectedForConversationManager:(id)a3;
+- (void)neighborhoodActivityConduit:(id)conduit splitSessionEnded:(id)ended;
+- (void)neighborhoodActivityConduit:(id)conduit splitSessionStarted:(id)started;
+- (void)removeObserver:(id)observer;
+- (void)removeTelevisionWithRouteIdentifierFromSession:(id)session completion:(id)completion;
+- (void)serverDisconnectedForConversationManager:(id)manager;
 @end
 
 @implementation MRExpanseManager
@@ -50,10 +50,10 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(MRExpanseManager *)self activeConversation];
-  v3 = [v2 activitySessions];
+  activeConversation = [(MRExpanseManager *)self activeConversation];
+  activitySessions = [activeConversation activitySessions];
 
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v4 = [activitySessions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -64,7 +64,7 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activitySessions);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
@@ -77,10 +77,10 @@
             _os_log_impl(&dword_1A2860000, v9, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] Local activity found.", v16, 2u);
           }
 
-          v10 = [v8 activity];
-          v11 = [v10 isScreenSharingActivity];
+          activity = [v8 activity];
+          isScreenSharingActivity = [activity isScreenSharingActivity];
 
-          if (v11)
+          if (isScreenSharingActivity)
           {
             v13 = _MRLogForCategory(2uLL);
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -95,7 +95,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [activitySessions countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v5)
       {
         continue;
@@ -105,11 +105,11 @@
     }
   }
 
-  v3 = _MRLogForCategory(2uLL);
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  activitySessions = _MRLogForCategory(2uLL);
+  if (os_log_type_enabled(activitySessions, OS_LOG_TYPE_DEFAULT))
   {
     *v16 = 0;
-    _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] No screen sharing activity found.", v16, 2u);
+    _os_log_impl(&dword_1A2860000, activitySessions, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] No screen sharing activity found.", v16, 2u);
   }
 
   v12 = 0;
@@ -126,10 +126,10 @@ LABEL_18:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(MRExpanseManager *)self conversationManager];
-  v3 = [v2 activeConversations];
+  conversationManager = [(MRExpanseManager *)self conversationManager];
+  activeConversations = [conversationManager activeConversations];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [activeConversations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -139,7 +139,7 @@ LABEL_18:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeConversations);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -150,7 +150,7 @@ LABEL_18:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [activeConversations countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -177,24 +177,24 @@ void __33__MRExpanseManager_sharedManager__block_invoke()
   sharedManager___manager = v2;
 }
 
-- (MRExpanseManager)initWithQueue:(id)a3
+- (MRExpanseManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = MRExpanseManager;
   v6 = [(MRExpanseManager *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.amp.MediaRemote.MRExpanseManager.notifyQueue", v8);
     notifyQueue = v7->_notifyQueue;
     v7->_notifyQueue = v9;
 
-    v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v11;
+    v7->_observers = weakObjectsHashTable;
 
     v28 = 0;
     v29 = &v28;
@@ -249,29 +249,29 @@ void __33__MRExpanseManager_sharedManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(MRExpanseManager *)self conduit];
-  [v3 removeDelegate:self];
+  conduit = [(MRExpanseManager *)self conduit];
+  [conduit removeDelegate:self];
 
-  v4 = [(MRExpanseManager *)self conversationManager];
-  [v4 removeDelegate:self];
+  conversationManager = [(MRExpanseManager *)self conversationManager];
+  [conversationManager removeDelegate:self];
 
   v5.receiver = self;
   v5.super_class = MRExpanseManager;
   [(MRExpanseManager *)&v5 dealloc];
 }
 
-- (BOOL)activeActivityExistsForBundle:(id)a3
+- (BOOL)activeActivityExistsForBundle:(id)bundle
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundleCopy = bundle;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(MRExpanseManager *)self activeConversation];
-  v6 = [v5 activitySessions];
+  activeConversation = [(MRExpanseManager *)self activeConversation];
+  activitySessions = [activeConversation activitySessions];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  v7 = [activitySessions countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -281,15 +281,15 @@ void __33__MRExpanseManager_sharedManager__block_invoke()
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activitySessions);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 state] == 1 || objc_msgSend(v10, "state") == 4)
         {
-          v11 = [v10 activity];
-          v12 = [v11 bundleIdentifier];
-          v13 = [v12 isEqualToString:v4];
+          activity = [v10 activity];
+          bundleIdentifier = [activity bundleIdentifier];
+          v13 = [bundleIdentifier isEqualToString:bundleCopy];
 
           if (v13)
           {
@@ -297,7 +297,7 @@ void __33__MRExpanseManager_sharedManager__block_invoke()
             if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138477827;
-              v21 = v4;
+              v21 = bundleCopy;
               _os_log_impl(&dword_1A2860000, v7, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] Found active activity for %{private}@", buf, 0xCu);
             }
 
@@ -307,7 +307,7 @@ void __33__MRExpanseManager_sharedManager__block_invoke()
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v7 = [activitySessions countByEnumeratingWithState:&v16 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -325,24 +325,24 @@ LABEL_15:
 
 - (NSString)activeTelevisionRouteID
 {
-  v2 = [(MRExpanseManager *)self conduit];
-  v3 = [v2 activeSplitSessionTV];
-  v4 = [v3 identifierWithType:1];
+  conduit = [(MRExpanseManager *)self conduit];
+  activeSplitSessionTV = [conduit activeSplitSessionTV];
+  v4 = [activeSplitSessionTV identifierWithType:1];
 
   return v4;
 }
 
-- (BOOL)deviceIsActiveTelevision:(id)a3
+- (BOOL)deviceIsActiveTelevision:(id)television
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRExpanseManager *)self activeTelevisionRouteID];
-  if (v5)
+  televisionCopy = television;
+  activeTelevisionRouteID = [(MRExpanseManager *)self activeTelevisionRouteID];
+  if (activeTelevisionRouteID)
   {
-    if ([v4 deviceSubtype] != 15)
+    if ([televisionCopy deviceSubtype] != 15)
     {
-      v14 = [v4 uid];
-      v13 = [v14 isEqualToString:v5];
+      v14 = [televisionCopy uid];
+      v13 = [v14 isEqualToString:activeTelevisionRouteID];
 
       goto LABEL_15;
     }
@@ -351,8 +351,8 @@ LABEL_15:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [v4 clusterComposition];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    clusterComposition = [televisionCopy clusterComposition];
+    v7 = [clusterComposition countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -363,11 +363,11 @@ LABEL_15:
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(clusterComposition);
           }
 
           v11 = [*(*(&v17 + 1) + 8 * i) uid];
-          v12 = [v11 isEqualToString:v5];
+          v12 = [v11 isEqualToString:activeTelevisionRouteID];
 
           if (v12)
           {
@@ -377,7 +377,7 @@ LABEL_15:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [clusterComposition countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           continue;
@@ -402,10 +402,10 @@ LABEL_15:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [(MRExpanseManager *)self activeConversation];
-  v3 = [v2 activitySessions];
+  activeConversation = [(MRExpanseManager *)self activeConversation];
+  activitySessions = [activeConversation activitySessions];
 
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [activitySessions countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -416,14 +416,14 @@ LABEL_15:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activitySessions);
         }
 
-        v8 = [*(*(&v16 + 1) + 8 * i) activity];
-        v9 = [v8 metadata];
-        v10 = [v9 supportsContinuationOnTV];
+        activity = [*(*(&v16 + 1) + 8 * i) activity];
+        metadata = [activity metadata];
+        supportsContinuationOnTV = [metadata supportsContinuationOnTV];
 
-        if (v10)
+        if (supportsContinuationOnTV)
         {
           v12 = _MRLogForCategory(2uLL);
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -437,7 +437,7 @@ LABEL_15:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [activitySessions countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         continue;
@@ -447,11 +447,11 @@ LABEL_15:
     }
   }
 
-  v3 = _MRLogForCategory(2uLL);
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  activitySessions = _MRLogForCategory(2uLL);
+  if (os_log_type_enabled(activitySessions, OS_LOG_TYPE_DEFAULT))
   {
     *v15 = 0;
-    _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] Found no activity to continue on TV.", v15, 2u);
+    _os_log_impl(&dword_1A2860000, activitySessions, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] Found no activity to continue on TV.", v15, 2u);
   }
 
   v11 = 0;
@@ -463,8 +463,8 @@ LABEL_15:
 
 - (BOOL)expanseSessionActive
 {
-  v2 = [(MRExpanseManager *)self activeConversation];
-  v3 = v2 != 0;
+  activeConversation = [(MRExpanseManager *)self activeConversation];
+  v3 = activeConversation != 0;
 
   return v3;
 }
@@ -476,10 +476,10 @@ LABEL_15:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(MRExpanseManager *)self activeConversation];
-  v3 = [v2 activitySessions];
+  activeConversation = [(MRExpanseManager *)self activeConversation];
+  activitySessions = [activeConversation activitySessions];
 
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [activitySessions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -490,7 +490,7 @@ LABEL_15:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activitySessions);
         }
 
         if ([*(*(&v13 + 1) + 8 * i) state] == 1)
@@ -507,7 +507,7 @@ LABEL_15:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [activitySessions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -517,11 +517,11 @@ LABEL_15:
     }
   }
 
-  v3 = _MRLogForCategory(2uLL);
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  activitySessions = _MRLogForCategory(2uLL);
+  if (os_log_type_enabled(activitySessions, OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 0;
-    _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] No local activity found.", v12, 2u);
+    _os_log_impl(&dword_1A2860000, activitySessions, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] No local activity found.", v12, 2u);
   }
 
   v8 = 0;
@@ -538,10 +538,10 @@ LABEL_15:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(MRExpanseManager *)self activeConversation];
-  v3 = [v2 activitySessions];
+  activeConversation = [(MRExpanseManager *)self activeConversation];
+  activitySessions = [activeConversation activitySessions];
 
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [activitySessions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -552,7 +552,7 @@ LABEL_15:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activitySessions);
         }
 
         if ([*(*(&v13 + 1) + 8 * i) state] == 4)
@@ -569,7 +569,7 @@ LABEL_15:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [activitySessions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -579,11 +579,11 @@ LABEL_15:
     }
   }
 
-  v3 = _MRLogForCategory(2uLL);
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  activitySessions = _MRLogForCategory(2uLL);
+  if (os_log_type_enabled(activitySessions, OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 0;
-    _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] No remote activity found.", v12, 2u);
+    _os_log_impl(&dword_1A2860000, activitySessions, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] No remote activity found.", v12, 2u);
   }
 
   v8 = 0;
@@ -593,51 +593,51 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)canAddTelevisionWithRouteIdentifierToSession:(id)a3
+- (BOOL)canAddTelevisionWithRouteIdentifierToSession:(id)session
 {
-  v4 = a3;
-  v5 = [objc_alloc(getTUNearbyDeviceHandleClass()) initWithType:1 identifier:v4 name:0];
+  sessionCopy = session;
+  v5 = [objc_alloc(getTUNearbyDeviceHandleClass()) initWithType:1 identifier:sessionCopy name:0];
 
-  v6 = [(MRExpanseManager *)self conduit];
-  v7 = [v6 nearbyTVDeviceHandles];
+  conduit = [(MRExpanseManager *)self conduit];
+  nearbyTVDeviceHandles = [conduit nearbyTVDeviceHandles];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__MRExpanseManager_canAddTelevisionWithRouteIdentifierToSession___block_invoke;
   v11[3] = &unk_1E769BB50;
   v12 = v5;
   v8 = v5;
-  v9 = [v7 msv_firstWhere:v11];
+  v9 = [nearbyTVDeviceHandles msv_firstWhere:v11];
 
   return v9 != 0;
 }
 
-- (void)addTelevisionWithRouteIdentifierToSession:(id)a3 completion:(id)a4
+- (void)addTelevisionWithRouteIdentifierToSession:(id)session completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRExpanseManager *)self activeConversation];
+  sessionCopy = session;
+  completionCopy = completion;
+  activeConversation = [(MRExpanseManager *)self activeConversation];
   v9 = _MRLogForCategory(2uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 UUID];
+    uUID = [activeConversation UUID];
     *buf = 138412546;
-    v19 = v6;
+    v19 = sessionCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = uUID;
     _os_log_impl(&dword_1A2860000, v9, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] Adding television with route ID: %@ to conversation %@", buf, 0x16u);
   }
 
-  v11 = [objc_alloc(getTUNearbyDeviceHandleClass()) initWithType:1 identifier:v6 name:0];
-  v12 = [(MRExpanseManager *)self conduit];
-  v13 = [v8 UUID];
+  v11 = [objc_alloc(getTUNearbyDeviceHandleClass()) initWithType:1 identifier:sessionCopy name:0];
+  conduit = [(MRExpanseManager *)self conduit];
+  uUID2 = [activeConversation UUID];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__MRExpanseManager_addTelevisionWithRouteIdentifierToSession_completion___block_invoke;
   v16[3] = &unk_1E769BB78;
-  v17 = v7;
-  v14 = v7;
-  [v12 inviteTVDevice:v11 toConversation:v13 completion:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [conduit inviteTVDevice:v11 toConversation:uUID2 completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -663,28 +663,28 @@ void __73__MRExpanseManager_addTelevisionWithRouteIdentifierToSession_completion
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeTelevisionWithRouteIdentifierFromSession:(id)a3 completion:(id)a4
+- (void)removeTelevisionWithRouteIdentifierFromSession:(id)session completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v8 = _MRLogForCategory(2uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = sessionCopy;
     _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] Removing television with route ID: %@", buf, 0xCu);
   }
 
-  v9 = [objc_alloc(getTUNearbyDeviceHandleClass()) initWithType:1 identifier:v6 name:0];
-  v10 = [(MRExpanseManager *)self conduit];
+  v9 = [objc_alloc(getTUNearbyDeviceHandleClass()) initWithType:1 identifier:sessionCopy name:0];
+  conduit = [(MRExpanseManager *)self conduit];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_completion___block_invoke;
   v13[3] = &unk_1E769BB78;
-  v14 = v7;
-  v11 = v7;
-  [v10 disconnectTVDevice:v9 completion:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [conduit disconnectTVDevice:v9 completion:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -710,49 +710,49 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(MRExpanseManager *)v5 observers];
-    [v6 addObject:v7];
+    v7 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    observers = [(MRExpanseManager *)selfCopy observers];
+    [observers addObject:v7];
 
-    objc_sync_exit(v5);
-    v4 = v7;
+    objc_sync_exit(selfCopy);
+    observerCopy = v7;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(MRExpanseManager *)v5 observers];
-    [v6 removeObject:v7];
+    v7 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    observers = [(MRExpanseManager *)selfCopy observers];
+    [observers removeObject:v7];
 
-    objc_sync_exit(v5);
-    v4 = v7;
+    objc_sync_exit(selfCopy);
+    observerCopy = v7;
   }
 }
 
 - (void)_notifyObserversThatTelevisionJoinedSession
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(MRExpanseManager *)v2 observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(MRExpanseManager *)selfCopy observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -763,47 +763,47 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v7 = *(*(&v11 + 1) + 8 * v6);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [(MRExpanseManager *)v2 notifyQueue];
+          notifyQueue = [(MRExpanseManager *)selfCopy notifyQueue];
           v10[0] = MEMORY[0x1E69E9820];
           v10[1] = 3221225472;
           v10[2] = __63__MRExpanseManager__notifyObserversThatTelevisionJoinedSession__block_invoke;
           v10[3] = &unk_1E769A4A0;
           v10[4] = v7;
-          v10[5] = v2;
-          dispatch_async(v8, v10);
+          v10[5] = selfCopy;
+          dispatch_async(notifyQueue, v10);
         }
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_notifyObserversThatTelevisionLeftSession
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(MRExpanseManager *)v2 observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(MRExpanseManager *)selfCopy observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -814,47 +814,47 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v7 = *(*(&v11 + 1) + 8 * v6);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [(MRExpanseManager *)v2 notifyQueue];
+          notifyQueue = [(MRExpanseManager *)selfCopy notifyQueue];
           v10[0] = MEMORY[0x1E69E9820];
           v10[1] = 3221225472;
           v10[2] = __61__MRExpanseManager__notifyObserversThatTelevisionLeftSession__block_invoke;
           v10[3] = &unk_1E769A4A0;
           v10[4] = v7;
-          v10[5] = v2;
-          dispatch_async(v8, v10);
+          v10[5] = selfCopy;
+          dispatch_async(notifyQueue, v10);
         }
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_notifyObserversThatExpanseSessionJoined
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(MRExpanseManager *)v2 observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(MRExpanseManager *)selfCopy observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -865,47 +865,47 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v7 = *(*(&v11 + 1) + 8 * v6);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [(MRExpanseManager *)v2 notifyQueue];
+          notifyQueue = [(MRExpanseManager *)selfCopy notifyQueue];
           v10[0] = MEMORY[0x1E69E9820];
           v10[1] = 3221225472;
           v10[2] = __60__MRExpanseManager__notifyObserversThatExpanseSessionJoined__block_invoke;
           v10[3] = &unk_1E769A4A0;
           v10[4] = v7;
-          v10[5] = v2;
-          dispatch_async(v8, v10);
+          v10[5] = selfCopy;
+          dispatch_async(notifyQueue, v10);
         }
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_notifyObserversThatExpanseSessionLeft
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(MRExpanseManager *)v2 observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(MRExpanseManager *)selfCopy observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -916,33 +916,33 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v7 = *(*(&v11 + 1) + 8 * v6);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [(MRExpanseManager *)v2 notifyQueue];
+          notifyQueue = [(MRExpanseManager *)selfCopy notifyQueue];
           v10[0] = MEMORY[0x1E69E9820];
           v10[1] = 3221225472;
           v10[2] = __58__MRExpanseManager__notifyObserversThatExpanseSessionLeft__block_invoke;
           v10[3] = &unk_1E769A4A0;
           v10[4] = v7;
-          v10[5] = v2;
-          dispatch_async(v8, v10);
+          v10[5] = selfCopy;
+          dispatch_async(notifyQueue, v10);
         }
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x1E69E9840];
 }
 
@@ -950,7 +950,7 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138477827;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1A2860000, a2, OS_LOG_TYPE_ERROR, "[MRExpanseManager] Failed to set category for audio session, route picking likely to malfunction. Error: %{private}@.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -959,9 +959,9 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MRExpanseManager *)obj auxiliaryPlaybackAudioSession];
+  auxiliaryPlaybackAudioSession = [(MRExpanseManager *)obj auxiliaryPlaybackAudioSession];
 
-  if (v2)
+  if (auxiliaryPlaybackAudioSession)
   {
     [(MRExpanseManager *)obj setAuxiliaryPlaybackAudioSession:0];
     [(MRExpanseManager *)obj _notifyObserversThatExpanseSessionLeft];
@@ -985,18 +985,18 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
   }
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  conversationCopy = conversation;
   v6 = _MRLogForCategory(2uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 UUID];
+    uUID = [conversationCopy UUID];
     v9 = 138412546;
-    v10 = v7;
+    v10 = uUID;
     v11 = 2048;
-    v12 = [v5 state];
+    state = [conversationCopy state];
     _os_log_impl(&dword_1A2860000, v6, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] Conversation %@ state changed to %ld", &v9, 0x16u);
   }
 
@@ -1004,7 +1004,7 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)serverDisconnectedForConversationManager:(id)a3
+- (void)serverDisconnectedForConversationManager:(id)manager
 {
   v4 = _MRLogForCategory(2uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1015,17 +1015,17 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
   [(MRExpanseManager *)self _handleConversationStateChanged];
 }
 
-- (void)neighborhoodActivityConduit:(id)a3 splitSessionStarted:(id)a4
+- (void)neighborhoodActivityConduit:(id)conduit splitSessionStarted:(id)started
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  startedCopy = started;
   v6 = _MRLogForCategory(2uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138478083;
-    v9 = v5;
+    v9 = startedCopy;
     v10 = 1024;
-    v11 = [(MRExpanseManager *)self expanseSessionHasRemoteActivity];
+    expanseSessionHasRemoteActivity = [(MRExpanseManager *)self expanseSessionHasRemoteActivity];
     _os_log_impl(&dword_1A2860000, v6, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] Television joined split session: %{private}@, remoteActivity: %{BOOL}u", &v8, 0x12u);
   }
 
@@ -1033,17 +1033,17 @@ void __78__MRExpanseManager_removeTelevisionWithRouteIdentifierFromSession_compl
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)neighborhoodActivityConduit:(id)a3 splitSessionEnded:(id)a4
+- (void)neighborhoodActivityConduit:(id)conduit splitSessionEnded:(id)ended
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  endedCopy = ended;
   v6 = _MRLogForCategory(2uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138478083;
-    v9 = v5;
+    v9 = endedCopy;
     v10 = 1024;
-    v11 = [(MRExpanseManager *)self expanseSessionHasActiveActivity];
+    expanseSessionHasActiveActivity = [(MRExpanseManager *)self expanseSessionHasActiveActivity];
     _os_log_impl(&dword_1A2860000, v6, OS_LOG_TYPE_DEFAULT, "[MRExpanseManager] Television left split session: %{private}@, localActivity: %{BOOL}u", &v8, 0x12u);
   }
 

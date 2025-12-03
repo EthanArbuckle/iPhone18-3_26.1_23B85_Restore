@@ -1,24 +1,24 @@
 @interface NPKPeerPaymentQuickTypeParser
-- (NPKPeerPaymentQuickTypeParser)initWithSupportedCurrencyCodes:(id)a3 allowedPayloadIDs:(id)a4;
-- (id)parsePayload:(id)a3 payloadID:(id)a4 maxCount:(unint64_t)a5;
+- (NPKPeerPaymentQuickTypeParser)initWithSupportedCurrencyCodes:(id)codes allowedPayloadIDs:(id)ds;
+- (id)parsePayload:(id)payload payloadID:(id)d maxCount:(unint64_t)count;
 @end
 
 @implementation NPKPeerPaymentQuickTypeParser
 
-- (NPKPeerPaymentQuickTypeParser)initWithSupportedCurrencyCodes:(id)a3 allowedPayloadIDs:(id)a4
+- (NPKPeerPaymentQuickTypeParser)initWithSupportedCurrencyCodes:(id)codes allowedPayloadIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  codesCopy = codes;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = NPKPeerPaymentQuickTypeParser;
   v8 = [(NPKPeerPaymentQuickTypeParser *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB98] setWithArray:v6];
+    v9 = [MEMORY[0x277CBEB98] setWithArray:codesCopy];
     supportedCurrencyCodes = v8->_supportedCurrencyCodes;
     v8->_supportedCurrencyCodes = v9;
 
-    v11 = [MEMORY[0x277CBEB98] setWithArray:v7];
+    v11 = [MEMORY[0x277CBEB98] setWithArray:dsCopy];
     allowedPayloadIDs = v8->_allowedPayloadIDs;
     v8->_allowedPayloadIDs = v11;
   }
@@ -26,11 +26,11 @@
   return v8;
 }
 
-- (id)parsePayload:(id)a3 payloadID:(id)a4 maxCount:(unint64_t)a5
+- (id)parsePayload:(id)payload payloadID:(id)d maxCount:(unint64_t)count
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  payloadCopy = payload;
+  dCopy = d;
   v10 = pk_General_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -40,17 +40,17 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v39 = v9;
+      v39 = dCopy;
       v40 = 2112;
-      v41 = v8;
+      v41 = payloadCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Starting Parse payload for PayloadID:%@ payload:%@", buf, 0x16u);
     }
   }
 
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [(NPKPeerPaymentQuickTypeParser *)self allowedPayloadIDs];
-  v15 = v9;
-  v16 = v14;
+  array = [MEMORY[0x277CBEB18] array];
+  allowedPayloadIDs = [(NPKPeerPaymentQuickTypeParser *)self allowedPayloadIDs];
+  v15 = dCopy;
+  v16 = allowedPayloadIDs;
   if (![v16 count])
   {
 
@@ -70,8 +70,8 @@
 LABEL_10:
     v18 = objc_opt_class();
     v19 = objc_opt_class();
-    v20 = [(NPKPeerPaymentQuickTypeParser *)self supportedCurrencyCodes];
-    v21 = [v8 npk_objectForKey:@"DirectlyInitiate" class:objc_opt_class()];
+    supportedCurrencyCodes = [(NPKPeerPaymentQuickTypeParser *)self supportedCurrencyCodes];
+    v21 = [payloadCopy npk_objectForKey:@"DirectlyInitiate" class:objc_opt_class()];
     v22 = pk_General_log();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
 
@@ -86,17 +86,17 @@ LABEL_10:
       }
     }
 
-    v25 = [v8 npk_objectForKey:@"Currency" class:objc_opt_class()];
+    v25 = [payloadCopy npk_objectForKey:@"Currency" class:objc_opt_class()];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __65__NPKPeerPaymentQuickTypeParser_parsePayload_payloadID_maxCount___block_invoke;
     v32[3] = &unk_279945EC8;
     v35 = v18;
     v36 = v19;
-    v33 = v20;
-    v34 = v13;
-    v37 = a5;
-    v26 = v20;
+    v33 = supportedCurrencyCodes;
+    v34 = array;
+    countCopy = count;
+    v26 = supportedCurrencyCodes;
     [v25 enumerateObjectsUsingBlock:v32];
 
     goto LABEL_20;
@@ -124,7 +124,7 @@ LABEL_20:
 
   v21 = 0;
 LABEL_22:
-  v29 = [[NPKPeerPaymentQuickTypeParserData alloc] initWithCurrenciesData:v13 directlyInitiate:v21];
+  v29 = [[NPKPeerPaymentQuickTypeParserData alloc] initWithCurrenciesData:array directlyInitiate:v21];
 
   v30 = *MEMORY[0x277D85DE8];
 

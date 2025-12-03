@@ -1,25 +1,25 @@
 @interface _GCControllerGestureAwareButtonInput
-- (BOOL)_commitPendingValueOnQueue:(id)a3;
-- (BOOL)_setValue:(float)a3 queue:(id)a4;
-- (_GCControllerGestureAwareButtonInput)initWithDescriptionName:(id)a3;
+- (BOOL)_commitPendingValueOnQueue:(id)queue;
+- (BOOL)_setValue:(float)value queue:(id)queue;
+- (_GCControllerGestureAwareButtonInput)initWithDescriptionName:(id)name;
 - (int64_t)actualSystemGestureState;
-- (void)__onqueue_executeDoublePressRecognizerForEvent:(id)a3 queue:(id)a4;
-- (void)__onqueue_executeLongPressRecognizerForEvent:(id)a3 queue:(id)a4;
-- (void)__onqueue_executeSinglePressRecognizerForEvent:(id)a3 queue:(id)a4;
-- (void)__onqueue_forwardEvent:(id)a3 queue:(id)a4;
-- (void)registerSetValueEvent:(float)a3 queue:(id)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setPreferredSystemGestureState:(int64_t)a3;
-- (void)setValue:(float)a3;
+- (void)__onqueue_executeDoublePressRecognizerForEvent:(id)event queue:(id)queue;
+- (void)__onqueue_executeLongPressRecognizerForEvent:(id)event queue:(id)queue;
+- (void)__onqueue_executeSinglePressRecognizerForEvent:(id)event queue:(id)queue;
+- (void)__onqueue_forwardEvent:(id)event queue:(id)queue;
+- (void)registerSetValueEvent:(float)event queue:(id)queue;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setPreferredSystemGestureState:(int64_t)state;
+- (void)setValue:(float)value;
 @end
 
 @implementation _GCControllerGestureAwareButtonInput
 
-- (_GCControllerGestureAwareButtonInput)initWithDescriptionName:(id)a3
+- (_GCControllerGestureAwareButtonInput)initWithDescriptionName:(id)name
 {
   v7.receiver = self;
   v7.super_class = _GCControllerGestureAwareButtonInput;
-  v3 = [(GCControllerButtonInput *)&v7 initWithDescriptionName:a3];
+  v3 = [(GCControllerButtonInput *)&v7 initWithDescriptionName:name];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -39,11 +39,11 @@
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
   }
 }
 
@@ -59,11 +59,11 @@
     v3 = ![(_GCControllerGestureAwareButtonInput *)self isLongPressGestureRecognizerEnabled];
   }
 
-  v4 = [(GCControllerElement *)self device];
+  device = [(GCControllerElement *)self device];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = device;
   }
 
   else
@@ -75,27 +75,27 @@
   v7 = v6;
   if (v6 && (([v6 isSnapshot] | v3) & 1) == 0 && self->_enabled)
   {
-    v8 = [(_GCControllerGestureAwareButtonInput *)self preferredSystemGestureState];
+    preferredSystemGestureState = [(_GCControllerGestureAwareButtonInput *)self preferredSystemGestureState];
   }
 
   else
   {
-    v8 = 2;
+    preferredSystemGestureState = 2;
   }
 
-  return v8;
+  return preferredSystemGestureState;
 }
 
-- (void)setPreferredSystemGestureState:(int64_t)a3
+- (void)setPreferredSystemGestureState:(int64_t)state
 {
-  if (self->_preferredSystemGestureState != a3)
+  if (self->_preferredSystemGestureState != state)
   {
-    self->_preferredSystemGestureState = a3;
-    v10 = [(GCControllerElement *)self device];
+    self->_preferredSystemGestureState = state;
+    device = [(GCControllerElement *)self device];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v10;
+      v4 = device;
     }
 
     else
@@ -104,52 +104,52 @@
     }
 
     v5 = v4;
-    v6 = [v5 systemGestureComponent];
+    systemGestureComponent = [v5 systemGestureComponent];
 
-    if (v6)
+    if (systemGestureComponent)
     {
       preferredSystemGestureState = self->_preferredSystemGestureState;
-      v8 = [v5 systemGestureComponent];
-      v9 = [(GCControllerElement *)self primaryAlias];
+      systemGestureComponent2 = [v5 systemGestureComponent];
+      primaryAlias = [(GCControllerElement *)self primaryAlias];
       if (preferredSystemGestureState == 2)
       {
-        [v8 disableSystemGestureForInput:v9];
+        [systemGestureComponent2 disableSystemGestureForInput:primaryAlias];
       }
 
       else
       {
-        [v8 enableSystemGestureForInput:v9];
+        [systemGestureComponent2 enableSystemGestureForInput:primaryAlias];
       }
     }
   }
 }
 
-- (BOOL)_setValue:(float)a3 queue:(id)a4
+- (BOOL)_setValue:(float)value queue:(id)queue
 {
-  v6 = a4;
-  v7 = clamp(a3, 0.0, 1.0);
+  queueCopy = queue;
+  v7 = clamp(value, 0.0, 1.0);
   self->_realValue = v7;
-  v8 = [(_GCControllerGestureAwareButtonInput *)self actualSystemGestureState];
-  switch(v8)
+  actualSystemGestureState = [(_GCControllerGestureAwareButtonInput *)self actualSystemGestureState];
+  switch(actualSystemGestureState)
   {
     case 2:
-      v13 = self;
+      selfCopy = self;
       v14 = _GCControllerGestureAwareButtonInput;
-      v11 = &v13;
+      v11 = &selfCopy;
       goto LABEL_8;
     case 1:
-      *&v9 = a3;
-      [(_GCControllerGestureAwareButtonInput *)self registerSetValueEvent:v6 queue:v9];
-      v15 = self;
+      *&v9 = value;
+      [(_GCControllerGestureAwareButtonInput *)self registerSetValueEvent:queueCopy queue:v9];
+      selfCopy2 = self;
       v16 = _GCControllerGestureAwareButtonInput;
-      v11 = &v15;
+      v11 = &selfCopy2;
 LABEL_8:
-      *&v9 = a3;
-      v10 = objc_msgSendSuper2(v11, sel__setValue_queue_, v6, v9, v13, v14, v15, v16);
+      *&v9 = value;
+      v10 = objc_msgSendSuper2(v11, sel__setValue_queue_, queueCopy, v9, selfCopy, v14, selfCopy2, v16);
       goto LABEL_9;
     case 0:
-      *&v9 = a3;
-      [(_GCControllerGestureAwareButtonInput *)self registerSetValueEvent:v6 queue:v9];
+      *&v9 = value;
+      [(_GCControllerGestureAwareButtonInput *)self registerSetValueEvent:queueCopy queue:v9];
       break;
   }
 
@@ -159,31 +159,31 @@ LABEL_9:
   return v10;
 }
 
-- (void)setValue:(float)a3
+- (void)setValue:(float)value
 {
-  v5 = [(GCControllerElement *)self device];
-  if (!v5)
+  device = [(GCControllerElement *)self device];
+  if (!device)
   {
-    v6 = MEMORY[0x1E69E96A0];
+    handlerQueue = MEMORY[0x1E69E96A0];
     v8 = MEMORY[0x1E69E96A0];
     goto LABEL_6;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v5 isSnapshot])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([device isSnapshot])
   {
-    v6 = [v5 handlerQueue];
+    handlerQueue = [device handlerQueue];
 LABEL_6:
     v9.receiver = self;
     v9.super_class = _GCControllerGestureAwareButtonInput;
-    *&v7 = a3;
-    [(GCControllerButtonInput *)&v9 _setValue:v6 queue:v7];
+    *&v7 = value;
+    [(GCControllerButtonInput *)&v9 _setValue:handlerQueue queue:v7];
   }
 }
 
-- (BOOL)_commitPendingValueOnQueue:(id)a3
+- (BOOL)_commitPendingValueOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if ([(GCControllerElement *)self updatePending])
   {
     [(GCControllerElement *)self pendingValue];
@@ -195,7 +195,7 @@ LABEL_6:
     else
     {
       [(GCControllerElement *)self pendingValue];
-      v6 = [(_GCControllerGestureAwareButtonInput *)self _setValue:v4 queue:?];
+      v6 = [(_GCControllerGestureAwareButtonInput *)self _setValue:queueCopy queue:?];
     }
 
     [(GCControllerElement *)self _resetPendingValue];
@@ -209,9 +209,9 @@ LABEL_6:
   return v6;
 }
 
-- (void)registerSetValueEvent:(float)a3 queue:(id)a4
+- (void)registerSetValueEvent:(float)event queue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   if (gc_isInternalBuild())
   {
@@ -224,65 +224,65 @@ LABEL_6:
   block[2] = __68___GCControllerGestureAwareButtonInput_registerSetValueEvent_queue___block_invoke;
   block[3] = &unk_1E841A700;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
+  eventCopy = event;
   block[4] = self;
-  v10 = v6;
-  v7 = v6;
+  v10 = queueCopy;
+  v7 = queueCopy;
   dispatch_async(v7, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)__onqueue_forwardEvent:(id)a3 queue:(id)a4
+- (void)__onqueue_forwardEvent:(id)event queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(_GCControllerGestureAwareButtonInput *)self actualSystemGestureState]&& (v6[17] & 1) == 0 && v6[20] == 1 && v6[19] == 1 && v6[21] == 1)
+  eventCopy = event;
+  queueCopy = queue;
+  if (![(_GCControllerGestureAwareButtonInput *)self actualSystemGestureState]&& (eventCopy[17] & 1) == 0 && eventCopy[20] == 1 && eventCopy[19] == 1 && eventCopy[21] == 1)
   {
-    v6[17] = 1;
+    eventCopy[17] = 1;
     if (gc_isInternalBuild())
     {
-      [_GCControllerGestureAwareButtonInput __onqueue_forwardEvent:v6 queue:?];
+      [_GCControllerGestureAwareButtonInput __onqueue_forwardEvent:eventCopy queue:?];
     }
 
-    LOBYTE(v8) = v6[16];
+    LOBYTE(v8) = eventCopy[16];
     *&v8 = LODWORD(v8);
     v11.receiver = self;
     v11.super_class = _GCControllerGestureAwareButtonInput;
-    if ([(GCControllerButtonInput *)&v11 _setValue:v7 queue:v8])
+    if ([(GCControllerButtonInput *)&v11 _setValue:queueCopy queue:v8])
     {
-      v9 = [(GCControllerElement *)self device];
-      v10 = [v9 physicalInputProfile];
-      [v10 _triggerValueChangedHandlerForElement:self queue:v7];
+      device = [(GCControllerElement *)self device];
+      physicalInputProfile = [device physicalInputProfile];
+      [physicalInputProfile _triggerValueChangedHandlerForElement:self queue:queueCopy];
     }
   }
 }
 
-- (void)__onqueue_executeDoublePressRecognizerForEvent:(id)a3 queue:(id)a4
+- (void)__onqueue_executeDoublePressRecognizerForEvent:(id)event queue:(id)queue
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableArray *)self->_doublePressEventQueue lastObject];
-  v9 = v8;
-  if (!v8 || *(v8 + 16) != v6[16])
+  eventCopy = event;
+  queueCopy = queue;
+  lastObject = [(NSMutableArray *)self->_doublePressEventQueue lastObject];
+  v9 = lastObject;
+  if (!lastObject || *(lastObject + 16) != eventCopy[16])
   {
-    v43 = v8;
-    [(NSMutableArray *)self->_doublePressEventQueue addObject:v6];
+    v43 = lastObject;
+    [(NSMutableArray *)self->_doublePressEventQueue addObject:eventCopy];
     [(_GCControllerGestureAwareButtonInput *)self doublePressInterval];
     v11 = dispatch_time(0, (v10 * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __93___GCControllerGestureAwareButtonInput___onqueue_executeDoublePressRecognizerForEvent_queue___block_invoke;
     block[3] = &unk_1E8419BC0;
-    v54 = v6;
-    v55 = self;
-    v56 = v7;
+    v54 = eventCopy;
+    selfCopy = self;
+    v56 = queueCopy;
     dispatch_after(v11, v56, block);
 
-    v12 = [MEMORY[0x1E695DF00] date];
-    [v12 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v14 = v13;
 
     v51 = 0u;
@@ -294,8 +294,8 @@ LABEL_6:
     if (v16)
     {
       v17 = v16;
-      log = v7;
-      v42 = v6;
+      log = queueCopy;
+      v42 = eventCopy;
       v18 = 0;
       v19 = *v50;
       while (2)
@@ -336,8 +336,8 @@ LABEL_6:
 
 LABEL_13:
 
-      v7 = log;
-      v6 = v42;
+      queueCopy = log;
+      eventCopy = v42;
       if (v18 >= 1)
       {
         [(NSMutableArray *)self->_doublePressEventQueue removeObjectsInRange:0, v18];
@@ -351,8 +351,8 @@ LABEL_13:
     v9 = v43;
     if ([(NSMutableArray *)self->_doublePressEventQueue count])
     {
-      v25 = [(NSMutableArray *)self->_doublePressEventQueue firstObject];
-      v26 = v25[16];
+      firstObject = [(NSMutableArray *)self->_doublePressEventQueue firstObject];
+      v26 = firstObject[16];
 
       if ([(NSMutableArray *)self->_doublePressEventQueue count])
       {
@@ -406,7 +406,7 @@ LABEL_13:
           while ([(NSMutableArray *)self->_doublePressEventQueue count]> v30);
         }
 
-        v33 = v7;
+        v33 = queueCopy;
         if (gc_isInternalBuild())
         {
           [_GCControllerGestureAwareButtonInput __onqueue_executeDoublePressRecognizerForEvent:queue:];
@@ -444,7 +444,7 @@ LABEL_13:
         }
 
         [(NSMutableArray *)self->_doublePressEventQueue removeAllObjects];
-        v7 = v33;
+        queueCopy = v33;
         v9 = v43;
         if (self->_doublePressHandler)
         {
@@ -464,44 +464,44 @@ LABEL_45:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__onqueue_executeLongPressRecognizerForEvent:(id)a3 queue:(id)a4
+- (void)__onqueue_executeLongPressRecognizerForEvent:(id)event queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  queueCopy = queue;
   longPressDownEvent = self->_longPressDownEvent;
   if (longPressDownEvent)
   {
-    if ((v7[2] & 1) == 0)
+    if ((eventCopy[2] & 1) == 0)
     {
-      v10 = v7[1] - longPressDownEvent->timestamp;
+      v10 = eventCopy[1] - longPressDownEvent->timestamp;
       [(_GCControllerGestureAwareButtonInput *)self longPressInterval];
       v12 = self->_longPressDownEvent;
       if (v10 <= v11)
       {
         v12->ignoredByLongPressRecognizer = 1;
-        *(v7 + 19) = 1;
-        if ((*(v7 + 17) & 1) != 0 || *(v7 + 18) != 1 || *(v7 + 20) != 1)
+        *(eventCopy + 19) = 1;
+        if ((*(eventCopy + 17) & 1) != 0 || *(eventCopy + 18) != 1 || *(eventCopy + 20) != 1)
         {
           if (gc_isInternalBuild())
           {
             [_GCControllerGestureAwareButtonInput __onqueue_executeLongPressRecognizerForEvent:? queue:?];
           }
 
-          [(_GCControllerGestureAwareButtonInput *)self __onqueue_forwardEvent:self->_longPressDownEvent queue:v8];
+          [(_GCControllerGestureAwareButtonInput *)self __onqueue_forwardEvent:self->_longPressDownEvent queue:queueCopy];
           v20 = dispatch_time(0, (v10 * 1000000000.0));
           v21[0] = MEMORY[0x1E69E9820];
           v21[1] = 3221225472;
           v21[2] = __91___GCControllerGestureAwareButtonInput___onqueue_executeLongPressRecognizerForEvent_queue___block_invoke_117;
           v21[3] = &unk_1E8419BC0;
-          v22 = v7;
-          v23 = self;
-          v24 = v8;
+          v22 = eventCopy;
+          selfCopy = self;
+          v24 = queueCopy;
           dispatch_after(v20, v24, v21);
 
           goto LABEL_23;
         }
 
-        *(v7 + 17) = 1;
+        *(eventCopy + 17) = 1;
         self->_longPressDownEvent->consumed = 1;
         if (!self->_singlePressHandler)
         {
@@ -531,7 +531,7 @@ LABEL_23:
             [_GCControllerGestureAwareButtonInput __onqueue_executeLongPressRecognizerForEvent:queue:];
           }
 
-          *(v7 + 17) = 1;
+          *(eventCopy + 17) = 1;
           goto LABEL_23;
         }
 
@@ -541,7 +541,7 @@ LABEL_23:
         }
 
         self->_longPressDownEvent->consumed = 1;
-        *(v7 + 17) = 1;
+        *(eventCopy + 17) = 1;
         if (!self->_longPressHandler)
         {
           goto LABEL_23;
@@ -561,54 +561,54 @@ LABEL_23:
     }
   }
 
-  else if (*(v7 + 16))
+  else if (*(eventCopy + 16))
   {
-    objc_storeStrong(&self->_longPressDownEvent, a3);
+    objc_storeStrong(&self->_longPressDownEvent, event);
     [(_GCControllerGestureAwareButtonInput *)self longPressInterval];
     v16 = dispatch_time(0, (v15 * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __91___GCControllerGestureAwareButtonInput___onqueue_executeLongPressRecognizerForEvent_queue___block_invoke;
     block[3] = &unk_1E8418C50;
-    v28 = v7;
-    v29 = self;
-    dispatch_after(v16, v8, block);
+    v28 = eventCopy;
+    selfCopy2 = self;
+    dispatch_after(v16, queueCopy, block);
     v17 = v28;
 LABEL_24:
   }
 }
 
-- (void)__onqueue_executeSinglePressRecognizerForEvent:(id)a3 queue:(id)a4
+- (void)__onqueue_executeSinglePressRecognizerForEvent:(id)event queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  queueCopy = queue;
   singlePressDownEvent = self->_singlePressDownEvent;
   if (singlePressDownEvent)
   {
-    if ((v7[2] & 1) == 0)
+    if ((eventCopy[2] & 1) == 0)
     {
-      if ((*(v7 + 17) & 1) == 0)
+      if ((*(eventCopy + 17) & 1) == 0)
       {
-        v10 = v7[1] - singlePressDownEvent->timestamp;
+        v10 = eventCopy[1] - singlePressDownEvent->timestamp;
         [(_GCControllerGestureAwareButtonInput *)self singlePressInterval];
         if (v10 >= v11)
         {
           self->_singlePressDownEvent->ignoredBySinglePressRecognizer = 1;
-          *(v7 + 21) = 1;
+          *(eventCopy + 21) = 1;
           if (gc_isInternalBuild())
           {
             [_GCControllerGestureAwareButtonInput __onqueue_executeSinglePressRecognizerForEvent:? queue:?];
           }
 
-          [(_GCControllerGestureAwareButtonInput *)self __onqueue_forwardEvent:self->_singlePressDownEvent queue:v8];
+          [(_GCControllerGestureAwareButtonInput *)self __onqueue_forwardEvent:self->_singlePressDownEvent queue:queueCopy];
           v12 = dispatch_time(0, (v10 * 1000000000.0));
           v14[0] = MEMORY[0x1E69E9820];
           v14[1] = 3221225472;
           v14[2] = __93___GCControllerGestureAwareButtonInput___onqueue_executeSinglePressRecognizerForEvent_queue___block_invoke_118;
           v14[3] = &unk_1E8419BC0;
-          v15 = v7;
-          v16 = self;
-          v17 = v8;
+          v15 = eventCopy;
+          selfCopy = self;
+          v17 = queueCopy;
           dispatch_after(v12, v17, v14);
         }
 
@@ -619,10 +619,10 @@ LABEL_24:
             [_GCControllerGestureAwareButtonInput __onqueue_executeSinglePressRecognizerForEvent:queue:];
           }
 
-          if (*(v7 + 20) == 1 && *(v7 + 19) == 1)
+          if (*(eventCopy + 20) == 1 && *(eventCopy + 19) == 1)
           {
             self->_singlePressDownEvent->consumed = 1;
-            *(v7 + 17) = 1;
+            *(eventCopy + 17) = 1;
             if (self->_singlePressHandler)
             {
               block[0] = MEMORY[0x1E69E9820];
@@ -636,7 +636,7 @@ LABEL_24:
 
           else
           {
-            *(v7 + 18) = 1;
+            *(eventCopy + 18) = 1;
           }
         }
       }
@@ -646,9 +646,9 @@ LABEL_24:
     }
   }
 
-  else if (*(v7 + 16))
+  else if (*(eventCopy + 16))
   {
-    objc_storeStrong(&self->_singlePressDownEvent, a3);
+    objc_storeStrong(&self->_singlePressDownEvent, event);
   }
 }
 

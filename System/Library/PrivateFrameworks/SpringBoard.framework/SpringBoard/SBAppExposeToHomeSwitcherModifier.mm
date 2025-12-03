@@ -1,7 +1,7 @@
 @interface SBAppExposeToHomeSwitcherModifier
 - (BOOL)_isEffectivelyHome;
-- (SBAppExposeToHomeSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 bundleIdentifier:(id)a5 appExposeModifier:(id)a6;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
+- (SBAppExposeToHomeSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction bundleIdentifier:(id)identifier appExposeModifier:(id)modifier;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
 - (double)plusButtonAlpha;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
@@ -9,35 +9,35 @@
 
 @implementation SBAppExposeToHomeSwitcherModifier
 
-- (SBAppExposeToHomeSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 bundleIdentifier:(id)a5 appExposeModifier:(id)a6
+- (SBAppExposeToHomeSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction bundleIdentifier:(id)identifier appExposeModifier:(id)modifier
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  modifierCopy = modifier;
   v24.receiver = self;
   v24.super_class = SBAppExposeToHomeSwitcherModifier;
-  v14 = [(SBTransitionSwitcherModifier *)&v24 initWithTransitionID:v11];
+  v14 = [(SBTransitionSwitcherModifier *)&v24 initWithTransitionID:dCopy];
   if (v14)
   {
-    if (!v13)
+    if (!modifierCopy)
     {
       [SBAppExposeToHomeSwitcherModifier initWithTransitionID:a2 direction:v14 bundleIdentifier:? appExposeModifier:?];
     }
 
-    v14->_direction = a4;
-    v15 = [v12 copy];
+    v14->_direction = direction;
+    v15 = [identifierCopy copy];
     bundleIdentifier = v14->_bundleIdentifier;
     v14->_bundleIdentifier = v15;
 
-    objc_storeStrong(&v14->_appExposeModifier, a6);
+    objc_storeStrong(&v14->_appExposeModifier, modifier);
     v17 = [SBRouteToAppExposeSwitcherModifier alloc];
-    v18 = [(SBAppExposeToHomeSwitcherModifier *)v14 _newAppExposeModifier];
-    v19 = [(SBRouteToAppExposeSwitcherModifier *)v17 initWithTransitionID:v11 appExposeModifier:v18];
+    _newAppExposeModifier = [(SBAppExposeToHomeSwitcherModifier *)v14 _newAppExposeModifier];
+    v19 = [(SBRouteToAppExposeSwitcherModifier *)v17 initWithTransitionID:dCopy appExposeModifier:_newAppExposeModifier];
 
     [(SBChainableModifier *)v14 addChildModifier:v19 atLevel:0 key:0];
     v20 = [SBHomeToGridSwitcherModifier alloc];
-    v21 = [(SBAppExposeToHomeSwitcherModifier *)v14 _newAppExposeModifier];
-    v22 = [(SBHomeToSwitcherSwitcherModifier *)v20 initWithTransitionID:v11 direction:a4 multitaskingModifier:v21];
+    _newAppExposeModifier2 = [(SBAppExposeToHomeSwitcherModifier *)v14 _newAppExposeModifier];
+    v22 = [(SBHomeToSwitcherSwitcherModifier *)v20 initWithTransitionID:dCopy direction:direction multitaskingModifier:_newAppExposeModifier2];
 
     [(SBChainableModifier *)v14 addChildModifier:v22 atLevel:1 key:0];
   }
@@ -50,14 +50,14 @@
   v25 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
   v23.super_class = SBAppExposeToHomeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v23 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v23 transitionWillBegin];
   v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v4];
+  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:transitionWillBegin toResponse:v4];
 
-  v6 = [(SBAppExposeToHomeSwitcherModifier *)self appLayouts];
-  v7 = [(SBTransitionSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:v6];
+  appLayouts = [(SBAppExposeToHomeSwitcherModifier *)self appLayouts];
+  v7 = [(SBTransitionSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:appLayouts];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -71,7 +71,7 @@
     while (2)
     {
       v13 = 0;
-      v14 = v8;
+      v14 = firstObject;
       do
       {
         if (*v20 != v12)
@@ -82,14 +82,14 @@
         v15 = *(*(&v19 + 1) + 8 * v13);
         if ([v15 environment] == 1)
         {
-          v8 = v14;
+          firstObject = v14;
           goto LABEL_11;
         }
 
-        v8 = v15;
+        firstObject = v15;
 
         ++v13;
-        v14 = v8;
+        v14 = firstObject;
       }
 
       while (v11 != v13);
@@ -105,9 +105,9 @@
 
 LABEL_11:
 
-  if (v8)
+  if (firstObject)
   {
-    v16 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v8 alignment:0 animated:0];
+    v16 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:firstObject alignment:0 animated:0];
     v17 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v16 toResponse:v5];
 
     v5 = v17;
@@ -120,23 +120,23 @@ LABEL_11:
 {
   v7.receiver = self;
   v7.super_class = SBAppExposeToHomeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   if (!self->_direction)
   {
     v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v4];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:transitionDidEnd toResponse:v4];
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
 - (double)plusButtonAlpha
 {
-  v2 = [(SBAppExposeToHomeSwitcherModifier *)self _isEffectivelyHome];
+  _isEffectivelyHome = [(SBAppExposeToHomeSwitcherModifier *)self _isEffectivelyHome];
   result = 1.0;
-  if (v2)
+  if (_isEffectivelyHome)
   {
     return 0.0;
   }
@@ -144,9 +144,9 @@ LABEL_11:
   return result;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2810000000;
@@ -159,7 +159,7 @@ LABEL_11:
   v8[3] = &unk_2783AB258;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = layoutCopy;
   v9 = v6;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appExposeModifier usingBlock:v8];
   LOWORD(self) = *(v12 + 16);

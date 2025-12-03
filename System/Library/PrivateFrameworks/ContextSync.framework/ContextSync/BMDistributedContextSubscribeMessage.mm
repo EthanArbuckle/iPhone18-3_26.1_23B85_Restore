@@ -1,17 +1,17 @@
 @interface BMDistributedContextSubscribeMessage
-- (BMDistributedContextSubscribeMessage)initWithMessageDictionary:(id)a3 fromRemoteDevice:(id)a4 localDevice:(id)a5;
-- (BMDistributedContextSubscribeMessage)initWithSubscriptions:(id)a3 localDevice:(id)a4 messageIntent:(unint64_t)a5;
+- (BMDistributedContextSubscribeMessage)initWithMessageDictionary:(id)dictionary fromRemoteDevice:(id)device localDevice:(id)localDevice;
+- (BMDistributedContextSubscribeMessage)initWithSubscriptions:(id)subscriptions localDevice:(id)device messageIntent:(unint64_t)intent;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation BMDistributedContextSubscribeMessage
 
-- (BMDistributedContextSubscribeMessage)initWithMessageDictionary:(id)a3 fromRemoteDevice:(id)a4 localDevice:(id)a5
+- (BMDistributedContextSubscribeMessage)initWithMessageDictionary:(id)dictionary fromRemoteDevice:(id)device localDevice:(id)localDevice
 {
   v70 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v55 = a4;
-  v56 = a5;
+  dictionaryCopy = dictionary;
+  deviceCopy = device;
+  localDeviceCopy = localDevice;
   v67.receiver = self;
   v67.super_class = BMDistributedContextSubscribeMessage;
   v9 = [(BMDistributedContextSubscribeMessage *)&v67 init];
@@ -20,15 +20,15 @@
     goto LABEL_27;
   }
 
-  v10 = [v8 objectForKeyedSubscript:@"messageVersion"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"messageVersion"];
   if (v10)
   {
     v11 = v10;
-    v12 = [v8 objectForKeyedSubscript:@"messageVersion"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"messageVersion"];
     if (v12)
     {
       v13 = v12;
-      v14 = [v8 objectForKeyedSubscript:@"messageVersion"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"messageVersion"];
       v15 = [v14 isEqualToString:@"1.0"];
 
       if ((v15 & 1) == 0)
@@ -41,7 +41,7 @@
     {
     }
 
-    v48 = a5;
+    localDeviceCopy2 = localDevice;
     v49 = v9;
     v54 = objc_opt_new();
     v58 = objc_opt_new();
@@ -49,7 +49,7 @@
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v18 = [v8 objectForKeyedSubscript:@"dsls"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"dsls"];
     v19 = [v18 countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v19)
     {
@@ -66,11 +66,11 @@
 
           v23 = *(*(&v63 + 1) + 8 * i);
           v24 = objc_autoreleasePoolPush();
-          v25 = [v8 objectForKeyedSubscript:@"dsls"];
+          v25 = [dictionaryCopy objectForKeyedSubscript:@"dsls"];
           v26 = [v25 objectForKeyedSubscript:v23];
 
-          v27 = [(NSData *)v26 bmdsl_deserialize];
-          [v58 setObject:v27 forKeyedSubscript:v23];
+          bmdsl_deserialize = [(NSData *)v26 bmdsl_deserialize];
+          [v58 setObject:bmdsl_deserialize forKeyedSubscript:v23];
 
           objc_autoreleasePoolPop(v24);
         }
@@ -81,9 +81,9 @@
       while (v20);
     }
 
-    v50 = v8;
-    v28 = [v8 objectForKeyedSubscript:@"dslIdentifiers"];
-    v29 = [v28 objectForKeyedSubscript:v56];
+    v50 = dictionaryCopy;
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"dslIdentifiers"];
+    v29 = [v28 objectForKeyedSubscript:localDeviceCopy];
 
     v61 = 0u;
     v62 = 0u;
@@ -120,10 +120,10 @@
           }
 
           v37 = [v34 objectForKeyedSubscript:@"wake"];
-          v38 = [v37 BOOLValue];
+          bOOLValue = [v37 BOOLValue];
           v39 = [v34 objectForKeyedSubscript:@"lastChangeDate"];
-          v40 = [[BMDistributedContextSubscriptionConfiguration alloc] initWithOptions:v36 | v38 lastChangedDate:v39];
-          v41 = [[BMDistributedContextSubscription alloc] initWithIdentifier:v31 dsl:v33 subscribingDevice:v55 subscribedDevice:v56 configuration:v40];
+          v40 = [[BMDistributedContextSubscriptionConfiguration alloc] initWithOptions:v36 | bOOLValue lastChangedDate:v39];
+          v41 = [[BMDistributedContextSubscription alloc] initWithIdentifier:v31 dsl:v33 subscribingDevice:deviceCopy subscribedDevice:localDeviceCopy configuration:v40];
           [(NSArray *)v54 addObject:v41];
 
           objc_autoreleasePoolPop(v32);
@@ -140,12 +140,12 @@
     v49->_subscriptions = v54;
     v43 = v54;
 
-    v8 = v50;
+    dictionaryCopy = v50;
     v44 = [v50 objectForKeyedSubscript:@"messageVersion"];
     messageVersion = v49->_messageVersion;
     v49->_messageVersion = v44;
 
-    objc_storeStrong(&v49->_localDevice, v48);
+    objc_storeStrong(&v49->_localDevice, localDeviceCopy2);
 LABEL_27:
     v17 = v9;
     goto LABEL_28;
@@ -155,7 +155,7 @@ LABEL_5:
   v16 = __biome_log_for_category();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
   {
-    [BMDistributedContextSubscribeMessage initWithMessageDictionary:v8 fromRemoteDevice:? localDevice:?];
+    [BMDistributedContextSubscribeMessage initWithMessageDictionary:dictionaryCopy fromRemoteDevice:? localDevice:?];
   }
 
   v17 = 0;
@@ -190,38 +190,38 @@ LABEL_28:
 
         v5 = *(*(&v31 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v6 = [v5 subscribedDevice];
-        v7 = [v3 objectForKeyedSubscript:v6];
+        subscribedDevice = [v5 subscribedDevice];
+        v7 = [v3 objectForKeyedSubscript:subscribedDevice];
 
         if (!v7)
         {
           v8 = objc_opt_new();
-          v9 = [v5 subscribedDevice];
-          [v3 setObject:v8 forKeyedSubscript:v9];
+          subscribedDevice2 = [v5 subscribedDevice];
+          [v3 setObject:v8 forKeyedSubscript:subscribedDevice2];
         }
 
         v37[0] = @"lastChangeDate";
-        v29 = [v5 configuration];
-        v28 = [v29 lastChangedDate];
-        v38[0] = v28;
+        configuration = [v5 configuration];
+        lastChangedDate = [configuration lastChangedDate];
+        v38[0] = lastChangedDate;
         v37[1] = @"wake";
-        v27 = [v5 configuration];
-        v10 = [v27 wakeState];
-        v38[1] = v10;
+        configuration2 = [v5 configuration];
+        wakeState = [configuration2 wakeState];
+        v38[1] = wakeState;
         v37[2] = @"oneOffSubscription";
-        v11 = [v5 configuration];
-        v12 = [v11 oneOffSubscription];
-        v38[2] = v12;
+        configuration3 = [v5 configuration];
+        oneOffSubscription = [configuration3 oneOffSubscription];
+        v38[2] = oneOffSubscription;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:3];
-        v14 = [v5 subscribedDevice];
-        v15 = [v3 objectForKeyedSubscript:v14];
-        v16 = [v5 identifier];
-        [v15 setObject:v13 forKeyedSubscript:v16];
+        subscribedDevice3 = [v5 subscribedDevice];
+        v15 = [v3 objectForKeyedSubscript:subscribedDevice3];
+        identifier = [v5 identifier];
+        [v15 setObject:v13 forKeyedSubscript:identifier];
 
         v17 = [v5 dsl];
-        v18 = [(BMDSL *)v17 bmdsl_serialize];
-        v19 = [v5 identifier];
-        [v25 setObject:v18 forKeyedSubscript:v19];
+        bmdsl_serialize = [(BMDSL *)v17 bmdsl_serialize];
+        identifier2 = [v5 identifier];
+        [v25 setObject:bmdsl_serialize forKeyedSubscript:identifier2];
 
         objc_autoreleasePoolPop(context);
       }
@@ -249,26 +249,26 @@ LABEL_28:
   return v20;
 }
 
-- (BMDistributedContextSubscribeMessage)initWithSubscriptions:(id)a3 localDevice:(id)a4 messageIntent:(unint64_t)a5
+- (BMDistributedContextSubscribeMessage)initWithSubscriptions:(id)subscriptions localDevice:(id)device messageIntent:(unint64_t)intent
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  subscriptionsCopy = subscriptions;
+  deviceCopy = device;
   v28.receiver = self;
   v28.super_class = BMDistributedContextSubscribeMessage;
   v11 = [(BMDistributedContextSubscribeMessage *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    v23 = v10;
-    objc_storeStrong(&v11->_subscriptions, a3);
-    objc_storeStrong(&v12->_localDevice, a4);
-    v12->_messageIntent = a5;
+    v23 = deviceCopy;
+    objc_storeStrong(&v11->_subscriptions, subscriptions);
+    objc_storeStrong(&v12->_localDevice, device);
+    v12->_messageIntent = intent;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = v9;
+    v13 = subscriptionsCopy;
     v14 = [v13 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v14)
     {
@@ -284,11 +284,11 @@ LABEL_28:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v24 + 1) + 8 * v17) configuration];
-          v19 = [v18 wakeState];
-          v20 = [v19 BOOLValue];
+          configuration = [*(*(&v24 + 1) + 8 * v17) configuration];
+          wakeState = [configuration wakeState];
+          bOOLValue = [wakeState BOOLValue];
 
-          if (v20)
+          if (bOOLValue)
           {
             v12->_shouldWake = 1;
           }
@@ -303,7 +303,7 @@ LABEL_28:
       while (v15);
     }
 
-    v10 = v23;
+    deviceCopy = v23;
   }
 
   v21 = *MEMORY[0x277D85DE8];

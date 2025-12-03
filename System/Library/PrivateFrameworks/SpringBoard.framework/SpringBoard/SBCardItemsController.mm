@@ -1,14 +1,14 @@
 @interface SBCardItemsController
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SBCardItemsController)init;
-- (void)_activateCardItem:(id)a3 animated:(BOOL)a4;
-- (void)_deactivateCardItem:(id)a3;
-- (void)_updateCardItem:(id)a3;
+- (void)_activateCardItem:(id)item animated:(BOOL)animated;
+- (void)_deactivateCardItem:(id)item;
+- (void)_updateCardItem:(id)item;
 - (void)_updateRestrictions;
-- (void)_updateThumbnailForCardItem:(id)a3 withSnapshotter:(id)a4 completion:(id)a5;
+- (void)_updateThumbnailForCardItem:(id)item withSnapshotter:(id)snapshotter completion:(id)completion;
 - (void)dealloc;
-- (void)getCardItemsForControllerWithIdentifier:(id)a3 withHandler:(id)a4;
-- (void)setCardItems:(id)a3 forControllerWithIdentifier:(id)a4;
+- (void)getCardItemsForControllerWithIdentifier:(id)identifier withHandler:(id)handler;
+- (void)setCardItems:(id)items forControllerWithIdentifier:(id)identifier;
 @end
 
 @implementation SBCardItemsController
@@ -34,13 +34,13 @@
     connections = v2->_connections;
     v2->_connections = v7;
 
-    v9 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
     profileConnection = v2->_profileConnection;
-    v2->_profileConnection = v9;
+    v2->_profileConnection = mEMORY[0x277D262A0];
 
     [(SBCardItemsController *)v2 _updateRestrictions];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v2 selector:sel__updateRestrictions name:*MEMORY[0x277D25CA0] object:v2->_profileConnection];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__updateRestrictions name:*MEMORY[0x277D25CA0] object:v2->_profileConnection];
   }
 
   return v2;
@@ -80,55 +80,55 @@
   }
 
   [(NSXPCListener *)self->_listener invalidate];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v9.receiver = self;
   v9.super_class = SBCardItemsController;
   [(SBCardItemsController *)&v9 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   listener = self->_listener;
-  if (listener == v6)
+  if (listener == listenerCopy)
   {
     v9 = SBCardItemsControllerClientInterface();
-    [v7 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
 
     v10 = SBCardItemsControllerServerInterface();
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    [v7 setExportedObject:self];
-    objc_initWeak(&location, v7);
+    [connectionCopy setExportedObject:self];
+    objc_initWeak(&location, connectionCopy);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __60__SBCardItemsController_listener_shouldAcceptNewConnection___block_invoke;
     v16[3] = &unk_2783B0E88;
     v16[4] = self;
     objc_copyWeak(&v17, &location);
-    [v7 setInterruptionHandler:v16];
+    [connectionCopy setInterruptionHandler:v16];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __60__SBCardItemsController_listener_shouldAcceptNewConnection___block_invoke_34;
     v14[3] = &unk_2783B0E88;
     v14[4] = self;
     objc_copyWeak(&v15, &location);
-    [v7 setInvalidationHandler:v14];
+    [connectionCopy setInvalidationHandler:v14];
     v11 = MEMORY[0x277D85CD0];
     v12 = MEMORY[0x277D85CD0];
-    [v7 _setQueue:v11];
+    [connectionCopy _setQueue:v11];
 
-    [v7 resume];
-    [(NSMutableArray *)self->_connections addObject:v7];
+    [connectionCopy resume];
+    [(NSMutableArray *)self->_connections addObject:connectionCopy];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 
-  return listener == v6;
+  return listener == listenerCopy;
 }
 
 void __60__SBCardItemsController_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -157,25 +157,25 @@ void __60__SBCardItemsController_listener_shouldAcceptNewConnection___block_invo
   [v3 removeObject:WeakRetained];
 }
 
-- (void)setCardItems:(id)a3 forControllerWithIdentifier:(id)a4
+- (void)setCardItems:(id)items forControllerWithIdentifier:(id)identifier
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v38 = a4;
+  itemsCopy = items;
+  identifierCopy = identifier;
   v7 = [(NSMutableDictionary *)self->_cardItems objectForKey:?];
   v8 = [v7 copy];
 
   v44 = v8;
   v45 = [v8 mutableCopy];
-  v43 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v40 = objc_alloc_init(MEMORY[0x277D38B50]);
   v9 = SBLogWallet();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134218498;
-    v59 = [v6 count];
+    v59 = [itemsCopy count];
     v60 = 2112;
-    *v61 = v6;
+    *v61 = itemsCopy;
     *&v61[8] = 2112;
     v62 = v8;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "Received set card items [%ld]: %@ from: %@", buf, 0x20u);
@@ -185,7 +185,7 @@ void __60__SBCardItemsController_listener_shouldAcceptNewConnection___block_invo
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v6;
+  obj = itemsCopy;
   v10 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v10)
   {
@@ -201,16 +201,16 @@ void __60__SBCardItemsController_listener_shouldAcceptNewConnection___block_invo
         }
 
         v13 = *(*(&v52 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        v15 = [v44 objectForKeyedSubscript:v14];
+        identifier = [v13 identifier];
+        v15 = [v44 objectForKeyedSubscript:identifier];
         v16 = v15;
         if (v15)
         {
-          v17 = self;
+          selfCopy = self;
           v18 = [v15 isEqual:v13];
-          v19 = [v16 thumbnail];
+          thumbnail = [v16 thumbnail];
 
-          if (v19)
+          if (thumbnail)
           {
             v20 = v18;
           }
@@ -224,11 +224,11 @@ void __60__SBCardItemsController_listener_shouldAcceptNewConnection___block_invo
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             *buf = 138544130;
-            v59 = v14;
+            v59 = identifier;
             v60 = 1024;
             *v61 = v18 ^ 1;
             *&v61[4] = 1024;
-            *&v61[6] = v19 != 0;
+            *&v61[6] = thumbnail != 0;
             LOWORD(v62) = 1024;
             *(&v62 + 2) = v20 ^ 1;
             _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_INFO, "Received card item %{public}@ [ didChange: %d existingCardHasThumbnail: %d ] %d", buf, 0x1Eu);
@@ -236,26 +236,26 @@ void __60__SBCardItemsController_listener_shouldAcceptNewConnection___block_invo
 
           if (v20)
           {
-            [v43 setObject:v16 forKeyedSubscript:v14];
-            self = v17;
+            [dictionary setObject:v16 forKeyedSubscript:identifier];
+            self = selfCopy;
             goto LABEL_19;
           }
 
-          [v43 setObject:v13 forKeyedSubscript:v14];
+          [dictionary setObject:v13 forKeyedSubscript:identifier];
           v51[0] = MEMORY[0x277D85DD0];
           v51[1] = 3221225472;
           v51[2] = __66__SBCardItemsController_setCardItems_forControllerWithIdentifier___block_invoke;
           v51[3] = &unk_2783A92D8;
-          self = v17;
-          v51[4] = v17;
+          self = selfCopy;
+          v51[4] = selfCopy;
           v51[5] = v13;
           v22 = v51;
-          v23 = v17;
+          selfCopy2 = selfCopy;
         }
 
         else
         {
-          [v43 setObject:v13 forKeyedSubscript:v14];
+          [dictionary setObject:v13 forKeyedSubscript:identifier];
           v50[0] = MEMORY[0x277D85DD0];
           v50[1] = 3221225472;
           v50[2] = __66__SBCardItemsController_setCardItems_forControllerWithIdentifier___block_invoke_2;
@@ -263,12 +263,12 @@ void __60__SBCardItemsController_listener_shouldAcceptNewConnection___block_invo
           v50[4] = self;
           v50[5] = v13;
           v22 = v50;
-          v23 = self;
+          selfCopy2 = self;
         }
 
-        [(SBCardItemsController *)v23 _updateThumbnailForCardItem:v13 withSnapshotter:v40 completion:v22];
+        [(SBCardItemsController *)selfCopy2 _updateThumbnailForCardItem:v13 withSnapshotter:v40 completion:v22];
 LABEL_19:
-        [v45 setObject:0 forKeyedSubscript:v14];
+        [v45 setObject:0 forKeyedSubscript:identifier];
       }
 
       v11 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
@@ -281,8 +281,8 @@ LABEL_19:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v42 = [v45 allValues];
-  v24 = [v42 countByEnumeratingWithState:&v46 objects:v56 count:16];
+  allValues = [v45 allValues];
+  v24 = [allValues countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v24)
   {
     v25 = v24;
@@ -293,36 +293,36 @@ LABEL_19:
       {
         if (*v47 != v26)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(allValues);
         }
 
         v28 = *(*(&v46 + 1) + 8 * j);
         v29 = SBLogWallet();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
-          v30 = [v28 identifier];
+          identifier2 = [v28 identifier];
           *buf = 138543362;
-          v59 = v30;
+          v59 = identifier2;
           _os_log_impl(&dword_21ED4E000, v29, OS_LOG_TYPE_INFO, "Remove card item %{public}@", buf, 0xCu);
         }
 
         [(SBCardItemsController *)self _deactivateCardItem:v28];
         v31 = MEMORY[0x277D38B50];
-        v32 = [v28 userInfo];
-        v33 = [v32 objectForKey:@"uniqueIDs"];
-        v34 = [v32 objectForKey:@"seedIndex"];
-        v35 = [v34 unsignedIntegerValue];
+        userInfo = [v28 userInfo];
+        v33 = [userInfo objectForKey:@"uniqueIDs"];
+        v34 = [userInfo objectForKey:@"seedIndex"];
+        unsignedIntegerValue = [v34 unsignedIntegerValue];
 
         if ([v33 count])
         {
-          if (v35 >= [v33 count])
+          if (unsignedIntegerValue >= [v33 count])
           {
             v36 = 0;
           }
 
           else
           {
-            v36 = v35;
+            v36 = unsignedIntegerValue;
           }
 
           v37 = [v33 objectAtIndexedSubscript:v36];
@@ -336,38 +336,38 @@ LABEL_19:
         [v31 purgeCacheOfPassSnapshotsWithUinqueID:v37];
       }
 
-      v25 = [v42 countByEnumeratingWithState:&v46 objects:v56 count:16];
+      v25 = [allValues countByEnumeratingWithState:&v46 objects:v56 count:16];
     }
 
     while (v25);
   }
 
-  [(NSMutableDictionary *)self->_cardItems setObject:v43 forKeyedSubscript:v38];
+  [(NSMutableDictionary *)self->_cardItems setObject:dictionary forKeyedSubscript:identifierCopy];
 }
 
-- (void)getCardItemsForControllerWithIdentifier:(id)a3 withHandler:(id)a4
+- (void)getCardItemsForControllerWithIdentifier:(id)identifier withHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
     cardItems = self->_cardItems;
-    v7 = a4;
-    v9 = [(NSMutableDictionary *)cardItems objectForKey:a3];
-    v8 = [v9 allValues];
-    (*(a4 + 2))(v7, v8, 0);
+    handlerCopy = handler;
+    v9 = [(NSMutableDictionary *)cardItems objectForKey:identifier];
+    allValues = [v9 allValues];
+    (*(handler + 2))(handlerCopy, allValues, 0);
   }
 }
 
-- (void)_updateThumbnailForCardItem:(id)a3 withSnapshotter:(id)a4 completion:(id)a5
+- (void)_updateThumbnailForCardItem:(id)item withSnapshotter:(id)snapshotter completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 userInfo];
-  v11 = [v10 objectForKey:@"uniqueIDs"];
-  v12 = [v10 objectForKey:@"manifestHashes"];
-  v13 = [v10 objectForKey:@"seedIndex"];
-  v14 = [v13 unsignedIntegerValue];
+  itemCopy = item;
+  snapshotterCopy = snapshotter;
+  completionCopy = completion;
+  userInfo = [itemCopy userInfo];
+  v11 = [userInfo objectForKey:@"uniqueIDs"];
+  v12 = [userInfo objectForKey:@"manifestHashes"];
+  v13 = [userInfo objectForKey:@"seedIndex"];
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
 
   if ([v11 count])
   {
@@ -382,9 +382,9 @@ LABEL_19:
   v16 = SBLogWallet();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v7 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138543618;
-    v28 = v17;
+    v28 = identifier;
     v29 = 1024;
     v30 = v15;
     _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_INFO, "Update thumbnail card item %{public}@ shouldRequestSnapshot: %d", buf, 0x12u);
@@ -392,24 +392,24 @@ LABEL_19:
 
   if (v15)
   {
-    if (v14 >= [v11 count])
+    if (unsignedIntegerValue >= [v11 count])
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v14;
+      v18 = unsignedIntegerValue;
     }
 
-    if (v14 >= [v12 count])
+    if (unsignedIntegerValue >= [v12 count])
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = v14;
+      v19 = unsignedIntegerValue;
     }
 
     v20 = [v11 objectAtIndexedSubscript:v18];
@@ -417,9 +417,9 @@ LABEL_19:
     v22 = SBLogWallet();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v7 identifier];
+      identifier2 = [itemCopy identifier];
       *buf = 138543362;
-      v28 = v23;
+      v28 = identifier2;
       _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_INFO, "Request snapshot for card item %{public}@", buf, 0xCu);
     }
 
@@ -427,14 +427,14 @@ LABEL_19:
     v24[1] = 3221225472;
     v24[2] = __80__SBCardItemsController__updateThumbnailForCardItem_withSnapshotter_completion___block_invoke;
     v24[3] = &unk_2783BE7A0;
-    v25 = v7;
-    v26 = v9;
-    [v8 snapshotWithUniqueID:v20 manifestHash:v21 size:v24 completion:{53.0, 66.0}];
+    v25 = itemCopy;
+    v26 = completionCopy;
+    [snapshotterCopy snapshotWithUniqueID:v20 manifestHash:v21 size:v24 completion:{53.0, 66.0}];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -477,55 +477,55 @@ uint64_t __80__SBCardItemsController__updateThumbnailForCardItem_withSnapshotter
   return result;
 }
 
-- (void)_activateCardItem:(id)a3 animated:(BOOL)a4
+- (void)_activateCardItem:(id)item animated:(BOOL)animated
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v6 = SBLogWallet();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 identifier];
+    identifier = [itemCopy identifier];
     v9 = 138543362;
-    v10 = v7;
+    v10 = identifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "Activating card item: %{public}@", &v9, 0xCu);
   }
 
-  v8 = [(SBCardItemsController *)self walletNotificationSource];
-  [v8 postNotificationRequestForCardItem:v5];
+  walletNotificationSource = [(SBCardItemsController *)self walletNotificationSource];
+  [walletNotificationSource postNotificationRequestForCardItem:itemCopy];
 }
 
-- (void)_updateCardItem:(id)a3
+- (void)_updateCardItem:(id)item
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = SBLogWallet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 identifier];
+    identifier = [itemCopy identifier];
     v8 = 138543362;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Updating card item: %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(SBCardItemsController *)self walletNotificationSource];
-  [v7 modifyNotificationRequestForCardItem:v4];
+  walletNotificationSource = [(SBCardItemsController *)self walletNotificationSource];
+  [walletNotificationSource modifyNotificationRequestForCardItem:itemCopy];
 }
 
-- (void)_deactivateCardItem:(id)a3
+- (void)_deactivateCardItem:(id)item
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = SBLogWallet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 identifier];
+    identifier = [itemCopy identifier];
     v8 = 138543362;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Deactivating card item: %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(SBCardItemsController *)self walletNotificationSource];
-  [v7 withdrawNotificationRequestForCardItem:v4];
+  walletNotificationSource = [(SBCardItemsController *)self walletNotificationSource];
+  [walletNotificationSource withdrawNotificationRequestForCardItem:itemCopy];
 }
 
 - (void)_updateRestrictions

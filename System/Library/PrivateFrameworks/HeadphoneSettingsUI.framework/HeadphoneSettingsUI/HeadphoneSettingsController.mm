@@ -1,24 +1,24 @@
 @interface HeadphoneSettingsController
-- (_TtC19HeadphoneSettingsUI27HeadphoneSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19HeadphoneSettingsUI27HeadphoneSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)presentViewController:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentViewController:(id)controller;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HeadphoneSettingsController
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](controller);
   MEMORY[0x1E69E5928](self);
-  HeadphoneSettingsController.present(_:)(a3);
+  HeadphoneSettingsController.present(_:)(controller);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](controller);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   MEMORY[0x1E69E5928](self);
   v3 = sub_1AC30910C();
@@ -33,7 +33,7 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   MEMORY[0x1E69E5928](self);
   v3 = sub_1AC30910C();
@@ -41,15 +41,15 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (_TtC19HeadphoneSettingsUI27HeadphoneSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19HeadphoneSettingsUI27HeadphoneSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  if (a3)
+  MEMORY[0x1E69E5928](name);
+  MEMORY[0x1E69E5928](bundle);
+  if (name)
   {
     v6 = sub_1AC30A92C();
     v7 = v4;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](name);
     v8 = v6;
     v9 = v7;
   }
@@ -60,7 +60,7 @@
     v9 = 0;
   }
 
-  return HeadphoneSettingsController.init(nibName:bundle:)(v8, v9, a4);
+  return HeadphoneSettingsController.init(nibName:bundle:)(v8, v9, bundle);
 }
 
 - (id)specifiers

@@ -1,7 +1,7 @@
 @interface LocalFileEnumerator
 - (NSString)description;
 - (_TtC18FileProviderDaemon19LocalFileEnumerator)init;
-- (void)currentSyncAnchorWithCompletionHandler:(id)a3;
+- (void)currentSyncAnchorWithCompletionHandler:(id)handler;
 - (void)invalidate;
 @end
 
@@ -9,7 +9,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CF019EF0();
 
   v3 = sub_1CF9E6888();
@@ -17,12 +17,12 @@
   return v3;
 }
 
-- (void)currentSyncAnchorWithCompletionHandler:(id)a3
+- (void)currentSyncAnchorWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_1CF4FADF4(v5, v4);
+  selfCopy = self;
+  sub_1CF4FADF4(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
@@ -42,7 +42,7 @@
   v8[2] = sub_1CEFFD02C;
   v8[3] = &block_descriptor_23;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   dispatch_sync(v3, v6);
   _Block_release(v6);

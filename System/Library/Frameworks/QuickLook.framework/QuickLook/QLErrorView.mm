@@ -1,19 +1,19 @@
 @interface QLErrorView
-- (QLErrorView)initWithTitle:(id)a3;
+- (QLErrorView)initWithTitle:(id)title;
 @end
 
 @implementation QLErrorView
 
-- (QLErrorView)initWithTitle:(id)a3
+- (QLErrorView)initWithTitle:(id)title
 {
   v4 = MEMORY[0x277D75390];
-  v5 = a3;
-  v6 = [v4 emptyConfiguration];
-  [v6 setText:v5];
+  titleCopy = title;
+  emptyConfiguration = [v4 emptyConfiguration];
+  [emptyConfiguration setText:titleCopy];
 
   v9.receiver = self;
   v9.super_class = QLErrorView;
-  v7 = [(UIContentUnavailableView *)&v9 initWithConfiguration:v6];
+  v7 = [(UIContentUnavailableView *)&v9 initWithConfiguration:emptyConfiguration];
 
   return v7;
 }

@@ -1,24 +1,24 @@
 @interface DTODRResourceStatus
-+ (void)registerCapabilities:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
 - (id)ODRGetBandwidth;
-- (id)ODRPurgeResourcesForBundleIdentifier:(id)a3;
-- (id)ODRPurgeTagID:(id)a3 forBundleIdentifier:(id)a4;
-- (id)ODRSetBandwidth:(id)a3;
-- (id)_uncachedValueForKey:(__CFString *)a3 atURL:(id)a4;
-- (id)bundleIDForPID:(int)a3;
-- (id)sampleAttributes:(id)a3 forPIDs:(id)a4;
+- (id)ODRPurgeResourcesForBundleIdentifier:(id)identifier;
+- (id)ODRPurgeTagID:(id)d forBundleIdentifier:(id)identifier;
+- (id)ODRSetBandwidth:(id)bandwidth;
+- (id)_uncachedValueForKey:(__CFString *)key atURL:(id)l;
+- (id)bundleIDForPID:(int)d;
+- (id)sampleAttributes:(id)attributes forPIDs:(id)ds;
 - (id)supportedAttributes;
-- (void)_ODRPurgeResourcesForBundleIdentifier:(id)a3 tagID:(id)a4 finishBlock:(id)a5;
-- (void)captureAttributes:(id)a3 toDictionary:(id)a4 forPID:(id)a5 completed:(id)a6;
+- (void)_ODRPurgeResourcesForBundleIdentifier:(id)identifier tagID:(id)d finishBlock:(id)block;
+- (void)captureAttributes:(id)attributes toDictionary:(id)dictionary forPID:(id)d completed:(id)completed;
 @end
 
 @implementation DTODRResourceStatus
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
-  [v4 publishCapability:@"com.apple.xcode.debug-gauge-data-providers.resources" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.xcode.resource-control" withVersion:1 forClass:a1];
+  capabilitiesCopy = capabilities;
+  [capabilitiesCopy publishCapability:@"com.apple.xcode.debug-gauge-data-providers.resources" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.xcode.resource-control" withVersion:1 forClass:self];
 }
 
 - (id)supportedAttributes
@@ -33,14 +33,14 @@
   return v3;
 }
 
-- (id)_uncachedValueForKey:(__CFString *)a3 atURL:(id)a4
+- (id)_uncachedValueForKey:(__CFString *)key atURL:(id)l
 {
-  v5 = CFBundleCreate(0, a4);
+  v5 = CFBundleCreate(0, l);
   if (v5)
   {
     v6 = v5;
     _CFBundleFlushBundleCaches();
-    v7 = CFBundleGetValueForInfoDictionaryKey(v6, a3);
+    v7 = CFBundleGetValueForInfoDictionaryKey(v6, key);
     CFRelease(v6);
   }
 
@@ -52,9 +52,9 @@
   return v7;
 }
 
-- (id)bundleIDForPID:(int)a3
+- (id)bundleIDForPID:(int)d
 {
-  if (proc_pidpath(a3, buffer, 0x1000u) >= 1 && ([NSString stringWithUTF8String:buffer], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (proc_pidpath(d, buffer, 0x1000u) >= 1 && ([NSString stringWithUTF8String:buffer], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = 0;
@@ -78,10 +78,10 @@
         v6 = 0;
       }
 
-      v10 = [v5 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
 
-      v5 = v10;
-      if (!v10)
+      v5 = stringByDeletingLastPathComponent;
+      if (!stringByDeletingLastPathComponent)
       {
         break;
       }
@@ -96,15 +96,15 @@
   return v6;
 }
 
-- (void)captureAttributes:(id)a3 toDictionary:(id)a4 forPID:(id)a5 completed:(id)a6
+- (void)captureAttributes:(id)attributes toDictionary:(id)dictionary forPID:(id)d completed:(id)completed
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([a3 containsObject:@"process.resources[]"])
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  completedCopy = completed;
+  if ([attributes containsObject:@"process.resources[]"])
   {
-    v13 = [v11 intValue];
-    if (v13 <= 0)
+    intValue = [dCopy intValue];
+    if (intValue <= 0)
     {
       v50[0] = @"ODRTag_TagNameKey";
       v50[1] = @"ODRTag_StatusStringKey";
@@ -170,13 +170,13 @@
       v52[3] = v26;
       v27 = [NSArray arrayWithObjects:v52 count:4];
 
-      [v10 setObject:v27 forKeyedSubscript:@"process.resources[]"];
-      v12[2](v12, v10, 0);
+      [dictionaryCopy setObject:v27 forKeyedSubscript:@"process.resources[]"];
+      completedCopy[2](completedCopy, dictionaryCopy, 0);
     }
 
     else
     {
-      v14 = [(DTODRResourceStatus *)self bundleIDForPID:v13];
+      v14 = [(DTODRResourceStatus *)self bundleIDForPID:intValue];
       if (v14)
       {
         v15 = sub_1450();
@@ -187,7 +187,7 @@
         v42[2] = 0x3032000000;
         v42[3] = sub_15EC;
         v42[4] = sub_15FC;
-        v43 = v10;
+        v43 = dictionaryCopy;
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_1604;
@@ -195,7 +195,7 @@
         v38 = v16;
         v39 = v14;
         v41 = v42;
-        v40 = v12;
+        v40 = completedCopy;
         v17 = v16;
         dispatch_sync(&_dispatch_main_q, block);
 
@@ -206,18 +206,18 @@
 
   else
   {
-    v12[2](v12, 0, 0);
+    completedCopy[2](completedCopy, 0, 0);
   }
 }
 
-- (id)sampleAttributes:(id)a3 forPIDs:(id)a4
+- (id)sampleAttributes:(id)attributes forPIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  dsCopy = ds;
   v8 = +[NSDate date];
   v9 = objc_opt_new();
   memset(v26, 0, sizeof(v26));
-  if ([v7 countByEnumeratingWithState:v26 objects:v27 count:16])
+  if ([dsCopy countByEnumeratingWithState:v26 objects:v27 count:16])
   {
     v10 = **(&v26[0] + 1);
     v11 = [NSMutableDictionary dictionaryWithCapacity:32];
@@ -242,7 +242,7 @@
     v22 = v10;
     v16 = v15;
     v23 = v16;
-    [(DTODRResourceStatus *)self captureAttributes:v6 toDictionary:v11 forPID:v10 completed:v20];
+    [(DTODRResourceStatus *)self captureAttributes:attributesCopy toDictionary:v11 forPID:v10 completed:v20];
     v17 = v23;
     v18 = v16;
   }
@@ -255,33 +255,33 @@
   return v18;
 }
 
-- (void)_ODRPurgeResourcesForBundleIdentifier:(id)a3 tagID:(id)a4 finishBlock:(id)a5
+- (void)_ODRPurgeResourcesForBundleIdentifier:(id)identifier tagID:(id)d finishBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  blockCopy = block;
   v10 = sub_1450();
   v11 = [v10 remoteObjectProxyWithErrorHandler:&stru_8350];
 
-  if (v7 && !v8 && v11)
+  if (identifierCopy && !dCopy && v11)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1E94;
     v17[3] = &unk_8398;
-    v18 = v9;
-    [v11 purgeAllTagsInBundleWithID:v7 replyBlock:v17];
+    v18 = blockCopy;
+    [v11 purgeAllTagsInBundleWithID:identifierCopy replyBlock:v17];
     v12 = v18;
   }
 
-  else if (v7 && v8 && v11)
+  else if (identifierCopy && dCopy && v11)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1EA4;
     v15[3] = &unk_8398;
-    v16 = v9;
-    [v11 purgeTagWithName:v8 inBundleWithID:v7 replyBlock:v15];
+    v16 = blockCopy;
+    [v11 purgeTagWithName:dCopy inBundleWithID:identifierCopy replyBlock:v15];
     v12 = v16;
   }
 
@@ -305,13 +305,13 @@
 
     v12 = [NSError errorWithDomain:@"com.apple.dtmobileis.assetcontrol" code:v14 userInfo:v13];
 
-    (*(v9 + 2))(v9, v12);
+    (*(blockCopy + 2))(blockCopy, v12);
   }
 }
 
-- (id)ODRPurgeResourcesForBundleIdentifier:(id)a3
+- (id)ODRPurgeResourcesForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(DTXRemoteInvocationReceipt);
   v6 = dispatch_time(0, 10000000000);
   v7 = dispatch_get_global_queue(0, 0);
@@ -321,8 +321,8 @@
   block[3] = &unk_83C0;
   v8 = v5;
   v17 = v8;
-  v18 = v4;
-  v9 = v4;
+  v18 = identifierCopy;
+  v9 = identifierCopy;
   dispatch_after(v6, v7, block);
 
   v14[0] = _NSConcreteStackBlock;
@@ -338,10 +338,10 @@
   return v10;
 }
 
-- (id)ODRPurgeTagID:(id)a3 forBundleIdentifier:(id)a4
+- (id)ODRPurgeTagID:(id)d forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(DTXRemoteInvocationReceipt);
   v9 = dispatch_time(0, 10000000000);
   v10 = dispatch_get_global_queue(0, 0);
@@ -351,8 +351,8 @@
   block[3] = &unk_83C0;
   v11 = v8;
   v20 = v11;
-  v21 = v6;
-  v12 = v6;
+  v21 = dCopy;
+  v12 = dCopy;
   dispatch_after(v9, v10, block);
 
   v17[0] = _NSConcreteStackBlock;
@@ -361,7 +361,7 @@
   v17[3] = &unk_83E8;
   v13 = v11;
   v18 = v13;
-  [(DTODRResourceStatus *)self _ODRPurgeResourcesForBundleIdentifier:v7 tagID:v12 finishBlock:v17];
+  [(DTODRResourceStatus *)self _ODRPurgeResourcesForBundleIdentifier:identifierCopy tagID:v12 finishBlock:v17];
 
   v14 = v18;
   v15 = v13;
@@ -398,10 +398,10 @@
   return v8;
 }
 
-- (id)ODRSetBandwidth:(id)a3
+- (id)ODRSetBandwidth:(id)bandwidth
 {
-  v3 = a3;
-  v4 = [v3 unsignedIntegerValue];
+  bandwidthCopy = bandwidth;
+  unsignedIntegerValue = [bandwidthCopy unsignedIntegerValue];
   v5 = sub_1450();
   v6 = [v5 remoteObjectProxyWithErrorHandler:&stru_8470];
 
@@ -414,8 +414,8 @@
   block[3] = &unk_83C0;
   v10 = v7;
   v19 = v10;
-  v20 = v3;
-  v11 = v3;
+  v20 = bandwidthCopy;
+  v11 = bandwidthCopy;
   dispatch_after(v8, v9, block);
 
   v16[0] = _NSConcreteStackBlock;
@@ -424,7 +424,7 @@
   v16[3] = &unk_8450;
   v12 = v10;
   v17 = v12;
-  [v6 setSimulatedBandwidth:v4 withReply:v16];
+  [v6 setSimulatedBandwidth:unsignedIntegerValue withReply:v16];
   v13 = v17;
   v14 = v12;
 

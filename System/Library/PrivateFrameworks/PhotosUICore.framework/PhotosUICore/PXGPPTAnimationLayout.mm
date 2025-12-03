@@ -1,30 +1,30 @@
 @interface PXGPPTAnimationLayout
 - (NSString)configurationDescription;
 - (PXGPPTAnimationLayout)init;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)_updateContent;
 - (void)referenceSizeDidChange;
-- (void)setNumberOfColumns:(unsigned int)a3;
-- (void)setNumberOfRows:(unsigned int)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setNumberOfColumns:(unsigned int)columns;
+- (void)setNumberOfRows:(unsigned int)rows;
+- (void)setStyle:(int64_t)style;
 - (void)update;
 @end
 
 @implementation PXGPPTAnimationLayout
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
   colors = self->_colors;
-  v5 = a3 % [(NSArray *)colors count];
+  v5 = index % [(NSArray *)colors count];
 
   return [(NSArray *)colors objectAtIndexedSubscript:v5];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -39,9 +39,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXGPPTAnimationLayout setStyle:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGPPTAnimationLayout.m" lineNumber:173 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGPPTAnimationLayout.m" lineNumber:173 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -64,11 +64,11 @@ LABEL_6:
   }
 }
 
-- (void)setNumberOfColumns:(unsigned int)a3
+- (void)setNumberOfColumns:(unsigned int)columns
 {
-  if (self->_numberOfColumns != a3)
+  if (self->_numberOfColumns != columns)
   {
-    self->_numberOfColumns = a3;
+    self->_numberOfColumns = columns;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -83,9 +83,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXGPPTAnimationLayout setNumberOfColumns:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGPPTAnimationLayout.m" lineNumber:165 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGPPTAnimationLayout.m" lineNumber:165 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -108,11 +108,11 @@ LABEL_6:
   }
 }
 
-- (void)setNumberOfRows:(unsigned int)a3
+- (void)setNumberOfRows:(unsigned int)rows
 {
-  if (self->_numberOfRows != a3)
+  if (self->_numberOfRows != rows)
   {
-    self->_numberOfRows = a3;
+    self->_numberOfRows = rows;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -127,9 +127,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXGPPTAnimationLayout setNumberOfRows:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGPPTAnimationLayout.m" lineNumber:157 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGPPTAnimationLayout.m" lineNumber:157 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -171,9 +171,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXGPPTAnimationLayout referenceSizeDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGPPTAnimationLayout.m" lineNumber:149 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGPPTAnimationLayout.m" lineNumber:149 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -197,12 +197,12 @@ LABEL_5:
 - (NSString)configurationDescription
 {
   [(PXGPPTAnimationLayout *)self updateIfNeeded];
-  v3 = [(PXGPPTAnimationLayout *)self numberOfSprites];
-  LODWORD(v4) = v3 / 0x3E8;
+  numberOfSprites = [(PXGPPTAnimationLayout *)self numberOfSprites];
+  LODWORD(v4) = numberOfSprites / 0x3E8;
   v5 = &stru_1F1741150;
-  if (v3 <= 0x3E7)
+  if (numberOfSprites <= 0x3E7)
   {
-    v4 = v3;
+    v4 = numberOfSprites;
   }
 
   else
@@ -210,7 +210,7 @@ LABEL_5:
     v4 = v4;
   }
 
-  if (v3 > 0x3E7)
+  if (numberOfSprites > 0x3E7)
   {
     v5 = @"k";
   }
@@ -220,21 +220,21 @@ LABEL_5:
 
 - (void)_updateContent
 {
-  v3 = [(PXGPPTAnimationLayout *)self numberOfRows];
-  v4 = [(PXGPPTAnimationLayout *)self numberOfColumns];
-  v5 = v4 * v3;
-  v6 = [(PXGPPTAnimationLayout *)self numberOfSprites];
-  if (v5 >= v6)
+  numberOfRows = [(PXGPPTAnimationLayout *)self numberOfRows];
+  numberOfColumns = [(PXGPPTAnimationLayout *)self numberOfColumns];
+  v5 = numberOfColumns * numberOfRows;
+  numberOfSprites = [(PXGPPTAnimationLayout *)self numberOfSprites];
+  if (v5 >= numberOfSprites)
   {
-    if (v5 > v6)
+    if (v5 > numberOfSprites)
     {
-      [(PXGPPTAnimationLayout *)self addSpritesInRange:v6 | ((v5 - v6) << 32) initialState:&__block_literal_global_98161];
+      [(PXGPPTAnimationLayout *)self addSpritesInRange:numberOfSprites | ((v5 - numberOfSprites) << 32) initialState:&__block_literal_global_98161];
     }
   }
 
   else
   {
-    [(PXGPPTAnimationLayout *)self removeSpritesInRange:v5 | ((v6 - v5) << 32)];
+    [(PXGPPTAnimationLayout *)self removeSpritesInRange:v5 | ((numberOfSprites - v5) << 32)];
   }
 
   [(PXGPPTAnimationLayout *)self referenceSize];
@@ -253,15 +253,15 @@ LABEL_5:
   v18 = [(PXGPPTAnimationLayout *)self style:v27];
   if (v18 == 1)
   {
-    v25 = 6.28318531 / v4;
+    v25 = 6.28318531 / numberOfColumns;
     v30[1] = 3221225472;
     v30[0] = MEMORY[0x1E69E9820];
     v30[2] = __39__PXGPPTAnimationLayout__updateContent__block_invoke_3;
     v30[3] = &__block_descriptor_64_e101_v40__0__PXGSpriteIndexRange_II_8_______ddd__16____f_________ffff__4f___ffffSCf____4___24____CCfqSC_32l;
     v20 = v5 << 32;
-    v31 = v4;
+    v31 = numberOfColumns;
     v32 = v25;
-    v33 = v17 / v3;
+    v33 = v17 / numberOfRows;
     __asm { FMOV            V0.2S, #10.0 }
 
     v30[4] = v16;
@@ -278,8 +278,8 @@ LABEL_5:
     v35[1] = 3221225472;
     v35[2] = __39__PXGPPTAnimationLayout__updateContent__block_invoke_2;
     v35[3] = &__block_descriptor_76_e101_v40__0__PXGSpriteIndexRange_II_8_______ddd__16____f_________ffff__4f___ffffSCf____4___24____CCfqSC_32l;
-    v36 = v4;
-    *v19.i8 = vcvt_f32_u32(vadd_s32(__PAIR64__(v3, v4), -1));
+    v36 = numberOfColumns;
+    *v19.i8 = vcvt_f32_u32(vadd_s32(__PAIR64__(numberOfRows, numberOfColumns), -1));
     _Q0 = vzip1q_s32(v19, v19);
     v22.i64[0] = 0x3F0000003F000000;
     v22.i64[1] = 0x3F0000003F000000;
@@ -441,9 +441,9 @@ void __39__PXGPPTAnimationLayout__updateContent__block_invoke(uint64_t a1, unint
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXGPPTAnimationLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXGPPTAnimationLayout.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXGPPTAnimationLayout.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -460,9 +460,9 @@ void __39__PXGPPTAnimationLayout__updateContent__block_invoke(uint64_t a1, unint
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXGPPTAnimationLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGPPTAnimationLayout.m" lineNumber:50 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXGPPTAnimationLayout.m" lineNumber:50 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 

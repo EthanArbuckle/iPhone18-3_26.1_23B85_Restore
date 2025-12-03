@@ -6,11 +6,11 @@
 
 - (AVSampleBufferDisplayLayerPlayerController)avkit_sampleBufferDisplayLayerPlayerController
 {
-  v2 = objc_getAssociatedObject(a1, "AVSBDLPlayerControllerKey");
+  v2 = objc_getAssociatedObject(self, "AVSBDLPlayerControllerKey");
   if (!v2)
   {
     v2 = objc_alloc_init(AVSampleBufferDisplayLayerPlayerController);
-    objc_setAssociatedObject(a1, "AVSBDLPlayerControllerKey", v2, 0);
+    objc_setAssociatedObject(self, "AVSBDLPlayerControllerKey", v2, 0);
   }
 
   return v2;

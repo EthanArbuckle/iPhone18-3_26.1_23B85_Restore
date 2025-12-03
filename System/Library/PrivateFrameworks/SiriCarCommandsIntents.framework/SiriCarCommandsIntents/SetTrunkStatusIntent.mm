@@ -1,6 +1,6 @@
 @interface SetTrunkStatusIntent
 - (SetTrunkStatusIntent)init;
-- (SetTrunkStatusIntent)initWithCoder:(id)a3;
+- (SetTrunkStatusIntent)initWithCoder:(id)coder;
 @end
 
 @implementation SetTrunkStatusIntent
@@ -12,12 +12,12 @@
   return [(SetTrunkStatusIntent *)&v3 init];
 }
 
-- (SetTrunkStatusIntent)initWithCoder:(id)a3
+- (SetTrunkStatusIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SetTrunkStatusIntent();
-  v4 = a3;
-  v5 = [(SetTrunkStatusIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SetTrunkStatusIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

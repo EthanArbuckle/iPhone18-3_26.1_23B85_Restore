@@ -1,21 +1,21 @@
 @interface LACDomainStateProviderBiometry
 + (id)sharedInstance;
-- (LACDomainStateProviderBiometry)initWithBiometryHelper:(id)a3;
-- (void)domainStateForRequest:(id)a3 completion:(id)a4;
+- (LACDomainStateProviderBiometry)initWithBiometryHelper:(id)helper;
+- (void)domainStateForRequest:(id)request completion:(id)completion;
 @end
 
 @implementation LACDomainStateProviderBiometry
 
-- (LACDomainStateProviderBiometry)initWithBiometryHelper:(id)a3
+- (LACDomainStateProviderBiometry)initWithBiometryHelper:(id)helper
 {
-  v5 = a3;
+  helperCopy = helper;
   v9.receiver = self;
   v9.super_class = LACDomainStateProviderBiometry;
   v6 = [(LACDomainStateProviderBiometry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_helper, a3);
+    objc_storeStrong(&v6->_helper, helper);
   }
 
   return v7;
@@ -42,18 +42,18 @@ void __48__LACDomainStateProviderBiometry_sharedInstance__block_invoke()
   sharedInstance_sharedInstace = v1;
 }
 
-- (void)domainStateForRequest:(id)a3 completion:(id)a4
+- (void)domainStateForRequest:(id)request completion:(id)completion
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   helper = self->_helper;
-  v8 = a3;
-  v9 = [(LACBiometryHelper *)helper biometryType];
+  requestCopy = request;
+  biometryType = [(LACBiometryHelper *)helper biometryType];
   v10 = self->_helper;
-  v11 = [v8 userID];
+  userID = [requestCopy userID];
 
   v22 = 0;
-  v12 = [(LACBiometryHelper *)v10 biometryDatabaseHashForUser:v11 error:&v22];
+  v12 = [(LACBiometryHelper *)v10 biometryDatabaseHashForUser:userID error:&v22];
   v13 = v22;
 
   if (v13)
@@ -66,7 +66,7 @@ void __48__LACDomainStateProviderBiometry_sharedInstance__block_invoke()
   }
 
   v27 = @"kLACDomainStateResultKeyAvailableBiometryTypes";
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:biometryType];
   v25 = v15;
   v26 = MEMORY[0x1E695E118];
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
@@ -76,14 +76,14 @@ void __48__LACDomainStateProviderBiometry_sharedInstance__block_invoke()
 
   if (v12)
   {
-    v19 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+    v19 = [MEMORY[0x1E696AD98] numberWithInteger:biometryType];
     v23 = v19;
     v24 = v12;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     [v18 setObject:v20 forKeyedSubscript:@"kLACDomainStateResultKeyBiometryStateHashes"];
   }
 
-  v6[2](v6, v18, 0);
+  completionCopy[2](completionCopy, v18, 0);
 
   v21 = *MEMORY[0x1E69E9840];
 }

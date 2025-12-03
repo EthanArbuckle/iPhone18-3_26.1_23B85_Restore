@@ -1,18 +1,18 @@
 @interface DiagnosticExtension
-- (id)__attachmentsForDiagnosticsModeWithParameters:(id)a3;
-- (id)attachmentsForParameters:(id)a3;
+- (id)__attachmentsForDiagnosticsModeWithParameters:(id)parameters;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DiagnosticExtension
 
-- (id)__attachmentsForDiagnosticsModeWithParameters:(id)a3
+- (id)__attachmentsForDiagnosticsModeWithParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = +[NSMutableArray array];
   v5 = objc_alloc_init(W5Client);
   if (v5)
   {
-    v6 = [v3 objectForKey:@"DiagnosticsModeUUID"];
+    v6 = [parametersCopy objectForKey:@"DiagnosticsModeUUID"];
     v7 = v6;
     if (v6)
     {
@@ -58,8 +58,8 @@
 
         v12 = v11;
         _Block_object_dispose(&v17, 8);
-        v13 = [v9 path];
-        v14 = [v11 attachmentWithPath:v13];
+        path = [v9 path];
+        v14 = [v11 attachmentWithPath:path];
 
         [v4 addObject:v14];
       }
@@ -68,7 +68,7 @@
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v3;
+      *(&buf + 4) = parametersCopy;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "WiFiVelocity Diagnostic Mode DE, missing DM UUID in params=%@", &buf, 0xCu);
     }
   }
@@ -76,26 +76,26 @@
   return v4;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = parametersCopy;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "WiFiVelocity Diagnostic Mode DE, params=%@", &v11, 0xCu);
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v5 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 lowercaseString];
-    if ([v7 hasPrefix:@"com.apple.taptoradar"])
+    lowercaseString = [v5 lowercaseString];
+    if ([lowercaseString hasPrefix:@"com.apple.taptoradar"])
     {
 
 LABEL_7:
-      v9 = [(DiagnosticExtension *)self __attachmentsForDiagnosticsModeWithParameters:v4];
+      v9 = [(DiagnosticExtension *)self __attachmentsForDiagnosticsModeWithParameters:parametersCopy];
       goto LABEL_11;
     }
 

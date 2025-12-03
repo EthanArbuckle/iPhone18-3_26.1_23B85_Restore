@@ -1,14 +1,14 @@
 @interface ASAuthorizationPasswordRequest
-- (BOOL)supportsStyle:(int64_t)a3;
+- (BOOL)supportsStyle:(int64_t)style;
 @end
 
 @implementation ASAuthorizationPasswordRequest
 
-- (BOOL)supportsStyle:(int64_t)a3
+- (BOOL)supportsStyle:(int64_t)style
 {
-  if (a3 < 3)
+  if (style < 3)
   {
-    return 1u >> (a3 & 7);
+    return 1u >> (style & 7);
   }
 
   else

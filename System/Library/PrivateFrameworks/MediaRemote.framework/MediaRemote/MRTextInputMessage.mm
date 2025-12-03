@@ -1,22 +1,22 @@
 @interface MRTextInputMessage
-- (MRTextInputMessage)initWithActionType:(unint64_t)a3 text:(id)a4;
+- (MRTextInputMessage)initWithActionType:(unint64_t)type text:(id)text;
 - (NSString)text;
 - (unint64_t)actionType;
 @end
 
 @implementation MRTextInputMessage
 
-- (MRTextInputMessage)initWithActionType:(unint64_t)a3 text:(id)a4
+- (MRTextInputMessage)initWithActionType:(unint64_t)type text:(id)text
 {
-  v6 = a4;
+  textCopy = text;
   v10.receiver = self;
   v10.super_class = MRTextInputMessage;
   v7 = [(MRProtocolMessage *)&v10 init];
   if (v7)
   {
     v8 = objc_alloc_init(_MRTextInputMessageProtobuf);
-    [(_MRTextInputMessageProtobuf *)v8 setText:v6];
-    [(_MRTextInputMessageProtobuf *)v8 setActionType:a3];
+    [(_MRTextInputMessageProtobuf *)v8 setText:textCopy];
+    [(_MRTextInputMessageProtobuf *)v8 setActionType:type];
     [(MRProtocolMessage *)v7 setUnderlyingCodableMessage:v8];
   }
 
@@ -25,18 +25,18 @@
 
 - (unint64_t)actionType
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 actionType];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  actionType = [underlyingCodableMessage actionType];
 
-  return v3;
+  return actionType;
 }
 
 - (NSString)text
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 text];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  text = [underlyingCodableMessage text];
 
-  return v3;
+  return text;
 }
 
 @end

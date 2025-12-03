@@ -1,28 +1,28 @@
 @interface TTMSchemaTTMNeuralCombinerTCUResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTMSchemaTTMNeuralCombinerTCUResult)initWithDictionary:(id)a3;
-- (TTMSchemaTTMNeuralCombinerTCUResult)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTMSchemaTTMNeuralCombinerTCUResult)initWithDictionary:(id)dictionary;
+- (TTMSchemaTTMNeuralCombinerTCUResult)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMode:(BOOL)a3;
-- (void)setHasRecommendation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMode:(BOOL)mode;
+- (void)setHasRecommendation:(BOOL)recommendation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTMSchemaTTMNeuralCombinerTCUResult
 
-- (TTMSchemaTTMNeuralCombinerTCUResult)initWithDictionary:(id)a3
+- (TTMSchemaTTMNeuralCombinerTCUResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = TTMSchemaTTMNeuralCombinerTCUResult;
   v5 = [(TTMSchemaTTMNeuralCombinerTCUResult *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tcuId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tcuId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(TTMSchemaTTMNeuralCombinerTCUResult *)v5 setTcuId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"neuralCombinerScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"neuralCombinerScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,14 +38,14 @@
       [(TTMSchemaTTMNeuralCombinerTCUResult *)v5 setNeuralCombinerScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"recommendation"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"recommendation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTMSchemaTTMNeuralCombinerTCUResult setRecommendation:](v5, "setRecommendation:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"mode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (TTMSchemaTTMNeuralCombinerTCUResult)initWithJSON:(id)a3
+- (TTMSchemaTTMNeuralCombinerTCUResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTMSchemaTTMNeuralCombinerTCUResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTMSchemaTTMNeuralCombinerTCUResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,18 +94,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v5 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self mode];
+    mode = [(TTMSchemaTTMNeuralCombinerTCUResult *)self mode];
     v6 = @"TTMNEURALCOMBINERMODE_UNKNOWN";
-    if (v5 == 1)
+    if (mode == 1)
     {
       v6 = @"TTMNEURALCOMBINERMODE_SIRI_X";
     }
 
-    if (v5 == 2)
+    if (mode == 2)
     {
       v7 = @"TTMNEURALCOMBINERMODE_CONVERSATIONAL";
     }
@@ -115,7 +115,7 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"mode"];
+    [dictionary setObject:v7 forKeyedSubscript:@"mode"];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -137,7 +137,7 @@ LABEL_3:
   v8 = MEMORY[0x1E696AD98];
   [(TTMSchemaTTMNeuralCombinerTCUResult *)self neuralCombinerScore];
   v9 = [v8 numberWithFloat:?];
-  [v3 setObject:v9 forKeyedSubscript:@"neuralCombinerScore"];
+  [dictionary setObject:v9 forKeyedSubscript:@"neuralCombinerScore"];
 
   if ((*&self->_has & 2) == 0)
   {
@@ -156,27 +156,27 @@ LABEL_12:
     v11 = off_1E78E7EC0[v10];
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"recommendation"];
+  [dictionary setObject:v11 forKeyedSubscript:@"recommendation"];
 LABEL_16:
   if (self->_tcuId)
   {
-    v12 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    tcuId = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
+    dictionaryRepresentation = [tcuId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"tcuId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"tcuId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"tcuId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"tcuId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -244,30 +244,30 @@ LABEL_12:
   return v6 ^ v3 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
-  v6 = [v4 tcuId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  tcuId = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
+  tcuId2 = [equalCopy tcuId];
+  v7 = tcuId2;
+  if ((tcuId != 0) == (tcuId2 == 0))
   {
 
     goto LABEL_20;
   }
 
-  v8 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
-  if (v8)
+  tcuId3 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
+  if (tcuId3)
   {
-    v9 = v8;
-    v10 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
-    v11 = [v4 tcuId];
-    v12 = [v10 isEqual:v11];
+    v9 = tcuId3;
+    tcuId4 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
+    tcuId5 = [equalCopy tcuId];
+    v12 = [tcuId4 isEqual:tcuId5];
 
     if (!v12)
     {
@@ -280,7 +280,7 @@ LABEL_12:
   }
 
   has = self->_has;
-  v14 = v4[28];
+  v14 = equalCopy[28];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_20:
@@ -291,14 +291,14 @@ LABEL_20:
   if (*&has)
   {
     neuralCombinerScore = self->_neuralCombinerScore;
-    [v4 neuralCombinerScore];
+    [equalCopy neuralCombinerScore];
     if (neuralCombinerScore != v16)
     {
       goto LABEL_20;
     }
 
     has = self->_has;
-    v14 = v4[28];
+    v14 = equalCopy[28];
   }
 
   v17 = (*&has >> 1) & 1;
@@ -310,10 +310,10 @@ LABEL_20:
   if (v17)
   {
     recommendation = self->_recommendation;
-    if (recommendation == [v4 recommendation])
+    if (recommendation == [equalCopy recommendation])
     {
       has = self->_has;
-      v14 = v4[28];
+      v14 = equalCopy[28];
       goto LABEL_16;
     }
 
@@ -330,7 +330,7 @@ LABEL_16:
   if (v19)
   {
     mode = self->_mode;
-    if (mode != [v4 mode])
+    if (mode != [equalCopy mode])
     {
       goto LABEL_20;
     }
@@ -342,14 +342,14 @@ LABEL_21:
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
+  toCopy = to;
+  tcuId = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
 
-  if (v4)
+  if (tcuId)
   {
-    v5 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
+    tcuId2 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -360,24 +360,24 @@ LABEL_21:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4;
   }
@@ -390,9 +390,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRecommendation:(BOOL)a3
+- (void)setHasRecommendation:(BOOL)recommendation
 {
-  if (a3)
+  if (recommendation)
   {
     v3 = 2;
   }
@@ -405,17 +405,17 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = TTMSchemaTTMNeuralCombinerTCUResult;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(TTMSchemaTTMNeuralCombinerTCUResult *)self tcuId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(TTMSchemaTTMNeuralCombinerTCUResult *)self deleteTcuId];
   }

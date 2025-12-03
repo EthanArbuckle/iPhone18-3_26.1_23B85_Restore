@@ -1,43 +1,43 @@
 @interface WDClinicalSourcesDataProvider
-+ (id)_logoCompletionOnMainQueue:(id)a3 cancellationToken:(id)a4;
-+ (id)_objectCompletionOnMainQueue:(id)a3 cancellationToken:(id)a4;
++ (id)_logoCompletionOnMainQueue:(id)queue cancellationToken:(id)token;
++ (id)_objectCompletionOnMainQueue:(id)queue cancellationToken:(id)token;
 - (HKHealthStore)healthStore;
 - (WDClinicalSourcesDataProvider)init;
-- (WDClinicalSourcesDataProvider)initWithHealthRecordsStore:(id)a3;
-- (id)_fetchLogoForBrand:(id)a3 fallback:(id)a4 size:(double)a5 options:(unint64_t)a6 completion:(id)a7;
-- (id)_logoForFallback:(id)a3 size:(double)a4;
-- (id)_orderAccountsForDisplay:(id)a3;
-- (id)appSourceRequestingAuthorizationForClinicalTypeWithBundleIdentifier:(id)a3;
-- (id)fetchAccessedAccountsForDisplayWithCompletion:(id)a3;
-- (id)fetchAccountsForDisplayWithCompletion:(id)a3;
-- (id)formattedFullName:(id)a3 birthDate:(id)a4 useMultipleLines:(BOOL)a5;
-- (id)nameAndFormattedBirthDateForAccountOwner:(id)a3 useMultipleLines:(BOOL)a4;
-- (id)nameAndFormattedBirthDateForSignedClinicalDataSubject:(id)a3 useMultipleLines:(BOOL)a4;
+- (WDClinicalSourcesDataProvider)initWithHealthRecordsStore:(id)store;
+- (id)_fetchLogoForBrand:(id)brand fallback:(id)fallback size:(double)size options:(unint64_t)options completion:(id)completion;
+- (id)_logoForFallback:(id)fallback size:(double)size;
+- (id)_orderAccountsForDisplay:(id)display;
+- (id)appSourceRequestingAuthorizationForClinicalTypeWithBundleIdentifier:(id)identifier;
+- (id)fetchAccessedAccountsForDisplayWithCompletion:(id)completion;
+- (id)fetchAccountsForDisplayWithCompletion:(id)completion;
+- (id)formattedFullName:(id)name birthDate:(id)date useMultipleLines:(BOOL)lines;
+- (id)nameAndFormattedBirthDateForAccountOwner:(id)owner useMultipleLines:(BOOL)lines;
+- (id)nameAndFormattedBirthDateForSignedClinicalDataSubject:(id)subject useMultipleLines:(BOOL)lines;
 - (id)sourcesRequestingAuthorizationForClinicalTypes;
-- (void)_fetchAccountsForDisplayWithCompletion:(id)a3;
-- (void)beginInitialLoginSessionForGateway:(id)a3 fromViewController:(id)a4 loginCancelledHandler:(id)a5 errorHandler:(id)a6;
-- (void)beginReloginSessionForAccount:(id)a3 fromViewController:(id)a4 profile:(id)a5 loginCancelledHandler:(id)a6 errorHandler:(id)a7;
-- (void)fetchAccountOwnerForSource:(id)a3 completion:(id)a4;
-- (void)fetchSignedClinicalDataRecordWithIdentifier:(id)a3 completion:(id)a4;
+- (void)_fetchAccountsForDisplayWithCompletion:(id)completion;
+- (void)beginInitialLoginSessionForGateway:(id)gateway fromViewController:(id)controller loginCancelledHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)beginReloginSessionForAccount:(id)account fromViewController:(id)controller profile:(id)profile loginCancelledHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)fetchAccountOwnerForSource:(id)source completion:(id)completion;
+- (void)fetchSignedClinicalDataRecordWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation WDClinicalSourcesDataProvider
 
-- (WDClinicalSourcesDataProvider)initWithHealthRecordsStore:(id)a3
+- (WDClinicalSourcesDataProvider)initWithHealthRecordsStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = WDClinicalSourcesDataProvider;
   v6 = [(WDClinicalSourcesDataProvider *)&v12 init];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E69A3F10]);
-    v8 = [v5 healthStore];
-    v9 = [v7 initWithHealthStore:v8];
+    healthStore = [storeCopy healthStore];
+    v9 = [v7 initWithHealthStore:healthStore];
     clinicalAccountStore = v6->_clinicalAccountStore;
     v6->_clinicalAccountStore = v9;
 
-    objc_storeStrong(&v6->_healthRecordsStore, a3);
+    objc_storeStrong(&v6->_healthRecordsStore, store);
   }
 
   return v6;
@@ -53,17 +53,17 @@
   return 0;
 }
 
-- (void)_fetchAccountsForDisplayWithCompletion:(id)a3
+- (void)_fetchAccountsForDisplayWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   clinicalAccountStore = self->_clinicalAccountStore;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__WDClinicalSourcesDataProvider__fetchAccountsForDisplayWithCompletion___block_invoke;
   v7[3] = &unk_1E83DCFF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(HKClinicalAccountStore *)clinicalAccountStore fetchAllAccountsWithCompletion:v7];
 }
 
@@ -88,11 +88,11 @@ void __72__WDClinicalSourcesDataProvider__fetchAccountsForDisplayWithCompletion_
   (*(v14 + 16))(v14, v15);
 }
 
-- (id)fetchAccountsForDisplayWithCompletion:(id)a3
+- (id)fetchAccountsForDisplayWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(WDCancellationToken);
-  v6 = [objc_opt_class() _objectCompletionOnMainQueue:v4 cancellationToken:v5];
+  v6 = [objc_opt_class() _objectCompletionOnMainQueue:completionCopy cancellationToken:v5];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -105,11 +105,11 @@ void __72__WDClinicalSourcesDataProvider__fetchAccountsForDisplayWithCompletion_
   return v5;
 }
 
-- (id)fetchAccessedAccountsForDisplayWithCompletion:(id)a3
+- (id)fetchAccessedAccountsForDisplayWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(WDCancellationToken);
-  v6 = [objc_opt_class() _objectCompletionOnMainQueue:v4 cancellationToken:v5];
+  v6 = [objc_opt_class() _objectCompletionOnMainQueue:completionCopy cancellationToken:v5];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -136,37 +136,37 @@ BOOL __79__WDClinicalSourcesDataProvider_fetchAccessedAccountsForDisplayWithComp
   return v3;
 }
 
-- (id)_fetchLogoForBrand:(id)a3 fallback:(id)a4 size:(double)a5 options:(unint64_t)a6 completion:(id)a7
+- (id)_fetchLogoForBrand:(id)brand fallback:(id)fallback size:(double)size options:(unint64_t)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  brandCopy = brand;
+  fallbackCopy = fallback;
+  completionCopy = completion;
   v15 = objc_alloc_init(WDCancellationToken);
-  v16 = [objc_opt_class() _logoCompletionOnMainQueue:v14 cancellationToken:v15];
+  v16 = [objc_opt_class() _logoCompletionOnMainQueue:completionCopy cancellationToken:v15];
 
-  if (v12)
+  if (brandCopy)
   {
-    v17 = [(WDClinicalSourcesDataProvider *)self healthRecordsStore];
-    v18 = [v17 hk_brandImageManager];
+    healthRecordsStore = [(WDClinicalSourcesDataProvider *)self healthRecordsStore];
+    hk_brandImageManager = [healthRecordsStore hk_brandImageManager];
     v29 = v15;
-    v19 = a6;
+    optionsCopy = options;
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __85__WDClinicalSourcesDataProvider__fetchLogoForBrand_fallback_size_options_completion___block_invoke_2;
     v30[3] = &unk_1E83DD068;
     v20 = v31;
-    v21 = v12;
+    v21 = brandCopy;
     v31[0] = v21;
     v31[1] = self;
     v22 = &v32;
-    v34 = a5;
-    v32 = v13;
+    sizeCopy = size;
+    v32 = fallbackCopy;
     v33 = v16;
     v23 = v16;
-    v24 = v13;
-    v25 = v19;
+    v24 = fallbackCopy;
+    v25 = optionsCopy;
     v15 = v29;
-    [v18 retrieveLogoForBrand:v21 size:v25 options:v30 completion:a5];
+    [hk_brandImageManager retrieveLogoForBrand:v21 size:v25 options:v30 completion:size];
   }
 
   else
@@ -176,13 +176,13 @@ BOOL __79__WDClinicalSourcesDataProvider_fetchAccessedAccountsForDisplayWithComp
     v37 = __85__WDClinicalSourcesDataProvider__fetchLogoForBrand_fallback_size_options_completion___block_invoke;
     v38 = &unk_1E83DD040;
     v20 = v41;
-    v40 = v13;
+    v40 = fallbackCopy;
     v41[0] = v16;
     v22 = &v40;
-    v39 = self;
-    *&v41[1] = a5;
+    selfCopy = self;
+    *&v41[1] = size;
     v26 = v16;
-    v27 = v13;
+    v27 = fallbackCopy;
     HKDispatchAsyncOnGlobalConcurrentQueue();
   }
 
@@ -220,32 +220,32 @@ void __85__WDClinicalSourcesDataProvider__fetchLogoForBrand_fallback_size_option
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)_logoForFallback:(id)a3 size:(double)a4
+- (id)_logoForFallback:(id)fallback size:(double)size
 {
-  v5 = a3;
-  v6 = [[HRMonogrammer alloc] initWithDiameter:a4];
-  v7 = [(HRMonogrammer *)v6 monogramForFirstWordFromText:v5];
+  fallbackCopy = fallback;
+  v6 = [[HRMonogrammer alloc] initWithDiameter:size];
+  v7 = [(HRMonogrammer *)v6 monogramForFirstWordFromText:fallbackCopy];
 
   return v7;
 }
 
-- (void)fetchAccountOwnerForSource:(id)a3 completion:(id)a4
+- (void)fetchAccountOwnerForSource:(id)source completion:(id)completion
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696C378] predicateForObjectsFromSource:a3];
+  completionCopy = completion;
+  v7 = [MEMORY[0x1E696C378] predicateForObjectsFromSource:source];
   v8 = objc_alloc(MEMORY[0x1E696C3C8]);
-  v9 = [MEMORY[0x1E696BEC0] accountOwnerType];
+  accountOwnerType = [MEMORY[0x1E696BEC0] accountOwnerType];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__WDClinicalSourcesDataProvider_fetchAccountOwnerForSource_completion___block_invoke;
   v14[3] = &unk_1E83DD090;
-  v15 = v6;
-  v10 = v6;
-  v11 = [v8 initWithSampleType:v9 predicate:v7 limit:0 sortDescriptors:0 resultsHandler:v14];
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = [v8 initWithSampleType:accountOwnerType predicate:v7 limit:0 sortDescriptors:0 resultsHandler:v14];
 
-  v12 = [(WDClinicalSourcesDataProvider *)self healthRecordsStore];
-  v13 = [v12 healthStore];
-  [v13 executeQuery:v11];
+  healthRecordsStore = [(WDClinicalSourcesDataProvider *)self healthRecordsStore];
+  healthStore = [healthRecordsStore healthStore];
+  [healthStore executeQuery:v11];
 }
 
 void __71__WDClinicalSourcesDataProvider_fetchAccountOwnerForSource_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -265,36 +265,36 @@ void __71__WDClinicalSourcesDataProvider_fetchAccountOwnerForSource_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)nameAndFormattedBirthDateForAccountOwner:(id)a3 useMultipleLines:(BOOL)a4
+- (id)nameAndFormattedBirthDateForAccountOwner:(id)owner useMultipleLines:(BOOL)lines
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 name];
-  v8 = [v6 birthDate];
+  linesCopy = lines;
+  ownerCopy = owner;
+  name = [ownerCopy name];
+  birthDate = [ownerCopy birthDate];
 
-  v9 = [(WDClinicalSourcesDataProvider *)self formattedFullName:v7 birthDate:v8 useMultipleLines:v4];
+  v9 = [(WDClinicalSourcesDataProvider *)self formattedFullName:name birthDate:birthDate useMultipleLines:linesCopy];
 
   return v9;
 }
 
-- (id)formattedFullName:(id)a3 birthDate:(id)a4 useMultipleLines:(BOOL)a5
+- (id)formattedFullName:(id)name birthDate:(id)date useMultipleLines:(BOOL)lines
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  v9 = v7;
-  if (v7)
+  linesCopy = lines;
+  nameCopy = name;
+  v8 = nameCopy;
+  v9 = nameCopy;
+  if (nameCopy)
   {
-    v9 = v7;
-    if (a4)
+    v9 = nameCopy;
+    if (date)
     {
-      v10 = a4;
-      v11 = [v10 displayString];
-      v12 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-      v13 = [v10 dateForUTC];
+      dateCopy = date;
+      displayString = [dateCopy displayString];
+      hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+      dateForUTC = [dateCopy dateForUTC];
 
-      v14 = [MEMORY[0x1E695DF00] date];
-      v15 = [v12 components:4 fromDate:v13 toDate:v14 options:0];
+      date = [MEMORY[0x1E695DF00] date];
+      v15 = [hk_gregorianCalendar components:4 fromDate:dateForUTC toDate:date options:0];
 
       v16 = HKIntegerFormatter();
       v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v15, "year")}];
@@ -303,9 +303,9 @@ void __71__WDClinicalSourcesDataProvider_fetchAccountOwnerForSource_completion__
       v19 = MEMORY[0x1E696AEC0];
       v20 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v21 = [v20 localizedStringForKey:@"date_and_age_%@_%@" value:&stru_1F4D16E38 table:@"HealthUI-Localizable"];
-      v22 = [v19 stringWithFormat:v21, v11, v18];
+      v22 = [v19 stringWithFormat:v21, displayString, v18];
 
-      if (v5)
+      if (linesCopy)
       {
         v23 = @"\n%@";
       }
@@ -322,98 +322,98 @@ void __71__WDClinicalSourcesDataProvider_fetchAccountOwnerForSource_completion__
   return v9;
 }
 
-- (id)nameAndFormattedBirthDateForSignedClinicalDataSubject:(id)a3 useMultipleLines:(BOOL)a4
+- (id)nameAndFormattedBirthDateForSignedClinicalDataSubject:(id)subject useMultipleLines:(BOOL)lines
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 fullName];
-  v8 = [v6 birthDate];
+  linesCopy = lines;
+  subjectCopy = subject;
+  fullName = [subjectCopy fullName];
+  birthDate = [subjectCopy birthDate];
 
-  v9 = [(WDClinicalSourcesDataProvider *)self formattedFullName:v7 birthDate:v8 useMultipleLines:v4];
+  v9 = [(WDClinicalSourcesDataProvider *)self formattedFullName:fullName birthDate:birthDate useMultipleLines:linesCopy];
 
   return v9;
 }
 
-- (void)beginInitialLoginSessionForGateway:(id)a3 fromViewController:(id)a4 loginCancelledHandler:(id)a5 errorHandler:(id)a6
+- (void)beginInitialLoginSessionForGateway:(id)gateway fromViewController:(id)controller loginCancelledHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
+  controllerCopy = controller;
+  gatewayCopy = gateway;
   v14 = [HRUIClinicalAccountLoginSession alloc];
   clinicalAccountStore = self->_clinicalAccountStore;
-  v16 = [v12 hk_window];
+  hk_window = [controllerCopy hk_window];
 
-  v17 = [(HRUIClinicalAccountLoginSession *)v14 initWithAccountStore:clinicalAccountStore presentationAnchor:v16 funnelContext:0];
+  v17 = [(HRUIClinicalAccountLoginSession *)v14 initWithAccountStore:clinicalAccountStore presentationAnchor:hk_window funnelContext:0];
   v19 = 0;
-  LOBYTE(clinicalAccountStore) = [(HRUIClinicalAccountLoginSession *)v17 startLoginWithGateway:v13 loginCancelledHandler:v11 callbackErrorHandler:v10 error:&v19];
+  LOBYTE(clinicalAccountStore) = [(HRUIClinicalAccountLoginSession *)v17 startLoginWithGateway:gatewayCopy loginCancelledHandler:handlerCopy callbackErrorHandler:errorHandlerCopy error:&v19];
 
   v18 = v19;
   if ((clinicalAccountStore & 1) == 0)
   {
-    v10[2](v10, v18);
+    errorHandlerCopy[2](errorHandlerCopy, v18);
   }
 }
 
-- (void)beginReloginSessionForAccount:(id)a3 fromViewController:(id)a4 profile:(id)a5 loginCancelledHandler:(id)a6 errorHandler:(id)a7
+- (void)beginReloginSessionForAccount:(id)account fromViewController:(id)controller profile:(id)profile loginCancelledHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
+  profileCopy = profile;
+  controllerCopy = controller;
+  accountCopy = account;
   v17 = [HRUIClinicalAccountLoginSession alloc];
   clinicalAccountStore = self->_clinicalAccountStore;
-  v19 = [v15 hk_window];
-  v20 = [(HRUIClinicalAccountLoginSession *)v17 initWithAccountStore:clinicalAccountStore presentationAnchor:v19 funnelContext:0];
+  hk_window = [controllerCopy hk_window];
+  v20 = [(HRUIClinicalAccountLoginSession *)v17 initWithAccountStore:clinicalAccountStore presentationAnchor:hk_window funnelContext:0];
 
   v22 = 0;
-  LOBYTE(clinicalAccountStore) = [(HRUIClinicalAccountLoginSession *)v20 startReloginToAccount:v16 viewController:v15 profile:v14 loginCancelledHandler:v13 callbackErrorHandler:v12 error:&v22];
+  LOBYTE(clinicalAccountStore) = [(HRUIClinicalAccountLoginSession *)v20 startReloginToAccount:accountCopy viewController:controllerCopy profile:profileCopy loginCancelledHandler:handlerCopy callbackErrorHandler:errorHandlerCopy error:&v22];
 
   v21 = v22;
   if ((clinicalAccountStore & 1) == 0)
   {
-    v12[2](v12, v21);
+    errorHandlerCopy[2](errorHandlerCopy, v21);
   }
 }
 
-- (id)appSourceRequestingAuthorizationForClinicalTypeWithBundleIdentifier:(id)a3
+- (id)appSourceRequestingAuthorizationForClinicalTypeWithBundleIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WDClinicalSourcesDataProvider *)self sourcesRequestingAuthorizationForClinicalTypes];
+  identifierCopy = identifier;
+  sourcesRequestingAuthorizationForClinicalTypes = [(WDClinicalSourcesDataProvider *)self sourcesRequestingAuthorizationForClinicalTypes];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 allSources];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v7)
+  allSources = [sourcesRequestingAuthorizationForClinicalTypes allSources];
+  source2 = [allSources countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (source2)
   {
     v8 = *v16;
     while (2)
     {
-      for (i = 0; i != v7; i = i + 1)
+      for (i = 0; i != source2; i = i + 1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allSources);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 source];
-        v12 = [v11 bundleIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        source = [v10 source];
+        bundleIdentifier = [source bundleIdentifier];
+        v13 = [bundleIdentifier isEqualToString:identifierCopy];
 
         if (v13)
         {
-          v7 = [v10 source];
+          source2 = [v10 source];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v7)
+      source2 = [allSources countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (source2)
       {
         continue;
       }
@@ -424,16 +424,16 @@ void __71__WDClinicalSourcesDataProvider_fetchAccountOwnerForSource_completion__
 
 LABEL_11:
 
-  return v7;
+  return source2;
 }
 
 - (id)sourcesRequestingAuthorizationForClinicalTypes
 {
   v3 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v4 = [MEMORY[0x1E696BFD8] allTypes];
-  v5 = [v3 initWithArray:v4];
+  allTypes = [MEMORY[0x1E696BFD8] allTypes];
+  v5 = [v3 initWithArray:allTypes];
 
-  v6 = [(WDClinicalSourcesDataProvider *)self healthStore];
+  healthStore = [(WDClinicalSourcesDataProvider *)self healthStore];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -441,7 +441,7 @@ LABEL_11:
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
   v7 = dispatch_semaphore_create(0);
-  v8 = [objc_alloc(MEMORY[0x1E696BF50]) initWithHealthStore:v6];
+  v8 = [objc_alloc(MEMORY[0x1E696BF50]) initWithHealthStore:healthStore];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__WDClinicalSourcesDataProvider_sourcesRequestingAuthorizationForClinicalTypes__block_invoke;
@@ -485,14 +485,14 @@ void __79__WDClinicalSourcesDataProvider_sourcesRequestingAuthorizationForClinic
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchSignedClinicalDataRecordWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchSignedClinicalDataRecordWithIdentifier:(id)identifier completion:(id)completion
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696C450] signedClinicalDataRecordType];
-  v9 = [MEMORY[0x1E696C378] predicateForMedicalRecordsWithSignedClinicalDataOriginIdentifier:v6];
-  v10 = [objc_alloc(MEMORY[0x1E696C388]) initWithSampleType:v8 predicate:v9];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  signedClinicalDataRecordType = [MEMORY[0x1E696C450] signedClinicalDataRecordType];
+  v9 = [MEMORY[0x1E696C378] predicateForMedicalRecordsWithSignedClinicalDataOriginIdentifier:identifierCopy];
+  v10 = [objc_alloc(MEMORY[0x1E696C388]) initWithSampleType:signedClinicalDataRecordType predicate:v9];
   v11 = objc_alloc(MEMORY[0x1E696C3C8]);
   v20[0] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
@@ -501,14 +501,14 @@ void __79__WDClinicalSourcesDataProvider_sourcesRequestingAuthorizationForClinic
   v17[2] = __88__WDClinicalSourcesDataProvider_fetchSignedClinicalDataRecordWithIdentifier_completion___block_invoke;
   v17[3] = &unk_1E83DD0E0;
   v17[4] = self;
-  v18 = v6;
-  v19 = v7;
-  v13 = v7;
-  v14 = v6;
+  v18 = identifierCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = identifierCopy;
   v15 = [v11 initWithQueryDescriptors:v12 limit:1 resultsHandler:v17];
 
-  v16 = [(WDClinicalSourcesDataProvider *)self healthStore];
-  [v16 executeQuery:v15];
+  healthStore = [(WDClinicalSourcesDataProvider *)self healthStore];
+  [healthStore executeQuery:v15];
 }
 
 void __88__WDClinicalSourcesDataProvider_fetchSignedClinicalDataRecordWithIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -533,18 +533,18 @@ void __88__WDClinicalSourcesDataProvider_fetchSignedClinicalDataRecordWithIdenti
   }
 }
 
-+ (id)_logoCompletionOnMainQueue:(id)a3 cancellationToken:(id)a4
++ (id)_logoCompletionOnMainQueue:(id)queue cancellationToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  tokenCopy = token;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__WDClinicalSourcesDataProvider__logoCompletionOnMainQueue_cancellationToken___block_invoke;
   v11[3] = &unk_1E83DD130;
-  v12 = v6;
-  v13 = v5;
-  v7 = v5;
-  v8 = v6;
+  v12 = tokenCopy;
+  v13 = queueCopy;
+  v7 = queueCopy;
+  v8 = tokenCopy;
   v9 = _Block_copy(v11);
 
   return v9;
@@ -579,18 +579,18 @@ uint64_t __78__WDClinicalSourcesDataProvider__logoCompletionOnMainQueue_cancella
   return result;
 }
 
-+ (id)_objectCompletionOnMainQueue:(id)a3 cancellationToken:(id)a4
++ (id)_objectCompletionOnMainQueue:(id)queue cancellationToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  tokenCopy = token;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__WDClinicalSourcesDataProvider__objectCompletionOnMainQueue_cancellationToken___block_invoke;
   v11[3] = &unk_1E83DD180;
-  v12 = v6;
-  v13 = v5;
-  v7 = v5;
-  v8 = v6;
+  v12 = tokenCopy;
+  v13 = queueCopy;
+  v7 = queueCopy;
+  v8 = tokenCopy;
   v9 = _Block_copy(v11);
 
   return v9;
@@ -624,27 +624,27 @@ uint64_t __80__WDClinicalSourcesDataProvider__objectCompletionOnMainQueue_cancel
   return result;
 }
 
-- (id)_orderAccountsForDisplay:(id)a3
+- (id)_orderAccountsForDisplay:(id)display
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEB0];
-  v4 = a3;
+  displayCopy = display;
   v5 = [[v3 alloc] initWithKey:@"title" ascending:1 selector:sel_localizedCaseInsensitiveCompare_];
   v6 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"subtitle" ascending:1 selector:sel_localizedCaseInsensitiveCompare_];
   v10[0] = v5;
   v10[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
-  v8 = [v4 sortedArrayUsingDescriptors:v7];
+  v8 = [displayCopy sortedArrayUsingDescriptors:v7];
 
   return v8;
 }
 
 - (HKHealthStore)healthStore
 {
-  v2 = [(WDClinicalSourcesDataProvider *)self healthRecordsStore];
-  v3 = [v2 healthStore];
+  healthRecordsStore = [(WDClinicalSourcesDataProvider *)self healthRecordsStore];
+  healthStore = [healthRecordsStore healthStore];
 
-  return v3;
+  return healthStore;
 }
 
 void __85__WDClinicalSourcesDataProvider__fetchLogoForBrand_fallback_size_options_completion___block_invoke_2_cold_1(uint64_t a1, void *a2)

@@ -1,18 +1,18 @@
 @interface DOCSourceOrderObserver
 - (DOCSourceOrderObserver)init;
-- (DOCSourceOrderObserver)initWithConfiguration:(id)a3 sourceObserver:(id)a4 updateBlock:(id)a5;
+- (DOCSourceOrderObserver)initWithConfiguration:(id)configuration sourceObserver:(id)observer updateBlock:(id)block;
 - (void)invokeUpdateBlock;
-- (void)moveSource:(id)a3 toIndex:(int64_t)a4;
+- (void)moveSource:(id)source toIndex:(int64_t)index;
 @end
 
 @implementation DOCSourceOrderObserver
 
-- (DOCSourceOrderObserver)initWithConfiguration:(id)a3 sourceObserver:(id)a4 updateBlock:(id)a5
+- (DOCSourceOrderObserver)initWithConfiguration:(id)configuration sourceObserver:(id)observer updateBlock:(id)block
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(block);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  return DOCSourceOrderObserver.init(configuration:sourceObserver:update:)(a3, a4, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned DOCSourceByType) -> (), v8);
+  return DOCSourceOrderObserver.init(configuration:sourceObserver:update:)(configuration, observer, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned DOCSourceByType) -> (), v8);
 }
 
 - (void)invokeUpdateBlock
@@ -21,21 +21,21 @@
   swift_beginAccess();
   v4 = *v3;
   v5 = *(**(&self->super.isa + OBJC_IVAR___DOCSourceOrderObserver_strategy) + 136);
-  v6 = self;
+  selfCopy = self;
 
   v8 = v5(v7);
   v4();
 }
 
-- (void)moveSource:(id)a3 toIndex:(int64_t)a4
+- (void)moveSource:(id)source toIndex:(int64_t)index
 {
   v6 = *(&self->super.isa + OBJC_IVAR___DOCSourceOrderObserver_strategy);
   v7 = *(*v6 + 120);
-  v8 = a3;
-  v14 = self;
-  if (v7(v8, a4))
+  sourceCopy = source;
+  selfCopy = self;
+  if (v7(sourceCopy, index))
   {
-    v9 = (v14 + OBJC_IVAR___DOCSourceOrderObserver_updateBlock);
+    v9 = (selfCopy + OBJC_IVAR___DOCSourceOrderObserver_updateBlock);
     swift_beginAccess();
     v10 = *v9;
     v11 = *(*v6 + 136);

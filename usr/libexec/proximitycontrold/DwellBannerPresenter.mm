@@ -1,11 +1,11 @@
 @interface DwellBannerPresenter
 - (BNPresentableContext)presentableContext;
-- (_TtC17proximitycontrold20DwellBannerPresenter)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17proximitycontrold20DwellBannerPresenter)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DwellBannerPresenter
@@ -25,18 +25,18 @@
   __chkstk_darwin(v3);
   v7 = &v10 - v6;
   (*(v4 + 16))(&v10 - v6, self + OBJC_IVAR____TtC17proximitycontrold20DwellBannerPresenter_eventContinuation, v3);
-  v8 = self;
+  selfCopy = self;
   AsyncStream.Continuation.finish()();
   (*(v4 + 8))(v7, v3);
   v9 = type metadata accessor for DwellBannerPresenter();
-  v10.receiver = v8;
+  v10.receiver = selfCopy;
   v10.super_class = v9;
   [(DwellBannerPresenter *)&v10 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000401CC();
 }
 
@@ -46,11 +46,11 @@
   v9.super_class = type metadata accessor for DwellBannerPresenter();
   v2 = v9.receiver;
   [(DwellBannerPresenter *)&v9 viewWillLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC17proximitycontrold20DwellBannerPresenter_childViewController] view];
-  if (v3)
+  view = [*&v2[OBJC_IVAR____TtC17proximitycontrold20DwellBannerPresenter_childViewController] view];
+  if (view)
   {
-    v4 = v3;
-    [v3 intrinsicContentSize];
+    v4 = view;
+    [view intrinsicContentSize];
     v6 = v5;
     v8 = v7;
 
@@ -63,24 +63,24 @@
   }
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1000408E0(a3);
+  selfCopy = self;
+  sub_1000408E0(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  sub_1000420A8(a4);
+  reasonCopy = reason;
+  selfCopy = self;
+  sub_1000420A8(reason);
   swift_unknownObjectRelease();
 }
 
-- (_TtC17proximitycontrold20DwellBannerPresenter)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17proximitycontrold20DwellBannerPresenter)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

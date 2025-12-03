@@ -1,6 +1,6 @@
 @interface CalculateScanResult
-+ (id)resultWithRange:(_NSRange)a3;
-- (CalculateScanResult)initWithRange:(_NSRange)a3;
++ (id)resultWithRange:(_NSRange)range;
+- (CalculateScanResult)initWithRange:(_NSRange)range;
 - (_NSRange)range;
 @end
 
@@ -15,10 +15,10 @@
   return result;
 }
 
-- (CalculateScanResult)initWithRange:(_NSRange)a3
+- (CalculateScanResult)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6.receiver = self;
   v6.super_class = CalculateScanResult;
   result = [(CalculateScanResult *)&v6 init];
@@ -31,9 +31,9 @@
   return result;
 }
 
-+ (id)resultWithRange:(_NSRange)a3
++ (id)resultWithRange:(_NSRange)range
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithRange:{a3.location, a3.length}];
+  v3 = [objc_alloc(objc_opt_class()) initWithRange:{range.location, range.length}];
 
   return v3;
 }

@@ -1,6 +1,6 @@
 @interface SCNImageSource
 - (id)textureSource;
-- (void)connectToProxy:(__C3DImageProxy *)a3;
+- (void)connectToProxy:(__C3DImageProxy *)proxy;
 - (void)textureSource;
 @end
 
@@ -17,17 +17,17 @@
   return 0;
 }
 
-- (void)connectToProxy:(__C3DImageProxy *)a3
+- (void)connectToProxy:(__C3DImageProxy *)proxy
 {
-  C3DImageProxySetSource(a3, self, 0);
+  C3DImageProxySetSource(proxy, self, 0);
   v4[0] = xmmword_282DC7808;
   v4[1] = *&off_282DC7818;
-  C3DImageProxySetCallbacks(a3, v4);
+  C3DImageProxySetCallbacks(proxy, v4);
 }
 
 - (void)textureSource
 {
-  NSStringFromSelector(a1);
+  NSStringFromSelector(self);
   OUTLINED_FUNCTION_2_7();
   OUTLINED_FUNCTION_1_7(&dword_21BEF7000, v1, v2, "Error: SCNImageSource astract method invoked %@", v3, v4, v5, v6, v7);
 }

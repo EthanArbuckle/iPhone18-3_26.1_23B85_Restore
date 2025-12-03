@@ -1,45 +1,45 @@
 @interface TSDImageRenderingConfiguration
-- (TSDImageRenderingConfiguration)initWithBitmapQualityInfo:(id)a3;
-- (TSDImageRenderingConfiguration)initWithCGContext:(CGContext *)a3;
-- (TSDImageRenderingConfiguration)initWithContentsScale:(double)a3 additionalScale:(double)a4 wantsHDR:(BOOL)a5 qualityInfo:(id)a6 isForPrinting:(BOOL)a7 isForPDF:(BOOL)a8;
+- (TSDImageRenderingConfiguration)initWithBitmapQualityInfo:(id)info;
+- (TSDImageRenderingConfiguration)initWithCGContext:(CGContext *)context;
+- (TSDImageRenderingConfiguration)initWithContentsScale:(double)scale additionalScale:(double)additionalScale wantsHDR:(BOOL)r qualityInfo:(id)info isForPrinting:(BOOL)printing isForPDF:(BOOL)f;
 - (id)description;
-- (id)i_initWithCanvas:(id)a3;
+- (id)i_initWithCanvas:(id)canvas;
 @end
 
 @implementation TSDImageRenderingConfiguration
 
-- (TSDImageRenderingConfiguration)initWithContentsScale:(double)a3 additionalScale:(double)a4 wantsHDR:(BOOL)a5 qualityInfo:(id)a6 isForPrinting:(BOOL)a7 isForPDF:(BOOL)a8
+- (TSDImageRenderingConfiguration)initWithContentsScale:(double)scale additionalScale:(double)additionalScale wantsHDR:(BOOL)r qualityInfo:(id)info isForPrinting:(BOOL)printing isForPDF:(BOOL)f
 {
-  v15 = a6;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = TSDImageRenderingConfiguration;
   v16 = [(TSDImageRenderingConfiguration *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_wantsHDR = a5;
-    v16->_contentsScale = a3;
-    v16->_additionalScale = a4;
-    objc_storeStrong(&v16->_qualityInfo, a6);
-    v17->_isForPrinting = a7;
-    v17->_isForPDF = a8;
+    v16->_wantsHDR = r;
+    v16->_contentsScale = scale;
+    v16->_additionalScale = additionalScale;
+    objc_storeStrong(&v16->_qualityInfo, info);
+    v17->_isForPrinting = printing;
+    v17->_isForPDF = f;
   }
 
   return v17;
 }
 
-- (TSDImageRenderingConfiguration)initWithCGContext:(CGContext *)a3
+- (TSDImageRenderingConfiguration)initWithCGContext:(CGContext *)context
 {
-  if (a3)
+  if (context)
   {
-    ShouldRenderHDRContent = TSDCGContextShouldRenderHDRContent(a3);
-    IsPrintContext = TSDCGContextIsPrintContext(a3);
-    IsPDFContext = TSDCGContextIsPDFContext(a3);
-    v8 = TSDCGContextAssociatedScreenScale(a3);
-    CGContextGetCTM(&v15, a3);
+    ShouldRenderHDRContent = TSDCGContextShouldRenderHDRContent(context);
+    IsPrintContext = TSDCGContextIsPrintContext(context);
+    IsPDFContext = TSDCGContextIsPDFContext(context);
+    v8 = TSDCGContextAssociatedScreenScale(context);
+    CGContextGetCTM(&v15, context);
     TSUTransformScale();
     v10 = v9;
-    v11 = TSDCGContextGetBitmapQualityInfo(a3);
+    v11 = TSDCGContextGetBitmapQualityInfo(context);
     v13 = objc_msgSend_initWithContentsScale_additionalScale_wantsHDR_qualityInfo_isForPrinting_isForPDF_(self, v12, ShouldRenderHDRContent, v11, IsPrintContext, IsPDFContext, v8, v10);
   }
 
@@ -51,28 +51,28 @@
   return v13;
 }
 
-- (TSDImageRenderingConfiguration)initWithBitmapQualityInfo:(id)a3
+- (TSDImageRenderingConfiguration)initWithBitmapQualityInfo:(id)info
 {
-  v4 = a3;
-  objc_msgSend_canvasScale(v4, v5, v6);
-  v8 = objc_msgSend_initWithContentsScale_additionalScale_wantsHDR_qualityInfo_isForPrinting_isForPDF_(self, v7, 0, v4, 0, 0);
+  infoCopy = info;
+  objc_msgSend_canvasScale(infoCopy, v5, v6);
+  v8 = objc_msgSend_initWithContentsScale_additionalScale_wantsHDR_qualityInfo_isForPrinting_isForPDF_(self, v7, 0, infoCopy, 0, 0);
 
   return v8;
 }
 
-- (id)i_initWithCanvas:(id)a3
+- (id)i_initWithCanvas:(id)canvas
 {
-  v4 = self;
-  v5 = a3;
-  objc_msgSend_contentsScale(v5, v6, v7);
+  selfCopy = self;
+  canvasCopy = canvas;
+  objc_msgSend_contentsScale(canvasCopy, v6, v7);
   v9 = v8;
-  objc_msgSend_viewScale(v5, v10, v11);
+  objc_msgSend_viewScale(canvasCopy, v10, v11);
   v13 = v12;
-  v16 = objc_msgSend_supportsHDR(v5, v14, v15);
-  isPrinting = objc_msgSend_isPrinting(v5, v17, v18);
-  isDrawingIntoPDF = objc_msgSend_isDrawingIntoPDF(v5, v20, v21);
+  v16 = objc_msgSend_supportsHDR(canvasCopy, v14, v15);
+  isPrinting = objc_msgSend_isPrinting(canvasCopy, v17, v18);
+  isDrawingIntoPDF = objc_msgSend_isDrawingIntoPDF(canvasCopy, v20, v21);
 
-  v24 = objc_msgSend_initWithContentsScale_additionalScale_wantsHDR_qualityInfo_isForPrinting_isForPDF_(v4, v23, v16, 0, isPrinting, isDrawingIntoPDF, v9, v13);
+  v24 = objc_msgSend_initWithContentsScale_additionalScale_wantsHDR_qualityInfo_isForPrinting_isForPDF_(selfCopy, v23, v16, 0, isPrinting, isDrawingIntoPDF, v9, v13);
 
   return v24;
 }

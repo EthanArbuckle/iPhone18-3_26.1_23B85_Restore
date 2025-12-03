@@ -1,20 +1,20 @@
 @interface SiriAnalyticsRawUnifiedStream
 - (void)prune;
-- (void)sendWithAnyEvent:(id)a3;
+- (void)sendWithAnyEvent:(id)event;
 @end
 
 @implementation SiriAnalyticsRawUnifiedStream
 
-- (void)sendWithAnyEvent:(id)a3
+- (void)sendWithAnyEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D988665C(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1D988665C(eventCopy);
 }
 
 - (void)prune
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D98867DC();
 }
 

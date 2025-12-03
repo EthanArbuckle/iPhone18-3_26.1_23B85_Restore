@@ -1,28 +1,28 @@
 @interface CrossFadeView
 - (CGRect)endFrame;
 - (CGRect)startFrame;
-- (CrossFadeView)initWithFrame:(CGRect)a3;
-- (CrossFadeView)initWithStartView:(id)a3 endView:(id)a4 startFrame:(CGRect)a5 endFrame:(CGRect)a6;
+- (CrossFadeView)initWithFrame:(CGRect)frame;
+- (CrossFadeView)initWithStartView:(id)view endView:(id)endView startFrame:(CGRect)frame endFrame:(CGRect)endFrame;
 - (id)description;
-- (void)animateToEndStateWithDuration:(double)a3 completion:(id)a4;
-- (void)animateToStartStateWithDuration:(double)a3 completion:(id)a4;
+- (void)animateToEndStateWithDuration:(double)duration completion:(id)completion;
+- (void)animateToStartStateWithDuration:(double)duration completion:(id)completion;
 - (void)haltAnimation;
-- (void)setEndView:(id)a3;
-- (void)setScaleSize:(BOOL)a3;
-- (void)setStartView:(id)a3;
+- (void)setEndView:(id)view;
+- (void)setScaleSize:(BOOL)size;
+- (void)setStartView:(id)view;
 - (void)setToEndState;
 - (void)setToStartState;
-- (void)springAnimateToEndStateWithTimingFunction:(int)a3 completion:(id)a4;
-- (void)springAnimateToStartStateWithTimingFunction:(int)a3 completion:(id)a4;
+- (void)springAnimateToEndStateWithTimingFunction:(int)function completion:(id)completion;
+- (void)springAnimateToStartStateWithTimingFunction:(int)function completion:(id)completion;
 @end
 
 @implementation CrossFadeView
 
-- (CrossFadeView)initWithFrame:(CGRect)a3
+- (CrossFadeView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CrossFadeView;
-  result = [(CrossFadeView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(CrossFadeView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_scaleSize = 1;
@@ -31,18 +31,18 @@
   return result;
 }
 
-- (CrossFadeView)initWithStartView:(id)a3 endView:(id)a4 startFrame:(CGRect)a5 endFrame:(CGRect)a6
+- (CrossFadeView)initWithStartView:(id)view endView:(id)endView startFrame:(CGRect)frame endFrame:(CGRect)endFrame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5.size.height;
-  v11 = a5.size.width;
-  v12 = a5.origin.y;
-  v13 = a5.origin.x;
-  v16 = a3;
-  v17 = a4;
+  height = endFrame.size.height;
+  width = endFrame.size.width;
+  y = endFrame.origin.y;
+  x = endFrame.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.y;
+  v13 = frame.origin.x;
+  viewCopy = view;
+  endViewCopy = endView;
   v18 = [(CrossFadeView *)self initWithFrame:v13, v12, v11, v10];
   v19 = v18;
   if (v18)
@@ -55,31 +55,31 @@
     v18->_endFrame.origin.y = y;
     v18->_endFrame.size.width = width;
     v18->_endFrame.size.height = height;
-    [(CrossFadeView *)v18 setStartView:v16];
-    [(CrossFadeView *)v19 setEndView:v17];
+    [(CrossFadeView *)v18 setStartView:viewCopy];
+    [(CrossFadeView *)v19 setEndView:endViewCopy];
   }
 
   return v19;
 }
 
-- (void)setStartView:(id)a3
+- (void)setStartView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   startView = self->_startView;
-  v9 = v5;
-  if (startView != v5)
+  v9 = viewCopy;
+  if (startView != viewCopy)
   {
     if (startView)
     {
-      v7 = [(UIView *)startView superview];
+      superview = [(UIView *)startView superview];
 
-      if (v7 == self)
+      if (superview == self)
       {
         [(UIView *)self->_startView removeFromSuperview];
       }
     }
 
-    objc_storeStrong(&self->_startView, a3);
+    objc_storeStrong(&self->_startView, view);
     v8 = self->_startView;
     if (v8)
     {
@@ -92,24 +92,24 @@
   }
 }
 
-- (void)setEndView:(id)a3
+- (void)setEndView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   endView = self->_endView;
-  v9 = v5;
-  if (endView != v5)
+  v9 = viewCopy;
+  if (endView != viewCopy)
   {
     if (endView)
     {
-      v7 = [(UIView *)endView superview];
+      superview = [(UIView *)endView superview];
 
-      if (v7 == self)
+      if (superview == self)
       {
         [(UIView *)self->_endView removeFromSuperview];
       }
     }
 
-    objc_storeStrong(&self->_endView, a3);
+    objc_storeStrong(&self->_endView, view);
     v8 = self->_endView;
     if (v8)
     {
@@ -122,9 +122,9 @@
   }
 }
 
-- (void)animateToStartStateWithDuration:(double)a3 completion:(id)a4
+- (void)animateToStartStateWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(CrossFadeView *)self setToEndState];
   v7 = MEMORY[0x1E69DD250];
   v11[0] = MEMORY[0x1E69E9820];
@@ -136,9 +136,9 @@
   v9[1] = 3221225472;
   v9[2] = __60__CrossFadeView_animateToStartStateWithDuration_completion___block_invoke_2;
   v9[3] = &unk_1E843F2D0;
-  v10 = v6;
-  v8 = v6;
-  [v7 animateWithDuration:327680 delay:v11 options:v9 animations:a3 completion:0.0];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 animateWithDuration:327680 delay:v11 options:v9 animations:duration completion:0.0];
 }
 
 uint64_t __60__CrossFadeView_animateToStartStateWithDuration_completion___block_invoke_2(uint64_t a1)
@@ -152,9 +152,9 @@ uint64_t __60__CrossFadeView_animateToStartStateWithDuration_completion___block_
   return result;
 }
 
-- (void)animateToEndStateWithDuration:(double)a3 completion:(id)a4
+- (void)animateToEndStateWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(CrossFadeView *)self setToStartState];
   v7 = MEMORY[0x1E69DD250];
   v11[0] = MEMORY[0x1E69E9820];
@@ -166,9 +166,9 @@ uint64_t __60__CrossFadeView_animateToStartStateWithDuration_completion___block_
   v9[1] = 3221225472;
   v9[2] = __58__CrossFadeView_animateToEndStateWithDuration_completion___block_invoke_2;
   v9[3] = &unk_1E843F2D0;
-  v10 = v6;
-  v8 = v6;
-  [v7 animateWithDuration:327680 delay:v11 options:v9 animations:a3 completion:0.0];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 animateWithDuration:327680 delay:v11 options:v9 animations:duration completion:0.0];
 }
 
 uint64_t __58__CrossFadeView_animateToEndStateWithDuration_completion___block_invoke_2(uint64_t a1)
@@ -182,9 +182,9 @@ uint64_t __58__CrossFadeView_animateToEndStateWithDuration_completion___block_in
   return result;
 }
 
-- (void)springAnimateToStartStateWithTimingFunction:(int)a3 completion:(id)a4
+- (void)springAnimateToStartStateWithTimingFunction:(int)function completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(CrossFadeView *)self setToEndState];
   v6 = MEMORY[0x1E69DD250];
   v7 = +[SpringFactory sharedFactory];
@@ -197,8 +197,8 @@ uint64_t __58__CrossFadeView_animateToEndStateWithDuration_completion___block_in
   v9[1] = 3221225472;
   v9[2] = __72__CrossFadeView_springAnimateToStartStateWithTimingFunction_completion___block_invoke_2;
   v9[3] = &unk_1E843F2D0;
-  v10 = v5;
-  v8 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v6 _animateWithDuration:393216 delay:v7 options:v11 factory:v9 animations:0.91 completion:0.0];
 }
 
@@ -213,9 +213,9 @@ uint64_t __72__CrossFadeView_springAnimateToStartStateWithTimingFunction_complet
   return result;
 }
 
-- (void)springAnimateToEndStateWithTimingFunction:(int)a3 completion:(id)a4
+- (void)springAnimateToEndStateWithTimingFunction:(int)function completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(CrossFadeView *)self setToStartState];
   v6 = MEMORY[0x1E69DD250];
   v7 = +[SpringFactory sharedFactory];
@@ -228,8 +228,8 @@ uint64_t __72__CrossFadeView_springAnimateToStartStateWithTimingFunction_complet
   v9[1] = 3221225472;
   v9[2] = __70__CrossFadeView_springAnimateToEndStateWithTimingFunction_completion___block_invoke_2;
   v9[3] = &unk_1E843F2D0;
-  v10 = v5;
-  v8 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v6 _animateWithDuration:393216 delay:v7 options:v11 factory:v9 animations:0.91 completion:0.0];
 }
 
@@ -259,11 +259,11 @@ uint64_t __70__CrossFadeView_springAnimateToEndStateWithTimingFunction_completio
     [(CrossFadeView *)self setFrame:?];
   }
 
-  v7 = [(CrossFadeView *)self startView];
-  [v7 setAlpha:1.0];
+  startView = [(CrossFadeView *)self startView];
+  [startView setAlpha:1.0];
 
-  v8 = [(CrossFadeView *)self endView];
-  [v8 setAlpha:0.0];
+  endView = [(CrossFadeView *)self endView];
+  [endView setAlpha:0.0];
 }
 
 - (void)setToEndState
@@ -281,46 +281,46 @@ uint64_t __70__CrossFadeView_springAnimateToEndStateWithTimingFunction_completio
     [(CrossFadeView *)self setFrame:?];
   }
 
-  v7 = [(CrossFadeView *)self startView];
-  [v7 setAlpha:0.0];
+  startView = [(CrossFadeView *)self startView];
+  [startView setAlpha:0.0];
 
-  v8 = [(CrossFadeView *)self endView];
-  [v8 setAlpha:1.0];
+  endView = [(CrossFadeView *)self endView];
+  [endView setAlpha:1.0];
 }
 
 - (void)haltAnimation
 {
-  v3 = [(CrossFadeView *)self layer];
-  [v3 removeAllAnimations];
+  layer = [(CrossFadeView *)self layer];
+  [layer removeAllAnimations];
 
-  v4 = [(CrossFadeView *)self startView];
-  v5 = [v4 layer];
-  [v5 removeAllAnimations];
+  startView = [(CrossFadeView *)self startView];
+  layer2 = [startView layer];
+  [layer2 removeAllAnimations];
 
-  v7 = [(CrossFadeView *)self endView];
-  v6 = [v7 layer];
-  [v6 removeAllAnimations];
+  endView = [(CrossFadeView *)self endView];
+  layer3 = [endView layer];
+  [layer3 removeAllAnimations];
 }
 
-- (void)setScaleSize:(BOOL)a3
+- (void)setScaleSize:(BOOL)size
 {
-  self->_scaleSize = a3;
-  if (a3)
+  self->_scaleSize = size;
+  if (size)
   {
     [(CrossFadeView *)self setAutoresizesSubviews:1];
-    v4 = [(CrossFadeView *)self startView];
-    [v4 frame];
+    startView = [(CrossFadeView *)self startView];
+    [startView frame];
     v6 = v5;
     v8 = v7;
 
     [(CrossFadeView *)self bounds];
     v10 = v9;
     v12 = v11;
-    v13 = [(CrossFadeView *)self startView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    startView2 = [(CrossFadeView *)self startView];
+    [startView2 setFrame:{v6, v8, v10, v12}];
 
-    v14 = [(CrossFadeView *)self endView];
-    [v14 frame];
+    endView = [(CrossFadeView *)self endView];
+    [endView frame];
     v16 = v15;
     v18 = v17;
 
@@ -330,19 +330,19 @@ uint64_t __70__CrossFadeView_springAnimateToEndStateWithTimingFunction_completio
   else
   {
     [(CrossFadeView *)self setAutoresizesSubviews:?];
-    v21 = [(CrossFadeView *)self startView];
-    [v21 frame];
+    startView3 = [(CrossFadeView *)self startView];
+    [startView3 frame];
     v23 = v22;
     v25 = v24;
 
     [(CrossFadeView *)self startFrame];
     v27 = v26;
     v29 = v28;
-    v30 = [(CrossFadeView *)self startView];
-    [v30 setFrame:{v23, v25, v27, v29}];
+    startView4 = [(CrossFadeView *)self startView];
+    [startView4 setFrame:{v23, v25, v27, v29}];
 
-    v31 = [(CrossFadeView *)self endView];
-    [v31 frame];
+    endView2 = [(CrossFadeView *)self endView];
+    [endView2 frame];
     v16 = v32;
     v18 = v33;
 
@@ -351,8 +351,8 @@ uint64_t __70__CrossFadeView_springAnimateToEndStateWithTimingFunction_completio
 
   v34 = v19;
   v35 = v20;
-  v36 = [(CrossFadeView *)self endView];
-  [v36 setFrame:{v16, v18, v34, v35}];
+  endView3 = [(CrossFadeView *)self endView];
+  [endView3 setFrame:{v16, v18, v34, v35}];
 }
 
 - (id)description
@@ -360,11 +360,11 @@ uint64_t __70__CrossFadeView_springAnimateToEndStateWithTimingFunction_completio
   v12.receiver = self;
   v12.super_class = CrossFadeView;
   v3 = [(CrossFadeView *)&v12 description];
-  v4 = [(CrossFadeView *)self startView];
-  v5 = [v4 description];
+  startView = [(CrossFadeView *)self startView];
+  v5 = [startView description];
 
-  v6 = [(CrossFadeView *)self endView];
-  v7 = [v6 description];
+  endView = [(CrossFadeView *)self endView];
+  v7 = [endView description];
 
   [(CrossFadeView *)self startFrame];
   v8 = NSStringFromCGRect(v14);

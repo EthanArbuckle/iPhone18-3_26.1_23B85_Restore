@@ -1,14 +1,14 @@
 @interface LanguageCell
-- (_TtC20SiriMessagesSettings12LanguageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC20SiriMessagesSettings12LanguageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC20SiriMessagesSettings12LanguageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC20SiriMessagesSettings12LanguageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
 @implementation LanguageCell
 
-- (_TtC20SiriMessagesSettings12LanguageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC20SiriMessagesSettings12LanguageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_21EF4();
     v6 = v5;
@@ -23,16 +23,16 @@
   return sub_1EF3C(v4, v4, v6);
 }
 
-- (_TtC20SiriMessagesSettings12LanguageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC20SiriMessagesSettings12LanguageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v7 = sub_21EF4();
-  sub_1F3EC(a3, v7, v8, a5);
+  sub_1F3EC(style, v7, v8, specifier);
   return result;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_202D8();
 }
 

@@ -1,8 +1,8 @@
 @interface VFXMTLRenderPipeline
-- (BOOL)matchesRenderPassDescriptor:(id)a3;
+- (BOOL)matchesRenderPassDescriptor:(id)descriptor;
 - (VFXMTLRenderPipeline)init;
 - (id)description;
-- (void)_computeUsageForBindings:(id)a3 function:(id)a4;
+- (void)_computeUsageForBindings:(id)bindings function:(id)function;
 - (void)dealloc;
 @end
 
@@ -214,13 +214,13 @@
   return v5;
 }
 
-- (BOOL)matchesRenderPassDescriptor:(id)a3
+- (BOOL)matchesRenderPassDescriptor:(id)descriptor
 {
   v6 = 0;
   p_renderPassDesc = &self->_renderPassDesc;
   while (1)
   {
-    v8 = objc_msgSend_colorAttachments(a3, a2, a3, v3);
+    v8 = objc_msgSend_colorAttachments(descriptor, a2, descriptor, v3);
     v11 = objc_msgSend_objectAtIndexedSubscript_(v8, v9, v6, v10);
     v15 = objc_msgSend_texture(v11, v12, v13, v14);
     v16 = p_renderPassDesc->colorFormat[v6];
@@ -232,7 +232,7 @@
     if (v15)
     {
       sampleCount = self->_renderPassDesc.sampleCount;
-      if (objc_msgSend_sampleCount(v15, a2, a3, v3) != sampleCount)
+      if (objc_msgSend_sampleCount(v15, a2, descriptor, v3) != sampleCount)
       {
         break;
       }
@@ -240,14 +240,14 @@
 
     if (++v6 == 8)
     {
-      v21 = objc_msgSend_depthAttachment(a3, a2, a3, v3);
+      v21 = objc_msgSend_depthAttachment(descriptor, a2, descriptor, v3);
       v25 = objc_msgSend_texture(v21, v22, v23, v24);
       depthFormat = self->_renderPassDesc.depthFormat;
       if (depthFormat == objc_msgSend_pixelFormat(v25, v27, v28, v29))
       {
         if (!v25 || (v33 = self->_renderPassDesc.sampleCount, objc_msgSend_sampleCount(v25, v30, v31, v32) == v33))
         {
-          v34 = objc_msgSend_stencilAttachment(a3, v30, v31, v32);
+          v34 = objc_msgSend_stencilAttachment(descriptor, v30, v31, v32);
           v38 = objc_msgSend_texture(v34, v35, v36, v37);
           stencilFormat = self->_renderPassDesc.stencilFormat;
           if (stencilFormat == objc_msgSend_pixelFormat(v38, v40, v41, v42))
@@ -273,10 +273,10 @@
   return 0;
 }
 
-- (void)_computeUsageForBindings:(id)a3 function:(id)a4
+- (void)_computeUsageForBindings:(id)bindings function:(id)function
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = objc_msgSend_functionType(a4, a2, a3, a4);
+  v6 = objc_msgSend_functionType(function, a2, bindings, function);
   v8 = sub_1AF1F1F6C(v6);
   if (v8 >= 2)
   {
@@ -297,7 +297,7 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v7, &v31, v35, 16);
+  v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(bindings, v7, &v31, v35, 16);
   if (v19)
   {
     v23 = v19;
@@ -308,7 +308,7 @@
       {
         if (*v32 != v24)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(bindings);
         }
 
         v26 = *(*(&v31 + 1) + 8 * i);
@@ -349,7 +349,7 @@
         }
       }
 
-      v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v20, &v31, v35, 16);
+      v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(bindings, v20, &v31, v35, 16);
     }
 
     while (v23);

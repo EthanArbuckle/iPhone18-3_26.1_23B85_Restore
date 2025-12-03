@@ -1,24 +1,24 @@
 @interface IMSPISuggestionsObject
-- (IMSPISuggestionsObject)initWithChatGuid:(id)a3 displayName:(id)a4 participants:(id)a5;
+- (IMSPISuggestionsObject)initWithChatGuid:(id)guid displayName:(id)name participants:(id)participants;
 - (id)description;
 @end
 
 @implementation IMSPISuggestionsObject
 
-- (IMSPISuggestionsObject)initWithChatGuid:(id)a3 displayName:(id)a4 participants:(id)a5
+- (IMSPISuggestionsObject)initWithChatGuid:(id)guid displayName:(id)name participants:(id)participants
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  guidCopy = guid;
+  nameCopy = name;
+  participantsCopy = participants;
   v15.receiver = self;
   v15.super_class = IMSPISuggestionsObject;
   v12 = [(IMSPISuggestionsObject *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_chatGUID, a3);
-    objc_storeStrong(&v13->_displayName, a4);
-    objc_storeStrong(&v13->_participants, a5);
+    objc_storeStrong(&v12->_chatGUID, guid);
+    objc_storeStrong(&v13->_displayName, name);
+    objc_storeStrong(&v13->_participants, participants);
   }
 
   return v13;

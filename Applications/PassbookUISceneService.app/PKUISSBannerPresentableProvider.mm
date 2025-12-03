@@ -1,20 +1,20 @@
 @interface PKUISSBannerPresentableProvider
-- (BOOL)shouldRevokeCurrentRequestForManager:(id)a3;
-- (id)nextRequestForManager:(id)a3;
+- (BOOL)shouldRevokeCurrentRequestForManager:(id)manager;
+- (id)nextRequestForManager:(id)manager;
 @end
 
 @implementation PKUISSBannerPresentableProvider
 
-- (BOOL)shouldRevokeCurrentRequestForManager:(id)a3
+- (BOOL)shouldRevokeCurrentRequestForManager:(id)manager
 {
-  v4 = [a3 _currentRequest];
-  v5 = v4;
-  if (v4)
+  _currentRequest = [manager _currentRequest];
+  v5 = _currentRequest;
+  if (_currentRequest)
   {
-    v6 = [v4 context];
-    if (v6)
+    context = [_currentRequest context];
+    if (context)
     {
-      v7 = v6[7];
+      v7 = context[7];
       if (self->_requestedExpressHandle)
       {
         v8 = v7 != 0;
@@ -50,9 +50,9 @@
   return v8;
 }
 
-- (id)nextRequestForManager:(id)a3
+- (id)nextRequestForManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   while (1)
   {
     requestedExpressHandle = self->_requestedExpressHandle;
@@ -70,7 +70,7 @@
       v34 = v7;
       v10 = v9;
       v35 = v10;
-      v11 = v7;
+      firstObject = v7;
       v12 = objc_retainBlock(v33);
 
       v13 = &v34;
@@ -94,24 +94,24 @@ LABEL_8:
       v31 = v15;
       v10 = v16;
       v32 = v10;
-      v11 = v15;
+      firstObject = v15;
       v12 = objc_retainBlock(v30);
 
       v13 = &v31;
       goto LABEL_8;
     }
 
-    v11 = [(NSMutableArray *)self->_standaloneTransactonHandles firstObject];
-    if (v11)
+    firstObject = [(NSMutableArray *)self->_standaloneTransactonHandles firstObject];
+    if (firstObject)
     {
       [(NSMutableArray *)self->_standaloneTransactonHandles removeObjectAtIndex:0];
-      v10 = sub_1000038C4([PKUISSPresentableContext alloc], v11);
+      v10 = sub_1000038C4([PKUISSPresentableContext alloc], firstObject);
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100004588;
       v28[3] = &unk_10000C4E8;
-      v11 = v11;
-      v29 = v11;
+      firstObject = firstObject;
+      v29 = firstObject;
       v12 = objc_retainBlock(v28);
       v13 = &v29;
       goto LABEL_8;
@@ -142,7 +142,7 @@ LABEL_9:
     v20 = v19;
     v25 = v20;
     [v18 setDidFinishHandler:v24];
-    v21 = [v5 _createPresentableWithConfiguration:v18];
+    v21 = [managerCopy _createPresentableWithConfiguration:v18];
     if (v21)
     {
       v22 = PKLogFacilityTypeGetObject();

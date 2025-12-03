@@ -2,7 +2,7 @@
 - (void)_configureBackgroundViewIfNecessary;
 - (void)_layoutBackgroundView;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation NCNotificationSummaryOnboardingButton
@@ -26,8 +26,8 @@
     self->_backgroundView = v4;
 
     v6 = self->_backgroundView;
-    v7 = [MEMORY[0x277D75348] systemBlackColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(UIView *)v6 setBackgroundColor:systemBlackColor];
 
     [(UIView *)self->_backgroundView setAlpha:0.25];
     [(UIView *)self->_backgroundView setUserInteractionEnabled:0];
@@ -49,12 +49,12 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v6.receiver = self;
   v6.super_class = NCNotificationSummaryOnboardingButton;
   [(NCNotificationSummaryOnboardingButton *)&v6 setHighlighted:?];
-  if (a3)
+  if (highlighted)
   {
     [(UIView *)self->_backgroundView setAlpha:0.1];
   }

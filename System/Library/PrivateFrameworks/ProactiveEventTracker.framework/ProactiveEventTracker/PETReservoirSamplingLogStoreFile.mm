@@ -1,11 +1,11 @@
 @interface PETReservoirSamplingLogStoreFile
-- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)headerMap:(unint64_t *)a3;
-- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)remap:(unint64_t *)a3;
-- (BOOL)appendData:(id)a3 andReturnMapPointer:(id *)a4;
+- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)headerMap:(unint64_t *)map;
+- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)remap:(unint64_t *)remap;
+- (BOOL)appendData:(id)data andReturnMapPointer:(id *)pointer;
 - (BOOL)attemptToRecreate;
-- (BOOL)changeLength:(unint64_t)a3;
+- (BOOL)changeLength:(unint64_t)length;
 - (BOOL)lock;
-- (PETReservoirSamplingLogStoreFile)initWithPath:(id)a3;
+- (PETReservoirSamplingLogStoreFile)initWithPath:(id)path;
 - (unint64_t)currentLength;
 - (void)_unmap;
 - (void)dealloc;
@@ -89,22 +89,22 @@
     goto LABEL_8;
   }
 
-  v6 = [v4 path];
-  v7 = [v6 fileSystemRepresentation];
-  v8 = [(NSString *)self->_path fileSystemRepresentation];
-  rename(v7, v8, v9);
-  LODWORD(v7) = v10;
+  path = [v4 path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
+  fileSystemRepresentation2 = [(NSString *)self->_path fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v9);
+  LODWORD(fileSystemRepresentation) = v10;
 
-  if (v7)
+  if (fileSystemRepresentation)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v16 = [(NSString *)self->_path fileSystemRepresentation];
+      fileSystemRepresentation3 = [(NSString *)self->_path fileSystemRepresentation];
       v17 = *__error();
       v18 = __error();
       v19 = strerror(*v18);
       *buf = 136315650;
-      v23 = v16;
+      v23 = fileSystemRepresentation3;
       v24 = 1024;
       *v25 = v17;
       v25[2] = 2080;
@@ -112,8 +112,8 @@
       _os_log_error_impl(&dword_1DF726000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Could not overwrite %s: [%i] %s", buf, 0x1Cu);
     }
 
-    v11 = [v4 path];
-    unlink([v11 fileSystemRepresentation]);
+    path2 = [v4 path];
+    unlink([path2 fileSystemRepresentation]);
 
     close([v4 fd]);
 LABEL_8:
@@ -137,10 +137,10 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)appendData:(id)a3 andReturnMapPointer:(id *)a4
+- (BOOL)appendData:(id)data andReturnMapPointer:(id *)pointer
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   if (lseek(self->_fd, 0, 2) == -1)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -162,8 +162,8 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  v7 = write(self->_fd, [v6 bytes], objc_msgSend(v6, "length"));
-  if (v7 == [v6 length])
+  v7 = write(self->_fd, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
+  if (v7 == [dataCopy length])
   {
     v8 = 1;
     goto LABEL_8;
@@ -191,19 +191,19 @@ LABEL_8:
     [(PETReservoirSamplingLogStoreFile *)self remap:0];
   }
 
-  if (a4)
+  if (pointer)
   {
-    *a4 = self->_ptr;
+    *pointer = self->_ptr;
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v8;
 }
 
-- (BOOL)changeLength:(unint64_t)a3
+- (BOOL)changeLength:(unint64_t)length
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = ftruncate(self->_fd, a3);
+  v3 = ftruncate(self->_fd, length);
   if (v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v6 = *__error();
@@ -221,29 +221,29 @@ LABEL_8:
   return result;
 }
 
-- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)headerMap:(unint64_t *)a3
+- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)headerMap:(unint64_t *)map
 {
   result = self->_ptr;
   if (!result)
   {
-    return [(PETReservoirSamplingLogStoreFile *)self remap:a3];
+    return [(PETReservoirSamplingLogStoreFile *)self remap:map];
   }
 
-  if (a3)
+  if (map)
   {
-    *a3 = self->_mapLen;
+    *map = self->_mapLen;
   }
 
   return result;
 }
 
-- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)remap:(unint64_t *)a3
+- ($BC5B52E09B2B7D90AC3928E0EFF6AC05)remap:(unint64_t *)remap
 {
   v14 = *MEMORY[0x1E69E9840];
   [(PETReservoirSamplingLogStoreFile *)self _unmap];
-  v5 = [(PETReservoirSamplingLogStoreFile *)self currentLength];
-  self->_mapLen = v5;
-  result = mmap(0, v5, 3, 1, self->_fd, 0);
+  currentLength = [(PETReservoirSamplingLogStoreFile *)self currentLength];
+  self->_mapLen = currentLength;
+  result = mmap(0, currentLength, 3, 1, self->_fd, 0);
   if (result == -1)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -262,9 +262,9 @@ LABEL_8:
   }
 
   self->_ptr = result;
-  if (a3)
+  if (remap)
   {
-    *a3 = self->_mapLen;
+    *remap = self->_mapLen;
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -298,14 +298,14 @@ LABEL_8:
   [(PETReservoirSamplingLogStoreFile *)&v4 dealloc];
 }
 
-- (PETReservoirSamplingLogStoreFile)initWithPath:(id)a3
+- (PETReservoirSamplingLogStoreFile)initWithPath:(id)path
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = PETReservoirSamplingLogStoreFile;
   v5 = [(PETReservoirSamplingLogStoreFile *)&v15 init];
-  if (v5 && (v6 = [v4 copy], path = v5->_path, v5->_path = v6, path, v8 = open(objc_msgSend(v4, "fileSystemRepresentation"), 514, 384), v5->_fd = v8, v8 < 0))
+  if (v5 && (v6 = [pathCopy copy], path = v5->_path, v5->_path = v6, path, v8 = open(objc_msgSend(pathCopy, "fileSystemRepresentation"), 514, 384), v5->_fd = v8, v8 < 0))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -313,7 +313,7 @@ LABEL_8:
       v13 = __error();
       v14 = strerror(*v13);
       *buf = 138412802;
-      v17 = v4;
+      v17 = pathCopy;
       v18 = 1024;
       v19 = v12;
       v20 = 2080;

@@ -1,14 +1,14 @@
 @interface ICQPreferencesRemoteUIDelegateBorderedButton
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation ICQPreferencesRemoteUIDelegateBorderedButton
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v14.receiver = self;
   v14.super_class = ICQPreferencesRemoteUIDelegateBorderedButton;
-  [(ICQPreferencesRemoteUIDelegateBorderedButton *)&v14 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ICQPreferencesRemoteUIDelegateBorderedButton *)&v14 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(ICQPreferencesRemoteUIDelegateBorderedButton *)self bounds];
   v5 = v4;
   v7 = v6;

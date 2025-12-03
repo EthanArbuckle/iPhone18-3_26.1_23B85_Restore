@@ -1,37 +1,37 @@
 @interface SFUIPeopleSuggestionImageProvider
-- (BOOL)_fetchNoAppTransportImageForIdentifier:(id)a3;
+- (BOOL)_fetchNoAppTransportImageForIdentifier:(id)identifier;
 - (CGSize)targetSize;
-- (SFUIPeopleSuggestionImageProvider)initWithTargetSize:(CGSize)a3 layoutDirection:(unint64_t)a4;
-- (SFUIPeopleSuggestionImageProvider)initWithTargetSize:(CGSize)a3 layoutDirection:(unint64_t)a4 userInterfaceStyle:(int64_t)a5;
+- (SFUIPeopleSuggestionImageProvider)initWithTargetSize:(CGSize)size layoutDirection:(unint64_t)direction;
+- (SFUIPeopleSuggestionImageProvider)initWithTargetSize:(CGSize)size layoutDirection:(unint64_t)direction userInterfaceStyle:(int64_t)style;
 - (UIImage)placeholderImage;
-- (int)requestAvatarImageForPeopleSuggestion:(id)a3 resultHandler:(id)a4;
-- (int)requestTransportImageForPeopleSuggestion:(id)a3 resultHandler:(id)a4;
-- (void)_deliverIconImage:(id)a3 identifier:(id)a4 isUTI:(BOOL)a5 error:(id)a6;
-- (void)_fetchAvatarImageForPeopleSuggestion:(id)a3;
-- (void)_fetchTransportImageForPeopleSuggestion:(id)a3;
+- (int)requestAvatarImageForPeopleSuggestion:(id)suggestion resultHandler:(id)handler;
+- (int)requestTransportImageForPeopleSuggestion:(id)suggestion resultHandler:(id)handler;
+- (void)_deliverIconImage:(id)image identifier:(id)identifier isUTI:(BOOL)i error:(id)error;
+- (void)_fetchAvatarImageForPeopleSuggestion:(id)suggestion;
+- (void)_fetchTransportImageForPeopleSuggestion:(id)suggestion;
 - (void)_processPlaceholderImage;
-- (void)performImageRequest:(id)a3;
-- (void)updateTargetSize:(CGSize)a3;
-- (void)updateUserInterfaceStyle:(int64_t)a3;
+- (void)performImageRequest:(id)request;
+- (void)updateTargetSize:(CGSize)size;
+- (void)updateUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation SFUIPeopleSuggestionImageProvider
 
-- (SFUIPeopleSuggestionImageProvider)initWithTargetSize:(CGSize)a3 layoutDirection:(unint64_t)a4
+- (SFUIPeopleSuggestionImageProvider)initWithTargetSize:(CGSize)size layoutDirection:(unint64_t)direction
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v9 = [v8 traitCollection];
-  v10 = -[SFUIPeopleSuggestionImageProvider initWithTargetSize:layoutDirection:userInterfaceStyle:](self, "initWithTargetSize:layoutDirection:userInterfaceStyle:", a4, [v9 userInterfaceStyle], width, height);
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v10 = -[SFUIPeopleSuggestionImageProvider initWithTargetSize:layoutDirection:userInterfaceStyle:](self, "initWithTargetSize:layoutDirection:userInterfaceStyle:", direction, [traitCollection userInterfaceStyle], width, height);
 
   return v10;
 }
 
-- (SFUIPeopleSuggestionImageProvider)initWithTargetSize:(CGSize)a3 layoutDirection:(unint64_t)a4 userInterfaceStyle:(int64_t)a5
+- (SFUIPeopleSuggestionImageProvider)initWithTargetSize:(CGSize)size layoutDirection:(unint64_t)direction userInterfaceStyle:(int64_t)style
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v20.receiver = self;
   v20.super_class = SFUIPeopleSuggestionImageProvider;
   v9 = [(SFUIImageProvider *)&v20 init];
@@ -40,8 +40,8 @@
   {
     v9->_targetSize.width = width;
     v9->_targetSize.height = height;
-    v9->_layoutDirection = a4;
-    v9->_userInterfaceStyle = a5;
+    v9->_layoutDirection = direction;
+    v9->_userInterfaceStyle = style;
     v11 = +[SFUIAvatarImageRenderer avatarImageRender];
     imageRenderer = v10->_imageRenderer;
     v10->_imageRenderer = v11;
@@ -65,13 +65,13 @@
 
 - (void)_processPlaceholderImage
 {
-  v3 = [(SFUIPeopleSuggestionImageProvider *)self placeholderImageQueue];
-  dispatch_assert_queue_V2(v3);
+  placeholderImageQueue = [(SFUIPeopleSuggestionImageProvider *)self placeholderImageQueue];
+  dispatch_assert_queue_V2(placeholderImageQueue);
 
   avatarImageScale();
-  v6 = [(SFUIPeopleSuggestionImageProvider *)self imageRenderer];
+  imageRenderer = [(SFUIPeopleSuggestionImageProvider *)self imageRenderer];
   [(SFUIPeopleSuggestionImageProvider *)self targetSize];
-  v4 = [v6 placeholderImageForSize:? scale:?];
+  v4 = [imageRenderer placeholderImageForSize:? scale:?];
   processedPlaceholderImage = self->_processedPlaceholderImage;
   self->_processedPlaceholderImage = v4;
 }
@@ -87,14 +87,14 @@
   v3 = v9[5];
   if (!v3)
   {
-    v4 = [(SFUIPeopleSuggestionImageProvider *)self placeholderImageQueue];
+    placeholderImageQueue = [(SFUIPeopleSuggestionImageProvider *)self placeholderImageQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __53__SFUIPeopleSuggestionImageProvider_placeholderImage__block_invoke;
     v7[3] = &unk_1E7EE45A8;
     v7[4] = self;
     v7[5] = &v8;
-    dispatch_sync(v4, v7);
+    dispatch_sync(placeholderImageQueue, v7);
 
     objc_storeStrong(&self->_placeholderImage, v9[5]);
     v3 = v9[5];
@@ -114,10 +114,10 @@ void __53__SFUIPeopleSuggestionImageProvider_placeholderImage__block_invoke(uint
   *(v3 + 40) = v2;
 }
 
-- (int)requestAvatarImageForPeopleSuggestion:(id)a3 resultHandler:(id)a4
+- (int)requestAvatarImageForPeopleSuggestion:(id)suggestion resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v8 = people_ui_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -125,9 +125,9 @@ void __53__SFUIPeopleSuggestionImageProvider_placeholderImage__block_invoke(uint
     [SFUIPeopleSuggestionImageProvider requestAvatarImageForPeopleSuggestion:resultHandler:];
   }
 
-  v9 = [v6 identifier];
-  v10 = [(SFUIImageProvider *)self imageCache];
-  v11 = [v10 objectForKey:v9];
+  identifier = [suggestionCopy identifier];
+  imageCache = [(SFUIImageProvider *)self imageCache];
+  v11 = [imageCache objectForKey:identifier];
 
   if (v11)
   {
@@ -137,34 +137,34 @@ void __53__SFUIPeopleSuggestionImageProvider_placeholderImage__block_invoke(uint
       [SFUIPeopleSuggestionImageProvider requestAvatarImageForPeopleSuggestion:resultHandler:];
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, v11, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, v11, 0, 0);
     }
 
-    LODWORD(v13) = 0;
+    LODWORD(nextRequestID) = 0;
   }
 
   else
   {
-    if (v7)
+    if (handlerCopy)
     {
-      v14 = [(SFUIPeopleSuggestionImageProvider *)self placeholderImage];
-      (*(v7 + 2))(v7, v14, 1, 0);
+      placeholderImage = [(SFUIPeopleSuggestionImageProvider *)self placeholderImage];
+      (*(handlerCopy + 2))(handlerCopy, placeholderImage, 1, 0);
     }
 
-    v13 = [(SFUIImageProvider *)self nextRequestID];
-    v15 = [[SFUIPeopleSuggestionImageRequest alloc] initWithRequestID:v13 peopleSuggestion:v6 type:0 resultHandler:v7];
+    nextRequestID = [(SFUIImageProvider *)self nextRequestID];
+    v15 = [[SFUIPeopleSuggestionImageRequest alloc] initWithRequestID:nextRequestID peopleSuggestion:suggestionCopy type:0 resultHandler:handlerCopy];
     [(SFUIImageProvider *)self scheduleImageRequest:v15];
   }
 
-  return v13;
+  return nextRequestID;
 }
 
-- (int)requestTransportImageForPeopleSuggestion:(id)a3 resultHandler:(id)a4
+- (int)requestTransportImageForPeopleSuggestion:(id)suggestion resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v8 = people_ui_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -172,9 +172,9 @@ void __53__SFUIPeopleSuggestionImageProvider_placeholderImage__block_invoke(uint
     [SFUIPeopleSuggestionImageProvider requestTransportImageForPeopleSuggestion:resultHandler:];
   }
 
-  v9 = [v6 transportBundleIdentifier];
-  v10 = [(SFUIImageProvider *)self imageCache];
-  v11 = [v10 objectForKey:v9];
+  transportBundleIdentifier = [suggestionCopy transportBundleIdentifier];
+  imageCache = [(SFUIImageProvider *)self imageCache];
+  v11 = [imageCache objectForKey:transportBundleIdentifier];
 
   if (v11)
   {
@@ -184,97 +184,97 @@ void __53__SFUIPeopleSuggestionImageProvider_placeholderImage__block_invoke(uint
       [SFUIPeopleSuggestionImageProvider requestAvatarImageForPeopleSuggestion:resultHandler:];
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, v11, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, v11, 0, 0);
     }
 
-    LODWORD(v13) = 0;
+    LODWORD(nextRequestID) = 0;
   }
 
   else
   {
-    v13 = [(SFUIImageProvider *)self nextRequestID];
-    v14 = [[SFUIPeopleSuggestionImageRequest alloc] initWithRequestID:v13 peopleSuggestion:v6 type:1 resultHandler:v7];
+    nextRequestID = [(SFUIImageProvider *)self nextRequestID];
+    v14 = [[SFUIPeopleSuggestionImageRequest alloc] initWithRequestID:nextRequestID peopleSuggestion:suggestionCopy type:1 resultHandler:handlerCopy];
     [(SFUIImageProvider *)self scheduleImageRequest:v14];
   }
 
-  return v13;
+  return nextRequestID;
 }
 
-- (void)updateTargetSize:(CGSize)a3
+- (void)updateTargetSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SFUIPeopleSuggestionImageProvider *)self targetSize];
   if (v7 != width || v6 != height)
   {
     self->_targetSize.width = width;
     self->_targetSize.height = height;
-    v9 = [(SFUIImageProvider *)self imageCache];
-    [v9 removeAllObjects];
+    imageCache = [(SFUIImageProvider *)self imageCache];
+    [imageCache removeAllObjects];
   }
 }
 
-- (void)updateUserInterfaceStyle:(int64_t)a3
+- (void)updateUserInterfaceStyle:(int64_t)style
 {
-  if ([(SFUIPeopleSuggestionImageProvider *)self userInterfaceStyle]!= a3)
+  if ([(SFUIPeopleSuggestionImageProvider *)self userInterfaceStyle]!= style)
   {
-    self->_userInterfaceStyle = a3;
-    v5 = [(SFUIImageProvider *)self imageCache];
-    [v5 removeAllObjects];
+    self->_userInterfaceStyle = style;
+    imageCache = [(SFUIImageProvider *)self imageCache];
+    [imageCache removeAllObjects];
   }
 }
 
-- (void)performImageRequest:(id)a3
+- (void)performImageRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(SFUIPeopleSuggestionImageProvider *)a2 performImageRequest:?];
   }
 
-  v8 = v5;
-  v6 = [v8 peopleSuggestion];
-  v7 = [v8 type];
-  if (v7 == 1)
+  v8 = requestCopy;
+  peopleSuggestion = [v8 peopleSuggestion];
+  type = [v8 type];
+  if (type == 1)
   {
-    [(SFUIPeopleSuggestionImageProvider *)self _fetchTransportImageForPeopleSuggestion:v6];
+    [(SFUIPeopleSuggestionImageProvider *)self _fetchTransportImageForPeopleSuggestion:peopleSuggestion];
   }
 
-  else if (!v7)
+  else if (!type)
   {
-    [(SFUIPeopleSuggestionImageProvider *)self _fetchAvatarImageForPeopleSuggestion:v6];
+    [(SFUIPeopleSuggestionImageProvider *)self _fetchAvatarImageForPeopleSuggestion:peopleSuggestion];
   }
 }
 
-- (void)_fetchAvatarImageForPeopleSuggestion:(id)a3
+- (void)_fetchAvatarImageForPeopleSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   dispatch_assert_queue_not_V2(MEMORY[0x1E69E96A0]);
-  v5 = [v4 donatedImage];
+  donatedImage = [suggestionCopy donatedImage];
 
-  if (v5)
+  if (donatedImage)
   {
-    v6 = [v4 donatedImage];
+    donatedImage2 = [suggestionCopy donatedImage];
     v7 = sharing_ui_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       [SFUIPeopleSuggestionImageProvider _fetchAvatarImageForPeopleSuggestion:];
     }
 
-    v8 = [v6 _imageData];
-    if (v8)
+    _imageData = [donatedImage2 _imageData];
+    if (_imageData)
     {
-      v9 = v8;
+      v9 = _imageData;
     }
 
     else
     {
-      v15 = [getINImageServiceConnectionClass() sharedConnection];
+      sharedConnection = [getINImageServiceConnectionClass() sharedConnection];
       v34 = 0;
-      v9 = [v15 loadDataImageFromImage:v6 scaledSize:&v34 error:getINImageDefaultScaledSize()];
+      v9 = [sharedConnection loadDataImageFromImage:donatedImage2 scaledSize:&v34 error:getINImageDefaultScaledSize()];
       v11 = v34;
 
       if (v11)
@@ -285,22 +285,22 @@ void __53__SFUIPeopleSuggestionImageProvider_placeholderImage__block_invoke(uint
           [SFUIPeopleSuggestionImageProvider _fetchAvatarImageForPeopleSuggestion:];
         }
 
-        v10 = 0;
+        _imageData2 = 0;
         goto LABEL_13;
       }
 
-      v10 = [v9 _imageData];
+      _imageData2 = [v9 _imageData];
 
-      if (!v10)
+      if (!_imageData2)
       {
         v11 = 0;
         goto LABEL_14;
       }
 
-      v9 = v10;
+      v9 = _imageData2;
     }
 
-    v10 = [MEMORY[0x1E69DCAB8] imageWithData:v9];
+    _imageData2 = [MEMORY[0x1E69DCAB8] imageWithData:v9];
     v11 = 0;
 LABEL_13:
 
@@ -308,13 +308,13 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v12 = [v4 deviceModelIdentifier];
-  v13 = [v12 length];
+  deviceModelIdentifier = [suggestionCopy deviceModelIdentifier];
+  v13 = [deviceModelIdentifier length];
 
   if (v13)
   {
-    v14 = [v4 deviceModelIdentifier];
-    v10 = [_TtC9SharingUI22SFUIDeviceIconProvider deviceImageWithModelIdentifier:v14];
+    deviceModelIdentifier2 = [suggestionCopy deviceModelIdentifier];
+    _imageData2 = [_TtC9SharingUI22SFUIDeviceIconProvider deviceImageWithModelIdentifier:deviceModelIdentifier2];
   }
 
   else
@@ -326,15 +326,15 @@ LABEL_14:
     }
 
     v18 = [(SFUIPeopleSuggestionImageProvider *)self layoutDirection]== 1;
-    v19 = [MEMORY[0x1E69DC938] currentDevice];
-    v20 = 4 * ([v19 userInterfaceIdiom] == 4);
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v20 = 4 * ([currentDevice userInterfaceIdiom] == 4);
 
     avatarImageScale();
     [(SFUIPeopleSuggestionImageProvider *)self targetSize];
     v21 = [SFUIAvatarImageRenderingScope scopeWithPointSize:"scopeWithPointSize:scale:rightToLeft:style:backgroundStyle:" scale:v18 rightToLeft:1 style:v20 backgroundStyle:?];
-    v22 = [(SFUIPeopleSuggestionImageProvider *)self imageRenderer];
-    v23 = [v4 contacts];
-    v10 = [v22 avatarImageForContacts:v23 scope:v21];
+    imageRenderer = [(SFUIPeopleSuggestionImageProvider *)self imageRenderer];
+    contacts = [suggestionCopy contacts];
+    _imageData2 = [imageRenderer avatarImageForContacts:contacts scope:v21];
   }
 
   v11 = 0;
@@ -345,12 +345,12 @@ LABEL_19:
   v28[2] = __74__SFUIPeopleSuggestionImageProvider__fetchAvatarImageForPeopleSuggestion___block_invoke;
   v28[3] = &unk_1E7EE45D0;
   objc_copyWeak(&v32, &location);
-  v29 = v10;
-  v30 = v4;
+  v29 = _imageData2;
+  v30 = suggestionCopy;
   v31 = v11;
   v24 = v11;
-  v25 = v4;
-  v26 = v10;
+  v25 = suggestionCopy;
+  v26 = _imageData2;
   v27 = MEMORY[0x1E69E96A0];
   dispatch_async(MEMORY[0x1E69E96A0], v28);
 
@@ -366,19 +366,19 @@ void __74__SFUIPeopleSuggestionImageProvider__fetchAvatarImageForPeopleSuggestio
   [WeakRetained deliverImage:v2 identifier:v3 placeholder:0 error:*(a1 + 48)];
 }
 
-- (void)_fetchTransportImageForPeopleSuggestion:(id)a3
+- (void)_fetchTransportImageForPeopleSuggestion:(id)suggestion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionCopy = suggestion;
   dispatch_assert_queue_not_V2(MEMORY[0x1E69E96A0]);
-  v5 = [v4 transportBundleIdentifier];
+  transportBundleIdentifier = [suggestionCopy transportBundleIdentifier];
 
-  if ([(SFUIPeopleSuggestionImageProvider *)self _fetchNoAppTransportImageForIdentifier:v5])
+  if ([(SFUIPeopleSuggestionImageProvider *)self _fetchNoAppTransportImageForIdentifier:transportBundleIdentifier])
   {
     goto LABEL_26;
   }
 
-  v6 = v5;
+  v6 = transportBundleIdentifier;
   if (([(__CFString *)v6 hasPrefix:@"com.apple.InCallService"]& 1) != 0)
   {
     v7 = 0;
@@ -392,10 +392,10 @@ LABEL_10:
   if ([(__CFString *)v6 isEqualToString:*MEMORY[0x1E69CDA78]])
   {
     v9 = objc_alloc_init(MEMORY[0x1E69CDA00]);
-    v10 = [(__CFString *)v9 _bundleIdentifierForActivityImageCreation];
+    _bundleIdentifierForActivityImageCreation = [(__CFString *)v9 _bundleIdentifierForActivityImageCreation];
 
-    v7 = v10 == 0;
-    if (v10)
+    v7 = _bundleIdentifierForActivityImageCreation == 0;
+    if (_bundleIdentifierForActivityImageCreation)
     {
       [(__CFString *)v9 _bundleIdentifierForActivityImageCreation];
     }
@@ -476,22 +476,22 @@ LABEL_11:
 LABEL_26:
 }
 
-- (BOOL)_fetchNoAppTransportImageForIdentifier:(id)a3
+- (BOOL)_fetchNoAppTransportImageForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.telephonyutilities.callservicesd"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.telephonyutilities.callservicesd"])
   {
     v5 = objc_alloc_init(MEMORY[0x1E69CDA38]);
     [v5 setUserInterfaceStyle:{-[SFUIPeopleSuggestionImageProvider userInterfaceStyle](self, "userInterfaceStyle")}];
-    v6 = [v5 activityImage];
+    activityImage = [v5 activityImage];
   }
 
   else
   {
-    v6 = 0;
+    activityImage = 0;
   }
 
-  v7 = [SFUIActivityImageProvider tintImage:v6 withDescriptorName:*MEMORY[0x1E69A8A78] userInterfaceStyle:[(SFUIPeopleSuggestionImageProvider *)self userInterfaceStyle]];
+  v7 = [SFUIActivityImageProvider tintImage:activityImage withDescriptorName:*MEMORY[0x1E69A8A78] userInterfaceStyle:[(SFUIPeopleSuggestionImageProvider *)self userInterfaceStyle]];
 
   if (v7)
   {
@@ -502,7 +502,7 @@ LABEL_26:
     v9[3] = &unk_1E7EE4428;
     objc_copyWeak(&v12, &location);
     v10 = v7;
-    v11 = v4;
+    v11 = identifierCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v9);
 
     objc_destroyWeak(&v12);
@@ -518,14 +518,14 @@ void __76__SFUIPeopleSuggestionImageProvider__fetchNoAppTransportImageForIdentif
   [WeakRetained deliverImage:*(a1 + 32) identifier:*(a1 + 40) placeholder:0 error:0];
 }
 
-- (void)_deliverIconImage:(id)a3 identifier:(id)a4 isUTI:(BOOL)a5 error:(id)a6
+- (void)_deliverIconImage:(id)image identifier:(id)identifier isUTI:(BOOL)i error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
+  imageCopy = image;
+  identifierCopy = identifier;
   v10 = MEMORY[0x1E69DCAB8];
-  v11 = [v8 CGImage];
-  [v8 scale];
-  v12 = [v10 imageWithCGImage:v11 scale:0 orientation:?];
+  cGImage = [imageCopy CGImage];
+  [imageCopy scale];
+  v12 = [v10 imageWithCGImage:cGImage scale:0 orientation:?];
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -533,10 +533,10 @@ void __76__SFUIPeopleSuggestionImageProvider__fetchNoAppTransportImageForIdentif
   block[3] = &unk_1E7EE45D0;
   objc_copyWeak(&v20, &location);
   v17 = v12;
-  v18 = v9;
-  v19 = v8;
-  v13 = v8;
-  v14 = v9;
+  v18 = identifierCopy;
+  v19 = imageCopy;
+  v13 = imageCopy;
+  v14 = identifierCopy;
   v15 = v12;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 

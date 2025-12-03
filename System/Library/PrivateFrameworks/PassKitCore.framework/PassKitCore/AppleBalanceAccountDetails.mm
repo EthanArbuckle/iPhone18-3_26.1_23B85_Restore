@@ -1,22 +1,22 @@
 @interface AppleBalanceAccountDetails
-+ (id)_commonDictionaryForAppleBalanceAccountDetails:(id)a3;
-+ (id)_predicateForAccountPID:(int64_t)a3;
++ (id)_commonDictionaryForAppleBalanceAccountDetails:(id)details;
++ (id)_predicateForAccountPID:(int64_t)d;
 + (id)_propertySettersForAppleBalanceAccountDetails;
-+ (id)accountDetailsForAccountPID:(int64_t)a3 inDatabase:(id)a4;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)insertOrUpdateAccountDetails:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (void)deleteAccountDetailsForAccountPID:(int64_t)a3 inDatabase:(id)a4;
-- (AppleBalanceAccountDetails)initWithAccountDetails:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5;
++ (id)accountDetailsForAccountPID:(int64_t)d inDatabase:(id)database;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)insertOrUpdateAccountDetails:(id)details forAccountPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteAccountDetailsForAccountPID:(int64_t)d inDatabase:(id)database;
+- (AppleBalanceAccountDetails)initWithAccountDetails:(id)details forAccountPID:(int64_t)d inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
 - (id)accountDetails;
-- (void)updateWitDetails:(id)a3;
+- (void)updateWitDetails:(id)details;
 @end
 
 @implementation AppleBalanceAccountDetails
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"a";
   }
@@ -27,78 +27,78 @@
   }
 }
 
-- (AppleBalanceAccountDetails)initWithAccountDetails:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5
+- (AppleBalanceAccountDetails)initWithAccountDetails:(id)details forAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [a3 appleBalanceDetails];
-  v10 = [objc_opt_class() _commonDictionaryForAppleBalanceAccountDetails:v9];
-  v11 = [NSNumber numberWithLongLong:a4];
+  databaseCopy = database;
+  appleBalanceDetails = [details appleBalanceDetails];
+  v10 = [objc_opt_class() _commonDictionaryForAppleBalanceAccountDetails:appleBalanceDetails];
+  v11 = [NSNumber numberWithLongLong:d];
   [v10 setObjectOrNull:v11 forKey:@"a"];
 
-  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v8];
-  v13 = [(SQLiteEntity *)v12 persistentID];
-  v14 = [v9 accountSummary];
-  v15 = [AppleBalanceAccountSummary insertAppleBalanceAccountSummary:v14 forAppleBalanceAccountDetailsPID:v13 inDatabase:v8];
+  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
+  persistentID = [(SQLiteEntity *)v12 persistentID];
+  accountSummary = [appleBalanceDetails accountSummary];
+  v15 = [AppleBalanceAccountSummary insertAppleBalanceAccountSummary:accountSummary forAppleBalanceAccountDetailsPID:persistentID inDatabase:databaseCopy];
 
   return v12;
 }
 
-+ (id)insertOrUpdateAccountDetails:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertOrUpdateAccountDetails:(id)details forAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _predicateForAccountPID:a4];
-  v11 = [a1 anyInDatabase:v9 predicate:v10];
+  detailsCopy = details;
+  databaseCopy = database;
+  v10 = [self _predicateForAccountPID:d];
+  v11 = [self anyInDatabase:databaseCopy predicate:v10];
 
   if (v11)
   {
-    [v11 updateWitDetails:v8];
+    [v11 updateWitDetails:detailsCopy];
   }
 
   else
   {
-    v11 = [objc_alloc(objc_opt_class()) initWithAccountDetails:v8 forAccountPID:a4 inDatabase:v9];
+    v11 = [objc_alloc(objc_opt_class()) initWithAccountDetails:detailsCopy forAccountPID:d inDatabase:databaseCopy];
   }
 
   return v11;
 }
 
-+ (void)deleteAccountDetailsForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteAccountDetailsForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   [v8 deleteFromDatabase];
 }
 
 - (BOOL)deleteFromDatabase
 {
-  v2 = self;
-  v3 = [(SQLiteEntity *)self persistentID];
-  v4 = [(SQLiteEntity *)v2 database];
-  [AppleBalanceAccountSummary deleteAppleBalanceAccountSummaryForAppleBalanceAccountDetailsPID:v3 inDatabase:v4];
-  v6.receiver = v2;
+  selfCopy = self;
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)selfCopy database];
+  [AppleBalanceAccountSummary deleteAppleBalanceAccountSummaryForAppleBalanceAccountDetailsPID:persistentID inDatabase:database];
+  v6.receiver = selfCopy;
   v6.super_class = AppleBalanceAccountDetails;
-  LOBYTE(v2) = [(SQLiteEntity *)&v6 deleteFromDatabase];
+  LOBYTE(selfCopy) = [(SQLiteEntity *)&v6 deleteFromDatabase];
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)accountDetailsForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (id)accountDetailsForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 accountDetails];
+  accountDetails = [v8 accountDetails];
 
-  return v9;
+  return accountDetails;
 }
 
-+ (id)_predicateForAccountPID:(int64_t)a3
++ (id)_predicateForAccountPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;
@@ -130,22 +130,22 @@
 - (id)accountDetails
 {
   v3 = objc_alloc_init(PKAppleBalanceAccountDetails);
-  v4 = [objc_opt_class() _propertySettersForAppleBalanceAccountDetails];
-  v5 = [v4 allKeys];
+  _propertySettersForAppleBalanceAccountDetails = [objc_opt_class() _propertySettersForAppleBalanceAccountDetails];
+  allKeys = [_propertySettersForAppleBalanceAccountDetails allKeys];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100104B04;
   v13[3] = &unk_10083BEE0;
   v13[4] = self;
-  v14 = v4;
+  v14 = _propertySettersForAppleBalanceAccountDetails;
   v15 = v3;
   v6 = v3;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v13];
+  v7 = _propertySettersForAppleBalanceAccountDetails;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v13];
 
-  v8 = [(SQLiteEntity *)self persistentID];
-  v9 = [(SQLiteEntity *)self database];
-  v10 = [AppleBalanceAccountSummary appleBalanceAccountSummaryForAppleBalanceAccountDetailsPID:v8 inDatabase:v9];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  v10 = [AppleBalanceAccountSummary appleBalanceAccountSummaryForAppleBalanceAccountDetailsPID:persistentID inDatabase:database];
   [v6 setAccountSummary:v10];
 
   v11 = [[PKAccountDetails alloc] initWithAppleBalanceDetails:v6];
@@ -153,48 +153,48 @@
   return v11;
 }
 
-+ (id)_commonDictionaryForAppleBalanceAccountDetails:(id)a3
++ (id)_commonDictionaryForAppleBalanceAccountDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 createdDate];
+  createdDate = [detailsCopy createdDate];
   v6 = _SQLValueForDate();
   [v4 setObjectOrNull:v6 forKey:@"c"];
 
-  v7 = [v3 lastUpdatedDate];
+  lastUpdatedDate = [detailsCopy lastUpdatedDate];
   v8 = _SQLValueForDate();
   [v4 setObjectOrNull:v8 forKey:@"b"];
 
-  v9 = [v3 currencyCode];
-  [v4 setObjectOrNull:v9 forKey:@"e"];
+  currencyCode = [detailsCopy currencyCode];
+  [v4 setObjectOrNull:currencyCode forKey:@"e"];
 
-  v10 = [v3 countryCode];
-  [v4 setObjectOrNull:v10 forKey:@"f"];
+  countryCode = [detailsCopy countryCode];
+  [v4 setObjectOrNull:countryCode forKey:@"f"];
 
-  v11 = [v3 fpanIdentifier];
-  [v4 setObjectOrNull:v11 forKey:@"g"];
+  fpanIdentifier = [detailsCopy fpanIdentifier];
+  [v4 setObjectOrNull:fpanIdentifier forKey:@"g"];
 
-  v12 = [v3 associatedPassSerialNumber];
-  [v4 setObjectOrNull:v12 forKey:@"h"];
+  associatedPassSerialNumber = [detailsCopy associatedPassSerialNumber];
+  [v4 setObjectOrNull:associatedPassSerialNumber forKey:@"h"];
 
-  v13 = [v3 associatedPassTypeIdentifier];
-  [v4 setObjectOrNull:v13 forKey:@"i"];
+  associatedPassTypeIdentifier = [detailsCopy associatedPassTypeIdentifier];
+  [v4 setObjectOrNull:associatedPassTypeIdentifier forKey:@"i"];
 
-  v14 = [v3 cardType];
-  v15 = [NSNumber numberWithInteger:v14];
+  cardType = [detailsCopy cardType];
+  v15 = [NSNumber numberWithInteger:cardType];
   [v4 setObjectOrNull:v15 forKey:@"j"];
 
   return v4;
 }
 
-- (void)updateWitDetails:(id)a3
+- (void)updateWitDetails:(id)details
 {
-  v8 = [a3 appleBalanceDetails];
-  v4 = [objc_opt_class() _commonDictionaryForAppleBalanceAccountDetails:v8];
-  v5 = [(SQLiteEntity *)self persistentID];
-  v6 = [(SQLiteEntity *)self database];
-  v7 = [v8 accountSummary];
-  [AppleBalanceAccountSummary updateAppleBalanceAccountSummary:v7 forAppleBalanceAccountDetailsPID:v5 inDatabase:v6];
+  appleBalanceDetails = [details appleBalanceDetails];
+  v4 = [objc_opt_class() _commonDictionaryForAppleBalanceAccountDetails:appleBalanceDetails];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  accountSummary = [appleBalanceDetails accountSummary];
+  [AppleBalanceAccountSummary updateAppleBalanceAccountSummary:accountSummary forAppleBalanceAccountDetailsPID:persistentID inDatabase:database];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v4];
 }

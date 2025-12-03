@@ -1,10 +1,10 @@
 @interface PXContentSyndicationConfigurationProvider
-+ (PXContentSyndicationConfigurationProvider)contentSyndicationConfigurationProviderWithPhotoLibrary:(id)a3;
++ (PXContentSyndicationConfigurationProvider)contentSyndicationConfigurationProviderWithPhotoLibrary:(id)library;
 + (PXContentSyndicationConfigurationProvider)deprecated_sharedInstance;
-+ (void)preloadResourcesForPhotoLibrary:(id)a3;
++ (void)preloadResourcesForPhotoLibrary:(id)library;
 - (PXContentSyndicationConfigurationProvider)init;
-- (PXContentSyndicationConfigurationProvider)initWithPhotoLibrary:(id)a3;
-- (id)_dataSourceManagerForDataSourceType:(int64_t)a3;
+- (PXContentSyndicationConfigurationProvider)initWithPhotoLibrary:(id)library;
+- (id)_dataSourceManagerForDataSourceType:(int64_t)type;
 - (void)_createDataSourceManagerIfNeeded;
 - (void)_initializeSocialHighlightCenter;
 - (void)_invalidateDataSourceManager;
@@ -16,15 +16,15 @@
 - (void)_updateShowUnsavedSyndicatedContentInFeaturedPhotos;
 - (void)_updateShowUnsavedSyndicatedContentInMemories;
 - (void)_updateShowUnsavedSyndicatedContentInPhotosGrids;
-- (void)contentSyndicationHighlightCenterDidChange:(id)a3;
+- (void)contentSyndicationHighlightCenterDidChange:(id)change;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setContentSyndicationIsAvailable:(BOOL)a3;
-- (void)setShowUnsavedSyndicatedContentInFeaturedPhotos:(BOOL)a3;
-- (void)setShowUnsavedSyndicatedContentInMemories:(BOOL)a3;
-- (void)setShowUnsavedSyndicatedContentInPhotosGrids:(BOOL)a3;
-- (void)setTestingOverride_contentSyndicationEnabled:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setContentSyndicationIsAvailable:(BOOL)available;
+- (void)setShowUnsavedSyndicatedContentInFeaturedPhotos:(BOOL)photos;
+- (void)setShowUnsavedSyndicatedContentInMemories:(BOOL)memories;
+- (void)setShowUnsavedSyndicatedContentInPhotosGrids:(BOOL)grids;
+- (void)setTestingOverride_contentSyndicationEnabled:(id)enabled;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PXContentSyndicationConfigurationProvider
@@ -55,8 +55,8 @@ uint64_t __62__PXContentSyndicationConfigurationProvider__updateEverything__bloc
 - (void)_updateContentSyndicationAvailability
 {
   photoLibrary = self->_photoLibrary;
-  v4 = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
-  isContentSyndicationAvailable = _isContentSyndicationAvailable(photoLibrary, v4);
+  testingOverride_contentSyndicationEnabled = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
+  isContentSyndicationAvailable = _isContentSyndicationAvailable(photoLibrary, testingOverride_contentSyndicationEnabled);
 
   [(PXContentSyndicationConfigurationProvider *)self setContentSyndicationIsAvailable:isContentSyndicationAvailable];
 }
@@ -64,12 +64,12 @@ uint64_t __62__PXContentSyndicationConfigurationProvider__updateEverything__bloc
 - (void)_updateDataSourceType
 {
   v3 = +[PXContentSyndicationSettings sharedInstance];
-  v4 = [v3 dataSourceType];
+  dataSourceType = [v3 dataSourceType];
 
-  if (v4 != [(PXContentSyndicationConfigurationProvider *)self dataSourceType])
+  if (dataSourceType != [(PXContentSyndicationConfigurationProvider *)self dataSourceType])
   {
     [(PXContentSyndicationConfigurationProvider *)self _invalidateDataSourceManager];
-    [(PXContentSyndicationConfigurationProvider *)self setDataSourceType:v4];
+    [(PXContentSyndicationConfigurationProvider *)self setDataSourceType:dataSourceType];
 
     [(PXContentSyndicationConfigurationProvider *)self _createDataSourceManagerIfNeeded];
   }
@@ -78,11 +78,11 @@ uint64_t __62__PXContentSyndicationConfigurationProvider__updateEverything__bloc
 - (void)_createDataSourceManagerIfNeeded
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
+  syndicationItemsDataSourceManager = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
 
-  if (!v3)
+  if (!syndicationItemsDataSourceManager)
   {
-    v4 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
+    syndicationItemsDataSourceManager2 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
     if ([(PXContentSyndicationConfigurationProvider *)self readyToLoadActualDataSourceManager])
     {
       v5 = [(PXContentSyndicationConfigurationProvider *)self _dataSourceManagerForDataSourceType:[(PXContentSyndicationConfigurationProvider *)self dataSourceType]];
@@ -103,11 +103,11 @@ uint64_t __62__PXContentSyndicationConfigurationProvider__updateEverything__bloc
     v7 = v5;
     [(PXContentSyndicationConfigurationProvider *)self setSyndicationItemsDataSourceManager:v5];
 
-    v8 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
-    [v8 registerChangeObserver:self context:PXContentSyndicationConfigurationProviderDataSourceObservationContext];
+    syndicationItemsDataSourceManager3 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
+    [syndicationItemsDataSourceManager3 registerChangeObserver:self context:PXContentSyndicationConfigurationProviderDataSourceObservationContext];
 
     v9 = objc_opt_class();
-    v10 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
+    syndicationItemsDataSourceManager4 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
     v11 = objc_opt_class();
 
     if (v9 != v11)
@@ -117,7 +117,7 @@ uint64_t __62__PXContentSyndicationConfigurationProvider__updateEverything__bloc
       {
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
-        v15 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
+        syndicationItemsDataSourceManager5 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
         v18 = 138543618;
@@ -135,26 +135,26 @@ uint64_t __62__PXContentSyndicationConfigurationProvider__updateEverything__bloc
 - (void)_updateShowUnsavedSyndicatedContentInPhotosGrids
 {
   photoLibrary = self->_photoLibrary;
-  v4 = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
-  if (_isContentSyndicationAvailable(photoLibrary, v4))
+  testingOverride_contentSyndicationEnabled = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
+  if (_isContentSyndicationAvailable(photoLibrary, testingOverride_contentSyndicationEnabled))
   {
     v5 = +[PXContentSyndicationSettings sharedInstance];
-    v6 = [v5 showSyndicatedContentInLibrary];
+    showSyndicatedContentInLibrary = [v5 showSyndicatedContentInLibrary];
   }
 
   else
   {
-    v6 = 0;
+    showSyndicatedContentInLibrary = 0;
   }
 
-  [(PXContentSyndicationConfigurationProvider *)self setShowUnsavedSyndicatedContentInPhotosGrids:v6];
+  [(PXContentSyndicationConfigurationProvider *)self setShowUnsavedSyndicatedContentInPhotosGrids:showSyndicatedContentInLibrary];
 }
 
 - (void)_updateShowUnsavedSyndicatedContentInMemories
 {
   photoLibrary = self->_photoLibrary;
-  v4 = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
-  isContentSyndicationAvailable = _isContentSyndicationAvailable(photoLibrary, v4);
+  testingOverride_contentSyndicationEnabled = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
+  isContentSyndicationAvailable = _isContentSyndicationAvailable(photoLibrary, testingOverride_contentSyndicationEnabled);
 
   [(PXContentSyndicationConfigurationProvider *)self setShowUnsavedSyndicatedContentInMemories:isContentSyndicationAvailable];
 }
@@ -162,8 +162,8 @@ uint64_t __62__PXContentSyndicationConfigurationProvider__updateEverything__bloc
 - (void)_updateShowUnsavedSyndicatedContentInFeaturedPhotos
 {
   photoLibrary = self->_photoLibrary;
-  v4 = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
-  isContentSyndicationAvailable = _isContentSyndicationAvailable(photoLibrary, v4);
+  testingOverride_contentSyndicationEnabled = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
+  isContentSyndicationAvailable = _isContentSyndicationAvailable(photoLibrary, testingOverride_contentSyndicationEnabled);
 
   [(PXContentSyndicationConfigurationProvider *)self setShowUnsavedSyndicatedContentInFeaturedPhotos:isContentSyndicationAvailable];
 }
@@ -210,19 +210,19 @@ uint64_t __80__PXContentSyndicationConfigurationProvider__markDataSourceManagerA
 
 - (void)_invalidateDataSourceManager
 {
-  v3 = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
-  [v3 unregisterChangeObserver:self context:PXContentSyndicationConfigurationProviderDataSourceObservationContext];
+  syndicationItemsDataSourceManager = [(PXContentSyndicationConfigurationProvider *)self syndicationItemsDataSourceManager];
+  [syndicationItemsDataSourceManager unregisterChangeObserver:self context:PXContentSyndicationConfigurationProviderDataSourceObservationContext];
 
   [(PXContentSyndicationConfigurationProvider *)self setSyndicationItemsDataSourceManager:0];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXContentSyndicationConfigurationProviderDataSourceObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXContentSyndicationConfigurationProviderDataSourceObservationContext == context)
   {
-    if (v6)
+    if (changeCopy)
     {
       v10 = v15;
       v15[0] = MEMORY[0x1E69E9820];
@@ -234,15 +234,15 @@ uint64_t __80__PXContentSyndicationConfigurationProvider__markDataSourceManagerA
 
   else
   {
-    if (PXLibraryFilterStateObservationContext_202006 != a5)
+    if (PXLibraryFilterStateObservationContext_202006 != context)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationConfigurationProvider.m" lineNumber:611 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationConfigurationProvider.m" lineNumber:611 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if (v6)
+    if (changeCopy)
     {
       v10 = &v13;
       v13 = MEMORY[0x1E69E9820];
@@ -257,7 +257,7 @@ LABEL_7:
   }
 }
 
-- (void)contentSyndicationHighlightCenterDidChange:(id)a3
+- (void)contentSyndicationHighlightCenterDidChange:(id)change
 {
   v4 = PLSyndicationUIGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -269,38 +269,38 @@ LABEL_7:
   [(PXContentSyndicationConfigurationProvider *)self _updateEverything];
 }
 
-- (void)setShowUnsavedSyndicatedContentInFeaturedPhotos:(BOOL)a3
+- (void)setShowUnsavedSyndicatedContentInFeaturedPhotos:(BOOL)photos
 {
-  if (self->_showUnsavedSyndicatedContentInFeaturedPhotos != a3)
+  if (self->_showUnsavedSyndicatedContentInFeaturedPhotos != photos)
   {
-    self->_showUnsavedSyndicatedContentInFeaturedPhotos = a3;
+    self->_showUnsavedSyndicatedContentInFeaturedPhotos = photos;
     [(PXContentSyndicationConfigurationProvider *)self signalChange:16];
   }
 }
 
-- (void)setShowUnsavedSyndicatedContentInMemories:(BOOL)a3
+- (void)setShowUnsavedSyndicatedContentInMemories:(BOOL)memories
 {
-  if (self->_showUnsavedSyndicatedContentInMemories != a3)
+  if (self->_showUnsavedSyndicatedContentInMemories != memories)
   {
-    self->_showUnsavedSyndicatedContentInMemories = a3;
+    self->_showUnsavedSyndicatedContentInMemories = memories;
     [(PXContentSyndicationConfigurationProvider *)self signalChange:8];
   }
 }
 
-- (void)setShowUnsavedSyndicatedContentInPhotosGrids:(BOOL)a3
+- (void)setShowUnsavedSyndicatedContentInPhotosGrids:(BOOL)grids
 {
-  if (self->_showUnsavedSyndicatedContentInPhotosGrids != a3)
+  if (self->_showUnsavedSyndicatedContentInPhotosGrids != grids)
   {
-    self->_showUnsavedSyndicatedContentInPhotosGrids = a3;
+    self->_showUnsavedSyndicatedContentInPhotosGrids = grids;
     [(PXContentSyndicationConfigurationProvider *)self signalChange:4];
   }
 }
 
-- (id)_dataSourceManagerForDataSourceType:(int64_t)a3
+- (id)_dataSourceManagerForDataSourceType:(int64_t)type
 {
   photoLibrary = self->_photoLibrary;
-  v6 = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
-  LODWORD(photoLibrary) = _isContentSyndicationAvailable(photoLibrary, v6);
+  testingOverride_contentSyndicationEnabled = [(PXContentSyndicationConfigurationProvider *)self testingOverride_contentSyndicationEnabled];
+  LODWORD(photoLibrary) = _isContentSyndicationAvailable(photoLibrary, testingOverride_contentSyndicationEnabled);
 
   if (!photoLibrary)
   {
@@ -322,7 +322,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 > 6)
+  if (type > 6)
   {
 LABEL_18:
     v13 = PLSyndicationUIGetLog();
@@ -339,23 +339,23 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  if (((1 << a3) & 0xE) != 0)
+  if (((1 << type) & 0xE) != 0)
   {
     v18 = PXContentSyndicationMockSingleAssetsDataSourceManager;
     goto LABEL_17;
   }
 
-  if (((1 << a3) & 0x31) == 0)
+  if (((1 << type) & 0x31) == 0)
   {
     v18 = PXContentSyndicationMockCMMDataSourceManager;
     goto LABEL_17;
   }
 
-  v7 = [(PXContentSyndicationConfigurationProvider *)self syndicationPhotoLibrary];
+  syndicationPhotoLibrary = [(PXContentSyndicationConfigurationProvider *)self syndicationPhotoLibrary];
 
   v8 = PLSyndicationUIGetLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (!v7)
+  if (!syndicationPhotoLibrary)
   {
     if (v9)
     {
@@ -381,8 +381,8 @@ LABEL_17:
   }
 
   v10 = [PXContentSyndicationPhotoKitDataSourceManager alloc];
-  v11 = [(PXContentSyndicationConfigurationProvider *)self syndicationPhotoLibrary];
-  v12 = [(PXContentSyndicationPhotoKitDataSourceManager *)v10 initWithPhotoLibrary:v11];
+  syndicationPhotoLibrary2 = [(PXContentSyndicationConfigurationProvider *)self syndicationPhotoLibrary];
+  v12 = [(PXContentSyndicationPhotoKitDataSourceManager *)v10 initWithPhotoLibrary:syndicationPhotoLibrary2];
 
   if (!v12)
   {
@@ -394,12 +394,12 @@ LABEL_22:
   return v12;
 }
 
-- (void)setContentSyndicationIsAvailable:(BOOL)a3
+- (void)setContentSyndicationIsAvailable:(BOOL)available
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_contentSyndicationIsAvailable != a3)
+  if (self->_contentSyndicationIsAvailable != available)
   {
-    self->_contentSyndicationIsAvailable = a3;
+    self->_contentSyndicationIsAvailable = available;
     v4 = PLSyndicationUIGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -424,17 +424,17 @@ LABEL_22:
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = NSStringFromSelector(sel_contentSyndicationEnabled);
-  if ([v5 isEqualToString:v6])
+  if ([keyCopy isEqualToString:v6])
   {
     goto LABEL_6;
   }
 
   v7 = NSStringFromSelector(sel_showSyndicatedContentInLibrary);
-  if ([v5 isEqualToString:v7])
+  if ([keyCopy isEqualToString:v7])
   {
 LABEL_5:
 
@@ -443,19 +443,19 @@ LABEL_6:
   }
 
   v8 = NSStringFromSelector(sel_ignoreSocialLayerEnablement);
-  if ([v5 isEqualToString:v8])
+  if ([keyCopy isEqualToString:v8])
   {
 
     goto LABEL_5;
   }
 
   v9 = NSStringFromSelector(sel_showContentSyndicationInSystemPhotoLibraryOnly);
-  v10 = [v5 isEqualToString:v9];
+  v10 = [keyCopy isEqualToString:v9];
 
   if ((v10 & 1) == 0)
   {
     v11 = NSStringFromSelector(sel_dataSourceType);
-    v12 = [v5 isEqualToString:v11];
+    v12 = [keyCopy isEqualToString:v11];
 
     if (v12)
     {
@@ -463,14 +463,14 @@ LABEL_6:
       v22 = 3221225472;
       v23 = __73__PXContentSyndicationConfigurationProvider_settings_changedValueForKey___block_invoke;
       v24 = &unk_1E774C5F8;
-      v25 = self;
+      selfCopy = self;
       v13 = &v21;
     }
 
     else
     {
       v14 = NSStringFromSelector(sel_showSidebarItemEvenIfNoSyndicatedContentAvailable);
-      v15 = [v5 isEqualToString:v14];
+      v15 = [keyCopy isEqualToString:v14];
 
       if (!v15)
       {
@@ -481,11 +481,11 @@ LABEL_6:
       v17 = 3221225472;
       v18 = __73__PXContentSyndicationConfigurationProvider_settings_changedValueForKey___block_invoke_2;
       v19 = &unk_1E774C5F8;
-      v20 = self;
+      selfCopy2 = self;
       v13 = &v16;
     }
 
-    [(PXContentSyndicationConfigurationProvider *)self performChanges:v13, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25];
+    [(PXContentSyndicationConfigurationProvider *)self performChanges:v13, v16, v17, v18, v19, selfCopy2, v21, v22, v23, v24, selfCopy];
     goto LABEL_8;
   }
 
@@ -523,13 +523,13 @@ uint64_t __73__PXContentSyndicationConfigurationProvider_settings_changedValueFo
   [(PXContentSyndicationConfigurationProvider *)&v4 dealloc];
 }
 
-- (PXContentSyndicationConfigurationProvider)initWithPhotoLibrary:(id)a3
+- (PXContentSyndicationConfigurationProvider)initWithPhotoLibrary:(id)library
 {
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationConfigurationProvider.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationConfigurationProvider.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v27.receiver = self;
@@ -538,7 +538,7 @@ uint64_t __73__PXContentSyndicationConfigurationProvider_settings_changedValueFo
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_photoLibrary, a3);
+    objc_storeStrong(&v7->_photoLibrary, library);
     v9 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v8->_photoLibrary];
     v10 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:v9];
     libraryFilterState = v8->_libraryFilterState;
@@ -549,13 +549,13 @@ uint64_t __73__PXContentSyndicationConfigurationProvider_settings_changedValueFo
     if (_isContentSyndicationPossible())
     {
       objc_initWeak(location, v8);
-      v13 = [off_1E7721858 sharedScheduler];
+      sharedScheduler = [off_1E7721858 sharedScheduler];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __66__PXContentSyndicationConfigurationProvider_initWithPhotoLibrary___block_invoke;
       v24[3] = &unk_1E774C318;
       objc_copyWeak(&v25, location);
-      [v13 scheduleTaskWithQoS:1 block:v24];
+      [sharedScheduler scheduleTaskWithQoS:1 block:v24];
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(location);
@@ -577,16 +577,16 @@ uint64_t __73__PXContentSyndicationConfigurationProvider_settings_changedValueFo
         _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_DEFAULT, "ContentSyndicationConfiguration: Beginning delayed load of real data source manager. Loading syndication photo library in background thread.", location, 2u);
       }
 
-      v15 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v16 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __66__PXContentSyndicationConfigurationProvider_initWithPhotoLibrary___block_invoke_207;
       block[3] = &unk_1E774A1B8;
       v21 = v8;
-      v22 = v6;
-      v23 = v15;
-      v17 = v15;
+      v22 = libraryCopy;
+      v23 = date;
+      v17 = date;
       dispatch_async(v16, block);
     }
 
@@ -708,18 +708,18 @@ void __66__PXContentSyndicationConfigurationProvider_initWithPhotoLibrary___bloc
 
 - (PXContentSyndicationConfigurationProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationConfigurationProvider.m" lineNumber:207 description:{@"%s is not available as initializer", "-[PXContentSyndicationConfigurationProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationConfigurationProvider.m" lineNumber:207 description:{@"%s is not available as initializer", "-[PXContentSyndicationConfigurationProvider init]"}];
 
   abort();
 }
 
-- (void)setTestingOverride_contentSyndicationEnabled:(id)a3
+- (void)setTestingOverride_contentSyndicationEnabled:(id)enabled
 {
-  v8 = a3;
+  enabledCopy = enabled;
   v5 = self->_testingOverride_contentSyndicationEnabled;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == enabledCopy)
   {
   }
 
@@ -729,35 +729,35 @@ void __66__PXContentSyndicationConfigurationProvider_initWithPhotoLibrary___bloc
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_testingOverride_contentSyndicationEnabled, a3);
+      objc_storeStrong(&self->_testingOverride_contentSyndicationEnabled, enabled);
       [(PXContentSyndicationConfigurationProvider *)self _updateEverything];
     }
   }
 }
 
-+ (PXContentSyndicationConfigurationProvider)contentSyndicationConfigurationProviderWithPhotoLibrary:(id)a3
++ (PXContentSyndicationConfigurationProvider)contentSyndicationConfigurationProviderWithPhotoLibrary:(id)library
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:]"];
-    [v12 handleFailureInFunction:v13 file:@"PXContentSyndicationConfigurationProvider.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    [currentHandler handleFailureInFunction:v13 file:@"PXContentSyndicationConfigurationProvider.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   os_unfair_lock_lock(&contentSyndicationConfigurationProviderWithPhotoLibrary___statusProvidersMapTableLock);
   v4 = contentSyndicationConfigurationProviderWithPhotoLibrary___statusProvidersMapTable;
   if (!contentSyndicationConfigurationProviderWithPhotoLibrary___statusProvidersMapTable)
   {
-    v5 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v6 = contentSyndicationConfigurationProviderWithPhotoLibrary___statusProvidersMapTable;
-    contentSyndicationConfigurationProviderWithPhotoLibrary___statusProvidersMapTable = v5;
+    contentSyndicationConfigurationProviderWithPhotoLibrary___statusProvidersMapTable = weakToWeakObjectsMapTable;
 
     v4 = contentSyndicationConfigurationProviderWithPhotoLibrary___statusProvidersMapTable;
   }
 
-  v7 = [v4 objectForKey:v3];
+  v7 = [v4 objectForKey:libraryCopy];
   if (v7)
   {
     v8 = v7;
@@ -768,7 +768,7 @@ void __66__PXContentSyndicationConfigurationProvider_initWithPhotoLibrary___bloc
     }
 
     *buf = 138412546;
-    v15 = v3;
+    v15 = libraryCopy;
     v16 = 2048;
     v17 = v8;
     v10 = "%@ Reusing existing content syndication configuration provider: %p";
@@ -776,8 +776,8 @@ void __66__PXContentSyndicationConfigurationProvider_initWithPhotoLibrary___bloc
 
   else
   {
-    v8 = [[PXContentSyndicationConfigurationProvider alloc] initWithPhotoLibrary:v3];
-    [contentSyndicationConfigurationProviderWithPhotoLibrary___statusProvidersMapTable setObject:v8 forKey:v3];
+    v8 = [[PXContentSyndicationConfigurationProvider alloc] initWithPhotoLibrary:libraryCopy];
+    [contentSyndicationConfigurationProviderWithPhotoLibrary___statusProvidersMapTable setObject:v8 forKey:libraryCopy];
     v9 = PLSyndicationUIGetLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -785,7 +785,7 @@ void __66__PXContentSyndicationConfigurationProvider_initWithPhotoLibrary___bloc
     }
 
     *buf = 138412546;
-    v15 = v3;
+    v15 = libraryCopy;
     v16 = 2048;
     v17 = v8;
     v10 = "%@ Creating new content syndication configuration provider: %p";
@@ -799,12 +799,12 @@ LABEL_11:
   return v8;
 }
 
-+ (void)preloadResourcesForPhotoLibrary:(id)a3
++ (void)preloadResourcesForPhotoLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   if (_isContentSyndicationPossible())
   {
-    _isContentSyndicationAvailable(v3, 0);
+    _isContentSyndicationAvailable(libraryCopy, 0);
   }
 }
 

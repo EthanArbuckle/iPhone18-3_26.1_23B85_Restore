@@ -1,36 +1,36 @@
 @interface PIInpaintPlaceholderNode
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_evaluateImageProperties:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_evaluateImageProperties:(id *)properties;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIInpaintPlaceholderNode
 
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data
 {
-  if (a3 == 2 || a3 == 7)
+  if (data == 2 || data == 7)
   {
     return 0;
   }
 
-  v5 = [(PIInpaintPlaceholderNode *)self inputNode];
-  v6 = [v5 canPropagateOriginalAuxiliaryData:a3];
+  inputNode = [(PIInpaintPlaceholderNode *)self inputNode];
+  v6 = [inputNode canPropagateOriginalAuxiliaryData:data];
 
   return v6;
 }
 
-- (id)_evaluateImageProperties:(id *)a3
+- (id)_evaluateImageProperties:(id *)properties
 {
   v16.receiver = self;
   v16.super_class = PIInpaintPlaceholderNode;
-  v3 = [(NURenderNode *)&v16 _evaluateImageProperties:a3];
+  v3 = [(NURenderNode *)&v16 _evaluateImageProperties:properties];
   if (v3)
   {
     v4 = v3;
     v5 = [objc_alloc(MEMORY[0x1E69B3D60]) initWithProperties:v3];
-    v6 = [v5 metadata];
-    v7 = [v6 mutableCopy];
+    metadata = [v5 metadata];
+    v7 = [metadata mutableCopy];
 
     v8 = *MEMORY[0x1E696DD90];
     v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696DD90]];
@@ -64,12 +64,12 @@
   return v5;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v28 = NUAssertLogger_16994();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -91,8 +91,8 @@
         v36 = dispatch_get_specific(*v30);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v44 = v36;
         v45 = 2114;
@@ -103,8 +103,8 @@
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v35;
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -113,26 +113,26 @@
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  if ([v9 evaluationMode] == 1 && -[PIInpaintPlaceholderNode _needsInpaintWithAuxImageType:](self, "_needsInpaintWithAuxImageType:", objc_msgSend(v10, "auxiliaryImageType")))
+  v10 = stateCopy;
+  if ([stateCopy evaluationMode] == 1 && -[PIInpaintPlaceholderNode _needsInpaintWithAuxImageType:](self, "_needsInpaintWithAuxImageType:", objc_msgSend(v10, "auxiliaryImageType")))
   {
-    if ([PIObjectRemoval loadAndRegisterInpaintModel:a5]&& [PIObjectRemoval loadAndRegisterRefinementModel:a5])
+    if ([PIObjectRemoval loadAndRegisterInpaintModel:error]&& [PIObjectRemoval loadAndRegisterRefinementModel:error])
     {
       v11 = [PIInpaintCacheNode alloc];
-      v12 = [(NURenderNode *)self inputs];
-      v13 = [(NURenderNode *)self settings];
-      v14 = [(PIInpaintCacheNode *)v11 initWithInputs:v12 settings:v13];
+      inputs = [(NURenderNode *)self inputs];
+      settings = [(NURenderNode *)self settings];
+      v14 = [(PIInpaintCacheNode *)v11 initWithInputs:inputs settings:settings];
 
       v15 = [PIInpaintSubsampleCacheNode alloc];
-      v16 = [(NURenderNode *)self settings];
-      v17 = [(NUCacheNode *)v15 initWithInput:v14 settings:v16];
+      settings2 = [(NURenderNode *)self settings];
+      v17 = [(NUCacheNode *)v15 initWithInput:v14 settings:settings2];
 
       if ([v10 auxiliaryImageType] != 1)
       {
         v18 = [PIInpaintAuxiliaryImageNode alloc];
-        v19 = [(NURenderNode *)self inputs];
-        v20 = [(NURenderNode *)self settings];
-        v21 = [(PIInpaintAuxiliaryImageNode *)v18 initWithInputs:v19 retouchNode:v17 settings:v20];
+        inputs2 = [(NURenderNode *)self inputs];
+        settings3 = [(NURenderNode *)self settings];
+        v21 = [(PIInpaintAuxiliaryImageNode *)v18 initWithInputs:inputs2 retouchNode:v17 settings:settings3];
 
         v22 = objc_alloc(MEMORY[0x1E69B3B70]);
         v41 = @"auxiliaryImageType";
@@ -143,7 +143,7 @@
         v17 = [v22 initWithInput:v21 settings:v24];
       }
 
-      v25 = [(PIInpaintSubsampleCacheNode *)v17 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+      v25 = [(PIInpaintSubsampleCacheNode *)v17 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
     }
 
     else
@@ -154,17 +154,17 @@
 
   else
   {
-    v26 = [(PIInpaintPlaceholderNode *)self inputNode];
-    v25 = [v26 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    inputNode = [(PIInpaintPlaceholderNode *)self inputNode];
+    v25 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
   }
 
   return v25;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
-  v4 = [(PIInpaintPlaceholderNode *)self inputNode];
-  v5 = [v4 outputImageGeometry:a3];
+  inputNode = [(PIInpaintPlaceholderNode *)self inputNode];
+  v5 = [inputNode outputImageGeometry:geometry];
 
   return v5;
 }

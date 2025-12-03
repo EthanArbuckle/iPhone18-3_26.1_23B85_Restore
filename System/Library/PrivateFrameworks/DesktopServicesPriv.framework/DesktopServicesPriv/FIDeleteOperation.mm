@@ -1,25 +1,25 @@
 @interface FIDeleteOperation
-- (FIDeleteOperation)initWithSourceItems:(id)a3;
-- (FIDeleteOperation)initWithSourceNodes:(id)a3;
+- (FIDeleteOperation)initWithSourceItems:(id)items;
+- (FIDeleteOperation)initWithSourceNodes:(id)nodes;
 - (id)createFPOperation;
 - (id)makeProgress;
 @end
 
 @implementation FIDeleteOperation
 
-- (FIDeleteOperation)initWithSourceNodes:(id)a3
+- (FIDeleteOperation)initWithSourceNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   v7.receiver = self;
   v7.super_class = FIDeleteOperation;
   v5 = [(FIOperation *)&v7 init];
   [(FIOperation *)v5 setOperationType:5];
-  [(FIOperation *)v5 setSourceNodes:v4];
+  [(FIOperation *)v5 setSourceNodes:nodesCopy];
 
   return v5;
 }
 
-- (FIDeleteOperation)initWithSourceItems:(id)a3
+- (FIDeleteOperation)initWithSourceItems:(id)items
 {
   v5.receiver = self;
   v5.super_class = FIDeleteOperation;
@@ -32,8 +32,8 @@
 {
   [(FIOperation *)self setExecutedAsFPAction:1];
   v3 = objc_alloc(MEMORY[0x1E6967300]);
-  v4 = [(FIOperation *)self sourceFPItems];
-  v5 = [v3 initWithItems:v4];
+  sourceFPItems = [(FIOperation *)self sourceFPItems];
+  v5 = [v3 initWithItems:sourceFPItems];
 
   return v5;
 }
@@ -42,14 +42,14 @@
 {
   v7.receiver = self;
   v7.super_class = FIDeleteOperation;
-  v3 = [(FIOperation *)&v7 makeProgress];
-  [v3 setKind:*MEMORY[0x1E696A888]];
-  [v3 setFileOperationKind:*MEMORY[0x1E696A840]];
-  v4 = [(FIOperation *)self destinationNode];
-  v5 = [v4 fileURL];
-  [v3 setFileURL:v5];
+  makeProgress = [(FIOperation *)&v7 makeProgress];
+  [makeProgress setKind:*MEMORY[0x1E696A888]];
+  [makeProgress setFileOperationKind:*MEMORY[0x1E696A840]];
+  destinationNode = [(FIOperation *)self destinationNode];
+  fileURL = [destinationNode fileURL];
+  [makeProgress setFileURL:fileURL];
 
-  return v3;
+  return makeProgress;
 }
 
 @end

@@ -1,51 +1,51 @@
 @interface DDSMAAsset
-- (BOOL)isEqual:(id)a3;
-- (DDSMAAsset)initWithMAAsset:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DDSMAAsset)initWithMAAsset:(id)asset;
 @end
 
 @implementation DDSMAAsset
 
-- (DDSMAAsset)initWithMAAsset:(id)a3
+- (DDSMAAsset)initWithMAAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 attributes];
-  v7 = [v6 mutableCopy];
+  assetCopy = asset;
+  attributes = [assetCopy attributes];
+  v7 = [attributes mutableCopy];
 
-  v8 = [v7 objectForKey:@"AssetType"];
-  if (!v8)
+  assetType2 = [v7 objectForKey:@"AssetType"];
+  if (!assetType2)
   {
-    v9 = [v5 assetType];
+    assetType = [assetCopy assetType];
 
-    if (!v9)
+    if (!assetType)
     {
       goto LABEL_5;
     }
 
-    v8 = [v5 assetType];
-    [v7 setObject:v8 forKey:@"AssetType"];
+    assetType2 = [assetCopy assetType];
+    [v7 setObject:assetType2 forKey:@"AssetType"];
   }
 
 LABEL_5:
-  v10 = [v5 getLocalUrl];
+  getLocalUrl = [assetCopy getLocalUrl];
   v13.receiver = self;
   v13.super_class = DDSMAAsset;
-  v11 = [(DDSAsset *)&v13 initWithAttributes:v7 localURL:v10];
+  v11 = [(DDSAsset *)&v13 initWithAttributes:v7 localURL:getLocalUrl];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_maAsset, a3);
+    objc_storeStrong(&v11->_maAsset, asset);
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -54,11 +54,11 @@ LABEL_5:
   }
 
   v6 = v5;
-  if (v6 && (v11.receiver = self, v11.super_class = DDSMAAsset, [(DDSAsset *)&v11 isEqual:v4]))
+  if (v6 && (v11.receiver = self, v11.super_class = DDSMAAsset, [(DDSAsset *)&v11 isEqual:equalCopy]))
   {
-    v7 = [(DDSMAAsset *)self maAsset];
-    v8 = [v6 maAsset];
-    v9 = DDSObjectsAreEqualOrNil(v7, v8);
+    maAsset = [(DDSMAAsset *)self maAsset];
+    maAsset2 = [v6 maAsset];
+    v9 = DDSObjectsAreEqualOrNil(maAsset, maAsset2);
   }
 
   else

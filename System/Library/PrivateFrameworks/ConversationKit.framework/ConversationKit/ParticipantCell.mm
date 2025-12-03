@@ -2,7 +2,7 @@
 - (NSString)accessibilityDisplayName;
 - (_TtC15ConversationKit15ParticipantView)participantView;
 - (void)prepareForReuse;
-- (void)setAccessibilityDisplayName:(id)a3;
+- (void)setAccessibilityDisplayName:(id)name;
 @end
 
 @implementation ParticipantCell
@@ -16,7 +16,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantCell.prepareForReuse()();
 }
 
@@ -28,11 +28,11 @@
   return v3;
 }
 
-- (void)setAccessibilityDisplayName:(id)a3
+- (void)setAccessibilityDisplayName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   ParticipantCell.accessibilityDisplayName.setter(v4, v6);
 }
 

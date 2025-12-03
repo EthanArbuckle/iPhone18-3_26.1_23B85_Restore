@@ -10,7 +10,7 @@
 - (id)hs20Networks
 {
   v2 = [MEMORY[0x277CCAC30] predicateWithFormat:@"isHotspot20 == YES"];
-  v3 = [a1 filteredSetUsingPredicate:v2];
+  v3 = [self filteredSetUsingPredicate:v2];
 
   return v3;
 }
@@ -18,25 +18,25 @@
 - (id)scanRecordWithSSID:()WiFiKit
 {
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"ssid == %@", a3];
-  v5 = [a1 filteredSetUsingPredicate:v4];
+  v5 = [self filteredSetUsingPredicate:v4];
 
   if (v5)
   {
-    v6 = [v5 anyObject];
+    anyObject = [v5 anyObject];
   }
 
   else
   {
-    v6 = 0;
+    anyObject = 0;
   }
 
-  return v6;
+  return anyObject;
 }
 
 - (id)hiddenNetworkProfiles
 {
   v2 = [MEMORY[0x277CCAC30] predicateWithFormat:@"isHidden == YES"];
-  v3 = [a1 filteredSetUsingPredicate:v2];
+  v3 = [self filteredSetUsingPredicate:v2];
 
   return v3;
 }
@@ -44,14 +44,14 @@
 - (id)logStringWithScanRecords
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = a1;
-  v3 = [a1 allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  allObjects = [self allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -63,7 +63,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
@@ -71,10 +71,10 @@
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
-          v11 = [v10 ssid];
-          if (v11)
+          ssid = [v10 ssid];
+          if (ssid)
           {
-            v12 = v11;
+            v12 = ssid;
           }
 
           else
@@ -82,11 +82,11 @@
             v12 = @"NULL";
           }
 
-          v13 = [v10 channel];
+          channel = [v10 channel];
 
-          if (v13)
+          if (channel)
           {
-            v14 = v13;
+            v14 = channel;
           }
 
           else
@@ -94,15 +94,15 @@
             v14 = &unk_288304E70;
           }
 
-          [v2 appendFormat:@"%@ (%d)", v12, objc_msgSend(v14, "intValue")];
-          if (++v6 < [v17 count])
+          [string appendFormat:@"%@ (%d)", v12, objc_msgSend(v14, "intValue")];
+          if (++v6 < [selfCopy count])
           {
-            [v2 appendString:{@", "}];
+            [string appendString:{@", "}];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -110,7 +110,7 @@
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return string;
 }
 
 @end

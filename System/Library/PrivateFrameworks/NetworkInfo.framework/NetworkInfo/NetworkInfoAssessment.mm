@@ -1,12 +1,12 @@
 @interface NetworkInfoAssessment
-- (void)runWithCompletionHandler:(id)a3;
+- (void)runWithCompletionHandler:(id)handler;
 @end
 
 @implementation NetworkInfoAssessment
 
-- (void)runWithCompletionHandler:(id)a3
+- (void)runWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   MEMORY[0x277D82BE0](self);
   v3 = swift_allocObject();
   *(v3 + 16) = v4;

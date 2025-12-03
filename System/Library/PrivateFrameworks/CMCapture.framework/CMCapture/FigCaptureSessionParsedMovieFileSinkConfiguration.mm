@@ -1,16 +1,16 @@
 @interface FigCaptureSessionParsedMovieFileSinkConfiguration
 - (FigVideoCaptureConnectionConfiguration)primaryVideoConnectionConfiguration;
 - (void)dealloc;
-- (void)initWithCaptureConnectionConfigurations:(void *)a1 videoConnectionConfigurations:(void *)a2 stillImageConnectionConfiguration:(void *)a3 sceneClassifierConnectionConfigurationsBySourceID:(void *)a4;
+- (void)initWithCaptureConnectionConfigurations:(void *)configurations videoConnectionConfigurations:(void *)connectionConfigurations stillImageConnectionConfiguration:(void *)configuration sceneClassifierConnectionConfigurationsBySourceID:(void *)d;
 @end
 
 @implementation FigCaptureSessionParsedMovieFileSinkConfiguration
 
 - (FigVideoCaptureConnectionConfiguration)primaryVideoConnectionConfiguration
 {
-  v2 = [(NSArray *)self->_videoConnectionConfigurations firstObject];
+  firstObject = [(NSArray *)self->_videoConnectionConfigurations firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (void)dealloc
@@ -20,25 +20,25 @@
   [(FigCaptureSessionParsedMovieFileSinkConfiguration *)&v3 dealloc];
 }
 
-- (void)initWithCaptureConnectionConfigurations:(void *)a1 videoConnectionConfigurations:(void *)a2 stillImageConnectionConfiguration:(void *)a3 sceneClassifierConnectionConfigurationsBySourceID:(void *)a4
+- (void)initWithCaptureConnectionConfigurations:(void *)configurations videoConnectionConfigurations:(void *)connectionConfigurations stillImageConnectionConfiguration:(void *)configuration sceneClassifierConnectionConfigurationsBySourceID:(void *)d
 {
-  if (!a1)
+  if (!configurations)
   {
     return 0;
   }
 
-  v32.receiver = a1;
+  v32.receiver = configurations;
   v32.super_class = FigCaptureSessionParsedMovieFileSinkConfiguration;
   v7 = objc_msgSendSuper2(&v32, sel_init);
   if (v7)
   {
-    v24 = a4;
-    v27 = [MEMORY[0x1E695DF70] array];
-    v8 = a3;
+    dCopy = d;
+    array = [MEMORY[0x1E695DF70] array];
+    configurationCopy = configuration;
     v25 = v7;
-    v7[1] = v8;
+    v7[1] = configurationCopy;
     memset(v31, 0, sizeof(v31));
-    v10 = OUTLINED_FUNCTION_1_0(v8, v9, v31, v30);
+    v10 = OUTLINED_FUNCTION_1_0(configurationCopy, v9, v31, v30);
     if (!v10)
     {
       goto LABEL_23;
@@ -56,12 +56,12 @@ LABEL_5:
       OUTLINED_FUNCTION_6_30();
       if (!v14)
       {
-        objc_enumerationMutation(a2);
+        objc_enumerationMutation(connectionConfigurations);
       }
 
       v15 = *(v31[0].super_class + v13);
-      v16 = [v15 mediaType];
-      if (v16 == 1685091432)
+      mediaType = [v15 mediaType];
+      if (mediaType == 1685091432)
       {
         v18 = v29;
       }
@@ -69,15 +69,15 @@ LABEL_5:
       else
       {
         v18 = v12;
-        if (v16 != 1936684398)
+        if (mediaType != 1936684398)
         {
-          if (v16 != 1835365473)
+          if (mediaType != 1835365473)
           {
             goto LABEL_21;
           }
 
-          v16 = [objc_msgSend(v15 "sourceConfiguration")];
-          if (v16 != 1)
+          mediaType = [objc_msgSend(v15 "sourceConfiguration")];
+          if (mediaType != 1)
           {
             goto LABEL_21;
           }
@@ -98,11 +98,11 @@ LABEL_28:
 
           if (FigMetadataItemConnectionConfigurationRequiresObjectDetection(v15))
           {
-            [v27 addObject:v15];
+            [array addObject:v15];
           }
 
-          v16 = [(__CFArray *)Identifiers containsObject:v28];
-          if (!v16)
+          mediaType = [(__CFArray *)Identifiers containsObject:v28];
+          if (!mediaType)
           {
             goto LABEL_21;
           }
@@ -115,12 +115,12 @@ LABEL_28:
         }
       }
 
-      v16 = v15;
-      *v18 = v16;
+      mediaType = v15;
+      *v18 = mediaType;
 LABEL_21:
       if (v11 == ++v13)
       {
-        v11 = OUTLINED_FUNCTION_1_0(v16, v17, v31, v30);
+        v11 = OUTLINED_FUNCTION_1_0(mediaType, v17, v31, v30);
         if (v11)
         {
           goto LABEL_5;
@@ -128,18 +128,18 @@ LABEL_21:
 
 LABEL_23:
         v7 = v25;
-        v25[6] = v24;
-        v20 = [v27 count];
+        v25[6] = dCopy;
+        v20 = [array count];
         if (v20)
         {
-          v20 = v27;
+          v20 = array;
         }
 
         v25[4] = v20;
         [objc_msgSend(objc_msgSend(v25[1] "firstObject")];
         v21 = [OUTLINED_FUNCTION_4() objectForKeyedSubscript:?];
-        v22 = [v21 underlyingDeviceType];
-        if (v22 == [objc_msgSend(v25[1] "firstObject")])
+        underlyingDeviceType = [v21 underlyingDeviceType];
+        if (underlyingDeviceType == [objc_msgSend(v25[1] "firstObject")])
         {
           v25[7] = v21;
         }

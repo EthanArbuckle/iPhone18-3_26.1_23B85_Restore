@@ -1,9 +1,9 @@
 @interface ASVInlinePreviewFactory
 + (id)shared;
 - (ASVInlinePreviewFactory)init;
-- (void)_getSharedInlineServiceWithCompletionHandler:(id)a3;
-- (void)createFullscreenInstanceWithUUID:(id)a3 initialFrame:(CGRect)a4 previewOptions:(id)a5 completionHandler:(id)a6;
-- (void)getSharedInlineServiceWithCompletionHandler:(id)a3;
+- (void)_getSharedInlineServiceWithCompletionHandler:(id)handler;
+- (void)createFullscreenInstanceWithUUID:(id)d initialFrame:(CGRect)frame previewOptions:(id)options completionHandler:(id)handler;
+- (void)getSharedInlineServiceWithCompletionHandler:(id)handler;
 - (void)handleInterruptionOrInvalidation;
 @end
 
@@ -45,24 +45,24 @@ void __33__ASVInlinePreviewFactory_shared__block_invoke()
   return v2;
 }
 
-- (void)getSharedInlineServiceWithCompletionHandler:(id)a3
+- (void)getSharedInlineServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__ASVInlinePreviewFactory_getSharedInlineServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_278CCB060;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (void)_getSharedInlineServiceWithCompletionHandler:(id)a3
+- (void)_getSharedInlineServiceWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_accessQueue);
   if (self->_extension)
   {
@@ -93,7 +93,7 @@ void __33__ASVInlinePreviewFactory_shared__block_invoke()
 LABEL_2:
     if (self->_sharedInlineService)
     {
-      v5[2](v5, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -105,7 +105,7 @@ LABEL_2:
       v14[3] = &unk_278CCB100;
       v16 = a2;
       v14[4] = self;
-      v15 = v5;
+      v15 = handlerCopy;
       [(NSExtension *)v12 instantiateViewControllerWithInputItems:0 connectionHandler:v14];
     }
 
@@ -128,7 +128,7 @@ LABEL_2:
     _os_log_impl(&dword_241215000, v11, OS_LOG_TYPE_ERROR, "#Inline: Couldn't retrieve extension, error: %@", buf, 0xCu);
   }
 
-  (v5)[2](v5, v10);
+  (handlerCopy)[2](handlerCopy, v10);
 
 LABEL_15:
 }
@@ -294,32 +294,32 @@ uint64_t __72__ASVInlinePreviewFactory__getSharedInlineServiceWithCompletionHand
   return v3();
 }
 
-- (void)createFullscreenInstanceWithUUID:(id)a3 initialFrame:(CGRect)a4 previewOptions:(id)a5 completionHandler:(id)a6
+- (void)createFullscreenInstanceWithUUID:(id)d initialFrame:(CGRect)frame previewOptions:(id)options completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
   extension = self->_extension;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __106__ASVInlinePreviewFactory_createFullscreenInstanceWithUUID_initialFrame_previewOptions_completionHandler___block_invoke;
   v21[3] = &unk_278CCB178;
-  v24 = v16;
+  v24 = handlerCopy;
   v25 = a2;
   v21[4] = self;
-  v22 = v14;
+  v22 = dCopy;
   v26 = x;
   v27 = y;
   v28 = width;
   v29 = height;
-  v23 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v16;
+  v23 = optionsCopy;
+  v18 = optionsCopy;
+  v19 = dCopy;
+  v20 = handlerCopy;
   [(NSExtension *)extension instantiateViewControllerWithInputItems:0 connectionHandler:v21];
 }
 
@@ -415,8 +415,8 @@ void __106__ASVInlinePreviewFactory_createFullscreenInstanceWithUUID_initialFram
   self->_sharedInlineService = 0;
 
   v6 = [MEMORY[0x277CCAB88] notificationWithName:@"ASVConnectionInterrupted" object:0];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotification:v6];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v6];
 }
 
 void __72__ASVInlinePreviewFactory__getSharedInlineServiceWithCompletionHandler___block_invoke_2_cold_1(uint64_t a1, void *a2, void *a3)

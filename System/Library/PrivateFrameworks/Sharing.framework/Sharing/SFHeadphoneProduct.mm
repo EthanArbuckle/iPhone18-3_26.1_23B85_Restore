@@ -25,10 +25,10 @@
 + (SFHeadphoneProduct)powerBeats3;
 + (SFHeadphoneProduct)powerBeats4;
 + (SFHeadphoneProduct)powerBeatsPro;
-- (SFHeadphoneProduct)initWithBluetoothModel:(id)a3;
-- (SFHeadphoneProduct)initWithModel:(unint64_t)a3;
-- (SFHeadphoneProduct)initWithProductID:(unsigned int)a3;
-- (SFHeadphoneProduct)initWithProductID:(unsigned int)a3 supportsMobileAsset:(BOOL)a4;
+- (SFHeadphoneProduct)initWithBluetoothModel:(id)model;
+- (SFHeadphoneProduct)initWithModel:(unint64_t)model;
+- (SFHeadphoneProduct)initWithProductID:(unsigned int)d;
+- (SFHeadphoneProduct)initWithProductID:(unsigned int)d supportsMobileAsset:(BOOL)asset;
 @end
 
 @implementation SFHeadphoneProduct
@@ -225,21 +225,21 @@
   return v3;
 }
 
-- (SFHeadphoneProduct)initWithProductID:(unsigned int)a3 supportsMobileAsset:(BOOL)a4
+- (SFHeadphoneProduct)initWithProductID:(unsigned int)d supportsMobileAsset:(BOOL)asset
 {
   v7.receiver = self;
   v7.super_class = SFHeadphoneProduct;
   result = [(SFHeadphoneProduct *)&v7 init];
-  result->_supportsMobileAsset = a4;
-  result->_productID = a3;
+  result->_supportsMobileAsset = asset;
+  result->_productID = d;
   result->_altProductID = -1;
   return result;
 }
 
-- (SFHeadphoneProduct)initWithModel:(unint64_t)a3
+- (SFHeadphoneProduct)initWithModel:(unint64_t)model
 {
   v4 = 0;
-  switch(a3)
+  switch(model)
   {
     case 1uLL:
       v5 = +[SFHeadphoneProduct airPods];
@@ -325,12 +325,12 @@ LABEL_27:
   return v4;
 }
 
-- (SFHeadphoneProduct)initWithBluetoothModel:(id)a3
+- (SFHeadphoneProduct)initWithBluetoothModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = +[SFHeadphoneProduct b507];
-  v6 = [v5 bluetoothModel];
-  v7 = [v4 isEqualToString:v6];
+  bluetoothModel = [v5 bluetoothModel];
+  v7 = [modelCopy isEqualToString:bluetoothModel];
 
   if (v7)
   {
@@ -340,8 +340,8 @@ LABEL_27:
   else
   {
     v9 = +[SFHeadphoneProduct b688];
-    v10 = [v9 bluetoothModel];
-    v11 = [v4 isEqualToString:v10];
+    bluetoothModel2 = [v9 bluetoothModel];
+    v11 = [modelCopy isEqualToString:bluetoothModel2];
 
     if (v11)
     {
@@ -351,8 +351,8 @@ LABEL_27:
     else
     {
       v12 = +[SFHeadphoneProduct b494];
-      v13 = [v12 bluetoothModel];
-      v14 = [v4 isEqualToString:v13];
+      bluetoothModel3 = [v12 bluetoothModel];
+      v14 = [modelCopy isEqualToString:bluetoothModel3];
 
       if (v14)
       {
@@ -362,8 +362,8 @@ LABEL_27:
       else
       {
         v15 = +[SFHeadphoneProduct b698];
-        v16 = [v15 bluetoothModel];
-        v17 = [v4 isEqualToString:v16];
+        bluetoothModel4 = [v15 bluetoothModel];
+        v17 = [modelCopy isEqualToString:bluetoothModel4];
 
         if (v17)
         {
@@ -373,8 +373,8 @@ LABEL_27:
         else
         {
           v18 = +[SFHeadphoneProduct b607];
-          v19 = [v18 bluetoothModel];
-          v20 = [v4 isEqualToString:v19];
+          bluetoothModel5 = [v18 bluetoothModel];
+          v20 = [modelCopy isEqualToString:bluetoothModel5];
 
           if (v20)
           {
@@ -384,8 +384,8 @@ LABEL_27:
           else
           {
             v21 = +[SFHeadphoneProduct b453];
-            v22 = [v21 bluetoothModel];
-            v23 = [v4 isEqualToString:v22];
+            bluetoothModel6 = [v21 bluetoothModel];
+            v23 = [modelCopy isEqualToString:bluetoothModel6];
 
             if (v23)
             {
@@ -395,8 +395,8 @@ LABEL_27:
             else
             {
               v24 = +[SFHeadphoneProduct b465];
-              v25 = [v24 bluetoothModel];
-              v26 = [v4 isEqualToString:v25];
+              bluetoothModel7 = [v24 bluetoothModel];
+              v26 = [modelCopy isEqualToString:bluetoothModel7];
 
               if (v26)
               {
@@ -406,8 +406,8 @@ LABEL_27:
               else
               {
                 v27 = +[SFHeadphoneProduct b768e];
-                v28 = [v27 bluetoothModel];
-                v29 = [v4 isEqualToString:v28];
+                bluetoothModel8 = [v27 bluetoothModel];
+                v29 = [modelCopy isEqualToString:bluetoothModel8];
 
                 if (v29)
                 {
@@ -417,8 +417,8 @@ LABEL_27:
                 else
                 {
                   v30 = +[SFHeadphoneProduct b768m];
-                  v31 = [v30 bluetoothModel];
-                  v32 = [v4 isEqualToString:v31];
+                  bluetoothModel9 = [v30 bluetoothModel];
+                  v32 = [modelCopy isEqualToString:bluetoothModel9];
 
                   if (v32)
                   {
@@ -428,8 +428,8 @@ LABEL_27:
                   else
                   {
                     v33 = +[SFHeadphoneProduct b487];
-                    v34 = [v33 bluetoothModel];
-                    v35 = [v4 isEqualToString:v34];
+                    bluetoothModel10 = [v33 bluetoothModel];
+                    v35 = [modelCopy isEqualToString:bluetoothModel10];
 
                     if (v35)
                     {
@@ -439,8 +439,8 @@ LABEL_27:
                     else
                     {
                       v36 = +[SFHeadphoneProduct b498];
-                      v37 = [v36 bluetoothModel];
-                      v38 = [v4 isEqualToString:v37];
+                      bluetoothModel11 = [v36 bluetoothModel];
+                      v38 = [modelCopy isEqualToString:bluetoothModel11];
 
                       if (v38)
                       {
@@ -450,8 +450,8 @@ LABEL_27:
                       else
                       {
                         v39 = +[SFHeadphoneProduct b463];
-                        v40 = [v39 bluetoothModel];
-                        v41 = [v4 isEqualToString:v40];
+                        bluetoothModel12 = [v39 bluetoothModel];
+                        v41 = [modelCopy isEqualToString:bluetoothModel12];
 
                         if (v41)
                         {
@@ -461,8 +461,8 @@ LABEL_27:
                         else
                         {
                           v42 = +[SFHeadphoneProduct b788];
-                          v43 = [v42 bluetoothModel];
-                          v44 = [v4 isEqualToString:v43];
+                          bluetoothModel13 = [v42 bluetoothModel];
+                          v44 = [modelCopy isEqualToString:bluetoothModel13];
 
                           if (v44)
                           {
@@ -472,8 +472,8 @@ LABEL_27:
                           else
                           {
                             v45 = +[SFHeadphoneProduct b494b];
-                            v46 = [v45 bluetoothModel];
-                            v47 = [v4 isEqualToString:v46];
+                            bluetoothModel14 = [v45 bluetoothModel];
+                            v47 = [modelCopy isEqualToString:bluetoothModel14];
 
                             if (!v47)
                             {
@@ -502,12 +502,12 @@ LABEL_30:
   return v48;
 }
 
-- (SFHeadphoneProduct)initWithProductID:(unsigned int)a3
+- (SFHeadphoneProduct)initWithProductID:(unsigned int)d
 {
   v5 = +[SFHeadphoneProduct b507];
-  v6 = [v5 productID];
+  productID = [v5 productID];
 
-  if (v6 == a3)
+  if (productID == d)
   {
     v7 = +[SFHeadphoneProduct b507];
   }
@@ -515,9 +515,9 @@ LABEL_30:
   else
   {
     v8 = +[SFHeadphoneProduct b607];
-    v9 = [v8 productID];
+    productID2 = [v8 productID];
 
-    if (v9 == a3)
+    if (productID2 == d)
     {
       v7 = +[SFHeadphoneProduct b607];
     }
@@ -525,9 +525,9 @@ LABEL_30:
     else
     {
       v10 = +[SFHeadphoneProduct b688];
-      v11 = [v10 productID];
+      productID3 = [v10 productID];
 
-      if (v11 == a3)
+      if (productID3 == d)
       {
         v7 = +[SFHeadphoneProduct b688];
       }
@@ -535,9 +535,9 @@ LABEL_30:
       else
       {
         v12 = +[SFHeadphoneProduct b494];
-        v13 = [v12 productID];
+        productID4 = [v12 productID];
 
-        if (v13 == a3)
+        if (productID4 == d)
         {
           v7 = +[SFHeadphoneProduct b494];
         }
@@ -545,18 +545,18 @@ LABEL_30:
         else
         {
           v16 = +[SFHeadphoneProduct b698];
-          v17 = [v16 productID];
+          productID5 = [v16 productID];
 
           v18 = +[SFHeadphoneProduct b698];
           v14 = v18;
-          if (v17 == a3)
+          if (productID5 == d)
           {
             goto LABEL_10;
           }
 
-          v19 = [(SFHeadphoneProduct *)v18 altProductID];
+          altProductID = [(SFHeadphoneProduct *)v18 altProductID];
 
-          if (v19 == a3)
+          if (altProductID == d)
           {
             v7 = +[SFHeadphoneProduct b698];
           }
@@ -564,18 +564,18 @@ LABEL_30:
           else
           {
             v20 = +[SFHeadphoneProduct b768e];
-            v21 = [v20 productID];
+            productID6 = [v20 productID];
 
             v22 = +[SFHeadphoneProduct b768e];
             v14 = v22;
-            if (v21 == a3)
+            if (productID6 == d)
             {
               goto LABEL_10;
             }
 
-            v23 = [(SFHeadphoneProduct *)v22 altProductID];
+            altProductID2 = [(SFHeadphoneProduct *)v22 altProductID];
 
-            if (v23 == a3)
+            if (altProductID2 == d)
             {
               v7 = +[SFHeadphoneProduct b768e];
             }
@@ -583,18 +583,18 @@ LABEL_30:
             else
             {
               v24 = +[SFHeadphoneProduct b768m];
-              v25 = [v24 productID];
+              productID7 = [v24 productID];
 
               v26 = +[SFHeadphoneProduct b768m];
               v14 = v26;
-              if (v25 == a3)
+              if (productID7 == d)
               {
                 goto LABEL_10;
               }
 
-              v27 = [(SFHeadphoneProduct *)v26 altProductID];
+              altProductID3 = [(SFHeadphoneProduct *)v26 altProductID];
 
-              if (v27 == a3)
+              if (altProductID3 == d)
               {
                 v7 = +[SFHeadphoneProduct b768m];
               }
@@ -602,9 +602,9 @@ LABEL_30:
               else
               {
                 v28 = +[SFHeadphoneProduct airPodsPro];
-                v29 = [v28 productID];
+                productID8 = [v28 productID];
 
-                if (v29 == a3)
+                if (productID8 == d)
                 {
                   v7 = +[SFHeadphoneProduct airPodsPro];
                 }
@@ -612,18 +612,18 @@ LABEL_30:
                 else
                 {
                   v30 = +[SFHeadphoneProduct b788];
-                  v31 = [v30 productID];
+                  productID9 = [v30 productID];
 
                   v32 = +[SFHeadphoneProduct b788];
                   v14 = v32;
-                  if (v31 == a3)
+                  if (productID9 == d)
                   {
                     goto LABEL_10;
                   }
 
-                  v33 = [(SFHeadphoneProduct *)v32 altProductID];
+                  altProductID4 = [(SFHeadphoneProduct *)v32 altProductID];
 
-                  if (v33 == a3)
+                  if (altProductID4 == d)
                   {
                     v7 = +[SFHeadphoneProduct b788];
                   }
@@ -631,18 +631,18 @@ LABEL_30:
                   else
                   {
                     v34 = +[SFHeadphoneProduct airPodsMax];
-                    v35 = [v34 altProductID];
+                    altProductID5 = [v34 altProductID];
 
                     v36 = +[SFHeadphoneProduct airPodsMax];
                     v14 = v36;
-                    if (v35 == a3)
+                    if (altProductID5 == d)
                     {
                       goto LABEL_10;
                     }
 
-                    v37 = [(SFHeadphoneProduct *)v36 productID];
+                    productID10 = [(SFHeadphoneProduct *)v36 productID];
 
-                    if (v37 == a3)
+                    if (productID10 == d)
                     {
                       v7 = +[SFHeadphoneProduct airPodsMax];
                     }
@@ -650,9 +650,9 @@ LABEL_30:
                     else
                     {
                       v38 = +[SFHeadphoneProduct powerBeatsPro];
-                      v39 = [v38 productID];
+                      productID11 = [v38 productID];
 
-                      if (v39 == a3)
+                      if (productID11 == d)
                       {
                         v7 = +[SFHeadphoneProduct powerBeatsPro];
                       }
@@ -660,9 +660,9 @@ LABEL_30:
                       else
                       {
                         v40 = +[SFHeadphoneProduct b453];
-                        v41 = [v40 productID];
+                        productID12 = [v40 productID];
 
-                        if (v41 == a3)
+                        if (productID12 == d)
                         {
                           v7 = +[SFHeadphoneProduct b453];
                         }
@@ -670,9 +670,9 @@ LABEL_30:
                         else
                         {
                           v42 = +[SFHeadphoneProduct b465];
-                          v43 = [v42 productID];
+                          productID13 = [v42 productID];
 
-                          if (v43 == a3)
+                          if (productID13 == d)
                           {
                             v7 = +[SFHeadphoneProduct b465];
                           }
@@ -680,9 +680,9 @@ LABEL_30:
                           else
                           {
                             v44 = +[SFHeadphoneProduct b487];
-                            v45 = [v44 productID];
+                            productID14 = [v44 productID];
 
-                            if (v45 == a3)
+                            if (productID14 == d)
                             {
                               v7 = +[SFHeadphoneProduct b487];
                             }
@@ -690,9 +690,9 @@ LABEL_30:
                             else
                             {
                               v46 = +[SFHeadphoneProduct b498];
-                              v47 = [v46 productID];
+                              productID15 = [v46 productID];
 
-                              if (v47 == a3)
+                              if (productID15 == d)
                               {
                                 v7 = +[SFHeadphoneProduct b498];
                               }
@@ -700,9 +700,9 @@ LABEL_30:
                               else
                               {
                                 v48 = +[SFHeadphoneProduct b463];
-                                v49 = [v48 productID];
+                                productID16 = [v48 productID];
 
-                                if (v49 == a3)
+                                if (productID16 == d)
                                 {
                                   v7 = +[SFHeadphoneProduct b463];
                                 }
@@ -710,9 +710,9 @@ LABEL_30:
                                 else
                                 {
                                   v50 = +[SFHeadphoneProduct b494b];
-                                  v51 = [v50 productID];
+                                  productID17 = [v50 productID];
 
-                                  if (v51 != a3)
+                                  if (productID17 != d)
                                   {
                                     v14 = 0;
                                     goto LABEL_10;

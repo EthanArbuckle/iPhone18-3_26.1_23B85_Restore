@@ -1,6 +1,6 @@
 @interface MOEventPatternDetectorFeatureExtractorEventDuration
 - (MOEventPatternDetectorFeatureExtractorEventDuration)init;
-- (id)extractFeaturesFromEvents:(id)a3;
+- (id)extractFeaturesFromEvents:(id)events;
 @end
 
 @implementation MOEventPatternDetectorFeatureExtractorEventDuration
@@ -19,15 +19,15 @@
   return v3;
 }
 
-- (id)extractFeaturesFromEvents:(id)a3
+- (id)extractFeaturesFromEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v31 = objc_opt_new();
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v32 = [obj countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v32)
   {
@@ -73,8 +73,8 @@
                 v41 = 0u;
                 v38 = 0u;
                 v39 = 0u;
-                v11 = [v10 interactions];
-                v12 = [v11 countByEnumeratingWithState:&v38 objects:v50 count:16];
+                interactions = [v10 interactions];
+                v12 = [interactions countByEnumeratingWithState:&v38 objects:v50 count:16];
                 if (v12)
                 {
                   v13 = v12;
@@ -87,23 +87,23 @@
                     {
                       if (*v39 != v15)
                       {
-                        objc_enumerationMutation(v11);
+                        objc_enumerationMutation(interactions);
                       }
 
                       v18 = *(*(&v38 + 1) + 8 * j);
-                      v19 = [v18 mechanism];
-                      if (v19 <= 0x11 && ((1 << v19) & 0x31B01) != 0)
+                      mechanism = [v18 mechanism];
+                      if (mechanism <= 0x11 && ((1 << mechanism) & 0x31B01) != 0)
                       {
-                        v21 = [v18 endDate];
-                        v22 = [v18 startDate];
-                        [v21 timeIntervalSinceDate:v22];
+                        endDate = [v18 endDate];
+                        startDate = [v18 startDate];
+                        [endDate timeIntervalSinceDate:startDate];
                         v24 = v23;
 
                         v16 = v16 + v24;
                       }
                     }
 
-                    v13 = [v11 countByEnumeratingWithState:&v38 objects:v50 count:16];
+                    v13 = [interactions countByEnumeratingWithState:&v38 objects:v50 count:16];
                   }
 
                   while (v13);
@@ -120,9 +120,9 @@
 
               else
               {
-                v11 = [v10 endDate];
-                v25 = [v10 startDate];
-                [v11 timeIntervalSinceDate:v25];
+                interactions = [v10 endDate];
+                startDate2 = [v10 startDate];
+                [interactions timeIntervalSinceDate:startDate2];
                 v16 = v26;
               }
 

@@ -1,26 +1,26 @@
 @interface PHSynchronousPhotoLibraryExecutionContext
 + (PHSynchronousPhotoLibraryExecutionContext)synchronousExecutionContext;
-- (void)callTransactionCompletionHandler:(id)a3 withSuccess:(BOOL)a4 error:(id)a5;
-- (void)sendChangesRequest:(id)a3 onClient:(id)a4 reply:(id)a5;
+- (void)callTransactionCompletionHandler:(id)handler withSuccess:(BOOL)success error:(id)error;
+- (void)sendChangesRequest:(id)request onClient:(id)client reply:(id)reply;
 @end
 
 @implementation PHSynchronousPhotoLibraryExecutionContext
 
-- (void)callTransactionCompletionHandler:(id)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)callTransactionCompletionHandler:(id)handler withSuccess:(BOOL)success error:(id)error
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, a4, a5);
+    (*(handler + 2))(handler, success, error);
   }
 }
 
-- (void)sendChangesRequest:(id)a3 onClient:(id)a4 reply:(id)a5
+- (void)sendChangesRequest:(id)request onClient:(id)client reply:(id)reply
 {
   v10 = 0;
-  v7 = a5;
-  v8 = [a4 sendChangesRequest:a3 error:&v10];
+  replyCopy = reply;
+  v8 = [client sendChangesRequest:request error:&v10];
   v9 = v10;
-  v7[2](v7, v8, v9);
+  replyCopy[2](replyCopy, v8, v9);
 }
 
 + (PHSynchronousPhotoLibraryExecutionContext)synchronousExecutionContext

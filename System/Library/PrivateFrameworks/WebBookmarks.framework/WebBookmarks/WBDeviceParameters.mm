@@ -1,33 +1,33 @@
 @interface WBDeviceParameters
-+ (id)localDeviceWithTitle:(id)a3 creationDeviceIdentifier:(id)a4 deviceIdentifier:(id)a5;
-+ (id)remoteDeviceWithTitle:(id)a3 deviceIdentifier:(id)a4;
++ (id)localDeviceWithTitle:(id)title creationDeviceIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier;
++ (id)remoteDeviceWithTitle:(id)title deviceIdentifier:(id)identifier;
 @end
 
 @implementation WBDeviceParameters
 
-+ (id)remoteDeviceWithTitle:(id)a3 deviceIdentifier:(id)a4
++ (id)remoteDeviceWithTitle:(id)title deviceIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  titleCopy = title;
   v7 = objc_alloc_init(WBDeviceParameters);
   [(WBDeviceParameters *)v7 setRemoteDevice:1];
-  [(WBDeviceParameters *)v7 setTitle:v6];
+  [(WBDeviceParameters *)v7 setTitle:titleCopy];
 
-  [(WBDeviceParameters *)v7 setDeviceIdentifier:v5];
+  [(WBDeviceParameters *)v7 setDeviceIdentifier:identifierCopy];
 
   return v7;
 }
 
-+ (id)localDeviceWithTitle:(id)a3 creationDeviceIdentifier:(id)a4 deviceIdentifier:(id)a5
++ (id)localDeviceWithTitle:(id)title creationDeviceIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  deviceIdentifierCopy = deviceIdentifier;
+  identifierCopy = identifier;
+  titleCopy = title;
   v10 = objc_alloc_init(WBDeviceParameters);
-  [(WBDeviceParameters *)v10 setTitle:v9];
+  [(WBDeviceParameters *)v10 setTitle:titleCopy];
 
-  [(WBDeviceParameters *)v10 setDeviceIdentifier:v7];
-  [(WBDeviceParameters *)v10 setCreationDeviceIdentifier:v8];
+  [(WBDeviceParameters *)v10 setDeviceIdentifier:deviceIdentifierCopy];
+  [(WBDeviceParameters *)v10 setCreationDeviceIdentifier:identifierCopy];
 
   return v10;
 }

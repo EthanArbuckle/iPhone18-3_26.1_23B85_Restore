@@ -1,18 +1,18 @@
 @interface HKOverlayRoomPillValueProviderBalance
 - (HKOverlayRoomPillValueProviderBalance)init;
-- (id)valueFromChartPoints:(id)a3 unit:(id)a4 displayType:(id)a5 timeScope:(int64_t)a6 unitPreferenceController:(id)a7;
+- (id)valueFromChartPoints:(id)points unit:(id)unit displayType:(id)type timeScope:(int64_t)scope unitPreferenceController:(id)controller;
 @end
 
 @implementation HKOverlayRoomPillValueProviderBalance
 
-- (id)valueFromChartPoints:(id)a3 unit:(id)a4 displayType:(id)a5 timeScope:(int64_t)a6 unitPreferenceController:(id)a7
+- (id)valueFromChartPoints:(id)points unit:(id)unit displayType:(id)type timeScope:(int64_t)scope unitPreferenceController:(id)controller
 {
   sub_1C3C315FC();
   v11 = sub_1C3D202B4();
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = self;
+  unitCopy = unit;
+  typeCopy = type;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1C3D0255C(v11);
   v17 = v16;
 

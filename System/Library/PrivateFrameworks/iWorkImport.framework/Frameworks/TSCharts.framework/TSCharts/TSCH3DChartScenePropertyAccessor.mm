@@ -1,6 +1,6 @@
 @interface TSCH3DChartScenePropertyAccessor
-+ (id)accessorWithScene:(id)a3;
-+ (id)nonNilAccessorWithScene:(id)a3;
++ (id)accessorWithScene:(id)scene;
++ (id)nonNilAccessorWithScene:(id)scene;
 - (BOOL)dynamicShadowsEnabled;
 - (BOOL)isHorizontal;
 - (BOOL)labelsShadowIgnored;
@@ -28,30 +28,30 @@
 - (tvec4<float>)initialInfoChartScale;
 - (tvec4<float>)originalInfoChartScale;
 - (void)resetInfoChartScale;
-- (void)setCachedRotation:(tvec3<float>)a3;
-- (void)setDynamicShadowsEnabled:(BOOL)a3;
-- (void)setElementScale:(tvec3<float>)a3;
-- (void)setInfoChartScale:(tvec4<float>)a3;
-- (void)setInfoChartScaleVec3:(tvec3<float>)a3;
-- (void)setInitialInfoChartScale:(tvec4<float>)a3;
-- (void)setInitialInfoChartScaleVec3:(tvec3<float>)a3;
-- (void)setLabelsShadowIgnored:(BOOL)a3;
-- (void)setLayoutConfigurationEnabled:(BOOL)a3;
-- (void)setOriginalInfoChartScale:(tvec4<float>)a3;
-- (void)setOriginalRotation:(tvec3<float>)a3;
-- (void)setRotation:(tvec3<float>)a3;
-- (void)setSageChartInfoSize:(tvec2<float>)a3;
-- (void)setStageOffset:(tvec3<float>)a3;
-- (void)setStageScale:(tvec3<float>)a3;
+- (void)setCachedRotation:(tvec3<float>)rotation;
+- (void)setDynamicShadowsEnabled:(BOOL)enabled;
+- (void)setElementScale:(tvec3<float>)scale;
+- (void)setInfoChartScale:(tvec4<float>)scale;
+- (void)setInfoChartScaleVec3:(tvec3<float>)vec3;
+- (void)setInitialInfoChartScale:(tvec4<float>)scale;
+- (void)setInitialInfoChartScaleVec3:(tvec3<float>)vec3;
+- (void)setLabelsShadowIgnored:(BOOL)ignored;
+- (void)setLayoutConfigurationEnabled:(BOOL)enabled;
+- (void)setOriginalInfoChartScale:(tvec4<float>)scale;
+- (void)setOriginalRotation:(tvec3<float>)rotation;
+- (void)setRotation:(tvec3<float>)rotation;
+- (void)setSageChartInfoSize:(tvec2<float>)size;
+- (void)setStageOffset:(tvec3<float>)offset;
+- (void)setStageScale:(tvec3<float>)scale;
 - (void)updateInfoChartScaleUsingConstantDepth;
 @end
 
 @implementation TSCH3DChartScenePropertyAccessor
 
-+ (id)accessorWithScene:(id)a3
++ (id)accessorWithScene:(id)scene
 {
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "+[TSCH3DChartScenePropertyAccessor accessorWithScene:]");
@@ -61,16 +61,16 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = &OBJC_METACLASS___TSCH3DChartScenePropertyAccessor;
-  v24 = objc_msgSendSuper2(&v26, sel_accessorWithScene_, v5);
+  v24 = objc_msgSendSuper2(&v26, sel_accessorWithScene_, sceneCopy);
 
   return v24;
 }
 
-+ (id)nonNilAccessorWithScene:(id)a3
++ (id)nonNilAccessorWithScene:(id)scene
 {
-  v7 = objc_msgSend_accessorWithScene_(a1, a2, v3, v4, v5, a3);
+  v7 = objc_msgSend_accessorWithScene_(self, a2, v3, v4, v5, scene);
   if (!v7)
   {
     v11 = MEMORY[0x277D81150];
@@ -109,10 +109,10 @@
   return v16;
 }
 
-- (void)setSageChartInfoSize:(tvec2<float>)a3
+- (void)setSageChartInfoSize:(tvec2<float>)size
 {
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
-  v6 = objc_msgSend_valueWithCGSize_(MEMORY[0x277CCAE60], v4, **&a3, *(*&a3 + 4), v5);
+  v6 = objc_msgSend_valueWithCGSize_(MEMORY[0x277CCAE60], v4, **&size, *(*&size + 4), v5);
   objc_msgSend_setProperties_forType_(WeakRetained, v7, v8, v9, v10, v6, @"TSCH3DChartScenePropertyAccessor.sageChartInfoSize");
 }
 
@@ -140,9 +140,9 @@
   return result;
 }
 
-- (void)setRotation:(tvec3<float>)a3
+- (void)setRotation:(tvec3<float>)rotation
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&rotation.var0.var0;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
   v8 = objc_msgSend_vectorWithVec3_(TSCH3DVector, v4, v5, v6, v7, v3);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.rotation");
@@ -170,9 +170,9 @@
   return result;
 }
 
-- (void)setOriginalRotation:(tvec3<float>)a3
+- (void)setOriginalRotation:(tvec3<float>)rotation
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&rotation.var0.var0;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
   v8 = objc_msgSend_vectorWithVec3_(TSCH3DVector, v4, v5, v6, v7, v3);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.originalRotation");
@@ -200,9 +200,9 @@
   return result;
 }
 
-- (void)setCachedRotation:(tvec3<float>)a3
+- (void)setCachedRotation:(tvec3<float>)rotation
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&rotation.var0.var0;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
   v8 = objc_msgSend_vectorWithVec3_(TSCH3DVector, v4, v5, v6, v7, v3);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.cachedRotation");
@@ -232,9 +232,9 @@
   return result;
 }
 
-- (void)setInitialInfoChartScale:(tvec4<float>)a3
+- (void)setInitialInfoChartScale:(tvec4<float>)scale
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&scale.var0.var0;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
   v8 = objc_msgSend_vectorWithVec4_(TSCH3DVector, v4, v5, v6, v7, v3);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.initialInfoChartScale");
@@ -264,9 +264,9 @@
   return result;
 }
 
-- (void)setInfoChartScale:(tvec4<float>)a3
+- (void)setInfoChartScale:(tvec4<float>)scale
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&scale.var0.var0;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
   v8 = objc_msgSend_vectorWithVec4_(TSCH3DVector, v4, v5, v6, v7, v3);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.infoChartScale");
@@ -296,9 +296,9 @@
   return result;
 }
 
-- (void)setElementScale:(tvec3<float>)a3
+- (void)setElementScale:(tvec3<float>)scale
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&scale.var0.var0;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
   v8 = objc_msgSend_vectorWithVec3_(TSCH3DVector, v4, v5, v6, v7, v3);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.elementScale");
@@ -328,9 +328,9 @@
   return result;
 }
 
-- (void)setStageScale:(tvec3<float>)a3
+- (void)setStageScale:(tvec3<float>)scale
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&scale.var0.var0;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
   v8 = objc_msgSend_vectorWithVec3_(TSCH3DVector, v4, v5, v6, v7, v3);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.stageScale");
@@ -360,9 +360,9 @@
   return result;
 }
 
-- (void)setStageOffset:(tvec3<float>)a3
+- (void)setStageOffset:(tvec3<float>)offset
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&offset.var0.var0;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
   v8 = objc_msgSend_vectorWithVec3_(TSCH3DVector, v4, v5, v6, v7, v3);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.stageOffset");
@@ -391,9 +391,9 @@
   return result;
 }
 
-- (void)setOriginalInfoChartScale:(tvec4<float>)a3
+- (void)setOriginalInfoChartScale:(tvec4<float>)scale
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&scale.var0.var0;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
   v8 = objc_msgSend_vectorWithVec4_(TSCH3DVector, v4, v5, v6, v7, v3);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.originalInfoChartScale");
@@ -410,11 +410,11 @@
   return WeakRetained;
 }
 
-- (void)setLayoutConfigurationEnabled:(BOOL)a3
+- (void)setLayoutConfigurationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
-  v8 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v4, v5, v6, v7, v3);
+  v8 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v4, v5, v6, v7, enabledCopy);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.enableLayoutConfiguration");
 }
 
@@ -429,11 +429,11 @@
   return WeakRetained;
 }
 
-- (void)setDynamicShadowsEnabled:(BOOL)a3
+- (void)setDynamicShadowsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
-  v8 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v4, v5, v6, v7, v3);
+  v8 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v4, v5, v6, v7, enabledCopy);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.dynamicShadows");
 }
 
@@ -448,11 +448,11 @@
   return WeakRetained;
 }
 
-- (void)setLabelsShadowIgnored:(BOOL)a3
+- (void)setLabelsShadowIgnored:(BOOL)ignored
 {
-  v3 = a3;
+  ignoredCopy = ignored;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
-  v8 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v4, v5, v6, v7, v3);
+  v8 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v4, v5, v6, v7, ignoredCopy);
   objc_msgSend_setProperties_forType_(WeakRetained, v9, v10, v11, v12, v8, @"TSCH3DChartScenePropertyAccessor.ignoreLabelsShadow");
 }
 
@@ -693,10 +693,10 @@
   return result;
 }
 
-- (void)setInitialInfoChartScaleVec3:(tvec3<float>)a3
+- (void)setInitialInfoChartScaleVec3:(tvec3<float>)vec3
 {
-  v6 = *&a3.var0.var0;
-  objc_msgSend_initialInfoChartScale(self, a2, v3, v4, v5, *&a3.var0.var0, *&a3.var2.var0);
+  v6 = *&vec3.var0.var0;
+  objc_msgSend_initialInfoChartScale(self, a2, v3, v4, v5, *&vec3.var0.var0, *&vec3.var2.var0);
   *&v8 = *v6;
   DWORD2(v8) = *(v6 + 8);
   HIDWORD(v8) = v12;
@@ -716,10 +716,10 @@
   return result;
 }
 
-- (void)setInfoChartScaleVec3:(tvec3<float>)a3
+- (void)setInfoChartScaleVec3:(tvec3<float>)vec3
 {
-  v6 = *&a3.var0.var0;
-  objc_msgSend_infoChartScale(self, a2, v3, v4, v5, *&a3.var0.var0, *&a3.var2.var0);
+  v6 = *&vec3.var0.var0;
+  objc_msgSend_infoChartScale(self, a2, v3, v4, v5, *&vec3.var0.var0, *&vec3.var2.var0);
   *&v8 = *v6;
   DWORD2(v8) = *(v6 + 8);
   HIDWORD(v8) = v12;

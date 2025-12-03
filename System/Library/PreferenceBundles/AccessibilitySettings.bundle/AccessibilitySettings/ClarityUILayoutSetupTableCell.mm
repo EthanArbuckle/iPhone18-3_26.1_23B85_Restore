@@ -1,8 +1,8 @@
 @interface ClarityUILayoutSetupTableCell
-+ (id)_visualPickerSpecifierWithLeadingButton:(id)a3 trailingButton:(id)a4 preferenceKey:(id)a5;
++ (id)_visualPickerSpecifierWithLeadingButton:(id)button trailingButton:(id)trailingButton preferenceKey:(id)key;
 + (id)visualLayoutPickerSpecifier;
-- (ClarityUILayoutSetupTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)buttonTapped:(id)a3;
+- (ClarityUILayoutSetupTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)buttonTapped:(id)tapped;
 @end
 
 @implementation ClarityUILayoutSetupTableCell
@@ -22,30 +22,30 @@
   return v8;
 }
 
-+ (id)_visualPickerSpecifierWithLeadingButton:(id)a3 trailingButton:(id)a4 preferenceKey:(id)a5
++ (id)_visualPickerSpecifierWithLeadingButton:(id)button trailingButton:(id)trailingButton preferenceKey:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [PSSpecifier preferenceSpecifierNamed:0 target:a1 set:0 get:0 detail:a1 cell:-1 edit:0];
+  keyCopy = key;
+  trailingButtonCopy = trailingButton;
+  buttonCopy = button;
+  v11 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:self cell:-1 edit:0];
   v23[0] = PSCellClassKey;
   v12 = objc_opt_class();
   v23[1] = PSKeyNameKey;
   v24[0] = v12;
-  v24[1] = v8;
+  v24[1] = keyCopy;
   v13 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
   [v11 setProperties:v13];
 
-  v14 = [v10 _dictionaryRepresentation];
+  _dictionaryRepresentation = [buttonCopy _dictionaryRepresentation];
 
-  v15 = [v9 _dictionaryRepresentation];
+  _dictionaryRepresentation2 = [trailingButtonCopy _dictionaryRepresentation];
 
   v16 = 0;
-  if (v14 && v15)
+  if (_dictionaryRepresentation && _dictionaryRepresentation2)
   {
-    v20[1] = v15;
+    v20[1] = _dictionaryRepresentation2;
     v21 = @"ClarityUILayoutSetupVisualPickerUserInfoArray";
-    v20[0] = v14;
+    v20[0] = _dictionaryRepresentation;
     v17 = [NSArray arrayWithObjects:v20 count:2];
     v22 = v17;
     v18 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
@@ -57,20 +57,20 @@
   return v16;
 }
 
-- (ClarityUILayoutSetupTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (ClarityUILayoutSetupTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  specifierCopy = specifier;
   v73.receiver = self;
   v73.super_class = ClarityUILayoutSetupTableCell;
-  v10 = [(ClarityUILayoutSetupTableCell *)&v73 initWithStyle:a3 reuseIdentifier:v8 specifier:v9];
+  v10 = [(ClarityUILayoutSetupTableCell *)&v73 initWithStyle:style reuseIdentifier:identifierCopy specifier:specifierCopy];
   if (v10)
   {
-    v71 = v9;
-    v72 = v8;
-    v11 = [v9 userInfo];
+    v71 = specifierCopy;
+    v72 = identifierCopy;
+    userInfo = [specifierCopy userInfo];
     v74 = 0;
-    v12 = [v11 objectForKeyedSubscript:@"ClarityUILayoutSetupVisualPickerUserInfoArray"];
+    v12 = [userInfo objectForKeyedSubscript:@"ClarityUILayoutSetupVisualPickerUserInfoArray"];
     v13 = __UIAccessibilitySafeClass();
 
     if (v74 == 1)
@@ -81,7 +81,7 @@ LABEL_17:
 
     if ([v13 count] == &dword_0 + 2)
     {
-      v68 = a5;
+      specifierCopy2 = specifier;
       v14 = [NSMutableArray arrayWithCapacity:2];
       v15 = 0;
       v16 = 1;
@@ -127,7 +127,7 @@ LABEL_17:
       }
 
       while ((v17 & 1) != 0);
-      a5 = v68;
+      specifier = specifierCopy2;
     }
 
     else
@@ -137,29 +137,29 @@ LABEL_17:
 
     if (v14)
     {
-      objc_storeStrong(&v10->_specifier, a5);
+      objc_storeStrong(&v10->_specifier, specifier);
       v26 = [v14 objectAtIndexedSubscript:0];
       v27 = [ClarityUIIconSettingsButton alloc];
       [v26 title];
       v29 = v28 = v10;
       v70 = v26;
-      v30 = [v26 preferenceValue];
-      v31 = [(ClarityUIIconSettingsButton *)v27 initWithTitle:v29 preferenceValue:v30];
+      preferenceValue = [v26 preferenceValue];
+      v31 = [(ClarityUIIconSettingsButton *)v27 initWithTitle:v29 preferenceValue:preferenceValue];
       v32 = v28[15];
       v28[15] = v31;
 
       [v28[15] addTarget:v28 action:"buttonTapped:" forControlEvents:0x2000];
       v33 = +[CLFSettings sharedInstance];
-      v69 = [v33 listLayout];
+      listLayout = [v33 listLayout];
 
-      v34 = [v26 preferenceValue];
-      [v28[15] setSelected:{objc_msgSend(v69, "isEqualToString:", v34)}];
+      preferenceValue2 = [v26 preferenceValue];
+      [v28[15] setSelected:{objc_msgSend(listLayout, "isEqualToString:", preferenceValue2)}];
 
       v67 = [v14 objectAtIndexedSubscript:1];
       v35 = [ClarityUIIconSettingsButton alloc];
-      v36 = [v67 title];
-      v37 = [v67 preferenceValue];
-      v38 = [(ClarityUIIconSettingsButton *)v35 initWithTitle:v36 preferenceValue:v37];
+      title = [v67 title];
+      preferenceValue3 = [v67 preferenceValue];
+      v38 = [(ClarityUIIconSettingsButton *)v35 initWithTitle:title preferenceValue:preferenceValue3];
       v39 = v28[16];
       v28[16] = v38;
 
@@ -175,33 +175,33 @@ LABEL_17:
       [v42 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v42 setDistribution:1];
       [v42 setSpacing:30.0];
-      v43 = [v28 contentView];
-      [v43 addSubview:v42];
+      contentView = [v28 contentView];
+      [contentView addSubview:v42];
 
-      v64 = [v42 centerXAnchor];
-      v65 = [v28 contentView];
-      v63 = [v65 centerXAnchor];
-      v62 = [v64 constraintEqualToAnchor:v63];
+      centerXAnchor = [v42 centerXAnchor];
+      contentView2 = [v28 contentView];
+      centerXAnchor2 = [contentView2 centerXAnchor];
+      v62 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v75[0] = v62;
-      v61 = [v28 contentView];
-      v60 = [v61 heightAnchor];
-      v59 = [v42 heightAnchor];
-      v58 = [v60 constraintEqualToAnchor:v59 constant:40.0];
+      contentView3 = [v28 contentView];
+      heightAnchor = [contentView3 heightAnchor];
+      heightAnchor2 = [v42 heightAnchor];
+      v58 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:40.0];
       v75[1] = v58;
-      v56 = [v42 centerYAnchor];
-      v57 = [v28 contentView];
-      v55 = [v57 centerYAnchor];
-      v54 = [v56 constraintEqualToAnchor:v55];
+      centerYAnchor = [v42 centerYAnchor];
+      contentView4 = [v28 contentView];
+      centerYAnchor2 = [contentView4 centerYAnchor];
+      v54 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v75[2] = v54;
-      v53 = [v28 contentView];
-      v44 = [v53 widthAnchor];
-      v45 = [v42 widthAnchor];
-      v46 = [v44 constraintEqualToAnchor:v45 multiplier:1.2];
+      contentView5 = [v28 contentView];
+      widthAnchor = [contentView5 widthAnchor];
+      widthAnchor2 = [v42 widthAnchor];
+      v46 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.2];
       v75[3] = v46;
-      v47 = [v28 contentView];
-      v48 = [v47 widthAnchor];
-      v49 = [v42 widthAnchor];
-      v50 = [v48 constraintGreaterThanOrEqualToAnchor:v49 constant:10.0];
+      contentView6 = [v28 contentView];
+      widthAnchor3 = [contentView6 widthAnchor];
+      widthAnchor4 = [v42 widthAnchor];
+      v50 = [widthAnchor3 constraintGreaterThanOrEqualToAnchor:widthAnchor4 constant:10.0];
       v75[4] = v50;
       v51 = [NSArray arrayWithObjects:v75 count:5];
       [NSLayoutConstraint activateConstraints:v51];
@@ -217,8 +217,8 @@ LABEL_17:
       v25 = 0;
     }
 
-    v9 = v71;
-    v8 = v72;
+    specifierCopy = v71;
+    identifierCopy = v72;
   }
 
   else
@@ -229,10 +229,10 @@ LABEL_17:
   return v25;
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
   trailingButton = self->_trailingButton;
-  if (trailingButton != a3)
+  if (trailingButton != tapped)
   {
     trailingButton = self->_leadingButton;
   }
@@ -272,9 +272,9 @@ LABEL_17:
     while (v9);
   }
 
-  v12 = [(ClarityUIIconSettingsButton *)v5 preferenceValue];
+  preferenceValue = [(ClarityUIIconSettingsButton *)v5 preferenceValue];
   v13 = +[CLFSettings sharedInstance];
-  [v13 setListLayout:v12];
+  [v13 setListLayout:preferenceValue];
 }
 
 @end

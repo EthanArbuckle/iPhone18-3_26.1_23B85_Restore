@@ -1,24 +1,24 @@
 @interface STKImageData
-+ (id)UTITypeForData:(id)a3;
-+ (id)UTTypeForData:(id)a3;
++ (id)UTITypeForData:(id)data;
++ (id)UTTypeForData:(id)data;
 - (BOOL)typeSupportsAnimatedImages;
 - (CGSize)ptSize;
 - (CGSize)pxSize;
-- (CGSize)sizeForImageSource:(CGImageSource *)a3 index:(unint64_t)a4;
+- (CGSize)sizeForImageSource:(CGImageSource *)source index:(unint64_t)index;
 - (NSData)data;
-- (STKImageData)initWithData:(id)a3;
-- (STKImageData)initWithURL:(id)a3;
+- (STKImageData)initWithData:(id)data;
+- (STKImageData)initWithURL:(id)l;
 - (UIImage)image;
 - (UTType)utType;
 - (id)MIMEType;
-- (id)_defaultDurationsWithMaxCount:(unint64_t)a3;
-- (id)_thumbnailFillToSize:(CGSize)a3 atIndex:(unint64_t)a4;
-- (id)_thumbnailFitToSize:(CGSize)a3 atIndex:(unint64_t)a4;
-- (id)durationsWithMaxCount:(unint64_t)a3;
-- (id)thumbnailAtIndex:(unint64_t)a3 fillToSize:(CGSize)a4 maxCount:(unint64_t)a5;
-- (id)thumbnailFillToSizeCropping:(CGSize)a3;
-- (id)thumbnailsFillToSize:(CGSize)a3 maxCount:(unint64_t)a4;
-- (id)thumbnailsFitToSize:(CGSize)a3 maxCount:(unint64_t)a4;
+- (id)_defaultDurationsWithMaxCount:(unint64_t)count;
+- (id)_thumbnailFillToSize:(CGSize)size atIndex:(unint64_t)index;
+- (id)_thumbnailFitToSize:(CGSize)size atIndex:(unint64_t)index;
+- (id)durationsWithMaxCount:(unint64_t)count;
+- (id)thumbnailAtIndex:(unint64_t)index fillToSize:(CGSize)size maxCount:(unint64_t)count;
+- (id)thumbnailFillToSizeCropping:(CGSize)cropping;
+- (id)thumbnailsFillToSize:(CGSize)size maxCount:(unint64_t)count;
+- (id)thumbnailsFitToSize:(CGSize)size maxCount:(unint64_t)count;
 - (unint64_t)count;
 - (void)_initializeProperties;
 - (void)dealloc;
@@ -39,21 +39,21 @@
   [(STKImageData *)&v4 dealloc];
 }
 
-+ (id)UTITypeForData:(id)a3
++ (id)UTITypeForData:(id)data
 {
-  v3 = a3;
-  v4 = [[STKImageData alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[STKImageData alloc] initWithData:dataCopy];
 
-  v5 = [(STKImageData *)v4 UTIType];
+  uTIType = [(STKImageData *)v4 UTIType];
 
-  return v5;
+  return uTIType;
 }
 
-+ (id)UTTypeForData:(id)a3
++ (id)UTTypeForData:(id)data
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 UTITypeForData:v4];
+  dataCopy = data;
+  v5 = [self UTITypeForData:dataCopy];
   v6 = v5;
   if (v5 && ![v5 isEqualToString:&stru_1F0DCF9D8])
   {
@@ -65,7 +65,7 @@
     v7 = os_log_create("com.apple.VisionKit", "com.apple.StickerKit.stickerData");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 debugDescription];
+      v8 = [dataCopy debugDescription];
       v11 = 138412290;
       v12 = v8;
       _os_log_impl(&dword_19A5EE000, v7, OS_LOG_TYPE_DEFAULT, "Cannot determine UTType without a UTIType: %@", &v11, 0xCu);
@@ -77,19 +77,19 @@
   return v9;
 }
 
-- (STKImageData)initWithData:(id)a3
+- (STKImageData)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = STKImageData;
   v5 = [(STKImageData *)&v7 init];
   if (v5)
   {
-    if (v4)
+    if (dataCopy)
     {
-      v5->_imageSource = CGImageSourceCreateWithData(v4, 0);
+      v5->_imageSource = CGImageSourceCreateWithData(dataCopy, 0);
       v5->_count = 0x7FFFFFFFFFFFFFFFLL;
-      [(STKImageData *)v5 setData:v4];
+      [(STKImageData *)v5 setData:dataCopy];
     }
 
     if (!v5->_imageSource)
@@ -102,20 +102,20 @@
   return v5;
 }
 
-- (STKImageData)initWithURL:(id)a3
+- (STKImageData)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = STKImageData;
   v5 = [(STKImageData *)&v8 init];
   v6 = v5;
-  if (v4)
+  if (lCopy)
   {
     if (v5)
     {
-      v5->_imageSource = CGImageSourceCreateWithURL(v4, 0);
+      v5->_imageSource = CGImageSourceCreateWithURL(lCopy, 0);
       v6->_count = 0x7FFFFFFFFFFFFFFFLL;
-      [(STKImageData *)v6 setUrl:v4];
+      [(STKImageData *)v6 setUrl:lCopy];
       if (!v6->_imageSource)
       {
 
@@ -152,8 +152,8 @@
   if (!image)
   {
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [(STKImageData *)self data];
-    v6 = [v4 itk_mainScreenScaledImageWithData:v5];
+    data = [(STKImageData *)self data];
+    v6 = [v4 itk_mainScreenScaledImageWithData:data];
     v7 = self->_image;
     self->_image = v6;
 
@@ -165,14 +165,14 @@
 
 - (BOOL)typeSupportsAnimatedImages
 {
-  v2 = [(STKImageData *)self utType];
-  v3 = v2;
-  v4 = v2 && (([v2 itk_isPNG] & 1) != 0 || (objc_msgSend(v3, "itk_isGIF") & 1) != 0 || (objc_msgSend(v3, "itk_isWebP") & 1) != 0 || objc_msgSend(v3, "itk_isHEICS"));
+  utType = [(STKImageData *)self utType];
+  v3 = utType;
+  v4 = utType && (([utType itk_isPNG] & 1) != 0 || (objc_msgSend(v3, "itk_isGIF") & 1) != 0 || (objc_msgSend(v3, "itk_isWebP") & 1) != 0 || objc_msgSend(v3, "itk_isHEICS"));
 
   return v4;
 }
 
-- (id)thumbnailFillToSizeCropping:(CGSize)a3
+- (id)thumbnailFillToSizeCropping:(CGSize)cropping
 {
   if (ITKMainScreenScale_once[0] != -1)
   {
@@ -219,31 +219,31 @@
   return v11;
 }
 
-- (id)thumbnailsFitToSize:(CGSize)a3 maxCount:(unint64_t)a4
+- (id)thumbnailsFitToSize:(CGSize)size maxCount:(unint64_t)count
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v27 = *MEMORY[0x1E69E9840];
   v8 = [(STKImageData *)self count];
   v9 = v8;
   v10 = 1.0;
-  if (v8 > a4)
+  if (v8 > count)
   {
-    v10 = v8 / a4;
+    v10 = v8 / count;
   }
 
   v11 = objc_alloc(MEMORY[0x1E695DF70]);
-  if (v9 >= a4)
+  if (v9 >= count)
   {
-    v12 = a4;
+    countCopy = count;
   }
 
   else
   {
-    v12 = v9;
+    countCopy = v9;
   }
 
-  v13 = [v11 initWithCapacity:v12];
+  v13 = [v11 initWithCapacity:countCopy];
   if (v9)
   {
     v14 = 0;
@@ -252,10 +252,10 @@
     {
       if (v15 <= v14)
       {
-        v16 = [(STKImageData *)self _thumbnailFitToSize:v14 atIndex:width, height];
-        if (v16)
+        height = [(STKImageData *)self _thumbnailFitToSize:v14 atIndex:width, height];
+        if (height)
         {
-          [v13 addObject:v16];
+          [v13 addObject:height];
         }
 
         v15 = v10 + v15;
@@ -267,7 +267,7 @@
     while (v9 != v14);
   }
 
-  if (v9 > a4)
+  if (v9 > count)
   {
     v17 = os_log_create("com.apple.VisionKit", "com.apple.StickerKit.stickerData");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -275,7 +275,7 @@
       v19 = 134218752;
       v20 = v9;
       v21 = 2048;
-      v22 = a4;
+      countCopy2 = count;
       v23 = 2048;
       v24 = v10;
       v25 = 2048;
@@ -287,45 +287,45 @@
   return v13;
 }
 
-- (id)thumbnailAtIndex:(unint64_t)a3 fillToSize:(CGSize)a4 maxCount:(unint64_t)a5
+- (id)thumbnailAtIndex:(unint64_t)index fillToSize:(CGSize)size maxCount:(unint64_t)count
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = [(STKImageData *)self count];
   v11 = 1.0;
-  if (v10 > a5)
+  if (v10 > count)
   {
-    v11 = v10 / a5;
+    v11 = v10 / count;
   }
 
-  return [(STKImageData *)self _thumbnailFitToSize:(v11 * a3) atIndex:width, height];
+  return [(STKImageData *)self _thumbnailFitToSize:(v11 * index) atIndex:width, height];
 }
 
-- (id)thumbnailsFillToSize:(CGSize)a3 maxCount:(unint64_t)a4
+- (id)thumbnailsFillToSize:(CGSize)size maxCount:(unint64_t)count
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v27 = *MEMORY[0x1E69E9840];
   v8 = [(STKImageData *)self count];
   v9 = v8;
   v10 = 1.0;
-  if (v8 > a4)
+  if (v8 > count)
   {
-    v10 = v8 / a4;
+    v10 = v8 / count;
   }
 
   v11 = objc_alloc(MEMORY[0x1E695DF70]);
-  if (v9 >= a4)
+  if (v9 >= count)
   {
-    v12 = a4;
+    countCopy = count;
   }
 
   else
   {
-    v12 = v9;
+    countCopy = v9;
   }
 
-  v13 = [v11 initWithCapacity:v12];
+  v13 = [v11 initWithCapacity:countCopy];
   if (v9)
   {
     v14 = 0;
@@ -334,10 +334,10 @@
     {
       if (v15 <= v14)
       {
-        v16 = [(STKImageData *)self _thumbnailFillToSize:v14 atIndex:width, height];
-        if (v16)
+        height = [(STKImageData *)self _thumbnailFillToSize:v14 atIndex:width, height];
+        if (height)
         {
-          [v13 addObject:v16];
+          [v13 addObject:height];
         }
 
         v15 = v10 + v15;
@@ -349,7 +349,7 @@
     while (v9 != v14);
   }
 
-  if (v9 > a4)
+  if (v9 > count)
   {
     v17 = os_log_create("com.apple.VisionKit", "com.apple.StickerKit.stickerData");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -357,7 +357,7 @@
       v19 = 134218752;
       v20 = v9;
       v21 = 2048;
-      v22 = a4;
+      countCopy2 = count;
       v23 = 2048;
       v24 = v10;
       v25 = 2048;
@@ -369,21 +369,21 @@
   return v13;
 }
 
-- (id)_defaultDurationsWithMaxCount:(unint64_t)a3
+- (id)_defaultDurationsWithMaxCount:(unint64_t)count
 {
-  v3 = a3;
+  countCopy = count;
   v12[1] = *MEMORY[0x1E69E9840];
-  if ([(STKImageData *)self count]< a3)
+  if ([(STKImageData *)self count]< count)
   {
-    v3 = [(STKImageData *)self count];
+    countCopy = [(STKImageData *)self count];
   }
 
-  v5 = v3;
-  bzero(v12 - ((8 * v3 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v3);
-  if (v3)
+  v5 = countCopy;
+  bzero(v12 - ((8 * countCopy + 15) & 0xFFFFFFFFFFFFFFF0), 8 * countCopy);
+  if (countCopy)
   {
-    v6 = v3;
-    v7 = (v12 - ((8 * v3 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v6 = countCopy;
+    v7 = (v12 - ((8 * countCopy + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
       v8 = [MEMORY[0x1E696AD98] numberWithDouble:0.0666666667];
@@ -396,8 +396,8 @@
     while (v6);
   }
 
-  v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 - ((8 * v3 + 15) & 0xFFFFFFFFFFFFFFF0) count:v3];
-  if (v3)
+  v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 - ((8 * countCopy + 15) & 0xFFFFFFFFFFFFFFF0) count:countCopy];
+  if (countCopy)
   {
     do
     {
@@ -409,16 +409,16 @@
   return v10;
 }
 
-- (id)durationsWithMaxCount:(unint64_t)a3
+- (id)durationsWithMaxCount:(unint64_t)count
 {
   v56 = *MEMORY[0x1E69E9840];
   if ([(STKImageData *)self supportsAnimatedImages])
   {
     v5 = [(STKImageData *)self count];
     v6 = v5;
-    if (v5 > a3)
+    if (v5 > count)
     {
-      v7 = v5 / a3;
+      v7 = v5 / count;
     }
 
     else
@@ -427,18 +427,18 @@
     }
 
     v8 = objc_alloc(MEMORY[0x1E695DF70]);
-    v39 = a3;
-    if (v6 >= a3)
+    countCopy = count;
+    if (v6 >= count)
     {
-      v9 = a3;
+      countCopy2 = count;
     }
 
     else
     {
-      v9 = v6;
+      countCopy2 = v6;
     }
 
-    v10 = [v8 initWithCapacity:v9];
+    v10 = [v8 initWithCapacity:countCopy2];
     if (v6)
     {
       v11 = 0;
@@ -545,7 +545,7 @@
 
     v35 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v16];
     [v10 addObject:v35];
-    if (v6 > v39)
+    if (v6 > countCopy)
     {
       v36 = os_log_create("com.apple.VisionKit", "com.apple.StickerKit.stickerData");
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -554,7 +554,7 @@
         *&valuePtr = 3.8523e-34;
         v49 = v6;
         v50 = 2048;
-        v51 = v39;
+        v51 = countCopy;
         v52 = 2048;
         v53 = v7;
         v54 = 2048;
@@ -574,18 +574,18 @@
 
 - (id)MIMEType
 {
-  v2 = [(STKImageData *)self utType];
-  v3 = [v2 preferredMIMEType];
+  utType = [(STKImageData *)self utType];
+  preferredMIMEType = [utType preferredMIMEType];
 
-  return v3;
+  return preferredMIMEType;
 }
 
 - (UTType)utType
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(STKImageData *)self UTIType];
-  v4 = v3;
-  if (v3 && ![v3 isEqualToString:&stru_1F0DCF9D8])
+  uTIType = [(STKImageData *)self UTIType];
+  v4 = uTIType;
+  if (uTIType && ![uTIType isEqualToString:&stru_1F0DCF9D8])
   {
     v7 = [MEMORY[0x1E6982C40] typeWithIdentifier:v4];
   }
@@ -713,20 +713,20 @@ LABEL_16:
       }
     }
 
-    v14 = [v11 integerValue];
+    integerValue = [v11 integerValue];
     v15 = 2;
     v16 = 3;
-    if (v14 != 6)
+    if (integerValue != 6)
     {
       v16 = 0;
     }
 
-    if (v14 != 8)
+    if (integerValue != 8)
     {
       v15 = v16;
     }
 
-    if (v14 == 3)
+    if (integerValue == 3)
     {
       v12 = 1;
     }
@@ -740,7 +740,7 @@ LABEL_16:
   }
 }
 
-- (id)_thumbnailFitToSize:(CGSize)a3 atIndex:(unint64_t)a4
+- (id)_thumbnailFitToSize:(CGSize)size atIndex:(unint64_t)index
 {
   if (ITKMainScreenScale_once[0] != -1)
   {
@@ -762,12 +762,12 @@ LABEL_16:
   ITKFloorSize();
   ITKSizeGetMaxDimension();
   v8 = v6 * v7;
-  v9 = [(STKImageData *)self UTIType];
-  v10 = [v9 isEqualToString:@"public.heics"];
+  uTIType = [(STKImageData *)self UTIType];
+  v10 = [uTIType isEqualToString:@"public.heics"];
 
-  v11 = [(STKImageData *)self UTIType];
-  v12 = [*MEMORY[0x1E6982E58] identifier];
-  v13 = [v11 isEqualToString:v12];
+  uTIType2 = [(STKImageData *)self UTIType];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v13 = [uTIType2 isEqualToString:identifier];
 
   if ([(STKImageData *)self count]<= 1 && v13)
   {
@@ -782,7 +782,7 @@ LABEL_16:
       goto LABEL_20;
     }
 
-    [(STKImageData *)self sizeForImageSource:self->_imageSource index:a4];
+    [(STKImageData *)self sizeForImageSource:self->_imageSource index:index];
     if (v16 <= v17)
     {
       v16 = v17;
@@ -793,7 +793,7 @@ LABEL_16:
       goto LABEL_20;
     }
 
-    ThumbnailWithJPEGForMaxDimension = _CreateThumbnailFromHEICSWithMaxDimension(self->_imageSource, a4);
+    ThumbnailWithJPEGForMaxDimension = _CreateThumbnailFromHEICSWithMaxDimension(self->_imageSource, index);
   }
 
   ThumbnailWithImageSourceAtIndexForMaxDimension = ThumbnailWithJPEGForMaxDimension;
@@ -806,7 +806,7 @@ LABEL_21:
   }
 
 LABEL_20:
-  ThumbnailWithImageSourceAtIndexForMaxDimension = _CreateThumbnailWithImageSourceAtIndexForMaxDimension(self->_imageSource, a4, v8);
+  ThumbnailWithImageSourceAtIndexForMaxDimension = _CreateThumbnailWithImageSourceAtIndexForMaxDimension(self->_imageSource, index, v8);
   if (ThumbnailWithImageSourceAtIndexForMaxDimension)
   {
     goto LABEL_21;
@@ -818,9 +818,9 @@ LABEL_23:
   return v19;
 }
 
-- (CGSize)sizeForImageSource:(CGImageSource *)a3 index:(unint64_t)a4
+- (CGSize)sizeForImageSource:(CGImageSource *)source index:(unint64_t)index
 {
-  v4 = CGImageSourceCopyPropertiesAtIndex(a3, a4, 0);
+  v4 = CGImageSourceCopyPropertiesAtIndex(source, index, 0);
   v5 = v4;
   if (v4)
   {
@@ -846,7 +846,7 @@ LABEL_23:
   return result;
 }
 
-- (id)_thumbnailFillToSize:(CGSize)a3 atIndex:(unint64_t)a4
+- (id)_thumbnailFillToSize:(CGSize)size atIndex:(unint64_t)index
 {
   if (ITKMainScreenScale_once[0] != -1)
   {
@@ -867,10 +867,10 @@ LABEL_23:
   ITKFitOrFillSizeInSize();
   ITKSizeGetMaxDimension();
   v8 = v6 * v7;
-  if (!a4)
+  if (!index)
   {
-    v9 = [(STKImageData *)self utType];
-    if ([v9 itk_isJPEG])
+    utType = [(STKImageData *)self utType];
+    if ([utType itk_isJPEG])
     {
       v10 = [(STKImageData *)self count];
 
@@ -890,7 +890,7 @@ LABEL_23:
     }
   }
 
-  ThumbnailWithJPEGForMaxDimension = _CreateThumbnailWithImageSourceAtIndexForMaxDimension(self->_imageSource, a4, v8);
+  ThumbnailWithJPEGForMaxDimension = _CreateThumbnailWithImageSourceAtIndexForMaxDimension(self->_imageSource, index, v8);
   if (ThumbnailWithJPEGForMaxDimension)
   {
 LABEL_13:

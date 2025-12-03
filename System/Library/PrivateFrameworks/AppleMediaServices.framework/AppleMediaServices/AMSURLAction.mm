@@ -1,13 +1,13 @@
 @interface AMSURLAction
-+ (AMSURLAction)actionWithError:(id)a3;
++ (AMSURLAction)actionWithError:(id)error;
 + (id)proceedAction;
-+ (id)redirectActionWithURL:(id)a3;
++ (id)redirectActionWithURL:(id)l;
 + (id)retryAction;
-- (AMSURLAction)initWithCoder:(id)a3;
-- (AMSURLAction)initWithType:(int64_t)a3;
-- (AMSURLAction)initWithType:(int64_t)a3 error:(id)a4 reason:(id)a5 redirectURL:(id)a6;
+- (AMSURLAction)initWithCoder:(id)coder;
+- (AMSURLAction)initWithType:(int64_t)type;
+- (AMSURLAction)initWithType:(int64_t)type error:(id)error reason:(id)reason redirectURL:(id)l;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSURLAction
@@ -19,25 +19,25 @@
   return v2;
 }
 
-- (AMSURLAction)initWithType:(int64_t)a3
+- (AMSURLAction)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = AMSURLAction;
   result = [(AMSURLAction *)&v5 init];
   if (result)
   {
-    result->_actionType = a3;
+    result->_actionType = type;
   }
 
   return result;
 }
 
-+ (AMSURLAction)actionWithError:(id)a3
++ (AMSURLAction)actionWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = [[AMSURLAction alloc] initWithType:3];
   error = v4->_error;
-  v4->_error = v3;
+  v4->_error = errorCopy;
 
   return v4;
 }
@@ -49,13 +49,13 @@
   return v2;
 }
 
-+ (id)redirectActionWithURL:(id)a3
++ (id)redirectActionWithURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v5 = [[AMSURLAction alloc] initWithType:1];
-    v6 = v4;
+    v6 = lCopy;
     redirectURL = v5->_redirectURL;
     v5->_redirectURL = v6;
   }
@@ -63,27 +63,27 @@
   else
   {
     redirectURL = AMSError(301, @"Unable to redirect", @"Redirect URL not found", 0);
-    v5 = [a1 actionWithError:redirectURL];
+    v5 = [self actionWithError:redirectURL];
   }
 
   return v5;
 }
 
-- (AMSURLAction)initWithType:(int64_t)a3 error:(id)a4 reason:(id)a5 redirectURL:(id)a6
+- (AMSURLAction)initWithType:(int64_t)type error:(id)error reason:(id)reason redirectURL:(id)l
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorCopy = error;
+  reasonCopy = reason;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = AMSURLAction;
   v14 = [(AMSURLAction *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_actionType = a3;
-    objc_storeStrong(&v14->_error, a4);
-    objc_storeStrong(&v15->_reason, a5);
-    objc_storeStrong(&v15->_redirectURL, a6);
+    v14->_actionType = type;
+    objc_storeStrong(&v14->_error, error);
+    objc_storeStrong(&v15->_reason, reason);
+    objc_storeStrong(&v15->_redirectURL, l);
   }
 
   return v15;
@@ -93,67 +93,67 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AMSURLAction *)self actionType];
-  v6 = [(AMSURLAction *)self reason];
-  v7 = [(AMSURLAction *)self redirectURL];
-  v8 = AMSLogableURL(v7);
-  v9 = [(AMSURLAction *)self retryIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@ type=%ld reason=%@ redirectURL=%@ retryId=%@>", v4, v5, v6, v8, v9];
+  actionType = [(AMSURLAction *)self actionType];
+  reason = [(AMSURLAction *)self reason];
+  redirectURL = [(AMSURLAction *)self redirectURL];
+  v8 = AMSLogableURL(redirectURL);
+  retryIdentifier = [(AMSURLAction *)self retryIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@ type=%ld reason=%@ redirectURL=%@ retryId=%@>", v4, actionType, reason, v8, retryIdentifier];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[AMSURLAction actionType](self forKey:{"actionType"), @"actionType"}];
-  v5 = [(AMSURLAction *)self error];
-  [v4 encodeObject:v5 forKey:@"error"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AMSURLAction actionType](self forKey:{"actionType"), @"actionType"}];
+  error = [(AMSURLAction *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 
-  v6 = [(AMSURLAction *)self reason];
-  [v4 encodeObject:v6 forKey:@"reason"];
+  reason = [(AMSURLAction *)self reason];
+  [coderCopy encodeObject:reason forKey:@"reason"];
 
-  v7 = [(AMSURLAction *)self redirectURL];
-  [v4 encodeObject:v7 forKey:@"redirectURL"];
+  redirectURL = [(AMSURLAction *)self redirectURL];
+  [coderCopy encodeObject:redirectURL forKey:@"redirectURL"];
 
-  v8 = [(AMSURLAction *)self updatedBody];
-  [v4 encodeObject:v8 forKey:@"updatedBody"];
+  updatedBody = [(AMSURLAction *)self updatedBody];
+  [coderCopy encodeObject:updatedBody forKey:@"updatedBody"];
 
-  v9 = [(AMSURLAction *)self updatedBuyParams];
-  [v4 encodeObject:v9 forKey:@"updateBuyParams"];
+  updatedBuyParams = [(AMSURLAction *)self updatedBuyParams];
+  [coderCopy encodeObject:updatedBuyParams forKey:@"updateBuyParams"];
 
-  v10 = [(AMSURLAction *)self updatedHeaders];
-  [v4 encodeObject:v10 forKey:@"updatedHeaders"];
+  updatedHeaders = [(AMSURLAction *)self updatedHeaders];
+  [coderCopy encodeObject:updatedHeaders forKey:@"updatedHeaders"];
 
-  v11 = [(AMSURLAction *)self updatedMethod];
-  [v4 encodeObject:v11 forKey:@"updatedMethod"];
+  updatedMethod = [(AMSURLAction *)self updatedMethod];
+  [coderCopy encodeObject:updatedMethod forKey:@"updatedMethod"];
 }
 
-- (AMSURLAction)initWithCoder:(id)a3
+- (AMSURLAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"actionType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redirectURL"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"actionType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redirectURL"];
   v9 = [(AMSURLAction *)self initWithType:v5 error:v6 reason:v7 redirectURL:v8];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"updatedBody"];
+    ams_PLISTClasses = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+    v11 = [coderCopy decodeObjectOfClasses:ams_PLISTClasses forKey:@"updatedBody"];
     updatedBody = v9->_updatedBody;
     v9->_updatedBody = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateBuyParams"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateBuyParams"];
     updatedBuyParams = v9->_updatedBuyParams;
     v9->_updatedBuyParams = v13;
 
-    v15 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"updatedHeaders"];
+    ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v16 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"updatedHeaders"];
     updatedHeaders = v9->_updatedHeaders;
     v9->_updatedHeaders = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updatedMethod"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updatedMethod"];
     updatedMethod = v9->_updatedMethod;
     v9->_updatedMethod = v18;
   }

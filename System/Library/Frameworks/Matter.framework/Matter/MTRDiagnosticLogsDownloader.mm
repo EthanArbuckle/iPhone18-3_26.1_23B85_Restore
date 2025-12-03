@@ -1,11 +1,11 @@
 @interface MTRDiagnosticLogsDownloader
 - (MTRDiagnosticLogsDownloader)init;
-- (void)_abortDownloadsForController:(id)a3 nodeID:(id)a4;
+- (void)_abortDownloadsForController:(id)controller nodeID:(id)d;
 - (void)dealloc;
-- (void)downloadLogFromNodeWithID:(id)a3 controller:(id)a4 type:(int64_t)a5 timeout:(double)a6 queue:(id)a7 completion:(id)a8;
-- (void)handleBDXTransferSessionBeginForFileDesignator:(id)a3 fabricIndex:(id)a4 nodeID:(id)a5 completion:(id)a6 abortHandler:(id)a7;
-- (void)handleBDXTransferSessionDataForFileDesignator:(id)a3 fabricIndex:(id)a4 nodeID:(id)a5 data:(id)a6 completion:(id)a7;
-- (void)handleBDXTransferSessionEndForFileDesignator:(id)a3 fabricIndex:(id)a4 nodeID:(id)a5 error:(id)a6;
+- (void)downloadLogFromNodeWithID:(id)d controller:(id)controller type:(int64_t)type timeout:(double)timeout queue:(id)queue completion:(id)completion;
+- (void)handleBDXTransferSessionBeginForFileDesignator:(id)designator fabricIndex:(id)index nodeID:(id)d completion:(id)completion abortHandler:(id)handler;
+- (void)handleBDXTransferSessionDataForFileDesignator:(id)designator fabricIndex:(id)index nodeID:(id)d data:(id)data completion:(id)completion;
+- (void)handleBDXTransferSessionEndForFileDesignator:(id)designator fabricIndex:(id)index nodeID:(id)d error:(id)error;
 @end
 
 @implementation MTRDiagnosticLogsDownloader
@@ -45,25 +45,25 @@
   [(MTRDiagnosticLogsDownloader *)&v5 dealloc];
 }
 
-- (void)downloadLogFromNodeWithID:(id)a3 controller:(id)a4 type:(int64_t)a5 timeout:(double)a6 queue:(id)a7 completion:(id)a8
+- (void)downloadLogFromNodeWithID:(id)d controller:(id)controller type:(int64_t)type timeout:(double)timeout queue:(id)queue completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v37 = a8;
+  dCopy = d;
+  controllerCopy = controller;
+  queueCopy = queue;
+  completionCopy = completion;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm", 527);
-  [(MTRDiagnosticLogsDownloader *)self _abortDownloadsForController:v15 nodeID:v14];
+  [(MTRDiagnosticLogsDownloader *)self _abortDownloadsForController:controllerCopy nodeID:dCopy];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = sub_238EAD7BC;
   v42[3] = &unk_278A72B60;
-  v17 = v15;
+  v17 = controllerCopy;
   v43 = v17;
-  v44 = self;
+  selfCopy = self;
   v36 = MEMORY[0x23EE78590](v42);
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v17, "fabricIndex")}];
-  v18 = [MTRDownloads add:"add:fabricIndex:nodeID:timeout:queue:completion:done:" fabricIndex:a5 nodeID:a6 timeout:? queue:? completion:? done:?];
+  v18 = [MTRDownloads add:"add:fabricIndex:nodeID:timeout:queue:completion:done:" fabricIndex:type nodeID:timeout timeout:? queue:? completion:? done:?];
   v19 = v18;
   if (v18)
   {
@@ -74,41 +74,41 @@
     v20 = v18;
     v39 = v20;
     v32 = MEMORY[0x23EE78590](v38);
-    v34 = [MTRDevice deviceWithNodeID:v14 controller:v17];
-    v33 = [(MTRGenericCluster *)[MTRClusterDiagnosticLogs alloc] initWithDevice:v34 endpointID:&unk_284C3E570 queue:v16];
+    v34 = [MTRDevice deviceWithNodeID:dCopy controller:v17];
+    v33 = [(MTRGenericCluster *)[MTRClusterDiagnosticLogs alloc] initWithDevice:v34 endpointID:&unk_284C3E570 queue:queueCopy];
     v21 = objc_alloc_init(MTRDiagnosticLogsClusterRetrieveLogsRequestParams);
-    v22 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v22 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v21 setIntent:v22];
 
     [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v21 setRequestedProtocol:&unk_284C3E558];
-    v23 = [v20 fileDesignator];
-    [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v21 setTransferFileDesignator:v23];
+    fileDesignator = [v20 fileDesignator];
+    [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v21 setTransferFileDesignator:fileDesignator];
 
     [(MTRClusterDiagnosticLogs *)v33 retrieveLogsRequestWithParams:v21 expectedValues:0 expectedValueInterval:0 completion:v32];
     v24 = sub_2393D9044(0);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v17 compressedFabricID];
-      v26 = [v25 unsignedLongLongValue];
-      v27 = [v14 unsignedLongLongValue];
-      v28 = [v14 unsignedLongLongValue];
+      compressedFabricID = [v17 compressedFabricID];
+      unsignedLongLongValue = [compressedFabricID unsignedLongLongValue];
+      unsignedLongLongValue2 = [dCopy unsignedLongLongValue];
+      unsignedLongLongValue3 = [dCopy unsignedLongLongValue];
       *buf = 138413058;
       v46 = v20;
       v47 = 2048;
-      v48 = v26;
+      v48 = unsignedLongLongValue;
       v49 = 2048;
-      v50 = v27;
+      v50 = unsignedLongLongValue2;
       v51 = 2048;
-      v52 = v28;
+      v52 = unsignedLongLongValue3;
       _os_log_impl(&dword_238DAE000, v24, OS_LOG_TYPE_DEFAULT, "%@ Started log download attempt for node %016llX-%016llX (%llu)", buf, 0x2Au);
     }
 
     if (sub_2393D5398(2u))
     {
-      v29 = [v17 compressedFabricID];
-      [v29 unsignedLongLongValue];
-      [v14 unsignedLongLongValue];
-      [v14 unsignedLongLongValue];
+      compressedFabricID2 = [v17 compressedFabricID];
+      [compressedFabricID2 unsignedLongLongValue];
+      [dCopy unsignedLongLongValue];
+      [dCopy unsignedLongLongValue];
       sub_2393D5320(0, 2);
     }
 
@@ -122,116 +122,116 @@
     block[2] = sub_238EAD87C;
     block[3] = &unk_278A72B88;
     v30 = &v41;
-    v41 = v37;
-    dispatch_async(v16, block);
+    v41 = completionCopy;
+    dispatch_async(queueCopy, block);
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_abortDownloadsForController:(id)a3 nodeID:(id)a4
+- (void)_abortDownloadsForController:(id)controller nodeID:(id)d
 {
-  v7 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  dCopy = d;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm", 570);
-  [(MTRDownloads *)self->_downloads abortDownloadsForController:v7 nodeID:v6];
+  [(MTRDownloads *)self->_downloads abortDownloadsForController:controllerCopy nodeID:dCopy];
 }
 
-- (void)handleBDXTransferSessionBeginForFileDesignator:(id)a3 fabricIndex:(id)a4 nodeID:(id)a5 completion:(id)a6 abortHandler:(id)a7
+- (void)handleBDXTransferSessionBeginForFileDesignator:(id)designator fabricIndex:(id)index nodeID:(id)d completion:(id)completion abortHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v24 = a7;
+  designatorCopy = designator;
+  indexCopy = index;
+  dCopy = d;
+  completionCopy = completion;
+  handlerCopy = handler;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm", 581);
-  v16 = [(MTRDownloads *)self->_downloads get:v12 fabricIndex:v13 nodeID:v14];
+  v16 = [(MTRDownloads *)self->_downloads get:designatorCopy fabricIndex:indexCopy nodeID:dCopy];
   v17 = +[MTRDeviceControllerFactory sharedInstance];
-  v18 = sub_23952B954(v17, [v13 unsignedCharValue]);
+  v18 = sub_23952B954(v17, [indexCopy unsignedCharValue]);
 
   v19 = sub_2393D9044(0);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v18 compressedFabricID];
+    compressedFabricID = [v18 compressedFabricID];
     *buf = 138413314;
     v26 = v16;
     v27 = 2048;
-    v28 = [v20 unsignedLongLongValue];
+    unsignedLongLongValue = [compressedFabricID unsignedLongLongValue];
     v29 = 2048;
-    v30 = [v14 unsignedLongLongValue];
+    unsignedLongLongValue2 = [dCopy unsignedLongLongValue];
     v31 = 2048;
-    v32 = [v14 unsignedLongLongValue];
+    unsignedLongLongValue3 = [dCopy unsignedLongLongValue];
     v33 = 2112;
-    v34 = v12;
+    v34 = designatorCopy;
     _os_log_impl(&dword_238DAE000, v19, OS_LOG_TYPE_DEFAULT, "%@ BDX Transfer Session Begin for log download: %016llX-%016llX (%llu), %@", buf, 0x34u);
   }
 
   if (sub_2393D5398(2u))
   {
-    v21 = [v18 compressedFabricID];
-    [v21 unsignedLongLongValue];
-    [v14 unsignedLongLongValue];
-    [v14 unsignedLongLongValue];
+    compressedFabricID2 = [v18 compressedFabricID];
+    [compressedFabricID2 unsignedLongLongValue];
+    [dCopy unsignedLongLongValue];
+    [dCopy unsignedLongLongValue];
     sub_2393D5320(0, 2);
   }
 
   if (v16)
   {
-    [v16 setAbortHandler:v24];
-    v15[2](v15, 0);
+    [v16 setAbortHandler:handlerCopy];
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v22 = sub_23921C1E4(MTRError, 0x24F000000D8, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm");
-    (v15)[2](v15, v22);
+    (completionCopy)[2](completionCopy, v22);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleBDXTransferSessionDataForFileDesignator:(id)a3 fabricIndex:(id)a4 nodeID:(id)a5 data:(id)a6 completion:(id)a7
+- (void)handleBDXTransferSessionDataForFileDesignator:(id)designator fabricIndex:(id)index nodeID:(id)d data:(id)data completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v26 = v12;
+  designatorCopy = designator;
+  indexCopy = index;
+  dCopy = d;
+  dataCopy = data;
+  completionCopy = completion;
+  v26 = designatorCopy;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm", 603);
-  v17 = v12;
-  v18 = [(MTRDownloads *)self->_downloads get:v12 fabricIndex:v13 nodeID:v14];
+  v17 = designatorCopy;
+  v18 = [(MTRDownloads *)self->_downloads get:designatorCopy fabricIndex:indexCopy nodeID:dCopy];
   v19 = +[MTRDeviceControllerFactory sharedInstance];
-  v20 = sub_23952B954(v19, [v13 unsignedCharValue]);
+  v20 = sub_23952B954(v19, [indexCopy unsignedCharValue]);
 
   v21 = sub_2393D9044(0);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v20 compressedFabricID];
+    compressedFabricID = [v20 compressedFabricID];
     *buf = 138413570;
     v29 = v18;
     v30 = 2048;
-    v31 = [v22 unsignedLongLongValue];
+    unsignedLongLongValue = [compressedFabricID unsignedLongLongValue];
     v32 = 2048;
-    v33 = [v14 unsignedLongLongValue];
+    unsignedLongLongValue2 = [dCopy unsignedLongLongValue];
     v34 = 2048;
-    v35 = [v14 unsignedLongLongValue];
+    unsignedLongLongValue3 = [dCopy unsignedLongLongValue];
     v36 = 2112;
     v17 = v26;
     v37 = v26;
     v38 = 2112;
-    v39 = v15;
+    v39 = dataCopy;
     _os_log_impl(&dword_238DAE000, v21, OS_LOG_TYPE_DEFAULT, "%@ BDX Transfer Session Data for log download: %016llX-%016llX (%llu), %@: %@", buf, 0x3Eu);
   }
 
   if (sub_2393D5398(2u))
   {
-    v23 = [v20 compressedFabricID];
-    [v23 unsignedLongLongValue];
-    [v14 unsignedLongLongValue];
-    [v14 unsignedLongLongValue];
+    compressedFabricID2 = [v20 compressedFabricID];
+    [compressedFabricID2 unsignedLongLongValue];
+    [dCopy unsignedLongLongValue];
+    [dCopy unsignedLongLongValue];
     sub_2393D5320(0, 2);
 
     v17 = v26;
@@ -240,65 +240,65 @@
   if (v18)
   {
     v27 = 0;
-    [v18 writeToFile:v15 error:&v27];
+    [v18 writeToFile:dataCopy error:&v27];
     v24 = v27;
-    v16[2](v16, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v24 = sub_23921C1E4(MTRError, 0x265000000D8, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm");
-    (v16)[2](v16, v24);
+    (completionCopy)[2](completionCopy, v24);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleBDXTransferSessionEndForFileDesignator:(id)a3 fabricIndex:(id)a4 nodeID:(id)a5 error:(id)a6
+- (void)handleBDXTransferSessionEndForFileDesignator:(id)designator fabricIndex:(id)index nodeID:(id)d error:(id)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  designatorCopy = designator;
+  indexCopy = index;
+  dCopy = d;
+  errorCopy = error;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm", 627);
-  v14 = [(MTRDownloads *)self->_downloads get:v10 fabricIndex:v11 nodeID:v12];
+  v14 = [(MTRDownloads *)self->_downloads get:designatorCopy fabricIndex:indexCopy nodeID:dCopy];
   v15 = +[MTRDeviceControllerFactory sharedInstance];
-  v16 = sub_23952B954(v15, [v11 unsignedCharValue]);
+  v16 = sub_23952B954(v15, [indexCopy unsignedCharValue]);
 
   v17 = sub_2393D9044(0);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v16 compressedFabricID];
+    compressedFabricID = [v16 compressedFabricID];
     *buf = 138413570;
     v22 = v14;
     v23 = 2048;
-    v24 = [v18 unsignedLongLongValue];
+    unsignedLongLongValue = [compressedFabricID unsignedLongLongValue];
     v25 = 2048;
-    v26 = [v12 unsignedLongLongValue];
+    unsignedLongLongValue2 = [dCopy unsignedLongLongValue];
     v27 = 2048;
-    v28 = [v12 unsignedLongLongValue];
+    unsignedLongLongValue3 = [dCopy unsignedLongLongValue];
     v29 = 2112;
-    v30 = v10;
+    v30 = designatorCopy;
     v31 = 2112;
-    v32 = v13;
+    v32 = errorCopy;
     _os_log_impl(&dword_238DAE000, v17, OS_LOG_TYPE_DEFAULT, "%@ BDX Transfer Session End for log download: %016llX-%016llX (%llu), %@: %@", buf, 0x3Eu);
   }
 
   if (sub_2393D5398(2u))
   {
-    v19 = [v16 compressedFabricID];
-    [v19 unsignedLongLongValue];
-    [v12 unsignedLongLongValue];
-    [v12 unsignedLongLongValue];
+    compressedFabricID2 = [v16 compressedFabricID];
+    [compressedFabricID2 unsignedLongLongValue];
+    [dCopy unsignedLongLongValue];
+    [dCopy unsignedLongLongValue];
     sub_2393D5320(0, 2);
   }
 
   if (v14)
   {
-    if (v13)
+    if (errorCopy)
     {
-      [v14 failure:v13];
+      [v14 failure:errorCopy];
     }
 
     else

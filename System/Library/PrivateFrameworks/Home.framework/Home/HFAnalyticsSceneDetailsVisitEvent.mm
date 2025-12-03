@@ -1,10 +1,10 @@
 @interface HFAnalyticsSceneDetailsVisitEvent
-- (HFAnalyticsSceneDetailsVisitEvent)initWithData:(id)a3;
+- (HFAnalyticsSceneDetailsVisitEvent)initWithData:(id)data;
 @end
 
 @implementation HFAnalyticsSceneDetailsVisitEvent
 
-- (HFAnalyticsSceneDetailsVisitEvent)initWithData:(id)a3
+- (HFAnalyticsSceneDetailsVisitEvent)initWithData:(id)data
 {
   v4.receiver = self;
   v4.super_class = HFAnalyticsSceneDetailsVisitEvent;

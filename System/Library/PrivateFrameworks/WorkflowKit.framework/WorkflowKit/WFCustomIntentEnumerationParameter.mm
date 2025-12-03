@@ -1,19 +1,19 @@
 @interface WFCustomIntentEnumerationParameter
 - (NSArray)possibleStates;
-- (WFCustomIntentEnumerationParameter)initWithDefinition:(id)a3;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (WFCustomIntentEnumerationParameter)initWithDefinition:(id)definition;
+- (id)localizedLabelForPossibleState:(id)state;
 @end
 
 @implementation WFCustomIntentEnumerationParameter
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = [a3 value];
-  if (v4)
+  value = [state value];
+  if (value)
   {
-    v5 = v4;
-    v6 = [(WFCustomIntentEnumerationParameter *)self keysToEnumNames];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    v5 = value;
+    keysToEnumNames = [(WFCustomIntentEnumerationParameter *)self keysToEnumNames];
+    v7 = [keysToEnumNames objectForKeyedSubscript:v5];
     v8 = v7;
     if (v7)
     {
@@ -27,10 +27,10 @@
 
     v10 = v9;
 
-    v11 = [(WFCustomIntentEnumerationParameter *)self enumNamesToLabels];
-    v12 = [v11 objectForKeyedSubscript:v10];
-    v13 = [MEMORY[0x1E69E0BE0] defaultContext];
-    v14 = [v12 localizedStringWithContext:v13 pluralizationNumber:0];
+    enumNamesToLabels = [(WFCustomIntentEnumerationParameter *)self enumNamesToLabels];
+    v12 = [enumNamesToLabels objectForKeyedSubscript:v10];
+    defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+    v14 = [v12 localizedStringWithContext:defaultContext pluralizationNumber:0];
   }
 
   else
@@ -52,11 +52,11 @@
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = [(WFCustomIntentEnumerationParameter *)self enumAttribute];
-    v6 = [v5 codableEnum];
-    v7 = [v6 values];
+    enumAttribute = [(WFCustomIntentEnumerationParameter *)self enumAttribute];
+    codableEnum = [enumAttribute codableEnum];
+    values = [codableEnum values];
 
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v8 = [values countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
@@ -67,34 +67,34 @@
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(values);
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
           if ([v12 index])
           {
-            v13 = [(WFCustomIntentEnumerationParameter *)self enumNamesToKeys];
-            v14 = [v12 name];
-            v15 = [v13 objectForKeyedSubscript:v14];
+            enumNamesToKeys = [(WFCustomIntentEnumerationParameter *)self enumNamesToKeys];
+            name = [v12 name];
+            v15 = [enumNamesToKeys objectForKeyedSubscript:name];
             v16 = v15;
             if (v15)
             {
-              v17 = v15;
+              name2 = v15;
             }
 
             else
             {
-              v17 = [v12 name];
+              name2 = [v12 name];
             }
 
-            v18 = v17;
+            v18 = name2;
 
             v19 = [(WFVariableSubstitutableParameterState *)[WFStringSubstitutableState alloc] initWithValue:v18];
             [v4 addObject:v19];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v9 = [values countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v9);
@@ -112,21 +112,21 @@
   return possibleStates;
 }
 
-- (WFCustomIntentEnumerationParameter)initWithDefinition:(id)a3
+- (WFCustomIntentEnumerationParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v27.receiver = self;
   v27.super_class = WFCustomIntentEnumerationParameter;
-  v5 = [(WFEnumerationParameter *)&v27 initWithDefinition:v4];
+  v5 = [(WFEnumerationParameter *)&v27 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"EnumAttribute"];
+    v6 = [definitionCopy objectForKey:@"EnumAttribute"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
     enumAttribute = v5->_enumAttribute;
     v5->_enumAttribute = v8;
 
-    v10 = [v4 objectForKey:@"IntentEnumOverrides"];
+    v10 = [definitionCopy objectForKey:@"IntentEnumOverrides"];
     v11 = objc_opt_class();
     v12 = WFEnforceClass_1501(v10, v11);
     enumNamesToKeys = v5->_enumNamesToKeys;
@@ -145,7 +145,7 @@
     v5->_keysToEnumNames = v16;
     v18 = v16;
 
-    v19 = [v4 objectForKey:@"EnumNamesToLabel"];
+    v19 = [definitionCopy objectForKey:@"EnumNamesToLabel"];
     v20 = objc_opt_class();
     v21 = WFEnforceClass_1501(v19, v20);
     enumNamesToLabels = v5->_enumNamesToLabels;

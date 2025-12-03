@@ -1,22 +1,22 @@
 @interface QLThumbnail
 + (id)defaultDescriptors;
 + (id)sharedQueue;
-- (BOOL)provideImages:(id)a3 error:(id *)a4;
-- (QLThumbnail)initWithURL:(id)a3;
+- (BOOL)provideImages:(id)images error:(id *)error;
+- (QLThumbnail)initWithURL:(id)l;
 @end
 
 @implementation QLThumbnail
 
-- (QLThumbnail)initWithURL:(id)a3
+- (QLThumbnail)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = QLThumbnail;
   v5 = [(QLThumbnail *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(QLThumbnail *)v5 setUrl:v4];
+    [(QLThumbnail *)v5 setUrl:lCopy];
   }
 
   return v6;
@@ -58,12 +58,12 @@ uint64_t __26__QLThumbnail_sharedQueue__block_invoke()
   return v3;
 }
 
-- (BOOL)provideImages:(id)a3 error:(id *)a4
+- (BOOL)provideImages:(id)images error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [objc_opt_class() defaultDescriptors];
-  v8 = v6[2](v6, v7);
+  imagesCopy = images;
+  defaultDescriptors = [objc_opt_class() defaultDescriptors];
+  v8 = imagesCopy[2](imagesCopy, defaultDescriptors);
 
   v36 = 0u;
   v37 = 0u;
@@ -116,9 +116,9 @@ uint64_t __26__QLThumbnail_sharedQueue__block_invoke()
   }
 
   v21 = MEMORY[0x277CDAAC0];
-  v22 = [v12 CGImage];
+  cGImage = [v12 CGImage];
   v23 = [(QLThumbnail *)self url];
-  v24 = [v21 associateImage:v22 metadata:0 automaticallyGenerated:0 withURL:v23 error:a4];
+  v24 = [v21 associateImage:cGImage metadata:0 automaticallyGenerated:0 withURL:v23 error:error];
 
   v25 = MEMORY[0x277D43EF8];
   v26 = *MEMORY[0x277D43EF8];
@@ -153,9 +153,9 @@ LABEL_26:
 
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      if (a4)
+      if (error)
       {
-        v31 = *a4;
+        v31 = *error;
       }
 
       else

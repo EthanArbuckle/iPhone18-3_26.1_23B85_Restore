@@ -7,8 +7,8 @@
 
 - (id)hmu_homePods
 {
-  v1 = [a1 accessories];
-  v2 = [v1 na_filter:&__block_literal_global_4];
+  accessories = [self accessories];
+  v2 = [accessories na_filter:&__block_literal_global_4];
 
   return v2;
 }

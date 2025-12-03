@@ -1,20 +1,20 @@
 @interface EKAvailabilityCachedSpan
-- (EKAvailabilityCachedSpan)initWithSpan:(id)a3;
+- (EKAvailabilityCachedSpan)initWithSpan:(id)span;
 - (id)description;
 @end
 
 @implementation EKAvailabilityCachedSpan
 
-- (EKAvailabilityCachedSpan)initWithSpan:(id)a3
+- (EKAvailabilityCachedSpan)initWithSpan:(id)span
 {
-  v4 = a3;
+  spanCopy = span;
   v9.receiver = self;
   v9.super_class = EKAvailabilityCachedSpan;
   v5 = [(EKAvailabilityCachedSpan *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(EKAvailabilityCachedSpan *)v5 setSpan:v4];
+    [(EKAvailabilityCachedSpan *)v5 setSpan:spanCopy];
     v7 = objc_opt_new();
     [(EKAvailabilityCachedSpan *)v6 setCreationDate:v7];
   }
@@ -30,15 +30,15 @@
   v4 = [(EKAvailabilityCachedSpan *)&v10 description];
   v5 = [v3 initWithSuperclassDescription:v4];
 
-  v6 = [(EKAvailabilityCachedSpan *)self creationDate];
-  [v5 setKey:@"creationDate" withDate:v6];
+  creationDate = [(EKAvailabilityCachedSpan *)self creationDate];
+  [v5 setKey:@"creationDate" withDate:creationDate];
 
-  v7 = [(EKAvailabilityCachedSpan *)self span];
-  [v5 setKey:@"span" withObject:v7];
+  span = [(EKAvailabilityCachedSpan *)self span];
+  [v5 setKey:@"span" withObject:span];
 
-  v8 = [v5 build];
+  build = [v5 build];
 
-  return v8;
+  return build;
 }
 
 @end

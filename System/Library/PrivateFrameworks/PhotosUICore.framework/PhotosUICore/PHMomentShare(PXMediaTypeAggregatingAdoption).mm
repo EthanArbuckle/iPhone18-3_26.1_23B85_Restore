@@ -6,14 +6,14 @@
 
 - (uint64_t)aggregateMediaType
 {
-  v2 = [a1 photosCount];
-  v3 = [a1 videosCount];
-  result = [a1 assetCount];
+  photosCount = [self photosCount];
+  videosCount = [self videosCount];
+  result = [self assetCount];
   if (result)
   {
-    if (v3 || v2 != result)
+    if (videosCount || photosCount != result)
     {
-      if (v3 == result && v2 == 0)
+      if (videosCount == result && photosCount == 0)
       {
         return 2;
       }

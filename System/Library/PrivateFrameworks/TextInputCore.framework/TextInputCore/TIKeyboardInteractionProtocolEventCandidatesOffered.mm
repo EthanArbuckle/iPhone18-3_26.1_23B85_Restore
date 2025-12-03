@@ -1,10 +1,10 @@
 @interface TIKeyboardInteractionProtocolEventCandidatesOffered
 - (NSString)description;
-- (TIKeyboardInteractionProtocolEventCandidatesOffered)initWithCandidatesOffered:(id)a3 keyboardState:(id)a4;
-- (TIKeyboardInteractionProtocolEventCandidatesOffered)initWithCoder:(id)a3;
-- (void)adjustSourceMaskForCandidate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)sendTo:(id)a3;
+- (TIKeyboardInteractionProtocolEventCandidatesOffered)initWithCandidatesOffered:(id)offered keyboardState:(id)state;
+- (TIKeyboardInteractionProtocolEventCandidatesOffered)initWithCoder:(id)coder;
+- (void)adjustSourceMaskForCandidate:(id)candidate;
+- (void)encodeWithCoder:(id)coder;
+- (void)sendTo:(id)to;
 @end
 
 @implementation TIKeyboardInteractionProtocolEventCandidatesOffered
@@ -12,25 +12,25 @@
 - (NSString)description
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(TIAutocorrectionList *)self->_candidates corrections];
-  v5 = [v4 autocorrection];
-  if (v5)
+  string = [MEMORY[0x277CCAB68] string];
+  corrections = [(TIAutocorrectionList *)self->_candidates corrections];
+  autocorrection = [corrections autocorrection];
+  if (autocorrection)
   {
-    v6 = v5;
-    v7 = [(TIAutocorrectionList *)self->_candidates corrections];
-    v8 = [v7 autocorrection];
-    v9 = [v8 candidate];
-    v10 = [v9 length];
+    v6 = autocorrection;
+    corrections2 = [(TIAutocorrectionList *)self->_candidates corrections];
+    autocorrection2 = [corrections2 autocorrection];
+    candidate = [autocorrection2 candidate];
+    v10 = [candidate length];
 
     if (v10)
     {
-      v11 = [(TIAutocorrectionList *)self->_candidates corrections];
-      v12 = [v11 autocorrection];
-      v13 = [v12 candidate];
-      [v3 appendString:v13];
+      corrections3 = [(TIAutocorrectionList *)self->_candidates corrections];
+      autocorrection3 = [corrections3 autocorrection];
+      candidate2 = [autocorrection3 candidate];
+      [string appendString:candidate2];
 
-      [v3 appendString:@": "];
+      [string appendString:@": "];
     }
   }
 
@@ -42,8 +42,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [(TIAutocorrectionList *)self->_candidates predictions];
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  predictions = [(TIAutocorrectionList *)self->_candidates predictions];
+  v15 = [predictions countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
     v16 = v15;
@@ -54,42 +54,42 @@
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(predictions);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * i) candidate];
-        [v3 appendString:v19];
+        candidate3 = [*(*(&v23 + 1) + 8 * i) candidate];
+        [string appendString:candidate3];
 
-        [v3 appendString:@" "];
+        [string appendString:@" "];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v16 = [predictions countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v16);
   }
 
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"<Candidates Offered: %@>", v3];
+  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"<Candidates Offered: %@>", string];
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v20;
 }
 
-- (void)sendTo:(id)a3
+- (void)sendTo:(id)to
 {
   candidates = self->_candidates;
-  v5 = a3;
-  v6 = [(TIKeyboardInteractionProtocolBase *)self keyboardState];
-  [v5 candidatesOffered:candidates keyboardState:v6];
+  toCopy = to;
+  keyboardState = [(TIKeyboardInteractionProtocolBase *)self keyboardState];
+  [toCopy candidatesOffered:candidates keyboardState:keyboardState];
 }
 
-- (void)adjustSourceMaskForCandidate:(id)a3
+- (void)adjustSourceMaskForCandidate:(id)candidate
 {
-  v10 = a3;
-  v3 = [v10 usageTrackingMask];
-  v4 = [v10 sourceMask];
-  if ((v3 & 0x40000) != 0)
+  candidateCopy = candidate;
+  usageTrackingMask = [candidateCopy usageTrackingMask];
+  sourceMask = [candidateCopy sourceMask];
+  if ((usageTrackingMask & 0x40000) != 0)
   {
     v5 = 0x20000;
   }
@@ -99,8 +99,8 @@
     v5 = 0x8000;
   }
 
-  v6 = v5 | v4 & 0xFFFFFFFE;
-  if ((v3 & 0x40000) != 0)
+  v6 = v5 | sourceMask & 0xFFFFFFFE;
+  if ((usageTrackingMask & 0x40000) != 0)
   {
     v7 = 0x40000;
   }
@@ -110,9 +110,9 @@
     v7 = 0x10000;
   }
 
-  if ((v4 & 1) == 0)
+  if ((sourceMask & 1) == 0)
   {
-    v6 = v4;
+    v6 = sourceMask;
   }
 
   v8 = v6 & 0xFFFFFFFD | v7;
@@ -126,33 +126,33 @@
     v9 = v6;
   }
 
-  [v10 setSourceMask:v9];
+  [candidateCopy setSourceMask:v9];
 }
 
-- (TIKeyboardInteractionProtocolEventCandidatesOffered)initWithCoder:(id)a3
+- (TIKeyboardInteractionProtocolEventCandidatesOffered)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = TIKeyboardInteractionProtocolEventCandidatesOffered;
-  v5 = [(TIKeyboardInteractionProtocolBase *)&v21 initWithCoder:v4];
+  v5 = [(TIKeyboardInteractionProtocolBase *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidates"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidates"];
     candidates = v5->_candidates;
     v5->_candidates = v6;
   }
 
-  v8 = [(TIAutocorrectionList *)v5->_candidates corrections];
-  v9 = [v8 autocorrection];
-  [(TIKeyboardInteractionProtocolEventCandidatesOffered *)v5 adjustSourceMaskForCandidate:v9];
+  corrections = [(TIAutocorrectionList *)v5->_candidates corrections];
+  autocorrection = [corrections autocorrection];
+  [(TIKeyboardInteractionProtocolEventCandidatesOffered *)v5 adjustSourceMaskForCandidate:autocorrection];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(TIAutocorrectionList *)v5->_candidates predictions];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  predictions = [(TIAutocorrectionList *)v5->_candidates predictions];
+  v11 = [predictions countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -163,13 +163,13 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(predictions);
         }
 
         [(TIKeyboardInteractionProtocolEventCandidatesOffered *)v5 adjustSourceMaskForCandidate:*(*(&v17 + 1) + 8 * i)];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v12 = [predictions countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v12);
@@ -179,25 +179,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardInteractionProtocolEventCandidatesOffered;
-  v4 = a3;
-  [(TIKeyboardInteractionProtocolBase *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_candidates forKey:{@"candidates", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(TIKeyboardInteractionProtocolBase *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_candidates forKey:{@"candidates", v5.receiver, v5.super_class}];
 }
 
-- (TIKeyboardInteractionProtocolEventCandidatesOffered)initWithCandidatesOffered:(id)a3 keyboardState:(id)a4
+- (TIKeyboardInteractionProtocolEventCandidatesOffered)initWithCandidatesOffered:(id)offered keyboardState:(id)state
 {
-  v7 = a3;
+  offeredCopy = offered;
   v11.receiver = self;
   v11.super_class = TIKeyboardInteractionProtocolEventCandidatesOffered;
-  v8 = [(TIKeyboardInteractionProtocolBase *)&v11 initWithKeyboardState:a4];
+  v8 = [(TIKeyboardInteractionProtocolBase *)&v11 initWithKeyboardState:state];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_candidates, a3);
+    objc_storeStrong(&v8->_candidates, offered);
   }
 
   return v9;

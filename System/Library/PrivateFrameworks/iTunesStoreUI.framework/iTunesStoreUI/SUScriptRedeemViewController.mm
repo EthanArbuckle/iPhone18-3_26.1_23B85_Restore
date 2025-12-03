@@ -1,11 +1,11 @@
 @interface SUScriptRedeemViewController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (id)newNativeViewController;
 - (id)scriptAttributeKeys;
-- (void)setInitialCode:(id)a3;
-- (void)setRedeemStyle:(int64_t)a3;
+- (void)setInitialCode:(id)code;
+- (void)setRedeemStyle:(int64_t)style;
 @end
 
 @implementation SUScriptRedeemViewController
@@ -23,27 +23,27 @@
   return v5;
 }
 
-- (void)setRedeemStyle:(int64_t)a3
+- (void)setRedeemStyle:(int64_t)style
 {
   [(SUScriptObject *)self lock];
-  self->_category = a3;
+  self->_category = style;
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setInitialCode:(id)a3
+- (void)setInitialCode:(id)code
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    code = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUScriptObject *)self lock];
-    self->_initialCode = [a3 copy];
+    self->_initialCode = [code copy];
 
     [(SUScriptObject *)self unlock];
   }
@@ -56,27 +56,27 @@
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_82 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptRedeemViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_62, 1);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_62, 1);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptRedeemViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -86,14 +86,14 @@
 {
   v4.receiver = self;
   v4.super_class = SUScriptRedeemViewController;
-  v2 = [(SUScriptViewController *)&v4 scriptAttributeKeys];
-  [v2 addObjectsFromArray:{objc_msgSend(__KeyMapping_82, "allKeys")}];
-  return v2;
+  scriptAttributeKeys = [(SUScriptViewController *)&v4 scriptAttributeKeys];
+  [scriptAttributeKeys addObjectsFromArray:{objc_msgSend(__KeyMapping_82, "allKeys")}];
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_62 = sel_setRedeemStyle_;
     unk_1EBF3BA30 = @"setRedeemStyle";

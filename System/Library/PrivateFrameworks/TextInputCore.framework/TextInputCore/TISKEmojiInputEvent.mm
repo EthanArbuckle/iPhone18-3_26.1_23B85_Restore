@@ -1,76 +1,76 @@
 @interface TISKEmojiInputEvent
-- (void)reportToSession:(id)a3;
+- (void)reportToSession:(id)session;
 @end
 
 @implementation TISKEmojiInputEvent
 
-- (void)reportToSession:(id)a3
+- (void)reportToSession:(id)session
 {
-  v20 = a3;
-  [v20 addSample:&unk_28400BF10 forKey:kTISKNumberOfEmojiCounter];
-  [v20 addSample:&unk_28400BF10 forKey:kTISKNumberOfTappedKeysCounter];
-  [v20 addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
-  v4 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
+  sessionCopy = session;
+  [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfEmojiCounter];
+  [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfTappedKeysCounter];
+  [sessionCopy addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
+  emojiBucketCategory = [(TISKEmojiInputEvent *)self emojiBucketCategory];
 
-  v5 = v20;
-  if (v4)
+  v5 = sessionCopy;
+  if (emojiBucketCategory)
   {
-    v6 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
-    v7 = [v6 isEqualToString:@"PositiveEmoji"];
+    emojiBucketCategory2 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
+    v7 = [emojiBucketCategory2 isEqualToString:@"PositiveEmoji"];
 
     if (v7)
     {
-      [v20 addSample:&unk_28400BF10 forKey:kTISKtotalPositiveEmoji];
+      [sessionCopy addSample:&unk_28400BF10 forKey:kTISKtotalPositiveEmoji];
     }
 
-    v8 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
-    v9 = [v8 isEqualToString:@"SadEmoji"];
+    emojiBucketCategory3 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
+    v9 = [emojiBucketCategory3 isEqualToString:@"SadEmoji"];
 
     if (v9)
     {
-      [v20 addSample:&unk_28400BF10 forKey:kTISKtotalSadEmoji];
+      [sessionCopy addSample:&unk_28400BF10 forKey:kTISKtotalSadEmoji];
     }
 
-    v10 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
-    v11 = [v10 isEqualToString:@"AnxietyEmoji"];
+    emojiBucketCategory4 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
+    v11 = [emojiBucketCategory4 isEqualToString:@"AnxietyEmoji"];
 
     if (v11)
     {
-      [v20 addSample:&unk_28400BF10 forKey:kTISKtotalAnxietyEmoji];
+      [sessionCopy addSample:&unk_28400BF10 forKey:kTISKtotalAnxietyEmoji];
     }
 
-    v12 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
-    v13 = [v12 isEqualToString:@"AngerEmoji"];
+    emojiBucketCategory5 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
+    v13 = [emojiBucketCategory5 isEqualToString:@"AngerEmoji"];
 
     if (v13)
     {
-      [v20 addSample:&unk_28400BF10 forKey:kTISKtotalAngerEmoji];
+      [sessionCopy addSample:&unk_28400BF10 forKey:kTISKtotalAngerEmoji];
     }
 
-    v14 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
-    v15 = [v14 isEqualToString:@"LowEnergyEmoji"];
+    emojiBucketCategory6 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
+    v15 = [emojiBucketCategory6 isEqualToString:@"LowEnergyEmoji"];
 
     if (v15)
     {
-      [v20 addSample:&unk_28400BF10 forKey:kTISKtotalLowEnergyEmoji];
+      [sessionCopy addSample:&unk_28400BF10 forKey:kTISKtotalLowEnergyEmoji];
     }
 
-    v16 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
-    v17 = [v16 isEqualToString:@"FeelEmoji"];
+    emojiBucketCategory7 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
+    v17 = [emojiBucketCategory7 isEqualToString:@"FeelEmoji"];
 
     if (v17)
     {
-      [v20 addSample:&unk_28400BF10 forKey:kTISKtotalFeelEmoji];
+      [sessionCopy addSample:&unk_28400BF10 forKey:kTISKtotalFeelEmoji];
     }
 
-    v18 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
-    v19 = [v18 isEqualToString:@"ConfusedEmoji"];
+    emojiBucketCategory8 = [(TISKEmojiInputEvent *)self emojiBucketCategory];
+    v19 = [emojiBucketCategory8 isEqualToString:@"ConfusedEmoji"];
 
-    v5 = v20;
+    v5 = sessionCopy;
     if (v19)
     {
-      [v20 addSample:&unk_28400BF10 forKey:kTISKtotalConfusedEmoji];
-      v5 = v20;
+      [sessionCopy addSample:&unk_28400BF10 forKey:kTISKtotalConfusedEmoji];
+      v5 = sessionCopy;
     }
   }
 }

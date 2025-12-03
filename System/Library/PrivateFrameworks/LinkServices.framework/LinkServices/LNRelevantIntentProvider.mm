@@ -1,23 +1,23 @@
 @interface LNRelevantIntentProvider
 - (LNRelevantIntentProvider)init;
 - (void)dealloc;
-- (void)relevantIntentsForBundleIdentifier:(id)a3 reply:(id)a4;
-- (void)relevantIntentsWithReply:(id)a3;
+- (void)relevantIntentsForBundleIdentifier:(id)identifier reply:(id)reply;
+- (void)relevantIntentsWithReply:(id)reply;
 @end
 
 @implementation LNRelevantIntentProvider
 
-- (void)relevantIntentsWithReply:(id)a3
+- (void)relevantIntentsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = _os_activity_create(&dword_19763D000, "appintents:fetch all relevant intents", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__LNRelevantIntentProvider_relevantIntentsWithReply___block_invoke;
   v7[3] = &unk_1E74B1930;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   os_activity_apply(v5, v7);
 }
 
@@ -33,20 +33,20 @@ void __53__LNRelevantIntentProvider_relevantIntentsWithReply___block_invoke(uint
   [v3 relevantIntentsWithReply:*(a1 + 40)];
 }
 
-- (void)relevantIntentsForBundleIdentifier:(id)a3 reply:(id)a4
+- (void)relevantIntentsForBundleIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = _os_activity_create(&dword_19763D000, "appintents:fetch relevant intents for app", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__LNRelevantIntentProvider_relevantIntentsForBundleIdentifier_reply___block_invoke;
   block[3] = &unk_1E74B2580;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = replyCopy;
   os_activity_apply(v8, block);
 }
 

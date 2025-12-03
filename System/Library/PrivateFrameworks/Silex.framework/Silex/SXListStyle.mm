@@ -1,19 +1,19 @@
 @interface SXListStyle
-- (SXListStyle)styleWithValue:(id)a3 withType:(int)a4;
+- (SXListStyle)styleWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXListStyle
 
-- (SXListStyle)styleWithValue:(id)a3 withType:(int)a4
+- (SXListStyle)styleWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 != 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type != 3)
   {
     goto LABEL_5;
   }
 
-  if ([v5 isEqualToString:@"none"])
+  if ([valueCopy isEqualToString:@"none"])
   {
     v7 = 1;
     goto LABEL_6;

@@ -1,7 +1,7 @@
 @interface WFWebViewLinkExtractor
 + (id)linkPositionRetrievalJavaScript;
-+ (void)extractLinksFromScriptResult:(id)a3 withDestinationWidth:(double)a4 completionHandler:(id)a5;
-+ (void)extractLinksFromWKWebView:(id)a3 withDestinationWidth:(double)a4 completionHandler:(id)a5;
++ (void)extractLinksFromScriptResult:(id)result withDestinationWidth:(double)width completionHandler:(id)handler;
++ (void)extractLinksFromWKWebView:(id)view withDestinationWidth:(double)width completionHandler:(id)handler;
 @end
 
 @implementation WFWebViewLinkExtractor
@@ -13,22 +13,22 @@
   return v2;
 }
 
-+ (void)extractLinksFromScriptResult:(id)a3 withDestinationWidth:(double)a4 completionHandler:(id)a5
++ (void)extractLinksFromScriptResult:(id)result withDestinationWidth:(double)width completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  resultCopy = result;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = MEMORY[0x277CCAAA0];
-    v10 = [v7 dataUsingEncoding:4];
+    v10 = [resultCopy dataUsingEncoding:4];
     v11 = [v9 JSONObjectWithData:v10 options:0 error:0];
 
     v12 = [v11 objectForKey:@"pageMetrics"];
     v13 = [v11 objectForKey:@"links"];
     v14 = [v12 objectForKey:@"width"];
     [v14 floatValue];
-    v16 = a4 / v15;
+    v16 = width / v15;
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -36,12 +36,12 @@
     v18[3] = &__block_descriptor_40_e25__24__0__NSDictionary_8Q16l;
     *&v18[4] = v16;
     v17 = [v13 if_compactMap:v18];
-    v8[2](v8, v17);
+    handlerCopy[2](handlerCopy, v17);
   }
 
   else
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -90,20 +90,20 @@ WFWebViewLink *__94__WFWebViewLinkExtractor_extractLinksFromScriptResult_withDes
   return v22;
 }
 
-+ (void)extractLinksFromWKWebView:(id)a3 withDestinationWidth:(double)a4 completionHandler:(id)a5
++ (void)extractLinksFromWKWebView:(id)view withDestinationWidth:(double)width completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 linkPositionRetrievalJavaScript];
+  handlerCopy = handler;
+  viewCopy = view;
+  linkPositionRetrievalJavaScript = [self linkPositionRetrievalJavaScript];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__WFWebViewLinkExtractor_extractLinksFromWKWebView_withDestinationWidth_completionHandler___block_invoke;
   v12[3] = &unk_278344A58;
-  v15 = a4;
-  v13 = v8;
-  v14 = a1;
-  v11 = v8;
-  [v9 evaluateJavaScript:v10 completionHandler:v12];
+  widthCopy = width;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v11 = handlerCopy;
+  [viewCopy evaluateJavaScript:linkPositionRetrievalJavaScript completionHandler:v12];
 }
 
 @end

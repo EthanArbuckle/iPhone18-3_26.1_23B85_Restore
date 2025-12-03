@@ -1,20 +1,20 @@
 @interface MobileTimerAssistantAlarmDelete
-- (void)_performWithCompletion:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MobileTimerAssistantAlarmDelete
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_D544(v5);
   }
 
-  [(MobileTimerAssistantAlarmDelete *)self _performWithCompletion:v4];
+  [(MobileTimerAssistantAlarmDelete *)self _performWithCompletion:completionCopy];
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -22,9 +22,9 @@
   }
 }
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -36,7 +36,7 @@
   }
 
   v6 = objc_opt_new();
-  v7 = [v6 alarms];
+  alarms = [v6 alarms];
   objc_initWeak(&location, self);
   v8 = dispatch_semaphore_create(0);
   *buf = 0;
@@ -52,7 +52,7 @@
   objc_copyWeak(&v27, &location);
   v9 = v6;
   v26 = v9;
-  v10 = [v7 flatMap:v25];
+  v10 = [alarms flatMap:v25];
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
   v20 = sub_938C;
@@ -66,18 +66,18 @@
   v13 = MTLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [*(*&buf[8] + 40) dictionary];
-    sub_D64C(self, v14, v30);
+    dictionary = [*(*&buf[8] + 40) dictionary];
+    sub_D64C(self, dictionary, v30);
   }
 
-  v15 = [*(*&buf[8] + 40) dictionary];
-  v4[2](v4, v15);
+  dictionary2 = [*(*&buf[8] + 40) dictionary];
+  completionCopy[2](completionCopy, dictionary2);
 
   v16 = MTLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [*(*&buf[8] + 40) dictionary];
-    sub_D6B0(self, v17, v29);
+    dictionary3 = [*(*&buf[8] + 40) dictionary];
+    sub_D6B0(self, dictionary3, v29);
   }
 
   objc_destroyWeak(&v24);

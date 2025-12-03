@@ -1,8 +1,8 @@
 @interface _UIBackdropViewSettingsCombiner
-- (void)computeOutputSettingsUsingModel:(id)a3;
-- (void)copyAdditionalSettingsFromSettings:(id)a3;
+- (void)computeOutputSettingsUsingModel:(id)model;
+- (void)copyAdditionalSettingsFromSettings:(id)settings;
 - (void)setDefaultValues;
-- (void)setRequiresColorStatistics:(BOOL)a3;
+- (void)setRequiresColorStatistics:(BOOL)statistics;
 @end
 
 @implementation _UIBackdropViewSettingsCombiner
@@ -15,22 +15,22 @@
   self->super._requiresColorStatistics = 0;
 }
 
-- (void)copyAdditionalSettingsFromSettings:(id)a3
+- (void)copyAdditionalSettingsFromSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v12.receiver = self;
   v12.super_class = _UIBackdropViewSettingsCombiner;
-  [(_UIBackdropViewSettings *)&v12 copyAdditionalSettingsFromSettings:v4];
+  [(_UIBackdropViewSettings *)&v12 copyAdditionalSettingsFromSettings:settingsCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 inputSettingsA];
-    v7 = [_UIBackdropViewSettings settingsPreservingHintsFromSettings:v6 graphicsQuality:[(_UIBackdropViewSettings *)self graphicsQuality]];
+    v5 = settingsCopy;
+    inputSettingsA = [v5 inputSettingsA];
+    v7 = [_UIBackdropViewSettings settingsPreservingHintsFromSettings:inputSettingsA graphicsQuality:[(_UIBackdropViewSettings *)self graphicsQuality]];
     [(_UIBackdropViewSettingsCombiner *)self setInputSettingsA:v7];
 
-    v8 = [v5 inputSettingsB];
-    v9 = [_UIBackdropViewSettings settingsPreservingHintsFromSettings:v8 graphicsQuality:[(_UIBackdropViewSettings *)self graphicsQuality]];
+    inputSettingsB = [v5 inputSettingsB];
+    v9 = [_UIBackdropViewSettings settingsPreservingHintsFromSettings:inputSettingsB graphicsQuality:[(_UIBackdropViewSettings *)self graphicsQuality]];
     [(_UIBackdropViewSettingsCombiner *)self setInputSettingsB:v9];
 
     [v5 weighting];
@@ -40,16 +40,16 @@
   }
 }
 
-- (void)setRequiresColorStatistics:(BOOL)a3
+- (void)setRequiresColorStatistics:(BOOL)statistics
 {
   v3.receiver = self;
   v3.super_class = _UIBackdropViewSettingsCombiner;
   [(_UIBackdropViewSettings *)&v3 setRequiresColorStatistics:0];
 }
 
-- (void)computeOutputSettingsUsingModel:(id)a3
+- (void)computeOutputSettingsUsingModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (!self->_outputSettingsA)
   {
     v5 = objc_alloc_init(objc_opt_class());
@@ -59,10 +59,10 @@
 
   if (self->_outputSettingsB)
   {
-    if (v4)
+    if (modelCopy)
     {
 LABEL_5:
-      v7 = v4[6];
+      v7 = modelCopy[6];
       goto LABEL_8;
     }
   }
@@ -73,7 +73,7 @@ LABEL_5:
     outputSettingsB = self->_outputSettingsB;
     self->_outputSettingsB = v8;
 
-    if (v4)
+    if (modelCopy)
     {
       goto LABEL_5;
     }

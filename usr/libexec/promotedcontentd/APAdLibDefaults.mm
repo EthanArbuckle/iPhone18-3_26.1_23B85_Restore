@@ -1,16 +1,16 @@
 @interface APAdLibDefaults
 - (APAdLibDefaults)init;
-- (BOOL)BOOLForKey:(id)a3;
-- (BOOL)defaultIsSetForKey:(id)a3;
-- (double)doubleForKey:(id)a3;
-- (id)arrayForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
-- (void)setArray:(id)a3 forKey:(id)a4;
-- (void)setBool:(BOOL)a3 forKey:(id)a4;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setString:(id)a3 forKey:(id)a4;
+- (BOOL)BOOLForKey:(id)key;
+- (BOOL)defaultIsSetForKey:(id)key;
+- (double)doubleForKey:(id)key;
+- (id)arrayForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
+- (void)setArray:(id)array forKey:(id)key;
+- (void)setBool:(BOOL)bool forKey:(id)key;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setString:(id)string forKey:(id)key;
 @end
 
 @implementation APAdLibDefaults
@@ -30,97 +30,97 @@
   return v2;
 }
 
-- (BOOL)defaultIsSetForKey:(id)a3
+- (BOOL)defaultIsSetForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(APAdLibDefaults *)self defaults];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  defaults = [(APAdLibDefaults *)self defaults];
+  v6 = [defaults valueForKey:keyCopy];
 
   return v6 != 0;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(APAdLibDefaults *)self defaults];
-  v6 = [v5 BOOLForKey:v4];
+  keyCopy = key;
+  defaults = [(APAdLibDefaults *)self defaults];
+  v6 = [defaults BOOLForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setBool:(BOOL)a3 forKey:(id)a4
+- (void)setBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(APAdLibDefaults *)self defaults];
-  [v7 setBool:v4 forKey:v6];
+  boolCopy = bool;
+  keyCopy = key;
+  defaults = [(APAdLibDefaults *)self defaults];
+  [defaults setBool:boolCopy forKey:keyCopy];
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(APAdLibDefaults *)self defaults];
-  [v5 doubleForKey:v4];
+  keyCopy = key;
+  defaults = [(APAdLibDefaults *)self defaults];
+  [defaults doubleForKey:keyCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(APAdLibDefaults *)self defaults];
-  [v7 setDouble:v6 forKey:a3];
+  keyCopy = key;
+  defaults = [(APAdLibDefaults *)self defaults];
+  [defaults setDouble:keyCopy forKey:double];
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(APAdLibDefaults *)self defaults];
-  v6 = [v5 integerForKey:v4];
+  keyCopy = key;
+  defaults = [(APAdLibDefaults *)self defaults];
+  v6 = [defaults integerForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(APAdLibDefaults *)self defaults];
-  [v7 setInteger:a3 forKey:v6];
+  keyCopy = key;
+  defaults = [(APAdLibDefaults *)self defaults];
+  [defaults setInteger:integer forKey:keyCopy];
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(APAdLibDefaults *)self defaults];
-  v6 = [v5 stringForKey:v4];
+  keyCopy = key;
+  defaults = [(APAdLibDefaults *)self defaults];
+  v6 = [defaults stringForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setString:(id)a3 forKey:(id)a4
+- (void)setString:(id)string forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(APAdLibDefaults *)self defaults];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  stringCopy = string;
+  defaults = [(APAdLibDefaults *)self defaults];
+  [defaults setValue:stringCopy forKey:keyCopy];
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(APAdLibDefaults *)self defaults];
-  v6 = [v5 arrayForKey:v4];
+  keyCopy = key;
+  defaults = [(APAdLibDefaults *)self defaults];
+  v6 = [defaults arrayForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setArray:(id)a3 forKey:(id)a4
+- (void)setArray:(id)array forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(APAdLibDefaults *)self defaults];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  arrayCopy = array;
+  defaults = [(APAdLibDefaults *)self defaults];
+  [defaults setValue:arrayCopy forKey:keyCopy];
 }
 
 @end

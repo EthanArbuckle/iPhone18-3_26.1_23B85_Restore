@@ -7,9 +7,9 @@
 + (id)asParseRules;
 - (id)convertToDAContactSearchResultElement;
 - (id)description;
-- (void)addClass:(id)a3;
-- (void)addCollectionID:(id)a3;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)addClass:(id)class;
+- (void)addCollectionID:(id)d;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 - (void)postProcessApplicationData;
 @end
 
@@ -24,7 +24,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_15 = v2;
     acceptsTopLevelLeaves___haveChecked_15 = 1;
   }
@@ -41,7 +41,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_15 = v2;
     parsingLeafNode___haveChecked_15 = 1;
   }
@@ -58,7 +58,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_15 = v2;
     parsingWithSubItems___haveChecked_15 = 1;
   }
@@ -75,7 +75,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_15 = v2;
     frontingBasicTypes___haveChecked_15 = 1;
   }
@@ -92,7 +92,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_15 = v2;
     notifyOfUnknownTokens___haveChecked_15 = 1;
   }
@@ -103,10 +103,10 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ASGALSearchResult *)self firstName];
-  v5 = [(ASGALSearchResult *)self lastName];
-  v6 = [(ASGALSearchResult *)self emailAddress];
-  v7 = [v3 stringWithFormat:@"ASGALSearchResult: %@ %@ <%@>", v4, v5, v6];
+  firstName = [(ASGALSearchResult *)self firstName];
+  lastName = [(ASGALSearchResult *)self lastName];
+  emailAddress = [(ASGALSearchResult *)self emailAddress];
+  v7 = [v3 stringWithFormat:@"ASGALSearchResult: %@ %@ <%@>", firstName, lastName, emailAddress];
 
   return v7;
 }
@@ -114,7 +114,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -143,7 +143,7 @@
     v5 = [v29 dictionaryWithObjectsAndKeys:{v28, v27, v26, v18, v25, v24, v13, v14, 0}];
 
     v15 = +[ASItem parseRuleCache];
-    v16 = NSStringFromClass(a1);
+    v16 = NSStringFromClass(self);
     [v15 setObject:v5 forKey:v16];
   }
 
@@ -152,9 +152,9 @@
 
 - (void)postProcessApplicationData
 {
-  v3 = [(ASGALSearchResult *)self applicationData];
+  applicationData = [(ASGALSearchResult *)self applicationData];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:4102];
-  v5 = [v3 objectForKey:v4];
+  v5 = [applicationData objectForKey:v4];
 
   if (v5)
   {
@@ -165,9 +165,9 @@
     }
   }
 
-  v6 = [(ASGALSearchResult *)self applicationData];
+  applicationData2 = [(ASGALSearchResult *)self applicationData];
   v7 = [MEMORY[0x277CCABB0] numberWithInt:4103];
-  v8 = [v6 objectForKey:v7];
+  v8 = [applicationData2 objectForKey:v7];
 
   if (v8)
   {
@@ -178,9 +178,9 @@
     }
   }
 
-  v9 = [(ASGALSearchResult *)self applicationData];
+  applicationData3 = [(ASGALSearchResult *)self applicationData];
   v10 = [MEMORY[0x277CCABB0] numberWithInt:4104];
-  v11 = [v9 objectForKey:v10];
+  v11 = [applicationData3 objectForKey:v10];
 
   if (v11)
   {
@@ -191,9 +191,9 @@
     }
   }
 
-  v12 = [(ASGALSearchResult *)self applicationData];
+  applicationData4 = [(ASGALSearchResult *)self applicationData];
   v13 = [MEMORY[0x277CCABB0] numberWithInt:4105];
-  v14 = [v12 objectForKey:v13];
+  v14 = [applicationData4 objectForKey:v13];
 
   if (v14)
   {
@@ -204,9 +204,9 @@
     }
   }
 
-  v15 = [(ASGALSearchResult *)self applicationData];
+  applicationData5 = [(ASGALSearchResult *)self applicationData];
   v16 = [MEMORY[0x277CCABB0] numberWithInt:4106];
-  v17 = [v15 objectForKey:v16];
+  v17 = [applicationData5 objectForKey:v16];
 
   if (v17)
   {
@@ -217,9 +217,9 @@
     }
   }
 
-  v18 = [(ASGALSearchResult *)self applicationData];
+  applicationData6 = [(ASGALSearchResult *)self applicationData];
   v19 = [MEMORY[0x277CCABB0] numberWithInt:4107];
-  v20 = [v18 objectForKey:v19];
+  v20 = [applicationData6 objectForKey:v19];
 
   if (v20)
   {
@@ -230,9 +230,9 @@
     }
   }
 
-  v21 = [(ASGALSearchResult *)self applicationData];
+  applicationData7 = [(ASGALSearchResult *)self applicationData];
   v22 = [MEMORY[0x277CCABB0] numberWithInt:4108];
-  v23 = [v21 objectForKey:v22];
+  v23 = [applicationData7 objectForKey:v22];
 
   if (v23)
   {
@@ -243,9 +243,9 @@
     }
   }
 
-  v24 = [(ASGALSearchResult *)self applicationData];
+  applicationData8 = [(ASGALSearchResult *)self applicationData];
   v25 = [MEMORY[0x277CCABB0] numberWithInt:4109];
-  v26 = [v24 objectForKey:v25];
+  v26 = [applicationData8 objectForKey:v25];
 
   if (v26)
   {
@@ -256,9 +256,9 @@
     }
   }
 
-  v27 = [(ASGALSearchResult *)self applicationData];
+  applicationData9 = [(ASGALSearchResult *)self applicationData];
   v28 = [MEMORY[0x277CCABB0] numberWithInt:4110];
-  v29 = [v27 objectForKey:v28];
+  v29 = [applicationData9 objectForKey:v28];
 
   if (v29)
   {
@@ -269,9 +269,9 @@
     }
   }
 
-  v30 = [(ASGALSearchResult *)self applicationData];
+  applicationData10 = [(ASGALSearchResult *)self applicationData];
   v31 = [MEMORY[0x277CCABB0] numberWithInt:4111];
-  v32 = [v30 objectForKey:v31];
+  v32 = [applicationData10 objectForKey:v31];
 
   if (v32)
   {
@@ -282,9 +282,9 @@
     }
   }
 
-  v33 = [(ASGALSearchResult *)self applicationData];
+  applicationData11 = [(ASGALSearchResult *)self applicationData];
   v34 = [MEMORY[0x277CCABB0] numberWithInt:4101];
-  v35 = [v33 objectForKey:v34];
+  v35 = [applicationData11 objectForKey:v34];
 
   if (v35)
   {
@@ -310,11 +310,11 @@
   self->_applicationData = 0;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v10.receiver = self;
   v10.super_class = ASGALSearchResult;
-  [(ASItem *)&v10 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASItem *)&v10 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super._parsingState;
   if (parsingState >= 2)
   {
@@ -332,138 +332,138 @@
 
 - (id)convertToDAContactSearchResultElement
 {
-  v3 = [(ASGALSearchResult *)self phone];
-  if ([v3 length])
+  phone = [(ASGALSearchResult *)self phone];
+  if ([phone length])
   {
     goto LABEL_20;
   }
 
-  v4 = [(ASGALSearchResult *)self office];
-  if ([v4 length])
+  office = [(ASGALSearchResult *)self office];
+  if ([office length])
   {
 LABEL_19:
 
 LABEL_20:
 LABEL_21:
     v13 = objc_opt_new();
-    v14 = [(ASGALSearchResult *)self phone];
-    [v13 setWorkPhone:v14];
+    phone2 = [(ASGALSearchResult *)self phone];
+    [v13 setWorkPhone:phone2];
 
-    v15 = [(ASGALSearchResult *)self office];
-    [v13 setOffice:v15];
+    office2 = [(ASGALSearchResult *)self office];
+    [v13 setOffice:office2];
 
-    v16 = [(ASGALSearchResult *)self title];
-    [v13 setTitle:v16];
+    title = [(ASGALSearchResult *)self title];
+    [v13 setTitle:title];
 
-    v17 = [(ASGALSearchResult *)self company];
-    [v13 setCompany:v17];
+    company = [(ASGALSearchResult *)self company];
+    [v13 setCompany:company];
 
-    v18 = [(ASGALSearchResult *)self alias];
-    [v13 setAlias:v18];
+    alias = [(ASGALSearchResult *)self alias];
+    [v13 setAlias:alias];
 
-    v19 = [(ASGALSearchResult *)self firstName];
-    [v13 setFirstName:v19];
+    firstName = [(ASGALSearchResult *)self firstName];
+    [v13 setFirstName:firstName];
 
-    v20 = [(ASGALSearchResult *)self lastName];
-    [v13 setLastName:v20];
+    lastName = [(ASGALSearchResult *)self lastName];
+    [v13 setLastName:lastName];
 
-    v21 = [(ASGALSearchResult *)self homePhone];
-    [v13 setHomePhone:v21];
+    homePhone = [(ASGALSearchResult *)self homePhone];
+    [v13 setHomePhone:homePhone];
 
-    v22 = [(ASGALSearchResult *)self mobilePhone];
-    [v13 setMobilePhone:v22];
+    mobilePhone = [(ASGALSearchResult *)self mobilePhone];
+    [v13 setMobilePhone:mobilePhone];
 
-    v23 = [(ASGALSearchResult *)self emailAddress];
-    [v13 setEmailAddress:v23];
+    emailAddress = [(ASGALSearchResult *)self emailAddress];
+    [v13 setEmailAddress:emailAddress];
 
-    v24 = [(ASGALSearchResult *)self displayName];
-    [v13 setDisplayName:v24];
+    displayName = [(ASGALSearchResult *)self displayName];
+    [v13 setDisplayName:displayName];
 
-    v25 = [(ASGALSearchResult *)self photoData];
-    [v13 setJpegPhoto:v25];
+    photoData = [(ASGALSearchResult *)self photoData];
+    [v13 setJpegPhoto:photoData];
 
-    v26 = [v13 emailAddress];
-    [v13 setIdentifierOnServer:v26];
+    emailAddress2 = [v13 emailAddress];
+    [v13 setIdentifierOnServer:emailAddress2];
 
     goto LABEL_22;
   }
 
-  v5 = [(ASGALSearchResult *)self title];
-  if ([v5 length])
+  title2 = [(ASGALSearchResult *)self title];
+  if ([title2 length])
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v6 = [(ASGALSearchResult *)self company];
-  if ([v6 length])
+  company2 = [(ASGALSearchResult *)self company];
+  if ([company2 length])
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v7 = [(ASGALSearchResult *)self alias];
-  if ([v7 length])
+  alias2 = [(ASGALSearchResult *)self alias];
+  if ([alias2 length])
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v8 = [(ASGALSearchResult *)self firstName];
-  if ([v8 length])
+  firstName2 = [(ASGALSearchResult *)self firstName];
+  if ([firstName2 length])
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v9 = [(ASGALSearchResult *)self lastName];
-  if ([v9 length])
+  lastName2 = [(ASGALSearchResult *)self lastName];
+  if ([lastName2 length])
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v10 = [(ASGALSearchResult *)self homePhone];
-  if ([v10 length])
+  homePhone2 = [(ASGALSearchResult *)self homePhone];
+  if ([homePhone2 length])
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v11 = [(ASGALSearchResult *)self mobilePhone];
-  if ([v11 length])
+  mobilePhone2 = [(ASGALSearchResult *)self mobilePhone];
+  if ([mobilePhone2 length])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v32 = v11;
-  v12 = [(ASGALSearchResult *)self emailAddress];
-  if ([v12 length])
+  v32 = mobilePhone2;
+  emailAddress3 = [(ASGALSearchResult *)self emailAddress];
+  if ([emailAddress3 length])
   {
 
-    v11 = v32;
+    mobilePhone2 = v32;
     goto LABEL_12;
   }
 
-  v30 = v12;
-  v28 = [(ASGALSearchResult *)self displayName];
-  if ([v28 length])
+  v30 = emailAddress3;
+  displayName2 = [(ASGALSearchResult *)self displayName];
+  if ([displayName2 length])
   {
     v31 = 1;
   }
 
   else
   {
-    v29 = [(ASGALSearchResult *)self photoData];
-    v31 = [v29 length] != 0;
+    photoData2 = [(ASGALSearchResult *)self photoData];
+    v31 = [photoData2 length] != 0;
   }
 
   if (v31)
@@ -477,34 +477,34 @@ LABEL_22:
   return v13;
 }
 
-- (void)addClass:(id)a3
+- (void)addClass:(id)class
 {
-  v4 = a3;
-  v5 = [(ASGALSearchResult *)self mClasses];
+  classCopy = class;
+  mClasses = [(ASGALSearchResult *)self mClasses];
 
-  if (!v5)
+  if (!mClasses)
   {
     v6 = objc_opt_new();
     [(ASGALSearchResult *)self setMClasses:v6];
   }
 
-  v7 = [(ASGALSearchResult *)self mClasses];
-  [v7 addObject:v4];
+  mClasses2 = [(ASGALSearchResult *)self mClasses];
+  [mClasses2 addObject:classCopy];
 }
 
-- (void)addCollectionID:(id)a3
+- (void)addCollectionID:(id)d
 {
-  v4 = a3;
-  v5 = [(ASGALSearchResult *)self mCollectionIDs];
+  dCopy = d;
+  mCollectionIDs = [(ASGALSearchResult *)self mCollectionIDs];
 
-  if (!v5)
+  if (!mCollectionIDs)
   {
     v6 = objc_opt_new();
     [(ASGALSearchResult *)self setMCollectionIDs:v6];
   }
 
-  v7 = [(ASGALSearchResult *)self mCollectionIDs];
-  [v7 addObject:v4];
+  mCollectionIDs2 = [(ASGALSearchResult *)self mCollectionIDs];
+  [mCollectionIDs2 addObject:dCopy];
 }
 
 @end

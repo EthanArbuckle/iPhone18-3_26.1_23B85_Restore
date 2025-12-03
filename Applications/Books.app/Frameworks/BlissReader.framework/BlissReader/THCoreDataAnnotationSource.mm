@@ -1,31 +1,31 @@
 @interface THCoreDataAnnotationSource
 - (NSArray)annotations;
 - (THAnnotation)temporaryAnnotation;
-- (THCoreDataAnnotationSource)initWithAnnotationController:(id)a3 contentNode:(id)a4 storageId:(id)a5 storageLength:(unint64_t)a6;
-- (id)annotationsForRange:(_NSRange)a3;
-- (void)addInterest:(id)a3;
+- (THCoreDataAnnotationSource)initWithAnnotationController:(id)controller contentNode:(id)node storageId:(id)id storageLength:(unint64_t)length;
+- (id)annotationsForRange:(_NSRange)range;
+- (void)addInterest:(id)interest;
 - (void)annotationControllerTeardown;
 - (void)dealloc;
-- (void)p_rangeChanged:(_NSRange)a3;
-- (void)p_updateCachedAnnotations:(id)a3;
-- (void)removeInterest:(id)a3;
-- (void)setTemporaryAnnotation:(id)a3;
+- (void)p_rangeChanged:(_NSRange)changed;
+- (void)p_updateCachedAnnotations:(id)annotations;
+- (void)removeInterest:(id)interest;
+- (void)setTemporaryAnnotation:(id)annotation;
 - (void)updateAnnotations;
 @end
 
 @implementation THCoreDataAnnotationSource
 
-- (THCoreDataAnnotationSource)initWithAnnotationController:(id)a3 contentNode:(id)a4 storageId:(id)a5 storageLength:(unint64_t)a6
+- (THCoreDataAnnotationSource)initWithAnnotationController:(id)controller contentNode:(id)node storageId:(id)id storageLength:(unint64_t)length
 {
   v12.receiver = self;
   v12.super_class = THCoreDataAnnotationSource;
-  v9 = [(THCoreDataAnnotationSource *)&v12 init:a3];
+  v9 = [(THCoreDataAnnotationSource *)&v12 init:controller];
   v10 = v9;
   if (v9)
   {
-    v9->mContentNode = a4;
-    v9->mAnnotationController = a3;
-    v9->mStorageID = a5;
+    v9->mContentNode = node;
+    v9->mAnnotationController = controller;
+    v9->mStorageID = id;
     v10->mInterestedParties = objc_alloc_init(TSUMutablePointerSet);
     v10->mCachedAnnotations = [(THAnnotationStorageController *)v10->mAnnotationController cachedAnnotationsForContentNode:v10->mContentNode];
     [(THAnnotationStorageController *)v10->mAnnotationController registerAnnotationObserver:v10 forContentNode:v10->mContentNode];
@@ -47,17 +47,17 @@
   [(THCoreDataAnnotationSource *)&v3 dealloc];
 }
 
-- (void)p_rangeChanged:(_NSRange)a3
+- (void)p_rangeChanged:(_NSRange)changed
 {
-  length = a3.length;
-  location = a3.location;
+  length = changed.length;
+  location = changed.location;
   objc_sync_enter(self);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(TSUMutablePointerSet *)self->mInterestedParties objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(TSUMutablePointerSet *)self->mInterestedParties objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -67,7 +67,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -80,7 +80,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -97,10 +97,10 @@
   objc_sync_exit(self);
 }
 
-- (void)p_updateCachedAnnotations:(id)a3
+- (void)p_updateCachedAnnotations:(id)annotations
 {
   mCachedAnnotations = self->mCachedAnnotations;
-  if (mCachedAnnotations == a3)
+  if (mCachedAnnotations == annotations)
   {
     return;
   }
@@ -110,9 +110,9 @@
     goto LABEL_5;
   }
 
-  if (a3)
+  if (annotations)
   {
-    mCachedAnnotations = a3;
+    mCachedAnnotations = annotations;
 LABEL_5:
     v6 = [mCachedAnnotations differenceRangeWithCache:? storageUID:?];
     v8 = v7;
@@ -124,7 +124,7 @@ LABEL_5:
 LABEL_6:
 
   self->mCachedAnnotations = 0;
-  self->mCachedAnnotations = a3;
+  self->mCachedAnnotations = annotations;
   if (v6 != 0x7FFFFFFFFFFFFFFFLL && v8 != 0)
   {
 
@@ -142,15 +142,15 @@ LABEL_6:
   return v4;
 }
 
-- (id)annotationsForRange:(_NSRange)a3
+- (id)annotationsForRange:(_NSRange)range
 {
-  if (!a3.length)
+  if (!range.length)
   {
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   result = [(THCoreDataAnnotationSource *)self annotations];
   if (result)
   {
@@ -166,10 +166,10 @@ LABEL_6:
   return result;
 }
 
-- (void)setTemporaryAnnotation:(id)a3
+- (void)setTemporaryAnnotation:(id)annotation
 {
   objc_sync_enter(self);
-  v5 = [(THAnnotationCache *)self->mCachedAnnotations newAnnotationCacheWithTemporaryAnnotation:a3];
+  v5 = [(THAnnotationCache *)self->mCachedAnnotations newAnnotationCacheWithTemporaryAnnotation:annotation];
   [(THCoreDataAnnotationSource *)self p_updateCachedAnnotations:v5];
 
   objc_sync_exit(self);
@@ -178,17 +178,17 @@ LABEL_6:
 - (THAnnotation)temporaryAnnotation
 {
   objc_sync_enter(self);
-  v3 = [(THAnnotationCache *)self->mCachedAnnotations temporaryAnnotation];
+  temporaryAnnotation = [(THAnnotationCache *)self->mCachedAnnotations temporaryAnnotation];
   objc_sync_exit(self);
-  return v3;
+  return temporaryAnnotation;
 }
 
-- (void)addInterest:(id)a3
+- (void)addInterest:(id)interest
 {
   objc_sync_enter(self);
-  if (a3)
+  if (interest)
   {
-    [(TSUMutablePointerSet *)self->mInterestedParties addObject:a3];
+    [(TSUMutablePointerSet *)self->mInterestedParties addObject:interest];
   }
 
   ++self->mInterestCount;
@@ -196,12 +196,12 @@ LABEL_6:
   objc_sync_exit(self);
 }
 
-- (void)removeInterest:(id)a3
+- (void)removeInterest:(id)interest
 {
   objc_sync_enter(self);
-  if (a3)
+  if (interest)
   {
-    [(TSUMutablePointerSet *)self->mInterestedParties removeObject:a3];
+    [(TSUMutablePointerSet *)self->mInterestedParties removeObject:interest];
   }
 
   --self->mInterestCount;

@@ -1,15 +1,15 @@
 @interface TopBannerItemView
-- (TopBannerItemView)initWithCoder:(id)a3;
-- (TopBannerItemView)initWithFrame:(CGRect)a3;
-- (void)_buttonTapped:(id)a3;
+- (TopBannerItemView)initWithCoder:(id)coder;
+- (TopBannerItemView)initWithFrame:(CGRect)frame;
+- (void)_buttonTapped:(id)tapped;
 - (void)_customInit;
 - (void)_deregisterObservers;
 - (void)_setupConstraints;
 - (void)_updateUI;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setFirstItemWithIcon:(BOOL)a3;
-- (void)setItem:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setFirstItemWithIcon:(BOOL)icon;
+- (void)setItem:(id)item;
 - (void)updateBadgeView;
 @end
 
@@ -21,13 +21,13 @@
   [(TopBannerItem *)self->_item removeObserver:self forKeyPath:v3 context:off_1019328D8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
+  pathCopy = path;
   v11 = NSStringFromSelector("artwork");
   v9 = off_1019328D8;
 
-  if (v9 == a6 && v11 == v8)
+  if (v9 == context && v11 == pathCopy)
   {
     [(TopBannerItemView *)self updateBadgeView];
   }
@@ -35,24 +35,24 @@
 
 - (void)_updateUI
 {
-  v3 = [(TopBannerItem *)self->_item buttonText];
-  if ([v3 length])
+  buttonText = [(TopBannerItem *)self->_item buttonText];
+  if ([buttonText length])
   {
-    v4 = [(TopBannerItem *)self->_item maxNumberOfLines];
+    maxNumberOfLines = [(TopBannerItem *)self->_item maxNumberOfLines];
   }
 
   else
   {
-    v4 = 0;
+    maxNumberOfLines = 0;
   }
 
-  [(UILabel *)self->_messageLabel setNumberOfLines:v4];
+  [(UILabel *)self->_messageLabel setNumberOfLines:maxNumberOfLines];
 
-  v5 = [(TopBannerItem *)self->_item attributedText];
-  if ([v5 length])
+  attributedText = [(TopBannerItem *)self->_item attributedText];
+  if ([attributedText length])
   {
-    v6 = [(TopBannerItem *)self->_item attributedText];
-    [(UILabel *)self->_messageLabel setAttributedText:v6];
+    attributedText2 = [(TopBannerItem *)self->_item attributedText];
+    [(UILabel *)self->_messageLabel setAttributedText:attributedText2];
   }
 
   else
@@ -60,16 +60,16 @@
     [(UILabel *)self->_messageLabel setAttributedText:0];
   }
 
-  v7 = [(TopBannerItem *)self->_item buttonText];
-  v8 = [v7 length];
+  buttonText2 = [(TopBannerItem *)self->_item buttonText];
+  v8 = [buttonText2 length];
 
   if (v8)
   {
     button = self->_button;
     if (!button)
     {
-      v10 = [(TopBannerItemView *)self traitCollection];
-      v11 = [v10 userInterfaceIdiom] != 5;
+      traitCollection = [(TopBannerItemView *)self traitCollection];
+      v11 = [traitCollection userInterfaceIdiom] != 5;
 
       v12 = [UIButton buttonWithType:v11];
       v13 = self->_button;
@@ -79,8 +79,8 @@
       [(UIButton *)self->_button addTarget:self action:"_buttonTapped:" forControlEvents:64];
       LODWORD(v14) = 1148829696;
       [(UIButton *)self->_button setContentHuggingPriority:0 forAxis:v14];
-      v15 = [(UIButton *)self->_button titleLabel];
-      [DynamicTypeWizard autorefreshLabel:v15 withFontProvider:&stru_10165D908];
+      titleLabel = [(UIButton *)self->_button titleLabel];
+      [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_10165D908];
 
       button = self->_button;
     }
@@ -90,76 +90,76 @@
       [(TopBannerItemView *)self addSubview:self->_button];
     }
 
-    v16 = [(TopBannerItem *)self->_item layout];
-    if (v16 == 1)
+    layout = [(TopBannerItem *)self->_item layout];
+    if (layout == 1)
     {
       if (!self->_messageLabelToButtonConstraint)
       {
-        v30 = [(UILabel *)self->_messageLabel lastBaselineAnchor];
-        v31 = [(UIButton *)self->_button firstBaselineAnchor];
-        v32 = [v30 constraintEqualToAnchor:v31];
+        lastBaselineAnchor = [(UILabel *)self->_messageLabel lastBaselineAnchor];
+        firstBaselineAnchor = [(UIButton *)self->_button firstBaselineAnchor];
+        v32 = [lastBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor];
         v33 = [DynamicTypeWizard autoscaledConstraint:v32 constant:&stru_1016373F8 withFontProvider:-19.0];
         messageLabelToButtonConstraint = self->_messageLabelToButtonConstraint;
         self->_messageLabelToButtonConstraint = v33;
       }
 
-      v43 = [(UIButton *)self->_button leadingAnchor];
-      v46 = [(UILabel *)self->_messageLabel leadingAnchor];
-      v45 = [v43 constraintEqualToAnchor:?];
+      leadingAnchor = [(UIButton *)self->_button leadingAnchor];
+      leadingAnchor2 = [(UILabel *)self->_messageLabel leadingAnchor];
+      v45 = [leadingAnchor constraintEqualToAnchor:?];
       v47[0] = v45;
-      v35 = [(UILabel *)self->_messageLabel trailingAnchor];
-      v42 = [(TopBannerItemView *)self trailingAnchor];
-      v44 = v35;
-      v24 = [v35 constraintEqualToAnchor:v42 constant:7.0];
+      trailingAnchor = [(UILabel *)self->_messageLabel trailingAnchor];
+      trailingAnchor2 = [(TopBannerItemView *)self trailingAnchor];
+      v44 = trailingAnchor;
+      v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:7.0];
       v47[1] = v24;
-      v25 = [(TopBannerItemView *)self bottomAnchor];
-      v26 = [(UIButton *)self->_button lastBaselineAnchor];
-      v27 = [v25 constraintGreaterThanOrEqualToAnchor:v26];
+      bottomAnchor = [(TopBannerItemView *)self bottomAnchor];
+      lastBaselineAnchor2 = [(UIButton *)self->_button lastBaselineAnchor];
+      v27 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2];
       v36 = [DynamicTypeWizard autoscaledConstraint:v27 constant:&stru_1016373F8 withFontProvider:11.0];
       v37 = self->_messageLabelToButtonConstraint;
-      v23 = v42;
+      firstBaselineAnchor3 = trailingAnchor2;
       v47[2] = v36;
       v47[3] = v37;
       v47[4] = self->_messageLabelToTrailingConstraint;
       v29 = [NSArray arrayWithObjects:v47 count:5];
 
-      v21 = v43;
+      trailingAnchor4 = leadingAnchor;
     }
 
     else
     {
-      if (v16)
+      if (layout)
       {
 LABEL_22:
         v38 = self->_button;
-        v39 = [(TopBannerItem *)self->_item buttonText];
-        [(UIButton *)v38 setTitle:v39 forState:0];
+        buttonText3 = [(TopBannerItem *)self->_item buttonText];
+        [(UIButton *)v38 setTitle:buttonText3 forState:0];
 
         goto LABEL_23;
       }
 
       if (!self->_messageLabelToButtonConstraint)
       {
-        v17 = [(UILabel *)self->_messageLabel trailingAnchor];
-        v18 = [(UIButton *)self->_button leadingAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18 constant:-7.0];
+        trailingAnchor3 = [(UILabel *)self->_messageLabel trailingAnchor];
+        leadingAnchor3 = [(UIButton *)self->_button leadingAnchor];
+        v19 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3 constant:-7.0];
         v20 = self->_messageLabelToButtonConstraint;
         self->_messageLabelToButtonConstraint = v19;
       }
 
       [(NSLayoutConstraint *)self->_messageLabelToTrailingConstraint setActive:0];
-      v21 = [(UIButton *)self->_button trailingAnchor];
-      v46 = [(TopBannerItemView *)self trailingAnchor];
-      v45 = [v21 constraintEqualToAnchor:-9.0 constant:?];
+      trailingAnchor4 = [(UIButton *)self->_button trailingAnchor];
+      leadingAnchor2 = [(TopBannerItemView *)self trailingAnchor];
+      v45 = [trailingAnchor4 constraintEqualToAnchor:-9.0 constant:?];
       v48[0] = v45;
-      v22 = [(UIButton *)self->_button firstBaselineAnchor];
-      v23 = [(UILabel *)self->_messageLabel firstBaselineAnchor];
-      v44 = v22;
-      v24 = [v22 constraintEqualToAnchor:v23];
+      firstBaselineAnchor2 = [(UIButton *)self->_button firstBaselineAnchor];
+      firstBaselineAnchor3 = [(UILabel *)self->_messageLabel firstBaselineAnchor];
+      v44 = firstBaselineAnchor2;
+      v24 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3];
       v48[1] = v24;
-      v25 = [(TopBannerItemView *)self bottomAnchor];
-      v26 = [(UIButton *)self->_button lastBaselineAnchor];
-      v27 = [v25 constraintGreaterThanOrEqualToAnchor:v26 constant:11.0];
+      bottomAnchor = [(TopBannerItemView *)self bottomAnchor];
+      lastBaselineAnchor2 = [(UIButton *)self->_button lastBaselineAnchor];
+      v27 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2 constant:11.0];
       v28 = self->_messageLabelToButtonConstraint;
       v48[2] = v27;
       v48[3] = v28;
@@ -182,13 +182,13 @@ LABEL_23:
 
 - (void)updateBadgeView
 {
-  v3 = [(TopBannerItem *)self->_item artwork];
-  [(MKArtworkImageView *)self->_badgeImageView setImageSource:v3];
+  artwork = [(TopBannerItem *)self->_item artwork];
+  [(MKArtworkImageView *)self->_badgeImageView setImageSource:artwork];
 
   [(MKArtworkImageView *)self->_badgeImageView setHidden:!self->_firstItemWithIcon];
-  v4 = [(MKArtworkImageView *)self->_badgeImageView image];
+  image = [(MKArtworkImageView *)self->_badgeImageView image];
 
-  if (v4)
+  if (image)
   {
     v5 = -7.0;
   }
@@ -198,18 +198,18 @@ LABEL_23:
     v5 = 0.0;
   }
 
-  [(NSLayoutConstraint *)self->_badgeViewWidthConstraint setActive:v4 == 0];
+  [(NSLayoutConstraint *)self->_badgeViewWidthConstraint setActive:image == 0];
   [(NSLayoutConstraint *)self->_badgeViewToMessageLabelConstraint setConstant:v5];
-  v6 = [(MKArtworkImageView *)self->_badgeImageView image];
-  if (v6)
+  image2 = [(MKArtworkImageView *)self->_badgeImageView image];
+  if (image2)
   {
     v7 = 4;
   }
 
   else
   {
-    v8 = [(UIButton *)self->_button superview];
-    if (v8)
+    superview = [(UIButton *)self->_button superview];
+    if (superview)
     {
       v7 = 4;
     }
@@ -225,25 +225,25 @@ LABEL_23:
   [(UILabel *)messageLabel setTextAlignment:v7];
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v4 = [(TopBannerItemView *)self item];
-  v5 = [v4 buttonAction];
+  item = [(TopBannerItemView *)self item];
+  buttonAction = [item buttonAction];
 
-  if (v5)
+  if (buttonAction)
   {
-    v8 = [(TopBannerItemView *)self item];
-    v6 = [v8 buttonAction];
-    v7 = [(TopBannerItemView *)self item];
-    (v6)[2](v6, v7);
+    item2 = [(TopBannerItemView *)self item];
+    buttonAction2 = [item2 buttonAction];
+    item3 = [(TopBannerItemView *)self item];
+    (buttonAction2)[2](buttonAction2, item3);
   }
 }
 
-- (void)setFirstItemWithIcon:(BOOL)a3
+- (void)setFirstItemWithIcon:(BOOL)icon
 {
-  if (self->_firstItemWithIcon != a3)
+  if (self->_firstItemWithIcon != icon)
   {
-    self->_firstItemWithIcon = a3;
+    self->_firstItemWithIcon = icon;
     v5 = [(TopBannerItemView *)self isFirstItemWithIcon]^ 1;
     badgeImageView = self->_badgeImageView;
 
@@ -251,105 +251,105 @@ LABEL_23:
   }
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   item = self->_item;
-  if (item != v5)
+  if (item != itemCopy)
   {
-    v7 = v5;
+    v7 = itemCopy;
     if (item)
     {
       [(TopBannerItemView *)self _deregisterObservers];
     }
 
-    objc_storeStrong(&self->_item, a3);
+    objc_storeStrong(&self->_item, item);
     [(TopBannerItemView *)self _updateUI];
-    v5 = v7;
+    itemCopy = v7;
   }
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(TopBannerItemView *)self badgeImageView];
+  badgeImageView = [(TopBannerItemView *)self badgeImageView];
   LODWORD(v4) = 1148846080;
-  [v3 setContentCompressionResistancePriority:0 forAxis:v4];
+  [badgeImageView setContentCompressionResistancePriority:0 forAxis:v4];
 
-  v5 = [(TopBannerItemView *)self badgeImageView];
+  badgeImageView2 = [(TopBannerItemView *)self badgeImageView];
   LODWORD(v6) = 1148846080;
-  [v5 setContentHuggingPriority:0 forAxis:v6];
+  [badgeImageView2 setContentHuggingPriority:0 forAxis:v6];
 
-  v7 = [(TopBannerItemView *)self messageLabel];
-  v8 = [v7 trailingAnchor];
-  v9 = [(TopBannerItemView *)self trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:-9.0];
+  messageLabel = [(TopBannerItemView *)self messageLabel];
+  trailingAnchor = [messageLabel trailingAnchor];
+  trailingAnchor2 = [(TopBannerItemView *)self trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-9.0];
   messageLabelToTrailingConstraint = self->_messageLabelToTrailingConstraint;
   self->_messageLabelToTrailingConstraint = v10;
 
-  v12 = [(TopBannerItemView *)self badgeImageView];
-  v13 = [v12 trailingAnchor];
-  v14 = [(TopBannerItemView *)self messageLabel];
-  v15 = [v14 leadingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:-7.0];
+  badgeImageView3 = [(TopBannerItemView *)self badgeImageView];
+  trailingAnchor3 = [badgeImageView3 trailingAnchor];
+  messageLabel2 = [(TopBannerItemView *)self messageLabel];
+  leadingAnchor = [messageLabel2 leadingAnchor];
+  v16 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor constant:-7.0];
   badgeViewToMessageLabelConstraint = self->_badgeViewToMessageLabelConstraint;
   self->_badgeViewToMessageLabelConstraint = v16;
 
-  v61 = [(TopBannerItemView *)self badgeImageView];
-  v60 = [v61 leadingAnchor];
-  v59 = [(TopBannerItemView *)self leadingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59 constant:9.0];
+  badgeImageView4 = [(TopBannerItemView *)self badgeImageView];
+  leadingAnchor2 = [badgeImageView4 leadingAnchor];
+  leadingAnchor3 = [(TopBannerItemView *)self leadingAnchor];
+  v58 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:9.0];
   v62[0] = v58;
-  v57 = [(TopBannerItemView *)self badgeImageView];
-  v56 = [v57 topAnchor];
-  v55 = [(TopBannerItemView *)self topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55 constant:9.0];
+  badgeImageView5 = [(TopBannerItemView *)self badgeImageView];
+  topAnchor = [badgeImageView5 topAnchor];
+  topAnchor2 = [(TopBannerItemView *)self topAnchor];
+  v54 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:9.0];
   v62[1] = v54;
-  v53 = [(TopBannerItemView *)self badgeImageView];
-  v51 = [v53 bottomAnchor];
-  v52 = [(TopBannerItemView *)self messageLabel];
-  v50 = [v52 bottomAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  badgeImageView6 = [(TopBannerItemView *)self badgeImageView];
+  bottomAnchor = [badgeImageView6 bottomAnchor];
+  messageLabel3 = [(TopBannerItemView *)self messageLabel];
+  bottomAnchor2 = [messageLabel3 bottomAnchor];
+  v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v18 = self->_badgeViewToMessageLabelConstraint;
   v19 = self->_messageLabelToTrailingConstraint;
   v62[2] = v49;
   v62[3] = v18;
   v62[4] = v19;
-  v47 = [(HairlineView *)self->_hairlineView leadingAnchor];
-  v48 = [(TopBannerItemView *)self messageLabel];
-  v46 = [v48 leadingAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  leadingAnchor4 = [(HairlineView *)self->_hairlineView leadingAnchor];
+  messageLabel4 = [(TopBannerItemView *)self messageLabel];
+  leadingAnchor5 = [messageLabel4 leadingAnchor];
+  v45 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v62[5] = v45;
-  v44 = [(HairlineView *)self->_hairlineView trailingAnchor];
-  v43 = [(TopBannerItemView *)self trailingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43 constant:-9.0];
+  trailingAnchor4 = [(HairlineView *)self->_hairlineView trailingAnchor];
+  trailingAnchor5 = [(TopBannerItemView *)self trailingAnchor];
+  v42 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-9.0];
   v62[6] = v42;
-  v41 = [(TopBannerItemView *)self badgeImageView];
-  v40 = [v41 topAnchor];
-  v39 = [(TopBannerItemView *)self topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  badgeImageView7 = [(TopBannerItemView *)self badgeImageView];
+  topAnchor3 = [badgeImageView7 topAnchor];
+  topAnchor4 = [(TopBannerItemView *)self topAnchor];
+  v38 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v37 = [DynamicTypeWizard autoscaledConstraint:v38 constant:&stru_1016373F8 withFontProvider:9.0];
   v62[7] = v37;
-  v36 = [(TopBannerItemView *)self messageLabel];
-  v35 = [v36 firstBaselineAnchor];
-  v34 = [(TopBannerItemView *)self topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  messageLabel5 = [(TopBannerItemView *)self messageLabel];
+  firstBaselineAnchor = [messageLabel5 firstBaselineAnchor];
+  topAnchor5 = [(TopBannerItemView *)self topAnchor];
+  v33 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor5];
   v20 = [DynamicTypeWizard autoscaledConstraint:v33 constant:&stru_1016373F8 withFontProvider:19.0];
   v62[8] = v20;
-  v21 = [(TopBannerItemView *)self bottomAnchor];
-  v22 = [(TopBannerItemView *)self messageLabel];
-  v23 = [v22 lastBaselineAnchor];
-  v24 = [v21 constraintGreaterThanOrEqualToAnchor:v23 constant:11.0];
+  bottomAnchor3 = [(TopBannerItemView *)self bottomAnchor];
+  messageLabel6 = [(TopBannerItemView *)self messageLabel];
+  lastBaselineAnchor = [messageLabel6 lastBaselineAnchor];
+  v24 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor constant:11.0];
   v62[9] = v24;
-  v25 = [(HairlineView *)self->_hairlineView bottomAnchor];
-  v26 = [(TopBannerItemView *)self bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  bottomAnchor4 = [(HairlineView *)self->_hairlineView bottomAnchor];
+  bottomAnchor5 = [(TopBannerItemView *)self bottomAnchor];
+  v27 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v62[10] = v27;
   v28 = [NSArray arrayWithObjects:v62 count:11];
   [NSLayoutConstraint activateConstraints:v28];
 
-  v29 = [(TopBannerItemView *)self badgeImageView];
-  v30 = [v29 widthAnchor];
-  v31 = [v30 constraintEqualToConstant:0.0];
+  badgeImageView8 = [(TopBannerItemView *)self badgeImageView];
+  widthAnchor = [badgeImageView8 widthAnchor];
+  v31 = [widthAnchor constraintEqualToConstant:0.0];
   badgeViewWidthConstraint = self->_badgeViewWidthConstraint;
   self->_badgeViewWidthConstraint = v31;
 }
@@ -399,11 +399,11 @@ LABEL_23:
   [(TopBannerItemView *)&v3 dealloc];
 }
 
-- (TopBannerItemView)initWithCoder:(id)a3
+- (TopBannerItemView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TopBannerItemView;
-  v3 = [(TopBannerItemView *)&v7 initWithCoder:a3];
+  v3 = [(TopBannerItemView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -414,11 +414,11 @@ LABEL_23:
   return v4;
 }
 
-- (TopBannerItemView)initWithFrame:(CGRect)a3
+- (TopBannerItemView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = TopBannerItemView;
-  v3 = [(TopBannerItemView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TopBannerItemView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

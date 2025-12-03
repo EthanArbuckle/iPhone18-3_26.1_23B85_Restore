@@ -1,31 +1,31 @@
 @interface ATXContactModeEntity
 + (id)cnContactIdsOfEmergencyContacts;
-+ (id)cnContactIdsOfFavoriteContactsWithContactStore:(id)a3;
++ (id)cnContactIdsOfFavoriteContactsWithContactStore:(id)store;
 + (id)cnContactIdsOfICloudFamilyMembers;
 + (id)vipContactEmailAddresses;
-- (ATXContactModeEntity)initWithCoder:(id)a3;
-- (ATXContactModeEntity)initWithDisplayName:(id)a3 rawIdentifier:(id)a4 cnContactId:(id)a5 stableContactIdentifier:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isVIPContactGivenVIPs:(id)a3 contactStore:(id)a4;
+- (ATXContactModeEntity)initWithCoder:(id)coder;
+- (ATXContactModeEntity)initWithDisplayName:(id)name rawIdentifier:(id)identifier cnContactId:(id)id stableContactIdentifier:(id)contactIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isVIPContactGivenVIPs:(id)ps contactStore:(id)store;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
 - (id)jsonDict;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXContactModeEntity
 
-- (ATXContactModeEntity)initWithDisplayName:(id)a3 rawIdentifier:(id)a4 cnContactId:(id)a5 stableContactIdentifier:(id)a6
+- (ATXContactModeEntity)initWithDisplayName:(id)name rawIdentifier:(id)identifier cnContactId:(id)id stableContactIdentifier:(id)contactIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v12 && !v13 && !v14)
+  nameCopy = name;
+  identifierCopy = identifier;
+  idCopy = id;
+  contactIdentifierCopy = contactIdentifier;
+  v15 = contactIdentifierCopy;
+  if (!identifierCopy && !idCopy && !contactIdentifierCopy)
   {
     [ATXContactModeEntity initWithDisplayName:a2 rawIdentifier:self cnContactId:? stableContactIdentifier:?];
   }
@@ -35,15 +35,15 @@
   v16 = [(ATXContactModeEntity *)&v26 init];
   if (v16)
   {
-    v17 = [v11 copy];
+    v17 = [nameCopy copy];
     displayName = v16->_displayName;
     v16->_displayName = v17;
 
-    v19 = [v12 copy];
+    v19 = [identifierCopy copy];
     rawIdentifier = v16->_rawIdentifier;
     v16->_rawIdentifier = v19;
 
-    v21 = [v13 copy];
+    v21 = [idCopy copy];
     cnContactId = v16->_cnContactId;
     v16->_cnContactId = v21;
 
@@ -76,63 +76,63 @@
 {
   v19[5] = *MEMORY[0x1E69E9840];
   v18[0] = @"displayName";
-  v3 = [(ATXContactModeEntity *)self displayName];
-  v4 = v3;
-  if (!v3)
+  displayName = [(ATXContactModeEntity *)self displayName];
+  v4 = displayName;
+  if (!displayName)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    displayName = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17 = v3;
-  v19[0] = v3;
+  v17 = displayName;
+  v19[0] = displayName;
   v18[1] = @"rawIdentifier";
-  v5 = [(ATXContactModeEntity *)self rawIdentifier];
-  v6 = v5;
-  if (!v5)
+  rawIdentifier = [(ATXContactModeEntity *)self rawIdentifier];
+  v6 = rawIdentifier;
+  if (!rawIdentifier)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    rawIdentifier = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v5;
-  v19[1] = v5;
+  v16 = rawIdentifier;
+  v19[1] = rawIdentifier;
   v18[2] = @"cnContactId";
-  v7 = [(ATXContactModeEntity *)self cnContactId];
-  v8 = v7;
-  if (!v7)
+  cnContactId = [(ATXContactModeEntity *)self cnContactId];
+  null = cnContactId;
+  if (!cnContactId)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v8;
+  v19[2] = null;
   v18[3] = @"stableContactIdentifier";
-  v9 = [(ATXContactModeEntity *)self stableContactIdentifier];
-  v10 = v9;
-  if (!v9)
+  stableContactIdentifier = [(ATXContactModeEntity *)self stableContactIdentifier];
+  null2 = stableContactIdentifier;
+  if (!stableContactIdentifier)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[3] = v10;
+  v19[3] = null2;
   v18[4] = @"scoreMetadata";
-  v11 = [(ATXContactModeEntity *)self scoreMetadata];
-  v12 = [v11 jsonDict];
-  v13 = v12;
-  if (!v12)
+  scoreMetadata = [(ATXContactModeEntity *)self scoreMetadata];
+  jsonDict = [scoreMetadata jsonDict];
+  null3 = jsonDict;
+  if (!jsonDict)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[4] = v13;
+  v19[4] = null3;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:5];
-  if (!v12)
+  if (!jsonDict)
   {
   }
 
-  if (!v9)
+  if (!stableContactIdentifier)
   {
   }
 
-  if (!v7)
+  if (!cnContactId)
   {
   }
 
@@ -149,8 +149,8 @@
 
 - (NSString)debugDescription
 {
-  v2 = [(ATXContactModeEntity *)self jsonDict];
-  v3 = [v2 description];
+  jsonDict = [(ATXContactModeEntity *)self jsonDict];
+  v3 = [jsonDict description];
 
   return v3;
 }
@@ -158,21 +158,21 @@
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(ATXContactModeEntity *)self identifier];
+  identifier = [(ATXContactModeEntity *)self identifier];
   v11 = *&self->_displayName;
   cnContactId = self->_cnContactId;
   stableContactIdentifier = self->_stableContactIdentifier;
-  v7 = [(ATXContactModeEntity *)self scoreMetadata];
-  [v7 score];
-  v9 = [v3 initWithFormat:@"entityIdentifier: %@, displayName: %@, rawIdentifier: %@, cnContactId: %@, stableContactIdentifer: %@, score: %.3f", v4, v11, cnContactId, stableContactIdentifier, v8];
+  scoreMetadata = [(ATXContactModeEntity *)self scoreMetadata];
+  [scoreMetadata score];
+  v9 = [v3 initWithFormat:@"entityIdentifier: %@, displayName: %@, rawIdentifier: %@, cnContactId: %@, stableContactIdentifer: %@, score: %.3f", identifier, v11, cnContactId, stableContactIdentifier, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -182,11 +182,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATXContactModeEntity *)self identifier];
-      v7 = [(ATXContactModeEntity *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(ATXContactModeEntity *)self identifier];
+      identifier2 = [(ATXContactModeEntity *)v5 identifier];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -200,25 +200,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(ATXContactModeEntity *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(ATXContactModeEntity *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-+ (id)cnContactIdsOfFavoriteContactsWithContactStore:(id)a3
++ (id)cnContactIdsOfFavoriteContactsWithContactStore:(id)store
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  storeCopy = store;
   v4 = objc_opt_new();
-  v17 = v3;
-  v5 = [objc_alloc(MEMORY[0x1E695CE90]) initWithContactStore:v3];
+  v17 = storeCopy;
+  v5 = [objc_alloc(MEMORY[0x1E695CE90]) initWithContactStore:storeCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v5 entries];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  entries = [v5 entries];
+  v7 = [entries countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -229,24 +229,24 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(entries);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 contactProperty];
-        v14 = [v13 contact];
-        v15 = [v14 identifier];
+        contactProperty = [v11 contactProperty];
+        contact = [contactProperty contact];
+        identifier = [contact identifier];
 
-        if (v15)
+        if (identifier)
         {
-          [v4 addObject:v15];
+          [v4 addObject:identifier];
         }
 
         objc_autoreleasePoolPop(v12);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [entries countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -301,8 +301,8 @@
         v20 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v11 = [v9 emailAddresses];
-        v12 = [v11 countByEnumeratingWithState:&v17 objects:v34 count:16];
+        emailAddresses = [v9 emailAddresses];
+        v12 = [emailAddresses countByEnumeratingWithState:&v17 objects:v34 count:16];
         if (v12)
         {
           v13 = *v18;
@@ -312,13 +312,13 @@
             {
               if (*v18 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(emailAddresses);
               }
 
               [v4 addObject:*(*(&v17 + 1) + 8 * j)];
             }
 
-            v12 = [v11 countByEnumeratingWithState:&v17 objects:v34 count:16];
+            v12 = [emailAddresses countByEnumeratingWithState:&v17 objects:v34 count:16];
           }
 
           while (v12);
@@ -426,12 +426,12 @@ void __48__ATXContactModeEntity_vipContactEmailAddresses__block_invoke_377()
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 nameContactIdentifier];
+        nameContactIdentifier = [v14 nameContactIdentifier];
 
-        if (v15)
+        if (nameContactIdentifier)
         {
-          v16 = [v14 nameContactIdentifier];
-          [v5 addObject:v16];
+          nameContactIdentifier2 = [v14 nameContactIdentifier];
+          [v5 addObject:nameContactIdentifier2];
         }
       }
 
@@ -483,14 +483,14 @@ LABEL_7:
 {
   v21 = *MEMORY[0x1E69E9840];
   v2 = objc_opt_new();
-  v3 = [v2 fetchFamilyCircle];
+  fetchFamilyCircle = [v2 fetchFamilyCircle];
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 members];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  members = [fetchFamilyCircle members];
+  v6 = [members countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -501,25 +501,25 @@ LABEL_7:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(members);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if (([v10 isMe] & 1) == 0)
         {
-          v11 = [v10 contact];
-          v12 = [v11 identifier];
+          contact = [v10 contact];
+          identifier = [contact identifier];
 
-          if (v12)
+          if (identifier)
           {
-            v13 = [v10 contact];
-            v14 = [v13 identifier];
-            [v4 addObject:v14];
+            contact2 = [v10 contact];
+            identifier2 = [contact2 identifier];
+            [v4 addObject:identifier2];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [members countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -528,30 +528,30 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)isVIPContactGivenVIPs:(id)a3 contactStore:(id)a4
+- (BOOL)isVIPContactGivenVIPs:(id)ps contactStore:(id)store
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  psCopy = ps;
+  storeCopy = store;
   cnContactId = self->_cnContactId;
   if (cnContactId)
   {
     v26[0] = *MEMORY[0x1E695C208];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     v24 = 0;
-    v10 = [v7 unifiedContactWithIdentifier:cnContactId keysToFetch:v9 error:&v24];
+    v10 = [storeCopy unifiedContactWithIdentifier:cnContactId keysToFetch:v9 error:&v24];
     v11 = v24;
 
-    v12 = [v10 emailAddresses];
+    emailAddresses = [v10 emailAddresses];
 
-    if (v12)
+    if (emailAddresses)
     {
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v13 = [v10 emailAddresses];
-      v14 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      emailAddresses2 = [v10 emailAddresses];
+      v14 = [emailAddresses2 countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v14)
       {
         v15 = *v21;
@@ -561,11 +561,11 @@ LABEL_7:
           {
             if (*v21 != v15)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(emailAddresses2);
             }
 
-            v17 = [*(*(&v20 + 1) + 8 * i) value];
-            v18 = [v6 containsObject:v17];
+            value = [*(*(&v20 + 1) + 8 * i) value];
+            v18 = [psCopy containsObject:value];
 
             if (v18)
             {
@@ -574,7 +574,7 @@ LABEL_7:
             }
           }
 
-          v14 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
+          v14 = [emailAddresses2 countByEnumeratingWithState:&v20 objects:v25 count:16];
           if (v14)
           {
             continue;
@@ -601,47 +601,47 @@ LABEL_14:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXContactModeEntity *)self displayName];
-  [v4 encodeObject:v5 forKey:@"codingKeyForDisplayName"];
+  coderCopy = coder;
+  displayName = [(ATXContactModeEntity *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"codingKeyForDisplayName"];
 
-  v6 = [(ATXContactModeEntity *)self rawIdentifier];
-  [v4 encodeObject:v6 forKey:@"codingKeyForRawIdentifier"];
+  rawIdentifier = [(ATXContactModeEntity *)self rawIdentifier];
+  [coderCopy encodeObject:rawIdentifier forKey:@"codingKeyForRawIdentifier"];
 
-  v7 = [(ATXContactModeEntity *)self cnContactId];
-  [v4 encodeObject:v7 forKey:@"codingKeyForCnContactId"];
+  cnContactId = [(ATXContactModeEntity *)self cnContactId];
+  [coderCopy encodeObject:cnContactId forKey:@"codingKeyForCnContactId"];
 
-  v8 = [(ATXContactModeEntity *)self stableContactIdentifier];
-  [v4 encodeObject:v8 forKey:@"codingKeyForStableContactIdentifier"];
+  stableContactIdentifier = [(ATXContactModeEntity *)self stableContactIdentifier];
+  [coderCopy encodeObject:stableContactIdentifier forKey:@"codingKeyForStableContactIdentifier"];
 
-  v9 = [(ATXContactModeEntity *)self scoreMetadata];
-  [v4 encodeObject:v9 forKey:@"codingKeyForScoreMetadata"];
+  scoreMetadata = [(ATXContactModeEntity *)self scoreMetadata];
+  [coderCopy encodeObject:scoreMetadata forKey:@"codingKeyForScoreMetadata"];
 }
 
-- (ATXContactModeEntity)initWithCoder:(id)a3
+- (ATXContactModeEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_notification_management();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForDisplayName" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForDisplayName" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v7];
 
-  v9 = [v4 error];
+  error = [coderCopy error];
 
-  if (!v9)
+  if (!error)
   {
     v11 = MEMORY[0x1E69C5D78];
     v12 = objc_opt_class();
     v13 = __atxlog_handle_notification_management();
-    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"codingKeyForRawIdentifier" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v13];
+    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"codingKeyForRawIdentifier" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v13];
 
-    v15 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (v15)
+    if (error2)
     {
-      v10 = 0;
+      selfCopy = 0;
 LABEL_20:
 
       goto LABEL_21;
@@ -650,13 +650,13 @@ LABEL_20:
     v16 = MEMORY[0x1E69C5D78];
     v17 = objc_opt_class();
     v18 = __atxlog_handle_notification_management();
-    v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"codingKeyForCnContactId" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v18];
+    v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"codingKeyForCnContactId" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v18];
 
-    v20 = [v4 error];
+    error3 = [coderCopy error];
 
-    if (v20)
+    if (error3)
     {
-      v10 = 0;
+      selfCopy = 0;
 LABEL_19:
 
       goto LABEL_20;
@@ -665,13 +665,13 @@ LABEL_19:
     v21 = MEMORY[0x1E69C5D78];
     v22 = objc_opt_class();
     v23 = __atxlog_handle_notification_management();
-    v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"codingKeyForStableContactIdentifier" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v23];
+    v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"codingKeyForStableContactIdentifier" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v23];
 
-    v25 = [v4 error];
+    error4 = [coderCopy error];
 
-    if (v25)
+    if (error4)
     {
-      v10 = 0;
+      selfCopy = 0;
 LABEL_18:
 
       goto LABEL_19;
@@ -680,17 +680,17 @@ LABEL_18:
     v26 = MEMORY[0x1E69C5D78];
     v27 = objc_opt_class();
     v28 = __atxlog_handle_notification_management();
-    v29 = [v26 robustDecodeObjectOfClass:v27 forKey:@"codingKeyForScoreMetadata" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v28];
+    v29 = [v26 robustDecodeObjectOfClass:v27 forKey:@"codingKeyForScoreMetadata" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.decode.contactModeEntity" errorCode:-1 logHandle:v28];
 
-    v30 = [v4 error];
+    error5 = [coderCopy error];
 
-    if (!v30)
+    if (!error5)
     {
       if (v14 || v19 || v24)
       {
         self = [(ATXContactModeEntity *)self initWithDisplayName:v8 rawIdentifier:v14 cnContactId:v19 stableContactIdentifier:v24];
         [(ATXContactModeEntity *)self setScoreMetadata:v29];
-        v10 = self;
+        selfCopy = self;
         goto LABEL_17;
       }
 
@@ -701,26 +701,26 @@ LABEL_18:
       }
     }
 
-    v10 = 0;
+    selfCopy = 0;
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_21:
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ATXContactModeEntity alloc];
-  v5 = [(ATXContactModeEntity *)self displayName];
-  v6 = [(ATXContactModeEntity *)self rawIdentifier];
-  v7 = [(ATXContactModeEntity *)self cnContactId];
-  v8 = [(ATXContactModeEntity *)self stableContactIdentifier];
-  v9 = [(ATXContactModeEntity *)v4 initWithDisplayName:v5 rawIdentifier:v6 cnContactId:v7 stableContactIdentifier:v8];
+  displayName = [(ATXContactModeEntity *)self displayName];
+  rawIdentifier = [(ATXContactModeEntity *)self rawIdentifier];
+  cnContactId = [(ATXContactModeEntity *)self cnContactId];
+  stableContactIdentifier = [(ATXContactModeEntity *)self stableContactIdentifier];
+  v9 = [(ATXContactModeEntity *)v4 initWithDisplayName:displayName rawIdentifier:rawIdentifier cnContactId:cnContactId stableContactIdentifier:stableContactIdentifier];
 
   return v9;
 }

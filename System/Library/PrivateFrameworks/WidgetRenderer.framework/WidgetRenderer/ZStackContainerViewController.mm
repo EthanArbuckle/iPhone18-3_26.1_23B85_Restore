@@ -1,7 +1,7 @@
 @interface ZStackContainerViewController
 - (_TtC14WidgetRenderer29ZStackContainerViewController)init;
-- (_TtC14WidgetRenderer29ZStackContainerViewController)initWithCoder:(id)a3;
-- (_TtC14WidgetRenderer29ZStackContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14WidgetRenderer29ZStackContainerViewController)initWithCoder:(id)coder;
+- (_TtC14WidgetRenderer29ZStackContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_childViewControllersForAlwaysOnTimelines;
 - (void)loadView;
 @end
@@ -11,9 +11,9 @@
 - (void)loadView
 {
   v3 = objc_allocWithZone(type metadata accessor for TouchPassThroughView());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(ZStackContainerViewController *)v5 setView:v4];
+  [(ZStackContainerViewController *)selfCopy setView:v4];
 }
 
 - (_TtC14WidgetRenderer29ZStackContainerViewController)init
@@ -25,8 +25,8 @@
 
 - (id)_childViewControllersForAlwaysOnTimelines
 {
-  v2 = self;
-  v3 = [(ZStackContainerViewController *)v2 childViewControllers];
+  selfCopy = self;
+  childViewControllers = [(ZStackContainerViewController *)selfCopy childViewControllers];
   sub_1DAD674D4(0, &qword_1EE005620, 0x1E69DD258);
   v4 = sub_1DAED1E7C();
 
@@ -38,14 +38,14 @@
   return v5;
 }
 
-- (_TtC14WidgetRenderer29ZStackContainerViewController)initWithCoder:(id)a3
+- (_TtC14WidgetRenderer29ZStackContainerViewController)initWithCoder:(id)coder
 {
   result = sub_1DAED273C();
   __break(1u);
   return result;
 }
 
-- (_TtC14WidgetRenderer29ZStackContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14WidgetRenderer29ZStackContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

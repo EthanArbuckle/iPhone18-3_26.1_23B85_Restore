@@ -1,7 +1,7 @@
 @interface AVExtendedNoteOnEvent
 - (AVExtendedNoteOnEvent)initWithMIDINote:(float)midiNote velocity:(float)velocity groupID:(UInt32)groupID duration:(AVMusicTimeStamp)duration;
 - (AVExtendedNoteOnEvent)initWithMIDINote:(float)midiNote velocity:(float)velocity instrumentID:(UInt32)instrumentID groupID:(UInt32)groupID duration:(AVMusicTimeStamp)duration;
-- (AVExtendedNoteOnEvent)initWithNoteOnEvent:(ExtendedNoteOnEvent *)a3;
+- (AVExtendedNoteOnEvent)initWithNoteOnEvent:(ExtendedNoteOnEvent *)event;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   [(AVExtendedNoteOnEvent *)&v3 dealloc];
 }
 
-- (AVExtendedNoteOnEvent)initWithNoteOnEvent:(ExtendedNoteOnEvent *)a3
+- (AVExtendedNoteOnEvent)initWithNoteOnEvent:(ExtendedNoteOnEvent *)event
 {
   v8.receiver = self;
   v8.super_class = AVExtendedNoteOnEvent;
@@ -24,8 +24,8 @@
   {
     v5 = malloc_type_malloc(0x20uLL, 0x1000040E0EAB150uLL);
     v4->_event = v5;
-    v6 = *&a3->extendedParams.mPitch;
-    *&v5->instrumentID = *&a3->instrumentID;
+    v6 = *&event->extendedParams.mPitch;
+    *&v5->instrumentID = *&event->instrumentID;
     *&v5->extendedParams.mPitch = v6;
     v4->_event->extendedParams.argCount = 2;
   }

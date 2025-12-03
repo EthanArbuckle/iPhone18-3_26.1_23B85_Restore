@@ -1,13 +1,13 @@
 @interface REDateRelevanceProviderManager
 + (id)_dependencyClasses;
 + (id)_features;
-- (BOOL)_isHistoricProvider:(id)a3;
-- (id)_valueForHistoricProvider:(id)a3 feature:(id)a4;
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5;
+- (BOOL)_isHistoricProvider:(id)provider;
+- (id)_valueForHistoricProvider:(id)provider feature:(id)feature;
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature;
 - (void)_handleSignificantTimeChange;
 - (void)_prepareForUpdate;
-- (void)_scheduleUpdateForDate:(id)a3;
-- (void)_scheduleUpdatesForDateProvider:(id)a3;
+- (void)_scheduleUpdateForDate:(id)date;
+- (void)_scheduleUpdatesForDateProvider:(id)provider;
 - (void)pause;
 - (void)resume;
 @end
@@ -44,13 +44,13 @@
   return v4;
 }
 
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v8;
-  v11 = [a4 attributeForKey:@"RETrainingContextDateKey"];
+  providerCopy = provider;
+  featureCopy = feature;
+  v10 = providerCopy;
+  v11 = [context attributeForKey:@"RETrainingContextDateKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -75,33 +75,33 @@ LABEL_6:
   v16 = RELogForDomain(3);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v42 = [v9 name];
-    v43 = [v10 initialRelevanceDate];
-    v44 = [v10 irrelevantDate];
-    v45 = [v10 startDate];
-    v46 = [v10 endDate];
+    name = [featureCopy name];
+    initialRelevanceDate = [v10 initialRelevanceDate];
+    irrelevantDate = [v10 irrelevantDate];
+    startDate = [v10 startDate];
+    endDate = [v10 endDate];
     v47 = 138413570;
-    v48 = v42;
+    v48 = name;
     v49 = 2112;
-    v50 = v43;
+    v50 = initialRelevanceDate;
     v51 = 2112;
-    v52 = v44;
+    v52 = irrelevantDate;
     v53 = 2112;
-    v54 = v45;
+    v54 = startDate;
     v55 = 2112;
-    v56 = v46;
+    v56 = endDate;
     v57 = 2112;
     v58 = v11;
     _os_log_debug_impl(&dword_22859F000, v16, OS_LOG_TYPE_DEBUG, "Calculating value for feature: %@ with provider initialRelevanceDate: %@, irrelevantDate: %@, startDate: %@, endDate: %@ at currentDate: %@", &v47, 0x3Eu);
   }
 
   v17 = +[REFeature dateOccursTodayFeature];
-  v18 = [v9 isEqual:v17];
+  v18 = [featureCopy isEqual:v17];
 
   if (v18)
   {
-    v19 = [v10 interval];
-    v20 = [v19 intersectionWithDateInterval:v15];
+    interval = [v10 interval];
+    v20 = [interval intersectionWithDateInterval:v15];
 
     v21 = RELogForDomain(3);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -116,22 +116,22 @@ LABEL_21:
   }
 
   v23 = +[REFeature dateFeature];
-  if ([v9 isEqual:v23] && objc_msgSend(v10, "priority") != 1)
+  if ([featureCopy isEqual:v23] && objc_msgSend(v10, "priority") != 1)
   {
 
     goto LABEL_23;
   }
 
   v24 = +[REFeature dateInformationalFeature];
-  if (([v9 isEqual:v24] & 1) == 0)
+  if (([featureCopy isEqual:v24] & 1) == 0)
   {
 
     goto LABEL_18;
   }
 
-  v25 = [v10 priority];
+  priority = [v10 priority];
 
-  if (v25 != 1)
+  if (priority != 1)
   {
 LABEL_18:
     v26 = RELogForDomain(3);
@@ -145,18 +145,18 @@ LABEL_18:
   }
 
 LABEL_23:
-  v28 = [v10 initialRelevanceDate];
-  v29 = [v10 interval];
-  v30 = [v29 endDate];
+  initialRelevanceDate2 = [v10 initialRelevanceDate];
+  interval2 = [v10 interval];
+  endDate2 = [interval2 endDate];
 
   v31 = 0.0;
-  if (v28)
+  if (initialRelevanceDate2)
   {
-    if (v30)
+    if (endDate2)
     {
-      v32 = [v28 laterDate:v30];
+      v32 = [initialRelevanceDate2 laterDate:endDate2];
 
-      if (v32 == v30)
+      if (v32 == endDate2)
       {
         v33 = RELogForDomain(3);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -164,7 +164,7 @@ LABEL_23:
           [REDateRelevanceProviderManager _valueForProvider:context:feature:];
         }
 
-        v34 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v28 endDate:v30];
+        v34 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:initialRelevanceDate2 endDate:endDate2];
         if ([v34 containsDate:v11])
         {
           v35 = RELogForDomain(3);
@@ -173,9 +173,9 @@ LABEL_23:
             [REDateRelevanceProviderManager _valueForProvider:context:feature:];
           }
 
-          v36 = [v10 interval];
-          v37 = [v36 startDate];
-          v38 = REPercentBetweenDates(v11, v37);
+          interval3 = [v10 interval];
+          startDate2 = [interval3 startDate];
+          v38 = REPercentBetweenDates(v11, startDate2);
 
           v31 = v38;
         }
@@ -197,47 +197,47 @@ LABEL_36:
   return v27;
 }
 
-- (BOOL)_isHistoricProvider:(id)a3
+- (BOOL)_isHistoricProvider:(id)provider
 {
-  v4 = [a3 irrelevantDate];
-  LOBYTE(self) = [v4 compare:self->_lastDateUpdate] == -1;
+  irrelevantDate = [provider irrelevantDate];
+  LOBYTE(self) = [irrelevantDate compare:self->_lastDateUpdate] == -1;
 
   return self;
 }
 
-- (id)_valueForHistoricProvider:(id)a3 feature:(id)a4
+- (id)_valueForHistoricProvider:(id)provider feature:(id)feature
 {
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 irrelevantDate];
-  v10 = [v8 interval];
-  v11 = [v10 endDate];
+  providerCopy = provider;
+  featureCopy = feature;
+  v8 = providerCopy;
+  irrelevantDate = [v8 irrelevantDate];
+  interval = [v8 interval];
+  endDate = [interval endDate];
 
   [v8 recentDuration];
-  v43 = v11;
-  v12 = [v11 dateByAddingTimeInterval:?];
-  v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v12];
+  v43 = endDate;
+  v12 = [endDate dateByAddingTimeInterval:?];
+  v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:irrelevantDate endDate:v12];
   v14 = RELogForDomain(3);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v42 = [v7 name];
-    v35 = [v8 initialRelevanceDate];
-    v36 = [v8 irrelevantDate];
-    v37 = [v8 startDate];
+    name = [featureCopy name];
+    initialRelevanceDate = [v8 initialRelevanceDate];
+    irrelevantDate2 = [v8 irrelevantDate];
+    startDate = [v8 startDate];
     [v8 endDate];
     v38 = v41 = v13;
     [v8 recentDuration];
     lastDateUpdate = self->_lastDateUpdate;
     *buf = 138413826;
-    v45 = v42;
+    v45 = name;
     v46 = 2112;
-    v47 = v35;
+    v47 = initialRelevanceDate;
     v48 = 2112;
-    v49 = v36;
+    v49 = irrelevantDate2;
     v50 = 2112;
-    v51 = v37;
+    v51 = startDate;
     v52 = 2112;
     v53 = v38;
     v54 = 2048;
@@ -250,7 +250,7 @@ LABEL_36:
   }
 
   v15 = +[REFeature dateFeature];
-  if ([v7 isEqual:v15])
+  if ([featureCopy isEqual:v15])
   {
 
 LABEL_6:
@@ -265,10 +265,10 @@ LABEL_6:
         [REDateRelevanceProviderManager _valueForProvider:context:feature:];
       }
 
-      v23 = [MEMORY[0x277CBEA80] currentCalendar];
-      v24 = [v8 interval];
-      v25 = [v24 startDate];
-      v26 = [v23 dateByAddingUnit:16 value:1 toDate:v25 options:0];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      interval2 = [v8 interval];
+      startDate2 = [interval2 startDate];
+      v26 = [currentCalendar dateByAddingUnit:16 value:1 toDate:startDate2 options:0];
 
       v27 = 1.0 - REPercentBetweenDates(self->_lastDateUpdate, v26);
       v28 = v27;
@@ -297,7 +297,7 @@ LABEL_6:
 
   +[REFeature dateInformationalFeature];
   v17 = v16 = v13;
-  v18 = [v7 isEqual:v17];
+  v18 = [featureCopy isEqual:v17];
 
   v13 = v16;
   if (v18)
@@ -321,36 +321,36 @@ LABEL_19:
   return v30;
 }
 
-- (void)_scheduleUpdatesForDateProvider:(id)a3
+- (void)_scheduleUpdatesForDateProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 interval];
-  v6 = [v5 startDate];
-  [(REDateRelevanceProviderManager *)self _scheduleUpdateForDate:v6];
+  providerCopy = provider;
+  interval = [providerCopy interval];
+  startDate = [interval startDate];
+  [(REDateRelevanceProviderManager *)self _scheduleUpdateForDate:startDate];
 
-  v7 = [v4 interval];
-  v8 = [v7 endDate];
-  [(REDateRelevanceProviderManager *)self _scheduleUpdateForDate:v8];
+  interval2 = [providerCopy interval];
+  endDate = [interval2 endDate];
+  [(REDateRelevanceProviderManager *)self _scheduleUpdateForDate:endDate];
 
-  v9 = [v4 irrelevantDate];
-  [(REDateRelevanceProviderManager *)self _scheduleUpdateForDate:v9];
+  irrelevantDate = [providerCopy irrelevantDate];
+  [(REDateRelevanceProviderManager *)self _scheduleUpdateForDate:irrelevantDate];
 
-  v10 = [v4 initialRelevanceDate];
-  [(REDateRelevanceProviderManager *)self _scheduleUpdateForDate:v10];
+  initialRelevanceDate = [providerCopy initialRelevanceDate];
+  [(REDateRelevanceProviderManager *)self _scheduleUpdateForDate:initialRelevanceDate];
 
-  v11 = [v4 interval];
-  v12 = [v11 endDate];
-  [v4 recentDuration];
-  v13 = [v12 dateByAddingTimeInterval:?];
+  interval3 = [providerCopy interval];
+  endDate2 = [interval3 endDate];
+  [providerCopy recentDuration];
+  v13 = [endDate2 dateByAddingTimeInterval:?];
 
   [(REDateRelevanceProviderManager *)self _scheduleUpdateForDate:v13];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__REDateRelevanceProviderManager__scheduleUpdatesForDateProvider___block_invoke;
   v15[3] = &unk_2785F9C08;
-  v16 = v4;
-  v17 = self;
-  v14 = v4;
+  v16 = providerCopy;
+  selfCopy = self;
+  v14 = providerCopy;
   [(RERelevanceProviderManager *)self enumerateInflectionFeatureValues:v15];
 }
 
@@ -382,17 +382,17 @@ void __66__REDateRelevanceProviderManager__scheduleUpdatesForDateProvider___bloc
 LABEL_5:
 }
 
-- (void)_scheduleUpdateForDate:(id)a3
+- (void)_scheduleUpdateForDate:(id)date
 {
-  v4 = [RERelevanceProviderManagerUpdate scheduledUpdateForAllProvidersAtDate:a3];
+  v4 = [RERelevanceProviderManagerUpdate scheduledUpdateForAllProvidersAtDate:date];
   [(RERelevanceProviderManager *)self _scheduleUpdate:v4];
 }
 
 - (void)_prepareForUpdate
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastDateUpdate = self->_lastDateUpdate;
-  self->_lastDateUpdate = v3;
+  self->_lastDateUpdate = date;
 
   v5 = objc_alloc(MEMORY[0x277CCA970]);
   v9 = REStartOfDayForDate(self->_lastDateUpdate);
@@ -404,16 +404,16 @@ LABEL_5:
 
 - (void)resume
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = RESignificantTimeChangeNotification();
-  [v4 addObserver:self selector:sel__handleSignificantTimeChange name:v3 object:0];
+  [defaultCenter addObserver:self selector:sel__handleSignificantTimeChange name:v3 object:0];
 }
 
 - (void)pause
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = RESignificantTimeChangeNotification();
-  [v4 removeObserver:self name:v3 object:0];
+  [defaultCenter removeObserver:self name:v3 object:0];
 }
 
 - (void)_handleSignificantTimeChange

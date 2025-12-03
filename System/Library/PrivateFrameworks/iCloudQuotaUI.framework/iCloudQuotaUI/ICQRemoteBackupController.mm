@@ -1,20 +1,20 @@
 @interface ICQRemoteBackupController
 + (id)specifier;
-+ (id)specifierForAccount:(id)a3;
++ (id)specifierForAccount:(id)account;
 - (id)specifiers;
-- (void)_backupDeletionFailedWithCode:(int64_t)a3;
+- (void)_backupDeletionFailedWithCode:(int64_t)code;
 - (void)_backupDeletionSuccess;
 - (void)dealloc;
 - (void)deleteBackupConfirmed;
 - (void)endDeletionBezel;
-- (void)firstDeleteConfirmation:(id)a3;
-- (void)loadFailed:(id)a3 withError:(id)a4;
-- (void)loadFinished:(id)a3;
-- (void)loadPropertyValuesFromDictionary:(id)a3;
-- (void)loadStarted:(id)a3;
+- (void)firstDeleteConfirmation:(id)confirmation;
+- (void)loadFailed:(id)failed withError:(id)error;
+- (void)loadFinished:(id)finished;
+- (void)loadPropertyValuesFromDictionary:(id)dictionary;
+- (void)loadStarted:(id)started;
 - (void)loadView;
-- (void)secondDeleteConfirmationWithSender:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)secondDeleteConfirmationWithSender:(id)sender;
+- (void)setSpecifier:(id)specifier;
 - (void)startDeletionBezel;
 @end
 
@@ -30,21 +30,21 @@
   return v5;
 }
 
-+ (id)specifierForAccount:(id)a3
++ (id)specifierForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [a1 specifier];
-  [v5 setObject:v4 forKeyedSubscript:@"ICQUISpecifierKeyAccount"];
+  accountCopy = account;
+  specifier = [self specifier];
+  [specifier setObject:accountCopy forKeyedSubscript:@"ICQUISpecifierKeyAccount"];
 
-  return v5;
+  return specifier;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  objc_storeStrong((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]), a3);
-  v6 = [(ICQRemoteBackupController *)self specifier];
-  v7 = [v6 objectForKeyedSubscript:@"ICQUISpecifierKeyAccount"];
+  specifierCopy = specifier;
+  objc_storeStrong((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]), specifier);
+  specifier = [(ICQRemoteBackupController *)self specifier];
+  v7 = [specifier objectForKeyedSubscript:@"ICQUISpecifierKeyAccount"];
   account = self->_account;
   self->_account = v7;
 
@@ -60,9 +60,9 @@
 
 - (void)dealloc
 {
-  v3 = [(ICQPreferencesRemoteUIDelegate *)self->_remoteDelegate delegate];
+  delegate = [(ICQPreferencesRemoteUIDelegate *)self->_remoteDelegate delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [(ICQPreferencesRemoteUIDelegate *)self->_remoteDelegate setDelegate:0];
   }
@@ -72,25 +72,25 @@
   [(ICQRemoteBackupController *)&v4 dealloc];
 }
 
-- (void)loadPropertyValuesFromDictionary:(id)a3
+- (void)loadPropertyValuesFromDictionary:(id)dictionary
 {
-  v25 = a3;
-  v4 = [v25 objectForKey:@"label"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"label"];
   [(ICQRemoteBackupController *)self setDeviceName:v4];
 
-  v5 = [v25 objectForKey:@"deviceUdid"];
+  v5 = [dictionaryCopy objectForKey:@"deviceUdid"];
   [(ICQRemoteBackupController *)self setDeviceIdentifier:v5];
 
-  v6 = [v25 objectForKey:@"backupTimestamp"];
+  v6 = [dictionaryCopy objectForKey:@"backupTimestamp"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
-    if (v8)
+    integerValue = [v6 integerValue];
+    if (integerValue)
     {
-      if (v8 != -1)
+      if (integerValue != -1)
       {
-        v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v8];
+        v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:integerValue];
         v12 = [ICQLocalBackupController cellValueStyleDateStringForDate:v10];
         goto LABEL_8;
       }
@@ -113,54 +113,54 @@ LABEL_8:
     [(ICQRemoteBackupController *)self setLastBackupDateString:v12];
   }
 
-  v14 = [ICQLocalBackupController deviceImageURLFromAttributes:v25];
+  v14 = [ICQLocalBackupController deviceImageURLFromAttributes:dictionaryCopy];
   [(ICQRemoteBackupController *)self setDeviceImageURL:v14];
 
-  v15 = [v25 objectForKey:@"backupSize"];
+  v15 = [dictionaryCopy objectForKey:@"backupSize"];
   [v15 longLongValue];
   v16 = CPFSSizeStrings();
   [(ICQRemoteBackupController *)self setBackupSizeString:v16];
 
-  v17 = [v25 objectForKey:@"deleteURL"];
+  v17 = [dictionaryCopy objectForKey:@"deleteURL"];
   if (v17)
   {
     v18 = [MEMORY[0x277CBEBC0] URLWithString:v17];
     [(ICQRemoteBackupController *)self setDeletionURL:v18];
   }
 
-  v19 = [v25 objectForKey:@"isActive"];
+  v19 = [dictionaryCopy objectForKey:@"isActive"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v19 BOOLValue];
+    bOOLValue = [v19 BOOLValue];
   }
 
   else
   {
-    v20 = 0;
+    bOOLValue = 0;
   }
 
-  [(ICQRemoteBackupController *)self setIsBackupEnabled:v20];
-  v21 = [(ICQRemoteBackupController *)self deviceName];
-  if (!v21)
+  [(ICQRemoteBackupController *)self setIsBackupEnabled:bOOLValue];
+  deviceName = [(ICQRemoteBackupController *)self deviceName];
+  if (!deviceName)
   {
     [ICQRemoteBackupController loadPropertyValuesFromDictionary:];
   }
 
-  v22 = [(ICQRemoteBackupController *)self backupSizeString];
-  if (!v22)
+  backupSizeString = [(ICQRemoteBackupController *)self backupSizeString];
+  if (!backupSizeString)
   {
     [ICQRemoteBackupController loadPropertyValuesFromDictionary:];
   }
 
-  v23 = [(ICQRemoteBackupController *)self deletionURL];
-  if (!v23)
+  deletionURL = [(ICQRemoteBackupController *)self deletionURL];
+  if (!deletionURL)
   {
     [ICQRemoteBackupController loadPropertyValuesFromDictionary:];
   }
 
-  v24 = [(ICQRemoteBackupController *)self lastBackupDateString];
-  if (!v24)
+  lastBackupDateString = [(ICQRemoteBackupController *)self lastBackupDateString];
+  if (!lastBackupDateString)
   {
     [ICQRemoteBackupController loadPropertyValuesFromDictionary:];
   }
@@ -171,19 +171,19 @@ LABEL_8:
   v13.receiver = self;
   v13.super_class = ICQRemoteBackupController;
   [(ICQRemoteBackupController *)&v13 loadView];
-  v3 = [(ICQRemoteBackupController *)self specifier];
-  v4 = [v3 propertyForKey:@"attributes"];
+  specifier = [(ICQRemoteBackupController *)self specifier];
+  v4 = [specifier propertyForKey:@"attributes"];
   [(ICQRemoteBackupController *)self loadPropertyValuesFromDictionary:v4];
 
-  v5 = [(ICQRemoteBackupController *)self specifier];
-  v6 = [v5 propertyForKey:@"remoteDelegate"];
+  specifier2 = [(ICQRemoteBackupController *)self specifier];
+  v6 = [specifier2 propertyForKey:@"remoteDelegate"];
   [(ICQRemoteBackupController *)self setRemoteDelegate:v6];
 
   v7 = [ICQDeviceIdentificationView alloc];
-  v8 = [(ICQRemoteBackupController *)self deviceName];
-  v9 = [(ICQRemoteBackupController *)self deviceIdentifier];
-  v10 = [(ICQRemoteBackupController *)self deviceImageURL];
-  v11 = [(ICQDeviceIdentificationView *)v7 initWithFrame:v8 deviceName:v9 deviceIdentifier:v10 imageURL:0 isCurrentDevice:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  deviceName = [(ICQRemoteBackupController *)self deviceName];
+  deviceIdentifier = [(ICQRemoteBackupController *)self deviceIdentifier];
+  deviceImageURL = [(ICQRemoteBackupController *)self deviceImageURL];
+  v11 = [(ICQDeviceIdentificationView *)v7 initWithFrame:deviceName deviceName:deviceIdentifier deviceIdentifier:deviceImageURL imageURL:0 isCurrentDevice:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   deviceIdentificationView = self->_deviceIdentificationView;
   self->_deviceIdentificationView = v11;
 
@@ -198,7 +198,7 @@ LABEL_8:
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"REMOTE_HEADER"];
     if (!self->_isBackupEnabled)
     {
@@ -207,20 +207,20 @@ LABEL_8:
       [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277D3FF88]];
     }
 
-    [v5 addObject:v6];
+    [array addObject:v6];
     v9 = MEMORY[0x277D3FAD8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v27 = v6;
     v11 = [v10 localizedStringForKey:@"LATEST_BACKUP" value:&stru_28844FC60 table:@"BackupInfo"];
     v12 = [v9 preferenceSpecifierNamed:v11 target:self set:0 get:sel_lastBackupDateString detail:0 cell:4 edit:0];
 
-    [v5 addObject:v12];
+    [array addObject:v12];
     v13 = MEMORY[0x277D3FAD8];
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"BACKUP_SIZE" value:&stru_28844FC60 table:@"BackupInfo"];
     v16 = [v13 preferenceSpecifierNamed:v15 target:self set:0 get:sel_backupSizeString detail:0 cell:4 edit:0];
 
-    [v5 addObject:v16];
+    [array addObject:v16];
     if (self->_isBackupEnabled)
     {
       v17 = @"DELETE_BACKUP_AND_TURN_OFF_BACKUP";
@@ -236,20 +236,20 @@ LABEL_8:
     v20 = [v19 localizedStringForKey:v17 value:&stru_28844FC60 table:@"BackupInfo"];
     v21 = [v18 deleteButtonSpecifierWithName:v20 target:self action:sel_firstDeleteConfirmation_];
 
-    v22 = [(ICQRemoteBackupController *)self deletionURL];
+    deletionURL = [(ICQRemoteBackupController *)self deletionURL];
 
-    if (!v22)
+    if (!deletionURL)
     {
       v23 = [MEMORY[0x277CCABB0] numberWithBool:0];
       [v21 setProperty:v23 forKey:*MEMORY[0x277D3FF38]];
     }
 
-    v24 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v5 addObject:v24];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [array addObject:emptyGroupSpecifier];
 
-    [v5 addObject:v21];
+    [array addObject:v21];
     v25 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -257,9 +257,9 @@ LABEL_8:
   return v4;
 }
 
-- (void)firstDeleteConfirmation:(id)a3
+- (void)firstDeleteConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   if (self->_isBackupEnabled)
   {
     v5 = @"TURN_OFF_AND_DELETE";
@@ -271,7 +271,7 @@ LABEL_8:
   }
 
   v28 = v5;
-  v29 = v4;
+  v29 = confirmationCopy;
   if (self->_isBackupEnabled)
   {
     v6 = @"TURN_OFF_REMOTE_ACTIVE_PROMPT_TEXT";
@@ -285,14 +285,14 @@ LABEL_8:
   v7 = MEMORY[0x277CCACA8];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"TURN_OFF_REMOTE_PROMPT_TITLE" value:&stru_28844FC60 table:@"BackupInfo"];
-  v10 = [(ICQRemoteBackupController *)self deviceName];
-  v27 = [v7 stringWithFormat:v9, v10];
+  deviceName = [(ICQRemoteBackupController *)self deviceName];
+  v27 = [v7 stringWithFormat:v9, deviceName];
 
   v11 = MEMORY[0x277CCACA8];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:v6 value:&stru_28844FC60 table:@"BackupInfo"];
-  v14 = [(ICQRemoteBackupController *)self deviceName];
-  v15 = [v11 stringWithFormat:v13, v14];
+  deviceName2 = [(ICQRemoteBackupController *)self deviceName];
+  v15 = [v11 stringWithFormat:v13, deviceName2];
 
   v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17 = [v16 localizedStringForKey:v28 value:&stru_28844FC60 table:@"BackupInfo"];
@@ -302,8 +302,8 @@ LABEL_8:
 
   v20 = [MEMORY[0x277D75110] sheetAlertControllerWithTitle:v27 message:v15];
   v21 = [(ICQRemoteBackupController *)self cachedCellForSpecifier:v29];
-  v22 = [v20 popoverPresentationController];
-  [v22 setSourceItem:v21];
+  popoverPresentationController = [v20 popoverPresentationController];
+  [popoverPresentationController setSourceItem:v21];
 
   v23 = MEMORY[0x277D750F8];
   v30[0] = MEMORY[0x277D85DD0];
@@ -320,10 +320,10 @@ LABEL_8:
   [(ICQRemoteBackupController *)self presentViewController:v20 animated:1 completion:0];
 }
 
-- (void)secondDeleteConfirmationWithSender:(id)a3
+- (void)secondDeleteConfirmationWithSender:(id)sender
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  senderCopy = sender;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SECOND_TURN_OFF_REMOTE_PROMPT_TITLE" value:&stru_28844FC60 table:@"BackupInfo"];
 
@@ -337,10 +337,10 @@ LABEL_8:
   v13 = [v12 localizedStringForKey:@"CANCEL" value:&stru_28844FC60 table:@"BackupInfo"];
 
   v14 = [MEMORY[0x277D75110] sheetAlertControllerWithTitle:v7 message:v9];
-  v15 = [(ICQRemoteBackupController *)self cachedCellForSpecifier:v5];
+  v15 = [(ICQRemoteBackupController *)self cachedCellForSpecifier:senderCopy];
 
-  v16 = [v14 popoverPresentationController];
-  [v16 setSourceItem:v15];
+  popoverPresentationController = [v14 popoverPresentationController];
+  [popoverPresentationController setSourceItem:v15];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -356,9 +356,9 @@ LABEL_8:
 
 - (void)startDeletionBezel
 {
-  v3 = [(ICQRemoteBackupController *)self navigationController];
-  v4 = [v3 view];
-  [v4 bounds];
+  navigationController = [(ICQRemoteBackupController *)self navigationController];
+  view = [navigationController view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
 
@@ -366,10 +366,10 @@ LABEL_8:
   v10 = floorf(v9);
   v11 = (v8 + -126.0) * 0.5;
   v12 = floorf(v11);
-  v13 = [(ICQRemoteBackupController *)self navigationController];
-  v14 = [v13 view];
-  v15 = [(ICQRemoteBackupController *)self view];
-  [v14 convertRect:v15 toView:{v10, v12, 156.0, 126.0}];
+  navigationController2 = [(ICQRemoteBackupController *)self navigationController];
+  view2 = [navigationController2 view];
+  view3 = [(ICQRemoteBackupController *)self view];
+  [view2 convertRect:view3 toView:{v10, v12, 156.0, 126.0}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -384,40 +384,40 @@ LABEL_8:
   v28 = [v27 localizedStringForKey:@"DELETING" value:&stru_28844FC60 table:@"BackupInfo"];
   [(ICQSpinnerBezel *)v26 setBezelText:v28];
 
-  v29 = [(ICQRemoteBackupController *)self view];
-  [v29 addSubview:self->_deletionBezel];
+  view4 = [(ICQRemoteBackupController *)self view];
+  [view4 addSubview:self->_deletionBezel];
 
-  v31 = [(ICQRemoteBackupController *)self view];
-  v30 = [v31 window];
-  [v30 setUserInteractionEnabled:0];
+  view5 = [(ICQRemoteBackupController *)self view];
+  window = [view5 window];
+  [window setUserInteractionEnabled:0];
 }
 
 - (void)endDeletionBezel
 {
-  v3 = [(ICQRemoteBackupController *)self view];
-  v4 = [v3 window];
-  [v4 setUserInteractionEnabled:1];
+  view = [(ICQRemoteBackupController *)self view];
+  window = [view window];
+  [window setUserInteractionEnabled:1];
 
   [(ICQSpinnerBezel *)self->_deletionBezel removeFromSuperview];
   deletionBezel = self->_deletionBezel;
   self->_deletionBezel = 0;
 }
 
-- (void)_backupDeletionFailedWithCode:(int64_t)a3
+- (void)_backupDeletionFailedWithCode:(int64_t)code
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICQRemoteBackupController *)self deletionURL];
+    deletionURL = [(ICQRemoteBackupController *)self deletionURL];
     *buf = 138412290;
-    v25 = v6;
+    v25 = deletionURL;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Deletion URL: %@", buf, 0xCu);
   }
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = v7;
-  if (a3 == 423)
+  if (code == 423)
   {
     v9 = @"CANNOT_DELETE_BACKUP_LOCKED";
   }
@@ -464,29 +464,29 @@ LABEL_8:
   }
 
   [(ICQRemoteBackupController *)self endDeletionBezel];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"BackupInfoDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"BackupInfoDidChange" object:0];
 
-  v5 = [(ICQRemoteBackupController *)self navigationController];
-  v6 = [v5 popViewControllerAnimated:1];
+  navigationController = [(ICQRemoteBackupController *)self navigationController];
+  v6 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)deleteBackupConfirmed
 {
   [(ICQRemoteBackupController *)self startDeletionBezel];
   v3 = MEMORY[0x277CCAB70];
-  v4 = [(ICQRemoteBackupController *)self deletionURL];
-  v5 = [v3 requestWithURL:v4];
+  deletionURL = [(ICQRemoteBackupController *)self deletionURL];
+  v5 = [v3 requestWithURL:deletionURL];
 
   [(ICQUsageQuotaRequest *)ICQQuotaInfoRequest addHeadersToRequest:v5 forAccount:self->_account];
   [v5 setHTTPMethod:@"POST"];
-  v6 = [MEMORY[0x277CCAD30] sharedSession];
+  mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__ICQRemoteBackupController_deleteBackupConfirmed__block_invoke;
   v8[3] = &unk_27A65A7A0;
   v8[4] = self;
-  v7 = [v6 dataTaskWithRequest:v5 completionHandler:v8];
+  v7 = [mEMORY[0x277CCAD30] dataTaskWithRequest:v5 completionHandler:v8];
 
   [v7 resume];
 }
@@ -566,46 +566,46 @@ LABEL_13:
   }
 }
 
-- (void)loadStarted:(id)a3
+- (void)loadStarted:(id)started
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  startedCopy = started;
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = startedCopy;
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "loadStarted: %@", &v5, 0xCu);
   }
 }
 
-- (void)loadFinished:(id)a3
+- (void)loadFinished:(id)finished
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = finishedCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "loadFinished: %@", &v6, 0xCu);
   }
 
   [(ICQRemoteBackupController *)self endDeletionBezel];
 }
 
-- (void)loadFailed:(id)a3 withError:(id)a4
+- (void)loadFailed:(id)failed withError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [ICQRemoteBackupController loadFailed:v5 withError:v6];
+    [ICQRemoteBackupController loadFailed:errorCopy withError:v6];
   }
 
   [(ICQRemoteBackupController *)self endDeletionBezel];
-  v7 = [(ICQRemoteBackupController *)self navigationController];
-  v8 = [v7 popViewControllerAnimated:1];
+  navigationController = [(ICQRemoteBackupController *)self navigationController];
+  v8 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)loadFailed:(uint64_t)a1 withError:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

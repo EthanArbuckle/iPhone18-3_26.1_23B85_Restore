@@ -1,8 +1,8 @@
 @interface DASimulatedDeviceServer
 - (DASimulatedDeviceServer)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
-- (void)_connectionAccept:(id)a3;
+- (void)_connectionAccept:(id)accept;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)activate;
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   objc_opt_class();
   deviceBonjourServiceType = self->_deviceBonjourServiceType;
@@ -162,15 +162,15 @@ uint64_t __37__DASimulatedDeviceServer_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)_connectionAccept:(id)a3
+- (void)_connectionAccept:(id)accept
 {
-  v4 = a3;
+  acceptCopy = accept;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __45__DASimulatedDeviceServer__connectionAccept___block_invoke;
   v12 = &unk_278F57CB8;
-  v13 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = acceptCopy;
   v14 = v5;
   [v5 setInvalidationHandler:&v9];
   tcpConnections = self->_tcpConnections;
@@ -183,7 +183,7 @@ uint64_t __37__DASimulatedDeviceServer_invalidate__block_invoke(uint64_t result)
     tcpConnections = self->_tcpConnections;
   }
 
-  [(NSMutableSet *)tcpConnections addObject:v5, v9, v10, v11, v12, v13];
+  [(NSMutableSet *)tcpConnections addObject:v5, v9, v10, v11, v12, selfCopy];
 }
 
 @end

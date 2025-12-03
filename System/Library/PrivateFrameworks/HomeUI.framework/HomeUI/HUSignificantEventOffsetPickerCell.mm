@@ -1,24 +1,24 @@
 @interface HUSignificantEventOffsetPickerCell
 + (id)_defaultOffsetDateComponentOptions;
-- (HUSignificantEventOffsetPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUSignificantEventOffsetPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUSignificantEventOffsetPickerDelegate)delegate;
 - (NSDateComponents)selectedOffset;
-- (id)_titleForOffsetComponents:(id)a3;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (id)_titleForOffsetComponents:(id)components;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 - (void)_updateOffsetDateComponentOptions;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)setCurrentOffset:(id)a3;
-- (void)setSignificantEvent:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)setCurrentOffset:(id)offset;
+- (void)setSignificantEvent:(id)event;
 @end
 
 @implementation HUSignificantEventOffsetPickerCell
 
-- (HUSignificantEventOffsetPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUSignificantEventOffsetPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v34.receiver = self;
   v34.super_class = HUSignificantEventOffsetPickerCell;
-  v4 = [(HUSignificantEventOffsetPickerCell *)&v34 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUSignificantEventOffsetPickerCell *)&v34 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -33,44 +33,44 @@
     pickerView = v5->_pickerView;
     v5->_pickerView = v9;
 
-    v11 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
-    [v11 setDataSource:v5];
+    pickerView = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
+    [pickerView setDataSource:v5];
 
-    v12 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
-    [v12 setDelegate:v5];
+    pickerView2 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
+    [pickerView2 setDelegate:v5];
 
-    v13 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    pickerView3 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
+    [pickerView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [(HUSignificantEventOffsetPickerCell *)v5 _updateOffsetDateComponentOptions];
-    v14 = [(HUSignificantEventOffsetPickerCell *)v5 contentView];
-    v15 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
-    [v14 addSubview:v15];
+    contentView = [(HUSignificantEventOffsetPickerCell *)v5 contentView];
+    pickerView4 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
+    [contentView addSubview:pickerView4];
 
-    v16 = [MEMORY[0x277CBEB18] array];
-    v17 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
-    v18 = [v17 topAnchor];
-    v19 = [(HUSignificantEventOffsetPickerCell *)v5 contentView];
-    v20 = [v19 topAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
-    [v16 addObject:v21];
+    array = [MEMORY[0x277CBEB18] array];
+    pickerView5 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
+    topAnchor = [pickerView5 topAnchor];
+    contentView2 = [(HUSignificantEventOffsetPickerCell *)v5 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v21];
 
-    v22 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
-    v23 = [v22 bottomAnchor];
-    v24 = [(HUSignificantEventOffsetPickerCell *)v5 contentView];
-    v25 = [v24 bottomAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
-    [v16 addObject:v26];
+    pickerView6 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
+    bottomAnchor = [pickerView6 bottomAnchor];
+    contentView3 = [(HUSignificantEventOffsetPickerCell *)v5 contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v26];
 
-    v27 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
-    v28 = [v27 centerXAnchor];
-    v29 = [(HUSignificantEventOffsetPickerCell *)v5 contentView];
-    v30 = [v29 layoutMarginsGuide];
-    v31 = [v30 centerXAnchor];
-    v32 = [v28 constraintEqualToAnchor:v31];
-    [v16 addObject:v32];
+    pickerView7 = [(HUSignificantEventOffsetPickerCell *)v5 pickerView];
+    centerXAnchor = [pickerView7 centerXAnchor];
+    contentView4 = [(HUSignificantEventOffsetPickerCell *)v5 contentView];
+    layoutMarginsGuide = [contentView4 layoutMarginsGuide];
+    centerXAnchor2 = [layoutMarginsGuide centerXAnchor];
+    v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v32];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v16];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   return v5;
@@ -78,8 +78,8 @@
 
 - (NSDateComponents)selectedOffset
 {
-  v3 = [(HUSignificantEventOffsetPickerCell *)self pickerView];
-  v4 = [v3 selectedRowInComponent:0];
+  pickerView = [(HUSignificantEventOffsetPickerCell *)self pickerView];
+  v4 = [pickerView selectedRowInComponent:0];
 
   if (v4 == -1)
   {
@@ -88,18 +88,18 @@
 
   else
   {
-    v5 = [(HUSignificantEventOffsetPickerCell *)self offsetDateComponentOptions];
-    v6 = [v5 objectAtIndexedSubscript:v4];
+    offsetDateComponentOptions = [(HUSignificantEventOffsetPickerCell *)self offsetDateComponentOptions];
+    v6 = [offsetDateComponentOptions objectAtIndexedSubscript:v4];
   }
 
   return v6;
 }
 
-- (void)setCurrentOffset:(id)a3
+- (void)setCurrentOffset:(id)offset
 {
-  v5 = a3;
+  offsetCopy = offset;
   currentOffset = self->_currentOffset;
-  v9 = v5;
+  v9 = offsetCopy;
   v7 = currentOffset;
   if (v7 == v9)
   {
@@ -118,23 +118,23 @@
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_currentOffset, a3);
+    objc_storeStrong(&self->_currentOffset, offset);
     [(HUSignificantEventOffsetPickerCell *)self _updateOffsetDateComponentOptions];
   }
 
 LABEL_8:
 }
 
-- (void)setSignificantEvent:(id)a3
+- (void)setSignificantEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   significantEvent = self->_significantEvent;
-  v10 = v5;
+  v10 = eventCopy;
   v7 = significantEvent;
   if (v7 == v10)
   {
 
-    v9 = v10;
+    pickerView = v10;
 LABEL_8:
 
     goto LABEL_9;
@@ -151,9 +151,9 @@ LABEL_8:
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_significantEvent, a3);
-    v9 = [(HUSignificantEventOffsetPickerCell *)self pickerView];
-    [v9 reloadAllComponents];
+    objc_storeStrong(&self->_significantEvent, event);
+    pickerView = [(HUSignificantEventOffsetPickerCell *)self pickerView];
+    [pickerView reloadAllComponents];
     goto LABEL_8;
   }
 
@@ -239,24 +239,24 @@ void __72__HUSignificantEventOffsetPickerCell__defaultOffsetDateComponentOptions
 
 - (void)_updateOffsetDateComponentOptions
 {
-  v4 = [objc_opt_class() _defaultOffsetDateComponentOptions];
-  v5 = [v4 mutableCopy];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
+  _defaultOffsetDateComponentOptions = [objc_opt_class() _defaultOffsetDateComponentOptions];
+  v5 = [_defaultOffsetDateComponentOptions mutableCopy];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:0.0];
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0x7FFFFFFFFFFFFFFFLL;
-  v8 = [(HUSignificantEventOffsetPickerCell *)self currentOffset];
+  currentOffset = [(HUSignificantEventOffsetPickerCell *)self currentOffset];
 
-  if (!v8)
+  if (!currentOffset)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HUSignificantEventOffsetPickerCell.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"self.currentOffset != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSignificantEventOffsetPickerCell.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"self.currentOffset != nil"}];
   }
 
-  v9 = [(HUSignificantEventOffsetPickerCell *)self currentOffset];
-  v10 = [v6 dateByAddingComponents:v9 toDate:v7 options:0];
+  currentOffset2 = [(HUSignificantEventOffsetPickerCell *)self currentOffset];
+  v10 = [currentCalendar dateByAddingComponents:currentOffset2 toDate:v7 options:0];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -265,7 +265,7 @@ void __72__HUSignificantEventOffsetPickerCell__defaultOffsetDateComponentOptions
   v20[1] = 3221225472;
   v20[2] = __71__HUSignificantEventOffsetPickerCell__updateOffsetDateComponentOptions__block_invoke;
   v20[3] = &unk_277DBFC20;
-  v11 = v6;
+  v11 = currentCalendar;
   v21 = v11;
   v12 = v7;
   v22 = v12;
@@ -275,9 +275,9 @@ void __72__HUSignificantEventOffsetPickerCell__defaultOffsetDateComponentOptions
   v27 = &v32;
   v14 = v5;
   v24 = v14;
-  v15 = v9;
+  v15 = currentOffset2;
   v25 = v15;
-  [v4 enumerateObjectsUsingBlock:v20];
+  [_defaultOffsetDateComponentOptions enumerateObjectsUsingBlock:v20];
   if ((v29[3] & 1) == 0)
   {
     [v14 addObject:v15];
@@ -286,11 +286,11 @@ void __72__HUSignificantEventOffsetPickerCell__defaultOffsetDateComponentOptions
   }
 
   [(HUSignificantEventOffsetPickerCell *)self setOffsetDateComponentOptions:v14];
-  v17 = [(HUSignificantEventOffsetPickerCell *)self pickerView];
-  [v17 reloadAllComponents];
+  pickerView = [(HUSignificantEventOffsetPickerCell *)self pickerView];
+  [pickerView reloadAllComponents];
 
-  v18 = [(HUSignificantEventOffsetPickerCell *)self pickerView];
-  [v18 selectRow:v33[3] inComponent:0 animated:0];
+  pickerView2 = [(HUSignificantEventOffsetPickerCell *)self pickerView];
+  [pickerView2 selectRow:v33[3] inComponent:0 animated:0];
 
   _Block_object_dispose(&v28, 8);
   _Block_object_dispose(&v32, 8);
@@ -321,43 +321,43 @@ void __71__HUSignificantEventOffsetPickerCell__updateOffsetDateComponentOptions_
 LABEL_6:
 }
 
-- (id)_titleForOffsetComponents:(id)a3
+- (id)_titleForOffsetComponents:(id)components
 {
   v4 = MEMORY[0x277CD1EC0];
-  v5 = a3;
-  v6 = [(HUSignificantEventOffsetPickerCell *)self significantEvent];
-  v7 = [v4 hf_localizedStringForSignficantEvent:v6 offset:v5];
+  componentsCopy = components;
+  significantEvent = [(HUSignificantEventOffsetPickerCell *)self significantEvent];
+  v7 = [v4 hf_localizedStringForSignficantEvent:significantEvent offset:componentsCopy];
 
   return v7;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v4 = [(HUSignificantEventOffsetPickerCell *)self offsetDateComponentOptions:a3];
+  v4 = [(HUSignificantEventOffsetPickerCell *)self offsetDateComponentOptions:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = [(HUSignificantEventOffsetPickerCell *)self offsetDateComponentOptions:a3];
-  v8 = [v7 objectAtIndexedSubscript:a4];
+  v7 = [(HUSignificantEventOffsetPickerCell *)self offsetDateComponentOptions:view];
+  v8 = [v7 objectAtIndexedSubscript:row];
   v9 = [(HUSignificantEventOffsetPickerCell *)self _titleForOffsetComponents:v8];
 
   return v9;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v6 = [(HUSignificantEventOffsetPickerCell *)self delegate:a3];
+  v6 = [(HUSignificantEventOffsetPickerCell *)self delegate:view];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v9 = [(HUSignificantEventOffsetPickerCell *)self delegate];
-    v8 = [(HUSignificantEventOffsetPickerCell *)self selectedOffset];
-    [v9 significantEventOffsetPicker:self didSelectOffset:v8];
+    delegate = [(HUSignificantEventOffsetPickerCell *)self delegate];
+    selectedOffset = [(HUSignificantEventOffsetPickerCell *)self selectedOffset];
+    [delegate significantEventOffsetPicker:self didSelectOffset:selectedOffset];
   }
 }
 

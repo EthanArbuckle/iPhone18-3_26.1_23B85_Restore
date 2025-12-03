@@ -1,34 +1,34 @@
 @interface HFHomePodAlarmItemModule
-- (HFHomePodAlarmItemModule)initWithItemUpdater:(id)a3 mediaProfileContainer:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)mobileTimerAdapterForAlarmItem:(id)a3;
-- (id)mobileTimerAdapterForMediaProfile:(id)a3;
-- (void)mobileTimerAdapter:(id)a3 didUpdateAlarms:(id)a4;
+- (HFHomePodAlarmItemModule)initWithItemUpdater:(id)updater mediaProfileContainer:(id)container;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)mobileTimerAdapterForAlarmItem:(id)item;
+- (id)mobileTimerAdapterForMediaProfile:(id)profile;
+- (void)mobileTimerAdapter:(id)adapter didUpdateAlarms:(id)alarms;
 - (void)registerForExternalUpdates;
 - (void)unregisterForExternalUpdates;
 @end
 
 @implementation HFHomePodAlarmItemModule
 
-- (HFHomePodAlarmItemModule)initWithItemUpdater:(id)a3 mediaProfileContainer:(id)a4
+- (HFHomePodAlarmItemModule)initWithItemUpdater:(id)updater mediaProfileContainer:(id)container
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  updaterCopy = updater;
+  containerCopy = container;
+  if (!containerCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmItemModule.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmItemModule.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
   }
 
   v17.receiver = self;
   v17.super_class = HFHomePodAlarmItemModule;
-  v9 = [(HFItemModule *)&v17 initWithItemUpdater:v7];
+  v9 = [(HFItemModule *)&v17 initWithItemUpdater:updaterCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaProfileContainer, a4);
+    objc_storeStrong(&v9->_mediaProfileContainer, container);
     v11 = [MEMORY[0x277CBEB58] set];
-    v12 = [[HFHomePodAlarmItemProvider alloc] initWithMediaProfileContainer:v8];
+    v12 = [[HFHomePodAlarmItemProvider alloc] initWithMediaProfileContainer:containerCopy];
     v13 = [MEMORY[0x277CBEB98] setWithObject:v12];
     itemProviders = v10->_itemProviders;
     v10->_itemProviders = v13;
@@ -37,41 +37,41 @@
   return v10;
 }
 
-- (id)mobileTimerAdapterForAlarmItem:(id)a3
+- (id)mobileTimerAdapterForAlarmItem:(id)item
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(HFHomePodAlarmItemModule *)self itemProviders];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v6)
+  itemProviders = [(HFHomePodAlarmItemModule *)self itemProviders];
+  mobileTimerAdapter = [itemProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (mobileTimerAdapter)
   {
     v7 = *v15;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != mobileTimerAdapter; i = i + 1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(itemProviders);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 items];
-        v11 = [v10 containsObject:v4];
+        items = [v9 items];
+        v11 = [items containsObject:itemCopy];
 
         if (v11)
         {
-          v6 = [v9 mobileTimerAdapter];
+          mobileTimerAdapter = [v9 mobileTimerAdapter];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v6)
+      mobileTimerAdapter = [itemProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (mobileTimerAdapter)
       {
         continue;
       }
@@ -84,45 +84,45 @@ LABEL_11:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return mobileTimerAdapter;
 }
 
-- (id)mobileTimerAdapterForMediaProfile:(id)a3
+- (id)mobileTimerAdapterForMediaProfile:(id)profile
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(HFHomePodAlarmItemModule *)self itemProviders];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v6)
+  itemProviders = [(HFHomePodAlarmItemModule *)self itemProviders];
+  mobileTimerAdapter = [itemProviders countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (mobileTimerAdapter)
   {
     v7 = *v16;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != mobileTimerAdapter; i = i + 1)
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(itemProviders);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 mediaProfileContainer];
-        v11 = [v10 mediaProfiles];
-        v12 = [v11 containsObject:v4];
+        mediaProfileContainer = [v9 mediaProfileContainer];
+        mediaProfiles = [mediaProfileContainer mediaProfiles];
+        v12 = [mediaProfiles containsObject:profileCopy];
 
         if (v12)
         {
-          v6 = [v9 mobileTimerAdapter];
+          mobileTimerAdapter = [v9 mobileTimerAdapter];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v6)
+      mobileTimerAdapter = [itemProviders countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (mobileTimerAdapter)
       {
         continue;
       }
@@ -135,34 +135,34 @@ LABEL_11:
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return mobileTimerAdapter;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v59 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v3 = [(HFHomePodAlarmItemModule *)self mediaProfileContainer];
-  v4 = [v3 settings];
-  v5 = [v4 isControllable];
+  itemsCopy = items;
+  mediaProfileContainer = [(HFHomePodAlarmItemModule *)self mediaProfileContainer];
+  settings = [mediaProfileContainer settings];
+  isControllable = [settings isControllable];
 
-  if (v5)
+  if (isControllable)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v3 hf_backingAccessory];
-    v8 = [v7 hf_siriEndpointProfile];
-    v6 = v8 == 0;
+    hf_backingAccessory = [mediaProfileContainer hf_backingAccessory];
+    hf_siriEndpointProfile = [hf_backingAccessory hf_siriEndpointProfile];
+    v6 = hf_siriEndpointProfile == 0;
   }
 
-  v9 = [v44 count];
+  v9 = [itemsCopy count];
   v10 = MEMORY[0x277CBEBF8];
   if (v9 && !v6)
   {
-    v40 = v3;
+    v40 = mediaProfileContainer;
     v10 = objc_opt_new();
     v52 = 0u;
     v53 = 0u;
@@ -188,14 +188,14 @@ LABEL_11:
 
         v46 = v11;
         v12 = *(*(&v52 + 1) + 8 * v11);
-        v13 = [(HFHomePodAlarmItemModule *)self itemProviders];
-        v14 = [v13 count];
+        itemProviders = [(HFHomePodAlarmItemModule *)self itemProviders];
+        v14 = [itemProviders count];
 
         v47 = v12;
-        v15 = [v12 items];
-        v16 = [v15 na_setByIntersectingWithSet:v44];
-        v17 = [v16 allObjects];
-        v18 = [v17 sortedArrayUsingSelector:sel_compare_];
+        items = [v12 items];
+        v16 = [items na_setByIntersectingWithSet:itemsCopy];
+        allObjects = [v16 allObjects];
+        v18 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
         v50 = 0u;
         v51 = 0u;
@@ -238,9 +238,9 @@ LABEL_11:
               v29 = v27;
               if (!v28)
               {
-                v30 = [MEMORY[0x277CCA890] currentHandler];
+                currentHandler = [MEMORY[0x277CCA890] currentHandler];
                 v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-                [v30 handleFailureInFunction:v31 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v26, objc_opt_class()}];
+                [currentHandler handleFailureInFunction:v31 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v26, objc_opt_class()}];
 
 LABEL_22:
                 v29 = 0;
@@ -252,9 +252,9 @@ LABEL_22:
 
               if (v22)
               {
-                v35 = [v47 mediaProfileContainer];
-                v36 = [v35 hf_displayName];
-                [(HFItemSection *)v34 setHeaderTitle:v36];
+                mediaProfileContainer2 = [v47 mediaProfileContainer];
+                hf_displayName = [mediaProfileContainer2 hf_displayName];
+                [(HFItemSection *)v34 setHeaderTitle:hf_displayName];
               }
 
               v56 = v27;
@@ -281,7 +281,7 @@ LABEL_22:
       {
 LABEL_29:
 
-        v3 = v40;
+        mediaProfileContainer = v40;
         break;
       }
     }
@@ -292,11 +292,11 @@ LABEL_29:
   return v10;
 }
 
-- (void)mobileTimerAdapter:(id)a3 didUpdateAlarms:(id)a4
+- (void)mobileTimerAdapter:(id)adapter didUpdateAlarms:(id)alarms
 {
-  v9 = [(HFItemModule *)self itemUpdater:a3];
-  v6 = [(HFHomePodAlarmItemModule *)self itemProviders];
-  v7 = [HFItemUpdateRequest requestToReloadItemProviders:v6 senderSelector:a2];
+  v9 = [(HFItemModule *)self itemUpdater:adapter];
+  itemProviders = [(HFHomePodAlarmItemModule *)self itemProviders];
+  v7 = [HFItemUpdateRequest requestToReloadItemProviders:itemProviders senderSelector:a2];
   v8 = [v9 performItemUpdateRequest:v7];
 }
 
@@ -307,8 +307,8 @@ LABEL_29:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(HFHomePodAlarmItemModule *)self itemProviders];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  itemProviders = [(HFHomePodAlarmItemModule *)self itemProviders];
+  v4 = [itemProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -320,17 +320,17 @@ LABEL_29:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemProviders);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) mobileTimerAdapter];
-        [v8 addObserver:self];
+        mobileTimerAdapter = [*(*(&v10 + 1) + 8 * v7) mobileTimerAdapter];
+        [mobileTimerAdapter addObserver:self];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [itemProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -346,8 +346,8 @@ LABEL_29:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(HFHomePodAlarmItemModule *)self itemProviders];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  itemProviders = [(HFHomePodAlarmItemModule *)self itemProviders];
+  v4 = [itemProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -359,17 +359,17 @@ LABEL_29:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemProviders);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) mobileTimerAdapter];
-        [v8 removeObserver:self];
+        mobileTimerAdapter = [*(*(&v10 + 1) + 8 * v7) mobileTimerAdapter];
+        [mobileTimerAdapter removeObserver:self];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [itemProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);

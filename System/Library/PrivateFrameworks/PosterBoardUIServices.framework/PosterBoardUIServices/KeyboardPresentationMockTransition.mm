@@ -1,10 +1,10 @@
 @interface KeyboardPresentationMockTransition
-- (_TtC21PosterBoardUIServices34KeyboardPresentationMockTransition)initWithType:(id)a3 initialStateMetadata:(id)a4 finalStateMetadata:(id)a5;
+- (_TtC21PosterBoardUIServices34KeyboardPresentationMockTransition)initWithType:(id)type initialStateMetadata:(id)metadata finalStateMetadata:(id)stateMetadata;
 @end
 
 @implementation KeyboardPresentationMockTransition
 
-- (_TtC21PosterBoardUIServices34KeyboardPresentationMockTransition)initWithType:(id)a3 initialStateMetadata:(id)a4 finalStateMetadata:(id)a5
+- (_TtC21PosterBoardUIServices34KeyboardPresentationMockTransition)initWithType:(id)type initialStateMetadata:(id)metadata finalStateMetadata:(id)stateMetadata
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

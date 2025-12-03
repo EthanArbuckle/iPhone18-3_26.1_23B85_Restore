@@ -1,10 +1,10 @@
 @interface LoadingIndicatorCoverView
-- (_TtC7ChatKitP33_BD78CF6CDE905E05AD6D455A82FAED4A25LoadingIndicatorCoverView)initWithCoder:(id)a3;
+- (_TtC7ChatKitP33_BD78CF6CDE905E05AD6D455A82FAED4A25LoadingIndicatorCoverView)initWithCoder:(id)coder;
 @end
 
 @implementation LoadingIndicatorCoverView
 
-- (_TtC7ChatKitP33_BD78CF6CDE905E05AD6D455A82FAED4A25LoadingIndicatorCoverView)initWithCoder:(id)a3
+- (_TtC7ChatKitP33_BD78CF6CDE905E05AD6D455A82FAED4A25LoadingIndicatorCoverView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7ChatKitP33_BD78CF6CDE905E05AD6D455A82FAED4A25LoadingIndicatorCoverView_spinner;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for LoadingIndicatorView()) initWithActivityIndicatorStyle_];

@@ -1,23 +1,23 @@
 @interface WBSHistoryServiceImporter
-- (WBSHistoryServiceImporter)initWithDatabase:(id)a3 visitTimePrecision:(unint64_t)a4;
-- (void)_submitVisitsWithCompletionHandler:(id)a3;
-- (void)addVisitWithURLString:(id)a3 visitTime:(double)a4 title:(id)a5 loadSuccessful:(BOOL)a6 httpGet:(BOOL)a7 redirectSourceURLString:(id)a8 redirectSourceVisitTime:(double)a9 redirectDestinationURLString:(id)a10 redirectDestinationVisitTime:(double)a11 visitCount:(unint64_t)a12;
-- (void)finishWithCompletionHandler:(id)a3;
+- (WBSHistoryServiceImporter)initWithDatabase:(id)database visitTimePrecision:(unint64_t)precision;
+- (void)_submitVisitsWithCompletionHandler:(id)handler;
+- (void)addVisitWithURLString:(id)string visitTime:(double)time title:(id)title loadSuccessful:(BOOL)successful httpGet:(BOOL)get redirectSourceURLString:(id)lString redirectSourceVisitTime:(double)visitTime redirectDestinationURLString:(id)self0 redirectDestinationVisitTime:(double)self1 visitCount:(unint64_t)self2;
+- (void)finishWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSHistoryServiceImporter
 
-- (WBSHistoryServiceImporter)initWithDatabase:(id)a3 visitTimePrecision:(unint64_t)a4
+- (WBSHistoryServiceImporter)initWithDatabase:(id)database visitTimePrecision:(unint64_t)precision
 {
-  v7 = a3;
+  databaseCopy = database;
   v14.receiver = self;
   v14.super_class = WBSHistoryServiceImporter;
   v8 = [(WBSHistoryServiceImporter *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_database, a3);
-    v9->_visitTimePrecision = a4;
+    objc_storeStrong(&v8->_database, database);
+    v9->_visitTimePrecision = precision;
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     visits = v9->_visits;
     v9->_visits = v10;
@@ -28,42 +28,42 @@
   return v9;
 }
 
-- (void)addVisitWithURLString:(id)a3 visitTime:(double)a4 title:(id)a5 loadSuccessful:(BOOL)a6 httpGet:(BOOL)a7 redirectSourceURLString:(id)a8 redirectSourceVisitTime:(double)a9 redirectDestinationURLString:(id)a10 redirectDestinationVisitTime:(double)a11 visitCount:(unint64_t)a12
+- (void)addVisitWithURLString:(id)string visitTime:(double)time title:(id)title loadSuccessful:(BOOL)successful httpGet:(BOOL)get redirectSourceURLString:(id)lString redirectSourceVisitTime:(double)visitTime redirectDestinationURLString:(id)self0 redirectDestinationVisitTime:(double)self1 visitCount:(unint64_t)self2
 {
-  v15 = a7;
-  v16 = a6;
-  v29 = a8;
-  v21 = a10;
-  v22 = a5;
-  v23 = a3;
-  v24 = [[WBSHistoryVisitIdentifier alloc] initWithURLString:v23 visitTime:a4];
+  getCopy = get;
+  successfulCopy = successful;
+  lStringCopy = lString;
+  rLStringCopy = rLString;
+  titleCopy = title;
+  stringCopy = string;
+  v24 = [[WBSHistoryVisitIdentifier alloc] initWithURLString:stringCopy visitTime:time];
 
   v25 = [[WBSHistoryServicePendingVisit alloc] initWithWithVisitIdentifier:v24];
   [(WBSHistoryServicePendingVisit *)v25 setOperation:1];
-  [(WBSHistoryServicePendingVisit *)v25 setTitle:v22];
+  [(WBSHistoryServicePendingVisit *)v25 setTitle:titleCopy];
 
-  [(WBSHistoryServicePendingVisit *)v25 setLoadSuccessful:v16];
-  [(WBSHistoryServicePendingVisit *)v25 setWasHTTPNonGet:!v15];
-  if (a12 <= 1)
+  [(WBSHistoryServicePendingVisit *)v25 setLoadSuccessful:successfulCopy];
+  [(WBSHistoryServicePendingVisit *)v25 setWasHTTPNonGet:!getCopy];
+  if (count <= 1)
   {
-    v26 = 1;
+    countCopy = 1;
   }
 
   else
   {
-    v26 = a12;
+    countCopy = count;
   }
 
-  [(WBSHistoryServicePendingVisit *)v25 setVisitCount:v26];
-  if (v29)
+  [(WBSHistoryServicePendingVisit *)v25 setVisitCount:countCopy];
+  if (lStringCopy)
   {
-    v27 = [[WBSHistoryVisitIdentifier alloc] initWithURLString:v29 visitTime:a9];
+    v27 = [[WBSHistoryVisitIdentifier alloc] initWithURLString:lStringCopy visitTime:visitTime];
     [(WBSHistoryServicePendingVisit *)v25 setSourceVisitIdentifier:v27];
   }
 
-  if (v21)
+  if (rLStringCopy)
   {
-    v28 = [[WBSHistoryVisitIdentifier alloc] initWithURLString:v21 visitTime:a11];
+    v28 = [[WBSHistoryVisitIdentifier alloc] initWithURLString:rLStringCopy visitTime:destinationVisitTime];
     [(WBSHistoryServicePendingVisit *)v25 setDestinationVisitIdentifier:v28];
   }
 
@@ -74,24 +74,24 @@
   }
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
   visits = self->_visits;
-  v5 = a3;
+  handlerCopy = handler;
   if ([(NSMutableArray *)visits count])
   {
-    [(WBSHistoryServiceImporter *)self _submitVisitsWithCompletionHandler:v5];
+    [(WBSHistoryServiceImporter *)self _submitVisitsWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)_submitVisitsWithCompletionHandler:(id)a3
+- (void)_submitVisitsWithCompletionHandler:(id)handler
 {
-  [(WBSHistoryServiceDatabase *)self->_database importVisits:self->_visits desiredVisitTimePrecision:self->_visitTimePrecision completionHandler:a3];
+  [(WBSHistoryServiceDatabase *)self->_database importVisits:self->_visits desiredVisitTimePrecision:self->_visitTimePrecision completionHandler:handler];
   visits = self->_visits;
 
   [(NSMutableArray *)visits removeAllObjects];

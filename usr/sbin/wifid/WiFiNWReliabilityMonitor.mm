@@ -1,18 +1,18 @@
 @interface WiFiNWReliabilityMonitor
-- (WiFiNWReliabilityMonitor)initWithManagerQueue:(id)a3;
+- (WiFiNWReliabilityMonitor)initWithManagerQueue:(id)queue;
 - (void)_cleanup;
-- (void)_evaluationComplete:(unint64_t)a3;
+- (void)_evaluationComplete:(unint64_t)complete;
 - (void)dealloc;
-- (void)ingestLQMUpdate:(id)a3;
-- (void)processRoamEvent:(__WiFiNetwork *)a3;
-- (void)waitForNetworkToBeReliableWithTimeout:(__WiFiNetwork *)a3 withTimeout:(unint64_t)a4 withMgrCallback:(id)a5;
+- (void)ingestLQMUpdate:(id)update;
+- (void)processRoamEvent:(__WiFiNetwork *)event;
+- (void)waitForNetworkToBeReliableWithTimeout:(__WiFiNetwork *)timeout withTimeout:(unint64_t)withTimeout withMgrCallback:(id)callback;
 @end
 
 @implementation WiFiNWReliabilityMonitor
 
-- (WiFiNWReliabilityMonitor)initWithManagerQueue:(id)a3
+- (WiFiNWReliabilityMonitor)initWithManagerQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = WiFiNWReliabilityMonitor;
   v6 = [(WiFiNWReliabilityMonitor *)&v11 init];
@@ -22,7 +22,7 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_sharedMgrQueue, a3);
+  objc_storeStrong(&v6->_sharedMgrQueue, queue);
   if (!v7->_sharedMgrQueue || (v7->_metrics = 1, *&v7->_isEvalInProgress = 0, +[NSMutableArray array], v8 = objc_claimAutoreleasedReturnValue(), sessions = v7->_sessions, v7->_sessions = v8, sessions, !v7->_sessions))
   {
 LABEL_4:
@@ -41,14 +41,14 @@ LABEL_4:
   [(WiFiNWReliabilityMonitor *)&v3 dealloc];
 }
 
-- (void)waitForNetworkToBeReliableWithTimeout:(__WiFiNetwork *)a3 withTimeout:(unint64_t)a4 withMgrCallback:(id)a5
+- (void)waitForNetworkToBeReliableWithTimeout:(__WiFiNetwork *)timeout withTimeout:(unint64_t)withTimeout withMgrCallback:(id)callback
 {
-  v8 = a5;
+  callbackCopy = callback;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v9 = [v8 copy];
+  v9 = [callbackCopy copy];
   mgrCallback = self->_mgrCallback;
   self->_mgrCallback = v9;
 
@@ -71,7 +71,7 @@ LABEL_4:
   handler[3] = &unk_10025E9B8;
   handler[4] = self;
   dispatch_source_set_cancel_handler(v14, handler);
-  v15 = [[WiFiNWReliabilityMonitorSession alloc] initWithNetworkRecord:a3 withMetrics:self->_metrics withMaxSamples:20 withMinSampleThresh:16];
+  v15 = [[WiFiNWReliabilityMonitorSession alloc] initWithNetworkRecord:timeout withMetrics:self->_metrics withMaxSamples:20 withMinSampleThresh:16];
   if (v15)
   {
     [(NSMutableArray *)self->_sessions insertObject:v15 atIndex:0];
@@ -90,7 +90,7 @@ LABEL_4:
     v21[3] = &unk_10025E9E0;
     v21[4] = self;
     v21[5] = &v23;
-    v21[6] = a4;
+    v21[6] = withTimeout;
     dispatch_source_set_event_handler(v20, v21);
     dispatch_resume(self->_timer);
   }
@@ -124,22 +124,22 @@ LABEL_4:
   }
 }
 
-- (void)_evaluationComplete:(unint64_t)a3
+- (void)_evaluationComplete:(unint64_t)complete
 {
   if (self->_isEvalInProgress)
   {
     v6 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: network reliability evaluation complete with result:%lu", "-[WiFiNWReliabilityMonitor _evaluationComplete:]", a3}];
+      [off_100298C40 WFLog:3 message:{"%s: network reliability evaluation complete with result:%lu", "-[WiFiNWReliabilityMonitor _evaluationComplete:]", complete}];
     }
 
     objc_autoreleasePoolPop(v6);
     [(WiFiNWReliabilityMonitor *)self _cleanup];
     mgrCallback = self->_mgrCallback;
-    if (a3 != 3 && mgrCallback)
+    if (complete != 3 && mgrCallback)
     {
-      mgrCallback[2](mgrCallback, a3);
+      mgrCallback[2](mgrCallback, complete);
       mgrCallback = self->_mgrCallback;
     }
 
@@ -147,7 +147,7 @@ LABEL_4:
   }
 }
 
-- (void)processRoamEvent:(__WiFiNetwork *)a3
+- (void)processRoamEvent:(__WiFiNetwork *)event
 {
   if (self->_isEvalInProgress)
   {
@@ -161,7 +161,7 @@ LABEL_4:
     activeSession = self->_activeSession;
     self->_activeSession = 0;
 
-    v8 = [[WiFiNWReliabilityMonitorSession alloc] initWithNetworkRecord:a3 withMetrics:self->_metrics withMaxSamples:20 withMinSampleThresh:16];
+    v8 = [[WiFiNWReliabilityMonitorSession alloc] initWithNetworkRecord:event withMetrics:self->_metrics withMaxSamples:20 withMinSampleThresh:16];
     if (v8)
     {
       obj = v8;
@@ -174,17 +174,17 @@ LABEL_4:
   }
 }
 
-- (void)ingestLQMUpdate:(id)a3
+- (void)ingestLQMUpdate:(id)update
 {
-  v4 = a3;
-  v5 = v4;
+  updateCopy = update;
+  v5 = updateCopy;
   if (self->_isEvalInProgress)
   {
     activeSession = self->_activeSession;
     v8 = v5;
     if (activeSession)
     {
-      v4 = [(WiFiNWReliabilityMonitorSession *)activeSession ingestLQMUpdate:v5];
+      updateCopy = [(WiFiNWReliabilityMonitorSession *)activeSession ingestLQMUpdate:v5];
     }
 
     else
@@ -201,7 +201,7 @@ LABEL_4:
     v5 = v8;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(updateCopy, v5);
 }
 
 @end

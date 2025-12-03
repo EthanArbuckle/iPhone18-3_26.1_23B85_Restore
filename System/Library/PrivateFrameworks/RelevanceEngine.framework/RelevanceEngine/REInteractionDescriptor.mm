@@ -1,7 +1,7 @@
 @interface REInteractionDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (REInteractionDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -26,10 +26,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -39,7 +39,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (vabds_f32(self->_weight, v5->_weight) >= 0.00000011921 || vabds_f32(self->_exploreBias, v5->_exploreBias) >= 0.00000011921 || vabds_f32(self->_trainingSimulationExploreBias, v5->_trainingSimulationExploreBias) >= 0.00000011921 || vabds_f32(self->_initialProbability, v5->_initialProbability) >= 0.00000011921 || self->_enableExploreExploit != v5->_enableExploreExploit)
       {
@@ -157,9 +157,9 @@ LABEL_26:
   return v18 ^ v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setName:self->_name];
   *&v5 = self->_weight;
   [v4 setWeight:v5];

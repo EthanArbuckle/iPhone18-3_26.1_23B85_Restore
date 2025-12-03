@@ -1,25 +1,25 @@
 @interface MIStoreMetadata
-+ (id)metadataForBundleContainerURL:(id)a3 error:(id *)a4;
-+ (id)metadataFromDictionary:(id)a3;
-+ (id)metadataFromPlistAtURL:(id)a3 error:(id *)a4;
-+ (id)metadataFromPlistData:(id)a3 error:(id *)a4;
++ (id)metadataForBundleContainerURL:(id)l error:(id *)error;
++ (id)metadataFromDictionary:(id)dictionary;
++ (id)metadataFromPlistAtURL:(id)l error:(id *)error;
++ (id)metadataFromPlistData:(id)data error:(id *)error;
 - (BOOL)isEligibleForWatchAppInstall;
-- (BOOL)isEqual:(id)a3;
-- (MIStoreMetadata)initWithCoder:(id)a3;
-- (MIStoreMetadata)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MIStoreMetadata)initWithCoder:(id)coder;
+- (MIStoreMetadata)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)propertyListDataWithError:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)propertyListDataWithError:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIStoreMetadata
 
-- (MIStoreMetadata)initWithDictionary:(id)a3
+- (MIStoreMetadata)initWithDictionary:(id)dictionary
 {
   v122 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(MIStoreMetadata *)self init];
 
   if (!v5)
@@ -27,7 +27,7 @@
     goto LABEL_412;
   }
 
-  v6 = [v4 objectForKeyedSubscript:iAdAttribution];
+  v6 = [dictionaryCopy objectForKeyedSubscript:iAdAttribution];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -40,7 +40,7 @@
     MOLogWrite();
   }
 
-  v7 = [v4 objectForKeyedSubscript:iAdConversionDate];
+  v7 = [dictionaryCopy objectForKeyedSubscript:iAdConversionDate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -53,7 +53,7 @@
     MOLogWrite();
   }
 
-  v8 = [v4 objectForKeyedSubscript:iAdImpressionDate];
+  v8 = [dictionaryCopy objectForKeyedSubscript:iAdImpressionDate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -66,7 +66,7 @@
     MOLogWrite();
   }
 
-  v9 = [v4 objectForKeyedSubscript:artistName];
+  v9 = [dictionaryCopy objectForKeyedSubscript:artistName];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -79,7 +79,7 @@
     MOLogWrite();
   }
 
-  v10 = [v4 objectForKeyedSubscript:betaExternalVersionIdentifier];
+  v10 = [dictionaryCopy objectForKeyedSubscript:betaExternalVersionIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -92,7 +92,7 @@
     MOLogWrite();
   }
 
-  v11 = [v4 objectForKeyedSubscript:bundleVersion];
+  v11 = [dictionaryCopy objectForKeyedSubscript:bundleVersion];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -105,7 +105,7 @@
     MOLogWrite();
   }
 
-  v12 = [v4 objectForKeyedSubscript:bundleShortVersionString];
+  v12 = [dictionaryCopy objectForKeyedSubscript:bundleShortVersionString];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -118,7 +118,7 @@
     MOLogWrite();
   }
 
-  v13 = [v4 objectForKeyedSubscript:downloadInfoDict];
+  v13 = [dictionaryCopy objectForKeyedSubscript:downloadInfoDict];
   objc_opt_class();
   v14 = v13;
   if (objc_opt_isKindOfClass())
@@ -254,7 +254,7 @@
     MOLogWrite();
   }
 
-  v26 = [v4 objectForKeyedSubscript:{hasMessagesExtension, v103, v109}];
+  v26 = [dictionaryCopy objectForKeyedSubscript:{hasMessagesExtension, v103, v109}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -267,7 +267,7 @@
     MOLogWrite();
   }
 
-  v27 = [v4 objectForKeyedSubscript:initialODRSize];
+  v27 = [dictionaryCopy objectForKeyedSubscript:initialODRSize];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -280,7 +280,7 @@
     MOLogWrite();
   }
 
-  v28 = [v4 objectForKeyedSubscript:purchasedRedownload];
+  v28 = [dictionaryCopy objectForKeyedSubscript:purchasedRedownload];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -293,7 +293,7 @@
     MOLogWrite();
   }
 
-  v29 = [v4 objectForKeyedSubscript:itemID];
+  v29 = [dictionaryCopy objectForKeyedSubscript:itemID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -306,7 +306,7 @@
     MOLogWrite();
   }
 
-  v30 = [v4 objectForKeyedSubscript:itemName];
+  v30 = [dictionaryCopy objectForKeyedSubscript:itemName];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -319,7 +319,7 @@
     MOLogWrite();
   }
 
-  v31 = [v4 objectForKeyedSubscript:shortItemName];
+  v31 = [dictionaryCopy objectForKeyedSubscript:shortItemName];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -332,7 +332,7 @@
     MOLogWrite();
   }
 
-  v32 = [v4 objectForKeyedSubscript:kind];
+  v32 = [dictionaryCopy objectForKeyedSubscript:kind];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -345,7 +345,7 @@
     MOLogWrite();
   }
 
-  v33 = [v4 objectForKeyedSubscript:label];
+  v33 = [dictionaryCopy objectForKeyedSubscript:label];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -358,7 +358,7 @@
     MOLogWrite();
   }
 
-  v34 = [v4 objectForKeyedSubscript:launchProhibited];
+  v34 = [dictionaryCopy objectForKeyedSubscript:launchProhibited];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -371,7 +371,7 @@
     MOLogWrite();
   }
 
-  v35 = [v4 objectForKeyedSubscript:ratingDict];
+  v35 = [dictionaryCopy objectForKeyedSubscript:ratingDict];
   objc_opt_class();
   v36 = v35;
   if (objc_opt_isKindOfClass())
@@ -419,7 +419,7 @@
     MOLogWrite();
   }
 
-  v40 = [v4 objectForKeyedSubscript:{releaseDate, v104}];
+  v40 = [dictionaryCopy objectForKeyedSubscript:{releaseDate, v104}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -432,7 +432,7 @@
     MOLogWrite();
   }
 
-  v41 = [v4 objectForKeyedSubscript:softwareVersionBundleID];
+  v41 = [dictionaryCopy objectForKeyedSubscript:softwareVersionBundleID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -445,7 +445,7 @@
     MOLogWrite();
   }
 
-  v42 = [v4 objectForKeyedSubscript:softwareVersionExternalIdentifier];
+  v42 = [dictionaryCopy objectForKeyedSubscript:softwareVersionExternalIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -458,7 +458,7 @@
     MOLogWrite();
   }
 
-  v43 = [v4 objectForKeyedSubscript:sourceApp];
+  v43 = [dictionaryCopy objectForKeyedSubscript:sourceApp];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -471,7 +471,7 @@
     MOLogWrite();
   }
 
-  v44 = [v4 objectForKeyedSubscript:storeCohort];
+  v44 = [dictionaryCopy objectForKeyedSubscript:storeCohort];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -484,7 +484,7 @@
     MOLogWrite();
   }
 
-  v45 = [v4 objectForKeyedSubscript:storefront];
+  v45 = [dictionaryCopy objectForKeyedSubscript:storefront];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -497,7 +497,7 @@
     MOLogWrite();
   }
 
-  v46 = [v4 objectForKeyedSubscript:storefrontCountryCode];
+  v46 = [dictionaryCopy objectForKeyedSubscript:storefrontCountryCode];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -510,7 +510,7 @@
     MOLogWrite();
   }
 
-  v47 = [v4 objectForKeyedSubscript:assetToken];
+  v47 = [dictionaryCopy objectForKeyedSubscript:assetToken];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -523,7 +523,7 @@
     MOLogWrite();
   }
 
-  v48 = [v4 objectForKeyedSubscript:variantID];
+  v48 = [dictionaryCopy objectForKeyedSubscript:variantID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -536,7 +536,7 @@
     MOLogWrite();
   }
 
-  v49 = [v4 objectForKeyedSubscript:betaBuildGroupID];
+  v49 = [dictionaryCopy objectForKeyedSubscript:betaBuildGroupID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -549,7 +549,7 @@
     MOLogWrite();
   }
 
-  v50 = [v4 objectForKeyedSubscript:genre];
+  v50 = [dictionaryCopy objectForKeyedSubscript:genre];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -562,7 +562,7 @@
     MOLogWrite();
   }
 
-  v51 = [v4 objectForKeyedSubscript:genreID];
+  v51 = [dictionaryCopy objectForKeyedSubscript:genreID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -575,10 +575,10 @@
     MOLogWrite();
   }
 
-  v52 = [v4 objectForKeyedSubscript:subGenres];
+  v52 = [dictionaryCopy objectForKeyedSubscript:subGenres];
   if (!v52)
   {
-    v52 = [v4 objectForKeyedSubscript:@"subgenre"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"subgenre"];
   }
 
   objc_opt_class();
@@ -598,7 +598,7 @@
   {
     v112 = v36;
     v113 = v5;
-    v114 = v4;
+    v114 = dictionaryCopy;
     v116 = objc_opt_new();
     v117 = 0u;
     v118 = 0u;
@@ -703,11 +703,11 @@
       [(MIStoreMetadata *)v113 setSubGenres:v70];
     }
 
-    v4 = v114;
+    dictionaryCopy = v114;
     v36 = v112;
   }
 
-  v71 = [v4 objectForKeyedSubscript:{categories, v105, v110, v111}];
+  v71 = [dictionaryCopy objectForKeyedSubscript:{categories, v105, v110, v111}];
   if (v71)
   {
     objc_opt_class();
@@ -738,7 +738,7 @@
   }
 
 LABEL_300:
-  v75 = [v4 objectForKeyedSubscript:{gameCenterEnabled, v106}];
+  v75 = [dictionaryCopy objectForKeyedSubscript:{gameCenterEnabled, v106}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -751,7 +751,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v76 = [v4 objectForKeyedSubscript:gameCenterEverEnabled];
+  v76 = [dictionaryCopy objectForKeyedSubscript:gameCenterEverEnabled];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -764,7 +764,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v77 = [v4 objectForKeyedSubscript:isAutoDownload];
+  v77 = [dictionaryCopy objectForKeyedSubscript:isAutoDownload];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -777,7 +777,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v78 = [v4 objectForKeyedSubscript:referrerURL];
+  v78 = [dictionaryCopy objectForKeyedSubscript:referrerURL];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -790,7 +790,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v79 = [v4 objectForKeyedSubscript:referrerApp];
+  v79 = [dictionaryCopy objectForKeyedSubscript:referrerApp];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -803,7 +803,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v80 = [v4 objectForKeyedSubscript:sideLoadedDeviceBasedVPP];
+  v80 = [dictionaryCopy objectForKeyedSubscript:sideLoadedDeviceBasedVPP];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -816,7 +816,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v81 = [v4 objectForKeyedSubscript:deviceBasedVPP];
+  v81 = [dictionaryCopy objectForKeyedSubscript:deviceBasedVPP];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -829,7 +829,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v82 = [v4 objectForKeyedSubscript:isB2BCustomApp];
+  v82 = [dictionaryCopy objectForKeyedSubscript:isB2BCustomApp];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -842,7 +842,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v83 = [v4 objectForKeyedSubscript:enterpriseInstallURL];
+  v83 = [dictionaryCopy objectForKeyedSubscript:enterpriseInstallURL];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -855,7 +855,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v84 = [v4 objectForKeyedSubscript:redownloadParams];
+  v84 = [dictionaryCopy objectForKeyedSubscript:redownloadParams];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -868,7 +868,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v85 = [v4 objectForKeyedSubscript:factoryInstall];
+  v85 = [dictionaryCopy objectForKeyedSubscript:factoryInstall];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -881,7 +881,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v86 = [v4 objectForKeyedSubscript:md5];
+  v86 = [dictionaryCopy objectForKeyedSubscript:md5];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -894,7 +894,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v87 = [v4 objectForKeyedSubscript:protectedMetadata];
+  v87 = [dictionaryCopy objectForKeyedSubscript:protectedMetadata];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -907,7 +907,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v88 = [v4 objectForKeyedSubscript:hasOrEverHasHadIAP];
+  v88 = [dictionaryCopy objectForKeyedSubscript:hasOrEverHasHadIAP];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -920,7 +920,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v89 = [v4 objectForKeyedSubscript:nameTranscriptions];
+  v89 = [dictionaryCopy objectForKeyedSubscript:nameTranscriptions];
   v90 = v89;
   if (v89)
   {
@@ -935,7 +935,7 @@ LABEL_300:
     }
   }
 
-  v91 = [v4 objectForKeyedSubscript:{::distributorInfo, v107}];
+  v91 = [dictionaryCopy objectForKeyedSubscript:{::distributorInfo, v107}];
   objc_opt_class();
   v92 = v91;
   if (objc_opt_isKindOfClass())
@@ -961,7 +961,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v96 = [v4 objectForKeyedSubscript:{managementDeclarationIdentifier, v108}];
+  v96 = [dictionaryCopy objectForKeyedSubscript:{managementDeclarationIdentifier, v108}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -973,7 +973,7 @@ LABEL_300:
     MOLogWrite();
   }
 
-  v97 = [v4 objectForKeyedSubscript:installerEpoch];
+  v97 = [dictionaryCopy objectForKeyedSubscript:installerEpoch];
   objc_opt_class();
   v98 = v97;
   if (objc_opt_isKindOfClass())
@@ -988,10 +988,10 @@ LABEL_300:
 
   if (v99)
   {
-    v100 = [v99 unsignedIntegerValue];
-    if (v100 <= 2)
+    unsignedIntegerValue = [v99 unsignedIntegerValue];
+    if (unsignedIntegerValue <= 2)
     {
-      v5->_installerEpoch = v100;
+      v5->_installerEpoch = unsignedIntegerValue;
     }
   }
 
@@ -1001,180 +1001,180 @@ LABEL_412:
   return v101;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(MIStoreMetadata *)self iAdAttribution];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  iAdAttribution = [(MIStoreMetadata *)self iAdAttribution];
+  v6 = [iAdAttribution copy];
   [v4 setIAdAttribution:v6];
 
-  v7 = [(MIStoreMetadata *)self iAdConversionDate];
-  v8 = [v7 copy];
+  iAdConversionDate = [(MIStoreMetadata *)self iAdConversionDate];
+  v8 = [iAdConversionDate copy];
   [v4 setIAdConversionDate:v8];
 
-  v9 = [(MIStoreMetadata *)self iAdImpressionDate];
-  v10 = [v9 copy];
+  iAdImpressionDate = [(MIStoreMetadata *)self iAdImpressionDate];
+  v10 = [iAdImpressionDate copy];
   [v4 setIAdImpressionDate:v10];
 
-  v11 = [(MIStoreMetadata *)self artistName];
-  v12 = [v11 copy];
+  artistName = [(MIStoreMetadata *)self artistName];
+  v12 = [artistName copy];
   [v4 setArtistName:v12];
 
-  v13 = [(MIStoreMetadata *)self betaExternalVersionIdentifier];
-  v14 = [v13 copy];
+  betaExternalVersionIdentifier = [(MIStoreMetadata *)self betaExternalVersionIdentifier];
+  v14 = [betaExternalVersionIdentifier copy];
   [v4 setBetaExternalVersionIdentifier:v14];
 
-  v15 = [(MIStoreMetadata *)self bundleVersion];
-  v16 = [v15 copy];
+  bundleVersion = [(MIStoreMetadata *)self bundleVersion];
+  v16 = [bundleVersion copy];
   [v4 setBundleVersion:v16];
 
-  v17 = [(MIStoreMetadata *)self bundleShortVersionString];
-  v18 = [v17 copy];
+  bundleShortVersionString = [(MIStoreMetadata *)self bundleShortVersionString];
+  v18 = [bundleShortVersionString copy];
   [v4 setBundleShortVersionString:v18];
 
-  v19 = [(MIStoreMetadata *)self purchaseDate];
-  v20 = [v19 copy];
+  purchaseDate = [(MIStoreMetadata *)self purchaseDate];
+  v20 = [purchaseDate copy];
   [v4 setPurchaseDate:v20];
 
-  v21 = [(MIStoreMetadata *)self appleID];
-  v22 = [v21 copy];
+  appleID = [(MIStoreMetadata *)self appleID];
+  v22 = [appleID copy];
   [v4 setAppleID:v22];
 
-  v23 = [(MIStoreMetadata *)self DSPersonID];
-  v24 = [v23 copy];
+  dSPersonID = [(MIStoreMetadata *)self DSPersonID];
+  v24 = [dSPersonID copy];
   [v4 setDSPersonID:v24];
 
-  v25 = [(MIStoreMetadata *)self downloaderID];
-  v26 = [v25 copy];
+  downloaderID = [(MIStoreMetadata *)self downloaderID];
+  v26 = [downloaderID copy];
   [v4 setDownloaderID:v26];
 
-  v27 = [(MIStoreMetadata *)self familyID];
-  v28 = [v27 copy];
+  familyID = [(MIStoreMetadata *)self familyID];
+  v28 = [familyID copy];
   [v4 setFamilyID:v28];
 
-  v29 = [(MIStoreMetadata *)self purchaserID];
-  v30 = [v29 copy];
+  purchaserID = [(MIStoreMetadata *)self purchaserID];
+  v30 = [purchaserID copy];
   [v4 setPurchaserID:v30];
 
-  v31 = [(MIStoreMetadata *)self altDSID];
-  v32 = [v31 copy];
+  altDSID = [(MIStoreMetadata *)self altDSID];
+  v32 = [altDSID copy];
   [v4 setAltDSID:v32];
 
   [v4 setHasMessagesExtension:{-[MIStoreMetadata hasMessagesExtension](self, "hasMessagesExtension")}];
-  v33 = [(MIStoreMetadata *)self initialODRSize];
-  v34 = [v33 copy];
+  initialODRSize = [(MIStoreMetadata *)self initialODRSize];
+  v34 = [initialODRSize copy];
   [v4 setInitialODRSize:v34];
 
   [v4 setPurchasedRedownload:{-[MIStoreMetadata isPurchasedRedownload](self, "isPurchasedRedownload")}];
-  v35 = [(MIStoreMetadata *)self itemID];
-  v36 = [v35 copy];
+  itemID = [(MIStoreMetadata *)self itemID];
+  v36 = [itemID copy];
   [v4 setItemID:v36];
 
-  v37 = [(MIStoreMetadata *)self itemName];
-  v38 = [v37 copy];
+  itemName = [(MIStoreMetadata *)self itemName];
+  v38 = [itemName copy];
   [v4 setItemName:v38];
 
-  v39 = [(MIStoreMetadata *)self shortItemName];
-  v40 = [v39 copy];
+  shortItemName = [(MIStoreMetadata *)self shortItemName];
+  v40 = [shortItemName copy];
   [v4 setShortItemName:v40];
 
-  v41 = [(MIStoreMetadata *)self kind];
-  v42 = [v41 copy];
+  kind = [(MIStoreMetadata *)self kind];
+  v42 = [kind copy];
   [v4 setKind:v42];
 
-  v43 = [(MIStoreMetadata *)self label];
-  v44 = [v43 copy];
+  label = [(MIStoreMetadata *)self label];
+  v44 = [label copy];
   [v4 setLabel:v44];
 
   [v4 setLaunchProhibited:{-[MIStoreMetadata isLaunchProhibited](self, "isLaunchProhibited")}];
-  v45 = [(MIStoreMetadata *)self ratingLabel];
-  v46 = [v45 copy];
+  ratingLabel = [(MIStoreMetadata *)self ratingLabel];
+  v46 = [ratingLabel copy];
   [v4 setRatingLabel:v46];
 
-  v47 = [(MIStoreMetadata *)self ratingRank];
-  v48 = [v47 copy];
+  ratingRank = [(MIStoreMetadata *)self ratingRank];
+  v48 = [ratingRank copy];
   [v4 setRatingRank:v48];
 
-  v49 = [(MIStoreMetadata *)self releaseDate];
-  v50 = [v49 copy];
+  releaseDate = [(MIStoreMetadata *)self releaseDate];
+  v50 = [releaseDate copy];
   [v4 setReleaseDate:v50];
 
-  v51 = [(MIStoreMetadata *)self softwareVersionBundleID];
-  v52 = [v51 copy];
+  softwareVersionBundleID = [(MIStoreMetadata *)self softwareVersionBundleID];
+  v52 = [softwareVersionBundleID copy];
   [v4 setSoftwareVersionBundleID:v52];
 
-  v53 = [(MIStoreMetadata *)self softwareVersionExternalIdentifier];
-  v54 = [v53 copy];
+  softwareVersionExternalIdentifier = [(MIStoreMetadata *)self softwareVersionExternalIdentifier];
+  v54 = [softwareVersionExternalIdentifier copy];
   [v4 setSoftwareVersionExternalIdentifier:v54];
 
-  v55 = [(MIStoreMetadata *)self sourceApp];
-  v56 = [v55 copy];
+  sourceApp = [(MIStoreMetadata *)self sourceApp];
+  v56 = [sourceApp copy];
   [v4 setSourceApp:v56];
 
-  v57 = [(MIStoreMetadata *)self storeCohort];
-  v58 = [v57 copy];
+  storeCohort = [(MIStoreMetadata *)self storeCohort];
+  v58 = [storeCohort copy];
   [v4 setStoreCohort:v58];
 
-  v59 = [(MIStoreMetadata *)self storefront];
-  v60 = [v59 copy];
+  storefront = [(MIStoreMetadata *)self storefront];
+  v60 = [storefront copy];
   [v4 setStorefront:v60];
 
-  v61 = [(MIStoreMetadata *)self storefrontCountryCode];
-  v62 = [v61 copy];
+  storefrontCountryCode = [(MIStoreMetadata *)self storefrontCountryCode];
+  v62 = [storefrontCountryCode copy];
   [v4 setStorefrontCountryCode:v62];
 
-  v63 = [(MIStoreMetadata *)self assetToken];
-  v64 = [v63 copy];
+  assetToken = [(MIStoreMetadata *)self assetToken];
+  v64 = [assetToken copy];
   [v4 setAssetToken:v64];
 
-  v65 = [(MIStoreMetadata *)self variantID];
-  v66 = [v65 copy];
+  variantID = [(MIStoreMetadata *)self variantID];
+  v66 = [variantID copy];
   [v4 setVariantID:v66];
 
-  v67 = [(MIStoreMetadata *)self betaBuildGroupID];
-  v68 = [v67 copy];
+  betaBuildGroupID = [(MIStoreMetadata *)self betaBuildGroupID];
+  v68 = [betaBuildGroupID copy];
   [v4 setBetaBuildGroupID:v68];
 
-  v69 = [(MIStoreMetadata *)self genre];
-  v70 = [v69 copy];
+  genre = [(MIStoreMetadata *)self genre];
+  v70 = [genre copy];
   [v4 setGenre:v70];
 
-  v71 = [(MIStoreMetadata *)self genreID];
-  v72 = [v71 copy];
+  genreID = [(MIStoreMetadata *)self genreID];
+  v72 = [genreID copy];
   [v4 setGenreID:v72];
 
-  v73 = [(MIStoreMetadata *)self subGenres];
-  v74 = [v73 copy];
+  subGenres = [(MIStoreMetadata *)self subGenres];
+  v74 = [subGenres copy];
   [v4 setSubGenres:v74];
 
-  v75 = [(MIStoreMetadata *)self categories];
-  v76 = [v75 copy];
+  categories = [(MIStoreMetadata *)self categories];
+  v76 = [categories copy];
   [v4 setCategories:v76];
 
   [v4 setGameCenterEnabled:{-[MIStoreMetadata isGameCenterEnabled](self, "isGameCenterEnabled")}];
   [v4 setGameCenterEverEnabled:{-[MIStoreMetadata gameCenterEverEnabled](self, "gameCenterEverEnabled")}];
   [v4 setIsAutoDownload:{-[MIStoreMetadata isAutoDownload](self, "isAutoDownload")}];
-  v77 = [(MIStoreMetadata *)self referrerURL];
-  v78 = [v77 copy];
+  referrerURL = [(MIStoreMetadata *)self referrerURL];
+  v78 = [referrerURL copy];
   [v4 setReferrerURL:v78];
 
-  v79 = [(MIStoreMetadata *)self referrerApp];
-  v80 = [v79 copy];
+  referrerApp = [(MIStoreMetadata *)self referrerApp];
+  v80 = [referrerApp copy];
   [v4 setReferrerApp:v80];
 
   [v4 setSideLoadedDeviceBasedVPP:{-[MIStoreMetadata sideLoadedDeviceBasedVPP](self, "sideLoadedDeviceBasedVPP")}];
   [v4 setDeviceBasedVPP:{-[MIStoreMetadata deviceBasedVPP](self, "deviceBasedVPP")}];
   [v4 setIsB2BCustomApp:{-[MIStoreMetadata isB2BCustomApp](self, "isB2BCustomApp")}];
-  v81 = [(MIStoreMetadata *)self enterpriseInstallURL];
-  v82 = [v81 copy];
+  enterpriseInstallURL = [(MIStoreMetadata *)self enterpriseInstallURL];
+  v82 = [enterpriseInstallURL copy];
   [v4 setEnterpriseInstallURL:v82];
 
-  v83 = [(MIStoreMetadata *)self redownloadParams];
-  v84 = [v83 copy];
+  redownloadParams = [(MIStoreMetadata *)self redownloadParams];
+  v84 = [redownloadParams copy];
   [v4 setRedownloadParams:v84];
 
-  v85 = [(MIStoreMetadata *)self nameTranscriptions];
-  v86 = [v85 copy];
+  nameTranscriptions = [(MIStoreMetadata *)self nameTranscriptions];
+  v86 = [nameTranscriptions copy];
   [v4 setNameTranscriptions:v86];
 
   [v4 setFactoryInstall:{-[MIStoreMetadata isFactoryInstall](self, "isFactoryInstall")}];
@@ -1182,225 +1182,225 @@ LABEL_412:
   v88 = [v87 copy];
   [v4 setMd5:v88];
 
-  v89 = [(MIStoreMetadata *)self protectedMetadata];
-  v90 = [v89 copy];
+  protectedMetadata = [(MIStoreMetadata *)self protectedMetadata];
+  v90 = [protectedMetadata copy];
   [v4 setProtectedMetadata:v90];
 
-  v91 = [(MIStoreMetadata *)self hasOrEverHasHadIAP];
-  v92 = [v91 copy];
+  hasOrEverHasHadIAP = [(MIStoreMetadata *)self hasOrEverHasHadIAP];
+  v92 = [hasOrEverHasHadIAP copy];
   [v4 setHasOrEverHasHadIAP:v92];
 
-  v93 = [(MIStoreMetadata *)self distributorInfo];
-  v94 = [v93 copy];
+  distributorInfo = [(MIStoreMetadata *)self distributorInfo];
+  v94 = [distributorInfo copy];
   [v4 setDistributorInfo:v94];
 
-  v95 = [(MIStoreMetadata *)self managementDeclarationIdentifier];
-  v96 = [v95 copy];
+  managementDeclarationIdentifier = [(MIStoreMetadata *)self managementDeclarationIdentifier];
+  v96 = [managementDeclarationIdentifier copy];
   [v4 setManagementDeclarationIdentifier:v96];
 
   [v4 setInstallerEpoch:{-[MIStoreMetadata installerEpoch](self, "installerEpoch")}];
   return v4;
 }
 
-- (MIStoreMetadata)initWithCoder:(id)a3
+- (MIStoreMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MIStoreMetadata *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iAdAttribution"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iAdAttribution"];
     iAdAttribution = v5->_iAdAttribution;
     v5->_iAdAttribution = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iAdConversionDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iAdConversionDate"];
     iAdConversionDate = v5->_iAdConversionDate;
     v5->_iAdConversionDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iAdImpressionDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iAdImpressionDate"];
     iAdImpressionDate = v5->_iAdImpressionDate;
     v5->_iAdImpressionDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artistName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artistName"];
     artistName = v5->_artistName;
     v5->_artistName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"betaExternalVersionIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"betaExternalVersionIdentifier"];
     betaExternalVersionIdentifier = v5->_betaExternalVersionIdentifier;
     v5->_betaExternalVersionIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
     bundleVersion = v5->_bundleVersion;
     v5->_bundleVersion = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleShortVersionString"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleShortVersionString"];
     bundleShortVersionString = v5->_bundleShortVersionString;
     v5->_bundleShortVersionString = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchaseDate"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchaseDate"];
     purchaseDate = v5->_purchaseDate;
     v5->_purchaseDate = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
     appleID = v5->_appleID;
     v5->_appleID = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DSPersonID"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DSPersonID"];
     DSPersonID = v5->_DSPersonID;
     v5->_DSPersonID = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloaderID"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloaderID"];
     downloaderID = v5->_downloaderID;
     v5->_downloaderID = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"familyID"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"familyID"];
     familyID = v5->_familyID;
     v5->_familyID = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchaserID"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchaserID"];
     purchaserID = v5->_purchaserID;
     v5->_purchaserID = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v32;
 
-    v5->_hasMessagesExtension = [v4 decodeBoolForKey:@"hasMessagesExtension"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initialODRSize"];
+    v5->_hasMessagesExtension = [coderCopy decodeBoolForKey:@"hasMessagesExtension"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initialODRSize"];
     initialODRSize = v5->_initialODRSize;
     v5->_initialODRSize = v34;
 
-    v5->_purchasedRedownload = [v4 decodeBoolForKey:@"purchasedRedownload"];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemID"];
+    v5->_purchasedRedownload = [coderCopy decodeBoolForKey:@"purchasedRedownload"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemID"];
     itemID = v5->_itemID;
     v5->_itemID = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemName"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemName"];
     itemName = v5->_itemName;
     v5->_itemName = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortItemName"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortItemName"];
     shortItemName = v5->_shortItemName;
     v5->_shortItemName = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
     kind = v5->_kind;
     v5->_kind = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v44;
 
-    v5->_launchProhibited = [v4 decodeBoolForKey:@"launchProhibited"];
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ratingLabel"];
+    v5->_launchProhibited = [coderCopy decodeBoolForKey:@"launchProhibited"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ratingLabel"];
     ratingLabel = v5->_ratingLabel;
     v5->_ratingLabel = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ratingRank"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ratingRank"];
     ratingRank = v5->_ratingRank;
     v5->_ratingRank = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseDate"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseDate"];
     releaseDate = v5->_releaseDate;
     v5->_releaseDate = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"softwareVersionBundleID"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"softwareVersionBundleID"];
     softwareVersionBundleID = v5->_softwareVersionBundleID;
     v5->_softwareVersionBundleID = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"softwareVersionExternalIdentifier"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"softwareVersionExternalIdentifier"];
     softwareVersionExternalIdentifier = v5->_softwareVersionExternalIdentifier;
     v5->_softwareVersionExternalIdentifier = v54;
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceApp"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceApp"];
     sourceApp = v5->_sourceApp;
     v5->_sourceApp = v56;
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeCohort"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeCohort"];
     storeCohort = v5->_storeCohort;
     v5->_storeCohort = v58;
 
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storefront"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storefront"];
     storefront = v5->_storefront;
     v5->_storefront = v60;
 
-    v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storefrontCountryCode"];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storefrontCountryCode"];
     storefrontCountryCode = v5->_storefrontCountryCode;
     v5->_storefrontCountryCode = v62;
 
-    v64 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetToken"];
+    v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetToken"];
     assetToken = v5->_assetToken;
     v5->_assetToken = v64;
 
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"variantID"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"variantID"];
     variantID = v5->_variantID;
     v5->_variantID = v66;
 
-    v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"betaBuildGroupID"];
+    v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"betaBuildGroupID"];
     betaBuildGroupID = v5->_betaBuildGroupID;
     v5->_betaBuildGroupID = v68;
 
-    v70 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"genre"];
+    v70 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"genre"];
     genre = v5->_genre;
     v5->_genre = v70;
 
-    v72 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"genreID"];
+    v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"genreID"];
     genreID = v5->_genreID;
     v5->_genreID = v72;
 
     v74 = MEMORY[0x1E695DFD8];
     v75 = objc_opt_class();
     v76 = [v74 setWithObjects:{v75, objc_opt_class(), 0}];
-    v77 = [v4 decodeObjectOfClasses:v76 forKey:@"subGenres"];
+    v77 = [coderCopy decodeObjectOfClasses:v76 forKey:@"subGenres"];
     subGenres = v5->_subGenres;
     v5->_subGenres = v77;
 
     v79 = MEMORY[0x1E695DFD8];
     v80 = objc_opt_class();
     v81 = [v79 setWithObjects:{v80, objc_opt_class(), 0}];
-    v82 = [v4 decodeObjectOfClasses:v81 forKey:@"categories"];
+    v82 = [coderCopy decodeObjectOfClasses:v81 forKey:@"categories"];
     categories = v5->_categories;
     v5->_categories = v82;
 
-    v5->_gameCenterEnabled = [v4 decodeBoolForKey:@"gameCenterEnabled"];
-    v5->_gameCenterEverEnabled = [v4 decodeBoolForKey:@"gameCenterEverEnabled"];
-    v5->_isAutoDownload = [v4 decodeBoolForKey:@"isAutoDownload"];
-    v84 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referrerURL"];
+    v5->_gameCenterEnabled = [coderCopy decodeBoolForKey:@"gameCenterEnabled"];
+    v5->_gameCenterEverEnabled = [coderCopy decodeBoolForKey:@"gameCenterEverEnabled"];
+    v5->_isAutoDownload = [coderCopy decodeBoolForKey:@"isAutoDownload"];
+    v84 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referrerURL"];
     referrerURL = v5->_referrerURL;
     v5->_referrerURL = v84;
 
-    v86 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referrerApp"];
+    v86 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referrerApp"];
     referrerApp = v5->_referrerApp;
     v5->_referrerApp = v86;
 
-    v5->_sideLoadedDeviceBasedVPP = [v4 decodeBoolForKey:@"sideLoadedDeviceBasedVPP"];
-    v5->_deviceBasedVPP = [v4 decodeBoolForKey:@"deviceBasedVPP"];
-    v5->_isB2BCustomApp = [v4 decodeBoolForKey:@"isB2BCustomApp"];
-    v88 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enterpriseInstallURL"];
+    v5->_sideLoadedDeviceBasedVPP = [coderCopy decodeBoolForKey:@"sideLoadedDeviceBasedVPP"];
+    v5->_deviceBasedVPP = [coderCopy decodeBoolForKey:@"deviceBasedVPP"];
+    v5->_isB2BCustomApp = [coderCopy decodeBoolForKey:@"isB2BCustomApp"];
+    v88 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enterpriseInstallURL"];
     enterpriseInstallURL = v5->_enterpriseInstallURL;
     v5->_enterpriseInstallURL = v88;
 
-    v90 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redownloadParams"];
+    v90 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redownloadParams"];
     redownloadParams = v5->_redownloadParams;
     v5->_redownloadParams = v90;
 
-    v5->_factoryInstall = [v4 decodeBoolForKey:@"factoryInstall"];
-    v92 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"md5"];
+    v5->_factoryInstall = [coderCopy decodeBoolForKey:@"factoryInstall"];
+    v92 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"md5"];
     md5 = v5->_md5;
     v5->_md5 = v92;
 
-    v94 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protectedMetadata"];
+    v94 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protectedMetadata"];
     protectedMetadata = v5->_protectedMetadata;
     v5->_protectedMetadata = v94;
 
-    v96 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasOrEverHasHadIAP"];
+    v96 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasOrEverHasHadIAP"];
     hasOrEverHasHadIAP = v5->_hasOrEverHasHadIAP;
     v5->_hasOrEverHasHadIAP = v96;
 
-    v98 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"distributorInfo"];
+    v98 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"distributorInfo"];
     distributorInfo = v5->_distributorInfo;
     v5->_distributorInfo = v98;
 
-    v100 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managementDeclarationIdentifier"];
+    v100 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managementDeclarationIdentifier"];
     managementDeclarationIdentifier = v5->_managementDeclarationIdentifier;
     v5->_managementDeclarationIdentifier = v100;
 
@@ -1408,7 +1408,7 @@ LABEL_412:
     v103 = objc_opt_class();
     v104 = objc_opt_class();
     v105 = [v102 setWithObjects:{v103, v104, objc_opt_class(), 0}];
-    v106 = [v4 decodeObjectOfClasses:v105 forKey:@"nameTranscriptions"];
+    v106 = [coderCopy decodeObjectOfClasses:v105 forKey:@"nameTranscriptions"];
 
     if (v106 && (_IsDictionaryWithKeyStringAndValueArrayOfString(v106) & 1) == 0)
     {
@@ -1423,7 +1423,7 @@ LABEL_412:
       [(MIStoreMetadata *)v5 setNameTranscriptions:v106];
     }
 
-    v107 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installerEpoch"];
+    v107 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installerEpoch"];
     v5->_installerEpoch = [v107 unsignedIntegerValue];
 
     if (v5->_installerEpoch >= 3)
@@ -1435,173 +1435,173 @@ LABEL_412:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MIStoreMetadata *)self iAdAttribution];
-  [v4 encodeObject:v5 forKey:@"iAdAttribution"];
+  coderCopy = coder;
+  iAdAttribution = [(MIStoreMetadata *)self iAdAttribution];
+  [coderCopy encodeObject:iAdAttribution forKey:@"iAdAttribution"];
 
-  v6 = [(MIStoreMetadata *)self iAdConversionDate];
-  [v4 encodeObject:v6 forKey:@"iAdConversionDate"];
+  iAdConversionDate = [(MIStoreMetadata *)self iAdConversionDate];
+  [coderCopy encodeObject:iAdConversionDate forKey:@"iAdConversionDate"];
 
-  v7 = [(MIStoreMetadata *)self iAdImpressionDate];
-  [v4 encodeObject:v7 forKey:@"iAdImpressionDate"];
+  iAdImpressionDate = [(MIStoreMetadata *)self iAdImpressionDate];
+  [coderCopy encodeObject:iAdImpressionDate forKey:@"iAdImpressionDate"];
 
-  v8 = [(MIStoreMetadata *)self artistName];
-  [v4 encodeObject:v8 forKey:@"artistName"];
+  artistName = [(MIStoreMetadata *)self artistName];
+  [coderCopy encodeObject:artistName forKey:@"artistName"];
 
-  v9 = [(MIStoreMetadata *)self betaExternalVersionIdentifier];
-  [v4 encodeObject:v9 forKey:@"betaExternalVersionIdentifier"];
+  betaExternalVersionIdentifier = [(MIStoreMetadata *)self betaExternalVersionIdentifier];
+  [coderCopy encodeObject:betaExternalVersionIdentifier forKey:@"betaExternalVersionIdentifier"];
 
-  v10 = [(MIStoreMetadata *)self bundleVersion];
-  [v4 encodeObject:v10 forKey:@"bundleVersion"];
+  bundleVersion = [(MIStoreMetadata *)self bundleVersion];
+  [coderCopy encodeObject:bundleVersion forKey:@"bundleVersion"];
 
-  v11 = [(MIStoreMetadata *)self bundleShortVersionString];
-  [v4 encodeObject:v11 forKey:@"bundleShortVersionString"];
+  bundleShortVersionString = [(MIStoreMetadata *)self bundleShortVersionString];
+  [coderCopy encodeObject:bundleShortVersionString forKey:@"bundleShortVersionString"];
 
-  v12 = [(MIStoreMetadata *)self purchaseDate];
-  [v4 encodeObject:v12 forKey:@"purchaseDate"];
+  purchaseDate = [(MIStoreMetadata *)self purchaseDate];
+  [coderCopy encodeObject:purchaseDate forKey:@"purchaseDate"];
 
-  v13 = [(MIStoreMetadata *)self appleID];
-  [v4 encodeObject:v13 forKey:@"appleID"];
+  appleID = [(MIStoreMetadata *)self appleID];
+  [coderCopy encodeObject:appleID forKey:@"appleID"];
 
-  v14 = [(MIStoreMetadata *)self DSPersonID];
-  [v4 encodeObject:v14 forKey:@"DSPersonID"];
+  dSPersonID = [(MIStoreMetadata *)self DSPersonID];
+  [coderCopy encodeObject:dSPersonID forKey:@"DSPersonID"];
 
-  v15 = [(MIStoreMetadata *)self downloaderID];
-  [v4 encodeObject:v15 forKey:@"downloaderID"];
+  downloaderID = [(MIStoreMetadata *)self downloaderID];
+  [coderCopy encodeObject:downloaderID forKey:@"downloaderID"];
 
-  v16 = [(MIStoreMetadata *)self familyID];
-  [v4 encodeObject:v16 forKey:@"familyID"];
+  familyID = [(MIStoreMetadata *)self familyID];
+  [coderCopy encodeObject:familyID forKey:@"familyID"];
 
-  v17 = [(MIStoreMetadata *)self purchaserID];
-  [v4 encodeObject:v17 forKey:@"purchaserID"];
+  purchaserID = [(MIStoreMetadata *)self purchaserID];
+  [coderCopy encodeObject:purchaserID forKey:@"purchaserID"];
 
-  v18 = [(MIStoreMetadata *)self altDSID];
-  [v4 encodeObject:v18 forKey:@"altDSID"];
+  altDSID = [(MIStoreMetadata *)self altDSID];
+  [coderCopy encodeObject:altDSID forKey:@"altDSID"];
 
-  [v4 encodeBool:-[MIStoreMetadata hasMessagesExtension](self forKey:{"hasMessagesExtension"), @"hasMessagesExtension"}];
-  v19 = [(MIStoreMetadata *)self initialODRSize];
-  [v4 encodeObject:v19 forKey:@"initialODRSize"];
+  [coderCopy encodeBool:-[MIStoreMetadata hasMessagesExtension](self forKey:{"hasMessagesExtension"), @"hasMessagesExtension"}];
+  initialODRSize = [(MIStoreMetadata *)self initialODRSize];
+  [coderCopy encodeObject:initialODRSize forKey:@"initialODRSize"];
 
-  [v4 encodeBool:-[MIStoreMetadata isPurchasedRedownload](self forKey:{"isPurchasedRedownload"), @"purchasedRedownload"}];
-  v20 = [(MIStoreMetadata *)self itemID];
-  [v4 encodeObject:v20 forKey:@"itemID"];
+  [coderCopy encodeBool:-[MIStoreMetadata isPurchasedRedownload](self forKey:{"isPurchasedRedownload"), @"purchasedRedownload"}];
+  itemID = [(MIStoreMetadata *)self itemID];
+  [coderCopy encodeObject:itemID forKey:@"itemID"];
 
-  v21 = [(MIStoreMetadata *)self itemName];
-  [v4 encodeObject:v21 forKey:@"itemName"];
+  itemName = [(MIStoreMetadata *)self itemName];
+  [coderCopy encodeObject:itemName forKey:@"itemName"];
 
-  v22 = [(MIStoreMetadata *)self shortItemName];
-  [v4 encodeObject:v22 forKey:@"shortItemName"];
+  shortItemName = [(MIStoreMetadata *)self shortItemName];
+  [coderCopy encodeObject:shortItemName forKey:@"shortItemName"];
 
-  v23 = [(MIStoreMetadata *)self kind];
-  [v4 encodeObject:v23 forKey:@"kind"];
+  kind = [(MIStoreMetadata *)self kind];
+  [coderCopy encodeObject:kind forKey:@"kind"];
 
-  v24 = [(MIStoreMetadata *)self label];
-  [v4 encodeObject:v24 forKey:@"label"];
+  label = [(MIStoreMetadata *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 
-  [v4 encodeBool:-[MIStoreMetadata isLaunchProhibited](self forKey:{"isLaunchProhibited"), @"launchProhibited"}];
-  v25 = [(MIStoreMetadata *)self ratingLabel];
-  [v4 encodeObject:v25 forKey:@"ratingLabel"];
+  [coderCopy encodeBool:-[MIStoreMetadata isLaunchProhibited](self forKey:{"isLaunchProhibited"), @"launchProhibited"}];
+  ratingLabel = [(MIStoreMetadata *)self ratingLabel];
+  [coderCopy encodeObject:ratingLabel forKey:@"ratingLabel"];
 
-  v26 = [(MIStoreMetadata *)self ratingRank];
-  [v4 encodeObject:v26 forKey:@"ratingRank"];
+  ratingRank = [(MIStoreMetadata *)self ratingRank];
+  [coderCopy encodeObject:ratingRank forKey:@"ratingRank"];
 
-  v27 = [(MIStoreMetadata *)self releaseDate];
-  [v4 encodeObject:v27 forKey:@"releaseDate"];
+  releaseDate = [(MIStoreMetadata *)self releaseDate];
+  [coderCopy encodeObject:releaseDate forKey:@"releaseDate"];
 
-  v28 = [(MIStoreMetadata *)self softwareVersionBundleID];
-  [v4 encodeObject:v28 forKey:@"softwareVersionBundleID"];
+  softwareVersionBundleID = [(MIStoreMetadata *)self softwareVersionBundleID];
+  [coderCopy encodeObject:softwareVersionBundleID forKey:@"softwareVersionBundleID"];
 
-  v29 = [(MIStoreMetadata *)self softwareVersionExternalIdentifier];
-  [v4 encodeObject:v29 forKey:@"softwareVersionExternalIdentifier"];
+  softwareVersionExternalIdentifier = [(MIStoreMetadata *)self softwareVersionExternalIdentifier];
+  [coderCopy encodeObject:softwareVersionExternalIdentifier forKey:@"softwareVersionExternalIdentifier"];
 
-  v30 = [(MIStoreMetadata *)self sourceApp];
-  [v4 encodeObject:v30 forKey:@"sourceApp"];
+  sourceApp = [(MIStoreMetadata *)self sourceApp];
+  [coderCopy encodeObject:sourceApp forKey:@"sourceApp"];
 
-  v31 = [(MIStoreMetadata *)self storeCohort];
-  [v4 encodeObject:v31 forKey:@"storeCohort"];
+  storeCohort = [(MIStoreMetadata *)self storeCohort];
+  [coderCopy encodeObject:storeCohort forKey:@"storeCohort"];
 
-  v32 = [(MIStoreMetadata *)self storefront];
-  [v4 encodeObject:v32 forKey:@"storefront"];
+  storefront = [(MIStoreMetadata *)self storefront];
+  [coderCopy encodeObject:storefront forKey:@"storefront"];
 
-  v33 = [(MIStoreMetadata *)self storefrontCountryCode];
-  [v4 encodeObject:v33 forKey:@"storefrontCountryCode"];
+  storefrontCountryCode = [(MIStoreMetadata *)self storefrontCountryCode];
+  [coderCopy encodeObject:storefrontCountryCode forKey:@"storefrontCountryCode"];
 
-  v34 = [(MIStoreMetadata *)self assetToken];
-  [v4 encodeObject:v34 forKey:@"assetToken"];
+  assetToken = [(MIStoreMetadata *)self assetToken];
+  [coderCopy encodeObject:assetToken forKey:@"assetToken"];
 
-  v35 = [(MIStoreMetadata *)self variantID];
-  [v4 encodeObject:v35 forKey:@"variantID"];
+  variantID = [(MIStoreMetadata *)self variantID];
+  [coderCopy encodeObject:variantID forKey:@"variantID"];
 
-  v36 = [(MIStoreMetadata *)self betaBuildGroupID];
-  [v4 encodeObject:v36 forKey:@"betaBuildGroupID"];
+  betaBuildGroupID = [(MIStoreMetadata *)self betaBuildGroupID];
+  [coderCopy encodeObject:betaBuildGroupID forKey:@"betaBuildGroupID"];
 
-  v37 = [(MIStoreMetadata *)self genre];
-  [v4 encodeObject:v37 forKey:@"genre"];
+  genre = [(MIStoreMetadata *)self genre];
+  [coderCopy encodeObject:genre forKey:@"genre"];
 
-  v38 = [(MIStoreMetadata *)self genreID];
-  [v4 encodeObject:v38 forKey:@"genreID"];
+  genreID = [(MIStoreMetadata *)self genreID];
+  [coderCopy encodeObject:genreID forKey:@"genreID"];
 
-  v39 = [(MIStoreMetadata *)self subGenres];
-  [v4 encodeObject:v39 forKey:@"subGenres"];
+  subGenres = [(MIStoreMetadata *)self subGenres];
+  [coderCopy encodeObject:subGenres forKey:@"subGenres"];
 
-  v40 = [(MIStoreMetadata *)self categories];
-  [v4 encodeObject:v40 forKey:@"categories"];
+  categories = [(MIStoreMetadata *)self categories];
+  [coderCopy encodeObject:categories forKey:@"categories"];
 
-  [v4 encodeBool:-[MIStoreMetadata isGameCenterEnabled](self forKey:{"isGameCenterEnabled"), @"gameCenterEnabled"}];
-  [v4 encodeBool:-[MIStoreMetadata gameCenterEverEnabled](self forKey:{"gameCenterEverEnabled"), @"gameCenterEverEnabled"}];
-  [v4 encodeBool:-[MIStoreMetadata isAutoDownload](self forKey:{"isAutoDownload"), @"isAutoDownload"}];
-  v41 = [(MIStoreMetadata *)self referrerURL];
-  [v4 encodeObject:v41 forKey:@"referrerURL"];
+  [coderCopy encodeBool:-[MIStoreMetadata isGameCenterEnabled](self forKey:{"isGameCenterEnabled"), @"gameCenterEnabled"}];
+  [coderCopy encodeBool:-[MIStoreMetadata gameCenterEverEnabled](self forKey:{"gameCenterEverEnabled"), @"gameCenterEverEnabled"}];
+  [coderCopy encodeBool:-[MIStoreMetadata isAutoDownload](self forKey:{"isAutoDownload"), @"isAutoDownload"}];
+  referrerURL = [(MIStoreMetadata *)self referrerURL];
+  [coderCopy encodeObject:referrerURL forKey:@"referrerURL"];
 
-  v42 = [(MIStoreMetadata *)self referrerApp];
-  [v4 encodeObject:v42 forKey:@"referrerApp"];
+  referrerApp = [(MIStoreMetadata *)self referrerApp];
+  [coderCopy encodeObject:referrerApp forKey:@"referrerApp"];
 
-  [v4 encodeBool:-[MIStoreMetadata sideLoadedDeviceBasedVPP](self forKey:{"sideLoadedDeviceBasedVPP"), @"sideLoadedDeviceBasedVPP"}];
-  [v4 encodeBool:-[MIStoreMetadata deviceBasedVPP](self forKey:{"deviceBasedVPP"), @"deviceBasedVPP"}];
-  [v4 encodeBool:-[MIStoreMetadata isB2BCustomApp](self forKey:{"isB2BCustomApp"), @"isB2BCustomApp"}];
-  v43 = [(MIStoreMetadata *)self enterpriseInstallURL];
-  [v4 encodeObject:v43 forKey:@"enterpriseInstallURL"];
+  [coderCopy encodeBool:-[MIStoreMetadata sideLoadedDeviceBasedVPP](self forKey:{"sideLoadedDeviceBasedVPP"), @"sideLoadedDeviceBasedVPP"}];
+  [coderCopy encodeBool:-[MIStoreMetadata deviceBasedVPP](self forKey:{"deviceBasedVPP"), @"deviceBasedVPP"}];
+  [coderCopy encodeBool:-[MIStoreMetadata isB2BCustomApp](self forKey:{"isB2BCustomApp"), @"isB2BCustomApp"}];
+  enterpriseInstallURL = [(MIStoreMetadata *)self enterpriseInstallURL];
+  [coderCopy encodeObject:enterpriseInstallURL forKey:@"enterpriseInstallURL"];
 
-  v44 = [(MIStoreMetadata *)self redownloadParams];
-  [v4 encodeObject:v44 forKey:@"redownloadParams"];
+  redownloadParams = [(MIStoreMetadata *)self redownloadParams];
+  [coderCopy encodeObject:redownloadParams forKey:@"redownloadParams"];
 
-  v45 = [(MIStoreMetadata *)self nameTranscriptions];
-  [v4 encodeObject:v45 forKey:@"nameTranscriptions"];
+  nameTranscriptions = [(MIStoreMetadata *)self nameTranscriptions];
+  [coderCopy encodeObject:nameTranscriptions forKey:@"nameTranscriptions"];
 
-  [v4 encodeBool:-[MIStoreMetadata isFactoryInstall](self forKey:{"isFactoryInstall"), @"factoryInstall"}];
+  [coderCopy encodeBool:-[MIStoreMetadata isFactoryInstall](self forKey:{"isFactoryInstall"), @"factoryInstall"}];
   v46 = [(MIStoreMetadata *)self md5];
-  [v4 encodeObject:v46 forKey:@"md5"];
+  [coderCopy encodeObject:v46 forKey:@"md5"];
 
-  v47 = [(MIStoreMetadata *)self protectedMetadata];
-  [v4 encodeObject:v47 forKey:@"protectedMetadata"];
+  protectedMetadata = [(MIStoreMetadata *)self protectedMetadata];
+  [coderCopy encodeObject:protectedMetadata forKey:@"protectedMetadata"];
 
-  v48 = [(MIStoreMetadata *)self hasOrEverHasHadIAP];
-  [v4 encodeObject:v48 forKey:@"hasOrEverHasHadIAP"];
+  hasOrEverHasHadIAP = [(MIStoreMetadata *)self hasOrEverHasHadIAP];
+  [coderCopy encodeObject:hasOrEverHasHadIAP forKey:@"hasOrEverHasHadIAP"];
 
-  v49 = [(MIStoreMetadata *)self distributorInfo];
-  [v4 encodeObject:v49 forKey:@"distributorInfo"];
+  distributorInfo = [(MIStoreMetadata *)self distributorInfo];
+  [coderCopy encodeObject:distributorInfo forKey:@"distributorInfo"];
 
-  v50 = [(MIStoreMetadata *)self managementDeclarationIdentifier];
-  [v4 encodeObject:v50 forKey:@"managementDeclarationIdentifier"];
+  managementDeclarationIdentifier = [(MIStoreMetadata *)self managementDeclarationIdentifier];
+  [coderCopy encodeObject:managementDeclarationIdentifier forKey:@"managementDeclarationIdentifier"];
 
   v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MIStoreMetadata installerEpoch](self, "installerEpoch")}];
-  [v4 encodeObject:v51 forKey:@"installerEpoch"];
+  [coderCopy encodeObject:v51 forKey:@"installerEpoch"];
 }
 
-+ (id)metadataFromPlistData:(id)a3 error:(id *)a4
++ (id)metadataFromPlistData:(id)data error:(id *)error
 {
   v18 = 0;
-  v6 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:&v18];
+  v6 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:&v18];
   v8 = v18;
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [a1 metadataFromDictionary:v6];
-      if (!a4)
+      v9 = [self metadataFromDictionary:v6];
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -1615,7 +1615,7 @@ LABEL_412:
 
       v9 = 0;
       v8 = v14;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -1628,7 +1628,7 @@ LABEL_412:
 
     v9 = 0;
     v8 = v10;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -1637,7 +1637,7 @@ LABEL_412:
   if (!v9)
   {
     v15 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_10:
@@ -1645,11 +1645,11 @@ LABEL_10:
   return v9;
 }
 
-+ (id)metadataFromPlistAtURL:(id)a3 error:(id *)a4
++ (id)metadataFromPlistAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v15 = 0;
-  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:3 error:&v15];
+  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:3 error:&v15];
   v7 = v15;
   if (v6)
   {
@@ -1660,34 +1660,34 @@ LABEL_10:
 
   else
   {
-    v10 = [v5 path];
-    v9 = _CreateError("+[MIStoreMetadata metadataFromPlistAtURL:error:]", 994, @"MIInstallerErrorDomain", 78, v7, &unk_1F2888C18, @"Failed to read iTunesMetadata.plist from %@", v11, v10);
+    path = [lCopy path];
+    v9 = _CreateError("+[MIStoreMetadata metadataFromPlistAtURL:error:]", 994, @"MIInstallerErrorDomain", 78, v7, &unk_1F2888C18, @"Failed to read iTunesMetadata.plist from %@", v11, path);
 
     v8 = 0;
-    v7 = v10;
+    v7 = path;
   }
 
-  if (a4 && !v8)
+  if (error && !v8)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-+ (id)metadataFromDictionary:(id)a3
++ (id)metadataFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithDictionary:dictionaryCopy];
 
   return v4;
 }
 
-+ (id)metadataForBundleContainerURL:(id)a3 error:(id *)a4
++ (id)metadataForBundleContainerURL:(id)l error:(id *)error
 {
-  v6 = [a3 URLByAppendingPathComponent:@"iTunesMetadata.plist" isDirectory:0];
-  v7 = [a1 metadataFromPlistAtURL:v6 error:a4];
+  v6 = [l URLByAppendingPathComponent:@"iTunesMetadata.plist" isDirectory:0];
+  v7 = [self metadataFromPlistAtURL:v6 error:error];
 
   return v7;
 }
@@ -1696,119 +1696,119 @@ LABEL_10:
 {
   v94 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(MIStoreMetadata *)self iAdAttribution];
-  if (v4)
+  iAdAttribution = [(MIStoreMetadata *)self iAdAttribution];
+  if (iAdAttribution)
   {
-    [v3 setObject:v4 forKeyedSubscript:iAdAttribution];
+    [v3 setObject:iAdAttribution forKeyedSubscript:iAdAttribution];
   }
 
-  v5 = [(MIStoreMetadata *)self iAdConversionDate];
-  if (v5)
+  iAdConversionDate = [(MIStoreMetadata *)self iAdConversionDate];
+  if (iAdConversionDate)
   {
-    [v3 setObject:v5 forKeyedSubscript:iAdConversionDate];
+    [v3 setObject:iAdConversionDate forKeyedSubscript:iAdConversionDate];
   }
 
-  v6 = [(MIStoreMetadata *)self iAdImpressionDate];
-  if (v6)
+  iAdImpressionDate = [(MIStoreMetadata *)self iAdImpressionDate];
+  if (iAdImpressionDate)
   {
-    [v3 setObject:v6 forKeyedSubscript:iAdImpressionDate];
+    [v3 setObject:iAdImpressionDate forKeyedSubscript:iAdImpressionDate];
   }
 
-  v7 = [(MIStoreMetadata *)self artistName];
-  if (v7)
+  artistName = [(MIStoreMetadata *)self artistName];
+  if (artistName)
   {
-    [v3 setObject:v7 forKeyedSubscript:artistName];
+    [v3 setObject:artistName forKeyedSubscript:artistName];
   }
 
-  v8 = [(MIStoreMetadata *)self betaExternalVersionIdentifier];
-  if (v8)
+  betaExternalVersionIdentifier = [(MIStoreMetadata *)self betaExternalVersionIdentifier];
+  if (betaExternalVersionIdentifier)
   {
-    [v3 setObject:v8 forKeyedSubscript:betaExternalVersionIdentifier];
+    [v3 setObject:betaExternalVersionIdentifier forKeyedSubscript:betaExternalVersionIdentifier];
   }
 
-  v9 = [(MIStoreMetadata *)self bundleVersion];
-  if (v9)
+  bundleVersion = [(MIStoreMetadata *)self bundleVersion];
+  if (bundleVersion)
   {
-    [v3 setObject:v9 forKeyedSubscript:bundleVersion];
+    [v3 setObject:bundleVersion forKeyedSubscript:bundleVersion];
   }
 
-  v10 = [(MIStoreMetadata *)self bundleShortVersionString];
-  if (v10)
+  bundleShortVersionString = [(MIStoreMetadata *)self bundleShortVersionString];
+  if (bundleShortVersionString)
   {
-    [v3 setObject:v10 forKeyedSubscript:bundleShortVersionString];
+    [v3 setObject:bundleShortVersionString forKeyedSubscript:bundleShortVersionString];
   }
 
   v11 = objc_opt_new();
-  v12 = [(MIStoreMetadata *)self purchaseDate];
+  purchaseDate = [(MIStoreMetadata *)self purchaseDate];
 
-  if (v12)
+  if (purchaseDate)
   {
-    v13 = [(MIStoreMetadata *)self purchaseDate];
-    [v11 setObject:v13 forKeyedSubscript:purchaseDate];
+    purchaseDate2 = [(MIStoreMetadata *)self purchaseDate];
+    [v11 setObject:purchaseDate2 forKeyedSubscript:purchaseDate];
   }
 
-  v14 = [(MIStoreMetadata *)self appleID];
-  if (v14 || ([(MIStoreMetadata *)self DSPersonID], (v14 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MIStoreMetadata *)self downloaderID], (v14 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MIStoreMetadata *)self familyID], (v14 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MIStoreMetadata *)self purchaserID], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  appleID = [(MIStoreMetadata *)self appleID];
+  if (appleID || ([(MIStoreMetadata *)self DSPersonID], (appleID = objc_claimAutoreleasedReturnValue()) != 0) || ([(MIStoreMetadata *)self downloaderID], (appleID = objc_claimAutoreleasedReturnValue()) != 0) || ([(MIStoreMetadata *)self familyID], (appleID = objc_claimAutoreleasedReturnValue()) != 0) || ([(MIStoreMetadata *)self purchaserID], (appleID = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v88 = [(MIStoreMetadata *)self altDSID];
+    altDSID = [(MIStoreMetadata *)self altDSID];
 
-    if (!v88)
+    if (!altDSID)
     {
       goto LABEL_36;
     }
   }
 
   v15 = objc_opt_new();
-  v16 = [(MIStoreMetadata *)self appleID];
+  appleID2 = [(MIStoreMetadata *)self appleID];
 
-  if (v16)
+  if (appleID2)
   {
-    v17 = [(MIStoreMetadata *)self appleID];
-    [v15 setObject:v17 forKeyedSubscript:appleID];
+    appleID3 = [(MIStoreMetadata *)self appleID];
+    [v15 setObject:appleID3 forKeyedSubscript:appleID];
   }
 
-  v18 = [(MIStoreMetadata *)self DSPersonID];
+  dSPersonID = [(MIStoreMetadata *)self DSPersonID];
 
-  if (v18)
+  if (dSPersonID)
   {
-    v19 = [(MIStoreMetadata *)self DSPersonID];
-    [v15 setObject:v19 forKeyedSubscript:DSPersonID];
+    dSPersonID2 = [(MIStoreMetadata *)self DSPersonID];
+    [v15 setObject:dSPersonID2 forKeyedSubscript:DSPersonID];
   }
 
-  v20 = [(MIStoreMetadata *)self downloaderID];
+  downloaderID = [(MIStoreMetadata *)self downloaderID];
 
-  if (v20)
+  if (downloaderID)
   {
-    v21 = [(MIStoreMetadata *)self downloaderID];
-    [v15 setObject:v21 forKeyedSubscript:downloaderID];
+    downloaderID2 = [(MIStoreMetadata *)self downloaderID];
+    [v15 setObject:downloaderID2 forKeyedSubscript:downloaderID];
   }
 
-  v22 = [(MIStoreMetadata *)self familyID];
+  familyID = [(MIStoreMetadata *)self familyID];
 
-  if (v22)
+  if (familyID)
   {
-    v23 = [(MIStoreMetadata *)self familyID];
-    [v15 setObject:v23 forKeyedSubscript:familyID];
+    familyID2 = [(MIStoreMetadata *)self familyID];
+    [v15 setObject:familyID2 forKeyedSubscript:familyID];
   }
 
-  v24 = [(MIStoreMetadata *)self purchaserID];
+  purchaserID = [(MIStoreMetadata *)self purchaserID];
 
-  if (v24)
+  if (purchaserID)
   {
-    v25 = [(MIStoreMetadata *)self purchaserID];
-    [v15 setObject:v25 forKeyedSubscript:purchaserID];
+    purchaserID2 = [(MIStoreMetadata *)self purchaserID];
+    [v15 setObject:purchaserID2 forKeyedSubscript:purchaserID];
   }
 
-  v26 = [(MIStoreMetadata *)self altDSID];
+  altDSID2 = [(MIStoreMetadata *)self altDSID];
 
-  if (v26)
+  if (altDSID2)
   {
-    v27 = [(MIStoreMetadata *)self altDSID];
-    [v15 setObject:v27 forKeyedSubscript:altDSID];
+    altDSID3 = [(MIStoreMetadata *)self altDSID];
+    [v15 setObject:altDSID3 forKeyedSubscript:altDSID];
   }
 
   v28 = [v15 copy];
@@ -1824,63 +1824,63 @@ LABEL_36:
   v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[MIStoreMetadata hasMessagesExtension](self, "hasMessagesExtension")}];
   [v3 setObject:v30 forKeyedSubscript:hasMessagesExtension];
 
-  v31 = [(MIStoreMetadata *)self initialODRSize];
-  if (v31)
+  initialODRSize = [(MIStoreMetadata *)self initialODRSize];
+  if (initialODRSize)
   {
-    [v3 setObject:v31 forKeyedSubscript:initialODRSize];
+    [v3 setObject:initialODRSize forKeyedSubscript:initialODRSize];
   }
 
   v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[MIStoreMetadata isPurchasedRedownload](self, "isPurchasedRedownload")}];
   [v3 setObject:v32 forKeyedSubscript:purchasedRedownload];
 
-  v33 = [(MIStoreMetadata *)self itemID];
-  if (v33)
+  itemID = [(MIStoreMetadata *)self itemID];
+  if (itemID)
   {
-    [v3 setObject:v33 forKeyedSubscript:itemID];
+    [v3 setObject:itemID forKeyedSubscript:itemID];
   }
 
-  v34 = [(MIStoreMetadata *)self itemName];
-  if (v34)
+  itemName = [(MIStoreMetadata *)self itemName];
+  if (itemName)
   {
-    [v3 setObject:v34 forKeyedSubscript:itemName];
+    [v3 setObject:itemName forKeyedSubscript:itemName];
   }
 
-  v35 = [(MIStoreMetadata *)self shortItemName];
-  if (v35)
+  shortItemName = [(MIStoreMetadata *)self shortItemName];
+  if (shortItemName)
   {
-    [v3 setObject:v35 forKeyedSubscript:shortItemName];
+    [v3 setObject:shortItemName forKeyedSubscript:shortItemName];
   }
 
-  v36 = [(MIStoreMetadata *)self kind];
-  if (v36)
+  kind = [(MIStoreMetadata *)self kind];
+  if (kind)
   {
-    [v3 setObject:v36 forKeyedSubscript:kind];
+    [v3 setObject:kind forKeyedSubscript:kind];
   }
 
-  v37 = [(MIStoreMetadata *)self label];
-  if (v37)
+  label = [(MIStoreMetadata *)self label];
+  if (label)
   {
-    [v3 setObject:v37 forKeyedSubscript:label];
+    [v3 setObject:label forKeyedSubscript:label];
   }
 
   v38 = [MEMORY[0x1E696AD98] numberWithBool:{-[MIStoreMetadata isLaunchProhibited](self, "isLaunchProhibited")}];
   [v3 setObject:v38 forKeyedSubscript:launchProhibited];
 
   v39 = objc_opt_new();
-  v40 = [(MIStoreMetadata *)self ratingLabel];
+  ratingLabel = [(MIStoreMetadata *)self ratingLabel];
 
-  if (v40)
+  if (ratingLabel)
   {
-    v41 = [(MIStoreMetadata *)self ratingLabel];
-    [v39 setObject:v41 forKeyedSubscript:ratingLabel];
+    ratingLabel2 = [(MIStoreMetadata *)self ratingLabel];
+    [v39 setObject:ratingLabel2 forKeyedSubscript:ratingLabel];
   }
 
-  v42 = [(MIStoreMetadata *)self ratingRank];
+  ratingRank = [(MIStoreMetadata *)self ratingRank];
 
-  if (v42)
+  if (ratingRank)
   {
-    v43 = [(MIStoreMetadata *)self ratingRank];
-    [v39 setObject:v43 forKeyedSubscript:ratingRank];
+    ratingRank2 = [(MIStoreMetadata *)self ratingRank];
+    [v39 setObject:ratingRank2 forKeyedSubscript:ratingRank];
   }
 
   if ([v39 count])
@@ -1888,76 +1888,76 @@ LABEL_36:
     [v3 setObject:v39 forKeyedSubscript:ratingDict];
   }
 
-  v44 = [(MIStoreMetadata *)self releaseDate];
-  if (v44)
+  releaseDate = [(MIStoreMetadata *)self releaseDate];
+  if (releaseDate)
   {
-    [v3 setObject:v44 forKeyedSubscript:releaseDate];
+    [v3 setObject:releaseDate forKeyedSubscript:releaseDate];
   }
 
-  v45 = [(MIStoreMetadata *)self softwareVersionBundleID];
-  if (v45)
+  softwareVersionBundleID = [(MIStoreMetadata *)self softwareVersionBundleID];
+  if (softwareVersionBundleID)
   {
-    [v3 setObject:v45 forKeyedSubscript:softwareVersionBundleID];
+    [v3 setObject:softwareVersionBundleID forKeyedSubscript:softwareVersionBundleID];
   }
 
-  v46 = [(MIStoreMetadata *)self softwareVersionExternalIdentifier];
-  if (v46)
+  softwareVersionExternalIdentifier = [(MIStoreMetadata *)self softwareVersionExternalIdentifier];
+  if (softwareVersionExternalIdentifier)
   {
-    [v3 setObject:v46 forKeyedSubscript:softwareVersionExternalIdentifier];
+    [v3 setObject:softwareVersionExternalIdentifier forKeyedSubscript:softwareVersionExternalIdentifier];
   }
 
-  v47 = [(MIStoreMetadata *)self sourceApp];
-  if (v47)
+  sourceApp = [(MIStoreMetadata *)self sourceApp];
+  if (sourceApp)
   {
-    [v3 setObject:v47 forKeyedSubscript:sourceApp];
+    [v3 setObject:sourceApp forKeyedSubscript:sourceApp];
   }
 
-  v48 = [(MIStoreMetadata *)self storeCohort];
-  if (v48)
+  storeCohort = [(MIStoreMetadata *)self storeCohort];
+  if (storeCohort)
   {
-    [v3 setObject:v48 forKeyedSubscript:storeCohort];
+    [v3 setObject:storeCohort forKeyedSubscript:storeCohort];
   }
 
-  v49 = [(MIStoreMetadata *)self storefront];
-  if (v49)
+  storefront = [(MIStoreMetadata *)self storefront];
+  if (storefront)
   {
-    [v3 setObject:v49 forKeyedSubscript:storefront];
+    [v3 setObject:storefront forKeyedSubscript:storefront];
   }
 
-  v50 = [(MIStoreMetadata *)self storefrontCountryCode];
-  if (v50)
+  storefrontCountryCode = [(MIStoreMetadata *)self storefrontCountryCode];
+  if (storefrontCountryCode)
   {
-    [v3 setObject:v50 forKeyedSubscript:storefrontCountryCode];
+    [v3 setObject:storefrontCountryCode forKeyedSubscript:storefrontCountryCode];
   }
 
-  v51 = [(MIStoreMetadata *)self assetToken];
-  if (v51)
+  assetToken = [(MIStoreMetadata *)self assetToken];
+  if (assetToken)
   {
-    [v3 setObject:v51 forKeyedSubscript:assetToken];
+    [v3 setObject:assetToken forKeyedSubscript:assetToken];
   }
 
-  v52 = [(MIStoreMetadata *)self variantID];
-  if (v52)
+  variantID = [(MIStoreMetadata *)self variantID];
+  if (variantID)
   {
-    [v3 setObject:v52 forKeyedSubscript:variantID];
+    [v3 setObject:variantID forKeyedSubscript:variantID];
   }
 
-  v53 = [(MIStoreMetadata *)self betaBuildGroupID];
-  if (v53)
+  betaBuildGroupID = [(MIStoreMetadata *)self betaBuildGroupID];
+  if (betaBuildGroupID)
   {
-    [v3 setObject:v53 forKeyedSubscript:betaBuildGroupID];
+    [v3 setObject:betaBuildGroupID forKeyedSubscript:betaBuildGroupID];
   }
 
-  v54 = [(MIStoreMetadata *)self genre];
-  if (v54)
+  genre = [(MIStoreMetadata *)self genre];
+  if (genre)
   {
-    [v3 setObject:v54 forKeyedSubscript:genre];
+    [v3 setObject:genre forKeyedSubscript:genre];
   }
 
-  v55 = [(MIStoreMetadata *)self genreID];
-  if (v55)
+  genreID = [(MIStoreMetadata *)self genreID];
+  if (genreID)
   {
-    [v3 setObject:v55 forKeyedSubscript:genreID];
+    [v3 setObject:genreID forKeyedSubscript:genreID];
   }
 
   v56 = objc_opt_new();
@@ -1965,8 +1965,8 @@ LABEL_36:
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v57 = [(MIStoreMetadata *)self subGenres];
-  v58 = [v57 countByEnumeratingWithState:&v89 objects:v93 count:16];
+  subGenres = [(MIStoreMetadata *)self subGenres];
+  v58 = [subGenres countByEnumeratingWithState:&v89 objects:v93 count:16];
   if (v58)
   {
     v59 = v58;
@@ -1977,14 +1977,14 @@ LABEL_36:
       {
         if (*v90 != v60)
         {
-          objc_enumerationMutation(v57);
+          objc_enumerationMutation(subGenres);
         }
 
-        v62 = [*(*(&v89 + 1) + 8 * i) dictionaryRepresentation];
-        [v56 addObject:v62];
+        dictionaryRepresentation = [*(*(&v89 + 1) + 8 * i) dictionaryRepresentation];
+        [v56 addObject:dictionaryRepresentation];
       }
 
-      v59 = [v57 countByEnumeratingWithState:&v89 objects:v93 count:16];
+      v59 = [subGenres countByEnumeratingWithState:&v89 objects:v93 count:16];
     }
 
     while (v59);
@@ -1993,10 +1993,10 @@ LABEL_36:
   v63 = [v56 copy];
   [v3 setObject:v63 forKeyedSubscript:subGenres];
 
-  v64 = [(MIStoreMetadata *)self categories];
-  if (v64)
+  categories = [(MIStoreMetadata *)self categories];
+  if (categories)
   {
-    [v3 setObject:v64 forKeyedSubscript:categories];
+    [v3 setObject:categories forKeyedSubscript:categories];
   }
 
   v65 = [MEMORY[0x1E696AD98] numberWithBool:{-[MIStoreMetadata isGameCenterEnabled](self, "isGameCenterEnabled")}];
@@ -2008,16 +2008,16 @@ LABEL_36:
   v67 = [MEMORY[0x1E696AD98] numberWithBool:{-[MIStoreMetadata isAutoDownload](self, "isAutoDownload")}];
   [v3 setObject:v67 forKeyedSubscript:isAutoDownload];
 
-  v68 = [(MIStoreMetadata *)self referrerURL];
-  if (v68)
+  referrerURL = [(MIStoreMetadata *)self referrerURL];
+  if (referrerURL)
   {
-    [v3 setObject:v68 forKeyedSubscript:referrerURL];
+    [v3 setObject:referrerURL forKeyedSubscript:referrerURL];
   }
 
-  v69 = [(MIStoreMetadata *)self referrerApp];
-  if (v69)
+  referrerApp = [(MIStoreMetadata *)self referrerApp];
+  if (referrerApp)
   {
-    [v3 setObject:v69 forKeyedSubscript:referrerApp];
+    [v3 setObject:referrerApp forKeyedSubscript:referrerApp];
   }
 
   v70 = [MEMORY[0x1E696AD98] numberWithBool:{-[MIStoreMetadata sideLoadedDeviceBasedVPP](self, "sideLoadedDeviceBasedVPP")}];
@@ -2029,22 +2029,22 @@ LABEL_36:
   v72 = [MEMORY[0x1E696AD98] numberWithBool:{-[MIStoreMetadata isB2BCustomApp](self, "isB2BCustomApp")}];
   [v3 setObject:v72 forKeyedSubscript:isB2BCustomApp];
 
-  v73 = [(MIStoreMetadata *)self enterpriseInstallURL];
-  if (v73)
+  enterpriseInstallURL = [(MIStoreMetadata *)self enterpriseInstallURL];
+  if (enterpriseInstallURL)
   {
-    [v3 setObject:v73 forKeyedSubscript:enterpriseInstallURL];
+    [v3 setObject:enterpriseInstallURL forKeyedSubscript:enterpriseInstallURL];
   }
 
-  v74 = [(MIStoreMetadata *)self redownloadParams];
-  if (v74)
+  redownloadParams = [(MIStoreMetadata *)self redownloadParams];
+  if (redownloadParams)
   {
-    [v3 setObject:v74 forKeyedSubscript:redownloadParams];
+    [v3 setObject:redownloadParams forKeyedSubscript:redownloadParams];
   }
 
-  v75 = [(MIStoreMetadata *)self nameTranscriptions];
-  if (v75)
+  nameTranscriptions = [(MIStoreMetadata *)self nameTranscriptions];
+  if (nameTranscriptions)
   {
-    [v3 setObject:v75 forKeyedSubscript:nameTranscriptions];
+    [v3 setObject:nameTranscriptions forKeyedSubscript:nameTranscriptions];
   }
 
   v76 = [MEMORY[0x1E696AD98] numberWithBool:{-[MIStoreMetadata isFactoryInstall](self, "isFactoryInstall")}];
@@ -2056,36 +2056,36 @@ LABEL_36:
     [v3 setObject:v77 forKeyedSubscript:md5];
   }
 
-  v78 = [(MIStoreMetadata *)self protectedMetadata];
-  if (v78)
+  protectedMetadata = [(MIStoreMetadata *)self protectedMetadata];
+  if (protectedMetadata)
   {
-    [v3 setObject:v78 forKeyedSubscript:protectedMetadata];
+    [v3 setObject:protectedMetadata forKeyedSubscript:protectedMetadata];
   }
 
-  v79 = [(MIStoreMetadata *)self hasOrEverHasHadIAP];
-  if (v79)
+  hasOrEverHasHadIAP = [(MIStoreMetadata *)self hasOrEverHasHadIAP];
+  if (hasOrEverHasHadIAP)
   {
-    [v3 setObject:v79 forKeyedSubscript:hasOrEverHasHadIAP];
+    [v3 setObject:hasOrEverHasHadIAP forKeyedSubscript:hasOrEverHasHadIAP];
   }
 
-  v80 = [(MIStoreMetadata *)self distributorInfo];
-  v81 = v80;
-  if (v80)
+  distributorInfo = [(MIStoreMetadata *)self distributorInfo];
+  v81 = distributorInfo;
+  if (distributorInfo)
   {
-    v82 = [v80 dictionaryRepresentation];
-    [v3 setObject:v82 forKeyedSubscript:distributorInfo];
+    dictionaryRepresentation2 = [distributorInfo dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:distributorInfo];
   }
 
-  v83 = [(MIStoreMetadata *)self managementDeclarationIdentifier];
-  if (v83)
+  managementDeclarationIdentifier = [(MIStoreMetadata *)self managementDeclarationIdentifier];
+  if (managementDeclarationIdentifier)
   {
-    [v3 setObject:v83 forKeyedSubscript:managementDeclarationIdentifier];
+    [v3 setObject:managementDeclarationIdentifier forKeyedSubscript:managementDeclarationIdentifier];
   }
 
-  v84 = [(MIStoreMetadata *)self installerEpoch];
-  if (v84)
+  installerEpoch = [(MIStoreMetadata *)self installerEpoch];
+  if (installerEpoch)
   {
-    v85 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v84];
+    v85 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:installerEpoch];
     [v3 setObject:v85 forKeyedSubscript:installerEpoch];
   }
 
@@ -2094,19 +2094,19 @@ LABEL_36:
   return v86;
 }
 
-- (id)propertyListDataWithError:(id *)a3
+- (id)propertyListDataWithError:(id *)error
 {
   v4 = MEMORY[0x1E696AE40];
-  v5 = [(MIStoreMetadata *)self dictionaryRepresentation];
-  v6 = [v4 dataWithPropertyList:v5 format:200 options:0 error:a3];
+  dictionaryRepresentation = [(MIStoreMetadata *)self dictionaryRepresentation];
+  v6 = [v4 dataWithPropertyList:dictionaryRepresentation format:200 options:0 error:error];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v155 = 1;
   }
@@ -2116,10 +2116,10 @@ LABEL_36:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIStoreMetadata *)self iAdAttribution];
-      v7 = [(MIStoreMetadata *)v5 iAdAttribution];
-      v8 = MICompareObjects(v6, v7);
+      v5 = equalCopy;
+      iAdAttribution = [(MIStoreMetadata *)self iAdAttribution];
+      iAdAttribution2 = [(MIStoreMetadata *)v5 iAdAttribution];
+      v8 = MICompareObjects(iAdAttribution, iAdAttribution2);
 
       if (v8
         && ([(MIStoreMetadata *)self iAdConversionDate], v9 = objc_claimAutoreleasedReturnValue(), [(MIStoreMetadata *)v5 iAdConversionDate], v10 = objc_claimAutoreleasedReturnValue(), v11 = MICompareObjects(v9, v10), v10, v9, v11)
@@ -2178,8 +2178,8 @@ LABEL_36:
         && ([(MIStoreMetadata *)self distributorInfo], v148 = objc_claimAutoreleasedReturnValue(), [(MIStoreMetadata *)v5 distributorInfo], v149 = objc_claimAutoreleasedReturnValue(), v150 = MICompareObjects(v148, v149), v149, v148, v150)
         && ([(MIStoreMetadata *)self managementDeclarationIdentifier], v151 = objc_claimAutoreleasedReturnValue(), [(MIStoreMetadata *)v5 managementDeclarationIdentifier], v152 = objc_claimAutoreleasedReturnValue(), v153 = MICompareObjects(v151, v152), v152, v151, v153))
       {
-        v154 = [(MIStoreMetadata *)self installerEpoch];
-        v155 = v154 == [(MIStoreMetadata *)v5 installerEpoch];
+        installerEpoch = [(MIStoreMetadata *)self installerEpoch];
+        v155 = installerEpoch == [(MIStoreMetadata *)v5 installerEpoch];
       }
 
       else
@@ -2199,28 +2199,28 @@ LABEL_36:
 
 - (id)description
 {
-  v2 = [(MIStoreMetadata *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(MIStoreMetadata *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
 
 - (BOOL)isEligibleForWatchAppInstall
 {
-  v2 = [(MIStoreMetadata *)self distributorInfo];
-  v3 = [v2 distributorID];
+  distributorInfo = [(MIStoreMetadata *)self distributorInfo];
+  distributorID = [distributorInfo distributorID];
 
-  if (v3)
+  if (distributorID)
   {
-    v4 = [v2 distributorIsFirstPartyApple];
+    distributorIsFirstPartyApple = [distributorInfo distributorIsFirstPartyApple];
   }
 
   else
   {
-    v4 = 1;
+    distributorIsFirstPartyApple = 1;
   }
 
-  return v4;
+  return distributorIsFirstPartyApple;
 }
 
 @end

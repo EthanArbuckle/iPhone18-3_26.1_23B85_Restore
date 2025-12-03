@@ -1,15 +1,15 @@
 @interface UISegmentedControlOutlineStyleProvider
-- (double)defaultHeightForControlSize:(int)a3;
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6;
-- (id)fontForControlSize:(int)a3 selected:(BOOL)a4;
+- (double)defaultHeightForControlSize:(int)size;
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state;
+- (id)fontForControlSize:(int)size selected:(BOOL)selected;
 @end
 
 @implementation UISegmentedControlOutlineStyleProvider
 
-- (double)defaultHeightForControlSize:(int)a3
+- (double)defaultHeightForControlSize:(int)size
 {
   result = 28.0;
-  if (a3 == 1)
+  if (size == 1)
   {
     return 22.0;
   }
@@ -17,13 +17,13 @@
   return result;
 }
 
-- (id)fontForControlSize:(int)a3 selected:(BOOL)a4
+- (id)fontForControlSize:(int)size selected:(BOOL)selected
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v4 = 0.0;
-  if (a3 <= 2)
+  if (size <= 2)
   {
-    v4 = dbl_18A682788[a3];
+    v4 = dbl_18A682788[size];
   }
 
   v5 = *off_1E70ECD28;
@@ -48,16 +48,16 @@
   return v12;
 }
 
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state
 {
-  if (a4)
+  if (enabled)
   {
-    [a3 _inheritedInteractionTintColor];
+    [segment _inheritedInteractionTintColor];
   }
 
   else
   {
-    [a3 _disabledColor];
+    [segment _disabledColor];
   }
   v6 = ;
 

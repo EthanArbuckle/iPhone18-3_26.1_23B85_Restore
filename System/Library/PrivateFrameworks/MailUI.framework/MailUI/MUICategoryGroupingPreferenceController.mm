@@ -1,36 +1,36 @@
 @interface MUICategoryGroupingPreferenceController
-- (BOOL)shouldDisableGroupingForBucket:(int64_t)a3;
-- (MUICategoryGroupingPreferenceController)initWithDelegate:(id)a3;
+- (BOOL)shouldDisableGroupingForBucket:(int64_t)bucket;
+- (MUICategoryGroupingPreferenceController)initWithDelegate:(id)delegate;
 - (MUICategoryGroupingPreferenceControllerDelegate)delegate;
-- (void)disableGrouping:(BOOL)a3 forBucket:(int64_t)a4;
+- (void)disableGrouping:(BOOL)grouping forBucket:(int64_t)bucket;
 @end
 
 @implementation MUICategoryGroupingPreferenceController
 
-- (MUICategoryGroupingPreferenceController)initWithDelegate:(id)a3
+- (MUICategoryGroupingPreferenceController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = MUICategoryGroupingPreferenceController;
   v5 = [(MUICategoryGroupingPreferenceController *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x277CBEBD0] em_userDefaults];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
     v8 = *MEMORY[0x277D06CD0];
-    v6->_shouldDisableGroupingInTransactions = [v7 BOOLForKey:*MEMORY[0x277D06CD0]];
+    v6->_shouldDisableGroupingInTransactions = [em_userDefaults BOOLForKey:*MEMORY[0x277D06CD0]];
     v9 = *MEMORY[0x277D06CD8];
-    v6->_shouldDisableGroupingInUpdates = [v7 BOOLForKey:*MEMORY[0x277D06CD8]];
+    v6->_shouldDisableGroupingInUpdates = [em_userDefaults BOOLForKey:*MEMORY[0x277D06CD8]];
     v10 = *MEMORY[0x277D06CC8];
-    v6->_shouldDisableGroupingInPromotions = [v7 BOOLForKey:*MEMORY[0x277D06CC8]];
+    v6->_shouldDisableGroupingInPromotions = [em_userDefaults BOOLForKey:*MEMORY[0x277D06CC8]];
     objc_initWeak(&location, v6);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __60__MUICategoryGroupingPreferenceController_initWithDelegate___block_invoke;
     v22[3] = &unk_2781893A0;
     objc_copyWeak(&v23, &location);
-    v11 = [v7 ef_observeKeyPath:v8 options:1 autoCancelToken:1 usingBlock:v22];
+    v11 = [em_userDefaults ef_observeKeyPath:v8 options:1 autoCancelToken:1 usingBlock:v22];
     shouldDisableGroupingInTransactionsUserDefaultsObserver = v6->_shouldDisableGroupingInTransactionsUserDefaultsObserver;
     v6->_shouldDisableGroupingInTransactionsUserDefaultsObserver = v11;
 
@@ -39,7 +39,7 @@
     v20[2] = __60__MUICategoryGroupingPreferenceController_initWithDelegate___block_invoke_2;
     v20[3] = &unk_2781893A0;
     objc_copyWeak(&v21, &location);
-    v13 = [v7 ef_observeKeyPath:v9 options:1 autoCancelToken:1 usingBlock:v20];
+    v13 = [em_userDefaults ef_observeKeyPath:v9 options:1 autoCancelToken:1 usingBlock:v20];
     shouldDisableGroupingInUpdatesUserDefaultsObserver = v6->_shouldDisableGroupingInUpdatesUserDefaultsObserver;
     v6->_shouldDisableGroupingInUpdatesUserDefaultsObserver = v13;
 
@@ -48,7 +48,7 @@
     v18[2] = __60__MUICategoryGroupingPreferenceController_initWithDelegate___block_invoke_3;
     v18[3] = &unk_2781893A0;
     objc_copyWeak(&v19, &location);
-    v15 = [v7 ef_observeKeyPath:v10 options:1 autoCancelToken:1 usingBlock:v18];
+    v15 = [em_userDefaults ef_observeKeyPath:v10 options:1 autoCancelToken:1 usingBlock:v18];
     shouldDisableGroupingInPromotionsUserDefaultsObserver = v6->_shouldDisableGroupingInPromotionsUserDefaultsObserver;
     v6->_shouldDisableGroupingInPromotionsUserDefaultsObserver = v15;
 
@@ -118,9 +118,9 @@ void __60__MUICategoryGroupingPreferenceController_initWithDelegate___block_invo
   }
 }
 
-- (BOOL)shouldDisableGroupingForBucket:(int64_t)a3
+- (BOOL)shouldDisableGroupingForBucket:(int64_t)bucket
 {
-  switch(a3)
+  switch(bucket)
   {
     case 4:
       return [(MUICategoryGroupingPreferenceController *)self shouldDisableGroupingInPromotions];
@@ -133,15 +133,15 @@ void __60__MUICategoryGroupingPreferenceController_initWithDelegate___block_invo
   return 1;
 }
 
-- (void)disableGrouping:(BOOL)a3 forBucket:(int64_t)a4
+- (void)disableGrouping:(BOOL)grouping forBucket:(int64_t)bucket
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEBD0] em_userDefaults];
-  if ((a4 - 2) <= 2)
+  groupingCopy = grouping;
+  em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
+  if ((bucket - 2) <= 2)
   {
-    v7 = v6;
-    [v6 setBool:v5 forKey:**(&unk_27818A4D0 + a4 - 2)];
-    v6 = v7;
+    v7 = em_userDefaults;
+    [em_userDefaults setBool:groupingCopy forKey:**(&unk_27818A4D0 + bucket - 2)];
+    em_userDefaults = v7;
   }
 }
 

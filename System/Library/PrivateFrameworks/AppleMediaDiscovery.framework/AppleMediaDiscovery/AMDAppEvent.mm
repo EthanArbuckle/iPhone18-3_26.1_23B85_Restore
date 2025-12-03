@@ -1,27 +1,27 @@
 @interface AMDAppEvent
-+ (BOOL)validateInput:(id)a3;
-+ (id)deleteAllEventsForUser:(id)a3 error:(id *)a4;
-+ (id)deleteAppEventsOlderThan:(unint64_t)a3 forEventType:(id)a4 withPlatform:(id)a5 error:(id *)a6;
-+ (id)deleteUsingPredicates:(id)a3 error:(id *)a4;
-+ (id)fetchEvents:(id *)a3;
-+ (id)fetchEventsWithPredicate:(id)a3 error:(id *)a4;
-+ (id)getEventPlatform:(id)a3;
-+ (id)getEventSubType:(id)a3;
-+ (id)getEventType:(id)a3;
-+ (id)getSegmentsWithLookBack:(id)a3 andRecencyThreshold:(id)a4 andFrequencyThreshold:(id)a5 andDurationThreshold:(id)a6 withUserId:(id)a7 error:(id *)a8;
-+ (unsigned)saveEvent:(id)a3 error:(id *)a4;
-- (void)populateRecord:(id)a3;
++ (BOOL)validateInput:(id)input;
++ (id)deleteAllEventsForUser:(id)user error:(id *)error;
++ (id)deleteAppEventsOlderThan:(unint64_t)than forEventType:(id)type withPlatform:(id)platform error:(id *)error;
++ (id)deleteUsingPredicates:(id)predicates error:(id *)error;
++ (id)fetchEvents:(id *)events;
++ (id)fetchEventsWithPredicate:(id)predicate error:(id *)error;
++ (id)getEventPlatform:(id)platform;
++ (id)getEventSubType:(id)type;
++ (id)getEventType:(id)type;
++ (id)getSegmentsWithLookBack:(id)back andRecencyThreshold:(id)threshold andFrequencyThreshold:(id)frequencyThreshold andDurationThreshold:(id)durationThreshold withUserId:(id)id error:(id *)error;
++ (unsigned)saveEvent:(id)event error:(id *)error;
+- (void)populateRecord:(id)record;
 @end
 
 @implementation AMDAppEvent
 
-+ (id)getEventType:(id)a3
++ (id)getEventType:(id)type
 {
   v16[6] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   if (!getEventType__eventTypeMap)
   {
     v15[0] = @"installs";
@@ -61,13 +61,13 @@
   return v7;
 }
 
-+ (id)getEventSubType:(id)a3
++ (id)getEventSubType:(id)type
 {
   v16[6] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   if (!getEventSubType__eventSubTypeMap)
   {
     v15[0] = @"unknown";
@@ -107,13 +107,13 @@
   return v7;
 }
 
-+ (id)getEventPlatform:(id)a3
++ (id)getEventPlatform:(id)platform
 {
   v14[5] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, platform);
   if (!getEventPlatform__platformMap)
   {
     v13[0] = @"iPhone";
@@ -149,11 +149,11 @@
   return v6;
 }
 
-+ (id)fetchEvents:(id *)a3
++ (id)fetchEvents:(id *)events
 {
-  v32 = a1;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
+  eventsCopy = events;
   v7 = +[AMDCoreDataPersistentContainer sharedContainer];
   location = [v7 getManagedObjectContext];
   MEMORY[0x277D82BD8](v7);
@@ -185,7 +185,7 @@
   {
     v6 = v23[5];
     v3 = v6;
-    *v30 = v6;
+    *eventsCopy = v6;
     v33 = 0;
   }
 
@@ -228,13 +228,13 @@ void __27__AMDAppEvent_fetchEvents___block_invoke(void *a1)
   objc_storeStrong(v11, 0);
 }
 
-+ (BOOL)validateInput:(id)a3
++ (BOOL)validateInput:(id)input
 {
   v47 = *MEMORY[0x277D85DE8];
-  v44 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, input);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
   v13 = [obj countByEnumeratingWithState:__b objects:v46 count:16];
@@ -276,14 +276,14 @@ void __27__AMDAppEvent_fetchEvents___block_invoke(void *a1)
           v33 = 1;
           if (v34 || (v32 = [v42 objectForKey:@"time"], v31 = 1, v6 = 1, v32))
           {
-            v5 = v44;
+            v5 = selfCopy;
             v30 = [v42 objectForKey:@"eventType"];
             v29 = 1;
             v28 = [v5 getEventType:?];
             v27 = 1;
             if (v28 || (v26 = [v42 objectForKey:@"type"], v25 = 1, v6 = 1, v26))
             {
-              v4 = v44;
+              v4 = selfCopy;
               v24 = [v42 valueForKey:@"platform"];
               v23 = 1;
               v22 = [v4 getEventPlatform:?];
@@ -409,15 +409,15 @@ LABEL_47:
   return v45 & 1;
 }
 
-+ (unsigned)saveEvent:(id)a3 error:(id *)a4
++ (unsigned)saveEvent:(id)event error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v24 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
-  v12 = v24;
+  objc_storeStrong(location, event);
+  errorCopy = error;
+  v12 = selfCopy;
   v29[0] = location[0];
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
   v14 = [v12 validateInput:?];
@@ -425,9 +425,9 @@ LABEL_47:
   if (v14)
   {
     v9 = +[AMDAppEvent entity];
-    v17 = [v9 name];
+    name = [v9 name];
     MEMORY[0x277D82BD8](v9);
-    if (v17)
+    if (name)
     {
       v26 = location[0];
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
@@ -449,13 +449,13 @@ LABEL_47:
       objc_storeStrong(&v15, 0);
       v8 = [AMDError allocError:29 withMessage:v16];
       v5 = v8;
-      *v22 = v8;
+      *errorCopy = v8;
       v25 = 0;
       v18 = 1;
       objc_storeStrong(&v16, 0);
     }
 
-    objc_storeStrong(&v17, 0);
+    objc_storeStrong(&name, 0);
   }
 
   else
@@ -472,7 +472,7 @@ LABEL_47:
     objc_storeStrong(&v20, 0);
     v10 = [AMDError allocError:15 withMessage:v21];
     v4 = v10;
-    *v22 = v10;
+    *errorCopy = v10;
     v25 = 0;
     v18 = 1;
     objc_storeStrong(&v21, 0);
@@ -483,16 +483,16 @@ LABEL_47:
   return v25;
 }
 
-+ (id)deleteAllEventsForUser:(id)a3 error:(id *)a4
++ (id)deleteAllEventsForUser:(id)user error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v12 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10[1] = a4;
+  objc_storeStrong(location, user);
+  v10[1] = error;
   v10[0] = [MEMORY[0x277CCAC30] predicateWithFormat:@"userId == %@", location[0]];
-  v6 = v12;
+  v6 = selfCopy;
   v13[0] = v10[0];
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   v9 = [v6 deleteUsingPredicates:? error:?];
@@ -506,28 +506,28 @@ LABEL_47:
   return v8;
 }
 
-+ (id)deleteAppEventsOlderThan:(unint64_t)a3 forEventType:(id)a4 withPlatform:(id)a5 error:(id *)a6
++ (id)deleteAppEventsOlderThan:(unint64_t)than forEventType:(id)type withPlatform:(id)platform error:(id *)error
 {
-  v26 = a1;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
+  thanCopy = than;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, type);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
-  v21 = a6;
+  objc_storeStrong(&v22, platform);
+  errorCopy = error;
   v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
-  v17 = [MEMORY[0x277CBEAA8] date];
-  [v17 timeIntervalSince1970];
-  v18 = ((v6 - (86400 * v24)) * 1000.0);
-  MEMORY[0x277D82BD8](v17);
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
+  v18 = ((v6 - (86400 * thanCopy)) * 1000.0);
+  MEMORY[0x277D82BD8](date);
   v19 = [MEMORY[0x277CCAC30] predicateWithFormat:@"time < %llu", v18];
   [v20 addObject:?];
   MEMORY[0x277D82BD8](v19);
   if (location)
   {
     v12 = MEMORY[0x277CCAC30];
-    v14 = [v26 getEventType:location];
+    v14 = [selfCopy getEventType:location];
     v13 = [v12 predicateWithFormat:@"type == %d", objc_msgSend(v14, "shortValue")];
     [v20 addObject:?];
     MEMORY[0x277D82BD8](v13);
@@ -537,14 +537,14 @@ LABEL_47:
   if (v22)
   {
     v9 = MEMORY[0x277CCAC30];
-    v11 = [v26 getEventType:location];
+    v11 = [selfCopy getEventType:location];
     v10 = [v9 predicateWithFormat:@"platform == %d", objc_msgSend(v11, "shortValue")];
     [v20 addObject:?];
     MEMORY[0x277D82BD8](v10);
     MEMORY[0x277D82BD8](v11);
   }
 
-  v8 = [v26 deleteUsingPredicates:v20 error:v21];
+  v8 = [selfCopy deleteUsingPredicates:v20 error:errorCopy];
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&location, 0);
@@ -552,13 +552,13 @@ LABEL_47:
   return v8;
 }
 
-+ (id)deleteUsingPredicates:(id)a3 error:(id *)a4
++ (id)deleteUsingPredicates:(id)predicates error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, predicates);
+  errorCopy = error;
   [AMDPerf startMonitoringEvent:@"DeleteEvents"];
   v27 = 0;
   v28 = &v27;
@@ -575,15 +575,15 @@ LABEL_47:
   v25 = __Block_byref_object_dispose__5;
   v26 = 0;
   v19 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v18 = [v19 getManagedObjectContext];
-  v8 = v18;
+  getManagedObjectContext = [v19 getManagedObjectContext];
+  v8 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __43__AMDAppEvent_deleteUsingPredicates_error___block_invoke;
   v14 = &unk_278CB5A58;
   v15 = MEMORY[0x277D82BE0](location[0]);
-  v16 = MEMORY[0x277D82BE0](v18);
+  v16 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[1] = &v27;
   v17[0] = MEMORY[0x277D82BE0](v19);
   v17[2] = &v20;
@@ -592,7 +592,7 @@ LABEL_47:
   {
     v7 = v28[5];
     v4 = v7;
-    *v34 = v7;
+    *errorCopy = v7;
     v36 = 0;
   }
 
@@ -605,7 +605,7 @@ LABEL_47:
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v19, 0);
   _Block_object_dispose(&v20, 8);
   objc_storeStrong(&v26, 0);
@@ -663,22 +663,22 @@ void __43__AMDAppEvent_deleteUsingPredicates_error___block_invoke(void *a1)
   objc_storeStrong(v19, 0);
 }
 
-+ (id)getSegmentsWithLookBack:(id)a3 andRecencyThreshold:(id)a4 andFrequencyThreshold:(id)a5 andDurationThreshold:(id)a6 withUserId:(id)a7 error:(id *)a8
++ (id)getSegmentsWithLookBack:(id)back andRecencyThreshold:(id)threshold andFrequencyThreshold:(id)frequencyThreshold andDurationThreshold:(id)durationThreshold withUserId:(id)id error:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, back);
   *(&v82 + 1) = 0;
-  objc_storeStrong(&v82 + 1, a4);
+  objc_storeStrong(&v82 + 1, threshold);
   *&v82 = 0;
-  objc_storeStrong(&v82, a5);
+  objc_storeStrong(&v82, frequencyThreshold);
   v81 = 0;
-  objc_storeStrong(&v81, a6);
+  objc_storeStrong(&v81, durationThreshold);
   v80 = 0;
-  objc_storeStrong(&v80, a7);
-  v79 = a8;
+  objc_storeStrong(&v80, id);
+  errorCopy = error;
   if (v82 != 0 || v81)
   {
     v71 = 0;
@@ -696,9 +696,9 @@ void __43__AMDAppEvent_deleteUsingPredicates_error___block_invoke(void *a1)
     v69 = __Block_byref_object_dispose__5;
     v70 = 0;
     v34 = +[AMDCoreDataPersistentContainer sharedContainer];
-    v63 = [v34 getManagedObjectContext];
+    getManagedObjectContext = [v34 getManagedObjectContext];
     MEMORY[0x277D82BD8](v34);
-    v33 = v63;
+    v33 = getManagedObjectContext;
     v55 = MEMORY[0x277D85DD0];
     v56 = -1073741824;
     v57 = 0;
@@ -707,24 +707,24 @@ void __43__AMDAppEvent_deleteUsingPredicates_error___block_invoke(void *a1)
     v60 = MEMORY[0x277D82BE0](location[0]);
     v61 = MEMORY[0x277D82BE0](v80);
     v62[1] = &v64;
-    v62[0] = MEMORY[0x277D82BE0](v63);
+    v62[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
     v62[2] = &v71;
     [v33 performBlockAndWait:&v55];
     if (v72[5])
     {
       v32 = v72[5];
       v9 = v32;
-      *v79 = v32;
+      *errorCopy = v32;
       v84 = 0;
       v78 = 1;
     }
 
     else if (v65[5])
     {
-      v30 = [MEMORY[0x277CBEAA8] date];
-      [v30 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v29 = v11;
-      MEMORY[0x277D82BD8](v30);
+      MEMORY[0x277D82BD8](date);
       v51 = v29;
       v50 = objc_alloc_init(MEMORY[0x277CBEB38]);
       memset(__b, 0, sizeof(__b));
@@ -757,8 +757,8 @@ void __43__AMDAppEvent_deleteUsingPredicates_error___block_invoke(void *a1)
               {
                 v42 = [v49 objectForKey:@"totalForegroundDuration"];
                 v41 = 1;
-                v17 = [v42 unsignedIntValue];
-                v18 = v17 < [v81 unsignedIntValue];
+                unsignedIntValue = [v42 unsignedIntValue];
+                v18 = unsignedIntValue < [v81 unsignedIntValue];
               }
 
               v20 = v18;
@@ -826,7 +826,7 @@ void __43__AMDAppEvent_deleteUsingPredicates_error___block_invoke(void *a1)
       objc_storeStrong(&v53, 0);
       v31 = [AMDError allocError:15 withMessage:v54];
       v10 = v31;
-      *v79 = v31;
+      *errorCopy = v31;
       v84 = 0;
       v78 = 1;
       objc_storeStrong(&v54, 0);
@@ -835,7 +835,7 @@ void __43__AMDAppEvent_deleteUsingPredicates_error___block_invoke(void *a1)
     objc_storeStrong(v62, 0);
     objc_storeStrong(&v61, 0);
     objc_storeStrong(&v60, 0);
-    objc_storeStrong(&v63, 0);
+    objc_storeStrong(&getManagedObjectContext, 0);
     _Block_object_dispose(&v64, 8);
     objc_storeStrong(&v70, 0);
     _Block_object_dispose(&v71, 8);
@@ -846,7 +846,7 @@ void __43__AMDAppEvent_deleteUsingPredicates_error___block_invoke(void *a1)
   {
     v35 = [AMDError allocError:16 withMessage:@"programmer error!"];
     v8 = v35;
-    *v79 = v35;
+    *errorCopy = v35;
     v84 = 0;
     v78 = 1;
   }
@@ -943,12 +943,12 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   *MEMORY[0x277D85DE8];
 }
 
-- (void)populateRecord:(id)a3
+- (void)populateRecord:(id)record
 {
-  v72 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, record);
   v55 = [location[0] objectForKey:@"itemId"];
   v68 = 0;
   v66 = 0;
@@ -1036,14 +1036,14 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   }
 
   MEMORY[0x277D82BD8](v53);
-  -[AMDAppEvent setAdamId:](v72, "setAdamId:", [v70 unsignedLongLongValue]);
-  [(AMDAppEvent *)v72 setAppVersion:v65];
-  -[AMDAppEvent setTime:](v72, "setTime:", [v60 unsignedLongLongValue]);
+  -[AMDAppEvent setAdamId:](selfCopy, "setAdamId:", [v70 unsignedLongLongValue]);
+  [(AMDAppEvent *)selfCopy setAppVersion:v65];
+  -[AMDAppEvent setTime:](selfCopy, "setTime:", [v60 unsignedLongLongValue]);
   v52 = [location[0] objectForKey:@"eventType"];
   MEMORY[0x277D82BD8](v52);
   if (v52)
   {
-    v49 = v72;
+    v49 = selfCopy;
     v51 = [location[0] objectForKey:@"eventType"];
     v50 = [AMDAppEvent getEventType:?];
     -[AMDAppEvent setType:](v49, "setType:", [v50 unsignedShortValue]);
@@ -1053,7 +1053,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
 
   else
   {
-    v47 = v72;
+    v47 = selfCopy;
     v48 = [location[0] objectForKey:@"type"];
     -[AMDAppEvent setType:](v47, "setType:", [v48 unsignedShortValue]);
     MEMORY[0x277D82BD8](v48);
@@ -1065,7 +1065,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   MEMORY[0x277D82BD8](v45);
   if (isKindOfClass)
   {
-    v43 = v72;
+    v43 = selfCopy;
     v44 = [location[0] valueForKey:@"platform"];
     -[AMDAppEvent setPlatform:](v43, "setPlatform:", [v44 unsignedShortValue]);
     MEMORY[0x277D82BD8](v44);
@@ -1073,7 +1073,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
 
   else
   {
-    v40 = v72;
+    v40 = selfCopy;
     v42 = [location[0] valueForKey:@"platform"];
     v41 = [AMDAppEvent getEventPlatform:?];
     -[AMDAppEvent setPlatform:](v40, "setPlatform:", [v41 unsignedShortValue]);
@@ -1091,7 +1091,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
     MEMORY[0x277D82BD8](v37);
     if (v38)
     {
-      v34 = v72;
+      v34 = selfCopy;
       v36 = [location[0] valueForKey:@"eventSubtype"];
       v35 = [AMDAppEvent getEventSubType:?];
       -[AMDAppEvent setEventSubType:](v34, "setEventSubType:", [v35 intValue]);
@@ -1101,14 +1101,14 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
 
     else
     {
-      v32 = v72;
+      v32 = selfCopy;
       v33 = [location[0] valueForKey:@"eventSubtype"];
       -[AMDAppEvent setEventSubType:](v32, "setEventSubType:", [v33 intValue]);
       MEMORY[0x277D82BD8](v33);
     }
   }
 
-  v29 = v72;
+  v29 = selfCopy;
   v30 = [location[0] valueForKey:@"userId"];
   [(AMDAppEvent *)v29 setUserId:?];
   MEMORY[0x277D82BD8](v30);
@@ -1116,7 +1116,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   MEMORY[0x277D82BD8](v31);
   if (v31)
   {
-    v27 = v72;
+    v27 = selfCopy;
     v28 = [location[0] objectForKey:@"batteryUsage"];
     [v28 floatValue];
     [(AMDAppEvent *)v27 setBatteryUsage:?];
@@ -1127,7 +1127,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   MEMORY[0x277D82BD8](v26);
   if (v26)
   {
-    v24 = v72;
+    v24 = selfCopy;
     v25 = [location[0] valueForKey:@"foregroundDuration"];
     -[AMDAppEvent setForegroundDuration:](v24, "setForegroundDuration:", [v25 unsignedLongLongValue]);
     MEMORY[0x277D82BD8](v25);
@@ -1137,7 +1137,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   MEMORY[0x277D82BD8](v23);
   if (v23)
   {
-    v21 = v72;
+    v21 = selfCopy;
     v22 = [location[0] valueForKey:@"latitude"];
     [v22 floatValue];
     [(AMDAppEvent *)v21 setLatitude:?];
@@ -1148,7 +1148,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   MEMORY[0x277D82BD8](v20);
   if (v20)
   {
-    v18 = v72;
+    v18 = selfCopy;
     v19 = [location[0] valueForKey:@"locationAccuracy"];
     [v19 floatValue];
     [(AMDAppEvent *)v18 setLocationAccuracy:?];
@@ -1159,7 +1159,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   MEMORY[0x277D82BD8](v17);
   if (v17)
   {
-    v15 = v72;
+    v15 = selfCopy;
     v16 = [location[0] valueForKey:@"longitude"];
     [v16 floatValue];
     [(AMDAppEvent *)v15 setLongitude:?];
@@ -1170,7 +1170,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   MEMORY[0x277D82BD8](v14);
   if (v14)
   {
-    v12 = v72;
+    v12 = selfCopy;
     v13 = [location[0] valueForKey:@"storageUsed"];
     -[AMDAppEvent setStorageUsed:](v12, "setStorageUsed:", [v13 intValue]);
     MEMORY[0x277D82BD8](v13);
@@ -1180,7 +1180,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   MEMORY[0x277D82BD8](v11);
   if (v11)
   {
-    v9 = v72;
+    v9 = selfCopy;
     v10 = [location[0] valueForKey:@"timezoneOffset"];
     -[AMDAppEvent setTimeZoneOffset:](v9, "setTimeZoneOffset:", [v10 unsignedLongLongValue]);
     MEMORY[0x277D82BD8](v10);
@@ -1190,7 +1190,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   MEMORY[0x277D82BD8](v8);
   if (v8)
   {
-    v6 = v72;
+    v6 = selfCopy;
     v7 = [location[0] objectForKey:@"deviceId"];
     [(AMDAppEvent *)v6 setDeviceId:?];
     MEMORY[0x277D82BD8](v7);
@@ -1202,15 +1202,15 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   objc_storeStrong(location, 0);
 }
 
-+ (id)fetchEventsWithPredicate:(id)a3 error:(id *)a4
++ (id)fetchEventsWithPredicate:(id)predicate error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = a4;
+  objc_storeStrong(location, predicate);
+  errorCopy = error;
   v9 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v32 = [v9 getManagedObjectContext];
+  getManagedObjectContext = [v9 getManagedObjectContext];
   MEMORY[0x277D82BD8](v9);
   v25 = 0;
   v26 = &v25;
@@ -1226,7 +1226,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   v22 = __Block_byref_object_copy__5;
   v23 = __Block_byref_object_dispose__5;
   v24 = 0;
-  v10 = v32;
+  v10 = getManagedObjectContext;
   v11 = MEMORY[0x277D85DD0];
   v12 = -1073741824;
   v13 = 0;
@@ -1234,14 +1234,14 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   v15 = &unk_278CB5AA8;
   v16 = MEMORY[0x277D82BE0](location[0]);
   v17[1] = &v18;
-  v17[0] = MEMORY[0x277D82BE0](v32);
+  v17[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[2] = &v25;
   [v10 performBlockAndWait:&v11];
   if (v26[5])
   {
     v7 = v26[5];
     v4 = v7;
-    *v33 = v7;
+    *errorCopy = v7;
     v35 = 0;
   }
 
@@ -1256,7 +1256,7 @@ void __119__AMDAppEvent_getSegmentsWithLookBack_andRecencyThreshold_andFrequency
   objc_storeStrong(&v24, 0);
   _Block_object_dispose(&v25, 8);
   objc_storeStrong(&v31, 0);
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(location, 0);
   v5 = v35;
 

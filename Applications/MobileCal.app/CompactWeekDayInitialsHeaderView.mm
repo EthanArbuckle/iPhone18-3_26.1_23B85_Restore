@@ -1,7 +1,7 @@
 @interface CompactWeekDayInitialsHeaderView
 + (double)standardHeight;
 + (id)dayInitialFont;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)bottomPadding;
 @end
 
@@ -9,9 +9,9 @@
 
 + (double)standardHeight
 {
-  v3 = [a1 dayInitialFont];
-  [v3 capHeight];
-  [a1 _bottomPadding];
+  dayInitialFont = [self dayInitialFont];
+  [dayInitialFont capHeight];
+  [self _bottomPadding];
   CalRoundToScreenScale();
   v5 = v4;
 
@@ -33,9 +33,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [objc_opt_class() standardHeight];
   v5 = v4;
   v6 = width;

@@ -1,22 +1,22 @@
 @interface MSParsecSearchEmbeddingState
-- (MSParsecSearchEmbeddingState)initWithQueryStatus:(int)a3 hasQueryEmbedding:(BOOL)a4 hasKeywordResults:(BOOL)a5 hasEmbeddingResults:(BOOL)a6;
+- (MSParsecSearchEmbeddingState)initWithQueryStatus:(int)status hasQueryEmbedding:(BOOL)embedding hasKeywordResults:(BOOL)results hasEmbeddingResults:(BOOL)embeddingResults;
 - (id)description;
 - (id)feedbackEmbedding;
 @end
 
 @implementation MSParsecSearchEmbeddingState
 
-- (MSParsecSearchEmbeddingState)initWithQueryStatus:(int)a3 hasQueryEmbedding:(BOOL)a4 hasKeywordResults:(BOOL)a5 hasEmbeddingResults:(BOOL)a6
+- (MSParsecSearchEmbeddingState)initWithQueryStatus:(int)status hasQueryEmbedding:(BOOL)embedding hasKeywordResults:(BOOL)results hasEmbeddingResults:(BOOL)embeddingResults
 {
   v11.receiver = self;
   v11.super_class = MSParsecSearchEmbeddingState;
   result = [(MSParsecSearchEmbeddingState *)&v11 init];
   if (result)
   {
-    result->_queryStatus = a3;
-    result->_hasQueryEmbedding = a4;
-    result->_hasKeywordResults = a5;
-    result->_hasEmbeddingResults = a6;
+    result->_queryStatus = status;
+    result->_hasQueryEmbedding = embedding;
+    result->_hasKeywordResults = results;
+    result->_hasEmbeddingResults = embeddingResults;
   }
 
   return result;
@@ -36,7 +36,7 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MSParsecSearchEmbeddingState *)self queryStatus];
+  queryStatus = [(MSParsecSearchEmbeddingState *)self queryStatus];
   if ([(MSParsecSearchEmbeddingState *)self hasQueryEmbedding])
   {
     v5 = @"YES";
@@ -67,7 +67,7 @@
     v7 = @"NO";
   }
 
-  return [v3 stringWithFormat:@"queryStatus: %d, hasQueryEmbedding: %@, hasKeywordResults: %@, hasEmbeddingResults: %@", v4, v5, v6, v7];
+  return [v3 stringWithFormat:@"queryStatus: %d, hasQueryEmbedding: %@, hasKeywordResults: %@, hasEmbeddingResults: %@", queryStatus, v5, v6, v7];
 }
 
 @end

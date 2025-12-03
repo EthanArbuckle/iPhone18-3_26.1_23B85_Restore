@@ -1,38 +1,38 @@
 @interface MUStackLayoutInternal
 - (BOOL)alignmentBoundsContent;
-- (BOOL)alignmentBoundsContentForArrangedLayoutItem:(id)a3;
+- (BOOL)alignmentBoundsContentForArrangedLayoutItem:(id)item;
 - (BOOL)distributionBoundsContent;
-- (BOOL)hasAlignmentForArrangedLayoutItem:(id)a3;
+- (BOOL)hasAlignmentForArrangedLayoutItem:(id)item;
 - (MULayoutItem)container;
 - (NSArray)arrangedLayoutItems;
 - (NSDirectionalEdgeInsets)insets;
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3;
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3;
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item;
+- (UIOffset)offsetForArrangedLayoutItem:(id)item;
 - (double)spacing;
 - (float)alignmentFittingSizePriority;
-- (float)alignmentFittingSizePriorityForArrangedLayoutItem:(id)a3;
+- (float)alignmentFittingSizePriorityForArrangedLayoutItem:(id)item;
 - (float)distributionFittingSizePriority;
 - (int64_t)alignment;
-- (int64_t)alignmentForArrangedLayoutItem:(id)a3;
+- (int64_t)alignmentForArrangedLayoutItem:(id)item;
 - (int64_t)axis;
 - (int64_t)distribution;
-- (void)removeArrangedLayoutItem:(id)a3;
-- (void)setAlignment:(int64_t)a3;
-- (void)setAlignment:(int64_t)a3 forArrangedLayoutItem:(id)a4;
-- (void)setAlignmentBoundsContent:(BOOL)a3;
-- (void)setAlignmentBoundsContent:(BOOL)a3 forArrangedLayoutItem:(id)a4;
-- (void)setAlignmentFittingSizePriority:(float)a3;
-- (void)setAlignmentFittingSizePriority:(float)a3 forArrangedLayoutItem:(id)a4;
-- (void)setArrangedLayoutItems:(id)a3;
-- (void)setAxis:(int64_t)a3;
-- (void)setContainer:(id)a3;
-- (void)setDistribution:(int64_t)a3;
-- (void)setDistributionBoundsContent:(BOOL)a3;
-- (void)setDistributionFittingSizePriority:(float)a3;
-- (void)setInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setOffset:(UIOffset)a3 forArrangedLayoutItem:(id)a4;
-- (void)setPadding:(NSDirectionalEdgeInsets)a3 forArrangedLayoutItem:(id)a4;
-- (void)setSpacing:(double)a3;
+- (void)removeArrangedLayoutItem:(id)item;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setAlignment:(int64_t)alignment forArrangedLayoutItem:(id)item;
+- (void)setAlignmentBoundsContent:(BOOL)content;
+- (void)setAlignmentBoundsContent:(BOOL)content forArrangedLayoutItem:(id)item;
+- (void)setAlignmentFittingSizePriority:(float)priority;
+- (void)setAlignmentFittingSizePriority:(float)priority forArrangedLayoutItem:(id)item;
+- (void)setArrangedLayoutItems:(id)items;
+- (void)setAxis:(int64_t)axis;
+- (void)setContainer:(id)container;
+- (void)setDistribution:(int64_t)distribution;
+- (void)setDistributionBoundsContent:(BOOL)content;
+- (void)setDistributionFittingSizePriority:(float)priority;
+- (void)setInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setOffset:(UIOffset)offset forArrangedLayoutItem:(id)item;
+- (void)setPadding:(NSDirectionalEdgeInsets)padding forArrangedLayoutItem:(id)item;
+- (void)setSpacing:(double)spacing;
 @end
 
 @implementation MUStackLayoutInternal
@@ -40,7 +40,7 @@
 - (MULayoutItem)container
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   Strong = swift_unknownObjectWeakLoadStrong();
 
@@ -49,12 +49,12 @@
   return Strong;
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
   v4 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v5 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1C5623A68(v10);
   swift_unknownObjectWeakAssign();
   v7 = *(&self->super.super.isa + v4);
@@ -68,7 +68,7 @@
 - (int64_t)axis
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
 
   v4 = v6[1];
@@ -76,13 +76,13 @@
   return v4;
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
   v5 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  v12 = a3;
+  axisCopy = axis;
   v8 = *(&self->super.super.isa + v5);
   sub_1C5672E88(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -92,7 +92,7 @@
 - (int64_t)distribution
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   v4 = sub_1C5724078();
 
@@ -100,13 +100,13 @@
   return v4;
 }
 
-- (void)setDistribution:(int64_t)a3
+- (void)setDistribution:(int64_t)distribution
 {
   v5 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C57240E4(a3);
+  sub_1C57240E4(distribution);
   v8 = *(&self->super.super.isa + v5);
   sub_1C5672E88(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -116,7 +116,7 @@
 - (BOOL)distributionBoundsContent
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v5);
   LOBYTE(v2) = sub_1C572470C();
 
@@ -124,13 +124,13 @@
   return v2 & 1;
 }
 
-- (void)setDistributionBoundsContent:(BOOL)a3
+- (void)setDistributionBoundsContent:(BOOL)content
 {
   v5 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C5724738(a3);
+  sub_1C5724738(content);
   v8 = *(&self->super.super.isa + v5);
   sub_1C5672E88(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -140,7 +140,7 @@
 - (float)distributionFittingSizePriority
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   v4 = sub_1C57246C0();
 
@@ -148,13 +148,13 @@
   return v4;
 }
 
-- (void)setDistributionFittingSizePriority:(float)a3
+- (void)setDistributionFittingSizePriority:(float)priority
 {
   v5 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C5724750(a3);
+  sub_1C5724750(priority);
   v8 = *(&self->super.super.isa + v5);
   sub_1C5672E88(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -164,7 +164,7 @@
 - (int64_t)alignment
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   v4 = sub_1C57243F4();
 
@@ -172,13 +172,13 @@
   return v4;
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
   v5 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C572440C(a3);
+  sub_1C572440C(alignment);
   v8 = *(&self->super.super.isa + v5);
   sub_1C5672E88(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -188,7 +188,7 @@
 - (BOOL)alignmentBoundsContent
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v5);
   LOBYTE(v2) = sub_1C5724830();
 
@@ -196,13 +196,13 @@
   return v2 & 1;
 }
 
-- (void)setAlignmentBoundsContent:(BOOL)a3
+- (void)setAlignmentBoundsContent:(BOOL)content
 {
   v5 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C5724854(a3);
+  sub_1C5724854(content);
   v8 = *(&self->super.super.isa + v5);
   sub_1C5672E88(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -212,7 +212,7 @@
 - (float)alignmentFittingSizePriority
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   v4 = sub_1C5724800();
 
@@ -220,13 +220,13 @@
   return v4;
 }
 
-- (void)setAlignmentFittingSizePriority:(float)a3
+- (void)setAlignmentFittingSizePriority:(float)priority
 {
   v5 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C57248B8(a3);
+  sub_1C57248B8(priority);
   v8 = *(&self->super.super.isa + v5);
   sub_1C5672E88(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -236,7 +236,7 @@
 - (double)spacing
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
 
   v4 = *&v6[5];
@@ -244,13 +244,13 @@
   return v4;
 }
 
-- (void)setSpacing:(double)a3
+- (void)setSpacing:(double)spacing
 {
   v5 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  v12 = a3;
+  spacingCopy = spacing;
   v8 = *(&self->super.super.isa + v5);
   sub_1C5672E88(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -260,7 +260,7 @@
 - (NSDirectionalEdgeInsets)insets
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v12);
 
   v4 = *&v12[6];
@@ -279,15 +279,15 @@
   return result;
 }
 
-- (void)setInsets:(NSDirectionalEdgeInsets)a3
+- (void)setInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   v8 = OBJC_IVAR___MUStackLayoutInternal_builder;
   v9 = *(&self->super.super.isa + OBJC_IVAR___MUStackLayoutInternal_builder);
-  v10 = self;
+  selfCopy = self;
   sub_1C5623A68(v14);
   v15 = top;
   v16 = leading;
@@ -301,7 +301,7 @@
 
 - (NSArray)arrangedLayoutItems
 {
-  v2 = self;
+  selfCopy = self;
   StackLayout.arrangedLayoutItems.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC16DC50, &qword_1C586A8F0);
@@ -310,20 +310,20 @@
   return v3;
 }
 
-- (void)setArrangedLayoutItems:(id)a3
+- (void)setArrangedLayoutItems:(id)items
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC16DC50, &qword_1C586A8F0);
   v4 = sub_1C584F770();
-  v5 = self;
+  selfCopy = self;
   StackLayout.arrangedLayoutItems.setter(v4);
 }
 
-- (void)removeArrangedLayoutItem:(id)a3
+- (void)removeArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain_n();
-  v4 = self;
+  selfCopy = self;
   sub_1C56236C4();
-  v5 = (*((*MEMORY[0x1E69E7D40] & v4->super.super.isa) + 0xB0))(v10);
+  v5 = (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.isa) + 0xB0))(v10);
   v7 = v6;
   v8 = sub_1C5675D78(sub_1C5676CD0);
   v9 = *(*v7 + 16);
@@ -342,10 +342,10 @@
   }
 }
 
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = StackLayout.padding(forArrangedLayoutItem:)();
   v7 = v6;
   v9 = v8;
@@ -363,22 +363,22 @@
   return result;
 }
 
-- (void)setPadding:(NSDirectionalEdgeInsets)a3 forArrangedLayoutItem:(id)a4
+- (void)setPadding:(NSDirectionalEdgeInsets)padding forArrangedLayoutItem:(id)item
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = padding.trailing;
+  bottom = padding.bottom;
+  leading = padding.leading;
+  top = padding.top;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   StackLayout.setPadding(_:forArrangedLayoutItem:)(top, leading, bottom, trailing);
   swift_unknownObjectRelease();
 }
 
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3
+- (UIOffset)offsetForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = StackLayout.offset(forArrangedLayoutItem:)();
   v7 = v6;
   swift_unknownObjectRelease();
@@ -390,35 +390,35 @@
   return result;
 }
 
-- (void)setOffset:(UIOffset)a3 forArrangedLayoutItem:(id)a4
+- (void)setOffset:(UIOffset)offset forArrangedLayoutItem:(id)item
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   StackLayout.setOffset(_:forArrangedLayoutItem:)(horizontal, vertical);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)hasAlignmentForArrangedLayoutItem:(id)a3
+- (BOOL)hasAlignmentForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C5674C30(&v6);
   swift_unknownObjectRelease();
 
   return (~v6 & 0xFFFFFFFE) != 0;
 }
 
-- (int64_t)alignmentForArrangedLayoutItem:(id)a3
+- (int64_t)alignmentForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1C5674C30(&v9);
   v6 = v9;
   if ((~v9 & 0xFFFFFFFE) == 0)
   {
-    (*((*MEMORY[0x1E69E7D40] & v4->super.super.isa) + 0x118))(&v10, v5);
+    (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.isa) + 0x118))(&v10, v5);
     v6 = v10;
   }
 
@@ -429,18 +429,18 @@
   return v7;
 }
 
-- (void)setAlignment:(int64_t)a3 forArrangedLayoutItem:(id)a4
+- (void)setAlignment:(int64_t)alignment forArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  StackLayout.setAlignmentKind(_:forArrangedLayoutItem:)(a3);
+  selfCopy = self;
+  StackLayout.setAlignmentKind(_:forArrangedLayoutItem:)(alignment);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)alignmentBoundsContentForArrangedLayoutItem:(id)a3
+- (BOOL)alignmentBoundsContentForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C5674C30(&v7);
   if ((~v7 & 0xFFFFFFFE) != 0)
   {
@@ -458,18 +458,18 @@
   return v5 & 1;
 }
 
-- (void)setAlignmentBoundsContent:(BOOL)a3 forArrangedLayoutItem:(id)a4
+- (void)setAlignmentBoundsContent:(BOOL)content forArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  StackLayout.setAlignmentBoundsContent(_:forArrangedLayoutItem:)(a3);
+  selfCopy = self;
+  StackLayout.setAlignmentBoundsContent(_:forArrangedLayoutItem:)(content);
   swift_unknownObjectRelease();
 }
 
-- (float)alignmentFittingSizePriorityForArrangedLayoutItem:(id)a3
+- (float)alignmentFittingSizePriorityForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C5674C30(&v7);
   if ((~v7 & 0xFFFFFFFE) != 0)
   {
@@ -487,11 +487,11 @@
   }
 }
 
-- (void)setAlignmentFittingSizePriority:(float)a3 forArrangedLayoutItem:(id)a4
+- (void)setAlignmentFittingSizePriority:(float)priority forArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  StackLayout.setAlignmentFittingSizePriority(_:forArrangedLayoutItem:)(a3);
+  selfCopy = self;
+  StackLayout.setAlignmentFittingSizePriority(_:forArrangedLayoutItem:)(priority);
   swift_unknownObjectRelease();
 }
 

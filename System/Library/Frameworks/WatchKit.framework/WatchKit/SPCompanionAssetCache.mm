@@ -1,20 +1,20 @@
 @interface SPCompanionAssetCache
 + (id)sharedInstance;
-- (BOOL)addImageToPermanentCache:(id)a3 withName:(id)a4;
-- (BOOL)imageInPermanentCache:(id)a3;
-- (BOOL)imageInTransientCache:(id)a3;
+- (BOOL)addImageToPermanentCache:(id)cache withName:(id)name;
+- (BOOL)imageInPermanentCache:(id)cache;
+- (BOOL)imageInTransientCache:(id)cache;
 - (SPCompanionAssetCache)init;
 - (id)cachedImages;
-- (id)dataForImageWithName:(id)a3;
-- (id)keyFromImageData:(id)a3;
-- (void)addImageReferenceToTransientCache:(id)a3 withName:(id)a4;
-- (void)addedAsset:(id)a3;
-- (void)clearedCache:(id)a3;
-- (void)deletedAsset:(id)a3;
-- (void)handleCacheMessage:(id)a3;
+- (id)dataForImageWithName:(id)name;
+- (id)keyFromImageData:(id)data;
+- (void)addImageReferenceToTransientCache:(id)cache withName:(id)name;
+- (void)addedAsset:(id)asset;
+- (void)clearedCache:(id)cache;
+- (void)deletedAsset:(id)asset;
+- (void)handleCacheMessage:(id)message;
 - (void)removeAllImagesFromPermanentCache;
-- (void)removeImageFromPermanentCacheWithName:(id)a3;
-- (void)syncCache:(id)a3;
+- (void)removeImageFromPermanentCacheWithName:(id)name;
+- (void)syncCache:(id)cache;
 @end
 
 @implementation SPCompanionAssetCache
@@ -58,13 +58,13 @@ uint64_t __39__SPCompanionAssetCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)imageInTransientCache:(id)a3
+- (BOOL)imageInTransientCache:(id)cache
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SPAssetCacheClientCache *)v5->_transientCache assets];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  assets = [(SPAssetCacheClientCache *)selfCopy->_transientCache assets];
+  v7 = [assets objectForKeyedSubscript:cacheCopy];
 
   if (v7)
   {
@@ -76,69 +76,69 @@ uint64_t __39__SPCompanionAssetCache_sharedInstance__block_invoke()
     v8 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
-- (void)addImageReferenceToTransientCache:(id)a3 withName:(id)a4
+- (void)addImageReferenceToTransientCache:(id)cache withName:(id)name
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(SPAssetCacheClientCache *)v7->_transientCache addAsset:v8 withName:v6 sendImage:0];
-  objc_sync_exit(v7);
+  cacheCopy = cache;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SPAssetCacheClientCache *)selfCopy->_transientCache addAsset:cacheCopy withName:nameCopy sendImage:0];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)handleCacheMessage:(id)a3
+- (void)handleCacheMessage:(id)message
 {
-  v4 = a3;
-  if ([v4 messageType] == 6)
+  messageCopy = message;
+  if ([messageCopy messageType] == 6)
   {
-    [(SPCompanionAssetCache *)self addedAsset:v4];
+    [(SPCompanionAssetCache *)self addedAsset:messageCopy];
   }
 
-  else if ([v4 messageType] == 7)
+  else if ([messageCopy messageType] == 7)
   {
-    [(SPCompanionAssetCache *)self deletedAsset:v4];
+    [(SPCompanionAssetCache *)self deletedAsset:messageCopy];
   }
 
-  else if ([v4 messageType] == 8)
+  else if ([messageCopy messageType] == 8)
   {
-    [(SPCompanionAssetCache *)self clearedCache:v4];
+    [(SPCompanionAssetCache *)self clearedCache:messageCopy];
   }
 
-  else if ([v4 messageType] == 11)
+  else if ([messageCopy messageType] == 11)
   {
-    [(SPCompanionAssetCache *)self syncCache:v4];
+    [(SPCompanionAssetCache *)self syncCache:messageCopy];
   }
 }
 
-- (void)addedAsset:(id)a3
+- (void)addedAsset:(id)asset
 {
   v12[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![v4 error])
+  assetCopy = asset;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![assetCopy error])
   {
-    if ([v4 cacheType] == 1)
+    if ([assetCopy cacheType] == 1)
     {
-      permanentCache = v5->_permanentCache;
-      v9 = [v4 assetKey];
-      [(SPAssetCacheClientCache *)permanentCache addedAssetWithName:v9];
+      permanentCache = selfCopy->_permanentCache;
+      assetKey = [assetCopy assetKey];
+      [(SPAssetCacheClientCache *)permanentCache addedAssetWithName:assetKey];
     }
 
     else
     {
-      if ([v4 cacheType] != 2)
+      if ([assetCopy cacheType] != 2)
       {
         goto LABEL_10;
       }
 
-      transientCache = v5->_transientCache;
-      v9 = [v4 assetKey];
-      [(SPAssetCacheClientCache *)transientCache addedAssetWithName:v9];
+      transientCache = selfCopy->_transientCache;
+      assetKey = [assetCopy assetKey];
+      [(SPAssetCacheClientCache *)transientCache addedAssetWithName:assetKey];
     }
 
     goto LABEL_10;
@@ -147,41 +147,41 @@ uint64_t __39__SPCompanionAssetCache_sharedInstance__block_invoke()
   v6 = wk_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [v4 assetKey];
-    [(SPCompanionAssetCache *)v7 addedAsset:v12];
+    assetKey2 = [assetCopy assetKey];
+    [(SPCompanionAssetCache *)assetKey2 addedAsset:v12];
   }
 
 LABEL_10:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletedAsset:(id)a3
+- (void)deletedAsset:(id)asset
 {
   v12[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![v4 error])
+  assetCopy = asset;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![assetCopy error])
   {
-    if ([v4 cacheType] == 1)
+    if ([assetCopy cacheType] == 1)
     {
-      permanentCache = v5->_permanentCache;
-      v9 = [v4 assetKey];
-      [(SPAssetCacheClientCache *)permanentCache deletedAssetWithName:v9];
+      permanentCache = selfCopy->_permanentCache;
+      assetKey = [assetCopy assetKey];
+      [(SPAssetCacheClientCache *)permanentCache deletedAssetWithName:assetKey];
     }
 
     else
     {
-      if ([v4 cacheType] != 2)
+      if ([assetCopy cacheType] != 2)
       {
         goto LABEL_10;
       }
 
-      transientCache = v5->_transientCache;
-      v9 = [v4 assetKey];
-      [(SPAssetCacheClientCache *)transientCache deletedAssetWithName:v9];
+      transientCache = selfCopy->_transientCache;
+      assetKey = [assetCopy assetKey];
+      [(SPAssetCacheClientCache *)transientCache deletedAssetWithName:assetKey];
     }
 
     goto LABEL_10;
@@ -190,32 +190,32 @@ LABEL_10:
   v6 = wk_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [v4 assetKey];
-    [(SPCompanionAssetCache *)v7 deletedAsset:v12];
+    assetKey2 = [assetCopy assetKey];
+    [(SPCompanionAssetCache *)assetKey2 deletedAsset:v12];
   }
 
 LABEL_10:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearedCache:(id)a3
+- (void)clearedCache:(id)cache
 {
   v9[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![v4 error])
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![cacheCopy error])
   {
-    if ([v4 cacheType] == 1)
+    if ([cacheCopy cacheType] == 1)
     {
       v7 = 8;
     }
 
     else
     {
-      if ([v4 cacheType] != 2)
+      if ([cacheCopy cacheType] != 2)
       {
         goto LABEL_10;
       }
@@ -223,31 +223,31 @@ LABEL_10:
       v7 = 16;
     }
 
-    [*(&v5->super.isa + v7) clearedCache];
+    [*(&selfCopy->super.isa + v7) clearedCache];
     goto LABEL_10;
   }
 
   v6 = wk_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    -[SPCompanionAssetCache clearedCache:].cold.1(v9, [v4 cacheType], v6);
+    -[SPCompanionAssetCache clearedCache:].cold.1(v9, [cacheCopy cacheType], v6);
   }
 
 LABEL_10:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCache:(id)a3
+- (void)syncCache:(id)cache
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([v4 error])
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([cacheCopy error])
   {
-    v6 = wk_default_log();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    syncData2 = wk_default_log();
+    if (os_log_type_enabled(syncData2, OS_LOG_TYPE_ERROR))
     {
       [SPCompanionAssetCache syncCache:];
     }
@@ -255,25 +255,25 @@ LABEL_10:
 
   else
   {
-    transientCache = v5->_transientCache;
-    v8 = [v4 syncData];
-    [(SPAssetCacheClientCache *)transientCache syncAssets:v8];
+    transientCache = selfCopy->_transientCache;
+    syncData = [cacheCopy syncData];
+    [(SPAssetCacheClientCache *)transientCache syncAssets:syncData];
 
-    permanentCache = v5->_permanentCache;
-    v6 = [v4 syncData];
-    [(SPAssetCacheClientCache *)permanentCache syncAssets:v6];
+    permanentCache = selfCopy->_permanentCache;
+    syncData2 = [cacheCopy syncData];
+    [(SPAssetCacheClientCache *)permanentCache syncAssets:syncData2];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)imageInPermanentCache:(id)a3
+- (BOOL)imageInPermanentCache:(id)cache
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SPAssetCacheClientCache *)v5->_permanentCache assets];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  assets = [(SPAssetCacheClientCache *)selfCopy->_permanentCache assets];
+  v7 = [assets objectForKeyedSubscript:cacheCopy];
 
   if (v7)
   {
@@ -285,29 +285,29 @@ LABEL_10:
     v8 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
-- (BOOL)addImageToPermanentCache:(id)a3 withName:(id)a4
+- (BOOL)addImageToPermanentCache:(id)cache withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(SPAssetCacheClientCache *)v8->_permanentCache addAsset:v6 withName:v7 sendImage:1];
-  objc_sync_exit(v8);
+  cacheCopy = cache;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(SPAssetCacheClientCache *)selfCopy->_permanentCache addAsset:cacheCopy withName:nameCopy sendImage:1];
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (void)removeImageFromPermanentCacheWithName:(id)a3
+- (void)removeImageFromPermanentCacheWithName:(id)name
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(SPAssetCacheClientCache *)v4->_permanentCache deleteAssetWithName:v5];
-  objc_sync_exit(v4);
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SPAssetCacheClientCache *)selfCopy->_permanentCache deleteAssetWithName:nameCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)removeAllImagesFromPermanentCache
@@ -320,30 +320,30 @@ LABEL_10:
 
 - (id)cachedImages
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SPAssetCacheClientCache *)v2->_permanentCache cachedImages];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedImages = [(SPAssetCacheClientCache *)selfCopy->_permanentCache cachedImages];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return cachedImages;
 }
 
-- (id)dataForImageWithName:(id)a3
+- (id)dataForImageWithName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SPAssetCacheClientCache *)v5->_permanentCache dataForImageWithName:v4];
-  objc_sync_exit(v5);
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(SPAssetCacheClientCache *)selfCopy->_permanentCache dataForImageWithName:nameCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)keyFromImageData:(id)a3
+- (id)keyFromImageData:(id)data
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  CC_MD5([v3 bytes], objc_msgSend(v3, "length"), md);
+  dataCopy = data;
+  CC_MD5([dataCopy bytes], objc_msgSend(dataCopy, "length"), md);
   v4 = [MEMORY[0x277CCAB68] stringWithCapacity:32];
   for (i = 0; i != 16; ++i)
   {

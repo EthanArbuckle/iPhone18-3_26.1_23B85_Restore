@@ -1,57 +1,57 @@
 @interface _INPBSearchForNotebookItemsIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchForNotebookItemsIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchForNotebookItemsIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsDateSearchType:(id)a3;
-- (int)StringAsItemType:(id)a3;
-- (int)StringAsLocationSearchType:(id)a3;
-- (int)StringAsStatus:(id)a3;
-- (int)StringAsTaskPriority:(id)a3;
-- (int)StringAsTemporalEventTriggerTypes:(id)a3;
+- (int)StringAsDateSearchType:(id)type;
+- (int)StringAsItemType:(id)type;
+- (int)StringAsLocationSearchType:(id)type;
+- (int)StringAsStatus:(id)status;
+- (int)StringAsTaskPriority:(id)priority;
+- (int)StringAsTemporalEventTriggerTypes:(id)types;
 - (unint64_t)hash;
-- (void)addTemporalEventTriggerType:(int)a3;
+- (void)addTemporalEventTriggerType:(int)type;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setDateSearchType:(int)a3;
-- (void)setHasIncludeAllNoteContents:(BOOL)a3;
-- (void)setHasItemType:(BOOL)a3;
-- (void)setHasLocationSearchType:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setHasTaskPriority:(BOOL)a3;
-- (void)setItemType:(int)a3;
-- (void)setLocationSearchType:(int)a3;
-- (void)setNotebookItemIdentifier:(id)a3;
-- (void)setStatus:(int)a3;
-- (void)setTaskPriority:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContent:(id)content;
+- (void)setDateSearchType:(int)type;
+- (void)setHasIncludeAllNoteContents:(BOOL)contents;
+- (void)setHasItemType:(BOOL)type;
+- (void)setHasLocationSearchType:(BOOL)type;
+- (void)setHasStatus:(BOOL)status;
+- (void)setHasTaskPriority:(BOOL)priority;
+- (void)setItemType:(int)type;
+- (void)setLocationSearchType:(int)type;
+- (void)setNotebookItemIdentifier:(id)identifier;
+- (void)setStatus:(int)status;
+- (void)setTaskPriority:(int)priority;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchForNotebookItemsIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_content)
   {
-    v4 = [(_INPBSearchForNotebookItemsIntent *)self content];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"content"];
+    content = [(_INPBSearchForNotebookItemsIntent *)self content];
+    v5 = [content copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"content"];
   }
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasDateSearchType])
   {
-    v6 = [(_INPBSearchForNotebookItemsIntent *)self dateSearchType];
-    if (v6 > 19)
+    dateSearchType = [(_INPBSearchForNotebookItemsIntent *)self dateSearchType];
+    if (dateSearchType > 19)
     {
-      if (v6 == 20)
+      if (dateSearchType == 20)
       {
         v7 = @"BY_MODIFIED_DATE";
         goto LABEL_14;
       }
 
-      if (v6 == 30)
+      if (dateSearchType == 30)
       {
         v7 = @"BY_CREATED_DATE";
         goto LABEL_14;
@@ -60,57 +60,57 @@
 
     else
     {
-      if (!v6)
+      if (!dateSearchType)
       {
         v7 = @"UNKNOWN_DATE_SEARCH_TYPE";
         goto LABEL_14;
       }
 
-      if (v6 == 10)
+      if (dateSearchType == 10)
       {
         v7 = @"BY_DUE_DATE";
 LABEL_14:
-        [v3 setObject:v7 forKeyedSubscript:@"dateSearchType"];
+        [dictionary setObject:v7 forKeyedSubscript:@"dateSearchType"];
 
         goto LABEL_15;
       }
     }
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", dateSearchType];
     goto LABEL_14;
   }
 
 LABEL_15:
-  v8 = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"dateTime"];
+  dateTime = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
+  dictionaryRepresentation = [dateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dateTime"];
 
-  v10 = [(_INPBSearchForNotebookItemsIntent *)self groupName];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"groupName"];
+  groupName = [(_INPBSearchForNotebookItemsIntent *)self groupName];
+  dictionaryRepresentation2 = [groupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"groupName"];
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasIncludeAllNoteContents])
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSearchForNotebookItemsIntent includeAllNoteContents](self, "includeAllNoteContents")}];
-    [v3 setObject:v12 forKeyedSubscript:@"includeAllNoteContents"];
+    [dictionary setObject:v12 forKeyedSubscript:@"includeAllNoteContents"];
   }
 
-  v13 = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
+  dictionaryRepresentation3 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasItemType])
   {
-    v15 = [(_INPBSearchForNotebookItemsIntent *)self itemType];
-    if (v15 > 19)
+    itemType = [(_INPBSearchForNotebookItemsIntent *)self itemType];
+    if (itemType > 19)
     {
-      if (v15 == 20)
+      if (itemType == 20)
       {
         v16 = @"TASK_LIST";
         goto LABEL_28;
       }
 
-      if (v15 == 30)
+      if (itemType == 30)
       {
         v16 = @"TASK";
         goto LABEL_28;
@@ -119,44 +119,44 @@ LABEL_15:
 
     else
     {
-      if (!v15)
+      if (!itemType)
       {
         v16 = @"UNKNOWN_NOTE_TYPE";
         goto LABEL_28;
       }
 
-      if (v15 == 10)
+      if (itemType == 10)
       {
         v16 = @"NOTE";
 LABEL_28:
-        [v3 setObject:v16 forKeyedSubscript:@"itemType"];
+        [dictionary setObject:v16 forKeyedSubscript:@"itemType"];
 
         goto LABEL_29;
       }
     }
 
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v15];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", itemType];
     goto LABEL_28;
   }
 
 LABEL_29:
-  v17 = [(_INPBSearchForNotebookItemsIntent *)self location];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"location"];
+  location = [(_INPBSearchForNotebookItemsIntent *)self location];
+  dictionaryRepresentation4 = [location dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"location"];
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasLocationSearchType])
   {
-    v19 = [(_INPBSearchForNotebookItemsIntent *)self locationSearchType];
-    if (v19)
+    locationSearchType = [(_INPBSearchForNotebookItemsIntent *)self locationSearchType];
+    if (locationSearchType)
     {
-      if (v19 == 10)
+      if (locationSearchType == 10)
       {
         v20 = @"BY_LOCATION_TRIGGER";
       }
 
       else
       {
-        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v19];
+        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", locationSearchType];
       }
     }
 
@@ -165,34 +165,34 @@ LABEL_29:
       v20 = @"UNKNOWN_LOCATION_SEARCH_TYPE";
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"locationSearchType"];
+    [dictionary setObject:v20 forKeyedSubscript:@"locationSearchType"];
   }
 
   if (self->_notebookItemIdentifier)
   {
-    v21 = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"notebookItemIdentifier"];
+    notebookItemIdentifier = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
+    v22 = [notebookItemIdentifier copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"notebookItemIdentifier"];
   }
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasStatus])
   {
-    v23 = [(_INPBSearchForNotebookItemsIntent *)self status];
-    if (v23)
+    status = [(_INPBSearchForNotebookItemsIntent *)self status];
+    if (status)
     {
-      if (v23 == 20)
+      if (status == 20)
       {
         v24 = @"COMPLETED";
       }
 
-      else if (v23 == 10)
+      else if (status == 10)
       {
         v24 = @"NOT_COMPLETED";
       }
 
       else
       {
-        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v23];
+        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", status];
       }
     }
 
@@ -201,23 +201,23 @@ LABEL_29:
       v24 = @"UNKNOWN_STATUS";
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"status"];
+    [dictionary setObject:v24 forKeyedSubscript:@"status"];
   }
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasTaskPriority])
   {
-    v25 = [(_INPBSearchForNotebookItemsIntent *)self taskPriority];
-    if (v25 >= 3)
+    taskPriority = [(_INPBSearchForNotebookItemsIntent *)self taskPriority];
+    if (taskPriority >= 3)
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v25];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", taskPriority];
     }
 
     else
     {
-      v26 = off_1E7283878[v25];
+      v26 = off_1E7283878[taskPriority];
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"taskPriority"];
+    [dictionary setObject:v26 forKeyedSubscript:@"taskPriority"];
   }
 
   if (self->_temporalEventTriggerTypes.count)
@@ -247,14 +247,14 @@ LABEL_29:
       while (v28 < [(_INPBSearchForNotebookItemsIntent *)self temporalEventTriggerTypesCount]);
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"temporalEventTriggerType"];
+    [dictionary setObject:v27 forKeyedSubscript:@"temporalEventTriggerType"];
   }
 
-  v31 = [(_INPBSearchForNotebookItemsIntent *)self title];
-  v32 = [v31 dictionaryRepresentation];
-  [v3 setObject:v32 forKeyedSubscript:@"title"];
+  title = [(_INPBSearchForNotebookItemsIntent *)self title];
+  dictionaryRepresentation5 = [title dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"title"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -329,28 +329,28 @@ LABEL_29:
   return v15 ^ v16 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ [(_INPBDataString *)self->_title hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_62;
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntent *)self content];
-  v6 = [v4 content];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForNotebookItemsIntent *)self content];
+  content2 = [equalCopy content];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_61;
   }
 
-  v7 = [(_INPBSearchForNotebookItemsIntent *)self content];
-  if (v7)
+  content3 = [(_INPBSearchForNotebookItemsIntent *)self content];
+  if (content3)
   {
-    v8 = v7;
-    v9 = [(_INPBSearchForNotebookItemsIntent *)self content];
-    v10 = [v4 content];
-    v11 = [v9 isEqual:v10];
+    v8 = content3;
+    content4 = [(_INPBSearchForNotebookItemsIntent *)self content];
+    content5 = [equalCopy content];
+    v11 = [content4 isEqual:content5];
 
     if (!v11)
     {
@@ -362,38 +362,38 @@ LABEL_29:
   {
   }
 
-  v12 = [(_INPBSearchForNotebookItemsIntent *)self hasDateSearchType];
-  if (v12 != [v4 hasDateSearchType])
+  hasDateSearchType = [(_INPBSearchForNotebookItemsIntent *)self hasDateSearchType];
+  if (hasDateSearchType != [equalCopy hasDateSearchType])
   {
     goto LABEL_62;
   }
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasDateSearchType])
   {
-    if ([v4 hasDateSearchType])
+    if ([equalCopy hasDateSearchType])
     {
       dateSearchType = self->_dateSearchType;
-      if (dateSearchType != [v4 dateSearchType])
+      if (dateSearchType != [equalCopy dateSearchType])
       {
         goto LABEL_62;
       }
     }
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
-  v6 = [v4 dateTime];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
+  content2 = [equalCopy dateTime];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_61;
   }
 
-  v14 = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
-  if (v14)
+  dateTime = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
+  if (dateTime)
   {
-    v15 = v14;
-    v16 = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
-    v17 = [v4 dateTime];
-    v18 = [v16 isEqual:v17];
+    v15 = dateTime;
+    dateTime2 = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
+    dateTime3 = [equalCopy dateTime];
+    v18 = [dateTime2 isEqual:dateTime3];
 
     if (!v18)
     {
@@ -405,20 +405,20 @@ LABEL_29:
   {
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntent *)self groupName];
-  v6 = [v4 groupName];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForNotebookItemsIntent *)self groupName];
+  content2 = [equalCopy groupName];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_61;
   }
 
-  v19 = [(_INPBSearchForNotebookItemsIntent *)self groupName];
-  if (v19)
+  groupName = [(_INPBSearchForNotebookItemsIntent *)self groupName];
+  if (groupName)
   {
-    v20 = v19;
-    v21 = [(_INPBSearchForNotebookItemsIntent *)self groupName];
-    v22 = [v4 groupName];
-    v23 = [v21 isEqual:v22];
+    v20 = groupName;
+    groupName2 = [(_INPBSearchForNotebookItemsIntent *)self groupName];
+    groupName3 = [equalCopy groupName];
+    v23 = [groupName2 isEqual:groupName3];
 
     if (!v23)
     {
@@ -430,38 +430,38 @@ LABEL_29:
   {
   }
 
-  v24 = [(_INPBSearchForNotebookItemsIntent *)self hasIncludeAllNoteContents];
-  if (v24 != [v4 hasIncludeAllNoteContents])
+  hasIncludeAllNoteContents = [(_INPBSearchForNotebookItemsIntent *)self hasIncludeAllNoteContents];
+  if (hasIncludeAllNoteContents != [equalCopy hasIncludeAllNoteContents])
   {
     goto LABEL_62;
   }
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasIncludeAllNoteContents])
   {
-    if ([v4 hasIncludeAllNoteContents])
+    if ([equalCopy hasIncludeAllNoteContents])
     {
       includeAllNoteContents = self->_includeAllNoteContents;
-      if (includeAllNoteContents != [v4 includeAllNoteContents])
+      if (includeAllNoteContents != [equalCopy includeAllNoteContents])
       {
         goto LABEL_62;
       }
     }
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
+  content2 = [equalCopy intentMetadata];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_61;
   }
 
-  v26 = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
-  if (v26)
+  intentMetadata = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v27 = v26;
-    v28 = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
-    v29 = [v4 intentMetadata];
-    v30 = [v28 isEqual:v29];
+    v27 = intentMetadata;
+    intentMetadata2 = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v30 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v30)
     {
@@ -473,38 +473,38 @@ LABEL_29:
   {
   }
 
-  v31 = [(_INPBSearchForNotebookItemsIntent *)self hasItemType];
-  if (v31 != [v4 hasItemType])
+  hasItemType = [(_INPBSearchForNotebookItemsIntent *)self hasItemType];
+  if (hasItemType != [equalCopy hasItemType])
   {
     goto LABEL_62;
   }
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasItemType])
   {
-    if ([v4 hasItemType])
+    if ([equalCopy hasItemType])
     {
       itemType = self->_itemType;
-      if (itemType != [v4 itemType])
+      if (itemType != [equalCopy itemType])
       {
         goto LABEL_62;
       }
     }
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntent *)self location];
-  v6 = [v4 location];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForNotebookItemsIntent *)self location];
+  content2 = [equalCopy location];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_61;
   }
 
-  v33 = [(_INPBSearchForNotebookItemsIntent *)self location];
-  if (v33)
+  location = [(_INPBSearchForNotebookItemsIntent *)self location];
+  if (location)
   {
-    v34 = v33;
-    v35 = [(_INPBSearchForNotebookItemsIntent *)self location];
-    v36 = [v4 location];
-    v37 = [v35 isEqual:v36];
+    v34 = location;
+    location2 = [(_INPBSearchForNotebookItemsIntent *)self location];
+    location3 = [equalCopy location];
+    v37 = [location2 isEqual:location3];
 
     if (!v37)
     {
@@ -516,38 +516,38 @@ LABEL_29:
   {
   }
 
-  v38 = [(_INPBSearchForNotebookItemsIntent *)self hasLocationSearchType];
-  if (v38 != [v4 hasLocationSearchType])
+  hasLocationSearchType = [(_INPBSearchForNotebookItemsIntent *)self hasLocationSearchType];
+  if (hasLocationSearchType != [equalCopy hasLocationSearchType])
   {
     goto LABEL_62;
   }
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasLocationSearchType])
   {
-    if ([v4 hasLocationSearchType])
+    if ([equalCopy hasLocationSearchType])
     {
       locationSearchType = self->_locationSearchType;
-      if (locationSearchType != [v4 locationSearchType])
+      if (locationSearchType != [equalCopy locationSearchType])
       {
         goto LABEL_62;
       }
     }
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
-  v6 = [v4 notebookItemIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
+  content2 = [equalCopy notebookItemIdentifier];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_61;
   }
 
-  v40 = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
-  if (v40)
+  notebookItemIdentifier = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
+  if (notebookItemIdentifier)
   {
-    v41 = v40;
-    v42 = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
-    v43 = [v4 notebookItemIdentifier];
-    v44 = [v42 isEqual:v43];
+    v41 = notebookItemIdentifier;
+    notebookItemIdentifier2 = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
+    notebookItemIdentifier3 = [equalCopy notebookItemIdentifier];
+    v44 = [notebookItemIdentifier2 isEqual:notebookItemIdentifier3];
 
     if (!v44)
     {
@@ -559,36 +559,36 @@ LABEL_29:
   {
   }
 
-  v45 = [(_INPBSearchForNotebookItemsIntent *)self hasStatus];
-  if (v45 != [v4 hasStatus])
+  hasStatus = [(_INPBSearchForNotebookItemsIntent *)self hasStatus];
+  if (hasStatus != [equalCopy hasStatus])
   {
     goto LABEL_62;
   }
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasStatus])
   {
-    if ([v4 hasStatus])
+    if ([equalCopy hasStatus])
     {
       status = self->_status;
-      if (status != [v4 status])
+      if (status != [equalCopy status])
       {
         goto LABEL_62;
       }
     }
   }
 
-  v47 = [(_INPBSearchForNotebookItemsIntent *)self hasTaskPriority];
-  if (v47 != [v4 hasTaskPriority])
+  hasTaskPriority = [(_INPBSearchForNotebookItemsIntent *)self hasTaskPriority];
+  if (hasTaskPriority != [equalCopy hasTaskPriority])
   {
     goto LABEL_62;
   }
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasTaskPriority])
   {
-    if ([v4 hasTaskPriority])
+    if ([equalCopy hasTaskPriority])
     {
       taskPriority = self->_taskPriority;
-      if (taskPriority != [v4 taskPriority])
+      if (taskPriority != [equalCopy taskPriority])
       {
         goto LABEL_62;
       }
@@ -600,12 +600,12 @@ LABEL_29:
     goto LABEL_62;
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntent *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) != (v6 == 0))
+  content = [(_INPBSearchForNotebookItemsIntent *)self title];
+  content2 = [equalCopy title];
+  if ((content != 0) != (content2 == 0))
   {
-    v49 = [(_INPBSearchForNotebookItemsIntent *)self title];
-    if (!v49)
+    title = [(_INPBSearchForNotebookItemsIntent *)self title];
+    if (!title)
     {
 
 LABEL_65:
@@ -613,10 +613,10 @@ LABEL_65:
       goto LABEL_63;
     }
 
-    v50 = v49;
-    v51 = [(_INPBSearchForNotebookItemsIntent *)self title];
-    v52 = [v4 title];
-    v53 = [v51 isEqual:v52];
+    v50 = title;
+    title2 = [(_INPBSearchForNotebookItemsIntent *)self title];
+    title3 = [equalCopy title];
+    v53 = [title2 isEqual:title3];
 
     if (v53)
     {
@@ -636,10 +636,10 @@ LABEL_63:
   return v54;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchForNotebookItemsIntent allocWithZone:](_INPBSearchForNotebookItemsIntent init];
-  v6 = [(NSString *)self->_content copyWithZone:a3];
+  v6 = [(NSString *)self->_content copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntent *)v5 setContent:v6];
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasDateSearchType])
@@ -647,10 +647,10 @@ LABEL_63:
     [(_INPBSearchForNotebookItemsIntent *)v5 setDateSearchType:[(_INPBSearchForNotebookItemsIntent *)self dateSearchType]];
   }
 
-  v7 = [(_INPBDateTimeRange *)self->_dateTime copyWithZone:a3];
+  v7 = [(_INPBDateTimeRange *)self->_dateTime copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntent *)v5 setDateTime:v7];
 
-  v8 = [(_INPBDataString *)self->_groupName copyWithZone:a3];
+  v8 = [(_INPBDataString *)self->_groupName copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntent *)v5 setGroupName:v8];
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasIncludeAllNoteContents])
@@ -658,7 +658,7 @@ LABEL_63:
     [(_INPBSearchForNotebookItemsIntent *)v5 setIncludeAllNoteContents:[(_INPBSearchForNotebookItemsIntent *)self includeAllNoteContents]];
   }
 
-  v9 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v9 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntent *)v5 setIntentMetadata:v9];
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasItemType])
@@ -666,7 +666,7 @@ LABEL_63:
     [(_INPBSearchForNotebookItemsIntent *)v5 setItemType:[(_INPBSearchForNotebookItemsIntent *)self itemType]];
   }
 
-  v10 = [(_INPBLocation *)self->_location copyWithZone:a3];
+  v10 = [(_INPBLocation *)self->_location copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntent *)v5 setLocation:v10];
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasLocationSearchType])
@@ -674,7 +674,7 @@ LABEL_63:
     [(_INPBSearchForNotebookItemsIntent *)v5 setLocationSearchType:[(_INPBSearchForNotebookItemsIntent *)self locationSearchType]];
   }
 
-  v11 = [(NSString *)self->_notebookItemIdentifier copyWithZone:a3];
+  v11 = [(NSString *)self->_notebookItemIdentifier copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntent *)v5 setNotebookItemIdentifier:v11];
 
   if ([(_INPBSearchForNotebookItemsIntent *)self hasStatus])
@@ -688,34 +688,34 @@ LABEL_63:
   }
 
   PBRepeatedInt32Copy();
-  v12 = [(_INPBDataString *)self->_title copyWithZone:a3];
+  v12 = [(_INPBDataString *)self->_title copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntent *)v5 setTitle:v12];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchForNotebookItemsIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchForNotebookItemsIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchForNotebookItemsIntent)initWithCoder:(id)a3
+- (_INPBSearchForNotebookItemsIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchForNotebookItemsIntent *)self initWithData:v6];
+    self = [(_INPBSearchForNotebookItemsIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -726,12 +726,12 @@ LABEL_63:
   [(_INPBSearchForNotebookItemsIntent *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v26 = a3;
-  v4 = [(_INPBSearchForNotebookItemsIntent *)self content];
+  toCopy = to;
+  content = [(_INPBSearchForNotebookItemsIntent *)self content];
 
-  if (v4)
+  if (content)
   {
     content = self->_content;
     PBDataWriterWriteStringField();
@@ -743,19 +743,19 @@ LABEL_63:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
+  dateTime = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
 
-  if (v7)
+  if (dateTime)
   {
-    v8 = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
+    dateTime2 = [(_INPBSearchForNotebookItemsIntent *)self dateTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBSearchForNotebookItemsIntent *)self groupName];
+  groupName = [(_INPBSearchForNotebookItemsIntent *)self groupName];
 
-  if (v9)
+  if (groupName)
   {
-    v10 = [(_INPBSearchForNotebookItemsIntent *)self groupName];
+    groupName2 = [(_INPBSearchForNotebookItemsIntent *)self groupName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -765,11 +765,11 @@ LABEL_63:
     PBDataWriterWriteBOOLField();
   }
 
-  v12 = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
 
-  if (v12)
+  if (intentMetadata)
   {
-    v13 = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSearchForNotebookItemsIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -779,11 +779,11 @@ LABEL_63:
     PBDataWriterWriteInt32Field();
   }
 
-  v15 = [(_INPBSearchForNotebookItemsIntent *)self location];
+  location = [(_INPBSearchForNotebookItemsIntent *)self location];
 
-  if (v15)
+  if (location)
   {
-    v16 = [(_INPBSearchForNotebookItemsIntent *)self location];
+    location2 = [(_INPBSearchForNotebookItemsIntent *)self location];
     PBDataWriterWriteSubmessage();
   }
 
@@ -793,9 +793,9 @@ LABEL_63:
     PBDataWriterWriteInt32Field();
   }
 
-  v18 = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
+  notebookItemIdentifier = [(_INPBSearchForNotebookItemsIntent *)self notebookItemIdentifier];
 
-  if (v18)
+  if (notebookItemIdentifier)
   {
     notebookItemIdentifier = self->_notebookItemIdentifier;
     PBDataWriterWriteStringField();
@@ -826,34 +826,34 @@ LABEL_63:
     while (v22 < self->_temporalEventTriggerTypes.count);
   }
 
-  v24 = [(_INPBSearchForNotebookItemsIntent *)self title];
+  title = [(_INPBSearchForNotebookItemsIntent *)self title];
 
-  if (v24)
+  if (title)
   {
-    v25 = [(_INPBSearchForNotebookItemsIntent *)self title];
+    title2 = [(_INPBSearchForNotebookItemsIntent *)self title];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (int)StringAsTemporalEventTriggerTypes:(id)a3
+- (int)StringAsTemporalEventTriggerTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TEMPORAL_TRIGGER_TYPE"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"UNKNOWN_TEMPORAL_TRIGGER_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOT_SCHEDULED"])
+  else if ([typesCopy isEqualToString:@"NOT_SCHEDULED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SCHEDULED_NON_RECURRING"])
+  else if ([typesCopy isEqualToString:@"SCHEDULED_NON_RECURRING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SCHEDULED_RECURRING"])
+  else if ([typesCopy isEqualToString:@"SCHEDULED_RECURRING"])
   {
     v4 = 3;
   }
@@ -866,28 +866,28 @@ LABEL_63:
   return v4;
 }
 
-- (void)addTemporalEventTriggerType:(int)a3
+- (void)addTemporalEventTriggerType:(int)type
 {
-  if (a3 != 0x7FFFFFFF)
+  if (type != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsTaskPriority:(id)a3
+- (int)StringAsTaskPriority:(id)priority
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_PRIORITY"])
+  priorityCopy = priority;
+  if ([priorityCopy isEqualToString:@"UNKNOWN_PRIORITY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOT_FLAGGED"])
+  else if ([priorityCopy isEqualToString:@"NOT_FLAGGED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FLAGGED"])
+  else if ([priorityCopy isEqualToString:@"FLAGGED"])
   {
     v4 = 2;
   }
@@ -900,9 +900,9 @@ LABEL_63:
   return v4;
 }
 
-- (void)setHasTaskPriority:(BOOL)a3
+- (void)setHasTaskPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 32;
   }
@@ -915,10 +915,10 @@ LABEL_63:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setTaskPriority:(int)a3
+- (void)setTaskPriority:(int)priority
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (priority == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xDF;
   }
@@ -926,24 +926,24 @@ LABEL_63:
   else
   {
     *&self->_has = has | 0x20;
-    self->_taskPriority = a3;
+    self->_taskPriority = priority;
   }
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_STATUS"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN_STATUS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOT_COMPLETED"])
+  else if ([statusCopy isEqualToString:@"NOT_COMPLETED"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([statusCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 20;
   }
@@ -956,9 +956,9 @@ LABEL_63:
   return v4;
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -971,10 +971,10 @@ LABEL_63:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setStatus:(int)a3
+- (void)setStatus:(int)status
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (status == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xEF;
   }
@@ -982,28 +982,28 @@ LABEL_63:
   else
   {
     *&self->_has = has | 0x10;
-    self->_status = a3;
+    self->_status = status;
   }
 }
 
-- (void)setNotebookItemIdentifier:(id)a3
+- (void)setNotebookItemIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   notebookItemIdentifier = self->_notebookItemIdentifier;
   self->_notebookItemIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, notebookItemIdentifier);
 }
 
-- (int)StringAsLocationSearchType:(id)a3
+- (int)StringAsLocationSearchType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_LOCATION_SEARCH_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_LOCATION_SEARCH_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BY_LOCATION_TRIGGER"])
+  else if ([typeCopy isEqualToString:@"BY_LOCATION_TRIGGER"])
   {
     v4 = 10;
   }
@@ -1016,9 +1016,9 @@ LABEL_63:
   return v4;
 }
 
-- (void)setHasLocationSearchType:(BOOL)a3
+- (void)setHasLocationSearchType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -1031,10 +1031,10 @@ LABEL_63:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setLocationSearchType:(int)a3
+- (void)setLocationSearchType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7;
   }
@@ -1042,29 +1042,29 @@ LABEL_63:
   else
   {
     *&self->_has = has | 8;
-    self->_locationSearchType = a3;
+    self->_locationSearchType = type;
   }
 }
 
-- (int)StringAsItemType:(id)a3
+- (int)StringAsItemType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_NOTE_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_NOTE_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOTE"])
+  else if ([typeCopy isEqualToString:@"NOTE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TASK_LIST"])
+  else if ([typeCopy isEqualToString:@"TASK_LIST"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"TASK"])
+  else if ([typeCopy isEqualToString:@"TASK"])
   {
     v4 = 30;
   }
@@ -1077,9 +1077,9 @@ LABEL_63:
   return v4;
 }
 
-- (void)setHasItemType:(BOOL)a3
+- (void)setHasItemType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -1092,10 +1092,10 @@ LABEL_63:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setItemType:(int)a3
+- (void)setItemType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -1103,13 +1103,13 @@ LABEL_63:
   else
   {
     *&self->_has = has | 4;
-    self->_itemType = a3;
+    self->_itemType = type;
   }
 }
 
-- (void)setHasIncludeAllNoteContents:(BOOL)a3
+- (void)setHasIncludeAllNoteContents:(BOOL)contents
 {
-  if (a3)
+  if (contents)
   {
     v3 = 2;
   }
@@ -1122,25 +1122,25 @@ LABEL_63:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsDateSearchType:(id)a3
+- (int)StringAsDateSearchType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_DATE_SEARCH_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_DATE_SEARCH_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BY_DUE_DATE"])
+  else if ([typeCopy isEqualToString:@"BY_DUE_DATE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BY_MODIFIED_DATE"])
+  else if ([typeCopy isEqualToString:@"BY_MODIFIED_DATE"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"BY_CREATED_DATE"])
+  else if ([typeCopy isEqualToString:@"BY_CREATED_DATE"])
   {
     v4 = 30;
   }
@@ -1153,10 +1153,10 @@ LABEL_63:
   return v4;
 }
 
-- (void)setDateSearchType:(int)a3
+- (void)setDateSearchType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -1164,13 +1164,13 @@ LABEL_63:
   else
   {
     *&self->_has = has | 1;
-    self->_dateSearchType = a3;
+    self->_dateSearchType = type;
   }
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = [a3 copy];
+  v4 = [content copy];
   content = self->_content;
   self->_content = v4;
 

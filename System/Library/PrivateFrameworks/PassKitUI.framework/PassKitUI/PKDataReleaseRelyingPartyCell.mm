@@ -1,8 +1,8 @@
 @interface PKDataReleaseRelyingPartyCell
-- (_TtC9PassKitUI29PKDataReleaseRelyingPartyCell)initWithCoder:(id)a3;
-- (_TtC9PassKitUI29PKDataReleaseRelyingPartyCell)initWithFrame:(CGRect)a3;
+- (_TtC9PassKitUI29PKDataReleaseRelyingPartyCell)initWithCoder:(id)coder;
+- (_TtC9PassKitUI29PKDataReleaseRelyingPartyCell)initWithFrame:(CGRect)frame;
 - (_TtC9PassKitUI42PKDataReleaseRelyingPartyCellConfiguration)configuration;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation PKDataReleaseRelyingPartyCell
@@ -14,19 +14,19 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v6 = a3;
-  v5 = self;
-  sub_1BD308A68(a3);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1BD308A68(configuration);
 }
 
-- (_TtC9PassKitUI29PKDataReleaseRelyingPartyCell)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI29PKDataReleaseRelyingPartyCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI29PKDataReleaseRelyingPartyCell_configuration) = 0;
   v10.receiver = self;
@@ -34,14 +34,14 @@
   return [(PKDataReleaseRelyingPartyCell *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9PassKitUI29PKDataReleaseRelyingPartyCell)initWithCoder:(id)a3
+- (_TtC9PassKitUI29PKDataReleaseRelyingPartyCell)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI29PKDataReleaseRelyingPartyCell_configuration) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(PKDataReleaseRelyingPartyCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(PKDataReleaseRelyingPartyCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

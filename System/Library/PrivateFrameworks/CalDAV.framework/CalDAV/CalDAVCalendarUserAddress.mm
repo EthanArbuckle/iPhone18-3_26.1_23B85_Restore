@@ -1,47 +1,47 @@
 @interface CalDAVCalendarUserAddress
-+ (BOOL)compareAddressURL:(id)a3 localString:(id)a4;
-+ (BOOL)compareAddressURL:(id)a3 localURL:(id)a4;
-+ (id)_minPreferredAddress:(id)a3;
-+ (id)_preferredAddressNoPreferred:(id)a3;
-+ (id)packCalDAVUserAdress:(id)a3;
-+ (id)preferredAddress:(id)a3;
-+ (id)unpackCalDAVUserAdress:(id)a3;
-- (BOOL)isSameAsUserAddressURL:(id)a3;
-- (CalDAVCalendarUserAddress)initWithAddress:(id)a3 preferred:(int64_t)a4;
-- (int64_t)compare:(id)a3;
++ (BOOL)compareAddressURL:(id)l localString:(id)string;
++ (BOOL)compareAddressURL:(id)l localURL:(id)rL;
++ (id)_minPreferredAddress:(id)address;
++ (id)_preferredAddressNoPreferred:(id)preferred;
++ (id)packCalDAVUserAdress:(id)adress;
++ (id)preferredAddress:(id)address;
++ (id)unpackCalDAVUserAdress:(id)adress;
+- (BOOL)isSameAsUserAddressURL:(id)l;
+- (CalDAVCalendarUserAddress)initWithAddress:(id)address preferred:(int64_t)preferred;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CalDAVCalendarUserAddress
 
-- (CalDAVCalendarUserAddress)initWithAddress:(id)a3 preferred:(int64_t)a4
+- (CalDAVCalendarUserAddress)initWithAddress:(id)address preferred:(int64_t)preferred
 {
-  v6 = a3;
+  addressCopy = address;
   v10.receiver = self;
   v10.super_class = CalDAVCalendarUserAddress;
   v7 = [(CalDAVCalendarUserAddress *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(CalDAVCalendarUserAddress *)v7 setAddress:v6];
-    [(CalDAVCalendarUserAddress *)v8 setPreferred:a4];
+    [(CalDAVCalendarUserAddress *)v7 setAddress:addressCopy];
+    [(CalDAVCalendarUserAddress *)v8 setPreferred:preferred];
   }
 
   return v8;
 }
 
-+ (id)packCalDAVUserAdress:(id)a3
++ (id)packCalDAVUserAdress:(id)adress
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"packedCalendarUserAddressAddress";
-  v3 = a3;
-  v4 = [v3 address];
-  v5 = [v4 absoluteString];
+  adressCopy = adress;
+  address = [adressCopy address];
+  absoluteString = [address absoluteString];
   v12[1] = @"packedCalendarUserAddressPreferred";
-  v13[0] = v5;
+  v13[0] = absoluteString;
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v3 preferred];
+  preferred = [adressCopy preferred];
 
-  v8 = [v6 numberWithInteger:v7];
+  v8 = [v6 numberWithInteger:preferred];
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
@@ -50,66 +50,66 @@
   return v9;
 }
 
-+ (id)unpackCalDAVUserAdress:(id)a3
++ (id)unpackCalDAVUserAdress:(id)adress
 {
-  v3 = a3;
+  adressCopy = adress;
   v4 = [CalDAVCalendarUserAddress alloc];
   v5 = MEMORY[0x277CBEBC0];
-  v6 = [v3 objectForKeyedSubscript:@"packedCalendarUserAddressAddress"];
+  v6 = [adressCopy objectForKeyedSubscript:@"packedCalendarUserAddressAddress"];
   v7 = [v5 URLWithString:v6];
-  v8 = [v3 objectForKeyedSubscript:@"packedCalendarUserAddressPreferred"];
+  v8 = [adressCopy objectForKeyedSubscript:@"packedCalendarUserAddressPreferred"];
 
   v9 = -[CalDAVCalendarUserAddress initWithAddress:preferred:](v4, "initWithAddress:preferred:", v7, [v8 integerValue]);
 
   return v9;
 }
 
-+ (id)preferredAddress:(id)a3
++ (id)preferredAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  addressCopy = address;
+  v5 = addressCopy;
+  if (addressCopy && [addressCopy count])
   {
-    v6 = [a1 _minPreferredAddress:v5];
+    v6 = [self _minPreferredAddress:v5];
     if (!v6)
     {
-      v6 = [a1 _preferredAddressNoPreferred:v5];
+      v6 = [self _preferredAddressNoPreferred:v5];
     }
 
-    v7 = [v6 address];
-    v8 = [v7 absoluteString];
+    address = [v6 address];
+    absoluteString = [address absoluteString];
   }
 
   else
   {
-    v8 = 0;
+    absoluteString = 0;
   }
 
-  return v8;
+  return absoluteString;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarUserAddress *)self address];
-  v6 = [v5 absoluteString];
-  v7 = [v4 address];
+  compareCopy = compare;
+  address = [(CalDAVCalendarUserAddress *)self address];
+  absoluteString = [address absoluteString];
+  address2 = [compareCopy address];
 
-  v8 = [v7 absoluteString];
-  v9 = [v6 compare:v8];
+  absoluteString2 = [address2 absoluteString];
+  v9 = [absoluteString compare:absoluteString2];
 
   return v9;
 }
 
-+ (id)_minPreferredAddress:(id)a3
++ (id)_minPreferredAddress:(id)address
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  addressCopy = address;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [addressCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -121,17 +121,17 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(addressCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 preferred];
-        if (v10 != [objc_opt_class() defaultPreferredAttribute])
+        preferred = [v9 preferred];
+        if (preferred != [objc_opt_class() defaultPreferredAttribute])
         {
           if (v6)
           {
-            v11 = [v6 preferred];
-            if (v11 > [v9 preferred])
+            preferred2 = [v6 preferred];
+            if (preferred2 > [v9 preferred])
             {
               v12 = v9;
 
@@ -146,7 +146,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [addressCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -162,12 +162,12 @@
   return v6;
 }
 
-+ (id)_preferredAddressNoPreferred:(id)a3
++ (id)_preferredAddressNoPreferred:(id)preferred
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  preferredCopy = preferred;
+  allObjects = [preferredCopy allObjects];
+  v5 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   if ([v5 count] == 1)
   {
@@ -176,7 +176,7 @@
   }
 
   v29 = v5;
-  v30 = v3;
+  v30 = preferredCopy;
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -211,7 +211,7 @@ LABEL_25:
       if (!v32)
       {
         v5 = v29;
-        v3 = v30;
+        preferredCopy = v30;
         v7 = v31;
         if (v31)
         {
@@ -254,11 +254,11 @@ LABEL_6:
     }
 
     v15 = *(*(&v34 + 1) + 8 * v14);
-    v16 = [v15 address];
-    v17 = [v16 absoluteString];
-    v18 = [v17 lowercaseString];
+    address = [v15 address];
+    absoluteString = [address absoluteString];
+    lowercaseString = [absoluteString lowercaseString];
 
-    if ([v18 hasPrefix:@"https"])
+    if ([lowercaseString hasPrefix:@"https"])
     {
       v19 = v12;
       v20 = v11;
@@ -270,9 +270,9 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v21 = [v15 address];
-    v22 = [v21 absoluteString];
-    v23 = [v22 hasPrefix:@"/"];
+    address2 = [v15 address];
+    absoluteString2 = [address2 absoluteString];
+    v23 = [absoluteString2 hasPrefix:@"/"];
 
     if (v23)
     {
@@ -282,7 +282,7 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if ([v18 hasPrefix:@"http"])
+    if ([lowercaseString hasPrefix:@"http"])
     {
       v19 = v31;
       v20 = v11;
@@ -290,14 +290,14 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if ([v18 hasPrefix:@"mailto"])
+    if ([lowercaseString hasPrefix:@"mailto"])
     {
       break;
     }
 
     v19 = v11;
     v20 = v15;
-    if ([v18 hasPrefix:@"tel"])
+    if ([lowercaseString hasPrefix:@"tel"])
     {
       goto LABEL_17;
     }
@@ -330,7 +330,7 @@ LABEL_18:
 LABEL_27:
 LABEL_33:
   v5 = v29;
-  v3 = v30;
+  preferredCopy = v30;
 LABEL_34:
 
   v27 = *MEMORY[0x277D85DE8];
@@ -338,68 +338,68 @@ LABEL_34:
   return v7;
 }
 
-- (BOOL)isSameAsUserAddressURL:(id)a3
+- (BOOL)isSameAsUserAddressURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_class();
-  v6 = [(CalDAVCalendarUserAddress *)self address];
-  LOBYTE(v5) = [v5 compareAddressURL:v4 localURL:v6];
+  address = [(CalDAVCalendarUserAddress *)self address];
+  LOBYTE(v5) = [v5 compareAddressURL:lCopy localURL:address];
 
   return v5;
 }
 
-+ (BOOL)compareAddressURL:(id)a3 localString:(id)a4
++ (BOOL)compareAddressURL:(id)l localString:(id)string
 {
-  if (!a3 || !a4)
+  if (!l || !string)
   {
     return 0;
   }
 
   v6 = MEMORY[0x277CBEBC0];
-  v7 = a3;
-  v8 = [v6 URLWithString:a4];
-  LOBYTE(a1) = [a1 compareAddressURL:v7 localURL:v8];
+  lCopy = l;
+  v8 = [v6 URLWithString:string];
+  LOBYTE(self) = [self compareAddressURL:lCopy localURL:v8];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)compareAddressURL:(id)a3 localURL:(id)a4
++ (BOOL)compareAddressURL:(id)l localURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 absoluteString];
-  v8 = [v7 removeSlashIfNeeded];
-  v9 = [v6 absoluteString];
-  v10 = [v9 removeSlashIfNeeded];
-  v11 = [v8 caseInsensitiveCompare:v10];
+  lCopy = l;
+  rLCopy = rL;
+  absoluteString = [lCopy absoluteString];
+  removeSlashIfNeeded = [absoluteString removeSlashIfNeeded];
+  absoluteString2 = [rLCopy absoluteString];
+  removeSlashIfNeeded2 = [absoluteString2 removeSlashIfNeeded];
+  v11 = [removeSlashIfNeeded caseInsensitiveCompare:removeSlashIfNeeded2];
 
   if (v11)
   {
-    v12 = [v5 relativePath];
-    v13 = [v12 removeSlashIfNeeded];
+    relativePath = [lCopy relativePath];
+    removeSlashIfNeeded3 = [relativePath removeSlashIfNeeded];
 
-    v14 = [v6 relativePath];
-    v15 = [v14 removeSlashIfNeeded];
+    relativePath2 = [rLCopy relativePath];
+    removeSlashIfNeeded4 = [relativePath2 removeSlashIfNeeded];
 
-    if (!v13 || v13 == v15 || [v13 caseInsensitiveCompare:v15])
+    if (!removeSlashIfNeeded3 || removeSlashIfNeeded3 == removeSlashIfNeeded4 || [removeSlashIfNeeded3 caseInsensitiveCompare:removeSlashIfNeeded4])
     {
-      v16 = [v6 path];
-      v17 = [v5 path];
-      v18 = [v16 isEqualToString:v17];
+      path = [rLCopy path];
+      path2 = [lCopy path];
+      v18 = [path isEqualToString:path2];
 
       if (v18)
       {
-        v19 = [v6 port];
-        v20 = [v5 port];
-        v21 = v20;
-        if (v19)
+        port = [rLCopy port];
+        port2 = [lCopy port];
+        v21 = port2;
+        if (port)
         {
-          if (v20 && ([v19 isEqualToNumber:v20] & 1) != 0)
+          if (port2 && ([port isEqualToNumber:port2] & 1) != 0)
           {
 LABEL_9:
-            v22 = [v6 host];
-            v23 = [v5 host];
-            if ([v22 isEqualToString:v23])
+            host = [rLCopy host];
+            host2 = [lCopy host];
+            if ([host isEqualToString:host2])
             {
 LABEL_10:
               v24 = 1;
@@ -408,26 +408,26 @@ LABEL_27:
               goto LABEL_28;
             }
 
-            v25 = [v22 length];
-            v26 = [v23 length];
+            v25 = [host length];
+            v26 = [host2 length];
             if (v25 >= v26)
             {
-              v27 = v23;
+              v27 = host2;
             }
 
             else
             {
-              v27 = v22;
+              v27 = host;
             }
 
             if (v25 >= v26)
             {
-              v28 = v22;
+              v28 = host;
             }
 
             else
             {
-              v28 = v23;
+              v28 = host2;
             }
 
             v29 = v27;
@@ -451,7 +451,7 @@ LABEL_27:
           }
         }
 
-        else if (!v20)
+        else if (!port2)
         {
           goto LABEL_9;
         }

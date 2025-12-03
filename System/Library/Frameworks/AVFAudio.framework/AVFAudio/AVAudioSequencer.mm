@@ -1,6 +1,6 @@
 @interface AVAudioSequencer
 - (AVAudioSequencer)initWithAudioEngine:(AVAudioEngine *)engine;
-- (AVAudioSequencer)initWithImpl:(void *)a3;
+- (AVAudioSequencer)initWithImpl:(void *)impl;
 - (AVMusicTimeStamp)beatsForHostTime:(UInt64)inHostTime error:(NSError *)outError;
 - (AVMusicTrack)createAndAppendTrack;
 - (BOOL)isPlaying;
@@ -32,7 +32,7 @@
 - (void)setUserCallback:(AVAudioSequencerUserCallback)userCallback
 {
   impl = self->_impl;
-  v10 = self;
+  selfCopy = self;
   v6 = _Block_copy(userCallback);
   v7 = *(impl + 4);
   *(impl + 4) = v6;
@@ -62,9 +62,9 @@
 - (BOOL)removeTrack:(AVMusicTrack *)track
 {
   v4 = track;
-  v5 = [(AVMusicTrack *)v4 index];
-  v6 = [(AVAudioSequencer *)self trackArray];
-  [v6 removeObjectAtIndex:v5];
+  index = [(AVMusicTrack *)v4 index];
+  trackArray = [(AVAudioSequencer *)self trackArray];
+  [trackArray removeObjectAtIndex:index];
 
   return 1;
 }
@@ -142,9 +142,9 @@
 
 - (void)setupTrackArray
 {
-  v3 = [(AVAudioSequencer *)self trackArray];
+  trackArray = [(AVAudioSequencer *)self trackArray];
 
-  if (!v3)
+  if (!trackArray)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(AVAudioSequencer *)self setTrackArray:?];
@@ -181,21 +181,21 @@
   [(AVAudioSequencer *)&v4 dealloc];
 }
 
-- (AVAudioSequencer)initWithImpl:(void *)a3
+- (AVAudioSequencer)initWithImpl:(void *)impl
 {
   v7.receiver = self;
   v7.super_class = AVAudioSequencer;
   v4 = [(AVAudioSequencer *)&v7 init];
   if (v4)
   {
-    v4->_impl = a3;
+    v4->_impl = impl;
     v5 = [AVMusicTrack alloc];
     operator new();
   }
 
-  if (a3)
+  if (impl)
   {
-    AVAudioSequencerImpl::~AVAudioSequencerImpl(a3);
+    AVAudioSequencerImpl::~AVAudioSequencerImpl(impl);
   }
 
   return 0;

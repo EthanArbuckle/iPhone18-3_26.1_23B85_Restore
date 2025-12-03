@@ -1,20 +1,20 @@
 @interface HUDropInBannerItem
-- (HUDropInBannerItem)initWithHome:(id)a3;
-- (HUDropInBannerItem)initWithHome:(id)a3 device:(id)a4 eventBulletin:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUDropInBannerItem)initWithHome:(id)home;
+- (HUDropInBannerItem)initWithHome:(id)home device:(id)device eventBulletin:(id)bulletin;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUDropInBannerItem
 
-- (HUDropInBannerItem)initWithHome:(id)a3 device:(id)a4 eventBulletin:(id)a5
+- (HUDropInBannerItem)initWithHome:(id)home device:(id)device eventBulletin:(id)bulletin
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  homeCopy = home;
+  deviceCopy = device;
+  bulletinCopy = bulletin;
+  if (homeCopy)
   {
-    if (v10)
+    if (deviceCopy)
     {
       goto LABEL_3;
     }
@@ -22,98 +22,98 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HUDropInBannerItem.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUDropInBannerItem.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"home"}];
 
-    if (v10)
+    if (deviceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"HUDropInBannerItem.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"device"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUDropInBannerItem.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"device"}];
 
 LABEL_3:
   v17.receiver = self;
   v17.super_class = HUDropInBannerItem;
-  v12 = [(HUBannerItem *)&v17 initWithHome:v9];
+  v12 = [(HUBannerItem *)&v17 initWithHome:homeCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_device, a4);
-    objc_storeStrong(&v13->_eventBulletin, a5);
+    objc_storeStrong(&v12->_device, device);
+    objc_storeStrong(&v13->_eventBulletin, bulletin);
   }
 
   return v13;
 }
 
-- (HUDropInBannerItem)initWithHome:(id)a3
+- (HUDropInBannerItem)initWithHome:(id)home
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithHome_device_eventBulletin_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUDropInBannerItem.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUDropInBannerItem initWithHome:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUDropInBannerItem.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUDropInBannerItem initWithHome:]", v6}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HUBannerItem *)self home];
-  v6 = [(HUDropInBannerItem *)self device];
-  v7 = [(HUDropInBannerItem *)self eventBulletin];
-  v8 = [v4 initWithHome:v5 device:v6 eventBulletin:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  home = [(HUBannerItem *)self home];
+  device = [(HUDropInBannerItem *)self device];
+  eventBulletin = [(HUDropInBannerItem *)self eventBulletin];
+  v8 = [v4 initWithHome:home device:device eventBulletin:eventBulletin];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v92 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
-    v7 = [(HUDropInBannerItem *)self device];
+    device = [(HUDropInBannerItem *)self device];
     *buf = 138412802;
-    v83 = self;
+    selfCopy5 = self;
     v84 = 2112;
     v85 = v6;
     v86 = 2112;
-    *v87 = v7;
+    *v87 = device;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@: %@ DropIn device: %@", buf, 0x20u);
   }
 
-  v8 = [(HUDropInBannerItem *)self device];
-  if ([v8 state] == 2)
+  device2 = [(HUDropInBannerItem *)self device];
+  if ([device2 state] == 2)
   {
   }
 
   else
   {
-    v9 = [(HUDropInBannerItem *)self device];
-    v10 = [v9 state];
+    device3 = [(HUDropInBannerItem *)self device];
+    state = [device3 state];
 
-    if (v10 != 3)
+    if (state != 3)
     {
       v14 = 0;
       goto LABEL_10;
     }
   }
 
-  v11 = [(HUBannerItem *)self home];
-  v12 = [(HUDropInBannerItem *)self device];
-  v13 = [v12 homeKitIdentifier];
-  v14 = [v11 hf_accessoryWithIdentifier:v13];
+  home = [(HUBannerItem *)self home];
+  device4 = [(HUDropInBannerItem *)self device];
+  homeKitIdentifier = [device4 homeKitIdentifier];
+  v14 = [home hf_accessoryWithIdentifier:homeKitIdentifier];
 
   v15 = HFLogForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v83 = self;
+    selfCopy5 = self;
     v84 = 2112;
     v85 = v16;
     v86 = 2112;
@@ -134,63 +134,63 @@ LABEL_10:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v21 = NSStringFromSelector(a2);
-      v22 = [(HUDropInBannerItem *)self eventBulletin];
+      eventBulletin = [(HUDropInBannerItem *)self eventBulletin];
       *buf = 138412802;
-      v83 = self;
+      selfCopy5 = self;
       v84 = 2112;
       v85 = v21;
       v86 = 2112;
-      *v87 = v22;
+      *v87 = eventBulletin;
       _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "%@: %@ Last Known Event Bulletin: %@", buf, 0x20u);
     }
 
     [v17 setObject:@"Home.Banners.DropIn" forKeyedSubscript:*MEMORY[0x277D13DC8]];
-    v23 = [(HUDropInBannerItem *)self eventBulletin];
+    eventBulletin2 = [(HUDropInBannerItem *)self eventBulletin];
 
-    if (v23)
+    if (eventBulletin2)
     {
       v24 = HFLogForCategory();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         v25 = NSStringFromSelector(a2);
-        v26 = [(HUDropInBannerItem *)self eventBulletin];
+        eventBulletin3 = [(HUDropInBannerItem *)self eventBulletin];
         *buf = 138412802;
-        v83 = self;
+        selfCopy5 = self;
         v84 = 2112;
         v85 = v25;
         v86 = 2112;
-        *v87 = v26;
+        *v87 = eventBulletin3;
         _os_log_impl(&dword_20CEB6000, v24, OS_LOG_TYPE_DEFAULT, "%@: %@ Found last known event for accessory: %@", buf, 0x20u);
       }
 
       v27 = [MEMORY[0x277CBEAA8] now];
-      v28 = [(HUDropInBannerItem *)self eventBulletin];
-      v29 = [v28 startDate];
+      eventBulletin4 = [(HUDropInBannerItem *)self eventBulletin];
+      startDate = [eventBulletin4 startDate];
 
-      v30 = [(HUDropInBannerItem *)self eventBulletin];
-      v80 = [v30 dateOfOccurrence];
+      eventBulletin5 = [(HUDropInBannerItem *)self eventBulletin];
+      dateOfOccurrence = [eventBulletin5 dateOfOccurrence];
 
-      v31 = [v14 hf_serviceNameComponents];
-      v32 = [v31 composedString];
+      hf_serviceNameComponents = [v14 hf_serviceNameComponents];
+      composedString = [hf_serviceNameComponents composedString];
 
       if (objc_opt_respondsToSelector())
       {
-        v33 = [v14 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];
-        v34 = [v33 composedString];
+        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 = [v14 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];
+        composedString2 = [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 composedString];
 
-        v32 = v34;
+        composedString = composedString2;
       }
 
-      v35 = [(HUDropInBannerItem *)self eventBulletin];
-      v36 = [v35 state];
+      eventBulletin6 = [(HUDropInBannerItem *)self eventBulletin];
+      state2 = [eventBulletin6 state];
 
-      v79 = v32;
-      if (v36)
+      v79 = composedString;
+      if (state2)
       {
-        v37 = [(HUDropInBannerItem *)self eventBulletin];
-        v38 = [v37 state];
+        eventBulletin7 = [(HUDropInBannerItem *)self eventBulletin];
+        state3 = [eventBulletin7 state];
 
-        if (v38 != 1)
+        if (state3 != 1)
         {
           v18 = 1;
 LABEL_36:
@@ -199,25 +199,25 @@ LABEL_36:
           {
             v65 = NSStringFromSelector(a2);
             *buf = 138413570;
-            v83 = self;
+            selfCopy5 = self;
             v84 = 2112;
             v85 = v65;
             v86 = 1024;
             *v87 = v18;
             *&v87[4] = 2112;
-            *&v87[6] = v29;
+            *&v87[6] = startDate;
             v88 = 2112;
-            v89 = v80;
+            v89 = dateOfOccurrence;
             v90 = 2112;
             v91 = v27;
             _os_log_impl(&dword_20CEB6000, v64, OS_LOG_TYPE_DEFAULT, "%@: %@ Should hide banner?: %{BOOL}d Event start time: %@ end time: %@ vs Current time: %@", buf, 0x3Au);
           }
 
           v66 = MEMORY[0x277D755D0];
-          v67 = [MEMORY[0x277D75348] systemWhiteColor];
-          v81[0] = v67;
-          v68 = [MEMORY[0x277D75348] systemRedColor];
-          v81[1] = v68;
+          systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+          v81[0] = systemWhiteColor;
+          systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+          v81[1] = systemRedColor;
           v69 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:2];
           v70 = [v66 configurationWithPaletteColors:v69];
 
@@ -227,23 +227,23 @@ LABEL_36:
           goto LABEL_39;
         }
 
-        v39 = [v80 dateByAddingTimeInterval:900.0];
+        v39 = [dateOfOccurrence dateByAddingTimeInterval:900.0];
         v78 = v27;
         [v27 timeIntervalSince1970];
         v41 = v40;
         [v39 timeIntervalSince1970];
         v18 = v41 > v42;
-        v43 = [MEMORY[0x277CCA968] localizedStringFromDate:v29 dateStyle:0 timeStyle:1];
+        v43 = [MEMORY[0x277CCA968] localizedStringFromDate:startDate dateStyle:0 timeStyle:1];
         v44 = objc_alloc_init(MEMORY[0x277CCA958]);
         [v44 setUnitsStyle:3];
         [v44 setAllowedUnits:64];
-        v77 = [v44 stringFromDate:v29 toDate:v80];
-        [v80 timeIntervalSinceDate:v29];
+        v77 = [v44 stringFromDate:startDate toDate:dateOfOccurrence];
+        [dateOfOccurrence timeIntervalSinceDate:startDate];
         v46 = v45;
-        v47 = [v29 hf_isSingularHour];
+        hf_isSingularHour = [startDate hf_isSingularHour];
         if (v46 >= 60.0)
         {
-          if (v47)
+          if (hf_isSingularHour)
           {
             v62 = @"HUDropIn_Description_Alarm_Ended_SingularHour_FormatString";
           }
@@ -258,7 +258,7 @@ LABEL_36:
 
         else
         {
-          if (v47)
+          if (hf_isSingularHour)
           {
             v54 = @"HUDropIn_Description_Alarm_Ended_SingularHour_LessThanOneMin_FormatString";
           }
@@ -277,8 +277,8 @@ LABEL_36:
       else
       {
         v78 = v27;
-        v39 = [MEMORY[0x277CCA968] localizedStringFromDate:v29 dateStyle:0 timeStyle:1];
-        if ([v29 hf_isSingularHour])
+        v39 = [MEMORY[0x277CCA968] localizedStringFromDate:startDate dateStyle:0 timeStyle:1];
+        if ([startDate hf_isSingularHour])
         {
           v61 = @"HUDropIn_Description_Alarm_Started_SingularHour_FormatString";
         }
@@ -288,7 +288,7 @@ LABEL_36:
           v61 = @"HUDropIn_Description_Alarm_Started_PluralHour_FormatString";
         }
 
-        v43 = HULocalizedStringWithFormat(v61, @"%@%@", v55, v56, v57, v58, v59, v60, v32);
+        v43 = HULocalizedStringWithFormat(v61, @"%@%@", v55, v56, v57, v58, v59, v60, composedString);
         [v17 setObject:v43 forKeyedSubscript:*MEMORY[0x277D13E20]];
         v18 = 0;
       }
@@ -303,8 +303,8 @@ LABEL_39:
   [v17 setObject:v72 forKeyedSubscript:*MEMORY[0x277D13DE8]];
 
   [v17 setObject:&unk_282491400 forKeyedSubscript:@"bannerItemCategory"];
-  v73 = [(HUBannerItem *)self forceShowBanner];
-  v74 = [MEMORY[0x277CCABB0] numberWithBool:!v73 & v18];
+  forceShowBanner = [(HUBannerItem *)self forceShowBanner];
+  v74 = [MEMORY[0x277CCABB0] numberWithBool:!forceShowBanner & v18];
   [v17 setObject:v74 forKeyedSubscript:*MEMORY[0x277D13FB8]];
 
   v75 = [MEMORY[0x277D2C900] futureWithResult:v17];

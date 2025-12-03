@@ -1,82 +1,82 @@
 @interface CRLPathKnob
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 inputType:(int64_t)a4 returningDistance:(double *)a5;
-- (BOOL)obscuresKnob:(id)a3;
-- (BOOL)overlapsWithKnob:(id)a3;
-- (CGAffineTransform)p_underlayRenderableTransformForRep:(SEL)a3;
-- (CRLPathKnob)initWithInControlForNode:(id)a3 onRep:(id)a4;
-- (CRLPathKnob)initWithNode:(id)a3 onRep:(id)a4;
-- (CRLPathKnob)initWithOutControlForNode:(id)a3 onRep:(id)a4;
-- (id)initBendKnobOnRep:(id)a3;
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point inputType:(int64_t)type returningDistance:(double *)distance;
+- (BOOL)obscuresKnob:(id)knob;
+- (BOOL)overlapsWithKnob:(id)knob;
+- (CGAffineTransform)p_underlayRenderableTransformForRep:(SEL)rep;
+- (CRLPathKnob)initWithInControlForNode:(id)node onRep:(id)rep;
+- (CRLPathKnob)initWithNode:(id)node onRep:(id)rep;
+- (CRLPathKnob)initWithOutControlForNode:(id)node onRep:(id)rep;
+- (id)initBendKnobOnRep:(id)rep;
 - (id)knobImage;
 - (id)p_knobHitPath;
-- (id)underlayRenderableForRep:(id)a3;
-- (void)setHovering:(BOOL)a3;
-- (void)setHoveringSharp:(BOOL)a3;
+- (id)underlayRenderableForRep:(id)rep;
+- (void)setHovering:(BOOL)hovering;
+- (void)setHoveringSharp:(BOOL)sharp;
 - (void)updateImage;
-- (void)updatePositionWithTransform:(CGAffineTransform *)a3;
+- (void)updatePositionWithTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation CRLPathKnob
 
-- (id)initBendKnobOnRep:(id)a3
+- (id)initBendKnobOnRep:(id)rep
 {
   v4.receiver = self;
   v4.super_class = CRLPathKnob;
-  return [(CRLCanvasKnob *)&v4 initWithType:0 position:23 radius:a3 tag:CGPointZero.x onRep:CGPointZero.y, 10.0];
+  return [(CRLCanvasKnob *)&v4 initWithType:0 position:23 radius:rep tag:CGPointZero.x onRep:CGPointZero.y, 10.0];
 }
 
-- (CRLPathKnob)initWithNode:(id)a3 onRep:(id)a4
+- (CRLPathKnob)initWithNode:(id)node onRep:(id)rep
 {
-  v7 = a3;
-  v8 = a4;
-  [v7 nodePoint];
+  nodeCopy = node;
+  repCopy = rep;
+  [nodeCopy nodePoint];
   v12.receiver = self;
   v12.super_class = CRLPathKnob;
-  v9 = [CRLCanvasKnob initWithType:"initWithType:position:radius:tag:onRep:" position:0 radius:17 tag:v8 onRep:?];
+  v9 = [CRLCanvasKnob initWithType:"initWithType:position:radius:tag:onRep:" position:0 radius:17 tag:repCopy onRep:?];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_node, a3);
-    v10 = [(CRLPathKnob *)v9 p_knobHitPath];
-    [(CRLCanvasKnob *)v9 setHitRegionPath:v10];
+    objc_storeStrong(&v9->_node, node);
+    p_knobHitPath = [(CRLPathKnob *)v9 p_knobHitPath];
+    [(CRLCanvasKnob *)v9 setHitRegionPath:p_knobHitPath];
   }
 
   return v9;
 }
 
-- (CRLPathKnob)initWithInControlForNode:(id)a3 onRep:(id)a4
+- (CRLPathKnob)initWithInControlForNode:(id)node onRep:(id)rep
 {
-  v7 = a3;
-  v8 = a4;
-  [v7 inControlPoint];
+  nodeCopy = node;
+  repCopy = rep;
+  [nodeCopy inControlPoint];
   v12.receiver = self;
   v12.super_class = CRLPathKnob;
-  v9 = [CRLCanvasKnob initWithType:"initWithType:position:radius:tag:onRep:" position:0 radius:18 tag:v8 onRep:?];
+  v9 = [CRLCanvasKnob initWithType:"initWithType:position:radius:tag:onRep:" position:0 radius:18 tag:repCopy onRep:?];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_node, a3);
-    v10 = [(CRLPathKnob *)v9 p_knobHitPath];
-    [(CRLCanvasKnob *)v9 setHitRegionPath:v10];
+    objc_storeStrong(&v9->_node, node);
+    p_knobHitPath = [(CRLPathKnob *)v9 p_knobHitPath];
+    [(CRLCanvasKnob *)v9 setHitRegionPath:p_knobHitPath];
   }
 
   return v9;
 }
 
-- (CRLPathKnob)initWithOutControlForNode:(id)a3 onRep:(id)a4
+- (CRLPathKnob)initWithOutControlForNode:(id)node onRep:(id)rep
 {
-  v7 = a3;
-  v8 = a4;
-  [v7 outControlPoint];
+  nodeCopy = node;
+  repCopy = rep;
+  [nodeCopy outControlPoint];
   v12.receiver = self;
   v12.super_class = CRLPathKnob;
-  v9 = [CRLCanvasKnob initWithType:"initWithType:position:radius:tag:onRep:" position:0 radius:19 tag:v8 onRep:?];
+  v9 = [CRLCanvasKnob initWithType:"initWithType:position:radius:tag:onRep:" position:0 radius:19 tag:repCopy onRep:?];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_node, a3);
-    v10 = [(CRLPathKnob *)v9 p_knobHitPath];
-    [(CRLCanvasKnob *)v9 setHitRegionPath:v10];
+    objc_storeStrong(&v9->_node, node);
+    p_knobHitPath = [(CRLPathKnob *)v9 p_knobHitPath];
+    [(CRLCanvasKnob *)v9 setHitRegionPath:p_knobHitPath];
   }
 
   return v9;
@@ -89,28 +89,28 @@
   return [CRLBezierPath bezierPathWithOvalInRect:v2];
 }
 
-- (void)setHovering:(BOOL)a3
+- (void)setHovering:(BOOL)hovering
 {
-  if (self->_hovering != a3)
+  if (self->_hovering != hovering)
   {
-    self->_hovering = a3;
+    self->_hovering = hovering;
     [(CRLPathKnob *)self updateImage];
   }
 }
 
-- (void)setHoveringSharp:(BOOL)a3
+- (void)setHoveringSharp:(BOOL)sharp
 {
-  if (self->_hoveringSharp != a3)
+  if (self->_hoveringSharp != sharp)
   {
-    self->_hoveringSharp = a3;
+    self->_hoveringSharp = sharp;
     [(CRLPathKnob *)self updateImage];
   }
 }
 
-- (BOOL)obscuresKnob:(id)a3
+- (BOOL)obscuresKnob:(id)knob
 {
-  v4 = a3;
-  if ([v4 tag] == 23)
+  knobCopy = knob;
+  if ([knobCopy tag] == 23)
   {
     v5 = 1;
   }
@@ -124,16 +124,16 @@
   {
     v7.receiver = self;
     v7.super_class = CRLPathKnob;
-    v5 = [(CRLCanvasKnob *)&v7 obscuresKnob:v4];
+    v5 = [(CRLCanvasKnob *)&v7 obscuresKnob:knobCopy];
   }
 
   return v5;
 }
 
-- (BOOL)overlapsWithKnob:(id)a3
+- (BOOL)overlapsWithKnob:(id)knob
 {
-  v4 = a3;
-  if ([v4 tag] == 23 || -[CRLCanvasKnob tag](self, "tag") == 23)
+  knobCopy = knob;
+  if ([knobCopy tag] == 23 || -[CRLCanvasKnob tag](self, "tag") == 23)
   {
     v5 = 1;
   }
@@ -142,22 +142,22 @@
   {
     v7.receiver = self;
     v7.super_class = CRLPathKnob;
-    v5 = [(CRLCanvasKnob *)&v7 overlapsWithKnob:v4];
+    v5 = [(CRLCanvasKnob *)&v7 overlapsWithKnob:knobCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 inputType:(int64_t)a4 returningDistance:(double *)a5
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point inputType:(int64_t)type returningDistance:(double *)distance
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(CRLCanvasKnob *)self tag]== 23 || [(CRLCanvasKnob *)self tag]== 24)
   {
     v10 = [(CRLCanvasKnob *)self rep];
-    v11 = [v10 editablePathSource];
-    v12 = v11;
-    if (!v11 || ([v11 nodes], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, !v14))
+    editablePathSource = [v10 editablePathSource];
+    v12 = editablePathSource;
+    if (!editablePathSource || ([editablePathSource nodes], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, !v14))
     {
       v18 = 0;
 LABEL_29:
@@ -184,21 +184,21 @@ LABEL_29:
     v88 = 0;
     v86 = 0.0;
     [v12 distanceToPoint:&v87 subpathIndex:&v88 elementIndex:&v86 tValue:vaddq_f64(*&v91.tx threshold:{vmlaq_n_f64(vmulq_n_f64(*&v91.c, v81), *&v91.a, v84)), 0.0}];
-    *a5 = v19;
-    v20 = [v12 subpaths];
-    v21 = [v20 objectAtIndexedSubscript:v87];
+    *distance = v19;
+    subpaths = [v12 subpaths];
+    v21 = [subpaths objectAtIndexedSubscript:v87];
 
-    v22 = [v21 nodes];
-    v23 = [v22 count];
+    nodes = [v21 nodes];
+    v23 = [nodes count];
 
     v24 = (v88 + 1) % v23;
     [(CRLPathKnob *)self setSubpathIndex:v87];
-    v25 = [v21 nodes];
-    v26 = [v25 objectAtIndexedSubscript:v24];
+    nodes2 = [v21 nodes];
+    v26 = [nodes2 objectAtIndexedSubscript:v24];
     [(CRLPathKnob *)self setNode:v26];
 
-    v27 = [v21 nodes];
-    v28 = [v27 objectAtIndexedSubscript:v88];
+    nodes3 = [v21 nodes];
+    v28 = [nodes3 objectAtIndexedSubscript:v88];
     [(CRLPathKnob *)self setPrevNode:v28];
 
     if ([(CRLCanvasKnob *)self tag]== 24)
@@ -214,13 +214,13 @@ LABEL_29:
     [(CRLPathKnob *)self setNodeIndex:v29, *&v81];
     if ([(CRLCanvasKnob *)self tag]!= 24)
     {
-      v30 = [(CRLPathKnob *)self prevNode];
-      if ([v30 type] == 1)
+      prevNode = [(CRLPathKnob *)self prevNode];
+      if ([prevNode type] == 1)
       {
-        v31 = [(CRLPathKnob *)self node];
-        v32 = [v31 type];
+        node = [(CRLPathKnob *)self node];
+        type = [node type];
 
-        if (v32 == 1)
+        if (type == 1)
         {
           v18 = 0;
 LABEL_28:
@@ -234,26 +234,26 @@ LABEL_28:
       }
     }
 
-    v33 = [(CRLPathKnob *)self prevNode];
-    [v33 nodePoint];
+    prevNode2 = [(CRLPathKnob *)self prevNode];
+    [prevNode2 nodePoint];
     v35 = v34;
     v37 = v36;
     v91.a = v34;
     v91.b = v36;
-    v38 = [(CRLPathKnob *)self prevNode];
-    [v38 outControlPoint];
+    prevNode3 = [(CRLPathKnob *)self prevNode];
+    [prevNode3 outControlPoint];
     v40 = v39;
     v42 = v41;
     v91.c = v39;
     v91.d = v41;
-    v43 = [(CRLPathKnob *)self node];
-    [v43 inControlPoint];
+    node2 = [(CRLPathKnob *)self node];
+    [node2 inControlPoint];
     v45 = v44;
     v47 = v46;
     v91.tx = v44;
     v91.ty = v46;
-    v48 = [(CRLPathKnob *)self node];
-    [v48 nodePoint];
+    node3 = [(CRLPathKnob *)self node];
+    [node3 nodePoint];
     v50 = v49;
     v52 = v51;
     v92 = v49;
@@ -315,9 +315,9 @@ LABEL_28:
     }
 
     [(CRLPathKnob *)self setBendParameter:v67 / v68];
-    v75 = *a5;
-    v76 = [v15 interactiveCanvasController];
-    [v76 viewScale];
+    v75 = *distance;
+    interactiveCanvasController = [v15 interactiveCanvasController];
+    [interactiveCanvasController viewScale];
     v78 = v75 * v77;
     [(CRLCanvasKnob *)self radius];
     v18 = v78 < v79;
@@ -327,12 +327,12 @@ LABEL_28:
 
   v90.receiver = self;
   v90.super_class = CRLPathKnob;
-  return [(CRLCanvasKnob *)&v90 isHitByUnscaledPoint:a4 inputType:a5 returningDistance:x, y];
+  return [(CRLCanvasKnob *)&v90 isHitByUnscaledPoint:type inputType:distance returningDistance:x, y];
 }
 
-- (id)underlayRenderableForRep:(id)a3
+- (id)underlayRenderableForRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   if ([(CRLCanvasKnob *)self tag]== 18 || [(CRLCanvasKnob *)self tag]== 19)
   {
     if (!self->_handleLine)
@@ -348,7 +348,7 @@ LABEL_28:
       [(CRLCanvasShapeRenderable *)self->_handleLine setLineWidth:1.0];
     }
 
-    [(CRLPathKnob *)self p_underlayRenderableTransformForRep:v4, 0, 0, 0, 0, 0, 0];
+    [(CRLPathKnob *)self p_underlayRenderableTransformForRep:repCopy, 0, 0, 0, 0, 0, 0];
     Mutable = CGPathCreateMutable();
     [(CRLBezierNode *)self->_node nodePoint];
     v10 = v9;
@@ -384,18 +384,18 @@ LABEL_28:
   return v18;
 }
 
-- (CGAffineTransform)p_underlayRenderableTransformForRep:(SEL)a3
+- (CGAffineTransform)p_underlayRenderableTransformForRep:(SEL)rep
 {
   v5 = a4;
-  v6 = [v5 interactiveCanvasController];
+  interactiveCanvasController = [v5 interactiveCanvasController];
   *&retstr->a = 0u;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  v7 = [v5 layout];
-  v8 = v7;
-  if (v7)
+  layout = [v5 layout];
+  v8 = layout;
+  if (layout)
   {
-    [v7 pureTransformInRoot];
+    [layout pureTransformInRoot];
   }
 
   else
@@ -403,9 +403,9 @@ LABEL_28:
     memset(&t1, 0, sizeof(t1));
   }
 
-  [v6 viewScale];
+  [interactiveCanvasController viewScale];
   v10 = v9;
-  [v6 viewScale];
+  [interactiveCanvasController viewScale];
   CGAffineTransformMakeScale(&t2, v10, v11);
   CGAffineTransformConcat(retstr, &t1, &t2);
 
@@ -471,20 +471,20 @@ LABEL_8:
       goto LABEL_4;
     }
 
-    v6 = [(CRLBezierNode *)self->_node type];
+    type = [(CRLBezierNode *)self->_node type];
     node = self->_node;
-    if (v6 == 1)
+    if (type == 1)
     {
-      v8 = [(CRLBezierNode *)node isSelected];
+      isSelected = [(CRLBezierNode *)node isSelected];
       v9 = @"CRLCanvasKnobPathLine";
       v10 = @"CRLCanvasKnobPathLineSelected";
     }
 
     else
     {
-      v11 = [(CRLBezierNode *)node type];
-      v8 = [(CRLBezierNode *)self->_node isSelected];
-      if (v11 == 3)
+      type2 = [(CRLBezierNode *)node type];
+      isSelected = [(CRLBezierNode *)self->_node isSelected];
+      if (type2 == 3)
       {
         v9 = @"CRLCanvasKnobPathSmooth";
         v10 = @"CRLCanvasKnobPathSmoothSelected";
@@ -497,7 +497,7 @@ LABEL_8:
       }
     }
 
-    if (v8)
+    if (isSelected)
     {
       v9 = v10;
     }
@@ -517,24 +517,24 @@ LABEL_4:
 
   if (v3)
   {
-    v4 = [(CRLPathKnob *)self knobImage];
-    if (v4)
+    knobImage = [(CRLPathKnob *)self knobImage];
+    if (knobImage)
     {
-      v8 = v4;
-      v5 = [(CRLCanvasKnob *)self renderable];
+      v8 = knobImage;
+      renderable = [(CRLCanvasKnob *)self renderable];
       [v8 size];
-      [v5 setBounds:sub_10011ECB4()];
+      [renderable setBounds:sub_10011ECB4()];
       v6 = [(CRLCanvasKnob *)self rep];
-      v7 = [v6 canvas];
-      [v7 contentsScale];
-      [v5 setContents:{objc_msgSend(v8, "CGImageForContentsScale:")}];
+      canvas = [v6 canvas];
+      [canvas contentsScale];
+      [renderable setContents:{objc_msgSend(v8, "CGImageForContentsScale:")}];
 
-      v4 = v8;
+      knobImage = v8;
     }
   }
 }
 
-- (void)updatePositionWithTransform:(CGAffineTransform *)a3
+- (void)updatePositionWithTransform:(CGAffineTransform *)transform
 {
   v5 = [(CRLCanvasKnob *)self tag];
   if (v5 > 19)
@@ -588,7 +588,7 @@ LABEL_4:
     v16 = sub_1001F3D88(&v33);
 LABEL_18:
     v31 = sub_10011F20C(&v33, v16);
-    [(CRLCanvasKnob *)self setPosition:vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v32), *&a3->a, v31))];
+    [(CRLCanvasKnob *)self setPosition:vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v32), *&transform->a, v31))];
     return;
   }
 
@@ -607,7 +607,7 @@ LABEL_18:
       return;
   }
 
-  v24 = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v7), *&a3->a, v6));
+  v24 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v7), *&transform->a, v6));
 
   [(CRLCanvasKnob *)self setPosition:*&v24];
 }

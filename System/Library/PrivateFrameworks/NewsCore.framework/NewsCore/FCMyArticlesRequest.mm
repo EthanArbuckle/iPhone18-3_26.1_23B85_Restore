@@ -1,6 +1,6 @@
 @interface FCMyArticlesRequest
 + (FCMyArticlesRequest)lastRequestIssued;
-+ (void)setLastRequestIssued:(id)a3;
++ (void)setLastRequestIssued:(id)issued;
 - (FCMyArticlesRequest)init;
 - (NSArray)feedIDs;
 @end
@@ -9,7 +9,7 @@
 
 - (NSArray)feedIDs
 {
-  v2 = self;
+  selfCopy = self;
   MyArticlesRequest.feedIDs.getter();
 
   v3 = sub_1B67D97AC();
@@ -31,11 +31,11 @@
   return v2;
 }
 
-+ (void)setLastRequestIssued:(id)a3
++ (void)setLastRequestIssued:(id)issued
 {
-  v4 = a3;
+  issuedCopy = issued;
 
-  _s8NewsCore17MyArticlesRequestC04lastE6IssuedACSgvsZ_0(a3);
+  _s8NewsCore17MyArticlesRequestC04lastE6IssuedACSgvsZ_0(issued);
 }
 
 @end

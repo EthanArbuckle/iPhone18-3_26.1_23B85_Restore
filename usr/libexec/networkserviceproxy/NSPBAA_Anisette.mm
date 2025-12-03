@@ -1,8 +1,8 @@
 @interface NSPBAA_Anisette
 + (void)authenticationFailure;
-+ (void)sendRequestForQuota:(id)a3 urlSession:(id)a4 quotaServiceRequest:(id)a5 completionHandler:(id)a6;
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 messageBody:(id)a5 completionHandler:(id)a6;
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 tokenActivationQuery:(id)a5 completionHandler:(id)a6;
++ (void)sendRequestForQuota:(id)quota urlSession:(id)session quotaServiceRequest:(id)request completionHandler:(id)handler;
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session messageBody:(id)body completionHandler:(id)handler;
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session tokenActivationQuery:(id)query completionHandler:(id)handler;
 @end
 
 @implementation NSPBAA_Anisette
@@ -14,13 +14,13 @@
   +[NSPAnisette authenticationFailure];
 }
 
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 tokenActivationQuery:(id)a5 completionHandler:(id)a6
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session tokenActivationQuery:(id)query completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  tokensCopy = tokens;
+  sessionCopy = session;
+  queryCopy = query;
+  handlerCopy = handler;
+  if (!tokensCopy)
   {
     v24 = nplog_obj();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -33,11 +33,11 @@
 
 LABEL_11:
 
-    (*(v12 + 2))(v12, 1, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, 0, 0);
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!sessionCopy)
   {
     v24 = nplog_obj();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -51,7 +51,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v11)
+  if (!queryCopy)
   {
     v24 = nplog_obj();
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -71,21 +71,21 @@ LABEL_13:
   v28[1] = 3221225472;
   v28[2] = sub_1000B0CA0;
   v28[3] = &unk_10010B208;
-  v27 = v9;
-  v29 = v9;
-  v26 = v10;
-  v30 = v10;
-  v31 = v11;
-  v32 = v12;
-  v13 = v11;
+  v27 = tokensCopy;
+  v29 = tokensCopy;
+  v26 = sessionCopy;
+  v30 = sessionCopy;
+  v31 = queryCopy;
+  v32 = handlerCopy;
+  v13 = queryCopy;
   v14 = v29;
   v15 = v30;
   v16 = v31;
   v17 = v28;
   objc_opt_self();
   [v16 setAuthType:1];
-  v18 = [v16 tokenInfo];
-  v19 = [v18 data];
+  tokenInfo = [v16 tokenInfo];
+  data = [tokenInfo data];
   *&buf = _NSConcreteStackBlock;
   *(&buf + 1) = 3221225472;
   v34 = sub_1000AFC08;
@@ -98,22 +98,22 @@ LABEL_13:
   v38 = v22;
   v23 = v17;
   v39 = v23;
-  sub_1000AEFE4(NSPBAA, v19, &buf);
+  sub_1000AEFE4(NSPBAA, data, &buf);
 
-  v11 = v13;
-  v9 = v27;
+  queryCopy = v13;
+  tokensCopy = v27;
 
-  v10 = v26;
+  sessionCopy = v26;
 LABEL_5:
 }
 
-+ (void)sendRequestForQuota:(id)a3 urlSession:(id)a4 quotaServiceRequest:(id)a5 completionHandler:(id)a6
++ (void)sendRequestForQuota:(id)quota urlSession:(id)session quotaServiceRequest:(id)request completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  quotaCopy = quota;
+  sessionCopy = session;
+  requestCopy = request;
+  handlerCopy = handler;
+  if (!quotaCopy)
   {
     v13 = nplog_obj();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -126,11 +126,11 @@ LABEL_5:
 
 LABEL_11:
 
-    (*(v12 + 2))(v12, 1, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, 0, 0);
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!sessionCopy)
   {
     v13 = nplog_obj();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -144,7 +144,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v11)
+  if (!requestCopy)
   {
     v13 = nplog_obj();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -160,17 +160,17 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  [NSPBAA sendRequestForQuota:v9 urlSession:v10 quotaServiceRequest:v11 completionHandler:v12];
+  [NSPBAA sendRequestForQuota:quotaCopy urlSession:sessionCopy quotaServiceRequest:requestCopy completionHandler:handlerCopy];
 LABEL_5:
 }
 
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 messageBody:(id)a5 completionHandler:(id)a6
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session messageBody:(id)body completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  tokensCopy = tokens;
+  sessionCopy = session;
+  bodyCopy = body;
+  handlerCopy = handler;
+  if (!tokensCopy)
   {
     v21 = nplog_obj();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -183,11 +183,11 @@ LABEL_5:
 
 LABEL_11:
 
-    (*(v12 + 2))(v12, 1, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, 0, 0);
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!sessionCopy)
   {
     v21 = nplog_obj();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -201,7 +201,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v11)
+  if (!bodyCopy)
   {
     v21 = nplog_obj();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -221,10 +221,10 @@ LABEL_13:
   v23[1] = 3221225472;
   v23[2] = sub_1000B1268;
   v23[3] = &unk_10010B208;
-  v24 = v9;
-  v25 = v10;
-  v26 = v11;
-  v27 = v12;
+  v24 = tokensCopy;
+  v25 = sessionCopy;
+  v26 = bodyCopy;
+  v27 = handlerCopy;
   v13 = v24;
   v14 = v25;
   v15 = v26;

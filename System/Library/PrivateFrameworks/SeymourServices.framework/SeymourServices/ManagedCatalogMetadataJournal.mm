@@ -1,14 +1,14 @@
 @interface ManagedCatalogMetadataJournal
-- (ManagedCatalogMetadataJournal)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedCatalogMetadataJournal)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedCatalogMetadataJournal
 
-- (ManagedCatalogMetadataJournal)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedCatalogMetadataJournal)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedCatalogMetadataJournal();
-  return [(ManagedCatalogMetadataJournal *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedCatalogMetadataJournal *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

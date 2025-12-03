@@ -1,24 +1,24 @@
 @interface PKPinCodeField
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)pinCode;
-- (PKPinCodeField)initWithPinCodeLength:(unint64_t)a3 style:(unint64_t)a4 delegate:(id)a5;
+- (PKPinCodeField)initWithPinCodeLength:(unint64_t)length style:(unint64_t)style delegate:(id)delegate;
 - (PKPinCodeFieldDelegate)delegate;
 - (int64_t)keyboardType;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 - (void)layoutSubviews;
-- (void)setHyphenatePinCode:(BOOL)a3;
-- (void)setPinCode:(id)a3;
-- (void)setSecureTextEntry:(BOOL)a3;
+- (void)setHyphenatePinCode:(BOOL)code;
+- (void)setPinCode:(id)code;
+- (void)setSecureTextEntry:(BOOL)entry;
 - (void)updateCharacterVisibility;
 @end
 
 @implementation PKPinCodeField
 
-- (PKPinCodeField)initWithPinCodeLength:(unint64_t)a3 style:(unint64_t)a4 delegate:(id)a5
+- (PKPinCodeField)initWithPinCodeLength:(unint64_t)length style:(unint64_t)style delegate:(id)delegate
 {
-  v8 = a5;
-  if (a3)
+  delegateCopy = delegate;
+  if (length)
   {
     v9 = [(PKPinCodeField *)self init];
     v10 = v9;
@@ -26,24 +26,24 @@
     {
 LABEL_14:
       self = v10;
-      v14 = self;
+      selfCopy = self;
       goto LABEL_15;
     }
 
     v11 = 408;
-    v9->_pinCodeLength = a3;
-    objc_storeWeak(&v9->_delegate, v8);
-    v10->_style = a4;
+    v9->_pinCodeLength = length;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10->_style = style;
     p_config = &v10->_config;
-    v49 = v8;
-    if (a4 == 1)
+    v49 = delegateCopy;
+    if (style == 1)
     {
       v13 = xmmword_1BE116CE0;
     }
 
     else
     {
-      if (a4)
+      if (style)
       {
         v13 = 0uLL;
         v15 = 0.0;
@@ -101,11 +101,11 @@ LABEL_10:
         [v29 addObject:v33];
         [(PKPinCodeField *)v10 addSubview:v33];
         v34 = objc_alloc_init(MEMORY[0x1E69DD250]);
-        v35 = [MEMORY[0x1E69DC888] labelColor];
-        [v34 setBackgroundColor:v35];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
+        [v34 setBackgroundColor:labelColor];
 
-        v36 = [v34 layer];
-        [v36 setCornerRadius:p_config->dashWidth * 0.5];
+        layer = [v34 layer];
+        [layer setCornerRadius:p_config->dashWidth * 0.5];
 
         v37 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v10->_dotImage];
         [MEMORY[0x1E69DC888] labelColor];
@@ -144,24 +144,24 @@ LABEL_10:
     [v20 lineHeight];
     v10->_fontHeight = v47;
 
-    v8 = v50;
+    delegateCopy = v50;
     goto LABEL_14;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)setPinCode:(id)a3
+- (void)setPinCode:(id)code
 {
-  v10 = a3;
+  codeCopy = code;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   pinCode = self->_pinCode;
   self->_pinCode = v4;
 
-  v6 = [v10 length];
+  v6 = [codeCopy length];
   if (v6)
   {
     if (self->_pinCodeLength >= v6)
@@ -175,7 +175,7 @@ LABEL_15:
     }
 
     v8 = self->_pinCode;
-    v9 = [v10 substringToIndex:pinCodeLength];
+    v9 = [codeCopy substringToIndex:pinCodeLength];
     [(NSMutableString *)v8 appendString:v9];
   }
 
@@ -189,21 +189,21 @@ LABEL_15:
   return v2;
 }
 
-- (void)setSecureTextEntry:(BOOL)a3
+- (void)setSecureTextEntry:(BOOL)entry
 {
-  if (self->_secureTextEntry == !a3)
+  if (self->_secureTextEntry == !entry)
   {
-    self->_secureTextEntry = a3;
+    self->_secureTextEntry = entry;
     [(PKPinCodeField *)self updateCharacterVisibility];
   }
 }
 
-- (void)setHyphenatePinCode:(BOOL)a3
+- (void)setHyphenatePinCode:(BOOL)code
 {
-  if (self->_hyphenatePinCode != a3)
+  if (self->_hyphenatePinCode != code)
   {
-    self->_hyphenatePinCode = a3;
-    [(UILabel *)self->_hyphenLabel setHidden:!a3];
+    self->_hyphenatePinCode = code;
+    [(UILabel *)self->_hyphenLabel setHidden:!code];
 
     [(PKPinCodeField *)self setNeedsLayout];
   }
@@ -238,10 +238,10 @@ LABEL_15:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKPinCodeField *)self layoutMargins:a3.width];
+  width = fits.width;
+  [(PKPinCodeField *)self layoutMargins:fits.width];
   v7 = v5 + v6 + self->_config.dashLength * self->_pinCodeLength;
   v10 = v9 + v8 + self->_fontHeight;
   v11 = fmax(v7, width);
@@ -321,9 +321,9 @@ LABEL_15:
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v21 = a3;
+  textCopy = text;
   pinCodeLength = self->_pinCodeLength;
   v5 = [(NSMutableString *)self->_pinCode length];
   v6 = self->_pinCodeLength;
@@ -332,9 +332,9 @@ LABEL_15:
     v6 = [(NSMutableString *)self->_pinCode length];
   }
 
-  if (pinCodeLength - v6 >= [v21 length])
+  if (pinCodeLength - v6 >= [textCopy length])
   {
-    v10 = [v21 length];
+    v10 = [textCopy length];
     if (!v10)
     {
       goto LABEL_18;
@@ -359,7 +359,7 @@ LABEL_15:
   }
 
   v11 = 0;
-  while (-[NSCharacterSet characterIsMember:](self->_numbersOnlyCharacterSet, "characterIsMember:", [v21 characterAtIndex:v11]) || self->_keyboardOverrideEnabled)
+  while (-[NSCharacterSet characterIsMember:](self->_numbersOnlyCharacterSet, "characterIsMember:", [textCopy characterAtIndex:v11]) || self->_keyboardOverrideEnabled)
   {
     if (v10 == ++v11)
     {
@@ -376,7 +376,7 @@ LABEL_15:
 LABEL_15:
   v12 = [(NSMutableString *)self->_pinCode length];
   pinCode = self->_pinCode;
-  v14 = [v21 substringToIndex:v11];
+  v14 = [textCopy substringToIndex:v11];
   [(NSMutableString *)pinCode appendString:v14];
 
   if (v12 < v12 + v11)

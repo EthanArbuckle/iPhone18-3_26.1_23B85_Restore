@@ -1,16 +1,16 @@
 @interface SBSwitcherViewControllerAccessibility
 - (id)_axMainSwitcher;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SBSwitcherViewControllerAccessibility
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBSwitcherViewControllerAccessibility;
-  [(SBSwitcherViewControllerAccessibility *)&v4 viewDidAppear:a3];
+  [(SBSwitcherViewControllerAccessibility *)&v4 viewDidAppear:appear];
   [(SBSwitcherViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -19,8 +19,8 @@
   v4.receiver = self;
   v4.super_class = SBSwitcherViewControllerAccessibility;
   [(SBSwitcherViewControllerAccessibility *)&v4 _accessibilityLoadAccessibilityInformation];
-  v3 = [(SBSwitcherViewControllerAccessibility *)self _axMainSwitcher];
-  [v3 _accessibilityLoadAccessibilityInformation];
+  _axMainSwitcher = [(SBSwitcherViewControllerAccessibility *)self _axMainSwitcher];
+  [_axMainSwitcher _accessibilityLoadAccessibilityInformation];
 }
 
 - (id)_axMainSwitcher

@@ -1,17 +1,17 @@
 @interface BKBootUIOverlayVendor
 + (id)sharedInstance;
-- (BKBootUIOverlayVendor)initWithFirstBootDetector:(id)a3;
-- (id)currentOverlayWithLevel:(float)a3;
+- (BKBootUIOverlayVendor)initWithFirstBootDetector:(id)detector;
+- (id)currentOverlayWithLevel:(float)level;
 @end
 
 @implementation BKBootUIOverlayVendor
 
-- (id)currentOverlayWithLevel:(float)a3
+- (id)currentOverlayWithLevel:(float)level
 {
-  v4 = [(BKFirstBootDetector *)self->_firstBootDetector isFirstBoot];
+  isFirstBoot = [(BKFirstBootDetector *)self->_firstBootDetector isFirstBoot];
   v5 = sub_1000524BC();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isFirstBoot)
   {
     if (v6)
     {
@@ -20,7 +20,7 @@
     }
 
     v8 = +[CADisplay mainDisplay];
-    *&v9 = a3;
+    *&v9 = level;
     v10 = [BKDisplayRenderOverlayAppleLogo overlayWithLevel:v8 display:v9];
   }
 
@@ -28,7 +28,7 @@
   {
     if (v6)
     {
-      *&v7 = a3;
+      *&v7 = level;
       v11 = [NSNumber numberWithFloat:v7];
       v15 = 138412290;
       v16 = v11;
@@ -36,7 +36,7 @@
     }
 
     v12 = +[CADisplay mainDisplay];
-    *&v13 = a3;
+    *&v13 = level;
     v10 = [BKDisplayRenderOverlaySpinny overlayWithLevel:v12 display:v13];
 
     [v10 setBackground:1];
@@ -45,16 +45,16 @@
   return v10;
 }
 
-- (BKBootUIOverlayVendor)initWithFirstBootDetector:(id)a3
+- (BKBootUIOverlayVendor)initWithFirstBootDetector:(id)detector
 {
-  v5 = a3;
+  detectorCopy = detector;
   v9.receiver = self;
   v9.super_class = BKBootUIOverlayVendor;
   v6 = [(BKBootUIOverlayVendor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_firstBootDetector, a3);
+    objc_storeStrong(&v6->_firstBootDetector, detector);
   }
 
   return v7;

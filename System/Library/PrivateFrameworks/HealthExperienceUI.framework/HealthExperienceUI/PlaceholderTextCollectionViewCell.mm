@@ -1,10 +1,10 @@
 @interface PlaceholderTextCollectionViewCell
-- (_TtC18HealthExperienceUI33PlaceholderTextCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18HealthExperienceUI33PlaceholderTextCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation PlaceholderTextCollectionViewCell
 
-- (_TtC18HealthExperienceUI33PlaceholderTextCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI33PlaceholderTextCollectionViewCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18HealthExperienceUI33PlaceholderTextCollectionViewCell_item;
   *v3 = 0u;

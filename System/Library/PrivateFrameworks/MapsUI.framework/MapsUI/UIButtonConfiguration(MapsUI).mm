@@ -12,11 +12,11 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v7 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-  [v7 setTitleAlignment:1];
-  v8 = [v7 background];
-  [v8 setBackgroundColorTransformer:&__block_literal_global_5642];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [plainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  [plainButtonConfiguration setTitleAlignment:1];
+  background = [plainButtonConfiguration background];
+  [background setBackgroundColorTransformer:&__block_literal_global_5642];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -26,9 +26,9 @@
   v14 = v6;
   v9 = v6;
   v10 = v5;
-  [v7 setTitleTextAttributesTransformer:v12];
+  [plainButtonConfiguration setTitleTextAttributesTransformer:v12];
 
-  return v7;
+  return plainButtonConfiguration;
 }
 
 + (id)_mapsui_textButtonConfiguration
@@ -36,23 +36,23 @@
   v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
   v3 = [v2 _mapkit_fontWithWeight:*MEMORY[0x1E69DB980]];
   v4 = +[MUInfoCardStyle textColor];
-  v5 = [a1 _mapsui_textButtonConfigurationWithFont:v3 textColor:v4];
+  v5 = [self _mapsui_textButtonConfigurationWithFont:v3 textColor:v4];
 
   return v5;
 }
 
 + (id)_mapsui_filledButtonConfiguration
 {
-  v2 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  v3 = [a1 _setupButtonConfiguration:v2];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  v3 = [self _setupButtonConfiguration:filledButtonConfiguration];
 
   return v3;
 }
 
 + (id)_mapsui_grayButtonConfiguration
 {
-  v2 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  v3 = [a1 _setupButtonConfiguration:v2];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  v3 = [self _setupButtonConfiguration:grayButtonConfiguration];
 
   return v3;
 }
@@ -69,8 +69,8 @@
   v5 = v4;
   [v3 setTitleTextAttributesTransformer:v8];
   [v3 setContentInsets:{15.0, 10.0, 15.0, 10.0}];
-  v6 = [v3 background];
-  [v6 setCornerRadius:8.0];
+  background = [v3 background];
+  [background setCornerRadius:8.0];
 
   return v3;
 }

@@ -1,6 +1,6 @@
 @interface WFMapsAppPickerParameter
-- (WFMapsAppPickerParameter)initWithDefinition:(id)a3;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (WFMapsAppPickerParameter)initWithDefinition:(id)definition;
+- (id)localizedLabelForPossibleState:(id)state;
 - (id)possibleStatesForLocalization;
 - (void)addObservers;
 - (void)dealloc;
@@ -14,34 +14,34 @@
 
 - (void)removeObservers
 {
-  v5 = [MEMORY[0x277D7C540] sharedRegistry];
-  v3 = [(WFMapsAppPickerParameter *)self supportedAppIdentifiers];
-  v4 = [v3 array];
-  [v5 removeInstallStatusObserver:self forAppIdentifiers:v4];
+  mEMORY[0x277D7C540] = [MEMORY[0x277D7C540] sharedRegistry];
+  supportedAppIdentifiers = [(WFMapsAppPickerParameter *)self supportedAppIdentifiers];
+  array = [supportedAppIdentifiers array];
+  [mEMORY[0x277D7C540] removeInstallStatusObserver:self forAppIdentifiers:array];
 }
 
 - (void)addObservers
 {
-  v5 = [MEMORY[0x277D7C540] sharedRegistry];
-  v3 = [(WFMapsAppPickerParameter *)self supportedAppIdentifiers];
-  v4 = [v3 array];
-  [v5 addInstallStatusObserver:self forAppIdentifiers:v4];
+  mEMORY[0x277D7C540] = [MEMORY[0x277D7C540] sharedRegistry];
+  supportedAppIdentifiers = [(WFMapsAppPickerParameter *)self supportedAppIdentifiers];
+  array = [supportedAppIdentifiers array];
+  [mEMORY[0x277D7C540] addInstallStatusObserver:self forAppIdentifiers:array];
 }
 
 - (void)refreshInstalledApps
 {
-  v3 = [MEMORY[0x277D7C540] sharedRegistry];
-  v4 = [(WFMapsAppPickerParameter *)self supportedAppIdentifiers];
-  v5 = [v4 array];
-  v9 = [v3 appsWithIdentifiers:v5];
+  mEMORY[0x277D7C540] = [MEMORY[0x277D7C540] sharedRegistry];
+  supportedAppIdentifiers = [(WFMapsAppPickerParameter *)self supportedAppIdentifiers];
+  array = [supportedAppIdentifiers array];
+  v9 = [mEMORY[0x277D7C540] appsWithIdentifiers:array];
 
   v6 = [v9 if_compactMap:&__block_literal_global_245];
   possibleStates = self->_possibleStates;
   self->_possibleStates = v6;
 
   [(WFMapsAppPickerParameter *)self possibleStatesDidChange];
-  v8 = [(WFMapsAppPickerParameter *)self possibleStates];
-  -[WFMapsAppPickerParameter setHidden:](self, "setHidden:", [v8 count] < 2);
+  possibleStates = [(WFMapsAppPickerParameter *)self possibleStates];
+  -[WFMapsAppPickerParameter setHidden:](self, "setHidden:", [possibleStates count] < 2);
 }
 
 id __48__WFMapsAppPickerParameter_refreshInstalledApps__block_invoke(uint64_t a1, void *a2)
@@ -64,10 +64,10 @@ id __48__WFMapsAppPickerParameter_refreshInstalledApps__block_invoke(uint64_t a1
   return v7;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v3 = [a3 value];
-  v4 = WFLocalizedMapsAppNameForAppName(v3);
+  value = [state value];
+  v4 = WFLocalizedMapsAppNameForAppName(value);
 
   return v4;
 }
@@ -75,8 +75,8 @@ id __48__WFMapsAppPickerParameter_refreshInstalledApps__block_invoke(uint64_t a1
 - (id)possibleStatesForLocalization
 {
   v2 = WFMapsAppNamesByIdentifier();
-  v3 = [v2 allValues];
-  v4 = [v3 if_compactMap:&__block_literal_global_240];
+  allValues = [v2 allValues];
+  v4 = [allValues if_compactMap:&__block_literal_global_240];
 
   return v4;
 }
@@ -115,16 +115,16 @@ id __57__WFMapsAppPickerParameter_possibleStatesForLocalization__block_invoke(ui
   [(WFMapsAppPickerParameter *)self addObservers];
 }
 
-- (WFMapsAppPickerParameter)initWithDefinition:(id)a3
+- (WFMapsAppPickerParameter)initWithDefinition:(id)definition
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  definitionCopy = definition;
   v20.receiver = self;
   v20.super_class = WFMapsAppPickerParameter;
-  v5 = [(WFMapsAppPickerParameter *)&v20 initWithDefinition:v4];
+  v5 = [(WFMapsAppPickerParameter *)&v20 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"SupportedApps"];
+    v6 = [definitionCopy objectForKey:@"SupportedApps"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

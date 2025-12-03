@@ -1,16 +1,16 @@
 @interface WFHomeAccessoryConditionalSubjectState
 - (BOOL)isEnumeration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMCharacteristic)characteristic;
 - (HMHome)home;
 - (HMService)service;
 - (NSFormatter)characteristicValueFormatter;
 - (WFHMCharacteristicSubstitutableState)characteristicSubstitutableState;
 - (WFHMServiceParameterState)serviceParameterState;
-- (WFHomeAccessoryConditionalSubjectState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFHomeAccessoryConditionalSubjectState)initWithSerializedWFHMServiceParameter:(id)a3 serializedWFHMCharacteristicSubstitutableState:(id)a4 negatesValue:(BOOL)a5;
+- (WFHomeAccessoryConditionalSubjectState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFHomeAccessoryConditionalSubjectState)initWithSerializedWFHMServiceParameter:(id)parameter serializedWFHMCharacteristicSubstitutableState:(id)state negatesValue:(BOOL)value;
 - (id)homeIdentifier;
-- (id)localizedLabelForEnumerationPossibleState:(id)a3;
+- (id)localizedLabelForEnumerationPossibleState:(id)state;
 - (id)maximumLength;
 - (id)maximumValue;
 - (id)minimumValue;
@@ -20,16 +20,16 @@
 - (id)unitType;
 - (int64_t)contentType;
 - (unint64_t)hash;
-- (void)getContentWithContext:(id)a3 completionHandler:(id)a4;
-- (void)getEnumerationPossibleStatesWithCompletionHandler:(id)a3;
+- (void)getContentWithContext:(id)context completionHandler:(id)handler;
+- (void)getEnumerationPossibleStatesWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFHomeAccessoryConditionalSubjectState
 
 - (NSFormatter)characteristicValueFormatter
 {
-  v3 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
-  v4 = v3;
+  characteristic = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+  v4 = characteristic;
   characteristicValueFormatter = self->_characteristicValueFormatter;
   if (characteristicValueFormatter)
   {
@@ -38,7 +38,7 @@
 
   else
   {
-    v6 = v3 == 0;
+    v6 = characteristic == 0;
   }
 
   if (!v6)
@@ -60,17 +60,17 @@
   return characteristicValueFormatter;
 }
 
-- (id)localizedLabelForEnumerationPossibleState:(id)a3
+- (id)localizedLabelForEnumerationPossibleState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_opt_class();
-  v6 = WFEnforceClass_1501(v4, v5);
+  v6 = WFEnforceClass_1501(stateCopy, v5);
 
-  v7 = [v6 number];
-  if (v7)
+  number = [v6 number];
+  if (number)
   {
-    v8 = [(WFHomeAccessoryConditionalSubjectState *)self characteristicValueFormatter];
-    v9 = [v8 stringForObjectValue:v7];
+    characteristicValueFormatter = [(WFHomeAccessoryConditionalSubjectState *)self characteristicValueFormatter];
+    v9 = [characteristicValueFormatter stringForObjectValue:number];
   }
 
   else
@@ -81,17 +81,17 @@
   return v9;
 }
 
-- (void)getEnumerationPossibleStatesWithCompletionHandler:(id)a3
+- (void)getEnumerationPossibleStatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[WFHomeManager sharedManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __92__WFHomeAccessoryConditionalSubjectState_getEnumerationPossibleStatesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E837E1F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 ensureHomesAreLoadedWithCompletionHandler:v7];
 }
 
@@ -142,15 +142,15 @@ WFNumberSubstitutableState *__92__WFHomeAccessoryConditionalSubjectState_getEnum
 
 - (BOOL)isEnumeration
 {
-  v3 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+  characteristic = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
 
-  if (!v3)
+  if (!characteristic)
   {
     return 0;
   }
 
-  v4 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
-  IsEnumeration = WFHMCharacteristicIsEnumeration(v4);
+  characteristic2 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+  IsEnumeration = WFHMCharacteristicIsEnumeration(characteristic2);
 
   return IsEnumeration;
 }
@@ -159,13 +159,13 @@ WFNumberSubstitutableState *__92__WFHomeAccessoryConditionalSubjectState_getEnum
 {
   if (!self->_characteristicSubstitutableState)
   {
-    v3 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
+    serializedWFHMCharacteristicSubstitutableState = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
 
-    if (v3)
+    if (serializedWFHMCharacteristicSubstitutableState)
     {
       v4 = [WFHMCharacteristicSubstitutableState alloc];
-      v5 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
-      v6 = [(WFHMCharacteristicSubstitutableState *)v4 initWithSerializedRepresentation:v5 variableProvider:0 parameter:0];
+      serializedWFHMCharacteristicSubstitutableState2 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
+      v6 = [(WFHMCharacteristicSubstitutableState *)v4 initWithSerializedRepresentation:serializedWFHMCharacteristicSubstitutableState2 variableProvider:0 parameter:0];
       characteristicSubstitutableState = self->_characteristicSubstitutableState;
       self->_characteristicSubstitutableState = v6;
     }
@@ -182,8 +182,8 @@ WFNumberSubstitutableState *__92__WFHomeAccessoryConditionalSubjectState_getEnum
   if (!serviceParameterState)
   {
     v4 = [WFHMServiceParameterState alloc];
-    v5 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMServiceParameter];
-    v6 = [(WFHMServiceParameterState *)v4 initWithSerializedRepresentation:v5 variableProvider:0 parameter:0];
+    serializedWFHMServiceParameter = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMServiceParameter];
+    v6 = [(WFHMServiceParameterState *)v4 initWithSerializedRepresentation:serializedWFHMServiceParameter variableProvider:0 parameter:0];
     v7 = self->_serviceParameterState;
     self->_serviceParameterState = v6;
 
@@ -195,12 +195,12 @@ WFNumberSubstitutableState *__92__WFHomeAccessoryConditionalSubjectState_getEnum
 
 - (id)unit
 {
-  v3 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+  characteristic = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
 
-  if (v3)
+  if (characteristic)
   {
-    v4 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
-    v5 = WFUnitForHMCharacteristic(v4);
+    characteristic2 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+    v5 = WFUnitForHMCharacteristic(characteristic2);
   }
 
   else
@@ -213,57 +213,57 @@ WFNumberSubstitutableState *__92__WFHomeAccessoryConditionalSubjectState_getEnum
 
 - (id)stepValue
 {
-  v2 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
-  v3 = [v2 metadata];
-  v4 = [v3 stepValue];
+  characteristic = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+  metadata = [characteristic metadata];
+  stepValue = [metadata stepValue];
 
-  return v4;
+  return stepValue;
 }
 
 - (id)maximumValue
 {
-  v2 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
-  v3 = [v2 metadata];
-  v4 = [v3 maximumValue];
+  characteristic = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+  metadata = [characteristic metadata];
+  maximumValue = [metadata maximumValue];
 
-  return v4;
+  return maximumValue;
 }
 
 - (id)minimumValue
 {
-  v2 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
-  v3 = [v2 metadata];
-  v4 = [v3 minimumValue];
+  characteristic = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+  metadata = [characteristic metadata];
+  minimumValue = [metadata minimumValue];
 
-  return v4;
+  return minimumValue;
 }
 
 - (id)maximumLength
 {
-  v2 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
-  v3 = [v2 metadata];
-  v4 = [v3 maxLength];
+  characteristic = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+  metadata = [characteristic metadata];
+  maxLength = [metadata maxLength];
 
-  return v4;
+  return maxLength;
 }
 
 - (int64_t)contentType
 {
-  v3 = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
-  v4 = [v3 metadata];
-  v5 = [v4 format];
+  characteristic = [(WFHomeAccessoryConditionalSubjectState *)self characteristic];
+  metadata = [characteristic metadata];
+  format = [metadata format];
 
   v6 = getHMCharacteristicMetadataFormatBool_2135();
-  LOBYTE(v4) = [v5 isEqualToString:v6];
+  LOBYTE(metadata) = [format isEqualToString:v6];
 
-  if (v4)
+  if (metadata)
   {
     v7 = 1;
     goto LABEL_19;
   }
 
   v8 = getHMCharacteristicMetadataFormatString_2136();
-  v9 = [v5 isEqualToString:v8];
+  v9 = [format isEqualToString:v8];
 
   if (v9)
   {
@@ -272,22 +272,22 @@ WFNumberSubstitutableState *__92__WFHomeAccessoryConditionalSubjectState_getEnum
   }
 
   v10 = getHMCharacteristicMetadataFormatInt_2137();
-  if (([v5 isEqualToString:v10] & 1) == 0)
+  if (([format isEqualToString:v10] & 1) == 0)
   {
     v11 = getHMCharacteristicMetadataFormatFloat_2138();
-    if (([v5 isEqualToString:v11] & 1) == 0)
+    if (([format isEqualToString:v11] & 1) == 0)
     {
       v12 = getHMCharacteristicMetadataFormatUInt8_2139();
-      if (([v5 isEqualToString:v12] & 1) == 0)
+      if (([format isEqualToString:v12] & 1) == 0)
       {
         v13 = getHMCharacteristicMetadataFormatUInt16_2140();
-        if (([v5 isEqualToString:v13] & 1) == 0)
+        if (([format isEqualToString:v13] & 1) == 0)
         {
           v14 = getHMCharacteristicMetadataFormatUInt32_2141();
-          if (([v5 isEqualToString:v14] & 1) == 0)
+          if (([format isEqualToString:v14] & 1) == 0)
           {
             v17 = getHMCharacteristicMetadataFormatUInt64_2142();
-            v18 = [v5 isEqualToString:v17];
+            v18 = [format isEqualToString:v17];
 
             if ((v18 & 1) == 0)
             {
@@ -303,8 +303,8 @@ WFNumberSubstitutableState *__92__WFHomeAccessoryConditionalSubjectState_getEnum
   }
 
 LABEL_15:
-  v15 = [(WFHomeAccessoryConditionalSubjectState *)self unit];
-  if (v15)
+  unit = [(WFHomeAccessoryConditionalSubjectState *)self unit];
+  if (unit)
   {
     v7 = 5;
   }
@@ -318,17 +318,17 @@ LABEL_19:
   return v7;
 }
 
-- (void)getContentWithContext:(id)a3 completionHandler:(id)a4
+- (void)getContentWithContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = +[WFHomeManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__WFHomeAccessoryConditionalSubjectState_getContentWithContext_completionHandler___block_invoke;
   v8[3] = &unk_1E837E1F8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v6 ensureHomesAreLoadedWithCompletionHandler:v8];
 }
 
@@ -393,10 +393,10 @@ void __82__WFHomeAccessoryConditionalSubjectState_getContentWithContext_completi
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
@@ -406,9 +406,9 @@ void __82__WFHomeAccessoryConditionalSubjectState_getContentWithContext_completi
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMServiceParameter];
-      v8 = [(WFHomeAccessoryConditionalSubjectState *)v6 serializedWFHMServiceParameter];
-      if (![v7 isEqual:v8])
+      serializedWFHMServiceParameter = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMServiceParameter];
+      serializedWFHMServiceParameter2 = [(WFHomeAccessoryConditionalSubjectState *)equalCopy serializedWFHMServiceParameter];
+      if (![serializedWFHMServiceParameter isEqual:serializedWFHMServiceParameter2])
       {
         LOBYTE(v11) = 0;
 LABEL_13:
@@ -416,13 +416,13 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
-      v10 = [(WFHomeAccessoryConditionalSubjectState *)v6 serializedWFHMCharacteristicSubstitutableState];
-      if (v9 == v10 || (-[WFHomeAccessoryConditionalSubjectState serializedWFHMCharacteristicSubstitutableState](self, "serializedWFHMCharacteristicSubstitutableState"), v3 = objc_claimAutoreleasedReturnValue(), -[WFHomeAccessoryConditionalSubjectState serializedWFHMCharacteristicSubstitutableState](v6, "serializedWFHMCharacteristicSubstitutableState"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      serializedWFHMCharacteristicSubstitutableState = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
+      serializedWFHMCharacteristicSubstitutableState2 = [(WFHomeAccessoryConditionalSubjectState *)equalCopy serializedWFHMCharacteristicSubstitutableState];
+      if (serializedWFHMCharacteristicSubstitutableState == serializedWFHMCharacteristicSubstitutableState2 || (-[WFHomeAccessoryConditionalSubjectState serializedWFHMCharacteristicSubstitutableState](self, "serializedWFHMCharacteristicSubstitutableState"), v3 = objc_claimAutoreleasedReturnValue(), -[WFHomeAccessoryConditionalSubjectState serializedWFHMCharacteristicSubstitutableState](equalCopy, "serializedWFHMCharacteristicSubstitutableState"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v12 = [(WFHomeAccessoryConditionalSubjectState *)self negatesValue];
-        v11 = v12 ^ [(WFHomeAccessoryConditionalSubjectState *)v6 negatesValue]^ 1;
-        if (v9 == v10)
+        negatesValue = [(WFHomeAccessoryConditionalSubjectState *)self negatesValue];
+        v11 = negatesValue ^ [(WFHomeAccessoryConditionalSubjectState *)equalCopy negatesValue]^ 1;
+        if (serializedWFHMCharacteristicSubstitutableState == serializedWFHMCharacteristicSubstitutableState2)
         {
 LABEL_12:
 
@@ -448,10 +448,10 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMServiceParameter];
-  v4 = [v3 hash];
-  v5 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
-  v6 = [v5 hash] ^ v4;
+  serializedWFHMServiceParameter = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMServiceParameter];
+  v4 = [serializedWFHMServiceParameter hash];
+  serializedWFHMCharacteristicSubstitutableState = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
+  v6 = [serializedWFHMCharacteristicSubstitutableState hash] ^ v4;
   if ([(WFHomeAccessoryConditionalSubjectState *)self negatesValue])
   {
     v7 = 305449726;
@@ -467,41 +467,41 @@ LABEL_14:
 
 - (HMCharacteristic)characteristic
 {
-  v2 = [(WFHomeAccessoryConditionalSubjectState *)self characteristicSubstitutableState];
-  v3 = [v2 characteristic];
+  characteristicSubstitutableState = [(WFHomeAccessoryConditionalSubjectState *)self characteristicSubstitutableState];
+  characteristic = [characteristicSubstitutableState characteristic];
 
-  return v3;
+  return characteristic;
 }
 
 - (HMService)service
 {
-  v2 = [(WFHomeAccessoryConditionalSubjectState *)self serviceParameterState];
-  v3 = [v2 service];
+  serviceParameterState = [(WFHomeAccessoryConditionalSubjectState *)self serviceParameterState];
+  service = [serviceParameterState service];
 
-  return v3;
+  return service;
 }
 
 - (HMHome)home
 {
   v3 = +[WFHomeManager sharedManager];
-  v4 = [(WFHomeAccessoryConditionalSubjectState *)self homeIdentifier];
-  v5 = [v3 homeWithIdentifier:v4];
+  homeIdentifier = [(WFHomeAccessoryConditionalSubjectState *)self homeIdentifier];
+  v5 = [v3 homeWithIdentifier:homeIdentifier];
 
   return v5;
 }
 
 - (id)homeIdentifier
 {
-  v2 = [(WFHomeAccessoryConditionalSubjectState *)self serviceParameterState];
-  v3 = [v2 homeIdentifier];
+  serviceParameterState = [(WFHomeAccessoryConditionalSubjectState *)self serviceParameterState];
+  homeIdentifier = [serviceParameterState homeIdentifier];
 
-  return v3;
+  return homeIdentifier;
 }
 
 - (id)unitType
 {
-  v2 = [(WFHomeAccessoryConditionalSubjectState *)self unit];
-  if (v2)
+  unit = [(WFHomeAccessoryConditionalSubjectState *)self unit];
+  if (unit)
   {
     v3 = [MEMORY[0x1E69E0BE8] unitTypeForUnitClass:objc_opt_class()];
   }
@@ -518,18 +518,18 @@ LABEL_14:
 {
   v9.receiver = self;
   v9.super_class = WFHomeAccessoryConditionalSubjectState;
-  v3 = [(WFConditionalSubjectParameterState *)&v9 serializedRepresentation];
-  v4 = [v3 mutableCopy];
+  serializedRepresentation = [(WFConditionalSubjectParameterState *)&v9 serializedRepresentation];
+  v4 = [serializedRepresentation mutableCopy];
 
-  v5 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMServiceParameter];
-  [v4 setObject:v5 forKeyedSubscript:@"HomeService"];
+  serializedWFHMServiceParameter = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMServiceParameter];
+  [v4 setObject:serializedWFHMServiceParameter forKeyedSubscript:@"HomeService"];
 
-  v6 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
+  serializedWFHMCharacteristicSubstitutableState = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
 
-  if (v6)
+  if (serializedWFHMCharacteristicSubstitutableState)
   {
-    v7 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
-    [v4 setObject:v7 forKeyedSubscript:@"HomeCharacteristic"];
+    serializedWFHMCharacteristicSubstitutableState2 = [(WFHomeAccessoryConditionalSubjectState *)self serializedWFHMCharacteristicSubstitutableState];
+    [v4 setObject:serializedWFHMCharacteristicSubstitutableState2 forKeyedSubscript:@"HomeCharacteristic"];
   }
 
   if ([(WFHomeAccessoryConditionalSubjectState *)self negatesValue])
@@ -540,11 +540,11 @@ LABEL_14:
   return v4;
 }
 
-- (WFHomeAccessoryConditionalSubjectState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFHomeAccessoryConditionalSubjectState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v6 = a3;
+  representationCopy = representation;
   v7 = objc_opt_class();
-  v8 = WFEnforceClass_1501(v6, v7);
+  v8 = WFEnforceClass_1501(representationCopy, v7);
 
   if (v8)
   {
@@ -561,34 +561,34 @@ LABEL_14:
       v15 = [v8 objectForKeyedSubscript:@"NegatesValue"];
       v16 = objc_opt_class();
       v17 = WFEnforceClass_1501(v15, v16);
-      v18 = [v17 BOOLValue];
+      bOOLValue = [v17 BOOLValue];
 
-      self = [(WFHomeAccessoryConditionalSubjectState *)self initWithSerializedWFHMServiceParameter:v11 serializedWFHMCharacteristicSubstitutableState:v14 negatesValue:v18];
-      v19 = self;
+      self = [(WFHomeAccessoryConditionalSubjectState *)self initWithSerializedWFHMServiceParameter:v11 serializedWFHMCharacteristicSubstitutableState:v14 negatesValue:bOOLValue];
+      selfCopy = self;
     }
 
     else
     {
-      v19 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (WFHomeAccessoryConditionalSubjectState)initWithSerializedWFHMServiceParameter:(id)a3 serializedWFHMCharacteristicSubstitutableState:(id)a4 negatesValue:(BOOL)a5
+- (WFHomeAccessoryConditionalSubjectState)initWithSerializedWFHMServiceParameter:(id)parameter serializedWFHMCharacteristicSubstitutableState:(id)state negatesValue:(BOOL)value
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  parameterCopy = parameter;
+  stateCopy = state;
+  if (!parameterCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFHomeAccessoryConditionalSubjectState.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"serializedWFHMServiceParameter"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHomeAccessoryConditionalSubjectState.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"serializedWFHMServiceParameter"}];
   }
 
   v17.receiver = self;
@@ -597,9 +597,9 @@ LABEL_14:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serializedWFHMServiceParameter, a3);
-    objc_storeStrong(&v13->_serializedWFHMCharacteristicSubstitutableState, a4);
-    v13->_negatesValue = a5;
+    objc_storeStrong(&v12->_serializedWFHMServiceParameter, parameter);
+    objc_storeStrong(&v13->_serializedWFHMCharacteristicSubstitutableState, state);
+    v13->_negatesValue = value;
     v14 = v13;
   }
 

@@ -1,12 +1,12 @@
 @interface ChannelActivityDeactivationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ChannelActivityDeactivationRequest
@@ -17,133 +17,133 @@
   v8.receiver = self;
   v8.super_class = ChannelActivityDeactivationRequest;
   v4 = [(ChannelActivityDeactivationRequest *)&v8 description];
-  v5 = [(ChannelActivityDeactivationRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ChannelActivityDeactivationRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   authCredential = self->_authCredential;
   if (authCredential)
   {
-    v5 = [(AuthCredential *)authCredential dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"auth_credential"];
+    dictionaryRepresentation = [(AuthCredential *)authCredential dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"auth_credential"];
   }
 
   channelIdentity = self->_channelIdentity;
   if (channelIdentity)
   {
-    v7 = [(ChannelIdentity *)channelIdentity dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"channel_identity"];
+    dictionaryRepresentation2 = [(ChannelIdentity *)channelIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"channel_identity"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_clientTimestampSeconds];
-    [v3 setObject:v9 forKey:@"client_timestamp_seconds"];
+    [dictionary setObject:v9 forKey:@"client_timestamp_seconds"];
   }
 
   adopter = self->_adopter;
   if (adopter)
   {
-    [v3 setObject:adopter forKey:@"adopter"];
+    [dictionary setObject:adopter forKey:@"adopter"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_authCredential)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_channelIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     clientTimestampSeconds = self->_clientTimestampSeconds;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_adopter)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_authCredential)
   {
-    [v4 setAuthCredential:?];
-    v4 = v5;
+    [toCopy setAuthCredential:?];
+    toCopy = v5;
   }
 
   if (self->_channelIdentity)
   {
     [v5 setChannelIdentity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_uuid)
   {
     [v5 setUuid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_clientTimestampSeconds;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = self->_clientTimestampSeconds;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_adopter)
   {
     [v5 setAdopter:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(AuthCredential *)self->_authCredential copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(AuthCredential *)self->_authCredential copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(ChannelIdentity *)self->_channelIdentity copyWithZone:a3];
+  v8 = [(ChannelIdentity *)self->_channelIdentity copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSData *)self->_uuid copyWithZone:a3];
+  v10 = [(NSData *)self->_uuid copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -153,23 +153,23 @@
     *(v5 + 48) |= 1u;
   }
 
-  v12 = [(NSString *)self->_adopter copyWithZone:a3];
+  v12 = [(NSString *)self->_adopter copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   authCredential = self->_authCredential;
-  if (authCredential | *(v4 + 3))
+  if (authCredential | *(equalCopy + 3))
   {
     if (![(AuthCredential *)authCredential isEqual:?])
     {
@@ -178,7 +178,7 @@
   }
 
   channelIdentity = self->_channelIdentity;
-  if (channelIdentity | *(v4 + 4))
+  if (channelIdentity | *(equalCopy + 4))
   {
     if (![(ChannelIdentity *)channelIdentity isEqual:?])
     {
@@ -187,7 +187,7 @@
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 5))
+  if (uuid | *(equalCopy + 5))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -195,16 +195,16 @@
     }
   }
 
-  v8 = *(v4 + 48);
+  v8 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_clientTimestampSeconds != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_clientTimestampSeconds != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -212,7 +212,7 @@ LABEL_15:
   }
 
   adopter = self->_adopter;
-  if (adopter | *(v4 + 2))
+  if (adopter | *(equalCopy + 2))
   {
     v10 = [(NSString *)adopter isEqual:?];
   }
@@ -245,12 +245,12 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_adopter hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   authCredential = self->_authCredential;
-  v6 = v4[3];
-  v9 = v4;
+  v6 = fromCopy[3];
+  v9 = fromCopy;
   if (authCredential)
   {
     if (!v6)
@@ -271,10 +271,10 @@ LABEL_16:
     [(ChannelActivityDeactivationRequest *)self setAuthCredential:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   channelIdentity = self->_channelIdentity;
-  v8 = v4[4];
+  v8 = fromCopy[4];
   if (channelIdentity)
   {
     if (!v8)
@@ -295,21 +295,21 @@ LABEL_7:
     [(ChannelActivityDeactivationRequest *)self setChannelIdentity:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(ChannelActivityDeactivationRequest *)self setUuid:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
-    self->_clientTimestampSeconds = v4[1];
+    self->_clientTimestampSeconds = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(ChannelActivityDeactivationRequest *)self setAdopter:?];
   }

@@ -1,33 +1,33 @@
 @interface SUUIIndexBarEntryListController
-+ (id)entryListControllerForEntryListViewElement:(id)a3;
-+ (id)entryListControllerForEntryViewElement:(id)a3;
++ (id)entryListControllerForEntryListViewElement:(id)element;
++ (id)entryListControllerForEntryViewElement:(id)element;
 - (SUUIIndexBarEntryListControllerDelegate)delegate;
 - (void)_didInvalidate;
 @end
 
 @implementation SUUIIndexBarEntryListController
 
-+ (id)entryListControllerForEntryViewElement:(id)a3
++ (id)entryListControllerForEntryViewElement:(id)element
 {
-  v3 = a3;
-  v4 = [[SUUIIndexBarSingleEntryListController alloc] initWithEntryViewElement:v3];
+  elementCopy = element;
+  v4 = [[SUUIIndexBarSingleEntryListController alloc] initWithEntryViewElement:elementCopy];
 
   return v4;
 }
 
-+ (id)entryListControllerForEntryListViewElement:(id)a3
++ (id)entryListControllerForEntryListViewElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 entryListElementType];
-  if (v4 == 2)
+  elementCopy = element;
+  entryListElementType = [elementCopy entryListElementType];
+  if (entryListElementType == 2)
   {
-    v5 = [[SUUIIndexBarLocaleStandardEntryListController alloc] initWithSUUIIndexBarEntryListViewElement:v3];
+    v5 = [[SUUIIndexBarLocaleStandardEntryListController alloc] initWithSUUIIndexBarEntryListViewElement:elementCopy];
     goto LABEL_5;
   }
 
-  if (v4 == 1)
+  if (entryListElementType == 1)
   {
-    v5 = [[SUUIIndexBarDynamicElementEntryListController alloc] initWithEntryListViewElement:v3];
+    v5 = [[SUUIIndexBarDynamicElementEntryListController alloc] initWithEntryListViewElement:elementCopy];
 LABEL_5:
     v6 = v5;
     goto LABEL_7;
@@ -41,10 +41,10 @@ LABEL_7:
 
 - (void)_didInvalidate
 {
-  v3 = [(SUUIIndexBarEntryListController *)self delegate];
+  delegate = [(SUUIIndexBarEntryListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 indexBarEntryListControllerDidInvalidate:self];
+    [delegate indexBarEntryListControllerDidInvalidate:self];
   }
 }
 

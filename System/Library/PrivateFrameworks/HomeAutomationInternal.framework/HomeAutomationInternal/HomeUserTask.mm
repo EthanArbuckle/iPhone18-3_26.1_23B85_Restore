@@ -1,13 +1,13 @@
 @interface HomeUserTask
-- (HomeUserTask)initWithCoder:(id)a3;
-- (HomeUserTask)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (HomeUserTask)initWithCoder:(id)coder;
+- (HomeUserTask)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation HomeUserTask
 
-- (HomeUserTask)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (HomeUserTask)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_252E36F34();
     v8 = v7;
@@ -21,7 +21,7 @@
 
   v9 = sub_252E36F34();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = sub_252E36F34();
     v14 = v13;
@@ -36,12 +36,12 @@
   return HomeUserTask.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (HomeUserTask)initWithCoder:(id)a3
+- (HomeUserTask)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for HomeUserTask();
-  v4 = a3;
-  v5 = [(HomeUserTask *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HomeUserTask *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

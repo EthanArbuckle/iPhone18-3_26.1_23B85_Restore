@@ -8,10 +8,10 @@
 - (void)_setupWiFi;
 - (void)_teardownWiFi;
 - (void)dealloc;
-- (void)handleBluetoothPowerChanged:(id)a3;
+- (void)handleBluetoothPowerChanged:(id)changed;
 - (void)handleWifiPowerChanged;
-- (void)setPresentingController:(id)a3;
-- (void)setWiFiPowered:(BOOL)a3;
+- (void)setPresentingController:(id)controller;
+- (void)setWiFiPowered:(BOOL)powered;
 @end
 
 @implementation CARRadiosAvailabilityPrompt
@@ -101,10 +101,10 @@
   [(CARRadiosAvailabilityPrompt *)&v4 dealloc];
 }
 
-- (void)setPresentingController:(id)a3
+- (void)setPresentingController:(id)controller
 {
-  objc_storeWeak(&self->_presentingController, a3);
-  if (a3 && [(CARRadiosAvailabilityPrompt *)self needsPresentationConsideration])
+  objc_storeWeak(&self->_presentingController, controller);
+  if (controller && [(CARRadiosAvailabilityPrompt *)self needsPresentationConsideration])
   {
 
     [(CARRadiosAvailabilityPrompt *)self updateRadiosAvailabilityAlertPresentation];
@@ -114,9 +114,9 @@
 - (BOOL)shouldPromptBluetoothPower
 {
   v2 = +[BluetoothManager sharedInstance];
-  v3 = [v2 available];
+  available = [v2 available];
 
-  if (!v3)
+  if (!available)
   {
     return 0;
   }
@@ -138,7 +138,7 @@
   return wifiManager;
 }
 
-- (void)setWiFiPowered:(BOOL)a3
+- (void)setWiFiPowered:(BOOL)powered
 {
   if (self->_wifiManager)
   {
@@ -149,16 +149,16 @@
 - (BOOL)updateRadiosAvailabilityAlertPresentation
 {
   [(CARRadiosAvailabilityPrompt *)self setNeedsPresentationConsideration:0];
-  v3 = [(CARRadiosAvailabilityPrompt *)self shouldPromptBluetoothPower];
-  v4 = [(CARRadiosAvailabilityPrompt *)self shouldPromptWiFiPower];
-  if (v3 && v4)
+  shouldPromptBluetoothPower = [(CARRadiosAvailabilityPrompt *)self shouldPromptBluetoothPower];
+  shouldPromptWiFiPower = [(CARRadiosAvailabilityPrompt *)self shouldPromptWiFiPower];
+  if (shouldPromptBluetoothPower && shouldPromptWiFiPower)
   {
     goto LABEL_3;
   }
 
-  if (v3)
+  if (shouldPromptBluetoothPower)
   {
-    v27 = v4;
+    v27 = shouldPromptWiFiPower;
     v11 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v11 localizedStringForKey:@"POWER_BLUETOOTH_TITLE" value:&stru_6FD90 table:@"Alerts"];
 
@@ -167,10 +167,10 @@
     goto LABEL_6;
   }
 
-  if (v4)
+  if (shouldPromptWiFiPower)
   {
 LABEL_3:
-    v27 = v4;
+    v27 = shouldPromptWiFiPower;
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = SFLocalizableWAPIStringKeyForKey();
     v7 = [v5 localizedStringForKey:v6 value:&stru_6FD90 table:@"Alerts"];
@@ -180,9 +180,9 @@ LABEL_3:
     v10 = [v8 localizedStringForKey:v9 value:&stru_6FD90 table:@"Alerts"];
 
 LABEL_6:
-    v12 = [(CARRadiosAvailabilityPrompt *)self presentingController];
+    presentingController = [(CARRadiosAvailabilityPrompt *)self presentingController];
 
-    if (v12)
+    if (presentingController)
     {
       v13 = [NSBundle bundleForClass:objc_opt_class()];
       v14 = [v13 localizedStringForKey:@"POWER_MESSAGE" value:&stru_6FD90 table:@"Alerts"];
@@ -196,7 +196,7 @@ LABEL_6:
       v28[1] = 3221225472;
       v28[2] = sub_A080;
       v28[3] = &unk_6E530;
-      v29 = v3;
+      v29 = shouldPromptBluetoothPower;
       v28[4] = self;
       v30 = v27;
       v19 = [UIAlertAction actionWithTitle:v10 style:0 handler:v28];
@@ -205,8 +205,8 @@ LABEL_6:
       v20 = [UIAlertAction actionWithTitle:v16 style:1 handler:&stru_6E570];
       [v18 addAction:v20];
 
-      v21 = [(CARRadiosAvailabilityPrompt *)self presentingController];
-      [v21 presentViewController:v18 animated:1 completion:0];
+      presentingController2 = [(CARRadiosAvailabilityPrompt *)self presentingController];
+      [presentingController2 presentViewController:v18 animated:1 completion:0];
 
       [(CARRadiosAvailabilityPrompt *)self setPresentedAlertController:v18];
     }
@@ -220,23 +220,23 @@ LABEL_6:
     return v17;
   }
 
-  v23 = [(CARRadiosAvailabilityPrompt *)self presentingController];
-  if (v23)
+  presentingController3 = [(CARRadiosAvailabilityPrompt *)self presentingController];
+  if (presentingController3)
   {
-    v24 = v23;
-    v25 = [(CARRadiosAvailabilityPrompt *)self presentedAlertController];
+    v24 = presentingController3;
+    presentedAlertController = [(CARRadiosAvailabilityPrompt *)self presentedAlertController];
 
-    if (v25)
+    if (presentedAlertController)
     {
-      v26 = [(CARRadiosAvailabilityPrompt *)self presentingController];
-      [v26 dismissViewControllerAnimated:1 completion:0];
+      presentingController4 = [(CARRadiosAvailabilityPrompt *)self presentingController];
+      [presentingController4 dismissViewControllerAnimated:1 completion:0];
     }
   }
 
   return 0;
 }
 
-- (void)handleBluetoothPowerChanged:(id)a3
+- (void)handleBluetoothPowerChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

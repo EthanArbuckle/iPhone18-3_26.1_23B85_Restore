@@ -3,31 +3,31 @@
 - (BOOL)isBackupEnabled;
 - (BOOL)isManualBackupOnCellularAllowed;
 - (BOOL)isRestoring;
-- (DKBackupProvider)initWithAccount:(id)a3;
+- (DKBackupProvider)initWithAccount:(id)account;
 - (void)cancel;
 - (void)isManualBackupOnCellularAllowed;
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4;
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5;
-- (void)managerDidFinishBackup:(id)a3;
-- (void)managerDidLoseConnectionToService:(id)a3;
-- (void)startBackupWithExpensiveCellularAllowed:(BOOL)a3 progressHandler:(id)a4 completionHandler:(id)a5;
+- (void)manager:(id)manager didFailBackupWithError:(id)error;
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining;
+- (void)managerDidFinishBackup:(id)backup;
+- (void)managerDidLoseConnectionToService:(id)service;
+- (void)startBackupWithExpensiveCellularAllowed:(BOOL)allowed progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation DKBackupProvider
 
-- (DKBackupProvider)initWithAccount:(id)a3
+- (DKBackupProvider)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v13.receiver = self;
   v13.super_class = DKBackupProvider;
   v6 = [(DKBackupProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v8 = objc_alloc(MEMORY[0x277D28A40]);
-    v9 = [v5 personaIdentifier];
-    v10 = [v8 initWithDelegate:0 eventQueue:0 personaIdentifier:v9];
+    personaIdentifier = [accountCopy personaIdentifier];
+    v10 = [v8 initWithDelegate:0 eventQueue:0 personaIdentifier:personaIdentifier];
     manager = v7->_manager;
     v7->_manager = v10;
   }
@@ -37,36 +37,36 @@
 
 - (BOOL)isBackupEnabled
 {
-  v2 = [(DKBackupProvider *)self manager];
-  v3 = [v2 isBackupEnabled];
+  manager = [(DKBackupProvider *)self manager];
+  isBackupEnabled = [manager isBackupEnabled];
 
-  return v3;
+  return isBackupEnabled;
 }
 
 - (BOOL)isBackingUp
 {
-  v2 = [(DKBackupProvider *)self manager];
-  v3 = [v2 backupState];
+  manager = [(DKBackupProvider *)self manager];
+  backupState = [manager backupState];
 
-  LOBYTE(v2) = [v3 state] - 1 < 3;
-  return v2;
+  LOBYTE(manager) = [backupState state] - 1 < 3;
+  return manager;
 }
 
 - (BOOL)isRestoring
 {
-  v2 = [(DKBackupProvider *)self manager];
-  v3 = [v2 restoreState];
+  manager = [(DKBackupProvider *)self manager];
+  restoreState = [manager restoreState];
 
-  LOBYTE(v2) = [v3 state] - 1 < 3;
-  return v2;
+  LOBYTE(manager) = [restoreState state] - 1 < 3;
+  return manager;
 }
 
 - (BOOL)isManualBackupOnCellularAllowed
 {
-  v3 = [(DKBackupProvider *)self manager];
-  v4 = [(DKBackupProvider *)self account];
+  manager = [(DKBackupProvider *)self manager];
+  account = [(DKBackupProvider *)self account];
   v9 = 0;
-  v5 = [v3 isManualBackupOnCellularAllowedWithAccount:v4 error:&v9];
+  v5 = [manager isManualBackupOnCellularAllowedWithAccount:account error:&v9];
   v6 = v9;
 
   if (v6)
@@ -81,32 +81,32 @@
   return v5;
 }
 
-- (void)startBackupWithExpensiveCellularAllowed:(BOOL)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (void)startBackupWithExpensiveCellularAllowed:(BOOL)allowed progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
+  allowedCopy = allowed;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__DKBackupProvider_startBackupWithExpensiveCellularAllowed_progressHandler_completionHandler___block_invoke;
   block[3] = &unk_278F7DD00;
   block[4] = self;
-  v10 = v8;
+  v10 = handlerCopy;
   v32 = v10;
-  v11 = v9;
+  v11 = completionHandlerCopy;
   v33 = v11;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v12 = [(DKBackupProvider *)self isBackingUp];
+  isBackingUp = [(DKBackupProvider *)self isBackingUp];
   v13 = _DKLogSystem();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v12)
+  if (isBackingUp)
   {
     if (v14)
     {
-      v15 = [(DKBackupProvider *)self account];
+      account = [(DKBackupProvider *)self account];
       *buf = 138412290;
-      v35 = v15;
+      v35 = account;
       _os_log_impl(&dword_248D68000, v13, OS_LOG_TYPE_DEFAULT, "Skipping starting backup; backup already running for %@...", buf, 0xCu);
     }
   }
@@ -115,16 +115,16 @@
   {
     if (v14)
     {
-      v16 = [(DKBackupProvider *)self account];
+      account2 = [(DKBackupProvider *)self account];
       *buf = 138412290;
-      v35 = v16;
+      v35 = account2;
       _os_log_impl(&dword_248D68000, v13, OS_LOG_TYPE_DEFAULT, "Starting backup for %@...", buf, 0xCu);
     }
 
     v13 = objc_alloc_init(MEMORY[0x277D28A70]);
     if ([(DKBackupProvider *)self isManualBackupOnCellularAllowed])
     {
-      if (v6)
+      if (allowedCopy)
       {
         [MEMORY[0x277D28A38] expensiveCellularAccess];
       }
@@ -137,15 +137,15 @@
       [v13 setCellularAccess:v17];
     }
 
-    v18 = [(DKBackupProvider *)self manager];
-    [v18 setDelegate:self];
+    manager = [(DKBackupProvider *)self manager];
+    [manager setDelegate:self];
 
-    v19 = [(DKBackupProvider *)self manager];
+    manager2 = [(DKBackupProvider *)self manager];
     v30 = 0;
-    v20 = [v19 startBackupWithOptions:v13 error:&v30];
+    domain = [manager2 startBackupWithOptions:v13 error:&v30];
     v21 = v30;
 
-    if ((v20 & 1) == 0)
+    if ((domain & 1) == 0)
     {
       v22 = _DKLogSystem();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -159,8 +159,8 @@
         else if (v21)
         {
           v27 = MEMORY[0x277CCACA8];
-          v20 = [v21 domain];
-          v26 = [v27 stringWithFormat:@"<Error domain: %@, code %ld>", v20, objc_msgSend(v21, "code")];
+          domain = [v21 domain];
+          v26 = [v27 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v21, "code")];
           v25 = 1;
         }
 
@@ -219,24 +219,24 @@ uint64_t __94__DKBackupProvider_startBackupWithExpensiveCellularAllowed_progress
 
 - (void)cancel
 {
-  v2 = [(DKBackupProvider *)self manager];
-  [v2 cancel];
+  manager = [(DKBackupProvider *)self manager];
+  [manager cancel];
 }
 
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining
 {
-  v8 = a3;
-  v9 = [(DKBackupProvider *)self manager];
+  managerCopy = manager;
+  manager = [(DKBackupProvider *)self manager];
 
-  if (v9 == v8)
+  if (manager == managerCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __69__DKBackupProvider_manager_didUpdateProgress_estimatedTimeRemaining___block_invoke;
     block[3] = &unk_278F7DDF0;
-    v11 = a4;
+    progressCopy = progress;
     block[4] = self;
-    block[5] = a5;
+    block[5] = remaining;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -252,12 +252,12 @@ void __69__DKBackupProvider_manager_didUpdateProgress_estimatedTimeRemaining___b
   }
 }
 
-- (void)managerDidFinishBackup:(id)a3
+- (void)managerDidFinishBackup:(id)backup
 {
-  v4 = a3;
-  v5 = [(DKBackupProvider *)self manager];
+  backupCopy = backup;
+  manager = [(DKBackupProvider *)self manager];
 
-  if (v5 == v4)
+  if (manager == backupCopy)
   {
     v6 = _DKLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -266,8 +266,8 @@ void __69__DKBackupProvider_manager_didUpdateProgress_estimatedTimeRemaining___b
       _os_log_impl(&dword_248D68000, v6, OS_LOG_TYPE_DEFAULT, "Backup did finish!", buf, 2u);
     }
 
-    v7 = [(DKBackupProvider *)self manager];
-    [v7 setDelegate:0];
+    manager2 = [(DKBackupProvider *)self manager];
+    [manager2 setDelegate:0];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -289,14 +289,14 @@ void __43__DKBackupProvider_managerDidFinishBackup___block_invoke(uint64_t a1)
   }
 }
 
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4
+- (void)manager:(id)manager didFailBackupWithError:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DKBackupProvider *)self manager];
+  errorCopy = error;
+  managerCopy = manager;
+  manager = [(DKBackupProvider *)self manager];
 
-  if (v8 == v7)
+  if (manager == managerCopy)
   {
     v9 = _DKLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -304,14 +304,14 @@ void __43__DKBackupProvider_managerDidFinishBackup___block_invoke(uint64_t a1)
       if (_DKIsInternalInstall())
       {
         v11 = 0;
-        v12 = v6;
+        v12 = errorCopy;
       }
 
-      else if (v6)
+      else if (errorCopy)
       {
         v13 = MEMORY[0x277CCACA8];
-        v8 = [v6 domain];
-        v12 = [v13 stringWithFormat:@"<Error domain: %@, code %ld>", v8, objc_msgSend(v6, "code")];
+        manager = [errorCopy domain];
+        v12 = [v13 stringWithFormat:@"<Error domain: %@, code %ld>", manager, objc_msgSend(errorCopy, "code")];
         v11 = 1;
       }
 
@@ -334,7 +334,7 @@ void __43__DKBackupProvider_managerDidFinishBackup___block_invoke(uint64_t a1)
     block[2] = __51__DKBackupProvider_manager_didFailBackupWithError___block_invoke;
     block[3] = &unk_278F7DE18;
     block[4] = self;
-    v15 = v6;
+    v15 = errorCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -352,12 +352,12 @@ void __51__DKBackupProvider_manager_didFailBackupWithError___block_invoke(uint64
   }
 }
 
-- (void)managerDidLoseConnectionToService:(id)a3
+- (void)managerDidLoseConnectionToService:(id)service
 {
-  v4 = a3;
-  v5 = [(DKBackupProvider *)self manager];
+  serviceCopy = service;
+  manager = [(DKBackupProvider *)self manager];
 
-  if (v5 == v4)
+  if (manager == serviceCopy)
   {
     v6 = _DKLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -365,8 +365,8 @@ void __51__DKBackupProvider_manager_didFailBackupWithError___block_invoke(uint64
       [DKBackupProvider managerDidLoseConnectionToService:v6];
     }
 
-    v7 = [(DKBackupProvider *)self manager];
-    [v7 setDelegate:0];
+    manager2 = [(DKBackupProvider *)self manager];
+    [manager2 setDelegate:0];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -396,12 +396,12 @@ void __54__DKBackupProvider_managerDidLoseConnectionToService___block_invoke(uin
   if ((v5 & 1) == 0)
   {
     v6 = MEMORY[0x277CCACA8];
-    v2 = [a1 domain];
-    a1 = [v6 stringWithFormat:@"<Error domain: %@, code %ld>", v2, objc_msgSend(a1, "code")];
+    domain = [self domain];
+    self = [v6 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(self, "code")];
   }
 
   *buf = 138543362;
-  v9 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_248D68000, a2, OS_LOG_TYPE_ERROR, "Failed to check if backup is supported on cellular: %{public}@", buf, 0xCu);
   if (!v5)
   {

@@ -2,67 +2,67 @@
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (MUHairlineView)init;
-- (MUHairlineView)initWithCoder:(id)a3;
-- (MUHairlineView)initWithFrame:(CGRect)a3;
+- (MUHairlineView)initWithCoder:(id)coder;
+- (MUHairlineView)initWithFrame:(CGRect)frame;
 - (double)leadingMargin;
 - (double)trailingMargin;
 - (void)_updateIntrinsicThicknessForDisplayScale;
 - (void)customInit;
 - (void)didMoveToWindow;
-- (void)setLeadingMargin:(double)a3;
-- (void)setTrailingMargin:(double)a3;
-- (void)setVertical:(BOOL)a3;
+- (void)setLeadingMargin:(double)margin;
+- (void)setTrailingMargin:(double)margin;
+- (void)setVertical:(BOOL)vertical;
 @end
 
 @implementation MUHairlineView
 
 - (double)trailingMargin
 {
-  v2 = [(MUHairlineView *)self trailingMarginConstraint];
-  [v2 constant];
+  trailingMarginConstraint = [(MUHairlineView *)self trailingMarginConstraint];
+  [trailingMarginConstraint constant];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTrailingMargin:(double)a3
+- (void)setTrailingMargin:(double)margin
 {
-  v4 = [(MUHairlineView *)self trailingMarginConstraint];
-  [v4 setConstant:a3];
+  trailingMarginConstraint = [(MUHairlineView *)self trailingMarginConstraint];
+  [trailingMarginConstraint setConstant:margin];
 }
 
 - (double)leadingMargin
 {
-  v2 = [(MUHairlineView *)self leadingMarginConstraint];
-  [v2 constant];
+  leadingMarginConstraint = [(MUHairlineView *)self leadingMarginConstraint];
+  [leadingMarginConstraint constant];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLeadingMargin:(double)a3
+- (void)setLeadingMargin:(double)margin
 {
-  v4 = [(MUHairlineView *)self leadingMarginConstraint];
-  [v4 setConstant:a3];
+  leadingMarginConstraint = [(MUHairlineView *)self leadingMarginConstraint];
+  [leadingMarginConstraint setConstant:margin];
 }
 
 - (void)_updateIntrinsicThicknessForDisplayScale
 {
-  v2 = self;
-  v3 = [(MUHairlineView *)v2 window];
-  v4 = [v3 screen];
-  if (v4)
+  selfCopy = self;
+  window = [(MUHairlineView *)selfCopy window];
+  screen = [window screen];
+  if (screen)
   {
-    v5 = [(MUHairlineView *)v2 window];
-    v6 = [v5 screen];
-    [v6 nativeScale];
+    window2 = [(MUHairlineView *)selfCopy window];
+    screen2 = [window2 screen];
+    [screen2 nativeScale];
     v8 = v7;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 nativeScale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 nativeScale];
     v8 = v9;
   }
 
@@ -76,9 +76,9 @@
     v10 = 1.0 / v8;
   }
 
-  v2->_intrinsicThickness = v10;
+  selfCopy->_intrinsicThickness = v10;
 
-  [(MUHairlineView *)v2 invalidateIntrinsicContentSize];
+  [(MUHairlineView *)selfCopy invalidateIntrinsicContentSize];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result
@@ -127,23 +127,23 @@
   v12.receiver = self;
   v12.super_class = MUHairlineView;
   [(MKHairlineView *)&v12 didMoveToWindow];
-  v3 = self;
-  v4 = [(MUHairlineView *)v3 window];
-  v5 = [v4 screen];
-  if (v5)
+  selfCopy = self;
+  window = [(MUHairlineView *)selfCopy window];
+  screen = [window screen];
+  if (screen)
   {
-    v6 = [(MUHairlineView *)v3 window];
+    window2 = [(MUHairlineView *)selfCopy window];
 
-    v7 = [v6 screen];
-    [v7 nativeScale];
+    screen2 = [window2 screen];
+    [screen2 nativeScale];
     v9 = v8;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
 
-    [v6 nativeScale];
+    [window2 nativeScale];
     v9 = v10;
   }
 
@@ -153,23 +153,23 @@
     v11 = 1.0 / v9;
   }
 
-  if (v11 != v3->_intrinsicThickness)
+  if (v11 != selfCopy->_intrinsicThickness)
   {
-    v3->_intrinsicThickness = v11;
-    [(MUHairlineView *)v3 invalidateIntrinsicContentSize];
+    selfCopy->_intrinsicThickness = v11;
+    [(MUHairlineView *)selfCopy invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setVertical:(BOOL)a3
+- (void)setVertical:(BOOL)vertical
 {
-  if (self->_vertical != a3)
+  if (self->_vertical != vertical)
   {
     v19 = v10;
     v20 = v9;
     v21 = v8;
     v22 = v3;
-    self->_vertical = a3;
-    if (a3)
+    self->_vertical = vertical;
+    if (vertical)
     {
       *&v7 = 1000.0;
     }
@@ -179,7 +179,7 @@
       *&v7 = 250.0;
     }
 
-    if (a3)
+    if (vertical)
     {
       v13 = 250.0;
     }
@@ -189,7 +189,7 @@
       v13 = 1000.0;
     }
 
-    if (a3)
+    if (vertical)
     {
       v14 = 1000.0;
     }
@@ -199,7 +199,7 @@
       v14 = 750.0;
     }
 
-    if (a3)
+    if (vertical)
     {
       v15 = 750.0;
     }
@@ -223,21 +223,21 @@
 - (void)customInit
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  v3 = [(MUHairlineView *)v2 window];
-  v4 = [v3 screen];
-  if (v4)
+  selfCopy = self;
+  window = [(MUHairlineView *)selfCopy window];
+  screen = [window screen];
+  if (screen)
   {
-    v5 = [(MUHairlineView *)v2 window];
-    v6 = [v5 screen];
-    [v6 nativeScale];
+    window2 = [(MUHairlineView *)selfCopy window];
+    screen2 = [window2 screen];
+    [screen2 nativeScale];
     v8 = v7;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 nativeScale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 nativeScale];
     v8 = v9;
   }
 
@@ -251,24 +251,24 @@
     v10 = 1.0 / v8;
   }
 
-  v2->_intrinsicThickness = v10;
+  selfCopy->_intrinsicThickness = v10;
   LODWORD(v11) = 1148846080;
-  [(MUHairlineView *)v2 setContentHuggingPriority:1 forAxis:v11];
+  [(MUHairlineView *)selfCopy setContentHuggingPriority:1 forAxis:v11];
   LODWORD(v12) = 1148846080;
-  [(MUHairlineView *)v2 setContentCompressionResistancePriority:1 forAxis:v12];
+  [(MUHairlineView *)selfCopy setContentCompressionResistancePriority:1 forAxis:v12];
   v13 = objc_opt_self();
   v17[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v15 = [(MUHairlineView *)v2 registerForTraitChanges:v14 withAction:sel__updateIntrinsicThicknessForDisplayScale];
+  v15 = [(MUHairlineView *)selfCopy registerForTraitChanges:v14 withAction:sel__updateIntrinsicThicknessForDisplayScale];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (MUHairlineView)initWithCoder:(id)a3
+- (MUHairlineView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MUHairlineView;
-  v3 = [(MUHairlineView *)&v6 initWithCoder:a3];
+  v3 = [(MUHairlineView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -278,11 +278,11 @@
   return v4;
 }
 
-- (MUHairlineView)initWithFrame:(CGRect)a3
+- (MUHairlineView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUHairlineView;
-  v3 = [(MKHairlineView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKHairlineView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

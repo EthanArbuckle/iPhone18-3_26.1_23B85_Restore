@@ -1,28 +1,28 @@
 @interface HSPCDiscoveredAccessoryPickerViewController
-- (HSPCDiscoveredAccessoryPickerViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCDiscoveredAccessoryPickerViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (UIActivityIndicatorView)spinnerView;
 - (id)onAccessoryNotListedButton;
 - (void)_launchAirportUtility;
 - (void)_launchAppStore;
 - (void)_presentSoftwareUpdateAlertForAirportExpress;
-- (void)configureNextViewController:(id)a3;
-- (void)didSelectDiscoveredAccessory:(id)a3;
-- (void)didUpdateNumberOfDiscoveredAccessories:(unint64_t)a3;
+- (void)configureNextViewController:(id)controller;
+- (void)didSelectDiscoveredAccessory:(id)accessory;
+- (void)didUpdateNumberOfDiscoveredAccessories:(unint64_t)accessories;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCDiscoveredAccessoryPickerViewController
 
-- (HSPCDiscoveredAccessoryPickerViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCDiscoveredAccessoryPickerViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [HSDiscoveredAccessoryPickerViewController alloc];
-  v10 = [v7 accessoryBrowser];
-  v11 = [v7 entitlementContext];
-  v12 = [v7 setupAccessoryDescription];
-  v13 = [v7 matterDeviceSetupRequest];
-  v14 = [(HSDiscoveredAccessoryPickerViewController *)v9 initWithAccessoryBrowsingManager:v10 entitlementContext:v11 setupAccessoryDescription:v12 matterDeviceSetupRequest:v13];
+  accessoryBrowser = [coordinatorCopy accessoryBrowser];
+  entitlementContext = [coordinatorCopy entitlementContext];
+  setupAccessoryDescription = [coordinatorCopy setupAccessoryDescription];
+  matterDeviceSetupRequest = [coordinatorCopy matterDeviceSetupRequest];
+  v14 = [(HSDiscoveredAccessoryPickerViewController *)v9 initWithAccessoryBrowsingManager:accessoryBrowser entitlementContext:entitlementContext setupAccessoryDescription:setupAccessoryDescription matterDeviceSetupRequest:matterDeviceSetupRequest];
 
   v24.receiver = self;
   v24.super_class = HSPCDiscoveredAccessoryPickerViewController;
@@ -30,20 +30,20 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_coordinator, a3);
-    objc_storeStrong(&v16->_config, a4);
-    if (([v8 isSetupInitiatedByOtherMatterEcosystem] & 1) != 0 || (objc_msgSend(v7, "home"), v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
+    objc_storeStrong(&v15->_coordinator, coordinator);
+    objc_storeStrong(&v16->_config, config);
+    if (([configCopy isSetupInitiatedByOtherMatterEcosystem] & 1) != 0 || (objc_msgSend(coordinatorCopy, "home"), v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
     {
-      v18 = HULocalizedString();
-      [(HSPCDiscoveredAccessoryPickerViewController *)v16 setTitle:v18];
+      home = HULocalizedString();
+      [(HSPCDiscoveredAccessoryPickerViewController *)v16 setTitle:home];
     }
 
     else
     {
-      v18 = [v7 home];
-      v19 = [v18 name];
+      home = [coordinatorCopy home];
+      name = [home name];
       v20 = HULocalizedStringWithFormat();
-      [(HSPCDiscoveredAccessoryPickerViewController *)v16 setTitle:v20, v19];
+      [(HSPCDiscoveredAccessoryPickerViewController *)v16 setTitle:v20, name];
     }
 
     v21 = sub_100063A44(@"HSSetupCodeSubtitlePickAccessory");
@@ -59,8 +59,8 @@
 
 - (id)onAccessoryNotListedButton
 {
-  v3 = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
-  v4 = [v3 didReceiveDiscoveredAccessory:0 withPayload:0];
+  coordinator = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
+  v4 = [coordinator didReceiveDiscoveredAccessory:0 withPayload:0];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100030730;
@@ -71,11 +71,11 @@
   return v5;
 }
 
-- (void)configureNextViewController:(id)a3
+- (void)configureNextViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
-  v6 = v3;
+  v6 = controllerCopy;
   if (objc_opt_isKindOfClass())
   {
     v4 = v6;
@@ -96,89 +96,89 @@
   v60.receiver = self;
   v60.super_class = HSPCDiscoveredAccessoryPickerViewController;
   [(HSPCDiscoveredAccessoryPickerViewController *)&v60 viewDidLoad];
-  v3 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
-  [(HSPCDiscoveredAccessoryPickerViewController *)self addChildViewController:v3];
+  contentVC = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
+  [(HSPCDiscoveredAccessoryPickerViewController *)self addChildViewController:contentVC];
 
-  v4 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentView];
-  v5 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
-  v6 = [v5 view];
-  [v4 addSubview:v6];
+  contentView = [(HSPCDiscoveredAccessoryPickerViewController *)self contentView];
+  contentVC2 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
+  view = [contentVC2 view];
+  [contentView addSubview:view];
 
-  v7 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
-  [v7 didMoveToParentViewController:self];
+  contentVC3 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
+  [contentVC3 didMoveToParentViewController:self];
 
   v57 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
-  v8 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentView];
-  [v8 addSubview:v57];
+  contentView2 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentView];
+  [contentView2 addSubview:v57];
 
   [v57 startAnimating];
   [(HSPCDiscoveredAccessoryPickerViewController *)self setSpinnerView:v57];
-  v9 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentView];
-  v10 = [v9 mainContentGuide];
+  contentView3 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentView];
+  mainContentGuide = [contentView3 mainContentGuide];
 
-  v11 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
-  v12 = [v11 view];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentVC4 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
+  view2 = [contentVC4 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v55 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
-  v53 = [v55 view];
-  v51 = [v53 leftAnchor];
-  v49 = [v10 leftAnchor];
-  v47 = [v51 constraintEqualToAnchor:v49];
+  contentVC5 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
+  view3 = [contentVC5 view];
+  leftAnchor = [view3 leftAnchor];
+  leftAnchor2 = [mainContentGuide leftAnchor];
+  v47 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v62[0] = v47;
-  v45 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
-  v43 = [v45 view];
-  v42 = [v43 topAnchor];
-  v40 = [v10 topAnchor];
-  v39 = [v42 constraintEqualToAnchor:v40];
+  contentVC6 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
+  view4 = [contentVC6 view];
+  topAnchor = [view4 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v62[1] = v39;
-  v38 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
-  v37 = [v38 view];
-  v13 = [v37 rightAnchor];
-  v58 = v10;
-  v14 = [v10 rightAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  contentVC7 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
+  view5 = [contentVC7 view];
+  rightAnchor = [view5 rightAnchor];
+  v58 = mainContentGuide;
+  rightAnchor2 = [mainContentGuide rightAnchor];
+  v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v62[2] = v15;
-  v16 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
-  v17 = [v16 view];
-  v18 = [v17 bottomAnchor];
-  v19 = [v10 bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  contentVC8 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
+  view6 = [contentVC8 view];
+  bottomAnchor = [view6 bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v62[3] = v20;
   v21 = [NSArray arrayWithObjects:v62 count:4];
   [NSLayoutConstraint activateConstraints:v21];
 
-  v22 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  spinnerView = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
+  [spinnerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v56 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
-  v54 = [v56 centerXAnchor];
-  v52 = [v58 centerXAnchor];
-  v50 = [v54 constraintEqualToAnchor:v52];
+  spinnerView2 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
+  centerXAnchor = [spinnerView2 centerXAnchor];
+  centerXAnchor2 = [v58 centerXAnchor];
+  v50 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v61[0] = v50;
-  v48 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
-  v46 = [v48 centerYAnchor];
-  v44 = [v58 centerYAnchor];
-  v41 = [v46 constraintEqualToAnchor:v44];
+  spinnerView3 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
+  centerYAnchor = [spinnerView3 centerYAnchor];
+  centerYAnchor2 = [v58 centerYAnchor];
+  v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v61[1] = v41;
-  v23 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
-  v24 = [v23 topAnchor];
-  v25 = [v58 topAnchor];
-  v26 = [v24 constraintGreaterThanOrEqualToAnchor:v25];
+  spinnerView4 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
+  topAnchor3 = [spinnerView4 topAnchor];
+  topAnchor4 = [v58 topAnchor];
+  v26 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v61[2] = v26;
-  v27 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
-  v28 = [v27 bottomAnchor];
-  v29 = [v58 bottomAnchor];
-  v30 = [v28 constraintLessThanOrEqualToAnchor:v29];
+  spinnerView5 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
+  bottomAnchor3 = [spinnerView5 bottomAnchor];
+  bottomAnchor4 = [v58 bottomAnchor];
+  v30 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
   v61[3] = v30;
   v31 = [NSArray arrayWithObjects:v61 count:4];
   [NSLayoutConstraint activateConstraints:v31];
 
   objc_opt_class();
-  v32 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
+  contentVC9 = [(HSPCDiscoveredAccessoryPickerViewController *)self contentVC];
   if (objc_opt_isKindOfClass())
   {
-    v33 = v32;
+    v33 = contentVC9;
   }
 
   else
@@ -188,19 +188,19 @@
 
   v34 = v33;
 
-  v35 = [v34 hu_preloadContent];
+  hu_preloadContent = [v34 hu_preloadContent];
 
   v59[0] = _NSConcreteStackBlock;
   v59[1] = 3221225472;
   v59[2] = sub_100030E14;
   v59[3] = &unk_1000C6CA0;
   v59[4] = self;
-  v36 = [v35 addCompletionBlock:v59];
+  v36 = [hu_preloadContent addCompletionBlock:v59];
 }
 
-- (void)didSelectDiscoveredAccessory:(id)a3
+- (void)didSelectDiscoveredAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   if (![(HSPCDiscoveredAccessoryPickerViewController *)self shouldIgnoreFutureAccessorySelection])
   {
     [(HSPCDiscoveredAccessoryPickerViewController *)self setShouldIgnoreFutureAccessorySelection:1];
@@ -208,33 +208,33 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v4;
+      v35 = accessoryCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "didSelectDiscoveredAccessory, discoveredAccessory %@", buf, 0xCu);
     }
 
-    v6 = [v4 sharingDevice];
+    sharingDevice = [accessoryCopy sharingDevice];
 
-    if (v6)
+    if (sharingDevice)
     {
-      v7 = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
+      coordinator = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_100031240;
       v31[3] = &unk_1000C5F38;
-      v32 = v4;
-      v33 = self;
+      v32 = accessoryCopy;
+      selfCopy = self;
       v8 = [NAFuture futureWithBlock:v31];
-      [v7 dismissProxCardFlowAfterExecuting:v8];
+      [coordinator dismissProxCardFlowAfterExecuting:v8];
 
       goto LABEL_18;
     }
 
-    if ([v4 requiresSoftwareUpdate])
+    if ([accessoryCopy requiresSoftwareUpdate])
     {
-      v9 = [v4 accessory];
-      v10 = [v9 category];
-      v11 = [v10 categoryType];
-      v12 = [v11 isEqualToString:HMAccessoryCategoryTypeAirPort];
+      accessory = [accessoryCopy accessory];
+      category = [accessory category];
+      categoryType = [category categoryType];
+      v12 = [categoryType isEqualToString:HMAccessoryCategoryTypeAirPort];
 
       if (v12)
       {
@@ -243,32 +243,32 @@
       }
     }
 
-    v13 = [v4 accessory];
-    v14 = [v13 category];
-    v15 = [v14 categoryType];
-    v16 = [v15 isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
+    accessory2 = [accessoryCopy accessory];
+    category2 = [accessory2 category];
+    categoryType2 = [category2 categoryType];
+    v16 = [categoryType2 isEqualToString:HMAccessoryCategoryTypeWiFiRouter];
 
-    v17 = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
-    v18 = [v17 setupAccessoryDescription];
+    coordinator2 = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
+    setupAccessoryDescription = [coordinator2 setupAccessoryDescription];
 
     if (v16)
     {
-      [v18 hf_updateWithDiscoveredAccessory:v4];
-      v19 = [(HSPCDiscoveredAccessoryPickerViewController *)self navigationController];
-      v20 = [[HSPCSetupNetworkRouterAppPunchoutViewController alloc] initWithPopupDelegate:0 setupAccessoryDescription:v18];
-      [v19 pushViewController:v20 animated:1];
+      [setupAccessoryDescription hf_updateWithDiscoveredAccessory:accessoryCopy];
+      navigationController = [(HSPCDiscoveredAccessoryPickerViewController *)self navigationController];
+      v20 = [[HSPCSetupNetworkRouterAppPunchoutViewController alloc] initWithPopupDelegate:0 setupAccessoryDescription:setupAccessoryDescription];
+      [navigationController pushViewController:v20 animated:1];
     }
 
     else
     {
-      v21 = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
-      v22 = [v18 setupAccessoryPayload];
-      v23 = [v21 shouldShowCustomCommissioningProxCardWithPayload:v22];
+      coordinator3 = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
+      setupAccessoryPayload = [setupAccessoryDescription setupAccessoryPayload];
+      v23 = [coordinator3 shouldShowCustomCommissioningProxCardWithPayload:setupAccessoryPayload];
 
       if (!v23)
       {
-        v27 = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
-        v28 = [v27 didReceiveDiscoveredAccessory:v4 withPayload:0];
+        coordinator4 = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
+        v28 = [coordinator4 didReceiveDiscoveredAccessory:accessoryCopy withPayload:0];
         v30[0] = _NSConcreteStackBlock;
         v30[1] = 3221225472;
         v30[2] = sub_100031480;
@@ -286,13 +286,13 @@
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "discoveredAccessory matterDeviceTypeID == MTRDeviceTypeIDTypeRoboticVacuumCleanerID. requiresMatterCustomCommissioningFlow: true", buf, 2u);
       }
 
-      [v18 hf_updateWithDiscoveredAccessory:v4];
-      v25 = [(HSPCDiscoveredAccessoryPickerViewController *)self navigationController];
-      v26 = [[HSPCThirdPartyAppPunchoutViewController alloc] initWithSetupAccessoryDescription:v18];
-      [v25 pushViewController:v26 animated:1];
+      [setupAccessoryDescription hf_updateWithDiscoveredAccessory:accessoryCopy];
+      navigationController2 = [(HSPCDiscoveredAccessoryPickerViewController *)self navigationController];
+      v26 = [[HSPCThirdPartyAppPunchoutViewController alloc] initWithSetupAccessoryDescription:setupAccessoryDescription];
+      [navigationController2 pushViewController:v26 animated:1];
 
-      v19 = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
-      [v19 setDidShowCustomCommissioningFlowAlertIfNecessary:1];
+      navigationController = [(HSPCDiscoveredAccessoryPickerViewController *)self coordinator];
+      [navigationController setDidShowCustomCommissioningFlowAlertIfNecessary:1];
     }
 
 LABEL_17:
@@ -301,28 +301,28 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)didUpdateNumberOfDiscoveredAccessories:(unint64_t)a3
+- (void)didUpdateNumberOfDiscoveredAccessories:(unint64_t)accessories
 {
-  v4 = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
-  v5 = v4;
-  if (a3)
+  spinnerView = [(HSPCDiscoveredAccessoryPickerViewController *)self spinnerView];
+  v5 = spinnerView;
+  if (accessories)
   {
-    [v4 stopAnimating];
+    [spinnerView stopAnimating];
   }
 
   else
   {
-    [v4 startAnimating];
+    [spinnerView startAnimating];
   }
 }
 
 - (void)_presentSoftwareUpdateAlertForAirportExpress
 {
   v3 = [LSApplicationProxy applicationProxyForIdentifier:@"com.apple.airport.mobileairportutility"];
-  v4 = [v3 appState];
-  v5 = [v4 isInstalled];
+  appState = [v3 appState];
+  isInstalled = [appState isInstalled];
 
-  if (v5)
+  if (isInstalled)
   {
     v6 = @"HSTroubleshootingTipOpenAirPortUtilityTitle";
   }
@@ -332,7 +332,7 @@ LABEL_18:
     v6 = @"HSTroubleshootingTipInstallAirPortUtilityTitle";
   }
 
-  if (v5)
+  if (isInstalled)
   {
     v7 = @"HSTroubleshootingTipOpenAirPortUtilityDescription";
   }
@@ -342,7 +342,7 @@ LABEL_18:
     v7 = @"HSTroubleshootingTipInstallAirPortUtilityDescription";
   }
 
-  if (v5)
+  if (isInstalled)
   {
     v8 = @"HSTroubleshootingTipOpenAirPortUtilityAction";
   }
@@ -356,7 +356,7 @@ LABEL_18:
   v10 = sub_100063A44(v7);
   v11 = sub_100063A44(v8);
   v12 = [UIAlertController alertControllerWithTitle:v9 message:v10 preferredStyle:1];
-  if (v5)
+  if (isInstalled)
   {
     v13 = v20;
     v20[0] = _NSConcreteStackBlock;

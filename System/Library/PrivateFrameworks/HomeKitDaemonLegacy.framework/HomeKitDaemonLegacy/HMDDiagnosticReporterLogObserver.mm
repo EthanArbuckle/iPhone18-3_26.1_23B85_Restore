@@ -1,14 +1,14 @@
 @interface HMDDiagnosticReporterLogObserver
-+ (BOOL)isSupportedEvent:(id)a3;
-+ (id)domainForEvent:(id)a3;
++ (BOOL)isSupportedEvent:(id)event;
++ (id)domainForEvent:(id)event;
 + (id)logCategory;
-+ (id)subTypeForEvent:(id)a3;
++ (id)subTypeForEvent:(id)event;
 + (id)supportedEventClasses;
-+ (id)typeForEvent:(id)a3;
-- (BOOL)shouldSubmitEvent:(id)a3;
-- (HMDDiagnosticReporterLogObserver)initWithLogEventDispatcher:(id)a3;
++ (id)typeForEvent:(id)event;
+- (BOOL)shouldSubmitEvent:(id)event;
+- (HMDDiagnosticReporterLogObserver)initWithLogEventDispatcher:(id)dispatcher;
 - (HMMLogEventDispatching)logEventDispatcher;
-- (void)observeEvent:(id)a3;
+- (void)observeEvent:(id)event;
 - (void)start;
 - (void)stop;
 @end
@@ -22,19 +22,19 @@
   return WeakRetained;
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v4 = a3;
-  if ([objc_opt_class() isSupportedEvent:v4])
+  eventCopy = event;
+  if ([objc_opt_class() isSupportedEvent:eventCopy])
   {
-    v5 = [(HMDDiagnosticReporterLogObserver *)self clientQueue];
+    clientQueue = [(HMDDiagnosticReporterLogObserver *)self clientQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __49__HMDDiagnosticReporterLogObserver_observeEvent___block_invoke;
     v6[3] = &unk_2797359B0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = eventCopy;
+    dispatch_async(clientQueue, v6);
   }
 }
 
@@ -174,7 +174,7 @@ void __49__HMDDiagnosticReporterLogObserver_observeEvent___block_invoke_76(uint6
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -185,8 +185,8 @@ void __49__HMDDiagnosticReporterLogObserver_observeEvent___block_invoke_76(uint6
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDDiagnosticReporterLogObserver *)v4 logEventDispatcher];
-  [v7 removeObserver:v4];
+  logEventDispatcher = [(HMDDiagnosticReporterLogObserver *)selfCopy logEventDispatcher];
+  [logEventDispatcher removeObserver:selfCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -195,7 +195,7 @@ void __49__HMDDiagnosticReporterLogObserver_observeEvent___block_invoke_76(uint6
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -206,32 +206,32 @@ void __49__HMDDiagnosticReporterLogObserver_observeEvent___block_invoke_76(uint6
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDDiagnosticReporterLogObserver *)v4 logEventDispatcher];
-  v8 = [objc_opt_class() supportedEventClasses];
-  [v7 addObserver:v4 forEventClasses:v8];
+  logEventDispatcher = [(HMDDiagnosticReporterLogObserver *)selfCopy logEventDispatcher];
+  supportedEventClasses = [objc_opt_class() supportedEventClasses];
+  [logEventDispatcher addObserver:selfCopy forEventClasses:supportedEventClasses];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDDiagnosticReporterLogObserver)initWithLogEventDispatcher:(id)a3
+- (HMDDiagnosticReporterLogObserver)initWithLogEventDispatcher:(id)dispatcher
 {
-  v4 = a3;
+  dispatcherCopy = dispatcher;
   v18.receiver = self;
   v18.super_class = HMDDiagnosticReporterLogObserver;
   v5 = [(HMDDiagnosticReporterLogObserver *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_logEventDispatcher, v4);
-    v7 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v8 = [v7 preferenceForKey:@"memoryTriggerSize"];
-    v9 = [v8 numberValue];
-    v6->_memoryExceptionThreshold = [v9 unsignedIntegerValue];
+    objc_storeWeak(&v5->_logEventDispatcher, dispatcherCopy);
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v8 = [mEMORY[0x277D0F8D0] preferenceForKey:@"memoryTriggerSize"];
+    numberValue = [v8 numberValue];
+    v6->_memoryExceptionThreshold = [numberValue unsignedIntegerValue];
 
     v10 = HMDispatchQueueNameString();
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     clientQueue = v6->_clientQueue;
     v6->_clientQueue = v13;
 
@@ -243,13 +243,13 @@ void __49__HMDDiagnosticReporterLogObserver_observeEvent___block_invoke_76(uint6
   return v6;
 }
 
-- (BOOL)shouldSubmitEvent:(id)a3
+- (BOOL)shouldSubmitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = eventCopy;
   }
 
   else
@@ -262,8 +262,8 @@ void __49__HMDDiagnosticReporterLogObserver_observeEvent___block_invoke_76(uint6
   v13 = 1;
   if (v6)
   {
-    v8 = [v6 currentMemoryUsage];
-    if (v8 < -[HMDDiagnosticReporterLogObserver memoryExceptionThreshold](self, "memoryExceptionThreshold") || ([MEMORY[0x277CBEBD0] standardUserDefaults], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "doubleForKey:", @"HMDDiagnosticReporterMemoryEventReportTime"), v11 = v10, v9, objc_msgSend(MEMORY[0x277CBEAA8], "timeIntervalSinceReferenceDate"), v12 - v11 < 86400.0))
+    currentMemoryUsage = [v6 currentMemoryUsage];
+    if (currentMemoryUsage < -[HMDDiagnosticReporterLogObserver memoryExceptionThreshold](self, "memoryExceptionThreshold") || ([MEMORY[0x277CBEBD0] standardUserDefaults], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "doubleForKey:", @"HMDDiagnosticReporterMemoryEventReportTime"), v11 = v10, v9, objc_msgSend(MEMORY[0x277CBEAA8], "timeIntervalSinceReferenceDate"), v12 - v11 < 86400.0))
     {
       v13 = 0;
     }
@@ -294,10 +294,10 @@ uint64_t __47__HMDDiagnosticReporterLogObserver_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)subTypeForEvent:(id)a3
++ (id)subTypeForEvent:(id)event
 {
-  v3 = a3;
-  if (![v3 conformsToProtocol:&unk_286674308] || (objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend(v3, "diagnosticReportEventSubType"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  eventCopy = event;
+  if (![eventCopy conformsToProtocol:&unk_286674308] || (objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend(eventCopy, "diagnosticReportEventSubType"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
@@ -324,10 +324,10 @@ uint64_t __47__HMDDiagnosticReporterLogObserver_logCategory__block_invoke()
   return v4;
 }
 
-+ (id)typeForEvent:(id)a3
++ (id)typeForEvent:(id)event
 {
-  v3 = a3;
-  if (![v3 conformsToProtocol:&unk_286674308] || (objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend(v3, "diagnosticReportEventType"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  eventCopy = event;
+  if (![eventCopy conformsToProtocol:&unk_286674308] || (objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend(eventCopy, "diagnosticReportEventType"), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
@@ -352,7 +352,7 @@ LABEL_10:
   return v4;
 }
 
-+ (id)domainForEvent:(id)a3
++ (id)domainForEvent:(id)event
 {
   v3 = objc_opt_class();
   if (v3 == objc_opt_class())
@@ -366,14 +366,14 @@ LABEL_10:
   }
 }
 
-+ (BOOL)isSupportedEvent:(id)a3
++ (BOOL)isSupportedEvent:(id)event
 {
-  v4 = a3;
-  v5 = [a1 supportedEventClasses];
+  eventCopy = event;
+  supportedEventClasses = [self supportedEventClasses];
   v6 = objc_opt_class();
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(eventCopy) = [supportedEventClasses containsObject:v6];
+  return eventCopy;
 }
 
 + (id)supportedEventClasses

@@ -67,14 +67,14 @@
   v17 = __Block_byref_object_copy__8;
   v18 = __Block_byref_object_dispose__8;
   v19 = 0;
-  v9 = [a1 _br_itemServiceSyncProxy];
+  _br_itemServiceSyncProxy = [self _br_itemServiceSyncProxy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __86__NSURL_BRAdditions_Private___br_getAttributeValue_withSecondaryConnection_withError___block_invoke;
   v13[3] = &unk_1E7A14FA8;
   v13[4] = &v20;
   v13[5] = &v14;
-  [v9 getAttributeValues:v8 reply:v13];
+  [_br_itemServiceSyncProxy getAttributeValues:v8 reply:v13];
   if (a5)
   {
     *a5 = v15[5];
@@ -93,8 +93,8 @@
 - (BOOL)br_getBirthDate:()BRAdditions_Private
 {
   memset(&v10.st_birthtimespec, 0, 64);
-  v4 = [a1 path];
-  v5 = lstat([v4 fileSystemRepresentation], &v10);
+  path = [self path];
+  v5 = lstat([path fileSystemRepresentation], &v10);
 
   if (v5)
   {
@@ -120,7 +120,7 @@
 - (BOOL)br_isIgnoredByFileProviderWithError:()BRAdditions_Private
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = getxattr([a1 fileSystemRepresentation], "com.apple.fileprovider.ignore#P", 0, 0, 0, 1);
+  v4 = getxattr([self fileSystemRepresentation], "com.apple.fileprovider.ignore#P", 0, 0, 0, 1);
   if (v4 < 0)
   {
     v7 = __error();
@@ -151,7 +151,7 @@
   v5 = 0;
   v4 = xmmword_1AE33E000;
   v3 = 0;
-  return getattrlist([a1 fileSystemRepresentation], &v4, &v3, 8uLL, 0x20u) && HIDWORD(v3) == 0;
+  return getattrlist([self fileSystemRepresentation], &v4, &v3, 8uLL, 0x20u) && HIDWORD(v3) == 0;
 }
 
 - (void)br_getBirthDate:()BRAdditions_Private .cold.1()

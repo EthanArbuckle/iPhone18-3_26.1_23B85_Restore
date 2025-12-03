@@ -12,35 +12,35 @@
 - (PSSpecifier)temperatureUnitSpecifier;
 - (_TtC30CompanionInternationalSettings8Settings)init;
 - (int64_t)firstWeekday;
-- (void)setCalendar:(id)a3;
-- (void)setFirstWeekday:(int64_t)a3;
-- (void)setFirstWeekdayAsNSNumber:(id)a3;
-- (void)setMeasurementSystem:(id)a3;
-- (void)setNumberFormat:(id)a3;
-- (void)setNumberFormatAsString:(id)a3;
-- (void)setNumberingSystem:(id)a3;
-- (void)setTemperatureUnit:(id)a3;
+- (void)setCalendar:(id)calendar;
+- (void)setFirstWeekday:(int64_t)weekday;
+- (void)setFirstWeekdayAsNSNumber:(id)number;
+- (void)setMeasurementSystem:(id)system;
+- (void)setNumberFormat:(id)format;
+- (void)setNumberFormatAsString:(id)string;
+- (void)setNumberingSystem:(id)system;
+- (void)setTemperatureUnit:(id)unit;
 @end
 
 @implementation Settings
 
 - (IPNumberFormat)numberFormat
 {
-  v2 = [objc_opt_self() currentFormat];
+  currentFormat = [objc_opt_self() currentFormat];
 
-  return v2;
+  return currentFormat;
 }
 
-- (void)setNumberFormat:(id)a3
+- (void)setNumberFormat:(id)format
 {
   type metadata accessor for Settings();
   sub_134E0();
-  v5 = a3;
-  v8 = self;
+  formatCopy = format;
+  selfCopy = self;
   sub_1AB78();
   sub_1AB88();
 
-  [objc_opt_self() setFormat:v5];
+  [objc_opt_self() setFormat:formatCopy];
   _CFLocaleResetCurrent();
   v6 = CFNotificationCenterGetDarwinNotifyCenter();
   v7 = sub_1ABC8();
@@ -49,30 +49,30 @@
 
 - (NSString)numberFormatAsString
 {
-  v2 = self;
-  v3 = [(Settings *)v2 numberFormat];
-  v4 = [(IPNumberFormat *)v3 formattedNumber];
+  selfCopy = self;
+  numberFormat = [(Settings *)selfCopy numberFormat];
+  formattedNumber = [(IPNumberFormat *)numberFormat formattedNumber];
 
-  if (!v4)
+  if (!formattedNumber)
   {
     sub_1ABF8();
-    v4 = sub_1ABC8();
+    formattedNumber = sub_1ABC8();
   }
 
-  return v4;
+  return formattedNumber;
 }
 
-- (void)setNumberFormatAsString:(id)a3
+- (void)setNumberFormatAsString:(id)string
 {
   v4 = sub_1ABF8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_128D8(v4, v6);
 }
 
 - (PSSpecifier)numberFormatSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_12B58();
 
   return v3;
@@ -86,17 +86,17 @@
   return v2;
 }
 
-- (void)setMeasurementSystem:(id)a3
+- (void)setMeasurementSystem:(id)system
 {
   v4 = sub_1ABF8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_135F0(v4, v6);
 }
 
 - (PSSpecifier)measurementSystemSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_138E8();
 
   return v3;
@@ -110,17 +110,17 @@
   return v2;
 }
 
-- (void)setTemperatureUnit:(id)a3
+- (void)setTemperatureUnit:(id)unit
 {
   v4 = sub_1ABF8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1438C(v4, v6);
 }
 
 - (PSSpecifier)temperatureUnitSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_14670();
 
   return v3;
@@ -141,11 +141,11 @@
   return v2;
 }
 
-- (void)setNumberingSystem:(id)a3
+- (void)setNumberingSystem:(id)system
 {
   v4 = sub_1ABF8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_16650(v4, v6);
 }
 
@@ -164,7 +164,7 @@
   __chkstk_darwin(v11);
   v15 = &v21 - v14;
   v16 = objc_opt_self();
-  v17 = self;
+  selfCopy = self;
   result = [v16 preferredLocale];
   if (result)
   {
@@ -188,31 +188,31 @@
   return result;
 }
 
-- (void)setFirstWeekday:(int64_t)a3
+- (void)setFirstWeekday:(int64_t)weekday
 {
-  v4 = self;
-  sub_1729C(a3);
+  selfCopy = self;
+  sub_1729C(weekday);
 }
 
 - (NSNumber)firstWeekdayAsNSNumber
 {
   sub_122DC(0, &qword_302A8, NSNumber_ptr);
-  v3 = self;
-  v4.super.super.isa = sub_1AC58([(Settings *)v3 firstWeekday]).super.super.isa;
+  selfCopy = self;
+  v4.super.super.isa = sub_1AC58([(Settings *)selfCopy firstWeekday]).super.super.isa;
 
   return v4.super.super.isa;
 }
 
-- (void)setFirstWeekdayAsNSNumber:(id)a3
+- (void)setFirstWeekdayAsNSNumber:(id)number
 {
-  v4 = a3;
-  v5 = self;
-  -[Settings setFirstWeekday:](v5, "setFirstWeekday:", [v4 integerValue]);
+  numberCopy = number;
+  selfCopy = self;
+  -[Settings setFirstWeekday:](selfCopy, "setFirstWeekday:", [numberCopy integerValue]);
 }
 
 - (PSSpecifier)firstWeekdaySpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_17848();
 
   return v3;
@@ -226,11 +226,11 @@
   return v2;
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
   v4 = sub_1ABF8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_191F0(v4, v6);
 }
 

@@ -1,19 +1,19 @@
 @interface PAEKeyerCbCrSetup
-- (BOOL)isEqualTo:(id)a3;
+- (BOOL)isEqualTo:(id)to;
 - (PAEKeyerCbCrSetup)init;
-- (PAEKeyerCbCrSetup)initWithCoder:(id)a3;
-- (Vec2f)polarToCartesian:(Vec2f)a3;
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4;
+- (PAEKeyerCbCrSetup)initWithCoder:(id)coder;
+- (Vec2f)polarToCartesian:(Vec2f)cartesian;
+- (id)interpolateBetween:(id)between withWeight:(float)weight;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)interpPieWithWeight:(float)a3 currentDirectionCorrection:(float)a4 nextDirectionCorrection:(float)a5 interpolatedCenter:(Vec2f)a6 currentCenter:(Vec2f)a7 currentPolar:(const Vec2f *)a8 nextCenter:(Vec2f)a9 nextPolar:(const Vec2f *)a10 interpolationType:(int)a11 interpolatedPie:(void *)a12;
-- (void)offsetPie:(Vec2f *)a3 offsetDegrees:(float)a4;
-- (void)pieToPolarForPie:(void *)a3 polar:(Vec2f *)a4;
-- (void)pieToPolarForPie:(void *)a3 softPie:(void *)a4 tolPolar:(Vec2f *)a5 softPolar:(Vec2f *)a6;
-- (void)setSoftPieX:(id)a3 indice:(int)a4;
-- (void)setSoftPieY:(id)a3 indice:(int)a4;
-- (void)setTolPieX:(id)a3 indice:(int)a4;
-- (void)setTolPieY:(id)a3 indice:(int)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)interpPieWithWeight:(float)weight currentDirectionCorrection:(float)correction nextDirectionCorrection:(float)directionCorrection interpolatedCenter:(Vec2f)center currentCenter:(Vec2f)currentCenter currentPolar:(const Vec2f *)polar nextCenter:(Vec2f)nextCenter nextPolar:(const Vec2f *)self0 interpolationType:(int)self1 interpolatedPie:(void *)self2;
+- (void)offsetPie:(Vec2f *)pie offsetDegrees:(float)degrees;
+- (void)pieToPolarForPie:(void *)pie polar:(Vec2f *)polar;
+- (void)pieToPolarForPie:(void *)pie softPie:(void *)softPie tolPolar:(Vec2f *)polar softPolar:(Vec2f *)softPolar;
+- (void)setSoftPieX:(id)x indice:(int)indice;
+- (void)setSoftPieY:(id)y indice:(int)indice;
+- (void)setTolPieX:(id)x indice:(int)indice;
+- (void)setTolPieY:(id)y indice:(int)indice;
 @end
 
 @implementation PAEKeyerCbCrSetup
@@ -31,7 +31,7 @@
   return 0;
 }
 
-- (PAEKeyerCbCrSetup)initWithCoder:(id)a3
+- (PAEKeyerCbCrSetup)initWithCoder:(id)coder
 {
   v10 = *MEMORY[0x277D85DE8];
   self->_initialized = 1;
@@ -40,30 +40,30 @@
   v4 = [(PAEKeyerCbCrSetup *)&v9 init];
   if (v4)
   {
-    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_L"], 0);
-    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_M"], 1);
-    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_R"], 2);
-    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_LL"], 3);
-    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_RR"], 4);
-    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_L"], 0);
-    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_M"], 1);
-    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_R"], 2);
-    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_LL"], 3);
-    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_RR"], 4);
-    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_L"], 0);
-    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_M"], 1);
-    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_R"], 2);
-    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_LL"], 3);
-    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_RR"], 4);
-    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_L"], 0);
-    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_M"], 1);
-    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_R"], 2);
-    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_LL"], 3);
-    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_RR"], 4);
+    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_L"], 0);
+    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_M"], 1);
+    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_R"], 2);
+    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_LL"], 3);
+    -[PAEKeyerCbCrSetup setTolPieX:indice:](v4, "setTolPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieX_CORNER_RR"], 4);
+    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_L"], 0);
+    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_M"], 1);
+    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_R"], 2);
+    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_LL"], 3);
+    -[PAEKeyerCbCrSetup setTolPieY:indice:](v4, "setTolPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"TolPieY_CORNER_RR"], 4);
+    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_L"], 0);
+    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_M"], 1);
+    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_R"], 2);
+    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_LL"], 3);
+    -[PAEKeyerCbCrSetup setSoftPieX:indice:](v4, "setSoftPieX:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieX_CORNER_RR"], 4);
+    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_L"], 0);
+    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_M"], 1);
+    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_R"], 2);
+    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_LL"], 3);
+    -[PAEKeyerCbCrSetup setSoftPieY:indice:](v4, "setSoftPieY:indice:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"SoftPieY_CORNER_RR"], 4);
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
-    v4->_splineVertex = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"SplineVertex"}];
+    v4->_splineVertex = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"SplineVertex"}];
     operator new();
   }
 
@@ -111,7 +111,7 @@
   [(PAEKeyerCbCrSetup *)&v8 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = 0;
   for (i = 0; i != 5; ++i)
@@ -161,64 +161,64 @@
     while (v12 < ((*(self->_keyer2DSatSpline + 1) - *self->_keyer2DSatSpline) >> 5));
   }
 
-  [a3 encodeObject:self->_tolPieX[0] forKey:@"TolPieX_CORNER_L"];
-  [a3 encodeObject:self->_tolPieX[1] forKey:@"TolPieX_CORNER_M"];
-  [a3 encodeObject:self->_tolPieX[2] forKey:@"TolPieX_CORNER_R"];
-  [a3 encodeObject:self->_tolPieX[3] forKey:@"TolPieX_CORNER_LL"];
-  [a3 encodeObject:self->_tolPieX[4] forKey:@"TolPieX_CORNER_RR"];
-  [a3 encodeObject:self->_tolPieY[0] forKey:@"TolPieY_CORNER_L"];
-  [a3 encodeObject:self->_tolPieY[1] forKey:@"TolPieY_CORNER_M"];
-  [a3 encodeObject:self->_tolPieY[2] forKey:@"TolPieY_CORNER_R"];
-  [a3 encodeObject:self->_tolPieY[3] forKey:@"TolPieY_CORNER_LL"];
-  [a3 encodeObject:self->_tolPieY[4] forKey:@"TolPieY_CORNER_RR"];
-  [a3 encodeObject:self->_softPieX[0] forKey:@"SoftPieX_CORNER_L"];
-  [a3 encodeObject:self->_softPieX[1] forKey:@"SoftPieX_CORNER_M"];
-  [a3 encodeObject:self->_softPieX[2] forKey:@"SoftPieX_CORNER_R"];
-  [a3 encodeObject:self->_softPieX[3] forKey:@"SoftPieX_CORNER_LL"];
-  [a3 encodeObject:self->_softPieX[4] forKey:@"SoftPieX_CORNER_RR"];
-  [a3 encodeObject:self->_softPieY[0] forKey:@"SoftPieY_CORNER_L"];
-  [a3 encodeObject:self->_softPieY[1] forKey:@"SoftPieY_CORNER_M"];
-  [a3 encodeObject:self->_softPieY[2] forKey:@"SoftPieY_CORNER_R"];
-  [a3 encodeObject:self->_softPieY[3] forKey:@"SoftPieY_CORNER_LL"];
-  [a3 encodeObject:self->_softPieY[4] forKey:@"SoftPieY_CORNER_RR"];
+  [coder encodeObject:self->_tolPieX[0] forKey:@"TolPieX_CORNER_L"];
+  [coder encodeObject:self->_tolPieX[1] forKey:@"TolPieX_CORNER_M"];
+  [coder encodeObject:self->_tolPieX[2] forKey:@"TolPieX_CORNER_R"];
+  [coder encodeObject:self->_tolPieX[3] forKey:@"TolPieX_CORNER_LL"];
+  [coder encodeObject:self->_tolPieX[4] forKey:@"TolPieX_CORNER_RR"];
+  [coder encodeObject:self->_tolPieY[0] forKey:@"TolPieY_CORNER_L"];
+  [coder encodeObject:self->_tolPieY[1] forKey:@"TolPieY_CORNER_M"];
+  [coder encodeObject:self->_tolPieY[2] forKey:@"TolPieY_CORNER_R"];
+  [coder encodeObject:self->_tolPieY[3] forKey:@"TolPieY_CORNER_LL"];
+  [coder encodeObject:self->_tolPieY[4] forKey:@"TolPieY_CORNER_RR"];
+  [coder encodeObject:self->_softPieX[0] forKey:@"SoftPieX_CORNER_L"];
+  [coder encodeObject:self->_softPieX[1] forKey:@"SoftPieX_CORNER_M"];
+  [coder encodeObject:self->_softPieX[2] forKey:@"SoftPieX_CORNER_R"];
+  [coder encodeObject:self->_softPieX[3] forKey:@"SoftPieX_CORNER_LL"];
+  [coder encodeObject:self->_softPieX[4] forKey:@"SoftPieX_CORNER_RR"];
+  [coder encodeObject:self->_softPieY[0] forKey:@"SoftPieY_CORNER_L"];
+  [coder encodeObject:self->_softPieY[1] forKey:@"SoftPieY_CORNER_M"];
+  [coder encodeObject:self->_softPieY[2] forKey:@"SoftPieY_CORNER_R"];
+  [coder encodeObject:self->_softPieY[3] forKey:@"SoftPieY_CORNER_LL"];
+  [coder encodeObject:self->_softPieY[4] forKey:@"SoftPieY_CORNER_RR"];
   splineVertex = self->_splineVertex;
 
-  [a3 encodeObject:splineVertex forKey:@"SplineVertex"];
+  [coder encodeObject:splineVertex forKey:@"SplineVertex"];
 }
 
-- (void)setTolPieX:(id)a3 indice:(int)a4
+- (void)setTolPieX:(id)x indice:(int)indice
 {
-  v7 = a3;
-  v8 = (&self->super.isa + a4);
+  xCopy = x;
+  v8 = (&self->super.isa + indice);
 
-  v8[1] = a3;
+  v8[1] = x;
 }
 
-- (void)setSoftPieX:(id)a3 indice:(int)a4
+- (void)setSoftPieX:(id)x indice:(int)indice
 {
-  v7 = a3;
-  v8 = (&self->super.isa + a4);
+  xCopy = x;
+  v8 = (&self->super.isa + indice);
 
-  v8[11] = a3;
+  v8[11] = x;
 }
 
-- (void)setTolPieY:(id)a3 indice:(int)a4
+- (void)setTolPieY:(id)y indice:(int)indice
 {
-  v7 = a3;
-  v8 = (&self->super.isa + a4);
+  yCopy = y;
+  v8 = (&self->super.isa + indice);
 
-  v8[6] = a3;
+  v8[6] = y;
 }
 
-- (void)setSoftPieY:(id)a3 indice:(int)a4
+- (void)setSoftPieY:(id)y indice:(int)indice
 {
-  v7 = a3;
-  v8 = (&self->super.isa + a4);
+  yCopy = y;
+  v8 = (&self->super.isa + indice);
 
-  v8[16] = a3;
+  v8[16] = y;
 }
 
-- (Vec2f)polarToCartesian:(Vec2f)a3
+- (Vec2f)polarToCartesian:(Vec2f)cartesian
 {
   v5 = v4;
   v6 = *v3;
@@ -232,17 +232,17 @@
   return result;
 }
 
-- (void)interpPieWithWeight:(float)a3 currentDirectionCorrection:(float)a4 nextDirectionCorrection:(float)a5 interpolatedCenter:(Vec2f)a6 currentCenter:(Vec2f)a7 currentPolar:(const Vec2f *)a8 nextCenter:(Vec2f)a9 nextPolar:(const Vec2f *)a10 interpolationType:(int)a11 interpolatedPie:(void *)a12
+- (void)interpPieWithWeight:(float)weight currentDirectionCorrection:(float)correction nextDirectionCorrection:(float)directionCorrection interpolatedCenter:(Vec2f)center currentCenter:(Vec2f)currentCenter currentPolar:(const Vec2f *)polar nextCenter:(Vec2f)nextCenter nextPolar:(const Vec2f *)self0 interpolationType:(int)self1 interpolatedPie:(void *)self2
 {
   v14 = v13;
   v15 = v12;
-  v16 = *&a11;
-  v18 = a8;
+  v16 = *&type;
+  polarCopy2 = polar;
   v23 = 0;
-  v25 = v13 == 1 && a3 > 0.5;
-  v26 = v13 != 2 || a3 > 0.5;
-  v54 = a3 + a3;
-  v27 = (a3 + -0.5) + (a3 + -0.5);
+  v25 = v13 == 1 && weight > 0.5;
+  v26 = v13 != 2 || weight > 0.5;
+  v54 = weight + weight;
+  v27 = (weight + -0.5) + (weight + -0.5);
   v28 = !v26;
   v55 = v25 | v28;
   HIDWORD(v29) = 1075388923;
@@ -259,9 +259,9 @@
         v33 = 0;
         v34 = *(v15 + 12);
         *&v29 = v27;
-        if (a3 <= 0.5)
+        if (weight <= 0.5)
         {
-          v50 = v18->var0[1];
+          v50 = polarCopy2->var0[1];
           v63[0] = 0;
           *&v63[1] = v50;
           if (self)
@@ -285,9 +285,9 @@ LABEL_54:
           v31 = 0.0;
           v32 = *(v16 + 12);
           *&v29 = v54;
-          if (a3 > 0.5)
+          if (weight > 0.5)
           {
-            v35 = v18->var0[1];
+            v35 = polarCopy2->var0[1];
             v64[0] = 0;
             *&v64[1] = v35;
             if (self)
@@ -297,7 +297,7 @@ LABEL_43:
               [(PAEKeyerCbCrSetup *)self polarToCartesian:v36, *&v53];
               v29 = *v65;
 LABEL_55:
-              *(*(*&a9 + 48) + 8) = v29;
+              *(*(*&nextCenter + 48) + 8) = v29;
               goto LABEL_56;
             }
 
@@ -307,7 +307,7 @@ LABEL_55:
 
         else
         {
-          *&v29 = a3;
+          *&v29 = weight;
         }
       }
 
@@ -352,7 +352,7 @@ LABEL_55:
     v39 = *(v16 + v23 + 4);
     if (v14 == 1)
     {
-      if (a3 <= 0.5 || v30 > 1)
+      if (weight <= 0.5 || v30 > 1)
       {
         goto LABEL_32;
       }
@@ -364,10 +364,10 @@ LABEL_55:
 
     else
     {
-      if (v14 != 2 || (a3 <= 0.5 ? (v42 = v30 > 1) : (v42 = 1), v42))
+      if (v14 != 2 || (weight <= 0.5 ? (v42 = v30 > 1) : (v42 = 1), v42))
       {
 LABEL_32:
-        *&v29 = a3;
+        *&v29 = weight;
         goto LABEL_33;
       }
 
@@ -377,25 +377,25 @@ LABEL_32:
     }
 
 LABEL_33:
-    v43 = a10->var0[1] - v39;
-    v44 = *(a12 + 1);
-    v45 = *a12 - v38;
-    *&v62 = a10->var0[0] - v40;
-    *(&v62 + 1) = v43 - a4;
+    v43 = nextPolar->var0[1] - v39;
+    v44 = *(pie + 1);
+    v45 = *pie - v38;
+    *&v62 = nextPolar->var0[0] - v40;
+    *(&v62 + 1) = v43 - correction;
     v60 = v45;
-    v61 = (v44 - v37) - a5;
+    v61 = (v44 - v37) - directionCorrection;
     [(PAEKeyerCbCrSetup *)self interpVec2f:&v62 left:&v60 right:v65 interpolated:v29];
-    v18 = a8;
-    v46 = a8->var0[0];
+    polarCopy2 = polar;
+    v46 = polar->var0[0];
     v47 = *v65;
     if (v30 > 1 || (v55 & 1) == 0)
     {
-      v48 = a8->var0[1] - *(v65 + 1);
+      v48 = polar->var0[1] - *(v65 + 1);
     }
 
     else
     {
-      v62 = *(*(*&a9 + 48) + 16 * (v23 != 24));
+      v62 = *(*(*&nextCenter + 48) + 16 * (v23 != 24));
       [(PAEKeyerCbCrSetup *)self toPolar:&v62 polar:&v60];
       v48 = v61;
     }
@@ -414,7 +414,7 @@ LABEL_33:
       v29 = 0.0;
     }
 
-    v49 = (*(*&a9 + 48) + v23);
+    v49 = (*(*&nextCenter + 48) + v23);
     *v49 = LODWORD(v29);
     v49[1] = HIDWORD(v62);
 LABEL_56:
@@ -425,52 +425,52 @@ LABEL_56:
   while (v23 != 40);
 }
 
-- (void)pieToPolarForPie:(void *)a3 polar:(Vec2f *)a4
+- (void)pieToPolarForPie:(void *)pie polar:(Vec2f *)polar
 {
   v7 = 0;
-  v8 = a4;
+  polarCopy = polar;
   do
   {
-    v9 = (*(a3 + 6) + v7);
+    v9 = (*(pie + 6) + v7);
     v13[0] = *v9;
     v13[1] = v9[1];
-    [(PAEKeyerCbCrSetup *)self toPolar:v13 polar:v8++];
+    [(PAEKeyerCbCrSetup *)self toPolar:v13 polar:polarCopy++];
     v7 += 8;
   }
 
   while (v7 != 40);
-  v10 = a4[2].var0[1];
-  if (a4->var0[1] > v10)
+  v10 = polar[2].var0[1];
+  if (polar->var0[1] > v10)
   {
     v11 = v10 + 6.28318531;
-    a4[2].var0[1] = v11;
-    v12 = a4[4].var0[1] + 6.28318531;
-    a4[4].var0[1] = v12;
+    polar[2].var0[1] = v11;
+    v12 = polar[4].var0[1] + 6.28318531;
+    polar[4].var0[1] = v12;
   }
 }
 
-- (void)pieToPolarForPie:(void *)a3 softPie:(void *)a4 tolPolar:(Vec2f *)a5 softPolar:(Vec2f *)a6
+- (void)pieToPolarForPie:(void *)pie softPie:(void *)softPie tolPolar:(Vec2f *)polar softPolar:(Vec2f *)softPolar
 {
-  [(PAEKeyerCbCrSetup *)self pieToPolarForPie:a3 polar:a5];
+  [(PAEKeyerCbCrSetup *)self pieToPolarForPie:pie polar:polar];
 
-  [(PAEKeyerCbCrSetup *)self pieToPolarForPie:a4 polar:a6];
+  [(PAEKeyerCbCrSetup *)self pieToPolarForPie:softPie polar:softPolar];
 }
 
-- (void)offsetPie:(Vec2f *)a3 offsetDegrees:(float)a4
+- (void)offsetPie:(Vec2f *)pie offsetDegrees:(float)degrees
 {
   for (i = 1; i != 11; i += 2)
   {
-    a3->var0[i] = a3->var0[i] + a4;
+    pie->var0[i] = pie->var0[i] + degrees;
   }
 }
 
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4
+- (id)interpolateBetween:(id)between withWeight:(float)weight
 {
-  v38 = *&a4;
+  v38 = *&weight;
   v56 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(PAEKeyerCbCrSetup);
   [(PAEKeyerCbCrSetup *)self pieToPolarForPie:self->_keyer2DTolPie softPie:self->_keyer2DSoftPie tolPolar:&v52 softPolar:v48];
-  [(PAEKeyerCbCrSetup *)self pieToPolarForPie:*(a3 + 23) softPie:*(a3 + 24) tolPolar:v51 softPolar:v45];
+  [(PAEKeyerCbCrSetup *)self pieToPolarForPie:*(between + 23) softPie:*(between + 24) tolPolar:v51 softPolar:v45];
   v8 = v54;
   v9 = v52;
   v10 = v53 + ((v55 - v53) * 0.5);
@@ -554,9 +554,9 @@ LABEL_22:
   v41 = v14 + ((v12 - v14) * 0.5);
   v42 = v18;
   [(PAEKeyerCbCrSetup *)self interpVec2f:&v43 left:&v41 right:&v44 interpolated:v38];
-  if (OMPie::isQuadActive((self->_keyer2DTolPie + 8)) || !OMPie::isQuadActive((*(a3 + 23) + 8)))
+  if (OMPie::isQuadActive((self->_keyer2DTolPie + 8)) || !OMPie::isQuadActive((*(between + 23) + 8)))
   {
-    if (OMPie::isQuadActive((*(a3 + 23) + 8)))
+    if (OMPie::isQuadActive((*(between + 23) + 8)))
     {
       v28 = 0;
     }
@@ -585,9 +585,9 @@ LABEL_22:
   LODWORD(v26) = v24;
   LODWORD(v27) = v25;
   [(PAEKeyerCbCrSetup *)self interpPieWithWeight:&v43 currentDirectionCorrection:&v41 nextDirectionCorrection:&v52 interpolatedCenter:&v39 currentCenter:v51 currentPolar:v28 nextCenter:v38 nextPolar:v26 interpolationType:v27 interpolatedPie:v6->_keyer2DTolPie];
-  if (OMPie::isQuadActive((self->_keyer2DSoftPie + 8)) || !OMPie::isQuadActive((*(a3 + 24) + 8)))
+  if (OMPie::isQuadActive((self->_keyer2DSoftPie + 8)) || !OMPie::isQuadActive((*(between + 24) + 8)))
   {
-    if (OMPie::isQuadActive((*(a3 + 24) + 8)))
+    if (OMPie::isQuadActive((*(between + 24) + 8)))
     {
       v31 = 0;
     }
@@ -628,7 +628,7 @@ LABEL_22:
     do
     {
       v36 = v6->_keyer2DSatSpline;
-      v43 = vadd_f32(vmul_n_f32(*(v33 + v35), 1.0 - *&v38), vmul_n_f32(*(**(a3 + 22) + v35), *&v38));
+      v43 = vadd_f32(vmul_n_f32(*(v33 + v35), 1.0 - *&v38), vmul_n_f32(*(**(between + 22) + v35), *&v38));
       OMSpline::addVertexAtEnd(v36, &v43);
       ++v34;
       v33 = *self->_keyer2DSatSpline;
@@ -641,16 +641,16 @@ LABEL_22:
   return v6;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
   v3 = *(self->_keyer2DTolPie + 6);
-  v4 = *(*(a3 + 23) + 48);
+  v4 = *(*(to + 23) + 48);
   for (i = 4; i != 44; i += 8)
   {
     if (*(v3 + i - 4) == *(v4 + i - 4) && *(v3 + i) == *(v4 + i))
     {
       v6 = *(self->_keyer2DSoftPie + 6);
-      v7 = *(*(a3 + 24) + 48);
+      v7 = *(*(to + 24) + 48);
       if (*(v6 + i - 4) == *(v7 + i - 4) && *(v6 + i) == *(v7 + i))
       {
         continue;
@@ -673,7 +673,7 @@ LABEL_22:
   {
     v11 = ((v10 >> 5) & 0x7FFFFFFF) - 1;
     v12 = (v9 + 28);
-    v13 = (**(a3 + 22) + 28);
+    v13 = (**(to + 22) + 28);
     do
     {
       v14 = *v12 == *v13 && *(v12 - 1) == *(v13 - 1);

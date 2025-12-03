@@ -1,41 +1,41 @@
 @interface NEFilterDataSavedMessageHandler
-- (void)enqueueWithFlow:(void *)a3 context:;
-- (void)executeVerdictHandlerWithFlow:(void *)a3 verdict:(void *)a4 context:;
-- (void)executeWithFlow:(void *)a3 context:;
-- (void)initWithGetVerdictBlock:(void *)a3 handleVerdictBlock:;
+- (void)enqueueWithFlow:(void *)flow context:;
+- (void)executeVerdictHandlerWithFlow:(void *)flow verdict:(void *)verdict context:;
+- (void)executeWithFlow:(void *)flow context:;
+- (void)initWithGetVerdictBlock:(void *)block handleVerdictBlock:;
 @end
 
 @implementation NEFilterDataSavedMessageHandler
 
-- (void)initWithGetVerdictBlock:(void *)a3 handleVerdictBlock:
+- (void)initWithGetVerdictBlock:(void *)block handleVerdictBlock:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  blockCopy = block;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = NEFilterDataSavedMessageHandler;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v7 = _Block_copy(v5);
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      v9 = _Block_copy(v6);
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = _Block_copy(blockCopy);
+      v10 = self[2];
+      self[2] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)enqueueWithFlow:(void *)a3 context:
+- (void)enqueueWithFlow:(void *)flow context:
 {
   self = a2;
-  v6 = a3;
-  if (a1)
+  flowCopy = flow;
+  if (self)
   {
     Property = self;
     if (self)
@@ -48,30 +48,30 @@
 
     if (v9)
     {
-      v11 = self;
+      selfCopy = self;
       if (self)
       {
-        v11 = objc_getProperty(self, v10, 136, 1);
+        selfCopy = objc_getProperty(self, v10, 136, 1);
       }
 
-      v12 = v11;
-      [v12 addObject:a1];
+      v12 = selfCopy;
+      [v12 addObject:self];
     }
 
     else
     {
-      [(NEFilterDataSavedMessageHandler *)a1 executeWithFlow:v6 context:?];
+      [(NEFilterDataSavedMessageHandler *)self executeWithFlow:flowCopy context:?];
     }
   }
 }
 
-- (void)executeWithFlow:(void *)a3 context:
+- (void)executeWithFlow:(void *)flow context:
 {
   self = a2;
-  v5 = a3;
-  if (a1)
+  flowCopy = flow;
+  if (self)
   {
-    v6 = (*(*(a1 + 8) + 16))();
+    v6 = (*(*(self + 8) + 16))();
     v8 = v6;
     if (v6)
     {
@@ -94,19 +94,19 @@
 
         if (v10)
         {
-          v12 = self;
+          selfCopy = self;
           if (self)
           {
-            v12 = objc_getProperty(self, v11, 136, 1);
+            selfCopy = objc_getProperty(self, v11, 136, 1);
           }
 
-          v13 = v12;
-          [v13 insertObject:a1 atIndex:0];
+          v13 = selfCopy;
+          [v13 insertObject:self atIndex:0];
         }
 
         else
         {
-          v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a1, 0}];
+          v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{self, 0}];
           if (self)
           {
             objc_setProperty_atomic(self, v17, v18, 136);
@@ -116,32 +116,32 @@
         goto LABEL_14;
       }
 
-      v14 = a1;
-      v15 = self;
+      selfCopy4 = self;
+      selfCopy5 = self;
       v16 = v8;
     }
 
     else
     {
-      v14 = a1;
-      v15 = self;
+      selfCopy4 = self;
+      selfCopy5 = self;
       v16 = 0;
     }
 
-    [(NEFilterDataSavedMessageHandler *)v14 executeVerdictHandlerWithFlow:v15 verdict:v16 context:v5];
+    [(NEFilterDataSavedMessageHandler *)selfCopy4 executeVerdictHandlerWithFlow:selfCopy5 verdict:v16 context:flowCopy];
 LABEL_14:
   }
 }
 
-- (void)executeVerdictHandlerWithFlow:(void *)a3 verdict:(void *)a4 context:
+- (void)executeVerdictHandlerWithFlow:(void *)flow verdict:(void *)verdict context:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a1)
+  flowCopy = flow;
+  verdictCopy = verdict;
+  v10 = verdictCopy;
+  if (self)
   {
-    if (v9 && v8 && (*(v9 + 104) & 1) != 0 && [v8 needRules])
+    if (verdictCopy && flowCopy && (*(verdictCopy + 104) & 1) != 0 && [flowCopy needRules])
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -149,14 +149,14 @@ LABEL_14:
       v11[3] = &unk_1E7F076C8;
       v12 = v7;
       v13 = v10;
-      v14 = a1;
-      v15 = v8;
+      selfCopy = self;
+      v15 = flowCopy;
       [v13 fetchCurrentRulesForFlow:v12 completionHandler:v11];
     }
 
     else
     {
-      (*(*(a1 + 16) + 16))();
+      (*(*(self + 16) + 16))();
     }
   }
 }

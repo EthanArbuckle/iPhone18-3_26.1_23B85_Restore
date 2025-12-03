@@ -1,63 +1,63 @@
 @interface MTAirDropActivityItemSource
-- (MTAirDropActivityItemSource)initWithDataSource:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (MTAirDropActivityItemSource)initWithDataSource:(id)source;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation MTAirDropActivityItemSource
 
-- (MTAirDropActivityItemSource)initWithDataSource:(id)a3
+- (MTAirDropActivityItemSource)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [(MTAirDropActivityItemSource *)self init];
   v6 = v5;
   if (v5)
   {
-    [(MTAirDropActivityItemSource *)v5 setDataSource:v4];
+    [(MTAirDropActivityItemSource *)v5 setDataSource:sourceCopy];
   }
 
   return v6;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
-  v3 = [(MTAirDropActivityItemSource *)self dataSource];
-  v4 = [v3 shareURL];
+  dataSource = [(MTAirDropActivityItemSource *)self dataSource];
+  shareURL = [dataSource shareURL];
 
-  return v4;
+  return shareURL;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  if ([a4 isEqualToString:UIActivityTypeAirDrop])
+  if ([type isEqualToString:UIActivityTypeAirDrop])
   {
-    v5 = [(MTAirDropActivityItemSource *)self dataSource];
-    v6 = [v5 shareURL];
+    dataSource = [(MTAirDropActivityItemSource *)self dataSource];
+    shareURL = [dataSource shareURL];
   }
 
   else
   {
-    v6 = 0;
+    shareURL = 0;
   }
 
-  return v6;
+  return shareURL;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  if ([a4 isEqualToString:{UIActivityTypeAirDrop, a5.width, a5.height}])
+  if ([type isEqualToString:{UIActivityTypeAirDrop, size.width, size.height}])
   {
-    v6 = [(MTAirDropActivityItemSource *)self dataSource];
-    v7 = [v6 shareImage];
+    dataSource = [(MTAirDropActivityItemSource *)self dataSource];
+    shareImage = [dataSource shareImage];
   }
 
   else
   {
-    v7 = 0;
+    shareImage = 0;
   }
 
-  return v7;
+  return shareImage;
 }
 
 @end

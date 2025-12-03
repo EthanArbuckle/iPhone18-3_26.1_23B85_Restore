@@ -8,13 +8,13 @@
 {
   v2 = +[VideosExtrasRootViewController currentController];
   v3 = objc_alloc(MEMORY[0x1E69704A0]);
-  v4 = [v2 artworkDataSource];
-  v5 = [v3 initWithToken:a1 dataSource:v4];
+  artworkDataSource = [v2 artworkDataSource];
+  v5 = [v3 initWithToken:self dataSource:artworkDataSource];
 
-  v6 = [v2 artworkDataSource];
-  LODWORD(v4) = [v6 areRepresentationsAvailableForCatalog:v5];
+  artworkDataSource2 = [v2 artworkDataSource];
+  LODWORD(artworkDataSource) = [artworkDataSource2 areRepresentationsAvailableForCatalog:v5];
 
-  if (v4)
+  if (artworkDataSource)
   {
     v7 = v5;
   }

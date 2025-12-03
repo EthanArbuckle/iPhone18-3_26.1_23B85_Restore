@@ -36,18 +36,18 @@ uint64_t __29__DEDActivity_sharedInstance__block_invoke()
 
 - (id)currentCleanupActivity
 {
-  v3 = [(DEDActivity *)self cleanup];
-  if (v3)
+  cleanup = [(DEDActivity *)self cleanup];
+  if (cleanup)
   {
-    v4 = [(DEDActivity *)self cleanup];
+    cleanup2 = [(DEDActivity *)self cleanup];
   }
 
   else
   {
-    v4 = [(DEDActivity *)self newCleanupActivity];
+    cleanup2 = [(DEDActivity *)self newCleanupActivity];
   }
 
-  v5 = v4;
+  v5 = cleanup2;
 
   return v5;
 }

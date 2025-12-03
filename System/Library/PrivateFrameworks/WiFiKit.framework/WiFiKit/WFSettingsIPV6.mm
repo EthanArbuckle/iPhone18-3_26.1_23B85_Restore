@@ -2,8 +2,8 @@
 + (id)automaticConfig;
 + (id)linkLocalConfig;
 - (NSString)description;
-- (WFSettingsIPV6)initWithDictionary:(id)a3;
-- (WFSettingsIPV6)initWithMethod:(int64_t)a3 addresses:(id)a4 prefixLengths:(id)a5 router:(id)a6;
+- (WFSettingsIPV6)initWithDictionary:(id)dictionary;
+- (WFSettingsIPV6)initWithMethod:(int64_t)method addresses:(id)addresses prefixLengths:(id)lengths router:(id)router;
 @end
 
 @implementation WFSettingsIPV6
@@ -24,64 +24,64 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"%@- ", v5];
+  [string appendFormat:@"%@- ", v5];
 
-  v6 = [(WFSettingsIPV6 *)self items];
-  v7 = [v6 objectForKey:*MEMORY[0x277CE1760]];
-  [v3 appendFormat:@"ConfigMethod: %@ ", v7];
+  items = [(WFSettingsIPV6 *)self items];
+  v7 = [items objectForKey:*MEMORY[0x277CE1760]];
+  [string appendFormat:@"ConfigMethod: %@ ", v7];
 
-  [v3 appendString:@"| Addresses: "];
-  v8 = [(WFSettingsIPV6 *)self addresses];
+  [string appendString:@"| Addresses: "];
+  addresses = [(WFSettingsIPV6 *)self addresses];
 
-  if (v8)
+  if (addresses)
   {
-    v9 = [(WFSettingsIPV6 *)self addresses];
-    v10 = [v9 description];
-    [v3 appendFormat:@"%@ ", v10];
+    addresses2 = [(WFSettingsIPV6 *)self addresses];
+    v10 = [addresses2 description];
+    [string appendFormat:@"%@ ", v10];
   }
 
   else
   {
-    [v3 appendString:@"(None) "];
+    [string appendString:@"(None) "];
   }
 
-  [v3 appendString:@"| Router: "];
-  v11 = [(WFSettingsIPV6 *)self router];
+  [string appendString:@"| Router: "];
+  router = [(WFSettingsIPV6 *)self router];
 
-  if (v11)
+  if (router)
   {
-    v12 = [(WFSettingsIPV6 *)self router];
-    [v3 appendFormat:@"%@ ", v12];
+    router2 = [(WFSettingsIPV6 *)self router];
+    [string appendFormat:@"%@ ", router2];
   }
 
   else
   {
-    [v3 appendString:@"(None) "];
+    [string appendString:@"(None) "];
   }
 
-  return v3;
+  return string;
 }
 
-- (WFSettingsIPV6)initWithDictionary:(id)a3
+- (WFSettingsIPV6)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = WFSettingsIPV6;
   v6 = [(WFSettingsIPV6 *)&v22 init];
   v7 = v6;
   v8 = 0;
-  if (!v5 || !v6)
+  if (!dictionaryCopy || !v6)
   {
     router = v6;
     v7 = 0;
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v6->_items, a3);
+  objc_storeStrong(&v6->_items, dictionary);
   v9 = [(NSDictionary *)v7->_items objectForKey:*MEMORY[0x277CE1760]];
   v8 = v9;
   if (!v9)
@@ -152,19 +152,19 @@ LABEL_11:
   return v7;
 }
 
-- (WFSettingsIPV6)initWithMethod:(int64_t)a3 addresses:(id)a4 prefixLengths:(id)a5 router:(id)a6
+- (WFSettingsIPV6)initWithMethod:(int64_t)method addresses:(id)addresses prefixLengths:(id)lengths router:(id)router
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  addressesCopy = addresses;
+  lengthsCopy = lengths;
+  routerCopy = router;
   v29.receiver = self;
   v29.super_class = WFSettingsIPV6;
   v13 = [(WFSettingsIPV6 *)&v29 init];
   if (v13)
   {
     v14 = MEMORY[0x277CE1840];
-    switch(a3)
+    switch(method)
     {
       case 0:
       case 4:
@@ -177,7 +177,7 @@ LABEL_11:
         }
 
         *buf = 134349056;
-        v31 = a3;
+        methodCopy = method;
         v17 = "Unsupported WFIPv6ConfigMethod used %{public}ld";
         v18 = v15;
         v19 = v16;
@@ -194,24 +194,24 @@ LABEL_18:
         v23 = *v14;
         if (v23)
         {
-          v25 = [MEMORY[0x277CBEB38] dictionary];
-          [v25 setObject:v23 forKey:*MEMORY[0x277CE1760]];
-          if (v11)
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:v23 forKey:*MEMORY[0x277CE1760]];
+          if (lengthsCopy)
           {
-            [v25 setObject:v11 forKey:*MEMORY[0x277CE1778]];
+            [dictionary setObject:lengthsCopy forKey:*MEMORY[0x277CE1778]];
           }
 
-          if (v10)
+          if (addressesCopy)
           {
-            [v25 setObject:v10 forKey:*MEMORY[0x277CE1758]];
+            [dictionary setObject:addressesCopy forKey:*MEMORY[0x277CE1758]];
           }
 
-          if (v12)
+          if (routerCopy)
           {
-            [v25 setObject:v12 forKey:*MEMORY[0x277CE1780]];
+            [dictionary setObject:routerCopy forKey:*MEMORY[0x277CE1780]];
           }
 
-          v22 = v25;
+          v22 = dictionary;
           items = v13->_items;
           v13->_items = v22;
         }
@@ -226,7 +226,7 @@ LABEL_15:
 
         break;
       default:
-        if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+        if (method == 0x7FFFFFFFFFFFFFFFLL)
         {
           v15 = WFLogForCategory(0);
           v21 = OSLogForWFLogLevel(1uLL);

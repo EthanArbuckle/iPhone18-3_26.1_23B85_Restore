@@ -1,25 +1,25 @@
 @interface MRMutableApplicationActivity
-- (void)setPrimaryApplicationDisplayID:(id)a3;
-- (void)setSecondaryApplicationDisplayID:(id)a3;
+- (void)setPrimaryApplicationDisplayID:(id)d;
+- (void)setSecondaryApplicationDisplayID:(id)d;
 @end
 
 @implementation MRMutableApplicationActivity
 
-- (void)setPrimaryApplicationDisplayID:(id)a3
+- (void)setPrimaryApplicationDisplayID:(id)d
 {
-  if (self->super._primaryApplicationDisplayID != a3)
+  if (self->super._primaryApplicationDisplayID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     primaryApplicationDisplayID = self->super._primaryApplicationDisplayID;
     self->super._primaryApplicationDisplayID = v5;
   }
 }
 
-- (void)setSecondaryApplicationDisplayID:(id)a3
+- (void)setSecondaryApplicationDisplayID:(id)d
 {
-  if (self->super._secondaryApplicationDisplayID != a3)
+  if (self->super._secondaryApplicationDisplayID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     secondaryApplicationDisplayID = self->super._secondaryApplicationDisplayID;
     self->super._secondaryApplicationDisplayID = v5;
   }

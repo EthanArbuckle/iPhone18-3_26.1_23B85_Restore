@@ -1,17 +1,17 @@
 @interface VCPImageAnalyzer
 - (id).cxx_construct;
-- (int)analyzePixelBufferInTiles:(__CVBuffer *)a3 results:(id)a4 cancel:(id)a5;
-- (int)calculateTextureness:(float *)a3 height:(int)a4 width:(int)a5 sdof:(BOOL)a6 result:(char *)a7;
+- (int)analyzePixelBufferInTiles:(__CVBuffer *)tiles results:(id)results cancel:(id)cancel;
+- (int)calculateTextureness:(float *)textureness height:(int)height width:(int)width sdof:(BOOL)sdof result:(char *)result;
 @end
 
 @implementation VCPImageAnalyzer
 
-- (int)analyzePixelBufferInTiles:(__CVBuffer *)a3 results:(id)a4 cancel:(id)a5
+- (int)analyzePixelBufferInTiles:(__CVBuffer *)tiles results:(id)results cancel:(id)cancel
 {
-  v37 = a4;
-  v38 = a5;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  resultsCopy = results;
+  cancelCopy = cancel;
+  Width = CVPixelBufferGetWidth(tiles);
+  Height = CVPixelBufferGetHeight(tiles);
   cf = 0;
   v10 = -50;
   if (Width)
@@ -52,7 +52,7 @@
 
       if (v14 < 2)
       {
-        v10 = [(VCPImageAnalyzer *)self processTile:a3 results:v37 cancel:v38];
+        v10 = [(VCPImageAnalyzer *)self processTile:tiles results:resultsCopy cancel:cancelCopy];
       }
 
       else
@@ -63,7 +63,7 @@
         v36 = Height;
         while (1)
         {
-          if (v38[2]())
+          if (cancelCopy[2]())
           {
             v10 = -128;
             goto LABEL_53;
@@ -82,15 +82,15 @@
           v24 = Width > v11 ? 0.0 : v19;
           v25 = Width > v11 ? v20 : 1.0;
           v26 = Width > v11 ? 1.0 : v20;
-          v27 = [MEMORY[0x1E695DF70] array];
-          v28 = v27;
+          array = [MEMORY[0x1E695DF70] array];
+          v28 = array;
           v29 = v18;
           v30 = (v19 * v18);
           v31 = v17;
           v32 = (v19 * v17);
           v33 = Width <= v11 ? 0.0 : v30;
           v34 = Width <= v11 ? v32 : 0.0;
-          if (!v27)
+          if (!array)
           {
             break;
           }
@@ -99,8 +99,8 @@
           v40.origin.y = v24;
           v40.size.width = v25;
           v40.size.height = v26;
-          v10 = Scaler::ScaleCropped(&self->_scaler, v40, a3, &cf, v22, v21, 875704422);
-          if (v10 || (v10 = [(VCPImageAnalyzer *)self processTile:cf results:v28 cancel:v38]) != 0 || (v10 = [(VCPImageAnalyzer *)self aggregateTileResults:v28 tileRect:Width > v11 imageSize:v37 landscape:v33 results:v34, v22, v21, Width, v36]) != 0)
+          v10 = Scaler::ScaleCropped(&self->_scaler, v40, tiles, &cf, v22, v21, 875704422);
+          if (v10 || (v10 = [(VCPImageAnalyzer *)self processTile:cf results:v28 cancel:cancelCopy]) != 0 || (v10 = [(VCPImageAnalyzer *)self aggregateTileResults:v28 tileRect:Width > v11 imageSize:resultsCopy landscape:v33 results:v34, v22, v21, Width, v36]) != 0)
           {
 
             goto LABEL_53;
@@ -135,18 +135,18 @@ LABEL_53:
   return v10;
 }
 
-- (int)calculateTextureness:(float *)a3 height:(int)a4 width:(int)a5 sdof:(BOOL)a6 result:(char *)a7
+- (int)calculateTextureness:(float *)textureness height:(int)height width:(int)width sdof:(BOOL)sdof result:(char *)result
 {
   v68 = *MEMORY[0x1E69E9840];
   bzero(v67, 0x320uLL);
-  if (a5 * a4 < 0)
+  if (width * height < 0)
   {
     v12 = -1;
   }
 
   else
   {
-    v12 = 4 * (a5 * a4);
+    v12 = 4 * (width * height);
   }
 
   v13 = operator new[](v12, MEMORY[0x1E69E5398]);
@@ -175,10 +175,10 @@ LABEL_53:
   v19 = -108;
   if (v14 && v16)
   {
-    if (a4 <= 2)
+    if (height <= 2)
     {
-      bzero(a7, a5 * a4);
-      if (!a6)
+      bzero(result, width * height);
+      if (!sdof)
       {
 LABEL_49:
         v19 = 0;
@@ -189,8 +189,8 @@ LABEL_49:
     else
     {
       v20 = 0;
-      v21 = 4 * a5;
-      v22 = &a3[2 * a5 + 1];
+      v21 = 4 * width;
+      v22 = &textureness[2 * width + 1];
       v23 = &v14[v21 + 4];
       v24 = &v18[v21 + 4];
       v25 = &v16[v21 + 4];
@@ -198,10 +198,10 @@ LABEL_49:
       v27 = 1;
       v28 = v16;
       v29 = v18;
-      v30 = &a3[v21 / 4];
+      v30 = &textureness[v21 / 4];
       do
       {
-        if (a5 >= 3)
+        if (width >= 3)
         {
           v31 = 0;
           v32 = v21 + v21 * v20;
@@ -211,7 +211,7 @@ LABEL_49:
           do
           {
             v36 = v30[v31 / 4 + 2] - v30[v31 / 4];
-            v37 = v22[v31 / 4] - a3[v31 / 4 + 1];
+            v37 = v22[v31 / 4] - textureness[v31 / 4 + 1];
             v38 = *&v29[v31];
             v39 = v34 + *&v29[v31 + 4];
             v35 = ((v35 + *&v26[v31]) - *&v26[v31 - 4]) + (v36 * v36);
@@ -223,7 +223,7 @@ LABEL_49:
             v31 += 4;
           }
 
-          while (4 * (a5 - 1) - 4 != v31);
+          while (4 * (width - 1) - 4 != v31);
         }
 
         ++v27;
@@ -236,35 +236,35 @@ LABEL_49:
         v29 += v21;
         v28 += v21;
         v30 = (v30 + v21);
-        a3 = (a3 + v21);
+        textureness = (textureness + v21);
       }
 
-      while (v27 != a4 - 1);
-      bzero(a7, a5 * a4);
-      if (a4 >= 31)
+      while (v27 != height - 1);
+      bzero(result, width * height);
+      if (height >= 31)
       {
         v40 = 0;
-        v41 = 116 * a5 - 4;
+        v41 = 116 * width - 4;
         v42 = &v16[v41];
-        v43 = 4 * a5;
+        v43 = 4 * width;
         v44 = &v18[v41];
         v45 = &v14[116 - v43];
         v46 = &v18[116 - v43];
         v47 = &v16[116 - v43];
         v48 = &v14[v41];
-        v49 = a7;
-        while (a5 < 31)
+        resultCopy = result;
+        while (width < 31)
         {
 LABEL_32:
           ++v40;
-          v49 += a5;
+          resultCopy += width;
           v42 = (v42 + v43);
           v44 = (v44 + v43);
           v45 = (v45 + v43);
           v46 = (v46 + v43);
           v47 = (v47 + v43);
           v48 += v43;
-          if (v40 == a4 - 30)
+          if (v40 == height - 30)
           {
             goto LABEL_33;
           }
@@ -318,8 +318,8 @@ LABEL_29:
 
           v59 = v58 & ~(v58 >> 31);
           ++v67[v59];
-          v49[v51++] = v59;
-          if (a5 - 30 == ++v50)
+          resultCopy[v51++] = v59;
+          if (width - 30 == ++v50)
           {
             goto LABEL_32;
           }
@@ -327,7 +327,7 @@ LABEL_29:
       }
 
 LABEL_33:
-      if (!a6)
+      if (!sdof)
       {
         goto LABEL_49;
       }
@@ -339,7 +339,7 @@ LABEL_33:
     {
       v62 = v61 - 1;
       v60 += v67[v61 - 1];
-      if (v60 > ((a5 * a4) * 0.1))
+      if (v60 > ((width * height) * 0.1))
       {
         break;
       }
@@ -352,34 +352,34 @@ LABEL_33:
     }
 
     v19 = 0;
-    if (v61 != 2 && a4 >= 1)
+    if (v61 != 2 && height >= 1)
     {
       v63 = 0;
       do
       {
-        v64 = a5;
-        v65 = a7;
-        if (a5 >= 1)
+        widthCopy = width;
+        resultCopy2 = result;
+        if (width >= 1)
         {
           do
           {
-            if (v62 > *v65)
+            if (v62 > *resultCopy2)
             {
-              *v65 = 0;
+              *resultCopy2 = 0;
             }
 
-            ++v65;
-            --v64;
+            ++resultCopy2;
+            --widthCopy;
           }
 
-          while (v64);
+          while (widthCopy);
         }
 
         ++v63;
-        a7 += a5;
+        result += width;
       }
 
-      while (v63 != a4);
+      while (v63 != height);
       goto LABEL_49;
     }
   }

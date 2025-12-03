@@ -1,49 +1,49 @@
 @interface UIKeyboardMotionSupport
-+ (id)supportForScreen:(id)a3;
-+ (id)supportForUIScene:(id)a3;
-- (id)_initWithScene:(id)a3 options:(id)a4;
-- (id)_initWithScreen:(id)a3 options:(id)a4;
-- (void)_disconnectingController:(id)a3;
-- (void)setMasterController:(id)a3;
-- (void)translateToPlacement:(id)a3 quietly:(BOOL)a4 animated:(BOOL)a5;
++ (id)supportForScreen:(id)screen;
++ (id)supportForUIScene:(id)scene;
+- (id)_initWithScene:(id)scene options:(id)options;
+- (id)_initWithScreen:(id)screen options:(id)options;
+- (void)_disconnectingController:(id)controller;
+- (void)setMasterController:(id)controller;
+- (void)translateToPlacement:(id)placement quietly:(BOOL)quietly animated:(BOOL)animated;
 @end
 
 @implementation UIKeyboardMotionSupport
 
-+ (id)supportForScreen:(id)a3
++ (id)supportForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Only subclasses of UIKeyboardMotionSupport should be instantiated"];
   }
 
-  v6 = [_UIObjectPerScreen objectOfClass:a1 forScreen:v4 withOptions:0 createIfNecessary:1];
+  v6 = [_UIObjectPerScreen objectOfClass:self forScreen:screenCopy withOptions:0 createIfNecessary:1];
 
   return v6;
 }
 
-+ (id)supportForUIScene:(id)a3
++ (id)supportForUIScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Only subclasses of UIKeyboardMotionSupport should be instantiated"];
   }
 
-  v6 = [_UIObjectPerScene objectOfClass:a1 forScene:v4 withOptions:0 createIfNecessary:1];
+  v6 = [_UIObjectPerScene objectOfClass:self forScene:sceneCopy withOptions:0 createIfNecessary:1];
 
   return v6;
 }
 
-- (id)_initWithScreen:(id)a3 options:(id)a4
+- (id)_initWithScreen:(id)screen options:(id)options
 {
-  v7 = a3;
-  if (a4)
+  screenCopy = screen;
+  if (options)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -54,22 +54,22 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_screen, a3);
+      objc_storeStrong(&v9->_screen, screen);
     }
 
     self = v10;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)_initWithScene:(id)a3 options:(id)a4
+- (id)_initWithScene:(id)scene options:(id)options
 {
-  v7 = a3;
-  if (a4)
+  sceneCopy = scene;
+  if (options)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -80,37 +80,37 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_scene, a3);
-      v11 = [v7 screen];
+      objc_storeStrong(&v9->_scene, scene);
+      screen = [sceneCopy screen];
       screen = v10->_screen;
-      v10->_screen = v11;
+      v10->_screen = screen;
     }
 
     self = v10;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)_disconnectingController:(id)a3
+- (void)_disconnectingController:(id)controller
 {
   controller = self->_controller;
   self->_controller = 0;
 }
 
-- (void)setMasterController:(id)a3
+- (void)setMasterController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   controller = self->_controller;
-  v7 = v4;
-  if (controller == v4)
+  v7 = controllerCopy;
+  if (controller == controllerCopy)
   {
     [(UIKeyboardMotionSupport *)self _updatedController];
     goto LABEL_7;
   }
 
-  v6 = v4;
+  v6 = controllerCopy;
   if (controller)
   {
     [(UIKeyboardMotionSupport *)self _disconnectingController:?];
@@ -125,19 +125,19 @@ LABEL_7:
   }
 }
 
-- (void)translateToPlacement:(id)a3 quietly:(BOOL)a4 animated:(BOOL)a5
+- (void)translateToPlacement:(id)placement quietly:(BOOL)quietly animated:(BOOL)animated
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(UIKeyboardMotionSupport *)self generateSplitNotificationForNewPlacement:v8];
-  if (v8)
+  placementCopy = placement;
+  v9 = [(UIKeyboardMotionSupport *)self generateSplitNotificationForNewPlacement:placementCopy];
+  if (placementCopy)
   {
-    v10 = [(UISplitKeyboardSource *)self->_controller placement];
-    v11 = [v10 assistantView];
+    placement = [(UISplitKeyboardSource *)self->_controller placement];
+    assistantView = [placement assistantView];
 
-    if (v11)
+    if (assistantView)
     {
-      v34[0] = v8;
+      v34[0] = placementCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
       +[UIKeyboardImpl normalizedPersistentOffset];
       v14 = v13;
@@ -151,7 +151,7 @@ LABEL_7:
       v26 = [UIInputViewSetPlacementFloating placementWithUndockedOffset:v14 chromeBuffer:v16 floatingWidth:v18, v20, v22, v24, v25];
 
       [v26 setSubPlacements:v12];
-      v8 = v26;
+      placementCopy = v26;
     }
   }
 
@@ -160,11 +160,11 @@ LABEL_7:
   v29[1] = 3221225472;
   v29[2] = __65__UIKeyboardMotionSupport_translateToPlacement_quietly_animated___block_invoke;
   v29[3] = &unk_1E7117960;
-  v30 = v8;
-  v31 = a4;
-  v32 = a5;
+  v30 = placementCopy;
+  quietlyCopy = quietly;
+  animatedCopy = animated;
   v33 = v9;
-  v28 = v8;
+  v28 = placementCopy;
   [v27 performOnLocalDistributedControllers:v29];
 }
 

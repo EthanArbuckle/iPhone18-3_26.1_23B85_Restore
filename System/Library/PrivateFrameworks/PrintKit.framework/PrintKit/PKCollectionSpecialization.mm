@@ -1,21 +1,21 @@
 @interface PKCollectionSpecialization
-- (PKCollectionSpecialization)initWithCollection:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKCollectionSpecialization)initWithCollection:(id)collection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (void)dealloc;
 @end
 
 @implementation PKCollectionSpecialization
 
-- (PKCollectionSpecialization)initWithCollection:(id)a3
+- (PKCollectionSpecialization)initWithCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v8.receiver = self;
   v8.super_class = PKCollectionSpecialization;
   v6 = [(PKCollectionSpecialization *)&v8 init];
   if (v6)
   {
-    objc_storeStrong(&v6->_collection, a3);
+    objc_storeStrong(&v6->_collection, collection);
     operator new();
   }
 
@@ -36,7 +36,7 @@
   [(PKCollectionSpecialization *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   collection = self->_collection;
@@ -48,12 +48,12 @@
 {
   if (([(PKCollectionSpecialization *)self conformsToProtocol:&unk_2871AFB80]& 1) != 0)
   {
-    v3 = [(PKCollectionSpecialization *)self userCodableDictionary];
+    userCodableDictionary = [(PKCollectionSpecialization *)self userCodableDictionary];
     v4 = MEMORY[0x277CCACA8];
     v8.receiver = self;
     v8.super_class = PKCollectionSpecialization;
     v5 = [(PKCollectionSpecialization *)&v8 description];
-    v6 = [v4 stringWithFormat:@"%@ %@", v5, v3];
+    v6 = [v4 stringWithFormat:@"%@ %@", v5, userCodableDictionary];
   }
 
   else

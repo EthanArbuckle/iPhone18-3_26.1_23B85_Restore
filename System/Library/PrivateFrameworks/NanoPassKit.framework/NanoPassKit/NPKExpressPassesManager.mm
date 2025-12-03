@@ -1,9 +1,9 @@
 @interface NPKExpressPassesManager
 - (NPKExpressPassesManager)init;
-- (id)passForUniqueID:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateWithExpressPass:(id)a3 siblingExpressPasses:(id)a4;
+- (id)passForUniqueID:(id)d;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
+- (void)updateWithExpressPass:(id)pass siblingExpressPasses:(id)passes;
 @end
 
 @implementation NPKExpressPassesManager
@@ -15,62 +15,62 @@
   v2 = [(NPKExpressPassesManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x277CCAA50] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
   }
 
   return v2;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v6;
+    v6 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v6;
     if (!v5)
     {
       [(NSHashTable *)self->_observers addObject:v6];
-      v4 = v6;
+      observerCopy = v6;
     }
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v6;
+    v6 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v6;
     if (v5)
     {
       [(NSHashTable *)self->_observers removeObject:v6];
-      v4 = v6;
+      observerCopy = v6;
     }
   }
 }
 
-- (void)updateWithExpressPass:(id)a3 siblingExpressPasses:(id)a4
+- (void)updateWithExpressPass:(id)pass siblingExpressPasses:(id)passes
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = v8;
-  if (v6)
+  passCopy = pass;
+  passesCopy = passes;
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = array;
+  if (passCopy)
   {
-    [v8 addObject:v6];
+    [array addObject:passCopy];
   }
 
-  v33 = v6;
-  if (v7)
+  v33 = passCopy;
+  if (passesCopy)
   {
-    [v9 addObjectsFromArray:v7];
+    [v9 addObjectsFromArray:passesCopy];
   }
 
   v10 = [v9 copy];
@@ -99,11 +99,11 @@
         }
 
         v19 = *(*(&v38 + 1) + 8 * i);
-        v20 = [v19 paymentPass];
-        [v12 safelyAddObject:v20];
+        paymentPass = [v19 paymentPass];
+        [v12 safelyAddObject:paymentPass];
 
-        v21 = [v19 secureElementPass];
-        [v13 safelyAddObject:v21];
+        secureElementPass = [v19 secureElementPass];
+        [v13 safelyAddObject:secureElementPass];
       }
 
       v16 = [(NSArray *)v14 countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -120,12 +120,12 @@
   currentSecureElementPasses = self->_currentSecureElementPasses;
   self->_currentSecureElementPasses = v24;
 
-  v26 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v27 = [v26 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  v27 = [allObjects countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v27)
   {
     v28 = v27;
@@ -136,13 +136,13 @@
       {
         if (*v35 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v34 + 1) + 8 * j) passesDataSourceDidReloadPasses:self];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v28 = [allObjects countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v28);
@@ -151,24 +151,24 @@
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)passForUniqueID:(id)a3
+- (id)passForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__12;
   v16 = __Block_byref_object_dispose__12;
   v17 = 0;
-  v5 = [(NPKExpressPassesManager *)self passes];
+  passes = [(NPKExpressPassesManager *)self passes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__NPKExpressPassesManager_passForUniqueID___block_invoke;
   v9[3] = &unk_279945330;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [passes enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);

@@ -6,13 +6,13 @@
 - (UIView)_overrideGeometryView;
 - (int64_t)_fixedUserInterfaceStyle;
 - (int64_t)_preferredUserInterfaceStyle;
-- (void)_setColor:(id)a3;
-- (void)_setFixedUserInterfaceStyle:(int64_t)a3;
-- (void)_setOverrideGeometryView:(id)a3;
-- (void)_setPreferredUserInterfaceStyle:(int64_t)a3;
-- (void)_setPrefersSolidColorHardPocket:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setStyle:(id)a3;
+- (void)_setColor:(id)color;
+- (void)_setFixedUserInterfaceStyle:(int64_t)style;
+- (void)_setOverrideGeometryView:(id)view;
+- (void)_setPreferredUserInterfaceStyle:(int64_t)style;
+- (void)_setPrefersSolidColorHardPocket:(BOOL)pocket;
+- (void)setHidden:(BOOL)hidden;
+- (void)setStyle:(id)style;
 @end
 
 @implementation UIScrollEdgeEffect
@@ -22,7 +22,7 @@
   v3 = *(&self->super.isa + OBJC_IVAR___UIScrollEdgeEffect_state);
   swift_getKeyPath();
   sub_188F700B4();
-  v4 = self;
+  selfCopy = self;
   sub_18A4A2C08();
 
   v5 = *(v3 + 16);
@@ -31,11 +31,11 @@
   return v5;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v4 = a3;
-  v5 = self;
-  sub_188F6E6B8(v4);
+  styleCopy = style;
+  selfCopy = self;
+  sub_188F6E6B8(styleCopy);
 }
 
 - (BOOL)isHidden
@@ -43,7 +43,7 @@
   v3 = *(&self->super.isa + OBJC_IVAR___UIScrollEdgeEffect_state);
   swift_getKeyPath();
   sub_188F700B4();
-  v4 = self;
+  selfCopy = self;
   sub_18A4A2C08();
 
   v5 = *(v3 + 24);
@@ -51,18 +51,18 @@
   return v5;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = self;
-  sub_188F6F45C(v3);
+  hiddenCopy = hidden;
+  selfCopy = self;
+  sub_188F6F45C(hiddenCopy);
 }
 
-- (void)_setColor:(id)a3
+- (void)_setColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_188F6F5B4(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_188F6F5B4(color);
 }
 
 - (BOOL)_prefersSolidColorHardPocket
@@ -70,7 +70,7 @@
   v3 = *(&self->super.isa + OBJC_IVAR___UIScrollEdgeEffect_state);
   swift_getKeyPath();
   sub_188F700B4();
-  v4 = self;
+  selfCopy = self;
   sub_18A4A2C08();
 
   v5 = *(v3 + 25);
@@ -78,11 +78,11 @@
   return v5;
 }
 
-- (void)_setPrefersSolidColorHardPocket:(BOOL)a3
+- (void)_setPrefersSolidColorHardPocket:(BOOL)pocket
 {
-  v3 = a3;
-  v4 = self;
-  sub_188F6F714(v3);
+  pocketCopy = pocket;
+  selfCopy = self;
+  sub_188F6F714(pocketCopy);
 }
 
 - (int64_t)_preferredUserInterfaceStyle
@@ -90,7 +90,7 @@
   v3 = *(&self->super.isa + OBJC_IVAR___UIScrollEdgeEffect_state);
   swift_getKeyPath();
   sub_188F700B4();
-  v4 = self;
+  selfCopy = self;
   sub_18A4A2C08();
 
   v5 = *(v3 + 32);
@@ -98,10 +98,10 @@
   return v5;
 }
 
-- (void)_setPreferredUserInterfaceStyle:(int64_t)a3
+- (void)_setPreferredUserInterfaceStyle:(int64_t)style
 {
-  v4 = self;
-  sub_188F6F8EC(a3);
+  selfCopy = self;
+  sub_188F6F8EC(style);
 }
 
 - (int64_t)_fixedUserInterfaceStyle
@@ -109,7 +109,7 @@
   v3 = *(&self->super.isa + OBJC_IVAR___UIScrollEdgeEffect_state);
   swift_getKeyPath();
   sub_188F700B4();
-  v4 = self;
+  selfCopy = self;
   sub_18A4A2C08();
 
   v5 = *(v3 + 40);
@@ -117,17 +117,17 @@
   return v5;
 }
 
-- (void)_setFixedUserInterfaceStyle:(int64_t)a3
+- (void)_setFixedUserInterfaceStyle:(int64_t)style
 {
-  v4 = self;
-  sub_188F6FAB8(a3);
+  selfCopy = self;
+  sub_188F6FAB8(style);
 }
 
 - (UIView)_overrideGeometryView
 {
   swift_getKeyPath();
   sub_188F700B4();
-  v3 = self;
+  selfCopy = self;
   sub_18A4A2C08();
 
   Strong = swift_unknownObjectWeakLoadStrong();
@@ -135,11 +135,11 @@
   return Strong;
 }
 
-- (void)_setOverrideGeometryView:(id)a3
+- (void)_setOverrideGeometryView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188F6EFD8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188F6EFD8(view);
 }
 
 - (UIScrollEdgeEffect)init

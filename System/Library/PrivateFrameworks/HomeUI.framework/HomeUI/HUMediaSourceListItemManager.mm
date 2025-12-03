@@ -1,22 +1,22 @@
 @interface HUMediaSourceListItemManager
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)initForMediaProfileContainers:(id)a3 delegate:(id)a4 forTarget:(unint64_t)a5;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)initForMediaProfileContainers:(id)containers delegate:(id)delegate forTarget:(unint64_t)target;
 @end
 
 @implementation HUMediaSourceListItemManager
 
-- (id)initForMediaProfileContainers:(id)a3 delegate:(id)a4 forTarget:(unint64_t)a5
+- (id)initForMediaProfileContainers:(id)containers delegate:(id)delegate forTarget:(unint64_t)target
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v24 = a3;
+  containersCopy = containers;
   v32.receiver = self;
   v32.super_class = HUMediaSourceListItemManager;
-  v21 = a4;
+  delegateCopy = delegate;
   val = [(HFItemManager *)&v32 initWithDelegate:?];
   if (val)
   {
-    objc_storeStrong(&val->_containers, a3);
+    objc_storeStrong(&val->_containers, containers);
     v9 = +[HUMediaSourceItem appleMusicSource];
     v34[0] = v9;
     v10 = +[HUMediaSourceItem soundScapesSource];
@@ -30,8 +30,8 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v13 = [(HUMediaSourceListItemManager *)val sources];
-    v14 = [v13 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    sources = [(HUMediaSourceListItemManager *)val sources];
+    v14 = [sources countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v14)
     {
       v15 = *v28;
@@ -41,11 +41,11 @@
         {
           if (*v28 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(sources);
           }
 
           v17 = *(*(&v27 + 1) + 8 * i);
-          v18 = [v17 resolveForMediaProfiles:v24 forTarget:a5];
+          v18 = [v17 resolveForMediaProfiles:containersCopy forTarget:target];
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __81__HUMediaSourceListItemManager_initForMediaProfileContainers_delegate_forTarget___block_invoke;
@@ -57,7 +57,7 @@
           objc_destroyWeak(v26);
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v27 objects:v33 count:16];
+        v14 = [sources countByEnumeratingWithState:&v27 objects:v33 count:16];
       }
 
       while (v14);
@@ -76,13 +76,13 @@ void __81__HUMediaSourceListItemManager_initForMediaProfileContainers_delegate_f
   v3 = [WeakRetained updateResultsForItems:v2 senderSelector:*(a1 + 48)];
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277D14B40]);
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(HUMediaSourceListItemManager *)self sources];
-  v7 = [v5 setWithArray:v6];
+  sources = [(HUMediaSourceListItemManager *)self sources];
+  v7 = [v5 setWithArray:sources];
   v8 = [v4 initWithItems:v7];
   v11[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -90,15 +90,15 @@ void __81__HUMediaSourceListItemManager_initForMediaProfileContainers_delegate_f
   return v9;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D14850];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [[v3 alloc] initWithIdentifier:@"HUMediaSourceListItemManager"];
-  v6 = [v4 allObjects];
+  allObjects = [itemsCopy allObjects];
 
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_227];
+  v7 = [allObjects sortedArrayUsingComparator:&__block_literal_global_227];
   [v5 setItems:v7];
 
   [v5 setHeaderTitle:0];

@@ -1,11 +1,11 @@
 @interface ADOpportuneSpeakingMovingAverageBuffer
-- (ADOpportuneSpeakingMovingAverageBuffer)initWithSize:(int)a3;
-- (void)add:(unsigned __int8)a3;
+- (ADOpportuneSpeakingMovingAverageBuffer)initWithSize:(int)size;
+- (void)add:(unsigned __int8)add;
 @end
 
 @implementation ADOpportuneSpeakingMovingAverageBuffer
 
-- (void)add:(unsigned __int8)a3
+- (void)add:(unsigned __int8)add
 {
   if (self->_ringFull)
   {
@@ -14,15 +14,15 @@
     v5 = self->_cursor % size;
     LOBYTE(v3) = ring[v5];
     self->_movingAverage = self->_movingAverage - (v3 / size);
-    ring[v5] = a3;
+    ring[v5] = add;
     v7 = self->_size;
     LODWORD(ring) = self->_cursor;
-    self->_movingAverage = self->_movingAverage + (a3 / v7);
+    self->_movingAverage = self->_movingAverage + (add / v7);
   }
 
   else
   {
-    self->_ring[self->_cursor % self->_size] = a3;
+    self->_ring[self->_cursor % self->_size] = add;
     ring = self->_cursor;
     if ((ring & 0x80000000) != 0)
     {
@@ -56,7 +56,7 @@
   }
 }
 
-- (ADOpportuneSpeakingMovingAverageBuffer)initWithSize:(int)a3
+- (ADOpportuneSpeakingMovingAverageBuffer)initWithSize:(int)size
 {
   v8.receiver = self;
   v8.super_class = ADOpportuneSpeakingMovingAverageBuffer;
@@ -64,9 +64,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_size = a3;
+    v4->_size = size;
     v4->_cursor = 0;
-    v4->_ring = malloc_type_calloc(a3, 1uLL, 0x6129C0E0uLL);
+    v4->_ring = malloc_type_calloc(size, 1uLL, 0x6129C0E0uLL);
     v5->_ringFull = 0;
     v5->_movingAverage = 0.0;
     v6 = v5;

@@ -1,5 +1,5 @@
 @interface WFDeviceIdiomResource
-- (_TtC11WorkflowKit21WFDeviceIdiomResource)initWithDefinition:(id)a3;
+- (_TtC11WorkflowKit21WFDeviceIdiomResource)initWithDefinition:(id)definition;
 - (void)refreshAvailability;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)refreshAvailability
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA4D28F0();
 }
 
-- (_TtC11WorkflowKit21WFDeviceIdiomResource)initWithDefinition:(id)a3
+- (_TtC11WorkflowKit21WFDeviceIdiomResource)initWithDefinition:(id)definition
 {
-  if (a3)
+  if (definition)
   {
     sub_1CA94C1C8();
   }

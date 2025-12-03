@@ -1,20 +1,20 @@
 @interface WFPrivateAddressModeOptionsViewController
-- (void)_promptForAllowTrackingCurrentNetwork:(BOOL)a3 indexPath:(id)a4;
-- (void)_promptForInterruptCurrentNetwork:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_promptForAllowTrackingCurrentNetwork:(BOOL)network indexPath:(id)path;
+- (void)_promptForInterruptCurrentNetwork:(id)network;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation WFPrivateAddressModeOptionsViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v21 = a4;
-  [a3 deselectRowAtIndexPath:v21 animated:1];
-  v6 = [(WFValueListViewController *)self titles];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v21, "row")}];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  titles = [(WFValueListViewController *)self titles];
+  v7 = [titles objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v8 = [(WFValueListViewController *)self selectedTitle];
-  v9 = [v7 isEqualToString:v8];
+  selectedTitle = [(WFValueListViewController *)self selectedTitle];
+  v9 = [v7 isEqualToString:selectedTitle];
 
   if ((v9 & 1) == 0)
   {
@@ -25,7 +25,7 @@
 
     if (pendingSelection == v12)
     {
-      [(WFPrivateAddressModeOptionsViewController *)self _promptForAllowTrackingCurrentNetwork:self->_isCurrentNetwork indexPath:v21];
+      [(WFPrivateAddressModeOptionsViewController *)self _promptForAllowTrackingCurrentNetwork:self->_isCurrentNetwork indexPath:pathCopy];
     }
 
     else
@@ -36,36 +36,36 @@
 
       if (originalSelection == v15 && self->_isCurrentNetwork)
       {
-        [(WFPrivateAddressModeOptionsViewController *)self _promptForInterruptCurrentNetwork:v21];
+        [(WFPrivateAddressModeOptionsViewController *)self _promptForInterruptCurrentNetwork:pathCopy];
       }
 
       else
       {
         [(WFValueListViewController *)self setSelectedTitle:self->_pendingSelection];
-        v16 = [(WFPrivateAddressModeOptionsViewController *)self tableView];
-        v17 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(v21, "section")}];
-        [v16 reloadSections:v17 withRowAnimation:5];
+        tableView = [(WFPrivateAddressModeOptionsViewController *)self tableView];
+        v17 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
+        [tableView reloadSections:v17 withRowAnimation:5];
       }
     }
 
-    v18 = [(WFValueListViewController *)self completionHandler];
+    completionHandler = [(WFValueListViewController *)self completionHandler];
 
-    if (v18)
+    if (completionHandler)
     {
-      v19 = [(WFValueListViewController *)self completionHandler];
-      v20 = [(WFValueListViewController *)self selectedTitle];
-      (v19)[2](v19, v20, 1);
+      completionHandler2 = [(WFValueListViewController *)self completionHandler];
+      selectedTitle2 = [(WFValueListViewController *)self selectedTitle];
+      (completionHandler2)[2](completionHandler2, selectedTitle2, 1);
     }
   }
 }
 
-- (void)_promptForInterruptCurrentNetwork:(id)a3
+- (void)_promptForInterruptCurrentNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(WFPrivateAddressModeOptionsViewController *)self isChinaDevice];
+  networkCopy = network;
+  isChinaDevice = [(WFPrivateAddressModeOptionsViewController *)self isChinaDevice];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
-  if (v5)
+  if (isChinaDevice)
   {
     v8 = @"kWFLocPrivateAddressInterruptionAlertTile_CH";
   }
@@ -90,7 +90,7 @@
   v25[3] = &unk_279EC5CB0;
   objc_copyWeak(&v27, location);
   v25[4] = self;
-  v15 = v4;
+  v15 = networkCopy;
   v26 = v15;
   v16 = [v14 actionWithTitle:v13 style:0 handler:v25];
   [v11 addAction:v16];
@@ -141,14 +141,14 @@ void __79__WFPrivateAddressModeOptionsViewController__promptForInterruptCurrentN
   [v4 reloadSections:v5 withRowAnimation:5];
 }
 
-- (void)_promptForAllowTrackingCurrentNetwork:(BOOL)a3 indexPath:(id)a4
+- (void)_promptForAllowTrackingCurrentNetwork:(BOOL)network indexPath:(id)path
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(WFPrivateAddressModeOptionsViewController *)self isChinaDevice];
+  networkCopy = network;
+  pathCopy = path;
+  isChinaDevice = [(WFPrivateAddressModeOptionsViewController *)self isChinaDevice];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = v8;
-  if (v7)
+  if (isChinaDevice)
   {
     v10 = @"kWFLocPrivateAddressAllowTrackingAlertTitle_CH";
   }
@@ -162,7 +162,7 @@ void __79__WFPrivateAddressModeOptionsViewController__promptForInterruptCurrentN
   v12 = [v8 localizedStringForKey:v10 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:v12, self->_networkName];
-  if (v4)
+  if (networkCopy)
   {
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v14 localizedStringForKey:@"kWFLocPrivateAddressAllowTrackingAlertMessage" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
@@ -180,7 +180,7 @@ void __79__WFPrivateAddressModeOptionsViewController__promptForInterruptCurrentN
   v30[3] = &unk_279EC5CB0;
   objc_copyWeak(&v32, location);
   v30[4] = self;
-  v19 = v6;
+  v19 = pathCopy;
   v31 = v19;
   v20 = [v18 actionWithTitle:v17 style:0 handler:v30];
   v26 = v12;

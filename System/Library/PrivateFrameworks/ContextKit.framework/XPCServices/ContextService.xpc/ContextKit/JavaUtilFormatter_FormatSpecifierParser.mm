@@ -1,29 +1,29 @@
 @interface JavaUtilFormatter_FormatSpecifierParser
-- (JavaUtilFormatter_FormatSpecifierParser)initWithNSString:(id)a3;
+- (JavaUtilFormatter_FormatSpecifierParser)initWithNSString:(id)string;
 - (id)getFormatSpecifierText;
-- (id)parseFormatTokenWithInt:(int)a3;
+- (id)parseFormatTokenWithInt:(int)int;
 - (int)peek;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilFormatter_FormatSpecifierParser
 
-- (JavaUtilFormatter_FormatSpecifierParser)initWithNSString:(id)a3
+- (JavaUtilFormatter_FormatSpecifierParser)initWithNSString:(id)string
 {
-  JreStrongAssign(&self->format_, a3);
-  if (!a3)
+  JreStrongAssign(&self->format_, string);
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  self->length_ = [a3 length];
+  self->length_ = [string length];
   return self;
 }
 
-- (id)parseFormatTokenWithInt:(int)a3
+- (id)parseFormatTokenWithInt:(int)int
 {
-  self->startIndex_ = a3;
-  self->i_ = a3;
+  self->startIndex_ = int;
+  self->i_ = int;
   v4 = [JavaUtilFormatter_FormatToken alloc];
   v4->argIndex_ = -1;
   v4->conversionType_ = -1;

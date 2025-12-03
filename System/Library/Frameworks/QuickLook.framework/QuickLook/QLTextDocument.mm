@@ -1,17 +1,17 @@
 @interface QLTextDocument
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5;
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error;
 - (NSAttributedString)attributedTextContent;
 - (NSString)textContent;
-- (_TtC9QuickLook14QLTextDocument)initWithFileURL:(id)a3;
-- (id)contentsForType:(id)a3 error:(id *)a4;
-- (void)saveWithTextContent:(id)a3;
+- (_TtC9QuickLook14QLTextDocument)initWithFileURL:(id)l;
+- (id)contentsForType:(id)type error:(id *)error;
+- (void)saveWithTextContent:(id)content;
 @end
 
 @implementation QLTextDocument
 
 - (NSString)textContent
 {
-  v2 = self;
+  selfCopy = self;
   sub_23A7C6C4C();
   v4 = v3;
 
@@ -30,23 +30,23 @@
 
 - (NSAttributedString)attributedTextContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23A7C6DC0();
 
   return v3;
 }
 
-- (void)saveWithTextContent:(id)a3
+- (void)saveWithTextContent:(id)content
 {
-  v4 = a3;
-  v5 = self;
-  sub_23A7C6E8C(v4);
+  contentCopy = content;
+  selfCopy = self;
+  sub_23A7C6E8C(contentCopy);
 }
 
-- (id)contentsForType:(id)a3 error:(id *)a4
+- (id)contentsForType:(id)type error:(id *)error
 {
   sub_23A7EE844();
-  v5 = self;
+  selfCopy = self;
   sub_23A7C6FFC(v8);
 
   __swift_project_boxed_opaque_existential_0(v8, v8[3]);
@@ -56,14 +56,14 @@
   return v6;
 }
 
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = a4;
+  selfCopy = self;
+  typeCopy = type;
   sub_23A7EEC44();
   swift_unknownObjectRelease();
-  if (v8)
+  if (typeCopy)
   {
     v9 = sub_23A7EE844();
     v11 = v10;
@@ -81,7 +81,7 @@
   return 1;
 }
 
-- (_TtC9QuickLook14QLTextDocument)initWithFileURL:(id)a3
+- (_TtC9QuickLook14QLTextDocument)initWithFileURL:(id)l
 {
   v4 = sub_23A7EDF64();
   v5 = *(v4 - 8);

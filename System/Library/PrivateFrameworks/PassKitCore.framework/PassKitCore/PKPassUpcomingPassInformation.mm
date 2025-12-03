@@ -1,33 +1,33 @@
 @interface PKPassUpcomingPassInformation
-+ (BOOL)isPassStyleEligible:(int64_t)a3;
-+ (id)_supportedEntryTypesForPassStyle:(int64_t)a3;
-+ (id)createFromDictionary:(id)a3 bundle:(id)a4 forPassStyle:(int64_t)a5;
-- (BOOL)coalesceIntoGroupsForPassStyle:(int64_t)a3;
-- (PKPassUpcomingPassInformation)initWithCoder:(id)a3;
-- (id)_groupIdentifierForEntry:(id)a3;
-- (id)_groupNameForIdentifier:(id)a3;
-- (id)_initWithEntries:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (BOOL)isPassStyleEligible:(int64_t)eligible;
++ (id)_supportedEntryTypesForPassStyle:(int64_t)style;
++ (id)createFromDictionary:(id)dictionary bundle:(id)bundle forPassStyle:(int64_t)style;
+- (BOOL)coalesceIntoGroupsForPassStyle:(int64_t)style;
+- (PKPassUpcomingPassInformation)initWithCoder:(id)coder;
+- (id)_groupIdentifierForEntry:(id)entry;
+- (id)_groupNameForIdentifier:(id)identifier;
+- (id)_initWithEntries:(id)entries;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpcomingPassInformation
 
-+ (BOOL)isPassStyleEligible:(int64_t)a3
++ (BOOL)isPassStyleEligible:(int64_t)eligible
 {
-  v3 = [PKPassUpcomingPassInformation _supportedEntryTypesForPassStyle:a3];
+  v3 = [PKPassUpcomingPassInformation _supportedEntryTypesForPassStyle:eligible];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-+ (id)_supportedEntryTypesForPassStyle:(int64_t)a3
++ (id)_supportedEntryTypesForPassStyle:(int64_t)style
 {
-  if (a3 < 9 || a3 == 10)
+  if (style < 9 || style == 10)
   {
     return MEMORY[0x1E695E0F0];
   }
 
-  if (a3 != 13)
+  if (style != 13)
   {
     return &unk_1F23B4028;
   }
@@ -36,17 +36,17 @@
   return result;
 }
 
-+ (id)createFromDictionary:(id)a3 bundle:(id)a4 forPassStyle:(int64_t)a5
++ (id)createFromDictionary:(id)dictionary bundle:(id)bundle forPassStyle:(int64_t)style
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
+  v9 = bundleCopy;
   v10 = 0;
-  if (v7 && v8)
+  if (dictionaryCopy && bundleCopy)
   {
-    if ([PKPassUpcomingPassInformation isPassStyleEligible:a5])
+    if ([PKPassUpcomingPassInformation isPassStyleEligible:style])
     {
-      v11 = [v7 objectForKeyedSubscript:@"upcomingPassInformation"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"upcomingPassInformation"];
       v12 = v11;
       v13 = MEMORY[0x1E695E0F0];
       if (v11)
@@ -65,7 +65,7 @@
 
       v16 = [[PKPassUpcomingPassInformation alloc] _initWithEntries:v15];
       v17 = v16;
-      if (v16 && [v16 coalesceIntoGroupsForPassStyle:a5])
+      if (v16 && [v16 coalesceIntoGroupsForPassStyle:style])
       {
         v10 = v17;
       }
@@ -85,10 +85,10 @@
   return v10;
 }
 
-- (id)_initWithEntries:(id)a3
+- (id)_initWithEntries:(id)entries
 {
-  v5 = a3;
-  if ([v5 count])
+  entriesCopy = entries;
+  if ([entriesCopy count])
   {
     v10.receiver = self;
     v10.super_class = PKPassUpcomingPassInformation;
@@ -96,25 +96,25 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_allEntries, a3);
+      objc_storeStrong(&v6->_allEntries, entries);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)_groupIdentifierForEntry:(id)a3
+- (id)_groupIdentifierForEntry:(id)entry
 {
-  v3 = [a3 metadata];
-  if ([v3 type])
+  metadata = [entry metadata];
+  if ([metadata type])
   {
     v4 = @"upcomingEvents";
   }
@@ -127,11 +127,11 @@
   return v4;
 }
 
-- (id)_groupNameForIdentifier:(id)a3
+- (id)_groupNameForIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 != @"upcoming" && v3 && (v5 = [(__CFString *)v3 isEqualToString:@"upcoming"], v4, (v5 & 1) == 0) && ((v6 = v4, v6 == @"upcomingEvents") || (v7 = v6, v8 = [(__CFString *)v6 isEqualToString:@"upcomingEvents"], v7, (v8 & 1) != 0)))
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy != @"upcoming" && identifierCopy && (v5 = [(__CFString *)identifierCopy isEqualToString:@"upcoming"], v4, (v5 & 1) == 0) && ((v6 = v4, v6 == @"upcomingEvents") || (v7 = v6, v8 = [(__CFString *)v6 isEqualToString:@"upcomingEvents"], v7, (v8 & 1) != 0)))
   {
     v9 = @"UPCOMING_INFORMATION_EVENT_SECTION_LABEL";
   }
@@ -146,10 +146,10 @@
   return v10;
 }
 
-- (BOOL)coalesceIntoGroupsForPassStyle:(int64_t)a3
+- (BOOL)coalesceIntoGroupsForPassStyle:(int64_t)style
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = [PKPassUpcomingPassInformation _supportedEntryTypesForPassStyle:a3];
+  v4 = [PKPassUpcomingPassInformation _supportedEntryTypesForPassStyle:style];
   allEntries = self->_allEntries;
   v6 = MEMORY[0x1E696AE18];
   v43[0] = MEMORY[0x1E69E9820];
@@ -270,19 +270,19 @@ uint64_t __64__PKPassUpcomingPassInformation_coalesceIntoGroupsForPassStyle___bl
   return v6;
 }
 
-- (PKPassUpcomingPassInformation)initWithCoder:(id)a3
+- (PKPassUpcomingPassInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPassUpcomingPassInformation;
   v5 = [(PKPassUpcomingPassInformation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"allEntries"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"allEntries"];
     allEntries = v5->_allEntries;
     v5->_allEntries = v6;
 
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"groups"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"groups"];
     groups = v5->_groups;
     v5->_groups = v8;
   }
@@ -290,12 +290,12 @@ uint64_t __64__PKPassUpcomingPassInformation_coalesceIntoGroupsForPassStyle___bl
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   allEntries = self->_allEntries;
-  v5 = a3;
-  [v5 encodeObject:allEntries forKey:@"allEntries"];
-  [v5 encodeObject:self->_groups forKey:@"groups"];
+  coderCopy = coder;
+  [coderCopy encodeObject:allEntries forKey:@"allEntries"];
+  [coderCopy encodeObject:self->_groups forKey:@"groups"];
 }
 
 @end

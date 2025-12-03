@@ -9,11 +9,11 @@
 + (__CFString)hk_stringForDisplayFromFHIRData:()HealthKit
 {
   v9 = 0;
-  v4 = [a1 hk_JSONObjectFromFHIRData:a3 options:0 error:&v9];
+  v4 = [self hk_JSONObjectFromFHIRData:a3 options:0 error:&v9];
   v5 = v9;
   if (v4)
   {
-    v6 = [a1 hk_stringForDisplayFromFHIRJSONObject:v4];
+    v6 = [self hk_stringForDisplayFromFHIRJSONObject:v4];
   }
 
   else
@@ -39,7 +39,7 @@
   if (v3)
   {
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
-    v6 = [v5 hk_stringByUnescapingJSONCharactersForDisplay];
+    hk_stringByUnescapingJSONCharactersForDisplay = [v5 hk_stringByUnescapingJSONCharactersForDisplay];
   }
 
   else
@@ -51,10 +51,10 @@
       [(NSJSONSerialization(HealthKit) *)v4 hk_stringForDisplayFromFHIRJSONObject:v7];
     }
 
-    v6 = &stru_1F05FF230;
+    hk_stringByUnescapingJSONCharactersForDisplay = &stru_1F05FF230;
   }
 
-  return v6;
+  return hk_stringByUnescapingJSONCharactersForDisplay;
 }
 
 + (id)hk_JSONObjectSecureCodingClasses

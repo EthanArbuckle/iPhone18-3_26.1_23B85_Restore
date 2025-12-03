@@ -3,34 +3,34 @@
 + (id)usage;
 + (id)usagesummary;
 + (option)longopts;
-- (BOOL)argument:(id)a3 isValidDouble:(double *)a4;
-- (BOOL)processOption:(int)a3 arg:(id)a4;
+- (BOOL)argument:(id)argument isValidDouble:(double *)double;
+- (BOOL)processOption:(int)option arg:(id)arg;
 - (NSURL)libraryURL;
-- (PhotosControlPhotoLibraryCommand)initWithArgc:(int)a3 argv:(char *)a4 ctl:(id)a5;
-- (id)_jsonDictionaryFromManagedObject:(id)a3 allPreviousObjects:(id)a4 currentDepth:(unint64_t)a5 maxDepth:(unint64_t)a6;
-- (id)jsonDictionaryFromError:(id)a3;
+- (PhotosControlPhotoLibraryCommand)initWithArgc:(int)argc argv:(char *)argv ctl:(id)ctl;
+- (id)_jsonDictionaryFromManagedObject:(id)object allPreviousObjects:(id)objects currentDepth:(unint64_t)depth maxDepth:(unint64_t)maxDepth;
+- (id)jsonDictionaryFromError:(id)error;
 - (id)managedObjectContext;
 - (id)photoLibrary;
 - (id)plPhotoLibrary;
-- (id)processBooleanOptionArg:(id)a3;
+- (id)processBooleanOptionArg:(id)arg;
 - (id)unopenedPhotoLibrary;
-- (int)runOnAssetArgumentsAllowAll:(BOOL)a3 additionalPredicate:(id)a4 block:(id)a5;
-- (int)runOnManagedObjectArgumentsWithEntityName:(id)a3 identifierPropertyKey:(id)a4 allowAll:(BOOL)a5 additionalPredicate:(id)a6 sortDescriptors:(id)a7 relationshipKeyPathsForPrefetching:(id)a8 block:(id)a9;
-- (int)runOnPhotoKitAssetArgumentsAllowAll:(BOOL)a3 propertySets:(id)a4 additionalPredicate:(id)a5 block:(id)a6;
+- (int)runOnAssetArgumentsAllowAll:(BOOL)all additionalPredicate:(id)predicate block:(id)block;
+- (int)runOnManagedObjectArgumentsWithEntityName:(id)name identifierPropertyKey:(id)key allowAll:(BOOL)all additionalPredicate:(id)predicate sortDescriptors:(id)descriptors relationshipKeyPathsForPrefetching:(id)prefetching block:(id)block;
+- (int)runOnPhotoKitAssetArgumentsAllowAll:(BOOL)all propertySets:(id)sets additionalPredicate:(id)predicate block:(id)block;
 - (int)save;
-- (int)setValueString:(id)a3 forKey:(id)a4 onManagedObject:(id)a5;
-- (int)traverseRelationshipsForRootManagedObject:(id)a3 keys:(id)a4 targetObject:(id *)a5;
-- (void)configureWithAlternateURLToLibraryDatabase:(id)a3;
+- (int)setValueString:(id)string forKey:(id)key onManagedObject:(id)object;
+- (int)traverseRelationshipsForRootManagedObject:(id)object keys:(id)keys targetObject:(id *)targetObject;
+- (void)configureWithAlternateURLToLibraryDatabase:(id)database;
 @end
 
 @implementation PhotosControlPhotoLibraryCommand
 
-- (int)runOnPhotoKitAssetArgumentsAllowAll:(BOOL)a3 propertySets:(id)a4 additionalPredicate:(id)a5 block:(id)a6
+- (int)runOnPhotoKitAssetArgumentsAllowAll:(BOOL)all propertySets:(id)sets additionalPredicate:(id)predicate block:(id)block
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  allCopy = all;
+  setsCopy = sets;
+  predicateCopy = predicate;
+  blockCopy = block;
   photoKitProxy = self->_photoKitProxy;
   if (!photoKitProxy)
   {
@@ -38,7 +38,7 @@
     objc_exception_throw(v16);
   }
 
-  v14 = [(_PhotosControlPhotoLibraryPhotoKit *)photoKitProxy runOnPhotoKitAssetArgumentsAllowAll:v8 propertySets:v10 additionalPredicate:v11 block:v12];
+  v14 = [(_PhotosControlPhotoLibraryPhotoKit *)photoKitProxy runOnPhotoKitAssetArgumentsAllowAll:allCopy propertySets:setsCopy additionalPredicate:predicateCopy block:blockCopy];
 
   return v14;
 }
@@ -48,7 +48,7 @@
   moc = self->_moc;
   if (moc)
   {
-    v3 = moc;
+    managedObjectContext = moc;
   }
 
   else
@@ -60,10 +60,10 @@
       objc_exception_throw(v6);
     }
 
-    v3 = [(_PhotosControlPhotoLibraryPhotoKit *)photoKitProxy managedObjectContext];
+    managedObjectContext = [(_PhotosControlPhotoLibraryPhotoKit *)photoKitProxy managedObjectContext];
   }
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (id)photoLibrary
@@ -102,52 +102,52 @@
   return [(_PhotosControlPhotoLibraryPhotoKit *)photoKitProxy plPhotoLibrary];
 }
 
-- (BOOL)processOption:(int)a3 arg:(id)a4
+- (BOOL)processOption:(int)option arg:(id)arg
 {
-  v5 = *&a3;
-  v7 = a4;
+  v5 = *&option;
+  argCopy = arg;
   if (v5 == 108)
   {
-    objc_storeStrong(&self->_libraryArg, a4);
-    v8 = [(PhotosControlCommand *)self libraryURLFromArgument:v7];
+    objc_storeStrong(&self->_libraryArg, arg);
+    v8 = [(PhotosControlCommand *)self libraryURLFromArgument:argCopy];
     libraryURL = self->_libraryURL;
     self->_libraryURL = v8;
   }
 
-  v10 = [(PhotosControlPhotoLibraryCommand *)self libraryProcessOption:v5 arg:v7];
+  v10 = [(PhotosControlPhotoLibraryCommand *)self libraryProcessOption:v5 arg:argCopy];
   v11 = v5 == 108 || v10;
 
   return v11;
 }
 
-- (id)processBooleanOptionArg:(id)a3
+- (id)processBooleanOptionArg:(id)arg
 {
-  v4 = a3;
-  v5 = [v4 lowercaseString];
-  if ([v5 isEqualToString:@"y"])
+  argCopy = arg;
+  lowercaseString = [argCopy lowercaseString];
+  if ([lowercaseString isEqualToString:@"y"])
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 lowercaseString];
-  if (![v6 isEqualToString:@"yes"])
+  lowercaseString2 = [argCopy lowercaseString];
+  if (![lowercaseString2 isEqualToString:@"yes"])
   {
-    v9 = [v4 lowercaseString];
-    v10 = [v9 isEqualToString:@"1"];
+    lowercaseString3 = [argCopy lowercaseString];
+    v10 = [lowercaseString3 isEqualToString:@"1"];
 
     if (v10)
     {
       goto LABEL_5;
     }
 
-    v11 = [v4 lowercaseString];
-    if (([v11 isEqualToString:@"n"] & 1) == 0)
+    lowercaseString4 = [argCopy lowercaseString];
+    if (([lowercaseString4 isEqualToString:@"n"] & 1) == 0)
     {
-      v12 = [v4 lowercaseString];
-      if (![v12 isEqualToString:@"no"])
+      lowercaseString5 = [argCopy lowercaseString];
+      if (![lowercaseString5 isEqualToString:@"no"])
       {
-        v13 = [v4 lowercaseString];
-        v14 = [v13 isEqualToString:@"0"];
+        lowercaseString6 = [argCopy lowercaseString];
+        v14 = [lowercaseString6 isEqualToString:@"0"];
 
         if ((v14 & 1) == 0)
         {
@@ -175,11 +175,11 @@ LABEL_6:
 
 - (int)save
 {
-  v3 = [(PhotosControlPhotoLibraryCommand *)self plPhotoLibrary];
-  v4 = [v3 managedObjectContext];
+  plPhotoLibrary = [(PhotosControlPhotoLibraryCommand *)self plPhotoLibrary];
+  managedObjectContext = [plPhotoLibrary managedObjectContext];
 
   v10 = 0;
-  v5 = [v4 save:&v10];
+  v5 = [managedObjectContext save:&v10];
   v6 = v10;
   v7 = v6;
   if (v5)
@@ -196,54 +196,54 @@ LABEL_6:
   return v8;
 }
 
-- (id)jsonDictionaryFromError:(id)a3
+- (id)jsonDictionaryFromError:(id)error
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 domain];
-  [v5 setObject:v6 forKeyedSubscript:@"domain"];
+  domain = [errorCopy domain];
+  [v5 setObject:domain forKeyedSubscript:@"domain"];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "code")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   [v5 setObject:v7 forKeyedSubscript:@"code"];
 
-  v8 = [v4 localizedDescription];
+  localizedDescription = [errorCopy localizedDescription];
 
-  [v5 setObject:v8 forKeyedSubscript:@"localizedDescription"];
+  [v5 setObject:localizedDescription forKeyedSubscript:@"localizedDescription"];
 
   return v5;
 }
 
-- (id)_jsonDictionaryFromManagedObject:(id)a3 allPreviousObjects:(id)a4 currentDepth:(unint64_t)a5 maxDepth:(unint64_t)a6
+- (id)_jsonDictionaryFromManagedObject:(id)object allPreviousObjects:(id)objects currentDepth:(unint64_t)depth maxDepth:(unint64_t)maxDepth
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v11)
+  objectCopy = object;
+  objectsCopy = objects;
+  if (!objectsCopy)
   {
     v12 = MEMORY[0x1E695DFA8];
-    v13 = [v10 objectID];
-    v11 = [v12 setWithObject:v13];
+    objectID = [objectCopy objectID];
+    objectsCopy = [v12 setWithObject:objectID];
   }
 
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  v15 = [v10 entity];
-  v16 = [v15 propertiesByName];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  entity = [objectCopy entity];
+  propertiesByName = [entity propertiesByName];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __110__PhotosControlPhotoLibraryCommand__jsonDictionaryFromManagedObject_allPreviousObjects_currentDepth_maxDepth___block_invoke;
   v22[3] = &unk_1E756F6F8;
-  v23 = v10;
-  v17 = v14;
+  v23 = objectCopy;
+  v17 = dictionary;
   v24 = v17;
-  v25 = v11;
-  v29 = a6 - 1 >= a5;
-  v26 = self;
-  v27 = a5;
-  v28 = a6;
-  v18 = v11;
-  v19 = v10;
-  [v16 enumerateKeysAndObjectsUsingBlock:v22];
+  v25 = objectsCopy;
+  v29 = maxDepth - 1 >= depth;
+  selfCopy = self;
+  depthCopy = depth;
+  maxDepthCopy = maxDepth;
+  v18 = objectsCopy;
+  v19 = objectCopy;
+  [propertiesByName enumerateKeysAndObjectsUsingBlock:v22];
   v20 = v17;
 
   return v17;
@@ -393,15 +393,15 @@ LABEL_37:
   }
 }
 
-- (int)setValueString:(id)a3 forKey:(id)a4 onManagedObject:(id)a5
+- (int)setValueString:(id)string forKey:(id)key onManagedObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 entity];
-  v12 = [v11 propertiesByName];
+  stringCopy = string;
+  keyCopy = key;
+  objectCopy = object;
+  entity = [objectCopy entity];
+  propertiesByName = [entity propertiesByName];
 
-  v13 = [v12 objectForKey:v9];
+  v13 = [propertiesByName objectForKey:keyCopy];
   if (v13)
   {
     objc_opt_class();
@@ -409,11 +409,11 @@ LABEL_37:
     {
       v14 = v13;
       v15 = v14;
-      if (!v8)
+      if (!stringCopy)
       {
         if (([v14 isOptional] & 1) == 0)
         {
-          [(PhotosControlCommand *)self outputError:@"Resetting property %@ is forbidden because it is not optional\n", v9];
+          [(PhotosControlCommand *)self outputError:@"Resetting property %@ is forbidden because it is not optional\n", keyCopy];
 LABEL_33:
           v17 = 64;
           goto LABEL_34;
@@ -423,12 +423,12 @@ LABEL_33:
         goto LABEL_29;
       }
 
-      v16 = [v14 attributeType];
-      if (v16 <= 599)
+      attributeType = [v14 attributeType];
+      if (attributeType <= 599)
       {
-        if (v16 <= 299)
+        if (attributeType <= 299)
         {
-          if (v16 != 100 && v16 != 200)
+          if (attributeType != 100 && attributeType != 200)
           {
             goto LABEL_31;
           }
@@ -436,17 +436,17 @@ LABEL_33:
           goto LABEL_22;
         }
 
-        if (v16 == 300)
+        if (attributeType == 300)
         {
 LABEL_22:
-          v20 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "integerValue")}];
+          v20 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(stringCopy, "integerValue")}];
           goto LABEL_28;
         }
 
-        if (v16 == 500)
+        if (attributeType == 500)
         {
           v19 = MEMORY[0x1E696AD98];
-          [v8 doubleValue];
+          [stringCopy doubleValue];
           v20 = [v19 numberWithDouble:?];
           goto LABEL_28;
         }
@@ -456,31 +456,31 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      if (v16 > 799)
+      if (attributeType > 799)
       {
-        if (v16 == 800)
+        if (attributeType == 800)
         {
-          v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "BOOLValue")}];
+          v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(stringCopy, "BOOLValue")}];
         }
 
         else
         {
-          if (v16 != 900)
+          if (attributeType != 900)
           {
             goto LABEL_31;
           }
 
-          v20 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:{objc_msgSend(v8, "integerValue")}];
+          v20 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:{objc_msgSend(stringCopy, "integerValue")}];
         }
       }
 
       else
       {
-        if (v16 != 600)
+        if (attributeType != 600)
         {
-          if (v16 == 700)
+          if (attributeType == 700)
           {
-            v18 = v8;
+            v18 = stringCopy;
             goto LABEL_29;
           }
 
@@ -488,7 +488,7 @@ LABEL_31:
         }
 
         v21 = MEMORY[0x1E696AD98];
-        [v8 floatValue];
+        [stringCopy floatValue];
         v20 = [v21 numberWithFloat:?];
       }
 
@@ -505,21 +505,21 @@ LABEL_32:
 LABEL_29:
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
-      [(PhotosControlCommand *)self output:@"Setting value %@ for key %@ on object of class %@\n", v18, v9, v23];
+      [(PhotosControlCommand *)self output:@"Setting value %@ for key %@ on object of class %@\n", v18, keyCopy, v23];
 
-      [v10 setValue:v18 forKey:v9];
+      [objectCopy setValue:v18 forKey:keyCopy];
       v17 = 0;
 LABEL_34:
 
       goto LABEL_35;
     }
 
-    [(PhotosControlCommand *)self outputError:@"Set command is only supported for attribute properties, %@ is not an attribute\n", v9];
+    [(PhotosControlCommand *)self outputError:@"Set command is only supported for attribute properties, %@ is not an attribute\n", keyCopy];
   }
 
   else
   {
-    [(PhotosControlCommand *)self outputError:@"Cannot find property %@\n", v9];
+    [(PhotosControlCommand *)self outputError:@"Cannot find property %@\n", keyCopy];
   }
 
   v17 = 64;
@@ -528,24 +528,24 @@ LABEL_35:
   return v17;
 }
 
-- (int)traverseRelationshipsForRootManagedObject:(id)a3 keys:(id)a4 targetObject:(id *)a5
+- (int)traverseRelationshipsForRootManagedObject:(id)object keys:(id)keys targetObject:(id *)targetObject
 {
-  v7 = a3;
-  v8 = [a4 mutableCopy];
-  v25 = v7;
+  objectCopy = object;
+  v8 = [keys mutableCopy];
+  v25 = objectCopy;
   if ([v8 count])
   {
     v9 = @"Cannot find relationship %@ on object of class %@\n";
     v10 = 0x1E695D000uLL;
-    v27 = self;
+    selfCopy = self;
     while (1)
     {
-      v11 = [v8 firstObject];
+      firstObject = [v8 firstObject];
       [v8 removeObjectAtIndex:0];
-      v12 = [v7 entity];
-      v13 = [v12 propertiesByName];
+      entity = [objectCopy entity];
+      propertiesByName = [entity propertiesByName];
 
-      v14 = [v13 objectForKey:v11];
+      v14 = [propertiesByName objectForKey:firstObject];
       if (!v14)
       {
         break;
@@ -555,31 +555,31 @@ LABEL_35:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 
-        [(PhotosControlCommand *)self outputError:@"%@ is not a relationship\n", v11];
+        [(PhotosControlCommand *)self outputError:@"%@ is not a relationship\n", firstObject];
         goto LABEL_9;
       }
 
       if ([v14 isToMany])
       {
 
-        [(PhotosControlCommand *)self outputError:@"Set command is not supported for to-many relationships, %@ is to-many\n", v11];
+        [(PhotosControlCommand *)self outputError:@"Set command is not supported for to-many relationships, %@ is to-many\n", firstObject];
 LABEL_9:
-        v7 = 0;
+        objectCopy = 0;
         v17 = 0;
         v18 = 64;
         goto LABEL_10;
       }
 
-      [v7 valueForKey:v11];
+      [objectCopy valueForKey:firstObject];
       v20 = v10;
       v22 = v21 = v9;
 
       v18 = 0;
       v17 = 1;
-      v7 = v22;
+      objectCopy = v22;
       v9 = v21;
       v10 = v20;
-      self = v27;
+      self = selfCopy;
 LABEL_10:
 
       v19 = [v8 count];
@@ -591,37 +591,37 @@ LABEL_10:
 
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [(PhotosControlCommand *)self outputError:v9, v11, v16];
+    [(PhotosControlCommand *)self outputError:v9, firstObject, v16];
 
     goto LABEL_9;
   }
 
   v18 = 0;
 LABEL_15:
-  if (a5)
+  if (targetObject)
   {
-    v23 = v7;
-    *a5 = v7;
+    v23 = objectCopy;
+    *targetObject = objectCopy;
   }
 
   return v18;
 }
 
-- (int)runOnAssetArgumentsAllowAll:(BOOL)a3 additionalPredicate:(id)a4 block:(id)a5
+- (int)runOnAssetArgumentsAllowAll:(BOOL)all additionalPredicate:(id)predicate block:(id)block
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
+  allCopy = all;
+  blockCopy = block;
+  predicateCopy = predicate;
   v10 = +[PLManagedAsset entityName];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __90__PhotosControlPhotoLibraryCommand_runOnAssetArgumentsAllowAll_additionalPredicate_block___block_invoke;
   v13[3] = &unk_1E756F6D0;
-  v14 = v8;
-  v11 = v8;
-  LODWORD(v6) = [(PhotosControlPhotoLibraryCommand *)self runOnManagedObjectArgumentsWithEntityName:v10 identifierPropertyKey:@"uuid" allowAll:v6 additionalPredicate:v9 sortDescriptors:0 block:v13];
+  v14 = blockCopy;
+  v11 = blockCopy;
+  LODWORD(allCopy) = [(PhotosControlPhotoLibraryCommand *)self runOnManagedObjectArgumentsWithEntityName:v10 identifierPropertyKey:@"uuid" allowAll:allCopy additionalPredicate:predicateCopy sortDescriptors:0 block:v13];
 
-  return v6;
+  return allCopy;
 }
 
 uint64_t __90__PhotosControlPhotoLibraryCommand_runOnAssetArgumentsAllowAll_additionalPredicate_block___block_invoke(uint64_t a1)
@@ -635,32 +635,32 @@ uint64_t __90__PhotosControlPhotoLibraryCommand_runOnAssetArgumentsAllowAll_addi
   return result;
 }
 
-- (int)runOnManagedObjectArgumentsWithEntityName:(id)a3 identifierPropertyKey:(id)a4 allowAll:(BOOL)a5 additionalPredicate:(id)a6 sortDescriptors:(id)a7 relationshipKeyPathsForPrefetching:(id)a8 block:(id)a9
+- (int)runOnManagedObjectArgumentsWithEntityName:(id)name identifierPropertyKey:(id)key allowAll:(BOOL)all additionalPredicate:(id)predicate sortDescriptors:(id)descriptors relationshipKeyPathsForPrefetching:(id)prefetching block:(id)block
 {
-  v12 = a5;
-  v15 = a3;
-  v27 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = [(PhotosControlPhotoLibraryCommand *)self managedObjectContext];
+  allCopy = all;
+  nameCopy = name;
+  keyCopy = key;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  prefetchingCopy = prefetching;
+  blockCopy = block;
+  managedObjectContext = [(PhotosControlPhotoLibraryCommand *)self managedObjectContext];
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
   v44 = 0;
   if (self->_argumentRangeForRunOnManagedObjects.length)
   {
-    v21 = [(PhotosControlCommand *)self args];
-    v22 = [v21 subarrayWithRange:{self->_argumentRangeForRunOnManagedObjects.location, self->_argumentRangeForRunOnManagedObjects.length}];
+    args = [(PhotosControlCommand *)self args];
+    args2 = [args subarrayWithRange:{self->_argumentRangeForRunOnManagedObjects.location, self->_argumentRangeForRunOnManagedObjects.length}];
   }
 
   else
   {
-    v22 = [(PhotosControlCommand *)self args];
+    args2 = [(PhotosControlCommand *)self args];
   }
 
-  v23 = [v22 count];
+  v23 = [args2 count];
   if (v23 > 1)
   {
     v28[0] = MEMORY[0x1E69E9820];
@@ -668,28 +668,28 @@ uint64_t __90__PhotosControlPhotoLibraryCommand_runOnAssetArgumentsAllowAll_addi
     v28[2] = __186__PhotosControlPhotoLibraryCommand_runOnManagedObjectArgumentsWithEntityName_identifierPropertyKey_allowAll_additionalPredicate_sortDescriptors_relationshipKeyPathsForPrefetching_block___block_invoke;
     v28[3] = &unk_1E756F6A8;
     v39 = v23;
-    v29 = v22;
-    v40 = v12;
-    v30 = v27;
-    v31 = v15;
-    v32 = v18;
-    v33 = v20;
-    v34 = v16;
-    v35 = v17;
-    v36 = self;
-    v37 = v19;
+    v29 = args2;
+    v40 = allCopy;
+    v30 = keyCopy;
+    v31 = nameCopy;
+    v32 = prefetchingCopy;
+    v33 = managedObjectContext;
+    v34 = predicateCopy;
+    v35 = descriptorsCopy;
+    selfCopy = self;
+    v37 = blockCopy;
     v38 = &v41;
     [v33 performBlockAndWait:v28];
     v25 = *(v42 + 6);
 
-    v24 = v29;
+    firstObject = v29;
   }
 
   else
   {
-    v24 = [v22 firstObject];
-    [(PhotosControlCommand *)self outputError:@"%@ requires at least 1 %@ identifier", v24, v15, v27];
-    if (v12)
+    firstObject = [args2 firstObject];
+    [(PhotosControlCommand *)self outputError:@"%@ requires at least 1 %@ identifier", firstObject, nameCopy, keyCopy];
+    if (allCopy)
     {
       [(PhotosControlCommand *)self outputError:@" or 'all'"];
       [(PhotosControlCommand *)self outputError:@" or 'guest'"];
@@ -910,15 +910,15 @@ LABEL_6:
   }
 }
 
-- (BOOL)argument:(id)a3 isValidDouble:(double *)a4
+- (BOOL)argument:(id)argument isValidDouble:(double *)double
 {
-  v5 = [MEMORY[0x1E696AE88] scannerWithString:a3];
+  v5 = [MEMORY[0x1E696AE88] scannerWithString:argument];
   v8 = 0;
   if ([v5 scanDouble:&v8] && objc_msgSend(v5, "isAtEnd"))
   {
-    if (a4)
+    if (double)
     {
-      *a4 = v8;
+      *double = v8;
     }
 
     v6 = 1;
@@ -932,33 +932,33 @@ LABEL_6:
   return v6;
 }
 
-- (void)configureWithAlternateURLToLibraryDatabase:(id)a3
+- (void)configureWithAlternateURLToLibraryDatabase:(id)database
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PhotosControlPhotoLibraryCommand.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"urlToDb"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PhotosControlPhotoLibraryCommand.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"urlToDb"}];
   }
 
   v6 = MEMORY[0x1E695D6B8];
   v20 = 0;
-  v7 = v5;
+  v7 = databaseCopy;
   v8 = [v6 cachedModelForPersistentStoreWithURL:v7 options:0 error:&v20];
   v9 = v20;
   if (!v8)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PhotosControlPhotoLibraryCommand.m" lineNumber:100 description:@"can't load model."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PhotosControlPhotoLibraryCommand.m" lineNumber:100 description:@"can't load model."];
   }
 
-  v10 = [v7 lastPathComponent];
-  v11 = [v10 stringByDeletingPathExtension];
+  lastPathComponent = [v7 lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v12 = [v7 URLByDeletingLastPathComponent];
-  [PhotosControlArbitraryPersistentContainer setDefaultDirectoryURL:v12];
-  v13 = [(NSPersistentContainer *)[PhotosControlArbitraryPersistentContainer alloc] initWithName:v11 managedObjectModel:v8];
+  uRLByDeletingLastPathComponent = [v7 URLByDeletingLastPathComponent];
+  [PhotosControlArbitraryPersistentContainer setDefaultDirectoryURL:uRLByDeletingLastPathComponent];
+  v13 = [(NSPersistentContainer *)[PhotosControlArbitraryPersistentContainer alloc] initWithName:stringByDeletingPathExtension managedObjectModel:v8];
   v14 = [objc_alloc(MEMORY[0x1E695D6C8]) initWithURL:v7];
 
   [v14 setShouldMigrateStoreAutomatically:0];
@@ -967,9 +967,9 @@ LABEL_6:
   [(NSPersistentContainer *)v13 setPersistentStoreDescriptions:v15];
 
   [(NSPersistentContainer *)v13 loadPersistentStoresWithCompletionHandler:&__block_literal_global_64922];
-  v16 = [(NSPersistentContainer *)v13 newBackgroundContext];
+  newBackgroundContext = [(NSPersistentContainer *)v13 newBackgroundContext];
   moc = self->_moc;
-  self->_moc = v16;
+  self->_moc = newBackgroundContext;
 }
 
 void __79__PhotosControlPhotoLibraryCommand_configureWithAlternateURLToLibraryDatabase___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -989,9 +989,9 @@ void __79__PhotosControlPhotoLibraryCommand_configureWithAlternateURLToLibraryDa
   libraryURL = self->_libraryURL;
   if (!libraryURL)
   {
-    v5 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+    systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
     v6 = self->_libraryURL;
-    self->_libraryURL = v5;
+    self->_libraryURL = systemLibraryURL;
 
     libraryURL = self->_libraryURL;
   }
@@ -1002,20 +1002,20 @@ void __79__PhotosControlPhotoLibraryCommand_configureWithAlternateURLToLibraryDa
   return v7;
 }
 
-- (PhotosControlPhotoLibraryCommand)initWithArgc:(int)a3 argv:(char *)a4 ctl:(id)a5
+- (PhotosControlPhotoLibraryCommand)initWithArgc:(int)argc argv:(char *)argv ctl:(id)ctl
 {
-  v7 = *&a3;
-  v9 = a5;
+  v7 = *&argc;
+  ctlCopy = ctl;
   v19.receiver = self;
   v19.super_class = PhotosControlPhotoLibraryCommand;
-  v10 = [(PhotosControlCommand *)&v19 initWithArgc:v7 argv:a4];
+  v10 = [(PhotosControlCommand *)&v19 initWithArgc:v7 argv:argv];
   if (v10)
   {
     v11 = dispatch_group_create();
     group = v10->_group;
     v10->_group = v11;
 
-    objc_storeStrong(&v10->_ctl, a5);
+    objc_storeStrong(&v10->_ctl, ctl);
     v10->_argumentRangeForRunOnManagedObjects.location = 0;
     v10->_argumentRangeForRunOnManagedObjects.length = 0;
     v13 = getenv("PHOTOSCTL_LIBRARY");
@@ -1039,14 +1039,14 @@ void __79__PhotosControlPhotoLibraryCommand_configureWithAlternateURLToLibraryDa
 
 + (option)longopts
 {
-  v2 = [a1 libraryLongopts];
-  if (v2)
+  libraryLongopts = [self libraryLongopts];
+  if (libraryLongopts)
   {
     v3 = 0;
     do
     {
-      v4 = (v2 + v3 * 8);
-      if (!*(v2 + v3 * 8))
+      v4 = (libraryLongopts + v3 * 8);
+      if (!*(libraryLongopts + v3 * 8))
       {
         break;
       }
@@ -1066,7 +1066,7 @@ void __79__PhotosControlPhotoLibraryCommand_configureWithAlternateURLToLibraryDa
 
 + (const)optstring
 {
-  if (![a1 libraryOptstring])
+  if (![self libraryOptstring])
   {
     return "l:";
   }
@@ -1079,16 +1079,16 @@ void __79__PhotosControlPhotoLibraryCommand_configureWithAlternateURLToLibraryDa
 
 + (id)usage
 {
-  v3 = [a1 usagesummary];
-  v4 = [a1 libraryUsage];
-  if (v4)
+  usagesummary = [self usagesummary];
+  libraryUsage = [self libraryUsage];
+  if (libraryUsage)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ %@", v3, v4];
+    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ %@", usagesummary, libraryUsage];
   }
 
   else
   {
-    v5 = v3;
+    v5 = usagesummary;
   }
 
   v6 = v5;
@@ -1098,18 +1098,18 @@ void __79__PhotosControlPhotoLibraryCommand_configureWithAlternateURLToLibraryDa
 
 + (id)usagesummary
 {
-  v3 = [a1 libraryUsagesummary];
+  libraryUsagesummary = [self libraryUsagesummary];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [a1 name];
-  v6 = v5;
-  if (v3)
+  name = [self name];
+  v6 = name;
+  if (libraryUsagesummary)
   {
-    v7 = [v4 initWithFormat:@"%@ %@ %@", v5, @"[-l|--library <path.photoslibrary>|<uuid>|<WellKnownPhotoLibraryIdentifier (1=System, 3=Syndication)>]", v3];
+    v7 = [v4 initWithFormat:@"%@ %@ %@", name, @"[-l|--library <path.photoslibrary>|<uuid>|<WellKnownPhotoLibraryIdentifier (1=System, 3=Syndication)>]", libraryUsagesummary];
   }
 
   else
   {
-    v7 = [v4 initWithFormat:@"%@ %@", v5, @"[-l|--library <path.photoslibrary>|<uuid>|<WellKnownPhotoLibraryIdentifier (1=System, 3=Syndication)>]", v10];
+    v7 = [v4 initWithFormat:@"%@ %@", name, @"[-l|--library <path.photoslibrary>|<uuid>|<WellKnownPhotoLibraryIdentifier (1=System, 3=Syndication)>]", v10];
   }
 
   v8 = v7;

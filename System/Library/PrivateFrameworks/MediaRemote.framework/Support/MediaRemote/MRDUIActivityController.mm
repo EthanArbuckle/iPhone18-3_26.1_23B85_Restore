@@ -3,15 +3,15 @@
 - (MRDUIActivityControllerDelegate)delegate;
 - (NSDictionary)currentActivitiesInfo;
 - (NSString)nowPlayingActivityIdentifier;
-- (id)contextForActivityIdentifier:(id)a3;
-- (id)startRouteRecommendationActivityFor:(id)a3 relevanceScore:(double)a4;
+- (id)contextForActivityIdentifier:(id)identifier;
+- (id)startRouteRecommendationActivityFor:(id)for relevanceScore:(double)score;
 - (void)clearActivities;
-- (void)endRouteRecommendationActivityFor:(id)a3;
-- (void)setRouteRecommendationRelevanceScore:(double)a3 activityIdentifier:(id)a4;
-- (void)startGroupSessionNearbyActivity:(id)a3;
+- (void)endRouteRecommendationActivityFor:(id)for;
+- (void)setRouteRecommendationRelevanceScore:(double)score activityIdentifier:(id)identifier;
+- (void)startGroupSessionNearbyActivity:(id)activity;
 - (void)startMirroringActivity;
-- (void)startNowPlayingActivityWithPreferredState:(int64_t)a3 suppressedBundleIdentifiers:(id)a4;
-- (void)updateNowPlayingActivityState:(int64_t)a3 suppressedBundleIdentifiers:(id)a4;
+- (void)startNowPlayingActivityWithPreferredState:(int64_t)state suppressedBundleIdentifiers:(id)identifiers;
+- (void)updateNowPlayingActivityState:(int64_t)state suppressedBundleIdentifiers:(id)identifiers;
 @end
 
 @implementation MRDUIActivityController
@@ -38,18 +38,18 @@
   return v2.super.isa;
 }
 
-- (void)startNowPlayingActivityWithPreferredState:(int64_t)a3 suppressedBundleIdentifiers:(id)a4
+- (void)startNowPlayingActivityWithPreferredState:(int64_t)state suppressedBundleIdentifiers:(id)identifiers
 {
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
-  ActivityController.startNowPlayingActivity(preferredState:suppressedBundleIdentifiers:)(a3, v6);
+  selfCopy = self;
+  ActivityController.startNowPlayingActivity(preferredState:suppressedBundleIdentifiers:)(state, v6);
 }
 
-- (void)updateNowPlayingActivityState:(int64_t)a3 suppressedBundleIdentifiers:(id)a4
+- (void)updateNowPlayingActivityState:(int64_t)state suppressedBundleIdentifiers:(id)identifiers
 {
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
-  _s12mediaremoted18ActivityControllerC016updateNowPlayingB5State_27suppressedBundleIdentifiersySo05MRNowfB7UIStateV_SaySSGtF_0(a3, v6);
+  selfCopy = self;
+  _s12mediaremoted18ActivityControllerC016updateNowPlayingB5State_27suppressedBundleIdentifiersySo05MRNowfB7UIStateV_SaySSGtF_0(state, v6);
 }
 
 - (NSString)nowPlayingActivityIdentifier
@@ -88,14 +88,14 @@
   sub_100384FCC(1, v2);
 }
 
-- (id)startRouteRecommendationActivityFor:(id)a3 relevanceScore:(double)a4
+- (id)startRouteRecommendationActivityFor:(id)for relevanceScore:(double)score
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  object = ActivityController.startRouteRecommendationActivity(for:relevanceScore:)(v10, a4).value._object;
+  object = ActivityController.startRouteRecommendationActivity(for:relevanceScore:)(v10, score).value._object;
 
   if (object)
   {
@@ -110,7 +110,7 @@
   return v12;
 }
 
-- (void)setRouteRecommendationRelevanceScore:(double)a3 activityIdentifier:(id)a4
+- (void)setRouteRecommendationRelevanceScore:(double)score activityIdentifier:(id)identifier
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -119,10 +119,10 @@
     swift_once();
   }
 
-  sub_100388968(2u, v5, v7, a3);
+  sub_100388968(2u, v5, v7, score);
 }
 
-- (void)endRouteRecommendationActivityFor:(id)a3
+- (void)endRouteRecommendationActivityFor:(id)for
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -134,11 +134,11 @@
   sub_1003871AC(2, v3, v5);
 }
 
-- (void)startGroupSessionNearbyActivity:(id)a3
+- (void)startGroupSessionNearbyActivity:(id)activity
 {
-  v4 = a3;
-  v5 = self;
-  ActivityController.startGroupSessionNearbyActivity(_:)(v4);
+  activityCopy = activity;
+  selfCopy = self;
+  ActivityController.startGroupSessionNearbyActivity(_:)(activityCopy);
 }
 
 - (void)clearActivities
@@ -151,11 +151,11 @@
   sub_100384DBC();
 }
 
-- (id)contextForActivityIdentifier:(id)a3
+- (id)contextForActivityIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = _s12mediaremoted18ActivityControllerC010contextForB10IdentifierySo11MRUIContextaSSF_0(v4, v6);
 
   return v8;

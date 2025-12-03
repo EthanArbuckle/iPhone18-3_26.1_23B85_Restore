@@ -1,37 +1,37 @@
 @interface SearchUIQuickLookThumbnailImage
 - (QLThumbnailGenerationRequest)request;
-- (SearchUIQuickLookThumbnailImage)initWithResult:(id)a3 url:(id)a4 isCompact:(BOOL)a5;
-- (SearchUIQuickLookThumbnailImage)initWithSFImage:(id)a3;
+- (SearchUIQuickLookThumbnailImage)initWithResult:(id)result url:(id)url isCompact:(BOOL)compact;
+- (SearchUIQuickLookThumbnailImage)initWithSFImage:(id)image;
 - (unint64_t)representationType;
 - (void)dealloc;
-- (void)generateImageWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
-- (void)setupRequest:(id)a3;
+- (void)generateImageWithRequest:(id)request completionHandler:(id)handler;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
+- (void)setupRequest:(id)request;
 - (void)updateSize;
 @end
 
 @implementation SearchUIQuickLookThumbnailImage
 
-- (SearchUIQuickLookThumbnailImage)initWithSFImage:(id)a3
+- (SearchUIQuickLookThumbnailImage)initWithSFImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v16.receiver = self;
   v16.super_class = SearchUIQuickLookThumbnailImage;
-  v5 = [(SearchUIImage *)&v16 initWithSFImage:v4];
+  v5 = [(SearchUIImage *)&v16 initWithSFImage:imageCopy];
   if (v5)
   {
-    v6 = [v4 filePath];
-    [(SearchUIQuickLookThumbnailImage *)v5 setUrl:v6];
+    filePath = [imageCopy filePath];
+    [(SearchUIQuickLookThumbnailImage *)v5 setUrl:filePath];
 
-    v7 = [v4 contentType];
-    [(SearchUIQuickLookThumbnailImage *)v5 setContentType:v7];
+    contentType = [imageCopy contentType];
+    [(SearchUIQuickLookThumbnailImage *)v5 setContentType:contentType];
 
-    v8 = [v4 coreSpotlightIdentifier];
-    if (v8 && (v9 = v8, [v4 fileProviderIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+    coreSpotlightIdentifier = [imageCopy coreSpotlightIdentifier];
+    if (coreSpotlightIdentifier && (v9 = coreSpotlightIdentifier, [imageCopy fileProviderIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
     {
-      v11 = [v4 coreSpotlightIdentifier];
-      v12 = [v4 fileProviderIdentifier];
-      v13 = [SearchUIUtilities fileProviderItemIDForCoreSpotlightIdentifier:v11 fileProviderIdentifier:v12];
+      coreSpotlightIdentifier2 = [imageCopy coreSpotlightIdentifier];
+      fileProviderIdentifier = [imageCopy fileProviderIdentifier];
+      v13 = [SearchUIUtilities fileProviderItemIDForCoreSpotlightIdentifier:coreSpotlightIdentifier2 fileProviderIdentifier:fileProviderIdentifier];
       [(SearchUIQuickLookThumbnailImage *)v5 setFpItemID:v13];
     }
 
@@ -46,10 +46,10 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v11 = SearchUIGeneralLog();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      coreSpotlightIdentifier2 = SearchUIGeneralLog();
+      if (os_log_type_enabled(coreSpotlightIdentifier2, OS_LOG_TYPE_ERROR))
       {
-        [(SearchUIQuickLookThumbnailImage *)v4 initWithSFImage:v11];
+        [(SearchUIQuickLookThumbnailImage *)imageCopy initWithSFImage:coreSpotlightIdentifier2];
       }
     }
 
@@ -61,22 +61,22 @@ LABEL_10:
   return v5;
 }
 
-- (SearchUIQuickLookThumbnailImage)initWithResult:(id)a3 url:(id)a4 isCompact:(BOOL)a5
+- (SearchUIQuickLookThumbnailImage)initWithResult:(id)result url:(id)url isCompact:(BOOL)compact
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  compactCopy = compact;
+  resultCopy = result;
+  urlCopy = url;
   v14.receiver = self;
   v14.super_class = SearchUIQuickLookThumbnailImage;
   v10 = [(SearchUIQuickLookThumbnailImage *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    [(SearchUIQuickLookThumbnailImage *)v10 setUrl:v9];
-    v12 = [SearchUIUtilities fileProviderItemIDForFileResult:v8];
+    [(SearchUIQuickLookThumbnailImage *)v10 setUrl:urlCopy];
+    v12 = [SearchUIUtilities fileProviderItemIDForFileResult:resultCopy];
     [(SearchUIQuickLookThumbnailImage *)v11 setFpItemID:v12];
 
-    [(SearchUIQuickLookThumbnailImage *)v11 setIsCompact:v5];
+    [(SearchUIQuickLookThumbnailImage *)v11 setIsCompact:compactCopy];
     [(SearchUIQuickLookThumbnailImage *)v11 updateSize];
   }
 
@@ -85,8 +85,8 @@ LABEL_10:
 
 - (void)updateSize
 {
-  v3 = [(SearchUIImage *)self sfImage];
-  [v3 size];
+  sfImage = [(SearchUIImage *)self sfImage];
+  [sfImage size];
   v5 = v4;
   v7 = v6;
   v8 = *MEMORY[0x1E695F060];
@@ -102,11 +102,11 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [(SearchUIQuickLookThumbnailImage *)self request];
-  if (v3)
+  request = [(SearchUIQuickLookThumbnailImage *)self request];
+  if (request)
   {
-    v4 = [MEMORY[0x1E697A0E8] sharedGenerator];
-    [v4 cancelRequest:v3];
+    mEMORY[0x1E697A0E8] = [MEMORY[0x1E697A0E8] sharedGenerator];
+    [mEMORY[0x1E697A0E8] cancelRequest:request];
   }
 
   v5.receiver = self;
@@ -114,20 +114,20 @@ LABEL_10:
   [(SearchUIQuickLookThumbnailImage *)&v5 dealloc];
 }
 
-- (void)generateImageWithRequest:(id)a3 completionHandler:(id)a4
+- (void)generateImageWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __78__SearchUIQuickLookThumbnailImage_generateImageWithRequest_completionHandler___block_invoke;
   v10[3] = &unk_1E85B3F30;
   v10[4] = self;
-  v8 = v6;
+  v8 = requestCopy;
   v11 = v8;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v12 = v9;
   [SearchUIUtilities dispatchAsyncIfNecessary:v10];
   [(SearchUIQuickLookThumbnailImage *)self setRequest:v8];
@@ -244,29 +244,29 @@ LABEL_15:
   }
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   [(SearchUIImage *)self size];
   v10 = v9;
   v12 = v11;
-  v13 = [(SearchUIQuickLookThumbnailImage *)self fpItemID];
+  fpItemID = [(SearchUIQuickLookThumbnailImage *)self fpItemID];
   v14 = [(SearchUIQuickLookThumbnailImage *)self url];
   v15 = v14;
-  if (v13)
+  if (fpItemID)
   {
     v16 = SearchUIGeneralLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v13 coreSpotlightIdentifier];
-      v18 = [v13 providerID];
+      coreSpotlightIdentifier = [fpItemID coreSpotlightIdentifier];
+      providerID = [fpItemID providerID];
       *buf = 138412802;
-      v41 = v13;
+      v41 = fpItemID;
       v42 = 2112;
-      v43 = v17;
+      v43 = coreSpotlightIdentifier;
       v44 = 2112;
-      v45 = v18;
+      v45 = providerID;
       _os_log_impl(&dword_1DA169000, v16, OS_LOG_TYPE_DEFAULT, "SearchUIQuickLookThumbnailImage loadImageWithScale fpItemId: %@ coreSpotlightIdentifier: %@ fileProviderIdentifier: %@", buf, 0x20u);
     }
 
@@ -275,13 +275,13 @@ LABEL_15:
     v35[1] = 3221225472;
     v35[2] = __84__SearchUIQuickLookThumbnailImage_loadImageWithScale_isDarkStyle_completionHandler___block_invoke;
     v35[3] = &unk_1E85B3F80;
-    v36 = v13;
+    v36 = fpItemID;
     v39[1] = v10;
     v39[2] = v12;
-    v39[3] = *&a3;
+    v39[3] = *&scale;
     objc_copyWeak(v39, buf);
-    v37 = self;
-    v38 = v8;
+    selfCopy = self;
+    v38 = handlerCopy;
     [SearchUIUtilities dispatchAsyncIfNecessary:v35];
 
     objc_destroyWeak(v39);
@@ -292,28 +292,28 @@ LABEL_15:
   {
     if (!v14)
     {
-      v19 = [(SearchUIQuickLookThumbnailImage *)self contentType];
+      contentType = [(SearchUIQuickLookThumbnailImage *)self contentType];
 
-      if (v19)
+      if (contentType)
       {
         v20 = objc_alloc(MEMORY[0x1E69A8A00]);
-        v21 = [(SearchUIQuickLookThumbnailImage *)self contentType];
-        v22 = [v20 initWithType:v21];
+        contentType2 = [(SearchUIQuickLookThumbnailImage *)self contentType];
+        v22 = [v20 initWithType:contentType2];
 
-        v23 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:*&v10 scale:{*&v12, a3}];
+        v23 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:*&v10 scale:{*&v12, scale}];
         [v23 setVariantOptions:32];
         v24 = [v22 imageForDescriptor:v23];
         v25 = v24;
         if (v24)
         {
           v26 = [MEMORY[0x1E69DCAB8] imageWithCGImage:{objc_msgSend(v24, "CGImage")}];
-          (*(v8 + 2))(v8, v26, 1);
+          (*(handlerCopy + 2))(handlerCopy, v26, 1);
 
           goto LABEL_12;
         }
       }
 
-      (*(v8 + 2))(v8, 0, 1);
+      (*(handlerCopy + 2))(handlerCopy, 0, 1);
       goto LABEL_12;
     }
 
@@ -322,10 +322,10 @@ LABEL_15:
     v27[2] = __84__SearchUIQuickLookThumbnailImage_loadImageWithScale_isDarkStyle_completionHandler___block_invoke_3;
     v27[3] = &unk_1E85B3FA8;
     v28 = v14;
-    v29 = self;
-    v31 = a3;
-    v34 = a4;
-    v30 = v8;
+    selfCopy2 = self;
+    scaleCopy = scale;
+    styleCopy = style;
+    v30 = handlerCopy;
     v32 = v10;
     v33 = v12;
     [SearchUIUtilities dispatchAsyncIfNecessary:v27];
@@ -416,11 +416,11 @@ void __84__SearchUIQuickLookThumbnailImage_loadImageWithScale_isDarkStyle_comple
   }
 }
 
-- (void)setupRequest:(id)a3
+- (void)setupRequest:(id)request
 {
-  v3 = a3;
-  [v3 setIconVariant:1];
-  [v3 setIconMode:1];
+  requestCopy = request;
+  [requestCopy setIconVariant:1];
+  [requestCopy setIconMode:1];
 }
 
 - (unint64_t)representationType

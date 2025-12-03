@@ -2,11 +2,11 @@
 - (BOOL)isEmpty;
 - (CGSize)asSize;
 - (LPSize)init;
-- (LPSize)initWithSize:(CGSize)a3;
-- (LPSize)initWithSquarePoints:(id)a3;
-- (LPSize)initWithSquareSize:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)scaledBy:(double)a3;
+- (LPSize)initWithSize:(CGSize)size;
+- (LPSize)initWithSquarePoints:(id)points;
+- (LPSize)initWithSquareSize:(double)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)scaledBy:(double)by;
 @end
 
 @implementation LPSize
@@ -32,10 +32,10 @@
   return v2;
 }
 
-- (LPSize)initWithSize:(CGSize)a3
+- (LPSize)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = LPSize;
   v5 = [(LPSize *)&v12 init];
@@ -64,14 +64,14 @@
   return v5;
 }
 
-- (LPSize)initWithSquareSize:(double)a3
+- (LPSize)initWithSquareSize:(double)size
 {
   v9.receiver = self;
   v9.super_class = LPSize;
   v4 = [(LPSize *)&v9 init];
   if (v4)
   {
-    v5 = [[LPPointUnit alloc] initWithValue:a3];
+    v5 = [[LPPointUnit alloc] initWithValue:size];
     width = v4->_width;
     v4->_width = v5;
 
@@ -82,26 +82,26 @@
   return v4;
 }
 
-- (LPSize)initWithSquarePoints:(id)a3
+- (LPSize)initWithSquarePoints:(id)points
 {
-  v5 = a3;
+  pointsCopy = points;
   v10.receiver = self;
   v10.super_class = LPSize;
   v6 = [(LPSize *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_width, a3);
-    objc_storeStrong(&v7->_height, a3);
+    objc_storeStrong(&v6->_width, points);
+    objc_storeStrong(&v7->_height, points);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPSize allocWithZone:a3];
+  v4 = [LPSize allocWithZone:zone];
   p_isa = &v4->super.isa;
   if (v4)
   {
@@ -137,13 +137,13 @@
   return v4 == 0.0;
 }
 
-- (id)scaledBy:(double)a3
+- (id)scaledBy:(double)by
 {
   v5 = [LPSize alloc];
   [(LPPointUnit *)self->_width value];
-  v7 = v6 * a3;
+  v7 = v6 * by;
   [(LPPointUnit *)self->_height value];
-  v9 = [(LPSize *)v5 initWithSize:v7, v8 * a3];
+  v9 = [(LPSize *)v5 initWithSize:v7, v8 * by];
 
   return v9;
 }

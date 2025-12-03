@@ -75,9 +75,9 @@ void __50__PVHostApplicationDelegateHandler_sharedInstance__block_invoke()
     v4 = p_hostApplicationDelegate;
   }
 
-  v5 = [*v4 preferredDisplayColorSpace];
+  preferredDisplayColorSpace = [*v4 preferredDisplayColorSpace];
 
-  return v5;
+  return preferredDisplayColorSpace;
 }
 
 - (id)preferredExportColorSpace
@@ -90,9 +90,9 @@ void __50__PVHostApplicationDelegateHandler_sharedInstance__block_invoke()
     v4 = p_hostApplicationDelegate;
   }
 
-  v5 = [*v4 preferredExportColorSpace];
+  preferredExportColorSpace = [*v4 preferredExportColorSpace];
 
-  return v5;
+  return preferredExportColorSpace;
 }
 
 - (id)effectTemplatesDirectoryName

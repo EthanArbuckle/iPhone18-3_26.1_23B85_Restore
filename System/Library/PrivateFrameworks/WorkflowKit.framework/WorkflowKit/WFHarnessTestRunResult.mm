@@ -1,8 +1,8 @@
 @interface WFHarnessTestRunResult
-- (WFHarnessTestRunResult)initWithCoder:(id)a3;
-- (WFHarnessTestRunResult)initWithTestResult:(id)a3;
+- (WFHarnessTestRunResult)initWithCoder:(id)coder;
+- (WFHarnessTestRunResult)initWithTestResult:(id)result;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFHarnessTestRunResult
@@ -13,31 +13,31 @@
   v8.receiver = self;
   v8.super_class = WFHarnessTestRunResult;
   v4 = [(WFWorkflowRunResult *)&v8 description];
-  v5 = [(WFHarnessTestRunResult *)self testResult];
-  v6 = [v3 stringWithFormat:@"<%@, testResult: %@>", v4, v5];
+  testResult = [(WFHarnessTestRunResult *)self testResult];
+  v6 = [v3 stringWithFormat:@"<%@, testResult: %@>", v4, testResult];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFHarnessTestRunResult;
-  v4 = a3;
-  [(WFWorkflowRunResult *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFWorkflowRunResult *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFHarnessTestRunResult *)self testResult:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"testResult"];
+  [coderCopy encodeObject:v5 forKey:@"testResult"];
 }
 
-- (WFHarnessTestRunResult)initWithCoder:(id)a3
+- (WFHarnessTestRunResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFHarnessTestRunResult;
-  v5 = [(WFWorkflowRunResult *)&v10 initWithCoder:v4];
+  v5 = [(WFWorkflowRunResult *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testResult"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testResult"];
     testResult = v5->_testResult;
     v5->_testResult = v6;
 
@@ -47,13 +47,13 @@
   return v5;
 }
 
-- (WFHarnessTestRunResult)initWithTestResult:(id)a3
+- (WFHarnessTestRunResult)initWithTestResult:(id)result
 {
-  v6 = a3;
-  if (!v6)
+  resultCopy = result;
+  if (!resultCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunResult.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"testResult"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunResult.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"testResult"}];
   }
 
   v12.receiver = self;
@@ -62,7 +62,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_testResult, a3);
+    objc_storeStrong(&v7->_testResult, result);
     v9 = v8;
   }
 

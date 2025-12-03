@@ -1,16 +1,16 @@
 @interface UserProfilePersonalizationLinkCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
-- (void)updateTitle:(id)a3 subtitle:(id)a4 icon:(id)a5;
+- (void)updateTitle:(id)title subtitle:(id)subtitle icon:(id)icon;
 @end
 
 @implementation UserProfilePersonalizationLinkCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UserProfilePersonalizationLinkCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UserProfilePersonalizationLinkCell" hasInstanceMethod:@"updateTitle:subtitle:icon:" withFullSignature:{"v", "@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UserProfilePersonalizationLinkCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UserProfilePersonalizationLinkCell" hasInstanceMethod:@"updateTitle:subtitle:icon:" withFullSignature:{"v", "@", "@", "@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -20,13 +20,13 @@
   return *MEMORY[0x29EDC7F70] | [(UserProfilePersonalizationLinkCellAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)updateTitle:(id)a3 subtitle:(id)a4 icon:(id)a5
+- (void)updateTitle:(id)title subtitle:(id)subtitle icon:(id)icon
 {
   v9.receiver = self;
   v9.super_class = UserProfilePersonalizationLinkCellAccessibility;
-  v8 = a3;
-  [(UserProfilePersonalizationLinkCellAccessibility *)&v9 updateTitle:v8 subtitle:a4 icon:a5];
-  [(UserProfilePersonalizationLinkCellAccessibility *)self setAccessibilityLabel:v8, v9.receiver, v9.super_class];
+  titleCopy = title;
+  [(UserProfilePersonalizationLinkCellAccessibility *)&v9 updateTitle:titleCopy subtitle:subtitle icon:icon];
+  [(UserProfilePersonalizationLinkCellAccessibility *)self setAccessibilityLabel:titleCopy, v9.receiver, v9.super_class];
 }
 
 @end

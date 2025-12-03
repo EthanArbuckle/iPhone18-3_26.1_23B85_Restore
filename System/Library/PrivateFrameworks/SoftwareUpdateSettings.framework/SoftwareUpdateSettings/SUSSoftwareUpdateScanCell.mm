@@ -1,93 +1,93 @@
 @interface SUSSoftwareUpdateScanCell
-- (SUSSoftwareUpdateScanCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (double)preferredHeightWithTable:(id)a3;
-- (id)contentUnavailableConfigurationForState:(int)a3;
+- (SUSSoftwareUpdateScanCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (double)preferredHeightWithTable:(id)table;
+- (id)contentUnavailableConfigurationForState:(int)state;
 - (id)upToDateManagedText;
 - (id)upToDateText;
 - (id)upToDateWithAlternate;
 - (void)layoutSubviews;
-- (void)setState:(int)a3;
+- (void)setState:(int)state;
 @end
 
 @implementation SUSSoftwareUpdateScanCell
 
-- (SUSSoftwareUpdateScanCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (SUSSoftwareUpdateScanCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, identifier);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v5 = v17;
-  v17 = 0;
+  objc_storeStrong(&v13, specifier);
+  v5 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v5;
   v12.super_class = SUSSoftwareUpdateScanCell;
-  v17 = [(PSTableCell *)&v12 initWithStyle:v15 reuseIdentifier:location specifier:v13];
-  objc_storeStrong(&v17, v17);
-  if (v17)
+  selfCopy = [(PSTableCell *)&v12 initWithStyle:styleCopy reuseIdentifier:location specifier:v13];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [(SUSSoftwareUpdateScanCell *)v17 setSelectionStyle:0];
-    v9 = v17;
-    v10 = [MEMORY[0x277D75348] clearColor];
+    [(SUSSoftwareUpdateScanCell *)selfCopy setSelectionStyle:0];
+    v9 = selfCopy;
+    clearColor = [MEMORY[0x277D75348] clearColor];
     [(SUSSoftwareUpdateScanCell *)v9 setBackgroundColor:?];
-    *&v6 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-    [(SUSSoftwareUpdateScanCell *)v17 setHoverStyle:0, v6];
-    v17->_state = -1;
+    *&v6 = MEMORY[0x277D82BD8](clearColor).n128_u64[0];
+    [(SUSSoftwareUpdateScanCell *)selfCopy setHoverStyle:0, v6];
+    selfCopy->_state = -1;
   }
 
-  v8 = MEMORY[0x277D82BE0](v17);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  if (a3 != self->_state)
+  if (state != self->_state)
   {
-    self->_state = a3;
-    v3 = [(SUSSoftwareUpdateScanCell *)self contentUnavailableConfigurationForState:a3];
+    self->_state = state;
+    v3 = [(SUSSoftwareUpdateScanCell *)self contentUnavailableConfigurationForState:state];
     [(SUSSoftwareUpdateScanCell *)self setContentConfiguration:?];
     [(SUSSoftwareUpdateScanCell *)self setNeedsLayout];
   }
 }
 
-- (double)preferredHeightWithTable:(id)a3
+- (double)preferredHeightWithTable:(id)table
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, table);
   objc_storeStrong(location, 0);
   return -1.0;
 }
 
 - (void)layoutSubviews
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v4 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   [(SUSSoftwareUpdateScanCell *)self setSeparatorColor:?];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  v5.receiver = v7;
+  *&v2 = MEMORY[0x277D82BD8](clearColor).n128_u64[0];
+  v5.receiver = selfCopy;
   v5.super_class = SUSSoftwareUpdateScanCell;
   [(PSTableCell *)&v5 layoutSubviews];
 }
 
-- (id)contentUnavailableConfigurationForState:(int)a3
+- (id)contentUnavailableConfigurationForState:(int)state
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
+  stateCopy = state;
   v23 = 0;
-  if (a3 == 1)
+  if (state == 1)
   {
-    v3 = [MEMORY[0x277D75390] loadingConfiguration];
+    loadingConfiguration = [MEMORY[0x277D75390] loadingConfiguration];
     v4 = v23;
-    v23 = v3;
+    v23 = loadingConfiguration;
     MEMORY[0x277D82BD8](v4);
     v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v20 = [v21 localizedStringForKey:@"CHECKING_FOR_UPDATES" value:&stru_287B74428 table:@"Software Update"];
@@ -96,37 +96,37 @@
     MEMORY[0x277D82BD8](v21);
   }
 
-  else if (v24 && v24 != 5)
+  else if (stateCopy && stateCopy != 5)
   {
-    if (v24 == 4)
+    if (stateCopy == 4)
     {
       v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v22 = [v16 localizedStringForKey:@"MANAGED_DEVICE_HIDDEN_WITHIN_DELAY" value:&stru_287B74428 table:@"Software Update"];
-      v7 = [MEMORY[0x277D75390] emptyConfiguration];
+      emptyConfiguration = [MEMORY[0x277D75390] emptyConfiguration];
       v8 = v23;
-      v23 = v7;
+      v23 = emptyConfiguration;
       *&v9 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-      [v23 setText:{v26->_currentVersion, v9}];
+      [v23 setText:{selfCopy->_currentVersion, v9}];
       [v23 setSecondaryText:v22];
       objc_storeStrong(&v22, 0);
     }
 
-    else if (v24 == 2)
+    else if (stateCopy == 2)
     {
-      v10 = [MEMORY[0x277D75390] emptyConfiguration];
+      emptyConfiguration2 = [MEMORY[0x277D75390] emptyConfiguration];
       v11 = v23;
-      v23 = v10;
-      [v10 setText:{v26->_errorTitle, MEMORY[0x277D82BD8](v11).n128_f64[0]}];
-      [v23 setSecondaryText:v26->_errorMessage];
-      if (v26->_errorPrimaryButton)
+      v23 = emptyConfiguration2;
+      [emptyConfiguration2 setText:{selfCopy->_errorTitle, MEMORY[0x277D82BD8](v11).n128_f64[0]}];
+      [v23 setSecondaryText:selfCopy->_errorMessage];
+      if (selfCopy->_errorPrimaryButton)
       {
-        if (v26->_errorPrimaryButtonAction)
+        if (selfCopy->_errorPrimaryButtonAction)
         {
-          v14 = [v23 button];
-          [v14 setTitle:v26->_errorPrimaryButton];
-          v15 = [v23 buttonProperties];
-          [v15 setPrimaryAction:v26->_errorPrimaryButtonAction];
-          MEMORY[0x277D82BD8](v15);
+          button = [v23 button];
+          [button setTitle:selfCopy->_errorPrimaryButton];
+          buttonProperties = [v23 buttonProperties];
+          [buttonProperties setPrimaryAction:selfCopy->_errorPrimaryButtonAction];
+          MEMORY[0x277D82BD8](buttonProperties);
         }
       }
     }
@@ -134,29 +134,29 @@
 
   else
   {
-    v5 = [MEMORY[0x277D75390] emptyConfiguration];
+    emptyConfiguration3 = [MEMORY[0x277D75390] emptyConfiguration];
     v6 = v23;
-    v23 = v5;
-    [v5 setText:{v26->_currentVersion, MEMORY[0x277D82BD8](v6).n128_f64[0]}];
-    if ([(SUSSoftwareUpdateScanCell *)v26 updatesDeferred]|| [(SUSSoftwareUpdateScanCell *)v26 suPathsRestricted])
+    v23 = emptyConfiguration3;
+    [emptyConfiguration3 setText:{selfCopy->_currentVersion, MEMORY[0x277D82BD8](v6).n128_f64[0]}];
+    if ([(SUSSoftwareUpdateScanCell *)selfCopy updatesDeferred]|| [(SUSSoftwareUpdateScanCell *)selfCopy suPathsRestricted])
     {
-      v19 = [(SUSSoftwareUpdateScanCell *)v26 upToDateManagedText];
+      upToDateManagedText = [(SUSSoftwareUpdateScanCell *)selfCopy upToDateManagedText];
       [v23 setSecondaryText:?];
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](upToDateManagedText);
     }
 
-    else if (v24 == 5)
+    else if (stateCopy == 5)
     {
-      v18 = [(SUSSoftwareUpdateScanCell *)v26 upToDateWithAlternate];
+      upToDateWithAlternate = [(SUSSoftwareUpdateScanCell *)selfCopy upToDateWithAlternate];
       [v23 setSecondaryText:?];
-      MEMORY[0x277D82BD8](v18);
+      MEMORY[0x277D82BD8](upToDateWithAlternate);
     }
 
     else
     {
-      v17 = [(SUSSoftwareUpdateScanCell *)v26 upToDateText];
+      upToDateText = [(SUSSoftwareUpdateScanCell *)selfCopy upToDateText];
       [v23 setSecondaryText:?];
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](upToDateText);
     }
   }
 
@@ -182,15 +182,15 @@
   v14[2] = self;
   v14[1] = a2;
   v14[0] = 0;
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  location = [v12 systemVersion];
-  *&v2 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  location = [currentDevice systemVersion];
+  *&v2 = MEMORY[0x277D82BD8](currentDevice).n128_u64[0];
   if (location)
   {
     v11 = [location componentsSeparatedByString:{@".", v2}];
-    v3 = [v11 firstObject];
+    firstObject = [v11 firstObject];
     v4 = v14[0];
-    v14[0] = v3;
+    v14[0] = firstObject;
     MEMORY[0x277D82BD8](v4);
     MEMORY[0x277D82BD8](v11);
   }

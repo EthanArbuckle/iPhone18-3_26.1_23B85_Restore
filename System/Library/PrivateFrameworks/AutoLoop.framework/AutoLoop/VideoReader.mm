@@ -1,23 +1,23 @@
 @interface VideoReader
-- (VideoReader)initWithAsset:(id)a3;
-- (id)initFromFile:(id)a3;
+- (VideoReader)initWithAsset:(id)asset;
+- (id)initFromFile:(id)file;
 - (int)buildAssetReader;
-- (int)getFrame:(CGImage *)a3;
-- (int)getFrameAsSampleBuf:(opaqueCMSampleBuffer *)a3;
-- (int)getFrameAtTime:(id *)a3 exactTime:(BOOL)a4 frame:(opaqueCMSampleBuffer *)a5;
+- (int)getFrame:(CGImage *)frame;
+- (int)getFrameAsSampleBuf:(opaqueCMSampleBuffer *)buf;
+- (int)getFrameAtTime:(id *)time exactTime:(BOOL)exactTime frame:(opaqueCMSampleBuffer *)frame;
 - (int)reset;
-- (int)skipFrames:(unsigned int)a3;
+- (int)skipFrames:(unsigned int)frames;
 - (opaqueCMSampleBuffer)nextSampleBuf;
 - (void)dealloc;
 - (void)fireReadahead;
-- (void)setReadAheadEnable:(BOOL)a3;
+- (void)setReadAheadEnable:(BOOL)enable;
 @end
 
 @implementation VideoReader
 
-- (VideoReader)initWithAsset:(id)a3
+- (VideoReader)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   asset = self->asset;
   self->asset = 0;
 
@@ -54,7 +54,7 @@
   [(VideoReader *)self setPixelFormatOptions:193];
   self->_readAheadEnable = 0;
   [(VideoReader *)self setReadAheadEnable:1];
-  objc_storeStrong(&self->asset, a3);
+  objc_storeStrong(&self->asset, asset);
   v16 = self->asset;
   if (v16)
   {
@@ -134,9 +134,9 @@ LABEL_15:
     *&p_preferredTransform->c = *&time[16];
     *&p_preferredTransform->tx = v32;
     *&p_preferredTransform->a = v31;
-    v33 = [(AVAssetTrack *)self->videoTrack formatDescriptions];
+    formatDescriptions = [(AVAssetTrack *)self->videoTrack formatDescriptions];
     formatDescriptions = self->formatDescriptions;
-    self->formatDescriptions = v33;
+    self->formatDescriptions = formatDescriptions;
 
     v35 = self->formatDescriptions;
     if (v35)
@@ -217,7 +217,7 @@ LABEL_15:
           NSLog(&cfstr_WarningNoKcmfo.isa);
         }
 
-        v30 = self;
+        selfCopy = self;
         goto LABEL_44;
       }
 
@@ -230,42 +230,42 @@ LABEL_15:
     }
 
 LABEL_43:
-    v30 = 0;
+    selfCopy = 0;
 LABEL_44:
 
     goto LABEL_45;
   }
 
   NSLog(&cfstr_ErrorAvassetIs.isa);
-  v30 = 0;
+  selfCopy = 0;
 LABEL_45:
 
-  return v30;
+  return selfCopy;
 }
 
-- (id)initFromFile:(id)a3
+- (id)initFromFile:(id)file
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CE63D8] assetWithURL:v4];
+  fileCopy = file;
+  v5 = [MEMORY[0x277CE63D8] assetWithURL:fileCopy];
   if (v5)
   {
     self = [(VideoReader *)self initWithAsset:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    NSLog(&cfstr_ErrorOpeningAv.isa, [v4 fileSystemRepresentation]);
-    v6 = 0;
+    NSLog(&cfstr_ErrorOpeningAv.isa, [fileCopy fileSystemRepresentation]);
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(VideoReader *)self readaheadLock];
-  [v3 lock];
+  readaheadLock = [(VideoReader *)self readaheadLock];
+  [readaheadLock lock];
 
   if ([(VideoReader *)self readaheadBuf])
   {
@@ -273,8 +273,8 @@ LABEL_45:
     [(VideoReader *)self setReadaheadBuf:0];
   }
 
-  v4 = [(VideoReader *)self readaheadLock];
-  [v4 unlock];
+  readaheadLock2 = [(VideoReader *)self readaheadLock];
+  [readaheadLock2 unlock];
 
   if ([(VideoReader *)self lastFrame])
   {
@@ -343,8 +343,8 @@ LABEL_25:
           }
 
           NSLog(&cfstr_StartreadingFa.isa);
-          v16 = [(AVAssetReader *)self->assetReader error];
-          NSLog(&cfstr_AssetreaderErr.isa, v16);
+          error = [(AVAssetReader *)self->assetReader error];
+          NSLog(&cfstr_AssetreaderErr.isa, error);
         }
 
         else
@@ -399,7 +399,7 @@ LABEL_25:
   return 0;
 }
 
-- (int)getFrame:(CGImage *)a3
+- (int)getFrame:(CGImage *)frame
 {
   if ([(VideoReader *)self buildAssetReader])
   {
@@ -412,14 +412,14 @@ LABEL_25:
   v7 = 1000;
   while (1)
   {
-    v8 = [(AVAssetReaderOutput *)self->trackOutput copyNextSampleBuffer];
-    if (!v8)
+    copyNextSampleBuffer = [(AVAssetReaderOutput *)self->trackOutput copyNextSampleBuffer];
+    if (!copyNextSampleBuffer)
     {
       break;
     }
 
-    v9 = v8;
-    NumSamples = CMSampleBufferGetNumSamples(v8);
+    v9 = copyNextSampleBuffer;
+    NumSamples = CMSampleBufferGetNumSamples(copyNextSampleBuffer);
     if (NumSamples)
     {
       if (NumSamples != 1)
@@ -483,11 +483,11 @@ LABEL_31:
                   }
 
 LABEL_33:
-                  *a3 = v36;
+                  *frame = v36;
                   CMSampleBufferGetPresentationTimeStamp(&v37, v9);
                   self->lastPresentationTime = v37;
                   CFRelease(v9);
-                  return 2 * (*a3 == 0);
+                  return 2 * (*frame == 0);
                 }
 
                 NSLog(&cfstr_VideoreaderErr_0.isa);
@@ -531,9 +531,9 @@ LABEL_33:
   if ([(AVAssetReader *)self->assetReader status]== AVAssetReaderStatusFailed)
   {
     NSLog(&cfstr_GetframeAvasse.isa);
-    v25 = [(AVAssetReader *)self->assetReader error];
+    error = [(AVAssetReader *)self->assetReader error];
     v26 = self->lastError;
-    self->lastError = v25;
+    self->lastError = error;
 
     return 2;
   }
@@ -552,18 +552,18 @@ LABEL_33:
 {
   if (self->_readAheadEnable)
   {
-    v3 = [(VideoReader *)self readaheadLock];
-    [v3 lock];
+    readaheadLock = [(VideoReader *)self readaheadLock];
+    [readaheadLock lock];
 
-    v4 = [(VideoReader *)self readaheadState];
-    if (v4)
+    readaheadState = [(VideoReader *)self readaheadState];
+    if (readaheadState)
     {
-      while (v4 == 1)
+      while (readaheadState == 1)
       {
-        v5 = [(VideoReader *)self readaheadLock];
-        [v5 wait];
+        readaheadLock2 = [(VideoReader *)self readaheadLock];
+        [readaheadLock2 wait];
 
-        v4 = [(VideoReader *)self readaheadState];
+        readaheadState = [(VideoReader *)self readaheadState];
       }
     }
 
@@ -572,9 +572,9 @@ LABEL_33:
       [(VideoReader *)self setReadaheadBuf:[(AVAssetReaderOutput *)self->trackOutput copyNextSampleBuffer]];
     }
 
-    v8 = [(VideoReader *)self readaheadBuf];
+    readaheadBuf = [(VideoReader *)self readaheadBuf];
     [(VideoReader *)self setReadaheadBuf:0];
-    if (v8)
+    if (readaheadBuf)
     {
       [(VideoReader *)self fireReadahead];
     }
@@ -584,10 +584,10 @@ LABEL_33:
       [(VideoReader *)self setReadaheadState:3];
     }
 
-    v9 = [(VideoReader *)self readaheadLock];
-    [v9 unlock];
+    readaheadLock3 = [(VideoReader *)self readaheadLock];
+    [readaheadLock3 unlock];
 
-    return v8;
+    return readaheadBuf;
   }
 
   else
@@ -611,7 +611,7 @@ LABEL_33:
   dispatch_async(v4, block);
 }
 
-- (int)getFrameAsSampleBuf:(opaqueCMSampleBuffer *)a3
+- (int)getFrameAsSampleBuf:(opaqueCMSampleBuffer *)buf
 {
   if ([(VideoReader *)self buildAssetReader])
   {
@@ -624,19 +624,19 @@ LABEL_33:
   v7 = 1000;
   while (1)
   {
-    v8 = [(VideoReader *)self nextSampleBuf];
-    if (!v8)
+    nextSampleBuf = [(VideoReader *)self nextSampleBuf];
+    if (!nextSampleBuf)
     {
       break;
     }
 
-    v9 = v8;
-    NumSamples = CMSampleBufferGetNumSamples(v8);
+    v9 = nextSampleBuf;
+    NumSamples = CMSampleBufferGetNumSamples(nextSampleBuf);
     if (NumSamples)
     {
       if (NumSamples == 1)
       {
-        *a3 = v9;
+        *buf = v9;
         CMSampleBufferGetPresentationTimeStamp(&v17, v9);
         result = 0;
         self->lastPresentationTime = v17;
@@ -656,13 +656,13 @@ LABEL_33:
     }
   }
 
-  v11 = [(AVAssetReader *)self->assetReader status];
+  status = [(AVAssetReader *)self->assetReader status];
   assetReader = self->assetReader;
-  if (v11 == AVAssetReaderStatusFailed)
+  if (status == AVAssetReaderStatusFailed)
   {
-    v13 = [(AVAssetReader *)assetReader error];
+    error = [(AVAssetReader *)assetReader error];
     v14 = self->lastError;
-    self->lastError = v13;
+    self->lastError = error;
 
     NSLog(&cfstr_Getframeassamp.isa, self->lastError);
     return 2;
@@ -678,16 +678,16 @@ LABEL_33:
   return 1;
 }
 
-- (int)getFrameAtTime:(id *)a3 exactTime:(BOOL)a4 frame:(opaqueCMSampleBuffer *)a5
+- (int)getFrameAtTime:(id *)time exactTime:(BOOL)exactTime frame:(opaqueCMSampleBuffer *)frame
 {
-  v6 = a4;
+  exactTimeCopy = exactTime;
   if (![(VideoReader *)self lastFrame])
   {
     goto LABEL_12;
   }
 
   CMSampleBufferGetPresentationTimeStamp(&time1, [(VideoReader *)self lastFrame]);
-  time2 = *a3;
+  time2 = *time;
   v9 = CMTimeCompare(&time1, &time2);
   if (v9 < 0)
   {
@@ -708,17 +708,17 @@ LABEL_12:
       }
 
       time1 = self->lastPresentationTime;
-      time2 = *a3;
+      time2 = *time;
       v12 = CMTimeCompare(&time1, &time2);
       if ((v12 & 0x80000000) == 0)
       {
-        if (v12 && v6)
+        if (v12 && exactTimeCopy)
         {
           CFRelease(cf);
           return 2;
         }
 
-        *a5 = cf;
+        *frame = cf;
         [(VideoReader *)self setLastFrame:?];
         goto LABEL_19;
       }
@@ -730,10 +730,10 @@ LABEL_12:
   else
   {
     v10 = v9;
-    v11 = [(VideoReader *)self lastFrame];
-    if (v10 && v6)
+    lastFrame = [(VideoReader *)self lastFrame];
+    if (v10 && exactTimeCopy)
     {
-      if (v11)
+      if (lastFrame)
       {
         CFRelease([(VideoReader *)self lastFrame]);
         [(VideoReader *)self setLastFrame:0];
@@ -744,7 +744,7 @@ LABEL_12:
 
     else
     {
-      *a5 = v11;
+      *frame = lastFrame;
 LABEL_19:
       CFRetain([(VideoReader *)self lastFrame]);
       return 0;
@@ -754,10 +754,10 @@ LABEL_19:
   return result;
 }
 
-- (void)setReadAheadEnable:(BOOL)a3
+- (void)setReadAheadEnable:(BOOL)enable
 {
-  self->_readAheadEnable = a3;
-  if (a3)
+  self->_readAheadEnable = enable;
+  if (enable)
   {
     [(VideoReader *)self setReadaheadState:0];
     v4 = objc_alloc_init(MEMORY[0x277CCA928]);
@@ -779,14 +779,14 @@ LABEL_19:
   return 0;
 }
 
-- (int)skipFrames:(unsigned int)a3
+- (int)skipFrames:(unsigned int)frames
 {
-  if (!a3)
+  if (!frames)
   {
     return 0;
   }
 
-  v3 = a3;
+  framesCopy = frames;
   while (1)
   {
     cf = 0;
@@ -797,7 +797,7 @@ LABEL_19:
     }
 
     CFRelease(cf);
-    if (!--v3)
+    if (!--framesCopy)
     {
       return 0;
     }

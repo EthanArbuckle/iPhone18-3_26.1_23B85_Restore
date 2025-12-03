@@ -1,9 +1,9 @@
 @interface SemanticOutputCollection
-- (BOOL)add:(id)a3 with:(id)a4;
-- (BOOL)isCompatibleWith:(id)a3;
+- (BOOL)add:(id)add with:(id)with;
+- (BOOL)isCompatibleWith:(id)with;
 - (SemanticOutputCollection)init;
 - (id)description;
-- (int)allocateResources:(id)a3;
+- (int)allocateResources:(id)resources;
 @end
 
 @implementation SemanticOutputCollection
@@ -70,14 +70,14 @@
   return v39;
 }
 
-- (BOOL)add:(id)a3 with:(id)a4
+- (BOOL)add:(id)add with:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  isCompatibleWith = objc_msgSend_isCompatibleWith_(self, v8, v7);
+  addCopy = add;
+  withCopy = with;
+  isCompatibleWith = objc_msgSend_isCompatibleWith_(self, v8, withCopy);
   if (isCompatibleWith)
   {
-    objc_msgSend_addObject_(self->_semanticOutputs, v9, v6);
+    objc_msgSend_addObject_(self->_semanticOutputs, v9, addCopy);
     if (self->_spatioTemporalFilterDescriptor)
     {
       v13 = objc_msgSend_count(self->_semanticOutputs, v11, v12);
@@ -87,12 +87,12 @@
     else
     {
       v15 = MEMORY[0x29EDBB800];
-      v16 = objc_msgSend_width(v7, v11, v12);
-      v19 = objc_msgSend_height(v7, v17, v18);
-      v22 = objc_msgSend_kernelSpatialDiameter(v7, v20, v21);
-      objc_msgSend_epsilon(v7, v23, v24);
+      v16 = objc_msgSend_width(withCopy, v11, v12);
+      v19 = objc_msgSend_height(withCopy, v17, v18);
+      v22 = objc_msgSend_kernelSpatialDiameter(withCopy, v20, v21);
+      objc_msgSend_epsilon(withCopy, v23, v24);
       v26 = v25;
-      v29 = objc_msgSend_useDepthFilter(v7, v27, v28);
+      v29 = objc_msgSend_useDepthFilter(withCopy, v27, v28);
       v32 = 3;
       if (v29)
       {
@@ -105,11 +105,11 @@
       self->_spatioTemporalFilterDescriptor = v33;
 
       v35 = MEMORY[0x29EDBA070];
-      v38 = objc_msgSend_iterations(v7, v36, v37);
+      v38 = objc_msgSend_iterations(withCopy, v36, v37);
       v40 = objc_msgSend_numberWithUnsignedInt_(v35, v39, v38);
       objc_msgSend_setIterations_(self, v41, v40);
 
-      v44 = objc_msgSend_useDepthFilter(v7, v42, v43);
+      v44 = objc_msgSend_useDepthFilter(withCopy, v42, v43);
       objc_msgSend_setUseDepthFilter_(self, v45, v44);
     }
   }
@@ -117,40 +117,40 @@
   return isCompatibleWith;
 }
 
-- (BOOL)isCompatibleWith:(id)a3
+- (BOOL)isCompatibleWith:(id)with
 {
-  v6 = a3;
+  withCopy = with;
   spatioTemporalFilterDescriptor = self->_spatioTemporalFilterDescriptor;
   if (spatioTemporalFilterDescriptor)
   {
     v8 = objc_msgSend_width(spatioTemporalFilterDescriptor, v4, v5);
-    if (v8 != objc_msgSend_width(v6, v9, v10))
+    if (v8 != objc_msgSend_width(withCopy, v9, v10))
     {
       goto LABEL_10;
     }
 
     v13 = objc_msgSend_height(self->_spatioTemporalFilterDescriptor, v11, v12);
-    if (v13 != objc_msgSend_height(v6, v14, v15))
+    if (v13 != objc_msgSend_height(withCopy, v14, v15))
     {
       goto LABEL_10;
     }
 
     v18 = objc_msgSend_kernelSpatialDiameter(self->_spatioTemporalFilterDescriptor, v16, v17);
-    if (v18 != objc_msgSend_kernelSpatialDiameter(v6, v19, v20))
+    if (v18 != objc_msgSend_kernelSpatialDiameter(withCopy, v19, v20))
     {
       goto LABEL_10;
     }
 
     objc_msgSend_epsilon(self->_spatioTemporalFilterDescriptor, v21, v22);
     v24 = v23;
-    objc_msgSend_epsilon(v6, v25, v26);
+    objc_msgSend_epsilon(withCopy, v25, v26);
     if (vabds_f32(v24, v29) >= 1.0e-10)
     {
       goto LABEL_10;
     }
 
     v30 = objc_msgSend_guideChannels(self->_spatioTemporalFilterDescriptor, v27, v28);
-    v33 = objc_msgSend_useDepthFilter(v6, v31, v32);
+    v33 = objc_msgSend_useDepthFilter(withCopy, v31, v32);
     v36 = 3;
     if (v33)
     {
@@ -161,7 +161,7 @@
     {
       v37 = objc_msgSend_iterations(self, v34, v35);
       v38 = MEMORY[0x29EDBA070];
-      v41 = objc_msgSend_iterations(v6, v39, v40);
+      v41 = objc_msgSend_iterations(withCopy, v39, v40);
       v43 = objc_msgSend_numberWithUnsignedInt_(v38, v42, v41);
       isEqualToNumber = objc_msgSend_isEqualToNumber_(v37, v44, v43);
     }
@@ -181,12 +181,12 @@ LABEL_10:
   return isEqualToNumber;
 }
 
-- (int)allocateResources:(id)a3
+- (int)allocateResources:(id)resources
 {
   v4 = MEMORY[0x29EDBB7F8];
-  v5 = a3;
+  resourcesCopy = resources;
   v6 = [v4 alloc];
-  v9 = objc_msgSend_device(v5, v7, v8);
+  v9 = objc_msgSend_device(resourcesCopy, v7, v8);
 
   v11 = objc_msgSend_initWithDevice_filterDescriptor_(v6, v10, v9, self->_spatioTemporalFilterDescriptor);
   objc_msgSend_setSpatioTemporalFilter_(self, v12, v11);

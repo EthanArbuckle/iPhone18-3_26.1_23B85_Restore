@@ -1,51 +1,51 @@
 @interface SUScriptNavigationItem
-+ (id)_rootScriptObjectForObject:(id)a3;
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
-+ (void)_disconnectNavigationItem:(id)a3 scriptObject:(id)a4;
++ (id)_rootScriptObjectForObject:(id)object;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
++ (void)_disconnectNavigationItem:(id)item scriptObject:(id)object;
 + (void)initialize;
 - (NSString)backButtonTitle;
 - (NSString)prompt;
 - (NSString)title;
-- (SUScriptNavigationItem)initWithNativeNavigationItem:(id)a3;
+- (SUScriptNavigationItem)initWithNativeNavigationItem:(id)item;
 - (SUScriptNavigationItem)leftItem;
 - (SUScriptNavigationItem)leftMostItem;
 - (SUScriptNavigationItem)rightItem;
 - (UINavigationItem)nativeNavigationItem;
-- (id)_copyScriptButtonForButtonItem:(id)a3;
-- (id)_copyScriptObjectForButtonItem:(id)a3;
+- (id)_copyScriptButtonForButtonItem:(id)item;
+- (id)_copyScriptObjectForButtonItem:(id)item;
 - (id)hidesBackButton;
 - (id)leftItems;
 - (id)leftItemsSupplementBackButton;
 - (id)rightItems;
 - (id)scriptAttributeKeys;
 - (id)titleView;
-- (void)setBackButtonTitle:(id)a3;
-- (void)setHidesBackButton:(id)a3;
-- (void)setLeftItem:(id)a3 animated:(BOOL)a4;
-- (void)setLeftItems:(id)a3 animated:(BOOL)a4;
-- (void)setLeftItemsSupplementBackButton:(id)a3;
-- (void)setLeftMostItem:(id)a3 animated:(BOOL)a4;
-- (void)setPrompt:(id)a3;
-- (void)setRightItem:(id)a3 animated:(BOOL)a4;
-- (void)setRightItems:(id)a3 animated:(BOOL)a4;
-- (void)setTitle:(id)a3;
-- (void)setTitleView:(id)a3 animated:(BOOL)a4;
+- (void)setBackButtonTitle:(id)title;
+- (void)setHidesBackButton:(id)button;
+- (void)setLeftItem:(id)item animated:(BOOL)animated;
+- (void)setLeftItems:(id)items animated:(BOOL)animated;
+- (void)setLeftItemsSupplementBackButton:(id)button;
+- (void)setLeftMostItem:(id)item animated:(BOOL)animated;
+- (void)setPrompt:(id)prompt;
+- (void)setRightItem:(id)item animated:(BOOL)animated;
+- (void)setRightItems:(id)items animated:(BOOL)animated;
+- (void)setTitle:(id)title;
+- (void)setTitleView:(id)view animated:(BOOL)animated;
 - (void)tearDownUserInterface;
 @end
 
 @implementation SUScriptNavigationItem
 
-- (SUScriptNavigationItem)initWithNativeNavigationItem:(id)a3
+- (SUScriptNavigationItem)initWithNativeNavigationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SUScriptNavigationItem;
   v5 = [(SUScriptObject *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (itemCopy && v5)
   {
-    v7 = [SUScriptNativeObject objectWithNativeObject:v4];
+    v7 = [SUScriptNativeObject objectWithNativeObject:itemCopy];
     [(SUScriptObject *)v6 setNativeObject:v7];
   }
 
@@ -54,8 +54,8 @@
 
 - (UINavigationItem)nativeNavigationItem
 {
-  v3 = [(SUScriptObject *)self nativeObject];
-  v4 = [v3 object];
+  nativeObject = [(SUScriptObject *)self nativeObject];
+  object = [nativeObject object];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -65,18 +65,18 @@
     v6 = [SUScriptNativeObject objectWithNativeObject:v5];
     [(SUScriptObject *)self setNativeObject:v6];
 
-    v4 = v5;
+    object = v5;
   }
 
-  return v4;
+  return object;
 }
 
 - (void)tearDownUserInterface
 {
-  v3 = [(SUScriptObject *)self nativeObject];
-  v4 = [v3 object];
+  nativeObject = [(SUScriptObject *)self nativeObject];
+  object = [nativeObject object];
 
-  [objc_opt_class() _disconnectNavigationItem:v4 scriptObject:self];
+  [objc_opt_class() _disconnectNavigationItem:object scriptObject:self];
   v5.receiver = self;
   v5.super_class = SUScriptNavigationItem;
   [(SUScriptObject *)&v5 tearDownUserInterface];
@@ -147,20 +147,20 @@ void __41__SUScriptNavigationItem_hidesBackButton__block_invoke(uint64_t a1)
   v8 = 3221225472;
   v9 = __34__SUScriptNavigationItem_leftItem__block_invoke;
   v10 = &unk_1E81647F0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __34__SUScriptNavigationItem_leftItem__block_invoke, &unk_1E81647F0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __34__SUScriptNavigationItem_leftItem__block_invoke, &unk_1E81647F0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
 
   return v5;
@@ -292,20 +292,20 @@ void __55__SUScriptNavigationItem_leftItemsSupplementBackButton__block_invoke(ui
   v8 = 3221225472;
   v9 = __38__SUScriptNavigationItem_leftMostItem__block_invoke;
   v10 = &unk_1E81647F0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __38__SUScriptNavigationItem_leftMostItem__block_invoke, &unk_1E81647F0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __38__SUScriptNavigationItem_leftMostItem__block_invoke, &unk_1E81647F0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
 
   return v5;
@@ -335,15 +335,15 @@ void __38__SUScriptNavigationItem_leftMostItem__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
 
   return v4;
@@ -370,20 +370,20 @@ void __32__SUScriptNavigationItem_prompt__block_invoke(uint64_t a1)
   v8 = 3221225472;
   v9 = __35__SUScriptNavigationItem_rightItem__block_invoke;
   v10 = &unk_1E81647C8;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __35__SUScriptNavigationItem_rightItem__block_invoke, &unk_1E81647C8, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __35__SUScriptNavigationItem_rightItem__block_invoke, &unk_1E81647C8, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
 
   return v5;
@@ -474,17 +474,17 @@ void __36__SUScriptNavigationItem_rightItems__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setBackButtonTitle:(id)a3
+- (void)setBackButtonTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    titleCopy = 0;
   }
 
-  else if (v3)
+  else if (titleCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -494,7 +494,7 @@ void __36__SUScriptNavigationItem_rightItems__block_invoke(uint64_t a1)
     }
   }
 
-  v3 = v3;
+  titleCopy = titleCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -506,23 +506,23 @@ void __45__SUScriptNavigationItem_setBackButtonTitle___block_invoke(uint64_t a1)
   [v2 setBackButtonTitle:*(a1 + 40)];
 }
 
-- (void)setHidesBackButton:(id)a3
+- (void)setHidesBackButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    buttonCopy = 0;
   }
 
-  else if (v3 && (objc_opt_respondsToSelector() & 1) == 0)
+  else if (buttonCopy && (objc_opt_respondsToSelector() & 1) == 0)
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     goto LABEL_5;
   }
 
-  v3 = v3;
+  buttonCopy = buttonCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -534,23 +534,23 @@ void __45__SUScriptNavigationItem_setHidesBackButton___block_invoke(uint64_t a1)
   [v2 setHidesBackButton:{objc_msgSend(*(a1 + 40), "BOOLValue")}];
 }
 
-- (void)setLeftItemsSupplementBackButton:(id)a3
+- (void)setLeftItemsSupplementBackButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    buttonCopy = 0;
   }
 
-  else if (v3 && (objc_opt_respondsToSelector() & 1) == 0)
+  else if (buttonCopy && (objc_opt_respondsToSelector() & 1) == 0)
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     goto LABEL_5;
   }
 
-  v3 = v3;
+  buttonCopy = buttonCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -562,17 +562,17 @@ void __59__SUScriptNavigationItem_setLeftItemsSupplementBackButton___block_invok
   [v2 setLeftItemsSupplementBackButton:{objc_msgSend(*(a1 + 40), "BOOLValue")}];
 }
 
-- (void)setPrompt:(id)a3
+- (void)setPrompt:(id)prompt
 {
-  v3 = a3;
+  promptCopy = prompt;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    promptCopy = 0;
   }
 
-  else if (v3)
+  else if (promptCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -582,7 +582,7 @@ void __59__SUScriptNavigationItem_setLeftItemsSupplementBackButton___block_invok
     }
   }
 
-  v3 = v3;
+  promptCopy = promptCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -594,17 +594,17 @@ void __36__SUScriptNavigationItem_setPrompt___block_invoke(uint64_t a1)
   [v2 setPrompt:*(a1 + 40)];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v3 = 0;
+    titleCopy = 0;
   }
 
-  else if (v3)
+  else if (titleCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -614,7 +614,7 @@ void __36__SUScriptNavigationItem_setPrompt___block_invoke(uint64_t a1)
     }
   }
 
-  v3 = v3;
+  titleCopy = titleCopy;
   WebThreadRunOnMainThread();
 
 LABEL_5:
@@ -639,15 +639,15 @@ void __35__SUScriptNavigationItem_setTitle___block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
 
   return v4;
@@ -694,25 +694,25 @@ void __35__SUScriptNavigationItem_titleView__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLeftItem:(id)a3 animated:(BOOL)a4
+- (void)setLeftItem:(id)item animated:(BOOL)animated
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v5 = 0;
+    itemCopy = 0;
 LABEL_4:
     v6 = 1;
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!itemCopy)
   {
     goto LABEL_4;
   }
 
-  if (([v5 conformsToProtocol:&unk_1F422F898] & 1) == 0)
+  if (([itemCopy conformsToProtocol:&unk_1F422F898] & 1) == 0)
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     goto LABEL_8;
@@ -720,11 +720,11 @@ LABEL_4:
 
   v6 = 0;
 LABEL_5:
-  v5 = v5;
+  itemCopy = itemCopy;
   WebThreadRunOnMainThread();
   if ((v6 & 1) == 0)
   {
-    [(SUScriptObject *)self checkInScriptObject:v5];
+    [(SUScriptObject *)self checkInScriptObject:itemCopy];
   }
 
 LABEL_8:
@@ -770,18 +770,18 @@ LABEL_10:
   }
 }
 
-- (void)setLeftItems:(id)a3 animated:(BOOL)a4
+- (void)setLeftItems:(id)items animated:(BOOL)animated
 {
-  v5 = a3;
+  itemsCopy = items;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
     v6 = 0;
-    v5 = 0;
+    itemsCopy = 0;
   }
 
-  else if (v5)
+  else if (itemsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -798,7 +798,7 @@ LABEL_10:
     v6 = 0;
   }
 
-  v7 = [v5 copyArrayValueWithValidator:SUConformsValidator context:&unk_1F422F898];
+  v7 = [itemsCopy copyArrayValueWithValidator:SUConformsValidator context:&unk_1F422F898];
   v8 = v7;
   if (!v6 || v7)
   {
@@ -863,25 +863,25 @@ void __48__SUScriptNavigationItem_setLeftItems_animated___block_invoke(uint64_t 
   [v9 setLeftBarButtonItems:v2 animated:*(a1 + 48)];
 }
 
-- (void)setLeftMostItem:(id)a3 animated:(BOOL)a4
+- (void)setLeftMostItem:(id)item animated:(BOOL)animated
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v5 = 0;
+    itemCopy = 0;
 LABEL_4:
     v6 = 1;
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!itemCopy)
   {
     goto LABEL_4;
   }
 
-  if (([v5 conformsToProtocol:&unk_1F422F898] & 1) == 0)
+  if (([itemCopy conformsToProtocol:&unk_1F422F898] & 1) == 0)
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     goto LABEL_8;
@@ -889,11 +889,11 @@ LABEL_4:
 
   v6 = 0;
 LABEL_5:
-  v5 = v5;
+  itemCopy = itemCopy;
   WebThreadRunOnMainThread();
   if ((v6 & 1) == 0)
   {
-    [(SUScriptObject *)self checkInScriptObject:v5];
+    [(SUScriptObject *)self checkInScriptObject:itemCopy];
   }
 
 LABEL_8:
@@ -906,25 +906,25 @@ void __51__SUScriptNavigationItem_setLeftMostItem_animated___block_invoke(uint64
   [v3 setLeftBarButtonItem:v2 animated:*(a1 + 48)];
 }
 
-- (void)setRightItem:(id)a3 animated:(BOOL)a4
+- (void)setRightItem:(id)item animated:(BOOL)animated
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v5 = 0;
+    itemCopy = 0;
 LABEL_4:
     v6 = 1;
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!itemCopy)
   {
     goto LABEL_4;
   }
 
-  if (([v5 conformsToProtocol:&unk_1F422F898] & 1) == 0)
+  if (([itemCopy conformsToProtocol:&unk_1F422F898] & 1) == 0)
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     goto LABEL_8;
@@ -932,11 +932,11 @@ LABEL_4:
 
   v6 = 0;
 LABEL_5:
-  v5 = v5;
+  itemCopy = itemCopy;
   WebThreadRunOnMainThread();
   if ((v6 & 1) == 0)
   {
-    [(SUScriptObject *)self checkInScriptObject:v5];
+    [(SUScriptObject *)self checkInScriptObject:itemCopy];
   }
 
 LABEL_8:
@@ -949,18 +949,18 @@ void __48__SUScriptNavigationItem_setRightItem_animated___block_invoke(uint64_t 
   [v3 setRightBarButtonItem:v2 animated:*(a1 + 48)];
 }
 
-- (void)setRightItems:(id)a3 animated:(BOOL)a4
+- (void)setRightItems:(id)items animated:(BOOL)animated
 {
-  v5 = a3;
+  itemsCopy = items;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
     v6 = 0;
-    v5 = 0;
+    itemsCopy = 0;
   }
 
-  else if (v5)
+  else if (itemsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -977,7 +977,7 @@ void __48__SUScriptNavigationItem_setRightItem_animated___block_invoke(uint64_t 
     v6 = 0;
   }
 
-  v7 = [v5 copyArrayValueWithValidator:SUConformsValidator context:&unk_1F422F898];
+  v7 = [itemsCopy copyArrayValueWithValidator:SUConformsValidator context:&unk_1F422F898];
   v8 = v7;
   if (!v6 || v7)
   {
@@ -1042,17 +1042,17 @@ void __49__SUScriptNavigationItem_setRightItems_animated___block_invoke(uint64_t
   [v9 setRightBarButtonItems:v2 animated:*(a1 + 48)];
 }
 
-- (void)setTitleView:(id)a3 animated:(BOOL)a4
+- (void)setTitleView:(id)view animated:(BOOL)animated
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v4 = 0;
+    viewCopy = 0;
   }
 
-  v5 = v4;
+  v5 = viewCopy;
   WebThreadRunOnMainThread();
 }
 
@@ -1084,19 +1084,19 @@ void __48__SUScriptNavigationItem_setTitleView_animated___block_invoke(uint64_t 
   }
 }
 
-+ (void)_disconnectNavigationItem:(id)a3 scriptObject:(id)a4
++ (void)_disconnectNavigationItem:(id)item scriptObject:(id)object
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v29 = a1;
-  v30 = [a1 _rootScriptObjectForObject:a4];
-  v7 = [v6 leftBarButtonItems];
+  itemCopy = item;
+  selfCopy = self;
+  v30 = [self _rootScriptObjectForObject:object];
+  leftBarButtonItems = [itemCopy leftBarButtonItems];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = v7;
+  v9 = leftBarButtonItems;
   v10 = [v9 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v10)
   {
@@ -1114,9 +1114,9 @@ void __48__SUScriptNavigationItem_setTitleView_animated___block_invoke(uint64_t 
         v14 = *(*(&v35 + 1) + 8 * i);
         if (SUScriptNavigationItemIsFlagged(v14))
         {
-          v15 = [v14 target];
+          target = [v14 target];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || ([v15 scriptObject], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "_rootScriptObjectForObject:", v16), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v30 != v17))
+          if ((objc_opt_isKindOfClass() & 1) == 0 || ([target scriptObject], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(selfCopy, "_rootScriptObjectForObject:", v16), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v30 != v17))
           {
             [v8 addObject:v14];
           }
@@ -1129,15 +1129,15 @@ void __48__SUScriptNavigationItem_setTitleView_animated___block_invoke(uint64_t 
     while (v11);
   }
 
-  [v6 setLeftBarButtonItems:v8];
-  v18 = [v6 rightBarButtonItems];
+  [itemCopy setLeftBarButtonItems:v8];
+  rightBarButtonItems = [itemCopy rightBarButtonItems];
 
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = v18;
+  v20 = rightBarButtonItems;
   v21 = [v20 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v21)
   {
@@ -1155,9 +1155,9 @@ void __48__SUScriptNavigationItem_setTitleView_animated___block_invoke(uint64_t 
         v25 = *(*(&v31 + 1) + 8 * j);
         if (SUScriptNavigationItemIsFlagged(v25))
         {
-          v26 = [v25 target];
+          target2 = [v25 target];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || ([v26 scriptObject], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "_rootScriptObjectForObject:", v27), v28 = objc_claimAutoreleasedReturnValue(), v28, v27, v30 != v28))
+          if ((objc_opt_isKindOfClass() & 1) == 0 || ([target2 scriptObject], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(selfCopy, "_rootScriptObjectForObject:", v27), v28 = objc_claimAutoreleasedReturnValue(), v28, v27, v30 != v28))
           {
             [v19 addObject:v25];
           }
@@ -1170,57 +1170,57 @@ void __48__SUScriptNavigationItem_setTitleView_animated___block_invoke(uint64_t 
     while (v22);
   }
 
-  [v6 setRightBarButtonItems:v19];
+  [itemCopy setRightBarButtonItems:v19];
 }
 
-+ (id)_rootScriptObjectForObject:(id)a3
++ (id)_rootScriptObjectForObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 parentScriptObject];
+  objectCopy = object;
+  parentScriptObject = [objectCopy parentScriptObject];
 
-  v5 = v3;
-  if (v4)
+  parentScriptObject2 = objectCopy;
+  if (parentScriptObject)
   {
-    v6 = v3;
+    v6 = objectCopy;
     do
     {
-      v5 = [v6 parentScriptObject];
+      parentScriptObject2 = [v6 parentScriptObject];
 
-      v7 = [v5 parentScriptObject];
+      v5ParentScriptObject = [parentScriptObject2 parentScriptObject];
 
-      v6 = v5;
+      v6 = parentScriptObject2;
     }
 
-    while (v7);
+    while (v5ParentScriptObject);
   }
 
-  return v5;
+  return parentScriptObject2;
 }
 
-- (id)_copyScriptButtonForButtonItem:(id)a3
+- (id)_copyScriptButtonForButtonItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 target];
-  if (!SUScriptNavigationItemIsFlagged(v3) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v4 scriptObject], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  itemCopy = item;
+  target = [itemCopy target];
+  if (!SUScriptNavigationItemIsFlagged(itemCopy) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([target scriptObject], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5 = objc_alloc_init(SUScriptButton);
-    [(SUScriptButton *)v5 setNativeButton:v3];
+    [(SUScriptButton *)v5 setNativeButton:itemCopy];
   }
 
   return v5;
 }
 
-- (id)_copyScriptObjectForButtonItem:(id)a3
+- (id)_copyScriptObjectForButtonItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 customView];
-  if (v5)
+  itemCopy = item;
+  customView = [itemCopy customView];
+  if (customView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6 = objc_alloc_init(SUScriptTextField);
-      [(SUScriptTextField *)v6 setNativeObjectWithTextField:v5];
+      [(SUScriptTextField *)v6 setNativeObjectWithTextField:customView];
     }
 
     else
@@ -1229,7 +1229,7 @@ void __48__SUScriptNavigationItem_setTitleView_animated___block_invoke(uint64_t 
       if (objc_opt_isKindOfClass())
       {
         v6 = [[SUScriptTextField alloc] initWithTextFieldStyle:@"search"];
-        [(SUScriptTextField *)v6 setNativeObjectWithSearchBar:v5];
+        [(SUScriptTextField *)v6 setNativeObjectWithSearchBar:customView];
       }
 
       else
@@ -1241,34 +1241,34 @@ void __48__SUScriptNavigationItem_setTitleView_animated___block_invoke(uint64_t 
 
   else
   {
-    v6 = [(SUScriptNavigationItem *)self _copyScriptButtonForButtonItem:v4];
+    v6 = [(SUScriptNavigationItem *)self _copyScriptButtonForButtonItem:itemCopy];
   }
 
   return v6;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_33 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_33 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptNavigationItem;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_27, 7);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_27, 7);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptNavigationItem;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -1278,16 +1278,16 @@ void __48__SUScriptNavigationItem_setTitleView_animated___block_invoke(uint64_t 
 {
   v5.receiver = self;
   v5.super_class = SUScriptNavigationItem;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_33 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_33 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_27 = sel_setHidesBackButton_;
     unk_1EBF3AF30 = @"setHidesBackButton";

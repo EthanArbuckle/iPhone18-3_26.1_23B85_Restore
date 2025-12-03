@@ -1,51 +1,51 @@
 @interface MSAssetCollection
-+ (id)collectionWithMasterAsset:(id)a3 fileName:(id)a4;
-+ (id)collectionWithMasterAsset:(id)a3 fileName:(id)a4 derivedAssets:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (MSAssetCollection)initWithCoder:(id)a3;
-- (MSAssetCollection)initWithMasterAsset:(id)a3 fileName:(id)a4 derivedAssets:(id)a5;
++ (id)collectionWithMasterAsset:(id)asset fileName:(id)name;
++ (id)collectionWithMasterAsset:(id)asset fileName:(id)name derivedAssets:(id)assets;
+- (BOOL)isEqual:(id)equal;
+- (MSAssetCollection)initWithCoder:(id)coder;
+- (MSAssetCollection)initWithMasterAsset:(id)asset fileName:(id)name derivedAssets:(id)assets;
 - (NSData)masterAssetHash;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDerivedAssets:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDerivedAssets:(id)assets;
 @end
 
 @implementation MSAssetCollection
 
-- (MSAssetCollection)initWithCoder:(id)a3
+- (MSAssetCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = MSAssetCollection;
   v5 = [(MSAssetCollection *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetCollectionID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetCollectionID"];
     assetCollectionID = v5->_assetCollectionID;
     v5->_assetCollectionID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ctag"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ctag"];
     ctag = v5->_ctag;
     v5->_ctag = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"masterAsset"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"masterAsset"];
     masterAsset = v5->_masterAsset;
     v5->_masterAsset = v10;
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"derivedAssets"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"derivedAssets"];
     derivedAssets = v5->_derivedAssets;
     v5->_derivedAssets = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileName"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileName"];
     fileName = v5->_fileName;
     v5->_fileName = v17;
 
-    v5->_wasDeleted = [v4 decodeBoolForKey:@"wasDeleted"];
-    v5->_initialFailureDate = [v4 decodeInt64ForKey:@"initialFailureDate"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverUploadedDate"];
+    v5->_wasDeleted = [coderCopy decodeBoolForKey:@"wasDeleted"];
+    v5->_initialFailureDate = [coderCopy decodeInt64ForKey:@"initialFailureDate"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverUploadedDate"];
     serverUploadedDate = v5->_serverUploadedDate;
     v5->_serverUploadedDate = v19;
   }
@@ -53,81 +53,81 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   assetCollectionID = self->_assetCollectionID;
-  v11 = v4;
+  v11 = coderCopy;
   if (assetCollectionID)
   {
-    [v4 encodeObject:assetCollectionID forKey:@"assetCollectionID"];
-    v4 = v11;
+    [coderCopy encodeObject:assetCollectionID forKey:@"assetCollectionID"];
+    coderCopy = v11;
   }
 
   ctag = self->_ctag;
   if (ctag)
   {
     [v11 encodeObject:ctag forKey:@"ctag"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   masterAsset = self->_masterAsset;
   if (masterAsset)
   {
     [v11 encodeObject:masterAsset forKey:@"masterAsset"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   derivedAssets = self->_derivedAssets;
   if (derivedAssets)
   {
     [v11 encodeObject:derivedAssets forKey:@"derivedAssets"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   fileName = self->_fileName;
   if (fileName)
   {
     [v11 encodeObject:fileName forKey:@"fileName"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_wasDeleted)
   {
     [v11 encodeBool:1 forKey:@"wasDeleted"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_initialFailureDate >= 1)
   {
     [v11 encodeInt64:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   serverUploadedDate = self->_serverUploadedDate;
   if (serverUploadedDate)
   {
     [v11 encodeObject:serverUploadedDate forKey:@"serverUploadedDate"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     masterAsset = self->_masterAsset;
-    v6 = [v4 masterAsset];
-    v7 = [(MSAsset *)masterAsset isEqual:v6];
+    masterAsset = [equalCopy masterAsset];
+    v7 = [(MSAsset *)masterAsset isEqual:masterAsset];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = MSAssetCollection;
-    v7 = [(MSAssetCollection *)&v9 isEqual:v4];
+    v7 = [(MSAssetCollection *)&v9 isEqual:equalCopy];
   }
 
   return v7;
@@ -174,11 +174,11 @@
   return v5;
 }
 
-- (void)setDerivedAssets:(id)a3
+- (void)setDerivedAssets:(id)assets
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_derivedAssets, a3);
+  assetsCopy = assets;
+  objc_storeStrong(&self->_derivedAssets, assets);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -200,8 +200,8 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(MSAsset *)self->_masterAsset fileHash];
-        [v11 setMasterAssetHash:v12];
+        fileHash = [(MSAsset *)self->_masterAsset fileHash];
+        [v11 setMasterAssetHash:fileHash];
 
         ++v10;
       }
@@ -218,46 +218,46 @@
 
 - (NSData)masterAssetHash
 {
-  v2 = [(MSAssetCollection *)self masterAsset];
-  v3 = [v2 fileHash];
+  masterAsset = [(MSAssetCollection *)self masterAsset];
+  fileHash = [masterAsset fileHash];
 
-  return v3;
+  return fileHash;
 }
 
-- (MSAssetCollection)initWithMasterAsset:(id)a3 fileName:(id)a4 derivedAssets:(id)a5
+- (MSAssetCollection)initWithMasterAsset:(id)asset fileName:(id)name derivedAssets:(id)assets
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  nameCopy = name;
+  assetsCopy = assets;
   v15.receiver = self;
   v15.super_class = MSAssetCollection;
   v12 = [(MSAssetCollection *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_masterAsset, a3);
-    objc_storeStrong(&v13->_fileName, a4);
-    objc_storeStrong(&v13->_derivedAssets, a5);
+    objc_storeStrong(&v12->_masterAsset, asset);
+    objc_storeStrong(&v13->_fileName, name);
+    objc_storeStrong(&v13->_derivedAssets, assets);
   }
 
   return v13;
 }
 
-+ (id)collectionWithMasterAsset:(id)a3 fileName:(id)a4 derivedAssets:(id)a5
++ (id)collectionWithMasterAsset:(id)asset fileName:(id)name derivedAssets:(id)assets
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithMasterAsset:v10 fileName:v9 derivedAssets:v8];
+  assetsCopy = assets;
+  nameCopy = name;
+  assetCopy = asset;
+  v11 = [[self alloc] initWithMasterAsset:assetCopy fileName:nameCopy derivedAssets:assetsCopy];
 
   return v11;
 }
 
-+ (id)collectionWithMasterAsset:(id)a3 fileName:(id)a4
++ (id)collectionWithMasterAsset:(id)asset fileName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithMasterAsset:v7 fileName:v6 derivedAssets:0];
+  nameCopy = name;
+  assetCopy = asset;
+  v8 = [[self alloc] initWithMasterAsset:assetCopy fileName:nameCopy derivedAssets:0];
 
   return v8;
 }

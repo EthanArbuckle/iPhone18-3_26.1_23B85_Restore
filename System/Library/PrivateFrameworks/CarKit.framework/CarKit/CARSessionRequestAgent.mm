@@ -1,8 +1,8 @@
 @interface CARSessionRequestAgent
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)wantsCarPlayControlAdvertisingForUSB;
-- (BOOL)wantsCarPlayControlAdvertisingForWiFiUUID:(id)a3;
-- (CARSessionRequestAgent)initWithRequestHandler:(id)a3;
+- (BOOL)wantsCarPlayControlAdvertisingForWiFiUUID:(id)d;
+- (CARSessionRequestAgent)initWithRequestHandler:(id)handler;
 - (CARSessionRequestHandling)requestHandler;
 - (void)dealloc;
 @end
@@ -54,9 +54,9 @@ void __62__CARSessionRequestAgent_wantsCarPlayControlAdvertisingForUSB__block_in
   }
 }
 
-- (CARSessionRequestAgent)initWithRequestHandler:(id)a3
+- (CARSessionRequestAgent)initWithRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = CARSessionRequestAgent;
   v5 = [(CARSessionRequestAgent *)&v11 init];
@@ -66,8 +66,8 @@ void __62__CARSessionRequestAgent_wantsCarPlayControlAdvertisingForUSB__block_in
     handlerProxy = v5->_handlerProxy;
     v5->_handlerProxy = v6;
 
-    v8 = [(CARSessionRequestAgent *)v5 handlerProxy];
-    [v8 setRequestHandler:v4];
+    handlerProxy = [(CARSessionRequestAgent *)v5 handlerProxy];
+    [handlerProxy setRequestHandler:handlerCopy];
 
     v9 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:@"com.apple.carkit.sessionRequestHandler"];
     [v9 setDelegate:v5];
@@ -80,56 +80,56 @@ void __62__CARSessionRequestAgent_wantsCarPlayControlAdvertisingForUSB__block_in
 
 - (void)dealloc
 {
-  v3 = [(CARSessionRequestAgent *)self listener];
-  [v3 invalidate];
+  listener = [(CARSessionRequestAgent *)self listener];
+  [listener invalidate];
 
   v4.receiver = self;
   v4.super_class = CARSessionRequestAgent;
   [(CARSessionRequestAgent *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.carkit.sessionRequest"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.carkit.sessionRequest"];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = CarGeneralLogging();
   v9 = v8;
-  if (v7)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v12[0] = 67109120;
-      v12[1] = [v5 processIdentifier];
+      v12[1] = [connectionCopy processIdentifier];
       _os_log_impl(&dword_1C81FC000, v9, OS_LOG_TYPE_INFO, "Received CARSessionRequest connection from pid %d", v12, 8u);
     }
 
     v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F47F64F8];
     [v9 setClass:objc_opt_class() forSelector:sel_service_startSessionWithHost_requestIdentifier_reply_ argumentIndex:0 ofReply:0];
     [v9 setClass:objc_opt_class() forSelector:sel_service_startSessionWithHost_requestIdentifier_reply_ argumentIndex:1 ofReply:0];
-    [v5 setExportedInterface:v9];
-    v10 = [(CARSessionRequestAgent *)self handlerProxy];
-    [v5 setExportedObject:v10];
+    [connectionCopy setExportedInterface:v9];
+    handlerProxy = [(CARSessionRequestAgent *)self handlerProxy];
+    [connectionCopy setExportedObject:handlerProxy];
 
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [CARSessionRequestAgent listener:v5 shouldAcceptNewConnection:v9];
+    [CARSessionRequestAgent listener:connectionCopy shouldAcceptNewConnection:v9];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (CARSessionRequestHandling)requestHandler
 {
-  v2 = [(CARSessionRequestAgent *)self handlerProxy];
-  v3 = [v2 requestHandler];
+  handlerProxy = [(CARSessionRequestAgent *)self handlerProxy];
+  requestHandler = [handlerProxy requestHandler];
 
-  return v3;
+  return requestHandler;
 }
 
 void __62__CARSessionRequestAgent_wantsCarPlayControlAdvertisingForUSB__block_invoke_45(uint64_t a1, void *a2)
@@ -142,9 +142,9 @@ void __62__CARSessionRequestAgent_wantsCarPlayControlAdvertisingForUSB__block_in
   }
 }
 
-- (BOOL)wantsCarPlayControlAdvertisingForWiFiUUID:(id)a3
+- (BOOL)wantsCarPlayControlAdvertisingForWiFiUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -153,7 +153,7 @@ void __62__CARSessionRequestAgent_wantsCarPlayControlAdvertisingForUSB__block_in
   v7[1] = 3221225472;
   v7[2] = __68__CARSessionRequestAgent_wantsCarPlayControlAdvertisingForWiFiUUID___block_invoke;
   v7[3] = &unk_1E82FC0F8;
-  v4 = v3;
+  v4 = dCopy;
   v8 = v4;
   v9 = &v10;
   CRServiceConnectionSynchronousPerform(v7, &__block_literal_global_49_0);

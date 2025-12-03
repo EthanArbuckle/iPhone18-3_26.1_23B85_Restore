@@ -1,65 +1,65 @@
 @interface RMCapabilities
-+ (BOOL)isClassItemSupported:(Class)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6;
-+ (BOOL)isConfigurationSchemaItemSupported:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6;
-+ (BOOL)isStatusSchemaItemSupported:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6;
++ (BOOL)isClassItemSupported:(Class)supported enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (BOOL)isConfigurationSchemaItemSupported:(id)supported enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (BOOL)isStatusSchemaItemSupported:(id)supported enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
 + (NSMutableDictionary)capabilitiesByCapabilitiesType;
-+ (id)_clientCapabilitiesModelForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5;
-+ (id)_supportedActivationsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5;
-+ (id)_supportedAssetsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5;
-+ (id)_supportedClasses:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6;
-+ (id)_supportedConfigurationSchemas:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6;
-+ (id)_supportedConfigurationsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5;
-+ (id)_supportedManagementForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5;
-+ (id)_supportedPayloadsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5;
-+ (id)_supportedStatusClasses:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6;
-+ (id)_supportedStatusItemsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5;
-+ (id)_supportedStatusSchemas:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6;
-+ (id)capabilitiesForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5;
-- (RMCapabilities)initWithClientCapabilitiesModel:(id)a3;
++ (id)_clientCapabilitiesModelForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedActivationsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedAssetsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedClasses:(id)classes enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedConfigurationSchemas:(id)schemas enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedConfigurationsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedManagementForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedPayloadsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedStatusClasses:(id)classes enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedStatusItemsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)_supportedStatusSchemas:(id)schemas enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
++ (id)capabilitiesForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType;
+- (RMCapabilities)initWithClientCapabilitiesModel:(id)model;
 @end
 
 @implementation RMCapabilities
 
-+ (id)capabilitiesForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5
++ (id)capabilitiesForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
-  v9 = [NSString stringWithFormat:@"%ld-%ld-%lu", a3, a4, a5];
-  v10 = [a1 capabilitiesByCapabilitiesType];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  protocolType = [NSString stringWithFormat:@"%ld-%ld-%lu", type, scope, protocolType];
+  capabilitiesByCapabilitiesType = [self capabilitiesByCapabilitiesType];
+  v11 = [capabilitiesByCapabilitiesType objectForKeyedSubscript:protocolType];
 
   if (!v11)
   {
     v12 = [RMCapabilities alloc];
-    v13 = [RMCapabilities _clientCapabilitiesModelForEnrollmentType:a3 scope:a4 protocolType:a5];
+    v13 = [RMCapabilities _clientCapabilitiesModelForEnrollmentType:type scope:scope protocolType:protocolType];
     v11 = [(RMCapabilities *)v12 initWithClientCapabilitiesModel:v13];
 
-    v14 = [a1 capabilitiesByCapabilitiesType];
-    [v14 setObject:v11 forKeyedSubscript:v9];
+    capabilitiesByCapabilitiesType2 = [self capabilitiesByCapabilitiesType];
+    [capabilitiesByCapabilitiesType2 setObject:v11 forKeyedSubscript:protocolType];
   }
 
   return v11;
 }
 
-+ (BOOL)isClassItemSupported:(Class)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6
++ (BOOL)isClassItemSupported:(Class)supported enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
-  v9 = [RMModelSharedDefinitions currentPlatform:a3];
+  v9 = [RMModelSharedDefinitions currentPlatform:supported];
 
-  return [(objc_class *)a3 isSupportedForPlatform:v9 scope:a5 enrollmentType:a4];
+  return [(objc_class *)supported isSupportedForPlatform:v9 scope:scope enrollmentType:type];
 }
 
-+ (BOOL)isConfigurationSchemaItemSupported:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6
++ (BOOL)isConfigurationSchemaItemSupported:(id)supported enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
-  v8 = a3;
-  LOBYTE(a5) = [v8 isSupportedForPlatform:+[RMModelSharedDefinitions currentPlatform](RMModelSharedDefinitions scope:"currentPlatform") enrollmentType:{a5, a4}];
+  supportedCopy = supported;
+  LOBYTE(scope) = [supportedCopy isSupportedForPlatform:+[RMModelSharedDefinitions currentPlatform](RMModelSharedDefinitions scope:"currentPlatform") enrollmentType:{scope, type}];
 
-  return a5;
+  return scope;
 }
 
-+ (BOOL)isStatusSchemaItemSupported:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6
++ (BOOL)isStatusSchemaItemSupported:(id)supported enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
-  v8 = a3;
-  LOBYTE(a5) = [v8 isSupportedForPlatform:+[RMModelSharedDefinitions currentPlatform](RMModelSharedDefinitions scope:"currentPlatform") enrollmentType:{a5, a4}];
+  supportedCopy = supported;
+  LOBYTE(scope) = [supportedCopy isSupportedForPlatform:+[RMModelSharedDefinitions currentPlatform](RMModelSharedDefinitions scope:"currentPlatform") enrollmentType:{scope, type}];
 
-  return a5;
+  return scope;
 }
 
 + (NSMutableDictionary)capabilitiesByCapabilitiesType
@@ -74,75 +74,75 @@
   return v3;
 }
 
-- (RMCapabilities)initWithClientCapabilitiesModel:(id)a3
+- (RMCapabilities)initWithClientCapabilitiesModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = RMCapabilities;
   v6 = [(RMCapabilities *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_status, a3);
-    v8 = v5;
+    objc_storeStrong(&v6->_status, model);
+    v8 = modelCopy;
     v9 = [v8 serializeWithType:1];
     v10 = [NSJSONSerialization dataWithJSONObject:v9 options:10 error:0];
 
-    v11 = [v10 RMModelSHA1HexString];
+    rMModelSHA1HexString = [v10 RMModelSHA1HexString];
 
     versionHash = v7->_versionHash;
-    v7->_versionHash = v11;
+    v7->_versionHash = rMModelSHA1HexString;
   }
 
   return v7;
 }
 
-+ (id)_clientCapabilitiesModelForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5
++ (id)_clientCapabilitiesModelForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
   v9 = [RMModelAnyPayload buildFromDictionary:&__NSDictionary0__struct];
-  v10 = [a1 _supportedPayloadsForEnrollmentType:a3 scope:a4 protocolType:a5];
+  v10 = [self _supportedPayloadsForEnrollmentType:type scope:scope protocolType:protocolType];
   v11 = [RMModelStatusManagementClientCapabilities buildWithSupportedVersions:&off_1000D6E08 supportedFeatures:v9 supportedPayloads:v10];
 
   return v11;
 }
 
-+ (id)_supportedPayloadsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5
++ (id)_supportedPayloadsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
-  v9 = [a1 _supportedActivationsForEnrollmentType:? scope:? protocolType:?];
-  v10 = [a1 _supportedAssetsForEnrollmentType:a3 scope:a4 protocolType:a5];
-  v11 = [a1 _supportedConfigurationsForEnrollmentType:a3 scope:a4 protocolType:a5];
-  v12 = [a1 _supportedManagementForEnrollmentType:a3 scope:a4 protocolType:a5];
-  v13 = [a1 _supportedStatusItemsForEnrollmentType:a3 scope:a4 protocolType:a5];
+  v9 = [self _supportedActivationsForEnrollmentType:? scope:? protocolType:?];
+  v10 = [self _supportedAssetsForEnrollmentType:type scope:scope protocolType:protocolType];
+  v11 = [self _supportedConfigurationsForEnrollmentType:type scope:scope protocolType:protocolType];
+  v12 = [self _supportedManagementForEnrollmentType:type scope:scope protocolType:protocolType];
+  v13 = [self _supportedStatusItemsForEnrollmentType:type scope:scope protocolType:protocolType];
   v14 = [RMModelStatusManagementClientCapabilities_SupportedPayloadsDeclarations buildWithActivations:v9 assets:v10 configurations:v11 management:v12];
   v15 = [RMModelStatusManagementClientCapabilities_SupportedPayloads buildWithDeclarations:v14 statusItems:v13];
 
   return v15;
 }
 
-+ (id)_supportedActivationsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5
++ (id)_supportedActivationsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
   v9 = +[RMModelClasses allActivationClasses];
-  v10 = [a1 _supportedClasses:v9 enrollmentType:a3 scope:a4 protocolType:a5];
+  v10 = [self _supportedClasses:v9 enrollmentType:type scope:scope protocolType:protocolType];
 
   return v10;
 }
 
-+ (id)_supportedAssetsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5
++ (id)_supportedAssetsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
   v9 = +[RMModelClasses allAssetClasses];
-  v10 = [a1 _supportedClasses:v9 enrollmentType:a3 scope:a4 protocolType:a5];
+  v10 = [self _supportedClasses:v9 enrollmentType:type scope:scope protocolType:protocolType];
 
   return v10;
 }
 
-+ (id)_supportedConfigurationsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5
++ (id)_supportedConfigurationsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
   v9 = +[RMModelClasses allConfigurationClasses];
-  v10 = [a1 _supportedClasses:v9 enrollmentType:a3 scope:a4 protocolType:a5];
+  v10 = [self _supportedClasses:v9 enrollmentType:type scope:scope protocolType:protocolType];
 
   v11 = +[RMModelConfigurationSchema schemas];
-  v12 = [v11 allValues];
-  v13 = [a1 _supportedConfigurationSchemas:v12 enrollmentType:a3 scope:a4 protocolType:a5];
+  allValues = [v11 allValues];
+  v13 = [self _supportedConfigurationSchemas:allValues enrollmentType:type scope:scope protocolType:protocolType];
 
   v14 = [v10 arrayByAddingObjectsFromArray:v13];
   v15 = [v14 mutableCopy];
@@ -152,28 +152,28 @@
   return v15;
 }
 
-+ (id)_supportedManagementForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5
++ (id)_supportedManagementForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
   v9 = +[RMModelClasses allManagementClasses];
-  v10 = [a1 _supportedClasses:v9 enrollmentType:a3 scope:a4 protocolType:a5];
+  v10 = [self _supportedClasses:v9 enrollmentType:type scope:scope protocolType:protocolType];
 
   return v10;
 }
 
-+ (id)_supportedStatusItemsForEnrollmentType:(int64_t)a3 scope:(int64_t)a4 protocolType:(unint64_t)a5
++ (id)_supportedStatusItemsForEnrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
   v9 = +[RMModelClasses allStatusItemClasses];
   v10 = [v9 mutableCopy];
 
-  if (a5)
+  if (protocolType)
   {
     [v10 removeObject:objc_opt_class()];
   }
 
-  v11 = [a1 _supportedStatusClasses:v10 enrollmentType:a3 scope:a4 protocolType:a5];
+  v11 = [self _supportedStatusClasses:v10 enrollmentType:type scope:scope protocolType:protocolType];
   v12 = +[RMModelStatusSchema schemas];
-  v13 = [v12 allValues];
-  v14 = [a1 _supportedStatusSchemas:v13 enrollmentType:a3 scope:a4 protocolType:a5];
+  allValues = [v12 allValues];
+  v14 = [self _supportedStatusSchemas:allValues enrollmentType:type scope:scope protocolType:protocolType];
 
   v15 = [v11 arrayByAddingObjectsFromArray:v14];
   v16 = [v15 mutableCopy];
@@ -183,15 +183,15 @@
   return v16;
 }
 
-+ (id)_supportedClasses:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6
++ (id)_supportedClasses:(id)classes enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
-  v9 = a3;
-  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+  classesCopy = classes;
+  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [classesCopy count]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v9;
+  v10 = classesCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -207,10 +207,10 @@
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 registeredIdentifier];
-        if (+[RMFeatureFlags isAllowedDeclarationType:](RMFeatureFlags, "isAllowedDeclarationType:", v16) && [a1 isClassItemSupported:v15 enrollmentType:a4 scope:a5 protocolType:a6])
+        registeredIdentifier = [v15 registeredIdentifier];
+        if (+[RMFeatureFlags isAllowedDeclarationType:](RMFeatureFlags, "isAllowedDeclarationType:", registeredIdentifier) && [self isClassItemSupported:v15 enrollmentType:type scope:scope protocolType:protocolType])
         {
-          [v18 addObject:v16];
+          [v18 addObject:registeredIdentifier];
         }
       }
 
@@ -225,15 +225,15 @@
   return v18;
 }
 
-+ (id)_supportedConfigurationSchemas:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6
++ (id)_supportedConfigurationSchemas:(id)schemas enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
-  v9 = a3;
-  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+  schemasCopy = schemas;
+  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [schemasCopy count]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v9;
+  v10 = schemasCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -249,10 +249,10 @@
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 configurationType];
-        if (+[RMFeatureFlags isAllowedDeclarationType:](RMFeatureFlags, "isAllowedDeclarationType:", v16) && [a1 isConfigurationSchemaItemSupported:v15 enrollmentType:a4 scope:a5 protocolType:a6])
+        configurationType = [v15 configurationType];
+        if (+[RMFeatureFlags isAllowedDeclarationType:](RMFeatureFlags, "isAllowedDeclarationType:", configurationType) && [self isConfigurationSchemaItemSupported:v15 enrollmentType:type scope:scope protocolType:protocolType])
         {
-          [v18 addObject:v16];
+          [v18 addObject:configurationType];
         }
       }
 
@@ -267,15 +267,15 @@
   return v18;
 }
 
-+ (id)_supportedStatusClasses:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6
++ (id)_supportedStatusClasses:(id)classes enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
-  v9 = a3;
-  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+  classesCopy = classes;
+  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [classesCopy count]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v9;
+  v10 = classesCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -291,10 +291,10 @@
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 statusItemType];
-        if (+[RMFeatureFlags isAllowedStatusItem:](RMFeatureFlags, "isAllowedStatusItem:", v16) && [a1 isClassItemSupported:v15 enrollmentType:a4 scope:a5 protocolType:a6])
+        statusItemType = [v15 statusItemType];
+        if (+[RMFeatureFlags isAllowedStatusItem:](RMFeatureFlags, "isAllowedStatusItem:", statusItemType) && [self isClassItemSupported:v15 enrollmentType:type scope:scope protocolType:protocolType])
         {
-          [v18 addObject:v16];
+          [v18 addObject:statusItemType];
         }
       }
 
@@ -309,15 +309,15 @@
   return v18;
 }
 
-+ (id)_supportedStatusSchemas:(id)a3 enrollmentType:(int64_t)a4 scope:(int64_t)a5 protocolType:(unint64_t)a6
++ (id)_supportedStatusSchemas:(id)schemas enrollmentType:(int64_t)type scope:(int64_t)scope protocolType:(unint64_t)protocolType
 {
-  v9 = a3;
-  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+  schemasCopy = schemas;
+  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [schemasCopy count]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v9;
+  v10 = schemasCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -333,10 +333,10 @@
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 statusType];
-        if (+[RMFeatureFlags isAllowedDeclarationType:](RMFeatureFlags, "isAllowedDeclarationType:", v16) && [a1 isStatusSchemaItemSupported:v15 enrollmentType:a4 scope:a5 protocolType:a6])
+        statusType = [v15 statusType];
+        if (+[RMFeatureFlags isAllowedDeclarationType:](RMFeatureFlags, "isAllowedDeclarationType:", statusType) && [self isStatusSchemaItemSupported:v15 enrollmentType:type scope:scope protocolType:protocolType])
         {
-          [v18 addObject:v16];
+          [v18 addObject:statusType];
         }
       }
 

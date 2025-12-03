@@ -8,14 +8,14 @@
 
 - (void)didMoveToSuperview
 {
-  v3 = [(PassThroughView *)self delegate];
+  delegate = [(PassThroughView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(PassThroughView *)self delegate];
-    v5 = [(PassThroughView *)self superview];
-    [v6 passThroughView:self didMoveToView:v5];
+    delegate2 = [(PassThroughView *)self delegate];
+    superview = [(PassThroughView *)self superview];
+    [delegate2 passThroughView:self didMoveToView:superview];
   }
 }
 

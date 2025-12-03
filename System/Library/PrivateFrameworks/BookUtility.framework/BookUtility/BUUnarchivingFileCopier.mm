@@ -1,29 +1,29 @@
 @interface BUUnarchivingFileCopier
-- (BOOL)copyToURL:(id)a3 error:(id *)a4;
-- (BOOL)countTotalFileSize:(unint64_t *)a3 totalFileCount:(unint64_t *)a4;
+- (BOOL)copyToURL:(id)l error:(id *)error;
+- (BOOL)countTotalFileSize:(unint64_t *)size totalFileCount:(unint64_t *)count;
 - (BUFileCopierDelegate)delegate;
-- (BUUnarchivingFileCopier)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BUUnarchivingFileCopier)initWithURL:(id)l options:(unint64_t)options error:(id *)error;
 @end
 
 @implementation BUUnarchivingFileCopier
 
-- (BUUnarchivingFileCopier)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BUUnarchivingFileCopier)initWithURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = BUUnarchivingFileCopier;
   v10 = [(BUUnarchivingFileCopier *)&v20 init];
   if (v10)
   {
     v19 = 0;
-    v11 = objc_msgSend_zipArchiveFromURL_options_error_(BUZipFileArchive, v9, v8, a4, &v19);
+    v11 = objc_msgSend_zipArchiveFromURL_options_error_(BUZipFileArchive, v9, lCopy, options, &v19);
     v12 = v19;
     if (v12)
     {
       p_super = BUZipLog();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
-        sub_241DD1314(v8, v12, p_super);
+        sub_241DD1314(lCopy, v12, p_super);
       }
     }
 
@@ -34,7 +34,7 @@
       v10->_zipArchive = v14;
     }
 
-    if (a5)
+    if (error)
     {
       goto LABEL_9;
     }
@@ -43,11 +43,11 @@
   else
   {
     v12 = 0;
-    if (a5)
+    if (error)
     {
 LABEL_9:
       v15 = v12;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -66,29 +66,29 @@ LABEL_9:
   return v17;
 }
 
-- (BOOL)countTotalFileSize:(unint64_t *)a3 totalFileCount:(unint64_t *)a4
+- (BOOL)countTotalFileSize:(unint64_t *)size totalFileCount:(unint64_t *)count
 {
-  v6 = objc_msgSend_zipArchive(self, a2, a3);
+  v6 = objc_msgSend_zipArchive(self, a2, size);
   v9 = v6;
   if (v6)
   {
-    if (a3)
+    if (size)
     {
-      *a3 = objc_msgSend_totalSize(v6, v7, v8);
+      *size = objc_msgSend_totalSize(v6, v7, v8);
     }
 
-    if (a4)
+    if (count)
     {
-      *a4 = objc_msgSend_entriesCount(v9, v7, v8);
+      *count = objc_msgSend_entriesCount(v9, v7, v8);
     }
   }
 
   return v9 != 0;
 }
 
-- (BOOL)copyToURL:(id)a3 error:(id *)a4
+- (BOOL)copyToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v11 = objc_msgSend_zipArchive(self, v7, v8);
   if (v11)
   {
@@ -105,7 +105,7 @@ LABEL_9:
     v20[3] = &unk_278D1DC90;
     v21 = v23;
     v16 = v23;
-    Entry = objc_msgSend_extractToURL_error_shouldExtractEntry_didExtractEntry_(v15, v17, v6, a4, v22, v20);
+    Entry = objc_msgSend_extractToURL_error_shouldExtractEntry_didExtractEntry_(v15, v17, lCopy, error, v22, v20);
   }
 
   else

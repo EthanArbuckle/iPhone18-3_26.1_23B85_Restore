@@ -1,23 +1,23 @@
 @interface _MTL4FXSpatialScalingEffectEFFECT_NAME_V1
-- (_MTL4FXSpatialScalingEffectEFFECT_NAME_V1)initWithDevice:(id)a3 compiler:(id)a4 descriptor:(id)a5;
-- (void)encodeToCommandBuffer:(id)a3;
+- (_MTL4FXSpatialScalingEffectEFFECT_NAME_V1)initWithDevice:(id)device compiler:(id)compiler descriptor:(id)descriptor;
+- (void)encodeToCommandBuffer:(id)buffer;
 @end
 
 @implementation _MTL4FXSpatialScalingEffectEFFECT_NAME_V1
 
-- (_MTL4FXSpatialScalingEffectEFFECT_NAME_V1)initWithDevice:(id)a3 compiler:(id)a4 descriptor:(id)a5
+- (_MTL4FXSpatialScalingEffectEFFECT_NAME_V1)initWithDevice:(id)device compiler:(id)compiler descriptor:(id)descriptor
 {
-  v9 = a3;
-  v106 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  compilerCopy = compiler;
+  descriptorCopy = descriptor;
   v119.receiver = self;
   v119.super_class = _MTL4FXSpatialScalingEffectEFFECT_NAME_V1;
   v11 = [(_MTL4FXEffect *)&v119 init];
-  objc_storeStrong(&v11->_device, a3);
+  objc_storeStrong(&v11->_device, device);
   v104 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v12 = [(MTLDeviceSPI *)v11->_device newFence];
+  newFence = [(MTLDeviceSPI *)v11->_device newFence];
   internalFence = v11->_internalFence;
-  v11->_internalFence = v12;
+  v11->_internalFence = newFence;
 
   fence = v11->_fence;
   v11->_fence = 0;
@@ -29,25 +29,25 @@
   v103 = [v104 pathForResource:@"default" ofType:@"metallib"];
   v15 = [MEMORY[0x277CBEBC0] URLWithString:v103];
   v118 = 0;
-  v105 = [v9 newLibraryWithURL:v15 error:&v118];
+  v105 = [deviceCopy newLibraryWithURL:v15 error:&v118];
   v16 = v118;
 
   if (!v16)
   {
-    v11->_colorTextureFormat = [v10 colorTextureFormat];
-    v11->_outputTextureFormat = [v10 outputTextureFormat];
-    v11->_inputWidth = [v10 inputWidth];
-    v11->_inputHeight = [v10 inputHeight];
-    v11->_outputWidth = [v10 outputWidth];
-    v11->_outputHeight = [v10 outputHeight];
+    v11->_colorTextureFormat = [descriptorCopy colorTextureFormat];
+    v11->_outputTextureFormat = [descriptorCopy outputTextureFormat];
+    v11->_inputWidth = [descriptorCopy inputWidth];
+    v11->_inputHeight = [descriptorCopy inputHeight];
+    v11->_outputWidth = [descriptorCopy outputWidth];
+    v11->_outputHeight = [descriptorCopy outputHeight];
     v17 = objc_opt_new();
     v18 = [(MTLDeviceSPI *)v11->_device newResidencySetWithDescriptor:v17 error:0];
     residencySetGlobal = v11->_residencySetGlobal;
     v11->_residencySetGlobal = v18;
 
-    v20 = [v10 colorProcessingMode];
-    v11->_colorProcessingMode = v20;
-    if (v20 >= 3)
+    colorProcessingMode = [descriptorCopy colorProcessingMode];
+    v11->_colorProcessingMode = colorProcessingMode;
+    if (colorProcessingMode >= 3)
     {
       goto LABEL_22;
     }
@@ -56,19 +56,19 @@
     mfxPassDescriptor = v11->_mfxPassDescriptor;
     v11->_mfxPassDescriptor = v21;
 
-    v23 = [(MTL4RenderPassDescriptor *)v11->_mfxPassDescriptor colorAttachments];
-    v24 = [v23 objectAtIndexedSubscript:0];
+    colorAttachments = [(MTL4RenderPassDescriptor *)v11->_mfxPassDescriptor colorAttachments];
+    v24 = [colorAttachments objectAtIndexedSubscript:0];
     [v24 setLoadAction:0];
 
-    v25 = [(MTL4RenderPassDescriptor *)v11->_mfxPassDescriptor colorAttachments];
-    v26 = [v25 objectAtIndexedSubscript:0];
+    colorAttachments2 = [(MTL4RenderPassDescriptor *)v11->_mfxPassDescriptor colorAttachments];
+    v26 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v26 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-    v27 = [(MTL4RenderPassDescriptor *)v11->_mfxPassDescriptor colorAttachments];
-    v28 = [v27 objectAtIndexedSubscript:0];
+    colorAttachments3 = [(MTL4RenderPassDescriptor *)v11->_mfxPassDescriptor colorAttachments];
+    v28 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v28 setStoreAction:1];
 
-    [v10 colorTextureFormat];
+    [descriptorCopy colorTextureFormat];
     device = v11->_device;
     *&v112 = 0;
     v110 = 0u;
@@ -76,7 +76,7 @@
     v109 = 0u;
     MTLPixelFormatGetInfoForDevice();
     v11->_inputSRGB = 0;
-    [v10 outputTextureFormat];
+    [descriptorCopy outputTextureFormat];
     v30 = v11->_device;
     *&v112 = 0;
     v110 = 0u;
@@ -86,8 +86,8 @@
     v11->_outputSRGB = 0;
     if (v11->_inputSRGB)
     {
-      v31 = [v10 colorTextureFormat];
-      if (((v31 - 31) > 0x32 || ((1 << (v31 - 31)) & 0x4010000000001) == 0) && v31 != 11)
+      colorTextureFormat = [descriptorCopy colorTextureFormat];
+      if (((colorTextureFormat - 31) > 0x32 || ((1 << (colorTextureFormat - 31)) & 0x4010000000001) == 0) && colorTextureFormat != 11)
       {
         goto LABEL_22;
       }
@@ -95,8 +95,8 @@
 
     if (v11->_outputSRGB)
     {
-      v32 = [v10 outputTextureFormat];
-      if (((v32 - 31) > 0x32 || ((1 << (v32 - 31)) & 0x4010000000001) == 0) && v32 != 11)
+      outputTextureFormat = [descriptorCopy outputTextureFormat];
+      if (((outputTextureFormat - 31) > 0x32 || ((1 << (outputTextureFormat - 31)) & 0x4010000000001) == 0) && outputTextureFormat != 11)
       {
         goto LABEL_22;
       }
@@ -117,56 +117,56 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v11->_inputContentWidth = [v10 inputWidth];
-    v11->_inputContentHeight = [v10 inputHeight];
+    v11->_inputContentWidth = [descriptorCopy inputWidth];
+    v11->_inputContentHeight = [descriptorCopy inputHeight];
     v11->_colorTextureUsage = 1;
     v11->_outputTextureUsage = 5;
-    v11->_inputFormat = [v10 colorTextureFormat];
-    v11->_outputFormat = [v10 outputTextureFormat];
+    v11->_inputFormat = [descriptorCopy colorTextureFormat];
+    v11->_outputFormat = [descriptorCopy outputTextureFormat];
     if (!v11->_outputSRGB)
     {
-      v34 = [v10 outputTextureFormat];
+      outputTextureFormat2 = [descriptorCopy outputTextureFormat];
       goto LABEL_27;
     }
 
-    v33 = [v10 outputTextureFormat];
-    if (v33 > 70)
+    outputTextureFormat3 = [descriptorCopy outputTextureFormat];
+    if (outputTextureFormat3 > 70)
     {
-      if (v33 != 71)
+      if (outputTextureFormat3 != 71)
       {
-        if (v33 == 81)
+        if (outputTextureFormat3 == 81)
         {
-          v34 = 80;
+          outputTextureFormat2 = 80;
           goto LABEL_27;
         }
 
         goto LABEL_43;
       }
 
-      v34 = 70;
+      outputTextureFormat2 = 70;
     }
 
     else
     {
-      if (v33 != 11)
+      if (outputTextureFormat3 != 11)
       {
-        if (v33 == 31)
+        if (outputTextureFormat3 == 31)
         {
-          v34 = 30;
+          outputTextureFormat2 = 30;
           goto LABEL_27;
         }
 
 LABEL_43:
-        v34 = 0;
+        outputTextureFormat2 = 0;
         goto LABEL_27;
       }
 
-      v34 = 10;
+      outputTextureFormat2 = 10;
     }
 
 LABEL_27:
-    v11->_intermediatePixelFormat = v34;
-    v37 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v34 width:objc_msgSend(v10 height:"outputWidth") mipmapped:objc_msgSend(v10, "outputHeight"), 0];
+    v11->_intermediatePixelFormat = outputTextureFormat2;
+    v37 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:outputTextureFormat2 width:objc_msgSend(descriptorCopy height:"outputWidth") mipmapped:objc_msgSend(descriptorCopy, "outputHeight"), 0];
     texDesc = v11->_texDesc;
     v11->_texDesc = v37;
 
@@ -212,12 +212,12 @@ LABEL_27:
       [v98 setVertexFunctionDescriptor:v95];
       [v98 setFragmentFunctionDescriptor:v97];
       intermediatePixelFormat = v11->_intermediatePixelFormat;
-      v47 = [v98 colorAttachments];
-      v48 = [v47 objectAtIndexedSubscript:0];
+      colorAttachments4 = [v98 colorAttachments];
+      v48 = [colorAttachments4 objectAtIndexedSubscript:0];
       [v48 setPixelFormat:intermediatePixelFormat];
 
       v116 = 0;
-      v49 = [v106 newRenderPipelineStateWithDescriptor:v98 compilerTaskOptions:0 error:&v116];
+      v49 = [compilerCopy newRenderPipelineStateWithDescriptor:v98 compilerTaskOptions:0 error:&v116];
       v50 = v116;
       mfxNormPerceptPSO = v11->_mfxNormPerceptPSO;
       v11->_mfxNormPerceptPSO = v49;
@@ -225,7 +225,7 @@ LABEL_27:
       [v96 setMaxTextureBindCount:1];
       [v96 setMaxBufferBindCount:1];
       v115 = v50;
-      v52 = [v9 newArgumentTableWithDescriptor:v96 error:&v115];
+      v52 = [deviceCopy newArgumentTableWithDescriptor:v96 error:&v115];
       v53 = v115;
 
       normPerceptFragInputs = v11->_normPerceptFragInputs;
@@ -235,7 +235,7 @@ LABEL_27:
       LOBYTE(v117) = v55 == 2;
       BYTE1(v117) = v55 > 0;
       HIWORD(v117) = 0;
-      v56 = [v9 newBufferWithBytes:&v117 length:4 options:0];
+      v56 = [deviceCopy newBufferWithBytes:&v117 length:4 options:0];
       normalizeBuffer = v11->_normalizeBuffer;
       v11->_normalizeBuffer = v56;
 
@@ -255,12 +255,12 @@ LABEL_27:
     [v99 setVertexFunctionDescriptor:v95];
     [v99 setFragmentFunctionDescriptor:v97];
     v58 = v11->_intermediatePixelFormat;
-    v59 = [v99 colorAttachments];
-    v60 = [v59 objectAtIndexedSubscript:0];
+    colorAttachments5 = [v99 colorAttachments];
+    v60 = [colorAttachments5 objectAtIndexedSubscript:0];
     [v60 setPixelFormat:v58];
 
     v114 = v100;
-    v61 = [v106 newRenderPipelineStateWithDescriptor:v99 compilerTaskOptions:0 error:&v114];
+    v61 = [compilerCopy newRenderPipelineStateWithDescriptor:v99 compilerTaskOptions:0 error:&v114];
     v16 = v114;
 
     mfxUpscalePSO = v11->_mfxUpscalePSO;
@@ -277,13 +277,13 @@ LABEL_27:
       [v96 setMaxTextureBindCount:1];
       [v96 setMaxBufferBindCount:2];
       v113 = 0;
-      v64 = [v9 newArgumentTableWithDescriptor:v96 error:&v113];
+      v64 = [deviceCopy newArgumentTableWithDescriptor:v96 error:&v113];
       v101 = v113;
       scaleFragInputs = v11->_scaleFragInputs;
       v11->_scaleFragInputs = v64;
 
       v117 = 0;
-      v66 = [v9 newBufferWithBytes:&v117 length:4 options:0];
+      v66 = [deviceCopy newBufferWithBytes:&v117 length:4 options:0];
       scaleBuffer = v11->_scaleBuffer;
       v11->_scaleBuffer = v66;
 
@@ -318,7 +318,7 @@ LABEL_27:
         v76 = 0;
         do
         {
-          v77 = [v9 newBufferWithBytes:&v109 length:64 options:0];
+          v77 = [deviceCopy newBufferWithBytes:&v109 length:64 options:0];
           [(NSMutableArray *)v11->_fxrUpscaleBuffer setObject:v77 atIndexedSubscript:v76];
 
           v78 = v11->_residencySetGlobal;
@@ -338,12 +338,12 @@ LABEL_27:
       [v80 setVertexFunctionDescriptor:v95];
       [v80 setFragmentFunctionDescriptor:v97];
       v81 = v11->_intermediatePixelFormat;
-      v82 = [v80 colorAttachments];
-      v83 = [v82 objectAtIndexedSubscript:0];
+      colorAttachments6 = [v80 colorAttachments];
+      v83 = [colorAttachments6 objectAtIndexedSubscript:0];
       [v83 setPixelFormat:v81];
 
       v108 = v101;
-      v84 = [v106 newRenderPipelineStateWithDescriptor:v80 compilerTaskOptions:0 error:&v108];
+      v84 = [compilerCopy newRenderPipelineStateWithDescriptor:v80 compilerTaskOptions:0 error:&v108];
       v16 = v108;
 
       mfxSharpenPSO = v11->_mfxSharpenPSO;
@@ -354,7 +354,7 @@ LABEL_27:
         [v96 setMaxTextureBindCount:1];
         [v96 setMaxBufferBindCount:2];
         v107 = 0;
-        v87 = [v9 newArgumentTableWithDescriptor:v96 error:&v107];
+        v87 = [deviceCopy newArgumentTableWithDescriptor:v96 error:&v107];
         v102 = v107;
         sharpenFragInputs = v11->_sharpenFragInputs;
         v11->_sharpenFragInputs = v87;
@@ -364,7 +364,7 @@ LABEL_27:
         v89 = v11->_colorProcessingMode;
         BYTE2(v117) = v89 > 0;
         HIBYTE(v117) = v89 == 2;
-        v90 = [v9 newBufferWithBytes:&v117 length:4 options:0];
+        v90 = [deviceCopy newBufferWithBytes:&v117 length:4 options:0];
         sharpenBuffer = v11->_sharpenBuffer;
         v11->_sharpenBuffer = v90;
 
@@ -373,7 +373,7 @@ LABEL_27:
         v112 = 0u;
         v109 = xmmword_2398F28B0;
         v110 = 0u;
-        v92 = [v9 newBufferWithBytes:&v109 length:64 options:0];
+        v92 = [deviceCopy newBufferWithBytes:&v109 length:64 options:0];
         fxrSharpenBuffer = v11->_fxrSharpenBuffer;
         v11->_fxrSharpenBuffer = v92;
 
@@ -383,7 +383,7 @@ LABEL_27:
         [(MTLResidencySet *)v11->_residencySetGlobal addAllocation:v11->_mfxUpscaledTex];
 
         [(MTLResidencySet *)v11->_residencySetGlobal commit];
-        [(_MTL4FXSpatialScaler *)v11 _emitTelemetry:v10 forDevice:v11->_device];
+        [(_MTL4FXSpatialScaler *)v11 _emitTelemetry:descriptorCopy forDevice:v11->_device];
         v35 = v11;
         v16 = v102;
         goto LABEL_38;
@@ -408,11 +408,11 @@ LABEL_25:
   return v35;
 }
 
-- (void)encodeToCommandBuffer:(id)a3
+- (void)encodeToCommandBuffer:(id)buffer
 {
-  v4 = a3;
-  v43 = v4;
-  [(_MTL4FXEffect *)self _beginEncodeWithCommandBuffer:v4];
+  bufferCopy = buffer;
+  v43 = bufferCopy;
+  [(_MTL4FXEffect *)self _beginEncodeWithCommandBuffer:bufferCopy];
   if (MTLReportFailureTypeEnabled())
   {
     if (!self->_fence && !self->_outputTextureBarrierStages)
@@ -435,16 +435,16 @@ LABEL_25:
     goto LABEL_20;
   }
 
-  v6 = [(MTLTexture *)inputTexture pixelFormat];
-  if (v6 > 70)
+  pixelFormat = [(MTLTexture *)inputTexture pixelFormat];
+  if (pixelFormat > 70)
   {
-    if (v6 == 71)
+    if (pixelFormat == 71)
     {
       v7 = 70;
       goto LABEL_19;
     }
 
-    if (v6 == 81)
+    if (pixelFormat == 81)
     {
       v7 = 80;
       goto LABEL_19;
@@ -455,13 +455,13 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  if (v6 == 11)
+  if (pixelFormat == 11)
   {
     v7 = 10;
     goto LABEL_19;
   }
 
-  if (v6 != 31)
+  if (pixelFormat != 31)
   {
     goto LABEL_16;
   }
@@ -488,13 +488,13 @@ LABEL_20:
   {
     [(MTL4ArgumentTable *)self->_normPerceptFragInputs setTexture:[(MTLTexture *)v9 gpuResourceID] atIndex:0];
     mfxNormPerceptTex = self->_mfxNormPerceptTex;
-    v13 = [(MTL4RenderPassDescriptor *)self->_mfxPassDescriptor colorAttachments];
-    v14 = [v13 objectAtIndexedSubscript:0];
+    colorAttachments = [(MTL4RenderPassDescriptor *)self->_mfxPassDescriptor colorAttachments];
+    v14 = [colorAttachments objectAtIndexedSubscript:0];
     [v14 setTexture:mfxNormPerceptTex];
 
-    v15 = [v4 renderCommandEncoderWithDescriptor:self->_mfxPassDescriptor];
+    v15 = [bufferCopy renderCommandEncoderWithDescriptor:self->_mfxPassDescriptor];
     [(_MTL4FXEffect *)self _didCreateRenderCommandEncoder:v15 forEncode:self->super.super.super._encodeID];
-    [v4 useResidencySet:self->_residencySetPercept];
+    [bufferCopy useResidencySet:self->_residencySetPercept];
     fence = self->_fence;
     if (fence)
     {
@@ -509,13 +509,13 @@ LABEL_20:
     [v15 endEncoding];
   }
 
-  [v4 useResidencySet:self->_residencySetGlobal];
+  [bufferCopy useResidencySet:self->_residencySetGlobal];
   mfxUpscaledTex = self->_mfxUpscaledTex;
-  v18 = [(MTL4RenderPassDescriptor *)self->_mfxPassDescriptor colorAttachments];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  colorAttachments2 = [(MTL4RenderPassDescriptor *)self->_mfxPassDescriptor colorAttachments];
+  v19 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v19 setTexture:mfxUpscaledTex];
 
-  v20 = [v4 renderCommandEncoderWithDescriptor:self->_mfxPassDescriptor];
+  v20 = [bufferCopy renderCommandEncoderWithDescriptor:self->_mfxPassDescriptor];
   [v20 setLabel:@"Metal4FX_Scale"];
   if (MTLTraceEnabled())
   {
@@ -546,26 +546,26 @@ LABEL_20:
     outputWidth = self->_outputWidth;
     outputHeight = self->_outputHeight;
     v28 = [(NSMutableArray *)self->_fxrUpscaleBuffer objectAtIndexedSubscript:self->_frame];
-    v29 = [v28 contents];
+    contents = [v28 contents];
     v30 = 1.0 / outputWidth;
     v31 = 1.0 / outputHeight;
     v32 = 1.0 / inputWidth;
-    *v29 = v30 * inputContentWidth;
-    *(v29 + 4) = v31 * inputContentHeight;
+    *contents = v30 * inputContentWidth;
+    *(contents + 4) = v31 * inputContentHeight;
     v33 = 1.0 / inputHeight;
-    *(v29 + 8) = (vcvts_n_f32_u64(inputContentWidth, 1uLL) * v30) + -0.5;
-    *(v29 + 12) = (vcvts_n_f32_u64(inputContentHeight, 1uLL) * v31) + -0.5;
-    *(v29 + 16) = v32;
-    *(v29 + 20) = v33;
-    *(v29 + 24) = v32;
-    *(v29 + 28) = -v33;
-    *(v29 + 32) = -v32;
-    *(v29 + 36) = v33 + v33;
-    *(v29 + 40) = v32;
-    *(v29 + 44) = v33 + v33;
-    *(v29 + 48) = v32 * 0.0;
-    *(v29 + 52) = v33 * 4.0;
-    *(v29 + 56) = 0;
+    *(contents + 8) = (vcvts_n_f32_u64(inputContentWidth, 1uLL) * v30) + -0.5;
+    *(contents + 12) = (vcvts_n_f32_u64(inputContentHeight, 1uLL) * v31) + -0.5;
+    *(contents + 16) = v32;
+    *(contents + 20) = v33;
+    *(contents + 24) = v32;
+    *(contents + 28) = -v33;
+    *(contents + 32) = -v32;
+    *(contents + 36) = v33 + v33;
+    *(contents + 40) = v32;
+    *(contents + 44) = v33 + v33;
+    *(contents + 48) = v32 * 0.0;
+    *(contents + 52) = v33 * 4.0;
+    *(contents + 56) = 0;
   }
 
   scaleFragInputs = self->_scaleFragInputs;
@@ -584,8 +584,8 @@ LABEL_20:
   [v20 drawPrimitives:3 vertexStart:0 vertexCount:3];
   [v20 updateFence:self->_internalFence afterEncoderStages:2];
   [v20 endEncoding];
-  v37 = [(MTL4RenderPassDescriptor *)self->_mfxPassDescriptor colorAttachments];
-  v38 = [v37 objectAtIndexedSubscript:0];
+  colorAttachments3 = [(MTL4RenderPassDescriptor *)self->_mfxPassDescriptor colorAttachments];
+  v38 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v38 setTexture:v41];
 
   v39 = [v43 renderCommandEncoderWithDescriptor:self->_mfxPassDescriptor];

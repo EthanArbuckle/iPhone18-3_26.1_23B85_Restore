@@ -1,13 +1,13 @@
 @interface _SBUIAnimationControllerCoordinatingChildRelationship
-- (_SBUIAnimationControllerCoordinatingChildRelationship)initWithCoordinatingChildTransaction:(id)a3 schedulingPolicy:(unint64_t)a4;
+- (_SBUIAnimationControllerCoordinatingChildRelationship)initWithCoordinatingChildTransaction:(id)transaction schedulingPolicy:(unint64_t)policy;
 @end
 
 @implementation _SBUIAnimationControllerCoordinatingChildRelationship
 
-- (_SBUIAnimationControllerCoordinatingChildRelationship)initWithCoordinatingChildTransaction:(id)a3 schedulingPolicy:(unint64_t)a4
+- (_SBUIAnimationControllerCoordinatingChildRelationship)initWithCoordinatingChildTransaction:(id)transaction schedulingPolicy:(unint64_t)policy
 {
-  v7 = a3;
-  if (!v7)
+  transactionCopy = transaction;
+  if (!transactionCopy)
   {
     [_SBUIAnimationControllerCoordinatingChildRelationship initWithCoordinatingChildTransaction:schedulingPolicy:];
   }
@@ -18,8 +18,8 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_coordinatingChildTransaction, a3);
-    v9->_schedulingPolicy = a4;
+    objc_storeStrong(&v8->_coordinatingChildTransaction, transaction);
+    v9->_schedulingPolicy = policy;
   }
 
   return v9;

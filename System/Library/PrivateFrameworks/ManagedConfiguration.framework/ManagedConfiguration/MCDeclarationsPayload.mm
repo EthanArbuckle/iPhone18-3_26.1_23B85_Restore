@@ -1,5 +1,5 @@
 @interface MCDeclarationsPayload
-- (MCDeclarationsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCDeclarationsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)declarationsDictionary;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
@@ -8,27 +8,27 @@
 
 @implementation MCDeclarationsPayload
 
-- (MCDeclarationsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCDeclarationsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = MCDeclarationsPayload;
-  v9 = [(MCPayload *)&v30 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v30 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (v9)
   {
     v29 = 0;
-    v10 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Declarations" isRequired:1 outError:&v29];
+    v10 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Declarations" isRequired:1 outError:&v29];
     v11 = v29;
     if (v11)
     {
       v12 = v11;
       v13 = [(MCPayload *)v9 malformedPayloadErrorWithError:v11];
       v14 = v13;
-      if (a5)
+      if (error)
       {
         v15 = v13;
-        *a5 = v14;
+        *error = v14;
       }
 
       v16 = _MCLogObjects;
@@ -37,11 +37,11 @@
         v17 = v16;
         v18 = objc_opt_class();
         v19 = v18;
-        v20 = [v14 MCVerboseDescription];
+        mCVerboseDescription = [v14 MCVerboseDescription];
         *buf = 138543618;
         v32 = v18;
         v33 = 2114;
-        v34 = v20;
+        v34 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v17, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
@@ -52,18 +52,18 @@
 
     else
     {
-      if ([v8 count])
+      if ([dictionaryCopy count])
       {
         v22 = _MCLogObjects;
         if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
         {
           v23 = v22;
-          v24 = [(MCPayload *)v9 friendlyName];
-          v25 = [v8 allKeys];
+          friendlyName = [(MCPayload *)v9 friendlyName];
+          allKeys = [dictionaryCopy allKeys];
           *buf = 138543618;
-          v32 = v24;
+          v32 = friendlyName;
           v33 = 2114;
-          v34 = v25;
+          v34 = allKeys;
           _os_log_impl(&dword_1A795B000, v23, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
         }
       }
@@ -80,12 +80,12 @@
 
 - (id)declarationsDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(MCDeclarationsPayload *)self declarations];
-  v5 = [v4 copy];
-  [v3 setObject:v5 forKeyedSubscript:@"Declarations"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  declarations = [(MCDeclarationsPayload *)self declarations];
+  v5 = [declarations copy];
+  [dictionary setObject:v5 forKeyedSubscript:@"Declarations"];
 
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
 
   return v6;
 }
@@ -94,11 +94,11 @@
 {
   v6.receiver = self;
   v6.super_class = MCDeclarationsPayload;
-  v3 = [(MCPayload *)&v6 stubDictionary];
-  v4 = [(MCDeclarationsPayload *)self declarationsDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  stubDictionary = [(MCPayload *)&v6 stubDictionary];
+  declarationsDictionary = [(MCDeclarationsPayload *)self declarationsDictionary];
+  [stubDictionary addEntriesFromDictionary:declarationsDictionary];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
@@ -106,9 +106,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = MCDeclarationsPayload;
-  v4 = [(MCPayload *)&v8 verboseDescription];
-  v5 = [(MCDeclarationsPayload *)self declarations];
-  v6 = [v3 stringWithFormat:@"%@ %p: Declarations:%@", v4, self, v5];
+  verboseDescription = [(MCPayload *)&v8 verboseDescription];
+  declarations = [(MCDeclarationsPayload *)self declarations];
+  v6 = [v3 stringWithFormat:@"%@ %p: Declarations:%@", verboseDescription, self, declarations];
 
   return v6;
 }
@@ -117,8 +117,8 @@
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(MCDeclarationsPayload *)self declarations];
-  v6 = [v5 count];
+  declarations = [(MCDeclarationsPayload *)self declarations];
+  v6 = [declarations count];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", v6];
   v8 = [MCKeyValue alloc];

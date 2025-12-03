@@ -1,10 +1,10 @@
 @interface TimerSnippetTimeViewAccessibility
-- (BOOL)updateDisplayWithTime:(double)a3;
+- (BOOL)updateDisplayWithTime:(double)time;
 @end
 
 @implementation TimerSnippetTimeViewAccessibility
 
-- (BOOL)updateDisplayWithTime:(double)a3
+- (BOOL)updateDisplayWithTime:(double)time
 {
   v9.receiver = self;
   v9.super_class = TimerSnippetTimeViewAccessibility;

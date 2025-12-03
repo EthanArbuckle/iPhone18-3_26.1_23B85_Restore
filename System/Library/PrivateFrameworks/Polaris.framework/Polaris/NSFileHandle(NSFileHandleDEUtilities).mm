@@ -11,7 +11,7 @@
   v12 = [[v10 alloc] initWithFormat:v11 arguments:&a9];
 
   v13 = [v12 dataUsingEncoding:4];
-  [a1 writeData:v13];
+  [self writeData:v13];
 }
 
 @end

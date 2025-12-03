@@ -1,20 +1,20 @@
 @interface DASharedTestStatusHelper
-+ (id)statusCodeForArchiveError:(id)a3;
++ (id)statusCodeForArchiveError:(id)error;
 @end
 
 @implementation DASharedTestStatusHelper
 
-+ (id)statusCodeForArchiveError:(id)a3
++ (id)statusCodeForArchiveError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
+  errorCopy = error;
+  v4 = errorCopy;
   v5 = -999;
-  if (v3)
+  if (errorCopy)
   {
-    v6 = [v3 code];
-    if ((v6 - 1) < 0xA)
+    code = [errorCopy code];
+    if ((code - 1) < 0xA)
     {
-      v5 = (v6 - 2010);
+      v5 = (code - 2010);
     }
   }
 

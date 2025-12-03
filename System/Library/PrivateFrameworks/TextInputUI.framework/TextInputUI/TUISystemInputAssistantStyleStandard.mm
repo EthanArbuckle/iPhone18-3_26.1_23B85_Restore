@@ -11,15 +11,15 @@
 {
   if (_UISolariumEnabled())
   {
-    v2 = [MEMORY[0x1E69DC888] separatorColor];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
   }
 
   else
   {
-    v2 = 0;
+    separatorColor = 0;
   }
 
-  return v2;
+  return separatorColor;
 }
 
 - (double)highlightCornerRadius

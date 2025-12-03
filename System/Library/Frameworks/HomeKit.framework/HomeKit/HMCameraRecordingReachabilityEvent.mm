@@ -1,21 +1,21 @@
 @interface HMCameraRecordingReachabilityEvent
-- (BOOL)isEqual:(id)a3;
-- (HMCameraRecordingReachabilityEvent)initWithCoder:(id)a3;
-- (HMCameraRecordingReachabilityEvent)initWithUniqueIdentifier:(id)a3 dateOfOccurrence:(id)a4 reachable:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMCameraRecordingReachabilityEvent)initWithCoder:(id)coder;
+- (HMCameraRecordingReachabilityEvent)initWithUniqueIdentifier:(id)identifier dateOfOccurrence:(id)occurrence reachable:(BOOL)reachable;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCameraRecordingReachabilityEvent
 
-- (HMCameraRecordingReachabilityEvent)initWithCoder:(id)a3
+- (HMCameraRecordingReachabilityEvent)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCRRE.ck.ui"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCRRE.ck.doo"];
-  v7 = [v4 decodeBoolForKey:@"HMCRRE.ck.r"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCRRE.ck.ui"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCRRE.ck.doo"];
+  v7 = [coderCopy decodeBoolForKey:@"HMCRRE.ck.r"];
   if (v5)
   {
     v8 = v6 == 0;
@@ -29,7 +29,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -49,41 +49,41 @@
 
   else
   {
-    v12 = [(HMCameraRecordingReachabilityEvent *)self initWithUniqueIdentifier:v5 dateOfOccurrence:v6 reachable:v7];
-    v13 = v12;
+    selfCopy = [(HMCameraRecordingReachabilityEvent *)self initWithUniqueIdentifier:v5 dateOfOccurrence:v6 reachable:v7];
+    v13 = selfCopy;
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(HMCameraRecordingReachabilityEvent *)self uniqueIdentifier];
-  [v6 encodeObject:v4 forKey:@"HMCRRE.ck.ui"];
+  coderCopy = coder;
+  uniqueIdentifier = [(HMCameraRecordingReachabilityEvent *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"HMCRRE.ck.ui"];
 
-  v5 = [(HMCameraRecordingReachabilityEvent *)self dateOfOccurrence];
-  [v6 encodeObject:v5 forKey:@"HMCRRE.ck.doo"];
+  dateOfOccurrence = [(HMCameraRecordingReachabilityEvent *)self dateOfOccurrence];
+  [coderCopy encodeObject:dateOfOccurrence forKey:@"HMCRRE.ck.doo"];
 
-  [v6 encodeBool:-[HMCameraRecordingReachabilityEvent isReachable](self forKey:{"isReachable"), @"HMCRRE.ck.r"}];
+  [coderCopy encodeBool:-[HMCameraRecordingReachabilityEvent isReachable](self forKey:{"isReachable"), @"HMCRRE.ck.r"}];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMCameraRecordingReachabilityEvent *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(HMCameraRecordingReachabilityEvent *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -94,16 +94,16 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMCameraRecordingReachabilityEvent *)self uniqueIdentifier];
-    v8 = [v6 uniqueIdentifier];
-    if ([v7 isEqual:v8])
+    uniqueIdentifier = [(HMCameraRecordingReachabilityEvent *)self uniqueIdentifier];
+    uniqueIdentifier2 = [v6 uniqueIdentifier];
+    if ([uniqueIdentifier isEqual:uniqueIdentifier2])
     {
-      v9 = [(HMCameraRecordingReachabilityEvent *)self dateOfOccurrence];
-      v10 = [v6 dateOfOccurrence];
-      if ([v9 isEqualToDate:v10])
+      dateOfOccurrence = [(HMCameraRecordingReachabilityEvent *)self dateOfOccurrence];
+      dateOfOccurrence2 = [v6 dateOfOccurrence];
+      if ([dateOfOccurrence isEqualToDate:dateOfOccurrence2])
       {
-        v11 = [(HMCameraRecordingReachabilityEvent *)self isReachable];
-        v12 = v11 ^ [v6 isReachable] ^ 1;
+        isReachable = [(HMCameraRecordingReachabilityEvent *)self isReachable];
+        v12 = isReachable ^ [v6 isReachable] ^ 1;
       }
 
       else
@@ -129,12 +129,12 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(HMCameraRecordingReachabilityEvent *)self uniqueIdentifier];
-  [v3 appendFormat:@" uniqueIdentifier: %@", v4];
+  uniqueIdentifier = [(HMCameraRecordingReachabilityEvent *)self uniqueIdentifier];
+  [v3 appendFormat:@" uniqueIdentifier: %@", uniqueIdentifier];
 
   v5 = MEMORY[0x1E696AB78];
-  v6 = [(HMCameraRecordingReachabilityEvent *)self dateOfOccurrence];
-  v7 = [v5 localizedStringFromDate:v6 dateStyle:1 timeStyle:2];
+  dateOfOccurrence = [(HMCameraRecordingReachabilityEvent *)self dateOfOccurrence];
+  v7 = [v5 localizedStringFromDate:dateOfOccurrence dateStyle:1 timeStyle:2];
   [v3 appendFormat:@" dateOfOccurrence: %@", v7];
 
   [(HMCameraRecordingReachabilityEvent *)self isReachable];
@@ -147,18 +147,18 @@
   return v9;
 }
 
-- (HMCameraRecordingReachabilityEvent)initWithUniqueIdentifier:(id)a3 dateOfOccurrence:(id)a4 reachable:(BOOL)a5
+- (HMCameraRecordingReachabilityEvent)initWithUniqueIdentifier:(id)identifier dateOfOccurrence:(id)occurrence reachable:(BOOL)reachable
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  occurrenceCopy = occurrence;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = occurrenceCopy;
+  if (!occurrenceCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -170,7 +170,7 @@ LABEL_7:
   v11 = [(HMCameraRecordingReachabilityEvent *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     uniqueIdentifier = v11->_uniqueIdentifier;
     v11->_uniqueIdentifier = v12;
 
@@ -178,7 +178,7 @@ LABEL_7:
     dateOfOccurrence = v11->_dateOfOccurrence;
     v11->_dateOfOccurrence = v14;
 
-    v11->_reachable = a5;
+    v11->_reachable = reachable;
   }
 
   return v11;

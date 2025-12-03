@@ -1,13 +1,13 @@
 @interface DemoDataSource
 - (_TtC29MindRelevanceEngineDataSource14DemoDataSource)init;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 @end
 
 @implementation DemoDataSource
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_99DC();
   v8 = v7;
   if (v5)
@@ -22,7 +22,7 @@
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_17A0(v6, v8, v5, v9);
   sub_1D64(v5);
 }

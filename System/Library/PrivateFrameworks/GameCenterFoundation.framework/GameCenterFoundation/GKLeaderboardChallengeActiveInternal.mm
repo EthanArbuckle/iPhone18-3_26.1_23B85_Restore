@@ -1,5 +1,5 @@
 @interface GKLeaderboardChallengeActiveInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
 @end
 
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __63__GKLeaderboardChallengeActiveInternal_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_445 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_445, block);
@@ -43,12 +43,12 @@ void __63__GKLeaderboardChallengeActiveInternal_secureCodedPropertyKeys__block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengeActiveInternal);
-  [(GKLeaderboardChallengeDetailsInternal *)v4 updateWithServerFragment:v3];
-  v5 = [v3 objectForKeyedSubscript:@"card-text"];
+  [(GKLeaderboardChallengeDetailsInternal *)v4 updateWithServerFragment:fragmentCopy];
+  v5 = [fragmentCopy objectForKeyedSubscript:@"card-text"];
 
   [(GKLeaderboardChallengeActiveInternal *)v4 setLocalizedText:v5];
 

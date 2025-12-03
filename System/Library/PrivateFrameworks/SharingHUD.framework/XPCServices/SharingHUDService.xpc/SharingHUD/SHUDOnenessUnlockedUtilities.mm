@@ -31,8 +31,8 @@
   v4 = [UIButton buttonWithType:1];
   [v4 setTitle:v3 forState:0];
   v5 = [UIFont _preferredFontForTextStyle:UIFontTextStyleSubheadline variant:1024];
-  v6 = [v4 titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setFont:v5];
 
   v7 = +[UIColor systemRedColor];
   [v4 setTintColor:v7];

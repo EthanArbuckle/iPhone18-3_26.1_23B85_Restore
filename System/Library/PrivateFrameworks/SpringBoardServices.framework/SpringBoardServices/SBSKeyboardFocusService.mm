@@ -1,11 +1,11 @@
 @interface SBSKeyboardFocusService
 + (BKSHIDEventDeferringEnvironment)systemKeyCommandOverlayEnvironment;
 - (id)_connection;
-- (id)applyAdditionalDeferringRules:(id)a3 whenSceneHasKeyboardFocus:(id)a4 processID:(int)a5;
-- (id)setExternalSceneIdentities:(id)a3 forReason:(id)a4;
+- (id)applyAdditionalDeferringRules:(id)rules whenSceneHasKeyboardFocus:(id)focus processID:(int)d;
+- (id)setExternalSceneIdentities:(id)identities forReason:(id)reason;
 - (void)dealloc;
-- (void)removeKeyboardFocusFromSceneIdentity:(id)a3 processID:(int)a4;
-- (void)requestKeyboardFocusForSceneIdentity:(id)a3 processID:(int)a4 completion:(id)a5;
+- (void)removeKeyboardFocusFromSceneIdentity:(id)identity processID:(int)d;
+- (void)requestKeyboardFocusForSceneIdentity:(id)identity processID:(int)d completion:(id)completion;
 @end
 
 @implementation SBSKeyboardFocusService
@@ -43,23 +43,23 @@ uint64_t __61__SBSKeyboardFocusService_systemKeyCommandOverlayEnvironment__block
   [(SBSKeyboardFocusService *)&v5 dealloc];
 }
 
-- (void)requestKeyboardFocusForSceneIdentity:(id)a3 processID:(int)a4 completion:(id)a5
+- (void)requestKeyboardFocusForSceneIdentity:(id)identity processID:(int)d completion:(id)completion
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
-  if (v8 && v6)
+  v6 = *&d;
+  identityCopy = identity;
+  completionCopy = completion;
+  if (identityCopy && v6)
   {
-    v10 = [(SBSKeyboardFocusService *)self _connection];
-    v11 = [v10 remoteTarget];
+    _connection = [(SBSKeyboardFocusService *)self _connection];
+    remoteTarget = [_connection remoteTarget];
     v12 = [MEMORY[0x1E696AD98] numberWithInt:v6];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __85__SBSKeyboardFocusService_requestKeyboardFocusForSceneIdentity_processID_completion___block_invoke;
     v13[3] = &unk_1E7360228;
-    v14 = v8;
-    v15 = v9;
-    [v11 requestKeyboardFocusForSceneIdentity:v14 pid:v12 completion:v13];
+    v14 = identityCopy;
+    v15 = completionCopy;
+    [remoteTarget requestKeyboardFocusForSceneIdentity:v14 pid:v12 completion:v13];
   }
 }
 
@@ -81,30 +81,30 @@ void __85__SBSKeyboardFocusService_requestKeyboardFocusForSceneIdentity_processI
   (*(*(a1 + 40) + 16))(*(a1 + 40), [v5 BOOLValue]);
 }
 
-- (void)removeKeyboardFocusFromSceneIdentity:(id)a3 processID:(int)a4
+- (void)removeKeyboardFocusFromSceneIdentity:(id)identity processID:(int)d
 {
-  if (a3)
+  if (identity)
   {
-    v4 = *&a4;
-    if (a4)
+    v4 = *&d;
+    if (d)
     {
-      v6 = a3;
-      v9 = [(SBSKeyboardFocusService *)self _connection];
-      v7 = [v9 remoteTarget];
+      identityCopy = identity;
+      _connection = [(SBSKeyboardFocusService *)self _connection];
+      remoteTarget = [_connection remoteTarget];
       v8 = [MEMORY[0x1E696AD98] numberWithInt:v4];
-      [v7 removeKeyboardFocusFromSceneIdentity:v6 pid:v8];
+      [remoteTarget removeKeyboardFocusFromSceneIdentity:identityCopy pid:v8];
     }
   }
 }
 
-- (id)applyAdditionalDeferringRules:(id)a3 whenSceneHasKeyboardFocus:(id)a4 processID:(int)a5
+- (id)applyAdditionalDeferringRules:(id)rules whenSceneHasKeyboardFocus:(id)focus processID:(int)d
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E698E620] tokenForCurrentProcess];
-  v11 = [v10 hasEntitlement:@"com.apple.springboard.keyboardfocusservice"];
-  if (!v9 || !v11)
+  v5 = *&d;
+  rulesCopy = rules;
+  focusCopy = focus;
+  tokenForCurrentProcess = [MEMORY[0x1E698E620] tokenForCurrentProcess];
+  v11 = [tokenForCurrentProcess hasEntitlement:@"com.apple.springboard.keyboardfocusservice"];
+  if (!focusCopy || !v11)
   {
 
     goto LABEL_9;
@@ -118,7 +118,7 @@ LABEL_9:
   }
 
   v30 = 0;
-  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v30];
+  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:rulesCopy requiringSecureCoding:1 error:&v30];
   v13 = v30;
   if (v13)
   {
@@ -126,7 +126,7 @@ LABEL_9:
     v15 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [SBSKeyboardFocusService applyAdditionalDeferringRules:v8 whenSceneHasKeyboardFocus:v15 processID:?];
+      [SBSKeyboardFocusService applyAdditionalDeferringRules:rulesCopy whenSceneHasKeyboardFocus:v15 processID:?];
     }
 
     goto LABEL_9;
@@ -134,22 +134,22 @@ LABEL_9:
 
   objc_initWeak(&location, self);
   v18 = objc_alloc(MEMORY[0x1E698E778]);
-  v19 = [MEMORY[0x1E696AFB0] UUID];
-  v20 = [v19 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __93__SBSKeyboardFocusService_applyAdditionalDeferringRules_whenSceneHasKeyboardFocus_processID___block_invoke;
   v25[3] = &unk_1E7360250;
   objc_copyWeak(&v27, &location);
-  v21 = v9;
+  v21 = focusCopy;
   v26 = v21;
   v28 = v5;
-  v16 = [v18 initWithIdentifier:v20 forReason:@"SBSKeyboardFocusService" invalidationBlock:v25];
+  v16 = [v18 initWithIdentifier:uUIDString forReason:@"SBSKeyboardFocusService" invalidationBlock:v25];
 
-  v22 = [(SBSKeyboardFocusService *)self _connection];
-  v23 = [v22 remoteTarget];
+  _connection = [(SBSKeyboardFocusService *)self _connection];
+  remoteTarget = [_connection remoteTarget];
   v24 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-  [v23 deferAdditionalEnvironments:v12 whenSceneHasKeyboardFocus:v21 pid:v24];
+  [remoteTarget deferAdditionalEnvironments:v12 whenSceneHasKeyboardFocus:v21 pid:v24];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -169,10 +169,10 @@ void __93__SBSKeyboardFocusService_applyAdditionalDeferringRules_whenSceneHasKey
   [v3 stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:v4 pid:v5];
 }
 
-- (id)setExternalSceneIdentities:(id)a3 forReason:(id)a4
+- (id)setExternalSceneIdentities:(id)identities forReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  identitiesCopy = identities;
+  reasonCopy = reason;
   externalSceneIdentitiesAssertion = self->_externalSceneIdentitiesAssertion;
   if (!externalSceneIdentitiesAssertion)
   {
@@ -192,7 +192,7 @@ void __93__SBSKeyboardFocusService_applyAdditionalDeferringRules_whenSceneHasKey
     externalSceneIdentitiesAssertion = self->_externalSceneIdentitiesAssertion;
   }
 
-  v13 = [(BSCompoundAssertion *)externalSceneIdentitiesAssertion acquireForReason:v7 withContext:v6];
+  v13 = [(BSCompoundAssertion *)externalSceneIdentitiesAssertion acquireForReason:reasonCopy withContext:identitiesCopy];
 
   return v13;
 }
@@ -243,9 +243,9 @@ void __64__SBSKeyboardFocusService_setExternalSceneIdentities_forReason___block_
   if (!connection)
   {
     v4 = MEMORY[0x1E698F498];
-    v5 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v6 = +[SBSKeyboardFocusServiceSpecification identifier];
-    v7 = [v4 endpointForMachName:v5 service:v6 instance:0];
+    v7 = [v4 endpointForMachName:defaultShellMachName service:v6 instance:0];
 
     v8 = BSDispatchQueueCreateWithQualityOfService();
     connectionQueue = self->_connectionQueue;

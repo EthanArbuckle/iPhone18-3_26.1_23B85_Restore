@@ -1,49 +1,49 @@
 @interface PKCloudDeletedRecord
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeletedRecord:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeletedRecord:(id)record;
 - (BOOL)isPass;
 - (BOOL)isPassCatalog;
 - (BOOL)isRemoteAsset;
 - (NSString)recordName;
-- (PKCloudDeletedRecord)initWithCoder:(id)a3;
-- (PKCloudDeletedRecord)initWithRecordID:(id)a3 recordType:(id)a4;
+- (PKCloudDeletedRecord)initWithCoder:(id)coder;
+- (PKCloudDeletedRecord)initWithRecordID:(id)d recordType:(id)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudDeletedRecord
 
-- (PKCloudDeletedRecord)initWithRecordID:(id)a3 recordType:(id)a4
+- (PKCloudDeletedRecord)initWithRecordID:(id)d recordType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = PKCloudDeletedRecord;
   v9 = [(PKCloudDeletedRecord *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recordID, a3);
-    objc_storeStrong(&v10->_recordType, a4);
+    objc_storeStrong(&v9->_recordID, d);
+    objc_storeStrong(&v10->_recordType, type);
   }
 
   return v10;
 }
 
-- (PKCloudDeletedRecord)initWithCoder:(id)a3
+- (PKCloudDeletedRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKCloudDeletedRecord;
   v5 = [(PKCloudDeletedRecord *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordID"];
     recordID = v5->_recordID;
     v5->_recordID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordType"];
     recordType = v5->_recordType;
     v5->_recordType = v8;
   }
@@ -51,28 +51,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   recordID = self->_recordID;
-  v5 = a3;
-  [v5 encodeObject:recordID forKey:@"recordID"];
-  [v5 encodeObject:self->_recordType forKey:@"recordType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:recordID forKey:@"recordID"];
+  [coderCopy encodeObject:self->_recordType forKey:@"recordType"];
 }
 
 - (NSString)recordName
 {
-  v2 = [(PKCloudDeletedRecord *)self recordID];
-  v3 = [v2 recordName];
+  recordID = [(PKCloudDeletedRecord *)self recordID];
+  recordName = [recordID recordName];
 
-  return v3;
+  return recordName;
 }
 
 - (BOOL)isPass
 {
-  v2 = [(PKCloudDeletedRecord *)self recordType];
+  recordType = [(PKCloudDeletedRecord *)self recordType];
   v3 = @"Pass";
   v4 = v3;
-  if (v2 == v3)
+  if (recordType == v3)
   {
     v5 = 1;
   }
@@ -80,9 +80,9 @@
   else
   {
     v5 = 0;
-    if (v2 && v3)
+    if (recordType && v3)
     {
-      v5 = [(__CFString *)v2 isEqualToString:v3];
+      v5 = [(__CFString *)recordType isEqualToString:v3];
     }
   }
 
@@ -91,10 +91,10 @@
 
 - (BOOL)isPassCatalog
 {
-  v2 = [(PKCloudDeletedRecord *)self recordType];
+  recordType = [(PKCloudDeletedRecord *)self recordType];
   v3 = @"PassCatalog";
   v4 = v3;
-  if (v2 == v3)
+  if (recordType == v3)
   {
     v5 = 1;
   }
@@ -102,9 +102,9 @@
   else
   {
     v5 = 0;
-    if (v2 && v3)
+    if (recordType && v3)
     {
-      v5 = [(__CFString *)v2 isEqualToString:v3];
+      v5 = [(__CFString *)recordType isEqualToString:v3];
     }
   }
 
@@ -113,10 +113,10 @@
 
 - (BOOL)isRemoteAsset
 {
-  v2 = [(PKCloudDeletedRecord *)self recordType];
+  recordType = [(PKCloudDeletedRecord *)self recordType];
   v3 = @"RemoteAsset";
   v4 = v3;
-  if (v2 == v3)
+  if (recordType == v3)
   {
     v5 = 1;
   }
@@ -124,42 +124,42 @@
   else
   {
     v5 = 0;
-    if (v2 && v3)
+    if (recordType && v3)
     {
-      v5 = [(__CFString *)v2 isEqualToString:v3];
+      v5 = [(__CFString *)recordType isEqualToString:v3];
     }
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCloudDeletedRecord *)self isEqualToDeletedRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCloudDeletedRecord *)self isEqualToDeletedRecord:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDeletedRecord:(id)a3
+- (BOOL)isEqualToDeletedRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     goto LABEL_8;
   }
 
   recordID = self->_recordID;
-  v6 = v4[1];
+  v6 = recordCopy[1];
   if (recordID)
   {
     v7 = v6 == 0;
@@ -189,7 +189,7 @@ LABEL_8:
 
 LABEL_11:
   recordType = self->_recordType;
-  v11 = v4[2];
+  v11 = recordCopy[2];
   if (recordType && v11)
   {
     v8 = [(NSString *)recordType isEqual:?];
@@ -217,13 +217,13 @@ LABEL_9:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendString:@"----------------------------\n"];
-  [v3 appendFormat:@"recordID:\n%@\n", self->_recordID];
-  [v3 appendFormat:@"recordType:%@\n", self->_recordType];
-  [v3 appendString:@"----------------------------\n"];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:@"----------------------------\n"];
+  [string appendFormat:@"recordID:\n%@\n", self->_recordID];
+  [string appendFormat:@"recordType:%@\n", self->_recordType];
+  [string appendString:@"----------------------------\n"];
 
-  return v3;
+  return string;
 }
 
 @end

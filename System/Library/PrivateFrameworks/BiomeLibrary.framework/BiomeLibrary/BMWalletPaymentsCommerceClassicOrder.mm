@@ -1,40 +1,40 @@
 @interface BMWalletPaymentsCommerceClassicOrder
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWalletPaymentsCommerceClassicOrder)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMWalletPaymentsCommerceClassicOrder)initWithOrderTypeIdentifier:(id)a3 orderIdentifier:(id)a4 orderNumber:(id)a5 orderDate:(id)a6 merchant:(id)a7 shippingFulfillments:(id)a8 customer:(id)a9 payment:(id)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMWalletPaymentsCommerceClassicOrder)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMWalletPaymentsCommerceClassicOrder)initWithOrderTypeIdentifier:(id)identifier orderIdentifier:(id)orderIdentifier orderNumber:(id)number orderDate:(id)date merchant:(id)merchant shippingFulfillments:(id)fulfillments customer:(id)customer payment:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)orderDate;
 - (NSString)description;
 - (id)_shippingFulfillmentsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWalletPaymentsCommerceClassicOrder
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWalletPaymentsCommerceClassicOrder *)self orderTypeIdentifier];
-    v7 = [v5 orderTypeIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    orderTypeIdentifier = [(BMWalletPaymentsCommerceClassicOrder *)self orderTypeIdentifier];
+    orderTypeIdentifier2 = [v5 orderTypeIdentifier];
+    v8 = orderTypeIdentifier2;
+    if (orderTypeIdentifier == orderTypeIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMWalletPaymentsCommerceClassicOrder *)self orderTypeIdentifier];
-      v10 = [v5 orderTypeIdentifier];
-      v11 = [v9 isEqual:v10];
+      orderTypeIdentifier3 = [(BMWalletPaymentsCommerceClassicOrder *)self orderTypeIdentifier];
+      orderTypeIdentifier4 = [v5 orderTypeIdentifier];
+      v11 = [orderTypeIdentifier3 isEqual:orderTypeIdentifier4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMWalletPaymentsCommerceClassicOrder *)self orderIdentifier];
-    v14 = [v5 orderIdentifier];
-    v15 = v14;
-    if (v13 == v14)
+    orderIdentifier = [(BMWalletPaymentsCommerceClassicOrder *)self orderIdentifier];
+    orderIdentifier2 = [v5 orderIdentifier];
+    v15 = orderIdentifier2;
+    if (orderIdentifier == orderIdentifier2)
     {
     }
 
     else
     {
-      v16 = [(BMWalletPaymentsCommerceClassicOrder *)self orderIdentifier];
-      v17 = [v5 orderIdentifier];
-      v18 = [v16 isEqual:v17];
+      orderIdentifier3 = [(BMWalletPaymentsCommerceClassicOrder *)self orderIdentifier];
+      orderIdentifier4 = [v5 orderIdentifier];
+      v18 = [orderIdentifier3 isEqual:orderIdentifier4];
 
       if (!v18)
       {
@@ -61,18 +61,18 @@
       }
     }
 
-    v19 = [(BMWalletPaymentsCommerceClassicOrder *)self orderNumber];
-    v20 = [v5 orderNumber];
-    v21 = v20;
-    if (v19 == v20)
+    orderNumber = [(BMWalletPaymentsCommerceClassicOrder *)self orderNumber];
+    orderNumber2 = [v5 orderNumber];
+    v21 = orderNumber2;
+    if (orderNumber == orderNumber2)
     {
     }
 
     else
     {
-      v22 = [(BMWalletPaymentsCommerceClassicOrder *)self orderNumber];
-      v23 = [v5 orderNumber];
-      v24 = [v22 isEqual:v23];
+      orderNumber3 = [(BMWalletPaymentsCommerceClassicOrder *)self orderNumber];
+      orderNumber4 = [v5 orderNumber];
+      v24 = [orderNumber3 isEqual:orderNumber4];
 
       if (!v24)
       {
@@ -80,18 +80,18 @@
       }
     }
 
-    v25 = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
-    v26 = [v5 orderDate];
-    v27 = v26;
-    if (v25 == v26)
+    orderDate = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
+    orderDate2 = [v5 orderDate];
+    v27 = orderDate2;
+    if (orderDate == orderDate2)
     {
     }
 
     else
     {
-      v28 = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
-      v29 = [v5 orderDate];
-      v30 = [v28 isEqual:v29];
+      orderDate3 = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
+      orderDate4 = [v5 orderDate];
+      v30 = [orderDate3 isEqual:orderDate4];
 
       if (!v30)
       {
@@ -99,18 +99,18 @@
       }
     }
 
-    v31 = [(BMWalletPaymentsCommerceClassicOrder *)self merchant];
-    v32 = [v5 merchant];
-    v33 = v32;
-    if (v31 == v32)
+    merchant = [(BMWalletPaymentsCommerceClassicOrder *)self merchant];
+    merchant2 = [v5 merchant];
+    v33 = merchant2;
+    if (merchant == merchant2)
     {
     }
 
     else
     {
-      v34 = [(BMWalletPaymentsCommerceClassicOrder *)self merchant];
-      v35 = [v5 merchant];
-      v36 = [v34 isEqual:v35];
+      merchant3 = [(BMWalletPaymentsCommerceClassicOrder *)self merchant];
+      merchant4 = [v5 merchant];
+      v36 = [merchant3 isEqual:merchant4];
 
       if (!v36)
       {
@@ -118,18 +118,18 @@
       }
     }
 
-    v37 = [(BMWalletPaymentsCommerceClassicOrder *)self shippingFulfillments];
-    v38 = [v5 shippingFulfillments];
-    v39 = v38;
-    if (v37 == v38)
+    shippingFulfillments = [(BMWalletPaymentsCommerceClassicOrder *)self shippingFulfillments];
+    shippingFulfillments2 = [v5 shippingFulfillments];
+    v39 = shippingFulfillments2;
+    if (shippingFulfillments == shippingFulfillments2)
     {
     }
 
     else
     {
-      v40 = [(BMWalletPaymentsCommerceClassicOrder *)self shippingFulfillments];
-      v41 = [v5 shippingFulfillments];
-      v42 = [v40 isEqual:v41];
+      shippingFulfillments3 = [(BMWalletPaymentsCommerceClassicOrder *)self shippingFulfillments];
+      shippingFulfillments4 = [v5 shippingFulfillments];
+      v42 = [shippingFulfillments3 isEqual:shippingFulfillments4];
 
       if (!v42)
       {
@@ -137,18 +137,18 @@
       }
     }
 
-    v43 = [(BMWalletPaymentsCommerceClassicOrder *)self customer];
-    v44 = [v5 customer];
-    v45 = v44;
-    if (v43 == v44)
+    customer = [(BMWalletPaymentsCommerceClassicOrder *)self customer];
+    customer2 = [v5 customer];
+    v45 = customer2;
+    if (customer == customer2)
     {
     }
 
     else
     {
-      v46 = [(BMWalletPaymentsCommerceClassicOrder *)self customer];
-      v47 = [v5 customer];
-      v48 = [v46 isEqual:v47];
+      customer3 = [(BMWalletPaymentsCommerceClassicOrder *)self customer];
+      customer4 = [v5 customer];
+      v48 = [customer3 isEqual:customer4];
 
       if (!v48)
       {
@@ -160,18 +160,18 @@ LABEL_30:
       }
     }
 
-    v50 = [(BMWalletPaymentsCommerceClassicOrder *)self payment];
-    v51 = [v5 payment];
-    if (v50 == v51)
+    payment = [(BMWalletPaymentsCommerceClassicOrder *)self payment];
+    payment2 = [v5 payment];
+    if (payment == payment2)
     {
       v12 = 1;
     }
 
     else
     {
-      v52 = [(BMWalletPaymentsCommerceClassicOrder *)self payment];
-      v53 = [v5 payment];
-      v12 = [v52 isEqual:v53];
+      payment3 = [(BMWalletPaymentsCommerceClassicOrder *)self payment];
+      payment4 = [v5 payment];
+      v12 = [payment3 isEqual:payment4];
     }
 
     goto LABEL_30;
@@ -203,15 +203,15 @@ LABEL_31:
 - (id)jsonDictionary
 {
   v36[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMWalletPaymentsCommerceClassicOrder *)self orderTypeIdentifier];
-  v4 = [(BMWalletPaymentsCommerceClassicOrder *)self orderIdentifier];
-  v5 = [(BMWalletPaymentsCommerceClassicOrder *)self orderNumber];
-  v6 = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
-  if (v6)
+  orderTypeIdentifier = [(BMWalletPaymentsCommerceClassicOrder *)self orderTypeIdentifier];
+  orderIdentifier = [(BMWalletPaymentsCommerceClassicOrder *)self orderIdentifier];
+  orderNumber = [(BMWalletPaymentsCommerceClassicOrder *)self orderNumber];
+  orderDate = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
+  if (orderDate)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
-    [v8 timeIntervalSinceReferenceDate];
+    orderDate2 = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
+    [orderDate2 timeIntervalSinceReferenceDate];
     v9 = [v7 numberWithDouble:?];
   }
 
@@ -220,98 +220,98 @@ LABEL_31:
     v9 = 0;
   }
 
-  v10 = [(BMWalletPaymentsCommerceClassicOrder *)self merchant];
-  v34 = [v10 jsonDictionary];
+  merchant = [(BMWalletPaymentsCommerceClassicOrder *)self merchant];
+  jsonDictionary = [merchant jsonDictionary];
 
-  v11 = [(BMWalletPaymentsCommerceClassicOrder *)self _shippingFulfillmentsJSONArray];
-  v12 = [(BMWalletPaymentsCommerceClassicOrder *)self customer];
-  v13 = [v12 jsonDictionary];
+  _shippingFulfillmentsJSONArray = [(BMWalletPaymentsCommerceClassicOrder *)self _shippingFulfillmentsJSONArray];
+  customer = [(BMWalletPaymentsCommerceClassicOrder *)self customer];
+  jsonDictionary2 = [customer jsonDictionary];
 
-  v14 = [(BMWalletPaymentsCommerceClassicOrder *)self payment];
-  v15 = [v14 jsonDictionary];
+  payment = [(BMWalletPaymentsCommerceClassicOrder *)self payment];
+  jsonDictionary3 = [payment jsonDictionary];
 
   v35[0] = @"orderTypeIdentifier";
-  v16 = v3;
-  if (!v3)
+  null = orderTypeIdentifier;
+  if (!orderTypeIdentifier)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v16;
-  v36[0] = v16;
+  v30 = null;
+  v36[0] = null;
   v35[1] = @"orderIdentifier";
-  v17 = v4;
-  if (!v4)
+  null2 = orderIdentifier;
+  if (!orderIdentifier)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v17;
-  v36[1] = v17;
+  v29 = null2;
+  v36[1] = null2;
   v35[2] = @"orderNumber";
-  v18 = v5;
-  if (!v5)
+  null3 = orderNumber;
+  if (!orderNumber)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v3;
-  v28 = v18;
-  v36[2] = v18;
+  v33 = orderTypeIdentifier;
+  v28 = null3;
+  v36[2] = null3;
   v35[3] = @"orderDate";
-  v19 = v9;
+  null4 = v9;
   if (!v9)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v4;
-  v36[3] = v19;
+  v32 = orderIdentifier;
+  v36[3] = null4;
   v35[4] = @"merchant";
-  v20 = v34;
-  if (!v34)
+  null5 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v5;
-  v36[4] = v20;
+  v31 = orderNumber;
+  v36[4] = null5;
   v35[5] = @"shippingFulfillments";
-  v21 = v11;
-  if (!v11)
+  null6 = _shippingFulfillmentsJSONArray;
+  if (!_shippingFulfillmentsJSONArray)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v22 = v9;
-  v36[5] = v21;
+  v36[5] = null6;
   v35[6] = @"customer";
-  v23 = v13;
-  if (!v13)
+  null7 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36[6] = v23;
+  v36[6] = null7;
   v35[7] = @"payment";
-  v24 = v15;
-  if (!v15)
+  null8 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36[7] = v24;
+  v36[7] = null8;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:8];
-  if (v15)
+  if (jsonDictionary3)
   {
-    if (v13)
+    if (jsonDictionary2)
     {
       goto LABEL_22;
     }
 
 LABEL_34:
 
-    if (v11)
+    if (_shippingFulfillmentsJSONArray)
     {
       goto LABEL_23;
     }
@@ -319,13 +319,13 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (!v13)
+  if (!jsonDictionary2)
   {
     goto LABEL_34;
   }
 
 LABEL_22:
-  if (v11)
+  if (_shippingFulfillmentsJSONArray)
   {
     goto LABEL_23;
   }
@@ -333,7 +333,7 @@ LABEL_22:
 LABEL_35:
 
 LABEL_23:
-  if (!v34)
+  if (!jsonDictionary)
   {
   }
 
@@ -385,8 +385,8 @@ LABEL_30:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMWalletPaymentsCommerceClassicOrder *)self shippingFulfillments];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  shippingFulfillments = [(BMWalletPaymentsCommerceClassicOrder *)self shippingFulfillments];
+  v5 = [shippingFulfillments countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -397,14 +397,14 @@ LABEL_30:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(shippingFulfillments);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [shippingFulfillments countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -415,18 +415,18 @@ LABEL_30:
   return v3;
 }
 
-- (BMWalletPaymentsCommerceClassicOrder)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMWalletPaymentsCommerceClassicOrder)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v143[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"orderTypeIdentifier"];
-  v113 = self;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"orderTypeIdentifier"];
+  selfCopy = self;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v21 = objc_alloc(MEMORY[0x1E696ABC0]);
         v22 = *MEMORY[0x1E698F240];
@@ -438,7 +438,7 @@ LABEL_30:
         v9 = v24;
         v8 = 0;
         v26 = 0;
-        *a4 = [v21 initWithDomain:v25 code:2 userInfo:v24];
+        *error = [v21 initWithDomain:v25 code:2 userInfo:v24];
         goto LABEL_110;
       }
 
@@ -455,29 +455,29 @@ LABEL_30:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"orderIdentifier"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"orderIdentifier"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v27 = objc_alloc(MEMORY[0x1E696ABC0]);
         v28 = v9;
         v29 = *MEMORY[0x1E698F240];
         v140 = *MEMORY[0x1E696A578];
-        v30 = a4;
-        a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"orderIdentifier"];
-        v141 = a4;
-        v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v141 forKeys:&v140 count:1];
+        errorCopy = error;
+        error = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"orderIdentifier"];
+        errorCopy2 = error;
+        v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy2 forKeys:&v140 count:1];
         v32 = v27;
         v10 = v31;
         v33 = v29;
         v9 = v28;
         v23 = 0;
         v26 = 0;
-        *v30 = [v32 initWithDomain:v33 code:2 userInfo:v31];
+        *errorCopy = [v32 initWithDomain:v33 code:2 userInfo:v31];
         goto LABEL_109;
       }
 
@@ -494,14 +494,14 @@ LABEL_30:
     v112 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"orderNumber"];
-  v111 = a4;
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"orderNumber"];
+  errorCopy3 = error;
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
         v35 = v9;
@@ -513,10 +513,10 @@ LABEL_30:
         v39 = v36;
         v9 = v35;
         v40 = [v34 initWithDomain:v39 code:2 userInfo:v38];
-        a4 = 0;
+        error = 0;
         v26 = 0;
         v23 = v112;
-        *v111 = v40;
+        *errorCopy3 = v40;
         goto LABEL_108;
       }
 
@@ -525,17 +525,17 @@ LABEL_30:
       goto LABEL_109;
     }
 
-    a4 = v10;
+    error = v10;
   }
 
   else
   {
-    a4 = 0;
+    error = 0;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"orderDate"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"orderDate"];
   v108 = v11;
-  v109 = a4;
+  errorCopy4 = error;
   if (v11 && (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -567,7 +567,7 @@ LABEL_30:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v111)
+        if (errorCopy3)
         {
           v80 = v10;
           v81 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -585,7 +585,7 @@ LABEL_30:
           v9 = v107;
           v110 = 0;
           v26 = 0;
-          *v111 = [v84 initWithDomain:v85 code:2 userInfo:v83];
+          *errorCopy3 = [v84 initWithDomain:v85 code:2 userInfo:v83];
           v23 = v112;
           goto LABEL_106;
         }
@@ -609,7 +609,7 @@ LABEL_30:
   }
 
 LABEL_30:
-  v42 = [v6 objectForKeyedSubscript:@"merchant"];
+  v42 = [dictionaryCopy objectForKeyedSubscript:@"merchant"];
   if (v42)
   {
     objc_opt_class();
@@ -626,7 +626,7 @@ LABEL_30:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v111)
+        if (errorCopy3)
         {
           v102 = v10;
           v58 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -641,7 +641,7 @@ LABEL_30:
           v10 = v102;
           v62 = v59;
           v9 = v106;
-          *v111 = [v61 initWithDomain:v62 code:2 userInfo:v60];
+          *errorCopy3 = [v61 initWithDomain:v62 code:2 userInfo:v60];
 
           v26 = 0;
           v56 = v104;
@@ -664,10 +664,10 @@ LABEL_30:
       if (v57)
       {
         v23 = v112;
-        if (v111)
+        if (errorCopy3)
         {
           v57 = v57;
-          *v111 = v57;
+          *errorCopy3 = v57;
         }
 
         v26 = 0;
@@ -691,16 +691,16 @@ LABEL_30:
     v105 = v9;
   }
 
-  v43 = [v6 objectForKeyedSubscript:@"shippingFulfillments"];
-  v44 = [MEMORY[0x1E695DFB0] null];
-  v45 = [v43 isEqual:v44];
+  v43 = [dictionaryCopy objectForKeyedSubscript:@"shippingFulfillments"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v45 = [v43 isEqual:null];
 
   v95 = v7;
   v100 = v8;
   if (v45)
   {
     v96 = v42;
-    v94 = v6;
+    v94 = dictionaryCopy;
 
     v43 = 0;
   }
@@ -712,7 +712,7 @@ LABEL_30:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v111)
+        if (!errorCopy3)
         {
           v26 = 0;
           v9 = v105;
@@ -730,13 +730,13 @@ LABEL_30:
         v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
         v74 = [v72 initWithDomain:v73 code:2 userInfo:v55];
         v26 = 0;
-        *v111 = v74;
+        *errorCopy3 = v74;
         goto LABEL_70;
       }
     }
 
     v96 = v42;
-    v94 = v6;
+    v94 = dictionaryCopy;
   }
 
   v114 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v43, "count")}];
@@ -766,8 +766,8 @@ LABEL_30:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v63 = v111;
-        if (v111)
+        v63 = errorCopy3;
+        if (errorCopy3)
         {
           v64 = objc_alloc(MEMORY[0x1E696ABC0]);
           v65 = *MEMORY[0x1E698F240];
@@ -783,7 +783,7 @@ LABEL_63:
           v26 = 0;
           *v63 = v70;
           v55 = v43;
-          v6 = v94;
+          dictionaryCopy = v94;
           v23 = v112;
           v38 = v108;
           v56 = v103;
@@ -795,7 +795,7 @@ LABEL_67:
 LABEL_72:
         v26 = 0;
         v55 = v43;
-        v6 = v94;
+        dictionaryCopy = v94;
         v23 = v112;
         v38 = v108;
         v56 = v103;
@@ -806,8 +806,8 @@ LABEL_72:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v63 = v111;
-        if (v111)
+        v63 = errorCopy3;
+        if (errorCopy3)
         {
           v64 = objc_alloc(MEMORY[0x1E696ABC0]);
           v65 = *MEMORY[0x1E698F240];
@@ -832,15 +832,15 @@ LABEL_72:
       {
         v69 = v54;
         v56 = v103;
-        if (v111)
+        if (errorCopy3)
         {
           v71 = v54;
-          *v111 = v69;
+          *errorCopy3 = v69;
         }
 
         v26 = 0;
         v55 = v43;
-        v6 = v94;
+        dictionaryCopy = v94;
         v23 = v112;
         v38 = v108;
         goto LABEL_67;
@@ -860,7 +860,7 @@ LABEL_72:
 
 LABEL_49:
 
-  v6 = v94;
+  dictionaryCopy = v94;
   v55 = [v94 objectForKeyedSubscript:@"customer"];
   if (!v55)
   {
@@ -886,10 +886,10 @@ LABEL_49:
         goto LABEL_74;
       }
 
-      if (v111)
+      if (errorCopy3)
       {
         v77 = v77;
-        *v111 = v77;
+        *errorCopy3 = v77;
       }
 
       v26 = 0;
@@ -897,7 +897,7 @@ LABEL_49:
       goto LABEL_101;
     }
 
-    if (v111)
+    if (errorCopy3)
     {
       v86 = objc_alloc(MEMORY[0x1E696ABC0]);
       v87 = *MEMORY[0x1E698F240];
@@ -907,7 +907,7 @@ LABEL_49:
       v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v126 forKeys:&v125 count:1];
       v88 = [v86 initWithDomain:v87 code:2 userInfo:v69];
       v26 = 0;
-      *v111 = v88;
+      *errorCopy3 = v88;
 LABEL_101:
       v23 = v112;
       goto LABEL_102;
@@ -936,7 +936,7 @@ LABEL_74:
   v23 = v112;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v111)
+    if (errorCopy3)
     {
       v99 = objc_alloc(MEMORY[0x1E696ABC0]);
       v93 = *MEMORY[0x1E698F240];
@@ -944,7 +944,7 @@ LABEL_74:
       v91 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"payment"];
       v124 = v91;
       v92 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v124 forKeys:&v123 count:1];
-      *v111 = [v99 initWithDomain:v93 code:2 userInfo:v92];
+      *errorCopy3 = [v99 initWithDomain:v93 code:2 userInfo:v92];
 
       v76 = v91;
       v26 = 0;
@@ -971,16 +971,16 @@ LABEL_102:
     v38 = v108;
     v75 = v98;
 LABEL_77:
-    v26 = [(BMWalletPaymentsCommerceClassicOrder *)v113 initWithOrderTypeIdentifier:v100 orderIdentifier:v23 orderNumber:v109 orderDate:v110 merchant:v42 shippingFulfillments:v114 customer:v51 payment:v75];
-    v113 = v26;
+    v26 = [(BMWalletPaymentsCommerceClassicOrder *)selfCopy initWithOrderTypeIdentifier:v100 orderIdentifier:v23 orderNumber:errorCopy4 orderDate:v110 merchant:v42 shippingFulfillments:v114 customer:v51 payment:v75];
+    selfCopy = v26;
     v76 = v75;
     goto LABEL_78;
   }
 
-  if (v111)
+  if (errorCopy3)
   {
     v79 = v79;
-    *v111 = v79;
+    *errorCopy3 = v79;
   }
 
   v26 = 0;
@@ -1001,7 +1001,7 @@ LABEL_105:
 LABEL_106:
 
 LABEL_107:
-  a4 = v109;
+  error = errorCopy4;
   v37 = v110;
 LABEL_108:
 
@@ -1017,15 +1017,15 @@ LABEL_111:
 {
   v3 = objc_opt_new();
   [(BMWalletPaymentsCommerceClassicOrder *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_orderTypeIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -1051,7 +1051,7 @@ LABEL_111:
   {
     v17 = 0;
     PBDataWriterPlaceMark();
-    [(BMWalletPaymentsCommerceClassicOrderMerchant *)self->_merchant writeTo:v4];
+    [(BMWalletPaymentsCommerceClassicOrderMerchant *)self->_merchant writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1078,7 +1078,7 @@ LABEL_111:
         v11 = *(*(&v13 + 1) + 8 * v10);
         v17 = 0;
         PBDataWriterPlaceMark();
-        [v11 writeTo:{v4, v13}];
+        [v11 writeTo:{toCopy, v13}];
         PBDataWriterRecallMark();
         ++v10;
       }
@@ -1094,7 +1094,7 @@ LABEL_111:
   {
     v17 = 0;
     PBDataWriterPlaceMark();
-    [(BMWalletPaymentsCommerceClassicOrderCustomer *)self->_customer writeTo:v4];
+    [(BMWalletPaymentsCommerceClassicOrderCustomer *)self->_customer writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1102,16 +1102,16 @@ LABEL_111:
   {
     v17 = 0;
     PBDataWriterPlaceMark();
-    [(BMWalletPaymentsCommerceClassicOrderPayment *)self->_payment writeTo:v4];
+    [(BMWalletPaymentsCommerceClassicOrderPayment *)self->_payment writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v34.receiver = self;
   v34.super_class = BMWalletPaymentsCommerceClassicOrder;
   v5 = [(BMEventBase *)&v34 init];
@@ -1121,12 +1121,12 @@ LABEL_111:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_54;
       }
@@ -1137,18 +1137,18 @@ LABEL_111:
       while (1)
       {
         LOBYTE(v35) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v35 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (LOBYTE(v35) & 0x7F) << v8;
@@ -1165,9 +1165,9 @@ LABEL_111:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_54;
       }
@@ -1184,7 +1184,7 @@ LABEL_16:
         {
           v35 = 0.0;
           v36 = 0;
-          if (!PBReaderPlaceMark() || (v23 = [[BMWalletPaymentsCommerceClassicOrderCustomer alloc] initByReadFrom:v4]) == 0)
+          if (!PBReaderPlaceMark() || (v23 = [[BMWalletPaymentsCommerceClassicOrderCustomer alloc] initByReadFrom:fromCopy]) == 0)
           {
 LABEL_56:
 
@@ -1204,7 +1204,7 @@ LABEL_56:
             goto LABEL_56;
           }
 
-          v23 = [[BMWalletPaymentsCommerceClassicOrderPayment alloc] initByReadFrom:v4];
+          v23 = [[BMWalletPaymentsCommerceClassicOrderPayment alloc] initByReadFrom:fromCopy];
           if (!v23)
           {
             goto LABEL_56;
@@ -1232,7 +1232,7 @@ LABEL_49:
           goto LABEL_56;
         }
 
-        v23 = [[BMWalletPaymentsCommerceClassicOrderMerchant alloc] initByReadFrom:v4];
+        v23 = [[BMWalletPaymentsCommerceClassicOrderMerchant alloc] initByReadFrom:fromCopy];
         if (!v23)
         {
           goto LABEL_56;
@@ -1259,7 +1259,7 @@ LABEL_48:
         goto LABEL_56;
       }
 
-      v19 = [[BMWalletPaymentsCommerceClassicOrderShippingFulfillment alloc] initByReadFrom:v4];
+      v19 = [[BMWalletPaymentsCommerceClassicOrderShippingFulfillment alloc] initByReadFrom:fromCopy];
       if (!v19)
       {
         goto LABEL_56;
@@ -1270,8 +1270,8 @@ LABEL_48:
       PBReaderRecallMark();
 
 LABEL_53:
-      v28 = [v4 position];
-      if (v28 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_54;
       }
@@ -1290,18 +1290,18 @@ LABEL_53:
       {
         v5->_hasRaw_orderDate = 1;
         v35 = 0.0;
-        v21 = [v4 position] + 8;
-        if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 8, v22 <= objc_msgSend(v4, "length")))
+        v21 = [fromCopy position] + 8;
+        if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 8, v22 <= objc_msgSend(fromCopy, "length")))
         {
-          v27 = [v4 data];
-          [v27 getBytes:&v35 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v35 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_orderDate = v35;
@@ -1338,8 +1338,8 @@ LABEL_54:
   shippingFulfillments = v5->_shippingFulfillments;
   v5->_shippingFulfillments = v29;
 
-  v31 = [v4 hasError];
-  if (v31)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_57:
     v32 = 0;
@@ -1357,42 +1357,42 @@ LABEL_55:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMWalletPaymentsCommerceClassicOrder *)self orderTypeIdentifier];
-  v5 = [(BMWalletPaymentsCommerceClassicOrder *)self orderIdentifier];
-  v6 = [(BMWalletPaymentsCommerceClassicOrder *)self orderNumber];
-  v7 = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
-  v8 = [(BMWalletPaymentsCommerceClassicOrder *)self merchant];
-  v9 = [(BMWalletPaymentsCommerceClassicOrder *)self shippingFulfillments];
-  v10 = [(BMWalletPaymentsCommerceClassicOrder *)self customer];
-  v11 = [(BMWalletPaymentsCommerceClassicOrder *)self payment];
-  v12 = [v3 initWithFormat:@"BMWalletPaymentsCommerceClassicOrder with orderTypeIdentifier: %@, orderIdentifier: %@, orderNumber: %@, orderDate: %@, merchant: %@, shippingFulfillments: %@, customer: %@, payment: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  orderTypeIdentifier = [(BMWalletPaymentsCommerceClassicOrder *)self orderTypeIdentifier];
+  orderIdentifier = [(BMWalletPaymentsCommerceClassicOrder *)self orderIdentifier];
+  orderNumber = [(BMWalletPaymentsCommerceClassicOrder *)self orderNumber];
+  orderDate = [(BMWalletPaymentsCommerceClassicOrder *)self orderDate];
+  merchant = [(BMWalletPaymentsCommerceClassicOrder *)self merchant];
+  shippingFulfillments = [(BMWalletPaymentsCommerceClassicOrder *)self shippingFulfillments];
+  customer = [(BMWalletPaymentsCommerceClassicOrder *)self customer];
+  payment = [(BMWalletPaymentsCommerceClassicOrder *)self payment];
+  v12 = [v3 initWithFormat:@"BMWalletPaymentsCommerceClassicOrder with orderTypeIdentifier: %@, orderIdentifier: %@, orderNumber: %@, orderDate: %@, merchant: %@, shippingFulfillments: %@, customer: %@, payment: %@", orderTypeIdentifier, orderIdentifier, orderNumber, orderDate, merchant, shippingFulfillments, customer, payment];
 
   return v12;
 }
 
-- (BMWalletPaymentsCommerceClassicOrder)initWithOrderTypeIdentifier:(id)a3 orderIdentifier:(id)a4 orderNumber:(id)a5 orderDate:(id)a6 merchant:(id)a7 shippingFulfillments:(id)a8 customer:(id)a9 payment:(id)a10
+- (BMWalletPaymentsCommerceClassicOrder)initWithOrderTypeIdentifier:(id)identifier orderIdentifier:(id)orderIdentifier orderNumber:(id)number orderDate:(id)date merchant:(id)merchant shippingFulfillments:(id)fulfillments customer:(id)customer payment:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v17 = a6;
-  v24 = a7;
-  v23 = a8;
-  v22 = a9;
-  v21 = a10;
+  identifierCopy = identifier;
+  orderIdentifierCopy = orderIdentifier;
+  numberCopy = number;
+  dateCopy = date;
+  merchantCopy = merchant;
+  fulfillmentsCopy = fulfillments;
+  customerCopy = customer;
+  paymentCopy = payment;
   v28.receiver = self;
   v28.super_class = BMWalletPaymentsCommerceClassicOrder;
   v18 = [(BMEventBase *)&v28 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_orderTypeIdentifier, a3);
-    objc_storeStrong(&v18->_orderIdentifier, a4);
-    objc_storeStrong(&v18->_orderNumber, a5);
-    if (v17)
+    objc_storeStrong(&v18->_orderTypeIdentifier, identifier);
+    objc_storeStrong(&v18->_orderIdentifier, orderIdentifier);
+    objc_storeStrong(&v18->_orderNumber, number);
+    if (dateCopy)
     {
       v18->_hasRaw_orderDate = 1;
-      [v17 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1402,10 +1402,10 @@ LABEL_55:
     }
 
     v18->_raw_orderDate = v19;
-    objc_storeStrong(&v18->_merchant, a7);
-    objc_storeStrong(&v18->_shippingFulfillments, a8);
-    objc_storeStrong(&v18->_customer, a9);
-    objc_storeStrong(&v18->_payment, a10);
+    objc_storeStrong(&v18->_merchant, merchant);
+    objc_storeStrong(&v18->_shippingFulfillments, fulfillments);
+    objc_storeStrong(&v18->_customer, customer);
+    objc_storeStrong(&v18->_payment, payment);
   }
 
   return v18;
@@ -1502,9 +1502,9 @@ id __47__BMWalletPaymentsCommerceClassicOrder_columns__block_invoke(uint64_t a1,
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1512,8 +1512,8 @@ id __47__BMWalletPaymentsCommerceClassicOrder_columns__block_invoke(uint64_t a1,
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMWalletPaymentsCommerceClassicOrder alloc] initByReadFrom:v7];
     v4 = v8;

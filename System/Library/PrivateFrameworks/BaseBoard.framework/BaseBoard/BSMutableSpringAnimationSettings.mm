@@ -1,56 +1,56 @@
 @interface BSMutableSpringAnimationSettings
-- (void)setBeginTime:(double)a3;
-- (void)setDamping:(double)a3;
-- (void)setDelay:(double)a3;
-- (void)setHighFrameRateReason:(unsigned int)a3;
-- (void)setInitialVelocity:(double)a3;
-- (void)setMass:(double)a3;
-- (void)setStiffness:(double)a3;
+- (void)setBeginTime:(double)time;
+- (void)setDamping:(double)damping;
+- (void)setDelay:(double)delay;
+- (void)setHighFrameRateReason:(unsigned int)reason;
+- (void)setInitialVelocity:(double)velocity;
+- (void)setMass:(double)mass;
+- (void)setStiffness:(double)stiffness;
 @end
 
 @implementation BSMutableSpringAnimationSettings
 
-- (void)setDelay:(double)a3
+- (void)setDelay:(double)delay
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super.super._lock);
-    self->super.super._lock_delay = a3;
+    self->super.super._lock_delay = delay;
 
     os_unfair_lock_unlock(&self->super.super._lock);
   }
 }
 
-- (void)setHighFrameRateReason:(unsigned int)a3
+- (void)setHighFrameRateReason:(unsigned int)reason
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super.super._lock);
-    self->super.super._lock_highFrameRateReason = a3;
+    self->super.super._lock_highFrameRateReason = reason;
 
     os_unfair_lock_unlock(&self->super.super._lock);
   }
 }
 
-- (void)setBeginTime:(double)a3
+- (void)setBeginTime:(double)time
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super.super._lock);
-    self->super.super._lock_beginTime = a3;
+    self->super.super._lock_beginTime = time;
 
     os_unfair_lock_unlock(&self->super.super._lock);
   }
 }
 
-- (void)setMass:(double)a3
+- (void)setMass:(double)mass
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super.super._lock);
-    if (vabdd_f64(self->super.super._lock_mass, a3) >= 2.22044605e-16)
+    if (vabdd_f64(self->super.super._lock_mass, mass) >= 2.22044605e-16)
     {
-      self->super.super._lock_mass = a3;
+      self->super.super._lock_mass = mass;
       self->super.super._lock_storedDurationIsDirty = 1;
     }
 
@@ -58,14 +58,14 @@
   }
 }
 
-- (void)setStiffness:(double)a3
+- (void)setStiffness:(double)stiffness
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super.super._lock);
-    if (vabdd_f64(self->super.super._lock_stiffness, a3) >= 2.22044605e-16)
+    if (vabdd_f64(self->super.super._lock_stiffness, stiffness) >= 2.22044605e-16)
     {
-      self->super.super._lock_stiffness = a3;
+      self->super.super._lock_stiffness = stiffness;
       self->super.super._lock_storedDurationIsDirty = 1;
     }
 
@@ -73,14 +73,14 @@
   }
 }
 
-- (void)setDamping:(double)a3
+- (void)setDamping:(double)damping
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super.super._lock);
-    if (vabdd_f64(self->super.super._lock_damping, a3) >= 2.22044605e-16)
+    if (vabdd_f64(self->super.super._lock_damping, damping) >= 2.22044605e-16)
     {
-      self->super.super._lock_damping = a3;
+      self->super.super._lock_damping = damping;
       self->super.super._lock_storedDurationIsDirty = 1;
     }
 
@@ -88,14 +88,14 @@
   }
 }
 
-- (void)setInitialVelocity:(double)a3
+- (void)setInitialVelocity:(double)velocity
 {
   if (self)
   {
     os_unfair_lock_lock(&self->super.super._lock);
-    if (vabdd_f64(self->super.super._lock_initialVelocity, a3) >= 2.22044605e-16)
+    if (vabdd_f64(self->super.super._lock_initialVelocity, velocity) >= 2.22044605e-16)
     {
-      self->super.super._lock_initialVelocity = a3;
+      self->super.super._lock_initialVelocity = velocity;
       self->super.super._lock_storedDurationIsDirty = 1;
     }
 

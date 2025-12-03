@@ -1,18 +1,18 @@
 @interface DTKPTriggerKDebug
-- (DTKPTriggerKDebug)initWithCounterAllocatorProvider:(id)a3 recountConfiguration:(id)a4;
-- (int)start:(id *)a3;
-- (int)stop:(id *)a3;
-- (void)addCodeSet:(id)a3;
+- (DTKPTriggerKDebug)initWithCounterAllocatorProvider:(id)provider recountConfiguration:(id)configuration;
+- (int)start:(id *)start;
+- (int)stop:(id *)stop;
+- (void)addCodeSet:(id)set;
 - (void)clearCodeSet;
 @end
 
 @implementation DTKPTriggerKDebug
 
-- (DTKPTriggerKDebug)initWithCounterAllocatorProvider:(id)a3 recountConfiguration:(id)a4
+- (DTKPTriggerKDebug)initWithCounterAllocatorProvider:(id)provider recountConfiguration:(id)configuration
 {
   v9.receiver = self;
   v9.super_class = DTKPTriggerKDebug;
-  v4 = [(DTKPTrigger *)&v9 initWithCounterAllocatorProvider:a3 recountConfiguration:a4];
+  v4 = [(DTKPTrigger *)&v9 initWithCounterAllocatorProvider:provider recountConfiguration:configuration];
   v5 = v4;
   if (v4)
   {
@@ -32,44 +32,44 @@
   self->_codeSet = v3;
 }
 
-- (void)addCodeSet:(id)a3
+- (void)addCodeSet:(id)set
 {
-  v4 = a3;
-  v5 = [(DTKPTriggerKDebug *)self codeSet];
-  [v5 addCodeSet:v4];
+  setCopy = set;
+  codeSet = [(DTKPTriggerKDebug *)self codeSet];
+  [codeSet addCodeSet:setCopy];
 }
 
-- (int)start:(id *)a3
+- (int)start:(id *)start
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
+  lock = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_wait(lock, 0xFFFFFFFFFFFFFFFFLL);
 
   v6 = sDTKPLogClient;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(DTKPTrigger *)self triggerID];
+    triggerID = [(DTKPTrigger *)self triggerID];
     filterMode = self->_filterMode;
-    v9 = [(DTKPTriggerKDebug *)self codeSet];
-    v10 = [v9 description];
+    codeSet = [(DTKPTriggerKDebug *)self codeSet];
+    v10 = [codeSet description];
     v27[0] = 67109634;
-    v27[1] = v7;
+    v27[1] = triggerID;
     v28 = 1024;
     v29 = filterMode;
     v30 = 2080;
-    v31 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     _os_log_impl(&dword_247F67000, v6, OS_LOG_TYPE_DEBUG, "DTKPTriggerKDebug: Starting KDebug Trigger (%d). Filter Mode: %d. %s.", v27, 0x18u);
   }
 
-  v11 = [(DTKPTriggerKDebug *)self codeSet];
-  v12 = [v11 kdebugCodes];
-  v13 = [v12 count] == 0;
+  codeSet2 = [(DTKPTriggerKDebug *)self codeSet];
+  kdebugCodes = [codeSet2 kdebugCodes];
+  v13 = [kdebugCodes count] == 0;
 
   if (!v13)
   {
-    v14 = [(DTKPTrigger *)self collectKernelStacks];
-    v15 = [(DTKPTrigger *)self collectUserStacks];
-    if (v14)
+    collectKernelStacks = [(DTKPTrigger *)self collectKernelStacks];
+    collectUserStacks = [(DTKPTrigger *)self collectUserStacks];
+    if (collectKernelStacks)
     {
       v16 = 4;
     }
@@ -79,7 +79,7 @@
       v16 = 0;
     }
 
-    if (v15)
+    if (collectUserStacks)
     {
       v17 = v16 | 8;
     }
@@ -99,35 +99,35 @@
     if (![(DTKPTrigger *)self actionID])
     {
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error allocating a Kdebug trigger action"];
-      v22 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerKDebug", a3, 0xFFFFFFFFLL, v23);
+      v22 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerKDebug", start, 0xFFFFFFFFLL, v23);
 
       goto LABEL_17;
     }
 
-    v20 = [(DTKPTriggerKDebug *)self codeSet];
-    v21 = [v20 createKperfFilter];
+    codeSet3 = [(DTKPTriggerKDebug *)self codeSet];
+    createKperfFilter = [codeSet3 createKperfFilter];
 
     [(DTKPTrigger *)self _setSamplers:v17 | 1u forAction:[(DTKPTrigger *)self actionID]];
     [(DTKPTrigger *)self _setFilterByPid:[(DTKPTrigger *)self targetPid] forAction:[(DTKPTrigger *)self actionID]];
     kperf_kdebug_filter_set();
     [(DTKPTrigger *)self actionID];
     kperf_kdebug_action_set();
-    [DTKPKDebugCodeSet releaseKperfFilter:v21];
+    [DTKPKDebugCodeSet releaseKperfFilter:createKperfFilter];
   }
 
   v22 = 0;
 LABEL_17:
-  v24 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_signal(v24);
+  lock2 = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_signal(lock2);
 
   v25 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-- (int)stop:(id *)a3
+- (int)stop:(id *)stop
 {
-  v4 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+  lock = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_wait(lock, 0xFFFFFFFFFFFFFFFFLL);
 
   kperf_kdebug_filter_set();
   kperf_kdebug_action_set();
@@ -137,8 +137,8 @@ LABEL_17:
     [(DTKPTrigger *)self setActionID:0];
   }
 
-  v5 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_signal(v5);
+  lock2 = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_signal(lock2);
 
   return 0;
 }

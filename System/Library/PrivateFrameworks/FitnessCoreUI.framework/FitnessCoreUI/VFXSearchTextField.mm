@@ -1,6 +1,6 @@
 @interface VFXSearchTextField
-- (_TtC13FitnessCoreUI18VFXSearchTextField)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI18VFXSearchTextField)initWithFrame:(CGRect)a3;
+- (_TtC13FitnessCoreUI18VFXSearchTextField)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI18VFXSearchTextField)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -16,16 +16,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_20C3A9098();
 }
 
-- (_TtC13FitnessCoreUI18VFXSearchTextField)initWithFrame:(CGRect)a3
+- (_TtC13FitnessCoreUI18VFXSearchTextField)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -38,12 +38,12 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI18VFXSearchTextField____lazy_storage___backgroundVisuallEffectView) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for VFXSearchTextField();
-  v8 = [(VFXSearchTextField *)&v10 initWithFrame:x, y, width, height];
+  height = [(VFXSearchTextField *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
-- (_TtC13FitnessCoreUI18VFXSearchTextField)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI18VFXSearchTextField)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -57,8 +57,8 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI18VFXSearchTextField____lazy_storage___backgroundVisuallEffectView) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for VFXSearchTextField();
-  v5 = a3;
-  v6 = [(UISearchTextField *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(UISearchTextField *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

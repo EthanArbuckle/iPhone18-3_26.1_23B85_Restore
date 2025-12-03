@@ -1,11 +1,11 @@
 @interface MPSParavirtDevice
-- (BOOL)supportsFamily:(int64_t)a3;
-- (MPSParavirtDevice)initWithDevice:(id)a3;
+- (BOOL)supportsFamily:(int64_t)family;
+- (MPSParavirtDevice)initWithDevice:(id)device;
 @end
 
 @implementation MPSParavirtDevice
 
-- (MPSParavirtDevice)initWithDevice:(id)a3
+- (MPSParavirtDevice)initWithDevice:(id)device
 {
   v18.receiver = self;
   v18.super_class = MPSParavirtDevice;
@@ -32,7 +32,7 @@
   *p_hostSupportsFamilySEL = v8;
   if (objc_opt_respondsToSelector())
   {
-    a3 = objc_msgSend_performSelector_(a3, v9, sel_originalObject, v10, v11);
+    device = objc_msgSend_performSelector_(device, v9, sel_originalObject, v10, v11);
   }
 
   if (*p_hostSupportsFamilySEL)
@@ -48,16 +48,16 @@
 LABEL_9:
     if (*p_hostSupportsFamilySEL)
     {
-      v15 = objc_msgSend_methodForSelector_(a3, v12, *p_hostSupportsFamilySEL, v13, v14);
+      v15 = objc_msgSend_methodForSelector_(device, v12, *p_hostSupportsFamilySEL, v13, v14);
     }
 
     else
     {
-      v15 = objc_msgSend_methodForSelector_(a3, v12, 0, v13, v14);
+      v15 = objc_msgSend_methodForSelector_(device, v12, 0, v13, v14);
     }
 
     v5->_hostSupportsFamily = v15;
-    v5->_device = a3;
+    v5->_device = device;
     if (!v15)
     {
       goto LABEL_18;
@@ -67,7 +67,7 @@ LABEL_9:
   }
 
   hostSupportsFamily = v5->_hostSupportsFamily;
-  v5->_device = a3;
+  v5->_device = device;
   if (!hostSupportsFamily)
   {
     goto LABEL_18;
@@ -89,19 +89,19 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)supportsFamily:(int64_t)a3
+- (BOOL)supportsFamily:(int64_t)family
 {
   hostSupportsFamilySEL = self->_hostSupportsFamilySEL;
   hostSupportsFamily = self->_hostSupportsFamily;
   device = self->_device;
   if (hostSupportsFamilySEL)
   {
-    return hostSupportsFamily(device, hostSupportsFamilySEL, a3);
+    return hostSupportsFamily(device, hostSupportsFamilySEL, family);
   }
 
   else
   {
-    return hostSupportsFamily(device, 0, a3);
+    return hostSupportsFamily(device, 0, family);
   }
 }
 

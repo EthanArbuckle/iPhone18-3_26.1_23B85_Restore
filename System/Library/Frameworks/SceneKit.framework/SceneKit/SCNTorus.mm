@@ -1,27 +1,27 @@
 @interface SCNTorus
 + (SCNTorus)torusWithRingRadius:(CGFloat)ringRadius pipeRadius:(CGFloat)pipeRadius;
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4;
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4;
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max;
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius;
 - (CGFloat)pipeRadius;
 - (CGFloat)ringRadius;
 - (NSInteger)pipeSegmentCount;
 - (NSInteger)ringSegmentCount;
 - (SCNTorus)init;
-- (SCNTorus)initWithCoder:(id)a3;
-- (SCNTorus)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (SCNTorus)initWithCoder:(id)coder;
+- (SCNTorus)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (double)radialSpan;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (id)presentationTorus;
 - (int64_t)primitiveType;
-- (void)_setupObjCModelFrom:(id)a3;
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setupObjCModelFrom:(id)from;
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model;
+- (void)encodeWithCoder:(id)coder;
 - (void)setPipeRadius:(CGFloat)pipeRadius;
 - (void)setPipeSegmentCount:(NSInteger)pipeSegmentCount;
-- (void)setPrimitiveType:(int64_t)a3;
-- (void)setRadialSpan:(double)a3;
+- (void)setPrimitiveType:(int64_t)type;
+- (void)setRadialSpan:(double)span;
 - (void)setRingRadius:(CGFloat)ringRadius;
 - (void)setRingSegmentCount:(NSInteger)ringSegmentCount;
 @end
@@ -47,11 +47,11 @@
   return v5;
 }
 
-- (SCNTorus)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (SCNTorus)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNTorus;
-  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:a3];
+  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:ref];
   v4 = v3;
   if (v3)
   {
@@ -64,11 +64,11 @@
   return v4;
 }
 
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = SCNTorus;
-  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:a3];
+  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:ref];
 }
 
 - (id)presentationTorus
@@ -78,14 +78,14 @@
   return v2;
 }
 
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model
 {
-  self->_torusringRadius = C3DParametricGeometryGetFloatValue(a3, 9);
-  self->_toruspipeRadius = C3DParametricGeometryGetFloatValue(a3, 10);
-  self->_torusradialSpan = C3DParametricGeometryGetFloatValue(a3, 21);
-  self->_torusringSegmentCount = C3DParametricGeometryGetRingSegmentCount(a3);
-  self->_toruspipeSegmentCount = C3DParametricGeometryGetPipeSegmentCount(a3);
-  self->_torusprimitiveType = C3DParametricGeometryGetIntValue(a3, 20);
+  self->_torusringRadius = C3DParametricGeometryGetFloatValue(model, 9);
+  self->_toruspipeRadius = C3DParametricGeometryGetFloatValue(model, 10);
+  self->_torusradialSpan = C3DParametricGeometryGetFloatValue(model, 21);
+  self->_torusringSegmentCount = C3DParametricGeometryGetRingSegmentCount(model);
+  self->_toruspipeSegmentCount = C3DParametricGeometryGetPipeSegmentCount(model);
+  self->_torusprimitiveType = C3DParametricGeometryGetIntValue(model, 20);
 }
 
 - (CGFloat)pipeRadius
@@ -95,11 +95,11 @@
     return self->_toruspipeRadius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   PipeRadius = C3DParametricGeometryGetPipeRadius([(SCNGeometry *)self geometryRef]);
@@ -125,14 +125,14 @@
   else if (self->_toruspipeRadius != pipeRadius)
   {
     self->_toruspipeRadius = pipeRadius;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __26__SCNTorus_setPipeRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = pipeRadius;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"pipeRadius" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"pipeRadius" applyBlock:v7];
   }
 }
 
@@ -151,11 +151,11 @@ void __26__SCNTorus_setPipeRadius___block_invoke(uint64_t a1)
     return self->_toruspipeSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   PipeSegmentCount = C3DParametricGeometryGetPipeSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -181,14 +181,14 @@ void __26__SCNTorus_setPipeRadius___block_invoke(uint64_t a1)
   else if (self->_toruspipeSegmentCount != pipeSegmentCount)
   {
     self->_toruspipeSegmentCount = pipeSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __32__SCNTorus_setPipeSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = pipeSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"pipeSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"pipeSegmentCount" applyBlock:v7];
   }
 }
 
@@ -207,11 +207,11 @@ void __32__SCNTorus_setPipeSegmentCount___block_invoke(uint64_t a1)
     return self->_torusprimitiveType;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   PrimitiveType = C3DParametricGeometryGetPrimitiveType([(SCNGeometry *)self geometryRef]);
@@ -223,7 +223,7 @@ void __32__SCNTorus_setPipeSegmentCount___block_invoke(uint64_t a1)
   return PrimitiveType;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -234,17 +234,17 @@ void __32__SCNTorus_setPipeSegmentCount___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_torusprimitiveType != a3)
+  else if (self->_torusprimitiveType != type)
   {
-    self->_torusprimitiveType = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_torusprimitiveType = type;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __29__SCNTorus_setPrimitiveType___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    v7[5] = type;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -263,11 +263,11 @@ void __29__SCNTorus_setPrimitiveType___block_invoke(uint64_t a1)
     return self->_torusradialSpan;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   RadialSpan = C3DParametricGeometryGetRadialSpan([(SCNGeometry *)self geometryRef]);
@@ -279,7 +279,7 @@ void __29__SCNTorus_setPrimitiveType___block_invoke(uint64_t a1)
   return RadialSpan;
 }
 
-- (void)setRadialSpan:(double)a3
+- (void)setRadialSpan:(double)span
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -290,17 +290,17 @@ void __29__SCNTorus_setPrimitiveType___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_torusradialSpan != a3)
+  else if (self->_torusradialSpan != span)
   {
-    self->_torusradialSpan = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_torusradialSpan = span;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __26__SCNTorus_setRadialSpan___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    *&v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"radialSpan" applyBlock:v7];
+    *&v7[5] = span;
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"radialSpan" applyBlock:v7];
   }
 }
 
@@ -319,11 +319,11 @@ void __26__SCNTorus_setRadialSpan___block_invoke(uint64_t a1)
     return self->_torusringRadius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   RingRadius = C3DParametricGeometryGetRingRadius([(SCNGeometry *)self geometryRef]);
@@ -349,14 +349,14 @@ void __26__SCNTorus_setRadialSpan___block_invoke(uint64_t a1)
   else if (self->_torusringRadius != ringRadius)
   {
     self->_torusringRadius = ringRadius;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __26__SCNTorus_setRingRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = ringRadius;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"ringRadius" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"ringRadius" applyBlock:v7];
   }
 }
 
@@ -375,11 +375,11 @@ void __26__SCNTorus_setRingRadius___block_invoke(uint64_t a1)
     return self->_torusringSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   RingSegmentCount = C3DParametricGeometryGetRingSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -405,14 +405,14 @@ void __26__SCNTorus_setRingRadius___block_invoke(uint64_t a1)
   else if (self->_torusringSegmentCount != ringSegmentCount)
   {
     self->_torusringSegmentCount = ringSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __32__SCNTorus_setRingSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = ringSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"ringSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"ringSegmentCount" applyBlock:v7];
   }
 }
 
@@ -424,7 +424,7 @@ void __32__SCNTorus_setRingSegmentCount___block_invoke(uint64_t a1)
   C3DParametricGeometrySetRingSegmentCount(v2, v3);
 }
 
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max
 {
   v24 = 0.0;
   v23 = 0;
@@ -432,11 +432,11 @@ void __32__SCNTorus_setRingSegmentCount___block_invoke(uint64_t a1)
   v21 = 0;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef])
@@ -465,7 +465,7 @@ LABEL_11:
     {
       v20.receiver = self;
       v20.super_class = SCNTorus;
-      return [(SCNGeometry *)&v20 getBoundingBoxMin:a3 max:a4];
+      return [(SCNGeometry *)&v20 getBoundingBoxMin:min max:max];
     }
 
     [(SCNTorus *)self ringRadius];
@@ -478,47 +478,47 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (a3)
+  if (min)
   {
     v17 = v24;
-    *&a3->x = v23;
-    a3->z = v17;
+    *&min->x = v23;
+    min->z = v17;
   }
 
-  if (a4)
+  if (max)
   {
     v18 = v22;
-    *&a4->x = v21;
-    a4->z = v18;
+    *&max->x = v21;
+    max->z = v18;
   }
 
   return v10;
 }
 
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius
 {
   v16 = 0uLL;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef]&& C3DTorusGetBoundingSphere([(SCNGeometry *)self geometryRef], &v16))
     {
-      if (a3)
+      if (center)
       {
         v9 = *(&v16 + 2);
-        *&a3->x = v16;
-        a3->z = v9;
+        *&center->x = v16;
+        center->z = v9;
       }
 
-      if (a4)
+      if (radius)
       {
-        *a4 = *(&v16 + 3);
+        *radius = *(&v16 + 3);
       }
 
       v10 = 1;
@@ -549,16 +549,16 @@ LABEL_12:
     return 0;
   }
 
-  if (a3)
+  if (center)
   {
     v14 = *(&v16 + 2);
-    *&a3->x = v16;
-    a3->z = v14;
+    *&center->x = v16;
+    center->z = v14;
   }
 
-  if (a4)
+  if (radius)
   {
-    *a4 = *(&v16 + 3);
+    *radius = *(&v16 + 3);
   }
 
   return 1;
@@ -566,7 +566,7 @@ LABEL_12:
 
 + (SCNTorus)torusWithRingRadius:(CGFloat)ringRadius pipeRadius:(CGFloat)pipeRadius
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [v6 setRingRadius:ringRadius];
   [v6 setPipeRadius:pipeRadius];
 
@@ -576,33 +576,33 @@ LABEL_12:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCNGeometry *)self geometryDescription];
+  geometryDescription = [(SCNGeometry *)self geometryDescription];
   [(SCNTorus *)self ringRadius];
   v6 = v5;
   [(SCNTorus *)self pipeRadius];
-  return [v3 stringWithFormat:@"<%@ | ringRadius=%.3f pipeRadius=%.3f>", v4, v6, v7];
+  return [v3 stringWithFormat:@"<%@ | ringRadius=%.3f pipeRadius=%.3f>", geometryDescription, v6, v7];
 }
 
-- (void)_setupObjCModelFrom:(id)a3
+- (void)_setupObjCModelFrom:(id)from
 {
   v5.receiver = self;
   v5.super_class = SCNTorus;
   [(SCNGeometry *)&v5 _setupObjCModelFrom:?];
   +[SCNTransaction begin];
   [SCNTransaction setImmediateMode:1];
-  [a3 ringRadius];
+  [from ringRadius];
   [(SCNTorus *)self setRingRadius:?];
-  [a3 pipeRadius];
+  [from pipeRadius];
   [(SCNTorus *)self setPipeRadius:?];
-  [a3 radialSpan];
+  [from radialSpan];
   [(SCNTorus *)self setRadialSpan:?];
-  -[SCNTorus setRingSegmentCount:](self, "setRingSegmentCount:", [a3 ringSegmentCount]);
-  -[SCNTorus setPipeSegmentCount:](self, "setPipeSegmentCount:", [a3 pipeSegmentCount]);
-  -[SCNTorus setPrimitiveType:](self, "setPrimitiveType:", [a3 primitiveType]);
+  -[SCNTorus setRingSegmentCount:](self, "setRingSegmentCount:", [from ringSegmentCount]);
+  -[SCNTorus setPipeSegmentCount:](self, "setPipeSegmentCount:", [from pipeSegmentCount]);
+  -[SCNTorus setPrimitiveType:](self, "setPrimitiveType:", [from primitiveType]);
   +[SCNTransaction commitImmediate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _setupObjCModelFrom:self];
@@ -610,7 +610,7 @@ LABEL_12:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNTorus;
@@ -620,15 +620,15 @@ LABEL_12:
     [(SCNTorus *)self _syncObjCModel:[(SCNGeometry *)self geometryRef]];
   }
 
-  [a3 encodeDouble:@"torusringRadius" forKey:self->_torusringRadius];
-  [a3 encodeDouble:@"toruspipeRadius" forKey:self->_toruspipeRadius];
-  [a3 encodeDouble:@"torusradialSpan" forKey:self->_torusradialSpan];
-  [a3 encodeInteger:self->_torusringSegmentCount forKey:@"torusringSegmentCount"];
-  [a3 encodeInteger:self->_toruspipeSegmentCount forKey:@"toruspipeSegmentCount"];
-  [a3 encodeInteger:self->_torusprimitiveType forKey:@"torusprimitiveType"];
+  [coder encodeDouble:@"torusringRadius" forKey:self->_torusringRadius];
+  [coder encodeDouble:@"toruspipeRadius" forKey:self->_toruspipeRadius];
+  [coder encodeDouble:@"torusradialSpan" forKey:self->_torusradialSpan];
+  [coder encodeInteger:self->_torusringSegmentCount forKey:@"torusringSegmentCount"];
+  [coder encodeInteger:self->_toruspipeSegmentCount forKey:@"toruspipeSegmentCount"];
+  [coder encodeInteger:self->_torusprimitiveType forKey:@"torusprimitiveType"];
 }
 
-- (SCNTorus)initWithCoder:(id)a3
+- (SCNTorus)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNTorus;
@@ -637,15 +637,15 @@ LABEL_12:
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [a3 decodeDoubleForKey:@"torusringRadius"];
+    [coder decodeDoubleForKey:@"torusringRadius"];
     [(SCNTorus *)v4 setRingRadius:?];
-    [a3 decodeDoubleForKey:@"toruspipeRadius"];
+    [coder decodeDoubleForKey:@"toruspipeRadius"];
     [(SCNTorus *)v4 setPipeRadius:?];
-    [a3 decodeDoubleForKey:@"torusradialSpan"];
+    [coder decodeDoubleForKey:@"torusradialSpan"];
     [(SCNTorus *)v4 setRadialSpan:?];
-    -[SCNTorus setRingSegmentCount:](v4, "setRingSegmentCount:", [a3 decodeIntegerForKey:@"torusringSegmentCount"]);
-    -[SCNTorus setPipeSegmentCount:](v4, "setPipeSegmentCount:", [a3 decodeIntegerForKey:@"toruspipeSegmentCount"]);
-    -[SCNTorus setPrimitiveType:](v4, "setPrimitiveType:", [a3 decodeIntegerForKey:@"torusprimitiveType"]);
+    -[SCNTorus setRingSegmentCount:](v4, "setRingSegmentCount:", [coder decodeIntegerForKey:@"torusringSegmentCount"]);
+    -[SCNTorus setPipeSegmentCount:](v4, "setPipeSegmentCount:", [coder decodeIntegerForKey:@"toruspipeSegmentCount"]);
+    -[SCNTorus setPrimitiveType:](v4, "setPrimitiveType:", [coder decodeIntegerForKey:@"torusprimitiveType"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

@@ -3,7 +3,7 @@
 + (id)_userDefaults;
 + (id)createSharedSettings;
 + (id)sharedSettings;
-+ (void)setSuiteName:(id)a3;
++ (void)setSuiteName:(id)name;
 - (id)parentSettings;
 - (void)save;
 @end
@@ -12,51 +12,51 @@
 
 + (id)_signatureDictionary
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [objc_alloc(objc_opt_class()) initWithDefaultValues];
-  v4 = [v3 archiveDictionary];
-  [v2 setObject:v4 forKey:@"__defaultValues"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  initWithDefaultValues = [objc_alloc(objc_opt_class()) initWithDefaultValues];
+  archiveDictionary = [initWithDefaultValues archiveDictionary];
+  [dictionary setObject:archiveDictionary forKey:@"__defaultValues"];
 
-  return v2;
+  return dictionary;
 }
 
 + (id)_userDefaults
 {
-  v2 = [a1 suiteName];
-  if (v2)
+  suiteName = [self suiteName];
+  if (suiteName)
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v2];
+    standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:suiteName];
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   }
 
-  v4 = v3;
+  v4 = standardUserDefaults;
 
   return v4;
 }
 
 + (id)createSharedSettings
 {
-  if (MEMORY[0x21CEE19C0](a1, a2))
+  if (MEMORY[0x21CEE19C0](self, a2))
   {
-    v3 = [a1 _userDefaults];
-    v4 = [a1 _defaultsKey];
-    v5 = [v3 objectForKey:v4];
+    _userDefaults = [self _userDefaults];
+    _defaultsKey = [self _defaultsKey];
+    v5 = [_userDefaults objectForKey:_defaultsKey];
 
     v6 = [v5 objectForKeyedSubscript:@"archive"];
     v7 = [v5 objectForKeyedSubscript:@"signature"];
-    v8 = [a1 _signatureDictionary];
-    v9 = [v7 isEqualToDictionary:v8];
+    _signatureDictionary = [self _signatureDictionary];
+    v9 = [v7 isEqualToDictionary:_signatureDictionary];
 
     if (!v9)
     {
-      v10 = 0;
+      initWithDefaultValues = 0;
 LABEL_6:
 
-      if (v10)
+      if (initWithDefaultValues)
       {
         goto LABEL_10;
       }
@@ -66,62 +66,62 @@ LABEL_6:
 
     if (v6)
     {
-      v10 = [a1 settingsFromArchiveDictionary:v6];
+      initWithDefaultValues = [self settingsFromArchiveDictionary:v6];
       goto LABEL_6;
     }
   }
 
 LABEL_9:
-  v10 = [[a1 alloc] initWithDefaultValues];
+  initWithDefaultValues = [[self alloc] initWithDefaultValues];
 LABEL_10:
 
-  return v10;
+  return initWithDefaultValues;
 }
 
 + (id)sharedSettings
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PHSettings.m" lineNumber:30 description:@"Concrete subclass must implement. Use either PHSettingsImplementRootSettings() or PHSettingsImplementChildSettings() macro for this."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHSettings.m" lineNumber:30 description:@"Concrete subclass must implement. Use either PHSettingsImplementRootSettings() or PHSettingsImplementChildSettings() macro for this."];
 
   return 0;
 }
 
-+ (void)setSuiteName:(id)a3
++ (void)setSuiteName:(id)name
 {
-  _suiteName = [a3 copy];
+  _suiteName = [name copy];
 
   MEMORY[0x2821F96F8]();
 }
 
 - (void)save
 {
-  v3 = [(PHSettings *)self parentSettings];
-  v9 = v3;
-  if (v3)
+  parentSettings = [(PHSettings *)self parentSettings];
+  v9 = parentSettings;
+  if (parentSettings)
   {
-    [v3 save];
+    [parentSettings save];
   }
 
   else
   {
-    v4 = [objc_opt_class() _userDefaults];
-    v5 = [objc_opt_class() _defaultsKey];
+    _userDefaults = [objc_opt_class() _userDefaults];
+    _defaultsKey = [objc_opt_class() _defaultsKey];
     v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-    v7 = [(PTSettings *)self archiveDictionary];
-    [v6 setObject:v7 forKeyedSubscript:@"archive"];
+    archiveDictionary = [(PTSettings *)self archiveDictionary];
+    [v6 setObject:archiveDictionary forKeyedSubscript:@"archive"];
 
-    v8 = [objc_opt_class() _signatureDictionary];
-    [v6 setObject:v8 forKeyedSubscript:@"signature"];
+    _signatureDictionary = [objc_opt_class() _signatureDictionary];
+    [v6 setObject:_signatureDictionary forKeyedSubscript:@"signature"];
 
-    [v4 setObject:v6 forKey:v5];
-    [v4 synchronize];
+    [_userDefaults setObject:v6 forKey:_defaultsKey];
+    [_userDefaults synchronize];
   }
 }
 
 - (id)parentSettings
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PHSettings.m" lineNumber:35 description:@"Concrete subclass must implement. Use either PHSettingsImplementRootSettings() or PHSettingsImplementChildSettings() macro for this."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHSettings.m" lineNumber:35 description:@"Concrete subclass must implement. Use either PHSettingsImplementRootSettings() or PHSettingsImplementChildSettings() macro for this."];
 
   return 0;
 }

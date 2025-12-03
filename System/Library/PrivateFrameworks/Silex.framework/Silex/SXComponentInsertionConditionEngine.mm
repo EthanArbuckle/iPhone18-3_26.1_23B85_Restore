@@ -1,9 +1,9 @@
 @interface SXComponentInsertionConditionEngine
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5;
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider;
 - (SXComponentInsertionConditionEngine)init;
-- (void)addCondition:(id)a3;
-- (void)insertedComponent:(id)a3 approximateLocation:(CGPoint)a4;
-- (void)prepareWithComponents:(id)a3 layoutProvider:(id)a4 DOMObjectProvider:(id)a5;
+- (void)addCondition:(id)condition;
+- (void)insertedComponent:(id)component approximateLocation:(CGPoint)location;
+- (void)prepareWithComponents:(id)components layoutProvider:(id)provider DOMObjectProvider:(id)objectProvider;
 @end
 
 @implementation SXComponentInsertionConditionEngine
@@ -23,20 +23,20 @@
   return v2;
 }
 
-- (void)prepareWithComponents:(id)a3 layoutProvider:(id)a4 DOMObjectProvider:(id)a5
+- (void)prepareWithComponents:(id)components layoutProvider:(id)provider DOMObjectProvider:(id)objectProvider
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  componentsCopy = components;
+  providerCopy = provider;
+  objectProviderCopy = objectProvider;
+  if (componentsCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = [(SXComponentInsertionConditionEngine *)self conditions];
-    v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    conditions = [(SXComponentInsertionConditionEngine *)self conditions];
+    v12 = [conditions countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v12)
     {
       v13 = v12;
@@ -48,20 +48,20 @@
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(conditions);
           }
 
           v16 = *(*(&v17 + 1) + 8 * v15);
           if (objc_opt_respondsToSelector())
           {
-            [v16 prepareWithComponents:v8 layoutProvider:v9 DOMObjectProvider:v10];
+            [v16 prepareWithComponents:componentsCopy layoutProvider:providerCopy DOMObjectProvider:objectProviderCopy];
           }
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v13 = [conditions countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v13);
@@ -69,18 +69,18 @@
   }
 }
 
-- (void)insertedComponent:(id)a3 approximateLocation:(CGPoint)a4
+- (void)insertedComponent:(id)component approximateLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  componentCopy = component;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SXComponentInsertionConditionEngine *)self conditions];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  conditions = [(SXComponentInsertionConditionEngine *)self conditions];
+  v9 = [conditions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -92,37 +92,37 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(conditions);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 insertedComponent:v7 approximateLocation:{x, y}];
+          [v13 insertedComponent:componentCopy approximateLocation:{x, y}];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [conditions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  markerCopy = marker;
+  providerCopy = provider;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(SXComponentInsertionConditionEngine *)self conditions];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  conditions = [(SXComponentInsertionConditionEngine *)self conditions];
+  v11 = [conditions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -133,17 +133,17 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(conditions);
         }
 
-        if (![*(*(&v17 + 1) + 8 * i) validateMarker:v8 componentTraits:a4 layoutProvider:v9])
+        if (![*(*(&v17 + 1) + 8 * i) validateMarker:markerCopy componentTraits:traits layoutProvider:providerCopy])
         {
           v15 = 0;
           goto LABEL_11;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [conditions countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         continue;
@@ -159,13 +159,13 @@ LABEL_11:
   return v15;
 }
 
-- (void)addCondition:(id)a3
+- (void)addCondition:(id)condition
 {
-  if (a3)
+  if (condition)
   {
-    v4 = a3;
-    v5 = [(SXComponentInsertionConditionEngine *)self conditions];
-    [v5 addObject:v4];
+    conditionCopy = condition;
+    conditions = [(SXComponentInsertionConditionEngine *)self conditions];
+    [conditions addObject:conditionCopy];
   }
 }
 

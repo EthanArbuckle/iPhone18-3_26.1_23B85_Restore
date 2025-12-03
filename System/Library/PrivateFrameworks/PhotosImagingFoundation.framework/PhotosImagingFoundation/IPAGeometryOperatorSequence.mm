@@ -1,12 +1,12 @@
 @interface IPAGeometryOperatorSequence
-+ (id)sequenceWithIdentifier:(id)a3;
-- (BOOL)appendOperator:(id)a3;
-- (BOOL)removeOperatorWithIdentifier:(id)a3;
-- (BOOL)replaceOperatorWithIdentifier:(id)a3 withOperator:(id)a4;
-- (IPAGeometryOperatorSequence)initWithIdentifier:(id)a3;
++ (id)sequenceWithIdentifier:(id)identifier;
+- (BOOL)appendOperator:(id)operator;
+- (BOOL)removeOperatorWithIdentifier:(id)identifier;
+- (BOOL)replaceOperatorWithIdentifier:(id)identifier withOperator:(id)operator;
+- (IPAGeometryOperatorSequence)initWithIdentifier:(id)identifier;
 - (id)description;
-- (id)subsequenceFrom:(id)a3 to:(id)a4;
-- (id)transformForGeometry:(id)a3;
+- (id)subsequenceFrom:(id)from to:(id)to;
+- (id)transformForGeometry:(id)geometry;
 - (unint64_t)count;
 @end
 
@@ -22,12 +22,12 @@
   return v6;
 }
 
-- (id)subsequenceFrom:(id)a3 to:(id)a4
+- (id)subsequenceFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  fromCopy = from;
+  toCopy = to;
+  v8 = toCopy;
+  if (!fromCopy || !toCopy)
   {
     result = _PFAssertFailHandler();
 LABEL_24:
@@ -61,7 +61,7 @@ LABEL_24:
   v26 = &v41;
   v27 = &v35;
   block[4] = self;
-  v10 = v6;
+  v10 = fromCopy;
   v24 = v10;
   v28 = &v29;
   v11 = v8;
@@ -120,9 +120,9 @@ LABEL_13:
     goto LABEL_23;
   }
 
-  v18 = [v17 unsignedIntegerValue];
-  v19 = [v30[5] unsignedIntegerValue];
-  if (v18 > v19)
+  unsignedIntegerValue = [v17 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v30[5] unsignedIntegerValue];
+  if (unsignedIntegerValue > unsignedIntegerValue2)
   {
     goto LABEL_23;
   }
@@ -130,13 +130,13 @@ LABEL_13:
   v20 = +[IPAGeometryOperatorSequence sequence];
   do
   {
-    v21 = [v42[5] objectAtIndexedSubscript:v18];
+    v21 = [v42[5] objectAtIndexedSubscript:unsignedIntegerValue];
     [v20 appendOperator:v21];
 
-    ++v18;
+    ++unsignedIntegerValue;
   }
 
-  while (v18 <= v19);
+  while (unsignedIntegerValue <= unsignedIntegerValue2);
 
   _Block_object_dispose(&v29, 8);
   _Block_object_dispose(&v35, 8);
@@ -163,17 +163,17 @@ uint64_t __50__IPAGeometryOperatorSequence_subsequenceFrom_to___block_invoke(voi
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)transformForGeometry:(id)a3
+- (id)transformForGeometry:(id)geometry
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  geometryCopy = geometry;
+  if (!geometryCopy)
   {
 LABEL_15:
     _PFAssertFailHandler();
   }
 
-  v5 = v4;
+  intrinsicGeometry = geometryCopy;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -188,7 +188,7 @@ LABEL_15:
   block[4] = self;
   block[5] = &v24;
   dispatch_sync(isolationQueue, block);
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -204,7 +204,7 @@ LABEL_15:
   do
   {
     v11 = 0;
-    v12 = v5;
+    v12 = intrinsicGeometry;
     do
     {
       if (*v20 != v10)
@@ -221,11 +221,11 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      [v7 addObject:v14];
-      v5 = [v14 intrinsicGeometry];
+      [array addObject:v14];
+      intrinsicGeometry = [v14 intrinsicGeometry];
 
       ++v11;
-      v12 = v5;
+      v12 = intrinsicGeometry;
     }
 
     while (v9 != v11);
@@ -235,7 +235,7 @@ LABEL_15:
   while (v9);
 LABEL_11:
 
-  v17 = [IPAImageTransform compositeTransforms:v7];
+  v17 = [IPAImageTransform compositeTransforms:array];
 
   _Block_object_dispose(&v24, 8);
 
@@ -249,10 +249,10 @@ uint64_t __52__IPAGeometryOperatorSequence_transformForGeometry___block_invoke(u
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)removeOperatorWithIdentifier:(id)a3
+- (BOOL)removeOperatorWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -264,9 +264,9 @@ uint64_t __52__IPAGeometryOperatorSequence_transformForGeometry___block_invoke(u
     block[2] = __60__IPAGeometryOperatorSequence_removeOperatorWithIdentifier___block_invoke;
     block[3] = &unk_279A26640;
     block[4] = self;
-    v10 = v4;
+    v10 = identifierCopy;
     v11 = &v12;
-    v6 = v4;
+    v6 = identifierCopy;
     dispatch_sync(isolationQueue, block);
     LOBYTE(isolationQueue) = *(v13 + 24);
 
@@ -309,11 +309,11 @@ void __60__IPAGeometryOperatorSequence_removeOperatorWithIdentifier___block_invo
   }
 }
 
-- (BOOL)replaceOperatorWithIdentifier:(id)a3 withOperator:(id)a4
+- (BOOL)replaceOperatorWithIdentifier:(id)identifier withOperator:(id)operator
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && v7)
+  identifierCopy = identifier;
+  operatorCopy = operator;
+  if (identifierCopy && operatorCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -325,11 +325,11 @@ void __60__IPAGeometryOperatorSequence_removeOperatorWithIdentifier___block_invo
     block[2] = __74__IPAGeometryOperatorSequence_replaceOperatorWithIdentifier_withOperator___block_invoke;
     block[3] = &unk_279A26468;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = identifierCopy;
+    v15 = operatorCopy;
     v16 = &v17;
-    v9 = v7;
-    v10 = v6;
+    v9 = operatorCopy;
+    v10 = identifierCopy;
     dispatch_sync(isolationQueue, block);
     v11 = *(v18 + 24);
 
@@ -358,10 +358,10 @@ void __74__IPAGeometryOperatorSequence_replaceOperatorWithIdentifier_withOperato
   }
 }
 
-- (BOOL)appendOperator:(id)a3
+- (BOOL)appendOperator:(id)operator
 {
-  v4 = a3;
-  if (v4)
+  operatorCopy = operator;
+  if (operatorCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -373,9 +373,9 @@ void __74__IPAGeometryOperatorSequence_replaceOperatorWithIdentifier_withOperato
     block[2] = __46__IPAGeometryOperatorSequence_appendOperator___block_invoke;
     block[3] = &unk_279A26640;
     block[4] = self;
-    v10 = v4;
+    v10 = operatorCopy;
     v11 = &v12;
-    v6 = v4;
+    v6 = operatorCopy;
     dispatch_sync(isolationQueue, block);
     LOBYTE(isolationQueue) = *(v13 + 24);
 
@@ -444,11 +444,11 @@ uint64_t __36__IPAGeometryOperatorSequence_count__block_invoke(uint64_t a1)
   return result;
 }
 
-- (IPAGeometryOperatorSequence)initWithIdentifier:(id)a3
+- (IPAGeometryOperatorSequence)initWithIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = IPAGeometryOperatorSequence;
-  v3 = [(IPAGeometryOperator *)&v17 initWithIdentifier:a3];
+  v3 = [(IPAGeometryOperator *)&v17 initWithIdentifier:identifier];
   if (v3)
   {
     v4 = MEMORY[0x277CCACA8];
@@ -460,26 +460,26 @@ uint64_t __36__IPAGeometryOperatorSequence_count__block_invoke(uint64_t a1)
     isolationQueue = v3->_isolationQueue;
     v3->_isolationQueue = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     map_identifierToOperator = v3->map_identifierToOperator;
-    v3->map_identifierToOperator = v10;
+    v3->map_identifierToOperator = dictionary;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     map_identifierToIndex = v3->map_identifierToIndex;
-    v3->map_identifierToIndex = v12;
+    v3->map_identifierToIndex = dictionary2;
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     operators = v3->_operators;
-    v3->_operators = v14;
+    v3->_operators = array;
   }
 
   return v3;
 }
 
-+ (id)sequenceWithIdentifier:(id)a3
++ (id)sequenceWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[IPAGeometryOperatorSequence alloc] initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[IPAGeometryOperatorSequence alloc] initWithIdentifier:identifierCopy];
 
   return v4;
 }

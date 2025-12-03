@@ -1,22 +1,22 @@
 @interface SHMediaItemPresenter
-- (BOOL)didUserCancelAuthenticationWithError:(id)a3;
+- (BOOL)didUserCancelAuthenticationWithError:(id)error;
 - (BOOL)isShazamAppInstalled;
-- (SHMediaItemPresenter)initWithRemoteConfiguration:(id)a3 bundleIdentifier:(id)a4;
-- (id)initBundleIdentifier:(id)a3;
-- (id)presentationOptionsForFeatureFlags:(id)a3;
-- (id)removePresentationOption:(int64_t)a3 fromArray:(id)a4;
-- (void)iteratePresentationOptions:(id)a3 mediaItem:(id)a4 presentationSettings:(id)a5 featureFlags:(id)a6 completionHandler:(id)a7;
-- (void)openURL:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5;
-- (void)presentMediaItem:(id)a3 completionHandler:(id)a4;
-- (void)presentMediaItem:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5;
-- (void)presentShazamAppFromShazamURL:(id)a3 completionHandler:(id)a4;
+- (SHMediaItemPresenter)initWithRemoteConfiguration:(id)configuration bundleIdentifier:(id)identifier;
+- (id)initBundleIdentifier:(id)identifier;
+- (id)presentationOptionsForFeatureFlags:(id)flags;
+- (id)removePresentationOption:(int64_t)option fromArray:(id)array;
+- (void)iteratePresentationOptions:(id)options mediaItem:(id)item presentationSettings:(id)settings featureFlags:(id)flags completionHandler:(id)handler;
+- (void)openURL:(id)l presentationSettings:(id)settings completionHandler:(id)handler;
+- (void)presentMediaItem:(id)item completionHandler:(id)handler;
+- (void)presentMediaItem:(id)item presentationSettings:(id)settings completionHandler:(id)handler;
+- (void)presentShazamAppFromShazamURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation SHMediaItemPresenter
 
-- (id)initBundleIdentifier:(id)a3
+- (id)initBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SHMediaItemPresenter;
   v6 = [(SHMediaItemPresenter *)&v10 init];
@@ -26,31 +26,31 @@
     remoteConfiguration = v6->_remoteConfiguration;
     v6->_remoteConfiguration = v7;
 
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
   }
 
   return v6;
 }
 
-- (SHMediaItemPresenter)initWithRemoteConfiguration:(id)a3 bundleIdentifier:(id)a4
+- (SHMediaItemPresenter)initWithRemoteConfiguration:(id)configuration bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SHMediaItemPresenter *)self initBundleIdentifier:v8];
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  v9 = [(SHMediaItemPresenter *)self initBundleIdentifier:identifierCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9 + 1, a3);
-    objc_storeStrong(&v10->_bundleIdentifier, a4);
+    objc_storeStrong(v9 + 1, configuration);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (void)presentMediaItem:(id)a3 completionHandler:(id)a4
+- (void)presentMediaItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  itemCopy = item;
   v8 = [SHMediaItemPresentationSettings alloc];
   v14 = SHMediaItemPresentationSettingOpenResultInBrowserOnFailure;
   v15 = &__kCFBooleanTrue;
@@ -61,32 +61,32 @@
   v12[1] = 3221225472;
   v12[2] = sub_100043048;
   v12[3] = &unk_10007E078;
-  v13 = v6;
-  v11 = v6;
-  [(SHMediaItemPresenter *)self presentMediaItem:v7 presentationSettings:v10 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(SHMediaItemPresenter *)self presentMediaItem:itemCopy presentationSettings:v10 completionHandler:v12];
 }
 
-- (void)presentMediaItem:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5
+- (void)presentMediaItem:(id)item presentationSettings:(id)settings completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 properties];
-  v12 = [v11 count];
+  itemCopy = item;
+  settingsCopy = settings;
+  handlerCopy = handler;
+  properties = [itemCopy properties];
+  v12 = [properties count];
 
   if (v12)
   {
     objc_initWeak(location, self);
-    v13 = [(SHMediaItemPresenter *)self remoteConfiguration];
+    remoteConfiguration = [(SHMediaItemPresenter *)self remoteConfiguration];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100043260;
     v15[3] = &unk_10007E0A0;
     objc_copyWeak(&v19, location);
-    v16 = v8;
-    v17 = v9;
-    v18 = v10;
-    [v13 featureFlagsWithCompletion:v15];
+    v16 = itemCopy;
+    v17 = settingsCopy;
+    v18 = handlerCopy;
+    [remoteConfiguration featureFlagsWithCompletion:v15];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(location);
@@ -98,11 +98,11 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v8;
+      *(location + 4) = itemCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Presenting media item with no properties %@", location, 0xCu);
     }
 
-    [(SHMediaItemPresenter *)self presentTrackPageFromMediaItem:v8 presentationSettings:v9 displayShazamUpsell:0 completionHandler:v10];
+    [(SHMediaItemPresenter *)self presentTrackPageFromMediaItem:itemCopy presentationSettings:settingsCopy displayShazamUpsell:0 completionHandler:handlerCopy];
   }
 }
 
@@ -116,9 +116,9 @@
     v4 = sh_log_object();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [0 bundleIdentifier];
+      bundleIdentifier = [0 bundleIdentifier];
       *buf = 138412546;
-      v9 = v5;
+      v9 = bundleIdentifier;
       v10 = 2112;
       v11 = v3;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "No application record for %@ found with error: %@", buf, 0x16u);
@@ -128,7 +128,7 @@
   return v2 != 0;
 }
 
-- (id)presentationOptionsForFeatureFlags:(id)a3
+- (id)presentationOptionsForFeatureFlags:(id)flags
 {
   v4 = +[NSMutableArray array];
   if ([(SHMediaItemPresenter *)self isShazamAppInstalled])
@@ -143,10 +143,10 @@
   return v5;
 }
 
-- (id)removePresentationOption:(int64_t)a3 fromArray:(id)a4
+- (id)removePresentationOption:(int64_t)option fromArray:(id)array
 {
-  v5 = [a4 mutableCopy];
-  v6 = [NSNumber numberWithInteger:a3];
+  v5 = [array mutableCopy];
+  v6 = [NSNumber numberWithInteger:option];
   [v5 removeObject:v6];
 
   v7 = [v5 copy];
@@ -154,13 +154,13 @@
   return v7;
 }
 
-- (BOOL)didUserCancelAuthenticationWithError:(id)a3
+- (BOOL)didUserCancelAuthenticationWithError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:FBSOpenApplicationServiceErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:FBSOpenApplicationServiceErrorDomain];
 
-  v6 = [v3 code] != 1 && objc_msgSend(v3, "code") != 2;
+  v6 = [errorCopy code] != 1 && objc_msgSend(errorCopy, "code") != 2;
   v7 = v5 ^ 1 | v6;
   if ((v7 & 1) == 0)
   {
@@ -175,18 +175,18 @@
   return (v7 & 1) == 0;
 }
 
-- (void)iteratePresentationOptions:(id)a3 mediaItem:(id)a4 presentationSettings:(id)a5 featureFlags:(id)a6 completionHandler:(id)a7
+- (void)iteratePresentationOptions:(id)options mediaItem:(id)item presentationSettings:(id)settings featureFlags:(id)flags completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  optionsCopy = options;
+  itemCopy = item;
+  settingsCopy = settings;
+  flagsCopy = flags;
+  handlerCopy = handler;
   v17 = sh_log_object();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v50 = v12;
+    v50 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Available presentation options are %@", buf, 0xCu);
   }
 
@@ -195,7 +195,7 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v18 = v12;
+  v18 = optionsCopy;
   v19 = [v18 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v19)
   {
@@ -209,31 +209,31 @@ LABEL_5:
         objc_enumerationMutation(v18);
       }
 
-      v22 = [*(*(&v44 + 1) + 8 * v21) integerValue];
-      if (v22 > 1)
+      integerValue = [*(*(&v44 + 1) + 8 * v21) integerValue];
+      if (integerValue > 1)
       {
-        if (v22 == 2)
+        if (integerValue == 2)
         {
-          v23 = [v15 shouldDisplayShazamUpsell];
+          shouldDisplayShazamUpsell = [flagsCopy shouldDisplayShazamUpsell];
           v32[0] = _NSConcreteStackBlock;
           v32[1] = 3221225472;
           v32[2] = sub_100043B78;
           v32[3] = &unk_10007E0C8;
           objc_copyWeak(&v37, buf);
-          v33 = v13;
-          v36 = v16;
+          v33 = itemCopy;
+          v36 = handlerCopy;
           v34 = v18;
-          v35 = v15;
-          [(SHMediaItemPresenter *)self presentTrackPageFromMediaItem:v33 presentationSettings:v14 displayShazamUpsell:v23 completionHandler:v32];
+          v35 = flagsCopy;
+          [(SHMediaItemPresenter *)self presentTrackPageFromMediaItem:v33 presentationSettings:settingsCopy displayShazamUpsell:shouldDisplayShazamUpsell completionHandler:v32];
 
           objc_destroyWeak(&v37);
           goto LABEL_27;
         }
 
-        if (v22 == 3)
+        if (integerValue == 3)
         {
-          v27 = [v13 webURL];
-          v28 = v27 == 0;
+          webURL = [itemCopy webURL];
+          v28 = webURL == 0;
 
           if (v28)
           {
@@ -245,13 +245,13 @@ LABEL_5:
             }
 
 LABEL_26:
-            (*(v16 + 2))(v16, 0, 0, 0);
+            (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
           }
 
           else
           {
-            v29 = [v13 webURL];
-            [(SHMediaItemPresenter *)self openURL:v29 presentationSettings:v14 completionHandler:v16];
+            webURL2 = [itemCopy webURL];
+            [(SHMediaItemPresenter *)self openURL:webURL2 presentationSettings:settingsCopy completionHandler:handlerCopy];
           }
 
 LABEL_27:
@@ -262,34 +262,34 @@ LABEL_27:
 
       else
       {
-        if (!v22)
+        if (!integerValue)
         {
           goto LABEL_26;
         }
 
-        if (v22 == 1)
+        if (integerValue == 1)
         {
-          v24 = [v13 webURL];
-          v25 = v24 == 0;
+          webURL3 = [itemCopy webURL];
+          v25 = webURL3 == 0;
 
           if (v25)
           {
-            [(SHMediaItemPresenter *)self presentTrackPageFromMediaItem:v13 presentationSettings:v14 displayShazamUpsell:0 completionHandler:v16];
+            [(SHMediaItemPresenter *)self presentTrackPageFromMediaItem:itemCopy presentationSettings:settingsCopy displayShazamUpsell:0 completionHandler:handlerCopy];
           }
 
           else
           {
-            v26 = [v13 webURL];
+            webURL4 = [itemCopy webURL];
             v38[0] = _NSConcreteStackBlock;
             v38[1] = 3221225472;
             v38[2] = sub_100043A94;
             v38[3] = &unk_10007E0C8;
             objc_copyWeak(&v43, buf);
-            v39 = v13;
-            v42 = v16;
+            v39 = itemCopy;
+            v42 = handlerCopy;
             v40 = v18;
-            v41 = v15;
-            [(SHMediaItemPresenter *)self presentShazamAppFromShazamURL:v26 completionHandler:v38];
+            v41 = flagsCopy;
+            [(SHMediaItemPresenter *)self presentShazamAppFromShazamURL:webURL4 completionHandler:v38];
 
             objc_destroyWeak(&v43);
           }
@@ -311,20 +311,20 @@ LABEL_27:
     }
   }
 
-  (*(v16 + 2))(v16, 0, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
 LABEL_28:
   objc_destroyWeak(buf);
 }
 
-- (void)presentShazamAppFromShazamURL:(id)a3 completionHandler:(id)a4
+- (void)presentShazamAppFromShazamURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v7 = sh_log_object();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = lCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Attempting to open Shazam app with url %@", buf, 0xCu);
   }
 
@@ -340,21 +340,21 @@ LABEL_28:
   v12[1] = 3221225472;
   v12[2] = sub_100043E80;
   v12[3] = &unk_10007E0F0;
-  v13 = v5;
-  v14 = v6;
-  v10 = v6;
-  v11 = v5;
+  v13 = lCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = lCopy;
   [LSAppLink openWithURL:v11 configuration:v8 completionHandler:v12];
 }
 
-- (void)openURL:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5
+- (void)openURL:(id)l presentationSettings:(id)settings completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 && ([v8 openResultInBrowserOnFailure] & 1) == 0)
+  lCopy = l;
+  settingsCopy = settings;
+  handlerCopy = handler;
+  if (settingsCopy && ([settingsCopy openResultInBrowserOnFailure] & 1) == 0)
   {
-    (*(v9 + 2))(v9, 0, v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, lCopy, 0);
   }
 
   else
@@ -372,8 +372,8 @@ LABEL_28:
     v13[1] = 3221225472;
     v13[2] = sub_1000446B4;
     v13[3] = &unk_10007E118;
-    v14 = v7;
-    v15 = v9;
+    v14 = lCopy;
+    v15 = handlerCopy;
     [v12 openURL:v14 configuration:v10 completionHandler:v13];
   }
 }

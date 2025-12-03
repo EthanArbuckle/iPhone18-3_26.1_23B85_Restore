@@ -1,18 +1,18 @@
 @interface SMUFocusedSheetPresentationController
-- (SMUFocusedSheetPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (SMUFocusedSheetPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
 @implementation SMUFocusedSheetPresentationController
 
-- (SMUFocusedSheetPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (SMUFocusedSheetPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v10.receiver = self;
   v10.super_class = SMUFocusedSheetPresentationController;
-  v4 = [(SMUFocusedSheetPresentationController *)&v10 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(SMUFocusedSheetPresentationController *)&v10 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v5 = [MEMORY[0x277D75210] effectWithStyle:5];
@@ -36,51 +36,51 @@
   v35.receiver = self;
   v35.super_class = SMUFocusedSheetPresentationController;
   [(SMUFocusedSheetPresentationController *)&v35 presentationTransitionWillBegin];
-  v3 = [(SMUFocusedSheetPresentationController *)self containerView];
-  v4 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
-  [v3 addSubview:v4];
+  containerView = [(SMUFocusedSheetPresentationController *)self containerView];
+  blurredBackgroundView = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
+  [containerView addSubview:blurredBackgroundView];
 
   v18 = MEMORY[0x277CCAAD0];
-  v30 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
-  v28 = [v30 leadingAnchor];
-  v29 = [(SMUFocusedSheetPresentationController *)self containerView];
-  v27 = [v29 leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  blurredBackgroundView2 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
+  leadingAnchor = [blurredBackgroundView2 leadingAnchor];
+  containerView2 = [(SMUFocusedSheetPresentationController *)self containerView];
+  leadingAnchor2 = [containerView2 leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[0] = v26;
-  v25 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
-  v23 = [v25 trailingAnchor];
-  v24 = [(SMUFocusedSheetPresentationController *)self containerView];
-  v22 = [v24 trailingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  blurredBackgroundView3 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
+  trailingAnchor = [blurredBackgroundView3 trailingAnchor];
+  containerView3 = [(SMUFocusedSheetPresentationController *)self containerView];
+  trailingAnchor2 = [containerView3 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[1] = v21;
-  v20 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
-  v19 = [v20 topAnchor];
-  v5 = [(SMUFocusedSheetPresentationController *)self containerView];
-  v6 = [v5 topAnchor];
-  v7 = [v19 constraintEqualToAnchor:v6];
+  blurredBackgroundView4 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
+  topAnchor = [blurredBackgroundView4 topAnchor];
+  containerView4 = [(SMUFocusedSheetPresentationController *)self containerView];
+  topAnchor2 = [containerView4 topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v36[2] = v7;
-  v8 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(SMUFocusedSheetPresentationController *)self containerView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  blurredBackgroundView5 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
+  bottomAnchor = [blurredBackgroundView5 bottomAnchor];
+  containerView5 = [(SMUFocusedSheetPresentationController *)self containerView];
+  bottomAnchor2 = [containerView5 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v36[3] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:4];
   [v18 activateConstraints:v13];
 
-  v14 = [(SMUFocusedSheetPresentationController *)self presentingViewController];
-  v15 = [v14 transitionCoordinator];
+  presentingViewController = [(SMUFocusedSheetPresentationController *)self presentingViewController];
+  transitionCoordinator = [presentingViewController transitionCoordinator];
 
-  v16 = [(SMUFocusedSheetPresentationController *)self backgroundBlurEffect];
+  backgroundBlurEffect = [(SMUFocusedSheetPresentationController *)self backgroundBlurEffect];
   objc_initWeak(&location, self);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __72__SMUFocusedSheetPresentationController_presentationTransitionWillBegin__block_invoke;
   v31[3] = &unk_277D97D60;
   objc_copyWeak(&v33, &location);
-  v17 = v16;
+  v17 = backgroundBlurEffect;
   v32 = v17;
-  [v15 animateAlongsideTransition:v31 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v31 completion:0];
 
   objc_destroyWeak(&v33);
   objc_destroyWeak(&location);
@@ -93,15 +93,15 @@ void __72__SMUFocusedSheetPresentationController_presentationTransitionWillBegin
   [v2 setEffect:*(a1 + 32)];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
   v6.receiver = self;
   v6.super_class = SMUFocusedSheetPresentationController;
   [(SMUFocusedSheetPresentationController *)&v6 presentationTransitionDidEnd:?];
-  if (!a3)
+  if (!end)
   {
-    v5 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
-    [v5 removeFromSuperview];
+    blurredBackgroundView = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
+    [blurredBackgroundView removeFromSuperview];
   }
 }
 
@@ -110,8 +110,8 @@ void __72__SMUFocusedSheetPresentationController_presentationTransitionWillBegin
   v8.receiver = self;
   v8.super_class = SMUFocusedSheetPresentationController;
   [(SMUFocusedSheetPresentationController *)&v8 dismissalTransitionWillBegin];
-  v3 = [(SMUFocusedSheetPresentationController *)self presentingViewController];
-  v4 = [v3 transitionCoordinator];
+  presentingViewController = [(SMUFocusedSheetPresentationController *)self presentingViewController];
+  transitionCoordinator = [presentingViewController transitionCoordinator];
 
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
@@ -119,7 +119,7 @@ void __72__SMUFocusedSheetPresentationController_presentationTransitionWillBegin
   v5[2] = __69__SMUFocusedSheetPresentationController_dismissalTransitionWillBegin__block_invoke;
   v5[3] = &unk_277D97D88;
   objc_copyWeak(&v6, &location);
-  [v4 animateAlongsideTransition:v5 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v5 completion:0];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -131,15 +131,15 @@ void __69__SMUFocusedSheetPresentationController_dismissalTransitionWillBegin__b
   [v1 setEffect:0];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
   v6.receiver = self;
   v6.super_class = SMUFocusedSheetPresentationController;
   [(SMUFocusedSheetPresentationController *)&v6 dismissalTransitionDidEnd:?];
-  if (!a3)
+  if (!end)
   {
-    v5 = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
-    [v5 removeFromSuperview];
+    blurredBackgroundView = [(SMUFocusedSheetPresentationController *)self blurredBackgroundView];
+    [blurredBackgroundView removeFromSuperview];
   }
 }
 

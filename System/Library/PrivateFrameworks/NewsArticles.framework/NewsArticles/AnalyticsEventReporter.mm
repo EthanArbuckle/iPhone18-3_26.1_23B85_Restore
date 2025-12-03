@@ -1,6 +1,6 @@
 @interface AnalyticsEventReporter
 - (_TtC12NewsArticles22AnalyticsEventReporter)init;
-- (void)reportEvent:(id)a3;
+- (void)reportEvent:(id)event;
 @end
 
 @implementation AnalyticsEventReporter
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)reportEvent:(id)a3
+- (void)reportEvent:(id)event
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1D7C3AA08();
   swift_unknownObjectRelease();
 }

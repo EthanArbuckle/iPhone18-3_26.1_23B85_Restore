@@ -1,6 +1,6 @@
 @interface GetSignalActivationStatusIntent
 - (GetSignalActivationStatusIntent)init;
-- (GetSignalActivationStatusIntent)initWithCoder:(id)a3;
+- (GetSignalActivationStatusIntent)initWithCoder:(id)coder;
 @end
 
 @implementation GetSignalActivationStatusIntent
@@ -12,12 +12,12 @@
   return [(GetSignalActivationStatusIntent *)&v3 init];
 }
 
-- (GetSignalActivationStatusIntent)initWithCoder:(id)a3
+- (GetSignalActivationStatusIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for GetSignalActivationStatusIntent();
-  v4 = a3;
-  v5 = [(GetSignalActivationStatusIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(GetSignalActivationStatusIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

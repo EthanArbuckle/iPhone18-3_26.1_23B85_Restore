@@ -1,17 +1,17 @@
 @interface MIMachOImageSlice
-- (MIMachOImageSlice)initWithCPUType:(int)a3 cpuSubtype:(int)a4 platform:(unsigned int)a5 sdkVersion:(unsigned int)a6 minOSVersion:(unsigned int)a7;
+- (MIMachOImageSlice)initWithCPUType:(int)type cpuSubtype:(int)subtype platform:(unsigned int)platform sdkVersion:(unsigned int)version minOSVersion:(unsigned int)sVersion;
 - (id)description;
 @end
 
 @implementation MIMachOImageSlice
 
-- (MIMachOImageSlice)initWithCPUType:(int)a3 cpuSubtype:(int)a4 platform:(unsigned int)a5 sdkVersion:(unsigned int)a6 minOSVersion:(unsigned int)a7
+- (MIMachOImageSlice)initWithCPUType:(int)type cpuSubtype:(int)subtype platform:(unsigned int)platform sdkVersion:(unsigned int)version minOSVersion:(unsigned int)sVersion
 {
-  v7 = *&a7;
-  v8 = *&a6;
-  v9 = *&a5;
-  v10 = *&a4;
-  v11 = *&a3;
+  v7 = *&sVersion;
+  v8 = *&version;
+  v9 = *&platform;
+  v10 = *&subtype;
+  v11 = *&type;
   v16.receiver = self;
   v16.super_class = MIMachOImageSlice;
   v12 = [(MIMachOImageSlice *)&v16 init];

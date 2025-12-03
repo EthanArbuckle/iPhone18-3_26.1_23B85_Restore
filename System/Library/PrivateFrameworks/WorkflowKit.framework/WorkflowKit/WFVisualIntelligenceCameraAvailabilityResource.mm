@@ -1,27 +1,27 @@
 @interface WFVisualIntelligenceCameraAvailabilityResource
-- (_TtC11WorkflowKit46WFVisualIntelligenceCameraAvailabilityResource)initWithDefinition:(id)a3;
-- (void)configureWithRunSource:(id)a3;
+- (_TtC11WorkflowKit46WFVisualIntelligenceCameraAvailabilityResource)initWithDefinition:(id)definition;
+- (void)configureWithRunSource:(id)source;
 - (void)refreshAvailability;
 @end
 
 @implementation WFVisualIntelligenceCameraAvailabilityResource
 
-- (void)configureWithRunSource:(id)a3
+- (void)configureWithRunSource:(id)source
 {
-  v4 = a3;
-  v5 = self;
-  WFVisualIntelligenceCameraAvailabilityResource.configure(withRunSource:)(v4);
+  sourceCopy = source;
+  selfCopy = self;
+  WFVisualIntelligenceCameraAvailabilityResource.configure(withRunSource:)(sourceCopy);
 }
 
 - (void)refreshAvailability
 {
-  v2 = self;
+  selfCopy = self;
   WFVisualIntelligenceCameraAvailabilityResource.refreshAvailability()();
 }
 
-- (_TtC11WorkflowKit46WFVisualIntelligenceCameraAvailabilityResource)initWithDefinition:(id)a3
+- (_TtC11WorkflowKit46WFVisualIntelligenceCameraAvailabilityResource)initWithDefinition:(id)definition
 {
-  if (a3)
+  if (definition)
   {
     v3 = sub_1CA94C1C8();
   }

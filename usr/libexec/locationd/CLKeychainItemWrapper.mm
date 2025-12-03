@@ -1,25 +1,25 @@
 @interface CLKeychainItemWrapper
-- (CLKeychainItemWrapper)initWithIdentifier:(id)a3 keyType:(__CFString *)a4;
-- (id)dictionaryToSecItemFormat:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)secItemFormatToDictionary:(id)a3;
+- (CLKeychainItemWrapper)initWithIdentifier:(id)identifier keyType:(__CFString *)type;
+- (id)dictionaryToSecItemFormat:(id)format;
+- (id)objectForKey:(id)key;
+- (id)secItemFormatToDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)initializeKeychainItemWithIdentifier:(id)a3 keyType:(__CFString *)a4;
+- (void)initializeKeychainItemWithIdentifier:(id)identifier keyType:(__CFString *)type;
 - (void)resetKeychainItem;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)writeToKeychain;
 @end
 
 @implementation CLKeychainItemWrapper
 
-- (CLKeychainItemWrapper)initWithIdentifier:(id)a3 keyType:(__CFString *)a4
+- (CLKeychainItemWrapper)initWithIdentifier:(id)identifier keyType:(__CFString *)type
 {
   v18.receiver = self;
   v18.super_class = CLKeychainItemWrapper;
   v6 = [(CLKeychainItemWrapper *)&v18 init];
   if (v6)
   {
-    if (a3)
+    if (identifier)
     {
       if (qword_1025D47A0 != -1)
       {
@@ -29,22 +29,22 @@
       v7 = off_1025D47A8;
       if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_INFO))
       {
-        v8 = [a3 UTF8String];
+        uTF8String = [identifier UTF8String];
         *buf = 68289539;
         v20 = 0;
         v21 = 2082;
         v22 = "";
         v23 = 2081;
-        v24 = v8;
+        v24 = uTF8String;
         v25 = 2113;
-        v26 = a4;
+        typeCopy = type;
         _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Initializing CLKeychainItemWrapper with identifier and key., identifier:%{private, location:escape_only}s, key:%{private, location:escape_only}@}", buf, 0x26u);
       }
 
       v9 = objc_opt_new();
       v6->_genericPasswordQuery = v9;
       [(NSMutableDictionary *)v9 setObject:kSecClassGenericPassword forKey:kSecClass];
-      [(NSMutableDictionary *)v6->_genericPasswordQuery setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)v6->_genericPasswordQuery setObject:identifier forKey:type];
       [(NSMutableDictionary *)v6->_genericPasswordQuery setObject:kSecMatchLimitOne forKey:kSecMatchLimit];
       [(NSMutableDictionary *)v6->_genericPasswordQuery setObject:kCFBooleanTrue forKey:kSecReturnAttributes];
       result = 0;
@@ -67,7 +67,7 @@ LABEL_18:
         }
 
 LABEL_17:
-        [(CLKeychainItemWrapper *)v6 initializeKeychainItemWithIdentifier:a3 keyType:a4];
+        [(CLKeychainItemWrapper *)v6 initializeKeychainItemWithIdentifier:identifier keyType:type];
         goto LABEL_18;
       }
 
@@ -141,29 +141,29 @@ LABEL_17:
   [(CLKeychainItemWrapper *)&v3 dealloc];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a3 && ([-[CLKeychainItemWrapper objectForKey:](self objectForKey:{a4), "isEqual:", a3}] & 1) == 0)
+  if (object && ([-[CLKeychainItemWrapper objectForKey:](self objectForKey:{key), "isEqual:", object}] & 1) == 0)
   {
-    [(NSMutableDictionary *)[(CLKeychainItemWrapper *)self keychainItemData] setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)[(CLKeychainItemWrapper *)self keychainItemData] setObject:object forKey:key];
 
     [(CLKeychainItemWrapper *)self writeToKeychain];
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = [(CLKeychainItemWrapper *)self keychainItemData];
+  keychainItemData = [(CLKeychainItemWrapper *)self keychainItemData];
 
-  return [(NSMutableDictionary *)v4 objectForKey:a3];
+  return [(NSMutableDictionary *)keychainItemData objectForKey:key];
 }
 
-- (void)initializeKeychainItemWithIdentifier:(id)a3 keyType:(__CFString *)a4
+- (void)initializeKeychainItemWithIdentifier:(id)identifier keyType:(__CFString *)type
 {
   [(CLKeychainItemWrapper *)self resetKeychainItem];
   keychainItemData = self->_keychainItemData;
 
-  [(NSMutableDictionary *)keychainItemData setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)keychainItemData setObject:identifier forKey:type];
 }
 
 - (void)resetKeychainItem
@@ -180,14 +180,14 @@ LABEL_17:
   }
 
   [(NSMutableDictionary *)[(CLKeychainItemWrapper *)self keychainItemData] setObject:@"com.apple.locationd" forKey:kSecAttrService];
-  v3 = [(CLKeychainItemWrapper *)self keychainItemData];
+  keychainItemData = [(CLKeychainItemWrapper *)self keychainItemData];
 
-  [(NSMutableDictionary *)v3 setObject:&stru_1025052F8 forKey:kSecValueData];
+  [(NSMutableDictionary *)keychainItemData setObject:&stru_1025052F8 forKey:kSecValueData];
 }
 
-- (id)dictionaryToSecItemFormat:(id)a3
+- (id)dictionaryToSecItemFormat:(id)format
 {
-  if (!a3)
+  if (!format)
   {
     if (qword_1025D47A0 != -1)
     {
@@ -211,7 +211,7 @@ LABEL_17:
 
   v4 = [NSMutableDictionary dictionaryWithDictionary:?];
   [(NSMutableDictionary *)v4 setObject:kSecClassGenericPassword forKey:kSecClass];
-  v5 = [a3 objectForKey:kSecValueData];
+  v5 = [format objectForKey:kSecValueData];
   if (!v5)
   {
     if (qword_1025D47A0 != -1)
@@ -238,9 +238,9 @@ LABEL_17:
   return v4;
 }
 
-- (id)secItemFormatToDictionary:(id)a3
+- (id)secItemFormatToDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     if (qword_1025D47A0 != -1)
     {

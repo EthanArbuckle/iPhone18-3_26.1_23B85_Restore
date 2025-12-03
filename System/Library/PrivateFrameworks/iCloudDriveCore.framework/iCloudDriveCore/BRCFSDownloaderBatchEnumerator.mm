@@ -7,11 +7,11 @@
 - (id)nextDocumentItem
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(BRCSyncContext *)self->_syncContext session];
+  session = [(BRCSyncContext *)self->_syncContext session];
   if (![(PQLResultSet *)self->_rs next])
   {
 LABEL_15:
-    v19 = 0;
+    asDocument = 0;
     goto LABEL_16;
   }
 
@@ -59,19 +59,19 @@ LABEL_15:
       }
 
       *retryQueueKick = v13;
-      v14 = [v3 clientDB];
+      clientDB = [session clientDB];
       kind = self->_kind;
       v16 = [(PQLResultSet *)self->_rs stringAtIndex:3];
-      [v14 execute:{@"UPDATE client_downloads    SET transfer_queue = '_retry'  WHERE throttle_id = %lld AND download_kind = %u AND download_etag = %@", v5, kind, v16}];
+      [clientDB execute:{@"UPDATE client_downloads    SET transfer_queue = '_retry'  WHERE throttle_id = %lld AND download_kind = %u AND download_etag = %@", v5, kind, v16}];
 
       goto LABEL_14;
     }
 
-    v17 = [v3 itemFetcher];
-    v18 = [v17 itemByRowID:v5];
-    v19 = [v18 asDocument];
+    itemFetcher = [session itemFetcher];
+    v18 = [itemFetcher itemByRowID:v5];
+    asDocument = [v18 asDocument];
 
-    if (v19)
+    if (asDocument)
     {
       break;
     }
@@ -93,7 +93,7 @@ LABEL_16:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return asDocument;
 }
 
 @end

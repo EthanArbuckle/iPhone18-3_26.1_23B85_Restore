@@ -2,11 +2,11 @@
 - (UIEdgeInsets)contentViewInsets;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackdropView:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setContentViewInsets:(UIEdgeInsets)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setPreviewOverlayView:(id)a3;
+- (void)setBackdropView:(id)view;
+- (void)setContentView:(id)view;
+- (void)setContentViewInsets:(UIEdgeInsets)insets;
+- (void)setHeaderView:(id)view;
+- (void)setPreviewOverlayView:(id)view;
 @end
 
 @implementation SUStorePageView
@@ -18,60 +18,60 @@
   [(SUStorePageView *)&v3 dealloc];
 }
 
-- (void)setBackdropView:(id)a3
+- (void)setBackdropView:(id)view
 {
   backdropView = self->_backdropView;
-  if (backdropView != a3)
+  if (backdropView != view)
   {
     [(UIView *)backdropView removeFromSuperview];
 
-    v6 = a3;
-    self->_backdropView = v6;
-    if (v6)
+    viewCopy = view;
+    self->_backdropView = viewCopy;
+    if (viewCopy)
     {
 
-      [(SUStorePageView *)self insertSubview:v6 atIndex:0];
+      [(SUStorePageView *)self insertSubview:viewCopy atIndex:0];
     }
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   contentView = self->_contentView;
-  if (contentView != a3)
+  if (contentView != view)
   {
     [(UIView *)contentView removeFromSuperview];
 
-    v6 = a3;
-    self->_contentView = v6;
-    if (v6)
+    viewCopy = view;
+    self->_contentView = viewCopy;
+    if (viewCopy)
     {
       if (self->_headerScrollView || self->_previewOverlayView)
       {
 
-        [(SUStorePageView *)self insertSubview:v6 belowSubview:?];
+        [(SUStorePageView *)self insertSubview:viewCopy belowSubview:?];
       }
 
       else
       {
 
-        [(SUStorePageView *)self addSubview:v6];
+        [(SUStorePageView *)self addSubview:viewCopy];
       }
     }
   }
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
   headerView = self->_headerView;
-  if (headerView != a3)
+  if (headerView != view)
   {
     [(UIView *)headerView removeFromSuperview];
 
-    v6 = a3;
-    self->_headerView = v6;
+    viewCopy = view;
+    self->_headerView = viewCopy;
     headerScrollView = self->_headerScrollView;
-    if (v6)
+    if (viewCopy)
     {
       if (!headerScrollView)
       {
@@ -104,35 +104,35 @@
   }
 }
 
-- (void)setPreviewOverlayView:(id)a3
+- (void)setPreviewOverlayView:(id)view
 {
   previewOverlayView = self->_previewOverlayView;
-  if (previewOverlayView != a3)
+  if (previewOverlayView != view)
   {
     if ([(UIView *)previewOverlayView superview]== self)
     {
       [(UIView *)self->_previewOverlayView removeFromSuperview];
     }
 
-    v6 = a3;
-    self->_previewOverlayView = v6;
-    if (v6)
+    viewCopy = view;
+    self->_previewOverlayView = viewCopy;
+    if (viewCopy)
     {
 
-      [(SUStorePageView *)self addSubview:v6];
+      [(SUStorePageView *)self addSubview:viewCopy];
     }
   }
 }
 
-- (void)setContentViewInsets:(UIEdgeInsets)a3
+- (void)setContentViewInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentViewInsets.top, v3), vceqq_f64(*&self->_contentViewInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentViewInsets = a3;
+    self->_contentViewInsets = insets;
     [(SUStorePageView *)self setNeedsLayout];
   }
 }

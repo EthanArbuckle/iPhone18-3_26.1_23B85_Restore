@@ -1,25 +1,25 @@
 @interface HUMatterConnectedServicesViewController
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUMatterConnectedServicesViewController)initWithConnectedServicesItemProvider:(id)a3;
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUMatterConnectedServicesViewController)initWithConnectedServicesItemProvider:(id)provider;
 - (HUMatterConnectedServicesViewControllerDelegate)delegate;
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4;
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated;
 - (id)hu_preloadContent;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (void)_presentHomeConnectedEcosystemDetailViewController:(id)a3;
-- (void)_presentRemoveFromEcosystemConfirmation:(id)a3 atIndexPath:(id)a4;
-- (void)buttonTappedForCell:(id)a3 withItem:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (void)_presentHomeConnectedEcosystemDetailViewController:(id)controller;
+- (void)_presentRemoveFromEcosystemConfirmation:(id)confirmation atIndexPath:(id)path;
+- (void)buttonTappedForCell:(id)cell withItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation HUMatterConnectedServicesViewController
 
-- (HUMatterConnectedServicesViewController)initWithConnectedServicesItemProvider:(id)a3
+- (HUMatterConnectedServicesViewController)initWithConnectedServicesItemProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[HUMatterConnectedServicesItemManager alloc] initWithConnectedServicesItemProvider:v4 delegate:self];
+  providerCopy = provider;
+  v5 = [[HUMatterConnectedServicesItemManager alloc] initWithConnectedServicesItemProvider:providerCopy delegate:self];
 
   v9.receiver = self;
   v9.super_class = HUMatterConnectedServicesViewController;
@@ -33,57 +33,57 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v8 = [v7 attributedFooterTitleForSection:a4];
+  viewCopy = view;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v8 = [itemManager attributedFooterTitleForSection:section];
 
   if (v8)
   {
-    v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"footerReuseIdentifier"];
+    v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"footerReuseIdentifier"];
 
     if (!v9)
     {
       v9 = [[HUItemTableSectionHeaderFooterView alloc] initWithReuseIdentifier:@"footerReuseIdentifier"];
     }
 
-    v10 = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
-    v11 = [v10 textDragInteraction];
-    [v11 setEnabled:1];
+    messageTextView = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
+    textDragInteraction = [messageTextView textDragInteraction];
+    [textDragInteraction setEnabled:1];
 
     [(HUItemTableSectionHeaderFooterView *)v9 setType:1];
     [(HUItemTableSectionHeaderFooterView *)v9 setMessage:v8];
-    v6 = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
-    [v6 setDelegate:self];
+    viewCopy = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
+    [viewCopy setDelegate:self];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = HUMatterConnectedServicesViewController;
-    v9 = [(HUItemTableViewController *)&v13 tableView:v6 viewForFooterInSection:a4];
+    v9 = [(HUItemTableViewController *)&v13 tableView:viewCopy viewForFooterInSection:section];
   }
 
   return v9;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v7;
+    v15 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v12, 0x16u);
   }
 
-  v9 = [MEMORY[0x277D148E8] sharedInstance];
-  v10 = [v9 openSensitiveURL:v7];
+  mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+  v10 = [mEMORY[0x277D148E8] openSensitiveURL:lCopy];
 
   return 0;
 }
@@ -93,13 +93,13 @@
   v12[2] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HUMatterConnectedServicesViewController;
-  v3 = [(HUItemTableViewController *)&v11 hu_preloadContent];
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 fetchSystemCommissionerPairingUUID];
+  hu_preloadContent = [(HUItemTableViewController *)&v11 hu_preloadContent];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  fetchSystemCommissionerPairingUUID = [itemManager fetchSystemCommissionerPairingUUID];
 
   v6 = MEMORY[0x277D2C900];
-  v12[0] = v3;
-  v12[1] = v5;
+  v12[0] = hu_preloadContent;
+  v12[1] = fetchSystemCommissionerPairingUUID;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   v8 = [v6 combineAllFutures:v7];
   v9 = [v8 flatMap:&__block_literal_global_286];
@@ -107,9 +107,9 @@
   return v9;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -122,22 +122,22 @@
   return v5;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
+  cellCopy = cell;
   v12.receiver = self;
   v12.super_class = HUMatterConnectedServicesViewController;
-  [(HUItemTableViewController *)&v12 setupCell:v8 forItem:a4 indexPath:a5];
+  [(HUItemTableViewController *)&v12 setupCell:cellCopy forItem:item indexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = cellCopy;
     [v9 setButtonColorFollowsTintColor:1];
     [v9 setHideIcon:1];
     [v9 setDelegate:self];
     v10 = 0;
 LABEL_5:
-    [v8 setAccessoryType:v10];
+    [cellCopy setAccessoryType:v10];
 
     goto LABEL_6;
   }
@@ -145,7 +145,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
+    v11 = cellCopy;
     v10 = 1;
     [v11 setValueColorFollowsTintColor:1];
     [v11 setHideIcon:1];
@@ -155,26 +155,26 @@ LABEL_5:
 LABEL_6:
 }
 
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section
 {
-  v3 = [(HUItemTableViewController *)self itemManager];
-  v4 = [v3 connectedHomeEcosystemItemProvider];
-  v5 = v4 != 0;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  connectedHomeEcosystemItemProvider = [itemManager connectedHomeEcosystemItemProvider];
+  v5 = connectedHomeEcosystemItemProvider != 0;
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = HUMatterConnectedServicesViewController;
-  v6 = a4;
-  v7 = a3;
-  [(HUItemTableViewController *)&v13 tableView:v7 didSelectRowAtIndexPath:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:{1, v13.receiver, v13.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(HUItemTableViewController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:{1, v13.receiver, v13.super_class}];
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   v10 = v9;
@@ -196,26 +196,26 @@ LABEL_6:
   }
 }
 
-- (void)_presentRemoveFromEcosystemConfirmation:(id)a3 atIndexPath:(id)a4
+- (void)_presentRemoveFromEcosystemConfirmation:(id)confirmation atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 latestResults];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  confirmationCopy = confirmation;
+  pathCopy = path;
+  latestResults = [confirmationCopy latestResults];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
 
   v16 = HULocalizedStringWithFormat(@"HUEcosystemRemovalActionConfirmationTitle", @"%@", v10, v11, v12, v13, v14, v15, v9);
   v23 = HULocalizedStringWithFormat(@"HUEcosystemRemovalAction", @"%@", v17, v18, v19, v20, v21, v22, v9);
-  v24 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v16 indexPath:v7];
+  v24 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v16 indexPath:pathCopy];
   v25 = MEMORY[0x277D750F8];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __95__HUMatterConnectedServicesViewController__presentRemoveFromEcosystemConfirmation_atIndexPath___block_invoke;
   v32[3] = &unk_277DBBD68;
   v32[4] = self;
-  v33 = v6;
-  v34 = v7;
-  v26 = v7;
-  v27 = v6;
+  v33 = confirmationCopy;
+  v34 = pathCopy;
+  v26 = pathCopy;
+  v27 = confirmationCopy;
   v28 = [v25 actionWithTitle:v23 style:2 handler:v32];
   [v24 addAction:v28];
   v29 = MEMORY[0x277D750F8];
@@ -309,23 +309,23 @@ uint64_t __95__HUMatterConnectedServicesViewController__presentRemoveFromEcosyst
   return v5;
 }
 
-- (void)_presentHomeConnectedEcosystemDetailViewController:(id)a3
+- (void)_presentHomeConnectedEcosystemDetailViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [HUMatterConnectedEcosystemDetailViewController alloc];
-  v6 = [v4 connectedEcosystem];
+  connectedEcosystem = [controllerCopy connectedEcosystem];
 
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v8 = [v7 connectedHomeEcosystemItemProvider];
-  v11 = [(HUMatterConnectedEcosystemDetailViewController *)v5 initWithConnectedEcosystem:v6 connectedEcosystemItemProvider:v8];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  connectedHomeEcosystemItemProvider = [itemManager connectedHomeEcosystemItemProvider];
+  v11 = [(HUMatterConnectedEcosystemDetailViewController *)v5 initWithConnectedEcosystem:connectedEcosystem connectedEcosystemItemProvider:connectedHomeEcosystemItemProvider];
 
-  v9 = [(HUMatterConnectedServicesViewController *)self navigationController];
-  v10 = [v9 hu_pushPreloadableViewController:v11 animated:1];
+  navigationController = [(HUMatterConnectedServicesViewController *)self navigationController];
+  v10 = [navigationController hu_pushPreloadableViewController:v11 animated:1];
 }
 
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated
 {
-  v4 = [(HUMatterConnectedServicesViewController *)self navigationController:a3];
+  v4 = [(HUMatterConnectedServicesViewController *)self navigationController:presentation];
   v5 = [v4 popViewControllerAnimated:1];
 
   v6 = MEMORY[0x277D2C900];
@@ -333,15 +333,15 @@ uint64_t __95__HUMatterConnectedServicesViewController__presentRemoveFromEcosyst
   return [v6 futureWithNoResult];
 }
 
-- (void)buttonTappedForCell:(id)a3 withItem:(id)a4
+- (void)buttonTappedForCell:(id)cell withItem:(id)item
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 indexPathForItem:v5];
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager indexPathForItem:itemCopy];
 
   objc_opt_class();
-  v8 = v5;
+  v8 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -370,7 +370,7 @@ uint64_t __95__HUMatterConnectedServicesViewController__presentRemoveFromEcosyst
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412802;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = v8;
       v17 = 2112;

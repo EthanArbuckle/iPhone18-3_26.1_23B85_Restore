@@ -1,36 +1,36 @@
 @interface PLAssetContainerDataSource
-- (BOOL)hasAssetAtIndexPath:(id)a3;
+- (BOOL)hasAssetAtIndexPath:(id)path;
 - (NSString)description;
-- (PLAssetContainerDataSource)initWithAssetCollectionsFetchResult:(id)a3 collectionsAssetsFetchResults:(id)a4;
-- (id)assetAtGlobalIndex:(unint64_t)a3;
-- (id)assetAtIndexPath:(id)a3;
-- (id)assetContainerForAsset:(id)a3;
-- (id)assetContainerForAssetGlobalIndex:(unint64_t)a3;
-- (id)assetInAssetContainer:(id)a3 atIndex:(unint64_t)a4;
-- (id)assetWithObjectID:(id)a3;
-- (id)assetsInAssetCollectionAtIndex:(unint64_t)a3;
-- (id)decrementAssetIndexPath:(id)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5;
-- (id)findNearestIndexPath:(id)a3 preferNext:(BOOL)a4;
+- (PLAssetContainerDataSource)initWithAssetCollectionsFetchResult:(id)result collectionsAssetsFetchResults:(id)results;
+- (id)assetAtGlobalIndex:(unint64_t)index;
+- (id)assetAtIndexPath:(id)path;
+- (id)assetContainerForAsset:(id)asset;
+- (id)assetContainerForAssetGlobalIndex:(unint64_t)index;
+- (id)assetInAssetContainer:(id)container atIndex:(unint64_t)index;
+- (id)assetWithObjectID:(id)d;
+- (id)assetsInAssetCollectionAtIndex:(unint64_t)index;
+- (id)decrementAssetIndexPath:(id)path insideCurrentAssetContainer:(BOOL)container andWrap:(BOOL)wrap;
+- (id)findNearestIndexPath:(id)path preferNext:(BOOL)next;
 - (id)firstAssetIndexPath;
-- (id)incrementAssetIndexPath:(id)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5;
-- (id)indexPathForGlobalIndex:(unint64_t)a3;
-- (id)indexPathOfAsset:(id)a3;
+- (id)incrementAssetIndexPath:(id)path insideCurrentAssetContainer:(BOOL)container andWrap:(BOOL)wrap;
+- (id)indexPathForGlobalIndex:(unint64_t)index;
+- (id)indexPathOfAsset:(id)asset;
 - (id)lastAssetIndexPath;
 - (id)pl_fetchAllAssets;
-- (unint64_t)_indexOfNextNonEmptyAssetContainerAfterContainerIndex:(unint64_t)a3 wrap:(BOOL)a4;
-- (unint64_t)_indexOfPreviousNonEmptyAssetContainerBeforeContainerIndex:(unint64_t)a3 wrap:(BOOL)a4;
+- (unint64_t)_indexOfNextNonEmptyAssetContainerAfterContainerIndex:(unint64_t)index wrap:(BOOL)wrap;
+- (unint64_t)_indexOfPreviousNonEmptyAssetContainerBeforeContainerIndex:(unint64_t)index wrap:(BOOL)wrap;
 - (unint64_t)allAssetsCount;
-- (unint64_t)assetCountForContainer:(id)a3;
-- (unint64_t)assetCountForContainerAtIndex:(unint64_t)a3;
-- (unint64_t)decrementGlobalIndex:(unint64_t)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5;
-- (unint64_t)globalIndexForIndexPath:(id)a3;
-- (unint64_t)globalIndexOfAsset:(id)a3;
-- (unint64_t)incrementGlobalIndex:(unint64_t)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5;
-- (unint64_t)indexOffsetForAssetContainerAtAssetIndex:(unint64_t)a3;
-- (void)_updateCachedCount:(unint64_t)a3 forContainerAtContainerIndex:(unint64_t)a4;
+- (unint64_t)assetCountForContainer:(id)container;
+- (unint64_t)assetCountForContainerAtIndex:(unint64_t)index;
+- (unint64_t)decrementGlobalIndex:(unint64_t)index insideCurrentAssetContainer:(BOOL)container andWrap:(BOOL)wrap;
+- (unint64_t)globalIndexForIndexPath:(id)path;
+- (unint64_t)globalIndexOfAsset:(id)asset;
+- (unint64_t)incrementGlobalIndex:(unint64_t)index insideCurrentAssetContainer:(BOOL)container andWrap:(BOOL)wrap;
+- (unint64_t)indexOffsetForAssetContainerAtAssetIndex:(unint64_t)index;
+- (void)_updateCachedCount:(unint64_t)count forContainerAtContainerIndex:(unint64_t)index;
 - (void)_updateCachedValues;
 - (void)dealloc;
-- (void)viewControllerPhotoLibraryDidChange:(id)a3;
+- (void)viewControllerPhotoLibraryDidChange:(id)change;
 @end
 
 @implementation PLAssetContainerDataSource
@@ -80,37 +80,37 @@
   return [v3 copy];
 }
 
-- (void)viewControllerPhotoLibraryDidChange:(id)a3
+- (void)viewControllerPhotoLibraryDidChange:(id)change
 {
-  v4 = self;
+  selfCopy = self;
   v46 = *MEMORY[0x277D85DE8];
-  v5 = [a3 changeDetailsForFetchResult:{-[PLAssetContainerDataSource assetCollectionsFetchResult](self, "assetCollectionsFetchResult")}];
+  v5 = [change changeDetailsForFetchResult:{-[PLAssetContainerDataSource assetCollectionsFetchResult](self, "assetCollectionsFetchResult")}];
   v6 = v5 != 0;
   if (!v5)
   {
-    v30 = 0;
+    fetchResultAfterChanges = 0;
 LABEL_15:
-    v10 = [(NSMutableDictionary *)v4->_assetsFetchResultByAssetCollection mutableCopy];
+    v10 = [(NSMutableDictionary *)selfCopy->_assetsFetchResultByAssetCollection mutableCopy];
     goto LABEL_16;
   }
 
   v7 = v5;
-  v30 = [v5 fetchResultAfterChanges];
-  v8 = [v7 insertedObjects];
-  v9 = [v7 removedObjects];
-  if (![v8 count] && !objc_msgSend(v9, "count"))
+  fetchResultAfterChanges = [v5 fetchResultAfterChanges];
+  insertedObjects = [v7 insertedObjects];
+  removedObjects = [v7 removedObjects];
+  if (![insertedObjects count] && !objc_msgSend(removedObjects, "count"))
   {
     if (([v7 hasIncrementalChanges] & 1) == 0)
     {
-      v23 = v30;
-      v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v30, "count")}];
-      v24 = [objc_msgSend(objc_msgSend(v30 "firstObject")];
+      v23 = fetchResultAfterChanges;
+      v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(fetchResultAfterChanges, "count")}];
+      v24 = [objc_msgSend(objc_msgSend(fetchResultAfterChanges "firstObject")];
       [v24 setIncludeHiddenAssets:1];
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v25 = [v30 countByEnumeratingWithState:&v35 objects:v44 count:16];
+      v25 = [fetchResultAfterChanges countByEnumeratingWithState:&v35 objects:v44 count:16];
       if (v25)
       {
         v26 = v25;
@@ -121,13 +121,13 @@ LABEL_15:
           {
             if (*v36 != v27)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(fetchResultAfterChanges);
             }
 
             -[NSMutableDictionary setObject:forKey:](v10, "setObject:forKey:", [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:*(*(&v35 + 1) + 8 * i) options:v24], *(*(&v35 + 1) + 8 * i));
           }
 
-          v26 = [v30 countByEnumeratingWithState:&v35 objects:v44 count:16];
+          v26 = [fetchResultAfterChanges countByEnumeratingWithState:&v35 objects:v44 count:16];
         }
 
         while (v26);
@@ -139,15 +139,15 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v10 = [(NSMutableDictionary *)v4->_assetsFetchResultByAssetCollection mutableCopy];
-  [(NSMutableDictionary *)v10 removeObjectsForKeys:v9];
-  v11 = [objc_msgSend(objc_msgSend(v8 "firstObject")];
+  v10 = [(NSMutableDictionary *)selfCopy->_assetsFetchResultByAssetCollection mutableCopy];
+  [(NSMutableDictionary *)v10 removeObjectsForKeys:removedObjects];
+  v11 = [objc_msgSend(objc_msgSend(insertedObjects "firstObject")];
   [v11 setIncludeHiddenAssets:1];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v12 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  v12 = [insertedObjects countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v12)
   {
     v13 = v12;
@@ -158,13 +158,13 @@ LABEL_15:
       {
         if (*v40 != v14)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(insertedObjects);
         }
 
         -[NSMutableDictionary setObject:forKey:](v10, "setObject:forKey:", [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:*(*(&v39 + 1) + 8 * j) options:v11], *(*(&v39 + 1) + 8 * j));
       }
 
-      v13 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      v13 = [insertedObjects countByEnumeratingWithState:&v39 objects:v45 count:16];
     }
 
     while (v13);
@@ -172,19 +172,19 @@ LABEL_15:
 
   if (!v10)
   {
-    v4 = v29;
+    selfCopy = v29;
     goto LABEL_15;
   }
 
   v6 = 1;
-  v4 = v29;
+  selfCopy = v29;
 LABEL_16:
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v16 = [(NSMutableDictionary *)v10 allKeys];
-  v17 = [v16 countByEnumeratingWithState:&v31 objects:v43 count:16];
+  allKeys = [(NSMutableDictionary *)v10 allKeys];
+  v17 = [allKeys countByEnumeratingWithState:&v31 objects:v43 count:16];
   if (v17)
   {
     v18 = v17;
@@ -195,11 +195,11 @@ LABEL_16:
       {
         if (*v32 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
         v21 = *(*(&v31 + 1) + 8 * k);
-        v22 = [a3 changeDetailsForFetchResult:{-[NSMutableDictionary objectForKey:](v10, "objectForKey:", v21)}];
+        v22 = [change changeDetailsForFetchResult:{-[NSMutableDictionary objectForKey:](v10, "objectForKey:", v21)}];
         if (v22)
         {
           -[NSMutableDictionary setObject:forKey:](v10, "setObject:forKey:", [v22 fetchResultAfterChanges], v21);
@@ -207,7 +207,7 @@ LABEL_16:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v31 objects:v43 count:16];
+      v18 = [allKeys countByEnumeratingWithState:&v31 objects:v43 count:16];
     }
 
     while (v18);
@@ -219,21 +219,21 @@ LABEL_16:
     return;
   }
 
-  v23 = v30;
+  v23 = fetchResultAfterChanges;
 LABEL_27:
   if (v10)
   {
 
-    v4->_assetsFetchResultByAssetCollection = v10;
+    selfCopy->_assetsFetchResultByAssetCollection = v10;
   }
 
   if (v23)
   {
 
-    v4->_assetCollectionsFetchResult = v23;
+    selfCopy->_assetCollectionsFetchResult = v23;
   }
 
-  [(PLAssetContainerDataSource *)v4 _updateCachedValues];
+  [(PLAssetContainerDataSource *)selfCopy _updateCachedValues];
 }
 
 - (id)pl_fetchAllAssets
@@ -244,7 +244,7 @@ LABEL_27:
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -265,7 +265,7 @@ LABEL_27:
         }
 
         v9 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:*(*(&v11 + 1) + 8 * i)];
-        [v3 addObjectsFromArray:{objc_msgSend(MEMORY[0x277CD97A8], "pl_managedAssetsForAssets:", v9)}];
+        [array addObjectsFromArray:{objc_msgSend(MEMORY[0x277CD97A8], "pl_managedAssetsForAssets:", v9)}];
       }
 
       v6 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -274,31 +274,31 @@ LABEL_27:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)assetInAssetContainer:(id)a3 atIndex:(unint64_t)a4
+- (id)assetInAssetContainer:(id)container atIndex:(unint64_t)index
 {
-  v5 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:a3];
-  if ([v5 count] <= a4)
+  v5 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:container];
+  if ([v5 count] <= index)
   {
     return 0;
   }
 
-  return [v5 objectAtIndexedSubscript:a4];
+  return [v5 objectAtIndexedSubscript:index];
 }
 
-- (unint64_t)assetCountForContainerAtIndex:(unint64_t)a3
+- (unint64_t)assetCountForContainerAtIndex:(unint64_t)index
 {
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  return self->_containerCounts[a3];
+  return self->_containerCounts[index];
 }
 
-- (unint64_t)assetCountForContainer:(id)a3
+- (unint64_t)assetCountForContainer:(id)container
 {
   if (self->_cachedValuesNeedUpdate)
   {
@@ -306,9 +306,9 @@ LABEL_27:
   }
 
   v5 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3)
+  if (container)
   {
-    v6 = [(PHFetchResult *)self->_assetCollectionsFetchResult indexOfObject:a3];
+    v6 = [(PHFetchResult *)self->_assetCollectionsFetchResult indexOfObject:container];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
       return self->_containerCounts[v6];
@@ -318,19 +318,19 @@ LABEL_27:
   return v5;
 }
 
-- (id)decrementAssetIndexPath:(id)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5
+- (id)decrementAssetIndexPath:(id)path insideCurrentAssetContainer:(BOOL)container andWrap:(BOOL)wrap
 {
-  v5 = a5;
-  v6 = a4;
+  wrapCopy = wrap;
+  containerCopy = container;
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  v9 = [a3 section];
-  if ([a3 item])
+  section = [path section];
+  if ([path item])
   {
-    v10 = [a3 item] - 1;
+    v10 = [path item] - 1;
   }
 
   else
@@ -338,8 +338,8 @@ LABEL_27:
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = [(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:v9];
-  if (!v6)
+  v11 = [(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:section];
+  if (!containerCopy)
   {
     if ([(PLAssetContainerDataSource *)self allAssetsCount])
     {
@@ -348,10 +348,10 @@ LABEL_27:
         goto LABEL_17;
       }
 
-      v12 = [(PLAssetContainerDataSource *)self _indexOfPreviousNonEmptyAssetContainerBeforeContainerIndex:v9 wrap:v5];
+      v12 = [(PLAssetContainerDataSource *)self _indexOfPreviousNonEmptyAssetContainerBeforeContainerIndex:section wrap:wrapCopy];
       if (v12 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v9 = v12;
+        section = v12;
         v11 = [(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:v12];
         goto LABEL_15;
       }
@@ -370,7 +370,7 @@ LABEL_27:
     goto LABEL_17;
   }
 
-  if (!v5)
+  if (!wrapCopy)
   {
     return 0;
   }
@@ -385,23 +385,23 @@ LABEL_15:
 LABEL_17:
   v14 = MEMORY[0x277CCAA70];
 
-  return [v14 indexPathForItem:v10 inSection:v9];
+  return [v14 indexPathForItem:v10 inSection:section];
 }
 
-- (id)incrementAssetIndexPath:(id)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5
+- (id)incrementAssetIndexPath:(id)path insideCurrentAssetContainer:(BOOL)container andWrap:(BOOL)wrap
 {
-  v5 = a5;
-  v6 = a4;
+  wrapCopy = wrap;
+  containerCopy = container;
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  v9 = [a3 section];
-  v10 = [a3 item] + 1;
-  v11 = [(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:v9];
+  section = [path section];
+  v10 = [path item] + 1;
+  v11 = [(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:section];
   v12 = v11;
-  if (v6)
+  if (containerCopy)
   {
     if (!v11)
     {
@@ -409,7 +409,7 @@ LABEL_17:
     }
 
     v13 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v5)
+    if (wrapCopy)
     {
       v13 = 0;
     }
@@ -438,32 +438,32 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v14 = [(PLAssetContainerDataSource *)self _indexOfNextNonEmptyAssetContainerAfterContainerIndex:v9 wrap:v5];
+  v14 = [(PLAssetContainerDataSource *)self _indexOfNextNonEmptyAssetContainerAfterContainerIndex:section wrap:wrapCopy];
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v9 = v14;
+  section = v14;
   v10 = 0;
 LABEL_17:
   v16 = MEMORY[0x277CCAA70];
 
-  return [v16 indexPathForItem:v10 inSection:v9];
+  return [v16 indexPathForItem:v10 inSection:section];
 }
 
-- (unint64_t)_indexOfPreviousNonEmptyAssetContainerBeforeContainerIndex:(unint64_t)a3 wrap:(BOOL)a4
+- (unint64_t)_indexOfPreviousNonEmptyAssetContainerBeforeContainerIndex:(unint64_t)index wrap:(BOOL)wrap
 {
-  v4 = a4;
+  wrapCopy = wrap;
   v7 = [(PHFetchResult *)self->_assetCollectionsFetchResult count];
   if (v7 >= 2)
   {
     v8 = v7;
-    v9 = a3 - 1;
+    v9 = index - 1;
     for (i = 1; v8 != i; ++i)
     {
-      v11 = i >= a3 ? v8 : 0;
-      if (v11 + v9 > a3 && !v4)
+      v11 = i >= index ? v8 : 0;
+      if (v11 + v9 > index && !wrapCopy)
       {
         break;
       }
@@ -480,19 +480,19 @@ LABEL_17:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)_indexOfNextNonEmptyAssetContainerAfterContainerIndex:(unint64_t)a3 wrap:(BOOL)a4
+- (unint64_t)_indexOfNextNonEmptyAssetContainerAfterContainerIndex:(unint64_t)index wrap:(BOOL)wrap
 {
-  v4 = a4;
+  wrapCopy = wrap;
   v7 = [(PHFetchResult *)self->_assetCollectionsFetchResult count];
   if (v7 >= 2)
   {
     v8 = v7;
-    v9 = a3 + 1;
+    v9 = index + 1;
     v10 = v7 - 1;
     do
     {
       v11 = v9 % v8;
-      if (v9 % v8 < a3 && !v4)
+      if (v9 % v8 < index && !wrapCopy)
       {
         break;
       }
@@ -512,22 +512,22 @@ LABEL_17:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)findNearestIndexPath:(id)a3 preferNext:(BOOL)a4
+- (id)findNearestIndexPath:(id)path preferNext:(BOOL)next
 {
-  v4 = a4;
+  nextCopy = next;
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
   result = 0;
-  if (!a3 || !self->_allAssetsCount)
+  if (!path || !self->_allAssetsCount)
   {
     return result;
   }
 
-  v8 = [a3 section];
-  if (v8 >= [(PHFetchResult *)self->_assetCollectionsFetchResult count])
+  section = [path section];
+  if (section >= [(PHFetchResult *)self->_assetCollectionsFetchResult count])
   {
     result = [(PLAssetContainerDataSource *)self lastAssetIndexPath];
     if (result)
@@ -538,14 +538,14 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  if ([a3 row] < self->_containerCounts[v8])
+  if ([path row] < self->_containerCounts[section])
   {
-    return a3;
+    return path;
   }
 
-  if (!v4 || (result = [(PLAssetContainerDataSource *)self incrementAssetIndexPath:a3 insideCurrentAssetContainer:0 andWrap:0]) == 0)
+  if (!nextCopy || (result = [(PLAssetContainerDataSource *)self incrementAssetIndexPath:path insideCurrentAssetContainer:0 andWrap:0]) == 0)
   {
-    result = [(PLAssetContainerDataSource *)self decrementAssetIndexPath:a3 insideCurrentAssetContainer:0 andWrap:0];
+    result = [(PLAssetContainerDataSource *)self decrementAssetIndexPath:path insideCurrentAssetContainer:0 andWrap:0];
     if (!result)
     {
 LABEL_14:
@@ -557,7 +557,7 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)hasAssetAtIndexPath:(id)a3
+- (BOOL)hasAssetAtIndexPath:(id)path
 {
   if (self->_cachedValuesNeedUpdate)
   {
@@ -565,10 +565,10 @@ LABEL_14:
   }
 
   result = 0;
-  if (a3 && self->_allAssetsCount)
+  if (path && self->_allAssetsCount)
   {
-    v6 = [a3 section];
-    return v6 < -[PHFetchResult count](self->_assetCollectionsFetchResult, "count") && [a3 row] < self->_containerCounts[v6];
+    section = [path section];
+    return section < -[PHFetchResult count](self->_assetCollectionsFetchResult, "count") && [path row] < self->_containerCounts[section];
   }
 
   return result;
@@ -644,7 +644,7 @@ LABEL_14:
   return [v6 indexPathForItem:0 inSection:?];
 }
 
-- (id)indexPathOfAsset:(id)a3
+- (id)indexPathOfAsset:(id)asset
 {
   v24 = *MEMORY[0x277D85DE8];
   if (self->_cachedValuesNeedUpdate)
@@ -660,14 +660,14 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v6 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:")), "indexOfObject:", a3}];
+    v6 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:")), "indexOfObject:", asset}];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL || (result = [MEMORY[0x277CCAA70] indexPathForItem:v6 inSection:self->_lastAssetCollectionIndex]) == 0)
     {
       lastAssetCollectionIndex = self->_lastAssetCollectionIndex;
       if (lastAssetCollectionIndex)
       {
         v8 = lastAssetCollectionIndex - 1;
-        v9 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", lastAssetCollectionIndex - 1)), "indexOfObject:", a3}];
+        v9 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", lastAssetCollectionIndex - 1)), "indexOfObject:", asset}];
         if (v9 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v8 = self->_lastAssetCollectionIndex;
@@ -689,7 +689,7 @@ LABEL_14:
         v8 = 0;
       }
 
-      if (v8 >= -[PHFetchResult count](self->_assetCollectionsFetchResult, "count") - 1 || (v10 = self->_lastAssetCollectionIndex + 1, v11 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", v10)), "indexOfObject:", a3}], v11 == 0x7FFFFFFFFFFFFFFFLL) || (result = objc_msgSend(MEMORY[0x277CCAA70], "indexPathForItem:inSection:", v11, v10), self->_lastAssetCollectionIndex = v10, !result))
+      if (v8 >= -[PHFetchResult count](self->_assetCollectionsFetchResult, "count") - 1 || (v10 = self->_lastAssetCollectionIndex + 1, v11 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", v10)), "indexOfObject:", asset}], v11 == 0x7FFFFFFFFFFFFFFFLL) || (result = objc_msgSend(MEMORY[0x277CCAA70], "indexPathForItem:inSection:", v11, v10), self->_lastAssetCollectionIndex = v10, !result))
       {
 LABEL_15:
         v21 = 0u;
@@ -715,7 +715,7 @@ LABEL_15:
                 objc_enumerationMutation(assetCollectionsFetchResult);
               }
 
-              v18 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{*(*(&v19 + 1) + 8 * v16)), "indexOfObject:", a3}];
+              v18 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{*(*(&v19 + 1) + 8 * v16)), "indexOfObject:", asset}];
               if (v18 != 0x7FFFFFFFFFFFFFFFLL)
               {
                 result = [MEMORY[0x277CCAA70] indexPathForItem:v18 inSection:v17];
@@ -745,28 +745,28 @@ LABEL_15:
   return result;
 }
 
-- (id)assetAtIndexPath:(id)a3
+- (id)assetAtIndexPath:(id)path
 {
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  v5 = -[PHFetchResult objectAtIndex:](self->_assetCollectionsFetchResult, "objectAtIndex:", [a3 section]);
-  v6 = [a3 item];
+  v5 = -[PHFetchResult objectAtIndex:](self->_assetCollectionsFetchResult, "objectAtIndex:", [path section]);
+  item = [path item];
 
-  return [(PLAssetContainerDataSource *)self assetInAssetContainer:v5 atIndex:v6];
+  return [(PLAssetContainerDataSource *)self assetInAssetContainer:v5 atIndex:item];
 }
 
-- (id)assetsInAssetCollectionAtIndex:(unint64_t)a3
+- (id)assetsInAssetCollectionAtIndex:(unint64_t)index
 {
-  v4 = [(PHFetchResult *)self->_assetCollectionsFetchResult objectAtIndex:a3];
+  v4 = [(PHFetchResult *)self->_assetCollectionsFetchResult objectAtIndex:index];
   assetsFetchResultByAssetCollection = self->_assetsFetchResultByAssetCollection;
 
   return [(NSMutableDictionary *)assetsFetchResultByAssetCollection objectForKey:v4];
 }
 
-- (id)assetWithObjectID:(id)a3
+- (id)assetWithObjectID:(id)d
 {
   v7[1] = *MEMORY[0x277D85DE8];
   if (self->_cachedValuesNeedUpdate)
@@ -774,7 +774,7 @@ LABEL_15:
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  v7[0] = a3;
+  v7[0] = d;
   result = [objc_msgSend(pl_appPhotoLibrary() fetchPHObjectsForOIDs:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v7, 1)), "lastObject"}];
   if (result)
   {
@@ -793,7 +793,7 @@ LABEL_15:
   return result;
 }
 
-- (unint64_t)indexOffsetForAssetContainerAtAssetIndex:(unint64_t)a3
+- (unint64_t)indexOffsetForAssetContainerAtAssetIndex:(unint64_t)index
 {
   if (self->_cachedValuesNeedUpdate)
   {
@@ -812,7 +812,7 @@ LABEL_15:
   {
     v8 = *containerCounts++;
     v9 = v8 + v6;
-    if (v8 + v6 > a3)
+    if (v8 + v6 > index)
     {
       break;
     }
@@ -827,7 +827,7 @@ LABEL_15:
   return v6;
 }
 
-- (unint64_t)globalIndexOfAsset:(id)a3
+- (unint64_t)globalIndexOfAsset:(id)asset
 {
   v28 = *MEMORY[0x277D85DE8];
   if (self->_cachedValuesNeedUpdate)
@@ -835,23 +835,23 @@ LABEL_15:
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  v5 = [(PLAssetContainerDataSource *)self allAssetsCount];
+  allAssetsCount = [(PLAssetContainerDataSource *)self allAssetsCount];
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5)
+  if (allAssetsCount)
   {
     if (self->_lastAssetCollectionIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_15;
     }
 
-    v7 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:")), "indexOfObject:", a3}];
+    v7 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:")), "indexOfObject:", asset}];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL || (result = -[PLAssetContainerDataSource globalIndexForIndexPath:](self, "globalIndexForIndexPath:", [MEMORY[0x277CCAA70] indexPathForItem:v7 inSection:self->_lastAssetCollectionIndex]), result == 0x7FFFFFFFFFFFFFFFLL))
     {
       lastAssetCollectionIndex = self->_lastAssetCollectionIndex;
       if (lastAssetCollectionIndex)
       {
         v9 = lastAssetCollectionIndex - 1;
-        v10 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", lastAssetCollectionIndex - 1)), "indexOfObject:", a3}];
+        v10 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", lastAssetCollectionIndex - 1)), "indexOfObject:", asset}];
         if (v10 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v9 = self->_lastAssetCollectionIndex;
@@ -873,7 +873,7 @@ LABEL_15:
         v9 = 0;
       }
 
-      if (v9 >= -[PHFetchResult count](self->_assetCollectionsFetchResult, "count") - 1 || (v11 = self->_lastAssetCollectionIndex + 1, v12 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", v11)), "indexOfObject:", a3}], v12 == 0x7FFFFFFFFFFFFFFFLL) || (result = -[PLAssetContainerDataSource globalIndexForIndexPath:](self, "globalIndexForIndexPath:", objc_msgSend(MEMORY[0x277CCAA70], "indexPathForItem:inSection:", v12, v11)), self->_lastAssetCollectionIndex = v11, result == 0x7FFFFFFFFFFFFFFFLL))
+      if (v9 >= -[PHFetchResult count](self->_assetCollectionsFetchResult, "count") - 1 || (v11 = self->_lastAssetCollectionIndex + 1, v12 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", v11)), "indexOfObject:", asset}], v12 == 0x7FFFFFFFFFFFFFFFLL) || (result = -[PLAssetContainerDataSource globalIndexForIndexPath:](self, "globalIndexForIndexPath:", objc_msgSend(MEMORY[0x277CCAA70], "indexPathForItem:inSection:", v12, v11)), self->_lastAssetCollectionIndex = v11, result == 0x7FFFFFFFFFFFFFFFLL))
       {
 LABEL_15:
         v25 = 0u;
@@ -900,7 +900,7 @@ LABEL_15:
                 objc_enumerationMutation(assetCollectionsFetchResult);
               }
 
-              v21 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{*(*(&v23 + 1) + 8 * v19)), "indexOfObject:", a3}];
+              v21 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{*(*(&v23 + 1) + 8 * v19)), "indexOfObject:", asset}];
               if (v21 != 0x7FFFFFFFFFFFFFFFLL)
               {
                 result = v21 + v17;
@@ -936,61 +936,61 @@ LABEL_15:
   return result;
 }
 
-- (id)assetAtGlobalIndex:(unint64_t)a3
+- (id)assetAtGlobalIndex:(unint64_t)index
 {
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  v5 = [(PLAssetContainerDataSource *)self allAssetsCount];
-  if (!v5)
+  allAssetsCount = [(PLAssetContainerDataSource *)self allAssetsCount];
+  if (!allAssetsCount)
   {
     return 0;
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  if (v5 <= a3)
+  if (allAssetsCount <= index)
   {
     return 0;
   }
 
-  v6 = [(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:a3];
-  v7 = [(PLAssetContainerDataSource *)self indexOffsetForAssetContainerAtAssetIndex:a3];
+  v6 = [(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:index];
+  v7 = [(PLAssetContainerDataSource *)self indexOffsetForAssetContainerAtAssetIndex:index];
   if (!v6)
   {
     return 0;
   }
 
-  return [(PLAssetContainerDataSource *)self assetInAssetContainer:v6 atIndex:a3 - v7];
+  return [(PLAssetContainerDataSource *)self assetInAssetContainer:v6 atIndex:index - v7];
 }
 
-- (unint64_t)decrementGlobalIndex:(unint64_t)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5
+- (unint64_t)decrementGlobalIndex:(unint64_t)index insideCurrentAssetContainer:(BOOL)container andWrap:(BOOL)wrap
 {
-  v5 = a5;
-  v6 = a4;
+  wrapCopy = wrap;
+  containerCopy = container;
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  v9 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:[(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:a3]];
-  if (v6)
+  v9 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:[(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:index]];
+  if (containerCopy)
   {
     v10 = [v9 count];
     if (v10)
     {
       v11 = v10;
-      v12 = [(PLAssetContainerDataSource *)self indexOffsetForAssetContainerAtAssetIndex:a3];
+      v12 = [(PLAssetContainerDataSource *)self indexOffsetForAssetContainerAtAssetIndex:index];
       v13 = v12 + v11;
-      if (v12 == a3)
+      if (v12 == index)
       {
         v14 = v13 - 1;
-        if (v5)
+        if (wrapCopy)
         {
           return v14;
         }
@@ -1001,14 +1001,14 @@ LABEL_15:
         }
       }
 
-      else if (v13 <= a3)
+      else if (v13 <= index)
       {
         return v13 - 1;
       }
 
       else
       {
-        return a3 - 1;
+        return index - 1;
       }
     }
 
@@ -1020,25 +1020,25 @@ LABEL_15:
 
   else
   {
-    v16 = [(PLAssetContainerDataSource *)self allAssetsCount];
-    v17 = a3 - 1;
-    v18 = v16 - 1;
-    if (v16 <= a3)
+    allAssetsCount = [(PLAssetContainerDataSource *)self allAssetsCount];
+    v17 = index - 1;
+    v18 = allAssetsCount - 1;
+    if (allAssetsCount <= index)
     {
-      v17 = v16 - 1;
+      v17 = allAssetsCount - 1;
     }
 
-    if (!v5)
+    if (!wrapCopy)
     {
       v18 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (!a3)
+    if (!index)
     {
       v17 = v18;
     }
 
-    if (v16)
+    if (allAssetsCount)
     {
       return v17;
     }
@@ -1050,26 +1050,26 @@ LABEL_15:
   }
 }
 
-- (unint64_t)incrementGlobalIndex:(unint64_t)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5
+- (unint64_t)incrementGlobalIndex:(unint64_t)index insideCurrentAssetContainer:(BOOL)container andWrap:(BOOL)wrap
 {
-  v5 = a5;
-  v6 = a4;
+  wrapCopy = wrap;
+  containerCopy = container;
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  v9 = a3 + 1;
-  v10 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:[(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:a3]];
-  if (v6)
+  v9 = index + 1;
+  v10 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:[(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:index]];
+  if (containerCopy)
   {
     v11 = [v10 count];
     v12 = 0x7FFFFFFFFFFFFFFFLL;
     if (v11)
     {
       v13 = v11;
-      v14 = [(PLAssetContainerDataSource *)self indexOffsetForAssetContainerAtAssetIndex:a3];
-      if (v5)
+      v14 = [(PLAssetContainerDataSource *)self indexOffsetForAssetContainerAtAssetIndex:index];
+      if (wrapCopy)
       {
         v15 = v14;
       }
@@ -1086,15 +1086,15 @@ LABEL_15:
 
       else
       {
-        return a3 + 1;
+        return index + 1;
       }
     }
   }
 
   else
   {
-    v16 = [(PLAssetContainerDataSource *)self allAssetsCount];
-    if (v5)
+    allAssetsCount = [(PLAssetContainerDataSource *)self allAssetsCount];
+    if (wrapCopy)
     {
       v17 = 0;
     }
@@ -1104,12 +1104,12 @@ LABEL_15:
       v17 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (v9 < v16)
+    if (v9 < allAssetsCount)
     {
-      v17 = a3 + 1;
+      v17 = index + 1;
     }
 
-    if (v16)
+    if (allAssetsCount)
     {
       return v17;
     }
@@ -1123,19 +1123,19 @@ LABEL_15:
   return v12;
 }
 
-- (id)indexPathForGlobalIndex:(unint64_t)a3
+- (id)indexPathForGlobalIndex:(unint64_t)index
 {
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  if (self->_allAssetsCount <= a3)
+  if (self->_allAssetsCount <= index)
   {
     return 0;
   }
@@ -1151,7 +1151,7 @@ LABEL_15:
   while (1)
   {
     v8 = self->_containerCounts[v7] + v6;
-    if (v8 > a3)
+    if (v8 > index)
     {
       break;
     }
@@ -1166,44 +1166,44 @@ LABEL_15:
 
   v10 = MEMORY[0x277CCAA70];
 
-  return [v10 indexPathForItem:a3 - v6 inSection:?];
+  return [v10 indexPathForItem:index - v6 inSection:?];
 }
 
-- (unint64_t)globalIndexForIndexPath:(id)a3
+- (unint64_t)globalIndexForIndexPath:(id)path
 {
   if (self->_cachedValuesNeedUpdate)
   {
     [(PLAssetContainerDataSource *)self _updateCachedValues];
   }
 
-  if (!a3)
+  if (!path)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [a3 section];
-  v6 = [a3 item];
-  if (v5 >= [(PHFetchResult *)self->_assetCollectionsFetchResult count])
+  section = [path section];
+  item = [path item];
+  if (section >= [(PHFetchResult *)self->_assetCollectionsFetchResult count])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   containerCounts = self->_containerCounts;
-  if (v6 >= containerCounts[v5])
+  if (item >= containerCounts[section])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  for (; v5; --v5)
+  for (; section; --section)
   {
     v8 = *containerCounts++;
-    v6 += v8;
+    item += v8;
   }
 
-  return v6;
+  return item;
 }
 
-- (id)assetContainerForAssetGlobalIndex:(unint64_t)a3
+- (id)assetContainerForAssetGlobalIndex:(unint64_t)index
 {
   if (self->_cachedValuesNeedUpdate)
   {
@@ -1211,13 +1211,13 @@ LABEL_15:
   }
 
   v5 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection count];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v6 = v5;
-  if (!v5 || [(PLAssetContainerDataSource *)self allAssetsCount]<= a3)
+  if (!v5 || [(PLAssetContainerDataSource *)self allAssetsCount]<= index)
   {
     return 0;
   }
@@ -1227,7 +1227,7 @@ LABEL_15:
   while (1)
   {
     v8 += self->_containerCounts[v7];
-    if (v8 > a3)
+    if (v8 > index)
     {
       break;
     }
@@ -1243,7 +1243,7 @@ LABEL_15:
   return [(PHFetchResult *)assetCollectionsFetchResult objectAtIndex:?];
 }
 
-- (id)assetContainerForAsset:(id)a3
+- (id)assetContainerForAsset:(id)asset
 {
   if (self->_cachedValuesNeedUpdate)
   {
@@ -1252,12 +1252,12 @@ LABEL_15:
 
   v5 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection count];
   result = 0;
-  if (a3 && v5)
+  if (asset && v5)
   {
     if (v5 == 1)
     {
       v7 = [(PHFetchResult *)self->_assetCollectionsFetchResult objectAtIndex:0];
-      if ([-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{v7), "indexOfObject:", a3}] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{v7), "indexOfObject:", asset}] == 0x7FFFFFFFFFFFFFFFLL)
       {
         return 0;
       }
@@ -1270,7 +1270,7 @@ LABEL_15:
 
     else
     {
-      v8 = [(PLAssetContainerDataSource *)self globalIndexOfAsset:a3];
+      v8 = [(PLAssetContainerDataSource *)self globalIndexOfAsset:asset];
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
         return 0;
@@ -1297,11 +1297,11 @@ LABEL_15:
   return self->_allAssetsCount;
 }
 
-- (void)_updateCachedCount:(unint64_t)a3 forContainerAtContainerIndex:(unint64_t)a4
+- (void)_updateCachedCount:(unint64_t)count forContainerAtContainerIndex:(unint64_t)index
 {
   containerCounts = self->_containerCounts;
-  v5 = a3 - containerCounts[a4];
-  containerCounts[a4] = a3;
+  v5 = count - containerCounts[index];
+  containerCounts[index] = count;
   self->_allAssetsCount += v5;
 }
 
@@ -1402,28 +1402,28 @@ LABEL_20:
   [(PLAssetContainerDataSource *)&v4 dealloc];
 }
 
-- (PLAssetContainerDataSource)initWithAssetCollectionsFetchResult:(id)a3 collectionsAssetsFetchResults:(id)a4
+- (PLAssetContainerDataSource)initWithAssetCollectionsFetchResult:(id)result collectionsAssetsFetchResults:(id)results
 {
   v14.receiver = self;
   v14.super_class = PLAssetContainerDataSource;
   v7 = [(PLAssetContainerDataSource *)&v14 init];
   if (v7)
   {
-    v8 = [a3 count];
-    if (v8 != [a4 count])
+    v8 = [result count];
+    if (v8 != [results count])
     {
       [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
     }
 
-    v7->_assetCollectionsFetchResult = a3;
-    v7->_assetsFetchResultByAssetCollection = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(a4, "count")}];
+    v7->_assetCollectionsFetchResult = result;
+    v7->_assetsFetchResultByAssetCollection = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(results, "count")}];
     v9 = [(PHFetchResult *)v7->_assetCollectionsFetchResult count];
     if (v9)
     {
       v10 = v9;
       for (i = 0; i != v10; ++i)
       {
-        -[NSMutableDictionary setObject:forKey:](v7->_assetsFetchResultByAssetCollection, "setObject:forKey:", [a4 objectAtIndex:i], -[PHFetchResult objectAtIndex:](v7->_assetCollectionsFetchResult, "objectAtIndex:", i));
+        -[NSMutableDictionary setObject:forKey:](v7->_assetsFetchResultByAssetCollection, "setObject:forKey:", [results objectAtIndex:i], -[PHFetchResult objectAtIndex:](v7->_assetCollectionsFetchResult, "objectAtIndex:", i));
       }
     }
 

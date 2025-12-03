@@ -1,10 +1,10 @@
 @interface CRLCLCopyPasteHelper
-+ (BOOL)containsSupportedCanvasObjectFromTypeIdentifiers:(id)a3;
++ (BOOL)containsSupportedCanvasObjectFromTypeIdentifiers:(id)identifiers;
 + (NSArray)canvasObjectTypeIdentifiers;
 + (NSArray)canvasObjectVersionsToExport;
-+ (id)canvasObjectTypeIdentifierForVersion:(id)a3;
-+ (id)canvasObjectTypeIdentifierToUseFromTypeIdentifiers:(id)a3;
-+ (id)metaTypeIdentifiersForBoardItems:(id)a3;
++ (id)canvasObjectTypeIdentifierForVersion:(id)version;
++ (id)canvasObjectTypeIdentifierToUseFromTypeIdentifiers:(id)identifiers;
++ (id)metaTypeIdentifiersForBoardItems:(id)items;
 - (_TtC8Freeform20CRLCLCopyPasteHelper)init;
 @end
 
@@ -19,7 +19,7 @@
   return v2.super.isa;
 }
 
-+ (id)metaTypeIdentifiersForBoardItems:(id)a3
++ (id)metaTypeIdentifiersForBoardItems:(id)items
 {
   type metadata accessor for CRLBoardItem(0);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -30,7 +30,7 @@
   return v4.super.isa;
 }
 
-+ (BOOL)containsSupportedCanvasObjectFromTypeIdentifiers:(id)a3
++ (BOOL)containsSupportedCanvasObjectFromTypeIdentifiers:(id)identifiers
 {
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1007AC158(v3);
@@ -43,7 +43,7 @@
   return v5 != 0;
 }
 
-+ (id)canvasObjectTypeIdentifierToUseFromTypeIdentifiers:(id)a3
++ (id)canvasObjectTypeIdentifierToUseFromTypeIdentifiers:(id)identifiers
 {
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1007AC158(v3);
@@ -82,10 +82,10 @@
   return v2.super.isa;
 }
 
-+ (id)canvasObjectTypeIdentifierForVersion:(id)a3
++ (id)canvasObjectTypeIdentifierForVersion:(id)version
 {
-  v3 = a3;
-  v4 = [v3 description];
+  versionCopy = version;
+  v4 = [versionCopy description];
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 

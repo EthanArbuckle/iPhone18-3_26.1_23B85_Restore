@@ -6,7 +6,7 @@
 
 - (id)makeAnimator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNKCrossFadeAnimatorFactory.makeAnimator()();
 
   return v3;

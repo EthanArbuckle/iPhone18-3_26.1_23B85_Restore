@@ -2,7 +2,7 @@
 + (id)enterState;
 + (id)exitState;
 + (id)initialTransition;
-- (CUStateEvent)initWithName:(id)a3 userInfo:(id)a4;
+- (CUStateEvent)initWithName:(id)name userInfo:(id)info;
 - (id)description;
 - (void)dealloc;
 @end
@@ -29,10 +29,10 @@
   [(CUStateEvent *)&v5 dealloc];
 }
 
-- (CUStateEvent)initWithName:(id)a3 userInfo:(id)a4
+- (CUStateEvent)initWithName:(id)name userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = CUStateEvent;
   v8 = [(CUStateEvent *)&v22 init];
@@ -42,11 +42,11 @@
   }
 
   v16 = v8;
-  v17 = [v6 copy];
+  v17 = [nameCopy copy];
   name = v16->_name;
   v16->_name = v17;
 
-  v19 = [v7 copy];
+  v19 = [infoCopy copy];
   userInfo = v16->_userInfo;
   v16->_userInfo = v19;
 

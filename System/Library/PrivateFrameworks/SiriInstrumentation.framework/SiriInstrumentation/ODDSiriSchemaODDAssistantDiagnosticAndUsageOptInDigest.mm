@@ -1,25 +1,25 @@
 @interface ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest
 
-- (ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest;
   v5 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)v5 setDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appTaskCounts"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appTaskCounts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appTaskCounts)
   {
-    v4 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    appTaskCounts = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
+    dictionaryRepresentation = [appTaskCounts dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"appTaskCounts"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"appTaskCounts"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"appTaskCounts"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"appTaskCounts"];
     }
   }
 
   if (self->_dimensions)
   {
-    v7 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    dimensions = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
+    dictionaryRepresentation2 = [dimensions dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"dimensions"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"dimensions"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"dimensions"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"dimensions"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
-  v6 = [v4 dimensions];
-  if ((v5 != 0) == (v6 == 0))
+  dimensions = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
+  dimensions2 = [equalCopy dimensions];
+  if ((dimensions != 0) == (dimensions2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
-  if (v7)
+  dimensions3 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
+  if (dimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
-    v10 = [v4 dimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = dimensions3;
+    dimensions4 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
+    dimensions5 = [equalCopy dimensions];
+    v11 = [dimensions4 isEqual:dimensions5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
-  v6 = [v4 appTaskCounts];
-  if ((v5 != 0) != (v6 == 0))
+  dimensions = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
+  dimensions2 = [equalCopy appTaskCounts];
+  if ((dimensions != 0) != (dimensions2 == 0))
   {
-    v12 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
-    if (!v12)
+    appTaskCounts = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
+    if (!appTaskCounts)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
-    v15 = [v4 appTaskCounts];
-    v16 = [v14 isEqual:v15];
+    v13 = appTaskCounts;
+    appTaskCounts2 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
+    appTaskCounts3 = [equalCopy appTaskCounts];
+    v16 = [appTaskCounts2 isEqual:appTaskCounts3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
+  toCopy = to;
+  dimensions = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
 
-  if (v4)
+  if (dimensions)
   {
-    v5 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
+    dimensions2 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
+  appTaskCounts = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
 
-  if (v6)
+  if (appTaskCounts)
   {
-    v7 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
+    appTaskCounts2 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  dimensions = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self dimensions];
+  v7 = [dimensions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self deleteDimensions];
   }
 
-  v9 = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  appTaskCounts = [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self appTaskCounts];
+  v10 = [appTaskCounts applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDAssistantDiagnosticAndUsageOptInDigest *)self deleteAppTaskCounts];
   }

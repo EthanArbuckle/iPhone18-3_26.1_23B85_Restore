@@ -1,63 +1,63 @@
 @interface PRLikenessChange
-+ (id)changeForLikeness:(id)a3 withType:(unint64_t)a4;
-+ (id)descriptionForChangeType:(unint64_t)a3;
-+ (unint64_t)changeTypeFromDescription:(id)a3;
++ (id)changeForLikeness:(id)likeness withType:(unint64_t)type;
++ (id)descriptionForChangeType:(unint64_t)type;
++ (unint64_t)changeTypeFromDescription:(id)description;
 - (id)description;
 @end
 
 @implementation PRLikenessChange
 
-+ (id)changeForLikeness:(id)a3 withType:(unint64_t)a4
++ (id)changeForLikeness:(id)likeness withType:(unint64_t)type
 {
-  v5 = a3;
+  likenessCopy = likeness;
   v6 = objc_alloc_init(PRLikenessChange);
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   identifier = v6->_identifier;
-  v6->_identifier = v8;
+  v6->_identifier = uUIDString;
 
-  v6->_type = a4;
-  v10 = [v5 uniqueIdentifier];
+  v6->_type = type;
+  uniqueIdentifier = [likenessCopy uniqueIdentifier];
   changedLikenessID = v6->_changedLikenessID;
-  v6->_changedLikenessID = v10;
+  v6->_changedLikenessID = uniqueIdentifier;
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "version")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(likenessCopy, "version")}];
   changedLikenessVersion = v6->_changedLikenessVersion;
   v6->_changedLikenessVersion = v12;
 
-  v14 = [v5 dirtyProperties];
+  dirtyProperties = [likenessCopy dirtyProperties];
 
-  v15 = [v14 allObjects];
+  allObjects = [dirtyProperties allObjects];
   dirtyLikenessProperties = v6->_dirtyLikenessProperties;
-  v6->_dirtyLikenessProperties = v15;
+  v6->_dirtyLikenessProperties = allObjects;
 
   return v6;
 }
 
-+ (id)descriptionForChangeType:(unint64_t)a3
++ (id)descriptionForChangeType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"(undefined)";
   }
 
   else
   {
-    return off_279A1B8A8[a3];
+    return off_279A1B8A8[type];
   }
 }
 
-+ (unint64_t)changeTypeFromDescription:(id)a3
++ (unint64_t)changeTypeFromDescription:(id)description
 {
-  v3 = a3;
-  if ([v3 isEqual:@"delete"])
+  descriptionCopy = description;
+  if ([descriptionCopy isEqual:@"delete"])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = [v3 isEqual:@"create"];
+    v4 = [descriptionCopy isEqual:@"create"];
   }
 
   return v4;

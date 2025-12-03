@@ -1,65 +1,65 @@
 @interface PKPaymentTransactionBankConnectMetadata
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentTransactionBankConnectMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentTransactionBankConnectMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentTransactionBankConnectMetadata
 
-- (PKPaymentTransactionBankConnectMetadata)initWithCoder:(id)a3
+- (PKPaymentTransactionBankConnectMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = PKPaymentTransactionBankConnectMetadata;
   v5 = [(PKPaymentTransactionBankConnectMetadata *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalTransactionDescription"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalTransactionDescription"];
     originalTransactionDescription = v5->_originalTransactionDescription;
     v5->_originalTransactionDescription = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"digitalServicingURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"digitalServicingURL"];
     digitalServicingURL = v5->_digitalServicingURL;
     v5->_digitalServicingURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payNowURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payNowURL"];
     payNowURL = v5->_payNowURL;
     v5->_payNowURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"postInstallmentURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"postInstallmentURL"];
     postInstallmentURL = v5->_postInstallmentURL;
     v5->_postInstallmentURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redeemRewardsURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redeemRewardsURL"];
     redeemRewardsURL = v5->_redeemRewardsURL;
     v5->_redeemRewardsURL = v14;
 
-    v5->_creditDebitIndicator = [v4 decodeIntegerForKey:@"creditDebitIndicator"];
-    v5->_classifiedByMaps = [v4 decodeBoolForKey:@"classifiedByMaps"];
-    v5->_roundTransactionDate = [v4 decodeBoolForKey:@"roundTransactionDate"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankCategoryDescription"];
+    v5->_creditDebitIndicator = [coderCopy decodeIntegerForKey:@"creditDebitIndicator"];
+    v5->_classifiedByMaps = [coderCopy decodeBoolForKey:@"classifiedByMaps"];
+    v5->_roundTransactionDate = [coderCopy decodeBoolForKey:@"roundTransactionDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankCategoryDescription"];
     bankCategoryDescription = v5->_bankCategoryDescription;
     v5->_bankCategoryDescription = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankMerchantAddress"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankMerchantAddress"];
     bankMerchantAddress = v5->_bankMerchantAddress;
     v5->_bankMerchantAddress = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankMerchantCategoryCode"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankMerchantCategoryCode"];
     bankMerchantCategoryCode = v5->_bankMerchantCategoryCode;
     v5->_bankMerchantCategoryCode = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankMerchantName"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankMerchantName"];
     bankMerchantName = v5->_bankMerchantName;
     v5->_bankMerchantName = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankMerchantNumber"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankMerchantNumber"];
     bankMerchantNumber = v5->_bankMerchantNumber;
     v5->_bankMerchantNumber = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankStandardIndustrialClassificationCode"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankStandardIndustrialClassificationCode"];
     bankStandardIndustrialClassificationCode = v5->_bankStandardIndustrialClassificationCode;
     v5->_bankStandardIndustrialClassificationCode = v26;
   }
@@ -67,74 +67,74 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originalTransactionDescription = self->_originalTransactionDescription;
-  v5 = a3;
-  [v5 encodeObject:originalTransactionDescription forKey:@"originalTransactionDescription"];
-  [v5 encodeObject:self->_digitalServicingURL forKey:@"digitalServicingURL"];
-  [v5 encodeObject:self->_payNowURL forKey:@"payNowURL"];
-  [v5 encodeObject:self->_postInstallmentURL forKey:@"postInstallmentURL"];
-  [v5 encodeObject:self->_redeemRewardsURL forKey:@"redeemRewardsURL"];
-  [v5 encodeInteger:self->_creditDebitIndicator forKey:@"creditDebitIndicator"];
-  [v5 encodeBool:self->_classifiedByMaps forKey:@"classifiedByMaps"];
-  [v5 encodeBool:self->_roundTransactionDate forKey:@"roundTransactionDate"];
-  [v5 encodeObject:self->_bankCategoryDescription forKey:@"bankCategoryDescription"];
-  [v5 encodeObject:self->_bankMerchantAddress forKey:@"bankMerchantAddress"];
-  [v5 encodeObject:self->_bankMerchantCategoryCode forKey:@"bankMerchantCategoryCode"];
-  [v5 encodeObject:self->_bankMerchantName forKey:@"bankMerchantName"];
-  [v5 encodeObject:self->_bankMerchantNumber forKey:@"bankMerchantNumber"];
-  [v5 encodeObject:self->_bankStandardIndustrialClassificationCode forKey:@"bankStandardIndustrialClassificationCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originalTransactionDescription forKey:@"originalTransactionDescription"];
+  [coderCopy encodeObject:self->_digitalServicingURL forKey:@"digitalServicingURL"];
+  [coderCopy encodeObject:self->_payNowURL forKey:@"payNowURL"];
+  [coderCopy encodeObject:self->_postInstallmentURL forKey:@"postInstallmentURL"];
+  [coderCopy encodeObject:self->_redeemRewardsURL forKey:@"redeemRewardsURL"];
+  [coderCopy encodeInteger:self->_creditDebitIndicator forKey:@"creditDebitIndicator"];
+  [coderCopy encodeBool:self->_classifiedByMaps forKey:@"classifiedByMaps"];
+  [coderCopy encodeBool:self->_roundTransactionDate forKey:@"roundTransactionDate"];
+  [coderCopy encodeObject:self->_bankCategoryDescription forKey:@"bankCategoryDescription"];
+  [coderCopy encodeObject:self->_bankMerchantAddress forKey:@"bankMerchantAddress"];
+  [coderCopy encodeObject:self->_bankMerchantCategoryCode forKey:@"bankMerchantCategoryCode"];
+  [coderCopy encodeObject:self->_bankMerchantName forKey:@"bankMerchantName"];
+  [coderCopy encodeObject:self->_bankMerchantNumber forKey:@"bankMerchantNumber"];
+  [coderCopy encodeObject:self->_bankStandardIndustrialClassificationCode forKey:@"bankStandardIndustrialClassificationCode"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSUUID *)self->_transactionIdentifier copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSUUID *)self->_transactionIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_originalTransactionDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_originalTransactionDescription copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_bankCategoryDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_bankCategoryDescription copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
-  v12 = [(CNPostalAddress *)self->_bankMerchantAddress copyWithZone:a3];
+  v12 = [(CNPostalAddress *)self->_bankMerchantAddress copyWithZone:zone];
   v13 = *(v5 + 80);
   *(v5 + 80) = v12;
 
-  v14 = [(NSNumber *)self->_bankMerchantCategoryCode copyWithZone:a3];
+  v14 = [(NSNumber *)self->_bankMerchantCategoryCode copyWithZone:zone];
   v15 = *(v5 + 88);
   *(v5 + 88) = v14;
 
-  v16 = [(NSString *)self->_bankMerchantName copyWithZone:a3];
+  v16 = [(NSString *)self->_bankMerchantName copyWithZone:zone];
   v17 = *(v5 + 96);
   *(v5 + 96) = v16;
 
-  v18 = [(NSString *)self->_bankMerchantNumber copyWithZone:a3];
+  v18 = [(NSString *)self->_bankMerchantNumber copyWithZone:zone];
   v19 = *(v5 + 104);
   *(v5 + 104) = v18;
 
-  v20 = [(NSString *)self->_bankStandardIndustrialClassificationCode copyWithZone:a3];
+  v20 = [(NSString *)self->_bankStandardIndustrialClassificationCode copyWithZone:zone];
   v21 = *(v5 + 112);
   *(v5 + 112) = v20;
 
-  v22 = [(NSURL *)self->_digitalServicingURL copyWithZone:a3];
+  v22 = [(NSURL *)self->_digitalServicingURL copyWithZone:zone];
   v23 = *(v5 + 32);
   *(v5 + 32) = v22;
 
-  v24 = [(NSURL *)self->_payNowURL copyWithZone:a3];
+  v24 = [(NSURL *)self->_payNowURL copyWithZone:zone];
   v25 = *(v5 + 40);
   *(v5 + 40) = v24;
 
-  v26 = [(NSURL *)self->_postInstallmentURL copyWithZone:a3];
+  v26 = [(NSURL *)self->_postInstallmentURL copyWithZone:zone];
   v27 = *(v5 + 48);
   *(v5 + 48) = v26;
 
-  v28 = [(NSURL *)self->_redeemRewardsURL copyWithZone:a3];
+  v28 = [(NSURL *)self->_redeemRewardsURL copyWithZone:zone];
   v29 = *(v5 + 56);
   *(v5 + 56) = v28;
 
@@ -167,18 +167,18 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

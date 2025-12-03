@@ -1,15 +1,15 @@
 @interface MedicationLogDetailsUnitView
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (void)didChangeText:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (void)didChangeText:(id)text;
+- (void)textFieldDidBeginEditing:(id)editing;
 @end
 
 @implementation MedicationLogDetailsUnitView
 
-- (void)didChangeText:(id)a3
+- (void)didChangeText:(id)text
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_228392F90();
   swift_unknownObjectRelease();
   sub_228215A00();
@@ -17,21 +17,21 @@
   __swift_destroy_boxed_opaque_existential_0(v5);
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_228216830(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_228216830(editingCopy);
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_228392000();
-  v9 = a3;
-  v10 = self;
-  LOBYTE(length) = sub_228216B18(v9, location, length);
+  fieldCopy = field;
+  selfCopy = self;
+  LOBYTE(length) = sub_228216B18(fieldCopy, location, length);
 
   return length & 1;
 }

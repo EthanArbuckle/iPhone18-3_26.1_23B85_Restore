@@ -1,7 +1,7 @@
 @interface MPCMRContentItemArtworkDataToken
-- (BOOL)isEqual:(id)a3;
-- (MPCMRContentItemArtworkDataToken)initWithIdentifier:(id)a3 artworkIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPCMRContentItemArtworkDataToken)initWithIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)stringRepresentation;
 @end
 
@@ -9,26 +9,26 @@
 
 - (id)stringRepresentation
 {
-  v2 = [(MPCMRContentItemArtworkDataToken *)self artworkIdentifier];
-  v3 = [v2 copy];
+  artworkIdentifier = [(MPCMRContentItemArtworkDataToken *)self artworkIdentifier];
+  v3 = [artworkIdentifier copy];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPCMRContentItemArtworkDataToken alloc];
-  v5 = [(MPCMRContentItemArtworkDataToken *)self identifier];
-  v6 = [(MPCMRContentItemArtworkDataToken *)self artworkIdentifier];
-  v7 = [(MPCMRContentItemArtworkDataToken *)v4 initWithIdentifier:v5 artworkIdentifier:v6];
+  identifier = [(MPCMRContentItemArtworkDataToken *)self identifier];
+  artworkIdentifier = [(MPCMRContentItemArtworkDataToken *)self artworkIdentifier];
+  v7 = [(MPCMRContentItemArtworkDataToken *)v4 initWithIdentifier:identifier artworkIdentifier:artworkIdentifier];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -38,7 +38,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSString *)self->_identifier isEqual:v5->_identifier])
       {
         v6 = [(NSString *)self->_artworkIdentifier isEqual:v5->_artworkIdentifier];
@@ -59,20 +59,20 @@
   return v6;
 }
 
-- (MPCMRContentItemArtworkDataToken)initWithIdentifier:(id)a3 artworkIdentifier:(id)a4
+- (MPCMRContentItemArtworkDataToken)initWithIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  artworkIdentifierCopy = artworkIdentifier;
   v14.receiver = self;
   v14.super_class = MPCMRContentItemArtworkDataToken;
   v8 = [(MPCMRContentItemArtworkDataToken *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [artworkIdentifierCopy copy];
     artworkIdentifier = v8->_artworkIdentifier;
     v8->_artworkIdentifier = v11;
   }

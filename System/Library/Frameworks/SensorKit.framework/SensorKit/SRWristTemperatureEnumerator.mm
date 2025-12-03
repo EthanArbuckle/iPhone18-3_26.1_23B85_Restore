@@ -1,6 +1,6 @@
 @interface SRWristTemperatureEnumerator
 - (SRWristTemperatureEnumerator)init;
-- (SRWristTemperatureEnumerator)initWithHAWristTemperatureEnumerator:(id)a3;
+- (SRWristTemperatureEnumerator)initWithHAWristTemperatureEnumerator:(id)enumerator;
 - (id)allObjects;
 - (id)nextObject;
 - (void)dealloc;
@@ -15,14 +15,14 @@
   return 0;
 }
 
-- (SRWristTemperatureEnumerator)initWithHAWristTemperatureEnumerator:(id)a3
+- (SRWristTemperatureEnumerator)initWithHAWristTemperatureEnumerator:(id)enumerator
 {
   v6.receiver = self;
   v6.super_class = SRWristTemperatureEnumerator;
   v4 = [(SRWristTemperatureEnumerator *)&v6 init];
   if (v4)
   {
-    v4->_enumerableHAWristTemperature = a3;
+    v4->_enumerableHAWristTemperature = enumerator;
   }
 
   return v4;
@@ -44,7 +44,7 @@
 - (id)allObjects
 {
   v18 = *MEMORY[0x1E69E9840];
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -66,7 +66,7 @@
 
         v7 = *(*(&v13 + 1) + 8 * i);
         v8 = -[SRWristTemperature initWithTimestamp:temperature:condition:errorEstimate:temperatureT1:temperatureT2:]([SRWristTemperature alloc], "initWithTimestamp:temperature:condition:errorEstimate:temperatureT1:temperatureT2:", [v7 timestamp], objc_msgSend(v7, "computedTemperature"), objc_msgSend(v7, "dataValidity"), objc_msgSend(v7, "computedTemperatureErrorEstimate"), objc_msgSend(v7, "sensor1Temperature"), objc_msgSend(v7, "sensor2Temperature"));
-        [v12 addObject:v8];
+        [array addObject:v8];
       }
 
       v4 = [(HAWristTemperatureEnumerator *)obj countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -75,7 +75,7 @@
     while (v4);
   }
 
-  result = [MEMORY[0x1E695DEC8] arrayWithArray:v12];
+  result = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }

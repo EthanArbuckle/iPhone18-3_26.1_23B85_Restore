@@ -1,5 +1,5 @@
 @interface CAMCameraViewControllerContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 - (void)verifyViewOrdering;
@@ -7,14 +7,14 @@
 
 @implementation CAMCameraViewControllerContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMCameraViewControllerContainerView" hasInstanceMethod:@"viewfinderView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMCameraViewControllerContainerView" hasInstanceMethod:@"customOverlayView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMCameraViewControllerContainerView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMCameraViewControllerContainerView" hasInstanceMethod:@"verifyViewOrdering" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"isPerformingReviewUsingOverlay" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMCameraViewControllerContainerView" hasInstanceMethod:@"viewfinderView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMCameraViewControllerContainerView" hasInstanceMethod:@"customOverlayView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMCameraViewControllerContainerView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMCameraViewControllerContainerView" hasInstanceMethod:@"verifyViewOrdering" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"isPerformingReviewUsingOverlay" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

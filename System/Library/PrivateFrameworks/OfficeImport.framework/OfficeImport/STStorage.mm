@@ -1,18 +1,18 @@
 @interface STStorage
-- (STStorage)initWithCStorage:(_Storage *)a3;
+- (STStorage)initWithCStorage:(_Storage *)storage;
 - (id)getChildrenInfo;
 - (id)getInfo;
-- (id)openStorage:(id)a3 withMode:(int)a4;
-- (id)openStream:(id)a3 withMode:(int)a4;
-- (int)getChildType:(id)a3;
+- (id)openStorage:(id)storage withMode:(int)mode;
+- (id)openStream:(id)stream withMode:(int)mode;
+- (int)getChildType:(id)type;
 - (void)close;
 - (void)dealloc;
-- (void)setClass:(id)a3;
+- (void)setClass:(id)class;
 @end
 
 @implementation STStorage
 
-- (STStorage)initWithCStorage:(_Storage *)a3
+- (STStorage)initWithCStorage:(_Storage *)storage
 {
   v8.receiver = self;
   v8.super_class = STStorage;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->m_pCStorage = a3;
+    v4->m_pCStorage = storage;
     v6 = v4;
   }
 
@@ -43,21 +43,21 @@
   }
 }
 
-- (id)openStream:(id)a3 withMode:(int)a4
+- (id)openStream:(id)stream withMode:(int)mode
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&mode;
+  streamCopy = stream;
   v13 = 0;
   v7 = StgModeFromSTStgMode(v4);
   if (v7 == 1)
   {
-    v8 = createStream(self->m_pCStorage, [v6 cWideString], &v13);
+    v8 = createStream(self->m_pCStorage, [streamCopy cWideString], &v13);
     goto LABEL_5;
   }
 
   if (!v7)
   {
-    v8 = openStream(self->m_pCStorage, [v6 cWideString], &v13);
+    v8 = openStream(self->m_pCStorage, [streamCopy cWideString], &v13);
 LABEL_5:
     v9 = v8;
     goto LABEL_7;
@@ -76,21 +76,21 @@ LABEL_7:
   return v11;
 }
 
-- (id)openStorage:(id)a3 withMode:(int)a4
+- (id)openStorage:(id)storage withMode:(int)mode
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&mode;
+  storageCopy = storage;
   v13 = 0;
   v7 = StgModeFromSTStgMode(v4);
   if (v7 == 1)
   {
-    v8 = createStorage(self->m_pCStorage, [v6 cWideString], &v13);
+    v8 = createStorage(self->m_pCStorage, [storageCopy cWideString], &v13);
     goto LABEL_5;
   }
 
   if (!v7)
   {
-    v8 = openStorage(self->m_pCStorage, [v6 cWideString], &v13);
+    v8 = openStorage(self->m_pCStorage, [storageCopy cWideString], &v13);
 LABEL_5:
     v9 = v8;
     goto LABEL_7;
@@ -131,9 +131,9 @@ LABEL_7:
   v11 = 0;
   v10 = 0;
   [STSStgObject throwIfError:getChildrenInfo(self->m_pCStorage, &v11, &v10)];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = MEMORY[0x277CBE728];
-  if (!v2)
+  if (!array)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE728] format:@"Structured Storage library memory failure"];
   }
@@ -152,7 +152,7 @@ LABEL_7:
         [MEMORY[0x277CBEAD8] raise:v6 format:@"Structured Storage library memory failure"];
       }
 
-      [v2 addObject:v8];
+      [array addObject:v8];
 
       ++v5;
       v4 += 8;
@@ -161,12 +161,12 @@ LABEL_7:
     while (v5 < v10);
   }
 
-  return v2;
+  return array;
 }
 
-- (int)getChildType:(id)a3
+- (int)getChildType:(id)type
 {
-  ChildType = getChildType(self->m_pCStorage, [a3 cWideString]);
+  ChildType = getChildType(self->m_pCStorage, [type cWideString]);
   if (ChildType >= 3)
   {
     return -1;
@@ -178,11 +178,11 @@ LABEL_7:
   }
 }
 
-- (void)setClass:(id)a3
+- (void)setClass:(id)class
 {
   v4 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [STSStgObject throwIfError:storageSetClass(self->m_pCStorage, &v3)];
+  classCopy = class;
+  [STSStgObject throwIfError:storageSetClass(self->m_pCStorage, &classCopy)];
 }
 
 @end

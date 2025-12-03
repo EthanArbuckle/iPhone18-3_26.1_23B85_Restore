@@ -1,42 +1,42 @@
 @interface CNQuickPropertyAction
 - (BOOL)enabled;
-- (CNQuickPropertyAction)initWithPropertyAction:(id)a3;
+- (CNQuickPropertyAction)initWithPropertyAction:(id)action;
 - (id)_coreDuetValue;
 - (id)identifier;
 - (id)propertyItem;
-- (id)subtitleForContext:(int64_t)a3;
-- (id)titleForContext:(int64_t)a3;
+- (id)subtitleForContext:(int64_t)context;
+- (id)titleForContext:(int64_t)context;
 - (unint64_t)score;
-- (void)performWithCompletionBlock:(id)a3;
+- (void)performWithCompletionBlock:(id)block;
 @end
 
 @implementation CNQuickPropertyAction
 
-- (void)performWithCompletionBlock:(id)a3
+- (void)performWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (+[CNQuickAction reallyPerform])
   {
     v33.receiver = self;
     v33.super_class = CNQuickPropertyAction;
-    [(CNQuickContactAction *)&v33 performWithCompletionBlock:v4];
+    [(CNQuickContactAction *)&v33 performWithCompletionBlock:blockCopy];
   }
 
   else
   {
-    v5 = [(CNQuickAction *)self globalIdentifier];
-    NSLog(&cfstr_PerformAction.isa, v5);
+    globalIdentifier = [(CNQuickAction *)self globalIdentifier];
+    NSLog(&cfstr_PerformAction.isa, globalIdentifier);
 
-    [(CNQuickContactAction *)self setCompletionBlock:v4];
-    v6 = [(CNQuickAction *)self globalIdentifier];
-    v7 = [(CNQuickPropertyAction *)self propertyItem];
-    v8 = [v7 displayValue];
+    [(CNQuickContactAction *)self setCompletionBlock:blockCopy];
+    globalIdentifier2 = [(CNQuickAction *)self globalIdentifier];
+    propertyItem = [(CNQuickPropertyAction *)self propertyItem];
+    displayValue = [propertyItem displayValue];
 
-    v9 = [(CNQuickPropertyAction *)self propertyAction];
-    v10 = [v9 contact];
+    propertyAction = [(CNQuickPropertyAction *)self propertyAction];
+    contact = [propertyAction contact];
 
-    v11 = [(CNQuickAction *)self category];
-    v12 = [v11 isEqualToString:CNQuickActionCategoryAudioCall];
+    category = [(CNQuickAction *)self category];
+    v12 = [category isEqualToString:CNQuickActionCategoryAudioCall];
 
     if (v12)
     {
@@ -45,54 +45,54 @@
 
       if (isKindOfClass)
       {
-        v6 = @"FaceTime Audio with";
+        globalIdentifier2 = @"FaceTime Audio with";
       }
 
       else
       {
-        v6 = @"Call";
+        globalIdentifier2 = @"Call";
       }
     }
 
     else
     {
-      v14 = [(CNQuickAction *)self category];
-      v15 = [v14 isEqualToString:CNQuickActionCategoryVideoCall];
+      category2 = [(CNQuickAction *)self category];
+      v15 = [category2 isEqualToString:CNQuickActionCategoryVideoCall];
 
       if (v15)
       {
 
-        v6 = @"FaceTime with";
+        globalIdentifier2 = @"FaceTime with";
       }
 
       else
       {
-        v16 = [(CNQuickAction *)self category];
-        v17 = [v16 isEqualToString:CNQuickActionCategoryInstantMessage];
+        category3 = [(CNQuickAction *)self category];
+        v17 = [category3 isEqualToString:CNQuickActionCategoryInstantMessage];
 
         if (v17)
         {
 
-          v6 = @"Send message to";
+          globalIdentifier2 = @"Send message to";
         }
 
         else
         {
-          v18 = [(CNQuickAction *)self category];
-          v19 = [v18 isEqualToString:CNQuickActionCategoryMail];
+          category4 = [(CNQuickAction *)self category];
+          v19 = [category4 isEqualToString:CNQuickActionCategoryMail];
 
           if (v19)
           {
 
-            v6 = @"Send email to";
+            globalIdentifier2 = @"Send email to";
           }
         }
       }
     }
 
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [MEMORY[0x1E695CD80] stringFromContact:v10 style:0];
-    v22 = [v20 stringWithFormat:@"%@ %@ on %@\n\nNote: If you want to really perform the action, go to Internal Settings > Contacts and enable Quick Actions Perform.", v6, v21, v8];
+    v21 = [MEMORY[0x1E695CD80] stringFromContact:contact style:0];
+    v22 = [v20 stringWithFormat:@"%@ %@ on %@\n\nNote: If you want to really perform the action, go to Internal Settings > Contacts and enable Quick Actions Perform.", globalIdentifier2, v21, displayValue];
 
     v23 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Performing action" message:v22 preferredStyle:1];
     v24 = MEMORY[0x1E69DC648];
@@ -103,13 +103,13 @@
     v30[2] = __52__CNQuickPropertyAction_performWithCompletionBlock___block_invoke;
     v30[3] = &unk_1E74E7308;
     v31 = v23;
-    v32 = self;
+    selfCopy = self;
     v27 = v23;
     v28 = [v24 actionWithTitle:v26 style:0 handler:v30];
     [v27 addAction:v28];
 
-    v29 = [(CNQuickContactAction *)self delegate];
-    [v29 contactAction:self presentViewController:v27];
+    delegate = [(CNQuickContactAction *)self delegate];
+    [delegate contactAction:self presentViewController:v27];
   }
 }
 
@@ -125,18 +125,18 @@ void __52__CNQuickPropertyAction_performWithCompletionBlock___block_invoke(uint6
 {
   v9.receiver = self;
   v9.super_class = CNQuickPropertyAction;
-  v3 = [(CNQuickAction *)&v9 score];
-  v4 = [(CNQuickPropertyAction *)self propertyAction];
-  v5 = [v4 contact];
-  v6 = [CNQuickActionsUsageManager managerForContact:v5];
+  score = [(CNQuickAction *)&v9 score];
+  propertyAction = [(CNQuickPropertyAction *)self propertyAction];
+  contact = [propertyAction contact];
+  v6 = [CNQuickActionsUsageManager managerForContact:contact];
 
   [v6 scoreForAction:self];
   if (v7 > 0.0)
   {
-    v3 += vcvtpd_u64_f64((v7 + 1.0) * 1000.0);
+    score += vcvtpd_u64_f64((v7 + 1.0) * 1000.0);
   }
 
-  return v3;
+  return score;
 }
 
 - (BOOL)enabled
@@ -150,56 +150,56 @@ void __52__CNQuickPropertyAction_performWithCompletionBlock___block_invoke(uint6
 
   else
   {
-    v4 = [(CNQuickPropertyAction *)self propertyAction];
-    v5 = [v4 canPerformAction];
+    propertyAction = [(CNQuickPropertyAction *)self propertyAction];
+    canPerformAction = [propertyAction canPerformAction];
 
-    return v5;
+    return canPerformAction;
   }
 }
 
-- (id)subtitleForContext:(int64_t)a3
+- (id)subtitleForContext:(int64_t)context
 {
-  if ((a3 - 2) < 3)
+  if ((context - 2) < 3)
   {
-    v3 = [(CNQuickPropertyAction *)self propertyItem];
-    v4 = [v3 displayValue];
+    propertyItem = [(CNQuickPropertyAction *)self propertyItem];
+    displayValue = [propertyItem displayValue];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (a3 == 1)
+  if (context == 1)
   {
-    v3 = [(CNQuickPropertyAction *)self propertyItem];
+    propertyItem = [(CNQuickPropertyAction *)self propertyItem];
     v5 = MEMORY[0x1E695CEE0];
-    v6 = [v3 labeledValue];
-    v7 = [v6 label];
-    v8 = [v3 property];
-    v4 = [v5 localizedDisplayStringForLabel:v7 propertyName:v8];
+    labeledValue = [propertyItem labeledValue];
+    label = [labeledValue label];
+    property = [propertyItem property];
+    displayValue = [v5 localizedDisplayStringForLabel:label propertyName:property];
 
     goto LABEL_5;
   }
 
-  v4 = 0;
+  displayValue = 0;
 LABEL_6:
 
-  return v4;
+  return displayValue;
 }
 
-- (id)titleForContext:(int64_t)a3
+- (id)titleForContext:(int64_t)context
 {
-  if ((a3 - 2) < 4)
+  if ((context - 2) < 4)
   {
     goto LABEL_2;
   }
 
-  if (a3 >= 2)
+  if (context >= 2)
   {
-    if (a3 == 6)
+    if (context == 6)
     {
 LABEL_2:
-      v4 = [(CNQuickPropertyAction *)self propertyItem];
-      v3 = [v4 displayLabel];
+      propertyItem = [(CNQuickPropertyAction *)self propertyItem];
+      displayLabel = [propertyItem displayLabel];
     }
   }
 
@@ -207,43 +207,43 @@ LABEL_2:
   {
     v6.receiver = self;
     v6.super_class = CNQuickPropertyAction;
-    v3 = [(CNQuickAction *)&v6 titleForContext:?];
+    displayLabel = [(CNQuickAction *)&v6 titleForContext:?];
   }
 
-  return v3;
+  return displayLabel;
 }
 
 - (id)_coreDuetValue
 {
-  v2 = [(CNQuickPropertyAction *)self propertyItem];
-  v3 = [v2 labeledValue];
-  v4 = [v3 value];
+  propertyItem = [(CNQuickPropertyAction *)self propertyItem];
+  labeledValue = [propertyItem labeledValue];
+  value = [labeledValue value];
 
-  return v4;
+  return value;
 }
 
 - (id)identifier
 {
-  v2 = [(CNQuickPropertyAction *)self propertyItem];
-  v3 = [v2 labeledValue];
-  v4 = [v3 identifier];
+  propertyItem = [(CNQuickPropertyAction *)self propertyItem];
+  labeledValue = [propertyItem labeledValue];
+  identifier = [labeledValue identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (id)propertyItem
 {
-  v2 = [(CNQuickPropertyAction *)self propertyAction];
-  v3 = [v2 propertyItem];
+  propertyAction = [(CNQuickPropertyAction *)self propertyAction];
+  propertyItem = [propertyAction propertyItem];
 
-  return v3;
+  return propertyItem;
 }
 
-- (CNQuickPropertyAction)initWithPropertyAction:(id)a3
+- (CNQuickPropertyAction)initWithPropertyAction:(id)action
 {
   v4.receiver = self;
   v4.super_class = CNQuickPropertyAction;
-  return [(CNQuickContactAction *)&v4 initWithContactAction:a3];
+  return [(CNQuickContactAction *)&v4 initWithContactAction:action];
 }
 
 @end

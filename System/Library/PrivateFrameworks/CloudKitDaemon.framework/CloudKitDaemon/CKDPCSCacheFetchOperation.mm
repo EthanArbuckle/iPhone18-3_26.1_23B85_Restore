@@ -1,10 +1,10 @@
 @interface CKDPCSCacheFetchOperation
-+ (id)nameForState:(unint64_t)a3;
-- (BOOL)canBeUsedForOperation:(id)a3 withOptions:(unint64_t)a4;
++ (id)nameForState:(unint64_t)state;
+- (BOOL)canBeUsedForOperation:(id)operation withOptions:(unint64_t)options;
 - (BOOL)hasAllPCSData;
 - (BOOL)makeStateTransition;
-- (CKDPCSCacheFetchOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (CKDPCSCacheFetchOperation)initWithOperationInfo:(id)info container:(id)container;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)_willRetryFetch;
 - (void)main;
 @end
@@ -183,7 +183,7 @@ LABEL_34:
       {
         v11 = objc_msgSend_pcsData(self, v7, v8);
 
-        v14 = self;
+        selfCopy2 = self;
         if (!v11)
         {
           if ((objc_msgSend_fetchOptions(self, v12, v13) & 2) == 0)
@@ -257,9 +257,9 @@ LABEL_37:
 
     if (!v71)
     {
-      v14 = self;
+      selfCopy2 = self;
 LABEL_60:
-      objc_msgSend_setState_(v14, v12, 4);
+      objc_msgSend_setState_(selfCopy2, v12, 4);
       v96 = *MEMORY[0x277D85DE8];
 
       LOBYTE(v10) = MEMORY[0x2821F9670](self, sel__createAdditionalPCS, v95);
@@ -337,23 +337,23 @@ LABEL_60:
   objc_msgSend_makeStateTransition_(self, v4, 0);
 }
 
-- (CKDPCSCacheFetchOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDPCSCacheFetchOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = CKDPCSCacheFetchOperation;
-  v9 = [(CKDDatabaseOperation *)&v21 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v21 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_itemID(v6, v7, v8);
+    v10 = objc_msgSend_itemID(infoCopy, v7, v8);
     v11 = *(v9 + 63);
     *(v9 + 63) = v10;
 
-    v14 = objc_msgSend_cache(v6, v12, v13);
+    v14 = objc_msgSend_cache(infoCopy, v12, v13);
     v15 = *(v9 + 62);
     *(v9 + 62) = v14;
 
-    *(v9 + 64) = objc_msgSend_options(v6, v16, v17);
+    *(v9 + 64) = objc_msgSend_options(infoCopy, v16, v17);
     v18 = dispatch_group_create();
     v19 = *(v9 + 61);
     *(v9 + 61) = v18;
@@ -364,32 +364,32 @@ LABEL_60:
   return v9;
 }
 
-- (BOOL)canBeUsedForOperation:(id)a3 withOptions:(unint64_t)a4
+- (BOOL)canBeUsedForOperation:(id)operation withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (!objc_msgSend_isNetworkingBehaviorEquivalentForOperation_(self, v7, v6))
+  optionsCopy = options;
+  operationCopy = operation;
+  if (!objc_msgSend_isNetworkingBehaviorEquivalentForOperation_(self, v7, operationCopy))
   {
     goto LABEL_4;
   }
 
-  v10 = objc_msgSend_databaseScope(v6, v8, v9);
+  v10 = objc_msgSend_databaseScope(operationCopy, v8, v9);
   if (v10 != objc_msgSend_databaseScope(self, v11, v12))
   {
     goto LABEL_4;
   }
 
-  v15 = objc_msgSend_container(v6, v13, v14);
+  v15 = objc_msgSend_container(operationCopy, v13, v14);
   v18 = objc_msgSend_container(self, v16, v17);
 
-  if (v15 != v18 || (v4 & 4) != 0 && (objc_msgSend_fetchOptions(self, v19, v20) & 4) == 0)
+  if (v15 != v18 || (optionsCopy & 4) != 0 && (objc_msgSend_fetchOptions(self, v19, v20) & 4) == 0)
   {
     goto LABEL_4;
   }
 
-  if (((v4 & 8) == 0 || (objc_msgSend_fetchOptions(self, v19, v20) & 8) != 0) && ((Options = objc_msgSend_fetchOptions(self, v19, v20), (v4 & 2) != 0) || (Options & 2) == 0) && ((v26 = objc_msgSend_fetchOptions(self, v24, v25), (v4 & 0x10) != 0) || (v26 & 0x10) == 0))
+  if (((optionsCopy & 8) == 0 || (objc_msgSend_fetchOptions(self, v19, v20) & 8) != 0) && ((Options = objc_msgSend_fetchOptions(self, v19, v20), (optionsCopy & 2) != 0) || (Options & 2) == 0) && ((v26 = objc_msgSend_fetchOptions(self, v24, v25), (optionsCopy & 0x10) != 0) || (v26 & 0x10) == 0))
   {
-    v21 = ((objc_msgSend_fetchOptions(self, v27, v28) ^ v4) & 0x1C00) == 0;
+    v21 = ((objc_msgSend_fetchOptions(self, v27, v28) ^ optionsCopy) & 0x1C00) == 0;
   }
 
   else
@@ -401,20 +401,20 @@ LABEL_4:
   return v21;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 7)
+  if (state - 2 >= 7)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDPCSCacheFetchOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_27854B878[a3 - 2];
+    v5 = off_27854B878[state - 2];
   }
 
   return v5;
@@ -466,9 +466,9 @@ LABEL_4:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_hash(self, v5, v6);
   kdebug_trace();
   v9 = objc_msgSend_error(self, v7, v8);
@@ -488,7 +488,7 @@ LABEL_4:
 
   v19.receiver = self;
   v19.super_class = CKDPCSCacheFetchOperation;
-  [(CKDOperation *)&v19 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v19 _finishOnCallbackQueueWithError:errorCopy];
   v18 = objc_msgSend_fetchGroup(self, v16, v17);
   dispatch_group_leave(v18);
 }

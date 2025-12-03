@@ -12,25 +12,25 @@
 
   if (v3)
   {
-    v4 = [(SXBorder *)self all];
+    left2 = [(SXBorder *)self all];
   }
 
   else
   {
-    v5 = [(SXBorder *)self left];
+    left = [(SXBorder *)self left];
 
-    if (v5)
+    if (left)
     {
-      v4 = [(SXBorder *)self left];
+      left2 = [(SXBorder *)self left];
     }
 
     else
     {
-      v6 = [(SXBorder *)self right];
+      right = [(SXBorder *)self right];
 
-      if (v6)
+      if (right)
       {
-        v4 = [(SXBorder *)self right];
+        left2 = [(SXBorder *)self right];
       }
 
       else
@@ -39,28 +39,28 @@
 
         if (v7)
         {
-          v4 = [(SXBorder *)self top];
+          left2 = [(SXBorder *)self top];
         }
 
         else
         {
-          v8 = [(SXBorder *)self bottom];
+          bottom = [(SXBorder *)self bottom];
 
-          if (v8)
+          if (bottom)
           {
-            v4 = [(SXBorder *)self bottom];
+            left2 = [(SXBorder *)self bottom];
           }
 
           else
           {
-            v4 = 0;
+            left2 = 0;
           }
         }
       }
     }
   }
 
-  return v4;
+  return left2;
 }
 
 - (BOOL)shouldBeDotted
@@ -81,24 +81,24 @@
 
     else
     {
-      v6 = [(SXBorder *)self bottom];
-      if ([v6 style] == 3)
+      bottom = [(SXBorder *)self bottom];
+      if ([bottom style] == 3)
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(SXBorder *)self left];
-        if ([v7 style] == 3)
+        left = [(SXBorder *)self left];
+        if ([left style] == 3)
         {
           v4 = 1;
         }
 
         else
         {
-          v8 = [(SXBorder *)self right];
-          v4 = [v8 style] == 3;
+          right = [(SXBorder *)self right];
+          v4 = [right style] == 3;
         }
       }
     }
@@ -125,24 +125,24 @@
 
     else
     {
-      v6 = [(SXBorder *)self bottom];
-      if ([v6 style] == 1)
+      bottom = [(SXBorder *)self bottom];
+      if ([bottom style] == 1)
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(SXBorder *)self left];
-        if ([v7 style] == 1)
+        left = [(SXBorder *)self left];
+        if ([left style] == 1)
         {
           v4 = 1;
         }
 
         else
         {
-          v8 = [(SXBorder *)self right];
-          v4 = [v8 style] == 1;
+          right = [(SXBorder *)self right];
+          v4 = [right style] == 1;
         }
       }
     }

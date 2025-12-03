@@ -1,7 +1,7 @@
 @interface PUIColorHSBValues
-- (PUIColorHSBValues)initWithColor:(id)a3;
-- (PUIColorHSBValues)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5;
-- (id)colorWithAlpha:(double)a3;
+- (PUIColorHSBValues)initWithColor:(id)color;
+- (PUIColorHSBValues)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness;
+- (id)colorWithAlpha:(double)alpha;
 - (id)hslValues;
 @end
 
@@ -28,31 +28,31 @@
   return v6;
 }
 
-- (PUIColorHSBValues)initWithColor:(id)a3
+- (PUIColorHSBValues)initWithColor:(id)color
 {
   v6 = 0.0;
   v7 = 0.0;
   v5 = 1.0;
-  [a3 getHue:&v7 saturation:&v6 brightness:&v5 alpha:0];
+  [color getHue:&v7 saturation:&v6 brightness:&v5 alpha:0];
   return [(PUIColorHSBValues *)self initWithHue:v7 saturation:v6 brightness:v5];
 }
 
-- (PUIColorHSBValues)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5
+- (PUIColorHSBValues)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness
 {
   v9.receiver = self;
   v9.super_class = PUIColorHSBValues;
   result = [(PUIColorHSBValues *)&v9 init];
   if (result)
   {
-    result->_hue = a3;
-    result->_saturation = a4;
-    result->_brightness = a5;
+    result->_hue = hue;
+    result->_saturation = saturation;
+    result->_brightness = brightness;
   }
 
   return result;
 }
 
-- (id)colorWithAlpha:(double)a3
+- (id)colorWithAlpha:(double)alpha
 {
   v5 = MEMORY[0x1E69DC888];
   [(PUIColorHSBValues *)self hue];
@@ -61,7 +61,7 @@
   v9 = v8;
   [(PUIColorHSBValues *)self brightness];
 
-  return [v5 colorWithHue:v7 saturation:v9 brightness:v10 alpha:a3];
+  return [v5 colorWithHue:v7 saturation:v9 brightness:v10 alpha:alpha];
 }
 
 @end

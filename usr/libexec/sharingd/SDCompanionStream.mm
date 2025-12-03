@@ -1,28 +1,28 @@
 @interface SDCompanionStream
 - (NSFileHandle)fileHandle;
-- (SDCompanionStream)initWithAuthorData:(id)a3 streamHandler:(id)a4;
+- (SDCompanionStream)initWithAuthorData:(id)data streamHandler:(id)handler;
 - (SDCompanionStreamDelegate)delegate;
-- (int)setBufferSize:(int)a3 socket:(int)a4;
+- (int)setBufferSize:(int)size socket:(int)socket;
 - (void)dealloc;
-- (void)getStreamsWithCompletionHandler:(id)a3;
+- (void)getStreamsWithCompletionHandler:(id)handler;
 - (void)handleOpenedStream;
-- (void)handleStreamRequest:(id)a3;
-- (void)handleStreamResponse:(id)a3;
+- (void)handleStreamRequest:(id)request;
+- (void)handleStreamResponse:(id)response;
 - (void)logClientReceived;
 - (void)logClientSent;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)notifyStreamRequestWithError:(id)a3;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)notifyStreamRequestWithError:(id)error;
 - (void)readClientStream;
 - (void)sendInitialRequest;
-- (void)setBundleID:(id)a3;
+- (void)setBundleID:(id)d;
 - (void)start;
 - (void)startBrowser;
 - (void)stop;
 - (void)stopIfReady;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)streamHandler:(id)a3 didReceiveMessage:(id)a4;
-- (void)streamHandler:(id)a3 didReceiveStreamData:(id)a4;
-- (void)streamHandlerDidClose:(id)a3 withError:(id)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
+- (void)streamHandler:(id)handler didReceiveMessage:(id)message;
+- (void)streamHandler:(id)handler didReceiveStreamData:(id)data;
+- (void)streamHandlerDidClose:(id)close withError:(id)error;
 - (void)switchToStreaming;
 - (void)writeClientStream;
 - (void)writeNetworkStream;
@@ -30,18 +30,18 @@
 
 @implementation SDCompanionStream
 
-- (SDCompanionStream)initWithAuthorData:(id)a3 streamHandler:(id)a4
+- (SDCompanionStream)initWithAuthorData:(id)data streamHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = SDCompanionStream;
   v9 = [(SDCompanionStream *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_authorData, a3);
-    objc_storeStrong(&v10->_streamHandler, a4);
+    objc_storeStrong(&v9->_authorData, data);
+    objc_storeStrong(&v10->_streamHandler, handler);
     *&v10->_initiator = 0;
     v10->_clientSent = 0;
     identifier = v10->_identifier;
@@ -85,52 +85,52 @@
 
 - (void)stop
 {
-  v2 = self;
-  v3 = [(SDCompanionStream *)v2 streamHandler];
+  selfCopy = self;
+  streamHandler = [(SDCompanionStream *)selfCopy streamHandler];
 
-  if (v3)
+  if (streamHandler)
   {
-    v4 = [(SDCompanionStream *)v2 streamHandler];
-    [v4 stop];
+    streamHandler2 = [(SDCompanionStream *)selfCopy streamHandler];
+    [streamHandler2 stop];
   }
 
-  v5 = [(SDCompanionStream *)v2 clientInputStream];
+  clientInputStream = [(SDCompanionStream *)selfCopy clientInputStream];
 
-  if (v5)
+  if (clientInputStream)
   {
-    v6 = [(SDCompanionStream *)v2 clientInputStream];
-    [v6 close];
+    clientInputStream2 = [(SDCompanionStream *)selfCopy clientInputStream];
+    [clientInputStream2 close];
 
-    v7 = [(SDCompanionStream *)v2 clientInputStream];
-    [v7 setDelegate:0];
+    clientInputStream3 = [(SDCompanionStream *)selfCopy clientInputStream];
+    [clientInputStream3 setDelegate:0];
 
-    [(SDCompanionStream *)v2 setClientInputStream:0];
+    [(SDCompanionStream *)selfCopy setClientInputStream:0];
   }
 
-  v8 = [(SDCompanionStream *)v2 clientOutputStream];
+  clientOutputStream = [(SDCompanionStream *)selfCopy clientOutputStream];
 
-  if (v8)
+  if (clientOutputStream)
   {
-    v9 = [(SDCompanionStream *)v2 clientOutputStream];
-    [v9 close];
+    clientOutputStream2 = [(SDCompanionStream *)selfCopy clientOutputStream];
+    [clientOutputStream2 close];
 
-    v10 = [(SDCompanionStream *)v2 clientOutputStream];
-    [v10 setDelegate:0];
+    clientOutputStream3 = [(SDCompanionStream *)selfCopy clientOutputStream];
+    [clientOutputStream3 setDelegate:0];
 
-    [(SDCompanionStream *)v2 setClientOutputStream:0];
+    [(SDCompanionStream *)selfCopy setClientOutputStream:0];
   }
 
-  v11 = [(SDCompanionStream *)v2 netServiceBrowser];
+  netServiceBrowser = [(SDCompanionStream *)selfCopy netServiceBrowser];
 
-  if (v11)
+  if (netServiceBrowser)
   {
-    v12 = [(SDCompanionStream *)v2 netServiceBrowser];
-    [v12 stop];
+    netServiceBrowser2 = [(SDCompanionStream *)selfCopy netServiceBrowser];
+    [netServiceBrowser2 stop];
 
-    v13 = [(SDCompanionStream *)v2 netServiceBrowser];
-    [v13 setDelegate:0];
+    netServiceBrowser3 = [(SDCompanionStream *)selfCopy netServiceBrowser];
+    [netServiceBrowser3 setDelegate:0];
 
-    [(SDCompanionStream *)v2 setNetServiceBrowser:0];
+    [(SDCompanionStream *)selfCopy setNetServiceBrowser:0];
     v14 = streams_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -146,19 +146,19 @@
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Client streams closed", v19, 2u);
   }
 
-  v16 = [(SDCompanionStream *)v2 streamHandler];
-  if (v16)
+  streamHandler3 = [(SDCompanionStream *)selfCopy streamHandler];
+  if (streamHandler3)
   {
     goto LABEL_16;
   }
 
-  v17 = [(SDCompanionStream *)v2 delegate];
+  delegate = [(SDCompanionStream *)selfCopy delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
   {
-    v16 = [(SDCompanionStream *)v2 delegate];
-    [v16 companionStreamClosedStreams:v2];
+    streamHandler3 = [(SDCompanionStream *)selfCopy delegate];
+    [streamHandler3 companionStreamClosedStreams:selfCopy];
 LABEL_16:
   }
 }
@@ -172,12 +172,12 @@ LABEL_16:
   }
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"com.apple."])
+  dCopy = d;
+  if ([dCopy hasPrefix:@"com.apple."])
   {
-    [(SDStreamHandler *)self->_streamHandler setBundleID:v4];
+    [(SDStreamHandler *)self->_streamHandler setBundleID:dCopy];
   }
 
   else
@@ -191,9 +191,9 @@ LABEL_16:
   }
 }
 
-- (void)getStreamsWithCompletionHandler:(id)a3
+- (void)getStreamsWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   streamsRequestHandler = self->_streamsRequestHandler;
   self->_streamsRequestHandler = v4;
 
@@ -243,13 +243,13 @@ LABEL_16:
   v5 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
   [v5 encodeObject:v4 forKey:NSKeyedArchiveRootObjectKey];
   streamHandler = self->_streamHandler;
-  v7 = [v5 encodedData];
+  encodedData = [v5 encodedData];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10021C7C4;
   v8[3] = &unk_1008CE090;
   v8[4] = self;
-  [(SDStreamHandler *)streamHandler sendMessage:v7 withCompletionHandler:v8];
+  [(SDStreamHandler *)streamHandler sendMessage:encodedData withCompletionHandler:v8];
 }
 
 - (void)switchToStreaming
@@ -265,13 +265,13 @@ LABEL_16:
   [(SDCompanionStream *)self writeNetworkStream];
 }
 
-- (void)notifyStreamRequestWithError:(id)a3
+- (void)notifyStreamRequestWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
+  errorCopy = error;
+  v5 = errorCopy;
   if (self->_streamsRequestHandler)
   {
-    if (v4)
+    if (errorCopy)
     {
       v6 = streams_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -284,8 +284,8 @@ LABEL_16:
 
     else
     {
-      v8 = [(SDCompanionStream *)self fileHandle];
-      if (v8)
+      fileHandle = [(SDCompanionStream *)self fileHandle];
+      if (fileHandle)
       {
         (*(self->_streamsRequestHandler + 2))();
       }
@@ -408,13 +408,13 @@ LABEL_7:
   return v4;
 }
 
-- (int)setBufferSize:(int)a3 socket:(int)a4
+- (int)setBufferSize:(int)size socket:(int)socket
 {
-  v6 = a3;
-  result = setsockopt(a4, 0xFFFF, 4097, &v6, 4u);
+  sizeCopy = size;
+  result = setsockopt(socket, 0xFFFF, 4097, &sizeCopy, 4u);
   if ((result & 0x80000000) == 0)
   {
-    result = setsockopt(a4, 0xFFFF, 4098, &v6, 4u);
+    result = setsockopt(socket, 0xFFFF, 4098, &sizeCopy, 4u);
     if (result >= 0)
     {
       return 1;
@@ -424,23 +424,23 @@ LABEL_7:
   return result;
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
-  v5 = a4;
+  serviceCopy = service;
   v6 = streams_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Browser found net service = %@", &v7, 0xCu);
   }
 }
 
-- (void)streamHandler:(id)a3 didReceiveMessage:(id)a4
+- (void)streamHandler:(id)handler didReceiveMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v17 = 0;
-  v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v5 error:&v17];
+  v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:messageCopy error:&v17];
 
   v7 = v17;
   v8 = [NSSet setWithObject:objc_opt_class()];
@@ -454,13 +454,13 @@ LABEL_7:
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 integerValue];
-      if (v15 == 1)
+      integerValue = [v13 integerValue];
+      if (integerValue == 1)
       {
         [(SDCompanionStream *)self handleStreamResponse:v12];
       }
 
-      else if (!v15)
+      else if (!integerValue)
       {
         [(SDCompanionStream *)self handleStreamRequest:v12];
       }
@@ -486,9 +486,9 @@ LABEL_7:
   }
 }
 
-- (void)handleStreamRequest:(id)a3
+- (void)handleStreamRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = streams_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -496,19 +496,19 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received request to create streams", buf, 2u);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"RequestAuthorData"];
+  v6 = [requestCopy objectForKeyedSubscript:@"RequestAuthorData"];
 
   if (v6)
   {
     v7 = [SFCompanionService serviceFromAuthorData:v6];
-    v8 = [v7 identifier];
+    identifier = [v7 identifier];
     identifier = self->_identifier;
-    self->_identifier = v8;
+    self->_identifier = identifier;
 
     if (v7)
     {
-      v10 = [(SDCompanionStream *)self fileHandle];
-      if (v10)
+      fileHandle = [(SDCompanionStream *)self fileHandle];
+      if (fileHandle)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v12 = objc_opt_respondsToSelector();
@@ -521,7 +521,7 @@ LABEL_7:
           v16[2] = sub_10021D604;
           v16[3] = &unk_1008CDAA8;
           v16[4] = self;
-          [v13 continuationStream:self connectedToService:v7 withFileHandle:v10 acceptHandler:v16];
+          [v13 continuationStream:self connectedToService:v7 withFileHandle:fileHandle acceptHandler:v16];
         }
       }
 
@@ -550,15 +550,15 @@ LABEL_7:
   }
 }
 
-- (void)handleStreamResponse:(id)a3
+- (void)handleStreamResponse:(id)response
 {
-  v4 = [a3 objectForKeyedSubscript:@"CompanionStreamConnectResponse"];
+  v4 = [response objectForKeyedSubscript:@"CompanionStreamConnectResponse"];
   v5 = streams_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
     v7 = @"NO";
-    if (v6)
+    if (bOOLValue)
     {
       v7 = @"YES";
     }
@@ -586,9 +586,9 @@ LABEL_7:
   }
 }
 
-- (void)streamHandler:(id)a3 didReceiveStreamData:(id)a4
+- (void)streamHandler:(id)handler didReceiveStreamData:(id)data
 {
-  [(NSMutableData *)self->_networkStreamData appendData:a4];
+  [(NSMutableData *)self->_networkStreamData appendData:data];
   if ([(NSMutableData *)self->_networkStreamData length]> 0x20000)
   {
     [(SDStreamHandler *)self->_streamHandler setShouldReadNetwork:0];
@@ -597,21 +597,21 @@ LABEL_7:
   [(SDCompanionStream *)self writeClientStream];
 }
 
-- (void)streamHandlerDidClose:(id)a3 withError:(id)a4
+- (void)streamHandlerDidClose:(id)close withError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = streams_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v5;
+    v19 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Stream handler closed with error = %@", buf, 0xCu);
   }
 
   v7 = +[SDStatusMonitor sharedMonitor];
-  v8 = [v7 wirelessEnabled];
+  wirelessEnabled = [v7 wirelessEnabled];
 
-  if (!v8)
+  if (!wirelessEnabled)
   {
     v14 = NSLocalizedDescriptionKey;
     v15 = @"Could not create connection, wireless not enabled";
@@ -625,7 +625,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v5)
+  if (!errorCopy)
   {
     v16 = NSLocalizedDescriptionKey;
     v17 = @"Connection lost";
@@ -635,7 +635,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  [(SDCompanionStream *)self notifyStreamRequestWithError:v5];
+  [(SDCompanionStream *)self notifyStreamRequestWithError:errorCopy];
 LABEL_9:
   [(SDStreamHandler *)self->_streamHandler setDelegate:0];
   streamHandler = self->_streamHandler;
@@ -645,24 +645,24 @@ LABEL_9:
   [(SDCompanionStream *)self stopIfReady];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 <= 3)
+  streamCopy = stream;
+  v7 = streamCopy;
+  if (event <= 3)
   {
-    if (a4 == 1)
+    if (event == 1)
     {
       [(SDCompanionStream *)self handleOpenedStream];
       goto LABEL_22;
     }
 
-    if (a4 != 2)
+    if (event != 2)
     {
       goto LABEL_22;
     }
 
-    if ([v6 isEqual:self->_clientInputStream])
+    if ([streamCopy isEqual:self->_clientInputStream])
     {
       [(SDCompanionStream *)self readClientStream];
       goto LABEL_22;
@@ -679,10 +679,10 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  switch(a4)
+  switch(event)
   {
     case 4uLL:
-      if ([v6 isEqual:self->_clientOutputStream])
+      if ([streamCopy isEqual:self->_clientOutputStream])
       {
         [(SDCompanionStream *)self writeClientStream];
         break;
@@ -757,9 +757,9 @@ LABEL_22:
       }
 
       v7 = +[SDStatusMonitor sharedMonitor];
-      v8 = [v7 enableStreamDebugging];
+      enableStreamDebugging = [v7 enableStreamDebugging];
 
-      if (v8)
+      if (enableStreamDebugging)
       {
         self->_wroteToClient += v3;
         v9 = streams_log();
@@ -791,9 +791,9 @@ LABEL_22:
   v13 = +[SDStatusMonitor sharedMonitor];
   if ([v13 enableStreamDebugging])
   {
-    v11 = [(NSOutputStream *)self->_clientOutputStream hasSpaceAvailable];
+    hasSpaceAvailable = [(NSOutputStream *)self->_clientOutputStream hasSpaceAvailable];
 
-    if (v11)
+    if (hasSpaceAvailable)
     {
       return;
     }
@@ -882,9 +882,9 @@ LABEL_13:
   else
   {
     v5 = +[SDStatusMonitor sharedMonitor];
-    v6 = [v5 enableStreamDebugging];
+    enableStreamDebugging = [v5 enableStreamDebugging];
 
-    if (v6)
+    if (enableStreamDebugging)
     {
       v7 = streams_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))

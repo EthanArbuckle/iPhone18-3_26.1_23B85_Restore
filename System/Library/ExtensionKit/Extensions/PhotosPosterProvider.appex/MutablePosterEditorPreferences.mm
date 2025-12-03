@@ -12,120 +12,120 @@
 - (unint64_t)px_adaptiveTimeMode;
 - (unint64_t)px_powerLogIdentifier;
 - (unint64_t)supportedMotionEffectsMode;
-- (void)setDepthEffectEnabled:(BOOL)a3;
-- (void)setDeviceMotionMode:(unint64_t)a3;
-- (void)setPreferredDeviceMotionUpdateInterval:(double)a3;
-- (void)setPx_adaptiveTimeMode:(unint64_t)a3;
-- (void)setPx_contentOcclusionRectangleUpdatesRequested:(BOOL)a3;
-- (void)setPx_powerLogIdentifier:(unint64_t)a3;
+- (void)setDepthEffectEnabled:(BOOL)enabled;
+- (void)setDeviceMotionMode:(unint64_t)mode;
+- (void)setPreferredDeviceMotionUpdateInterval:(double)interval;
+- (void)setPx_adaptiveTimeMode:(unint64_t)mode;
+- (void)setPx_contentOcclusionRectangleUpdatesRequested:(BOOL)requested;
+- (void)setPx_powerLogIdentifier:(unint64_t)identifier;
 - (void)setPx_preferredSalientContentRectangle:;
-- (void)setStatusBarTintColor:(id)a3;
-- (void)setSupportedMotionEffectsMode:(unint64_t)a3;
-- (void)setTimeColor:(id)a3;
-- (void)setTimeFont:(id)a3;
+- (void)setStatusBarTintColor:(id)color;
+- (void)setSupportedMotionEffectsMode:(unint64_t)mode;
+- (void)setTimeColor:(id)color;
+- (void)setTimeFont:(id)font;
 @end
 
 @implementation MutablePosterEditorPreferences
 
 - (UIFont)timeFont
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100008868();
 
   return v3;
 }
 
-- (void)setTimeFont:(id)a3
+- (void)setTimeFont:(id)font
 {
-  v4 = a3;
-  v5 = self;
+  fontCopy = font;
+  selfCopy = self;
   sub_100008904();
 }
 
 - (UIColor)timeColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100008994();
 
   return v3;
 }
 
-- (void)setTimeColor:(id)a3
+- (void)setTimeColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
+  colorCopy = color;
+  selfCopy = self;
   sub_100008A30();
 }
 
 - (UIColor)statusBarTintColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100008AC0();
 
   return v3;
 }
 
-- (void)setStatusBarTintColor:(id)a3
+- (void)setStatusBarTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
+  colorCopy = color;
+  selfCopy = self;
   sub_100008B5C();
 }
 
 - (unint64_t)supportedMotionEffectsMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100008BDC();
 
   return v3;
 }
 
-- (void)setSupportedMotionEffectsMode:(unint64_t)a3
+- (void)setSupportedMotionEffectsMode:(unint64_t)mode
 {
-  v3 = self;
+  selfCopy = self;
   sub_100008C5C();
 }
 
 - (unint64_t)deviceMotionMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100008CC4();
 
   return v3;
 }
 
-- (void)setDeviceMotionMode:(unint64_t)a3
+- (void)setDeviceMotionMode:(unint64_t)mode
 {
-  v4 = self;
-  sub_100008D8C(a3);
+  selfCopy = self;
+  sub_100008D8C(mode);
 }
 
 - (double)preferredDeviceMotionUpdateInterval
 {
-  v2 = self;
+  selfCopy = self;
   sub_100008E84();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPreferredDeviceMotionUpdateInterval:(double)a3
+- (void)setPreferredDeviceMotionUpdateInterval:(double)interval
 {
-  v3 = self;
+  selfCopy = self;
   sub_100008EF4();
 }
 
 - (BOOL)isDepthEffectEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100008F40();
 
   return v3 & 1;
 }
 
-- (void)setDepthEffectEnabled:(BOOL)a3
+- (void)setDepthEffectEnabled:(BOOL)enabled
 {
-  v3 = self;
+  selfCopy = self;
   sub_100008FC0();
 }
 
@@ -172,44 +172,44 @@
 
 - (BOOL)px_contentOcclusionRectangleUpdatesRequested
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000910C();
 
   return v3 & 1;
 }
 
-- (void)setPx_contentOcclusionRectangleUpdatesRequested:(BOOL)a3
+- (void)setPx_contentOcclusionRectangleUpdatesRequested:(BOOL)requested
 {
-  v4 = self;
-  sub_100009184(a3);
+  selfCopy = self;
+  sub_100009184(requested);
 }
 
 - (unint64_t)px_adaptiveTimeMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000091C4();
 
   return v3;
 }
 
-- (void)setPx_adaptiveTimeMode:(unint64_t)a3
+- (void)setPx_adaptiveTimeMode:(unint64_t)mode
 {
-  v4 = self;
-  sub_100009224(a3);
+  selfCopy = self;
+  sub_100009224(mode);
 }
 
 - (unint64_t)px_powerLogIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100009264();
 
   return v3;
 }
 
-- (void)setPx_powerLogIdentifier:(unint64_t)a3
+- (void)setPx_powerLogIdentifier:(unint64_t)identifier
 {
-  v4 = self;
-  sub_1000092C4(a3);
+  selfCopy = self;
+  sub_1000092C4(identifier);
 }
 
 @end

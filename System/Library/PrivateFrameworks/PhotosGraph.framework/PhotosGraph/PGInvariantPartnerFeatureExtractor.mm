@@ -1,10 +1,10 @@
 @interface PGInvariantPartnerFeatureExtractor
-- (PGInvariantPartnerFeatureExtractor)initWithError:(id *)a3;
+- (PGInvariantPartnerFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGInvariantPartnerFeatureExtractor
 
-- (PGInvariantPartnerFeatureExtractor)initWithError:(id *)a3
+- (PGInvariantPartnerFeatureExtractor)initWithError:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v17[0] = *MEMORY[0x277D275B8];
@@ -15,8 +15,8 @@
   v7 = +[PGGraphPersonNode partnerOfPerson];
   v16[1] = v7;
   v8 = +[PGGraphMeNode filter];
-  v9 = [v8 relation];
-  v16[2] = v9;
+  relation = [v8 relation];
+  v16[2] = relation;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
   v11 = [v5 chain:v10];
 

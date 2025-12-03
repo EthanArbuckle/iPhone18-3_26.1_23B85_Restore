@@ -1,8 +1,8 @@
 @interface MRPlaybackSessionRequest
-- (BOOL)isEqual:(id)a3;
-- (MRPlaybackSessionRequest)initWithData:(id)a3;
-- (MRPlaybackSessionRequest)initWithIdentifier:(id)a3 type:(id)a4;
-- (MRPlaybackSessionRequest)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRPlaybackSessionRequest)initWithData:(id)data;
+- (MRPlaybackSessionRequest)initWithIdentifier:(id)identifier type:(id)type;
+- (MRPlaybackSessionRequest)initWithProtobuf:(id)protobuf;
 - (NSData)data;
 - (_MRPlaybackSessionRequestProtobuf)protobuf;
 - (id)description;
@@ -10,20 +10,20 @@
 
 @implementation MRPlaybackSessionRequest
 
-- (MRPlaybackSessionRequest)initWithIdentifier:(id)a3 type:(id)a4
+- (MRPlaybackSessionRequest)initWithIdentifier:(id)identifier type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = MRPlaybackSessionRequest;
   v8 = [(MRPlaybackSessionRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [typeCopy copy];
     type = v8->_type;
     v8->_type = v11;
 
@@ -33,63 +33,63 @@
   return v8;
 }
 
-- (MRPlaybackSessionRequest)initWithProtobuf:(id)a3
+- (MRPlaybackSessionRequest)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v24.receiver = self;
     v24.super_class = MRPlaybackSessionRequest;
     v5 = [(MRPlaybackSessionRequest *)&v24 init];
     if (v5)
     {
-      v6 = [v4 requestID];
-      v7 = [v6 copy];
+      requestID = [protobufCopy requestID];
+      v7 = [requestID copy];
       requestIdentifier = v5->_requestIdentifier;
       v5->_requestIdentifier = v7;
 
-      v9 = [v4 identifier];
-      v10 = [v9 copy];
+      identifier = [protobufCopy identifier];
+      v10 = [identifier copy];
       identifier = v5->_identifier;
       v5->_identifier = v10;
 
-      v12 = [v4 type];
-      v13 = [v12 copy];
+      type = [protobufCopy type];
+      v13 = [type copy];
       type = v5->_type;
       v5->_type = v13;
 
       v15 = [MRPlayerPath alloc];
-      v16 = [v4 destinationPlayerPath];
-      v17 = [(MRPlayerPath *)v15 initWithProtobuf:v16];
+      destinationPlayerPath = [protobufCopy destinationPlayerPath];
+      v17 = [(MRPlayerPath *)v15 initWithProtobuf:destinationPlayerPath];
       destinationPlayerPath = v5->_destinationPlayerPath;
       v5->_destinationPlayerPath = v17;
 
-      v19 = [v4 destinationCommandInfo];
-      v20 = _MRProtoUtilsNSDictionaryFromProtoDictionary(v19);
+      destinationCommandInfo = [protobufCopy destinationCommandInfo];
+      v20 = _MRProtoUtilsNSDictionaryFromProtoDictionary(destinationCommandInfo);
       destinationCommandInfo = v5->_destinationCommandInfo;
       v5->_destinationCommandInfo = v20;
 
-      v5->_isPreflight = [v4 isPreflight];
+      v5->_isPreflight = [protobufCopy isPreflight];
     }
 
     self = v5;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
-- (MRPlaybackSessionRequest)initWithData:(id)a3
+- (MRPlaybackSessionRequest)initWithData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = [[_MRPlaybackSessionRequestProtobuf alloc] initWithData:v4];
+    v5 = [[_MRPlaybackSessionRequestProtobuf alloc] initWithData:dataCopy];
     v6 = [(MRPlaybackSessionRequest *)self initWithProtobuf:v5];
   }
 
@@ -104,24 +104,24 @@
 - (_MRPlaybackSessionRequestProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRPlaybackSessionRequestProtobuf);
-  v4 = [(MRPlaybackSessionRequest *)self requestIdentifier];
-  v5 = [v4 copy];
+  requestIdentifier = [(MRPlaybackSessionRequest *)self requestIdentifier];
+  v5 = [requestIdentifier copy];
   [(_MRPlaybackSessionRequestProtobuf *)v3 setRequestID:v5];
 
-  v6 = [(MRPlaybackSessionRequest *)self identifier];
-  v7 = [v6 copy];
+  identifier = [(MRPlaybackSessionRequest *)self identifier];
+  v7 = [identifier copy];
   [(_MRPlaybackSessionRequestProtobuf *)v3 setIdentifier:v7];
 
-  v8 = [(MRPlaybackSessionRequest *)self type];
-  v9 = [v8 copy];
+  type = [(MRPlaybackSessionRequest *)self type];
+  v9 = [type copy];
   [(_MRPlaybackSessionRequestProtobuf *)v3 setType:v9];
 
-  v10 = [(MRPlaybackSessionRequest *)self destinationPlayerPath];
-  v11 = [v10 protobuf];
-  [(_MRPlaybackSessionRequestProtobuf *)v3 setDestinationPlayerPath:v11];
+  destinationPlayerPath = [(MRPlaybackSessionRequest *)self destinationPlayerPath];
+  protobuf = [destinationPlayerPath protobuf];
+  [(_MRPlaybackSessionRequestProtobuf *)v3 setDestinationPlayerPath:protobuf];
 
-  v12 = [(MRPlaybackSessionRequest *)self destinationCommandInfo];
-  v13 = _MRProtoUtilsProtoDictionaryFromNSDictionary(v12);
+  destinationCommandInfo = [(MRPlaybackSessionRequest *)self destinationCommandInfo];
+  v13 = _MRProtoUtilsProtoDictionaryFromNSDictionary(destinationCommandInfo);
   [(_MRPlaybackSessionRequestProtobuf *)v3 setDestinationCommandInfo:v13];
 
   [(_MRPlaybackSessionRequestProtobuf *)v3 setIsPreflight:[(MRPlaybackSessionRequest *)self isPreflight]];
@@ -131,16 +131,16 @@
 
 - (NSData)data
 {
-  v2 = [(MRPlaybackSessionRequest *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRPlaybackSessionRequest *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -150,19 +150,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRPlaybackSessionRequest *)v5 requestIdentifier];
-      v7 = [(MRPlaybackSessionRequest *)self requestIdentifier];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      requestIdentifier = [(MRPlaybackSessionRequest *)v5 requestIdentifier];
+      requestIdentifier2 = [(MRPlaybackSessionRequest *)self requestIdentifier];
+      v8 = requestIdentifier2;
+      if (requestIdentifier == requestIdentifier2)
       {
       }
 
       else
       {
-        v9 = [(MRPlaybackSessionRequest *)v5 requestIdentifier];
-        v10 = [(MRPlaybackSessionRequest *)self requestIdentifier];
-        v11 = [v9 isEqualToString:v10];
+        requestIdentifier3 = [(MRPlaybackSessionRequest *)v5 requestIdentifier];
+        requestIdentifier4 = [(MRPlaybackSessionRequest *)self requestIdentifier];
+        v11 = [requestIdentifier3 isEqualToString:requestIdentifier4];
 
         if (!v11)
         {
@@ -170,18 +170,18 @@
         }
       }
 
-      v13 = [(MRPlaybackSessionRequest *)v5 identifier];
-      v14 = [(MRPlaybackSessionRequest *)self identifier];
-      v15 = v14;
-      if (v13 == v14)
+      identifier = [(MRPlaybackSessionRequest *)v5 identifier];
+      identifier2 = [(MRPlaybackSessionRequest *)self identifier];
+      v15 = identifier2;
+      if (identifier == identifier2)
       {
       }
 
       else
       {
-        v16 = [(MRPlaybackSessionRequest *)v5 identifier];
-        v17 = [(MRPlaybackSessionRequest *)self identifier];
-        v18 = [v16 isEqualToString:v17];
+        identifier3 = [(MRPlaybackSessionRequest *)v5 identifier];
+        identifier4 = [(MRPlaybackSessionRequest *)self identifier];
+        v18 = [identifier3 isEqualToString:identifier4];
 
         if (!v18)
         {
@@ -189,18 +189,18 @@
         }
       }
 
-      v19 = [(MRPlaybackSessionRequest *)v5 type];
-      v20 = [(MRPlaybackSessionRequest *)self type];
-      v21 = v20;
-      if (v19 == v20)
+      type = [(MRPlaybackSessionRequest *)v5 type];
+      type2 = [(MRPlaybackSessionRequest *)self type];
+      v21 = type2;
+      if (type == type2)
       {
       }
 
       else
       {
-        v22 = [(MRPlaybackSessionRequest *)v5 type];
-        v23 = [(MRPlaybackSessionRequest *)self type];
-        v24 = [v22 isEqualToString:v23];
+        type3 = [(MRPlaybackSessionRequest *)v5 type];
+        type4 = [(MRPlaybackSessionRequest *)self type];
+        v24 = [type3 isEqualToString:type4];
 
         if (!v24)
         {
@@ -212,8 +212,8 @@ LABEL_18:
         }
       }
 
-      v25 = [(MRPlaybackSessionRequest *)v5 isPreflight];
-      v12 = v25 ^ [(MRPlaybackSessionRequest *)self isPreflight]^ 1;
+      isPreflight = [(MRPlaybackSessionRequest *)v5 isPreflight];
+      v12 = isPreflight ^ [(MRPlaybackSessionRequest *)self isPreflight]^ 1;
       goto LABEL_18;
     }
 
@@ -228,10 +228,10 @@ LABEL_19:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(MRPlaybackSessionRequest *)self requestIdentifier];
-  v5 = [(MRPlaybackSessionRequest *)self identifier];
-  v6 = [(MRPlaybackSessionRequest *)self type];
-  v7 = [v3 initWithFormat:@"%@/%@/%@/isPreflight:%d", v4, v5, v6, -[MRPlaybackSessionRequest isPreflight](self, "isPreflight")];
+  requestIdentifier = [(MRPlaybackSessionRequest *)self requestIdentifier];
+  identifier = [(MRPlaybackSessionRequest *)self identifier];
+  type = [(MRPlaybackSessionRequest *)self type];
+  v7 = [v3 initWithFormat:@"%@/%@/%@/isPreflight:%d", requestIdentifier, identifier, type, -[MRPlaybackSessionRequest isPreflight](self, "isPreflight")];
 
   return v7;
 }

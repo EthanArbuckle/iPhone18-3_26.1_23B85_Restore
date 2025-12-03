@@ -1,7 +1,7 @@
 @interface SystemMinimumLayoutMarginsReader.MarginsTrackingViewController
 - (_TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController)init;
-- (_TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController)initWithCoder:(id)a3;
-- (_TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController)initWithCoder:(id)coder;
+- (_TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewLayoutMarginsDidChange;
 @end
 
@@ -15,7 +15,7 @@
   return [(SystemMinimumLayoutMarginsReader.MarginsTrackingViewController *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (_TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController)initWithCoder:(id)a3
+- (_TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController_minimumLayoutMargins) = 0;
   result = sub_21E1429C4();
@@ -25,11 +25,11 @@
 
 - (void)viewLayoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21DF4FB7C();
 }
 
-- (_TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCV20VisualIntelligenceUI32SystemMinimumLayoutMarginsReader29MarginsTrackingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -2,52 +2,52 @@
 + (id)restorationImageAssetID;
 + (id)restorationImageURL;
 + (unint64_t)restorationImageAppearance;
-+ (void)setRestorationImageAppearance:(unint64_t)a3;
-+ (void)setRestorationImageAssetID:(id)a3;
-- (BEPageSnapshotCache)initWithIdentifier:(id)a3 dataSource:(id)a4;
++ (void)setRestorationImageAppearance:(unint64_t)appearance;
++ (void)setRestorationImageAssetID:(id)d;
+- (BEPageSnapshotCache)initWithIdentifier:(id)identifier dataSource:(id)source;
 - (BEPageSnapshotCacheDataSource)dataSource;
-- (id)_fetchImageForKey:(id)a3 size:(CGSize)a4;
-- (id)_scheduleRenderWithKey:(id)a3 size:(CGSize)a4 pageNumber:(int64_t)a5 priority:(int64_t)a6 completion:(id)a7;
+- (id)_fetchImageForKey:(id)key size:(CGSize)size;
+- (id)_scheduleRenderWithKey:(id)key size:(CGSize)size pageNumber:(int64_t)number priority:(int64_t)priority completion:(id)completion;
 - (id)persistentCacheFileName;
-- (id)snapshotForAsset:(id)a3 page:(int64_t)a4 snapshotThemeIdentifier:(id)a5 size:(CGSize)a6 completion:(id)a7;
+- (id)snapshotForAsset:(id)asset page:(int64_t)page snapshotThemeIdentifier:(id)identifier size:(CGSize)size completion:(id)completion;
 @end
 
 @implementation BEPageSnapshotCache
 
 - (id)persistentCacheFileName
 {
-  v2 = [(BEPageSnapshotCache *)self identifier];
-  v3 = [NSString stringWithFormat:@"%@-%@", v2, @"v20220201"];
+  identifier = [(BEPageSnapshotCache *)self identifier];
+  v3 = [NSString stringWithFormat:@"%@-%@", identifier, @"v20220201"];
 
   return v3;
 }
 
-- (BEPageSnapshotCache)initWithIdentifier:(id)a3 dataSource:(id)a4
+- (BEPageSnapshotCache)initWithIdentifier:(id)identifier dataSource:(id)source
 {
-  v6 = a4;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = BEPageSnapshotCache;
-  v7 = [(AEHTMLBookRenderingCache *)&v10 initWithIdentifier:a3];
+  v7 = [(AEHTMLBookRenderingCache *)&v10 initWithIdentifier:identifier];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_dataSource, v6);
+    objc_storeWeak(&v7->_dataSource, sourceCopy);
   }
 
   return v8;
 }
 
-+ (void)setRestorationImageAppearance:(unint64_t)a3
++ (void)setRestorationImageAppearance:(unint64_t)appearance
 {
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setInteger:a3 forKey:BERestorationAssetAppearanceKey];
+  [v4 setInteger:appearance forKey:BERestorationAssetAppearanceKey];
 }
 
-+ (void)setRestorationImageAssetID:(id)a3
++ (void)setRestorationImageAssetID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setObject:v3 forKey:BERestorationAssetIDKey];
+  [v4 setObject:dCopy forKey:BERestorationAssetIDKey];
 }
 
 + (unint64_t)restorationImageAppearance
@@ -69,22 +69,22 @@
 + (id)restorationImageURL
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"currentLocationContentSnapshot.png"];
+  v4 = [lastObject stringByAppendingPathComponent:@"currentLocationContentSnapshot.png"];
   v5 = [NSURL fileURLWithPath:v4];
 
   return v5;
 }
 
-- (id)snapshotForAsset:(id)a3 page:(int64_t)a4 snapshotThemeIdentifier:(id)a5 size:(CGSize)a6 completion:(id)a7
+- (id)snapshotForAsset:(id)asset page:(int64_t)page snapshotThemeIdentifier:(id)identifier size:(CGSize)size completion:(id)completion
 {
-  height = a6.height;
-  width = a6.width;
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  if ((a4 - 0x7FFFFFFFFFFFFFFFLL) < 0x8000000000000002 || ![v13 length])
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ((page - 0x7FFFFFFFFFFFFFFFLL) < 0x8000000000000002 || ![assetCopy length])
   {
     goto LABEL_7;
   }
@@ -99,10 +99,10 @@
   [(BEPageSnapshotCache *)self scaleAdjustedImageSize:v17, v16];
   v23 = v22;
   v25 = v24;
-  v26 = [(BEPageSnapshotCache *)self keyPrefixForPage:a4];
-  v27 = [v26 stringByAppendingString:v14];
+  v26 = [(BEPageSnapshotCache *)self keyPrefixForPage:page];
+  v27 = [v26 stringByAppendingString:identifierCopy];
 
-  v28 = [(BEPageSnapshotCache *)self keyForAssetID:v13 prefix:v27 size:v23, v25];
+  v28 = [(BEPageSnapshotCache *)self keyForAssetID:assetCopy prefix:v27 size:v23, v25];
   v29 = [(BEPageSnapshotCache *)self _fetchImageForKey:v28 size:v17, v16];
   if (v29)
   {
@@ -111,14 +111,14 @@
     goto LABEL_8;
   }
 
-  v20 = [(BEPageSnapshotCache *)self _scheduleRenderWithKey:v28 size:a4 pageNumber:4 priority:v15 completion:v17, v16];
+  v20 = [(BEPageSnapshotCache *)self _scheduleRenderWithKey:v28 size:page pageNumber:4 priority:completionCopy completion:v17, v16];
 
   if (!v20)
   {
 LABEL_7:
     v19 = 0;
 LABEL_8:
-    v15[2](v15, v19);
+    completionCopy[2](completionCopy, v19);
 
     v20 = 0;
   }
@@ -126,50 +126,50 @@ LABEL_8:
   return v20;
 }
 
-- (id)_fetchImageForKey:(id)a3 size:(CGSize)a4
+- (id)_fetchImageForKey:(id)key size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
   if (width < 100.0)
   {
     goto LABEL_2;
   }
 
-  v9 = [(BEPageSnapshotCache *)self memoryCache];
-  v8 = [v9 objectForKey:v7];
+  memoryCache = [(BEPageSnapshotCache *)self memoryCache];
+  height = [memoryCache objectForKey:keyCopy];
 
-  if (!v8)
+  if (!height)
   {
     v26 = 0;
     v10 = +[IMPersistentCacheManager sharedInstance];
-    v11 = [(BEPageSnapshotCache *)self persistentCachePath];
-    v12 = [v10 cacheForPath:v11 maxSize:0];
+    persistentCachePath = [(BEPageSnapshotCache *)self persistentCachePath];
+    v12 = [v10 cacheForPath:persistentCachePath maxSize:0];
 
     if ([(BEPageSnapshotCache *)self serializeFormat]!= 2)
     {
-      v21 = [v12 dataForKey:v7];
+      v21 = [v12 dataForKey:keyCopy];
       v26 = [v21 length];
-      v8 = [(AEHTMLBookRenderingCache *)self imageForSize:v21 data:width, height];
+      height = [(AEHTMLBookRenderingCache *)self imageForSize:v21 data:width, height];
 
-      if (!v8)
+      if (!height)
       {
         goto LABEL_7;
       }
 
 LABEL_9:
-      v22 = [(BEPageSnapshotCache *)self memoryCache];
-      [v22 setObject:v8 forKey:v7 cost:v26];
+      memoryCache2 = [(BEPageSnapshotCache *)self memoryCache];
+      [memoryCache2 setObject:height forKey:keyCopy cost:v26];
 
       v23 = +[IMPersistentCacheManager sharedInstance];
-      v24 = [(BEPageSnapshotCache *)self persistentCachePath];
-      [v23 purgeFromCache:v24];
+      persistentCachePath2 = [(BEPageSnapshotCache *)self persistentCachePath];
+      [v23 purgeFromCache:persistentCachePath2];
 
       goto LABEL_11;
     }
 
-    NSLog(@"Getting Image for key %@ from persistent cache", v7);
-    v13 = [v12 copyCGImageForKey:v7 resourceSize:&v26];
+    NSLog(@"Getting Image for key %@ from persistent cache", keyCopy);
+    v13 = [v12 copyCGImageForKey:keyCopy resourceSize:&v26];
     if (v13)
     {
       v14 = v13;
@@ -177,56 +177,56 @@ LABEL_9:
       v16 = CGImageGetHeight(v14);
       DataProvider = CGImageGetDataProvider(v14);
       v18 = CGDataProviderCopyData(DataProvider);
-      v8 = [(AEHTMLBookRenderingCache *)self imageForSize:v18 data:v15, v16];
+      height = [(AEHTMLBookRenderingCache *)self imageForSize:v18 data:v15, v16];
       CFRelease(v18);
       CGImageRelease(v14);
-      if (!v8)
+      if (!height)
       {
 LABEL_7:
         v19 = +[IMPersistentCacheManager sharedInstance];
-        v20 = [(BEPageSnapshotCache *)self persistentCachePath];
-        [v19 purgeFromCache:v20];
+        persistentCachePath3 = [(BEPageSnapshotCache *)self persistentCachePath];
+        [v19 purgeFromCache:persistentCachePath3];
 
 LABEL_2:
-        v8 = [(BEPageSnapshotCache *)self fetchImageForKey:v7];
+        height = [(BEPageSnapshotCache *)self fetchImageForKey:keyCopy];
         goto LABEL_11;
       }
 
       goto LABEL_9;
     }
 
-    v8 = 0;
+    height = 0;
   }
 
 LABEL_11:
 
-  return v8;
+  return height;
 }
 
-- (id)_scheduleRenderWithKey:(id)a3 size:(CGSize)a4 pageNumber:(int64_t)a5 priority:(int64_t)a6 completion:(id)a7
+- (id)_scheduleRenderWithKey:(id)key size:(CGSize)size pageNumber:(int64_t)number priority:(int64_t)priority completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a7;
-  if (([(BEPageSnapshotCache *)self hasImageForKey:v13]& 1) != 0)
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  completionCopy = completion;
+  if (([(BEPageSnapshotCache *)self hasImageForKey:keyCopy]& 1) != 0)
   {
     v15 = 0;
     goto LABEL_15;
   }
 
-  v16 = [(BEPageSnapshotCache *)self findRenderingCacheOperationWithStorageKey:v13 target:0 selector:0 context:0];
+  v16 = [(BEPageSnapshotCache *)self findRenderingCacheOperationWithStorageKey:keyCopy target:0 selector:0 context:0];
   objc_opt_class();
   v17 = BUDynamicCast();
   v18 = v17;
-  if (v14)
+  if (completionCopy)
   {
     v19 = [BCRenderingCacheBlockCallback alloc];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_BEA48;
     v24[3] = &unk_1E2E50;
-    v25 = v14;
+    v25 = completionCopy;
     v20 = [v19 initWithCompletion:v24];
 
     if (!v18)
@@ -257,11 +257,11 @@ LABEL_11:
 
 LABEL_8:
   v21 = [BEPageSnapshotCacheOperation alloc];
-  v22 = [(BEPageSnapshotCache *)self dataSource];
-  v15 = [(BEPageSnapshotCacheOperation *)v21 initWithDataSource:v22];
+  dataSource = [(BEPageSnapshotCache *)self dataSource];
+  v15 = [(BEPageSnapshotCacheOperation *)v21 initWithDataSource:dataSource];
 
   [(BEPageSnapshotCacheOperation *)v15 setSelector:0];
-  [(BEPageSnapshotCacheOperation *)v15 setPageNumber:a5];
+  [(BEPageSnapshotCacheOperation *)v15 setPageNumber:number];
   [(BEPageSnapshotCacheOperation *)v15 setSnapshotSize:width, height];
   if (v20)
   {
@@ -270,10 +270,10 @@ LABEL_8:
 
   [(BEPageSnapshotCacheOperation *)v15 setImageCache:self];
   [(BEPageSnapshotCacheOperation *)v15 setDesiredSize:width, height];
-  [(BEPageSnapshotCacheOperation *)v15 setStorageKey:v13];
+  [(BEPageSnapshotCacheOperation *)v15 setStorageKey:keyCopy];
   [(BEPageSnapshotCacheOperation *)v15 setMasterImageKey:0];
   [(BEPageSnapshotCacheOperation *)v15 setSerializeFormat:[(BEPageSnapshotCache *)self serializeFormat]];
-  [(BEPageSnapshotCacheOperation *)v15 setQueuePriority:a6];
+  [(BEPageSnapshotCacheOperation *)v15 setQueuePriority:priority];
   [(BEPageSnapshotCache *)self enqueueRenderingCacheOperation:v15];
 LABEL_14:
 

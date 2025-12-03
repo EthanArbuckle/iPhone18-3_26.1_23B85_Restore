@@ -4,12 +4,12 @@
 + (float)_defaultMaximumDisparityPerSecond;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)maximumRackFocusPullTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minimumRackFocusPullTime;
-- (BOOL)writeToGlobalMetadata:(id)a3;
+- (BOOL)writeToGlobalMetadata:(id)metadata;
 - (PTCinematographyFocusFramesOptions)init;
-- (PTCinematographyFocusFramesOptions)initWithGlobalMetadata:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setMaximumRackFocusPullTime:(id *)a3;
-- (void)setMinimumRackFocusPullTime:(id *)a3;
+- (PTCinematographyFocusFramesOptions)initWithGlobalMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setMaximumRackFocusPullTime:(id *)time;
+- (void)setMinimumRackFocusPullTime:(id *)time;
 @end
 
 @implementation PTCinematographyFocusFramesOptions
@@ -137,19 +137,19 @@ void __71__PTCinematographyFocusFramesOptions__defaultMaximumDisparityPerSecond_
   return v2;
 }
 
-- (PTCinematographyFocusFramesOptions)initWithGlobalMetadata:(id)a3
+- (PTCinematographyFocusFramesOptions)initWithGlobalMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v13.receiver = self;
   v13.super_class = PTCinematographyFocusFramesOptions;
   v5 = [(PTCinematographyFocusFramesOptions *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (metadataCopy)
     {
-      if ([v4 majorVersion] == 1)
+      if ([metadataCopy majorVersion] == 1)
       {
-        v6 = v4;
+        v6 = metadataCopy;
         [v6 minimumRackFocusPullTime];
         *(v5 + 28) = v12;
         *(v5 + 12) = v11;
@@ -168,7 +168,7 @@ void __71__PTCinematographyFocusFramesOptions__defaultMaximumDisparityPerSecond_
       v9 = _PTLogSystem();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [PTCinematographyFocusFramesOptions initWithGlobalMetadata:v4];
+        [PTCinematographyFocusFramesOptions initWithGlobalMetadata:metadataCopy];
       }
     }
 
@@ -180,15 +180,15 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)writeToGlobalMetadata:(id)a3
+- (BOOL)writeToGlobalMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 majorVersion];
-  if (v5 == 1)
+  metadataCopy = metadata;
+  majorVersion = [metadataCopy majorVersion];
+  if (majorVersion == 1)
   {
     v9 = *(&self->_maximumDisparityPerSecond + 1);
     v10 = *&self->_minimumRackFocusPullTime.flags;
-    v6 = v4;
+    v6 = metadataCopy;
     [v6 setMinimumRackFocusPullTime:&v9];
     v9 = *(&self->_minimumRackFocusPullTime.epoch + 4);
     v10 = *&self->_maximumRackFocusPullTime.flags;
@@ -202,14 +202,14 @@ LABEL_9:
     v6 = _PTLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [PTCinematographyFocusFramesOptions initWithGlobalMetadata:v4];
+      [PTCinematographyFocusFramesOptions initWithGlobalMetadata:metadataCopy];
     }
   }
 
-  return v5 == 1;
+  return majorVersion == 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -233,10 +233,10 @@ LABEL_9:
   return self;
 }
 
-- (void)setMinimumRackFocusPullTime:(id *)a3
+- (void)setMinimumRackFocusPullTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_minimumRackFocusPullTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_minimumRackFocusPullTime.flags = time->var3;
   *(&self->_maximumDisparityPerSecond + 1) = v3;
 }
 
@@ -247,10 +247,10 @@ LABEL_9:
   return self;
 }
 
-- (void)setMaximumRackFocusPullTime:(id *)a3
+- (void)setMaximumRackFocusPullTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_maximumRackFocusPullTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_maximumRackFocusPullTime.flags = time->var3;
   *(&self->_minimumRackFocusPullTime.epoch + 4) = v3;
 }
 

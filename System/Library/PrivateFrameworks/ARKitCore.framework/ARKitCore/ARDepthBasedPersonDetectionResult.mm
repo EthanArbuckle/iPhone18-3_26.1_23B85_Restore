@@ -1,18 +1,18 @@
 @interface ARDepthBasedPersonDetectionResult
-- (ARDepthBasedPersonDetectionResult)initWithBoundingBox:(CGRect)a3;
-- (ARDepthBasedPersonDetectionResult)initWithCoder:(id)a3;
+- (ARDepthBasedPersonDetectionResult)initWithBoundingBox:(CGRect)box;
+- (ARDepthBasedPersonDetectionResult)initWithCoder:(id)coder;
 - (float)meanValue;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARDepthBasedPersonDetectionResult
 
-- (ARDepthBasedPersonDetectionResult)initWithBoundingBox:(CGRect)a3
+- (ARDepthBasedPersonDetectionResult)initWithBoundingBox:(CGRect)box
 {
   v4.receiver = self;
   v4.super_class = ARDepthBasedPersonDetectionResult;
-  result = [(ARPersonDetectionResult *)&v4 initWithBoundingBox:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(ARPersonDetectionResult *)&v4 initWithBoundingBox:box.origin.x, box.origin.y, box.size.width, box.size.height];
   if (result)
   {
     result->_sumDepthValues = 0.0;
@@ -22,11 +22,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = ARDepthBasedPersonDetectionResult;
-  result = [(ARPersonDetectionResult *)&v5 copyWithZone:a3];
+  result = [(ARPersonDetectionResult *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 10) = LODWORD(self->_sumDepthValues);
@@ -38,35 +38,35 @@
   return result;
 }
 
-- (ARDepthBasedPersonDetectionResult)initWithCoder:(id)a3
+- (ARDepthBasedPersonDetectionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ARDepthBasedPersonDetectionResult;
-  v5 = [(ARPersonDetectionResult *)&v8 initWithCoder:v4];
+  v5 = [(ARPersonDetectionResult *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"sumDepthValues"];
+    [coderCopy decodeFloatForKey:@"sumDepthValues"];
     v5->_sumDepthValues = v6;
-    v5->_numberDepthPixels = [v4 decodeIntegerForKey:@"numberDepthPixels"];
-    v5->_numberDepthPixelsWithHighConfidence = [v4 decodeIntegerForKey:@"numberDepthPixelsWithHighConfidence"];
-    v5->_sumDepthValuesWithHighConfidence = [v4 decodeIntegerForKey:@"sumDepthValuesWithHighConfidence"];
+    v5->_numberDepthPixels = [coderCopy decodeIntegerForKey:@"numberDepthPixels"];
+    v5->_numberDepthPixelsWithHighConfidence = [coderCopy decodeIntegerForKey:@"numberDepthPixelsWithHighConfidence"];
+    v5->_sumDepthValuesWithHighConfidence = [coderCopy decodeIntegerForKey:@"sumDepthValuesWithHighConfidence"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ARDepthBasedPersonDetectionResult;
-  v4 = a3;
-  [(ARPersonDetectionResult *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ARPersonDetectionResult *)&v6 encodeWithCoder:coderCopy];
   *&v5 = self->_sumDepthValues;
-  [v4 encodeFloat:@"sumDepthValues" forKey:{v5, v6.receiver, v6.super_class}];
-  [v4 encodeInteger:self->_numberDepthPixels forKey:@"numberDepthPixels"];
-  [v4 encodeInteger:self->_numberDepthPixelsWithHighConfidence forKey:@"numberDepthPixelsWithHighConfidence"];
-  [v4 encodeInteger:self->_sumDepthValuesWithHighConfidence forKey:@"sumDepthValuesWithHighConfidence"];
+  [coderCopy encodeFloat:@"sumDepthValues" forKey:{v5, v6.receiver, v6.super_class}];
+  [coderCopy encodeInteger:self->_numberDepthPixels forKey:@"numberDepthPixels"];
+  [coderCopy encodeInteger:self->_numberDepthPixelsWithHighConfidence forKey:@"numberDepthPixelsWithHighConfidence"];
+  [coderCopy encodeInteger:self->_sumDepthValuesWithHighConfidence forKey:@"sumDepthValuesWithHighConfidence"];
 }
 
 - (float)meanValue

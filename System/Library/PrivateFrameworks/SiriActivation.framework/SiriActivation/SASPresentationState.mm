@@ -1,31 +1,31 @@
 @interface SASPresentationState
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SASPresentationState)initWithBuilder:(id)a3;
-- (SASPresentationState)initWithCoder:(id)a3;
-- (SASPresentationState)initWithPresentationIdentifier:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SASPresentationState)initWithBuilder:(id)builder;
+- (SASPresentationState)initWithCoder:(id)coder;
+- (SASPresentationState)initWithPresentationIdentifier:(id)identifier;
 - (id)description;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 @end
 
 @implementation SASPresentationState
 
-- (SASPresentationState)initWithBuilder:(id)a3
+- (SASPresentationState)initWithBuilder:(id)builder
 {
-  v4 = [SASPresentationState newWithBuilder:a3];
+  v4 = [SASPresentationState newWithBuilder:builder];
 
   return v4;
 }
 
-- (SASPresentationState)initWithPresentationIdentifier:(id)a3
+- (SASPresentationState)initWithPresentationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SASPresentationState;
   v5 = [(SASPresentationState *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     presentationIdentifier = v5->_presentationIdentifier;
     v5->_presentationIdentifier = v6;
   }
@@ -53,10 +53,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -66,9 +66,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SASPresentationState *)v4 presentationIdentifier];
+      presentationIdentifier = [(SASPresentationState *)equalCopy presentationIdentifier];
       presentationIdentifier = self->_presentationIdentifier;
-      v7 = presentationIdentifier == v5 || [(NSString *)presentationIdentifier isEqual:v5];
+      v7 = presentationIdentifier == presentationIdentifier || [(NSString *)presentationIdentifier isEqual:presentationIdentifier];
     }
 
     else
@@ -80,45 +80,45 @@
   return v7;
 }
 
-- (SASPresentationState)initWithCoder:(id)a3
+- (SASPresentationState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASPresentationState::presentationIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASPresentationState::presentationIdentifier"];
 
   v6 = [(SASPresentationState *)self initWithPresentationIdentifier:v5];
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SASPresentationStateMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SASPresentationStateMutation *)v4 generate];
+  generate = [(_SASPresentationStateMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SASPresentationStateMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SASPresentationStateMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SASPresentationStateMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SASPresentationState *)self copy];
+    generate = [(SASPresentationState *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface MTTermsVersionSyncProcessor
 - (BOOL)hasLocalChanges;
-- (BOOL)mergeData:(id)a3 mismatch:(BOOL)a4;
-- (MTTermsVersionSyncProcessor)initWithStorage:(id)a3;
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5;
-- (id)versionForGetTransaction:(id)a3 key:(id)a4;
-- (void)completeTransactionWithNewVersion:(id)a3 mismatch:(BOOL)a4 finishedBlock:(id)a5;
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)transaction:(id)a3 didProcessResponseWithDomainVersion:(id)a4;
+- (BOOL)mergeData:(id)data mismatch:(BOOL)mismatch;
+- (MTTermsVersionSyncProcessor)initWithStorage:(id)storage;
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version;
+- (id)versionForGetTransaction:(id)transaction key:(id)key;
+- (void)completeTransactionWithNewVersion:(id)version mismatch:(BOOL)mismatch finishedBlock:(id)block;
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)transaction:(id)transaction didProcessResponseWithDomainVersion:(id)version;
 @end
 
 @implementation MTTermsVersionSyncProcessor
 
-- (MTTermsVersionSyncProcessor)initWithStorage:(id)a3
+- (MTTermsVersionSyncProcessor)initWithStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v8.receiver = self;
   v8.super_class = MTTermsVersionSyncProcessor;
   v5 = [(MTTermsVersionSyncProcessor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MTTermsVersionSyncProcessor *)v5 setStorageProvider:v4];
+    [(MTTermsVersionSyncProcessor *)v5 setStorageProvider:storageCopy];
   }
 
   return v6;
@@ -29,176 +29,176 @@
 
 - (BOOL)hasLocalChanges
 {
-  v2 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-  v3 = [v2 cloudSyncIsDirty];
+  storageProvider = [(MTTermsVersionSyncProcessor *)self storageProvider];
+  cloudSyncIsDirty = [storageProvider cloudSyncIsDirty];
 
-  return v3;
+  return cloudSyncIsDirty;
 }
 
-- (id)versionForGetTransaction:(id)a3 key:(id)a4
+- (id)versionForGetTransaction:(id)transaction key:(id)key
 {
-  v4 = [(MTTermsVersionSyncProcessor *)self storageProvider:a3];
-  v5 = [v4 cloudSyncVersion];
+  v4 = [(MTTermsVersionSyncProcessor *)self storageProvider:transaction];
+  cloudSyncVersion = [v4 cloudSyncVersion];
 
-  return v5;
+  return cloudSyncVersion;
 }
 
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version
 {
-  v7 = [(MTTermsVersionSyncProcessor *)self storageProvider:a3];
+  v7 = [(MTTermsVersionSyncProcessor *)self storageProvider:transaction];
   if (![(MZKeyValueStoreNode *)v7 cloudSyncIsDirty])
   {
-    v18 = 0;
+    value = 0;
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v8 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-  v9 = [v8 deviceAgreedTermsVersion];
+  storageProvider = [(MTTermsVersionSyncProcessor *)self storageProvider];
+  deviceAgreedTermsVersion = [storageProvider deviceAgreedTermsVersion];
 
-  if (v9)
+  if (deviceAgreedTermsVersion)
   {
     v7 = objc_alloc_init(MZKeyValueStoreNode);
-    v10 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-    v11 = [v10 deviceAgreedTermsVersion];
-    v12 = [v11 integerValue];
+    storageProvider2 = [(MTTermsVersionSyncProcessor *)self storageProvider];
+    deviceAgreedTermsVersion2 = [storageProvider2 deviceAgreedTermsVersion];
+    integerValue = [deviceAgreedTermsVersion2 integerValue];
 
-    v13 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-    v14 = [v13 accountAgreedTermsVersion];
-    v15 = [v14 integerValue];
+    storageProvider3 = [(MTTermsVersionSyncProcessor *)self storageProvider];
+    accountAgreedTermsVersion = [storageProvider3 accountAgreedTermsVersion];
+    integerValue2 = [accountAgreedTermsVersion integerValue];
 
-    if (v12 <= v15)
+    if (integerValue <= integerValue2)
     {
-      v16 = v15;
+      v16 = integerValue2;
     }
 
     else
     {
-      v16 = v12;
+      v16 = integerValue;
     }
 
     v17 = [NSNumber numberWithInteger:v16];
     [(MZKeyValueStoreNode *)v7 setNumberValue:v17];
 
-    v18 = [(MZKeyValueStoreNode *)v7 value];
-    v19 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-    *a5 = [v19 cloudSyncVersion];
+    value = [(MZKeyValueStoreNode *)v7 value];
+    storageProvider4 = [(MTTermsVersionSyncProcessor *)self storageProvider];
+    *version = [storageProvider4 cloudSyncVersion];
 
     goto LABEL_8;
   }
 
-  v18 = 0;
+  value = 0;
 LABEL_9:
 
-  return v18;
+  return value;
 }
 
-- (void)transaction:(id)a3 didProcessResponseWithDomainVersion:(id)a4
+- (void)transaction:(id)transaction didProcessResponseWithDomainVersion:(id)version
 {
-  v5 = a4;
-  v6 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-  [v6 setPodcastsDomainVersion:v5];
+  versionCopy = version;
+  storageProvider = [(MTTermsVersionSyncProcessor *)self storageProvider];
+  [storageProvider setPodcastsDomainVersion:versionCopy];
 }
 
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v10 = a7;
-  v11 = a6;
-  [(MTTermsVersionSyncProcessor *)self completeTransactionWithNewVersion:v11 mismatch:[(MTTermsVersionSyncProcessor *)self mergeData:a4 mismatch:0] finishedBlock:v10];
+  blockCopy = block;
+  versionCopy = version;
+  [(MTTermsVersionSyncProcessor *)self completeTransactionWithNewVersion:versionCopy mismatch:[(MTTermsVersionSyncProcessor *)self mergeData:data mismatch:0] finishedBlock:blockCopy];
 }
 
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v10 = a7;
-  v11 = a6;
-  [(MTTermsVersionSyncProcessor *)self completeTransactionWithNewVersion:v11 mismatch:[(MTTermsVersionSyncProcessor *)self mergeData:a4 mismatch:1] finishedBlock:v10];
+  blockCopy = block;
+  versionCopy = version;
+  [(MTTermsVersionSyncProcessor *)self completeTransactionWithNewVersion:versionCopy mismatch:[(MTTermsVersionSyncProcessor *)self mergeData:data mismatch:1] finishedBlock:blockCopy];
 }
 
-- (BOOL)mergeData:(id)a3 mismatch:(BOOL)a4
+- (BOOL)mergeData:(id)data mismatch:(BOOL)mismatch
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_alloc_init(MZKeyValueStoreNode);
-  [(MZKeyValueStoreNode *)v7 setValue:v6];
+  [(MZKeyValueStoreNode *)v7 setValue:dataCopy];
 
-  v8 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-  v9 = [v8 deviceAgreedTermsVersion];
-  if (v9)
+  storageProvider = [(MTTermsVersionSyncProcessor *)self storageProvider];
+  deviceAgreedTermsVersion = [storageProvider deviceAgreedTermsVersion];
+  if (deviceAgreedTermsVersion)
   {
   }
 
   else
   {
-    v10 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-    v11 = [v10 accountAgreedTermsVersion];
+    storageProvider2 = [(MTTermsVersionSyncProcessor *)self storageProvider];
+    accountAgreedTermsVersion = [storageProvider2 accountAgreedTermsVersion];
 
-    if (!v11)
+    if (!accountAgreedTermsVersion)
     {
       v19 = 0;
       goto LABEL_8;
     }
   }
 
-  v12 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-  v13 = [v12 deviceAgreedTermsVersion];
-  v14 = [v13 integerValue];
+  storageProvider3 = [(MTTermsVersionSyncProcessor *)self storageProvider];
+  deviceAgreedTermsVersion2 = [storageProvider3 deviceAgreedTermsVersion];
+  integerValue = [deviceAgreedTermsVersion2 integerValue];
 
-  v15 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-  v16 = [v15 accountAgreedTermsVersion];
-  v17 = [v16 integerValue];
+  storageProvider4 = [(MTTermsVersionSyncProcessor *)self storageProvider];
+  accountAgreedTermsVersion2 = [storageProvider4 accountAgreedTermsVersion];
+  integerValue2 = [accountAgreedTermsVersion2 integerValue];
 
-  if (v14 <= v17)
+  if (integerValue <= integerValue2)
   {
-    v18 = v17;
+    v18 = integerValue2;
   }
 
   else
   {
-    v18 = v14;
+    v18 = integerValue;
   }
 
   v19 = [NSNumber numberWithInteger:v18];
 LABEL_8:
   if ([(MZKeyValueStoreNode *)v7 hasData])
   {
-    v20 = [(MZKeyValueStoreNode *)v7 numberValue];
-    v21 = [v20 integerValue];
-    if (v21 >= [v19 integerValue])
+    numberValue = [(MZKeyValueStoreNode *)v7 numberValue];
+    integerValue3 = [numberValue integerValue];
+    if (integerValue3 >= [v19 integerValue])
     {
-      v22 = [v20 integerValue];
-      if (v22 >= [v19 integerValue])
+      integerValue4 = [numberValue integerValue];
+      if (integerValue4 >= [v19 integerValue])
       {
-        v23 = v20;
+        v23 = numberValue;
 
-        a4 = 0;
+        mismatch = 0;
         v19 = v23;
       }
     }
 
     else
     {
-      a4 = 1;
+      mismatch = 1;
     }
   }
 
-  v24 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-  [v24 setAccountAgreedTermsVersion:v19];
+  storageProvider5 = [(MTTermsVersionSyncProcessor *)self storageProvider];
+  [storageProvider5 setAccountAgreedTermsVersion:v19];
 
-  return a4;
+  return mismatch;
 }
 
-- (void)completeTransactionWithNewVersion:(id)a3 mismatch:(BOOL)a4 finishedBlock:(id)a5
+- (void)completeTransactionWithNewVersion:(id)version mismatch:(BOOL)mismatch finishedBlock:(id)block
 {
-  v5 = a4;
-  v11 = a5;
-  v8 = a3;
-  v9 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-  [v9 setCloudSyncVersion:v8];
+  mismatchCopy = mismatch;
+  blockCopy = block;
+  versionCopy = version;
+  storageProvider = [(MTTermsVersionSyncProcessor *)self storageProvider];
+  [storageProvider setCloudSyncVersion:versionCopy];
 
-  v10 = [(MTTermsVersionSyncProcessor *)self storageProvider];
-  [v10 setCloudSyncIsDirty:v5];
+  storageProvider2 = [(MTTermsVersionSyncProcessor *)self storageProvider];
+  [storageProvider2 setCloudSyncIsDirty:mismatchCopy];
 
-  v11[2](v11, v5);
+  blockCopy[2](blockCopy, mismatchCopy);
 }
 
 @end

@@ -5,9 +5,9 @@
 + (void)postAnalyticsGeneralTransactionStatistics;
 + (void)postDailyTagStatistics;
 + (void)postGeneralDeviceStatistics;
-+ (void)updateAnalyticsGeneralTransactionStatistics:(id)a3;
-+ (void)updateDailyTagStatistic:(id)a3;
-+ (void)updateGeneralDeviceStatistic:(id)a3;
++ (void)updateAnalyticsGeneralTransactionStatistics:(id)statistics;
++ (void)updateDailyTagStatistic:(id)statistic;
++ (void)updateGeneralDeviceStatistic:(id)statistic;
 @end
 
 @implementation NFGeneralStatisticsCALogger
@@ -24,14 +24,14 @@
   v15 = objc_msgSend_sharedCALogger(NFCALogger, v13, v14);
   objc_msgSend_postCAEventFor_eventInput_(v15, v16, @"com.apple.nfcd.generalTransactionStatisticDim", v8);
 
-  objc_msgSend__setupInitValuesForGeneralTransactionStatistics(a1, v17, v18);
+  objc_msgSend__setupInitValuesForGeneralTransactionStatistics(self, v17, v18);
 }
 
-+ (void)updateAnalyticsGeneralTransactionStatistics:(id)a3
++ (void)updateAnalyticsGeneralTransactionStatistics:(id)statistics
 {
-  if (a3)
+  if (statistics)
   {
-    v4 = a3;
+    statisticsCopy = statistics;
     v7 = objc_msgSend_sharedCALogger(NFCALogger, v5, v6);
     v10 = objc_msgSend_getCALoggerUserDefaults(v7, v8, v9);
 
@@ -44,7 +44,7 @@
 
     else
     {
-      objc_msgSend__setupInitValuesForGeneralTransactionStatistics(a1, v13, v14);
+      objc_msgSend__setupInitValuesForGeneralTransactionStatistics(self, v13, v14);
       v18 = objc_msgSend_objectForKey_(v10, v17, @"com.apple.nfcd.generalTransactionStatistic");
       v16 = objc_msgSend_mutableCopy(v18, v19, v20);
     }
@@ -55,7 +55,7 @@
     v24[3] = &unk_278872C50;
     v25 = v16;
     v21 = v16;
-    objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v4, v22, v24);
+    objc_msgSend_enumerateKeysAndObjectsUsingBlock_(statisticsCopy, v22, v24);
 
     objc_msgSend_setObject_forKey_(v10, v23, v21, @"com.apple.nfcd.generalTransactionStatistic");
   }
@@ -101,10 +101,10 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)updateGeneralDeviceStatistic:(id)a3
++ (void)updateGeneralDeviceStatistic:(id)statistic
 {
-  v6 = a3;
-  if (v6)
+  statisticCopy = statistic;
+  if (statisticCopy)
   {
     v7 = objc_msgSend_sharedCALogger(NFCALogger, v4, v5);
     v10 = objc_msgSend_getCALoggerUserDefaults(v7, v8, v9);
@@ -120,7 +120,7 @@
 
       else
       {
-        objc_msgSend__resetGeneralDeviceStatisticToDefaults(a1, v13, v14);
+        objc_msgSend__resetGeneralDeviceStatisticToDefaults(self, v13, v14);
         v18 = objc_msgSend_objectForKey_(v10, v17, @"com.apple.nfcd.generalDeviceStatistic");
         v16 = objc_msgSend_mutableCopy(v18, v19, v20);
       }
@@ -136,7 +136,7 @@
       v21 = v16;
       v30 = v21;
       v31 = &v32;
-      objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v6, v22, &v26);
+      objc_msgSend_enumerateKeysAndObjectsUsingBlock_(statisticCopy, v22, &v26);
       if (*(v33 + 24) == 1)
       {
         objc_msgSend_setObject_forKey_(v10, v23, v21, @"com.apple.nfcd.generalDeviceStatistic", v26, v27, v28, v29);
@@ -163,7 +163,7 @@
       objc_msgSend_postCAEventFor_eventInput_(v12, v13, @"com.apple.nfcd.generalDeviceStatistic", v11);
     }
 
-    objc_msgSend__resetGeneralDeviceStatisticToDefaults(a1, v9, v10);
+    objc_msgSend__resetGeneralDeviceStatisticToDefaults(self, v9, v10);
 
     v8 = v14;
   }
@@ -198,10 +198,10 @@
   }
 }
 
-+ (void)updateDailyTagStatistic:(id)a3
++ (void)updateDailyTagStatistic:(id)statistic
 {
-  v6 = a3;
-  if (v6)
+  statisticCopy = statistic;
+  if (statisticCopy)
   {
     v7 = objc_msgSend_sharedCALogger(NFCALogger, v4, v5);
     v10 = objc_msgSend_getCALoggerUserDefaults(v7, v8, v9);
@@ -217,7 +217,7 @@
 
       else
       {
-        objc_msgSend__resetGeneralDeviceStatisticToDefaults(a1, v13, v14);
+        objc_msgSend__resetGeneralDeviceStatisticToDefaults(self, v13, v14);
         v18 = objc_msgSend_objectForKey_(v10, v17, @"com.apple.nfcd.dailyBackgroundTagReadingEvent");
         v16 = objc_msgSend_mutableCopy(v18, v19, v20);
       }
@@ -233,7 +233,7 @@
       v21 = v16;
       v28 = v21;
       v29 = &v30;
-      objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v6, v22, &v24);
+      objc_msgSend_enumerateKeysAndObjectsUsingBlock_(statisticCopy, v22, &v24);
       if (*(v31 + 24) == 1)
       {
         objc_msgSend_setObject_forKey_(v10, v23, v21, @"com.apple.nfcd.dailyBackgroundTagReadingEvent", v24, v25, v26, v27);
@@ -259,7 +259,7 @@
       objc_msgSend_postCAEventFor_eventInput_(v12, v13, @"com.apple.nfcd.dailyBackgroundTagReadingEvent", v11);
     }
 
-    objc_msgSend__resetDailyTagStatisticToDefaults(a1, v9, v10);
+    objc_msgSend__resetDailyTagStatisticToDefaults(self, v9, v10);
 
     v8 = v14;
   }

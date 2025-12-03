@@ -1,12 +1,12 @@
 @interface HMIThermalMonitorService
-- (HMIThermalMonitorService)initWithService:(__IOHIDServiceClient *)a3;
+- (HMIThermalMonitorService)initWithService:(__IOHIDServiceClient *)service;
 - (double)readValue;
 - (void)dealloc;
 @end
 
 @implementation HMIThermalMonitorService
 
-- (HMIThermalMonitorService)initWithService:(__IOHIDServiceClient *)a3
+- (HMIThermalMonitorService)initWithService:(__IOHIDServiceClient *)service
 {
   v7.receiver = self;
   v7.super_class = HMIThermalMonitorService;
@@ -14,8 +14,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_service = a3;
-    CFRetain(a3);
+    v4->_service = service;
+    CFRetain(service);
   }
 
   return v5;

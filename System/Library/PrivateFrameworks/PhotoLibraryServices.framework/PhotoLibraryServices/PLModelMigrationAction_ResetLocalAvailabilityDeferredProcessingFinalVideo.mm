@@ -1,22 +1,22 @@
 @interface PLModelMigrationAction_ResetLocalAvailabilityDeferredProcessingFinalVideo
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetLocalAvailabilityDeferredProcessingFinalVideo
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v76[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D560];
-  v7 = a3;
+  contextCopy = context;
   v8 = +[PLInternalResource entityName];
   v9 = [v6 batchUpdateRequestWithEntityName:v8];
 
   v10 = MEMORY[0x1E696AB28];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"recipeID", 131280];
-  v76[0] = v11;
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 4294934528];
-  v76[1] = v12;
+  131280 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"recipeID", 131280];
+  v76[0] = 131280;
+  4294934528 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 4294934528];
+  v76[1] = 4294934528;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:2];
   v14 = [v10 andPredicateWithSubpredicates:v13];
   [v9 setPredicate:v14];
@@ -28,7 +28,7 @@
 
   [v9 setResultType:2];
   v39 = 0;
-  v16 = [v7 executeRequest:v9 error:&v39];
+  v16 = [contextCopy executeRequest:v9 error:&v39];
 
   v17 = v39;
   v18 = PLMigrationGetLog();
@@ -39,9 +39,9 @@
 
     if (v20)
     {
-      v21 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v21)
+      if (logger)
       {
         v72 = 0u;
         v73 = 0u;
@@ -77,9 +77,9 @@
         *buf = 0u;
         v22 = PLMigrationGetLog();
         os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-        v23 = [v16 result];
+        result = [v16 result];
         v40 = 138412290;
-        v41 = v23;
+        v41 = result;
         LODWORD(v38) = 12;
         v24 = _os_log_send_and_compose_impl();
 
@@ -97,9 +97,9 @@
         v31 = PLMigrationGetLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [v16 result];
+          result2 = [v16 result];
           *buf = 138412290;
-          *&buf[4] = v32;
+          *&buf[4] = result2;
           _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "Batch update to reset deferred processing video complement resources localAvailability from not possible -> none request successful with result %@", buf, 0xCu);
         }
       }
@@ -116,9 +116,9 @@
 
     if (v26)
     {
-      v27 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v27)
+      if (logger2)
       {
         v72 = 0u;
         v73 = 0u;
@@ -182,9 +182,9 @@
 
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v36 = v17;
-    if (a4)
+    if (error)
     {
-      *a4 = v36;
+      *error = v36;
     }
 
     v34 = 3;

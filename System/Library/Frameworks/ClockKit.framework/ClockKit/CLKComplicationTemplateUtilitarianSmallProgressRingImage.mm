@@ -1,39 +1,39 @@
 @interface CLKComplicationTemplateUtilitarianSmallProgressRingImage
-+ (id)templateWithImageProvider:(id)a3 progressProvider:(id)a4 ringStyle:(int64_t)a5;
-- (CLKComplicationTemplateUtilitarianSmallProgressRingImage)initWithImageProvider:(id)a3 progressProvider:(id)a4 ringStyle:(int64_t)a5;
-- (void)_enumerateImageProviderKeysWithBlock:(id)a3;
++ (id)templateWithImageProvider:(id)provider progressProvider:(id)progressProvider ringStyle:(int64_t)style;
+- (CLKComplicationTemplateUtilitarianSmallProgressRingImage)initWithImageProvider:(id)provider progressProvider:(id)progressProvider ringStyle:(int64_t)style;
+- (void)_enumerateImageProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateUtilitarianSmallProgressRingImage
 
-- (CLKComplicationTemplateUtilitarianSmallProgressRingImage)initWithImageProvider:(id)a3 progressProvider:(id)a4 ringStyle:(int64_t)a5
+- (CLKComplicationTemplateUtilitarianSmallProgressRingImage)initWithImageProvider:(id)provider progressProvider:(id)progressProvider ringStyle:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
+  providerCopy = provider;
+  progressProviderCopy = progressProvider;
   v13.receiver = self;
   v13.super_class = CLKComplicationTemplateUtilitarianSmallProgressRingImage;
-  v10 = [(CLKComplicationTemplate *)&v13 initPrivate];
-  v11 = v10;
-  if (v10)
+  initPrivate = [(CLKComplicationTemplate *)&v13 initPrivate];
+  v11 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateUtilitarianSmallProgressRingImage *)v10 setImageProvider:v8];
-    [(CLKComplicationTemplateUtilitarianSmallProgressRingImage *)v11 setProgressProvider:v9];
-    [(CLKComplicationTemplateUtilitarianSmallProgressRingImage *)v11 setRingStyle:a5];
+    [(CLKComplicationTemplateUtilitarianSmallProgressRingImage *)initPrivate setImageProvider:providerCopy];
+    [(CLKComplicationTemplateUtilitarianSmallProgressRingImage *)v11 setProgressProvider:progressProviderCopy];
+    [(CLKComplicationTemplateUtilitarianSmallProgressRingImage *)v11 setRingStyle:style];
   }
 
   return v11;
 }
 
-+ (id)templateWithImageProvider:(id)a3 progressProvider:(id)a4 ringStyle:(int64_t)a5
++ (id)templateWithImageProvider:(id)provider progressProvider:(id)progressProvider ringStyle:(int64_t)style
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithImageProvider:v9 progressProvider:v8 ringStyle:a5];
+  progressProviderCopy = progressProvider;
+  providerCopy = provider;
+  v10 = [[self alloc] initWithImageProvider:providerCopy progressProvider:progressProviderCopy ringStyle:style];
 
   return v10;
 }
 
-- (void)_enumerateImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateImageProviderKeysWithBlock:(id)block
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v11 = 0;
@@ -46,11 +46,11 @@
   v13[0] = &unk_284A34DA8;
   v13[1] = &unk_284A34DB8;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  blockCopy = block;
   v6 = [v4 dictionaryWithObjects:v13 forKeys:v12 count:2];
   _SquareImageSizeScaled(v6, 1, [(CLKComplicationTemplate *)self sdkVersion], &v9, &v7, 14.0);
 
-  (*(v5 + 2))(v5, @"imageProvider", 0, 1, 0, 4, 1, &v11, v9, v10, v7, v8);
+  (*(blockCopy + 2))(blockCopy, @"imageProvider", 0, 1, 0, 4, 1, &v11, v9, v10, v7, v8);
 }
 
 @end

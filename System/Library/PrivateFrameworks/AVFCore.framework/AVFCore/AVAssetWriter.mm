@@ -1,17 +1,17 @@
 @interface AVAssetWriter
 + (AVAssetWriter)assetWriterWithURL:(NSURL *)outputURL fileType:(AVFileType)outputFileType error:(NSError *)outError;
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (id)_errorForOSStatus:(int)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (id)_errorForOSStatus:(int)status;
 - (AVAssetWriter)initWithContentType:(UTType *)outputContentType;
-- (AVAssetWriter)initWithFileType:(id)a3 error:(id *)a4;
+- (AVAssetWriter)initWithFileType:(id)type error:(id *)error;
 - (AVAssetWriter)initWithURL:(NSURL *)outputURL fileType:(AVFileType)outputFileType error:(NSError *)outError;
 - (AVAssetWriterHelper)_helper;
 - (AVAssetWriterStatus)status;
 - (AVFileType)outputFileType;
 - (AVFileTypeProfile)outputFileTypeProfile;
 - (BOOL)_initInternalObject;
-- (BOOL)_setHelper:(id)a3 ifCurrentHelper:(id)a4 withBlock:(id)a5;
-- (BOOL)_supportsSampleReferencesReturningError:(id *)a3;
+- (BOOL)_setHelper:(id)helper ifCurrentHelper:(id)currentHelper withBlock:(id)block;
+- (BOOL)_supportsSampleReferencesReturningError:(id *)error;
 - (BOOL)canAddInput:(AVAssetWriterInput *)input;
 - (BOOL)canAddInputGroup:(AVAssetWriterInputGroup *)inputGroup;
 - (BOOL)canApplyOutputSettings:(NSDictionary *)outputSettings forMediaType:(AVMediaType)mediaType;
@@ -40,12 +40,12 @@
 - (float)preferredRate;
 - (float)preferredVolume;
 - (id)delegate;
-- (void)_transitionToFailedStatusWithError:(id)a3;
+- (void)_transitionToFailedStatusWithError:(id)error;
 - (void)addInput:(AVAssetWriterInput *)input;
 - (void)addInputGroup:(AVAssetWriterInputGroup *)inputGroup;
 - (void)cancelWriting;
 - (void)dealloc;
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3;
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry;
 - (void)endSessionAtSourceTime:(CMTime *)endTime;
 - (void)finishWritingWithCompletionHandler:(void *)handler;
 - (void)flush;
@@ -61,14 +61,14 @@
 - (void)setOutputFileTypeProfile:(AVFileTypeProfile)outputFileTypeProfile;
 - (void)setOverallDurationHint:(CMTime *)overallDurationHint;
 - (void)setPreferredOutputSegmentInterval:(CMTime *)preferredOutputSegmentInterval;
-- (void)setPreferredRate:(float)a3;
-- (void)setPreferredTransform:(CGAffineTransform *)a3;
-- (void)setPreferredVolume:(float)a3;
+- (void)setPreferredRate:(float)rate;
+- (void)setPreferredTransform:(CGAffineTransform *)transform;
+- (void)setPreferredVolume:(float)volume;
 - (void)setProducesCombinableFragments:(BOOL)producesCombinableFragments;
-- (void)setRequiresInProcessOperation:(BOOL)a3;
+- (void)setRequiresInProcessOperation:(BOOL)operation;
 - (void)setShouldOptimizeForNetworkUse:(BOOL)shouldOptimizeForNetworkUse;
-- (void)setUsesVirtualCaptureCard:(BOOL)a3;
-- (void)setWritesSinglePassUsingPredeterminedFileSize:(int64_t)a3 mediaDataSize:(int64_t)a4;
+- (void)setUsesVirtualCaptureCard:(BOOL)card;
+- (void)setWritesSinglePassUsingPredeterminedFileSize:(int64_t)size mediaDataSize:(int64_t)dataSize;
 - (void)startSessionAtSourceTime:(CMTime *)startTime;
 @end
 
@@ -212,13 +212,13 @@ LABEL_11:
   return v6;
 }
 
-- (AVAssetWriter)initWithFileType:(id)a3 error:(id *)a4
+- (AVAssetWriter)initWithFileType:(id)type error:(id *)error
 {
   v30.receiver = self;
   v30.super_class = AVAssetWriter;
   v7 = [(AVAssetWriter *)&v30 init];
   v8 = v7;
-  if (!a3)
+  if (!type)
   {
     v13 = v7;
     v14 = MEMORY[0x1E695DF30];
@@ -238,7 +238,7 @@ LABEL_11:
   }
 
   v29 = 0;
-  v9 = [AVMediaFileType _mediaFileTypeWithFileTypeIdentifier:a3 exceptionReason:&v29];
+  v9 = [AVMediaFileType _mediaFileTypeWithFileTypeIdentifier:type exceptionReason:&v29];
   if (!v9)
   {
     v22 = v8;
@@ -262,9 +262,9 @@ LABEL_7:
 
   v8 = 0;
 LABEL_8:
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return v8;
@@ -344,29 +344,29 @@ id __24__AVAssetWriter__helper__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_setHelper:(id)a3 ifCurrentHelper:(id)a4 withBlock:(id)a5
+- (BOOL)_setHelper:(id)helper ifCurrentHelper:(id)currentHelper withBlock:(id)block
 {
-  v8 = self;
+  selfCopy = self;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
   [(AVAssetWriter *)self willChangeValueForKey:@"helper"];
-  helperReadWriteQueue = v8->_internal->helperReadWriteQueue;
+  helperReadWriteQueue = selfCopy->_internal->helperReadWriteQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__AVAssetWriter__setHelper_ifCurrentHelper_withBlock___block_invoke;
   v11[3] = &unk_1E7463710;
-  v11[4] = a4;
-  v11[5] = v8;
-  v11[6] = a3;
-  v11[7] = a5;
+  v11[4] = currentHelper;
+  v11[5] = selfCopy;
+  v11[6] = helper;
+  v11[7] = block;
   v11[8] = &v12;
   av_readwrite_dispatch_queue_write(helperReadWriteQueue, v11);
-  [(AVAssetWriter *)v8 didChangeValueForKey:@"helper"];
-  LOBYTE(v8) = *(v13 + 24);
+  [(AVAssetWriter *)selfCopy didChangeValueForKey:@"helper"];
+  LOBYTE(selfCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
-  return v8;
+  return selfCopy;
 }
 
 void *__54__AVAssetWriter__setHelper_ifCurrentHelper_withBlock___block_invoke(uint64_t a1)
@@ -394,80 +394,80 @@ void *__54__AVAssetWriter__setHelper_ifCurrentHelper_withBlock___block_invoke(ui
 
 - (NSURL)outputURL
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 outputURL];
+  return [(AVAssetWriterHelper *)_helper outputURL];
 }
 
 - (AVFileType)outputFileType
 {
-  v2 = [(AVAssetWriterHelper *)[(AVAssetWriter *)self _helper] mediaFileType];
+  mediaFileType = [(AVAssetWriterHelper *)[(AVAssetWriter *)self _helper] mediaFileType];
 
-  return [(AVMediaFileType *)v2 UTI];
+  return [(AVMediaFileType *)mediaFileType UTI];
 }
 
 - (NSArray)availableMediaTypes
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 availableMediaTypes];
+  return [(AVAssetWriterHelper *)_helper availableMediaTypes];
 }
 
-- (BOOL)_supportsSampleReferencesReturningError:(id *)a3
+- (BOOL)_supportsSampleReferencesReturningError:(id *)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [(AVAssetWriterHelper *)[(AVAssetWriter *)self _helper] mediaFileType];
-  v5 = [(AVMediaFileType *)v4 supportsSampleReferences];
-  v6 = v5;
-  if (a3 && !v5)
+  mediaFileType = [(AVAssetWriterHelper *)[(AVAssetWriter *)self _helper] mediaFileType];
+  supportsSampleReferences = [(AVMediaFileType *)mediaFileType supportsSampleReferences];
+  v6 = supportsSampleReferences;
+  if (error && !supportsSampleReferences)
   {
     v8 = @"AVErrorFileTypeKey";
-    v9[0] = [(AVMediaFileType *)v4 UTI];
-    *a3 = AVLocalizedError(@"AVFoundationErrorDomain", -11854, [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1]);
+    v9[0] = [(AVMediaFileType *)mediaFileType UTI];
+    *error = AVLocalizedError(@"AVFoundationErrorDomain", -11854, [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1]);
   }
 
   return v6;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  if ([a3 isEqualToString:@"helper"])
+  if ([key isEqualToString:@"helper"])
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AVAssetWriter;
-  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, key);
 }
 
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry
 {
-  [a3 valueForKey:@"status" dependsOnValueAtKeyPath:{AVTwoPartKeyPathMake(@"helper", @"status"}];
+  [registry valueForKey:@"status" dependsOnValueAtKeyPath:{AVTwoPartKeyPathMake(@"helper", @"status"}];
   v4 = AVTwoPartKeyPathMake(@"helper", @"error");
 
-  [a3 valueForKey:@"error" dependsOnValueAtKeyPath:v4];
+  [registry valueForKey:@"error" dependsOnValueAtKeyPath:v4];
 }
 
 - (AVAssetWriterStatus)status
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 status];
+  return [(AVAssetWriterHelper *)_helper status];
 }
 
 - (NSError)error
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 error];
+  return [(AVAssetWriterHelper *)_helper error];
 }
 
 - (id)delegate
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 delegate];
+  return [(AVAssetWriterHelper *)_helper delegate];
 }
 
 - (void)setDelegate:(id)delegate
@@ -510,9 +510,9 @@ void *__54__AVAssetWriter__setHelper_ifCurrentHelper_withBlock___block_invoke(ui
     objc_exception_throw(v12);
   }
 
-  v11 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
   time1 = *movieFragmentInterval;
-  [(AVAssetWriterHelper *)v11 setMovieFragmentInterval:&time1];
+  [(AVAssetWriterHelper *)_helper setMovieFragmentInterval:&time1];
 }
 
 - (CMTime)initialMovieFragmentInterval
@@ -544,9 +544,9 @@ void *__54__AVAssetWriter__setHelper_ifCurrentHelper_withBlock___block_invoke(ui
     objc_exception_throw(v12);
   }
 
-  v11 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
   time1 = *initialMovieFragmentInterval;
-  [(AVAssetWriterHelper *)v11 setInitialMovieFragmentInterval:&time1];
+  [(AVAssetWriterHelper *)_helper setInitialMovieFragmentInterval:&time1];
 }
 
 - (CMTime)overallDurationHint
@@ -590,45 +590,45 @@ void *__54__AVAssetWriter__setHelper_ifCurrentHelper_withBlock___block_invoke(ui
   }
 
 LABEL_5:
-  v12 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
   time1 = *overallDurationHint;
-  [(AVAssetWriterHelper *)v12 setOverallDurationHint:&time1];
+  [(AVAssetWriterHelper *)_helper setOverallDurationHint:&time1];
 }
 
 - (BOOL)shouldOptimizeForNetworkUse
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 shouldOptimizeForNetworkUse];
+  return [(AVAssetWriterHelper *)_helper shouldOptimizeForNetworkUse];
 }
 
 - (void)setShouldOptimizeForNetworkUse:(BOOL)shouldOptimizeForNetworkUse
 {
   v3 = shouldOptimizeForNetworkUse;
-  v4 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v4 setShouldOptimizeForNetworkUse:v3];
+  [(AVAssetWriterHelper *)_helper setShouldOptimizeForNetworkUse:v3];
 }
 
 - (NSURL)directoryForTemporaryFiles
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 directoryForTemporaryFiles];
+  return [(AVAssetWriterHelper *)_helper directoryForTemporaryFiles];
 }
 
 - (void)setDirectoryForTemporaryFiles:(NSURL *)directoryForTemporaryFiles
 {
-  v4 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v4 setDirectoryForTemporaryFiles:directoryForTemporaryFiles];
+  [(AVAssetWriterHelper *)_helper setDirectoryForTemporaryFiles:directoryForTemporaryFiles];
 }
 
 - (CMTimeScale)movieTimeScale
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 movieTimeScale];
+  return [(AVAssetWriterHelper *)_helper movieTimeScale];
 }
 
 - (void)setMovieTimeScale:(CMTimeScale)movieTimeScale
@@ -640,9 +640,9 @@ LABEL_5:
   }
 
   v8 = *&movieTimeScale;
-  v9 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v9 setMovieTimeScale:v8];
+  [(AVAssetWriterHelper *)_helper setMovieTimeScale:v8];
 }
 
 - (CGAffineTransform)preferredTransform
@@ -664,46 +664,46 @@ LABEL_5:
   return result;
 }
 
-- (void)setPreferredTransform:(CGAffineTransform *)a3
+- (void)setPreferredTransform:(CGAffineTransform *)transform
 {
-  v4 = [(AVAssetWriter *)self _helper];
-  v5 = *&a3->c;
-  v6[0] = *&a3->a;
+  _helper = [(AVAssetWriter *)self _helper];
+  v5 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v5;
-  v6[2] = *&a3->tx;
-  [(AVAssetWriterHelper *)v4 setPreferredTransform:v6];
+  v6[2] = *&transform->tx;
+  [(AVAssetWriterHelper *)_helper setPreferredTransform:v6];
 }
 
 - (float)preferredVolume
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v2 preferredVolume];
+  [(AVAssetWriterHelper *)_helper preferredVolume];
   return result;
 }
 
-- (void)setPreferredVolume:(float)a3
+- (void)setPreferredVolume:(float)volume
 {
-  v4 = [(AVAssetWriter *)self _helper];
-  *&v5 = a3;
+  _helper = [(AVAssetWriter *)self _helper];
+  *&v5 = volume;
 
-  [(AVAssetWriterHelper *)v4 setPreferredVolume:v5];
+  [(AVAssetWriterHelper *)_helper setPreferredVolume:v5];
 }
 
 - (float)preferredRate
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v2 preferredRate];
+  [(AVAssetWriterHelper *)_helper preferredRate];
   return result;
 }
 
-- (void)setPreferredRate:(float)a3
+- (void)setPreferredRate:(float)rate
 {
-  v4 = [(AVAssetWriter *)self _helper];
-  *&v5 = a3;
+  _helper = [(AVAssetWriter *)self _helper];
+  *&v5 = rate;
 
-  [(AVAssetWriterHelper *)v4 setPreferredRate:v5];
+  [(AVAssetWriterHelper *)_helper setPreferredRate:v5];
 }
 
 - (CMTime)preferredOutputSegmentInterval
@@ -727,9 +727,9 @@ LABEL_5:
 
 - (void)setPreferredOutputSegmentInterval:(CMTime *)preferredOutputSegmentInterval
 {
-  v4 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
   v5 = *preferredOutputSegmentInterval;
-  [(AVAssetWriterHelper *)v4 setPreferredOutputSegmentInterval:&v5];
+  [(AVAssetWriterHelper *)_helper setPreferredOutputSegmentInterval:&v5];
 }
 
 - (CMTime)initialSegmentStartTime
@@ -753,30 +753,30 @@ LABEL_5:
 
 - (void)setInitialSegmentStartTime:(CMTime *)initialSegmentStartTime
 {
-  v4 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
   v5 = *initialSegmentStartTime;
-  [(AVAssetWriterHelper *)v4 setInitialSegmentStartTime:&v5];
+  [(AVAssetWriterHelper *)_helper setInitialSegmentStartTime:&v5];
 }
 
 - (AVFileTypeProfile)outputFileTypeProfile
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 outputFileTypeProfile];
+  return [(AVAssetWriterHelper *)_helper outputFileTypeProfile];
 }
 
 - (void)setOutputFileTypeProfile:(AVFileTypeProfile)outputFileTypeProfile
 {
-  v4 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v4 setOutputFileTypeProfile:outputFileTypeProfile];
+  [(AVAssetWriterHelper *)_helper setOutputFileTypeProfile:outputFileTypeProfile];
 }
 
 - (NSInteger)initialMovieFragmentSequenceNumber
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 initialMovieFragmentSequenceNumber];
+  return [(AVAssetWriterHelper *)_helper initialMovieFragmentSequenceNumber];
 }
 
 - (void)setInitialMovieFragmentSequenceNumber:(NSInteger)initialMovieFragmentSequenceNumber
@@ -787,66 +787,66 @@ LABEL_5:
     objc_exception_throw(v10);
   }
 
-  v9 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v9 setInitialMovieFragmentSequenceNumber:initialMovieFragmentSequenceNumber];
+  [(AVAssetWriterHelper *)_helper setInitialMovieFragmentSequenceNumber:initialMovieFragmentSequenceNumber];
 }
 
 - (BOOL)producesCombinableFragments
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 producesCombinableFragments];
+  return [(AVAssetWriterHelper *)_helper producesCombinableFragments];
 }
 
 - (void)setProducesCombinableFragments:(BOOL)producesCombinableFragments
 {
   v3 = producesCombinableFragments;
-  v4 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v4 setProducesCombinableFragments:v3];
+  [(AVAssetWriterHelper *)_helper setProducesCombinableFragments:v3];
 }
 
 - (BOOL)isVirtualCaptureCardSupported
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 isVirtualCaptureCardSupported];
+  return [(AVAssetWriterHelper *)_helper isVirtualCaptureCardSupported];
 }
 
 - (BOOL)usesVirtualCaptureCard
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 usesVirtualCaptureCard];
+  return [(AVAssetWriterHelper *)_helper usesVirtualCaptureCard];
 }
 
-- (void)setUsesVirtualCaptureCard:(BOOL)a3
+- (void)setUsesVirtualCaptureCard:(BOOL)card
 {
-  v3 = a3;
-  v4 = [(AVAssetWriter *)self _helper];
+  cardCopy = card;
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v4 setUsesVirtualCaptureCard:v3];
+  [(AVAssetWriterHelper *)_helper setUsesVirtualCaptureCard:cardCopy];
 }
 
 - (BOOL)requiresInProcessOperation
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 requiresInProcessOperation];
+  return [(AVAssetWriterHelper *)_helper requiresInProcessOperation];
 }
 
-- (void)setRequiresInProcessOperation:(BOOL)a3
+- (void)setRequiresInProcessOperation:(BOOL)operation
 {
-  v3 = a3;
-  v4 = [(AVAssetWriter *)self _helper];
+  operationCopy = operation;
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v4 setRequiresInProcessOperation:v3];
+  [(AVAssetWriterHelper *)_helper setRequiresInProcessOperation:operationCopy];
 }
 
-- (void)setWritesSinglePassUsingPredeterminedFileSize:(int64_t)a3 mediaDataSize:(int64_t)a4
+- (void)setWritesSinglePassUsingPredeterminedFileSize:(int64_t)size mediaDataSize:(int64_t)dataSize
 {
-  if (a3 <= 0)
+  if (size <= 0)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
@@ -854,41 +854,41 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (a4 <= 0)
+  if (dataSize <= 0)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
     v13 = "mediaDataSize > 0";
 LABEL_8:
-    v14 = [v11 exceptionWithName:v12 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, v4, v5, v6, v7, v13), 0}];
+    v14 = [v11 exceptionWithName:v12 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", dataSize, v4, v5, v6, v7, v13), 0}];
     objc_exception_throw(v14);
   }
 
-  [(AVAssetWriterHelper *)[(AVAssetWriter *)self _helper] setSinglePassFileSize:a3];
-  v10 = [(AVAssetWriter *)self _helper];
+  [(AVAssetWriterHelper *)[(AVAssetWriter *)self _helper] setSinglePassFileSize:size];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v10 setSinglePassMediaDataSize:a4];
+  [(AVAssetWriterHelper *)_helper setSinglePassMediaDataSize:dataSize];
 }
 
 - (NSArray)inputs
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 inputs];
+  return [(AVAssetWriterHelper *)_helper inputs];
 }
 
 - (NSArray)inputGroups
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 inputGroups];
+  return [(AVAssetWriterHelper *)_helper inputGroups];
 }
 
 - (BOOL)canApplyOutputSettings:(NSDictionary *)outputSettings forMediaType:(AVMediaType)mediaType
 {
-  v6 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v6 canApplyOutputSettings:outputSettings forMediaType:mediaType];
+  return [(AVAssetWriterHelper *)_helper canApplyOutputSettings:outputSettings forMediaType:mediaType];
 }
 
 - (BOOL)canAddInput:(AVAssetWriterInput *)input
@@ -899,9 +899,9 @@ LABEL_8:
     objc_exception_throw(v11);
   }
 
-  v9 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v9 canAddInput:input];
+  return [(AVAssetWriterHelper *)_helper canAddInput:input];
 }
 
 - (void)addInput:(AVAssetWriterInput *)input
@@ -912,9 +912,9 @@ LABEL_8:
     objc_exception_throw(v10);
   }
 
-  v9 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v9 addInput:input];
+  [(AVAssetWriterHelper *)_helper addInput:input];
 }
 
 - (BOOL)canAddInputGroup:(AVAssetWriterInputGroup *)inputGroup
@@ -925,9 +925,9 @@ LABEL_8:
     objc_exception_throw(v11);
   }
 
-  v9 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v9 canAddInputGroup:inputGroup];
+  return [(AVAssetWriterHelper *)_helper canAddInputGroup:inputGroup];
 }
 
 - (void)addInputGroup:(AVAssetWriterInputGroup *)inputGroup
@@ -938,16 +938,16 @@ LABEL_8:
     objc_exception_throw(v10);
   }
 
-  v9 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v9 addInputGroup:inputGroup];
+  [(AVAssetWriterHelper *)_helper addInputGroup:inputGroup];
 }
 
 - (NSArray)metadata
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 metadata];
+  return [(AVAssetWriterHelper *)_helper metadata];
 }
 
 - (void)setMetadata:(NSArray *)metadata
@@ -976,9 +976,9 @@ LABEL_8:
     objc_exception_throw(v10);
   }
 
-  v9 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
   v11 = *startTime;
-  [(AVAssetWriterHelper *)v9 startSessionAtSourceTime:&v11];
+  [(AVAssetWriterHelper *)_helper startSessionAtSourceTime:&v11];
 }
 
 - (void)endSessionAtSourceTime:(CMTime *)endTime
@@ -989,16 +989,16 @@ LABEL_8:
     objc_exception_throw(v10);
   }
 
-  v9 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
   v11 = *endTime;
-  [(AVAssetWriterHelper *)v9 endSessionAtSourceTime:&v11];
+  [(AVAssetWriterHelper *)_helper endSessionAtSourceTime:&v11];
 }
 
 - (void)cancelWriting
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v2 cancelWriting];
+  [(AVAssetWriterHelper *)_helper cancelWriting];
 }
 
 - (void)finishWritingWithCompletionHandler:(void *)handler
@@ -1009,24 +1009,24 @@ LABEL_8:
     objc_exception_throw(v10);
   }
 
-  v9 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v9 finishWritingWithCompletionHandler:handler];
+  [(AVAssetWriterHelper *)_helper finishWritingWithCompletionHandler:handler];
 }
 
-+ (id)_errorForOSStatus:(int)a3
++ (id)_errorForOSStatus:(int)status
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (a3 == -17698)
+  if (status == -17698)
   {
     v4 = *MEMORY[0x1E696A278];
     v5[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot append tagged buffer group due to mismatch between video layer IDs in tagged buffer group and value of kVTCompressionPropertyKey_MVHEVCVideoLayerIDs in the AVVideoCompressionPropertiesKey sub-dictionary of the input's outputSettings"];
     return AVLocalizedErrorWithUnderlyingOSStatus(-17698, [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
   }
 
-  else if (a3)
+  else if (status)
   {
-    if (a3 == -12785)
+    if (status == -12785)
     {
 
       return AVLocalizedError(@"AVFoundationErrorDomain", -11847, 0);
@@ -1035,7 +1035,7 @@ LABEL_8:
     else
     {
 
-      return AVLocalizedErrorWithUnderlyingOSStatus(a3, 0);
+      return AVLocalizedErrorWithUnderlyingOSStatus(status, 0);
     }
   }
 
@@ -1045,18 +1045,18 @@ LABEL_8:
   }
 }
 
-- (void)_transitionToFailedStatusWithError:(id)a3
+- (void)_transitionToFailedStatusWithError:(id)error
 {
-  v4 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v4 transitionToFailedStatusWithError:a3];
+  [(AVAssetWriterHelper *)_helper transitionToFailedStatusWithError:error];
 }
 
 - (void)flush
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  [(AVAssetWriterHelper *)v2 flush];
+  [(AVAssetWriterHelper *)_helper flush];
 }
 
 - (void)flushSegment
@@ -1093,9 +1093,9 @@ LABEL_9:
 
 - (BOOL)isDefunct
 {
-  v2 = [(AVAssetWriter *)self _helper];
+  _helper = [(AVAssetWriter *)self _helper];
 
-  return [(AVAssetWriterHelper *)v2 _isDefunct];
+  return [(AVAssetWriterHelper *)_helper _isDefunct];
 }
 
 @end

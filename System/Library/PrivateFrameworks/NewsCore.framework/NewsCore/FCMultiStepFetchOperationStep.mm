@@ -1,6 +1,6 @@
 @interface FCMultiStepFetchOperationStep
 - (SEL)fetchSelector;
-- (void)setFetchSelector:(SEL)a3;
+- (void)setFetchSelector:(SEL)selector;
 @end
 
 @implementation FCMultiStepFetchOperationStep
@@ -18,19 +18,19 @@
   }
 }
 
-- (void)setFetchSelector:(SEL)a3
+- (void)setFetchSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_fetchSelector = v3;
+  self->_fetchSelector = selectorCopy;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface CNAutocompleteCalendarServerOperationFactory
-- (id)eventKitDirectorySearchOperationForSource:(id)a3 query:(id)a4 resultsBlock:(id)a5;
+- (id)eventKitDirectorySearchOperationForSource:(id)source query:(id)query resultsBlock:(id)block;
 @end
 
 @implementation CNAutocompleteCalendarServerOperationFactory
 
-- (id)eventKitDirectorySearchOperationForSource:(id)a3 query:(id)a4 resultsBlock:(id)a5
+- (id)eventKitDirectorySearchOperationForSource:(id)source query:(id)query resultsBlock:(id)block
 {
   v7 = getEKDirectorySearchOperationClass;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_alloc(v7()) initWithSource:v10 query:v9 resultsBlock:v8];
+  blockCopy = block;
+  queryCopy = query;
+  sourceCopy = source;
+  v11 = [objc_alloc(v7()) initWithSource:sourceCopy query:queryCopy resultsBlock:blockCopy];
 
   return v11;
 }

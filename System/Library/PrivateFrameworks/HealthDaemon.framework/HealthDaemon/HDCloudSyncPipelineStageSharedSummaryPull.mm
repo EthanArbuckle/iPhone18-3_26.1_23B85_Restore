@@ -7,19 +7,19 @@
 - (void)main
 {
   v3 = [HDCloudSyncCompoundOperation alloc];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [(HDCloudSyncCompoundOperation *)v3 initWithConfiguration:v4 cloudState:0 name:@"Pull Shared Summaries" continueOnSubOperationError:0];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  v5 = [(HDCloudSyncCompoundOperation *)v3 initWithConfiguration:configuration cloudState:0 name:@"Pull Shared Summaries" continueOnSubOperationError:0];
 
   v6 = [HDCloudSyncValidateSubscriptionsOperation alloc];
-  v7 = [(HDCloudSyncOperation *)self configuration];
-  v8 = [(HDCloudSyncOperation *)v6 initWithConfiguration:v7 cloudState:0];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  v8 = [(HDCloudSyncOperation *)v6 initWithConfiguration:configuration2 cloudState:0];
 
-  v9 = [(HDCloudSyncOperation *)v8 operationIgnoringErrors];
-  [(HDCloudSyncCompoundOperation *)v5 addOperation:v9 transitionHandler:0];
+  operationIgnoringErrors = [(HDCloudSyncOperation *)v8 operationIgnoringErrors];
+  [(HDCloudSyncCompoundOperation *)v5 addOperation:operationIgnoringErrors transitionHandler:0];
 
   v10 = [HDCloudSyncSharedSummaryPullOperation alloc];
-  v11 = [(HDCloudSyncOperation *)self configuration];
-  v12 = [(HDCloudSyncOperation *)v10 initWithConfiguration:v11 cloudState:0];
+  configuration3 = [(HDCloudSyncOperation *)self configuration];
+  v12 = [(HDCloudSyncOperation *)v10 initWithConfiguration:configuration3 cloudState:0];
 
   [(HDCloudSyncCompoundOperation *)v5 addOperation:v12 transitionHandler:0];
   v14[0] = MEMORY[0x277D85DD0];

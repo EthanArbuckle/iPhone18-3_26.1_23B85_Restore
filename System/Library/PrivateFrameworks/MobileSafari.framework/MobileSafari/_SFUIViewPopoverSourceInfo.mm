@@ -2,26 +2,26 @@
 - (CGRect)popoverSourceRect;
 - (NSString)description;
 - (UIView)zoomTransitionSourceView;
-- (_SFUIViewPopoverSourceInfo)initWithView:(id)a3 insets:(UIEdgeInsets)a4;
-- (_SFUIViewPopoverSourceInfo)initWithView:(id)a3 rect:(CGRect)a4;
+- (_SFUIViewPopoverSourceInfo)initWithView:(id)view insets:(UIEdgeInsets)insets;
+- (_SFUIViewPopoverSourceInfo)initWithView:(id)view rect:(CGRect)rect;
 @end
 
 @implementation _SFUIViewPopoverSourceInfo
 
-- (_SFUIViewPopoverSourceInfo)initWithView:(id)a3 insets:(UIEdgeInsets)a4
+- (_SFUIViewPopoverSourceInfo)initWithView:(id)view insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v10 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = _SFUIViewPopoverSourceInfo;
   v11 = [(_SFUIViewPopoverSourceInfo *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_view, a3);
+    objc_storeStrong(&v11->_view, view);
     v12->_insets.top = top;
     v12->_insets.left = left;
     v12->_insets.bottom = bottom;
@@ -33,15 +33,15 @@
   return v12;
 }
 
-- (_SFUIViewPopoverSourceInfo)initWithView:(id)a3 rect:(CGRect)a4
+- (_SFUIViewPopoverSourceInfo)initWithView:(id)view rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 bounds];
-  v14 = [(_SFUIViewPopoverSourceInfo *)self initWithView:v9 insets:SFEdgeInsetsForInsetingRectToRect(v10, v11, v12, v13, x, y, width, height)];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  [viewCopy bounds];
+  v14 = [(_SFUIViewPopoverSourceInfo *)self initWithView:viewCopy insets:SFEdgeInsetsForInsetingRectToRect(v10, v11, v12, v13, x, y, width, height)];
 
   return v14;
 }

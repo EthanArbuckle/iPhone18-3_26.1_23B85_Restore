@@ -21,14 +21,14 @@
 
 + (id)defaultConfiguration
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (id)setupAssistantConfiguration
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setPostFollowUp:1];
   [v2 setSkipBackup:1];
   [v2 setPreventOpeningSafari:1];

@@ -1,12 +1,12 @@
 @interface CSReusableBufferPool
-- (CSReusableBufferPool)initWithConfiguration:(id)a3;
+- (CSReusableBufferPool)initWithConfiguration:(id)configuration;
 - (id)_createNewBackingStore;
 - (id)_getAvailableBackingStore;
-- (id)dataWithBytes:(const void *)a3 length:(unint64_t)a4;
+- (id)dataWithBytes:(const void *)bytes length:(unint64_t)length;
 - (void)_checkIdleBackingStores;
-- (void)_recycleUsedBackingStore:(id)a3;
+- (void)_recycleUsedBackingStore:(id)store;
 - (void)cleanup;
-- (void)handleUsedBackingStore:(id)a3;
+- (void)handleUsedBackingStore:(id)store;
 @end
 
 @implementation CSReusableBufferPool
@@ -45,13 +45,13 @@ LABEL_7:
               objc_enumerationMutation(v8);
             }
 
-            v14 = [*(*(&v16 + 1) + 8 * v13) recycleHostTime];
+            recycleHostTime = [*(*(&v16 + 1) + 8 * v13) recycleHostTime];
             if (_CSMachAbsoluteTimeRate_onceToken != -1)
             {
               dispatch_once(&_CSMachAbsoluteTimeRate_onceToken, &__block_literal_global_431);
             }
 
-            if (*&_CSMachAbsoluteTimeRate_rate * (v7 - v14) / 1000000000.0 <= v6)
+            if (*&_CSMachAbsoluteTimeRate_rate * (v7 - recycleHostTime) / 1000000000.0 <= v6)
             {
               break;
             }
@@ -86,11 +86,11 @@ LABEL_7:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recycleUsedBackingStore:(id)a3
+- (void)_recycleUsedBackingStore:(id)store
 {
-  v4 = a3;
-  [v4 setRecycleHostTime:mach_absolute_time()];
-  [(NSMutableArray *)self->_recycledBackingStores addObject:v4];
+  storeCopy = store;
+  [storeCopy setRecycleHostTime:mach_absolute_time()];
+  [(NSMutableArray *)self->_recycledBackingStores addObject:storeCopy];
 }
 
 - (id)_createNewBackingStore
@@ -111,20 +111,20 @@ LABEL_7:
 
 - (id)_getAvailableBackingStore
 {
-  v3 = [(NSMutableArray *)self->_recycledBackingStores lastObject];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_recycledBackingStores lastObject];
+  if (lastObject)
   {
     [(NSMutableArray *)self->_recycledBackingStores removeLastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (void)handleUsedBackingStore:(id)a3
+- (void)handleUsedBackingStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_lock);
-  [(CSReusableBufferPool *)self _recycleUsedBackingStore:v4];
+  [(CSReusableBufferPool *)self _recycleUsedBackingStore:storeCopy];
 
   [(CSReusableBufferPool *)self _checkIdleBackingStores];
 
@@ -139,39 +139,39 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)dataWithBytes:(const void *)a3 length:(unint64_t)a4
+- (id)dataWithBytes:(const void *)bytes length:(unint64_t)length
 {
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(CSReusableBufferPool *)self _getAvailableBackingStore];
-  if (v7)
+  _getAvailableBackingStore = [(CSReusableBufferPool *)self _getAvailableBackingStore];
+  if (_getAvailableBackingStore)
   {
-    v8 = v7;
+    _createNewBackingStore = _getAvailableBackingStore;
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    v8 = [(CSReusableBufferPool *)self _createNewBackingStore];
+    _createNewBackingStore = [(CSReusableBufferPool *)self _createNewBackingStore];
     os_unfair_lock_unlock(&self->_lock);
-    if (!v8)
+    if (!_createNewBackingStore)
     {
       goto LABEL_6;
     }
   }
 
-  if ([v8 configureWithBytes:a3 length:a4])
+  if ([_createNewBackingStore configureWithBytes:bytes length:length])
   {
     objc_initWeak(&location, self);
     v9 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v10 = [v8 bytes];
+    bytes = [_createNewBackingStore bytes];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __45__CSReusableBufferPool_dataWithBytes_length___block_invoke;
     v13[3] = &unk_1E865C6F0;
     objc_copyWeak(&v15, &location);
-    v8 = v8;
-    v14 = v8;
-    v11 = [v9 initWithBytesNoCopy:v10 length:a4 deallocator:v13];
+    _createNewBackingStore = _createNewBackingStore;
+    v14 = _createNewBackingStore;
+    v11 = [v9 initWithBytesNoCopy:bytes length:length deallocator:v13];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -191,16 +191,16 @@ void __45__CSReusableBufferPool_dataWithBytes_length___block_invoke(uint64_t a1)
   [WeakRetained handleUsedBackingStore:*(a1 + 32)];
 }
 
-- (CSReusableBufferPool)initWithConfiguration:(id)a3
+- (CSReusableBufferPool)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = CSReusableBufferPool;
   v6 = [(CSReusableBufferPool *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v7->_lock._os_unfair_lock_opaque = 0;
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     recycledBackingStores = v7->_recycledBackingStores;

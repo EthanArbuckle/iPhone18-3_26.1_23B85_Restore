@@ -1,5 +1,5 @@
 @interface RAPDirectionsStepsTableViewController
-- (BOOL)RAPDirectionsStepsList:(id)a3 shouldShowFlagForStep:(id)a4 listItem:(id)a5;
+- (BOOL)RAPDirectionsStepsList:(id)list shouldShowFlagForStep:(id)step listItem:(id)item;
 - (RAPDirectionsStepsTableViewController)init;
 - (RAPDirectionsStepsTableViewControllerDelegate)instructionDelegate;
 @end
@@ -13,12 +13,12 @@
   return WeakRetained;
 }
 
-- (BOOL)RAPDirectionsStepsList:(id)a3 shouldShowFlagForStep:(id)a4 listItem:(id)a5
+- (BOOL)RAPDirectionsStepsList:(id)list shouldShowFlagForStep:(id)step listItem:(id)item
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(RAPDirectionsStepsTableViewController *)self instructionDelegate];
-  LOBYTE(self) = [v9 viewController:self shouldShowFlagForStep:v8 listItem:v7];
+  itemCopy = item;
+  stepCopy = step;
+  instructionDelegate = [(RAPDirectionsStepsTableViewController *)self instructionDelegate];
+  LOBYTE(self) = [instructionDelegate viewController:self shouldShowFlagForStep:stepCopy listItem:itemCopy];
 
   return self;
 }
@@ -31,8 +31,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(DirectionsStepsTableViewController *)v2 dataSource];
-    [v4 setRapDelegate:v3];
+    dataSource = [(DirectionsStepsTableViewController *)v2 dataSource];
+    [dataSource setRapDelegate:v3];
   }
 
   return v3;

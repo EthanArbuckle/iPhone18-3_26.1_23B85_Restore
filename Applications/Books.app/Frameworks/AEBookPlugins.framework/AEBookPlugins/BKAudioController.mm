@@ -1,33 +1,33 @@
 @interface BKAudioController
-- (BKAudioController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BKAudioController)initWithNibName:(id)name bundle:(id)bundle;
 - (BKAudioControllerDelegate)delegate;
 - (double)desiredPopoverWidth;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)volumeSlider;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_soundTrackChanged:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_soundTrackChanged:(id)changed;
 - (void)contentSizeCategoryDidChange;
 - (void)dealloc;
-- (void)onReadButton:(id)a3;
-- (void)onTrackSwitch:(id)a3;
-- (void)onTurnSwitch:(id)a3;
-- (void)onVolume:(id)a3;
+- (void)onReadButton:(id)button;
+- (void)onTrackSwitch:(id)switch;
+- (void)onTurnSwitch:(id)switch;
+- (void)onVolume:(id)volume;
 - (void)releaseViews;
 - (void)updateControlStates;
 - (void)updatePopoverSize;
 - (void)updateRowHeight;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BKAudioController
 
-- (BKAudioController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKAudioController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = BKAudioController;
-  return [(BKViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(BKViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 - (void)dealloc
@@ -69,26 +69,26 @@
   [(UITableView *)self->_tableView setSeparatorInset:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
   [(BKAudioController *)self updateControlStates];
   v5 = +[UIColor systemBackgroundColor];
-  v6 = [(BKAudioController *)self view];
-  [v6 setBackgroundColor:v5];
+  view = [(BKAudioController *)self view];
+  [view setBackgroundColor:v5];
 
   v7 = +[UIColor systemBackgroundColor];
-  v8 = [(BKAudioController *)self navigationController];
-  v9 = [v8 navigationBar];
-  [v9 setBarTintColor:v7];
+  navigationController = [(BKAudioController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setBarTintColor:v7];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = BKAudioController;
-  [(BKAudioController *)&v6 viewWillAppear:a3];
+  [(BKAudioController *)&v6 viewWillAppear:appear];
   [(BKAudioController *)self updateControlStates];
   [(BKAudioController *)self updateRowHeight];
   [(BKAudioController *)self desiredPopoverWidth];
   [(BKAudioController *)self setPreferredContentSize:?];
-  v4 = [(BKAudioController *)self view];
-  [v4 layoutIfNeeded];
+  view = [(BKAudioController *)self view];
+  [view layoutIfNeeded];
 
   [(BKAudioController *)self updatePopoverSize];
   v5 = +[NSNotificationCenter defaultCenter];
@@ -96,11 +96,11 @@
   [v5 addObserver:self selector:"_soundTrackChanged:" name:@"BKHTMLContentSoundTrackChangedNotification" object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = BKAudioController;
-  [(BKAudioController *)&v5 viewDidDisappear:a3];
+  [(BKAudioController *)&v5 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:0];
   [v4 removeObserver:self name:@"BKHTMLContentSoundTrackChangedNotification" object:0];
@@ -115,19 +115,19 @@
 
 - (void)updateControlStates
 {
-  v3 = [(BKAudioController *)self delegate];
-  v4 = [v3 readAloudState];
+  delegate = [(BKAudioController *)self delegate];
+  readAloudState = [delegate readAloudState];
 
-  v5 = [(BKAudioController *)self delegate];
-  [v5 volume];
+  delegate2 = [(BKAudioController *)self delegate];
+  [delegate2 volume];
   v7 = v6;
-  v8 = [(BKAudioController *)self volumeSlider];
+  volumeSlider = [(BKAudioController *)self volumeSlider];
   LODWORD(v9) = v7;
-  [v8 setValue:v9];
+  [volumeSlider setValue:v9];
 
   [(UITableView *)self->_tableView reloadData];
   readButton = self->_readButton;
-  if ((v4 & 0x80000000) != 0)
+  if ((readAloudState & 0x80000000) != 0)
   {
 
     [(UIButton *)readButton setHidden:1];
@@ -139,7 +139,7 @@
     v11 = self->_readButton;
     v12 = AEBundle();
     v15 = v12;
-    if (v4)
+    if (readAloudState)
     {
       v13 = @"Stop Reading";
     }
@@ -193,7 +193,7 @@
   [(BKAudioController *)self setPreferredContentSize:v6, v7];
 }
 
-- (void)_soundTrackChanged:(id)a3
+- (void)_soundTrackChanged:(id)changed
 {
   [(BKAudioController *)self updateControlStates];
 
@@ -215,15 +215,15 @@
     v9 = [v8 imageWithConfiguration:v7];
 
     [(UISlider *)self->_volumeSlider setMinimumValueImage:v9];
-    v10 = [(UISlider *)self->_volumeSlider _minValueView];
-    [v10 setTintColor:v6];
+    _minValueView = [(UISlider *)self->_volumeSlider _minValueView];
+    [_minValueView setTintColor:v6];
 
     v11 = [UIImage systemImageNamed:@"speaker.3.fill"];
     v12 = [v11 imageWithConfiguration:v7];
 
     [(UISlider *)self->_volumeSlider setMaximumValueImage:v12];
-    v13 = [(UISlider *)self->_volumeSlider _maxValueView];
-    [v13 setTintColor:v6];
+    _maxValueView = [(UISlider *)self->_volumeSlider _maxValueView];
+    [_maxValueView setTintColor:v6];
 
     [(UISlider *)self->_volumeSlider addTarget:self action:"onVolume:" forControlEvents:4096];
     volumeSlider = self->_volumeSlider;
@@ -232,112 +232,112 @@
   return volumeSlider;
 }
 
-- (void)onReadButton:(id)a3
+- (void)onReadButton:(id)button
 {
-  v4 = [(BKAudioController *)self delegate];
-  v5 = [v4 readAloudState] == 0;
+  delegate = [(BKAudioController *)self delegate];
+  v5 = [delegate readAloudState] == 0;
 
-  v6 = [(BKAudioController *)self delegate];
-  [v6 setReadAloudState:v5];
+  delegate2 = [(BKAudioController *)self delegate];
+  [delegate2 setReadAloudState:v5];
 
   [(BKAudioController *)self updateControlStates];
 }
 
-- (void)onTrackSwitch:(id)a3
+- (void)onTrackSwitch:(id)switch
 {
-  v4 = a3;
-  v6 = [(BKAudioController *)self delegate];
-  v5 = [v4 isOn];
+  switchCopy = switch;
+  delegate = [(BKAudioController *)self delegate];
+  isOn = [switchCopy isOn];
 
-  [v6 setTrackState:v5];
+  [delegate setTrackState:isOn];
 }
 
-- (void)onTurnSwitch:(id)a3
+- (void)onTurnSwitch:(id)switch
 {
-  v4 = a3;
-  v6 = [(BKAudioController *)self delegate];
-  v5 = [v4 isOn];
+  switchCopy = switch;
+  delegate = [(BKAudioController *)self delegate];
+  isOn = [switchCopy isOn];
 
-  [v6 setTurnState:v5];
+  [delegate setTurnState:isOn];
 }
 
-- (void)onVolume:(id)a3
+- (void)onVolume:(id)volume
 {
-  v4 = [(BKAudioController *)self delegate];
+  delegate = [(BKAudioController *)self delegate];
   [(UISlider *)self->_volumeSlider value];
-  [v4 setVolume:?];
+  [delegate setVolume:?];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"BKAudioController"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"BKAudioController"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:@"BKAudioController"];
   }
 
-  if ([v6 row])
+  if ([pathCopy row])
   {
-    if ([v6 row] != &dword_0 + 1 || (-[BKAudioController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "readAloudState"), v8, (v9 & 0x80000000) != 0))
+    if ([pathCopy row] != &dword_0 + 1 || (-[BKAudioController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "readAloudState"), v8, (v9 & 0x80000000) != 0))
     {
       v16 = AEBundle();
       v17 = [v16 localizedStringForKey:@"Soundtrack" value:&stru_1E7188 table:0];
-      v18 = [v7 textLabel];
-      [v18 setText:v17];
+      textLabel = [v7 textLabel];
+      [textLabel setText:v17];
 
-      v13 = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-      [v13 setPreferredStyle:2];
-      [v13 addTarget:self action:"onTrackSwitch:" forControlEvents:4096];
-      [v13 sizeToFit];
-      v14 = [(BKAudioController *)self delegate];
-      v15 = [v14 trackState] == 1;
+      volumeSlider = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+      [volumeSlider setPreferredStyle:2];
+      [volumeSlider addTarget:self action:"onTrackSwitch:" forControlEvents:4096];
+      [volumeSlider sizeToFit];
+      delegate = [(BKAudioController *)self delegate];
+      turnState = [delegate trackState] == 1;
     }
 
     else
     {
       v10 = AEBundle();
       v11 = [v10 localizedStringForKey:@"Turn My Pages" value:&stru_1E7188 table:0];
-      v12 = [v7 textLabel];
-      [v12 setText:v11];
+      textLabel2 = [v7 textLabel];
+      [textLabel2 setText:v11];
 
-      v13 = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-      [v13 setPreferredStyle:2];
-      [v13 addTarget:self action:"onTurnSwitch:" forControlEvents:4096];
-      [v13 sizeToFit];
-      v14 = [(BKAudioController *)self delegate];
-      v15 = [v14 turnState];
+      volumeSlider = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+      [volumeSlider setPreferredStyle:2];
+      [volumeSlider addTarget:self action:"onTurnSwitch:" forControlEvents:4096];
+      [volumeSlider sizeToFit];
+      delegate = [(BKAudioController *)self delegate];
+      turnState = [delegate turnState];
     }
 
-    [v13 setOn:v15];
+    [volumeSlider setOn:turnState];
 
-    [v7 setAccessoryView:v13];
+    [v7 setAccessoryView:volumeSlider];
   }
 
   else
   {
-    v13 = [(BKAudioController *)self volumeSlider];
-    [v13 setNeedsLayout];
-    v19 = [v7 contentView];
-    [v19 addSubview:v13];
+    volumeSlider = [(BKAudioController *)self volumeSlider];
+    [volumeSlider setNeedsLayout];
+    contentView = [v7 contentView];
+    [contentView addSubview:volumeSlider];
 
     [v7 setAccessoryView:0];
-    v20 = [v7 textLabel];
-    [v20 setText:0];
+    textLabel3 = [v7 textLabel];
+    [textLabel3 setText:0];
   }
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(BKAudioController *)self delegate:a3];
-  v6 = [v5 trackState];
+  v5 = [(BKAudioController *)self delegate:view];
+  trackState = [v5 trackState];
 
-  v7 = [(BKAudioController *)self delegate];
-  LODWORD(v5) = [v7 readAloudState];
+  delegate = [(BKAudioController *)self delegate];
+  LODWORD(v5) = [delegate readAloudState];
 
-  if ((v6 | v5) < 0)
+  if ((trackState | v5) < 0)
   {
     return 2;
   }

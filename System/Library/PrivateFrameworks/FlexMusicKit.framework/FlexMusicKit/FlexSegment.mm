@@ -1,57 +1,57 @@
 @interface FlexSegment
-+ (BOOL)canTransitionFromSegment:(id)a3 toSegment:(id)a4 fromBarIndex:(int64_t)a5 checkIfPrevented:(BOOL)a6;
-+ (FlexSegment)segmentWithName:(id)a3 inSegments:(id)a4;
-+ (id)longLabelForSegmentType:(unint64_t)a3;
-+ (id)readInfoFromAudioFileAtPath:(id)a3;
-+ (id)segmentsWithType:(unint64_t)a3 inSegments:(id)a4;
-+ (id)segmentsWithType:(unint64_t)a3 nameIndex:(id)a4 nameSuffix:(id)a5 inSegments:(id)a6;
-+ (id)shortLabelForSegmentType:(unint64_t)a3;
-+ (int64_t)crossfadeLengthInSamplesForFromSeg:(id)a3 toSeg:(id)a4 fadeOutTimeInMsec:(int64_t)a5 fadeInTimeInMsec:(int64_t)a6 validFadeOutSamples:(int64_t *)a7 validFadeInSamples:(int64_t *)a8;
-+ (int64_t)samplesForTimeInMsec:(int64_t)a3 atSampleRate:(int64_t)a4;
++ (BOOL)canTransitionFromSegment:(id)segment toSegment:(id)toSegment fromBarIndex:(int64_t)index checkIfPrevented:(BOOL)prevented;
++ (FlexSegment)segmentWithName:(id)name inSegments:(id)segments;
++ (id)longLabelForSegmentType:(unint64_t)type;
++ (id)readInfoFromAudioFileAtPath:(id)path;
++ (id)segmentsWithType:(unint64_t)type inSegments:(id)segments;
++ (id)segmentsWithType:(unint64_t)type nameIndex:(id)index nameSuffix:(id)suffix inSegments:(id)segments;
++ (id)shortLabelForSegmentType:(unint64_t)type;
++ (int64_t)crossfadeLengthInSamplesForFromSeg:(id)seg toSeg:(id)toSeg fadeOutTimeInMsec:(int64_t)msec fadeInTimeInMsec:(int64_t)inMsec validFadeOutSamples:(int64_t *)samples validFadeInSamples:(int64_t *)inSamples;
++ (int64_t)samplesForTimeInMsec:(int64_t)msec atSampleRate:(int64_t)rate;
 - (BOOL)isPriorityValid;
-- (BOOL)linkedPerBarTransitionsToSegmentNamed:(id)a3;
+- (BOOL)linkedPerBarTransitionsToSegmentNamed:(id)named;
 - (BOOL)relinkAllTransitions;
-- (FlexSegment)initWithDictionary:(id)a3;
-- (FlexSegment)initWithFileAtPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FlexSegment)initWithDictionary:(id)dictionary;
+- (FlexSegment)initWithFileAtPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsDictionary;
-- (id)initAsCrossFade:(id)a3 sampleRate:(int64_t)a4 sampleCount:(int64_t)a5 beatsPerBar:(int64_t)a6;
-- (id)transitionToSegmentNamed:(id)a3 fromBarIndex:(int64_t)a4;
-- (int64_t)barEndPositionForBarIndex:(int64_t)a3;
-- (int64_t)barStartPositionForBarIndex:(int64_t)a3;
+- (id)initAsCrossFade:(id)fade sampleRate:(int64_t)rate sampleCount:(int64_t)count beatsPerBar:(int64_t)bar;
+- (id)transitionToSegmentNamed:(id)named fromBarIndex:(int64_t)index;
+- (int64_t)barEndPositionForBarIndex:(int64_t)index;
+- (int64_t)barStartPositionForBarIndex:(int64_t)index;
 - (int64_t)samplesPerBar;
 - (void)_decodeTypeInfoFromSegmentName;
-- (void)addMetadataValue:(id)a3 forKey:(id)a4;
-- (void)addOrReplaceTransition:(id)a3 toSegmentNamed:(id)a4 fromBarIndex:(int64_t)a5;
-- (void)removeTransitionToSegmentNamed:(id)a3 fromBarIndex:(int64_t)a4;
-- (void)setBars:(int64_t)a3;
-- (void)setLinkedPerBarTransitions:(BOOL)a3 toSegmentNamed:(id)a4;
-- (void)setName:(id)a3;
+- (void)addMetadataValue:(id)value forKey:(id)key;
+- (void)addOrReplaceTransition:(id)transition toSegmentNamed:(id)named fromBarIndex:(int64_t)index;
+- (void)removeTransitionToSegmentNamed:(id)named fromBarIndex:(int64_t)index;
+- (void)setBars:(int64_t)bars;
+- (void)setLinkedPerBarTransitions:(BOOL)transitions toSegmentNamed:(id)named;
+- (void)setName:(id)name;
 @end
 
 @implementation FlexSegment
 
-- (FlexSegment)initWithDictionary:(id)a3
+- (FlexSegment)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v124.receiver = self;
   v124.super_class = FlexSegment;
   v8 = [(FlexSegment *)&v124 init];
   if (v8)
   {
-    v9 = objc_msgSend_objectForKey_(v4, v5, @"name", v6, v7);
+    v9 = objc_msgSend_objectForKey_(dictionaryCopy, v5, @"name", v6, v7);
     name = v8->_name;
     v8->_name = v9;
 
     objc_msgSend__decodeTypeInfoFromSegmentName(v8, v11, v12, v13, v14);
-    v18 = objc_msgSend_objectForKey_(v4, v15, @"bars", v16, v17);
+    v18 = objc_msgSend_objectForKey_(dictionaryCopy, v15, @"bars", v16, v17);
     v8->_bars = objc_msgSend_intValue(v18, v19, v20, v21, v22);
 
-    v26 = objc_msgSend_objectForKey_(v4, v23, @"priority", v24, v25);
+    v26 = objc_msgSend_objectForKey_(dictionaryCopy, v23, @"priority", v24, v25);
     v8->_priority = objc_msgSend_intValue(v26, v27, v28, v29, v30);
 
-    v34 = objc_msgSend_objectForKey_(v4, v31, @"beatsPerBar", v32, v33);
+    v34 = objc_msgSend_objectForKey_(dictionaryCopy, v31, @"beatsPerBar", v32, v33);
     v8->_beatsPerBar = objc_msgSend_intValue(v34, v35, v36, v37, v38);
 
     if (!v8->_beatsPerBar)
@@ -59,13 +59,13 @@
       v8->_beatsPerBar = 4;
     }
 
-    v42 = objc_msgSend_objectForKey_(v4, v39, @"sampleRate", v40, v41);
+    v42 = objc_msgSend_objectForKey_(dictionaryCopy, v39, @"sampleRate", v40, v41);
     v8->_sampleRate = objc_msgSend_intValue(v42, v43, v44, v45, v46);
 
-    v50 = objc_msgSend_objectForKey_(v4, v47, @"sampleCount", v48, v49);
+    v50 = objc_msgSend_objectForKey_(dictionaryCopy, v47, @"sampleCount", v48, v49);
     v8->_sampleCount = objc_msgSend_longLongValue(v50, v51, v52, v53, v54);
 
-    v58 = objc_msgSend_objectForKey_(v4, v55, @"sliceable", v56, v57);
+    v58 = objc_msgSend_objectForKey_(dictionaryCopy, v55, @"sliceable", v56, v57);
     v8->_sliceable = objc_msgSend_BOOLValue(v58, v59, v60, v61, v62);
 
     if (v8->_sliceable && objc_msgSend_type(v8, v63, v64, v65, v66) != 2)
@@ -73,7 +73,7 @@
       v8->_sliceable = 0;
     }
 
-    v67 = objc_msgSend_objectForKey_(v4, v63, @"customBarMarkers", v65, v66);
+    v67 = objc_msgSend_objectForKey_(dictionaryCopy, v63, @"customBarMarkers", v65, v66);
     v68 = objc_opt_class();
     v71 = objc_msgSend_decodeItemsInArray_asClass_(FlexUtilities, v69, v67, v68, v70);
     customBarMarkers = v8->_customBarMarkers;
@@ -98,7 +98,7 @@
     }
 
     v8->_samplesPerBar = sampleCount;
-    v83 = objc_msgSend_objectForKey_(v4, v77, @"transitions", v78, v79);
+    v83 = objc_msgSend_objectForKey_(dictionaryCopy, v77, @"transitions", v78, v79);
     v84 = objc_opt_class();
     v87 = objc_msgSend_decodeItemsInDict_asClass_(FlexUtilities, v85, v83, v84, v86);
     transitions = v8->_transitions;
@@ -115,15 +115,15 @@
 
     if (objc_msgSend_type(v8, v93, v94, v95, v96) == 4)
     {
-      v104 = objc_msgSend_objectForKey_(v4, v101, @"markers", v102, v103);
+      v104 = objc_msgSend_objectForKey_(dictionaryCopy, v101, @"markers", v102, v103);
       v105 = objc_opt_class();
       v108 = objc_msgSend_decodeItemsInDict_asClass_(FlexUtilities, v106, v104, v105, v107);
       markers = v8->_markers;
       v8->_markers = v108;
     }
 
-    v110 = objc_msgSend_objectForKey_(v4, v101, @"peakValue", v102, v103);
-    v114 = objc_msgSend_objectForKey_(v4, v111, @"loudness", v112, v113);
+    v110 = objc_msgSend_objectForKey_(dictionaryCopy, v101, @"peakValue", v102, v103);
+    v114 = objc_msgSend_objectForKey_(dictionaryCopy, v111, @"loudness", v112, v113);
     if (v110 | v114)
     {
       v115 = objc_opt_new();
@@ -148,16 +148,16 @@
   return v8;
 }
 
-- (id)initAsCrossFade:(id)a3 sampleRate:(int64_t)a4 sampleCount:(int64_t)a5 beatsPerBar:(int64_t)a6
+- (id)initAsCrossFade:(id)fade sampleRate:(int64_t)rate sampleCount:(int64_t)count beatsPerBar:(int64_t)bar
 {
-  v11 = a3;
+  fadeCopy = fade;
   v22.receiver = self;
   v22.super_class = FlexSegment;
   v12 = [(FlexSegment *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
+    objc_storeStrong(&v12->_name, fade);
     objc_msgSend__decodeTypeInfoFromSegmentName(v13, v14, v15, v16, v17);
     if (v13->_type != 5)
     {
@@ -166,11 +166,11 @@
     }
 
     *&v13->_priority = vdupq_n_s64(1uLL);
-    v13->_sampleRate = a4;
-    v13->_sampleCount = a5;
+    v13->_sampleRate = rate;
+    v13->_sampleCount = count;
     v13->_sliceable = 0;
-    v13->_beatsPerBar = a6;
-    v13->_samplesPerBar = a5;
+    v13->_beatsPerBar = bar;
+    v13->_samplesPerBar = count;
     customBarMarkers = v13->_customBarMarkers;
     v13->_customBarMarkers = 0;
 
@@ -203,9 +203,9 @@ LABEL_6:
   return result;
 }
 
-- (FlexSegment)initWithFileAtPath:(id)a3
+- (FlexSegment)initWithFileAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v60.receiver = self;
   v60.super_class = FlexSegment;
   v9 = [(FlexSegment *)&v60 init];
@@ -216,13 +216,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = objc_msgSend_lastPathComponent(v4, v5, v6, v7, v8);
+  v10 = objc_msgSend_lastPathComponent(pathCopy, v5, v6, v7, v8);
   v15 = objc_msgSend_stringByDeletingPathExtension(v10, v11, v12, v13, v14);
   name = v9->_name;
   v9->_name = v15;
 
   objc_msgSend__decodeTypeInfoFromSegmentName(v9, v17, v18, v19, v20);
-  v24 = objc_msgSend_readInfoFromAudioFileAtPath_(FlexSegment, v21, v4, v22, v23);
+  v24 = objc_msgSend_readInfoFromAudioFileAtPath_(FlexSegment, v21, pathCopy, v22, v23);
   v29 = v24;
   if (v24)
   {
@@ -358,17 +358,17 @@ LABEL_10:
   return v6;
 }
 
-+ (id)readInfoFromAudioFileAtPath:(id)a3
++ (id)readInfoFromAudioFileAtPath:(id)path
 {
   v177 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v20 = 0;
     goto LABEL_17;
   }
 
-  v6 = objc_msgSend_fileURLWithPath_isDirectory_(MEMORY[0x277CBEBC0], v3, v5, 0, v4);
+  v6 = objc_msgSend_fileURLWithPath_isDirectory_(MEMORY[0x277CBEBC0], v3, pathCopy, 0, v4);
   if (!v6)
   {
     v20 = 0;
@@ -390,7 +390,7 @@ LABEL_10:
   if (v11)
   {
 LABEL_10:
-    v18 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"Cannot open audio file: %@", v9, v10, v5);
+    v18 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"Cannot open audio file: %@", v9, v10, pathCopy);
     v19 = FlexLogForCategory(1uLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -603,9 +603,9 @@ LABEL_17:
   return v20;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  objc_storeStrong(&self->_name, a3);
+  objc_storeStrong(&self->_name, name);
 
   objc_msgSend__decodeTypeInfoFromSegmentName(self, v4, v5, v6, v7);
 }
@@ -619,29 +619,29 @@ LABEL_17:
   return v10;
 }
 
-+ (id)shortLabelForSegmentType:(unint64_t)a3
++ (id)shortLabelForSegmentType:(unint64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_27900F700[a3];
+    return off_27900F700[type];
   }
 }
 
-+ (id)longLabelForSegmentType:(unint64_t)a3
++ (id)longLabelForSegmentType:(unint64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_27900F730[a3];
+    return off_27900F730[type];
   }
 }
 
@@ -780,52 +780,52 @@ LABEL_23:
   }
 }
 
-- (int64_t)barStartPositionForBarIndex:(int64_t)a3
+- (int64_t)barStartPositionForBarIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     return 0;
   }
 
-  v5 = a3;
-  if (objc_msgSend_bars(self, a2, a3, v3, v4) <= a3)
+  indexCopy = index;
+  if (objc_msgSend_bars(self, a2, index, v3, v4) <= index)
   {
     return 0;
   }
 
   if (objc_msgSend_samplesPerBar(self, v7, v8, v9, v10) != -1)
   {
-    v5 *= objc_msgSend_samplesPerBar(self, v11, v12, v13, v14);
-    return v5;
+    indexCopy *= objc_msgSend_samplesPerBar(self, v11, v12, v13, v14);
+    return indexCopy;
   }
 
   v15 = objc_msgSend_customBarMarkers(self, v11, v12, v13, v14);
   v20 = objc_msgSend_count(v15, v16, v17, v18, v19);
 
-  if (v20 <= v5)
+  if (v20 <= indexCopy)
   {
     return 0;
   }
 
   v25 = objc_msgSend_customBarMarkers(self, v21, v22, v23, v24);
-  v29 = objc_msgSend_objectAtIndex_(v25, v26, v5, v27, v28);
+  v29 = objc_msgSend_objectAtIndex_(v25, v26, indexCopy, v27, v28);
 
-  if (v5)
+  if (indexCopy)
   {
-    v5 = objc_msgSend_position(v29, v30, v31, v32, v33);
+    indexCopy = objc_msgSend_position(v29, v30, v31, v32, v33);
   }
 
-  return v5;
+  return indexCopy;
 }
 
-- (int64_t)barEndPositionForBarIndex:(int64_t)a3
+- (int64_t)barEndPositionForBarIndex:(int64_t)index
 {
-  if (a3 < 0 || objc_msgSend_bars(self, a2, a3, v3, v4) <= a3)
+  if (index < 0 || objc_msgSend_bars(self, a2, index, v3, v4) <= index)
   {
     return 0;
   }
 
-  if (objc_msgSend_bars(self, v7, v8, v9, v10) - 1 == a3)
+  if (objc_msgSend_bars(self, v7, v8, v9, v10) - 1 == index)
   {
 
     return objc_msgSend_sampleCount(self, v11, v12, v13, v14);
@@ -834,17 +834,17 @@ LABEL_23:
   else
   {
 
-    return objc_msgSend_barStartPositionForBarIndex_(self, v11, a3 + 1, v13, v14);
+    return objc_msgSend_barStartPositionForBarIndex_(self, v11, index + 1, v13, v14);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9 = objc_alloc_init(objc_opt_class());
   if (v9)
   {
     v10 = objc_msgSend_name(self, v5, v6, v7, v8);
-    v14 = objc_msgSend_copyWithZone_(v10, v11, a3, v12, v13);
+    v14 = objc_msgSend_copyWithZone_(v10, v11, zone, v12, v13);
     v15 = v9[2];
     v9[2] = v14;
 
@@ -854,7 +854,7 @@ LABEL_23:
     v9[5] = objc_msgSend_beatsPerBar(self, v28, v29, v30, v31);
     v9[6] = objc_msgSend_samplesPerBar(self, v32, v33, v34, v35);
     v40 = objc_msgSend_customBarMarkers(self, v36, v37, v38, v39);
-    v44 = objc_msgSend_copyWithZone_(v40, v41, a3, v42, v43);
+    v44 = objc_msgSend_copyWithZone_(v40, v41, zone, v42, v43);
     v45 = v9[7];
     v9[7] = v44;
 
@@ -862,18 +862,18 @@ LABEL_23:
     v9[9] = objc_msgSend_sampleCount(self, v50, v51, v52, v53);
     *(v9 + 8) = objc_msgSend_sliceable(self, v54, v55, v56, v57);
     v62 = objc_msgSend_transitions(self, v58, v59, v60, v61);
-    v66 = objc_msgSend_copyWithZone_(v62, v63, a3, v64, v65);
+    v66 = objc_msgSend_copyWithZone_(v62, v63, zone, v64, v65);
     v67 = v9[10];
     v9[10] = v66;
 
     v72 = objc_msgSend_markers(self, v68, v69, v70, v71);
-    v76 = objc_msgSend_copyWithZone_(v72, v73, a3, v74, v75);
+    v76 = objc_msgSend_copyWithZone_(v72, v73, zone, v74, v75);
     v77 = v9[11];
     v9[11] = v76;
 
     v9[13] = objc_msgSend_errors(self, v78, v79, v80, v81);
     v86 = objc_msgSend_metadataValues(self, v82, v83, v84, v85);
-    v90 = objc_msgSend_copyWithZone_(v86, v87, a3, v88, v89);
+    v90 = objc_msgSend_copyWithZone_(v86, v87, zone, v88, v89);
     v91 = v9[14];
     v9[14] = v90;
   }
@@ -881,11 +881,11 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)linkedPerBarTransitionsToSegmentNamed:(id)a3
+- (BOOL)linkedPerBarTransitionsToSegmentNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v9 = objc_msgSend_transitions(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_objectForKey_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_objectForKey_(v9, v10, namedCopy, v11, v12);
 
   objc_opt_class();
   LOBYTE(v9) = objc_opt_isKindOfClass();
@@ -893,29 +893,29 @@ LABEL_23:
   return (v9 & 1) == 0;
 }
 
-- (void)setLinkedPerBarTransitions:(BOOL)a3 toSegmentNamed:(id)a4
+- (void)setLinkedPerBarTransitions:(BOOL)transitions toSegmentNamed:(id)named
 {
-  v4 = a3;
-  v65 = a4;
-  if ((v4 & 1) == 0)
+  transitionsCopy = transitions;
+  namedCopy = named;
+  if ((transitionsCopy & 1) == 0)
   {
     v10 = objc_msgSend_sliceable(self, v6, v7, v8, v9);
-    v6 = v65;
+    v6 = namedCopy;
     if (!v10)
     {
       goto LABEL_28;
     }
   }
 
-  if (objc_msgSend_linkedPerBarTransitionsToSegmentNamed_(self, v6, v65, v8, v9) == v4)
+  if (objc_msgSend_linkedPerBarTransitionsToSegmentNamed_(self, v6, namedCopy, v8, v9) == transitionsCopy)
   {
     goto LABEL_28;
   }
 
-  v14 = objc_msgSend_transitions(self, v65, v11, v12, v13);
-  v18 = objc_msgSend_objectForKey_(v14, v15, v65, v16, v17);
+  v14 = objc_msgSend_transitions(self, namedCopy, v11, v12, v13);
+  v18 = objc_msgSend_objectForKey_(v14, v15, namedCopy, v16, v17);
 
-  if ((v4 & 1) == 0)
+  if ((transitionsCopy & 1) == 0)
   {
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -956,7 +956,7 @@ LABEL_23:
     v57 = objc_msgSend_transitions(self, v42, v43, v44, v45);
     v61 = objc_msgSend_dictionaryWithDictionary_(v56, v58, v57, v59, v60);
 
-    objc_msgSend_setObject_forKey_(v61, v62, v37, v65, v63);
+    objc_msgSend_setObject_forKey_(v61, v62, v37, namedCopy, v63);
     transitions = self->_transitions;
     self->_transitions = v61;
 
@@ -995,12 +995,12 @@ LABEL_10:
 
   if (v27)
   {
-    objc_msgSend_setObject_forKey_(v33, v34, v27, v65, v36);
+    objc_msgSend_setObject_forKey_(v33, v34, v27, namedCopy, v36);
   }
 
   else
   {
-    objc_msgSend_removeObjectForKey_(v33, v34, v65, v35, v36);
+    objc_msgSend_removeObjectForKey_(v33, v34, namedCopy, v35, v36);
   }
 
   v37 = self->_transitions;
@@ -1013,17 +1013,17 @@ LABEL_28:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)transitionToSegmentNamed:(id)a3 fromBarIndex:(int64_t)a4
+- (id)transitionToSegmentNamed:(id)named fromBarIndex:(int64_t)index
 {
-  v10 = a3;
-  if (!v10)
+  namedCopy = named;
+  if (!namedCopy)
   {
     v16 = 0;
     goto LABEL_13;
   }
 
   v11 = objc_msgSend_transitions(self, v6, v7, v8, v9);
-  v15 = objc_msgSend_objectForKey_(v11, v12, v10, v13, v14);
+  v15 = objc_msgSend_objectForKey_(v11, v12, namedCopy, v13, v14);
 
   if (!v15)
   {
@@ -1036,14 +1036,14 @@ LABEL_28:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v16 = 0;
-    if (a4 < 0 || (isKindOfClass & 1) == 0)
+    if (index < 0 || (isKindOfClass & 1) == 0)
     {
       goto LABEL_12;
     }
 
-    if (objc_msgSend_count(v15, v18, v19, v20, v21) > a4)
+    if (objc_msgSend_count(v15, v18, v19, v20, v21) > index)
     {
-      v16 = objc_msgSend_objectAtIndex_(v15, v22, a4, v23, v24);
+      v16 = objc_msgSend_objectAtIndex_(v15, v22, index, v23, v24);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1067,51 +1067,51 @@ LABEL_13:
   return v16;
 }
 
-- (void)addOrReplaceTransition:(id)a3 toSegmentNamed:(id)a4 fromBarIndex:(int64_t)a5
+- (void)addOrReplaceTransition:(id)transition toSegmentNamed:(id)named fromBarIndex:(int64_t)index
 {
-  v51 = a3;
-  v12 = a4;
-  if (v51 && v12)
+  transitionCopy = transition;
+  namedCopy = named;
+  if (transitionCopy && namedCopy)
   {
     v13 = MEMORY[0x277CBEB38];
     v14 = objc_msgSend_transitions(self, v8, v9, v10, v11);
     v18 = objc_msgSend_dictionaryWithDictionary_(v13, v15, v14, v16, v17);
 
-    if (objc_msgSend_linkedPerBarTransitionsToSegmentNamed_(self, v19, v12, v20, v21))
+    if (objc_msgSend_linkedPerBarTransitionsToSegmentNamed_(self, v19, namedCopy, v20, v21))
     {
-      if (objc_msgSend_isDefaultTransition(v51, v22, v23, v24, v25))
+      if (objc_msgSend_isDefaultTransition(transitionCopy, v22, v23, v24, v25))
       {
-        objc_msgSend_removeObjectForKey_(v18, v26, v12, v27, v28);
+        objc_msgSend_removeObjectForKey_(v18, v26, namedCopy, v27, v28);
       }
 
       else
       {
-        objc_msgSend_setObject_forKey_(v18, v26, v51, v12, v28);
+        objc_msgSend_setObject_forKey_(v18, v26, transitionCopy, namedCopy, v28);
       }
     }
 
     else
     {
-      v29 = objc_msgSend_objectForKey_(v18, v22, v12, v24, v25);
+      v29 = objc_msgSend_objectForKey_(v18, v22, namedCopy, v24, v25);
       if (v29)
       {
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        if ((a5 & 0x8000000000000000) == 0 && (isKindOfClass & 1) != 0 && objc_msgSend_count(v29, v31, v32, v33, v34) > a5)
+        if ((index & 0x8000000000000000) == 0 && (isKindOfClass & 1) != 0 && objc_msgSend_count(v29, v31, v32, v33, v34) > index)
         {
           v38 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v35, v29, v36, v37);
-          if (objc_msgSend_isDefaultTransition(v51, v39, v40, v41, v42))
+          if (objc_msgSend_isDefaultTransition(transitionCopy, v39, v40, v41, v42))
           {
             v45 = objc_opt_new();
-            objc_msgSend_setObject_atIndexedSubscript_(v38, v46, v45, a5, v47);
+            objc_msgSend_setObject_atIndexedSubscript_(v38, v46, v45, index, v47);
           }
 
           else
           {
-            objc_msgSend_setObject_atIndexedSubscript_(v38, v43, v51, a5, v44);
+            objc_msgSend_setObject_atIndexedSubscript_(v38, v43, transitionCopy, index, v44);
           }
 
-          objc_msgSend_setObject_forKey_(v18, v48, v38, v12, v49);
+          objc_msgSend_setObject_forKey_(v18, v48, v38, namedCopy, v49);
         }
       }
     }
@@ -1121,14 +1121,14 @@ LABEL_13:
   }
 }
 
-- (void)removeTransitionToSegmentNamed:(id)a3 fromBarIndex:(int64_t)a4
+- (void)removeTransitionToSegmentNamed:(id)named fromBarIndex:(int64_t)index
 {
-  v6 = a3;
-  if (v6)
+  namedCopy = named;
+  if (namedCopy)
   {
     v10 = MEMORY[0x277CBEB38];
-    v38 = v6;
-    v11 = objc_msgSend_transitions(self, v6, v7, v8, v9);
+    v38 = namedCopy;
+    v11 = objc_msgSend_transitions(self, namedCopy, v7, v8, v9);
     v15 = objc_msgSend_dictionaryWithDictionary_(v10, v12, v11, v13, v14);
 
     if (objc_msgSend_linkedPerBarTransitionsToSegmentNamed_(self, v16, v38, v17, v18))
@@ -1143,11 +1143,11 @@ LABEL_13:
       {
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        if ((a4 & 0x8000000000000000) == 0 && (isKindOfClass & 1) != 0 && objc_msgSend_count(v22, v24, v25, v26, v27) > a4)
+        if ((index & 0x8000000000000000) == 0 && (isKindOfClass & 1) != 0 && objc_msgSend_count(v22, v24, v25, v26, v27) > index)
         {
           v31 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v28, v22, v29, v30);
           v32 = objc_opt_new();
-          objc_msgSend_setObject_atIndexedSubscript_(v31, v33, v32, a4, v34);
+          objc_msgSend_setObject_atIndexedSubscript_(v31, v33, v32, index, v34);
 
           objc_msgSend_setObject_forKey_(v15, v35, v31, v38, v36);
         }
@@ -1161,13 +1161,13 @@ LABEL_13:
   MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)canTransitionFromSegment:(id)a3 toSegment:(id)a4 fromBarIndex:(int64_t)a5 checkIfPrevented:(BOOL)a6
++ (BOOL)canTransitionFromSegment:(id)segment toSegment:(id)toSegment fromBarIndex:(int64_t)index checkIfPrevented:(BOOL)prevented
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v15 = objc_msgSend_type(v9, v11, v12, v13, v14);
-  v20 = objc_msgSend_type(v10, v16, v17, v18, v19);
+  preventedCopy = prevented;
+  segmentCopy = segment;
+  toSegmentCopy = toSegment;
+  v15 = objc_msgSend_type(segmentCopy, v11, v12, v13, v14);
+  v20 = objc_msgSend_type(toSegmentCopy, v16, v17, v18, v19);
   LOBYTE(v25) = 0;
   if (v15 == 5 || !v15 || !v20 || v20 == 5)
   {
@@ -1207,20 +1207,20 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v44 = objc_msgSend_nameIndex(v9, v21, v22, v23, v24);
-    v49 = objc_msgSend_nameIndex(v10, v45, v46, v47, v48);
+    v44 = objc_msgSend_nameIndex(segmentCopy, v21, v22, v23, v24);
+    v49 = objc_msgSend_nameIndex(toSegmentCopy, v45, v46, v47, v48);
     v52 = objc_msgSend_compare_options_(v44, v50, v49, 65, v51);
 
     if (v52 != -1)
     {
       if (!v52)
       {
-        v53 = objc_msgSend_nameSuffix(v9, v21, v22, v23, v24);
-        v58 = objc_msgSend_nameSuffix(v10, v54, v55, v56, v57);
+        v53 = objc_msgSend_nameSuffix(segmentCopy, v21, v22, v23, v24);
+        v58 = objc_msgSend_nameSuffix(toSegmentCopy, v54, v55, v56, v57);
         v62 = objc_msgSend_caseInsensitiveCompare_(v53, v59, v58, v60, v61);
 
-        v67 = objc_msgSend_nameIndex(v9, v63, v64, v65, v66);
-        v72 = objc_msgSend_nameIndex(v10, v68, v69, v70, v71);
+        v67 = objc_msgSend_nameIndex(segmentCopy, v63, v64, v65, v66);
+        v72 = objc_msgSend_nameIndex(toSegmentCopy, v68, v69, v70, v71);
         isEqualToString = objc_msgSend_isEqualToString_(v67, v73, v72, v74, v75);
 
         if (v62 == 1)
@@ -1247,18 +1247,18 @@ LABEL_29:
 
   LOBYTE(v25) = 1;
 LABEL_16:
-  if (v6)
+  if (preventedCopy)
   {
-    v27 = objc_msgSend_name(v10, v21, v22, v23, v24);
-    v31 = objc_msgSend_linkedPerBarTransitionsToSegmentNamed_(v9, v28, v27, v29, v30);
+    v27 = objc_msgSend_name(toSegmentCopy, v21, v22, v23, v24);
+    v31 = objc_msgSend_linkedPerBarTransitionsToSegmentNamed_(segmentCopy, v28, v27, v29, v30);
 
     if (v31)
     {
-      a5 = objc_msgSend_bars(v9, v32, v33, v34, v35) - 1;
+      index = objc_msgSend_bars(segmentCopy, v32, v33, v34, v35) - 1;
     }
 
-    v36 = objc_msgSend_name(v10, v32, v33, v34, v35);
-    v39 = objc_msgSend_transitionToSegmentNamed_fromBarIndex_(v9, v37, v36, a5, v38);
+    v36 = objc_msgSend_name(toSegmentCopy, v32, v33, v34, v35);
+    v39 = objc_msgSend_transitionToSegmentNamed_fromBarIndex_(segmentCopy, v37, v36, index, v38);
 
     if (v39)
     {
@@ -1337,78 +1337,78 @@ LABEL_32:
   return v13 & 1;
 }
 
-- (void)setBars:(int64_t)a3
+- (void)setBars:(int64_t)bars
 {
-  if (self->_bars != a3)
+  if (self->_bars != bars)
   {
-    objc_msgSend_relinkAllTransitions(self, a2, a3, v3, v4);
-    self->_bars = a3;
+    objc_msgSend_relinkAllTransitions(self, a2, bars, v3, v4);
+    self->_bars = bars;
   }
 }
 
-+ (id)segmentsWithType:(unint64_t)a3 inSegments:(id)a4
++ (id)segmentsWithType:(unint64_t)type inSegments:(id)segments
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a4;
+  segmentsCopy = segments;
   v11 = objc_msgSend_array(v5, v7, v8, v9, v10);
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = sub_24B8141C8;
   v24 = &unk_27900F690;
   v25 = v11;
-  v26 = a3;
+  typeCopy = type;
   v12 = v11;
-  objc_msgSend_enumerateObjectsUsingBlock_(v6, v13, &v21, v14, v15);
+  objc_msgSend_enumerateObjectsUsingBlock_(segmentsCopy, v13, &v21, v14, v15);
 
   v19 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v16, v12, v17, v18, v21, v22, v23, v24);
 
   return v19;
 }
 
-+ (id)segmentsWithType:(unint64_t)a3 nameIndex:(id)a4 nameSuffix:(id)a5 inSegments:(id)a6
++ (id)segmentsWithType:(unint64_t)type nameIndex:(id)index nameSuffix:(id)suffix inSegments:(id)segments
 {
-  v9 = a4;
-  v10 = a5;
+  indexCopy = index;
+  suffixCopy = suffix;
   v11 = MEMORY[0x277CBEB18];
-  v12 = a6;
+  segmentsCopy = segments;
   v17 = objc_msgSend_array(v11, v13, v14, v15, v16);
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = sub_24B814358;
   v32 = &unk_27900F6B8;
-  v33 = v9;
-  v34 = v10;
+  v33 = indexCopy;
+  v34 = suffixCopy;
   v35 = v17;
-  v36 = a3;
+  typeCopy = type;
   v18 = v17;
-  v19 = v10;
-  v20 = v9;
-  objc_msgSend_enumerateObjectsUsingBlock_(v12, v21, &v29, v22, v23);
+  v19 = suffixCopy;
+  v20 = indexCopy;
+  objc_msgSend_enumerateObjectsUsingBlock_(segmentsCopy, v21, &v29, v22, v23);
 
   v27 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v24, v18, v25, v26, v29, v30, v31, v32);
 
   return v27;
 }
 
-+ (FlexSegment)segmentWithName:(id)a3 inSegments:(id)a4
++ (FlexSegment)segmentWithName:(id)name inSegments:(id)segments
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  segmentsCopy = segments;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_24B814564;
   v20 = sub_24B814574;
   v21 = 0;
-  if (v5)
+  if (nameCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_24B81457C;
     v13[3] = &unk_27900F6E0;
-    v14 = v5;
+    v14 = nameCopy;
     v15 = &v16;
-    objc_msgSend_enumerateObjectsUsingBlock_(v6, v7, v13, v8, v9);
+    objc_msgSend_enumerateObjectsUsingBlock_(segmentsCopy, v7, v13, v8, v9);
 
     v10 = v17[5];
   }
@@ -1424,44 +1424,44 @@ LABEL_32:
   return v11;
 }
 
-+ (int64_t)samplesForTimeInMsec:(int64_t)a3 atSampleRate:(int64_t)a4
++ (int64_t)samplesForTimeInMsec:(int64_t)msec atSampleRate:(int64_t)rate
 {
-  v4 = a4;
-  CMTimeMake(&time, a3, 1000);
-  CMTimeConvertScale(&v6, &time, v4, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+  rateCopy = rate;
+  CMTimeMake(&time, msec, 1000);
+  CMTimeConvertScale(&v6, &time, rateCopy, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
   return v6.value;
 }
 
-+ (int64_t)crossfadeLengthInSamplesForFromSeg:(id)a3 toSeg:(id)a4 fadeOutTimeInMsec:(int64_t)a5 fadeInTimeInMsec:(int64_t)a6 validFadeOutSamples:(int64_t *)a7 validFadeInSamples:(int64_t *)a8
++ (int64_t)crossfadeLengthInSamplesForFromSeg:(id)seg toSeg:(id)toSeg fadeOutTimeInMsec:(int64_t)msec fadeInTimeInMsec:(int64_t)inMsec validFadeOutSamples:(int64_t *)samples validFadeInSamples:(int64_t *)inSamples
 {
-  v13 = a3;
-  v14 = a4;
-  v19 = objc_msgSend_sampleRate(v13, v15, v16, v17, v18);
-  v22 = objc_msgSend_samplesForTimeInMsec_atSampleRate_(FlexSegment, v20, a5, v19, v21);
-  if (v22 > objc_msgSend_sampleCount(v13, v23, v24, v25, v26))
+  segCopy = seg;
+  toSegCopy = toSeg;
+  v19 = objc_msgSend_sampleRate(segCopy, v15, v16, v17, v18);
+  v22 = objc_msgSend_samplesForTimeInMsec_atSampleRate_(FlexSegment, v20, msec, v19, v21);
+  if (v22 > objc_msgSend_sampleCount(segCopy, v23, v24, v25, v26))
   {
-    v22 = objc_msgSend_sampleCount(v13, v27, v28, v29, v30);
+    v22 = objc_msgSend_sampleCount(segCopy, v27, v28, v29, v30);
   }
 
-  if (v22 > objc_msgSend_sampleCount(v14, v27, v28, v29, v30))
+  if (v22 > objc_msgSend_sampleCount(toSegCopy, v27, v28, v29, v30))
   {
-    v22 = objc_msgSend_sampleCount(v14, v31, v32, v33, v34);
+    v22 = objc_msgSend_sampleCount(toSegCopy, v31, v32, v33, v34);
   }
 
-  v35 = objc_msgSend_samplesForTimeInMsec_atSampleRate_(FlexSegment, v31, a6, v19, v34);
-  if (v35 > objc_msgSend_sampleCount(v14, v36, v37, v38, v39))
+  v35 = objc_msgSend_samplesForTimeInMsec_atSampleRate_(FlexSegment, v31, inMsec, v19, v34);
+  if (v35 > objc_msgSend_sampleCount(toSegCopy, v36, v37, v38, v39))
   {
-    v35 = objc_msgSend_sampleCount(v14, v40, v41, v42, v43);
+    v35 = objc_msgSend_sampleCount(toSegCopy, v40, v41, v42, v43);
   }
 
-  if (a7)
+  if (samples)
   {
-    *a7 = v22;
+    *samples = v22;
   }
 
-  if (a8)
+  if (inSamples)
   {
-    *a8 = v35;
+    *inSamples = v35;
   }
 
   if (v35 <= v22)
@@ -1477,17 +1477,17 @@ LABEL_32:
   return v44;
 }
 
-- (void)addMetadataValue:(id)a3 forKey:(id)a4
+- (void)addMetadataValue:(id)value forKey:(id)key
 {
   if (self->_metadataValues)
   {
     v6 = MEMORY[0x277CBEB38];
-    v7 = a4;
-    v8 = a3;
+    keyCopy = key;
+    valueCopy = value;
     v13 = objc_msgSend_metadataValues(self, v9, v10, v11, v12);
     v31 = objc_msgSend_dictionaryWithDictionary_(v6, v14, v13, v15, v16);
 
-    objc_msgSend_setObject_forKey_(v31, v17, v8, v7, v18);
+    objc_msgSend_setObject_forKey_(v31, v17, valueCopy, keyCopy, v18);
     v22 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEAC0], v19, v31, v20, v21);
     metadataValues = self->_metadataValues;
     self->_metadataValues = v22;
@@ -1498,9 +1498,9 @@ LABEL_32:
   else
   {
     v25 = MEMORY[0x277CBEAC0];
-    v26 = a4;
-    v27 = a3;
-    v30 = objc_msgSend_dictionaryWithObject_forKey_(v25, v28, v27, v26, v29);
+    keyCopy2 = key;
+    valueCopy2 = value;
+    v30 = objc_msgSend_dictionaryWithObject_forKey_(v25, v28, valueCopy2, keyCopy2, v29);
 
     v24 = self->_metadataValues;
     self->_metadataValues = v30;

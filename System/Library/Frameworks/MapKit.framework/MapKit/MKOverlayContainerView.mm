@@ -1,45 +1,45 @@
 @interface MKOverlayContainerView
 + (int64_t)_defaultOverlayLevel;
-- ($9433BFB5400FDC760880D1BFD6845728)_mapRectWithFractionOfVisible:(double)a3;
+- ($9433BFB5400FDC760880D1BFD6845728)_mapRectWithFractionOfVisible:(double)visible;
 - (BOOL)_overlaySpansGlobeAndReplacesMapContent;
 - (BOOL)requiresModernMap;
 - (BOOL)supportsElevation;
 - (MKMapView)mapView;
-- (MKOverlayContainerView)initWithFrame:(CGRect)a3;
+- (MKOverlayContainerView)initWithFrame:(CGRect)frame;
 - (MKOverlayContainerViewDelegate)delegate;
 - (NSArray)allDrawables;
 - (NSArray)overlays;
 - (id)_allOverlays;
-- (id)_considerAddingDrawable:(id)a3 inAddRect:(id)a4 level:(int64_t)a5;
-- (id)_viewContainerForLevel:(int64_t)a3;
-- (id)drawableForOverlay:(id)a3;
-- (id)overlaysInLevel:(int64_t)a3;
-- (int64_t)_drawableIndexForDrawable:(id)a3 level:(int64_t)a4;
-- (int64_t)_levelForOverlay:(id)a3 exists:(BOOL *)a4;
+- (id)_considerAddingDrawable:(id)drawable inAddRect:(id)rect level:(int64_t)level;
+- (id)_viewContainerForLevel:(int64_t)level;
+- (id)drawableForOverlay:(id)overlay;
+- (id)overlaysInLevel:(int64_t)level;
+- (int64_t)_drawableIndexForDrawable:(id)drawable level:(int64_t)level;
+- (int64_t)_levelForOverlay:(id)overlay exists:(BOOL *)exists;
 - (unint64_t)_overlayCount;
-- (void)_configureAndAddDrawable:(id)a3 forOverlay:(id)a4 level:(int64_t)a5;
-- (void)_exchangeOverlayAtIndex:(unint64_t)a3 withOverlayAtIndex:(unint64_t)a4 level:(int64_t)a5;
+- (void)_configureAndAddDrawable:(id)drawable forOverlay:(id)overlay level:(int64_t)level;
+- (void)_exchangeOverlayAtIndex:(unint64_t)index withOverlayAtIndex:(unint64_t)atIndex level:(int64_t)level;
 - (void)_flexTerrainIfNeeded;
-- (void)_insertDrawable:(id)a3 forOverlay:(id)a4 atIndex:(int64_t)a5 level:(int64_t)a6;
-- (void)_removeDrawable:(id)a3 forOverlay:(id)a4 level:(int64_t)a5;
+- (void)_insertDrawable:(id)drawable forOverlay:(id)overlay atIndex:(int64_t)index level:(int64_t)level;
+- (void)_removeDrawable:(id)drawable forOverlay:(id)overlay level:(int64_t)level;
 - (void)_unFlexTerrainIfNeeded;
-- (void)_updateContentScale:(id)a3;
+- (void)_updateContentScale:(id)scale;
 - (void)_updateShowsAppleLogoIfNeeded;
 - (void)addAndRemoveOverlayViews;
-- (void)addInternalOverlay:(id)a3 level:(int64_t)a4 provider:(id)a5;
-- (void)addOverlay:(id)a3;
-- (void)addOverlay:(id)a3 level:(int64_t)a4;
-- (void)addOverlays:(id)a3;
-- (void)addOverlays:(id)a3 level:(int64_t)a4;
+- (void)addInternalOverlay:(id)overlay level:(int64_t)level provider:(id)provider;
+- (void)addOverlay:(id)overlay;
+- (void)addOverlay:(id)overlay level:(int64_t)level;
+- (void)addOverlays:(id)overlays;
+- (void)addOverlays:(id)overlays level:(int64_t)level;
 - (void)didMoveToWindow;
-- (void)exchangeOverlay:(id)a3 withOverlay:(id)a4;
-- (void)exchangeOverlayAtIndex:(unint64_t)a3 withOverlayAtIndex:(unint64_t)a4;
-- (void)insertOverlay:(id)a3 aboveOverlay:(id)a4;
-- (void)insertOverlay:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertOverlay:(id)a3 atIndex:(unint64_t)a4 level:(int64_t)a5;
-- (void)insertOverlay:(id)a3 belowOverlay:(id)a4;
-- (void)removeOverlay:(id)a3;
-- (void)removeOverlays:(id)a3;
+- (void)exchangeOverlay:(id)overlay withOverlay:(id)withOverlay;
+- (void)exchangeOverlayAtIndex:(unint64_t)index withOverlayAtIndex:(unint64_t)atIndex;
+- (void)insertOverlay:(id)overlay aboveOverlay:(id)aboveOverlay;
+- (void)insertOverlay:(id)overlay atIndex:(unint64_t)index;
+- (void)insertOverlay:(id)overlay atIndex:(unint64_t)index level:(int64_t)level;
+- (void)insertOverlay:(id)overlay belowOverlay:(id)belowOverlay;
+- (void)removeOverlay:(id)overlay;
+- (void)removeOverlays:(id)overlays;
 @end
 
 @implementation MKOverlayContainerView
@@ -60,15 +60,15 @@
 
 - (id)_allOverlays
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   overlays = self->_overlays;
-  v5 = [(NSMutableOrderedSet *)self->_overlays[0] array];
-  [v3 addObjectsFromArray:v5];
+  array2 = [(NSMutableOrderedSet *)self->_overlays[0] array];
+  [array addObjectsFromArray:array2];
 
-  v6 = [(NSMutableOrderedSet *)overlays[1] array];
-  [v3 addObjectsFromArray:v6];
+  array3 = [(NSMutableOrderedSet *)overlays[1] array];
+  [array addObjectsFromArray:array3];
 
-  return v3;
+  return array;
 }
 
 - (BOOL)_overlaySpansGlobeAndReplacesMapContent
@@ -146,27 +146,27 @@
 
 - (void)_updateShowsAppleLogoIfNeeded
 {
-  v3 = [(MKOverlayContainerView *)self _overlaySpansGlobeAndReplacesMapContent];
+  _overlaySpansGlobeAndReplacesMapContent = [(MKOverlayContainerView *)self _overlaySpansGlobeAndReplacesMapContent];
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
-  [WeakRetained _setShowsAppleLogo:!v3];
+  [WeakRetained _setShowsAppleLogo:!_overlaySpansGlobeAndReplacesMapContent];
 }
 
 - (void)_unFlexTerrainIfNeeded
 {
-  v2 = [(MKOverlayContainerView *)self mapView];
-  [v2 _updateCartographicConfiguration];
+  mapView = [(MKOverlayContainerView *)self mapView];
+  [mapView _updateCartographicConfiguration];
 }
 
 - (void)_flexTerrainIfNeeded
 {
-  v2 = [(MKOverlayContainerView *)self mapView];
-  [v2 _updateCartographicConfiguration];
+  mapView = [(MKOverlayContainerView *)self mapView];
+  [mapView _updateCartographicConfiguration];
 }
 
 - (BOOL)requiresModernMap
 {
-  v2 = [(MKOverlayContainerView *)self _allOverlays];
-  v3 = [MKStandardMapConfiguration _overlaysRequireModernMap:v2];
+  _allOverlays = [(MKOverlayContainerView *)self _allOverlays];
+  v3 = [MKStandardMapConfiguration _overlaysRequireModernMap:_allOverlays];
 
   return v3;
 }
@@ -176,8 +176,8 @@
   v3 = _MKLinkedOnOrAfterReleaseSet(3338);
   if (v3)
   {
-    v4 = [(MKOverlayContainerView *)self _allOverlays];
-    v5 = [MKStandardMapConfiguration _overlaysSupportElevation:v4];
+    _allOverlays = [(MKOverlayContainerView *)self _allOverlays];
+    v5 = [MKStandardMapConfiguration _overlaysSupportElevation:_allOverlays];
 
     LOBYTE(v3) = v5;
   }
@@ -231,29 +231,29 @@
   while ((v5 & 1) != 0);
 }
 
-- (void)_insertDrawable:(id)a3 forOverlay:(id)a4 atIndex:(int64_t)a5 level:(int64_t)a6
+- (void)_insertDrawable:(id)drawable forOverlay:(id)overlay atIndex:(int64_t)index level:(int64_t)level
 {
-  v26 = a3;
-  v10 = self->_overlayToDrawable[a6];
-  v11 = a4;
-  [(NSMapTable *)v10 setObject:v26 forKey:v11];
+  drawableCopy = drawable;
+  v10 = self->_overlayToDrawable[level];
+  overlayCopy = overlay;
+  [(NSMapTable *)v10 setObject:drawableCopy forKey:overlayCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v13 = [WeakRetained vk_mapLayer];
+  vk_mapLayer = [WeakRetained vk_mapLayer];
 
-  v14 = [MEMORY[0x1E69DF460] overlayWithDrawable:v26 forOverlay:v11 atLevel:a6];
+  v14 = [MEMORY[0x1E69DF460] overlayWithDrawable:drawableCopy forOverlay:overlayCopy atLevel:level];
 
-  v15 = [(MKOverlayContainerView *)self mapView];
-  [v26 _setMapView:v15];
+  mapView = [(MKOverlayContainerView *)self mapView];
+  [drawableCopy _setMapView:mapView];
 
-  [(MKOverlayContainerView *)self _updateContentScale:v26];
+  [(MKOverlayContainerView *)self _updateContentScale:drawableCopy];
   drawables = self->_drawables;
-  v17 = [(NSMutableArray *)self->_drawables[a6] count];
-  v18 = self->_drawables[a6];
-  if (v17 <= a5)
+  v17 = [(NSMutableArray *)self->_drawables[level] count];
+  v18 = self->_drawables[level];
+  if (v17 <= index)
   {
-    [(NSMutableArray *)v18 addObject:v26];
-    [(NSMutableArray *)self->_vkOverlays[a6] addObject:v14];
-    if (a5)
+    [(NSMutableArray *)v18 addObject:drawableCopy];
+    [(NSMutableArray *)self->_vkOverlays[level] addObject:v14];
+    if (index)
     {
       goto LABEL_3;
     }
@@ -261,58 +261,58 @@
 
   else
   {
-    [(NSMutableArray *)v18 insertObject:v26 atIndex:a5];
-    [(NSMutableArray *)self->_vkOverlays[a6] insertObject:v14 atIndex:a5];
-    if (a5)
+    [(NSMutableArray *)v18 insertObject:drawableCopy atIndex:index];
+    [(NSMutableArray *)self->_vkOverlays[level] insertObject:v14 atIndex:index];
+    if (index)
     {
 LABEL_3:
-      v19 = [(NSMutableArray *)drawables[a6] objectAtIndex:a5 - 1];
+      v19 = [(NSMutableArray *)drawables[level] objectAtIndex:index - 1];
       goto LABEL_6;
     }
   }
 
   v19 = 0;
 LABEL_6:
-  v20 = a5 + 1;
-  if (a5 + 1 >= [(NSMutableArray *)drawables[a6] count])
+  v20 = index + 1;
+  if (index + 1 >= [(NSMutableArray *)drawables[level] count])
   {
     v21 = 0;
   }
 
   else
   {
-    v21 = [(NSMutableArray *)drawables[a6] objectAtIndex:a5 + 1];
+    v21 = [(NSMutableArray *)drawables[level] objectAtIndex:index + 1];
   }
 
-  if (a5)
+  if (index)
   {
-    a5 = [(NSMutableArray *)self->_vkOverlays[a6] objectAtIndex:a5 - 1];
+    index = [(NSMutableArray *)self->_vkOverlays[level] objectAtIndex:index - 1];
   }
 
-  if (v20 >= [(NSMutableArray *)self->_vkOverlays[a6] count])
+  if (v20 >= [(NSMutableArray *)self->_vkOverlays[level] count])
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = [(NSMutableArray *)self->_vkOverlays[a6] objectAtIndex:v20];
+    v22 = [(NSMutableArray *)self->_vkOverlays[level] objectAtIndex:v20];
   }
 
-  v23 = [v26 _mk_overlayView];
-  if (v23)
+  _mk_overlayView = [drawableCopy _mk_overlayView];
+  if (_mk_overlayView)
   {
-    v24 = [(MKOverlayContainerView *)self _viewContainerForLevel:a6];
+    v24 = [(MKOverlayContainerView *)self _viewContainerForLevel:level];
     if (v19)
     {
 LABEL_16:
-      v25 = [v19 _mk_overlayView];
-      if (v23)
+      _mk_overlayView2 = [v19 _mk_overlayView];
+      if (_mk_overlayView)
       {
-        [v24 insertSubview:v23 aboveSubview:v25];
+        [v24 insertSubview:_mk_overlayView aboveSubview:_mk_overlayView2];
       }
 
-      [v13 insertOverlay:v14 aboveOverlay:a5];
+      [vk_mapLayer insertOverlay:v14 aboveOverlay:index];
 LABEL_24:
 
       goto LABEL_25;
@@ -330,49 +330,49 @@ LABEL_24:
 
   if (v21)
   {
-    v25 = [v21 _mk_overlayView];
-    if (v23)
+    _mk_overlayView2 = [v21 _mk_overlayView];
+    if (_mk_overlayView)
     {
-      [v24 insertSubview:v23 belowSubview:v25];
+      [v24 insertSubview:_mk_overlayView belowSubview:_mk_overlayView2];
     }
 
-    [v13 insertOverlay:v14 belowOverlay:v22];
+    [vk_mapLayer insertOverlay:v14 belowOverlay:v22];
     goto LABEL_24;
   }
 
-  if (v23)
+  if (_mk_overlayView)
   {
-    [v24 addSubview:v23];
+    [v24 addSubview:_mk_overlayView];
   }
 
-  [v13 addOverlay:v14];
+  [vk_mapLayer addOverlay:v14];
 LABEL_25:
 }
 
-- (void)_updateContentScale:(id)a3
+- (void)_updateContentScale:(id)scale
 {
-  v16 = a3;
-  v4 = [(MKOverlayContainerView *)self window];
-  v5 = [v4 screen];
-  v6 = v5;
-  if (v5)
+  scaleCopy = scale;
+  window = [(MKOverlayContainerView *)self window];
+  screen = [window screen];
+  v6 = screen;
+  if (screen)
   {
-    v7 = v5;
+    mainScreen = screen;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   }
 
-  v8 = v7;
+  v8 = mainScreen;
 
   [v8 scale];
   v10 = v9;
   [v8 nativeScale];
   v12 = v11;
-  v13 = [MEMORY[0x1E69DC668] sharedApplication];
-  if ([v13 _isClassic])
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  if ([mEMORY[0x1E69DC668] _isClassic])
   {
 
 LABEL_10:
@@ -399,20 +399,20 @@ LABEL_10:
   }
 
 LABEL_11:
-  [v16 setContentScaleFactor:v15 * (v15 / v10)];
+  [scaleCopy setContentScaleFactor:v15 * (v15 / v10)];
 }
 
-- (void)_removeDrawable:(id)a3 forOverlay:(id)a4 level:(int64_t)a5
+- (void)_removeDrawable:(id)drawable forOverlay:(id)overlay level:(int64_t)level
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  drawableCopy = drawable;
+  overlayCopy = overlay;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   vkOverlays = self->_vkOverlays;
-  v11 = self->_vkOverlays[a5];
+  v11 = self->_vkOverlays[level];
   v12 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -427,9 +427,9 @@ LABEL_11:
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 delegate];
+        delegate = [v15 delegate];
 
-        if (v16 == v8)
+        if (delegate == drawableCopy)
         {
           v12 = v15;
           goto LABEL_11;
@@ -449,54 +449,54 @@ LABEL_11:
     vkOverlays = self->_vkOverlays;
   }
 
-  [v8 _setMapView:0];
+  [drawableCopy _setMapView:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v18 = [WeakRetained vk_mapLayer];
-  [v18 removeOverlay:v12];
+  vk_mapLayer = [WeakRetained vk_mapLayer];
+  [vk_mapLayer removeOverlay:v12];
 
   [v12 setDelegate:0];
-  v19 = [v8 _mk_overlayView];
-  [v19 removeFromSuperview];
+  _mk_overlayView = [drawableCopy _mk_overlayView];
+  [_mk_overlayView removeFromSuperview];
 
-  [(NSMapTable *)self->_overlayToDrawable[a5] removeObjectForKey:v9];
-  [(NSMutableArray *)self->_drawables[a5] removeObjectIdenticalTo:v8];
+  [(NSMapTable *)self->_overlayToDrawable[level] removeObjectForKey:overlayCopy];
+  [(NSMutableArray *)self->_drawables[level] removeObjectIdenticalTo:drawableCopy];
   if (v12)
   {
-    [(NSMutableArray *)vkOverlays[a5] removeObjectIdenticalTo:v12];
+    [(NSMutableArray *)vkOverlays[level] removeObjectIdenticalTo:v12];
   }
 }
 
 - (NSArray)allDrawables
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   overlayToDrawable = self->_overlayToDrawable;
-  v5 = [(NSMapTable *)self->_overlayToDrawable[0] objectEnumerator];
-  v6 = [v5 allObjects];
+  objectEnumerator = [(NSMapTable *)self->_overlayToDrawable[0] objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  v7 = [(NSMapTable *)overlayToDrawable[1] objectEnumerator];
-  v8 = [v7 allObjects];
+  objectEnumerator2 = [(NSMapTable *)overlayToDrawable[1] objectEnumerator];
+  allObjects2 = [objectEnumerator2 allObjects];
 
-  if (v6)
+  if (allObjects)
   {
-    [v3 addObjectsFromArray:v6];
+    [array addObjectsFromArray:allObjects];
   }
 
-  if (v8)
+  if (allObjects2)
   {
-    [v3 addObjectsFromArray:v8];
+    [array addObjectsFromArray:allObjects2];
   }
 
-  return v3;
+  return array;
 }
 
-- (id)drawableForOverlay:(id)a3
+- (id)drawableForOverlay:(id)overlay
 {
-  v4 = a3;
+  overlayCopy = overlay;
   v8 = 0;
-  v5 = [(MKOverlayContainerView *)self _levelForOverlay:v4 exists:&v8];
+  v5 = [(MKOverlayContainerView *)self _levelForOverlay:overlayCopy exists:&v8];
   if (v8 == 1)
   {
-    v6 = [(NSMapTable *)self->_overlayToDrawable[v5] objectForKey:v4];
+    v6 = [(NSMapTable *)self->_overlayToDrawable[v5] objectForKey:overlayCopy];
   }
 
   else
@@ -507,11 +507,11 @@ LABEL_11:
   return v6;
 }
 
-- (id)overlaysInLevel:(int64_t)a3
+- (id)overlaysInLevel:(int64_t)level
 {
-  checkLevel(a3);
-  v5 = [(NSMutableOrderedSet *)self->_overlays[a3] array];
-  v6 = [v5 copy];
+  checkLevel(level);
+  array = [(NSMutableOrderedSet *)self->_overlays[level] array];
+  v6 = [array copy];
 
   return v6;
 }
@@ -520,11 +520,11 @@ LABEL_11:
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[MKOverlayContainerView _overlayCount](self, "_overlayCount")}];
   overlays = self->_overlays;
-  v5 = [(NSMutableOrderedSet *)self->_overlays[0] array];
-  [v3 addObjectsFromArray:v5];
+  array = [(NSMutableOrderedSet *)self->_overlays[0] array];
+  [v3 addObjectsFromArray:array];
 
-  v6 = [(NSMutableOrderedSet *)overlays[1] array];
-  [v3 addObjectsFromArray:v6];
+  array2 = [(NSMutableOrderedSet *)overlays[1] array];
+  [v3 addObjectsFromArray:array2];
 
   return v3;
 }
@@ -548,52 +548,52 @@ LABEL_11:
   return v3;
 }
 
-- (void)insertOverlay:(id)a3 belowOverlay:(id)a4
+- (void)insertOverlay:(id)overlay belowOverlay:(id)belowOverlay
 {
-  v6 = a3;
-  v7 = a4;
+  overlayCopy = overlay;
+  belowOverlayCopy = belowOverlay;
   v9 = 0;
-  v8 = [(MKOverlayContainerView *)self _levelForOverlay:v7 exists:&v9];
+  v8 = [(MKOverlayContainerView *)self _levelForOverlay:belowOverlayCopy exists:&v9];
   if (v9)
   {
-    [(MKOverlayContainerView *)self insertOverlay:v6 atIndex:[(NSMutableOrderedSet *)self->_overlays[v8] indexOfObject:v7] level:v8];
+    [(MKOverlayContainerView *)self insertOverlay:overlayCopy atIndex:[(NSMutableOrderedSet *)self->_overlays[v8] indexOfObject:belowOverlayCopy] level:v8];
   }
 
   else
   {
-    [(MKOverlayContainerView *)self addOverlay:v6];
+    [(MKOverlayContainerView *)self addOverlay:overlayCopy];
   }
 }
 
-- (void)insertOverlay:(id)a3 aboveOverlay:(id)a4
+- (void)insertOverlay:(id)overlay aboveOverlay:(id)aboveOverlay
 {
-  v6 = a3;
-  v7 = a4;
+  overlayCopy = overlay;
+  aboveOverlayCopy = aboveOverlay;
   v9 = 0;
-  v8 = [(MKOverlayContainerView *)self _levelForOverlay:v7 exists:&v9];
+  v8 = [(MKOverlayContainerView *)self _levelForOverlay:aboveOverlayCopy exists:&v9];
   if (v9)
   {
-    [(MKOverlayContainerView *)self insertOverlay:v6 atIndex:[(NSMutableOrderedSet *)self->_overlays[v8] indexOfObject:v7]+ 1 level:v8];
+    [(MKOverlayContainerView *)self insertOverlay:overlayCopy atIndex:[(NSMutableOrderedSet *)self->_overlays[v8] indexOfObject:aboveOverlayCopy]+ 1 level:v8];
   }
 
   else
   {
-    [(MKOverlayContainerView *)self addOverlay:v6];
+    [(MKOverlayContainerView *)self addOverlay:overlayCopy];
   }
 }
 
-- (void)exchangeOverlay:(id)a3 withOverlay:(id)a4
+- (void)exchangeOverlay:(id)overlay withOverlay:(id)withOverlay
 {
-  v6 = a3;
-  v7 = a4;
+  overlayCopy = overlay;
+  withOverlayCopy = withOverlay;
   v13 = 0;
-  v8 = [(MKOverlayContainerView *)self _levelForOverlay:v6 exists:&v13 + 1];
-  v9 = [(MKOverlayContainerView *)self _levelForOverlay:v7 exists:&v13];
+  v8 = [(MKOverlayContainerView *)self _levelForOverlay:overlayCopy exists:&v13 + 1];
+  v9 = [(MKOverlayContainerView *)self _levelForOverlay:withOverlayCopy exists:&v13];
   if (HIBYTE(v13) == 1 && v13 == 1)
   {
     v10 = v9;
-    v11 = [(NSMutableOrderedSet *)self->_overlays[v8] indexOfObject:v6];
-    v12 = [(NSMutableOrderedSet *)self->_overlays[v10] indexOfObject:v7];
+    v11 = [(NSMutableOrderedSet *)self->_overlays[v8] indexOfObject:overlayCopy];
+    v12 = [(NSMutableOrderedSet *)self->_overlays[v10] indexOfObject:withOverlayCopy];
     if (v8 == v10)
     {
       [(MKOverlayContainerView *)self _exchangeOverlayAtIndex:v11 withOverlayAtIndex:v12 level:v8];
@@ -601,95 +601,95 @@ LABEL_11:
 
     else
     {
-      [(MKOverlayContainerView *)self insertOverlay:v7 atIndex:v11 level:v8];
-      [(MKOverlayContainerView *)self insertOverlay:v6 atIndex:v12 level:v10];
+      [(MKOverlayContainerView *)self insertOverlay:withOverlayCopy atIndex:v11 level:v8];
+      [(MKOverlayContainerView *)self insertOverlay:overlayCopy atIndex:v12 level:v10];
     }
   }
 }
 
-- (void)exchangeOverlayAtIndex:(unint64_t)a3 withOverlayAtIndex:(unint64_t)a4
+- (void)exchangeOverlayAtIndex:(unint64_t)index withOverlayAtIndex:(unint64_t)atIndex
 {
-  v7 = [objc_opt_class() _defaultOverlayLevel];
+  _defaultOverlayLevel = [objc_opt_class() _defaultOverlayLevel];
 
-  [(MKOverlayContainerView *)self _exchangeOverlayAtIndex:a3 withOverlayAtIndex:a4 level:v7];
+  [(MKOverlayContainerView *)self _exchangeOverlayAtIndex:index withOverlayAtIndex:atIndex level:_defaultOverlayLevel];
 }
 
-- (void)_exchangeOverlayAtIndex:(unint64_t)a3 withOverlayAtIndex:(unint64_t)a4 level:(int64_t)a5
+- (void)_exchangeOverlayAtIndex:(unint64_t)index withOverlayAtIndex:(unint64_t)atIndex level:(int64_t)level
 {
-  if (a3 != a4)
+  if (index != atIndex)
   {
-    if (a3 <= a4)
+    if (index <= atIndex)
     {
-      v8 = a4;
+      indexCopy = atIndex;
     }
 
     else
     {
-      v8 = a3;
+      indexCopy = index;
     }
 
-    if (a3 >= a4)
+    if (index >= atIndex)
     {
-      v9 = a4;
+      indexCopy2 = atIndex;
     }
 
     else
     {
-      v9 = a3;
+      indexCopy2 = index;
     }
 
     overlays = self->_overlays;
-    v14 = [(NSMutableOrderedSet *)self->_overlays[a5] objectAtIndex:v9];
-    v11 = [(NSMutableOrderedSet *)overlays[a5] objectAtIndex:v8];
-    v12 = [(NSMapTable *)self->_overlayToDrawable[a5] objectForKey:v14];
-    v13 = [(NSMapTable *)self->_overlayToDrawable[a5] objectForKey:v11];
-    [(NSMutableOrderedSet *)overlays[a5] exchangeObjectAtIndex:v9 withObjectAtIndex:v8];
+    v14 = [(NSMutableOrderedSet *)self->_overlays[level] objectAtIndex:indexCopy2];
+    v11 = [(NSMutableOrderedSet *)overlays[level] objectAtIndex:indexCopy];
+    v12 = [(NSMapTable *)self->_overlayToDrawable[level] objectForKey:v14];
+    v13 = [(NSMapTable *)self->_overlayToDrawable[level] objectForKey:v11];
+    [(NSMutableOrderedSet *)overlays[level] exchangeObjectAtIndex:indexCopy2 withObjectAtIndex:indexCopy];
     if (v12)
     {
-      [(MKOverlayContainerView *)self _removeDrawable:v12 forOverlay:v14 level:a5];
+      [(MKOverlayContainerView *)self _removeDrawable:v12 forOverlay:v14 level:level];
     }
 
     if (v13)
     {
-      [(MKOverlayContainerView *)self _removeDrawable:v13 forOverlay:v11 level:a5];
+      [(MKOverlayContainerView *)self _removeDrawable:v13 forOverlay:v11 level:level];
     }
 
     if (v12)
     {
-      [(MKOverlayContainerView *)self _insertDrawable:v12 forOverlay:v14 atIndex:[(MKOverlayContainerView *)self _drawableIndexForDrawable:v12 level:a5] level:a5];
+      [(MKOverlayContainerView *)self _insertDrawable:v12 forOverlay:v14 atIndex:[(MKOverlayContainerView *)self _drawableIndexForDrawable:v12 level:level] level:level];
     }
 
     if (v13)
     {
-      [(MKOverlayContainerView *)self _insertDrawable:v13 forOverlay:v11 atIndex:[(MKOverlayContainerView *)self _drawableIndexForDrawable:v13 level:a5] level:a5];
+      [(MKOverlayContainerView *)self _insertDrawable:v13 forOverlay:v11 atIndex:[(MKOverlayContainerView *)self _drawableIndexForDrawable:v13 level:level] level:level];
     }
   }
 }
 
-- (void)insertOverlay:(id)a3 atIndex:(unint64_t)a4
+- (void)insertOverlay:(id)overlay atIndex:(unint64_t)index
 {
-  v6 = a3;
-  -[MKOverlayContainerView insertOverlay:atIndex:level:](self, "insertOverlay:atIndex:level:", v6, a4, [objc_opt_class() _defaultOverlayLevel]);
+  overlayCopy = overlay;
+  -[MKOverlayContainerView insertOverlay:atIndex:level:](self, "insertOverlay:atIndex:level:", overlayCopy, index, [objc_opt_class() _defaultOverlayLevel]);
 }
 
-- (void)insertOverlay:(id)a3 atIndex:(unint64_t)a4 level:(int64_t)a5
+- (void)insertOverlay:(id)overlay atIndex:(unint64_t)index level:(int64_t)level
 {
-  v13 = a3;
+  overlayCopy = overlay;
   [(MKOverlayContainerView *)self removeOverlay:?];
-  v8 = [(NSMutableOrderedSet *)self->_overlays[a5] count];
-  v9 = self->_overlays[a5];
-  if (v8 <= a4)
+  v8 = [(NSMutableOrderedSet *)self->_overlays[level] count];
+  v9 = self->_overlays[level];
+  if (v8 <= index)
   {
-    [(NSMutableOrderedSet *)v9 addObject:v13];
+    [(NSMutableOrderedSet *)v9 addObject:overlayCopy];
   }
 
   else
   {
-    [(NSMutableOrderedSet *)v9 insertObject:v13 atIndex:a4];
+    [(NSMutableOrderedSet *)v9 insertObject:overlayCopy atIndex:index];
   }
 
   [(MKOverlayContainerView *)self _mapRectWithFractionOfVisible:3.0];
-  v10 = [(MKOverlayContainerView *)self _considerAddingDrawable:v13 inAddRect:a5 level:?];
+  v10 = [(MKOverlayContainerView *)self _considerAddingDrawable:overlayCopy inAddRect:level level:?];
   if (v10)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -698,15 +698,15 @@ LABEL_11:
   }
 }
 
-- (void)removeOverlays:(id)a3
+- (void)removeOverlays:(id)overlays
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  overlaysCopy = overlays;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [overlaysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -718,45 +718,45 @@ LABEL_11:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(overlaysCopy);
         }
 
         [(MKOverlayContainerView *)self removeOverlay:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [overlaysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)removeOverlay:(id)a3
+- (void)removeOverlay:(id)overlay
 {
-  v4 = a3;
-  if (v4)
+  overlayCopy = overlay;
+  if (overlayCopy)
   {
     v8 = 0;
-    v5 = [(MKOverlayContainerView *)self _levelForOverlay:v4 exists:&v8];
+    v5 = [(MKOverlayContainerView *)self _levelForOverlay:overlayCopy exists:&v8];
     if (v8 == 1)
     {
       v6 = v5;
-      v7 = [(NSMapTable *)self->_overlayToDrawable[v5] objectForKey:v4];
+      v7 = [(NSMapTable *)self->_overlayToDrawable[v5] objectForKey:overlayCopy];
       if (v7)
       {
-        [(MKOverlayContainerView *)self _removeDrawable:v7 forOverlay:v4 level:v6];
+        [(MKOverlayContainerView *)self _removeDrawable:v7 forOverlay:overlayCopy level:v6];
       }
 
-      [(NSMutableOrderedSet *)self->_overlays[v6] removeObject:v4];
-      [(NSMapTable *)self->_internalOverlayToProvider removeObjectForKey:v4];
+      [(NSMutableOrderedSet *)self->_overlays[v6] removeObject:overlayCopy];
+      [(NSMapTable *)self->_internalOverlayToProvider removeObjectForKey:overlayCopy];
       [(MKOverlayContainerView *)self _updateShowsAppleLogoIfNeeded];
       [(MKOverlayContainerView *)self _unFlexTerrainIfNeeded];
     }
   }
 }
 
-- (int64_t)_levelForOverlay:(id)a3 exists:(BOOL *)a4
+- (int64_t)_levelForOverlay:(id)overlay exists:(BOOL *)exists
 {
   v6 = 0;
   overlays = self->_overlays;
@@ -764,9 +764,9 @@ LABEL_11:
   do
   {
     v9 = v8;
-    if (([(NSMutableOrderedSet *)overlays[v6] containsObject:a3]& 1) != 0)
+    if (([(NSMutableOrderedSet *)overlays[v6] containsObject:overlay]& 1) != 0)
     {
-      *a4 = 1;
+      *exists = 1;
       return v6;
     }
 
@@ -775,29 +775,29 @@ LABEL_11:
   }
 
   while ((v9 & 1) != 0);
-  *a4 = 0;
+  *exists = 0;
   v10 = objc_opt_class();
 
   return [v10 _defaultOverlayLevel];
 }
 
-- (void)addOverlays:(id)a3
+- (void)addOverlays:(id)overlays
 {
-  v4 = a3;
-  -[MKOverlayContainerView addOverlays:level:](self, "addOverlays:level:", v4, [objc_opt_class() _defaultOverlayLevel]);
+  overlaysCopy = overlays;
+  -[MKOverlayContainerView addOverlays:level:](self, "addOverlays:level:", overlaysCopy, [objc_opt_class() _defaultOverlayLevel]);
 }
 
-- (void)addOverlay:(id)a3
+- (void)addOverlay:(id)overlay
 {
-  v4 = a3;
-  -[MKOverlayContainerView addOverlay:level:](self, "addOverlay:level:", v4, [objc_opt_class() _defaultOverlayLevel]);
+  overlayCopy = overlay;
+  -[MKOverlayContainerView addOverlay:level:](self, "addOverlay:level:", overlayCopy, [objc_opt_class() _defaultOverlayLevel]);
 }
 
-- (void)addOverlays:(id)a3 level:(int64_t)a4
+- (void)addOverlays:(id)overlays level:(int64_t)level
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  checkLevel(a4);
+  overlaysCopy = overlays;
+  checkLevel(level);
   [(MKOverlayContainerView *)self _mapRectWithFractionOfVisible:3.0];
   v8 = v7;
   v10 = v9;
@@ -807,16 +807,16 @@ LABEL_11:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = v6;
+  v15 = overlaysCopy;
   v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
-  v17 = v15;
+  array = v15;
   if (!v16)
   {
     goto LABEL_14;
   }
 
   v18 = v16;
-  v17 = 0;
+  array = 0;
   v19 = *v25;
   do
   {
@@ -829,16 +829,16 @@ LABEL_11:
 
       v21 = *(*(&v24 + 1) + 8 * i);
       [(MKOverlayContainerView *)self removeOverlay:v21, v24];
-      [(NSMutableOrderedSet *)self->_overlays[a4] addObject:v21];
-      v22 = [(MKOverlayContainerView *)self _considerAddingDrawable:v21 inAddRect:a4 level:v8, v10, v12, v14];
+      [(NSMutableOrderedSet *)self->_overlays[level] addObject:v21];
+      v22 = [(MKOverlayContainerView *)self _considerAddingDrawable:v21 inAddRect:level level:v8, v10, v12, v14];
       if (v22)
       {
-        if (!v17)
+        if (!array)
         {
-          v17 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        [v17 addObject:v22];
+        [array addObject:v22];
       }
     }
 
@@ -847,22 +847,22 @@ LABEL_11:
 
   while (v18);
 
-  if (v17)
+  if (array)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained overlayContainerAddedDrawables:v17];
+    [WeakRetained overlayContainerAddedDrawables:array];
 
 LABEL_14:
   }
 }
 
-- (void)addInternalOverlay:(id)a3 level:(int64_t)a4 provider:(id)a5
+- (void)addInternalOverlay:(id)overlay level:(int64_t)level provider:(id)provider
 {
-  v15 = a3;
-  v8 = a5;
-  checkLevel(a4);
-  [(MKOverlayContainerView *)self removeOverlay:v15];
-  [(NSMutableOrderedSet *)self->_overlays[a4] addObject:v15];
+  overlayCopy = overlay;
+  providerCopy = provider;
+  checkLevel(level);
+  [(MKOverlayContainerView *)self removeOverlay:overlayCopy];
+  [(NSMutableOrderedSet *)self->_overlays[level] addObject:overlayCopy];
   internalOverlayToProvider = self->_internalOverlayToProvider;
   if (!internalOverlayToProvider)
   {
@@ -873,9 +873,9 @@ LABEL_14:
     internalOverlayToProvider = self->_internalOverlayToProvider;
   }
 
-  [(NSMapTable *)internalOverlayToProvider setObject:v8 forKey:v15];
+  [(NSMapTable *)internalOverlayToProvider setObject:providerCopy forKey:overlayCopy];
   [(MKOverlayContainerView *)self _mapRectWithFractionOfVisible:3.0];
-  v12 = [(MKOverlayContainerView *)self _considerAddingDrawable:v15 inAddRect:a4 level:?];
+  v12 = [(MKOverlayContainerView *)self _considerAddingDrawable:overlayCopy inAddRect:level level:?];
   if (v12)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -884,14 +884,14 @@ LABEL_14:
   }
 }
 
-- (void)addOverlay:(id)a3 level:(int64_t)a4
+- (void)addOverlay:(id)overlay level:(int64_t)level
 {
-  v6 = a3;
-  checkLevel(a4);
-  [(MKOverlayContainerView *)self removeOverlay:v6];
-  [(NSMutableOrderedSet *)self->_overlays[a4] addObject:v6];
+  overlayCopy = overlay;
+  checkLevel(level);
+  [(MKOverlayContainerView *)self removeOverlay:overlayCopy];
+  [(NSMutableOrderedSet *)self->_overlays[level] addObject:overlayCopy];
   [(MKOverlayContainerView *)self _mapRectWithFractionOfVisible:3.0];
-  v9 = [(MKOverlayContainerView *)self _considerAddingDrawable:v6 inAddRect:a4 level:?];
+  v9 = [(MKOverlayContainerView *)self _considerAddingDrawable:overlayCopy inAddRect:level level:?];
 
   if (v9)
   {
@@ -903,22 +903,22 @@ LABEL_14:
 
 - (void)addAndRemoveOverlayViews
 {
-  v2 = self;
+  selfCopy = self;
   v70 = *MEMORY[0x1E69E9840];
   [(MKOverlayContainerView *)self _mapRectWithFractionOfVisible:3.0];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [(MKOverlayContainerView *)v2 _mapRectWithFractionOfVisible:5.0];
+  [(MKOverlayContainerView *)selfCopy _mapRectWithFractionOfVisible:5.0];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v58 = 0;
-  p_isa = &v2->super.super.super.isa;
+  p_isa = &selfCopy->super.super.super.isa;
   v19 = 0;
-  drawables = v2->_drawables;
+  drawables = selfCopy->_drawables;
   v20 = 1;
   do
   {
@@ -928,15 +928,15 @@ LABEL_14:
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    overlays = v2->_overlays;
-    v22 = v2->_overlays[v19];
+    overlays = selfCopy->_overlays;
+    v22 = selfCopy->_overlays[v19];
     v23 = [(NSMutableOrderedSet *)v22 countByEnumeratingWithState:&v64 objects:v69 count:16];
     if (v23)
     {
       v24 = v23;
       v25 = *v65;
       v26 = v19;
-      v27 = (&v2->super.super.super.isa + v19);
+      v27 = (&selfCopy->super.super.super.isa + v19);
       do
       {
         for (i = 0; i != v24; ++i)
@@ -1046,7 +1046,7 @@ LABEL_25:
 
     v20 = 0;
     v19 = 1;
-    v2 = p_isa;
+    selfCopy = p_isa;
   }
 
   while ((v57 & 1) != 0);
@@ -1060,23 +1060,23 @@ LABEL_25:
   }
 }
 
-- (id)_considerAddingDrawable:(id)a3 inAddRect:(id)a4 level:(int64_t)a5
+- (id)_considerAddingDrawable:(id)drawable inAddRect:(id)rect level:(int64_t)level
 {
-  var1 = a4.var1.var1;
-  var0 = a4.var1.var0;
-  v8 = a4.var0.var1;
-  v9 = a4.var0.var0;
-  v11 = a3;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v8 = rect.var0.var1;
+  v9 = rect.var0.var0;
+  drawableCopy = drawable;
   [(MKOverlayContainerView *)self _updateShowsAppleLogoIfNeeded];
   [(MKOverlayContainerView *)self _flexTerrainIfNeeded];
-  v12 = [(NSMapTable *)self->_overlayToDrawable[a5] objectForKey:v11];
+  v12 = [(NSMapTable *)self->_overlayToDrawable[level] objectForKey:drawableCopy];
 
   if (v12)
   {
     goto LABEL_2;
   }
 
-  v15 = v11;
+  v15 = drawableCopy;
   if (objc_opt_respondsToSelector())
   {
     v16 = [v15 intersectsMapRect:{v9, v8, var0, var1}];
@@ -1120,7 +1120,7 @@ LABEL_10:
   v13 = [v28 createDrawableForOverlay:v15];
   if (v13)
   {
-    [(MKOverlayContainerView *)self _configureAndAddDrawable:v13 forOverlay:v15 level:a5];
+    [(MKOverlayContainerView *)self _configureAndAddDrawable:v13 forOverlay:v15 level:level];
   }
 
 LABEL_3:
@@ -1128,26 +1128,26 @@ LABEL_3:
   return v13;
 }
 
-- (void)_configureAndAddDrawable:(id)a3 forOverlay:(id)a4 level:(int64_t)a5
+- (void)_configureAndAddDrawable:(id)drawable forOverlay:(id)overlay level:(int64_t)level
 {
-  v8 = a4;
-  v19 = a3;
-  [v8 boundingMapRect];
+  overlayCopy = overlay;
+  drawableCopy = drawable;
+  [overlayCopy boundingMapRect];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v19 set_boundingMapRect:?];
-  v17 = [v19 _mk_overlayLayer];
-  [v17 setPosition:{v10 + v14 * 0.5, v12 + v16 * 0.5}];
+  [drawableCopy set_boundingMapRect:?];
+  _mk_overlayLayer = [drawableCopy _mk_overlayLayer];
+  [_mk_overlayLayer setPosition:{v10 + v14 * 0.5, v12 + v16 * 0.5}];
 
-  v18 = [v19 _mk_overlayLayer];
-  [v18 setBounds:{0.0, 0.0, v14, v16}];
+  _mk_overlayLayer2 = [drawableCopy _mk_overlayLayer];
+  [_mk_overlayLayer2 setBounds:{0.0, 0.0, v14, v16}];
 
-  [(MKOverlayContainerView *)self _insertDrawable:v19 forOverlay:v8 atIndex:[(MKOverlayContainerView *)self _drawableIndexForDrawable:v19 level:a5] level:a5];
+  [(MKOverlayContainerView *)self _insertDrawable:drawableCopy forOverlay:overlayCopy atIndex:[(MKOverlayContainerView *)self _drawableIndexForDrawable:drawableCopy level:level] level:level];
 }
 
-- ($9433BFB5400FDC760880D1BFD6845728)_mapRectWithFractionOfVisible:(double)a3
+- ($9433BFB5400FDC760880D1BFD6845728)_mapRectWithFractionOfVisible:(double)visible
 {
   v26[4] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1177,10 +1177,10 @@ LABEL_3:
 
   else
   {
-    v19 = v7 - v11 * a3;
-    v17 = v9 - v13 * a3;
-    v11 = v11 - -(v11 * a3) * 2.0;
-    v13 = v13 - -(v13 * a3) * 2.0;
+    v19 = v7 - v11 * visible;
+    v17 = v9 - v13 * visible;
+    v11 = v11 - -(v11 * visible) * 2.0;
+    v13 = v13 - -(v13 * visible) * 2.0;
   }
 
   v20 = 0x41B0000000000000;
@@ -1193,22 +1193,22 @@ LABEL_3:
   return MKMapRectIntersection(*&v21, *(&v17 - 1));
 }
 
-- (int64_t)_drawableIndexForDrawable:(id)a3 level:(int64_t)a4
+- (int64_t)_drawableIndexForDrawable:(id)drawable level:(int64_t)level
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [a3 overlay];
+  overlay = [drawable overlay];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = self->_overlays[a4];
+  v7 = self->_overlays[level];
   v8 = [(NSMutableOrderedSet *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = 0;
     v11 = *v17;
-    v12 = (&self->super.super.super.isa + a4);
+    v12 = (&self->super.super.super.isa + level);
 LABEL_3:
     v13 = 0;
     while (1)
@@ -1218,7 +1218,7 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      if (*(*(&v16 + 1) + 8 * v13) == v6)
+      if (*(*(&v16 + 1) + 8 * v13) == overlay)
       {
         break;
       }
@@ -1251,30 +1251,30 @@ LABEL_3:
   return v10;
 }
 
-- (id)_viewContainerForLevel:(int64_t)a3
+- (id)_viewContainerForLevel:(int64_t)level
 {
   viewContainers = self->_viewContainers;
-  v5 = self->_viewContainers[a3];
+  v5 = self->_viewContainers[level];
   if (!v5)
   {
     v7 = objc_alloc(MEMORY[0x1E69DD250]);
     [(MKOverlayContainerView *)self bounds];
     v8 = [v7 initWithFrame:?];
-    v9 = viewContainers[a3];
-    viewContainers[a3] = v8;
+    v9 = viewContainers[level];
+    viewContainers[level] = v8;
 
-    if (a3 < 1)
+    if (level < 1)
     {
 LABEL_9:
-      [(MKOverlayContainerView *)self insertSubview:viewContainers[a3] atIndex:0];
+      [(MKOverlayContainerView *)self insertSubview:viewContainers[level] atIndex:0];
     }
 
     else
     {
-      v10 = a3;
-      while (v10 >= 1)
+      levelCopy = level;
+      while (levelCopy >= 1)
       {
-        v11 = self->_vkOverlays[v10-- + 1];
+        v11 = self->_vkOverlays[levelCopy-- + 1];
         if (v11)
         {
           v12 = v11;
@@ -1289,20 +1289,20 @@ LABEL_9:
       }
 
 LABEL_8:
-      [(MKOverlayContainerView *)self insertSubview:viewContainers[a3] aboveSubview:v12];
+      [(MKOverlayContainerView *)self insertSubview:viewContainers[level] aboveSubview:v12];
     }
 
-    v5 = viewContainers[a3];
+    v5 = viewContainers[level];
   }
 
   return v5;
 }
 
-- (MKOverlayContainerView)initWithFrame:(CGRect)a3
+- (MKOverlayContainerView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = MKOverlayContainerView;
-  v3 = [(MKOverlayContainerView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKOverlayContainerView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = 0;

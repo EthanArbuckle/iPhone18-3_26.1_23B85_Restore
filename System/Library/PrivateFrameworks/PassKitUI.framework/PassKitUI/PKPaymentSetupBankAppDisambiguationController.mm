@@ -1,28 +1,28 @@
 @interface PKPaymentSetupBankAppDisambiguationController
-- (PKPaymentSetupBankAppDisambiguationController)initWithPaymentSetupProduct:(id)a3 inAppMethod:(id)a4 cameraCaptureMethod:(id)a5;
+- (PKPaymentSetupBankAppDisambiguationController)initWithPaymentSetupProduct:(id)product inAppMethod:(id)method cameraCaptureMethod:(id)captureMethod;
 - (PKPaymentSetupBankAppDisambiguationControllerDelegate)delegate;
-- (id)_listItemWithName:(id)a3;
+- (id)_listItemWithName:(id)name;
 - (id)identifiers;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_updateItemWithIdentifier:(id)a3 loadingIndicatorVisibility:(BOOL)a4;
-- (void)didSelectItem:(id)a3;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_updateItemWithIdentifier:(id)identifier loadingIndicatorVisibility:(BOOL)visibility;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKPaymentSetupBankAppDisambiguationController
 
-- (PKPaymentSetupBankAppDisambiguationController)initWithPaymentSetupProduct:(id)a3 inAppMethod:(id)a4 cameraCaptureMethod:(id)a5
+- (PKPaymentSetupBankAppDisambiguationController)initWithPaymentSetupProduct:(id)product inAppMethod:(id)method cameraCaptureMethod:(id)captureMethod
 {
   v53 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  productCopy = product;
+  methodCopy = method;
+  captureMethodCopy = captureMethod;
   v48.receiver = self;
   v48.super_class = PKPaymentSetupBankAppDisambiguationController;
   v12 = [(PKPaymentSetupListSectionController *)&v48 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_paymentSetupProduct, a3);
+    objc_storeStrong(&v12->_paymentSetupProduct, product);
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     inAppItemIdentifierToItemMapping = v13->_inAppItemIdentifierToItemMapping;
     v13->_inAppItemIdentifierToItemMapping = v14;
@@ -31,14 +31,14 @@
     cameraItemIdentifierToItemMapping = v13->_cameraItemIdentifierToItemMapping;
     v13->_cameraItemIdentifierToItemMapping = v16;
 
-    v39 = v10;
-    v18 = [v10 cardTypeSupport];
-    v19 = [v11 cardTypeSupport];
+    v39 = methodCopy;
+    cardTypeSupport = [methodCopy cardTypeSupport];
+    cardTypeSupport2 = [captureMethodCopy cardTypeSupport];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v20 = v18;
+    v20 = cardTypeSupport;
     v21 = [v20 countByEnumeratingWithState:&v44 objects:v52 count:16];
     if (v21)
     {
@@ -73,7 +73,7 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v29 = v19;
+    v29 = cardTypeSupport2;
     v30 = [v29 countByEnumeratingWithState:&v40 objects:v50 count:16];
     if (v30)
     {
@@ -104,13 +104,13 @@
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
     [(NSMutableArray *)v35 sortUsingDescriptors:v37];
 
-    v10 = v39;
+    methodCopy = v39;
   }
 
   return v13;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -130,16 +130,16 @@
   return v2;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = [a3 identifier];
-  [(PKPaymentSetupBankAppDisambiguationController *)self _updateItemWithIdentifier:v4 loadingIndicatorVisibility:1];
+  identifier = [item identifier];
+  [(PKPaymentSetupBankAppDisambiguationController *)self _updateItemWithIdentifier:identifier loadingIndicatorVisibility:1];
   inAppItemIdentifierToItemMapping = self->_inAppItemIdentifierToItemMapping;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __63__PKPaymentSetupBankAppDisambiguationController_didSelectItem___block_invoke;
   v16[3] = &unk_1E801AB30;
-  v6 = v4;
+  v6 = identifier;
   v17 = v6;
   v7 = [(NSMutableArray *)inAppItemIdentifierToItemMapping pk_containsObjectPassingTest:v16];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -178,28 +178,28 @@ uint64_t __63__PKPaymentSetupBankAppDisambiguationController_didSelectItem___blo
   return v4;
 }
 
-- (id)_listItemWithName:(id)a3
+- (id)_listItemWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [PKPaymentSetupListItem alloc];
   v5 = PKUIImageNamed(@"PlaceholderCardArt_Small");
-  v6 = [(PKPaymentSetupListItem *)v4 initWithTitle:v3 subtitle:0 icon:v5];
+  v6 = [(PKPaymentSetupListItem *)v4 initWithTitle:nameCopy subtitle:0 icon:v5];
 
   [(PKPaymentSetupListItem *)v6 setDisplayChevron:1];
 
   return v6;
 }
 
-- (void)_updateItemWithIdentifier:(id)a3 loadingIndicatorVisibility:(BOOL)a4
+- (void)_updateItemWithIdentifier:(id)identifier loadingIndicatorVisibility:(BOOL)visibility
 {
-  v4 = a4;
-  v6 = a3;
+  visibilityCopy = visibility;
+  identifierCopy = identifier;
   v7 = self->_inAppItemIdentifierToItemMapping;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __102__PKPaymentSetupBankAppDisambiguationController__updateItemWithIdentifier_loadingIndicatorVisibility___block_invoke;
   v21[3] = &unk_1E801AB58;
-  v8 = v6;
+  v8 = identifierCopy;
   v22 = v8;
   v9 = [(NSMutableArray *)v7 indexOfObjectPassingTest:v21];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
@@ -227,10 +227,10 @@ uint64_t __63__PKPaymentSetupBankAppDisambiguationController_didSelectItem___blo
 
   v12 = [(NSMutableArray *)v7 objectAtIndex:v11, v16, v17, v18, v19];
   v13 = v12;
-  if (v12 && [v12 loadingIndicatorVisible] != v4)
+  if (v12 && [v12 loadingIndicatorVisible] != visibilityCopy)
   {
     v14 = [v13 copy];
-    [v14 setLoadingIndicatorVisible:v4];
+    [v14 setLoadingIndicatorVisible:visibilityCopy];
     [(NSMutableArray *)v7 replaceObjectAtIndex:v11 withObject:v14];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained reloadItem:v14 animated:1];

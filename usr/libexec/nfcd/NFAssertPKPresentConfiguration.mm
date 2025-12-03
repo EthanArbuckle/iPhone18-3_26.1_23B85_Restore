@@ -1,18 +1,18 @@
 @interface NFAssertPKPresentConfiguration
-+ (id)configurationWithOptions:(unint64_t)a3 expressPassIDList:(id)a4 clientInfo:(id)a5;
++ (id)configurationWithOptions:(unint64_t)options expressPassIDList:(id)list clientInfo:(id)info;
 @end
 
 @implementation NFAssertPKPresentConfiguration
 
-+ (id)configurationWithOptions:(unint64_t)a3 expressPassIDList:(id)a4 clientInfo:(id)a5
++ (id)configurationWithOptions:(unint64_t)options expressPassIDList:(id)list clientInfo:(id)info
 {
-  v7 = a5;
-  v8 = a4;
+  infoCopy = info;
+  listCopy = list;
   v9 = objc_opt_new();
-  [v9 setOptions:a3];
-  [v9 setExpressPassIDList:v8];
+  [v9 setOptions:options];
+  [v9 setExpressPassIDList:listCopy];
 
-  [v9 setClientInfo:v7];
+  [v9 setClientInfo:infoCopy];
 
   return v9;
 }

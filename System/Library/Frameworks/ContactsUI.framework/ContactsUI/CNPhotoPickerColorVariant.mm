@@ -1,18 +1,18 @@
 @interface CNPhotoPickerColorVariant
-- (BOOL)isEqual:(id)a3;
-- (CNPhotoPickerColorVariant)initWithColor:(id)a3 named:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CNPhotoPickerColorVariant)initWithColor:(id)color named:(id)named;
 @end
 
 @implementation CNPhotoPickerColorVariant
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -53,18 +53,18 @@ uint64_t __37__CNPhotoPickerColorVariant_isEqual___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (CNPhotoPickerColorVariant)initWithColor:(id)a3 named:(id)a4
+- (CNPhotoPickerColorVariant)initWithColor:(id)color named:(id)named
 {
-  v7 = a3;
-  v8 = a4;
+  colorCopy = color;
+  namedCopy = named;
   v13.receiver = self;
   v13.super_class = CNPhotoPickerColorVariant;
   v9 = [(CNPhotoPickerColorVariant *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_color, a3);
-    objc_storeStrong(&v10->_colorName, a4);
+    objc_storeStrong(&v9->_color, color);
+    objc_storeStrong(&v10->_colorName, named);
     v11 = v10;
   }
 

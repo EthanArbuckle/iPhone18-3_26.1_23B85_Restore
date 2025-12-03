@@ -1,45 +1,45 @@
 @interface _MLCANEDomTree
-+ (id)computeDominationForGraph:(id)a3;
-+ (id)computeDominationForGraphImpl:(id)a3;
-+ (void)computeDominationForLayer:(id)a3 dominationTree:(id)a4;
-- (BOOL)doesLayer:(id)a3 dominates:(id)a4;
-- (BOOL)doesLayer:(id)a3 dominatesSubgraph:(id)a4;
-- (BOOL)doesSubgraph:(id)a3 dominatesLayer:(id)a4;
-- (BOOL)doesSubgraph:(id)a3 dominatesSubgraph:(id)a4;
-- (id)getDominanceFrontierForSubgraph:(id)a3;
-- (id)getPostDominanceFrontierForSubgraph:(id)a3;
-- (id)initDomTree:(id)a3;
++ (id)computeDominationForGraph:(id)graph;
++ (id)computeDominationForGraphImpl:(id)impl;
++ (void)computeDominationForLayer:(id)layer dominationTree:(id)tree;
+- (BOOL)doesLayer:(id)layer dominates:(id)dominates;
+- (BOOL)doesLayer:(id)layer dominatesSubgraph:(id)subgraph;
+- (BOOL)doesSubgraph:(id)subgraph dominatesLayer:(id)layer;
+- (BOOL)doesSubgraph:(id)subgraph dominatesSubgraph:(id)dominatesSubgraph;
+- (id)getDominanceFrontierForSubgraph:(id)subgraph;
+- (id)getPostDominanceFrontierForSubgraph:(id)subgraph;
+- (id)initDomTree:(id)tree;
 @end
 
 @implementation _MLCANEDomTree
 
-+ (id)computeDominationForGraph:(id)a3
++ (id)computeDominationForGraph:(id)graph
 {
-  v4 = [_MLCANEDomTree computeDominationForGraphImpl:a3];
-  v5 = [[a1 alloc] initDomTree:v4];
+  v4 = [_MLCANEDomTree computeDominationForGraphImpl:graph];
+  v5 = [[self alloc] initDomTree:v4];
 
   return v5;
 }
 
-- (BOOL)doesLayer:(id)a3 dominates:(id)a4
+- (BOOL)doesLayer:(id)layer dominates:(id)dominates
 {
-  v6 = a3;
-  if (v6 == a4)
+  layerCopy = layer;
+  if (layerCopy == dominates)
   {
     v11 = 1;
   }
 
   else
   {
-    v7 = a4;
-    v8 = [(_MLCANEDomTree *)self dominationTree];
-    v9 = [v7 key];
+    dominatesCopy = dominates;
+    dominationTree = [(_MLCANEDomTree *)self dominationTree];
+    v9 = [dominatesCopy key];
 
-    v10 = [v8 objectForKeyedSubscript:v9];
+    v10 = [dominationTree objectForKeyedSubscript:v9];
 
     if (v10)
     {
-      v11 = [v10 containsObject:v6];
+      v11 = [v10 containsObject:layerCopy];
     }
 
     else
@@ -51,16 +51,16 @@
   return v11;
 }
 
-- (BOOL)doesLayer:(id)a3 dominatesSubgraph:(id)a4
+- (BOOL)doesLayer:(id)layer dominatesSubgraph:(id)subgraph
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  layerCopy = layer;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subgraphCopy = subgraph;
+  v8 = [subgraphCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -71,17 +71,17 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subgraphCopy);
         }
 
-        if ([(_MLCANEDomTree *)self doesLayer:v6 dominates:*(*(&v15 + 1) + 8 * i), v15])
+        if ([(_MLCANEDomTree *)self doesLayer:layerCopy dominates:*(*(&v15 + 1) + 8 * i), v15])
         {
           v12 = 1;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [subgraphCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -98,16 +98,16 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)doesSubgraph:(id)a3 dominatesLayer:(id)a4
+- (BOOL)doesSubgraph:(id)subgraph dominatesLayer:(id)layer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  subgraphCopy = subgraph;
+  layerCopy = layer;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = subgraphCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -122,7 +122,7 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        if ([(_MLCANEDomTree *)self doesLayer:*(*(&v16 + 1) + 8 * i) dominates:v7, v16])
+        if ([(_MLCANEDomTree *)self doesLayer:*(*(&v16 + 1) + 8 * i) dominates:layerCopy, v16])
         {
           v13 = 1;
           goto LABEL_11;
@@ -146,16 +146,16 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)doesSubgraph:(id)a3 dominatesSubgraph:(id)a4
+- (BOOL)doesSubgraph:(id)subgraph dominatesSubgraph:(id)dominatesSubgraph
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  subgraphCopy = subgraph;
+  dominatesSubgraphCopy = dominatesSubgraph;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v8 = v6;
+  v8 = subgraphCopy;
   v9 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v9)
   {
@@ -177,12 +177,12 @@ LABEL_11:
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v13 = [v12 resultTensors];
-        v29 = [v13 countByEnumeratingWithState:&v35 objects:v44 count:16];
+        resultTensors = [v12 resultTensors];
+        v29 = [resultTensors countByEnumeratingWithState:&v35 objects:v44 count:16];
         if (v29)
         {
           v14 = *v36;
-          v30 = v13;
+          v30 = resultTensors;
           v28 = *v36;
           do
           {
@@ -190,7 +190,7 @@ LABEL_11:
             {
               if (*v36 != v14)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(resultTensors);
               }
 
               v16 = *(*(&v35 + 1) + 8 * i);
@@ -198,8 +198,8 @@ LABEL_11:
               v32 = 0u;
               v33 = 0u;
               v34 = 0u;
-              v17 = [v16 childLayers];
-              v18 = [v17 countByEnumeratingWithState:&v31 objects:v43 count:16];
+              childLayers = [v16 childLayers];
+              v18 = [childLayers countByEnumeratingWithState:&v31 objects:v43 count:16];
               if (v18)
               {
                 v19 = v18;
@@ -210,11 +210,11 @@ LABEL_11:
                   {
                     if (*v32 != v20)
                     {
-                      objc_enumerationMutation(v17);
+                      objc_enumerationMutation(childLayers);
                     }
 
                     v22 = *(*(&v31 + 1) + 8 * j);
-                    if (([v8 containsObject:v22] & 1) == 0 && -[_MLCANEDomTree doesLayer:dominatesSubgraph:](self, "doesLayer:dominatesSubgraph:", v22, v7))
+                    if (([v8 containsObject:v22] & 1) == 0 && -[_MLCANEDomTree doesLayer:dominatesSubgraph:](self, "doesLayer:dominatesSubgraph:", v22, dominatesSubgraphCopy))
                     {
 
                       v23 = 1;
@@ -222,7 +222,7 @@ LABEL_11:
                     }
                   }
 
-                  v19 = [v17 countByEnumeratingWithState:&v31 objects:v43 count:16];
+                  v19 = [childLayers countByEnumeratingWithState:&v31 objects:v43 count:16];
                   if (v19)
                   {
                     continue;
@@ -232,7 +232,7 @@ LABEL_11:
                 }
               }
 
-              v13 = v30;
+              resultTensors = v30;
               v14 = v28;
             }
 
@@ -265,16 +265,16 @@ LABEL_27:
   return v23;
 }
 
-- (id)getDominanceFrontierForSubgraph:(id)a3
+- (id)getDominanceFrontierForSubgraph:(id)subgraph
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  subgraphCopy = subgraph;
   v4 = [MEMORY[0x277CBEB58] set];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v3;
+  v5 = subgraphCopy;
   v22 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v22)
   {
@@ -315,8 +315,8 @@ LABEL_27:
               v26 = 0u;
               v27 = 0u;
               v28 = 0u;
-              v13 = [v12 parentLayers];
-              v14 = [v13 countByEnumeratingWithState:&v25 objects:v37 count:16];
+              parentLayers = [v12 parentLayers];
+              v14 = [parentLayers countByEnumeratingWithState:&v25 objects:v37 count:16];
               if (v14)
               {
                 v15 = v14;
@@ -327,7 +327,7 @@ LABEL_27:
                   {
                     if (*v26 != v16)
                     {
-                      objc_enumerationMutation(v13);
+                      objc_enumerationMutation(parentLayers);
                     }
 
                     v18 = *(*(&v25 + 1) + 8 * j);
@@ -337,7 +337,7 @@ LABEL_27:
                     }
                   }
 
-                  v15 = [v13 countByEnumeratingWithState:&v25 objects:v37 count:16];
+                  v15 = [parentLayers countByEnumeratingWithState:&v25 objects:v37 count:16];
                 }
 
                 while (v15);
@@ -365,16 +365,16 @@ LABEL_27:
   return v4;
 }
 
-- (id)getPostDominanceFrontierForSubgraph:(id)a3
+- (id)getPostDominanceFrontierForSubgraph:(id)subgraph
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  subgraphCopy = subgraph;
   v4 = [MEMORY[0x277CBEB58] set];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v3;
+  v5 = subgraphCopy;
   v22 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v22)
   {
@@ -415,8 +415,8 @@ LABEL_27:
               v26 = 0u;
               v27 = 0u;
               v28 = 0u;
-              v13 = [v12 childLayers];
-              v14 = [v13 countByEnumeratingWithState:&v25 objects:v37 count:16];
+              childLayers = [v12 childLayers];
+              v14 = [childLayers countByEnumeratingWithState:&v25 objects:v37 count:16];
               if (v14)
               {
                 v15 = v14;
@@ -427,7 +427,7 @@ LABEL_27:
                   {
                     if (*v26 != v16)
                     {
-                      objc_enumerationMutation(v13);
+                      objc_enumerationMutation(childLayers);
                     }
 
                     v18 = *(*(&v25 + 1) + 8 * j);
@@ -437,7 +437,7 @@ LABEL_27:
                     }
                   }
 
-                  v15 = [v13 countByEnumeratingWithState:&v25 objects:v37 count:16];
+                  v15 = [childLayers countByEnumeratingWithState:&v25 objects:v37 count:16];
                 }
 
                 while (v15);
@@ -465,13 +465,13 @@ LABEL_27:
   return v4;
 }
 
-+ (void)computeDominationForLayer:(id)a3 dominationTree:(id)a4
++ (void)computeDominationForLayer:(id)layer dominationTree:(id)tree
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 key];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  layerCopy = layer;
+  treeCopy = tree;
+  v8 = [layerCopy key];
+  v9 = [treeCopy objectForKeyedSubscript:v8];
 
   if (!v9)
   {
@@ -480,12 +480,12 @@ LABEL_27:
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = [v6 sourceTensors];
-    v26 = [v11 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    sourceTensors = [layerCopy sourceTensors];
+    v26 = [sourceTensors countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v26)
     {
       v12 = *v34;
-      v28 = v11;
+      v28 = sourceTensors;
       v25 = *v34;
       do
       {
@@ -494,7 +494,7 @@ LABEL_27:
         {
           if (*v34 != v12)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(sourceTensors);
           }
 
           v27 = v13;
@@ -503,8 +503,8 @@ LABEL_27:
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v15 = [v14 parentLayers];
-          v16 = [v15 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          parentLayers = [v14 parentLayers];
+          v16 = [parentLayers countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v16)
           {
             v17 = v16;
@@ -515,14 +515,14 @@ LABEL_27:
               {
                 if (*v30 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(parentLayers);
                 }
 
                 v20 = *(*(&v29 + 1) + 8 * i);
                 [v10 addObject:v20];
-                [a1 computeDominationForLayer:v20 dominationTree:v7];
+                [self computeDominationForLayer:v20 dominationTree:treeCopy];
                 v21 = [v20 key];
-                v22 = [v7 objectForKeyedSubscript:v21];
+                v22 = [treeCopy objectForKeyedSubscript:v21];
 
                 if (!v22)
                 {
@@ -534,7 +534,7 @@ LABEL_27:
                 [v10 unionSet:v22];
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v29 objects:v37 count:16];
+              v17 = [parentLayers countByEnumeratingWithState:&v29 objects:v37 count:16];
               if (v17)
               {
                 continue;
@@ -545,7 +545,7 @@ LABEL_27:
           }
 
           v13 = v27 + 1;
-          v11 = v28;
+          sourceTensors = v28;
           v12 = v25;
         }
 
@@ -556,24 +556,24 @@ LABEL_27:
       while (v26);
     }
 
-    v23 = [v6 key];
-    [v7 setObject:v10 forKeyedSubscript:v23];
+    v23 = [layerCopy key];
+    [treeCopy setObject:v10 forKeyedSubscript:v23];
 LABEL_19:
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)computeDominationForGraphImpl:(id)a3
++ (id)computeDominationForGraphImpl:(id)impl
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  implCopy = impl;
   v5 = [MEMORY[0x277CBEC10] mutableCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = implCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -591,7 +591,7 @@ LABEL_19:
         v11 = *(*(&v14 + 1) + 8 * i);
         if ([v11 isLastLayer])
         {
-          [a1 computeDominationForLayer:v11 dominationTree:v5];
+          [self computeDominationForLayer:v11 dominationTree:v5];
         }
       }
 
@@ -606,16 +606,16 @@ LABEL_19:
   return v5;
 }
 
-- (id)initDomTree:(id)a3
+- (id)initDomTree:(id)tree
 {
-  v5 = a3;
+  treeCopy = tree;
   v9.receiver = self;
   v9.super_class = _MLCANEDomTree;
   v6 = [(_MLCANEDomTree *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dominationTree, a3);
+    objc_storeStrong(&v6->_dominationTree, tree);
   }
 
   return v7;

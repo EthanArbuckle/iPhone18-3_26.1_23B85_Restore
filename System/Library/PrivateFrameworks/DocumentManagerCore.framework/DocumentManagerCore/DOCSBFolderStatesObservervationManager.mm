@@ -3,14 +3,14 @@
 - (DOCFolderStateProviding)folderObservationProvider;
 - (DOCSBFolderStatesObservervationManager)init;
 - (NSDictionary)folderStates;
-- (id)_fetchStoredItemsWithFolderID:(id)a3;
-- (void)_compareItemsWithLeft:(id)a3 right:(id)a4;
-- (void)_handleFolderChangedWithFolderID:(id)a3 topItems:(id)a4;
-- (void)_storeItems:(id)a3 folderID:(id)a4;
-- (void)setFolderObservationProvider:(id)a3;
-- (void)setFolderStates:(id)a3;
+- (id)_fetchStoredItemsWithFolderID:(id)d;
+- (void)_compareItemsWithLeft:(id)left right:(id)right;
+- (void)_handleFolderChangedWithFolderID:(id)d topItems:(id)items;
+- (void)_storeItems:(id)items folderID:(id)d;
+- (void)setFolderObservationProvider:(id)provider;
+- (void)setFolderStates:(id)states;
 - (void)start;
-- (void)stopObservingFolderID:(id)a3;
+- (void)stopObservingFolderID:(id)d;
 @end
 
 @implementation DOCSBFolderStatesObservervationManager
@@ -35,10 +35,10 @@
   return v3;
 }
 
-- (void)setFolderObservationProvider:(id)a3
+- (void)setFolderObservationProvider:(id)provider
 {
   v3 = *(self + OBJC_IVAR___DOCSBFolderStatesObservervationManager_folderObservationProvider);
-  *(self + OBJC_IVAR___DOCSBFolderStatesObservervationManager_folderObservationProvider) = a3;
+  *(self + OBJC_IVAR___DOCSBFolderStatesObservervationManager_folderObservationProvider) = provider;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -54,7 +54,7 @@
   return v3;
 }
 
-- (void)setFolderStates:(id)a3
+- (void)setFolderStates:(id)states
 {
   type metadata accessor for DOCSBFolderState(self);
   v4 = sub_24938A3FC();
@@ -62,38 +62,38 @@
   *(self + OBJC_IVAR___DOCSBFolderStatesObservervationManager_folderStates) = v4;
 }
 
-- (void)stopObservingFolderID:(id)a3
+- (void)stopObservingFolderID:(id)d
 {
   v4 = sub_24938A45C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_249380564(v4, v6);
 }
 
-- (void)_handleFolderChangedWithFolderID:(id)a3 topItems:(id)a4
+- (void)_handleFolderChangedWithFolderID:(id)d topItems:(id)items
 {
   v5 = sub_24938A45C();
   v7 = v6;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EEE2D58, &qword_24938F5D8);
   v8 = sub_24938A4FC();
-  v9 = self;
+  selfCopy = self;
   sub_249380BE4(v5, v7, v8);
 }
 
-- (void)_compareItemsWithLeft:(id)a3 right:(id)a4
+- (void)_compareItemsWithLeft:(id)left right:(id)right
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EEE2D58, &qword_24938F5D8);
   v5 = sub_24938A4FC();
   v6 = sub_24938A4FC();
-  v7 = self;
+  selfCopy = self;
   sub_249381F9C(v5, v6);
 }
 
-- (id)_fetchStoredItemsWithFolderID:(id)a3
+- (id)_fetchStoredItemsWithFolderID:(id)d
 {
   v4 = sub_24938A45C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_2493822B4(v4, v6);
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EEE2D58, &qword_24938F5D8);
@@ -102,13 +102,13 @@
   return v8;
 }
 
-- (void)_storeItems:(id)a3 folderID:(id)a4
+- (void)_storeItems:(id)items folderID:(id)d
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EEE2D58, &qword_24938F5D8);
   v5 = sub_24938A4FC();
   v6 = sub_24938A45C();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   sub_24938255C(v5, v6, v8);
 }
 

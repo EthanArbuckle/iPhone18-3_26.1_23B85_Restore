@@ -1,25 +1,25 @@
 @interface MIUIMedicalIDViewController
-- (MIUIMedicalIDViewController)initWithCoder:(id)a3;
-- (MIUIMedicalIDViewController)initWithHealthStore:(id)a3 displayConfiguration:(id)a4;
-- (MIUIMedicalIDViewController)initWithHealthStore:(id)a3 medicalIDData:(id)a4 displayConfiguration:(id)a5;
+- (MIUIMedicalIDViewController)initWithCoder:(id)coder;
+- (MIUIMedicalIDViewController)initWithHealthStore:(id)store displayConfiguration:(id)configuration;
+- (MIUIMedicalIDViewController)initWithHealthStore:(id)store medicalIDData:(id)data displayConfiguration:(id)configuration;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation MIUIMedicalIDViewController
 
-- (MIUIMedicalIDViewController)initWithHealthStore:(id)a3 displayConfiguration:(id)a4
+- (MIUIMedicalIDViewController)initWithHealthStore:(id)store displayConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = MIUIMedicalIDViewController;
   v9 = [(MIUIMedicalIDViewController *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_displayConfiguration, a4);
-    objc_storeStrong(&v10->_healthStore, a3);
+    objc_storeStrong(&v9->_displayConfiguration, configuration);
+    objc_storeStrong(&v10->_healthStore, store);
     medicalIDData = v10->_medicalIDData;
     v10->_medicalIDData = 0;
 
@@ -35,20 +35,20 @@
   return v10;
 }
 
-- (MIUIMedicalIDViewController)initWithHealthStore:(id)a3 medicalIDData:(id)a4 displayConfiguration:(id)a5
+- (MIUIMedicalIDViewController)initWithHealthStore:(id)store medicalIDData:(id)data displayConfiguration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  dataCopy = data;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = MIUIMedicalIDViewController;
   v12 = [(MIUIMedicalIDViewController *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_healthStore, a3);
-    objc_storeStrong(&v13->_medicalIDData, a4);
-    objc_storeStrong(&v13->_displayConfiguration, a5);
+    objc_storeStrong(&v12->_healthStore, store);
+    objc_storeStrong(&v13->_medicalIDData, data);
+    objc_storeStrong(&v13->_displayConfiguration, configuration);
     v14 = objc_alloc_init(_TtC11MedicalIDUI20MedicalIDViewFactory);
     factory = v13->_factory;
     v13->_factory = v14;
@@ -61,11 +61,11 @@
   return v13;
 }
 
-- (MIUIMedicalIDViewController)initWithCoder:(id)a3
+- (MIUIMedicalIDViewController)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = MIUIMedicalIDViewController;
-  v3 = [(MIUIMedicalIDViewController *)&v14 initWithCoder:a3];
+  v3 = [(MIUIMedicalIDViewController *)&v14 initWithCoder:coder];
   if (v3)
   {
     v4 = +[MIUIDisplayConfiguration standardConfiguration];
@@ -97,19 +97,19 @@
   v23.super_class = MIUIMedicalIDViewController;
   [(MIUIMedicalIDViewController *)&v23 viewDidLoad];
   [(MIUIMedicalIDViewController *)self addChildViewController:self->_hostedController];
-  v3 = [(MIUIMedicalIDViewController *)self view];
-  v4 = [(UIViewController *)self->_hostedController view];
-  [v3 addSubview:v4];
+  view = [(MIUIMedicalIDViewController *)self view];
+  view2 = [(UIViewController *)self->_hostedController view];
+  [view addSubview:view2];
 
   [(UIViewController *)self->_hostedController didMoveToParentViewController:self];
   v5 = [MIUIMedicalIDNavigationBarView alloc];
   healthStore = self->_healthStore;
   medicalIDData = self->_medicalIDData;
-  v8 = [(MIUIDisplayConfiguration *)self->_displayConfiguration isLockScreen];
-  v9 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  v10 = [(MIUIMedicalIDNavigationBarView *)v5 initWithHealthStore:healthStore medicalIDData:medicalIDData showDateUpdated:v8 locale:v9];
-  v11 = [(MIUIMedicalIDViewController *)self navigationItem];
-  [v11 setTitleView:v10];
+  isLockScreen = [(MIUIDisplayConfiguration *)self->_displayConfiguration isLockScreen];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  v10 = [(MIUIMedicalIDNavigationBarView *)v5 initWithHealthStore:healthStore medicalIDData:medicalIDData showDateUpdated:isLockScreen locale:autoupdatingCurrentLocale];
+  navigationItem = [(MIUIMedicalIDViewController *)self navigationItem];
+  [navigationItem setTitleView:v10];
 
   if ([(MIUIDisplayConfiguration *)self->_displayConfiguration shouldShowDoneButton])
   {
@@ -123,8 +123,8 @@
     v13 = [v12 actionWithHandler:&v17];
     v14 = objc_alloc(MEMORY[0x277D751E0]);
     v15 = [v14 initWithBarButtonSystemItem:0 primaryAction:{v13, v17, v18, v19, v20}];
-    v16 = [(MIUIMedicalIDViewController *)self navigationItem];
-    [v16 setRightBarButtonItem:v15];
+    navigationItem2 = [(MIUIMedicalIDViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v15];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -143,14 +143,14 @@ void __42__MIUIMedicalIDViewController_viewDidLoad__block_invoke(uint64_t a1)
   v13.receiver = self;
   v13.super_class = MIUIMedicalIDViewController;
   [(MIUIMedicalIDViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(MIUIMedicalIDViewController *)self view];
-  [v3 bounds];
+  view = [(MIUIMedicalIDViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIViewController *)self->_hostedController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(UIViewController *)self->_hostedController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 @end

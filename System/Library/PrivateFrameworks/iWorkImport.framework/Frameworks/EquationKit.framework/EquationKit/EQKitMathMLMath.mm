@@ -2,14 +2,14 @@
 - (NSString)description;
 - (Schemata)layoutSchemata;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)newLayout;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMath
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v22.receiver = self;
   v22.super_class = EQKitMathMLMath;
@@ -22,8 +22,8 @@
       v11 = v7;
       v12 = sub_275CB3F9C(v7);
       v6->mAttributeCollection = v13;
-      objc_msgSend_setAttributeCollection_(a4, v14, v11, v15, v12);
-      v18 = objc_msgSend_parseChildrenAsNodeFromXMLNode_(a4, v16, a3, v17);
+      objc_msgSend_setAttributeCollection_(parser, v14, v11, v15, v12);
+      v18 = objc_msgSend_parseChildrenAsNodeFromXMLNode_(parser, v16, node, v17);
       v6->mExpression = v18;
       objc_msgSend_setParent_(v18, v19, v6, v20);
     }
@@ -35,7 +35,7 @@
 
     if (v6->mExpression)
     {
-      v6->mEnvironment = objc_msgSend_environment(a4, v8, v9, v10);
+      v6->mEnvironment = objc_msgSend_environment(parser, v8, v9, v10);
     }
 
     else

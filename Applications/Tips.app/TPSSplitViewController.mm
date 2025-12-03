@@ -1,26 +1,26 @@
 @interface TPSSplitViewController
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (_TtC4Tips22TPSSplitViewController)initWithCoder:(id)a3;
-- (_TtC4Tips22TPSSplitViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC4Tips22TPSSplitViewController)initWithStyle:(int64_t)a3;
+- (_TtC4Tips22TPSSplitViewController)initWithCoder:(id)coder;
+- (_TtC4Tips22TPSSplitViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC4Tips22TPSSplitViewController)initWithStyle:(int64_t)style;
 @end
 
 @implementation TPSSplitViewController
 
 - (UIViewController)childViewControllerForStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100024460();
 
   return v3;
 }
 
-- (_TtC4Tips22TPSSplitViewController)initWithCoder:(id)a3
+- (_TtC4Tips22TPSSplitViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TPSSplitViewController();
-  v4 = a3;
-  v5 = [(TPSSplitViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TPSSplitViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -29,33 +29,33 @@
   return v5;
 }
 
-- (_TtC4Tips22TPSSplitViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Tips22TPSSplitViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for TPSSplitViewController();
-  v9 = [(TPSSplitViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(TPSSplitViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC4Tips22TPSSplitViewController)initWithStyle:(int64_t)a3
+- (_TtC4Tips22TPSSplitViewController)initWithStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for TPSSplitViewController();
-  return [(TPSSplitViewController *)&v5 initWithStyle:a3];
+  return [(TPSSplitViewController *)&v5 initWithStyle:style];
 }
 
 @end

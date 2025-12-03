@@ -2,18 +2,18 @@
 + (SecureUIManager)sharedInstance;
 - (BOOL)isRecording;
 - (SecureUIManager)init;
-- (id)controllerWithConfiguration:(id)a3 containerView:(id)a4 owner:(id)a5;
-- (void)setControllers:(id)a3;
-- (void)setIsRecording:(BOOL)a3;
+- (id)controllerWithConfiguration:(id)configuration containerView:(id)view owner:(id)owner;
+- (void)setControllers:(id)controllers;
+- (void)setIsRecording:(BOOL)recording;
 @end
 
 @implementation SecureUIManager
 
-- (void)setControllers:(id)a3
+- (void)setControllers:(id)controllers
 {
   v4 = *(&self->super.isa + OBJC_IVAR___SecureUIManager_controllers);
-  *(&self->super.isa + OBJC_IVAR___SecureUIManager_controllers) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___SecureUIManager_controllers) = controllers;
+  controllersCopy = controllers;
 }
 
 + (SecureUIManager)sharedInstance
@@ -35,12 +35,12 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsRecording:(BOOL)a3
+- (void)setIsRecording:(BOOL)recording
 {
   v5 = OBJC_IVAR___SecureUIManager_isRecording;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
-  v6 = self;
+  *(&self->super.isa + v5) = recording;
+  selfCopy = self;
   SecureUIManager.configureControllersForRecording()();
 }
 
@@ -54,13 +54,13 @@
   return [(SecureUIManager *)&v5 init];
 }
 
-- (id)controllerWithConfiguration:(id)a3 containerView:(id)a4 owner:(id)a5
+- (id)controllerWithConfiguration:(id)configuration containerView:(id)view owner:(id)owner
 {
   swift_unknownObjectRetain();
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = SecureUIManager.controller(with:containerView:owner:)(a3, v9, v10);
+  viewCopy = view;
+  ownerCopy = owner;
+  selfCopy = self;
+  v12 = SecureUIManager.controller(with:containerView:owner:)(configuration, viewCopy, ownerCopy);
   swift_unknownObjectRelease();
 
   return v12;

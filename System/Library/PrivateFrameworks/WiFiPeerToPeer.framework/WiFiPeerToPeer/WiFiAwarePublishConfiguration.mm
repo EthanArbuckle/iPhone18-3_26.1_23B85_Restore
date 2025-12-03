@@ -1,124 +1,124 @@
 @interface WiFiAwarePublishConfiguration
-- (BOOL)channelConfigurationEqual:(id)a3;
-- (BOOL)countryCodeEqual:(id)a3;
-- (BOOL)datapathConfigurationEqual:(id)a3;
-- (BOOL)fastDiscoveryConfigurationEqual:(id)a3;
-- (BOOL)internetSharingConfigurationEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)multicastAddressConfigurationEqual:(id)a3;
-- (BOOL)multicastConfigurationEqual:(id)a3;
-- (BOOL)serviceSpecificInfoEqual:(id)a3;
-- (WiFiAwarePublishConfiguration)initWithCoder:(id)a3;
-- (WiFiAwarePublishConfiguration)initWithServiceName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)channelConfigurationEqual:(id)equal;
+- (BOOL)countryCodeEqual:(id)equal;
+- (BOOL)datapathConfigurationEqual:(id)equal;
+- (BOOL)fastDiscoveryConfigurationEqual:(id)equal;
+- (BOOL)internetSharingConfigurationEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)multicastAddressConfigurationEqual:(id)equal;
+- (BOOL)multicastConfigurationEqual:(id)equal;
+- (BOOL)serviceSpecificInfoEqual:(id)equal;
+- (WiFiAwarePublishConfiguration)initWithCoder:(id)coder;
+- (WiFiAwarePublishConfiguration)initWithServiceName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwarePublishConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishConfiguration *)self serviceName];
-  [v4 encodeObject:v5 forKey:@"WiFiAwarePublishConfiguration.serviceName"];
+  coderCopy = coder;
+  serviceName = [(WiFiAwarePublishConfiguration *)self serviceName];
+  [coderCopy encodeObject:serviceName forKey:@"WiFiAwarePublishConfiguration.serviceName"];
 
-  v6 = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
-  [v4 encodeObject:v6 forKey:@"WiFiAwarePublishConfiguration.serviceSpecificInfo"];
+  serviceSpecificInfo = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
+  [coderCopy encodeObject:serviceSpecificInfo forKey:@"WiFiAwarePublishConfiguration.serviceSpecificInfo"];
 
-  [v4 encodeBool:-[WiFiAwarePublishConfiguration furtherServiceDiscoveryRequired](self forKey:{"furtherServiceDiscoveryRequired"), @"WiFiAwarePublishConfiguration.furtherServiceDiscoveryRequired"}];
-  [v4 encodeBool:-[WiFiAwarePublishConfiguration jumboServiceDiscoveryMessages](self forKey:{"jumboServiceDiscoveryMessages"), @"WiFiAwarePublishConfiguration.jumboServiceDiscoveryMessages"}];
-  [v4 encodeInteger:-[WiFiAwarePublishConfiguration authenticationType](self forKey:{"authenticationType"), @"WiFiAwarePublishConfiguration.authenticationType"}];
-  v7 = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
-  [v4 encodeObject:v7 forKey:@"WiFiAwarePublishConfiguration.datapathConfiguration"];
+  [coderCopy encodeBool:-[WiFiAwarePublishConfiguration furtherServiceDiscoveryRequired](self forKey:{"furtherServiceDiscoveryRequired"), @"WiFiAwarePublishConfiguration.furtherServiceDiscoveryRequired"}];
+  [coderCopy encodeBool:-[WiFiAwarePublishConfiguration jumboServiceDiscoveryMessages](self forKey:{"jumboServiceDiscoveryMessages"), @"WiFiAwarePublishConfiguration.jumboServiceDiscoveryMessages"}];
+  [coderCopy encodeInteger:-[WiFiAwarePublishConfiguration authenticationType](self forKey:{"authenticationType"), @"WiFiAwarePublishConfiguration.authenticationType"}];
+  datapathConfiguration = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
+  [coderCopy encodeObject:datapathConfiguration forKey:@"WiFiAwarePublishConfiguration.datapathConfiguration"];
 
-  v8 = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
-  [v4 encodeObject:v8 forKey:@"WiFiAwarePublishConfiguration.fastDiscoveryConfiguration"];
+  fastDiscoveryConfiguration = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
+  [coderCopy encodeObject:fastDiscoveryConfiguration forKey:@"WiFiAwarePublishConfiguration.fastDiscoveryConfiguration"];
 
-  v9 = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
-  [v4 encodeObject:v9 forKey:@"WiFiAwarePublishConfiguration.internetSharingConfiguration"];
+  internetSharingConfiguration = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
+  [coderCopy encodeObject:internetSharingConfiguration forKey:@"WiFiAwarePublishConfiguration.internetSharingConfiguration"];
 
-  v10 = [(WiFiAwarePublishConfiguration *)self multicastAddress];
-  [v4 encodeObject:v10 forKey:@"WiFiAwarePublishConfiguration.multicastAddress"];
+  multicastAddress = [(WiFiAwarePublishConfiguration *)self multicastAddress];
+  [coderCopy encodeObject:multicastAddress forKey:@"WiFiAwarePublishConfiguration.multicastAddress"];
 
-  v11 = [(WiFiAwarePublishConfiguration *)self allowedDeviceIDs];
-  [v4 encodeObject:v11 forKey:@"WiFiAwarePublishConfiguration.allowedDeviceIDs"];
+  allowedDeviceIDs = [(WiFiAwarePublishConfiguration *)self allowedDeviceIDs];
+  [coderCopy encodeObject:allowedDeviceIDs forKey:@"WiFiAwarePublishConfiguration.allowedDeviceIDs"];
 
   v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLong:{-[WiFiAwarePublishConfiguration timeoutAfterSeconds](self, "timeoutAfterSeconds")}];
-  [v4 encodeObject:v12 forKey:@"WiFiAwarePublishConfiguration.timeout"];
+  [coderCopy encodeObject:v12 forKey:@"WiFiAwarePublishConfiguration.timeout"];
 
-  v13 = [(WiFiAwarePublishConfiguration *)self channelInfo];
-  [v4 encodeObject:v13 forKey:@"WiFiAwarePublishConfiguration.channelInfo"];
+  channelInfo = [(WiFiAwarePublishConfiguration *)self channelInfo];
+  [coderCopy encodeObject:channelInfo forKey:@"WiFiAwarePublishConfiguration.channelInfo"];
 
-  v14 = [(WiFiAwarePublishConfiguration *)self countryCode];
-  [v4 encodeObject:v14 forKey:@"WiFiAwarePublishConfiguration.countryCode"];
+  countryCode = [(WiFiAwarePublishConfiguration *)self countryCode];
+  [coderCopy encodeObject:countryCode forKey:@"WiFiAwarePublishConfiguration.countryCode"];
 
-  v15 = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
-  [v4 encodeObject:v15 forKey:@"WiFiAwarePublishConfiguration.multicastConfiguration"];
+  multicastConfiguration = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
+  [coderCopy encodeObject:multicastConfiguration forKey:@"WiFiAwarePublishConfiguration.multicastConfiguration"];
 
-  v16 = [(WiFiAwarePublishConfiguration *)self pairingMetadata];
-  [v4 encodeObject:v16 forKey:@"WiFiAwarePublishConfiguration.pairingMetadata"];
+  pairingMetadata = [(WiFiAwarePublishConfiguration *)self pairingMetadata];
+  [coderCopy encodeObject:pairingMetadata forKey:@"WiFiAwarePublishConfiguration.pairingMetadata"];
 }
 
-- (WiFiAwarePublishConfiguration)initWithCoder:(id)a3
+- (WiFiAwarePublishConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.serviceName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.serviceName"];
   v6 = [(WiFiAwarePublishConfiguration *)self initWithServiceName:v5];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.serviceSpecificInfo"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.serviceSpecificInfo"];
   [(WiFiAwarePublishConfiguration *)v6 setServiceSpecificInfo:v7];
 
-  -[WiFiAwarePublishConfiguration setFurtherServiceDiscoveryRequired:](v6, "setFurtherServiceDiscoveryRequired:", [v4 decodeBoolForKey:@"WiFiAwarePublishConfiguration.furtherServiceDiscoveryRequired"]);
-  -[WiFiAwarePublishConfiguration setJumboServiceDiscoveryMessages:](v6, "setJumboServiceDiscoveryMessages:", [v4 decodeBoolForKey:@"WiFiAwarePublishConfiguration.jumboServiceDiscoveryMessages"]);
-  -[WiFiAwarePublishConfiguration setAuthenticationType:](v6, "setAuthenticationType:", [v4 decodeIntegerForKey:@"WiFiAwarePublishConfiguration.authenticationType"]);
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.datapathConfiguration"];
+  -[WiFiAwarePublishConfiguration setFurtherServiceDiscoveryRequired:](v6, "setFurtherServiceDiscoveryRequired:", [coderCopy decodeBoolForKey:@"WiFiAwarePublishConfiguration.furtherServiceDiscoveryRequired"]);
+  -[WiFiAwarePublishConfiguration setJumboServiceDiscoveryMessages:](v6, "setJumboServiceDiscoveryMessages:", [coderCopy decodeBoolForKey:@"WiFiAwarePublishConfiguration.jumboServiceDiscoveryMessages"]);
+  -[WiFiAwarePublishConfiguration setAuthenticationType:](v6, "setAuthenticationType:", [coderCopy decodeIntegerForKey:@"WiFiAwarePublishConfiguration.authenticationType"]);
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.datapathConfiguration"];
   [(WiFiAwarePublishConfiguration *)v6 setDatapathConfiguration:v8];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.fastDiscoveryConfiguration"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.fastDiscoveryConfiguration"];
   [(WiFiAwarePublishConfiguration *)v6 setFastDiscoveryConfiguration:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.internetSharingConfiguration"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.internetSharingConfiguration"];
   [(WiFiAwarePublishConfiguration *)v6 setInternetSharingConfiguration:v10];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.multicastAddress"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.multicastAddress"];
   [(WiFiAwarePublishConfiguration *)v6 setMulticastAddress:v11];
 
   v12 = MEMORY[0x277CBEB98];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"WiFiAwarePublishConfiguration.allowedDeviceIDs"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"WiFiAwarePublishConfiguration.allowedDeviceIDs"];
   [(WiFiAwarePublishConfiguration *)v6 setAllowedDeviceIDs:v15];
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.timeout"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.timeout"];
   -[WiFiAwarePublishConfiguration setTimeoutAfterSeconds:](v6, "setTimeoutAfterSeconds:", [v16 unsignedLongValue]);
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.channelInfo"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.channelInfo"];
   [(WiFiAwarePublishConfiguration *)v6 setChannelInfo:v17];
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.countryCode"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.countryCode"];
   [(WiFiAwarePublishConfiguration *)v6 setCountryCode:v18];
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.multicastConfiguration"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.multicastConfiguration"];
   [(WiFiAwarePublishConfiguration *)v6 setMulticastConfiguration:v19];
 
   v20 = MEMORY[0x277CBEB98];
   v21 = objc_opt_class();
   v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-  v23 = [v4 decodeObjectOfClasses:v22 forKey:@"WiFiAwarePublishConfiguration.pairingMetadata"];
+  v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"WiFiAwarePublishConfiguration.pairingMetadata"];
 
   [(WiFiAwarePublishConfiguration *)v6 setPairingMetadata:v23];
   return v6;
 }
 
-- (WiFiAwarePublishConfiguration)initWithServiceName:(id)a3
+- (WiFiAwarePublishConfiguration)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = WiFiAwarePublishConfiguration;
   v5 = [(WiFiAwarePublishConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     serviceName = v5->_serviceName;
     v5->_serviceName = v6;
 
@@ -128,170 +128,170 @@
   return v5;
 }
 
-- (BOOL)multicastConfigurationEqual:(id)a3
+- (BOOL)multicastConfigurationEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
-  v6 = [v4 multicastConfiguration];
-  if (v5 == v6)
+  equalCopy = equal;
+  multicastConfiguration = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
+  multicastConfiguration2 = [equalCopy multicastConfiguration];
+  if (multicastConfiguration == multicastConfiguration2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
-    v8 = [v4 multicastConfiguration];
-    v9 = [v7 isEqual:v8];
+    multicastConfiguration3 = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
+    multicastConfiguration4 = [equalCopy multicastConfiguration];
+    v9 = [multicastConfiguration3 isEqual:multicastConfiguration4];
   }
 
   return v9;
 }
 
-- (BOOL)serviceSpecificInfoEqual:(id)a3
+- (BOOL)serviceSpecificInfoEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
-  v6 = [v4 serviceSpecificInfo];
-  if (v5 == v6)
+  equalCopy = equal;
+  serviceSpecificInfo = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
+  serviceSpecificInfo2 = [equalCopy serviceSpecificInfo];
+  if (serviceSpecificInfo == serviceSpecificInfo2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
-    v8 = [v4 serviceSpecificInfo];
-    v9 = [v7 isEqual:v8];
+    serviceSpecificInfo3 = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
+    serviceSpecificInfo4 = [equalCopy serviceSpecificInfo];
+    v9 = [serviceSpecificInfo3 isEqual:serviceSpecificInfo4];
   }
 
   return v9;
 }
 
-- (BOOL)datapathConfigurationEqual:(id)a3
+- (BOOL)datapathConfigurationEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
-  v6 = [v4 datapathConfiguration];
-  if (v5 == v6)
+  equalCopy = equal;
+  datapathConfiguration = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
+  datapathConfiguration2 = [equalCopy datapathConfiguration];
+  if (datapathConfiguration == datapathConfiguration2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
-    v8 = [v4 datapathConfiguration];
-    v9 = [v7 isEqual:v8];
+    datapathConfiguration3 = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
+    datapathConfiguration4 = [equalCopy datapathConfiguration];
+    v9 = [datapathConfiguration3 isEqual:datapathConfiguration4];
   }
 
   return v9;
 }
 
-- (BOOL)fastDiscoveryConfigurationEqual:(id)a3
+- (BOOL)fastDiscoveryConfigurationEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
-  v6 = [v4 fastDiscoveryConfiguration];
-  if (v5 == v6)
+  equalCopy = equal;
+  fastDiscoveryConfiguration = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
+  fastDiscoveryConfiguration2 = [equalCopy fastDiscoveryConfiguration];
+  if (fastDiscoveryConfiguration == fastDiscoveryConfiguration2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
-    v8 = [v4 fastDiscoveryConfiguration];
-    v9 = [v7 isEqual:v8];
+    fastDiscoveryConfiguration3 = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
+    fastDiscoveryConfiguration4 = [equalCopy fastDiscoveryConfiguration];
+    v9 = [fastDiscoveryConfiguration3 isEqual:fastDiscoveryConfiguration4];
   }
 
   return v9;
 }
 
-- (BOOL)internetSharingConfigurationEqual:(id)a3
+- (BOOL)internetSharingConfigurationEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
-  v6 = [v4 internetSharingConfiguration];
-  if (v5 == v6)
+  equalCopy = equal;
+  internetSharingConfiguration = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
+  internetSharingConfiguration2 = [equalCopy internetSharingConfiguration];
+  if (internetSharingConfiguration == internetSharingConfiguration2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
-    v8 = [v4 internetSharingConfiguration];
-    v9 = [v7 isEqual:v8];
+    internetSharingConfiguration3 = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
+    internetSharingConfiguration4 = [equalCopy internetSharingConfiguration];
+    v9 = [internetSharingConfiguration3 isEqual:internetSharingConfiguration4];
   }
 
   return v9;
 }
 
-- (BOOL)multicastAddressConfigurationEqual:(id)a3
+- (BOOL)multicastAddressConfigurationEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishConfiguration *)self multicastAddress];
-  v6 = [v4 multicastAddress];
-  if (v5 == v6)
+  equalCopy = equal;
+  multicastAddress = [(WiFiAwarePublishConfiguration *)self multicastAddress];
+  multicastAddress2 = [equalCopy multicastAddress];
+  if (multicastAddress == multicastAddress2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishConfiguration *)self multicastAddress];
-    v8 = [v4 multicastAddress];
-    v9 = [v7 isEqual:v8];
+    multicastAddress3 = [(WiFiAwarePublishConfiguration *)self multicastAddress];
+    multicastAddress4 = [equalCopy multicastAddress];
+    v9 = [multicastAddress3 isEqual:multicastAddress4];
   }
 
   return v9;
 }
 
-- (BOOL)channelConfigurationEqual:(id)a3
+- (BOOL)channelConfigurationEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishConfiguration *)self channelInfo];
-  v6 = [v4 channelInfo];
-  if (v5 == v6)
+  equalCopy = equal;
+  channelInfo = [(WiFiAwarePublishConfiguration *)self channelInfo];
+  channelInfo2 = [equalCopy channelInfo];
+  if (channelInfo == channelInfo2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishConfiguration *)self channelInfo];
-    v8 = [v4 channelInfo];
-    v9 = [v7 isEqual:v8];
+    channelInfo3 = [(WiFiAwarePublishConfiguration *)self channelInfo];
+    channelInfo4 = [equalCopy channelInfo];
+    v9 = [channelInfo3 isEqual:channelInfo4];
   }
 
   return v9;
 }
 
-- (BOOL)countryCodeEqual:(id)a3
+- (BOOL)countryCodeEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishConfiguration *)self countryCode];
-  v6 = [v4 countryCode];
-  if (v5 == v6)
+  equalCopy = equal;
+  countryCode = [(WiFiAwarePublishConfiguration *)self countryCode];
+  countryCode2 = [equalCopy countryCode];
+  if (countryCode == countryCode2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishConfiguration *)self countryCode];
-    v8 = [v4 countryCode];
-    v9 = [v7 isEqual:v8];
+    countryCode3 = [(WiFiAwarePublishConfiguration *)self countryCode];
+    countryCode4 = [equalCopy countryCode];
+    v9 = [countryCode3 isEqual:countryCode4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
   }
@@ -306,10 +306,10 @@
       goto LABEL_23;
     }
 
-    v5 = v4;
-    v6 = [(WiFiAwarePublishConfiguration *)self serviceName];
-    v7 = [(WiFiAwarePublishConfiguration *)v5 serviceName];
-    if (![v6 isEqualToString:v7] || !-[WiFiAwarePublishConfiguration serviceSpecificInfoEqual:](self, "serviceSpecificInfoEqual:", v5) || (v8 = -[WiFiAwarePublishConfiguration furtherServiceDiscoveryRequired](self, "furtherServiceDiscoveryRequired"), v8 != -[WiFiAwarePublishConfiguration furtherServiceDiscoveryRequired](v5, "furtherServiceDiscoveryRequired")) || (v9 = -[WiFiAwarePublishConfiguration jumboServiceDiscoveryMessages](self, "jumboServiceDiscoveryMessages"), v9 != -[WiFiAwarePublishConfiguration jumboServiceDiscoveryMessages](v5, "jumboServiceDiscoveryMessages")) || (v10 = -[WiFiAwarePublishConfiguration authenticationType](self, "authenticationType"), v10 != -[WiFiAwarePublishConfiguration authenticationType](v5, "authenticationType")) || !-[WiFiAwarePublishConfiguration datapathConfigurationEqual:](self, "datapathConfigurationEqual:", v5) || !-[WiFiAwarePublishConfiguration fastDiscoveryConfigurationEqual:](self, "fastDiscoveryConfigurationEqual:", v5) || !-[WiFiAwarePublishConfiguration internetSharingConfigurationEqual:](self, "internetSharingConfigurationEqual:", v5) || !-[WiFiAwarePublishConfiguration multicastAddressConfigurationEqual:](self, "multicastAddressConfigurationEqual:", v5) || (v11 = -[WiFiAwarePublishConfiguration timeoutAfterSeconds](self, "timeoutAfterSeconds"), v11 != -[WiFiAwarePublishConfiguration timeoutAfterSeconds](v5, "timeoutAfterSeconds")) || !-[WiFiAwarePublishConfiguration channelConfigurationEqual:](self, "channelConfigurationEqual:", v5) || !-[WiFiAwarePublishConfiguration countryCodeEqual:](self, "countryCodeEqual:", v5) || !-[WiFiAwarePublishConfiguration multicastConfigurationEqual:](self, "multicastConfigurationEqual:", v5))
+    v5 = equalCopy;
+    serviceName = [(WiFiAwarePublishConfiguration *)self serviceName];
+    serviceName2 = [(WiFiAwarePublishConfiguration *)v5 serviceName];
+    if (![serviceName isEqualToString:serviceName2] || !-[WiFiAwarePublishConfiguration serviceSpecificInfoEqual:](self, "serviceSpecificInfoEqual:", v5) || (v8 = -[WiFiAwarePublishConfiguration furtherServiceDiscoveryRequired](self, "furtherServiceDiscoveryRequired"), v8 != -[WiFiAwarePublishConfiguration furtherServiceDiscoveryRequired](v5, "furtherServiceDiscoveryRequired")) || (v9 = -[WiFiAwarePublishConfiguration jumboServiceDiscoveryMessages](self, "jumboServiceDiscoveryMessages"), v9 != -[WiFiAwarePublishConfiguration jumboServiceDiscoveryMessages](v5, "jumboServiceDiscoveryMessages")) || (v10 = -[WiFiAwarePublishConfiguration authenticationType](self, "authenticationType"), v10 != -[WiFiAwarePublishConfiguration authenticationType](v5, "authenticationType")) || !-[WiFiAwarePublishConfiguration datapathConfigurationEqual:](self, "datapathConfigurationEqual:", v5) || !-[WiFiAwarePublishConfiguration fastDiscoveryConfigurationEqual:](self, "fastDiscoveryConfigurationEqual:", v5) || !-[WiFiAwarePublishConfiguration internetSharingConfigurationEqual:](self, "internetSharingConfigurationEqual:", v5) || !-[WiFiAwarePublishConfiguration multicastAddressConfigurationEqual:](self, "multicastAddressConfigurationEqual:", v5) || (v11 = -[WiFiAwarePublishConfiguration timeoutAfterSeconds](self, "timeoutAfterSeconds"), v11 != -[WiFiAwarePublishConfiguration timeoutAfterSeconds](v5, "timeoutAfterSeconds")) || !-[WiFiAwarePublishConfiguration channelConfigurationEqual:](self, "channelConfigurationEqual:", v5) || !-[WiFiAwarePublishConfiguration countryCodeEqual:](self, "countryCodeEqual:", v5) || !-[WiFiAwarePublishConfiguration multicastConfigurationEqual:](self, "multicastConfigurationEqual:", v5))
     {
 
 LABEL_22:
@@ -317,9 +317,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v12 = [(WiFiAwarePublishConfiguration *)self pairingMetadata];
-    v13 = [(WiFiAwarePublishConfiguration *)v5 pairingMetadata];
-    v14 = [v12 isEqual:v13];
+    pairingMetadata = [(WiFiAwarePublishConfiguration *)self pairingMetadata];
+    pairingMetadata2 = [(WiFiAwarePublishConfiguration *)v5 pairingMetadata];
+    v14 = [pairingMetadata isEqual:pairingMetadata2];
 
     if (!v14)
     {
@@ -336,8 +336,8 @@ LABEL_23:
 - (id)description
 {
   v19 = MEMORY[0x277CCACA8];
-  v18 = [(WiFiAwarePublishConfiguration *)self serviceName];
-  v17 = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
+  serviceName = [(WiFiAwarePublishConfiguration *)self serviceName];
+  serviceSpecificInfo = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
   if ([(WiFiAwarePublishConfiguration *)self furtherServiceDiscoveryRequired])
   {
     v3 = "YES";
@@ -359,68 +359,68 @@ LABEL_23:
     v4 = "NO";
   }
 
-  v15 = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
-  v5 = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
-  v6 = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
-  v7 = [(WiFiAwarePublishConfiguration *)self allowedDeviceIDs];
-  v8 = [(WiFiAwarePublishConfiguration *)self timeoutAfterSeconds];
-  v9 = [(WiFiAwarePublishConfiguration *)self channelInfo];
-  v10 = [(WiFiAwarePublishConfiguration *)self countryCode];
-  v11 = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
-  v12 = [(WiFiAwarePublishConfiguration *)self pairingMetadata];
-  v13 = [v19 stringWithFormat:@"<WiFiAwarePublishConfiguration: serviceName=%@, serviceSpecificInfo=%@, furtherServiceDiscoveryRequired=%s, jumboMessages=%s, dataConfig=%@, fastDiscovery=%@, internetSharing=%@>, allowedDeviceIDs=%@, timeoutAfter=%ld, channelInfo=%@, cc=%@, multicastConfiguration=%@, pairingMetadata=%@>", v18, v17, v16, v4, v15, v5, v6, v7, v8, v9, v10, v11, v12];
+  datapathConfiguration = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
+  fastDiscoveryConfiguration = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
+  internetSharingConfiguration = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
+  allowedDeviceIDs = [(WiFiAwarePublishConfiguration *)self allowedDeviceIDs];
+  timeoutAfterSeconds = [(WiFiAwarePublishConfiguration *)self timeoutAfterSeconds];
+  channelInfo = [(WiFiAwarePublishConfiguration *)self channelInfo];
+  countryCode = [(WiFiAwarePublishConfiguration *)self countryCode];
+  multicastConfiguration = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
+  pairingMetadata = [(WiFiAwarePublishConfiguration *)self pairingMetadata];
+  v13 = [v19 stringWithFormat:@"<WiFiAwarePublishConfiguration: serviceName=%@, serviceSpecificInfo=%@, furtherServiceDiscoveryRequired=%s, jumboMessages=%s, dataConfig=%@, fastDiscovery=%@, internetSharing=%@>, allowedDeviceIDs=%@, timeoutAfter=%ld, channelInfo=%@, cc=%@, multicastConfiguration=%@, pairingMetadata=%@>", serviceName, serviceSpecificInfo, v16, v4, datapathConfiguration, fastDiscoveryConfiguration, internetSharingConfiguration, allowedDeviceIDs, timeoutAfterSeconds, channelInfo, countryCode, multicastConfiguration, pairingMetadata];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [WiFiAwarePublishConfiguration alloc];
-  v5 = [(WiFiAwarePublishConfiguration *)self serviceName];
-  v6 = [(WiFiAwarePublishConfiguration *)v4 initWithServiceName:v5];
+  serviceName = [(WiFiAwarePublishConfiguration *)self serviceName];
+  v6 = [(WiFiAwarePublishConfiguration *)v4 initWithServiceName:serviceName];
 
-  v7 = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
-  v8 = [v7 copy];
+  serviceSpecificInfo = [(WiFiAwarePublishConfiguration *)self serviceSpecificInfo];
+  v8 = [serviceSpecificInfo copy];
   [(WiFiAwarePublishConfiguration *)v6 setServiceSpecificInfo:v8];
 
   [(WiFiAwarePublishConfiguration *)v6 setFurtherServiceDiscoveryRequired:[(WiFiAwarePublishConfiguration *)self furtherServiceDiscoveryRequired]];
   [(WiFiAwarePublishConfiguration *)v6 setJumboServiceDiscoveryMessages:[(WiFiAwarePublishConfiguration *)self jumboServiceDiscoveryMessages]];
-  v9 = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
-  v10 = [v9 copy];
+  datapathConfiguration = [(WiFiAwarePublishConfiguration *)self datapathConfiguration];
+  v10 = [datapathConfiguration copy];
   [(WiFiAwarePublishConfiguration *)v6 setDatapathConfiguration:v10];
 
   [(WiFiAwarePublishConfiguration *)v6 setAuthenticationType:[(WiFiAwarePublishConfiguration *)self authenticationType]];
-  v11 = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
-  v12 = [v11 copy];
+  fastDiscoveryConfiguration = [(WiFiAwarePublishConfiguration *)self fastDiscoveryConfiguration];
+  v12 = [fastDiscoveryConfiguration copy];
   [(WiFiAwarePublishConfiguration *)v6 setFastDiscoveryConfiguration:v12];
 
-  v13 = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
-  v14 = [v13 copy];
+  internetSharingConfiguration = [(WiFiAwarePublishConfiguration *)self internetSharingConfiguration];
+  v14 = [internetSharingConfiguration copy];
   [(WiFiAwarePublishConfiguration *)v6 setInternetSharingConfiguration:v14];
 
-  v15 = [(WiFiAwarePublishConfiguration *)self multicastAddress];
-  v16 = [v15 copy];
+  multicastAddress = [(WiFiAwarePublishConfiguration *)self multicastAddress];
+  v16 = [multicastAddress copy];
   [(WiFiAwarePublishConfiguration *)v6 setMulticastAddress:v16];
 
-  v17 = [(WiFiAwarePublishConfiguration *)self allowedDeviceIDs];
-  v18 = [v17 copy];
+  allowedDeviceIDs = [(WiFiAwarePublishConfiguration *)self allowedDeviceIDs];
+  v18 = [allowedDeviceIDs copy];
   [(WiFiAwarePublishConfiguration *)v6 setAllowedDeviceIDs:v18];
 
   [(WiFiAwarePublishConfiguration *)v6 setTimeoutAfterSeconds:[(WiFiAwarePublishConfiguration *)self timeoutAfterSeconds]];
-  v19 = [(WiFiAwarePublishConfiguration *)self channelInfo];
-  v20 = [v19 copy];
+  channelInfo = [(WiFiAwarePublishConfiguration *)self channelInfo];
+  v20 = [channelInfo copy];
   [(WiFiAwarePublishConfiguration *)v6 setChannelInfo:v20];
 
-  v21 = [(WiFiAwarePublishConfiguration *)self countryCode];
-  v22 = [v21 copy];
+  countryCode = [(WiFiAwarePublishConfiguration *)self countryCode];
+  v22 = [countryCode copy];
   [(WiFiAwarePublishConfiguration *)v6 setCountryCode:v22];
 
-  v23 = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
-  v24 = [v23 copy];
+  multicastConfiguration = [(WiFiAwarePublishConfiguration *)self multicastConfiguration];
+  v24 = [multicastConfiguration copy];
   [(WiFiAwarePublishConfiguration *)v6 setMulticastConfiguration:v24];
 
-  v25 = [(WiFiAwarePublishConfiguration *)self pairingMetadata];
-  v26 = [v25 copy];
+  pairingMetadata = [(WiFiAwarePublishConfiguration *)self pairingMetadata];
+  v26 = [pairingMetadata copy];
   [(WiFiAwarePublishConfiguration *)v6 setPairingMetadata:v26];
 
   return v6;

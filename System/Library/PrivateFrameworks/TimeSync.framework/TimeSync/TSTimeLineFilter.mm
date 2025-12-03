@@ -1,6 +1,6 @@
 @interface TSTimeLineFilter
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)rateRatio;
-- (void)getAnchors:(id *)a3 andRateRatio:(id *)a4;
+- (void)getAnchors:(id *)anchors andRateRatio:(id *)ratio;
 @end
 
 @implementation TSTimeLineFilter
@@ -14,18 +14,18 @@
   return result;
 }
 
-- (void)getAnchors:(id *)a3 andRateRatio:(id *)a4
+- (void)getAnchors:(id *)anchors andRateRatio:(id *)ratio
 {
-  if (a3)
+  if (anchors)
   {
-    a3->var0 = -1;
-    a3->var1 = -1;
+    anchors->var0 = -1;
+    anchors->var1 = -1;
   }
 
-  if (a4)
+  if (ratio)
   {
-    a4->var0 = -1;
-    a4->var1 = -1;
+    ratio->var0 = -1;
+    ratio->var1 = -1;
   }
 }
 

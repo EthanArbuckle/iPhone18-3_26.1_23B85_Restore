@@ -1,10 +1,10 @@
 @interface MPCVocalAttenuationPerformancePolicy
-- (MPCVocalAttenuationPerformancePolicy)initWithPerformanceLimit:(double)a3 calloutQueue:(id)a4 delegate:(id)a5;
+- (MPCVocalAttenuationPerformancePolicy)initWithPerformanceLimit:(double)limit calloutQueue:(id)queue delegate:(id)delegate;
 - (MPCVocalAttenuationPolicyDelegate)delegate;
 - (id)evaluation;
-- (void)processSample:(double)a3;
+- (void)processSample:(double)sample;
 - (void)reset;
-- (void)updateEvaluationWithReason:(id)a3;
+- (void)updateEvaluationWithReason:(id)reason;
 @end
 
 @implementation MPCVocalAttenuationPerformancePolicy
@@ -16,22 +16,22 @@
   return WeakRetained;
 }
 
-- (void)updateEvaluationWithReason:(id)a3
+- (void)updateEvaluationWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(MPCVocalAttenuationPerformancePolicy *)self evaluation];
-  v6 = [v5 explanation];
-  v7 = [v6 stringByAppendingFormat:@" [%@]", v4];
+  reasonCopy = reason;
+  evaluation = [(MPCVocalAttenuationPerformancePolicy *)self evaluation];
+  explanation = [evaluation explanation];
+  reasonCopy = [explanation stringByAppendingFormat:@" [%@]", reasonCopy];
 
-  [v5 setExplanation:v7];
+  [evaluation setExplanation:reasonCopy];
   calloutQueue = self->_calloutQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__MPCVocalAttenuationPerformancePolicy_updateEvaluationWithReason___block_invoke;
   block[3] = &unk_1E82392C0;
   block[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = evaluation;
+  v9 = evaluation;
   dispatch_async(calloutQueue, block);
 }
 
@@ -41,7 +41,7 @@ void __67__MPCVocalAttenuationPerformancePolicy_updateEvaluationWithReason___blo
   [v2 vocalAttenuationPolicy:*(a1 + 32) didChangeEvaluation:*(a1 + 40)];
 }
 
-- (void)processSample:(double)a3
+- (void)processSample:(double)sample
 {
   v35 = *MEMORY[0x1E69E9840];
   if ([(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation])
@@ -50,7 +50,7 @@ void __67__MPCVocalAttenuationPerformancePolicy_updateEvaluationWithReason___blo
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v29 = 138543362;
-      v30 = self;
+      selfCopy7 = self;
       _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEBUG, "[AP] - %{public}@ - ignoring sample [policy already active]", &v29, 0xCu);
     }
 
@@ -58,15 +58,15 @@ void __67__MPCVocalAttenuationPerformancePolicy_updateEvaluationWithReason___blo
   }
 
   os_unfair_lock_lock(&self->_dataLock);
-  v6 = [MEMORY[0x1E696AE30] processInfo];
-  [v6 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v8 = v7;
 
   v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v29 = 138543874;
-    v30 = self;
+    selfCopy7 = self;
     v31 = 1024;
     *v32 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
     *&v32[4] = 2048;
@@ -75,7 +75,7 @@ void __67__MPCVocalAttenuationPerformancePolicy_updateEvaluationWithReason___blo
   }
 
   [(MPCVocalAttenuationPerformancePolicy *)self performanceLimit];
-  if (v10 >= a3)
+  if (v10 >= sample)
   {
     goto LABEL_14;
   }
@@ -85,15 +85,15 @@ void __67__MPCVocalAttenuationPerformancePolicy_updateEvaluationWithReason___blo
   {
     [(MPCVocalAttenuationPerformancePolicy *)self performanceLimit];
     v13 = v12;
-    v14 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
+    shouldDisableVocalAttenuation = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
     v29 = 138544130;
-    v30 = self;
+    selfCopy7 = self;
     v31 = 2048;
-    *v32 = a3;
+    *v32 = sample;
     *&v32[8] = 2048;
     *&v32[10] = v13;
     v33 = 1024;
-    v34 = v14;
+    v34 = shouldDisableVocalAttenuation;
     _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Sample over limit [%3.2fms > %3.2fms] - _disableVocalAttenuation=%{BOOL}u", &v29, 0x26u);
   }
 
@@ -103,11 +103,11 @@ void __67__MPCVocalAttenuationPerformancePolicy_updateEvaluationWithReason___blo
     v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
+      shouldDisableVocalAttenuation2 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
       v29 = 138543618;
-      v30 = self;
+      selfCopy7 = self;
       v31 = 1024;
-      *v32 = v17;
+      *v32 = shouldDisableVocalAttenuation2;
       _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - First glitch detected - _disableVocalAttenuation=%{BOOL}u", &v29, 0x12u);
     }
 
@@ -124,13 +124,13 @@ void __67__MPCVocalAttenuationPerformancePolicy_updateEvaluationWithReason___blo
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       currentNumberOfGlitches = self->_currentNumberOfGlitches;
-      v28 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
+      shouldDisableVocalAttenuation3 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
       v29 = 138543874;
-      v30 = self;
+      selfCopy7 = self;
       v31 = 2048;
       *v32 = currentNumberOfGlitches;
       *&v32[8] = 1024;
-      *&v32[10] = v28;
+      *&v32[10] = shouldDisableVocalAttenuation3;
       _os_log_impl(&dword_1C5C61000, v26, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - New glitch after time limit - %ld - _disableVocalAttenuation=%{BOOL}u", &v29, 0x1Cu);
     }
 
@@ -143,15 +143,15 @@ void __67__MPCVocalAttenuationPerformancePolicy_updateEvaluationWithReason___blo
   {
     v19 = self->_currentNumberOfGlitches;
     timeThreshold = self->_timeThreshold;
-    v21 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
+    shouldDisableVocalAttenuation4 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
     v29 = 138544130;
-    v30 = self;
+    selfCopy7 = self;
     v31 = 2048;
     *v32 = v19;
     *&v32[8] = 2048;
     *&v32[10] = timeThreshold;
     v33 = 1024;
-    v34 = v21;
+    v34 = shouldDisableVocalAttenuation4;
     _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - %ld glitches detected in the last %3.2fms - _disableVocalAttenuation=%{BOOL}u", &v29, 0x26u);
   }
 
@@ -168,15 +168,15 @@ LABEL_14:
   {
     v23 = self->_timeThreshold;
     v24 = self->_currentNumberOfGlitches;
-    v25 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
+    shouldDisableVocalAttenuation5 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
     v29 = 138544130;
-    v30 = self;
+    selfCopy7 = self;
     v31 = 2048;
     *v32 = v23;
     *&v32[8] = 2048;
     *&v32[10] = v24;
     v33 = 1024;
-    v34 = v25;
+    v34 = shouldDisableVocalAttenuation5;
     _os_log_impl(&dword_1C5C61000, v22, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Too many glitches detected in the last %3.2fms: %ld - Disabling vocal attenuation - _disableVocalAttenuation=%{BOOL}u", &v29, 0x26u);
   }
 
@@ -190,9 +190,9 @@ LABEL_14:
   v3 = objc_opt_new();
   [v3 setDisableVocalAttenuation:{-[MPCVocalAttenuationPerformancePolicy shouldDisableVocalAttenuation](self, "shouldDisableVocalAttenuation")}];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
+  shouldDisableVocalAttenuation = [(MPCVocalAttenuationPerformancePolicy *)self shouldDisableVocalAttenuation];
   v6 = @"off";
-  if (v5)
+  if (shouldDisableVocalAttenuation)
   {
     v6 = @"on";
   }
@@ -221,10 +221,10 @@ LABEL_14:
   }
 }
 
-- (MPCVocalAttenuationPerformancePolicy)initWithPerformanceLimit:(double)a3 calloutQueue:(id)a4 delegate:(id)a5
+- (MPCVocalAttenuationPerformancePolicy)initWithPerformanceLimit:(double)limit calloutQueue:(id)queue delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = MPCVocalAttenuationPerformancePolicy;
   v11 = [(MPCVocalAttenuationPerformancePolicy *)&v14 init];
@@ -232,9 +232,9 @@ LABEL_14:
   if (v11)
   {
     v11->_type = 2;
-    v11->_performanceLimit = a3;
-    objc_storeStrong(&v11->_calloutQueue, a4);
-    objc_storeWeak(&v12->_delegate, v10);
+    v11->_performanceLimit = limit;
+    objc_storeStrong(&v11->_calloutQueue, queue);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v12->_disableVocalAttenuation = 0;
     *&v12->_timeOfFirstGlitch = xmmword_1C60451D0;
     *&v12->_glitchesThreshold = 5;

@@ -1,12 +1,12 @@
 @interface NavdOsTransaction
-- (NavdOsTransaction)initWithTransactionName:(const char *)a3;
+- (NavdOsTransaction)initWithTransactionName:(const char *)name;
 - (void)dealloc;
 - (void)endTransaction;
 @end
 
 @implementation NavdOsTransaction
 
-- (NavdOsTransaction)initWithTransactionName:(const char *)a3
+- (NavdOsTransaction)initWithTransactionName:(const char *)name
 {
   v9.receiver = self;
   v9.super_class = NavdOsTransaction;
@@ -21,7 +21,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136380931;
-      v11 = a3;
+      nameCopy = name;
       v12 = 2048;
       v13 = v4;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Created transaction %{private}s(%p)", buf, 0x16u);
@@ -45,9 +45,9 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         v9 = 136380931;
-        v10 = v5;
+        selfCopy2 = v5;
         v11 = 2048;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Ending transaction %{private}s(%p)", &v9, 0x16u);
       }
 
@@ -63,7 +63,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         v9 = 134217984;
-        v10 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "EndTransaction was called but transaction was already nil.(%p)", &v9, 0xCu);
       }
     }
@@ -90,7 +90,7 @@
         *buf = 136380931;
         v10 = v6;
         v11 = 2048;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Ending transaction %{private}s(%p)", buf, 0x16u);
       }
 

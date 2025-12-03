@@ -1,38 +1,38 @@
 @interface AXIndexMap
 - (AXIndexMap)init;
-- (AXIndexMap)initWithCoder:(id)a3;
-- (AXIndexMap)initWithObjects:(id *)a3 andIndexes:(unint64_t *)a4 count:(unint64_t)a5;
-- (id)_initAndDeepCopyIndexMap:(id)a3;
-- (id)_initWithIndexMap:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deepCopyWithZone:(_NSZone *)a3;
+- (AXIndexMap)initWithCoder:(id)coder;
+- (AXIndexMap)initWithObjects:(id *)objects andIndexes:(unint64_t *)indexes count:(unint64_t)count;
+- (id)_initAndDeepCopyIndexMap:(id)map;
+- (id)_initWithIndexMap:(id)map;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deepCopyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)indexes;
-- (unint64_t)_createIndexesWithSize:(unint64_t *)a3;
-- (void)addObjectsFromIndexMap:(id)a3;
+- (unint64_t)_createIndexesWithSize:(unint64_t *)size;
+- (void)addObjectsFromIndexMap:(id)map;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setObject:(id)a3 forIndex:(unint64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setObject:(id)object forIndex:(unint64_t)index;
 @end
 
 @implementation AXIndexMap
 
-- (AXIndexMap)initWithObjects:(id *)a3 andIndexes:(unint64_t *)a4 count:(unint64_t)a5
+- (AXIndexMap)initWithObjects:(id *)objects andIndexes:(unint64_t *)indexes count:(unint64_t)count
 {
   v12.receiver = self;
   v12.super_class = AXIndexMap;
   v8 = [(AXIndexMap *)&v12 init];
   if (v8 && (Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, MEMORY[0x1E695E9E8]), (v8->_map = Mutable) != 0))
   {
-    for (; a5; --a5)
+    for (; count; --count)
     {
-      if (*a3)
+      if (*objects)
       {
-        CFDictionarySetValue(v8->_map, *a4, *a3);
+        CFDictionarySetValue(v8->_map, *indexes, *objects);
       }
 
-      ++a4;
-      ++a3;
+      ++indexes;
+      ++objects;
     }
 
     v10 = v8;
@@ -64,13 +64,13 @@
   return v4;
 }
 
-- (id)_initWithIndexMap:(id)a3
+- (id)_initWithIndexMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v11.receiver = self;
   v11.super_class = AXIndexMap;
   v5 = [(AXIndexMap *)&v11 init];
-  if (v5 && (v6 = v4[1], Count = CFDictionaryGetCount(v6), MutableCopy = CFDictionaryCreateMutableCopy(0, Count, v6), (v5->_map = MutableCopy) != 0))
+  if (v5 && (v6 = mapCopy[1], Count = CFDictionaryGetCount(v6), MutableCopy = CFDictionaryCreateMutableCopy(0, Count, v6), (v5->_map = MutableCopy) != 0))
   {
     v9 = v5;
   }
@@ -83,16 +83,16 @@
   return v9;
 }
 
-- (id)_initAndDeepCopyIndexMap:(id)a3
+- (id)_initAndDeepCopyIndexMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v16.receiver = self;
   v16.super_class = AXIndexMap;
   v5 = [(AXIndexMap *)&v16 init];
   if (v5 && (Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, MEMORY[0x1E695E9E8]), (v5->_map = Mutable) != 0))
   {
     v15 = 0;
-    v7 = [v4 _createIndexesWithSize:&v15];
+    v7 = [mapCopy _createIndexesWithSize:&v15];
     if (v7)
     {
       v8 = v7;
@@ -100,7 +100,7 @@
       {
         for (i = 0; i < v15; ++i)
         {
-          v10 = [v4 objectForIndex:v8[i]];
+          v10 = [mapCopy objectForIndex:v8[i]];
           if ((objc_opt_respondsToSelector() & 1) == 0)
           {
             v14 = AXLogCommon();
@@ -132,28 +132,28 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AXIndexMap allocWithZone:a3];
+  v4 = [AXIndexMap allocWithZone:zone];
 
   return [(AXIndexMap *)v4 _initWithIndexMap:self];
 }
 
-- (id)deepCopyWithZone:(_NSZone *)a3
+- (id)deepCopyWithZone:(_NSZone *)zone
 {
-  v4 = [AXIndexMap allocWithZone:a3];
+  v4 = [AXIndexMap allocWithZone:zone];
 
   return [(AXIndexMap *)v4 _initAndDeepCopyIndexMap:self];
 }
 
-- (AXIndexMap)initWithCoder:(id)a3
+- (AXIndexMap)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AXIndexMap *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"indexes"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"values"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"indexes"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"values"];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __28__AXIndexMap_initWithCoder___block_invoke;
@@ -178,9 +178,9 @@ void __28__AXIndexMap_initWithCoder___block_invoke(uint64_t a1, void *a2, uint64
   [v4 setObject:v8 forIndex:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v16 = 0;
@@ -206,8 +206,8 @@ void __28__AXIndexMap_initWithCoder___block_invoke(uint64_t a1, void *a2, uint64
     }
   }
 
-  [v4 encodeObject:v5 forKey:@"indexes"];
-  [v4 encodeObject:v6 forKey:@"values"];
+  [coderCopy encodeObject:v5 forKey:@"indexes"];
+  [coderCopy encodeObject:v6 forKey:@"values"];
   free(v7);
 }
 
@@ -225,20 +225,20 @@ void __28__AXIndexMap_initWithCoder___block_invoke(uint64_t a1, void *a2, uint64
   [(AXIndexMap *)&v4 dealloc];
 }
 
-- (void)setObject:(id)a3 forIndex:(unint64_t)a4
+- (void)setObject:(id)object forIndex:(unint64_t)index
 {
-  if (a3)
+  if (object)
   {
-    CFDictionarySetValue(self->_map, a4, a3);
+    CFDictionarySetValue(self->_map, index, object);
   }
 }
 
-- (unint64_t)_createIndexesWithSize:(unint64_t *)a3
+- (unint64_t)_createIndexesWithSize:(unint64_t *)size
 {
   Count = CFDictionaryGetCount(self->_map);
-  if (a3)
+  if (size)
   {
-    *a3 = Count;
+    *size = Count;
   }
 
   v6 = 8 * Count;
@@ -271,11 +271,11 @@ void __28__AXIndexMap_initWithCoder___block_invoke(uint64_t a1, void *a2, uint64
   return v3;
 }
 
-- (void)addObjectsFromIndexMap:(id)a3
+- (void)addObjectsFromIndexMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v9 = 0;
-  v5 = [v4 _createIndexesWithSize:&v9];
+  v5 = [mapCopy _createIndexesWithSize:&v9];
   if (v5)
   {
     v6 = v5;
@@ -283,7 +283,7 @@ void __28__AXIndexMap_initWithCoder___block_invoke(uint64_t a1, void *a2, uint64
     {
       for (i = 0; i < v9; ++i)
       {
-        v8 = [v4 objectForIndex:v6[i]];
+        v8 = [mapCopy objectForIndex:v6[i]];
         [(AXIndexMap *)self setObject:v8 forIndex:v6[i]];
       }
     }

@@ -1,13 +1,13 @@
 @interface AMSStorefrontSuffixAccessor
-+ (BOOL)setStorefrontSuffix:(id)a3 clientInfo:(id)a4 error:(id *)a5;
-+ (id)storefrontSuffixWithClientInfo:(id)a3;
++ (BOOL)setStorefrontSuffix:(id)suffix clientInfo:(id)info error:(id *)error;
++ (id)storefrontSuffixWithClientInfo:(id)info;
 @end
 
 @implementation AMSStorefrontSuffixAccessor
 
-+ (BOOL)setStorefrontSuffix:(id)a3 clientInfo:(id)a4 error:(id *)a5
++ (BOOL)setStorefrontSuffix:(id)suffix clientInfo:(id)info error:(id *)error
 {
-  if (a3)
+  if (suffix)
   {
     v6 = sub_192F967CC();
     v8 = v7;
@@ -19,17 +19,17 @@
     v8 = 0;
   }
 
-  v9 = a4;
-  static StorefrontSuffixAccessor.setStorefrontSuffix(_:clientInfo:)(v6, v8, v9);
+  infoCopy = info;
+  static StorefrontSuffixAccessor.setStorefrontSuffix(_:clientInfo:)(v6, v8, infoCopy);
 
   return 1;
 }
 
-+ (id)storefrontSuffixWithClientInfo:(id)a3
++ (id)storefrontSuffixWithClientInfo:(id)info
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  static StorefrontSuffixAccessor.storefrontSuffix(withClientInfo:)(v4);
+  infoCopy = info;
+  static StorefrontSuffixAccessor.storefrontSuffix(withClientInfo:)(infoCopy);
   v6 = v5;
 
   if (v6)

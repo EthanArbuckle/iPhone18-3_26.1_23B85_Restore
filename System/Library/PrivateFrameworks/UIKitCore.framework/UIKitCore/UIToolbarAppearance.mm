@@ -1,15 +1,15 @@
 @interface UIToolbarAppearance
-- (BOOL)_checkEqualTo:(id)a3;
-- (unint64_t)_hashInto:(unint64_t)a3;
-- (void)_barButtonItemDataChanged:(id)a3;
+- (BOOL)_checkEqualTo:(id)to;
+- (unint64_t)_hashInto:(unint64_t)into;
+- (void)_barButtonItemDataChanged:(id)changed;
 - (void)_completeInit;
-- (void)_copyFromAppearance:(id)a3;
-- (void)_decodeFromCoder:(id)a3;
-- (void)_describeInto:(id)a3;
+- (void)_copyFromAppearance:(id)appearance;
+- (void)_decodeFromCoder:(id)coder;
+- (void)_describeInto:(id)into;
 - (void)_setupDefaults;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setButtonAppearance:(UIBarButtonItemAppearance *)buttonAppearance;
-- (void)setProminentButtonAppearance:(id)a3;
+- (void)setProminentButtonAppearance:(id)appearance;
 @end
 
 @implementation UIToolbarAppearance
@@ -43,90 +43,90 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIToolbarAppearance;
-  v4 = a3;
-  [(UIBarAppearance *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_buttonAppearance forKey:{@"PlainButtons", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_prominentButtonAppearance forKey:@"DoneButtons"];
+  coderCopy = coder;
+  [(UIBarAppearance *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_buttonAppearance forKey:{@"PlainButtons", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_prominentButtonAppearance forKey:@"DoneButtons"];
 }
 
-- (void)_copyFromAppearance:(id)a3
+- (void)_copyFromAppearance:(id)appearance
 {
   v11.receiver = self;
   v11.super_class = UIToolbarAppearance;
-  v4 = a3;
-  [(UIBarAppearance *)&v11 _copyFromAppearance:v4];
-  v5 = [v4 _plainButtonAppearance];
-  v6 = [v5 copy];
+  appearanceCopy = appearance;
+  [(UIBarAppearance *)&v11 _copyFromAppearance:appearanceCopy];
+  _plainButtonAppearance = [appearanceCopy _plainButtonAppearance];
+  v6 = [_plainButtonAppearance copy];
   buttonAppearance = self->_buttonAppearance;
   self->_buttonAppearance = v6;
 
-  v8 = [v4 _prominentButtonAppearance];
+  _prominentButtonAppearance = [appearanceCopy _prominentButtonAppearance];
 
-  v9 = [v8 copy];
+  v9 = [_prominentButtonAppearance copy];
   prominentButtonAppearance = self->_prominentButtonAppearance;
   self->_prominentButtonAppearance = v9;
 }
 
-- (void)_decodeFromCoder:(id)a3
+- (void)_decodeFromCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = UIToolbarAppearance;
-  v4 = a3;
-  [(UIBarAppearance *)&v9 _decodeFromCoder:v4];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:{@"PlainButtons", v9.receiver, v9.super_class}];
+  coderCopy = coder;
+  [(UIBarAppearance *)&v9 _decodeFromCoder:coderCopy];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"PlainButtons", v9.receiver, v9.super_class}];
   buttonAppearance = self->_buttonAppearance;
   self->_buttonAppearance = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DoneButtons"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DoneButtons"];
 
   prominentButtonAppearance = self->_prominentButtonAppearance;
   self->_prominentButtonAppearance = v7;
 }
 
-- (void)_describeInto:(id)a3
+- (void)_describeInto:(id)into
 {
   v5.receiver = self;
   v5.super_class = UIToolbarAppearance;
-  v4 = a3;
-  [(UIBarAppearance *)&v5 _describeInto:v4];
-  [v4 appendFormat:@"\n\tPlain BarButtonItems(%p):", self->_buttonAppearance];
-  [(UIBarButtonItemAppearance *)self->_buttonAppearance _describeInto:v4];
-  [v4 appendFormat:@"\n\tProminent BarButtonItems(%p):", self->_prominentButtonAppearance];
-  [(UIBarButtonItemAppearance *)self->_prominentButtonAppearance _describeInto:v4];
+  intoCopy = into;
+  [(UIBarAppearance *)&v5 _describeInto:intoCopy];
+  [intoCopy appendFormat:@"\n\tPlain BarButtonItems(%p):", self->_buttonAppearance];
+  [(UIBarButtonItemAppearance *)self->_buttonAppearance _describeInto:intoCopy];
+  [intoCopy appendFormat:@"\n\tProminent BarButtonItems(%p):", self->_prominentButtonAppearance];
+  [(UIBarButtonItemAppearance *)self->_prominentButtonAppearance _describeInto:intoCopy];
 }
 
-- (unint64_t)_hashInto:(unint64_t)a3
+- (unint64_t)_hashInto:(unint64_t)into
 {
   v10.receiver = self;
   v10.super_class = UIToolbarAppearance;
-  v4 = 3 * [(UIBarAppearance *)&v10 _hashInto:a3];
-  v5 = [(UIBarButtonItemAppearance *)self->_buttonAppearance _data];
-  v6 = [v5 hash] + v4;
+  v4 = 3 * [(UIBarAppearance *)&v10 _hashInto:into];
+  _data = [(UIBarButtonItemAppearance *)self->_buttonAppearance _data];
+  v6 = [_data hash] + v4;
 
-  v7 = [(UIBarButtonItemAppearance *)self->_prominentButtonAppearance _data];
-  v8 = [v7 hash];
+  _data2 = [(UIBarButtonItemAppearance *)self->_prominentButtonAppearance _data];
+  v8 = [_data2 hash];
 
   return v8 + 3 * v6;
 }
 
-- (BOOL)_checkEqualTo:(id)a3
+- (BOOL)_checkEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v18.receiver = self;
   v18.super_class = UIToolbarAppearance;
-  if (![(UIBarAppearance *)&v18 _checkEqualTo:v4])
+  if (![(UIBarAppearance *)&v18 _checkEqualTo:toCopy])
   {
     goto LABEL_8;
   }
 
-  v5 = [(UIBarButtonItemAppearance *)self->_buttonAppearance _data];
-  v6 = [v4[7] _data];
-  v7 = v5;
-  v8 = v6;
+  _data = [(UIBarButtonItemAppearance *)self->_buttonAppearance _data];
+  _data2 = [toCopy[7] _data];
+  v7 = _data;
+  v8 = _data2;
   v9 = v8;
   if (v7 == v8)
   {
@@ -154,10 +154,10 @@
   if (v11)
   {
 LABEL_10:
-    v13 = [(UIBarButtonItemAppearance *)self->_prominentButtonAppearance _data];
-    v14 = [v4[8] _data];
-    v7 = v13;
-    v15 = v14;
+    _data3 = [(UIBarButtonItemAppearance *)self->_prominentButtonAppearance _data];
+    _data4 = [toCopy[8] _data];
+    v7 = _data3;
+    v15 = _data4;
     v9 = v15;
     if (v7 == v15)
     {
@@ -200,8 +200,8 @@ LABEL_19:
   v5 = buttonAppearance;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIToolbarAppearance.m" lineNumber:114 description:@"use -[UIBarButtonItemAppearance setupDefaultAppearanceForStyle:] to reset appearance values"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIToolbarAppearance.m" lineNumber:114 description:@"use -[UIBarButtonItemAppearance setupDefaultAppearanceForStyle:] to reset appearance values"];
   }
 
   v6 = self->_buttonAppearance;
@@ -236,17 +236,17 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setProminentButtonAppearance:(id)a3
+- (void)setProminentButtonAppearance:(id)appearance
 {
-  v5 = a3;
-  if (!v5)
+  appearanceCopy = appearance;
+  if (!appearanceCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIToolbarAppearance.m" lineNumber:125 description:@"use -[UIBarButtonItemAppearance setupDefaultAppearanceForStyle:] to reset appearance values"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIToolbarAppearance.m" lineNumber:125 description:@"use -[UIBarButtonItemAppearance setupDefaultAppearanceForStyle:] to reset appearance values"];
   }
 
   v6 = self->_prominentButtonAppearance;
-  v7 = v5;
+  v7 = appearanceCopy;
   v12 = v7;
   if (v6 == v7)
   {
@@ -277,23 +277,23 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_barButtonItemDataChanged:(id)a3
+- (void)_barButtonItemDataChanged:(id)changed
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_buttonAppearance == v4)
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (self->_buttonAppearance == changedCopy)
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 8;
 LABEL_8:
-    [(UIBarAppearance *)v7 _signalCategoryChanges:v8];
+    [(UIBarAppearance *)selfCopy2 _signalCategoryChanges:v8];
     goto LABEL_9;
   }
 
-  if (self->_prominentButtonAppearance == v4)
+  if (self->_prominentButtonAppearance == changedCopy)
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 16;
     goto LABEL_8;
   }

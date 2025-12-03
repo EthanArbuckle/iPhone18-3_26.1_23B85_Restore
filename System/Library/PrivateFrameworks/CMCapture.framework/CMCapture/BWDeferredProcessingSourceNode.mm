@@ -1,17 +1,17 @@
 @interface BWDeferredProcessingSourceNode
-- (BOOL)start:(id *)a3;
-- (BOOL)stop:(id *)a3;
-- (BWDeferredProcessingSourceNode)initWithPortTypes:(id)a3 attributes:(id)a4 colorSpaceProperties:(int)a5;
-- (id)portTypeForOutput:(id)a3;
+- (BOOL)start:(id *)start;
+- (BOOL)stop:(id *)stop;
+- (BWDeferredProcessingSourceNode)initWithPortTypes:(id)types attributes:(id)attributes colorSpaceProperties:(int)properties;
+- (id)portTypeForOutput:(id)output;
 - (void)dealloc;
-- (void)processBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)processBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation BWDeferredProcessingSourceNode
 
-- (BWDeferredProcessingSourceNode)initWithPortTypes:(id)a3 attributes:(id)a4 colorSpaceProperties:(int)a5
+- (BWDeferredProcessingSourceNode)initWithPortTypes:(id)types attributes:(id)attributes colorSpaceProperties:(int)properties
 {
-  v5 = *&a5;
+  v5 = *&properties;
   v24.receiver = self;
   v24.super_class = BWDeferredProcessingSourceNode;
   v7 = [(BWNode *)&v24 init];
@@ -24,7 +24,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [a3 countByEnumeratingWithState:&v20 objects:v19 count:16];
+    v9 = [types countByEnumeratingWithState:&v20 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -36,13 +36,13 @@
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(types);
           }
 
           v13 = *(*(&v20 + 1) + 8 * v12);
           v14 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v7];
           [(NSMutableDictionary *)v7->_outputsByPortType setObject:v14 forKeyedSubscript:v13];
-          v15 = [[BWVideoFormatRequirements alloc] initWithPixelBufferAttributes:a4];
+          v15 = [[BWVideoFormatRequirements alloc] initWithPixelBufferAttributes:attributes];
           v18 = [MEMORY[0x1E696AD98] numberWithInt:v5];
           -[BWVideoFormatRequirements setSupportedColorSpaceProperties:](v15, "setSupportedColorSpaceProperties:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1]);
           [(BWNodeOutput *)v14 setFormatRequirements:v15];
@@ -53,7 +53,7 @@
         }
 
         while (v10 != v12);
-        v10 = [a3 countByEnumeratingWithState:&v20 objects:v19 count:16];
+        v10 = [types countByEnumeratingWithState:&v20 objects:v19 count:16];
       }
 
       while (v10);
@@ -70,7 +70,7 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (id)portTypeForOutput:(id)a3
+- (id)portTypeForOutput:(id)output
 {
   v15 = 0u;
   v16 = 0u;
@@ -95,7 +95,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v13 + 1) + 8 * v9);
-    if ([(NSMutableDictionary *)self->_outputsByPortType objectForKeyedSubscript:v10]== a3)
+    if ([(NSMutableDictionary *)self->_outputsByPortType objectForKeyedSubscript:v10]== output)
     {
       return v10;
     }
@@ -113,7 +113,7 @@ LABEL_3:
   }
 }
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -167,7 +167,7 @@ _BYTE *__40__BWDeferredProcessingSourceNode_start___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -220,9 +220,9 @@ uint64_t __39__BWDeferredProcessingSourceNode_stop___block_invoke(uint64_t resul
   return result;
 }
 
-- (void)processBuffer:(opaqueCMSampleBuffer *)a3
+- (void)processBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = -[BWDeferredProcessingSourceNode outputForPortType:](self, "outputForPortType:", [CMGetAttachment(a3 *off_1E798A3C8]);
+  v5 = -[BWDeferredProcessingSourceNode outputForPortType:](self, "outputForPortType:", [CMGetAttachment(buffer *off_1E798A3C8]);
   emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -230,7 +230,7 @@ uint64_t __39__BWDeferredProcessingSourceNode_stop___block_invoke(uint64_t resul
   block[3] = &unk_1E798FE50;
   block[4] = self;
   block[5] = v5;
-  block[6] = a3;
+  block[6] = buffer;
   dispatch_sync(emitSamplesDispatchQueue, block);
 }
 

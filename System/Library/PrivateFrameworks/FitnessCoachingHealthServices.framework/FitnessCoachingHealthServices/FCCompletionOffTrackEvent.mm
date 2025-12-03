@@ -1,23 +1,23 @@
 @interface FCCompletionOffTrackEvent
-- (BOOL)shouldFireWithTypicalDayModel:(id)a3 evaluationDelegate:(id)a4;
-- (FCCompletionOffTrackEvent)initWithConfiguration:(id)a3;
+- (BOOL)shouldFireWithTypicalDayModel:(id)model evaluationDelegate:(id)delegate;
+- (FCCompletionOffTrackEvent)initWithConfiguration:(id)configuration;
 - (double)minimumDayDuration;
-- (id)goalProgressContentForModel:(id)a3;
-- (id)nextFireDateWithModel:(id)a3;
+- (id)goalProgressContentForModel:(id)model;
+- (id)nextFireDateWithModel:(id)model;
 @end
 
 @implementation FCCompletionOffTrackEvent
 
-- (FCCompletionOffTrackEvent)initWithConfiguration:(id)a3
+- (FCCompletionOffTrackEvent)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = FCCompletionOffTrackEvent;
   v6 = [(FCCompletionOffTrackEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
@@ -25,20 +25,20 @@
 
 - (double)minimumDayDuration
 {
-  v2 = [(FCCCompletionOffTrackConfiguration *)self->_configuration percentageOfDayRule];
-  [v2 minimumDayDuration];
+  percentageOfDayRule = [(FCCCompletionOffTrackConfiguration *)self->_configuration percentageOfDayRule];
+  [percentageOfDayRule minimumDayDuration];
   v4 = v3;
 
   return v4;
 }
 
-- (BOOL)shouldFireWithTypicalDayModel:(id)a3 evaluationDelegate:(id)a4
+- (BOOL)shouldFireWithTypicalDayModel:(id)model evaluationDelegate:(id)delegate
 {
-  v6 = a3;
+  modelCopy = model;
   configuration = self->_configuration;
-  v8 = a4;
-  v9 = [(FCCCompletionOffTrackConfiguration *)configuration coalescingRules];
-  v10 = FCEventCoalescedWithRules(v9, v8);
+  delegateCopy = delegate;
+  coalescingRules = [(FCCCompletionOffTrackConfiguration *)configuration coalescingRules];
+  v10 = FCEventCoalescedWithRules(coalescingRules, delegateCopy);
 
   if (v10)
   {
@@ -47,14 +47,14 @@
 
   [(FCCCompletionOffTrackConfiguration *)self->_configuration goalBufferPercentage];
   v13 = v12;
-  v14 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
-  v15 = [v14 containsObject:&unk_285E86990];
+  allowedGoalTypes = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
+  v15 = [allowedGoalTypes containsObject:&unk_285E86990];
 
   if (v15)
   {
-    [v6 valueOfTypicalDayMoveEarnedByNow];
+    [modelCopy valueOfTypicalDayMoveEarnedByNow];
     v17 = v16 > 0.0;
-    v18 = [v6 willCompleteMoveGoalWithBufferPercentage:v13];
+    v18 = [modelCopy willCompleteMoveGoalWithBufferPercentage:v13];
   }
 
   else
@@ -63,14 +63,14 @@
     v18 = 1;
   }
 
-  v19 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
-  v20 = [v19 containsObject:&unk_285E869A8];
+  allowedGoalTypes2 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
+  v20 = [allowedGoalTypes2 containsObject:&unk_285E869A8];
 
   if (v20)
   {
-    [v6 valueOfTypicalDayBriskMinutesEarnedByNow];
+    [modelCopy valueOfTypicalDayBriskMinutesEarnedByNow];
     v22 = v21 > 0.0;
-    v23 = [v6 willCompleteExerciseGoalWithBufferPercentage:v13];
+    v23 = [modelCopy willCompleteExerciseGoalWithBufferPercentage:v13];
   }
 
   else
@@ -79,10 +79,10 @@
     v23 = 1;
   }
 
-  v24 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
-  v25 = [v24 containsObject:&unk_285E869C0];
+  allowedGoalTypes3 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
+  v25 = [allowedGoalTypes3 containsObject:&unk_285E869C0];
 
-  v26 = v25 ? [v6 willCompleteStandGoalOrItIsTooLateWithBufferPercentage:v13] : 1;
+  v26 = v25 ? [modelCopy willCompleteStandGoalOrItIsTooLateWithBufferPercentage:v13] : 1;
   if (v18 & 1 | !v17 && ((!v22 | v23) & 1) != 0 && v26 & 1 | (!v17 && !v22))
   {
 LABEL_2:
@@ -105,27 +105,27 @@ LABEL_2:
   return v11;
 }
 
-- (id)nextFireDateWithModel:(id)a3
+- (id)nextFireDateWithModel:(id)model
 {
   configuration = self->_configuration;
-  v4 = a3;
-  v5 = [(FCCCompletionOffTrackConfiguration *)configuration percentageOfDayRule];
-  v6 = FCFireDateForPercentOfDayRule(v5, v4);
+  modelCopy = model;
+  percentageOfDayRule = [(FCCCompletionOffTrackConfiguration *)configuration percentageOfDayRule];
+  v6 = FCFireDateForPercentOfDayRule(percentageOfDayRule, modelCopy);
 
   return v6;
 }
 
-- (id)goalProgressContentForModel:(id)a3
+- (id)goalProgressContentForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   [(FCCCompletionOffTrackConfiguration *)self->_configuration goalBufferPercentage];
   v6 = v5;
-  v7 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
-  v8 = [v7 containsObject:&unk_285E86990];
+  allowedGoalTypes = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
+  v8 = [allowedGoalTypes containsObject:&unk_285E86990];
 
   if (v8)
   {
-    v9 = [v4 willCompleteMoveGoalWithBufferPercentage:v6];
+    v9 = [modelCopy willCompleteMoveGoalWithBufferPercentage:v6];
   }
 
   else
@@ -133,12 +133,12 @@ LABEL_2:
     v9 = 1;
   }
 
-  v10 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
-  v11 = [v10 containsObject:&unk_285E869A8];
+  allowedGoalTypes2 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
+  v11 = [allowedGoalTypes2 containsObject:&unk_285E869A8];
 
   if (v11)
   {
-    v12 = [v4 willCompleteExerciseGoalWithBufferPercentage:v6];
+    v12 = [modelCopy willCompleteExerciseGoalWithBufferPercentage:v6];
   }
 
   else
@@ -146,12 +146,12 @@ LABEL_2:
     v12 = 1;
   }
 
-  v13 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
-  v14 = [v13 containsObject:&unk_285E869C0];
+  allowedGoalTypes3 = [(FCCCompletionOffTrackConfiguration *)self->_configuration allowedGoalTypes];
+  v14 = [allowedGoalTypes3 containsObject:&unk_285E869C0];
 
   if (v14)
   {
-    v15 = [v4 willCompleteStandGoalOrItIsTooLateWithBufferPercentage:v6];
+    v15 = [modelCopy willCompleteStandGoalOrItIsTooLateWithBufferPercentage:v6];
     if ((v9 & 1) == 0)
     {
       goto LABEL_9;
@@ -192,8 +192,8 @@ LABEL_14:
   }
 
   v19 = objc_alloc(MEMORY[0x277D09CB8]);
-  v20 = [(FCCompletionOffTrackEvent *)self eventIdentifier];
-  v21 = [v19 initWithEventIdentifier:v20 goalTypesToDisplay:v16 goalTypeToHighlight:0 expectedGoalValue:0.0];
+  eventIdentifier = [(FCCompletionOffTrackEvent *)self eventIdentifier];
+  v21 = [v19 initWithEventIdentifier:eventIdentifier goalTypesToDisplay:v16 goalTypeToHighlight:0 expectedGoalValue:0.0];
 
   return v21;
 }

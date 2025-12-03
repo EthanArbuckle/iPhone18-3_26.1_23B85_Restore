@@ -11,7 +11,7 @@
   ObjectType = swift_getObjectType();
   v4 = (self + OBJC_IVAR___TSCachePreFlushTask_block);
   v5 = *(&self->super.isa + OBJC_IVAR___TSCachePreFlushTask_block);
-  v6 = self;
+  selfCopy = self;
   if (v5)
   {
     v7 = sub_2188202A8(v5);
@@ -37,7 +37,7 @@
 {
   v2 = (self + OBJC_IVAR___TSCachePreFlushTask_block);
   v3 = *(&self->super.isa + OBJC_IVAR___TSCachePreFlushTask_block);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     v5 = sub_2188202A8(v3);

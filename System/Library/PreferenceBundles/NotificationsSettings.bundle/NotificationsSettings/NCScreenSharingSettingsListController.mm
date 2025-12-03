@@ -1,7 +1,7 @@
 @interface NCScreenSharingSettingsListController
-- (id)allowNotifications:(id)a3;
+- (id)allowNotifications:(id)notifications;
 - (id)specifiers;
-- (void)setAllowNotifications:(id)a3 specifier:(id)a4;
+- (void)setAllowNotifications:(id)notifications specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -45,18 +45,18 @@
   return v4;
 }
 
-- (id)allowNotifications:(id)a3
+- (id)allowNotifications:(id)notifications
 {
   v3 = NCGetAllowNotificationsDuringScreenSharing();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setAllowNotifications:(id)a3 specifier:(id)a4
+- (void)setAllowNotifications:(id)notifications specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [notifications BOOLValue];
 
-  NCSetAllowNotificationsDuringScreenSharing(v4);
+  NCSetAllowNotificationsDuringScreenSharing(bOOLValue);
 }
 
 @end

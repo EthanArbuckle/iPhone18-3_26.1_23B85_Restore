@@ -1,16 +1,16 @@
 @interface PKPaymentSetupFieldBuiltInDateOfBirth
 - (BOOL)submissionStringMeetsAllRequirements;
-- (PKPaymentSetupFieldBuiltInDateOfBirth)initWithIdentifier:(id)a3 type:(unint64_t)a4;
-- (void)updateWithConfiguration:(id)a3;
+- (PKPaymentSetupFieldBuiltInDateOfBirth)initWithIdentifier:(id)identifier type:(unint64_t)type;
+- (void)updateWithConfiguration:(id)configuration;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInDateOfBirth
 
-- (PKPaymentSetupFieldBuiltInDateOfBirth)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInDateOfBirth)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupFieldBuiltInDateOfBirth;
-  v4 = [(PKPaymentSetupFieldDate *)&v7 initWithIdentifier:@"dateOfBirth" type:a4];
+  v4 = [(PKPaymentSetupFieldDate *)&v7 initWithIdentifier:@"dateOfBirth" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_DateOfBirth.isa, 0);
@@ -25,23 +25,23 @@
   return v4;
 }
 
-- (void)updateWithConfiguration:(id)a3
+- (void)updateWithConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupFieldBuiltInDateOfBirth;
-  v4 = a3;
-  [(PKPaymentSetupFieldDate *)&v6 updateWithConfiguration:v4];
-  v5 = [v4 PKIntegerForKey:{@"minimumAge", v6.receiver, v6.super_class}];
+  configurationCopy = configuration;
+  [(PKPaymentSetupFieldDate *)&v6 updateWithConfiguration:configurationCopy];
+  v5 = [configurationCopy PKIntegerForKey:{@"minimumAge", v6.receiver, v6.super_class}];
 
   self->_minimumAge = v5;
 }
 
 - (BOOL)submissionStringMeetsAllRequirements
 {
-  v3 = [(PKPaymentSetupFieldDate *)self currentValue];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [(PKPaymentSetupFieldDate *)self calendar];
-  v6 = v5;
+  currentValue = [(PKPaymentSetupFieldDate *)self currentValue];
+  date = [MEMORY[0x1E695DF00] date];
+  calendar = [(PKPaymentSetupFieldDate *)self calendar];
+  v6 = calendar;
   disallowCurrentYear = self->_disallowCurrentYear;
   if (self->_disallowCurrentYear)
   {
@@ -53,15 +53,15 @@
     v8 = 16;
   }
 
-  v9 = [v5 compareDate:v3 toDate:v4 toUnitGranularity:v8];
-  v10 = [v6 components:4 fromDate:v3 toDate:v4 options:0];
-  v11 = [v10 year];
+  v9 = [calendar compareDate:currentValue toDate:date toUnitGranularity:v8];
+  v10 = [v6 components:4 fromDate:currentValue toDate:date options:0];
+  year = [v10 year];
   minimumAge = self->_minimumAge;
   v18.receiver = self;
   v18.super_class = PKPaymentSetupFieldBuiltInDateOfBirth;
-  v13 = [(PKPaymentSetupFieldDate *)&v18 submissionStringMeetsAllRequirements];
-  v15 = v9 != !disallowCurrentYear && v11 >= minimumAge;
-  if (v13)
+  submissionStringMeetsAllRequirements = [(PKPaymentSetupFieldDate *)&v18 submissionStringMeetsAllRequirements];
+  v15 = v9 != !disallowCurrentYear && year >= minimumAge;
+  if (submissionStringMeetsAllRequirements)
   {
     v16 = v15;
   }

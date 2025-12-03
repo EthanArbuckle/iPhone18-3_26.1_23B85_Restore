@@ -2,7 +2,7 @@
 - (UILabel)auManufacturerLabel;
 - (UILabel)auNameLabel;
 - (UILabel)auVersionLabel;
-- (_TtC12CoreAudioKit23AUGenericViewHeaderCell)initWithFrame:(CGRect)a3;
+- (_TtC12CoreAudioKit23AUGenericViewHeaderCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AUGenericViewHeaderCell
@@ -28,7 +28,7 @@
   return Strong;
 }
 
-- (_TtC12CoreAudioKit23AUGenericViewHeaderCell)initWithFrame:(CGRect)a3
+- (_TtC12CoreAudioKit23AUGenericViewHeaderCell)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

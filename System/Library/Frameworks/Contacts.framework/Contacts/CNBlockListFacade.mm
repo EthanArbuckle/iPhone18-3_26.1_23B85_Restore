@@ -1,15 +1,15 @@
 @interface CNBlockListFacade
-+ (void)newItemWithHandle:(id)a3;
-- (BOOL)isHandleBlocked:(id)a3;
-- (void)setBlocked:(BOOL)a3 forHandle:(id)a4;
++ (void)newItemWithHandle:(id)handle;
+- (BOOL)isHandleBlocked:(id)blocked;
+- (void)setBlocked:(BOOL)blocked forHandle:(id)handle;
 @end
 
 @implementation CNBlockListFacade
 
-- (BOOL)isHandleBlocked:(id)a3
+- (BOOL)isHandleBlocked:(id)blocked
 {
-  v3 = a3;
-  v4 = [objc_opt_class() newItemWithHandle:v3];
+  blockedCopy = blocked;
+  v4 = [objc_opt_class() newItemWithHandle:blockedCopy];
   if (v4)
   {
     v5 = v4;
@@ -46,16 +46,16 @@
   return v8;
 }
 
-- (void)setBlocked:(BOOL)a3 forHandle:(id)a4
+- (void)setBlocked:(BOOL)blocked forHandle:(id)handle
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [objc_opt_class() newItemWithHandle:v5];
+  blockedCopy = blocked;
+  handleCopy = handle;
+  v6 = [objc_opt_class() newItemWithHandle:handleCopy];
   if (v6)
   {
     v7 = v6;
     v8 = &v14;
-    if (v4)
+    if (blockedCopy)
     {
       v14 = 0;
       v15 = &v14;
@@ -107,9 +107,9 @@ LABEL_10:
   }
 }
 
-+ (void)newItemWithHandle:(id)a3
++ (void)newItemWithHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -131,7 +131,7 @@ LABEL_10:
     _Unwind_Resume(MDItemUniqueIdentifier_cold_1);
   }
 
-  v6 = v4(v3);
+  v6 = v4(handleCopy);
 
   return v6;
 }

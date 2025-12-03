@@ -1,81 +1,81 @@
 @interface STRootViewModelCoordinator
-+ (id)createValuesByRestrictionWithValuesByRestrictionItem:(id)a3 isSiriImageGenerationAllowed:(BOOL)a4;
-+ (id)defaultValueForRestrictionIdentifier:(id)a3 forIsLocalDevice:(BOOL)a4;
++ (id)createValuesByRestrictionWithValuesByRestrictionItem:(id)item isSiriImageGenerationAllowed:(BOOL)allowed;
++ (id)defaultValueForRestrictionIdentifier:(id)identifier forIsLocalDevice:(BOOL)device;
 + (id)keyPathsForValuesAffectingUsageDetailsCoordinator;
-+ (id)loadViewModelFromManagedObjectContext:(id)a3 isLocalUser:(BOOL)a4 userDSID:(id)a5 error:(id *)a6;
++ (id)loadViewModelFromManagedObjectContext:(id)context isLocalUser:(BOOL)user userDSID:(id)d error:(id *)error;
 - (BOOL)_currentAccountIsProto;
 - (BOOL)hasShownAppRatingChangeTip;
 - (BOOL)hasShownMiniBuddy;
 - (BOOL)isPasscodeEnabled;
 - (BOOL)shouldShowConnectToFamilyForSignIn;
-- (BOOL)validatePIN:(id)a3;
+- (BOOL)validatePIN:(id)n;
 - (STCommunicationSafetyViewModelCoordinator)communicationSafetyCoordinator;
 - (STContentPrivacyViewModelCoordinator)contentPrivacyCoordinator;
 - (STEyeReliefViewModelCoordinator)eyeReliefCoordinator;
-- (STRootViewModelCoordinator)initWithUserDSID:(id)a3 deviceIdentifier:(id)a4 usageReportType:(id)a5 usageContext:(int64_t)a6;
+- (STRootViewModelCoordinator)initWithUserDSID:(id)d deviceIdentifier:(id)identifier usageReportType:(id)type usageContext:(int64_t)context;
 - (STTimeAllowancesViewModelCoordinator)timeAllowancesCoordinator;
 - (STUsageDetailsViewModelCoordinator)usageDetailsCoordinator;
-- (id)coordinatorForChild:(id)a3 deviceIdentifier:(id)a4 usageReportType:(id)a5;
-- (id)defaultValueForRestrictionIdentifier:(id)a3;
+- (id)coordinatorForChild:(id)child deviceIdentifier:(id)identifier usageReportType:(id)type;
+- (id)defaultValueForRestrictionIdentifier:(id)identifier;
 - (id)organizationIdentifierForManagement;
 - (id)organizationIdentifierForUsage;
 - (void)_registerForPersistentStoreNotifications;
 - (void)_registerForWillResignActiveNotifications;
-- (void)_reportCoreAnalyticsEventScreenTimeEnabled:(BOOL)a3 user:(id)a4 userType:(unint64_t)a5 userIsRemote:(BOOL)a6;
-- (void)_setPIN:(id)a3 recoveryAltDSID:(id)a4 shouldSetRecoveryAppleID:(BOOL)a5 completionHandler:(id)a6;
+- (void)_reportCoreAnalyticsEventScreenTimeEnabled:(BOOL)enabled user:(id)user userType:(unint64_t)type userIsRemote:(BOOL)remote;
+- (void)_setPIN:(id)n recoveryAltDSID:(id)d shouldSetRecoveryAppleID:(BOOL)iD completionHandler:(id)handler;
 - (void)_validateDeviceIdentifier;
-- (void)_willRefreshUsage:(id)a3;
-- (void)applyIntroductionViewModel:(id)a3 withCompletionHandler:(id)a4;
-- (void)enableManagementWithPIN:(id)a3 recoveryAltDSID:(id)a4 completionHandler:(id)a5;
-- (void)loadRegionRatingsWithCompletionHandler:(id)a3;
-- (void)loadValuesByRestrictionWithCompletionHandler:(id)a3;
+- (void)_willRefreshUsage:(id)usage;
+- (void)applyIntroductionViewModel:(id)model withCompletionHandler:(id)handler;
+- (void)enableManagementWithPIN:(id)n recoveryAltDSID:(id)d completionHandler:(id)handler;
+- (void)loadRegionRatingsWithCompletionHandler:(id)handler;
+- (void)loadValuesByRestrictionWithCompletionHandler:(id)handler;
 - (void)loadViewModelRightNow;
-- (void)loadViewModelWithCompletionHandler:(id)a3;
-- (void)saveViewModel:(id)a3;
-- (void)setHasShownAppRatingChangeTip:(BOOL)a3;
-- (void)setHasShownMiniBuddy:(BOOL)a3;
-- (void)setManagementEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setScreenTimeEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setScreenTimeSyncingEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setShareWebUsageEnabled:(BOOL)a3 completionHandler:(id)a4;
+- (void)loadViewModelWithCompletionHandler:(id)handler;
+- (void)saveViewModel:(id)model;
+- (void)setHasShownAppRatingChangeTip:(BOOL)tip;
+- (void)setHasShownMiniBuddy:(BOOL)buddy;
+- (void)setManagementEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setScreenTimeEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setScreenTimeSyncingEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setShareWebUsageEnabled:(BOOL)enabled completionHandler:(id)handler;
 @end
 
 @implementation STRootViewModelCoordinator
 
-- (STRootViewModelCoordinator)initWithUserDSID:(id)a3 deviceIdentifier:(id)a4 usageReportType:(id)a5 usageContext:(int64_t)a6
+- (STRootViewModelCoordinator)initWithUserDSID:(id)d deviceIdentifier:(id)identifier usageReportType:(id)type usageContext:(int64_t)context
 {
   v31.receiver = self;
   v31.super_class = STRootViewModelCoordinator;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  typeCopy = type;
+  identifierCopy = identifier;
+  dCopy = d;
   v12 = [(STRootViewModelCoordinator *)&v31 init];
-  v13 = [v11 copy];
+  v13 = [dCopy copy];
   userDSID = v12->_userDSID;
   v12->_userDSID = v13;
 
-  v15 = [v10 copy];
+  v15 = [identifierCopy copy];
   deviceIdentifier = v12->_deviceIdentifier;
   v12->_deviceIdentifier = v15;
 
-  v17 = [v9 copy];
+  v17 = [typeCopy copy];
   usageReportType = v12->_usageReportType;
   v12->_usageReportType = v17;
 
-  v12->_usageContext = a6;
-  v19 = [MEMORY[0x277D4B898] sharedController];
+  v12->_usageContext = context;
+  mEMORY[0x277D4B898] = [MEMORY[0x277D4B898] sharedController];
   persistenceController = v12->_persistenceController;
-  v12->_persistenceController = v19;
+  v12->_persistenceController = mEMORY[0x277D4B898];
 
-  v21 = [v11 unsignedIntegerValue];
-  if (!v21)
+  unsignedIntegerValue = [dCopy unsignedIntegerValue];
+  if (!unsignedIntegerValue)
   {
     v12->_isLocalUser = 1;
   }
 
-  v22 = [(STAdminPersistenceController *)v12->_persistenceController persistentContainer];
-  v23 = [MEMORY[0x277D4B8C0] sharedCache];
-  [v23 setPersistentContainer:v22];
+  persistentContainer = [(STAdminPersistenceController *)v12->_persistenceController persistentContainer];
+  mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+  [mEMORY[0x277D4B8C0] setPersistentContainer:persistentContainer];
 
   userName = v12->_userName;
   v12->_userName = 0;
@@ -91,8 +91,8 @@
   [(STRootViewModelCoordinator *)v12 loadViewModelRightNow];
   [(STRootViewModelCoordinator *)v12 _registerForPersistentStoreNotifications];
   [(STRootViewModelCoordinator *)v12 _registerForWillResignActiveNotifications];
-  v29 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v29 addObserver:v12 selector:sel__willRefreshUsage_ name:0x287677CE8 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v12 selector:sel__willRefreshUsage_ name:0x287677CE8 object:0];
 
   return v12;
 }
@@ -101,35 +101,35 @@
 {
   v24[5] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D4B9C8];
-  v4 = [MEMORY[0x277D4B988] fetchRequest];
-  v5 = [v3 requestWithFetchRequest:v4];
+  fetchRequest = [MEMORY[0x277D4B988] fetchRequest];
+  v5 = [v3 requestWithFetchRequest:fetchRequest];
 
   v6 = MEMORY[0x277D4B9C8];
-  v7 = [MEMORY[0x277D4B980] fetchRequest];
-  v8 = [v6 requestWithFetchRequest:v7];
+  fetchRequest2 = [MEMORY[0x277D4B980] fetchRequest];
+  v8 = [v6 requestWithFetchRequest:fetchRequest2];
 
   v9 = MEMORY[0x277D4B9C8];
-  v10 = [MEMORY[0x277D4BA90] fetchRequest];
-  v11 = [v9 requestWithFetchRequest:v10];
+  fetchRequest3 = [MEMORY[0x277D4BA90] fetchRequest];
+  v11 = [v9 requestWithFetchRequest:fetchRequest3];
 
   v12 = MEMORY[0x277D4B9C8];
-  v13 = [MEMORY[0x277D4B9D8] fetchRequest];
-  v14 = [v12 requestWithFetchRequest:v13];
+  fetchRequest4 = [MEMORY[0x277D4B9D8] fetchRequest];
+  v14 = [v12 requestWithFetchRequest:fetchRequest4];
 
   v15 = MEMORY[0x277D4B9C8];
-  v16 = [MEMORY[0x277D4BAD8] fetchRequest];
-  v17 = [v15 requestWithFetchRequest:v16];
+  fetchRequest5 = [MEMORY[0x277D4BAD8] fetchRequest];
+  v17 = [v15 requestWithFetchRequest:fetchRequest5];
 
   v18 = objc_alloc(MEMORY[0x277D4B9D0]);
-  v19 = [(STRootViewModelCoordinator *)self persistenceController];
-  v20 = [v19 viewContext];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
+  viewContext = [persistenceController viewContext];
   v24[0] = v5;
   v24[1] = v8;
   v24[2] = v11;
   v24[3] = v14;
   v24[4] = v17;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:5];
-  v22 = [v18 initWithContext:v20 resultsRequests:v21];
+  v22 = [v18 initWithContext:viewContext resultsRequests:v21];
 
   [v22 setDelegate:self];
   fetchedResultsController = self->_fetchedResultsController;
@@ -138,28 +138,28 @@
 
 - (void)_registerForWillResignActiveNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__passcodeSessionHasEnded_ name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__passcodeSessionHasEnded_ name:*MEMORY[0x277D76768] object:0];
 }
 
-- (id)coordinatorForChild:(id)a3 deviceIdentifier:(id)a4 usageReportType:(id)a5
+- (id)coordinatorForChild:(id)child deviceIdentifier:(id)identifier usageReportType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(STRootViewModelCoordinator *)self coordinatorsByChildDSID];
-  v12 = [v8 dsid];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  childCopy = child;
+  identifierCopy = identifier;
+  typeCopy = type;
+  coordinatorsByChildDSID = [(STRootViewModelCoordinator *)self coordinatorsByChildDSID];
+  dsid = [childCopy dsid];
+  v13 = [coordinatorsByChildDSID objectForKeyedSubscript:dsid];
 
   if (!v13)
   {
     v14 = [STRootViewModelCoordinator alloc];
-    v15 = [v8 dsid];
-    v13 = [(STRootViewModelCoordinator *)v14 initWithUserDSID:v15 deviceIdentifier:v9 usageReportType:v10 usageContext:[(STRootViewModelCoordinator *)self usageContext]];
+    dsid2 = [childCopy dsid];
+    v13 = [(STRootViewModelCoordinator *)v14 initWithUserDSID:dsid2 deviceIdentifier:identifierCopy usageReportType:typeCopy usageContext:[(STRootViewModelCoordinator *)self usageContext]];
 
-    v16 = [(STRootViewModelCoordinator *)self coordinatorsByChildDSID];
-    v17 = [v8 dsid];
-    [v16 setObject:v13 forKeyedSubscript:v17];
+    coordinatorsByChildDSID2 = [(STRootViewModelCoordinator *)self coordinatorsByChildDSID];
+    dsid3 = [childCopy dsid];
+    [coordinatorsByChildDSID2 setObject:v13 forKeyedSubscript:dsid3];
   }
 
   return v13;
@@ -180,24 +180,24 @@
 {
   if (!self->_usageDetailsCoordinator)
   {
-    v3 = [(STRootViewModelCoordinator *)self viewModel];
-    v4 = [v3 isScreenTimeEnabled];
+    viewModel = [(STRootViewModelCoordinator *)self viewModel];
+    isScreenTimeEnabled = [viewModel isScreenTimeEnabled];
 
-    if (v4)
+    if (isScreenTimeEnabled)
     {
       v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K == %hd OR %K == %hd)", @"platform", 4, @"platform", 5];
-      v6 = [(STRootViewModelCoordinator *)self viewModel];
-      v7 = [v6 devices];
-      v8 = [v7 filteredArrayUsingPredicate:v5];
+      viewModel2 = [(STRootViewModelCoordinator *)self viewModel];
+      devices = [viewModel2 devices];
+      v8 = [devices filteredArrayUsingPredicate:v5];
 
       [(STRootViewModelCoordinator *)self _validateDeviceIdentifier];
       v9 = [STUsageDetailsViewModelCoordinator alloc];
-      v10 = [(STRootViewModelCoordinator *)self persistenceController];
-      v11 = [(STRootViewModelCoordinator *)self organizationIdentifierForUsage];
-      v12 = [(STRootViewModelCoordinator *)self userDSID];
-      v13 = [(STRootViewModelCoordinator *)self deviceIdentifier];
-      v14 = [(STRootViewModelCoordinator *)self usageReportType];
-      v15 = [(STUsageDetailsViewModelCoordinator *)v9 initWithPersistenceController:v10 organizationIdentifier:v11 userDSID:v12 devices:v8 selectedDeviceIdentifier:v13 selectedUsageReportType:v14 usageContext:[(STRootViewModelCoordinator *)self usageContext]];
+      persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
+      organizationIdentifierForUsage = [(STRootViewModelCoordinator *)self organizationIdentifierForUsage];
+      userDSID = [(STRootViewModelCoordinator *)self userDSID];
+      deviceIdentifier = [(STRootViewModelCoordinator *)self deviceIdentifier];
+      usageReportType = [(STRootViewModelCoordinator *)self usageReportType];
+      v15 = [(STUsageDetailsViewModelCoordinator *)v9 initWithPersistenceController:persistenceController organizationIdentifier:organizationIdentifierForUsage userDSID:userDSID devices:v8 selectedDeviceIdentifier:deviceIdentifier selectedUsageReportType:usageReportType usageContext:[(STRootViewModelCoordinator *)self usageContext]];
       usageDetailsCoordinator = self->_usageDetailsCoordinator;
       self->_usageDetailsCoordinator = v15;
     }
@@ -211,46 +211,46 @@
 - (void)_validateDeviceIdentifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(STRootViewModelCoordinator *)self viewModel];
-  v4 = [v3 devices];
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  devices = [viewModel devices];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__STRootViewModelCoordinator__validateDeviceIdentifier__block_invoke;
   v14[3] = &unk_279B7DEB0;
   v14[4] = self;
-  v5 = [v4 indexOfObjectPassingTest:v14];
+  v5 = [devices indexOfObjectPassingTest:v14];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     if ([(STRootViewModelCoordinator *)self isLocalUser])
     {
-      v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == YES", @"isLocalDevice"];
-      v7 = [(STRootViewModelCoordinator *)self viewModel];
-      v8 = [v7 devices];
-      v9 = [v8 filteredArrayUsingPredicate:v6];
+      viewModel3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == YES", @"isLocalDevice"];
+      viewModel2 = [(STRootViewModelCoordinator *)self viewModel];
+      devices2 = [viewModel2 devices];
+      devices3 = [devices2 filteredArrayUsingPredicate:viewModel3];
     }
 
     else
     {
-      v6 = [(STRootViewModelCoordinator *)self viewModel];
-      v9 = [v6 devices];
+      viewModel3 = [(STRootViewModelCoordinator *)self viewModel];
+      devices3 = [viewModel3 devices];
     }
 
-    v10 = [v9 firstObject];
-    v11 = [v10 identifier];
+    firstObject = [devices3 firstObject];
+    identifier = [firstObject identifier];
 
     v12 = +[STUILog usage];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(STRootViewModelCoordinator *)self deviceIdentifier];
+      deviceIdentifier = [(STRootViewModelCoordinator *)self deviceIdentifier];
       *buf = 138543618;
-      v16 = v13;
+      v16 = deviceIdentifier;
       v17 = 2114;
-      v18 = v11;
+      v18 = identifier;
       _os_log_impl(&dword_264BA2000, v12, OS_LOG_TYPE_DEFAULT, "_validateDeviceIdentifier: deviceIdentifier %{public}@ not found. Switching to %{public}@", buf, 0x16u);
     }
 
-    [(STRootViewModelCoordinator *)self setDeviceIdentifier:v11];
+    [(STRootViewModelCoordinator *)self setDeviceIdentifier:identifier];
   }
 }
 
@@ -279,9 +279,9 @@ uint64_t __55__STRootViewModelCoordinator__validateDeviceIdentifier__block_invok
   if (!timeAllowancesCoordinator)
   {
     v4 = [STTimeAllowancesViewModelCoordinator alloc];
-    v5 = [(STRootViewModelCoordinator *)self persistenceController];
-    v6 = [(STRootViewModelCoordinator *)self userDSID];
-    v7 = [(STTimeAllowancesViewModelCoordinator *)v4 initWithPersistenceController:v5 userDSID:v6];
+    persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
+    userDSID = [(STRootViewModelCoordinator *)self userDSID];
+    v7 = [(STTimeAllowancesViewModelCoordinator *)v4 initWithPersistenceController:persistenceController userDSID:userDSID];
     v8 = self->_timeAllowancesCoordinator;
     self->_timeAllowancesCoordinator = v7;
 
@@ -297,10 +297,10 @@ uint64_t __55__STRootViewModelCoordinator__validateDeviceIdentifier__block_invok
   if (!contentPrivacyCoordinator)
   {
     v4 = [STContentPrivacyViewModelCoordinator alloc];
-    v5 = [(STRootViewModelCoordinator *)self persistenceController];
-    v6 = [(STRootViewModelCoordinator *)self userDSID];
-    v7 = [(STRootViewModelCoordinator *)self userName];
-    v8 = [(STContentPrivacyViewModelCoordinator *)v4 initWithPersistenceController:v5 userDSID:v6 userName:v7 currentAccountIsProto:[(STRootViewModelCoordinator *)self _currentAccountIsProto]];
+    persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
+    userDSID = [(STRootViewModelCoordinator *)self userDSID];
+    userName = [(STRootViewModelCoordinator *)self userName];
+    v8 = [(STContentPrivacyViewModelCoordinator *)v4 initWithPersistenceController:persistenceController userDSID:userDSID userName:userName currentAccountIsProto:[(STRootViewModelCoordinator *)self _currentAccountIsProto]];
     v9 = self->_contentPrivacyCoordinator;
     self->_contentPrivacyCoordinator = v8;
 
@@ -316,9 +316,9 @@ uint64_t __55__STRootViewModelCoordinator__validateDeviceIdentifier__block_invok
   if (!communicationSafetyCoordinator)
   {
     v4 = [STCommunicationSafetyViewModelCoordinator alloc];
-    v5 = [(STRootViewModelCoordinator *)self persistenceController];
-    v6 = [(STRootViewModelCoordinator *)self userDSID];
-    v7 = [(STCommunicationSafetyViewModelCoordinator *)v4 initWithPersistenceController:v5 userDSID:v6 currentAccountIsProto:[(STRootViewModelCoordinator *)self _currentAccountIsProto]];
+    persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
+    userDSID = [(STRootViewModelCoordinator *)self userDSID];
+    v7 = [(STCommunicationSafetyViewModelCoordinator *)v4 initWithPersistenceController:persistenceController userDSID:userDSID currentAccountIsProto:[(STRootViewModelCoordinator *)self _currentAccountIsProto]];
     v8 = self->_communicationSafetyCoordinator;
     self->_communicationSafetyCoordinator = v7;
 
@@ -334,9 +334,9 @@ uint64_t __55__STRootViewModelCoordinator__validateDeviceIdentifier__block_invok
   if (!eyeReliefCoordinator)
   {
     v4 = [STEyeReliefViewModelCoordinator alloc];
-    v5 = [(STRootViewModelCoordinator *)self persistenceController];
-    v6 = [(STRootViewModelCoordinator *)self userDSID];
-    v7 = [(STEyeReliefViewModelCoordinator *)v4 initWithPersistenceController:v5 userDSID:v6 currentAccountIsProto:[(STRootViewModelCoordinator *)self _currentAccountIsProto]];
+    persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
+    userDSID = [(STRootViewModelCoordinator *)self userDSID];
+    v7 = [(STEyeReliefViewModelCoordinator *)v4 initWithPersistenceController:persistenceController userDSID:userDSID currentAccountIsProto:[(STRootViewModelCoordinator *)self _currentAccountIsProto]];
     v8 = self->_eyeReliefCoordinator;
     self->_eyeReliefCoordinator = v7;
 
@@ -349,83 +349,83 @@ uint64_t __55__STRootViewModelCoordinator__validateDeviceIdentifier__block_invok
 - (BOOL)_currentAccountIsProto
 {
   v3 = objc_opt_class();
-  v4 = [(STRootViewModelCoordinator *)self _akAccountManager];
-  LOBYTE(v3) = [v3 currentAccountIsProtoForAKAccountManager:v4];
+  _akAccountManager = [(STRootViewModelCoordinator *)self _akAccountManager];
+  LOBYTE(v3) = [v3 currentAccountIsProtoForAKAccountManager:_akAccountManager];
 
   return v3;
 }
 
 - (BOOL)hasShownMiniBuddy
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"RMSetupShown"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"RMSetupShown"];
 
   return v3;
 }
 
-- (void)setHasShownMiniBuddy:(BOOL)a3
+- (void)setHasShownMiniBuddy:(BOOL)buddy
 {
-  if (a3)
+  if (buddy)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v3 setBool:1 forKey:@"RMSetupShown"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:1 forKey:@"RMSetupShown"];
   }
 }
 
 - (BOOL)hasShownAppRatingChangeTip
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:0x2876701E8];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:0x2876701E8];
 
   return v3;
 }
 
-- (void)setHasShownAppRatingChangeTip:(BOOL)a3
+- (void)setHasShownAppRatingChangeTip:(BOOL)tip
 {
-  if (a3)
+  if (tip)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v3 setBool:1 forKey:0x2876701E8];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:1 forKey:0x2876701E8];
   }
 }
 
 - (BOOL)shouldShowConnectToFamilyForSignIn
 {
   v3 = objc_opt_class();
-  v4 = [(STRootViewModelCoordinator *)self _akAccountManager];
-  LOBYTE(v3) = [v3 shouldShowConnectToFamilyForSignInForAKAccountManager:v4];
+  _akAccountManager = [(STRootViewModelCoordinator *)self _akAccountManager];
+  LOBYTE(v3) = [v3 shouldShowConnectToFamilyForSignInForAKAccountManager:_akAccountManager];
 
   return v3;
 }
 
 - (BOOL)isPasscodeEnabled
 {
-  v2 = [(STRootViewModelCoordinator *)self viewModel];
-  v3 = [v2 me];
-  v4 = [v3 hasPasscode];
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  v3 = [viewModel me];
+  hasPasscode = [v3 hasPasscode];
 
-  return v4;
+  return hasPasscode;
 }
 
-- (BOOL)validatePIN:(id)a3
+- (BOOL)validatePIN:(id)n
 {
-  v4 = a3;
-  v5 = [(STRootViewModelCoordinator *)self viewModel];
-  v6 = [v5 me];
+  nCopy = n;
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  v6 = [viewModel me];
 
-  v7 = [v6 passcode];
-  v8 = [v7 isEqualToString:v4];
+  passcode = [v6 passcode];
+  v8 = [passcode isEqualToString:nCopy];
 
   if (_os_feature_enabled_impl() && v8)
   {
-    v9 = [(STRootViewModelCoordinator *)self persistenceController];
+    persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__STRootViewModelCoordinator_validatePIN___block_invoke;
     v11[3] = &unk_279B7DED8;
     v12 = v6;
-    v13 = self;
-    [v9 performBackgroundTask:v11];
+    selfCopy = self;
+    [persistenceController performBackgroundTask:v11];
   }
 
   return v8;
@@ -495,36 +495,36 @@ void __42__STRootViewModelCoordinator_validatePIN___block_invoke_425(uint64_t a1
   }
 }
 
-- (void)_setPIN:(id)a3 recoveryAltDSID:(id)a4 shouldSetRecoveryAppleID:(BOOL)a5 completionHandler:(id)a6
+- (void)_setPIN:(id)n recoveryAltDSID:(id)d shouldSetRecoveryAppleID:(BOOL)iD completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(STRootViewModelCoordinator *)self viewModel];
-  v14 = [v13 me];
+  nCopy = n;
+  dCopy = d;
+  handlerCopy = handler;
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  v14 = [viewModel me];
 
-  v15 = [(STRootViewModelCoordinator *)self timeAllowancesCoordinator];
-  v16 = [v15 viewModel];
-  v17 = [v16 allowancesByIdentifier];
+  timeAllowancesCoordinator = [(STRootViewModelCoordinator *)self timeAllowancesCoordinator];
+  viewModel2 = [timeAllowancesCoordinator viewModel];
+  allowancesByIdentifier = [viewModel2 allowancesByIdentifier];
 
-  v18 = [(STRootViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __97__STRootViewModelCoordinator__setPIN_recoveryAltDSID_shouldSetRecoveryAppleID_completionHandler___block_invoke;
   v24[3] = &unk_279B7DF28;
   v25 = v14;
-  v26 = v10;
-  v31 = a5;
-  v27 = v11;
-  v28 = v17;
-  v29 = self;
-  v30 = v12;
-  v19 = v12;
-  v20 = v17;
-  v21 = v11;
-  v22 = v10;
+  v26 = nCopy;
+  iDCopy = iD;
+  v27 = dCopy;
+  v28 = allowancesByIdentifier;
+  selfCopy = self;
+  v30 = handlerCopy;
+  v19 = handlerCopy;
+  v20 = allowancesByIdentifier;
+  v21 = dCopy;
+  v22 = nCopy;
   v23 = v14;
-  [v18 performBackgroundTask:v24];
+  [persistenceController performBackgroundTask:v24];
 }
 
 void __97__STRootViewModelCoordinator__setPIN_recoveryAltDSID_shouldSetRecoveryAppleID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -662,24 +662,24 @@ void __97__STRootViewModelCoordinator__setPIN_recoveryAltDSID_shouldSetRecoveryA
   }
 }
 
-- (void)setScreenTimeEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setScreenTimeEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(STRootViewModelCoordinator *)self viewModel];
-  v8 = [v7 me];
+  handlerCopy = handler;
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  v8 = [viewModel me];
 
-  v9 = [(STRootViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__STRootViewModelCoordinator_setScreenTimeEnabled_completionHandler___block_invoke;
   v12[3] = &unk_279B7DF50;
-  v16 = a3;
+  enabledCopy = enabled;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v8;
-  [v9 performBackgroundTask:v12];
+  [persistenceController performBackgroundTask:v12];
 }
 
 void __69__STRootViewModelCoordinator_setScreenTimeEnabled_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -786,24 +786,24 @@ void __69__STRootViewModelCoordinator_setScreenTimeEnabled_completionHandler___b
   }
 }
 
-- (void)setManagementEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setManagementEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(STRootViewModelCoordinator *)self viewModel];
-  v8 = [v7 me];
+  handlerCopy = handler;
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  v8 = [viewModel me];
 
-  v9 = [(STRootViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__STRootViewModelCoordinator_setManagementEnabled_completionHandler___block_invoke;
   v12[3] = &unk_279B7DF50;
-  v16 = a3;
+  enabledCopy = enabled;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v8;
-  [v9 performBackgroundTask:v12];
+  [persistenceController performBackgroundTask:v12];
 }
 
 void __69__STRootViewModelCoordinator_setManagementEnabled_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -874,24 +874,24 @@ void __69__STRootViewModelCoordinator_setManagementEnabled_completionHandler___b
   }
 }
 
-- (void)setScreenTimeSyncingEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setScreenTimeSyncingEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(STRootViewModelCoordinator *)self viewModel];
-  v8 = [v7 me];
+  handlerCopy = handler;
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  v8 = [viewModel me];
 
-  v9 = [(STRootViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__STRootViewModelCoordinator_setScreenTimeSyncingEnabled_completionHandler___block_invoke;
   v12[3] = &unk_279B7DF50;
-  v16 = a3;
+  enabledCopy = enabled;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v8;
-  [v9 performBackgroundTask:v12];
+  [persistenceController performBackgroundTask:v12];
 }
 
 void __76__STRootViewModelCoordinator_setScreenTimeSyncingEnabled_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -957,24 +957,24 @@ void __76__STRootViewModelCoordinator_setScreenTimeSyncingEnabled_completionHand
   }
 }
 
-- (void)setShareWebUsageEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setShareWebUsageEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(STRootViewModelCoordinator *)self viewModel];
-  v8 = [v7 me];
+  handlerCopy = handler;
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  v8 = [viewModel me];
 
-  v9 = [(STRootViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __72__STRootViewModelCoordinator_setShareWebUsageEnabled_completionHandler___block_invoke;
   v12[3] = &unk_279B7DF50;
-  v16 = a3;
+  enabledCopy = enabled;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v8;
-  [v9 performBackgroundTask:v12];
+  [persistenceController performBackgroundTask:v12];
 }
 
 void __72__STRootViewModelCoordinator_setShareWebUsageEnabled_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1040,29 +1040,29 @@ void __72__STRootViewModelCoordinator_setShareWebUsageEnabled_completionHandler_
   }
 }
 
-- (void)enableManagementWithPIN:(id)a3 recoveryAltDSID:(id)a4 completionHandler:(id)a5
+- (void)enableManagementWithPIN:(id)n recoveryAltDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(STRootViewModelCoordinator *)self viewModel];
-  v12 = [v11 me];
+  nCopy = n;
+  dCopy = d;
+  handlerCopy = handler;
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  v12 = [viewModel me];
 
-  v13 = [(STRootViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__STRootViewModelCoordinator_enableManagementWithPIN_recoveryAltDSID_completionHandler___block_invoke;
   v18[3] = &unk_279B7DF78;
   v19 = v12;
-  v20 = v8;
-  v21 = v9;
-  v22 = self;
-  v23 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v20 = nCopy;
+  v21 = dCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = dCopy;
+  v16 = nCopy;
   v17 = v12;
-  [v13 performBackgroundTask:v18];
+  [persistenceController performBackgroundTask:v18];
 }
 
 void __88__STRootViewModelCoordinator_enableManagementWithPIN_recoveryAltDSID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1183,15 +1183,15 @@ void __88__STRootViewModelCoordinator_enableManagementWithPIN_recoveryAltDSID_co
   }
 }
 
-- (void)applyIntroductionViewModel:(id)a3 withCompletionHandler:(id)a4
+- (void)applyIntroductionViewModel:(id)model withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v30 = [(STRootViewModelCoordinator *)self timeAllowancesCoordinator];
-  v29 = [(STRootViewModelCoordinator *)self communicationSafetyCoordinator];
-  v8 = [(STRootViewModelCoordinator *)self contentPrivacyCoordinator];
-  v9 = [(STRootViewModelCoordinator *)self eyeReliefCoordinator];
-  if (v7)
+  modelCopy = model;
+  handlerCopy = handler;
+  timeAllowancesCoordinator = [(STRootViewModelCoordinator *)self timeAllowancesCoordinator];
+  communicationSafetyCoordinator = [(STRootViewModelCoordinator *)self communicationSafetyCoordinator];
+  contentPrivacyCoordinator = [(STRootViewModelCoordinator *)self contentPrivacyCoordinator];
+  eyeReliefCoordinator = [(STRootViewModelCoordinator *)self eyeReliefCoordinator];
+  if (handlerCopy)
   {
     v10 = dispatch_group_create();
   }
@@ -1201,12 +1201,12 @@ void __88__STRootViewModelCoordinator_enableManagementWithPIN_recoveryAltDSID_co
     v10 = 0;
   }
 
-  v11 = [v6 communicationSafetyEnabled];
-  v12 = [v11 BOOLValue];
+  communicationSafetyEnabled = [modelCopy communicationSafetyEnabled];
+  bOOLValue = [communicationSafetyEnabled BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
-    if (v7)
+    if (handlerCopy)
     {
       dispatch_group_enter(v10);
     }
@@ -1215,69 +1215,69 @@ void __88__STRootViewModelCoordinator_enableManagementWithPIN_recoveryAltDSID_co
     v53[1] = 3221225472;
     v53[2] = __79__STRootViewModelCoordinator_applyIntroductionViewModel_withCompletionHandler___block_invoke;
     v53[3] = &unk_279B7D090;
-    v55 = v7 != 0;
+    v55 = handlerCopy != 0;
     v54 = v10;
-    [v29 saveCommunicationSafetyReceivingRestricted:1 communicationSafetySendingRestricted:1 completionHandler:v53];
+    [communicationSafetyCoordinator saveCommunicationSafetyReceivingRestricted:1 communicationSafetySendingRestricted:1 completionHandler:v53];
   }
 
-  v13 = [v6 appAndWebsiteActivityEnabled];
+  appAndWebsiteActivityEnabled = [modelCopy appAndWebsiteActivityEnabled];
 
-  if (v13)
+  if (appAndWebsiteActivityEnabled)
   {
-    v14 = [v6 appAndWebsiteActivityEnabled];
-    v15 = [v14 BOOLValue];
+    appAndWebsiteActivityEnabled2 = [modelCopy appAndWebsiteActivityEnabled];
+    bOOLValue2 = [appAndWebsiteActivityEnabled2 BOOLValue];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __79__STRootViewModelCoordinator_applyIntroductionViewModel_withCompletionHandler___block_invoke_432;
     v51[3] = &unk_279B7CC18;
-    v52 = v6;
-    [(STRootViewModelCoordinator *)self setScreenTimeEnabled:v15 completionHandler:v51];
+    v52 = modelCopy;
+    [(STRootViewModelCoordinator *)self setScreenTimeEnabled:bOOLValue2 completionHandler:v51];
   }
 
-  v16 = [v6 bedtime];
+  bedtime = [modelCopy bedtime];
 
-  if (v16)
+  if (bedtime)
   {
-    if (v7)
+    if (handlerCopy)
     {
       dispatch_group_enter(v10);
     }
 
-    v17 = [v6 bedtime];
+    bedtime2 = [modelCopy bedtime];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __79__STRootViewModelCoordinator_applyIntroductionViewModel_withCompletionHandler___block_invoke_439;
     v48[3] = &unk_279B7D090;
-    v50 = v7 != 0;
+    v50 = handlerCopy != 0;
     v49 = v10;
-    [v30 saveDeviceBedtime:v17 completionHandler:v48];
+    [timeAllowancesCoordinator saveDeviceBedtime:bedtime2 completionHandler:v48];
   }
 
-  v18 = [v6 allowance];
+  allowance = [modelCopy allowance];
 
-  if (v18)
+  if (allowance)
   {
-    if (v7)
+    if (handlerCopy)
     {
       dispatch_group_enter(v10);
     }
 
-    v19 = [v6 allowance];
+    allowance2 = [modelCopy allowance];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __79__STRootViewModelCoordinator_applyIntroductionViewModel_withCompletionHandler___block_invoke_440;
     v45[3] = &unk_279B7D090;
-    v47 = v7 != 0;
+    v47 = handlerCopy != 0;
     v46 = v10;
-    [v30 saveAllowance:v19 completionHandler:v45];
+    [timeAllowancesCoordinator saveAllowance:allowance2 completionHandler:v45];
   }
 
-  v20 = [v6 restrictions];
-  v21 = [v20 count];
+  restrictions = [modelCopy restrictions];
+  v21 = [restrictions count];
 
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    if (!v21 && ![v6 imageGenerationRestriction])
+    if (!v21 && ![modelCopy imageGenerationRestriction])
     {
       goto LABEL_22;
     }
@@ -1286,27 +1286,27 @@ void __88__STRootViewModelCoordinator_enableManagementWithPIN_recoveryAltDSID_co
   else if (!v21)
   {
 LABEL_22:
-    [v8 saveContentPrivacyEnabled:0 completionHandler:&__block_literal_global_451];
+    [contentPrivacyCoordinator saveContentPrivacyEnabled:0 completionHandler:&__block_literal_global_451];
     goto LABEL_31;
   }
 
-  [v8 saveContentPrivacyEnabled:1 completionHandler:&__block_literal_global_445];
-  v22 = [v6 restrictions];
+  [contentPrivacyCoordinator saveContentPrivacyEnabled:1 completionHandler:&__block_literal_global_445];
+  restrictions2 = [modelCopy restrictions];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __79__STRootViewModelCoordinator_applyIntroductionViewModel_withCompletionHandler___block_invoke_446;
   v41[3] = &unk_279B7DFA0;
-  v44 = v7 != 0;
+  v44 = handlerCopy != 0;
   v23 = v10;
   v42 = v23;
-  v24 = v8;
+  v24 = contentPrivacyCoordinator;
   v43 = v24;
-  [v22 enumerateKeysAndObjectsUsingBlock:v41];
+  [restrictions2 enumerateKeysAndObjectsUsingBlock:v41];
 
-  if (_os_feature_enabled_impl() && _os_feature_enabled_impl() && ([v6 imageGenerationRestriction] - 1) <= 1)
+  if (_os_feature_enabled_impl() && _os_feature_enabled_impl() && ([modelCopy imageGenerationRestriction] - 1) <= 1)
   {
-    v25 = [v6 imageGenerationRestriction];
-    if (v7)
+    imageGenerationRestriction = [modelCopy imageGenerationRestriction];
+    if (handlerCopy)
     {
       dispatch_group_enter(v23);
     }
@@ -1315,21 +1315,21 @@ LABEL_22:
     v37[1] = 3221225472;
     v37[2] = __79__STRootViewModelCoordinator_applyIntroductionViewModel_withCompletionHandler___block_invoke_448;
     v37[3] = &unk_279B7DFC8;
-    v39 = v7 != 0;
+    v39 = handlerCopy != 0;
     v38 = v23;
-    v40 = v25 == 1;
-    [v24 saveSiriImageGenerationIsAllowed:v25 == 1 completionHandler:v37];
+    v40 = imageGenerationRestriction == 1;
+    [v24 saveSiriImageGenerationIsAllowed:imageGenerationRestriction == 1 completionHandler:v37];
   }
 
 LABEL_31:
-  v26 = [v6 screenDistanceEnabled];
+  screenDistanceEnabled = [modelCopy screenDistanceEnabled];
 
-  if (v26)
+  if (screenDistanceEnabled)
   {
-    v27 = [v6 screenDistanceEnabled];
-    v28 = [v27 BOOLValue];
+    screenDistanceEnabled2 = [modelCopy screenDistanceEnabled];
+    bOOLValue3 = [screenDistanceEnabled2 BOOLValue];
 
-    if (v7)
+    if (handlerCopy)
     {
       dispatch_group_enter(v10);
     }
@@ -1338,19 +1338,19 @@ LABEL_31:
     v33[1] = 3221225472;
     v33[2] = __79__STRootViewModelCoordinator_applyIntroductionViewModel_withCompletionHandler___block_invoke_452;
     v33[3] = &unk_279B7CD08;
-    v36 = v7 != 0;
+    v36 = handlerCopy != 0;
     v34 = v10;
-    v35 = v6;
-    [v9 persistEyeReliefState:v28 withCompletionHandler:v33];
+    v35 = modelCopy;
+    [eyeReliefCoordinator persistEyeReliefState:bOOLValue3 withCompletionHandler:v33];
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__STRootViewModelCoordinator_applyIntroductionViewModel_withCompletionHandler___block_invoke_453;
     block[3] = &unk_279B7D270;
-    v32 = v7;
+    v32 = handlerCopy;
     dispatch_group_notify(v10, MEMORY[0x277D85CD0], block);
   }
 }
@@ -1644,21 +1644,21 @@ uint64_t __79__STRootViewModelCoordinator_applyIntroductionViewModel_withComplet
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)loadRegionRatingsWithCompletionHandler:(id)a3
+- (void)loadRegionRatingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STRootViewModelCoordinator *)self userDSID];
+  handlerCopy = handler;
+  userDSID = [(STRootViewModelCoordinator *)self userDSID];
   v6 = MEMORY[0x277D4BA70];
-  v7 = [(STRootViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___block_invoke;
   v10[3] = &unk_279B7E018;
-  v11 = v5;
-  v12 = v4;
-  v8 = v5;
-  v9 = v4;
-  [v6 fetchRestrictionsForUserDSID:v8 persistenceController:v7 completionHandler:v10];
+  v11 = userDSID;
+  v12 = handlerCopy;
+  v8 = userDSID;
+  v9 = handlerCopy;
+  [v6 fetchRestrictionsForUserDSID:v8 persistenceController:persistenceController completionHandler:v10];
 }
 
 void __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1723,27 +1723,27 @@ void __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___b
   }
 }
 
-- (void)_reportCoreAnalyticsEventScreenTimeEnabled:(BOOL)a3 user:(id)a4 userType:(unint64_t)a5 userIsRemote:(BOOL)a6
+- (void)_reportCoreAnalyticsEventScreenTimeEnabled:(BOOL)enabled user:(id)user userType:(unint64_t)type userIsRemote:(BOOL)remote
 {
-  v6 = a6;
-  v8 = a3;
-  v9 = [a4 effectivePasscode];
+  remoteCopy = remote;
+  enabledCopy = enabled;
+  effectivePasscode = [user effectivePasscode];
 
-  if (a5 > 7)
+  if (type > 7)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = qword_264CD1AA8[a5];
+    v10 = qword_264CD1AA8[type];
   }
 
-  v16 = [MEMORY[0x277D4B988] fetchRequest];
+  fetchRequest = [MEMORY[0x277D4B988] fetchRequest];
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != NULL AND %K == YES", @"familySettings", @"isParent"];
-  [v16 setPredicate:v11];
+  [fetchRequest setPredicate:v11];
 
-  v12 = [v16 execute:0];
+  v12 = [fetchRequest execute:0];
   v13 = v12;
   if (v12)
   {
@@ -1755,35 +1755,35 @@ void __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___b
     v14 = 0;
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D4BA88]) initWithScreenTimeEnabled:v8 numberOfGuardians:v14 pinSet:v9 != 0 userAgeGroup:v10 userIsRemote:v6];
+  v15 = [objc_alloc(MEMORY[0x277D4BA88]) initWithScreenTimeEnabled:enabledCopy numberOfGuardians:v14 pinSet:effectivePasscode != 0 userAgeGroup:v10 userIsRemote:remoteCopy];
   [MEMORY[0x277D4B970] reportEvent:v15];
 }
 
-+ (id)loadViewModelFromManagedObjectContext:(id)a3 isLocalUser:(BOOL)a4 userDSID:(id)a5 error:(id *)a6
++ (id)loadViewModelFromManagedObjectContext:(id)context isLocalUser:(BOOL)user userDSID:(id)d error:(id *)error
 {
-  v8 = a4;
+  userCopy = user;
   v290 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  dCopy = d;
   v218 = objc_opt_new();
-  v217 = v8;
-  if (v8)
+  v217 = userCopy;
+  if (userCopy)
   {
     v260 = 0;
-    v11 = [MEMORY[0x277D4B988] fetchLocalUserInContext:v9 error:&v260];
+    v11 = [MEMORY[0x277D4B988] fetchLocalUserInContext:contextCopy error:&v260];
     v228 = v260;
     if (v11)
     {
       v12 = [[STUIUser alloc] initWithUser:v11];
       [v218 setMe:v12];
-      v212 = v10;
+      v212 = dCopy;
       if ([(STUIUser *)v12 isParent])
       {
         v211 = v12;
-        v213 = v9;
+        v213 = contextCopy;
         v215 = v11;
         v259 = v228;
-        v13 = [MEMORY[0x277D4B9C0] fetchWithContext:v9 error:&v259];
+        v13 = [MEMORY[0x277D4B9C0] fetchWithContext:contextCopy error:&v259];
         v209 = v259;
 
         v220 = objc_opt_new();
@@ -1814,20 +1814,20 @@ void __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___b
             v226 = v15;
             v16 = *(*(&v255 + 1) + 8 * v15);
             v17 = [STUIUser alloc];
-            v18 = [v16 user];
-            v19 = [(STUIUser *)v17 initWithUser:v18];
+            user = [v16 user];
+            v19 = [(STUIUser *)v17 initWithUser:user];
 
             if ([(STUIUser *)v19 isChild])
             {
               [v220 addObject:v19];
             }
 
-            v224 = [v16 user];
-            v20 = [v224 userDeviceStates];
+            user2 = [v16 user];
+            userDeviceStates = [user2 userDeviceStates];
             v225 = v19;
-            v21 = [(STUIUser *)v19 altDSID];
-            v22 = v20;
-            v229 = v21;
+            altDSID = [(STUIUser *)v19 altDSID];
+            v22 = userDeviceStates;
+            v229 = altDSID;
             v250 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v22, "count")}];
             v23 = +[STUILog usage];
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -1837,8 +1837,8 @@ void __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___b
               _os_log_impl(&dword_264BA2000, v23, OS_LOG_TYPE_DEFAULT, "Finding devices for user: %{public}@", buf, 0xCu);
             }
 
-            v24 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-            v25 = [v24 BOOLForKey:0x287677CC8];
+            standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+            v25 = [standardUserDefaults BOOLForKey:0x287677CC8];
 
             if (_os_feature_enabled_impl() && (v25 & 1) == 0)
             {
@@ -1870,38 +1870,38 @@ void __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___b
                       }
 
                       v31 = *(*(&v270 + 1) + 8 * i);
-                      v32 = [v31 coreDuetIdentifier];
+                      coreDuetIdentifier = [v31 coreDuetIdentifier];
                       v33 = +[STUILog usage];
                       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
                       {
-                        v34 = [v31 identifier];
-                        v35 = [v31 name];
+                        identifier = [v31 identifier];
+                        name = [v31 name];
                         *v279 = 138543874;
-                        *&v279[4] = v32;
+                        *&v279[4] = coreDuetIdentifier;
                         *&v279[12] = 2114;
-                        *&v279[14] = v34;
+                        *&v279[14] = identifier;
                         *&v279[22] = 2114;
-                        *&v279[24] = v35;
+                        *&v279[24] = name;
                         _os_log_impl(&dword_264BA2000, v33, OS_LOG_TYPE_DEFAULT, "Device Activity Device Found:  %{public}@ %{public}@ %{public}@", v279, 0x20u);
                       }
 
                       v36 = [STUIDevice alloc];
-                      v37 = [v31 name];
-                      v38 = [v31 identifier];
-                      v39 = [v31 platform];
-                      v40 = [v31 isLocalDevice];
-                      v41 = [v31 lastUpdatedDate];
-                      v42 = [(STUIDevice *)v36 initWithName:v37 identifier:v38 coreDuetIdentifier:v32 platform:v39 hasDeviceActivity:1 isLocalDevice:v40 lastFamilyCheckinDate:v41];
+                      name2 = [v31 name];
+                      identifier2 = [v31 identifier];
+                      platform = [v31 platform];
+                      isLocalDevice = [v31 isLocalDevice];
+                      lastUpdatedDate = [v31 lastUpdatedDate];
+                      v42 = [(STUIDevice *)v36 initWithName:name2 identifier:identifier2 coreDuetIdentifier:coreDuetIdentifier platform:platform hasDeviceActivity:1 isLocalDevice:isLocalDevice lastFamilyCheckinDate:lastUpdatedDate];
 
                       [v250 addObject:v42];
                       v43 = +[STUILog usage];
                       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
                       {
-                        v44 = [v31 identifier];
+                        identifier3 = [v31 identifier];
                         *v279 = 138543618;
-                        *&v279[4] = v32;
+                        *&v279[4] = coreDuetIdentifier;
                         *&v279[12] = 2114;
-                        *&v279[14] = v44;
+                        *&v279[14] = identifier3;
                         _os_log_impl(&dword_264BA2000, v43, OS_LOG_TYPE_DEFAULT, "Device Activity Device added: %{public}@, %{public}@", v279, 0x16u);
                       }
                     }
@@ -1953,11 +1953,11 @@ void __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___b
                   }
 
                   v50 = *(*(&v266 + 1) + 8 * v49);
-                  v51 = [v50 device];
-                  v52 = v51;
-                  if (v51)
+                  device = [v50 device];
+                  v52 = device;
+                  if (device)
                   {
-                    if ([v51 platform] != 1 && objc_msgSend(v52, "platform") != 2)
+                    if ([device platform] != 1 && objc_msgSend(v52, "platform") != 2)
                     {
                       v57 = +[STUILog usage];
                       if (!os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
@@ -1965,9 +1965,9 @@ void __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___b
                         goto LABEL_68;
                       }
 
-                      v66 = [v52 name];
+                      name3 = [v52 name];
                       *v284 = 138543362;
-                      v285 = v66;
+                      v285 = name3;
                       v67 = v57;
                       v68 = "Skipping %{public}@ because it is not an iOS or macOS device";
                       goto LABEL_52;
@@ -1981,9 +1981,9 @@ void __69__STRootViewModelCoordinator_loadRegionRatingsWithCompletionHandler___b
                         goto LABEL_68;
                       }
 
-                      v66 = [v52 name];
+                      name3 = [v52 name];
                       *v284 = 138543362;
-                      v285 = v66;
+                      v285 = name3;
                       v67 = v57;
                       v68 = "Skipping %{public}@ because it has no legacy usage data";
 LABEL_52:
@@ -1992,18 +1992,18 @@ LABEL_52:
                       goto LABEL_68;
                     }
 
-                    v53 = [v50 coreDuetIdentifier];
+                    coreDuetIdentifier2 = [v50 coreDuetIdentifier];
                     v54 = +[STUILog usage];
                     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
                     {
-                      v55 = [v52 identifier];
-                      v56 = [v52 name];
+                      identifier4 = [v52 identifier];
+                      name4 = [v52 name];
                       *v284 = 138543874;
-                      v285 = v53;
+                      v285 = coreDuetIdentifier2;
                       v286 = 2114;
-                      v287 = v55;
+                      v287 = identifier4;
                       v288 = 2114;
-                      v289 = v56;
+                      v289 = name4;
                       _os_log_impl(&dword_264BA2000, v54, OS_LOG_TYPE_DEFAULT, "Screen Time Device Found: coreDuetIdentifier: %{public}@ %{public}@ %{public}@", v284, 0x20u);
 
                       v47 = v248;
@@ -2014,14 +2014,14 @@ LABEL_52:
                     v262 = 3221225472;
                     v263 = __createDevices_block_invoke;
                     v264 = &unk_279B7DEB0;
-                    v57 = v53;
+                    v57 = coreDuetIdentifier2;
                     v265 = v57;
                     v58 = [v250 indexOfObjectPassingTest:&v261];
                     if (v58 == 0x7FFFFFFFFFFFFFFFLL)
                     {
-                      v59 = [v50 user];
+                      user3 = [v50 user];
                       v60 = v52;
-                      v61 = [MEMORY[0x277D4BAB8] fetchRequestMatchingUser:v59 device:v60];
+                      v61 = [MEMORY[0x277D4BAB8] fetchRequestMatchingUser:user3 device:v60];
                       v275 = 0;
                       v62 = [v61 execute:&v275];
                       v63 = v275;
@@ -2030,12 +2030,12 @@ LABEL_52:
                         v64 = +[STUILog usage];
                         if (os_log_type_enabled(v64, OS_LOG_TYPE_FAULT))
                         {
-                          v65 = [v59 altDSID];
-                          v231 = [v60 name];
+                          altDSID2 = [user3 altDSID];
+                          name5 = [v60 name];
                           *v284 = 138543874;
-                          v285 = v65;
+                          v285 = altDSID2;
                           v286 = 2114;
-                          v287 = v231;
+                          v287 = name5;
                           v288 = 2114;
                           v289 = v63;
                           _os_log_fault_impl(&dword_264BA2000, v64, OS_LOG_TYPE_FAULT, "fetchLastUpdatedDate Request failed for user %{public}@ and device %{public}@: %{public}@", v284, 0x20u);
@@ -2049,13 +2049,13 @@ LABEL_52:
                         v64 = +[STUILog usage];
                         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
                         {
-                          v232 = [v59 altDSID];
-                          v83 = [v60 name];
+                          altDSID3 = [user3 altDSID];
+                          name6 = [v60 name];
                           *v284 = 138543874;
-                          v285 = v232;
+                          v285 = altDSID3;
                           v286 = 2114;
-                          v287 = v83;
-                          v84 = v83;
+                          v287 = name6;
+                          v84 = name6;
                           v288 = 2114;
                           v289 = v62;
                           _os_log_error_impl(&dword_264BA2000, v64, OS_LOG_TYPE_ERROR, "fetchLastUpdatedDate no usage for user %{public}@ and device %{public}@: %{public}@", v284, 0x20u);
@@ -2069,16 +2069,16 @@ LABEL_60:
                       v70 = v73;
 
                       v74 = [STUIDevice alloc];
-                      v75 = [v60 name];
-                      v76 = [v60 identifier];
-                      v77 = [v60 platform];
-                      v78 = [v60 localUserDeviceState];
-                      v79 = [(STUIDevice *)v74 initWithName:v75 identifier:v76 coreDuetIdentifier:v57 platform:v77 hasDeviceActivity:0 isLocalDevice:v78 != 0 lastFamilyCheckinDate:v70];
+                      name7 = [v60 name];
+                      identifier5 = [v60 identifier];
+                      platform2 = [v60 platform];
+                      localUserDeviceState = [v60 localUserDeviceState];
+                      v79 = [(STUIDevice *)v74 initWithName:name7 identifier:identifier5 coreDuetIdentifier:v57 platform:platform2 hasDeviceActivity:0 isLocalDevice:localUserDeviceState != 0 lastFamilyCheckinDate:v70];
 
                       if (_os_feature_enabled_impl())
                       {
-                        v80 = [v60 lastPasscodeUseDate];
-                        [(STUIDevice *)v79 setLastPasscodeUseDate:v80];
+                        lastPasscodeUseDate = [v60 lastPasscodeUseDate];
+                        [(STUIDevice *)v79 setLastPasscodeUseDate:lastPasscodeUseDate];
 
                         -[STUIDevice setSupportsPasscodeActivity:](v79, "setSupportsPasscodeActivity:", [v60 supportsPasscodeActivity]);
                       }
@@ -2088,11 +2088,11 @@ LABEL_60:
                       v47 = v248;
                       if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
                       {
-                        v82 = [(STUIDevice *)v79 identifier];
+                        identifier6 = [(STUIDevice *)v79 identifier];
                         *v284 = 138543618;
                         v285 = v57;
                         v286 = 2114;
-                        v287 = v82;
+                        v287 = identifier6;
                         _os_log_impl(&dword_264BA2000, v81, OS_LOG_TYPE_DEFAULT, "Screen Time Device added: %{public}@, %{public}@", v284, 0x16u);
                       }
 
@@ -2107,8 +2107,8 @@ LABEL_66:
                       if (_os_feature_enabled_impl())
                       {
                         v70 = [v250 objectAtIndexedSubscript:v69];
-                        v71 = [v52 lastPasscodeUseDate];
-                        [v70 setLastPasscodeUseDate:v71];
+                        lastPasscodeUseDate2 = [v52 lastPasscodeUseDate];
+                        [v70 setLastPasscodeUseDate:lastPasscodeUseDate2];
 
                         [v70 setSupportsPasscodeActivity:{objc_msgSend(v52, "supportsPasscodeActivity")}];
                         goto LABEL_66;
@@ -2143,10 +2143,10 @@ LABEL_68:
 
             v85 = v250;
             v86 = v85;
-            v87 = [MEMORY[0x277CBEA80] currentCalendar];
+            currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
             v88 = [MEMORY[0x277CBEAA8] now];
-            v89 = [v87 startOfDayForDate:v88];
-            v90 = [v87 dateByAddingUnit:0x2000 value:-1 toDate:v89 options:0];
+            v89 = [currentCalendar startOfDayForDate:v88];
+            v90 = [currentCalendar dateByAddingUnit:0x2000 value:-1 toDate:v89 options:0];
 
             v280 = 0u;
             v281 = 0u;
@@ -2165,8 +2165,8 @@ LABEL_68:
                     objc_enumerationMutation(v91);
                   }
 
-                  v95 = [*(*&v279[8] + 8 * j) lastFamilyCheckinDate];
-                  v96 = [v90 compare:v95];
+                  lastFamilyCheckinDate = [*(*&v279[8] + 8 * j) lastFamilyCheckinDate];
+                  v96 = [v90 compare:lastFamilyCheckinDate];
 
                   if (v96 == 1)
                   {
@@ -2209,7 +2209,7 @@ LABEL_83:
             [v218 setChildren:v100];
 
             v228 = v209;
-            v9 = v213;
+            contextCopy = v213;
             v11 = v215;
             v12 = v211;
             goto LABEL_93;
@@ -2223,7 +2223,7 @@ LABEL_93:
       goto LABEL_94;
     }
 
-    v102 = v10;
+    v102 = dCopy;
     v103 = +[STUILog persistence];
     v104 = v228;
     if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
@@ -2233,11 +2233,11 @@ LABEL_93:
 
 LABEL_90:
 
-    if (a6)
+    if (error)
     {
       v105 = v104;
       v106 = 0;
-      *a6 = v104;
+      *error = v104;
     }
 
     else
@@ -2250,11 +2250,11 @@ LABEL_90:
   }
 
   v254 = 0;
-  v11 = [MEMORY[0x277D4B988] fetchUserWithDSID:v10 inContext:v9 error:&v254];
+  v11 = [MEMORY[0x277D4B988] fetchUserWithDSID:dCopy inContext:contextCopy error:&v254];
   v228 = v254;
   if (!v11)
   {
-    v102 = v10;
+    v102 = dCopy;
     v103 = +[STUILog persistence];
     v104 = v228;
     if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
@@ -2265,17 +2265,17 @@ LABEL_90:
     goto LABEL_90;
   }
 
-  v212 = v10;
+  v212 = dCopy;
   v12 = [[STUIUser alloc] initWithUser:v11];
   [v218 setMe:v12];
 LABEL_94:
-  v214 = v9;
+  v214 = contextCopy;
 
-  v107 = [v11 userDeviceStates];
+  userDeviceStates2 = [v11 userDeviceStates];
   v216 = v11;
-  v108 = [v11 altDSID];
-  v109 = v107;
-  v110 = v108;
+  altDSID4 = [v11 altDSID];
+  v109 = userDeviceStates2;
+  v110 = altDSID4;
   v251 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v109, "count")}];
   v111 = 0x279B7B000uLL;
   v112 = +[STUILog usage];
@@ -2287,8 +2287,8 @@ LABEL_94:
     _os_log_impl(&dword_264BA2000, v112, OS_LOG_TYPE_DEFAULT, "Finding devices for user: %{public}@", buf, 0xCu);
   }
 
-  v114 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v115 = [v114 BOOLForKey:0x287677CC8];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v115 = [standardUserDefaults2 BOOLForKey:0x287677CC8];
 
   v227 = v110;
   if (_os_feature_enabled_impl() && (v115 & 1) == 0)
@@ -2321,39 +2321,39 @@ LABEL_94:
             }
 
             v121 = *(*(&v270 + 1) + 8 * k);
-            v122 = [v121 coreDuetIdentifier];
+            coreDuetIdentifier3 = [v121 coreDuetIdentifier];
             v123 = +[STUILog usage];
             if (os_log_type_enabled(v123, OS_LOG_TYPE_DEFAULT))
             {
-              v124 = [v121 identifier];
-              v125 = [v121 name];
+              identifier7 = [v121 identifier];
+              name8 = [v121 name];
               *v279 = 138543874;
-              *&v279[4] = v122;
+              *&v279[4] = coreDuetIdentifier3;
               *&v279[12] = 2114;
-              *&v279[14] = v124;
+              *&v279[14] = identifier7;
               *&v279[22] = 2114;
-              *&v279[24] = v125;
+              *&v279[24] = name8;
               _os_log_impl(&dword_264BA2000, v123, OS_LOG_TYPE_DEFAULT, "Device Activity Device Found:  %{public}@ %{public}@ %{public}@", v279, 0x20u);
             }
 
             v126 = [STUIDevice alloc];
-            v127 = [v121 name];
-            v128 = [v121 identifier];
-            v129 = [v121 platform];
-            v130 = [v121 isLocalDevice];
-            v131 = [v121 lastUpdatedDate];
-            v132 = [(STUIDevice *)v126 initWithName:v127 identifier:v128 coreDuetIdentifier:v122 platform:v129 hasDeviceActivity:1 isLocalDevice:v130 lastFamilyCheckinDate:v131];
+            name9 = [v121 name];
+            identifier8 = [v121 identifier];
+            platform3 = [v121 platform];
+            isLocalDevice2 = [v121 isLocalDevice];
+            lastUpdatedDate2 = [v121 lastUpdatedDate];
+            v132 = [(STUIDevice *)v126 initWithName:name9 identifier:identifier8 coreDuetIdentifier:coreDuetIdentifier3 platform:platform3 hasDeviceActivity:1 isLocalDevice:isLocalDevice2 lastFamilyCheckinDate:lastUpdatedDate2];
 
             [v251 addObject:v132];
             v111 = 0x279B7B000uLL;
             v133 = +[STUILog usage];
             if (os_log_type_enabled(v133, OS_LOG_TYPE_DEFAULT))
             {
-              v134 = [v121 identifier];
+              identifier9 = [v121 identifier];
               *v279 = 138543618;
-              *&v279[4] = v122;
+              *&v279[4] = coreDuetIdentifier3;
               *&v279[12] = 2114;
-              *&v279[14] = v134;
+              *&v279[14] = identifier9;
               _os_log_impl(&dword_264BA2000, v133, OS_LOG_TYPE_DEFAULT, "Device Activity Device added: %{public}@, %{public}@", v279, 0x16u);
             }
           }
@@ -2405,38 +2405,38 @@ LABEL_94:
         }
 
         v142 = *(*(&v266 + 1) + 8 * v141);
-        v143 = [v142 device];
-        v144 = v143;
-        if (v143)
+        device2 = [v142 device];
+        v144 = device2;
+        if (device2)
         {
-          if ([v143 platform] != 1 && objc_msgSend(v144, "platform") != 2)
+          if ([device2 platform] != 1 && objc_msgSend(v144, "platform") != 2)
           {
-            v149 = [*(v111 + 1680) usage];
-            if (!os_log_type_enabled(v149, OS_LOG_TYPE_DEFAULT))
+            usage = [*(v111 + 1680) usage];
+            if (!os_log_type_enabled(usage, OS_LOG_TYPE_DEFAULT))
             {
               goto LABEL_153;
             }
 
-            v158 = [v144 name];
+            name10 = [v144 name];
             *v284 = v243;
-            v285 = v158;
-            v159 = v149;
+            v285 = name10;
+            v159 = usage;
             v160 = "Skipping %{public}@ because it is not an iOS or macOS device";
             goto LABEL_137;
           }
 
           if (([*(v140 + 2456) hasLegacyUsageData:v144] & 1) == 0)
           {
-            v149 = [*(v111 + 1680) usage];
-            if (!os_log_type_enabled(v149, OS_LOG_TYPE_DEFAULT))
+            usage = [*(v111 + 1680) usage];
+            if (!os_log_type_enabled(usage, OS_LOG_TYPE_DEFAULT))
             {
               goto LABEL_153;
             }
 
-            v158 = [v144 name];
+            name10 = [v144 name];
             *v284 = v243;
-            v285 = v158;
-            v159 = v149;
+            v285 = name10;
+            v159 = usage;
             v160 = "Skipping %{public}@ because it has no legacy usage data";
 LABEL_137:
             _os_log_impl(&dword_264BA2000, v159, OS_LOG_TYPE_DEFAULT, v160, v284, 0xCu);
@@ -2444,19 +2444,19 @@ LABEL_137:
             goto LABEL_153;
           }
 
-          v145 = [v142 coreDuetIdentifier];
-          v146 = [*(v111 + 1680) usage];
-          if (os_log_type_enabled(v146, OS_LOG_TYPE_DEFAULT))
+          coreDuetIdentifier4 = [v142 coreDuetIdentifier];
+          usage2 = [*(v111 + 1680) usage];
+          if (os_log_type_enabled(usage2, OS_LOG_TYPE_DEFAULT))
           {
-            v147 = [v144 identifier];
-            v148 = [v144 name];
+            identifier10 = [v144 identifier];
+            name11 = [v144 name];
             *v284 = 138543874;
-            v285 = v145;
+            v285 = coreDuetIdentifier4;
             v286 = 2114;
-            v287 = v147;
+            v287 = identifier10;
             v288 = 2114;
-            v289 = v148;
-            _os_log_impl(&dword_264BA2000, v146, OS_LOG_TYPE_DEFAULT, "Screen Time Device Found: coreDuetIdentifier: %{public}@ %{public}@ %{public}@", v284, 0x20u);
+            v289 = name11;
+            _os_log_impl(&dword_264BA2000, usage2, OS_LOG_TYPE_DEFAULT, "Screen Time Device Found: coreDuetIdentifier: %{public}@ %{public}@ %{public}@", v284, 0x20u);
 
             v111 = 0x279B7B000;
           }
@@ -2465,14 +2465,14 @@ LABEL_137:
           v262 = 3221225472;
           v263 = __createDevices_block_invoke;
           v264 = &unk_279B7DEB0;
-          v149 = v145;
-          v265 = v149;
+          usage = coreDuetIdentifier4;
+          v265 = usage;
           v150 = [v251 indexOfObjectPassingTest:&v261];
           if (v150 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v151 = [v142 user];
+            user4 = [v142 user];
             v152 = v144;
-            v153 = [MEMORY[0x277D4BAB8] fetchRequestMatchingUser:v151 device:v152];
+            v153 = [MEMORY[0x277D4BAB8] fetchRequestMatchingUser:user4 device:v152];
             v275 = 0;
             v154 = [v153 execute:&v275];
             v155 = v275;
@@ -2481,12 +2481,12 @@ LABEL_137:
               v156 = +[STUILog usage];
               if (os_log_type_enabled(v156, OS_LOG_TYPE_FAULT))
               {
-                v157 = [v151 altDSID];
-                v233 = [v152 name];
+                altDSID5 = [user4 altDSID];
+                name12 = [v152 name];
                 *v284 = 138543874;
-                v285 = v157;
+                v285 = altDSID5;
                 v286 = 2114;
-                v287 = v233;
+                v287 = name12;
                 v288 = 2114;
                 v289 = v155;
                 _os_log_fault_impl(&dword_264BA2000, v156, OS_LOG_TYPE_FAULT, "fetchLastUpdatedDate Request failed for user %{public}@ and device %{public}@: %{public}@", v284, 0x20u);
@@ -2500,13 +2500,13 @@ LABEL_137:
               v156 = +[STUILog usage];
               if (os_log_type_enabled(v156, OS_LOG_TYPE_ERROR))
               {
-                v234 = [v151 altDSID];
-                v175 = [v152 name];
+                altDSID6 = [user4 altDSID];
+                name13 = [v152 name];
                 *v284 = 138543874;
-                v285 = v234;
+                v285 = altDSID6;
                 v286 = 2114;
-                v287 = v175;
-                v176 = v175;
+                v287 = name13;
+                v176 = name13;
                 v288 = 2114;
                 v289 = v154;
                 _os_log_error_impl(&dword_264BA2000, v156, OS_LOG_TYPE_ERROR, "fetchLastUpdatedDate no usage for user %{public}@ and device %{public}@: %{public}@", v284, 0x20u);
@@ -2520,16 +2520,16 @@ LABEL_145:
             v162 = v165;
 
             v166 = [STUIDevice alloc];
-            v167 = [v152 name];
-            v168 = [v152 identifier];
-            v169 = [v152 platform];
-            v170 = [v152 localUserDeviceState];
-            v171 = [(STUIDevice *)v166 initWithName:v167 identifier:v168 coreDuetIdentifier:v149 platform:v169 hasDeviceActivity:0 isLocalDevice:v170 != 0 lastFamilyCheckinDate:v162];
+            name14 = [v152 name];
+            identifier11 = [v152 identifier];
+            platform4 = [v152 platform];
+            localUserDeviceState2 = [v152 localUserDeviceState];
+            v171 = [(STUIDevice *)v166 initWithName:name14 identifier:identifier11 coreDuetIdentifier:usage platform:platform4 hasDeviceActivity:0 isLocalDevice:localUserDeviceState2 != 0 lastFamilyCheckinDate:v162];
 
             if (_os_feature_enabled_impl())
             {
-              v172 = [v152 lastPasscodeUseDate];
-              [(STUIDevice *)v171 setLastPasscodeUseDate:v172];
+              lastPasscodeUseDate3 = [v152 lastPasscodeUseDate];
+              [(STUIDevice *)v171 setLastPasscodeUseDate:lastPasscodeUseDate3];
 
               -[STUIDevice setSupportsPasscodeActivity:](v171, "setSupportsPasscodeActivity:", [v152 supportsPasscodeActivity]);
             }
@@ -2540,11 +2540,11 @@ LABEL_145:
             v140 = 0x277D4B000;
             if (os_log_type_enabled(v173, OS_LOG_TYPE_DEFAULT))
             {
-              v174 = [(STUIDevice *)v171 identifier];
+              identifier12 = [(STUIDevice *)v171 identifier];
               *v284 = 138543618;
-              v285 = v149;
+              v285 = usage;
               v286 = 2114;
-              v287 = v174;
+              v287 = identifier12;
               _os_log_impl(&dword_264BA2000, v173, OS_LOG_TYPE_DEFAULT, "Screen Time Device added: %{public}@, %{public}@", v284, 0x16u);
             }
 
@@ -2561,8 +2561,8 @@ LABEL_151:
             if (_os_feature_enabled_impl())
             {
               v162 = [v251 objectAtIndexedSubscript:v161];
-              v163 = [v144 lastPasscodeUseDate];
-              [v162 setLastPasscodeUseDate:v163];
+              lastPasscodeUseDate4 = [v144 lastPasscodeUseDate];
+              [v162 setLastPasscodeUseDate:lastPasscodeUseDate4];
 
               [v162 setSupportsPasscodeActivity:{objc_msgSend(v144, "supportsPasscodeActivity")}];
               goto LABEL_151;
@@ -2573,14 +2573,14 @@ LABEL_151:
           goto LABEL_153;
         }
 
-        v149 = [*(v111 + 1680) usage];
-        if (os_log_type_enabled(v149, OS_LOG_TYPE_ERROR))
+        usage = [*(v111 + 1680) usage];
+        if (os_log_type_enabled(usage, OS_LOG_TYPE_ERROR))
         {
           *v284 = 138543618;
           v285 = 0;
           v286 = 2114;
           v287 = v142;
-          _os_log_error_impl(&dword_264BA2000, v149, OS_LOG_TYPE_ERROR, "Could not create an STUIDevice from source device %{public}@ for user and device: %{public}@", v284, 0x16u);
+          _os_log_error_impl(&dword_264BA2000, usage, OS_LOG_TYPE_ERROR, "Could not create an STUIDevice from source device %{public}@ for user and device: %{public}@", v284, 0x16u);
         }
 
 LABEL_153:
@@ -2596,10 +2596,10 @@ LABEL_153:
   }
 
   v177 = v251;
-  v178 = [v216 userDeviceStates];
-  v179 = [v216 altDSID];
-  v180 = v178;
-  v181 = v179;
+  userDeviceStates3 = [v216 userDeviceStates];
+  altDSID7 = [v216 altDSID];
+  v180 = userDeviceStates3;
+  v181 = altDSID7;
   memset(v279, 0, sizeof(v279));
   v280 = 0u;
   v281 = 0u;
@@ -2620,9 +2620,9 @@ LABEL_153:
           objc_enumerationMutation(v182);
         }
 
-        v189 = [*(*&v279[8] + 8 * m) device];
-        v190 = v189;
-        if (v189 && [v189 platform] == 4)
+        device3 = [*(*&v279[8] + 8 * m) device];
+        v190 = device3;
+        if (device3 && [device3 platform] == 4)
         {
           ++v185;
         }
@@ -2670,16 +2670,16 @@ LABEL_153:
   v197 = MEMORY[0x277D4B9D8];
   if (v217)
   {
-    v198 = &unk_28769D388;
+    dsid = &unk_28769D388;
   }
 
   else
   {
-    v198 = [v216 dsid];
+    dsid = [v216 dsid];
   }
 
   v253 = v187;
-  v199 = [v197 bundleIdentifiersInstalledForDSID:v198 inContext:v214 error:&v253];
+  v199 = [v197 bundleIdentifiersInstalledForDSID:dsid inContext:v214 error:&v253];
   v200 = v253;
 
   if (!v217)
@@ -2693,8 +2693,8 @@ LABEL_153:
 
   else
   {
-    v201 = [*(v111 + 1680) persistence];
-    if (os_log_type_enabled(v201, OS_LOG_TYPE_ERROR))
+    persistence = [*(v111 + 1680) persistence];
+    if (os_log_type_enabled(persistence, OS_LOG_TYPE_ERROR))
     {
       +[STRootViewModelCoordinator loadViewModelFromManagedObjectContext:isLocalUser:userDSID:error:];
     }
@@ -2702,14 +2702,14 @@ LABEL_153:
 
   if (v217 && ([v218 isCloudSyncEnabled] & 1) == 0)
   {
-    v202 = [MEMORY[0x277D4B928] fetchRequest];
+    fetchRequest = [MEMORY[0x277D4B928] fetchRequest];
     v203 = MEMORY[0x277CCAC30];
-    v204 = [v216 managingOrganization];
-    v205 = [v203 predicateWithFormat:@"(%K == NO) AND (%@ IN %K) AND (%K == %@) AND (%K != %@) AND (%K != %@)", @"isTombstoned", v216, @"users", @"organization", v204, @"type", *MEMORY[0x277D4BB88], @"type", *MEMORY[0x277D4BB98]];
-    [v202 setPredicate:v205];
+    managingOrganization = [v216 managingOrganization];
+    v205 = [v203 predicateWithFormat:@"(%K == NO) AND (%@ IN %K) AND (%K == %@) AND (%K != %@) AND (%K != %@)", @"isTombstoned", v216, @"users", @"organization", managingOrganization, @"type", *MEMORY[0x277D4BB88], @"type", *MEMORY[0x277D4BB98]];
+    [fetchRequest setPredicate:v205];
 
     v252 = v200;
-    v206 = [v202 execute:&v252];
+    v206 = [fetchRequest execute:&v252];
     v104 = v252;
 
     if (v206)
@@ -2736,34 +2736,34 @@ LABEL_153:
 
   v135 = v218;
   v102 = v212;
-  v9 = v214;
+  contextCopy = v214;
 LABEL_190:
 
   return v106;
 }
 
-- (void)saveViewModel:(id)a3
+- (void)saveViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 me];
-  v6 = [v5 dsid];
-  [(STRootViewModelCoordinator *)self setUserDSID:v6];
+  modelCopy = model;
+  v5 = [modelCopy me];
+  dsid = [v5 dsid];
+  [(STRootViewModelCoordinator *)self setUserDSID:dsid];
 
-  v7 = [v4 me];
-  v8 = [v7 name];
-  [(STRootViewModelCoordinator *)self setUserName:v8];
+  v7 = [modelCopy me];
+  name = [v7 name];
+  [(STRootViewModelCoordinator *)self setUserName:name];
 
-  [(STRootViewModelCoordinator *)self setViewModel:v4];
-  v9 = [MEMORY[0x277CF9650] sharedCategories];
-  v10 = [v4 installedBundleIDs];
+  [(STRootViewModelCoordinator *)self setViewModel:modelCopy];
+  mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
+  installedBundleIDs = [modelCopy installedBundleIDs];
 
-  v11 = [v10 allObjects];
+  allObjects = [installedBundleIDs allObjects];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __44__STRootViewModelCoordinator_saveViewModel___block_invoke;
   v12[3] = &unk_279B7CB08;
   v12[4] = self;
-  [v9 categoriesForBundleIDs:v11 completionHandler:v12];
+  [mEMORY[0x277CF9650] categoriesForBundleIDs:allObjects completionHandler:v12];
 }
 
 void __44__STRootViewModelCoordinator_saveViewModel___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2850,7 +2850,7 @@ void __44__STRootViewModelCoordinator_saveViewModel___block_invoke_2(uint64_t a1
 - (void)loadViewModelRightNow
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v3 = 138543362;
   v4 = v2;
   _os_log_fault_impl(&dword_264BA2000, a2, OS_LOG_TYPE_FAULT, "Unable to load view model: %{public}@", &v3, 0xCu);
@@ -2872,23 +2872,23 @@ void __51__STRootViewModelCoordinator_loadViewModelRightNow__block_invoke(uint64
   *(v9 + 40) = v8;
 }
 
-- (void)loadViewModelWithCompletionHandler:(id)a3
+- (void)loadViewModelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STRootViewModelCoordinator *)self userDSID];
-  v6 = [(STRootViewModelCoordinator *)self isLocalUser];
-  v7 = [(STRootViewModelCoordinator *)self persistenceController];
+  handlerCopy = handler;
+  userDSID = [(STRootViewModelCoordinator *)self userDSID];
+  isLocalUser = [(STRootViewModelCoordinator *)self isLocalUser];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__STRootViewModelCoordinator_loadViewModelWithCompletionHandler___block_invoke;
   v10[3] = &unk_279B7DF50;
-  v13 = v6;
+  v13 = isLocalUser;
   v10[4] = self;
-  v11 = v5;
-  v12 = v4;
-  v8 = v4;
-  v9 = v5;
-  [v7 performBackgroundTask:v10];
+  v11 = userDSID;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = userDSID;
+  [persistenceController performBackgroundTask:v10];
 }
 
 void __65__STRootViewModelCoordinator_loadViewModelWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2964,9 +2964,9 @@ void __65__STRootViewModelCoordinator_loadViewModelWithCompletionHandler___block
 
 - (id)organizationIdentifierForUsage
 {
-  v2 = [(STRootViewModelCoordinator *)self isLocalUser];
+  isLocalUser = [(STRootViewModelCoordinator *)self isLocalUser];
   v3 = MEMORY[0x277D4BC50];
-  if (!v2)
+  if (!isLocalUser)
   {
     v3 = MEMORY[0x277D4BC48];
   }
@@ -2978,11 +2978,11 @@ void __65__STRootViewModelCoordinator_loadViewModelWithCompletionHandler___block
 
 - (id)organizationIdentifierForManagement
 {
-  v2 = [(STRootViewModelCoordinator *)self viewModel];
-  v3 = [v2 me];
-  v4 = [v3 source];
+  viewModel = [(STRootViewModelCoordinator *)self viewModel];
+  v3 = [viewModel me];
+  source = [v3 source];
   v5 = MEMORY[0x277D4BC50];
-  if (v4)
+  if (source)
   {
     v5 = MEMORY[0x277D4BC48];
   }
@@ -2993,25 +2993,25 @@ void __65__STRootViewModelCoordinator_loadViewModelWithCompletionHandler___block
   return v6;
 }
 
-- (void)_willRefreshUsage:(id)a3
+- (void)_willRefreshUsage:(id)usage
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  usageCopy = usage;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__4;
   v25 = __Block_byref_object_dispose__4;
   v26 = 0;
-  v5 = [(STRootViewModelCoordinator *)self persistenceController];
-  v6 = [v5 viewContext];
+  persistenceController = [(STRootViewModelCoordinator *)self persistenceController];
+  viewContext = [persistenceController viewContext];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __48__STRootViewModelCoordinator__willRefreshUsage___block_invoke;
   v18[3] = &unk_279B7E0B8;
   v18[4] = self;
-  v7 = v6;
+  v7 = viewContext;
   v19 = v7;
   v20 = &v21;
   [v7 performBlockAndWait:v18];
@@ -3020,9 +3020,9 @@ void __65__STRootViewModelCoordinator_loadViewModelWithCompletionHandler___block
     v8 = +[STUILog persistence];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(STRootViewModelCoordinator *)self viewModel];
-      v10 = [v9 devices];
-      v11 = [v10 valueForKeyPath:@"name"];
+      viewModel = [(STRootViewModelCoordinator *)self viewModel];
+      devices = [viewModel devices];
+      v11 = [devices valueForKeyPath:@"name"];
       v12 = [v22[5] valueForKeyPath:@"name"];
       *buf = 138543618;
       v28 = v11;
@@ -3032,13 +3032,13 @@ void __65__STRootViewModelCoordinator_loadViewModelWithCompletionHandler___block
     }
 
     v13 = v22[5];
-    v14 = [(STRootViewModelCoordinator *)self viewModel];
-    [v14 setDevices:v13];
+    viewModel2 = [(STRootViewModelCoordinator *)self viewModel];
+    [viewModel2 setDevices:v13];
 
     v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K == %hd OR %K == %hd)", @"platform", 4, @"platform", 5];
     v16 = [v22[5] filteredArrayUsingPredicate:v15];
-    v17 = [(STRootViewModelCoordinator *)self usageDetailsCoordinator];
-    [v17 setDevices:v16];
+    usageDetailsCoordinator = [(STRootViewModelCoordinator *)self usageDetailsCoordinator];
+    [usageDetailsCoordinator setDevices:v16];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -3418,37 +3418,37 @@ LABEL_64:
   }
 }
 
-- (id)defaultValueForRestrictionIdentifier:(id)a3
+- (id)defaultValueForRestrictionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STRootViewModelCoordinator *)self contentPrivacyCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 isLocalDevice];
+  identifierCopy = identifier;
+  contentPrivacyCoordinator = [(STRootViewModelCoordinator *)self contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  isLocalDevice = [viewModel isLocalDevice];
 
-  v8 = [objc_opt_class() defaultValueForRestrictionIdentifier:v4 forIsLocalDevice:v7];
+  v8 = [objc_opt_class() defaultValueForRestrictionIdentifier:identifierCopy forIsLocalDevice:isLocalDevice];
 
   return v8;
 }
 
-+ (id)defaultValueForRestrictionIdentifier:(id)a3 forIsLocalDevice:(BOOL)a4
++ (id)defaultValueForRestrictionIdentifier:(id)identifier forIsLocalDevice:(BOOL)device
 {
-  v4 = a4;
-  v5 = a3;
+  deviceCopy = device;
+  identifierCopy = identifier;
   if (STRestrictionTypeWithString_onceToken_0 != -1)
   {
     +[STRootViewModelCoordinator(STRestrictionsDataSource) defaultValueForRestrictionIdentifier:forIsLocalDevice:];
   }
 
-  v6 = [STRestrictionTypeWithString_restrictionItemTypes_0 objectForKeyedSubscript:v5];
+  v6 = [STRestrictionTypeWithString_restrictionItemTypes_0 objectForKeyedSubscript:identifierCopy];
   if (v6)
   {
-    v7 = [v5 componentsSeparatedByString:@"."];
+    v7 = [identifierCopy componentsSeparatedByString:@"."];
     v8 = [v7 mutableCopy];
 
-    v9 = [v8 lastObject];
+    lastObject = [v8 lastObject];
     [v8 removeLastObject];
     v10 = [v8 componentsJoinedByString:@"."];
-    v11 = -[STRestrictionItem initWithConfiguration:restrictionKey:labelName:type:restrictionValue:]([STRestrictionItem alloc], "initWithConfiguration:restrictionKey:labelName:type:restrictionValue:", v10, v9, &stru_28766E5A8, [v6 unsignedIntegerValue], 0);
+    v11 = -[STRestrictionItem initWithConfiguration:restrictionKey:labelName:type:restrictionValue:]([STRestrictionItem alloc], "initWithConfiguration:restrictionKey:labelName:type:restrictionValue:", v10, lastObject, &stru_28766E5A8, [v6 unsignedIntegerValue], 0);
   }
 
   else
@@ -3456,7 +3456,7 @@ LABEL_64:
     v11 = 0;
   }
 
-  if (v11 && ([(STRestrictionItem *)v11 rmConfiguration], v12 = objc_claimAutoreleasedReturnValue(), [(STRestrictionItem *)v11 payloadKey], v13 = objc_claimAutoreleasedReturnValue(), [STContentPrivacyViewModel visibleRestrictionWithConfiguration:v12 key:v13 isLocalDevice:v4], v14 = objc_claimAutoreleasedReturnValue(), v13, v12, v14))
+  if (v11 && ([(STRestrictionItem *)v11 rmConfiguration], v12 = objc_claimAutoreleasedReturnValue(), [(STRestrictionItem *)v11 payloadKey], v13 = objc_claimAutoreleasedReturnValue(), [STContentPrivacyViewModel visibleRestrictionWithConfiguration:v12 key:v13 isLocalDevice:deviceCopy], v14 = objc_claimAutoreleasedReturnValue(), v13, v12, v14))
   {
     v15 = [STContentPrivacyViewModel defaultValueForRestriction:v14];
   }
@@ -3469,18 +3469,18 @@ LABEL_64:
   return v15;
 }
 
-- (void)loadValuesByRestrictionWithCompletionHandler:(id)a3
+- (void)loadValuesByRestrictionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STRootViewModelCoordinator *)self contentPrivacyCoordinator];
+  handlerCopy = handler;
+  contentPrivacyCoordinator = [(STRootViewModelCoordinator *)self contentPrivacyCoordinator];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __101__STRootViewModelCoordinator_STRestrictionsDataSource__loadValuesByRestrictionWithCompletionHandler___block_invoke;
   v7[3] = &unk_279B7E158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 loadValuesByRestrictionWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [contentPrivacyCoordinator loadValuesByRestrictionWithCompletionHandler:v7];
 }
 
 void __101__STRootViewModelCoordinator_STRestrictionsDataSource__loadValuesByRestrictionWithCompletionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -3502,17 +3502,17 @@ void __101__STRootViewModelCoordinator_STRestrictionsDataSource__loadValuesByRes
   }
 }
 
-+ (id)createValuesByRestrictionWithValuesByRestrictionItem:(id)a3 isSiriImageGenerationAllowed:(BOOL)a4
++ (id)createValuesByRestrictionWithValuesByRestrictionItem:(id)item isSiriImageGenerationAllowed:(BOOL)allowed
 {
-  v19 = a4;
+  allowedCopy = allowed;
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  itemCopy = item;
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(itemCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = itemCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -3529,9 +3529,9 @@ void __101__STRootViewModelCoordinator_STRestrictionsDataSource__loadValuesByRes
 
         v11 = *(*(&v20 + 1) + 8 * i);
         v12 = MEMORY[0x277CCACA8];
-        v13 = [v11 rmConfiguration];
-        v14 = [v11 payloadKey];
-        v15 = [v12 stringWithFormat:@"%@.%@", v13, v14];
+        rmConfiguration = [v11 rmConfiguration];
+        payloadKey = [v11 payloadKey];
+        v15 = [v12 stringWithFormat:@"%@.%@", rmConfiguration, payloadKey];
 
         v16 = [v6 objectForKeyedSubscript:v11];
         [v5 setObject:v16 forKeyedSubscript:v15];
@@ -3545,7 +3545,7 @@ void __101__STRootViewModelCoordinator_STRestrictionsDataSource__loadValuesByRes
 
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:v19];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:allowedCopy];
     [v5 setObject:v17 forKeyedSubscript:*MEMORY[0x277D4BB40]];
   }
 

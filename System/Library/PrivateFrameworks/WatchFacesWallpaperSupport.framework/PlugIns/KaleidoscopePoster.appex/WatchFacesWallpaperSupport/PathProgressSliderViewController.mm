@@ -1,7 +1,7 @@
 @interface PathProgressSliderViewController
-- (_TtC18KaleidoscopePoster32PathProgressSliderViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18KaleidoscopePoster32PathProgressSliderViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)sliderValueDidChangeWithSender:(id)a3;
+- (void)sliderValueDidChangeWithSender:(id)sender;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -11,31 +11,31 @@
 - (void)loadView
 {
   v3 = objc_allocWithZone(UIView);
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 initWithFrame:{0.0, 0.0, 100.0, 200.0}];
-  [(PathProgressSliderViewController *)v5 setView:v4];
+  [(PathProgressSliderViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100022F8C();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100023734();
 }
 
-- (void)sliderValueDidChangeWithSender:(id)a3
+- (void)sliderValueDidChangeWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_100023CA0(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_100023CA0(senderCopy);
 }
 
-- (_TtC18KaleidoscopePoster32PathProgressSliderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18KaleidoscopePoster32PathProgressSliderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

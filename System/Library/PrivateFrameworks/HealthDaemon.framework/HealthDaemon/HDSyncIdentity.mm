@@ -1,15 +1,15 @@
 @interface HDSyncIdentity
-+ (HDSyncIdentity)syncIdentityWithCodable:(id)a3 error:(id *)a4;
++ (HDSyncIdentity)syncIdentityWithCodable:(id)codable error:(id *)error;
 + (id)legacySyncIdentity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDSyncIdentity)init;
-- (HDSyncIdentity)initWithCoder:(id)a3;
-- (HDSyncIdentity)initWithHardwareIdentifier:(id)a3 databaseIdentifier:(id)a4 instanceDiscriminator:(id)a5;
+- (HDSyncIdentity)initWithCoder:(id)coder;
+- (HDSyncIdentity)initWithHardwareIdentifier:(id)identifier databaseIdentifier:(id)databaseIdentifier instanceDiscriminator:(id)discriminator;
 - (id)codableSyncIdentity;
 - (id)description;
 - (id)identityString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDSyncIdentity
@@ -32,25 +32,25 @@
   return 0;
 }
 
-- (HDSyncIdentity)initWithHardwareIdentifier:(id)a3 databaseIdentifier:(id)a4 instanceDiscriminator:(id)a5
+- (HDSyncIdentity)initWithHardwareIdentifier:(id)identifier databaseIdentifier:(id)databaseIdentifier instanceDiscriminator:(id)discriminator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  databaseIdentifierCopy = databaseIdentifier;
+  discriminatorCopy = discriminator;
   v19.receiver = self;
   v19.super_class = HDSyncIdentity;
   v11 = [(HDSyncIdentity *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     hardwareIdentifier = v11->_hardwareIdentifier;
     v11->_hardwareIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [databaseIdentifierCopy copy];
     databaseIdentifier = v11->_databaseIdentifier;
     v11->_databaseIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [discriminatorCopy copy];
     instanceDiscriminator = v11->_instanceDiscriminator;
     v11->_instanceDiscriminator = v16;
   }
@@ -58,27 +58,27 @@
   return v11;
 }
 
-+ (HDSyncIdentity)syncIdentityWithCodable:(id)a3 error:(id *)a4
++ (HDSyncIdentity)syncIdentityWithCodable:(id)codable error:(id *)error
 {
-  v5 = a3;
+  codableCopy = codable;
   v6 = MEMORY[0x277CCAD78];
-  v7 = [v5 hardwareIdentifier];
-  v8 = [v6 hk_UUIDWithData:v7];
+  hardwareIdentifier = [codableCopy hardwareIdentifier];
+  v8 = [v6 hk_UUIDWithData:hardwareIdentifier];
 
   if (v8)
   {
     v9 = MEMORY[0x277CCAD78];
-    v10 = [v5 databaseIdentifier];
-    v11 = [v9 hk_UUIDWithData:v10];
+    databaseIdentifier = [codableCopy databaseIdentifier];
+    v11 = [v9 hk_UUIDWithData:databaseIdentifier];
 
     if (v11)
     {
-      v12 = [v5 instanceDiscriminator];
-      v13 = v12;
+      instanceDiscriminator = [codableCopy instanceDiscriminator];
+      v13 = instanceDiscriminator;
       v14 = &stru_283BF39C8;
-      if (v12)
+      if (instanceDiscriminator)
       {
-        v14 = v12;
+        v14 = instanceDiscriminator;
       }
 
       v15 = v14;
@@ -88,14 +88,14 @@
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Missing database identifier."];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Missing database identifier."];
       v16 = 0;
     }
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Missing hardware identifier."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Missing hardware identifier."];
     v16 = 0;
   }
 
@@ -105,11 +105,11 @@
 - (id)codableSyncIdentity
 {
   v3 = objc_alloc_init(HDCodableSyncIdentity);
-  v4 = [(NSUUID *)self->_hardwareIdentifier hk_dataForUUIDBytes];
-  [(HDCodableSyncIdentity *)v3 setHardwareIdentifier:v4];
+  hk_dataForUUIDBytes = [(NSUUID *)self->_hardwareIdentifier hk_dataForUUIDBytes];
+  [(HDCodableSyncIdentity *)v3 setHardwareIdentifier:hk_dataForUUIDBytes];
 
-  v5 = [(NSUUID *)self->_databaseIdentifier hk_dataForUUIDBytes];
-  [(HDCodableSyncIdentity *)v3 setDatabaseIdentifier:v5];
+  hk_dataForUUIDBytes2 = [(NSUUID *)self->_databaseIdentifier hk_dataForUUIDBytes];
+  [(HDCodableSyncIdentity *)v3 setDatabaseIdentifier:hk_dataForUUIDBytes2];
 
   [(HDCodableSyncIdentity *)v3 setInstanceDiscriminator:self->_instanceDiscriminator];
 
@@ -119,17 +119,17 @@
 - (id)identityString
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSUUID *)self->_hardwareIdentifier UUIDString];
-  v5 = [(NSUUID *)self->_databaseIdentifier UUIDString];
-  v6 = [v3 stringWithFormat:@"%@:%@:%@", v4, v5, self->_instanceDiscriminator];
+  uUIDString = [(NSUUID *)self->_hardwareIdentifier UUIDString];
+  uUIDString2 = [(NSUUID *)self->_databaseIdentifier UUIDString];
+  v6 = [v3 stringWithFormat:@"%@:%@:%@", uUIDString, uUIDString2, self->_instanceDiscriminator];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -137,9 +137,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSUUID *)self->_hardwareIdentifier isEqual:v4->_hardwareIdentifier]&& [(NSUUID *)self->_databaseIdentifier isEqual:v4->_databaseIdentifier])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSUUID *)self->_hardwareIdentifier isEqual:equalCopy->_hardwareIdentifier]&& [(NSUUID *)self->_databaseIdentifier isEqual:equalCopy->_databaseIdentifier])
     {
-      v5 = [(NSString *)self->_instanceDiscriminator isEqual:v4->_instanceDiscriminator];
+      v5 = [(NSString *)self->_instanceDiscriminator isEqual:equalCopy->_instanceDiscriminator];
     }
 
     else
@@ -163,28 +163,28 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NSUUID *)self->_hardwareIdentifier UUIDString];
-  v7 = [(NSUUID *)self->_databaseIdentifier UUIDString];
-  v8 = [v3 stringWithFormat:@"<%@ %@:%@:%@>", v5, v6, v7, self->_instanceDiscriminator];
+  uUIDString = [(NSUUID *)self->_hardwareIdentifier UUIDString];
+  uUIDString2 = [(NSUUID *)self->_databaseIdentifier UUIDString];
+  v8 = [v3 stringWithFormat:@"<%@ %@:%@:%@>", v5, uUIDString, uUIDString2, self->_instanceDiscriminator];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hardwareIdentifier = self->_hardwareIdentifier;
-  v5 = a3;
-  [v5 encodeObject:hardwareIdentifier forKey:@"hwID"];
-  [v5 encodeObject:self->_databaseIdentifier forKey:@"dbID"];
-  [v5 encodeObject:self->_instanceDiscriminator forKey:@"instanceDisc"];
+  coderCopy = coder;
+  [coderCopy encodeObject:hardwareIdentifier forKey:@"hwID"];
+  [coderCopy encodeObject:self->_databaseIdentifier forKey:@"dbID"];
+  [coderCopy encodeObject:self->_instanceDiscriminator forKey:@"instanceDisc"];
 }
 
-- (HDSyncIdentity)initWithCoder:(id)a3
+- (HDSyncIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hwID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dbID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"instanceDisc"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hwID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dbID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"instanceDisc"];
 
   if (v5)
   {
@@ -198,16 +198,16 @@
 
   if (v8 || v7 == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HDSyncIdentity *)self initWithHardwareIdentifier:v5 databaseIdentifier:v6 instanceDiscriminator:v7];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

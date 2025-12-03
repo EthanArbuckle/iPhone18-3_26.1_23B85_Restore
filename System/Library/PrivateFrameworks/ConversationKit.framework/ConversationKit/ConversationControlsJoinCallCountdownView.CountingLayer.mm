@@ -1,13 +1,13 @@
 @interface ConversationControlsJoinCallCountdownView.CountingLayer
-- (void)setValue:(int64_t)a3;
+- (void)setValue:(int64_t)value;
 @end
 
 @implementation ConversationControlsJoinCallCountdownView.CountingLayer
 
-- (void)setValue:(int64_t)a3
+- (void)setValue:(int64_t)value
 {
-  v4 = self;
-  ConversationControlsJoinCallCountdownView.CountingLayer.value.setter(a3);
+  selfCopy = self;
+  ConversationControlsJoinCallCountdownView.CountingLayer.value.setter(value);
 }
 
 @end

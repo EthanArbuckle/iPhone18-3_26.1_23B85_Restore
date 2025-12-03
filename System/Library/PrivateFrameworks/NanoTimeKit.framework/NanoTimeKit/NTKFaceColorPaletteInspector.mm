@@ -41,9 +41,9 @@
   pathLocation = self->_pathLocation;
   if (pathLocation)
   {
-    v8 = [(NSBundle *)self->_bundleLocation bundlePath];
-    v9 = [v8 ntk_extractFileName];
-    [v5 appendFormat:@"%@ %@: %@", pathLocation, v9, color];
+    bundlePath = [(NSBundle *)self->_bundleLocation bundlePath];
+    ntk_extractFileName = [bundlePath ntk_extractFileName];
+    [v5 appendFormat:@"%@ %@: %@", pathLocation, ntk_extractFileName, color];
   }
 
   else if (self->_fallbackMethodName)

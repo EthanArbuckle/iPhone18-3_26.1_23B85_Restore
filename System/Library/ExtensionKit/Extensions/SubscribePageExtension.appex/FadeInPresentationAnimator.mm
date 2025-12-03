@@ -1,15 +1,15 @@
 @interface FadeInPresentationAnimator
 - (_TtC22SubscribePageExtension26FadeInPresentationAnimator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation FadeInPresentationAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10049F824(a3);
+  selfCopy = self;
+  sub_10049F824(transition);
   swift_unknownObjectRelease();
 }
 

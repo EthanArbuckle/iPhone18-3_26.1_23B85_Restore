@@ -1,15 +1,15 @@
 @interface PKPaymentOfferWebServiceConfirmResponse
-- (PKPaymentOfferWebServiceConfirmResponse)initWithData:(id)a3;
+- (PKPaymentOfferWebServiceConfirmResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentOfferWebServiceConfirmResponse
 
-- (PKPaymentOfferWebServiceConfirmResponse)initWithData:(id)a3
+- (PKPaymentOfferWebServiceConfirmResponse)initWithData:(id)data
 {
   v42 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = PKPaymentOfferWebServiceConfirmResponse;
-  v3 = [(PKWebServiceResponse *)&v37 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v37 initWithData:data];
   v4 = v3;
   if (!v3)
   {
@@ -18,19 +18,19 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKStringForKey:@"paymentHash"];
+    v6 = [jSONObject PKStringForKey:@"paymentHash"];
     paymentHash = v4->_paymentHash;
     v4->_paymentHash = v6;
 
-    v8 = [v5 PKURLForKey:@"issuerInstallmentManagementURL"];
+    v8 = [jSONObject PKURLForKey:@"issuerInstallmentManagementURL"];
     issuerInstallmentManagementURL = v4->_issuerInstallmentManagementURL;
     v4->_issuerInstallmentManagementURL = v8;
 
-    v10 = [v5 PKStringForKey:@"followUpAction"];
+    v10 = [jSONObject PKStringForKey:@"followUpAction"];
     v11 = v10;
     if (v10 != @"none" && v10 != 0)
     {
@@ -58,7 +58,7 @@ LABEL_12:
 LABEL_9:
 
     v4->_followUpAction = v14;
-    v15 = [v5 PKDictionaryForKey:@"redemption"];
+    v15 = [jSONObject PKDictionaryForKey:@"redemption"];
     if (v15)
     {
       v16 = [PKPaymentRewardsRedemption alloc];

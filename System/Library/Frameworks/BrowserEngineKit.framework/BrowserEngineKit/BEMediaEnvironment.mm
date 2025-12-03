@@ -1,14 +1,14 @@
 @interface BEMediaEnvironment
 - (BEMediaEnvironment)init;
-- (BEMediaEnvironment)initWithWebPageURL:(id)a3;
-- (BEMediaEnvironment)initWithXPCRepresentation:(id)a3 error:(id *)a4;
+- (BEMediaEnvironment)initWithWebPageURL:(id)l;
+- (BEMediaEnvironment)initWithXPCRepresentation:(id)representation error:(id *)error;
 - (id)createXPCRepresentation;
-- (id)makeCaptureSessionWithError:(id *)a3;
+- (id)makeCaptureSessionWithError:(id *)error;
 @end
 
 @implementation BEMediaEnvironment
 
-- (BEMediaEnvironment)initWithWebPageURL:(id)a3
+- (BEMediaEnvironment)initWithWebPageURL:(id)l
 {
   v4 = type metadata accessor for MediaEnvironment(0);
   v5 = *(*(v4 - 8) + 64);
@@ -33,7 +33,7 @@
   return v17;
 }
 
-- (BEMediaEnvironment)initWithXPCRepresentation:(id)a3 error:(id *)a4
+- (BEMediaEnvironment)initWithXPCRepresentation:(id)representation error:(id *)error
 {
   v5 = type metadata accessor for MediaEnvironment(0);
   v6 = *(*(v5 - 8) + 64);
@@ -53,7 +53,7 @@
 - (id)createXPCRepresentation
 {
   v2 = (self + OBJC_IVAR___BEMediaEnvironment_inner);
-  v3 = self;
+  selfCopy = self;
   empty = xpc_dictionary_create_empty();
   v5 = *v2;
   v6 = v2[1];
@@ -69,16 +69,16 @@
   return empty;
 }
 
-- (id)makeCaptureSessionWithError:(id *)a3
+- (id)makeCaptureSessionWithError:(id *)error
 {
   v4 = *(&self->super.isa + OBJC_IVAR___BEMediaEnvironment_inner);
   v5 = *&self->inner[OBJC_IVAR___BEMediaEnvironment_inner];
   v6 = objc_allocWithZone(MEMORY[0x1E6987110]);
-  v7 = self;
+  selfCopy = self;
   v8 = sub_19D51E27C();
-  v9 = [v6 initWithMediaEnvironment_];
+  initWithMediaEnvironment_ = [v6 initWithMediaEnvironment_];
 
-  return v9;
+  return initWithMediaEnvironment_;
 }
 
 - (BEMediaEnvironment)init

@@ -1,27 +1,27 @@
 @interface CPWindow
 - (CPTemplateApplicationScene)templateApplicationScene;
-- (CPWindow)initWithFrame:(CGRect)a3 templateScene:(id)a4;
+- (CPWindow)initWithFrame:(CGRect)frame templateScene:(id)scene;
 - (UIEdgeInsets)edgeInsets;
-- (void)updateLayoutGuideWithInsets:(UIEdgeInsets)a3;
+- (void)updateLayoutGuideWithInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation CPWindow
 
-- (CPWindow)initWithFrame:(CGRect)a3 templateScene:(id)a4
+- (CPWindow)initWithFrame:(CGRect)frame templateScene:(id)scene
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v40[4] = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  sceneCopy = scene;
   v39.receiver = self;
   v39.super_class = CPWindow;
-  v10 = [(CPWindow *)&v39 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(CPWindow *)&v39 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_templateApplicationScene, v9);
+    objc_storeWeak(&height->_templateApplicationScene, sceneCopy);
     v12 = objc_alloc_init(MEMORY[0x277D756D0]);
     [(CPWindow *)v11 addLayoutGuide:v12];
     mapButtonSafeAreaLayoutGuide = v11->_mapButtonSafeAreaLayoutGuide;
@@ -31,21 +31,21 @@
     v15 = *(MEMORY[0x277D768C8] + 16);
     *&v11->_edgeInsets.top = *MEMORY[0x277D768C8];
     *&v11->_edgeInsets.bottom = v15;
-    v16 = [(CPWindow *)v11 topAnchor];
-    v17 = [(UILayoutGuide *)v14 topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:v11->_edgeInsets.top];
+    topAnchor = [(CPWindow *)v11 topAnchor];
+    topAnchor2 = [(UILayoutGuide *)v14 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v11->_edgeInsets.top];
 
-    v19 = [(CPWindow *)v11 bottomAnchor];
-    v20 = [(UILayoutGuide *)v14 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:v11->_edgeInsets.bottom];
+    bottomAnchor = [(CPWindow *)v11 bottomAnchor];
+    bottomAnchor2 = [(UILayoutGuide *)v14 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v11->_edgeInsets.bottom];
 
-    v22 = [(CPWindow *)v11 leftAnchor];
-    v23 = [(UILayoutGuide *)v14 leftAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:v11->_edgeInsets.left];
+    leftAnchor = [(CPWindow *)v11 leftAnchor];
+    leftAnchor2 = [(UILayoutGuide *)v14 leftAnchor];
+    v24 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v11->_edgeInsets.left];
 
-    v25 = [(CPWindow *)v11 rightAnchor];
-    v26 = [(UILayoutGuide *)v14 rightAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:v11->_edgeInsets.right];
+    rightAnchor = [(CPWindow *)v11 rightAnchor];
+    rightAnchor2 = [(UILayoutGuide *)v14 rightAnchor];
+    v27 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v11->_edgeInsets.right];
 
     v28 = MEMORY[0x277CCAAD0];
     v40[0] = v18;
@@ -75,30 +75,30 @@
   return v11;
 }
 
-- (void)updateLayoutGuideWithInsets:(UIEdgeInsets)a3
+- (void)updateLayoutGuideWithInsets:(UIEdgeInsets)insets
 {
   p_edgeInsets = &self->_edgeInsets;
-  v4.f64[0] = a3.top;
-  v4.f64[1] = a3.left;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.right;
+  v4.f64[0] = insets.top;
+  v4.f64[1] = insets.left;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v4, *&self->_edgeInsets.top), vceqq_f64(v5, *&self->_edgeInsets.bottom)))) & 1) == 0)
   {
-    bottom = a3.bottom;
-    right = a3.right;
-    top = a3.top;
-    left = a3.left;
-    v7 = [(CPWindow *)self topConstraint];
-    [v7 setConstant:-top];
+    bottom = insets.bottom;
+    right = insets.right;
+    top = insets.top;
+    left = insets.left;
+    topConstraint = [(CPWindow *)self topConstraint];
+    [topConstraint setConstant:-top];
 
-    v8 = [(CPWindow *)self bottomConstraint];
-    [v8 setConstant:bottom];
+    bottomConstraint = [(CPWindow *)self bottomConstraint];
+    [bottomConstraint setConstant:bottom];
 
-    v9 = [(CPWindow *)self leftConstraint];
-    [v9 setConstant:-left];
+    leftConstraint = [(CPWindow *)self leftConstraint];
+    [leftConstraint setConstant:-left];
 
-    v10 = [(CPWindow *)self rightConstraint];
-    [v10 setConstant:right];
+    rightConstraint = [(CPWindow *)self rightConstraint];
+    [rightConstraint setConstant:right];
 
     p_edgeInsets->top = top;
     p_edgeInsets->left = left;

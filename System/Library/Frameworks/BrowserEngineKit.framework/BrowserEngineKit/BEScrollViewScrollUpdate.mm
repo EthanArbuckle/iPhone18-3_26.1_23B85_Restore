@@ -1,30 +1,30 @@
 @interface BEScrollViewScrollUpdate
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)translationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)translationInView:(id)view;
 - (double)timestamp;
 - (uint64_t)_scrollEvent;
-- (void)initWithScrollEvent:(uint64_t)a3 phase:;
+- (void)initWithScrollEvent:(uint64_t)event phase:;
 @end
 
 @implementation BEScrollViewScrollUpdate
 
-- (void)initWithScrollEvent:(uint64_t)a3 phase:
+- (void)initWithScrollEvent:(uint64_t)event phase:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = BEScrollViewScrollUpdate;
     v7 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       objc_storeStrong(v7 + 2, a2);
-      a1[1] = a3;
+      self[1] = event;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (double)timestamp
@@ -48,27 +48,27 @@
   return result;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   if (self)
   {
     self = self->__scrollEvent;
   }
 
-  [(BEScrollViewScrollUpdate *)self locationInView:a3];
+  [(BEScrollViewScrollUpdate *)self locationInView:view];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
   if (self)
   {
     self = self->__scrollEvent;
   }
 
-  [(BEScrollViewScrollUpdate *)self _adjustedAcceleratedDeltaInView:a3];
+  [(BEScrollViewScrollUpdate *)self _adjustedAcceleratedDeltaInView:view];
   result.y = v4;
   result.x = v3;
   return result;

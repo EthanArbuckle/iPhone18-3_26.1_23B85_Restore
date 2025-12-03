@@ -1,21 +1,21 @@
 @interface ClimateSeatHeatingIndicator
-- (void)heatingCoolingService:(id)a3 didUpdateHeatingCoolingLevel:(int)a4;
-- (void)heatingCoolingService:(id)a3 didUpdateOn:(BOOL)a4;
+- (void)heatingCoolingService:(id)service didUpdateHeatingCoolingLevel:(int)level;
+- (void)heatingCoolingService:(id)service didUpdateOn:(BOOL)on;
 @end
 
 @implementation ClimateSeatHeatingIndicator
 
-- (void)heatingCoolingService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)heatingCoolingService:(id)service didUpdateOn:(BOOL)on
 {
-  v6 = a3;
-  v7 = self;
-  sub_100075AC0(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_100075AC0(serviceCopy, on);
 }
 
-- (void)heatingCoolingService:(id)a3 didUpdateHeatingCoolingLevel:(int)a4
+- (void)heatingCoolingService:(id)service didUpdateHeatingCoolingLevel:(int)level
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_100075E60();
 }
 

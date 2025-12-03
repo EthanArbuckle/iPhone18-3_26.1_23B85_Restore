@@ -1,44 +1,44 @@
 @interface _UIFindNavigatorSearchTextField
-+ (id)_newlineImageForSize:(CGSize)a3 withTraitCollection:(id)a4;
-- (BOOL)_isTextRectWideEnoughForRightView:(CGRect)a3;
-- (BOOL)_showsClearButtonWhenNonEmpty:(BOOL)a3;
++ (id)_newlineImageForSize:(CGSize)size withTraitCollection:(id)collection;
+- (BOOL)_isTextRectWideEnoughForRightView:(CGRect)view;
+- (BOOL)_showsClearButtonWhenNonEmpty:(BOOL)empty;
 - (BOOL)canResignFirstResponder;
-- (CGRect)_applyRightViewOffsetIfApplicable:(CGRect)a3;
-- (CGRect)_availableTextRectForBounds:(CGRect)a3 forEditing:(BOOL)a4;
-- (CGRect)_availableTextRectForBounds:(CGRect)a3 forEditing:(BOOL)a4 accountForRightView:(BOOL)a5;
-- (CGRect)_baselineLeftViewRectForBounds:(CGRect)a3;
-- (CGRect)rightViewRectForBounds:(CGRect)a3;
+- (CGRect)_applyRightViewOffsetIfApplicable:(CGRect)applicable;
+- (CGRect)_availableTextRectForBounds:(CGRect)bounds forEditing:(BOOL)editing;
+- (CGRect)_availableTextRectForBounds:(CGRect)bounds forEditing:(BOOL)editing accountForRightView:(BOOL)view;
+- (CGRect)_baselineLeftViewRectForBounds:(CGRect)bounds;
+- (CGRect)rightViewRectForBounds:(CGRect)bounds;
 - (CGRect)visibleRect;
-- (_UIFindNavigatorSearchTextField)initWithFrame:(CGRect)a3;
+- (_UIFindNavigatorSearchTextField)initWithFrame:(CGRect)frame;
 - (id)responderForKeyboardAppearance;
 - (id)text;
 - (id)undoManager;
 - (int64_t)keyboardAppearance;
 - (void)insertNewline;
 - (void)layoutSubviews;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIFindNavigatorSearchTextField
 
-- (_UIFindNavigatorSearchTextField)initWithFrame:(CGRect)a3
+- (_UIFindNavigatorSearchTextField)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = _UIFindNavigatorSearchTextField;
-  v3 = [(UITextField *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UITextField *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UITextField *)v3 _systemBackgroundView];
-    [v5 setBackgroundContainer:1];
+    _systemBackgroundView = [(UITextField *)v3 _systemBackgroundView];
+    [_systemBackgroundView setBackgroundContainer:1];
     objc_initWeak(&location, v4);
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49___UIFindNavigatorSearchTextField_initWithFrame___block_invoke;
     v9[3] = &unk_1E70F3D28;
     objc_copyWeak(&v10, &location);
-    v7 = [v6 addObserverForName:@"UIKeyboardDidShowNotification" object:0 queue:0 usingBlock:v9];
+    v7 = [defaultCenter addObserverForName:@"UIKeyboardDidShowNotification" object:0 queue:0 usingBlock:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -47,12 +47,12 @@
   return v4;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = _UIFindNavigatorSearchTextField;
   [(UISearchTextField *)&v5 willMoveToWindow:?];
-  if (!a3)
+  if (!window)
   {
     self->_keyboardDidAppear = 0;
   }
@@ -60,8 +60,8 @@
 
 - (CGRect)visibleRect
 {
-  v2 = [(UIView *)self window];
-  [v2 bounds];
+  window = [(UIView *)self window];
+  [window bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -80,16 +80,16 @@
 
 - (BOOL)canResignFirstResponder
 {
-  v3 = [(UIResponder *)self _ui_findNavigatorResponder];
-  v4 = [v3 isChangingInputModes];
+  _ui_findNavigatorResponder = [(UIResponder *)self _ui_findNavigatorResponder];
+  isChangingInputModes = [_ui_findNavigatorResponder isChangingInputModes];
 
-  if (v4)
+  if (isChangingInputModes)
   {
     return 0;
   }
 
-  v5 = [(UIResponder *)self _ui_findNavigatorResponder];
-  if (v5)
+  _ui_findNavigatorResponder2 = [(UIResponder *)self _ui_findNavigatorResponder];
+  if (_ui_findNavigatorResponder2)
   {
     keyboardDidAppear = self->_keyboardDidAppear;
 
@@ -106,58 +106,58 @@
 
 - (id)responderForKeyboardAppearance
 {
-  v2 = [(UIResponder *)self _ui_findNavigatorResponder];
-  v3 = [v2 responderForKeyboardAppearance];
+  _ui_findNavigatorResponder = [(UIResponder *)self _ui_findNavigatorResponder];
+  responderForKeyboardAppearance = [_ui_findNavigatorResponder responderForKeyboardAppearance];
 
-  return v3;
+  return responderForKeyboardAppearance;
 }
 
 - (int64_t)keyboardAppearance
 {
-  v2 = [(UIResponder *)self _ui_findNavigatorResponder];
-  v3 = [v2 keyboardAppearance];
+  _ui_findNavigatorResponder = [(UIResponder *)self _ui_findNavigatorResponder];
+  keyboardAppearance = [_ui_findNavigatorResponder keyboardAppearance];
 
-  return v3;
+  return keyboardAppearance;
 }
 
 - (id)undoManager
 {
-  v2 = [(UIView *)self nextResponder];
-  v3 = [v2 undoManager];
+  nextResponder = [(UIView *)self nextResponder];
+  undoManager = [nextResponder undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (BOOL)_showsClearButtonWhenNonEmpty:(BOOL)a3
+- (BOOL)_showsClearButtonWhenNonEmpty:(BOOL)empty
 {
-  v4 = [(UIView *)self isFirstResponder];
-  if (v4)
+  isFirstResponder = [(UIView *)self isFirstResponder];
+  if (isFirstResponder)
   {
 
-    LOBYTE(v4) = [(UISearchTextField *)self _hasContent];
+    LOBYTE(isFirstResponder) = [(UISearchTextField *)self _hasContent];
   }
 
-  return v4;
+  return isFirstResponder;
 }
 
-- (CGRect)_applyRightViewOffsetIfApplicable:(CGRect)a3
+- (CGRect)_applyRightViewOffsetIfApplicable:(CGRect)applicable
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UITextField *)self rightView];
-  if (v8)
+  height = applicable.size.height;
+  width = applicable.size.width;
+  y = applicable.origin.y;
+  x = applicable.origin.x;
+  rightView = [(UITextField *)self rightView];
+  if (rightView)
   {
-    v9 = v8;
+    v9 = rightView;
     v10 = [(_UIFindNavigatorSearchTextField *)self _showsClearButtonWhenNonEmpty:[(UITextField *)self isEditing]];
 
     if (v10)
     {
-      v11 = [(UIView *)self _shouldReverseLayoutDirection];
+      _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
       [(UITextField *)self clearButtonRect];
       v12 = CGRectGetWidth(v18);
-      if (v11)
+      if (_shouldReverseLayoutDirection)
       {
         v13 = v12;
       }
@@ -190,11 +190,11 @@
   return result;
 }
 
-- (CGRect)_baselineLeftViewRectForBounds:(CGRect)a3
+- (CGRect)_baselineLeftViewRectForBounds:(CGRect)bounds
 {
   v20.receiver = self;
   v20.super_class = _UIFindNavigatorSearchTextField;
-  [(UITextField *)&v20 _baselineLeftViewRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UITextField *)&v20 _baselineLeftViewRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -219,11 +219,11 @@
   return result;
 }
 
-- (CGRect)rightViewRectForBounds:(CGRect)a3
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
   v20.receiver = self;
   v20.super_class = _UIFindNavigatorSearchTextField;
-  [(UISearchTextField *)&v20 rightViewRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UISearchTextField *)&v20 rightViewRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -248,24 +248,24 @@
   return result;
 }
 
-- (BOOL)_isTextRectWideEnoughForRightView:(CGRect)a3
+- (BOOL)_isTextRectWideEnoughForRightView:(CGRect)view
 {
-  width = a3.size.width;
-  [(UIView *)self bounds:a3.origin.x];
+  width = view.size.width;
+  [(UIView *)self bounds:view.origin.x];
   [(_UIFindNavigatorSearchTextField *)self rightViewRectForBounds:?];
   return width - CGRectGetWidth(v6) > 44.0;
 }
 
-- (CGRect)_availableTextRectForBounds:(CGRect)a3 forEditing:(BOOL)a4
+- (CGRect)_availableTextRectForBounds:(CGRect)bounds forEditing:(BOOL)editing
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  editingCopy = editing;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = [(_UIFindNavigatorSearchTextField *)self _showsClearButtonWhenNonEmpty:?];
 
-  [(_UIFindNavigatorSearchTextField *)self _availableTextRectForBounds:v4 forEditing:v10 accountForRightView:x, y, width, height];
+  [(_UIFindNavigatorSearchTextField *)self _availableTextRectForBounds:editingCopy forEditing:v10 accountForRightView:x, y, width, height];
   result.size.height = v14;
   result.size.width = v13;
   result.origin.y = v12;
@@ -273,24 +273,24 @@
   return result;
 }
 
-- (CGRect)_availableTextRectForBounds:(CGRect)a3 forEditing:(BOOL)a4 accountForRightView:(BOOL)a5
+- (CGRect)_availableTextRectForBounds:(CGRect)bounds forEditing:(BOOL)editing accountForRightView:(BOOL)view
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  viewCopy = view;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v25.receiver = self;
   v25.super_class = _UIFindNavigatorSearchTextField;
-  [(UISearchTextField *)&v25 _availableTextRectForBounds:a4 forEditing:?];
+  [(UISearchTextField *)&v25 _availableTextRectForBounds:editing forEditing:?];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  if (v5)
+  if (viewCopy)
   {
-    v19 = [(UITextField *)self rightView];
-    if (v19 && ![(UIView *)self _shouldReverseLayoutDirection])
+    rightView = [(UITextField *)self rightView];
+    if (rightView && ![(UIView *)self _shouldReverseLayoutDirection])
     {
       v24 = [(_UIFindNavigatorSearchTextField *)self _isTextRectWideEnoughForRightView:v12, v14, v16, v18];
 
@@ -325,25 +325,25 @@
   [(UIView *)self bounds];
   [(_UIFindNavigatorSearchTextField *)self _availableTextRectForBounds:[(UITextField *)self isEditing] forEditing:0 accountForRightView:v3, v4, v5, v6];
   v7 = [(_UIFindNavigatorSearchTextField *)self _isTextRectWideEnoughForRightView:?];
-  v8 = [(UITextField *)self rightView];
-  [v8 setHidden:!v7];
+  rightView = [(UITextField *)self rightView];
+  [rightView setHidden:!v7];
 }
 
-+ (id)_newlineImageForSize:(CGSize)a3 withTraitCollection:(id)a4
++ (id)_newlineImageForSize:(CGSize)size withTraitCollection:(id)collection
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
   v7 = +[UIColor secondarySystemFillColor];
-  v8 = [v7 resolvedColorWithTraitCollection:v6];
+  v8 = [v7 resolvedColorWithTraitCollection:collectionCopy];
 
   v9 = +[UIColor labelColor];
-  v10 = [v9 resolvedColorWithTraitCollection:v6];
+  v10 = [v9 resolvedColorWithTraitCollection:collectionCopy];
 
   v11 = [UIImage systemImageNamed:@"return"];
   v12 = [v11 imageWithTintColor:v10];
 
-  [v6 displayScale];
+  [collectionCopy displayScale];
   v14 = v13;
 
   _UIGraphicsBeginImageContextWithOptions(0, 0, width, height, v14);
@@ -383,29 +383,29 @@
 
 - (void)insertNewline
 {
-  v3 = [(UITextField *)self font];
-  [v3 capHeight];
-  v4 = [(UITextField *)self font];
-  [v4 descender];
+  font = [(UITextField *)self font];
+  [font capHeight];
+  font2 = [(UITextField *)self font];
+  [font2 descender];
   UICeilToViewScale(self);
   v6 = v5;
 
   v18 = objc_alloc_init(off_1E70ECBA8);
   v7 = objc_opt_class();
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v7 _newlineImageForSize:v8 withTraitCollection:{v6, v6}];
+  traitCollection = [(UIView *)self traitCollection];
+  v9 = [v7 _newlineImageForSize:traitCollection withTraitCollection:{v6, v6}];
   [v18 setImage:v9];
 
-  v10 = [(UITextField *)self font];
-  [v10 descender];
+  font3 = [(UITextField *)self font];
+  [font3 descender];
   [v18 setBounds:{0.0, v11 * 0.5, v6, v6}];
 
   v12 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v18];
-  v13 = [(UITextField *)self textStorage];
-  [v13 appendAttributedString:v12];
+  textStorage = [(UITextField *)self textStorage];
+  [textStorage appendAttributedString:v12];
 
-  v14 = [(UITextField *)self selectedTextRange];
-  v15 = [v14 end];
+  selectedTextRange = [(UITextField *)self selectedTextRange];
+  v15 = [selectedTextRange end];
   v16 = [(UITextField *)self positionFromPosition:v15 inDirection:2 offset:1];
 
   v17 = [(UITextField *)self textRangeFromPosition:v16 toPosition:v16];
@@ -418,10 +418,10 @@
 {
   v7.receiver = self;
   v7.super_class = _UIFindNavigatorSearchTextField;
-  v2 = [(UISearchTextField *)&v7 text];
+  text = [(UISearchTextField *)&v7 text];
   v6 = -4;
   v3 = [MEMORY[0x1E696AEC0] stringWithCharacters:&v6 length:1];
-  v4 = [v2 stringByReplacingOccurrencesOfString:v3 withString:@"\n"];
+  v4 = [text stringByReplacingOccurrencesOfString:v3 withString:@"\n"];
 
   return v4;
 }

@@ -1,20 +1,20 @@
 @interface MPStoreLibraryMappingRequestOperation
-+ (BOOL)supportsModelClass:(Class)a3;
++ (BOOL)supportsModelClass:(Class)class;
 - (void)execute;
 @end
 
 @implementation MPStoreLibraryMappingRequestOperation
 
-+ (BOOL)supportsModelClass:(Class)a3
++ (BOOL)supportsModelClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     return 1;
   }
 
   v5 = objc_opt_class();
 
-  return [(objc_class *)a3 isSubclassOfClass:v5];
+  return [(objc_class *)class isSubclassOfClass:v5];
 }
 
 - (void)execute
@@ -24,8 +24,8 @@
   if (!v3[34])
   {
     v180 = v2;
-    v181 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v181 handleFailureInMethod:v180 object:v3 file:@"MPStoreLibraryMappingRequestOperation.mm" lineNumber:36 description:@"Library view must not be nil."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:v180 object:v3 file:@"MPStoreLibraryMappingRequestOperation.mm" lineNumber:36 description:@"Library view must not be nil."];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -66,8 +66,8 @@
 
   v200 = objc_alloc_init(MPMediaLibraryEntityTranslationContext);
   [(MPMediaLibraryEntityTranslationContext *)v200 setIdentifierSourcePrefix:@"PersonalizedMap-"];
-  v7 = [v3[34] library];
-  [(MPMediaLibraryEntityTranslationContext *)v200 setMediaLibrary:v7];
+  library = [v3[34] library];
+  [(MPMediaLibraryEntityTranslationContext *)v200 setMediaLibrary:library];
 
   v8 = [MPModelKind kindWithModelClass:v3[35]];
   [(MPMediaLibraryEntityTranslationContext *)v200 setModelKind:v8];
@@ -75,9 +75,9 @@
   v9 = v3;
   if ([MEMORY[0x1E69E4688] canAccessAccountStore])
   {
-    v10 = [v3 userIdentity];
-    v11 = [v10 accountDSID];
-    [(MPMediaLibraryEntityTranslationContext *)v200 setPersonID:v11];
+    userIdentity = [v3 userIdentity];
+    accountDSID = [userIdentity accountDSID];
+    [(MPMediaLibraryEntityTranslationContext *)v200 setPersonID:accountDSID];
 
     v9 = v3;
   }
@@ -124,13 +124,13 @@
         }
 
         v15 = *(*(&v365 + 1) + 8 * i);
-        v16 = [v15 library];
-        v17 = [v16 databaseID];
-        v18 = [v217[34] library];
-        v19 = [v18 uniqueIdentifier];
-        if ([v17 isEqualToString:v19])
+        library2 = [v15 library];
+        databaseID = [library2 databaseID];
+        library3 = [v217[34] library];
+        uniqueIdentifier = [library3 uniqueIdentifier];
+        if ([databaseID isEqualToString:uniqueIdentifier])
         {
-          v20 = [v16 persistentID] == 0;
+          v20 = [library2 persistentID] == 0;
 
           if (!v20)
           {
@@ -142,45 +142,45 @@
         {
         }
 
-        v21 = [v15 universalStore];
-        v22 = [v21 subscriptionAdamID];
+        universalStore = [v15 universalStore];
+        subscriptionAdamID = [universalStore subscriptionAdamID];
 
-        *&v395 = v22;
-        v23 = v22 != 0;
-        if (v22)
+        *&v395 = subscriptionAdamID;
+        v23 = subscriptionAdamID != 0;
+        if (subscriptionAdamID)
         {
-          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, v22);
+          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, subscriptionAdamID);
         }
 
-        v24 = [v15 universalStore];
-        v25 = [v24 purchasedAdamID];
+        universalStore2 = [v15 universalStore];
+        purchasedAdamID = [universalStore2 purchasedAdamID];
 
-        v313 = v25;
-        if (v25)
+        v313 = purchasedAdamID;
+        if (purchasedAdamID)
         {
-          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, v25);
+          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, purchasedAdamID);
           v23 = 1;
         }
 
-        v26 = [v15 universalStore];
-        v27 = [v26 adamID];
+        universalStore3 = [v15 universalStore];
+        adamID = [universalStore3 adamID];
 
-        v394 = v27;
-        if (v27)
+        v394 = adamID;
+        if (adamID)
         {
-          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, v27);
-          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, v27);
+          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, adamID);
+          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, adamID);
           v23 = 1;
         }
 
-        v28 = [v15 universalStore];
-        v29 = [v28 formerAdamIDs];
+        universalStore4 = [v15 universalStore];
+        formerAdamIDs = [universalStore4 formerAdamIDs];
 
         v364 = 0u;
         v363 = 0u;
         v362 = 0u;
         v361 = 0u;
-        v30 = v29;
+        v30 = formerAdamIDs;
         v31 = [v30 countByEnumeratingWithState:&v361 objects:v396 count:16];
         if (v31)
         {
@@ -194,11 +194,11 @@
                 objc_enumerationMutation(v30);
               }
 
-              v34 = [*(*(&v361 + 1) + 8 * j) longLongValue];
-              __p[0] = v34;
-              if (v34)
+              longLongValue = [*(*(&v361 + 1) + 8 * j) longLongValue];
+              __p[0] = longLongValue;
+              if (longLongValue)
               {
-                std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v375, v34);
+                std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v375, longLongValue);
               }
             }
 
@@ -208,23 +208,23 @@
           while (v31);
         }
 
-        v35 = [v15 personalizedStore];
-        v36 = [v35 cloudID];
+        personalizedStore = [v15 personalizedStore];
+        cloudID = [personalizedStore cloudID];
 
-        v315 = v36;
-        if (v36)
+        v315 = cloudID;
+        if (cloudID)
         {
-          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v372, v36);
+          std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v372, cloudID);
           v23 = 1;
         }
 
-        v37 = [v15 universalStore];
-        v38 = [v37 universalCloudLibraryID];
+        universalStore5 = [v15 universalStore];
+        universalCloudLibraryID = [universalStore5 universalCloudLibraryID];
 
-        if ([v38 length])
+        if ([universalCloudLibraryID length])
         {
-          v39 = v38;
-          std::string::basic_string[abi:ne200100]<0>(__p, [v38 UTF8String]);
+          v39 = universalCloudLibraryID;
+          std::string::basic_string[abi:ne200100]<0>(__p, [universalCloudLibraryID UTF8String]);
           std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::__emplace_unique_key_args<std::string,std::string>(v369, __p);
           if (SHIBYTE(v360) < 0)
           {
@@ -238,8 +238,8 @@ LABEL_46:
           if (v41)
           {
             [v203 addObject:v15];
-            v42 = [MEMORY[0x1E695DFB0] null];
-            [v211 setObject:v42 forKey:v15];
+            null = [MEMORY[0x1E695DFB0] null];
+            [v211 setObject:null forKey:v15];
           }
 
           goto LABEL_48;
@@ -471,15 +471,15 @@ LABEL_51:
           }
 
           v85 = *(*(&v284 + 1) + 8 * k);
-          v86 = [v85 personalizedStore];
-          v87 = [v86 cloudAlbumID];
+          personalizedStore2 = [v85 personalizedStore];
+          cloudAlbumID = [personalizedStore2 cloudAlbumID];
 
-          v88 = [v87 length];
+          v88 = [cloudAlbumID length];
           v89 = v88 != 0;
           if (v88)
           {
-            v90 = v87;
-            std::string::basic_string[abi:ne200100]<0>(v369, [v87 UTF8String]);
+            v90 = cloudAlbumID;
+            std::string::basic_string[abi:ne200100]<0>(v369, [cloudAlbumID UTF8String]);
             std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::__emplace_unique_key_args<std::string,std::string>(&v375, v369);
             if (SBYTE7(v370) < 0)
             {
@@ -487,24 +487,24 @@ LABEL_51:
             }
           }
 
-          v91 = [v85 universalStore];
-          v92 = [v91 adamID];
+          universalStore6 = [v85 universalStore];
+          adamID2 = [universalStore6 adamID];
 
-          __p[0] = v92;
-          if (v92)
+          __p[0] = adamID2;
+          if (adamID2)
           {
-            std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, v92);
+            std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, adamID2);
             v89 = 1;
           }
 
-          v93 = [v85 universalStore];
-          v94 = [v93 formerAdamIDs];
+          universalStore7 = [v85 universalStore];
+          formerAdamIDs2 = [universalStore7 formerAdamIDs];
 
           v283 = 0u;
           v282 = 0u;
           v281 = 0u;
           v280 = 0u;
-          v95 = v94;
+          v95 = formerAdamIDs2;
           v96 = [v95 countByEnumeratingWithState:&v280 objects:v391 count:16];
           if (v96)
           {
@@ -518,11 +518,11 @@ LABEL_51:
                   objc_enumerationMutation(v95);
                 }
 
-                v99 = [*(*(&v280 + 1) + 8 * m) longLongValue];
-                v369[0] = v99;
-                if (v99)
+                longLongValue2 = [*(*(&v280 + 1) + 8 * m) longLongValue];
+                v369[0] = longLongValue2;
+                if (longLongValue2)
                 {
-                  std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, v99);
+                  std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, longLongValue2);
                 }
               }
 
@@ -532,33 +532,33 @@ LABEL_51:
             while (v96);
           }
 
-          v100 = [v85 universalStore];
-          v101 = [v100 subscriptionAdamID];
+          universalStore8 = [v85 universalStore];
+          subscriptionAdamID2 = [universalStore8 subscriptionAdamID];
 
-          *&v395 = v101;
-          if (v101)
+          *&v395 = subscriptionAdamID2;
+          if (subscriptionAdamID2)
           {
-            std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, v101);
+            std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, subscriptionAdamID2);
             v89 = 1;
           }
 
-          v102 = [v85 universalStore];
-          v103 = [v102 purchasedAdamID];
+          universalStore9 = [v85 universalStore];
+          purchasedAdamID2 = [universalStore9 purchasedAdamID];
 
-          v313 = v103;
-          if (v103)
+          v313 = purchasedAdamID2;
+          if (purchasedAdamID2)
           {
-            std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, v103);
+            std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v218, purchasedAdamID2);
             v89 = 1;
           }
 
-          v104 = [v85 universalStore];
-          v105 = [v104 universalCloudLibraryID];
+          universalStore10 = [v85 universalStore];
+          universalCloudLibraryID2 = [universalStore10 universalCloudLibraryID];
 
-          if ([v105 length])
+          if ([universalCloudLibraryID2 length])
           {
-            v106 = v105;
-            std::string::basic_string[abi:ne200100]<0>(v369, [v105 UTF8String]);
+            v106 = universalCloudLibraryID2;
+            std::string::basic_string[abi:ne200100]<0>(v369, [universalCloudLibraryID2 UTF8String]);
             std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::__emplace_unique_key_args<std::string,std::string>(v372, v369);
             if (SBYTE7(v370) < 0)
             {
@@ -782,7 +782,7 @@ LABEL_230:
     v376 = 0u;
     v375 = 0u;
     v377 = 1065353216;
-    v204 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v251 = 0u;
     v252 = 0u;
     v249 = 0u;
@@ -805,23 +805,23 @@ LABEL_142:
       }
 
       v123 = *(*(&v249 + 1) + 8 * v122);
-      v124 = [v123 universalStore];
-      v125 = [v124 adamID];
+      universalStore11 = [v123 universalStore];
+      adamID3 = [universalStore11 adamID];
 
-      v372[0] = v125;
-      if (v125)
+      v372[0] = adamID3;
+      if (adamID3)
       {
-        std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, v125);
+        std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, adamID3);
       }
 
-      v126 = [v123 universalStore];
-      v127 = [v126 formerAdamIDs];
+      universalStore12 = [v123 universalStore];
+      formerAdamIDs3 = [universalStore12 formerAdamIDs];
 
       v247 = 0u;
       v248 = 0u;
       v245 = 0u;
       v246 = 0u;
-      v128 = v127;
+      v128 = formerAdamIDs3;
       v129 = [v128 countByEnumeratingWithState:&v245 objects:v389 count:16];
       if (v129)
       {
@@ -835,11 +835,11 @@ LABEL_142:
               objc_enumerationMutation(v128);
             }
 
-            v132 = [*(*(&v245 + 1) + 8 * n) longLongValue];
-            v218[0] = v132;
-            if (v132)
+            longLongValue3 = [*(*(&v245 + 1) + 8 * n) longLongValue];
+            v218[0] = longLongValue3;
+            if (longLongValue3)
             {
-              std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, v132);
+              std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, longLongValue3);
             }
           }
 
@@ -849,15 +849,15 @@ LABEL_142:
         while (v129);
       }
 
-      v133 = [v123 personalizedStore];
-      v134 = [v133 cloudArtistID];
+      personalizedStore3 = [v123 personalizedStore];
+      cloudArtistID = [personalizedStore3 cloudArtistID];
 
-      if ([v134 length])
+      if ([cloudArtistID length])
       {
         break;
       }
 
-      if (v125)
+      if (adamID3)
       {
         goto LABEL_160;
       }
@@ -903,7 +903,7 @@ LABEL_195:
               v228 = v201;
               v183 = v202;
               v223 = v183;
-              v184 = v204;
+              v184 = array;
               v224 = v184;
               std::unordered_set<long long>::unordered_set(v229, &v378);
               v230 = 0;
@@ -976,13 +976,13 @@ LABEL_165:
             }
 
             v138 = *(*(&v241 + 1) + 8 * v137);
-            v215 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             v239 = 0u;
             v240 = 0u;
             v237 = 0u;
             v238 = 0u;
-            v139 = [v138 allKeys];
-            v140 = [v139 countByEnumeratingWithState:&v237 objects:v387 count:16];
+            allKeys = [v138 allKeys];
+            v140 = [allKeys countByEnumeratingWithState:&v237 objects:v387 count:16];
             v198 = v137;
             if (v140)
             {
@@ -991,9 +991,9 @@ LABEL_165:
 
 LABEL_191:
 
-            if ([v215 count])
+            if ([dictionary count])
             {
-              [v204 addObject:v215];
+              [array addObject:dictionary];
             }
 
             v137 = v198 + 1;
@@ -1010,7 +1010,7 @@ LABEL_191:
           }
 
           v141 = *v238;
-          objb = v139;
+          objb = allKeys;
           while (2)
           {
             v142 = 0;
@@ -1021,23 +1021,23 @@ LABEL_171:
             }
 
             v143 = *(*(&v237 + 1) + 8 * v142);
-            v144 = [v143 universalStore];
-            v145 = [v144 adamID];
+            universalStore13 = [v143 universalStore];
+            adamID4 = [universalStore13 adamID];
 
-            v372[0] = v145;
-            if (v145)
+            v372[0] = adamID4;
+            if (adamID4)
             {
-              std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, v145);
+              std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, adamID4);
             }
 
-            v146 = [v143 universalStore];
-            v147 = [v146 formerAdamIDs];
+            universalStore14 = [v143 universalStore];
+            formerAdamIDs4 = [universalStore14 formerAdamIDs];
 
             v235 = 0u;
             v236 = 0u;
             v233 = 0u;
             v234 = 0u;
-            v148 = v147;
+            v148 = formerAdamIDs4;
             v149 = [v148 countByEnumeratingWithState:&v233 objects:v386 count:16];
             if (v149)
             {
@@ -1051,11 +1051,11 @@ LABEL_171:
                     objc_enumerationMutation(v148);
                   }
 
-                  v152 = [*(*(&v233 + 1) + 8 * ii) longLongValue];
-                  v218[0] = v152;
-                  if (v152)
+                  longLongValue4 = [*(*(&v233 + 1) + 8 * ii) longLongValue];
+                  v218[0] = longLongValue4;
+                  if (longLongValue4)
                   {
-                    std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, v152);
+                    std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v378, longLongValue4);
                   }
                 }
 
@@ -1065,13 +1065,13 @@ LABEL_171:
               while (v149);
             }
 
-            v153 = [v143 personalizedStore];
-            v154 = [v153 cloudArtistID];
+            personalizedStore4 = [v143 personalizedStore];
+            cloudArtistID2 = [personalizedStore4 cloudArtistID];
 
-            if ([v154 length])
+            if ([cloudArtistID2 length])
             {
-              v155 = v154;
-              std::string::basic_string[abi:ne200100]<0>(v218, [v154 UTF8String]);
+              v155 = cloudArtistID2;
+              std::string::basic_string[abi:ne200100]<0>(v218, [cloudArtistID2 UTF8String]);
               std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::__emplace_unique_key_args<std::string,std::string>(&v375, v218);
               if (SBYTE7(v219) < 0)
               {
@@ -1080,17 +1080,17 @@ LABEL_171:
 
 LABEL_188:
               v156 = [v138 objectForKey:v143];
-              [v215 setObject:v156 forKey:v143];
+              [dictionary setObject:v156 forKey:v143];
             }
 
-            else if (v145)
+            else if (adamID4)
             {
               goto LABEL_188;
             }
 
             if (++v142 == v140)
             {
-              v139 = objb;
+              allKeys = objb;
               v140 = [objb countByEnumeratingWithState:&v237 objects:v387 count:16];
               if (!v140)
               {
@@ -1108,8 +1108,8 @@ LABEL_188:
       }
     }
 
-    v135 = v134;
-    std::string::basic_string[abi:ne200100]<0>(v218, [v134 UTF8String]);
+    v135 = cloudArtistID;
+    std::string::basic_string[abi:ne200100]<0>(v218, [cloudArtistID UTF8String]);
     std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::__emplace_unique_key_args<std::string,std::string>(&v375, v218);
     if (SBYTE7(v219) < 0)
     {
@@ -1150,15 +1150,15 @@ LABEL_160:
         }
 
         v70 = *(*(&v309 + 1) + 8 * jj);
-        v71 = [v70 universalStore];
-        v72 = [v71 globalPlaylistID];
+        universalStore15 = [v70 universalStore];
+        globalPlaylistID = [universalStore15 globalPlaylistID];
 
-        v73 = [v72 length];
+        v73 = [globalPlaylistID length];
         v74 = v73 != 0;
         if (v73)
         {
-          v75 = v72;
-          std::string::basic_string[abi:ne200100]<0>(v372, [v72 UTF8String]);
+          v75 = globalPlaylistID;
+          std::string::basic_string[abi:ne200100]<0>(v372, [globalPlaylistID UTF8String]);
           std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::__emplace_unique_key_args<std::string,std::string>(v218, v372);
           if (SBYTE7(v373) < 0)
           {
@@ -1166,23 +1166,23 @@ LABEL_160:
           }
         }
 
-        v76 = [v70 personalizedStore];
-        v77 = [v76 cloudID];
+        personalizedStore5 = [v70 personalizedStore];
+        cloudID2 = [personalizedStore5 cloudID];
 
-        v369[0] = v77;
-        if (v77)
+        v369[0] = cloudID2;
+        if (cloudID2)
         {
-          std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::__emplace_unique_key_args<unsigned long long,unsigned long long const&>(&v378, v77);
+          std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::__emplace_unique_key_args<unsigned long long,unsigned long long const&>(&v378, cloudID2);
           v74 = 1;
         }
 
-        v78 = [v70 universalStore];
-        v79 = [v78 universalCloudLibraryID];
+        universalStore16 = [v70 universalStore];
+        universalCloudLibraryID3 = [universalStore16 universalCloudLibraryID];
 
-        if ([v79 length])
+        if ([universalCloudLibraryID3 length])
         {
-          v80 = v79;
-          std::string::basic_string[abi:ne200100]<0>(v372, [v79 UTF8String]);
+          v80 = universalCloudLibraryID3;
+          std::string::basic_string[abi:ne200100]<0>(v372, [universalCloudLibraryID3 UTF8String]);
           std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::__emplace_unique_key_args<std::string,std::string>(&v375, v372);
           if (SBYTE7(v373) < 0)
           {

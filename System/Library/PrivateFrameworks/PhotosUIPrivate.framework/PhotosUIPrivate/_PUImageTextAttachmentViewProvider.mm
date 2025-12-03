@@ -6,9 +6,9 @@
 
 - (void)loadView
 {
-  v4 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  v3 = [v4 imageView];
-  [(NSTextAttachmentViewProvider *)self setView:v3];
+  textAttachment = [(NSTextAttachmentViewProvider *)self textAttachment];
+  imageView = [textAttachment imageView];
+  [(NSTextAttachmentViewProvider *)self setView:imageView];
 }
 
 @end

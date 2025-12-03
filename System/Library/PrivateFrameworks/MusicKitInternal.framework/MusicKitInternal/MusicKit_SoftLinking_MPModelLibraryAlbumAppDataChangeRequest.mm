@@ -1,6 +1,6 @@
 @interface MusicKit_SoftLinking_MPModelLibraryAlbumAppDataChangeRequest
 - (MusicKit_SoftLinking_MPModelLibraryAlbumAppDataChangeRequest)init;
-- (void)performWithAlbum:(id)a3 appData:(id)a4 completionHandler:(id)a5;
+- (void)performWithAlbum:(id)album appData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryAlbumAppDataChangeRequest
@@ -38,28 +38,28 @@
   return v2;
 }
 
-- (void)performWithAlbum:(id)a3 appData:(id)a4 completionHandler:(id)a5
+- (void)performWithAlbum:(id)album appData:(id)data completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   underlyingChangeRequest = self->_underlyingChangeRequest;
-  v10 = a4;
-  v11 = [a3 _underlyingModelObject];
-  [(MPModelLibraryAlbumAppDataChangeRequest *)underlyingChangeRequest setModelObject:v11];
+  dataCopy = data;
+  _underlyingModelObject = [album _underlyingModelObject];
+  [(MPModelLibraryAlbumAppDataChangeRequest *)underlyingChangeRequest setModelObject:_underlyingModelObject];
 
   v12 = self->_underlyingChangeRequest;
-  v13 = [v10 _underlyingAlbumAppData];
+  _underlyingAlbumAppData = [dataCopy _underlyingAlbumAppData];
 
-  [(MPModelLibraryAlbumAppDataChangeRequest *)v12 setAlbumAppData:v13];
+  [(MPModelLibraryAlbumAppDataChangeRequest *)v12 setAlbumAppData:_underlyingAlbumAppData];
   v14 = self->_underlyingChangeRequest;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __107__MusicKit_SoftLinking_MPModelLibraryAlbumAppDataChangeRequest_performWithAlbum_appData_completionHandler___block_invoke;
   v18[3] = &unk_1E84C4450;
-  v19 = v8;
-  v15 = v8;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
   v16 = [(MPModelLibraryAlbumAppDataChangeRequest *)v14 newOperationWithResponseHandler:v18];
-  v17 = [MEMORY[0x1E69775F8] deviceLibrary];
-  [v17 performOperation:v16];
+  deviceLibrary = [MEMORY[0x1E69775F8] deviceLibrary];
+  [deviceLibrary performOperation:v16];
 }
 
 @end

@@ -1,52 +1,52 @@
 @interface HDNotificationManager
-+ (id)createNotificationContentWithTitle:(id)a3 body:(id)a4 categoryIdentifier:(id)a5;
-- (BOOL)_resourceQueue_setBadge:(uint64_t)a3 domain:(void *)a4 error:;
++ (id)createNotificationContentWithTitle:(id)title body:(id)body categoryIdentifier:(id)identifier;
+- (BOOL)_resourceQueue_setBadge:(uint64_t)badge domain:(void *)domain error:;
 - (BOOL)areHealthCriticalAlertsAuthorized;
 - (BOOL)areHealthNotificationsAuthorized;
-- (BOOL)incrementBadgeForDomain:(int64_t)a3 count:(int64_t)a4 error:(id *)a5;
-- (HDNotificationManager)initWithProfile:(id)a3 bundle:(int64_t)a4;
-- (id)_actionCompletionOnClientQueue:(void *)a1;
+- (BOOL)incrementBadgeForDomain:(int64_t)domain count:(int64_t)count error:(id *)error;
+- (HDNotificationManager)initWithProfile:(id)profile bundle:(int64_t)bundle;
+- (id)_actionCompletionOnClientQueue:(void *)queue;
 - (id)_aggregateBadge;
-- (id)_badgeForDomain:(int64_t)a3 error:(id *)a4;
-- (id)_resourceQueue_badgeForDomain:(dispatch_queue_t *)a1;
-- (id)_resourceQueue_badgeForDomain:(int64_t)a3 error:(id *)a4;
+- (id)_badgeForDomain:(int64_t)domain error:(id *)error;
+- (id)_resourceQueue_badgeForDomain:(dispatch_queue_t *)domain;
+- (id)_resourceQueue_badgeForDomain:(int64_t)domain error:(id *)error;
 - (id)_resourceQueue_coaleseDomainBadges;
 - (id)diagnosticDescription;
-- (id)identifierForBundle:(id)a1;
-- (void)_postNotificationWithTitle:(void *)a3 body:(void *)a4 categoryIdentifier:(void *)a5 subtitle:(uint64_t)a6 domain:(void *)a7 url:(void *)a8 accessoryImageName:(void *)a9 header:(void *)a10 completion:;
-- (void)_sendCompanionUserNotificationResponse:(void *)a3 error:;
-- (void)addNotificationObserver:(id)a3;
-- (void)badgeForDomain:(int64_t)a3 completion:(id)a4;
+- (id)identifierForBundle:(id)bundle;
+- (void)_postNotificationWithTitle:(void *)title body:(void *)body categoryIdentifier:(void *)identifier subtitle:(uint64_t)subtitle domain:(void *)domain url:(void *)url accessoryImageName:(void *)name header:(void *)self0 completion:;
+- (void)_sendCompanionUserNotificationResponse:(void *)response error:;
+- (void)addNotificationObserver:(id)observer;
+- (void)badgeForDomain:(int64_t)domain completion:(id)completion;
 - (void)dealloc;
-- (void)getDeliveredNotificationsWithCompletionHandler:(id)a3;
-- (void)postCompanionUserNotificationOfType:(int64_t)a3 completion:(id)a4;
-- (void)postNotificationWithIdentifier:(id)a3 content:(id)a4 trigger:(id)a5 completion:(id)a6;
-- (void)postNotificationWithRequest:(id)a3 completion:(id)a4;
-- (void)receivedCompanionUserNotificationRequest:(id)a3 completion:(id)a4;
-- (void)removeDeliveredNotificationsWithCategoryIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeDeliveredNotificationsWithIdentifiers:(id)a3;
-- (void)removePendingNotificationsWithIdentifiers:(id)a3;
-- (void)setBadge:(id)a3 forDomain:(int64_t)a4 completion:(id)a5;
+- (void)getDeliveredNotificationsWithCompletionHandler:(id)handler;
+- (void)postCompanionUserNotificationOfType:(int64_t)type completion:(id)completion;
+- (void)postNotificationWithIdentifier:(id)identifier content:(id)content trigger:(id)trigger completion:(id)completion;
+- (void)postNotificationWithRequest:(id)request completion:(id)completion;
+- (void)receivedCompanionUserNotificationRequest:(id)request completion:(id)completion;
+- (void)removeDeliveredNotificationsWithCategoryIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeDeliveredNotificationsWithIdentifiers:(id)identifiers;
+- (void)removePendingNotificationsWithIdentifiers:(id)identifiers;
+- (void)setBadge:(id)badge forDomain:(int64_t)domain completion:(id)completion;
 @end
 
 @implementation HDNotificationManager
 
-- (HDNotificationManager)initWithProfile:(id)a3 bundle:(int64_t)a4
+- (HDNotificationManager)initWithProfile:(id)profile bundle:(int64_t)bundle
 {
-  v7 = a3;
+  profileCopy = profile;
   v26.receiver = self;
   v26.super_class = HDNotificationManager;
   v8 = [(HDNotificationManager *)&v26 init];
   if (v8)
   {
-    if (!v7)
+    if (!profileCopy)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
-      [v25 handleFailureInMethod:a2 object:v8 file:@"HDNotificationManager.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"HDNotificationManager.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
     }
 
-    objc_storeWeak(&v8->_profile, v7);
-    v8->_bundle = a4;
+    objc_storeWeak(&v8->_profile, profileCopy);
+    v8->_bundle = bundle;
     v9 = objc_alloc(MEMORY[0x277CCD738]);
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -63,7 +63,7 @@
     v8->_resourceQueue = v16;
 
     v18 = objc_alloc(MEMORY[0x277CE2028]);
-    v19 = [(HDNotificationManager *)v8 identifierForBundle:a4];
+    v19 = [(HDNotificationManager *)v8 identifierForBundle:bundle];
     v20 = [v18 initWithBundleIdentifier:v19];
     userNotificationCenter = v8->_userNotificationCenter;
     v8->_userNotificationCenter = v20;
@@ -79,16 +79,16 @@
       [(UNUserNotificationCenter *)v22 requestAuthorizationWithOptions:39 completionHandler:v27];
     }
 
-    v23 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v23 addObject:v8];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v8];
   }
 
   return v8;
 }
 
-- (id)identifierForBundle:(id)a1
+- (id)identifierForBundle:(id)bundle
 {
-  if (a1)
+  if (bundle)
   {
     if (a2)
     {
@@ -105,18 +105,18 @@
       v3 = MEMORY[0x277CCE3A8];
     }
 
-    a1 = *v3;
+    bundle = *v3;
   }
 
 LABEL_7:
 
-  return a1;
+  return bundle;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-  [v3 removeObject:self];
+  mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+  [mEMORY[0x277D10AF8] removeObject:self];
 
   v4.receiver = self;
   v4.super_class = HDNotificationManager;
@@ -155,32 +155,32 @@ void __70__HDNotificationManager__registerWithUserNotificationCenterIfRequired__
 
 - (BOOL)areHealthNotificationsAuthorized
 {
-  v2 = [(UNUserNotificationCenter *)self->_userNotificationCenter notificationSettings];
-  v3 = [v2 authorizationStatus];
+  notificationSettings = [(UNUserNotificationCenter *)self->_userNotificationCenter notificationSettings];
+  authorizationStatus = [notificationSettings authorizationStatus];
 
-  return v3 == 4 || (v3 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  return authorizationStatus == 4 || (authorizationStatus & 0xFFFFFFFFFFFFFFFELL) == 2;
 }
 
 - (BOOL)areHealthCriticalAlertsAuthorized
 {
-  v2 = [(UNUserNotificationCenter *)self->_userNotificationCenter notificationSettings];
-  v3 = [v2 criticalAlertSetting];
+  notificationSettings = [(UNUserNotificationCenter *)self->_userNotificationCenter notificationSettings];
+  criticalAlertSetting = [notificationSettings criticalAlertSetting];
 
-  return v3 == 2;
+  return criticalAlertSetting == 2;
 }
 
-- (void)badgeForDomain:(int64_t)a3 completion:(id)a4
+- (void)badgeForDomain:(int64_t)domain completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   resourceQueue = self->_resourceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__HDNotificationManager_badgeForDomain_completion___block_invoke;
   block[3] = &unk_278620058;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  domainCopy = domain;
+  v8 = completionCopy;
   dispatch_async(resourceQueue, block);
 }
 
@@ -208,7 +208,7 @@ void __51__HDNotificationManager_badgeForDomain_completion___block_invoke(uint64
   (v2)[2](v2, v7, v8);
 }
 
-- (BOOL)incrementBadgeForDomain:(int64_t)a3 count:(int64_t)a4 error:(id *)a5
+- (BOOL)incrementBadgeForDomain:(int64_t)domain count:(int64_t)count error:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -227,8 +227,8 @@ void __51__HDNotificationManager_badgeForDomain_completion___block_invoke(uint64
   block[3] = &unk_278623700;
   block[4] = self;
   block[5] = v9;
-  block[7] = a3;
-  block[8] = a4;
+  block[7] = domain;
+  block[8] = count;
   block[6] = &v11;
   dispatch_sync(resourceQueue, block);
   v6 = *(v12 + 24);
@@ -264,11 +264,11 @@ void __61__HDNotificationManager_incrementBadgeForDomain_count_error___block_inv
   }
 }
 
-- (BOOL)_resourceQueue_setBadge:(uint64_t)a3 domain:(void *)a4 error:
+- (BOOL)_resourceQueue_setBadge:(uint64_t)badge domain:(void *)domain error:
 {
   v46 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v8 = MEMORY[0x277CCC300];
@@ -285,9 +285,9 @@ void __61__HDNotificationManager_incrementBadgeForDomain_count_error___block_inv
       _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_INFO, "Setting badge to %@ for domain %@", buf, 0x16u);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     v39 = 0;
-    v14 = [HDUnprotectedKeyValueEntity setBadge:v7 forDomain:a3 profile:WeakRetained error:&v39];
+    v14 = [HDUnprotectedKeyValueEntity setBadge:v7 forDomain:badge profile:WeakRetained error:&v39];
     v15 = v39;
 
     _HKInitializeLogging();
@@ -307,14 +307,14 @@ void __61__HDNotificationManager_incrementBadgeForDomain_count_error___block_inv
         _os_log_impl(&dword_228986000, v18, OS_LOG_TYPE_DEFAULT, "Setting badge to %{public}@ for domain %{public}@", buf, 0x16u);
       }
 
-      dispatch_assert_queue_V2(*(a1 + 40));
-      v21 = [(HDNotificationManager *)a1 _resourceQueue_coaleseDomainBadges];
+      dispatch_assert_queue_V2(*(self + 40));
+      _resourceQueue_coaleseDomainBadges = [(HDNotificationManager *)self _resourceQueue_coaleseDomainBadges];
       _HKInitializeLogging();
       v22 = *v8;
       if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [v21 description];
+        v24 = [_resourceQueue_coaleseDomainBadges description];
         *buf = 138543362;
         v41 = v24;
         _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, "Setting application badge to %{public}@", buf, 0xCu);
@@ -322,17 +322,17 @@ void __61__HDNotificationManager_incrementBadgeForDomain_count_error___block_inv
 
       v25 = objc_alloc(MEMORY[0x277D77740]);
       v26 = [v25 initWithBundleIdentifier:*MEMORY[0x277CCE3A8]];
-      v27 = [v21 value];
-      [v26 setBadgeValue:v27];
+      value = [_resourceQueue_coaleseDomainBadges value];
+      [v26 setBadgeValue:value];
 
-      v28 = *(a1 + 24);
+      v28 = *(self + 24);
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __62__HDNotificationManager__resourceQueue_setBadge_domain_error___block_invoke;
       v36[3] = &unk_2786237F0;
-      v36[4] = a1;
+      v36[4] = self;
       v37 = v7;
-      v38 = a3;
+      badgeCopy = badge;
       [v28 notifyObservers:v36];
       if (notify_post(*MEMORY[0x277CCE398]))
       {
@@ -364,10 +364,10 @@ void __61__HDNotificationManager_incrementBadgeForDomain_count_error___block_inv
       v30 = v15;
       if (v30)
       {
-        if (a4)
+        if (domain)
         {
           v31 = v30;
-          *a4 = v30;
+          *domain = v30;
         }
 
         else
@@ -387,21 +387,21 @@ void __61__HDNotificationManager_incrementBadgeForDomain_count_error___block_inv
   return v14;
 }
 
-- (void)setBadge:(id)a3 forDomain:(int64_t)a4 completion:(id)a5
+- (void)setBadge:(id)badge forDomain:(int64_t)domain completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  badgeCopy = badge;
+  completionCopy = completion;
   resourceQueue = self->_resourceQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __55__HDNotificationManager_setBadge_forDomain_completion___block_invoke;
   v13[3] = &unk_278623728;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = badgeCopy;
+  v15 = completionCopy;
+  domainCopy = domain;
+  v11 = badgeCopy;
+  v12 = completionCopy;
   dispatch_async(resourceQueue, v13);
 }
 
@@ -417,44 +417,44 @@ void __55__HDNotificationManager_setBadge_forDomain_completion___block_invoke(ui
   (v2)[2](v2, v6, v7);
 }
 
-- (id)_actionCompletionOnClientQueue:(void *)a1
+- (id)_actionCompletionOnClientQueue:(void *)queue
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (queue)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __56__HDNotificationManager__actionCompletionOnClientQueue___block_invoke;
     v6[3] = &unk_2786173C8;
-    v6[4] = a1;
+    v6[4] = queue;
     v7 = v3;
-    a1 = [v6 copy];
+    queue = [v6 copy];
   }
 
-  return a1;
+  return queue;
 }
 
-+ (id)createNotificationContentWithTitle:(id)a3 body:(id)a4 categoryIdentifier:(id)a5
++ (id)createNotificationContentWithTitle:(id)title body:(id)body categoryIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  bodyCopy = body;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(MEMORY[0x277CE1F60]);
   v11 = v10;
-  if (v7)
+  if (titleCopy)
   {
-    [v10 setTitle:v7];
+    [v10 setTitle:titleCopy];
   }
 
-  if (v8)
+  if (bodyCopy)
   {
-    [v11 setBody:v8];
+    [v11 setBody:bodyCopy];
   }
 
-  if (v9)
+  if (identifierCopy)
   {
-    [v11 setCategoryIdentifier:v9];
+    [v11 setCategoryIdentifier:identifierCopy];
   }
 
   v12 = [MEMORY[0x277CE1FE0] soundWithAlertType:25];
@@ -463,10 +463,10 @@ void __55__HDNotificationManager_setBadge_forDomain_completion___block_invoke(ui
   return v11;
 }
 
-- (void)getDeliveredNotificationsWithCompletionHandler:(id)a3
+- (void)getDeliveredNotificationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (_HDIsUnitTesting)
   {
     resourceQueue = self->_resourceQueue;
@@ -475,38 +475,38 @@ void __55__HDNotificationManager_setBadge_forDomain_completion___block_invoke(ui
     v7[2] = __72__HDNotificationManager_getDeliveredNotificationsWithCompletionHandler___block_invoke;
     v7[3] = &unk_278614008;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_async(resourceQueue, v7);
   }
 
   else
   {
-    [(UNUserNotificationCenter *)self->_userNotificationCenter getDeliveredNotificationsWithCompletionHandler:v4];
+    [(UNUserNotificationCenter *)self->_userNotificationCenter getDeliveredNotificationsWithCompletionHandler:handlerCopy];
   }
 }
 
-- (void)postNotificationWithIdentifier:(id)a3 content:(id)a4 trigger:(id)a5 completion:(id)a6
+- (void)postNotificationWithIdentifier:(id)identifier content:(id)content trigger:(id)trigger completion:(id)completion
 {
   v10 = MEMORY[0x277CE1FC0];
-  v11 = a6;
-  v12 = [v10 requestWithIdentifier:a3 content:a4 trigger:a5];
-  [(HDNotificationManager *)self postNotificationWithRequest:v12 completion:v11];
+  completionCopy = completion;
+  v12 = [v10 requestWithIdentifier:identifier content:content trigger:trigger];
+  [(HDNotificationManager *)self postNotificationWithRequest:v12 completion:completionCopy];
 }
 
-- (void)postNotificationWithRequest:(id)a3 completion:(id)a4
+- (void)postNotificationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   resourceQueue = self->_resourceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__HDNotificationManager_postNotificationWithRequest_completion___block_invoke;
   block[3] = &unk_278614160;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(resourceQueue, block);
 }
 
@@ -570,60 +570,60 @@ void __64__HDNotificationManager_postNotificationWithRequest_completion___block_
   [v5 notifyObservers:v6];
 }
 
-- (void)_postNotificationWithTitle:(void *)a3 body:(void *)a4 categoryIdentifier:(void *)a5 subtitle:(uint64_t)a6 domain:(void *)a7 url:(void *)a8 accessoryImageName:(void *)a9 header:(void *)a10 completion:
+- (void)_postNotificationWithTitle:(void *)title body:(void *)body categoryIdentifier:(void *)identifier subtitle:(uint64_t)subtitle domain:(void *)domain url:(void *)url accessoryImageName:(void *)name header:(void *)self0 completion:
 {
-  v30 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  if (a1)
+  identifierCopy = identifier;
+  domainCopy = domain;
+  urlCopy = url;
+  nameCopy = name;
+  if (self)
   {
-    v20 = a10;
-    v21 = a4;
-    v22 = a3;
+    headerCopy = header;
+    bodyCopy = body;
+    titleCopy = title;
     v23 = a2;
-    v24 = [objc_opt_class() createNotificationContentWithTitle:v23 body:v22 categoryIdentifier:v21];
+    v24 = [objc_opt_class() createNotificationContentWithTitle:v23 body:titleCopy categoryIdentifier:bodyCopy];
 
-    if (v30)
+    if (identifierCopy)
     {
-      [v24 setSubtitle:v30];
+      [v24 setSubtitle:identifierCopy];
     }
 
-    [v24 setAccessoryImageName:v18];
-    if (v19)
+    [v24 setAccessoryImageName:urlCopy];
+    if (nameCopy)
     {
-      [v24 setHeader:v19];
+      [v24 setHeader:nameCopy];
     }
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
-    [v25 setObject:v26 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v26 = [MEMORY[0x277CCABB0] numberWithInteger:subtitle];
+    [dictionary setObject:v26 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
 
-    if (v17)
+    if (domainCopy)
     {
-      v27 = [v17 absoluteString];
-      [v25 setObject:v27 forKeyedSubscript:*MEMORY[0x277CCE4E0]];
+      absoluteString = [domainCopy absoluteString];
+      [dictionary setObject:absoluteString forKeyedSubscript:*MEMORY[0x277CCE4E0]];
     }
 
-    [v24 setUserInfo:v25];
-    v28 = [MEMORY[0x277CCAD78] UUID];
-    v29 = [v28 UUIDString];
-    [a1 postNotificationWithIdentifier:v29 content:v24 trigger:0 completion:v20];
+    [v24 setUserInfo:dictionary];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [self postNotificationWithIdentifier:uUIDString content:v24 trigger:0 completion:headerCopy];
   }
 }
 
-- (void)postCompanionUserNotificationOfType:(int64_t)a3 completion:(id)a4
+- (void)postCompanionUserNotificationOfType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   resourceQueue = self->_resourceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__HDNotificationManager_postCompanionUserNotificationOfType_completion___block_invoke;
   block[3] = &unk_278620058;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(resourceQueue, block);
 }
 
@@ -698,14 +698,14 @@ uint64_t __72__HDNotificationManager_postCompanionUserNotificationOfType_complet
   return result;
 }
 
-- (void)receivedCompanionUserNotificationRequest:(id)a3 completion:(id)a4
+- (void)receivedCompanionUserNotificationRequest:(id)request completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 notificationConfiguration];
-  v8 = [v7 notificationType];
+  completionCopy = completion;
+  notificationConfiguration = [request notificationConfiguration];
+  notificationType = [notificationConfiguration notificationType];
 
-  if (v8 == 1)
+  if (notificationType == 1)
   {
     v9 = HKHealthKitFrameworkBundle();
     v10 = [v9 localizedStringForKey:@"NEW_ELECTROCARDIOGRAM_NOTIFICATION_TITLE" value:&stru_283BF39C8 table:@"Localizable-Cinnamon"];
@@ -713,14 +713,14 @@ uint64_t __72__HDNotificationManager_postCompanionUserNotificationOfType_complet
     v12 = HKHealthKitFrameworkBundle();
     v13 = [v12 localizedStringForKey:@"NEW_ELECTROCARDIOGRAM_NOTIFICATION_BODY" value:&stru_283BF39C8 table:@"Localizable-Cinnamon"];
     v14 = HKConditionallyRedactedHeartRhythmString();
-    v15 = [MEMORY[0x277CBEBC0] _hk_urlForElectrocardiogramType];
+    _hk_urlForElectrocardiogramType = [MEMORY[0x277CBEBC0] _hk_urlForElectrocardiogramType];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __77__HDNotificationManager_receivedCompanionUserNotificationRequest_completion___block_invoke;
     v19[3] = &unk_2786173C8;
     v19[4] = self;
-    v20 = v6;
-    [(HDNotificationManager *)self _postNotificationWithTitle:v11 body:v14 categoryIdentifier:@"com.apple.private.health.heartrhythm.phoneonly" subtitle:0 domain:4 url:v15 accessoryImageName:0 header:0 completion:v19];
+    v20 = completionCopy;
+    [(HDNotificationManager *)self _postNotificationWithTitle:v11 body:v14 categoryIdentifier:@"com.apple.private.health.heartrhythm.phoneonly" subtitle:0 domain:4 url:_hk_urlForElectrocardiogramType accessoryImageName:0 header:0 completion:v19];
   }
 
   else
@@ -730,30 +730,30 @@ uint64_t __72__HDNotificationManager_postCompanionUserNotificationOfType_complet
     if (os_log_type_enabled(*MEMORY[0x277CCC300], OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v22 = v8;
+      v22 = notificationType;
       _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "Received unsupported user notification message of type %ld.", buf, 0xCu);
     }
 
     v17 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Unsupported companion notification type."];
-    [(HDNotificationManager *)self _sendCompanionUserNotificationResponse:v6 error:v17];
+    [(HDNotificationManager *)self _sendCompanionUserNotificationResponse:completionCopy error:v17];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendCompanionUserNotificationResponse:(void *)a3 error:
+- (void)_sendCompanionUserNotificationResponse:(void *)response error:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  responseCopy = response;
+  v7 = responseCopy;
+  if (self)
   {
-    v8 = *(a1 + 32);
+    v8 = *(self + 32);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __70__HDNotificationManager__sendCompanionUserNotificationResponse_error___block_invoke;
     v9[3] = &unk_278614E28;
-    v10 = v6;
+    v10 = responseCopy;
     v11 = v5;
     dispatch_async(v8, v9);
   }
@@ -779,18 +779,18 @@ void __70__HDNotificationManager__sendCompanionUserNotificationResponse_error___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removePendingNotificationsWithIdentifiers:(id)a3
+- (void)removePendingNotificationsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  [(UNUserNotificationCenter *)self->_userNotificationCenter removePendingNotificationRequestsWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  [(UNUserNotificationCenter *)self->_userNotificationCenter removePendingNotificationRequestsWithIdentifiers:identifiersCopy];
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HDNotificationManager_removePendingNotificationsWithIdentifiers___block_invoke;
   v7[3] = &unk_278623750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 
@@ -803,18 +803,18 @@ void __67__HDNotificationManager_removePendingNotificationsWithIdentifiers___blo
   }
 }
 
-- (void)removeDeliveredNotificationsWithIdentifiers:(id)a3
+- (void)removeDeliveredNotificationsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  [(UNUserNotificationCenter *)self->_userNotificationCenter removeDeliveredNotificationsWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  [(UNUserNotificationCenter *)self->_userNotificationCenter removeDeliveredNotificationsWithIdentifiers:identifiersCopy];
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HDNotificationManager_removeDeliveredNotificationsWithIdentifiers___block_invoke;
   v7[3] = &unk_278623750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 
@@ -827,20 +827,20 @@ void __69__HDNotificationManager_removeDeliveredNotificationsWithIdentifiers___b
   }
 }
 
-- (void)removeDeliveredNotificationsWithCategoryIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeDeliveredNotificationsWithCategoryIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   userNotificationCenter = self->_userNotificationCenter;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __94__HDNotificationManager_removeDeliveredNotificationsWithCategoryIdentifier_completionHandler___block_invoke;
   v11[3] = &unk_2786237A0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   [(UNUserNotificationCenter *)userNotificationCenter getDeliveredNotificationsWithCompletionHandler:v11];
 }
 
@@ -913,15 +913,15 @@ void __94__HDNotificationManager_removeDeliveredNotificationsWithCategoryIdentif
   }
 }
 
-- (void)addNotificationObserver:(id)a3
+- (void)addNotificationObserver:(id)observer
 {
   if (self)
   {
-    [(HKObserverSet *)self->_observers registerObserver:a3 queue:0];
+    [(HKObserverSet *)self->_observers registerObserver:observer queue:0];
   }
 }
 
-- (id)_badgeForDomain:(int64_t)a3 error:(id *)a4
+- (id)_badgeForDomain:(int64_t)domain error:(id *)error
 {
   dispatch_assert_queue_not_V2(self->_resourceQueue);
   v20 = 0;
@@ -944,16 +944,16 @@ void __94__HDNotificationManager_removeDeliveredNotificationsWithCategoryIdentif
   v13[4] = self;
   v13[5] = &v14;
   v13[6] = &v20;
-  v13[7] = a3;
+  v13[7] = domain;
   dispatch_sync(resourceQueue, v13);
   v8 = v21[5];
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -1018,20 +1018,20 @@ uint64_t __40__HDNotificationManager__aggregateBadge__block_invoke(uint64_t a1)
 
 - (id)_resourceQueue_coaleseDomainBadges
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[5]);
-    v2 = [MEMORY[0x277CCD068] zeroBadge];
+    dispatch_assert_queue_V2(self[5]);
+    zeroBadge = [MEMORY[0x277CCD068] zeroBadge];
     for (i = 0; i != 18; ++i)
     {
       if ((HKNotificationDomainIsDeprecated() & 1) == 0)
       {
-        v4 = [(HDNotificationManager *)a1 _resourceQueue_badgeForDomain:?];
+        v4 = [(HDNotificationManager *)self _resourceQueue_badgeForDomain:?];
         if (v4)
         {
-          v5 = [v2 badgeByAggregatingWithBadge:v4];
+          v5 = [zeroBadge badgeByAggregatingWithBadge:v4];
 
-          v2 = v5;
+          zeroBadge = v5;
         }
       }
     }
@@ -1039,21 +1039,21 @@ uint64_t __40__HDNotificationManager__aggregateBadge__block_invoke(uint64_t a1)
 
   else
   {
-    v2 = 0;
+    zeroBadge = 0;
   }
 
-  return v2;
+  return zeroBadge;
 }
 
-- (id)_resourceQueue_badgeForDomain:(dispatch_queue_t *)a1
+- (id)_resourceQueue_badgeForDomain:(dispatch_queue_t *)domain
 {
-  v2 = a1;
+  domainCopy = domain;
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (domain)
   {
-    dispatch_assert_queue_V2(a1[5]);
+    dispatch_assert_queue_V2(domain[5]);
     v10 = 0;
-    v2 = [v2 _resourceQueue_badgeForDomain:a2 error:&v10];
+    domainCopy = [domainCopy _resourceQueue_badgeForDomain:a2 error:&v10];
     v4 = v10;
     if (v4)
     {
@@ -1074,14 +1074,14 @@ uint64_t __40__HDNotificationManager__aggregateBadge__block_invoke(uint64_t a1)
 
   v6 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return domainCopy;
 }
 
-- (id)_resourceQueue_badgeForDomain:(int64_t)a3 error:(id *)a4
+- (id)_resourceQueue_badgeForDomain:(int64_t)domain error:(id *)error
 {
   dispatch_assert_queue_V2(self->_resourceQueue);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [HDUnprotectedKeyValueEntity badgeForDomain:a3 profile:WeakRetained error:a4];
+  v8 = [HDUnprotectedKeyValueEntity badgeForDomain:domain profile:WeakRetained error:error];
 
   return v8;
 }

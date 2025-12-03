@@ -1,16 +1,16 @@
 @interface _HKAnchoredObjectQueryServerConfiguration
-- (_HKAnchoredObjectQueryServerConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_HKAnchoredObjectQueryServerConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKAnchoredObjectQueryServerConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _HKAnchoredObjectQueryServerConfiguration;
-  v4 = [(HKQueryServerConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(HKQueryServerConfiguration *)&v6 copyWithZone:zone];
   [v4 setAnchor:self->_anchor];
   [v4 setLimit:self->_limit];
   [v4 setIncludeDeletedObjects:self->_includeDeletedObjects];
@@ -21,18 +21,18 @@
   return v4;
 }
 
-- (_HKAnchoredObjectQueryServerConfiguration)initWithCoder:(id)a3
+- (_HKAnchoredObjectQueryServerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = _HKAnchoredObjectQueryServerConfiguration;
-  v5 = [(HKQueryServerConfiguration *)&v18 initWithCoder:v4];
+  v5 = [(HKQueryServerConfiguration *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"query_anchor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"query_anchor"];
     if (!v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
       v8 = v7;
       if (v7)
       {
@@ -49,37 +49,37 @@
     v5->_anchor = v6;
     v10 = v6;
 
-    v5->_limit = [v4 decodeIntegerForKey:@"limit"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"limit"];
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"queryDescriptors"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"queryDescriptors"];
     queryDescriptors = v5->_queryDescriptors;
     v5->_queryDescriptors = v14;
 
-    v5->_includeDeletedObjects = [v4 decodeBoolForKey:@"includeDeleted"];
-    v5->_includeAutomaticTimeZones = [v4 decodeBoolForKey:@"includeAutomaticTimeZones"];
-    [v4 decodeDoubleForKey:@"collectionInterval"];
+    v5->_includeDeletedObjects = [coderCopy decodeBoolForKey:@"includeDeleted"];
+    v5->_includeAutomaticTimeZones = [coderCopy decodeBoolForKey:@"includeAutomaticTimeZones"];
+    [coderCopy decodeDoubleForKey:@"collectionInterval"];
     v5->_collectionInterval = v16;
-    v5->_includeContributorInformation = [v4 decodeBoolForKey:@"includeContributor"];
+    v5->_includeContributorInformation = [coderCopy decodeBoolForKey:@"includeContributor"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _HKAnchoredObjectQueryServerConfiguration;
-  v4 = a3;
-  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_anchor forKey:{@"query_anchor", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_limit forKey:@"limit"];
-  [v4 encodeObject:self->_queryDescriptors forKey:@"queryDescriptors"];
-  [v4 encodeBool:self->_includeDeletedObjects forKey:@"includeDeleted"];
-  [v4 encodeBool:self->_includeAutomaticTimeZones forKey:@"includeAutomaticTimeZones"];
-  [v4 encodeDouble:@"collectionInterval" forKey:self->_collectionInterval];
-  [v4 encodeBool:self->_includeContributorInformation forKey:@"includeContributor"];
+  coderCopy = coder;
+  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_anchor forKey:{@"query_anchor", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_limit forKey:@"limit"];
+  [coderCopy encodeObject:self->_queryDescriptors forKey:@"queryDescriptors"];
+  [coderCopy encodeBool:self->_includeDeletedObjects forKey:@"includeDeleted"];
+  [coderCopy encodeBool:self->_includeAutomaticTimeZones forKey:@"includeAutomaticTimeZones"];
+  [coderCopy encodeDouble:@"collectionInterval" forKey:self->_collectionInterval];
+  [coderCopy encodeBool:self->_includeContributorInformation forKey:@"includeContributor"];
 }
 
 @end

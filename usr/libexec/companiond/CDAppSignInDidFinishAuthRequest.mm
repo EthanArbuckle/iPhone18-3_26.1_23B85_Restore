@@ -1,21 +1,21 @@
 @interface CDAppSignInDidFinishAuthRequest
-- (CDAppSignInDidFinishAuthRequest)initWithRapportDictionary:(id)a3;
+- (CDAppSignInDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDAppSignInDidFinishAuthRequest
 
-- (CDAppSignInDidFinishAuthRequest)initWithRapportDictionary:(id)a3
+- (CDAppSignInDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = CDAppSignInDidFinishAuthRequest;
   v5 = [(CDAppSignInDidFinishAuthRequest *)&v37 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = v4;
+    v7 = dictionaryCopy;
     v8 = [NSSet setWithObject:v6];
     v9 = sub_100017500(v7, @"appleIDAuthorization", v8);
 
@@ -106,9 +106,9 @@
 
   v8 = [v3 appendObject:self->_platformKeyCredentialAssertion withName:@"platformKeyCredentialAssertion" skipIfNil:1];
   v9 = [v3 appendObject:self->_platformKeyCredentialRegistration withName:@"platformKeyCredentialRegistration" skipIfNil:1];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface EKDayViewContentGeometryDelegate
-- (CGPoint)pointForDate:(double)a3;
+- (CGPoint)pointForDate:(double)date;
 - (CGRect)bounds;
 - (CGRect)displayedRect;
 - (CGRect)frame;
 - (EKDayViewContent)dayViewContent;
 - (NSString)description;
-- (double)dateForPoint:(CGPoint)a3;
+- (double)dateForPoint:(CGPoint)point;
 - (double)hourHeight;
 - (double)timeWidth;
 - (double)topPadding;
@@ -22,9 +22,9 @@
 
 - (CGRect)displayedRect
 {
-  v3 = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
+  dayViewContent = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
   [(EKDayViewContentGeometryDelegate *)self frame];
-  [v3 _occurrencePaddingBetweenDays:?];
+  [dayViewContent _occurrencePaddingBetweenDays:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -56,9 +56,9 @@
 
 - (double)hourHeight
 {
-  v2 = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
-  v3 = [v2 grid];
-  [v3 hourHeight];
+  dayViewContent = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
+  grid = [dayViewContent grid];
+  [grid hourHeight];
   v5 = v4;
 
   return v5;
@@ -66,9 +66,9 @@
 
 - (double)topPadding
 {
-  v2 = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
-  v3 = [v2 grid];
-  [v3 topPadding];
+  dayViewContent = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
+  grid = [dayViewContent grid];
+  [grid topPadding];
   v5 = v4;
 
   return v5;
@@ -76,29 +76,29 @@
 
 - (double)timeWidth
 {
-  v2 = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
-  v3 = [v2 grid];
-  [v3 timeWidth];
+  dayViewContent = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
+  grid = [dayViewContent grid];
+  [grid timeWidth];
   v5 = v4;
 
   return v5;
 }
 
-- (double)dateForPoint:(CGPoint)a3
+- (double)dateForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
-  [v5 dateForPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  dayViewContent = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
+  [dayViewContent dateForPoint:{x, y}];
   v7 = v6;
 
   return v7;
 }
 
-- (CGPoint)pointForDate:(double)a3
+- (CGPoint)pointForDate:(double)date
 {
-  v4 = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
-  [v4 pointForDate:a3];
+  dayViewContent = [(EKDayViewContentGeometryDelegate *)self dayViewContent];
+  [dayViewContent pointForDate:date];
   v6 = v5;
   v8 = v7;
 

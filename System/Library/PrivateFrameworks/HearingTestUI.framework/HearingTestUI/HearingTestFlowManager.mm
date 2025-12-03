@@ -1,12 +1,12 @@
 @interface HearingTestFlowManager
 - (_TtC13HearingTestUI22HearingTestFlowManager)init;
-- (void)fitNoiseCheckCancelled:(id)a3;
-- (void)fitNoiseCheckCompleted:(id)a3 status:(unint64_t)a4 details:(id)a5;
+- (void)fitNoiseCheckCancelled:(id)cancelled;
+- (void)fitNoiseCheckCompleted:(id)completed status:(unint64_t)status details:(id)details;
 @end
 
 @implementation HearingTestFlowManager
 
-- (void)fitNoiseCheckCompleted:(id)a3 status:(unint64_t)a4 details:(id)a5
+- (void)fitNoiseCheckCompleted:(id)completed status:(unint64_t)status details:(id)details
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -16,13 +16,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  sub_20CDC18C8(v9, a4, v10);
+  completedCopy = completed;
+  detailsCopy = details;
+  selfCopy = self;
+  sub_20CDC18C8(completedCopy, status, detailsCopy);
 }
 
-- (void)fitNoiseCheckCancelled:(id)a3
+- (void)fitNoiseCheckCancelled:(id)cancelled
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -32,8 +32,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  cancelledCopy = cancelled;
+  selfCopy = self;
   sub_20CDC253C();
 }
 

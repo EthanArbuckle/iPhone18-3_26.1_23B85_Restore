@@ -1,5 +1,5 @@
 @interface WFWebPageToFilterText
-- (BOOL)isWorthAnalyzingWithEvidence:(int *)a3 message:(id *)a4;
+- (BOOL)isWorthAnalyzingWithEvidence:(int *)evidence message:(id *)message;
 - (BOOL)selfRestricted;
 - (id)URLFuzzyForFilter;
 - (id)rawPlainText;
@@ -25,20 +25,20 @@
   return v3;
 }
 
-- (BOOL)isWorthAnalyzingWithEvidence:(int *)a3 message:(id *)a4
+- (BOOL)isWorthAnalyzingWithEvidence:(int *)evidence message:(id *)message
 {
   v20 = *MEMORY[0x277D85DE8];
-  *a4 = 0;
-  v7 = [(WFWebPageDecorator *)self pageContent];
-  v8 = [v7 length];
+  *message = 0;
+  pageContent = [(WFWebPageDecorator *)self pageContent];
+  v8 = [pageContent length];
   if (v8 <= 0x3B && ![-[WFWebPageDecorator images](self "images")] && objc_msgSend(-[WFWebPageDecorator scriptBlocks](self, "scriptBlocks"), "count") <= 3 && objc_msgSend(-[WFWebPageDecorator metaTagKeywords](self, "metaTagKeywords"), "length") <= 4 && objc_msgSend(-[WFWebPageDecorator metaTagDescription](self, "metaTagDescription"), "length") <= 4)
   {
-    v9 = [v7 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "whitespaceAndNewlineCharacterSet")}];
+    v9 = [pageContent stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "whitespaceAndNewlineCharacterSet")}];
     v10 = __WFDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v17 = [v7 length];
+      v17 = [pageContent length];
       v18 = 2048;
       v19 = [-[WFWebPageDecorator scriptBlocks](self "scriptBlocks")];
       _os_log_impl(&dword_272D73000, v10, OS_LOG_TYPE_INFO, "Page not worth analyzing [pageContent length]:%lu [[self images] count]==0 [[self scriptBlocks] count]:%lu", buf, 0x16u);
@@ -47,7 +47,7 @@
     if ([v9 length] <= 0xF)
     {
       result = 0;
-      *a3 = 5;
+      *evidence = 5;
       v12 = @"too little content found";
       goto LABEL_20;
     }
@@ -57,13 +57,13 @@
   {
     if (v8 <= 0x7F)
     {
-      *a3 = 6;
+      *evidence = 6;
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"it has a frameset (length:%lu)", v8];
 LABEL_15:
       v12 = v11;
       result = 0;
 LABEL_20:
-      *a4 = v12;
+      *message = v12;
       goto LABEL_21;
     }
 
@@ -75,7 +75,7 @@ LABEL_20:
   {
     if (v8 <= 0x7F)
     {
-      *a3 = 7;
+      *evidence = 7;
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"it has a short refresh (length:%lu)", v8];
       goto LABEL_15;
     }
@@ -105,12 +105,12 @@ LABEL_30:
 
   else
   {
-    v4 = [(WFWebPageDecorator *)self metaTagsUnlabeled];
+    metaTagsUnlabeled = [(WFWebPageDecorator *)self metaTagsUnlabeled];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v5 = [metaTagsUnlabeled countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v5)
     {
       v6 = v5;
@@ -121,7 +121,7 @@ LABEL_5:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(metaTagsUnlabeled);
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
@@ -133,7 +133,7 @@ LABEL_5:
 
         if (v6 == ++v8)
         {
-          v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v6 = [metaTagsUnlabeled countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v6)
           {
             goto LABEL_5;
@@ -146,7 +146,7 @@ LABEL_5:
       if (v9)
       {
         v11 = [MEMORY[0x277CCAC80] scannerWithString:v9];
-        v12 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v17 = 0;
         v16 = 0;
         while (([v11 scanUpToString:@"SS~~" intoString:0] & 1) != 0 || objc_msgSend(v11, "scanString:intoString:", @"SS~~", 0))
@@ -158,10 +158,10 @@ LABEL_5:
           }
 
           v13 = [MEMORY[0x277CCABB0] numberWithInt:v16];
-          [v12 setObject:v13 forKey:v17];
+          [dictionary setObject:v13 forKey:v17];
         }
 
-        if ([objc_msgSend(v12 objectForKey:{@"000", "intValue"}] > 4 || objc_msgSend(objc_msgSend(v12, "objectForKey:", @"001"), "intValue") > 5 || objc_msgSend(objc_msgSend(v12, "objectForKey:", @"002"), "intValue") > 5 || objc_msgSend(objc_msgSend(v12, "objectForKey:", @"003"), "intValue") > 5 || objc_msgSend(objc_msgSend(v12, "objectForKey:", @"004"), "intValue") > 5 || objc_msgSend(objc_msgSend(v12, "objectForKey:", @"005"), "intValue") > 5 || objc_msgSend(objc_msgSend(v12, "objectForKey:", @"007"), "intValue") > 4 || objc_msgSend(objc_msgSend(v12, "objectForKey:", @"008"), "intValue") > 5 || objc_msgSend(objc_msgSend(v12, "objectForKey:", @"009"), "intValue") > 5 || objc_msgSend(objc_msgSend(v12, "objectForKey:", @"00A"), "intValue") > 5)
+        if ([objc_msgSend(dictionary objectForKey:{@"000", "intValue"}] > 4 || objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"001"), "intValue") > 5 || objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"002"), "intValue") > 5 || objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"003"), "intValue") > 5 || objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"004"), "intValue") > 5 || objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"005"), "intValue") > 5 || objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"007"), "intValue") > 4 || objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"008"), "intValue") > 5 || objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"009"), "intValue") > 5 || objc_msgSend(objc_msgSend(dictionary, "objectForKey:", @"00A"), "intValue") > 5)
         {
           goto LABEL_30;
         }

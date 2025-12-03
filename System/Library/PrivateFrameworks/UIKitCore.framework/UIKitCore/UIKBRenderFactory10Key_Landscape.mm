@@ -8,7 +8,7 @@
 - (double)capitalAbcSymbolSize;
 - (double)numberPadKeyPrimarySymbolSize;
 - (double)symbolImageControlKeyFontSize;
-- (void)setupColumnLayoutSegmentsWithControlWidth:(double)a3;
+- (void)setupColumnLayoutSegmentsWithControlWidth:(double)width;
 @end
 
 @implementation UIKBRenderFactory10Key_Landscape
@@ -37,8 +37,8 @@
 
 - (double)capitalAbcSymbolSize
 {
-  v2 = [(UIKBRenderFactory *)self renderingContext];
-  if ([v2 isColorAdaptiveNonLinearCarplayKeyboard])
+  renderingContext = [(UIKBRenderFactory *)self renderingContext];
+  if ([renderingContext isColorAdaptiveNonLinearCarplayKeyboard])
   {
     v3 = 14.0;
   }
@@ -53,9 +53,9 @@
 
 - (double)symbolImageControlKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self renderingContext];
+  renderingContext = [(UIKBRenderFactory *)self renderingContext];
   v4 = 14.0;
-  if (([v3 isColorAdaptiveNonLinearCarplayKeyboard] & 1) == 0)
+  if (([renderingContext isColorAdaptiveNonLinearCarplayKeyboard] & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = UIKBRenderFactory10Key_Landscape;
@@ -68,8 +68,8 @@
 
 - (CGPoint)longVowelSignKeyTextOffset
 {
-  v2 = [(UIKBRenderFactory *)self renderingContext];
-  if ([v2 isColorAdaptiveNonLinearCarplayKeyboard])
+  renderingContext = [(UIKBRenderFactory *)self renderingContext];
+  if ([renderingContext isColorAdaptiveNonLinearCarplayKeyboard])
   {
     v3 = 7.0;
   }
@@ -88,8 +88,8 @@
 
 - (double)numberPadKeyPrimarySymbolSize
 {
-  v2 = [(UIKBRenderFactory *)self renderingContext];
-  if ([v2 isColorAdaptiveNonLinearCarplayKeyboard])
+  renderingContext = [(UIKBRenderFactory *)self renderingContext];
+  if ([renderingContext isColorAdaptiveNonLinearCarplayKeyboard])
   {
     v3 = 14.0;
   }
@@ -104,9 +104,9 @@
 
 - (CGPoint)numberPadKeyPrimaryTextOffset
 {
-  v2 = [(UIKBRenderFactory *)self renderingContext];
-  v3 = [v2 isColorAdaptiveNonLinearCarplayKeyboard];
-  if (v3)
+  renderingContext = [(UIKBRenderFactory *)self renderingContext];
+  isColorAdaptiveNonLinearCarplayKeyboard = [renderingContext isColorAdaptiveNonLinearCarplayKeyboard];
+  if (isColorAdaptiveNonLinearCarplayKeyboard)
   {
     v4 = -10.0;
   }
@@ -116,7 +116,7 @@
     v4 = 0.0;
   }
 
-  if (v3)
+  if (isColorAdaptiveNonLinearCarplayKeyboard)
   {
     v5 = 0.0;
   }
@@ -135,9 +135,9 @@
 
 - (CGPoint)numberPadKeySecondaryTextOffset
 {
-  v2 = [(UIKBRenderFactory *)self renderingContext];
-  v3 = [v2 isColorAdaptiveNonLinearCarplayKeyboard];
-  if (v3)
+  renderingContext = [(UIKBRenderFactory *)self renderingContext];
+  isColorAdaptiveNonLinearCarplayKeyboard = [renderingContext isColorAdaptiveNonLinearCarplayKeyboard];
+  if (isColorAdaptiveNonLinearCarplayKeyboard)
   {
     v4 = 12.0;
   }
@@ -147,7 +147,7 @@
     v4 = 1.0;
   }
 
-  if (v3)
+  if (isColorAdaptiveNonLinearCarplayKeyboard)
   {
     v5 = 0.0;
   }
@@ -166,8 +166,8 @@
 
 - (CGPoint)numberPadVBarSecondaryTextOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderingContext];
-  if ([v3 isColorAdaptiveNonLinearCarplayKeyboard])
+  renderingContext = [(UIKBRenderFactory *)self renderingContext];
+  if ([renderingContext isColorAdaptiveNonLinearCarplayKeyboard])
   {
     v4 = 0.0;
     v5 = 12.0;
@@ -196,21 +196,21 @@
   return result;
 }
 
-- (void)setupColumnLayoutSegmentsWithControlWidth:(double)a3
+- (void)setupColumnLayoutSegmentsWithControlWidth:(double)width
 {
   v11.receiver = self;
   v11.super_class = UIKBRenderFactory10Key_Landscape;
   [(UIKBRenderFactory10Key *)&v11 setupColumnLayoutSegmentsWithControlWidth:?];
   [(UIKBRenderFactory10Key_Landscape *)self centerColumnWidthFactor];
-  v6 = v5 * a3;
-  v7 = [(UIKBRenderFactory10Key_Round *)self controlKeyTraits];
-  v8 = [UIKBRenderFactoryLayoutSegment segmentWithTraits:v7];
+  v6 = v5 * width;
+  controlKeyTraits = [(UIKBRenderFactory10Key_Round *)self controlKeyTraits];
+  v8 = [UIKBRenderFactoryLayoutSegment segmentWithTraits:controlKeyTraits];
 
   [v8 setKeyStates:3];
   [v8 addLayoutRect:0 asTriangle:{0.5 - v6 * 0.5, 0.0, v6, 1.0}];
   [(UIKBRenderFactory *)self addLayoutSegment:v8];
-  v9 = [(UIKBRenderFactory10Key_Round *)self activeControlKeyTraits];
-  v10 = [UIKBRenderFactoryLayoutSegment segmentWithTraits:v9];
+  activeControlKeyTraits = [(UIKBRenderFactory10Key_Round *)self activeControlKeyTraits];
+  v10 = [UIKBRenderFactoryLayoutSegment segmentWithTraits:activeControlKeyTraits];
 
   [v10 setKeyStates:4];
   [v10 addLayoutRect:0 asTriangle:{0.5 - v6 * 0.5, 0.0, v6, 1.0}];

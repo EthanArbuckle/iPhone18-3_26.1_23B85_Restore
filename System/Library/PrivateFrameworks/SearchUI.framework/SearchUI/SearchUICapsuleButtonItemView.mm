@@ -25,9 +25,9 @@
 
 - (double)verticalPaddingFontMultipler
 {
-  v2 = [(SearchUIButtonItemView *)self isCompact];
+  isCompact = [(SearchUIButtonItemView *)self isCompact];
   result = 1.54;
-  if (v2)
+  if (isCompact)
   {
     return 1.96;
   }
@@ -37,9 +37,9 @@
 
 - (double)horizontalPadding
 {
-  v2 = [(SearchUIButtonItemView *)self isCompact];
+  isCompact = [(SearchUIButtonItemView *)self isCompact];
   result = 18.0;
-  if (v2)
+  if (isCompact)
   {
     return 14.0;
   }

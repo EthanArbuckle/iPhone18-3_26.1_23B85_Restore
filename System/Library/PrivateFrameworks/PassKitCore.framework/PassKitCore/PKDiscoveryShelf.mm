@@ -1,25 +1,25 @@
 @interface PKDiscoveryShelf
-+ (id)shelfWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)shelfWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (PKDiscoveryItem)item;
-- (PKDiscoveryShelf)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setItem:(id)a3;
+- (PKDiscoveryShelf)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setItem:(id)item;
 @end
 
 @implementation PKDiscoveryShelf
 
-+ (id)shelfWithDictionary:(id)a3
++ (id)shelfWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 PKStringForKey:@"shelfType"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"shelfType"];
   if ([@"textBlock" isEqualToString:v4])
   {
     v5 = off_1E79BFB38;
 LABEL_7:
 
 LABEL_8:
-    v6 = [objc_alloc(*v5) initWithDictionary:v3];
+    v6 = [objc_alloc(*v5) initWithDictionary:dictionaryCopy];
     goto LABEL_9;
   }
 
@@ -49,43 +49,43 @@ LABEL_9:
   return v6;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = a3;
-  objc_storeWeak(&self->_item, v4);
-  v5 = [v4 identifier];
+  itemCopy = item;
+  objc_storeWeak(&self->_item, itemCopy);
+  identifier = [itemCopy identifier];
 
   itemIdentifier = self->_itemIdentifier;
-  self->_itemIdentifier = v5;
+  self->_itemIdentifier = identifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == v4[3];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == equalCopy[3];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"shelfType"];
-  [v5 encodeObject:self->_itemIdentifier forKey:@"itemIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"shelfType"];
+  [coderCopy encodeObject:self->_itemIdentifier forKey:@"itemIdentifier"];
 }
 
-- (PKDiscoveryShelf)initWithCoder:(id)a3
+- (PKDiscoveryShelf)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKDiscoveryShelf;
   v5 = [(PKDiscoveryShelf *)&v9 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"shelfType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifier"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"shelfType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
   }

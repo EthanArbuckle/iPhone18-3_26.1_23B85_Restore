@@ -1,41 +1,41 @@
 @interface SBLockScreenPluginOverlayViewController
-+ (BOOL)_pluginNeedsOverlay:(id)a3;
-- (SBLockScreenPluginOverlayViewController)initWithPlugin:(id)a3;
++ (BOOL)_pluginNeedsOverlay:(id)overlay;
+- (SBLockScreenPluginOverlayViewController)initWithPlugin:(id)plugin;
 - (id)_newOverlayView;
 - (void)loadView;
 @end
 
 @implementation SBLockScreenPluginOverlayViewController
 
-+ (BOOL)_pluginNeedsOverlay:(id)a3
++ (BOOL)_pluginNeedsOverlay:(id)overlay
 {
-  v3 = a3;
-  v4 = [v3 appearance];
-  v5 = [v4 backgroundStyle];
+  overlayCopy = overlay;
+  appearance = [overlayCopy appearance];
+  backgroundStyle = [appearance backgroundStyle];
 
-  if (v5 == 3)
+  if (backgroundStyle == 3)
   {
     v6 = +[SBWallpaperController sharedInstance];
     v7 = [v6 legibilitySettingsForVariant:0];
-    v8 = [v3 appearance];
-    v9 = [v8 legibilitySettings];
+    appearance2 = [overlayCopy appearance];
+    legibilitySettings = [appearance2 legibilitySettings];
 
-    v10 = [v7 style];
-    v12 = [v9 style] != 2 && v10 == 2;
+    style = [v7 style];
+    v12 = [legibilitySettings style] != 2 && style == 2;
   }
 
   else
   {
-    v12 = v5 != 0;
+    v12 = backgroundStyle != 0;
   }
 
   return v12;
 }
 
-- (SBLockScreenPluginOverlayViewController)initWithPlugin:(id)a3
+- (SBLockScreenPluginOverlayViewController)initWithPlugin:(id)plugin
 {
-  v4 = a3;
-  if ([SBLockScreenPluginOverlayViewController _pluginNeedsOverlay:v4])
+  pluginCopy = plugin;
+  if ([SBLockScreenPluginOverlayViewController _pluginNeedsOverlay:pluginCopy])
   {
     v9.receiver = self;
     v9.super_class = SBLockScreenPluginOverlayViewController;
@@ -43,41 +43,41 @@
     v6 = v5;
     if (v5)
     {
-      objc_storeWeak(&v5->_plugin, v4);
+      objc_storeWeak(&v5->_plugin, pluginCopy);
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)loadView
 {
-  v3 = [(SBLockScreenPluginOverlayViewController *)self _newOverlayView];
-  [(SBLockScreenPluginOverlayViewController *)self setView:v3];
+  _newOverlayView = [(SBLockScreenPluginOverlayViewController *)self _newOverlayView];
+  [(SBLockScreenPluginOverlayViewController *)self setView:_newOverlayView];
 }
 
 - (id)_newOverlayView
 {
   WeakRetained = objc_loadWeakRetained(&self->_plugin);
-  v3 = [WeakRetained appearance];
-  v4 = [v3 backgroundStyle];
+  appearance = [WeakRetained appearance];
+  backgroundStyle = [appearance backgroundStyle];
 
-  if (!v4)
+  if (!backgroundStyle)
   {
     return 0;
   }
 
-  if (v4 != 2)
+  if (backgroundStyle != 2)
   {
-    v4 = 1;
+    backgroundStyle = 1;
   }
 
   v5 = [SBLockOverlayView alloc];
@@ -86,7 +86,7 @@
   v8 = *(MEMORY[0x277CBF3A0] + 16);
   v9 = *(MEMORY[0x277CBF3A0] + 24);
 
-  return [(SBUILockOverlayView *)v5 initWithFrame:v4 style:v6, v7, v8, v9];
+  return [(SBUILockOverlayView *)v5 initWithFrame:backgroundStyle style:v6, v7, v8, v9];
 }
 
 @end

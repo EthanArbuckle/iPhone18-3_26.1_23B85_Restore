@@ -1,26 +1,26 @@
 @interface IMDContactStoreChangeHistoryEventsHandler
-- (BOOL)isAcceptedCNID:(id)a3;
-- (BOOL)isCuratedCNID:(id)a3;
-- (IMDContactStoreChangeHistoryEventsHandler)initWithAliasToCNIDMap:(id)a3;
-- (id)generateCNIDToAliasesMapFrom:(id)a3;
+- (BOOL)isAcceptedCNID:(id)d;
+- (BOOL)isCuratedCNID:(id)d;
+- (IMDContactStoreChangeHistoryEventsHandler)initWithAliasToCNIDMap:(id)map;
+- (id)generateCNIDToAliasesMapFrom:(id)from;
 - (id)getCachedAcceptedContactIdentifiers;
-- (id)matchAliasesFromCacheForCNContact:(id)a3;
-- (id)updateWithCurrentAcceptedContactsMap:(id)a3;
-- (void)addAliasToCNIDToAliasMap:(id)a3 withCNID:(id)a4;
-- (void)handleAddOrUpdateEventForCNContact:(id)a3;
-- (void)handleDeleteEventForContactIdentifier:(id)a3;
-- (void)removeAliasFromCNIDToAliasesMap:(id)a3 withCNID:(id)a4;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDropEverythingEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (id)matchAliasesFromCacheForCNContact:(id)contact;
+- (id)updateWithCurrentAcceptedContactsMap:(id)map;
+- (void)addAliasToCNIDToAliasMap:(id)map withCNID:(id)d;
+- (void)handleAddOrUpdateEventForCNContact:(id)contact;
+- (void)handleDeleteEventForContactIdentifier:(id)identifier;
+- (void)removeAliasFromCNIDToAliasesMap:(id)map withCNID:(id)d;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDropEverythingEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation IMDContactStoreChangeHistoryEventsHandler
 
-- (IMDContactStoreChangeHistoryEventsHandler)initWithAliasToCNIDMap:(id)a3
+- (IMDContactStoreChangeHistoryEventsHandler)initWithAliasToCNIDMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   v12.receiver = self;
   v12.super_class = IMDContactStoreChangeHistoryEventsHandler;
   v6 = [(IMDContactStoreChangeHistoryEventsHandler *)&v12 init];
@@ -38,11 +38,11 @@
         }
       }
 
-      [IMContactStore logDictionary:v5];
+      [IMContactStore logDictionary:mapCopy];
     }
 
-    objc_storeStrong(&v6->_aliasToCNIDMap, a3);
-    v8 = [(IMDContactStoreChangeHistoryEventsHandler *)v6 generateCNIDToAliasesMapFrom:v5];
+    objc_storeStrong(&v6->_aliasToCNIDMap, map);
+    v8 = [(IMDContactStoreChangeHistoryEventsHandler *)v6 generateCNIDToAliasesMapFrom:mapCopy];
     CNIDToAliasesMap = v6->_CNIDToAliasesMap;
     v6->_CNIDToAliasesMap = v8;
   }
@@ -50,17 +50,17 @@
   return v6;
 }
 
-- (BOOL)isAcceptedCNID:(id)a3
+- (BOOL)isAcceptedCNID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x1E695CD58] isCoreRecentsAcceptedIdentifier:v3];
+    v4 = [MEMORY[0x1E695CD58] isCoreRecentsAcceptedIdentifier:dCopy];
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"CNCoreRecentsContactStore://com.apple.introductions.accepted"];
+    v4 = [dCopy hasPrefix:@"CNCoreRecentsContactStore://com.apple.introductions.accepted"];
   }
 
   v5 = v4;
@@ -68,17 +68,17 @@
   return v5;
 }
 
-- (BOOL)isCuratedCNID:(id)a3
+- (BOOL)isCuratedCNID:(id)d
 {
-  v4 = a3;
-  if ([(IMDContactStoreChangeHistoryEventsHandler *)self isUnknownCNID:v4])
+  dCopy = d;
+  if ([(IMDContactStoreChangeHistoryEventsHandler *)self isUnknownCNID:dCopy])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = ![(IMDContactStoreChangeHistoryEventsHandler *)self isAcceptedCNID:v4];
+    v5 = ![(IMDContactStoreChangeHistoryEventsHandler *)self isAcceptedCNID:dCopy];
   }
 
   return v5;
@@ -87,13 +87,13 @@
 - (id)getCachedAcceptedContactIdentifiers
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_CNIDToAliasesMap allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_CNIDToAliasesMap allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -104,34 +104,34 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([(IMDContactStoreChangeHistoryEventsHandler *)self isAcceptedCNID:v9])
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)updateWithCurrentAcceptedContactsMap:(id)a3
+- (id)updateWithCurrentAcceptedContactsMap:(id)map
 {
   v69 = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  mapCopy = map;
   v4 = MEMORY[0x1E695DFA8];
-  v5 = [(IMDContactStoreChangeHistoryEventsHandler *)self getCachedAcceptedContactIdentifiers];
-  v6 = [v4 setWithArray:v5];
+  getCachedAcceptedContactIdentifiers = [(IMDContactStoreChangeHistoryEventsHandler *)self getCachedAcceptedContactIdentifiers];
+  v6 = [v4 setWithArray:getCachedAcceptedContactIdentifiers];
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
   v59[2] = sub_1A8635408;
@@ -139,9 +139,9 @@
   v59[4] = self;
   v8 = v6;
   v60 = v8;
-  v9 = v7;
+  v9 = array;
   v61 = v9;
-  [v39 enumerateKeysAndObjectsUsingBlock:v59];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v59];
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -154,7 +154,7 @@
     }
   }
 
-  v43 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
@@ -177,7 +177,7 @@
         v16 = [(NSMutableDictionary *)self->_CNIDToAliasesMap objectForKey:v15];
         if ([v16 count])
         {
-          [v43 addObjectsFromArray:v16];
+          [array2 addObjectsFromArray:v16];
         }
 
         [(IMDContactStoreChangeHistoryEventsHandler *)self handleDeleteEventForContactIdentifier:v15];
@@ -189,7 +189,7 @@
     while (v12);
   }
 
-  v40 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -247,8 +247,8 @@
 
               else
               {
-                v27 = [v19 identifier];
-                v28 = [v26 isEqualToString:v27];
+                identifier = [v19 identifier];
+                v28 = [v26 isEqualToString:identifier];
 
                 v23 |= v28 ^ 1;
               }
@@ -265,13 +265,13 @@
 
           if (v23)
           {
-            v29 = [v21 firstObject];
-            v30 = v29 == 0;
+            firstObject = [v21 firstObject];
+            v30 = firstObject == 0;
 
             if (!v30)
             {
-              v31 = [v21 firstObject];
-              [v40 setValue:v19 forKey:v31];
+              firstObject2 = [v21 firstObject];
+              [dictionary setValue:v19 forKey:firstObject2];
             }
 
             [(IMDContactStoreChangeHistoryEventsHandler *)self handleAddOrUpdateEventForCNContact:v19];
@@ -298,7 +298,7 @@ LABEL_35:
     v32 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
-      v33 = [v40 count];
+      v33 = [dictionary count];
       v34 = [obj count];
       *buf = 134218240;
       v63 = v33;
@@ -309,77 +309,77 @@ LABEL_35:
   }
 
   v35 = objc_alloc_init(IMDAcceptedContactStoreChanges);
-  v36 = [v40 copy];
+  v36 = [dictionary copy];
   [(IMDAcceptedContactStoreChanges *)v35 setUpdatedMap:v36];
 
-  v37 = [obj allObjects];
-  [(IMDAcceptedContactStoreChanges *)v35 setDeletedCNIDs:v37];
+  allObjects = [obj allObjects];
+  [(IMDAcceptedContactStoreChanges *)v35 setDeletedCNIDs:allObjects];
 
   return v35;
 }
 
-- (id)generateCNIDToAliasesMapFrom:(id)a3
+- (id)generateCNIDToAliasesMapFrom:(id)from
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  fromCopy = from;
+  dictionary = [v3 dictionary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1A86355F0;
   v8[3] = &unk_1E7826C50;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [fromCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
 
-- (void)removeAliasFromCNIDToAliasesMap:(id)a3 withCNID:(id)a4
+- (void)removeAliasFromCNIDToAliasesMap:(id)map withCNID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 length] && objc_msgSend(v6, "length"))
+  mapCopy = map;
+  dCopy = d;
+  if ([mapCopy length] && objc_msgSend(dCopy, "length"))
   {
-    v7 = [(NSMutableDictionary *)self->_CNIDToAliasesMap objectForKey:v6];
-    if ([v7 containsObject:v10])
+    v7 = [(NSMutableDictionary *)self->_CNIDToAliasesMap objectForKey:dCopy];
+    if ([v7 containsObject:mapCopy])
     {
-      [v7 removeObject:v10];
+      [v7 removeObject:mapCopy];
     }
 
     v8 = [v7 count];
     CNIDToAliasesMap = self->_CNIDToAliasesMap;
     if (v8)
     {
-      [(NSMutableDictionary *)CNIDToAliasesMap setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)CNIDToAliasesMap setObject:v7 forKey:dCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)CNIDToAliasesMap removeObjectForKey:v6];
+      [(NSMutableDictionary *)CNIDToAliasesMap removeObjectForKey:dCopy];
     }
   }
 }
 
-- (void)addAliasToCNIDToAliasMap:(id)a3 withCNID:(id)a4
+- (void)addAliasToCNIDToAliasMap:(id)map withCNID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 length] && objc_msgSend(v6, "length"))
+  mapCopy = map;
+  dCopy = d;
+  if ([mapCopy length] && objc_msgSend(dCopy, "length"))
   {
-    v7 = [(NSMutableDictionary *)self->_CNIDToAliasesMap objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_CNIDToAliasesMap objectForKey:dCopy];
     if (!v7)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    [v7 addObject:v8];
-    [(NSMutableDictionary *)self->_CNIDToAliasesMap setObject:v7 forKey:v6];
+    [v7 addObject:mapCopy];
+    [(NSMutableDictionary *)self->_CNIDToAliasesMap setObject:v7 forKey:dCopy];
   }
 }
 
-- (void)visitDropEverythingEvent:(id)a3
+- (void)visitDropEverythingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -396,9 +396,9 @@ LABEL_35:
   [(IMDContactStoreChangeHistoryEventsHandler *)self setReceivedDropEverythingEvent:1];
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -409,13 +409,13 @@ LABEL_35:
     }
   }
 
-  v6 = [v4 contact];
-  [(IMDContactStoreChangeHistoryEventsHandler *)self handleAddOrUpdateEventForCNContact:v6];
+  contact = [eventCopy contact];
+  [(IMDContactStoreChangeHistoryEventsHandler *)self handleAddOrUpdateEventForCNContact:contact];
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -426,13 +426,13 @@ LABEL_35:
     }
   }
 
-  v6 = [v4 contact];
-  [(IMDContactStoreChangeHistoryEventsHandler *)self handleAddOrUpdateEventForCNContact:v6];
+  contact = [eventCopy contact];
+  [(IMDContactStoreChangeHistoryEventsHandler *)self handleAddOrUpdateEventForCNContact:contact];
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -443,14 +443,14 @@ LABEL_35:
     }
   }
 
-  v6 = [v4 contactIdentifier];
-  [(IMDContactStoreChangeHistoryEventsHandler *)self handleDeleteEventForContactIdentifier:v6];
+  contactIdentifier = [eventCopy contactIdentifier];
+  [(IMDContactStoreChangeHistoryEventsHandler *)self handleDeleteEventForContactIdentifier:contactIdentifier];
 }
 
-- (void)handleDeleteEventForContactIdentifier:(id)a3
+- (void)handleDeleteEventForContactIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  identifierCopy = identifier;
   [(NSMutableDictionary *)self->_CNIDToAliasesMap objectForKey:?];
   v14 = 0u;
   v15 = 0u;
@@ -499,22 +499,22 @@ LABEL_35:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v17 = v11;
+        v17 = identifierCopy;
         _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Removing entry for contactIdentifier %@ from _CNIDToAliasesMap ", buf, 0xCu);
       }
     }
 
-    [(NSMutableDictionary *)self->_CNIDToAliasesMap removeObjectForKey:v11];
+    [(NSMutableDictionary *)self->_CNIDToAliasesMap removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)handleAddOrUpdateEventForCNContact:(id)a3
+- (void)handleAddOrUpdateEventForCNContact:(id)contact
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    [(IMDContactStoreChangeHistoryEventsHandler *)self matchAliasesFromCacheForCNContact:v4];
+    [(IMDContactStoreChangeHistoryEventsHandler *)self matchAliasesFromCacheForCNContact:contactCopy];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -550,25 +550,25 @@ LABEL_35:
             }
 
             [(NSMutableDictionary *)self->_aliasToCNIDMap removeObjectForKey:v8];
-            v11 = [v4 identifier];
-            [(IMDContactStoreChangeHistoryEventsHandler *)self removeAliasFromCNIDToAliasesMap:v8 withCNID:v11];
+            identifier = [contactCopy identifier];
+            [(IMDContactStoreChangeHistoryEventsHandler *)self removeAliasFromCNIDToAliasesMap:v8 withCNID:identifier];
           }
 
           aliasToCNIDMap = self->_aliasToCNIDMap;
-          v13 = [v4 identifier];
-          [(NSMutableDictionary *)aliasToCNIDMap setObject:v13 forKey:v8];
+          identifier2 = [contactCopy identifier];
+          [(NSMutableDictionary *)aliasToCNIDMap setObject:identifier2 forKey:v8];
 
-          v14 = [v4 identifier];
-          [(IMDContactStoreChangeHistoryEventsHandler *)self addAliasToCNIDToAliasMap:v8 withCNID:v14];
+          identifier3 = [contactCopy identifier];
+          [(IMDContactStoreChangeHistoryEventsHandler *)self addAliasToCNIDToAliasMap:v8 withCNID:identifier3];
 
           if (IMAdditionalContactsLoggingEnabled() && IMOSLoggingEnabled())
           {
             v15 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
             {
-              v16 = [v4 identifier];
+              identifier4 = [contactCopy identifier];
               *buf = 138412546;
-              v40 = v16;
+              v40 = identifier4;
               v41 = 2112;
               v42 = v8;
               _os_log_impl(&dword_1A85E5000, v15, OS_LOG_TYPE_INFO, " Adding CNID %@ to _aliasToCNIDMap for alias %@", buf, 0x16u);
@@ -583,8 +583,8 @@ LABEL_35:
     }
 
     CNIDToAliasesMap = self->_CNIDToAliasesMap;
-    v18 = [v4 identifier];
-    v19 = [(NSMutableDictionary *)CNIDToAliasesMap objectForKey:v18];
+    identifier5 = [contactCopy identifier];
+    v19 = [(NSMutableDictionary *)CNIDToAliasesMap objectForKey:identifier5];
     v28 = [v19 mutableCopy];
 
     v20 = [v28 count];
@@ -623,8 +623,8 @@ LABEL_35:
               }
             }
 
-            v27 = [v4 identifier];
-            [(IMDContactStoreChangeHistoryEventsHandler *)self removeAliasFromCNIDToAliasesMap:v25 withCNID:v27];
+            identifier6 = [contactCopy identifier];
+            [(IMDContactStoreChangeHistoryEventsHandler *)self removeAliasFromCNIDToAliasesMap:v25 withCNID:identifier6];
           }
 
           v22 = [v21 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -636,12 +636,12 @@ LABEL_35:
   }
 }
 
-- (id)matchAliasesFromCacheForCNContact:(id)a3
+- (id)matchAliasesFromCacheForCNContact:(id)contact
 {
   v29 = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  contactCopy = contact;
   v4 = [IMContactStore IDsFromCNContact:?];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -665,7 +665,7 @@ LABEL_35:
 
         if (v11)
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
 
         else if (MEMORY[0x1AC570A50](v10) && ([v10 hasPrefix:@"+"] & 1) == 0)
@@ -686,7 +686,7 @@ LABEL_35:
 
           if (v14)
           {
-            [v5 addObject:v12];
+            [array addObject:v12];
           }
 
           else
@@ -698,7 +698,7 @@ LABEL_35:
             if (v17)
             {
               v18 = [@"+" stringByAppendingString:v10];
-              [v5 addObject:v18];
+              [array addObject:v18];
             }
           }
         }
@@ -710,7 +710,7 @@ LABEL_35:
     while (v7);
   }
 
-  v19 = [v5 copy];
+  v19 = [array copy];
 
   return v19;
 }

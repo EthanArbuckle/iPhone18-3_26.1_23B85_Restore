@@ -1,16 +1,16 @@
 @interface LiveFSRawDevice
 - (LiveFSRawDevice)init;
-- (id)getVolumeLabelFromReply:(_UVFSScanVolsReply *)a3;
-- (id)getVolumeUUID:(void *)a3 fsOPs:(_UVFSFSOps *)a4;
-- (id)getVolumeUUIDFromReply:(_UVFSScanVolsReply *)a3;
-- (id)getVolumesFromDeviceForFileSystem:(id)a3;
-- (id)initDeviceWithName:(id)a3 andError:(id *)a4;
+- (id)getVolumeLabelFromReply:(_UVFSScanVolsReply *)reply;
+- (id)getVolumeUUID:(void *)d fsOPs:(_UVFSFSOps *)ps;
+- (id)getVolumeUUIDFromReply:(_UVFSScanVolsReply *)reply;
+- (id)getVolumesFromDeviceForFileSystem:(id)system;
+- (id)initDeviceWithName:(id)name andError:(id *)error;
 - (void)cancelNotifications;
 - (void)close;
 - (void)terminate;
 - (void)terminateVolumesWithErrors;
-- (void)unloadVolume:(id)a3;
-- (void)unloadVolumes:(unsigned int)a3;
+- (void)unloadVolume:(id)volume;
+- (void)unloadVolumes:(unsigned int)volumes;
 @end
 
 @implementation LiveFSRawDevice
@@ -32,14 +32,14 @@
   return v3;
 }
 
-- (id)initDeviceWithName:(id)a3 andError:(id *)a4
+- (id)initDeviceWithName:(id)name andError:(id *)error
 {
-  v7 = a3;
+  nameCopy = name;
   v8 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v29 = v7;
+    v29 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "rawDeviceInit:start:%@", buf, 0xCu);
   }
 
@@ -52,17 +52,17 @@
   }
 
   v9->_isErasable = 0;
-  if (![v7 hasPrefix:@"disk"])
+  if (![nameCopy hasPrefix:@"disk"])
   {
-    if (([v7 hasPrefix:@"/var/mobile/Library/Caches/com.apple.filesystems.userfsd"] & 1) != 0 || objc_msgSend(v7, "hasPrefix:", @"/private/var/mobile/Library/Caches/com.apple.filesystems.userfsd"))
+    if (([nameCopy hasPrefix:@"/var/mobile/Library/Caches/com.apple.filesystems.userfsd"] & 1) != 0 || objc_msgSend(nameCopy, "hasPrefix:", @"/private/var/mobile/Library/Caches/com.apple.filesystems.userfsd"))
     {
-      v19 = open([v7 UTF8String], 2);
+      v19 = open([nameCopy UTF8String], 2);
       v10->_deviceFD = v19;
       if ((v19 & 0x80000000) == 0)
       {
         *&v10->_deviceIsFile = 1;
-        objc_storeStrong(&v10->_deviceName, a3);
-        if (!a4)
+        objc_storeStrong(&v10->_deviceName, name);
+        if (!error)
         {
           goto LABEL_52;
         }
@@ -90,7 +90,7 @@
     goto LABEL_48;
   }
 
-  snprintf(buf, 0x20uLL, "/dev/r%s", [v7 UTF8String]);
+  snprintf(buf, 0x20uLL, "/dev/r%s", [nameCopy UTF8String]);
   v11 = sub_1000038C8(buf, 2u);
   v10->_deviceFD = v11;
   p_deviceFD = &v10->_deviceFD;
@@ -122,7 +122,7 @@
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_INFO))
     {
       *v26 = 138412290;
-      v27 = v7;
+      v27 = nameCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "rawDeviceInit:tryingRDONLYopen:%@", v26, 0xCu);
     }
 
@@ -148,7 +148,7 @@ LABEL_45:
     v13 = 0;
   }
 
-  objc_storeStrong(&v10->_deviceName, a3);
+  objc_storeStrong(&v10->_deviceName, name);
   v10->_deviceIsReadOnly = v13;
   if (v10->_deviceFD < 0)
   {
@@ -167,7 +167,7 @@ LABEL_45:
     IONotificationPortSetDispatchQueue(qword_10003FE00, &_dispatch_main_q);
   }
 
-  v14 = IOBSDNameMatching(kIOMasterPortDefault, 0, [v7 UTF8String]);
+  v14 = IOBSDNameMatching(kIOMasterPortDefault, 0, [nameCopy UTF8String]);
   MatchingService = IOServiceGetMatchingService(kIOMasterPortDefault, v14);
   if (!MatchingService)
   {
@@ -204,14 +204,14 @@ LABEL_47:
 
   v18 = 0;
 LABEL_48:
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
     if (v18)
     {
       v20 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v18 userInfo:0];
 LABEL_51:
-      *a4 = v20;
+      *error = v20;
     }
   }
 
@@ -220,7 +220,7 @@ LABEL_52:
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v29 = v7;
+    v29 = nameCopy;
     v30 = 2112;
     v31 = v10;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "rawDeviceInit:finish:%@:%@", buf, 0x16u);
@@ -229,9 +229,9 @@ LABEL_52:
   return v10;
 }
 
-- (id)getVolumeLabelFromReply:(_UVFSScanVolsReply *)a3
+- (id)getVolumeLabelFromReply:(_UVFSScanVolsReply *)reply
 {
-  v3 = [NSString stringWithUTF8String:a3->var3];
+  v3 = [NSString stringWithUTF8String:reply->var3];
   v4 = v3;
   if (!v3 || ![(__CFString *)v3 length])
   {
@@ -242,17 +242,17 @@ LABEL_52:
   return v4;
 }
 
-- (id)getVolumeUUIDFromReply:(_UVFSScanVolsReply *)a3
+- (id)getVolumeUUIDFromReply:(_UVFSScanVolsReply *)reply
 {
-  if (*a3->var2 == 0)
+  if (*reply->var2 == 0)
   {
-    v4 = 0;
+    uUIDString = 0;
   }
 
   else
   {
-    v3 = [[NSUUID alloc] initWithUUIDBytes:a3->var2];
-    v4 = [v3 UUIDString];
+    v3 = [[NSUUID alloc] initWithUUIDBytes:reply->var2];
+    uUIDString = [v3 UUIDString];
   }
 
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -260,14 +260,14 @@ LABEL_52:
     sub_10001FA7C();
   }
 
-  return v4;
+  return uUIDString;
 }
 
-- (id)getVolumeUUID:(void *)a3 fsOPs:(_UVFSFSOps *)a4
+- (id)getVolumeUUID:(void *)d fsOPs:(_UVFSFSOps *)ps
 {
   v15 = 0;
   v16 = 0;
-  v7 = (a4->var8)(a3, "_O_f_uuid", &v16, 0, &v15);
+  v7 = (ps->var8)(d, "_O_f_uuid", &v16, 0, &v15);
   if (v7 == 45)
   {
     goto LABEL_4;
@@ -292,28 +292,28 @@ LABEL_4:
     }
 
 LABEL_12:
-    v12 = 0;
+    uUIDString = 0;
     goto LABEL_16;
   }
 
   v8 = [NSMutableData alloc];
   v9 = [v8 initWithLength:v15];
-  var8 = a4->var8;
-  v11 = [v9 mutableBytes];
-  if (var8(a3, "_O_f_uuid", v11, v15, &v15))
+  var8 = ps->var8;
+  mutableBytes = [v9 mutableBytes];
+  if (var8(d, "_O_f_uuid", mutableBytes, v15, &v15))
   {
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_10001FAFC();
     }
 
-    v12 = 0;
+    uUIDString = 0;
   }
 
   else
   {
     v13 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(v9, "bytes")}];
-    v12 = [v13 UUIDString];
+    uUIDString = [v13 UUIDString];
 
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -323,12 +323,12 @@ LABEL_12:
 
 LABEL_16:
 
-  return v12;
+  return uUIDString;
 }
 
-- (id)getVolumesFromDeviceForFileSystem:(id)a3
+- (id)getVolumesFromDeviceForFileSystem:(id)system
 {
-  v4 = a3;
+  systemCopy = system;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_10001FD18(self);
@@ -355,10 +355,10 @@ LABEL_16:
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  if ([v5 containsObject:v4])
+  if ([v5 containsObject:systemCopy])
   {
     v69 = 0;
-    v6 = [UVFSPluginManager getUVFSPluginForFS:v4 withError:&v69];
+    v6 = [UVFSPluginManager getUVFSPluginForFS:systemCopy withError:&v69];
     v7 = v69;
     fsPlugin = self->_fsPlugin;
     self->_fsPlugin = v6;
@@ -374,8 +374,8 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = [(UVFSPlugin *)self->_fsPlugin FSOps];
-    v15 = (v14->var3)(self->_deviceFD);
+    fSOps = [(UVFSPlugin *)self->_fsPlugin FSOps];
+    v15 = (fSOps->var3)(self->_deviceFD);
     v16 = userfs_log_default;
     if (v15)
     {
@@ -397,7 +397,7 @@ LABEL_16:
       *buf = 138412546;
       v73 = deviceName;
       v74 = 2114;
-      v75 = v4;
+      v75 = systemCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "device:%@:selected:plugin:%{public}@", buf, 0x16u);
     }
 
@@ -413,7 +413,7 @@ LABEL_24:
     v12 = v21;
     while (1)
     {
-      v23 = (v14->var32)(self->_deviceFD, &v70, &v78);
+      v23 = (fSOps->var32)(self->_deviceFD, &v70, &v78);
       if (v23)
       {
         v41 = v23;
@@ -422,7 +422,7 @@ LABEL_24:
           v41 = 0;
         }
 
-        if (([v4 isEqualToString:@"msdos"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"exfat") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"apfs"))
+        if (([systemCopy isEqualToString:@"msdos"] & 1) != 0 || (objc_msgSend(systemCopy, "isEqualToString:", @"exfat") & 1) != 0 || objc_msgSend(systemCopy, "isEqualToString:", @"apfs"))
         {
           self->_isErasable = ([(NSMutableArray *)self->_volumes count]== 1) & (v18 ^ 1);
         }
@@ -435,7 +435,7 @@ LABEL_24:
         if ([(NSMutableArray *)self->_volumes count])
         {
           v42 = [NSNumber numberWithUnsignedLong:[(NSMutableArray *)self->_volumes count]];
-          v60 = v4;
+          v60 = systemCopy;
           v43 = v42;
           v61 = v43;
           AnalyticsSendEventLazy();
@@ -491,8 +491,8 @@ LABEL_24:
           }
         }
 
-        v52 = [(UVFSPlugin *)v7 localizedDescription];
-        [(LiveFSRawDevice *)self sendAnalytics:v4 loadStatus:v49 loadErrorReason:v52];
+        localizedDescription = [(UVFSPlugin *)v7 localizedDescription];
+        [(LiveFSRawDevice *)self sendAnalytics:systemCopy loadStatus:v49 loadErrorReason:localizedDescription];
 
         goto LABEL_11;
       }
@@ -520,7 +520,7 @@ LABEL_24:
         }
 
 LABEL_34:
-        v19 = [LIFSPreVolume newWithDevice:self forID:v78 opsTable:v14];
+        v19 = [LIFSPreVolume newWithDevice:self forID:v78 opsTable:fSOps];
 
         if (v19)
         {
@@ -546,7 +546,7 @@ LABEL_52:
               v56 = v27;
               v54 = [(LiveFSRawDevice *)self getVolumeLabelFromReply:&v78];
               v32 = [(LiveFSRawDevice *)self getVolumeUUIDFromReply:&v78];
-              if (v32 || ([(LiveFSRawDevice *)self getVolumeUUID:v71 fsOPs:v14], (v32 = objc_claimAutoreleasedReturnValue()) != 0))
+              if (v32 || ([(LiveFSRawDevice *)self getVolumeUUID:v71 fsOPs:fSOps], (v32 = objc_claimAutoreleasedReturnValue()) != 0))
               {
                 v33 = v32;
               }
@@ -554,7 +554,7 @@ LABEL_52:
               else
               {
                 v37 = +[NSUUID UUID];
-                v38 = [v37 UUIDString];
+                uUIDString = [v37 UUIDString];
 
                 v39 = userfs_log_default;
                 if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEFAULT))
@@ -565,15 +565,15 @@ LABEL_52:
                   v74 = 2114;
                   v75 = v40;
                   v76 = 2112;
-                  v77 = v38;
+                  v77 = uUIDString;
                   _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%s:device:%{public}@:no:UUID:generated:new:one:%@", buf, 0x20u);
                 }
 
-                v33 = v38;
+                v33 = uUIDString;
               }
 
               v62 = v7;
-              v34 = [userFSVolume newWithDevice:self fsType:v4 volumeName:v33 rootNode:v71 errorState:v56 returnError:&v62, v33];
+              v34 = [userFSVolume newWithDevice:self fsType:systemCopy volumeName:v33 rootNode:v71 errorState:v56 returnError:&v62, v33];
               v22 = v62;
 
               if (!v34 || v22)
@@ -589,7 +589,7 @@ LABEL_52:
                 v35 = v54;
                 if (v71)
                 {
-                  (v14->var7)(v71, 1);
+                  (fSOps->var7)(v71, 1);
                 }
               }
 
@@ -811,40 +811,40 @@ LABEL_14:
   }
 }
 
-- (void)unloadVolume:(id)a3
+- (void)unloadVolume:(id)volume
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_volumes removeObject:v5];
-  objc_sync_exit(v4);
+  volumeCopy = volume;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_volumes removeObject:volumeCopy];
+  objc_sync_exit(selfCopy);
 
-  if (![(NSMutableArray *)v4->_volumes count])
+  if (![(NSMutableArray *)selfCopy->_volumes count])
   {
-    [(UVFSPlugin *)v4->_fsPlugin checkAndUnloadPlugin];
-    [(LiveFSRawDevice *)v4 cancelNotifications];
-    [(LiveFSRawDevice *)v4 close];
+    [(UVFSPlugin *)selfCopy->_fsPlugin checkAndUnloadPlugin];
+    [(LiveFSRawDevice *)selfCopy cancelNotifications];
+    [(LiveFSRawDevice *)selfCopy close];
   }
 }
 
-- (void)unloadVolumes:(unsigned int)a3
+- (void)unloadVolumes:(unsigned int)volumes
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [NSArray arrayWithArray:v4->_volumes];
-  [(NSMutableArray *)v4->_volumes removeAllObjects];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [NSArray arrayWithArray:selfCopy->_volumes];
+  [(NSMutableArray *)selfCopy->_volumes removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v12 = 0u;
   v13 = 0u;
-  if ([(LiveFSRawDevice *)v4 deviceIsClosed])
+  if ([(LiveFSRawDevice *)selfCopy deviceIsClosed])
   {
-    v6 = a3 | 8;
+    volumesCopy = volumes | 8;
   }
 
   else
   {
-    v6 = a3;
+    volumesCopy = volumes;
   }
 
   v14 = 0uLL;
@@ -865,7 +865,7 @@ LABEL_14:
 
         v11 = *(*(&v12 + 1) + 8 * i);
         [v11 invalidateAllConnections];
-        [v11 unmount:v6];
+        [v11 unmount:volumesCopy];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -877,8 +877,8 @@ LABEL_14:
 
 - (void)terminate
 {
-  v2 = [(LiveFSRawDevice *)self volumes];
-  v3 = [NSArray arrayWithArray:v2];
+  volumes = [(LiveFSRawDevice *)self volumes];
+  v3 = [NSArray arrayWithArray:volumes];
 
   v11 = 0u;
   v12 = 0u;
@@ -920,18 +920,18 @@ LABEL_14:
   }
 
   v3 = +[NSMutableArray array];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(LiveFSRawDevice *)v4 volumes];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  volumes = [(LiveFSRawDevice *)selfCopy volumes];
 
-  if (v5)
+  if (volumes)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = [(LiveFSRawDevice *)v4 volumes];
-    v7 = [NSArray arrayWithArray:v6];
+    volumes2 = [(LiveFSRawDevice *)selfCopy volumes];
+    v7 = [NSArray arrayWithArray:volumes2];
 
     v8 = [v7 countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v8)
@@ -947,9 +947,9 @@ LABEL_14:
           }
 
           v11 = *(*(&v28 + 1) + 8 * i);
-          v12 = [v11 errorState];
+          errorState = [v11 errorState];
 
-          if (v12)
+          if (errorState)
           {
             [v3 addObject:v11];
           }
@@ -962,7 +962,7 @@ LABEL_14:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v26 = 0u;
   v27 = 0u;
@@ -989,11 +989,11 @@ LABEL_14:
         if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
         {
           v21 = v19;
-          v22 = [v18 volumeName];
+          volumeName = [v18 volumeName];
           *buf = v23;
           v33 = "[LiveFSRawDevice terminateVolumesWithErrors]";
           v34 = 2112;
-          v35 = v22;
+          v35 = volumeName;
           _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%s: unregister with mounter service for volume %@ using LIVEFSMOUNTCLIENT_UNMOUNT_FORGET", buf, 0x16u);
         }
 

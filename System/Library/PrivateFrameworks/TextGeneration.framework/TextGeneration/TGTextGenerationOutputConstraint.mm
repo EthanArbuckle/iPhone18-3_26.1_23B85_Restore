@@ -1,53 +1,53 @@
 @interface TGTextGenerationOutputConstraint
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation TGTextGenerationOutputConstraint
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TGTextGenerationOutputConstraint);
-  v5 = [(TGTextGenerationOutputConstraint *)self maxWordCount];
-  [(TGTextGenerationOutputConstraint *)v4 setMaxWordCount:v5];
+  maxWordCount = [(TGTextGenerationOutputConstraint *)self maxWordCount];
+  [(TGTextGenerationOutputConstraint *)v4 setMaxWordCount:maxWordCount];
 
-  v6 = self;
-  return v6;
+  selfCopy = self;
+  return selfCopy;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TGMutableTextGenerationOutputConstraint);
-  v5 = [(TGTextGenerationOutputConstraint *)self maxWordCount];
-  [(TGTextGenerationOutputConstraint *)v4 setMaxWordCount:v5];
+  maxWordCount = [(TGTextGenerationOutputConstraint *)self maxWordCount];
+  [(TGTextGenerationOutputConstraint *)v4 setMaxWordCount:maxWordCount];
 
-  v6 = self;
-  return v6;
+  selfCopy = self;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(TGTextGenerationOutputConstraint *)self maxWordCount];
-  v3 = [v2 hash];
+  maxWordCount = [(TGTextGenerationOutputConstraint *)self maxWordCount];
+  v3 = [maxWordCount hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v7 = v4;
-    v8 = [(TGTextGenerationOutputConstraint *)self maxWordCount];
-    v9 = [v7 maxWordCount];
+    v7 = equalCopy;
+    maxWordCount = [(TGTextGenerationOutputConstraint *)self maxWordCount];
+    maxWordCount2 = [v7 maxWordCount];
 
-    v6 = TGTextGenerationEqualAllowingNil(v8, v9);
+    v6 = TGTextGenerationEqualAllowingNil(maxWordCount, maxWordCount2);
   }
 
   return v6;

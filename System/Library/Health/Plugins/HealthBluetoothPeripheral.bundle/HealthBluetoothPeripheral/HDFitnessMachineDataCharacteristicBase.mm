@@ -1,33 +1,33 @@
 @interface HDFitnessMachineDataCharacteristicBase
-+ (id)_buildWithBinaryValue:(id)a3 error:(id *)a4;
++ (id)_buildWithBinaryValue:(id)value error:(id *)error;
 + (id)uuid;
 + (unsigned)flagFieldLength;
 - (BOOL)elapsedTimeIsSet;
 - (NSArray)allFields;
-- (id)generateDatums:(id)a3;
-- (id)getBinaryValueWithError:(id *)a3;
+- (id)generateDatums:(id)datums;
+- (id)getBinaryValueWithError:(id *)error;
 - (unsigned)elapsedTime;
 @end
 
 @implementation HDFitnessMachineDataCharacteristicBase
 
-+ (id)_buildWithBinaryValue:(id)a3 error:(id *)a4
++ (id)_buildWithBinaryValue:(id)value error:(id *)error
 {
-  v5 = a3;
-  v6 = [[a1 alloc] _init];
-  v7 = [v5 bytes];
-  v23 = v7;
-  v8 = [v5 length];
-  v9 = [a1 flagFieldLength];
-  if (v9 == 3)
+  valueCopy = value;
+  _init = [[self alloc] _init];
+  bytes = [valueCopy bytes];
+  v23 = bytes;
+  v8 = [valueCopy length];
+  flagFieldLength = [self flagFieldLength];
+  if (flagFieldLength == 3)
   {
-    v10 = [HDHealthServiceCharacteristic uint24FromData:&v23 before:&v8[v7]];
+    v10 = [HDHealthServiceCharacteristic uint24FromData:&v23 before:&v8[bytes]];
     goto LABEL_5;
   }
 
-  if (v9 == 2)
+  if (flagFieldLength == 2)
   {
-    v10 = [HDHealthServiceCharacteristic uint16FromData:&v23 before:&v8[v7]];
+    v10 = [HDHealthServiceCharacteristic uint16FromData:&v23 before:&v8[bytes]];
 LABEL_5:
     v11 = v10;
     goto LABEL_7;
@@ -39,8 +39,8 @@ LABEL_7:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [v6 allFields];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  allFields = [_init allFields];
+  v13 = [allFields countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -51,26 +51,26 @@ LABEL_7:
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allFields);
         }
 
         v17 = *(*(&v19 + 1) + 8 * i);
         if ([v17 isIncludedInFlags:v11])
         {
-          [v17 setValueWithBytes:&v23 before:&v8[v7]];
+          [v17 setValueWithBytes:&v23 before:&v8[bytes]];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v14 = [allFields countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v14);
   }
 
-  return v6;
+  return _init;
 }
 
-- (id)getBinaryValueWithError:(id *)a3
+- (id)getBinaryValueWithError:(id *)error
 {
   v4 = +[NSMutableData data];
   v5 = objc_alloc_init(NSMutableSet);
@@ -78,8 +78,8 @@ LABEL_7:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(HDFitnessMachineDataCharacteristicBase *)self allFields];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allFields = [(HDFitnessMachineDataCharacteristicBase *)self allFields];
+  v7 = [allFields countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -90,7 +90,7 @@ LABEL_7:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allFields);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -107,11 +107,11 @@ LABEL_7:
           }
         }
 
-        v15 = [v11 valueAsData];
-        [v4 appendData:v15];
+        valueAsData = [v11 valueAsData];
+        [v4 appendData:valueAsData];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allFields countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -120,7 +120,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)generateDatums:(id)a3
+- (id)generateDatums:(id)datums
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

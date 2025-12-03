@@ -3,7 +3,7 @@
 - (id)labelView;
 - (id)valueView;
 - (void)performDefaultAction;
-- (void)setCardGroupItem:(id)a3;
+- (void)setCardGroupItem:(id)item;
 - (void)updateConstraints;
 @end
 
@@ -25,81 +25,81 @@
   -[UILabel setNumberOfLines:](self->_accountNameLabel, "setNumberOfLines:", [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] ^ 1);
 }
 
-- (void)setCardGroupItem:(id)a3
+- (void)setCardGroupItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v22.receiver = self;
   v22.super_class = CNContactContainerCell;
-  v5 = [(CNContactCell *)&v22 cardGroupItem];
+  cardGroupItem = [(CNContactCell *)&v22 cardGroupItem];
 
-  if (v5 != v4)
+  if (cardGroupItem != itemCopy)
   {
     v21.receiver = self;
     v21.super_class = CNContactContainerCell;
-    [(CNContactCell *)&v21 setCardGroupItem:v4];
-    if (v4)
+    [(CNContactCell *)&v21 setCardGroupItem:itemCopy];
+    if (itemCopy)
     {
-      v6 = [v4 containers];
-      v7 = [v6 count];
+      containers = [itemCopy containers];
+      v7 = [containers count];
 
       if (v7 < 2)
       {
-        v14 = [v4 containers];
-        v9 = [v14 firstObject];
+        containers2 = [itemCopy containers];
+        firstObject = [containers2 firstObject];
 
-        v15 = [(CNContactContainerCell *)self delegate];
-        v10 = [v15 contactViewCache];
+        delegate = [(CNContactContainerCell *)self delegate];
+        contactViewCache = [delegate contactViewCache];
 
-        v11 = [v10 accountForContainer:v9];
-        [MEMORY[0x1E695CD10] _cnui_displayNameForACAccount:v11];
+        containers3 = [contactViewCache accountForContainer:firstObject];
+        [MEMORY[0x1E695CD10] _cnui_displayNameForACAccount:containers3];
       }
 
       else
       {
         v8 = MEMORY[0x1E696AEC0];
-        v9 = CNContactsUIBundle();
-        v10 = [v9 localizedStringForKey:@"N_ACCOUNTS" value:&stru_1F0CE7398 table:@"Localized"];
-        v11 = [v4 containers];
-        [v8 localizedStringWithFormat:v10, objc_msgSend(v11, "count")];
+        firstObject = CNContactsUIBundle();
+        contactViewCache = [firstObject localizedStringForKey:@"N_ACCOUNTS" value:&stru_1F0CE7398 table:@"Localized"];
+        containers3 = [itemCopy containers];
+        [v8 localizedStringWithFormat:contactViewCache, objc_msgSend(containers3, "count")];
       }
-      v13 = ;
+      accountNameLabel2 = ;
 
       v16 = CNContactsUIBundle();
       v17 = [v16 localizedStringForKey:@"ACCOUNT_CARD_ITEM_LABEL" value:&stru_1F0CE7398 table:@"Localized"];
-      v18 = [(CNContactContainerCell *)self accountLabel];
-      [v18 setText:v17];
+      accountLabel = [(CNContactContainerCell *)self accountLabel];
+      [accountLabel setText:v17];
 
-      v19 = v13;
-      if (!v13)
+      v19 = accountNameLabel2;
+      if (!accountNameLabel2)
       {
         v16 = CNContactsUIBundle();
         v19 = [v16 localizedStringForKey:@"UNKNOWN_SOURCE_STRING" value:&stru_1F0CE7398 table:@"Localized"];
       }
 
-      v20 = [(CNContactContainerCell *)self accountNameLabel];
-      [v20 setText:v19];
+      accountNameLabel = [(CNContactContainerCell *)self accountNameLabel];
+      [accountNameLabel setText:v19];
 
-      if (!v13)
+      if (!accountNameLabel2)
       {
       }
     }
 
     else
     {
-      v12 = [(CNContactContainerCell *)self accountLabel];
-      [v12 setText:0];
+      accountLabel2 = [(CNContactContainerCell *)self accountLabel];
+      [accountLabel2 setText:0];
 
-      v13 = [(CNContactContainerCell *)self accountNameLabel];
-      [v13 setText:0];
+      accountNameLabel2 = [(CNContactContainerCell *)self accountNameLabel];
+      [accountNameLabel2 setText:0];
     }
   }
 }
 
 - (void)performDefaultAction
 {
-  v4 = [(CNContactContainerCell *)self delegate];
-  v3 = [(CNContactCell *)self cardGroupItem];
-  [v4 propertyCell:self performActionForItem:v3 withTransportType:0];
+  delegate = [(CNContactContainerCell *)self delegate];
+  cardGroupItem = [(CNContactCell *)self cardGroupItem];
+  [delegate propertyCell:self performActionForItem:cardGroupItem withTransportType:0];
 }
 
 - (id)valueView
@@ -107,9 +107,9 @@
   accountNameLabel = self->_accountNameLabel;
   if (!accountNameLabel)
   {
-    v4 = [(CNLabeledCell *)self standardValueView];
+    standardValueView = [(CNLabeledCell *)self standardValueView];
     v5 = self->_accountNameLabel;
-    self->_accountNameLabel = v4;
+    self->_accountNameLabel = standardValueView;
 
     accountNameLabel = self->_accountNameLabel;
   }
@@ -122,9 +122,9 @@
   accountLabel = self->_accountLabel;
   if (!accountLabel)
   {
-    v4 = [(CNLabeledCell *)self standardLabelView];
+    standardLabelView = [(CNLabeledCell *)self standardLabelView];
     v5 = self->_accountLabel;
-    self->_accountLabel = v4;
+    self->_accountLabel = standardLabelView;
 
     accountLabel = self->_accountLabel;
   }

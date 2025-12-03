@@ -1,6 +1,6 @@
 @interface IMContactStore
 + (BOOL)_shouldAllowContactStoreLookup;
-+ (BOOL)isCNContactAKnownContact:(id)a3;
++ (BOOL)isCNContactAKnownContact:(id)contact;
 + (BOOL)shouldShowAbbreviatedNames;
 + (BOOL)shouldShowNickNames;
 + (Class)IMCNChangeHistoryFetchRequestClass;
@@ -12,23 +12,23 @@
 + (Class)IMCNMutableContactClass;
 + (Class)IMCNPhoneNumberClass;
 + (id)CNIDToFormattedStringCache;
-+ (id)IDWithCurrentLocaleITUCode:(id)a3;
-+ (id)IDsFromCNContact:(id)a3;
++ (id)IDWithCurrentLocaleITUCode:(id)code;
++ (id)IDsFromCNContact:(id)contact;
 + (id)IMContactStoreQueue;
-+ (id)_stringFromContact:(id)a3 withStyle:(int64_t)a4;
-+ (id)abbreviatedNameForCNContact:(id)a3;
-+ (id)companyNameForCNContact:(id)a3;
-+ (id)createMutableContactWithID:(id)a3;
-+ (id)createMutableContactWithMapURL:(id)a3 andLocalizedLocationString:(id)a4;
-+ (id)descriptionForCNContact:(id)a3;
-+ (id)dialingCodeForID:(id)a3;
++ (id)_stringFromContact:(id)contact withStyle:(int64_t)style;
++ (id)abbreviatedNameForCNContact:(id)contact;
++ (id)companyNameForCNContact:(id)contact;
++ (id)createMutableContactWithID:(id)d;
++ (id)createMutableContactWithMapURL:(id)l andLocalizedLocationString:(id)string;
++ (id)descriptionForCNContact:(id)contact;
++ (id)dialingCodeForID:(id)d;
 + (id)dialingForCurrentLocale;
-+ (id)displayNameForContact:(id)a3;
-+ (id)displayNameWithCNNickNameOrFullNameOrCompanyNameOrAbbreviatedForContact:(id)a3;
-+ (id)displayNameWithPhoneNumberOrEmailForContact:(id)a3;
-+ (id)emailsForCNContact:(id)a3;
-+ (id)firstNameForCNContact:(id)a3;
-+ (id)fullNameForCNContact:(id)a3;
++ (id)displayNameForContact:(id)contact;
++ (id)displayNameWithCNNickNameOrFullNameOrCompanyNameOrAbbreviatedForContact:(id)contact;
++ (id)displayNameWithPhoneNumberOrEmailForContact:(id)contact;
++ (id)emailsForCNContact:(id)contact;
++ (id)firstNameForCNContact:(id)contact;
++ (id)fullNameForCNContact:(id)contact;
 + (id)kIMCNContactAvatarRecipeDataKey;
 + (id)kIMCNContactCropRectKey;
 + (id)kIMCNContactEmailAddressesKey;
@@ -45,75 +45,75 @@
 + (id)keysForCNContact;
 + (id)keysForMeContact;
 + (id)keysForNicknameHandling;
-+ (id)lastNameForCNContact:(id)a3;
-+ (id)nickNameForCNContact:(id)a3;
-+ (id)phoneNumbersForCNContact:(id)a3;
-+ (id)phoneticFirstNameForCNContact:(id)a3;
-+ (id)phoneticFullNameForCNContact:(id)a3;
-+ (id)phoneticLastNameForCNContact:(id)a3;
-+ (id)predicateForID:(id)a3;
++ (id)lastNameForCNContact:(id)contact;
++ (id)nickNameForCNContact:(id)contact;
++ (id)phoneNumbersForCNContact:(id)contact;
++ (id)phoneticFirstNameForCNContact:(id)contact;
++ (id)phoneticFullNameForCNContact:(id)contact;
++ (id)phoneticLastNameForCNContact:(id)contact;
++ (id)predicateForID:(id)d;
 + (id)sharedInstance;
-+ (id)validateAndCleanupID:(id)a3;
-+ (id)validateAndFilterIDsForContactsBatchFetch:(id)a3;
-+ (void)_logArray:(id)a3 inBatchesOfSize:(int64_t)a4;
-+ (void)_logDictionaryInformation:(id)a3 withSortedKeys:(id)a4 inRange:(_NSRange)a5;
-+ (void)logCNContact:(id)a3;
-+ (void)logCNContact:(id)a3 andID:(id)a4;
-+ (void)logContactFetchRequestResults:(id)a3;
-+ (void)logDictionary:(id)a3 checkAdditionalLoggingEnabled:(BOOL)a4;
-+ (void)logDictionary:(id)a3 inBatchesOfSize:(int64_t)a4;
-+ (void)logHandleID:(id)a3;
-+ (void)logHandleIDs:(id)a3 checkAdditionalLoggingEnabled:(BOOL)a4;
-+ (void)logHistoryToken:(id)a3;
-- (BOOL)isAcceptedCNID:(id)a3;
-- (BOOL)isContactWithIDAlreadyFetched:(id)a3;
-- (BOOL)isCuratedCNID:(id)a3;
-- (BOOL)isIDAKnownContact:(id)a3;
++ (id)validateAndCleanupID:(id)d;
++ (id)validateAndFilterIDsForContactsBatchFetch:(id)fetch;
++ (void)_logArray:(id)array inBatchesOfSize:(int64_t)size;
++ (void)_logDictionaryInformation:(id)information withSortedKeys:(id)keys inRange:(_NSRange)range;
++ (void)logCNContact:(id)contact;
++ (void)logCNContact:(id)contact andID:(id)d;
++ (void)logContactFetchRequestResults:(id)results;
++ (void)logDictionary:(id)dictionary checkAdditionalLoggingEnabled:(BOOL)enabled;
++ (void)logDictionary:(id)dictionary inBatchesOfSize:(int64_t)size;
++ (void)logHandleID:(id)d;
++ (void)logHandleIDs:(id)ds checkAdditionalLoggingEnabled:(BOOL)enabled;
++ (void)logHistoryToken:(id)token;
+- (BOOL)isAcceptedCNID:(id)d;
+- (BOOL)isContactWithIDAlreadyFetched:(id)fetched;
+- (BOOL)isCuratedCNID:(id)d;
+- (BOOL)isIDAKnownContact:(id)contact;
 - (IMContactStore)init;
-- (IMContactStore)initWithContactStore:(id)a3;
+- (IMContactStore)initWithContactStore:(id)store;
 - (NSData)currentHistoryToken;
-- (id)_coreRecentsEventsFromIntroductions:(id)a3;
-- (id)_postChangeEventsForAcceptedIntroductions:(id)a3;
-- (id)batchFetchContactsWithoutCachingForIdentifiers:(id)a3;
-- (id)cnContactIdentifierForID:(id)a3;
-- (id)completedContact:(id)a3 withKeys:(id)a4;
-- (id)fetchAcceptedContactsForHandles:(id)a3;
-- (id)fetchCNContactForHandleID:(id)a3 withKeys:(id)a4;
-- (id)fetchCNContactWithIdentifier:(id)a3;
-- (id)fetchMeContactWithKeys:(id)a3;
-- (id)fetchMeContactWithKeys:(id)a3 withError:(id *)a4;
+- (id)_coreRecentsEventsFromIntroductions:(id)introductions;
+- (id)_postChangeEventsForAcceptedIntroductions:(id)introductions;
+- (id)batchFetchContactsWithoutCachingForIdentifiers:(id)identifiers;
+- (id)cnContactIdentifierForID:(id)d;
+- (id)completedContact:(id)contact withKeys:(id)keys;
+- (id)fetchAcceptedContactsForHandles:(id)handles;
+- (id)fetchCNContactForHandleID:(id)d withKeys:(id)keys;
+- (id)fetchCNContactWithIdentifier:(id)identifier;
+- (id)fetchMeContactWithKeys:(id)keys;
+- (id)fetchMeContactWithKeys:(id)keys withError:(id *)error;
 - (id)getAllKeysFromIDToCNContactMap;
 - (id)getCNIDToHandleIDsMap;
-- (id)getContactForID:(id)a3;
+- (id)getContactForID:(id)d;
 - (id)getHandleIDToCNIDMap;
 - (id)getIDToCNContactMap;
-- (id)handleIDsForCNID:(id)a3;
-- (id)preferCuratedContactFromFetchResults:(id)a3;
+- (id)handleIDsForCNID:(id)d;
+- (id)preferCuratedContactFromFetchResults:(id)results;
 - (id)stateDictionaryForDiagnosticsRequest;
-- (void)_cacheBatchFetchResults:(id)a3 handleIDsWithoutCNID:(id)a4;
-- (void)_fetchContactsWithIdentifiers:(id)a3 usingCNID:(BOOL)a4;
+- (void)_cacheBatchFetchResults:(id)results handleIDsWithoutCNID:(id)d;
+- (void)_fetchContactsWithIdentifiers:(id)identifiers usingCNID:(BOOL)d;
 - (void)_startObservingAcceptedContactChanges;
-- (void)addContact:(id)a3 withID:(id)a4;
-- (void)addEntriesToIDToCNContactMap:(id)a3;
-- (void)addIDToCNIDToHandleIDsMap:(id)a3 withCNID:(id)a4;
+- (void)addContact:(id)contact withID:(id)d;
+- (void)addEntriesToIDToCNContactMap:(id)map;
+- (void)addIDToCNIDToHandleIDsMap:(id)map withCNID:(id)d;
 - (void)checkForAcceptedContactStoreChanges;
 - (void)checkForContactStoreChanges;
-- (void)contactStoreChanged:(id)a3;
+- (void)contactStoreChanged:(id)changed;
 - (void)dealloc;
-- (void)fetchCNContactsForHandlesWithIDs:(id)a3 isFinalBatch:(BOOL)a4;
+- (void)fetchCNContactsForHandlesWithIDs:(id)ds isFinalBatch:(BOOL)batch;
 - (void)generateCNIDToHandleIDMap;
 - (void)handleDropEverythingEvent;
-- (void)meCardChanged:(id)a3;
-- (void)recordAcceptedIntroductions:(id)a3 completion:(id)a4;
-- (void)removeContactWithID:(id)a3;
-- (void)removeIDFromCNIDToHandleIDsMap:(id)a3 withCNID:(id)a4;
-- (void)replaceContact:(id)a3 withID:(id)a4;
-- (void)replaceWithMutableContactForID:(id)a3;
+- (void)meCardChanged:(id)changed;
+- (void)recordAcceptedIntroductions:(id)introductions completion:(id)completion;
+- (void)removeContactWithID:(id)d;
+- (void)removeIDFromCNIDToHandleIDsMap:(id)map withCNID:(id)d;
+- (void)replaceContact:(id)contact withID:(id)d;
+- (void)replaceWithMutableContactForID:(id)d;
 - (void)resetMeCard;
 - (void)setBatchFetchingCompleted;
-- (void)setBatchFetchingIsCompleted:(BOOL)a3;
-- (void)setCurrentHistoryToken:(id)a3;
-- (void)setHandleIDToCNIDMap:(id)a3;
+- (void)setBatchFetchingIsCompleted:(BOOL)completed;
+- (void)setCurrentHistoryToken:(id)token;
+- (void)setHandleIDToCNIDMap:(id)map;
 @end
 
 @implementation IMContactStore
@@ -194,9 +194,9 @@
   [v3 setUseInProcessMapperExclusively:1];
 LABEL_17:
   v11 = +[IMFeatureFlags sharedFeatureFlags];
-  v12 = [v11 isIntroductionsEnabled];
+  isIntroductionsEnabled = [v11 isIntroductionsEnabled];
 
-  if (v12)
+  if (isIntroductionsEnabled)
   {
     [v3 setIncludeAcceptedIntroductions:1];
   }
@@ -376,14 +376,14 @@ LABEL_29:
   v12[3] = v5;
   v6 = [(objc_class *)+[IMContactStore IMCNContactFormatterClass](IMContactStore descriptorForRequiredKeysForStyle:"descriptorForRequiredKeysForStyle:", 0];
   v12[4] = v6;
-  v7 = [MEMORY[0x1E696ADF0] descriptorForUsedKeys];
-  v12[5] = v7;
+  descriptorForUsedKeys = [MEMORY[0x1E696ADF0] descriptorForUsedKeys];
+  v12[5] = descriptorForUsedKeys;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:6];
 
   if (IMSharedHelperDeviceHasMultipleSubscriptions() && [(objc_class *)+[IMContactStore deviceSupportsGemini] IMCNGeminiManagerClass]
   {
-    v9 = [(objc_class *)+[IMContactStore IMCNGeminiManagerClass](IMContactStore descriptorForRequiredKeys];
-    v10 = [v8 arrayByAddingObject:v9];
+    descriptorForRequiredKeys = [(objc_class *)+[IMContactStore IMCNGeminiManagerClass](IMContactStore descriptorForRequiredKeys];
+    v10 = [v8 arrayByAddingObject:descriptorForRequiredKeys];
 
     v8 = v10;
   }
@@ -418,9 +418,9 @@ LABEL_29:
 - (void)generateCNIDToHandleIDMap
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   CNIDToHandleIDsMap = self->_CNIDToHandleIDsMap;
-  self->_CNIDToHandleIDsMap = v3;
+  self->_CNIDToHandleIDsMap = dictionary;
 
   if (IMAdditionalContactsLoggingEnabled())
   {
@@ -429,24 +429,24 @@ LABEL_29:
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(NSMutableDictionary *)self->_CNIDToHandleIDsMap allKeys];
+        allKeys = [(NSMutableDictionary *)self->_CNIDToHandleIDsMap allKeys];
         *buf = 134217984;
-        v15 = [v6 count];
+        v15 = [allKeys count];
         _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "CNIDToHandleIDsMap before update. Number of entries %lu", buf, 0xCu);
       }
     }
 
-    v7 = [(IMContactStore *)self getCNIDToHandleIDsMap];
-    [IMContactStore logDictionary:v7];
+    getCNIDToHandleIDsMap = [(IMContactStore *)self getCNIDToHandleIDsMap];
+    [IMContactStore logDictionary:getCNIDToHandleIDsMap];
   }
 
-  v8 = [(IMContactStore *)self handleIDToCNIDMap];
+  handleIDToCNIDMap = [(IMContactStore *)self handleIDToCNIDMap];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1A85F9B64;
   v13[3] = &unk_1E7826C50;
   v13[4] = self;
-  [v8 enumerateKeysAndObjectsUsingBlock:v13];
+  [handleIDToCNIDMap enumerateKeysAndObjectsUsingBlock:v13];
 
   if (IMAdditionalContactsLoggingEnabled())
   {
@@ -455,16 +455,16 @@ LABEL_29:
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(NSMutableDictionary *)self->_CNIDToHandleIDsMap allKeys];
-        v11 = [v10 count];
+        allKeys2 = [(NSMutableDictionary *)self->_CNIDToHandleIDsMap allKeys];
+        v11 = [allKeys2 count];
         *buf = 134217984;
         v15 = v11;
         _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "CNIDToHandleIDsMap after update. Number of entries %lu", buf, 0xCu);
       }
     }
 
-    v12 = [(IMContactStore *)self getCNIDToHandleIDsMap];
-    [IMContactStore logDictionary:v12];
+    getCNIDToHandleIDsMap2 = [(IMContactStore *)self getCNIDToHandleIDsMap];
+    [IMContactStore logDictionary:getCNIDToHandleIDsMap2];
   }
 }
 
@@ -482,19 +482,19 @@ LABEL_29:
     sub_1A8601E04();
   }
 
-  v2 = [MEMORY[0x1E695CE40] sharedDefaults];
-  v3 = v2;
+  mEMORY[0x1E695CE40] = [MEMORY[0x1E695CE40] sharedDefaults];
+  v3 = mEMORY[0x1E695CE40];
   if (byte_1EB309308)
   {
-    v4 = 1;
+    isShortNameFormatEnabled = 1;
   }
 
   else
   {
-    v4 = [v2 isShortNameFormatEnabled];
+    isShortNameFormatEnabled = [mEMORY[0x1E695CE40] isShortNameFormatEnabled];
   }
 
-  return v4;
+  return isShortNameFormatEnabled;
 }
 
 + (id)IMContactStoreQueue
@@ -516,19 +516,19 @@ LABEL_29:
     sub_1A860258C();
   }
 
-  v2 = [MEMORY[0x1E695CE40] sharedDefaults];
-  v3 = v2;
+  mEMORY[0x1E695CE40] = [MEMORY[0x1E695CE40] sharedDefaults];
+  v3 = mEMORY[0x1E695CE40];
   if (byte_1EB30A410)
   {
-    v4 = 1;
+    shortNameFormatPrefersNicknames = 1;
   }
 
   else
   {
-    v4 = [v2 shortNameFormatPrefersNicknames];
+    shortNameFormatPrefersNicknames = [mEMORY[0x1E695CE40] shortNameFormatPrefersNicknames];
   }
 
-  return v4;
+  return shortNameFormatPrefersNicknames;
 }
 
 + (Class)IMCNMutableContactClass
@@ -584,15 +584,15 @@ LABEL_29:
   v11 = 0x3032000000;
   v12 = sub_1A8601E88;
   v13 = sub_1A8602138;
-  v14 = [MEMORY[0x1E695DF70] array];
-  v4 = [(IMContactStore *)self getHandleIDToCNIDMap];
+  array = [MEMORY[0x1E695DF70] array];
+  getHandleIDToCNIDMap = [(IMContactStore *)self getHandleIDToCNIDMap];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1A8638FD0;
   v8[3] = &unk_1E7826CC8;
   v8[4] = self;
   v8[5] = buf;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [getHandleIDToCNIDMap enumerateKeysAndObjectsUsingBlock:v8];
   v5 = [*(v10 + 5) copy];
   v6 = [(IMContactStore *)self fetchAcceptedContactsForHandles:v5];
 
@@ -602,14 +602,14 @@ LABEL_29:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)recordAcceptedIntroductions:(id)a3 completion:(id)a4
+- (void)recordAcceptedIntroductions:(id)introductions completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMContactStore *)self _coreRecentsEventsFromIntroductions:v6];
+  introductionsCopy = introductions;
+  completionCopy = completion;
+  v8 = [(IMContactStore *)self _coreRecentsEventsFromIntroductions:introductionsCopy];
   v9 = [v8 count];
-  if (v9 == [v6 count] && objc_msgSend(v8, "count"))
+  if (v9 == [introductionsCopy count] && objc_msgSend(v8, "count"))
   {
     if (IMOSLoggingEnabled())
     {
@@ -617,7 +617,7 @@ LABEL_29:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v18 = [v6 count];
+        v18 = [introductionsCopy count];
         _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Recording accepted introductions for %lu handles", buf, 0xCu);
       }
     }
@@ -627,15 +627,15 @@ LABEL_29:
       sub_1A88C0DF4();
     }
 
-    v11 = [qword_1EB30AD38 defaultInstance];
+    defaultInstance = [qword_1EB30AD38 defaultInstance];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1A86392A0;
     v14[3] = &unk_1E7826D18;
     v14[4] = self;
-    v15 = v6;
-    v16 = v7;
-    [v11 recordAcceptedContactEvents:v8 sendingAddress:0 source:0 completion:v14];
+    v15 = introductionsCopy;
+    v16 = completionCopy;
+    [defaultInstance recordAcceptedContactEvents:v8 sendingAddress:0 source:0 completion:v14];
   }
 
   else
@@ -647,21 +647,21 @@ LABEL_29:
     }
 
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.Messages.IMContactStore.Introductions" code:2 userInfo:0];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
-- (id)_postChangeEventsForAcceptedIntroductions:(id)a3
+- (id)_postChangeEventsForAcceptedIntroductions:(id)introductions
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  introductionsCopy = introductions;
+  array = [MEMORY[0x1E695DF70] array];
   v6 = objc_alloc_init(IMContactStoreChangeHistoryEventsHandler);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v4;
+  v7 = introductionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v8)
   {
@@ -677,16 +677,16 @@ LABEL_29:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 handle];
-        [(IMContactStore *)self removeContactWithID:v13];
+        handle = [v12 handle];
+        [(IMContactStore *)self removeContactWithID:handle];
 
-        v14 = [v12 handle];
-        v15 = [(IMContactStore *)self fetchCNContactForHandleWithID:v14];
+        handle2 = [v12 handle];
+        v15 = [(IMContactStore *)self fetchCNContactForHandleWithID:handle2];
 
         if (v15)
         {
           [(IMContactStoreChangeHistoryEventsHandler *)v6 processAcceptedIntroductionForContact:v15];
-          [v5 addObject:v15];
+          [array addObject:v15];
         }
 
         else
@@ -705,21 +705,21 @@ LABEL_29:
     while (v9);
   }
 
-  v17 = [v5 copy];
+  v17 = [array copy];
 
   return v17;
 }
 
-- (id)_coreRecentsEventsFromIntroductions:(id)a3
+- (id)_coreRecentsEventsFromIntroductions:(id)introductions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  introductionsCopy = introductions;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = introductionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -734,10 +734,10 @@ LABEL_29:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) convertToCoreRecentsEvent];
-        if (v10)
+        convertToCoreRecentsEvent = [*(*(&v13 + 1) + 8 * i) convertToCoreRecentsEvent];
+        if (convertToCoreRecentsEvent)
         {
-          [v4 addObject:v10];
+          [array addObject:convertToCoreRecentsEvent];
         }
       }
 
@@ -747,22 +747,22 @@ LABEL_29:
     while (v7);
   }
 
-  v11 = [v4 copy];
+  v11 = [array copy];
 
   return v11;
 }
 
-- (BOOL)isAcceptedCNID:(id)a3
+- (BOOL)isAcceptedCNID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x1E695CD58] isCoreRecentsAcceptedIdentifier:v3];
+    v4 = [MEMORY[0x1E695CD58] isCoreRecentsAcceptedIdentifier:dCopy];
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"CNCoreRecentsContactStore://com.apple.introductions.accepted"];
+    v4 = [dCopy hasPrefix:@"CNCoreRecentsContactStore://com.apple.introductions.accepted"];
   }
 
   v5 = v4;
@@ -770,27 +770,27 @@ LABEL_29:
   return v5;
 }
 
-- (BOOL)isCuratedCNID:(id)a3
+- (BOOL)isCuratedCNID:(id)d
 {
-  v4 = a3;
-  if ([(IMContactStore *)self isUnknownCNID:v4])
+  dCopy = d;
+  if ([(IMContactStore *)self isUnknownCNID:dCopy])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = ![(IMContactStore *)self isAcceptedCNID:v4];
+    v5 = ![(IMContactStore *)self isAcceptedCNID:dCopy];
   }
 
   return v5;
 }
 
-+ (void)logDictionary:(id)a3 checkAdditionalLoggingEnabled:(BOOL)a4
++ (void)logDictionary:(id)dictionary checkAdditionalLoggingEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
-  if (!v4 || IMAdditionalContactsLoggingEnabled())
+  enabledCopy = enabled;
+  dictionaryCopy = dictionary;
+  if (!enabledCopy || IMAdditionalContactsLoggingEnabled())
   {
     if (IMOSLoggingEnabled())
     {
@@ -802,27 +802,27 @@ LABEL_29:
       }
     }
 
-    [IMContactStore logDictionary:v5 inBatchesOfSize:20];
+    [IMContactStore logDictionary:dictionaryCopy inBatchesOfSize:20];
   }
 }
 
-+ (void)logDictionary:(id)a3 inBatchesOfSize:(int64_t)a4
++ (void)logDictionary:(id)dictionary inBatchesOfSize:(int64_t)size
 {
-  v12 = a3;
-  v5 = [v12 allKeys];
-  v6 = [v5 count];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
+  v6 = [allKeys count];
 
-  v7 = v6 / a4;
-  v8 = v6 % a4;
-  v9 = [IMContactStore _sortContactsFor:v12];
+  v7 = v6 / size;
+  v8 = v6 % size;
+  v9 = [IMContactStore _sortContactsFor:dictionaryCopy];
   if (v7 >= 1)
   {
     v10 = 0;
     v11 = v7;
     do
     {
-      [IMContactStore _logDictionaryInformation:v12 withSortedKeys:v9 inRange:v10, a4];
-      v10 += a4;
+      [IMContactStore _logDictionaryInformation:dictionaryCopy withSortedKeys:v9 inRange:v10, size];
+      v10 += size;
       --v11;
     }
 
@@ -831,16 +831,16 @@ LABEL_29:
 
   if (v8 > 0)
   {
-    [IMContactStore _logDictionaryInformation:v12 withSortedKeys:v9 inRange:v7 * a4, v8];
+    [IMContactStore _logDictionaryInformation:dictionaryCopy withSortedKeys:v9 inRange:v7 * size, v8];
   }
 }
 
-+ (void)logHandleIDs:(id)a3 checkAdditionalLoggingEnabled:(BOOL)a4
++ (void)logHandleIDs:(id)ds checkAdditionalLoggingEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v4 || IMAdditionalContactsLoggingEnabled())
+  dsCopy = ds;
+  if (!enabledCopy || IMAdditionalContactsLoggingEnabled())
   {
     if (IMOSLoggingEnabled())
     {
@@ -848,19 +848,19 @@ LABEL_29:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v7 = 134217984;
-        v8 = [v5 count];
+        v8 = [dsCopy count];
         _os_log_impl(&dword_1A85E5000, v6, OS_LOG_TYPE_INFO, "Logging %lu IDs", &v7, 0xCu);
       }
     }
 
-    [IMContactStore _logArray:v5 inBatchesOfSize:20];
+    [IMContactStore _logArray:dsCopy inBatchesOfSize:20];
   }
 }
 
-+ (void)logContactFetchRequestResults:(id)a3
++ (void)logContactFetchRequestResults:(id)results
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultsCopy = results;
   if (IMAdditionalContactsLoggingEnabled())
   {
     if (IMOSLoggingEnabled())
@@ -868,9 +868,9 @@ LABEL_29:
       v4 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v5 = [v3 value];
+        value = [resultsCopy value];
         v19 = 134217984;
-        v20 = [v5 count];
+        v20 = [value count];
         _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Logging Contact Store fetch result. Obtained (%lu) results from Contacts Store.", &v19, 0xCu);
       }
     }
@@ -885,7 +885,7 @@ LABEL_29:
       }
     }
 
-    v7 = [v3 value];
+    value2 = [resultsCopy value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -901,13 +901,13 @@ LABEL_29:
         }
       }
 
-      v10 = [v3 value];
-      [IMContactStore logDictionary:v10 inBatchesOfSize:10];
+      value3 = [resultsCopy value];
+      [IMContactStore logDictionary:value3 inBatchesOfSize:10];
     }
 
     else
     {
-      v11 = [v3 value];
+      value4 = [resultsCopy value];
       objc_opt_class();
       v12 = objc_opt_isKindOfClass();
 
@@ -924,8 +924,8 @@ LABEL_29:
           }
         }
 
-        v15 = [v3 value];
-        [IMContactStore _logArray:v15 inBatchesOfSize:10];
+        value5 = [resultsCopy value];
+        [IMContactStore _logArray:value5 inBatchesOfSize:10];
       }
 
       else if (v13)
@@ -944,32 +944,32 @@ LABEL_29:
   }
 }
 
-+ (void)logHistoryToken:(id)a3
++ (void)logHistoryToken:(id)token
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  tokenCopy = token;
   if (IMAdditionalContactsLoggingEnabled() && IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = 138412290;
-      v6 = v3;
+      v6 = tokenCopy;
       _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Logging history token: %@", &v5, 0xCu);
     }
   }
 }
 
-+ (void)logCNContact:(id)a3
++ (void)logCNContact:(id)contact
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contactCopy = contact;
   if (IMAdditionalContactsLoggingEnabled() && IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [v3 description];
+      v5 = [contactCopy description];
       v6 = 138412290;
       v7 = v5;
       _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Logging additional details about CNContact: %@", &v6, 0xCu);
@@ -977,11 +977,11 @@ LABEL_29:
   }
 }
 
-+ (void)logCNContact:(id)a3 andID:(id)a4
++ (void)logCNContact:(id)contact andID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  dCopy = d;
   if (IMAdditionalContactsLoggingEnabled())
   {
     if (IMOSLoggingEnabled())
@@ -989,27 +989,27 @@ LABEL_29:
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [v5 description];
+        v8 = [contactCopy description];
         v9 = 138412546;
-        v10 = v6;
+        v10 = dCopy;
         v11 = 2112;
         v12 = v8;
         _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "ID: %@ and CNContact: %@", &v9, 0x16u);
       }
     }
 
-    [IMContactStore logCNContact:v5];
+    [IMContactStore logCNContact:contactCopy];
   }
 }
 
-+ (void)logHandleID:(id)a3
++ (void)logHandleID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   if (IMAdditionalContactsLoggingEnabled())
   {
     v4 = +[IMContactStore sharedInstance];
-    v5 = [v4 fetchCNContactForHandleWithID:v3];
+    v5 = [v4 fetchCNContactForHandleWithID:dCopy];
 
     if (IMOSLoggingEnabled())
     {
@@ -1018,7 +1018,7 @@ LABEL_29:
       {
         v7 = [v5 description];
         v8 = 138412546;
-        v9 = v3;
+        v9 = dCopy;
         v10 = 2112;
         v11 = v7;
         _os_log_impl(&dword_1A85E5000, v6, OS_LOG_TYPE_INFO, "For ID %@ found an entry in cache: %@", &v8, 0x16u);
@@ -1027,20 +1027,20 @@ LABEL_29:
   }
 }
 
-+ (void)_logArray:(id)a3 inBatchesOfSize:(int64_t)a4
++ (void)_logArray:(id)array inBatchesOfSize:(int64_t)size
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 count];
+  arrayCopy = array;
+  v6 = [arrayCopy count];
   v14 = v6;
-  v7 = v6 / a4;
-  if (v6 / a4 >= 1)
+  v7 = v6 / size;
+  if (v6 / size >= 1)
   {
     v8 = 0;
-    v9 = v6 / a4;
+    v9 = v6 / size;
     do
     {
-      v10 = [v5 subarrayWithRange:{v8, a4}];
+      v10 = [arrayCopy subarrayWithRange:{v8, size}];
       if (IMOSLoggingEnabled())
       {
         v11 = OSLogHandleForIMFoundationCategory();
@@ -1052,16 +1052,16 @@ LABEL_29:
         }
       }
 
-      v8 += a4;
+      v8 += size;
       --v9;
     }
 
     while (v9);
   }
 
-  if (v14 - v7 * a4 > 0)
+  if (v14 - v7 * size > 0)
   {
-    v12 = [v5 subarrayWithRange:v7 * a4];
+    v12 = [arrayCopy subarrayWithRange:v7 * size];
     if (IMOSLoggingEnabled())
     {
       v13 = OSLogHandleForIMFoundationCategory();
@@ -1075,14 +1075,14 @@ LABEL_29:
   }
 }
 
-+ (void)_logDictionaryInformation:(id)a3 withSortedKeys:(id)a4 inRange:(_NSRange)a5
++ (void)_logDictionaryInformation:(id)information withSortedKeys:(id)keys inRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v16 = a4;
-  [v16 subarrayWithRange:{location, length}];
+  informationCopy = information;
+  keysCopy = keys;
+  [keysCopy subarrayWithRange:{location, length}];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -1101,7 +1101,7 @@ LABEL_29:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v8 objectForKey:v13];
+        v14 = [informationCopy objectForKey:v13];
         if (IMOSLoggingEnabled())
         {
           v15 = OSLogHandleForIMFoundationCategory();
@@ -1123,16 +1123,16 @@ LABEL_29:
   }
 }
 
-- (IMContactStore)initWithContactStore:(id)a3
+- (IMContactStore)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v26.receiver = self;
   v26.super_class = IMContactStore;
   v6 = [(IMContactStore *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
     currentHistoryToken = v7->_currentHistoryToken;
     v7->_currentHistoryToken = 0;
 
@@ -1150,16 +1150,16 @@ LABEL_29:
     stateCaptureAssistant = v7->_stateCaptureAssistant;
     v7->_stateCaptureAssistant = v15;
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v7 selector:sel_contactStoreChanged_ name:*MEMORY[0x1E695C3D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_contactStoreChanged_ name:*MEMORY[0x1E695C3D8] object:0];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v7 selector:sel_meCardChanged_ name:*MEMORY[0x1E695C3E0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_meCardChanged_ name:*MEMORY[0x1E695C3E0] object:0];
 
     v19 = +[IMFeatureFlags sharedFeatureFlags];
-    v20 = [v19 isIntroductionsEnabled];
+    isIntroductionsEnabled = [v19 isIntroductionsEnabled];
 
-    if (v20)
+    if (isIntroductionsEnabled)
     {
       v21 = objc_alloc_init(MEMORY[0x1E695CE28]);
       [v21 setUseInProcessMapperExclusively:1];
@@ -1181,14 +1181,14 @@ LABEL_29:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(IMContactStore *)self acceptedContactsChangeNotifier];
-  [v4 stopObserving];
+  acceptedContactsChangeNotifier = [(IMContactStore *)self acceptedContactsChangeNotifier];
+  [acceptedContactsChangeNotifier stopObserving];
 
-  v5 = [(IMContactStore *)self stateCaptureAssistant];
-  [v5 deregister];
+  stateCaptureAssistant = [(IMContactStore *)self stateCaptureAssistant];
+  [stateCaptureAssistant deregister];
 
   [(IMContactStore *)self setStateCaptureAssistant:0];
   v6.receiver = self;
@@ -1328,11 +1328,11 @@ LABEL_29:
   return v3;
 }
 
-- (id)fetchAcceptedContactsForHandles:(id)a3
+- (id)fetchAcceptedContactsForHandles:(id)handles
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] && self->_acceptedContactStore)
+  handlesCopy = handles;
+  if ([handlesCopy count] && self->_acceptedContactStore)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1340,7 +1340,7 @@ LABEL_29:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v24 = [v4 count];
+        v24 = [handlesCopy count];
         _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Fetching accepted contacts for %lu handles", buf, 0xCu);
       }
     }
@@ -1348,7 +1348,7 @@ LABEL_29:
     v6 = +[IMContactStore keysForCNContact];
     v7 = [objc_alloc(+[IMContactStore IMCNContactFetchRequestClass](IMContactStore "IMCNContactFetchRequestClass"))];
     [v7 setUnifyResults:0];
-    v8 = [qword_1ED8CA180 predicateForContactsMatchingHandleStrings:v4];
+    v8 = [qword_1ED8CA180 predicateForContactsMatchingHandleStrings:handlesCopy];
     [v7 setPredicate:v8];
     v9 = objc_alloc_init(MEMORY[0x1E69A6170]);
     [v9 startTimingForKey:@"Contacts Accepted Batch Fetch"];
@@ -1356,7 +1356,7 @@ LABEL_29:
     v22 = 0;
     v11 = [(CNContactStore *)acceptedContactStore executeFetchRequest:v7 error:&v22];
     v12 = v22;
-    v13 = [v11 value];
+    value = [v11 value];
     [v9 stopTimingForKey:@"Contacts Accepted Batch Fetch"];
     if (IMOSLoggingEnabled())
     {
@@ -1370,15 +1370,15 @@ LABEL_29:
       }
     }
 
-    if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       if (IMOSLoggingEnabled())
       {
         v16 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v21 = [v13 count];
-          v17 = [v4 count];
+          v21 = [value count];
+          v17 = [handlesCopy count];
           *buf = 134218240;
           v24 = v21;
           v25 = 2048;
@@ -1388,7 +1388,7 @@ LABEL_29:
       }
 
       [IMContactStore logContactFetchRequestResults:v11];
-      v18 = v13;
+      v18 = value;
     }
 
     else
@@ -1422,18 +1422,18 @@ LABEL_29:
   return v18;
 }
 
-- (void)_cacheBatchFetchResults:(id)a3 handleIDsWithoutCNID:(id)a4
+- (void)_cacheBatchFetchResults:(id)results handleIDsWithoutCNID:(id)d
 {
   v69 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v34 = a4;
+  resultsCopy = results;
+  dCopy = d;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v42 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v5;
+  obj = resultsCopy;
   v7 = [obj countByEnumeratingWithState:&v57 objects:v68 count:16];
   if (v7)
   {
@@ -1448,8 +1448,8 @@ LABEL_29:
         }
 
         v10 = *(*(&v57 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        [v42 setObject:v10 forKey:v11];
+        identifier = [v10 identifier];
+        [v42 setObject:v10 forKey:identifier];
       }
 
       v7 = [obj countByEnumeratingWithState:&v57 objects:v68 count:16];
@@ -1462,8 +1462,8 @@ LABEL_29:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v35 = [v42 allKeys];
-  v38 = [v35 countByEnumeratingWithState:&v53 objects:v67 count:16];
+  allKeys = [v42 allKeys];
+  v38 = [allKeys countByEnumeratingWithState:&v53 objects:v67 count:16];
   if (v38)
   {
     v37 = *v54;
@@ -1475,7 +1475,7 @@ LABEL_29:
         if (*v54 != v37)
         {
           v13 = v12;
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(allKeys);
           v12 = v13;
         }
 
@@ -1485,8 +1485,8 @@ LABEL_29:
         v16 = [(IMContactStore *)self handleIDsForCNID:v14];
         if (!v16)
         {
-          v17 = [v15 linkIdentifier];
-          v18 = [(IMContactStore *)self handleIDsForCNID:v17];
+          linkIdentifier = [v15 linkIdentifier];
+          v18 = [(IMContactStore *)self handleIDsForCNID:linkIdentifier];
 
           v16 = v18;
         }
@@ -1552,7 +1552,7 @@ LABEL_29:
       }
 
       while (v41 + 1 != v38);
-      v38 = [v35 countByEnumeratingWithState:&v53 objects:v67 count:16];
+      v38 = [allKeys countByEnumeratingWithState:&v53 objects:v67 count:16];
     }
 
     while (v38);
@@ -1562,7 +1562,7 @@ LABEL_29:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v26 = v34;
+  v26 = dCopy;
   v27 = [v26 countByEnumeratingWithState:&v45 objects:v61 count:16];
   if (v27)
   {
@@ -1609,30 +1609,30 @@ LABEL_29:
   }
 }
 
-- (void)fetchCNContactsForHandlesWithIDs:(id)a3 isFinalBatch:(BOOL)a4
+- (void)fetchCNContactsForHandlesWithIDs:(id)ds isFinalBatch:(BOOL)batch
 {
-  v29 = a4;
+  batchCopy = batch;
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dsCopy = ds;
   v30 = objc_alloc_init(MEMORY[0x1E69A6170]);
   [v30 startTimingForKey:@"Fetch CNContacts For HandleIDs"];
-  v28 = v5;
-  v31 = [IMContactStore validateAndFilterIDsForContactsBatchFetch:v5];
+  v28 = dsCopy;
+  v31 = [IMContactStore validateAndFilterIDsForContactsBatchFetch:dsCopy];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v38 = [v5 count];
+      v38 = [dsCopy count];
       v39 = 2048;
       v40 = [v31 count];
       _os_log_impl(&dword_1A85E5000, v6, OS_LOG_TYPE_INFO, "%lu handles passed in. %lu valid IDs for batch fetch", buf, 0x16u);
     }
   }
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if ([v31 count])
   {
     v34 = 0u;
@@ -1658,12 +1658,12 @@ LABEL_29:
           v15 = v14;
           if (v14 && ([v14 containsString:@"IMDCNPersonNotFound"] & 1) == 0)
           {
-            [v7 addObject:v15];
+            [array addObject:v15];
           }
 
           else
           {
-            [v8 addObject:v13];
+            [array2 addObject:v13];
           }
         }
 
@@ -1679,8 +1679,8 @@ LABEL_29:
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [v7 count];
-      v18 = [v8 count];
+      v17 = [array count];
+      v18 = [array2 count];
       *buf = 134218240;
       v38 = v17;
       v39 = 2048;
@@ -1689,7 +1689,7 @@ LABEL_29:
     }
   }
 
-  if ([v8 count])
+  if ([array2 count])
   {
     if (IMOSLoggingEnabled())
     {
@@ -1701,14 +1701,14 @@ LABEL_29:
       }
     }
 
-    [IMContactStore logHandleIDs:v8 checkAdditionalLoggingEnabled:0];
+    [IMContactStore logHandleIDs:array2 checkAdditionalLoggingEnabled:0];
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    if (![v7 count] || (v20 = objc_msgSend(v7, "count"), v21 = objc_msgSend(v7, "count"), (v20 / (v21 + objc_msgSend(v8, "count"))) >= 0.1))
+    if (![array count] || (v20 = objc_msgSend(array, "count"), v21 = objc_msgSend(array, "count"), (v20 / (v21 + objc_msgSend(array2, "count"))) >= 0.1))
     {
-      [(IMContactStore *)self _fetchContactsWithIdentifiers:v7 usingCNID:1];
+      [(IMContactStore *)self _fetchContactsWithIdentifiers:array usingCNID:1];
       goto LABEL_41;
     }
   }
@@ -1729,18 +1729,18 @@ LABEL_29:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v38 = v8;
+      v38 = array2;
       _os_log_impl(&dword_1A85E5000, v23, OS_LOG_TYPE_INFO, "Refetching contacts from MobileSMS using handle IDs: %@", buf, 0xCu);
     }
   }
 
-  [(IMContactStore *)self _fetchContactsWithIdentifiers:v8 usingCNID:0];
+  [(IMContactStore *)self _fetchContactsWithIdentifiers:array2 usingCNID:0];
 LABEL_41:
   [v30 stopTimingForKey:@"Fetch CNContacts For HandleIDs"];
   v24 = IMChatRegistryLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    if (v29)
+    if (batchCopy)
     {
       v25 = @"Final";
     }
@@ -1758,7 +1758,7 @@ LABEL_41:
     _os_log_impl(&dword_1A85E5000, v24, OS_LOG_TYPE_DEFAULT, "%@ Batch Fetch completed. Took %f seconds", buf, 0x16u);
   }
 
-  if (v29)
+  if (batchCopy)
   {
     v27 = +[IMContactStore sharedInstance];
     [v27 setBatchFetchingCompleted];
@@ -1767,32 +1767,32 @@ LABEL_41:
   }
 }
 
-- (id)batchFetchContactsWithoutCachingForIdentifiers:(id)a3
+- (id)batchFetchContactsWithoutCachingForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[IMContactStore keysForCNContact];
   v6 = [objc_alloc(+[IMContactStore IMCNContactFetchRequestClass](IMContactStore "IMCNContactFetchRequestClass"))];
   [v6 setUnifyResults:1];
-  v7 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:v4];
+  v7 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:identifiersCopy];
 
   [v6 setPredicate:v7];
   contactStore = self->_contactStore;
   v15 = 0;
   v9 = [(CNContactStore *)contactStore executeFetchRequest:v6 error:&v15];
-  v10 = [v9 value];
+  value = [v9 value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 allValues];
+    allValues = [value allValues];
 LABEL_5:
-    v12 = v11;
+    v12 = allValues;
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    allValues = value;
     goto LABEL_5;
   }
 
@@ -1808,18 +1808,18 @@ LABEL_9:
   return v12;
 }
 
-- (void)_fetchContactsWithIdentifiers:(id)a3 usingCNID:(BOOL)a4
+- (void)_fetchContactsWithIdentifiers:(id)identifiers usingCNID:(BOOL)d
 {
-  v4 = a4;
+  dCopy = d;
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([v7 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v36 = +[IMContactStore keysForCNContact];
     v8 = [objc_alloc(+[IMContactStore IMCNContactFetchRequestClass](IMContactStore "IMCNContactFetchRequestClass"))];
     [v8 setUnifyResults:0];
     v9 = IMOSLoggingEnabled();
-    if (v4)
+    if (dCopy)
     {
       if (v9)
       {
@@ -1831,7 +1831,7 @@ LABEL_9:
         }
       }
 
-      v11 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:v7];
+      v11 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:identifiersCopy];
     }
 
     else
@@ -1846,14 +1846,14 @@ LABEL_9:
         }
       }
 
-      v11 = [qword_1ED8CA180 predicateForContactsMatchingHandleStrings:v7];
+      v11 = [qword_1ED8CA180 predicateForContactsMatchingHandleStrings:identifiersCopy];
     }
 
     v14 = v11;
     [v8 setPredicate:v11];
-    if ((IMIsRunningInUnitTesting() & v4) == 1)
+    if ((IMIsRunningInUnitTesting() & dCopy) == 1)
     {
-      objc_storeStrong(&self->_CNIDsForBatchFetch, a3);
+      objc_storeStrong(&self->_CNIDsForBatchFetch, identifiers);
     }
 
     v15 = objc_alloc_init(MEMORY[0x1E69A6170]);
@@ -1862,7 +1862,7 @@ LABEL_9:
     v37 = 0;
     v17 = [(CNContactStore *)contactStore executeFetchRequest:v8 error:&v37];
     v35 = v37;
-    v18 = [v17 value];
+    value = [v17 value];
     [v15 stopTimingForKey:@"Contacts Batch Fetch"];
     if (IMOSLoggingEnabled())
     {
@@ -1876,15 +1876,15 @@ LABEL_9:
       }
     }
 
-    if (v18)
+    if (value)
     {
       if (IMOSLoggingEnabled())
       {
         v21 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = [v18 count];
-          v23 = [v7 count];
+          v22 = [value count];
+          v23 = [identifiersCopy count];
           *buf = 134218240;
           v39 = v22;
           v40 = 2048;
@@ -1896,32 +1896,32 @@ LABEL_9:
       [IMContactStore logContactFetchRequestResults:v17];
       v24 = objc_alloc_init(MEMORY[0x1E69A6170]);
       [v24 startTimingForKey:@"Contacts Caching"];
-      v25 = [v17 value];
+      value2 = [v17 value];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v27 = [v18 allValues];
-        [(IMContactStore *)self _cacheBatchFetchResults:v27 handleIDsWithoutCNID:v7];
+        allValues = [value allValues];
+        [(IMContactStore *)self _cacheBatchFetchResults:allValues handleIDsWithoutCNID:identifiersCopy];
       }
 
       else
       {
-        v28 = [v17 value];
+        value3 = [v17 value];
         objc_opt_class();
         v29 = objc_opt_isKindOfClass();
 
         if (v29)
         {
-          [(IMContactStore *)self _cacheBatchFetchResults:v18 handleIDsWithoutCNID:v7];
+          [(IMContactStore *)self _cacheBatchFetchResults:value handleIDsWithoutCNID:identifiersCopy];
         }
       }
 
       if (IMAdditionalContactsLoggingEnabled())
       {
-        v30 = [(IMContactStore *)self getIDToCNContactMap];
-        [IMContactStore logDictionary:v30];
+        getIDToCNContactMap = [(IMContactStore *)self getIDToCNContactMap];
+        [IMContactStore logDictionary:getIDToCNContactMap];
       }
 
       [v24 stopTimingForKey:@"Contacts Caching"];
@@ -1951,8 +1951,8 @@ LABEL_9:
 
     if ((IMIsRunningInUnitTesting() & 1) == 0)
     {
-      v34 = [v17 currentHistoryToken];
-      [(IMContactStore *)self setCurrentHistoryToken:v34];
+      currentHistoryToken = [v17 currentHistoryToken];
+      [(IMContactStore *)self setCurrentHistoryToken:currentHistoryToken];
     }
   }
 
@@ -1967,13 +1967,13 @@ LABEL_9:
   }
 }
 
-- (void)setCurrentHistoryToken:(id)a3
+- (void)setCurrentHistoryToken:(id)token
 {
-  v4 = a3;
-  v5 = [(IMContactStore *)self currentHistoryToken];
-  [IMContactStore logHistoryToken:v5];
+  tokenCopy = token;
+  currentHistoryToken = [(IMContactStore *)self currentHistoryToken];
+  [IMContactStore logHistoryToken:currentHistoryToken];
 
-  if (v4)
+  if (tokenCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1981,10 +1981,10 @@ LABEL_9:
     block[2] = sub_1A86A4250;
     block[3] = &unk_1E78260F0;
     block[4] = self;
-    v11 = v4;
+    v11 = tokenCopy;
     dispatch_sync(queue, block);
-    v7 = [(IMContactStore *)self currentHistoryToken];
-    [IMContactStore logHistoryToken:v7];
+    currentHistoryToken2 = [(IMContactStore *)self currentHistoryToken];
+    [IMContactStore logHistoryToken:currentHistoryToken2];
   }
 
   else if (IMOSLoggingEnabled())
@@ -1998,18 +1998,18 @@ LABEL_9:
   }
 }
 
-- (id)fetchCNContactForHandleID:(id)a3 withKeys:(id)a4
+- (id)fetchCNContactForHandleID:(id)d withKeys:(id)keys
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length])
+  dCopy = d;
+  keysCopy = keys;
+  if (![dCopy length])
   {
     v4 = 0;
     goto LABEL_67;
   }
 
-  v9 = [IMContactStore validateAndCleanupID:v7];
+  v9 = [IMContactStore validateAndCleanupID:dCopy];
   if (IMAdditionalContactsLoggingEnabled() && IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -2024,7 +2024,7 @@ LABEL_9:
   if ([v9 length]&& (MEMORY[0x1AC570A30](v9) & 1) == 0)
   {
     v11 = [(IMContactStore *)self getContactForID:v9];
-    if ([v11 areKeysAvailable:v8])
+    if ([v11 areKeysAvailable:keysCopy])
     {
 LABEL_12:
       v11 = v11;
@@ -2036,7 +2036,7 @@ LABEL_65:
 
     if (IMIsRunningInMessages() && ![(IMContactStore *)self isBatchFetchingForLaunchCompleted])
     {
-      v20 = [v11 areKeysAvailable:v8];
+      v20 = [v11 areKeysAvailable:keysCopy];
       v21 = IMOSLoggingEnabled();
       if (v20)
       {
@@ -2074,8 +2074,8 @@ LABEL_65:
       {
         v34 = [IMContactStore predicateForID:v9];
         v12 = +[IMContactStore keysForCNContact];
-        v33 = [v8 arrayByExcludingObjectsInArray:v12];
-        if (v8 && v33)
+        v33 = [keysCopy arrayByExcludingObjectsInArray:v12];
+        if (keysCopy && v33)
         {
           v13 = [v12 arrayByAddingObjectsFromArray:?];
 
@@ -2173,9 +2173,9 @@ LABEL_54:
         if (v4)
         {
           v26 = +[IMUnlockMonitor sharedInstance];
-          v27 = [v26 isUnderFirstDataProtectionLock];
+          isUnderFirstDataProtectionLock = [v26 isUnderFirstDataProtectionLock];
 
-          if ((v27 & 1) == 0)
+          if ((isUnderFirstDataProtectionLock & 1) == 0)
           {
             [(IMContactStore *)self addContact:v4 withID:v9];
             v18 = 0;
@@ -2226,21 +2226,21 @@ LABEL_67:
   return v4;
 }
 
-- (id)completedContact:(id)a3 withKeys:(id)a4
+- (id)completedContact:(id)contact withKeys:(id)keys
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  contactCopy = contact;
+  keysCopy = keys;
+  if (!contactCopy)
   {
 LABEL_13:
     v8 = 0;
     goto LABEL_20;
   }
 
-  if ([v6 areKeysAvailable:v7])
+  if ([contactCopy areKeysAvailable:keysCopy])
   {
-    v8 = v6;
+    v8 = contactCopy;
     goto LABEL_20;
   }
 
@@ -2259,13 +2259,13 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = [v6 availableKeyDescriptor];
-  v36[0] = v9;
+  availableKeyDescriptor = [contactCopy availableKeyDescriptor];
+  v36[0] = availableKeyDescriptor;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
 
-  if (v7)
+  if (keysCopy)
   {
-    v11 = [v10 arrayByAddingObjectsFromArray:v7];
+    v11 = [v10 arrayByAddingObjectsFromArray:keysCopy];
 
     v10 = v11;
   }
@@ -2273,8 +2273,8 @@ LABEL_13:
   v12 = [objc_alloc(+[IMContactStore IMCNContactFetchRequestClass](IMContactStore "IMCNContactFetchRequestClass"))];
   [v12 setUnifyResults:0];
   v13 = MEMORY[0x1E695CD58];
-  v14 = [v6 identifier];
-  v35 = v14;
+  identifier = [contactCopy identifier];
+  v35 = identifier;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
   v16 = [v13 predicateForContactsWithIdentifiers:v15];
   [v12 setPredicate:v16];
@@ -2293,9 +2293,9 @@ LABEL_13:
   v23[2] = sub_1A86A4DFC;
   v23[3] = &unk_1E78294A0;
   v23[4] = self;
-  LOBYTE(v14) = [(CNContactStore *)contactStore enumerateContactsWithFetchRequest:v12 error:&v24 usingBlock:v23];
+  LOBYTE(identifier) = [(CNContactStore *)contactStore enumerateContactsWithFetchRequest:v12 error:&v24 usingBlock:v23];
   v18 = v24;
-  if (v14)
+  if (identifier)
   {
     v8 = *(v26 + 5);
   }
@@ -2307,9 +2307,9 @@ LABEL_13:
       v20 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [v6 identifier];
+        identifier2 = [contactCopy identifier];
         *v31 = 138412546;
-        v32 = v21;
+        v32 = identifier2;
         v33 = 2112;
         v34 = v18;
         _os_log_impl(&dword_1A85E5000, v20, OS_LOG_TYPE_INFO, "Failed to complete contact for contact id: %@, error: %@", v31, 0x16u);
@@ -2325,11 +2325,11 @@ LABEL_20:
   return v8;
 }
 
-- (id)fetchCNContactWithIdentifier:(id)a3
+- (id)fetchCNContactWithIdentifier:(id)identifier
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
 LABEL_17:
     v11 = 0;
@@ -2353,7 +2353,7 @@ LABEL_17:
 
   v5 = +[IMContactStore keysForCNContact];
   v6 = MEMORY[0x1E695CD58];
-  v23[0] = v4;
+  v23[0] = identifierCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v8 = [v6 predicateForContactsWithIdentifiers:v7];
 
@@ -2382,7 +2382,7 @@ LABEL_17:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v20 = v4;
+      v20 = identifierCopy;
       v21 = 2112;
       v22 = v12;
       _os_log_impl(&dword_1A85E5000, v15, OS_LOG_TYPE_INFO, "Identifier based Fetch failed for identifier: %@. Error: %@", buf, 0x16u);
@@ -2409,9 +2409,9 @@ LABEL_18:
   self->_batchFetchingForLaunchCompleted = 1;
 }
 
-- (void)setBatchFetchingIsCompleted:(BOOL)a3
+- (void)setBatchFetchingIsCompleted:(BOOL)completed
 {
-  v3 = a3;
+  completedCopy = completed;
   v12 = *MEMORY[0x1E69E9840];
   v5 = IMIsRunningInUnitTesting();
   v6 = IMOSLoggingEnabled();
@@ -2423,7 +2423,7 @@ LABEL_18:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v8 = @"NO";
-        if (v3)
+        if (completedCopy)
         {
           v8 = @"YES";
         }
@@ -2434,7 +2434,7 @@ LABEL_18:
       }
     }
 
-    self->_batchFetchingForLaunchCompleted = v3;
+    self->_batchFetchingForLaunchCompleted = completedCopy;
   }
 
   else if (v6)
@@ -2448,9 +2448,9 @@ LABEL_18:
   }
 }
 
-- (void)setHandleIDToCNIDMap:(id)a3
+- (void)setHandleIDToCNIDMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   if (IMAdditionalContactsLoggingEnabled())
   {
     if (IMOSLoggingEnabled())
@@ -2463,12 +2463,12 @@ LABEL_18:
       }
     }
 
-    v7 = [(IMContactStore *)self getHandleIDToCNIDMap];
-    [IMContactStore logDictionary:v7];
+    getHandleIDToCNIDMap = [(IMContactStore *)self getHandleIDToCNIDMap];
+    [IMContactStore logDictionary:getHandleIDToCNIDMap];
   }
 
   v8 = IMOSLoggingEnabled();
-  if (v5)
+  if (mapCopy)
   {
     if (v8)
     {
@@ -2480,7 +2480,7 @@ LABEL_18:
       }
     }
 
-    objc_storeStrong(&self->_handleIDToCNIDMap, a3);
+    objc_storeStrong(&self->_handleIDToCNIDMap, map);
     if (IMAdditionalContactsLoggingEnabled())
     {
       if (IMOSLoggingEnabled())
@@ -2493,29 +2493,29 @@ LABEL_18:
         }
       }
 
-      v11 = [(IMContactStore *)self getHandleIDToCNIDMap];
-      [IMContactStore logDictionary:v11];
+      getHandleIDToCNIDMap2 = [(IMContactStore *)self getHandleIDToCNIDMap];
+      [IMContactStore logDictionary:getHandleIDToCNIDMap2];
 LABEL_21:
     }
   }
 
   else if (v8)
   {
-    v11 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    getHandleIDToCNIDMap2 = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(getHandleIDToCNIDMap2, OS_LOG_TYPE_INFO))
     {
       *v12 = 0;
-      _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Error updating handleIDToCNIDMap", v12, 2u);
+      _os_log_impl(&dword_1A85E5000, getHandleIDToCNIDMap2, OS_LOG_TYPE_INFO, "Error updating handleIDToCNIDMap", v12, 2u);
     }
 
     goto LABEL_21;
   }
 }
 
-- (id)handleIDsForCNID:(id)a3
+- (id)handleIDsForCNID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v11 = 0;
     v12 = &v11;
@@ -2530,7 +2530,7 @@ LABEL_21:
     block[3] = &unk_1E78294C8;
     block[4] = self;
     v10 = &v11;
-    v9 = v4;
+    v9 = dCopy;
     dispatch_sync(queue, block);
     v6 = v12[5];
 
@@ -2545,11 +2545,11 @@ LABEL_21:
   return v6;
 }
 
-- (void)removeIDFromCNIDToHandleIDsMap:(id)a3 withCNID:(id)a4
+- (void)removeIDFromCNIDToHandleIDsMap:(id)map withCNID:(id)d
 {
-  v12 = a3;
-  v6 = a4;
-  if ([v12 length] && objc_msgSend(v6, "length"))
+  mapCopy = map;
+  dCopy = d;
+  if ([mapCopy length] && objc_msgSend(dCopy, "length"))
   {
     CNIDToHandleIDsMap = self->_CNIDToHandleIDsMap;
     if (!CNIDToHandleIDsMap)
@@ -2558,8 +2558,8 @@ LABEL_21:
       CNIDToHandleIDsMap = self->_CNIDToHandleIDsMap;
     }
 
-    v8 = [(NSMutableDictionary *)CNIDToHandleIDsMap objectForKey:v6];
-    v9 = [IMContactStore validateAndCleanupID:v12];
+    v8 = [(NSMutableDictionary *)CNIDToHandleIDsMap objectForKey:dCopy];
+    v9 = [IMContactStore validateAndCleanupID:mapCopy];
     if ([v8 count] && objc_msgSend(v8, "containsObject:", v9))
     {
       [v8 removeObject:v9];
@@ -2569,21 +2569,21 @@ LABEL_21:
     v11 = self->_CNIDToHandleIDsMap;
     if (v10)
     {
-      [(NSMutableDictionary *)v11 setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)v11 setObject:v8 forKey:dCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)v11 removeObjectForKey:v6];
+      [(NSMutableDictionary *)v11 removeObjectForKey:dCopy];
     }
   }
 }
 
-- (void)addIDToCNIDToHandleIDsMap:(id)a3 withCNID:(id)a4
+- (void)addIDToCNIDToHandleIDsMap:(id)map withCNID:(id)d
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 length] && objc_msgSend(v6, "length"))
+  mapCopy = map;
+  dCopy = d;
+  if ([mapCopy length] && objc_msgSend(dCopy, "length"))
   {
     CNIDToHandleIDsMap = self->_CNIDToHandleIDsMap;
     if (!CNIDToHandleIDsMap)
@@ -2592,8 +2592,8 @@ LABEL_21:
       CNIDToHandleIDsMap = self->_CNIDToHandleIDsMap;
     }
 
-    v8 = [(NSMutableDictionary *)CNIDToHandleIDsMap objectForKey:v6];
-    v9 = [IMContactStore validateAndCleanupID:v11];
+    v8 = [(NSMutableDictionary *)CNIDToHandleIDsMap objectForKey:dCopy];
+    v9 = [IMContactStore validateAndCleanupID:mapCopy];
     if (![v8 count])
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2608,19 +2608,19 @@ LABEL_21:
 
     if (v8)
     {
-      [(NSMutableDictionary *)self->_CNIDToHandleIDsMap setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)self->_CNIDToHandleIDsMap setObject:v8 forKey:dCopy];
     }
   }
 }
 
-- (BOOL)isIDAKnownContact:(id)a3
+- (BOOL)isIDAKnownContact:(id)contact
 {
-  v4 = a3;
-  if ([v4 length])
+  contactCopy = contact;
+  if ([contactCopy length])
   {
-    v5 = [IMContactStore validateAndCleanupID:v4];
-    v6 = [(IMContactStore *)self getHandleIDToCNIDMap];
-    v7 = [v6 objectForKey:v5];
+    v5 = [IMContactStore validateAndCleanupID:contactCopy];
+    getHandleIDToCNIDMap = [(IMContactStore *)self getHandleIDToCNIDMap];
+    v7 = [getHandleIDToCNIDMap objectForKey:v5];
 
     if (v7 && [v7 length])
     {
@@ -2650,18 +2650,18 @@ LABEL_21:
   return v8;
 }
 
-- (id)cnContactIdentifierForID:(id)a3
+- (id)cnContactIdentifierForID:(id)d
 {
-  v4 = a3;
-  if (![v4 length])
+  dCopy = d;
+  if (![dCopy length])
   {
-    v9 = 0;
+    identifier = 0;
     goto LABEL_14;
   }
 
-  v5 = [IMContactStore validateAndCleanupID:v4];
-  v6 = [(IMContactStore *)self getHandleIDToCNIDMap];
-  v7 = [v6 objectForKey:v5];
+  v5 = [IMContactStore validateAndCleanupID:dCopy];
+  getHandleIDToCNIDMap = [(IMContactStore *)self getHandleIDToCNIDMap];
+  v7 = [getHandleIDToCNIDMap objectForKey:v5];
 
   if (v7 && [v7 length])
   {
@@ -2683,24 +2683,24 @@ LABEL_9:
       v10 = v7;
     }
 
-    v9 = v10;
+    identifier = v10;
     goto LABEL_13;
   }
 
-  v9 = [v8 identifier];
+  identifier = [v8 identifier];
 
 LABEL_13:
 LABEL_14:
 
-  return v9;
+  return identifier;
 }
 
-- (BOOL)isContactWithIDAlreadyFetched:(id)a3
+- (BOOL)isContactWithIDAlreadyFetched:(id)fetched
 {
-  v4 = a3;
-  if ([v4 length])
+  fetchedCopy = fetched;
+  if ([fetchedCopy length])
   {
-    v5 = [(IMContactStore *)self getContactForID:v4];
+    v5 = [(IMContactStore *)self getContactForID:fetchedCopy];
     v6 = v5 != 0;
   }
 
@@ -2712,17 +2712,17 @@ LABEL_14:
   return v6;
 }
 
-- (void)addContact:(id)a3 withID:(id)a4
+- (void)addContact:(id)contact withID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 length])
+  contactCopy = contact;
+  dCopy = d;
+  v8 = dCopy;
+  if (contactCopy && [dCopy length])
   {
     if (IMAdditionalContactsLoggingEnabled())
     {
-      [IMContactStore logCNContact:v6 andID:v8];
+      [IMContactStore logCNContact:contactCopy andID:v8];
     }
 
     v9 = [IMContactStore validateAndCleanupID:v8];
@@ -2734,7 +2734,7 @@ LABEL_14:
       v12[2] = sub_1A86A5DF0;
       v12[3] = &unk_1E78294F0;
       v12[4] = self;
-      v13 = v6;
+      v13 = contactCopy;
       v14 = v8;
       v15 = v9;
       dispatch_sync(queue, v12);
@@ -2753,17 +2753,17 @@ LABEL_14:
   }
 }
 
-- (id)getContactForID:(id)a3
+- (id)getContactForID:(id)d
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 length] && IMOSLoggingEnabled())
+  dCopy = d;
+  if (![dCopy length] && IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = dCopy;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Invalid ID, cannot fetch CNContact from Map.ID: %@", &buf, 0xCu);
     }
   }
@@ -2773,7 +2773,7 @@ LABEL_14:
   v26 = 0x3032000000;
   v27 = sub_1A8601F64;
   v28 = sub_1A86021A0;
-  v29 = [IMContactStore validateAndCleanupID:v4];
+  v29 = [IMContactStore validateAndCleanupID:dCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -2790,7 +2790,7 @@ LABEL_14:
     v13 = &v15;
     v11[4] = self;
     p_buf = &buf;
-    v12 = v4;
+    v12 = dCopy;
     dispatch_sync(queue, v11);
   }
 
@@ -2803,7 +2803,7 @@ LABEL_14:
       *v21 = 138412546;
       v22 = v8;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Returning Contact:%@ for ID:%@", v21, 0x16u);
     }
   }
@@ -2816,26 +2816,26 @@ LABEL_14:
   return v9;
 }
 
-- (void)removeContactWithID:(id)a3
+- (void)removeContactWithID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 length] && IMOSLoggingEnabled())
+  dCopy = d;
+  if (![dCopy length] && IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = dCopy;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Invalid ID, cannot remove CNContact from Map.ID: %@", buf, 0xCu);
     }
   }
 
-  [IMContactStore logHandleID:v4];
-  v6 = [(IMContactStore *)self getContactForID:v4];
+  [IMContactStore logHandleID:dCopy];
+  v6 = [(IMContactStore *)self getContactForID:dCopy];
   if (v6)
   {
-    v7 = [IMContactStore validateAndCleanupID:v4];
+    v7 = [IMContactStore validateAndCleanupID:dCopy];
     if ([v7 length])
     {
       queue = self->_queue;
@@ -2846,7 +2846,7 @@ LABEL_14:
       v10[4] = self;
       v11 = v7;
       v12 = v6;
-      v13 = v4;
+      v13 = dCopy;
       dispatch_sync(queue, v10);
     }
   }
@@ -2857,29 +2857,29 @@ LABEL_14:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = dCopy;
       _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "No contact in map with ID: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)replaceContact:(id)a3 withID:(id)a4
+- (void)replaceContact:(id)contact withID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 length] && IMOSLoggingEnabled())
+  contactCopy = contact;
+  dCopy = d;
+  if (![dCopy length] && IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v20 = v7;
+      v20 = dCopy;
       _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Invalid ID, cannot replace CNContact from Map.ID: %@", buf, 0xCu);
     }
   }
 
-  if (!v6 && IMOSLoggingEnabled())
+  if (!contactCopy && IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -2890,12 +2890,12 @@ LABEL_14:
     }
   }
 
-  [IMContactStore logCNContact:v6 andID:v7];
-  v10 = [IMContactStore validateAndCleanupID:v7];
+  [IMContactStore logCNContact:contactCopy andID:dCopy];
+  v10 = [IMContactStore validateAndCleanupID:dCopy];
   v11 = +[IMContactStore sharedInstance];
   v12 = [v11 getContactForID:v10];
 
-  if (v6 && [v10 length])
+  if (contactCopy && [v10 length])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -2905,20 +2905,20 @@ LABEL_14:
     block[4] = self;
     v15 = v10;
     v16 = v12;
-    v17 = v6;
-    v18 = v7;
+    v17 = contactCopy;
+    v18 = dCopy;
     dispatch_sync(queue, block);
   }
 }
 
-- (void)replaceWithMutableContactForID:(id)a3
+- (void)replaceWithMutableContactForID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    [IMContactStore logHandleID:v4];
-    v5 = [IMContactStore validateAndCleanupID:v4];
+    [IMContactStore logHandleID:dCopy];
+    v5 = [IMContactStore validateAndCleanupID:dCopy];
     if ([v5 length])
     {
       v6 = [objc_opt_class() createMutableContactWithID:v5];
@@ -2933,7 +2933,7 @@ LABEL_14:
         v10[4] = self;
         v11 = v5;
         v12 = v6;
-        v13 = v4;
+        v13 = dCopy;
         dispatch_sync(queue, v10);
       }
 
@@ -2954,7 +2954,7 @@ LABEL_14:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = dCopy;
       _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Invalid ID, cannot replace CNContact from Map.ID: %@", buf, 0xCu);
     }
   }
@@ -2982,11 +2982,11 @@ LABEL_14:
   return v3;
 }
 
-- (void)addEntriesToIDToCNContactMap:(id)a3
+- (void)addEntriesToIDToCNContactMap:(id)map
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  mapCopy = map;
+  v5 = mapCopy;
+  if (mapCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -2994,7 +2994,7 @@ LABEL_14:
     v7[2] = sub_1A86A6D6C;
     v7[3] = &unk_1E78260F0;
     v7[4] = self;
-    v8 = v4;
+    v8 = mapCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -3002,9 +3002,9 @@ LABEL_14:
 - (void)_startObservingAcceptedContactChanges
 {
   v3 = +[IMFeatureFlags sharedFeatureFlags];
-  v4 = [v3 isIntroductionsEnabled];
+  isIntroductionsEnabled = [v3 isIntroductionsEnabled];
 
-  if (v4)
+  if (isIntroductionsEnabled)
   {
     objc_initWeak(&location, self);
     v7 = MEMORY[0x1E69E9820];
@@ -3015,18 +3015,18 @@ LABEL_14:
     v5 = [IMAcceptedContactsChangeNotifier notifierWithBlock:&v7];
     [(IMContactStore *)self setAcceptedContactsChangeNotifier:v5, v7, v8, v9, v10];
 
-    v6 = [(IMContactStore *)self acceptedContactsChangeNotifier];
-    [v6 startObserving];
+    acceptedContactsChangeNotifier = [(IMContactStore *)self acceptedContactsChangeNotifier];
+    [acceptedContactsChangeNotifier startObserving];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)contactStoreChanged:(id)a3
+- (void)contactStoreChanged:(id)changed
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   if (IMIsRunningInMessages())
   {
     if (![(IMContactStore *)self isBatchFetchingForLaunchCompleted]&& !IMIsRunningInMessagesExtension())
@@ -3051,14 +3051,14 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [changedCopy userInfo];
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v6;
+      v9 = userInfo;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Received ContactStore change notification. User Info:%@", &v8, 0xCu);
     }
   }
@@ -3076,10 +3076,10 @@ LABEL_14:
   MEMORY[0x1EEE66B58](self, sel_setShouldSkipMeContactLookup_);
 }
 
-- (void)meCardChanged:(id)a3
+- (void)meCardChanged:(id)changed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = +[IMContactStore _shouldAllowContactStoreLookup];
   v6 = IMOSLoggingEnabled();
   if (v5)
@@ -3104,7 +3104,7 @@ LABEL_14:
       }
     }
 
-    v9 = [v4 userInfo];
+    userInfo = [changedCopy userInfo];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     if (v10 - self->_lastMeContactStoreSync >= 0.5)
     {
@@ -3121,7 +3121,7 @@ LABEL_14:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           v15 = 138412290;
-          v16 = v9;
+          v16 = userInfo;
           _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Ignoring MeCard ContactStore change notification. userinfo:%@", &v15, 0xCu);
         }
       }
@@ -3132,7 +3132,7 @@ LABEL_14:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v15 = 138412290;
-          v16 = v9;
+          v16 = userInfo;
           _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Ignoring MeCard ContactStore change notification. userinfo:%@", &v15, 0xCu);
         }
       }
@@ -3145,11 +3145,11 @@ LABEL_24:
 
   if (v6)
   {
-    v9 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    userInfo = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_INFO))
     {
       LOWORD(v15) = 0;
-      _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Not handling me card change notification in non Messages processes", &v15, 2u);
+      _os_log_impl(&dword_1A85E5000, userInfo, OS_LOG_TYPE_INFO, "Not handling me card change notification in non Messages processes", &v15, 2u);
     }
 
     goto LABEL_24;
@@ -3158,30 +3158,30 @@ LABEL_24:
 LABEL_25:
 }
 
-- (id)fetchMeContactWithKeys:(id)a3
+- (id)fetchMeContactWithKeys:(id)keys
 {
   v5 = 0;
-  v3 = [(IMContactStore *)self fetchMeContactWithKeys:a3 withError:&v5];
+  v3 = [(IMContactStore *)self fetchMeContactWithKeys:keys withError:&v5];
 
   return v3;
 }
 
-- (id)fetchMeContactWithKeys:(id)a3 withError:(id *)a4
+- (id)fetchMeContactWithKeys:(id)keys withError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keysCopy = keys;
   if (+[IMContactStore _shouldAllowContactStoreLookup])
   {
     if (!self->_shouldSkipMeContactLookup)
     {
       meContact = self->_meContact;
-      if (!meContact || ![(CNContact *)meContact areKeysAvailable:v6])
+      if (!meContact || ![(CNContact *)meContact areKeysAvailable:keysCopy])
       {
-        if (![v6 count])
+        if (![keysCopy count])
         {
           v8 = +[IMContactStore keysForMeContact];
 
-          v6 = v8;
+          keysCopy = v8;
         }
 
         v9 = [objc_alloc(+[IMContactStore IMCNContactFetchRequestClass](IMContactStore "IMCNContactFetchRequestClass"))];
@@ -3191,7 +3191,7 @@ LABEL_25:
         v25 = 0;
         v12 = [(CNContactStore *)contactStore executeFetchRequest:v9 error:&v25];
         v13 = v25;
-        v14 = [v12 value];
+        value = [v12 value];
         if (v13)
         {
           if (IMOSLoggingEnabled())
@@ -3205,24 +3205,24 @@ LABEL_25:
             }
           }
 
-          if (a4)
+          if (error)
           {
             v16 = v13;
-            *a4 = v13;
+            *error = v13;
           }
         }
 
         else
         {
-          v19 = [v12 currentHistoryToken];
-          [(IMContactStore *)self setCurrentHistoryToken:v19];
+          currentHistoryToken = [v12 currentHistoryToken];
+          [(IMContactStore *)self setCurrentHistoryToken:currentHistoryToken];
         }
 
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
         self->_lastMeContactStoreSync = v20;
-        v21 = [v14 firstObject];
+        firstObject = [value firstObject];
         v22 = self->_meContact;
-        self->_meContact = v21;
+        self->_meContact = firstObject;
 
         v23 = v13 != 0;
         if (self->_meContact)
@@ -3278,18 +3278,18 @@ LABEL_25:
   block[4] = self;
   dispatch_sync(queue, block);
   [(IMContactStore *)self setCurrentHistoryToken:0];
-  v5 = [(IMContactStore *)self getIDToCNContactMap];
-  [IMContactStore logDictionary:v5];
+  getIDToCNContactMap = [(IMContactStore *)self getIDToCNContactMap];
+  [IMContactStore logDictionary:getIDToCNContactMap];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:IMContactStoreChangedNotification object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:IMContactStoreChangedNotification object:0];
 }
 
 - (void)checkForContactStoreChanges
 {
   v3 = objc_alloc_init(+[IMContactStore IMCNChangeHistoryFetchRequestClass]);
-  v4 = [(IMContactStore *)self currentHistoryToken];
-  [v3 setStartingToken:v4];
+  currentHistoryToken = [(IMContactStore *)self currentHistoryToken];
+  [v3 setStartingToken:currentHistoryToken];
 
   [v3 setShouldUnifyResults:0];
   v5 = +[IMContactStore keysForCNContact];
@@ -3305,11 +3305,11 @@ LABEL_25:
     }
   }
 
-  v7 = [(IMContactStore *)self getIDToCNContactMap];
-  [IMContactStore logDictionary:v7];
+  getIDToCNContactMap = [(IMContactStore *)self getIDToCNContactMap];
+  [IMContactStore logDictionary:getIDToCNContactMap];
 
-  v8 = [(IMContactStore *)self currentHistoryToken];
-  [IMContactStore logHistoryToken:v8];
+  currentHistoryToken2 = [(IMContactStore *)self currentHistoryToken];
+  [IMContactStore logHistoryToken:currentHistoryToken2];
 
   changeHistoryFetchQueue = self->_changeHistoryFetchQueue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -3322,10 +3322,10 @@ LABEL_25:
   dispatch_async(changeHistoryFetchQueue, v11);
 }
 
-+ (id)displayNameWithCNNickNameOrFullNameOrCompanyNameOrAbbreviatedForContact:(id)a3
++ (id)displayNameWithCNNickNameOrFullNameOrCompanyNameOrAbbreviatedForContact:(id)contact
 {
-  v3 = a3;
-  if (!v3)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     v4 = 0;
     goto LABEL_14;
@@ -3333,17 +3333,17 @@ LABEL_25:
 
   if (+[IMContactStore shouldShowNickNames])
   {
-    v4 = [IMContactStore nickNameForCNContact:v3];
+    v4 = [IMContactStore nickNameForCNContact:contactCopy];
     if ([v4 length])
     {
       goto LABEL_14;
     }
   }
 
-  v4 = [IMContactStore fullNameForCNContact:v3];
+  v4 = [IMContactStore fullNameForCNContact:contactCopy];
   if (![v4 length])
   {
-    v5 = [IMContactStore companyNameForCNContact:v3];
+    v5 = [IMContactStore companyNameForCNContact:contactCopy];
     if ([v5 length])
     {
       v6 = v5;
@@ -3355,7 +3355,7 @@ LABEL_13:
 
     if ((IMIsRunningInCarousel() & 1) == 0)
     {
-      v6 = [IMContactStore abbreviatedNameForCNContact:v3];
+      v6 = [IMContactStore abbreviatedNameForCNContact:contactCopy];
       if ([v6 length])
       {
         goto LABEL_13;
@@ -3371,29 +3371,29 @@ LABEL_14:
   return v4;
 }
 
-+ (id)displayNameWithPhoneNumberOrEmailForContact:(id)a3
++ (id)displayNameWithPhoneNumberOrEmailForContact:(id)contact
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  contactCopy = contact;
+  v4 = contactCopy;
+  if (contactCopy)
   {
-    v5 = [v3 phoneNumbers];
-    if ([v5 count])
+    phoneNumbers = [contactCopy phoneNumbers];
+    if ([phoneNumbers count])
     {
-      v6 = [v5 firstObject];
-      v7 = [v6 value];
-      v8 = [v7 stringValue];
+      firstObject = [phoneNumbers firstObject];
+      value = [firstObject value];
+      stringValue = [value stringValue];
 
       v9 = IMFormattedDisplayStringForNumber();
     }
 
     else
     {
-      v8 = [v4 emailAddresses];
-      if ([v8 count])
+      stringValue = [v4 emailAddresses];
+      if ([stringValue count])
       {
-        v10 = [v8 firstObject];
-        v11 = [v10 value];
+        firstObject2 = [stringValue firstObject];
+        value2 = [firstObject2 value];
 
         v9 = IMFormattedDisplayStringForNumber();
       }
@@ -3413,11 +3413,11 @@ LABEL_14:
   return v9;
 }
 
-+ (id)displayNameForContact:(id)a3
++ (id)displayNameForContact:(id)contact
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -3438,10 +3438,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v5 = [a1 displayNameWithCNNickNameOrFullNameOrCompanyNameOrAbbreviatedForContact:v4];
+  v5 = [self displayNameWithCNNickNameOrFullNameOrCompanyNameOrAbbreviatedForContact:contactCopy];
   if (!v5)
   {
-    v5 = [a1 displayNameWithPhoneNumberOrEmailForContact:v4];
+    v5 = [self displayNameWithPhoneNumberOrEmailForContact:contactCopy];
     if (!v5)
     {
       if (IMOSLoggingEnabled())
@@ -3450,7 +3450,7 @@ LABEL_12:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           v9 = 138412290;
-          v10 = v4;
+          v10 = contactCopy;
           _os_log_impl(&dword_1A85E5000, v6, OS_LOG_TYPE_INFO, "A display name for the given contact could not be generated for :%@", &v9, 0xCu);
         }
 
@@ -3468,14 +3468,14 @@ LABEL_13:
   return v5;
 }
 
-+ (id)firstNameForCNContact:(id)a3
++ (id)firstNameForCNContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v3 = [a3 givenName];
-    if ([v3 length])
+    givenName = [contact givenName];
+    if ([givenName length])
     {
-      v4 = v3;
+      v4 = givenName;
     }
 
     else
@@ -3492,14 +3492,14 @@ LABEL_13:
   return v4;
 }
 
-+ (id)lastNameForCNContact:(id)a3
++ (id)lastNameForCNContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v3 = [a3 familyName];
-    if ([v3 length])
+    familyName = [contact familyName];
+    if ([familyName length])
     {
-      v4 = v3;
+      v4 = familyName;
     }
 
     else
@@ -3516,14 +3516,14 @@ LABEL_13:
   return v4;
 }
 
-+ (id)phoneticFirstNameForCNContact:(id)a3
++ (id)phoneticFirstNameForCNContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v3 = [a3 phoneticGivenName];
-    if ([v3 length])
+    phoneticGivenName = [contact phoneticGivenName];
+    if ([phoneticGivenName length])
     {
-      v4 = v3;
+      v4 = phoneticGivenName;
     }
 
     else
@@ -3540,14 +3540,14 @@ LABEL_13:
   return v4;
 }
 
-+ (id)phoneticLastNameForCNContact:(id)a3
++ (id)phoneticLastNameForCNContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v3 = [a3 phoneticFamilyName];
-    if ([v3 length])
+    phoneticFamilyName = [contact phoneticFamilyName];
+    if ([phoneticFamilyName length])
     {
-      v4 = v3;
+      v4 = phoneticFamilyName;
     }
 
     else
@@ -3564,12 +3564,12 @@ LABEL_13:
   return v4;
 }
 
-+ (id)phoneticFullNameForCNContact:(id)a3
++ (id)phoneticFullNameForCNContact:(id)contact
 {
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v4 = [objc_opt_class() _stringFromContact:v3 withStyle:1];
+    v4 = [objc_opt_class() _stringFromContact:contactCopy withStyle:1];
     if ([v4 length])
     {
       v5 = v4;
@@ -3577,7 +3577,7 @@ LABEL_13:
 
     else
     {
-      v5 = [IMContactStore phoneticFirstNameForCNContact:v3];
+      v5 = [IMContactStore phoneticFirstNameForCNContact:contactCopy];
     }
 
     v6 = v5;
@@ -3591,12 +3591,12 @@ LABEL_13:
   return v6;
 }
 
-+ (id)fullNameForCNContact:(id)a3
++ (id)fullNameForCNContact:(id)contact
 {
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v4 = [objc_opt_class() _stringFromContact:v3 withStyle:0];
+    v4 = [objc_opt_class() _stringFromContact:contactCopy withStyle:0];
     if ([v4 length])
     {
       v5 = v4;
@@ -3604,7 +3604,7 @@ LABEL_13:
 
     else
     {
-      v5 = [IMContactStore firstNameForCNContact:v3];
+      v5 = [IMContactStore firstNameForCNContact:contactCopy];
     }
 
     v6 = v5;
@@ -3633,12 +3633,12 @@ LABEL_13:
   return v3;
 }
 
-+ (id)_stringFromContact:(id)a3 withStyle:(int64_t)a4
++ (id)_stringFromContact:(id)contact withStyle:(int64_t)style
 {
-  v5 = a3;
-  v6 = [v5 identifier];
+  contactCopy = contact;
+  identifier = [contactCopy identifier];
 
-  if (v6)
+  if (identifier)
   {
     v14 = 0;
     v15 = &v14;
@@ -3651,27 +3651,27 @@ LABEL_13:
     aBlock[2] = sub_1A86A8890;
     aBlock[3] = &unk_1E7829568;
     v12 = &v14;
-    v13 = a4;
-    v11 = v5;
+    styleCopy = style;
+    v11 = contactCopy;
     v7 = _Block_copy(aBlock);
     v8 = +[IMContactStore IMContactStoreQueue];
     dispatch_sync(v8, v7);
 
-    v6 = v15[5];
+    identifier = v15[5];
     _Block_object_dispose(&v14, 8);
   }
 
-  return v6;
+  return identifier;
 }
 
-+ (id)companyNameForCNContact:(id)a3
++ (id)companyNameForCNContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v3 = [a3 organizationName];
-    if ([v3 length])
+    organizationName = [contact organizationName];
+    if ([organizationName length])
     {
-      v4 = v3;
+      v4 = organizationName;
     }
 
     else
@@ -3688,14 +3688,14 @@ LABEL_13:
   return v4;
 }
 
-+ (id)nickNameForCNContact:(id)a3
++ (id)nickNameForCNContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v3 = [a3 nickname];
-    if ([v3 length])
+    nickname = [contact nickname];
+    if ([nickname length])
     {
-      v4 = v3;
+      v4 = nickname;
     }
 
     else
@@ -3712,12 +3712,12 @@ LABEL_13:
   return v4;
 }
 
-+ (id)abbreviatedNameForCNContact:(id)a3
++ (id)abbreviatedNameForCNContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v3 = a3;
-    v4 = [objc_opt_class() _stringFromContact:v3 withStyle:1000];
+    contactCopy = contact;
+    v4 = [objc_opt_class() _stringFromContact:contactCopy withStyle:1000];
 
     if ([v4 length])
     {
@@ -3738,19 +3738,19 @@ LABEL_13:
   return v5;
 }
 
-+ (id)IDsFromCNContact:(id)a3
++ (id)IDsFromCNContact:(id)contact
 {
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [IMContactStore phoneNumbersForCNContact:v3];
+    v5 = [IMContactStore phoneNumbersForCNContact:contactCopy];
     if ([v5 count])
     {
       [v4 addObjectsFromArray:v5];
     }
 
-    v6 = [IMContactStore emailsForCNContact:v3];
+    v6 = [IMContactStore emailsForCNContact:contactCopy];
     if ([v6 count])
     {
       [v4 addObjectsFromArray:v6];
@@ -3767,21 +3767,21 @@ LABEL_13:
   return v7;
 }
 
-+ (id)emailsForCNContact:(id)a3
++ (id)emailsForCNContact:(id)contact
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [v3 emailAddresses];
-    if ([v5 count])
+    emailAddresses = [contactCopy emailAddresses];
+    if ([emailAddresses count])
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v6 = v5;
+      v6 = emailAddresses;
       v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
@@ -3796,10 +3796,10 @@ LABEL_13:
               objc_enumerationMutation(v6);
             }
 
-            v11 = [*(*(&v14 + 1) + 8 * i) value];
-            if ([v11 length])
+            value = [*(*(&v14 + 1) + 8 * i) value];
+            if ([value length])
             {
-              [v4 addObject:v11];
+              [v4 addObject:value];
             }
           }
 
@@ -3821,21 +3821,21 @@ LABEL_13:
   return v12;
 }
 
-+ (id)phoneNumbersForCNContact:(id)a3
++ (id)phoneNumbersForCNContact:(id)contact
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [v3 phoneNumbers];
-    if ([v5 count])
+    phoneNumbers = [contactCopy phoneNumbers];
+    if ([phoneNumbers count])
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v6 = v5;
+      v6 = phoneNumbers;
       v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
@@ -3850,12 +3850,12 @@ LABEL_13:
               objc_enumerationMutation(v6);
             }
 
-            v11 = [*(*(&v16 + 1) + 8 * i) value];
-            v12 = [v11 stringValue];
+            value = [*(*(&v16 + 1) + 8 * i) value];
+            stringValue = [value stringValue];
 
-            if ([v12 length])
+            if ([stringValue length])
             {
-              v13 = [IMContactStore validateAndCleanupID:v12];
+              v13 = [IMContactStore validateAndCleanupID:stringValue];
               if ([v13 length])
               {
                 [v4 addObject:v13];
@@ -3892,15 +3892,15 @@ LABEL_13:
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    dictionary = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v6 = v5;
+  v6 = dictionary;
 
   return v6;
 }
@@ -3930,41 +3930,41 @@ LABEL_13:
 - (id)stateDictionaryForDiagnosticsRequest
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v3 = [(IMContactStore *)self getIDToCNContactMap];
-  [IMContactStore logDictionary:v3 checkAdditionalLoggingEnabled:0];
+  getIDToCNContactMap = [(IMContactStore *)self getIDToCNContactMap];
+  [IMContactStore logDictionary:getIDToCNContactMap checkAdditionalLoggingEnabled:0];
 
-  v4 = [(IMContactStore *)self getHandleIDToCNIDMap];
-  [IMContactStore logDictionary:v4 checkAdditionalLoggingEnabled:0];
+  getHandleIDToCNIDMap = [(IMContactStore *)self getHandleIDToCNIDMap];
+  [IMContactStore logDictionary:getHandleIDToCNIDMap checkAdditionalLoggingEnabled:0];
 
   v14[0] = @"debugDescription";
   v5 = [(IMContactStore *)self debugDescription];
   v15[0] = v5;
   v14[1] = @"IDsObtainedFromDaemon";
   v6 = MEMORY[0x1E696AD98];
-  v7 = [(IMContactStore *)self getHandleIDToCNIDMap];
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+  getHandleIDToCNIDMap2 = [(IMContactStore *)self getHandleIDToCNIDMap];
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(getHandleIDToCNIDMap2, "count")}];
   v15[1] = v8;
   v14[2] = @"ContactCache";
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(IMContactStore *)self getIDToCNContactMap];
-  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+  getIDToCNContactMap2 = [(IMContactStore *)self getIDToCNContactMap];
+  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(getIDToCNContactMap2, "count")}];
   v15[2] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
   return v12;
 }
 
-+ (id)createMutableContactWithID:(id)a3
++ (id)createMutableContactWithID:(id)d
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 length] || (MEMORY[0x1AC570A30](v3) & 1) != 0)
+  dCopy = d;
+  if (![dCopy length] || (MEMORY[0x1AC570A30](dCopy) & 1) != 0)
   {
     v4 = 0;
     goto LABEL_11;
   }
 
-  v5 = MEMORY[0x1AC570A80](v3);
+  v5 = MEMORY[0x1AC570A80](dCopy);
   if ([v5 _appearsToBeEmail])
   {
     v4 = objc_alloc_init(+[IMContactStore IMCNMutableContactClass]);
@@ -3998,20 +3998,20 @@ LABEL_11:
   return v4;
 }
 
-+ (id)createMutableContactWithMapURL:(id)a3 andLocalizedLocationString:(id)a4
++ (id)createMutableContactWithMapURL:(id)l andLocalizedLocationString:(id)string
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  lCopy = l;
+  stringCopy = string;
+  if ([lCopy length] && objc_msgSend(stringCopy, "length"))
   {
     v7 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    v8 = [(objc_class *)+[IMContactStore IMCNLabeledValueClass](IMContactStore labeledValueWithLabel:"labeledValueWithLabel:value:" value:&stru_1F1BB91F0, v5];
-    v11[0] = v8;
+    lCopy = [(objc_class *)+[IMContactStore IMCNLabeledValueClass](IMContactStore labeledValueWithLabel:"labeledValueWithLabel:value:" value:&stru_1F1BB91F0, lCopy];
+    v11[0] = lCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     [v7 setUrlAddresses:v9];
 
-    [v7 setGivenName:v6];
+    [v7 setGivenName:stringCopy];
   }
 
   else
@@ -4022,13 +4022,13 @@ LABEL_11:
   return v7;
 }
 
-+ (id)predicateForID:(id)a3
++ (id)predicateForID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v4 = MEMORY[0x1AC570A80](v3);
+    v4 = MEMORY[0x1AC570A80](dCopy);
     if (MEMORY[0x1AC570A50]())
     {
       v5 = MEMORY[0x1E695CD58];
@@ -4091,8 +4091,8 @@ LABEL_11:
 
   if (+[IMContactStore IMCNMeCardSharingPickerViewControllerClass])
   {
-    v11 = [(objc_class *)+[IMContactStore IMCNMeCardSharingPickerViewControllerClass](IMContactStore descriptorForRequiredKeys];
-    [v9 addObject:v11];
+    descriptorForRequiredKeys = [(objc_class *)+[IMContactStore IMCNMeCardSharingPickerViewControllerClass](IMContactStore descriptorForRequiredKeys];
+    [v9 addObject:descriptorForRequiredKeys];
   }
 
   v12 = [v9 copy];
@@ -4100,11 +4100,11 @@ LABEL_11:
   return v12;
 }
 
-+ (id)dialingCodeForID:(id)a3
++ (id)dialingCodeForID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 length] || !objc_msgSend(v3, "hasPrefix:", @"+"))
+  dCopy = d;
+  if (![dCopy length] || !objc_msgSend(dCopy, "hasPrefix:", @"+"))
   {
     v7 = 0;
     goto LABEL_13;
@@ -4119,8 +4119,8 @@ LABEL_11:
       v8 = v5;
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"+"];
       v10 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
-      v11 = [v10 stringValue];
-      v7 = [v9 stringByAppendingString:v11];
+      stringValue = [v10 stringValue];
+      v7 = [v9 stringByAppendingString:stringValue];
 
       goto LABEL_12;
     }
@@ -4131,7 +4131,7 @@ LABEL_11:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v13 = 138412546;
-        v14 = v3;
+        v14 = dCopy;
         v15 = 2112;
         v16 = v4;
         _os_log_impl(&dword_1A85E5000, v6, OS_LOG_TYPE_INFO, "Could not identify an ITU Country code for ID:%@ Country Code:%@.", &v13, 0x16u);
@@ -4149,21 +4149,21 @@ LABEL_13:
 
 + (id)dialingForCurrentLocale
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x1E695D978]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
   v4 = [MEMORY[0x1E695DF58] ITUCountryCodeForISOCountryCode:v3];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"+"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
-  v7 = [v6 stringValue];
-  v8 = [v5 stringByAppendingString:v7];
+  stringValue = [v6 stringValue];
+  v8 = [v5 stringByAppendingString:stringValue];
 
   return v8;
 }
 
-+ (id)IDWithCurrentLocaleITUCode:(id)a3
++ (id)IDWithCurrentLocaleITUCode:(id)code
 {
-  v3 = a3;
-  if ([v3 length])
+  codeCopy = code;
+  if ([codeCopy length])
   {
     v4 = IMStripFormattingFromAddress();
     v5 = +[IMContactStore dialingForCurrentLocale];
@@ -4178,11 +4178,11 @@ LABEL_13:
   return v6;
 }
 
-+ (BOOL)isCNContactAKnownContact:(id)a3
++ (BOOL)isCNContactAKnownContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v3 = a3;
+    contactCopy = contact;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4197,15 +4197,15 @@ LABEL_13:
   return v5 & 1;
 }
 
-+ (id)descriptionForCNContact:(id)a3
++ (id)descriptionForCNContact:(id)contact
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  contactCopy = contact;
+  if (contactCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = [IMContactStore fullNameForCNContact:v3];
+    v5 = [IMContactStore fullNameForCNContact:contactCopy];
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [v3 identifier];
-    v4 = [v6 stringWithFormat:@"%@ : %@", v5, v7];
+    identifier = [contactCopy identifier];
+    v4 = [v6 stringWithFormat:@"%@ : %@", v5, identifier];
   }
 
   else
@@ -4216,18 +4216,18 @@ LABEL_13:
   return v4;
 }
 
-+ (id)validateAndFilterIDsForContactsBatchFetch:(id)a3
++ (id)validateAndFilterIDsForContactsBatchFetch:(id)fetch
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  fetchCopy = fetch;
+  if ([fetchCopy count])
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fetchCopy, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = fetchCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -4266,37 +4266,37 @@ LABEL_13:
   return v11;
 }
 
-+ (id)validateAndCleanupID:(id)a3
++ (id)validateAndCleanupID:(id)d
 {
-  v3 = a3;
-  if ([v3 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = MEMORY[0x1AC570A80](v3);
+    v5 = MEMORY[0x1AC570A80](dCopy);
     v6 = IMStripFormattingFromAddress();
 
-    v7 = [v6 im_stripCategoryLabel];
+    im_stripCategoryLabel = [v6 im_stripCategoryLabel];
 
-    if ([v7 length])
+    if ([im_stripCategoryLabel length])
     {
-      if (MEMORY[0x1AC570A50](v7) & 1) != 0 || (IMStringIsEmail())
+      if (MEMORY[0x1AC570A50](im_stripCategoryLabel) & 1) != 0 || (IMStringIsEmail())
       {
         v8 = 0;
       }
 
       else
       {
-        v8 = MEMORY[0x1AC570A30](v7) ^ 1;
+        v8 = MEMORY[0x1AC570A30](im_stripCategoryLabel) ^ 1;
       }
 
-      v10 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v11 = [v3 stringByTrimmingCharactersInSet:v10];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v11 = [dCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
       v12 = [v11 length];
 
       v9 = 0;
       if ((v8 & 1) == 0 && v12)
       {
-        v9 = v7;
+        v9 = im_stripCategoryLabel;
       }
     }
 
@@ -4316,13 +4316,13 @@ LABEL_13:
   return v9;
 }
 
-- (id)preferCuratedContactFromFetchResults:(id)a3
+- (id)preferCuratedContactFromFetchResults:(id)results
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] == 1)
+  resultsCopy = results;
+  if ([resultsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [resultsCopy firstObject];
   }
 
   else
@@ -4331,16 +4331,16 @@ LABEL_13:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v3;
+    v5 = resultsCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
-      v4 = 0;
+      firstObject = 0;
       v8 = *v13;
 LABEL_5:
       v9 = 0;
-      v10 = v4;
+      v10 = firstObject;
       while (1)
       {
         if (*v13 != v8)
@@ -4348,15 +4348,15 @@ LABEL_5:
           objc_enumerationMutation(v5);
         }
 
-        v4 = *(*(&v12 + 1) + 8 * v9);
+        firstObject = *(*(&v12 + 1) + 8 * v9);
 
-        if (![v4 isCoreRecentsAccepted])
+        if (![firstObject isCoreRecentsAccepted])
         {
           break;
         }
 
         ++v9;
-        v10 = v4;
+        v10 = firstObject;
         if (v7 == v9)
         {
           v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -4372,11 +4372,11 @@ LABEL_5:
 
     else
     {
-      v4 = 0;
+      firstObject = 0;
     }
   }
 
-  return v4;
+  return firstObject;
 }
 
 @end

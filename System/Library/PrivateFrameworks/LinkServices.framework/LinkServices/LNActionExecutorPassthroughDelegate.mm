@@ -1,18 +1,18 @@
 @interface LNActionExecutorPassthroughDelegate
-- (BOOL)executor:(id)a3 shouldRunShowOutputAction:(id)a4;
+- (BOOL)executor:(id)executor shouldRunShowOutputAction:(id)action;
 - (LNActionExecutorDelegate)delegate;
-- (LNActionExecutorPassthroughDelegate)initWithShowOutputActionDelegate:(id)a3 performCompletionHandler:(id)a4;
-- (void)executor:(id)a3 continueInAppWithRequest:(id)a4;
-- (void)executor:(id)a3 didCompleteExecutionWithResult:(id)a4 error:(id)a5;
-- (void)executor:(id)a3 didFinishWithResult:(id)a4 error:(id)a5;
-- (void)executor:(id)a3 didPerformActionWithResult:(id)a4 error:(id)a5;
-- (void)executor:(id)a3 environmentForViewSnippetWithCompletion:(id)a4;
-- (void)executor:(id)a3 needsActionConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsAppProtectionUnlockWithCompletionHandler:(id)a4;
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4;
-- (void)executor:(id)a3 preferredContentSizeForViewSnippetWithCompletion:(id)a4;
+- (LNActionExecutorPassthroughDelegate)initWithShowOutputActionDelegate:(id)delegate performCompletionHandler:(id)handler;
+- (void)executor:(id)executor continueInAppWithRequest:(id)request;
+- (void)executor:(id)executor didCompleteExecutionWithResult:(id)result error:(id)error;
+- (void)executor:(id)executor didFinishWithResult:(id)result error:(id)error;
+- (void)executor:(id)executor didPerformActionWithResult:(id)result error:(id)error;
+- (void)executor:(id)executor environmentForViewSnippetWithCompletion:(id)completion;
+- (void)executor:(id)executor needsActionConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsAppProtectionUnlockWithCompletionHandler:(id)handler;
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request;
+- (void)executor:(id)executor needsValueWithRequest:(id)request;
+- (void)executor:(id)executor preferredContentSizeForViewSnippetWithCompletion:(id)completion;
 @end
 
 @implementation LNActionExecutorPassthroughDelegate
@@ -24,75 +24,75 @@
   return WeakRetained;
 }
 
-- (void)executor:(id)a3 continueInAppWithRequest:(id)a4
+- (void)executor:(id)executor continueInAppWithRequest:(id)request
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  executorCopy = executor;
+  requestCopy = request;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-    [v9 executor:v10 needsContinueInAppWithRequest:v6];
+    delegate2 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+    [delegate2 executor:executorCopy needsContinueInAppWithRequest:requestCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
-    [v6 respondWithError:v9];
+    delegate2 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
+    [requestCopy respondWithError:delegate2];
   }
 }
 
-- (void)executor:(id)a3 preferredContentSizeForViewSnippetWithCompletion:(id)a4
+- (void)executor:(id)executor preferredContentSizeForViewSnippetWithCompletion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  executorCopy = executor;
+  completionCopy = completion;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-    [v9 executor:v10 preferredContentSizeForViewSnippetWithCompletion:v6];
+    delegate2 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+    [delegate2 executor:executorCopy preferredContentSizeForViewSnippetWithCompletion:completionCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)executor:(id)a3 environmentForViewSnippetWithCompletion:(id)a4
+- (void)executor:(id)executor environmentForViewSnippetWithCompletion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  executorCopy = executor;
+  completionCopy = completion;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-    [v9 executor:v10 environmentForViewSnippetWithCompletion:v6];
+    delegate2 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+    [delegate2 executor:executorCopy environmentForViewSnippetWithCompletion:completionCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (BOOL)executor:(id)a3 shouldRunShowOutputAction:(id)a4
+- (BOOL)executor:(id)executor shouldRunShowOutputAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  executorCopy = executor;
+  actionCopy = action;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-    v11 = [v10 executor:v6 shouldRunShowOutputAction:v7];
+    delegate2 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+    v11 = [delegate2 executor:executorCopy shouldRunShowOutputAction:actionCopy];
   }
 
   else
@@ -103,128 +103,128 @@
   return v11;
 }
 
-- (void)executor:(id)a3 didCompleteExecutionWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didCompleteExecutionWithResult:(id)result error:(id)error
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  executorCopy = executor;
+  resultCopy = result;
+  errorCopy = error;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-    [v12 executor:v13 didCompleteExecutionWithResult:v8 error:v9];
+    delegate2 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+    [delegate2 executor:executorCopy didCompleteExecutionWithResult:resultCopy error:errorCopy];
   }
 }
 
-- (void)executor:(id)a3 didFinishWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didFinishWithResult:(id)result error:(id)error
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  executorCopy = executor;
+  resultCopy = result;
+  errorCopy = error;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-    [v12 executor:v13 didFinishWithResult:v8 error:v9];
+    delegate2 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+    [delegate2 executor:executorCopy didFinishWithResult:resultCopy error:errorCopy];
   }
 }
 
-- (void)executor:(id)a3 didPerformActionWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didPerformActionWithResult:(id)result error:(id)error
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  executorCopy = executor;
+  resultCopy = result;
+  errorCopy = error;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-    [v12 executor:v14 didPerformActionWithResult:v8 error:v9];
+    delegate2 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+    [delegate2 executor:executorCopy didPerformActionWithResult:resultCopy error:errorCopy];
   }
 
-  v13 = [(LNActionExecutorPassthroughDelegate *)self completionHandler];
-  (v13)[2](v13, v8, v9);
+  completionHandler = [(LNActionExecutorPassthroughDelegate *)self completionHandler];
+  (completionHandler)[2](completionHandler, resultCopy, errorCopy);
 }
 
-- (void)executor:(id)a3 needsAppProtectionUnlockWithCompletionHandler:(id)a4
+- (void)executor:(id)executor needsAppProtectionUnlockWithCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  executorCopy = executor;
+  handlerCopy = handler;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-    [v9 executor:v10 needsAppProtectionUnlockWithCompletionHandler:v6];
+    delegate2 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+    [delegate2 executor:executorCopy needsAppProtectionUnlockWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)executor:(id)a3 needsActionConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsActionConfirmationWithRequest:(id)request
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  executorCopy = executor;
+  requestCopy = request;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-    [v9 executor:v10 needsActionConfirmationWithRequest:v6];
+    delegate2 = [(LNActionExecutorPassthroughDelegate *)self delegate];
+    [delegate2 executor:executorCopy needsActionConfirmationWithRequest:requestCopy];
   }
 
   else
   {
-    [v6 respondWithConfirmation:1];
+    [requestCopy respondWithConfirmation:1];
   }
 }
 
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4
+- (void)executor:(id)executor needsValueWithRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-  [v8 executor:v7 needsValueWithRequest:v6];
+  requestCopy = request;
+  executorCopy = executor;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  [delegate executor:executorCopy needsValueWithRequest:requestCopy];
 }
 
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-  [v8 executor:v7 needsDisambiguationWithRequest:v6];
+  requestCopy = request;
+  executorCopy = executor;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  [delegate executor:executorCopy needsDisambiguationWithRequest:requestCopy];
 }
 
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNActionExecutorPassthroughDelegate *)self delegate];
-  [v8 executor:v7 needsConfirmationWithRequest:v6];
+  requestCopy = request;
+  executorCopy = executor;
+  delegate = [(LNActionExecutorPassthroughDelegate *)self delegate];
+  [delegate executor:executorCopy needsConfirmationWithRequest:requestCopy];
 }
 
-- (LNActionExecutorPassthroughDelegate)initWithShowOutputActionDelegate:(id)a3 performCompletionHandler:(id)a4
+- (LNActionExecutorPassthroughDelegate)initWithShowOutputActionDelegate:(id)delegate performCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = LNActionExecutorPassthroughDelegate;
   v8 = [(LNActionExecutorPassthroughDelegate *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    v10 = _Block_copy(v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = _Block_copy(handlerCopy);
     completionHandler = v9->_completionHandler;
     v9->_completionHandler = v10;
 

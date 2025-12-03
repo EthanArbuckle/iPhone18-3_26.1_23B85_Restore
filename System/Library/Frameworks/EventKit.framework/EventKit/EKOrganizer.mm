@@ -1,29 +1,29 @@
 @interface EKOrganizer
 - (BOOL)isCurrentUser;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)scheduleAgent;
-- (void)setScheduleAgent:(int64_t)a3;
+- (void)setScheduleAgent:(int64_t)agent;
 @end
 
 @implementation EKOrganizer
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([MEMORY[0x1E6992F30] isProgramSDKAtLeast:0x7E30901FFFFFFFFLL])
   {
     v11.receiver = self;
     v11.super_class = EKOrganizer;
-    return [(EKObject *)&v11 copyWithZone:a3];
+    return [(EKObject *)&v11 copyWithZone:zone];
   }
 
   else
   {
-    v6 = [(EKParticipant *)self name];
-    v7 = [(EKParticipant *)self emailAddress];
-    v8 = [(EKParticipant *)self phoneNumber];
+    name = [(EKParticipant *)self name];
+    emailAddress = [(EKParticipant *)self emailAddress];
+    phoneNumber = [(EKParticipant *)self phoneNumber];
     v9 = [(EKParticipant *)self URL];
-    v5 = [EKOrganizer organizerWithName:v6 emailAddress:v7 phoneNumber:v8 address:v9 isCurrentUser:[(EKOrganizer *)self isCurrentUser]];
+    v5 = [EKOrganizer organizerWithName:name emailAddress:emailAddress phoneNumber:phoneNumber address:v9 isCurrentUser:[(EKOrganizer *)self isCurrentUser]];
   }
 
   return v5;
@@ -33,11 +33,11 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKParticipant *)self UUID];
-  v6 = [(EKParticipant *)self name];
-  v7 = [(EKParticipant *)self emailAddress];
-  v8 = [(EKParticipant *)self phoneNumber];
-  v9 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ name = %@; email = %@; phone = %@; isSelf = %d}", v4, self, v5, v6, v7, v8, -[EKOrganizer isCurrentUser](self, "isCurrentUser")];;
+  uUID = [(EKParticipant *)self UUID];
+  name = [(EKParticipant *)self name];
+  emailAddress = [(EKParticipant *)self emailAddress];
+  phoneNumber = [(EKParticipant *)self phoneNumber];
+  v9 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ name = %@; email = %@; phone = %@; isSelf = %d}", v4, self, uUID, name, emailAddress, phoneNumber, -[EKOrganizer isCurrentUser](self, "isCurrentUser")];;
 
   return v9;
 }
@@ -45,22 +45,22 @@
 - (BOOL)isCurrentUser
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992B28]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)scheduleAgent
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992B30]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setScheduleAgent:(int64_t)a3
+- (void)setScheduleAgent:(int64_t)agent
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:agent];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992B30]];
 }
 

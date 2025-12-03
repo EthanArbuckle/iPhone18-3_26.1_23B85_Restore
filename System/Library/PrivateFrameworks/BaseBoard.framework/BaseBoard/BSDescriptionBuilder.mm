@@ -1,55 +1,55 @@
 @interface BSDescriptionBuilder
-+ (id)builderWithClass:(Class)a3;
-+ (id)builderWithObject:(id)a3;
-+ (id)descriptionForObject:(id)a3 withObjectsAndNames:(id)a4;
-+ (id)succinctDescriptionForObject:(id)a3;
-- (BSDescriptionBuilder)initWithObject:(id)a3;
++ (id)builderWithClass:(Class)class;
++ (id)builderWithObject:(id)object;
++ (id)descriptionForObject:(id)object withObjectsAndNames:(id)names;
++ (id)succinctDescriptionForObject:(id)object;
+- (BSDescriptionBuilder)initWithObject:(id)object;
 - (NSString)activeMultilinePrefix;
-- (id)appendBool:(BOOL)a3 withName:(id)a4;
-- (id)appendBool:(BOOL)a3 withName:(id)a4 ifEqualTo:(BOOL)a5;
-- (id)appendCString:(const char *)a3 withName:(id)a4;
-- (id)appendClass:(Class)a3 withName:(id)a4;
-- (id)appendDouble:(double)a3 withName:(id)a4 decimalPrecision:(unint64_t)a5;
-- (id)appendFlag:(int64_t)a3 withName:(id)a4 skipIfNotSet:(BOOL)a5;
-- (id)appendFormat:(id)a3;
-- (id)appendInt64:(int64_t)a3 withName:(id)a4;
-- (id)appendInt:(int)a3 withName:(id)a4;
-- (id)appendInteger:(int64_t)a3 withName:(id)a4;
-- (id)appendKeys:(id)a3;
-- (id)appendObject:(id)a3 withName:(id)a4 skipIfNil:(BOOL)a5;
-- (id)appendObjectsAndNames:(id *)a3 args:;
-- (id)appendPoint:(CGPoint)a3 withName:(id)a4;
-- (id)appendPointer:(void *)a3 withName:(id)a4;
-- (id)appendQueue:(id)a3 withName:(id)a4;
-- (id)appendRect:(CGRect)a3 withName:(id)a4;
-- (id)appendSelector:(SEL)a3 withName:(id)a4;
-- (id)appendSize:(CGSize)a3 withName:(id)a4;
-- (id)appendString:(id)a3;
+- (id)appendBool:(BOOL)bool withName:(id)name;
+- (id)appendBool:(BOOL)bool withName:(id)name ifEqualTo:(BOOL)to;
+- (id)appendCString:(const char *)string withName:(id)name;
+- (id)appendClass:(Class)class withName:(id)name;
+- (id)appendDouble:(double)double withName:(id)name decimalPrecision:(unint64_t)precision;
+- (id)appendFlag:(int64_t)flag withName:(id)name skipIfNotSet:(BOOL)set;
+- (id)appendFormat:(id)format;
+- (id)appendInt64:(int64_t)int64 withName:(id)name;
+- (id)appendInt:(int)int withName:(id)name;
+- (id)appendInteger:(int64_t)integer withName:(id)name;
+- (id)appendKeys:(id)keys;
+- (id)appendObject:(id)object withName:(id)name skipIfNil:(BOOL)nil;
+- (id)appendObjectsAndNames:(id *)names args:;
+- (id)appendPoint:(CGPoint)point withName:(id)name;
+- (id)appendPointer:(void *)pointer withName:(id)name;
+- (id)appendQueue:(id)queue withName:(id)name;
+- (id)appendRect:(CGRect)rect withName:(id)name;
+- (id)appendSelector:(SEL)selector withName:(id)name;
+- (id)appendSize:(CGSize)size withName:(id)name;
+- (id)appendString:(id)string;
 - (id)appendSuper;
-- (id)appendTimeInterval:(double)a3 withName:(id)a4 decomposeUnits:(BOOL)a5;
-- (id)appendUInt64:(unint64_t)a3 withName:(id)a4;
-- (id)appendUInt64:(unint64_t)a3 withName:(id)a4 format:(int64_t)a5;
-- (id)appendUnsignedInt:(unsigned int)a3 withName:(id)a4;
-- (id)appendUnsignedInteger:(unint64_t)a3 withName:(id)a4;
-- (id)appendUnsignedInteger:(unint64_t)a3 withName:(id)a4 format:(int64_t)a5;
-- (id)appendVersionedPID:(int64_t)a3 withName:(id)a4;
+- (id)appendTimeInterval:(double)interval withName:(id)name decomposeUnits:(BOOL)units;
+- (id)appendUInt64:(unint64_t)int64 withName:(id)name;
+- (id)appendUInt64:(unint64_t)int64 withName:(id)name format:(int64_t)format;
+- (id)appendUnsignedInt:(unsigned int)int withName:(id)name;
+- (id)appendUnsignedInteger:(unint64_t)integer withName:(id)name;
+- (id)appendUnsignedInteger:(unint64_t)integer withName:(id)name format:(int64_t)format;
+- (id)appendVersionedPID:(int64_t)d withName:(id)name;
 - (id)build;
-- (id)modifyBody:(id)a3;
-- (id)modifyProem:(id)a3;
+- (id)modifyBody:(id)body;
+- (id)modifyProem:(id)proem;
 - (id)style;
-- (void)appendBodySectionWithName:(id)a3 multilinePrefix:(id)a4 block:(id)a5;
-- (void)appendCollectionSection:(id)a3 withName:(id)a4 multilinePrefix:(id)a5 skipIfEmpty:(BOOL)a6;
-- (void)appendCollectionSection:(id)a3 withName:(id)a4 multilinePrefix:(id)a5 skipIfEmpty:(BOOL)a6 objectTransformer:(id)a7;
-- (void)appendCollectionSection:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5;
-- (void)appendCollectionSection:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5 objectTransformer:(id)a6;
-- (void)appendCustomFormatWithName:(id)a3 block:(id)a4;
-- (void)appendCustomFormatWithNameFromObjectDescription:(id)a3 block:(id)a4;
-- (void)appendDictionarySection:(id)a3 withName:(id)a4 multilinePrefix:(id)a5 skipIfEmpty:(BOOL)a6;
-- (void)appendDictionarySection:(id)a3 withName:(id)a4 multilinePrefix:(id)a5 skipIfEmpty:(BOOL)a6 objectTransformer:(id)a7;
-- (void)appendDictionarySection:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5;
-- (void)appendObjectWithName:(uint64_t)a3 formatBlock:;
-- (void)appendString:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5;
-- (void)tryAppendKey:(id *)a1;
+- (void)appendBodySectionWithName:(id)name multilinePrefix:(id)prefix block:(id)block;
+- (void)appendCollectionSection:(id)section withName:(id)name multilinePrefix:(id)prefix skipIfEmpty:(BOOL)empty;
+- (void)appendCollectionSection:(id)section withName:(id)name multilinePrefix:(id)prefix skipIfEmpty:(BOOL)empty objectTransformer:(id)transformer;
+- (void)appendCollectionSection:(id)section withName:(id)name skipIfEmpty:(BOOL)empty;
+- (void)appendCollectionSection:(id)section withName:(id)name skipIfEmpty:(BOOL)empty objectTransformer:(id)transformer;
+- (void)appendCustomFormatWithName:(id)name block:(id)block;
+- (void)appendCustomFormatWithNameFromObjectDescription:(id)description block:(id)block;
+- (void)appendDictionarySection:(id)section withName:(id)name multilinePrefix:(id)prefix skipIfEmpty:(BOOL)empty;
+- (void)appendDictionarySection:(id)section withName:(id)name multilinePrefix:(id)prefix skipIfEmpty:(BOOL)empty objectTransformer:(id)transformer;
+- (void)appendDictionarySection:(id)section withName:(id)name skipIfEmpty:(BOOL)empty;
+- (void)appendObjectWithName:(uint64_t)name formatBlock:;
+- (void)appendString:(id)string withName:(id)name skipIfEmpty:(BOOL)empty;
+- (void)tryAppendKey:(id *)key;
 @end
 
 @implementation BSDescriptionBuilder
@@ -58,8 +58,8 @@
 {
   [(NSMutableString *)self->_proem appendString:@">"];
   description = self->_description;
-  v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v5 = [(NSMutableString *)description stringByTrimmingCharactersInSet:v4];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v5 = [(NSMutableString *)description stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v5 length])
   {
@@ -89,50 +89,50 @@
   }
 }
 
-+ (id)builderWithObject:(id)a3
++ (id)builderWithObject:(id)object
 {
-  v3 = [[a1 alloc] initWithObject:a3];
+  v3 = [[self alloc] initWithObject:object];
 
   return v3;
 }
 
-+ (id)builderWithClass:(Class)a3
++ (id)builderWithClass:(Class)class
 {
-  v3 = [[a1 alloc] initWithObject:a3];
+  v3 = [[self alloc] initWithObject:class];
 
   return v3;
 }
 
-+ (id)descriptionForObject:(id)a3 withObjectsAndNames:(id)a4
++ (id)descriptionForObject:(id)object withObjectsAndNames:(id)names
 {
-  if (a3)
+  if (object)
   {
-    if (a4)
+    if (names)
     {
-      v6 = [BSDescriptionBuilder builderWithObject:a3];
-      v7 = [(BSDescriptionBuilder *)v6 appendObjectsAndNames:a4 args:&v13];
-      v8 = [v6 build];
+      v6 = [BSDescriptionBuilder builderWithObject:object];
+      v7 = [(BSDescriptionBuilder *)v6 appendObjectsAndNames:names args:&v13];
+      build = [v6 build];
     }
 
     else
     {
       v9 = MEMORY[0x1E696AEC0];
       v10 = objc_opt_class();
-      v8 = [v9 stringWithFormat:@"<%s: %p>", class_getName(v10), a3];
+      build = [v9 stringWithFormat:@"<%s: %p>", class_getName(v10), object];
     }
   }
 
   else
   {
-    v8 = @"(null)";
+    build = @"(null)";
   }
 
-  return v8;
+  return build;
 }
 
-- (id)appendObjectsAndNames:(id *)a3 args:
+- (id)appendObjectsAndNames:(id *)names args:
 {
-  if (a1)
+  if (self)
   {
     v4 = a2;
     if (v4)
@@ -140,10 +140,10 @@
       v5 = v4;
       do
       {
-        v6 = *a3;
-        v7 = [a1 appendObject:v5 withName:v6];
-        v8 = a3 + 1;
-        a3 += 2;
+        v6 = *names;
+        v7 = [self appendObject:v5 withName:v6];
+        v8 = names + 1;
+        names += 2;
         v9 = *v8;
 
         v5 = v9;
@@ -152,17 +152,17 @@
       while (v9);
     }
 
-    v10 = a1;
+    selfCopy = self;
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)succinctDescriptionForObject:(id)a3
++ (id)succinctDescriptionForObject:(id)object
 {
-  if (a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (object && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [a3 succinctDescription];
+    succinctDescription = [object succinctDescription];
   }
 
   else
@@ -170,20 +170,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 description];
+      [object description];
     }
 
     else
     {
-      [a1 descriptionForObject:a3];
+      [self descriptionForObject:object];
     }
-    v5 = ;
+    succinctDescription = ;
   }
 
-  return v5;
+  return succinctDescription;
 }
 
-- (BSDescriptionBuilder)initWithObject:(id)a3
+- (BSDescriptionBuilder)initWithObject:(id)object
 {
   v15.receiver = self;
   v15.super_class = BSDescriptionBuilder;
@@ -191,7 +191,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_object = a3;
+    v4->_object = object;
     v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
     description = v5->_description;
     v5->_description = v6;
@@ -318,9 +318,9 @@ LABEL_18:
   return v2;
 }
 
-- (id)appendObject:(id)a3 withName:(id)a4 skipIfNil:(BOOL)a5
+- (id)appendObject:(id)object withName:(id)name skipIfNil:(BOOL)nil
 {
-  if (a3 || !a5)
+  if (object || !nil)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -329,8 +329,8 @@ LABEL_18:
       v18[1] = 3221225472;
       v18[2] = __56__BSDescriptionBuilder_appendObject_withName_skipIfNil___block_invoke;
       v18[3] = &unk_1E72CAC10;
-      v18[4] = a3;
-      v8 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v18];
+      v18[4] = object;
+      v8 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v18];
     }
 
     else
@@ -338,47 +338,47 @@ LABEL_18:
       v9 = objc_autoreleasePoolPush();
       if (self->_useDebugDescription && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v10 = [a3 debugDescriptionWithMultilinePrefix:self->_activePrefix];
+        v10 = [object debugDescriptionWithMultilinePrefix:self->_activePrefix];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        v10 = [a3 descriptionWithMultilinePrefix:self->_activePrefix];
+        v10 = [object descriptionWithMultilinePrefix:self->_activePrefix];
       }
 
       else if (self->_useDebugDescription && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v10 = [a3 debugDescription];
+        v10 = [object debugDescription];
       }
 
       else
       {
         if (objc_opt_respondsToSelector())
         {
-          [a3 description];
+          [object description];
         }
 
         else
         {
-          [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", a3];
+          [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", object];
         }
         v10 = ;
       }
 
-      v11 = v10;
+      build = v10;
       if (!v10)
       {
-        v12 = [BSDescriptionBuilder builderWithObject:a3];
-        v11 = [v12 build];
+        v12 = [BSDescriptionBuilder builderWithObject:object];
+        build = [v12 build];
       }
 
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __56__BSDescriptionBuilder_appendObject_withName_skipIfNil___block_invoke_2;
       v16[3] = &unk_1E72CAC10;
-      v17 = v11;
-      v13 = v11;
-      v14 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v16];
+      v17 = build;
+      v13 = build;
+      v14 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v16];
 
       objc_autoreleasePoolPop(v9);
     }
@@ -387,80 +387,80 @@ LABEL_18:
   return self;
 }
 
-- (void)appendObjectWithName:(uint64_t)a3 formatBlock:
+- (void)appendObjectWithName:(uint64_t)name formatBlock:
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 9) == 1)
+    if (*(self + 9) == 1)
     {
-      v6 = a1[5];
+      v6 = self[5];
       if (!v6)
       {
         v6 = &stru_1F03A1A98;
       }
 
-      v7 = v6;
+      componentSeparator = v6;
       v8 = @";\n";
-      v9 = @" = ";
+      nameObjectSeparator = @" = ";
     }
 
     else
     {
       v10 = objc_opt_class();
-      v7 = [v10 componentSeparator];
-      v9 = [v10 nameObjectSeparator];
+      componentSeparator = [v10 componentSeparator];
+      nameObjectSeparator = [v10 nameObjectSeparator];
       v8 = &stru_1F03A1A98;
     }
 
     v11 = 3;
-    if (!*(a1 + 9))
+    if (!*(self + 9))
     {
       v11 = 2;
     }
 
-    v12 = a1[v11];
-    [v12 appendString:v7];
+    v12 = self[v11];
+    [v12 appendString:componentSeparator];
     if ([a2 length])
     {
       [v12 appendString:a2];
-      [v12 appendString:v9];
+      [v12 appendString:nameObjectSeparator];
     }
 
-    (*(a3 + 16))(a3, v12);
+    (*(name + 16))(name, v12);
     [v12 appendString:v8];
-    v13 = a1;
+    selfCopy = self;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)appendCustomFormatWithName:(id)a3 block:(id)a4
+- (void)appendCustomFormatWithName:(id)name block:(id)block
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __57__BSDescriptionBuilder_appendCustomFormatWithName_block___block_invoke;
   v5[3] = &unk_1E72CAC38;
-  v5[4] = a4;
-  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:a3 formatBlock:v5];
+  v5[4] = block;
+  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v5];
 }
 
-- (void)appendCustomFormatWithNameFromObjectDescription:(id)a3 block:(id)a4
+- (void)appendCustomFormatWithNameFromObjectDescription:(id)description block:(id)block
 {
-  v6 = [objc_opt_class() succinctDescriptionForObject:a3];
+  v6 = [objc_opt_class() succinctDescriptionForObject:description];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__BSDescriptionBuilder_appendCustomFormatWithNameFromObjectDescription_block___block_invoke;
   v8[3] = &unk_1E72CAC38;
-  v8[4] = a4;
+  v8[4] = block;
   v7 = [(BSDescriptionBuilder *)self appendObjectWithName:v6 formatBlock:v8];
 }
 
-- (void)appendString:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5
+- (void)appendString:(id)string withName:(id)name skipIfEmpty:(BOOL)empty
 {
-  v5 = a5;
-  if (!a3)
+  emptyCopy = empty;
+  if (!string)
   {
-    if (a5)
+    if (empty)
     {
       return;
     }
@@ -468,18 +468,18 @@ LABEL_18:
     goto LABEL_8;
   }
 
-  v9 = [a3 length];
-  if (!v5 || v9)
+  v9 = [string length];
+  if (!emptyCopy || v9)
   {
     if (!v9)
     {
-      v14 = @"";
-      v13 = self;
+      stringCopy = @"";
+      selfCopy2 = self;
       goto LABEL_10;
     }
 
-    v10 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v11 = [a3 rangeOfCharacterFromSet:v10];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v11 = [string rangeOfCharacterFromSet:whitespaceCharacterSet];
 
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -487,16 +487,16 @@ LABEL_18:
       v16[1] = 3221225472;
       v16[2] = __58__BSDescriptionBuilder_appendString_withName_skipIfEmpty___block_invoke;
       v16[3] = &unk_1E72CAC10;
-      v16[4] = a3;
-      v12 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v16];
+      v16[4] = string;
+      v12 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v16];
       return;
     }
 
 LABEL_8:
-    v13 = self;
-    v14 = a3;
+    selfCopy2 = self;
+    stringCopy = string;
 LABEL_10:
-    v15 = [(BSDescriptionBuilder *)v13 appendObject:v14 withName:a4 skipIfNil:v5];
+    v15 = [(BSDescriptionBuilder *)selfCopy2 appendObject:stringCopy withName:name skipIfNil:emptyCopy];
   }
 }
 
@@ -508,17 +508,17 @@ uint64_t __58__BSDescriptionBuilder_appendString_withName_skipIfEmpty___block_in
   return [a2 appendString:@""];
 }
 
-- (id)appendBool:(BOOL)a3 withName:(id)a4
+- (id)appendBool:(BOOL)bool withName:(id)name
 {
   v6 = NSStringFromBOOL();
-  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:a4];
+  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:name];
 
   return self;
 }
 
-- (id)appendBool:(BOOL)a3 withName:(id)a4 ifEqualTo:(BOOL)a5
+- (id)appendBool:(BOOL)bool withName:(id)name ifEqualTo:(BOOL)to
 {
-  if (a3 == a5)
+  if (bool == to)
   {
     v6 = [BSDescriptionBuilder appendBool:"appendBool:withName:" withName:?];
   }
@@ -526,50 +526,50 @@ uint64_t __58__BSDescriptionBuilder_appendString_withName_skipIfEmpty___block_in
   return self;
 }
 
-- (id)appendFlag:(int64_t)a3 withName:(id)a4 skipIfNotSet:(BOOL)a5
+- (id)appendFlag:(int64_t)flag withName:(id)name skipIfNotSet:(BOOL)set
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL || !a5)
+  if (flag != 0x7FFFFFFFFFFFFFFFLL || !set)
   {
-    v7 = BSSettingFlagDescription(a3);
-    v8 = [(BSDescriptionBuilder *)self appendObject:v7 withName:a4];
+    v7 = BSSettingFlagDescription(flag);
+    v8 = [(BSDescriptionBuilder *)self appendObject:v7 withName:name];
   }
 
   return self;
 }
 
-- (id)appendInteger:(int64_t)a3 withName:(id)a4
+- (id)appendInteger:(int64_t)integer withName:(id)name
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__BSDescriptionBuilder_appendInteger_withName___block_invoke;
   v6[3] = &__block_descriptor_40_e25_v16__0__NSMutableString_8l;
-  v6[4] = a3;
-  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v6];
+  v6[4] = integer;
+  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v6];
 
   return v4;
 }
 
-- (id)appendUnsignedInteger:(unint64_t)a3 withName:(id)a4
+- (id)appendUnsignedInteger:(unint64_t)integer withName:(id)name
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__BSDescriptionBuilder_appendUnsignedInteger_withName___block_invoke;
   v6[3] = &__block_descriptor_40_e25_v16__0__NSMutableString_8l;
-  v6[4] = a3;
-  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v6];
+  v6[4] = integer;
+  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v6];
 
   return v4;
 }
 
-- (id)appendUnsignedInteger:(unint64_t)a3 withName:(id)a4 format:(int64_t)a5
+- (id)appendUnsignedInteger:(unint64_t)integer withName:(id)name format:(int64_t)format
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__BSDescriptionBuilder_appendUnsignedInteger_withName_format___block_invoke;
   v7[3] = &__block_descriptor_48_e25_v16__0__NSMutableString_8l;
-  v7[4] = a5;
-  v7[5] = a3;
-  v5 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v7];
+  v7[4] = format;
+  v7[5] = integer;
+  v5 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v7];
 
   return v5;
 }
@@ -589,63 +589,63 @@ uint64_t __62__BSDescriptionBuilder_appendUnsignedInteger_withName_format___bloc
   return [a2 appendFormat:v2, *(a1 + 40)];
 }
 
-- (id)appendInt:(int)a3 withName:(id)a4
+- (id)appendInt:(int)int withName:(id)name
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__BSDescriptionBuilder_appendInt_withName___block_invoke;
   v6[3] = &__block_descriptor_36_e25_v16__0__NSMutableString_8l;
-  v7 = a3;
-  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v6];
+  intCopy = int;
+  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v6];
 
   return v4;
 }
 
-- (id)appendInt64:(int64_t)a3 withName:(id)a4
+- (id)appendInt64:(int64_t)int64 withName:(id)name
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__BSDescriptionBuilder_appendInt64_withName___block_invoke;
   v6[3] = &__block_descriptor_40_e25_v16__0__NSMutableString_8l;
-  v6[4] = a3;
-  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v6];
+  v6[4] = int64;
+  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v6];
 
   return v4;
 }
 
-- (id)appendUnsignedInt:(unsigned int)a3 withName:(id)a4
+- (id)appendUnsignedInt:(unsigned int)int withName:(id)name
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__BSDescriptionBuilder_appendUnsignedInt_withName___block_invoke;
   v6[3] = &__block_descriptor_36_e25_v16__0__NSMutableString_8l;
-  v7 = a3;
-  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v6];
+  intCopy = int;
+  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v6];
 
   return v4;
 }
 
-- (id)appendUInt64:(unint64_t)a3 withName:(id)a4
+- (id)appendUInt64:(unint64_t)int64 withName:(id)name
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__BSDescriptionBuilder_appendUInt64_withName___block_invoke;
   v6[3] = &__block_descriptor_40_e25_v16__0__NSMutableString_8l;
-  v6[4] = a3;
-  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v6];
+  v6[4] = int64;
+  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v6];
 
   return v4;
 }
 
-- (id)appendUInt64:(unint64_t)a3 withName:(id)a4 format:(int64_t)a5
+- (id)appendUInt64:(unint64_t)int64 withName:(id)name format:(int64_t)format
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__BSDescriptionBuilder_appendUInt64_withName_format___block_invoke;
   v7[3] = &__block_descriptor_48_e25_v16__0__NSMutableString_8l;
-  v7[4] = a5;
-  v7[5] = a3;
-  v5 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v7];
+  v7[4] = format;
+  v7[5] = int64;
+  v5 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v7];
 
   return v5;
 }
@@ -665,42 +665,42 @@ uint64_t __53__BSDescriptionBuilder_appendUInt64_withName_format___block_invoke(
   return [a2 appendFormat:v2, *(a1 + 40)];
 }
 
-- (id)appendDouble:(double)a3 withName:(id)a4 decimalPrecision:(unint64_t)a5
+- (id)appendDouble:(double)double withName:(id)name decimalPrecision:(unint64_t)precision
 {
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (precision == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", *&a3];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", *&double];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFLL;
-    if (a5 < 0x7FFFFFFF)
+    precisionCopy = 0x7FFFFFFFLL;
+    if (precision < 0x7FFFFFFF)
     {
-      v8 = a5;
+      precisionCopy = precision;
     }
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.*f", v8, *&a3];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.*f", precisionCopy, *&double];
   }
 
   v9 = v7;
-  v10 = [(BSDescriptionBuilder *)self appendObject:v7 withName:a4];
+  v10 = [(BSDescriptionBuilder *)self appendObject:v7 withName:name];
 
   return self;
 }
 
-- (id)appendTimeInterval:(double)a3 withName:(id)a4 decomposeUnits:(BOOL)a5
+- (id)appendTimeInterval:(double)interval withName:(id)name decomposeUnits:(BOOL)units
 {
-  v6 = self;
-  if (fabs(a3) == INFINITY)
+  selfCopy = self;
+  if (fabs(interval) == INFINITY)
   {
-    v6 = [(BSDescriptionBuilder *)self appendObject:@"(inf)" withName:a4];
+    selfCopy = [(BSDescriptionBuilder *)self appendObject:@"(inf)" withName:name];
   }
 
   else
   {
-    v7 = (a3 - a3) * 1000.0;
-    if (a5)
+    v7 = (interval - interval) * 1000.0;
+    if (units)
     {
       if (qword_1ED44FC70 != -1)
       {
@@ -721,7 +721,7 @@ uint64_t __53__BSDescriptionBuilder_appendUInt64_withName_format___block_invoke(
         v10 = v8;
       }
 
-      v6 = [v6 appendObject:v10 withName:a4];
+      selfCopy = [selfCopy appendObject:v10 withName:name];
     }
 
     else
@@ -732,7 +732,7 @@ uint64_t __53__BSDescriptionBuilder_appendUInt64_withName_format___block_invoke(
         v14[1] = 3221225472;
         v14[2] = __67__BSDescriptionBuilder_appendTimeInterval_withName_decomposeUnits___block_invoke_3;
         v14[3] = &__block_descriptor_40_e25_v16__0__NSMutableString_8l;
-        *&v14[4] = a3;
+        *&v14[4] = interval;
         v11 = v14;
       }
 
@@ -742,16 +742,16 @@ uint64_t __53__BSDescriptionBuilder_appendUInt64_withName_format___block_invoke(
         v15[1] = 3221225472;
         v15[2] = __67__BSDescriptionBuilder_appendTimeInterval_withName_decomposeUnits___block_invoke_2;
         v15[3] = &__block_descriptor_40_e25_v16__0__NSMutableString_8l;
-        *&v15[4] = a3;
+        *&v15[4] = interval;
         v11 = v15;
       }
 
-      [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v11];
+      [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v11];
       objc_claimAutoreleasedReturnValue();
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
 uint64_t __67__BSDescriptionBuilder_appendTimeInterval_withName_decomposeUnits___block_invoke()
@@ -765,105 +765,105 @@ uint64_t __67__BSDescriptionBuilder_appendTimeInterval_withName_decomposeUnits__
   return [v2 setUnitsStyle:1];
 }
 
-- (id)appendPointer:(void *)a3 withName:(id)a4
+- (id)appendPointer:(void *)pointer withName:(id)name
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__BSDescriptionBuilder_appendPointer_withName___block_invoke;
   v5[3] = &__block_descriptor_40_e25_v16__0__NSMutableString_8l;
-  v5[4] = a3;
-  return [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v5];
+  v5[4] = pointer;
+  return [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v5];
 }
 
-- (id)appendSelector:(SEL)a3 withName:(id)a4
+- (id)appendSelector:(SEL)selector withName:(id)name
 {
-  v6 = NSStringFromSelector(a3);
-  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:a4];
+  v6 = NSStringFromSelector(selector);
+  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:name];
 
   return self;
 }
 
-- (id)appendCString:(const char *)a3 withName:(id)a4
+- (id)appendCString:(const char *)string withName:(id)name
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__BSDescriptionBuilder_appendCString_withName___block_invoke;
   v6[3] = &__block_descriptor_40_e25_v16__0__NSMutableString_8l;
-  v6[4] = a3;
-  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v6];
+  v6[4] = string;
+  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v6];
 
   return v4;
 }
 
-- (id)appendQueue:(id)a3 withName:(id)a4
+- (id)appendQueue:(id)queue withName:(id)name
 {
-  label = dispatch_queue_get_label(a3);
+  label = dispatch_queue_get_label(queue);
 
-  return [(BSDescriptionBuilder *)self appendCString:label withName:a4];
+  return [(BSDescriptionBuilder *)self appendCString:label withName:name];
 }
 
-- (id)appendPoint:(CGPoint)a3 withName:(id)a4
+- (id)appendPoint:(CGPoint)point withName:(id)name
 {
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%.*g, %.*g}", 17, *&a3.x, 17, *&a3.y];
-  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:a4];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%.*g, %.*g}", 17, *&point.x, 17, *&point.y];
+  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:name];
 
   return v7;
 }
 
-- (id)appendSize:(CGSize)a3 withName:(id)a4
+- (id)appendSize:(CGSize)size withName:(id)name
 {
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%.*g, %.*g}", 17, *&a3.width, 17, *&a3.height];
-  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:a4];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%.*g, %.*g}", 17, *&size.width, 17, *&size.height];
+  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:name];
 
   return v7;
 }
 
-- (id)appendRect:(CGRect)a3 withName:(id)a4
+- (id)appendRect:(CGRect)rect withName:(id)name
 {
-  v6 = BSStringFromCGRect(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
-  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:a4];
+  v6 = BSStringFromCGRect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:name];
 
   return v7;
 }
 
-- (id)appendClass:(Class)a3 withName:(id)a4
+- (id)appendClass:(Class)class withName:(id)name
 {
-  v6 = NSStringFromClass(a3);
-  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:a4];
+  v6 = NSStringFromClass(class);
+  v7 = [(BSDescriptionBuilder *)self appendObject:v6 withName:name];
 
   return v7;
 }
 
-- (id)appendVersionedPID:(int64_t)a3 withName:(id)a4
+- (id)appendVersionedPID:(int64_t)d withName:(id)name
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__BSDescriptionBuilder_appendVersionedPID_withName___block_invoke;
   v6[3] = &__block_descriptor_40_e25_v16__0__NSMutableString_8l;
-  v6[4] = a3;
-  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:a4 formatBlock:v6];
+  v6[4] = d;
+  v4 = [(BSDescriptionBuilder *)self appendObjectWithName:name formatBlock:v6];
 
   return v4;
 }
 
-- (void)tryAppendKey:(id *)a1
+- (void)tryAppendKey:(id *)key
 {
-  if (a1)
+  if (key)
   {
-    v4 = [a1[1] valueForKey:a2];
-    v3 = [a1 appendObject:? withName:?];
+    v4 = [key[1] valueForKey:a2];
+    v3 = [key appendObject:? withName:?];
   }
 }
 
-- (id)appendKeys:(id)a3
+- (id)appendKeys:(id)keys
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  keysCopy = keys;
+  v5 = [keysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -874,14 +874,14 @@ uint64_t __67__BSDescriptionBuilder_appendTimeInterval_withName_decomposeUnits__
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         [(BSDescriptionBuilder *)&self->super.isa tryAppendKey:?];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [keysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -890,68 +890,68 @@ uint64_t __67__BSDescriptionBuilder_appendTimeInterval_withName_decomposeUnits__
   return self;
 }
 
-- (id)modifyProem:(id)a3
+- (id)modifyProem:(id)proem
 {
-  if (a3)
+  if (proem)
   {
     activeComponent = self->_activeComponent;
     self->_activeComponent = 0;
-    (*(a3 + 2))(a3, a2);
+    (*(proem + 2))(proem, a2);
     self->_activeComponent = activeComponent;
   }
 
   return self;
 }
 
-- (id)modifyBody:(id)a3
+- (id)modifyBody:(id)body
 {
-  if (a3)
+  if (body)
   {
     activeComponent = self->_activeComponent;
     self->_activeComponent = 1;
-    (*(a3 + 2))(a3, a2);
+    (*(body + 2))(body, a2);
     self->_activeComponent = activeComponent;
   }
 
   return self;
 }
 
-- (void)appendBodySectionWithName:(id)a3 multilinePrefix:(id)a4 block:(id)a5
+- (void)appendBodySectionWithName:(id)name multilinePrefix:(id)prefix block:(id)block
 {
   activeComponent = self->_activeComponent;
   self->_activeComponent = 1;
-  if (a3)
+  if (name)
   {
-    if (a4)
+    if (prefix)
     {
-      [(NSMutableString *)self->_description appendString:a4];
+      [(NSMutableString *)self->_description appendString:prefix];
     }
 
-    [(NSMutableString *)self->_description appendString:a3];
+    [(NSMutableString *)self->_description appendString:name];
     [(NSMutableString *)self->_description appendString:@" = "];
   }
 
   [(NSMutableString *)self->_description appendString:@"{"];
-  if (a5)
+  if (block)
   {
     v10 = objc_autoreleasePoolPush();
     [(NSMutableString *)self->_description appendString:@"\n"];
-    v11 = &stru_1F03A1A98;
-    if (a4)
+    prefixCopy = &stru_1F03A1A98;
+    if (prefix)
     {
-      v11 = a4;
+      prefixCopy = prefix;
     }
 
-    v12 = v11;
+    v12 = prefixCopy;
     v13 = self->_activePrefix;
     v14 = [(__CFString *)v12 stringByAppendingString:@"    "];
 
     [(BSDescriptionBuilder *)self setActiveMultilinePrefix:v14];
-    (*(a5 + 2))(a5);
+    (*(block + 2))(block);
     [(BSDescriptionBuilder *)self setActiveMultilinePrefix:v13];
-    if (a4)
+    if (prefix)
     {
-      [(NSMutableString *)self->_description appendString:a4];
+      [(NSMutableString *)self->_description appendString:prefix];
     }
 
     [(NSMutableString *)self->_description appendString:@"}\n"];
@@ -967,31 +967,31 @@ uint64_t __67__BSDescriptionBuilder_appendTimeInterval_withName_decomposeUnits__
   self->_activeComponent = activeComponent;
 }
 
-- (void)appendCollectionSection:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5
+- (void)appendCollectionSection:(id)section withName:(id)name skipIfEmpty:(BOOL)empty
 {
-  v8 = [(BSDescriptionBuilder *)self activeMultilinePrefix];
-  [BSDescriptionBuilder appendCollectionSection:"appendCollectionSection:withName:multilinePrefix:skipIfEmpty:" withName:a3 multilinePrefix:a4 skipIfEmpty:?];
+  activeMultilinePrefix = [(BSDescriptionBuilder *)self activeMultilinePrefix];
+  [BSDescriptionBuilder appendCollectionSection:"appendCollectionSection:withName:multilinePrefix:skipIfEmpty:" withName:section multilinePrefix:name skipIfEmpty:?];
 }
 
-- (void)appendCollectionSection:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5 objectTransformer:(id)a6
+- (void)appendCollectionSection:(id)section withName:(id)name skipIfEmpty:(BOOL)empty objectTransformer:(id)transformer
 {
-  v9 = [(BSDescriptionBuilder *)self activeMultilinePrefix];
-  [BSDescriptionBuilder appendCollectionSection:"appendCollectionSection:withName:multilinePrefix:skipIfEmpty:objectTransformer:" withName:a3 multilinePrefix:a4 skipIfEmpty:? objectTransformer:?];
+  activeMultilinePrefix = [(BSDescriptionBuilder *)self activeMultilinePrefix];
+  [BSDescriptionBuilder appendCollectionSection:"appendCollectionSection:withName:multilinePrefix:skipIfEmpty:objectTransformer:" withName:section multilinePrefix:name skipIfEmpty:? objectTransformer:?];
 }
 
-- (void)appendCollectionSection:(id)a3 withName:(id)a4 multilinePrefix:(id)a5 skipIfEmpty:(BOOL)a6 objectTransformer:(id)a7
+- (void)appendCollectionSection:(id)section withName:(id)name multilinePrefix:(id)prefix skipIfEmpty:(BOOL)empty objectTransformer:(id)transformer
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a7)
+  if (transformer)
   {
-    v18 = a6;
-    v11 = [MEMORY[0x1E695DF70] array];
+    emptyCopy = empty;
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = a3;
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    sectionCopy = section;
+    v13 = [sectionCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
       v14 = *v20;
@@ -1002,53 +1002,53 @@ uint64_t __67__BSDescriptionBuilder_appendTimeInterval_withName_decomposeUnits__
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(sectionCopy);
           }
 
-          v16 = (*(a7 + 2))(a7, *(*(&v19 + 1) + 8 * v15));
+          v16 = (*(transformer + 2))(transformer, *(*(&v19 + 1) + 8 * v15));
           if (v16)
           {
-            [v11 addObject:v16];
+            [array addObject:v16];
           }
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [sectionCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v13);
     }
 
-    [(BSDescriptionBuilder *)self appendCollectionSection:v11 withName:a4 multilinePrefix:a5 skipIfEmpty:v18];
+    [(BSDescriptionBuilder *)self appendCollectionSection:array withName:name multilinePrefix:prefix skipIfEmpty:emptyCopy];
   }
 
   else
   {
 
-    [(BSDescriptionBuilder *)self appendCollectionSection:a3 withName:a4 multilinePrefix:a5 skipIfEmpty:a6];
+    [(BSDescriptionBuilder *)self appendCollectionSection:section withName:name multilinePrefix:prefix skipIfEmpty:empty];
   }
 }
 
-- (void)appendCollectionSection:(id)a3 withName:(id)a4 multilinePrefix:(id)a5 skipIfEmpty:(BOOL)a6
+- (void)appendCollectionSection:(id)section withName:(id)name multilinePrefix:(id)prefix skipIfEmpty:(BOOL)empty
 {
-  if ([a3 count])
+  if ([section count])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __85__BSDescriptionBuilder_appendCollectionSection_withName_multilinePrefix_skipIfEmpty___block_invoke;
     v12[3] = &unk_1E72CACC0;
-    v12[4] = a3;
+    v12[4] = section;
     v12[5] = self;
-    [(BSDescriptionBuilder *)self appendBodySectionWithName:a4 multilinePrefix:a5 block:v12];
+    [(BSDescriptionBuilder *)self appendBodySectionWithName:name multilinePrefix:prefix block:v12];
   }
 
-  else if (a4)
+  else if (name)
   {
-    if (!a6)
+    if (!empty)
     {
-      v11 = [(BSDescriptionBuilder *)self appendObject:@"(empty)" withName:a4];
+      v11 = [(BSDescriptionBuilder *)self appendObject:@"(empty)" withName:name];
     }
   }
 }
@@ -1086,25 +1086,25 @@ void __85__BSDescriptionBuilder_appendCollectionSection_withName_multilinePrefix
   }
 }
 
-- (void)appendDictionarySection:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5
+- (void)appendDictionarySection:(id)section withName:(id)name skipIfEmpty:(BOOL)empty
 {
-  v8 = [(BSDescriptionBuilder *)self activeMultilinePrefix];
-  [BSDescriptionBuilder appendDictionarySection:"appendDictionarySection:withName:multilinePrefix:skipIfEmpty:" withName:a3 multilinePrefix:a4 skipIfEmpty:?];
+  activeMultilinePrefix = [(BSDescriptionBuilder *)self activeMultilinePrefix];
+  [BSDescriptionBuilder appendDictionarySection:"appendDictionarySection:withName:multilinePrefix:skipIfEmpty:" withName:section multilinePrefix:name skipIfEmpty:?];
 }
 
-- (void)appendDictionarySection:(id)a3 withName:(id)a4 multilinePrefix:(id)a5 skipIfEmpty:(BOOL)a6 objectTransformer:(id)a7
+- (void)appendDictionarySection:(id)section withName:(id)name multilinePrefix:(id)prefix skipIfEmpty:(BOOL)empty objectTransformer:(id)transformer
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a7)
+  if (transformer)
   {
-    v19 = a6;
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    emptyCopy = empty;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = a3;
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    sectionCopy = section;
+    v12 = [sectionCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = *v21;
@@ -1114,51 +1114,51 @@ void __85__BSDescriptionBuilder_appendCollectionSection_withName_multilinePrefix
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(sectionCopy);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
-          v16 = (*(a7 + 2))(a7, v15);
+          v16 = (*(transformer + 2))(transformer, v15);
           if (v16)
           {
-            [v10 setObject:v16 forKey:v15];
+            [dictionary setObject:v16 forKey:v15];
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v12 = [sectionCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v12);
     }
 
-    [(BSDescriptionBuilder *)self appendDictionarySection:v10 withName:a4 multilinePrefix:a5 skipIfEmpty:v19];
+    [(BSDescriptionBuilder *)self appendDictionarySection:dictionary withName:name multilinePrefix:prefix skipIfEmpty:emptyCopy];
   }
 
   else
   {
 
-    [(BSDescriptionBuilder *)self appendDictionarySection:a3 withName:a4 multilinePrefix:a5 skipIfEmpty:a6];
+    [(BSDescriptionBuilder *)self appendDictionarySection:section withName:name multilinePrefix:prefix skipIfEmpty:empty];
   }
 }
 
-- (void)appendDictionarySection:(id)a3 withName:(id)a4 multilinePrefix:(id)a5 skipIfEmpty:(BOOL)a6
+- (void)appendDictionarySection:(id)section withName:(id)name multilinePrefix:(id)prefix skipIfEmpty:(BOOL)empty
 {
-  if ([a3 count])
+  if ([section count])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __85__BSDescriptionBuilder_appendDictionarySection_withName_multilinePrefix_skipIfEmpty___block_invoke;
     v12[3] = &unk_1E72CACC0;
-    v12[4] = a3;
+    v12[4] = section;
     v12[5] = self;
-    [(BSDescriptionBuilder *)self appendBodySectionWithName:a4 multilinePrefix:a5 block:v12];
+    [(BSDescriptionBuilder *)self appendBodySectionWithName:name multilinePrefix:prefix block:v12];
   }
 
-  else if (a4)
+  else if (name)
   {
-    if (!a6)
+    if (!empty)
     {
-      v11 = [(BSDescriptionBuilder *)self appendObject:@"(empty)" withName:a4];
+      v11 = [(BSDescriptionBuilder *)self appendObject:@"(empty)" withName:name];
     }
   }
 }
@@ -1215,9 +1215,9 @@ void __85__BSDescriptionBuilder_appendDictionarySection_withName_multilinePrefix
   }
 }
 
-- (id)appendString:(id)a3
+- (id)appendString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v5 = 24;
     if (!self->_activeComponent)
@@ -1226,21 +1226,21 @@ void __85__BSDescriptionBuilder_appendDictionarySection_withName_multilinePrefix
     }
 
     v6 = *(&self->super.isa + v5);
-    [v6 appendString:a3];
+    [v6 appendString:string];
   }
 
   return self;
 }
 
-- (id)appendFormat:(id)a3
+- (id)appendFormat:(id)format
 {
-  v3 = a3;
-  if (a3)
+  formatCopy = format;
+  if (format)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a3 arguments:&v8];
+    formatCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v8];
   }
 
-  v5 = [(BSDescriptionBuilder *)self appendString:v3];
+  v5 = [(BSDescriptionBuilder *)self appendString:formatCopy];
 
   return v5;
 }

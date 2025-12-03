@@ -1,15 +1,15 @@
 @interface AAOBModelHelper
-+ (id)contactInfoForHandle:(id)a3;
++ (id)contactInfoForHandle:(id)handle;
 @end
 
 @implementation AAOBModelHelper
 
-+ (id)contactInfoForHandle:(id)a3
++ (id)contactInfoForHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   v4 = objc_alloc_init(AAContactsManager);
-  v5 = [(AAContactsManager *)v4 contactForHandle:v3];
-  v6 = [[AALocalContactInfo alloc] initWithHandle:v3 contact:v5];
+  v5 = [(AAContactsManager *)v4 contactForHandle:handleCopy];
+  v6 = [[AALocalContactInfo alloc] initWithHandle:handleCopy contact:v5];
 
   return v6;
 }

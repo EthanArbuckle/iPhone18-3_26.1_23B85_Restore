@@ -1,7 +1,7 @@
 @interface CACEditingModeOverlayViewController
 - (void)_syncUI;
 - (void)loadView;
-- (void)setElements:(id)a3;
+- (void)setElements:(id)elements;
 @end
 
 @implementation CACEditingModeOverlayViewController
@@ -16,9 +16,9 @@
   [(CACEditingModeOverlayViewController *)self _syncUI];
 }
 
-- (void)setElements:(id)a3
+- (void)setElements:(id)elements
 {
-  objc_storeStrong(&self->_elements, a3);
+  objc_storeStrong(&self->_elements, elements);
 
   [(CACEditingModeOverlayViewController *)self _syncUI];
 }
@@ -26,7 +26,7 @@
 - (void)_syncUI
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -49,12 +49,12 @@
 
         v9 = *(*(&v12 + 1) + 8 * v8);
         v10 = objc_opt_new();
-        v11 = [v9 label];
-        [v10 setLabel:v11];
+        label = [v9 label];
+        [v10 setLabel:label];
 
         [v9 interfaceOrientedFrame];
         [v10 setFrame:?];
-        [v3 addObject:v10];
+        [array addObject:v10];
 
         ++v8;
       }
@@ -67,7 +67,7 @@
   }
 
   [(CACEditingModeOverlayWordsView *)self->_wordsView setOverlayType:self->_overlayType];
-  [(CACEditingModeOverlayWordsView *)self->_wordsView setLabels:v3];
+  [(CACEditingModeOverlayWordsView *)self->_wordsView setLabels:array];
 }
 
 @end

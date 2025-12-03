@@ -1,8 +1,8 @@
 @interface _UIFlexInteractionSettings
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
-- (void)setInteractionSpec:(id)a3;
-- (void)setLiquidLensSpec:(id)a3;
+- (void)setInteractionSpec:(id)spec;
+- (void)setLiquidLensSpec:(id)spec;
 @end
 
 @implementation _UIFlexInteractionSettings
@@ -17,18 +17,18 @@
   v2[OBJC_IVAR____TtC5UIKit26_UIFlexInteractionSettings_flexEnabled] = 1;
 }
 
-- (void)setInteractionSpec:(id)a3
+- (void)setInteractionSpec:(id)spec
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit26_UIFlexInteractionSettings_interactionSpec);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit26_UIFlexInteractionSettings_interactionSpec) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit26_UIFlexInteractionSettings_interactionSpec) = spec;
+  specCopy = spec;
 }
 
-- (void)setLiquidLensSpec:(id)a3
+- (void)setLiquidLensSpec:(id)spec
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit26_UIFlexInteractionSettings_liquidLensSpec);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit26_UIFlexInteractionSettings_liquidLensSpec) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit26_UIFlexInteractionSettings_liquidLensSpec) = spec;
+  specCopy = spec;
 }
 
 + (id)settingsControllerModule

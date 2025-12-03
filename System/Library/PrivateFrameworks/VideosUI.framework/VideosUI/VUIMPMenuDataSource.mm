@@ -1,47 +1,47 @@
 @interface VUIMPMenuDataSource
 - (BOOL)_addOrRemoveDownloadCategoryIfNeeded;
 - (BOOL)_addOrRemoveFamilySharingCategoryIfNeeded;
-- (VUIMPMenuDataSource)initWithValidCategories:(id)a3;
-- (id)_categoryTypesWithMediaEntitiesMap:(id)a3 categoryTypeComparator:(id)a4;
-- (id)_categoryTypesWithOptimizedMenuDataMap:(id)a3 categoryTypeComparator:(id)a4;
+- (VUIMPMenuDataSource)initWithValidCategories:(id)categories;
+- (id)_categoryTypesWithMediaEntitiesMap:(id)map categoryTypeComparator:(id)comparator;
+- (id)_categoryTypesWithOptimizedMenuDataMap:(id)map categoryTypeComparator:(id)comparator;
 - (id)_constructCategoryList;
 - (id)_deviceMediaLibrary;
-- (id)_fetchRequestsWithMediaLibrary:(id)a3 categoryTypeMap:(id *)a4 isInitialFetch:(BOOL)a5;
-- (void)_accountsChanged:(id)a3;
+- (id)_fetchRequestsWithMediaLibrary:(id)library categoryTypeMap:(id *)map isInitialFetch:(BOOL)fetch;
+- (void)_accountsChanged:(id)changed;
 - (void)_addAccountChangedNotificationObserver;
 - (void)_addMediaLibraryNotificationObservers;
-- (void)_addNotificationObserversWithDeviceLibrary:(id)a3;
+- (void)_addNotificationObserversWithDeviceLibrary:(id)library;
 - (void)_addRentalsUpdateNotificationObserver;
-- (void)_homeShareMediaLibrariesDidChange:(id)a3;
+- (void)_homeShareMediaLibrariesDidChange:(id)change;
 - (void)_loadGenres;
-- (void)_loadMediaEntityShelvesWithInitialFetch:(BOOL)a3;
-- (void)_mediaLibraryContentDidChange:(id)a3;
+- (void)_loadMediaEntityShelvesWithInitialFetch:(BOOL)fetch;
+- (void)_mediaLibraryContentDidChange:(id)change;
 - (void)_notifyDelegateFetchDidComplete;
-- (void)_populateViewModelFromMeidaLibraryCategoryTypes:(id)a3;
+- (void)_populateViewModelFromMeidaLibraryCategoryTypes:(id)types;
 - (void)_removeAccountChangedNotificationObserver;
 - (void)_removeMediaLibraryNotificationObservers;
-- (void)_removeNotificationObserversWithDeviceLibrary:(id)a3;
+- (void)_removeNotificationObserversWithDeviceLibrary:(id)library;
 - (void)_removeRentalsUpdateNotificationObserver;
-- (void)_updateFetchRequest:(id)a3 isInitialFetch:(BOOL)a4;
+- (void)_updateFetchRequest:(id)request isInitialFetch:(BOOL)fetch;
 - (void)_updateRentalShelf;
-- (void)controller:(id)a3 fetchRequests:(id)a4 didCompleteWithResult:(id)a5;
-- (void)controller:(id)a3 fetchRequests:(id)a4 didFailWithError:(id)a5;
-- (void)dataSourceDidFinishFetching:(id)a3;
+- (void)controller:(id)controller fetchRequests:(id)requests didCompleteWithResult:(id)result;
+- (void)controller:(id)controller fetchRequests:(id)requests didFailWithError:(id)error;
+- (void)dataSourceDidFinishFetching:(id)fetching;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadedFetchDidFinishWithEntities:(id)a4;
-- (void)downloadManager:(id)a3 downloadsDidChange:(id)a4;
+- (void)downloadManager:(id)manager downloadedFetchDidFinishWithEntities:(id)entities;
+- (void)downloadManager:(id)manager downloadsDidChange:(id)change;
 - (void)refetch;
-- (void)setMediaLibrary:(id)a3;
+- (void)setMediaLibrary:(id)library;
 - (void)startFetch;
 @end
 
 @implementation VUIMPMenuDataSource
 
-- (VUIMPMenuDataSource)initWithValidCategories:(id)a3
+- (VUIMPMenuDataSource)initWithValidCategories:(id)categories
 {
   v10.receiver = self;
   v10.super_class = VUIMPMenuDataSource;
-  v3 = [(VUILibraryMenuDataSource *)&v10 initWithValidCategories:a3];
+  v3 = [(VUILibraryMenuDataSource *)&v10 initWithValidCategories:categories];
   v4 = v3;
   if (v3)
   {
@@ -49,12 +49,12 @@
     [(VUIMPMenuDataSource *)v3 _addRentalsUpdateNotificationObserver];
     [(VUIMPMenuDataSource *)v4 _addAccountChangedNotificationObserver];
     v5 = +[VUIMediaLibraryManager defaultManager];
-    v6 = [v5 aggregateMediaLibrary];
-    v7 = [VUIMediaEntitiesDataSourceFactory dataSourceForCategoryType:8 withLibrary:v6];
+    aggregateMediaLibrary = [v5 aggregateMediaLibrary];
+    v7 = [VUIMediaEntitiesDataSourceFactory dataSourceForCategoryType:8 withLibrary:aggregateMediaLibrary];
     [(VUIMPMenuDataSource *)v4 setDownloadDataSource:v7];
 
-    v8 = [(VUIMPMenuDataSource *)v4 downloadDataSource];
-    [v8 setDownloadDelegate:v4];
+    downloadDataSource = [(VUIMPMenuDataSource *)v4 downloadDataSource];
+    [downloadDataSource setDownloadDelegate:v4];
 
     [(VUIMPMenuDataSource *)v4 setHasDownloadDataSourceFetchCompleted:0];
   }
@@ -64,26 +64,26 @@
 
 - (void)dealloc
 {
-  v3 = [(VUIMPMenuDataSource *)self mediaEntitiesFetchController];
+  mediaEntitiesFetchController = [(VUIMPMenuDataSource *)self mediaEntitiesFetchController];
 
-  if (v3)
+  if (mediaEntitiesFetchController)
   {
-    v4 = [(VUIMPMenuDataSource *)self mediaLibrary];
-    v5 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:v4];
-    v6 = [(VUIMPMenuDataSource *)self mediaEntitiesFetchController];
-    [v5 removeFetchController:v6];
+    mediaLibrary = [(VUIMPMenuDataSource *)self mediaLibrary];
+    v5 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:mediaLibrary];
+    mediaEntitiesFetchController2 = [(VUIMPMenuDataSource *)self mediaEntitiesFetchController];
+    [v5 removeFetchController:mediaEntitiesFetchController2];
 
     [(VUIMediaEntitiesFetchController *)self->_mediaEntitiesFetchController setDelegate:0];
   }
 
-  v7 = [(VUIMPMenuDataSource *)self rentalsUpdateFetchController];
+  rentalsUpdateFetchController = [(VUIMPMenuDataSource *)self rentalsUpdateFetchController];
 
-  if (v7)
+  if (rentalsUpdateFetchController)
   {
-    v8 = [(VUIMPMenuDataSource *)self mediaLibrary];
-    v9 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:v8];
-    v10 = [(VUIMPMenuDataSource *)self rentalsUpdateFetchController];
-    [v9 removeFetchController:v10];
+    mediaLibrary2 = [(VUIMPMenuDataSource *)self mediaLibrary];
+    v9 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:mediaLibrary2];
+    rentalsUpdateFetchController2 = [(VUIMPMenuDataSource *)self rentalsUpdateFetchController];
+    [v9 removeFetchController:rentalsUpdateFetchController2];
 
     [(VUIMediaEntitiesFetchController *)self->_rentalsUpdateFetchController setDelegate:0];
   }
@@ -91,30 +91,30 @@
   [(VUIMPMenuDataSource *)self _removeMediaLibraryNotificationObservers];
   [(VUIMPMenuDataSource *)self _removeRentalsUpdateNotificationObserver];
   [(VUIMPMenuDataSource *)self _removeAccountChangedNotificationObserver];
-  v11 = [(VUIMPMenuDataSource *)self downloadDataSource];
-  [v11 setDelegate:0];
+  downloadDataSource = [(VUIMPMenuDataSource *)self downloadDataSource];
+  [downloadDataSource setDelegate:0];
 
   v12.receiver = self;
   v12.super_class = VUIMPMenuDataSource;
   [(VUIMPMenuDataSource *)&v12 dealloc];
 }
 
-- (void)setMediaLibrary:(id)a3
+- (void)setMediaLibrary:(id)library
 {
-  v10 = a3;
-  objc_storeStrong(&self->_mediaLibrary, a3);
+  libraryCopy = library;
+  objc_storeStrong(&self->_mediaLibrary, library);
   [(VUIMPMenuDataSource *)self _addMediaLibraryNotificationObservers];
-  v5 = [(VUILibraryMenuDataSource *)self validCategories];
-  if ([v5 containsObject:&unk_1F5E5D110])
+  validCategories = [(VUILibraryMenuDataSource *)self validCategories];
+  if ([validCategories containsObject:&unk_1F5E5D110])
   {
-    v6 = [(VUIMPMenuDataSource *)self mediaLibrary];
-    v7 = [v6 type];
+    mediaLibrary = [(VUIMPMenuDataSource *)self mediaLibrary];
+    type = [mediaLibrary type];
 
-    if (!v7)
+    if (!type)
     {
       v8 = +[VUIMediaLibraryManager defaultManager];
-      v9 = [v8 homeShareMediaLibraries];
-      [(VUIMPMenuDataSource *)self setHomeShares:v9];
+      homeShareMediaLibraries = [v8 homeShareMediaLibraries];
+      [(VUIMPMenuDataSource *)self setHomeShares:homeShareMediaLibraries];
 
       goto LABEL_6;
     }
@@ -133,11 +133,11 @@ LABEL_6:
   if (![(VUILibraryDataSource *)self hasCompletedInitialFetch])
   {
     [(VUIMPMenuDataSource *)self _loadInitialMediaEntityShelves];
-    v3 = [(VUIMPMenuDataSource *)self downloadDataSource];
-    [v3 loadDownloadData];
+    downloadDataSource = [(VUIMPMenuDataSource *)self downloadDataSource];
+    [downloadDataSource loadDownloadData];
 
-    v7 = [(VUILibraryMenuDataSource *)self validCategories];
-    if ([v7 containsObject:&unk_1F5E5D128])
+    validCategories = [(VUILibraryMenuDataSource *)self validCategories];
+    if ([validCategories containsObject:&unk_1F5E5D128])
     {
       v4 = +[VUIAuthenticationManager userHasActiveAccount];
 
@@ -149,11 +149,11 @@ LABEL_6:
       v5 = objc_alloc_init(VUILibraryFamilyMembersDataSource);
       [(VUIMPMenuDataSource *)self setFamilyDataSource:v5];
 
-      v6 = [(VUIMPMenuDataSource *)self familyDataSource];
-      [v6 setDelegate:self];
+      familyDataSource = [(VUIMPMenuDataSource *)self familyDataSource];
+      [familyDataSource setDelegate:self];
 
-      v7 = [(VUIMPMenuDataSource *)self familyDataSource];
-      [v7 startFetch];
+      validCategories = [(VUIMPMenuDataSource *)self familyDataSource];
+      [validCategories startFetch];
     }
   }
 }
@@ -162,11 +162,11 @@ LABEL_6:
 {
   [(VUIMPMenuDataSource *)self setHasMediaEntitiesFetchCompleted:0];
   [(VUIMPMenuDataSource *)self _refetchMediaEntityShelves];
-  v3 = [(VUIMPMenuDataSource *)self downloadDataSource];
-  [v3 loadDownloadData];
+  downloadDataSource = [(VUIMPMenuDataSource *)self downloadDataSource];
+  [downloadDataSource loadDownloadData];
 
-  v7 = [(VUILibraryMenuDataSource *)self validCategories];
-  if ([v7 containsObject:&unk_1F5E5D128])
+  validCategories = [(VUILibraryMenuDataSource *)self validCategories];
+  if ([validCategories containsObject:&unk_1F5E5D128])
   {
     v4 = +[VUIAuthenticationManager userHasActiveAccount];
 
@@ -178,17 +178,17 @@ LABEL_6:
     v5 = objc_alloc_init(VUILibraryFamilyMembersDataSource);
     [(VUIMPMenuDataSource *)self setFamilyDataSource:v5];
 
-    v6 = [(VUIMPMenuDataSource *)self familyDataSource];
-    [v6 setDelegate:self];
+    familyDataSource = [(VUIMPMenuDataSource *)self familyDataSource];
+    [familyDataSource setDelegate:self];
 
-    v7 = [(VUIMPMenuDataSource *)self familyDataSource];
-    [v7 startFetch];
+    validCategories = [(VUIMPMenuDataSource *)self familyDataSource];
+    [validCategories startFetch];
   }
 }
 
-- (void)downloadManager:(id)a3 downloadedFetchDidFinishWithEntities:(id)a4
+- (void)downloadManager:(id)manager downloadedFetchDidFinishWithEntities:(id)entities
 {
-  if ([(VUIMPMenuDataSource *)self hasMediaEntitiesFetchCompleted:a3])
+  if ([(VUIMPMenuDataSource *)self hasMediaEntitiesFetchCompleted:manager])
   {
     [(VUIMPMenuDataSource *)self _addOrRemoveDownloadCategoryIfNeeded];
     [(VUIMPMenuDataSource *)self setHasDownloadDataSourceFetchCompleted:1];
@@ -206,9 +206,9 @@ LABEL_6:
   }
 }
 
-- (void)downloadManager:(id)a3 downloadsDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadsDidChange:(id)change
 {
-  if ([(VUIMPMenuDataSource *)self hasMediaEntitiesFetchCompleted:a3])
+  if ([(VUIMPMenuDataSource *)self hasMediaEntitiesFetchCompleted:manager])
   {
     [(VUIMPMenuDataSource *)self _addOrRemoveDownloadCategoryIfNeeded];
     [(VUIMPMenuDataSource *)self setHasDownloadDataSourceFetchCompleted:1];
@@ -233,18 +233,18 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(VUIMPMenuDataSource *)self downloadDataSource];
-  v5 = [v4 downloadEntities];
-  v6 = [v5 count];
+  downloadDataSource = [(VUIMPMenuDataSource *)self downloadDataSource];
+  downloadEntities = [downloadDataSource downloadEntities];
+  mediaEntitiesByCategoryType2 = [downloadEntities count];
 
-  if (!v6)
+  if (!mediaEntitiesByCategoryType2)
   {
-    v10 = [(VUIMPMenuDataSource *)self mediaEntitiesByCategoryType];
-    v11 = [v10 objectForKey:&unk_1F5E5D140];
-    if (v11)
+    mediaEntitiesByCategoryType = [(VUIMPMenuDataSource *)self mediaEntitiesByCategoryType];
+    _constructCategoryList = [mediaEntitiesByCategoryType objectForKey:&unk_1F5E5D140];
+    if (_constructCategoryList)
     {
-      v6 = [(VUIMPMenuDataSource *)self mediaEntitiesByCategoryType];
-      v2 = [v6 objectForKey:&unk_1F5E5D140];
+      mediaEntitiesByCategoryType2 = [(VUIMPMenuDataSource *)self mediaEntitiesByCategoryType];
+      v2 = [mediaEntitiesByCategoryType2 objectForKey:&unk_1F5E5D140];
       if ([v2 count])
       {
 
@@ -255,10 +255,10 @@ LABEL_15:
       }
     }
 
-    v15 = [(VUIMPMenuDataSource *)self categoryTypes];
-    v16 = [v15 containsObject:&unk_1F5E5D140];
+    categoryTypes = [(VUIMPMenuDataSource *)self categoryTypes];
+    v16 = [categoryTypes containsObject:&unk_1F5E5D140];
 
-    if (v11)
+    if (_constructCategoryList)
     {
 
       if ((v16 & 1) == 0)
@@ -277,32 +277,32 @@ LABEL_15:
     }
 
     v17 = MEMORY[0x1E695DF70];
-    v18 = [(VUIMPMenuDataSource *)self categoryTypes];
-    v10 = [v17 arrayWithArray:v18];
+    categoryTypes2 = [(VUIMPMenuDataSource *)self categoryTypes];
+    mediaEntitiesByCategoryType = [v17 arrayWithArray:categoryTypes2];
 
-    [v10 removeObject:&unk_1F5E5D140];
+    [mediaEntitiesByCategoryType removeObject:&unk_1F5E5D140];
 LABEL_14:
-    v19 = [v10 copy];
+    v19 = [mediaEntitiesByCategoryType copy];
     [(VUIMPMenuDataSource *)self setCategoryTypes:v19];
 
-    v11 = [(VUIMPMenuDataSource *)self _constructCategoryList];
-    [(VUILibraryMenuDataSource *)self setMenuItems:v11];
+    _constructCategoryList = [(VUIMPMenuDataSource *)self _constructCategoryList];
+    [(VUILibraryMenuDataSource *)self setMenuItems:_constructCategoryList];
     v9 = 1;
     goto LABEL_15;
   }
 
-  v7 = [(VUIMPMenuDataSource *)self categoryTypes];
-  v8 = [v7 containsObject:&unk_1F5E5D140];
+  categoryTypes3 = [(VUIMPMenuDataSource *)self categoryTypes];
+  v8 = [categoryTypes3 containsObject:&unk_1F5E5D140];
 
   if ((v8 & 1) == 0)
   {
     v12 = MEMORY[0x1E695DF70];
-    v13 = [(VUIMPMenuDataSource *)self categoryTypes];
-    v10 = [v12 arrayWithArray:v13];
+    categoryTypes4 = [(VUIMPMenuDataSource *)self categoryTypes];
+    mediaEntitiesByCategoryType = [v12 arrayWithArray:categoryTypes4];
 
-    [v10 addObject:&unk_1F5E5D140];
-    v14 = [(VUIMPMenuDataSource *)self _categoryTypesSortComparator];
-    [v10 sortUsingComparator:v14];
+    [mediaEntitiesByCategoryType addObject:&unk_1F5E5D140];
+    _categoryTypesSortComparator = [(VUIMPMenuDataSource *)self _categoryTypesSortComparator];
+    [mediaEntitiesByCategoryType sortUsingComparator:_categoryTypesSortComparator];
 
     goto LABEL_14;
   }
@@ -310,7 +310,7 @@ LABEL_14:
   return 0;
 }
 
-- (void)dataSourceDidFinishFetching:(id)a3
+- (void)dataSourceDidFinishFetching:(id)fetching
 {
   if ([(VUIMPMenuDataSource *)self hasMediaEntitiesFetchCompleted])
   {
@@ -330,31 +330,31 @@ LABEL_14:
     return 0;
   }
 
-  v3 = [(VUIMPMenuDataSource *)self familyDataSource];
-  v4 = [v3 familyMembers];
-  v5 = [v4 count];
+  familyDataSource = [(VUIMPMenuDataSource *)self familyDataSource];
+  familyMembers = [familyDataSource familyMembers];
+  v5 = [familyMembers count];
 
-  v6 = [(VUIMPMenuDataSource *)self categoryTypes];
-  v7 = [v6 containsObject:&unk_1F5E5D128];
+  categoryTypes = [(VUIMPMenuDataSource *)self categoryTypes];
+  v7 = [categoryTypes containsObject:&unk_1F5E5D128];
 
   if (v5)
   {
     if ((v7 & 1) == 0)
     {
       v8 = MEMORY[0x1E695DF70];
-      v9 = [(VUIMPMenuDataSource *)self categoryTypes];
-      v10 = [v8 arrayWithArray:v9];
+      categoryTypes2 = [(VUIMPMenuDataSource *)self categoryTypes];
+      v10 = [v8 arrayWithArray:categoryTypes2];
 
       [v10 addObject:&unk_1F5E5D128];
-      v11 = [(VUIMPMenuDataSource *)self _categoryTypesSortComparator];
-      [v10 sortUsingComparator:v11];
+      _categoryTypesSortComparator = [(VUIMPMenuDataSource *)self _categoryTypesSortComparator];
+      [v10 sortUsingComparator:_categoryTypesSortComparator];
 
 LABEL_8:
       v15 = [v10 copy];
       [(VUIMPMenuDataSource *)self setCategoryTypes:v15];
 
-      v16 = [(VUIMPMenuDataSource *)self _constructCategoryList];
-      [(VUILibraryMenuDataSource *)self setMenuItems:v16];
+      _constructCategoryList = [(VUIMPMenuDataSource *)self _constructCategoryList];
+      [(VUILibraryMenuDataSource *)self setMenuItems:_constructCategoryList];
 
       return 1;
     }
@@ -363,8 +363,8 @@ LABEL_8:
   else if (v7)
   {
     v13 = MEMORY[0x1E695DF70];
-    v14 = [(VUIMPMenuDataSource *)self categoryTypes];
-    v10 = [v13 arrayWithArray:v14];
+    categoryTypes3 = [(VUIMPMenuDataSource *)self categoryTypes];
+    v10 = [v13 arrayWithArray:categoryTypes3];
 
     [v10 removeObject:&unk_1F5E5D128];
     goto LABEL_8;
@@ -373,35 +373,35 @@ LABEL_8:
   return 0;
 }
 
-- (void)controller:(id)a3 fetchRequests:(id)a4 didCompleteWithResult:(id)a5
+- (void)controller:(id)controller fetchRequests:(id)requests didCompleteWithResult:(id)result
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v43 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  requestsCopy = requests;
+  resultCopy = result;
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v12 = [v9 fetchResponses];
-  v13 = v12;
-  if (self->_rentalsUpdateFetchController == v8)
+  fetchResponses = [resultCopy fetchResponses];
+  v13 = fetchResponses;
+  if (self->_rentalsUpdateFetchController == controllerCopy)
   {
-    if (v12)
+    if (fetchResponses)
     {
-      v30 = [v12 firstObject];
-      v31 = [v30 mediaEntities];
+      firstObject = [fetchResponses firstObject];
+      mediaEntities = [firstObject mediaEntities];
     }
 
     else
     {
-      v31 = 0;
+      mediaEntities = 0;
     }
 
     v32 = self->_mediaEntitiesByCategoryType;
 
-    if ([v31 count])
+    if ([mediaEntities count])
     {
       v33 = v32;
-      v34 = v31;
+      v34 = mediaEntities;
     }
 
     else
@@ -415,45 +415,45 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  if (self->_mediaEntitiesFetchController != v8)
+  if (self->_mediaEntitiesFetchController != controllerCopy)
   {
     goto LABEL_29;
   }
 
-  if (![v12 count])
+  if (![fetchResponses count])
   {
     v32 = v10;
 LABEL_23:
-    v28 = [(VUIMPMenuDataSource *)self _categoryTypesSortComparator];
-    v29 = [(VUIMPMenuDataSource *)self _categoryTypesWithMediaEntitiesMap:v32 categoryTypeComparator:v28];
+    _categoryTypesSortComparator = [(VUIMPMenuDataSource *)self _categoryTypesSortComparator];
+    v29 = [(VUIMPMenuDataSource *)self _categoryTypesWithMediaEntitiesMap:v32 categoryTypeComparator:_categoryTypesSortComparator];
     v10 = v32;
     goto LABEL_24;
   }
 
   v41 = v10;
   v42 = v11;
-  v38 = v9;
-  v39 = v8;
+  v38 = resultCopy;
+  v39 = controllerCopy;
   v40 = 0;
   v14 = 0;
   do
   {
-    v15 = [v43 objectAtIndex:v14];
-    v16 = [v15 options];
-    v17 = [v16 vui_BOOLForKey:@"CheckHasItems" defaultValue:0];
+    v15 = [requestsCopy objectAtIndex:v14];
+    options = [v15 options];
+    v17 = [options vui_BOOLForKey:@"CheckHasItems" defaultValue:0];
     v18 = [v13 objectAtIndex:v14];
-    v19 = [(VUIMPMenuDataSource *)self categoryTypeByFetchRequestIdentifier];
-    v20 = [v15 identifier];
-    v21 = [v19 objectForKey:v20];
+    categoryTypeByFetchRequestIdentifier = [(VUIMPMenuDataSource *)self categoryTypeByFetchRequestIdentifier];
+    identifier = [v15 identifier];
+    v21 = [categoryTypeByFetchRequestIdentifier objectForKey:identifier];
 
     if (v21)
     {
-      v22 = [v18 mediaEntities];
-      v23 = v22;
+      mediaEntities2 = [v18 mediaEntities];
+      v23 = mediaEntities2;
       if (v17)
       {
-        v24 = [v18 hasDataForCheckHasItemsOption];
-        v25 = [MEMORY[0x1E696AD98] numberWithBool:v24];
+        hasDataForCheckHasItemsOption = [v18 hasDataForCheckHasItemsOption];
+        v25 = [MEMORY[0x1E696AD98] numberWithBool:hasDataForCheckHasItemsOption];
         [v42 setObject:v25 forKey:v21];
 
         v40 = 1;
@@ -461,7 +461,7 @@ LABEL_23:
 
       else
       {
-        if (v22)
+        if (mediaEntities2)
         {
           v26 = v41;
           v27 = v23;
@@ -485,16 +485,16 @@ LABEL_23:
   {
     v32 = v41;
     v11 = v42;
-    v9 = v38;
-    v8 = v39;
+    resultCopy = v38;
+    controllerCopy = v39;
     goto LABEL_23;
   }
 
-  v28 = [(VUIMPMenuDataSource *)self _categoryTypesSortComparator];
+  _categoryTypesSortComparator = [(VUIMPMenuDataSource *)self _categoryTypesSortComparator];
   v11 = v42;
-  v29 = [(VUIMPMenuDataSource *)self _categoryTypesWithOptimizedMenuDataMap:v42 categoryTypeComparator:v28];
-  v9 = v38;
-  v8 = v39;
+  v29 = [(VUIMPMenuDataSource *)self _categoryTypesWithOptimizedMenuDataMap:v42 categoryTypeComparator:_categoryTypesSortComparator];
+  resultCopy = v38;
+  controllerCopy = v39;
   v10 = v41;
 LABEL_24:
 
@@ -521,12 +521,12 @@ LABEL_24:
 LABEL_29:
 }
 
-- (void)controller:(id)a3 fetchRequests:(id)a4 didFailWithError:(id)a5
+- (void)controller:(id)controller fetchRequests:(id)requests didFailWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_mediaEntitiesFetchController == v8 || self->_rentalsUpdateFetchController == v8)
+  controllerCopy = controller;
+  requestsCopy = requests;
+  errorCopy = error;
+  if (self->_mediaEntitiesFetchController == controllerCopy || self->_rentalsUpdateFetchController == controllerCopy)
   {
     [(VUIMPMenuDataSource *)self setHasMediaEntitiesFetchCompleted:1];
     objc_initWeak(&location, self);
@@ -563,11 +563,11 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
 
 - (id)_deviceMediaLibrary
 {
-  v2 = [(VUIMPMenuDataSource *)self mediaLibrary];
+  mediaLibrary = [(VUIMPMenuDataSource *)self mediaLibrary];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = mediaLibrary;
   }
 
   else
@@ -580,75 +580,75 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
 
 - (void)_addMediaLibraryNotificationObservers
 {
-  v3 = [(VUIMPMenuDataSource *)self _deviceMediaLibrary];
-  if (v3)
+  _deviceMediaLibrary = [(VUIMPMenuDataSource *)self _deviceMediaLibrary];
+  if (_deviceMediaLibrary)
   {
-    v4 = v3;
-    [(VUIMPMenuDataSource *)self _addNotificationObserversWithDeviceLibrary:v3];
-    v3 = v4;
+    v4 = _deviceMediaLibrary;
+    [(VUIMPMenuDataSource *)self _addNotificationObserversWithDeviceLibrary:_deviceMediaLibrary];
+    _deviceMediaLibrary = v4;
   }
 }
 
-- (void)_addNotificationObserversWithDeviceLibrary:(id)a3
+- (void)_addNotificationObserversWithDeviceLibrary:(id)library
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__homeShareMediaLibrariesDidChange_ name:@"VUIMediaLibraryManagerHomeSharesDidChangeNotification" object:0];
-  v4 = [(VUIMPMenuDataSource *)self mediaLibrary];
-  [v5 addObserver:self selector:sel__mediaLibraryContentDidChange_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__homeShareMediaLibrariesDidChange_ name:@"VUIMediaLibraryManagerHomeSharesDidChangeNotification" object:0];
+  mediaLibrary = [(VUIMPMenuDataSource *)self mediaLibrary];
+  [defaultCenter addObserver:self selector:sel__mediaLibraryContentDidChange_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:mediaLibrary];
 }
 
 - (void)_removeMediaLibraryNotificationObservers
 {
-  v3 = [(VUIMPMenuDataSource *)self _deviceMediaLibrary];
-  if (v3)
+  _deviceMediaLibrary = [(VUIMPMenuDataSource *)self _deviceMediaLibrary];
+  if (_deviceMediaLibrary)
   {
-    v4 = v3;
-    [(VUIMPMenuDataSource *)self _removeNotificationObserversWithDeviceLibrary:v3];
-    v3 = v4;
+    v4 = _deviceMediaLibrary;
+    [(VUIMPMenuDataSource *)self _removeNotificationObserversWithDeviceLibrary:_deviceMediaLibrary];
+    _deviceMediaLibrary = v4;
   }
 }
 
-- (void)_removeNotificationObserversWithDeviceLibrary:(id)a3
+- (void)_removeNotificationObserversWithDeviceLibrary:(id)library
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"VUIMediaLibraryManagerHomeSharesDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VUIMediaLibraryManagerHomeSharesDidChangeNotification" object:0];
 }
 
 - (void)_addRentalsUpdateNotificationObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__updateRentalShelf name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateRentalShelf name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
 }
 
 - (void)_removeRentalsUpdateNotificationObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
 }
 
 - (void)_addAccountChangedNotificationObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__accountsChanged_ name:@"VUIAuthenticationManagerAccountStoreDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accountsChanged_ name:@"VUIAuthenticationManagerAccountStoreDidChangeNotification" object:0];
 }
 
 - (void)_removeAccountChangedNotificationObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D4A40] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4A40] object:0];
 }
 
-- (void)_homeShareMediaLibrariesDidChange:(id)a3
+- (void)_homeShareMediaLibrariesDidChange:(id)change
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"VUIMediaLibraryManagerHomeSharesDidChangeUserInfoKeyMediaLibraries"];
-  v6 = [v4 objectForKey:@"VUIMediaLibraryManagerHomeSharesDidChangeUserInfoKeyChangeSet"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"VUIMediaLibraryManagerHomeSharesDidChangeUserInfoKeyMediaLibraries"];
+  v6 = [userInfo objectForKey:@"VUIMediaLibraryManagerHomeSharesDidChangeUserInfoKeyChangeSet"];
   if ([(VUIMPMenuDataSource *)self hasMediaEntitiesFetchCompleted])
   {
-    v7 = [(VUIMPMenuDataSource *)self homeShares];
-    v8 = [v7 vui_arrayByApplyingChangeSet:v6 destinationObjects:v5];
-    if ([v7 count] && !objc_msgSend(v8, "count"))
+    homeShares = [(VUIMPMenuDataSource *)self homeShares];
+    v8 = [homeShares vui_arrayByApplyingChangeSet:v6 destinationObjects:v5];
+    if ([homeShares count] && !objc_msgSend(v8, "count"))
     {
       v23 = v8;
       v24 = v6;
@@ -657,8 +657,8 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v15 = [(VUIMPMenuDataSource *)self categoryTypes];
-      v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      categoryTypes = [(VUIMPMenuDataSource *)self categoryTypes];
+      v16 = [categoryTypes countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v16)
       {
         v17 = v16;
@@ -669,7 +669,7 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
           {
             if (*v26 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(categoryTypes);
             }
 
             v20 = *(*(&v25 + 1) + 8 * i);
@@ -679,7 +679,7 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v17 = [categoryTypes countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v17);
@@ -688,8 +688,8 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
       v21 = [v14 copy];
       [(VUIMPMenuDataSource *)self setCategoryTypes:v21];
 
-      v22 = [(VUIMPMenuDataSource *)self _constructCategoryList];
-      [(VUILibraryMenuDataSource *)self setMenuItems:v22];
+      _constructCategoryList = [(VUIMPMenuDataSource *)self _constructCategoryList];
+      [(VUILibraryMenuDataSource *)self setMenuItems:_constructCategoryList];
 
       if ([(VUIMPMenuDataSource *)self _allFetchesHaveCompleted])
       {
@@ -700,18 +700,18 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
       v6 = v24;
     }
 
-    else if (![v7 count] && objc_msgSend(v8, "count"))
+    else if (![homeShares count] && objc_msgSend(v8, "count"))
     {
       v9 = MEMORY[0x1E695DF70];
-      v10 = [(VUIMPMenuDataSource *)self categoryTypes];
-      v11 = [v9 arrayWithArray:v10];
+      categoryTypes2 = [(VUIMPMenuDataSource *)self categoryTypes];
+      v11 = [v9 arrayWithArray:categoryTypes2];
 
       [v11 addObject:&unk_1F5E5D110];
       v12 = [v11 copy];
       [(VUIMPMenuDataSource *)self setCategoryTypes:v12];
 
-      v13 = [(VUIMPMenuDataSource *)self _constructCategoryList];
-      [(VUILibraryMenuDataSource *)self setMenuItems:v13];
+      _constructCategoryList2 = [(VUIMPMenuDataSource *)self _constructCategoryList];
+      [(VUILibraryMenuDataSource *)self setMenuItems:_constructCategoryList2];
 
       if ([(VUIMPMenuDataSource *)self _allFetchesHaveCompleted])
       {
@@ -728,21 +728,21 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
   }
 }
 
-- (void)_mediaLibraryContentDidChange:(id)a3
+- (void)_mediaLibraryContentDidChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
-  v5 = [(VUIMPMenuDataSource *)self mediaLibrary];
+  object = [change object];
+  mediaLibrary = [(VUIMPMenuDataSource *)self mediaLibrary];
 
-  if (v4 == v5)
+  if (object == mediaLibrary)
   {
     v6 = VUIDefaultLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(VUIMPMenuDataSource *)self mediaLibrary];
-      v8 = [v7 identifier];
+      mediaLibrary2 = [(VUIMPMenuDataSource *)self mediaLibrary];
+      identifier = [mediaLibrary2 identifier];
       v9 = 138412290;
-      v10 = v8;
+      v10 = identifier;
       _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIMPMenuDataSource:: mediaLibrary %@ ContentDidChange", &v9, 0xCu);
     }
 
@@ -750,41 +750,41 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
   }
 }
 
-- (void)_loadMediaEntityShelvesWithInitialFetch:(BOOL)a3
+- (void)_loadMediaEntityShelvesWithInitialFetch:(BOOL)fetch
 {
-  v3 = a3;
-  v5 = [(VUIMPMenuDataSource *)self mediaLibrary];
+  fetchCopy = fetch;
+  mediaLibrary = [(VUIMPMenuDataSource *)self mediaLibrary];
   v15 = 0;
-  v6 = [(VUIMPMenuDataSource *)self _fetchRequestsWithMediaLibrary:v5 categoryTypeMap:&v15 isInitialFetch:v3];
+  v6 = [(VUIMPMenuDataSource *)self _fetchRequestsWithMediaLibrary:mediaLibrary categoryTypeMap:&v15 isInitialFetch:fetchCopy];
   v7 = v15;
 
   [(VUIMPMenuDataSource *)self setCategoryTypeByFetchRequestIdentifier:v7];
   v8 = [VUIMediaEntitiesFetchController alloc];
-  v9 = [(VUIMPMenuDataSource *)self mediaLibrary];
-  v10 = [(VUIMediaEntitiesFetchController *)v8 initWithMediaLibrary:v9 fetchRequests:v6];
+  mediaLibrary2 = [(VUIMPMenuDataSource *)self mediaLibrary];
+  v10 = [(VUIMediaEntitiesFetchController *)v8 initWithMediaLibrary:mediaLibrary2 fetchRequests:v6];
   [(VUIMPMenuDataSource *)self setMediaEntitiesFetchController:v10];
 
-  v11 = [(VUIMPMenuDataSource *)self mediaEntitiesFetchController];
-  [v11 setDelegate:self];
+  mediaEntitiesFetchController = [(VUIMPMenuDataSource *)self mediaEntitiesFetchController];
+  [mediaEntitiesFetchController setDelegate:self];
 
   [(VUIMPMenuDataSource *)self _loadGenres];
-  v12 = [(VUIMPMenuDataSource *)self mediaLibrary];
-  v13 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:v12];
-  v14 = [(VUIMPMenuDataSource *)self mediaEntitiesFetchController];
-  [v13 addFetchController:v14];
+  mediaLibrary3 = [(VUIMPMenuDataSource *)self mediaLibrary];
+  v13 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:mediaLibrary3];
+  mediaEntitiesFetchController2 = [(VUIMPMenuDataSource *)self mediaEntitiesFetchController];
+  [v13 addFetchController:mediaEntitiesFetchController2];
 }
 
-- (id)_fetchRequestsWithMediaLibrary:(id)a3 categoryTypeMap:(id *)a4 isInitialFetch:(BOOL)a5
+- (id)_fetchRequestsWithMediaLibrary:(id)library categoryTypeMap:(id *)map isInitialFetch:(BOOL)fetch
 {
-  v5 = a5;
+  fetchCopy = fetch;
   v57[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  libraryCopy = library;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v11 = [(VUILibraryMenuDataSource *)self validCategories];
-  v12 = [v11 containsObject:&unk_1F5E5D158];
+  validCategories = [(VUILibraryMenuDataSource *)self validCategories];
+  v12 = [validCategories containsObject:&unk_1F5E5D158];
 
-  if (v12 && ![v8 type])
+  if (v12 && ![libraryCopy type])
   {
     v13 = +[VUIMediaEntityFetchRequest movieRentalsFetchRequest];
     v52 = objc_alloc(MEMORY[0x1E695DEC8]);
@@ -792,10 +792,10 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
     v54 = [v52 initWithObjects:{v53, 0}];
 
     [v13 setSortDescriptors:v54];
-    [(VUIMPMenuDataSource *)self _updateFetchRequest:v13 isInitialFetch:v5];
+    [(VUIMPMenuDataSource *)self _updateFetchRequest:v13 isInitialFetch:fetchCopy];
     [v9 addObject:v13];
-    v55 = [v13 identifier];
-    [v10 setObject:&unk_1F5E5D158 forKey:v55];
+    identifier = [v13 identifier];
+    [v10 setObject:&unk_1F5E5D158 forKey:identifier];
   }
 
   else
@@ -803,8 +803,8 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
     v13 = 0;
   }
 
-  v14 = [(VUILibraryMenuDataSource *)self validCategories];
-  v15 = [v14 containsObject:&unk_1F5E5D170];
+  validCategories2 = [(VUILibraryMenuDataSource *)self validCategories];
+  v15 = [validCategories2 containsObject:&unk_1F5E5D170];
 
   if (v15)
   {
@@ -813,16 +813,16 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
     +[VUIMediaEntityType movie];
     v56 = v10;
     v18 = v9;
-    v19 = v5;
-    v20 = a4;
-    v22 = v21 = v8;
+    v19 = fetchCopy;
+    mapCopy = map;
+    v22 = v21 = libraryCopy;
     v23 = +[VUIMediaEntityType show];
     v24 = [v17 setWithObjects:{v22, v23, 0}];
     v25 = [(VUIMediaEntityFetchRequest *)v16 initWithMediaEntityTypes:v24];
 
-    v8 = v21;
-    a4 = v20;
-    v5 = v19;
+    libraryCopy = v21;
+    map = mapCopy;
+    fetchCopy = v19;
     v9 = v18;
     v10 = v56;
     v26 = VUIMediaEntityFetchRequestMinimalPropertiesSet();
@@ -839,79 +839,79 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
     v31 = [v29 vui_predicateWithSubpredicates:v30 type:1];
     [(VUIMediaEntityFetchRequest *)v25 setPredicate:v31];
 
-    [(VUIMPMenuDataSource *)self _updateFetchRequest:v25 isInitialFetch:v5];
+    [(VUIMPMenuDataSource *)self _updateFetchRequest:v25 isInitialFetch:fetchCopy];
     [v9 addObject:v25];
-    v32 = [(VUIMediaEntityFetchRequest *)v25 identifier];
-    [v56 setObject:&unk_1F5E5D170 forKey:v32];
+    identifier2 = [(VUIMediaEntityFetchRequest *)v25 identifier];
+    [v56 setObject:&unk_1F5E5D170 forKey:identifier2];
 
     v13 = v25;
   }
 
-  v33 = [(VUILibraryMenuDataSource *)self validCategories];
-  v34 = [v33 containsObject:&unk_1F5E5D188];
+  validCategories3 = [(VUILibraryMenuDataSource *)self validCategories];
+  v34 = [validCategories3 containsObject:&unk_1F5E5D188];
 
   if (v34)
   {
     v35 = +[VUIMediaEntityFetchRequest homeVideosFetchRequest];
 
-    [(VUIMPMenuDataSource *)self _updateFetchRequest:v35 isInitialFetch:v5];
+    [(VUIMPMenuDataSource *)self _updateFetchRequest:v35 isInitialFetch:fetchCopy];
     [v9 addObject:v35];
-    v36 = [v35 identifier];
-    [v10 setObject:&unk_1F5E5D188 forKey:v36];
+    identifier3 = [v35 identifier];
+    [v10 setObject:&unk_1F5E5D188 forKey:identifier3];
 
     v13 = v35;
   }
 
-  v37 = [(VUILibraryMenuDataSource *)self validCategories];
-  v38 = [v37 containsObject:&unk_1F5E5D1A0];
+  validCategories4 = [(VUILibraryMenuDataSource *)self validCategories];
+  v38 = [validCategories4 containsObject:&unk_1F5E5D1A0];
 
   if (v38)
   {
     v39 = +[VUIMediaEntityFetchRequest showsFetchRequest];
 
-    [(VUIMPMenuDataSource *)self _updateFetchRequest:v39 isInitialFetch:v5];
+    [(VUIMPMenuDataSource *)self _updateFetchRequest:v39 isInitialFetch:fetchCopy];
     [v9 addObject:v39];
-    v40 = [v39 identifier];
-    [v10 setObject:&unk_1F5E5D1A0 forKey:v40];
+    identifier4 = [v39 identifier];
+    [v10 setObject:&unk_1F5E5D1A0 forKey:identifier4];
 
     v13 = v39;
   }
 
-  v41 = [(VUILibraryMenuDataSource *)self validCategories];
-  v42 = [v41 containsObject:&unk_1F5E5D1B8];
+  validCategories5 = [(VUILibraryMenuDataSource *)self validCategories];
+  v42 = [validCategories5 containsObject:&unk_1F5E5D1B8];
 
   if (v42)
   {
     v43 = +[VUIMediaEntityFetchRequest moviesFetchRequest];
 
-    [(VUIMPMenuDataSource *)self _updateFetchRequest:v43 isInitialFetch:v5];
+    [(VUIMPMenuDataSource *)self _updateFetchRequest:v43 isInitialFetch:fetchCopy];
     [v9 addObject:v43];
-    v44 = [v43 identifier];
-    [v10 setObject:&unk_1F5E5D1B8 forKey:v44];
+    identifier5 = [v43 identifier];
+    [v10 setObject:&unk_1F5E5D1B8 forKey:identifier5];
 
     v13 = v43;
   }
 
-  v45 = [(VUILibraryMenuDataSource *)self validCategories];
-  v46 = [v45 containsObject:&unk_1F5E5D1D0];
+  validCategories6 = [(VUILibraryMenuDataSource *)self validCategories];
+  v46 = [validCategories6 containsObject:&unk_1F5E5D1D0];
 
   if (v46 && SSDeviceIsHDRCapable())
   {
     v47 = +[VUIMediaEntityFetchRequest moviesFetchRequest];
 
     [v47 addHDRColorCapabilityOr4KResolutionPredicate];
-    [(VUIMPMenuDataSource *)self _updateFetchRequest:v47 isInitialFetch:v5];
+    [(VUIMPMenuDataSource *)self _updateFetchRequest:v47 isInitialFetch:fetchCopy];
     [v9 addObject:v47];
-    v48 = [v47 identifier];
-    [v10 setObject:&unk_1F5E5D1D0 forKey:v48];
+    identifier6 = [v47 identifier];
+    [v10 setObject:&unk_1F5E5D1D0 forKey:identifier6];
 
     v13 = v47;
   }
 
-  if (a4)
+  if (map)
   {
     v49 = v10;
-    *a4 = v10;
+    *map = v10;
   }
 
   v50 = [v9 copy];
@@ -921,21 +921,21 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
 
 - (void)_loadGenres
 {
-  v3 = [(VUILibraryMenuDataSource *)self validCategories];
-  v4 = [v3 containsObject:&unk_1F5E5D1E8];
+  validCategories = [(VUILibraryMenuDataSource *)self validCategories];
+  v4 = [validCategories containsObject:&unk_1F5E5D1E8];
 
   if (v4)
   {
-    v5 = [(VUIMPMenuDataSource *)self mediaLibrary];
+    mediaLibrary = [(VUIMPMenuDataSource *)self mediaLibrary];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v7 = [(VUIMPMenuDataSource *)self mediaLibrary];
-    v8 = v7;
+    mediaLibrary2 = [(VUIMPMenuDataSource *)self mediaLibrary];
+    mediaLibrary3 = mediaLibrary2;
     if (isKindOfClass)
     {
-      v9 = [v7 mediaLibrary];
-      v10 = [v9 mediaLibrary];
+      v7MediaLibrary = [mediaLibrary2 mediaLibrary];
+      v9MediaLibrary = [v7MediaLibrary mediaLibrary];
     }
 
     else
@@ -948,13 +948,13 @@ void __65__VUIMPMenuDataSource_controller_fetchRequests_didFailWithError___block
         goto LABEL_8;
       }
 
-      v8 = [(VUIMPMenuDataSource *)self mediaLibrary];
-      v10 = [v8 mediaLibrary];
+      mediaLibrary3 = [(VUIMPMenuDataSource *)self mediaLibrary];
+      v9MediaLibrary = [mediaLibrary3 mediaLibrary];
     }
 
-    if (v10)
+    if (v9MediaLibrary)
     {
-      v12 = [MEMORY[0x1E6970618] vui_GenresQueryWithMediaLibrary:v10];
+      v12 = [MEMORY[0x1E6970618] vui_GenresQueryWithMediaLibrary:v9MediaLibrary];
       objc_initWeak(&location, self);
       v13 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -974,10 +974,10 @@ LABEL_10:
     }
 
 LABEL_8:
-    v10 = VUIDefaultLogObject();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    v9MediaLibrary = VUIDefaultLogObject();
+    if (os_log_type_enabled(v9MediaLibrary, OS_LOG_TYPE_ERROR))
     {
-      [(VUIMPMenuDataSource *)v10 _loadGenres];
+      [(VUIMPMenuDataSource *)v9MediaLibrary _loadGenres];
     }
 
     goto LABEL_10;
@@ -1094,9 +1094,9 @@ void __34__VUIMPMenuDataSource__loadGenres__block_invoke_55(uint64_t a1)
   }
 
   v5 = [VUIMenuDataSource alloc];
-  v6 = [(VUIMPMenuDataSource *)self categoryTypes];
+  categoryTypes = [(VUIMPMenuDataSource *)self categoryTypes];
   v7 = [(NSArray *)v3 copy];
-  v8 = [(VUIMenuDataSource *)v5 initWithMainMenuItems:v6 genreMenuItems:v7];
+  v8 = [(VUIMenuDataSource *)v5 initWithMainMenuItems:categoryTypes genreMenuItems:v7];
 
   v9 = [(NSArray *)v4 copy];
   [(VUIMenuDataSource *)v8 setGenreTypes:v9];
@@ -1104,11 +1104,11 @@ void __34__VUIMPMenuDataSource__loadGenres__block_invoke_55(uint64_t a1)
   return v8;
 }
 
-- (id)_categoryTypesWithMediaEntitiesMap:(id)a3 categoryTypeComparator:(id)a4
+- (id)_categoryTypesWithMediaEntitiesMap:(id)map categoryTypeComparator:(id)comparator
 {
-  v5 = a4;
+  comparatorCopy = comparator;
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
+  mapCopy = map;
   v8 = objc_alloc_init(v6);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1116,11 +1116,11 @@ void __34__VUIMPMenuDataSource__loadGenres__block_invoke_55(uint64_t a1)
   v12[3] = &unk_1E87319B0;
   v9 = v8;
   v13 = v9;
-  [v7 enumerateKeysAndObjectsUsingBlock:v12];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v12];
 
-  if (v5)
+  if (comparatorCopy)
   {
-    [v9 sortUsingComparator:v5];
+    [v9 sortUsingComparator:comparatorCopy];
   }
 
   v10 = [v9 copy];
@@ -1137,11 +1137,11 @@ void __81__VUIMPMenuDataSource__categoryTypesWithMediaEntitiesMap_categoryTypeCo
   }
 }
 
-- (id)_categoryTypesWithOptimizedMenuDataMap:(id)a3 categoryTypeComparator:(id)a4
+- (id)_categoryTypesWithOptimizedMenuDataMap:(id)map categoryTypeComparator:(id)comparator
 {
-  v5 = a4;
+  comparatorCopy = comparator;
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
+  mapCopy = map;
   v8 = objc_alloc_init(v6);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1149,11 +1149,11 @@ void __81__VUIMPMenuDataSource__categoryTypesWithMediaEntitiesMap_categoryTypeCo
   v12[3] = &unk_1E87319D8;
   v9 = v8;
   v13 = v9;
-  [v7 enumerateKeysAndObjectsUsingBlock:v12];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v12];
 
-  if (v5)
+  if (comparatorCopy)
   {
-    [v9 sortUsingComparator:v5];
+    [v9 sortUsingComparator:comparatorCopy];
   }
 
   v10 = [v9 copy];
@@ -1170,16 +1170,16 @@ void __85__VUIMPMenuDataSource__categoryTypesWithOptimizedMenuDataMap_categoryTy
   }
 }
 
-- (void)_updateFetchRequest:(id)a3 isInitialFetch:(BOOL)a4
+- (void)_updateFetchRequest:(id)request isInitialFetch:(BOOL)fetch
 {
-  v4 = a4;
-  v7 = a3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  fetchCopy = fetch;
+  requestCopy = request;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 && v6 == 1)
+  if (fetchCopy && userInterfaceIdiom == 1)
   {
-    [v7 addHasItemsOption];
+    [requestCopy addHasItemsOption];
   }
 }
 
@@ -1193,31 +1193,31 @@ void __85__VUIMPMenuDataSource__categoryTypesWithOptimizedMenuDataMap_categoryTy
 
   [v3 setSortDescriptors:v6];
   v7 = [(NSDictionary *)self->_categoryTypeByFetchRequestIdentifier mutableCopy];
-  v8 = [v3 identifier];
-  [v7 setObject:&unk_1F5E5D158 forKey:v8];
+  identifier = [v3 identifier];
+  [v7 setObject:&unk_1F5E5D158 forKey:identifier];
 
   v9 = [v7 copy];
   [(VUIMPMenuDataSource *)self setCategoryTypeByFetchRequestIdentifier:v9];
 
   v10 = [VUIMediaEntitiesFetchController alloc];
-  v11 = [(VUIMPMenuDataSource *)self mediaLibrary];
+  mediaLibrary = [(VUIMPMenuDataSource *)self mediaLibrary];
   v17[0] = v3;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v13 = [(VUIMediaEntitiesFetchController *)v10 initWithMediaLibrary:v11 fetchRequests:v12];
+  v13 = [(VUIMediaEntitiesFetchController *)v10 initWithMediaLibrary:mediaLibrary fetchRequests:v12];
   rentalsUpdateFetchController = self->_rentalsUpdateFetchController;
   self->_rentalsUpdateFetchController = v13;
 
   [(VUIMediaEntitiesFetchController *)self->_rentalsUpdateFetchController setDelegate:self];
-  v15 = [(VUIMPMenuDataSource *)self mediaLibrary];
-  v16 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:v15];
+  mediaLibrary2 = [(VUIMPMenuDataSource *)self mediaLibrary];
+  v16 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:mediaLibrary2];
   [v16 addFetchController:self->_rentalsUpdateFetchController];
 }
 
-- (void)_populateViewModelFromMeidaLibraryCategoryTypes:(id)a3
+- (void)_populateViewModelFromMeidaLibraryCategoryTypes:(id)types
 {
-  v13 = [MEMORY[0x1E695DF70] arrayWithArray:a3];
-  v4 = [(VUIDownloadDataSource *)self->_downloadDataSource downloadEntities];
-  if ([v4 count])
+  v13 = [MEMORY[0x1E695DF70] arrayWithArray:types];
+  downloadEntities = [(VUIDownloadDataSource *)self->_downloadDataSource downloadEntities];
+  if ([downloadEntities count])
   {
     v5 = [v13 containsObject:&unk_1F5E5D140];
 
@@ -1231,17 +1231,17 @@ void __85__VUIMPMenuDataSource__categoryTypesWithOptimizedMenuDataMap_categoryTy
   {
   }
 
-  v6 = [(VUIMPMenuDataSource *)self homeShares];
-  v7 = [v6 count];
+  homeShares = [(VUIMPMenuDataSource *)self homeShares];
+  v7 = [homeShares count];
 
   if (v7)
   {
     [v13 addObject:&unk_1F5E5D110];
   }
 
-  v8 = [(VUIMPMenuDataSource *)self familyDataSource];
-  v9 = [v8 familyMembers];
-  if ([v9 count])
+  familyDataSource = [(VUIMPMenuDataSource *)self familyDataSource];
+  familyMembers = [familyDataSource familyMembers];
+  if ([familyMembers count])
   {
     v10 = [v13 containsObject:&unk_1F5E5D128];
 
@@ -1258,18 +1258,18 @@ void __85__VUIMPMenuDataSource__categoryTypesWithOptimizedMenuDataMap_categoryTy
   v11 = [v13 copy];
   [(VUIMPMenuDataSource *)self setCategoryTypes:v11];
 
-  v12 = [(VUIMPMenuDataSource *)self _constructCategoryList];
-  [(VUILibraryMenuDataSource *)self setMenuItems:v12];
+  _constructCategoryList = [(VUIMPMenuDataSource *)self _constructCategoryList];
+  [(VUILibraryMenuDataSource *)self setMenuItems:_constructCategoryList];
 }
 
-- (void)_accountsChanged:(id)a3
+- (void)_accountsChanged:(id)changed
 {
   v4 = MEMORY[0x1E695E0F0];
   [(VUIMPMenuDataSource *)self setGenreTitles:MEMORY[0x1E695E0F0]];
   [(VUIMPMenuDataSource *)self setGenreTypes:v4];
   [(VUIMPMenuDataSource *)self setCategoryTypes:v4];
-  v5 = [(VUILibraryMenuDataSource *)self validCategories];
-  v6 = [v5 containsObject:&unk_1F5E5D128];
+  validCategories = [(VUILibraryMenuDataSource *)self validCategories];
+  v6 = [validCategories containsObject:&unk_1F5E5D128];
 
   if (v6)
   {
@@ -1278,11 +1278,11 @@ void __85__VUIMPMenuDataSource__categoryTypesWithOptimizedMenuDataMap_categoryTy
       v7 = objc_alloc_init(VUILibraryFamilyMembersDataSource);
       [(VUIMPMenuDataSource *)self setFamilyDataSource:v7];
 
-      v8 = [(VUIMPMenuDataSource *)self familyDataSource];
-      [v8 setDelegate:self];
+      familyDataSource = [(VUIMPMenuDataSource *)self familyDataSource];
+      [familyDataSource setDelegate:self];
 
-      v9 = [(VUIMPMenuDataSource *)self familyDataSource];
-      [v9 startFetch];
+      familyDataSource2 = [(VUIMPMenuDataSource *)self familyDataSource];
+      [familyDataSource2 startFetch];
     }
 
     else

@@ -1,28 +1,28 @@
 @interface CKMomentSharePreviewAsset
 - (BOOL)isPreviewImageDataAvailable;
-- (CGRect)bestCropRectForAspectRatio:(double)a3;
-- (CGRect)bestCropRectForAspectRatio:(double)a3 verticalContentMode:(int64_t)a4 cropMode:(int64_t)a5;
+- (CGRect)bestCropRectForAspectRatio:(double)ratio;
+- (CGRect)bestCropRectForAspectRatio:(double)ratio verticalContentMode:(int64_t)mode cropMode:(int64_t)cropMode;
 - (CGSize)size;
-- (CKMomentSharePreviewAsset)initWithMomentShare:(id)a3;
+- (CKMomentSharePreviewAsset)initWithMomentShare:(id)share;
 - (Class)defaultImageProviderClass;
 - (NSData)previewImageData;
 - (UIImage)previewImage;
 - (double)aspectRatio;
-- (int64_t)isContentEqualTo:(id)a3;
+- (int64_t)isContentEqualTo:(id)to;
 @end
 
 @implementation CKMomentSharePreviewAsset
 
-- (CKMomentSharePreviewAsset)initWithMomentShare:(id)a3
+- (CKMomentSharePreviewAsset)initWithMomentShare:(id)share
 {
-  v5 = a3;
+  shareCopy = share;
   v9.receiver = self;
   v9.super_class = CKMomentSharePreviewAsset;
   v6 = [(CKMomentSharePreviewAsset *)&v9 initWithConfiguration:&__block_literal_global_125];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_momentShare, a3);
+    objc_storeStrong(&v6->_momentShare, share);
   }
 
   return v7;
@@ -34,14 +34,14 @@
   objc_exception_throw(v2);
 }
 
-- (int64_t)isContentEqualTo:(id)a3
+- (int64_t)isContentEqualTo:(id)to
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  toCopy = to;
+  if (toCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     momentShare = self->_momentShare;
-    v6 = [v4 momentShare];
-    LODWORD(momentShare) = [(PHMomentShare *)momentShare isEqual:v6];
+    momentShare = [toCopy momentShare];
+    LODWORD(momentShare) = [(PHMomentShare *)momentShare isEqual:momentShare];
 
     if (momentShare)
     {
@@ -64,19 +64,19 @@
 
 - (BOOL)isPreviewImageDataAvailable
 {
-  v3 = [(PHMomentShare *)self->_momentShare preview];
-  v4 = [v3 thumbnailImageData];
-  if (v4)
+  preview = [(PHMomentShare *)self->_momentShare preview];
+  thumbnailImageData = [preview thumbnailImageData];
+  if (thumbnailImageData)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PHMomentShare *)self->_momentShare preview];
-    v7 = [v6 previewImageData];
-    v8 = [v7 firstObject];
-    v5 = v8 != 0;
+    preview2 = [(PHMomentShare *)self->_momentShare preview];
+    previewImageData = [preview2 previewImageData];
+    firstObject = [previewImageData firstObject];
+    v5 = firstObject != 0;
   }
 
   return v5;
@@ -84,22 +84,22 @@
 
 - (NSData)previewImageData
 {
-  v3 = [(PHMomentShare *)self->_momentShare preview];
-  v4 = [v3 previewImageData];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  preview = [(PHMomentShare *)self->_momentShare preview];
+  previewImageData = [preview previewImageData];
+  firstObject = [previewImageData firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = v5;
+    thumbnailImageData = firstObject;
   }
 
   else
   {
-    v8 = [(PHMomentShare *)self->_momentShare preview];
-    v7 = [v8 thumbnailImageData];
+    preview2 = [(PHMomentShare *)self->_momentShare preview];
+    thumbnailImageData = [preview2 thumbnailImageData];
   }
 
-  return v7;
+  return thumbnailImageData;
 }
 
 - (UIImage)previewImage
@@ -107,8 +107,8 @@
   if (!self->_cachedImage && [(CKMomentSharePreviewAsset *)self isPreviewImageDataAvailable])
   {
     v3 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v4 = [(CKMomentSharePreviewAsset *)self previewImageData];
-    v5 = [v3 initWithData:v4];
+    previewImageData = [(CKMomentSharePreviewAsset *)self previewImageData];
+    v5 = [v3 initWithData:previewImageData];
     cachedImage = self->_cachedImage;
     self->_cachedImage = v5;
   }
@@ -118,9 +118,9 @@
   return v7;
 }
 
-- (CGRect)bestCropRectForAspectRatio:(double)a3
+- (CGRect)bestCropRectForAspectRatio:(double)ratio
 {
-  [(CKMomentSharePreviewAsset *)self bestCropRectForAspectRatio:0 verticalContentMode:3 cropMode:a3];
+  [(CKMomentSharePreviewAsset *)self bestCropRectForAspectRatio:0 verticalContentMode:3 cropMode:ratio];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -130,8 +130,8 @@
 
 - (CGSize)size
 {
-  v2 = [(CKMomentSharePreviewAsset *)self previewImage];
-  [v2 size];
+  previewImage = [(CKMomentSharePreviewAsset *)self previewImage];
+  [previewImage size];
   v4 = v3;
   v6 = v5;
 
@@ -154,9 +154,9 @@
   return result;
 }
 
-- (CGRect)bestCropRectForAspectRatio:(double)a3 verticalContentMode:(int64_t)a4 cropMode:(int64_t)a5
+- (CGRect)bestCropRectForAspectRatio:(double)ratio verticalContentMode:(int64_t)mode cropMode:(int64_t)cropMode
 {
-  [(CKMomentSharePreviewAsset *)self aspectRatio:a4];
+  [(CKMomentSharePreviewAsset *)self aspectRatio:mode];
   if (PXFloatApproximatelyEqualToFloat())
   {
     v6 = *MEMORY[0x1E69C48E0];
@@ -170,8 +170,8 @@
     [(CKMomentSharePreviewAsset *)self size];
     v11 = v10;
     v13 = v12;
-    v14 = [(PHMomentShare *)self->_momentShare preview];
-    [v14 cropRect];
+    preview = [(PHMomentShare *)self->_momentShare preview];
+    [preview cropRect];
     v16 = v15;
     v18 = v17;
     v20 = v19;

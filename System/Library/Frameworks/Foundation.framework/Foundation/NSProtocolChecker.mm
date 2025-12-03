@@ -1,23 +1,23 @@
 @interface NSProtocolChecker
-+ (NSProtocolChecker)allocWithZone:(_NSZone *)a3;
++ (NSProtocolChecker)allocWithZone:(_NSZone *)zone;
 + (NSProtocolChecker)protocolCheckerWithTarget:(NSObject *)anObject protocol:(Protocol *)aProtocol;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (const)_localClassNameForClass;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (objc_method_description)methodDescriptionForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (objc_method_description)methodDescriptionForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation NSProtocolChecker
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5 = 1;
-  if (!protocol_getMethodDescription([(NSProtocolChecker *)self protocol], a3, 1, 1).name)
+  if (!protocol_getMethodDescription([(NSProtocolChecker *)self protocol], selector, 1, 1).name)
   {
-    if (!protocol_getMethodDescription([(NSProtocolChecker *)self protocol], a3, 0, 1).name)
+    if (!protocol_getMethodDescription([(NSProtocolChecker *)self protocol], selector, 0, 1).name)
     {
       return 0;
     }
@@ -32,18 +32,18 @@
   return v5;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = [(NSProtocolChecker *)self protocol];
+  protocol = [(NSProtocolChecker *)self protocol];
 
-  return protocol_conformsToProtocol(v4, a3);
+  return protocol_conformsToProtocol(protocol, protocol);
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  if (!protocol_getMethodDescription([(NSProtocolChecker *)self protocol], a3, 1, 1).name)
+  if (!protocol_getMethodDescription([(NSProtocolChecker *)self protocol], selector, 1, 1).name)
   {
-    if (!protocol_getMethodDescription([(NSProtocolChecker *)self protocol], a3, 0, 1).name)
+    if (!protocol_getMethodDescription([(NSProtocolChecker *)self protocol], selector, 0, 1).name)
     {
       return 0;
     }
@@ -58,12 +58,12 @@
   return [(NSProtocolChecker *)self target];
 }
 
-- (objc_method_description)methodDescriptionForSelector:(SEL)a3
+- (objc_method_description)methodDescriptionForSelector:(SEL)selector
 {
-  MethodDescription = protocol_getMethodDescription([(NSProtocolChecker *)self protocol], a3, 1, 1);
+  MethodDescription = protocol_getMethodDescription([(NSProtocolChecker *)self protocol], selector, 1, 1);
   types = MethodDescription.types;
   name = MethodDescription.name;
-  if (MethodDescription.name || ([(NSProtocolChecker *)self target], (objc_opt_respondsToSelector() & 1) != 0) && (v11 = protocol_getMethodDescription([(NSProtocolChecker *)self protocol], a3, 0, 1), types = v11.types, (name = v11.name) != 0))
+  if (MethodDescription.name || ([(NSProtocolChecker *)self target], (objc_opt_respondsToSelector() & 1) != 0) && (v11 = protocol_getMethodDescription([(NSProtocolChecker *)self protocol], selector, 0, 1), types = v11.types, (name = v11.name) != 0))
   {
     v8 = name;
     v9 = types;
@@ -72,11 +72,11 @@
     result->types = v9;
   }
 
-  else if (sel_respondsToSelector_ == a3 || sel__conformsToProtocolNamed_ == a3 || sel_conformsToProtocol_ == a3)
+  else if (sel_respondsToSelector_ == selector || sel__conformsToProtocolNamed_ == selector || sel_conformsToProtocol_ == selector)
   {
     v14 = MEMORY[0x1E69E58C0];
 
-    return [v14 instanceMethodDescriptionForSelector:a3];
+    return [v14 instanceMethodDescriptionForSelector:selector];
   }
 
   else
@@ -87,9 +87,9 @@
   return result;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  result = [(NSProtocolChecker *)self methodDescriptionForSelector:a3];
+  result = [(NSProtocolChecker *)self methodDescriptionForSelector:selector];
   if (result)
   {
     v4 = *(result + 1);
@@ -103,18 +103,18 @@
 
 - (const)_localClassNameForClass
 {
-  v2 = [(NSProtocolChecker *)self target];
+  target = [(NSProtocolChecker *)self target];
 
-  return [v2 _localClassNameForClass];
+  return [target _localClassNameForClass];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = [a3 selector];
-  if (v5 != sel_respondsToSelector_ && v5 != sel__conformsToProtocolNamed_ && v5 != sel_conformsToProtocol_)
+  selector = [invocation selector];
+  if (selector != sel_respondsToSelector_ && selector != sel__conformsToProtocolNamed_ && selector != sel_conformsToProtocol_)
   {
-    v8 = v5;
-    if (![(NSProtocolChecker *)self methodDescriptionForSelector:v5])
+    v8 = selector;
+    if (![(NSProtocolChecker *)self methodDescriptionForSelector:selector])
     {
       [(NSProtocolChecker *)self doesNotRecognizeSelector:v8];
     }
@@ -122,23 +122,23 @@
     self = [(NSProtocolChecker *)self target];
   }
 
-  [a3 invokeWithTarget:self];
+  [invocation invokeWithTarget:self];
 }
 
-+ (NSProtocolChecker)allocWithZone:(_NSZone *)a3
++ (NSProtocolChecker)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_self() == a1)
+  selfCopy = self;
+  if (objc_opt_self() == self)
   {
-    v4 = objc_opt_self();
+    selfCopy = objc_opt_self();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
 + (NSProtocolChecker)protocolCheckerWithTarget:(NSObject *)anObject protocol:(Protocol *)aProtocol
 {
-  v4 = [objc_allocWithZone(a1) initWithTarget:anObject protocol:aProtocol];
+  v4 = [objc_allocWithZone(self) initWithTarget:anObject protocol:aProtocol];
 
   return v4;
 }

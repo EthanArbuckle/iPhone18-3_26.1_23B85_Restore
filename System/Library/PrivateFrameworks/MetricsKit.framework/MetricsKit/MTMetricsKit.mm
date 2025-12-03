@@ -1,25 +1,25 @@
 @interface MTMetricsKit
-- (MTMetricsKit)initWithTopic:(id)a3;
-- (id)metricsDataWithFlexibleEventType:(id)a3 eventData:(id)a4;
-- (id)metricsDataWithFlexibleEventType:(id)a3 fields:(id)a4;
-- (void)performMaintenanceForUserId:(id)a3;
+- (MTMetricsKit)initWithTopic:(id)topic;
+- (id)metricsDataWithFlexibleEventType:(id)type eventData:(id)data;
+- (id)metricsDataWithFlexibleEventType:(id)type fields:(id)fields;
+- (void)performMaintenanceForUserId:(id)id;
 @end
 
 @implementation MTMetricsKit
 
-- (void)performMaintenanceForUserId:(id)a3
+- (void)performMaintenanceForUserId:(id)id
 {
-  v4 = a3;
-  v5 = [(MTMetricsKitTemplate *)self config];
-  v6 = [v5 sources];
+  idCopy = id;
+  config = [(MTMetricsKitTemplate *)self config];
+  sources = [config sources];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__MTMetricsKit_Demographic__performMaintenanceForUserId___block_invoke;
   v9[3] = &unk_2798CD900;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  v8 = [v6 thenWithBlock:v9];
+  v10 = idCopy;
+  v7 = idCopy;
+  v8 = [sources thenWithBlock:v9];
 }
 
 uint64_t __57__MTMetricsKit_Demographic__performMaintenanceForUserId___block_invoke(uint64_t a1, void *a2)
@@ -57,11 +57,11 @@ uint64_t __57__MTMetricsKit_Demographic__performMaintenanceForUserId___block_inv
   return 0;
 }
 
-- (MTMetricsKit)initWithTopic:(id)a3
+- (MTMetricsKit)initWithTopic:(id)topic
 {
   v7.receiver = self;
   v7.super_class = MTMetricsKit;
-  v3 = [(MTMetricsKitTemplate *)&v7 initWithTopic:a3];
+  v3 = [(MTMetricsKitTemplate *)&v7 initWithTopic:topic];
   if (v3)
   {
     v4 = [(MTObject *)[MTMetricsEventHandlers alloc] initWithMetricsKit:v3];
@@ -74,24 +74,24 @@ uint64_t __57__MTMetricsKit_Demographic__performMaintenanceForUserId___block_inv
   return v3;
 }
 
-- (id)metricsDataWithFlexibleEventType:(id)a3 eventData:(id)a4
+- (id)metricsDataWithFlexibleEventType:(id)type eventData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTMetricsKitTemplate *)self eventHandlers];
-  v9 = [v8 flexible];
-  v10 = [v9 metricsDataWithEventType:v7 eventData:v6];
+  dataCopy = data;
+  typeCopy = type;
+  eventHandlers = [(MTMetricsKitTemplate *)self eventHandlers];
+  flexible = [eventHandlers flexible];
+  v10 = [flexible metricsDataWithEventType:typeCopy eventData:dataCopy];
 
   return v10;
 }
 
-- (id)metricsDataWithFlexibleEventType:(id)a3 fields:(id)a4
+- (id)metricsDataWithFlexibleEventType:(id)type fields:(id)fields
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  typeCopy = type;
+  fieldsCopy = fields;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = &v18;
-  v9 = v7;
+  v9 = fieldsCopy;
   v10 = v9;
   if (v9)
   {
@@ -101,12 +101,12 @@ uint64_t __57__MTMetricsKit_Demographic__performMaintenanceForUserId___block_inv
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v8 addObjectsFromArray:v11];
+        [array addObjectsFromArray:v11];
       }
 
       else
       {
-        [v8 addObject:v11];
+        [array addObject:v11];
       }
 
       v12 = v16++;
@@ -118,7 +118,7 @@ uint64_t __57__MTMetricsKit_Demographic__performMaintenanceForUserId___block_inv
     while (v13);
   }
 
-  v14 = [(MTMetricsKit *)self metricsDataWithFlexibleEventType:v6 eventData:v8];
+  v14 = [(MTMetricsKit *)self metricsDataWithFlexibleEventType:typeCopy eventData:array];
 
   return v14;
 }

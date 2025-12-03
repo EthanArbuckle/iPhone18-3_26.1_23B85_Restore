@@ -1,36 +1,36 @@
 @interface OfflineMapsManagementSearchAutocompleteDataSource
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (OfflineMapsManagementSearchAutocompleteDataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)sectionForSectionIndex:(unint64_t)a3;
-- (int64_t)numberOfItemsInSection:(id)a3;
-- (void)_updateContentAnimated:(BOOL)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (OfflineMapsManagementSearchAutocompleteDataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)sectionForSectionIndex:(unint64_t)index;
+- (int64_t)numberOfItemsInSection:(id)section;
+- (void)_updateContentAnimated:(BOOL)animated;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)commonInit;
-- (void)setActive:(BOOL)a3;
-- (void)updateForSearchQuery:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)updateForSearchQuery:(id)query;
 @end
 
 @implementation OfflineMapsManagementSearchAutocompleteDataSource
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
-  v7 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
-  v9 = [v7 itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
+  diffableDataSource = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
+  v9 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v8 = [(DataSource *)self delegate];
-  [v8 dataSource:self itemTapped:v9];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSource:self itemTapped:v9];
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
+  v7 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -55,11 +55,11 @@ LABEL_7:
   return v9 & 1;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
+  v7 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -84,23 +84,23 @@ LABEL_7:
   return v9 & 1;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = -[OfflineMapsManagementSearchAutocompleteDataSource sectionForSectionIndex:](self, "sectionForSectionIndex:", [v9 section]);
-  LODWORD(self) = [v10 isEqualToString:UICollectionElementKindSectionHeader];
+  viewCopy = view;
+  pathCopy = path;
+  kindCopy = kind;
+  v11 = -[OfflineMapsManagementSearchAutocompleteDataSource sectionForSectionIndex:](self, "sectionForSectionIndex:", [pathCopy section]);
+  LODWORD(self) = [kindCopy isEqualToString:UICollectionElementKindSectionHeader];
 
   if (self)
   {
-    v12 = [v11 headerText];
-    if ([v12 length])
+    headerText = [v11 headerText];
+    if ([headerText length])
     {
       v13 = +[SectionHeaderCollectionReusableView reuseIdentifier];
-      v14 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v13 forIndexPath:v9];
+      v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v13 forIndexPath:pathCopy];
 
-      [v14 setTitle:v12];
+      [v14 setTitle:headerText];
       [v14 setShowsBottomHairline:0];
       [v14 setFirstNonEmptySection:1];
     }
@@ -119,17 +119,17 @@ LABEL_7:
   return v14;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = identifierCopy;
     v11 = +[TwoLineCollectionViewListCell identifier];
-    v12 = [v7 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v8];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
     v13 = [TwoLinesContentViewModelComposer cellModelForOfflineRegionLocalSearchCompletion:v10];
 
@@ -143,9 +143,9 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v14 = +[TwoLineCollectionViewListCell identifier];
-    v12 = [v7 dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:v8];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:pathCopy];
 
-    v15 = [TwoLinesContentViewModelComposer cellModelForOfflineSearchResult:v9];
+    v15 = [TwoLinesContentViewModelComposer cellModelForOfflineSearchResult:identifierCopy];
 LABEL_7:
     v13 = v15;
     goto LABEL_8;
@@ -155,9 +155,9 @@ LABEL_7:
   if (objc_opt_isKindOfClass())
   {
     v16 = +[TwoLineCollectionViewListCell identifier];
-    v12 = [v7 dequeueReusableCellWithReuseIdentifier:v16 forIndexPath:v8];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v16 forIndexPath:pathCopy];
 
-    v15 = [TwoLinesContentViewModelComposer cellModelForHistoryEntryRecentsItem:v9 showAutocompleteClientSource:0];
+    v15 = [TwoLinesContentViewModelComposer cellModelForHistoryEntryRecentsItem:identifierCopy showAutocompleteClientSource:0];
     goto LABEL_7;
   }
 
@@ -167,13 +167,13 @@ LABEL_9:
   return v12;
 }
 
-- (void)_updateContentAnimated:(BOOL)a3
+- (void)_updateContentAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = objc_alloc_init(NSDiffableDataSourceSnapshot);
-  v6 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
-  v7 = [v6 queryFragment];
-  v8 = [v7 length];
+  searchCompleter = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
+  queryFragment = [searchCompleter queryFragment];
+  v8 = [queryFragment length];
 
   v9 = [OfflineMapsManagementSearchAutocompleteSection alloc];
   if (v8)
@@ -183,10 +183,10 @@ LABEL_9:
     v11 = [NSArray arrayWithObjects:&v29 count:1];
     [v5 appendSectionsWithIdentifiers:v11];
 
-    v12 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
-    v13 = [(OfflineMapsManagementSearchAutocompleteSection *)v12 results];
+    searchCompleter2 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
+    results = [(OfflineMapsManagementSearchAutocompleteSection *)searchCompleter2 results];
     v14 = v5;
-    v15 = v13;
+    v15 = results;
     v16 = v10;
 LABEL_5:
     [v14 appendItemsWithIdentifiers:v15 intoSectionWithIdentifier:v16];
@@ -199,57 +199,57 @@ LABEL_5:
   v17 = [NSArray arrayWithObjects:&v28 count:1];
   [v5 appendSectionsWithIdentifiers:v17];
 
-  v18 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self currentLocationSearchResult];
-  v27 = v18;
+  currentLocationSearchResult = [(OfflineMapsManagementSearchAutocompleteDataSource *)self currentLocationSearchResult];
+  v27 = currentLocationSearchResult;
   v19 = [NSArray arrayWithObjects:&v27 count:1];
   [v5 appendItemsWithIdentifiers:v19 intoSectionWithIdentifier:v10];
 
-  v20 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self recentsDataFilter];
-  v21 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self recentsDataProvider];
-  v22 = [v21 recents];
-  v12 = [v20 filteredRecents:v22 excludingDuplicatesOfEntries:&__NSArray0__struct];
+  recentsDataFilter = [(OfflineMapsManagementSearchAutocompleteDataSource *)self recentsDataFilter];
+  recentsDataProvider = [(OfflineMapsManagementSearchAutocompleteDataSource *)self recentsDataProvider];
+  recents = [recentsDataProvider recents];
+  searchCompleter2 = [recentsDataFilter filteredRecents:recents excludingDuplicatesOfEntries:&__NSArray0__struct];
 
-  if ([(OfflineMapsManagementSearchAutocompleteSection *)v12 count])
+  if ([(OfflineMapsManagementSearchAutocompleteSection *)searchCompleter2 count])
   {
-    v13 = [[OfflineMapsManagementSearchAutocompleteSection alloc] initWithSectionType:1];
-    v26 = v13;
+    results = [[OfflineMapsManagementSearchAutocompleteSection alloc] initWithSectionType:1];
+    v26 = results;
     v23 = [NSArray arrayWithObjects:&v26 count:1];
     [v5 appendSectionsWithIdentifiers:v23];
 
     v14 = v5;
-    v15 = v12;
-    v16 = v13;
+    v15 = searchCompleter2;
+    v16 = results;
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  v24 = [v5 sectionIdentifiers];
-  [(OfflineMapsManagementSearchAutocompleteDataSource *)self setSections:v24];
+  sectionIdentifiers = [v5 sectionIdentifiers];
+  [(OfflineMapsManagementSearchAutocompleteDataSource *)self setSections:sectionIdentifiers];
 
-  v25 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
-  [v25 applySnapshot:v5 animatingDifferences:v3];
+  diffableDataSource = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
+  [diffableDataSource applySnapshot:v5 animatingDifferences:animatedCopy];
 }
 
-- (int64_t)numberOfItemsInSection:(id)a3
+- (int64_t)numberOfItemsInSection:(id)section
 {
-  v4 = a3;
-  v5 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
-  v6 = [v5 snapshot];
-  v7 = [v6 numberOfItemsInSection:v4];
+  sectionCopy = section;
+  diffableDataSource = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
+  v7 = [snapshot numberOfItemsInSection:sectionCopy];
 
   return v7;
 }
 
-- (id)sectionForSectionIndex:(unint64_t)a3
+- (id)sectionForSectionIndex:(unint64_t)index
 {
-  v5 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self sections];
-  v6 = [v5 count];
+  sections = [(OfflineMapsManagementSearchAutocompleteDataSource *)self sections];
+  v6 = [sections count];
 
-  if (v6 >= a3)
+  if (v6 >= index)
   {
-    v8 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self sections];
-    v7 = [v8 objectAtIndex:a3];
+    sections2 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self sections];
+    v7 = [sections2 objectAtIndex:index];
   }
 
   else
@@ -260,62 +260,62 @@ LABEL_6:
   return v7;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
-  if ([(DataSource *)self active]!= a3)
+  activeCopy = active;
+  if ([(DataSource *)self active]!= active)
   {
     v6.receiver = self;
     v6.super_class = OfflineMapsManagementSearchAutocompleteDataSource;
-    [(DataSource *)&v6 setActive:v3];
-    v5 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self recentsDataProvider];
-    [v5 setActive:v3];
+    [(DataSource *)&v6 setActive:activeCopy];
+    recentsDataProvider = [(OfflineMapsManagementSearchAutocompleteDataSource *)self recentsDataProvider];
+    [recentsDataProvider setActive:activeCopy];
 
-    if (v3)
+    if (activeCopy)
     {
       [(OfflineMapsManagementSearchAutocompleteDataSource *)self _updateContentAnimated:0];
     }
   }
 }
 
-- (void)updateForSearchQuery:(id)a3
+- (void)updateForSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
-  [v5 setQueryFragment:v4];
+  queryCopy = query;
+  searchCompleter = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
+  [searchCompleter setQueryFragment:queryCopy];
 }
 
 - (void)commonInit
 {
-  v3 = [(DataSource *)self collectionView];
-  [v3 setDelegate:self];
+  collectionView = [(DataSource *)self collectionView];
+  [collectionView setDelegate:self];
 
-  v4 = [(DataSource *)self collectionView];
+  collectionView2 = [(DataSource *)self collectionView];
   v5 = objc_opt_class();
   v6 = +[TwoLineCollectionViewListCell identifier];
-  [v4 registerClass:v5 forCellWithReuseIdentifier:v6];
+  [collectionView2 registerClass:v5 forCellWithReuseIdentifier:v6];
 
-  v7 = [(DataSource *)self collectionView];
+  collectionView3 = [(DataSource *)self collectionView];
   v8 = objc_opt_class();
   v9 = +[SectionHeaderCollectionReusableView reuseIdentifier];
-  [v7 registerClass:v8 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v9];
+  [collectionView3 registerClass:v8 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v9];
 
   v10 = [UICollectionViewDiffableDataSource alloc];
-  v11 = [(DataSource *)self collectionView];
+  collectionView4 = [(DataSource *)self collectionView];
   v12 = sub_1007CDFC8(self);
-  v13 = [v10 initWithCollectionView:v11 cellProvider:v12];
+  v13 = [v10 initWithCollectionView:collectionView4 cellProvider:v12];
   [(OfflineMapsManagementSearchAutocompleteDataSource *)self setDiffableDataSource:v13];
 
   v14 = sub_1007CE178(self);
-  v15 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
-  [v15 setSupplementaryViewProvider:v14];
+  diffableDataSource = [(OfflineMapsManagementSearchAutocompleteDataSource *)self diffableDataSource];
+  [diffableDataSource setSupplementaryViewProvider:v14];
 
   v16 = +[SearchResult currentLocationSearchResult];
   [(OfflineMapsManagementSearchAutocompleteDataSource *)self setCurrentLocationSearchResult:v16];
 
   v17 = +[CustomLocationManager sharedManager];
-  v18 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self currentLocationSearchResult];
-  [v17 processSearchResult:v18 traits:0];
+  currentLocationSearchResult = [(OfflineMapsManagementSearchAutocompleteDataSource *)self currentLocationSearchResult];
+  [v17 processSearchResult:currentLocationSearchResult traits:0];
 
   v26 = [NSPredicate predicateWithBlock:&stru_10165E480];
   v19 = [[RecentsDataFilter alloc] initWithSearchMode:1 filterPredicate:v26];
@@ -324,25 +324,25 @@ LABEL_6:
   v20 = objc_alloc_init(RecentsDataProvider);
   [(OfflineMapsManagementSearchAutocompleteDataSource *)self setRecentsDataProvider:v20];
 
-  v21 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self recentsDataProvider];
-  v22 = [v21 observers];
-  [v22 registerObserver:self];
+  recentsDataProvider = [(OfflineMapsManagementSearchAutocompleteDataSource *)self recentsDataProvider];
+  observers = [recentsDataProvider observers];
+  [observers registerObserver:self];
 
   v23 = objc_alloc_init(MKLocalSearchCompleter);
   [(OfflineMapsManagementSearchAutocompleteDataSource *)self setSearchCompleter:v23];
 
-  v24 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
-  [v24 setDelegate:self];
+  searchCompleter = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
+  [searchCompleter setDelegate:self];
 
-  v25 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
-  [v25 _setPrivateFilterType:1003];
+  searchCompleter2 = [(OfflineMapsManagementSearchAutocompleteDataSource *)self searchCompleter];
+  [searchCompleter2 _setPrivateFilterType:1003];
 }
 
-- (OfflineMapsManagementSearchAutocompleteDataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4
+- (OfflineMapsManagementSearchAutocompleteDataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location
 {
   v7.receiver = self;
   v7.super_class = OfflineMapsManagementSearchAutocompleteDataSource;
-  v4 = [(DataSource *)&v7 initWithCollectionView:a3 updateLocation:a4];
+  v4 = [(DataSource *)&v7 initWithCollectionView:view updateLocation:location];
   v5 = v4;
   if (v4)
   {

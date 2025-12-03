@@ -1,5 +1,5 @@
 @interface DumpPanicArgParser
-- (DumpPanicArgParser)initWithArgs:(char *)a3 count:(int)a4;
+- (DumpPanicArgParser)initWithArgs:(char *)args count:(int)count;
 - (void)usage;
 @end
 
@@ -17,7 +17,7 @@
   fputc(10, v2);
 }
 
-- (DumpPanicArgParser)initWithArgs:(char *)a3 count:(int)a4
+- (DumpPanicArgParser)initWithArgs:(char *)args count:(int)count
 {
   [(DumpPanicArgParser *)self setOutput_dir:0];
   [(DumpPanicArgParser *)self setRestoreos:0];
@@ -31,7 +31,7 @@
     {
       while (1)
       {
-        v7 = getopt_long(a4, a3, "ar:chf", &off_100041F90, 0);
+        v7 = getopt_long(count, args, "ar:chf", &off_100041F90, 0);
         if (v7 <= 103)
         {
           break;

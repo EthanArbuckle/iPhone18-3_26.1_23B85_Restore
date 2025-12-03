@@ -1,5 +1,5 @@
 @interface ProgressViewServiceUIViewController
-- (_TtC21TDGSharingViewService35ProgressViewServiceUIViewController)initWithContentView:(id)a3;
+- (_TtC21TDGSharingViewService35ProgressViewServiceUIViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -21,7 +21,7 @@
   }
 }
 
-- (_TtC21TDGSharingViewService35ProgressViewServiceUIViewController)initWithContentView:(id)a3
+- (_TtC21TDGSharingViewService35ProgressViewServiceUIViewController)initWithContentView:(id)view
 {
   v5 = &self->super.PRXCardContentViewController_opaque[OBJC_IVAR____TtC21TDGSharingViewService35ProgressViewServiceUIViewController_actionHandler];
   v6 = type metadata accessor for ProgressViewServiceUIViewController();
@@ -29,7 +29,7 @@
   *(v5 + 1) = 0;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(ViewServiceUIViewControllerExtendedHeight *)&v8 initWithContentView:a3];
+  return [(ViewServiceUIViewControllerExtendedHeight *)&v8 initWithContentView:view];
 }
 
 @end

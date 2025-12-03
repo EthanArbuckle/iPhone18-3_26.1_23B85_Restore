@@ -1,18 +1,18 @@
 @interface CommandHandlerLocate
-- (id)_checkForLocateParamOverrides:(id)a3;
-- (id)createLocatorWithParams:(id)a3;
+- (id)_checkForLocateParamOverrides:(id)overrides;
+- (id)createLocatorWithParams:(id)params;
 - (void)handleCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation CommandHandlerLocate
 
 - (void)handleCommand
 {
-  v3 = [(CommandHandler *)self provider];
-  v4 = [v3 locServicesCapable];
-  v5 = [v3 isProviderEnabledForLocations];
-  if (v4)
+  provider = [(CommandHandler *)self provider];
+  locServicesCapable = [provider locServicesCapable];
+  isProviderEnabledForLocations = [provider isProviderEnabledForLocations];
+  if (locServicesCapable)
   {
     v6 = @"Ignored Request - Location Services Not Enabled";
   }
@@ -23,22 +23,22 @@
   }
 
   v7 = 405;
-  if (v4 && v5)
+  if (locServicesCapable && isProviderEnabledForLocations)
   {
-    v8 = [(CommandHandler *)self commandParams];
-    v9 = [(CommandHandlerLocate *)self createLocatorWithParams:v8];
+    commandParams = [(CommandHandler *)self commandParams];
+    v9 = [(CommandHandlerLocate *)self createLocatorWithParams:commandParams];
 
-    v10 = [v3 standardLocator];
-    if (v10)
+    standardLocator = [provider standardLocator];
+    if (standardLocator)
     {
-      v11 = v10;
-      v12 = [v3 standardLocator];
-      v13 = [v12 locatorRunning];
+      v11 = standardLocator;
+      standardLocator2 = [provider standardLocator];
+      locatorRunning = [standardLocator2 locatorRunning];
 
-      if (v13)
+      if (locatorRunning)
       {
-        v14 = [v3 standardLocator];
-        [v14 desiredAccuracy];
+        standardLocator3 = [provider standardLocator];
+        [standardLocator3 desiredAccuracy];
         v16 = v15;
         [v9 desiredAccuracy];
         v18 = v17;
@@ -49,8 +49,8 @@
         {
           if (v20)
           {
-            v33 = [v3 standardLocator];
-            [v33 desiredAccuracy];
+            standardLocator4 = [provider standardLocator];
+            [standardLocator4 desiredAccuracy];
             v35 = v34;
             [v9 desiredAccuracy];
             *buf = 134218240;
@@ -65,8 +65,8 @@
 
         if (v20)
         {
-          v21 = [v3 standardLocator];
-          [v21 desiredAccuracy];
+          standardLocator5 = [provider standardLocator];
+          [standardLocator5 desiredAccuracy];
           v23 = v22;
           [v9 desiredAccuracy];
           *buf = 134218240;
@@ -78,26 +78,26 @@
       }
     }
 
-    v25 = [v3 standardLocator];
+    standardLocator6 = [provider standardLocator];
 
-    if (v25)
+    if (standardLocator6)
     {
-      v26 = [v3 standardLocator];
-      [v26 stopLocator];
+      standardLocator7 = [provider standardLocator];
+      [standardLocator7 stopLocator];
 
-      [v3 setStandardLocator:0];
+      [provider setStandardLocator:0];
     }
 
     v42 = @"id";
-    v27 = [(CommandHandler *)self commandID];
-    v43 = v27;
+    commandID = [(CommandHandler *)self commandID];
+    v43 = commandID;
     v28 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
 
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_1000143DC;
     v39[3] = &unk_10005D770;
-    v29 = v3;
+    v29 = provider;
     v40 = v29;
     v41 = v28;
     v19 = v28;
@@ -125,30 +125,30 @@ LABEL_15:
   [(CommandHandler *)self didHandleCommandWithAckData:v31];
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v10 = [(CommandHandler *)self ackDataForCommand];
-  v5 = [v10 objectForKeyedSubscript:@"status"];
-  v6 = [v5 intValue];
+  completionCopy = completion;
+  ackDataForCommand = [(CommandHandler *)self ackDataForCommand];
+  v5 = [ackDataForCommand objectForKeyedSubscript:@"status"];
+  intValue = [v5 intValue];
 
-  v7 = [v10 objectForKeyedSubscript:@"message"];
-  v8 = [(CommandHandler *)self provider];
-  v9 = [(CommandHandler *)self commandParams];
-  [v8 ackLocateCommand:v9 withStatusCode:v6 andStatusMessage:v7 withCompletion:v4];
+  v7 = [ackDataForCommand objectForKeyedSubscript:@"message"];
+  provider = [(CommandHandler *)self provider];
+  commandParams = [(CommandHandler *)self commandParams];
+  [provider ackLocateCommand:commandParams withStatusCode:intValue andStatusMessage:v7 withCompletion:completionCopy];
 }
 
-- (id)_checkForLocateParamOverrides:(id)a3
+- (id)_checkForLocateParamOverrides:(id)overrides
 {
-  v3 = a3;
-  v4 = [@"/var/mobile/Library/Application Support/FMFLocator/locateOverrides.json" stringByExpandingTildeInPath];
-  v5 = v3;
-  if (v4)
+  overridesCopy = overrides;
+  stringByExpandingTildeInPath = [@"/var/mobile/Library/Application Support/FMFLocator/locateOverrides.json" stringByExpandingTildeInPath];
+  v5 = overridesCopy;
+  if (stringByExpandingTildeInPath)
   {
     v6 = +[NSFileManager defaultManager];
-    v7 = [v6 fileExistsAtPath:v4];
+    v7 = [v6 fileExistsAtPath:stringByExpandingTildeInPath];
 
-    v5 = v3;
+    v5 = overridesCopy;
     if (v7)
     {
       v8 = sub_100002830();
@@ -158,17 +158,17 @@ LABEL_15:
       }
 
       v9 = +[NSFileManager defaultManager];
-      v10 = [v9 contentsAtPath:v4];
+      v10 = [v9 contentsAtPath:stringByExpandingTildeInPath];
 
       v22 = 0;
       v11 = [NSJSONSerialization JSONObjectWithData:v10 options:1 error:&v22];
       v12 = v22;
-      v5 = [v3 mutableCopy];
-      v13 = [v11 keyEnumerator];
-      v14 = [v13 nextObject];
-      if (v14)
+      v5 = [overridesCopy mutableCopy];
+      keyEnumerator = [v11 keyEnumerator];
+      nextObject = [keyEnumerator nextObject];
+      if (nextObject)
       {
-        v16 = v14;
+        v16 = nextObject;
         *&v15 = 138412546;
         v21 = v15;
         do
@@ -185,12 +185,12 @@ LABEL_15:
           }
 
           [v5 setValue:v17 forKey:v16];
-          v19 = [v13 nextObject];
+          nextObject2 = [keyEnumerator nextObject];
 
-          v16 = v19;
+          v16 = nextObject2;
         }
 
-        while (v19);
+        while (nextObject2);
       }
     }
   }
@@ -198,28 +198,28 @@ LABEL_15:
   return v5;
 }
 
-- (id)createLocatorWithParams:(id)a3
+- (id)createLocatorWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(CommandHandler *)self provider];
+  paramsCopy = params;
+  provider = [(CommandHandler *)self provider];
   v6 = [Locator alloc];
-  v7 = [v5 newLocationManager];
-  v8 = [(Locator *)v6 initWithLocationManager:v7];
+  newLocationManager = [provider newLocationManager];
+  v8 = [(Locator *)v6 initWithLocationManager:newLocationManager];
 
   v9 = sub_100002830();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(CommandHandlerLocate *)self fm_logID];
-    v11 = [v5 serviceName];
+    fm_logID = [(CommandHandlerLocate *)self fm_logID];
+    serviceName = [provider serviceName];
     v23 = 138412546;
-    v24 = v10;
+    v24 = fm_logID;
     v25 = 2112;
-    v26 = v11;
+    v26 = serviceName;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Created %@ for service %@", &v23, 0x16u);
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = [(CommandHandlerLocate *)self _checkForLocateParamOverrides:v4];
+  v13 = [(CommandHandlerLocate *)self _checkForLocateParamOverrides:paramsCopy];
   v14 = [v13 objectForKeyedSubscript:@"locationTimeout"];
   v15 = v14;
   if (v14)

@@ -1,12 +1,12 @@
 @interface HMFPairingKey
 + (void)setClassMappingForNSCoder;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMFPairingKey)init;
-- (HMFPairingKey)initWithCoder:(id)a3;
-- (HMFPairingKey)initWithPairingKeyData:(id)a3;
+- (HMFPairingKey)initWithCoder:(id)coder;
+- (HMFPairingKey)initWithPairingKeyData:(id)data;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFPairingKey
@@ -33,34 +33,34 @@
   objc_exception_throw(v7);
 }
 
-- (HMFPairingKey)initWithPairingKeyData:(id)a3
+- (HMFPairingKey)initWithPairingKeyData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] == 32)
+  dataCopy = data;
+  if ([dataCopy length] == 32)
   {
     v15.receiver = self;
     v15.super_class = HMFPairingKey;
     v5 = [(HMFPairingKey *)&v15 init];
     if (v5)
     {
-      v6 = [v4 hmf_zeroingCopy];
+      hmf_zeroingCopy = [dataCopy hmf_zeroingCopy];
       data = v5->_data;
-      v5->_data = v6;
+      v5->_data = hmf_zeroingCopy;
     }
 
-    v8 = v5;
-    v9 = v8;
+    selfCopy = v5;
+    v9 = selfCopy;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = HMFGetLogIdentifier(v8);
+      v12 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543618;
       v17 = v12;
       v18 = 2048;
@@ -78,16 +78,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMFPairingKey *)self data];
-  v3 = [v2 hash];
+  data = [(HMFPairingKey *)self data];
+  v3 = [data hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -97,9 +97,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMFPairingKey *)v4 data];
-      v6 = [(HMFPairingKey *)self data];
-      v7 = [v5 isEqualToData:v6];
+      data = [(HMFPairingKey *)equalCopy data];
+      data2 = [(HMFPairingKey *)self data];
+      v7 = [data isEqualToData:data2];
     }
 
     else
@@ -115,7 +115,7 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(HMFPairingKey *)self data];
+  data = [(HMFPairingKey *)self data];
   v5 = CUPrintNSObjectMasked();
   v6 = [(HMFAttributeDescription *)v3 initWithName:@"Hash" value:v5];
   v10[0] = v6;
@@ -126,20 +126,20 @@
   return v7;
 }
 
-- (HMFPairingKey)initWithCoder:(id)a3
+- (HMFPairingKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HAP.data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HAP.data"];
 
   v6 = [(HMFPairingKey *)self initWithPairingKeyData:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMFPairingKey *)self data];
-  [v4 encodeObject:v5 forKey:@"HAP.data"];
+  coderCopy = coder;
+  data = [(HMFPairingKey *)self data];
+  [coderCopy encodeObject:data forKey:@"HAP.data"];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface CardCustomBorderView
-- (CardCustomBorderView)initWithFrame:(CGRect)a3;
+- (CardCustomBorderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCardCustomBorder:(unint64_t)a3;
+- (void)setCardCustomBorder:(unint64_t)border;
 @end
 
 @implementation CardCustomBorderView
@@ -15,12 +15,12 @@
   [(CardShadowView *)self->_cardShadowView setFrame:?];
 }
 
-- (void)setCardCustomBorder:(unint64_t)a3
+- (void)setCardCustomBorder:(unint64_t)border
 {
-  if (self->_cardCustomBorder != a3)
+  if (self->_cardCustomBorder != border)
   {
-    self->_cardCustomBorder = a3;
-    [(CardShadowView *)self->_cardShadowView setShouldCropBottomEdge:a3 == 3];
+    self->_cardCustomBorder = border;
+    [(CardShadowView *)self->_cardShadowView setShouldCropBottomEdge:border == 3];
     v4 = 1.0;
     if (!self->_cardCustomBorder)
     {
@@ -33,11 +33,11 @@
   }
 }
 
-- (CardCustomBorderView)initWithFrame:(CGRect)a3
+- (CardCustomBorderView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CardCustomBorderView;
-  v3 = [(CardCustomBorderView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CardCustomBorderView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

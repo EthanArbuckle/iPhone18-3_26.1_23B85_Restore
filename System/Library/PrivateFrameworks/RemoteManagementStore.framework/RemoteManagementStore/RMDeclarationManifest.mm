@@ -1,18 +1,18 @@
 @interface RMDeclarationManifest
-+ (id)declarationManifestWithDeclarations:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToManifest:(id)a3;
-- (RMDeclarationManifest)initWithActivations:(id)a3 configurations:(id)a4 assets:(id)a5 management:(id)a6;
-- (RMDeclarationManifest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)declarationManifestWithDeclarations:(id)declarations;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToManifest:(id)manifest;
+- (RMDeclarationManifest)initWithActivations:(id)activations configurations:(id)configurations assets:(id)assets management:(id)management;
+- (RMDeclarationManifest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMDeclarationManifest
 
-+ (id)declarationManifestWithDeclarations:(id)a3
++ (id)declarationManifestWithDeclarations:(id)declarations
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  declarationsCopy = declarations;
   v4 = objc_opt_new();
   v25 = objc_opt_new();
   v23 = objc_opt_new();
@@ -21,7 +21,7 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = declarationsCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
@@ -41,14 +41,14 @@
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 declarationClassType];
+        declarationClassType = [v10 declarationClassType];
         v12 = v4;
-        if ([v11 isEqualToString:v8] & 1) != 0 || (v12 = v25, (objc_msgSend(v11, "isEqualToString:", v24)) || (v12 = v23, (objc_msgSend(v11, "isEqualToString:", v22)) || (v12 = v21, objc_msgSend(v11, "isEqualToString:", v20)))
+        if ([declarationClassType isEqualToString:v8] & 1) != 0 || (v12 = v25, (objc_msgSend(declarationClassType, "isEqualToString:", v24)) || (v12 = v23, (objc_msgSend(declarationClassType, "isEqualToString:", v22)) || (v12 = v21, objc_msgSend(declarationClassType, "isEqualToString:", v20)))
         {
           v13 = [RMDeclarationManifestItem alloc];
-          v14 = [v10 declarationIdentifier];
-          v15 = [v10 declarationServerToken];
-          v16 = [(RMDeclarationManifestItem *)v13 initWithIdentifier:v14 version:v15];
+          declarationIdentifier = [v10 declarationIdentifier];
+          declarationServerToken = [v10 declarationServerToken];
+          v16 = [(RMDeclarationManifestItem *)v13 initWithIdentifier:declarationIdentifier version:declarationServerToken];
           [v12 addObject:v16];
         }
       }
@@ -65,30 +65,30 @@
   return v17;
 }
 
-- (RMDeclarationManifest)initWithActivations:(id)a3 configurations:(id)a4 assets:(id)a5 management:(id)a6
+- (RMDeclarationManifest)initWithActivations:(id)activations configurations:(id)configurations assets:(id)assets management:(id)management
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  activationsCopy = activations;
+  configurationsCopy = configurations;
+  assetsCopy = assets;
+  managementCopy = management;
   v24.receiver = self;
   v24.super_class = RMDeclarationManifest;
   v14 = [(RMDeclarationManifest *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [activationsCopy copy];
     activations = v14->_activations;
     v14->_activations = v15;
 
-    v17 = [v11 copy];
+    v17 = [configurationsCopy copy];
     configurations = v14->_configurations;
     v14->_configurations = v17;
 
-    v19 = [v12 copy];
+    v19 = [assetsCopy copy];
     assets = v14->_assets;
     v14->_assets = v19;
 
-    v21 = [v13 copy];
+    v21 = [managementCopy copy];
     management = v14->_management;
     v14->_management = v21;
   }
@@ -96,57 +96,57 @@
   return v14;
 }
 
-- (RMDeclarationManifest)initWithCoder:(id)a3
+- (RMDeclarationManifest)initWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = [v3 setWithObjects:{v5, v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"activations"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"activations"];
 
   v9 = MEMORY[0x277CBEB98];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"configurations"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"configurations"];
 
   v14 = MEMORY[0x277CBEB98];
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v17 = [v14 setWithObjects:{v15, v16, objc_opt_class(), 0}];
-  v18 = [v4 decodeObjectOfClasses:v17 forKey:@"assets"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"assets"];
 
   v19 = MEMORY[0x277CBEB98];
   v20 = objc_opt_class();
   v21 = objc_opt_class();
   v22 = [v19 setWithObjects:{v20, v21, objc_opt_class(), 0}];
-  v23 = [v4 decodeObjectOfClasses:v22 forKey:@"management"];
+  v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"management"];
 
   v24 = [(RMDeclarationManifest *)self initWithActivations:v8 configurations:v13 assets:v18 management:v23];
   return v24;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RMDeclarationManifest *)self activations];
-  [v4 encodeObject:v5 forKey:@"activations"];
+  coderCopy = coder;
+  activations = [(RMDeclarationManifest *)self activations];
+  [coderCopy encodeObject:activations forKey:@"activations"];
 
-  v6 = [(RMDeclarationManifest *)self configurations];
-  [v4 encodeObject:v6 forKey:@"configurations"];
+  configurations = [(RMDeclarationManifest *)self configurations];
+  [coderCopy encodeObject:configurations forKey:@"configurations"];
 
-  v7 = [(RMDeclarationManifest *)self assets];
-  [v4 encodeObject:v7 forKey:@"assets"];
+  assets = [(RMDeclarationManifest *)self assets];
+  [coderCopy encodeObject:assets forKey:@"assets"];
 
-  v8 = [(RMDeclarationManifest *)self management];
-  [v4 encodeObject:v8 forKey:@"management"];
+  management = [(RMDeclarationManifest *)self management];
+  [coderCopy encodeObject:management forKey:@"management"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -154,30 +154,30 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMDeclarationManifest *)self isEqualToManifest:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMDeclarationManifest *)self isEqualToManifest:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToManifest:(id)a3
+- (BOOL)isEqualToManifest:(id)manifest
 {
-  v4 = a3;
-  v5 = [(RMDeclarationManifest *)self activations];
-  v6 = [v4 activations];
-  if ([v5 isEqualToArray:v6])
+  manifestCopy = manifest;
+  activations = [(RMDeclarationManifest *)self activations];
+  activations2 = [manifestCopy activations];
+  if ([activations isEqualToArray:activations2])
   {
-    v7 = [(RMDeclarationManifest *)self configurations];
-    v8 = [v4 configurations];
-    if ([v7 isEqualToArray:v8])
+    configurations = [(RMDeclarationManifest *)self configurations];
+    configurations2 = [manifestCopy configurations];
+    if ([configurations isEqualToArray:configurations2])
     {
-      v9 = [(RMDeclarationManifest *)self assets];
-      v10 = [v4 assets];
-      if ([v9 isEqualToArray:v10])
+      assets = [(RMDeclarationManifest *)self assets];
+      assets2 = [manifestCopy assets];
+      if ([assets isEqualToArray:assets2])
       {
-        v11 = [(RMDeclarationManifest *)self management];
-        v12 = [v4 management];
-        v13 = [v11 isEqualToArray:v12];
+        management = [(RMDeclarationManifest *)self management];
+        management2 = [manifestCopy management];
+        v13 = [management isEqualToArray:management2];
       }
 
       else

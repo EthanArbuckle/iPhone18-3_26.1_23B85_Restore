@@ -1,10 +1,10 @@
 @interface WebCache
-+ (CGImage)imageForURL:(id)a3;
++ (CGImage)imageForURL:(id)l;
 + (id)statistics;
 + (void)clearCachedCredentials;
 + (void)empty;
-+ (void)setDisabled:(BOOL)a3;
-+ (void)sizeOfDeadResources:(int *)a3;
++ (void)setDisabled:(BOOL)disabled;
++ (void)sizeOfDeadResources:(int *)resources;
 @end
 
 @implementation WebCache
@@ -12,7 +12,7 @@
 + (id)statistics
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  v2 = WebCore::MemoryCache::singleton(a1);
+  v2 = WebCore::MemoryCache::singleton(self);
   WebCore::MemoryCache::getStatistics(&v4, v2);
   v25[0] = @"Images";
   v26[0] = [MEMORY[0x1E696AD98] numberWithInt:v4];
@@ -71,25 +71,25 @@ uint64_t __34__WebCache_emptyInMemoryResources__block_invoke()
   return MEMORY[0x1EEE54800](v1, 1);
 }
 
-+ (void)sizeOfDeadResources:(int *)a3
++ (void)sizeOfDeadResources:(int *)resources
 {
-  v4 = WebCore::MemoryCache::singleton(a1);
+  v4 = WebCore::MemoryCache::singleton(self);
   WebCore::MemoryCache::getStatistics(v6, v4);
-  if (a3)
+  if (resources)
   {
     v5 = vadd_s32(vadd_s32(*&v6[4], v7), vadd_s32(v9, v8));
-    *a3 = vsub_s32(v5, vdup_lane_s32(v5, 1)).u32[0];
+    *resources = vsub_s32(v5, vdup_lane_s32(v5, 1)).u32[0];
   }
 }
 
-+ (CGImage)imageForURL:(id)a3
++ (CGImage)imageForURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
-  MEMORY[0x1CCA63960](v21, a3);
+  MEMORY[0x1CCA63960](v21, l);
   WebCore::ResourceRequestBase::RequestData::RequestData(v22, v21, 0);
   v24 = 0;
   v4 = *MEMORY[0x1E696EBA8];
@@ -222,22 +222,22 @@ LABEL_29:
   return v10;
 }
 
-+ (void)setDisabled:(BOOL)a3
++ (void)setDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v5 = pthread_main_np();
   if (v5)
   {
     v6 = WebCore::MemoryCache::singleton(v5);
 
-    MEMORY[0x1EEE547E0](v6, v3);
+    MEMORY[0x1EEE547E0](v6, disabledCopy);
   }
 
   else
   {
-    v7 = [a1 _webkit_invokeOnMainThread];
+    _webkit_invokeOnMainThread = [self _webkit_invokeOnMainThread];
 
-    [v7 setDisabled:v3];
+    [_webkit_invokeOnMainThread setDisabled:disabledCopy];
   }
 }
 

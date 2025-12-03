@@ -1,34 +1,34 @@
 @interface HKMCHeartStatistics
-+ (id)heartStatisticsFromStatistics:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKMCHeartStatistics)initWithCoder:(id)a3;
-- (HKMCHeartStatistics)initWithPercentileQuantityValue:(double)a3 sampleCount:(int64_t)a4;
++ (id)heartStatisticsFromStatistics:(id)statistics;
+- (BOOL)isEqual:(id)equal;
+- (HKMCHeartStatistics)initWithCoder:(id)coder;
+- (HKMCHeartStatistics)initWithPercentileQuantityValue:(double)value sampleCount:(int64_t)count;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCHeartStatistics
 
-- (HKMCHeartStatistics)initWithPercentileQuantityValue:(double)a3 sampleCount:(int64_t)a4
+- (HKMCHeartStatistics)initWithPercentileQuantityValue:(double)value sampleCount:(int64_t)count
 {
   v7.receiver = self;
   v7.super_class = HKMCHeartStatistics;
   result = [(HKMCHeartStatistics *)&v7 init];
   if (result)
   {
-    result->_percentileQuantityValue = a3;
-    result->_sampleCount = a4;
+    result->_percentileQuantityValue = value;
+    result->_sampleCount = count;
   }
 
   return result;
 }
 
-+ (id)heartStatisticsFromStatistics:(id)a3
++ (id)heartStatisticsFromStatistics:(id)statistics
 {
-  v4 = a3;
-  v5 = [v4 percentileQuantity];
-  [v5 _value];
+  statisticsCopy = statistics;
+  percentileQuantity = [statisticsCopy percentileQuantity];
+  [percentileQuantity _value];
   v7 = v6;
 
   if (v7 == 0.0)
@@ -38,35 +38,35 @@
 
   else
   {
-    v8 = [a1 alloc];
-    v9 = [v4 percentileQuantity];
-    v10 = [MEMORY[0x277CCDAB0] _countPerMinuteUnit];
-    [v9 doubleValueForUnit:v10];
-    v12 = [v8 initWithPercentileQuantityValue:objc_msgSend(v4 sampleCount:{"dataCount"), v11}];
+    v8 = [self alloc];
+    percentileQuantity2 = [statisticsCopy percentileQuantity];
+    _countPerMinuteUnit = [MEMORY[0x277CCDAB0] _countPerMinuteUnit];
+    [percentileQuantity2 doubleValueForUnit:_countPerMinuteUnit];
+    v12 = [v8 initWithPercentileQuantityValue:objc_msgSend(statisticsCopy sampleCount:{"dataCount"), v11}];
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   percentileQuantityValue = self->_percentileQuantityValue;
-  v5 = a3;
-  [v5 encodeDouble:@"PercentileQuantityValue" forKey:percentileQuantityValue];
-  [v5 encodeInteger:self->_sampleCount forKey:@"SampleCount"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"PercentileQuantityValue" forKey:percentileQuantityValue];
+  [coderCopy encodeInteger:self->_sampleCount forKey:@"SampleCount"];
 }
 
-- (HKMCHeartStatistics)initWithCoder:(id)a3
+- (HKMCHeartStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HKMCHeartStatistics;
   v5 = [(HKMCHeartStatistics *)&v8 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"PercentileQuantityValue"];
+    [coderCopy decodeDoubleForKey:@"PercentileQuantityValue"];
     v5->_percentileQuantityValue = v6;
-    v5->_sampleCount = [v4 decodeIntegerForKey:@"SampleCount"];
+    v5->_sampleCount = [coderCopy decodeIntegerForKey:@"SampleCount"];
   }
 
   return v5;
@@ -83,10 +83,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -94,10 +94,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(HKMCHeartStatistics *)self percentileQuantityValue], v6 = v5, [(HKMCHeartStatistics *)v4 percentileQuantityValue], v6 == v7))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(HKMCHeartStatistics *)self percentileQuantityValue], v6 = v5, [(HKMCHeartStatistics *)equalCopy percentileQuantityValue], v6 == v7))
     {
-      v8 = [(HKMCHeartStatistics *)self sampleCount];
-      v9 = v8 == [(HKMCHeartStatistics *)v4 sampleCount];
+      sampleCount = [(HKMCHeartStatistics *)self sampleCount];
+      v9 = sampleCount == [(HKMCHeartStatistics *)equalCopy sampleCount];
     }
 
     else

@@ -1,29 +1,29 @@
 @interface KTTapToRadar
-- (BOOL)hasRecentlyFiledTTRWithTapToRadarType:(id)a3;
+- (BOOL)hasRecentlyFiledTTRWithTapToRadarType:(id)type;
 - (_TtC13transparencyd12KTTapToRadar)init;
-- (_TtC13transparencyd12KTTapToRadar)initWithDataStore:(id)a3 configBag:(id)a4 dewConfig:(id)a5;
-- (void)presentTapToRadarError:(id)a3 title:(id)a4 message:(id)a5;
-- (void)presentTapToRadarRemote:(id)a3 fromHandle:(id)a4;
-- (void)sasTTRWithTitle:(id)a3 description:(id)a4 relatedRadar:(id)a5 unique:(id)a6 handle:(id)a7 pushToken:(id)a8;
+- (_TtC13transparencyd12KTTapToRadar)initWithDataStore:(id)store configBag:(id)bag dewConfig:(id)config;
+- (void)presentTapToRadarError:(id)error title:(id)title message:(id)message;
+- (void)presentTapToRadarRemote:(id)remote fromHandle:(id)handle;
+- (void)sasTTRWithTitle:(id)title description:(id)description relatedRadar:(id)radar unique:(id)unique handle:(id)handle pushToken:(id)token;
 @end
 
 @implementation KTTapToRadar
 
-- (_TtC13transparencyd12KTTapToRadar)initWithDataStore:(id)a3 configBag:(id)a4 dewConfig:(id)a5
+- (_TtC13transparencyd12KTTapToRadar)initWithDataStore:(id)store configBag:(id)bag dewConfig:(id)config
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_1000D8FA0(v7, v8, v9);
+  storeCopy = store;
+  bagCopy = bag;
+  configCopy = config;
+  v10 = sub_1000D8FA0(storeCopy, bagCopy, configCopy);
 
   return v10;
 }
 
-- (BOOL)hasRecentlyFiledTTRWithTapToRadarType:(id)a3
+- (BOOL)hasRecentlyFiledTTRWithTapToRadarType:(id)type
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   LOBYTE(v4) = KTTapToRadar.hasRecentlyFiledTTR(tapToRadarType:)(v8);
@@ -31,11 +31,11 @@
   return v4 & 1;
 }
 
-- (void)presentTapToRadarRemote:(id)a3 fromHandle:(id)a4
+- (void)presentTapToRadarRemote:(id)remote fromHandle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  v14 = self;
+  remoteCopy = remote;
+  handleCopy = handle;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
@@ -47,7 +47,7 @@
   sub_1000956CC(v8, v10);
 }
 
-- (void)presentTapToRadarError:(id)a3 title:(id)a4 message:(id)a5
+- (void)presentTapToRadarError:(id)error title:(id)title message:(id)message
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -55,7 +55,7 @@
   v11 = v10;
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
-  v15 = self;
+  selfCopy = self;
   v16._countAndFlagsBits = v6;
   v16._object = v8;
   v17._countAndFlagsBits = v9;
@@ -65,7 +65,7 @@
   KTTapToRadar.presentTapToRadarError(unique:title:message:)(v16, v17, v18);
 }
 
-- (void)sasTTRWithTitle:(id)a3 description:(id)a4 relatedRadar:(id)a5 unique:(id)a6 handle:(id)a7 pushToken:(id)a8
+- (void)sasTTRWithTitle:(id)title description:(id)description relatedRadar:(id)radar unique:(id)unique handle:(id)handle pushToken:(id)token
 {
   withTitle = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
@@ -75,10 +75,10 @@
   v16 = v15;
   v17 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v19 = v18;
-  if (a8)
+  if (token)
   {
     v20 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a8 = v21;
+    token = v21;
   }
 
   else
@@ -86,10 +86,10 @@
     v20 = 0;
   }
 
-  v22 = a5;
-  v23 = self;
+  radarCopy = radar;
+  selfCopy = self;
   pushToken.value._countAndFlagsBits = v20;
-  pushToken.value._object = a8;
+  pushToken.value._object = token;
   v32._object = v19;
   v24._countAndFlagsBits = withTitle;
   v24._object = v11;
@@ -98,7 +98,7 @@
   v26._countAndFlagsBits = v14;
   v26._object = v16;
   v32._countAndFlagsBits = v17;
-  KTTapToRadar.sasTTR(withTitle:description:relatedRadar:unique:handle:pushToken:)(v24, v25, v22, v26, v32, pushToken);
+  KTTapToRadar.sasTTR(withTitle:description:relatedRadar:unique:handle:pushToken:)(v24, v25, radarCopy, v26, v32, pushToken);
 }
 
 - (_TtC13transparencyd12KTTapToRadar)init

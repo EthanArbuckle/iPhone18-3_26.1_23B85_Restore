@@ -1,26 +1,26 @@
 @interface _CDXPCEventSubscriber
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)clientIdentifier;
-- (_CDXPCEventSubscriber)initWithToken:(unint64_t)a3 descriptor:(id)a4 userID:(unsigned int)a5 streamName:(id)a6;
+- (_CDXPCEventSubscriber)initWithToken:(unint64_t)token descriptor:(id)descriptor userID:(unsigned int)d streamName:(id)name;
 - (id)description;
 @end
 
 @implementation _CDXPCEventSubscriber
 
-- (_CDXPCEventSubscriber)initWithToken:(unint64_t)a3 descriptor:(id)a4 userID:(unsigned int)a5 streamName:(id)a6
+- (_CDXPCEventSubscriber)initWithToken:(unint64_t)token descriptor:(id)descriptor userID:(unsigned int)d streamName:(id)name
 {
-  v11 = a4;
-  v12 = a6;
+  descriptorCopy = descriptor;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = _CDXPCEventSubscriber;
   v13 = [(_CDXPCEventSubscriber *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_token = a3;
-    objc_storeStrong(&v13->_descriptor, a4);
-    v14->_uid = a5;
-    objc_storeStrong(&v14->_streamName, a6);
+    v13->_token = token;
+    objc_storeStrong(&v13->_descriptor, descriptor);
+    v14->_uid = d;
+    objc_storeStrong(&v14->_streamName, name);
   }
 
   return v14;
@@ -52,10 +52,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -66,7 +66,7 @@
     if (objc_opt_isKindOfClass())
     {
       token = self->_token;
-      v6 = token == [(_CDXPCEventSubscriber *)v4 token];
+      v6 = token == [(_CDXPCEventSubscriber *)equalCopy token];
     }
 
     else

@@ -13,13 +13,13 @@
   if (v2)
   {
     v13[0] = @"ProcessName";
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v3 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
     v13[1] = @"ProcessIdentifier";
-    v14[0] = v4;
+    v14[0] = processName;
     v5 = MEMORY[0x277CCABB0];
-    v6 = [MEMORY[0x277CCAC38] processInfo];
-    v7 = [v5 numberWithInt:{objc_msgSend(v6, "processIdentifier")}];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    v7 = [v5 numberWithInt:{objc_msgSend(processInfo2, "processIdentifier")}];
     v14[1] = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
     clientInfo = v2->_clientInfo;

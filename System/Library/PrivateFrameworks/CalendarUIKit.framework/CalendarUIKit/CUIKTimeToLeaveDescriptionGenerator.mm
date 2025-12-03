@@ -1,44 +1,44 @@
 @interface CUIKTimeToLeaveDescriptionGenerator
-+ (id)_attributedEtaString:(double)a3 fontName:(id)a4 fontSize:(double)a5;
-+ (id)_etaString:(double)a3;
-+ (id)_travelAdvisoryDescriptionOfType:(unint64_t)a3 hypothesis:(id)a4 eta:(id)a5 location:(id)a6;
-+ (id)_travelMultiModalWithHypothesis:(id)a3;
-+ (id)_travelTimeDrivingStringExcludingTrafficWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)_travelTimeDrivingStringIncludingTrafficWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)_travelTimeDrivingStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)_travelTimeDrivingSubstringWithEta:(id)a3 location:(id)a4 includeTransportType:(BOOL)a5;
-+ (id)_travelTimeDrivingSubstringWithEta:(id)a3 location:(id)a4 routeName:(id)a5 includeTransportType:(BOOL)a6;
-+ (id)_travelTimeLeaveNowDrivingStringExcludingTrafficWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)_travelTimeLeaveNowDrivingStringIncludingTrafficWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)_travelTimeLeaveNowDrivingStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)_travelTimeLeaveNowDrivingSubstringWithEta:(id)a3 location:(id)a4 includeTransportType:(BOOL)a5;
-+ (id)_travelTimeLeaveNowDrivingSubstringWithEta:(id)a3 location:(id)a4 routeName:(id)a5 includeTransportType:(BOOL)a6;
-+ (id)_travelTimeLeaveNowMultiModalSubstringWithEta:(id)a3 location:(id)a4 routeName:(id)a5;
-+ (id)_travelTimeLeaveNowMultiModalWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)_travelTimeLeaveNowTransitStringWithEta:(id)a3 location:(id)a4;
-+ (id)_travelTimeLeaveNowTransitStringWithLocation:(id)a3;
-+ (id)_travelTimeLeaveNowWalkingStringWithEta:(id)a3 location:(id)a4;
-+ (id)_travelTimeRunningLateTransitStringWithEta:(id)a3 location:(id)a4;
-+ (id)_travelTimeStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)_travelTimeSubstringWithEta:(id)a3 location:(id)a4 routeName:(id)a5;
-+ (id)_travelTimeSubstringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)_travelTimeWalkingStringWithEta:(id)a3 location:(id)a4;
-+ (id)departureDateString:(id)a3;
-+ (id)explanatoryTextForTTLStatus:(unint64_t)a3;
-+ (id)timeToLeaveAttributedStringWithAttributes:(id)a3 hypothesis:(id)a4 location:(id)a5;
-+ (id)timeToLeaveStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)timeToLeaveStringWithHypothesis:(id)a3 location:(id)a4;
-+ (id)travelAdvisoryDescriptionOfType:(unint64_t)a3 hypothesis:(id)a4 location:(id)a5;
-+ (id)travelTimeApproachingDepartureDateStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
-+ (id)travelTimeApproachingDepartureDateTransitStringWithDepartureDate:(id)a3 location:(id)a4;
-+ (id)travelTimeLeaveNowStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5;
++ (id)_attributedEtaString:(double)string fontName:(id)name fontSize:(double)size;
++ (id)_etaString:(double)string;
++ (id)_travelAdvisoryDescriptionOfType:(unint64_t)type hypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelMultiModalWithHypothesis:(id)hypothesis;
++ (id)_travelTimeDrivingStringExcludingTrafficWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelTimeDrivingStringIncludingTrafficWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelTimeDrivingStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelTimeDrivingSubstringWithEta:(id)eta location:(id)location includeTransportType:(BOOL)type;
++ (id)_travelTimeDrivingSubstringWithEta:(id)eta location:(id)location routeName:(id)name includeTransportType:(BOOL)type;
++ (id)_travelTimeLeaveNowDrivingStringExcludingTrafficWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelTimeLeaveNowDrivingStringIncludingTrafficWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelTimeLeaveNowDrivingStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelTimeLeaveNowDrivingSubstringWithEta:(id)eta location:(id)location includeTransportType:(BOOL)type;
++ (id)_travelTimeLeaveNowDrivingSubstringWithEta:(id)eta location:(id)location routeName:(id)name includeTransportType:(BOOL)type;
++ (id)_travelTimeLeaveNowMultiModalSubstringWithEta:(id)eta location:(id)location routeName:(id)name;
++ (id)_travelTimeLeaveNowMultiModalWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelTimeLeaveNowTransitStringWithEta:(id)eta location:(id)location;
++ (id)_travelTimeLeaveNowTransitStringWithLocation:(id)location;
++ (id)_travelTimeLeaveNowWalkingStringWithEta:(id)eta location:(id)location;
++ (id)_travelTimeRunningLateTransitStringWithEta:(id)eta location:(id)location;
++ (id)_travelTimeStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelTimeSubstringWithEta:(id)eta location:(id)location routeName:(id)name;
++ (id)_travelTimeSubstringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)_travelTimeWalkingStringWithEta:(id)eta location:(id)location;
++ (id)departureDateString:(id)string;
++ (id)explanatoryTextForTTLStatus:(unint64_t)status;
++ (id)timeToLeaveAttributedStringWithAttributes:(id)attributes hypothesis:(id)hypothesis location:(id)location;
++ (id)timeToLeaveStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)timeToLeaveStringWithHypothesis:(id)hypothesis location:(id)location;
++ (id)travelAdvisoryDescriptionOfType:(unint64_t)type hypothesis:(id)hypothesis location:(id)location;
++ (id)travelTimeApproachingDepartureDateStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
++ (id)travelTimeApproachingDepartureDateTransitStringWithDepartureDate:(id)date location:(id)location;
++ (id)travelTimeLeaveNowStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location;
 @end
 
 @implementation CUIKTimeToLeaveDescriptionGenerator
 
-+ (id)explanatoryTextForTTLStatus:(unint64_t)a3
++ (id)explanatoryTextForTTLStatus:(unint64_t)status
 {
-  if (a3 - 1 < 2)
+  if (status - 1 < 2)
   {
     v3 = CUIKBundle();
     v4 = v3;
@@ -48,7 +48,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (status == 3)
   {
     v3 = CUIKBundle();
     v4 = v3;
@@ -66,50 +66,50 @@ LABEL_7:
   return v7;
 }
 
-+ (id)travelAdvisoryDescriptionOfType:(unint64_t)a3 hypothesis:(id)a4 location:(id)a5
++ (id)travelAdvisoryDescriptionOfType:(unint64_t)type hypothesis:(id)hypothesis location:(id)location
 {
-  v8 = a5;
-  v9 = a4;
-  [v9 estimatedTravelTime];
-  v10 = [a1 _etaString:?];
-  v11 = [a1 _travelAdvisoryDescriptionOfType:a3 hypothesis:v9 eta:v10 location:v8];
+  locationCopy = location;
+  hypothesisCopy = hypothesis;
+  [hypothesisCopy estimatedTravelTime];
+  v10 = [self _etaString:?];
+  v11 = [self _travelAdvisoryDescriptionOfType:type hypothesis:hypothesisCopy eta:v10 location:locationCopy];
 
   return v11;
 }
 
-+ (id)_travelMultiModalWithHypothesis:(id)a3
++ (id)_travelMultiModalWithHypothesis:(id)hypothesis
 {
-  v4 = [a3 travelSections];
-  if ([v4 count] >= 2)
+  travelSections = [hypothesis travelSections];
+  if ([travelSections count] >= 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:1];
+    v5 = [travelSections objectAtIndexedSubscript:1];
     [v5 estimatedTravelTime];
-    v6 = [a1 _etaString:?];
+    v6 = [self _etaString:?];
 
-    if ([v4 count] == 2)
+    if ([travelSections count] == 2)
     {
-      v7 = [v4 objectAtIndexedSubscript:0];
+      v7 = [travelSections objectAtIndexedSubscript:0];
       [v7 estimatedTravelTime];
-      v8 = [a1 _etaString:?];
+      v8 = [self _etaString:?];
 
-      v9 = [v4 objectAtIndexedSubscript:0];
-      v10 = [v9 transportType];
+      v9 = [travelSections objectAtIndexedSubscript:0];
+      transportType = [v9 transportType];
 
-      if (v10 == 2)
+      if (transportType == 2)
       {
-        v11 = [v4 objectAtIndexedSubscript:1];
-        v12 = [v11 transportType];
+        v11 = [travelSections objectAtIndexedSubscript:1];
+        transportType2 = [v11 transportType];
 
-        if (!v12)
+        if (!transportType2)
         {
           v15 = @"%@ on foot and %@ by car";
           goto LABEL_26;
         }
 
-        v13 = [v4 objectAtIndexedSubscript:1];
-        v14 = [v13 transportType];
+        v13 = [travelSections objectAtIndexedSubscript:1];
+        transportType3 = [v13 transportType];
 
-        if (v14 == 3)
+        if (transportType3 == 3)
         {
           v15 = @"%@ on foot and %@ by bike";
 LABEL_26:
@@ -125,20 +125,20 @@ LABEL_26:
 
       else
       {
-        v29 = [v4 objectAtIndexedSubscript:0];
-        v30 = [v29 transportType];
+        v29 = [travelSections objectAtIndexedSubscript:0];
+        transportType4 = [v29 transportType];
 
-        if (v30)
+        if (transportType4)
         {
-          v31 = [v4 objectAtIndexedSubscript:0];
-          v32 = [v31 transportType];
+          v31 = [travelSections objectAtIndexedSubscript:0];
+          transportType5 = [v31 transportType];
 
-          if (v32 == 3)
+          if (transportType5 == 3)
           {
-            v33 = [v4 objectAtIndexedSubscript:1];
-            v34 = [v33 transportType];
+            v33 = [travelSections objectAtIndexedSubscript:1];
+            transportType6 = [v33 transportType];
 
-            if (v34 == 2)
+            if (transportType6 == 2)
             {
               v15 = @"%@ by bike and %@ on foot";
               goto LABEL_26;
@@ -148,10 +148,10 @@ LABEL_26:
 
         else
         {
-          v36 = [v4 objectAtIndexedSubscript:1];
-          v37 = [v36 transportType];
+          v36 = [travelSections objectAtIndexedSubscript:1];
+          transportType7 = [v36 transportType];
 
-          if (v37 == 2)
+          if (transportType7 == 2)
           {
             v15 = @"%@ by car and %@ on foot";
             goto LABEL_26;
@@ -162,51 +162,51 @@ LABEL_26:
       goto LABEL_30;
     }
 
-    if ([v4 count] != 3)
+    if ([travelSections count] != 3)
     {
       v35 = +[CUIKLogSubsystem defaultCategory];
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        [CUIKTimeToLeaveDescriptionGenerator _travelMultiModalWithHypothesis:v4];
+        [CUIKTimeToLeaveDescriptionGenerator _travelMultiModalWithHypothesis:travelSections];
       }
 
       goto LABEL_33;
     }
 
-    v16 = [v4 objectAtIndexedSubscript:0];
+    v16 = [travelSections objectAtIndexedSubscript:0];
     [v16 estimatedTravelTime];
     v18 = v17;
-    v19 = [v4 objectAtIndexedSubscript:2];
+    v19 = [travelSections objectAtIndexedSubscript:2];
     [v19 estimatedTravelTime];
     v21 = v18 + v20;
 
-    v8 = [a1 _etaString:v21];
-    v22 = [v4 objectAtIndexedSubscript:0];
+    v8 = [self _etaString:v21];
+    v22 = [travelSections objectAtIndexedSubscript:0];
     if ([v22 transportType] == 2)
     {
-      v23 = [v4 objectAtIndexedSubscript:1];
+      v23 = [travelSections objectAtIndexedSubscript:1];
       if (![v23 transportType])
       {
-        v43 = [v4 objectAtIndexedSubscript:2];
-        v44 = [v43 transportType];
+        v43 = [travelSections objectAtIndexedSubscript:2];
+        transportType8 = [v43 transportType];
 
-        if (v44 == 2)
+        if (transportType8 == 2)
         {
           v28 = @"%@ by car and %@ on foot";
           goto LABEL_39;
         }
 
 LABEL_12:
-        v24 = [v4 objectAtIndexedSubscript:0];
+        v24 = [travelSections objectAtIndexedSubscript:0];
         if ([v24 transportType] == 2)
         {
-          v25 = [v4 objectAtIndexedSubscript:1];
+          v25 = [travelSections objectAtIndexedSubscript:1];
           if ([v25 transportType] == 3)
           {
-            v26 = [v4 objectAtIndexedSubscript:2];
-            v27 = [v26 transportType];
+            v26 = [travelSections objectAtIndexedSubscript:2];
+            transportType9 = [v26 transportType];
 
-            if (v27 == 2)
+            if (transportType9 == 2)
             {
               v28 = @"%@ by bike and %@ on foot";
 LABEL_39:
@@ -244,21 +244,21 @@ LABEL_34:
   return v41;
 }
 
-+ (id)_travelAdvisoryDescriptionOfType:(unint64_t)a3 hypothesis:(id)a4 eta:(id)a5 location:(id)a6
++ (id)_travelAdvisoryDescriptionOfType:(unint64_t)type hypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  switch(a3)
+  hypothesisCopy = hypothesis;
+  etaCopy = eta;
+  locationCopy = location;
+  switch(type)
   {
     case 0uLL:
-      v12 = [CUIKTimeToLeaveDescriptionGenerator travelTimeApproachingDepartureDateStringWithHypothesis:v9 eta:v10 location:v11];
+      v12 = [CUIKTimeToLeaveDescriptionGenerator travelTimeApproachingDepartureDateStringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
       goto LABEL_7;
     case 1uLL:
-      v12 = [CUIKTimeToLeaveDescriptionGenerator travelTimeLeaveNowStringWithHypothesis:v9 eta:v10 location:v11];
+      v12 = [CUIKTimeToLeaveDescriptionGenerator travelTimeLeaveNowStringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
       goto LABEL_7;
     case 2uLL:
-      v12 = [CUIKTimeToLeaveDescriptionGenerator travelTimeRunningLateStringWithHypothesis:v9 eta:v10 location:v11];
+      v12 = [CUIKTimeToLeaveDescriptionGenerator travelTimeRunningLateStringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
 LABEL_7:
       v13 = v12;
       goto LABEL_11;
@@ -276,64 +276,64 @@ LABEL_11:
   return v13;
 }
 
-+ (id)timeToLeaveStringWithHypothesis:(id)a3 location:(id)a4
++ (id)timeToLeaveStringWithHypothesis:(id)hypothesis location:(id)location
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 estimatedTravelTime];
-  v8 = [a1 _etaString:?];
-  v9 = [a1 timeToLeaveStringWithHypothesis:v7 eta:v8 location:v6];
+  locationCopy = location;
+  hypothesisCopy = hypothesis;
+  [hypothesisCopy estimatedTravelTime];
+  v8 = [self _etaString:?];
+  v9 = [self timeToLeaveStringWithHypothesis:hypothesisCopy eta:v8 location:locationCopy];
 
   return v9;
 }
 
-+ (id)timeToLeaveStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)timeToLeaveStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hypothesisCopy = hypothesis;
+  etaCopy = eta;
+  locationCopy = location;
   v11 = +[CUIKLogSubsystem defaultCategory];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412802;
-    v17 = v8;
+    v17 = hypothesisCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = etaCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = locationCopy;
     _os_log_debug_impl(&dword_1CAB19000, v11, OS_LOG_TYPE_DEBUG, "Generating time to leave string from hypothesis: [%@]. ETA: [%@], location: [%@].", &v16, 0x20u);
   }
 
-  v12 = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
-  v13 = [CUIKTTLDescriptionGeneratorUtilities ttlDescriptionTypeForDate:v12 hypothesis:v8];
+  calSimulatedDateForNow = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
+  v13 = [CUIKTTLDescriptionGeneratorUtilities ttlDescriptionTypeForDate:calSimulatedDateForNow hypothesis:hypothesisCopy];
 
-  v14 = [a1 _travelAdvisoryDescriptionOfType:v13 hypothesis:v8 eta:v9 location:v10];
+  v14 = [self _travelAdvisoryDescriptionOfType:v13 hypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
 
   return v14;
 }
 
-+ (id)timeToLeaveAttributedStringWithAttributes:(id)a3 hypothesis:(id)a4 location:(id)a5
++ (id)timeToLeaveAttributedStringWithAttributes:(id)attributes hypothesis:(id)hypothesis location:(id)location
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v9 estimatedTravelTime];
-  v11 = [a1 _etaString:?];
-  v12 = [a1 timeToLeaveStringWithHypothesis:v9 eta:v11 location:v8];
+  locationCopy = location;
+  hypothesisCopy = hypothesis;
+  attributesCopy = attributes;
+  [hypothesisCopy estimatedTravelTime];
+  v11 = [self _etaString:?];
+  v12 = [self timeToLeaveStringWithHypothesis:hypothesisCopy eta:v11 location:locationCopy];
 
-  v13 = [v9 suggestedDepartureDate];
-  v14 = [v9 transportType];
+  suggestedDepartureDate = [hypothesisCopy suggestedDepartureDate];
+  transportType = [hypothesisCopy transportType];
 
-  if (v14 == 1)
+  if (transportType == 1)
   {
-    v15 = [MEMORY[0x1E69669E8] shared];
-    if ([v15 showDepartureDateForTransitTimeToLeave])
+    mEMORY[0x1E69669E8] = [MEMORY[0x1E69669E8] shared];
+    if ([mEMORY[0x1E69669E8] showDepartureDateForTransitTimeToLeave])
     {
-      v16 = [a1 departureDateString:v13];
+      v16 = [self departureDateString:suggestedDepartureDate];
       if ([v12 containsString:v16])
       {
-        v17 = [a1 departureDateString:v13];
+        v17 = [self departureDateString:suggestedDepartureDate];
       }
 
       else
@@ -355,13 +355,13 @@ LABEL_11:
     v18 = v11;
   }
 
-  v19 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v12 attributes:v10];
-  v20 = [v10 objectForKeyedSubscript:@"CUIKEtaAttributes"];
+  v19 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v12 attributes:attributesCopy];
+  v20 = [attributesCopy objectForKeyedSubscript:@"CUIKEtaAttributes"];
 
   if (v20)
   {
-    v21 = [v19 string];
-    v22 = [v21 rangeOfString:v18];
+    string = [v19 string];
+    v22 = [string rangeOfString:v18];
     [v19 addAttributes:v20 range:{v22, v23}];
   }
 
@@ -370,45 +370,45 @@ LABEL_11:
   return v24;
 }
 
-+ (id)_etaString:(double)a3
++ (id)_etaString:(double)string
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AB70]);
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v4 setCalendar:v5];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [v4 setCalendar:currentCalendar];
 
   [v4 setUnitsStyle:2];
   [v4 setAllowedUnits:96];
-  v6 = [v4 stringFromTimeInterval:a3];
+  v6 = [v4 stringFromTimeInterval:string];
 
   return v6;
 }
 
-+ (id)departureDateString:(id)a3
++ (id)departureDateString:(id)string
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v5 setCalendar:v6];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [v5 setCalendar:currentCalendar];
 
   [v5 setDateStyle:0];
   [v5 setTimeStyle:1];
-  v7 = [v5 stringFromDate:v4];
+  v7 = [v5 stringFromDate:stringCopy];
 
   return v7;
 }
 
-+ (id)_attributedEtaString:(double)a3 fontName:(id)a4 fontSize:(double)a5
++ (id)_attributedEtaString:(double)string fontName:(id)name fontSize:(double)size
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [a1 _etaString:a3];
+  nameCopy = name;
+  v9 = [self _etaString:string];
   v10 = objc_alloc_init(MEMORY[0x1E69DB880]);
-  if (v8)
+  if (nameCopy)
   {
-    v11 = [MEMORY[0x1E69DB878] fontWithName:v8 size:0.0];
-    v12 = [v11 familyName];
-    v13 = [v10 fontDescriptorWithFamily:v12];
+    v11 = [MEMORY[0x1E69DB878] fontWithName:nameCopy size:0.0];
+    familyName = [v11 familyName];
+    v13 = [v10 fontDescriptorWithFamily:familyName];
 
     v10 = v13;
   }
@@ -417,7 +417,7 @@ LABEL_11:
 
   v15 = objc_alloc(MEMORY[0x1E696AAB0]);
   v20 = *MEMORY[0x1E69DB648];
-  v16 = [MEMORY[0x1E69DB878] fontWithDescriptor:v14 size:a5];
+  v16 = [MEMORY[0x1E69DB878] fontWithDescriptor:v14 size:size];
   v21[0] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v18 = [v15 initWithString:v9 attributes:v17];
@@ -425,43 +425,43 @@ LABEL_11:
   return v18;
 }
 
-+ (id)travelTimeApproachingDepartureDateStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)travelTimeApproachingDepartureDateStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMultiModal])
+  hypothesisCopy = hypothesis;
+  etaCopy = eta;
+  locationCopy = location;
+  if ([hypothesisCopy isMultiModal])
   {
-    v11 = [a1 _travelTimeSubstringWithHypothesis:v8 eta:v9 location:v10];
+    v11 = [self _travelTimeSubstringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
 LABEL_5:
     v12 = v11;
     goto LABEL_6;
   }
 
-  if ([v8 transportType] == 2)
+  if ([hypothesisCopy transportType] == 2)
   {
-    v11 = [a1 _travelTimeWalkingStringWithHypothesis:v8 eta:v9 location:v10];
+    v11 = [self _travelTimeWalkingStringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
     goto LABEL_5;
   }
 
-  if ([v8 transportType] == 1)
+  if ([hypothesisCopy transportType] == 1)
   {
-    v14 = [v8 suggestedDepartureDate];
-    v12 = [a1 travelTimeApproachingDepartureDateTransitStringWithDepartureDate:v14 location:v10];
+    suggestedDepartureDate = [hypothesisCopy suggestedDepartureDate];
+    v12 = [self travelTimeApproachingDepartureDateTransitStringWithDepartureDate:suggestedDepartureDate location:locationCopy];
   }
 
   else
   {
-    if (![v8 transportType])
+    if (![hypothesisCopy transportType])
     {
-      v11 = [a1 _travelTimeDrivingStringWithHypothesis:v8 eta:v9 location:v10];
+      v11 = [self _travelTimeDrivingStringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
       goto LABEL_5;
     }
 
     v15 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [CUIKTimeToLeaveDescriptionGenerator travelTimeApproachingDepartureDateStringWithHypothesis:v8 eta:? location:?];
+      [CUIKTimeToLeaveDescriptionGenerator travelTimeApproachingDepartureDateStringWithHypothesis:hypothesisCopy eta:? location:?];
     }
 
     v12 = &stru_1F4AA8958;
@@ -472,17 +472,17 @@ LABEL_6:
   return v12;
 }
 
-+ (id)travelTimeApproachingDepartureDateTransitStringWithDepartureDate:(id)a3 location:(id)a4
++ (id)travelTimeApproachingDepartureDateTransitStringWithDepartureDate:(id)date location:(id)location
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 departureDateString:v7];
-  v9 = [MEMORY[0x1E6992F68] requiresSingularLocalizationForDate:v7];
+  locationCopy = location;
+  dateCopy = date;
+  v8 = [self departureDateString:dateCopy];
+  v9 = [MEMORY[0x1E6992F68] requiresSingularLocalizationForDate:dateCopy];
 
   v10 = MEMORY[0x1E696AEC0];
   v11 = CUIKBundle();
   v12 = v11;
-  if (v6)
+  if (locationCopy)
   {
     if (v9)
     {
@@ -495,7 +495,7 @@ LABEL_6:
     }
 
     v15 = [v11 localizedStringForKey:v13 value:@"Leave by %@ to get to %@ on time via transit." table:0];
-    [v10 localizedStringWithFormat:v15, v8, v6];
+    [v10 localizedStringWithFormat:v15, v8, locationCopy];
   }
 
   else
@@ -518,52 +518,52 @@ LABEL_6:
   return v16;
 }
 
-+ (id)travelTimeLeaveNowStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)travelTimeLeaveNowStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMultiModal])
+  hypothesisCopy = hypothesis;
+  etaCopy = eta;
+  locationCopy = location;
+  if ([hypothesisCopy isMultiModal])
   {
-    v11 = [a1 _travelTimeLeaveNowMultiModalWithHypothesis:v8 eta:v9 location:v10];
+    v11 = [self _travelTimeLeaveNowMultiModalWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
 LABEL_5:
     v12 = v11;
     goto LABEL_6;
   }
 
-  if ([v8 transportType] == 2)
+  if ([hypothesisCopy transportType] == 2)
   {
-    v11 = [a1 _travelTimeLeaveNowWalkingStringWithHypothesis:v8 eta:v9 location:v10];
+    v11 = [self _travelTimeLeaveNowWalkingStringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
     goto LABEL_5;
   }
 
-  if ([v8 transportType] == 1)
+  if ([hypothesisCopy transportType] == 1)
   {
-    v14 = [MEMORY[0x1E69669E8] shared];
-    if ([v14 showDepartureDateForTransitTimeToLeave])
+    mEMORY[0x1E69669E8] = [MEMORY[0x1E69669E8] shared];
+    if ([mEMORY[0x1E69669E8] showDepartureDateForTransitTimeToLeave])
     {
-      [a1 _travelTimeLeaveNowTransitStringWithLocation:v10];
+      [self _travelTimeLeaveNowTransitStringWithLocation:locationCopy];
     }
 
     else
     {
-      [a1 _travelTimeLeaveNowTransitStringWithEta:v9 location:v10];
+      [self _travelTimeLeaveNowTransitStringWithEta:etaCopy location:locationCopy];
     }
     v12 = ;
 
     goto LABEL_6;
   }
 
-  if (![v8 transportType])
+  if (![hypothesisCopy transportType])
   {
-    v11 = [a1 _travelTimeLeaveNowDrivingStringWithHypothesis:v8 eta:v9 location:v10];
+    v11 = [self _travelTimeLeaveNowDrivingStringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
     goto LABEL_5;
   }
 
   v15 = +[CUIKLogSubsystem defaultCategory];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    [CUIKTimeToLeaveDescriptionGenerator travelTimeLeaveNowStringWithHypothesis:v8 eta:? location:?];
+    [CUIKTimeToLeaveDescriptionGenerator travelTimeLeaveNowStringWithHypothesis:hypothesisCopy eta:? location:?];
   }
 
   v12 = &stru_1F4AA8958;
@@ -572,15 +572,15 @@ LABEL_6:
   return v12;
 }
 
-+ (id)_travelTimeLeaveNowMultiModalWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)_travelTimeLeaveNowMultiModalWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 routeName];
-  v12 = [a1 _travelTimeLeaveNowMultiModalSubstringWithEta:v9 location:v8 routeName:v11];
+  locationCopy = location;
+  etaCopy = eta;
+  hypothesisCopy = hypothesis;
+  routeName = [hypothesisCopy routeName];
+  v12 = [self _travelTimeLeaveNowMultiModalSubstringWithEta:etaCopy location:locationCopy routeName:routeName];
 
-  v13 = [a1 _travelMultiModalWithHypothesis:v10];
+  v13 = [self _travelMultiModalWithHypothesis:hypothesisCopy];
 
   if (v13)
   {
@@ -598,24 +598,24 @@ LABEL_6:
   return v17;
 }
 
-+ (id)_travelTimeLeaveNowMultiModalSubstringWithEta:(id)a3 location:(id)a4 routeName:(id)a5
++ (id)_travelTimeLeaveNowMultiModalSubstringWithEta:(id)eta location:(id)location routeName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  etaCopy = eta;
+  locationCopy = location;
+  nameCopy = name;
   v10 = MEMORY[0x1E696AEC0];
   v11 = CUIKBundle();
   v12 = v11;
-  if (v8 && v9)
+  if (locationCopy && nameCopy)
   {
     v13 = [v11 localizedStringForKey:@"Leave now: It will take %@ to get to %@ using %@" value:&stru_1F4AA8958 table:0];
-    v17 = v9;
+    v17 = nameCopy;
 LABEL_6:
-    v16 = v8;
+    v16 = locationCopy;
     goto LABEL_7;
   }
 
-  if (v8)
+  if (locationCopy)
   {
     v13 = [v11 localizedStringForKey:@"Leave now: It will take %@ to get to %@" value:&stru_1F4AA8958 table:0];
     goto LABEL_6;
@@ -623,67 +623,67 @@ LABEL_6:
 
   v13 = [v11 localizedStringForKey:@"Leave now: It will take %@" value:&stru_1F4AA8958 table:0];
 LABEL_7:
-  v14 = [v10 localizedStringWithFormat:v13, v7, v16, v17];
+  v14 = [v10 localizedStringWithFormat:v13, etaCopy, v16, v17];
 
   return v14;
 }
 
-+ (id)_travelTimeLeaveNowWalkingStringWithEta:(id)a3 location:(id)a4
++ (id)_travelTimeLeaveNowWalkingStringWithEta:(id)eta location:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
+  etaCopy = eta;
   v8 = CUIKBundle();
   v9 = v8;
-  if (v5)
+  if (locationCopy)
   {
     v10 = [v8 localizedStringForKey:@"Leave now: It will take %@ to get to %@ on foot." value:&stru_1F4AA8958 table:0];
-    [v6 localizedStringWithFormat:v10, v7, v5];
+    [v6 localizedStringWithFormat:v10, etaCopy, locationCopy];
   }
 
   else
   {
     v10 = [v8 localizedStringForKey:@"Leave now: It will take %@ on foot." value:&stru_1F4AA8958 table:0];
-    [v6 localizedStringWithFormat:v10, v7, v13];
+    [v6 localizedStringWithFormat:v10, etaCopy, v13];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (id)_travelTimeLeaveNowTransitStringWithEta:(id)a3 location:(id)a4
++ (id)_travelTimeLeaveNowTransitStringWithEta:(id)eta location:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
+  etaCopy = eta;
   v8 = CUIKBundle();
   v9 = v8;
-  if (v5)
+  if (locationCopy)
   {
     v10 = [v8 localizedStringForKey:@"Leave now: It will take %@ to get to %@ via transit." value:&stru_1F4AA8958 table:0];
-    [v6 localizedStringWithFormat:v10, v7, v5];
+    [v6 localizedStringWithFormat:v10, etaCopy, locationCopy];
   }
 
   else
   {
     v10 = [v8 localizedStringForKey:@"Leave now: It will take %@ via transit." value:&stru_1F4AA8958 table:0];
-    [v6 localizedStringWithFormat:v10, v7, v13];
+    [v6 localizedStringWithFormat:v10, etaCopy, v13];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (id)_travelTimeLeaveNowTransitStringWithLocation:(id)a3
++ (id)_travelTimeLeaveNowTransitStringWithLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = MEMORY[0x1E696AEC0];
   v5 = CUIKBundle();
   v6 = v5;
-  if (v3)
+  if (locationCopy)
   {
     v7 = [v5 localizedStringForKey:@"Leave now to get to %@ (location) on time via transit." value:@"Leave now to get to %@ on time via transit." table:0];
-    [v4 localizedStringWithFormat:v7, v3];
+    [v4 localizedStringWithFormat:v7, locationCopy];
   }
 
   else
@@ -696,84 +696,84 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_travelTimeLeaveNowDrivingStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)_travelTimeLeaveNowDrivingStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([CUIKTTLDescriptionGeneratorUtilities ttlDescriptionShouldIncludeTrafficForHypothesis:v10])
+  locationCopy = location;
+  etaCopy = eta;
+  hypothesisCopy = hypothesis;
+  if ([CUIKTTLDescriptionGeneratorUtilities ttlDescriptionShouldIncludeTrafficForHypothesis:hypothesisCopy])
   {
-    [a1 _travelTimeLeaveNowDrivingStringIncludingTrafficWithHypothesis:v10 eta:v9 location:v8];
+    [self _travelTimeLeaveNowDrivingStringIncludingTrafficWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
   }
 
   else
   {
-    [a1 _travelTimeLeaveNowDrivingStringExcludingTrafficWithHypothesis:v10 eta:v9 location:v8];
+    [self _travelTimeLeaveNowDrivingStringExcludingTrafficWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (id)_travelTimeLeaveNowDrivingStringIncludingTrafficWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)_travelTimeLeaveNowDrivingStringIncludingTrafficWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 trafficDensityDescription];
-  v12 = [v8 routeName];
-  v13 = [v12 length];
+  hypothesisCopy = hypothesis;
+  etaCopy = eta;
+  locationCopy = location;
+  trafficDensityDescription = [hypothesisCopy trafficDensityDescription];
+  routeName = [hypothesisCopy routeName];
+  v13 = [routeName length];
 
   if (v13)
   {
-    v14 = [v8 routeName];
-    v15 = [a1 _travelTimeLeaveNowDrivingSubstringWithEta:v9 location:v10 routeName:v14 includeTransportType:0];
+    routeName2 = [hypothesisCopy routeName];
+    v15 = [self _travelTimeLeaveNowDrivingSubstringWithEta:etaCopy location:locationCopy routeName:routeName2 includeTransportType:0];
   }
 
   else
   {
-    v15 = [a1 _travelTimeLeaveNowDrivingSubstringWithEta:v9 location:v10 includeTransportType:0];
+    v15 = [self _travelTimeLeaveNowDrivingSubstringWithEta:etaCopy location:locationCopy includeTransportType:0];
   }
 
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v11, v15];
+  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", trafficDensityDescription, v15];
 
   return v16;
 }
 
-+ (id)_travelTimeLeaveNowDrivingStringExcludingTrafficWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)_travelTimeLeaveNowDrivingStringExcludingTrafficWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 routeName];
-  v12 = [v11 length];
+  hypothesisCopy = hypothesis;
+  etaCopy = eta;
+  locationCopy = location;
+  routeName = [hypothesisCopy routeName];
+  v12 = [routeName length];
 
   if (v12)
   {
-    v13 = [v8 routeName];
-    v14 = [a1 _travelTimeLeaveNowDrivingSubstringWithEta:v9 location:v10 routeName:v13 includeTransportType:1];
+    routeName2 = [hypothesisCopy routeName];
+    v14 = [self _travelTimeLeaveNowDrivingSubstringWithEta:etaCopy location:locationCopy routeName:routeName2 includeTransportType:1];
   }
 
   else
   {
-    v14 = [a1 _travelTimeLeaveNowDrivingSubstringWithEta:v9 location:v10 includeTransportType:1];
+    v14 = [self _travelTimeLeaveNowDrivingSubstringWithEta:etaCopy location:locationCopy includeTransportType:1];
   }
 
   return v14;
 }
 
-+ (id)_travelTimeLeaveNowDrivingSubstringWithEta:(id)a3 location:(id)a4 routeName:(id)a5 includeTransportType:(BOOL)a6
++ (id)_travelTimeLeaveNowDrivingSubstringWithEta:(id)eta location:(id)location routeName:(id)name includeTransportType:(BOOL)type
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  etaCopy = eta;
+  locationCopy = location;
+  nameCopy = name;
   v12 = MEMORY[0x1E696AEC0];
   v13 = CUIKBundle();
   v14 = v13;
-  if (v10)
+  if (locationCopy)
   {
-    if (v6)
+    if (typeCopy)
     {
       v15 = @"Leave now: It will take %@ to get to %@ using %@ by car.";
     }
@@ -784,12 +784,12 @@ LABEL_7:
     }
 
     v17 = [v13 localizedStringForKey:v15 value:&stru_1F4AA8958 table:0];
-    [v12 localizedStringWithFormat:v17, v9, v10, v11];
+    [v12 localizedStringWithFormat:v17, etaCopy, locationCopy, nameCopy];
   }
 
   else
   {
-    if (v6)
+    if (typeCopy)
     {
       v16 = @"Leave now: It will take %@ using %@ by car.";
     }
@@ -800,24 +800,24 @@ LABEL_7:
     }
 
     v17 = [v13 localizedStringForKey:v16 value:&stru_1F4AA8958 table:0];
-    [v12 localizedStringWithFormat:v17, v9, v11, v20];
+    [v12 localizedStringWithFormat:v17, etaCopy, nameCopy, v20];
   }
   v18 = ;
 
   return v18;
 }
 
-+ (id)_travelTimeLeaveNowDrivingSubstringWithEta:(id)a3 location:(id)a4 includeTransportType:(BOOL)a5
++ (id)_travelTimeLeaveNowDrivingSubstringWithEta:(id)eta location:(id)location includeTransportType:(BOOL)type
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  etaCopy = eta;
+  locationCopy = location;
   v9 = MEMORY[0x1E696AEC0];
   v10 = CUIKBundle();
   v11 = v10;
-  if (v8)
+  if (locationCopy)
   {
-    if (v5)
+    if (typeCopy)
     {
       v12 = @"Leave now: It will take %@ to get to %@ by car.";
     }
@@ -828,12 +828,12 @@ LABEL_7:
     }
 
     v14 = [v10 localizedStringForKey:v12 value:&stru_1F4AA8958 table:0];
-    [v9 localizedStringWithFormat:v14, v7, v8];
+    [v9 localizedStringWithFormat:v14, etaCopy, locationCopy];
   }
 
   else
   {
-    if (v5)
+    if (typeCopy)
     {
       v13 = @"Leave now: It will take %@ by car.";
     }
@@ -844,71 +844,71 @@ LABEL_7:
     }
 
     v14 = [v10 localizedStringForKey:v13 value:&stru_1F4AA8958 table:0];
-    [v9 localizedStringWithFormat:v14, v7, v17];
+    [v9 localizedStringWithFormat:v14, etaCopy, v17];
   }
   v15 = ;
 
   return v15;
 }
 
-+ (id)_travelTimeRunningLateTransitStringWithEta:(id)a3 location:(id)a4
++ (id)_travelTimeRunningLateTransitStringWithEta:(id)eta location:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
+  etaCopy = eta;
   v8 = CUIKBundle();
   v9 = v8;
-  if (v5)
+  if (locationCopy)
   {
     v10 = [v8 localizedStringForKey:@"It will take %@ to get to %@ via transit." value:&stru_1F4AA8958 table:0];
-    [v6 localizedStringWithFormat:v10, v7, v5];
+    [v6 localizedStringWithFormat:v10, etaCopy, locationCopy];
   }
 
   else
   {
     v10 = [v8 localizedStringForKey:@"It will take %@ via transit." value:&stru_1F4AA8958 table:0];
-    [v6 localizedStringWithFormat:v10, v7, v13];
+    [v6 localizedStringWithFormat:v10, etaCopy, v13];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (id)_travelTimeStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)_travelTimeStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMultiModal])
+  hypothesisCopy = hypothesis;
+  etaCopy = eta;
+  locationCopy = location;
+  if ([hypothesisCopy isMultiModal])
   {
-    v11 = [a1 _travelTimeSubstringWithHypothesis:v8 eta:v9 location:v10];
+    v11 = [self _travelTimeSubstringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
 LABEL_12:
     v13 = v11;
     goto LABEL_13;
   }
 
-  if ([v8 transportType] == 2)
+  if ([hypothesisCopy transportType] == 2)
   {
-    v11 = [a1 _travelTimeWalkingStringWithHypothesis:v8 eta:v9 location:v10];
+    v11 = [self _travelTimeWalkingStringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
     goto LABEL_12;
   }
 
-  if ([v8 transportType] == 1)
+  if ([hypothesisCopy transportType] == 1)
   {
-    v11 = [a1 _travelTimeRunningLateTransitStringWithEta:v9 location:v10];
+    v11 = [self _travelTimeRunningLateTransitStringWithEta:etaCopy location:locationCopy];
     goto LABEL_12;
   }
 
-  if (![v8 transportType])
+  if (![hypothesisCopy transportType])
   {
-    v11 = [a1 _travelTimeDrivingStringWithHypothesis:v8 eta:v9 location:v10];
+    v11 = [self _travelTimeDrivingStringWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
     goto LABEL_12;
   }
 
   v12 = +[CUIKLogSubsystem defaultCategory];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [CUIKTimeToLeaveDescriptionGenerator travelTimeApproachingDepartureDateStringWithHypothesis:v8 eta:? location:?];
+    [CUIKTimeToLeaveDescriptionGenerator travelTimeApproachingDepartureDateStringWithHypothesis:hypothesisCopy eta:? location:?];
   }
 
   v13 = &stru_1F4AA8958;
@@ -917,107 +917,107 @@ LABEL_13:
   return v13;
 }
 
-+ (id)_travelTimeWalkingStringWithEta:(id)a3 location:(id)a4
++ (id)_travelTimeWalkingStringWithEta:(id)eta location:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
+  etaCopy = eta;
   v8 = CUIKBundle();
   v9 = v8;
-  if (v5)
+  if (locationCopy)
   {
     v10 = [v8 localizedStringForKey:@"It will take %@ to get to %@ on foot." value:&stru_1F4AA8958 table:0];
-    [v6 localizedStringWithFormat:v10, v7, v5];
+    [v6 localizedStringWithFormat:v10, etaCopy, locationCopy];
   }
 
   else
   {
     v10 = [v8 localizedStringForKey:@"It will take %@ on foot." value:&stru_1F4AA8958 table:0];
-    [v6 localizedStringWithFormat:v10, v7, v13];
+    [v6 localizedStringWithFormat:v10, etaCopy, v13];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (id)_travelTimeDrivingStringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)_travelTimeDrivingStringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([CUIKTTLDescriptionGeneratorUtilities ttlDescriptionShouldIncludeTrafficForHypothesis:v10])
+  locationCopy = location;
+  etaCopy = eta;
+  hypothesisCopy = hypothesis;
+  if ([CUIKTTLDescriptionGeneratorUtilities ttlDescriptionShouldIncludeTrafficForHypothesis:hypothesisCopy])
   {
-    [a1 _travelTimeDrivingStringIncludingTrafficWithHypothesis:v10 eta:v9 location:v8];
+    [self _travelTimeDrivingStringIncludingTrafficWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
   }
 
   else
   {
-    [a1 _travelTimeDrivingStringExcludingTrafficWithHypothesis:v10 eta:v9 location:v8];
+    [self _travelTimeDrivingStringExcludingTrafficWithHypothesis:hypothesisCopy eta:etaCopy location:locationCopy];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (id)_travelTimeDrivingStringIncludingTrafficWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)_travelTimeDrivingStringIncludingTrafficWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 trafficDensityDescription];
-  v12 = [v8 routeName];
-  v13 = [v12 length];
+  hypothesisCopy = hypothesis;
+  etaCopy = eta;
+  locationCopy = location;
+  trafficDensityDescription = [hypothesisCopy trafficDensityDescription];
+  routeName = [hypothesisCopy routeName];
+  v13 = [routeName length];
 
   if (v13)
   {
-    v14 = [v8 routeName];
-    v15 = [a1 _travelTimeDrivingSubstringWithEta:v9 location:v10 routeName:v14 includeTransportType:0];
+    routeName2 = [hypothesisCopy routeName];
+    v15 = [self _travelTimeDrivingSubstringWithEta:etaCopy location:locationCopy routeName:routeName2 includeTransportType:0];
   }
 
   else
   {
-    v15 = [a1 _travelTimeDrivingSubstringWithEta:v9 location:v10 includeTransportType:0];
+    v15 = [self _travelTimeDrivingSubstringWithEta:etaCopy location:locationCopy includeTransportType:0];
   }
 
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v11, v15];
+  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", trafficDensityDescription, v15];
 
   return v16;
 }
 
-+ (id)_travelTimeDrivingStringExcludingTrafficWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)_travelTimeDrivingStringExcludingTrafficWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 routeName];
-  v12 = [v11 length];
+  hypothesisCopy = hypothesis;
+  etaCopy = eta;
+  locationCopy = location;
+  routeName = [hypothesisCopy routeName];
+  v12 = [routeName length];
 
   if (v12)
   {
-    v13 = [v8 routeName];
-    v14 = [a1 _travelTimeDrivingSubstringWithEta:v9 location:v10 routeName:v13 includeTransportType:1];
+    routeName2 = [hypothesisCopy routeName];
+    v14 = [self _travelTimeDrivingSubstringWithEta:etaCopy location:locationCopy routeName:routeName2 includeTransportType:1];
   }
 
   else
   {
-    v14 = [a1 _travelTimeDrivingSubstringWithEta:v9 location:v10 includeTransportType:1];
+    v14 = [self _travelTimeDrivingSubstringWithEta:etaCopy location:locationCopy includeTransportType:1];
   }
 
   return v14;
 }
 
-+ (id)_travelTimeDrivingSubstringWithEta:(id)a3 location:(id)a4 routeName:(id)a5 includeTransportType:(BOOL)a6
++ (id)_travelTimeDrivingSubstringWithEta:(id)eta location:(id)location routeName:(id)name includeTransportType:(BOOL)type
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  etaCopy = eta;
+  locationCopy = location;
+  nameCopy = name;
   v12 = MEMORY[0x1E696AEC0];
   v13 = CUIKBundle();
   v14 = v13;
-  if (v10)
+  if (locationCopy)
   {
-    if (v6)
+    if (typeCopy)
     {
       v15 = @"It will take %@ to get to %@ using %@ by car.";
     }
@@ -1028,12 +1028,12 @@ LABEL_13:
     }
 
     v17 = [v13 localizedStringForKey:v15 value:&stru_1F4AA8958 table:0];
-    [v12 localizedStringWithFormat:v17, v9, v10, v11];
+    [v12 localizedStringWithFormat:v17, etaCopy, locationCopy, nameCopy];
   }
 
   else
   {
-    if (v6)
+    if (typeCopy)
     {
       v16 = @"It will take %@ using %@ by car.";
     }
@@ -1044,24 +1044,24 @@ LABEL_13:
     }
 
     v17 = [v13 localizedStringForKey:v16 value:&stru_1F4AA8958 table:0];
-    [v12 localizedStringWithFormat:v17, v9, v11, v20];
+    [v12 localizedStringWithFormat:v17, etaCopy, nameCopy, v20];
   }
   v18 = ;
 
   return v18;
 }
 
-+ (id)_travelTimeDrivingSubstringWithEta:(id)a3 location:(id)a4 includeTransportType:(BOOL)a5
++ (id)_travelTimeDrivingSubstringWithEta:(id)eta location:(id)location includeTransportType:(BOOL)type
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  etaCopy = eta;
+  locationCopy = location;
   v9 = MEMORY[0x1E696AEC0];
   v10 = CUIKBundle();
   v11 = v10;
-  if (v8)
+  if (locationCopy)
   {
-    if (v5)
+    if (typeCopy)
     {
       v12 = @"It will take %@ to get to %@ by car.";
     }
@@ -1072,12 +1072,12 @@ LABEL_13:
     }
 
     v14 = [v10 localizedStringForKey:v12 value:&stru_1F4AA8958 table:0];
-    [v9 localizedStringWithFormat:v14, v7, v8];
+    [v9 localizedStringWithFormat:v14, etaCopy, locationCopy];
   }
 
   else
   {
-    if (v5)
+    if (typeCopy)
     {
       v13 = @"It will take %@ by car.";
     }
@@ -1088,22 +1088,22 @@ LABEL_13:
     }
 
     v14 = [v10 localizedStringForKey:v13 value:&stru_1F4AA8958 table:0];
-    [v9 localizedStringWithFormat:v14, v7, v17];
+    [v9 localizedStringWithFormat:v14, etaCopy, v17];
   }
   v15 = ;
 
   return v15;
 }
 
-+ (id)_travelTimeSubstringWithHypothesis:(id)a3 eta:(id)a4 location:(id)a5
++ (id)_travelTimeSubstringWithHypothesis:(id)hypothesis eta:(id)eta location:(id)location
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 routeName];
-  v12 = [a1 _travelTimeSubstringWithEta:v9 location:v8 routeName:v11];
+  locationCopy = location;
+  etaCopy = eta;
+  hypothesisCopy = hypothesis;
+  routeName = [hypothesisCopy routeName];
+  v12 = [self _travelTimeSubstringWithEta:etaCopy location:locationCopy routeName:routeName];
 
-  v13 = [a1 _travelMultiModalWithHypothesis:v10];
+  v13 = [self _travelMultiModalWithHypothesis:hypothesisCopy];
 
   if (v13)
   {
@@ -1121,24 +1121,24 @@ LABEL_13:
   return v17;
 }
 
-+ (id)_travelTimeSubstringWithEta:(id)a3 location:(id)a4 routeName:(id)a5
++ (id)_travelTimeSubstringWithEta:(id)eta location:(id)location routeName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  etaCopy = eta;
+  locationCopy = location;
+  nameCopy = name;
   v10 = MEMORY[0x1E696AEC0];
   v11 = CUIKBundle();
   v12 = v11;
-  if (v8 && v9)
+  if (locationCopy && nameCopy)
   {
     v13 = [v11 localizedStringForKey:@"It will take %@ to get to %@ using %@" value:&stru_1F4AA8958 table:0];
-    v17 = v9;
+    v17 = nameCopy;
 LABEL_6:
-    v16 = v8;
+    v16 = locationCopy;
     goto LABEL_7;
   }
 
-  if (v8)
+  if (locationCopy)
   {
     v13 = [v11 localizedStringForKey:@"It will take %@ to get to %@" value:&stru_1F4AA8958 table:0];
     goto LABEL_6;
@@ -1146,7 +1146,7 @@ LABEL_6:
 
   v13 = [v11 localizedStringForKey:@"It will take %@" value:&stru_1F4AA8958 table:0];
 LABEL_7:
-  v14 = [v10 localizedStringWithFormat:v13, v7, v16, v17];
+  v14 = [v10 localizedStringWithFormat:v13, etaCopy, v16, v17];
 
   return v14;
 }

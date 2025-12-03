@@ -1,41 +1,41 @@
 @interface RTLocalBluePOIResult
-- (BOOL)isEqual:(id)a3;
-- (RTLocalBluePOIResult)initWithCoder:(id)a3;
-- (RTLocalBluePOIResult)initWithPOIConfidences:(id)a3 aoiConfidences:(id)a4 distanceToNearestAOILowerBound:(id)a5 referenceLocation:(id)a6 queryTime:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTLocalBluePOIResult)initWithCoder:(id)coder;
+- (RTLocalBluePOIResult)initWithPOIConfidences:(id)confidences aoiConfidences:(id)aoiConfidences distanceToNearestAOILowerBound:(id)bound referenceLocation:(id)location queryTime:(id)time;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLocalBluePOIResult
 
-- (RTLocalBluePOIResult)initWithPOIConfidences:(id)a3 aoiConfidences:(id)a4 distanceToNearestAOILowerBound:(id)a5 referenceLocation:(id)a6 queryTime:(id)a7
+- (RTLocalBluePOIResult)initWithPOIConfidences:(id)confidences aoiConfidences:(id)aoiConfidences distanceToNearestAOILowerBound:(id)bound referenceLocation:(id)location queryTime:(id)time
 {
   v58 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v46 = a6;
-  v16 = a7;
+  confidencesCopy = confidences;
+  aoiConfidencesCopy = aoiConfidences;
+  boundCopy = bound;
+  locationCopy = location;
+  timeCopy = time;
   v55.receiver = self;
   v55.super_class = RTLocalBluePOIResult;
   v17 = [(RTLocalBluePOIResult *)&v55 init];
   v18 = v17;
   if (v17)
   {
-    v45 = v15;
-    objc_storeStrong(&v17->_poiConfidences, a3);
-    objc_storeStrong(&v18->_aoiConfidences, a4);
-    objc_storeStrong(&v18->_distanceToNearestAOILowerBound, a5);
-    objc_storeStrong(&v18->_referenceLocation, a6);
-    objc_storeStrong(&v18->_queryTime, a7);
+    v45 = boundCopy;
+    objc_storeStrong(&v17->_poiConfidences, confidences);
+    objc_storeStrong(&v18->_aoiConfidences, aoiConfidences);
+    objc_storeStrong(&v18->_distanceToNearestAOILowerBound, bound);
+    objc_storeStrong(&v18->_referenceLocation, location);
+    objc_storeStrong(&v18->_queryTime, time);
     v18->_mostConfidentPOI = 0;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v19 = v13;
+    v19 = confidencesCopy;
     v20 = [v19 countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v20)
     {
@@ -52,7 +52,7 @@
           }
 
           v25 = *(*(&v51 + 1) + 8 * i);
-          v26 = [v19 objectForKeyedSubscript:{v25, v45, v46}];
+          v26 = [v19 objectForKeyedSubscript:{v25, v45, locationCopy}];
           [v26 doubleValue];
           v28 = v27;
 
@@ -76,7 +76,7 @@
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v31 = v14;
+    v31 = aoiConfidencesCopy;
     v32 = [v31 countByEnumeratingWithState:&v47 objects:v56 count:16];
     if (v32)
     {
@@ -112,7 +112,7 @@
       while (v33);
     }
 
-    v15 = v45;
+    boundCopy = v45;
   }
 
   v43 = *MEMORY[0x1E69E9840];
@@ -122,19 +122,19 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTLocalBluePOIResult *)self poiConfidences];
-  v5 = [(RTLocalBluePOIResult *)self aoiConfidences];
-  v6 = [(RTLocalBluePOIResult *)self referenceLocation];
-  v7 = [(RTLocalBluePOIResult *)self queryTime];
-  v8 = [(RTLocalBluePOIResult *)self distanceToNearestAOILowerBound];
-  v9 = [v3 stringWithFormat:@"poiConfidences, %@, aoiConfidences, %@, referenceLocation, %@, queryTime, %@, distanceToNearestAOILowerBound, %@", v4, v5, v6, v7, v8];
+  poiConfidences = [(RTLocalBluePOIResult *)self poiConfidences];
+  aoiConfidences = [(RTLocalBluePOIResult *)self aoiConfidences];
+  referenceLocation = [(RTLocalBluePOIResult *)self referenceLocation];
+  queryTime = [(RTLocalBluePOIResult *)self queryTime];
+  distanceToNearestAOILowerBound = [(RTLocalBluePOIResult *)self distanceToNearestAOILowerBound];
+  v9 = [v3 stringWithFormat:@"poiConfidences, %@, aoiConfidences, %@, referenceLocation, %@, queryTime, %@, distanceToNearestAOILowerBound, %@", poiConfidences, aoiConfidences, referenceLocation, queryTime, distanceToNearestAOILowerBound];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   poiConfidences = self->_poiConfidences;
   aoiConfidences = self->_aoiConfidences;
   distanceToNearestAOILowerBound = self->_distanceToNearestAOILowerBound;
@@ -144,27 +144,27 @@
   return [v4 initWithPOIConfidences:poiConfidences aoiConfidences:aoiConfidences distanceToNearestAOILowerBound:distanceToNearestAOILowerBound referenceLocation:referenceLocation queryTime:queryTime];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   poiConfidences = self->_poiConfidences;
-  v5 = a3;
-  [v5 encodeObject:poiConfidences forKey:@"poiConfidences"];
-  [v5 encodeObject:self->_aoiConfidences forKey:@"aoiConfidences"];
-  [v5 encodeObject:self->_distanceToNearestAOILowerBound forKey:@"distanceToNearestAOILowerBound"];
-  [v5 encodeObject:self->_referenceLocation forKey:@"referenceLocation"];
-  [v5 encodeObject:self->_queryTime forKey:@"queryTime"];
+  coderCopy = coder;
+  [coderCopy encodeObject:poiConfidences forKey:@"poiConfidences"];
+  [coderCopy encodeObject:self->_aoiConfidences forKey:@"aoiConfidences"];
+  [coderCopy encodeObject:self->_distanceToNearestAOILowerBound forKey:@"distanceToNearestAOILowerBound"];
+  [coderCopy encodeObject:self->_referenceLocation forKey:@"referenceLocation"];
+  [coderCopy encodeObject:self->_queryTime forKey:@"queryTime"];
 }
 
-- (RTLocalBluePOIResult)initWithCoder:(id)a3
+- (RTLocalBluePOIResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"poiConfidences"];
+  v6 = [coderCopy decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"poiConfidences"];
   v7 = objc_opt_class();
-  v8 = [v4 decodeDictionaryWithKeysOfClass:v7 objectsOfClass:objc_opt_class() forKey:@"aoiConfidences"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"distanceToNearestAOILowerBound"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceLocation"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryTime"];
+  v8 = [coderCopy decodeDictionaryWithKeysOfClass:v7 objectsOfClass:objc_opt_class() forKey:@"aoiConfidences"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"distanceToNearestAOILowerBound"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceLocation"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryTime"];
 
   v12 = [(RTLocalBluePOIResult *)self initWithPOIConfidences:v6 aoiConfidences:v8 distanceToNearestAOILowerBound:v9 referenceLocation:v10 queryTime:v11];
   return v12;
@@ -179,10 +179,10 @@
   return v6 ^ [(NSDate *)self->_queryTime hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -192,28 +192,28 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTLocalBluePOIResult *)self poiConfidences];
-      v7 = [(RTLocalBluePOIResult *)v5 poiConfidences];
-      v8 = [v6 isEqualToDictionary:v7];
+      v5 = equalCopy;
+      poiConfidences = [(RTLocalBluePOIResult *)self poiConfidences];
+      poiConfidences2 = [(RTLocalBluePOIResult *)v5 poiConfidences];
+      v8 = [poiConfidences isEqualToDictionary:poiConfidences2];
 
-      v9 = [(RTLocalBluePOIResult *)self aoiConfidences];
-      v10 = [(RTLocalBluePOIResult *)v5 aoiConfidences];
-      LOBYTE(v6) = [v9 isEqualToDictionary:v10];
+      aoiConfidences = [(RTLocalBluePOIResult *)self aoiConfidences];
+      aoiConfidences2 = [(RTLocalBluePOIResult *)v5 aoiConfidences];
+      LOBYTE(poiConfidences) = [aoiConfidences isEqualToDictionary:aoiConfidences2];
 
-      v11 = [(RTLocalBluePOIResult *)self distanceToNearestAOILowerBound];
-      v12 = [(RTLocalBluePOIResult *)v5 distanceToNearestAOILowerBound];
-      LOBYTE(v9) = [v11 isEqualToNumber:v12];
+      distanceToNearestAOILowerBound = [(RTLocalBluePOIResult *)self distanceToNearestAOILowerBound];
+      distanceToNearestAOILowerBound2 = [(RTLocalBluePOIResult *)v5 distanceToNearestAOILowerBound];
+      LOBYTE(aoiConfidences) = [distanceToNearestAOILowerBound isEqualToNumber:distanceToNearestAOILowerBound2];
 
-      v13 = [(RTLocalBluePOIResult *)self referenceLocation];
-      v14 = [(RTLocalBluePOIResult *)v5 referenceLocation];
-      v15 = [v13 isEqualToLocation:v14];
+      referenceLocation = [(RTLocalBluePOIResult *)self referenceLocation];
+      referenceLocation2 = [(RTLocalBluePOIResult *)v5 referenceLocation];
+      v15 = [referenceLocation isEqualToLocation:referenceLocation2];
 
-      v16 = [(RTLocalBluePOIResult *)self queryTime];
-      v17 = [(RTLocalBluePOIResult *)v5 queryTime];
+      queryTime = [(RTLocalBluePOIResult *)self queryTime];
+      queryTime2 = [(RTLocalBluePOIResult *)v5 queryTime];
 
-      LOBYTE(v5) = [v16 isEqual:v17];
-      v18 = v8 & v6 & v9 & v15 & v5;
+      LOBYTE(v5) = [queryTime isEqual:queryTime2];
+      v18 = v8 & poiConfidences & aoiConfidences & v15 & v5;
     }
 
     else

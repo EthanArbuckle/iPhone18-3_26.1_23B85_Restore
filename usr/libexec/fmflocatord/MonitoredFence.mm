@@ -1,23 +1,23 @@
 @interface MonitoredFence
-+ (id)createScheduleWithDictionary:(id)a3;
-- (BOOL)isAllowedAtLocation:(id)a3;
-- (BOOL)isValidTrigger:(int64_t)a3;
-- (BOOL)shouldTrigger:(int64_t)a3 forLocation:(id)a4 atDate:(id)a5 reason:(id *)a6;
++ (id)createScheduleWithDictionary:(id)dictionary;
+- (BOOL)isAllowedAtLocation:(id)location;
+- (BOOL)isValidTrigger:(int64_t)trigger;
+- (BOOL)shouldTrigger:(int64_t)trigger forLocation:(id)location atDate:(id)date reason:(id *)reason;
 - (BOOL)shouldUseIDSTrigger;
-- (MonitoredFence)initWithDictionary:(id)a3;
+- (MonitoredFence)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionary;
 - (id)description;
 @end
 
 @implementation MonitoredFence
 
-- (MonitoredFence)initWithDictionary:(id)a3
+- (MonitoredFence)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(MonitoredFence *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"fenceId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"fenceId"];
     if (v6)
     {
       [(MonitoredFence *)v5 setFenceId:v6];
@@ -25,51 +25,51 @@
 
     else
     {
-      v7 = [v4 objectForKeyedSubscript:@"id"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"id"];
       [(MonitoredFence *)v5 setFenceId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"trigger"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"trigger"];
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:@"trigger"];
-      v10 = sub_100014ADC(v9);
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"trigger"];
+      integerValue = sub_100014ADC(v9);
     }
 
     else
     {
-      v9 = [v4 objectForKeyedSubscript:@"triggerType"];
-      v10 = [v9 integerValue];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"triggerType"];
+      integerValue = [v9 integerValue];
     }
 
-    [(MonitoredFence *)v5 setTriggerType:v10];
+    [(MonitoredFence *)v5 setTriggerType:integerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"triggerURL"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"triggerURL"];
     [(MonitoredFence *)v5 setTriggerURL:v11];
 
-    v12 = [v4 objectForKeyedSubscript:@"latitude"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"latitude"];
     [v12 doubleValue];
     [(MonitoredFence *)v5 setLatitude:?];
 
-    v13 = [v4 objectForKeyedSubscript:@"longitude"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"longitude"];
     [v13 doubleValue];
     [(MonitoredFence *)v5 setLongitude:?];
 
-    v14 = [v4 objectForKeyedSubscript:@"radius"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"radius"];
     [v14 doubleValue];
     [(MonitoredFence *)v5 setRadius:?];
 
-    v15 = [v4 objectForKeyedSubscript:@"fenceContext"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"fenceContext"];
     [(MonitoredFence *)v5 setContextDict:v15];
 
-    v16 = [v4 objectForKeyedSubscript:@"lastTrigger"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"lastTrigger"];
     -[MonitoredFence setLastTrigger:](v5, "setLastTrigger:", [v16 integerValue]);
 
-    v17 = [v4 objectForKeyedSubscript:@"lastTriggerTimestamp"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"lastTriggerTimestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v4 objectForKeyedSubscript:@"lastTriggerTimestamp"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"lastTriggerTimestamp"];
       [(MonitoredFence *)v5 setLastTriggerTimestamp:v18];
     }
 
@@ -78,19 +78,19 @@
       [(MonitoredFence *)v5 setLastTriggerTimestamp:0];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"ckRecordName"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"ckRecordName"];
     [(MonitoredFence *)v5 setCkRecordName:v19];
 
-    v20 = [v4 objectForKeyedSubscript:@"ckRecordZoneOwnerName"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"ckRecordZoneOwnerName"];
     [(MonitoredFence *)v5 setCkRecordZoneOwnerName:v20];
 
-    v21 = [v4 objectForKeyedSubscript:@"type"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     [(MonitoredFence *)v5 setType:v21];
 
-    v22 = [v4 objectForKeyedSubscript:@"acceptanceStatus"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"acceptanceStatus"];
     [(MonitoredFence *)v5 setAcceptanceStatus:v22];
 
-    v23 = [v4 objectForKeyedSubscript:@"onetimeonly"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"onetimeonly"];
     v24 = v23;
     if (v23)
     {
@@ -103,22 +103,22 @@
     }
 
     [(MonitoredFence *)v5 setRecurring:v25];
-    v26 = [v4 objectForKeyedSubscript:@"fenceTimeRange"];
-    v27 = [v26 fm_nullToNil];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"fenceTimeRange"];
+    fm_nullToNil = [v26 fm_nullToNil];
 
-    v28 = [objc_opt_class() createScheduleWithDictionary:v27];
+    v28 = [objc_opt_class() createScheduleWithDictionary:fm_nullToNil];
     [(MonitoredFence *)v5 setSchedule:v28];
   }
 
   return v5;
 }
 
-+ (id)createScheduleWithDictionary:(id)a3
++ (id)createScheduleWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v3 = a3;
-    v4 = [[_TtC11fmflocatord11FMLSchedule alloc] initWithDictionary:v3];
+    dictionaryCopy = dictionary;
+    v4 = [[_TtC11fmflocatord11FMLSchedule alloc] initWithDictionary:dictionaryCopy];
   }
 
   else
@@ -132,14 +132,14 @@
 - (NSDictionary)dictionary
 {
   v3 = objc_opt_new();
-  v4 = [(MonitoredFence *)self fenceId];
-  [v3 setObject:v4 forKeyedSubscript:@"id"];
+  fenceId = [(MonitoredFence *)self fenceId];
+  [v3 setObject:fenceId forKeyedSubscript:@"id"];
 
   v5 = [NSNumber numberWithInteger:[(MonitoredFence *)self triggerType]];
   [v3 setObject:v5 forKeyedSubscript:@"triggerType"];
 
-  v6 = [(MonitoredFence *)self triggerURL];
-  [v3 setObject:v6 forKeyedSubscript:@"triggerURL"];
+  triggerURL = [(MonitoredFence *)self triggerURL];
+  [v3 setObject:triggerURL forKeyedSubscript:@"triggerURL"];
 
   [(MonitoredFence *)self latitude];
   v7 = [NSNumber numberWithDouble:?];
@@ -153,33 +153,33 @@
   v9 = [NSNumber numberWithDouble:?];
   [v3 setObject:v9 forKeyedSubscript:@"radius"];
 
-  v10 = [(MonitoredFence *)self contextDict];
-  [v3 setObject:v10 forKeyedSubscript:@"fenceContext"];
+  contextDict = [(MonitoredFence *)self contextDict];
+  [v3 setObject:contextDict forKeyedSubscript:@"fenceContext"];
 
   v11 = [NSNumber numberWithInteger:[(MonitoredFence *)self lastTrigger]];
   [v3 setObject:v11 forKeyedSubscript:@"lastTrigger"];
 
-  v12 = [(MonitoredFence *)self lastTriggerTimestamp];
-  [v3 setObject:v12 forKeyedSubscript:@"lastTriggerTimestamp"];
+  lastTriggerTimestamp = [(MonitoredFence *)self lastTriggerTimestamp];
+  [v3 setObject:lastTriggerTimestamp forKeyedSubscript:@"lastTriggerTimestamp"];
 
-  v13 = [(MonitoredFence *)self schedule];
-  v14 = [v13 dictionary];
-  [v3 setObject:v14 forKeyedSubscript:@"fenceTimeRange"];
+  schedule = [(MonitoredFence *)self schedule];
+  dictionary = [schedule dictionary];
+  [v3 setObject:dictionary forKeyedSubscript:@"fenceTimeRange"];
 
   v15 = [NSNumber numberWithInt:[(MonitoredFence *)self isRecurring]^ 1];
   [v3 setObject:v15 forKeyedSubscript:@"onetimeonly"];
 
-  v16 = [(MonitoredFence *)self ckRecordName];
-  [v3 setObject:v16 forKeyedSubscript:@"ckRecordName"];
+  ckRecordName = [(MonitoredFence *)self ckRecordName];
+  [v3 setObject:ckRecordName forKeyedSubscript:@"ckRecordName"];
 
-  v17 = [(MonitoredFence *)self ckRecordZoneOwnerName];
-  [v3 setObject:v17 forKeyedSubscript:@"ckRecordZoneOwnerName"];
+  ckRecordZoneOwnerName = [(MonitoredFence *)self ckRecordZoneOwnerName];
+  [v3 setObject:ckRecordZoneOwnerName forKeyedSubscript:@"ckRecordZoneOwnerName"];
 
-  v18 = [(MonitoredFence *)self acceptanceStatus];
-  [v3 setObject:v18 forKeyedSubscript:@"acceptanceStatus"];
+  acceptanceStatus = [(MonitoredFence *)self acceptanceStatus];
+  [v3 setObject:acceptanceStatus forKeyedSubscript:@"acceptanceStatus"];
 
-  v19 = [(MonitoredFence *)self type];
-  [v3 setObject:v19 forKeyedSubscript:@"type"];
+  type = [(MonitoredFence *)self type];
+  [v3 setObject:type forKeyedSubscript:@"type"];
 
   return v3;
 }
@@ -188,45 +188,45 @@
 {
   if ([(MonitoredFence *)self isNotifyMeFence]&& ([(MonitoredFence *)self isRecurring]|| [(MonitoredFence *)self triggerType]== 3))
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isNotifyOthersFence) = 1;
   }
 
   else
   {
-    v3 = [(MonitoredFence *)self isNotifyOthersFence];
-    if (v3)
+    isNotifyOthersFence = [(MonitoredFence *)self isNotifyOthersFence];
+    if (isNotifyOthersFence)
     {
-      LOBYTE(v3) = [(MonitoredFence *)self triggerType]== 3;
+      LOBYTE(isNotifyOthersFence) = [(MonitoredFence *)self triggerType]== 3;
     }
   }
 
-  return v3;
+  return isNotifyOthersFence;
 }
 
-- (BOOL)shouldTrigger:(int64_t)a3 forLocation:(id)a4 atDate:(id)a5 reason:(id *)a6
+- (BOOL)shouldTrigger:(int64_t)trigger forLocation:(id)location atDate:(id)date reason:(id *)reason
 {
-  v10 = a4;
-  v11 = a5;
-  if ([(MonitoredFence *)self isValidTrigger:a3])
+  locationCopy = location;
+  dateCopy = date;
+  if ([(MonitoredFence *)self isValidTrigger:trigger])
   {
-    if ([(MonitoredFence *)self isAllowedAtLocation:v10])
+    if ([(MonitoredFence *)self isAllowedAtLocation:locationCopy])
     {
-      if ([(MonitoredFence *)self lastTrigger]== a3)
+      if ([(MonitoredFence *)self lastTrigger]== trigger)
       {
-        v12 = [(MonitoredFence *)self lastTriggerTimestamp];
-        if (v12)
+        lastTriggerTimestamp = [(MonitoredFence *)self lastTriggerTimestamp];
+        if (lastTriggerTimestamp)
         {
-          v13 = v12;
-          v14 = [(MonitoredFence *)self lastTriggerTimestamp];
-          [v11 timeIntervalSinceDate:v14];
+          v13 = lastTriggerTimestamp;
+          lastTriggerTimestamp2 = [(MonitoredFence *)self lastTriggerTimestamp];
+          [dateCopy timeIntervalSinceDate:lastTriggerTimestamp2];
           v16 = v15;
 
           if (v16 < 5.0)
           {
-            if (a6)
+            if (reason)
             {
-              v17 = [(MonitoredFence *)self lastTriggerTimestamp];
-              *a6 = [NSString stringWithFormat:@"date (%@) < lastTriggerTimestamp (%@) + 5s", v11, v17];
+              lastTriggerTimestamp3 = [(MonitoredFence *)self lastTriggerTimestamp];
+              *reason = [NSString stringWithFormat:@"date (%@) < lastTriggerTimestamp (%@) + 5s", dateCopy, lastTriggerTimestamp3];
             }
 
             goto LABEL_16;
@@ -235,15 +235,15 @@
       }
 
       v20 = +[SystemConfig sharedInstance];
-      v21 = [v20 isFMFAppRemoved];
+      isFMFAppRemoved = [v20 isFMFAppRemoved];
 
-      if (!v21)
+      if (!isFMFAppRemoved)
       {
         v18 = 1;
         goto LABEL_18;
       }
 
-      if (!a6)
+      if (!reason)
       {
         goto LABEL_16;
       }
@@ -253,10 +253,10 @@
       goto LABEL_10;
     }
 
-    if (a6)
+    if (reason)
     {
-      [NSString stringWithFormat:@"not allowed at location: %@", v10];
-      *a6 = v18 = 0;
+      [NSString stringWithFormat:@"not allowed at location: %@", locationCopy];
+      *reason = v18 = 0;
       goto LABEL_18;
     }
 
@@ -265,7 +265,7 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (!a6)
+  if (!reason)
   {
     goto LABEL_16;
   }
@@ -273,7 +273,7 @@ LABEL_16:
   v18 = 0;
   v19 = @"invalid trigger";
 LABEL_10:
-  *a6 = v19;
+  *reason = v19;
 LABEL_18:
 
   return v18;
@@ -282,85 +282,85 @@ LABEL_18:
 - (id)description
 {
   v25 = objc_opt_class();
-  v26 = [(MonitoredFence *)self fenceId];
-  v3 = [(MonitoredFence *)self type];
-  v4 = [(MonitoredFence *)self triggerType];
-  if ((v4 - 1) > 2)
+  fenceId = [(MonitoredFence *)self fenceId];
+  type = [(MonitoredFence *)self type];
+  triggerType = [(MonitoredFence *)self triggerType];
+  if ((triggerType - 1) > 2)
   {
     v5 = @"enter";
   }
 
   else
   {
-    v5 = *(&off_10005D818 + v4 - 1);
+    v5 = *(&off_10005D818 + triggerType - 1);
   }
 
   v24 = v5;
-  v6 = [(MonitoredFence *)self contextDict];
+  contextDict = [(MonitoredFence *)self contextDict];
   [(MonitoredFence *)self latitude];
   v8 = v7;
   [(MonitoredFence *)self longitude];
   v10 = v9;
   [(MonitoredFence *)self radius];
   v12 = v11;
-  v13 = [(MonitoredFence *)self schedule];
-  v14 = [(MonitoredFence *)self isRecurring];
-  v15 = [(MonitoredFence *)self triggerURL];
-  v16 = [(MonitoredFence *)self lastTrigger];
-  if (v16 > 3)
+  schedule = [(MonitoredFence *)self schedule];
+  isRecurring = [(MonitoredFence *)self isRecurring];
+  triggerURL = [(MonitoredFence *)self triggerURL];
+  lastTrigger = [(MonitoredFence *)self lastTrigger];
+  if (lastTrigger > 3)
   {
     v17 = @"in";
   }
 
   else
   {
-    v17 = *(&off_10005D830 + v16);
+    v17 = *(&off_10005D830 + lastTrigger);
   }
 
-  v18 = [(MonitoredFence *)self lastTriggerTimestamp];
-  v19 = [(MonitoredFence *)self acceptanceStatus];
-  v20 = [(MonitoredFence *)self ckRecordName];
-  v21 = [(MonitoredFence *)self ckRecordZoneOwnerName];
-  v22 = [NSString stringWithFormat:@"<%@ fenceId: %@, type: %@, triggerType: %@, contextDict: %@, latitude: %f, longitude: %f, radius: %f, schedule: %@, recurring: %d, triggerURL: %@, lastTrigger: %@, lastTriggerTimestamp: %@, acceptanceStatus: %@, ckRecordName: %@, ckRecordZoneOwnerName: %@>", v25, v26, v3, v24, v6, v8, v10, v12, v13, v14, v15, v17, v18, v19, v20, v21];
+  lastTriggerTimestamp = [(MonitoredFence *)self lastTriggerTimestamp];
+  acceptanceStatus = [(MonitoredFence *)self acceptanceStatus];
+  ckRecordName = [(MonitoredFence *)self ckRecordName];
+  ckRecordZoneOwnerName = [(MonitoredFence *)self ckRecordZoneOwnerName];
+  v22 = [NSString stringWithFormat:@"<%@ fenceId: %@, type: %@, triggerType: %@, contextDict: %@, latitude: %f, longitude: %f, radius: %f, schedule: %@, recurring: %d, triggerURL: %@, lastTrigger: %@, lastTriggerTimestamp: %@, acceptanceStatus: %@, ckRecordName: %@, ckRecordZoneOwnerName: %@>", v25, fenceId, type, v24, contextDict, v8, v10, v12, schedule, isRecurring, triggerURL, v17, lastTriggerTimestamp, acceptanceStatus, ckRecordName, ckRecordZoneOwnerName];
 
   return v22;
 }
 
-- (BOOL)isAllowedAtLocation:(id)a3
+- (BOOL)isAllowedAtLocation:(id)location
 {
-  [a3 coordinate];
+  [location coordinate];
 
   return [_TtC11fmflocatord8FMLFence isAllowedAtLocation:?];
 }
 
-- (BOOL)isValidTrigger:(int64_t)a3
+- (BOOL)isValidTrigger:(int64_t)trigger
 {
-  v4 = [(MonitoredFence *)self triggerType];
-  v5 = a3 < 2;
-  v6 = (a3 & 0xFFFFFFFFFFFFFFFELL) == 2;
-  if (v4 != 3)
+  triggerType = [(MonitoredFence *)self triggerType];
+  v5 = trigger < 2;
+  v6 = (trigger & 0xFFFFFFFFFFFFFFFELL) == 2;
+  if (triggerType != 3)
   {
-    v6 = a3 < 2;
+    v6 = trigger < 2;
   }
 
-  if (v4 != 2)
+  if (triggerType != 2)
   {
     v5 = v6;
   }
 
-  v7 = a3 == 0;
-  v8 = a3 == 1;
-  if (v4 != 1)
+  v7 = trigger == 0;
+  v8 = trigger == 1;
+  if (triggerType != 1)
   {
     v8 = v5;
   }
 
-  if (v4)
+  if (triggerType)
   {
     v7 = v8;
   }
 
-  if (v4 <= 1)
+  if (triggerType <= 1)
   {
     return v7;
   }

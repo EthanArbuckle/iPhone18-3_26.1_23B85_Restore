@@ -1,16 +1,16 @@
 @interface VUIMediaCollectionsToRecentlyAddedToMediaCollectionsValueTransformer
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VUIMediaCollectionsToRecentlyAddedToMediaCollectionsValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v3 = MEMORY[0x1E69DF6F8];
-  v4 = a3;
+  valueCopy = value;
   v5 = [[v3 alloc] initWithDateForEntityBlock:&__block_literal_global_68];
   [v5 setMaxEntities:20];
-  v6 = [v5 transformedValue:v4];
+  v6 = [v5 transformedValue:valueCopy];
 
   return v6;
 }

@@ -1,32 +1,32 @@
 @interface MPMediaEntityCache
-- (MPMediaEntityCache)initWithMediaLibraryDataProvider:(id)a3;
-- (id)_entityWithIdentifier:(int64_t)a3 mediaEntityType:(int64_t)a4 collectionGroupingType:(int64_t)a5 loadEntityBlock:(id)a6;
-- (id)collectionWithIdentifier:(int64_t)a3 grouping:(int64_t)a4 loadEntityBlock:(id)a5;
-- (id)itemWithIdentifier:(int64_t)a3;
-- (id)itemWithIdentifier:(int64_t)a3 loadEntityBlock:(id)a4;
+- (MPMediaEntityCache)initWithMediaLibraryDataProvider:(id)provider;
+- (id)_entityWithIdentifier:(int64_t)identifier mediaEntityType:(int64_t)type collectionGroupingType:(int64_t)groupingType loadEntityBlock:(id)block;
+- (id)collectionWithIdentifier:(int64_t)identifier grouping:(int64_t)grouping loadEntityBlock:(id)block;
+- (id)itemWithIdentifier:(int64_t)identifier;
+- (id)itemWithIdentifier:(int64_t)identifier loadEntityBlock:(id)block;
 - (void)_clearSomeGlobalEntityTemporaryReferences;
-- (void)_entityMapForDataProviderEntityClass:(Class)a3;
-- (void)_performWithExclusiveAccessForDataProviderEntityClass:(Class)a3 block:(id)a4;
-- (void)_performWithSharedAccessForDataProviderEntityClass:(Class)a3 block:(id)a4;
-- (void)removeEntityWithIdentifier:(int64_t)a3 dataProviderEntityClass:(Class)a4;
-- (void)updatePropertyValuesInEntityWithIdentifier:(int64_t)a3 dataProviderEntityClass:(Class)a4 deleted:(BOOL)a5;
+- (void)_entityMapForDataProviderEntityClass:(Class)class;
+- (void)_performWithExclusiveAccessForDataProviderEntityClass:(Class)class block:(id)block;
+- (void)_performWithSharedAccessForDataProviderEntityClass:(Class)class block:(id)block;
+- (void)removeEntityWithIdentifier:(int64_t)identifier dataProviderEntityClass:(Class)class;
+- (void)updatePropertyValuesInEntityWithIdentifier:(int64_t)identifier dataProviderEntityClass:(Class)class deleted:(BOOL)deleted;
 @end
 
 @implementation MPMediaEntityCache
 
-- (void)_performWithSharedAccessForDataProviderEntityClass:(Class)a3 block:(id)a4
+- (void)_performWithSharedAccessForDataProviderEntityClass:(Class)class block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   os_unfair_recursive_lock_lock_with_options();
-  v6[2](v6, [(MPMediaEntityCache *)self _entityMapForDataProviderEntityClass:a3]);
+  blockCopy[2](blockCopy, [(MPMediaEntityCache *)self _entityMapForDataProviderEntityClass:class]);
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)_performWithExclusiveAccessForDataProviderEntityClass:(Class)a3 block:(id)a4
+- (void)_performWithExclusiveAccessForDataProviderEntityClass:(Class)class block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   os_unfair_recursive_lock_lock_with_options();
-  v6[2](v6, [(MPMediaEntityCache *)self _entityMapForDataProviderEntityClass:a3]);
+  blockCopy[2](blockCopy, [(MPMediaEntityCache *)self _entityMapForDataProviderEntityClass:class]);
   os_unfair_recursive_lock_unlock();
 }
 
@@ -47,9 +47,9 @@
   [(NSMutableArray *)self->_entityTemporaryReferences removeObjectsInRange:0, v3];
   if (![(NSMutableArray *)self->_entityTemporaryReferences count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     entityTemporaryReferences = self->_entityTemporaryReferences;
-    self->_entityTemporaryReferences = v5;
+    self->_entityTemporaryReferences = array;
   }
 
   v7 = [(NSMutableArray *)self->_entityTemporaryReferences count];
@@ -71,9 +71,9 @@
   }
 }
 
-- (void)_entityMapForDataProviderEntityClass:(Class)a3
+- (void)_entityMapForDataProviderEntityClass:(Class)class
 {
-  Value = CFDictionaryGetValue(self->_concreteEntitiesByDataProviderEntityClass, a3);
+  Value = CFDictionaryGetValue(self->_concreteEntitiesByDataProviderEntityClass, class);
   if (!Value)
   {
     operator new();
@@ -82,13 +82,13 @@
   return Value;
 }
 
-- (id)_entityWithIdentifier:(int64_t)a3 mediaEntityType:(int64_t)a4 collectionGroupingType:(int64_t)a5 loadEntityBlock:(id)a6
+- (id)_entityWithIdentifier:(int64_t)identifier mediaEntityType:(int64_t)type collectionGroupingType:(int64_t)groupingType loadEntityBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   if (self->_mediaLibraryDataProviderRespondsToSupportsEntityChangeTrackingMethod)
   {
     v23 = 0;
-    if ([(MPMediaLibraryDataProviderPrivate *)self->_mediaLibraryDataProvider supportsEntityChangeTrackingForMediaEntityType:a4 collectionGroupingType:a5 dataProviderClass:&v23])
+    if ([(MPMediaLibraryDataProviderPrivate *)self->_mediaLibraryDataProvider supportsEntityChangeTrackingForMediaEntityType:type collectionGroupingType:groupingType dataProviderClass:&v23])
     {
       v11 = v23;
     }
@@ -117,20 +117,20 @@
     v22[2] = __99__MPMediaEntityCache__entityWithIdentifier_mediaEntityType_collectionGroupingType_loadEntityBlock___block_invoke;
     v22[3] = &unk_1E7678760;
     v22[4] = &v23;
-    v22[5] = a3;
+    v22[5] = identifier;
     [(MPMediaEntityCache *)self _performWithSharedAccessForDataProviderEntityClass:v11 block:v22];
     if (!v24[5])
     {
-      v12 = [[MPConcreteMediaEntityPropertiesCache alloc] initWithLibraryDataProvider:self->_mediaLibraryDataProvider dataProviderEntityClass:v11 identifier:a3];
-      v13 = v10[2](v10, v12);
+      v12 = [[MPConcreteMediaEntityPropertiesCache alloc] initWithLibraryDataProvider:self->_mediaLibraryDataProvider dataProviderEntityClass:v11 identifier:identifier];
+      v13 = blockCopy[2](blockCopy, v12);
       v14 = v24[5];
       v24[5] = v13;
 
       if (([v24[5] conformsToProtocol:&unk_1F155A548] & 1) == 0)
       {
-        v19 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MPMediaEntityCache _entityWithIdentifier:mediaEntityType:collectionGroupingType:loadEntityBlock:]"];
-        [v19 handleFailureInFunction:v20 file:@"MPMediaEntityCache.mm" lineNumber:126 description:@"Invalid entity"];
+        [currentHandler handleFailureInFunction:v20 file:@"MPMediaEntityCache.mm" lineNumber:126 description:@"Invalid entity"];
       }
 
       v21[0] = MEMORY[0x1E69E9820];
@@ -138,7 +138,7 @@
       v21[2] = __99__MPMediaEntityCache__entityWithIdentifier_mediaEntityType_collectionGroupingType_loadEntityBlock___block_invoke_2;
       v21[3] = &unk_1E76787A8;
       v21[5] = &v23;
-      v21[6] = a3;
+      v21[6] = identifier;
       v21[4] = self;
       [(MPMediaEntityCache *)self _performWithExclusiveAccessForDataProviderEntityClass:v11 block:v21];
     }
@@ -146,7 +146,7 @@
 
   else
   {
-    v15 = v10[2](v10, 0);
+    v15 = blockCopy[2](blockCopy, 0);
     v16 = v24[5];
     v24[5] = v15;
   }
@@ -263,16 +263,16 @@ void __99__MPMediaEntityCache__entityWithIdentifier_mediaEntityType_collectionGr
   }
 }
 
-- (void)removeEntityWithIdentifier:(int64_t)a3 dataProviderEntityClass:(Class)a4
+- (void)removeEntityWithIdentifier:(int64_t)identifier dataProviderEntityClass:(Class)class
 {
-  if (a4)
+  if (class)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __73__MPMediaEntityCache_removeEntityWithIdentifier_dataProviderEntityClass___block_invoke;
     v4[3] = &__block_descriptor_40_e9_v16__0_v8l;
-    v4[4] = a3;
-    [(MPMediaEntityCache *)self _performWithExclusiveAccessForDataProviderEntityClass:a4 block:v4];
+    v4[4] = identifier;
+    [(MPMediaEntityCache *)self _performWithExclusiveAccessForDataProviderEntityClass:class block:v4];
   }
 }
 
@@ -615,15 +615,15 @@ LABEL_87:
   operator delete(v4);
 }
 
-- (void)updatePropertyValuesInEntityWithIdentifier:(int64_t)a3 dataProviderEntityClass:(Class)a4 deleted:(BOOL)a5
+- (void)updatePropertyValuesInEntityWithIdentifier:(int64_t)identifier dataProviderEntityClass:(Class)class deleted:(BOOL)deleted
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __97__MPMediaEntityCache_updatePropertyValuesInEntityWithIdentifier_dataProviderEntityClass_deleted___block_invoke;
   v5[3] = &__block_descriptor_41_e9_v16__0_v8l;
-  v5[4] = a3;
-  v6 = a5;
-  [(MPMediaEntityCache *)self _performWithExclusiveAccessForDataProviderEntityClass:a4 block:v5];
+  v5[4] = identifier;
+  deletedCopy = deleted;
+  [(MPMediaEntityCache *)self _performWithExclusiveAccessForDataProviderEntityClass:class block:v5];
 }
 
 void __97__MPMediaEntityCache_updatePropertyValuesInEntityWithIdentifier_dataProviderEntityClass_deleted___block_invoke(uint64_t a1, uint64_t a2)
@@ -664,21 +664,21 @@ void __97__MPMediaEntityCache_updatePropertyValuesInEntityWithIdentifier_dataPro
   }
 }
 
-- (id)collectionWithIdentifier:(int64_t)a3 grouping:(int64_t)a4 loadEntityBlock:(id)a5
+- (id)collectionWithIdentifier:(int64_t)identifier grouping:(int64_t)grouping loadEntityBlock:(id)block
 {
-  v5 = [(MPMediaEntityCache *)self _entityWithIdentifier:a3 mediaEntityType:1 collectionGroupingType:a4 loadEntityBlock:a5];
+  v5 = [(MPMediaEntityCache *)self _entityWithIdentifier:identifier mediaEntityType:1 collectionGroupingType:grouping loadEntityBlock:block];
 
   return v5;
 }
 
-- (id)itemWithIdentifier:(int64_t)a3 loadEntityBlock:(id)a4
+- (id)itemWithIdentifier:(int64_t)identifier loadEntityBlock:(id)block
 {
-  v4 = [(MPMediaEntityCache *)self _entityWithIdentifier:a3 mediaEntityType:0 collectionGroupingType:0 loadEntityBlock:a4];
+  v4 = [(MPMediaEntityCache *)self _entityWithIdentifier:identifier mediaEntityType:0 collectionGroupingType:0 loadEntityBlock:block];
 
   return v4;
 }
 
-- (id)itemWithIdentifier:(int64_t)a3
+- (id)itemWithIdentifier:(int64_t)identifier
 {
   v9 = 0;
   v10 = &v9;
@@ -742,9 +742,9 @@ LABEL_6:
   *(v9 + 40) = WeakRetained;
 }
 
-- (MPMediaEntityCache)initWithMediaLibraryDataProvider:(id)a3
+- (MPMediaEntityCache)initWithMediaLibraryDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = MPMediaEntityCache;
   v6 = [(MPMediaEntityCache *)&v12 init];
@@ -756,12 +756,12 @@ LABEL_6:
 
     v6->_rwlock.ourl_lock._os_unfair_lock_opaque = 0;
     v6->_rwlock.ourl_count = 0;
-    objc_storeStrong(&v6->_mediaLibraryDataProvider, a3);
+    objc_storeStrong(&v6->_mediaLibraryDataProvider, provider);
     v6->_mediaLibraryDataProviderRespondsToSupportsEntityChangeTrackingMethod = objc_opt_respondsToSelector() & 1;
     v6->_concreteEntitiesByDataProviderEntityClass = CFDictionaryCreateMutable(0, 0, 0, 0);
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     entityTemporaryReferences = v6->_entityTemporaryReferences;
-    v6->_entityTemporaryReferences = v9;
+    v6->_entityTemporaryReferences = array;
   }
 
   return v6;

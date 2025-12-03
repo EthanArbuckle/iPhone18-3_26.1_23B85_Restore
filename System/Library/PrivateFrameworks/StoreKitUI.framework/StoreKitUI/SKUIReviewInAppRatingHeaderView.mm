@@ -1,23 +1,23 @@
 @interface SKUIReviewInAppRatingHeaderView
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIReviewInAppRatingHeaderView)initWithTitle:(id)a3 message:(id)a4 icon:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIReviewInAppRatingHeaderView)initWithTitle:(id)title message:(id)message icon:(id)icon;
 - (id)_messageLabelFont;
 - (id)_titleLabelFont;
 - (void)layoutSubviews;
-- (void)setCompleted:(BOOL)a3;
-- (void)setCompletedWithRating:(int64_t)a3;
-- (void)setContentSize:(CGSize)a3;
+- (void)setCompleted:(BOOL)completed;
+- (void)setCompletedWithRating:(int64_t)rating;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation SKUIReviewInAppRatingHeaderView
 
-- (SKUIReviewInAppRatingHeaderView)initWithTitle:(id)a3 message:(id)a4 icon:(id)a5
+- (SKUIReviewInAppRatingHeaderView)initWithTitle:(id)title message:(id)message icon:(id)icon
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  iconCopy = icon;
   v36.receiver = self;
   v36.super_class = SKUIReviewInAppRatingHeaderView;
   v12 = *MEMORY[0x277CBF3A0];
@@ -31,29 +31,29 @@
     imageView = v16->_imageView;
     v16->_imageView = v17;
 
-    [(UIImageView *)v16->_imageView setImage:v11];
+    [(UIImageView *)v16->_imageView setImage:iconCopy];
     [(SKUIReviewInAppRatingHeaderView *)v16 addSubview:v16->_imageView];
-    objc_storeStrong(&v16->_title, a3);
+    objc_storeStrong(&v16->_title, title);
     v19 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v12, v13, v14, v15}];
     titleLabel = v16->_titleLabel;
     v16->_titleLabel = v19;
 
-    v21 = [(SKUIReviewInAppRatingHeaderView *)v16 _titleLabelFont];
-    [(UILabel *)v16->_titleLabel setFont:v21];
+    _titleLabelFont = [(SKUIReviewInAppRatingHeaderView *)v16 _titleLabelFont];
+    [(UILabel *)v16->_titleLabel setFont:_titleLabelFont];
 
-    [(UILabel *)v16->_titleLabel setText:v9];
+    [(UILabel *)v16->_titleLabel setText:titleCopy];
     [(UILabel *)v16->_titleLabel setNumberOfLines:0];
     [(UILabel *)v16->_titleLabel setTextAlignment:1];
     [(SKUIReviewInAppRatingHeaderView *)v16 addSubview:v16->_titleLabel];
-    objc_storeStrong(&v16->_message, a4);
+    objc_storeStrong(&v16->_message, message);
     v22 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v12, v13, v14, v15}];
     messageLabel = v16->_messageLabel;
     v16->_messageLabel = v22;
 
-    v24 = [(SKUIReviewInAppRatingHeaderView *)v16 _messageLabelFont];
-    [(UILabel *)v16->_messageLabel setFont:v24];
+    _messageLabelFont = [(SKUIReviewInAppRatingHeaderView *)v16 _messageLabelFont];
+    [(UILabel *)v16->_messageLabel setFont:_messageLabelFont];
 
-    [(UILabel *)v16->_messageLabel setText:v10];
+    [(UILabel *)v16->_messageLabel setText:messageCopy];
     [(UILabel *)v16->_messageLabel setNumberOfLines:0];
     [(UILabel *)v16->_messageLabel setTextAlignment:1];
     [(SKUIReviewInAppRatingHeaderView *)v16 addSubview:v16->_messageLabel];
@@ -80,20 +80,20 @@
   return v16;
 }
 
-- (void)setCompletedWithRating:(int64_t)a3
+- (void)setCompletedWithRating:(int64_t)rating
 {
-  v5 = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
-  [v5 setUserRating:a3];
+  ratingView = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
+  [ratingView setUserRating:rating];
 
   [(SKUIReviewInAppRatingHeaderView *)self setCompleted:1];
 }
 
-- (void)setCompleted:(BOOL)a3
+- (void)setCompleted:(BOOL)completed
 {
-  if (self->_completed != a3)
+  if (self->_completed != completed)
   {
-    v4 = a3;
-    if (a3)
+    completedCopy = completed;
+    if (completed)
     {
       v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       [v3 localizedStringForKey:@"IN_APP_REVIEW_SUCCESSFUL_TITLE" value:&stru_2827FFAC8 table:0];
@@ -104,10 +104,10 @@
       [(SKUIReviewInAppRatingHeaderView *)self title];
     }
     v6 = ;
-    v7 = [(SKUIReviewInAppRatingHeaderView *)self titleLabel];
-    [v7 setText:v6];
+    titleLabel = [(SKUIReviewInAppRatingHeaderView *)self titleLabel];
+    [titleLabel setText:v6];
 
-    if (v4)
+    if (completedCopy)
     {
 
       v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -119,10 +119,10 @@
       [(SKUIReviewInAppRatingHeaderView *)self message];
     }
     v8 = ;
-    v9 = [(SKUIReviewInAppRatingHeaderView *)self messageLabel];
-    [v9 setText:v8];
+    messageLabel = [(SKUIReviewInAppRatingHeaderView *)self messageLabel];
+    [messageLabel setText:v8];
 
-    if (v4)
+    if (completedCopy)
     {
 
       v8 = v3;
@@ -130,23 +130,23 @@
 
     [(SKUIReviewInAppRatingHeaderView *)self setNeedsLayout];
     [(SKUIReviewInAppRatingHeaderView *)self invalidateIntrinsicContentSize];
-    self->_completed = v4;
+    self->_completed = completedCopy;
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (self->_contentSize.width != a3.width || self->_contentSize.height != a3.height)
+  if (self->_contentSize.width != size.width || self->_contentSize.height != size.height)
   {
-    self->_contentSize = a3;
+    self->_contentSize = size;
     [(SKUIReviewInAppRatingHeaderView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SKUIReviewInAppRatingHeaderView *)self contentSize:a3.width];
+  width = fits.width;
+  [(SKUIReviewInAppRatingHeaderView *)self contentSize:fits.width];
   if (*MEMORY[0x277CBF3A8] == v6 && *(MEMORY[0x277CBF3A8] + 8) == v5)
   {
     v10 = 170.0;
@@ -191,8 +191,8 @@
   aBlock[3] = &__block_descriptor_64_e52__CGRect__CGPoint_dd__CGSize_dd__32__0_CGSize_dd_8d24l;
   v72 = v75;
   v7 = _Block_copy(aBlock);
-  v8 = [(SKUIReviewInAppRatingHeaderView *)self imageView];
-  [v8 sizeThatFits:{width, height}];
+  imageView = [(SKUIReviewInAppRatingHeaderView *)self imageView];
+  [imageView sizeThatFits:{width, height}];
   v10 = v9;
   v12 = v11;
 
@@ -207,11 +207,11 @@
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(SKUIReviewInAppRatingHeaderView *)self imageView];
-  [v22 setFrame:{v15, v17, v19, v21}];
+  imageView2 = [(SKUIReviewInAppRatingHeaderView *)self imageView];
+  [imageView2 setFrame:{v15, v17, v19, v21}];
 
-  v23 = [(SKUIReviewInAppRatingHeaderView *)self titleLabel];
-  [v23 sizeThatFits:{width, height}];
+  titleLabel = [(SKUIReviewInAppRatingHeaderView *)self titleLabel];
+  [titleLabel sizeThatFits:{width, height}];
   v25 = v24;
   v27 = v26;
 
@@ -235,11 +235,11 @@
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [(SKUIReviewInAppRatingHeaderView *)self titleLabel];
-  [v38 setFrame:{v31, v33, v35, v37}];
+  titleLabel2 = [(SKUIReviewInAppRatingHeaderView *)self titleLabel];
+  [titleLabel2 setFrame:{v31, v33, v35, v37}];
 
-  v39 = [(SKUIReviewInAppRatingHeaderView *)self messageLabel];
-  [v39 sizeThatFits:{v70, height}];
+  messageLabel = [(SKUIReviewInAppRatingHeaderView *)self messageLabel];
+  [messageLabel sizeThatFits:{v70, height}];
   v41 = v40;
   v43 = v42;
 
@@ -263,18 +263,18 @@
   v48 = v47;
   v50 = v49;
   v52 = v51;
-  v53 = [(SKUIReviewInAppRatingHeaderView *)self messageLabel];
-  [v53 setFrame:{v46, v48, v50, v52}];
+  messageLabel2 = [(SKUIReviewInAppRatingHeaderView *)self messageLabel];
+  [messageLabel2 setFrame:{v46, v48, v50, v52}];
 
-  v54 = [(SKUIReviewInAppRatingHeaderView *)self completed];
-  v55 = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
-  v56 = v55;
-  if (v54)
+  completed = [(SKUIReviewInAppRatingHeaderView *)self completed];
+  ratingView = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
+  ratingView4 = ratingView;
+  if (completed)
   {
-    [v55 sizeToFit];
+    [ratingView sizeToFit];
 
-    v57 = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
-    [v57 frame];
+    ratingView2 = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
+    [ratingView2 frame];
     v59 = v58;
     v61 = v60;
 
@@ -298,17 +298,17 @@
     v48 = v64;
     v50 = v65;
     v52 = v66;
-    v67 = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
-    [v67 setFrame:{v46, v48, v50, v52}];
+    ratingView3 = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
+    [ratingView3 setFrame:{v46, v48, v50, v52}];
 
-    v56 = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
-    [v56 setAlpha:1.0];
+    ratingView4 = [(SKUIReviewInAppRatingHeaderView *)self ratingView];
+    [ratingView4 setAlpha:1.0];
     v68 = 11.0;
   }
 
   else
   {
-    [v55 setAlpha:0.0];
+    [ratingView setAlpha:0.0];
     v68 = 20.0;
   }
 

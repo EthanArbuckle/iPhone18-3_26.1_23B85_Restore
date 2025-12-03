@@ -1,10 +1,10 @@
 @interface AXMTVideoFilePlayManager
 + (AXMTVideoFilePlayManager)shared;
 - (AXMTVideoFilePlayManager)init;
-- (id)fileURLForMotionTrackingVideoFileInput:(id)a3;
+- (id)fileURLForMotionTrackingVideoFileInput:(id)input;
 - (void)pausePlaybackForCurrentVideo;
-- (void)playVideoAtURL:(id)a3 onMotionTrackingVideoFileInput:(id)a4 completionHandler:(id)a5;
-- (void)videoPlayedWithInput:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (void)playVideoAtURL:(id)l onMotionTrackingVideoFileInput:(id)input completionHandler:(id)handler;
+- (void)videoPlayedWithInput:(id)input success:(BOOL)success error:(id)error;
 @end
 
 @implementation AXMTVideoFilePlayManager
@@ -40,14 +40,14 @@
   return v2;
 }
 
-- (void)playVideoAtURL:(id)a3 onMotionTrackingVideoFileInput:(id)a4 completionHandler:(id)a5
+- (void)playVideoAtURL:(id)l onMotionTrackingVideoFileInput:(id)input completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  lCopy = l;
+  inputCopy = input;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = v10;
+    v11 = handlerCopy;
   }
 
   else
@@ -55,10 +55,10 @@
     v11 = &stru_100049128;
   }
 
-  if (v8 && v9 && ([v9 uniqueIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  if (lCopy && inputCopy && ([inputCopy uniqueIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     v40 = 0;
-    v13 = [AXMTVideoFileReader fileURLContainsSuitablePlayableVideo:v8 error:&v40];
+    v13 = [AXMTVideoFileReader fileURLContainsSuitablePlayableVideo:lCopy error:&v40];
     v14 = v40;
     if ((v13 & 1) == 0)
     {
@@ -66,9 +66,9 @@
       goto LABEL_19;
     }
 
-    v15 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
-    v16 = [v9 uniqueIdentifier];
-    v17 = [v15 objectForKeyedSubscript:v16];
+    _completionHandlersByInputUniqueID = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
+    uniqueIdentifier = [inputCopy uniqueIdentifier];
+    v17 = [_completionHandlersByInputUniqueID objectForKeyedSubscript:uniqueIdentifier];
 
     if (v17)
     {
@@ -78,9 +78,9 @@
         sub_100021544();
       }
 
-      v19 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
-      v20 = [v9 uniqueIdentifier];
-      v21 = [v19 objectForKeyedSubscript:v20];
+      _completionHandlersByInputUniqueID2 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
+      uniqueIdentifier2 = [inputCopy uniqueIdentifier];
+      v21 = [_completionHandlersByInputUniqueID2 objectForKeyedSubscript:uniqueIdentifier2];
 
       v22 = AXSSMotionTrackingErrorDomain;
       v41 = NSLocalizedDescriptionKey;
@@ -89,20 +89,20 @@
       v24 = [NSError errorWithDomain:v22 code:0 userInfo:v23];
       (v21)[2](v21, 0, v24);
 
-      v25 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
-      v26 = [v9 uniqueIdentifier];
-      [v25 removeObjectForKey:v26];
+      _completionHandlersByInputUniqueID3 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
+      uniqueIdentifier3 = [inputCopy uniqueIdentifier];
+      [_completionHandlersByInputUniqueID3 removeObjectForKey:uniqueIdentifier3];
     }
 
-    v27 = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
-    v28 = [v9 uniqueIdentifier];
-    v29 = [v27 objectForKeyedSubscript:v28];
+    _videoFileInputURLsByInputUniqueID = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
+    uniqueIdentifier4 = [inputCopy uniqueIdentifier];
+    v29 = [_videoFileInputURLsByInputUniqueID objectForKeyedSubscript:uniqueIdentifier4];
 
     if (v29)
     {
-      v30 = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
-      v31 = [v9 uniqueIdentifier];
-      [v30 removeObjectForKey:v31];
+      _videoFileInputURLsByInputUniqueID2 = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
+      uniqueIdentifier5 = [inputCopy uniqueIdentifier];
+      [_videoFileInputURLsByInputUniqueID2 removeObjectForKey:uniqueIdentifier5];
     }
 
     v32 = AXSSLogForCategory();
@@ -112,16 +112,16 @@
     }
 
     v33 = objc_retainBlock(v11);
-    v34 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
-    v35 = [v9 uniqueIdentifier];
-    [v34 setObject:v33 forKeyedSubscript:v35];
+    _completionHandlersByInputUniqueID4 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
+    uniqueIdentifier6 = [inputCopy uniqueIdentifier];
+    [_completionHandlersByInputUniqueID4 setObject:v33 forKeyedSubscript:uniqueIdentifier6];
 
-    v36 = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
-    v37 = [v9 uniqueIdentifier];
-    [v36 setObject:v8 forKeyedSubscript:v37];
+    _videoFileInputURLsByInputUniqueID3 = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
+    uniqueIdentifier7 = [inputCopy uniqueIdentifier];
+    [_videoFileInputURLsByInputUniqueID3 setObject:lCopy forKeyedSubscript:uniqueIdentifier7];
 
     v38 = +[NSNotificationCenter defaultCenter];
-    [v38 postNotificationName:@"AXMTVideoFilePlayManagerPlayNotification" object:v9];
+    [v38 postNotificationName:@"AXMTVideoFilePlayManagerPlayNotification" object:inputCopy];
   }
 
   else
@@ -149,14 +149,14 @@ LABEL_19:
   [v3 postNotificationName:@"AXMTVideoFilePlayManagerPauseNotification" object:0];
 }
 
-- (void)videoPlayedWithInput:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)videoPlayedWithInput:(id)input success:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
-  v11 = [v8 uniqueIdentifier];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  successCopy = success;
+  inputCopy = input;
+  errorCopy = error;
+  _videoFileInputURLsByInputUniqueID = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
+  uniqueIdentifier = [inputCopy uniqueIdentifier];
+  v12 = [_videoFileInputURLsByInputUniqueID objectForKeyedSubscript:uniqueIdentifier];
 
   if (v12)
   {
@@ -166,42 +166,42 @@ LABEL_19:
       v21 = 136315906;
       v22 = "[AXMTVideoFilePlayManager videoPlayedWithInput:success:error:]";
       v23 = 2112;
-      v24 = v8;
+      v24 = inputCopy;
       v25 = 1024;
-      v26 = v6;
+      v26 = successCopy;
       v27 = 2112;
-      v28 = v9;
+      v28 = errorCopy;
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s: Completed play %@ %d %@", &v21, 0x26u);
     }
 
-    v14 = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
-    v15 = [v8 uniqueIdentifier];
-    [v14 removeObjectForKey:v15];
+    _videoFileInputURLsByInputUniqueID2 = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
+    uniqueIdentifier2 = [inputCopy uniqueIdentifier];
+    [_videoFileInputURLsByInputUniqueID2 removeObjectForKey:uniqueIdentifier2];
   }
 
-  v16 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
-  v17 = [v8 uniqueIdentifier];
-  v18 = [v16 objectForKeyedSubscript:v17];
+  _completionHandlersByInputUniqueID = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
+  uniqueIdentifier3 = [inputCopy uniqueIdentifier];
+  v18 = [_completionHandlersByInputUniqueID objectForKeyedSubscript:uniqueIdentifier3];
 
   if (v18)
   {
-    (v18)[2](v18, v6, v9);
-    v19 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
-    v20 = [v8 uniqueIdentifier];
-    [v19 removeObjectForKey:v20];
+    (v18)[2](v18, successCopy, errorCopy);
+    _completionHandlersByInputUniqueID2 = [(AXMTVideoFilePlayManager *)self _completionHandlersByInputUniqueID];
+    uniqueIdentifier4 = [inputCopy uniqueIdentifier];
+    [_completionHandlersByInputUniqueID2 removeObjectForKey:uniqueIdentifier4];
   }
 }
 
-- (id)fileURLForMotionTrackingVideoFileInput:(id)a3
+- (id)fileURLForMotionTrackingVideoFileInput:(id)input
 {
-  if (a3)
+  if (input)
   {
-    v4 = [a3 uniqueIdentifier];
-    v5 = v4;
-    if (v4 && [v4 length])
+    uniqueIdentifier = [input uniqueIdentifier];
+    v5 = uniqueIdentifier;
+    if (uniqueIdentifier && [uniqueIdentifier length])
     {
-      v6 = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
-      v7 = [v6 objectForKeyedSubscript:v5];
+      _videoFileInputURLsByInputUniqueID = [(AXMTVideoFilePlayManager *)self _videoFileInputURLsByInputUniqueID];
+      v7 = [_videoFileInputURLsByInputUniqueID objectForKeyedSubscript:v5];
     }
 
     else

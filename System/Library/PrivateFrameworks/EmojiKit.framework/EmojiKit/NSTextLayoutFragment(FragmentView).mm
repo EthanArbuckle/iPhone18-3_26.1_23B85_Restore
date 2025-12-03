@@ -6,10 +6,10 @@
 
 - (void)_emk_getFragmentViewFrame:()FragmentView getBounds:textContainerInset:
 {
-  [a1 layoutFragmentFrame];
+  [self layoutFragmentFrame];
   v10 = v9;
   v12 = v11;
-  [a1 renderingSurfaceBounds];
+  [self renderingSurfaceBounds];
   v20 = CGRectIntegral(v19);
   x = v20.origin.x;
   y = v20.origin.y;

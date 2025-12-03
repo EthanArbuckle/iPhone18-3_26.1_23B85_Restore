@@ -1,42 +1,42 @@
 @interface _SESSessionManager
-+ (id)sessionManagerWithMachServiceName:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)sessionManagerWithMachServiceName:(id)name;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)getActiveACWGSessions;
 - (id)getActiveDCKSessions;
 - (id)getActiveRKESessions;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (os_state_data_s)dumpState;
-- (void)addSession:(id)a3 forConnection:(id)a4;
-- (void)didAppEnterBackground:(id)a3;
-- (void)didAppEnterForeground:(id)a3;
-- (void)didAppGetSuspended:(id)a3;
-- (void)didCloseConnection:(id)a3;
-- (void)didCreateKey:(id)a3;
-- (void)didReceivePassthroughMessage:(id)a3 keyIdentifier:(id)a4;
-- (void)getVehicleReports:(id)a3;
-- (void)pauseRangingForReaderIdentifier:(id)a3 durationInSec:(id)a4 withAppletIdentifier:(id)a5 reply:(id)a6;
-- (void)registerCarKeyAppForLaunch:(BOOL)a3 reply:(id)a4;
-- (void)removeSession:(id)a3;
-- (void)resumeRangingForReaderIdentifier:(id)a3 withAppletIdentifier:(id)a4 reply:(id)a5;
-- (void)sendEvent:(id)a3 keyIdentifier:(id)a4;
+- (void)addSession:(id)session forConnection:(id)connection;
+- (void)didAppEnterBackground:(id)background;
+- (void)didAppEnterForeground:(id)foreground;
+- (void)didAppGetSuspended:(id)suspended;
+- (void)didCloseConnection:(id)connection;
+- (void)didCreateKey:(id)key;
+- (void)didReceivePassthroughMessage:(id)message keyIdentifier:(id)identifier;
+- (void)getVehicleReports:(id)reports;
+- (void)pauseRangingForReaderIdentifier:(id)identifier durationInSec:(id)sec withAppletIdentifier:(id)appletIdentifier reply:(id)reply;
+- (void)registerCarKeyAppForLaunch:(BOOL)launch reply:(id)reply;
+- (void)removeSession:(id)session;
+- (void)resumeRangingForReaderIdentifier:(id)identifier withAppletIdentifier:(id)appletIdentifier reply:(id)reply;
+- (void)sendEvent:(id)event keyIdentifier:(id)identifier;
 - (void)start;
-- (void)startSESACWGSession:(id)a3 completion:(id)a4;
-- (void)startSESAssertion:(id)a3 withKeyIdentifier:(id)a4 withAppletIdentifier:(id)a5 withOptions:(id)a6 completion:(id)a7;
-- (void)startSESDCKSession:(id)a3 completion:(id)a4;
-- (void)startSESRKESession:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)startSESACWGSession:(id)session completion:(id)completion;
+- (void)startSESAssertion:(id)assertion withKeyIdentifier:(id)identifier withAppletIdentifier:(id)appletIdentifier withOptions:(id)options completion:(id)completion;
+- (void)startSESDCKSession:(id)session completion:(id)completion;
+- (void)startSESRKESession:(id)session options:(id)options completion:(id)completion;
 @end
 
 @implementation _SESSessionManager
 
-+ (id)sessionManagerWithMachServiceName:(id)a3
++ (id)sessionManagerWithMachServiceName:(id)name
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100038658;
   block[3] = &unk_1004C08D8;
-  v9 = a3;
+  nameCopy = name;
   v3 = qword_10050CCA0;
-  v4 = v9;
+  v4 = nameCopy;
   if (v3 != -1)
   {
     dispatch_once(&qword_10050CCA0, block);
@@ -48,11 +48,11 @@
   return v5;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   v18.receiver = self;
   v18.super_class = _SESSessionManager;
-  v3 = [(_SESSessionManager *)&v18 initWithMachServiceName:a3];
+  v3 = [(_SESSessionManager *)&v18 initWithMachServiceName:init];
   v4 = v3;
   if (v3)
   {
@@ -97,22 +97,22 @@
   [(_SESSessionManager *)self resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"application-identifier"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"application-identifier"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = SESDefaultLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 67109634;
-      *&buf[4] = [v7 processIdentifier];
+      *&buf[4] = [connectionCopy processIdentifier];
       *&buf[8] = 2112;
       *&buf[10] = v8;
       *&buf[18] = 2112;
-      *&buf[20] = v7;
+      *&buf[20] = connectionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Added connection from PID %d (%@) %@", buf, 0x1Cu);
     }
 
@@ -126,21 +126,21 @@
     v26[2] = v11;
     v12 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3];
     v13 = [NSMutableDictionary dictionaryWithDictionary:v12];
-    [v7 setUserInfo:v13];
+    [connectionCopy setUserInfo:v13];
 
     v14 = +[SESSessionManagerCallbackInterface interface];
-    [v7 setRemoteObjectInterface:v14];
+    [connectionCopy setRemoteObjectInterface:v14];
 
     v15 = +[SESSessionManagerInterface interface];
-    [v7 setExportedInterface:v15];
+    [connectionCopy setExportedInterface:v15];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     *&buf[24] = sub_100038C90;
     v23 = sub_100038CA0;
-    v16 = v7;
+    v16 = connectionCopy;
     v24 = v16;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -181,44 +181,44 @@
   return v17;
 }
 
-- (void)didCloseConnection:(id)a3
+- (void)didCloseConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100038E40;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = connectionCopy;
+  selfCopy = self;
+  v6 = connectionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addSession:(id)a3 forConnection:(id)a4
+- (void)addSession:(id)session forConnection:(id)connection
 {
-  v6 = a3;
+  sessionCopy = session;
   queue = self->_queue;
-  v8 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(queue);
   os_unfair_lock_lock(&self->_lock);
-  v9 = [v8 userInfo];
+  userInfo = [connectionCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:&off_1004DCA08];
+  v10 = [userInfo objectForKeyedSubscript:&off_1004DCA08];
 
-  [v10 addObject:v6];
+  [v10 addObject:sessionCopy];
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = [(NSMutableArray *)self->_activeSessions count];
     v15 = 138412546;
-    v16 = v6;
+    v16 = sessionCopy;
     v17 = 2048;
     v18 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Adding session %@ active sessions %lu", &v15, 0x16u);
   }
 
-  [(NSMutableArray *)self->_activeSessions addObject:v6];
+  [(NSMutableArray *)self->_activeSessions addObject:sessionCopy];
   if (!self->_keepAlive)
   {
     v13 = os_transaction_create();
@@ -229,19 +229,19 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeSession:(id)a3
+- (void)removeSession:(id)session
 {
   queue = self->_queue;
-  v5 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(queue);
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_activeSessions removeObject:v5];
-  [v5 releaseRemoteObject];
-  v6 = [v5 connection];
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:&off_1004DCA08];
+  [(NSMutableArray *)self->_activeSessions removeObject:sessionCopy];
+  [sessionCopy releaseRemoteObject];
+  connection = [sessionCopy connection];
+  userInfo = [connection userInfo];
+  v8 = [userInfo objectForKeyedSubscript:&off_1004DCA08];
 
-  [v8 removeObject:v5];
+  [v8 removeObject:sessionCopy];
   v9 = SESDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -260,43 +260,43 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)registerCarKeyAppForLaunch:(BOOL)a3 reply:(id)a4
+- (void)registerCarKeyAppForLaunch:(BOOL)launch reply:(id)reply
 {
-  v4 = a3;
-  v5 = a4;
+  launchCopy = launch;
+  replyCopy = reply;
   v11 = +[NSXPCConnection currentConnection];
   v6 = [_SESSessionClientInfo withConnection:?];
   if ([v6 rkeSessionEntitlement])
   {
-    v7 = [v6 clientName];
-    if (v4)
+    clientName = [v6 clientName];
+    if (launchCopy)
     {
-      [_TtC10seserviced17CarKeyAppLauncher registerAppWithIdentifier:v7];
+      [_TtC10seserviced17CarKeyAppLauncher registerAppWithIdentifier:clientName];
     }
 
     else
     {
-      [_TtC10seserviced17CarKeyAppLauncher unregisterAppWithIdentifier:v7];
+      [_TtC10seserviced17CarKeyAppLauncher unregisterAppWithIdentifier:clientName];
     }
 
-    v5[2](v5, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
   }
 
   else
   {
     v8 = SESDefaultLogObject();
-    v10 = [v6 clientName];
+    clientName2 = [v6 clientName];
     v9 = SESCreateAndLogError();
-    (v5)[2](v5, 0, v9);
+    (replyCopy)[2](replyCopy, 0, v9);
 
-    v5 = v8;
+    replyCopy = v8;
   }
 }
 
-- (void)startSESACWGSession:(id)a3 completion:(id)a4
+- (void)startSESACWGSession:(id)session completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -308,7 +308,7 @@
   v10 = [_SESACWGSession validateEntitlements:v9];
   if (v10)
   {
-    v7[2](v7, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 
   else
@@ -318,18 +318,18 @@
     v12[1] = 3221225472;
     v12[2] = sub_1000397C0;
     v12[3] = &unk_1004C2548;
-    v13 = v6;
-    v14 = self;
-    v16 = v7;
+    v13 = sessionCopy;
+    selfCopy = self;
+    v16 = completionCopy;
     v15 = v9;
     dispatch_async(queue, v12);
   }
 }
 
-- (void)startSESDCKSession:(id)a3 completion:(id)a4
+- (void)startSESDCKSession:(id)session completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -341,7 +341,7 @@
   v10 = [_SESDCKSession validateEntitlements:v9];
   if (v10)
   {
-    v7[2](v7, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 
   else
@@ -351,19 +351,19 @@
     v12[1] = 3221225472;
     v12[2] = sub_100039BB0;
     v12[3] = &unk_1004C2548;
-    v13 = v6;
-    v14 = self;
-    v16 = v7;
+    v13 = sessionCopy;
+    selfCopy = self;
+    v16 = completionCopy;
     v15 = v9;
     dispatch_async(queue, v12);
   }
 }
 
-- (void)startSESRKESession:(id)a3 options:(id)a4 completion:(id)a5
+- (void)startSESRKESession:(id)session options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -380,7 +380,7 @@
   v26 = [_SESRKESession validateEntitlements:v12];
   if (*(v22 + 5))
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -391,10 +391,10 @@
     v14[2] = sub_10003A034;
     v14[3] = &unk_1004C2570;
     v15 = v12;
-    v16 = self;
-    v19 = v10;
-    v17 = v9;
-    v18 = v8;
+    selfCopy = self;
+    v19 = completionCopy;
+    v17 = optionsCopy;
+    v18 = sessionCopy;
     v20 = buf;
     dispatch_async(queue, v14);
   }
@@ -402,20 +402,20 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)sendEvent:(id)a3 keyIdentifier:(id)a4
+- (void)sendEvent:(id)event keyIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003A678;
   block[3] = &unk_1004C24A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = eventCopy;
   dispatch_async(queue, block);
 }
 
@@ -452,40 +452,40 @@
   return v4;
 }
 
-- (void)didCreateKey:(id)a3
+- (void)didCreateKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003AB84;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)didReceivePassthroughMessage:(id)a3 keyIdentifier:(id)a4
+- (void)didReceivePassthroughMessage:(id)message keyIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003ADC0;
   block[3] = &unk_1004C24A8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = messageCopy;
+  v9 = messageCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)getVehicleReports:(id)a3
+- (void)getVehicleReports:(id)reports
 {
-  v3 = a3;
+  reportsCopy = reports;
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -497,7 +497,7 @@
   v6 = [_SESDCKSession validateEntitlements:v5];
   if (v6)
   {
-    v3[2](v3, 0, v6);
+    reportsCopy[2](reportsCopy, 0, v6);
   }
 
   else
@@ -508,40 +508,40 @@
     v9 = SESDefaultLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v8 allValues];
+      allValues = [v8 allValues];
       v11 = 138412290;
-      v12 = v10;
+      v12 = allValues;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Vehicle report %@", &v11, 0xCu);
     }
 
-    (v3)[2](v3, v8, 0);
+    (reportsCopy)[2](reportsCopy, v8, 0);
   }
 }
 
-- (void)startSESAssertion:(id)a3 withKeyIdentifier:(id)a4 withAppletIdentifier:(id)a5 withOptions:(id)a6 completion:(id)a7
+- (void)startSESAssertion:(id)assertion withKeyIdentifier:(id)identifier withAppletIdentifier:(id)appletIdentifier withOptions:(id)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  assertionCopy = assertion;
+  identifierCopy = identifier;
+  appletIdentifierCopy = appletIdentifier;
+  optionsCopy = options;
+  completionCopy = completion;
   v17 = SESDefaultLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v29 = v13;
+    v29 = identifierCopy;
     v30 = 2112;
-    v31 = v14;
+    v31 = appletIdentifierCopy;
     v32 = 2112;
-    v33 = v15;
+    v33 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "startSESAssertion keyIdentifier %@ appletIdentifier %@ options %@", buf, 0x20u);
   }
 
   v18 = +[NSXPCConnection currentConnection];
-  v19 = [_SESAssertion validateEntitlements:v18 appletIdentifier:v14];
+  v19 = [_SESAssertion validateEntitlements:v18 appletIdentifier:appletIdentifierCopy];
   if (v19)
   {
-    v16[2](v16, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 
   else
@@ -552,28 +552,28 @@
     block[2] = sub_10003B330;
     block[3] = &unk_1004C2640;
     block[4] = self;
-    v22 = v13;
-    v23 = v12;
-    v24 = v14;
-    v25 = v15;
-    v27 = v16;
+    v22 = identifierCopy;
+    v23 = assertionCopy;
+    v24 = appletIdentifierCopy;
+    v25 = optionsCopy;
+    v27 = completionCopy;
     v26 = v18;
     dispatch_async(queue, block);
   }
 }
 
-- (void)pauseRangingForReaderIdentifier:(id)a3 durationInSec:(id)a4 withAppletIdentifier:(id)a5 reply:(id)a6
+- (void)pauseRangingForReaderIdentifier:(id)identifier durationInSec:(id)sec withAppletIdentifier:(id)appletIdentifier reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  secCopy = sec;
+  appletIdentifierCopy = appletIdentifier;
+  replyCopy = reply;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    [v11 doubleValue];
+    [secCopy doubleValue];
     *buf = 138412546;
-    *&buf[4] = v10;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2048;
     *&buf[14] = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "pauseRangingForReaderIdentifier %@ duration %f", buf, 0x16u);
@@ -588,7 +588,7 @@
   v27 = [_SESDCKSession validateEntitlements:v16];
   if (*(*&buf[8] + 40))
   {
-    v13[2](v13, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -598,10 +598,10 @@
     block[1] = 3221225472;
     block[2] = sub_10003B968;
     block[3] = &unk_1004C2668;
-    v19 = v11;
-    v22 = v13;
-    v20 = v12;
-    v21 = v10;
+    v19 = secCopy;
+    v22 = replyCopy;
+    v20 = appletIdentifierCopy;
+    v21 = identifierCopy;
     v23 = buf;
     dispatch_async(queue, block);
   }
@@ -609,16 +609,16 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)resumeRangingForReaderIdentifier:(id)a3 withAppletIdentifier:(id)a4 reply:(id)a5
+- (void)resumeRangingForReaderIdentifier:(id)identifier withAppletIdentifier:(id)appletIdentifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  appletIdentifierCopy = appletIdentifier;
+  replyCopy = reply;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "resumeRangingForReaderIdentifier %@", &buf, 0xCu);
   }
 
@@ -631,7 +631,7 @@
   v23 = [_SESDCKSession validateEntitlements:v12];
   if (*(*(&buf + 1) + 40))
   {
-    v10[2](v10, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -641,10 +641,10 @@
     v14[1] = 3221225472;
     v14[2] = sub_10003BD30;
     v14[3] = &unk_1004C2690;
-    v15 = v9;
-    v16 = v8;
+    v15 = appletIdentifierCopy;
+    v16 = identifierCopy;
     p_buf = &buf;
-    v17 = v10;
+    v17 = replyCopy;
     dispatch_async(queue, v14);
   }
 
@@ -662,9 +662,9 @@
   v24 = v3;
   if (currentAssertion)
   {
-    v6 = [(_SESAssertion *)currentAssertion connection];
-    v7 = [v6 userInfo];
-    v8 = [v7 objectForKeyedSubscript:&off_1004DC9F0];
+    connection = [(_SESAssertion *)currentAssertion connection];
+    userInfo = [connection userInfo];
+    v8 = [userInfo objectForKeyedSubscript:&off_1004DC9F0];
     v9 = [NSString stringWithFormat:@"Assertion %p client %@", currentAssertion, v8];
     [v3 setObject:v9 forKeyedSubscript:@"activeAssertion"];
   }
@@ -679,7 +679,7 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = self->_activeSessions;
   v10 = [(NSMutableArray *)obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
@@ -707,11 +707,11 @@
           v14 = @"RKE";
         }
 
-        v15 = [v13 isBackgrounded];
-        v16 = [v13 connection];
-        v17 = [v16 userInfo];
-        v18 = [v17 objectForKeyedSubscript:&off_1004DC9F0];
-        v19 = [NSString stringWithFormat:@"%@Session %p backgrounded %d client %@", v14, v13, v15, v18];
+        isBackgrounded = [v13 isBackgrounded];
+        connection2 = [v13 connection];
+        userInfo2 = [connection2 userInfo];
+        v18 = [userInfo2 objectForKeyedSubscript:&off_1004DC9F0];
+        v19 = [NSString stringWithFormat:@"%@Session %p backgrounded %d client %@", v14, v13, isBackgrounded, v18];
         [v27 addObject:v19];
       }
 
@@ -722,49 +722,49 @@
   }
 
   [v24 setObject:v27 forKeyedSubscript:@"activeSessions"];
-  v20 = [(_SESAppStateObserver *)v23->_appStateObserver dumpState];
-  [v24 addEntriesFromDictionary:v20];
+  dumpState = [(_SESAppStateObserver *)selfCopy->_appStateObserver dumpState];
+  [v24 addEntriesFromDictionary:dumpState];
   v21 = sub_100015DA0("sessessionmanager.state", v24);
 
   return v21;
 }
 
-- (void)didAppEnterBackground:(id)a3
+- (void)didAppEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C23C;
   block[3] = &unk_1004C08D8;
-  v8 = v4;
-  v6 = v4;
+  v8 = backgroundCopy;
+  v6 = backgroundCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didAppGetSuspended:(id)a3
+- (void)didAppGetSuspended:(id)suspended
 {
-  v4 = a3;
+  suspendedCopy = suspended;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C498;
   block[3] = &unk_1004C08D8;
-  v8 = v4;
-  v6 = v4;
+  v8 = suspendedCopy;
+  v6 = suspendedCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didAppEnterForeground:(id)a3
+- (void)didAppEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C6F4;
   block[3] = &unk_1004C08D8;
-  v8 = v4;
-  v6 = v4;
+  v8 = foregroundCopy;
+  v6 = foregroundCopy;
   dispatch_async(queue, block);
 }
 

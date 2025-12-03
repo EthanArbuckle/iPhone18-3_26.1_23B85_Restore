@@ -1,56 +1,56 @@
 @interface UIPageController
 - (BOOL)_allowsAutorotation;
-- (BOOL)_doesVisibleViewControllerSupportInterfaceOrientation:(int64_t)a3;
+- (BOOL)_doesVisibleViewControllerSupportInterfaceOrientation:(int64_t)orientation;
 - (BOOL)_hasNextViewController;
 - (BOOL)_hasPreviousViewController;
-- (BOOL)_isSupportedInterfaceOrientation:(int64_t)a3;
-- (BOOL)_isViewControllerBeingUnloaded:(id)a3 atIndex:(int64_t)a4;
+- (BOOL)_isSupportedInterfaceOrientation:(int64_t)orientation;
+- (BOOL)_isViewControllerBeingUnloaded:(id)unloaded atIndex:(int64_t)index;
 - (BOOL)_shouldUseOnePartRotation;
 - (CGRect)_scrollViewFrame;
 - (UIViewController)visibleViewController;
 - (id)_loadNextViewController;
 - (id)_loadPreviousViewController;
-- (id)_loadVisibleViewControllerAndNotify:(BOOL)a3;
+- (id)_loadVisibleViewControllerAndNotify:(BOOL)notify;
 - (id)_nextViewController;
 - (id)_pageControllerScrollView;
 - (id)_previousViewController;
 - (id)_visibleViewController;
 - (id)rotatingFooterView;
 - (id)rotatingHeaderView;
-- (int64_t)indexOfViewController:(id)a3;
+- (int64_t)indexOfViewController:(id)controller;
 - (void)_adjustScrollViewContentInsets;
 - (void)_createPageControl;
-- (void)_getRotationContentSettings:(id *)a3;
-- (void)_notifyNextViewController:(int)a3 animated:(BOOL)a4;
-- (void)_notifyPreviousViewController:(int)a3 animated:(BOOL)a4;
-- (void)_notifyViewController:(id)a3 ofState:(int)a4 previousState:(int)a5 animated:(BOOL)a6;
-- (void)_notifyVisibleViewController:(int)a3 animated:(BOOL)a4;
-- (void)_pageChanged:(id)a3;
-- (void)_replaceViewControllerAtIndex:(int64_t)a3 withViewController:(id)a4;
-- (void)_scrollView:(id)a3 boundsDidChangeToSize:(CGSize)a4;
+- (void)_getRotationContentSettings:(id *)settings;
+- (void)_notifyNextViewController:(int)controller animated:(BOOL)animated;
+- (void)_notifyPreviousViewController:(int)controller animated:(BOOL)animated;
+- (void)_notifyViewController:(id)controller ofState:(int)state previousState:(int)previousState animated:(BOOL)animated;
+- (void)_notifyVisibleViewController:(int)controller animated:(BOOL)animated;
+- (void)_pageChanged:(id)changed;
+- (void)_replaceViewControllerAtIndex:(int64_t)index withViewController:(id)controller;
+- (void)_scrollView:(id)view boundsDidChangeToSize:(CGSize)size;
 - (void)_scrollViewDidEndPaging;
-- (void)_scrollViewDidScroll:(id)a3 forceUpdate:(BOOL)a4;
+- (void)_scrollViewDidScroll:(id)scroll forceUpdate:(BOOL)update;
 - (void)_scrollViewWillBeginPaging;
 - (void)dealloc;
-- (void)didAnimateFirstHalfOfRotationToInterfaceOrientation:(int64_t)a3;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
+- (void)didAnimateFirstHalfOfRotationToInterfaceOrientation:(int64_t)orientation;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
 - (void)loadView;
-- (void)reloadViewControllerAtIndex:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDisplaysPageControl:(BOOL)a3;
-- (void)setPageCount:(int64_t)a3;
-- (void)setPageSpacing:(double)a3;
-- (void)setVisibleIndex:(int64_t)a3 preservingLoadedViewControllers:(BOOL)a4 animated:(BOOL)a5;
-- (void)setWraps:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)reloadViewControllerAtIndex:(int64_t)index;
+- (void)setDelegate:(id)delegate;
+- (void)setDisplaysPageControl:(BOOL)control;
+- (void)setPageCount:(int64_t)count;
+- (void)setPageSpacing:(double)spacing;
+- (void)setVisibleIndex:(int64_t)index preservingLoadedViewControllers:(BOOL)controllers animated:(BOOL)animated;
+- (void)setWraps:(BOOL)wraps;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willAnimateFirstHalfOfRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willAnimateFirstHalfOfRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation UIPageController
@@ -69,8 +69,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(UIView *)wrapperViews[v3] subviews];
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subviews = [(UIView *)wrapperViews[v3] subviews];
+    v6 = [(NSArray *)subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -81,13 +81,13 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v11 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [(NSArray *)subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -117,13 +117,13 @@
     [(NSMutableArray *)self->_viewControllers addObject:@"UnloadedViewController"];
   }
 
-  v4 = objc_opt_class();
+  _pageControllerScrollViewClass = objc_opt_class();
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UIPageControllerDelegate *)self->_delegate _pageControllerScrollViewClass];
+    _pageControllerScrollViewClass = [(UIPageControllerDelegate *)self->_delegate _pageControllerScrollViewClass];
   }
 
-  v5 = [v4 alloc];
+  v5 = [_pageControllerScrollViewClass alloc];
   [(UIPageController *)self _scrollViewFrame];
   v6 = [v5 initWithFrame:?];
   [(UIView *)v6 setAutoresizingMask:18];
@@ -168,8 +168,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(UIView *)wrapperViews[v3] subviews];
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subviews = [(UIView *)wrapperViews[v3] subviews];
+    v6 = [(NSArray *)subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -180,13 +180,13 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v11 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [(NSArray *)subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -201,11 +201,11 @@
   [(UIViewController *)&v10 viewDidUnload];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     *&self->_pageControllerFlags = *&self->_pageControllerFlags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -232,11 +232,11 @@
   }
 }
 
-- (void)setPageSpacing:(double)a3
+- (void)setPageSpacing:(double)spacing
 {
-  if (self->_pageSpacing != a3)
+  if (self->_pageSpacing != spacing)
   {
-    self->_pageSpacing = a3;
+    self->_pageSpacing = spacing;
     if ([(UIViewController *)self _existingView])
     {
       scrollView = self->_scrollView;
@@ -250,21 +250,21 @@
   }
 }
 
-- (BOOL)_isViewControllerBeingUnloaded:(id)a3 atIndex:(int64_t)a4
+- (BOOL)_isViewControllerBeingUnloaded:(id)unloaded atIndex:(int64_t)index
 {
-  if (!a3)
+  if (!unloaded)
   {
     return 0;
   }
 
-  v7 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   result = 0;
-  if (a3 != @"UnloadedViewController" && v7 != a3)
+  if (unloaded != @"UnloadedViewController" && null != unloaded)
   {
     v9 = 0;
     do
     {
-      result = a4 == v9 || [(NSMutableArray *)self->_viewControllers objectAtIndex:v9]!= a3;
+      result = index == v9 || [(NSMutableArray *)self->_viewControllers objectAtIndex:v9]!= unloaded;
       if (v9 > 1)
       {
         break;
@@ -279,19 +279,19 @@
   return result;
 }
 
-- (void)_replaceViewControllerAtIndex:(int64_t)a3 withViewController:(id)a4
+- (void)_replaceViewControllerAtIndex:(int64_t)index withViewController:(id)controller
 {
   v23 = *MEMORY[0x1E69E9840];
   v7 = [(NSMutableArray *)self->_viewControllers objectAtIndex:?];
   viewControllers = self->_viewControllers;
-  v9 = a4;
-  if (!a4)
+  controllerCopy = controller;
+  if (!controller)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    controllerCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  [(NSMutableArray *)viewControllers replaceObjectAtIndex:a3 withObject:v9];
-  v10 = [(UIPageController *)self _isViewControllerBeingUnloaded:v7 atIndex:a3];
+  [(NSMutableArray *)viewControllers replaceObjectAtIndex:index withObject:controllerCopy];
+  v10 = [(UIPageController *)self _isViewControllerBeingUnloaded:v7 atIndex:index];
   if (v10)
   {
     [v7 willMoveToParentViewController:0];
@@ -302,8 +302,8 @@
   v18 = 0u;
   v19 = 0u;
   wrapperViews = self->_wrapperViews;
-  v12 = [(UIView *)self->_wrapperViews[a3] subviews];
-  v13 = [(NSArray *)v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  subviews = [(UIView *)self->_wrapperViews[index] subviews];
+  v13 = [(NSArray *)subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = v13;
@@ -315,14 +315,14 @@
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v18 + 1) + 8 * v16++) removeFromSuperview];
       }
 
       while (v14 != v16);
-      v14 = [(NSArray *)v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v14 = [(NSArray *)subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v14);
@@ -333,12 +333,12 @@
     [v7 removeFromParentViewController];
   }
 
-  if (a4 != @"UnloadedViewController" && a4)
+  if (controller != @"UnloadedViewController" && controller)
   {
-    v17 = [a4 view];
-    [(UIView *)wrapperViews[a3] bounds];
-    [v17 setFrame:?];
-    [(UIView *)wrapperViews[a3] addSubview:v17];
+    view = [controller view];
+    [(UIView *)wrapperViews[index] bounds];
+    [view setFrame:?];
+    [(UIView *)wrapperViews[index] addSubview:view];
   }
 
   [(UIPageController *)self _adjustScrollViewContentInsets];
@@ -346,13 +346,13 @@
 
 - (id)_loadPreviousViewController
 {
-  v3 = [(UIPageController *)self _visibleViewController];
-  if (!v3)
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
+  if (!_visibleViewController)
   {
     goto LABEL_26;
   }
 
-  v4 = v3;
+  v4 = _visibleViewController;
   pageCount = self->_pageCount;
   if (!pageCount)
   {
@@ -362,7 +362,7 @@
     }
 
 LABEL_13:
-    v11 = [(UIPageControllerDelegate *)self->_delegate pageController:self viewControllerLeftOfController:v3];
+    v11 = [(UIPageControllerDelegate *)self->_delegate pageController:self viewControllerLeftOfController:_visibleViewController];
     goto LABEL_23;
   }
 
@@ -404,17 +404,17 @@ LABEL_26:
     }
 
     delegate = self->_delegate;
-    v10 = self;
+    selfCopy2 = self;
   }
 
   else
   {
     delegate = self->_delegate;
-    v10 = self;
+    selfCopy2 = self;
     v4 = (visibleIndex - 1);
   }
 
-  v11 = [(UIPageControllerDelegate *)delegate pageController:v10 viewControllerAtIndex:v4];
+  v11 = [(UIPageControllerDelegate *)delegate pageController:selfCopy2 viewControllerAtIndex:v4];
 LABEL_23:
   v14 = v11;
   if (!v11)
@@ -433,9 +433,9 @@ LABEL_23:
   return v14;
 }
 
-- (id)_loadVisibleViewControllerAndNotify:(BOOL)a3
+- (id)_loadVisibleViewControllerAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   if (*&self->_pageControllerFlags)
   {
     if (self->_pageCount < 1)
@@ -463,7 +463,7 @@ LABEL_23:
 LABEL_10:
     [(UIPageController *)self _setVisibleViewController:0];
     v5 = 0;
-    if (!v3)
+    if (!notifyCopy)
     {
       return v5;
     }
@@ -477,7 +477,7 @@ LABEL_7:
   if (v5 == @"UnloadedViewController")
   {
     v5 = @"UnloadedViewController";
-    if (!v3)
+    if (!notifyCopy)
     {
       return v5;
     }
@@ -486,7 +486,7 @@ LABEL_7:
   else
   {
     [(__CFString *)v5 didMoveToParentViewController:self];
-    if (!v3)
+    if (!notifyCopy)
     {
       return v5;
     }
@@ -504,8 +504,8 @@ LABEL_13:
 
 - (id)_loadNextViewController
 {
-  v3 = [(UIPageController *)self _visibleViewController];
-  if (!v3)
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
+  if (!_visibleViewController)
   {
     goto LABEL_26;
   }
@@ -519,7 +519,7 @@ LABEL_13:
     }
 
 LABEL_13:
-    v12 = [(UIPageControllerDelegate *)self->_delegate pageController:self viewControllerRightOfController:v3];
+    v12 = [(UIPageControllerDelegate *)self->_delegate pageController:self viewControllerRightOfController:_visibleViewController];
     goto LABEL_23;
   }
 
@@ -551,7 +551,7 @@ LABEL_26:
     }
 
     delegate = self->_delegate;
-    v11 = self;
+    selfCopy2 = self;
     v10 = 0;
   }
 
@@ -559,10 +559,10 @@ LABEL_26:
   {
     delegate = self->_delegate;
     v10 = visibleIndex + 1;
-    v11 = self;
+    selfCopy2 = self;
   }
 
-  v12 = [(UIPageControllerDelegate *)delegate pageController:v11 viewControllerAtIndex:v10];
+  v12 = [(UIPageControllerDelegate *)delegate pageController:selfCopy2 viewControllerAtIndex:v10];
 LABEL_23:
   v15 = v12;
   if (!v12)
@@ -583,20 +583,20 @@ LABEL_23:
 
 - (id)_previousViewController
 {
-  v3 = [(NSMutableArray *)self->_viewControllers objectAtIndex:0];
-  if (v3 == @"UnloadedViewController")
+  _loadPreviousViewController = [(NSMutableArray *)self->_viewControllers objectAtIndex:0];
+  if (_loadPreviousViewController == @"UnloadedViewController")
   {
-    v3 = [(UIPageController *)self _loadPreviousViewController];
+    _loadPreviousViewController = [(UIPageController *)self _loadPreviousViewController];
   }
 
-  if (v3 == [MEMORY[0x1E695DFB0] null])
+  if (_loadPreviousViewController == [MEMORY[0x1E695DFB0] null])
   {
     return 0;
   }
 
   else
   {
-    return v3;
+    return _loadPreviousViewController;
   }
 }
 
@@ -621,20 +621,20 @@ LABEL_23:
 
 - (id)_nextViewController
 {
-  v3 = [(NSMutableArray *)self->_viewControllers objectAtIndex:2];
-  if (v3 == @"UnloadedViewController")
+  _loadNextViewController = [(NSMutableArray *)self->_viewControllers objectAtIndex:2];
+  if (_loadNextViewController == @"UnloadedViewController")
   {
-    v3 = [(UIPageController *)self _loadNextViewController];
+    _loadNextViewController = [(UIPageController *)self _loadNextViewController];
   }
 
-  if (v3 == [MEMORY[0x1E695DFB0] null])
+  if (_loadNextViewController == [MEMORY[0x1E695DFB0] null])
   {
     return 0;
   }
 
   else
   {
-    return v3;
+    return _loadNextViewController;
   }
 }
 
@@ -682,90 +682,90 @@ LABEL_23:
 
 - (UIViewController)visibleViewController
 {
-  v2 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  return v2;
+  return _visibleViewController;
 }
 
-- (void)_notifyViewController:(id)a3 ofState:(int)a4 previousState:(int)a5 animated:(BOOL)a6
+- (void)_notifyViewController:(id)controller ofState:(int)state previousState:(int)previousState animated:(BOOL)animated
 {
-  if (a4 != a5)
+  if (state != previousState)
   {
-    v6 = a6;
-    if (a4 > 2)
+    animatedCopy = animated;
+    if (state > 2)
     {
-      if (a4 == 3)
+      if (state == 3)
       {
-        if (a5 == 1)
+        if (previousState == 1)
         {
-          [(UIPageController *)self _notifyViewController:a3 ofState:2 previousState:*&a5 animated:a6];
+          [(UIPageController *)self _notifyViewController:controller ofState:2 previousState:*&previousState animated:animated];
         }
 
-        [(UIViewController *)a3 __viewWillDisappear:v6];
+        [(UIViewController *)controller __viewWillDisappear:animatedCopy];
       }
 
-      else if (a4 == 4)
+      else if (state == 4)
       {
-        if (a5 != 3)
+        if (previousState != 3)
         {
-          [(UIPageController *)self _notifyViewController:a3 ofState:3 previousState:*&a5 animated:a6];
+          [(UIPageController *)self _notifyViewController:controller ofState:3 previousState:*&previousState animated:animated];
         }
 
-        [(UIViewController *)a3 __viewDidDisappear:v6];
+        [(UIViewController *)controller __viewDidDisappear:animatedCopy];
       }
     }
 
-    else if (a4 == 1)
+    else if (state == 1)
     {
-      if (a5 == 3)
+      if (previousState == 3)
       {
-        [(UIPageController *)self _notifyViewController:a3 ofState:4 previousState:*&a5 animated:a6];
+        [(UIPageController *)self _notifyViewController:controller ofState:4 previousState:*&previousState animated:animated];
       }
 
-      [a3 __viewWillAppear:v6];
+      [controller __viewWillAppear:animatedCopy];
     }
 
-    else if (a4 == 2)
+    else if (state == 2)
     {
-      if (a5 != 1)
+      if (previousState != 1)
       {
-        [(UIPageController *)self _notifyViewController:a3 ofState:1 previousState:*&a5 animated:a6];
+        [(UIPageController *)self _notifyViewController:controller ofState:1 previousState:*&previousState animated:animated];
       }
 
-      [a3 __viewDidAppear:v6];
+      [controller __viewDidAppear:animatedCopy];
     }
   }
 }
 
-- (void)_notifyPreviousViewController:(int)a3 animated:(BOOL)a4
+- (void)_notifyPreviousViewController:(int)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = *&a3;
+  animatedCopy = animated;
+  v5 = *&controller;
   if ([(UIPageController *)self _previousViewController])
   {
-    [(UIPageController *)self _notifyViewController:[(UIPageController *)self _previousViewController] ofState:v5 previousState:[(UIPageController *)self _previousViewControllerNotificationState] animated:v4];
+    [(UIPageController *)self _notifyViewController:[(UIPageController *)self _previousViewController] ofState:v5 previousState:[(UIPageController *)self _previousViewControllerNotificationState] animated:animatedCopy];
     self->_notificationState[0] = v5;
   }
 }
 
-- (void)_notifyVisibleViewController:(int)a3 animated:(BOOL)a4
+- (void)_notifyVisibleViewController:(int)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = *&a3;
+  animatedCopy = animated;
+  v5 = *&controller;
   if ([(UIPageController *)self _visibleViewController])
   {
-    [(UIPageController *)self _notifyViewController:[(UIPageController *)self _visibleViewController] ofState:v5 previousState:[(UIPageController *)self _visibleViewControllerNotificationState] animated:v4];
+    [(UIPageController *)self _notifyViewController:[(UIPageController *)self _visibleViewController] ofState:v5 previousState:[(UIPageController *)self _visibleViewControllerNotificationState] animated:animatedCopy];
     self->_notificationState[1] = v5;
   }
 }
 
-- (void)_notifyNextViewController:(int)a3 animated:(BOOL)a4
+- (void)_notifyNextViewController:(int)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = *&a3;
+  animatedCopy = animated;
+  v5 = *&controller;
   if ([(UIPageController *)self _nextViewController])
   {
-    [(UIPageController *)self _notifyViewController:[(UIPageController *)self _nextViewController] ofState:v5 previousState:[(UIPageController *)self _nextViewControllerNotificationState] animated:v4];
+    [(UIPageController *)self _notifyViewController:[(UIPageController *)self _nextViewController] ofState:v5 previousState:[(UIPageController *)self _nextViewControllerNotificationState] animated:animatedCopy];
     self->_notificationState[2] = v5;
   }
 }
@@ -825,11 +825,11 @@ LABEL_23:
 
 - (void)_adjustScrollViewContentInsets
 {
-  v3 = [(UIPageController *)self _scrollView];
-  [v3 bounds];
+  _scrollView = [(UIPageController *)self _scrollView];
+  [_scrollView bounds];
   v5 = v4;
-  v6 = [(UIPageController *)self _hasPreviousViewController];
-  v7 = [(UIPageController *)self _hasNextViewController];
+  _hasPreviousViewController = [(UIPageController *)self _hasPreviousViewController];
+  _hasNextViewController = [(UIPageController *)self _hasNextViewController];
   pageCount = self->_pageCount;
   if (pageCount)
   {
@@ -845,7 +845,7 @@ LABEL_23:
   }
 
   v12 = -v5;
-  if (v6)
+  if (_hasPreviousViewController)
   {
     v13 = v10;
   }
@@ -855,20 +855,20 @@ LABEL_23:
     v13 = -v5;
   }
 
-  if (v7)
+  if (_hasNextViewController)
   {
     v12 = v11;
   }
 
-  [v3 setContentInset:{0.0, v13, 0.0, v12}];
+  [_scrollView setContentInset:{0.0, v13, 0.0, v12}];
 }
 
-- (void)_scrollView:(id)a3 boundsDidChangeToSize:(CGSize)a4
+- (void)_scrollView:(id)view boundsDidChangeToSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [a3 setContentSize:a4.width * 3.0];
-  [a3 setContentOffset:{width, 0.0}];
+  height = size.height;
+  width = size.width;
+  [view setContentSize:size.width * 3.0];
+  [view setContentOffset:{width, 0.0}];
   [(UIView *)self->_wrapperViews[0] setFrame:self->_pageSpacing, 0.0, width - (2 * self->_pageSpacing), height];
   [(UIView *)self->_wrapperViews[1] setFrame:width + self->_pageSpacing, 0.0, width - (2 * self->_pageSpacing), height];
   [(UIView *)self->_wrapperViews[2] setFrame:width + width + self->_pageSpacing, 0.0, width - (2 * self->_pageSpacing), height];
@@ -876,20 +876,20 @@ LABEL_23:
   [(UIPageController *)self _adjustScrollViewContentInsets];
 }
 
-- (void)_scrollViewDidScroll:(id)a3 forceUpdate:(BOOL)a4
+- (void)_scrollViewDidScroll:(id)scroll forceUpdate:(BOOL)update
 {
-  if (!a4 && (([a3 isTracking] & 1) == 0 && (objc_msgSend(a3, "isDecelerating") & 1) == 0 && !objc_msgSend(a3, "isScrollAnimating") || (objc_msgSend(a3, "_isHorizontalBouncing") & 1) != 0))
+  if (!update && (([scroll isTracking] & 1) == 0 && (objc_msgSend(scroll, "isDecelerating") & 1) == 0 && !objc_msgSend(scroll, "isScrollAnimating") || (objc_msgSend(scroll, "_isHorizontalBouncing") & 1) != 0))
   {
     return;
   }
 
-  [a3 bounds];
+  [scroll bounds];
   v7 = v6;
   v9 = v8;
-  v10 = [(UIPageController *)self _hasPreviousViewController];
-  v11 = [(UIPageController *)self _hasNextViewController];
-  v12 = v7 > v9 && v11;
-  if (v10 && v7 < v9 && [(UIPageController *)self _previousViewControllerNotificationState]!= 1)
+  _hasPreviousViewController = [(UIPageController *)self _hasPreviousViewController];
+  _hasNextViewController = [(UIPageController *)self _hasNextViewController];
+  v12 = v7 > v9 && _hasNextViewController;
+  if (_hasPreviousViewController && v7 < v9 && [(UIPageController *)self _previousViewControllerNotificationState]!= 1)
   {
     if ([(UIPageController *)self _nextViewControllerNotificationState])
     {
@@ -916,9 +916,9 @@ LABEL_23:
 
   [(UIPageController *)self _notifyVisibleViewController:3 animated:1];
 LABEL_21:
-  v13 = [(UIPageController *)self _previousViewController];
-  v14 = [(UIPageController *)self _nextViewController];
-  if (v13 && v7 <= 0.0)
+  _previousViewController = [(UIPageController *)self _previousViewController];
+  _nextViewController = [(UIPageController *)self _nextViewController];
+  if (_previousViewController && v7 <= 0.0)
   {
     [(UIPageController *)self _setNextViewController:[(UIPageController *)self _visibleViewController]];
     [(UIPageController *)self _setNextViewControllerNotificationState:[(UIPageController *)self _visibleViewControllerNotificationState]];
@@ -926,7 +926,7 @@ LABEL_21:
     [(UIPageController *)self _setVisibleViewControllerNotificationState:[(UIPageController *)self _previousViewControllerNotificationState]];
     [(UIPageController *)self _setPreviousViewController:@"UnloadedViewController"];
     [(UIPageController *)self _setPreviousViewControllerNotificationState:0];
-    [a3 setContentOffset:{v7 + v9, 0.0}];
+    [scroll setContentOffset:{v7 + v9, 0.0}];
     visibleIndex = self->_visibleIndex;
     if ((*&self->_pageControllerFlags & 0x10) != 0)
     {
@@ -948,7 +948,7 @@ LABEL_21:
 
   else
   {
-    if (!v14 || v7 < v9 + v9)
+    if (!_nextViewController || v7 < v9 + v9)
     {
       return;
     }
@@ -959,7 +959,7 @@ LABEL_21:
     [(UIPageController *)self _setVisibleViewControllerNotificationState:[(UIPageController *)self _nextViewControllerNotificationState]];
     [(UIPageController *)self _setNextViewController:@"UnloadedViewController"];
     [(UIPageController *)self _setNextViewControllerNotificationState:0];
-    [a3 setContentOffset:{v7 - v9, 0.0}];
+    [scroll setContentOffset:{v7 - v9, 0.0}];
     if ((*&self->_pageControllerFlags & 0x10) != 0)
     {
       v18 = self->_visibleIndex;
@@ -1012,20 +1012,20 @@ LABEL_21:
   return result;
 }
 
-- (void)setPageCount:(int64_t)a3
+- (void)setPageCount:(int64_t)count
 {
   pageCount = self->_pageCount;
-  self->_pageCount = a3;
-  if (a3 && pageCount)
+  self->_pageCount = count;
+  if (count && pageCount)
   {
     p_visibleIndex = &self->_visibleIndex;
     visibleIndex = self->_visibleIndex;
-    if (pageCount < a3 && visibleIndex == pageCount - 1)
+    if (pageCount < count && visibleIndex == pageCount - 1)
     {
       goto LABEL_11;
     }
 
-    if (visibleIndex < a3 - 1)
+    if (visibleIndex < count - 1)
     {
       return;
     }
@@ -1047,19 +1047,19 @@ LABEL_11:
   [(UIPageController *)self reloadViewControllerAtIndex:visibleIndex + 1];
 }
 
-- (void)setWraps:(BOOL)a3
+- (void)setWraps:(BOOL)wraps
 {
   pageControllerFlags = self->_pageControllerFlags;
-  if (((((pageControllerFlags & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((pageControllerFlags & 0x10) == 0) ^ wraps) & 1) == 0)
   {
-    v5 = a3 ? 16 : 0;
+    v5 = wraps ? 16 : 0;
     *&self->_pageControllerFlags = pageControllerFlags & 0xEF | v5;
-    if (a3)
+    if (wraps)
     {
       if (![(UIPageController *)self _needToLoadPrevious])
       {
-        v6 = [(UIPageController *)self _previousViewController];
-        if (v6 == [MEMORY[0x1E695DFB0] null])
+        _previousViewController = [(UIPageController *)self _previousViewController];
+        if (_previousViewController == [MEMORY[0x1E695DFB0] null])
         {
           [(UIPageController *)self _setPreviousViewController:@"UnloadedViewController"];
         }
@@ -1067,8 +1067,8 @@ LABEL_11:
 
       if (![(UIPageController *)self _needToLoadNext])
       {
-        v7 = [(UIPageController *)self _nextViewController];
-        if (v7 == [MEMORY[0x1E695DFB0] null])
+        _nextViewController = [(UIPageController *)self _nextViewController];
+        if (_nextViewController == [MEMORY[0x1E695DFB0] null])
         {
 
           [(UIPageController *)self _setNextViewController:@"UnloadedViewController"];
@@ -1078,11 +1078,11 @@ LABEL_11:
   }
 }
 
-- (void)_pageChanged:(id)a3
+- (void)_pageChanged:(id)changed
 {
-  v4 = [a3 currentPage];
+  currentPage = [changed currentPage];
 
-  [(UIPageController *)self setVisibleIndex:v4 animated:1];
+  [(UIPageController *)self setVisibleIndex:currentPage animated:1];
 }
 
 - (void)_createPageControl
@@ -1116,12 +1116,12 @@ LABEL_11:
   }
 }
 
-- (void)setDisplaysPageControl:(BOOL)a3
+- (void)setDisplaysPageControl:(BOOL)control
 {
   pageControllerFlags = self->_pageControllerFlags;
-  if (((((pageControllerFlags & 8) == 0) ^ a3) & 1) == 0)
+  if (((((pageControllerFlags & 8) == 0) ^ control) & 1) == 0)
   {
-    if (a3)
+    if (control)
     {
       v5 = 8;
     }
@@ -1132,7 +1132,7 @@ LABEL_11:
     }
 
     *&self->_pageControllerFlags = pageControllerFlags & 0xF7 | v5;
-    if (a3 && [(UIViewController *)self _existingView])
+    if (control && [(UIViewController *)self _existingView])
     {
 
       [(UIPageController *)self _createPageControl];
@@ -1147,9 +1147,9 @@ LABEL_11:
   }
 }
 
-- (int64_t)indexOfViewController:(id)a3
+- (int64_t)indexOfViewController:(id)controller
 {
-  v4 = [(NSMutableArray *)self->_viewControllers indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_viewControllers indexOfObject:controller];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return -1;
@@ -1174,151 +1174,151 @@ LABEL_11:
 {
   v5.receiver = self;
   v5.super_class = UIPageController;
-  v3 = [(UIViewController *)&v5 _allowsAutorotation];
+  _allowsAutorotation = [(UIViewController *)&v5 _allowsAutorotation];
   if ([(UIPageController *)self _visibleViewController])
   {
-    v3 &= [-[UIPageController _visibleViewController](self "_visibleViewController")];
+    _allowsAutorotation &= [-[UIPageController _visibleViewController](self "_visibleViewController")];
   }
 
-  return v3;
+  return _allowsAutorotation;
 }
 
-- (BOOL)_doesVisibleViewControllerSupportInterfaceOrientation:(int64_t)a3
+- (BOOL)_doesVisibleViewControllerSupportInterfaceOrientation:(int64_t)orientation
 {
   if (![(UIPageController *)self _visibleViewController])
   {
     return 1;
   }
 
-  v5 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  return [v5 _isSupportedInterfaceOrientation:a3];
+  return [_visibleViewController _isSupportedInterfaceOrientation:orientation];
 }
 
-- (BOOL)_isSupportedInterfaceOrientation:(int64_t)a3
+- (BOOL)_isSupportedInterfaceOrientation:(int64_t)orientation
 {
   if ([objc_opt_class() _doesOverrideLegacyShouldAutorotateMethod])
   {
 
-    return [(UIPageController *)self shouldAutorotateToInterfaceOrientation:a3];
+    return [(UIPageController *)self shouldAutorotateToInterfaceOrientation:orientation];
   }
 
   else
   {
 
-    return [(UIPageController *)self _doesVisibleViewControllerSupportInterfaceOrientation:a3];
+    return [(UIPageController *)self _doesVisibleViewControllerSupportInterfaceOrientation:orientation];
   }
 }
 
 - (id)rotatingHeaderView
 {
-  v2 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  return [v2 rotatingHeaderView];
+  return [_visibleViewController rotatingHeaderView];
 }
 
 - (id)rotatingFooterView
 {
-  v2 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  return [v2 rotatingFooterView];
+  return [_visibleViewController rotatingFooterView];
 }
 
 - (BOOL)_shouldUseOnePartRotation
 {
-  v2 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  return [v2 _shouldUseOnePartRotation];
+  return [_visibleViewController _shouldUseOnePartRotation];
 }
 
-- (void)_getRotationContentSettings:(id *)a3
+- (void)_getRotationContentSettings:(id *)settings
 {
-  v4 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  [v4 _getRotationContentSettings:a3];
+  [_visibleViewController _getRotationContentSettings:settings];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v6 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  [v6 willRotateToInterfaceOrientation:a3 duration:a4];
+  [_visibleViewController willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v6 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  [v6 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+  [_visibleViewController willAnimateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)willAnimateFirstHalfOfRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateFirstHalfOfRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v6 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  [v6 willAnimateFirstHalfOfRotationToInterfaceOrientation:a3 duration:a4];
+  [_visibleViewController willAnimateFirstHalfOfRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)didAnimateFirstHalfOfRotationToInterfaceOrientation:(int64_t)a3
+- (void)didAnimateFirstHalfOfRotationToInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  [v4 didAnimateFirstHalfOfRotationToInterfaceOrientation:a3];
+  [_visibleViewController didAnimateFirstHalfOfRotationToInterfaceOrientation:orientation];
 }
 
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v6 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  [v6 willAnimateSecondHalfOfRotationFromInterfaceOrientation:a3 duration:a4];
+  [_visibleViewController willAnimateSecondHalfOfRotationFromInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [(UIPageController *)self _visibleViewController];
+  _visibleViewController = [(UIPageController *)self _visibleViewController];
 
-  [v4 didRotateFromInterfaceOrientation:a3];
+  [_visibleViewController didRotateFromInterfaceOrientation:orientation];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = UIPageController;
   [(UIViewController *)&v5 viewWillAppear:?];
-  [(UIPageController *)self _notifyVisibleViewController:1 animated:v3];
+  [(UIPageController *)self _notifyVisibleViewController:1 animated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = UIPageController;
   [(UIViewController *)&v5 viewDidAppear:?];
-  [(UIPageController *)self _notifyVisibleViewController:2 animated:v3];
+  [(UIPageController *)self _notifyVisibleViewController:2 animated:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = UIPageController;
   [(UIViewController *)&v5 viewWillDisappear:?];
-  [(UIPageController *)self _notifyVisibleViewController:3 animated:v3];
+  [(UIPageController *)self _notifyVisibleViewController:3 animated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = UIPageController;
   [(UIViewController *)&v5 viewDidDisappear:?];
-  [(UIPageController *)self _notifyVisibleViewController:4 animated:v3];
+  [(UIPageController *)self _notifyVisibleViewController:4 animated:disappearCopy];
 }
 
-- (void)setVisibleIndex:(int64_t)a3 preservingLoadedViewControllers:(BOOL)a4 animated:(BOOL)a5
+- (void)setVisibleIndex:(int64_t)index preservingLoadedViewControllers:(BOOL)controllers animated:(BOOL)animated
 {
-  v5 = a4;
+  controllersCopy = controllers;
   pageCount = self->_pageCount;
   if (pageCount <= 1)
   {
@@ -1326,9 +1326,9 @@ LABEL_11:
   }
 
   v8 = pageCount - 1;
-  if (v8 >= (a3 & ~(a3 >> 63)))
+  if (v8 >= (index & ~(index >> 63)))
   {
-    v9 = a3 & ~(a3 >> 63);
+    v9 = index & ~(index >> 63);
   }
 
   else
@@ -1337,9 +1337,9 @@ LABEL_11:
   }
 
   v10 = v9 - self->_visibleIndex;
-  if (v10 || !a4)
+  if (v10 || !controllers)
   {
-    if (a5)
+    if (animated)
     {
       v11 = v10;
       [(UIView *)self->_scrollView bounds];
@@ -1359,7 +1359,7 @@ LABEL_11:
       [(UIPageController *)self _notifyVisibleViewController:3 animated:0];
     }
 
-    if (!v5)
+    if (!controllersCopy)
     {
       goto LABEL_78;
     }
@@ -1374,48 +1374,48 @@ LABEL_11:
 
       if ([(UIPageController *)self _needToLoadVisible])
       {
-        v19 = @"UnloadedViewController";
+        _visibleViewController = @"UnloadedViewController";
       }
 
       else
       {
-        v19 = [(UIPageController *)self _visibleViewController];
+        _visibleViewController = [(UIPageController *)self _visibleViewController];
       }
 
-      [(UIPageController *)self _setPreviousViewController:v19];
+      [(UIPageController *)self _setPreviousViewController:_visibleViewController];
       if ([(UIPageController *)self _needToLoadVisible])
       {
-        v22 = 0;
+        _visibleViewControllerNotificationState = 0;
       }
 
       else
       {
-        v22 = [(UIPageController *)self _visibleViewControllerNotificationState];
+        _visibleViewControllerNotificationState = [(UIPageController *)self _visibleViewControllerNotificationState];
       }
 
-      [(UIPageController *)self _setPreviousViewControllerNotificationState:v22];
+      [(UIPageController *)self _setPreviousViewControllerNotificationState:_visibleViewControllerNotificationState];
       if ([(UIPageController *)self _needToLoadNext])
       {
-        v23 = @"UnloadedViewController";
+        _nextViewController = @"UnloadedViewController";
       }
 
       else
       {
-        v23 = [(UIPageController *)self _nextViewController];
+        _nextViewController = [(UIPageController *)self _nextViewController];
       }
 
-      [(UIPageController *)self _setVisibleViewController:v23];
+      [(UIPageController *)self _setVisibleViewController:_nextViewController];
       if ([(UIPageController *)self _needToLoadNext])
       {
-        v24 = 0;
+        _nextViewControllerNotificationState = 0;
       }
 
       else
       {
-        v24 = [(UIPageController *)self _nextViewControllerNotificationState];
+        _nextViewControllerNotificationState = [(UIPageController *)self _nextViewControllerNotificationState];
       }
 
-      [(UIPageController *)self _setVisibleViewControllerNotificationState:v24];
+      [(UIPageController *)self _setVisibleViewControllerNotificationState:_nextViewControllerNotificationState];
       [(UIPageController *)self _setNextViewController:@"UnloadedViewController"];
       [(UIPageController *)self _setNextViewControllerNotificationState:0];
       goto LABEL_49;
@@ -1430,49 +1430,49 @@ LABEL_11:
 
       if ([(UIPageController *)self _needToLoadVisible])
       {
-        v20 = @"UnloadedViewController";
+        _visibleViewController2 = @"UnloadedViewController";
       }
 
       else
       {
-        v20 = [(UIPageController *)self _visibleViewController];
+        _visibleViewController2 = [(UIPageController *)self _visibleViewController];
       }
 
-      [(UIPageController *)self _setNextViewController:v20];
+      [(UIPageController *)self _setNextViewController:_visibleViewController2];
       if ([(UIPageController *)self _needToLoadVisible])
       {
-        v25 = 0;
+        _visibleViewControllerNotificationState2 = 0;
       }
 
       else
       {
-        v25 = [(UIPageController *)self _visibleViewControllerNotificationState];
+        _visibleViewControllerNotificationState2 = [(UIPageController *)self _visibleViewControllerNotificationState];
       }
 
-      [(UIPageController *)self _setNextViewControllerNotificationState:v25];
+      [(UIPageController *)self _setNextViewControllerNotificationState:_visibleViewControllerNotificationState2];
       if ([(UIPageController *)self _needToLoadPrevious])
       {
-        v26 = @"UnloadedViewController";
+        _previousViewController = @"UnloadedViewController";
       }
 
       else
       {
-        v26 = [(UIPageController *)self _previousViewController];
+        _previousViewController = [(UIPageController *)self _previousViewController];
       }
 
-      [(UIPageController *)self _setVisibleViewController:v26];
+      [(UIPageController *)self _setVisibleViewController:_previousViewController];
       if ([(UIPageController *)self _needToLoadPrevious])
       {
-        v27 = 0;
+        _previousViewControllerNotificationState = 0;
       }
 
       else
       {
-        v27 = [(UIPageController *)self _previousViewControllerNotificationState];
+        _previousViewControllerNotificationState = [(UIPageController *)self _previousViewControllerNotificationState];
       }
 
-      [(UIPageController *)self _setVisibleViewControllerNotificationState:v27];
-      v21 = self;
+      [(UIPageController *)self _setVisibleViewControllerNotificationState:_previousViewControllerNotificationState];
+      selfCopy2 = self;
     }
 
     else
@@ -1487,10 +1487,10 @@ LABEL_78:
       [(UIPageController *)self _setNextViewControllerNotificationState:0];
       [(UIPageController *)self _setVisibleViewController:@"UnloadedViewController"];
       [(UIPageController *)self _setVisibleViewControllerNotificationState:0];
-      v21 = self;
+      selfCopy2 = self;
     }
 
-    [(UIPageController *)v21 _setPreviousViewController:@"UnloadedViewController"];
+    [(UIPageController *)selfCopy2 _setPreviousViewController:@"UnloadedViewController"];
     [(UIPageController *)self _setPreviousViewControllerNotificationState:0];
 LABEL_49:
     self->_visibleIndex = v9;
@@ -1520,12 +1520,12 @@ LABEL_49:
   }
 }
 
-- (void)reloadViewControllerAtIndex:(int64_t)a3
+- (void)reloadViewControllerAtIndex:(int64_t)index
 {
   visibleIndex = self->_visibleIndex;
-  if (visibleIndex - 1 <= a3 && visibleIndex + 1 >= a3)
+  if (visibleIndex - 1 <= index && visibleIndex + 1 >= index)
   {
-    v6 = a3 - visibleIndex + 1;
+    v6 = index - visibleIndex + 1;
     switch(v6)
     {
       case 2:
@@ -1555,9 +1555,9 @@ LABEL_49:
     [(UIViewController *)self view];
   }
 
-  v3 = [(UIPageController *)self _scrollView];
+  _scrollView = [(UIPageController *)self _scrollView];
 
-  return v3;
+  return _scrollView;
 }
 
 @end

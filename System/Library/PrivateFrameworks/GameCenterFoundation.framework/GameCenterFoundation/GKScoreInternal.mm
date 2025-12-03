@@ -1,33 +1,33 @@
 @interface GKScoreInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
-- (GKScoreInternal)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GKScoreInternal)initWithCoder:(id)coder;
 - (NSString)playerID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)serverRepresentation;
 - (unint64_t)hash;
 @end
 
 @implementation GKScoreInternal
 
-- (GKScoreInternal)initWithCoder:(id)a3
+- (GKScoreInternal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = GKScoreInternal;
   v5 = [(GKScoreInternal *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"player"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"player"];
     [(GKScoreInternal *)v5 setPlayer:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leaderboardIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leaderboardIdentifier"];
     [(GKScoreInternal *)v5 setLeaderboardIdentifier:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupLeaderboardIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupLeaderboardIdentifier"];
     [(GKScoreInternal *)v5 setGroupLeaderboardIdentifier:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playerID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playerID"];
     if (v9)
     {
       v10 = +[(GKInternalRepresentation *)GKPlayerInternal];
@@ -35,54 +35,54 @@
       [(GKScoreInternal *)v5 setPlayer:v10];
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
     if (v11)
     {
       [(GKScoreInternal *)v5 setCategory:v11];
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupCategory"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupCategory"];
 
     if (v12)
     {
       [(GKScoreInternal *)v5 setGroupCategory:v12];
     }
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formattedValue"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formattedValue"];
     [(GKScoreInternal *)v5 setFormattedValue:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     [(GKScoreInternal *)v5 setDate:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rank"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rank"];
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 unsignedIntegerValue];
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
     }
 
     else
     {
-      v17 = [v4 decodeIntegerForKey:@"rank"];
+      unsignedIntegerValue = [coderCopy decodeIntegerForKey:@"rank"];
     }
 
-    [(GKScoreInternal *)v5 setRank:v17];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    [(GKScoreInternal *)v5 setRank:unsignedIntegerValue];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 longLongValue];
+      longLongValue = [v18 longLongValue];
     }
 
     else
     {
-      v20 = [v4 decodeInt64ForKey:@"value"];
+      longLongValue = [coderCopy decodeInt64ForKey:@"value"];
     }
 
-    [(GKScoreInternal *)v5 setValue:v20];
-    if ([v4 containsValueForKey:@"valueSet"])
+    [(GKScoreInternal *)v5 setValue:longLongValue];
+    if ([coderCopy containsValueForKey:@"valueSet"])
     {
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueSet"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"valueSet"];
       -[GKScoreInternal setValueSet:](v5, "setValueSet:", [v21 BOOLValue]);
     }
 
@@ -91,25 +91,25 @@
       [(GKScoreInternal *)v5 setValueSet:1];
     }
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     v23 = v22;
     if (v22)
     {
-      v24 = [v22 longLongValue];
+      longLongValue2 = [v22 longLongValue];
     }
 
     else
     {
-      v24 = [v4 decodeInt64ForKey:@"context"];
+      longLongValue2 = [coderCopy decodeInt64ForKey:@"context"];
     }
 
-    [(GKScoreInternal *)v5 setContext:v24];
+    [(GKScoreInternal *)v5 setContext:longLongValue2];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -173,35 +173,35 @@ void __42__GKScoreInternal_secureCodedPropertyKeys__block_invoke()
 {
   v3 = MEMORY[0x277CBEAC0];
   v4 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[GKScoreInternal value](self, "value")}];
-  v5 = [(GKScoreInternal *)self leaderboardIdentifier];
+  leaderboardIdentifier = [(GKScoreInternal *)self leaderboardIdentifier];
   v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[GKScoreInternal context](self, "context")}];
-  v7 = [(GKScoreInternal *)self date];
-  if (v7)
+  date = [(GKScoreInternal *)self date];
+  if (date)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = MEMORY[0x277CBEAA8];
+    selfCopy = MEMORY[0x277CBEAA8];
   }
 
-  v9 = [(GKScoreInternal *)v8 date];
-  v10 = [v9 _gkServerTimestamp];
-  v11 = [v3 dictionaryWithObjectsAndKeys:{v4, @"score-value", v5, @"category", v6, @"context", v10, @"timestamp", 0}];
+  date2 = [(GKScoreInternal *)selfCopy date];
+  _gkServerTimestamp = [date2 _gkServerTimestamp];
+  v11 = [v3 dictionaryWithObjectsAndKeys:{v4, @"score-value", leaderboardIdentifier, @"category", v6, @"context", _gkServerTimestamp, @"timestamp", 0}];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(GKScoreInternal *)self rank];
-    if (v7 != [v6 rank] || (v8 = -[GKScoreInternal value](self, "value"), v8 != objc_msgSend(v6, "value")) || (v9 = -[GKScoreInternal context](self, "context"), v9 != objc_msgSend(v6, "context")))
+    v6 = equalCopy;
+    rank = [(GKScoreInternal *)self rank];
+    if (rank != [v6 rank] || (v8 = -[GKScoreInternal value](self, "value"), v8 != objc_msgSend(v6, "value")) || (v9 = -[GKScoreInternal context](self, "context"), v9 != objc_msgSend(v6, "context")))
     {
       v13 = 0;
 LABEL_10:
@@ -209,13 +209,13 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v10 = [(GKScoreInternal *)self date];
-    v11 = [v6 date];
-    if (v10 != v11)
+    date = [(GKScoreInternal *)self date];
+    date2 = [v6 date];
+    if (date != date2)
     {
-      v3 = [(GKScoreInternal *)self date];
-      v12 = [v6 date];
-      if (![v3 isEqual:v12])
+      date3 = [(GKScoreInternal *)self date];
+      date4 = [v6 date];
+      if (![date3 isEqual:date4])
       {
         v13 = 0;
 LABEL_20:
@@ -224,28 +224,28 @@ LABEL_21:
         goto LABEL_10;
       }
 
-      v22 = v12;
+      v22 = date4;
     }
 
-    v15 = [(GKScoreInternal *)self playerID];
-    v16 = [v6 playerID];
-    if ([v15 isEqualToString:v16])
+    playerID = [(GKScoreInternal *)self playerID];
+    playerID2 = [v6 playerID];
+    if ([playerID isEqualToString:playerID2])
     {
-      v17 = [(GKScoreInternal *)self leaderboardIdentifier];
-      v18 = [v6 leaderboardIdentifier];
-      if ([v17 isEqual:v18])
+      leaderboardIdentifier = [(GKScoreInternal *)self leaderboardIdentifier];
+      leaderboardIdentifier2 = [v6 leaderboardIdentifier];
+      if ([leaderboardIdentifier isEqual:leaderboardIdentifier2])
       {
         v13 = 1;
       }
 
       else
       {
-        v20 = [(GKScoreInternal *)self groupLeaderboardIdentifier];
+        groupLeaderboardIdentifier = [(GKScoreInternal *)self groupLeaderboardIdentifier];
         [v6 groupLeaderboardIdentifier];
-        v19 = v21 = v3;
-        v13 = [v20 isEqual:v19];
+        v19 = v21 = date3;
+        v13 = [groupLeaderboardIdentifier isEqual:v19];
 
-        v3 = v21;
+        date3 = v21;
       }
     }
 
@@ -255,8 +255,8 @@ LABEL_21:
       v13 = 0;
     }
 
-    v12 = v22;
-    if (v10 == v11)
+    date4 = v22;
+    if (date == date2)
     {
       goto LABEL_21;
     }
@@ -272,18 +272,18 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(GKScoreInternal *)self playerID];
-  v3 = [v2 hash];
+  playerID = [(GKScoreInternal *)self playerID];
+  v3 = [playerID hash];
 
   return v3;
 }
 
 - (NSString)playerID
 {
-  v2 = [(GKScoreInternal *)self player];
-  v3 = [v2 playerID];
+  player = [(GKScoreInternal *)self player];
+  playerID = [player playerID];
 
-  return v3;
+  return playerID;
 }
 
 @end

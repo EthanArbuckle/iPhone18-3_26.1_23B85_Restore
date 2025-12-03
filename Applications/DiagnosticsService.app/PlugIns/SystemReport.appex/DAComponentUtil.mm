@@ -1,12 +1,12 @@
 @interface DAComponentUtil
-+ (BOOL)IORegistryNameExists:(id)a3 optionalKey:(id)a4 passingValidator:(id)a5;
-+ (id)getIORegistryClass:(id)a3 property:(id)a4 optionalKey:(id)a5 classValidator:(id)a6;
-+ (id)getIORegistryName:(id)a3 property:(id)a4 optionalKey:(id)a5 classValidator:(id)a6;
-+ (id)getIOServicePropertiesWithMatchingDictionary:(id)a3;
-+ (id)getIOregData:(const char *)a3 property:(__CFString *)a4 length:(int)a5 optionalKey:(const __CFString *)a6;
-+ (id)getMatchingDict:(__CFDictionary *)a3 property:(id)a4 optionalKey:(id)a5 optionalClassValidator:(id)a6;
++ (BOOL)IORegistryNameExists:(id)exists optionalKey:(id)key passingValidator:(id)validator;
++ (id)getIORegistryClass:(id)class property:(id)property optionalKey:(id)key classValidator:(id)validator;
++ (id)getIORegistryName:(id)name property:(id)property optionalKey:(id)key classValidator:(id)validator;
++ (id)getIOServicePropertiesWithMatchingDictionary:(id)dictionary;
++ (id)getIOregData:(const char *)data property:(__CFString *)property length:(int)length optionalKey:(const __CFString *)key;
++ (id)getMatchingDict:(__CFDictionary *)dict property:(id)property optionalKey:(id)key optionalClassValidator:(id)validator;
 + (id)sharedInstance;
-+ (unsigned)getIOService:(__CFDictionary *)a3 optionalKey:(id)a4 optionalClassValidator:(id)a5;
++ (unsigned)getIOService:(__CFDictionary *)service optionalKey:(id)key optionalClassValidator:(id)validator;
 @end
 
 @implementation DAComponentUtil
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002A81C;
   block[3] = &unk_100090B10;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000D1FE0 != -1)
   {
     dispatch_once(&qword_1000D1FE0, block);
@@ -28,9 +28,9 @@
   return v2;
 }
 
-+ (id)getIOregData:(const char *)a3 property:(__CFString *)a4 length:(int)a5 optionalKey:(const __CFString *)a6
++ (id)getIOregData:(const char *)data property:(__CFString *)property length:(int)length optionalKey:(const __CFString *)key
 {
-  v10 = IOServiceMatching(a3);
+  v10 = IOServiceMatching(data);
   if (!v10)
   {
     v20 = DiagnosticLogHandleForCategory();
@@ -43,7 +43,7 @@ LABEL_13:
     }
 
     *v28 = 136315138;
-    *&v28[4] = a3;
+    *&v28[4] = data;
     v21 = "Class %s not found";
 LABEL_30:
     _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, v21, v28, 0xCu);
@@ -51,9 +51,9 @@ LABEL_30:
   }
 
   v11 = v10;
-  if (a6)
+  if (key)
   {
-    *v28 = a6;
+    *v28 = key;
     v12 = CFDictionaryCreate(kCFAllocatorDefault, v28, &kCFBooleanTrue, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     CFDictionarySetValue(v11, @"IONameMatch", v12);
     CFRelease(v12);
@@ -69,20 +69,20 @@ LABEL_30:
     }
 
     *v28 = 136315138;
-    *&v28[4] = a3;
+    *&v28[4] = data;
     v21 = "IO service for %s not found";
     goto LABEL_30;
   }
 
   v14 = MatchingService;
-  CFProperty = IORegistryEntryCreateCFProperty(MatchingService, a4, kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(MatchingService, property, kCFAllocatorDefault, 0);
   if (CFProperty)
   {
     v16 = CFProperty;
     v17 = CFGetTypeID(CFProperty);
     if (v17 == CFDataGetTypeID())
     {
-      v18 = [NSData dataWithBytes:CFDataGetBytePtr(v16) length:a5];
+      v18 = [NSData dataWithBytes:CFDataGetBytePtr(v16) length:length];
       v19 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
@@ -129,7 +129,7 @@ LABEL_30:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *v28 = 138412290;
-      *&v28[4] = a4;
+      *&v28[4] = property;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "ioreg entry %@ does not exist", v28, 0xCu);
     }
 
@@ -142,14 +142,14 @@ LABEL_26:
   return v18;
 }
 
-+ (id)getIORegistryClass:(id)a3 property:(id)a4 optionalKey:(id)a5 classValidator:(id)a6
++ (id)getIORegistryClass:(id)class property:(id)property optionalKey:(id)key classValidator:(id)validator
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = IOServiceMatching([a3 UTF8String]);
-  v16 = [a1 getMatchingDict:v15 property:v14 optionalKey:v13 optionalClassValidator:v12];
+  classCopy = class;
+  validatorCopy = validator;
+  keyCopy = key;
+  propertyCopy = property;
+  v15 = IOServiceMatching([class UTF8String]);
+  v16 = [self getMatchingDict:v15 property:propertyCopy optionalKey:keyCopy optionalClassValidator:validatorCopy];
 
   if (v15)
   {
@@ -159,14 +159,14 @@ LABEL_26:
   return v16;
 }
 
-+ (id)getIORegistryName:(id)a3 property:(id)a4 optionalKey:(id)a5 classValidator:(id)a6
++ (id)getIORegistryName:(id)name property:(id)property optionalKey:(id)key classValidator:(id)validator
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = IOServiceNameMatching([a3 UTF8String]);
-  v16 = [a1 getMatchingDict:v15 property:v14 optionalKey:v13 optionalClassValidator:v12];
+  nameCopy = name;
+  validatorCopy = validator;
+  keyCopy = key;
+  propertyCopy = property;
+  v15 = IOServiceNameMatching([name UTF8String]);
+  v16 = [self getMatchingDict:v15 property:propertyCopy optionalKey:keyCopy optionalClassValidator:validatorCopy];
 
   if (v15)
   {
@@ -176,13 +176,13 @@ LABEL_26:
   return v16;
 }
 
-+ (BOOL)IORegistryNameExists:(id)a3 optionalKey:(id)a4 passingValidator:(id)a5
++ (BOOL)IORegistryNameExists:(id)exists optionalKey:(id)key passingValidator:(id)validator
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = IOServiceNameMatching([a3 UTF8String]);
-  v12 = [DAComponentUtil getIOService:v11 optionalKey:v10 optionalClassValidator:v9];
+  existsCopy = exists;
+  validatorCopy = validator;
+  keyCopy = key;
+  v11 = IOServiceNameMatching([exists UTF8String]);
+  v12 = [DAComponentUtil getIOService:v11 optionalKey:keyCopy optionalClassValidator:validatorCopy];
 
   if (v11)
   {
@@ -197,11 +197,11 @@ LABEL_26:
   return v12 != 0;
 }
 
-+ (unsigned)getIOService:(__CFDictionary *)a3 optionalKey:(id)a4 optionalClassValidator:(id)a5
++ (unsigned)getIOService:(__CFDictionary *)service optionalKey:(id)key optionalClassValidator:(id)validator
 {
-  v7 = a4;
-  v8 = a5;
-  if (!a3)
+  keyCopy = key;
+  validatorCopy = validator;
+  if (!service)
   {
     v11 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -213,32 +213,32 @@ LABEL_26:
     goto LABEL_12;
   }
 
-  CFRetain(a3);
-  if (v7)
+  CFRetain(service);
+  if (keyCopy)
   {
-    keys = CFStringCreateWithCString(0, [v7 UTF8String], 0x8000100u);
+    keys = CFStringCreateWithCString(0, [keyCopy UTF8String], 0x8000100u);
     v9 = CFDictionaryCreate(kCFAllocatorDefault, &keys, &kCFBooleanTrue, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    CFDictionarySetValue(a3, @"IONameMatch", v9);
+    CFDictionarySetValue(service, @"IONameMatch", v9);
     CFRelease(v9);
     CFRelease(keys);
   }
 
   existing = 0;
-  if (IOServiceGetMatchingServices(kIOMainPortDefault, a3, &existing))
+  if (IOServiceGetMatchingServices(kIOMainPortDefault, service, &existing))
   {
 LABEL_12:
     LODWORD(v10) = 0;
     goto LABEL_13;
   }
 
-  if (v8)
+  if (validatorCopy)
   {
     do
     {
       v10 = IOIteratorNext(existing);
     }
 
-    while (v10 && !v8[2](v8, v10));
+    while (v10 && !validatorCopy[2](validatorCopy, v10));
   }
 
   else
@@ -251,14 +251,14 @@ LABEL_13:
   return v10;
 }
 
-+ (id)getMatchingDict:(__CFDictionary *)a3 property:(id)a4 optionalKey:(id)a5 optionalClassValidator:(id)a6
++ (id)getMatchingDict:(__CFDictionary *)dict property:(id)property optionalKey:(id)key optionalClassValidator:(id)validator
 {
-  v9 = a4;
-  v10 = [DAComponentUtil getIOService:a3 optionalKey:a5 optionalClassValidator:a6];
+  propertyCopy = property;
+  v10 = [DAComponentUtil getIOService:dict optionalKey:key optionalClassValidator:validator];
   if (v10)
   {
     v11 = v10;
-    CFProperty = IORegistryEntryCreateCFProperty(v10, v9, kCFAllocatorDefault, 0);
+    CFProperty = IORegistryEntryCreateCFProperty(v10, propertyCopy, kCFAllocatorDefault, 0);
     if (!CFProperty)
     {
       v19 = DiagnosticLogHandleForCategory();
@@ -373,17 +373,17 @@ LABEL_26:
   return v16;
 }
 
-+ (id)getIOServicePropertiesWithMatchingDictionary:(id)a3
++ (id)getIOServicePropertiesWithMatchingDictionary:(id)dictionary
 {
-  v3 = a3;
-  MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v3);
+  dictionaryCopy = dictionary;
+  MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, dictionaryCopy);
   if (!MatchingService)
   {
     v7 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *properties = 138412290;
-      *&properties[4] = v3;
+      *&properties[4] = dictionaryCopy;
       v8 = "[ERROR] Could not find the service matched by: %@";
       v9 = properties;
       v10 = v7;

@@ -1,8 +1,8 @@
 @interface DBGOffset
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withOffset:(CGPoint)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withOffset:(CGPoint)offset;
 - (CGPoint)offset;
-- (DBGOffset)initWithOffset:(CGPoint)a3;
+- (DBGOffset)initWithOffset:(CGPoint)offset;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -10,17 +10,17 @@
 
 @implementation DBGOffset
 
-+ (id)withOffset:(CGPoint)a3
++ (id)withOffset:(CGPoint)offset
 {
-  v3 = [[a1 alloc] initWithOffset:{a3.x, a3.y}];
+  v3 = [[self alloc] initWithOffset:{offset.x, offset.y}];
 
   return v3;
 }
 
-- (DBGOffset)initWithOffset:(CGPoint)a3
+- (DBGOffset)initWithOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v6.receiver = self;
   v6.super_class = DBGOffset;
   result = [(DBGOffset *)&v6 init];
@@ -35,8 +35,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGOffset *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGOffset *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -61,7 +61,7 @@
   return result;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v7 = DBGDecodeValueFromJSONCompatibleValue();
   v8 = 0;
@@ -70,10 +70,10 @@
   {
     x = CGPointZero.x;
     y = CGPointZero.y;
-    if (a5)
+    if (error)
     {
       v12 = v8;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -94,7 +94,7 @@
     x = valuePtr.x;
   }
 
-  v17 = [a1 withOffset:{x, y}];
+  v17 = [self withOffset:{x, y}];
 
   return v17;
 }

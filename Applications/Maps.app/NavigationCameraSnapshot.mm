@@ -1,23 +1,23 @@
 @interface NavigationCameraSnapshot
 - (NavigationCameraSnapshot)init;
-- (NavigationCameraSnapshot)initWithCamera:(id)a3 tracePlaybackTimeFraction:(double)a4 puckLocation:(id)a5;
-- (NavigationCameraSnapshot)initWithCoder:(id)a3;
+- (NavigationCameraSnapshot)initWithCamera:(id)camera tracePlaybackTimeFraction:(double)fraction puckLocation:(id)location;
+- (NavigationCameraSnapshot)initWithCoder:(id)coder;
 - (double)puckToCenterX;
 - (double)puckToCenterY;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NavigationCameraSnapshot
 
 - (double)puckToCenterY
 {
-  v3 = [(NavigationCameraSnapshot *)self puckLocation];
-  [v3 coordinate];
+  puckLocation = [(NavigationCameraSnapshot *)self puckLocation];
+  [puckLocation coordinate];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(NavigationCameraSnapshot *)self camera];
-  [v8 centerCoordinate];
+  camera = [(NavigationCameraSnapshot *)self camera];
+  [camera centerCoordinate];
   v10 = v9;
   v12 = v11;
 
@@ -56,13 +56,13 @@
 
 - (double)puckToCenterX
 {
-  v3 = [(NavigationCameraSnapshot *)self puckLocation];
-  [v3 coordinate];
+  puckLocation = [(NavigationCameraSnapshot *)self puckLocation];
+  [puckLocation coordinate];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(NavigationCameraSnapshot *)self camera];
-  [v8 centerCoordinate];
+  camera = [(NavigationCameraSnapshot *)self camera];
+  [camera centerCoordinate];
   v10 = v9;
   v12 = v11;
 
@@ -99,25 +99,25 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NavigationCameraSnapshot *)self camera];
-  [v4 encodeObject:v5 forKey:@"NavigationCameraSnapshotCamera"];
+  coderCopy = coder;
+  camera = [(NavigationCameraSnapshot *)self camera];
+  [coderCopy encodeObject:camera forKey:@"NavigationCameraSnapshotCamera"];
 
   [(NavigationCameraSnapshot *)self tracePlaybackTimeFraction];
-  [v4 encodeDouble:@"NavigationCameraSnapshotTracePlaybackTimeFraction" forKey:?];
-  v6 = [(NavigationCameraSnapshot *)self puckLocation];
-  [v4 encodeObject:v6 forKey:@"NavigationCameraSnapshotLocation"];
+  [coderCopy encodeDouble:@"NavigationCameraSnapshotTracePlaybackTimeFraction" forKey:?];
+  puckLocation = [(NavigationCameraSnapshot *)self puckLocation];
+  [coderCopy encodeObject:puckLocation forKey:@"NavigationCameraSnapshotLocation"];
 }
 
-- (NavigationCameraSnapshot)initWithCoder:(id)a3
+- (NavigationCameraSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NavigationCameraSnapshotCamera"];
-  [v4 decodeDoubleForKey:@"NavigationCameraSnapshotTracePlaybackTimeFraction"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NavigationCameraSnapshotCamera"];
+  [coderCopy decodeDoubleForKey:@"NavigationCameraSnapshotTracePlaybackTimeFraction"];
   v7 = v6;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NavigationCameraSnapshotLocation"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NavigationCameraSnapshotLocation"];
 
   v9 = [(NavigationCameraSnapshot *)self initWithCamera:v5 tracePlaybackTimeFraction:v8 puckLocation:v7];
   return v9;
@@ -131,21 +131,21 @@
   return v4;
 }
 
-- (NavigationCameraSnapshot)initWithCamera:(id)a3 tracePlaybackTimeFraction:(double)a4 puckLocation:(id)a5
+- (NavigationCameraSnapshot)initWithCamera:(id)camera tracePlaybackTimeFraction:(double)fraction puckLocation:(id)location
 {
-  v8 = a3;
-  v9 = a5;
+  cameraCopy = camera;
+  locationCopy = location;
   v15.receiver = self;
   v15.super_class = NavigationCameraSnapshot;
   v10 = [(NavigationCameraSnapshot *)&v15 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [cameraCopy copy];
     camera = v10->_camera;
     v10->_camera = v11;
 
-    v10->_tracePlaybackTimeFraction = a4;
-    objc_storeStrong(&v10->_puckLocation, a5);
+    v10->_tracePlaybackTimeFraction = fraction;
+    objc_storeStrong(&v10->_puckLocation, location);
     v13 = v10;
   }
 

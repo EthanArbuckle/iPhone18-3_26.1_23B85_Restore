@@ -1,71 +1,71 @@
 @interface OBTouchIDEnrollmentWelcomeController
-- (void)startTitleTransitionAnimated:(BOOL)a3 heightDifference:(id)a4;
+- (void)startTitleTransitionAnimated:(BOOL)animated heightDifference:(id)difference;
 @end
 
 @implementation OBTouchIDEnrollmentWelcomeController
 
-- (void)startTitleTransitionAnimated:(BOOL)a3 heightDifference:(id)a4
+- (void)startTitleTransitionAnimated:(BOOL)animated heightDifference:(id)difference
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(OBWelcomeController *)self headerView];
-  v7 = [v6 headerLabel];
-  [v7 frame];
+  differenceCopy = difference;
+  headerView = [(OBWelcomeController *)self headerView];
+  headerLabel = [headerView headerLabel];
+  [headerLabel frame];
   v9 = v8;
 
-  v10 = [(OBWelcomeController *)self headerView];
-  v11 = [v10 headerLabel];
-  v12 = [(OBWelcomeController *)self headerView];
-  [v12 bounds];
+  headerView2 = [(OBWelcomeController *)self headerView];
+  headerLabel2 = [headerView2 headerLabel];
+  headerView3 = [(OBWelcomeController *)self headerView];
+  [headerView3 bounds];
   v14 = v13;
   LODWORD(v13) = 1112014848;
   LODWORD(v15) = 1132068864;
-  [v11 systemLayoutSizeFittingSize:v14 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v13, v15}];
+  [headerLabel2 systemLayoutSizeFittingSize:v14 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v13, v15}];
   v17 = v16;
 
-  v18 = [(OBWelcomeController *)self headerView];
-  v19 = [v18 detailLabel];
-  [v19 frame];
+  headerView4 = [(OBWelcomeController *)self headerView];
+  detailLabel = [headerView4 detailLabel];
+  [detailLabel frame];
   v21 = v20;
 
-  v22 = [(OBWelcomeController *)self headerView];
-  v23 = [v22 detailLabel];
-  v24 = [(OBWelcomeController *)self headerView];
-  [v24 bounds];
+  headerView5 = [(OBWelcomeController *)self headerView];
+  detailLabel2 = [headerView5 detailLabel];
+  headerView6 = [(OBWelcomeController *)self headerView];
+  [headerView6 bounds];
   v26 = v25;
   LODWORD(v25) = 1112014848;
   LODWORD(v27) = 1132068864;
-  [v23 systemLayoutSizeFittingSize:v26 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v25, v27}];
+  [detailLabel2 systemLayoutSizeFittingSize:v26 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v25, v27}];
   v29 = v28;
 
   v30 = v29 != v21 || v17 != v9;
-  if (v5)
+  if (differenceCopy)
   {
-    v5[2](v5, v9 - v17 + v21 - v29);
+    differenceCopy[2](differenceCopy, v9 - v17 + v21 - v29);
   }
 
-  v31 = [(OBWelcomeController *)self headerView];
-  if (v31)
+  headerView7 = [(OBWelcomeController *)self headerView];
+  if (headerView7)
   {
-    v32 = [(OBWelcomeController *)self headerView];
-    [v32 headerLabel];
+    headerView8 = [(OBWelcomeController *)self headerView];
+    [headerView8 headerLabel];
   }
 
-  v33 = [(OBWelcomeController *)self headerView];
-  v34 = [v33 headerLabel];
-  v42[0] = v34;
+  headerView9 = [(OBWelcomeController *)self headerView];
+  headerLabel3 = [headerView9 headerLabel];
+  v42[0] = headerLabel3;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
 
   if (v30)
   {
-    v36 = [(OBWelcomeController *)self headerView];
-    v41 = v36;
+    headerView10 = [(OBWelcomeController *)self headerView];
+    v41 = headerView10;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
 
     if ([(OBTouchIDEnrollmentWelcomeController *)self shouldAnimateEntireView])
     {
-      v38 = [(OBTouchIDEnrollmentWelcomeController *)self view];
-      v40 = v38;
+      view = [(OBTouchIDEnrollmentWelcomeController *)self view];
+      v40 = view;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
     }
 

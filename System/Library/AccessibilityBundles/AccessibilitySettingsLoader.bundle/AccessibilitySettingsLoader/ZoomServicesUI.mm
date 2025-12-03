@@ -1,20 +1,20 @@
 @interface ZoomServicesUI
 + (BOOL)_shouldUnmapPointsForFluidGestures;
-+ (CGPoint)_unMappedZoomPoint:(CGPoint)a3;
++ (CGPoint)_unMappedZoomPoint:(CGPoint)point;
 + (void)disableZoomServices;
 + (void)enableZoomServices;
 - (CGRect)_keyboardFrameInScreenCoordinates;
 - (Class)_accessibilityBundlePrincipalClass;
 - (ZoomServicesUI)init;
-- (void)_handleAlertWillAppearNotification:(id)a3;
-- (void)_handleAppDidEnterBackgroundNotification:(id)a3;
-- (void)_handleAppSwitcherWillBeginRevealNotification:(id)a3;
-- (void)_handleFirstResponderDidChangeNotification:(id)a3;
-- (void)_handleKeyboardDidHideNotification:(id)a3;
-- (void)_handleKeyboardWillHideNotification:(id)a3;
-- (void)_handleLockButtonWasPressedNotification:(id)a3;
-- (void)_handleRegisterZoomConflictNotification:(id)a3;
-- (void)_handleZoomFocusDidChangeNotification:(id)a3;
+- (void)_handleAlertWillAppearNotification:(id)notification;
+- (void)_handleAppDidEnterBackgroundNotification:(id)notification;
+- (void)_handleAppSwitcherWillBeginRevealNotification:(id)notification;
+- (void)_handleFirstResponderDidChangeNotification:(id)notification;
+- (void)_handleKeyboardDidHideNotification:(id)notification;
+- (void)_handleKeyboardWillHideNotification:(id)notification;
+- (void)_handleLockButtonWasPressedNotification:(id)notification;
+- (void)_handleRegisterZoomConflictNotification:(id)notification;
+- (void)_handleZoomFocusDidChangeNotification:(id)notification;
 - (void)_installZoomUISafeCategoriesIfNeeded;
 - (void)_registerForAppNotifications;
 - (void)_unregisterForAppNotifications;
@@ -26,9 +26,9 @@
 
 + (void)enableZoomServices
 {
-  v0 = [MEMORY[0x29EDB9F28] currentHandler];
+  currentHandler = [MEMORY[0x29EDB9F28] currentHandler];
   v1 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:"BOOL soft_AXProcessIsAXUIServer(void)"];
-  [v0 handleFailureInFunction:v1 file:@"AXSettingsLoaderSoftLinkages.h" lineNumber:82 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"AXSettingsLoaderSoftLinkages.h" lineNumber:82 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -39,16 +39,16 @@
   _SharedZoomServicesUI = 0;
 }
 
-+ (CGPoint)_unMappedZoomPoint:(CGPoint)a3
++ (CGPoint)_unMappedZoomPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (CGRectIsEmpty(*zoomFrame))
   {
-    v5 = [getZoomServicesClass() sharedInstance];
-    v6 = [MEMORY[0x29EDC7C40] mainScreen];
-    v7 = [v6 displayIdentity];
-    [v5 zoomFrameOnDisplay:{objc_msgSend(v7, "displayID")}];
+    sharedInstance = [getZoomServicesClass() sharedInstance];
+    mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+    displayIdentity = [mainScreen displayIdentity];
+    [sharedInstance zoomFrameOnDisplay:{objc_msgSend(displayIdentity, "displayID")}];
     *zoomFrame = v8;
     *&zoomFrame[8] = v9;
     *&zoomFrame[16] = v10;
@@ -61,8 +61,8 @@
   {
     v12 = (x - *zoomFrame) / *&zoomFrame[16];
     v13 = (y - *&zoomFrame[8]) / *&zoomFrame[24];
-    v14 = [MEMORY[0x29EDC7C40] mainScreen];
-    [v14 bounds];
+    mainScreen2 = [MEMORY[0x29EDC7C40] mainScreen];
+    [mainScreen2 bounds];
     v16 = v15;
     v18 = v17;
 
@@ -81,10 +81,10 @@
 {
   if (_AXSZoomTouchEnabled())
   {
-    v2 = [getZoomServicesClass() sharedInstance];
-    v3 = [MEMORY[0x29EDC7C40] mainScreen];
-    v4 = [v3 displayIdentity];
-    v5 = [v2 activeZoomModeOnDisplay:{objc_msgSend(v4, "displayID")}];
+    sharedInstance = [getZoomServicesClass() sharedInstance];
+    mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+    displayIdentity = [mainScreen displayIdentity];
+    v5 = [sharedInstance activeZoomModeOnDisplay:{objc_msgSend(displayIdentity, "displayID")}];
     if ([v5 isEqualToString:*MEMORY[0x29EDBD620]] && (!soft_AXDeviceHasHomeButton() || soft_AXDeviceIsPad()))
     {
       v6 = !UIAccessibilityIsReduceMotionEnabled();
@@ -111,8 +111,8 @@
   v2 = [(ZoomServicesUI *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleZoomEnabledStatusDidChangeNotification_ name:*MEMORY[0x29EDC8558] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleZoomEnabledStatusDidChangeNotification_ name:*MEMORY[0x29EDC8558] object:0];
 
     [(ZoomServicesUI *)v2 _updateForCurrentZoomStatus];
   }
@@ -123,8 +123,8 @@
 - (void)dealloc
 {
   [(ZoomServicesUI *)self _unregisterForAppNotifications];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ZoomServicesUI;
@@ -139,9 +139,9 @@
   v5 = [v4 stringByAppendingPathExtension:@"axbundle"];
 
   v6 = [MEMORY[0x29EDB9F48] bundleWithPath:v5];
-  v7 = [v6 principalClass];
+  principalClass = [v6 principalClass];
 
-  return v7;
+  return principalClass;
 }
 
 - (void)_updateForCurrentZoomStatus
@@ -164,29 +164,29 @@
 {
   if (![(ZoomServicesUI *)self isRegisteredForAppNotifications])
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:self selector:sel__handleRegisterZoomConflictNotification_ name:*MEMORY[0x29EDC7E90] object:0];
-    [v3 addObserver:self selector:sel__handleZoomFocusDidChangeNotification_ name:*MEMORY[0x29EDC7E88] object:0];
-    [v3 addObserver:self selector:sel__handleFirstResponderDidChangeNotification_ name:@"UIWindowFirstResponderDidChangeNotification" object:0];
-    [v3 addObserver:self selector:sel__handleKeyboardWillShowNotification_ name:*MEMORY[0x29EDC81D8] object:0];
-    [v3 addObserver:self selector:sel__handleKeyboardWillHideNotification_ name:*MEMORY[0x29EDC81D0] object:0];
-    [v3 addObserver:self selector:sel__handleKeyboardDidHideNotification_ name:*MEMORY[0x29EDC8198] object:0];
-    [v3 addObserver:self selector:sel__handleAlertWillAppearNotification_ name:@"ZoomUIAleartWillAppearNotification" object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleRegisterZoomConflictNotification_ name:*MEMORY[0x29EDC7E90] object:0];
+    [defaultCenter addObserver:self selector:sel__handleZoomFocusDidChangeNotification_ name:*MEMORY[0x29EDC7E88] object:0];
+    [defaultCenter addObserver:self selector:sel__handleFirstResponderDidChangeNotification_ name:@"UIWindowFirstResponderDidChangeNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__handleKeyboardWillShowNotification_ name:*MEMORY[0x29EDC81D8] object:0];
+    [defaultCenter addObserver:self selector:sel__handleKeyboardWillHideNotification_ name:*MEMORY[0x29EDC81D0] object:0];
+    [defaultCenter addObserver:self selector:sel__handleKeyboardDidHideNotification_ name:*MEMORY[0x29EDC8198] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAlertWillAppearNotification_ name:@"ZoomUIAleartWillAppearNotification" object:0];
     if (soft_AXProcessIsSpringBoard())
     {
-      [v3 addObserver:self selector:sel__handleLockButtonWasPressedNotification_ name:@"SBLockButtonPressedNotification" object:0];
+      [defaultCenter addObserver:self selector:sel__handleLockButtonWasPressedNotification_ name:@"SBLockButtonPressedNotification" object:0];
       v4 = sel__handleAppSwitcherWillBeginRevealNotification_;
       v5 = @"SBUIAppSwitcherRevealedNotification";
     }
 
     else
     {
-      [v3 addObserver:self selector:sel__handleAppDidBecomeActiveNotification_ name:*MEMORY[0x29EDC8010] object:0];
+      [defaultCenter addObserver:self selector:sel__handleAppDidBecomeActiveNotification_ name:*MEMORY[0x29EDC8010] object:0];
       v4 = sel__handleAppDidEnterBackgroundNotification_;
       v5 = *MEMORY[0x29EDC8018];
     }
 
-    [v3 addObserver:self selector:v4 name:v5 object:0];
+    [defaultCenter addObserver:self selector:v4 name:v5 object:0];
   }
 
   [(ZoomServicesUI *)self setRegisteredForAppNotifications:1];
@@ -196,26 +196,26 @@
 {
   if ([(ZoomServicesUI *)self isRegisteredForAppNotifications])
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x29EDC7E90] object:0];
-    [v3 removeObserver:self name:*MEMORY[0x29EDC7E88] object:0];
-    [v3 removeObserver:self name:@"UIWindowFirstResponderDidChangeNotification" object:0];
-    [v3 removeObserver:self name:*MEMORY[0x29EDC81D8] object:0];
-    [v3 removeObserver:self name:*MEMORY[0x29EDC81D0] object:0];
-    [v3 removeObserver:self name:@"ZoomUIAleartWillAppearNotification" object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x29EDC7E90] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x29EDC7E88] object:0];
+    [defaultCenter removeObserver:self name:@"UIWindowFirstResponderDidChangeNotification" object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x29EDC81D8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x29EDC81D0] object:0];
+    [defaultCenter removeObserver:self name:@"ZoomUIAleartWillAppearNotification" object:0];
     if (soft_AXProcessIsSpringBoard())
     {
-      [v3 removeObserver:self name:@"SBLockButtonPressedNotification" object:0];
+      [defaultCenter removeObserver:self name:@"SBLockButtonPressedNotification" object:0];
       v4 = @"SBUIAppSwitcherRevealedNotification";
     }
 
     else
     {
-      [v3 removeObserver:self name:*MEMORY[0x29EDC8010] object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x29EDC8010] object:0];
       v4 = *MEMORY[0x29EDC8018];
     }
 
-    [v3 removeObserver:self name:v4 object:0];
+    [defaultCenter removeObserver:self name:v4 object:0];
   }
 
   [(ZoomServicesUI *)self setRegisteredForAppNotifications:0];
@@ -415,10 +415,10 @@ LABEL_6:
   return result;
 }
 
-- (void)_handleFirstResponderDidChangeNotification:(id)a3
+- (void)_handleFirstResponderDidChangeNotification:(id)notification
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:@"UIWindowFirstResponderUserInfoKey"];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKey:@"UIWindowFirstResponderUserInfoKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -535,23 +535,23 @@ void __61__ZoomServicesUI__handleFirstResponderDidChangeNotification___block_inv
   }
 }
 
-- (void)_handleZoomFocusDidChangeNotification:(id)a3
+- (void)_handleZoomFocusDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"type"];
-  v7 = [v6 integerValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"type"];
+  integerValue = [v6 integerValue];
 
-  if ((v7 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((integerValue - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKey:@"frame"];
+    userInfo2 = [notificationCopy userInfo];
+    v9 = [userInfo2 objectForKey:@"frame"];
     NSRectFromString(v9);
 
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKey:@"window"];
+    userInfo3 = [notificationCopy userInfo];
+    v11 = [userInfo3 objectForKey:@"window"];
 
-    if (v7)
+    if (integerValue)
     {
       v12 = *MEMORY[0x29EDB90D8];
       v13 = *(MEMORY[0x29EDB90D8] + 8);
@@ -568,7 +568,7 @@ void __61__ZoomServicesUI__handleFirstResponderDidChangeNotification___block_inv
       v15 = v19;
     }
 
-    v20 = v4;
+    v20 = notificationCopy;
     v34 = 0;
     v35 = &v34;
     v36 = 0x2020000000;
@@ -593,22 +593,22 @@ void __61__ZoomServicesUI__handleFirstResponderDidChangeNotification___block_inv
     v27 = v26;
     v29 = v28;
 
-    v30 = [getZoomServicesClass() sharedInstance];
-    v31 = [v11 _contextId];
-    v32 = [v11 screen];
-    v33 = [v32 displayIdentity];
-    [v30 notifyZoomFocusDidChangeWithType:v7 rect:v31 contextId:objc_msgSend(v33 keyboardFrame:"displayID") displayId:{v23, v25, v27, v29, v12, v13, v14, v15}];
+    sharedInstance = [getZoomServicesClass() sharedInstance];
+    _contextId = [v11 _contextId];
+    screen = [v11 screen];
+    displayIdentity = [screen displayIdentity];
+    [sharedInstance notifyZoomFocusDidChangeWithType:integerValue rect:_contextId contextId:objc_msgSend(displayIdentity keyboardFrame:"displayID") displayId:{v23, v25, v27, v29, v12, v13, v14, v15}];
   }
 }
 
-- (void)_handleRegisterZoomConflictNotification:(id)a3
+- (void)_handleRegisterZoomConflictNotification:(id)notification
 {
-  v5 = [a3 userInfo];
-  v3 = [getAXBackBoardServerClass() server];
-  [v3 registerGestureConflictWithZoom:v5];
+  userInfo = [notification userInfo];
+  server = [getAXBackBoardServerClass() server];
+  [server registerGestureConflictWithZoom:userInfo];
 
-  v4 = [getAXBackBoardServerClass() server];
-  [v4 registerGestureConflictWithZoom:v5];
+  server2 = [getAXBackBoardServerClass() server];
+  [server2 registerGestureConflictWithZoom:userInfo];
 }
 
 void __54__ZoomServicesUI__handleKeyboardWillShowNotification___block_invoke()
@@ -642,20 +642,20 @@ void __54__ZoomServicesUI__handleKeyboardWillShowNotification___block_invoke()
   }
 }
 
-- (void)_handleKeyboardWillHideNotification:(id)a3
+- (void)_handleKeyboardWillHideNotification:(id)notification
 {
-  v3 = [MEMORY[0x29EDC7AF8] activeKeyboard];
+  activeKeyboard = [MEMORY[0x29EDC7AF8] activeKeyboard];
 
-  if (v3)
+  if (activeKeyboard)
   {
-    v11 = [getZoomServicesClass() sharedInstance];
-    v4 = [MEMORY[0x29EDB9F48] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [MEMORY[0x29EDC7AF8] activeKeyboard];
-    v7 = [v6 window];
-    v8 = [v7 screen];
-    v9 = [v8 displayIdentity];
-    [v11 notifyZoomKeyboardWillHideInAppWithBundleID:v5 displayID:{objc_msgSend(v9, "displayID")}];
+    sharedInstance = [getZoomServicesClass() sharedInstance];
+    mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    activeKeyboard2 = [MEMORY[0x29EDC7AF8] activeKeyboard];
+    window = [activeKeyboard2 window];
+    screen = [window screen];
+    displayIdentity = [screen displayIdentity];
+    [sharedInstance notifyZoomKeyboardWillHideInAppWithBundleID:bundleIdentifier displayID:{objc_msgSend(displayIdentity, "displayID")}];
   }
 
   else
@@ -668,20 +668,20 @@ void __54__ZoomServicesUI__handleKeyboardWillShowNotification___block_invoke()
   }
 }
 
-- (void)_handleKeyboardDidHideNotification:(id)a3
+- (void)_handleKeyboardDidHideNotification:(id)notification
 {
-  v3 = [MEMORY[0x29EDC7AF8] activeKeyboard];
+  activeKeyboard = [MEMORY[0x29EDC7AF8] activeKeyboard];
 
-  if (v3)
+  if (activeKeyboard)
   {
-    v11 = [getZoomServicesClass() sharedInstance];
-    v4 = [MEMORY[0x29EDB9F48] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [MEMORY[0x29EDC7AF8] activeKeyboard];
-    v7 = [v6 window];
-    v8 = [v7 screen];
-    v9 = [v8 displayIdentity];
-    [v11 notifyZoomKeyboardDidHideInAppWithBundleID:v5 displayID:{objc_msgSend(v9, "displayID")}];
+    sharedInstance = [getZoomServicesClass() sharedInstance];
+    mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    activeKeyboard2 = [MEMORY[0x29EDC7AF8] activeKeyboard];
+    window = [activeKeyboard2 window];
+    screen = [window screen];
+    displayIdentity = [screen displayIdentity];
+    [sharedInstance notifyZoomKeyboardDidHideInAppWithBundleID:bundleIdentifier displayID:{objc_msgSend(displayIdentity, "displayID")}];
   }
 
   else
@@ -694,36 +694,36 @@ void __54__ZoomServicesUI__handleKeyboardWillShowNotification___block_invoke()
   }
 }
 
-- (void)_handleAlertWillAppearNotification:(id)a3
+- (void)_handleAlertWillAppearNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKey:@"frame"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKey:@"frame"];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [v3 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v15 = [v14 objectForKey:@"contextId"];
-  v16 = [v15 unsignedIntValue];
+  v15 = [userInfo2 objectForKey:@"contextId"];
+  unsignedIntValue = [v15 unsignedIntValue];
 
-  v17 = [getZoomServicesClass() sharedInstance];
-  [v17 notifyZoomFocusDidChangeWithType:7 rect:v16 contextId:0 displayId:{v7, v9, v11, v13}];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance notifyZoomFocusDidChangeWithType:7 rect:unsignedIntValue contextId:0 displayId:{v7, v9, v11, v13}];
 }
 
-- (void)_handleLockButtonWasPressedNotification:(id)a3
+- (void)_handleLockButtonWasPressedNotification:(id)notification
 {
-  v3 = [getZoomServicesClass() sharedInstance];
-  [v3 notifyZoomLockButtonWasPressed];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance notifyZoomLockButtonWasPressed];
 }
 
-- (void)_handleAppSwitcherWillBeginRevealNotification:(id)a3
+- (void)_handleAppSwitcherWillBeginRevealNotification:(id)notification
 {
-  v3 = [getZoomServicesClass() sharedInstance];
-  [v3 notifyZoomAppSwitcherRevealAnimationWillBegin];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance notifyZoomAppSwitcherRevealAnimationWillBegin];
 }
 
 void __56__ZoomServicesUI__handleAppDidBecomeActiveNotification___block_invoke()
@@ -757,12 +757,12 @@ void __56__ZoomServicesUI__handleAppDidBecomeActiveNotification___block_invoke()
   [v19 notifyZoomAppDidBecomeActive:v18 keyboardFrameIfVisible:{v10, v12, v14, v16}];
 }
 
-- (void)_handleAppDidEnterBackgroundNotification:(id)a3
+- (void)_handleAppDidEnterBackgroundNotification:(id)notification
 {
-  v5 = [getZoomServicesClass() sharedInstance];
-  v3 = [MEMORY[0x29EDB9F48] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  [v5 notifyZoomAppDidEnterBackground:v4];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [sharedInstance notifyZoomAppDidEnterBackground:bundleIdentifier];
 }
 
 void __54__ZoomServicesUI__installZoomUISafeCategoriesIfNeeded__block_invoke_3_cold_1()

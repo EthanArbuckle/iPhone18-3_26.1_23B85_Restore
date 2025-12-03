@@ -3,29 +3,29 @@
 - (id)remoteObject;
 - (void)beginAdvertisingProximitySetup;
 - (void)dismissProximityPinCode;
-- (void)doWithSetupCtlConnections:(id)a3;
+- (void)doWithSetupCtlConnections:(id)connections;
 - (void)endAdvertisingProximitySetup;
 - (void)executeResumeConnectionCompletionWithHandshake;
 - (void)executeSuspendConnectionForSoftwareUpdateCompletion;
-- (void)fileTransferSessionTemplate:(id)a3;
-- (void)finishAccountSetupWithIntent:(int64_t)a3;
+- (void)fileTransferSessionTemplate:(id)template;
+- (void)finishAccountSetupWithIntent:(int64_t)intent;
 - (void)finishPairing;
-- (void)hasConnection:(id)a3;
-- (void)hasHandshake:(id)a3;
-- (void)hasProximityInformation:(id)a3;
-- (void)isAdvertising:(id)a3;
-- (void)isConnected:(id)a3;
-- (void)isShowingPairingCode:(id)a3;
+- (void)hasConnection:(id)connection;
+- (void)hasHandshake:(id)handshake;
+- (void)hasProximityInformation:(id)information;
+- (void)isAdvertising:(id)advertising;
+- (void)isConnected:(id)connected;
+- (void)isShowingPairingCode:(id)code;
 - (void)proximityConnectionInitiated;
-- (void)proximityConnectionPreparing:(id)a3;
+- (void)proximityConnectionPreparing:(id)preparing;
 - (void)proximityConnectionReconnected;
 - (void)proximityConnectionTerminated;
-- (void)proximitySetupCompleted:(id)a3;
-- (void)receivedLanguages:(id)a3 locale:(id)a4 model:(id)a5 deviceClass:(id)a6 accessibilitySettings:(id)a7;
-- (void)resumeProximitySetup:(id)a3;
-- (void)storeHandshake:(id)a3;
-- (void)storeInformation:(id)a3;
-- (void)suspendConnectionForSoftwareUpdate:(id)a3;
+- (void)proximitySetupCompleted:(id)completed;
+- (void)receivedLanguages:(id)languages locale:(id)locale model:(id)model deviceClass:(id)class accessibilitySettings:(id)settings;
+- (void)resumeProximitySetup:(id)setup;
+- (void)storeHandshake:(id)handshake;
+- (void)storeInformation:(id)information;
+- (void)suspendConnectionForSoftwareUpdate:(id)update;
 @end
 
 @implementation BYDaemonProximityTargetClientConnectionOverride
@@ -46,12 +46,12 @@
 
 - (id)remoteObject
 {
-  v3 = [(BYDaemonProximityTargetClientConnectionOverride *)self setupConnection];
+  setupConnection = [(BYDaemonProximityTargetClientConnectionOverride *)self setupConnection];
 
-  if (v3)
+  if (setupConnection)
   {
-    v4 = [(BYDaemonProximityTargetClientConnectionOverride *)self setupConnection];
-    v5 = [v4 remoteObjectProxy];
+    setupConnection2 = [(BYDaemonProximityTargetClientConnectionOverride *)self setupConnection];
+    remoteObjectProxy = [setupConnection2 remoteObjectProxy];
   }
 
   else
@@ -62,79 +62,79 @@
       sub_100010EE4(v6);
     }
 
-    v5 = 0;
+    remoteObjectProxy = 0;
   }
 
-  return v5;
+  return remoteObjectProxy;
 }
 
 - (void)dismissProximityPinCode
 {
   [(BYDaemonProximityTargetClientConnectionOverride *)self setIsShowingPairingCode:0];
-  v3 = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
-  [v3 dismissProximityPinCode];
+  remoteObject = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
+  [remoteObject dismissProximityPinCode];
 }
 
 - (void)proximityConnectionInitiated
 {
   [(BYDaemonProximityTargetClientConnectionOverride *)self setIsConnected:1];
   [(BYDaemonProximityTargetClientConnectionOverride *)self setIsShowingPairingCode:0];
-  v3 = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
-  [v3 proximityConnectionInitiated];
+  remoteObject = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
+  [remoteObject proximityConnectionInitiated];
 }
 
 - (void)proximityConnectionReconnected
 {
   [(BYDaemonProximityTargetClientConnectionOverride *)self setIsConnected:1];
-  v3 = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
-  [v3 proximityConnectionReconnected];
+  remoteObject = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
+  [remoteObject proximityConnectionReconnected];
 }
 
 - (void)proximityConnectionTerminated
 {
   [(BYDaemonProximityTargetClientConnectionOverride *)self setIsConnected:0];
-  v3 = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
-  [v3 proximityConnectionTerminated];
+  remoteObject = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
+  [remoteObject proximityConnectionTerminated];
 }
 
-- (void)proximityConnectionPreparing:(id)a3
+- (void)proximityConnectionPreparing:(id)preparing
 {
-  v4 = a3;
-  v5 = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
-  [v5 proximityConnectionPreparing:v4];
+  preparingCopy = preparing;
+  remoteObject = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
+  [remoteObject proximityConnectionPreparing:preparingCopy];
 }
 
-- (void)proximitySetupCompleted:(id)a3
+- (void)proximitySetupCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   [(BYDaemonProximityTargetClientConnectionOverride *)self setIsShowingPairingCode:0];
-  v5 = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
-  [v5 proximitySetupCompleted:v4];
+  remoteObject = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
+  [remoteObject proximitySetupCompleted:completedCopy];
 }
 
-- (void)receivedLanguages:(id)a3 locale:(id)a4 model:(id)a5 deviceClass:(id)a6 accessibilitySettings:(id)a7
+- (void)receivedLanguages:(id)languages locale:(id)locale model:(id)model deviceClass:(id)class accessibilitySettings:(id)settings
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
-  [v17 receivedLanguages:v16 locale:v15 model:v14 deviceClass:v13 accessibilitySettings:v12];
+  settingsCopy = settings;
+  classCopy = class;
+  modelCopy = model;
+  localeCopy = locale;
+  languagesCopy = languages;
+  remoteObject = [(BYDaemonProximityTargetClientConnectionOverride *)self remoteObject];
+  [remoteObject receivedLanguages:languagesCopy locale:localeCopy model:modelCopy deviceClass:classCopy accessibilitySettings:settingsCopy];
 }
 
 - (void)finishPairing
 {
-  v3 = [(BYDaemonProximityTargetClientConnectionOverride *)self setupConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 finishPairing];
+  setupConnection = [(BYDaemonProximityTargetClientConnectionOverride *)self setupConnection];
+  remoteObjectProxy = [setupConnection remoteObjectProxy];
+  [remoteObjectProxy finishPairing];
 }
 
-- (void)finishAccountSetupWithIntent:(int64_t)a3
+- (void)finishAccountSetupWithIntent:(int64_t)intent
 {
-  v5 = [(BYDaemonProximityTargetClientConnectionOverride *)self setupConnection];
-  v4 = [v5 remoteObjectProxy];
-  [v4 finishAccountSetupWithIntent:a3];
+  setupConnection = [(BYDaemonProximityTargetClientConnectionOverride *)self setupConnection];
+  remoteObjectProxy = [setupConnection remoteObjectProxy];
+  [remoteObjectProxy finishAccountSetupWithIntent:intent];
 }
 
 - (void)beginAdvertisingProximitySetup
@@ -151,24 +151,24 @@
   [(BYDaemonProximityTargetClientConnectionOverride *)self doWithSetupCtlConnections:&stru_100020A80];
 }
 
-- (void)hasConnection:(id)a3
+- (void)hasConnection:(id)connection
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(BYDaemonProximityTargetClientConnectionOverride *)self isConnected]);
+  connectionCopy = connection;
+  (*(connection + 2))(connectionCopy, [(BYDaemonProximityTargetClientConnectionOverride *)self isConnected]);
 
   [(BYDaemonProximityTargetClientConnectionOverride *)self doWithSetupCtlConnections:&stru_100020AC0];
 }
 
-- (void)resumeProximitySetup:(id)a3
+- (void)resumeProximitySetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100008B5C;
   v6[3] = &unk_100020B88;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = setupCopy;
   v7 = v5;
   [(BYDaemonProximityTargetClientConnectionOverride *)self setResumeConnectionCompletion:v6];
   [(BYDaemonProximityTargetClientConnectionOverride *)self doWithSetupCtlConnections:&stru_100020BA8];
@@ -177,52 +177,52 @@
   objc_destroyWeak(&location);
 }
 
-- (void)storeHandshake:(id)a3
+- (void)storeHandshake:(id)handshake
 {
-  v4 = a3;
-  [(BYDaemonProximityTargetClientConnectionOverride *)self setHandshake:v4];
+  handshakeCopy = handshake;
+  [(BYDaemonProximityTargetClientConnectionOverride *)self setHandshake:handshakeCopy];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100008D6C;
   v6[3] = &unk_100020BF0;
-  v7 = v4;
-  v5 = v4;
+  v7 = handshakeCopy;
+  v5 = handshakeCopy;
   [(BYDaemonProximityTargetClientConnectionOverride *)self doWithSetupCtlConnections:v6];
 }
 
-- (void)storeInformation:(id)a3
+- (void)storeInformation:(id)information
 {
-  v4 = a3;
-  [(BYDaemonProximityTargetClientConnectionOverride *)self setInformation:v4];
+  informationCopy = information;
+  [(BYDaemonProximityTargetClientConnectionOverride *)self setInformation:informationCopy];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100008E64;
   v6[3] = &unk_100020BF0;
-  v7 = v4;
-  v5 = v4;
+  v7 = informationCopy;
+  v5 = informationCopy;
   [(BYDaemonProximityTargetClientConnectionOverride *)self doWithSetupCtlConnections:v6];
 }
 
-- (void)suspendConnectionForSoftwareUpdate:(id)a3
+- (void)suspendConnectionForSoftwareUpdate:(id)update
 {
-  [(BYDaemonProximityTargetClientConnectionOverride *)self setSuspendConnectionForSoftwareUpdateCompletion:a3];
+  [(BYDaemonProximityTargetClientConnectionOverride *)self setSuspendConnectionForSoftwareUpdateCompletion:update];
 
   [(BYDaemonProximityTargetClientConnectionOverride *)self doWithSetupCtlConnections:&stru_100020C10];
 }
 
-- (void)fileTransferSessionTemplate:(id)a3
+- (void)fileTransferSessionTemplate:(id)template
 {
-  [(BYDaemonProximityTargetClientConnectionOverride *)self setFileTransferSessionTemplateCompletion:a3];
+  [(BYDaemonProximityTargetClientConnectionOverride *)self setFileTransferSessionTemplateCompletion:template];
   [(BYDaemonProximityTargetClientConnectionOverride *)self doWithSetupCtlConnections:&stru_100020C30];
 
   [(BYDaemonProximityTargetClientConnectionOverride *)self executeFileTransferSessionTemplateWithError:0];
 }
 
-- (void)doWithSetupCtlConnections:(id)a3
+- (void)doWithSetupCtlConnections:(id)connections
 {
-  v4 = a3;
-  v5 = [(BYDaemonProximityTargetClientConnectionOverride *)self setupCtlConnections];
-  v6 = [v5 copy];
+  connectionsCopy = connections;
+  setupCtlConnections = [(BYDaemonProximityTargetClientConnectionOverride *)self setupCtlConnections];
+  v6 = [setupCtlConnections copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -246,7 +246,7 @@
 
         if (*(*(&v12 + 1) + 8 * v11))
         {
-          v4[2](v4);
+          connectionsCopy[2](connectionsCopy);
         }
 
         v11 = v11 + 1;
@@ -262,12 +262,12 @@
 
 - (void)executeResumeConnectionCompletionWithHandshake
 {
-  v3 = [(BYDaemonProximityTargetClientConnectionOverride *)self resumeConnectionCompletion];
+  resumeConnectionCompletion = [(BYDaemonProximityTargetClientConnectionOverride *)self resumeConnectionCompletion];
 
-  if (v3)
+  if (resumeConnectionCompletion)
   {
-    v4 = [(BYDaemonProximityTargetClientConnectionOverride *)self resumeConnectionCompletion];
-    v4[2]();
+    resumeConnectionCompletion2 = [(BYDaemonProximityTargetClientConnectionOverride *)self resumeConnectionCompletion];
+    resumeConnectionCompletion2[2]();
 
     [(BYDaemonProximityTargetClientConnectionOverride *)self setResumeConnectionCompletion:0];
   }
@@ -275,47 +275,47 @@
 
 - (void)executeSuspendConnectionForSoftwareUpdateCompletion
 {
-  v3 = [(BYDaemonProximityTargetClientConnectionOverride *)self suspendConnectionForSoftwareUpdateCompletion];
+  suspendConnectionForSoftwareUpdateCompletion = [(BYDaemonProximityTargetClientConnectionOverride *)self suspendConnectionForSoftwareUpdateCompletion];
 
-  if (v3)
+  if (suspendConnectionForSoftwareUpdateCompletion)
   {
-    v4 = [(BYDaemonProximityTargetClientConnectionOverride *)self suspendConnectionForSoftwareUpdateCompletion];
-    v4[2]();
+    suspendConnectionForSoftwareUpdateCompletion2 = [(BYDaemonProximityTargetClientConnectionOverride *)self suspendConnectionForSoftwareUpdateCompletion];
+    suspendConnectionForSoftwareUpdateCompletion2[2]();
 
     [(BYDaemonProximityTargetClientConnectionOverride *)self setSuspendConnectionForSoftwareUpdateCompletion:0];
   }
 }
 
-- (void)hasHandshake:(id)a3
+- (void)hasHandshake:(id)handshake
 {
-  v5 = a3;
-  v6 = [(BYDaemonProximityTargetClientConnectionOverride *)self handshake];
-  (*(a3 + 2))(v5, v6 != 0);
+  handshakeCopy = handshake;
+  handshake = [(BYDaemonProximityTargetClientConnectionOverride *)self handshake];
+  (*(handshake + 2))(handshakeCopy, handshake != 0);
 }
 
-- (void)hasProximityInformation:(id)a3
+- (void)hasProximityInformation:(id)information
 {
-  v5 = a3;
-  v6 = [(BYDaemonProximityTargetClientConnectionOverride *)self information];
-  (*(a3 + 2))(v5, v6 != 0);
+  informationCopy = information;
+  information = [(BYDaemonProximityTargetClientConnectionOverride *)self information];
+  (*(information + 2))(informationCopy, information != 0);
 }
 
-- (void)isAdvertising:(id)a3
+- (void)isAdvertising:(id)advertising
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(BYDaemonProximityTargetClientConnectionOverride *)self isAdvertising]);
+  advertisingCopy = advertising;
+  (*(advertising + 2))(advertisingCopy, [(BYDaemonProximityTargetClientConnectionOverride *)self isAdvertising]);
 }
 
-- (void)isConnected:(id)a3
+- (void)isConnected:(id)connected
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(BYDaemonProximityTargetClientConnectionOverride *)self isConnected]);
+  connectedCopy = connected;
+  (*(connected + 2))(connectedCopy, [(BYDaemonProximityTargetClientConnectionOverride *)self isConnected]);
 }
 
-- (void)isShowingPairingCode:(id)a3
+- (void)isShowingPairingCode:(id)code
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(BYDaemonProximityTargetClientConnectionOverride *)self isShowingPairingCode]);
+  codeCopy = code;
+  (*(code + 2))(codeCopy, [(BYDaemonProximityTargetClientConnectionOverride *)self isShowingPairingCode]);
 }
 
 @end

@@ -6,10 +6,10 @@
 
 - (id)newActionSeparatorView
 {
-  v3 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v4 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v5 = [v4 groupViewState];
-  v6 = [v3 newActionSeparatorViewForGroupViewState:v5];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  visualStyle2 = [(UIInterfaceActionGroupView *)self visualStyle];
+  groupViewState = [visualStyle2 groupViewState];
+  v6 = [visualStyle newActionSeparatorViewForGroupViewState:groupViewState];
 
   return v6;
 }

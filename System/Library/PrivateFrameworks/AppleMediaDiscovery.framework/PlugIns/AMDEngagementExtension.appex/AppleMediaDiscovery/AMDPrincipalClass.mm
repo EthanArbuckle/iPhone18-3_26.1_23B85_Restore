@@ -1,18 +1,18 @@
 @interface AMDPrincipalClass
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4;
-- (void)beginRequestWithExtensionContext:(id)a3;
++ (void)performRequestWithObject:(id)object completion:(id)completion;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation AMDPrincipalClass
 
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4
++ (void)performRequestWithObject:(id)object completion:(id)completion
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, completion);
   queue = dispatch_get_global_queue(25, 0);
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
@@ -29,12 +29,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   objc_storeStrong(location, 0);
 }
 

@@ -4,15 +4,15 @@
 - (NSString)profile;
 - (NSString)profileVersion;
 - (_TtC9appstoredP33_CE29999887872BC054A90566175647F89ASDAMSBag)init;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)URLForKey:(id)a3 account:(id)a4;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)URLForKey:(id)key account:(id)account;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation ASDAMSBag
@@ -24,7 +24,7 @@
   __chkstk_darwin(v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100005B60((&self->super.isa + OBJC_IVAR____TtC9appstoredP33_CE29999887872BC054A90566175647F89ASDAMSBag_bag), *&self->bag[OBJC_IVAR____TtC9appstoredP33_CE29999887872BC054A90566175647F89ASDAMSBag_bag + 16]);
-  v7 = self;
+  selfCopy = self;
   dispatch thunk of Bag.expiration.getter();
 
   v8.super.isa = Date._bridgeToObjectiveC()().super.isa;
@@ -49,17 +49,17 @@
 
 - (AMSProcessInfo)processInfo
 {
-  v2 = [objc_opt_self() currentProcess];
+  currentProcess = [objc_opt_self() currentProcess];
 
-  return v2;
+  return currentProcess;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -75,79 +75,79 @@
   v12[3] = 0;
   v12[4] = &unk_1004366D0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v7, &unk_1004344E0, v12);
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000D3D60(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1000D3D60(keyCopy);
 
   return v6;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000D3FC8(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1000D3FC8(keyCopy);
 
   return v6;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000D4648(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1000D4648(keyCopy);
 
   return v6;
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000D4780(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1000D4780(keyCopy);
 
   return v6;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000D48B4(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1000D48B4(keyCopy);
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000D49E8(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1000D49E8(keyCopy);
 
   return v6;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000D4BD4(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1000D4BD4(keyCopy);
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3 account:(id)a4
+- (id)URLForKey:(id)key account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1000D4D4C(v6, a4);
+  keyCopy = key;
+  accountCopy = account;
+  selfCopy = self;
+  v9 = sub_1000D4D4C(keyCopy, account);
 
   return v9;
 }

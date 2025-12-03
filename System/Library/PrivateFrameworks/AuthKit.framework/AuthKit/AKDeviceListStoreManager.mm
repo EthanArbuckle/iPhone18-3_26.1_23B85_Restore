@@ -1,12 +1,12 @@
 @interface AKDeviceListStoreManager
 + (AKDeviceListStoreManager)sharedManager;
 - (AKDeviceListStoreManager)init;
-- (void)clearDatabaseWithCompletionHandler:(id)a3;
-- (void)clearStaleDevicesWithAccountManager:(AKAccountManager *)a3 completionHandler:(id)a4;
-- (void)deleteDeviceListWithContext:(AKDeviceListRequestContext *)a3 completionHandler:(id)a4;
-- (void)fetchDeviceListWithContext:(AKDeviceListRequestContext *)a3 cdpFactory:(AKCDPFactory *)a4 serviceController:(AKServiceControllerImpl *)a5 accountManager:(AKAccountManager *)a6 completionHandler:(id)a7;
-- (void)updateCacheWithContext:(AKDeviceListRequestContext *)a3 deviceListResponse:(AKDeviceListResponse *)a4 completionHandler:(id)a5;
-- (void)verifyCacheSyncStatusFromResponse:(AKDeviceListResponse *)a3 context:(AKDeviceListRequestContext *)a4 accountManager:(AKAccountManager *)a5 reporter:(AAFAnalyticsReporter *)a6 completionHandler:(id)a7;
+- (void)clearDatabaseWithCompletionHandler:(id)handler;
+- (void)clearStaleDevicesWithAccountManager:(AKAccountManager *)manager completionHandler:(id)handler;
+- (void)deleteDeviceListWithContext:(AKDeviceListRequestContext *)context completionHandler:(id)handler;
+- (void)fetchDeviceListWithContext:(AKDeviceListRequestContext *)context cdpFactory:(AKCDPFactory *)factory serviceController:(AKServiceControllerImpl *)controller accountManager:(AKAccountManager *)manager completionHandler:(id)handler;
+- (void)updateCacheWithContext:(AKDeviceListRequestContext *)context deviceListResponse:(AKDeviceListResponse *)response completionHandler:(id)handler;
+- (void)verifyCacheSyncStatusFromResponse:(AKDeviceListResponse *)response context:(AKDeviceListRequestContext *)context accountManager:(AKAccountManager *)manager reporter:(AAFAnalyticsReporter *)reporter completionHandler:(id)handler;
 @end
 
 @implementation AKDeviceListStoreManager
@@ -23,13 +23,13 @@
   return v3;
 }
 
-- (void)clearDatabaseWithCompletionHandler:(id)a3
+- (void)clearDatabaseWithCompletionHandler:(id)handler
 {
   v5 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -45,22 +45,22 @@
   v13[3] = 0;
   v13[4] = &unk_10029E060;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100244978(0, 0, v8, &unk_10029E3B0, v13);
 }
 
-- (void)fetchDeviceListWithContext:(AKDeviceListRequestContext *)a3 cdpFactory:(AKCDPFactory *)a4 serviceController:(AKServiceControllerImpl *)a5 accountManager:(AKAccountManager *)a6 completionHandler:(id)a7
+- (void)fetchDeviceListWithContext:(AKDeviceListRequestContext *)context cdpFactory:(AKCDPFactory *)factory serviceController:(AKServiceControllerImpl *)controller accountManager:(AKAccountManager *)manager completionHandler:(id)handler
 {
   v13 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v14 = *(*(v13 - 8) + 64);
   __chkstk_darwin(v13 - 8);
   v16 = &v27 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  v18[2] = a3;
-  v18[3] = a4;
-  v18[4] = a5;
-  v18[5] = a6;
+  v18[2] = context;
+  v18[3] = factory;
+  v18[4] = controller;
+  v18[5] = manager;
   v18[6] = v17;
   v18[7] = self;
   v19 = type metadata accessor for TaskPriority();
@@ -75,23 +75,23 @@
   v21[3] = 0;
   v21[4] = &unk_10029E040;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = self;
+  contextCopy = context;
+  factoryCopy = factory;
+  controllerCopy = controller;
+  managerCopy = manager;
+  selfCopy = self;
   sub_100244978(0, 0, v16, &unk_10029E390, v21);
 }
 
-- (void)deleteDeviceListWithContext:(AKDeviceListRequestContext *)a3 completionHandler:(id)a4
+- (void)deleteDeviceListWithContext:(AKDeviceListRequestContext *)context completionHandler:(id)handler
 {
   v7 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -106,20 +106,20 @@
   v15[3] = 0;
   v15[4] = &unk_10029F770;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_100244978(0, 0, v10, &unk_10029F778, v15);
 }
 
-- (void)clearStaleDevicesWithAccountManager:(AKAccountManager *)a3 completionHandler:(id)a4
+- (void)clearStaleDevicesWithAccountManager:(AKAccountManager *)manager completionHandler:(id)handler
 {
   v7 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = manager;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -134,23 +134,23 @@
   v15[3] = 0;
   v15[4] = &unk_10029F750;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_100244978(0, 0, v10, &unk_10029F758, v15);
 }
 
-- (void)verifyCacheSyncStatusFromResponse:(AKDeviceListResponse *)a3 context:(AKDeviceListRequestContext *)a4 accountManager:(AKAccountManager *)a5 reporter:(AAFAnalyticsReporter *)a6 completionHandler:(id)a7
+- (void)verifyCacheSyncStatusFromResponse:(AKDeviceListResponse *)response context:(AKDeviceListRequestContext *)context accountManager:(AKAccountManager *)manager reporter:(AAFAnalyticsReporter *)reporter completionHandler:(id)handler
 {
   v13 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v14 = *(*(v13 - 8) + 64);
   __chkstk_darwin(v13 - 8);
   v16 = &v27 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  v18[2] = a3;
-  v18[3] = a4;
-  v18[4] = a5;
-  v18[5] = a6;
+  v18[2] = response;
+  v18[3] = context;
+  v18[4] = manager;
+  v18[5] = reporter;
   v18[6] = v17;
   v18[7] = self;
   v19 = type metadata accessor for TaskPriority();
@@ -165,24 +165,24 @@
   v21[3] = 0;
   v21[4] = &unk_10029F730;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = self;
+  responseCopy = response;
+  contextCopy = context;
+  managerCopy = manager;
+  reporterCopy = reporter;
+  selfCopy = self;
   sub_100244978(0, 0, v16, &unk_10029F738, v21);
 }
 
-- (void)updateCacheWithContext:(AKDeviceListRequestContext *)a3 deviceListResponse:(AKDeviceListResponse *)a4 completionHandler:(id)a5
+- (void)updateCacheWithContext:(AKDeviceListRequestContext *)context deviceListResponse:(AKDeviceListResponse *)response completionHandler:(id)handler
 {
   v9 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = context;
+  v14[3] = response;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -197,9 +197,9 @@
   v17[3] = 0;
   v17[4] = &unk_10029C6A0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  contextCopy = context;
+  responseCopy = response;
+  selfCopy = self;
   sub_100244978(0, 0, v12, &unk_10029CEE0, v17);
 }
 

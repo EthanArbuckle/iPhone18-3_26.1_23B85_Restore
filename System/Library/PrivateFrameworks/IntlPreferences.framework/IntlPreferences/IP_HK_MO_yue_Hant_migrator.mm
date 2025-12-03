@@ -1,21 +1,21 @@
 @interface IP_HK_MO_yue_Hant_migrator
-- (id)performMigrationForPreferences:(id)a3;
+- (id)performMigrationForPreferences:(id)preferences;
 @end
 
 @implementation IP_HK_MO_yue_Hant_migrator
 
-- (id)performMigrationForPreferences:(id)a3
+- (id)performMigrationForPreferences:(id)preferences
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  preferencesCopy = preferences;
   if ([(ISMigrator *)self previousSchemaVersion]>= 0x3E8)
   {
-    v17 = v4;
+    v17 = preferencesCopy;
   }
 
   else
   {
-    v5 = [v4 objectForKeyedSubscript:@"AppleLocale"];
+    v5 = [preferencesCopy objectForKeyedSubscript:@"AppleLocale"];
     v6 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v5];
     v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBE690]];
     if ([v7 isEqualToString:@"HK"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"MO"))
@@ -27,8 +27,8 @@
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v27 = v4;
-      v8 = [v4 objectForKeyedSubscript:@"AppleLanguages"];
+      v27 = preferencesCopy;
+      v8 = [preferencesCopy objectForKeyedSubscript:@"AppleLanguages"];
       v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v9)
       {
@@ -50,7 +50,7 @@
 
             if (v16)
             {
-              v4 = v27;
+              preferencesCopy = v27;
               v17 = v27;
 
               goto LABEL_15;
@@ -67,7 +67,7 @@
         }
       }
 
-      v4 = v27;
+      preferencesCopy = v27;
       v17 = [v27 mutableCopy];
       v18 = [v27 objectForKeyedSubscript:v23];
       v19 = [v18 mutableCopy];
@@ -89,7 +89,7 @@ LABEL_15:
 
     else
     {
-      v17 = v4;
+      v17 = preferencesCopy;
     }
   }
 

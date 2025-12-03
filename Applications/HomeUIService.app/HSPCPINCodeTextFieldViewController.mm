@@ -1,25 +1,25 @@
 @interface HSPCPINCodeTextFieldViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (HSPCPINCodeTextFieldViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (HSPCPINCodeTextFieldViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_skipPINCodeButtonTapped;
 - (id)_updatePINCodesForAllUsers;
 - (id)commitConfiguration;
-- (void)_updateContinueActionEnabledFor:(id)a3;
+- (void)_updateContinueActionEnabledFor:(id)for;
 - (void)_updateOnboardingFlags;
 - (void)_updateSubtitle;
-- (void)textFieldDidChange:(id)a3;
+- (void)textFieldDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCPINCodeTextFieldViewController
 
-- (HSPCPINCodeTextFieldViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCPINCodeTextFieldViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v28.receiver = self;
   v28.super_class = HSPCPINCodeTextFieldViewController;
-  v8 = [(HSPCTextFieldViewController *)&v28 initWithCoordinator:v6 config:v7 withTextFieldMinimumHeight:100.0];
+  v8 = [(HSPCTextFieldViewController *)&v28 initWithCoordinator:coordinatorCopy config:configCopy withTextFieldMinimumHeight:100.0];
   if (v8)
   {
     v9 = sub_100063A44(@"HSProximityCardPINCodeTextFieldTitle");
@@ -28,8 +28,8 @@
     v10 = sub_100063A44(@"HSProximityCardPINCodeTextFieldSubtitle");
     [(HSPCPINCodeTextFieldViewController *)v8 setSubtitle:v10];
 
-    v11 = [(HSPCTextFieldViewController *)v8 continueAction];
-    [v11 setEnabled:1];
+    continueAction = [(HSPCTextFieldViewController *)v8 continueAction];
+    [continueAction setEnabled:1];
 
     v12 = [PRXLabel labelWithStyle:1];
     [(HSPCTextFieldViewController *)v8 setFootnoteLabel:v12];
@@ -37,8 +37,8 @@
     v8->_PINCodeLengthMin = 4;
     v8->_PINCodeLengthMax = 8;
     v13 = +[HFHomeKitDispatcher sharedDispatcher];
-    v14 = [v7 home];
-    v15 = [v13 pinCodeManagerForHome:v14];
+    home = [configCopy home];
+    v15 = [v13 pinCodeManagerForHome:home];
     pinCodeManager = v8->_pinCodeManager;
     v8->_pinCodeManager = v15;
 
@@ -77,32 +77,32 @@
   v16 = NSKernAttributeName;
   v17 = &off_1000CE0F8;
   v3 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-  v4 = [(HSPCTextFieldViewController *)self textField];
-  [v4 setDefaultTextAttributes:v3];
+  textField = [(HSPCTextFieldViewController *)self textField];
+  [textField setDefaultTextAttributes:v3];
 
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleLargeTitle];
-  v6 = [(HSPCTextFieldViewController *)self textField];
-  [v6 setFont:v5];
+  textField2 = [(HSPCTextFieldViewController *)self textField];
+  [textField2 setFont:v5];
 
   v7 = +[UIColor labelColor];
-  v8 = [(HSPCTextFieldViewController *)self textField];
-  [v8 setTextColor:v7];
+  textField3 = [(HSPCTextFieldViewController *)self textField];
+  [textField3 setTextColor:v7];
 
-  v9 = [(HSPCTextFieldViewController *)self textField];
-  [v9 setClearButtonMode:0];
+  textField4 = [(HSPCTextFieldViewController *)self textField];
+  [textField4 setClearButtonMode:0];
 
-  v10 = [(HSPCTextFieldViewController *)self textField];
-  [v10 setTextAlignment:1];
+  textField5 = [(HSPCTextFieldViewController *)self textField];
+  [textField5 setTextAlignment:1];
 
-  v11 = [(HSPCTextFieldViewController *)self textField];
-  [v11 setKeyboardType:4];
+  textField6 = [(HSPCTextFieldViewController *)self textField];
+  [textField6 setKeyboardType:4];
 
-  v12 = [(HSPCTextFieldViewController *)self textField];
-  [v12 addTarget:self action:"textFieldDidChange:" forControlEvents:0x20000];
+  textField7 = [(HSPCTextFieldViewController *)self textField];
+  [textField7 addTarget:self action:"textFieldDidChange:" forControlEvents:0x20000];
 
-  v13 = [(HSPCTextFieldViewController *)self textField];
-  v14 = [v13 layer];
-  [v14 setDisableUpdateMask:16];
+  textField8 = [(HSPCTextFieldViewController *)self textField];
+  layer = [textField8 layer];
+  [layer setDisableUpdateMask:16];
 }
 
 - (id)commitConfiguration
@@ -128,14 +128,14 @@
   v4 = objc_retainBlock(v21);
   v20 = v4;
   v5 = objc_retainBlock(v19);
-  v6 = [(HSPCPINCodeTextFieldViewController *)self pinCodeManager];
-  v7 = [v6 fetchFromAccessoryCache];
+  pinCodeManager = [(HSPCPINCodeTextFieldViewController *)self pinCodeManager];
+  fetchFromAccessoryCache = [pinCodeManager fetchFromAccessoryCache];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100007C58;
   v17[3] = &unk_1000C5830;
   objc_copyWeak(&v18, buf);
-  v8 = [v7 flatMap:v17];
+  v8 = [fetchFromAccessoryCache flatMap:v17];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -163,16 +163,16 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[HSPCPINCodeTextFieldViewController _skipPINCodeButtonTapped]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "(%@:%s) User tapped Skip from HSPCPINCodeTextFieldViewController", buf, 0x16u);
   }
 
   [(HSPCPINCodeTextFieldViewController *)self _updateOnboardingFlags];
-  v4 = [(HSPCTextFieldViewController *)self config];
-  v5 = [v4 home];
-  v10[0] = v5;
+  config = [(HSPCTextFieldViewController *)self config];
+  home = [config home];
+  v10[0] = home;
   v10[1] = &off_1000CD378;
   v9[1] = HFAnalyticsAccessCodeOperationTypeKey;
   v9[2] = HFAnalyticsAccessCodeDuringOnboardingKey;
@@ -187,14 +187,14 @@
 
 - (void)_updateSubtitle
 {
-  v3 = [(HSPCTextFieldViewController *)self textField];
-  v4 = [v3 isFirstResponder];
+  textField = [(HSPCTextFieldViewController *)self textField];
+  isFirstResponder = [textField isFirstResponder];
 
-  if (v4)
+  if (isFirstResponder)
   {
-    v5 = [(HSPCPINCodeTextFieldViewController *)self PINCodeLengthMin];
+    pINCodeLengthMin = [(HSPCPINCodeTextFieldViewController *)self PINCodeLengthMin];
     [(HSPCPINCodeTextFieldViewController *)self PINCodeLengthMax];
-    sub_100063B5C(@"HSProximityCardPINCodeTextFieldSubtitle_Edit", @"%lu%lu", v6, v7, v8, v9, v10, v11, v5);
+    sub_100063B5C(@"HSProximityCardPINCodeTextFieldSubtitle_Edit", @"%lu%lu", v6, v7, v8, v9, v10, v11, pINCodeLengthMin);
   }
 
   else
@@ -207,17 +207,17 @@
 
 - (id)_updatePINCodesForAllUsers
 {
-  v3 = [(HSPCTextFieldViewController *)self config];
-  v4 = [v3 home];
-  v5 = [v4 hf_currentUserIsAdministrator];
+  config = [(HSPCTextFieldViewController *)self config];
+  home = [config home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (v5)
+  if (hf_currentUserIsAdministrator)
   {
     objc_initWeak(&location, self);
-    v6 = [(HSPCPINCodeTextFieldViewController *)self pinCodeManager];
-    v7 = [(HSPCTextFieldViewController *)self config];
-    v8 = [v7 addedAccessory];
-    v9 = [v6 enablePinCodesForAllUsersOnNewAccessory:v8];
+    pinCodeManager = [(HSPCPINCodeTextFieldViewController *)self pinCodeManager];
+    config2 = [(HSPCTextFieldViewController *)self config];
+    addedAccessory = [config2 addedAccessory];
+    v9 = [pinCodeManager enablePinCodesForAllUsersOnNewAccessory:addedAccessory];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000091F8;
@@ -240,35 +240,35 @@
 - (void)_updateOnboardingFlags
 {
   v3 = [HFUserItem alloc];
-  v4 = [(HSPCTextFieldViewController *)self config];
-  v5 = [v4 home];
-  v6 = [(HSPCTextFieldViewController *)self config];
-  v7 = [v6 home];
-  v8 = [v7 currentUser];
-  v15 = [v3 initWithHome:v5 user:v8 nameStyle:0];
+  config = [(HSPCTextFieldViewController *)self config];
+  home = [config home];
+  config2 = [(HSPCTextFieldViewController *)self config];
+  home2 = [config2 home];
+  currentUser = [home2 currentUser];
+  v15 = [v3 initWithHome:home user:currentUser nameStyle:0];
 
   v9 = [v15 setDismissAccessCodeOnboarding:1];
-  v10 = [(HSPCTextFieldViewController *)self config];
-  v11 = [v10 home];
-  LODWORD(v5) = [v11 hf_currentUserIsAdministrator];
+  config3 = [(HSPCTextFieldViewController *)self config];
+  home3 = [config3 home];
+  LODWORD(home) = [home3 hf_currentUserIsAdministrator];
 
-  if (v5)
+  if (home)
   {
-    v12 = [(HSPCTextFieldViewController *)self config];
-    v13 = [v12 home];
-    v14 = [v13 hf_setHasOnboardedForAccessCode];
+    config4 = [(HSPCTextFieldViewController *)self config];
+    home4 = [config4 home];
+    hf_setHasOnboardedForAccessCode = [home4 hf_setHasOnboardedForAccessCode];
   }
 }
 
-- (void)_updateContinueActionEnabledFor:(id)a3
+- (void)_updateContinueActionEnabledFor:(id)for
 {
-  v9 = a3;
-  v4 = [(HSPCTextFieldViewController *)self textField];
-  v5 = [v4 isUserInteractionEnabled];
+  forCopy = for;
+  textField = [(HSPCTextFieldViewController *)self textField];
+  isUserInteractionEnabled = [textField isUserInteractionEnabled];
 
-  if (v5)
+  if (isUserInteractionEnabled)
   {
-    v6 = [v9 length];
+    v6 = [forCopy length];
     v7 = v6 >= [(HSPCPINCodeTextFieldViewController *)self PINCodeLengthMin]&& v6 <= [(HSPCPINCodeTextFieldViewController *)self PINCodeLengthMax];
   }
 
@@ -277,35 +277,35 @@
     v7 = 1;
   }
 
-  v8 = [(HSPCTextFieldViewController *)self continueAction];
-  [v8 setEnabled:v7];
+  continueAction = [(HSPCTextFieldViewController *)self continueAction];
+  [continueAction setEnabled:v7];
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = [a3 text];
-  [(HSPCPINCodeTextFieldViewController *)self _updateContinueActionEnabledFor:v4];
+  text = [change text];
+  [(HSPCPINCodeTextFieldViewController *)self _updateContinueActionEnabledFor:text];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
-  v9 = [(HSPCTextFieldViewController *)self textField];
-  v10 = [v9 text];
-  v11 = v10;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  textField = [(HSPCTextFieldViewController *)self textField];
+  text = [textField text];
+  v11 = text;
   v12 = &stru_1000C89F8;
-  if (v10)
+  if (text)
   {
-    v12 = v10;
+    v12 = text;
   }
 
   v13 = v12;
 
-  v14 = [(__CFString *)v13 stringByReplacingCharactersInRange:location withString:length, v8];
+  stringCopy = [(__CFString *)v13 stringByReplacingCharactersInRange:location withString:length, stringCopy];
 
-  v15 = [v14 length];
+  v15 = [stringCopy length];
   LOBYTE(v15) = v15 <= [(HSPCPINCodeTextFieldViewController *)self PINCodeLengthMax];
 
   return v15;

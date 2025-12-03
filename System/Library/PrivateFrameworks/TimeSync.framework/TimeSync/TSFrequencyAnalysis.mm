@@ -1,19 +1,19 @@
 @interface TSFrequencyAnalysis
-- (TSFrequencyAnalysis)initWithTimeErrorValues:(id)a3;
+- (TSFrequencyAnalysis)initWithTimeErrorValues:(id)values;
 @end
 
 @implementation TSFrequencyAnalysis
 
-- (TSFrequencyAnalysis)initWithTimeErrorValues:(id)a3
+- (TSFrequencyAnalysis)initWithTimeErrorValues:(id)values
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v37.receiver = self;
   v37.super_class = TSFrequencyAnalysis;
   v5 = [(TSFrequencyAnalysis *)&v37 init];
   if (v5)
   {
-    v6 = [v4 count];
+    v6 = [valuesCopy count];
     v7 = v6 - 1;
     if (v6 < 1)
     {
@@ -32,15 +32,15 @@
       {
         v30 = v7;
         v31 = v11;
-        v13 = [v4 objectAtIndexedSubscript:0];
-        v14 = [v13 timestamp];
+        v13 = [valuesCopy objectAtIndexedSubscript:0];
+        timestamp = [v13 timestamp];
 
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v32 = v4;
-        v15 = v4;
+        v32 = valuesCopy;
+        v15 = valuesCopy;
         v16 = [v15 countByEnumeratingWithState:&v33 objects:v38 count:16];
         if (v16)
         {
@@ -57,7 +57,7 @@
               }
 
               v21 = *(*(&v33 + 1) + 8 * i);
-              v9[v18] = ([v21 timestamp] - v14);
+              v9[v18] = ([v21 timestamp] - timestamp);
               v10[v18++] = [v21 error];
             }
 
@@ -76,7 +76,7 @@
 
         _Q2.f64[0] = v30;
         *&v5->_lowestFrequency = vdivq_f64(vdupq_n_s64(0x41CDCD6500000000uLL), vmulq_n_f64(_Q2, averagePeriod));
-        v4 = v32;
+        valuesCopy = v32;
       }
 
       else

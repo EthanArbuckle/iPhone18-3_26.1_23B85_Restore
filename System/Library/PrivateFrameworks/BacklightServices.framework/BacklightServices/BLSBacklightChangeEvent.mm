@@ -1,13 +1,13 @@
 @interface BLSBacklightChangeEvent
-- (BLSBacklightChangeEvent)initWithCoder:(id)a3;
-- (BLSBacklightChangeEvent)initWithEventID:(unint64_t)a3 state:(int64_t)a4 previousState:(int64_t)a5 wasTransitioning:(BOOL)a6 changeRequest:(id)a7;
-- (BLSBacklightChangeEvent)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLSBacklightChangeEvent)initWithCoder:(id)coder;
+- (BLSBacklightChangeEvent)initWithEventID:(unint64_t)d state:(int64_t)state previousState:(int64_t)previousState wasTransitioning:(BOOL)transitioning changeRequest:(id)request;
+- (BLSBacklightChangeEvent)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)bls_shortLoggingString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSBacklightChangeEvent
@@ -24,9 +24,9 @@
 
   v7 = [v3 appendBool:self->_transitioning withName:@"->" ifEqualTo:1];
   v8 = [v3 appendObject:self->_changeRequest withName:@"request"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (id)bls_shortLoggingString
@@ -36,7 +36,7 @@
   v8 = 3221225472;
   v9 = __49__BLSBacklightChangeEvent_bls_shortLoggingString__block_invoke;
   v10 = &unk_278428688;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:0 block:&v7];
@@ -91,20 +91,20 @@ void __49__BLSBacklightChangeEvent_bls_shortLoggingString__block_invoke(uint64_t
   v13 = [*(a1 + 40) appendUInt64:*(*(a1 + 32) + 16) withName:0];
 }
 
-- (BLSBacklightChangeEvent)initWithEventID:(unint64_t)a3 state:(int64_t)a4 previousState:(int64_t)a5 wasTransitioning:(BOOL)a6 changeRequest:(id)a7
+- (BLSBacklightChangeEvent)initWithEventID:(unint64_t)d state:(int64_t)state previousState:(int64_t)previousState wasTransitioning:(BOOL)transitioning changeRequest:(id)request
 {
-  v13 = a7;
+  requestCopy = request;
   v17.receiver = self;
   v17.super_class = BLSBacklightChangeEvent;
   v14 = [(BLSBacklightChangeEvent *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_eventID = a3;
-    v14->_state = a4;
-    v14->_previousState = a5;
-    v14->_transitioning = a6;
-    objc_storeStrong(&v14->_changeRequest, a7);
+    v14->_eventID = d;
+    v14->_state = state;
+    v14->_previousState = previousState;
+    v14->_transitioning = transitioning;
+    objc_storeStrong(&v14->_changeRequest, request);
   }
 
   return v15;
@@ -112,22 +112,22 @@ void __49__BLSBacklightChangeEvent_bls_shortLoggingString__block_invoke(uint64_t
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendUnsignedInteger:self->_eventID];
-  v5 = [v3 appendUnsignedInteger:HIDWORD(self->_eventID)];
-  v6 = [v3 appendInteger:self->_state];
-  v7 = [v3 appendInteger:self->_previousState];
-  v8 = [v3 appendBool:self->_transitioning];
-  v9 = [v3 appendObject:self->_changeRequest];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendUnsignedInteger:self->_eventID];
+  v5 = [builder appendUnsignedInteger:HIDWORD(self->_eventID)];
+  v6 = [builder appendInteger:self->_state];
+  v7 = [builder appendInteger:self->_previousState];
+  v8 = [builder appendBool:self->_transitioning];
+  v9 = [builder appendObject:self->_changeRequest];
+  v10 = [builder hash];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -137,13 +137,13 @@ void __49__BLSBacklightChangeEvent_bls_shortLoggingString__block_invoke(uint64_t
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       eventID = self->_eventID;
       if (eventID == [(BLSBacklightChangeEvent *)v5 eventID]&& (state = self->_state, state == [(BLSBacklightChangeEvent *)v5 state]) && (previousState = self->_previousState, previousState == [(BLSBacklightChangeEvent *)v5 previousState]) && (transitioning = self->_transitioning, transitioning == [(BLSBacklightChangeEvent *)v5 wasTransitioning]))
       {
         changeRequest = self->_changeRequest;
-        v11 = [(BLSBacklightChangeEvent *)v5 changeRequest];
-        v12 = [(BLSBacklightChangeRequest *)changeRequest isEqual:v11];
+        changeRequest = [(BLSBacklightChangeEvent *)v5 changeRequest];
+        v12 = [(BLSBacklightChangeRequest *)changeRequest isEqual:changeRequest];
       }
 
       else
@@ -161,19 +161,19 @@ void __49__BLSBacklightChangeEvent_bls_shortLoggingString__block_invoke(uint64_t
   return v12;
 }
 
-- (BLSBacklightChangeEvent)initWithXPCDictionary:(id)a3
+- (BLSBacklightChangeEvent)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [@"id" UTF8String];
-  v6 = [@"state" UTF8String];
-  v7 = [@"previousState" UTF8String];
-  v8 = [@"->" UTF8String];
-  v9 = [@"request" UTF8String];
-  int64 = xpc_dictionary_get_int64(v4, v5);
-  v11 = xpc_dictionary_get_int64(v4, v6);
-  v12 = xpc_dictionary_get_int64(v4, v7);
-  v13 = xpc_dictionary_get_BOOL(v4, v8);
-  v14 = xpc_dictionary_get_dictionary(v4, v9);
+  dictionaryCopy = dictionary;
+  uTF8String = [@"id" UTF8String];
+  uTF8String2 = [@"state" UTF8String];
+  uTF8String3 = [@"previousState" UTF8String];
+  uTF8String4 = [@"->" UTF8String];
+  uTF8String5 = [@"request" UTF8String];
+  int64 = xpc_dictionary_get_int64(dictionaryCopy, uTF8String);
+  v11 = xpc_dictionary_get_int64(dictionaryCopy, uTF8String2);
+  v12 = xpc_dictionary_get_int64(dictionaryCopy, uTF8String3);
+  v13 = xpc_dictionary_get_BOOL(dictionaryCopy, uTF8String4);
+  v14 = xpc_dictionary_get_dictionary(dictionaryCopy, uTF8String5);
   if (v14)
   {
     v15 = [[BLSBacklightChangeRequest alloc] initWithXPCDictionary:v14];
@@ -184,7 +184,7 @@ void __49__BLSBacklightChangeEvent_bls_shortLoggingString__block_invoke(uint64_t
     v16 = bls_backlight_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      [(BLSBacklightChangeEvent *)v4 initWithXPCDictionary:v16];
+      [(BLSBacklightChangeEvent *)dictionaryCopy initWithXPCDictionary:v16];
     }
 
     v15 = 0;
@@ -195,45 +195,45 @@ void __49__BLSBacklightChangeEvent_bls_shortLoggingString__block_invoke(uint64_t
   return v17;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [@"id" UTF8String];
-  v6 = [@"state" UTF8String];
-  v7 = [@"previousState" UTF8String];
-  v8 = [@"->" UTF8String];
-  v9 = [@"request" UTF8String];
-  xpc_dictionary_set_int64(v4, v5, self->_eventID);
-  xpc_dictionary_set_int64(v4, v6, self->_state);
-  xpc_dictionary_set_int64(v4, v7, self->_previousState);
-  xpc_dictionary_set_BOOL(v4, v8, self->_transitioning);
+  dictionaryCopy = dictionary;
+  uTF8String = [@"id" UTF8String];
+  uTF8String2 = [@"state" UTF8String];
+  uTF8String3 = [@"previousState" UTF8String];
+  uTF8String4 = [@"->" UTF8String];
+  uTF8String5 = [@"request" UTF8String];
+  xpc_dictionary_set_int64(dictionaryCopy, uTF8String, self->_eventID);
+  xpc_dictionary_set_int64(dictionaryCopy, uTF8String2, self->_state);
+  xpc_dictionary_set_int64(dictionaryCopy, uTF8String3, self->_previousState);
+  xpc_dictionary_set_BOOL(dictionaryCopy, uTF8String4, self->_transitioning);
   value = xpc_dictionary_create(0, 0, 0);
   [(BLSBacklightChangeRequest *)self->_changeRequest encodeWithXPCDictionary:value];
-  xpc_dictionary_set_value(v4, v9, value);
+  xpc_dictionary_set_value(dictionaryCopy, uTF8String5, value);
 }
 
-- (BLSBacklightChangeEvent)initWithCoder:(id)a3
+- (BLSBacklightChangeEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"id"];
-  v6 = [v4 decodeIntegerForKey:@"state"];
-  v7 = [v4 decodeIntegerForKey:@"previousState"];
-  v8 = [v4 decodeBoolForKey:@"->"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"request"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"id"];
+  v6 = [coderCopy decodeIntegerForKey:@"state"];
+  v7 = [coderCopy decodeIntegerForKey:@"previousState"];
+  v8 = [coderCopy decodeBoolForKey:@"->"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"request"];
 
   v10 = [(BLSBacklightChangeEvent *)self initWithEventID:v5 state:v6 previousState:v7 wasTransitioning:v8 changeRequest:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventID = self->_eventID;
-  v5 = a3;
-  [v5 encodeInt64:eventID forKey:@"id"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeInteger:self->_previousState forKey:@"previousState"];
-  [v5 encodeBool:self->_transitioning forKey:@"->"];
-  [v5 encodeObject:self->_changeRequest forKey:@"request"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:eventID forKey:@"id"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeInteger:self->_previousState forKey:@"previousState"];
+  [coderCopy encodeBool:self->_transitioning forKey:@"->"];
+  [coderCopy encodeObject:self->_changeRequest forKey:@"request"];
 }
 
 - (void)initWithXPCDictionary:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

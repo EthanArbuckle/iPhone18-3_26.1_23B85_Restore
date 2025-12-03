@@ -1,39 +1,39 @@
 @interface SBProximityReaderUISceneController
 + (id)_setupInfo;
-- (BOOL)handleBackgroundActivity:(id)a3 handler:(id)a4;
+- (BOOL)handleBackgroundActivity:(id)activity handler:(id)handler;
 - (BOOL)handleHomeButtonPress;
 - (BOOL)handleLockButtonPress;
-- (SBProximityReaderUISceneController)initWithSceneWorkspaceIdentifier:(id)a3 clientProcessIdentity:(id)a4 sceneVendingPolicy:(int64_t)a5 traitsRole:(id)a6 jobLabel:(id)a7 level:(double)a8;
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4;
-- (void)_addHandlingBackgroundActivity:(id)a3;
-- (void)_handleActionForHomeAffordanceView:(id)a3;
-- (void)_removeHandlingBackgroundActivity:(id)a3;
-- (void)_updateHomeAffordance:(BOOL)a3 window:(id)a4;
-- (void)addProximityReaderObserver:(id)a3;
+- (SBProximityReaderUISceneController)initWithSceneWorkspaceIdentifier:(id)identifier clientProcessIdentity:(id)identity sceneVendingPolicy:(int64_t)policy traitsRole:(id)role jobLabel:(id)label level:(double)level;
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type;
+- (void)_addHandlingBackgroundActivity:(id)activity;
+- (void)_handleActionForHomeAffordanceView:(id)view;
+- (void)_removeHandlingBackgroundActivity:(id)activity;
+- (void)_updateHomeAffordance:(BOOL)affordance window:(id)window;
+- (void)addProximityReaderObserver:(id)observer;
 - (void)dealloc;
-- (void)removeProximityReaderObserver:(id)a3;
-- (void)scenePresenter:(id)a3 didPresentScene:(id)a4;
-- (void)scenePresenter:(id)a3 updateHomeAffordance:(BOOL)a4 forScene:(id)a5;
-- (void)scenePresenter:(id)a3 willDismissScene:(id)a4;
-- (void)setDefaultPresenter:(id)a3;
-- (void)willEnableSecureRendering:(id)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)removeProximityReaderObserver:(id)observer;
+- (void)scenePresenter:(id)presenter didPresentScene:(id)scene;
+- (void)scenePresenter:(id)presenter updateHomeAffordance:(BOOL)affordance forScene:(id)scene;
+- (void)scenePresenter:(id)presenter willDismissScene:(id)scene;
+- (void)setDefaultPresenter:(id)presenter;
+- (void)willEnableSecureRendering:(id)rendering;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBProximityReaderUISceneController
 
-- (SBProximityReaderUISceneController)initWithSceneWorkspaceIdentifier:(id)a3 clientProcessIdentity:(id)a4 sceneVendingPolicy:(int64_t)a5 traitsRole:(id)a6 jobLabel:(id)a7 level:(double)a8
+- (SBProximityReaderUISceneController)initWithSceneWorkspaceIdentifier:(id)identifier clientProcessIdentity:(id)identity sceneVendingPolicy:(int64_t)policy traitsRole:(id)role jobLabel:(id)label level:(double)level
 {
   v21.receiver = self;
   v21.super_class = SBProximityReaderUISceneController;
-  v8 = [(SBSystemUISceneController *)&v21 initWithSceneWorkspaceIdentifier:a3 clientProcessIdentity:a4 sceneVendingPolicy:a5 traitsRole:a6 jobLabel:a7 level:a8];
+  v8 = [(SBSystemUISceneController *)&v21 initWithSceneWorkspaceIdentifier:identifier clientProcessIdentity:identity sceneVendingPolicy:policy traitsRole:role jobLabel:label level:level];
   v9 = v8;
   if (v8)
   {
     v8->_presenting = 0;
-    v10 = [SBApp lockOutController];
+    lockOutController = [SBApp lockOutController];
     v11 = objc_opt_class();
-    v12 = v10;
+    v12 = lockOutController;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -59,8 +59,8 @@
 
     [(SBFDeviceLockOutController *)v9->_lockOutController setProximityReaderBlockProvider:v9];
     v16 = +[SBSceneManagerCoordinator sharedInstance];
-    v17 = [v16 sceneDeactivationManager];
-    v18 = [v17 newAssertionWithReason:7];
+    sceneDeactivationManager = [v16 sceneDeactivationManager];
+    v18 = [sceneDeactivationManager newAssertionWithReason:7];
     sceneDeactivationAssertion = v9->_sceneDeactivationAssertion;
     v9->_sceneDeactivationAssertion = v18;
   }
@@ -96,23 +96,23 @@
   return v2;
 }
 
-- (void)setDefaultPresenter:(id)a3
+- (void)setDefaultPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v5.receiver = self;
   v5.super_class = SBProximityReaderUISceneController;
-  [(SBSystemUISceneController *)&v5 setDefaultPresenter:v4];
-  [v4 setShouldPublishAsDisplayLayoutElement:1];
+  [(SBSystemUISceneController *)&v5 setDefaultPresenter:presenterCopy];
+  [presenterCopy setShouldPublishAsDisplayLayoutElement:1];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPresentingDelegate:self];
+    [presenterCopy setPresentingDelegate:self];
   }
 }
 
 - (BOOL)handleHomeButtonPress
 {
-  v3 = [(SBSUIFeaturePolicyHostComponent *)self->_featurePolicyComponent desiredHardwareButtonEvents];
-  if ((v3 & 0x10) != 0)
+  desiredHardwareButtonEvents = [(SBSUIFeaturePolicyHostComponent *)self->_featurePolicyComponent desiredHardwareButtonEvents];
+  if ((desiredHardwareButtonEvents & 0x10) != 0)
   {
     v4 = [objc_alloc(MEMORY[0x277D67CA0]) initWithButtonEvents:16 withHandler:&__block_literal_global_434];
     featurePolicyComponent = self->_featurePolicyComponent;
@@ -120,13 +120,13 @@
     [(SBSUIFeaturePolicyHostComponent *)featurePolicyComponent sendActions:v6];
   }
 
-  return (v3 >> 4) & 1;
+  return (desiredHardwareButtonEvents >> 4) & 1;
 }
 
 - (BOOL)handleLockButtonPress
 {
-  v3 = [(SBSUIFeaturePolicyHostComponent *)self->_featurePolicyComponent desiredHardwareButtonEvents];
-  if (v3)
+  desiredHardwareButtonEvents = [(SBSUIFeaturePolicyHostComponent *)self->_featurePolicyComponent desiredHardwareButtonEvents];
+  if (desiredHardwareButtonEvents)
   {
     v4 = [objc_alloc(MEMORY[0x277D67CA0]) initWithButtonEvents:1 withHandler:&__block_literal_global_33_4];
     featurePolicyComponent = self->_featurePolicyComponent;
@@ -134,14 +134,14 @@
     [(SBSUIFeaturePolicyHostComponent *)featurePolicyComponent sendActions:v6];
   }
 
-  return v3 & 1;
+  return desiredHardwareButtonEvents & 1;
 }
 
-- (BOOL)handleBackgroundActivity:(id)a3 handler:(id)a4
+- (BOOL)handleBackgroundActivity:(id)activity handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[SBProximityReaderUISceneController _isHandlingBackgroundActivity:](self, "_isHandlingBackgroundActivity:", v6) || (-[SBSUIFeaturePolicyHostComponent desiredBackgroundActivities](self->_featurePolicyComponent, "desiredBackgroundActivities"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v6], v8, !v9))
+  activityCopy = activity;
+  handlerCopy = handler;
+  if (-[SBProximityReaderUISceneController _isHandlingBackgroundActivity:](self, "_isHandlingBackgroundActivity:", activityCopy) || (-[SBSUIFeaturePolicyHostComponent desiredBackgroundActivities](self->_featurePolicyComponent, "desiredBackgroundActivities"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:activityCopy], v8, !v9))
   {
     v14 = 0;
   }
@@ -155,8 +155,8 @@
     v18 = __71__SBProximityReaderUISceneController_handleBackgroundActivity_handler___block_invoke;
     v19 = &unk_2783B08A8;
     objc_copyWeak(&v22, &location);
-    v20 = v6;
-    v21 = v7;
+    v20 = activityCopy;
+    v21 = handlerCopy;
     v11 = [v10 initWithBackgroundActivityIdentifier:v20 handler:&v16];
     featurePolicyComponent = self->_featurePolicyComponent;
     v13 = [MEMORY[0x277CBEB98] setWithObject:{v11, v16, v17, v18, v19}];
@@ -204,26 +204,26 @@ uint64_t __71__SBProximityReaderUISceneController_handleBackgroundActivity_handl
   return result;
 }
 
-- (void)scenePresenter:(id)a3 didPresentScene:(id)a4
+- (void)scenePresenter:(id)presenter didPresentScene:(id)scene
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 definition];
-  v9 = [v8 specification];
-  v10 = [v9 uiSceneSessionRole];
+  presenterCopy = presenter;
+  sceneCopy = scene;
+  definition = [sceneCopy definition];
+  specification = [definition specification];
+  uiSceneSessionRole = [specification uiSceneSessionRole];
 
   v11 = objc_opt_new();
-  v12 = [v11 uiSceneSessionRole];
-  if ([v10 isEqual:v12])
+  uiSceneSessionRole2 = [v11 uiSceneSessionRole];
+  if ([uiSceneSessionRole isEqual:uiSceneSessionRole2])
   {
   }
 
   else
   {
     v13 = objc_opt_new();
-    v14 = [v13 uiSceneSessionRole];
-    v15 = [v10 isEqual:v14];
+    uiSceneSessionRole3 = [v13 uiSceneSessionRole];
+    v15 = [uiSceneSessionRole isEqual:uiSceneSessionRole3];
 
     if (!v15)
     {
@@ -233,7 +233,7 @@ uint64_t __71__SBProximityReaderUISceneController_handleBackgroundActivity_handl
 
   self->_presenting = 1;
   v16 = objc_opt_class();
-  v17 = [v7 componentForExtension:v16 ofClass:objc_opt_class()];
+  v17 = [sceneCopy componentForExtension:v16 ofClass:objc_opt_class()];
   v18 = objc_opt_class();
   v19 = v17;
   if (v18)
@@ -262,13 +262,13 @@ uint64_t __71__SBProximityReaderUISceneController_handleBackgroundActivity_handl
   if (objc_opt_respondsToSelector())
   {
     v23 = self->_statusBarComponent;
-    v24 = v6;
+    v24 = presenterCopy;
     [(SBSUIStatusBarSceneHostComponent *)v23 setDelegate:v24];
     [v24 statusBarSceneHostComponent:self->_statusBarComponent didChangePreferredStatusBarVisibilityWithAnimationSettings:0];
   }
 
   v25 = objc_opt_class();
-  v26 = [v7 componentForExtension:v25 ofClass:objc_opt_class()];
+  v26 = [sceneCopy componentForExtension:v25 ofClass:objc_opt_class()];
   v27 = objc_opt_class();
   v28 = v26;
   if (v27)
@@ -297,7 +297,7 @@ uint64_t __71__SBProximityReaderUISceneController_handleBackgroundActivity_handl
   if (objc_opt_respondsToSelector())
   {
     v32 = self->_featurePolicyComponent;
-    v33 = v6;
+    v33 = presenterCopy;
     [(SBSUIFeaturePolicyHostComponent *)v32 setDelegate:v33];
     [v33 featurePolicyHostComponentDidChangeAllowsMenuButtonDismissal:self->_featurePolicyComponent];
     [v33 featurePolicyHostComponentDidChangeDesiredHardwareButtonEvents:self->_featurePolicyComponent];
@@ -305,7 +305,7 @@ uint64_t __71__SBProximityReaderUISceneController_handleBackgroundActivity_handl
   }
 
   v34 = objc_opt_class();
-  v35 = [v7 componentForExtension:v34 ofClass:objc_opt_class()];
+  v35 = [sceneCopy componentForExtension:v34 ofClass:objc_opt_class()];
   v36 = objc_opt_class();
   v37 = v35;
   if (v36)
@@ -334,7 +334,7 @@ uint64_t __71__SBProximityReaderUISceneController_handleBackgroundActivity_handl
   if (objc_opt_respondsToSelector())
   {
     v41 = self->_idleTimerComponent;
-    v42 = v6;
+    v42 = presenterCopy;
     [(SBSUIIdleTimerSceneHostComponent *)v41 setDelegate:v42];
     [v42 idleTimerSceneHostComponentDidChangeShouldDisableIdleTimer:self->_idleTimerComponent];
   }
@@ -353,29 +353,29 @@ uint64_t __71__SBProximityReaderUISceneController_handleBackgroundActivity_handl
 
   if (!self->_bannerSuppressionAssertion)
   {
-    v48 = [SBApp bannerManager];
-    v49 = [v48 acquireBannerSuppressionAssertionForReason:@"Prox Reader UI Presentation"];
+    bannerManager = [SBApp bannerManager];
+    v49 = [bannerManager acquireBannerSuppressionAssertionForReason:@"Prox Reader UI Presentation"];
     bannerSuppressionAssertion = self->_bannerSuppressionAssertion;
     self->_bannerSuppressionAssertion = v49;
   }
 
   if (!self->_suppressSystemApertureAssertion)
   {
-    v51 = [SBApp systemApertureControllerForMainDisplay];
-    v52 = [v51 systemApertureRepresentationSuppressionAssertionForProximityReaderVisibility];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    systemApertureRepresentationSuppressionAssertionForProximityReaderVisibility = [systemApertureControllerForMainDisplay systemApertureRepresentationSuppressionAssertionForProximityReaderVisibility];
     suppressSystemApertureAssertion = self->_suppressSystemApertureAssertion;
-    self->_suppressSystemApertureAssertion = v52;
+    self->_suppressSystemApertureAssertion = systemApertureRepresentationSuppressionAssertionForProximityReaderVisibility;
   }
 
   sceneDeactivationAssertion = self->_sceneDeactivationAssertion;
-  v55 = [v7 settings];
-  v56 = [v55 displayIdentity];
-  [(UIApplicationSceneDeactivationAssertion *)sceneDeactivationAssertion sb_acquireForDisplayIdentity:v56];
+  settings = [sceneCopy settings];
+  displayIdentity = [settings displayIdentity];
+  [(UIApplicationSceneDeactivationAssertion *)sceneDeactivationAssertion sb_acquireForDisplayIdentity:displayIdentity];
 
   if (!self->_captureButtonSuppressionAssertion)
   {
-    v57 = [SBApp captureButtonRestrictionCoordinator];
-    v58 = [v57 inhibitCaptureButtonActionAssertionWithReason:@"Prox Reader UI Presentation"];
+    captureButtonRestrictionCoordinator = [SBApp captureButtonRestrictionCoordinator];
+    v58 = [captureButtonRestrictionCoordinator inhibitCaptureButtonActionAssertionWithReason:@"Prox Reader UI Presentation"];
     captureButtonSuppressionAssertion = self->_captureButtonSuppressionAssertion;
     self->_captureButtonSuppressionAssertion = v58;
   }
@@ -416,24 +416,24 @@ uint64_t __71__SBProximityReaderUISceneController_handleBackgroundActivity_handl
 LABEL_41:
 }
 
-- (void)scenePresenter:(id)a3 willDismissScene:(id)a4
+- (void)scenePresenter:(id)presenter willDismissScene:(id)scene
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [a4 definition];
-  v6 = [v5 specification];
-  v7 = [v6 uiSceneSessionRole];
+  definition = [scene definition];
+  specification = [definition specification];
+  uiSceneSessionRole = [specification uiSceneSessionRole];
 
   v8 = objc_opt_new();
-  v9 = [v8 uiSceneSessionRole];
-  if ([v7 isEqual:v9])
+  uiSceneSessionRole2 = [v8 uiSceneSessionRole];
+  if ([uiSceneSessionRole isEqual:uiSceneSessionRole2])
   {
   }
 
   else
   {
     v10 = objc_opt_new();
-    v11 = [v10 uiSceneSessionRole];
-    v12 = [v7 isEqual:v11];
+    uiSceneSessionRole3 = [v10 uiSceneSessionRole];
+    v12 = [uiSceneSessionRole isEqual:uiSceneSessionRole3];
 
     if (!v12)
     {
@@ -507,68 +507,68 @@ LABEL_41:
 LABEL_12:
 }
 
-- (void)scenePresenter:(id)a3 updateHomeAffordance:(BOOL)a4 forScene:(id)a5
+- (void)scenePresenter:(id)presenter updateHomeAffordance:(BOOL)affordance forScene:(id)scene
 {
-  v5 = a4;
-  v12 = a5;
-  v8 = a3;
+  affordanceCopy = affordance;
+  sceneCopy = scene;
+  presenterCopy = presenter;
   v9 = objc_opt_class();
-  v10 = SBSafeCast(v9, v8);
+  v10 = SBSafeCast(v9, presenterCopy);
 
   if (v10)
   {
-    v11 = [v10 hostingWindowForScene:v12];
-    [(SBProximityReaderUISceneController *)self _updateHomeAffordance:v5 window:v11];
+    v11 = [v10 hostingWindowForScene:sceneCopy];
+    [(SBProximityReaderUISceneController *)self _updateHomeAffordance:affordanceCopy window:v11];
   }
 }
 
-- (void)willEnableSecureRendering:(id)a3
+- (void)willEnableSecureRendering:(id)rendering
 {
   v4.receiver = self;
   v4.super_class = SBProximityReaderUISceneController;
-  [(SBSystemUISceneController *)&v4 willEnableSecureRendering:a3];
+  [(SBSystemUISceneController *)&v4 willEnableSecureRendering:rendering];
   [(SBSystemUISceneController *)self _invalidateAllSceneControllers];
 }
 
-- (void)addProximityReaderObserver:(id)a3
+- (void)addProximityReaderObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeProximityReaderObserver:(id)a3
+- (void)removeProximityReaderObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
   homeAffordanceViewController = self->_homeAffordanceViewController;
-  v5 = a4;
-  [v5 setActivationPolicyForParticipantsBelow:{-[SBBarSwipeAffordanceViewController activationPolicyForParticipantsBelow](homeAffordanceViewController, "activationPolicyForParticipantsBelow")}];
+  preferencesCopy = preferences;
+  [preferencesCopy setActivationPolicyForParticipantsBelow:{-[SBBarSwipeAffordanceViewController activationPolicyForParticipantsBelow](homeAffordanceViewController, "activationPolicyForParticipantsBelow")}];
 }
 
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type
 {
-  if (a4 == 1)
+  if (type == 1)
   {
     return 11;
   }
@@ -579,13 +579,13 @@ LABEL_12:
   }
 }
 
-- (void)_addHandlingBackgroundActivity:(id)a3
+- (void)_addHandlingBackgroundActivity:(id)activity
 {
-  v4 = a3;
-  if (v4)
+  activityCopy = activity;
+  if (activityCopy)
   {
     handlingBackgroundActivities = self->_handlingBackgroundActivities;
-    v8 = v4;
+    v8 = activityCopy;
     if (!handlingBackgroundActivities)
     {
       v6 = [MEMORY[0x277CBEB58] set];
@@ -596,33 +596,33 @@ LABEL_12:
     }
 
     [(NSMutableSet *)handlingBackgroundActivities addObject:v8];
-    v4 = v8;
+    activityCopy = v8;
   }
 }
 
-- (void)_removeHandlingBackgroundActivity:(id)a3
+- (void)_removeHandlingBackgroundActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
     [(NSMutableSet *)self->_handlingBackgroundActivities removeObject:?];
   }
 }
 
-- (void)_updateHomeAffordance:(BOOL)a3 window:(id)a4
+- (void)_updateHomeAffordance:(BOOL)affordance window:(id)window
 {
-  v4 = a3;
-  v25 = a4;
-  if ([(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController wantsToBeActiveAffordance]!= v4)
+  affordanceCopy = affordance;
+  windowCopy = window;
+  if ([(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController wantsToBeActiveAffordance]!= affordanceCopy)
   {
     homeAffordanceViewController = self->_homeAffordanceViewController;
-    if (v4)
+    if (affordanceCopy)
     {
       if (!homeAffordanceViewController)
       {
         v7 = [SBBarSwipeAffordanceViewController alloc];
-        v8 = [v25 _sbWindowScene];
+        _sbWindowScene = [windowCopy _sbWindowScene];
         v9 = objc_opt_class();
-        v10 = v8;
+        v10 = _sbWindowScene;
         if (v9)
         {
           if (objc_opt_isKindOfClass())
@@ -649,16 +649,16 @@ LABEL_12:
 
         [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController setPointerClickDelegate:self];
         [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController setDelegate:self];
-        v16 = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController view];
-        [v16 setDelegate:self];
+        view = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController view];
+        [view setDelegate:self];
 
-        v17 = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController view];
-        [v17 addObserver:self];
+        view2 = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController view];
+        [view2 addObserver:self];
       }
 
-      v18 = [v25 rootViewController];
+      rootViewController = [windowCopy rootViewController];
       v19 = objc_opt_class();
-      v20 = v18;
+      v20 = rootViewController;
       if (v19)
       {
         if (objc_opt_isKindOfClass())
@@ -680,9 +680,9 @@ LABEL_12:
       v22 = v21;
 
       [v22 addChildViewController:self->_homeAffordanceViewController];
-      v23 = [v22 view];
-      v24 = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController view];
-      [v23 addOverlayView:v24];
+      view3 = [v22 view];
+      view4 = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController view];
+      [view3 addOverlayView:view4];
 
       [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController didMoveToParentViewController:v22];
       [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController setWantsToBeActiveAffordance:1];
@@ -692,18 +692,18 @@ LABEL_12:
     {
       [(SBBarSwipeAffordanceViewController *)homeAffordanceViewController setWantsToBeActiveAffordance:0];
       [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController willMoveToParentViewController:0];
-      v12 = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController view];
-      [v12 removeFromSuperview];
+      view5 = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController view];
+      [view5 removeFromSuperview];
 
       [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController removeFromParentViewController];
     }
   }
 }
 
-- (void)_handleActionForHomeAffordanceView:(id)a3
+- (void)_handleActionForHomeAffordanceView:(id)view
 {
-  v4 = [a3 _sbWindowScene];
-  [(SBSystemUISceneController *)self _invalidateSceneControllersForWindowScene:v4];
+  _sbWindowScene = [view _sbWindowScene];
+  [(SBSystemUISceneController *)self _invalidateSceneControllersForWindowScene:_sbWindowScene];
 }
 
 @end

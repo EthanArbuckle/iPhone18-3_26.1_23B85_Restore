@@ -1,18 +1,18 @@
 @interface ADAnnounceIncomingCallRequest
-- (ADAnnounceIncomingCallRequest)initWithCall:(id)a3 completion:(id)a4;
+- (ADAnnounceIncomingCallRequest)initWithCall:(id)call completion:(id)completion;
 @end
 
 @implementation ADAnnounceIncomingCallRequest
 
-- (ADAnnounceIncomingCallRequest)initWithCall:(id)a3 completion:(id)a4
+- (ADAnnounceIncomingCallRequest)initWithCall:(id)call completion:(id)completion
 {
-  v6 = a3;
+  callCopy = call;
   v11.receiver = self;
   v11.super_class = ADAnnounceIncomingCallRequest;
-  v7 = [(ADAnnouncementRequest *)&v11 initWithAnnouncementRequestType:2 platform:1 completion:a4];
+  v7 = [(ADAnnouncementRequest *)&v11 initWithAnnouncementRequestType:2 platform:1 completion:completion];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [callCopy copy];
     call = v7->_call;
     v7->_call = v8;
   }

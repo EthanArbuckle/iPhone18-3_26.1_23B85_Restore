@@ -10,13 +10,13 @@
   {
     if ([(DMTTaskOperation *)self isCanceled])
     {
-      v3 = CATErrorWithCodeAndUserInfo();
+      request = CATErrorWithCodeAndUserInfo();
       [(DMTTaskOperation *)self endOperationWithError:?];
     }
 
     else
     {
-      v3 = [(CATTaskOperation *)self request];
+      request = [(CATTaskOperation *)self request];
       [(DMTTaskOperation *)self runWithRequest:?];
     }
   }

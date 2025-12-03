@@ -2,22 +2,22 @@
 - (NSString)storeAccountName;
 - (TLToneStoreDownloadStoreServicesController)init;
 - (void)_assertRunningOnAccessQueue;
-- (void)_handleAccountStoreDidChangeNotification:(id)a3;
-- (void)_handleToneManagerContentsDidChangeNotification:(id)a3;
+- (void)_handleAccountStoreDidChangeNotification:(id)notification;
+- (void)_handleToneManagerContentsDidChangeNotification:(id)notification;
 - (void)_notifyObserversOfCheckingForDownloadsFinishedWithoutNeedToIssueAnyDownload;
-- (void)_notifyObserversOfStartedToneStoreDownloads:(id)a3 progressedToneStoreDownload:(id)a4 finishedToneStoreDownloads:(id)a5;
-- (void)_notifyObserversOfUpdatedStoreAccountName:(id)a3;
-- (void)_openToneStoreWithStoreItemKind:(id)a3;
-- (void)_performBlockOnAccessQueue:(id)a3;
+- (void)_notifyObserversOfStartedToneStoreDownloads:(id)downloads progressedToneStoreDownload:(id)download finishedToneStoreDownloads:(id)storeDownloads;
+- (void)_notifyObserversOfUpdatedStoreAccountName:(id)name;
+- (void)_openToneStoreWithStoreItemKind:(id)kind;
+- (void)_performBlockOnAccessQueue:(id)queue;
 - (void)_updateStoreAccountName;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4;
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change;
 - (void)openAlertToneStore;
 - (void)openRingtoneStore;
-- (void)purchaseManager:(id)a3 didFinishPurchasesWithResponses:(id)a4;
+- (void)purchaseManager:(id)manager didFinishPurchasesWithResponses:(id)responses;
 - (void)redownloadAllTones;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation TLToneStoreDownloadStoreServicesController
@@ -33,11 +33,11 @@
     v3 = objc_opt_class();
     v4 = MEMORY[0x1E696AEC0];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:v3];
-    v6 = [v5 bundleIdentifier];
+    bundleIdentifier = [v5 bundleIdentifier];
     v7 = NSStringFromClass(v3);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
-    v10 = [v4 stringWithFormat:@"%@.%@-%@-%@", v6, v7, @"AccessQueue", v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v10 = [v4 stringWithFormat:@"%@.%@-%@-%@", bundleIdentifier, v7, @"AccessQueue", uUIDString];
     accessQueueLabel = v2->_accessQueueLabel;
     v2->_accessQueueLabel = v10;
 
@@ -587,11 +587,11 @@ LABEL_61:
     _Block_object_dispose(&v124, 8);
     v93 = [v91 alloc];
     v94 = MEMORY[0x1E696AEC0];
-    v95 = [MEMORY[0x1E696AAE8] mainBundle];
-    v96 = [v95 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier2 = [mainBundle bundleIdentifier];
     v97 = objc_opt_class();
     v98 = NSStringFromClass(v97);
-    v99 = [v94 stringWithFormat:@"%@.%@", v96, v98];
+    v99 = [v94 stringWithFormat:@"%@.%@", bundleIdentifier2, v98];
     v100 = [v93 initWithManagerIdentifier:v99];
     v101 = p_isa[7];
     p_isa[7] = v100;
@@ -604,13 +604,13 @@ LABEL_61:
     v102 = p_isa;
     v117 = v102;
     [v102 _performBlockOnAccessQueue:v116];
-    v103 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v104 = getSSAccountStoreChangedNotification();
-    v105 = [getSSAccountStoreClass() defaultStore];
-    [v103 addObserver:v102 selector:sel__handleAccountStoreDidChangeNotification_ name:v104 object:v105];
+    defaultStore = [getSSAccountStoreClass() defaultStore];
+    [defaultCenter addObserver:v102 selector:sel__handleAccountStoreDidChangeNotification_ name:v104 object:defaultStore];
 
     v106 = +[TLToneManager sharedToneManager];
-    [v103 addObserver:v102 selector:sel__handleToneManagerContentsDidChangeNotification_ name:@"_TLToneManagerContentsChangedNotification" object:v106];
+    [defaultCenter addObserver:v102 selector:sel__handleToneManagerContentsDidChangeNotification_ name:@"_TLToneManagerContentsChangedNotification" object:v106];
   }
 
   v107 = *MEMORY[0x1E69E9840];
@@ -637,13 +637,13 @@ uint64_t __50__TLToneStoreDownloadStoreServicesController_init__block_invoke(uin
 
   [(SSDownloadManager *)self->_storeDownloadManager removeObserver:self];
   [(SSPurchaseManager *)self->_storePurchaseManager setDelegate:0];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = getSSAccountStoreChangedNotification();
-  v7 = [getSSAccountStoreClass() defaultStore];
-  [v5 removeObserver:self name:v6 object:v7];
+  defaultStore = [getSSAccountStoreClass() defaultStore];
+  [defaultCenter removeObserver:self name:v6 object:defaultStore];
 
   v8 = +[TLToneManager sharedToneManager];
-  [v5 removeObserver:self name:@"_TLToneManagerContentsChangedNotification" object:v8];
+  [defaultCenter removeObserver:self name:@"_TLToneManagerContentsChangedNotification" object:v8];
 
   dispatch_sync(v4, &__block_literal_global_1);
   v9.receiver = self;
@@ -685,10 +685,10 @@ uint64_t __62__TLToneStoreDownloadStoreServicesController_storeAccountName__bloc
 - (void)_updateStoreAccountName
 {
   [(TLToneStoreDownloadStoreServicesController *)self _assertRunningOnAccessQueue];
-  v10 = [getSSAccountStoreClass() defaultStore];
-  v3 = [v10 activeAccount];
-  v4 = [v3 accountName];
-  v5 = [v4 copy];
+  defaultStore = [getSSAccountStoreClass() defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  accountName = [activeAccount accountName];
+  v5 = [accountName copy];
 
   v6 = self->_storeAccountName;
   v7 = v5;
@@ -723,7 +723,7 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_handleAccountStoreDidChangeNotification:(id)a3
+- (void)_handleAccountStoreDidChangeNotification:(id)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -733,16 +733,16 @@ LABEL_10:
   [(TLToneStoreDownloadStoreServicesController *)self _performBlockOnAccessQueue:v3];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__TLToneStoreDownloadStoreServicesController_addObserver___block_invoke;
   v6[3] = &unk_1E8578900;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = observerCopy;
+  selfCopy = self;
+  v5 = observerCopy;
   [(TLToneStoreDownloadStoreServicesController *)self _performBlockOnAccessQueue:v6];
 }
 
@@ -774,16 +774,16 @@ uint64_t __58__TLToneStoreDownloadStoreServicesController_addObserver___block_in
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__TLToneStoreDownloadStoreServicesController_removeObserver___block_invoke;
   v6[3] = &unk_1E8578900;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = observerCopy;
+  selfCopy = self;
+  v5 = observerCopy;
   [(TLToneStoreDownloadStoreServicesController *)self _performBlockOnAccessQueue:v6];
 }
 
@@ -805,20 +805,20 @@ uint64_t __61__TLToneStoreDownloadStoreServicesController_removeObserver___block
   return result;
 }
 
-- (void)_notifyObserversOfUpdatedStoreAccountName:(id)a3
+- (void)_notifyObserversOfUpdatedStoreAccountName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(TLToneStoreDownloadStoreServicesController *)self _assertRunningOnAccessQueue];
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   v6 = dispatch_get_global_queue(0, 0);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __88__TLToneStoreDownloadStoreServicesController__notifyObserversOfUpdatedStoreAccountName___block_invoke;
   v9[3] = &unk_1E8578900;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = allObjects;
+  v11 = nameCopy;
+  v7 = nameCopy;
+  v8 = allObjects;
   dispatch_async(v6, v9);
 }
 
@@ -867,14 +867,14 @@ void __88__TLToneStoreDownloadStoreServicesController__notifyObserversOfUpdatedS
 - (void)_notifyObserversOfCheckingForDownloadsFinishedWithoutNeedToIssueAnyDownload
 {
   [(TLToneStoreDownloadStoreServicesController *)self _assertRunningOnAccessQueue];
-  v3 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __121__TLToneStoreDownloadStoreServicesController__notifyObserversOfCheckingForDownloadsFinishedWithoutNeedToIssueAnyDownload__block_invoke;
   block[3] = &unk_1E85789A0;
-  v7 = v3;
-  v5 = v3;
+  v7 = allObjects;
+  v5 = allObjects;
   dispatch_async(v4, block);
 }
 
@@ -920,33 +920,33 @@ void __121__TLToneStoreDownloadStoreServicesController__notifyObserversOfCheckin
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyObserversOfStartedToneStoreDownloads:(id)a3 progressedToneStoreDownload:(id)a4 finishedToneStoreDownloads:(id)a5
+- (void)_notifyObserversOfStartedToneStoreDownloads:(id)downloads progressedToneStoreDownload:(id)download finishedToneStoreDownloads:(id)storeDownloads
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  downloadsCopy = downloads;
+  downloadCopy = download;
+  storeDownloadsCopy = storeDownloads;
   [(TLToneStoreDownloadStoreServicesController *)self _assertRunningOnAccessQueue];
-  v11 = [v8 count];
-  v12 = [v9 count];
-  v13 = [v10 count];
+  v11 = [downloadsCopy count];
+  v12 = [downloadCopy count];
+  v13 = [storeDownloadsCopy count];
   if (v11 || v12 || v13)
   {
     v14 = v13 != 0;
     v15 = v11 != 0;
-    v16 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     v17 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __145__TLToneStoreDownloadStoreServicesController__notifyObserversOfStartedToneStoreDownloads_progressedToneStoreDownload_finishedToneStoreDownloads___block_invoke;
     block[3] = &unk_1E8578F78;
-    v20 = v16;
+    v20 = allObjects;
     v24 = v15;
-    v21 = v8;
+    v21 = downloadsCopy;
     v25 = v12 != 0;
-    v22 = v9;
+    v22 = downloadCopy;
     v26 = v14;
-    v23 = v10;
-    v18 = v16;
+    v23 = storeDownloadsCopy;
+    v18 = allObjects;
     dispatch_async(v17, block);
   }
 }
@@ -1064,9 +1064,9 @@ void __145__TLToneStoreDownloadStoreServicesController__notifyObserversOfStarted
   [(TLToneStoreDownloadStoreServicesController *)self _openToneStoreWithStoreItemKind:*v3];
 }
 
-- (void)_openToneStoreWithStoreItemKind:(id)a3
+- (void)_openToneStoreWithStoreItemKind:(id)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1093,7 +1093,7 @@ void __145__TLToneStoreDownloadStoreServicesController__notifyObserversOfStarted
     _Unwind_Resume(v9);
   }
 
-  v6 = v4(v3);
+  v6 = v4(kindCopy);
 
   v10 = MEMORY[0x1E69E9820];
   v11 = __78__TLToneStoreDownloadStoreServicesController__openToneStoreWithStoreItemKind___block_invoke;
@@ -1301,16 +1301,16 @@ void __64__TLToneStoreDownloadStoreServicesController_redownloadAllTones__block_
   }
 }
 
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__TLToneStoreDownloadStoreServicesController_downloadManager_downloadStatesDidChange___block_invoke;
   v7[3] = &unk_1E8578900;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   [(TLToneStoreDownloadStoreServicesController *)self _performBlockOnAccessQueue:v7];
 }
 
@@ -1477,11 +1477,11 @@ LABEL_20:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)purchaseManager:(id)a3 didFinishPurchasesWithResponses:(id)a4
+- (void)purchaseManager:(id)manager didFinishPurchasesWithResponses:(id)responses
 {
   v93 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  v5 = a4;
+  managerCopy = manager;
+  responsesCopy = responses;
   v56 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v55 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v61 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1489,7 +1489,7 @@ LABEL_20:
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  obj = v5;
+  obj = responsesCopy;
   v53 = [obj countByEnumeratingWithState:&v79 objects:v89 count:16];
   if (v53)
   {
@@ -1511,21 +1511,21 @@ LABEL_20:
         v9 = TLLogToneManagement();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 URLResponse];
-          v11 = [v10 storeCorrelationID];
+          uRLResponse = [v8 URLResponse];
+          storeCorrelationID = [uRLResponse storeCorrelationID];
           *buf = 138543362;
-          *&buf[4] = v11;
+          *&buf[4] = storeCorrelationID;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "Did finish store purchase with correlation key: %{public}@.", buf, 0xCu);
         }
 
         v64 = +[TLToneManager sharedToneManager];
-        v57 = [v64 _installedTones];
-        v12 = [v8 downloadsMetadata];
+        _installedTones = [v64 _installedTones];
+        downloadsMetadata = [v8 downloadsMetadata];
         v77 = 0u;
         v78 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v58 = v12;
+        v58 = downloadsMetadata;
         v60 = [v58 countByEnumeratingWithState:&v75 objects:v88 count:16];
         if (v60)
         {
@@ -1544,16 +1544,16 @@ LABEL_20:
 
               v62 = v13;
               v15 = *(*(&v75 + 1) + 8 * v13);
-              v63 = [v15 kind];
+              kind = [v15 kind];
               v16 = getSSDownloadKindRingtone();
-              if ([v63 isEqualToString:v16])
+              if ([kind isEqualToString:v16])
               {
               }
 
               else
               {
                 v17 = getSSDownloadKindTone();
-                v18 = [v63 isEqualToString:v17];
+                v18 = [kind isEqualToString:v17];
 
                 if ((v18 & 1) == 0)
                 {
@@ -1561,37 +1561,37 @@ LABEL_20:
 
                   v20 = [v15 copy];
                   [v20 setKind:v19];
-                  v63 = v19;
+                  kind = v19;
                   v15 = v20;
                 }
               }
 
               v21 = objc_alloc_init(TLToneStoreDownload);
-              v22 = [v15 title];
-              [(TLToneStoreDownload *)v21 _setName:v22];
+              title = [v15 title];
+              [(TLToneStoreDownload *)v21 _setName:title];
 
-              v23 = [v15 collectionName];
-              [(TLToneStoreDownload *)v21 _setAlbumTitle:v23];
+              collectionName = [v15 collectionName];
+              [(TLToneStoreDownload *)v21 _setAlbumTitle:collectionName];
 
-              v24 = [v15 artistName];
-              [(TLToneStoreDownload *)v21 _setArtistName:v24];
+              artistName = [v15 artistName];
+              [(TLToneStoreDownload *)v21 _setArtistName:artistName];
 
-              v25 = [v15 durationInMilliseconds];
+              durationInMilliseconds = [v15 durationInMilliseconds];
               v26 = objc_opt_respondsToSelector();
-              v27 = 0.0;
+              unsignedIntegerValue = 0.0;
               if (v26)
               {
-                v27 = [v25 unsignedIntegerValue];
+                unsignedIntegerValue = [durationInMilliseconds unsignedIntegerValue];
               }
 
-              [(TLToneStoreDownload *)v21 _setDuration:v27 / 1000.0, v49];
+              [(TLToneStoreDownload *)v21 _setDuration:unsignedIntegerValue / 1000.0, managerCopy];
 
-              v28 = [v15 genre];
-              [(TLToneStoreDownload *)v21 _setGenreName:v28];
+              genre = [v15 genre];
+              [(TLToneStoreDownload *)v21 _setGenreName:genre];
 
               -[TLToneStoreDownload _setStoreItemIdentifier:](v21, "_setStoreItemIdentifier:", [v15 itemIdentifier]);
               v29 = getSSDownloadKindTone();
-              -[TLToneStoreDownload _setRingtone:](v21, "_setRingtone:", [v63 isEqualToString:v29] ^ 1);
+              -[TLToneStoreDownload _setRingtone:](v21, "_setRingtone:", [kind isEqualToString:v29] ^ 1);
 
               v30 = [v61 indexOfObject:v21];
               if (v30 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1601,7 +1601,7 @@ LABEL_20:
                 v74 = 0u;
                 v71 = 0u;
                 v72 = 0u;
-                v32 = v57;
+                v32 = _installedTones;
                 v33 = [v32 countByEnumeratingWithState:&v71 objects:v87 count:16];
                 if (v33)
                 {
@@ -1618,8 +1618,8 @@ LABEL_20:
                       v35 = *(*(&v71 + 1) + 8 * i);
                       if ([(TLITunesTone *)v31 isDuplicateOfTone:v35])
                       {
-                        v36 = [v35 identifier];
-                        v37 = [v64 toneWithIdentifierIsValid:v36];
+                        identifier = [v35 identifier];
+                        v37 = [v64 toneWithIdentifierIsValid:identifier];
 
                         if (v37)
                         {
@@ -1855,19 +1855,19 @@ void __94__TLToneStoreDownloadStoreServicesController_purchaseManager_didFinishP
   }
 }
 
-- (void)_handleToneManagerContentsDidChangeNotification:(id)a3
+- (void)_handleToneManagerContentsDidChangeNotification:(id)notification
 {
   v4 = +[TLToneManager sharedToneManager];
-  v5 = [v4 _installedTones];
+  _installedTones = [v4 _installedTones];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__TLToneStoreDownloadStoreServicesController__handleToneManagerContentsDidChangeNotification___block_invoke;
   v8[3] = &unk_1E8579038;
   v8[4] = self;
-  v9 = v5;
+  v9 = _installedTones;
   v10 = v4;
   v6 = v4;
-  v7 = v5;
+  v7 = _installedTones;
   [(TLToneStoreDownloadStoreServicesController *)self _performBlockOnAccessQueue:v8];
 }
 
@@ -1935,12 +1935,12 @@ void __94__TLToneStoreDownloadStoreServicesController__handleToneManagerContents
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performBlockOnAccessQueue:(id)a3
+- (void)_performBlockOnAccessQueue:(id)queue
 {
   accessQueue = self->_accessQueue;
   if (accessQueue)
   {
-    dispatch_sync(accessQueue, a3);
+    dispatch_sync(accessQueue, queue);
   }
 }
 
@@ -1969,16 +1969,16 @@ void __94__TLToneStoreDownloadStoreServicesController__handleToneManagerContents
         v9 = TLLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 lastPathComponent];
-          v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          lastPathComponent = [v8 lastPathComponent];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           v14 = 136381443;
           v15 = "[TLToneStoreDownloadStoreServicesController _assertRunningOnAccessQueue]";
           v16 = 2113;
-          v17 = v10;
+          v17 = lastPathComponent;
           v18 = 2049;
           v19 = 455;
           v20 = 2113;
-          v21 = v11;
+          v21 = callStackSymbols;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v14, 0x2Au);
         }
       }

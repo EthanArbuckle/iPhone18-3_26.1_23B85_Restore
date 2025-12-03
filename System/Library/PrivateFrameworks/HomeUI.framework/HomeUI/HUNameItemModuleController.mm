@@ -1,42 +1,42 @@
 @interface HUNameItemModuleController
 - (BOOL)supportsCustomIconEditing;
-- (Class)cellClassForItem:(id)a3;
-- (HUNameItemModuleController)initWithModule:(id)a3 host:(id)a4;
+- (Class)cellClassForItem:(id)item;
+- (HUNameItemModuleController)initWithModule:(id)module host:(id)host;
 - (id)_builderName;
-- (id)currentTextForTextField:(id)a3 item:(id)a4;
-- (id)placeholderTextForTextField:(id)a3 item:(id)a4;
+- (id)currentTextForTextField:(id)field item:(id)item;
+- (id)placeholderTextForTextField:(id)field item:(id)item;
 - (id)prepareForCommit;
 - (void)_cleanupTextFieldSetBuilderName;
-- (void)_setBuilderName:(id)a3;
+- (void)_setBuilderName:(id)name;
 - (void)cancelNameEdit;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)iconPicker:(id)a3 didPickIconDescriptor:(id)a4;
-- (void)iconPickerDidCancel:(id)a3;
-- (void)nameAndIconEditorCellDidTapIcon:(id)a3;
-- (void)setShouldUseAccessoryName:(BOOL)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)iconPicker:(id)picker didPickIconDescriptor:(id)descriptor;
+- (void)iconPickerDidCancel:(id)cancel;
+- (void)nameAndIconEditorCellDidTapIcon:(id)icon;
+- (void)setShouldUseAccessoryName:(BOOL)name;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)textFieldDidEndEditing:(id)editing item:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUNameItemModuleController
 
-- (HUNameItemModuleController)initWithModule:(id)a3 host:(id)a4
+- (HUNameItemModuleController)initWithModule:(id)module host:(id)host
 {
-  v6 = a3;
-  v7 = a4;
+  moduleCopy = module;
+  hostCopy = host;
   v13.receiver = self;
   v13.super_class = HUNameItemModuleController;
-  v8 = [(HUItemModuleController *)&v13 initWithModule:v6];
+  v8 = [(HUItemModuleController *)&v13 initWithModule:moduleCopy];
   v9 = v8;
   if (v8)
   {
-    [(HUNameItemModuleController *)v8 setNameModule:v6];
-    v10 = [v6 sourceItem];
-    v11 = [v10 namingComponentForHomeKitObject];
-    [(HUNameItemModuleController *)v9 setNamingComponent:v11];
+    [(HUNameItemModuleController *)v8 setNameModule:moduleCopy];
+    sourceItem = [moduleCopy sourceItem];
+    namingComponentForHomeKitObject = [sourceItem namingComponentForHomeKitObject];
+    [(HUNameItemModuleController *)v9 setNamingComponent:namingComponentForHomeKitObject];
 
-    [(HUItemModuleController *)v9 setHost:v7];
+    [(HUItemModuleController *)v9 setHost:hostCopy];
     [(HUNameItemModuleController *)v9 setNameFieldHasClearButton:0];
     [(HUNameItemModuleController *)v9 setShowIcon:1];
     [(HUNameItemModuleController *)v9 setShouldUseAccessoryName:0];
@@ -45,37 +45,37 @@
   return v9;
 }
 
-- (void)setShouldUseAccessoryName:(BOOL)a3
+- (void)setShouldUseAccessoryName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
-    v5 = [(HUNameItemModuleController *)self nameModule];
-    v6 = [v5 sourceItem];
+    nameModule = [(HUNameItemModuleController *)self nameModule];
+    sourceItem = [nameModule sourceItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(HUNameItemModuleController *)self nameModule];
-      v9 = [v8 sourceItem];
-      v10 = [v9 service];
-      v11 = [v10 accessory];
+      nameModule2 = [(HUNameItemModuleController *)self nameModule];
+      sourceItem2 = [nameModule2 sourceItem];
+      service = [sourceItem2 service];
+      accessory = [service accessory];
 
-      v12 = [MEMORY[0x277D14870] namingComponentFromAccessory:v11];
+      v12 = [MEMORY[0x277D14870] namingComponentFromAccessory:accessory];
       [(HUNameItemModuleController *)self setNamingComponent:v12];
     }
   }
 
-  self->_shouldUseAccessoryName = a3;
+  self->_shouldUseAccessoryName = name;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUNameItemModuleController *)self nameModule];
-  v6 = [v5 nameAndIconItem];
+  itemCopy = item;
+  nameModule = [(HUNameItemModuleController *)self nameModule];
+  nameAndIconItem = [nameModule nameAndIconItem];
 
-  if (v6 == v4)
+  if (nameAndIconItem == itemCopy)
   {
     [(HUNameItemModuleController *)self showIcon];
   }
@@ -85,30 +85,30 @@
   return v7;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
   v10.receiver = self;
   v10.super_class = HUNameItemModuleController;
-  v5 = a4;
-  v6 = a3;
-  [(HUItemModuleController *)&v10 configureCell:v6 forItem:v5];
-  v7 = [MEMORY[0x277D756E0] cellConfiguration];
-  v8 = [v5 latestResults];
+  itemCopy = item;
+  cellCopy = cell;
+  [(HUItemModuleController *)&v10 configureCell:cellCopy forItem:itemCopy];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  latestResults = [itemCopy latestResults];
 
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  [v7 setText:v9];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  [cellConfiguration setText:v9];
 
-  [v6 setContentConfiguration:v7];
+  [cellCopy setContentConfiguration:cellConfiguration];
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v17 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_opt_class();
-    v6 = v17;
+    v6 = cellCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -127,9 +127,9 @@
         goto LABEL_9;
       }
 
-      v9 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
     }
 
     v8 = 0;
@@ -137,33 +137,33 @@ LABEL_9:
 
     [v8 setDelegate:self];
     v11 = [HUGridSceneCellLayoutOptions defaultOptionsForCellSizeSubclass:1];
-    v12 = [v11 font];
-    [v8 setTextFieldFont:v12];
+    font = [v11 font];
+    [v8 setTextFieldFont:font];
 
-    v13 = [(HUNameItemModuleController *)self supportsCustomIconEditing];
-    v14 = [v8 iconButton];
-    [v14 setSelected:v13];
+    supportsCustomIconEditing = [(HUNameItemModuleController *)self supportsCustomIconEditing];
+    iconButton = [v8 iconButton];
+    [iconButton setSelected:supportsCustomIconEditing];
 
-    v15 = [(HUNameItemModuleController *)self supportsCustomIconEditing];
-    v16 = [v8 iconButton];
-    [v16 setUserInteractionEnabled:v15];
+    supportsCustomIconEditing2 = [(HUNameItemModuleController *)self supportsCustomIconEditing];
+    iconButton2 = [v8 iconButton];
+    [iconButton2 setUserInteractionEnabled:supportsCustomIconEditing2];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v14 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v14;
-    v7 = [(HUNameItemModuleController *)self supportsCustomIconEditing];
-    v8 = [v6 iconButton];
-    [v8 setSelected:v7];
+    v6 = cellCopy;
+    supportsCustomIconEditing = [(HUNameItemModuleController *)self supportsCustomIconEditing];
+    iconButton = [v6 iconButton];
+    [iconButton setSelected:supportsCustomIconEditing];
 
-    v9 = [(HUNameItemModuleController *)self supportsCustomIconEditing];
-    v10 = [v6 iconButton];
-    [v10 setUserInteractionEnabled:v9];
+    supportsCustomIconEditing2 = [(HUNameItemModuleController *)self supportsCustomIconEditing];
+    iconButton2 = [v6 iconButton];
+    [iconButton2 setUserInteractionEnabled:supportsCustomIconEditing2];
 LABEL_8:
 
     if ([(HUNameItemModuleController *)self nameFieldHasClearButton])
@@ -176,9 +176,9 @@ LABEL_8:
       v12 = 0;
     }
 
-    v13 = [v6 textField];
+    textField = [v6 textField];
 
-    [v13 setClearButtonMode:v12];
+    [textField setClearButtonMode:v12];
     goto LABEL_12;
   }
 
@@ -186,10 +186,10 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v10 = v14;
+    iconButton2 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = iconButton2;
     }
 
     else
@@ -206,11 +206,11 @@ LABEL_12:
 
 - (BOOL)supportsCustomIconEditing
 {
-  v2 = [(HUNameItemModuleController *)self nameModule];
-  v3 = [v2 sourceItemBuilder];
-  if ([v3 conformsToProtocol:&unk_2825BD4E0])
+  nameModule = [(HUNameItemModuleController *)self nameModule];
+  sourceItemBuilder = [nameModule sourceItemBuilder];
+  if ([sourceItemBuilder conformsToProtocol:&unk_2825BD4E0])
   {
-    v4 = v3;
+    v4 = sourceItemBuilder;
   }
 
   else
@@ -222,8 +222,8 @@ LABEL_12:
 
   if (v5 && (objc_opt_respondsToSelector() & 1) != 0 && ([v5 home], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "hf_currentUserIsRestrictedGuest"), v6, (v7 & 1) == 0))
   {
-    v10 = [v5 availableIconDescriptors];
-    v8 = [v10 count] > 1;
+    availableIconDescriptors = [v5 availableIconDescriptors];
+    v8 = [availableIconDescriptors count] > 1;
   }
 
   else
@@ -234,34 +234,34 @@ LABEL_12:
   return v8;
 }
 
-- (id)placeholderTextForTextField:(id)a3 item:(id)a4
+- (id)placeholderTextForTextField:(id)field item:(id)item
 {
-  v4 = [(HUNameItemModuleController *)self namingComponent:a3];
-  v5 = [v4 placeholderText];
+  v4 = [(HUNameItemModuleController *)self namingComponent:field];
+  placeholderText = [v4 placeholderText];
 
-  return v5;
+  return placeholderText;
 }
 
-- (id)currentTextForTextField:(id)a3 item:(id)a4
+- (id)currentTextForTextField:(id)field item:(id)item
 {
-  v4 = [(HUNameItemModuleController *)self namingComponent:a3];
-  v5 = [v4 textFieldDisplayText];
+  v4 = [(HUNameItemModuleController *)self namingComponent:field];
+  textFieldDisplayText = [v4 textFieldDisplayText];
 
-  return v5;
+  return textFieldDisplayText;
 }
 
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4
+- (void)textFieldDidEndEditing:(id)editing item:(id)item
 {
-  v5 = a3;
-  v6 = [(HUNameItemModuleController *)self prepareForCommit];
+  editingCopy = editing;
+  prepareForCommit = [(HUNameItemModuleController *)self prepareForCommit];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__HUNameItemModuleController_textFieldDidEndEditing_item___block_invoke;
   v9[3] = &unk_277DB7158;
-  v10 = v5;
-  v11 = self;
-  v7 = v5;
-  v8 = [v6 addCompletionBlock:v9];
+  v10 = editingCopy;
+  selfCopy = self;
+  v7 = editingCopy;
+  v8 = [prepareForCommit addCompletionBlock:v9];
 }
 
 void __58__HUNameItemModuleController_textFieldDidEndEditing_item___block_invoke(uint64_t a1)
@@ -272,9 +272,9 @@ void __58__HUNameItemModuleController_textFieldDidEndEditing_item___block_invoke
 
 - (void)cancelNameEdit
 {
-  v3 = [(HUNameItemModuleController *)self nameModule];
-  v4 = [v3 nameAndIconItem];
-  v5 = [(HUItemModuleController *)self textFieldForVisibleItem:v4];
+  nameModule = [(HUNameItemModuleController *)self nameModule];
+  nameAndIconItem = [nameModule nameAndIconItem];
+  v5 = [(HUItemModuleController *)self textFieldForVisibleItem:nameAndIconItem];
 
   [v5 resignFirstResponder];
 }
@@ -282,15 +282,15 @@ void __58__HUNameItemModuleController_textFieldDidEndEditing_item___block_invoke
 - (id)prepareForCommit
 {
   [(HUNameItemModuleController *)self _cleanupTextFieldSetBuilderName];
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v4 = [v3 homeManager];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
 
   v5 = objc_opt_new();
-  v6 = [(HUNameItemModuleController *)self nameModule];
-  v7 = [v6 sourceItemBuilder];
-  if ([v7 conformsToProtocol:&unk_2825BD4E0])
+  nameModule = [(HUNameItemModuleController *)self nameModule];
+  sourceItemBuilder = [nameModule sourceItemBuilder];
+  if ([sourceItemBuilder conformsToProtocol:&unk_2825BD4E0])
   {
-    v8 = v7;
+    v8 = sourceItemBuilder;
   }
 
   else
@@ -300,30 +300,30 @@ void __58__HUNameItemModuleController_textFieldDidEndEditing_item___block_invoke
 
   v9 = v8;
 
-  v10 = [(HUNameItemModuleController *)self _builderName];
-  v11 = [(HUNameItemModuleController *)self nameModule];
-  v12 = [v11 nameAndIconItem];
-  v13 = [(HUItemModuleController *)self textFieldForVisibleItem:v12];
+  _builderName = [(HUNameItemModuleController *)self _builderName];
+  nameModule2 = [(HUNameItemModuleController *)self nameModule];
+  nameAndIconItem = [nameModule2 nameAndIconItem];
+  v13 = [(HUItemModuleController *)self textFieldForVisibleItem:nameAndIconItem];
 
   if (v9)
   {
-    if (v10)
+    if (_builderName)
     {
-      v14 = [v13 text];
-      v15 = [(HUNameItemModuleController *)self namingComponent];
-      v16 = [v15 name];
-      v17 = [v14 isEqualToString:v16];
+      text = [v13 text];
+      namingComponent = [(HUNameItemModuleController *)self namingComponent];
+      name = [namingComponent name];
+      v17 = [text isEqualToString:name];
 
       if (!v17)
       {
-        v18 = [v9 home];
+        home = [v9 home];
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __46__HUNameItemModuleController_prepareForCommit__block_invoke;
         v22[3] = &unk_277DB71A8;
         v23 = v5;
-        v24 = v10;
-        [v4 checkName:v24 inHome:v18 withValidationOptions:5 completionHandler:v22];
+        v24 = _builderName;
+        [homeManager checkName:v24 inHome:home withValidationOptions:5 completionHandler:v22];
 
         goto LABEL_10;
       }
@@ -332,9 +332,9 @@ void __58__HUNameItemModuleController_textFieldDidEndEditing_item___block_invoke
 
   else
   {
-    v19 = [(HUNameItemModuleController *)self nameModule];
-    v20 = [v19 sourceItem];
-    NSLog(&cfstr_BuilderForItem.isa, v20);
+    nameModule3 = [(HUNameItemModuleController *)self nameModule];
+    sourceItem = [nameModule3 sourceItem];
+    NSLog(&cfstr_BuilderForItem.isa, sourceItem);
   }
 
   [v5 finishWithNoResult];
@@ -385,27 +385,27 @@ uint64_t __46__HUNameItemModuleController_prepareForCommit__block_invoke_2(uint6
 
 - (void)_cleanupTextFieldSetBuilderName
 {
-  v3 = [(HUNameItemModuleController *)self nameModule];
-  v4 = [v3 nameAndIconItem];
-  v8 = [(HUItemModuleController *)self textFieldForVisibleItem:v4];
+  nameModule = [(HUNameItemModuleController *)self nameModule];
+  nameAndIconItem = [nameModule nameAndIconItem];
+  v8 = [(HUItemModuleController *)self textFieldForVisibleItem:nameAndIconItem];
 
-  v5 = [(HUNameItemModuleController *)self namingComponent];
-  v6 = [v8 text];
-  v7 = [v5 homeKitSafeStringForString:v6];
+  namingComponent = [(HUNameItemModuleController *)self namingComponent];
+  text = [v8 text];
+  v7 = [namingComponent homeKitSafeStringForString:text];
 
   [v8 setText:v7];
   [(HUNameItemModuleController *)self _setBuilderName:v7];
 }
 
-- (void)_setBuilderName:(id)a3
+- (void)_setBuilderName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_opt_class();
-  v5 = [(HUNameItemModuleController *)self nameModule];
-  v6 = [v5 sourceItemBuilder];
+  nameModule = [(HUNameItemModuleController *)self nameModule];
+  sourceItemBuilder = [nameModule sourceItemBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = sourceItemBuilder;
   }
 
   else
@@ -417,17 +417,17 @@ uint64_t __46__HUNameItemModuleController_prepareForCommit__block_invoke_2(uint6
 
   if ([(HUNameItemModuleController *)self shouldUseAccessoryName]&& v12)
   {
-    [v12 setAccessoryName:v4];
-    [v12 setName:v4];
+    [v12 setAccessoryName:nameCopy];
+    [v12 setName:nameCopy];
   }
 
   else
   {
-    v8 = [(HUNameItemModuleController *)self nameModule];
-    v9 = [v8 sourceItemBuilder];
-    if ([v9 conformsToProtocol:&unk_2825BD4E0])
+    nameModule2 = [(HUNameItemModuleController *)self nameModule];
+    sourceItemBuilder2 = [nameModule2 sourceItemBuilder];
+    if ([sourceItemBuilder2 conformsToProtocol:&unk_2825BD4E0])
     {
-      v10 = v9;
+      v10 = sourceItemBuilder2;
     }
 
     else
@@ -437,18 +437,18 @@ uint64_t __46__HUNameItemModuleController_prepareForCommit__block_invoke_2(uint6
 
     v11 = v10;
 
-    [v11 setName:v4];
+    [v11 setName:nameCopy];
   }
 }
 
 - (id)_builderName
 {
   objc_opt_class();
-  v3 = [(HUNameItemModuleController *)self nameModule];
-  v4 = [v3 sourceItemBuilder];
+  nameModule = [(HUNameItemModuleController *)self nameModule];
+  sourceItemBuilder = [nameModule sourceItemBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = sourceItemBuilder;
   }
 
   else
@@ -460,16 +460,16 @@ uint64_t __46__HUNameItemModuleController_prepareForCommit__block_invoke_2(uint6
 
   if ([(HUNameItemModuleController *)self shouldUseAccessoryName]&& v6)
   {
-    v7 = [v6 accessoryName];
+    accessoryName = [v6 accessoryName];
   }
 
   else
   {
-    v8 = [(HUNameItemModuleController *)self nameModule];
-    v9 = [v8 sourceItemBuilder];
-    if ([v9 conformsToProtocol:&unk_2825BD4E0])
+    nameModule2 = [(HUNameItemModuleController *)self nameModule];
+    sourceItemBuilder2 = [nameModule2 sourceItemBuilder];
+    if ([sourceItemBuilder2 conformsToProtocol:&unk_2825BD4E0])
     {
-      v10 = v9;
+      v10 = sourceItemBuilder2;
     }
 
     else
@@ -479,32 +479,32 @@ uint64_t __46__HUNameItemModuleController_prepareForCommit__block_invoke_2(uint6
 
     v11 = v10;
 
-    v7 = [v11 name];
+    accessoryName = [v11 name];
   }
 
-  return v7;
+  return accessoryName;
 }
 
-- (void)nameAndIconEditorCellDidTapIcon:(id)a3
+- (void)nameAndIconEditorCellDidTapIcon:(id)icon
 {
   if ([(HUNameItemModuleController *)self supportsCustomIconEditing])
   {
-    v4 = [(HUNameItemModuleController *)self nameModule];
-    v5 = [v4 sourceItemBuilder];
+    nameModule = [(HUNameItemModuleController *)self nameModule];
+    sourceItemBuilder = [nameModule sourceItemBuilder];
     v6 = objc_opt_respondsToSelector();
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(HUNameItemModuleController *)self nameModule];
-      v8 = [v7 sourceItemBuilder];
-      NSLog(&cfstr_ServiceLikeBui.isa, v8);
+      nameModule2 = [(HUNameItemModuleController *)self nameModule];
+      sourceItemBuilder2 = [nameModule2 sourceItemBuilder];
+      NSLog(&cfstr_ServiceLikeBui.isa, sourceItemBuilder2);
     }
 
-    v9 = [(HUNameItemModuleController *)self nameModule];
-    v10 = [v9 sourceItemBuilder];
-    if ([v10 conformsToProtocol:&unk_2825BD4E0])
+    nameModule3 = [(HUNameItemModuleController *)self nameModule];
+    sourceItemBuilder3 = [nameModule3 sourceItemBuilder];
+    if ([sourceItemBuilder3 conformsToProtocol:&unk_2825BD4E0])
     {
-      v11 = v10;
+      v11 = sourceItemBuilder3;
     }
 
     else
@@ -514,39 +514,39 @@ uint64_t __46__HUNameItemModuleController_prepareForCommit__block_invoke_2(uint6
 
     v12 = v11;
 
-    v19 = [v12 availableIconDescriptors];
-    v13 = [v12 iconDescriptor];
+    availableIconDescriptors = [v12 availableIconDescriptors];
+    iconDescriptor = [v12 iconDescriptor];
 
-    v14 = [[HUIconPickerViewController alloc] initWithIconDescriptors:v19 selectedIconDescriptor:v13 delegate:self];
+    v14 = [[HUIconPickerViewController alloc] initWithIconDescriptors:availableIconDescriptors selectedIconDescriptor:iconDescriptor delegate:self];
     v15 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v14];
     [v15 setModalPresentationStyle:2];
     v16 = [HUViewControllerPresentationRequest requestWithViewController:v15];
-    v17 = [(HUItemModuleController *)self host];
-    v18 = [v17 moduleController:self presentViewControllerForRequest:v16];
+    host = [(HUItemModuleController *)self host];
+    v18 = [host moduleController:self presentViewControllerForRequest:v16];
   }
 }
 
-- (void)iconPickerDidCancel:(id)a3
+- (void)iconPickerDidCancel:(id)cancel
 {
-  v6 = [HUViewControllerDismissalRequest requestWithViewController:a3];
-  v4 = [(HUItemModuleController *)self host];
-  v5 = [v4 moduleController:self dismissViewControllerForRequest:v6];
+  v6 = [HUViewControllerDismissalRequest requestWithViewController:cancel];
+  host = [(HUItemModuleController *)self host];
+  v5 = [host moduleController:self dismissViewControllerForRequest:v6];
 }
 
-- (void)iconPicker:(id)a3 didPickIconDescriptor:(id)a4
+- (void)iconPicker:(id)picker didPickIconDescriptor:(id)descriptor
 {
-  v7 = a4;
-  v8 = a3;
+  descriptorCopy = descriptor;
+  pickerCopy = picker;
   if (![(HUNameItemModuleController *)self supportsCustomIconEditing])
   {
     NSLog(&cfstr_UpdatingIconsI.isa);
   }
 
-  v9 = [(HUNameItemModuleController *)self nameModule];
-  v10 = [v9 sourceItemBuilder];
-  if ([v10 conformsToProtocol:&unk_2825BD4E0])
+  nameModule = [(HUNameItemModuleController *)self nameModule];
+  sourceItemBuilder = [nameModule sourceItemBuilder];
+  if ([sourceItemBuilder conformsToProtocol:&unk_2825BD4E0])
   {
-    v11 = v10;
+    v11 = sourceItemBuilder;
   }
 
   else
@@ -556,8 +556,8 @@ uint64_t __46__HUNameItemModuleController_prepareForCommit__block_invoke_2(uint6
 
   v12 = v11;
 
-  [v12 setIconDescriptor:v7];
-  v13 = [v12 commitItem];
+  [v12 setIconDescriptor:descriptorCopy];
+  commitItem = [v12 commitItem];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -565,12 +565,12 @@ uint64_t __46__HUNameItemModuleController_prepareForCommit__block_invoke_2(uint6
   v18[3] = &unk_277DB71D0;
   v18[4] = self;
   v18[5] = a2;
-  v14 = [v13 addSuccessBlock:v18];
+  v14 = [commitItem addSuccessBlock:v18];
 
-  v15 = [HUViewControllerDismissalRequest requestWithViewController:v8];
+  v15 = [HUViewControllerDismissalRequest requestWithViewController:pickerCopy];
 
-  v16 = [(HUItemModuleController *)self host];
-  v17 = [v16 moduleController:self dismissViewControllerForRequest:v15];
+  host = [(HUItemModuleController *)self host];
+  v17 = [host moduleController:self dismissViewControllerForRequest:v15];
 }
 
 void __63__HUNameItemModuleController_iconPicker_didPickIconDescriptor___block_invoke(uint64_t a1)

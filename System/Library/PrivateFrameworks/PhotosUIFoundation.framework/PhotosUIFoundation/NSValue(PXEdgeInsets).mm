@@ -9,13 +9,13 @@
 {
   v2[0] = PXEdgeInsetsNull;
   v2[1] = unk_1B4075370;
-  [a1 getValue:v2];
+  [self getValue:v2];
   return *v2;
 }
 
 + (id)valueWithPXEdgeInsets:()PXEdgeInsets
 {
-  *v6 = a1;
+  *v6 = self;
   *&v6[1] = a2;
   *&v6[2] = a3;
   *&v6[3] = a4;

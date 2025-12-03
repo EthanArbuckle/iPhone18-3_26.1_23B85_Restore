@@ -1,17 +1,17 @@
 @interface SBHGhostAppIcon
-- (id)makeIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6;
-- (id)makeIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6;
+- (id)makeIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options;
+- (id)makeIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options;
 @end
 
 @implementation SBHGhostAppIcon
 
-- (id)makeIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (id)makeIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options
 {
   v11 = v9;
   v12 = v8;
   v13 = v7;
   v14 = v6;
-  if ([MEMORY[0x1E69DD1B8] sbh_iconUserInterfaceStyleFromTraitCollection:{a3, a4, a5, a6}] == 2)
+  if ([MEMORY[0x1E69DD1B8] sbh_iconUserInterfaceStyleFromTraitCollection:{info, collection, context, options}] == 2)
   {
     v15 = 0.07;
     v16 = 1.0;
@@ -35,7 +35,7 @@
   v26 = v13;
   v27 = v12;
   v28 = v11;
-  v29 = a5;
+  contextCopy = context;
   v24 = v17;
   v20 = v17;
   v21 = [v19 imageWithActions:v23];
@@ -58,17 +58,17 @@ void __73__SBHGhostAppIcon_makeIconImageWithInfo_traitCollection_context_options
   [v6 fillRect:0 blendMode:{0.0, 0.0, v3, v4}];
 }
 
-- (id)makeIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (id)makeIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options
 {
   v9 = v8;
   v10 = v7;
   v11 = v6;
-  v12 = a3;
+  infoCopy = info;
   v13 = objc_alloc_init(SBHGhostAppLayer);
   [(SBHGhostAppLayer *)v13 setBounds:0.0, 0.0, v11, v10];
   [(SBHGhostAppLayer *)v13 setCornerRadius:v9];
   [(SBHGhostAppLayer *)v13 setCornerCurve:*MEMORY[0x1E69796E8]];
-  v14 = [MEMORY[0x1E69DD1B8] sbh_iconUserInterfaceStyleFromTraitCollection:v12];
+  v14 = [MEMORY[0x1E69DD1B8] sbh_iconUserInterfaceStyleFromTraitCollection:infoCopy];
 
   [(SBHGhostAppLayer *)v13 updateForUserInterfaceStyle:v14];
 

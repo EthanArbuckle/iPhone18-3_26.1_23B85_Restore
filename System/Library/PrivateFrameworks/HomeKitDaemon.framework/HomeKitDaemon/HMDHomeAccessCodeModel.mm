@@ -1,38 +1,38 @@
 @interface HMDHomeAccessCodeModel
-+ (id)modelUUIDForHomeUUID:(id)a3 accessCodeValue:(id)a4;
++ (id)modelUUIDForHomeUUID:(id)d accessCodeValue:(id)value;
 + (id)properties;
-- (HMDHomeAccessCodeModel)initWithHomeUUID:(id)a3 value:(id)a4 label:(id)a5;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (HMDHomeAccessCodeModel)initWithHomeUUID:(id)d value:(id)value label:(id)label;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDHomeAccessCodeModel
 
-- (HMDHomeAccessCodeModel)initWithHomeUUID:(id)a3 value:(id)a4 label:(id)a5
+- (HMDHomeAccessCodeModel)initWithHomeUUID:(id)d value:(id)value label:(id)label
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [HMDHomeAccessCodeModel modelUUIDForHomeUUID:v10 accessCodeValue:v8];
-  v12 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v11 parentUUID:v10];
+  valueCopy = value;
+  labelCopy = label;
+  dCopy = d;
+  v11 = [HMDHomeAccessCodeModel modelUUIDForHomeUUID:dCopy accessCodeValue:valueCopy];
+  v12 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v11 parentUUID:dCopy];
 
   if (v12)
   {
-    [(HMDHomeAccessCodeModel *)v12 setValue:v8];
-    [(HMDHomeAccessCodeModel *)v12 setLabel:v9];
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    [(HMDHomeAccessCodeModel *)v12 setHh2ModelID:v13];
+    [(HMDHomeAccessCodeModel *)v12 setValue:valueCopy];
+    [(HMDHomeAccessCodeModel *)v12 setLabel:labelCopy];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(HMDHomeAccessCodeModel *)v12 setHh2ModelID:uUID];
   }
 
   return v12;
 }
 
-+ (id)modelUUIDForHomeUUID:(id)a3 accessCodeValue:(id)a4
++ (id)modelUUIDForHomeUUID:(id)d accessCodeValue:(id)value
 {
   v5 = MEMORY[0x277CCAD78];
-  v6 = a3;
-  v7 = [a4 dataUsingEncoding:4];
-  v8 = [v5 hmf_UUIDWithNamespace:v6 data:v7];
+  dCopy = d;
+  v7 = [value dataUsingEncoding:4];
+  v8 = [v5 hmf_UUIDWithNamespace:dCopy data:v7];
 
   return v8;
 }
@@ -68,12 +68,12 @@ void __36__HMDHomeAccessCodeModel_properties__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"accessCode"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"accessCode"])
   {
     if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"value"])
     {
@@ -81,56 +81,56 @@ void __36__HMDHomeAccessCodeModel_properties__block_invoke()
       goto LABEL_11;
     }
 
-    v11 = [(HMDHomeAccessCodeModel *)self value];
+    value = [(HMDHomeAccessCodeModel *)self value];
   }
 
   else
   {
-    if ([v9 isEqualToString:@"home"])
+    if ([fieldCopy isEqualToString:@"home"])
     {
-      v12 = [(HMDBackingStoreModelObject *)self parentUUID];
-      v13 = [HMDHomeModel cd_getHomeFromUUID:v12];
+      parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
+      v13 = [HMDHomeModel cd_getHomeFromUUID:parentUUID];
 
       goto LABEL_11;
     }
 
-    if ([v9 isEqualToString:@"modelID"])
+    if ([fieldCopy isEqualToString:@"modelID"])
     {
-      v11 = [(HMDBackingStoreModelObject *)self uuid];
+      value = [(HMDBackingStoreModelObject *)self uuid];
     }
 
     else
     {
       v15.receiver = self;
       v15.super_class = HMDHomeAccessCodeModel;
-      v11 = [(HMDBackingStoreModelObject *)&v15 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+      value = [(HMDBackingStoreModelObject *)&v15 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
     }
   }
 
-  v13 = v11;
+  v13 = value;
 LABEL_11:
 
   return v13;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 isEqualToString:@"value"])
+  fieldCopy = field;
+  infoCopy = info;
+  objectCopy = object;
+  if ([fieldCopy isEqualToString:@"value"])
   {
-    v11 = [v10 accessCode];
+    accessCode = [objectCopy accessCode];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = HMDHomeAccessCodeModel;
-    v11 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:v10 modelObjectField:v8 modelFieldInfo:v9];
+    accessCode = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
-  v12 = v11;
+  v12 = accessCode;
 
   return v12;
 }

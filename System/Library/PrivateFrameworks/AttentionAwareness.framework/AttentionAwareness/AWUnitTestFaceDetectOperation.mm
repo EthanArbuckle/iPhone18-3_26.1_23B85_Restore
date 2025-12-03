@@ -1,18 +1,18 @@
 @interface AWUnitTestFaceDetectOperation
 - (AWUnitTestFaceDetectOperation)init;
 - (AWUnitTestPearlDevice)unitTestDevice;
-- (BOOL)startStreamWithError:(id *)a3;
-- (BOOL)startWithError:(id *)a3;
+- (BOOL)startStreamWithError:(id *)error;
+- (BOOL)startWithError:(id *)error;
 - (int64_t)state;
 - (void)awDeliverFaceFound;
 - (void)awDeliverStreamingEvent;
-- (void)awFinishWithReason:(int64_t)a3;
-- (void)awSetFaceDetectError:(BOOL)a3;
+- (void)awFinishWithReason:(int64_t)reason;
+- (void)awSetFaceDetectError:(BOOL)error;
 - (void)awSetFaceFound;
 - (void)cancel;
 - (void)dealloc;
-- (void)setErrorState:(BOOL)a3;
-- (void)startWithReply:(id)a3;
+- (void)setErrorState:(BOOL)state;
+- (void)startWithReply:(id)reply;
 @end
 
 @implementation AWUnitTestFaceDetectOperation
@@ -24,7 +24,7 @@
   return WeakRetained;
 }
 
-- (void)awSetFaceDetectError:(BOOL)a3
+- (void)awSetFaceDetectError:(BOOL)error
 {
   awQueue = self->_awQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -32,7 +32,7 @@
   v4[2] = __54__AWUnitTestFaceDetectOperation_awSetFaceDetectError___block_invoke;
   v4[3] = &unk_1E7F37FC8;
   v4[4] = self;
-  v5 = a3;
+  errorCopy = error;
   dispatch_sync(awQueue, v4);
 }
 
@@ -323,7 +323,7 @@ LABEL_25:
             *&v19[4] = 2048;
             *&v19[6] = v11;
             v20 = 2048;
-            v21 = self;
+            selfCopy = self;
             v12 = "%30s:%-4d: %13.5f: UNIT TEST: face found for already finished operation %p";
             v13 = v3;
             v14 = 38;
@@ -344,7 +344,7 @@ LABEL_25:
   [(AWUnitTestFaceDetectOperation *)self awFinishWithReason:1];
 }
 
-- (void)awFinishWithReason:(int64_t)a3
+- (void)awFinishWithReason:(int64_t)reason
 {
   v24 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_awQueue);
@@ -369,7 +369,7 @@ LABEL_25:
         *buf = 134218498;
         v19 = v7;
         v20 = 2080;
-        *v21 = getEndReasonDescriptions(a3);
+        *v21 = getEndReasonDescriptions(reason);
         *&v21[8] = 2048;
         *&v21[10] = self;
         v13 = "%13.5f: UNIT TEST: %s for already finished operation %p";
@@ -417,9 +417,9 @@ LABEL_22:
             *&v21[4] = 2048;
             *&v21[6] = v12;
             *&v21[14] = 2080;
-            *&v21[16] = getEndReasonDescriptions(a3);
+            *&v21[16] = getEndReasonDescriptions(reason);
             v22 = 2048;
-            v23 = self;
+            selfCopy = self;
             v13 = "%30s:%-4d: %13.5f: UNIT TEST: %s for already finished operation %p";
             v14 = v5;
             v15 = 48;
@@ -437,14 +437,14 @@ LABEL_22:
     self->_finished = 1;
     dispatch_source_cancel(self->_awInitTimer);
     dispatch_source_cancel(self->_deadlineTimer);
-    v8 = [(BKOperation *)self queue];
+    queue = [(BKOperation *)self queue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __52__AWUnitTestFaceDetectOperation_awFinishWithReason___block_invoke;
     v17[3] = &unk_1E7F37F50;
     v17[4] = self;
-    v17[5] = a3;
-    dispatch_async(v8, v17);
+    v17[5] = reason;
+    dispatch_async(queue, v17);
 
     dispatch_source_cancel(self->_streamingTimer);
   }
@@ -553,22 +553,22 @@ LABEL_21:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startWithReply:(id)a3
+- (void)startWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __48__AWUnitTestFaceDetectOperation_startWithReply___block_invoke;
   v17[3] = &unk_1E7F37F78;
   v17[4] = self;
-  v5 = v4;
+  v5 = replyCopy;
   v18 = v5;
   v6 = MEMORY[0x1BFB0D030](v17);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __48__AWUnitTestFaceDetectOperation_startWithReply___block_invoke_2;
   v14 = &unk_1E7F37F78;
-  v15 = self;
+  selfCopy = self;
   v16 = v5;
   v7 = v5;
   v8 = MEMORY[0x1BFB0D030](&v11);
@@ -681,8 +681,8 @@ LABEL_19:
 
 LABEL_21:
   v13 = objc_alloc(MEMORY[0x1E698F3A0]);
-  v14 = [(BKFaceDetectOperation *)self eyeRelief];
-  if (v14)
+  eyeRelief = [(BKFaceDetectOperation *)self eyeRelief];
+  if (eyeRelief)
   {
     v15 = 100.0;
   }
@@ -692,12 +692,12 @@ LABEL_21:
     v15 = 0.0;
   }
 
-  [v13 setEyeReliefStatus:v14];
+  [v13 setEyeReliefStatus:eyeRelief];
   *&v16 = v15;
   v17 = [MEMORY[0x1E696AD98] numberWithFloat:v16];
   [v13 setDistance:v17];
 
-  v18 = [(BKOperation *)self queue];
+  queue = [(BKOperation *)self queue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __56__AWUnitTestFaceDetectOperation_awDeliverStreamingEvent__block_invoke;
@@ -705,7 +705,7 @@ LABEL_21:
   v21[4] = self;
   v22 = v13;
   v19 = v13;
-  dispatch_sync(v18, v21);
+  dispatch_sync(queue, v21);
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -722,7 +722,7 @@ void __56__AWUnitTestFaceDetectOperation_awDeliverStreamingEvent__block_invoke(u
   }
 }
 
-- (void)setErrorState:(BOOL)a3
+- (void)setErrorState:(BOOL)state
 {
   awQueue = self->_awQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -730,11 +730,11 @@ void __56__AWUnitTestFaceDetectOperation_awDeliverStreamingEvent__block_invoke(u
   v4[2] = __47__AWUnitTestFaceDetectOperation_setErrorState___block_invoke;
   v4[3] = &unk_1E7F37FC8;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_sync(awQueue, v4);
 }
 
-- (BOOL)startStreamWithError:(id *)a3
+- (BOOL)startStreamWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   if (currentLogLevel == 5)
@@ -753,9 +753,9 @@ void __56__AWUnitTestFaceDetectOperation_awDeliverStreamingEvent__block_invoke(u
         v7 = v6 / 1000000000.0;
       }
 
-      v12 = [(BKFaceDetectOperation *)self eyeRelief];
+      eyeRelief = [(BKFaceDetectOperation *)self eyeRelief];
       v13 = "without";
-      if (v12)
+      if (eyeRelief)
       {
         v13 = "with";
       }
@@ -802,13 +802,13 @@ void __56__AWUnitTestFaceDetectOperation_awDeliverStreamingEvent__block_invoke(u
           v11 = v10 / 1000000000.0;
         }
 
-        v17 = [(BKFaceDetectOperation *)self eyeRelief];
+        eyeRelief2 = [(BKFaceDetectOperation *)self eyeRelief];
         v18 = "without";
         *buf = 136315906;
         *&buf[4] = v8;
         *&buf[12] = 1024;
         *&buf[14] = 459;
-        if (v17)
+        if (eyeRelief2)
         {
           v18 = "with";
         }
@@ -846,19 +846,19 @@ LABEL_24:
   v20 = *(*&buf[8] + 24);
   if (v20)
   {
-    v21 = [(BKOperation *)self queue];
+    queue = [(BKOperation *)self queue];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __54__AWUnitTestFaceDetectOperation_startStreamWithError___block_invoke_2;
     v26[3] = &unk_1E7F38038;
     v26[4] = self;
-    dispatch_sync(v21, v26);
+    dispatch_sync(queue, v26);
 
     v22 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A578];
     v29 = @" Pearl is in error state";
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    *a3 = [v22 errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v23];
+    *error = [v22 errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:v23];
   }
 
   else
@@ -884,7 +884,7 @@ void __54__AWUnitTestFaceDetectOperation_startStreamWithError___block_invoke_2(u
   }
 }
 
-- (BOOL)startWithError:(id *)a3
+- (BOOL)startWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   if (currentLogLevel == 5)
@@ -978,17 +978,17 @@ LABEL_21:
   [(BKFaceDetectOperation *)self timeout];
   v19 = v18;
   WeakRetained = objc_loadWeakRetained(&self->_unitTestDevice);
-  v21 = [WeakRetained sampleStatsPtr];
+  sampleStatsPtr = [WeakRetained sampleStatsPtr];
   if (v19 == 0.0)
   {
-    ++*(v21 + 16);
+    ++*(sampleStatsPtr + 16);
 
     v22 = 1000000000;
   }
 
   else
   {
-    ++*(v21 + 8);
+    ++*(sampleStatsPtr + 8);
 
     v22 = (v19 * 1000000000.0);
   }

@@ -1,45 +1,45 @@
 @interface CWFXPCClient
-- (BOOL)allowRequestType:(int64_t)a3;
-- (BOOL)beginActivity:(id)a3 requestParameters:(id)a4 error:(id *)a5;
-- (BOOL)checkinWithRequestParameters:(id)a3 error:(id *)a4;
-- (BOOL)startMonitoringEvent:(id)a3 requestParameters:(id)a4 error:(id *)a5;
+- (BOOL)allowRequestType:(int64_t)type;
+- (BOOL)beginActivity:(id)activity requestParameters:(id)parameters error:(id *)error;
+- (BOOL)checkinWithRequestParameters:(id)parameters error:(id *)error;
+- (BOOL)startMonitoringEvent:(id)event requestParameters:(id)parameters error:(id *)error;
 - (CWFXPCClient)init;
-- (CWFXPCClient)initWithServiceType:(int64_t)a3 endpoint:(id)a4 remoteXPCProxyConnection:(id)a5;
+- (CWFXPCClient)initWithServiceType:(int64_t)type endpoint:(id)endpoint remoteXPCProxyConnection:(id)connection;
 - (CWFXPCProxyConnection)localXPCProxyConnection;
-- (id)eventHandlerWithEventID:(id)a3;
+- (id)eventHandlerWithEventID:(id)d;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)__acknowledgeEventWithUUID:(id)a3;
-- (void)__beginActivity:(id)a3 requestParameters:(id)a4 reply:(id)a5;
-- (void)__receivedEvent:(id)a3;
-- (void)__startMonitoringEvent:(id)a3 requestParameters:(id)a4 reply:(id)a5;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)__acknowledgeEventWithUUID:(id)d;
+- (void)__beginActivity:(id)activity requestParameters:(id)parameters reply:(id)reply;
+- (void)__receivedEvent:(id)event;
+- (void)__startMonitoringEvent:(id)event requestParameters:(id)parameters reply:(id)reply;
 - (void)activate;
-- (void)allowBrokenBackhaulPersonalHotspotFallbackForNetwork:(id)a3 reply:(id)a4;
-- (void)checkinWithRequestParameters:(id)a3 reply:(id)a4;
+- (void)allowBrokenBackhaulPersonalHotspotFallbackForNetwork:(id)network reply:(id)reply;
+- (void)checkinWithRequestParameters:(id)parameters reply:(id)reply;
 - (void)clearAllEventHandlers;
 - (void)dealloc;
-- (void)dumpLogs:(id)a3 reply:(id)a4;
-- (void)endActivity:(id)a3 requestParameters:(id)a4;
-- (void)endAllActivities:(id)a3;
-- (void)forgetCloudNetworkProfile:(id)a3 reply:(id)a4;
+- (void)dumpLogs:(id)logs reply:(id)reply;
+- (void)endActivity:(id)activity requestParameters:(id)parameters;
+- (void)endAllActivities:(id)activities;
+- (void)forgetCloudNetworkProfile:(id)profile reply:(id)reply;
 - (void)invalidate;
-- (void)nearbyConfirmBrokenBackhaulUsingTimeout:(unint64_t)a3 count:(unint64_t)a4 network:(id)a5 minimumCacheTimestamp:(unint64_t)a6 reply:(id)a7;
-- (void)performWiFiNetworkSharingAccessoryScanWithReply:(id)a3;
-- (void)presentWiFiNetworkSharingAskToShareProxCardForClientID:(id)a3 accessoryName:(id)a4 reply:(id)a5;
-- (void)presentWiFiNetworkSharingAskToShareUserNotificationForClientID:(id)a3 network:(id)a4 accessoryName:(id)a5 reply:(id)a6;
-- (void)presentWiFiNetworkSharingAuthorizationProxCardForClientID:(id)a3 accessoryName:(id)a4 reply:(id)a5;
-- (void)queryCaptivePortalCredentialsForKnownNetworkProfile:(id)a3 reply:(id)a4;
-- (void)queryCloudNetworksAndReply:(id)a3;
-- (void)queryNearbyRecommendedNetworksAndReply:(id)a3;
-- (void)receivedAcknowledgedXPCEvent:(id)a3 reply:(id)a4;
-- (void)receivedXPCEvent:(id)a3;
-- (void)rememberCloudNetworkProfile:(id)a3 reply:(id)a4;
+- (void)nearbyConfirmBrokenBackhaulUsingTimeout:(unint64_t)timeout count:(unint64_t)count network:(id)network minimumCacheTimestamp:(unint64_t)timestamp reply:(id)reply;
+- (void)performWiFiNetworkSharingAccessoryScanWithReply:(id)reply;
+- (void)presentWiFiNetworkSharingAskToShareProxCardForClientID:(id)d accessoryName:(id)name reply:(id)reply;
+- (void)presentWiFiNetworkSharingAskToShareUserNotificationForClientID:(id)d network:(id)network accessoryName:(id)name reply:(id)reply;
+- (void)presentWiFiNetworkSharingAuthorizationProxCardForClientID:(id)d accessoryName:(id)name reply:(id)reply;
+- (void)queryCaptivePortalCredentialsForKnownNetworkProfile:(id)profile reply:(id)reply;
+- (void)queryCloudNetworksAndReply:(id)reply;
+- (void)queryNearbyRecommendedNetworksAndReply:(id)reply;
+- (void)receivedAcknowledgedXPCEvent:(id)event reply:(id)reply;
+- (void)receivedXPCEvent:(id)event;
+- (void)rememberCloudNetworkProfile:(id)profile reply:(id)reply;
 - (void)resume;
-- (void)setCaptivePortalCredentials:(id)a3 knownNetworkProfile:(id)a4 reply:(id)a5;
-- (void)setEventHandler:(id)a3 eventID:(id)a4;
-- (void)stopMonitoringAllEvents:(id)a3;
-- (void)stopMonitoringEvent:(id)a3 requestParameters:(id)a4;
+- (void)setCaptivePortalCredentials:(id)credentials knownNetworkProfile:(id)profile reply:(id)reply;
+- (void)setEventHandler:(id)handler eventID:(id)d;
+- (void)stopMonitoringAllEvents:(id)events;
+- (void)stopMonitoringEvent:(id)event requestParameters:(id)parameters;
 - (void)suspend;
 @end
 
@@ -103,17 +103,17 @@
 
     else
     {
-      v4 = [(CWFXPCClient *)obj remoteXPCProxyConnection];
-      [v4 invalidate];
+      remoteXPCProxyConnection = [(CWFXPCClient *)obj remoteXPCProxyConnection];
+      [remoteXPCProxyConnection invalidate];
     }
 
-    v5 = [(CWFXPCClient *)obj targetQueue];
+    targetQueue = [(CWFXPCClient *)obj targetQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = sub_1E0BCB36C;
     v7[3] = &unk_1E86E6010;
     v7[4] = obj;
-    dispatch_async(v5, v7);
+    dispatch_async(targetQueue, v7);
   }
 }
 
@@ -136,27 +136,27 @@
   objc_exception_throw(v2);
 }
 
-- (CWFXPCClient)initWithServiceType:(int64_t)a3 endpoint:(id)a4 remoteXPCProxyConnection:(id)a5
+- (CWFXPCClient)initWithServiceType:(int64_t)type endpoint:(id)endpoint remoteXPCProxyConnection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   v53.receiver = self;
   v53.super_class = CWFXPCClient;
   v10 = [(CWFXPCClient *)&v53 init];
   v11 = v10;
   v12 = 0;
-  if ((a3 - 12) < 0xFFFFFFFFFFFFFFF5 || !v10)
+  if ((type - 12) < 0xFFFFFFFFFFFFFFF5 || !v10)
   {
     goto LABEL_20;
   }
 
-  v10->_serviceType = a3;
+  v10->_serviceType = type;
   v13 = MEMORY[0x1E696AEC0];
-  v14 = sub_1E0BC1A5C(a3);
+  v14 = sub_1E0BC1A5C(type);
   v15 = [v13 stringWithFormat:@"com.apple.corewifi.client-mutex.%@", v14];
-  v16 = [v15 UTF8String];
+  uTF8String = [v15 UTF8String];
   v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v18 = dispatch_queue_create(v16, v17);
+  v18 = dispatch_queue_create(uTF8String, v17);
   mutex = v11->_mutex;
   v11->_mutex = v18;
 
@@ -168,9 +168,9 @@
   v20 = MEMORY[0x1E696AEC0];
   v21 = sub_1E0BC1A5C(v11->_serviceType);
   v22 = [v20 stringWithFormat:@"com.apple.corewifi.client-event.%@", v21];
-  v23 = [v22 UTF8String];
+  uTF8String2 = [v22 UTF8String];
   v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v25 = dispatch_queue_create(v23, v24);
+  v25 = dispatch_queue_create(uTF8String2, v24);
   targetQueue = v11->_targetQueue;
   v11->_targetQueue = v25;
 
@@ -208,11 +208,11 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v9)
+  if (!connectionCopy)
   {
-    if (v8)
+    if (endpointCopy)
     {
-      v38 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v8];
+      v38 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
       XPCConnection = v11->_XPCConnection;
       v11->_XPCConnection = v38;
 
@@ -275,7 +275,7 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  v35 = v9;
+  v35 = connectionCopy;
   v36 = 0;
   v12 = 0;
   remoteXPCProxyConnection = v11->_remoteXPCProxyConnection;
@@ -293,18 +293,18 @@ LABEL_18:
   [(NSXPCConnection *)XPCConnection suspend];
 }
 
-- (void)__beginActivity:(id)a3 requestParameters:(id)a4 reply:(id)a5
+- (void)__beginActivity:(id)activity requestParameters:(id)parameters reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activityCopy = activity;
+  parametersCopy = parameters;
+  replyCopy = reply;
   if ([(CWFXPCClient *)self allowRequestType:171])
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = sub_1E0D0E06C;
     v20[3] = &unk_1E86E7BB8;
-    v11 = v10;
+    v11 = replyCopy;
     v21 = v11;
     v12 = [(CWFXPCClient *)self remoteObjectProxyWithErrorHandler:v20];
     v16[0] = MEMORY[0x1E69E9820];
@@ -312,25 +312,25 @@ LABEL_18:
     v16[2] = sub_1E0D0E084;
     v16[3] = &unk_1E86E9468;
     v16[4] = self;
-    v17 = v8;
-    v18 = v9;
+    v17 = activityCopy;
+    v18 = parametersCopy;
     v19 = v11;
     [v12 beginActivity:v17 requestParams:v18 reply:v16];
   }
 
-  else if (v10)
+  else if (replyCopy)
   {
     v13 = *MEMORY[0x1E696A798];
     v14 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x2DuLL);
     v15 = CWFErrorWithDescription(v13, 45, v14);
-    (*(v10 + 2))(v10, v15);
+    (*(replyCopy + 2))(replyCopy, v15);
   }
 }
 
-- (BOOL)beginActivity:(id)a3 requestParameters:(id)a4 error:(id *)a5
+- (BOOL)beginActivity:(id)activity requestParameters:(id)parameters error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  activityCopy = activity;
+  parametersCopy = parameters;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -350,16 +350,16 @@ LABEL_18:
     v23[2] = sub_1E0D0E428;
     v23[3] = &unk_1E86E8E30;
     v23[4] = &v25;
-    [v10 beginActivity:v8 requestParams:v9 reply:v23];
+    [v10 beginActivity:activityCopy requestParams:parametersCopy reply:v23];
 
     mutex = self->_mutex;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0D0E438;
     block[3] = &unk_1E86E6060;
-    v20 = v8;
-    v21 = self;
-    v22 = v9;
+    v20 = activityCopy;
+    selfCopy = self;
+    v22 = parametersCopy;
     dispatch_sync(mutex, block);
 
     v12 = v20;
@@ -375,9 +375,9 @@ LABEL_18:
   }
 
   v13 = v26[5];
-  if (a5 && v13)
+  if (error && v13)
   {
-    *a5 = v13;
+    *error = v13;
     v13 = v26[5];
   }
 
@@ -387,34 +387,34 @@ LABEL_18:
   return v14;
 }
 
-- (void)endActivity:(id)a3 requestParameters:(id)a4
+- (void)endActivity:(id)activity requestParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  parametersCopy = parameters;
   if ([(CWFXPCClient *)self allowRequestType:172])
   {
     v8 = [(CWFXPCClient *)self synchronousRemoteObjectProxyWithErrorHandler:&unk_1F5B89CD0];
-    v9 = [v6 UUID];
-    [v8 endActivityWithUUID:v9 requestParams:v7 reply:&unk_1F5B8C060];
+    uUID = [activityCopy UUID];
+    [v8 endActivityWithUUID:uUID requestParams:parametersCopy reply:&unk_1F5B8C060];
 
     mutex = self->_mutex;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1E0D0E5A0;
     v11[3] = &unk_1E86E6420;
-    v12 = v6;
-    v13 = self;
+    v12 = activityCopy;
+    selfCopy = self;
     dispatch_sync(mutex, v11);
   }
 }
 
-- (void)endAllActivities:(id)a3
+- (void)endAllActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   if ([(CWFXPCClient *)self allowRequestType:172])
   {
     v5 = [(CWFXPCClient *)self synchronousRemoteObjectProxyWithErrorHandler:&unk_1F5B8C080];
-    [v5 endAllActivitiesWithRequestParams:v4 reply:&unk_1F5B8C0A0];
+    [v5 endAllActivitiesWithRequestParams:activitiesCopy reply:&unk_1F5B8C0A0];
 
     mutex = self->_mutex;
     block[0] = MEMORY[0x1E69E9820];
@@ -426,18 +426,18 @@ LABEL_18:
   }
 }
 
-- (void)__startMonitoringEvent:(id)a3 requestParameters:(id)a4 reply:(id)a5
+- (void)__startMonitoringEvent:(id)event requestParameters:(id)parameters reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  parametersCopy = parameters;
+  replyCopy = reply;
   if ([(CWFXPCClient *)self allowRequestType:169])
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = sub_1E0D0E8EC;
     v20[3] = &unk_1E86E7BB8;
-    v11 = v10;
+    v11 = replyCopy;
     v21 = v11;
     v12 = [(CWFXPCClient *)self remoteObjectProxyWithErrorHandler:v20];
     v16[0] = MEMORY[0x1E69E9820];
@@ -445,25 +445,25 @@ LABEL_18:
     v16[2] = sub_1E0D0E904;
     v16[3] = &unk_1E86E9468;
     v16[4] = self;
-    v17 = v8;
-    v18 = v9;
+    v17 = eventCopy;
+    v18 = parametersCopy;
     v19 = v11;
     [v12 startMonitoringEvent:v17 requestParams:v18 reply:v16];
   }
 
-  else if (v10)
+  else if (replyCopy)
   {
     v13 = *MEMORY[0x1E696A798];
     v14 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x2DuLL);
     v15 = CWFErrorWithDescription(v13, 45, v14);
-    (*(v10 + 2))(v10, v15);
+    (*(replyCopy + 2))(replyCopy, v15);
   }
 }
 
-- (BOOL)startMonitoringEvent:(id)a3 requestParameters:(id)a4 error:(id *)a5
+- (BOOL)startMonitoringEvent:(id)event requestParameters:(id)parameters error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  parametersCopy = parameters;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -483,16 +483,16 @@ LABEL_18:
     v23[2] = sub_1E0D0ECA8;
     v23[3] = &unk_1E86E8E30;
     v23[4] = &v25;
-    [v10 startMonitoringEvent:v8 requestParams:v9 reply:v23];
+    [v10 startMonitoringEvent:eventCopy requestParams:parametersCopy reply:v23];
 
     mutex = self->_mutex;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0D0ECB8;
     block[3] = &unk_1E86E6060;
-    v20 = v8;
-    v21 = self;
-    v22 = v9;
+    v20 = eventCopy;
+    selfCopy = self;
+    v22 = parametersCopy;
     dispatch_sync(mutex, block);
 
     v12 = v20;
@@ -508,9 +508,9 @@ LABEL_18:
   }
 
   v13 = v26[5];
-  if (a5 && v13)
+  if (error && v13)
   {
-    *a5 = v13;
+    *error = v13;
     v13 = v26[5];
   }
 
@@ -520,10 +520,10 @@ LABEL_18:
   return v14;
 }
 
-- (void)stopMonitoringEvent:(id)a3 requestParameters:(id)a4
+- (void)stopMonitoringEvent:(id)event requestParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  parametersCopy = parameters;
   if ([(CWFXPCClient *)self allowRequestType:170])
   {
     v8 = [(CWFXPCClient *)self remoteObjectProxyWithErrorHandler:&unk_1F5B8C0C0];
@@ -532,14 +532,14 @@ LABEL_18:
     v9[2] = sub_1E0D0EDF0;
     v9[3] = &unk_1E86E6690;
     v9[4] = self;
-    v10 = v6;
-    [v8 stopMonitoringEvent:v10 requestParams:v7 reply:v9];
+    v10 = eventCopy;
+    [v8 stopMonitoringEvent:v10 requestParams:parametersCopy reply:v9];
   }
 }
 
-- (void)stopMonitoringAllEvents:(id)a3
+- (void)stopMonitoringAllEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   if ([(CWFXPCClient *)self allowRequestType:170])
   {
     v5 = [(CWFXPCClient *)self remoteObjectProxyWithErrorHandler:&unk_1F5B89990];
@@ -548,30 +548,30 @@ LABEL_18:
     v6[2] = sub_1E0D0EF9C;
     v6[3] = &unk_1E86E84C0;
     v6[4] = self;
-    [v5 stopMonitoringAllEventsWithRequestParams:v4 reply:v6];
+    [v5 stopMonitoringAllEventsWithRequestParams:eventsCopy reply:v6];
   }
 }
 
-- (void)setEventHandler:(id)a3 eventID:(id)a4
+- (void)setEventHandler:(id)handler eventID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  dCopy = d;
   mutex = self->_mutex;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D0F120;
   block[3] = &unk_1E86E6CA8;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_sync(mutex, block);
 }
 
-- (id)eventHandlerWithEventID:(id)a3
+- (id)eventHandlerWithEventID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -583,10 +583,10 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_1E0D0F2D0;
   block[3] = &unk_1E86E7BE0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = dCopy;
+  v6 = dCopy;
   dispatch_sync(mutex, block);
   v7 = MEMORY[0x1E12EA400](v14[5]);
 
@@ -619,17 +619,17 @@ LABEL_18:
   return v3;
 }
 
-- (void)checkinWithRequestParameters:(id)a3 reply:(id)a4
+- (void)checkinWithRequestParameters:(id)parameters reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  replyCopy = reply;
   if ([(CWFXPCClient *)self allowRequestType:252])
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = sub_1E0D0F7D4;
     v16[3] = &unk_1E86E7BB8;
-    v8 = v7;
+    v8 = replyCopy;
     v17 = v8;
     v9 = [(CWFXPCClient *)self remoteObjectProxyWithErrorHandler:v16];
     v13[0] = MEMORY[0x1E69E9820];
@@ -637,23 +637,23 @@ LABEL_18:
     v13[2] = sub_1E0D0F7EC;
     v13[3] = &unk_1E86E6640;
     v13[4] = self;
-    v14 = v6;
+    v14 = parametersCopy;
     v15 = v8;
     [v9 checkinWithRequestParams:v14 reply:v13];
   }
 
-  else if (v7)
+  else if (replyCopy)
   {
     v10 = *MEMORY[0x1E696A798];
     v11 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x2DuLL);
     v12 = CWFErrorWithDescription(v10, 45, v11);
-    (*(v7 + 2))(v7, v12);
+    (*(replyCopy + 2))(replyCopy, v12);
   }
 }
 
-- (BOOL)checkinWithRequestParameters:(id)a3 error:(id *)a4
+- (BOOL)checkinWithRequestParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -673,7 +673,7 @@ LABEL_18:
     v18[2] = sub_1E0D0FB60;
     v18[3] = &unk_1E86E8E30;
     v18[4] = &v20;
-    [v7 checkinWithRequestParams:v6 reply:v18];
+    [v7 checkinWithRequestParams:parametersCopy reply:v18];
 
     mutex = self->_mutex;
     v16[0] = MEMORY[0x1E69E9820];
@@ -681,7 +681,7 @@ LABEL_18:
     v16[2] = sub_1E0D0FB70;
     v16[3] = &unk_1E86E6420;
     v16[4] = self;
-    v17 = v6;
+    v17 = parametersCopy;
     dispatch_sync(mutex, v16);
   }
 
@@ -695,9 +695,9 @@ LABEL_18:
   }
 
   v9 = v21[5];
-  if (a4 && v9)
+  if (error && v9)
   {
-    *a4 = v9;
+    *error = v9;
     v9 = v21[5];
   }
 
@@ -707,20 +707,20 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)allowRequestType:(int64_t)a3
+- (BOOL)allowRequestType:(int64_t)type
 {
   v5 = sub_1E0BC1AB4([(CWFXPCClient *)self serviceType]);
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v7 = [v5 containsObject:v6];
 
   if (v7)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(NSXPCConnection *)v8->_XPCConnection remoteObjectInterface];
-    sub_1E0BC1D40(a3, v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    remoteObjectInterface = [(NSXPCConnection *)selfCopy->_XPCConnection remoteObjectInterface];
+    sub_1E0BC1D40(type, remoteObjectInterface);
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   return v7;
@@ -728,60 +728,60 @@ LABEL_18:
 
 - (id)remoteObjectProxy
 {
-  v3 = [(CWFXPCClient *)self remoteXPCProxyConnection];
-  if (v3)
+  remoteXPCProxyConnection = [(CWFXPCClient *)self remoteXPCProxyConnection];
+  if (remoteXPCProxyConnection)
   {
-    v4 = [(CWFXPCClient *)self remoteXPCProxyConnection];
-    v5 = [v4 remoteObjectProxy];
+    remoteXPCProxyConnection2 = [(CWFXPCClient *)self remoteXPCProxyConnection];
+    remoteObjectProxy = [remoteXPCProxyConnection2 remoteObjectProxy];
   }
 
   else
   {
-    v5 = [(NSXPCConnection *)self->_XPCConnection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_XPCConnection remoteObjectProxy];
   }
 
-  return v5;
+  return remoteObjectProxy;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CWFXPCClient *)self remoteXPCProxyConnection];
-  if (v5)
+  handlerCopy = handler;
+  remoteXPCProxyConnection = [(CWFXPCClient *)self remoteXPCProxyConnection];
+  if (remoteXPCProxyConnection)
   {
-    v6 = [(CWFXPCClient *)self remoteXPCProxyConnection];
-    v7 = [v6 remoteObjectProxyWithErrorHandler:v4];
+    remoteXPCProxyConnection2 = [(CWFXPCClient *)self remoteXPCProxyConnection];
+    v7 = [remoteXPCProxyConnection2 remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [(NSXPCConnection *)self->_XPCConnection remoteObjectProxyWithErrorHandler:v4];
+    v7 = [(NSXPCConnection *)self->_XPCConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CWFXPCClient *)self remoteXPCProxyConnection];
-  if (v5)
+  handlerCopy = handler;
+  remoteXPCProxyConnection = [(CWFXPCClient *)self remoteXPCProxyConnection];
+  if (remoteXPCProxyConnection)
   {
-    v6 = [(CWFXPCClient *)self remoteXPCProxyConnection];
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    remoteXPCProxyConnection2 = [(CWFXPCClient *)self remoteXPCProxyConnection];
+    v7 = [remoteXPCProxyConnection2 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [(NSXPCConnection *)self->_XPCConnection synchronousRemoteObjectProxyWithErrorHandler:v4];
+    v7 = [(NSXPCConnection *)self->_XPCConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
 }
 
-- (void)__receivedEvent:(id)a3
+- (void)__receivedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -797,9 +797,9 @@ LABEL_18:
   v11 = 3221225472;
   v12 = sub_1E0D0FFF4;
   v13 = &unk_1E86E9490;
-  v6 = v4;
+  v6 = eventCopy;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v16 = &v18;
   v17 = &v22;
   dispatch_sync(mutex, &v10);
@@ -813,12 +813,12 @@ LABEL_18:
 
     else
     {
-      v8 = [v6 acknowledge];
+      acknowledge = [v6 acknowledge];
 
-      if (v8)
+      if (acknowledge)
       {
-        v9 = [v6 acknowledge];
-        v9[2]();
+        acknowledge2 = [v6 acknowledge];
+        acknowledge2[2]();
       }
     }
   }
@@ -827,9 +827,9 @@ LABEL_18:
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)__acknowledgeEventWithUUID:(id)a3
+- (void)__acknowledgeEventWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -843,7 +843,7 @@ LABEL_18:
   block[3] = &unk_1E86E6960;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v9 = v6;
   dispatch_sync(mutex, block);
   v7 = v12[5];
@@ -855,20 +855,20 @@ LABEL_18:
   _Block_object_dispose(&v11, 8);
 }
 
-- (void)receivedXPCEvent:(id)a3
+- (void)receivedXPCEvent:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(CWFEvent);
-  v6 = [v4 eventID];
-  [(CWFEvent *)v5 setEventID:v6];
+  eventID = [eventCopy eventID];
+  [(CWFEvent *)v5 setEventID:eventID];
 
-  v7 = [v4 timestamp];
-  [(CWFEvent *)v5 setTimestamp:v7];
+  timestamp = [eventCopy timestamp];
+  [(CWFEvent *)v5 setTimestamp:timestamp];
 
-  v8 = [v4 info];
+  info = [eventCopy info];
 
-  [(CWFEvent *)v5 setInfo:v8];
+  [(CWFEvent *)v5 setInfo:info];
   v9 = CWFGetOSLog();
   if (os_signpost_enabled(v9))
   {
@@ -878,7 +878,7 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_1E0BBF000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "receivedXPCEvent", "%@", buf, 0xCu);
   }
 
-  v11 = [(CWFXPCClient *)self targetQueue];
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1E0D10570;
@@ -886,27 +886,27 @@ LABEL_18:
   v14[4] = self;
   v15 = v5;
   v12 = v5;
-  dispatch_async(v11, v14);
+  dispatch_async(targetQueue, v14);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receivedAcknowledgedXPCEvent:(id)a3 reply:(id)a4
+- (void)receivedAcknowledgedXPCEvent:(id)event reply:(id)reply
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  eventCopy = event;
   v8 = objc_alloc_init(CWFEvent);
-  v9 = [v7 eventID];
-  [(CWFEvent *)v8 setEventID:v9];
+  eventID = [eventCopy eventID];
+  [(CWFEvent *)v8 setEventID:eventID];
 
-  v10 = [v7 timestamp];
-  [(CWFEvent *)v8 setTimestamp:v10];
+  timestamp = [eventCopy timestamp];
+  [(CWFEvent *)v8 setTimestamp:timestamp];
 
-  -[CWFEvent setAcknowledgementTimeout:](v8, "setAcknowledgementTimeout:", [v7 acknowledgementTimeout]);
-  v11 = [v7 info];
+  -[CWFEvent setAcknowledgementTimeout:](v8, "setAcknowledgementTimeout:", [eventCopy acknowledgementTimeout]);
+  info = [eventCopy info];
 
-  [(CWFEvent *)v8 setInfo:v11];
+  [(CWFEvent *)v8 setInfo:info];
   v12 = CWFGetOSLog();
   if (os_signpost_enabled(v12))
   {
@@ -916,17 +916,17 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_1E0BBF000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "receivedAcknowledgedXPCEvent", "%@", buf, 0xCu);
   }
 
-  v14 = [(CWFEvent *)v8 UUID];
+  uUID = [(CWFEvent *)v8 UUID];
   mutex = self->_mutex;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D10910;
   block[3] = &unk_1E86E6CA8;
   block[4] = self;
-  v16 = v14;
+  v16 = uUID;
   v32 = v16;
-  v33 = v6;
-  v17 = v6;
+  v33 = replyCopy;
+  v17 = replyCopy;
   dispatch_async(mutex, block);
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -946,7 +946,7 @@ LABEL_18:
   v28 = v18;
   v21 = v18;
   dispatch_after(v19, v20, v27);
-  v22 = [(CWFXPCClient *)self targetQueue];
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = sub_1E0D109CC;
@@ -954,239 +954,239 @@ LABEL_18:
   v25[4] = self;
   v26 = v8;
   v23 = v8;
-  dispatch_async(v22, v25);
+  dispatch_async(targetQueue, v25);
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rememberCloudNetworkProfile:(id)a3 reply:(id)a4
+- (void)rememberCloudNetworkProfile:(id)profile reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CWFXPCClient *)self targetQueue];
+  profileCopy = profile;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D10AE8;
   block[3] = &unk_1E86E6CA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = profileCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = profileCopy;
+  dispatch_async(targetQueue, block);
 }
 
-- (void)forgetCloudNetworkProfile:(id)a3 reply:(id)a4
+- (void)forgetCloudNetworkProfile:(id)profile reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CWFXPCClient *)self targetQueue];
+  profileCopy = profile;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D10CB4;
   block[3] = &unk_1E86E6CA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = profileCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = profileCopy;
+  dispatch_async(targetQueue, block);
 }
 
-- (void)queryCloudNetworksAndReply:(id)a3
+- (void)queryCloudNetworksAndReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CWFXPCClient *)self targetQueue];
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0D10E5C;
   v7[3] = &unk_1E86E64C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(targetQueue, v7);
 }
 
-- (void)dumpLogs:(id)a3 reply:(id)a4
+- (void)dumpLogs:(id)logs reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CWFXPCClient *)self targetQueue];
+  logsCopy = logs;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D1102C;
   block[3] = &unk_1E86E6CA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = logsCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = logsCopy;
+  dispatch_async(targetQueue, block);
 }
 
-- (void)queryNearbyRecommendedNetworksAndReply:(id)a3
+- (void)queryNearbyRecommendedNetworksAndReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CWFXPCClient *)self targetQueue];
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0D111D4;
   v7[3] = &unk_1E86E64C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(targetQueue, v7);
 }
 
-- (void)queryCaptivePortalCredentialsForKnownNetworkProfile:(id)a3 reply:(id)a4
+- (void)queryCaptivePortalCredentialsForKnownNetworkProfile:(id)profile reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CWFXPCClient *)self targetQueue];
+  profileCopy = profile;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D113BC;
   block[3] = &unk_1E86E6CA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = profileCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = profileCopy;
+  dispatch_async(targetQueue, block);
 }
 
-- (void)setCaptivePortalCredentials:(id)a3 knownNetworkProfile:(id)a4 reply:(id)a5
+- (void)setCaptivePortalCredentials:(id)credentials knownNetworkProfile:(id)profile reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CWFXPCClient *)self targetQueue];
+  credentialsCopy = credentials;
+  profileCopy = profile;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_1E0D115CC;
   v15[3] = &unk_1E86E6C30;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = profileCopy;
+  v17 = credentialsCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = credentialsCopy;
+  v14 = profileCopy;
+  dispatch_async(targetQueue, v15);
 }
 
-- (void)nearbyConfirmBrokenBackhaulUsingTimeout:(unint64_t)a3 count:(unint64_t)a4 network:(id)a5 minimumCacheTimestamp:(unint64_t)a6 reply:(id)a7
+- (void)nearbyConfirmBrokenBackhaulUsingTimeout:(unint64_t)timeout count:(unint64_t)count network:(id)network minimumCacheTimestamp:(unint64_t)timestamp reply:(id)reply
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = [(CWFXPCClient *)self targetQueue];
+  networkCopy = network;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_1E0D117D4;
   v17[3] = &unk_1E86E6E88;
   v17[4] = self;
-  v18 = v12;
-  v21 = a4;
-  v22 = a6;
-  v19 = v13;
-  v20 = a3;
-  v15 = v13;
-  v16 = v12;
-  dispatch_async(v14, v17);
+  v18 = networkCopy;
+  countCopy = count;
+  timestampCopy = timestamp;
+  v19 = replyCopy;
+  timeoutCopy = timeout;
+  v15 = replyCopy;
+  v16 = networkCopy;
+  dispatch_async(targetQueue, v17);
 }
 
-- (void)allowBrokenBackhaulPersonalHotspotFallbackForNetwork:(id)a3 reply:(id)a4
+- (void)allowBrokenBackhaulPersonalHotspotFallbackForNetwork:(id)network reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CWFXPCClient *)self targetQueue];
+  networkCopy = network;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D119AC;
   block[3] = &unk_1E86E6CA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = networkCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = networkCopy;
+  dispatch_async(targetQueue, block);
 }
 
-- (void)presentWiFiNetworkSharingAskToShareProxCardForClientID:(id)a3 accessoryName:(id)a4 reply:(id)a5
+- (void)presentWiFiNetworkSharingAskToShareProxCardForClientID:(id)d accessoryName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CWFXPCClient *)self targetQueue];
+  dCopy = d;
+  nameCopy = name;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_1E0D11BA4;
   v15[3] = &unk_1E86E6C30;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = nameCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = nameCopy;
+  v14 = dCopy;
+  dispatch_async(targetQueue, v15);
 }
 
-- (void)presentWiFiNetworkSharingAuthorizationProxCardForClientID:(id)a3 accessoryName:(id)a4 reply:(id)a5
+- (void)presentWiFiNetworkSharingAuthorizationProxCardForClientID:(id)d accessoryName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CWFXPCClient *)self targetQueue];
+  dCopy = d;
+  nameCopy = name;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_1E0D11D28;
   v15[3] = &unk_1E86E6C30;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = nameCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = nameCopy;
+  v14 = dCopy;
+  dispatch_async(targetQueue, v15);
 }
 
-- (void)presentWiFiNetworkSharingAskToShareUserNotificationForClientID:(id)a3 network:(id)a4 accessoryName:(id)a5 reply:(id)a6
+- (void)presentWiFiNetworkSharingAskToShareUserNotificationForClientID:(id)d network:(id)network accessoryName:(id)name reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CWFXPCClient *)self targetQueue];
+  dCopy = d;
+  networkCopy = network;
+  nameCopy = name;
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D11ED0;
   block[3] = &unk_1E86E6EB0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dCopy;
+  v21 = networkCopy;
+  v22 = nameCopy;
+  v23 = replyCopy;
+  v15 = replyCopy;
+  v16 = nameCopy;
+  v17 = networkCopy;
+  v18 = dCopy;
+  dispatch_async(targetQueue, block);
 }
 
-- (void)performWiFiNetworkSharingAccessoryScanWithReply:(id)a3
+- (void)performWiFiNetworkSharingAccessoryScanWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CWFXPCClient *)self targetQueue];
+  replyCopy = reply;
+  targetQueue = [(CWFXPCClient *)self targetQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0D12008;
   v7[3] = &unk_1E86E64C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(targetQueue, v7);
 }
 
 @end

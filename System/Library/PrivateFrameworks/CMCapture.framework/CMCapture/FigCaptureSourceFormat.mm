@@ -2,9 +2,9 @@
 - ($2825F4736939C4A6D3AD43837233062D)defaultHighResStillImageDimensions;
 - ($2825F4736939C4A6D3AD43837233062D)soleHighResStillImageDimensions;
 - (BOOL)isDefaultActiveFormat;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExperimental;
-- (FigCaptureSourceFormat)initWithFigCaptureStreamFormatDictionary:(id)a3 pixelFormatOverride:(unsigned int)a4;
+- (FigCaptureSourceFormat)initWithFigCaptureStreamFormatDictionary:(id)dictionary pixelFormatOverride:(unsigned int)override;
 - (float)maxSupportedFrameRate;
 - (float)minSupportedFrameRate;
 - (id)description;
@@ -45,7 +45,7 @@
 - (opaqueCMFormatDescription)formatDescription
 {
   formatDescriptionOut = 0;
-  v3 = [(FigCaptureSourceFormat *)self dimensions];
+  dimensions = [(FigCaptureSourceFormat *)self dimensions];
   if ([(FigCaptureSourceFormat *)self format]== 1785950320)
   {
     v7[0] = *MEMORY[0x1E69627A8];
@@ -59,7 +59,7 @@
 
   else
   {
-    CMVideoFormatDescriptionCreate(*MEMORY[0x1E695E480], [(FigCaptureSourceFormat *)self format], v3.var0, v3.var1, 0, &formatDescriptionOut);
+    CMVideoFormatDescriptionCreate(*MEMORY[0x1E695E480], [(FigCaptureSourceFormat *)self format], dimensions.var0, dimensions.var1, 0, &formatDescriptionOut);
   }
 
   result = formatDescriptionOut;
@@ -108,11 +108,11 @@
 
 - ($2825F4736939C4A6D3AD43837233062D)soleHighResStillImageDimensions
 {
-  v2 = [(FigCaptureSourceFormat *)self highResStillImageDimensions];
-  [(NSArray *)v2 count];
-  v3 = [(NSArray *)v2 firstObject];
+  highResStillImageDimensions = [(FigCaptureSourceFormat *)self highResStillImageDimensions];
+  [(NSArray *)highResStillImageDimensions count];
+  firstObject = [(NSArray *)highResStillImageDimensions firstObject];
 
-  return [v3 dimensions];
+  return [firstObject dimensions];
 }
 
 - (BOOL)isExperimental
@@ -124,14 +124,14 @@
 
 - ($2825F4736939C4A6D3AD43837233062D)defaultHighResStillImageDimensions
 {
-  v2 = [(NSArray *)[(FigCaptureSourceFormat *)self highResStillImageDimensions] firstObject];
+  firstObject = [(NSArray *)[(FigCaptureSourceFormat *)self highResStillImageDimensions] firstObject];
 
-  return [v2 dimensions];
+  return [firstObject dimensions];
 }
 
-- (FigCaptureSourceFormat)initWithFigCaptureStreamFormatDictionary:(id)a3 pixelFormatOverride:(unsigned int)a4
+- (FigCaptureSourceFormat)initWithFigCaptureStreamFormatDictionary:(id)dictionary pixelFormatOverride:(unsigned int)override
 {
-  if (a3)
+  if (dictionary)
   {
     v10.receiver = self;
     v10.super_class = FigCaptureSourceFormat;
@@ -139,8 +139,8 @@
     v7 = v6;
     if (v6)
     {
-      v6->_pixelFormatOverride = a4;
-      v8 = [a3 copy];
+      v6->_pixelFormatOverride = override;
+      v8 = [dictionary copy];
       v7->_formatDictionary = v8;
       if (![(NSDictionary *)v8 objectForKeyedSubscript:@"Name"])
       {
@@ -167,21 +167,21 @@
   return [v3 stringWithFormat:@"<%@ %p> %@", NSStringFromClass(v4), self, -[FigCaptureSourceFormat formatDescription](self, "formatDescription")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_pixelFormatOverride != *(a3 + 6))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_pixelFormatOverride != *(equal + 6))
   {
     return 0;
   }
 
   formatDictionary = self->_formatDictionary;
-  if (formatDictionary == *(a3 + 1))
+  if (formatDictionary == *(equal + 1))
   {
     return 1;
   }

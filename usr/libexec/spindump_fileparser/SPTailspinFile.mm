@@ -1,22 +1,22 @@
 @interface SPTailspinFile
-+ (id)sampleStoreForFile:(const char *)a3 stackshotsOnly:(BOOL)a4 parsePastLastStackshot:(BOOL)a5;
++ (id)sampleStoreForFile:(const char *)file stackshotsOnly:(BOOL)only parsePastLastStackshot:(BOOL)stackshot;
 @end
 
 @implementation SPTailspinFile
 
-+ (id)sampleStoreForFile:(const char *)a3 stackshotsOnly:(BOOL)a4 parsePastLastStackshot:(BOOL)a5
++ (id)sampleStoreForFile:(const char *)file stackshotsOnly:(BOOL)only parsePastLastStackshot:(BOOL)stackshot
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  stackshotCopy = stackshot;
+  onlyCopy = only;
+  fileCopy = file;
   v108 = 0;
-  v8 = [SASampleStore canOpenFileAsKTraceFile:a3 errorOut:&v108];
+  v8 = [SASampleStore canOpenFileAsKTraceFile:file errorOut:&v108];
   v9 = v108;
   v10 = v9;
   if (v8)
   {
     v11 = +[NSMutableArray array];
-    v12 = [[SASampleStore alloc] initForFileParsing];
+    initForFileParsing = [[SASampleStore alloc] initForFileParsing];
     if ((byte_100127EDC & 2) != 0 && sub_1000338E4())
     {
       if (byte_100127EC8 == 1)
@@ -34,7 +34,7 @@
 
       if (byte_100127EC9 == 1 && dword_100127558 <= 2)
       {
-        v100 = v7;
+        v100 = fileCopy;
         v16 = *__error();
         v17 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Avoiding inspecting live processes for tailspin file due to audio running");
         if (v17)
@@ -95,31 +95,31 @@
         }
 
         *__error() = v16;
-        v7 = v100;
+        fileCopy = v100;
       }
 
-      [v12 setDataGatheringOptions:{objc_msgSend(v12, "dataGatheringOptions") & 0xFFFFFFFFFFFFFFFDLL}];
+      [initForFileParsing setDataGatheringOptions:{objc_msgSend(initForFileParsing, "dataGatheringOptions") & 0xFFFFFFFFFFFFFFFDLL}];
     }
 
-    sub_1000791AC(v12, (byte_100127EDC >> 3) & 1, (byte_100127EDC >> 2) & 1, (byte_100127EDC & 0x10) == 0);
-    v98 = v12;
-    if (v6)
+    sub_1000791AC(initForFileParsing, (byte_100127EDC >> 3) & 1, (byte_100127EDC >> 2) & 1, (byte_100127EDC & 0x10) == 0);
+    v98 = initForFileParsing;
+    if (onlyCopy)
     {
       v107 = v10;
       v51 = &v107;
-      v52 = [v12 parseStackshotsFromKTraceFile:v7 warningsOut:v11 errorOut:&v107];
+      v52 = [initForFileParsing parseStackshotsFromKTraceFile:fileCopy warningsOut:v11 errorOut:&v107];
     }
 
     else
     {
-      if (v5)
+      if (stackshotCopy)
       {
-        [v12 setKPerfPETParsePastLastStackshot:1];
+        [initForFileParsing setKPerfPETParsePastLastStackshot:1];
       }
 
       v106 = v10;
       v51 = &v106;
-      v52 = [v12 parseKTraceFile:v7 warningsOut:v11 errorOut:&v106];
+      v52 = [initForFileParsing parseKTraceFile:fileCopy warningsOut:v11 errorOut:&v106];
     }
 
     v96 = v52;
@@ -155,7 +155,7 @@
             if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
             {
               *buf = 136315394;
-              v110 = v7;
+              v110 = fileCopy;
               v111 = 2112;
               v112 = v60;
               _os_log_error_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "WARNING creating sample store from %s: %@", buf, 0x16u);
@@ -167,7 +167,7 @@
           if (*v57 == 1 && *v58 <= 3)
           {
             v64 = *__error();
-            v65 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"WARNING creating sample store from %s: %@", v7, v60);
+            v65 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"WARNING creating sample store from %s: %@", fileCopy, v60);
             if (v65)
             {
               v66 = v65;
@@ -177,7 +177,7 @@
               v69 = v58;
               v70 = v57;
               v71 = v56;
-              v72 = v7;
+              v72 = fileCopy;
               v73 = CFStringGetCStringPtr(v65, 0x8000100u);
               if (v73)
               {
@@ -209,7 +209,7 @@
               }
 
               CFRelease(v66);
-              v7 = v72;
+              fileCopy = v72;
               v56 = v71;
               v57 = v70;
               v58 = v69;
@@ -224,7 +224,7 @@
               if (os_log_type_enabled(v76, OS_LOG_TYPE_FAULT))
               {
                 *buf = 136315394;
-                v110 = v7;
+                v110 = fileCopy;
                 v111 = 2112;
                 v112 = v60;
                 _os_log_fault_impl(&_mh_execute_header, v76, OS_LOG_TYPE_FAULT, "Unable to format: WARNING creating sample store from %s: %@", buf, 0x16u);
@@ -286,7 +286,7 @@ LABEL_161:
       }
 
       v82 = *__error();
-      v83 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"ERROR trying to create sample store from %s: %@", v7, v97);
+      v83 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"ERROR trying to create sample store from %s: %@", fileCopy, v97);
       if (v83)
       {
         v84 = v83;
@@ -332,7 +332,7 @@ LABEL_153:
       }
 
       v82 = *__error();
-      v89 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"ERROR trying to create sample store from %s: Unknown error", v7);
+      v89 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"ERROR trying to create sample store from %s: Unknown error", fileCopy);
       if (v89)
       {
         v84 = v89;
@@ -408,7 +408,7 @@ LABEL_160:
     if (byte_100127EC9 == 1 && dword_100127558 <= 0)
     {
       v30 = *__error();
-      v31 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Could not open %s as a ktrace file: %@", v7, v10);
+      v31 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Could not open %s as a ktrace file: %@", fileCopy, v10);
       if (v31)
       {
         v32 = v31;
@@ -495,7 +495,7 @@ LABEL_160:
     if (byte_100127EC9 == 1 && dword_100127558 <= 0)
     {
       v36 = *__error();
-      v37 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Could not open %s as a ktrace file for unknown reason", v7);
+      v37 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Could not open %s as a ktrace file for unknown reason", fileCopy);
       if (v37)
       {
         v38 = v37;

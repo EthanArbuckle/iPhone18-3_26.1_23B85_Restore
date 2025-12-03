@@ -1,23 +1,23 @@
 @interface HKSHSleepApneaNotificationsFooter
-- (HKSHSleepApneaNotificationsFooter)initWithText:(id)a3 link:(id)a4 url:(id)a5;
+- (HKSHSleepApneaNotificationsFooter)initWithText:(id)text link:(id)link url:(id)url;
 @end
 
 @implementation HKSHSleepApneaNotificationsFooter
 
-- (HKSHSleepApneaNotificationsFooter)initWithText:(id)a3 link:(id)a4 url:(id)a5
+- (HKSHSleepApneaNotificationsFooter)initWithText:(id)text link:(id)link url:(id)url
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  linkCopy = link;
+  urlCopy = url;
   v14.receiver = self;
   v14.super_class = HKSHSleepApneaNotificationsFooter;
   v11 = [(HKSHSleepApneaNotificationsFooter *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(HKSHSleepApneaNotificationsFooter *)v11 setFooterText:v8];
-    [(HKSHSleepApneaNotificationsFooter *)v12 setFooterLink:v9];
-    [(HKSHSleepApneaNotificationsFooter *)v12 setLinkURL:v10];
+    [(HKSHSleepApneaNotificationsFooter *)v11 setFooterText:textCopy];
+    [(HKSHSleepApneaNotificationsFooter *)v12 setFooterLink:linkCopy];
+    [(HKSHSleepApneaNotificationsFooter *)v12 setLinkURL:urlCopy];
   }
 
   return v12;

@@ -1,29 +1,29 @@
 @interface _EARVisualContextMetrics
-- (_EARVisualContextMetrics)initWithEntityCategory:(id)a3 visualContextCategories:(id)a4 speechProfileCategories:(id)a5;
+- (_EARVisualContextMetrics)initWithEntityCategory:(id)category visualContextCategories:(id)categories speechProfileCategories:(id)profileCategories;
 @end
 
 @implementation _EARVisualContextMetrics
 
-- (_EARVisualContextMetrics)initWithEntityCategory:(id)a3 visualContextCategories:(id)a4 speechProfileCategories:(id)a5
+- (_EARVisualContextMetrics)initWithEntityCategory:(id)category visualContextCategories:(id)categories speechProfileCategories:(id)profileCategories
 {
-  if (a3)
+  if (category)
   {
-    v9 = a3;
+    categoryCopy = category;
   }
 
   else
   {
-    v9 = &stru_1F2D44B60;
+    categoryCopy = &stru_1F2D44B60;
   }
 
-  objc_storeStrong(&self->_entityTaggerCategory, v9);
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  objc_storeStrong(&self->_entityTaggerCategory, categoryCopy);
+  profileCategoriesCopy = profileCategories;
+  categoriesCopy = categories;
+  categoryCopy2 = category;
   v13 = MEMORY[0x1E695E0F0];
-  if (v11)
+  if (categoriesCopy)
   {
-    v14 = v11;
+    v14 = categoriesCopy;
   }
 
   else
@@ -32,9 +32,9 @@
   }
 
   objc_storeStrong(&self->_visualContextCategories, v14);
-  if (v10)
+  if (profileCategoriesCopy)
   {
-    v15 = v10;
+    v15 = profileCategoriesCopy;
   }
 
   else

@@ -1,30 +1,30 @@
 @interface EKExceptionDateChange
-- (EKExceptionDateChange)initWithChangeProperties:(id)a3;
-- (id)owningEventInEventStore:(id)a3;
+- (EKExceptionDateChange)initWithChangeProperties:(id)properties;
+- (id)owningEventInEventStore:(id)store;
 @end
 
 @implementation EKExceptionDateChange
 
-- (EKExceptionDateChange)initWithChangeProperties:(id)a3
+- (EKExceptionDateChange)initWithChangeProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v14.receiver = self;
   v14.super_class = EKExceptionDateChange;
-  v5 = [(EKObjectChange *)&v14 initWithChangeProperties:v4];
+  v5 = [(EKObjectChange *)&v14 initWithChangeProperties:propertiesCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"owner_id"];
-    v7 = [v6 intValue];
+    v6 = [propertiesCopy objectForKeyedSubscript:@"owner_id"];
+    intValue = [v6 intValue];
 
-    if (v7)
+    if (intValue)
     {
-      v8 = [(EKObjectChange *)v5 changedObjectID];
-      v9 = +[EKObjectID objectIDWithEntityType:rowID:databaseID:](EKObjectID, "objectIDWithEntityType:rowID:databaseID:", 2, v7, [v8 databaseID]);
+      changedObjectID = [(EKObjectChange *)v5 changedObjectID];
+      v9 = +[EKObjectID objectIDWithEntityType:rowID:databaseID:](EKObjectID, "objectIDWithEntityType:rowID:databaseID:", 2, intValue, [changedObjectID databaseID]);
       ownerID = v5->_ownerID;
       v5->_ownerID = v9;
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"date"];
+    v11 = [propertiesCopy objectForKeyedSubscript:@"date"];
     date = v5->_date;
     v5->_date = v11;
   }
@@ -32,13 +32,13 @@
   return v5;
 }
 
-- (id)owningEventInEventStore:(id)a3
+- (id)owningEventInEventStore:(id)store
 {
-  v4 = a3;
-  v5 = [(EKExceptionDateChange *)self ownerID];
-  if (v5)
+  storeCopy = store;
+  ownerID = [(EKExceptionDateChange *)self ownerID];
+  if (ownerID)
   {
-    v6 = [v4 publicObjectWithObjectID:v5];
+    v6 = [storeCopy publicObjectWithObjectID:ownerID];
   }
 
   else

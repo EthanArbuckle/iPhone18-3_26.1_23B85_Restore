@@ -1,18 +1,18 @@
 @interface NavigationSessionBuilder
 - (NavigationDetailsOptions)navigationDetailsOptions;
-- (NavigationSessionBuilder)initWithRouteCollection:(id)a3 navigationDetailsOptions:(NavigationDetailsOptions *)a4 mapServiceTraits:(id)a5 sessionInitiator:(unint64_t)a6 isResumingMultipointRoute:(BOOL)a7 tracePlaybackPath:(id)a8;
+- (NavigationSessionBuilder)initWithRouteCollection:(id)collection navigationDetailsOptions:(NavigationDetailsOptions *)options mapServiceTraits:(id)traits sessionInitiator:(unint64_t)initiator isResumingMultipointRoute:(BOOL)route tracePlaybackPath:(id)path;
 - (id)build;
-- (void)setNavigationDetailsOptions:(NavigationDetailsOptions *)a3;
+- (void)setNavigationDetailsOptions:(NavigationDetailsOptions *)options;
 @end
 
 @implementation NavigationSessionBuilder
 
-- (void)setNavigationDetailsOptions:(NavigationDetailsOptions *)a3
+- (void)setNavigationDetailsOptions:(NavigationDetailsOptions *)options
 {
-  v3 = *&a3->shouldSimulateLocations;
-  v4 = *&a3->guidanceType;
-  v5 = *&a3->isReconnecting;
-  self->_navigationDetailsOptions.navigationModeContext = a3->navigationModeContext;
+  v3 = *&options->shouldSimulateLocations;
+  v4 = *&options->guidanceType;
+  v5 = *&options->isReconnecting;
+  self->_navigationDetailsOptions.navigationModeContext = options->navigationModeContext;
   *&self->_navigationDetailsOptions.guidanceType = v4;
   *&self->_navigationDetailsOptions.isReconnecting = v5;
   *&self->_navigationDetailsOptions.shouldSimulateLocations = v3;
@@ -45,11 +45,11 @@
   v6 = v5;
   [(GEOMapServiceTraits *)self->_mapServiceTraits useOnlineToOfflineFailoverRequestModeIfAllowed];
   [(StartNavigationDetailsBuilder *)v6 setTraits:self->_mapServiceTraits];
-  v7 = [(RouteCollection *)self->_routeCollection currentRoute];
-  v8 = [v7 routeAttributes];
-  v9 = [v8 hasTimepoint];
+  currentRoute = [(RouteCollection *)self->_routeCollection currentRoute];
+  routeAttributes = [currentRoute routeAttributes];
+  hasTimepoint = [routeAttributes hasTimepoint];
 
-  if (v9)
+  if (hasTimepoint)
   {
     self->_navigationDetailsOptions.preferredNavigationType = 2;
     v10 = sub_100035E6C();
@@ -68,37 +68,37 @@
   [(StartNavigationDetailsBuilder *)v6 setOptions:v17];
   [(StartNavigationDetailsBuilder *)v6 setIsResumingMultipointRoute:self->_isResumingMultipointRoute];
   v12 = [NavigationSessionConfiguration alloc];
-  v13 = [(StartNavigationDetailsBuilder *)v6 buildNavigationDetails];
-  v14 = [(NavigationSessionConfiguration *)v12 initWithStartNavigationDetails:v13 routeCollection:self->_routeCollection traits:self->_mapServiceTraits isETAOnlyMode:self->_navigationDetailsOptions.isETAOnlyMode];
+  buildNavigationDetails = [(StartNavigationDetailsBuilder *)v6 buildNavigationDetails];
+  v14 = [(NavigationSessionConfiguration *)v12 initWithStartNavigationDetails:buildNavigationDetails routeCollection:self->_routeCollection traits:self->_mapServiceTraits isETAOnlyMode:self->_navigationDetailsOptions.isETAOnlyMode];
 
   v15 = [[NavigationSession alloc] initWithInitiator:self->_mapsSessionInitiator configuration:v14];
 
   return v15;
 }
 
-- (NavigationSessionBuilder)initWithRouteCollection:(id)a3 navigationDetailsOptions:(NavigationDetailsOptions *)a4 mapServiceTraits:(id)a5 sessionInitiator:(unint64_t)a6 isResumingMultipointRoute:(BOOL)a7 tracePlaybackPath:(id)a8
+- (NavigationSessionBuilder)initWithRouteCollection:(id)collection navigationDetailsOptions:(NavigationDetailsOptions *)options mapServiceTraits:(id)traits sessionInitiator:(unint64_t)initiator isResumingMultipointRoute:(BOOL)route tracePlaybackPath:(id)path
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
+  collectionCopy = collection;
+  traitsCopy = traits;
+  pathCopy = path;
   v26.receiver = self;
   v26.super_class = NavigationSessionBuilder;
   v18 = [(NavigationSessionBuilder *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_routeCollection, a3);
-    v20 = *&a4->shouldSimulateLocations;
-    v21 = *&a4->guidanceType;
-    v22 = *&a4->isReconnecting;
-    v19->_navigationDetailsOptions.navigationModeContext = a4->navigationModeContext;
+    objc_storeStrong(&v18->_routeCollection, collection);
+    v20 = *&options->shouldSimulateLocations;
+    v21 = *&options->guidanceType;
+    v22 = *&options->isReconnecting;
+    v19->_navigationDetailsOptions.navigationModeContext = options->navigationModeContext;
     *&v19->_navigationDetailsOptions.guidanceType = v21;
     *&v19->_navigationDetailsOptions.isReconnecting = v22;
     *&v19->_navigationDetailsOptions.shouldSimulateLocations = v20;
-    objc_storeStrong(&v19->_mapServiceTraits, a5);
-    v19->_mapsSessionInitiator = a6;
-    v19->_isResumingMultipointRoute = a7;
-    v23 = [v17 copy];
+    objc_storeStrong(&v19->_mapServiceTraits, traits);
+    v19->_mapsSessionInitiator = initiator;
+    v19->_isResumingMultipointRoute = route;
+    v23 = [pathCopy copy];
     tracePlaybackPath = v19->_tracePlaybackPath;
     v19->_tracePlaybackPath = v23;
   }

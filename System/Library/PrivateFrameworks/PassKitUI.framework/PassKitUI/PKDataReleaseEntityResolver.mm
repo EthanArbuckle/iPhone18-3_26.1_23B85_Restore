@@ -1,9 +1,9 @@
 @interface PKDataReleaseEntityResolver
 - (PKDataReleaseEntityResolver)init;
-- (void)_merchantForIdentifier:(id)a3 withCurrentMerchant:(id)a4 fromMobileAssetLocalOnly:(BOOL)a5 completion:(id)a6;
-- (void)_merchantFromMapsWithIdentifier:(id)a3 completion:(id)a4;
-- (void)resolveEntityForRequest:(id)a3 completion:(id)a4;
-- (void)resolveEntityForRpIdentifier:(id)a3 completion:(id)a4;
+- (void)_merchantForIdentifier:(id)identifier withCurrentMerchant:(id)merchant fromMobileAssetLocalOnly:(BOOL)only completion:(id)completion;
+- (void)_merchantFromMapsWithIdentifier:(id)identifier completion:(id)completion;
+- (void)resolveEntityForRequest:(id)request completion:(id)completion;
+- (void)resolveEntityForRpIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation PKDataReleaseEntityResolver
@@ -15,34 +15,34 @@
   v2 = [(PKDataReleaseEntityResolver *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v2->_paymentService;
-    v2->_paymentService = v3;
+    v2->_paymentService = paymentService;
   }
 
   return v2;
 }
 
-- (void)resolveEntityForRpIdentifier:(id)a3 completion:(id)a4
+- (void)resolveEntityForRpIdentifier:(id)identifier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)resolveEntityForRequest:(id)a3 completion:(id)a4
+- (void)resolveEntityForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   objc_initWeak(location, self);
-  if (v7)
+  if (completionCopy)
   {
-    v8 = [v6 rpIdentifier];
-    v9 = [v6 organizationName];
-    v10 = [v6 iconURL];
-    v11 = [v6 industryCode];
-    if (v6 && [v8 length])
+    rpIdentifier = [requestCopy rpIdentifier];
+    organizationName = [requestCopy organizationName];
+    iconURL = [requestCopy iconURL];
+    industryCode = [requestCopy industryCode];
+    if (requestCopy && [rpIdentifier length])
     {
       v53[0] = 0;
       v53[1] = v53;
@@ -54,15 +54,15 @@
       aBlock[1] = 3221225472;
       aBlock[2] = __66__PKDataReleaseEntityResolver_resolveEntityForRequest_completion___block_invoke;
       aBlock[3] = &unk_1E801C518;
-      v27 = v9;
-      v12 = v9;
+      v27 = organizationName;
+      v12 = organizationName;
       v47 = v12;
-      v48 = v11;
-      v49 = v10;
-      v13 = v8;
+      v48 = industryCode;
+      v49 = iconURL;
+      v13 = rpIdentifier;
       v50 = v13;
       v52 = v53;
-      v51 = v7;
+      v51 = completionCopy;
       v14 = _Block_copy(aBlock);
       v15 = objc_alloc_init(MEMORY[0x1E69B8658]);
       v43[0] = MEMORY[0x1E69E9820];
@@ -109,8 +109,8 @@
       v24 = _Block_copy(v28);
       v24[2](v24, 1);
       v24[2](v24, 0);
-      v25 = [MEMORY[0x1E695DFB0] null];
-      v26 = [v22 evaluateWithInput:v25 completion:&__block_literal_global_151];
+      null = [MEMORY[0x1E695DFB0] null];
+      v26 = [v22 evaluateWithInput:null completion:&__block_literal_global_151];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(&v38);
@@ -118,12 +118,12 @@
       objc_destroyWeak(&v42);
       _Block_object_dispose(v53, 8);
 
-      v9 = v27;
+      organizationName = v27;
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -296,18 +296,18 @@ uint64_t __66__PKDataReleaseEntityResolver_resolveEntityForRequest_completion___
   return result;
 }
 
-- (void)_merchantFromMapsWithIdentifier:(id)a3 completion:(id)a4
+- (void)_merchantFromMapsWithIdentifier:(id)identifier completion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [[PKDataReleaseEntityLookupSource alloc] initWithEntityIdentifier:v5];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v7 = [[PKDataReleaseEntityLookupSource alloc] initWithEntityIdentifier:identifierCopy];
   v8 = [objc_alloc(MEMORY[0x1E69B89B0]) initWithSource:v7];
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v5;
+    v14 = identifierCopy;
     _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Processing identity request for %@", buf, 0xCu);
   }
 
@@ -315,8 +315,8 @@ uint64_t __66__PKDataReleaseEntityResolver_resolveEntityForRequest_completion___
   v11[1] = 3221225472;
   v11[2] = __74__PKDataReleaseEntityResolver__merchantFromMapsWithIdentifier_completion___block_invoke;
   v11[3] = &unk_1E801C678;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v8 startLookupWithCompletion:v11];
 }
 
@@ -361,26 +361,26 @@ void __74__PKDataReleaseEntityResolver__merchantFromMapsWithIdentifier_completio
   }
 }
 
-- (void)_merchantForIdentifier:(id)a3 withCurrentMerchant:(id)a4 fromMobileAssetLocalOnly:(BOOL)a5 completion:(id)a6
+- (void)_merchantForIdentifier:(id)identifier withCurrentMerchant:(id)merchant fromMobileAssetLocalOnly:(BOOL)only completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  onlyCopy = only;
+  identifierCopy = identifier;
+  merchantCopy = merchant;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v13 = [MEMORY[0x1E69B89C0] sharedInstance];
+  mEMORY[0x1E69B89C0] = [MEMORY[0x1E69B89C0] sharedInstance];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __110__PKDataReleaseEntityResolver__merchantForIdentifier_withCurrentMerchant_fromMobileAssetLocalOnly_completion___block_invoke;
   v17[3] = &unk_1E801C6C8;
   objc_copyWeak(&v21, &location);
-  v14 = v12;
+  v14 = completionCopy;
   v20 = v14;
-  v15 = v10;
+  v15 = identifierCopy;
   v18 = v15;
-  v16 = v11;
+  v16 = merchantCopy;
   v19 = v16;
-  [v13 fetchRPIdentifierMappingDiscretionary:0 localOnly:v7 completionHandler:v17];
+  [mEMORY[0x1E69B89C0] fetchRPIdentifierMappingDiscretionary:0 localOnly:onlyCopy completionHandler:v17];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);

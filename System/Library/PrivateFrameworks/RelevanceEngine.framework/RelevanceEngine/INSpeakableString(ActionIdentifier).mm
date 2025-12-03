@@ -6,10 +6,10 @@
 
 - (uint64_t)re_actionIdentifierHashValue
 {
-  v1 = [a1 spokenPhrase];
-  v2 = [v1 re_actionIdentifierHashValue];
+  spokenPhrase = [self spokenPhrase];
+  re_actionIdentifierHashValue = [spokenPhrase re_actionIdentifierHashValue];
 
-  return v2;
+  return re_actionIdentifierHashValue;
 }
 
 @end

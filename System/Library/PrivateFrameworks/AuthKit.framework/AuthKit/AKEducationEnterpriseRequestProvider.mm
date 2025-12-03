@@ -1,45 +1,45 @@
 @interface AKEducationEnterpriseRequestProvider
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
+- (BOOL)signRequest:(id)request error:(id *)error;
 - (id)_authKitAccount;
 - (id)_continuationToken;
 - (id)_passwordResetToken;
-- (void)_signWithProxiedDeviceHeaders:(id)a3;
+- (void)_signWithProxiedDeviceHeaders:(id)headers;
 @end
 
 @implementation AKEducationEnterpriseRequestProvider
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = a4;
-  v32.receiver = v35;
+  objc_storeStrong(location, request);
+  errorCopy = error;
+  v32.receiver = selfCopy;
   v32.super_class = AKEducationEnterpriseRequestProvider;
-  if ([(AKGrandSlamRequestProvider *)&v32 signRequest:location[0] error:a4])
+  if ([(AKGrandSlamRequestProvider *)&v32 signRequest:location[0] error:error])
   {
-    v16 = [(AKURLRequestProviderImpl *)v35 concreteAuthenticationContext];
-    v15 = [(AKAppleIDAuthenticationContext *)v16 desiredInternalTokens];
-    v17 = [v15 containsObject:AKAuthenticationInternalTokenCK];
-    _objc_release(v15);
-    _objc_release(v16);
+    concreteAuthenticationContext = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+    desiredInternalTokens = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext desiredInternalTokens];
+    v17 = [desiredInternalTokens containsObject:AKAuthenticationInternalTokenCK];
+    _objc_release(desiredInternalTokens);
+    _objc_release(concreteAuthenticationContext);
     v31 = v17;
     v18 = +[AKDevice currentDevice];
-    v19 = [v18 isProtectedWithPasscode];
+    isProtectedWithPasscode = [v18 isProtectedWithPasscode];
     _objc_release(v18);
-    v30 = v19;
+    v30 = isProtectedWithPasscode;
     if (v17)
     {
-      v13 = [(AKEducationEnterpriseRequestProvider *)v35 _continuationToken];
+      _continuationToken = [(AKEducationEnterpriseRequestProvider *)selfCopy _continuationToken];
       v28 = 0;
       v14 = 1;
-      if (v13)
+      if (_continuationToken)
       {
-        v29 = [(AKEducationEnterpriseRequestProvider *)v35 _passwordResetToken];
+        _passwordResetToken = [(AKEducationEnterpriseRequestProvider *)selfCopy _passwordResetToken];
         v28 = 1;
         v12 = 0;
-        if (!v29)
+        if (!_passwordResetToken)
         {
           v12 = v30;
         }
@@ -49,10 +49,10 @@
 
       if (v28)
       {
-        _objc_release(v29);
+        _objc_release(_passwordResetToken);
       }
 
-      _objc_release(v13);
+      _objc_release(_continuationToken);
       if (v14)
       {
         v27 = _AKLogSystem();
@@ -86,22 +86,22 @@
       [location[0] ak_addPRKRequestHeader];
     }
 
-    v6 = [(AKURLRequestProviderImpl *)v35 concreteAuthenticationContext];
-    v7 = [(AKAppleIDAuthenticationContext *)v6 proxiedDevice];
-    _objc_release(v7);
-    _objc_release(v6);
-    if (v7)
+    concreteAuthenticationContext2 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+    proxiedDevice = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext2 proxiedDevice];
+    _objc_release(proxiedDevice);
+    _objc_release(concreteAuthenticationContext2);
+    if (proxiedDevice)
     {
-      [(AKEducationEnterpriseRequestProvider *)v35 _signWithProxiedDeviceHeaders:location[0]];
+      [(AKEducationEnterpriseRequestProvider *)selfCopy _signWithProxiedDeviceHeaders:location[0]];
     }
 
     v21 = _AKLogSystem();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [location[0] allHTTPHeaderFields];
-      sub_1000194D4(v37, v5);
+      allHTTPHeaderFields = [location[0] allHTTPHeaderFields];
+      sub_1000194D4(v37, allHTTPHeaderFields);
       _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Request Headers for Education/Enterprise: %@", v37, 0xCu);
-      _objc_release(v5);
+      _objc_release(allHTTPHeaderFields);
     }
 
     objc_storeStrong(&v21, 0);
@@ -117,12 +117,12 @@
   return v36 & 1;
 }
 
-- (void)_signWithProxiedDeviceHeaders:(id)a3
+- (void)_signWithProxiedDeviceHeaders:(id)headers
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, headers);
   v41 = _AKLogSystem();
   v40 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -135,50 +135,50 @@
 
   objc_storeStrong(&v41, 0);
   v26 = [AKAnisetteProvisioningService alloc];
-  v28 = [(AKURLRequestProviderImpl *)v43 client];
-  v27 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-  v38 = [(AKAnisetteProvisioningService *)v26 initWithClient:v28 context:?];
-  _objc_release(v27);
-  _objc_release(v28);
-  v30 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-  v29 = [(AKAppleIDAuthenticationContext *)v30 proxiedDevice];
+  client = [(AKURLRequestProviderImpl *)selfCopy client];
+  concreteAuthenticationContext = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+  v38 = [(AKAnisetteProvisioningService *)v26 initWithClient:client context:?];
+  _objc_release(concreteAuthenticationContext);
+  _objc_release(client);
+  concreteAuthenticationContext2 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+  proxiedDevice = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext2 proxiedDevice];
   v37 = [v38 anisetteDataForDevice:? provisionIfNecessary:?];
-  _objc_release(v29);
-  _objc_release(v30);
-  v32 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-  v31 = [(AKAppleIDAuthenticationContext *)v32 proxiedDevice];
-  v33 = [v31 serverFriendlyDescription];
-  _objc_release(v33);
-  _objc_release(v31);
-  _objc_release(v32);
-  if (v33)
+  _objc_release(proxiedDevice);
+  _objc_release(concreteAuthenticationContext2);
+  concreteAuthenticationContext3 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+  proxiedDevice2 = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext3 proxiedDevice];
+  serverFriendlyDescription = [proxiedDevice2 serverFriendlyDescription];
+  _objc_release(serverFriendlyDescription);
+  _objc_release(proxiedDevice2);
+  _objc_release(concreteAuthenticationContext3);
+  if (serverFriendlyDescription)
   {
     v22 = location[0];
-    v25 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-    v24 = [(AKAppleIDAuthenticationContext *)v25 proxiedDevice];
-    v23 = [v24 serverFriendlyDescription];
+    concreteAuthenticationContext4 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+    proxiedDevice3 = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext4 proxiedDevice];
+    serverFriendlyDescription2 = [proxiedDevice3 serverFriendlyDescription];
     [v22 ak_addProxiedClientInfoHeader:?];
-    _objc_release(v23);
-    _objc_release(v24);
-    _objc_release(v25);
+    _objc_release(serverFriendlyDescription2);
+    _objc_release(proxiedDevice3);
+    _objc_release(concreteAuthenticationContext4);
   }
 
-  v20 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-  v19 = [(AKAppleIDAuthenticationContext *)v20 proxiedDevice];
-  v21 = [v19 uniqueDeviceIdentifier];
-  _objc_release(v21);
-  _objc_release(v19);
-  _objc_release(v20);
-  if (v21)
+  concreteAuthenticationContext5 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+  proxiedDevice4 = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext5 proxiedDevice];
+  uniqueDeviceIdentifier = [proxiedDevice4 uniqueDeviceIdentifier];
+  _objc_release(uniqueDeviceIdentifier);
+  _objc_release(proxiedDevice4);
+  _objc_release(concreteAuthenticationContext5);
+  if (uniqueDeviceIdentifier)
   {
     v15 = location[0];
-    v18 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-    v17 = [(AKAppleIDAuthenticationContext *)v18 proxiedDevice];
-    v16 = [v17 uniqueDeviceIdentifier];
+    concreteAuthenticationContext6 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+    proxiedDevice5 = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext6 proxiedDevice];
+    uniqueDeviceIdentifier2 = [proxiedDevice5 uniqueDeviceIdentifier];
     [v15 ak_addProxiedDeviceUDIDHeader:?];
-    _objc_release(v16);
-    _objc_release(v17);
-    _objc_release(v18);
+    _objc_release(uniqueDeviceIdentifier2);
+    _objc_release(proxiedDevice5);
+    _objc_release(concreteAuthenticationContext6);
   }
 
   if (v37)
@@ -186,41 +186,41 @@
     [location[0] ak_addProxiedAnisetteHeaders:v37];
   }
 
-  v14 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-  v13 = [(AKAppleIDAuthenticationContext *)v14 proxiedDevice];
-  v12 = [v13 locale];
-  v36 = [v12 objectForKey:NSLocaleCountryCode];
-  _objc_release(v12);
-  _objc_release(v13);
-  _objc_release(v14);
+  concreteAuthenticationContext7 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+  proxiedDevice6 = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext7 proxiedDevice];
+  locale = [proxiedDevice6 locale];
+  v36 = [locale objectForKey:NSLocaleCountryCode];
+  _objc_release(locale);
+  _objc_release(proxiedDevice6);
+  _objc_release(concreteAuthenticationContext7);
   if (v36)
   {
     [location[0] ak_addProxiedDeviceCountryHeader:v36];
   }
 
-  v10 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-  v9 = [(AKAppleIDAuthenticationContext *)v10 proxiedDevice];
-  v11 = [v9 serialNumber];
-  _objc_release(v11);
-  _objc_release(v9);
-  _objc_release(v10);
-  if (v11)
+  concreteAuthenticationContext8 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+  proxiedDevice7 = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext8 proxiedDevice];
+  serialNumber = [proxiedDevice7 serialNumber];
+  _objc_release(serialNumber);
+  _objc_release(proxiedDevice7);
+  _objc_release(concreteAuthenticationContext8);
+  if (serialNumber)
   {
     v5 = location[0];
-    v8 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-    v7 = [(AKAppleIDAuthenticationContext *)v8 proxiedDevice];
-    v6 = [v7 serialNumber];
+    concreteAuthenticationContext9 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+    proxiedDevice8 = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext9 proxiedDevice];
+    serialNumber2 = [proxiedDevice8 serialNumber];
     [v5 ak_addProxiedDeviceSerialNumberHeader:?];
-    _objc_release(v6);
-    _objc_release(v7);
-    _objc_release(v8);
+    _objc_release(serialNumber2);
+    _objc_release(proxiedDevice8);
+    _objc_release(concreteAuthenticationContext9);
   }
 
-  v3 = [(AKURLRequestProviderImpl *)v43 concreteAuthenticationContext];
-  v4 = [(AKAppleIDAuthenticationContext *)v3 proxiedDevice];
-  _objc_release(v4);
-  _objc_release(v3);
-  if (v4)
+  concreteAuthenticationContext10 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+  proxiedDevice9 = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext10 proxiedDevice];
+  _objc_release(proxiedDevice9);
+  _objc_release(concreteAuthenticationContext10);
+  if (proxiedDevice9)
   {
     [location[0] ak_addProxiedDevicePRKRequestHeader];
     [location[0] ak_addProxiedDeviceICSCIntentHeader];
@@ -237,12 +237,12 @@
   v8[2] = self;
   v8[1] = a2;
   v8[0] = 0;
-  v4 = [(AKURLRequestProviderImpl *)self concreteAuthenticationContext];
+  concreteAuthenticationContext = [(AKURLRequestProviderImpl *)self concreteAuthenticationContext];
   v6 = v8[0];
-  v3 = [(AKAppleIDAuthenticationContext *)v4 authKitAccount:&v6];
+  v3 = [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext authKitAccount:&v6];
   objc_storeStrong(v8, v6);
   v7 = v3;
-  _objc_release(v4);
+  _objc_release(concreteAuthenticationContext);
   v5 = _objc_retain(v7);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(v8, 0);

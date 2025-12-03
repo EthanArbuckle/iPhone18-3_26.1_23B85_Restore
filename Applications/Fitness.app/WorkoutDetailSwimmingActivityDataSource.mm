@@ -1,15 +1,15 @@
 @interface WorkoutDetailSwimmingActivityDataSource
 - (WorkoutDetailSwimmingActivityDataSource)init;
-- (WorkoutDetailSwimmingActivityDataSource)initWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5 formattingManager:(id)a6;
+- (WorkoutDetailSwimmingActivityDataSource)initWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator formattingManager:(id)manager;
 @end
 
 @implementation WorkoutDetailSwimmingActivityDataSource
 
-- (WorkoutDetailSwimmingActivityDataSource)initWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5 formattingManager:(id)a6
+- (WorkoutDetailSwimmingActivityDataSource)initWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator formattingManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  return sub_10028B46C(v9, a4, a5, a6);
+  workoutCopy = workout;
+  activityCopy = activity;
+  return sub_10028B46C(workoutCopy, activity, calculator, manager);
 }
 
 - (WorkoutDetailSwimmingActivityDataSource)init

@@ -7,13 +7,13 @@
 - (id)hd_stringArrayValue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(self, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,17 +24,17 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) hd_stringValue];
-        if (v8)
+        hd_stringValue = [*(*(&v12 + 1) + 8 * i) hd_stringValue];
+        if (hd_stringValue)
         {
-          [v2 addObject:v8];
+          [v2 addObject:hd_stringValue];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

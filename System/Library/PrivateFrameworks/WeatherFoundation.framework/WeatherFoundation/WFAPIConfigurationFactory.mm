@@ -1,12 +1,12 @@
 @interface WFAPIConfigurationFactory
-+ (id)configurationForAPIVersion:(id)a3;
++ (id)configurationForAPIVersion:(id)version;
 @end
 
 @implementation WFAPIConfigurationFactory
 
-+ (id)configurationForAPIVersion:(id)a3
++ (id)configurationForAPIVersion:(id)version
 {
-  v3 = [a3 componentsSeparatedByString:@"_"];
+  v3 = [version componentsSeparatedByString:@"_"];
   if ([v3 count] < 2)
   {
     v6 = [[WFWeatherChannelAPIConfiguration alloc] initWithVersion:0];

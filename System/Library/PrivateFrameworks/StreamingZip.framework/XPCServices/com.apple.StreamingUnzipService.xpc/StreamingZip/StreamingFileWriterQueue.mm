@@ -1,39 +1,39 @@
 @interface StreamingFileWriterQueue
 + (id)sharedInstance;
-- (BOOL)insertAsyncFileOperation:(id)a3 error:(id *)a4;
+- (BOOL)insertAsyncFileOperation:(id)operation error:(id *)error;
 - (StreamingFileWriterQueue)init;
-- (id)reserveAsyncOperationForFileSize:(int64_t)a3 path:(id)a4 group:(id)a5 operationPendingForPath:(BOOL *)a6;
-- (void)_runOperation:(id)a3;
+- (id)reserveAsyncOperationForFileSize:(int64_t)size path:(id)path group:(id)group operationPendingForPath:(BOOL *)forPath;
+- (void)_runOperation:(id)operation;
 @end
 
 @implementation StreamingFileWriterQueue
 
-- (BOOL)insertAsyncFileOperation:(id)a3 error:(id *)a4
+- (BOOL)insertAsyncFileOperation:(id)operation error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 reservation];
-  v8 = [v7 isValid];
-  if (v8)
+  operationCopy = operation;
+  reservation = [operationCopy reservation];
+  isValid = [reservation isValid];
+  if (isValid)
   {
-    v9 = [v7 reservedSize];
-    [v7 setValid:0];
-    v10 = [v6 trackingGroup];
-    dispatch_group_enter(v10);
-    v25 = [v6 path];
+    reservedSize = [reservation reservedSize];
+    [reservation setValid:0];
+    trackingGroup = [operationCopy trackingGroup];
+    dispatch_group_enter(trackingGroup);
+    path = [operationCopy path];
     os_unfair_lock_lock(&self->_pendingStateLock);
-    v11 = [(StreamingFileWriterQueue *)self runningOperationCount];
-    v12 = [(StreamingFileWriterQueue *)self maxConcurrency];
-    if (v11 >= v12)
+    runningOperationCount = [(StreamingFileWriterQueue *)self runningOperationCount];
+    maxConcurrency = [(StreamingFileWriterQueue *)self maxConcurrency];
+    if (runningOperationCount >= maxConcurrency)
     {
-      v18 = [(StreamingFileWriterQueue *)self pendingOperations];
-      [v18 addObject:v6];
+      pendingOperations = [(StreamingFileWriterQueue *)self pendingOperations];
+      [pendingOperations addObject:operationCopy];
       v19 = sub_10000123C();
       if (os_signpost_enabled(v19))
       {
         *buf = 134218240;
-        v29 = v9;
+        reservedSize2 = reservedSize;
         v30 = 2048;
-        v31 = [v18 count];
+        v31 = [pendingOperations count];
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CONCURRENCY_LIMIT", "Added async operation for size %lld; queue count: %lu", buf, 0x16u);
       }
     }
@@ -43,28 +43,28 @@
       [(StreamingFileWriterQueue *)self setRunningOperationCount:[(StreamingFileWriterQueue *)self runningOperationCount]+ 1];
     }
 
-    v20 = [NSValue valueWithNonretainedObject:v10];
-    v21 = [(StreamingFileWriterQueue *)self pendingOperationPathsByGroupPointer];
-    v22 = [v21 objectForKeyedSubscript:v20];
+    v20 = [NSValue valueWithNonretainedObject:trackingGroup];
+    pendingOperationPathsByGroupPointer = [(StreamingFileWriterQueue *)self pendingOperationPathsByGroupPointer];
+    v22 = [pendingOperationPathsByGroupPointer objectForKeyedSubscript:v20];
     if (!v22)
     {
       v22 = objc_opt_new();
-      [v21 setObject:v22 forKeyedSubscript:v20];
+      [pendingOperationPathsByGroupPointer setObject:v22 forKeyedSubscript:v20];
     }
 
-    [v22 addObject:v25];
+    [v22 addObject:path];
 
     os_unfair_lock_unlock(&self->_pendingStateLock);
-    if (v11 < v12)
+    if (runningOperationCount < maxConcurrency)
     {
-      v23 = [(StreamingFileWriterQueue *)self fileWriterQueue];
+      fileWriterQueue = [(StreamingFileWriterQueue *)self fileWriterQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100010394;
       block[3] = &unk_100028808;
       block[4] = self;
-      v27 = v6;
-      dispatch_group_async(v10, v23, block);
+      v27 = operationCopy;
+      dispatch_group_async(trackingGroup, fileWriterQueue, block);
     }
   }
 
@@ -74,48 +74,48 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v29 = [v7 reservedSize];
+      reservedSize2 = [reservation reservedSize];
       v30 = 2112;
       v31 = 0;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Rejecting insert of file operation because the reservation for size %llu was not valid : %@", buf, 0x16u);
     }
 
-    v14 = [v7 reservedSize];
-    v16 = sub_10000151C("[StreamingFileWriterQueue insertAsyncFileOperation:error:]", 237, @"SZExtractorErrorDomain", 1, 0, 0, @"Rejecting insert of file operation because the reservation for size %llu was not valid", v15, v14);
-    v10 = v16;
-    if (a4)
+    reservedSize3 = [reservation reservedSize];
+    v16 = sub_10000151C("[StreamingFileWriterQueue insertAsyncFileOperation:error:]", 237, @"SZExtractorErrorDomain", 1, 0, 0, @"Rejecting insert of file operation because the reservation for size %llu was not valid", v15, reservedSize3);
+    trackingGroup = v16;
+    if (error)
     {
       v17 = v16;
-      *a4 = v10;
+      *error = trackingGroup;
     }
   }
 
-  return v8;
+  return isValid;
 }
 
-- (void)_runOperation:(id)a3
+- (void)_runOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 reservation];
-  v6 = [v5 reservedSize];
+  operationCopy = operation;
+  reservation = [operationCopy reservation];
+  reservedSize = [reservation reservedSize];
 
-  v7 = [v4 path];
-  v8 = [v4 trackingGroup];
-  [v4 executeAsyncOperation];
+  path = [operationCopy path];
+  trackingGroup = [operationCopy trackingGroup];
+  [operationCopy executeAsyncOperation];
 
-  dispatch_group_leave(v8);
+  dispatch_group_leave(trackingGroup);
   os_unfair_lock_lock(&self->_pendingStateLock);
-  [(StreamingFileWriterQueue *)self setPendingOperationSize:[(StreamingFileWriterQueue *)self pendingOperationSize]- v6];
-  v9 = [NSValue valueWithNonretainedObject:v8];
-  v10 = [(StreamingFileWriterQueue *)self pendingOperationPathsByGroupPointer];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  [(StreamingFileWriterQueue *)self setPendingOperationSize:[(StreamingFileWriterQueue *)self pendingOperationSize]- reservedSize];
+  v9 = [NSValue valueWithNonretainedObject:trackingGroup];
+  pendingOperationPathsByGroupPointer = [(StreamingFileWriterQueue *)self pendingOperationPathsByGroupPointer];
+  v11 = [pendingOperationPathsByGroupPointer objectForKeyedSubscript:v9];
   v12 = v11;
   if (v11)
   {
-    [v11 removeObject:v7];
+    [v11 removeObject:path];
     if (![v12 count])
     {
-      [v10 removeObjectForKey:v9];
+      [pendingOperationPathsByGroupPointer removeObjectForKey:v9];
     }
   }
 
@@ -127,16 +127,16 @@
       *buf = 138412546;
       v21 = v9;
       v22 = 2112;
-      v23 = v7;
+      v23 = path;
       _os_log_fault_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "No pending operation paths found for group %@ when trying to remove path %@", buf, 0x16u);
     }
   }
 
-  v14 = [(StreamingFileWriterQueue *)self pendingOperations];
-  if ([v14 count])
+  pendingOperations = [(StreamingFileWriterQueue *)self pendingOperations];
+  if ([pendingOperations count])
   {
-    v15 = [v14 objectAtIndexedSubscript:0];
-    [v14 removeObjectAtIndex:0];
+    v15 = [pendingOperations objectAtIndexedSubscript:0];
+    [pendingOperations removeObjectAtIndex:0];
   }
 
   else
@@ -148,25 +148,25 @@
   os_unfair_lock_unlock(&self->_pendingStateLock);
   if (v15)
   {
-    v16 = [v15 trackingGroup];
-    v17 = [(StreamingFileWriterQueue *)self fileWriterQueue];
+    trackingGroup2 = [v15 trackingGroup];
+    fileWriterQueue = [(StreamingFileWriterQueue *)self fileWriterQueue];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10001064C;
     v18[3] = &unk_100028808;
     v18[4] = self;
     v19 = v15;
-    dispatch_group_async(v16, v17, v18);
+    dispatch_group_async(trackingGroup2, fileWriterQueue, v18);
   }
 }
 
-- (id)reserveAsyncOperationForFileSize:(int64_t)a3 path:(id)a4 group:(id)a5 operationPendingForPath:(BOOL *)a6
+- (id)reserveAsyncOperationForFileSize:(int64_t)size path:(id)path group:(id)group operationPendingForPath:(BOOL *)forPath
 {
-  v10 = a4;
-  v11 = a5;
-  if ([(StreamingFileWriterQueue *)self maxPendingItemSize]>= a3)
+  pathCopy = path;
+  groupCopy = group;
+  if ([(StreamingFileWriterQueue *)self maxPendingItemSize]>= size)
   {
-    v13 = a3 >= 0;
+    v13 = size >= 0;
   }
 
   else
@@ -175,23 +175,23 @@
     if (os_signpost_enabled(v12))
     {
       v25 = 138412546;
-      v26 = v10;
+      v26 = pathCopy;
       v27 = 2048;
-      v28 = a3;
+      sizeCopy3 = size;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "FILE_TOO_BIG", "Too large for async: %@ size %lld", &v25, 0x16u);
     }
 
     v13 = 0;
   }
 
-  v14 = [NSValue valueWithNonretainedObject:v11];
+  v14 = [NSValue valueWithNonretainedObject:groupCopy];
   os_unfair_lock_lock(&self->_pendingStateLock);
-  v15 = [(StreamingFileWriterQueue *)self pendingOperationPathsByGroupPointer];
-  v16 = [v15 objectForKeyedSubscript:v14];
+  pendingOperationPathsByGroupPointer = [(StreamingFileWriterQueue *)self pendingOperationPathsByGroupPointer];
+  v16 = [pendingOperationPathsByGroupPointer objectForKeyedSubscript:v14];
 
   if (v16)
   {
-    v17 = [v16 containsObject:v10];
+    v17 = [v16 containsObject:pathCopy];
     if (!v13)
     {
 LABEL_11:
@@ -217,7 +217,7 @@ LABEL_11:
     }
   }
 
-  v18 = [(StreamingFileWriterQueue *)self pendingOperationSize]+ a3;
+  v18 = [(StreamingFileWriterQueue *)self pendingOperationSize]+ size;
   if (v18 > [(StreamingFileWriterQueue *)self maxPendingOperationSize])
   {
     goto LABEL_11;
@@ -230,15 +230,15 @@ LABEL_11:
   if (os_signpost_enabled(v21))
   {
     v25 = 138412802;
-    v26 = v10;
+    v26 = pathCopy;
     v27 = 2048;
-    v28 = a3;
+    sizeCopy3 = size;
     v29 = 2048;
     v30 = v18;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v21, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ASYNC_FILE_RESERVED", "Async op reserved for %@ size %lld (cur total: %lld)", &v25, 0x20u);
   }
 
-  v19 = [[StreamingFileWriterQueueReservation alloc] initWithReservationSize:a3];
+  v19 = [[StreamingFileWriterQueueReservation alloc] initWithReservationSize:size];
   v20 = 0;
   if (v17)
   {
@@ -247,7 +247,7 @@ LABEL_16:
     if (os_signpost_enabled(v22))
     {
       v25 = 138412290;
-      v26 = v10;
+      v26 = pathCopy;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v22, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ASYNC_OP_EXISTS", "Async op exists for %@", &v25, 0xCu);
     }
   }
@@ -259,14 +259,14 @@ LABEL_19:
     if (os_signpost_enabled(v23))
     {
       v25 = 138412546;
-      v26 = v10;
+      v26 = pathCopy;
       v27 = 2048;
-      v28 = a3;
+      sizeCopy3 = size;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ASYNC_FILE_QUEUE_FULL", "Insufficient buffer avilable for %@ size %lld", &v25, 0x16u);
     }
   }
 
-  *a6 = v17;
+  *forPath = v17;
 
   return v19;
 }
@@ -407,16 +407,16 @@ LABEL_23:
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_10002F170)
   {
-    v3 = objc_alloc_init(v2);
+    v3 = objc_alloc_init(selfCopy);
     v4 = qword_10002F170;
     qword_10002F170 = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = qword_10002F170;
 

@@ -1,20 +1,20 @@
 @interface MZProcessAssertion
-- (MZProcessAssertion)initWithExpirationBlock:(id)a3 debugDescription:(id)a4;
+- (MZProcessAssertion)initWithExpirationBlock:(id)block debugDescription:(id)description;
 - (NSString)description;
 - (RBSAssertion)systemAssertion;
-- (void)_withLockSetAssertion:(id)a3;
-- (void)assertionWillInvalidate:(id)a3;
+- (void)_withLockSetAssertion:(id)assertion;
+- (void)assertionWillInvalidate:(id)invalidate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setSystemAssertion:(id)a3;
+- (void)setSystemAssertion:(id)assertion;
 @end
 
 @implementation MZProcessAssertion
 
-- (MZProcessAssertion)initWithExpirationBlock:(id)a3 debugDescription:(id)a4
+- (MZProcessAssertion)initWithExpirationBlock:(id)block debugDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  descriptionCopy = description;
   v21.receiver = self;
   v21.super_class = MZProcessAssertion;
   v8 = [(MZProcessAssertion *)&v21 init];
@@ -29,21 +29,21 @@
     v9 = ++qword_1005718A0;
     os_unfair_lock_unlock(&dword_100583BC8);
     v8->_identifier = v9;
-    v10 = [v6 copy];
+    v10 = [blockCopy copy];
     expirationBlock = v8->_expirationBlock;
     v8->_expirationBlock = v10;
 
-    if ([v7 length])
+    if ([descriptionCopy length])
     {
-      v12 = [NSString stringWithFormat:@"-%@", v7];
+      descriptionCopy = [NSString stringWithFormat:@"-%@", descriptionCopy];
     }
 
     else
     {
-      v12 = &stru_1004F3018;
+      descriptionCopy = &stru_1004F3018;
     }
 
-    v13 = [NSString stringWithFormat:@"com.apple.podcasts.storebookkeeper-%@", v12];
+    v13 = [NSString stringWithFormat:@"com.apple.podcasts.storebookkeeper-%@", descriptionCopy];
     v14 = [RBSDomainAttribute attributeWithDomain:@"com.apple.common" name:@"FinishTaskInterruptable"];
     v15 = [RBSAssertion alloc];
     v16 = +[RBSTarget currentProcess];
@@ -79,14 +79,14 @@
   [(MZProcessAssertion *)&v3 dealloc];
 }
 
-- (void)_withLockSetAssertion:(id)a3
+- (void)_withLockSetAssertion:(id)assertion
 {
-  v5 = a3;
+  assertionCopy = assertion;
   p_systemAssertion = &self->_systemAssertion;
-  if (([(RBSAssertion *)self->_systemAssertion isEqual:v5]& 1) == 0)
+  if (([(RBSAssertion *)self->_systemAssertion isEqual:assertionCopy]& 1) == 0)
   {
     v7 = *p_systemAssertion;
-    objc_storeStrong(&self->_systemAssertion, a3);
+    objc_storeStrong(&self->_systemAssertion, assertion);
     if (*p_systemAssertion)
     {
       [(RBSAssertion *)*p_systemAssertion addObserver:self];
@@ -104,11 +104,11 @@
   }
 }
 
-- (void)setSystemAssertion:(id)a3
+- (void)setSystemAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  [(MZProcessAssertion *)self _withLockSetAssertion:v4];
+  [(MZProcessAssertion *)self _withLockSetAssertion:assertionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -122,13 +122,13 @@
   return v3;
 }
 
-- (void)assertionWillInvalidate:(id)a3
+- (void)assertionWillInvalidate:(id)invalidate
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_systemAssertion && ([(MZProcessAssertion *)self expirationBlock], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(MZProcessAssertion *)self expirationBlock];
-    v6 = [v5 copy];
+    expirationBlock = [(MZProcessAssertion *)self expirationBlock];
+    v6 = [expirationBlock copy];
 
     [(MZProcessAssertion *)self setExpirationBlock:0];
     os_unfair_lock_unlock(&self->_lock);

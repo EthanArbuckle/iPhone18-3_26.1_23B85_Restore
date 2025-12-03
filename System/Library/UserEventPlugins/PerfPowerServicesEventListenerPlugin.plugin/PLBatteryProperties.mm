@@ -8,7 +8,7 @@
 - (BOOL)isPluggedIn;
 - (NSNumber)adapterInfo;
 - (PLBatteryProperties)init;
-- (PLBatteryProperties)initWithBatteryEntry:(unsigned int)a3;
+- (PLBatteryProperties)initWithBatteryEntry:(unsigned int)entry;
 - (double)capacity;
 - (double)chargeAccum;
 - (double)currentAbsoluteCapacity;
@@ -23,7 +23,7 @@
 - (double)rawMaxCapacity;
 - (id)batteryProperties;
 - (id)humanReadableChargingState;
-- (id)propertyForKey:(__CFString *)a3;
+- (id)propertyForKey:(__CFString *)key;
 - (int64_t)batteryTemp;
 - (int64_t)chargingCurrent;
 - (int64_t)current;
@@ -38,9 +38,9 @@
 
 - (BOOL)isPluggedIn
 {
-  v2 = [(PLBatteryProperties *)self adapterInfo];
+  adapterInfo = [(PLBatteryProperties *)self adapterInfo];
 
-  return [(NSNumber *)v2 BOOLValue];
+  return [(NSNumber *)adapterInfo BOOLValue];
 }
 
 - (NSNumber)adapterInfo
@@ -135,9 +135,9 @@
   if (CFProperty)
   {
     v5 = CFProperty;
-    v6 = [CFProperty integerValue];
+    integerValue = [CFProperty integerValue];
 
-    return v6;
+    return integerValue;
   }
 
   else
@@ -237,15 +237,15 @@
   return [v2 BOOLValue];
 }
 
-- (PLBatteryProperties)initWithBatteryEntry:(unsigned int)a3
+- (PLBatteryProperties)initWithBatteryEntry:(unsigned int)entry
 {
   v6.receiver = self;
   v6.super_class = PLBatteryProperties;
   v4 = [(PLBatteryProperties *)&v6 init];
   if (v4)
   {
-    IOObjectRetain(a3);
-    v4->batteryEntry = a3;
+    IOObjectRetain(entry);
+    v4->batteryEntry = entry;
   }
 
   return v4;
@@ -253,7 +253,7 @@
 
 + (id)properties
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -381,11 +381,11 @@
   }
 }
 
-- (id)propertyForKey:(__CFString *)a3
+- (id)propertyForKey:(__CFString *)key
 {
-  v4 = [(PLBatteryProperties *)self batteryProperties];
+  batteryProperties = [(PLBatteryProperties *)self batteryProperties];
 
-  return [v4 objectForKey:a3];
+  return [batteryProperties objectForKey:key];
 }
 
 - (id)humanReadableChargingState

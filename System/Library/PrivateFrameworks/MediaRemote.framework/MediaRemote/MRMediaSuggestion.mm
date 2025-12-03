@@ -1,56 +1,56 @@
 @interface MRMediaSuggestion
-+ (void)playSuggestionWithPlaybackIdentifier:(id)a3 completion:(id)a4;
-+ (void)playSuggestionWithPlaybackIdentifier:(id)a3 onDeviceWithUID:(id)a4 completion:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (MRMediaSuggestion)initWithIntent:(id)a3 playbackIdentifier:(id)a4;
++ (void)playSuggestionWithPlaybackIdentifier:(id)identifier completion:(id)completion;
++ (void)playSuggestionWithPlaybackIdentifier:(id)identifier onDeviceWithUID:(id)d completion:(id)completion;
+- (BOOL)isEqual:(id)equal;
+- (MRMediaSuggestion)initWithIntent:(id)intent playbackIdentifier:(id)identifier;
 - (__CFString)_identifierForQueuePlayback;
 - (dispatch_queue_t)_callbackQueue;
 - (id)_intentForQueuePlayback;
 - (id)_processedIntent;
-- (id)_processedIntentWithRouteIdentifiers:(uint64_t)a1;
+- (id)_processedIntentWithRouteIdentifiers:(uint64_t)identifiers;
 - (id)description;
 - (uint64_t)_originatedFromSystemMediaApp;
 - (unint64_t)hash;
-- (void)_confirmIntent:(void *)a3 intentHandler:;
-- (void)_handleIntentWithProxy:(void *)a3 completion:;
-- (void)_playIntent:(void *)a3 completion:;
+- (void)_confirmIntent:(void *)intent intentHandler:;
+- (void)_handleIntentWithProxy:(void *)proxy completion:;
+- (void)_playIntent:(void *)intent completion:;
 - (void)_playIntent:onEndpoint:queue:completion:;
 - (void)_playIntentRemotelyAsPlaybackQueue:endpoint:queue:completion:;
-- (void)_playIntentRemotelyWithAirPlay:(void *)a3 destinationDevices:(void *)a4 queue:(void *)a5 completion:;
-- (void)playOnDeviceWithUID:(id)a3 completion:(id)a4;
-- (void)playOnEndpoint:(id)a3 completion:(id)a4;
-- (void)playWithAirPlayRouteIdentifiers:(id)a3 completion:(id)a4;
-- (void)playWithCompletion:(id)a3;
-- (void)setArtwork:(uint64_t)a1;
-- (void)setBundleID:(uint64_t)a1;
+- (void)_playIntentRemotelyWithAirPlay:(void *)play destinationDevices:(void *)devices queue:(void *)queue completion:;
+- (void)playOnDeviceWithUID:(id)d completion:(id)completion;
+- (void)playOnEndpoint:(id)endpoint completion:(id)completion;
+- (void)playWithAirPlayRouteIdentifiers:(id)identifiers completion:(id)completion;
+- (void)playWithCompletion:(id)completion;
+- (void)setArtwork:(uint64_t)artwork;
+- (void)setBundleID:(uint64_t)d;
 @end
 
 @implementation MRMediaSuggestion
 
-- (MRMediaSuggestion)initWithIntent:(id)a3 playbackIdentifier:(id)a4
+- (MRMediaSuggestion)initWithIntent:(id)intent playbackIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  intentCopy = intent;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = MRMediaSuggestion;
   v9 = [(MRMediaSuggestion *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_intent, a3);
-    objc_storeStrong(&v10->_playbackIdentifier, a4);
-    v11 = [(INPlayMediaIntent *)v10->_intent mediaContainer];
+    objc_storeStrong(&v9->_intent, intent);
+    objc_storeStrong(&v10->_playbackIdentifier, identifier);
+    mediaContainer = [(INPlayMediaIntent *)v10->_intent mediaContainer];
     container = v10->_container;
-    v10->_container = v11;
+    v10->_container = mediaContainer;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -60,19 +60,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRMediaSuggestion *)self identifier];
-      v7 = [(MRMediaSuggestion *)v5 identifier];
-      if (v6 == v7)
+      v5 = equalCopy;
+      identifier = [(MRMediaSuggestion *)self identifier];
+      identifier2 = [(MRMediaSuggestion *)v5 identifier];
+      if (identifier == identifier2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(MRMediaSuggestion *)self identifier];
-        v9 = [(MRMediaSuggestion *)v5 identifier];
-        v10 = [v8 isEqualToString:v9];
+        identifier3 = [(MRMediaSuggestion *)self identifier];
+        identifier4 = [(MRMediaSuggestion *)v5 identifier];
+        v10 = [identifier3 isEqualToString:identifier4];
       }
     }
 
@@ -87,25 +87,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MRMediaSuggestion *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MRMediaSuggestion *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)_processedIntentWithRouteIdentifiers:(uint64_t)a1
+- (id)_processedIntentWithRouteIdentifiers:(uint64_t)identifiers
 {
   v3 = a2;
-  if (a1)
+  if (identifiers)
   {
-    v4 = [*(a1 + 40) copy];
+    v4 = [*(identifiers + 40) copy];
     [v4 _setAirPlayRouteIds:v3];
     [v4 setMediaItems:0];
     [v4 setPlayShuffled:0];
-    if ([(MRMediaSuggestion *)a1 _originatedFromSystemMediaApp])
+    if ([(MRMediaSuggestion *)identifiers _originatedFromSystemMediaApp])
     {
       v24 = v3;
-      v5 = [v4 privatePlayMediaIntentData];
+      privatePlayMediaIntentData = [v4 privatePlayMediaIntentData];
       v30 = 0;
       v31 = &v30;
       v32 = 0x2050000000;
@@ -126,23 +126,23 @@
       v7 = v6;
       _Block_object_dispose(&v30, 8);
       v23 = [v6 alloc];
-      v26 = [v5 appSelectionEnabled];
-      v28 = [v5 appInferred];
-      v27 = [v5 audioSearchResults];
-      v22 = [v5 privateMediaIntentData];
-      v21 = [v5 appSelectionSignalsEnabled];
-      v20 = [v5 appSelectionSignalsFrequencyDenominator];
-      v25 = [v5 immediatelyStartPlayback];
-      v19 = [v5 isAmbiguousPlay];
-      v17 = [v5 isPersonalizedRequest];
-      v16 = [v5 internalSignals];
-      v15 = [v5 entityConfidenceSignalsEnabled];
-      v14 = [v5 entityConfidenceSignalsFrequencyDenominatorInternal];
-      v8 = [v5 entityConfidenceSignalsFrequencyDenominatorProd];
-      v9 = [v5 entityConfidenceSignalsMaxItemsToDisambiguate];
-      v10 = [v5 alternativeProviderBundleIdentifier];
-      v11 = [v5 ampPAFDataSetID];
-      v12 = [v23 initWithAppSelectionEnabled:v26 appInferred:v28 audioSearchResults:v27 privateMediaIntentData:v22 appSelectionSignalsEnabled:v21 appSelectionSignalsFrequencyDenominator:v20 shouldSuppressCommonWholeHouseAudioRoutes:MEMORY[0x1E695E118] immediatelyStartPlayback:v25 isAmbiguousPlay:v19 isPersonalizedRequest:v17 internalSignals:v16 entityConfidenceSignalsEnabled:v15 entityConfidenceSignalsFrequencyDenominatorInternal:v14 entityConfidenceSignalsFrequencyDenominatorProd:v8 entityConfidenceSignalsMaxItemsToDisambiguate:v9 alternativeProviderBundleIdentifier:v10 ampPAFDataSetID:v11];
+      appSelectionEnabled = [privatePlayMediaIntentData appSelectionEnabled];
+      appInferred = [privatePlayMediaIntentData appInferred];
+      audioSearchResults = [privatePlayMediaIntentData audioSearchResults];
+      privateMediaIntentData = [privatePlayMediaIntentData privateMediaIntentData];
+      appSelectionSignalsEnabled = [privatePlayMediaIntentData appSelectionSignalsEnabled];
+      appSelectionSignalsFrequencyDenominator = [privatePlayMediaIntentData appSelectionSignalsFrequencyDenominator];
+      immediatelyStartPlayback = [privatePlayMediaIntentData immediatelyStartPlayback];
+      isAmbiguousPlay = [privatePlayMediaIntentData isAmbiguousPlay];
+      isPersonalizedRequest = [privatePlayMediaIntentData isPersonalizedRequest];
+      internalSignals = [privatePlayMediaIntentData internalSignals];
+      entityConfidenceSignalsEnabled = [privatePlayMediaIntentData entityConfidenceSignalsEnabled];
+      entityConfidenceSignalsFrequencyDenominatorInternal = [privatePlayMediaIntentData entityConfidenceSignalsFrequencyDenominatorInternal];
+      entityConfidenceSignalsFrequencyDenominatorProd = [privatePlayMediaIntentData entityConfidenceSignalsFrequencyDenominatorProd];
+      entityConfidenceSignalsMaxItemsToDisambiguate = [privatePlayMediaIntentData entityConfidenceSignalsMaxItemsToDisambiguate];
+      alternativeProviderBundleIdentifier = [privatePlayMediaIntentData alternativeProviderBundleIdentifier];
+      ampPAFDataSetID = [privatePlayMediaIntentData ampPAFDataSetID];
+      v12 = [v23 initWithAppSelectionEnabled:appSelectionEnabled appInferred:appInferred audioSearchResults:audioSearchResults privateMediaIntentData:privateMediaIntentData appSelectionSignalsEnabled:appSelectionSignalsEnabled appSelectionSignalsFrequencyDenominator:appSelectionSignalsFrequencyDenominator shouldSuppressCommonWholeHouseAudioRoutes:MEMORY[0x1E695E118] immediatelyStartPlayback:immediatelyStartPlayback isAmbiguousPlay:isAmbiguousPlay isPersonalizedRequest:isPersonalizedRequest internalSignals:internalSignals entityConfidenceSignalsEnabled:entityConfidenceSignalsEnabled entityConfidenceSignalsFrequencyDenominatorInternal:entityConfidenceSignalsFrequencyDenominatorInternal entityConfidenceSignalsFrequencyDenominatorProd:entityConfidenceSignalsFrequencyDenominatorProd entityConfidenceSignalsMaxItemsToDisambiguate:entityConfidenceSignalsMaxItemsToDisambiguate alternativeProviderBundleIdentifier:alternativeProviderBundleIdentifier ampPAFDataSetID:ampPAFDataSetID];
       [v18 setPrivatePlayMediaIntentData:v12];
 
       v3 = v24;
@@ -160,9 +160,9 @@
 
 - (id)_intentForQueuePlayback
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(MRMediaSuggestion *)a1 _processedIntent];
+    _processedIntent = [(MRMediaSuggestion *)self _processedIntent];
     v26 = 0;
     v27 = &v26;
     v28 = 0x2050000000;
@@ -182,34 +182,34 @@
     v3 = v2;
     _Block_object_dispose(&v26, 8);
     v18 = [v2 alloc];
-    v23 = [v1 mediaContainer];
-    v22 = [v23 identifier];
-    v24 = [v22 stringByAppendingString:@"&includePlaybackQueue=true"];
-    v21 = [v1 mediaContainer];
-    v16 = [v21 title];
-    v20 = [v1 mediaContainer];
-    v15 = [v20 type];
-    v19 = [v1 mediaContainer];
-    v4 = [v19 artwork];
-    v17 = [v1 mediaContainer];
-    v5 = [v17 artist];
-    v6 = [v1 mediaContainer];
-    v7 = [v6 topics];
-    v8 = [v1 mediaContainer];
-    v9 = [v8 namedEntities];
-    v10 = [v1 mediaContainer];
-    v11 = [v10 privateMediaItemValueData];
-    v12 = v5;
-    v13 = [v18 initWithIdentifier:v24 title:v16 type:v15 artwork:v4 artist:v5 topics:v7 namedEntities:v9 privateMediaItemValueData:v11];
-    [v1 setMediaContainer:v13];
+    mediaContainer = [_processedIntent mediaContainer];
+    identifier = [mediaContainer identifier];
+    v24 = [identifier stringByAppendingString:@"&includePlaybackQueue=true"];
+    mediaContainer2 = [_processedIntent mediaContainer];
+    title = [mediaContainer2 title];
+    mediaContainer3 = [_processedIntent mediaContainer];
+    type = [mediaContainer3 type];
+    mediaContainer4 = [_processedIntent mediaContainer];
+    artwork = [mediaContainer4 artwork];
+    mediaContainer5 = [_processedIntent mediaContainer];
+    artist = [mediaContainer5 artist];
+    mediaContainer6 = [_processedIntent mediaContainer];
+    topics = [mediaContainer6 topics];
+    mediaContainer7 = [_processedIntent mediaContainer];
+    namedEntities = [mediaContainer7 namedEntities];
+    mediaContainer8 = [_processedIntent mediaContainer];
+    privateMediaItemValueData = [mediaContainer8 privateMediaItemValueData];
+    v12 = artist;
+    v13 = [v18 initWithIdentifier:v24 title:title type:type artwork:artwork artist:artist topics:topics namedEntities:namedEntities privateMediaItemValueData:privateMediaItemValueData];
+    [_processedIntent setMediaContainer:v13];
   }
 
   else
   {
-    v1 = 0;
+    _processedIntent = 0;
   }
 
-  return v1;
+  return _processedIntent;
 }
 
 void __40__MRMediaSuggestion_playWithCompletion___block_invoke(void *a1, void *a2)
@@ -319,18 +319,18 @@ void __64__MRMediaSuggestion_playWithAirPlayRouteIdentifiers_completion___block_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)playOnEndpoint:(id)a3 completion:(id)a4
+- (void)playOnEndpoint:(id)endpoint completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isLocalEndpoint])
+  endpointCopy = endpoint;
+  completionCopy = completion;
+  if ([endpointCopy isLocalEndpoint])
   {
-    [(MRMediaSuggestion *)self playWithCompletion:v7];
+    [(MRMediaSuggestion *)self playWithCompletion:completionCopy];
   }
 
   else
   {
-    [(MRMediaSuggestion *)self playOnEndpoint:v8 completion:v7, v6];
+    [(MRMediaSuggestion *)self playOnEndpoint:v8 completion:completionCopy, endpointCopy];
   }
 }
 
@@ -361,18 +361,18 @@ void __47__MRMediaSuggestion_playOnEndpoint_completion___block_invoke(void *a1, 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)playSuggestionWithPlaybackIdentifier:(id)a3 completion:(id)a4
++ (void)playSuggestionWithPlaybackIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = +[MRMediaSuggestionRequest defaultRequest];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__MRMediaSuggestion_playSuggestionWithPlaybackIdentifier_completion___block_invoke;
   v9[3] = &unk_1E769AED0;
-  v10 = v5;
-  v8 = v5;
-  [v7 performWithPlaybackIdentifier:v6 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 performWithPlaybackIdentifier:identifierCopy completion:v9];
 }
 
 uint64_t __69__MRMediaSuggestion_playSuggestionWithPlaybackIdentifier_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -389,22 +389,22 @@ uint64_t __69__MRMediaSuggestion_playSuggestionWithPlaybackIdentifier_completion
   }
 }
 
-+ (void)playSuggestionWithPlaybackIdentifier:(id)a3 onDeviceWithUID:(id)a4 completion:(id)a5
++ (void)playSuggestionWithPlaybackIdentifier:(id)identifier onDeviceWithUID:(id)d completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  dCopy = d;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v11 = +[MRMediaSuggestionRequest defaultRequest];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__MRMediaSuggestion_playSuggestionWithPlaybackIdentifier_onDeviceWithUID_completion___block_invoke;
   v14[3] = &unk_1E769AF48;
-  v16 = v9;
-  v17 = a1;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
-  [v11 performWithPlaybackIdentifier:v10 completion:v14];
+  v16 = completionCopy;
+  selfCopy = self;
+  v15 = dCopy;
+  v12 = dCopy;
+  v13 = completionCopy;
+  [v11 performWithPlaybackIdentifier:identifierCopy completion:v14];
 }
 
 void __85__MRMediaSuggestion_playSuggestionWithPlaybackIdentifier_onDeviceWithUID_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -632,11 +632,11 @@ void __82__MRMediaSuggestion__playIntentRemotelyAsPlaybackQueue_endpoint_queue_c
   }
 }
 
-- (void)_confirmIntent:(void *)a3 intentHandler:
+- (void)_confirmIntent:(void *)intent intentHandler:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  intentCopy = intent;
+  if (self)
   {
     v18 = 0;
     v19 = &v18;
@@ -662,7 +662,7 @@ void __82__MRMediaSuggestion__playIntentRemotelyAsPlaybackQueue_endpoint_queue_c
     v15[1] = 3221225472;
     v15[2] = __50__MRMediaSuggestion__confirmIntent_intentHandler___block_invoke;
     v15[3] = &unk_1E769AD80;
-    v10 = v6;
+    v10 = intentCopy;
     v16 = v10;
     [v9 setInterruptionHandler:v15];
     v12[0] = MEMORY[0x1E69E9820];
@@ -871,11 +871,11 @@ void __50__MRMediaSuggestion__confirmIntent_intentHandler___block_invoke_3(uint6
 {
   v17 = objc_alloc(MEMORY[0x1E696AEC0]);
   v16 = objc_opt_class();
-  v19 = [(MRMediaSuggestion *)self bundleID];
-  v18 = [(MRMediaSuggestion *)self identifier];
-  v3 = [(MRMediaSuggestion *)self title];
-  v4 = [(MRMediaSuggestion *)self artist];
-  v5 = [(MRMediaSuggestion *)self playbackIdentifier];
+  bundleID = [(MRMediaSuggestion *)self bundleID];
+  identifier = [(MRMediaSuggestion *)self identifier];
+  title = [(MRMediaSuggestion *)self title];
+  artist = [(MRMediaSuggestion *)self artist];
+  playbackIdentifier = [(MRMediaSuggestion *)self playbackIdentifier];
   if (self)
   {
     intent = self->_intent;
@@ -886,10 +886,10 @@ void __50__MRMediaSuggestion__confirmIntent_intentHandler___block_invoke_3(uint6
     intent = 0;
   }
 
-  v7 = [(INPlayMediaIntent *)intent mediaContainer];
-  v8 = [v7 artwork];
+  mediaContainer = [(INPlayMediaIntent *)intent mediaContainer];
+  artwork = [mediaContainer artwork];
   v9 = @"YES";
-  if (v8)
+  if (artwork)
   {
     v10 = @"YES";
   }
@@ -899,15 +899,15 @@ void __50__MRMediaSuggestion__confirmIntent_intentHandler___block_invoke_3(uint6
     v10 = @"NO";
   }
 
-  v11 = [(MRMediaSuggestion *)self artwork];
-  if (!v11)
+  artwork2 = [(MRMediaSuggestion *)self artwork];
+  if (!artwork2)
   {
     v9 = @"NO";
   }
 
-  v12 = [(MRMediaSuggestion *)self artwork];
-  v13 = [v12 imageData];
-  v14 = [v17 initWithFormat:@"<%@: source=%@, identifier=%@, title=%@, artist=%@, playbackIdentifier=%@ intentHasArt=%@, artLoaded=%@, artSize: %ld>", v16, v19, v18, v3, v4, v5, v10, v9, objc_msgSend(v13, "length")];
+  artwork3 = [(MRMediaSuggestion *)self artwork];
+  imageData = [artwork3 imageData];
+  v14 = [v17 initWithFormat:@"<%@: source=%@, identifier=%@, title=%@, artist=%@, playbackIdentifier=%@ intentHasArt=%@, artLoaded=%@, artSize: %ld>", v16, bundleID, identifier, title, artist, playbackIdentifier, v10, v9, objc_msgSend(imageData, "length")];
 
   return v14;
 }
@@ -916,9 +916,9 @@ void __50__MRMediaSuggestion__confirmIntent_intentHandler___block_invoke_3(uint6
 {
   if (result)
   {
-    v1 = [result bundleID];
+    bundleID = [result bundleID];
 
-    if (MRMediaRemoteApplicationIsSystemMediaApplication(v1))
+    if (MRMediaRemoteApplicationIsSystemMediaApplication(bundleID))
     {
       return 1;
     }
@@ -926,7 +926,7 @@ void __50__MRMediaSuggestion__confirmIntent_intentHandler___block_invoke_3(uint6
     else
     {
 
-      return MRMediaRemoteApplicationIsSystemPodcastApplication(v1);
+      return MRMediaRemoteApplicationIsSystemPodcastApplication(bundleID);
     }
   }
 
@@ -935,44 +935,44 @@ void __50__MRMediaSuggestion__confirmIntent_intentHandler___block_invoke_3(uint6
 
 - (__CFString)_identifierForQueuePlayback
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(__CFString *)a1 bundleID];
+    bundleID = [(__CFString *)self bundleID];
 
-    if (MRMediaRemoteApplicationIsSystemMediaApplication(v2))
+    if (MRMediaRemoteApplicationIsSystemMediaApplication(bundleID))
     {
       v3 = kMRMediaRemoteSystemMediaApplicationDisplayIdentifier;
     }
 
-    else if (MRMediaRemoteApplicationIsSystemPodcastApplication(v2))
+    else if (MRMediaRemoteApplicationIsSystemPodcastApplication(bundleID))
     {
       v3 = kMRMediaRemoteSystemPodcastApplicationDisplayIdentifier;
     }
 
     else
     {
-      if (!MRMediaRemoteApplicationIsSystemBooksApplication(v2))
+      if (!MRMediaRemoteApplicationIsSystemBooksApplication(bundleID))
       {
-        a1 = 0;
+        self = 0;
         goto LABEL_9;
       }
 
       v3 = kMRMediaRemoteSystemBooksApplicationDisplayIdentifier;
     }
 
-    a1 = *v3;
+    self = *v3;
 LABEL_9:
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_processedIntent
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 40) copy];
+    v1 = [*(self + 40) copy];
     [v1 _setAirPlayRouteIds:0];
     [v1 setMediaItems:0];
     [v1 setPlayShuffled:0];
@@ -988,7 +988,7 @@ LABEL_9:
 
 - (dispatch_queue_t)_callbackQueue
 {
-  if (a1)
+  if (self)
   {
     v1 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v2 = dispatch_queue_create("com.apple.mediaremote.MRMediaSuggestion.callbackQueue", v1);
@@ -1002,68 +1002,68 @@ LABEL_9:
   return v2;
 }
 
-- (void)playWithCompletion:(id)a3
+- (void)playWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MRMediaSuggestion *)self _processedIntent];
-  v6 = [MEMORY[0x1E695DF00] date];
+  completionCopy = completion;
+  _processedIntent = [(MRMediaSuggestion *)self _processedIntent];
+  date = [MEMORY[0x1E695DF00] date];
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_3_2();
   v9 = v7;
-  v10 = v4;
-  v8 = v4;
-  OUTLINED_FUNCTION_6_0(v6);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  OUTLINED_FUNCTION_6_0(date);
 }
 
-- (void)_playIntent:(void *)a3 completion:
+- (void)_playIntent:(void *)intent completion:
 {
-  v5 = a3;
-  if (a1)
+  intentCopy = intent;
+  if (self)
   {
     OUTLINED_FUNCTION_1_0();
     v6[1] = 3221225472;
     v6[2] = __44__MRMediaSuggestion__playIntent_completion___block_invoke;
     v6[3] = &unk_1E769B060;
-    v6[4] = a1;
-    v7 = v5;
-    [(MRMediaSuggestion *)a1 _confirmIntent:a2 intentHandler:v6];
+    v6[4] = self;
+    v7 = intentCopy;
+    [(MRMediaSuggestion *)self _confirmIntent:a2 intentHandler:v6];
   }
 }
 
-- (void)playOnDeviceWithUID:(id)a3 completion:(id)a4
+- (void)playOnDeviceWithUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MRMediaSuggestion *)self _processedIntent];
+  completionCopy = completion;
+  dCopy = d;
+  _processedIntent = [(MRMediaSuggestion *)self _processedIntent];
   v9 = objc_alloc_init(MRAVLightweightReconnaissanceSession);
-  v10 = [(MRMediaSuggestion *)self _callbackQueue];
-  v11 = [MEMORY[0x1E695DF00] date];
+  _callbackQueue = [(MRMediaSuggestion *)self _callbackQueue];
+  date = [MEMORY[0x1E695DF00] date];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __52__MRMediaSuggestion_playOnDeviceWithUID_completion___block_invoke;
   v30[3] = &unk_1E769AE80;
-  v31 = v11;
-  v32 = self;
-  v12 = v6;
+  v31 = date;
+  selfCopy = self;
+  v12 = completionCopy;
   v33 = v12;
-  v13 = v11;
+  v13 = date;
   MEMORY[0x1A58E3570](v30);
   OUTLINED_FUNCTION_0_3();
   v21 = 3221225472;
   v22 = __52__MRMediaSuggestion_playOnDeviceWithUID_completion___block_invoke_17;
   v23 = &unk_1E769AEA8;
   v24 = v9;
-  v25 = self;
-  v26 = v8;
-  v27 = v10;
+  selfCopy2 = self;
+  v26 = _processedIntent;
+  v27 = _callbackQueue;
   v28 = v12;
   v29 = v14;
   v15 = v14;
-  v16 = v10;
-  v17 = v8;
+  v16 = _callbackQueue;
+  v17 = _processedIntent;
   v18 = v12;
   v19 = v9;
-  [(MRAVLightweightReconnaissanceSession *)v19 searchForOutputDeviceUID:v7 timeout:@"Searching for output device to play MRMediaSuggestion." reason:v16 queue:v20 completion:5.0];
+  [(MRAVLightweightReconnaissanceSession *)v19 searchForOutputDeviceUID:dCopy timeout:@"Searching for output device to play MRMediaSuggestion." reason:v16 queue:v20 completion:5.0];
 }
 
 - (void)_playIntent:onEndpoint:queue:completion:
@@ -1094,37 +1094,37 @@ LABEL_9:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_playIntentRemotelyWithAirPlay:(void *)a3 destinationDevices:(void *)a4 queue:(void *)a5 completion:
+- (void)_playIntentRemotelyWithAirPlay:(void *)play destinationDevices:(void *)devices queue:(void *)queue completion:
 {
   v9 = a2;
-  v10 = a5;
-  if (a1)
+  queueCopy = queue;
+  if (self)
   {
-    v11 = a4;
-    v12 = a3;
+    devicesCopy = devices;
+    playCopy = play;
     v13 = [MRAVLocalEndpoint sharedLocalEndpointForRoutingContextWithUID:0];
     OUTLINED_FUNCTION_0_3();
     OUTLINED_FUNCTION_3_2();
     v15 = __88__MRMediaSuggestion__playIntentRemotelyWithAirPlay_destinationDevices_queue_completion___block_invoke;
     v16 = &unk_1E769B038;
-    v19 = v10;
-    v17 = a1;
+    v19 = queueCopy;
+    selfCopy = self;
     v18 = v9;
-    [v13 setOutputDevices:v12 initiator:@"MRMediaSuggestion setting output devices." withReplyQueue:v11 completion:v14];
+    [v13 setOutputDevices:playCopy initiator:@"MRMediaSuggestion setting output devices." withReplyQueue:devicesCopy completion:v14];
   }
 }
 
-- (void)playWithAirPlayRouteIdentifiers:(id)a3 completion:(id)a4
+- (void)playWithAirPlayRouteIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(MRMediaSuggestion *)self _processedIntentWithRouteIdentifiers:a3];
-  v8 = [MEMORY[0x1E695DF00] date];
+  completionCopy = completion;
+  v7 = [(MRMediaSuggestion *)self _processedIntentWithRouteIdentifiers:identifiers];
+  date = [MEMORY[0x1E695DF00] date];
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_3_2();
   v11 = v9;
-  v12 = v6;
-  v10 = v6;
-  OUTLINED_FUNCTION_6_0(v8);
+  v12 = completionCopy;
+  v10 = completionCopy;
+  OUTLINED_FUNCTION_6_0(date);
 }
 
 - (void)_playIntentRemotelyAsPlaybackQueue:endpoint:queue:completion:
@@ -1136,7 +1136,7 @@ LABEL_9:
   v8 = v2;
   if (v3)
   {
-    v9 = [(MRMediaSuggestion *)v3 _intentForQueuePlayback];
+    _intentForQueuePlayback = [(MRMediaSuggestion *)v3 _intentForQueuePlayback];
     OUTLINED_FUNCTION_0_3();
     OUTLINED_FUNCTION_3_2();
     v11 = __82__MRMediaSuggestion__playIntentRemotelyAsPlaybackQueue_endpoint_queue_completion___block_invoke;
@@ -1146,37 +1146,37 @@ LABEL_9:
     v14 = v6;
     v15 = v7;
     v16 = v5;
-    [(MRMediaSuggestion *)v3 _confirmIntent:v9 intentHandler:v10];
+    [(MRMediaSuggestion *)v3 _confirmIntent:_intentForQueuePlayback intentHandler:v10];
   }
 }
 
-- (void)_handleIntentWithProxy:(void *)a3 completion:
+- (void)_handleIntentWithProxy:(void *)proxy completion:
 {
-  v5 = a3;
-  if (a1)
+  proxyCopy = proxy;
+  if (self)
   {
     OUTLINED_FUNCTION_0_3();
     OUTLINED_FUNCTION_3_2();
     v7 = __55__MRMediaSuggestion__handleIntentWithProxy_completion___block_invoke;
     v8 = &unk_1E769B088;
-    v9 = v5;
+    v9 = proxyCopy;
     [a2 handleIntentWithCompletionHandler:v6];
   }
 }
 
-- (void)setBundleID:(uint64_t)a1
+- (void)setBundleID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((d + 8), a2);
   }
 }
 
-- (void)setArtwork:(uint64_t)a1
+- (void)setArtwork:(uint64_t)artwork
 {
-  if (a1)
+  if (artwork)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((artwork + 16), a2);
   }
 }
 

@@ -1,25 +1,25 @@
 @interface NEKEventPurger
-- (NEKEventPurger)initWithStore:(id)a3 recordMap:(id)a4;
-- (void)_deleteCalendarById:(id)a3;
-- (void)_deleteEventById:(id)a3;
-- (void)_deleteStoreById:(id)a3;
+- (NEKEventPurger)initWithStore:(id)store recordMap:(id)map;
+- (void)_deleteCalendarById:(id)id;
+- (void)_deleteEventById:(id)id;
+- (void)_deleteStoreById:(id)id;
 - (void)finalizeDatabasesAfterResetSync;
 @end
 
 @implementation NEKEventPurger
 
-- (NEKEventPurger)initWithStore:(id)a3 recordMap:(id)a4
+- (NEKEventPurger)initWithStore:(id)store recordMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  mapCopy = map;
   v11.receiver = self;
   v11.super_class = NEKEventPurger;
   v8 = [(NEKEventPurger *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(NEKEventPurger *)v8 setStore:v6];
-    [(NEKEventPurger *)v9 setRecordMap:v7];
+    [(NEKEventPurger *)v8 setStore:storeCopy];
+    [(NEKEventPurger *)v9 setRecordMap:mapCopy];
   }
 
   return v9;
@@ -35,15 +35,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v4 = [(NEKEventPurger *)self recordMap];
-  v5 = [(NEKEventPurger *)self store];
-  v6 = [v5 _deletableSources];
+  recordMap = [(NEKEventPurger *)self recordMap];
+  store = [(NEKEventPurger *)self store];
+  _deletableSources = [store _deletableSources];
 
   v44 = 0u;
   v45 = 0u;
   v43 = 0u;
   v42 = 0u;
-  obj = v6;
+  obj = _deletableSources;
   v30 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v30)
   {
@@ -59,15 +59,15 @@
 
         v8 = *(*(&v42 + 1) + 8 * i);
         v9 = objc_autoreleasePoolPush();
-        v10 = [v8 objectID];
-        if (v10 && ([v4 identifierForRecordID:v10], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+        objectID = [v8 objectID];
+        if (objectID && ([recordMap identifierForRecordID:objectID], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
         {
-          [(NEKEventPurger *)self _deleteStoreById:v10];
+          [(NEKEventPurger *)self _deleteStoreById:objectID];
         }
 
         else
         {
-          v31 = v10;
+          v31 = objectID;
           v32 = v9;
           v33 = i;
           v12 = [v8 calendarsForEntityType:0];
@@ -92,25 +92,25 @@
 
                 v18 = *(*(&v38 + 1) + 8 * j);
                 v19 = objc_autoreleasePoolPush();
-                v20 = [v18 objectID];
-                if (v20 && ([v4 identifierForRecordID:v20], v21 = objc_claimAutoreleasedReturnValue(), v21, !v21))
+                objectID2 = [v18 objectID];
+                if (objectID2 && ([recordMap identifierForRecordID:objectID2], v21 = objc_claimAutoreleasedReturnValue(), v21, !v21))
                 {
-                  [(NEKEventPurger *)self _deleteCalendarById:v20];
+                  [(NEKEventPurger *)self _deleteCalendarById:objectID2];
                 }
 
                 else
                 {
-                  v22 = [(NEKEventPurger *)self store];
-                  v23 = [v22 predicateForMasterEventsInCalendar:v18];
+                  store2 = [(NEKEventPurger *)self store];
+                  v23 = [store2 predicateForMasterEventsInCalendar:v18];
 
-                  v24 = [(NEKEventPurger *)self store];
+                  store3 = [(NEKEventPurger *)self store];
                   v35[0] = _NSConcreteStackBlock;
                   v35[1] = 3221225472;
                   v35[2] = sub_100069B24;
                   v35[3] = &unk_1000B5378;
-                  v36 = v4;
-                  v37 = self;
-                  [v24 enumerateEventsMatchingPredicate:v23 usingBlock:v35];
+                  v36 = recordMap;
+                  selfCopy = self;
+                  [store3 enumerateEventsMatchingPredicate:v23 usingBlock:v35];
                 }
 
                 objc_autoreleasePoolPop(v19);
@@ -124,7 +124,7 @@
 
           v9 = v32;
           i = v33;
-          v10 = v31;
+          objectID = v31;
         }
 
         objc_autoreleasePoolPop(v9);
@@ -136,9 +136,9 @@
     while (v30);
   }
 
-  v25 = [(NEKEventPurger *)self store];
+  store4 = [(NEKEventPurger *)self store];
   v34 = 0;
-  [v25 commit:&v34];
+  [store4 commit:&v34];
   v26 = v34;
 
   if (v26)
@@ -151,23 +151,23 @@
   }
 }
 
-- (void)_deleteStoreById:(id)a3
+- (void)_deleteStoreById:(id)id
 {
-  v4 = a3;
-  v5 = [(NEKEventPurger *)self store];
-  v6 = [v5 publicObjectWithObjectID:v4];
+  idCopy = id;
+  store = [(NEKEventPurger *)self store];
+  v6 = [store publicObjectWithObjectID:idCopy];
 
-  if (v6 && [v4 entityType] == 6)
+  if (v6 && [idCopy entityType] == 6)
   {
     v7 = v6;
-    v8 = [(NEKEventPurger *)self store];
+    store2 = [(NEKEventPurger *)self store];
     v15 = 0;
-    [v8 removeSource:v7 commit:0 error:&v15];
+    [store2 removeSource:v7 commit:0 error:&v15];
     v9 = v15;
 
     v10 = sub_10002CDF8([v7 title]);
-    v11 = [v7 sourceIdentifier];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@ sourceIdentifier=%@; type=%ld", v4, v10, v11, [v7 sourceType]);;
+    sourceIdentifier = [v7 sourceIdentifier];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@ sourceIdentifier=%@; type=%ld", idCopy, v10, sourceIdentifier, [v7 sourceType]);;
 
     v13 = *(qword_1000D18A8 + 8);
     if (v9)
@@ -191,28 +191,28 @@
     v14 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_100076034(v14, v4);
+      sub_100076034(v14, idCopy);
     }
   }
 }
 
-- (void)_deleteCalendarById:(id)a3
+- (void)_deleteCalendarById:(id)id
 {
-  v4 = a3;
-  v5 = [(NEKEventPurger *)self store];
-  v6 = [v5 publicObjectWithObjectID:v4];
+  idCopy = id;
+  store = [(NEKEventPurger *)self store];
+  v6 = [store publicObjectWithObjectID:idCopy];
 
-  if (v6 && [v4 entityType] == 1)
+  if (v6 && [idCopy entityType] == 1)
   {
     v7 = v6;
-    v8 = [(NEKEventPurger *)self store];
+    store2 = [(NEKEventPurger *)self store];
     v15 = 0;
-    [v8 removeCalendar:v7 commit:0 error:&v15];
+    [store2 removeCalendar:v7 commit:0 error:&v15];
     v9 = v15;
 
     v10 = sub_10002CDF8([v7 title]);
-    v11 = [v7 calendarIdentifier];
-    v12 = [NSString stringWithFormat:@"%@ %@ calendarIdentifier=%@", v4, v10, v11];;
+    calendarIdentifier = [v7 calendarIdentifier];
+    v12 = [NSString stringWithFormat:@"%@ %@ calendarIdentifier=%@", idCopy, v10, calendarIdentifier];;
 
     v13 = *(qword_1000D18A8 + 8);
     if (v9)
@@ -236,28 +236,28 @@
     v14 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_100076128(v14, v4);
+      sub_100076128(v14, idCopy);
     }
   }
 }
 
-- (void)_deleteEventById:(id)a3
+- (void)_deleteEventById:(id)id
 {
-  v4 = a3;
-  v5 = [(NEKEventPurger *)self store];
-  v6 = [v5 publicObjectWithObjectID:v4];
+  idCopy = id;
+  store = [(NEKEventPurger *)self store];
+  v6 = [store publicObjectWithObjectID:idCopy];
 
-  if (v6 && [v4 entityType] == 2)
+  if (v6 && [idCopy entityType] == 2)
   {
     v7 = v6;
-    v8 = [(NEKEventPurger *)self store];
+    store2 = [(NEKEventPurger *)self store];
     v15 = 0;
-    [v8 removeEvent:v7 span:1 error:&v15];
+    [store2 removeEvent:v7 span:1 error:&v15];
     v9 = v15;
 
     v10 = sub_10002CDF8([v7 title]);
-    v11 = [v7 recurrenceIdentifier];
-    v12 = [NSString stringWithFormat:@"%@ %@ eventIdentifier=%@", v4, v10, v11];;
+    recurrenceIdentifier = [v7 recurrenceIdentifier];
+    v12 = [NSString stringWithFormat:@"%@ %@ eventIdentifier=%@", idCopy, v10, recurrenceIdentifier];;
 
     v13 = *(qword_1000D18A8 + 8);
     if (v9)
@@ -281,7 +281,7 @@
     v14 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_10007621C(v14, v4);
+      sub_10007621C(v14, idCopy);
     }
   }
 }

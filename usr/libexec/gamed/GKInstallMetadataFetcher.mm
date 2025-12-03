@@ -1,14 +1,14 @@
 @interface GKInstallMetadataFetcher
-- (GKInstallMetadataFetcher)initWithCodeSigning:(id)a3 cache:(id)a4;
+- (GKInstallMetadataFetcher)initWithCodeSigning:(id)signing cache:(id)cache;
 @end
 
 @implementation GKInstallMetadataFetcher
 
-- (GKInstallMetadataFetcher)initWithCodeSigning:(id)a3 cache:(id)a4
+- (GKInstallMetadataFetcher)initWithCodeSigning:(id)signing cache:(id)cache
 {
   swift_unknownObjectRetain();
 
-  return sub_100250C58(a3, a4);
+  return sub_100250C58(signing, cache);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface AMSDAutoBugCaptureService
 + (AMSDAutoBugCaptureService)sharedService;
-+ (BOOL)isConnectionEntitled:(id)a3;
-- (void)captureSnapshotWithSignature:(id)a3 delay:(double)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 completion:(id)a8;
++ (BOOL)isConnectionEntitled:(id)entitled;
+- (void)captureSnapshotWithSignature:(id)signature delay:(double)delay events:(id)events payload:(id)payload actions:(id)actions completion:(id)completion;
 @end
 
 @implementation AMSDAutoBugCaptureService
@@ -18,21 +18,21 @@
   return v3;
 }
 
-- (void)captureSnapshotWithSignature:(id)a3 delay:(double)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 completion:(id)a8
+- (void)captureSnapshotWithSignature:(id)signature delay:(double)delay events:(id)events payload:(id)payload actions:(id)actions completion:(id)completion
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a3;
+  completionCopy = completion;
+  actionsCopy = actions;
+  payloadCopy = payload;
+  eventsCopy = events;
+  signatureCopy = signature;
   v18 = objc_alloc_init(AMSDAutoBugCaptureServiceTrampoline);
-  [(AMSDAutoBugCaptureServiceTrampoline *)v18 captureSnapshotWithSignature:v17 delay:v16 events:v15 payload:v14 actions:v13 completion:a4];
+  [(AMSDAutoBugCaptureServiceTrampoline *)v18 captureSnapshotWithSignature:signatureCopy delay:eventsCopy events:payloadCopy payload:actionsCopy actions:completionCopy completion:delay];
 }
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  entitledCopy = entitled;
+  v4 = [entitledCopy valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -46,12 +46,12 @@
 
   if ([v5 BOOLValue])
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v7 = [v3 valueForEntitlement:@"com.apple.itunesstored.private"];
+    v7 = [entitledCopy valueForEntitlement:@"com.apple.itunesstored.private"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,10 +63,10 @@
       v8 = 0;
     }
 
-    v6 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 @end

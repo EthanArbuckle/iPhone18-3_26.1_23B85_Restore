@@ -1,5 +1,5 @@
 @interface DepthGraphView
-- (_TtC32DepthComplicationBundleCompanion14DepthGraphView)initWithFrame:(CGRect)a3;
+- (_TtC32DepthComplicationBundleCompanion14DepthGraphView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2ECAC();
 }
 
-- (_TtC32DepthComplicationBundleCompanion14DepthGraphView)initWithFrame:(CGRect)a3
+- (_TtC32DepthComplicationBundleCompanion14DepthGraphView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,17 +1,17 @@
 @interface _MRSystemPlaybackGenericTracklistQueueProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRepeatMode:(id)a3;
-- (int)StringAsShuffleMode:(id)a3;
+- (int)StringAsRepeatMode:(id)mode;
+- (int)StringAsShuffleMode:(id)mode;
 - (int)repeatMode;
 - (int)shuffleMode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShuffleMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasShuffleMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRSystemPlaybackGenericTracklistQueueProtobuf
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasShuffleMode:(BOOL)a3
+- (void)setHasShuffleMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -44,25 +44,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsShuffleMode:(id)a3
+- (int)StringAsShuffleMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Off"])
+  else if ([modeCopy isEqualToString:@"Off"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Albums"])
+  else if ([modeCopy isEqualToString:@"Albums"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Songs"])
+  else if ([modeCopy isEqualToString:@"Songs"])
   {
     v4 = 3;
   }
@@ -88,25 +88,25 @@
   }
 }
 
-- (int)StringAsRepeatMode:(id)a3
+- (int)StringAsRepeatMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([modeCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"One"])
+  else if ([modeCopy isEqualToString:@"One"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"All"])
+  else if ([modeCopy isEqualToString:@"All"])
   {
     v4 = 3;
   }
@@ -125,20 +125,20 @@
   v8.receiver = self;
   v8.super_class = _MRSystemPlaybackGenericTracklistQueueProtobuf;
   v4 = [(_MRSystemPlaybackGenericTracklistQueueProtobuf *)&v8 description];
-  v5 = [(_MRSystemPlaybackGenericTracklistQueueProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRSystemPlaybackGenericTracklistQueueProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   firstTrackIdentifier = self->_firstTrackIdentifier;
   if (firstTrackIdentifier)
   {
-    [v3 setObject:firstTrackIdentifier forKey:@"firstTrackIdentifier"];
+    [dictionary setObject:firstTrackIdentifier forKey:@"firstTrackIdentifier"];
   }
 
   trackIdentifiers = self->_trackIdentifiers;
@@ -191,26 +191,26 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_firstTrackIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_trackIdentifiers)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_collectionIdentifierSet)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -218,7 +218,7 @@
   {
     shuffleMode = self->_shuffleMode;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -226,59 +226,59 @@
   {
     repeatMode = self->_repeatMode;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_firstTrackIdentifier)
   {
-    [v4 setFirstTrackIdentifier:?];
-    v4 = v6;
+    [toCopy setFirstTrackIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_trackIdentifiers)
   {
     [v6 setTrackIdentifiers:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_collectionIdentifierSet)
   {
     [v6 setCollectionIdentifierSet:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 7) = self->_shuffleMode;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 7) = self->_shuffleMode;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 6) = self->_repeatMode;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 6) = self->_repeatMode;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_firstTrackIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_firstTrackIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_trackIdentifiers copyWithZone:a3];
+  v8 = [(NSString *)self->_trackIdentifiers copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSData *)self->_collectionIdentifierSet copyWithZone:a3];
+  v10 = [(NSData *)self->_collectionIdentifierSet copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
@@ -299,16 +299,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   firstTrackIdentifier = self->_firstTrackIdentifier;
-  if (firstTrackIdentifier | *(v4 + 2))
+  if (firstTrackIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)firstTrackIdentifier isEqual:?])
     {
@@ -317,7 +317,7 @@
   }
 
   trackIdentifiers = self->_trackIdentifiers;
-  if (trackIdentifiers | *(v4 + 4))
+  if (trackIdentifiers | *(equalCopy + 4))
   {
     if (![(NSString *)trackIdentifiers isEqual:?])
     {
@@ -326,7 +326,7 @@
   }
 
   collectionIdentifierSet = self->_collectionIdentifierSet;
-  if (collectionIdentifierSet | *(v4 + 1))
+  if (collectionIdentifierSet | *(equalCopy + 1))
   {
     if (![(NSData *)collectionIdentifierSet isEqual:?])
     {
@@ -336,23 +336,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_shuffleMode != *(v4 + 7))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_shuffleMode != *(equalCopy + 7))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_17:
     v8 = 0;
     goto LABEL_18;
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_repeatMode != *(v4 + 6))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_repeatMode != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
@@ -394,39 +394,39 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(_MRSystemPlaybackGenericTracklistQueueProtobuf *)self setFirstTrackIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_MRSystemPlaybackGenericTracklistQueueProtobuf *)self setTrackIdentifiers:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(_MRSystemPlaybackGenericTracklistQueueProtobuf *)self setCollectionIdentifierSet:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_shuffleMode = v4[7];
+    self->_shuffleMode = fromCopy[7];
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if (v5)
   {
-    self->_repeatMode = v4[6];
+    self->_repeatMode = fromCopy[6];
     *&self->_has |= 1u;
   }
 }

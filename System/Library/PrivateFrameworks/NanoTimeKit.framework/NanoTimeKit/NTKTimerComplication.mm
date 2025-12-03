@@ -1,23 +1,23 @@
 @interface NTKTimerComplication
-+ (double)_durationFromComplication:(id)a3;
-+ (int64_t)compareComplication:(id)a3 toComplication:(id)a4;
++ (double)_durationFromComplication:(id)complication;
++ (int64_t)compareComplication:(id)complication toComplication:(id)toComplication;
 @end
 
 @implementation NTKTimerComplication
 
-+ (double)_durationFromComplication:(id)a3
++ (double)_durationFromComplication:(id)complication
 {
-  v3 = a3;
+  complicationCopy = complication;
   objc_opt_class();
   v4 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 complicationDescriptor];
-    v6 = [v5 userInfo];
-    v7 = v6;
-    if (v6)
+    complicationDescriptor = [complicationCopy complicationDescriptor];
+    userInfo = [complicationDescriptor userInfo];
+    v7 = userInfo;
+    if (userInfo)
     {
-      v8 = [v6 objectForKey:@"Duration"];
+      v8 = [userInfo objectForKey:@"Duration"];
       v9 = v8;
       if (v8)
       {
@@ -30,14 +30,14 @@
   return v4;
 }
 
-+ (int64_t)compareComplication:(id)a3 toComplication:(id)a4
++ (int64_t)compareComplication:(id)complication toComplication:(id)toComplication
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() _durationFromComplication:v6];
+  toComplicationCopy = toComplication;
+  complicationCopy = complication;
+  [objc_opt_class() _durationFromComplication:complicationCopy];
   v8 = v7;
 
-  [objc_opt_class() _durationFromComplication:v5];
+  [objc_opt_class() _durationFromComplication:toComplicationCopy];
   v10 = v9;
 
   v11 = -1;

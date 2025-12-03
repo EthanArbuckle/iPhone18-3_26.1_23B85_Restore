@@ -15,18 +15,18 @@
 - (uint64_t)hasIDForClientType:()Private
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = [v4 ADIDRecords];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  aDIDRecords = [selfCopy ADIDRecords];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [aDIDRecords objectForKeyedSubscript:v6];
 
   if (!v7)
   {
     goto LABEL_5;
   }
 
-  v8 = [v4 idForClientType:a3];
+  v8 = [selfCopy idForClientType:a3];
   v9 = StringIsFromUUID();
 
   if ((v9 & 1) == 0)
@@ -47,7 +47,7 @@ LABEL_5:
 
   v10 = 1;
 LABEL_6:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v14 = *MEMORY[0x277D85DE8];
   return v10;
@@ -55,17 +55,17 @@ LABEL_6:
 
 - (void)removeIDForClientType:()Private
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
-  v4 = [obj ADIDRecords];
+  aDIDRecords = [obj ADIDRecords];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [aDIDRecords objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [obj ADIDRecords];
+    aDIDRecords2 = [obj ADIDRecords];
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    [v7 removeObjectForKey:v8];
+    [aDIDRecords2 removeObjectForKey:v8];
 
     [obj setDirty:1];
   }
@@ -75,7 +75,7 @@ LABEL_6:
 
 - (void)ensureiAdIDs
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v1 = 0;
   for (i = 0; i != 5; ++i)
@@ -91,37 +91,37 @@ LABEL_6:
     for (j = 0; j != 5; ++j)
     {
       v4 = objc_alloc_init(MEMORY[0x277CE9660]);
-      v5 = [obj ADIDRecords];
+      aDIDRecords = [obj ADIDRecords];
       v6 = [MEMORY[0x277CCABB0] numberWithInteger:j];
-      [v5 setObject:v4 forKeyedSubscript:v6];
+      [aDIDRecords setObject:v4 forKeyedSubscript:v6];
 
       v7 = MEMORY[0x277CCACA8];
-      v8 = [obj ADIDRecords];
+      aDIDRecords2 = [obj ADIDRecords];
       v9 = [MEMORY[0x277CCABB0] numberWithInteger:j];
-      v10 = [v8 objectForKeyedSubscript:v9];
-      v11 = [obj DSID];
+      v10 = [aDIDRecords2 objectForKeyedSubscript:v9];
+      dSID = [obj DSID];
       v12 = ClientTypeToString();
-      v13 = [v7 stringWithFormat:@"Generated ID %@ for DSID %@ and client type %ld(%@)", v10, v11, j, v12];
+      v13 = [v7 stringWithFormat:@"Generated ID %@ for DSID %@ and client type %ld(%@)", v10, dSID, j, v12];
       _ADLog();
     }
 
     [obj setLastSentSegmentDataTimestamp:0];
     v14 = objc_alloc_init(MEMORY[0x277CE9660]);
-    v15 = [obj ADIDRecords];
+    aDIDRecords3 = [obj ADIDRecords];
     v16 = [MEMORY[0x277CCABB0] numberWithInteger:6];
-    [v15 setObject:v14 forKeyedSubscript:v16];
+    [aDIDRecords3 setObject:v14 forKeyedSubscript:v16];
 
     v17 = MEMORY[0x277CCACA8];
-    v18 = [obj ADIDRecords];
+    aDIDRecords4 = [obj ADIDRecords];
     v19 = [MEMORY[0x277CCABB0] numberWithInteger:6];
-    v20 = [v18 objectForKeyedSubscript:v19];
-    v21 = [obj DSID];
+    v20 = [aDIDRecords4 objectForKeyedSubscript:v19];
+    dSID2 = [obj DSID];
     v22 = ClientTypeToString();
-    v23 = [v17 stringWithFormat:@"Generated ID %@ for DSID %@ and client type %ld(%@)", v20, v21, 6, v22];
+    v23 = [v17 stringWithFormat:@"Generated ID %@ for DSID %@ and client type %ld(%@)", v20, dSID2, 6, v22];
     _ADLog();
 
-    v24 = [MEMORY[0x277CBEAA8] date];
-    [obj setDeviceIDRotationTimestamp:{objc_msgSend(v24, "AD_toSinceReferenceTime")}];
+    date = [MEMORY[0x277CBEAA8] date];
+    [obj setDeviceIDRotationTimestamp:{objc_msgSend(date, "AD_toSinceReferenceTime")}];
   }
 
   objc_sync_exit(obj);
@@ -129,35 +129,35 @@ LABEL_6:
 
 - (BOOL)resetDeviceNewsPlusSubscriberIDIfNeeded
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [v2 AD_toSinceReferenceTime];
+  date = [MEMORY[0x277CBEAA8] date];
+  aD_toSinceReferenceTime = [date AD_toSinceReferenceTime];
 
-  v4 = v3 - [a1 deviceIDRotationTimestamp];
+  v4 = aD_toSinceReferenceTime - [self deviceIDRotationTimestamp];
   if (v4 <= 86399)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"It has not yet been 24 hours since deviceID was rotated. Last rotated at %d", objc_msgSend(a1, "deviceIDRotationTimestamp")];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"It has not yet been 24 hours since deviceID was rotated. Last rotated at %d", objc_msgSend(self, "deviceIDRotationTimestamp")];
     _ADLog();
   }
 
   else
   {
-    v5 = a1;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v6 = MEMORY[0x277CCACA8];
-    v7 = [v5 DSID];
-    v8 = [v6 stringWithFormat:@"Resetting deviceNewsPlusSubscriberID at time %d for DSID record %@.", v3, v7];
+    dSID = [selfCopy DSID];
+    v8 = [v6 stringWithFormat:@"Resetting deviceNewsPlusSubscriberID at time %d for DSID record %@.", aD_toSinceReferenceTime, dSID];
     _ADLog();
 
-    v9 = [v5 ADIDRecords];
+    aDIDRecords = [selfCopy ADIDRecords];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __62__DSIDRecord_Private__resetDeviceNewsPlusSubscriberIDIfNeeded__block_invoke;
     v12[3] = &unk_278C582E0;
-    v12[4] = v5;
-    [v9 enumerateKeysAndObjectsUsingBlock:v12];
+    v12[4] = selfCopy;
+    [aDIDRecords enumerateKeysAndObjectsUsingBlock:v12];
 
-    [v5 setDeviceIDRotationTimestamp:v3];
-    objc_sync_exit(v5);
+    [selfCopy setDeviceIDRotationTimestamp:aD_toSinceReferenceTime];
+    objc_sync_exit(selfCopy);
   }
 
   return v4 > 86399;
@@ -165,11 +165,11 @@ LABEL_6:
 
 - (uint64_t)isActiveRecord
 {
-  v1 = [a1 DSID];
-  v2 = [MEMORY[0x277CE9658] sharedInstance];
-  v3 = [v2 activeDSIDRecord];
-  v4 = [v3 DSID];
-  v5 = [v1 isEqualToString:v4];
+  dSID = [self DSID];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
+  dSID2 = [activeDSIDRecord DSID];
+  v5 = [dSID isEqualToString:dSID2];
 
   return v5;
 }
@@ -178,30 +178,30 @@ LABEL_6:
 {
   v4 = a3;
   v6 = +[ADSegmentDataManager sharedInstance];
-  v5 = [a1 DSID];
-  [v6 retrieveSegmentData:v5 forceSegments:0 completionHandler:v4];
+  dSID = [self DSID];
+  [v6 retrieveSegmentData:dSID forceSegments:0 completionHandler:v4];
 }
 
 - (void)sendSegmentDataToAdPlatforms:()Private
 {
   v4 = a3;
   v6 = +[ADSegmentDataManager sharedInstance];
-  v5 = [a1 DSID];
-  [v6 sendSegmentDataToAdPlatforms:v5 completionHandler:v4];
+  dSID = [self DSID];
+  [v6 sendSegmentDataToAdPlatforms:dSID completionHandler:v4];
 }
 
 - (void)sendPersonalizedAdsStatusToAdPlatforms:()Private
 {
   v4 = a3;
   v6 = +[ADPersonalizedAdsStatusManager sharedInstance];
-  v5 = [a1 DSID];
-  [v6 sendPersonalizedAdsStatusToAdPlatforms:v5 completionHandler:v4];
+  dSID = [self DSID];
+  [v6 sendPersonalizedAdsStatusToAdPlatforms:dSID completionHandler:v4];
 }
 
 - (BOOL)isEqual:()Private
 {
   v4 = a3;
-  if (v4 == a1)
+  if (v4 == self)
   {
     v19 = 1;
   }
@@ -212,35 +212,35 @@ LABEL_6:
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
-      v6 = [a1 DSID];
-      v7 = [v5 DSID];
-      v8 = [v6 isEqualToString:v7];
+      dSID = [self DSID];
+      dSID2 = [v5 DSID];
+      v8 = [dSID isEqualToString:dSID2];
 
       if (!v8)
       {
         goto LABEL_33;
       }
 
-      v9 = [a1 ADIDRecords];
-      v10 = [v5 ADIDRecords];
-      v11 = [v9 isEqual:v10];
+      aDIDRecords = [self ADIDRecords];
+      aDIDRecords2 = [v5 ADIDRecords];
+      v11 = [aDIDRecords isEqual:aDIDRecords2];
 
       if (!v11)
       {
         goto LABEL_33;
       }
 
-      v12 = [a1 segmentData];
-      if (v12)
+      segmentData = [self segmentData];
+      if (segmentData)
       {
-        v13 = v12;
-        v14 = [v5 segmentData];
-        if (v14)
+        v13 = segmentData;
+        segmentData2 = [v5 segmentData];
+        if (segmentData2)
         {
-          v15 = v14;
-          v16 = [a1 segmentData];
-          v17 = [v5 segmentData];
-          v18 = [v16 isEqualToString:v17];
+          v15 = segmentData2;
+          segmentData3 = [self segmentData];
+          segmentData4 = [v5 segmentData];
+          v18 = [segmentData3 isEqualToString:segmentData4];
 
           if (!v18)
           {
@@ -253,65 +253,65 @@ LABEL_6:
         }
       }
 
-      v20 = [a1 accountIsT13];
-      if (v20 != [v5 accountIsT13])
+      accountIsT13 = [self accountIsT13];
+      if (accountIsT13 != [v5 accountIsT13])
       {
         goto LABEL_33;
       }
 
-      v21 = [a1 accountIsU18];
-      if (v21 != [v5 accountIsU18])
+      accountIsU18 = [self accountIsU18];
+      if (accountIsU18 != [v5 accountIsU18])
       {
         goto LABEL_33;
       }
 
-      v22 = [a1 accountIsU13];
-      if (v22 != [v5 accountIsU13])
+      accountIsU13 = [self accountIsU13];
+      if (accountIsU13 != [v5 accountIsU13])
       {
         goto LABEL_33;
       }
 
-      v23 = [a1 sensitiveContentEligible];
-      if (v23 != [v5 sensitiveContentEligible])
+      sensitiveContentEligible = [self sensitiveContentEligible];
+      if (sensitiveContentEligible != [v5 sensitiveContentEligible])
       {
         goto LABEL_33;
       }
 
-      v24 = [a1 isProtoU13];
-      if (v24 != [v5 isProtoU13])
+      isProtoU13 = [self isProtoU13];
+      if (isProtoU13 != [v5 isProtoU13])
       {
         goto LABEL_33;
       }
 
-      v25 = [a1 isProtoTeen];
-      if (v25 != [v5 isProtoTeen])
+      isProtoTeen = [self isProtoTeen];
+      if (isProtoTeen != [v5 isProtoTeen])
       {
         goto LABEL_33;
       }
 
-      v26 = [a1 effectiveBirthYear];
-      if (v26 != [v5 effectiveBirthYear])
+      effectiveBirthYear = [self effectiveBirthYear];
+      if (effectiveBirthYear != [v5 effectiveBirthYear])
       {
         goto LABEL_33;
       }
 
-      v27 = [a1 actualBirthYear];
-      if (v27 != [v5 actualBirthYear])
+      actualBirthYear = [self actualBirthYear];
+      if (actualBirthYear != [v5 actualBirthYear])
       {
         goto LABEL_33;
       }
 
-      v28 = [a1 iso3166Code];
-      if (v28)
+      iso3166Code = [self iso3166Code];
+      if (iso3166Code)
       {
-        v29 = v28;
-        v30 = [v5 iso3166Code];
-        if (v30)
+        v29 = iso3166Code;
+        iso3166Code2 = [v5 iso3166Code];
+        if (iso3166Code2)
         {
-          v31 = v30;
-          v32 = [a1 iso3166Code];
-          v33 = [v5 iso3166Code];
-          v34 = [v32 isEqualToString:v33];
+          v31 = iso3166Code2;
+          iso3166Code3 = [self iso3166Code];
+          iso3166Code4 = [v5 iso3166Code];
+          v34 = [iso3166Code3 isEqualToString:iso3166Code4];
 
           if (!v34)
           {
@@ -324,29 +324,29 @@ LABEL_6:
         }
       }
 
-      v35 = [a1 noiseAppliedVersion];
-      if (v35 == [v5 noiseAppliedVersion])
+      noiseAppliedVersion = [self noiseAppliedVersion];
+      if (noiseAppliedVersion == [v5 noiseAppliedVersion])
       {
-        v36 = [a1 lastSentPersonalizedAdsStatus];
-        if (v36 == [v5 lastSentPersonalizedAdsStatus])
+        lastSentPersonalizedAdsStatus = [self lastSentPersonalizedAdsStatus];
+        if (lastSentPersonalizedAdsStatus == [v5 lastSentPersonalizedAdsStatus])
         {
-          v37 = [a1 personalizedAdsTimestamp];
-          if (v37 == [v5 personalizedAdsTimestamp])
+          personalizedAdsTimestamp = [self personalizedAdsTimestamp];
+          if (personalizedAdsTimestamp == [v5 personalizedAdsTimestamp])
           {
-            v38 = [a1 lastSentSegmentDataTimestamp];
-            if (v38 == [v5 lastSentSegmentDataTimestamp])
+            lastSentSegmentDataTimestamp = [self lastSentSegmentDataTimestamp];
+            if (lastSentSegmentDataTimestamp == [v5 lastSentSegmentDataTimestamp])
             {
-              v39 = [a1 segmentDataTimestamp];
-              if (v39 == [v5 segmentDataTimestamp])
+              segmentDataTimestamp = [self segmentDataTimestamp];
+              if (segmentDataTimestamp == [v5 segmentDataTimestamp])
               {
-                v40 = [a1 lastSentPersonalizedAdsTimestamp];
-                if (v40 == [v5 lastSentPersonalizedAdsTimestamp])
+                lastSentPersonalizedAdsTimestamp = [self lastSentPersonalizedAdsTimestamp];
+                if (lastSentPersonalizedAdsTimestamp == [v5 lastSentPersonalizedAdsTimestamp])
                 {
-                  v41 = [a1 lastSegmentServedTimestamp];
-                  if (v41 == [v5 lastSegmentServedTimestamp])
+                  lastSegmentServedTimestamp = [self lastSegmentServedTimestamp];
+                  if (lastSegmentServedTimestamp == [v5 lastSegmentServedTimestamp])
                   {
-                    v42 = [a1 deviceIDRotationTimestamp];
-                    v19 = v42 == [v5 deviceIDRotationTimestamp];
+                    deviceIDRotationTimestamp = [self deviceIDRotationTimestamp];
+                    v19 = deviceIDRotationTimestamp == [v5 deviceIDRotationTimestamp];
 LABEL_34:
 
                     goto LABEL_35;

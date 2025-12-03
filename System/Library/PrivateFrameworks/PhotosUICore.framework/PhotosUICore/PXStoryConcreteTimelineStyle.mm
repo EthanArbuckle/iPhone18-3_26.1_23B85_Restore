@@ -1,30 +1,30 @@
 @interface PXStoryConcreteTimelineStyle
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_kenBurnsMotionParametersForDuration:(double)a3;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_kenBurnsMotionParametersForDuration:(double)duration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultDisplayAssetPresentationDuration;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)durationForVerticallyPanningPortraitAsset:(SEL)a3 atSpeed:(id)a4 motionInfo:(double)a5 minimumDuration:(id *)a6 croppingContext:(id *)a7;
-- ($654D12A5B96C89A393ABE69D6FE3CC0A)audioInfoForDisplayAsset:(SEL)a3;
-- ($7566BBA16C4E03ED15B4F2B623931C37)_durationInfoForClip:(SEL)a3 startTime:(id)a4 croppingContext:(id *)a5;
-- ($7566BBA16C4E03ED15B4F2B623931C37)durationInfoForSegmentWithDisplayAssets:(SEL)a3 startTime:(id)a4;
-- ($D23540E3B197441F7781E3353E3BC035)_transitionInfoForClip:(SEL)a3 isKeyAsset:(id)a4;
-- ($D23540E3B197441F7781E3353E3BC035)transitionInfoForSegmentWithClipComposition:(SEL)a3 displayAssets:(id)a4;
-- (BOOL)allowsMultipartPanoramaForDisplayAsset:(id)a3 startTime:(id *)a4;
-- (BOOL)isOriginalPlaybackStyleAllowedInNUp:(int64_t)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)durationForVerticallyPanningPortraitAsset:(SEL)asset atSpeed:(id)speed motionInfo:(double)info minimumDuration:(id *)duration croppingContext:(id *)context;
+- ($654D12A5B96C89A393ABE69D6FE3CC0A)audioInfoForDisplayAsset:(SEL)asset;
+- ($7566BBA16C4E03ED15B4F2B623931C37)_durationInfoForClip:(SEL)clip startTime:(id)time croppingContext:(id *)context;
+- ($7566BBA16C4E03ED15B4F2B623931C37)durationInfoForSegmentWithDisplayAssets:(SEL)assets startTime:(id)time;
+- ($D23540E3B197441F7781E3353E3BC035)_transitionInfoForClip:(SEL)clip isKeyAsset:(id)asset;
+- ($D23540E3B197441F7781E3353E3BC035)transitionInfoForSegmentWithClipComposition:(SEL)composition displayAssets:(id)assets;
+- (BOOL)allowsMultipartPanoramaForDisplayAsset:(id)asset startTime:(id *)time;
+- (BOOL)isOriginalPlaybackStyleAllowedInNUp:(int64_t)up;
 - (PXStoryConcreteTimelineStyle)init;
-- (PXStoryConcreteTimelineStyle)initWithSpec:(id)a3 audioAsset:(id)a4 cueSource:(id)a5 overallDurationInfo:(id *)a6 autoEditDecisionList:(id)a7 autoEditConfiguration:(id)a8 allowedKeyAssetClipCompositions:(id)a9 allowedClipCompositions:(id)a10 randomNumberGenerators:(id)a11 errorReporter:(id)a12 allowsIncompleteTimelines:(BOOL)a13 styleOptions:(id)a14 storyConfiguration:(id)a15;
+- (PXStoryConcreteTimelineStyle)initWithSpec:(id)spec audioAsset:(id)asset cueSource:(id)source overallDurationInfo:(id *)info autoEditDecisionList:(id)list autoEditConfiguration:(id)configuration allowedKeyAssetClipCompositions:(id)compositions allowedClipCompositions:(id)self0 randomNumberGenerators:(id)self1 errorReporter:(id)self2 allowsIncompleteTimelines:(BOOL)self3 styleOptions:(id)self4 storyConfiguration:(id)self5;
 - (PXStoryConfiguration)storyConfiguration;
 - (PXStoryMultipartPanoramaParameters)defaultHorizontalMultipartPanoramaParameters;
 - (PXStoryMultipartPanoramaParameters)defaultVerticalMultipartPanoramaParameters;
-- (double)composabilityScoreForSegmentWithDisplayAssets:(id)a3;
-- (double)effectiveMovementDurationForDurationInfo:(id *)a3;
-- (id)_clipForDisplayAsset:(id)a3;
-- (id)_clipForDisplayAssets:(id)a3;
-- (id)clipCompositionForKeyAsset:(id)a3 contentInfo:(id *)a4 finalPlaybackStyle:(int64_t)a5;
-- (id)sortedCropContentsRectsForMultipartPanoramaWithDisplayAsset:(id)a3 startTime:(id *)a4 proposedCropContentsRects:(id)a5 axis:(int64_t)a6 normalizedKenBurnsEffectParameters:(id *)a7 durationInfos:(id *)a8 transitionInfos:(id *)a9;
-- (int64_t)finalOneUpPlaybackStyleForDisplayAsset:(id)a3 originalPlaybackStyle:(int64_t)a4;
+- (double)composabilityScoreForSegmentWithDisplayAssets:(id)assets;
+- (double)effectiveMovementDurationForDurationInfo:(id *)info;
+- (id)_clipForDisplayAsset:(id)asset;
+- (id)_clipForDisplayAssets:(id)assets;
+- (id)clipCompositionForKeyAsset:(id)asset contentInfo:(id *)info finalPlaybackStyle:(int64_t)style;
+- (id)sortedCropContentsRectsForMultipartPanoramaWithDisplayAsset:(id)asset startTime:(id *)time proposedCropContentsRects:(id)rects axis:(int64_t)axis normalizedKenBurnsEffectParameters:(id *)parameters durationInfos:(id *)infos transitionInfos:(id *)transitionInfos;
+- (int64_t)finalOneUpPlaybackStyleForDisplayAsset:(id)asset originalPlaybackStyle:(int64_t)style;
 - (void)_ensureDefaultMultipartPanoramaParameters;
-- (void)_getOneUpKenBurnsParameters:(id *)a3 forDisplayAsset:(id)a4 motionInfo:(id *)a5 motionParameters:(id *)a6 factory:(id)a7;
-- (void)enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition:(id)a3 displayAssets:(id)a4 assetContentInfos:(id *)a5 finalPlaybackStyles:(const int64_t *)a6 startTime:(id *)a7 durationInfo:(id *)a8 separatorEffectParameters:(id *)a9 separatorEffectContext:(int64_t)a10 buffer:(id *)a11 usingBlock:(id)a12;
-- (void)enumerateAllowedSeparatorEffectParametersForSegmentWithClipComposition:(id)a3 displayAssets:(id)a4 finalPlaybackStyles:(const int64_t *)a5 startTime:(id *)a6 durationInfo:(id *)a7 buffer:(id *)a8 usingBlock:(id)a9;
+- (void)_getOneUpKenBurnsParameters:(id *)parameters forDisplayAsset:(id)asset motionInfo:(id *)info motionParameters:(id *)motionParameters factory:(id)factory;
+- (void)enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition:(id)composition displayAssets:(id)assets assetContentInfos:(id *)infos finalPlaybackStyles:(const int64_t *)styles startTime:(id *)time durationInfo:(id *)info separatorEffectParameters:(id *)parameters separatorEffectContext:(int64_t)self0 buffer:(id *)self1 usingBlock:(id)self2;
+- (void)enumerateAllowedSeparatorEffectParametersForSegmentWithClipComposition:(id)composition displayAssets:(id)assets finalPlaybackStyles:(const int64_t *)styles startTime:(id *)time durationInfo:(id *)info buffer:(id *)buffer usingBlock:(id)block;
 @end
 
 @implementation PXStoryConcreteTimelineStyle
@@ -36,10 +36,10 @@
   return WeakRetained;
 }
 
-- (id)sortedCropContentsRectsForMultipartPanoramaWithDisplayAsset:(id)a3 startTime:(id *)a4 proposedCropContentsRects:(id)a5 axis:(int64_t)a6 normalizedKenBurnsEffectParameters:(id *)a7 durationInfos:(id *)a8 transitionInfos:(id *)a9
+- (id)sortedCropContentsRectsForMultipartPanoramaWithDisplayAsset:(id)asset startTime:(id *)time proposedCropContentsRects:(id)rects axis:(int64_t)axis normalizedKenBurnsEffectParameters:(id *)parameters durationInfos:(id *)infos transitionInfos:(id *)transitionInfos
 {
-  v14 = a3;
-  if (a6 == 1)
+  assetCopy = asset;
+  if (axis == 1)
   {
     v15 = 1;
   }
@@ -57,11 +57,11 @@
   v38[1] = 3221225472;
   v38[2] = __198__PXStoryConcreteTimelineStyle_sortedCropContentsRectsForMultipartPanoramaWithDisplayAsset_startTime_proposedCropContentsRects_axis_normalizedKenBurnsEffectParameters_durationInfos_transitionInfos___block_invoke;
   v38[3] = &__block_descriptor_48_e29_q24__0__NSValue_8__NSValue_16l;
-  v38[4] = a6;
+  v38[4] = axis;
   v38[5] = v15;
-  v16 = [a5 sortedArrayUsingComparator:v38];
+  v16 = [rects sortedArrayUsingComparator:v38];
   v17 = [v16 count];
-  v18 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAsset:v14];
+  v18 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAsset:assetCopy];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -69,11 +69,11 @@
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
-  v19 = [v14 resourcesDataSource];
-  v20 = [v19 croppingContext];
-  v28 = *&a4->var0;
-  *&v29 = a4->var3;
-  [(PXStoryConcreteTimelineStyle *)self _durationInfoForClip:v18 startTime:&v28 croppingContext:v20];
+  resourcesDataSource = [assetCopy resourcesDataSource];
+  croppingContext = [resourcesDataSource croppingContext];
+  v28 = *&time->var0;
+  *&v29 = time->var3;
+  [(PXStoryConcreteTimelineStyle *)self _durationInfoForClip:v18 startTime:&v28 croppingContext:croppingContext];
 
   if (v17 >= 1)
   {
@@ -81,24 +81,24 @@
     do
     {
       v22 = v36;
-      *&a8->var2.var3 = v35;
-      *&a8->var3.var0.var1 = v22;
-      *&a8->var3.var1 = v37;
+      *&infos->var2.var3 = v35;
+      *&infos->var3.var0.var1 = v22;
+      *&infos->var3.var1 = v37;
       v23 = v32;
-      *&a8->var0.var0 = v31;
-      *&a8->var0.var3 = v23;
+      *&infos->var0.var0 = v31;
+      *&infos->var0.var3 = v23;
       v24 = v34;
-      *&a8->var1.var1 = v33;
-      *&a8->var2.var0 = v24;
-      ++a8;
+      *&infos->var1.var1 = v33;
+      *&infos->var2.var0 = v24;
+      ++infos;
       --v21;
     }
 
     while (v21);
   }
 
-  v25 = &a9->var0 + 40 * v17;
-  -[PXStoryConcreteTimelineStyle _transitionInfoForClip:isKeyAsset:](self, "_transitionInfoForClip:isKeyAsset:", v18, [v14 resourceIndex] == -1);
+  v25 = &transitionInfos->var0 + 40 * v17;
+  -[PXStoryConcreteTimelineStyle _transitionInfoForClip:isKeyAsset:](self, "_transitionInfoForClip:isKeyAsset:", v18, [assetCopy resourceIndex] == -1);
   v26 = v29;
   *(v25 - 40) = v28;
   *(v25 - 24) = v26;
@@ -114,12 +114,12 @@ void __198__PXStoryConcreteTimelineStyle_sortedCropContentsRectsForMultipartPano
   PXRectGetMidForAxis();
 }
 
-- (BOOL)allowsMultipartPanoramaForDisplayAsset:(id)a3 startTime:(id *)a4
+- (BOOL)allowsMultipartPanoramaForDisplayAsset:(id)asset startTime:(id *)time
 {
-  v4 = a3;
-  if ([v4 mediaType] == 1)
+  assetCopy = asset;
+  if ([assetCopy mediaType] == 1)
   {
-    v5 = [v4 mediaSubtypes] & 1;
+    v5 = [assetCopy mediaSubtypes] & 1;
   }
 
   else
@@ -151,9 +151,9 @@ void __198__PXStoryConcreteTimelineStyle_sortedCropContentsRectsForMultipartPano
   if (!self->_didInitializeDefaultMultipartPanoramaParameters)
   {
     v3 = +[PXStoryMultipartPanoramaSettings sharedInstance];
-    v4 = [v3 isFeatureEnabled];
+    isFeatureEnabled = [v3 isFeatureEnabled];
 
-    if (v4)
+    if (isFeatureEnabled)
     {
       CMTimeMakeWithSeconds((&v68 + 8), 2.0, 600);
       *&v68 = 0;
@@ -280,7 +280,7 @@ void __73__PXStoryConcreteTimelineStyle__ensureDefaultMultipartPanoramaParameter
   [*(a1 + 32) _getOneUpKenBurnsParameters:*(*(a1 + 48) + 8) + 32 forDisplayAsset:v5 motionInfo:a1 + 112 motionParameters:a1 + 80 factory:v3];
 }
 
-- ($654D12A5B96C89A393ABE69D6FE3CC0A)audioInfoForDisplayAsset:(SEL)a3
+- ($654D12A5B96C89A393ABE69D6FE3CC0A)audioInfoForDisplayAsset:(SEL)asset
 {
   v9 = a4;
   if ([v9 playbackStyle] == 3 && self->_styleOptions.preferStillKeySegment && objc_msgSend(v9, "resourceIndex") == -1)
@@ -312,30 +312,30 @@ void __73__PXStoryConcreteTimelineStyle__ensureDefaultMultipartPanoramaParameter
   return result;
 }
 
-- ($D23540E3B197441F7781E3353E3BC035)_transitionInfoForClip:(SEL)a3 isKeyAsset:(id)a4
+- ($D23540E3B197441F7781E3353E3BC035)_transitionInfoForClip:(SEL)clip isKeyAsset:(id)asset
 {
   v5 = a5;
-  v8 = a4;
+  assetCopy = asset;
   songPace = self->_songPace;
   v10 = self->_autoEditConfiguration;
-  v11 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
-  v12 = [v11 allowedTransitionKinds];
+  storyConfiguration = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
+  allowedTransitionKinds = [storyConfiguration allowedTransitionKinds];
 
-  if ([v12 count] != 1 || !objc_msgSend(v12, "firstIndex"))
+  if ([allowedTransitionKinds count] != 1 || !objc_msgSend(allowedTransitionKinds, "firstIndex"))
   {
     if (!self->_allowsDefaultTransitions)
     {
       v26 = PFArrayRandomObjectWithRandomNumberGenerator();
-      v27 = [v26 integerValue];
+      integerValue = [v26 integerValue];
 
-      if (((v27 - 1) & 0xF8) != 0)
+      if (((integerValue - 1) & 0xF8) != 0)
       {
         v28 = 0;
       }
 
       else
       {
-        v28 = (v27 - 1) + 1;
+        v28 = (integerValue - 1) + 1;
       }
 
       [(PFStoryAutoEditConfiguration *)v10 durationForTransitionKind:v28 songPace:songPace];
@@ -350,11 +350,11 @@ void __73__PXStoryConcreteTimelineStyle__ensureDefaultMultipartPanoramaParameter
       *&retstr->var3 = 0;
       *&retstr->var0 = 0u;
       *&retstr->var2.var1 = 0u;
-      PXStoryTransitionInfoMakeDefault(v27, retstr, v30);
+      PXStoryTransitionInfoMakeDefault(integerValue, retstr, v30);
       goto LABEL_43;
     }
 
-    if (!v8)
+    if (!assetCopy)
     {
       *&retstr->var3 = 0;
       *&retstr->var0 = PXStoryTransitionInfoNone;
@@ -362,7 +362,7 @@ void __73__PXStoryConcreteTimelineStyle__ensureDefaultMultipartPanoramaParameter
       goto LABEL_44;
     }
 
-    [v8 transitionInfo];
+    [assetCopy transitionInfo];
     if (v5)
     {
       v16 = 2;
@@ -458,15 +458,15 @@ LABEL_29:
     goto LABEL_34;
   }
 
-  v13 = [v12 firstIndex];
-  if (((v13 - 1) & 0xF8) != 0)
+  firstIndex = [allowedTransitionKinds firstIndex];
+  if (((firstIndex - 1) & 0xF8) != 0)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = (v13 - 1) + 1;
+    v14 = (firstIndex - 1) + 1;
   }
 
   [(PFStoryAutoEditConfiguration *)v10 durationForTransitionKind:v14 songPace:songPace];
@@ -476,7 +476,7 @@ LABEL_44:
   return result;
 }
 
-- ($D23540E3B197441F7781E3353E3BC035)transitionInfoForSegmentWithClipComposition:(SEL)a3 displayAssets:(id)a4
+- ($D23540E3B197441F7781E3353E3BC035)transitionInfoForSegmentWithClipComposition:(SEL)composition displayAssets:(id)assets
 {
   v6 = a5;
   v7 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAssets:v6];
@@ -488,13 +488,13 @@ LABEL_44:
   return result;
 }
 
-- (void)_getOneUpKenBurnsParameters:(id *)a3 forDisplayAsset:(id)a4 motionInfo:(id *)a5 motionParameters:(id *)a6 factory:(id)a7
+- (void)_getOneUpKenBurnsParameters:(id *)parameters forDisplayAsset:(id)asset motionInfo:(id *)info motionParameters:(id *)motionParameters factory:(id)factory
 {
-  v24 = a4;
-  v13 = a7;
-  v14 = v13;
-  var0 = a5->var0;
-  if (a5->var0 <= 1)
+  assetCopy = asset;
+  factoryCopy = factory;
+  v14 = factoryCopy;
+  var0 = info->var0;
+  if (info->var0 <= 1)
   {
     if (!var0)
     {
@@ -503,7 +503,7 @@ LABEL_44:
 
     if (var0 == 1)
     {
-      v16 = a5->var1.var0.var0;
+      v16 = info->var1.var0.var0;
       if (v16 <= 2)
       {
         if (v16 == 2)
@@ -516,8 +516,8 @@ LABEL_44:
           v18 = 0;
           if (!v16)
           {
-            v23 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v23 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteStyle.m" lineNumber:1081 description:@"Pan direction is undefined"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteStyle.m" lineNumber:1081 description:@"Pan direction is undefined"];
 
             abort();
           }
@@ -552,15 +552,15 @@ LABEL_44:
         PXRectEdgeFlippedHorizontally();
       }
 
-      v21 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
-      v22 = [v21 usePreferredCropRectWhenVerticallyPanningLargeFaceAreasInPortraitAssets];
+      storyConfiguration = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
+      usePreferredCropRectWhenVerticallyPanningLargeFaceAreasInPortraitAssets = [storyConfiguration usePreferredCropRectWhenVerticallyPanningLargeFaceAreasInPortraitAssets];
 
-      if (!v22 || (v18 & 0xFFFFFFFD) != 1 || !+[PXStoryRecipeClipUtilities assetIsPortraitAspectWithLargeVerticalFaceArea:](PXStoryRecipeClipUtilities, "assetIsPortraitAspectWithLargeVerticalFaceArea:", v24) || ([v24 preferredCropRect], CGRectIsEmpty(v26)))
+      if (!usePreferredCropRectWhenVerticallyPanningLargeFaceAreasInPortraitAssets || (v18 & 0xFFFFFFFD) != 1 || !+[PXStoryRecipeClipUtilities assetIsPortraitAspectWithLargeVerticalFaceArea:](PXStoryRecipeClipUtilities, "assetIsPortraitAspectWithLargeVerticalFaceArea:", assetCopy) || ([assetCopy preferredCropRect], CGRectIsEmpty(v26)))
       {
         PXRectEdgeOpposite();
       }
 
-      [v14 getParameters:a3 forVerticallyPanningPreferredRectMovingTowardsVerticalEdge:v18];
+      [v14 getParameters:parameters forVerticallyPanningPreferredRectMovingTowardsVerticalEdge:v18];
     }
   }
 
@@ -569,26 +569,26 @@ LABEL_44:
     switch(var0)
     {
       case 2:
-        var1 = a6->var1;
-        if (a5->var1.var0.var0 != 1)
+        var1 = motionParameters->var1;
+        if (info->var1.var0.var0 != 1)
         {
           var1 = 1.0 / var1;
         }
 
-        [v13 getParameters:a3 forZoomWithScale:var1];
+        [factoryCopy getParameters:parameters forZoomWithScale:var1];
         break;
       case 3:
-        var2 = a6->var2;
-        if (a5->var1.var0.var0 != 1)
+        var2 = motionParameters->var2;
+        if (info->var1.var0.var0 != 1)
         {
           var2 = -var2;
         }
 
-        [v13 getParameters:a3 forRotationWithAngle:var2 scale:a6->var3];
+        [factoryCopy getParameters:parameters forRotationWithAngle:var2 scale:motionParameters->var3];
         break;
       case 4:
 LABEL_15:
-        [v13 getParametersForNoEffect:a3];
+        [factoryCopy getParametersForNoEffect:parameters];
         break;
       default:
         break;
@@ -596,24 +596,24 @@ LABEL_15:
   }
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_kenBurnsMotionParametersForDuration:(double)a3
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_kenBurnsMotionParametersForDuration:(double)duration
 {
-  v5 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
-  [v5 kenBurnsPanSpeed];
-  v7 = v6 * a3;
+  storyConfiguration = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
+  [storyConfiguration kenBurnsPanSpeed];
+  v7 = v6 * duration;
 
-  v8 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
-  [v8 kenBurnsScaleSpeed];
+  storyConfiguration2 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
+  [storyConfiguration2 kenBurnsScaleSpeed];
   v10 = 1.0;
-  v11 = v9 * self->_scaleSpeedFactor * a3 + 1.0;
+  v11 = v9 * self->_scaleSpeedFactor * duration + 1.0;
 
   v12 = +[PXStoryConcreteTimelineSettings sharedInstance];
   [v12 kenBurnsRotationSpeed];
-  v14 = v13 * self->_rotationSpeedFactor * a3;
+  v14 = v13 * self->_rotationSpeedFactor * duration;
   [v12 kenBurnsScaleSpeedDuringRotation];
-  v16 = v15 * self->_scaleSpeedFactor * a3 + 1.0;
-  v17 = [(PXStoryConcreteTimelineStyle *)self allowsKenBurnsAnimations];
-  if (v17)
+  v16 = v15 * self->_scaleSpeedFactor * duration + 1.0;
+  allowsKenBurnsAnimations = [(PXStoryConcreteTimelineStyle *)self allowsKenBurnsAnimations];
+  if (allowsKenBurnsAnimations)
   {
     v18 = v11;
   }
@@ -623,7 +623,7 @@ LABEL_15:
     v18 = 1.0;
   }
 
-  if (v17)
+  if (allowsKenBurnsAnimations)
   {
     v19 = v14;
   }
@@ -634,7 +634,7 @@ LABEL_15:
     v19 = 0.0;
   }
 
-  if (v17)
+  if (allowsKenBurnsAnimations)
   {
     v10 = v16;
   }
@@ -650,25 +650,25 @@ LABEL_15:
   return result;
 }
 
-- (void)enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition:(id)a3 displayAssets:(id)a4 assetContentInfos:(id *)a5 finalPlaybackStyles:(const int64_t *)a6 startTime:(id *)a7 durationInfo:(id *)a8 separatorEffectParameters:(id *)a9 separatorEffectContext:(int64_t)a10 buffer:(id *)a11 usingBlock:(id)a12
+- (void)enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition:(id)composition displayAssets:(id)assets assetContentInfos:(id *)infos finalPlaybackStyles:(const int64_t *)styles startTime:(id *)time durationInfo:(id *)info separatorEffectParameters:(id *)parameters separatorEffectContext:(int64_t)self0 buffer:(id *)self1 usingBlock:(id)self2
 {
-  v33 = a3;
-  v18 = a4;
-  v19 = a12;
-  if ([v18 count] == 1 && (*a6 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  compositionCopy = composition;
+  assetsCopy = assets;
+  blockCopy = block;
+  if ([assetsCopy count] == 1 && (*styles & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v19[2](v19, 0);
-    v20 = v33;
+    blockCopy[2](blockCopy, 0);
+    v20 = compositionCopy;
   }
 
   else
   {
-    v32 = a5;
-    v21 = [v18 resourcesDataSource];
-    v22 = [v21 croppingContext];
+    infosCopy = infos;
+    resourcesDataSource = [assetsCopy resourcesDataSource];
+    croppingContext = [resourcesDataSource croppingContext];
 
-    v23 = v18;
-    v31 = a6;
+    v23 = assetsCopy;
+    stylesCopy = styles;
     if ([v23 count] == 1)
     {
       v24 = *[v23 resourceIndexes];
@@ -693,23 +693,23 @@ LABEL_15:
     v34[2] = __244__PXStoryConcreteTimelineStyle_enumerateAllowedKenBurnsEffectParametersForSegmentWithClipComposition_displayAssets_assetContentInfos_finalPlaybackStyles_startTime_durationInfo_separatorEffectParameters_separatorEffectContext_buffer_usingBlock___block_invoke;
     v34[3] = &unk_1E7747B10;
     v34[4] = self;
-    v28 = *&a8->var3.var0.var1;
-    v42 = *&a8->var2.var3;
+    v28 = *&info->var3.var0.var1;
+    v42 = *&info->var2.var3;
     v43 = v28;
-    v44 = *&a8->var3.var1;
-    v29 = *&a8->var0.var3;
-    v38 = *&a8->var0.var0;
+    v44 = *&info->var3.var1;
+    v29 = *&info->var0.var3;
+    v38 = *&info->var0.var0;
     v39 = v29;
-    v30 = *&a8->var1.var1;
-    v41 = *&a8->var2.var0;
+    v30 = *&info->var1.var1;
+    v41 = *&info->var2.var0;
     v40 = v30;
-    v20 = v33;
-    v35 = v33;
-    v45 = a11;
-    v37 = v19;
+    v20 = compositionCopy;
+    v35 = compositionCopy;
+    bufferCopy = buffer;
+    v37 = blockCopy;
     v36 = v23;
     v46 = a2;
-    [PXStoryClipKenBurnsEffectFactory factoryForSpec:spec clipComposition:v35 displayAssets:v36 croppingContext:v22 croppingOptions:v26 assetContentInfos:v32 playbackStyles:v31 separatorEffectParameters:a9 handler:v34];
+    [PXStoryClipKenBurnsEffectFactory factoryForSpec:spec clipComposition:v35 displayAssets:v36 croppingContext:croppingContext croppingOptions:v26 assetContentInfos:infosCopy playbackStyles:stylesCopy separatorEffectParameters:parameters handler:v34];
   }
 }
 
@@ -1036,31 +1036,31 @@ LABEL_58:
 LABEL_80:
 }
 
-- (void)enumerateAllowedSeparatorEffectParametersForSegmentWithClipComposition:(id)a3 displayAssets:(id)a4 finalPlaybackStyles:(const int64_t *)a5 startTime:(id *)a6 durationInfo:(id *)a7 buffer:(id *)a8 usingBlock:(id)a9
+- (void)enumerateAllowedSeparatorEffectParametersForSegmentWithClipComposition:(id)composition displayAssets:(id)assets finalPlaybackStyles:(const int64_t *)styles startTime:(id *)time durationInfo:(id *)info buffer:(id *)buffer usingBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a9;
-  v14 = v11;
-  v15 = [v14 numberOfClips];
-  v16 = [v14 numberOfAssets];
+  compositionCopy = composition;
+  assetsCopy = assets;
+  blockCopy = block;
+  v14 = compositionCopy;
+  numberOfClips = [v14 numberOfClips];
+  numberOfAssets = [v14 numberOfAssets];
 
-  if (v15 <= v16 && self->_allowsRandomSeparatorEffectsFallback)
+  if (numberOfClips <= numberOfAssets && self->_allowsRandomSeparatorEffectsFallback)
   {
     [v14 mainDividerAxis];
     PXAxisTransposed();
   }
 
-  (*(v13 + 2))(v13, 0, 0);
+  (*(blockCopy + 2))(blockCopy, 0, 0);
 }
 
-- (int64_t)finalOneUpPlaybackStyleForDisplayAsset:(id)a3 originalPlaybackStyle:(int64_t)a4
+- (int64_t)finalOneUpPlaybackStyleForDisplayAsset:(id)asset originalPlaybackStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 3 && self->_styleOptions.preferStillKeySegment && [v6 resourceIndex] == -1)
+  assetCopy = asset;
+  v7 = assetCopy;
+  if (style == 3 && self->_styleOptions.preferStillKeySegment && [assetCopy resourceIndex] == -1)
   {
-    v11 = 1;
+    playbackStyle = 1;
   }
 
   else
@@ -1068,55 +1068,55 @@ LABEL_80:
     v8 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAsset:v7];
     if ([v8 playbackStyle] == 4 && (objc_msgSend(v7, "resourcesDataSource"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "movieHighlightsForDisplayAssetAtIndex:", objc_msgSend(v7, "resourceIndex")), v10 = objc_claimAutoreleasedReturnValue(), v9, v10, !v10))
     {
-      v11 = 1;
+      playbackStyle = 1;
     }
 
     else
     {
-      v11 = [v8 playbackStyle];
+      playbackStyle = [v8 playbackStyle];
     }
   }
 
-  return v11;
+  return playbackStyle;
 }
 
-- (BOOL)isOriginalPlaybackStyleAllowedInNUp:(int64_t)a3
+- (BOOL)isOriginalPlaybackStyleAllowedInNUp:(int64_t)up
 {
-  if (a3 >= 6)
+  if (up >= 6)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryConcreteTimelineStyle isOriginalPlaybackStyleAllowedInNUp:]"];
-    [v8 handleFailureInFunction:v9 file:@"PXStoryConcreteStyle.m" lineNumber:723 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInFunction:v9 file:@"PXStoryConcreteStyle.m" lineNumber:723 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  return (0xAu >> a3) & 1;
+  return (0xAu >> up) & 1;
 }
 
-- (double)composabilityScoreForSegmentWithDisplayAssets:(id)a3
+- (double)composabilityScoreForSegmentWithDisplayAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAssets:v4];
-  v6 = [v5 displayAssets];
-  v7 = [v6 count];
+  assetsCopy = assets;
+  v5 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAssets:assetsCopy];
+  displayAssets = [v5 displayAssets];
+  v7 = [displayAssets count];
   v8 = -1.0;
-  if (v7 == [v4 count])
+  if (v7 == [assetsCopy count])
   {
-    if ([v6 count])
+    if ([displayAssets count])
     {
       v9 = 0;
       while (1)
       {
-        v10 = [v6 objectAtIndexedSubscript:v9];
-        v11 = [v4 objectAtIndexedSubscript:v9];
+        v10 = [displayAssets objectAtIndexedSubscript:v9];
+        v11 = [assetsCopy objectAtIndexedSubscript:v9];
 
         if (v10 != v11)
         {
           break;
         }
 
-        if (++v9 >= [v6 count])
+        if (++v9 >= [displayAssets count])
         {
           goto LABEL_6;
         }
@@ -1133,16 +1133,16 @@ LABEL_6:
   return v8;
 }
 
-- (id)clipCompositionForKeyAsset:(id)a3 contentInfo:(id *)a4 finalPlaybackStyle:(int64_t)a5
+- (id)clipCompositionForKeyAsset:(id)asset contentInfo:(id *)info finalPlaybackStyle:(int64_t)style
 {
-  v8 = a3;
-  v9 = [v8 resourcesDataSource];
-  v10 = [v9 croppingContext];
+  assetCopy = asset;
+  resourcesDataSource = [assetCopy resourcesDataSource];
+  croppingContext = [resourcesDataSource croppingContext];
 
   allowedKeyAssetClipCompositions = self->_allowedKeyAssetClipCompositions;
-  v12 = [v8 displayAsset];
+  displayAsset = [assetCopy displayAsset];
 
-  v13 = [PXStoryConcreteStyle bestClipCompositionFromClipCompositions:allowedKeyAssetClipCompositions forKeyAsset:v12 contentInfo:a4 playbackStyle:a5 spec:self->_spec croppingContext:v10 options:self->_keyAssetCroppingOptions loggingOptions:0];
+  v13 = [PXStoryConcreteStyle bestClipCompositionFromClipCompositions:allowedKeyAssetClipCompositions forKeyAsset:displayAsset contentInfo:info playbackStyle:style spec:self->_spec croppingContext:croppingContext options:self->_keyAssetCroppingOptions loggingOptions:0];
 
   return v13;
 }
@@ -1161,12 +1161,12 @@ LABEL_6:
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)durationForVerticallyPanningPortraitAsset:(SEL)a3 atSpeed:(id)a4 motionInfo:(double)a5 minimumDuration:(id *)a6 croppingContext:(id *)a7
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)durationForVerticallyPanningPortraitAsset:(SEL)asset atSpeed:(id)speed motionInfo:(double)info minimumDuration:(id *)duration croppingContext:(id *)context
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  speedCopy = speed;
   v10 = a8;
-  v12[0] = v9;
+  v12[0] = speedCopy;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   objc_claimAutoreleasedReturnValue();
   PXDisplayAssetFetchResultFromArray();
@@ -1216,20 +1216,20 @@ BOOL __125__PXStoryConcreteTimelineStyle_durationForVerticallyPanningPortraitAss
   return result;
 }
 
-- ($7566BBA16C4E03ED15B4F2B623931C37)_durationInfoForClip:(SEL)a3 startTime:(id)a4 croppingContext:(id *)a5
+- ($7566BBA16C4E03ED15B4F2B623931C37)_durationInfoForClip:(SEL)clip startTime:(id)time croppingContext:(id *)context
 {
-  v10 = a4;
+  timeCopy = time;
   v40 = a6;
   v60 = 0;
   v59 = 0u;
   v57 = 0u;
   memset(v58, 0, sizeof(v58));
-  if (v10)
+  if (timeCopy)
   {
-    [v10 durationInfo];
+    [timeCopy durationInfo];
     v55 = 0u;
     v56 = 0u;
-    [v10 transitionInfo];
+    [timeCopy transitionInfo];
   }
 
   else
@@ -1327,21 +1327,21 @@ BOOL __125__PXStoryConcreteTimelineStyle_durationForVerticallyPanningPortraitAss
           [(PXStoryTimelineSpec *)v24 fixedSegmentDuration];
         }
 
-        v25 = [v10 displayAssets];
-        v26 = [v25 count];
+        displayAssets = [timeCopy displayAssets];
+        v26 = [displayAssets count];
 
         if (v26 != 1)
         {
           goto LABEL_34;
         }
 
-        v27 = [v10 displayAssets];
-        v28 = [v27 firstObject];
+        displayAssets2 = [timeCopy displayAssets];
+        firstObject = [displayAssets2 firstObject];
 
-        v29 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
-        if ([v29 usePreferredCropRectWhenVerticallyPanningLargeFaceAreasInPortraitAssets])
+        storyConfiguration = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
+        if ([storyConfiguration usePreferredCropRectWhenVerticallyPanningLargeFaceAreasInPortraitAssets])
         {
-          v30 = [PXStoryRecipeClipUtilities assetIsPortraitAspectWithLargeVerticalFaceArea:v28];
+          v30 = [PXStoryRecipeClipUtilities assetIsPortraitAspectWithLargeVerticalFaceArea:firstObject];
 
           if (!v30)
           {
@@ -1350,9 +1350,9 @@ BOOL __125__PXStoryConcreteTimelineStyle_durationForVerticallyPanningPortraitAss
 
           memset(&lhs, 0, 24);
           fallbackMotionStyleProvider = self->_fallbackMotionStyleProvider;
-          if (v10)
+          if (timeCopy)
           {
-            [v10 motionInfo];
+            [timeCopy motionInfo];
           }
 
           else
@@ -1365,17 +1365,17 @@ BOOL __125__PXStoryConcreteTimelineStyle_durationForVerticallyPanningPortraitAss
             goto LABEL_33;
           }
 
-          [(PXStoryRecipeClipMotionStyleProvider *)fallbackMotionStyleProvider updatedMotionForPortraitAspectAsset:v28 motionInfo:duration];
+          [(PXStoryRecipeClipMotionStyleProvider *)fallbackMotionStyleProvider updatedMotionForPortraitAspectAsset:firstObject motionInfo:duration];
           if (lhs.start.value != 1 || (*&lhs.start.timescale - 3) > 1)
           {
             goto LABEL_33;
           }
 
-          v29 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
-          [v29 kenBurnsPanSpeed];
+          storyConfiguration = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
+          [storyConfiguration kenBurnsPanSpeed];
           time2 = lhs.start;
           start = rhs.start;
-          [(PXStoryConcreteTimelineStyle *)self durationForVerticallyPanningPortraitAsset:v28 atSpeed:&time2 motionInfo:&start minimumDuration:v40 croppingContext:?];
+          [(PXStoryConcreteTimelineStyle *)self durationForVerticallyPanningPortraitAsset:firstObject atSpeed:&time2 motionInfo:&start minimumDuration:v40 croppingContext:?];
           *&rhs.start.value = *duration;
           rhs.start.epoch = *&duration[16];
         }
@@ -1409,8 +1409,8 @@ LABEL_34:
     [v32 time];
     CMTimeMakeWithSeconds(&start, v33, 600);
     memset(&v49, 0, sizeof(v49));
-    *&lhs.start.value = *&a5->var0;
-    lhs.start.epoch = a5->var3;
+    *&lhs.start.value = *&context->var0;
+    lhs.start.epoch = context->var3;
     rhs.start = start;
     CMTimeAdd(&v49, &rhs.start, &lhs.start);
     var0 = retstr->var0;
@@ -1465,22 +1465,22 @@ LABEL_6:
   return result;
 }
 
-- ($7566BBA16C4E03ED15B4F2B623931C37)durationInfoForSegmentWithDisplayAssets:(SEL)a3 startTime:(id)a4
+- ($7566BBA16C4E03ED15B4F2B623931C37)durationInfoForSegmentWithDisplayAssets:(SEL)assets startTime:(id)time
 {
-  v7 = a4;
-  v8 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAssets:v7];
-  v9 = [v7 resourcesDataSource];
+  timeCopy = time;
+  v8 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAssets:timeCopy];
+  resourcesDataSource = [timeCopy resourcesDataSource];
 
-  v10 = [v9 croppingContext];
+  croppingContext = [resourcesDataSource croppingContext];
   v12 = *a5;
-  [(PXStoryConcreteTimelineStyle *)self _durationInfoForClip:v8 startTime:&v12 croppingContext:v10];
+  [(PXStoryConcreteTimelineStyle *)self _durationInfoForClip:v8 startTime:&v12 croppingContext:croppingContext];
 
   return result;
 }
 
-- (double)effectiveMovementDurationForDurationInfo:(id *)a3
+- (double)effectiveMovementDurationForDurationInfo:(id *)info
 {
-  var1 = a3->var1;
+  var1 = info->var1;
   Seconds = CMTimeGetSeconds(&var1);
   if (Seconds >= 0.0 && Seconds <= 0.0)
   {
@@ -1490,13 +1490,13 @@ LABEL_6:
   return Seconds * self->_effectiveMovementDurationFactor;
 }
 
-- (id)_clipForDisplayAsset:(id)a3
+- (id)_clipForDisplayAsset:(id)asset
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   os_unfair_lock_lock(&self->_lock);
   lock_clipByAssetUUID = self->_lock_clipByAssetUUID;
-  v6 = v4;
+  v6 = assetCopy;
   if (objc_opt_respondsToSelector())
   {
     [v6 alternateUUID];
@@ -1536,27 +1536,27 @@ LABEL_46:
       goto LABEL_50;
     }
 
-    v9 = [v6 playbackStyle];
-    if (!v9)
+    playbackStyle = [v6 playbackStyle];
+    if (!playbackStyle)
     {
       v41 = PLStoryGetLog();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_FAULT))
       {
-        v42 = [v6 uuid];
+        uuid = [v6 uuid];
         *buf = 138412290;
-        *&buf[4] = v42;
+        *&buf[4] = uuid;
         _os_log_impl(&dword_1A3C1C000, v41, OS_LOG_TYPE_FAULT, "Unsupported playback style for asset %@", buf, 0xCu);
       }
 
-      v9 = 1;
+      playbackStyle = 1;
     }
 
-    v10 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
-    v11 = [v10 disableVideoPlayback];
+    storyConfiguration = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
+    disableVideoPlayback = [storyConfiguration disableVideoPlayback];
 
-    if (v11)
+    if (disableVideoPlayback)
     {
-      v9 = 1;
+      playbackStyle = 1;
     }
 
     songPace = self->_songPace;
@@ -1568,28 +1568,28 @@ LABEL_46:
     autoEditConfiguration = self->_autoEditConfiguration;
     if (autoEditConfiguration)
     {
-      [(PFStoryAutoEditConfiguration *)autoEditConfiguration durationInfoForPlaybackStyle:v9 songPace:songPace];
+      [(PFStoryAutoEditConfiguration *)autoEditConfiguration durationInfoForPlaybackStyle:playbackStyle songPace:songPace];
     }
 
     if (self->_allowsRandomKenBurnsFallback)
     {
-      v14 = [(PFRandomNumberGenerator *)self->_randomNumberGenerator nextUnsignedIntegerLessThan:3, songPace];
-      v45 = v14 + 1;
+      songPace = [(PFRandomNumberGenerator *)self->_randomNumberGenerator nextUnsignedIntegerLessThan:3, songPace];
+      v45 = songPace + 1;
       v15 = [(PFRandomNumberGenerator *)self->_randomNumberGenerator nextUnsignedIntegerLessThan:2];
       v16 = [(PFRandomNumberGenerator *)self->_randomNumberGenerator nextUnsignedIntegerLessThan:2];
-      if (v14 == 2)
+      if (songPace == 2)
       {
         v43 = 0;
         v17 = v16 + 1;
       }
 
-      else if (v14 == 1)
+      else if (songPace == 1)
       {
         v43 = 0;
         v17 = v15 + 1;
       }
 
-      else if (v14)
+      else if (songPace)
       {
         v43 = 0;
         v17 = 0;
@@ -1647,16 +1647,16 @@ LABEL_46:
     }
 
     v20 = PFArrayRandomObjectWithRandomNumberGenerator();
-    v21 = [v20 integerValue];
+    integerValue = [v20 integerValue];
 
-    if (((v21 - 1) & 0xF8) != 0)
+    if (((integerValue - 1) & 0xF8) != 0)
     {
       v22 = 0;
     }
 
     else
     {
-      v22 = (v21 - 1) + 1;
+      v22 = (integerValue - 1) + 1;
     }
 
     v23 = [(PFRandomNumberGenerator *)self->_randomNumberGenerator nextUnsignedIntegerLessThan:2, v43];
@@ -1693,20 +1693,20 @@ LABEL_36:
     v30 = v26 | v25;
     v29 = 0.5;
 LABEL_37:
-    v31 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
-    v32 = [v31 allowedTransitionKinds];
+    storyConfiguration2 = [(PXStoryConcreteTimelineStyle *)self storyConfiguration];
+    allowedTransitionKinds = [storyConfiguration2 allowedTransitionKinds];
 
-    if ([v32 count] == 1 && objc_msgSend(v32, "firstIndex"))
+    if ([allowedTransitionKinds count] == 1 && objc_msgSend(allowedTransitionKinds, "firstIndex"))
     {
-      v33 = [v32 firstIndex];
-      if (((v33 - 1) & 0xF8) != 0)
+      firstIndex = [allowedTransitionKinds firstIndex];
+      if (((firstIndex - 1) & 0xF8) != 0)
       {
         v34 = 0;
       }
 
       else
       {
-        v34 = (v33 - 1) + 1;
+        v34 = (firstIndex - 1) + 1;
       }
 
       [(PFStoryAutoEditConfiguration *)self->_autoEditConfiguration durationForTransitionKind:v34 songPace:self->_songPace];
@@ -1723,7 +1723,7 @@ LABEL_37:
     }
 
     v8 = [[PXStoryConcreteAutoEditClip alloc] initWithDisplayAsset:v6];
-    [(PXStoryConcreteAutoEditClip *)v8 setPlaybackStyle:v9];
+    [(PXStoryConcreteAutoEditClip *)v8 setPlaybackStyle:playbackStyle];
     v48 = v54;
     v49 = v55;
     v50 = v56;
@@ -1749,60 +1749,60 @@ LABEL_50:
   return v39;
 }
 
-- (id)_clipForDisplayAssets:(id)a3
+- (id)_clipForDisplayAssets:(id)assets
 {
-  v4 = [a3 firstObject];
-  v5 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAsset:v4];
+  firstObject = [assets firstObject];
+  v5 = [(PXStoryConcreteTimelineStyle *)self _clipForDisplayAsset:firstObject];
 
   return v5;
 }
 
-- (PXStoryConcreteTimelineStyle)initWithSpec:(id)a3 audioAsset:(id)a4 cueSource:(id)a5 overallDurationInfo:(id *)a6 autoEditDecisionList:(id)a7 autoEditConfiguration:(id)a8 allowedKeyAssetClipCompositions:(id)a9 allowedClipCompositions:(id)a10 randomNumberGenerators:(id)a11 errorReporter:(id)a12 allowsIncompleteTimelines:(BOOL)a13 styleOptions:(id)a14 storyConfiguration:(id)a15
+- (PXStoryConcreteTimelineStyle)initWithSpec:(id)spec audioAsset:(id)asset cueSource:(id)source overallDurationInfo:(id *)info autoEditDecisionList:(id)list autoEditConfiguration:(id)configuration allowedKeyAssetClipCompositions:(id)compositions allowedClipCompositions:(id)self0 randomNumberGenerators:(id)self1 errorReporter:(id)self2 allowsIncompleteTimelines:(BOOL)self3 styleOptions:(id)self4 storyConfiguration:(id)self5
 {
-  v19 = a3;
-  v47 = a4;
-  v20 = a4;
-  v56 = a5;
-  v49 = a7;
-  v55 = a7;
-  v54 = a8;
-  v53 = a9;
-  v52 = a10;
-  v21 = a11;
-  v51 = a12;
-  v57 = a15;
+  specCopy = spec;
+  assetCopy = asset;
+  assetCopy2 = asset;
+  sourceCopy = source;
+  listCopy = list;
+  listCopy2 = list;
+  configurationCopy = configuration;
+  compositionsCopy = compositions;
+  clipCompositionsCopy = clipCompositions;
+  generatorsCopy = generators;
+  reporterCopy = reporter;
+  storyConfigurationCopy = storyConfiguration;
   v58.receiver = self;
   v58.super_class = PXStoryConcreteTimelineStyle;
   v22 = [(PXStoryConcreteTimelineStyle *)&v58 init];
   if (v22)
   {
     v23 = +[PXStorySettings sharedInstance];
-    objc_storeStrong(v22 + 1, a3);
+    objc_storeStrong(v22 + 1, spec);
     v22[16] = [*(v22 + 1) layoutDirection] == 2;
-    objc_storeStrong(v22 + 3, v47);
-    if (v20)
+    objc_storeStrong(v22 + 3, assetCopy);
+    if (assetCopy2)
     {
-      v24 = [v20 pace];
+      pace = [assetCopy2 pace];
     }
 
     else
     {
-      v24 = 2;
+      pace = 2;
     }
 
-    *(v22 + 4) = v24;
-    *(v22 + 40) = a14;
-    objc_storeStrong(v22 + 27, a5);
-    objc_storeWeak(v22 + 39, v57);
+    *(v22 + 4) = pace;
+    *(v22 + 40) = options;
+    objc_storeStrong(v22 + 27, source);
+    objc_storeWeak(v22 + 39, storyConfigurationCopy);
     *(v22 + 63) = 0;
     v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v26 = *(v22 + 32);
     *(v22 + 32) = v25;
 
     WeakRetained = objc_loadWeakRetained(v22 + 39);
-    v28 = [WeakRetained preferFaceCrops];
+    preferFaceCrops = [WeakRetained preferFaceCrops];
 
-    if (v28)
+    if (preferFaceCrops)
     {
       *(v22 + 56) = vdupq_n_s64(2uLL);
     }
@@ -1814,37 +1814,37 @@ LABEL_50:
       *(v22 + 8) = v29 & 0xFFFFFFFFFFFFFFFELL;
     }
 
-    v30 = [v23 transitionShowcaseMode];
-    v22[72] = [v23 allowsDefaultBehaviorForShowcaseMode:v30];
-    v22[73] = [v23 allowsRandomFallbackForShowcaseMode:v30];
+    transitionShowcaseMode = [v23 transitionShowcaseMode];
+    v22[72] = [v23 allowsDefaultBehaviorForShowcaseMode:transitionShowcaseMode];
+    v22[73] = [v23 allowsRandomFallbackForShowcaseMode:transitionShowcaseMode];
     v31 = [v23 possibleTransitionKindsForFallback:{objc_msgSend(v23, "transitionFallback")}];
     v32 = *(v22 + 10);
     *(v22 + 10) = v31;
 
-    v33 = [v23 separatorEffectsShowcaseMode];
-    v22[88] = [v23 allowsDefaultBehaviorForShowcaseMode:v33];
-    v22[89] = [v23 allowsRandomFallbackForShowcaseMode:v33];
-    v34 = [v23 kenBurnsShowcaseMode];
-    v22[90] = [v23 allowsDefaultBehaviorForShowcaseMode:v34];
-    v22[91] = [v23 allowsRandomFallbackForShowcaseMode:v34];
-    *(v22 + 6) = *&a6->var0;
-    v35 = *&a6->var1.var2.var1;
-    v37 = *&a6->var1.var0.var1;
-    v36 = *&a6->var1.var1.var0;
-    *(v22 + 9) = *&a6->var1.var1.var3;
+    separatorEffectsShowcaseMode = [v23 separatorEffectsShowcaseMode];
+    v22[88] = [v23 allowsDefaultBehaviorForShowcaseMode:separatorEffectsShowcaseMode];
+    v22[89] = [v23 allowsRandomFallbackForShowcaseMode:separatorEffectsShowcaseMode];
+    kenBurnsShowcaseMode = [v23 kenBurnsShowcaseMode];
+    v22[90] = [v23 allowsDefaultBehaviorForShowcaseMode:kenBurnsShowcaseMode];
+    v22[91] = [v23 allowsRandomFallbackForShowcaseMode:kenBurnsShowcaseMode];
+    *(v22 + 6) = *&info->var0;
+    v35 = *&info->var1.var2.var1;
+    v37 = *&info->var1.var0.var1;
+    v36 = *&info->var1.var1.var0;
+    *(v22 + 9) = *&info->var1.var1.var3;
     *(v22 + 10) = v35;
     *(v22 + 7) = v37;
     *(v22 + 8) = v36;
-    objc_storeStrong(v22 + 22, v49);
-    objc_storeStrong(v22 + 23, a9);
-    objc_storeStrong(v22 + 24, a10);
-    v38 = [v21 firstObject];
+    objc_storeStrong(v22 + 22, listCopy);
+    objc_storeStrong(v22 + 23, compositions);
+    objc_storeStrong(v22 + 24, clipCompositions);
+    firstObject = [generatorsCopy firstObject];
     v39 = *(v22 + 25);
-    *(v22 + 25) = v38;
+    *(v22 + 25) = firstObject;
 
-    objc_storeStrong(v22 + 26, a12);
+    objc_storeStrong(v22 + 26, reporter);
     *(v22 + 28) = 0x3FF0000000000000;
-    if ([v57 movementAnimationCurve] == 5)
+    if ([storyConfigurationCopy movementAnimationCurve] == 5)
     {
       [v23 movementAnimationLinearFraction];
       *(v22 + 28) = *(v22 + 28) / v40;
@@ -1877,8 +1877,8 @@ LABEL_50:
 
 - (PXStoryConcreteTimelineStyle)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteStyle.m" lineNumber:412 description:{@"%s is not available as initializer", "-[PXStoryConcreteTimelineStyle init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteStyle.m" lineNumber:412 description:{@"%s is not available as initializer", "-[PXStoryConcreteTimelineStyle init]"}];
 
   abort();
 }

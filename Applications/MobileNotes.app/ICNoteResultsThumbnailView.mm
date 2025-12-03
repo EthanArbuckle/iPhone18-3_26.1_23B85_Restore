@@ -1,28 +1,28 @@
 @interface ICNoteResultsThumbnailView
 - (ICInvitation)invitation;
-- (ICNoteResultsThumbnailView)initWithCoder:(id)a3;
-- (ICNoteResultsThumbnailView)initWithFrame:(CGRect)a3;
+- (ICNoteResultsThumbnailView)initWithCoder:(id)coder;
+- (ICNoteResultsThumbnailView)initWithFrame:(CGRect)frame;
 - (ICSearchIndexableNote)note;
 - (double)cornerRadius;
 - (void)animateThumbnailImageView;
 - (void)commonInit;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setInvitation:(id)a3;
-- (void)setNote:(id)a3;
-- (void)setPreviewing:(BOOL)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setInvitation:(id)invitation;
+- (void)setNote:(id)note;
+- (void)setPreviewing:(BOOL)previewing;
 - (void)updateDropShadow;
 - (void)updateImages;
-- (void)updateThumbnailImageIfNeededWithNote:(id)a3;
+- (void)updateThumbnailImageIfNeededWithNote:(id)note;
 @end
 
 @implementation ICNoteResultsThumbnailView
 
-- (ICNoteResultsThumbnailView)initWithFrame:(CGRect)a3
+- (ICNoteResultsThumbnailView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICNoteResultsThumbnailView;
-  v3 = [(ICNoteResultsThumbnailView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICNoteResultsThumbnailView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,11 +32,11 @@
   return v4;
 }
 
-- (ICNoteResultsThumbnailView)initWithCoder:(id)a3
+- (ICNoteResultsThumbnailView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICNoteResultsThumbnailView;
-  v3 = [(ICNoteResultsThumbnailView *)&v6 initWithCoder:a3];
+  v3 = [(ICNoteResultsThumbnailView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -116,40 +116,40 @@
   [(UILabel *)self->_unsupportedNoteLabel setAttributedText:v48];
   [(UILabel *)self->_unsupportedNoteLabel setHidden:1];
   [(ICNoteResultsThumbnailView *)self addSubview:self->_unsupportedNoteLabel];
-  v47 = [(UIImageView *)self->_largeImageView centerXAnchor];
-  v46 = [(ICNoteResultsThumbnailView *)self centerXAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  centerXAnchor = [(UIImageView *)self->_largeImageView centerXAnchor];
+  centerXAnchor2 = [(ICNoteResultsThumbnailView *)self centerXAnchor];
+  v45 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v52[0] = v45;
-  v44 = [(UIImageView *)self->_largeImageView centerYAnchor];
-  v43 = [(ICNoteResultsThumbnailView *)self centerYAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  centerYAnchor = [(UIImageView *)self->_largeImageView centerYAnchor];
+  centerYAnchor2 = [(ICNoteResultsThumbnailView *)self centerYAnchor];
+  v42 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v52[1] = v42;
-  v41 = [(UIImageView *)self->_largeImageView heightAnchor];
-  v40 = [(ICNoteResultsThumbnailView *)self heightAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40 multiplier:0.5];
+  heightAnchor = [(UIImageView *)self->_largeImageView heightAnchor];
+  heightAnchor2 = [(ICNoteResultsThumbnailView *)self heightAnchor];
+  v39 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.5];
   v52[2] = v39;
-  v38 = [(UIImageView *)self->_largeImageView widthAnchor];
-  v37 = [(UIImageView *)self->_largeImageView heightAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  widthAnchor = [(UIImageView *)self->_largeImageView widthAnchor];
+  heightAnchor3 = [(UIImageView *)self->_largeImageView heightAnchor];
+  v36 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   v52[3] = v36;
-  v35 = [(UILabel *)self->_unsupportedNoteLabel centerYAnchor];
-  v23 = [(ICNoteResultsThumbnailView *)self centerYAnchor];
-  v24 = [v35 constraintEqualToAnchor:v23];
+  centerYAnchor3 = [(UILabel *)self->_unsupportedNoteLabel centerYAnchor];
+  centerYAnchor4 = [(ICNoteResultsThumbnailView *)self centerYAnchor];
+  v24 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v52[4] = v24;
-  v25 = [(UILabel *)self->_unsupportedNoteLabel leadingAnchor];
-  v26 = [(ICNoteResultsThumbnailView *)self leadingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26 constant:8.0];
+  leadingAnchor = [(UILabel *)self->_unsupportedNoteLabel leadingAnchor];
+  leadingAnchor2 = [(ICNoteResultsThumbnailView *)self leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
   v52[5] = v27;
-  v28 = [(UILabel *)self->_unsupportedNoteLabel trailingAnchor];
-  v29 = [(ICNoteResultsThumbnailView *)self trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29 constant:-8.0];
+  trailingAnchor = [(UILabel *)self->_unsupportedNoteLabel trailingAnchor];
+  trailingAnchor2 = [(ICNoteResultsThumbnailView *)self trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
   v52[6] = v30;
   v31 = [NSArray arrayWithObjects:v52 count:7];
   [NSLayoutConstraint activateConstraints:v31];
 
   [(ICNoteResultsThumbnailView *)self setPreviewing:0];
-  v32 = [(ICNoteResultsThumbnailView *)self layer];
-  [v32 setMasksToBounds:0];
+  layer = [(ICNoteResultsThumbnailView *)self layer];
+  [layer setMasksToBounds:0];
 
   v51 = objc_opt_class();
   v33 = [NSArray arrayWithObjects:&v51 count:1];
@@ -164,17 +164,17 @@
   [(ICNoteResultsThumbnailView *)self updateDropShadow];
 }
 
-- (void)setNote:(id)a3
+- (void)setNote:(id)note
 {
-  v13 = a3;
-  objc_storeWeak(&self->_note, v13);
-  if (!v13 || (objc_storeWeak(&self->_invitation, 0), -[ICNoteResultsThumbnailView noteIdentifier](self, "noteIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), [v13 identifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqualToString:", v5), v5, v4, (v6 & 1) == 0))
+  noteCopy = note;
+  objc_storeWeak(&self->_note, noteCopy);
+  if (!noteCopy || (objc_storeWeak(&self->_invitation, 0), -[ICNoteResultsThumbnailView noteIdentifier](self, "noteIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), [noteCopy identifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqualToString:", v5), v5, v4, (v6 & 1) == 0))
   {
-    v7 = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
-    [v7 setImage:0];
+    thumbnailImageView = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
+    [thumbnailImageView setImage:0];
 
-    v8 = [v13 identifier];
-    [(ICNoteResultsThumbnailView *)self setNoteIdentifier:v8];
+    identifier = [noteCopy identifier];
+    [(ICNoteResultsThumbnailView *)self setNoteIdentifier:identifier];
   }
 
   objc_opt_class();
@@ -190,7 +190,7 @@
   }
 
   v11 = [UIColor ic_noteEditorPreviewColorForceLightContent:v10];
-  if (v13)
+  if (noteCopy)
   {
     [(ICNoteResultsThumbnailView *)self setBackgroundColor:v11];
   }
@@ -205,14 +205,14 @@
   [(ICNoteResultsThumbnailView *)self updateImages];
 }
 
-- (void)setInvitation:(id)a3
+- (void)setInvitation:(id)invitation
 {
-  objc_storeWeak(&self->_invitation, a3);
-  if (a3)
+  objc_storeWeak(&self->_invitation, invitation);
+  if (invitation)
   {
     objc_storeWeak(&self->_note, 0);
-    v5 = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
-    [v5 setImage:0];
+    thumbnailImageView = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
+    [thumbnailImageView setImage:0];
 
     [(ICNoteResultsThumbnailView *)self setNoteIdentifier:0];
     v6 = [UIColor ic_noteEditorPreviewColorForceLightContent:0];
@@ -226,34 +226,34 @@
 
 - (double)cornerRadius
 {
-  v2 = [(ICNoteResultsThumbnailView *)self layer];
-  [v2 cornerRadius];
+  layer = [(ICNoteResultsThumbnailView *)self layer];
+  [layer cornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  [(ICNoteResultsThumbnailView *)self ic_applyRoundedCornersWithRadius:a3];
-  v4 = [(ICNoteResultsThumbnailView *)self layer];
-  [v4 setMasksToBounds:0];
+  [(ICNoteResultsThumbnailView *)self ic_applyRoundedCornersWithRadius:radius];
+  layer = [(ICNoteResultsThumbnailView *)self layer];
+  [layer setMasksToBounds:0];
 }
 
-- (void)setPreviewing:(BOOL)a3
+- (void)setPreviewing:(BOOL)previewing
 {
-  v3 = a3;
-  self->_previewing = a3;
+  previewingCopy = previewing;
+  self->_previewing = previewing;
   v5 = 0.0;
-  if (!a3)
+  if (!previewing)
   {
     v6 = +[UIDevice ic_isVision];
     v5 = 16.0;
     if ((v6 & 1) == 0)
     {
-      v7 = [(ICNoteResultsThumbnailView *)self ic_hasCompactWidth];
+      ic_hasCompactWidth = [(ICNoteResultsThumbnailView *)self ic_hasCompactWidth];
       v5 = 12.0;
-      if (v7)
+      if (ic_hasCompactWidth)
       {
         v5 = 8.0;
       }
@@ -262,38 +262,38 @@
 
   [(ICNoteResultsThumbnailView *)self setCornerRadius:v5];
 
-  [(ICNoteResultsThumbnailView *)self setHasDropShadow:!v3];
+  [(ICNoteResultsThumbnailView *)self setHasDropShadow:!previewingCopy];
 }
 
 - (void)updateImages
 {
-  v3 = [(ICNoteResultsThumbnailView *)self note];
+  note = [(ICNoteResultsThumbnailView *)self note];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     objc_opt_class();
-    v5 = [(ICNoteResultsThumbnailView *)self note];
+    note2 = [(ICNoteResultsThumbnailView *)self note];
     v28 = ICDynamicCast();
 
-    v6 = [v28 isUnsupported];
-    v7 = [(ICNoteResultsThumbnailView *)self unsupportedNoteLabel];
-    [v7 setHidden:v6 ^ 1];
+    isUnsupported = [v28 isUnsupported];
+    unsupportedNoteLabel = [(ICNoteResultsThumbnailView *)self unsupportedNoteLabel];
+    [unsupportedNoteLabel setHidden:isUnsupported ^ 1];
 
     if (![v28 isPasswordProtected] || -[ICNoteResultsThumbnailView isPreviewing](self, "isPreviewing") && (objc_msgSend(v28, "isAuthenticated") & 1) != 0)
     {
-      v8 = [(ICNoteResultsThumbnailView *)self largeImageView];
-      [v8 setImage:0];
+      largeImageView = [(ICNoteResultsThumbnailView *)self largeImageView];
+      [largeImageView setImage:0];
 
       [(ICNoteResultsThumbnailView *)self updateThumbnailImageIfNeededWithNote:v28];
     }
 
     else
     {
-      v14 = [v28 isAuthenticated];
+      isAuthenticated = [v28 isAuthenticated];
       v15 = @"lock.fill";
-      if (v14)
+      if (isAuthenticated)
       {
         v15 = @"lock.open.fill";
       }
@@ -318,8 +318,8 @@
 
       v20 = [UIImage ic_systemImageNamed:v16 textStyle:*v19 scale:v18];
 
-      v21 = [(ICNoteResultsThumbnailView *)self largeImageView];
-      [v21 setImage:v20];
+      largeImageView2 = [(ICNoteResultsThumbnailView *)self largeImageView];
+      [largeImageView2 setImage:v20];
     }
 
 LABEL_24:
@@ -327,22 +327,22 @@ LABEL_24:
     return;
   }
 
-  v9 = [(ICNoteResultsThumbnailView *)self note];
+  note3 = [(ICNoteResultsThumbnailView *)self note];
 
-  if (!v9)
+  if (!note3)
   {
-    v22 = [(ICNoteResultsThumbnailView *)self invitation];
+    invitation = [(ICNoteResultsThumbnailView *)self invitation];
 
-    if (!v22)
+    if (!invitation)
     {
       return;
     }
 
-    v23 = [(ICNoteResultsThumbnailView *)self unsupportedNoteLabel];
-    [v23 setHidden:1];
+    unsupportedNoteLabel2 = [(ICNoteResultsThumbnailView *)self unsupportedNoteLabel];
+    [unsupportedNoteLabel2 setHidden:1];
 
-    v24 = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
-    [v24 setImage:0];
+    thumbnailImageView = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
+    [thumbnailImageView setImage:0];
 
     if (+[UIDevice ic_isVision])
     {
@@ -357,20 +357,20 @@ LABEL_24:
     }
 
     v28 = [UIImage ic_systemImageNamed:@"arrow.down.message" textStyle:v25 scale:v26];
-    v27 = [(ICNoteResultsThumbnailView *)self largeImageView];
-    [v27 setImage:v28];
+    largeImageView3 = [(ICNoteResultsThumbnailView *)self largeImageView];
+    [largeImageView3 setImage:v28];
 
     goto LABEL_24;
   }
 
-  v10 = [(ICNoteResultsThumbnailView *)self unsupportedNoteLabel];
-  [v10 setHidden:1];
+  unsupportedNoteLabel3 = [(ICNoteResultsThumbnailView *)self unsupportedNoteLabel];
+  [unsupportedNoteLabel3 setHidden:1];
 
-  v11 = [(ICNoteResultsThumbnailView *)self largeImageView];
-  [v11 setImage:0];
+  largeImageView4 = [(ICNoteResultsThumbnailView *)self largeImageView];
+  [largeImageView4 setImage:0];
 
-  v12 = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
-  [v12 setImage:0];
+  thumbnailImageView2 = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
+  [thumbnailImageView2 setImage:0];
 
   v13 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -381,9 +381,9 @@ LABEL_24:
 
 - (void)animateThumbnailImageView
 {
-  v3 = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
-  v4 = [v3 layer];
-  [v4 setOpacity:0.0];
+  thumbnailImageView = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
+  layer = [thumbnailImageView layer];
+  [layer setOpacity:0.0];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -393,11 +393,11 @@ LABEL_24:
   [UIView animateWithDuration:0 delay:v5 options:0 animations:0.5 completion:0.0];
 }
 
-- (void)updateThumbnailImageIfNeededWithNote:(id)a3
+- (void)updateThumbnailImageIfNeededWithNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
-  [v5 bounds];
+  noteCopy = note;
+  thumbnailImageView = [(ICNoteResultsThumbnailView *)self thumbnailImageView];
+  [thumbnailImageView bounds];
   v7 = v6;
   v9 = v8;
 
@@ -405,8 +405,8 @@ LABEL_24:
   [v10 scale];
   v12 = v11;
 
-  v13 = [v4 ic_hasLightBackground];
-  if (v13)
+  ic_hasLightBackground = [noteCopy ic_hasLightBackground];
+  if (ic_hasLightBackground)
   {
     [ICAppearanceInfo appearanceInfoWithType:0];
   }
@@ -416,19 +416,19 @@ LABEL_24:
     [(ICNoteResultsThumbnailView *)self ic_appearanceInfo];
   }
   v14 = ;
-  v15 = [(ICNoteResultsThumbnailView *)self traitCollection];
+  traitCollection = [(ICNoteResultsThumbnailView *)self traitCollection];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100079CFC;
   v24[3] = &unk_100646E70;
-  v25 = v13;
-  v16 = [v15 traitCollectionByModifyingTraits:v24];
+  v25 = ic_hasLightBackground;
+  v16 = [traitCollection traitCollectionByModifyingTraits:v24];
 
-  v17 = [[ICThumbnailConfiguration alloc] initForNoteGalleryWithNote:v4 preferredSize:v16 traitCollection:v14 scale:v7 appearanceInfo:{v9, v12}];
+  v17 = [[ICThumbnailConfiguration alloc] initForNoteGalleryWithNote:noteCopy preferredSize:v16 traitCollection:v14 scale:v7 appearanceInfo:{v9, v12}];
   objc_initWeak(&location, self);
   v18 = +[ICThumbnailService sharedThumbnailService];
   v19 = +[UIApplication sharedApplication];
-  v20 = [v19 applicationState];
+  applicationState = [v19 applicationState];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -436,7 +436,7 @@ LABEL_24:
   v21[3] = &unk_100646EC0;
   objc_copyWeak(v22, &location);
   v21[4] = self;
-  v22[1] = v20;
+  v22[1] = applicationState;
   [v18 thumbnailWithConfiguration:v17 completion:v21];
   objc_destroyWeak(v22);
 
@@ -447,8 +447,8 @@ LABEL_24:
 {
   if ([(ICNoteResultsThumbnailView *)self hasDropShadow]&& ([(ICNoteResultsThumbnailView *)self note], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(ICNoteResultsThumbnailView *)self traitCollection];
-    if ([v4 ic_hasCompactWidth])
+    traitCollection = [(ICNoteResultsThumbnailView *)self traitCollection];
+    if ([traitCollection ic_hasCompactWidth])
     {
       v5 = 5.0;
     }
@@ -459,32 +459,32 @@ LABEL_24:
     }
 
     v6 = +[UIColor blackColor];
-    v7 = [v6 CGColor];
-    v8 = [(ICNoteResultsThumbnailView *)self layer];
-    [v8 setShadowColor:v7];
+    cGColor = [v6 CGColor];
+    layer = [(ICNoteResultsThumbnailView *)self layer];
+    [layer setShadowColor:cGColor];
 
-    v9 = [(ICNoteResultsThumbnailView *)self layer];
-    [v9 setShadowRadius:8.0];
+    layer2 = [(ICNoteResultsThumbnailView *)self layer];
+    [layer2 setShadowRadius:8.0];
 
-    v10 = [(ICNoteResultsThumbnailView *)self layer];
+    layer3 = [(ICNoteResultsThumbnailView *)self layer];
     LODWORD(v11) = 1042536202;
-    [v10 setShadowOpacity:v11];
+    [layer3 setShadowOpacity:v11];
 
-    v12 = [(ICNoteResultsThumbnailView *)self layer];
-    [v12 setShadowOffset:{0.0, 4.0}];
+    layer4 = [(ICNoteResultsThumbnailView *)self layer];
+    [layer4 setShadowOffset:{0.0, 4.0}];
 
-    v26 = [(ICNoteResultsThumbnailView *)self layer];
-    [v26 bounds];
+    layer5 = [(ICNoteResultsThumbnailView *)self layer];
+    [layer5 bounds];
     v29 = CGRectInset(v28, v5, v5);
     x = v29.origin.x;
     y = v29.origin.y;
     width = v29.size.width;
     height = v29.size.height;
-    v17 = [(ICNoteResultsThumbnailView *)self layer];
-    [v17 cornerRadius];
+    layer6 = [(ICNoteResultsThumbnailView *)self layer];
+    [layer6 cornerRadius];
     v19 = v18;
-    v20 = [(ICNoteResultsThumbnailView *)self layer];
-    [v20 cornerRadius];
+    layer7 = [(ICNoteResultsThumbnailView *)self layer];
+    [layer7 cornerRadius];
     v22 = v21;
     v30.origin.x = x;
     v30.origin.y = y;
@@ -492,8 +492,8 @@ LABEL_24:
     v30.size.height = height;
     v23 = CGPathCreateWithRoundedRect(v30, v19, v22, 0);
     v24 = CFAutorelease(v23);
-    v25 = [(ICNoteResultsThumbnailView *)self layer];
-    [v25 setShadowPath:v24];
+    layer8 = [(ICNoteResultsThumbnailView *)self layer];
+    [layer8 setShadowPath:v24];
   }
 
   else

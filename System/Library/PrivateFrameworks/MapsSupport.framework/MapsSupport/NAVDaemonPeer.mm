@@ -1,22 +1,22 @@
 @interface NAVDaemonPeer
 - (BOOL)checkDebugEntitlement;
 - (BOOL)checkRegularEntitlement;
-- (NAVDaemonPeer)initWithNavdManager:(id)a3 forXPCConnection:(id)a4;
-- (void)didPostUINotification:(unint64_t)a3 forDestination:(id)a4 fromClient:(id)a5;
+- (NAVDaemonPeer)initWithNavdManager:(id)manager forXPCConnection:(id)connection;
+- (void)didPostUINotification:(unint64_t)notification forDestination:(id)destination fromClient:(id)client;
 - (void)forceCacheRefresh;
-- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)a3 client:(id)a4;
-- (void)requestRefreshForPlannedDestination:(id)a3 client:(id)a4;
-- (void)startMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5;
-- (void)statusWithCallback:(id)a3;
-- (void)stopMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5;
+- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)destination client:(id)client;
+- (void)requestRefreshForPlannedDestination:(id)destination client:(id)client;
+- (void)startMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid;
+- (void)statusWithCallback:(id)callback;
+- (void)stopMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid;
 @end
 
 @implementation NAVDaemonPeer
 
-- (NAVDaemonPeer)initWithNavdManager:(id)a3 forXPCConnection:(id)a4
+- (NAVDaemonPeer)initWithNavdManager:(id)manager forXPCConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  connectionCopy = connection;
   v26.receiver = self;
   v26.super_class = NAVDaemonPeer;
   v9 = [(NAVDaemonPeer *)&v26 init];
@@ -24,14 +24,14 @@
   if (v9)
   {
     v9->_monitoringSuggestions = 0;
-    objc_storeStrong(&v9->_navdManager, a3);
-    objc_storeStrong(&v10->_connection, a4);
+    objc_storeStrong(&v9->_navdManager, manager);
+    objc_storeStrong(&v10->_connection, connection);
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___GEONavdProxyObserver];
-    [v8 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
-    v12 = [v8 remoteObjectProxy];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
     proxyObserver = v10->_proxyObserver;
-    v10->_proxyObserver = v12;
+    v10->_proxyObserver = remoteObjectProxy;
 
     v14 = [[GEOPerformanceEventLogger alloc] initWithClassName:@"NAVDaemonPeer"];
     performanceEventLogger = v10->_performanceEventLogger;
@@ -46,12 +46,12 @@
     clientsQueue = v10->_clientsQueue;
     v10->_clientsQueue = v19;
 
-    v21 = [v8 valueForEntitlement:@"com.apple.geoservices.navd.routehypothesis"];
+    v21 = [connectionCopy valueForEntitlement:@"com.apple.geoservices.navd.routehypothesis"];
     v10->_hasRegularEntitlement = [v21 BOOLValue];
-    v22 = [v8 valueForEntitlement:@"com.apple.geoservices.navd.supersekret.debug"];
+    v22 = [connectionCopy valueForEntitlement:@"com.apple.geoservices.navd.supersekret.debug"];
 
     v10->_hasDebugEntitlement = [v22 BOOLValue];
-    v23 = [v8 valueForEntitlement:@"com.apple.geoservices.navd.clientIdentifier"];
+    v23 = [connectionCopy valueForEntitlement:@"com.apple.geoservices.navd.clientIdentifier"];
     clientIdentifierEntitlement = v10->_clientIdentifierEntitlement;
     v10->_clientIdentifierEntitlement = v23;
   }
@@ -101,11 +101,11 @@
   return 0;
 }
 
-- (void)startMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5
+- (void)startMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  clientCopy = client;
+  uuidCopy = uuid;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[NAVDaemonPeer startMonitoringDestination:forClient:uuid:]"];
   if ([(NAVDaemonPeer *)self checkRegularEntitlement])
   {
@@ -115,63 +115,63 @@
     v12[2] = sub_100030B20;
     v12[3] = &unk_100064EB8;
     v12[4] = self;
-    v13 = v9;
-    [(GEONavdManager *)navdManager startMonitoringDestination:v8 forClient:v13 uuid:v10 handler:v12];
+    v13 = clientCopy;
+    [(GEONavdManager *)navdManager startMonitoringDestination:destinationCopy forClient:v13 uuid:uuidCopy handler:v12];
   }
 }
 
-- (void)stopMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5
+- (void)stopMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
+  destinationCopy = destination;
+  clientCopy = client;
+  uuidCopy = uuid;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[NAVDaemonPeer stopMonitoringDestination:forClient:uuid:]"];
   if ([(NAVDaemonPeer *)self checkRegularEntitlement])
   {
-    [(GEONavdManager *)self->_navdManager stopMonitoringDestination:v10 forClient:v8 uuid:v9];
+    [(GEONavdManager *)self->_navdManager stopMonitoringDestination:destinationCopy forClient:clientCopy uuid:uuidCopy];
   }
 }
 
-- (void)requestRefreshForPlannedDestination:(id)a3 client:(id)a4
+- (void)requestRefreshForPlannedDestination:(id)destination client:(id)client
 {
-  v7 = a3;
-  v6 = a4;
+  destinationCopy = destination;
+  clientCopy = client;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[NAVDaemonPeer requestRefreshForPlannedDestination:client:]"];
   if ([(NAVDaemonPeer *)self checkRegularEntitlement])
   {
-    [(GEONavdManager *)self->_navdManager requestRefreshForPlannedDestination:v7 client:v6];
+    [(GEONavdManager *)self->_navdManager requestRefreshForPlannedDestination:destinationCopy client:clientCopy];
   }
 }
 
-- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)a3 client:(id)a4
+- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)destination client:(id)client
 {
-  v7 = a3;
-  v6 = a4;
+  destinationCopy = destination;
+  clientCopy = client;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[NAVDaemonPeer onlyPerformLocalUpdatesForPlannedDestination:client:]"];
   if ([(NAVDaemonPeer *)self checkRegularEntitlement])
   {
-    [(GEONavdManager *)self->_navdManager onlyPerformLocalUpdatesForPlannedDestination:v7 client:v6];
+    [(GEONavdManager *)self->_navdManager onlyPerformLocalUpdatesForPlannedDestination:destinationCopy client:clientCopy];
   }
 }
 
-- (void)didPostUINotification:(unint64_t)a3 forDestination:(id)a4 fromClient:(id)a5
+- (void)didPostUINotification:(unint64_t)notification forDestination:(id)destination fromClient:(id)client
 {
-  v9 = a4;
-  v8 = a5;
+  destinationCopy = destination;
+  clientCopy = client;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[NAVDaemonPeer didPostUINotification:forDestination:fromClient:]"];
   if ([(NAVDaemonPeer *)self checkRegularEntitlement])
   {
-    [(GEONavdManager *)self->_navdManager didPostUINotification:a3 forDestination:v9 fromClient:v8];
+    [(GEONavdManager *)self->_navdManager didPostUINotification:notification forDestination:destinationCopy fromClient:clientCopy];
   }
 }
 
-- (void)statusWithCallback:(id)a3
+- (void)statusWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[NAVDaemonPeer statusWithCallback:]"];
   if ([(NAVDaemonPeer *)self checkDebugEntitlement])
   {
-    [(GEONavdManager *)self->_navdManager statusWithCallback:v4];
+    [(GEONavdManager *)self->_navdManager statusWithCallback:callbackCopy];
   }
 }
 

@@ -1,9 +1,9 @@
 @interface SegmentedViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (_TtC20ProductPageExtension23SegmentedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (_TtC20ProductPageExtension23SegmentedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didReceiveMemoryWarning;
-- (void)takeSelectedIndexFrom:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)takeSelectedIndexFrom:(id)from;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -12,28 +12,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006EED78();
 }
 
 - (void)didReceiveMemoryWarning
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006EEF48();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1006EF178(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1006EF178(change);
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1006F1B14(width);
   v9 = v8;
   swift_unknownObjectRelease();
@@ -45,25 +45,25 @@
   return result;
 }
 
-- (void)takeSelectedIndexFrom:(id)a3
+- (void)takeSelectedIndexFrom:(id)from
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [v4 selectedSegmentIndex];
-  v6 = *(&v7->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension23SegmentedViewController_selectedIndex);
-  *(&v7->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension23SegmentedViewController_selectedIndex) = v5;
-  sub_1006EF77C(v6, v5);
+  fromCopy = from;
+  selfCopy = self;
+  selectedSegmentIndex = [fromCopy selectedSegmentIndex];
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension23SegmentedViewController_selectedIndex);
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension23SegmentedViewController_selectedIndex) = selectedSegmentIndex;
+  sub_1006EF77C(v6, selectedSegmentIndex);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F05EC();
 }
 
-- (_TtC20ProductPageExtension23SegmentedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ProductPageExtension23SegmentedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10076FF9C();
     v7 = v6;
@@ -75,8 +75,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1006F1700(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1006F1700(v5, v7, bundle);
 }
 
 @end

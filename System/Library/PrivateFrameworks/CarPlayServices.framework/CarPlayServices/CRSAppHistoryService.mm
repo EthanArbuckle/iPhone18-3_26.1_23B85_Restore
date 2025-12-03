@@ -1,19 +1,19 @@
 @interface CRSAppHistoryService
 - (CRSAppHistoryDataProviding)dataProvider;
-- (CRSAppHistoryService)initWithDataProvider:(id)a3 applicationLibrary:(id)a4 policyEvaluator:(id)a5;
-- (void)_appLibraryUpdated:(id)a3;
-- (void)_connectionQueue_addConnection:(id)a3;
-- (void)_connectionQueue_removeConnection:(id)a3;
+- (CRSAppHistoryService)initWithDataProvider:(id)provider applicationLibrary:(id)library policyEvaluator:(id)evaluator;
+- (void)_appLibraryUpdated:(id)updated;
+- (void)_connectionQueue_addConnection:(id)connection;
+- (void)_connectionQueue_removeConnection:(id)connection;
 - (void)_setupApplicationLibraryObservations;
-- (void)fetchDockAppInCategory:(id)a3 completion:(id)a4;
-- (void)fetchSessionEchoContextStatesWithCompletion:(id)a3;
-- (void)fetchSessionUIContextStatesWithCompletion:(id)a3;
-- (void)fetchUIContextStatesWithCompletion:(id)a3;
+- (void)fetchDockAppInCategory:(id)category completion:(id)completion;
+- (void)fetchSessionEchoContextStatesWithCompletion:(id)completion;
+- (void)fetchSessionUIContextStatesWithCompletion:(id)completion;
+- (void)fetchUIContextStatesWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)serviceFetchInstrumentClusterURLs:(id)a3;
-- (void)setAnalyticsValues:(id)a3 onEvent:(id)a4 completion:(id)a5;
-- (void)setInstrumentClusterURLs:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)serviceFetchInstrumentClusterURLs:(id)ls;
+- (void)setAnalyticsValues:(id)values onEvent:(id)event completion:(id)completion;
+- (void)setInstrumentClusterURLs:(id)ls;
 @end
 
 @implementation CRSAppHistoryService
@@ -25,24 +25,24 @@
   return WeakRetained;
 }
 
-- (CRSAppHistoryService)initWithDataProvider:(id)a3 applicationLibrary:(id)a4 policyEvaluator:(id)a5
+- (CRSAppHistoryService)initWithDataProvider:(id)provider applicationLibrary:(id)library policyEvaluator:(id)evaluator
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  libraryCopy = library;
+  evaluatorCopy = evaluator;
   v28.receiver = self;
   v28.super_class = CRSAppHistoryService;
   v11 = [(CRSAppHistoryService *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_dataProvider, v8);
-    objc_storeStrong(&v12->_applicationLibrary, a4);
-    objc_storeStrong(&v12->_policyEvaluator, a5);
+    objc_storeWeak(&v11->_dataProvider, providerCopy);
+    objc_storeStrong(&v12->_applicationLibrary, library);
+    objc_storeStrong(&v12->_policyEvaluator, evaluator);
     [(CRSAppHistoryService *)v12 _setupApplicationLibraryObservations];
     [(CRSAppHistoryService *)v12 _appLibraryUpdated:v12->_applicationLibrary];
-    v13 = [MEMORY[0x277CF0C18] serial];
+    serial = [MEMORY[0x277CF0C18] serial];
     v14 = BSDispatchQueueCreate();
     connectionQueue = v12->_connectionQueue;
     v12->_connectionQueue = v14;
@@ -88,21 +88,21 @@ void __80__CRSAppHistoryService_initWithDataProvider_applicationLibrary_policyEv
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)setInstrumentClusterURLs:(id)a3
+- (void)setInstrumentClusterURLs:(id)ls
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NSArray *)self->_instrumentClusterURLs isEqualToArray:v4])
+  lsCopy = ls;
+  if (![(NSArray *)self->_instrumentClusterURLs isEqualToArray:lsCopy])
   {
     v5 = CRSLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = lsCopy;
       _os_log_impl(&dword_242FB5000, v5, OS_LOG_TYPE_DEFAULT, "Cluster URLs updated: %@", buf, 0xCu);
     }
 
-    v6 = [v4 copy];
+    v6 = [lsCopy copy];
     instrumentClusterURLs = self->_instrumentClusterURLs;
     self->_instrumentClusterURLs = v6;
 
@@ -119,8 +119,8 @@ void __80__CRSAppHistoryService_initWithDataProvider_applicationLibrary_policyEv
       v9 = 0;
     }
 
-    v10 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v10 postNotificationName:@"CRInstrumentClusterURLsDidChangeNotification" object:0 userInfo:v9];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"CRInstrumentClusterURLsDidChangeNotification" object:0 userInfo:v9];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -136,27 +136,27 @@ void __80__CRSAppHistoryService_initWithDataProvider_applicationLibrary_policyEv
   [(BSServiceConnectionListener *)listener invalidate];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = CRSLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = connectionCopy;
     _os_log_impl(&dword_242FB5000, v7, OS_LOG_TYPE_INFO, "Received connection! %@", buf, 0xCu);
   }
 
-  v8 = [v6 remoteProcess];
-  v9 = [v8 hasEntitlement:@"com.apple.private.CarPlayServices.app-history"];
+  remoteProcess = [connectionCopy remoteProcess];
+  v9 = [remoteProcess hasEntitlement:@"com.apple.private.CarPlayServices.app-history"];
 
   if ((v9 & 1) == 0)
   {
     v10 = CRSLogForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [CRSAppHistoryService listener:v6 didReceiveConnection:? withContext:?];
+      [CRSAppHistoryService listener:connectionCopy didReceiveConnection:? withContext:?];
     }
   }
 
@@ -165,24 +165,24 @@ void __80__CRSAppHistoryService_initWithDataProvider_applicationLibrary_policyEv
   v17[2] = __66__CRSAppHistoryService_listener_didReceiveConnection_withContext___block_invoke;
   v17[3] = &unk_278D8E1A8;
   v17[4] = self;
-  [v6 configureConnection:v17];
+  [connectionCopy configureConnection:v17];
   v11 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = connectionCopy;
     _os_log_impl(&dword_242FB5000, v11, OS_LOG_TYPE_INFO, "Activating connection... %@", buf, 0xCu);
   }
 
-  v12 = [(CRSAppHistoryService *)self connectionQueue];
+  connectionQueue = [(CRSAppHistoryService *)self connectionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__CRSAppHistoryService_listener_didReceiveConnection_withContext___block_invoke_87;
   block[3] = &unk_278D8E3D0;
   block[4] = self;
-  v16 = v6;
-  v13 = v6;
-  dispatch_async(v12, block);
+  v16 = connectionCopy;
+  v13 = connectionCopy;
+  dispatch_async(connectionQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -232,9 +232,9 @@ uint64_t __66__CRSAppHistoryService_listener_didReceiveConnection_withContext___
   return [v2 activate];
 }
 
-- (void)fetchUIContextStatesWithCompletion:(id)a3
+- (void)fetchUIContextStatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CRSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -247,8 +247,8 @@ uint64_t __66__CRSAppHistoryService_listener_didReceiveConnection_withContext___
   v7[2] = __59__CRSAppHistoryService_fetchUIContextStatesWithCompletion___block_invoke;
   v7[3] = &unk_278D8E420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -258,9 +258,9 @@ void __59__CRSAppHistoryService_fetchUIContextStatesWithCompletion___block_invok
   [v2 getUIContextStatesWithCompletion:*(a1 + 40)];
 }
 
-- (void)fetchSessionUIContextStatesWithCompletion:(id)a3
+- (void)fetchSessionUIContextStatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CRSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -273,8 +273,8 @@ void __59__CRSAppHistoryService_fetchUIContextStatesWithCompletion___block_invok
   v7[2] = __66__CRSAppHistoryService_fetchSessionUIContextStatesWithCompletion___block_invoke;
   v7[3] = &unk_278D8E420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -284,9 +284,9 @@ void __66__CRSAppHistoryService_fetchSessionUIContextStatesWithCompletion___bloc
   [v2 getSessionUIContextStatesWithCompletion:*(a1 + 40)];
 }
 
-- (void)fetchSessionEchoContextStatesWithCompletion:(id)a3
+- (void)fetchSessionEchoContextStatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CRSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -299,8 +299,8 @@ void __66__CRSAppHistoryService_fetchSessionUIContextStatesWithCompletion___bloc
   v7[2] = __68__CRSAppHistoryService_fetchSessionEchoContextStatesWithCompletion___block_invoke;
   v7[3] = &unk_278D8E420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -310,16 +310,16 @@ void __68__CRSAppHistoryService_fetchSessionEchoContextStatesWithCompletion___bl
   [v2 getSessionEchoContextStatesWithCompletion:*(a1 + 40)];
 }
 
-- (void)setAnalyticsValues:(id)a3 onEvent:(id)a4 completion:(id)a5
+- (void)setAnalyticsValues:(id)values onEvent:(id)event completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valuesCopy = values;
+  eventCopy = event;
+  completionCopy = completion;
   v11 = CRSLogForCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(valuesCopy, "count")}];
     *buf = 138412290;
     v22 = v12;
     _os_log_impl(&dword_242FB5000, v11, OS_LOG_TYPE_DEFAULT, "Received analytics values for current session, with %@ item(s).", buf, 0xCu);
@@ -330,12 +330,12 @@ void __68__CRSAppHistoryService_fetchSessionEchoContextStatesWithCompletion___bl
   v17[2] = __62__CRSAppHistoryService_setAnalyticsValues_onEvent_completion___block_invoke;
   v17[3] = &unk_278D8E448;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v18 = valuesCopy;
+  v19 = eventCopy;
+  v20 = completionCopy;
+  v13 = completionCopy;
+  v14 = eventCopy;
+  v15 = valuesCopy;
   dispatch_async(MEMORY[0x277D85CD0], v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -347,9 +347,9 @@ void __62__CRSAppHistoryService_setAnalyticsValues_onEvent_completion___block_in
   [v2 setAnalyticsValues:*(a1 + 40) onEvent:objc_msgSend(*(a1 + 48) completion:{"unsignedIntegerValue"), *(a1 + 56)}];
 }
 
-- (void)serviceFetchInstrumentClusterURLs:(id)a3
+- (void)serviceFetchInstrumentClusterURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v5 = CRSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -357,19 +357,19 @@ void __62__CRSAppHistoryService_setAnalyticsValues_onEvent_completion___block_in
     _os_log_impl(&dword_242FB5000, v5, OS_LOG_TYPE_DEFAULT, "serviceFetchInstrumentClusterURLs: updating geo", buf, 2u);
   }
 
-  v6 = [(CRSAppHistoryService *)self policyEvaluator];
-  v7 = [v6 isGeoSupported];
+  policyEvaluator = [(CRSAppHistoryService *)self policyEvaluator];
+  isGeoSupported = [policyEvaluator isGeoSupported];
 
-  v8 = [(CRSAppHistoryService *)self policyEvaluator];
+  policyEvaluator2 = [(CRSAppHistoryService *)self policyEvaluator];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__CRSAppHistoryService_serviceFetchInstrumentClusterURLs___block_invoke;
   v10[3] = &unk_278D8E498;
-  v12 = v7;
+  v12 = isGeoSupported;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v8 updateGeoSupportedWithCompletion:v10];
+  v11 = lsCopy;
+  v9 = lsCopy;
+  [policyEvaluator2 updateGeoSupportedWithCompletion:v10];
 }
 
 void __58__CRSAppHistoryService_serviceFetchInstrumentClusterURLs___block_invoke(uint64_t a1, char a2)
@@ -426,16 +426,16 @@ void __58__CRSAppHistoryService_serviceFetchInstrumentClusterURLs___block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchDockAppInCategory:(id)a3 completion:(id)a4
+- (void)fetchDockAppInCategory:(id)category completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  completionCopy = completion;
   v8 = CRSLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = categoryCopy;
     _os_log_impl(&dword_242FB5000, v8, OS_LOG_TYPE_DEFAULT, "Received request for dock app in category %@.", buf, 0xCu);
   }
 
@@ -444,10 +444,10 @@ void __58__CRSAppHistoryService_serviceFetchInstrumentClusterURLs___block_invoke
   block[2] = __58__CRSAppHistoryService_fetchDockAppInCategory_completion___block_invoke;
   block[3] = &unk_278D8E4C0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = categoryCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = categoryCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -459,18 +459,18 @@ void __58__CRSAppHistoryService_fetchDockAppInCategory_completion___block_invoke
   [v2 fetchDockAppInCategory:objc_msgSend(*(a1 + 40) completion:{"unsignedIntegerValue"), *(a1 + 48)}];
 }
 
-- (void)_connectionQueue_addConnection:(id)a3
+- (void)_connectionQueue_addConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRSAppHistoryService *)self connections];
-  [v5 addObject:v4];
+  connectionCopy = connection;
+  connections = [(CRSAppHistoryService *)self connections];
+  [connections addObject:connectionCopy];
 }
 
-- (void)_connectionQueue_removeConnection:(id)a3
+- (void)_connectionQueue_removeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRSAppHistoryService *)self connections];
-  [v5 removeObject:v4];
+  connectionCopy = connection;
+  connections = [(CRSAppHistoryService *)self connections];
+  [connections removeObject:connectionCopy];
 }
 
 - (void)_setupApplicationLibraryObservations
@@ -482,23 +482,23 @@ void __58__CRSAppHistoryService_fetchDockAppInCategory_completion___block_invoke
   v15[3] = &unk_278D8E4E8;
   objc_copyWeak(&v16, &location);
   v3 = MEMORY[0x245D28FB0](v15);
-  v4 = [(CRSAppHistoryService *)self applicationLibrary];
-  v5 = [v4 observeDidAddApplicationsWithBlock:v3];
+  applicationLibrary = [(CRSAppHistoryService *)self applicationLibrary];
+  v5 = [applicationLibrary observeDidAddApplicationsWithBlock:v3];
   installToken = self->_installToken;
   self->_installToken = v5;
 
-  v7 = [(CRSAppHistoryService *)self applicationLibrary];
-  v8 = [v7 observeDidRemoveApplicationsWithBlock:v3];
+  applicationLibrary2 = [(CRSAppHistoryService *)self applicationLibrary];
+  v8 = [applicationLibrary2 observeDidRemoveApplicationsWithBlock:v3];
   uninstallToken = self->_uninstallToken;
   self->_uninstallToken = v8;
 
-  v10 = [(CRSAppHistoryService *)self applicationLibrary];
+  applicationLibrary3 = [(CRSAppHistoryService *)self applicationLibrary];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__CRSAppHistoryService__setupApplicationLibraryObservations__block_invoke_3;
   v13[3] = &unk_278D8E510;
   objc_copyWeak(&v14, &location);
-  v11 = [v10 observeDidReplaceApplicationsWithBlock:v13];
+  v11 = [applicationLibrary3 observeDidReplaceApplicationsWithBlock:v13];
   replaceToken = self->_replaceToken;
   self->_replaceToken = v11;
 
@@ -543,10 +543,10 @@ void __60__CRSAppHistoryService__setupApplicationLibraryObservations__block_invo
   [v1 _appLibraryUpdated:v2];
 }
 
-- (void)_appLibraryUpdated:(id)a3
+- (void)_appLibraryUpdated:(id)updated
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v5 = CRSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -555,53 +555,53 @@ void __60__CRSAppHistoryService__setupApplicationLibraryObservations__block_invo
     _os_log_impl(&dword_242FB5000, v5, OS_LOG_TYPE_DEFAULT, "App library updated", buf, 2u);
   }
 
-  if (v4)
+  if (updatedCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v7 = [v4 applicationInfoForBundleIdentifier:@"com.apple.Maps"];
+    v7 = [updatedCopy applicationInfoForBundleIdentifier:@"com.apple.Maps"];
     if (v7)
     {
-      v8 = [(CRSAppHistoryService *)self policyEvaluator];
-      v9 = [v8 isGeoSupported];
+      policyEvaluator = [(CRSAppHistoryService *)self policyEvaluator];
+      isGeoSupported = [policyEvaluator isGeoSupported];
 
-      if (v9)
+      if (isGeoSupported)
       {
         v26 = 0;
         v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:@"com.apple.Maps" allowPlaceholder:0 error:&v26];
         v11 = v26;
-        v12 = [v10 carPlayInstrumentClusterURLSchemes];
+        carPlayInstrumentClusterURLSchemes = [v10 carPlayInstrumentClusterURLSchemes];
         v13 = CRSLogForCategory(0);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v28 = v12;
+          v28 = carPlayInstrumentClusterURLSchemes;
           _os_log_impl(&dword_242FB5000, v13, OS_LOG_TYPE_DEFAULT, "Adding Maps URLs %{public}@", buf, 0xCu);
         }
 
-        [v6 addObjectsFromArray:v12];
+        [v6 addObjectsFromArray:carPlayInstrumentClusterURLSchemes];
       }
     }
 
-    v14 = [v4 allInstalledApplications];
+    allInstalledApplications = [updatedCopy allInstalledApplications];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __43__CRSAppHistoryService__appLibraryUpdated___block_invoke;
     v24 = &unk_278D8E538;
     v15 = v6;
     v25 = v15;
-    [v14 enumerateObjectsUsingBlock:&v21];
+    [allInstalledApplications enumerateObjectsUsingBlock:&v21];
 
     v16 = CRSLogForCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v15 allObjects];
+      allObjects = [v15 allObjects];
       *buf = 138543362;
-      v28 = v17;
+      v28 = allObjects;
       _os_log_impl(&dword_242FB5000, v16, OS_LOG_TYPE_DEFAULT, "Setting new cluster URLs: %{public}@", buf, 0xCu);
     }
 
-    v18 = [v15 allObjects];
-    [(CRSAppHistoryService *)self setInstrumentClusterURLs:v18];
+    allObjects2 = [v15 allObjects];
+    [(CRSAppHistoryService *)self setInstrumentClusterURLs:allObjects2];
   }
 
   else

@@ -19,8 +19,8 @@
 
 - (NSString)countryCode
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"c"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"c"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -40,8 +40,8 @@
 
 - (NSString)language
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"l"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"l"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -61,8 +61,8 @@
 
 - (NSString)homeSharingID
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"ha"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"ha"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -82,8 +82,8 @@
 
 - (NSString)homeSharingGroupID
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"hg"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"hg"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -103,8 +103,8 @@
 
 - (BOOL)isDiagnosticsEnabled
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"a"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"a"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -119,14 +119,14 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (BOOL)rememberPassword
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"a"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"a"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -141,8 +141,8 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 @end

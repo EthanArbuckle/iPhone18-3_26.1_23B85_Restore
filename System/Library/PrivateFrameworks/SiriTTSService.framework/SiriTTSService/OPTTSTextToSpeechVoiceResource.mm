@@ -1,9 +1,9 @@
 @interface OPTTSTextToSpeechVoiceResource
-- (OPTTSTextToSpeechVoiceResource)initWithFlatbuffData:(id)a3 root:(const TextToSpeechVoiceResource *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TextToSpeechVoiceResource>)addObjectToBuffer:(void *)a3;
+- (OPTTSTextToSpeechVoiceResource)initWithFlatbuffData:(id)data root:(const TextToSpeechVoiceResource *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TextToSpeechVoiceResource>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)type;
-- (void)data:(id)a3;
+- (void)data:(id)data;
 @end
 
 @implementation OPTTSTextToSpeechVoiceResource
@@ -37,10 +37,10 @@ apple::aiml::flatbuffers2::DetachedBuffer *__46__OPTTSTextToSpeechVoiceResource_
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechVoiceResource>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechVoiceResource>)addObjectToBuffer:(void *)buffer
 {
-  v4 = self;
-  v5 = [(OPTTSTextToSpeechVoiceResource *)self type];
+  selfCopy = self;
+  type = [(OPTTSTextToSpeechVoiceResource *)self type];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3812000000;
@@ -53,18 +53,18 @@ apple::aiml::flatbuffers2::DetachedBuffer *__46__OPTTSTextToSpeechVoiceResource_
   v9[2] = __52__OPTTSTextToSpeechVoiceResource_addObjectToBuffer___block_invoke;
   v9[3] = &unk_1E7AF38B0;
   v9[4] = &v10;
-  v9[5] = a3;
-  [(OPTTSTextToSpeechVoiceResource *)v4 data:v9];
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v6 = *(a3 + 8);
-  v7 = *(a3 + 12);
-  LODWORD(v4) = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 6, *(v11 + 12));
-  LODWORD(a3) = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v6 - v7 + v4);
+  v9[5] = buffer;
+  [(OPTTSTextToSpeechVoiceResource *)selfCopy data:v9];
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v6 = *(buffer + 8);
+  v7 = *(buffer + 12);
+  LODWORD(selfCopy) = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, type);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 6, *(v11 + 12));
+  LODWORD(buffer) = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v6 - v7 + selfCopy);
   _Block_object_dispose(&v10, 8);
-  return a3;
+  return buffer;
 }
 
 uint64_t __52__OPTTSTextToSpeechVoiceResource_addObjectToBuffer___block_invoke(uint64_t a1, const void *a2, unsigned int a3)
@@ -74,14 +74,14 @@ uint64_t __52__OPTTSTextToSpeechVoiceResource_addObjectToBuffer___block_invoke(u
   return result;
 }
 
-- (void)data:(id)a3
+- (void)data:(id)data
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  dataCopy = data;
   v7 = *root[*v5[6].var0 + *root[*v5[6].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = dataCopy;
+  (*(data + 2))();
 }
 
 - (int64_t)type
@@ -99,10 +99,10 @@ uint64_t __52__OPTTSTextToSpeechVoiceResource_addObjectToBuffer___block_invoke(u
   }
 }
 
-- (OPTTSTextToSpeechVoiceResource)initWithFlatbuffData:(id)a3 root:(const TextToSpeechVoiceResource *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechVoiceResource)initWithFlatbuffData:(id)data root:(const TextToSpeechVoiceResource *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSTextToSpeechVoiceResource;
   v10 = [(OPTTSTextToSpeechVoiceResource *)&v25 init];
@@ -111,35 +111,35 @@ uint64_t __52__OPTTSTextToSpeechVoiceResource_addObjectToBuffer___block_invoke(u
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

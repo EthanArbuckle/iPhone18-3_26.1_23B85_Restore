@@ -1,6 +1,6 @@
 @interface TabDocumentViewForPageTest
 - ($3E8622391F623B53F6251319F3599675)currentGeometry;
-- (void)setFixedWebViewSize:(CGSize)a3 completionHandler:(id)a4;
+- (void)setFixedWebViewSize:(CGSize)size completionHandler:(id)handler;
 @end
 
 @implementation TabDocumentViewForPageTest
@@ -58,14 +58,14 @@
   return result;
 }
 
-- (void)setFixedWebViewSize:(CGSize)a3 completionHandler:(id)a4
+- (void)setFixedWebViewSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(TabDocumentView *)self webView];
-  [v8 frame];
+  handlerCopy = handler;
+  webView = [(TabDocumentView *)self webView];
+  [webView frame];
   v10 = v9;
   v12 = v11;
 
@@ -73,24 +73,24 @@
   {
     self->_fixedWebViewSize.width = width;
     self->_fixedWebViewSize.height = height;
-    v14 = [(TabDocumentView *)self webView];
-    [(TabDocumentView *)self applyGeometryToWebView:v14];
+    webView2 = [(TabDocumentView *)self webView];
+    [(TabDocumentView *)self applyGeometryToWebView:webView2];
 
     v15 = WBS_LOG_CHANNEL_PREFIXTest();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = v15;
-      v17 = [(TabDocumentView *)self webView];
-      [v17 frame];
+      webView3 = [(TabDocumentView *)self webView];
+      [webView3 frame];
       v19 = v18;
-      v20 = [(TabDocumentView *)self webView];
-      [v20 frame];
+      webView4 = [(TabDocumentView *)self webView];
+      [webView4 frame];
       v22 = v21;
-      v23 = [(TabDocumentView *)self webView];
-      [v23 frame];
+      webView5 = [(TabDocumentView *)self webView];
+      [webView5 frame];
       v25 = v24;
-      v26 = [(TabDocumentView *)self webView];
-      [v26 frame];
+      webView6 = [(TabDocumentView *)self webView];
+      [webView6 frame];
       v28 = 134218752;
       v29 = v19;
       v30 = 2048;
@@ -103,7 +103,7 @@
     }
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

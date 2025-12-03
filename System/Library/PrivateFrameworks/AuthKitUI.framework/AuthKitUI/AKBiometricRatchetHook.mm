@@ -1,124 +1,124 @@
 @interface AKBiometricRatchetHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (id)_biometricRatchetUIContextFromAttributes:(id)a3;
-- (void)_armBiometricRatchetWithServerAttributes:(id)a3 completion:(id)a4;
+- (id)_biometricRatchetUIContextFromAttributes:(id)attributes;
+- (void)_armBiometricRatchetWithServerAttributes:(id)attributes completion:(id)completion;
 - (void)_updateResponseWithContext;
-- (void)_updateResponseWithRatchetResult:(id)a3;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_updateResponseWithRatchetResult:(id)result;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AKBiometricRatchetHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] name];
-  v5 = [v4 isEqualToString:@"ak:bioratchet"];
-  MEMORY[0x277D82BD8](v4);
+  objc_storeStrong(location, element);
+  name = [location[0] name];
+  v5 = [name isEqualToString:@"ak:bioratchet"];
+  MEMORY[0x277D82BD8](name);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v5 = objc_opt_class();
-  v7 = [location[0] clientInfo];
-  v6 = [v7 objectForKeyedSubscript:*MEMORY[0x277D46250]];
+  clientInfo = [location[0] clientInfo];
+  v6 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277D46250]];
   v9 = _AKSafeCast_2(v5, v6);
   MEMORY[0x277D82BD8](v6);
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](clientInfo).n128_u64[0];
   v8 = [v9 isEqualToString:{@"ak:bioratchet", v3}];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
   return v8;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, element);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, attributes);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, model);
   v9 = 0;
-  objc_storeStrong(&v9, a6);
-  [(AKBiometricRatchetHook *)v13 _armBiometricRatchetWithServerAttributes:v11 completion:v9];
+  objc_storeStrong(&v9, completion);
+  [(AKBiometricRatchetHook *)selfCopy _armBiometricRatchetWithServerAttributes:v11 completion:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v5 = v9;
-  v6 = [location[0] clientInfo];
+  objc_storeStrong(&v7, completion);
+  v5 = selfCopy;
+  clientInfo = [location[0] clientInfo];
   [AKBiometricRatchetHook _armBiometricRatchetWithServerAttributes:v5 completion:"_armBiometricRatchetWithServerAttributes:completion:"];
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](clientInfo);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_armBiometricRatchetWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_armBiometricRatchetWithServerAttributes:(id)attributes completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, attributes);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, completion);
   v4 = objc_alloc_init(MEMORY[0x277CF01D0]);
-  biometricRatchetController = v29->_biometricRatchetController;
-  v29->_biometricRatchetController = v4;
+  biometricRatchetController = selfCopy->_biometricRatchetController;
+  selfCopy->_biometricRatchetController = v4;
   MEMORY[0x277D82BD8](biometricRatchetController);
   v13 = objc_opt_class();
   v14 = [location[0] objectForKeyedSubscript:@"context"];
   v6 = _AKSafeCast_2(v13, v14);
-  context = v29->_context;
-  v29->_context = v6;
+  context = selfCopy->_context;
+  selfCopy->_context = v6;
   MEMORY[0x277D82BD8](context);
   MEMORY[0x277D82BD8](v14);
-  v15 = v29->_context;
+  v15 = selfCopy->_context;
   if (v15)
   {
-    objc_storeStrong(&v29->_context, v15);
+    objc_storeStrong(&selfCopy->_context, v15);
   }
 
   else
   {
-    objc_storeStrong(&v29->_context, &stru_28358EF68);
+    objc_storeStrong(&selfCopy->_context, &stru_28358EF68);
   }
 
-  if ([(AKBiometricRatchetController *)v29->_biometricRatchetController isDTOEnabled])
+  if ([(AKBiometricRatchetController *)selfCopy->_biometricRatchetController isDTOEnabled])
   {
-    v23 = [(AKBiometricRatchetHook *)v29 _biometricRatchetUIContextFromAttributes:location[0]];
-    v9 = v29->_biometricRatchetController;
+    v23 = [(AKBiometricRatchetHook *)selfCopy _biometricRatchetUIContextFromAttributes:location[0]];
+    v9 = selfCopy->_biometricRatchetController;
     v8 = v23;
     v16 = MEMORY[0x277D85DD0];
     v17 = -1073741824;
     v18 = 0;
     v19 = __78__AKBiometricRatchetHook__armBiometricRatchetWithServerAttributes_completion___block_invoke;
     v20 = &unk_2784A7210;
-    v21 = MEMORY[0x277D82BE0](v29);
+    v21 = MEMORY[0x277D82BE0](selfCopy);
     v22 = MEMORY[0x277D82BE0](v27);
     [(AKBiometricRatchetController *)v9 armWithContext:v8 completion:&v16];
     objc_storeStrong(&v22, 0);
@@ -139,7 +139,7 @@
     }
 
     objc_storeStrong(&v26, 0);
-    [(AKBiometricRatchetHook *)v29 _updateResponseWithContext];
+    [(AKBiometricRatchetHook *)selfCopy _updateResponseWithContext];
     if (v27)
     {
       (*(v27 + 2))(v27, 1, 0);
@@ -199,15 +199,15 @@ void __78__AKBiometricRatchetHook__armBiometricRatchetWithServerAttributes_compl
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_biometricRatchetUIContextFromAttributes:(id)a3
+- (id)_biometricRatchetUIContextFromAttributes:(id)attributes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v17->_delegate);
-  v15 = [WeakRetained presentationContextForHook:v17];
+  objc_storeStrong(location, attributes);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  v15 = [WeakRetained presentationContextForHook:selfCopy];
   MEMORY[0x277D82BD8](WeakRetained);
   if (v15)
   {
@@ -248,15 +248,15 @@ void __78__AKBiometricRatchetHook__armBiometricRatchetWithServerAttributes_compl
   return v5;
 }
 
-- (void)_updateResponseWithRatchetResult:(id)a3
+- (void)_updateResponseWithRatchetResult:(id)result
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] ratchetState];
-  v6 = [v7 toString:{objc_msgSend(v7, "rawState")}];
+  objc_storeStrong(location, result);
+  ratchetState = [location[0] ratchetState];
+  v6 = [ratchetState toString:{objc_msgSend(ratchetState, "rawState")}];
   if (![v6 length])
   {
     objc_storeStrong(&v6, @"undefined");
@@ -266,14 +266,14 @@ void __78__AKBiometricRatchetHook__armBiometricRatchetWithServerAttributes_compl
   v10[0] = @"ratchetState";
   v11[0] = v6;
   v10[1] = @"context";
-  v11[1] = v9->_context;
+  v11[1] = selfCopy->_context;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
   [v5 setAdditionalPayload:?];
   *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  [(AKBiometricRatchetHook *)v9 setServerHookResponse:v5, v3];
+  [(AKBiometricRatchetHook *)selfCopy setServerHookResponse:v5, v3];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(&v6, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&ratchetState, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
@@ -281,15 +281,15 @@ void __78__AKBiometricRatchetHook__armBiometricRatchetWithServerAttributes_compl
 - (void)_updateResponseWithContext
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = objc_alloc_init(MEMORY[0x277D46208]);
   v6 = @"context";
-  v7[0] = v5->_context;
+  v7[0] = selfCopy->_context;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [v4[0] setAdditionalPayload:?];
   *&v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
-  [(AKBiometricRatchetHook *)v5 setServerHookResponse:v4[0], v2];
+  [(AKBiometricRatchetHook *)selfCopy setServerHookResponse:v4[0], v2];
   objc_storeStrong(v4, 0);
   *MEMORY[0x277D85DE8];
 }

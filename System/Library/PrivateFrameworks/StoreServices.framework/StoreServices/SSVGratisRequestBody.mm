@@ -2,22 +2,22 @@
 - (NSData)JSONBodyData;
 - (NSData)propertyListBodyData;
 - (NSMutableDictionary)bodyDictionary;
-- (SSVGratisRequestBody)initWithRequestStyle:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVGratisRequestBody)initWithRequestStyle:(int64_t)style;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setValue:(id)a3 forBodyParameter:(id)a4;
+- (void)setValue:(id)value forBodyParameter:(id)parameter;
 @end
 
 @implementation SSVGratisRequestBody
 
-- (SSVGratisRequestBody)initWithRequestStyle:(int64_t)a3
+- (SSVGratisRequestBody)initWithRequestStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = SSVGratisRequestBody;
   result = [(SSVGratisRequestBody *)&v5 init];
   if (result)
   {
-    result->_style = a3;
+    result->_style = style;
   }
 
   return result;
@@ -52,7 +52,7 @@
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v34 = self;
+    selfCopy = self;
     v9 = self->_applications;
     v10 = [(NSArray *)v9 countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v10)
@@ -69,21 +69,21 @@
           }
 
           v14 = *(*(&v39 + 1) + 8 * i);
-          v15 = [v14 bundleIdentifier];
-          if (v15)
+          bundleIdentifier = [v14 bundleIdentifier];
+          if (bundleIdentifier)
           {
-            [v8 addObject:v15];
+            [v8 addObject:bundleIdentifier];
           }
 
-          v16 = [v14 itemIdentifier];
-          if (v16)
+          itemIdentifier = [v14 itemIdentifier];
+          if (itemIdentifier)
           {
-            v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:{strtoll(objc_msgSend(v16, "UTF8String"), 0, 10)}];
+            v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:{strtoll(objc_msgSend(itemIdentifier, "UTF8String"), 0, 10)}];
             [v38 addObject:v17];
           }
 
-          v18 = [v14 dictionaryRepresentation];
-          [v7 addObject:v18];
+          dictionaryRepresentation = [v14 dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSArray *)v9 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -102,7 +102,7 @@
       v5 = v36;
     }
 
-    self = v34;
+    self = selfCopy;
     v6 = v35;
     if ([v38 count])
     {
@@ -120,8 +120,8 @@
     accountID = self->_accountID;
     if (accountID)
     {
-      v24 = [(NSNumber *)accountID stringValue];
-      [v4 setObject:v24 forKey:@"ds-id"];
+      stringValue = [(NSNumber *)accountID stringValue];
+      [v4 setObject:stringValue forKey:@"ds-id"];
     }
 
     if (v5)
@@ -225,8 +225,8 @@ LABEL_48:
 - (NSData)JSONBodyData
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(SSVGratisRequestBody *)self bodyDictionary];
-  v4 = [v2 dataWithJSONObject:v3 options:0 error:0];
+  bodyDictionary = [(SSVGratisRequestBody *)self bodyDictionary];
+  v4 = [v2 dataWithJSONObject:bodyDictionary options:0 error:0];
 
   return v4;
 }
@@ -234,16 +234,16 @@ LABEL_48:
 - (NSData)propertyListBodyData
 {
   v2 = MEMORY[0x1E696AE40];
-  v3 = [(SSVGratisRequestBody *)self bodyDictionary];
-  v4 = [v2 dataWithPropertyList:v3 format:100 options:0 error:0];
+  bodyDictionary = [(SSVGratisRequestBody *)self bodyDictionary];
+  v4 = [v2 dataWithPropertyList:bodyDictionary format:100 options:0 error:0];
 
   return v4;
 }
 
-- (void)setValue:(id)a3 forBodyParameter:(id)a4
+- (void)setValue:(id)value forBodyParameter:(id)parameter
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  parameterCopy = parameter;
   if (!self->_additionalParameters)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -252,38 +252,38 @@ LABEL_48:
   }
 
   v9 = self->_additionalParameters;
-  if (v10)
+  if (valueCopy)
   {
-    [(NSMutableDictionary *)v9 setObject:v10 forKey:v6];
+    [(NSMutableDictionary *)v9 setObject:valueCopy forKey:parameterCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)v9 removeObjectForKey:v6];
+    [(NSMutableDictionary *)v9 removeObjectForKey:parameterCopy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithRequestStyle:", self->_style}];
-  v6 = [(NSNumber *)self->_accountID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithRequestStyle:", self->_style}];
+  v6 = [(NSNumber *)self->_accountID copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSMutableDictionary *)self->_additionalParameters mutableCopyWithZone:a3];
+  v8 = [(NSMutableDictionary *)self->_additionalParameters mutableCopyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSArray *)self->_applications copyWithZone:a3];
+  v10 = [(NSArray *)self->_applications copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
   *(v5 + 32) = self->_backgroundRequest;
-  v12 = [(NSArray *)self->_bundleIdentifiers copyWithZone:a3];
+  v12 = [(NSArray *)self->_bundleIdentifiers copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSArray *)self->_itemIdentifiers copyWithZone:a3];
+  v14 = [(NSArray *)self->_itemIdentifiers copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
@@ -303,9 +303,9 @@ LABEL_48:
     itemIdentifiers = self->_bundleIdentifiers;
   }
 
-  v7 = [v3 stringWithFormat:@"%@: [IDs: %@]", v4, itemIdentifiers];
+  itemIdentifiers = [v3 stringWithFormat:@"%@: [IDs: %@]", v4, itemIdentifiers];
 
-  return v7;
+  return itemIdentifiers;
 }
 
 @end

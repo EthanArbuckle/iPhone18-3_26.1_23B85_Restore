@@ -1,46 +1,46 @@
 @interface SBWorkspaceEntity
 + (id)entity;
-- (BOOL)isAnalogousToEntity:(id)a3;
-- (BOOL)representsSameLayoutElementAsDescriptor:(id)a3;
-- (SBWorkspaceEntity)initWithIdentifier:(id)a3 displayChangeSettings:(id)a4;
+- (BOOL)isAnalogousToEntity:(id)entity;
+- (BOOL)representsSameLayoutElementAsDescriptor:(id)descriptor;
+- (SBWorkspaceEntity)initWithIdentifier:(id)identifier displayChangeSettings:(id)settings;
 - (id)_generator;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)displayItemRepresentation;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)flagForActivationSetting:(unsigned int)a3;
-- (int64_t)flagForDeactivationSetting:(unsigned int)a3;
+- (int64_t)flagForActivationSetting:(unsigned int)setting;
+- (int64_t)flagForDeactivationSetting:(unsigned int)setting;
 - (unint64_t)layoutAttributes;
-- (void)applyActivationSettings:(id)a3;
-- (void)applyDeactivationSettings:(id)a3;
-- (void)setFlag:(int64_t)a3 forActivationSetting:(unsigned int)a4;
-- (void)setFlag:(int64_t)a3 forDeactivationSetting:(unsigned int)a4;
-- (void)setObject:(id)a3 forActivationSetting:(unsigned int)a4;
-- (void)setObject:(id)a3 forDeactivationSetting:(unsigned int)a4;
+- (void)applyActivationSettings:(id)settings;
+- (void)applyDeactivationSettings:(id)settings;
+- (void)setFlag:(int64_t)flag forActivationSetting:(unsigned int)setting;
+- (void)setFlag:(int64_t)flag forDeactivationSetting:(unsigned int)setting;
+- (void)setObject:(id)object forActivationSetting:(unsigned int)setting;
+- (void)setObject:(id)object forDeactivationSetting:(unsigned int)setting;
 @end
 
 @implementation SBWorkspaceEntity
 
 + (id)entity
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 - (unint64_t)layoutAttributes
 {
-  v3 = [(SBWorkspaceEntity *)self supportsPresentationAtAnySize];
+  supportsPresentationAtAnySize = [(SBWorkspaceEntity *)self supportsPresentationAtAnySize];
   if ([(SBWorkspaceEntity *)self wantsExclusiveForeground])
   {
-    return v3 | 2;
+    return supportsPresentationAtAnySize | 2;
   }
 
   else
   {
-    return v3;
+    return supportsPresentationAtAnySize;
   }
 }
 
@@ -56,29 +56,29 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBWorkspaceEntity *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWorkspaceEntity *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)displayItemRepresentation
 {
   if ([(SBWorkspaceEntity *)self isApplicationSceneEntity])
   {
-    v3 = self;
-    v4 = [(SBWorkspaceEntity *)v3 application];
-    if ([v4 isWebApplication])
+    selfCopy = self;
+    application = [(SBWorkspaceEntity *)selfCopy application];
+    if ([application isWebApplication])
     {
-      v5 = [(SBWorkspaceEntity *)v3 uniqueIdentifier];
-      v6 = [SBDisplayItem webAppDisplayItemWithWebAppIdentifier:v5];
+      uniqueIdentifier = [(SBWorkspaceEntity *)selfCopy uniqueIdentifier];
+      v6 = [SBDisplayItem webAppDisplayItemWithWebAppIdentifier:uniqueIdentifier];
     }
 
     else
     {
-      v5 = [v4 bundleIdentifier];
-      v9 = [(SBWorkspaceEntity *)v3 uniqueIdentifier];
-      v6 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:v5 sceneIdentifier:v9];
+      uniqueIdentifier = [application bundleIdentifier];
+      uniqueIdentifier2 = [(SBWorkspaceEntity *)selfCopy uniqueIdentifier];
+      v6 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:uniqueIdentifier sceneIdentifier:uniqueIdentifier2];
     }
 
     goto LABEL_8;
@@ -86,10 +86,10 @@
 
   if ([(SBWorkspaceEntity *)self isAppClipPlaceholderEntity])
   {
-    v3 = [(SBWorkspaceEntity *)self appClipPlaceholderEntity];
-    v7 = [(SBWorkspaceEntity *)v3 bundleIdentifier];
-    v8 = [(SBWorkspaceEntity *)v3 futureSceneIdentifier];
-    v6 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:v7 sceneIdentifier:v8];
+    selfCopy = [(SBWorkspaceEntity *)self appClipPlaceholderEntity];
+    bundleIdentifier = [(SBWorkspaceEntity *)selfCopy bundleIdentifier];
+    futureSceneIdentifier = [(SBWorkspaceEntity *)selfCopy futureSceneIdentifier];
+    v6 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:bundleIdentifier sceneIdentifier:futureSceneIdentifier];
 
 LABEL_8:
     goto LABEL_9;
@@ -110,26 +110,26 @@ LABEL_9:
   return v6;
 }
 
-- (SBWorkspaceEntity)initWithIdentifier:(id)a3 displayChangeSettings:(id)a4
+- (SBWorkspaceEntity)initWithIdentifier:(id)identifier displayChangeSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  settingsCopy = settings;
   v16.receiver = self;
   v16.super_class = SBWorkspaceEntity;
   v8 = [(SBWorkspaceEntity *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copyActivationSettings];
+    copyActivationSettings = [settingsCopy copyActivationSettings];
     activationSettings = v8->_activationSettings;
-    v8->_activationSettings = v11;
+    v8->_activationSettings = copyActivationSettings;
 
-    v13 = [v7 copyDeactivationSettings];
+    copyDeactivationSettings = [settingsCopy copyDeactivationSettings];
     deactivationSettings = v8->_deactivationSettings;
-    v8->_deactivationSettings = v13;
+    v8->_deactivationSettings = copyDeactivationSettings;
 
     v8->_layoutRole = 0;
   }
@@ -137,10 +137,10 @@ LABEL_9:
   return v8;
 }
 
-- (void)setFlag:(int64_t)a3 forActivationSetting:(unsigned int)a4
+- (void)setFlag:(int64_t)flag forActivationSetting:(unsigned int)setting
 {
-  v4 = *&a4;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && !self->_activationSettings)
+  v4 = *&setting;
+  if (flag != 0x7FFFFFFFFFFFFFFFLL && !self->_activationSettings)
   {
     v7 = objc_alloc_init(SBActivationSettings);
     activationSettings = self->_activationSettings;
@@ -149,15 +149,15 @@ LABEL_9:
 
   v9 = self->_activationSettings;
 
-  [(SBActivationSettings *)v9 setFlag:a3 forActivationSetting:v4];
+  [(SBActivationSettings *)v9 setFlag:flag forActivationSetting:v4];
 }
 
-- (int64_t)flagForActivationSetting:(unsigned int)a3
+- (int64_t)flagForActivationSetting:(unsigned int)setting
 {
   activationSettings = self->_activationSettings;
   if (activationSettings)
   {
-    return [(SBActivationSettings *)activationSettings flagForActivationSetting:*&a3];
+    return [(SBActivationSettings *)activationSettings flagForActivationSetting:*&setting];
   }
 
   else
@@ -166,43 +166,43 @@ LABEL_9:
   }
 }
 
-- (void)setObject:(id)a3 forActivationSetting:(unsigned int)a4
+- (void)setObject:(id)object forActivationSetting:(unsigned int)setting
 {
-  v4 = *&a4;
-  v6 = a3;
-  v9 = v6;
-  if (v6 && !self->_activationSettings)
+  v4 = *&setting;
+  objectCopy = object;
+  v9 = objectCopy;
+  if (objectCopy && !self->_activationSettings)
   {
     v7 = objc_alloc_init(SBActivationSettings);
     activationSettings = self->_activationSettings;
     self->_activationSettings = v7;
 
-    v6 = v9;
+    objectCopy = v9;
   }
 
-  [(SBActivationSettings *)self->_activationSettings setObject:v6 forActivationSetting:v4];
+  [(SBActivationSettings *)self->_activationSettings setObject:objectCopy forActivationSetting:v4];
 }
 
-- (void)applyActivationSettings:(id)a3
+- (void)applyActivationSettings:(id)settings
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && !self->_activationSettings)
+  settingsCopy = settings;
+  v7 = settingsCopy;
+  if (settingsCopy && !self->_activationSettings)
   {
     v5 = objc_alloc_init(SBActivationSettings);
     activationSettings = self->_activationSettings;
     self->_activationSettings = v5;
 
-    v4 = v7;
+    settingsCopy = v7;
   }
 
-  [(SBActivationSettings *)self->_activationSettings applyActivationSettings:v4];
+  [(SBActivationSettings *)self->_activationSettings applyActivationSettings:settingsCopy];
 }
 
-- (void)setFlag:(int64_t)a3 forDeactivationSetting:(unsigned int)a4
+- (void)setFlag:(int64_t)flag forDeactivationSetting:(unsigned int)setting
 {
-  v4 = *&a4;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && !self->_deactivationSettings)
+  v4 = *&setting;
+  if (flag != 0x7FFFFFFFFFFFFFFFLL && !self->_deactivationSettings)
   {
     v7 = objc_alloc_init(SBDeactivationSettings);
     deactivationSettings = self->_deactivationSettings;
@@ -211,15 +211,15 @@ LABEL_9:
 
   v9 = self->_deactivationSettings;
 
-  [(SBDeactivationSettings *)v9 setFlag:a3 forDeactivationSetting:v4];
+  [(SBDeactivationSettings *)v9 setFlag:flag forDeactivationSetting:v4];
 }
 
-- (int64_t)flagForDeactivationSetting:(unsigned int)a3
+- (int64_t)flagForDeactivationSetting:(unsigned int)setting
 {
   deactivationSettings = self->_deactivationSettings;
   if (deactivationSettings)
   {
-    return [(SBDeactivationSettings *)deactivationSettings flagForDeactivationSetting:*&a3];
+    return [(SBDeactivationSettings *)deactivationSettings flagForDeactivationSetting:*&setting];
   }
 
   else
@@ -228,43 +228,43 @@ LABEL_9:
   }
 }
 
-- (void)setObject:(id)a3 forDeactivationSetting:(unsigned int)a4
+- (void)setObject:(id)object forDeactivationSetting:(unsigned int)setting
 {
-  v4 = *&a4;
-  v6 = a3;
-  v9 = v6;
-  if (v6 && !self->_deactivationSettings)
+  v4 = *&setting;
+  objectCopy = object;
+  v9 = objectCopy;
+  if (objectCopy && !self->_deactivationSettings)
   {
     v7 = objc_alloc_init(SBDeactivationSettings);
     deactivationSettings = self->_deactivationSettings;
     self->_deactivationSettings = v7;
 
-    v6 = v9;
+    objectCopy = v9;
   }
 
-  [(SBDeactivationSettings *)self->_deactivationSettings setObject:v6 forDeactivationSetting:v4];
+  [(SBDeactivationSettings *)self->_deactivationSettings setObject:objectCopy forDeactivationSetting:v4];
 }
 
-- (void)applyDeactivationSettings:(id)a3
+- (void)applyDeactivationSettings:(id)settings
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && !self->_deactivationSettings)
+  settingsCopy = settings;
+  v7 = settingsCopy;
+  if (settingsCopy && !self->_deactivationSettings)
   {
     v5 = objc_alloc_init(SBDeactivationSettings);
     deactivationSettings = self->_deactivationSettings;
     self->_deactivationSettings = v5;
 
-    v4 = v7;
+    settingsCopy = v7;
   }
 
-  [(SBDeactivationSettings *)self->_deactivationSettings applyDeactivationSettings:v4];
+  [(SBDeactivationSettings *)self->_deactivationSettings applyDeactivationSettings:settingsCopy];
 }
 
-- (BOOL)isAnalogousToEntity:(id)a3
+- (BOOL)isAnalogousToEntity:(id)entity
 {
-  v4 = a3;
-  if (self == v4)
+  entityCopy = entity;
+  if (self == entityCopy)
   {
     v6 = 1;
   }
@@ -274,9 +274,9 @@ LABEL_9:
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(SBWorkspaceEntity *)self uniqueIdentifier];
-      v8 = [(SBWorkspaceEntity *)v4 uniqueIdentifier];
-      v6 = [v7 isEqualToString:v8];
+      uniqueIdentifier = [(SBWorkspaceEntity *)self uniqueIdentifier];
+      uniqueIdentifier2 = [(SBWorkspaceEntity *)entityCopy uniqueIdentifier];
+      v6 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
     }
 
     else
@@ -302,42 +302,42 @@ LABEL_9:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(SBWorkspaceEntity *)self uniqueIdentifier];
-  v6 = [v4 initWithIdentifier:v5 displayChangeSettings:0];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  uniqueIdentifier = [(SBWorkspaceEntity *)self uniqueIdentifier];
+  v6 = [v4 initWithIdentifier:uniqueIdentifier displayChangeSettings:0];
 
-  v7 = [(SBWorkspaceEntity *)self activationSettings];
-  [v6 applyActivationSettings:v7];
+  activationSettings = [(SBWorkspaceEntity *)self activationSettings];
+  [v6 applyActivationSettings:activationSettings];
 
-  v8 = [(SBWorkspaceEntity *)self deactivationSettings];
-  [v6 applyDeactivationSettings:v8];
+  deactivationSettings = [(SBWorkspaceEntity *)self deactivationSettings];
+  [v6 applyDeactivationSettings:deactivationSettings];
 
   [v6 setLayoutRole:{-[SBWorkspaceEntity layoutRole](self, "layoutRole")}];
   return v6;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBWorkspaceEntity *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBWorkspaceEntity *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceEntity *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBWorkspaceEntity *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__SBWorkspaceEntity_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -367,14 +367,14 @@ uint64_t __59__SBWorkspaceEntity_descriptionBuilderWithMultilinePrefix___block_i
   return result;
 }
 
-- (BOOL)representsSameLayoutElementAsDescriptor:(id)a3
+- (BOOL)representsSameLayoutElementAsDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceEntity *)self uniqueIdentifier];
-  v6 = [v4 uniqueIdentifier];
+  descriptorCopy = descriptor;
+  uniqueIdentifier = [(SBWorkspaceEntity *)self uniqueIdentifier];
+  uniqueIdentifier2 = [descriptorCopy uniqueIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(descriptorCopy) = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
+  return descriptorCopy;
 }
 
 @end

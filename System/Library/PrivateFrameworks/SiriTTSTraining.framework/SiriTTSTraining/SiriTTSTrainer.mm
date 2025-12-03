@@ -1,50 +1,50 @@
 @interface SiriTTSTrainer
-- (SiriTTSTrainer)initWithPaths:(id)a3 dataAssetPath:(id)a4 inferenceAssetPath:(id)a5;
-- (SiriTTSTrainer)initWithPaths:(id)a3 dataAssetPath:(id)a4 inferenceAssetPath:(id)a5 taskId:(id)a6;
+- (SiriTTSTrainer)initWithPaths:(id)paths dataAssetPath:(id)path inferenceAssetPath:(id)assetPath;
+- (SiriTTSTrainer)initWithPaths:(id)paths dataAssetPath:(id)path inferenceAssetPath:(id)assetPath taskId:(id)id;
 - (id).cxx_construct;
-- (id)callback_func:(int)a3;
-- (int64_t)start_preprocess:(id)a3;
-- (int64_t)start_train:(int64_t)a3 delegate:(id)a4;
+- (id)callback_func:(int)callback_func;
+- (int64_t)start_preprocess:(id)start_preprocess;
+- (int64_t)start_train:(int64_t)start_train delegate:(id)delegate;
 @end
 
 @implementation SiriTTSTrainer
 
-- (SiriTTSTrainer)initWithPaths:(id)a3 dataAssetPath:(id)a4 inferenceAssetPath:(id)a5
+- (SiriTTSTrainer)initWithPaths:(id)paths dataAssetPath:(id)path inferenceAssetPath:(id)assetPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathsCopy = paths;
+  pathCopy = path;
+  assetPathCopy = assetPath;
   v11 = +[NSProcessInfo processInfo];
-  v12 = [v11 globallyUniqueString];
-  v13 = [NSString stringWithFormat:@"manual-task-%@", v12];
+  globallyUniqueString = [v11 globallyUniqueString];
+  v13 = [NSString stringWithFormat:@"manual-task-%@", globallyUniqueString];
 
-  v14 = [(SiriTTSTrainer *)self initWithPaths:v8 dataAssetPath:v9 inferenceAssetPath:v10 taskId:v13];
+  v14 = [(SiriTTSTrainer *)self initWithPaths:pathsCopy dataAssetPath:pathCopy inferenceAssetPath:assetPathCopy taskId:v13];
   return v14;
 }
 
-- (SiriTTSTrainer)initWithPaths:(id)a3 dataAssetPath:(id)a4 inferenceAssetPath:(id)a5 taskId:(id)a6
+- (SiriTTSTrainer)initWithPaths:(id)paths dataAssetPath:(id)path inferenceAssetPath:(id)assetPath taskId:(id)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathsCopy = paths;
+  pathCopy = path;
+  assetPathCopy = assetPath;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = SiriTTSTrainer;
   if ([(SiriTTSTrainer *)&v15 init])
   {
-    [v10 UTF8String];
-    [v11 UTF8String];
-    [v12 UTF8String];
-    [v13 UTF8String];
+    [pathsCopy UTF8String];
+    [pathCopy UTF8String];
+    [assetPathCopy UTF8String];
+    [idCopy UTF8String];
     operator new();
   }
 
   return 0;
 }
 
-- (id)callback_func:(int)a3
+- (id)callback_func:(int)callback_func
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -57,11 +57,11 @@
     v13 = 1024;
     v14 = HIDWORD(a2);
     v15 = 1024;
-    v16 = a3;
+    callback_funcCopy = callback_func;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "callback event: %d, curr_value=%d, total_value=%d", v12, 0x14u);
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
+  WeakRetained = objc_loadWeakRetained((self + 24));
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0)
@@ -69,18 +69,18 @@
     return 0;
   }
 
-  v9 = objc_loadWeakRetained((a1 + 24));
-  v10 = [v9 trainerTaskEvent:a2 currentValue:a2 >> 32 totalValue:a3];
+  v9 = objc_loadWeakRetained((self + 24));
+  v10 = [v9 trainerTaskEvent:a2 currentValue:a2 >> 32 totalValue:callback_func];
 
   return v10;
 }
 
-- (int64_t)start_preprocess:(id)a3
+- (int64_t)start_preprocess:(id)start_preprocess
 {
-  v4 = a3;
+  start_preprocessCopy = start_preprocess;
   if (self)
   {
-    objc_storeWeak(&self->_delegate, v4);
+    objc_storeWeak(&self->_delegate, start_preprocessCopy);
   }
 
   v23[0] = _NSConcreteStackBlock;
@@ -179,12 +179,12 @@
   return v13;
 }
 
-- (int64_t)start_train:(int64_t)a3 delegate:(id)a4
+- (int64_t)start_train:(int64_t)start_train delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   if (self)
   {
-    objc_storeWeak(&self->_delegate, v6);
+    objc_storeWeak(&self->_delegate, delegateCopy);
   }
 
   v44[0] = _NSConcreteStackBlock;
@@ -196,7 +196,7 @@
   v51[0] = off_285158;
   v51[1] = objc_retainBlock(v44);
   v52 = v51;
-  if (a3 == 2)
+  if (start_train == 2)
   {
     v25 = SiriTTSTrainerGetLog();
     v26 = os_signpost_id_generate(v25);
@@ -225,7 +225,7 @@
       *buf = 134218242;
       v48 = v26;
       v49 = 2080;
-      v50 = v31;
+      start_trainCopy = v31;
       _os_log_impl(&dword_0, v30, OS_LOG_TYPE_INFO, "#STTSP BEGIN [%lld]: STT-TrainingWaveRNN-Interval taskId=%s", buf, 0x16u);
       if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -287,7 +287,7 @@
       *buf = 134218242;
       v48 = v36;
       v49 = 2080;
-      v50 = p_p;
+      start_trainCopy = p_p;
       v24 = "#STTSP END [%lld]: STT-TrainingWaveRNN-Interval taskId=%s";
       goto LABEL_67;
     }
@@ -295,7 +295,7 @@
 
   else
   {
-    if (a3 != 1)
+    if (start_train != 1)
     {
       v22 = SiriTTSTrainerGetLog();
       if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -317,7 +317,7 @@
       *buf = 136315394;
       v48 = v42;
       v49 = 2048;
-      v50 = a3;
+      start_trainCopy = start_train;
       _os_log_error_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "taskId: %s, Training model type is not supported: %ld", buf, 0x16u);
       goto LABEL_68;
     }
@@ -349,7 +349,7 @@
       *buf = 134218242;
       v48 = v8;
       v49 = 2080;
-      v50 = v13;
+      start_trainCopy = v13;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "#STTSP BEGIN [%lld]: STT-TrainingFS2-Interval taskId=%s", buf, 0x16u);
       if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -411,7 +411,7 @@
       *buf = 134218242;
       v48 = v18;
       v49 = 2080;
-      v50 = v23;
+      start_trainCopy = v23;
       v24 = "#STTSP END [%lld]: STT-TrainingFS2-Interval taskId=%s";
 LABEL_67:
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_INFO, v24, buf, 0x16u);

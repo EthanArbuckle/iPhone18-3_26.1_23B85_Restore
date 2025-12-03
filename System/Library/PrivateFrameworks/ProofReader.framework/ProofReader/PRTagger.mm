@@ -1,17 +1,17 @@
 @interface PRTagger
-- (PRTagger)initWithTagSchemes:(id)a3 orthoIndex:(unint64_t)a4;
+- (PRTagger)initWithTagSchemes:(id)schemes orthoIndex:(unint64_t)index;
 @end
 
 @implementation PRTagger
 
-- (PRTagger)initWithTagSchemes:(id)a3 orthoIndex:(unint64_t)a4
+- (PRTagger)initWithTagSchemes:(id)schemes orthoIndex:(unint64_t)index
 {
   v6.receiver = self;
   v6.super_class = PRTagger;
-  result = [(NLTagger *)&v6 initWithTagSchemes:a3];
+  result = [(NLTagger *)&v6 initWithTagSchemes:schemes];
   if (result)
   {
-    result->_orthoIndex = a4;
+    result->_orthoIndex = index;
   }
 
   return result;

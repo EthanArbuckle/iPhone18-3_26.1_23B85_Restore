@@ -4,25 +4,25 @@
 - (BOOL)isFenceDelimiter;
 - (BOOL)isOperationSymbol;
 - (BOOL)isTermSeparator;
-- (SCRCMathOperatorExpression)initWithDictionary:(id)a3;
+- (SCRCMathOperatorExpression)initWithDictionary:(id)dictionary;
 - (id)description;
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4;
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position;
 - (id)latexFormatStringAsOver;
 - (id)mathMLString;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
 @end
 
 @implementation SCRCMathOperatorExpression
 
-- (SCRCMathOperatorExpression)initWithDictionary:(id)a3
+- (SCRCMathOperatorExpression)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SCRCMathOperatorExpression;
-  v5 = [(SCRCMathSimpleExpression *)&v10 initWithDictionary:v4];
+  v5 = [(SCRCMathSimpleExpression *)&v10 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AXMUnichar"];
+    v6 = [dictionaryCopy objectForKey:@"AXMUnichar"];
     *(&v5->super._isImplicit + 1) = [v6 unsignedShortValue];
 
     if (*(&v5->super._isImplicit + 1) == 45 && [(NSString *)v5->super._content length]== 1)
@@ -88,17 +88,17 @@
 
 - (BOOL)isOperationSymbol
 {
-  v2 = [(SCRCMathSimpleExpression *)self content];
-  v3 = [v2 length] == 1;
+  content = [(SCRCMathSimpleExpression *)self content];
+  v3 = [content length] == 1;
 
   return v3;
 }
 
 - (BOOL)isFenceDelimiter
 {
-  v3 = [(SCRCMathExpression *)self fenceDelimiters];
-  v4 = [(SCRCMathSimpleExpression *)self content];
-  v5 = [v3 containsObject:v4];
+  fenceDelimiters = [(SCRCMathExpression *)self fenceDelimiters];
+  content = [(SCRCMathSimpleExpression *)self content];
+  v5 = [fenceDelimiters containsObject:content];
 
   return v5;
 }
@@ -111,8 +111,8 @@
   }
 
   v3 = latexFormatStringAsOver__OverLookupTable;
-  v4 = [(SCRCMathSimpleExpression *)self content];
-  v5 = [v3 objectForKey:v4];
+  content = [(SCRCMathSimpleExpression *)self content];
+  v5 = [v3 objectForKey:content];
 
   return v5;
 }
@@ -123,18 +123,18 @@ void __53__SCRCMathOperatorExpression_latexFormatStringAsOver__block_invoke()
   latexFormatStringAsOver__OverLookupTable = &unk_28763AB40;
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
   v22.receiver = self;
   v22.super_class = SCRCMathOperatorExpression;
-  v5 = [(SCRCMathSimpleExpression *)&v22 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:a4];
+  v5 = [(SCRCMathSimpleExpression *)&v22 speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowed];
   if (!v5)
   {
     if ([(SCRCMathOperatorExpression *)self _isRingOperator])
     {
-      v6 = [(SCRCMathExpression *)self siblings];
-      v7 = [v6 indexOfObjectIdenticalTo:self];
-      if (v7 == [v6 count] - 1)
+      siblings = [(SCRCMathExpression *)self siblings];
+      v7 = [siblings indexOfObjectIdenticalTo:self];
+      if (v7 == [siblings count] - 1)
       {
         v5 = [(SCRCMathExpression *)self localizedAttributedStringForKey:@"operator.degrees"];
       }
@@ -166,8 +166,8 @@ LABEL_26:
       {
 LABEL_27:
         v15 = MEMORY[0x277CCA898];
-        v16 = [(SCRCMathSimpleExpression *)self content];
-        v5 = [v15 scrcStringWithLiteralString:v16];
+        content = [(SCRCMathSimpleExpression *)self content];
+        v5 = [v15 scrcStringWithLiteralString:content];
 
         goto LABEL_28;
       }
@@ -183,20 +183,20 @@ LABEL_7:
       goto LABEL_27;
     }
 
-    v6 = [(SCRCMathExpression *)self siblings];
-    v9 = [v6 indexOfObjectIdenticalTo:self];
+    siblings = [(SCRCMathExpression *)self siblings];
+    v9 = [siblings indexOfObjectIdenticalTo:self];
     v10 = v9;
     if (v9)
     {
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = [(SCRCMathExpression *)self parent];
-        NSLog(&cfstr_AxVoiceoverMat.isa, self, v11);
+        parent = [(SCRCMathExpression *)self parent];
+        NSLog(&cfstr_AxVoiceoverMat.isa, self, parent);
         goto LABEL_22;
       }
 
-      v12 = [v6 objectAtIndex:v9 - 1];
-      v11 = v12;
+      v12 = [siblings objectAtIndex:v9 - 1];
+      parent = v12;
       if (v12 && ![v12 isFenceDelimiter])
       {
         goto LABEL_22;
@@ -205,13 +205,13 @@ LABEL_7:
 
     else
     {
-      v11 = 0;
+      parent = 0;
     }
 
     v13 = v10 + 1;
-    if (v13 < [v6 count])
+    if (v13 < [siblings count])
     {
-      v14 = [v6 objectAtIndex:v13];
+      v14 = [siblings objectAtIndex:v13];
       if ([v14 isOperationSymbol])
       {
         v5 = 0;
@@ -246,19 +246,19 @@ LABEL_28:
   return v5;
 }
 
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position
 {
-  v6 = a4;
+  positionCopy = position;
   if ([(SCRCMathOperatorExpression *)self _isInvisibleCharacter])
   {
-    v7 = [MEMORY[0x277CCA898] scrcStringWithString:&stru_287632E30 treePosition:v6];
+    v7 = [MEMORY[0x277CCA898] scrcStringWithString:&stru_287632E30 treePosition:positionCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SCRCMathOperatorExpression;
-    v7 = [(SCRCMathSimpleExpression *)&v10 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 treePosition:v6];
+    v7 = [(SCRCMathSimpleExpression *)&v10 dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:positionCopy];
   }
 
   v8 = v7;
@@ -268,8 +268,8 @@ LABEL_28:
 
 - (id)mathMLString
 {
-  v2 = [(SCRCMathSimpleExpression *)self content];
-  v3 = [v2 stringWrappedInMathMLTag:@"mo"];
+  content = [(SCRCMathSimpleExpression *)self content];
+  v3 = [content stringWrappedInMathMLTag:@"mo"];
 
   return v3;
 }

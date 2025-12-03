@@ -1,8 +1,8 @@
 @interface SUStrokeEdgesImageModifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIEdgeInsets)edgeInsets;
 - (void)dealloc;
-- (void)drawAfterImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5;
+- (void)drawAfterImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size;
 @end
 
 @implementation SUStrokeEdgesImageModifier
@@ -15,16 +15,16 @@
   [(SUStrokeEdgesImageModifier *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ((-[SUStrokeEdgesImageModifier edgeInsets](self, "edgeInsets"), v6 = v5, v8 = v7, v10 = v9, v12 = v11, [a3 edgeInsets], v8 == v16) ? (v17 = v6 == v13) : (v17 = 0), v17 ? (v18 = v12 == v15) : (v18 = 0), v18 ? (v19 = v10 == v14) : (v19 = 0), v19 && (v20 = -[SUStrokeEdgesImageModifier fitToImage](self, "fitToImage"), v20 == objc_msgSend(a3, "fitToImage"))))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ((-[SUStrokeEdgesImageModifier edgeInsets](self, "edgeInsets"), v6 = v5, v8 = v7, v10 = v9, v12 = v11, [equal edgeInsets], v8 == v16) ? (v17 = v6 == v13) : (v17 = 0), v17 ? (v18 = v12 == v15) : (v18 = 0), v18 ? (v19 = v10 == v14) : (v19 = 0), v19 && (v20 = -[SUStrokeEdgesImageModifier fitToImage](self, "fitToImage"), v20 == objc_msgSend(equal, "fitToImage"))))
   {
-    v21 = -[UIColor isEqual:](-[SUStrokeEdgesImageModifier strokeColor](self, "strokeColor"), "isEqual:", [a3 strokeColor]);
+    v21 = -[UIColor isEqual:](-[SUStrokeEdgesImageModifier strokeColor](self, "strokeColor"), "isEqual:", [equal strokeColor]);
     if (v21)
     {
-      v22 = [(SUStrokeEdgesImageModifier *)self strokeCurrentPath];
-      LOBYTE(v21) = v22 ^ [a3 strokeCurrentPath] ^ 1;
+      strokeCurrentPath = [(SUStrokeEdgesImageModifier *)self strokeCurrentPath];
+      LOBYTE(v21) = strokeCurrentPath ^ [equal strokeCurrentPath] ^ 1;
     }
   }
 
@@ -36,14 +36,14 @@
   return v21;
 }
 
-- (void)drawAfterImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5
+- (void)drawAfterImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.size.height;
-  v8 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = size.height;
+  width = size.width;
+  v7 = frame.size.height;
+  v8 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   CGContextSetCompositeOperation();
   [(SUStrokeEdgesImageModifier *)self edgeInsets];
   v12 = v11;
@@ -77,19 +77,19 @@
       v19 = v20;
     }
 
-    CGContextSetLineWidth(a3, v19);
-    CGContextSetStrokeColorWithColor(a3, [(UIColor *)[(SUStrokeEdgesImageModifier *)self strokeColor] CGColor]);
+    CGContextSetLineWidth(context, v19);
+    CGContextSetStrokeColorWithColor(context, [(UIColor *)[(SUStrokeEdgesImageModifier *)self strokeColor] CGColor]);
 
-    CGContextStrokePath(a3);
+    CGContextStrokePath(context);
   }
 
   else
   {
     v33 = v16;
-    CGContextSetFillColorWithColor(a3, [(UIColor *)[(SUStrokeEdgesImageModifier *)self strokeColor] CGColor]);
+    CGContextSetFillColorWithColor(context, [(UIColor *)[(SUStrokeEdgesImageModifier *)self strokeColor] CGColor]);
     v21 = *(MEMORY[0x1E695F058] + 8);
     v32 = *MEMORY[0x1E695F058];
-    v22 = [(SUStrokeEdgesImageModifier *)self fitToImage];
+    fitToImage = [(SUStrokeEdgesImageModifier *)self fitToImage];
     if (height >= width)
     {
       v23 = height;
@@ -125,7 +125,7 @@
       v23 = v24;
     }
 
-    if (v22)
+    if (fitToImage)
     {
       v26 = y;
     }
@@ -137,7 +137,7 @@
       v26 = v21;
     }
 
-    if (v22)
+    if (fitToImage)
     {
       v27 = x;
     }
@@ -154,7 +154,7 @@
       v38.origin.x = v14 + v27;
       v38.origin.y = v26;
       v38.size.height = v12;
-      CGContextFillRect(a3, v38);
+      CGContextFillRect(context, v38);
     }
 
     if (v18 > 0.00000011920929)
@@ -167,7 +167,7 @@
       v40.origin.y = v26;
       v40.size.width = v18;
       v40.size.height = v7;
-      CGContextFillRect(a3, v40);
+      CGContextFillRect(context, v40);
     }
 
     if (v33 > 0.00000011920929)
@@ -180,7 +180,7 @@
       v42.size.width = v36 - v18;
       v42.origin.x = v14 + v27;
       v42.size.height = v33;
-      CGContextFillRect(a3, v42);
+      CGContextFillRect(context, v42);
     }
 
     if (v14 > 0.00000011920929)
@@ -190,7 +190,7 @@
       v30 = v14;
       v31 = v7;
 
-      CGContextFillRect(a3, *&v28);
+      CGContextFillRect(context, *&v28);
     }
   }
 }

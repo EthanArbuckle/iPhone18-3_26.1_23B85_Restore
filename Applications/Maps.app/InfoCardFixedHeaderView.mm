@@ -1,19 +1,19 @@
 @interface InfoCardFixedHeaderView
 - (NSString)title;
-- (_TtC4Maps23InfoCardFixedHeaderView)initWithCoder:(id)a3;
+- (_TtC4Maps23InfoCardFixedHeaderView)initWithCoder:(id)coder;
 - (_TtP4Maps31InfoCardFixedHeaderViewDelegate_)delegate;
-- (void)handleTapWithGestureRecognizer:(id)a3;
-- (void)setButtonConfiguration:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)handleTapWithGestureRecognizer:(id)recognizer;
+- (void)setButtonConfiguration:(id)configuration;
+- (void)setTitle:(id)title;
 @end
 
 @implementation InfoCardFixedHeaderView
 
-- (void)setButtonConfiguration:(id)a3
+- (void)setButtonConfiguration:(id)configuration
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps23InfoCardFixedHeaderView_buttonConfiguration);
-  *(self + OBJC_IVAR____TtC4Maps23InfoCardFixedHeaderView_buttonConfiguration) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps23InfoCardFixedHeaderView_buttonConfiguration) = configuration;
+  configurationCopy = configuration;
 }
 
 - (_TtP4Maps31InfoCardFixedHeaderViewDelegate_)delegate
@@ -39,9 +39,9 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -53,11 +53,11 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_100310DE4(v4, v6);
 }
 
-- (_TtC4Maps23InfoCardFixedHeaderView)initWithCoder:(id)a3
+- (_TtC4Maps23InfoCardFixedHeaderView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = (self + OBJC_IVAR____TtC4Maps23InfoCardFixedHeaderView_title);
@@ -68,7 +68,7 @@
   return result;
 }
 
-- (void)handleTapWithGestureRecognizer:(id)a3
+- (void)handleTapWithGestureRecognizer:(id)recognizer
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

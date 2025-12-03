@@ -1,8 +1,8 @@
 @interface HDDatabaseMigrator
-- (BOOL)executeSQL:(id)a3 error:(id *)a4;
-- (BOOL)executeSQLStatements:(id)a3 error:(id *)a4;
+- (BOOL)executeSQL:(id)l error:(id *)error;
+- (BOOL)executeSQLStatements:(id)statements error:(id *)error;
 - (HDDatabaseMigrator)init;
-- (HDDatabaseMigrator)initWithTransaction:(id)a3;
+- (HDDatabaseMigrator)initWithTransaction:(id)transaction;
 - (id)boulderProtectedMigrationSteps;
 - (id)butlerProtectedMigrationSteps;
 - (id)cinarProtectedMigrationSteps;
@@ -21,21 +21,21 @@
 - (id)tigrisUnprotectedMigrationSteps;
 - (id)whitetailProtectedMigrationSteps;
 - (id)whitetailUnprotectedMigrationSteps;
-- (int64_t)migrateFromVersion:(int64_t)a3 toVersion:(int64_t)a4 error:(id *)a5;
-- (int64_t)performHFDMigrationToVersion:(int64_t)a3 handler:(id)a4 error:(id *)a5;
-- (uint64_t)_deleteDatabaseStatusForVersion:(uint64_t)a1 errorMessage:(uint64_t)a2 error:(uint64_t)a3;
-- (uint64_t)_migrateKeyValueColumnsFromStringToText:(uint64_t)a3 error:;
-- (uint64_t)_recreateMedicalRecordTable:(void *)a3 intermediateTables:(void *)a4 creationSQL:(uint64_t)a5 error:;
-- (uint64_t)_renameKeyValueSyncStoreColumnInProtectedDabase:(uint64_t)a3 error:;
-- (uint64_t)_updateDataCollectorKeyValueContextWithObject:(void *)a3 domain:(uint64_t)a4 error:;
-- (uint64_t)_updateKeyValueEntityUniquenessWithProtectedDatabase:(uint64_t)a3 error:;
-- (unint64_t)fetchLegacySyncIdentity:(id)a3 error:(id *)a4;
-- (void)addLockstepMigrationForSchema:(id)a3 toVersion:(int64_t)a4 requiringVersion:(int64_t)a5 foreignKeyStatus:(int64_t)a6 handler:(id)a7;
-- (void)addMigrationForSchema:(id)a3 toVersion:(int64_t)a4 foreignKeyStatus:(int64_t)a5 handler:(id)a6;
-- (void)addMigrationSteps:(id)a3;
-- (void)addMigrationTo:(int64_t)a3 foreignKeys:(int64_t)a4 handler:(id)a5;
-- (void)addMigrationTo:(int64_t)a3 function:(void *)a4;
-- (void)addMigrationTo:(int64_t)a3 function:(void *)a4 foreignKeys:(int64_t)a5;
+- (int64_t)migrateFromVersion:(int64_t)version toVersion:(int64_t)toVersion error:(id *)error;
+- (int64_t)performHFDMigrationToVersion:(int64_t)version handler:(id)handler error:(id *)error;
+- (uint64_t)_deleteDatabaseStatusForVersion:(uint64_t)version errorMessage:(uint64_t)message error:(uint64_t)error;
+- (uint64_t)_migrateKeyValueColumnsFromStringToText:(uint64_t)text error:;
+- (uint64_t)_recreateMedicalRecordTable:(void *)table intermediateTables:(void *)tables creationSQL:(uint64_t)l error:;
+- (uint64_t)_renameKeyValueSyncStoreColumnInProtectedDabase:(uint64_t)dabase error:;
+- (uint64_t)_updateDataCollectorKeyValueContextWithObject:(void *)object domain:(uint64_t)domain error:;
+- (uint64_t)_updateKeyValueEntityUniquenessWithProtectedDatabase:(uint64_t)database error:;
+- (unint64_t)fetchLegacySyncIdentity:(id)identity error:(id *)error;
+- (void)addLockstepMigrationForSchema:(id)schema toVersion:(int64_t)version requiringVersion:(int64_t)requiringVersion foreignKeyStatus:(int64_t)status handler:(id)handler;
+- (void)addMigrationForSchema:(id)schema toVersion:(int64_t)version foreignKeyStatus:(int64_t)status handler:(id)handler;
+- (void)addMigrationSteps:(id)steps;
+- (void)addMigrationTo:(int64_t)to foreignKeys:(int64_t)keys handler:(id)handler;
+- (void)addMigrationTo:(int64_t)to function:(void *)function;
+- (void)addMigrationTo:(int64_t)to function:(void *)function foreignKeys:(int64_t)keys;
 - (void)addPrimaryMigrationSteps;
 - (void)azul_addProtectedMigrationSteps;
 - (void)azul_addUnprotectedMigrationSteps;
@@ -61,16 +61,16 @@
 
 - (id)whitetailUnprotectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__block_invoke;
   v6[3] = &unk_278615508;
   v6[4] = self;
   v4 = HDCreateMigrationStep(9203, 10001, v6);
-  [v3 addObject:v4];
+  [array addObject:v4];
 
-  return v3;
+  return array;
 }
 
 void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -86,14 +86,14 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
 
 - (id)whitetailProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __65__HDDatabaseMigrator_Whitetail__whitetailProtectedMigrationSteps__block_invoke;
   v68[3] = &unk_278615508;
   v68[4] = self;
   v4 = HDCreateMigrationStep(9210, 10002, v68);
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
@@ -101,7 +101,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v67[3] = &unk_278615508;
   v67[4] = self;
   v5 = HDCreateMigrationStep(10002, 10003, v67);
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
@@ -109,7 +109,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v66[3] = &unk_278615508;
   v66[4] = self;
   v6 = HDCreateMigrationStep(10003, 10004, v66);
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v65[0] = MEMORY[0x277D85DD0];
   v65[1] = 3221225472;
@@ -117,7 +117,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v65[3] = &unk_278615508;
   v65[4] = self;
   v7 = HDCreateMigrationStep(10004, 10005, v65);
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
@@ -125,7 +125,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v64[3] = &unk_278615508;
   v64[4] = self;
   v8 = HDCreateMigrationStep(10005, 10006, v64);
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
@@ -133,7 +133,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v63[3] = &unk_278615508;
   v63[4] = self;
   v9 = HDCreateMigrationStep(10006, 10007, v63);
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
@@ -141,7 +141,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v62[3] = &unk_278615508;
   v62[4] = self;
   v10 = HDCreateMigrationStep(10007, 10009, v62);
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
@@ -149,7 +149,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v61[3] = &unk_278615508;
   v61[4] = self;
   v11 = HDCreateMigrationStep(10009, 10010, v61);
-  [v3 addObject:v11];
+  [array addObject:v11];
 
   v60[0] = MEMORY[0x277D85DD0];
   v60[1] = 3221225472;
@@ -157,7 +157,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v60[3] = &unk_278615508;
   v60[4] = self;
   v12 = HDCreateMigrationStep(10010, 10011, v60);
-  [v3 addObject:v12];
+  [array addObject:v12];
 
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
@@ -165,7 +165,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v59[3] = &unk_278615508;
   v59[4] = self;
   v13 = HDCreateMigrationStep(10011, 10012, v59);
-  [v3 addObject:v13];
+  [array addObject:v13];
 
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
@@ -173,7 +173,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v58[3] = &unk_278615508;
   v58[4] = self;
   v14 = HDCreateMigrationStep(10012, 10013, v58);
-  [v3 addObject:v14];
+  [array addObject:v14];
 
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
@@ -181,7 +181,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v57[3] = &unk_278615508;
   v57[4] = self;
   v15 = HDCreateMigrationStep(10013, 10014, v57);
-  [v3 addObject:v15];
+  [array addObject:v15];
 
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
@@ -189,7 +189,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v56[3] = &unk_278615508;
   v56[4] = self;
   v16 = HDCreateMigrationStep(10014, 10015, v56);
-  [v3 addObject:v16];
+  [array addObject:v16];
 
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
@@ -197,7 +197,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v55[3] = &unk_278615508;
   v55[4] = self;
   v17 = HDCreateMigrationStep(10015, 10016, v55);
-  [v3 addObject:v17];
+  [array addObject:v17];
 
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
@@ -205,7 +205,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v54[3] = &unk_278615508;
   v54[4] = self;
   v18 = HDCreateMigrationStep(10016, 10017, v54);
-  [v3 addObject:v18];
+  [array addObject:v18];
 
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
@@ -213,7 +213,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v53[3] = &unk_278615508;
   v53[4] = self;
   v19 = HDCreateMigrationStep(10017, 10018, v53);
-  [v3 addObject:v19];
+  [array addObject:v19];
 
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
@@ -221,7 +221,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v52[3] = &unk_278615508;
   v52[4] = self;
   v20 = HDCreateMigrationStep(10018, 10019, v52);
-  [v3 addObject:v20];
+  [array addObject:v20];
 
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
@@ -229,7 +229,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v51[3] = &unk_278615508;
   v51[4] = self;
   v21 = HDCreateMigrationStep(10019, 10021, v51);
-  [v3 addObject:v21];
+  [array addObject:v21];
 
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
@@ -237,7 +237,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v50[3] = &unk_278615508;
   v50[4] = self;
   v22 = HDCreateMigrationStep(10021, 10022, v50);
-  [v3 addObject:v22];
+  [array addObject:v22];
 
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
@@ -245,7 +245,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v49[3] = &unk_278615508;
   v49[4] = self;
   v23 = HDCreateMigrationStep(10022, 10023, v49);
-  [v3 addObject:v23];
+  [array addObject:v23];
 
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
@@ -253,7 +253,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v48[3] = &unk_278615508;
   v48[4] = self;
   v24 = HDCreateMigrationStep(10023, 10025, v48);
-  [v3 addObject:v24];
+  [array addObject:v24];
 
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -261,7 +261,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v47[3] = &unk_278615508;
   v47[4] = self;
   v25 = [HDDatabaseMigrationStep migrationStepWithForeignKeysDisabledFrom:10025 to:10027 handler:v47];
-  [v3 addObject:v25];
+  [array addObject:v25];
 
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
@@ -269,7 +269,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v46[3] = &unk_278615508;
   v46[4] = self;
   v26 = HDCreateMigrationStep(10027, 10028, v46);
-  [v3 addObject:v26];
+  [array addObject:v26];
 
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -277,7 +277,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v45[3] = &unk_278615508;
   v45[4] = self;
   v27 = HDCreateMigrationStep(10028, 10029, v45);
-  [v3 addObject:v27];
+  [array addObject:v27];
 
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
@@ -285,7 +285,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v44[3] = &unk_278615508;
   v44[4] = self;
   v28 = HDCreateMigrationStep(10029, 10030, v44);
-  [v3 addObject:v28];
+  [array addObject:v28];
 
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
@@ -293,7 +293,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v43[3] = &unk_278615508;
   v43[4] = self;
   v29 = HDCreateMigrationStep(10030, 10031, v43);
-  [v3 addObject:v29];
+  [array addObject:v29];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -301,7 +301,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v42[3] = &unk_278615508;
   v42[4] = self;
   v30 = HDCreateMigrationStep(10031, 10032, v42);
-  [v3 addObject:v30];
+  [array addObject:v30];
 
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
@@ -309,7 +309,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v41[3] = &unk_278615508;
   v41[4] = self;
   v31 = HDCreateMigrationStep(10032, 10033, v41);
-  [v3 addObject:v31];
+  [array addObject:v31];
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -317,7 +317,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v40[3] = &unk_278615508;
   v40[4] = self;
   v32 = HDCreateMigrationStep(10033, 10034, v40);
-  [v3 addObject:v32];
+  [array addObject:v32];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -325,7 +325,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v39[3] = &unk_278615508;
   v39[4] = self;
   v33 = HDCreateMigrationStep(10034, 10035, v39);
-  [v3 addObject:v33];
+  [array addObject:v33];
 
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
@@ -333,7 +333,7 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v38[3] = &unk_278615508;
   v38[4] = self;
   v34 = HDCreateMigrationStep(10035, 10036, v38);
-  [v3 addObject:v34];
+  [array addObject:v34];
 
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
@@ -341,9 +341,9 @@ void *__67__HDDatabaseMigrator_Whitetail__whitetailUnprotectedMigrationSteps__bl
   v37[3] = &unk_278615508;
   v37[4] = self;
   v35 = HDCreateMigrationStep(10036, 10037, v37);
-  [v3 addObject:v35];
+  [array addObject:v35];
 
-  return v3;
+  return array;
 }
 
 uint64_t __65__HDDatabaseMigrator_Whitetail__whitetailProtectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -1036,14 +1036,14 @@ void __69__HDDatabaseMigrator_Whitetail___addFieldsToLocationSeriesWithError___b
 
 - (id)monarchUnprotectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__block_invoke;
   v20[3] = &unk_27861B758;
   v20[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepFrom:8114 to:9000 handler:v20];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -1051,7 +1051,7 @@ void __69__HDDatabaseMigrator_Whitetail___addFieldsToLocationSeriesWithError___b
   v19[3] = &unk_27861B758;
   v19[4] = self;
   v5 = [HDDatabaseMigrationStep migrationStepFrom:9000 to:9001 handler:v19];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -1059,7 +1059,7 @@ void __69__HDDatabaseMigrator_Whitetail___addFieldsToLocationSeriesWithError___b
   v18[3] = &unk_27861B758;
   v18[4] = self;
   v6 = [HDDatabaseMigrationStep migrationStepFrom:9001 to:9002 handler:v18];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -1067,7 +1067,7 @@ void __69__HDDatabaseMigrator_Whitetail___addFieldsToLocationSeriesWithError___b
   v17[3] = &unk_27861B758;
   v17[4] = self;
   v7 = [HDDatabaseMigrationStep migrationStepFrom:9002 to:9003 handler:v17];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1075,7 +1075,7 @@ void __69__HDDatabaseMigrator_Whitetail___addFieldsToLocationSeriesWithError___b
   v16[3] = &unk_27861B758;
   v16[4] = self;
   v8 = [HDDatabaseMigrationStep migrationStepFrom:9003 to:9004 handler:v16];
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -1083,7 +1083,7 @@ void __69__HDDatabaseMigrator_Whitetail___addFieldsToLocationSeriesWithError___b
   v15[3] = &unk_27861B758;
   v15[4] = self;
   v9 = [HDDatabaseMigrationStep migrationStepFrom:9004 to:9005 handler:v15];
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -1091,7 +1091,7 @@ void __69__HDDatabaseMigrator_Whitetail___addFieldsToLocationSeriesWithError___b
   v14[3] = &unk_27861B758;
   v14[4] = self;
   v10 = [HDDatabaseMigrationStep migrationStepFrom:9005 to:9006 handler:v14];
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -1099,9 +1099,9 @@ void __69__HDDatabaseMigrator_Whitetail___addFieldsToLocationSeriesWithError___b
   v13[3] = &unk_27861B758;
   v13[4] = self;
   v11 = [HDDatabaseMigrationStep migrationStepFrom:9006 to:9007 handler:v13];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
-  return v3;
+  return array;
 }
 
 uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -1303,14 +1303,14 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
 
 - (id)monarchProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __61__HDDatabaseMigrator_Monarch__monarchProtectedMigrationSteps__block_invoke;
   v36[3] = &unk_27861B758;
   v36[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepFrom:8120 to:9000 handler:v36];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -1318,7 +1318,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v35[3] = &unk_27861B758;
   v35[4] = self;
   v5 = [HDDatabaseMigrationStep migrationStepFrom:9000 to:9001 handler:v35];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -1326,7 +1326,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v34[3] = &unk_27861B758;
   v34[4] = self;
   v6 = [HDDatabaseMigrationStep migrationStepFrom:9001 to:9002 handler:v34];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
@@ -1334,7 +1334,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v33[3] = &unk_27861B758;
   v33[4] = self;
   v7 = [HDDatabaseMigrationStep migrationStepFrom:9002 to:9004 handler:v33];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -1342,7 +1342,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v32[3] = &unk_27861B758;
   v32[4] = self;
   v8 = [HDDatabaseMigrationStep migrationStepWithForeignKeysDisabledFrom:9004 to:9005 handler:v32];
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -1350,7 +1350,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v31[3] = &unk_27861B758;
   v31[4] = self;
   v9 = [HDDatabaseMigrationStep migrationStepFrom:9005 to:9006 handler:v31];
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -1358,7 +1358,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v30[3] = &unk_27861B758;
   v30[4] = self;
   v10 = [HDDatabaseMigrationStep migrationStepFrom:9006 to:9007 handler:v30];
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
@@ -1366,7 +1366,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v29[3] = &unk_27861B758;
   v29[4] = self;
   v11 = [HDDatabaseMigrationStep migrationStepFrom:9007 to:9009 handler:v29];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -1374,7 +1374,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v28[3] = &unk_27861B758;
   v28[4] = self;
   v12 = [HDDatabaseMigrationStep migrationStepFrom:9009 to:9010 handler:v28];
-  [v3 addObject:v12];
+  [array addObject:v12];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -1382,7 +1382,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v27[3] = &unk_27861B758;
   v27[4] = self;
   v13 = [HDDatabaseMigrationStep migrationStepFrom:9010 to:9011 handler:v27];
-  [v3 addObject:v13];
+  [array addObject:v13];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -1390,7 +1390,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v26[3] = &unk_27861B758;
   v26[4] = self;
   v14 = [HDDatabaseMigrationStep migrationStepFrom:9011 to:9012 handler:v26];
-  [v3 addObject:v14];
+  [array addObject:v14];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -1398,7 +1398,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v25[3] = &unk_27861B758;
   v25[4] = self;
   v15 = [HDDatabaseMigrationStep migrationStepFrom:9012 to:9013 handler:v25];
-  [v3 addObject:v15];
+  [array addObject:v15];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -1406,7 +1406,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v24[3] = &unk_27861B758;
   v24[4] = self;
   v16 = [HDDatabaseMigrationStep migrationStepFrom:9013 to:9014 handler:v24];
-  [v3 addObject:v16];
+  [array addObject:v16];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -1414,7 +1414,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v23[3] = &unk_27861B758;
   v23[4] = self;
   v17 = [HDDatabaseMigrationStep migrationStepFrom:9014 to:9015 handler:v23];
-  [v3 addObject:v17];
+  [array addObject:v17];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -1422,7 +1422,7 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v22[3] = &unk_27861B758;
   v22[4] = self;
   v18 = [HDDatabaseMigrationStep migrationStepFrom:9015 to:9016 handler:v22];
-  [v3 addObject:v18];
+  [array addObject:v18];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -1430,9 +1430,9 @@ uint64_t __63__HDDatabaseMigrator_Monarch__monarchUnprotectedMigrationSteps__blo
   v21[3] = &unk_27861B758;
   v21[4] = self;
   v19 = [HDDatabaseMigrationStep migrationStepFrom:9016 to:9017 handler:v21];
-  [v3 addObject:v19];
+  [array addObject:v19];
 
-  return v3;
+  return array;
 }
 
 uint64_t __61__HDDatabaseMigrator_Monarch__monarchProtectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -2604,16 +2604,16 @@ uint64_t __74__HDDatabaseMigrator_Monarch___fixDanglingSourcesAndProvenancesWith
 
 - (id)boulderProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__HDDatabaseMigrator_Boulder__boulderProtectedMigrationSteps__block_invoke;
   v6[3] = &unk_27861B758;
   v6[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepFrom:9017 to:9100 handler:v6];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
-  return v3;
+  return array;
 }
 
 uint64_t __61__HDDatabaseMigrator_Boulder__boulderProtectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -2742,14 +2742,14 @@ uint64_t __66__HDDatabaseMigrator_Boulder___fixSyncProvenanceForPostOkemoZurs___
 
 - (id)erieProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__HDDatabaseMigrator_Erie__erieProtectedMigrationSteps__block_invoke;
   v8[3] = &unk_278615508;
   v8[4] = self;
   v4 = HDCreateMigrationStep(10202, 10204, v8);
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -2757,9 +2757,9 @@ uint64_t __66__HDDatabaseMigrator_Boulder___fixSyncProvenanceForPostOkemoZurs___
   v7[3] = &unk_278615508;
   v7[4] = self;
   v5 = HDCreateMigrationStep(10204, 10205, v7);
-  [v3 addObject:v5];
+  [array addObject:v5];
 
-  return v3;
+  return array;
 }
 
 - (void)peace_addUnprotectedMigrationSteps
@@ -2841,14 +2841,14 @@ uint64_t __66__HDDatabaseMigrator_Boulder___fixSyncProvenanceForPostOkemoZurs___
 
 - (id)emetUnprotectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke;
   v8[3] = &unk_27861B758;
   v8[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepFrom:11203 to:11300 handler:v8];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -2856,9 +2856,9 @@ uint64_t __66__HDDatabaseMigrator_Boulder___fixSyncProvenanceForPostOkemoZurs___
   v7[3] = &unk_27861B758;
   v7[4] = self;
   v5 = [HDDatabaseMigrationStep migrationStepFrom:11300 to:11301 handler:v7];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
-  return v3;
+  return array;
 }
 
 uint64_t __57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -2892,14 +2892,14 @@ void *__57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke
 
 - (id)emetProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __55__HDDatabaseMigrator_Emet__emetProtectedMigrationSteps__block_invoke;
   v20[3] = &unk_27861B758;
   v20[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepWithForeignKeysDisabledFrom:11200 to:11300 handler:v20];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -2907,7 +2907,7 @@ void *__57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke
   v19[3] = &unk_27861B758;
   v19[4] = self;
   v5 = [HDDatabaseMigrationStep migrationStepFrom:11300 to:11301 handler:v19];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -2915,7 +2915,7 @@ void *__57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke
   v18[3] = &unk_27861B758;
   v18[4] = self;
   v6 = [HDDatabaseMigrationStep migrationStepFrom:11301 to:11302 handler:v18];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -2923,7 +2923,7 @@ void *__57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke
   v17[3] = &unk_27861B758;
   v17[4] = self;
   v7 = [HDDatabaseMigrationStep migrationStepFrom:11302 to:11303 handler:v17];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -2931,7 +2931,7 @@ void *__57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke
   v16[3] = &unk_27861B758;
   v16[4] = self;
   v8 = [HDDatabaseMigrationStep migrationStepFrom:11303 to:11304 handler:v16];
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -2939,7 +2939,7 @@ void *__57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke
   v15[3] = &unk_27861B758;
   v15[4] = self;
   v9 = [HDDatabaseMigrationStep migrationStepFrom:11304 to:11305 handler:v15];
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -2947,7 +2947,7 @@ void *__57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke
   v14[3] = &unk_27861B758;
   v14[4] = self;
   v10 = [HDDatabaseMigrationStep migrationStepFrom:11305 to:11306 handler:v14];
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -2955,9 +2955,9 @@ void *__57__HDDatabaseMigrator_Emet__emetUnprotectedMigrationSteps__block_invoke
   v13[3] = &unk_27861B758;
   v13[4] = self;
   v11 = [HDDatabaseMigrationStep migrationStepFrom:11306 to:11307 handler:v13];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
-  return v3;
+  return array;
 }
 
 uint64_t __55__HDDatabaseMigrator_Emet__emetProtectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -3366,27 +3366,27 @@ uint64_t __81__HDDatabaseMigrator_Emet___emet_migrateWorkoutEventMetadataToProto
   return sqlite3_bind_int64(a2, 2, v6);
 }
 
-- (uint64_t)_recreateMedicalRecordTable:(void *)a3 intermediateTables:(void *)a4 creationSQL:(uint64_t)a5 error:
+- (uint64_t)_recreateMedicalRecordTable:(void *)table intermediateTables:(void *)tables creationSQL:(uint64_t)l error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
+  tableCopy = table;
+  tablesCopy = tables;
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT uuid, provenance, data_type FROM %@ INNER JOIN objects USING (data_id) INNER JOIN samples USING (data_id)", v9];
-  v13 = [MEMORY[0x277CBEAA8] date];
-  v14 = [a1 transaction];
-  v15 = [v14 protectedDatabase];
+  date = [MEMORY[0x277CBEAA8] date];
+  transaction = [self transaction];
+  protectedDatabase = [transaction protectedDatabase];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __93__HDDatabaseMigrator_Emet___recreateMedicalRecordTable_intermediateTables_creationSQL_error___block_invoke;
   v23[3] = &unk_2786140C0;
-  v23[4] = a1;
-  v24 = v13;
-  v16 = v13;
-  v17 = [v15 executeSQL:v12 error:a5 bindingHandler:0 enumerationHandler:v23];
+  v23[4] = self;
+  v24 = date;
+  v16 = date;
+  v17 = [protectedDatabase executeSQL:v12 error:l bindingHandler:0 enumerationHandler:v23];
 
-  if (v17 && ([a1 transaction], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "protectedDatabase"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "deleteDataEntitySubclassTable:intermediateTables:error:", v9, v10, a5), v19, v18, v20))
+  if (v17 && ([self transaction], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "protectedDatabase"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "deleteDataEntitySubclassTable:intermediateTables:error:", v9, tableCopy, l), v19, v18, v20))
   {
-    v21 = [a1 executeSQL:v11 error:a5];
+    v21 = [self executeSQL:tablesCopy error:l];
   }
 
   else
@@ -3591,16 +3591,16 @@ uint64_t __120__HDDatabaseMigrator_Emet___insertDeletedObjectTombstoneWithUUID_p
 
 - (id)butlerProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__HDDatabaseMigrator_Butler__butlerProtectedMigrationSteps__block_invoke;
   v6[3] = &unk_278615508;
   v6[4] = self;
   v4 = HDCreateMigrationStep(10037, 10100, v6);
-  [v3 addObject:v4];
+  [array addObject:v4];
 
-  return v3;
+  return array;
 }
 
 - (void)dawn_addUnprotectedMigrationSteps
@@ -3696,14 +3696,14 @@ uint64_t __120__HDDatabaseMigrator_Emet___insertDeletedObjectTombstoneWithUUID_p
 
 - (id)cinarUnprotectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__HDDatabaseMigrator_Cinar__cinarUnprotectedMigrationSteps__block_invoke;
   v12[3] = &unk_278615508;
   v12[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepWithForeignKeysDisabledFrom:11013 to:11200 handler:v12];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -3711,7 +3711,7 @@ uint64_t __120__HDDatabaseMigrator_Emet___insertDeletedObjectTombstoneWithUUID_p
   v11[3] = &unk_278615508;
   v11[4] = self;
   v5 = [HDDatabaseMigrationStep migrationStepFrom:11200 to:11201 handler:v11];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -3719,7 +3719,7 @@ uint64_t __120__HDDatabaseMigrator_Emet___insertDeletedObjectTombstoneWithUUID_p
   v10[3] = &unk_278615508;
   v10[4] = self;
   v6 = [HDDatabaseMigrationStep migrationStepFrom:11201 to:11202 handler:v10];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -3727,9 +3727,9 @@ uint64_t __120__HDDatabaseMigrator_Emet___insertDeletedObjectTombstoneWithUUID_p
   v9[3] = &unk_278615508;
   v9[4] = self;
   v7 = [HDDatabaseMigrationStep migrationStepFrom:11202 to:11203 handler:v9];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
-  return v3;
+  return array;
 }
 
 uint64_t __59__HDDatabaseMigrator_Cinar__cinarUnprotectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -3997,16 +3997,16 @@ uint64_t __82__HDDatabaseMigrator_Cinar___cinar_convertLocalDevicePlaceholderSou
 
 - (id)cinarProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_invoke;
   v6[3] = &unk_278615508;
   v6[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepFrom:11051 to:11200 handler:v6];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
-  return v3;
+  return array;
 }
 
 uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -4153,13 +4153,13 @@ uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_inv
   return 0;
 }
 
-- (HDDatabaseMigrator)initWithTransaction:(id)a3
+- (HDDatabaseMigrator)initWithTransaction:(id)transaction
 {
-  v6 = a3;
-  if (!v6)
+  transactionCopy = transaction;
+  if (!transactionCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HDDatabaseMigrator.mm" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"transaction != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseMigrator.mm" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"transaction != nil"}];
   }
 
   v13.receiver = self;
@@ -4168,7 +4168,7 @@ uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_inv
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_transaction, a3);
+    objc_storeStrong(&v7->_transaction, transaction);
     v9 = [[HDDatabaseSchemaManager alloc] initWithTransaction:v8->_transaction];
     schemaManager = v8->_schemaManager;
     v8->_schemaManager = v9;
@@ -4186,45 +4186,45 @@ uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_inv
     v34 = 3221225472;
     v35 = __53__HDDatabaseMigrator__primaryProtectedMigrationSteps__block_invoke;
     v36 = &unk_278615508;
-    v37 = self;
+    selfCopy2 = self;
     v3 = [HDDatabaseMigrationStep migrationStepFrom:8041 to:8046 handler:&v33];
     [v32 addObject:v3];
 
     v4 = [HDDatabaseMigrationStep migrationStepFrom:8046 to:8047 handler:&__block_literal_global_213];
     [v32 addObject:v4];
 
-    v5 = [(HDDatabaseMigrator *)self okemoZursProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v5];
+    okemoZursProtectedMigrationSteps = [(HDDatabaseMigrator *)self okemoZursProtectedMigrationSteps];
+    [v32 addObjectsFromArray:okemoZursProtectedMigrationSteps];
 
-    v6 = [(HDDatabaseMigrator *)self monarchProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v6];
+    monarchProtectedMigrationSteps = [(HDDatabaseMigrator *)self monarchProtectedMigrationSteps];
+    [v32 addObjectsFromArray:monarchProtectedMigrationSteps];
 
-    v7 = [(HDDatabaseMigrator *)self boulderProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v7];
+    boulderProtectedMigrationSteps = [(HDDatabaseMigrator *)self boulderProtectedMigrationSteps];
+    [v32 addObjectsFromArray:boulderProtectedMigrationSteps];
 
-    v8 = [(HDDatabaseMigrator *)self eagleProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v8];
+    eagleProtectedMigrationSteps = [(HDDatabaseMigrator *)self eagleProtectedMigrationSteps];
+    [v32 addObjectsFromArray:eagleProtectedMigrationSteps];
 
-    v9 = [(HDDatabaseMigrator *)self whitetailProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v9];
+    whitetailProtectedMigrationSteps = [(HDDatabaseMigrator *)self whitetailProtectedMigrationSteps];
+    [v32 addObjectsFromArray:whitetailProtectedMigrationSteps];
 
-    v10 = [(HDDatabaseMigrator *)self butlerProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v10];
+    butlerProtectedMigrationSteps = [(HDDatabaseMigrator *)self butlerProtectedMigrationSteps];
+    [v32 addObjectsFromArray:butlerProtectedMigrationSteps];
 
-    v11 = [(HDDatabaseMigrator *)self corryProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v11];
+    corryProtectedMigrationSteps = [(HDDatabaseMigrator *)self corryProtectedMigrationSteps];
+    [v32 addObjectsFromArray:corryProtectedMigrationSteps];
 
-    v12 = [(HDDatabaseMigrator *)self erieProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v12];
+    erieProtectedMigrationSteps = [(HDDatabaseMigrator *)self erieProtectedMigrationSteps];
+    [v32 addObjectsFromArray:erieProtectedMigrationSteps];
 
-    v13 = [(HDDatabaseMigrator *)self tigrisProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v13];
+    tigrisProtectedMigrationSteps = [(HDDatabaseMigrator *)self tigrisProtectedMigrationSteps];
+    [v32 addObjectsFromArray:tigrisProtectedMigrationSteps];
 
-    v14 = [(HDDatabaseMigrator *)self cinarProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v14];
+    cinarProtectedMigrationSteps = [(HDDatabaseMigrator *)self cinarProtectedMigrationSteps];
+    [v32 addObjectsFromArray:cinarProtectedMigrationSteps];
 
-    v15 = [(HDDatabaseMigrator *)self emetProtectedMigrationSteps];
-    [v32 addObjectsFromArray:v15];
+    emetProtectedMigrationSteps = [(HDDatabaseMigrator *)self emetProtectedMigrationSteps];
+    [v32 addObjectsFromArray:emetProtectedMigrationSteps];
 
     [(HDDatabaseMigrator *)self addMigrationSteps:v32];
     [(HDDatabaseMigrator *)self peace_addProtectedMigrationSteps];
@@ -4235,10 +4235,10 @@ uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_inv
     [(HDDatabaseMigrator *)self dawn_addProtectedMigrationSteps];
     [(HDDatabaseMigrator *)self crystal_addProtectedMigrationSteps];
     [(HDDatabaseMigrator *)self luck_addProtectedMigrationSteps];
-    v16 = [(HDDatabaseMigrator *)self behavior];
-    v17 = [v16 futureMigrationsEnabled];
+    behavior = [(HDDatabaseMigrator *)self behavior];
+    futureMigrationsEnabled = [behavior futureMigrationsEnabled];
 
-    if (v17)
+    if (futureMigrationsEnabled)
     {
       [(HDDatabaseMigrator *)self future_addProtectedMigrationSteps];
     }
@@ -4251,42 +4251,42 @@ uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_inv
     v34 = 3221225472;
     v35 = __55__HDDatabaseMigrator__primaryUnprotectedMigrationSteps__block_invoke;
     v36 = &unk_278615508;
-    v37 = self;
+    selfCopy2 = self;
     v18 = [HDDatabaseMigrationStep migrationStepFrom:8041 to:8044 handler:&v33];
     [v32 addObject:v18];
 
-    v19 = [(HDDatabaseMigrator *)self okemoZursUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v19];
+    okemoZursUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self okemoZursUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:okemoZursUnprotectedMigrationSteps];
 
-    v20 = [(HDDatabaseMigrator *)self monarchUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v20];
+    monarchUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self monarchUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:monarchUnprotectedMigrationSteps];
 
-    v21 = [(HDDatabaseMigrator *)self boulderUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v21];
+    boulderUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self boulderUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:boulderUnprotectedMigrationSteps];
 
-    v22 = [(HDDatabaseMigrator *)self eagleUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v22];
+    eagleUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self eagleUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:eagleUnprotectedMigrationSteps];
 
-    v23 = [(HDDatabaseMigrator *)self whitetailUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v23];
+    whitetailUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self whitetailUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:whitetailUnprotectedMigrationSteps];
 
-    v24 = [(HDDatabaseMigrator *)self butlerUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v24];
+    butlerUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self butlerUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:butlerUnprotectedMigrationSteps];
 
-    v25 = [(HDDatabaseMigrator *)self corryUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v25];
+    corryUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self corryUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:corryUnprotectedMigrationSteps];
 
-    v26 = [(HDDatabaseMigrator *)self erieUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v26];
+    erieUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self erieUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:erieUnprotectedMigrationSteps];
 
-    v27 = [(HDDatabaseMigrator *)self tigrisUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v27];
+    tigrisUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self tigrisUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:tigrisUnprotectedMigrationSteps];
 
-    v28 = [(HDDatabaseMigrator *)self cinarUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v28];
+    cinarUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self cinarUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:cinarUnprotectedMigrationSteps];
 
-    v29 = [(HDDatabaseMigrator *)self emetUnprotectedMigrationSteps];
-    [v32 addObjectsFromArray:v29];
+    emetUnprotectedMigrationSteps = [(HDDatabaseMigrator *)self emetUnprotectedMigrationSteps];
+    [v32 addObjectsFromArray:emetUnprotectedMigrationSteps];
 
     [(HDDatabaseMigrator *)self addMigrationSteps:v32];
     [(HDDatabaseMigrator *)self peace_addUnprotectedMigrationSteps];
@@ -4297,21 +4297,21 @@ uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_inv
     [(HDDatabaseMigrator *)self dawn_addUnprotectedMigrationSteps];
     [(HDDatabaseMigrator *)self crystal_addUnprotectedMigrationSteps];
     [(HDDatabaseMigrator *)self luck_addUnprotectedMigrationSteps];
-    v30 = [(HDDatabaseMigrator *)self behavior];
-    v31 = [v30 futureMigrationsEnabled];
+    behavior2 = [(HDDatabaseMigrator *)self behavior];
+    futureMigrationsEnabled2 = [behavior2 futureMigrationsEnabled];
 
-    if (v31)
+    if (futureMigrationsEnabled2)
     {
       [(HDDatabaseMigrator *)self future_addUnprotectedMigrationSteps];
     }
   }
 }
 
-- (void)addMigrationTo:(int64_t)a3 foreignKeys:(int64_t)a4 handler:(id)a5
+- (void)addMigrationTo:(int64_t)to foreignKeys:(int64_t)keys handler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [[HDDatabaseMigrationStep alloc] initForSchema:0 toVersion:a3 requiringVersion:-1 foreignKeys:a4 handler:v8];
+  handlerCopy = handler;
+  v9 = [[HDDatabaseMigrationStep alloc] initForSchema:0 toVersion:to requiringVersion:-1 foreignKeys:keys handler:handlerCopy];
   v12[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   [(HDDatabaseMigrator *)self addMigrationSteps:v10];
@@ -4319,32 +4319,32 @@ uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_inv
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMigrationTo:(int64_t)a3 function:(void *)a4
+- (void)addMigrationTo:(int64_t)to function:(void *)function
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__HDDatabaseMigrator_addMigrationTo_function___block_invoke;
   v4[3] = &__block_descriptor_40_e70_q40__0__HDDatabaseMigrator_8__HDDatabaseMigrationTransaction_16q24__32l;
-  v4[4] = a4;
-  [(HDDatabaseMigrator *)self addMigrationTo:a3 foreignKeys:0 handler:v4];
+  v4[4] = function;
+  [(HDDatabaseMigrator *)self addMigrationTo:to foreignKeys:0 handler:v4];
 }
 
-- (void)addMigrationTo:(int64_t)a3 function:(void *)a4 foreignKeys:(int64_t)a5
+- (void)addMigrationTo:(int64_t)to function:(void *)function foreignKeys:(int64_t)keys
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__HDDatabaseMigrator_addMigrationTo_function_foreignKeys___block_invoke;
   v5[3] = &__block_descriptor_40_e70_q40__0__HDDatabaseMigrator_8__HDDatabaseMigrationTransaction_16q24__32l;
-  v5[4] = a4;
-  [(HDDatabaseMigrator *)self addMigrationTo:a3 foreignKeys:a5 handler:v5];
+  v5[4] = function;
+  [(HDDatabaseMigrator *)self addMigrationTo:to foreignKeys:keys handler:v5];
 }
 
-- (void)addMigrationForSchema:(id)a3 toVersion:(int64_t)a4 foreignKeyStatus:(int64_t)a5 handler:(id)a6
+- (void)addMigrationForSchema:(id)schema toVersion:(int64_t)version foreignKeyStatus:(int64_t)status handler:(id)handler
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = [[HDDatabaseMigrationStep alloc] initForSchema:v10 toVersion:a4 requiringVersion:-1 foreignKeys:a5 handler:v11];
+  schemaCopy = schema;
+  handlerCopy = handler;
+  v12 = [[HDDatabaseMigrationStep alloc] initForSchema:schemaCopy toVersion:version requiringVersion:-1 foreignKeys:status handler:handlerCopy];
   v15[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   [(HDDatabaseMigrator *)self addMigrationSteps:v13];
@@ -4352,18 +4352,18 @@ uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_inv
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLockstepMigrationForSchema:(id)a3 toVersion:(int64_t)a4 requiringVersion:(int64_t)a5 foreignKeyStatus:(int64_t)a6 handler:(id)a7
+- (void)addLockstepMigrationForSchema:(id)schema toVersion:(int64_t)version requiringVersion:(int64_t)requiringVersion foreignKeyStatus:(int64_t)status handler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a7;
-  if (a4 == -1)
+  schemaCopy = schema;
+  handlerCopy = handler;
+  if (version == -1)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDDatabaseMigrator.mm" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"finalVersion != HDSQLiteRequiredPrimarySchemaVersionAny"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseMigrator.mm" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"finalVersion != HDSQLiteRequiredPrimarySchemaVersionAny"}];
   }
 
-  v15 = [[HDDatabaseMigrationStep alloc] initForSchema:v13 toVersion:a4 requiringVersion:a5 foreignKeys:a6 handler:v14];
+  v15 = [[HDDatabaseMigrationStep alloc] initForSchema:schemaCopy toVersion:version requiringVersion:requiringVersion foreignKeys:status handler:handlerCopy];
   v19[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   [(HDDatabaseMigrator *)self addMigrationSteps:v16];
@@ -4371,38 +4371,38 @@ uint64_t __57__HDDatabaseMigrator_Cinar__cinarProtectedMigrationSteps__block_inv
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMigrationSteps:(id)a3
+- (void)addMigrationSteps:(id)steps
 {
-  v5 = a3;
-  v10 = v5;
+  stepsCopy = steps;
+  v10 = stepsCopy;
   if (self->_hasPerformedMigration)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HDDatabaseMigrator.mm" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"!_hasPerformedMigration"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseMigrator.mm" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"!_hasPerformedMigration"}];
 
-    v5 = v10;
+    stepsCopy = v10;
   }
 
   migrationSteps = self->_migrationSteps;
   if (migrationSteps)
   {
-    [(NSMutableArray *)migrationSteps addObjectsFromArray:v5];
+    [(NSMutableArray *)migrationSteps addObjectsFromArray:stepsCopy];
   }
 
   else
   {
-    v7 = [v5 mutableCopy];
+    v7 = [stepsCopy mutableCopy];
     v8 = self->_migrationSteps;
     self->_migrationSteps = v7;
   }
 }
 
-- (uint64_t)_deleteDatabaseStatusForVersion:(uint64_t)a1 errorMessage:(uint64_t)a2 error:(uint64_t)a3
+- (uint64_t)_deleteDatabaseStatusForVersion:(uint64_t)version errorMessage:(uint64_t)message error:(uint64_t)error
 {
   v6 = @"Unsupported Okemo database";
-  if (a1)
+  if (version)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 format:{@"%@ (version %ld)", @"Unsupported Okemo database", a2}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"%@ (version %ld)", @"Unsupported Okemo database", message}];
     v7 = 2;
   }
 
@@ -4657,35 +4657,35 @@ LABEL_52:
   return v11;
 }
 
-- (int64_t)migrateFromVersion:(int64_t)a3 toVersion:(int64_t)a4 error:(id *)a5
+- (int64_t)migrateFromVersion:(int64_t)version toVersion:(int64_t)toVersion error:(id *)error
 {
   v128 = *MEMORY[0x277D85DE8];
   v78 = self->_migrationSteps;
-  v102 = a3;
-  if (!a3)
+  versionCopy = version;
+  if (!version)
   {
-    v75 = [MEMORY[0x277CCA890] currentHandler];
-    [v75 handleFailureInMethod:sel__runMigrationSteps_currentVersion_expectedFinalVersion_error_ object:self file:@"HDDatabaseMigrator.mm" lineNumber:435 description:{@"Invalid parameter not satisfying: %@", @"currentVersion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__runMigrationSteps_currentVersion_expectedFinalVersion_error_ object:self file:@"HDDatabaseMigrator.mm" lineNumber:435 description:{@"Invalid parameter not satisfying: %@", @"currentVersion"}];
 
-    if (a5)
+    if (error)
     {
       goto LABEL_3;
     }
 
 LABEL_125:
-    v76 = [MEMORY[0x277CCA890] currentHandler];
-    [v76 handleFailureInMethod:sel__runMigrationSteps_currentVersion_expectedFinalVersion_error_ object:self file:@"HDDatabaseMigrator.mm" lineNumber:436 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__runMigrationSteps_currentVersion_expectedFinalVersion_error_ object:self file:@"HDDatabaseMigrator.mm" lineNumber:436 description:{@"Invalid parameter not satisfying: %@", @"error"}];
 
     goto LABEL_3;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_125;
   }
 
 LABEL_3:
-  v83 = v102;
+  v83 = versionCopy;
   v101 = 0;
   v79 = v78;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -4695,7 +4695,7 @@ LABEL_3:
   v104 = 0u;
   obj = v79;
   v8 = [(NSMutableArray *)obj countByEnumeratingWithState:&v103 objects:v122 count:16];
-  v84 = a5;
+  errorCopy = error;
   if (v8)
   {
     v98 = 0;
@@ -4710,8 +4710,8 @@ LABEL_3:
         }
 
         v11 = *(*(&v103 + 1) + 8 * i);
-        v12 = [v11 schemaName];
-        if (v12)
+        schemaName = [v11 schemaName];
+        if (schemaName)
         {
           v13 = v98;
           if (!v98)
@@ -4720,11 +4720,11 @@ LABEL_3:
           }
 
           v98 = v13;
-          v14 = [v13 objectForKeyedSubscript:v12];
+          v14 = [v13 objectForKeyedSubscript:schemaName];
           if (!v14)
           {
             v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            [v98 setObject:v14 forKeyedSubscript:v12];
+            [v98 setObject:v14 forKeyedSubscript:schemaName];
           }
 
           [v14 addObject:v11];
@@ -4748,8 +4748,8 @@ LABEL_3:
   }
 
   [v7 sortUsingComparator:&__block_literal_global_437];
-  v15 = [v98 allKeys];
-  v16 = [v15 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v98 allKeys];
+  v16 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v120 = 0u;
   v121 = 0u;
@@ -4774,9 +4774,9 @@ LABEL_3:
         while (v18 < [v17 count])
         {
           v19 = [v17 objectAtIndexedSubscript:v18];
-          v20 = [v19 requiredPrimarySchemaVersion];
-          v21 = v20;
-          if (v20 == -1)
+          requiredPrimarySchemaVersion = [v19 requiredPrimarySchemaVersion];
+          v21 = requiredPrimarySchemaVersion;
+          if (requiredPrimarySchemaVersion == -1)
           {
             ++v18;
           }
@@ -4787,13 +4787,13 @@ LABEL_3:
             *(&buf + 1) = 3221225472;
             v108 = ___ZL23_HDSortedMigrationStepsP7NSArrayIP23HDDatabaseMigrationStepE_block_invoke_3;
             v109 = &__block_descriptor_40_e40_B32__0__HDDatabaseMigrationStep_8Q16_B24l;
-            v110 = v20;
+            v110 = requiredPrimarySchemaVersion;
             v22 = [v7 indexOfObjectPassingTest:&buf];
             if (v22 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v82 = [MEMORY[0x277CCA890] currentHandler];
+              currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
               v81 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSArray<HDDatabaseMigrationStep *> * _Nonnull _HDSortedMigrationSteps(NSArray<HDDatabaseMigrationStep *> * _Nonnull __strong)"];
-              [v82 handleFailureInFunction:v81 file:@"HDDatabaseMigrator.mm" lineNumber:615 description:{@"Unable to find a primary migration step resulting in %ld, which is required for migration step %@", v21, v19}];
+              [currentHandler3 handleFailureInFunction:v81 file:@"HDDatabaseMigrator.mm" lineNumber:615 description:{@"Unable to find a primary migration step resulting in %ld, which is required for migration step %@", v21, v19}];
             }
 
             v23 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v22 + 1, v18 + 1}];
@@ -4816,10 +4816,10 @@ LABEL_3:
 
   v93 = v7;
   v99 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v25 = [(HDDatabaseMigrator *)self transaction];
-  v26 = [v25 isProtectedMigration];
+  transaction = [(HDDatabaseMigrator *)self transaction];
+  isProtectedMigration = [transaction isProtectedMigration];
   v27 = 1;
-  if (v26)
+  if (isProtectedMigration)
   {
     v27 = 2;
   }
@@ -4845,20 +4845,20 @@ LABEL_3:
         }
 
         v33 = *(*&v111[8] + 8 * k);
-        v34 = [v33 schemaName];
-        if (v34)
+        schemaName2 = [v33 schemaName];
+        if (schemaName2)
         {
-          v35 = [v29 objectForKeyedSubscript:v34];
+          v35 = [v29 objectForKeyedSubscript:schemaName2];
           v36 = v35;
           if (v35)
           {
-            v37 = [v35 integerValue];
+            integerValue = [v35 integerValue];
           }
 
           else
           {
-            v37 = [(HDDatabaseSchemaManager *)self->_schemaManager currentVersionForSchema:v34 protectionClass:v96 error:&v101];
-            if (v37 == -1)
+            integerValue = [(HDDatabaseSchemaManager *)self->_schemaManager currentVersionForSchema:schemaName2 protectionClass:v96 error:&v101];
+            if (integerValue == -1)
             {
 
               v91 = 0;
@@ -4871,17 +4871,17 @@ LABEL_3:
               v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
             }
 
-            v38 = [MEMORY[0x277CCABB0] numberWithInteger:v37];
-            [v29 setObject:v38 forKeyedSubscript:v34];
+            v38 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+            [v29 setObject:v38 forKeyedSubscript:schemaName2];
           }
         }
 
         else
         {
-          v37 = v83;
+          integerValue = v83;
         }
 
-        if ([v33 finalSchemaVersion] > v37)
+        if ([v33 finalSchemaVersion] > integerValue)
         {
           [v99 addObject:v33];
         }
@@ -4909,9 +4909,9 @@ LABEL_56:
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
     {
       *v122 = 134218498;
-      v123 = v102;
+      v123 = versionCopy;
       v124 = 2048;
-      v125 = a4;
+      toVersionCopy = toVersion;
       v126 = 2114;
       v127 = v86;
       _os_log_error_impl(&dword_228986000, v62, OS_LOG_TYPE_ERROR, "Unable to sort and prune migration steps from %ld to %ld: %{public}@.", v122, 0x20u);
@@ -4920,10 +4920,10 @@ LABEL_56:
     v80 = v86;
     if (v80)
     {
-      if (v84)
+      if (errorCopy)
       {
         v63 = v80;
-        *v84 = v80;
+        *errorCopy = v80;
       }
 
       else
@@ -4964,20 +4964,20 @@ LABEL_59:
 
     v100 = v42;
     v43 = *(*(&v103 + 1) + 8 * v42);
-    if (!v84)
+    if (!errorCopy)
     {
-      v59 = [MEMORY[0x277CCA890] currentHandler];
-      [v59 handleFailureInMethod:obja object:self file:@"HDDatabaseMigrator.mm" lineNumber:260 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:obja object:self file:@"HDDatabaseMigrator.mm" lineNumber:260 description:{@"Invalid parameter not satisfying: %@", @"error"}];
     }
 
-    v44 = v102;
-    v45 = [v43 finalSchemaVersion];
-    v46 = [v43 schemaName];
-    if (v46)
+    v44 = versionCopy;
+    finalSchemaVersion = [v43 finalSchemaVersion];
+    schemaName3 = [v43 schemaName];
+    if (schemaName3)
     {
       if ([v43 requiredPrimarySchemaVersion] != -1 && v44 != objc_msgSend(v43, "requiredPrimarySchemaVersion"))
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:v84 code:3 format:{@"Invalid current main schema version %lu for migration step %@", v44, v43}];
+        [MEMORY[0x277CCA9B8] hk_assignError:errorCopy code:3 format:{@"Invalid current main schema version %lu for migration step %@", v44, v43}];
 
         goto LABEL_112;
       }
@@ -4985,21 +4985,21 @@ LABEL_59:
 
     else
     {
-      if (v45 > a4)
+      if (finalSchemaVersion > toVersion)
       {
-        v60 = [MEMORY[0x277CCA890] currentHandler];
-        [v60 handleFailureInMethod:obja object:self file:@"HDDatabaseMigrator.mm" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"stepFinalSchemaVersion <= finalVersion"}];
+        currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler5 handleFailureInMethod:obja object:self file:@"HDDatabaseMigrator.mm" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"stepFinalSchemaVersion <= finalVersion"}];
 
-        if (v44 < v45)
+        if (v44 < finalSchemaVersion)
         {
           _HKInitializeLogging();
           v61 = *MEMORY[0x277CCC2A0];
           if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
           {
             *v119 = 134218240;
-            *&v119[4] = v45;
+            *&v119[4] = finalSchemaVersion;
             *&v119[12] = 2048;
-            *&v119[14] = a4;
+            *&v119[14] = toVersion;
             _os_log_error_impl(&dword_228986000, v61, OS_LOG_TYPE_ERROR, "Skipping migration step to %ld because expected current schema version is %ld.", v119, 0x16u);
           }
         }
@@ -5009,7 +5009,7 @@ LABEL_96:
         goto LABEL_97;
       }
 
-      if (v44 >= v45)
+      if (v44 >= finalSchemaVersion)
       {
         goto LABEL_96;
       }
@@ -5030,22 +5030,22 @@ LABEL_96:
       }
 
 LABEL_74:
-      v49 = [(HDDatabaseMigrator *)self transaction];
-      if ([v49 isProtectedMigration])
+      transaction2 = [(HDDatabaseMigrator *)self transaction];
+      if ([transaction2 isProtectedMigration])
       {
-        v50 = [(HDDatabaseMigrator *)self transaction];
-        [v50 protectedDatabase];
+        transaction3 = [(HDDatabaseMigrator *)self transaction];
+        [transaction3 protectedDatabase];
       }
 
       else
       {
-        v50 = [(HDDatabaseMigrator *)self transaction];
-        [v50 unprotectedDatabase];
+        transaction3 = [(HDDatabaseMigrator *)self transaction];
+        [transaction3 unprotectedDatabase];
       }
       v51 = ;
 
-      v52 = [(HDDatabaseMigrator *)self transaction];
-      if ([v52 isProtectedMigration])
+      transaction4 = [(HDDatabaseMigrator *)self transaction];
+      if ([transaction4 isProtectedMigration])
       {
         v53 = 2;
       }
@@ -5060,15 +5060,15 @@ LABEL_74:
       *&v111[16] = __74__HDDatabaseMigrator__runMigrationStep_currentVersion_finalVersion_error___block_invoke;
       *&v111[24] = &unk_27862BC18;
       v114 = v44;
-      *&v112 = v46;
+      *&v112 = schemaName3;
       *(&v112 + 1) = self;
       v115 = v53;
       *(&v113 + 1) = v119;
       *&v113 = v43;
-      v116 = &v102;
-      v117 = v45;
+      v116 = &versionCopy;
+      v117 = finalSchemaVersion;
       v118 = v47 & 1;
-      if (([v51 performTransactionWithType:1 error:v84 usingBlock:v111] & 1) == 0)
+      if (([v51 performTransactionWithType:1 error:errorCopy usingBlock:v111] & 1) == 0)
       {
         *(*&v119[8] + 24) = 1;
       }
@@ -5080,7 +5080,7 @@ LABEL_74:
       }
     }
 
-    if ([(HDDatabaseMigrator *)self executeSQL:@"PRAGMA foreign_keys = OFF" error:v84])
+    if ([(HDDatabaseMigrator *)self executeSQL:@"PRAGMA foreign_keys = OFF" error:errorCopy])
     {
       v47 = 1;
       goto LABEL_74;
@@ -5099,7 +5099,7 @@ LABEL_85:
       goto LABEL_86;
     }
 
-    v57 = *v84;
+    v57 = *errorCopy;
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v57;
     _os_log_error_impl(&dword_228986000, v54, OS_LOG_TYPE_ERROR, "Failed to disable foreign keys: %{public}@", &buf, 0xCu);
@@ -5109,14 +5109,14 @@ LABEL_85:
     }
 
 LABEL_86:
-    if (![(HDDatabaseMigrator *)self executeSQL:@"PRAGMA foreign_keys = ON" error:v84])
+    if (![(HDDatabaseMigrator *)self executeSQL:@"PRAGMA foreign_keys = ON" error:errorCopy])
     {
       *(*&v119[8] + 24) = 1;
       _HKInitializeLogging();
       v55 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
       {
-        v58 = *v84;
+        v58 = *errorCopy;
         LODWORD(buf) = 138543362;
         *(&buf + 4) = v58;
         _os_log_error_impl(&dword_228986000, v55, OS_LOG_TYPE_ERROR, "Failed to enable foreign keys: %{public}@", &buf, 0xCu);
@@ -5153,8 +5153,8 @@ LABEL_97:
     v64 = *MEMORY[0x277CCC2A0];
     if (os_log_type_enabled(v64, OS_LOG_TYPE_FAULT))
     {
-      v71 = [(HDDatabaseMigrator *)self transaction];
-      if ([v71 isProtectedMigration])
+      transaction5 = [(HDDatabaseMigrator *)self transaction];
+      if ([transaction5 isProtectedMigration])
       {
         v72 = @"protected";
       }
@@ -5164,14 +5164,14 @@ LABEL_97:
         v72 = @"unprotected";
       }
 
-      v73 = [v43 schemaName];
-      v74 = [v43 finalSchemaVersion];
+      schemaName4 = [v43 schemaName];
+      finalSchemaVersion2 = [v43 finalSchemaVersion];
       *v111 = 138543874;
       *&v111[4] = v72;
       *&v111[12] = 2112;
-      *&v111[14] = v73;
+      *&v111[14] = schemaName4;
       *&v111[22] = 2048;
-      *&v111[24] = v74;
+      *&v111[24] = finalSchemaVersion2;
       _os_log_fault_impl(&dword_228986000, v64, OS_LOG_TYPE_FAULT, "Fatal error encountered attempting migration for %{public}@ (schema: %@) to %ld; migration will be aborted.", v111, 0x20u);
     }
 
@@ -5190,8 +5190,8 @@ LABEL_112:
     v64 = *MEMORY[0x277CCC2A0];
     if (os_log_type_enabled(v64, OS_LOG_TYPE_FAULT))
     {
-      v67 = [(HDDatabaseMigrator *)self transaction];
-      if ([v67 isProtectedMigration])
+      transaction6 = [(HDDatabaseMigrator *)self transaction];
+      if ([transaction6 isProtectedMigration])
       {
         v68 = @"protected";
       }
@@ -5201,14 +5201,14 @@ LABEL_112:
         v68 = @"unprotected";
       }
 
-      v69 = [v43 schemaName];
-      v70 = [v43 finalSchemaVersion];
+      schemaName5 = [v43 schemaName];
+      finalSchemaVersion3 = [v43 finalSchemaVersion];
       *v111 = 138543874;
       *&v111[4] = v68;
       *&v111[12] = 2112;
-      *&v111[14] = v69;
+      *&v111[14] = schemaName5;
       *&v111[22] = 2048;
-      *&v111[24] = v70;
+      *&v111[24] = finalSchemaVersion3;
       _os_log_fault_impl(&dword_228986000, v64, OS_LOG_TYPE_FAULT, "Database migration interrupted attempting migration for %{public}@ (schema: %@) to %ld; migration will be retried.", v111, 0x20u);
     }
 
@@ -5220,18 +5220,18 @@ LABEL_115:
   return v56;
 }
 
-- (int64_t)performHFDMigrationToVersion:(int64_t)a3 handler:(id)a4 error:(id *)a5
+- (int64_t)performHFDMigrationToVersion:(int64_t)version handler:(id)handler error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDDatabaseMigrator *)self transaction];
+  handlerCopy = handler;
+  transaction = [(HDDatabaseMigrator *)self transaction];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block_invoke;
   v13[3] = &unk_27862BC68;
-  v15 = a3;
-  v10 = v8;
+  versionCopy = version;
+  v10 = handlerCopy;
   v14 = v10;
-  v11 = [v9 accessHistoricHFDWithError:a5 block:v13];
+  v11 = [transaction accessHistoricHFDWithError:error block:v13];
 
   return v11;
 }
@@ -5273,57 +5273,57 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
   operator new();
 }
 
-- (BOOL)executeSQL:(id)a3 error:(id *)a4
+- (BOOL)executeSQL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDDatabaseMigrator *)self transaction];
-  if ([v7 isProtectedMigration])
+  lCopy = l;
+  transaction = [(HDDatabaseMigrator *)self transaction];
+  if ([transaction isProtectedMigration])
   {
-    v8 = [(HDDatabaseMigrator *)self transaction];
-    [v8 protectedDatabase];
+    transaction2 = [(HDDatabaseMigrator *)self transaction];
+    [transaction2 protectedDatabase];
   }
 
   else
   {
-    v8 = [(HDDatabaseMigrator *)self transaction];
-    [v8 unprotectedDatabase];
+    transaction2 = [(HDDatabaseMigrator *)self transaction];
+    [transaction2 unprotectedDatabase];
   }
   v9 = ;
 
-  v10 = [v9 executeUncachedSQL:v6 error:a4];
+  v10 = [v9 executeUncachedSQL:lCopy error:error];
   return v10;
 }
 
-- (BOOL)executeSQLStatements:(id)a3 error:(id *)a4
+- (BOOL)executeSQLStatements:(id)statements error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDDatabaseMigrator *)self transaction];
-  if ([v7 isProtectedMigration])
+  statementsCopy = statements;
+  transaction = [(HDDatabaseMigrator *)self transaction];
+  if ([transaction isProtectedMigration])
   {
-    v8 = [(HDDatabaseMigrator *)self transaction];
-    [v8 protectedDatabase];
+    transaction2 = [(HDDatabaseMigrator *)self transaction];
+    [transaction2 protectedDatabase];
   }
 
   else
   {
-    v8 = [(HDDatabaseMigrator *)self transaction];
-    [v8 unprotectedDatabase];
+    transaction2 = [(HDDatabaseMigrator *)self transaction];
+    [transaction2 unprotectedDatabase];
   }
   v9 = ;
 
-  v10 = [v9 executeSQLStatements:v6 error:a4];
+  v10 = [v9 executeSQLStatements:statementsCopy error:error];
   return v10;
 }
 
-- (unint64_t)fetchLegacySyncIdentity:(id)a3 error:(id *)a4
+- (unint64_t)fetchLegacySyncIdentity:(id)identity error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 protectedDatabase];
+  identityCopy = identity;
+  protectedDatabase = [identityCopy protectedDatabase];
 
-  if (!v8)
+  if (!protectedDatabase)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HDDatabaseMigrator.mm" lineNumber:539 description:@"Protected database must not be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseMigrator.mm" lineNumber:539 description:@"Protected database must not be nil"];
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT ROWID FROM sync_identities WHERE hardware_identifier = %@('00000000-0000-0000-0000-000000000000') AND database_identifier = %@('00000000-0000-0000-0000-000000000000') AND instance_discriminator = '' LIMIT 1", *MEMORY[0x277D10A68], *MEMORY[0x277D10A68]];;
@@ -5331,13 +5331,13 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v10 = [v7 unprotectedDatabase];
+  unprotectedDatabase = [identityCopy unprotectedDatabase];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __52__HDDatabaseMigrator_fetchLegacySyncIdentity_error___block_invoke;
   v15[3] = &unk_278615530;
   v15[4] = &v16;
-  v11 = [v10 executeSQL:v9 error:a4 bindingHandler:0 enumerationHandler:v15];
+  v11 = [unprotectedDatabase executeSQL:v9 error:error bindingHandler:0 enumerationHandler:v15];
 
   if (v11)
   {
@@ -5356,14 +5356,14 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
 
 - (id)okemoZursUnprotectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps__block_invoke;
   v20[3] = &unk_27861B758;
   v20[4] = self;
   v4 = HDCreateMigrationStep(8044, 8101, v20);
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -5371,7 +5371,7 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
   v19[3] = &unk_27861B758;
   v19[4] = self;
   v5 = [HDDatabaseMigrationStep migrationStepFrom:8101 to:8103 handler:v19];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -5379,7 +5379,7 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
   v18[3] = &unk_27861B758;
   v18[4] = self;
   v6 = [HDDatabaseMigrationStep migrationStepFrom:8103 to:8106 handler:v18];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -5387,7 +5387,7 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
   v17[3] = &unk_27861B758;
   v17[4] = self;
   v7 = [HDDatabaseMigrationStep migrationStepFrom:8106 to:8109 handler:v17];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -5395,7 +5395,7 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
   v16[3] = &unk_27861B758;
   v16[4] = self;
   v8 = [HDDatabaseMigrationStep migrationStepFrom:8109 to:8110 handler:v16];
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -5403,7 +5403,7 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
   v15[3] = &unk_27861B758;
   v15[4] = self;
   v9 = [HDDatabaseMigrationStep migrationStepFrom:8110 to:8111 handler:v15];
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -5411,7 +5411,7 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
   v14[3] = &unk_27861B758;
   v14[4] = self;
   v10 = [HDDatabaseMigrationStep migrationStepFrom:8111 to:8113 handler:v14];
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -5419,9 +5419,9 @@ void __65__HDDatabaseMigrator_performHFDMigrationToVersion_handler_error___block
   v13[3] = &unk_27861B758;
   v13[4] = self;
   v11 = [HDDatabaseMigrationStep migrationStepFrom:8113 to:8114 handler:v13];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
-  return v3;
+  return array;
 }
 
 void *__67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -5435,10 +5435,10 @@ void *__67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps__bl
   return result;
 }
 
-- (uint64_t)_renameKeyValueSyncStoreColumnInProtectedDabase:(uint64_t)a3 error:
+- (uint64_t)_renameKeyValueSyncStoreColumnInProtectedDabase:(uint64_t)dabase error:
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v4 = a2;
     v6 = @"key_value";
@@ -5448,20 +5448,20 @@ void *__67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps__bl
     }
 
     v7 = v6;
-    v8 = [a1 transaction];
-    v9 = v8;
+    transaction = [self transaction];
+    v9 = transaction;
     if (v4)
     {
-      [v8 protectedDatabase];
+      [transaction protectedDatabase];
     }
 
     else
     {
-      [v8 unprotectedDatabase];
+      [transaction unprotectedDatabase];
     }
     v10 = ;
 
-    if ([v10 table:v7 hasColumnWithName:@"sync_store" error:a3])
+    if ([v10 table:v7 hasColumnWithName:@"sync_store" error:dabase])
     {
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"new_%@", v7];
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"CREATE TABLE %@ (ROWID INTEGER PRIMARY KEY AUTOINCREMENT, category INTEGER, provenance INTEGER, domain STRING, key STRING, value, mod_date REAL, UNIQUE(category, provenance, domain, key))", v11];;
@@ -5473,7 +5473,7 @@ void *__67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps__bl
       v20[2] = v14;
       v20[3] = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:4];
-      v17 = [a1 executeSQLStatements:v16 error:a3] ^ 1;
+      v17 = [self executeSQLStatements:v16 error:dabase] ^ 1;
     }
 
     else
@@ -5717,10 +5717,10 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   return v6;
 }
 
-- (uint64_t)_migrateKeyValueColumnsFromStringToText:(uint64_t)a3 error:
+- (uint64_t)_migrateKeyValueColumnsFromStringToText:(uint64_t)text error:
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v5 = @"key_value";
     if (a2)
@@ -5741,7 +5741,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
     v17[2] = v11;
     v17[3] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
-    v14 = [a1 executeSQLStatements:v13 error:a3] ^ 1;
+    v14 = [self executeSQLStatements:v13 error:text] ^ 1;
   }
 
   else
@@ -5788,14 +5788,14 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
 
 - (id)okemoZursProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __65__HDDatabaseMigrator_OkemoZurs__okemoZursProtectedMigrationSteps__block_invoke;
   v40[3] = &unk_27861B758;
   v40[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepFrom:8047 to:8101 handler:v40];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -5803,7 +5803,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v39[3] = &unk_27861B758;
   v39[4] = self;
   v5 = [HDDatabaseMigrationStep migrationStepFrom:8101 to:8102 handler:v39];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
@@ -5811,7 +5811,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v38[3] = &unk_27861B758;
   v38[4] = self;
   v6 = [HDDatabaseMigrationStep migrationStepFrom:8102 to:8103 handler:v38];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
@@ -5819,7 +5819,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v37[3] = &unk_27861B758;
   v37[4] = self;
   v7 = [HDDatabaseMigrationStep migrationStepFrom:8103 to:8104 handler:v37];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -5827,7 +5827,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v36[3] = &unk_27861B758;
   v36[4] = self;
   v8 = [HDDatabaseMigrationStep migrationStepFrom:8104 to:8105 handler:v36];
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -5835,7 +5835,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v35[3] = &unk_27861B758;
   v35[4] = self;
   v9 = [HDDatabaseMigrationStep migrationStepFrom:8105 to:8106 handler:v35];
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -5843,7 +5843,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v34[3] = &unk_27861B758;
   v34[4] = self;
   v10 = [HDDatabaseMigrationStep migrationStepFrom:8106 to:8107 handler:v34];
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
@@ -5851,7 +5851,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v33[3] = &unk_27861B758;
   v33[4] = self;
   v11 = [HDDatabaseMigrationStep migrationStepFrom:8107 to:8109 handler:v33];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -5859,7 +5859,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v32[3] = &unk_27861B758;
   v32[4] = self;
   v12 = [HDDatabaseMigrationStep migrationStepFrom:8109 to:8110 handler:v32];
-  [v3 addObject:v12];
+  [array addObject:v12];
 
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -5867,7 +5867,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v31[3] = &unk_27861B758;
   v31[4] = self;
   v13 = [HDDatabaseMigrationStep migrationStepFrom:8110 to:8111 handler:v31];
-  [v3 addObject:v13];
+  [array addObject:v13];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -5875,7 +5875,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v30[3] = &unk_27861B758;
   v30[4] = self;
   v14 = [HDDatabaseMigrationStep migrationStepFrom:8111 to:8112 handler:v30];
-  [v3 addObject:v14];
+  [array addObject:v14];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
@@ -5883,7 +5883,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v29[3] = &unk_27861B758;
   v29[4] = self;
   v15 = [HDDatabaseMigrationStep migrationStepFrom:8112 to:8114 handler:v29];
-  [v3 addObject:v15];
+  [array addObject:v15];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -5891,7 +5891,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v28[3] = &unk_27861B758;
   v28[4] = self;
   v16 = [HDDatabaseMigrationStep migrationStepFrom:8114 to:8115 handler:v28];
-  [v3 addObject:v16];
+  [array addObject:v16];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -5899,7 +5899,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v27[3] = &unk_27861B758;
   v27[4] = self;
   v17 = [HDDatabaseMigrationStep migrationStepFrom:8115 to:8116 handler:v27];
-  [v3 addObject:v17];
+  [array addObject:v17];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -5907,7 +5907,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v26[3] = &unk_27861B758;
   v26[4] = self;
   v18 = [HDDatabaseMigrationStep migrationStepFrom:8116 to:8117 handler:v26];
-  [v3 addObject:v18];
+  [array addObject:v18];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -5915,7 +5915,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v25[3] = &unk_27861B758;
   v25[4] = self;
   v19 = [HDDatabaseMigrationStep migrationStepFrom:8117 to:8118 handler:v25];
-  [v3 addObject:v19];
+  [array addObject:v19];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -5923,7 +5923,7 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v24[3] = &unk_27861B758;
   v24[4] = self;
   v20 = [HDDatabaseMigrationStep migrationStepFrom:8118 to:8119 handler:v24];
-  [v3 addObject:v20];
+  [array addObject:v20];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -5931,9 +5931,9 @@ uint64_t __67__HDDatabaseMigrator_OkemoZurs__okemoZursUnprotectedMigrationSteps_
   v23[3] = &unk_27861B758;
   v23[4] = self;
   v21 = [HDDatabaseMigrationStep migrationStepFrom:8119 to:8120 handler:v23];
-  [v3 addObject:v21];
+  [array addObject:v21];
 
-  return v3;
+  return array;
 }
 
 uint64_t __65__HDDatabaseMigrator_OkemoZurs__okemoZursProtectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -6389,21 +6389,21 @@ void *__65__HDDatabaseMigrator_OkemoZurs__okemoZursProtectedMigrationSteps__bloc
   return result;
 }
 
-- (uint64_t)_updateDataCollectorKeyValueContextWithObject:(void *)a3 domain:(uint64_t)a4 error:
+- (uint64_t)_updateDataCollectorKeyValueContextWithObject:(void *)object domain:(uint64_t)domain error:
 {
-  v7 = a3;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a2 requiringSecureCoding:1 error:a4];
+  objectCopy = object;
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a2 requiringSecureCoding:1 error:domain];
   if (v8)
   {
-    v9 = [a1 transaction];
-    v10 = [v9 unprotectedDatabase];
+    transaction = [self transaction];
+    unprotectedDatabase = [transaction unprotectedDatabase];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __92__HDDatabaseMigrator_OkemoZurs___updateDataCollectorKeyValueContextWithObject_domain_error___block_invoke;
     v13[3] = &unk_278613038;
-    v14 = v7;
+    v14 = objectCopy;
     v15 = v8;
-    v11 = [v10 executeUncachedSQL:@"INSERT INTO key_value (domain error:key bindingHandler:value enumerationHandler:{mod_date, category, provenance) VALUES (?, ?, ?, ?, ?, ?);", a4, v13, 0}];
+    v11 = [unprotectedDatabase executeUncachedSQL:@"INSERT INTO key_value (domain error:key bindingHandler:value enumerationHandler:{mod_date, category, provenance) VALUES (?, ?, ?, ?, ?, ?);", domain, v13, 0}];
   }
 
   else
@@ -6510,14 +6510,14 @@ uint64_t __70__HDDatabaseMigrator_OkemoZurs___clearSamplesWithoutSourcesWithErro
 
 - (id)eagleUnprotectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__HDDatabaseMigrator_Eagle__eagleUnprotectedMigrationSteps__block_invoke;
   v12[3] = &unk_27861B758;
   v12[4] = self;
   v4 = HDCreateMigrationStep(9007, 9200, v12);
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -6525,7 +6525,7 @@ uint64_t __70__HDDatabaseMigrator_OkemoZurs___clearSamplesWithoutSourcesWithErro
   v11[3] = &unk_27861B758;
   v11[4] = self;
   v5 = HDCreateMigrationStep(9200, 9201, v11);
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -6533,7 +6533,7 @@ uint64_t __70__HDDatabaseMigrator_OkemoZurs___clearSamplesWithoutSourcesWithErro
   v10[3] = &unk_27861B758;
   v10[4] = self;
   v6 = HDCreateMigrationStep(9201, 9202, v10);
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -6541,14 +6541,14 @@ uint64_t __70__HDDatabaseMigrator_OkemoZurs___clearSamplesWithoutSourcesWithErro
   v9[3] = &unk_27861B758;
   v9[4] = self;
   v7 = HDCreateMigrationStep(9202, 9203, v9);
-  [v3 addObject:v7];
+  [array addObject:v7];
 
-  return v3;
+  return array;
 }
 
-- (uint64_t)_updateKeyValueEntityUniquenessWithProtectedDatabase:(uint64_t)a3 error:
+- (uint64_t)_updateKeyValueEntityUniquenessWithProtectedDatabase:(uint64_t)database error:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -6585,7 +6585,7 @@ uint64_t __70__HDDatabaseMigrator_OkemoZurs___clearSamplesWithoutSourcesWithErro
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"DROP TABLE %@", v8];;
   [v10 addObject:v17];
 
-  v18 = [a1 executeSQLStatements:v10 error:a3] ^ 1;
+  v18 = [self executeSQLStatements:v10 error:database] ^ 1;
   return v18;
 }
 
@@ -6639,14 +6639,14 @@ uint64_t __59__HDDatabaseMigrator_Eagle__eagleUnprotectedMigrationSteps__block_i
 
 - (id)eagleProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke;
   v19[3] = &unk_27861B758;
   v19[4] = self;
   v4 = HDCreateMigrationStep(9100, 9201, v19);
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -6654,7 +6654,7 @@ uint64_t __59__HDDatabaseMigrator_Eagle__eagleUnprotectedMigrationSteps__block_i
   v18[3] = &unk_27861B758;
   v18[4] = self;
   v5 = HDCreateMigrationStep(9201, 9202, v18);
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -6662,7 +6662,7 @@ uint64_t __59__HDDatabaseMigrator_Eagle__eagleUnprotectedMigrationSteps__block_i
   v17[3] = &unk_27861B758;
   v17[4] = self;
   v6 = HDCreateMigrationStep(9202, 9203, v17);
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -6670,7 +6670,7 @@ uint64_t __59__HDDatabaseMigrator_Eagle__eagleUnprotectedMigrationSteps__block_i
   v16[3] = &unk_27861B758;
   v16[4] = self;
   v7 = HDCreateMigrationStep(9203, 9204, v16);
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -6678,7 +6678,7 @@ uint64_t __59__HDDatabaseMigrator_Eagle__eagleUnprotectedMigrationSteps__block_i
   v15[3] = &unk_27861B758;
   v15[4] = self;
   v8 = HDCreateMigrationStep(9204, 9206, v15);
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -6686,7 +6686,7 @@ uint64_t __59__HDDatabaseMigrator_Eagle__eagleUnprotectedMigrationSteps__block_i
   v14[3] = &unk_27861B758;
   v14[4] = self;
   v9 = HDCreateMigrationStep(9206, 9208, v14);
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -6694,12 +6694,12 @@ uint64_t __59__HDDatabaseMigrator_Eagle__eagleUnprotectedMigrationSteps__block_i
   v13[3] = &unk_27861B758;
   v13[4] = self;
   v10 = HDCreateMigrationStep(9208, 9209, v13);
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v11 = HDCreateMigrationStep(9209, 9210, &__block_literal_global_221);
-  [v3 addObject:v11];
+  [array addObject:v11];
 
-  return v3;
+  return array;
 }
 
 void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -6770,14 +6770,14 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
 
 - (id)tigrisUnprotectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block_invoke;
   v30[3] = &unk_278615508;
   v30[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepFrom:10001 to:11000 handler:v30];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
@@ -6785,7 +6785,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v29[3] = &unk_278615508;
   v29[4] = self;
   v5 = [HDDatabaseMigrationStep migrationStepWithForeignKeysDisabledFrom:11000 to:11001 handler:v29];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -6793,7 +6793,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v28[3] = &unk_278615508;
   v28[4] = self;
   v6 = [HDDatabaseMigrationStep migrationStepWithForeignKeysDisabledFrom:11001 to:11002 handler:v28];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -6801,7 +6801,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v27[3] = &unk_278615508;
   v27[4] = self;
   v7 = [HDDatabaseMigrationStep migrationStepFrom:11002 to:11003 handler:v27];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -6809,7 +6809,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v26[3] = &unk_278615508;
   v26[4] = self;
   v8 = HDCreateMigrationStep(11003, 11004, v26);
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -6817,7 +6817,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v25[3] = &unk_278615508;
   v25[4] = self;
   v9 = HDCreateMigrationStep(11004, 11005, v25);
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -6825,7 +6825,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v24[3] = &unk_278615508;
   v24[4] = self;
   v10 = HDCreateMigrationStep(11005, 11006, v24);
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -6833,7 +6833,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v23[3] = &unk_278615508;
   v23[4] = self;
   v11 = HDCreateMigrationStep(11006, 11007, v23);
-  [v3 addObject:v11];
+  [array addObject:v11];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -6841,7 +6841,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v22[3] = &unk_278615508;
   v22[4] = self;
   v12 = HDCreateMigrationStep(11007, 11009, v22);
-  [v3 addObject:v12];
+  [array addObject:v12];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -6849,7 +6849,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v21[3] = &unk_278615508;
   v21[4] = self;
   v13 = [HDDatabaseMigrationStep migrationStepFrom:11009 to:11010 handler:v21];
-  [v3 addObject:v13];
+  [array addObject:v13];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -6857,7 +6857,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v20[3] = &unk_278615508;
   v20[4] = self;
   v14 = HDCreateMigrationStep(11010, 11011, v20);
-  [v3 addObject:v14];
+  [array addObject:v14];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -6865,7 +6865,7 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v19[3] = &unk_278615508;
   v19[4] = self;
   v15 = HDCreateMigrationStep(11011, 11012, v19);
-  [v3 addObject:v15];
+  [array addObject:v15];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -6873,9 +6873,9 @@ void *__57__HDDatabaseMigrator_Eagle__eagleProtectedMigrationSteps__block_invoke
   v18[3] = &unk_278615508;
   v18[4] = self;
   v16 = HDCreateMigrationStep(11012, 11013, v18);
-  [v3 addObject:v16];
+  [array addObject:v16];
 
-  return v3;
+  return array;
 }
 
 void *__61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -7080,14 +7080,14 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
 
 - (id)tigrisProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __59__HDDatabaseMigrator_Tigris__tigrisProtectedMigrationSteps__block_invoke;
   v46[3] = &unk_278615508;
   v46[4] = self;
   v4 = [HDDatabaseMigrationStep migrationStepWithForeignKeysDisabledFrom:10200 to:11000 handler:v46];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -7095,7 +7095,7 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v45[3] = &unk_278615508;
   v45[4] = self;
   v5 = [HDDatabaseMigrationStep migrationStepFrom:11000 to:11001 handler:v45];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
@@ -7103,10 +7103,10 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v44[3] = &unk_278615508;
   v44[4] = self;
   v6 = [HDDatabaseMigrationStep migrationStepFrom:11001 to:11002 handler:v44];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v7 = [HDDatabaseMigrationStep migrationStepFrom:11002 to:11003 handler:&__block_literal_global_239];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
@@ -7114,7 +7114,7 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v43[3] = &unk_278615508;
   v43[4] = self;
   v8 = [HDDatabaseMigrationStep migrationStepFrom:11003 to:11004 handler:v43];
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -7122,10 +7122,10 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v42[3] = &unk_278615508;
   v42[4] = self;
   v9 = [HDDatabaseMigrationStep migrationStepFrom:11004 to:11005 handler:v42];
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v10 = [HDDatabaseMigrationStep migrationStepFrom:11005 to:11007 handler:&__block_literal_global_389_1];
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
@@ -7133,7 +7133,7 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v41[3] = &unk_278615508;
   v41[4] = self;
   v11 = [HDDatabaseMigrationStep migrationStepFrom:11007 to:11008 handler:v41];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -7141,10 +7141,10 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v40[3] = &unk_278615508;
   v40[4] = self;
   v12 = [HDDatabaseMigrationStep migrationStepFrom:11008 to:11009 handler:v40];
-  [v3 addObject:v12];
+  [array addObject:v12];
 
   v13 = HDCreateMigrationStep(11009, 11010, &__block_literal_global_391);
-  [v3 addObject:v13];
+  [array addObject:v13];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -7152,7 +7152,7 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v39[3] = &unk_278615508;
   v39[4] = self;
   v14 = [HDDatabaseMigrationStep migrationStepFrom:11010 to:11011 handler:v39];
-  [v3 addObject:v14];
+  [array addObject:v14];
 
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
@@ -7160,10 +7160,10 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v38[3] = &unk_278615508;
   v38[4] = self;
   v15 = [HDDatabaseMigrationStep migrationStepFrom:11011 to:11012 handler:v38];
-  [v3 addObject:v15];
+  [array addObject:v15];
 
   v16 = [HDDatabaseMigrationStep migrationStepFrom:11012 to:11013 handler:&__block_literal_global_393_0];
-  [v3 addObject:v16];
+  [array addObject:v16];
 
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
@@ -7171,7 +7171,7 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v37[3] = &unk_278615508;
   v37[4] = self;
   v17 = HDCreateMigrationStep(11013, 11014, v37);
-  [v3 addObject:v17];
+  [array addObject:v17];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -7179,10 +7179,10 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v36[3] = &unk_278615508;
   v36[4] = self;
   v18 = HDCreateMigrationStep(11014, 11015, v36);
-  [v3 addObject:v18];
+  [array addObject:v18];
 
   v19 = HDCreateMigrationStep(11015, 11028, &__block_literal_global_395_0);
-  [v3 addObject:v19];
+  [array addObject:v19];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -7190,10 +7190,10 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v35[3] = &unk_278615508;
   v35[4] = self;
   v20 = [HDDatabaseMigrationStep migrationStepFrom:11028 to:11029 handler:v35];
-  [v3 addObject:v20];
+  [array addObject:v20];
 
   v21 = [HDDatabaseMigrationStep migrationStepFrom:11029 to:11033 handler:&__block_literal_global_397];
-  [v3 addObject:v21];
+  [array addObject:v21];
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -7201,10 +7201,10 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v34[3] = &unk_278615508;
   v34[4] = self;
   v22 = [HDDatabaseMigrationStep migrationStepFrom:11033 to:11035 handler:v34];
-  [v3 addObject:v22];
+  [array addObject:v22];
 
   v23 = [HDDatabaseMigrationStep migrationStepFrom:11035 to:11036 handler:&__block_literal_global_399];
-  [v3 addObject:v23];
+  [array addObject:v23];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
@@ -7212,10 +7212,10 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v33[3] = &unk_278615508;
   v33[4] = self;
   v24 = [HDDatabaseMigrationStep migrationStepFrom:11036 to:11040 handler:v33];
-  [v3 addObject:v24];
+  [array addObject:v24];
 
   v25 = [HDDatabaseMigrationStep migrationStepFrom:11040 to:11048 handler:&__block_literal_global_401];
-  [v3 addObject:v25];
+  [array addObject:v25];
 
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -7223,7 +7223,7 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v32[3] = &unk_278615508;
   v32[4] = self;
   v26 = [HDDatabaseMigrationStep migrationStepFrom:11048 to:11049 handler:v32];
-  [v3 addObject:v26];
+  [array addObject:v26];
 
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -7231,7 +7231,7 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v31[3] = &unk_278615508;
   v31[4] = self;
   v27 = [HDDatabaseMigrationStep migrationStepFrom:11049 to:11050 handler:v31];
-  [v3 addObject:v27];
+  [array addObject:v27];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -7239,9 +7239,9 @@ uint64_t __61__HDDatabaseMigrator_Tigris__tigrisUnprotectedMigrationSteps__block
   v30[3] = &unk_278615508;
   v30[4] = self;
   v28 = [HDDatabaseMigrationStep migrationStepFrom:11050 to:11051 handler:v30];
-  [v3 addObject:v28];
+  [array addObject:v28];
 
-  return v3;
+  return array;
 }
 
 uint64_t __59__HDDatabaseMigrator_Tigris__tigrisProtectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -7644,14 +7644,14 @@ uint64_t __84__HDDatabaseMigrator_Tigris___addArbitraryMetadataSupportForWorkout
 
 - (id)corryProtectedMigrationSteps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__HDDatabaseMigrator_Corry__corryProtectedMigrationSteps__block_invoke;
   v10[3] = &unk_278615508;
   v10[4] = self;
   v4 = HDCreateMigrationStep(10100, 10200, v10);
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -7659,7 +7659,7 @@ uint64_t __84__HDDatabaseMigrator_Tigris___addArbitraryMetadataSupportForWorkout
   v9[3] = &unk_278615508;
   v9[4] = self;
   v5 = HDCreateMigrationStep(10200, 10201, v9);
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -7667,9 +7667,9 @@ uint64_t __84__HDDatabaseMigrator_Tigris___addArbitraryMetadataSupportForWorkout
   v8[3] = &unk_278615508;
   v8[4] = self;
   v6 = HDCreateMigrationStep(10201, 10202, v8);
-  [v3 addObject:v6];
+  [array addObject:v6];
 
-  return v3;
+  return array;
 }
 
 uint64_t __57__HDDatabaseMigrator_Corry__corryProtectedMigrationSteps__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)

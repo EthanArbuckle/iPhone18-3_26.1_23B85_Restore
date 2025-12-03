@@ -26,9 +26,9 @@
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "code")}];
   [v8 setCustomErrorCode:v9];
 
-  v10 = [v6 domain];
+  domain = [v6 domain];
 
-  [v8 setCustomErrorDomain:v10];
+  [v8 setCustomErrorDomain:domain];
 
   return v8;
 }

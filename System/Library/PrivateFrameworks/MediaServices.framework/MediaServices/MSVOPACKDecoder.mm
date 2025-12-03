@@ -1,24 +1,24 @@
 @interface MSVOPACKDecoder
-+ (id)decodedObjectOfClass:(Class)a3 fromData:(id)a4 userInfo:(id)a5 error:(id *)a6;
-+ (id)decodedObjectOfClasses:(id)a3 fromData:(id)a4 userInfo:(id)a5 error:(id *)a6;
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
++ (id)decodedObjectOfClass:(Class)class fromData:(id)data userInfo:(id)info error:(id *)error;
++ (id)decodedObjectOfClasses:(id)classes fromData:(id)data userInfo:(id)info error:(id *)error;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
 - (MSVOPACKDecoderDelegate)delegate;
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
-- (id)_decodeNumberForKey:(id)a3;
-- (id)_decodeOPACKObject:(id)a3 ofClasses:(id)a4;
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
-- (id)decodeRootObjectOfClass:(Class)a3 error:(id *)a4;
-- (id)initForReadingFromData:(id)a3 userInfo:(id)a4 error:(id *)a5;
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
+- (id)_decodeNumberForKey:(id)key;
+- (id)_decodeOPACKObject:(id)object ofClasses:(id)classes;
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key;
+- (id)decodeRootObjectOfClass:(Class)class error:(id *)error;
+- (id)initForReadingFromData:(id)data userInfo:(id)info error:(id *)error;
 - (id)msv_userInfo;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (void)_validateClass:(Class)a3 fromSupportedClasses:(id)a4;
-- (void)beginDecodingPartialTopLevelObjectOfClasses:(id)a3;
-- (void)msv_setUserInfo:(id)a3;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (void)_validateClass:(Class)class fromSupportedClasses:(id)classes;
+- (void)beginDecodingPartialTopLevelObjectOfClasses:(id)classes;
+- (void)msv_setUserInfo:(id)info;
 @end
 
 @implementation MSVOPACKDecoder
@@ -30,13 +30,13 @@
   return WeakRetained;
 }
 
-- (id)_decodeNumberForKey:(id)a3
+- (id)_decodeNumberForKey:(id)key
 {
   wrapperStack = self->_wrapperStack;
-  v5 = a3;
-  v6 = [(NSMutableArray *)wrapperStack lastObject];
-  v7 = [v6 objectForKeyedSubscript:&unk_1F215CA70];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)wrapperStack lastObject];
+  v7 = [lastObject objectForKeyedSubscript:&unk_1F215CA70];
+  v8 = [v7 objectForKeyedSubscript:keyCopy];
 
   if (v8 && (_NSIsNSNumber() & 1) == 0)
   {
@@ -49,9 +49,9 @@
   return v8;
 }
 
-- (void)msv_setUserInfo:(id)a3
+- (void)msv_setUserInfo:(id)info
 {
-  v4 = [a3 copy];
+  v4 = [info copy];
   userInfo = self->_userInfo;
   self->_userInfo = v4;
 
@@ -71,122 +71,122 @@
   }
 }
 
-- (void)beginDecodingPartialTopLevelObjectOfClasses:(id)a3
+- (void)beginDecodingPartialTopLevelObjectOfClasses:(id)classes
 {
   objects = self->_objects;
-  v6 = a3;
-  v13 = [(NSArray *)objects firstObject];
-  v7 = [v13 objectForKeyedSubscript:&unk_1F215CAA0];
-  v8 = [v7 BOOLValue];
+  classesCopy = classes;
+  firstObject = [(NSArray *)objects firstObject];
+  v7 = [firstObject objectForKeyedSubscript:&unk_1F215CAA0];
+  bOOLValue = [v7 BOOLValue];
 
-  if ((v8 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:366 description:@"Can't decode a partial object if it isn't."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:366 description:@"Can't decode a partial object if it isn't."];
   }
 
-  v9 = [v13 objectForKeyedSubscript:&unk_1F215CA88];
-  v10 = [v9 firstObject];
-  v11 = NSClassFromString(v10);
+  v9 = [firstObject objectForKeyedSubscript:&unk_1F215CA88];
+  firstObject2 = [v9 firstObject];
+  v11 = NSClassFromString(firstObject2);
 
-  [(MSVOPACKDecoder *)self _validateClass:v11 fromSupportedClasses:v6];
-  [(NSMutableArray *)self->_wrapperStack addObject:v13];
+  [(MSVOPACKDecoder *)self _validateClass:v11 fromSupportedClasses:classesCopy];
+  [(NSMutableArray *)self->_wrapperStack addObject:firstObject];
 }
 
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length
 {
   wrapperStack = self->_wrapperStack;
-  v6 = a3;
-  v7 = [(NSMutableArray *)wrapperStack lastObject];
-  v8 = [v7 objectForKeyedSubscript:&unk_1F215CA70];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)wrapperStack lastObject];
+  v8 = [lastObject objectForKeyedSubscript:&unk_1F215CA70];
+  v9 = [v8 objectForKeyedSubscript:keyCopy];
 
-  if (a4)
+  if (length)
   {
-    *a4 = [v9 length];
+    *length = [v9 length];
   }
 
-  v10 = [v9 bytes];
+  bytes = [v9 bytes];
 
-  return v10;
+  return bytes;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
-  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:a3];
+  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:key];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
-  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:a3];
+  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:key];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
-  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:key];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
-  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:a3];
-  v4 = [v3 longValue];
+  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:key];
+  longValue = [v3 longValue];
 
-  return v4;
+  return longValue;
 }
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
-  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:a3];
-  v4 = [v3 intValue];
+  v3 = [(MSVOPACKDecoder *)self _decodeNumberForKey:key];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
   wrapperStack = self->_wrapperStack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)wrapperStack lastObject];
-  v6 = [v5 objectForKeyedSubscript:&unk_1F215CA70];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)wrapperStack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:&unk_1F215CA70];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
-  LOBYTE(v4) = [v7 BOOLValue];
-  return v4;
+  LOBYTE(keyCopy) = [v7 BOOLValue];
+  return keyCopy;
 }
 
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  classesCopy = classes;
+  keyCopy = key;
   v9 = objc_autoreleasePoolPush();
-  if (![v8 isEqual:@"rootObject"])
+  if (![keyCopy isEqual:@"rootObject"])
   {
-    v12 = [(NSMutableArray *)self->_wrapperStack lastObject];
-    v13 = [v12 objectForKeyedSubscript:&unk_1F215CA70];
-    v10 = [v13 objectForKeyedSubscript:v8];
+    lastObject = [(NSMutableArray *)self->_wrapperStack lastObject];
+    v13 = [lastObject objectForKeyedSubscript:&unk_1F215CA70];
+    firstObject = [v13 objectForKeyedSubscript:keyCopy];
 
     goto LABEL_6;
   }
 
-  v10 = [(NSArray *)self->_objects firstObject];
-  if (!v10)
+  firstObject = [(NSArray *)self->_objects firstObject];
+  if (!firstObject)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:305 description:@"No root object"];
+    lastObject = [MEMORY[0x1E696AAA8] currentHandler];
+    [lastObject handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:305 description:@"No root object"];
 LABEL_6:
 
-    if (v7)
+    if (classesCopy)
     {
       goto LABEL_4;
     }
@@ -194,17 +194,17 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v7)
+  if (classesCopy)
   {
 LABEL_4:
-    [(NSMutableArray *)self->_allowedClassesStack addObject:v7];
-    v11 = [(MSVOPACKDecoder *)self _decodeOPACKObject:v10 ofClasses:v7];
+    [(NSMutableArray *)self->_allowedClassesStack addObject:classesCopy];
+    v11 = [(MSVOPACKDecoder *)self _decodeOPACKObject:firstObject ofClasses:classesCopy];
     [(NSMutableArray *)self->_allowedClassesStack removeLastObject];
     goto LABEL_8;
   }
 
 LABEL_7:
-  v11 = [(MSVOPACKDecoder *)self _decodeOPACKObject:v10 ofClasses:0];
+  v11 = [(MSVOPACKDecoder *)self _decodeOPACKObject:firstObject ofClasses:0];
 LABEL_8:
 
   objc_autoreleasePoolPop(v9);
@@ -212,22 +212,22 @@ LABEL_8:
   return v11;
 }
 
-- (id)_decodeOPACKObject:(id)a3 ofClasses:(id)a4
+- (id)_decodeOPACKObject:(id)object ofClasses:(id)classes
 {
   v95 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  objectCopy = object;
+  classesCopy = classes;
+  if (!objectCopy)
   {
     v10 = 0;
     goto LABEL_67;
   }
 
-  if (!_NSIsNSNumber() || ([v7 unsignedLongValue] & 0x80000000) == 0)
+  if (!_NSIsNSNumber() || ([objectCopy unsignedLongValue] & 0x80000000) == 0)
   {
     if (_NSIsNSArray())
     {
-      v9 = v7;
+      v9 = objectCopy;
       v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
       v87 = 0u;
       v88 = 0u;
@@ -248,7 +248,7 @@ LABEL_8:
               objc_enumerationMutation(v11);
             }
 
-            v16 = [(MSVOPACKDecoder *)self _decodeOPACKObject:*(*(&v87 + 1) + 8 * i) ofClasses:v8];
+            v16 = [(MSVOPACKDecoder *)self _decodeOPACKObject:*(*(&v87 + 1) + 8 * i) ofClasses:classesCopy];
             [v10 addObject:v16];
           }
 
@@ -266,7 +266,7 @@ LABEL_8:
       goto LABEL_66;
     }
 
-    v11 = v7;
+    v11 = objectCopy;
     v17 = [v11 count];
     if ((v17 & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
@@ -279,31 +279,31 @@ LABEL_8:
         if (v20)
         {
           v21 = [v11 objectForKeyedSubscript:&unk_1F215CAA0];
-          v22 = [v21 BOOLValue];
+          bOOLValue = [v21 BOOLValue];
 
-          if (v22)
+          if (bOOLValue)
           {
-            v68 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v68 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:207 description:@"Can't decode a partial object without a segmented decoder."];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:207 description:@"Can't decode a partial object without a segmented decoder."];
           }
 
           v23 = [v11 objectForKeyedSubscript:&unk_1F215CA88];
-          v24 = [v23 firstObject];
-          v25 = [&unk_1F215CC08 objectForKeyedSubscript:v24];
+          firstObject = [v23 firstObject];
+          v25 = [&unk_1F215CC08 objectForKeyedSubscript:firstObject];
           v26 = v25;
           if (v25)
           {
             v27 = v25;
 
-            v24 = v27;
+            firstObject = v27;
           }
 
-          v28 = NSClassFromString(v24);
-          [(MSVOPACKDecoder *)self _validateClass:v28 fromSupportedClasses:v8];
+          v28 = NSClassFromString(firstObject);
+          [(MSVOPACKDecoder *)self _validateClass:v28 fromSupportedClasses:classesCopy];
           [(NSMutableArray *)self->_wrapperStack addObject:v11];
           v10 = [[v28 alloc] initWithCoder:self];
           [(NSMutableArray *)self->_wrapperStack removeLastObject];
-          [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:v8];
+          [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:classesCopy];
 
           goto LABEL_39;
         }
@@ -339,7 +339,7 @@ LABEL_8:
                 objc_enumerationMutation(v23);
               }
 
-              v37 = [(MSVOPACKDecoder *)self _decodeOPACKObject:*(*(&v83 + 1) + 8 * j) ofClasses:v8];
+              v37 = [(MSVOPACKDecoder *)self _decodeOPACKObject:*(*(&v83 + 1) + 8 * j) ofClasses:classesCopy];
               [v10 addObject:v37];
             }
 
@@ -350,7 +350,7 @@ LABEL_8:
         }
 
 LABEL_38:
-        [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:v8];
+        [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:classesCopy];
 LABEL_39:
 
         goto LABEL_14;
@@ -362,7 +362,7 @@ LABEL_39:
       {
         v10 = [v11 objectForKeyedSubscript:&unk_1F215CAD0];
 LABEL_13:
-        [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:v8];
+        [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:classesCopy];
 LABEL_14:
 
         goto LABEL_67;
@@ -379,7 +379,7 @@ LABEL_14:
         v80[2] = __48__MSVOPACKDecoder__decodeOPACKObject_ofClasses___block_invoke;
         v80[3] = &unk_1E79820A8;
         v80[4] = self;
-        v41 = v8;
+        v41 = classesCopy;
         v81 = v41;
         v82 = v40;
         v42 = v40;
@@ -401,7 +401,7 @@ LABEL_14:
         v77[2] = __48__MSVOPACKDecoder__decodeOPACKObject_ofClasses___block_invoke_40;
         v77[3] = &unk_1E79820A8;
         v77[4] = self;
-        v45 = v8;
+        v45 = classesCopy;
         v78 = v45;
         v46 = v44;
         v79 = v46;
@@ -438,7 +438,7 @@ LABEL_14:
                 objc_enumerationMutation(v51);
               }
 
-              v56 = [(MSVOPACKDecoder *)self _decodeOPACKObject:*(*(&v73 + 1) + 8 * k) ofClasses:v8];
+              v56 = [(MSVOPACKDecoder *)self _decodeOPACKObject:*(*(&v73 + 1) + 8 * k) ofClasses:classesCopy];
               [v50 addObject:v56];
             }
 
@@ -448,7 +448,7 @@ LABEL_14:
           while (v53);
         }
 
-        [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:v8];
+        [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:classesCopy];
         v10 = [v50 copy];
 
         goto LABEL_14;
@@ -479,7 +479,7 @@ LABEL_14:
                 objc_enumerationMutation(v23);
               }
 
-              v63 = [(MSVOPACKDecoder *)self _decodeOPACKObject:*(*(&v69 + 1) + 8 * m) ofClasses:v8, v69];
+              v63 = [(MSVOPACKDecoder *)self _decodeOPACKObject:*(*(&v69 + 1) + 8 * m) ofClasses:classesCopy, v69];
               [v10 addObject:v63];
             }
 
@@ -492,30 +492,30 @@ LABEL_14:
         goto LABEL_38;
       }
 
-      v64 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v64 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:289 description:{@"Data key exists, but unknown object type."}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:289 description:{@"Data key exists, but unknown object type."}];
     }
 
 LABEL_65:
-    v65 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v65 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:291 description:@"Unknown encoded dictionary literal."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:291 description:@"Unknown encoded dictionary literal."];
 
 LABEL_66:
-    [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:v8];
-    v10 = v7;
+    [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:classesCopy];
+    v10 = objectCopy;
     goto LABEL_67;
   }
 
-  v29 = [v7 unsignedLongValue];
-  v10 = NSMapGet(self->_objectLookupTable, (v29 ^ 0x80000000));
+  unsignedLongValue = [objectCopy unsignedLongValue];
+  v10 = NSMapGet(self->_objectLookupTable, (unsignedLongValue ^ 0x80000000));
   if (!v10)
   {
-    v30 = [(NSArray *)self->_objects objectAtIndexedSubscript:v29 ^ 0x80000000];
-    v10 = [(MSVOPACKDecoder *)self _decodeOPACKObject:v30 ofClasses:v8];
-    NSMapInsert(self->_objectLookupTable, (v29 ^ 0x80000000), v10);
+    0x80000000 = [(NSArray *)self->_objects objectAtIndexedSubscript:unsignedLongValue ^ 0x80000000];
+    v10 = [(MSVOPACKDecoder *)self _decodeOPACKObject:0x80000000 ofClasses:classesCopy];
+    NSMapInsert(self->_objectLookupTable, (unsignedLongValue ^ 0x80000000), v10);
   }
 
-  [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:v8];
+  [(MSVOPACKDecoder *)self _validateClass:objc_opt_class() fromSupportedClasses:classesCopy];
 LABEL_67:
 
   v66 = *MEMORY[0x1E69E9840];
@@ -545,25 +545,25 @@ void __48__MSVOPACKDecoder__decodeOPACKObject_ofClasses___block_invoke_40(uint64
   [*(a1 + 48) setObject:v8 forKeyedSubscript:v9];
 }
 
-- (void)_validateClass:(Class)a3 fromSupportedClasses:(id)a4
+- (void)_validateClass:(Class)class fromSupportedClasses:(id)classes
 {
-  v10 = a4;
-  if (a3)
+  classesCopy = classes;
+  if (class)
   {
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([(objc_class *)a3 supportsSecureCoding]& 1) == 0)
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([(objc_class *)class supportsSecureCoding]& 1) == 0)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:162 description:{@"Class %@ does not support secure coding.", a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:162 description:{@"Class %@ does not support secure coding.", class}];
     }
 
-    v7 = a3;
-    while (([v10 containsObject:v7] & 1) == 0)
+    classCopy = class;
+    while (([classesCopy containsObject:classCopy] & 1) == 0)
     {
-      v7 = [(objc_class *)v7 superclass];
-      if (!v7)
+      classCopy = [(objc_class *)classCopy superclass];
+      if (!classCopy)
       {
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v8 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:170 description:{@"Class %@ does not match supported classes: %@", a3, v10}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"MSVOPACKDecoder.m" lineNumber:170 description:{@"Class %@ does not match supported classes: %@", class, classesCopy}];
 
         break;
       }
@@ -571,31 +571,31 @@ void __48__MSVOPACKDecoder__decodeOPACKObject_ofClasses___block_invoke_40(uint64
   }
 }
 
-- (id)decodeRootObjectOfClass:(Class)a3 error:(id *)a4
+- (id)decodeRootObjectOfClass:(Class)class error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:a3];
-  v7 = [(MSVOPACKDecoder *)self decodeRootObjectOfClasses:v6 error:a4];
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:class];
+  v7 = [(MSVOPACKDecoder *)self decodeRootObjectOfClasses:v6 error:error];
 
   return v7;
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
   wrapperStack = self->_wrapperStack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)wrapperStack lastObject];
-  v6 = [v5 objectForKeyedSubscript:&unk_1F215CA70];
-  v7 = [v6 allKeys];
-  v8 = [v7 containsObject:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)wrapperStack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:&unk_1F215CA70];
+  allKeys = [v6 allKeys];
+  v8 = [allKeys containsObject:keyCopy];
 
   return v8;
 }
 
-- (id)initForReadingFromData:(id)a3 userInfo:(id)a4 error:(id *)a5
+- (id)initForReadingFromData:(id)data userInfo:(id)info error:(id *)error
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  infoCopy = info;
   v29.receiver = self;
   v29.super_class = MSVOPACKDecoder;
   v10 = [(MSVOPACKDecoder *)&v29 init];
@@ -604,7 +604,7 @@ void __48__MSVOPACKDecoder__decodeOPACKObject_ofClasses___block_invoke_40(uint64
     goto LABEL_6;
   }
 
-  v11 = [v9 copy];
+  v11 = [infoCopy copy];
   v12 = v11;
   v13 = (v11 ? v11 : MEMORY[0x1E695E0F8]);
   objc_storeStrong(&v10->_userInfo, v13);
@@ -617,25 +617,25 @@ void __48__MSVOPACKDecoder__decodeOPACKObject_ofClasses___block_invoke_40(uint64
   objectLookupTable = v10->_objectLookupTable;
   v10->_objectLookupTable = v16;
 
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   wrapperStack = v10->_wrapperStack;
-  v10->_wrapperStack = v18;
+  v10->_wrapperStack = array;
 
-  v20 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   allowedClassesStack = v10->_allowedClassesStack;
-  v10->_allowedClassesStack = v20;
+  v10->_allowedClassesStack = array2;
 
   v22 = v10->_objects;
   if ((_NSIsNSArray() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v24 = MEMORY[0x1E696ABC0];
       v25 = MSVOPACKDecoderErrorDomain;
       v30 = *MEMORY[0x1E696A278];
       v31[0] = @"Decoded OPACK data did not contain an array as the root object.";
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-      *a5 = [v24 errorWithDomain:v25 code:1 userInfo:v26];
+      *error = [v24 errorWithDomain:v25 code:1 userInfo:v26];
     }
 
     v23 = 0;
@@ -651,25 +651,25 @@ LABEL_6:
   return v23;
 }
 
-+ (id)decodedObjectOfClasses:(id)a3 fromData:(id)a4 userInfo:(id)a5 error:(id *)a6
++ (id)decodedObjectOfClasses:(id)classes fromData:(id)data userInfo:(id)info error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[MSVOPACKDecoder alloc] initForReadingFromData:v10 userInfo:v9 error:a6];
+  infoCopy = info;
+  dataCopy = data;
+  classesCopy = classes;
+  v12 = [[MSVOPACKDecoder alloc] initForReadingFromData:dataCopy userInfo:infoCopy error:error];
 
-  v13 = [v12 decodeRootObjectOfClasses:v11 error:a6];
+  v13 = [v12 decodeRootObjectOfClasses:classesCopy error:error];
 
   return v13;
 }
 
-+ (id)decodedObjectOfClass:(Class)a3 fromData:(id)a4 userInfo:(id)a5 error:(id *)a6
++ (id)decodedObjectOfClass:(Class)class fromData:(id)data userInfo:(id)info error:(id *)error
 {
   v10 = MEMORY[0x1E695DFD8];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 setWithObject:a3];
-  v14 = [a1 decodedObjectOfClasses:v13 fromData:v12 userInfo:v11 error:a6];
+  infoCopy = info;
+  dataCopy = data;
+  v13 = [v10 setWithObject:class];
+  v14 = [self decodedObjectOfClasses:v13 fromData:dataCopy userInfo:infoCopy error:error];
 
   return v14;
 }

@@ -3,71 +3,71 @@
 - (UIView)backgroundView;
 - (id)_containerConstraints;
 - (id)_currentSign;
-- (id)_effectiveJunctionForSign:(id)a3;
+- (id)_effectiveJunctionForSign:(id)sign;
 - (void)_insertBackgroundView;
 - (void)_updateSign;
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4;
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4;
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)setCornerRadius:(double)a3;
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id;
+- (void)navigationService:(id)service showLaneDirections:(id)directions;
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info;
+- (void)setCornerRadius:(double)radius;
 - (void)viewDidLoad;
 @end
 
 @implementation NavSecondarySignViewController
 
-- (id)_effectiveJunctionForSign:(id)a3
+- (id)_effectiveJunctionForSign:(id)sign
 {
-  v4 = a3;
+  signCopy = sign;
   latestPrimarySign = self->_latestPrimarySign;
-  if (latestPrimarySign && ((-[MNGuidanceSignDescription junction](latestPrimarySign, "junction"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 maneuverType], v6, latestSecondarySign = self->_latestSecondarySign, latestSecondarySign == v4) ? (v9 = v7 - 85 > 1) : (v9 = 1), !v9 && (-[MNGuidanceSignDescription junction](latestSecondarySign, "junction"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "maneuverType"), v10, v11 == v7)))
+  if (latestPrimarySign && ((-[MNGuidanceSignDescription junction](latestPrimarySign, "junction"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 maneuverType], v6, latestSecondarySign = self->_latestSecondarySign, latestSecondarySign == signCopy) ? (v9 = v7 - 85 > 1) : (v9 = 1), !v9 && (-[MNGuidanceSignDescription junction](latestSecondarySign, "junction"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "maneuverType"), v10, v11 == v7)))
   {
-    v12 = 0;
+    junction = 0;
   }
 
   else
   {
-    v12 = [(MNGuidanceSignDescription *)v4 junction];
+    junction = [(MNGuidanceSignDescription *)signCopy junction];
   }
 
-  return v12;
+  return junction;
 }
 
 - (void)_updateSign
 {
-  v3 = [(MNGuidanceSignDescription *)self->_latestPrimarySign uniqueID];
+  uniqueID = [(MNGuidanceSignDescription *)self->_latestPrimarySign uniqueID];
   drawnPrimarySignID = self->_drawnPrimarySignID;
-  self->_drawnPrimarySignID = v3;
+  self->_drawnPrimarySignID = uniqueID;
 
-  v5 = [(MNGuidanceSignDescription *)self->_latestSecondarySign uniqueID];
+  uniqueID2 = [(MNGuidanceSignDescription *)self->_latestSecondarySign uniqueID];
   drawnSecondarySignID = self->_drawnSecondarySignID;
-  self->_drawnSecondarySignID = v5;
+  self->_drawnSecondarySignID = uniqueID2;
 
-  v7 = [(NavSecondarySignViewController *)self _currentSign];
-  v8 = v7;
-  if (v7)
+  _currentSign = [(NavSecondarySignViewController *)self _currentSign];
+  v8 = _currentSign;
+  if (_currentSign)
   {
-    v9 = [v7 secondaryStrings];
-    v10 = [v9 count];
+    secondaryStrings = [_currentSign secondaryStrings];
+    v10 = [secondaryStrings count];
 
     if (v10)
     {
       v11 = [MKServerFormattedString alloc];
-      v12 = [v8 secondaryStrings];
-      v13 = [v12 firstObject];
-      v14 = [v11 initWithComposedString:v13];
+      secondaryStrings2 = [v8 secondaryStrings];
+      firstObject = [secondaryStrings2 firstObject];
+      v14 = [v11 initWithComposedString:firstObject];
     }
 
     else
     {
       v15 = [MKServerFormattedStringParameters alloc];
-      v16 = [v8 distanceDetailLevel];
-      v17 = [v8 variableOverrides];
-      v12 = [v15 initWithInstructionsDistanceDetailLevel:v16 variableOverrides:v17];
+      distanceDetailLevel = [v8 distanceDetailLevel];
+      variableOverrides = [v8 variableOverrides];
+      secondaryStrings2 = [v15 initWithInstructionsDistanceDetailLevel:distanceDetailLevel variableOverrides:variableOverrides];
 
-      v18 = [v8 details];
-      v13 = [v18 firstObject];
+      details = [v8 details];
+      firstObject = [details firstObject];
 
-      v14 = [[MKServerFormattedString alloc] initWithGeoServerString:v13 parameters:v12];
+      v14 = [[MKServerFormattedString alloc] initWithGeoServerString:firstObject parameters:secondaryStrings2];
     }
 
     v19 = v14;
@@ -77,16 +77,16 @@
     [(RouteStepListMetrics *)self->_metrics displayedAsSecondaryFontWeight];
     v23 = [UIFont systemFontOfSize:v21 weight:v22];
     v44[0] = NSForegroundColorAttributeName;
-    v24 = [(RouteStepListMetrics *)self->_metrics displayedAsSecondaryTextColor];
-    v45[0] = v24;
+    displayedAsSecondaryTextColor = [(RouteStepListMetrics *)self->_metrics displayedAsSecondaryTextColor];
+    v45[0] = displayedAsSecondaryTextColor;
     v45[1] = v23;
     v44[1] = NSFontAttributeName;
     v44[2] = MKServerFormattedStringArtworkSizeAttributeKey;
     v45[2] = &off_1016E96B0;
     v25 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:3];
     v26 = [v19 multiPartAttributedStringWithAttributes:v25];
-    v27 = [v26 attributedString];
-    [(UILabel *)self->_primaryTextLabel setAttributedText:v27];
+    attributedString = [v26 attributedString];
+    [(UILabel *)self->_primaryTextLabel setAttributedText:attributedString];
   }
 
   else
@@ -106,10 +106,10 @@
   }
 
   v30 = [GuidanceManeuverArtwork alloc];
-  v31 = [v28 maneuverType];
-  v32 = [v28 drivingSide];
-  v33 = [v8 artworkOverride];
-  v34 = [(GuidanceManeuverArtwork *)v30 initWithManeuver:v31 junction:v29 drivingSide:v32 artworkDataSource:v33];
+  maneuverType = [v28 maneuverType];
+  drivingSide = [v28 drivingSide];
+  artworkOverride = [v8 artworkOverride];
+  v34 = [(GuidanceManeuverArtwork *)v30 initWithManeuver:maneuverType junction:v29 drivingSide:drivingSide artworkDataSource:artworkOverride];
   [(GuidanceManeuverView *)self->_guidanceManeuverView setManeuverArtwork:v34];
 
   metrics = self->_metrics;
@@ -140,11 +140,11 @@
   v38 = self->_guidanceManeuverView;
   memcpy(__dst, v41, sizeof(__dst));
   [(GuidanceManeuverView *)v38 setJunctionArrowMetrics:__dst];
-  v39 = [(RouteStepListMetrics *)self->_metrics arrowColor];
-  [(GuidanceManeuverView *)self->_guidanceManeuverView setArrowColor:v39];
+  arrowColor = [(RouteStepListMetrics *)self->_metrics arrowColor];
+  [(GuidanceManeuverView *)self->_guidanceManeuverView setArrowColor:arrowColor];
 
-  v40 = [(RouteStepListMetrics *)self->_metrics arrowAccentColor];
-  [(GuidanceManeuverView *)self->_guidanceManeuverView setAccentColor:v40];
+  arrowAccentColor = [(RouteStepListMetrics *)self->_metrics arrowAccentColor];
+  [(GuidanceManeuverView *)self->_guidanceManeuverView setAccentColor:arrowAccentColor];
 }
 
 - (id)_currentSign
@@ -162,43 +162,43 @@
   return *(&self->super.super.super.isa + *v2);
 }
 
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id
 {
   isShowingMidstepLaneGuidance = self->_isShowingMidstepLaneGuidance;
   self->_isShowingMidstepLaneGuidance = 0;
   if (isShowingMidstepLaneGuidance)
   {
-    [(NavSecondarySignViewController *)self _updateSign:a3];
+    [(NavSecondarySignViewController *)self _updateSign:service];
   }
 }
 
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4
+- (void)navigationService:(id)service showLaneDirections:(id)directions
 {
   isShowingMidstepLaneGuidance = self->_isShowingMidstepLaneGuidance;
-  v6 = [a4 isForManeuver];
-  self->_isShowingMidstepLaneGuidance = v6 ^ 1;
-  if (isShowingMidstepLaneGuidance != (v6 ^ 1))
+  isForManeuver = [directions isForManeuver];
+  self->_isShowingMidstepLaneGuidance = isForManeuver ^ 1;
+  if (isShowingMidstepLaneGuidance != (isForManeuver ^ 1))
   {
 
     [(NavSecondarySignViewController *)self _updateSign];
   }
 }
 
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info
 {
-  v5 = a4;
-  v6 = [v5 primarySign];
-  v7 = [v5 secondarySign];
+  infoCopy = info;
+  primarySign = [infoCopy primarySign];
+  secondarySign = [infoCopy secondarySign];
 
   if (!self->_isShowingMidstepLaneGuidance)
   {
     LOBYTE(v10) = 0;
 LABEL_7:
-    v11 = [v7 uniqueID];
-    v12 = v11;
-    if (v11 | self->_drawnSecondarySignID)
+    uniqueID = [secondarySign uniqueID];
+    v12 = uniqueID;
+    if (uniqueID | self->_drawnSecondarySignID)
     {
-      v13 = [v11 isEqual:?] ^ 1;
+      v13 = [uniqueID isEqual:?] ^ 1;
     }
 
     else
@@ -210,11 +210,11 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v8 = [v6 uniqueID];
-  v9 = v8;
-  if (v8 | self->_drawnPrimarySignID)
+  uniqueID2 = [primarySign uniqueID];
+  v9 = uniqueID2;
+  if (uniqueID2 | self->_drawnPrimarySignID)
   {
-    v10 = [v8 isEqual:?] ^ 1;
+    v10 = [uniqueID2 isEqual:?] ^ 1;
   }
 
   else
@@ -229,11 +229,11 @@ LABEL_7:
 
 LABEL_11:
   latestPrimarySign = self->_latestPrimarySign;
-  self->_latestPrimarySign = v6;
-  v15 = v6;
+  self->_latestPrimarySign = primarySign;
+  v15 = primarySign;
 
   latestSecondarySign = self->_latestSecondarySign;
-  self->_latestSecondarySign = v7;
+  self->_latestSecondarySign = secondarySign;
 
   if (v10)
   {
@@ -242,26 +242,26 @@ LABEL_11:
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   [(NavSecondarySignViewController *)self loadViewIfNeeded];
-  v5 = [(UIView *)self->_backgroundView layer];
-  [v5 setMaskedCorners:12];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setMaskedCorners:12];
 
-  v6 = [(UIView *)self->_backgroundView layer];
-  [v6 setCornerCurve:kCACornerCurveContinuous];
+  layer2 = [(UIView *)self->_backgroundView layer];
+  [layer2 setCornerCurve:kCACornerCurveContinuous];
 
-  v7 = [(UIView *)self->_backgroundView layer];
-  [v7 setCornerRadius:a3];
+  layer3 = [(UIView *)self->_backgroundView layer];
+  [layer3 setCornerRadius:radius];
 }
 
 - (id)_containerConstraints
 {
   LODWORD(v2) = 1148846080;
   v3 = [(UIView *)self->_containerView _maps_constraintsEqualToEdgesOfView:self->_backgroundView priority:v2];
-  v4 = [v3 allConstraints];
+  allConstraints = [v3 allConstraints];
 
-  return v4;
+  return allConstraints;
 }
 
 - (void)_insertBackgroundView
@@ -299,36 +299,36 @@ LABEL_11:
   backgroundView = self->_backgroundView;
   self->_backgroundView = 0;
 
-  v4 = [(NavSecondarySignViewController *)self view];
-  v5 = [(NavSecondarySignViewController *)self backgroundView];
-  [v4 insertSubview:v5 atIndex:0];
+  view = [(NavSecondarySignViewController *)self view];
+  backgroundView = [(NavSecondarySignViewController *)self backgroundView];
+  [view insertSubview:backgroundView atIndex:0];
 
   v6 = [NSMutableArray alloc];
-  v25 = [(UIView *)self->_backgroundView leadingAnchor];
-  v26 = [(NavSecondarySignViewController *)self view];
-  v24 = [v26 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor = [(UIView *)self->_backgroundView leadingAnchor];
+  view2 = [(NavSecondarySignViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v27[0] = v23;
-  v21 = [(UIView *)self->_backgroundView trailingAnchor];
-  v22 = [(NavSecondarySignViewController *)self view];
-  v20 = [v22 trailingAnchor];
-  v7 = [v21 constraintEqualToAnchor:v20];
+  trailingAnchor = [(UIView *)self->_backgroundView trailingAnchor];
+  view3 = [(NavSecondarySignViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v27[1] = v7;
-  v8 = [(UIView *)self->_backgroundView bottomAnchor];
-  v9 = [(NavSecondarySignViewController *)self view];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  bottomAnchor = [(UIView *)self->_backgroundView bottomAnchor];
+  view4 = [(NavSecondarySignViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[2] = v11;
-  v12 = [(UIView *)self->_backgroundView heightAnchor];
-  v13 = [v12 constraintEqualToConstant:64.0];
+  heightAnchor = [(UIView *)self->_backgroundView heightAnchor];
+  v13 = [heightAnchor constraintEqualToConstant:64.0];
   v27[3] = v13;
   v14 = [NSArray arrayWithObjects:v27 count:4];
   v15 = [v6 initWithArray:v14];
 
   if (self->_containerView)
   {
-    v16 = [(NavSecondarySignViewController *)self _containerConstraints];
-    [v15 addObjectsFromArray:v16];
+    _containerConstraints = [(NavSecondarySignViewController *)self _containerConstraints];
+    [v15 addObjectsFromArray:_containerConstraints];
   }
 
   [NSLayoutConstraint activateConstraints:v15];
@@ -358,18 +358,18 @@ LABEL_11:
   v53.receiver = self;
   v53.super_class = NavSecondarySignViewController;
   [(NavSecondarySignViewController *)&v53 viewDidLoad];
-  v3 = [(NavSecondarySignViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(NavSecondarySignViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v4 = [(NavSecondarySignViewController *)self view];
-  v5 = [v4 layer];
-  [v5 setMasksToBounds:1];
+  view2 = [(NavSecondarySignViewController *)self view];
+  layer = [view2 layer];
+  [layer setMasksToBounds:1];
 
   [(NavSecondarySignViewController *)self _insertBackgroundView];
   v6 = objc_opt_new();
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v6 layer];
-  [v7 setMasksToBounds:1];
+  layer2 = [v6 layer];
+  [layer2 setMasksToBounds:1];
 
   objc_storeStrong(&self->_containerView, v6);
   if (_UISolariumEnabled())
@@ -379,8 +379,8 @@ LABEL_11:
 
   else
   {
-    v8 = [(NavSecondarySignViewController *)self view];
-    [v8 addSubview:v6];
+    view3 = [(NavSecondarySignViewController *)self view];
+    [view3 addSubview:v6];
   }
 
   v9 = objc_opt_new();
@@ -403,60 +403,60 @@ LABEL_11:
   [(UILabel *)self->_primaryTextLabel setAccessibilityIdentifier:@"PrimaryTextLabel"];
   [v6 addSubview:self->_primaryTextLabel];
   v39 = [NSMutableArray alloc];
-  v52 = [v9 leadingAnchor];
-  v51 = [v6 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  leadingAnchor = [v9 leadingAnchor];
+  leadingAnchor2 = [v6 leadingAnchor];
+  v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v54[0] = v50;
-  v49 = [v9 topAnchor];
-  v48 = [v6 topAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  topAnchor = [v9 topAnchor];
+  topAnchor2 = [v6 topAnchor];
+  v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v54[1] = v47;
-  v46 = [v9 bottomAnchor];
-  v45 = [v6 bottomAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  bottomAnchor = [v9 bottomAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v54[2] = v44;
-  v43 = [v9 widthAnchor];
+  widthAnchor = [v9 widthAnchor];
   [(RouteStepListMetrics *)self->_metrics imageAreaWidth];
-  v42 = [v43 constraintEqualToConstant:?];
+  v42 = [widthAnchor constraintEqualToConstant:?];
   v54[3] = v42;
-  v41 = [(GuidanceManeuverView *)self->_guidanceManeuverView centerXAnchor];
-  v38 = [v9 centerXAnchor];
+  centerXAnchor = [(GuidanceManeuverView *)self->_guidanceManeuverView centerXAnchor];
+  centerXAnchor2 = [v9 centerXAnchor];
   [(RouteStepListMetrics *)self->_metrics imageCenterXOffset];
-  v37 = [v41 constraintEqualToAnchor:v38 constant:?];
+  v37 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:?];
   v54[4] = v37;
-  v35 = [(GuidanceManeuverView *)self->_guidanceManeuverView centerYAnchor];
-  v34 = [v9 centerYAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:-2.0];
+  centerYAnchor = [(GuidanceManeuverView *)self->_guidanceManeuverView centerYAnchor];
+  centerYAnchor2 = [v9 centerYAnchor];
+  v33 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:-2.0];
   v54[5] = v33;
-  v32 = [(GuidanceManeuverView *)self->_guidanceManeuverView widthAnchor];
-  v31 = [v32 constraintEqualToConstant:48.0];
+  widthAnchor2 = [(GuidanceManeuverView *)self->_guidanceManeuverView widthAnchor];
+  v31 = [widthAnchor2 constraintEqualToConstant:48.0];
   v54[6] = v31;
-  v30 = [(GuidanceManeuverView *)self->_guidanceManeuverView heightAnchor];
-  v29 = [v30 constraintEqualToConstant:48.0];
+  heightAnchor = [(GuidanceManeuverView *)self->_guidanceManeuverView heightAnchor];
+  v29 = [heightAnchor constraintEqualToConstant:48.0];
   v54[7] = v29;
-  v28 = [(UILabel *)self->_primaryTextLabel leadingAnchor];
-  v27 = [v9 trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  leadingAnchor3 = [(UILabel *)self->_primaryTextLabel leadingAnchor];
+  trailingAnchor = [v9 trailingAnchor];
+  v26 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
   v54[8] = v26;
-  v25 = [(UILabel *)self->_primaryTextLabel trailingAnchor];
+  trailingAnchor2 = [(UILabel *)self->_primaryTextLabel trailingAnchor];
   v36 = v6;
-  v24 = [v6 trailingAnchor];
+  trailingAnchor3 = [v6 trailingAnchor];
   [(RouteStepListMetrics *)self->_metrics textTrailingMargin];
-  v15 = [v25 constraintEqualToAnchor:v24 constant:-v14];
+  v15 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-v14];
   v54[9] = v15;
-  v16 = [(UILabel *)self->_primaryTextLabel centerYAnchor];
-  v17 = [v36 centerYAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:-2.0];
+  centerYAnchor3 = [(UILabel *)self->_primaryTextLabel centerYAnchor];
+  centerYAnchor4 = [v36 centerYAnchor];
+  v18 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:-2.0];
   v54[10] = v18;
-  v19 = [(NavSecondarySignViewController *)self view];
-  v20 = [v19 heightAnchor];
-  v21 = [v20 constraintEqualToConstant:72.0];
+  view4 = [(NavSecondarySignViewController *)self view];
+  heightAnchor2 = [view4 heightAnchor];
+  v21 = [heightAnchor2 constraintEqualToConstant:72.0];
   v54[11] = v21;
   v22 = [NSArray arrayWithObjects:v54 count:12];
   v40 = [v39 initWithArray:v22];
 
-  v23 = [(NavSecondarySignViewController *)self _containerConstraints];
-  [v40 addObjectsFromArray:v23];
+  _containerConstraints = [(NavSecondarySignViewController *)self _containerConstraints];
+  [v40 addObjectsFromArray:_containerConstraints];
 
   [NSLayoutConstraint activateConstraints:v40];
 }

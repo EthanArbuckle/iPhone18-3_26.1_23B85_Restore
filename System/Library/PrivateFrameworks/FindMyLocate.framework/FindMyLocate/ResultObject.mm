@@ -1,21 +1,21 @@
 @interface ResultObject
 - (_TtC12FindMyLocate12ResultObject)init;
-- (_TtC12FindMyLocate12ResultObject)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC12FindMyLocate12ResultObject)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ResultObject
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ResultObject.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ResultObject.encode(with:)(coderCopy);
 }
 
-- (_TtC12FindMyLocate12ResultObject)initWithCoder:(id)a3
+- (_TtC12FindMyLocate12ResultObject)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_1B80C2C80();
 
   return v4;

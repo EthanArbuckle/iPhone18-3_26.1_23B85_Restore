@@ -1,29 +1,29 @@
 @interface HUTriggerTimeConditionEditorSectionModule
-- (BOOL)doesOptionItemRequireInitialUserConfiguration:(id)a3;
-- (id)_conditionItemForType:(unint64_t)a3;
-- (id)_createConditionItemForType:(unint64_t)a3;
+- (BOOL)doesOptionItemRequireInitialUserConfiguration:(id)configuration;
+- (id)_conditionItemForType:(unint64_t)type;
+- (id)_createConditionItemForType:(unint64_t)type;
 - (id)buildConditionOptionItems;
-- (id)conditionForOptionItem:(id)a3;
-- (id)preferredConditionFromConditions:(id)a3;
-- (id)selectOptionItemForCondition:(id)a3;
+- (id)conditionForOptionItem:(id)item;
+- (id)preferredConditionFromConditions:(id)conditions;
+- (id)selectOptionItemForCondition:(id)condition;
 @end
 
 @implementation HUTriggerTimeConditionEditorSectionModule
 
-- (id)conditionForOptionItem:(id)a3
+- (id)conditionForOptionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUTriggerTimeConditionEditorSectionModule *)self anyTimeOptionItem];
+  itemCopy = item;
+  anyTimeOptionItem = [(HUTriggerTimeConditionEditorSectionModule *)self anyTimeOptionItem];
 
-  if (v5 == v4)
+  if (anyTimeOptionItem == itemCopy)
   {
-    v12 = 0;
+    condition = 0;
   }
 
   else
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -38,34 +38,34 @@
 
     if (v8 && (-[HUTriggerConditionEditorExpandingSectionModule optionItems](self, "optionItems"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 containsObject:v8], v9, v10))
     {
-      v11 = [v8 sourceItem];
-      v12 = [v11 condition];
+      sourceItem = [v8 sourceItem];
+      condition = [sourceItem condition];
 
-      if (!v12)
+      if (!condition)
       {
         v13 = MEMORY[0x277D14C08];
-        v14 = [v8 sourceItem];
-        v12 = [v13 defaultConditionForType:{objc_msgSend(v14, "type")}];
+        sourceItem2 = [v8 sourceItem];
+        condition = [v13 defaultConditionForType:{objc_msgSend(sourceItem2, "type")}];
       }
     }
 
     else
     {
       NSLog(&cfstr_UnknownOptionI.isa, v6);
-      v12 = 0;
+      condition = 0;
     }
   }
 
-  return v12;
+  return condition;
 }
 
-- (id)selectOptionItemForCondition:(id)a3
+- (id)selectOptionItemForCondition:(id)condition
 {
-  v4 = a3;
-  if (v4)
+  conditionCopy = condition;
+  if (conditionCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = conditionCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -80,42 +80,42 @@
 
     if (v7)
     {
-      v8 = -[HUTriggerTimeConditionEditorSectionModule _conditionItemForType:](self, "_conditionItemForType:", [v7 timeConditionType]);
-      v9 = [v8 sourceItem];
-      [v9 setCondition:v7];
+      anyTimeOptionItem = -[HUTriggerTimeConditionEditorSectionModule _conditionItemForType:](self, "_conditionItemForType:", [v7 timeConditionType]);
+      sourceItem = [anyTimeOptionItem sourceItem];
+      [sourceItem setCondition:v7];
     }
 
     else
     {
       NSLog(&cfstr_UnexpectedCond.isa, v5);
-      v8 = 0;
+      anyTimeOptionItem = 0;
     }
   }
 
   else
   {
-    v8 = [(HUTriggerTimeConditionEditorSectionModule *)self anyTimeOptionItem];
+    anyTimeOptionItem = [(HUTriggerTimeConditionEditorSectionModule *)self anyTimeOptionItem];
   }
 
-  return v8;
+  return anyTimeOptionItem;
 }
 
-- (id)preferredConditionFromConditions:(id)a3
+- (id)preferredConditionFromConditions:(id)conditions
 {
-  v3 = [a3 na_filter:&__block_literal_global_120];
+  v3 = [conditions na_filter:&__block_literal_global_120];
   v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_8];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    firstObject = v4;
   }
 
   else
   {
-    v6 = [v3 firstObject];
+    firstObject = [v3 firstObject];
   }
 
-  v7 = v6;
+  v7 = firstObject;
 
   return v7;
 }
@@ -152,17 +152,17 @@ uint64_t __78__HUTriggerTimeConditionEditorSectionModule_preferredConditionFromC
   return v9;
 }
 
-- (BOOL)doesOptionItemRequireInitialUserConfiguration:(id)a3
+- (BOOL)doesOptionItemRequireInitialUserConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(HUTriggerTimeConditionEditorSectionModule *)self specificTimesOptionItem];
+  configurationCopy = configuration;
+  specificTimesOptionItem = [(HUTriggerTimeConditionEditorSectionModule *)self specificTimesOptionItem];
 
-  if (v5 == v4)
+  if (specificTimesOptionItem == configurationCopy)
   {
-    v7 = [(HUTriggerTimeConditionEditorSectionModule *)self specificTimesOptionItem];
-    v8 = [v7 sourceItem];
-    v9 = [v8 condition];
-    v6 = v9 == 0;
+    specificTimesOptionItem2 = [(HUTriggerTimeConditionEditorSectionModule *)self specificTimesOptionItem];
+    sourceItem = [specificTimesOptionItem2 sourceItem];
+    condition = [sourceItem condition];
+    v6 = condition == 0;
   }
 
   else
@@ -173,41 +173,41 @@ uint64_t __78__HUTriggerTimeConditionEditorSectionModule_preferredConditionFromC
   return v6;
 }
 
-- (id)_conditionItemForType:(unint64_t)a3
+- (id)_conditionItemForType:(unint64_t)type
 {
-  v4 = 0;
-  if (a3 > 1)
+  specificTimesOptionItem = 0;
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v4 = [(HUTriggerTimeConditionEditorSectionModule *)self specificTimesOptionItem];
+      specificTimesOptionItem = [(HUTriggerTimeConditionEditorSectionModule *)self specificTimesOptionItem];
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
-      v4 = [(HUTriggerTimeConditionEditorSectionModule *)self customOptionItem];
+      specificTimesOptionItem = [(HUTriggerTimeConditionEditorSectionModule *)self customOptionItem];
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v4 = [(HUTriggerTimeConditionEditorSectionModule *)self onlyNightOptionItem];
+      specificTimesOptionItem = [(HUTriggerTimeConditionEditorSectionModule *)self onlyNightOptionItem];
     }
   }
 
   else
   {
-    v4 = [(HUTriggerTimeConditionEditorSectionModule *)self onlyDayOptionItem];
+    specificTimesOptionItem = [(HUTriggerTimeConditionEditorSectionModule *)self onlyDayOptionItem];
   }
 
-  return v4;
+  return specificTimesOptionItem;
 }
 
-- (id)_createConditionItemForType:(unint64_t)a3
+- (id)_createConditionItemForType:(unint64_t)type
 {
-  v5 = [objc_alloc(MEMORY[0x277D14C10]) initWithConditionType:a3];
+  v5 = [objc_alloc(MEMORY[0x277D14C10]) initWithConditionType:type];
   objc_initWeak(&location, self);
   v6 = objc_alloc(MEMORY[0x277D14C30]);
   v10[0] = MEMORY[0x277D85DD0];
@@ -215,7 +215,7 @@ uint64_t __78__HUTriggerTimeConditionEditorSectionModule_preferredConditionFromC
   v10[2] = __73__HUTriggerTimeConditionEditorSectionModule__createConditionItemForType___block_invoke_27;
   v10[3] = &unk_277DBD6D8;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
+  v12[1] = type;
   v7 = v5;
   v11 = v7;
   v8 = [v6 initWithSourceItem:v7 updateOptionsTransformBlock:&__block_literal_global_22_0 resultsAndItemTransformBlock:v10];

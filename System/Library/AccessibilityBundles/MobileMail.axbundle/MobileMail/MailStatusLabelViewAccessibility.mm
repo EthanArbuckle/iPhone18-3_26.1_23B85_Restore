@@ -1,15 +1,15 @@
 @interface MailStatusLabelViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MailStatusLabelViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MailStatusLabelView" hasInstanceMethod:@"primaryLabelText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailStatusLabelView" hasInstanceMethod:@"secondaryLabelText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MailStatusLabelView" hasInstanceMethod:@"primaryLabelText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailStatusLabelView" hasInstanceMethod:@"secondaryLabelText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

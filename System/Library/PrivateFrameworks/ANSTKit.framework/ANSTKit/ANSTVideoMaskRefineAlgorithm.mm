@@ -1,18 +1,18 @@
 @interface ANSTVideoMaskRefineAlgorithm
-+ (Class)_concreteClassOfVersion:(unint64_t)a3;
++ (Class)_concreteClassOfVersion:(unint64_t)version;
 + (id)new;
-+ (id)supportedSemanticCategoriesOfVersion:(unint64_t)a3;
++ (id)supportedSemanticCategoriesOfVersion:(unint64_t)version;
 - (ANSTVideoMaskRefineAlgorithm)init;
-- (ANSTVideoMaskRefineAlgorithm)initWithConfiguration:(id)a3;
-- (id)resultForPixelBuffer:(__CVBuffer *)a3 coarseSegementationMasks:(id)a4 error:(id *)a5;
+- (ANSTVideoMaskRefineAlgorithm)initWithConfiguration:(id)configuration;
+- (id)resultForPixelBuffer:(__CVBuffer *)buffer coarseSegementationMasks:(id)masks error:(id *)error;
 @end
 
 @implementation ANSTVideoMaskRefineAlgorithm
 
-+ (id)supportedSemanticCategoriesOfVersion:(unint64_t)a3
++ (id)supportedSemanticCategoriesOfVersion:(unint64_t)version
 {
   v6[3] = *MEMORY[0x277D85DE8];
-  if (a3 == 0x10000)
+  if (version == 0x10000)
   {
     v6[0] = @"Person";
     v6[1] = @"Skin";
@@ -32,7 +32,7 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
@@ -44,9 +44,9 @@
   return result;
 }
 
-+ (Class)_concreteClassOfVersion:(unint64_t)a3
++ (Class)_concreteClassOfVersion:(unint64_t)version
 {
-  if (a3 == 0x10000)
+  if (version == 0x10000)
   {
     v4 = objc_opt_class();
   }
@@ -59,16 +59,16 @@
   return v4;
 }
 
-- (ANSTVideoMaskRefineAlgorithm)initWithConfiguration:(id)a3
+- (ANSTVideoMaskRefineAlgorithm)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = ANSTVideoMaskRefineAlgorithm;
-  return [(ANSTAlgorithm *)&v4 initWithConfiguration:a3];
+  return [(ANSTAlgorithm *)&v4 initWithConfiguration:configuration];
 }
 
-- (id)resultForPixelBuffer:(__CVBuffer *)a3 coarseSegementationMasks:(id)a4 error:(id *)a5
+- (id)resultForPixelBuffer:(__CVBuffer *)buffer coarseSegementationMasks:(id)masks error:(id *)error
 {
-  v7 = a4;
+  masksCopy = masks;
   result = objc_msgSend_doesNotRecognizeSelector_(self, v8, a2);
   __break(1u);
   return result;

@@ -1,37 +1,37 @@
 @interface CKUsageInfo
 + (id)none;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNone;
-- (CKUsageInfo)initWithCoder:(id)a3;
-- (CKUsageInfo)initWithLastUsed:(id)a3;
-- (CKUsageInfo)initWithLastUsed:(id)a3 lastSent:(id)a4 sending:(id)a5 failureCount:(unint64_t)a6;
-- (CKUsageInfo)initWithUsageInfoEntry:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)startSendingWithResendingRefreshInterval:(double)a3 maxFailureCount:(unint64_t)a4;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)completeSendingForDate:(id)a3 withSuccess:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CKUsageInfo)initWithCoder:(id)coder;
+- (CKUsageInfo)initWithLastUsed:(id)used;
+- (CKUsageInfo)initWithLastUsed:(id)used lastSent:(id)sent sending:(id)sending failureCount:(unint64_t)count;
+- (CKUsageInfo)initWithUsageInfoEntry:(id)entry;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)startSendingWithResendingRefreshInterval:(double)interval maxFailureCount:(unint64_t)count;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)completeSendingForDate:(id)date withSuccess:(BOOL)success;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKUsageInfo
 
-- (CKUsageInfo)initWithUsageInfoEntry:(id)a3
+- (CKUsageInfo)initWithUsageInfoEntry:(id)entry
 {
-  v4 = a3;
-  v7 = objc_msgSend_lastUsed(v4, v5, v6);
+  entryCopy = entry;
+  selfCopy = objc_msgSend_lastUsed(entryCopy, v5, v6);
 
-  if (v7)
+  if (selfCopy)
   {
-    v10 = objc_msgSend_lastUsed(v4, v8, v9);
-    v13 = objc_msgSend_lastSent(v4, v11, v12);
-    v16 = objc_msgSend_sending(v4, v14, v15);
-    v19 = objc_msgSend_failureCount(v4, v17, v18);
+    v10 = objc_msgSend_lastUsed(entryCopy, v8, v9);
+    v13 = objc_msgSend_lastSent(entryCopy, v11, v12);
+    v16 = objc_msgSend_sending(entryCopy, v14, v15);
+    v19 = objc_msgSend_failureCount(entryCopy, v17, v18);
     self = objc_msgSend_initWithLastUsed_lastSent_sending_failureCount_(self, v20, v10, v13, v16, v19);
 
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 + (id)none
@@ -46,15 +46,15 @@
   return v3;
 }
 
-- (CKUsageInfo)initWithLastUsed:(id)a3
+- (CKUsageInfo)initWithLastUsed:(id)used
 {
-  v4 = a3;
+  usedCopy = used;
   v11.receiver = self;
   v11.super_class = CKUsageInfo;
   v7 = [(CKUsageInfo *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(usedCopy, v5, v6);
     lastUsed = v7->_lastUsed;
     v7->_lastUsed = v8;
   }
@@ -62,29 +62,29 @@
   return v7;
 }
 
-- (CKUsageInfo)initWithLastUsed:(id)a3 lastSent:(id)a4 sending:(id)a5 failureCount:(unint64_t)a6
+- (CKUsageInfo)initWithLastUsed:(id)used lastSent:(id)sent sending:(id)sending failureCount:(unint64_t)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  usedCopy = used;
+  sentCopy = sent;
+  sendingCopy = sending;
   v27.receiver = self;
   v27.super_class = CKUsageInfo;
   v15 = [(CKUsageInfo *)&v27 init];
   if (v15)
   {
-    v16 = objc_msgSend_copy(v11, v13, v14);
+    v16 = objc_msgSend_copy(sentCopy, v13, v14);
     lastSent = v15->_lastSent;
     v15->_lastSent = v16;
 
-    v20 = objc_msgSend_copy(v10, v18, v19);
+    v20 = objc_msgSend_copy(usedCopy, v18, v19);
     lastUsed = v15->_lastUsed;
     v15->_lastUsed = v20;
 
-    v24 = objc_msgSend_copy(v12, v22, v23);
+    v24 = objc_msgSend_copy(sendingCopy, v22, v23);
     sending = v15->_sending;
     v15->_sending = v24;
 
-    v15->_failureCount = a6;
+    v15->_failureCount = count;
   }
 
   return v15;
@@ -98,9 +98,9 @@
   return self;
 }
 
-- (id)startSendingWithResendingRefreshInterval:(double)a3 maxFailureCount:(unint64_t)a4
+- (id)startSendingWithResendingRefreshInterval:(double)interval maxFailureCount:(unint64_t)count
 {
-  v7 = objc_msgSend_sending(self, a2, a4);
+  v7 = objc_msgSend_sending(self, a2, count);
 
   if (v7)
   {
@@ -109,7 +109,7 @@
     objc_msgSend_timeIntervalSinceDate_(v10, v14, v13);
     v16 = v15;
 
-    if (v16 <= a3)
+    if (v16 <= interval)
     {
 
 LABEL_6:
@@ -122,7 +122,7 @@ LABEL_6:
     objc_msgSend_setSending_(self, v21, 0);
   }
 
-  if (objc_msgSend_failureCount(self, v8, v9) > a4)
+  if (objc_msgSend_failureCount(self, v8, v9) > count)
   {
     goto LABEL_6;
   }
@@ -136,10 +136,10 @@ LABEL_8:
   return v24;
 }
 
-- (void)completeSendingForDate:(id)a3 withSuccess:(BOOL)a4
+- (void)completeSendingForDate:(id)date withSuccess:(BOOL)success
 {
-  v4 = a4;
-  v6 = a3;
+  successCopy = success;
+  dateCopy = date;
   v9 = objc_msgSend_sending(self, v7, v8);
 
   if (!v9)
@@ -158,11 +158,11 @@ LABEL_8:
   }
 
   v13 = objc_msgSend_sending(self, v10, v11);
-  isEqualToDate = objc_msgSend_isEqualToDate_(v13, v14, v6);
+  isEqualToDate = objc_msgSend_isEqualToDate_(v13, v14, dateCopy);
 
   if (isEqualToDate)
   {
-    if (v4)
+    if (successCopy)
     {
       v18 = objc_msgSend_sending(self, v16, v17);
       objc_msgSend_setLastSent_(self, v19, v18);
@@ -180,10 +180,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v29 = 1;
   }
@@ -193,7 +193,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_lastUsed(self, v6, v7);
       v11 = objc_msgSend_lastUsed(v5, v9, v10);
       if (CKObjectsAreBothNilOrEqual())
@@ -237,27 +237,27 @@ LABEL_8:
   return v29;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_lastSent(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v21, v8, v7, @"LastSent");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"LastSent");
 
   v11 = objc_msgSend_lastUsed(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v21, v12, v11, @"LastUsed");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"LastUsed");
 
   v15 = objc_msgSend_sending(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v21, v16, v15, @"Sending");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"Sending");
 
   v19 = objc_msgSend_failureCount(self, v17, v18);
-  objc_msgSend_encodeInteger_forKey_(v21, v20, v19, @"FailureCount");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v20, v19, @"FailureCount");
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKUsageInfo)initWithCoder:(id)a3
+- (CKUsageInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CKUsageInfo;
   v5 = [(CKUsageInfo *)&v21 init];
@@ -265,28 +265,28 @@ LABEL_8:
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"LastSent");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"LastSent");
     lastSent = v5->_lastSent;
     v5->_lastSent = v9;
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"LastUsed");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"LastUsed");
     lastUsed = v5->_lastUsed;
     v5->_lastUsed = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"Sending");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"Sending");
     sending = v5->_sending;
     v5->_sending = v17;
 
-    v5->_failureCount = objc_msgSend_decodeIntegerForKey_(v4, v19, @"FailureCount");
+    v5->_failureCount = objc_msgSend_decodeIntegerForKey_(coderCopy, v19, @"FailureCount");
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKUsageInfo alloc];
   v7 = objc_msgSend_lastUsed(self, v5, v6);
@@ -303,22 +303,22 @@ LABEL_8:
   return Used;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_lastSent(self, v5, v6);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v8, @"lastSent", v7, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v8, @"lastSent", v7, 0);
 
   v11 = objc_msgSend_lastUsed(self, v9, v10);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v12, @"lastUsed", v11, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v12, @"lastUsed", v11, 0);
 
   v15 = objc_msgSend_sending(self, v13, v14);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v16, @"sending", v15, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v16, @"sending", v15, 0);
 
   v17 = MEMORY[0x277CCABB0];
   v20 = objc_msgSend_failureCount(self, v18, v19);
   v23 = objc_msgSend_numberWithUnsignedInteger_(v17, v21, v20);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v22, @"failureCount", v23, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v22, @"failureCount", v23, 0);
 }
 
 @end

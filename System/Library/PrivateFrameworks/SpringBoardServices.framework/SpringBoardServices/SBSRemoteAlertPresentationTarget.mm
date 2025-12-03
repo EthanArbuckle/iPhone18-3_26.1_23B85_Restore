@@ -1,73 +1,73 @@
 @interface SBSRemoteAlertPresentationTarget
-- (SBSRemoteAlertPresentationTarget)initWithCoder:(id)a3;
-- (SBSRemoteAlertPresentationTarget)initWithTargetPredicate:(id)a3;
-- (SBSRemoteAlertPresentationTarget)initWithTargetProcess:(id)a3;
-- (SBSRemoteAlertPresentationTarget)initWithXPCDictionary:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSRemoteAlertPresentationTarget)initWithCoder:(id)coder;
+- (SBSRemoteAlertPresentationTarget)initWithTargetPredicate:(id)predicate;
+- (SBSRemoteAlertPresentationTarget)initWithTargetProcess:(id)process;
+- (SBSRemoteAlertPresentationTarget)initWithXPCDictionary:(id)dictionary;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSRemoteAlertPresentationTarget
 
-- (SBSRemoteAlertPresentationTarget)initWithTargetProcess:(id)a3
+- (SBSRemoteAlertPresentationTarget)initWithTargetProcess:(id)process
 {
-  v4 = [SBSRemoteAlertPresentationTargetPredicate predicateForProcess:a3];
+  v4 = [SBSRemoteAlertPresentationTargetPredicate predicateForProcess:process];
   v5 = [(SBSRemoteAlertPresentationTarget *)self initWithTargetPredicate:v4];
 
   return v5;
 }
 
-- (SBSRemoteAlertPresentationTarget)initWithTargetPredicate:(id)a3
+- (SBSRemoteAlertPresentationTarget)initWithTargetPredicate:(id)predicate
 {
-  v5 = a3;
+  predicateCopy = predicate;
   v9.receiver = self;
   v9.super_class = SBSRemoteAlertPresentationTarget;
   v6 = [(SBSRemoteAlertPresentationTarget *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_targetPredicate, a3);
+    objc_storeStrong(&v6->_targetPredicate, predicate);
     v7->_shouldDismissInSwitcher = 1;
   }
 
   return v7;
 }
 
-- (SBSRemoteAlertPresentationTarget)initWithXPCDictionary:(id)a3
+- (SBSRemoteAlertPresentationTarget)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSCreateDeserializedBSXPCEncodableObjectFromXPCDictionaryWithKey();
   if (v5 && (self = [(SBSRemoteAlertPresentationTarget *)self initWithTargetPredicate:v5]) != 0)
   {
-    [(SBSRemoteAlertPresentationTarget *)self setShouldDismissOnUILock:xpc_dictionary_get_BOOL(v4, "shouldDismissOnUILock")];
-    [(SBSRemoteAlertPresentationTarget *)self setShouldDismissInSwitcher:xpc_dictionary_get_BOOL(v4, "shouldDismissInSwitcher")];
-    [(SBSRemoteAlertPresentationTarget *)self setRequiresFullscreenPresentation:xpc_dictionary_get_BOOL(v4, "requiresFullscreenPresentation")];
-    v6 = self;
+    [(SBSRemoteAlertPresentationTarget *)self setShouldDismissOnUILock:xpc_dictionary_get_BOOL(dictionaryCopy, "shouldDismissOnUILock")];
+    [(SBSRemoteAlertPresentationTarget *)self setShouldDismissInSwitcher:xpc_dictionary_get_BOOL(dictionaryCopy, "shouldDismissInSwitcher")];
+    [(SBSRemoteAlertPresentationTarget *)self setRequiresFullscreenPresentation:xpc_dictionary_get_BOOL(dictionaryCopy, "requiresFullscreenPresentation")];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
   xpc_dictionary_set_BOOL(xdict, "shouldDismissOnUILock", self->_shouldDismissOnUILock);
   xpc_dictionary_set_BOOL(xdict, "shouldDismissInSwitcher", self->_shouldDismissInSwitcher);
   xpc_dictionary_set_BOOL(xdict, "requiresFullscreenPresentation", self->_requiresFullscreenPresentation);
 }
 
-- (SBSRemoteAlertPresentationTarget)initWithCoder:(id)a3
+- (SBSRemoteAlertPresentationTarget)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -79,11 +79,11 @@
     v6 = NSStringFromClass(v11);
     [v8 raise:v9 format:{@"An %@ can only be decoded with an instance of NSXPCCoder; attempting to decode with %@", v5, v6}];
 LABEL_6:
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = coderCopy;
   v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"targetPredicate"];
   if (!v6)
   {
@@ -99,19 +99,19 @@ LABEL_6:
   -[SBSRemoteAlertPresentationTarget setShouldDismissOnUILock:](self, "setShouldDismissOnUILock:", [v5 decodeBoolForKey:@"shouldDismissOnUILock"]);
   -[SBSRemoteAlertPresentationTarget setShouldDismissInSwitcher:](self, "setShouldDismissInSwitcher:", [v5 decodeBoolForKey:@"shouldDismissInSwitcher"]);
   -[SBSRemoteAlertPresentationTarget setRequiresFullscreenPresentation:](self, "setRequiresFullscreenPresentation:", [v5 decodeBoolForKey:@"requiresFullscreenPresentation"]);
-  v7 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v12;
+    v4 = coderCopy;
     v5 = v4;
     targetPredicate = self->_targetPredicate;
     if (targetPredicate)
@@ -138,29 +138,29 @@ LABEL_7:
 
 - (id)succinctDescription
 {
-  v2 = [(SBSRemoteAlertPresentationTarget *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSRemoteAlertPresentationTarget *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSRemoteAlertPresentationTarget *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSRemoteAlertPresentationTarget *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSRemoteAlertPresentationTarget *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_targetPredicate withName:0];
-  v6 = [v4 appendBool:self->_shouldDismissOnUILock withName:@"shouldDismissOnUILock"];
-  v7 = [v4 appendBool:self->_shouldDismissInSwitcher withName:@"shouldDismissInSwitcher"];
-  v8 = [v4 appendBool:self->_requiresFullscreenPresentation withName:@"requiresFullscreenPresentation"];
+  succinctDescriptionBuilder = [(SBSRemoteAlertPresentationTarget *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_targetPredicate withName:0];
+  v6 = [succinctDescriptionBuilder appendBool:self->_shouldDismissOnUILock withName:@"shouldDismissOnUILock"];
+  v7 = [succinctDescriptionBuilder appendBool:self->_shouldDismissInSwitcher withName:@"shouldDismissInSwitcher"];
+  v8 = [succinctDescriptionBuilder appendBool:self->_requiresFullscreenPresentation withName:@"requiresFullscreenPresentation"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

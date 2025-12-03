@@ -48,8 +48,8 @@ uint64_t __52__PSUICoreTelephonyPostponementCache_sharedInstance__block_invoke()
     activationPolicyState = v2->_activationPolicyState;
     v2->_activationPolicyState = 0;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
@@ -82,26 +82,26 @@ uint64_t __52__PSUICoreTelephonyPostponementCache_sharedInstance__block_invoke()
   v3 = 136315394;
   v4 = "[PSUICoreTelephonyPostponementCache fetchActivationPolicyState]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21CF20000, a2, OS_LOG_TYPE_ERROR, "%s fetch failed: %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }
 
 - (id)getActivationPolicyState
 {
-  v3 = [(PSUICoreTelephonyPostponementCache *)self activationPolicyState];
+  activationPolicyState = [(PSUICoreTelephonyPostponementCache *)self activationPolicyState];
 
-  if (!v3)
+  if (!activationPolicyState)
   {
     [(PSUICoreTelephonyPostponementCache *)self fetchActivationPolicyState];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PSUICoreTelephonyPostponementCache *)v4 activationPolicyState];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activationPolicyState2 = [(PSUICoreTelephonyPostponementCache *)selfCopy activationPolicyState];
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return activationPolicyState2;
 }
 
 @end

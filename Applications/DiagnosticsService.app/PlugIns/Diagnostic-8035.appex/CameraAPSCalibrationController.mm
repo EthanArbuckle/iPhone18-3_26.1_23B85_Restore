@@ -1,15 +1,15 @@
 @interface CameraAPSCalibrationController
-- (id)calibrateCameraType:(id)a3 position:(int64_t)a4 statusCode:(int64_t *)a5;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (id)calibrateCameraType:(id)type position:(int64_t)position statusCode:(int64_t *)code;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation CameraAPSCalibrationController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v5 = [a3 cameras];
-  [(CameraAPSCalibrationController *)self setCameras:v5];
+  cameras = [inputs cameras];
+  [(CameraAPSCalibrationController *)self setCameras:cameras];
 }
 
 - (void)start
@@ -23,22 +23,22 @@
   dispatch_async(v3, block);
 }
 
-- (id)calibrateCameraType:(id)a3 position:(int64_t)a4 statusCode:(int64_t *)a5
+- (id)calibrateCameraType:(id)type position:(int64_t)position statusCode:(int64_t *)code
 {
-  v7 = a3;
+  typeCopy = type;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v7;
+    v30 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Calibrating %@...", buf, 0xCu);
   }
 
-  v9 = [AVCaptureDevice defaultDeviceWithDeviceType:v7 mediaType:AVMediaTypeVideo position:a4];
+  v9 = [AVCaptureDevice defaultDeviceWithDeviceType:typeCopy mediaType:AVMediaTypeVideo position:position];
   v10 = v9;
   if (!v9)
   {
-    *a5 = -101;
+    *code = -101;
     v12 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -51,7 +51,7 @@
   v11 = AVCaptureDeviceDiagnosticsTestTypeAutoFocusPositionSensorCalibration;
   if (![v9 isDiagnosticsTestSupported:AVCaptureDeviceDiagnosticsTestTypeAutoFocusPositionSensorCalibration])
   {
-    *a5 = -102;
+    *code = -102;
     v12 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -83,12 +83,12 @@ LABEL_22:
       if (v17)
       {
         v18 = [v12 objectForKeyedSubscript:v16];
-        v19 = [v18 intValue];
+        intValue = [v18 intValue];
 
-        if (v19)
+        if (intValue)
         {
           v20 = [v12 objectForKeyedSubscript:v16];
-          *a5 = [v20 integerValue];
+          *code = [v20 integerValue];
 
           v21 = DiagnosticLogHandleForCategory();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -96,9 +96,9 @@ LABEL_22:
             sub_1000017DC();
           }
 
-          if (*a5 >> 31)
+          if (*code >> 31)
           {
-            *a5 = -100;
+            *code = -100;
             v22 = DiagnosticLogHandleForCategory();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
@@ -107,7 +107,7 @@ LABEL_22:
           }
         }
 
-        v28[0] = v7;
+        v28[0] = typeCopy;
         v23 = [v12 objectForKeyedSubscript:v16, @"camera", @"statusCode"];
         v28[1] = v23;
         v27[2] = @"passed";
@@ -118,7 +118,7 @@ LABEL_22:
         goto LABEL_30;
       }
 
-      *a5 = -105;
+      *code = -105;
       v23 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -128,7 +128,7 @@ LABEL_22:
 
     else
     {
-      *a5 = -104;
+      *code = -104;
       v23 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -139,7 +139,7 @@ LABEL_22:
 
   else
   {
-    *a5 = -103;
+    *code = -103;
     v23 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {

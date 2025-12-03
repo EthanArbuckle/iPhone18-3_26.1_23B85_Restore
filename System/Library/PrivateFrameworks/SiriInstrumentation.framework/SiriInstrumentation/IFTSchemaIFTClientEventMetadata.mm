@@ -1,30 +1,30 @@
 @interface IFTSchemaIFTClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTClientEventMetadata)initWithDictionary:(id)a3;
-- (IFTSchemaIFTClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTClientEventMetadata)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addInitiatedSpans:(id)a3;
-- (void)setHasClientApplicationId:(BOOL)a3;
-- (void)setHasPostingSpanId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addInitiatedSpans:(id)spans;
+- (void)setHasClientApplicationId:(BOOL)id;
+- (void)setHasPostingSpanId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTClientEventMetadata
 
-- (IFTSchemaIFTClientEventMetadata)initWithDictionary:(id)a3
+- (IFTSchemaIFTClientEventMetadata)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = IFTSchemaIFTClientEventMetadata;
   v5 = [(IFTSchemaIFTClientEventMetadata *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ifRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ifRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(IFTSchemaIFTClientEventMetadata *)v5 setIfRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ifEventId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ifEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(IFTSchemaIFTClientEventMetadata *)v5 setIfEventId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"ifSessionId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"ifSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(IFTSchemaIFTClientEventMetadata *)v5 setIfSessionId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"clientTraceId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"clientTraceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,14 +56,14 @@
       [(IFTSchemaIFTClientEventMetadata *)v5 setClientTraceId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"sender"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"sender"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTClientEventMetadata setSender:](v5, "setSender:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"postingSpanId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"postingSpanId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
     }
 
     v32 = v15;
-    v16 = [v4 objectForKeyedSubscript:@"initiatedSpans"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"initiatedSpans"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,7 +120,7 @@
       v14 = v27;
     }
 
-    v24 = [v4 objectForKeyedSubscript:{@"clientApplicationId", v27, v28, v29, v30, v31}];
+    v24 = [dictionaryCopy objectForKeyedSubscript:{@"clientApplicationId", v27, v28, v29, v30, v31}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,30 +133,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTClientEventMetadata)initWithJSON:(id)a3
+- (IFTSchemaIFTClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -170,7 +170,7 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [(IFTSchemaIFTClientEventMetadata *)self clientApplicationId]- 1;
@@ -184,76 +184,76 @@
       v5 = off_1E78D8408[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"clientApplicationId"];
+    [dictionary setObject:v5 forKeyedSubscript:@"clientApplicationId"];
   }
 
   if (self->_clientTraceId)
   {
-    v6 = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    clientTraceId = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
+    dictionaryRepresentation = [clientTraceId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"clientTraceId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clientTraceId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"clientTraceId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clientTraceId"];
     }
   }
 
   if (self->_ifEventId)
   {
-    v9 = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    ifEventId = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
+    dictionaryRepresentation2 = [ifEventId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"ifEventId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ifEventId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"ifEventId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"ifEventId"];
     }
   }
 
   if (self->_ifRequestId)
   {
-    v12 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    ifRequestId = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
+    dictionaryRepresentation3 = [ifRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"ifRequestId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"ifRequestId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"ifRequestId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"ifRequestId"];
     }
   }
 
   if (self->_ifSessionId)
   {
-    v15 = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    ifSessionId = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
+    dictionaryRepresentation4 = [ifSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"ifSessionId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"ifSessionId"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"ifSessionId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"ifSessionId"];
     }
   }
 
   if ([(NSArray *)self->_initiatedSpans count])
   {
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -273,16 +273,16 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          if (v24)
+          dictionaryRepresentation5 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation5)
           {
-            [v18 addObject:v24];
+            [array addObject:dictionaryRepresentation5];
           }
 
           else
           {
-            v25 = [MEMORY[0x1E695DFB0] null];
-            [v18 addObject:v25];
+            null5 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null5];
           }
         }
 
@@ -292,14 +292,14 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"initiatedSpans"];
+    [dictionary setObject:array forKeyedSubscript:@"initiatedSpans"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[IFTSchemaIFTClientEventMetadata postingSpanId](self, "postingSpanId")}];
-    [v3 setObject:v27 forKeyedSubscript:@"postingSpanId"];
+    [dictionary setObject:v27 forKeyedSubscript:@"postingSpanId"];
 
     has = self->_has;
   }
@@ -317,12 +317,12 @@
       v29 = off_1E78D8420[v28];
     }
 
-    [v3 setObject:v29 forKeyedSubscript:@"sender"];
+    [dictionary setObject:v29 forKeyedSubscript:@"sender"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -367,28 +367,28 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
-  v6 = [v4 ifRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  ifRequestId = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
+  ifRequestId2 = [equalCopy ifRequestId];
+  if ((ifRequestId != 0) == (ifRequestId2 == 0))
   {
     goto LABEL_33;
   }
 
-  v7 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
-  if (v7)
+  ifRequestId3 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
+  if (ifRequestId3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
-    v10 = [v4 ifRequestId];
-    v11 = [v9 isEqual:v10];
+    v8 = ifRequestId3;
+    ifRequestId4 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
+    ifRequestId5 = [equalCopy ifRequestId];
+    v11 = [ifRequestId4 isEqual:ifRequestId5];
 
     if (!v11)
     {
@@ -400,20 +400,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
-  v6 = [v4 ifEventId];
-  if ((v5 != 0) == (v6 == 0))
+  ifRequestId = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
+  ifRequestId2 = [equalCopy ifEventId];
+  if ((ifRequestId != 0) == (ifRequestId2 == 0))
   {
     goto LABEL_33;
   }
 
-  v12 = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
-  if (v12)
+  ifEventId = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
+  if (ifEventId)
   {
-    v13 = v12;
-    v14 = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
-    v15 = [v4 ifEventId];
-    v16 = [v14 isEqual:v15];
+    v13 = ifEventId;
+    ifEventId2 = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
+    ifEventId3 = [equalCopy ifEventId];
+    v16 = [ifEventId2 isEqual:ifEventId3];
 
     if (!v16)
     {
@@ -425,20 +425,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
-  v6 = [v4 ifSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  ifRequestId = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
+  ifRequestId2 = [equalCopy ifSessionId];
+  if ((ifRequestId != 0) == (ifRequestId2 == 0))
   {
     goto LABEL_33;
   }
 
-  v17 = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
-  if (v17)
+  ifSessionId = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
+  if (ifSessionId)
   {
-    v18 = v17;
-    v19 = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
-    v20 = [v4 ifSessionId];
-    v21 = [v19 isEqual:v20];
+    v18 = ifSessionId;
+    ifSessionId2 = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
+    ifSessionId3 = [equalCopy ifSessionId];
+    v21 = [ifSessionId2 isEqual:ifSessionId3];
 
     if (!v21)
     {
@@ -450,20 +450,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
-  v6 = [v4 clientTraceId];
-  if ((v5 != 0) == (v6 == 0))
+  ifRequestId = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
+  ifRequestId2 = [equalCopy clientTraceId];
+  if ((ifRequestId != 0) == (ifRequestId2 == 0))
   {
     goto LABEL_33;
   }
 
-  v22 = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
-  if (v22)
+  clientTraceId = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
+  if (clientTraceId)
   {
-    v23 = v22;
-    v24 = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
-    v25 = [v4 clientTraceId];
-    v26 = [v24 isEqual:v25];
+    v23 = clientTraceId;
+    clientTraceId2 = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
+    clientTraceId3 = [equalCopy clientTraceId];
+    v26 = [clientTraceId2 isEqual:clientTraceId3];
 
     if (!v26)
     {
@@ -476,7 +476,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v28 = v4[68];
+  v28 = equalCopy[68];
   if ((*&has & 1) != (v28 & 1))
   {
     goto LABEL_34;
@@ -485,13 +485,13 @@ LABEL_6:
   if (*&has)
   {
     sender = self->_sender;
-    if (sender != [v4 sender])
+    if (sender != [equalCopy sender])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v28 = v4[68];
+    v28 = equalCopy[68];
   }
 
   v30 = (*&has >> 1) & 1;
@@ -503,28 +503,28 @@ LABEL_6:
   if (v30)
   {
     postingSpanId = self->_postingSpanId;
-    if (postingSpanId != [v4 postingSpanId])
+    if (postingSpanId != [equalCopy postingSpanId])
     {
       goto LABEL_34;
     }
   }
 
-  v5 = [(IFTSchemaIFTClientEventMetadata *)self initiatedSpans];
-  v6 = [v4 initiatedSpans];
-  if ((v5 != 0) == (v6 == 0))
+  ifRequestId = [(IFTSchemaIFTClientEventMetadata *)self initiatedSpans];
+  ifRequestId2 = [equalCopy initiatedSpans];
+  if ((ifRequestId != 0) == (ifRequestId2 == 0))
   {
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v32 = [(IFTSchemaIFTClientEventMetadata *)self initiatedSpans];
-  if (v32)
+  initiatedSpans = [(IFTSchemaIFTClientEventMetadata *)self initiatedSpans];
+  if (initiatedSpans)
   {
-    v33 = v32;
-    v34 = [(IFTSchemaIFTClientEventMetadata *)self initiatedSpans];
-    v35 = [v4 initiatedSpans];
-    v36 = [v34 isEqual:v35];
+    v33 = initiatedSpans;
+    initiatedSpans2 = [(IFTSchemaIFTClientEventMetadata *)self initiatedSpans];
+    initiatedSpans3 = [equalCopy initiatedSpans];
+    v36 = [initiatedSpans2 isEqual:initiatedSpans3];
 
     if (!v36)
     {
@@ -537,9 +537,9 @@ LABEL_33:
   }
 
   v39 = (*&self->_has >> 2) & 1;
-  if (v39 == ((v4[68] >> 2) & 1))
+  if (v39 == ((equalCopy[68] >> 2) & 1))
   {
-    if (!v39 || (clientApplicationId = self->_clientApplicationId, clientApplicationId == [v4 clientApplicationId]))
+    if (!v39 || (clientApplicationId = self->_clientApplicationId, clientApplicationId == [equalCopy clientApplicationId]))
     {
       v37 = 1;
       goto LABEL_35;
@@ -553,39 +553,39 @@ LABEL_35:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
+  toCopy = to;
+  ifRequestId = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
 
-  if (v5)
+  if (ifRequestId)
   {
-    v6 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
+    ifRequestId2 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
+  ifEventId = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
 
-  if (v7)
+  if (ifEventId)
   {
-    v8 = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
+    ifEventId2 = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
+  ifSessionId = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
 
-  if (v9)
+  if (ifSessionId)
   {
-    v10 = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
+    ifSessionId2 = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
+  clientTraceId = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
 
-  if (v11)
+  if (clientTraceId)
   {
-    v12 = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
+    clientTraceId2 = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -635,9 +635,9 @@ LABEL_35:
   }
 }
 
-- (void)setHasClientApplicationId:(BOOL)a3
+- (void)setHasClientApplicationId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -650,27 +650,27 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addInitiatedSpans:(id)a3
+- (void)addInitiatedSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   initiatedSpans = self->_initiatedSpans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!initiatedSpans)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_initiatedSpans;
-    self->_initiatedSpans = v6;
+    self->_initiatedSpans = array;
 
-    v4 = v8;
+    spansCopy = v8;
     initiatedSpans = self->_initiatedSpans;
   }
 
-  [(NSArray *)initiatedSpans addObject:v4];
+  [(NSArray *)initiatedSpans addObject:spansCopy];
 }
 
-- (void)setHasPostingSpanId:(BOOL)a3
+- (void)setHasPostingSpanId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -683,50 +683,50 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v21.receiver = self;
   v21.super_class = IFTSchemaIFTClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v21 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v21 applySensitiveConditionsPolicy:policyCopy];
+  ifRequestId = [(IFTSchemaIFTClientEventMetadata *)self ifRequestId];
+  v7 = [ifRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTClientEventMetadata *)self deleteIfRequestId];
   }
 
-  v9 = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ifEventId = [(IFTSchemaIFTClientEventMetadata *)self ifEventId];
+  v10 = [ifEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTClientEventMetadata *)self deleteIfEventId];
   }
 
-  v12 = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  ifSessionId = [(IFTSchemaIFTClientEventMetadata *)self ifSessionId];
+  v13 = [ifSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTClientEventMetadata *)self deleteIfSessionId];
   }
 
-  v15 = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  clientTraceId = [(IFTSchemaIFTClientEventMetadata *)self clientTraceId];
+  v16 = [clientTraceId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTClientEventMetadata *)self deleteClientTraceId];
   }
 
-  v18 = [(IFTSchemaIFTClientEventMetadata *)self initiatedSpans];
-  v19 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v18 underConditions:v4];
+  initiatedSpans = [(IFTSchemaIFTClientEventMetadata *)self initiatedSpans];
+  v19 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:initiatedSpans underConditions:policyCopy];
   [(IFTSchemaIFTClientEventMetadata *)self setInitiatedSpans:v19];
 
   return v5;

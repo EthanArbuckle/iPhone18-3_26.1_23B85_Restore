@@ -6,18 +6,18 @@
 - (NSString)locationDetailLabel;
 - (SARecordActivity)donateActivityCommand;
 - (SARestaurantRestaurant)restaurantInfo;
-- (void)updateEntityInSession:(id)a3;
+- (void)updateEntityInSession:(id)session;
 @end
 
 @implementation SALocalSearchMapItem
 
 - (BOOL)needsAttribution
 {
-  v3 = [(SALocalSearchMapItem *)self attributions];
-  if (v3)
+  attributions = [(SALocalSearchMapItem *)self attributions];
+  if (attributions)
   {
-    v4 = [(SALocalSearchMapItem *)self attributions];
-    v5 = [v4 count] != 0;
+    attributions2 = [(SALocalSearchMapItem *)self attributions];
+    v5 = [attributions2 count] != 0;
   }
 
   else
@@ -30,59 +30,59 @@
 
 - (NSString)locationDetailLabel
 {
-  v3 = [(SALocalSearchMapItem *)self location];
-  v4 = [v3 street];
+  location = [(SALocalSearchMapItem *)self location];
+  street = [location street];
 
-  v5 = [(SALocalSearchMapItem *)self location];
-  v6 = v5;
-  if (v4)
+  location2 = [(SALocalSearchMapItem *)self location];
+  v6 = location2;
+  if (street)
   {
-    v7 = [v5 street];
+    street2 = [location2 street];
 LABEL_9:
-    v14 = v7;
+    v14 = street2;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v8 = [v5 thoroughfare];
+  thoroughfare = [location2 thoroughfare];
 
-  v9 = [(SALocalSearchMapItem *)self location];
-  v6 = v9;
-  if (v8)
+  location3 = [(SALocalSearchMapItem *)self location];
+  v6 = location3;
+  if (thoroughfare)
   {
-    v7 = [v9 thoroughfare];
+    street2 = [location3 thoroughfare];
     goto LABEL_9;
   }
 
-  v10 = [v9 city];
+  city = [location3 city];
 
-  v11 = [(SALocalSearchMapItem *)self location];
-  v6 = v11;
-  if (v10)
+  location4 = [(SALocalSearchMapItem *)self location];
+  v6 = location4;
+  if (city)
   {
-    v7 = [v11 city];
+    street2 = [location4 city];
     goto LABEL_9;
   }
 
-  v12 = [v11 stateCode];
+  stateCode = [location4 stateCode];
 
-  v13 = [(SALocalSearchMapItem *)self location];
-  v6 = v13;
-  if (v12)
+  location5 = [(SALocalSearchMapItem *)self location];
+  v6 = location5;
+  if (stateCode)
   {
-    v7 = [v13 stateCode];
+    street2 = [location5 stateCode];
     goto LABEL_9;
   }
 
-  v16 = [v13 countryCode];
+  countryCode = [location5 countryCode];
 
-  if (v16)
+  if (countryCode)
   {
     v6 = +[NSLocale _ma_locale];
-    v17 = [(SALocalSearchMapItem *)self location];
-    v18 = [v17 countryCode];
-    v14 = [v6 displayNameForKey:NSLocaleCountryCode value:v18];
+    location6 = [(SALocalSearchMapItem *)self location];
+    countryCode2 = [location6 countryCode];
+    v14 = [v6 displayNameForKey:NSLocaleCountryCode value:countryCode2];
 
     goto LABEL_10;
   }
@@ -95,35 +95,35 @@ LABEL_11:
 
 - (SARestaurantRestaurant)restaurantInfo
 {
-  v3 = [(SALocalSearchMapItem *)self detail];
+  detail = [(SALocalSearchMapItem *)self detail];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SALocalSearchMapItem *)self detail];
+    detail2 = [(SALocalSearchMapItem *)self detail];
   }
 
   else
   {
-    v5 = 0;
+    detail2 = 0;
   }
 
-  return v5;
+  return detail2;
 }
 
 - (SARecordActivity)donateActivityCommand
 {
-  v3 = [(SALocalSearchMapItem *)self location];
-  v4 = [v3 locationActivityMetaData];
-  v5 = [NSMutableDictionary dictionaryWithDictionary:v4];
+  location = [(SALocalSearchMapItem *)self location];
+  locationActivityMetaData = [location locationActivityMetaData];
+  v5 = [NSMutableDictionary dictionaryWithDictionary:locationActivityMetaData];
 
-  v6 = [(SALocalSearchMapItem *)self restaurantInfo];
-  v7 = [v6 phoneNumber];
+  restaurantInfo = [(SALocalSearchMapItem *)self restaurantInfo];
+  phoneNumber = [restaurantInfo phoneNumber];
 
-  if (v7)
+  if (phoneNumber)
   {
-    v13 = v7;
+    v13 = phoneNumber;
     v8 = [NSArray arrayWithObjects:&v13 count:1];
     v9 = +[_DKLocationApplicationActivityMetadataKey phoneNumbers];
     [v5 setValue:v8 forKey:v9];
@@ -150,43 +150,43 @@ LABEL_11:
 
 - (BOOL)isBusinessLocation
 {
-  v2 = [(SALocalSearchMapItem *)self detailType];
-  v3 = [v2 isEqualToString:SALocalSearchMapItemMapItemTypeBUSINESS_ITEMValue];
+  detailType = [(SALocalSearchMapItem *)self detailType];
+  v3 = [detailType isEqualToString:SALocalSearchMapItemMapItemTypeBUSINESS_ITEMValue];
 
   return v3;
 }
 
 - (BOOL)isCurrentLocation
 {
-  v2 = [(SALocalSearchMapItem *)self detailType];
-  v3 = [v2 isEqualToString:SALocalSearchMapItemMapItemTypeCURRENT_LOCATIONValue];
+  detailType = [(SALocalSearchMapItem *)self detailType];
+  v3 = [detailType isEqualToString:SALocalSearchMapItemMapItemTypeCURRENT_LOCATIONValue];
 
   return v3;
 }
 
 - (BOOL)isParkingLocation
 {
-  v2 = [(SALocalSearchMapItem *)self detailType];
-  v3 = [v2 isEqualToString:SALocalSearchMapItemMapItemTypePARKING_LOCATIONValue];
+  detailType = [(SALocalSearchMapItem *)self detailType];
+  v3 = [detailType isEqualToString:SALocalSearchMapItemMapItemTypePARKING_LOCATIONValue];
 
   return v3;
 }
 
-- (void)updateEntityInSession:(id)a3
+- (void)updateEntityInSession:(id)session
 {
-  v8 = a3;
+  sessionCopy = session;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v4 = [(SALocalSearchMapItem *)self extSessionGuid];
-    v5 = [(SALocalSearchMapItem *)self extSessionGuidCreatedTimestamp];
-    v6 = v5;
-    if (v4 && v5)
+    extSessionGuid = [(SALocalSearchMapItem *)self extSessionGuid];
+    extSessionGuidCreatedTimestamp = [(SALocalSearchMapItem *)self extSessionGuidCreatedTimestamp];
+    v6 = extSessionGuidCreatedTimestamp;
+    if (extSessionGuid && extSessionGuidCreatedTimestamp)
     {
       v7 = objc_alloc_init(GEOUserSessionEntity);
-      [v7 updateSessionIDFromUUIDString:v4];
+      [v7 updateSessionIDFromUUIDString:extSessionGuid];
       [v6 timeIntervalSinceReferenceDate];
       [v7 setSessionCreationTime:?];
-      [v8 setSharedMapsUserSessionEntity:v7 shareSessionIDWithMaps:1];
+      [sessionCopy setSharedMapsUserSessionEntity:v7 shareSessionIDWithMaps:1];
     }
   }
 }

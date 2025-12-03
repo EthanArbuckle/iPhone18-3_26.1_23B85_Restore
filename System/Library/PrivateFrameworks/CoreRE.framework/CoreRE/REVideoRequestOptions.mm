@@ -1,19 +1,19 @@
 @interface REVideoRequestOptions
-- (REVideoRequestOptions)initWithCoder:(id)a3;
-- (REVideoRequestOptions)initWithReceiverEndpoint:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (REVideoRequestOptions)initWithCoder:(id)coder;
+- (REVideoRequestOptions)initWithReceiverEndpoint:(id)endpoint;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REVideoRequestOptions
 
-- (REVideoRequestOptions)initWithReceiverEndpoint:(id)a3
+- (REVideoRequestOptions)initWithReceiverEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v13.receiver = self;
   v13.super_class = REVideoRequestOptions;
   v6 = [(REResourceRequestOptions *)&v13 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_receiverEndpoint, a3), !v7->_receiverEndpoint))
+  if (v6 && (objc_storeStrong(&v6->_receiverEndpoint, endpoint), !v7->_receiverEndpoint))
   {
     v10 = *re::assetTypesLogObjects(v8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -33,12 +33,12 @@
   return v9;
 }
 
-- (REVideoRequestOptions)initWithCoder:(id)a3
+- (REVideoRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = REVideoRequestOptions;
-  v5 = [(REResourceRequestOptions *)&v16 initWithCoder:v4];
+  v5 = [(REResourceRequestOptions *)&v16 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_5;
@@ -58,7 +58,7 @@
     goto LABEL_11;
   }
 
-  v7 = v4;
+  v7 = coderCopy;
   v8 = [v7 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"receiverEndpoint"];
   receiverEndpoint = v5->_receiverEndpoint;
   v5->_receiverEndpoint = v8;
@@ -84,14 +84,14 @@ LABEL_12:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 encodeXPCObject:self->_receiverEndpoint forKey:@"receiverEndpoint"];
+    [coderCopy encodeXPCObject:self->_receiverEndpoint forKey:@"receiverEndpoint"];
   }
 
   else

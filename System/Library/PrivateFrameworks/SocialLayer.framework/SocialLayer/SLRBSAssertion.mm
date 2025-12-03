@@ -1,5 +1,5 @@
 @interface SLRBSAssertion
-+ (id)assertionNameForType:(int64_t)a3;
++ (id)assertionNameForType:(int64_t)type;
 - (BOOL)isValid;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,9 +7,9 @@
 
 @implementation SLRBSAssertion
 
-+ (id)assertionNameForType:(int64_t)a3
++ (id)assertionNameForType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     return 0;
   }
@@ -22,10 +22,10 @@
 
 - (BOOL)isValid
 {
-  v2 = [(SLRBSAssertion *)self assertion];
-  v3 = [v2 isValid];
+  assertion = [(SLRBSAssertion *)self assertion];
+  isValid = [assertion isValid];
 
-  return v3;
+  return isValid;
 }
 
 - (void)invalidate
@@ -36,16 +36,16 @@
     v3 = SLDaemonLogHandle();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(SLRBSAssertion *)self assertion];
+      assertion = [(SLRBSAssertion *)self assertion];
       v7 = 136315394;
       v8 = "[SLRBSAssertion invalidate]";
       v9 = 2048;
-      v10 = v4;
+      v10 = assertion;
       _os_log_impl(&dword_231772000, v3, OS_LOG_TYPE_DEFAULT, "%s invalidating assertion: <RBSAssertion: %p>", &v7, 0x16u);
     }
 
-    v5 = [(SLRBSAssertion *)self assertion];
-    [v5 invalidate];
+    assertion2 = [(SLRBSAssertion *)self assertion];
+    [assertion2 invalidate];
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -59,16 +59,16 @@
     v3 = SLDaemonLogHandle();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(SLRBSAssertion *)self assertion];
+      assertion = [(SLRBSAssertion *)self assertion];
       *buf = 136315394;
       v9 = "[SLRBSAssertion dealloc]";
       v10 = 2048;
-      v11 = v4;
+      v11 = assertion;
       _os_log_impl(&dword_231772000, v3, OS_LOG_TYPE_DEFAULT, "%s invalidating assertion: <RBSAssertion: %p>", buf, 0x16u);
     }
 
-    v5 = [(SLRBSAssertion *)self assertion];
-    [v5 invalidate];
+    assertion2 = [(SLRBSAssertion *)self assertion];
+    [assertion2 invalidate];
   }
 
   v7.receiver = self;

@@ -1,96 +1,96 @@
 @interface CKDUpdateMissingAssetStatusURLRequest
-- (CKDUpdateMissingAssetStatusURLRequest)initWithOperation:(id)a3 recoveredAssetRepairRecordID:(id)a4 size:(unint64_t)a5 putReceipt:(id)a6;
-- (CKDUpdateMissingAssetStatusURLRequest)initWithOperation:(id)a3 repairRecordID:(id)a4 recovered:(BOOL)a5 package:(BOOL)a6 sizes:(id)a7 putReceipts:(id)a8;
+- (CKDUpdateMissingAssetStatusURLRequest)initWithOperation:(id)operation recoveredAssetRepairRecordID:(id)d size:(unint64_t)size putReceipt:(id)receipt;
+- (CKDUpdateMissingAssetStatusURLRequest)initWithOperation:(id)operation repairRecordID:(id)d recovered:(BOOL)recovered package:(BOOL)package sizes:(id)sizes putReceipts:(id)receipts;
 - (id)generateRequestOperations;
-- (id)recordIDsUsedInZones:(id)a3;
+- (id)recordIDsUsedInZones:(id)zones;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
 @end
 
 @implementation CKDUpdateMissingAssetStatusURLRequest
 
-- (CKDUpdateMissingAssetStatusURLRequest)initWithOperation:(id)a3 recoveredAssetRepairRecordID:(id)a4 size:(unint64_t)a5 putReceipt:(id)a6
+- (CKDUpdateMissingAssetStatusURLRequest)initWithOperation:(id)operation recoveredAssetRepairRecordID:(id)d size:(unint64_t)size putReceipt:(id)receipt
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v14 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v13, a5);
+  operationCopy = operation;
+  dCopy = d;
+  receiptCopy = receipt;
+  v14 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v13, size);
   v24[0] = v14;
   v17 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v15, v24, 1);
-  if (v12)
+  if (receiptCopy)
   {
-    v23 = v12;
+    v23 = receiptCopy;
     v18 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v16, &v23, 1);
-    v20 = objc_msgSend_initWithOperation_repairRecordID_recovered_package_sizes_putReceipts_(self, v19, v10, v11, 1, 0, v17, v18);
+    v20 = objc_msgSend_initWithOperation_repairRecordID_recovered_package_sizes_putReceipts_(self, v19, operationCopy, dCopy, 1, 0, v17, v18);
   }
 
   else
   {
-    v20 = objc_msgSend_initWithOperation_repairRecordID_recovered_package_sizes_putReceipts_(self, v16, v10, v11, 1, 0, v17, MEMORY[0x277CBEBF8]);
+    v20 = objc_msgSend_initWithOperation_repairRecordID_recovered_package_sizes_putReceipts_(self, v16, operationCopy, dCopy, 1, 0, v17, MEMORY[0x277CBEBF8]);
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (CKDUpdateMissingAssetStatusURLRequest)initWithOperation:(id)a3 repairRecordID:(id)a4 recovered:(BOOL)a5 package:(BOOL)a6 sizes:(id)a7 putReceipts:(id)a8
+- (CKDUpdateMissingAssetStatusURLRequest)initWithOperation:(id)operation repairRecordID:(id)d recovered:(BOOL)recovered package:(BOOL)package sizes:(id)sizes putReceipts:(id)receipts
 {
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  sizesCopy = sizes;
+  receiptsCopy = receipts;
   v21.receiver = self;
   v21.super_class = CKDUpdateMissingAssetStatusURLRequest;
-  v18 = [(CKDURLRequest *)&v21 initWithOperation:a3];
+  v18 = [(CKDURLRequest *)&v21 initWithOperation:operation];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_repairRecordID, a4);
-    v19->_recovered = a5;
-    v19->_isPackage = a6;
-    objc_storeStrong(&v19->_assetSizes, a7);
-    objc_storeStrong(&v19->_assetPutReceipts, a8);
+    objc_storeStrong(&v18->_repairRecordID, d);
+    v19->_recovered = recovered;
+    v19->_isPackage = package;
+    objc_storeStrong(&v19->_assetSizes, sizes);
+    objc_storeStrong(&v19->_assetPutReceipts, receipts);
   }
 
   return v19;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v13.receiver = self;
   v13.super_class = CKDUpdateMissingAssetStatusURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_repairRecordID(self, v5, v6, v13.receiver, v13.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"repairRecordID");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"repairRecordID");
 
   v11 = objc_msgSend_assetSizes(self, v9, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v12, v11, @"assetSizes");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v12, v11, @"assetSizes");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_repairRecordID(self, v5, v6);
   v13[0] = v7;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, v13, 1);
-  objc_msgSend_setModifyRecordIDs_(v4, v10, v9);
+  objc_msgSend_setModifyRecordIDs_(propertiesCopy, v10, v9);
 
   v12.receiver = self;
   v12.super_class = CKDUpdateMissingAssetStatusURLRequest;
-  [(CKDURLRequest *)&v12 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v12 fillOutRequestProperties:propertiesCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)recordIDsUsedInZones:(id)a3
+- (id)recordIDsUsedInZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   v7 = objc_msgSend_repairRecordID(self, v5, v6);
   v10 = objc_msgSend_zoneID(v7, v8, v9);
-  v12 = objc_msgSend_containsObject_(v4, v11, v10);
+  v12 = objc_msgSend_containsObject_(zonesCopy, v11, v10);
 
   v15 = MEMORY[0x277CBEB98];
   if (v12)

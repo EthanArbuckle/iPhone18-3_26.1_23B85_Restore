@@ -1,9 +1,9 @@
 @interface MRDProactivePrepareForSetQueueSender
 - (MRDProactivePrepareForSetQueueSender)init;
-- (id)systemMediaAppPlayerPathForNotification:(id)a3;
-- (void)_handleActiveSystemEndpointDidChangeNotification:(id)a3;
+- (id)systemMediaAppPlayerPathForNotification:(id)notification;
+- (void)_handleActiveSystemEndpointDidChangeNotification:(id)notification;
 - (void)_initialize;
-- (void)_onQueue_sendPrepareForSetQueueTo:(id)a3 reason:(id)a4 type:(int64_t)a5;
+- (void)_onQueue_sendPrepareForSetQueueTo:(id)to reason:(id)reason type:(int64_t)type;
 - (void)dealloc;
 - (void)handleFirstLaunchAfterBootIfNeeded;
 - (void)registerForChanges;
@@ -38,7 +38,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRDPPFSQS] <%p> Initializing", &v4, 0xCu);
   }
 
@@ -52,7 +52,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRDPPFSQS] <%p> Deallocating.", buf, 0xCu);
   }
 
@@ -74,44 +74,44 @@
   [v3 removeObserver:self];
 }
 
-- (void)_handleActiveSystemEndpointDidChangeNotification:(id)a3
+- (void)_handleActiveSystemEndpointDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016F688;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (id)systemMediaAppPlayerPathForNotification:(id)a3
+- (id)systemMediaAppPlayerPathForNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:kMROriginActiveNowPlayingPlayerPathUserInfoKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:kMROriginActiveNowPlayingPlayerPathUserInfoKey];
 
-  v6 = [v3 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:kMRNowPlayingPlayerPathUserInfoKey];
+  v7 = [userInfo2 objectForKeyedSubscript:kMRNowPlayingPlayerPathUserInfoKey];
 
-  v8 = [v5 origin];
-  if (v8)
+  origin = [v5 origin];
+  if (origin)
   {
-    v9 = v8;
+    origin2 = origin;
 LABEL_4:
     v10 = [MRClient alloc];
     v11 = [v10 initWithBundleIdentifier:kMRMediaRemoteSystemMediaApplicationDisplayIdentifier];
-    v12 = [[MRPlayerPath alloc] initWithOrigin:v9 client:v11 player:0];
+    v12 = [[MRPlayerPath alloc] initWithOrigin:origin2 client:v11 player:0];
 
     goto LABEL_5;
   }
 
-  v9 = [v7 origin];
-  if (v9)
+  origin2 = [v7 origin];
+  if (origin2)
   {
     goto LABEL_4;
   }
@@ -135,25 +135,25 @@ LABEL_5:
   }
 }
 
-- (void)_onQueue_sendPrepareForSetQueueTo:(id)a3 reason:(id)a4 type:(int64_t)a5
+- (void)_onQueue_sendPrepareForSetQueueTo:(id)to reason:(id)reason type:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
+  toCopy = to;
+  reasonCopy = reason;
   v22[0] = kMRMediaRemoteOptionPrepareForSetQueueIsProactive;
   v22[1] = kMRMediaRemoteOptionPrepareForSetQueueProactiveReason;
   v23[0] = &__kCFBooleanTrue;
-  v23[1] = v8;
+  v23[1] = reasonCopy;
   v22[2] = MRMediaRemoteOptionPrepareForSetQueueProactiveReasonType;
-  v9 = [NSNumber numberWithInteger:a5];
+  v9 = [NSNumber numberWithInteger:type];
   v23[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:3];
 
   v11 = +[NSDate date];
-  v12 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"proactivePrepareForSetQueue", v8];
-  v13 = v12;
-  if (v7)
+  reasonCopy = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"proactivePrepareForSetQueue", reasonCopy];
+  v13 = reasonCopy;
+  if (toCopy)
   {
-    [v12 appendFormat:@" for %@", v7];
+    [reasonCopy appendFormat:@" for %@", toCopy];
   }
 
   v14 = _MRLogForCategory();
@@ -165,10 +165,10 @@ LABEL_5:
   }
 
   v15 = dispatch_get_global_queue(0, 0);
-  v18 = v8;
+  v18 = reasonCopy;
   v19 = v11;
   v16 = v11;
-  v17 = v8;
+  v17 = reasonCopy;
   MRMediaRemoteSendCommandToPlayerWithResult();
 }
 

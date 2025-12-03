@@ -1,16 +1,16 @@
 @interface FMNoLocationBackgroundView
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMNoLocationBackgroundView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMNoLocationBackgroundView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(FMNoLocationBackgroundView *)&v6 traitCollectionDidChange:v4];
+  [(FMNoLocationBackgroundView *)&v6 traitCollectionDidChange:changeCopy];
   sub_100019994();
 }
 

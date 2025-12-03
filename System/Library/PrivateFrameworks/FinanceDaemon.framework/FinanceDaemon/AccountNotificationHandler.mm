@@ -16,13 +16,13 @@
 
 - (void)primaryAppleAccountWasAdded
 {
-  v2 = self;
+  selfCopy = self;
   sub_226B1B0E0();
 }
 
 - (void)primaryAppleAccountWasDeleted
 {
-  v2 = self;
+  selfCopy = self;
   sub_226B1B134();
 }
 

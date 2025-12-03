@@ -1,41 +1,41 @@
 @interface STContentPrivacySiriAndIntelligenceRestrictionsDetailController
-- (STContentPrivacySiriAndIntelligenceRestrictionsDetailController)initWithRootViewModelCoordinator:(id)a3;
-- (id)_defaultLinkListSpecifierWithConfiguration:(id)a3 key:(id)a4;
-- (id)_defaultLinkListSpecifierWithConfiguration:(id)a3 key:(id)a4 uiLabelStringsTable:(id)a5;
-- (id)_defaultLinkListSpecifierWithItem:(id)a3 titlesByValue:(id)a4 uiLabelStringsTable:(id)a5;
-- (id)_defaultSwitchSpecifierWithConfiguration:(id)a3 key:(id)a4 fallbackLabel:(id)a5;
-- (id)_getSiriImageGenerationLinkListSpecifierValue:(id)a3;
-- (id)_getSpecifierValueForItem:(id)a3 viewModel:(id)a4 restrictionValues:(id)a5;
-- (id)_radioGroupSpecifierWithName:(id)a3 footerText:(id)a4 item:(id)a5;
+- (STContentPrivacySiriAndIntelligenceRestrictionsDetailController)initWithRootViewModelCoordinator:(id)coordinator;
+- (id)_defaultLinkListSpecifierWithConfiguration:(id)configuration key:(id)key;
+- (id)_defaultLinkListSpecifierWithConfiguration:(id)configuration key:(id)key uiLabelStringsTable:(id)table;
+- (id)_defaultLinkListSpecifierWithItem:(id)item titlesByValue:(id)value uiLabelStringsTable:(id)table;
+- (id)_defaultSwitchSpecifierWithConfiguration:(id)configuration key:(id)key fallbackLabel:(id)label;
+- (id)_getSiriImageGenerationLinkListSpecifierValue:(id)value;
+- (id)_getSpecifierValueForItem:(id)item viewModel:(id)model restrictionValues:(id)values;
+- (id)_radioGroupSpecifierWithName:(id)name footerText:(id)text item:(id)item;
 - (id)_siriImageGenerationSpecifier;
-- (id)getItemSpecifierValue:(id)a3;
+- (id)getItemSpecifierValue:(id)value;
 - (id)specifiers;
-- (void)_setItemSpecifierValue:(id)a3 specifier:(id)a4;
-- (void)_setSiriImageGenerationLinkListSpecifierValue:(id)a3 specifier:(id)a4;
+- (void)_setItemSpecifierValue:(id)value specifier:(id)specifier;
+- (void)_setSiriImageGenerationLinkListSpecifierValue:(id)value specifier:(id)specifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
-- (void)setItemSpecifierValue:(id)a3 specifier:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
+- (void)setItemSpecifierValue:(id)value specifier:(id)specifier;
 @end
 
 @implementation STContentPrivacySiriAndIntelligenceRestrictionsDetailController
 
-- (STContentPrivacySiriAndIntelligenceRestrictionsDetailController)initWithRootViewModelCoordinator:(id)a3
+- (STContentPrivacySiriAndIntelligenceRestrictionsDetailController)initWithRootViewModelCoordinator:(id)coordinator
 {
   v4.receiver = self;
   v4.super_class = STContentPrivacySiriAndIntelligenceRestrictionsDetailController;
-  return [(STPINListViewController *)&v4 initWithRootViewModelCoordinator:a3];
+  return [(STPINListViewController *)&v4 initWithRootViewModelCoordinator:coordinator];
 }
 
 - (id)specifiers
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 contentPrivacyCoordinator];
-  v5 = [v4 viewModel];
-  v6 = [v5 isLoaded];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  isLoaded = [viewModel isLoaded];
 
-  if (v6)
+  if (isLoaded)
   {
     v7 = objc_opt_new();
     v8 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
@@ -46,8 +46,8 @@
 
     if (_os_feature_enabled_impl())
     {
-      v12 = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _siriImageGenerationSpecifier];
-      [v7 addObject:v12];
+      _siriImageGenerationSpecifier = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _siriImageGenerationSpecifier];
+      [v7 addObject:_siriImageGenerationSpecifier];
     }
 
     v13 = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _defaultLinkListSpecifierWithConfiguration:@"system.siri" key:@"allowWritingTools"];
@@ -85,9 +85,9 @@
     v24 = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _defaultLinkListSpecifierWithConfiguration:0x2876725E8 key:0x287672728];
     [v7 addObject:v24];
 
-    v25 = [(STPINListViewController *)self coordinator];
-    v26 = [v25 contentPrivacyCoordinator];
-    LOBYTE(v21) = [v26 areRestrictionsEditable];
+    coordinator2 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator2 = [coordinator2 contentPrivacyCoordinator];
+    LOBYTE(v21) = [contentPrivacyCoordinator2 areRestrictionsEditable];
 
     if ((v21 & 1) == 0)
     {
@@ -143,27 +143,27 @@
   return v37;
 }
 
-- (id)getItemSpecifierValue:(id)a3
+- (id)getItemSpecifierValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:0x287672648];
-  v6 = [(STPINListViewController *)self coordinator];
-  v7 = [v6 contentPrivacyCoordinator];
-  v8 = [v7 viewModel];
+  valueCopy = value;
+  v5 = [valueCopy objectForKeyedSubscript:0x287672648];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
 
-  v9 = [v4 values];
+  values = [valueCopy values];
 
-  v10 = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _getSpecifierValueForItem:v5 viewModel:v8 restrictionValues:v9];
+  v10 = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _getSpecifierValueForItem:v5 viewModel:viewModel restrictionValues:values];
 
   return v10;
 }
 
-- (id)_getSpecifierValueForItem:(id)a3 viewModel:(id)a4 restrictionValues:(id)a5
+- (id)_getSpecifierValueForItem:(id)item viewModel:(id)model restrictionValues:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valuesByRestriction];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  itemCopy = item;
+  modelCopy = model;
+  valuesByRestriction = [modelCopy valuesByRestriction];
+  v9 = [valuesByRestriction objectForKeyedSubscript:itemCopy];
   v10 = v9;
   if (v9)
   {
@@ -172,7 +172,7 @@
 
   else
   {
-    v11 = [v7 defaultValueForRestriction:v6];
+    v11 = [modelCopy defaultValueForRestriction:itemCopy];
   }
 
   v12 = v11;
@@ -180,10 +180,10 @@
   return v12;
 }
 
-- (void)setItemSpecifierValue:(id)a3 specifier:(id)a4
+- (void)setItemSpecifierValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  specifierCopy = specifier;
   if ([(PSListController *)self st_shouldShowPINSheetForPINSpecifier])
   {
     v8[0] = MEMORY[0x277D85DD0];
@@ -191,14 +191,14 @@
     v8[2] = __99__STContentPrivacySiriAndIntelligenceRestrictionsDetailController_setItemSpecifierValue_specifier___block_invoke;
     v8[3] = &unk_279B7CC40;
     v8[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = valueCopy;
+    v10 = specifierCopy;
     [(PSListController *)self st_showPINSheetWithCompletion:v8];
   }
 
   else
   {
-    [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _setItemSpecifierValue:v6 specifier:v7];
+    [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _setItemSpecifierValue:valueCopy specifier:specifierCopy];
   }
 }
 
@@ -216,91 +216,91 @@ uint64_t __99__STContentPrivacySiriAndIntelligenceRestrictionsDetailController_s
   }
 }
 
-- (void)_setItemSpecifierValue:(id)a3 specifier:(id)a4
+- (void)_setItemSpecifierValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 objectForKeyedSubscript:0x287672648];
-  v9 = [(STPINListViewController *)self coordinator];
-  v10 = [v9 contentPrivacyCoordinator];
+  specifierCopy = specifier;
+  valueCopy = value;
+  v8 = [specifierCopy objectForKeyedSubscript:0x287672648];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __100__STContentPrivacySiriAndIntelligenceRestrictionsDetailController__setItemSpecifierValue_specifier___block_invoke;
   v12[3] = &unk_279B7CBC8;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v10 saveRestrictionValue:v7 forItem:v8 completionHandler:v12];
+  v13 = specifierCopy;
+  v11 = specifierCopy;
+  [contentPrivacyCoordinator saveRestrictionValue:valueCopy forItem:v8 completionHandler:v12];
 }
 
-- (id)_getSiriImageGenerationLinkListSpecifierValue:(id)a3
+- (id)_getSiriImageGenerationLinkListSpecifierValue:(id)value
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STPINListViewController *)self coordinator];
-  v5 = [v4 contentPrivacyCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v3 numberWithBool:{objc_msgSend(v6, "isSiriImageGenerationAllowed")}];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v7 = [v3 numberWithBool:{objc_msgSend(viewModel, "isSiriImageGenerationAllowed")}];
 
   return v7;
 }
 
-- (void)_setSiriImageGenerationLinkListSpecifierValue:(id)a3 specifier:(id)a4
+- (void)_setSiriImageGenerationLinkListSpecifierValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 BOOLValue];
-  v8 = [(STPINListViewController *)self coordinator];
-  v9 = [v8 contentPrivacyCoordinator];
+  specifierCopy = specifier;
+  bOOLValue = [value BOOLValue];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __123__STContentPrivacySiriAndIntelligenceRestrictionsDetailController__setSiriImageGenerationLinkListSpecifierValue_specifier___block_invoke;
   v11[3] = &unk_279B7CBC8;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 saveSiriImageGenerationIsAllowed:v7 completionHandler:v11];
+  v12 = specifierCopy;
+  v10 = specifierCopy;
+  [contentPrivacyCoordinator saveSiriImageGenerationIsAllowed:bOOLValue completionHandler:v11];
 }
 
 - (void)dealloc
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 contentPrivacyCoordinator];
-  [v4 removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"SiriAndIntelligenceRestrictionsViewModelLoadedContext"];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  [contentPrivacyCoordinator removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"SiriAndIntelligenceRestrictionsViewModelLoadedContext"];
 
   v5.receiver = self;
   v5.super_class = STContentPrivacySiriAndIntelligenceRestrictionsDetailController;
   [(STListViewController *)&v5 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STPINListViewController *)self coordinator];
+  coordinatorCopy = coordinator;
+  coordinator = [(STPINListViewController *)self coordinator];
 
-  if (v5 != v4)
+  if (coordinator != coordinatorCopy)
   {
-    v6 = [(STPINListViewController *)self coordinator];
-    v7 = [v6 contentPrivacyCoordinator];
-    [v7 removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"SiriAndIntelligenceRestrictionsViewModelLoadedContext"];
+    coordinator2 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator = [coordinator2 contentPrivacyCoordinator];
+    [contentPrivacyCoordinator removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"SiriAndIntelligenceRestrictionsViewModelLoadedContext"];
 
     v10.receiver = self;
     v10.super_class = STContentPrivacySiriAndIntelligenceRestrictionsDetailController;
-    [(STPINListViewController *)&v10 setCoordinator:v4];
-    v8 = [(STPINListViewController *)self coordinator];
-    v9 = [v8 contentPrivacyCoordinator];
-    [v9 addObserver:self forKeyPath:@"viewModel.isLoaded" options:0 context:@"SiriAndIntelligenceRestrictionsViewModelLoadedContext"];
+    [(STPINListViewController *)&v10 setCoordinator:coordinatorCopy];
+    coordinator3 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator2 = [coordinator3 contentPrivacyCoordinator];
+    [contentPrivacyCoordinator2 addObserver:self forKeyPath:@"viewModel.isLoaded" options:0 context:@"SiriAndIntelligenceRestrictionsViewModelLoadedContext"];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"SiriAndIntelligenceRestrictionsViewModelLoadedContext")
+  if (context == @"SiriAndIntelligenceRestrictionsViewModelLoadedContext")
   {
-    v7 = [(STPINListViewController *)self coordinator:a3];
-    v8 = [v7 contentPrivacyCoordinator];
-    v9 = [v8 viewModel];
-    v10 = [v9 isLoaded];
+    v7 = [(STPINListViewController *)self coordinator:path];
+    contentPrivacyCoordinator = [v7 contentPrivacyCoordinator];
+    viewModel = [contentPrivacyCoordinator viewModel];
+    isLoaded = [viewModel isLoaded];
 
-    if (v10)
+    if (isLoaded)
     {
 
       [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self reloadSpecifiers];
@@ -311,27 +311,27 @@ uint64_t __99__STContentPrivacySiriAndIntelligenceRestrictionsDetailController_s
   {
     v11.receiver = self;
     v11.super_class = STContentPrivacySiriAndIntelligenceRestrictionsDetailController;
-    [(STListViewController *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(STListViewController *)&v11 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (id)_defaultLinkListSpecifierWithItem:(id)a3 titlesByValue:(id)a4 uiLabelStringsTable:(id)a5
+- (id)_defaultLinkListSpecifierWithItem:(id)item titlesByValue:(id)value uiLabelStringsTable:(id)table
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  tableCopy = table;
   v10 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
   v11 = +[STScreenTimeSettingsUIBundle bundle];
-  v12 = [v8 uiLabel];
-  v13 = [v11 localizedStringForKey:v12 value:&stru_28766E5A8 table:v9];
+  uiLabel = [itemCopy uiLabel];
+  v13 = [v11 localizedStringForKey:uiLabel value:&stru_28766E5A8 table:tableCopy];
 
   v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v13 target:self set:sel_setItemSpecifierValue_specifier_ get:sel_getItemSpecifierValue_ detail:objc_opt_class() cell:2 edit:0];
-  v15 = [(STPINListViewController *)self coordinator];
-  [v14 setObject:v15 forKeyedSubscript:0x287675C48];
+  coordinator = [(STPINListViewController *)self coordinator];
+  [v14 setObject:coordinator forKeyedSubscript:0x287675C48];
 
-  v16 = [v8 restrictionType];
+  restrictionType = [itemCopy restrictionType];
   v31 = v13;
-  if (v16 == 1)
+  if (restrictionType == 1)
   {
     v22 = [v11 localizedStringForKey:@"AllowLabel" value:&stru_28766E5A8 table:v10];
     v23 = [v11 localizedStringForKey:@"DontAllowLabel" value:&stru_28766E5A8 table:v10];
@@ -344,11 +344,11 @@ uint64_t __99__STContentPrivacySiriAndIntelligenceRestrictionsDetailController_s
 
   else
   {
-    v17 = v16;
-    if (v16)
+    v17 = restrictionType;
+    if (restrictionType)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"STContentPrivacySiriAndIntelligenceRestrictionsDetailController.m" lineNumber:192 description:{@"Unimplemented type %d", v17}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"STContentPrivacySiriAndIntelligenceRestrictionsDetailController.m" lineNumber:192 description:{@"Unimplemented type %d", v17}];
 
       v20 = 0;
       v21 = 0;
@@ -367,99 +367,99 @@ uint64_t __99__STContentPrivacySiriAndIntelligenceRestrictionsDetailController_s
   }
 
   v25 = MEMORY[0x277CCABB0];
-  v26 = [(STPINListViewController *)self coordinator];
-  v27 = [v26 contentPrivacyCoordinator];
-  v28 = [v27 viewModel];
-  v29 = [v25 numberWithBool:{objc_msgSend(v28, "shouldEnableRestriction:", v8)}];
+  coordinator2 = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator2 contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v29 = [v25 numberWithBool:{objc_msgSend(viewModel, "shouldEnableRestriction:", itemCopy)}];
   [v14 setObject:v29 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
-  [v14 setObject:v8 forKeyedSubscript:0x287672648];
+  [v14 setObject:itemCopy forKeyedSubscript:0x287672648];
   [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FD80]];
   [v14 setValues:v21 titles:v20];
 
   return v14;
 }
 
-- (id)_defaultLinkListSpecifierWithConfiguration:(id)a3 key:(id)a4
+- (id)_defaultLinkListSpecifierWithConfiguration:(id)configuration key:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  configurationCopy = configuration;
   v8 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
-  v9 = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _defaultLinkListSpecifierWithConfiguration:v7 key:v6 uiLabelStringsTable:v8];
+  v9 = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _defaultLinkListSpecifierWithConfiguration:configurationCopy key:keyCopy uiLabelStringsTable:v8];
 
   return v9;
 }
 
-- (id)_defaultLinkListSpecifierWithConfiguration:(id)a3 key:(id)a4 uiLabelStringsTable:(id)a5
+- (id)_defaultLinkListSpecifierWithConfiguration:(id)configuration key:(id)key uiLabelStringsTable:(id)table
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(STPINListViewController *)self coordinator];
-  v13 = [v12 contentPrivacyCoordinator];
-  v14 = [v13 viewModel];
-  v15 = [v14 visibleRestrictionWithConfiguration:v11 key:v10];
+  tableCopy = table;
+  keyCopy = key;
+  configurationCopy = configuration;
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v15 = [viewModel visibleRestrictionWithConfiguration:configurationCopy key:keyCopy];
 
   if (!v15)
   {
     [STContentPrivacySiriAndIntelligenceRestrictionsDetailController _defaultLinkListSpecifierWithConfiguration:a2 key:self uiLabelStringsTable:?];
   }
 
-  v16 = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _defaultLinkListSpecifierWithItem:v15 titlesByValue:0 uiLabelStringsTable:v9];
+  v16 = [(STContentPrivacySiriAndIntelligenceRestrictionsDetailController *)self _defaultLinkListSpecifierWithItem:v15 titlesByValue:0 uiLabelStringsTable:tableCopy];
 
   return v16;
 }
 
-- (id)_radioGroupSpecifierWithName:(id)a3 footerText:(id)a4 item:(id)a5
+- (id)_radioGroupSpecifierWithName:(id)name footerText:(id)text item:(id)item
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:a3];
+  textCopy = text;
+  itemCopy = item;
+  v9 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:name];
   [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FFE8]];
-  if (v7)
+  if (textCopy)
   {
-    [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [v9 setObject:textCopy forKeyedSubscript:*MEMORY[0x277D3FF88]];
   }
 
-  if (v8)
+  if (itemCopy)
   {
-    [v9 setObject:v8 forKeyedSubscript:0x287672648];
+    [v9 setObject:itemCopy forKeyedSubscript:0x287672648];
   }
 
   return v9;
 }
 
-- (id)_defaultSwitchSpecifierWithConfiguration:(id)a3 key:(id)a4 fallbackLabel:(id)a5
+- (id)_defaultSwitchSpecifierWithConfiguration:(id)configuration key:(id)key fallbackLabel:(id)label
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STPINListViewController *)self coordinator];
-  v12 = [v11 contentPrivacyCoordinator];
-  v13 = [v12 viewModel];
-  v14 = [v13 visibleRestrictionWithConfiguration:v10 key:v9];
+  labelCopy = label;
+  keyCopy = key;
+  configurationCopy = configuration;
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v14 = [viewModel visibleRestrictionWithConfiguration:configurationCopy key:keyCopy];
 
   v15 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
   v16 = +[STScreenTimeSettingsUIBundle bundle];
-  v17 = [v14 uiLabel];
-  v27 = v8;
-  if ([v17 length])
+  uiLabel = [v14 uiLabel];
+  v27 = labelCopy;
+  if ([uiLabel length])
   {
-    v18 = [v16 localizedStringForKey:v17 value:&stru_28766E5A8 table:v15];
+    v18 = [v16 localizedStringForKey:uiLabel value:&stru_28766E5A8 table:v15];
   }
 
   else
   {
-    v18 = v8;
+    v18 = labelCopy;
   }
 
   v19 = v18;
   v20 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v18 target:self set:sel_setItemSpecifierValue_specifier_ get:sel_getItemSpecifierValue_ detail:0 cell:6 edit:0];
   v21 = MEMORY[0x277CCABB0];
-  v22 = [(STPINListViewController *)self coordinator];
-  v23 = [v22 contentPrivacyCoordinator];
-  v24 = [v23 viewModel];
-  v25 = [v21 numberWithBool:{objc_msgSend(v24, "restrictionsEnabled")}];
+  coordinator2 = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator2 = [coordinator2 contentPrivacyCoordinator];
+  viewModel2 = [contentPrivacyCoordinator2 viewModel];
+  v25 = [v21 numberWithBool:{objc_msgSend(viewModel2, "restrictionsEnabled")}];
   [v20 setObject:v25 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
   [v20 setObject:v14 forKeyedSubscript:0x287672648];
@@ -474,14 +474,14 @@ uint64_t __99__STContentPrivacySiriAndIntelligenceRestrictionsDetailController_s
   v4 = +[STScreenTimeSettingsUIBundle bundle];
   v5 = [v4 localizedStringForKey:@"SiriImageGenerationSpecifierName" value:&stru_28766E5A8 table:v3];
   v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v5 target:self set:sel__setSiriImageGenerationLinkListSpecifierValue_specifier_ get:sel__getSiriImageGenerationLinkListSpecifierValue_ detail:objc_opt_class() cell:2 edit:0];
-  v7 = [(STPINListViewController *)self coordinator];
-  [v6 setObject:v7 forKeyedSubscript:0x287675C48];
+  coordinator = [(STPINListViewController *)self coordinator];
+  [v6 setObject:coordinator forKeyedSubscript:0x287675C48];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(STPINListViewController *)self coordinator];
-  v10 = [v9 contentPrivacyCoordinator];
-  v11 = [v10 viewModel];
-  v12 = [v8 numberWithBool:{objc_msgSend(v11, "restrictionsEnabled")}];
+  coordinator2 = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator2 contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v12 = [v8 numberWithBool:{objc_msgSend(viewModel, "restrictionsEnabled")}];
   [v6 setObject:v12 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
   [v6 setObject:&unk_28769D7A8 forKeyedSubscript:@"STSiriAndIntelligenceRestrictionRanksSpecifierKey"];
@@ -496,11 +496,11 @@ uint64_t __99__STContentPrivacySiriAndIntelligenceRestrictionsDetailController_s
   v16 = [v4 localizedStringForKey:@"SiriImageGenerationDetailFooterText" value:&stru_28766E5A8 table:v3];
   [v6 setObject:v16 forKeyedSubscript:0x287674048];
 
-  v17 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v18 = [v4 localizedStringForKey:@"SiriImageGenerationDetailExtendAppleIntelligenceFooterText" value:&stru_28766E5A8 table:@"Restrictions-Montara"];
-  [v17 setObject:v18 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+  [emptyGroupSpecifier setObject:v18 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-  v21 = v17;
+  v21 = emptyGroupSpecifier;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
   [v6 setObject:v19 forKeyedSubscript:0x287674008];
 

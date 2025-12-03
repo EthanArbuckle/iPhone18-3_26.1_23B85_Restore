@@ -1,15 +1,15 @@
 @interface CHWorkoutDetailHeartRateChartView
-- (CHWorkoutDetailHeartRateChartView)initWithChartType:(unint64_t)a3;
+- (CHWorkoutDetailHeartRateChartView)initWithChartType:(unint64_t)type;
 - (id)_dateInterval;
 - (void)_reloadChartPoints;
 - (void)_updateChartSpacing;
 - (void)layoutSubviews;
-- (void)setHeartRateReadings:(id)a3 averageHeartRate:(id)a4 workout:(id)a5;
+- (void)setHeartRateReadings:(id)readings averageHeartRate:(id)rate workout:(id)workout;
 @end
 
 @implementation CHWorkoutDetailHeartRateChartView
 
-- (CHWorkoutDetailHeartRateChartView)initWithChartType:(unint64_t)a3
+- (CHWorkoutDetailHeartRateChartView)initWithChartType:(unint64_t)type
 {
   v35.receiver = self;
   v35.super_class = CHWorkoutDetailHeartRateChartView;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_chartType = a3;
+    v4->_chartType = type;
     v6 = [[FIUIChartView alloc] initWithDateInterval:0];
     chartView = v5->_chartView;
     v5->_chartView = v6;
@@ -38,14 +38,14 @@
 
     [(FIUIChartView *)v5->_chartView setBackgroundView:v5->_backgroundView];
     v12 = [UIFont defaultFontForTextStyle:UIFontTextStyleCaption1];
-    v13 = [v12 fu_fontWithStraightSidedNumbers];
+    fu_fontWithStraightSidedNumbers = [v12 fu_fontWithStraightSidedNumbers];
 
     v14 = [UIColor colorWithRed:0.301960784 green:0.301960784 blue:0.301960784 alpha:1.0];
     v15 = +[ARUIMetricColors heartRateColors];
-    v16 = [v15 nonGradientTextColor];
+    nonGradientTextColor = [v15 nonGradientTextColor];
 
     v17 = off_100832818;
-    if (a3)
+    if (type)
     {
       v17 = off_100832820;
     }
@@ -53,14 +53,14 @@
     v18 = objc_alloc_init(*v17);
     [v18 setHighlightedLabelColor:v14];
     [v18 setUnhighlightedLabelColor:v14];
-    v34 = v16;
-    [v18 setHighlightedSubLabelColor:v16];
-    [v18 setUnhighlightedSubLabelColor:v16];
+    v34 = nonGradientTextColor;
+    [v18 setHighlightedSubLabelColor:nonGradientTextColor];
+    [v18 setUnhighlightedSubLabelColor:nonGradientTextColor];
     [v18 setTextStyle:2];
     [v18 setTimeInterval:0];
     [v18 setSubTimeInterval:0];
     [v18 setSubLabelAlignment:1];
-    [v18 setLabelFont:v13];
+    [v18 setLabelFont:fu_fontWithStraightSidedNumbers];
     [v18 setForceAMPMOnFirstLabel:1];
     [v18 setHideClippedLabels:1];
     v19 = objc_alloc_init(FIUIChartDateAnchorRule);
@@ -79,7 +79,7 @@
     v22 = +[UIColor secondaryLabelColor];
     [v21 setUnhighlightedLabelColor:v22];
 
-    [v21 setLabelFont:v13];
+    [v21 setLabelFont:fu_fontWithStraightSidedNumbers];
     [v21 setAxisDescriptorPadding:1.0];
     v23 = +[UIColor blackColor];
     [v21 setShadowColor:v23];
@@ -97,15 +97,15 @@
     [(FIUIChartFloatingBarSeries *)v26 setCornerRadius:?];
     v27 = v5->_heartRateBarSeries;
     v28 = +[ARUIMetricColors heartRateColors];
-    v29 = [v28 nonGradientTextColor];
-    [(FIUIChartFloatingBarSeries *)v27 setBarColor:v29];
+    nonGradientTextColor2 = [v28 nonGradientTextColor];
+    [(FIUIChartFloatingBarSeries *)v27 setBarColor:nonGradientTextColor2];
 
     v30 = v5->_heartRateBarSeries;
-    v37[0] = v13;
+    v37[0] = fu_fontWithStraightSidedNumbers;
     v36[0] = NSFontAttributeName;
     v36[1] = NSForegroundColorAttributeName;
-    v31 = [(FIUIChartFloatingBarSeries *)v30 barColor];
-    v37[1] = v31;
+    barColor = [(FIUIChartFloatingBarSeries *)v30 barColor];
+    v37[1] = barColor;
     v32 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:2];
     [(FIUIChartFloatingBarSeries *)v30 setLabelAttributes:v32];
   }
@@ -122,20 +122,20 @@
   [(FIUIChartView *)self->_chartView setFrame:?];
 }
 
-- (void)setHeartRateReadings:(id)a3 averageHeartRate:(id)a4 workout:(id)a5
+- (void)setHeartRateReadings:(id)readings averageHeartRate:(id)rate workout:(id)workout
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 copy];
+  rateCopy = rate;
+  workoutCopy = workout;
+  v10 = [readings copy];
   heartRateReadings = self->_heartRateReadings;
   self->_heartRateReadings = v10;
 
   averageHeartRate = self->_averageHeartRate;
-  self->_averageHeartRate = v8;
-  v13 = v8;
+  self->_averageHeartRate = rateCopy;
+  v13 = rateCopy;
 
   workout = self->_workout;
-  self->_workout = v9;
+  self->_workout = workoutCopy;
 
   [(CHWorkoutDetailHeartRateChartView *)self _updateChartSpacing];
 
@@ -144,8 +144,8 @@
 
 - (void)_reloadChartPoints
 {
-  v3 = [(FIUIChartView *)self->_chartView dateInterval];
-  [v3 duration];
+  dateInterval = [(FIUIChartView *)self->_chartView dateInterval];
+  [dateInterval duration];
   v5 = v4 / 96.0;
   v6 = +[NSMutableDictionary dictionary];
   v7 = +[NSMutableArray array];
@@ -156,7 +156,7 @@
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v56 = self;
+  selfCopy = self;
   obj = self->_heartRateReadings;
   v9 = [(NSArray *)obj countByEnumeratingWithState:&v63 objects:v68 count:16];
   v10 = UICollectionViewCompositionalLayout_ptr;
@@ -174,14 +174,14 @@
         }
 
         v14 = *(*(&v63 + 1) + 8 * i);
-        v15 = [v14 date];
-        v16 = [v3 containsDate:v15];
+        date = [v14 date];
+        v16 = [dateInterval containsDate:date];
 
         if (v16)
         {
-          v17 = [v14 date];
-          v18 = [v3 startDate];
-          [v17 timeIntervalSinceDate:v18];
+          date2 = [v14 date];
+          startDate = [dateInterval startDate];
+          [date2 timeIntervalSinceDate:startDate];
           v20 = v19;
 
           v21 = vcvtmd_s64_f64(v20 / v5);
@@ -194,8 +194,8 @@
             v24 = +[NSMutableIndexSet indexSet];
           }
 
-          v25 = [v14 quantity];
-          [v25 ch_beatsPerMinute];
+          quantity = [v14 quantity];
+          [quantity ch_beatsPerMinute];
           v27 = llround(v26);
 
           [v24 addIndex:v27];
@@ -214,7 +214,7 @@
 
   v29 = 0;
   v30 = -2;
-  v31 = v56;
+  v31 = selfCopy;
   do
   {
     v32 = [v10[214] numberWithUnsignedInteger:v30 + 2];
@@ -240,12 +240,12 @@ LABEL_17:
   }
 
   while (v30 < 0x5E);
-  v36 = [(NSArray *)v56->_heartRateReadings count];
-  [v3 duration];
+  v36 = [(NSArray *)selfCopy->_heartRateReadings count];
+  [dateInterval duration];
   v38 = v36 / v37 * 60.0;
-  v40 = v38 >= 3.0 && v29 > 23 || v56->_chartType == 1;
+  v40 = v38 >= 3.0 && v29 > 23 || selfCopy->_chartType == 1;
   v41 = v40;
-  v56->_hasAdequateDataForDisplay = v41;
+  selfCopy->_hasAdequateDataForDisplay = v41;
   if (v40)
   {
     v61 = 0u;
@@ -269,13 +269,13 @@ LABEL_17:
 
           v46 = *(*(&v59 + 1) + 8 * j);
           v47 = v5 * [v46 integerValue];
-          v48 = [v3 startDate];
-          v49 = [v48 dateByAddingTimeInterval:v47];
+          startDate2 = [dateInterval startDate];
+          v49 = [startDate2 dateByAddingTimeInterval:v47];
 
           v50 = [v49 dateByAddingTimeInterval:v5 * 0.5];
           v51 = [v6 objectForKeyedSubscript:v46];
           v52 = [FIUIChartPointMultiple chartPointWithDate:v50 valueIndexSet:v51];
-          [(NSMutableArray *)v56->_heartRateChartPoints addObject:v52];
+          [(NSMutableArray *)selfCopy->_heartRateChartPoints addObject:v52];
         }
 
         v43 = [obja countByEnumeratingWithState:&v59 objects:v67 count:16];
@@ -284,9 +284,9 @@ LABEL_17:
       while (v43);
     }
 
-    v31 = v56;
-    [(FIUIChartDashedBackgroundView *)v56->_backgroundView setNumLines:4];
-    [(FIUIChartDashedBackgroundView *)v56->_backgroundView setShouldCenterLines:0];
+    v31 = selfCopy;
+    [(FIUIChartDashedBackgroundView *)selfCopy->_backgroundView setNumLines:4];
+    [(FIUIChartDashedBackgroundView *)selfCopy->_backgroundView setShouldCenterLines:0];
   }
 
   else
@@ -298,10 +298,10 @@ LABEL_17:
       sub_10069C578(v53, v29, v38);
     }
 
-    [(FIUIChartDashedBackgroundView *)v56->_backgroundView setNumLines:2];
-    [(FIUIChartDashedBackgroundView *)v56->_backgroundView setShouldCenterLines:1];
-    v55 = [(FIUIChartView *)v56->_chartView xAxisDescriptor];
-    [v55 setAverageHeartRate:0];
+    [(FIUIChartDashedBackgroundView *)selfCopy->_backgroundView setNumLines:2];
+    [(FIUIChartDashedBackgroundView *)selfCopy->_backgroundView setShouldCenterLines:1];
+    xAxisDescriptor = [(FIUIChartView *)selfCopy->_chartView xAxisDescriptor];
+    [xAxisDescriptor setAverageHeartRate:0];
   }
 
   [(FIUIChartView *)v31->_chartView reloadData];
@@ -310,11 +310,11 @@ LABEL_17:
 - (id)_dateInterval
 {
   v3 = +[NSCalendar currentCalendar];
-  v4 = [(HKWorkout *)self->_workout startDate];
-  v5 = [v3 dateBySettingUnit:0x8000 value:0 ofDate:v4 options:0];
+  startDate = [(HKWorkout *)self->_workout startDate];
+  v5 = [v3 dateBySettingUnit:0x8000 value:0 ofDate:startDate options:0];
 
-  v6 = [(HKWorkout *)self->_workout endDate];
-  v7 = [v3 dateBySettingUnit:0x8000 value:0 ofDate:v6 options:0];
+  endDate = [(HKWorkout *)self->_workout endDate];
+  v7 = [v3 dateBySettingUnit:0x8000 value:0 ofDate:endDate options:0];
 
   chartType = self->_chartType;
   v9 = [NSDateInterval alloc];
@@ -335,28 +335,28 @@ LABEL_17:
 
 - (void)_updateChartSpacing
 {
-  v11 = [(CHWorkoutDetailHeartRateChartView *)self _dateInterval];
-  [(FIUIChartView *)self->_chartView setDateInterval:v11];
-  [v11 duration];
+  _dateInterval = [(CHWorkoutDetailHeartRateChartView *)self _dateInterval];
+  [(FIUIChartView *)self->_chartView setDateInterval:_dateInterval];
+  [_dateInterval duration];
   v4 = v3 / 3.0;
   v5 = +[NSCalendar currentCalendar];
-  v6 = [v11 startDate];
-  v7 = [v11 startDate];
-  v8 = [v7 dateByAddingTimeInterval:v4];
-  v9 = [v5 components:224 fromDate:v6 toDate:v8 options:0];
+  startDate = [_dateInterval startDate];
+  startDate2 = [_dateInterval startDate];
+  v8 = [startDate2 dateByAddingTimeInterval:v4];
+  v9 = [v5 components:224 fromDate:startDate toDate:v8 options:0];
 
-  v10 = [(FIUIChartView *)self->_chartView xAxisDescriptor];
-  [v10 setAxisSpacing:v9];
-  [v10 setSubAxisSpacing:v9];
-  [(FIUIChartView *)self->_chartView setXAxisDescriptor:v10];
+  xAxisDescriptor = [(FIUIChartView *)self->_chartView xAxisDescriptor];
+  [xAxisDescriptor setAxisSpacing:v9];
+  [xAxisDescriptor setSubAxisSpacing:v9];
+  [(FIUIChartView *)self->_chartView setXAxisDescriptor:xAxisDescriptor];
   if (self->_chartType == 1)
   {
-    [v10 setRecoveryHeartRateReadings:self->_heartRateReadings];
+    [xAxisDescriptor setRecoveryHeartRateReadings:self->_heartRateReadings];
   }
 
   else
   {
-    [v10 setAverageHeartRate:self->_averageHeartRate];
+    [xAxisDescriptor setAverageHeartRate:self->_averageHeartRate];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface CDPRemoteSecretEntryViewControllerAccessibility__Setup__CoreCDPUI
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityShowsEscapeOffer;
 @end
 
 @implementation CDPRemoteSecretEntryViewControllerAccessibility__Setup__CoreCDPUI
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CDPRemoteSecretEntryViewController" isKindOfClass:@"PSDetailController"];
-  [v3 validateClass:@"PSDetailController" hasInstanceMethod:@"pane" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CDPRemoteSecretEntryViewController" hasInstanceVariable:@"_validator" withType:"CDPRemoteDeviceSecretValidator"];
-  [v3 validateClass:@"CDPRemoteDeviceSecretValidator" hasInstanceMethod:@"supportedEscapeOfferMask" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CDPRemoteSecretEntryPane"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CDPRemoteSecretEntryViewController" isKindOfClass:@"PSDetailController"];
+  [validationsCopy validateClass:@"PSDetailController" hasInstanceMethod:@"pane" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CDPRemoteSecretEntryViewController" hasInstanceVariable:@"_validator" withType:"CDPRemoteDeviceSecretValidator"];
+  [validationsCopy validateClass:@"CDPRemoteDeviceSecretValidator" hasInstanceMethod:@"supportedEscapeOfferMask" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CDPRemoteSecretEntryPane"];
 }
 
 - (BOOL)accessibilityShowsEscapeOffer

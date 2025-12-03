@@ -1,14 +1,14 @@
 @interface HDSQLiteDatabaseSchema
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation HDSQLiteDatabaseSchema
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   tables = self->_tables;
-  v4 = *(a3 + 1);
+  v4 = *(equal + 1);
   if (tables == v4)
   {
     return 1;
@@ -28,8 +28,8 @@
   v9.receiver = self;
   v9.super_class = HDSQLiteDatabaseSchema;
   v4 = [(HDSQLiteDatabaseSchema *)&v9 description];
-  v5 = [(NSDictionary *)self->_tables allValues];
-  v6 = [v5 componentsJoinedByString:@"\n"];
+  allValues = [(NSDictionary *)self->_tables allValues];
+  v6 = [allValues componentsJoinedByString:@"\n"];
   v7 = [v3 stringWithFormat:@"<%@: \n%@\n>", v4, v6];
 
   return v7;

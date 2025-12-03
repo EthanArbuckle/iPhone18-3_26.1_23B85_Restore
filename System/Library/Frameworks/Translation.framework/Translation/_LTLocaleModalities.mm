@@ -1,34 +1,34 @@
 @interface _LTLocaleModalities
-- (_LTLocaleModalities)initWithCoder:(id)a3;
-- (_LTLocaleModalities)initWithModalitiesPerLocale:(id)a3;
-- (_LTLocaleModalities)initWithSupportedLocales:(id)a3 asrLocales:(id)a4 ttsLocales:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_LTLocaleModalities)initWithCoder:(id)coder;
+- (_LTLocaleModalities)initWithModalitiesPerLocale:(id)locale;
+- (_LTLocaleModalities)initWithSupportedLocales:(id)locales asrLocales:(id)asrLocales ttsLocales:(id)ttsLocales;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (unint64_t)modalitiesForLocale:(id)a3;
+- (unint64_t)modalitiesForLocale:(id)locale;
 @end
 
 @implementation _LTLocaleModalities
 
-- (_LTLocaleModalities)initWithSupportedLocales:(id)a3 asrLocales:(id)a4 ttsLocales:(id)a5
+- (_LTLocaleModalities)initWithSupportedLocales:(id)locales asrLocales:(id)asrLocales ttsLocales:(id)ttsLocales
 {
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  localesCopy = locales;
+  asrLocalesCopy = asrLocales;
+  ttsLocalesCopy = ttsLocales;
   v58.receiver = self;
   v58.super_class = _LTLocaleModalities;
   v11 = [(_LTLocaleModalities *)&v58 init];
   v12 = v11;
   if (v11)
   {
-    v45 = v10;
+    v45 = ttsLocalesCopy;
     v42 = v11;
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v14 = v8;
+    v14 = localesCopy;
     v15 = [v14 countByEnumeratingWithState:&v54 objects:v63 count:16];
     if (v15)
     {
@@ -43,7 +43,7 @@
             objc_enumerationMutation(v14);
           }
 
-          [v13 setObject:&unk_284DC9990 forKeyedSubscript:*(*(&v54 + 1) + 8 * i)];
+          [dictionary setObject:&unk_284DC9990 forKeyedSubscript:*(*(&v54 + 1) + 8 * i)];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v54 objects:v63 count:16];
@@ -52,14 +52,14 @@
       while (v16);
     }
 
-    v44 = v8;
+    v44 = localesCopy;
 
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v43 = v9;
-    v19 = v9;
+    v43 = asrLocalesCopy;
+    v19 = asrLocalesCopy;
     v20 = [v19 countByEnumeratingWithState:&v50 objects:v62 count:16];
     if (v20)
     {
@@ -75,7 +75,7 @@
           }
 
           v24 = *(*(&v50 + 1) + 8 * j);
-          v25 = [v13 objectForKeyedSubscript:v24];
+          v25 = [dictionary objectForKeyedSubscript:v24];
           if (!v25)
           {
             v26 = _LTOSLogAssets();
@@ -88,7 +88,7 @@
           }
 
           v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v25, "integerValue") | 1}];
-          [v13 setObject:v27 forKeyedSubscript:v24];
+          [dictionary setObject:v27 forKeyedSubscript:v24];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v50 objects:v62 count:16];
@@ -117,7 +117,7 @@
           }
 
           v33 = *(*(&v46 + 1) + 8 * k);
-          v34 = [v13 objectForKeyedSubscript:v33];
+          v34 = [dictionary objectForKeyedSubscript:v33];
           if (!v34)
           {
             v35 = _LTOSLogAssets();
@@ -130,7 +130,7 @@
           }
 
           v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v34, "integerValue") | 2}];
-          [v13 setObject:v36 forKeyedSubscript:v33];
+          [dictionary setObject:v36 forKeyedSubscript:v33];
         }
 
         v30 = [v28 countByEnumeratingWithState:&v46 objects:v59 count:16];
@@ -139,30 +139,30 @@
       while (v30);
     }
 
-    v37 = [v13 copy];
+    v37 = [dictionary copy];
     v12 = v42;
     modalitiesPerLocale = v42->_modalitiesPerLocale;
     v42->_modalitiesPerLocale = v37;
 
     v39 = v42;
-    v9 = v43;
-    v8 = v44;
-    v10 = v45;
+    asrLocalesCopy = v43;
+    localesCopy = v44;
+    ttsLocalesCopy = v45;
   }
 
   v40 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (_LTLocaleModalities)initWithModalitiesPerLocale:(id)a3
+- (_LTLocaleModalities)initWithModalitiesPerLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v10.receiver = self;
   v10.super_class = _LTLocaleModalities;
   v5 = [(_LTLocaleModalities *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [localeCopy copy];
     modalitiesPerLocale = v5->_modalitiesPerLocale;
     v5->_modalitiesPerLocale = v6;
 
@@ -172,18 +172,18 @@
   return v5;
 }
 
-- (unint64_t)modalitiesForLocale:(id)a3
+- (unint64_t)modalitiesForLocale:(id)locale
 {
-  v3 = [(NSDictionary *)self->_modalitiesPerLocale objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSDictionary *)self->_modalitiesPerLocale objectForKeyedSubscript:locale];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (_LTLocaleModalities)initWithCoder:(id)a3
+- (_LTLocaleModalities)initWithCoder:(id)coder
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = _LTLocaleModalities;
   v5 = [(_LTLocaleModalities *)&v14 init];
@@ -196,7 +196,7 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"modalitiesPerLocale"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"modalitiesPerLocale"];
     modalitiesPerLocale = v5->_modalitiesPerLocale;
     v5->_modalitiesPerLocale = v9;
 
@@ -207,7 +207,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_LTLocaleModalities alloc];
   modalitiesPerLocale = self->_modalitiesPerLocale;
@@ -218,8 +218,8 @@
 - (id)debugDescription
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendString:@"{\n"];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:@"{\n"];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -240,9 +240,9 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 _ltLocaleIdentifier];
+        _ltLocaleIdentifier = [v9 _ltLocaleIdentifier];
         v11 = [(NSDictionary *)self->_modalitiesPerLocale objectForKeyedSubscript:v9];
-        [v3 appendFormat:@"\t%@: %@, \n", v10, v11, v14];
+        [string appendFormat:@"\t%@: %@, \n", _ltLocaleIdentifier, v11, v14];
       }
 
       v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -251,10 +251,10 @@
     while (v6);
   }
 
-  [v3 appendString:@"}"];
+  [string appendString:@"}"];
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
 @end

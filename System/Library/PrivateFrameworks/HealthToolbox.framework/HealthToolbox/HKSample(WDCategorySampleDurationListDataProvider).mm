@@ -7,21 +7,21 @@
 - (id)displayString
 {
   v2 = objc_alloc(MEMORY[0x277CCA970]);
-  v3 = [a1 startDate];
-  v4 = [a1 endDate];
-  v5 = [v2 initWithStartDate:v3 endDate:v4];
+  startDate = [self startDate];
+  endDate = [self endDate];
+  v5 = [v2 initWithStartDate:startDate endDate:endDate];
 
   [v5 duration];
   v7 = v6;
-  v8 = [MEMORY[0x277D12840] sharedInstance];
-  v9 = [a1 sampleType];
-  v10 = [v8 displayTypeForObjectType:v9];
+  mEMORY[0x277D12840] = [MEMORY[0x277D12840] sharedInstance];
+  sampleType = [self sampleType];
+  v10 = [mEMORY[0x277D12840] displayTypeForObjectType:sampleType];
 
-  v11 = [v10 presentation];
-  LODWORD(v9) = [v11 useSecondsWhenDisplayingDuration];
+  presentation = [v10 presentation];
+  LODWORD(sampleType) = [presentation useSecondsWhenDisplayingDuration];
 
   v12 = 0x277D12B00;
-  if (!v9)
+  if (!sampleType)
   {
     v12 = 0x277D12AF8;
   }

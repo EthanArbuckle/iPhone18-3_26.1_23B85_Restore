@@ -1,17 +1,17 @@
 @interface TipCell
-- (_TtC11SOSSettings7TipCell)initWithCoder:(id)a3;
-- (_TtC11SOSSettings7TipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC11SOSSettings7TipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC11SOSSettings7TipCell)initWithCoder:(id)coder;
+- (_TtC11SOSSettings7TipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC11SOSSettings7TipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation TipCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_C390();
 }
 
@@ -37,9 +37,9 @@
   *&v2[v3] = 0;
 }
 
-- (_TtC11SOSSettings7TipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC11SOSSettings7TipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_146D4();
     v9 = v8;
@@ -51,13 +51,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_BF10(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_BF10(style, v7, v9, specifier);
 }
 
-- (_TtC11SOSSettings7TipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11SOSSettings7TipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_146D4();
     *&self->PSTableCell_opaque[OBJC_IVAR____TtC11SOSSettings7TipCell_tipContentView] = 0;
@@ -72,18 +72,18 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for TipCell();
-  v7 = [(TipCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(TipCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC11SOSSettings7TipCell)initWithCoder:(id)a3
+- (_TtC11SOSSettings7TipCell)initWithCoder:(id)coder
 {
   *&self->PSTableCell_opaque[OBJC_IVAR____TtC11SOSSettings7TipCell_tipContentView] = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for TipCell();
-  v4 = a3;
-  v5 = [(TipCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TipCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

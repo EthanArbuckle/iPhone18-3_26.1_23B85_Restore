@@ -1,8 +1,8 @@
 @interface CSQueueAttributionManager
 + (id)sharedManager;
 - (CSQueueAttributionManager)init;
-- (void)retrieveAttributionsForQueueIdentifiers:(id)a3 withResultHandler:(id)a4;
-- (void)retrieveAvatarForParticipant:(id)a3 withResultHandler:(id)a4;
+- (void)retrieveAttributionsForQueueIdentifiers:(id)identifiers withResultHandler:(id)handler;
+- (void)retrieveAvatarForParticipant:(id)participant withResultHandler:(id)handler;
 @end
 
 @implementation CSQueueAttributionManager
@@ -33,37 +33,37 @@ uint64_t __42__CSQueueAttributionManager_sharedManager__block_invoke()
   v2 = [(CSQueueAttributionManager *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     attributions = v2->_attributions;
-    v2->_attributions = v3;
+    v2->_attributions = dictionary;
 
     v5 = [MEMORY[0x277CBEB58] set];
     requestedAttributions = v2->_requestedAttributions;
     v2->_requestedAttributions = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     avatars = v2->_avatars;
-    v2->_avatars = v7;
+    v2->_avatars = dictionary2;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     pendingAvatarHandlers = v2->_pendingAvatarHandlers;
-    v2->_pendingAvatarHandlers = v9;
+    v2->_pendingAvatarHandlers = dictionary3;
   }
 
   return v2;
 }
 
-- (void)retrieveAttributionsForQueueIdentifiers:(id)a3 withResultHandler:(id)a4
+- (void)retrieveAttributionsForQueueIdentifiers:(id)identifiers withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v6;
+  v10 = identifiersCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v22 count:16];
   if (v11)
   {
@@ -82,12 +82,12 @@ uint64_t __42__CSQueueAttributionManager_sharedManager__block_invoke()
         v16 = [(NSMutableDictionary *)self->_attributions objectForKeyedSubscript:v15];
         if (v16)
         {
-          [v8 setObject:v16 forKeyedSubscript:v15];
+          [dictionary setObject:v16 forKeyedSubscript:v15];
         }
 
         else if (([(NSMutableSet *)self->_requestedAttributions containsObject:v15]& 1) == 0)
         {
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -97,24 +97,24 @@ uint64_t __42__CSQueueAttributionManager_sharedManager__block_invoke()
     while (v12);
   }
 
-  if ([v9 count])
+  if ([array count])
   {
-    [(NSMutableSet *)self->_requestedAttributions addObjectsFromArray:v9];
+    [(NSMutableSet *)self->_requestedAttributions addObjectsFromArray:array];
     v17 = +[CSShieldManager sharedManager];
-    v18 = [v17 requestClient];
+    requestClient = [v17 requestClient];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __87__CSQueueAttributionManager_retrieveAttributionsForQueueIdentifiers_withResultHandler___block_invoke;
     v19[3] = &unk_278E0B2D0;
     v19[4] = self;
-    v20 = v8;
-    v21 = v7;
-    [v18 retrieveAttributionsForQueueIdentifiers:v9 handler:v19];
+    v20 = dictionary;
+    v21 = handlerCopy;
+    [requestClient retrieveAttributionsForQueueIdentifiers:array handler:v19];
   }
 
   else
   {
-    (*(v7 + 2))(v7, v8);
+    (*(handlerCopy + 2))(handlerCopy, dictionary);
   }
 }
 
@@ -144,17 +144,17 @@ uint64_t __87__CSQueueAttributionManager_retrieveAttributionsForQueueIdentifiers
   return v3();
 }
 
-- (void)retrieveAvatarForParticipant:(id)a3 withResultHandler:(id)a4
+- (void)retrieveAvatarForParticipant:(id)participant withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  handlerCopy = handler;
   avatars = self->_avatars;
-  v9 = [v6 socialProfileIdentifier];
-  v10 = [(NSMutableDictionary *)avatars objectForKeyedSubscript:v9];
+  socialProfileIdentifier = [participantCopy socialProfileIdentifier];
+  v10 = [(NSMutableDictionary *)avatars objectForKeyedSubscript:socialProfileIdentifier];
 
   pendingAvatarHandlers = self->_pendingAvatarHandlers;
-  v12 = [v6 socialProfileIdentifier];
-  v13 = [(NSMutableDictionary *)pendingAvatarHandlers objectForKeyedSubscript:v12];
+  socialProfileIdentifier2 = [participantCopy socialProfileIdentifier];
+  v13 = [(NSMutableDictionary *)pendingAvatarHandlers objectForKeyedSubscript:socialProfileIdentifier2];
 
   objc_initWeak(&location, self);
   if (!v10)
@@ -166,8 +166,8 @@ uint64_t __87__CSQueueAttributionManager_retrieveAttributionsForQueueIdentifiers
       v29[2] = __76__CSQueueAttributionManager_retrieveAvatarForParticipant_withResultHandler___block_invoke;
       v29[3] = &unk_278E0B2F8;
       objc_copyWeak(&v32, &location);
-      v31 = v7;
-      v30 = v6;
+      v31 = handlerCopy;
+      v30 = participantCopy;
       [v13 addExecutionBlock:v29];
 
       v17 = &v32;
@@ -181,23 +181,23 @@ uint64_t __87__CSQueueAttributionManager_retrieveAttributionsForQueueIdentifiers
       v25[2] = __76__CSQueueAttributionManager_retrieveAvatarForParticipant_withResultHandler___block_invoke_2;
       v25[3] = &unk_278E0B2F8;
       objc_copyWeak(&v28, &location);
-      v27 = v7;
-      v18 = v6;
+      v27 = handlerCopy;
+      v18 = participantCopy;
       v26 = v18;
       [v13 addExecutionBlock:v25];
       v19 = self->_pendingAvatarHandlers;
-      v20 = [v18 socialProfileIdentifier];
-      [(NSMutableDictionary *)v19 setObject:v13 forKeyedSubscript:v20];
+      socialProfileIdentifier3 = [v18 socialProfileIdentifier];
+      [(NSMutableDictionary *)v19 setObject:v13 forKeyedSubscript:socialProfileIdentifier3];
 
       v21 = +[CSShieldManager sharedManager];
-      v22 = [v21 requestClient];
+      requestClient = [v21 requestClient];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __76__CSQueueAttributionManager_retrieveAvatarForParticipant_withResultHandler___block_invoke_3;
       v23[3] = &unk_278E0B320;
       v23[4] = self;
       v24 = v18;
-      [v22 retrieveAvatarForParticipant:v24 handler:v23];
+      [requestClient retrieveAvatarForParticipant:v24 handler:v23];
 
       v17 = &v28;
     }
@@ -206,15 +206,15 @@ uint64_t __87__CSQueueAttributionManager_retrieveAttributionsForQueueIdentifiers
     goto LABEL_8;
   }
 
-  (*(v7 + 2))(v7, v10);
+  (*(handlerCopy + 2))(handlerCopy, v10);
   if (v13)
   {
-    v14 = [MEMORY[0x277CCABD8] mainQueue];
-    [v14 addOperation:v13];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+    [mainQueue addOperation:v13];
 
     v15 = self->_pendingAvatarHandlers;
-    v16 = [v6 socialProfileIdentifier];
-    [(NSMutableDictionary *)v15 setObject:0 forKeyedSubscript:v16];
+    socialProfileIdentifier4 = [participantCopy socialProfileIdentifier];
+    [(NSMutableDictionary *)v15 setObject:0 forKeyedSubscript:socialProfileIdentifier4];
 
 LABEL_8:
   }

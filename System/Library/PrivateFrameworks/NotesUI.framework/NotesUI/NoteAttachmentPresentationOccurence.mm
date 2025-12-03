@@ -1,23 +1,23 @@
 @interface NoteAttachmentPresentationOccurence
-- (NoteAttachmentPresentationOccurence)initWithPresentation:(id)a3 element:(id)a4;
+- (NoteAttachmentPresentationOccurence)initWithPresentation:(id)presentation element:(id)element;
 - (id)previewItemTitle;
 - (id)previewItemURL;
 @end
 
 @implementation NoteAttachmentPresentationOccurence
 
-- (NoteAttachmentPresentationOccurence)initWithPresentation:(id)a3 element:(id)a4
+- (NoteAttachmentPresentationOccurence)initWithPresentation:(id)presentation element:(id)element
 {
-  v7 = a3;
-  v8 = a4;
+  presentationCopy = presentation;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = NoteAttachmentPresentationOccurence;
   v9 = [(NoteAttachmentPresentationOccurence *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presentation, a3);
-    objc_storeStrong(&v10->_element, a4);
+    objc_storeStrong(&v9->_presentation, presentation);
+    objc_storeStrong(&v10->_element, element);
   }
 
   return v10;
@@ -25,19 +25,19 @@
 
 - (id)previewItemURL
 {
-  v2 = [(NoteAttachmentPresentationOccurence *)self presentation];
-  v3 = [v2 dataFileURL];
+  presentation = [(NoteAttachmentPresentationOccurence *)self presentation];
+  dataFileURL = [presentation dataFileURL];
 
-  return v3;
+  return dataFileURL;
 }
 
 - (id)previewItemTitle
 {
-  v2 = [(NoteAttachmentPresentationOccurence *)self presentation];
-  v3 = [v2 filename];
-  v4 = [v3 lastPathComponent];
+  presentation = [(NoteAttachmentPresentationOccurence *)self presentation];
+  filename = [presentation filename];
+  lastPathComponent = [filename lastPathComponent];
 
-  return v4;
+  return lastPathComponent;
 }
 
 @end

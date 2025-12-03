@@ -1,41 +1,41 @@
 @interface CPUIFocusRingView
-- (CPUIFocusRingView)initWithFrame:(CGRect)a3;
+- (CPUIFocusRingView)initWithFrame:(CGRect)frame;
 - (void)_updateFocusRect;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setRingColor:(id)a3;
-- (void)setRingGap:(double)a3;
-- (void)setRingWidth:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setRingColor:(id)color;
+- (void)setRingGap:(double)gap;
+- (void)setRingWidth:(double)width;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPUIFocusRingView
 
 - (void)_updateFocusRect
 {
-  v3 = [(CPUIFocusRingView *)self focusPath];
-  [v3 removeAllPoints];
+  focusPath = [(CPUIFocusRingView *)self focusPath];
+  [focusPath removeAllPoints];
 
   [(CPUIFocusRingView *)self setFocusPath:0];
 
   [(CPUIFocusRingView *)self setNeedsDisplay];
 }
 
-- (CPUIFocusRingView)initWithFrame:(CGRect)a3
+- (CPUIFocusRingView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CPUIFocusRingView;
-  v3 = [(CPUIFocusRingView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPUIFocusRingView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(CPUIFocusRingView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CPUIFocusRingView *)v3 setBackgroundColor:clearColor];
 
     v3->_cornerRadius = 11.0;
-    v5 = [MEMORY[0x277D75348] _carSystemFocusColor];
+    _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
     ringColor = v3->_ringColor;
-    v3->_ringColor = v5;
+    v3->_ringColor = _carSystemFocusColor;
 
     v3->_ringWidth = 2.0;
     v3->_ringGap = 2.0;
@@ -44,44 +44,44 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CPUIFocusRingView;
-  [(CPUIFocusRingView *)&v4 traitCollectionDidChange:a3];
+  [(CPUIFocusRingView *)&v4 traitCollectionDidChange:change];
   [(CPUIFocusRingView *)self _updateFocusRect];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(CPUIFocusRingView *)self _updateFocusRect];
   }
 }
 
-- (void)setRingWidth:(double)a3
+- (void)setRingWidth:(double)width
 {
-  if (self->_ringWidth != a3)
+  if (self->_ringWidth != width)
   {
-    self->_ringWidth = a3;
+    self->_ringWidth = width;
     [(CPUIFocusRingView *)self _updateFocusRect];
   }
 }
 
-- (void)setRingGap:(double)a3
+- (void)setRingGap:(double)gap
 {
-  if (self->_ringGap != a3)
+  if (self->_ringGap != gap)
   {
-    self->_ringGap = a3;
+    self->_ringGap = gap;
     [(CPUIFocusRingView *)self _updateFocusRect];
   }
 }
 
-- (void)setRingColor:(id)a3
+- (void)setRingColor:(id)color
 {
-  objc_storeStrong(&self->_ringColor, a3);
+  objc_storeStrong(&self->_ringColor, color);
 
   [(CPUIFocusRingView *)self _updateFocusRect];
 }
@@ -94,12 +94,12 @@
   [(CPUIFocusRingView *)self _updateFocusRect];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18.receiver = self;
   v18.super_class = CPUIFocusRingView;
   [(CPUIFocusRingView *)&v18 drawRect:?];
@@ -112,9 +112,9 @@
   v9 = v20.origin.y;
   v10 = v20.size.width;
   v11 = v20.size.height;
-  v12 = [(CPUIFocusRingView *)self focusPath];
+  focusPath = [(CPUIFocusRingView *)self focusPath];
 
-  if (!v12)
+  if (!focusPath)
   {
     v13 = MEMORY[0x277D75208];
     [(CPUIFocusRingView *)self cornerRadius];
@@ -123,11 +123,11 @@
     [(CPUIFocusRingView *)self setFocusPath:v15];
   }
 
-  v16 = [(CPUIFocusRingView *)self ringColor];
-  [v16 setStroke];
+  ringColor = [(CPUIFocusRingView *)self ringColor];
+  [ringColor setStroke];
 
-  v17 = [(CPUIFocusRingView *)self focusPath];
-  [v17 stroke];
+  focusPath2 = [(CPUIFocusRingView *)self focusPath];
+  [focusPath2 stroke];
 }
 
 @end

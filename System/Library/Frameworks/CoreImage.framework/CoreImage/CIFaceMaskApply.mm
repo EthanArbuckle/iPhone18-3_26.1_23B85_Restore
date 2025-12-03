@@ -12,11 +12,11 @@
   {
     if (self->inputParameterImage)
     {
-      v4 = [objc_opt_class() _kernel];
+      _kernel = [objc_opt_class() _kernel];
       inputImage = self->inputImage;
-      if (v4)
+      if (_kernel)
       {
-        v85 = v4;
+        v85 = _kernel;
         [(CIImage *)inputImage extent];
         v6 = v5;
         [(CIImage *)self->inputImage extent];

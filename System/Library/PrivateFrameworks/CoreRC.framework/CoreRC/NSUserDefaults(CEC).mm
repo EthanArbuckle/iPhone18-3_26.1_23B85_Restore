@@ -18,10 +18,10 @@
 - (uint64_t)lastKnownPhysicalAddress
 {
   v10 = *MEMORY[0x277D85DE8];
-  LOWORD(v2) = [a1 integerForKey:@"previousCECPhysicalAddress"];
+  LOWORD(v2) = [self integerForKey:@"previousCECPhysicalAddress"];
   if (!v2)
   {
-    v3 = [a1 integerForKey:@"previousPhysicalAddress"];
+    v3 = [self integerForKey:@"previousPhysicalAddress"];
     v4 = v3;
     if (v3)
     {
@@ -34,8 +34,8 @@
       }
 
       v2 = v5 & 0xF | (16 * ((v5 >> 8) & 0xF));
-      [a1 removeObjectForKey:@"previousPhysicalAddress"];
-      [a1 setInteger:v2 forKey:@"previousCECPhysicalAddress"];
+      [self removeObjectForKey:@"previousPhysicalAddress"];
+      [self setInteger:v2 forKey:@"previousCECPhysicalAddress"];
     }
 
     else

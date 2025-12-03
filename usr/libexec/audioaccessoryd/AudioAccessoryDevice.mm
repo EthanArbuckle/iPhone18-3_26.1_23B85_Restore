@@ -1,18 +1,18 @@
 @interface AudioAccessoryDevice
-- (BOOL)updateWithAADeviceRecord:(id)a3;
+- (BOOL)updateWithAADeviceRecord:(id)record;
 @end
 
 @implementation AudioAccessoryDevice
 
-- (BOOL)updateWithAADeviceRecord:(id)a3
+- (BOOL)updateWithAADeviceRecord:(id)record
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 allowNoiseManagementOff];
-  if (_os_feature_enabled_impl() && v6 != [(AudioAccessoryDevice *)v5 listeningModeOffAllowed])
+  recordCopy = record;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allowNoiseManagementOff = [recordCopy allowNoiseManagementOff];
+  if (_os_feature_enabled_impl() && allowNoiseManagementOff != [(AudioAccessoryDevice *)selfCopy listeningModeOffAllowed])
   {
-    [(AudioAccessoryDevice *)v5 setListeningModeOffAllowed:v6];
+    [(AudioAccessoryDevice *)selfCopy setListeningModeOffAllowed:allowNoiseManagementOff];
     v7 = 1;
   }
 
@@ -21,81 +21,81 @@
     v7 = 0;
   }
 
-  v8 = [v4 chargingReminderEnabled];
-  if (v8 != [(AudioAccessoryDevice *)v5 chargingReminderEnabled])
+  chargingReminderEnabled = [recordCopy chargingReminderEnabled];
+  if (chargingReminderEnabled != [(AudioAccessoryDevice *)selfCopy chargingReminderEnabled])
   {
-    [(AudioAccessoryDevice *)v5 setChargingReminderEnabled:v8];
+    [(AudioAccessoryDevice *)selfCopy setChargingReminderEnabled:chargingReminderEnabled];
     v7 = 1;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v9 = [v4 cameraControlConfig];
-    if (v9 != [(AudioAccessoryDevice *)v5 remoteCameraControlConfig])
+    cameraControlConfig = [recordCopy cameraControlConfig];
+    if (cameraControlConfig != [(AudioAccessoryDevice *)selfCopy remoteCameraControlConfig])
     {
-      [(AudioAccessoryDevice *)v5 setRemoteCameraControlConfig:v9];
+      [(AudioAccessoryDevice *)selfCopy setRemoteCameraControlConfig:cameraControlConfig];
       v7 = 1;
     }
   }
 
   if (_os_feature_enabled_impl())
   {
-    v10 = [v4 audiogramCreationTimestamp];
-    if (v10)
+    audiogramCreationTimestamp = [recordCopy audiogramCreationTimestamp];
+    if (audiogramCreationTimestamp)
     {
-      v11 = [(AudioAccessoryDevice *)v5 audiogramEnrolledTimestamp];
-      v12 = [v10 isEqualToDate:v11];
+      audiogramEnrolledTimestamp = [(AudioAccessoryDevice *)selfCopy audiogramEnrolledTimestamp];
+      v12 = [audiogramCreationTimestamp isEqualToDate:audiogramEnrolledTimestamp];
 
       if ((v12 & 1) == 0)
       {
-        [(AudioAccessoryDevice *)v5 setAudiogramEnrolledTimestamp:v10];
+        [(AudioAccessoryDevice *)selfCopy setAudiogramEnrolledTimestamp:audiogramCreationTimestamp];
         v7 = 1;
       }
     }
   }
 
-  v13 = [v4 healthKitDataWriteAllowed];
-  if (v13 != [(AudioAccessoryDevice *)v5 healthKitDataWriteAllowed])
+  healthKitDataWriteAllowed = [recordCopy healthKitDataWriteAllowed];
+  if (healthKitDataWriteAllowed != [(AudioAccessoryDevice *)selfCopy healthKitDataWriteAllowed])
   {
-    [(AudioAccessoryDevice *)v5 setHealthKitDataWriteAllowed:v13];
+    [(AudioAccessoryDevice *)selfCopy setHealthKitDataWriteAllowed:healthKitDataWriteAllowed];
     v7 = 1;
   }
 
-  if (([(AudioAccessoryDevice *)v5 heartRateMonitorCapabilityValueOriginatedFromDevice]& 1) == 0)
+  if (([(AudioAccessoryDevice *)selfCopy heartRateMonitorCapabilityValueOriginatedFromDevice]& 1) == 0)
   {
-    v14 = [v4 heartRateMonitorCapability];
-    if (v14)
+    heartRateMonitorCapability = [recordCopy heartRateMonitorCapability];
+    if (heartRateMonitorCapability)
     {
-      if (v14 != [(AudioAccessoryDevice *)v5 heartRateMonitorCapability])
+      if (heartRateMonitorCapability != [(AudioAccessoryDevice *)selfCopy heartRateMonitorCapability])
       {
-        [(AudioAccessoryDevice *)v5 setHeartRateMonitorCapability:v14];
+        [(AudioAccessoryDevice *)selfCopy setHeartRateMonitorCapability:heartRateMonitorCapability];
         v7 = 1;
       }
     }
   }
 
-  v15 = [v4 headGestureMode];
-  if (v15 != [(AudioAccessoryDevice *)v5 headGestureToggle])
+  headGestureMode = [recordCopy headGestureMode];
+  if (headGestureMode != [(AudioAccessoryDevice *)selfCopy headGestureToggle])
   {
-    [(AudioAccessoryDevice *)v5 setHeadGestureToggle:v15];
+    [(AudioAccessoryDevice *)selfCopy setHeadGestureToggle:headGestureMode];
     v7 = 1;
   }
 
-  v16 = [v4 acceptReplyPlayPauseConfig];
-  if (v16 != [(AudioAccessoryDevice *)v5 acceptReplyPlayPauseConfig])
+  acceptReplyPlayPauseConfig = [recordCopy acceptReplyPlayPauseConfig];
+  if (acceptReplyPlayPauseConfig != [(AudioAccessoryDevice *)selfCopy acceptReplyPlayPauseConfig])
   {
-    [(AudioAccessoryDevice *)v5 setAcceptReplyPlayPauseConfig:v16];
+    [(AudioAccessoryDevice *)selfCopy setAcceptReplyPlayPauseConfig:acceptReplyPlayPauseConfig];
     v7 = 1;
   }
 
-  v17 = [v4 declineDismissSkipConfig];
-  if (v17 != [(AudioAccessoryDevice *)v5 declineDismissSkipConfig])
+  declineDismissSkipConfig = [recordCopy declineDismissSkipConfig];
+  if (declineDismissSkipConfig != [(AudioAccessoryDevice *)selfCopy declineDismissSkipConfig])
   {
-    [(AudioAccessoryDevice *)v5 setDeclineDismissSkipConfig:v17];
+    [(AudioAccessoryDevice *)selfCopy setDeclineDismissSkipConfig:declineDismissSkipConfig];
     v7 = 1;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }

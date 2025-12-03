@@ -1,15 +1,15 @@
 @interface SUUIStorePagePinnedBackdropDecorationView
-- (SUUIStorePagePinnedBackdropDecorationView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (SUUIStorePagePinnedBackdropDecorationView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation SUUIStorePagePinnedBackdropDecorationView
 
-- (SUUIStorePagePinnedBackdropDecorationView)initWithFrame:(CGRect)a3
+- (SUUIStorePagePinnedBackdropDecorationView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SUUIStorePagePinnedBackdropDecorationView;
-  v3 = [(SUUIStorePagePinnedBackdropDecorationView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIStorePagePinnedBackdropDecorationView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2010];
@@ -25,19 +25,19 @@
     backdropStyleDefaultSettings = v3->_backdropStyleDefaultSettings;
     v3->_backdropStyleDefaultSettings = v7;
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIStorePagePinnedBackdropDecorationView *)v3 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIStorePagePinnedBackdropDecorationView *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  [v4 transitionProgress];
+  attributesCopy = attributes;
+  [attributesCopy transitionProgress];
   v6 = v5;
-  v7 = [v4 hidesBackdropView];
+  hidesBackdropView = [attributesCopy hidesBackdropView];
   if (v6 <= 0.00000011920929)
   {
     v8 = 1;
@@ -45,15 +45,15 @@
 
   else
   {
-    v8 = v7;
+    v8 = hidesBackdropView;
   }
 
-  v9 = [(_UIBackdropView *)self->_backdropView inputSettings];
-  v10 = [v4 backdropStyle];
+  inputSettings = [(_UIBackdropView *)self->_backdropView inputSettings];
+  backdropStyle = [attributesCopy backdropStyle];
   if ((v8 & 1) == 0)
   {
-    v11 = v10;
-    if ([(_UIBackdropView *)self->_backdropView style]!= v10)
+    v11 = backdropStyle;
+    if ([(_UIBackdropView *)self->_backdropView style]!= backdropStyle)
     {
       [(_UIBackdropView *)self->_backdropView transitionToPrivateStyle:v11];
       v12 = [MEMORY[0x277D75DF0] settingsForStyle:{-[_UIBackdropView style](self->_backdropView, "style")}];
@@ -65,9 +65,9 @@
   if (v8 != [(_UIBackdropView *)self->_backdropView isHidden])
   {
     [(_UIBackdropView *)self->_backdropView setHidden:v8];
-    if (!v8 || ([v4 backdropColor], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!v8 || ([attributesCopy backdropColor], (clearColor = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v14 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
     }
 
     backgroundView = self->_backgroundView;
@@ -85,20 +85,20 @@
     }
 
     [(UIView *)backgroundView setHidden:v8 ^ 1];
-    [(UIView *)self->_backgroundView setBackgroundColor:v14];
+    [(UIView *)self->_backgroundView setBackgroundColor:clearColor];
   }
 
   [(UIView *)self->_backgroundView setAlpha:v6];
-  v19 = [(_UIBackdropView *)self->_backdropView groupName];
+  groupName = [(_UIBackdropView *)self->_backdropView groupName];
   v20 = 1.0 - v6;
   if (1.0 - v6 <= 0.00000011920929)
   {
-    v22 = [v4 backdropGroupName];
-    v23 = v22;
+    backdropGroupName = [attributesCopy backdropGroupName];
+    v23 = backdropGroupName;
     v24 = @"_SUUIStorePagePinnedBackdropGroupName";
-    if (v22)
+    if (backdropGroupName)
     {
-      v24 = v22;
+      v24 = backdropGroupName;
     }
 
     v21 = v24;
@@ -109,7 +109,7 @@
     v21 = 0;
   }
 
-  if (v19 != v21 && ([(__CFString *)v19 isEqualToString:v21, v20]& 1) == 0)
+  if (groupName != v21 && ([(__CFString *)groupName isEqualToString:v21, v20]& 1) == 0)
   {
     [(_UIBackdropView *)self->_backdropView setGroupName:v21];
   }
@@ -117,56 +117,56 @@
   [(_UIBackdropViewSettings *)self->_backdropStyleDefaultSettings blurRadius];
   v26 = v25;
   v27 = v6 * v25;
-  [v9 blurRadius];
+  [inputSettings blurRadius];
   v29 = vabdd_f64(v27, v28);
   if (v29 >= 1.0 || (vabdd_f64(v26, v27) <= 1.0 ? (v30 = v29 <= 0.00000011920929) : (v30 = 1), !v30))
   {
-    [v9 setBlurRadius:v27];
+    [inputSettings setBlurRadius:v27];
   }
 
   [(_UIBackdropViewSettings *)self->_backdropStyleDefaultSettings saturationDeltaFactor];
   v32 = v6 * v31;
-  [v9 saturationDeltaFactor];
+  [inputSettings saturationDeltaFactor];
   if (vabdd_f64(v32, v33) > 0.00000011920929)
   {
-    [v9 setSaturationDeltaFactor:v32];
+    [inputSettings setSaturationDeltaFactor:v32];
   }
 
   [(_UIBackdropViewSettings *)self->_backdropStyleDefaultSettings darkeningTintAlpha];
   v35 = v6 * v34;
-  [v9 darkeningTintAlpha];
+  [inputSettings darkeningTintAlpha];
   if (vabdd_f64(v35, v36) > 0.00000011920929)
   {
-    [v9 setDarkeningTintAlpha:v35];
+    [inputSettings setDarkeningTintAlpha:v35];
   }
 
   [(_UIBackdropViewSettings *)self->_backdropStyleDefaultSettings grayscaleTintAlpha];
   v38 = v6 * v37;
-  [v9 grayscaleTintAlpha];
+  [inputSettings grayscaleTintAlpha];
   if (vabdd_f64(v38, v39) > 0.00000011920929)
   {
-    [v9 setGrayscaleTintAlpha:v38];
+    [inputSettings setGrayscaleTintAlpha:v38];
   }
 
   [(_UIBackdropViewSettings *)self->_backdropStyleDefaultSettings colorBurnTintAlpha];
   v41 = v6 * v40;
-  [v9 colorBurnTintAlpha];
+  [inputSettings colorBurnTintAlpha];
   if (vabdd_f64(v41, v42) > 0.00000011920929)
   {
-    [v9 setColorBurnTintAlpha:v41];
+    [inputSettings setColorBurnTintAlpha:v41];
   }
 
   [(_UIBackdropViewSettings *)self->_backdropStyleDefaultSettings colorTintAlpha];
   v44 = v6 * v43;
-  [v9 colorTintAlpha];
+  [inputSettings colorTintAlpha];
   if (vabdd_f64(v44, v45) > 0.00000011920929)
   {
-    [v9 setColorTintAlpha:v44];
+    [inputSettings setColorTintAlpha:v44];
   }
 
   v46.receiver = self;
   v46.super_class = SUUIStorePagePinnedBackdropDecorationView;
-  [(SUUIStorePagePinnedBackdropDecorationView *)&v46 applyLayoutAttributes:v4];
+  [(SUUIStorePagePinnedBackdropDecorationView *)&v46 applyLayoutAttributes:attributesCopy];
 }
 
 @end

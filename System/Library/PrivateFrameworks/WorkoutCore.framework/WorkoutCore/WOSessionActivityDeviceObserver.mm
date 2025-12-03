@@ -1,5 +1,5 @@
 @interface WOSessionActivityDeviceObserver
-- (BOOL)canResumeWorkoutWithActivityType:(id)a3;
+- (BOOL)canResumeWorkoutWithActivityType:(id)type;
 - (WOSessionActivityDeviceObserverDelegate)delegate;
 - (void)startObserving;
 - (void)stopObserving;
@@ -17,21 +17,21 @@
 
 - (void)startObserving
 {
-  v2 = self;
+  selfCopy = self;
   SessionActivityDeviceObserver.startObserving()();
 }
 
 - (void)stopObserving
 {
-  v2 = self;
+  selfCopy = self;
   SessionActivityDeviceObserver.stopObserving()();
 }
 
-- (BOOL)canResumeWorkoutWithActivityType:(id)a3
+- (BOOL)canResumeWorkoutWithActivityType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = SessionActivityDeviceObserver.canResumeWorkout(activityType:)(v4);
+  typeCopy = type;
+  selfCopy = self;
+  LOBYTE(self) = SessionActivityDeviceObserver.canResumeWorkout(activityType:)(typeCopy);
 
   return self & 1;
 }

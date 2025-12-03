@@ -1,6 +1,6 @@
 @interface FigAlternateObjC
 + (id)dummy;
-- (FigAlternateObjC)initWithFigAlternate:(OpaqueFigAlternate *)a3;
+- (FigAlternateObjC)initWithFigAlternate:(OpaqueFigAlternate *)alternate;
 - (FigAlternateObjCAudioAttributes)audioAttributes;
 - (FigAlternateObjCVideoAttributes)videoAttributes;
 - (void)dealloc;
@@ -8,16 +8,16 @@
 
 @implementation FigAlternateObjC
 
-- (FigAlternateObjC)initWithFigAlternate:(OpaqueFigAlternate *)a3
+- (FigAlternateObjC)initWithFigAlternate:(OpaqueFigAlternate *)alternate
 {
   v11.receiver = self;
   v11.super_class = FigAlternateObjC;
   v4 = [(FigAlternateObjC *)&v11 init];
   if (v4)
   {
-    if (a3)
+    if (alternate)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(alternate);
     }
 
     else
@@ -33,18 +33,18 @@
     }
 
     v4->_url = PlaylistAlternateURL;
-    IsPeakBitRateDeclared = FigAlternateIsPeakBitRateDeclared(a3);
+    IsPeakBitRateDeclared = FigAlternateIsPeakBitRateDeclared(alternate);
     AverageBitRate = -1.0;
     DeclaredPeakBitRate = -1.0;
     if (IsPeakBitRateDeclared)
     {
-      DeclaredPeakBitRate = FigAlternateGetDeclaredPeakBitRate(a3);
+      DeclaredPeakBitRate = FigAlternateGetDeclaredPeakBitRate(alternate);
     }
 
     v4->_peakBitRate = DeclaredPeakBitRate;
-    if (FigAlternateIsAverageBitRateDeclared(a3))
+    if (FigAlternateIsAverageBitRateDeclared(alternate))
     {
-      AverageBitRate = FigAlternateGetAverageBitRate(a3);
+      AverageBitRate = FigAlternateGetAverageBitRate(alternate);
     }
 
     v4->_averageBitRate = AverageBitRate;

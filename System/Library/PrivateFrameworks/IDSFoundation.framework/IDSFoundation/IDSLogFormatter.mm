@@ -1,33 +1,33 @@
 @interface IDSLogFormatter
-+ (id)descriptionForArray:(id)a3 options:(unint64_t)a4 level:(int64_t)a5;
-+ (id)descriptionForData:(id)a3 options:(unint64_t)a4;
-+ (id)descriptionForDictionary:(id)a3 options:(unint64_t)a4 level:(int64_t)a5;
-+ (id)descriptionForObject:(id)a3 options:(unint64_t)a4 level:(int64_t)a5;
-+ (id)descriptionForString:(id)a3 options:(unint64_t)a4;
++ (id)descriptionForArray:(id)array options:(unint64_t)options level:(int64_t)level;
++ (id)descriptionForData:(id)data options:(unint64_t)options;
++ (id)descriptionForDictionary:(id)dictionary options:(unint64_t)options level:(int64_t)level;
++ (id)descriptionForObject:(id)object options:(unint64_t)options level:(int64_t)level;
++ (id)descriptionForString:(id)string options:(unint64_t)options;
 @end
 
 @implementation IDSLogFormatter
 
-+ (id)descriptionForString:(id)a3 options:(unint64_t)a4
++ (id)descriptionForString:(id)string options:(unint64_t)options
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if ((v4 & 8) != 0 && [v5 length] >= 0x65)
+  optionsCopy = options;
+  stringCopy = string;
+  v6 = stringCopy;
+  if ((optionsCopy & 8) != 0 && [stringCopy length] >= 0x65)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [v6 _md5Hash];
-    [v7 stringWithFormat:@"-> %@", v8];
+    _md5Hash = [v6 _md5Hash];
+    [v7 stringWithFormat:@"-> %@", _md5Hash];
     v10 = LABEL_7:;
 
     goto LABEL_9;
   }
 
-  if ((v4 & 4) != 0 && [v6 length] >= 0x33)
+  if ((optionsCopy & 4) != 0 && [v6 length] >= 0x33)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v8 = [v6 substringToIndex:20];
-    [v9 stringWithFormat:@"%@ <...>", v8];
+    _md5Hash = [v6 substringToIndex:20];
+    [v9 stringWithFormat:@"%@ <...>", _md5Hash];
     goto LABEL_7;
   }
 
@@ -37,62 +37,62 @@ LABEL_9:
   return v10;
 }
 
-+ (id)descriptionForData:(id)a3 options:(unint64_t)a4
++ (id)descriptionForData:(id)data options:(unint64_t)options
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if ((v4 & 2) != 0 && [v5 length] >= 0x65)
+  optionsCopy = options;
+  dataCopy = data;
+  v6 = dataCopy;
+  if ((optionsCopy & 2) != 0 && [dataCopy length] >= 0x65)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [v6 SHA1HexString];
-    v9 = [v7 stringWithFormat:@"-> %@", v8];
+    sHA1HexString = [v6 SHA1HexString];
+    v9 = [v7 stringWithFormat:@"-> %@", sHA1HexString];
   }
 
   else
   {
-    if ((v4 & 1) != 0 && [v6 length] >= 0x33)
+    if ((optionsCopy & 1) != 0 && [v6 length] >= 0x33)
     {
-      v10 = [v6 truncatedDescription];
+      truncatedDescription = [v6 truncatedDescription];
     }
 
     else
     {
-      v10 = [v6 description];
+      truncatedDescription = [v6 description];
     }
 
-    v9 = v10;
+    v9 = truncatedDescription;
   }
 
   return v9;
 }
 
-+ (id)descriptionForArray:(id)a3 options:(unint64_t)a4 level:(int64_t)a5
++ (id)descriptionForArray:(id)array options:(unint64_t)options level:(int64_t)level
 {
-  v8 = a3;
+  arrayCopy = array;
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
   objc_msgSend(v9, "appendString:", @"(");
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_1A7CB78E8;
   v15[3] = &unk_1E77E2AE8;
-  v18 = a4;
+  optionsCopy = options;
   v10 = v9;
   v16 = v10;
-  v19 = a5;
-  v20 = a1;
-  v11 = v8;
+  levelCopy = level;
+  selfCopy = self;
+  v11 = arrayCopy;
   v17 = v11;
   [v11 enumerateObjectsUsingBlock:v15];
-  if ((a4 & 0x10) != 0 && a5 >= 1)
+  if ((options & 0x10) != 0 && level >= 1)
   {
     do
     {
       [v10 appendString:@"  "];
-      --a5;
+      --level;
     }
 
-    while (a5);
+    while (level);
   }
 
   [v10 appendString:@""]);
@@ -102,22 +102,22 @@ LABEL_9:
   return v10;
 }
 
-+ (id)descriptionForDictionary:(id)a3 options:(unint64_t)a4 level:(int64_t)a5
++ (id)descriptionForDictionary:(id)dictionary options:(unint64_t)options level:(int64_t)level
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v9 appendString:@"{\n"];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v8;
+  obj = dictionaryCopy;
   v20 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v20)
   {
     v19 = *v23;
-    v10 = a5 + 1;
+    v10 = level + 1;
     do
     {
       for (i = 0; i != v20; ++i)
@@ -129,8 +129,8 @@ LABEL_9:
 
         v12 = *(*(&v22 + 1) + 8 * i);
         v13 = v10;
-        v14 = a5;
-        if ((a5 & 0x8000000000000000) == 0)
+        levelCopy = level;
+        if ((level & 0x8000000000000000) == 0)
         {
           do
           {
@@ -141,12 +141,12 @@ LABEL_9:
           while (v13);
         }
 
-        v15 = [a1 descriptionForObject:v12 options:a4 level:v10];
+        v15 = [self descriptionForObject:v12 options:options level:v10];
         v16 = [obj objectForKey:v12];
-        v17 = [a1 descriptionForObject:v16 options:a4 level:v10];
+        v17 = [self descriptionForObject:v16 options:options level:v10];
         [v9 appendFormat:@"%@ : %@\n", v15, v17];
 
-        a5 = v14;
+        level = levelCopy;
       }
 
       v20 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -155,15 +155,15 @@ LABEL_9:
     while (v20);
   }
 
-  if (a5 >= 1)
+  if (level >= 1)
   {
     do
     {
       [v9 appendString:@"  "];
-      --a5;
+      --level;
     }
 
-    while (a5);
+    while (level);
   }
 
   [v9 appendString:@"}"];
@@ -171,13 +171,13 @@ LABEL_9:
   return v9;
 }
 
-+ (id)descriptionForObject:(id)a3 options:(unint64_t)a4 level:(int64_t)a5
++ (id)descriptionForObject:(id)object options:(unint64_t)options level:(int64_t)level
 {
-  v8 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [a1 descriptionForString:v8 options:a4];
+    v9 = [self descriptionForString:objectCopy options:options];
   }
 
   else
@@ -185,7 +185,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [a1 descriptionForData:v8 options:a4];
+      v9 = [self descriptionForData:objectCopy options:options];
     }
 
     else
@@ -193,7 +193,7 @@ LABEL_9:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [a1 descriptionForArray:v8 options:a4 level:a5];
+        v9 = [self descriptionForArray:objectCopy options:options level:level];
       }
 
       else
@@ -201,12 +201,12 @@ LABEL_9:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [a1 descriptionForDictionary:v8 options:a4 level:a5];
+          [self descriptionForDictionary:objectCopy options:options level:level];
         }
 
         else
         {
-          [v8 description];
+          [objectCopy description];
         }
         v9 = ;
       }

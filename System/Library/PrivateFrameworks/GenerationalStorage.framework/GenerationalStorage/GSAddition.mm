@@ -1,24 +1,24 @@
 @interface GSAddition
-- (BOOL)copyAdditionContentToURL:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)copyAdditionContentToURL:(id)l error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSavedConflict;
-- (BOOL)mergeUserInfo:(id)a3 error:(id *)a4;
-- (BOOL)refreshWithError:(id *)a3;
-- (BOOL)setDisplayName:(id)a3 error:(id *)a4;
-- (BOOL)setNameSpace:(id)a3 error:(id *)a4;
-- (BOOL)setOptions:(unint64_t)a3 error:(id *)a4;
+- (BOOL)mergeUserInfo:(id)info error:(id *)error;
+- (BOOL)refreshWithError:(id *)error;
+- (BOOL)setDisplayName:(id)name error:(id *)error;
+- (BOOL)setNameSpace:(id)space error:(id *)error;
+- (BOOL)setOptions:(unint64_t)options error:(id *)error;
 - (GSAddition)init;
 - (NSCopying)persistentIdentifier;
 - (NSData)sandboxExtension;
 - (NSNumber)size;
-- (id)_initWithStorage:(id)a3 andDictionary:(id)a4;
+- (id)_initWithStorage:(id)storage andDictionary:(id)dictionary;
 - (id)description;
-- (id)displayNameWithError:(id *)a3;
-- (id)originalPOSIXNameWithError:(id *)a3;
-- (id)replaceItemAtURL:(id)a3 error:(id *)a4;
-- (id)userInfoWithError:(id *)a3;
+- (id)displayNameWithError:(id *)error;
+- (id)originalPOSIXNameWithError:(id *)error;
+- (id)replaceItemAtURL:(id)l error:(id *)error;
+- (id)userInfoWithError:(id *)error;
 - (unint64_t)hash;
-- (void)_refreshWithDictionary:(id)a3;
+- (void)_refreshWithDictionary:(id)dictionary;
 @end
 
 @implementation GSAddition
@@ -29,8 +29,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(NSURL *)self->_url pathComponents];
-    v5 = [v4 objectAtIndex:{objc_msgSend(v4, "count") - 5}];
+    pathComponents = [(NSURL *)self->_url pathComponents];
+    v5 = [pathComponents objectAtIndex:{objc_msgSend(pathComponents, "count") - 5}];
     v6 = [v5 isEqualToString:@"PerUID"];
 
     if (v6)
@@ -94,15 +94,15 @@
     p_isa = &v4->isa;
   }
 
-  v5 = [(GSAdditionStoring *)self->_storage persistentIdentifier];
-  v6 = [(GSAddition *)self name:v5];
+  persistentIdentifier = [(GSAdditionStoring *)self->_storage persistentIdentifier];
+  v6 = [(GSAddition *)self name:persistentIdentifier];
   v9[2] = v6;
   v7 = [NSArray arrayWithObjects:v9 count:3];
 
   return v7;
 }
 
-- (id)displayNameWithError:(id *)a3
+- (id)displayNameWithError:(id *)error
 {
   p_displayName = &self->_displayName;
   displayName = self->_displayName;
@@ -113,7 +113,7 @@
 
   else
   {
-    v5 = sub_10000ADC4([(NSURL *)self->_url fileSystemRepresentation], a3);
+    v5 = sub_10000ADC4([(NSURL *)self->_url fileSystemRepresentation], error);
     if ([v5 rangeOfString:@":"] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = [v5 stringByReplacingOccurrencesOfString:@":" withString:@"/"];
@@ -130,13 +130,13 @@
   return displayName;
 }
 
-- (id)originalPOSIXNameWithError:(id *)a3
+- (id)originalPOSIXNameWithError:(id *)error
 {
   p_originalName = &self->_originalName;
   originalName = self->_originalName;
   if (!originalName)
   {
-    v8 = sub_10000AB84([(NSURL *)self->_url fileSystemRepresentation], a3);
+    v8 = sub_10000AB84([(NSURL *)self->_url fileSystemRepresentation], error);
     if (v8)
     {
       v5 = v8;
@@ -144,17 +144,17 @@
 
     else
     {
-      v9 = [(GSAddition *)self displayName];
-      v5 = v9;
-      if (v9)
+      displayName = [(GSAddition *)self displayName];
+      v5 = displayName;
+      if (displayName)
       {
-        v10 = [v9 pathExtension];
-        v11 = [(GSAddition *)self name];
-        v12 = [v11 pathExtension];
+        pathExtension = [displayName pathExtension];
+        name = [(GSAddition *)self name];
+        pathExtension2 = [name pathExtension];
 
-        if ([v10 caseInsensitiveCompare:v12])
+        if ([pathExtension caseInsensitiveCompare:pathExtension2])
         {
-          v13 = [v5 stringByAppendingPathExtension:v12];
+          v13 = [v5 stringByAppendingPathExtension:pathExtension2];
 
           v5 = v13;
         }
@@ -188,12 +188,12 @@ LABEL_13:
   return originalName;
 }
 
-- (id)userInfoWithError:(id *)a3
+- (id)userInfoWithError:(id *)error
 {
   userInfo = self->_userInfo;
   if (!userInfo)
   {
-    v5 = sub_10000A388([(NSURL *)self->_url fileSystemRepresentation], a3);
+    v5 = sub_10000A388([(NSURL *)self->_url fileSystemRepresentation], error);
     v6 = self->_userInfo;
     self->_userInfo = v5;
 
@@ -203,9 +203,9 @@ LABEL_13:
   return userInfo;
 }
 
-- (BOOL)refreshWithError:(id *)a3
+- (BOOL)refreshWithError:(id *)error
 {
-  v4 = [(GSAdditionStoring *)self->_storage getAdditionDictionary:self error:a3];
+  v4 = [(GSAdditionStoring *)self->_storage getAdditionDictionary:self error:error];
   if (v4)
   {
     [(GSAddition *)self _refreshWithDictionary:v4];
@@ -214,10 +214,10 @@ LABEL_13:
   return v4 != 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -227,12 +227,12 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(GSAdditionStoring *)self->_storage isEqual:v5->_storage]&& [(NSString *)self->_namespace isEqualToString:v5->_namespace])
       {
-        v6 = [(GSAddition *)self name];
-        v7 = [(GSAddition *)v5 name];
-        v8 = [v6 isEqual:v7];
+        name = [(GSAddition *)self name];
+        name2 = [(GSAddition *)v5 name];
+        v8 = [name isEqual:name2];
       }
 
       else
@@ -254,8 +254,8 @@ LABEL_13:
 {
   v3 = [(GSAdditionStoring *)self->_storage hash];
   v4 = [(NSString *)self->_namespace hash]^ v3;
-  v5 = [(GSAddition *)self name];
-  v6 = [v5 hash];
+  name = [(GSAddition *)self name];
+  v6 = [name hash];
 
   return v4 ^ v6;
 }
@@ -263,8 +263,8 @@ LABEL_13:
 - (id)description
 {
   v3 = self->_namespace;
-  v4 = [(NSURL *)self->_url lastPathComponent];
-  v5 = [NSString stringWithFormat:@"<GSAddition %p ns:%@ n:%@ o:%llx, cr:%hhd>", self, v3, v4, self->_options, self->_savedConflictResolved];
+  lastPathComponent = [(NSURL *)self->_url lastPathComponent];
+  v5 = [NSString stringWithFormat:@"<GSAddition %p ns:%@ n:%@ o:%llx, cr:%hhd>", self, v3, lastPathComponent, self->_options, self->_savedConflictResolved];
 
   return v5;
 }
@@ -277,11 +277,11 @@ LABEL_13:
   return 0;
 }
 
-- (void)_refreshWithDictionary:(id)a3
+- (void)_refreshWithDictionary:(id)dictionary
 {
   userInfo = self->_userInfo;
   self->_userInfo = 0;
-  v5 = a3;
+  dictionaryCopy = dictionary;
 
   displayName = self->_displayName;
   self->_displayName = 0;
@@ -289,72 +289,72 @@ LABEL_13:
   originalName = self->_originalName;
   self->_originalName = 0;
 
-  v8 = [v5 objectForKey:@"o"];
+  v8 = [dictionaryCopy objectForKey:@"o"];
   self->_options = [v8 longLongValue];
 
-  v9 = [v5 objectForKey:@"ns"];
+  v9 = [dictionaryCopy objectForKey:@"ns"];
   v10 = self->_namespace;
   self->_namespace = v9;
 
-  v11 = [v5 objectForKey:@"u"];
+  v11 = [dictionaryCopy objectForKey:@"u"];
   url = self->_url;
   self->_url = v11;
 
-  v13 = [v5 objectForKey:@"sz"];
+  v13 = [dictionaryCopy objectForKey:@"sz"];
   size = self->_size;
   self->_size = v13;
 
-  v15 = [v5 objectForKey:@"cr"];
+  v15 = [dictionaryCopy objectForKey:@"cr"];
 
   self->_savedConflictResolved = [v15 BOOLValue];
 }
 
-- (id)_initWithStorage:(id)a3 andDictionary:(id)a4
+- (id)_initWithStorage:(id)storage andDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = GSAddition;
   v9 = [(GSAddition *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storage, a3);
-    [(GSAddition *)v10 _refreshWithDictionary:v8];
+    objc_storeStrong(&v9->_storage, storage);
+    [(GSAddition *)v10 _refreshWithDictionary:dictionaryCopy];
   }
 
   return v10;
 }
 
-- (BOOL)setOptions:(unint64_t)a3 error:(id *)a4
+- (BOOL)setOptions:(unint64_t)options error:(id *)error
 {
-  v6 = [(GSAdditionStoring *)self->_storage setAdditionOptions:self value:a3 error:a4];
+  v6 = [(GSAdditionStoring *)self->_storage setAdditionOptions:self value:options error:error];
   if (v6)
   {
-    self->_options = a3;
+    self->_options = options;
   }
 
   return v6;
 }
 
-- (BOOL)setDisplayName:(id)a3 error:(id *)a4
+- (BOOL)setDisplayName:(id)name error:(id *)error
 {
-  v7 = a3;
-  v8 = [(GSAdditionStoring *)self->_storage setAdditionDisplayName:self value:v7 error:a4];
+  nameCopy = name;
+  v8 = [(GSAdditionStoring *)self->_storage setAdditionDisplayName:self value:nameCopy error:error];
   if (v8)
   {
-    objc_storeStrong(&self->_displayName, a3);
+    objc_storeStrong(&self->_displayName, name);
   }
 
   return v8;
 }
 
-- (BOOL)setNameSpace:(id)a3 error:(id *)a4
+- (BOOL)setNameSpace:(id)space error:(id *)error
 {
-  v6 = a3;
-  if (![(NSString *)self->_namespace isEqualToString:v6])
+  spaceCopy = space;
+  if (![(NSString *)self->_namespace isEqualToString:spaceCopy])
   {
-    v7 = [(GSAdditionStoring *)self->_storage setAdditionNameSpace:self value:v6 error:a4];
+    v7 = [(GSAdditionStoring *)self->_storage setAdditionNameSpace:self value:spaceCopy error:error];
     if (!v7)
     {
       v9 = 0;
@@ -371,9 +371,9 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)mergeUserInfo:(id)a3 error:(id *)a4
+- (BOOL)mergeUserInfo:(id)info error:(id *)error
 {
-  v5 = [(GSAdditionStoring *)self->_storage mergeAdditionUserInfo:self value:a3 error:a4];
+  v5 = [(GSAdditionStoring *)self->_storage mergeAdditionUserInfo:self value:info error:error];
   if (v5)
   {
     userInfo = self->_userInfo;
@@ -383,30 +383,30 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)copyAdditionContentToURL:(id)a3 error:(id *)a4
+- (BOOL)copyAdditionContentToURL:(id)l error:(id *)error
 {
   url = self->_url;
-  v6 = a3;
-  v7 = [(NSURL *)url fileSystemRepresentation];
-  v8 = [v6 fileSystemRepresentation];
+  lCopy = l;
+  fileSystemRepresentation = [(NSURL *)url fileSystemRepresentation];
+  fileSystemRepresentation2 = [lCopy fileSystemRepresentation];
 
-  return sub_10000C010(v7, v8, a4);
+  return sub_10000C010(fileSystemRepresentation, fileSystemRepresentation2, error);
 }
 
-- (id)replaceItemAtURL:(id)a3 error:(id *)a4
+- (id)replaceItemAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = sub_100002B78(v6, self, a4);
+  lCopy = l;
+  v7 = sub_100002B78(lCopy, self, error);
   v8 = v7;
-  if (v7 && v7 != v6)
+  if (v7 && v7 != lCopy)
   {
-    v9 = [(GSAddition *)self storage];
-    v10 = [v9 documentURL];
-    v11 = [v10 isEqual:v6];
+    storage = [(GSAddition *)self storage];
+    documentURL = [storage documentURL];
+    v11 = [documentURL isEqual:lCopy];
 
     if (v11)
     {
-      [v9 setDocumentURL:v8];
+      [storage setDocumentURL:v8];
     }
   }
 

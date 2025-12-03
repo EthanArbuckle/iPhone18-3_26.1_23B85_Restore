@@ -1,9 +1,9 @@
 @interface ACCTransportClientBridge
 + (id)sharedBridge;
 - (ACCTransportClientBridge)init;
-- (void)transportClient:(id)a3 propertiesDidChange:(id)a4 forConnectionWithUUID:(id)a5 previousProperties:(id)a6;
-- (void)transportClient:(id)a3 propertiesDidChange:(id)a4 forEndpointWithUUID:(id)a5 previousProperties:(id)a6 connectionUUID:(id)a7;
-- (void)transportClientServerDisconnected:(id)a3;
+- (void)transportClient:(id)client propertiesDidChange:(id)change forConnectionWithUUID:(id)d previousProperties:(id)properties;
+- (void)transportClient:(id)client propertiesDidChange:(id)change forEndpointWithUUID:(id)d previousProperties:(id)properties connectionUUID:(id)iD;
+- (void)transportClientServerDisconnected:(id)disconnected;
 @end
 
 @implementation ACCTransportClientBridge
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __40__ACCTransportClientBridge_sharedBridge__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedBridge_once != -1)
   {
     dispatch_once(&sharedBridge_once, block);
@@ -32,9 +32,9 @@
   v2 = [(ACCTransportClientBridge *)&v10 init];
   if (v2)
   {
-    v3 = [[ACCTransportClient alloc] _init];
+    _init = [[ACCTransportClient alloc] _init];
     transportClient = v2->_transportClient;
-    v2->_transportClient = v3;
+    v2->_transportClient = _init;
 
     [(ACCTransportClient *)v2->_transportClient setDelegate:v2];
     connectionAuthStatusChangedHandler = v2->_connectionAuthStatusChangedHandler;
@@ -53,43 +53,43 @@
   return v2;
 }
 
-- (void)transportClient:(id)a3 propertiesDidChange:(id)a4 forConnectionWithUUID:(id)a5 previousProperties:(id)a6
+- (void)transportClient:(id)client propertiesDidChange:(id)change forConnectionWithUUID:(id)d previousProperties:(id)properties
 {
-  v13 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(ACCTransportClientBridge *)self connectionPropertiesChangedHandler];
+  changeCopy = change;
+  dCopy = d;
+  propertiesCopy = properties;
+  connectionPropertiesChangedHandler = [(ACCTransportClientBridge *)self connectionPropertiesChangedHandler];
 
-  if (v11)
+  if (connectionPropertiesChangedHandler)
   {
-    v12 = [(ACCTransportClientBridge *)self connectionPropertiesChangedHandler];
-    (v12)[2](v12, v9, v13, v10);
+    connectionPropertiesChangedHandler2 = [(ACCTransportClientBridge *)self connectionPropertiesChangedHandler];
+    (connectionPropertiesChangedHandler2)[2](connectionPropertiesChangedHandler2, dCopy, changeCopy, propertiesCopy);
   }
 }
 
-- (void)transportClient:(id)a3 propertiesDidChange:(id)a4 forEndpointWithUUID:(id)a5 previousProperties:(id)a6 connectionUUID:(id)a7
+- (void)transportClient:(id)client propertiesDidChange:(id)change forEndpointWithUUID:(id)d previousProperties:(id)properties connectionUUID:(id)iD
 {
-  v16 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(ACCTransportClientBridge *)self endpointPropertiesChangedHandler];
+  changeCopy = change;
+  dCopy = d;
+  propertiesCopy = properties;
+  iDCopy = iD;
+  endpointPropertiesChangedHandler = [(ACCTransportClientBridge *)self endpointPropertiesChangedHandler];
 
-  if (v14)
+  if (endpointPropertiesChangedHandler)
   {
-    v15 = [(ACCTransportClientBridge *)self endpointPropertiesChangedHandler];
-    (v15)[2](v15, v11, v16, v12, v13);
+    endpointPropertiesChangedHandler2 = [(ACCTransportClientBridge *)self endpointPropertiesChangedHandler];
+    (endpointPropertiesChangedHandler2)[2](endpointPropertiesChangedHandler2, dCopy, changeCopy, propertiesCopy, iDCopy);
   }
 }
 
-- (void)transportClientServerDisconnected:(id)a3
+- (void)transportClientServerDisconnected:(id)disconnected
 {
-  v4 = [(ACCTransportClientBridge *)self serverDisconnectedHandler];
+  serverDisconnectedHandler = [(ACCTransportClientBridge *)self serverDisconnectedHandler];
 
-  if (v4)
+  if (serverDisconnectedHandler)
   {
-    v5 = [(ACCTransportClientBridge *)self serverDisconnectedHandler];
-    v5[2]();
+    serverDisconnectedHandler2 = [(ACCTransportClientBridge *)self serverDisconnectedHandler];
+    serverDisconnectedHandler2[2]();
   }
 }
 

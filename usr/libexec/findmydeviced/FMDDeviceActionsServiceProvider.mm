@@ -1,13 +1,13 @@
 @interface FMDDeviceActionsServiceProvider
-- (BOOL)setPasscodeLock:(id)a3 statusCode:(int64_t *)a4;
+- (BOOL)setPasscodeLock:(id)lock statusCode:(int64_t *)code;
 - (void)accountAdded;
-- (void)accountRemoveRequestedWithCompletion:(id)a3;
+- (void)accountRemoveRequestedWithCompletion:(id)completion;
 - (void)deregisterCommonNotifications;
-- (void)didAddNewTrackedLocation:(id)a3;
+- (void)didAddNewTrackedLocation:(id)location;
 - (void)didMakeProviderActive;
 - (void)registerCommonNotifications;
-- (void)sendLostModeExitAuthWithToken:(id)a3;
-- (void)sendTrackedLocations:(id)a3 withCurrentLocation:(id)a4;
+- (void)sendLostModeExitAuthWithToken:(id)token;
+- (void)sendTrackedLocations:(id)locations withCurrentLocation:(id)location;
 - (void)willMakeProviderInactive;
 @end
 
@@ -18,14 +18,14 @@
   v3 = [[FMDLocationTracker alloc] initWithType:0];
   [(FMDDeviceActionsServiceProvider *)self setLocationTracker:v3];
 
-  v4 = [(FMDDeviceActionsServiceProvider *)self locationTracker];
-  [v4 registerDelegate:self];
+  locationTracker = [(FMDDeviceActionsServiceProvider *)self locationTracker];
+  [locationTracker registerDelegate:self];
 }
 
 - (void)willMakeProviderInactive
 {
-  v3 = [(FMDDeviceActionsServiceProvider *)self locationTracker];
-  [v3 deregisterDelegate:self];
+  locationTracker = [(FMDDeviceActionsServiceProvider *)self locationTracker];
+  [locationTracker deregisterDelegate:self];
 
   [(FMDDeviceActionsServiceProvider *)self setLocationTracker:0];
 }
@@ -38,16 +38,16 @@
   [(FMDServiceProvider *)&v3 accountAdded];
 }
 
-- (void)accountRemoveRequestedWithCompletion:(id)a3
+- (void)accountRemoveRequestedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(FMDDeviceActionsServiceProvider *)self _cleanupFMIPPreferences];
   v5 = +[FMDProtectedContextManager sharedManager];
   [v5 cleanupAllContextsForKey:@"serverContextHeaderContext"];
 
   v6.receiver = self;
   v6.super_class = FMDDeviceActionsServiceProvider;
-  [(FMDServiceProvider *)&v6 accountRemoveRequestedWithCompletion:v4];
+  [(FMDServiceProvider *)&v6 accountRemoveRequestedWithCompletion:completionCopy];
 }
 
 - (void)registerCommonNotifications
@@ -70,44 +70,44 @@
   [(FMDServiceProvider *)&v4 deregisterCommonNotifications];
 }
 
-- (BOOL)setPasscodeLock:(id)a3 statusCode:(int64_t *)a4
+- (BOOL)setPasscodeLock:(id)lock statusCode:(int64_t *)code
 {
-  v5 = a3;
-  *a4 = qword_100312AF8;
+  lockCopy = lock;
+  *code = qword_100312AF8;
   v6 = objc_autoreleasePoolPush();
   v7 = +[FMDSystemConfig sharedInstance];
-  v8 = [v7 isPasscodeSet];
+  isPasscodeSet = [v7 isPasscodeSet];
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![v5 length])
+  if (!lockCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![lockCopy length])
   {
-    v10 = sub_100002880();
-    v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    localizedDescriptionOfCurrentPasscodeConstraints = sub_100002880();
+    v11 = os_log_type_enabled(localizedDescriptionOfCurrentPasscodeConstraints, OS_LOG_TYPE_DEFAULT);
+    if (isPasscodeSet)
     {
       if (v11)
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Remote Lock:  Passcode is already set - Locking device only", buf, 2u);
+        _os_log_impl(&_mh_execute_header, localizedDescriptionOfCurrentPasscodeConstraints, OS_LOG_TYPE_DEFAULT, "Remote Lock:  Passcode is already set - Locking device only", buf, 2u);
       }
 
-      *a4 = qword_100312B00;
+      *code = qword_100312B00;
       goto LABEL_12;
     }
 
     if (v11)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Remote Lock:  Invalid passcode state - locking device only", buf, 2u);
+      _os_log_impl(&_mh_execute_header, localizedDescriptionOfCurrentPasscodeConstraints, OS_LOG_TYPE_DEFAULT, "Remote Lock:  Invalid passcode state - locking device only", buf, 2u);
     }
 
-    LOBYTE(v10) = 0;
+    LOBYTE(localizedDescriptionOfCurrentPasscodeConstraints) = 0;
     v12 = &qword_100312AE0;
     goto LABEL_16;
   }
 
-  if (v8)
+  if (isPasscodeSet)
   {
-    *a4 = qword_100312B08;
+    *code = qword_100312B08;
     v9 = sub_100002880();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -116,34 +116,34 @@
     }
 
 LABEL_12:
-    LOBYTE(v10) = 1;
+    LOBYTE(localizedDescriptionOfCurrentPasscodeConstraints) = 1;
     goto LABEL_17;
   }
 
   v15 = +[MCProfileConnection sharedConnection];
-  v16 = [v15 passcode:v5 meetsCurrentConstraintsOutError:0];
+  v16 = [v15 passcode:lockCopy meetsCurrentConstraintsOutError:0];
 
   v17 = +[MCProfileConnection sharedConnection];
   v18 = v17;
   if (v16)
   {
-    LODWORD(v10) = [v17 isPasscodeModificationAllowed];
+    LODWORD(localizedDescriptionOfCurrentPasscodeConstraints) = [v17 isPasscodeModificationAllowed];
 
-    if (v10)
+    if (localizedDescriptionOfCurrentPasscodeConstraints)
     {
-      v10 = sub_100002880();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      localizedDescriptionOfCurrentPasscodeConstraints = sub_100002880();
+      if (os_log_type_enabled(localizedDescriptionOfCurrentPasscodeConstraints, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Remote Lock:  Setting new lock passcode", buf, 2u);
+        _os_log_impl(&_mh_execute_header, localizedDescriptionOfCurrentPasscodeConstraints, OS_LOG_TYPE_DEFAULT, "Remote Lock:  Setting new lock passcode", buf, 2u);
       }
 
       v19 = +[MCProfileConnection sharedConnection];
       v30 = 0;
-      LOBYTE(v10) = [v19 changePasscodeFrom:0 to:v5 outError:&v30];
+      LOBYTE(localizedDescriptionOfCurrentPasscodeConstraints) = [v19 changePasscodeFrom:0 to:lockCopy outError:&v30];
       v20 = v30;
 
-      if ((v10 & 1) == 0)
+      if ((localizedDescriptionOfCurrentPasscodeConstraints & 1) == 0)
       {
         v21 = sub_100002880();
         v22 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
@@ -160,7 +160,7 @@ LABEL_12:
           sub_10022740C(v21);
         }
 
-        *a4 = qword_100312AE8;
+        *code = qword_100312AE8;
       }
 
       v24 = [CDPStateController alloc];
@@ -168,7 +168,7 @@ LABEL_12:
       v26 = [v24 initWithContext:v25];
 
       v27 = +[MCProfileConnection sharedConnection];
-      v28 = [v27 unlockScreenTypeForPasscode:v5 outSimplePasscodeType:0];
+      v28 = [v27 unlockScreenTypeForPasscode:lockCopy outSimplePasscodeType:0];
 
       if (v28)
       {
@@ -180,64 +180,64 @@ LABEL_12:
         v29 = 2;
       }
 
-      [v26 localSecretChangedTo:v5 secretType:v29 completion:&stru_1002CE108];
+      [v26 localSecretChangedTo:lockCopy secretType:v29 completion:&stru_1002CE108];
 
       goto LABEL_17;
     }
 
     v12 = &qword_100312AF0;
 LABEL_16:
-    *a4 = *v12;
+    *code = *v12;
     goto LABEL_17;
   }
 
-  v10 = [v17 localizedDescriptionOfCurrentPasscodeConstraints];
+  localizedDescriptionOfCurrentPasscodeConstraints = [v17 localizedDescriptionOfCurrentPasscodeConstraints];
 
   v23 = sub_100002880();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v32 = v5;
+    v32 = lockCopy;
     v33 = 2112;
-    v34 = v10;
+    v34 = localizedDescriptionOfCurrentPasscodeConstraints;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Remote Lock: New passcode %@ does not meet current policy: %@", buf, 0x16u);
   }
 
-  *a4 = qword_100312AD8;
-  LOBYTE(v10) = 0;
+  *code = qword_100312AD8;
+  LOBYTE(localizedDescriptionOfCurrentPasscodeConstraints) = 0;
 LABEL_17:
   v13 = +[MCProfileConnection sharedConnection];
   [v13 lockDeviceImmediately:1];
 
   objc_autoreleasePoolPop(v6);
-  return v10;
+  return localizedDescriptionOfCurrentPasscodeConstraints;
 }
 
-- (void)sendLostModeExitAuthWithToken:(id)a3
+- (void)sendLostModeExitAuthWithToken:(id)token
 {
-  v4 = a3;
-  v5 = [[FMDRequestLostModeExitAuth alloc] initWithProvider:self lostModeExitAuthToken:v4];
+  tokenCopy = token;
+  v5 = [[FMDRequestLostModeExitAuth alloc] initWithProvider:self lostModeExitAuthToken:tokenCopy];
 
   [(FMDRequest *)v5 setCompletionHandler:&stru_1002CE128];
   [(FMDServiceProvider *)self enqueueRequest:v5];
 }
 
-- (void)didAddNewTrackedLocation:(id)a3
+- (void)didAddNewTrackedLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(FMDDeviceActionsServiceProvider *)self locationTracker];
-  if ([v5 trackNotifyEnabled])
+  locationCopy = location;
+  locationTracker = [(FMDDeviceActionsServiceProvider *)self locationTracker];
+  if ([locationTracker trackNotifyEnabled])
   {
 
 LABEL_4:
-    v7 = [(FMDDeviceActionsServiceProvider *)self locationTracker];
+    locationTracker2 = [(FMDDeviceActionsServiceProvider *)self locationTracker];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100147FF8;
     v9[3] = &unk_1002CE150;
-    v10 = v4;
-    v11 = self;
-    [v7 actOnTrackedLocationsUsingBlock:v9];
+    v10 = locationCopy;
+    selfCopy = self;
+    [locationTracker2 actOnTrackedLocationsUsingBlock:v9];
 
     v8 = v10;
     goto LABEL_5;
@@ -260,10 +260,10 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)sendTrackedLocations:(id)a3 withCurrentLocation:(id)a4
+- (void)sendTrackedLocations:(id)locations withCurrentLocation:(id)location
 {
-  v6 = a4;
-  v7 = a3;
+  locationCopy = location;
+  locationsCopy = locations;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10014833C;
@@ -271,9 +271,9 @@ LABEL_5:
   v16[4] = self;
   v8 = [[FMDActingRequestDecorator alloc] initWithDeviceContextGenerator:&stru_1002CE170 deviceInfoGenerator:v16 serverContextGenerator:0 requestHeaderGenerator:0];
   v9 = [FMDRequestTrackedLocations alloc];
-  v10 = [(FMDServiceProvider *)self account];
-  v11 = [(FMDDeviceActionsServiceProvider *)self locationTracker];
-  v12 = [(FMDRequestTrackedLocations *)v9 initWithAccount:v10 currentLocation:v6 trackedLocations:v7 locationTracker:v11];
+  account = [(FMDServiceProvider *)self account];
+  locationTracker = [(FMDDeviceActionsServiceProvider *)self locationTracker];
+  v12 = [(FMDRequestTrackedLocations *)v9 initWithAccount:account currentLocation:locationCopy trackedLocations:locationsCopy locationTracker:locationTracker];
 
   [(FMDRequest *)v12 setDecorator:v8];
   [(FMDRequest *)v12 setCompletionHandler:&stru_1002CE190];

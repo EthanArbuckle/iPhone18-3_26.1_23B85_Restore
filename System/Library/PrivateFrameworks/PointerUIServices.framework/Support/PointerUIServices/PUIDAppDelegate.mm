@@ -1,10 +1,10 @@
 @interface PUIDAppDelegate
 - (PUIDAppDelegate)init;
-- (void)_pointerUIServiceDidFinishSceneCreationWithSceneBag:(id)a3;
+- (void)_pointerUIServiceDidFinishSceneCreationWithSceneBag:(id)bag;
 - (void)_setEventFetchThreadPriorityWhenPossible;
-- (void)applicationDidCreateFBSScene:(id)a3;
-- (void)scene:(id)a3 didUpdateWithDiff:(id)a4 transitionContext:(id)a5 completion:(id)a6;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)applicationDidCreateFBSScene:(id)scene;
+- (void)scene:(id)scene didUpdateWithDiff:(id)diff transitionContext:(id)context completion:(id)completion;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation PUIDAppDelegate
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (void)applicationDidCreateFBSScene:(id)a3
+- (void)applicationDidCreateFBSScene:(id)scene
 {
-  v4 = a3;
-  v5 = [v4 psDisplay];
-  if (!v5)
+  sceneCopy = scene;
+  psDisplay = [sceneCopy psDisplay];
+  if (!psDisplay)
   {
     sub_100027D64();
   }
@@ -50,31 +50,31 @@
   v6 = PSLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 identifier];
+    identifier = [sceneCopy identifier];
     v21 = 138543874;
-    v22 = v5;
+    v22 = psDisplay;
     v23 = 2048;
-    v24 = v4;
+    v24 = sceneCopy;
     v25 = 2114;
-    v26 = v7;
+    v26 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@> Scene did connect: <%p:%{public}@> ", &v21, 0x20u);
   }
 
-  p_isa = [(NSMutableDictionary *)self->_sceneBagForDisplay objectForKeyedSubscript:v5];
+  p_isa = [(NSMutableDictionary *)self->_sceneBagForDisplay objectForKeyedSubscript:psDisplay];
   if (!p_isa)
   {
     v9 = objc_alloc_init(_PUIDSceneBag);
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeWeak(&v9->_display, v5);
+      objc_storeWeak(&v9->_display, psDisplay);
     }
 
-    [(NSMutableDictionary *)self->_sceneBagForDisplay setObject:p_isa forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_sceneBagForDisplay setObject:p_isa forKeyedSubscript:psDisplay];
   }
 
-  v10 = [v4 identifier];
-  v11 = [v10 hasPrefix:PSApplicationSceneIdentifierSystemPointer];
+  identifier2 = [sceneCopy identifier];
+  v11 = [identifier2 hasPrefix:PSApplicationSceneIdentifierSystemPointer];
 
   if (v11)
   {
@@ -88,7 +88,7 @@
       }
     }
 
-    v13 = [UIWindowScene _sceneForFBSScene:v4];
+    v13 = [UIWindowScene _sceneForFBSScene:sceneCopy];
     if (!v13)
     {
       sub_100027EE4();
@@ -109,8 +109,8 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v15 = [v4 identifier];
-  v16 = [v15 hasPrefix:PSApplicationSceneIdentifierPointerRendering];
+  identifier3 = [sceneCopy identifier];
+  v16 = [identifier3 hasPrefix:PSApplicationSceneIdentifierPointerRendering];
 
   if (v16)
   {
@@ -124,7 +124,7 @@ LABEL_26:
       }
     }
 
-    v13 = [UIWindowScene _sceneForFBSScene:v4];
+    v13 = [UIWindowScene _sceneForFBSScene:sceneCopy];
     if (!v13)
     {
       sub_100027E2C();
@@ -142,7 +142,7 @@ LABEL_26:
   }
 
 LABEL_27:
-  if (([(NSMutableSet *)self->_displaysThatFinishedSceneCreation containsObject:v5]& 1) == 0)
+  if (([(NSMutableSet *)self->_displaysThatFinishedSceneCreation containsObject:psDisplay]& 1) == 0)
   {
     if (p_isa)
     {
@@ -154,7 +154,7 @@ LABEL_27:
 
         if (v20)
         {
-          [(NSMutableSet *)self->_displaysThatFinishedSceneCreation addObject:v5];
+          [(NSMutableSet *)self->_displaysThatFinishedSceneCreation addObject:psDisplay];
           [(PUIDAppDelegate *)self _pointerUIServiceDidFinishSceneCreationWithSceneBag:p_isa];
         }
       }
@@ -162,60 +162,60 @@ LABEL_27:
   }
 }
 
-- (void)scene:(id)a3 didUpdateWithDiff:(id)a4 transitionContext:(id)a5 completion:(id)a6
+- (void)scene:(id)scene didUpdateWithDiff:(id)diff transitionContext:(id)context completion:(id)completion
 {
-  v7 = a6;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v9 = UIApp;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100019580;
     v10[3] = &unk_100049350;
-    v11 = v7;
-    [v9 _scheduleSceneEventResponseForScene:a3 withResponseBlock:v10];
+    v11 = completionCopy;
+    [v9 _scheduleSceneEventResponseForScene:scene withResponseBlock:v10];
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [v4 psDisplay];
+  disconnectCopy = disconnect;
+  psDisplay = [disconnectCopy psDisplay];
   v6 = PSLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 _sceneIdentifier];
+    _sceneIdentifier = [disconnectCopy _sceneIdentifier];
     v9 = 138543874;
-    v10 = v5;
+    v10 = psDisplay;
     v11 = 2048;
-    v12 = v4;
+    v12 = disconnectCopy;
     v13 = 2114;
-    v14 = v7;
+    v14 = _sceneIdentifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@> Scene did disconnect: <%p:%{public}@> ", &v9, 0x20u);
   }
 
-  if ([(NSMutableSet *)self->_displaysThatFinishedSceneCreation containsObject:v5])
+  if ([(NSMutableSet *)self->_displaysThatFinishedSceneCreation containsObject:psDisplay])
   {
     v8 = PSLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v5;
+      v10 = psDisplay;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Cleaning up for scene disconnection on display: %{public}@", &v9, 0xCu);
     }
 
-    [(NSMutableSet *)self->_displaysThatFinishedSceneCreation removeObject:v5];
-    [(NSMutableDictionary *)self->_sceneBagForDisplay removeObjectForKey:v5];
-    [(PUIDPointerController *)self->_pointerController displayDetached:v5];
+    [(NSMutableSet *)self->_displaysThatFinishedSceneCreation removeObject:psDisplay];
+    [(NSMutableDictionary *)self->_sceneBagForDisplay removeObjectForKey:psDisplay];
+    [(PUIDPointerController *)self->_pointerController displayDetached:psDisplay];
   }
 }
 
-- (void)_pointerUIServiceDidFinishSceneCreationWithSceneBag:(id)a3
+- (void)_pointerUIServiceDidFinishSceneCreationWithSceneBag:(id)bag
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || (WeakRetained = objc_loadWeakRetained(v4 + 3)) == 0)
+  bagCopy = bag;
+  v5 = bagCopy;
+  if (!bagCopy || (WeakRetained = objc_loadWeakRetained(bagCopy + 3)) == 0)
   {
     sub_100027F40();
     WeakRetained = 0;
@@ -275,11 +275,11 @@ LABEL_27:
 
 - (void)_setEventFetchThreadPriorityWhenPossible
 {
-  v3 = [UIApp _eventFetchRunLoop];
-  if (v3)
+  _eventFetchRunLoop = [UIApp _eventFetchRunLoop];
+  if (_eventFetchRunLoop)
   {
 
-    CFRunLoopPerformBlock(v3, kCFRunLoopCommonModes, &stru_100049370);
+    CFRunLoopPerformBlock(_eventFetchRunLoop, kCFRunLoopCommonModes, &stru_100049370);
   }
 
   else

@@ -1,7 +1,7 @@
 @interface _MessageAddressScannerQueue
 - (BOOL)_flush;
-- (BOOL)addHash:(int64_t)a3;
-- (BOOL)handleHashes:(id)a3;
+- (BOOL)addHash:(int64_t)hash;
+- (BOOL)handleHashes:(id)hashes;
 - (_MessageAddressScannerQueue)init;
 - (void)removeAllObjects;
 @end
@@ -28,7 +28,7 @@
   return v3;
 }
 
-- (BOOL)addHash:(int64_t)a3
+- (BOOL)addHash:(int64_t)hash
 {
   hashes = self->_hashes;
   if (!hashes)
@@ -40,13 +40,13 @@
     hashes = self->_hashes;
   }
 
-  if (([(EFMutableInt64Set *)hashes containsIndex:a3]& 1) != 0)
+  if (([(EFMutableInt64Set *)hashes containsIndex:hash]& 1) != 0)
   {
     return 0;
   }
 
   ++*&self->MFBufferedQueue_opaque[OBJC_IVAR___MFBufferedQueue__currentSize];
-  [(EFMutableInt64Set *)self->_hashes addIndex:a3];
+  [(EFMutableInt64Set *)self->_hashes addIndex:hash];
 
   return [(_MessageAddressScannerQueue *)self flushIfNecessary];
 }
@@ -87,10 +87,10 @@
   return v4;
 }
 
-- (BOOL)handleHashes:(id)a3
+- (BOOL)handleHashes:(id)hashes
 {
-  v4 = a3;
-  v5 = [(_MessageAddressScannerQueue *)self recentsLibrary];
+  hashesCopy = hashes;
+  recentsLibrary = [(_MessageAddressScannerQueue *)self recentsLibrary];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2050000000;
@@ -120,9 +120,9 @@
   v15[1] = 3221225472;
   v15[2] = sub_10003B018;
   v15[3] = &unk_1001577B8;
-  v12 = v4;
+  v12 = hashesCopy;
   v16 = v12;
-  v13 = v5;
+  v13 = recentsLibrary;
   v17 = v13;
   [v13 performRecentsSearch:v8 queue:dispatchQueue completion:v15];
 

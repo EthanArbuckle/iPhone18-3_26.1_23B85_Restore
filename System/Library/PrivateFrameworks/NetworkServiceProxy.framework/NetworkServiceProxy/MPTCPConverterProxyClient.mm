@@ -1,7 +1,7 @@
 @interface MPTCPConverterProxyClient
 + (id)getServerConnection;
-+ (void)startProxyToMPTCPConverterProxyWithCompletionHandler:(id)a3 completionHandler:(id)a4;
-+ (void)stopProxyToMPTCPConverterProxyWithCompletionHandler:(id)a3 completionHandler:(id)a4;
++ (void)startProxyToMPTCPConverterProxyWithCompletionHandler:(id)handler completionHandler:(id)completionHandler;
++ (void)stopProxyToMPTCPConverterProxyWithCompletionHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation MPTCPConverterProxyClient
@@ -25,19 +25,19 @@ uint64_t __48__MPTCPConverterProxyClient_getServerConnection__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)startProxyToMPTCPConverterProxyWithCompletionHandler:(id)a3 completionHandler:(id)a4
++ (void)startProxyToMPTCPConverterProxyWithCompletionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v5 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v7 = +[MPTCPConverterProxyClient getServerConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __100__MPTCPConverterProxyClient_startProxyToMPTCPConverterProxyWithCompletionHandler_completionHandler___block_invoke;
   v10[3] = &unk_1E7A30A40;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = handlerCopy;
+  v12 = completionHandlerCopy;
+  v8 = completionHandlerCopy;
+  v9 = handlerCopy;
   [v7 startProxyToMPTCPConverterProxyWithCompletionHandler:v10];
 }
 
@@ -61,19 +61,19 @@ void __100__MPTCPConverterProxyClient_startProxyToMPTCPConverterProxyWithComplet
   }
 }
 
-+ (void)stopProxyToMPTCPConverterProxyWithCompletionHandler:(id)a3 completionHandler:(id)a4
++ (void)stopProxyToMPTCPConverterProxyWithCompletionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v5 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v7 = +[MPTCPConverterProxyClient getServerConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __99__MPTCPConverterProxyClient_stopProxyToMPTCPConverterProxyWithCompletionHandler_completionHandler___block_invoke;
   v10[3] = &unk_1E7A30A40;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = handlerCopy;
+  v12 = completionHandlerCopy;
+  v8 = completionHandlerCopy;
+  v9 = handlerCopy;
   [v7 stopProxyToMPTCPConverterProxyWithCompletionHandler:v10];
 }
 

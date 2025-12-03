@@ -1,7 +1,7 @@
 @interface FilteredMetadataExtractor
 - (FilteredMetadataExtractor)init;
 - (int)processFile;
-- (void)removeMetadataFromInterpolatedFrameDict:(id)a3;
+- (void)removeMetadataFromInterpolatedFrameDict:(id)dict;
 @end
 
 @implementation FilteredMetadataExtractor
@@ -27,11 +27,11 @@
   return v2;
 }
 
-- (void)removeMetadataFromInterpolatedFrameDict:(id)a3
+- (void)removeMetadataFromInterpolatedFrameDict:(id)dict
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"InterpolatedFrame"];
+  dictCopy = dict;
+  v5 = [dictCopy objectForKeyedSubscript:@"InterpolatedFrame"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 BOOLValue])
   {
@@ -55,11 +55,11 @@
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
-          v12 = [v4 objectForKey:{v11, v13}];
+          v12 = [dictCopy objectForKey:{v11, v13}];
 
           if (v12)
           {
-            [v4 removeObjectForKey:v11];
+            [dictCopy removeObjectForKey:v11];
           }
         }
 
@@ -76,8 +76,8 @@
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = FilteredMetadataExtractor;
-  v3 = [(IrisVideoMetadataExtractor *)&v17 processFile];
-  if (!v3 && self->super._framesMetadataArray)
+  processFile = [(IrisVideoMetadataExtractor *)&v17 processFile];
+  if (!processFile && self->super._framesMetadataArray)
   {
     v4 = objc_opt_new();
     v13 = 0u;
@@ -118,7 +118,7 @@
     self->super._framesMetadataArray = v4;
   }
 
-  return v3;
+  return processFile;
 }
 
 @end

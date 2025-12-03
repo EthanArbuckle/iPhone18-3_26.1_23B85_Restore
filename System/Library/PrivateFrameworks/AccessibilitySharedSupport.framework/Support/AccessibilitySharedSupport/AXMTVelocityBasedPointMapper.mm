@@ -1,26 +1,26 @@
 @interface AXMTVelocityBasedPointMapper
-- (AXMTVelocityBasedPointMapper)initWithBounds:(CGRect)a3 sensitivity:(double)a4;
+- (AXMTVelocityBasedPointMapper)initWithBounds:(CGRect)bounds sensitivity:(double)sensitivity;
 - (AXMTVelocityBasedPointMapperDelegate)delegate;
-- (CGPoint)_normalizedPointForLocalCoordinate:(CGPoint)a3 inBounds:(CGRect)a4;
-- (CGPoint)processPoint:(CGPoint)a3;
+- (CGPoint)_normalizedPointForLocalCoordinate:(CGPoint)coordinate inBounds:(CGRect)bounds;
+- (CGPoint)processPoint:(CGPoint)point;
 - (CGRect)bounds;
-- (double)_computeDistanceForTimeDifference:(double)a3 currentAngle:(double)a4 lastAngle:(double)a5 sensitivityFactor:(double)a6;
-- (double)_computeDistanceForTimeDifference:(double)a3 currentNormalizedPoint:(double)a4 lastNormalizedPoint:(double)a5 sensitivityFactor:(double)a6;
-- (double)_dampenMovementForNormalizedValue:(double)result normalizedLastValue:(double)a4 startingCutoff:(double)a5 factorNumerator:(double)a6;
-- (id)_movingWindowAverageForNewDelta:(double)a3;
+- (double)_computeDistanceForTimeDifference:(double)difference currentAngle:(double)angle lastAngle:(double)lastAngle sensitivityFactor:(double)factor;
+- (double)_computeDistanceForTimeDifference:(double)difference currentNormalizedPoint:(double)point lastNormalizedPoint:(double)normalizedPoint sensitivityFactor:(double)factor;
+- (double)_dampenMovementForNormalizedValue:(double)result normalizedLastValue:(double)value startingCutoff:(double)cutoff factorNumerator:(double)numerator;
+- (id)_movingWindowAverageForNewDelta:(double)delta;
 - (void)dealloc;
 - (void)reset;
-- (void)resetToPoint:(CGPoint)a3;
+- (void)resetToPoint:(CGPoint)point;
 @end
 
 @implementation AXMTVelocityBasedPointMapper
 
-- (AXMTVelocityBasedPointMapper)initWithBounds:(CGRect)a3 sensitivity:(double)a4
+- (AXMTVelocityBasedPointMapper)initWithBounds:(CGRect)bounds sensitivity:(double)sensitivity
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v14.receiver = self;
   v14.super_class = AXMTVelocityBasedPointMapper;
   v9 = [(AXMTVelocityBasedPointMapper *)&v14 init];
@@ -31,7 +31,7 @@
     v9->_bounds.origin.y = y;
     v9->_bounds.size.width = width;
     v9->_bounds.size.height = height;
-    v9->_sensitivity = a4;
+    v9->_sensitivity = sensitivity;
     v11 = +[NSMutableArray array];
     deltaTimesWindow = v10->__deltaTimesWindow;
     v10->__deltaTimesWindow = v11;
@@ -47,10 +47,10 @@
   [(AXMTVelocityBasedPointMapper *)&v2 dealloc];
 }
 
-- (void)resetToPoint:(CGPoint)a3
+- (void)resetToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AXMTVelocityBasedPointMapper *)self reset];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -76,22 +76,22 @@
   [(AXMTVelocityBasedPointMapper *)self set_nextInitialPoint:0];
 }
 
-- (CGPoint)processPoint:(CGPoint)a3
+- (CGPoint)processPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AXMTVelocityBasedPointMapper *)self bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v14 = +[NSDate date];
-  v15 = [(AXMTVelocityBasedPointMapper *)self _lastProcessedPoint];
+  _lastProcessedPoint = [(AXMTVelocityBasedPointMapper *)self _lastProcessedPoint];
 
-  if (v15)
+  if (_lastProcessedPoint)
   {
-    v16 = [(AXMTVelocityBasedPointMapper *)self _lastProcessedPoint];
-    [v16 pointValue];
+    _lastProcessedPoint2 = [(AXMTVelocityBasedPointMapper *)self _lastProcessedPoint];
+    [_lastProcessedPoint2 pointValue];
     v18 = v17;
     v20 = v19;
 
@@ -99,9 +99,9 @@
     v21 = v9;
     v23 = v22;
     v73 = v24;
-    v25 = [(AXMTVelocityBasedPointMapper *)self _lastReportedTimestamp];
-    v26 = [(AXMTVelocityBasedPointMapper *)self _lastReportedPointFromProcessing];
-    [v26 pointValue];
+    _lastReportedTimestamp = [(AXMTVelocityBasedPointMapper *)self _lastReportedTimestamp];
+    _lastReportedPointFromProcessing = [(AXMTVelocityBasedPointMapper *)self _lastReportedPointFromProcessing];
+    [_lastReportedPointFromProcessing pointValue];
     v70 = v27;
     v72 = v28;
 
@@ -113,7 +113,7 @@
     [(AXMTVelocityBasedPointMapper *)self _normalizedPointForLocalCoordinate:x inBounds:y, v7, v21, v11, v13];
     v30 = v29;
     v32 = v31;
-    [v14 timeIntervalSinceDate:v25];
+    [v14 timeIntervalSinceDate:_lastReportedTimestamp];
     v34 = v33;
     v35 = [(AXMTVelocityBasedPointMapper *)self _movingWindowAverageForNewDelta:?];
     if (!v35)
@@ -136,12 +136,12 @@
     v48 = v72 + v47;
     v49 = v45 / v37;
     v50 = v47 / v37;
-    v51 = [(AXMTVelocityBasedPointMapper *)self _lastVelocitySize];
+    _lastVelocitySize = [(AXMTVelocityBasedPointMapper *)self _lastVelocitySize];
 
-    if (v51)
+    if (_lastVelocitySize)
     {
-      v52 = [(AXMTVelocityBasedPointMapper *)self _lastVelocitySize];
-      [v52 sizeValue];
+      _lastVelocitySize2 = [(AXMTVelocityBasedPointMapper *)self _lastVelocitySize];
+      [_lastVelocitySize2 sizeValue];
       v54 = v53;
       v56 = v55;
 
@@ -163,20 +163,20 @@
 
   else
   {
-    v25 = [NSValue valueWithPoint:v11 * 0.5, v13 * 0.5];
-    v62 = [(AXMTVelocityBasedPointMapper *)self _nextInitialPoint];
+    _lastReportedTimestamp = [NSValue valueWithPoint:v11 * 0.5, v13 * 0.5];
+    _nextInitialPoint = [(AXMTVelocityBasedPointMapper *)self _nextInitialPoint];
 
-    if (v62)
+    if (_nextInitialPoint)
     {
-      v63 = [(AXMTVelocityBasedPointMapper *)self _nextInitialPoint];
+      _nextInitialPoint2 = [(AXMTVelocityBasedPointMapper *)self _nextInitialPoint];
 
       [(AXMTVelocityBasedPointMapper *)self set_nextInitialPoint:0];
-      v25 = v63;
+      _lastReportedTimestamp = _nextInitialPoint2;
     }
 
     v58 = NSZeroPoint.x;
     v60 = NSZeroPoint.y;
-    [(AXMTVelocityBasedPointMapper *)self set_lastReportedPointFromProcessing:v25];
+    [(AXMTVelocityBasedPointMapper *)self set_lastReportedPointFromProcessing:_lastReportedTimestamp];
   }
 
   *v79 = x;
@@ -185,13 +185,13 @@
   [(AXMTVelocityBasedPointMapper *)self set_lastProcessedPoint:v64];
 
   [(AXMTVelocityBasedPointMapper *)self set_lastReportedTimestamp:v14];
-  v65 = [(AXMTVelocityBasedPointMapper *)self _lastReportedPointFromProcessing];
-  [(AXMTVelocityBasedPointMapper *)self setLastReportedPoint:v65];
+  _lastReportedPointFromProcessing2 = [(AXMTVelocityBasedPointMapper *)self _lastReportedPointFromProcessing];
+  [(AXMTVelocityBasedPointMapper *)self setLastReportedPoint:_lastReportedPointFromProcessing2];
 
-  v66 = [(AXMTVelocityBasedPointMapper *)self delegate];
-  v67 = [(AXMTVelocityBasedPointMapper *)self lastReportedPoint];
-  [v67 pointValue];
-  [v66 velocityBasedPointMapper:self updatedPoint:?];
+  delegate = [(AXMTVelocityBasedPointMapper *)self delegate];
+  lastReportedPoint = [(AXMTVelocityBasedPointMapper *)self lastReportedPoint];
+  [lastReportedPoint pointValue];
+  [delegate velocityBasedPointMapper:self updatedPoint:?];
 
   v68 = v58;
   v69 = v60;
@@ -200,27 +200,27 @@
   return result;
 }
 
-- (id)_movingWindowAverageForNewDelta:(double)a3
+- (id)_movingWindowAverageForNewDelta:(double)delta
 {
-  v5 = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
-  v6 = [v5 count];
+  _deltaTimesWindow = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
+  v6 = [_deltaTimesWindow count];
 
-  v7 = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
-  v8 = v7;
+  _deltaTimesWindow2 = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
+  v8 = _deltaTimesWindow2;
   if (v6 == 30)
   {
-    [v7 removeObjectAtIndex:0];
+    [_deltaTimesWindow2 removeObjectAtIndex:0];
 
-    v9 = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
-    v10 = [NSNumber numberWithDouble:a3];
-    [v9 addObject:v10];
+    _deltaTimesWindow3 = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
+    v10 = [NSNumber numberWithDouble:delta];
+    [_deltaTimesWindow3 addObject:v10];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    _deltaTimesWindow4 = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
+    v12 = [_deltaTimesWindow4 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = v12;
@@ -232,14 +232,14 @@
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(_deltaTimesWindow4);
           }
 
           [*(*(&v22 + 1) + 8 * i) doubleValue];
           v15 = v15 + v17;
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v13 = [_deltaTimesWindow4 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v13);
@@ -250,13 +250,13 @@
       v15 = 0.0;
     }
 
-    v20 = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
-    v19 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v15 / [v20 count]);
+    _deltaTimesWindow5 = [(AXMTVelocityBasedPointMapper *)self _deltaTimesWindow];
+    v19 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v15 / [_deltaTimesWindow5 count]);
   }
 
   else
   {
-    v18 = [NSNumber numberWithDouble:a3];
+    v18 = [NSNumber numberWithDouble:delta];
     [v8 addObject:v18];
 
     v19 = 0;
@@ -265,18 +265,18 @@
   return v19;
 }
 
-- (CGPoint)_normalizedPointForLocalCoordinate:(CGPoint)a3 inBounds:(CGRect)a4
+- (CGPoint)_normalizedPointForLocalCoordinate:(CGPoint)coordinate inBounds:(CGRect)bounds
 {
-  v4 = a3.x / a4.size.width;
-  v5 = a3.y / a4.size.height;
+  v4 = coordinate.x / bounds.size.width;
+  v5 = coordinate.y / bounds.size.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (double)_computeDistanceForTimeDifference:(double)a3 currentAngle:(double)a4 lastAngle:(double)a5 sensitivityFactor:(double)a6
+- (double)_computeDistanceForTimeDifference:(double)difference currentAngle:(double)angle lastAngle:(double)lastAngle sensitivityFactor:(double)factor
 {
-  v6 = (a4 - a5) / (a3 * 1000.0) * a6;
+  v6 = (angle - lastAngle) / (difference * 1000.0) * factor;
   v7 = fabs(v6);
   result = pow(v7, 1.7);
   if (v7 < 1.0)
@@ -292,9 +292,9 @@
   return result;
 }
 
-- (double)_computeDistanceForTimeDifference:(double)a3 currentNormalizedPoint:(double)a4 lastNormalizedPoint:(double)a5 sensitivityFactor:(double)a6
+- (double)_computeDistanceForTimeDifference:(double)difference currentNormalizedPoint:(double)point lastNormalizedPoint:(double)normalizedPoint sensitivityFactor:(double)factor
 {
-  v6 = (a4 - a5) / (a3 * 1000.0) * a6;
+  v6 = (point - normalizedPoint) / (difference * 1000.0) * factor;
   v7 = v6 * v6;
   v8 = v6 * v6 > 0.0 && v6 < 0.0;
   result = -(v6 * v6);
@@ -306,12 +306,12 @@
   return result;
 }
 
-- (double)_dampenMovementForNormalizedValue:(double)result normalizedLastValue:(double)a4 startingCutoff:(double)a5 factorNumerator:(double)a6
+- (double)_dampenMovementForNormalizedValue:(double)result normalizedLastValue:(double)value startingCutoff:(double)cutoff factorNumerator:(double)numerator
 {
-  v6 = fabs(a4);
-  if (fabs(result) > a5 && v6 > a5)
+  v6 = fabs(value);
+  if (fabs(result) > cutoff && v6 > cutoff)
   {
-    return a4 + a6 / (result * result) * (result - a4);
+    return value + numerator / (result * result) * (result - value);
   }
 
   return result;

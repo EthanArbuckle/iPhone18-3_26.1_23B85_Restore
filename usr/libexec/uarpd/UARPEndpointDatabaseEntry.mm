@@ -1,26 +1,26 @@
 @interface UARPEndpointDatabaseEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isMatch:(id)a3;
-- (BOOL)updateWithMatch:(id)a3;
-- (UARPEndpointDatabaseEntry)initWithCoder:(id)a3;
-- (UARPEndpointDatabaseEntry)initWithUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isMatch:(id)match;
+- (BOOL)updateWithMatch:(id)match;
+- (UARPEndpointDatabaseEntry)initWithCoder:(id)coder;
+- (UARPEndpointDatabaseEntry)initWithUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPEndpointDatabaseEntry
 
-- (UARPEndpointDatabaseEntry)initWithUUID:(id)a3
+- (UARPEndpointDatabaseEntry)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = UARPEndpointDatabaseEntry;
   v5 = [(UARPEndpointDatabaseEntry *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     uuid = v5->_uuid;
     v5->_uuid = v6;
   }
@@ -28,13 +28,13 @@
   return v5;
 }
 
-- (UARPEndpointDatabaseEntry)initWithCoder:(id)a3
+- (UARPEndpointDatabaseEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UARPEndpointDatabaseEntry *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ActiveFirmwareVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ActiveFirmwareVersion"];
     v7 = v6;
     if (v6)
     {
@@ -43,7 +43,7 @@
       v5->_activeFirmwareVersion = v8;
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppleModelNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppleModelNumber"];
     v11 = v10;
     if (v10)
     {
@@ -52,7 +52,7 @@
       v5->_appleModelNumber = v12;
     }
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AvailableFirmwareVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AvailableFirmwareVersion"];
     v15 = v14;
     if (v14)
     {
@@ -61,7 +61,7 @@
       v5->_availableFirmwareVersion = v16;
     }
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HardwareFusing"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HardwareFusing"];
     v19 = v18;
     if (v18)
     {
@@ -70,7 +70,7 @@
       v5->_hardwareFusing = v20;
     }
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SerialNumber"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SerialNumber"];
     v23 = v22;
     if (v22)
     {
@@ -79,7 +79,7 @@
       v5->_serialNumber = v24;
     }
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     v27 = v26;
     if (v26)
     {
@@ -92,19 +92,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activeFirmwareVersion = self->_activeFirmwareVersion;
-  v5 = a3;
-  [v5 encodeObject:activeFirmwareVersion forKey:@"ActiveFirmwareVersion"];
-  [v5 encodeObject:self->_appleModelNumber forKey:@"AppleModelNumber"];
-  [v5 encodeObject:self->_availableFirmwareVersion forKey:@"AvailableFirmwareVersion"];
-  [v5 encodeObject:self->_hardwareFusing forKey:@"HardwareFusing"];
-  [v5 encodeObject:self->_serialNumber forKey:@"SerialNumber"];
-  [v5 encodeObject:self->_uuid forKey:@"UUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:activeFirmwareVersion forKey:@"ActiveFirmwareVersion"];
+  [coderCopy encodeObject:self->_appleModelNumber forKey:@"AppleModelNumber"];
+  [coderCopy encodeObject:self->_availableFirmwareVersion forKey:@"AvailableFirmwareVersion"];
+  [coderCopy encodeObject:self->_hardwareFusing forKey:@"HardwareFusing"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"SerialNumber"];
+  [coderCopy encodeObject:self->_uuid forKey:@"UUID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UARPEndpointDatabaseEntry alloc] initWithUUID:self->_uuid];
   [(UARPEndpointDatabaseEntry *)v4 setActiveFirmwareVersion:self->_activeFirmwareVersion];
@@ -115,24 +115,24 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v5 = v4;
-      v6 = [(UARPEndpointDatabaseEntry *)self uuid];
-      v7 = [(UARPEndpointDatabaseEntry *)v5 uuid];
+      v5 = equalCopy;
+      uuid = [(UARPEndpointDatabaseEntry *)self uuid];
+      uuid2 = [(UARPEndpointDatabaseEntry *)v5 uuid];
 
-      v8 = [v6 compare:v7] == 0;
+      v8 = [uuid compare:uuid2] == 0;
     }
   }
 
@@ -144,15 +144,15 @@
   return v8;
 }
 
-- (BOOL)isMatch:(id)a3
+- (BOOL)isMatch:(id)match
 {
-  v4 = a3;
+  matchCopy = match;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (appleModelNumber = self->_appleModelNumber, [v4 appleModelNumber], v6 = objc_claimAutoreleasedReturnValue(), LODWORD(appleModelNumber) = -[NSString isEqualToString:](appleModelNumber, "isEqualToString:", v6), v6, appleModelNumber))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (appleModelNumber = self->_appleModelNumber, [matchCopy appleModelNumber], v6 = objc_claimAutoreleasedReturnValue(), LODWORD(appleModelNumber) = -[NSString isEqualToString:](appleModelNumber, "isEqualToString:", v6), v6, appleModelNumber))
   {
     serialNumber = self->_serialNumber;
-    v8 = [v4 serialNumber];
-    v9 = [(NSString *)serialNumber isEqualToString:v8];
+    serialNumber = [matchCopy serialNumber];
+    v9 = [(NSString *)serialNumber isEqualToString:serialNumber];
   }
 
   else
@@ -163,35 +163,35 @@
   return v9;
 }
 
-- (BOOL)updateWithMatch:(id)a3
+- (BOOL)updateWithMatch:(id)match
 {
-  v4 = a3;
-  v5 = [(UARPEndpointDatabaseEntry *)self isMatch:v4];
+  matchCopy = match;
+  v5 = [(UARPEndpointDatabaseEntry *)self isMatch:matchCopy];
   if (v5)
   {
-    v6 = [v4 activeFirmwareVersion];
+    activeFirmwareVersion = [matchCopy activeFirmwareVersion];
     activeFirmwareVersion = self->_activeFirmwareVersion;
-    self->_activeFirmwareVersion = v6;
+    self->_activeFirmwareVersion = activeFirmwareVersion;
 
-    v8 = [v4 appleModelNumber];
+    appleModelNumber = [matchCopy appleModelNumber];
     appleModelNumber = self->_appleModelNumber;
-    self->_appleModelNumber = v8;
+    self->_appleModelNumber = appleModelNumber;
 
-    v10 = [v4 availableFirmwareVersion];
+    availableFirmwareVersion = [matchCopy availableFirmwareVersion];
     availableFirmwareVersion = self->_availableFirmwareVersion;
-    self->_availableFirmwareVersion = v10;
+    self->_availableFirmwareVersion = availableFirmwareVersion;
 
-    v12 = [v4 hardwareFusing];
+    hardwareFusing = [matchCopy hardwareFusing];
     hardwareFusing = self->_hardwareFusing;
-    self->_hardwareFusing = v12;
+    self->_hardwareFusing = hardwareFusing;
 
-    v14 = [v4 serialNumber];
+    serialNumber = [matchCopy serialNumber];
     serialNumber = self->_serialNumber;
-    self->_serialNumber = v14;
+    self->_serialNumber = serialNumber;
 
-    v16 = [v4 uuid];
+    uuid = [matchCopy uuid];
     uuid = self->_uuid;
-    self->_uuid = v16;
+    self->_uuid = uuid;
   }
 
   return v5;
@@ -199,16 +199,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSUUID *)self->_uuid UUIDString];
-  v3 = [v2 hash];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v3 = [uUIDString hash];
 
   return v3;
 }
 
 - (id)description
 {
-  v2 = [(NSUUID *)self->_uuid UUIDString];
-  v3 = [NSString stringWithFormat:@"UUID <%@>", v2];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v3 = [NSString stringWithFormat:@"UUID <%@>", uUIDString];
 
   return v3;
 }

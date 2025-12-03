@@ -1,11 +1,11 @@
 @interface HRElectrocardiogramWatchAppInstallability
 + (BOOL)isElectrocardiogramAppDeletableForActiveWatch;
-+ (void)installElectrocardiogramAppOnActiveWatch:(id)a3;
++ (void)installElectrocardiogramAppOnActiveWatch:(id)watch;
 - (HRElectrocardiogramWatchAppInstallability)init;
-- (id)installElectrocardiogramAppAlertController:(id)a3 cancel:(id)a4;
-- (void)checkElectrocardiogramAppInstallStateWithContext:(id)a3 completion:(id)a4;
-- (void)electrocardiogramAppInstallStateOnActiveWatch:(id)a3;
-- (void)setAllowInstallingElectrocardiogramWatchApp:(BOOL)a3;
+- (id)installElectrocardiogramAppAlertController:(id)controller cancel:(id)cancel;
+- (void)checkElectrocardiogramAppInstallStateWithContext:(id)context completion:(id)completion;
+- (void)electrocardiogramAppInstallStateOnActiveWatch:(id)watch;
+- (void)setAllowInstallingElectrocardiogramWatchApp:(BOOL)app;
 @end
 
 @implementation HRElectrocardiogramWatchAppInstallability
@@ -26,12 +26,12 @@
   return v2;
 }
 
-- (void)setAllowInstallingElectrocardiogramWatchApp:(BOOL)a3
+- (void)setAllowInstallingElectrocardiogramWatchApp:(BOOL)app
 {
-  v3 = a3;
+  appCopy = app;
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
-  [v6 hk_setElectrocardiogramWatchAppInstallIsAllowed:v3];
+  hk_heartRhythmDefaults = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
+  [hk_heartRhythmDefaults hk_setElectrocardiogramWatchAppInstallIsAllowed:appCopy];
 
   v7 = objc_alloc(MEMORY[0x277CBEB98]);
   v8 = *MEMORY[0x277CCBD20];
@@ -47,36 +47,36 @@
     v12 = v11;
     v13 = NSStringFromSelector(a2);
     v14 = 138544130;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = v13;
     v18 = 2114;
     v19 = v8;
     v20 = 1026;
-    v21 = v3;
+    v21 = appCopy;
     _os_log_impl(&dword_2521E7000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}@] -> Triggered NanoPreferencesSync (key: %{public}@; value: %{public}d)", &v14, 0x26u);
   }
 }
 
 + (BOOL)isElectrocardiogramAppDeletableForActiveWatch
 {
-  v2 = [MEMORY[0x277CCD6A0] activeNonFamilySetupDevice];
+  activeNonFamilySetupDevice = [MEMORY[0x277CCD6A0] activeNonFamilySetupDevice];
   v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"1CFACCB8-FFEB-4682-A50E-16F853583912"];
-  v4 = [v2 supportsCapability:v3];
+  v4 = [activeNonFamilySetupDevice supportsCapability:v3];
 
   return v4;
 }
 
-- (void)electrocardiogramAppInstallStateOnActiveWatch:(id)a3
+- (void)electrocardiogramAppInstallStateOnActiveWatch:(id)watch
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCD6A0];
-  v6 = a3;
-  v7 = [v5 activeNonFamilySetupDevice];
-  if (v7)
+  watchCopy = watch;
+  activeNonFamilySetupDevice = [v5 activeNonFamilySetupDevice];
+  if (activeNonFamilySetupDevice)
   {
-    v8 = [(HRElectrocardiogramWatchAppInstallability *)self ecgAppAvailability];
-    [v8 appInstallStateOnWatch:v7 completion:v6];
+    ecgAppAvailability = [(HRElectrocardiogramWatchAppInstallability *)self ecgAppAvailability];
+    [ecgAppAvailability appInstallStateOnWatch:activeNonFamilySetupDevice completion:watchCopy];
   }
 
   else
@@ -88,22 +88,22 @@
       v10 = v9;
       v11 = NSStringFromSelector(a2);
       v12 = 138543618;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
       v15 = v11;
       _os_log_impl(&dword_2521E7000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}@] -> No active device", &v12, 0x16u);
     }
 
-    v8 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"No active device"];
-    v6[2](v6, 0, v8);
+    ecgAppAvailability = [MEMORY[0x277CCA9B8] hk_error:100 description:@"No active device"];
+    watchCopy[2](watchCopy, 0, ecgAppAvailability);
   }
 }
 
-- (void)checkElectrocardiogramAppInstallStateWithContext:(id)a3 completion:(id)a4
+- (void)checkElectrocardiogramAppInstallStateWithContext:(id)context completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if ([objc_opt_class() isElectrocardiogramAppDeletableForActiveWatch])
   {
     objc_initWeak(location, self);
@@ -113,8 +113,8 @@
     v12[3] = &unk_2796FB560;
     objc_copyWeak(v15, location);
     v15[1] = a2;
-    v14 = v8;
-    v13 = v7;
+    v14 = completionCopy;
+    v13 = contextCopy;
     [(HRElectrocardiogramWatchAppInstallability *)self electrocardiogramAppInstallStateOnActiveWatch:v12];
 
     objc_destroyWeak(v15);
@@ -136,7 +136,7 @@
       _os_log_impl(&dword_2521E7000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}@] -> Skipping check for if ECG app is installed, active watch does not support standalone apps", location, 0x16u);
     }
 
-    (*(v8 + 2))(v8, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -313,10 +313,10 @@ uint64_t __105__HRElectrocardiogramWatchAppInstallability_checkElectrocardiogram
   return (*(*(a1 + 32) + 16))();
 }
 
-- (id)installElectrocardiogramAppAlertController:(id)a3 cancel:(id)a4
+- (id)installElectrocardiogramAppAlertController:(id)controller cancel:(id)cancel
 {
-  v27 = a3;
-  v5 = a4;
+  controllerCopy = controller;
+  cancelCopy = cancel;
   v6 = MEMORY[0x277D75110];
   v7 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v8 = [v7 localizedStringForKey:@"ECG_APP_INSTALL_PROMPT_TITLE" value:&stru_2864680B0 table:@"HealthUI-Localizable-Cinnamon"];
@@ -334,8 +334,8 @@ uint64_t __105__HRElectrocardiogramWatchAppInstallability_checkElectrocardiogram
   v31[1] = 3221225472;
   v31[2] = __95__HRElectrocardiogramWatchAppInstallability_installElectrocardiogramAppAlertController_cancel___block_invoke;
   v31[3] = &unk_2796FB588;
-  v32 = v5;
-  v18 = v5;
+  v32 = cancelCopy;
+  v18 = cancelCopy;
   v19 = [v14 actionWithTitle:v17 style:1 handler:v31];
 
   v20 = MEMORY[0x277D750F8];
@@ -347,8 +347,8 @@ uint64_t __105__HRElectrocardiogramWatchAppInstallability_checkElectrocardiogram
   v29[2] = __95__HRElectrocardiogramWatchAppInstallability_installElectrocardiogramAppAlertController_cancel___block_invoke_2;
   v29[3] = &unk_2796FB600;
   v29[4] = self;
-  v30 = v27;
-  v24 = v27;
+  v30 = controllerCopy;
+  v24 = controllerCopy;
   v25 = [v20 actionWithTitle:v23 style:0 handler:v29];
 
   [v13 addAction:v19];
@@ -405,11 +405,11 @@ uint64_t __95__HRElectrocardiogramWatchAppInstallability_installElectrocardiogra
   return result;
 }
 
-+ (void)installElectrocardiogramAppOnActiveWatch:(id)a3
++ (void)installElectrocardiogramAppOnActiveWatch:(id)watch
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCD6A0] activeNonFamilySetupDevice];
-  if (v6)
+  watchCopy = watch;
+  activeNonFamilySetupDevice = [MEMORY[0x277CCD6A0] activeNonFamilySetupDevice];
+  if (activeNonFamilySetupDevice)
   {
     v23 = 0;
     v24 = &v23;
@@ -453,10 +453,10 @@ uint64_t __95__HRElectrocardiogramWatchAppInstallability_installElectrocardiogra
     v14[1] = 3221225472;
     v14[2] = __86__HRElectrocardiogramWatchAppInstallability_installElectrocardiogramAppOnActiveWatch___block_invoke;
     v14[3] = &unk_2796FB628;
-    v16 = a1;
+    selfCopy = self;
     v17 = a2;
-    v15 = v5;
-    [v11 installApp:v10 onPairedDevice:v6 withCompletionHandler:v14];
+    v15 = watchCopy;
+    [v11 installApp:v10 onPairedDevice:activeNonFamilySetupDevice withCompletionHandler:v14];
   }
 
   else
@@ -465,11 +465,11 @@ uint64_t __95__HRElectrocardiogramWatchAppInstallability_installElectrocardiogra
     v13 = *MEMORY[0x277CCC2D8];
     if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
     {
-      [(HRElectrocardiogramWatchAppInstallability *)a1 installElectrocardiogramAppOnActiveWatch:v13, a2];
+      [(HRElectrocardiogramWatchAppInstallability *)self installElectrocardiogramAppOnActiveWatch:v13, a2];
     }
 
     v10 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"No active device"];
-    (*(v5 + 2))(v5, 0, v10);
+    (*(watchCopy + 2))(watchCopy, 0, v10);
   }
 }
 

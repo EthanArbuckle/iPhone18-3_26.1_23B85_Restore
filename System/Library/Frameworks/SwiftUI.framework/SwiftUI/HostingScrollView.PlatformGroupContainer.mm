@@ -1,25 +1,25 @@
 @interface HostingScrollView.PlatformGroupContainer
-- (BOOL)_accessibilityAllowOutOfBoundsHitTestAtPoint:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)_accessibilityAllowOutOfBoundsHitTestAtPoint:(CGPoint)point withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NSArray)_childGestureRecognizerContainers;
 - (NSArray)preferredFocusEnvironments;
-- (id)focusItemsInRect:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (id)focusItemsInRect:(CGRect)rect;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation HostingScrollView.PlatformGroupContainer
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized HostingScrollView.PlatformGroupContainer.didUpdateFocus(in:with:)(v6);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  specialized HostingScrollView.PlatformGroupContainer.didUpdateFocus(in:with:)(contextCopy);
 }
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   HostingScrollView.PlatformGroupContainer.preferredFocusEnvironments.getter();
 
   type metadata accessor for _UISceneBSActionHandler(0, &lazy cache variable for type metadata for UIFocusEnvironment);
@@ -28,10 +28,10 @@
   return v3.super.isa;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
   type metadata accessor for [UIFocusItem]();
-  v4 = self;
+  selfCopy = self;
   static Update.ensure<A>(_:)();
 
   type metadata accessor for _UISceneBSActionHandler(0, &lazy cache variable for type metadata for UIFocusItem);
@@ -42,7 +42,7 @@
 
 - (NSArray)_childGestureRecognizerContainers
 {
-  v2 = self;
+  selfCopy = self;
   HostingScrollView.PlatformGroupContainer._childContainers.getter();
 
   type metadata accessor for _UIGestureRecognizerContainer();
@@ -51,42 +51,42 @@
   return v3.super.isa;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   ObjectType = swift_getObjectType();
-  v9 = a4;
-  v10 = self;
+  eventCopy = event;
+  selfCopy = self;
   static Semantics.v6.getter();
   if ((isLinkedOnOrAfter(_:)() & 1) != 0 && (Strong = swift_unknownObjectWeakLoadStrong()) != 0)
   {
     v12 = Strong;
-    [Strong convertPoint:v10 fromCoordinateSpace:{x, y}];
-    v13 = [v12 pointInside:v9 withEvent:?];
+    [Strong convertPoint:selfCopy fromCoordinateSpace:{x, y}];
+    v13 = [v12 pointInside:eventCopy withEvent:?];
 
     return v13;
   }
 
   else
   {
-    v16.receiver = v10;
+    v16.receiver = selfCopy;
     v16.super_class = ObjectType;
-    v15 = [(HostingScrollView.PlatformGroupContainer *)&v16 pointInside:v9 withEvent:x, y];
+    v15 = [(HostingScrollView.PlatformGroupContainer *)&v16 pointInside:eventCopy withEvent:x, y];
 
     return v15;
   }
 }
 
-- (BOOL)_accessibilityAllowOutOfBoundsHitTestAtPoint:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)_accessibilityAllowOutOfBoundsHitTestAtPoint:(CGPoint)point withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v13.receiver = self;
   v13.super_class = swift_getObjectType();
-  v7 = a4;
+  eventCopy = event;
   v8 = v13.receiver;
-  if ([(HostingScrollView.PlatformGroupContainer *)&v13 _accessibilityAllowOutOfBoundsHitTestAtPoint:v7 withEvent:x, y])
+  if ([(HostingScrollView.PlatformGroupContainer *)&v13 _accessibilityAllowOutOfBoundsHitTestAtPoint:eventCopy withEvent:x, y])
   {
     v9 = 1;
   }

@@ -2,36 +2,36 @@
 - (BOOL)beingModified;
 - (BOOL)canDelete;
 - (BOOL)canEditTitle;
-- (BOOL)containsItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)updateImage:(id)a3;
-- (BOOL)updateTitle:(id)a3;
+- (BOOL)containsItem:(id)item;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)updateImage:(id)image;
+- (BOOL)updateTitle:(id)title;
 - (MSCollection)collectionAsMapsSyncCollection;
-- (UserCollectionHandler)initWithCollection:(id)a3;
+- (UserCollectionHandler)initWithCollection:(id)collection;
 - (id)identifier;
 - (id)numberOfItems;
 - (id)title;
 - (int)showAction;
-- (void)addObjects:(id)a3 completion:(id)a4;
+- (void)addObjects:(id)objects completion:(id)completion;
 - (void)endModification;
 - (void)rebuildContent;
-- (void)removeObjects:(id)a3 completion:(id)a4;
-- (void)setCollection:(id)a3;
+- (void)removeObjects:(id)objects completion:(id)completion;
+- (void)setCollection:(id)collection;
 - (void)startModification;
-- (void)updateCollection:(id)a3;
-- (void)updateTitle:(id)a3 forMapItem:(id)a4 completion:(id)a5;
-- (void)updateWithMapsSyncCollection:(id)a3;
+- (void)updateCollection:(id)collection;
+- (void)updateTitle:(id)title forMapItem:(id)item completion:(id)completion;
+- (void)updateWithMapsSyncCollection:(id)collection;
 @end
 
 @implementation UserCollectionHandler
 
 - (id)identifier
 {
-  v2 = [(CollectionHandler *)self collection];
-  v3 = [v2 identifier];
-  v4 = [v3 UUIDString];
+  collection = [(CollectionHandler *)self collection];
+  identifier = [collection identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (void)rebuildContent
@@ -46,10 +46,10 @@
 
 - (int)showAction
 {
-  v2 = [(CollectionHandler *)self collection];
-  v3 = [v2 isLegacyFavoritesCollection];
+  collection = [(CollectionHandler *)self collection];
+  isLegacyFavoritesCollection = [collection isLegacyFavoritesCollection];
 
-  if (v3)
+  if (isLegacyFavoritesCollection)
   {
     return 2084;
   }
@@ -60,15 +60,15 @@
   }
 }
 
-- (void)updateCollection:(id)a3
+- (void)updateCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10086A730;
   v7[3] = &unk_10165DC78;
-  v5 = v4;
+  v5 = collectionCopy;
   v8 = v5;
   objc_copyWeak(&v9, &location);
   v6.receiver = self;
@@ -79,22 +79,22 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)containsItem:(id)a3
+- (BOOL)containsItem:(id)item
 {
   v6.receiver = self;
   v6.super_class = UserCollectionHandler;
-  v3 = [(CollectionHandler *)&v6 itemForMapItem:a3];
+  v3 = [(CollectionHandler *)&v6 itemForMapItem:item];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)updateTitle:(id)a3 forMapItem:(id)a4 completion:(id)a5
+- (void)updateTitle:(id)title forMapItem:(id)item completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CollectionHandler *)self itemForMapItem:a4];
-  [v10 setCustomName:v9];
+  completionCopy = completion;
+  titleCopy = title;
+  v10 = [(CollectionHandler *)self itemForMapItem:item];
+  [v10 setCustomName:titleCopy];
 
   v11 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
   v20 = v10;
@@ -108,36 +108,36 @@
   block[2] = sub_10086A9A8;
   block[3] = &unk_101661090;
   v17 = v13;
-  v18 = v8;
+  v18 = completionCopy;
   v14 = v13;
-  v15 = v8;
+  v15 = completionCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)updateWithMapsSyncCollection:(id)a3
+- (void)updateWithMapsSyncCollection:(id)collection
 {
-  [(UserCollectionHandler *)self setCollection:a3];
+  [(UserCollectionHandler *)self setCollection:collection];
 
   [(UserCollectionHandler *)self rebuildContent];
 }
 
-- (void)removeObjects:(id)a3 completion:(id)a4
+- (void)removeObjects:(id)objects completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UserCollectionHandler *)self collectionAsMapsSyncCollection];
-  v9 = v8;
-  if (v8)
+  objectsCopy = objects;
+  completionCopy = completion;
+  collectionAsMapsSyncCollection = [(UserCollectionHandler *)self collectionAsMapsSyncCollection];
+  v9 = collectionAsMapsSyncCollection;
+  if (collectionAsMapsSyncCollection)
   {
-    v27 = v8;
-    v28 = v7;
+    v27 = collectionAsMapsSyncCollection;
+    v28 = completionCopy;
     v10 = +[NSMutableArray array];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v29 = v6;
-    obj = v6;
+    v29 = objectsCopy;
+    obj = objectsCopy;
     v11 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (!v11)
     {
@@ -239,7 +239,7 @@ LABEL_24:
           v32 = v10;
           v9 = v27;
           v33 = v27;
-          v7 = v28;
+          completionCopy = v28;
           v34 = v28;
           dispatch_async(&_dispatch_main_q, block);
 
@@ -250,7 +250,7 @@ LABEL_24:
         else
         {
           v9 = v27;
-          v7 = v28;
+          completionCopy = v28;
           if (v28)
           {
             v26 = [NSError GEOErrorWithCode:0 reason:@"No object to remove"];
@@ -258,7 +258,7 @@ LABEL_24:
           }
         }
 
-        v6 = v29;
+        objectsCopy = v29;
         goto LABEL_37;
       }
     }
@@ -291,34 +291,34 @@ LABEL_24:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_37:
 }
 
-- (void)addObjects:(id)a3 completion:(id)a4
+- (void)addObjects:(id)objects completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  completionCopy = completion;
   [(UserCollectionHandler *)self startModification];
-  v8 = [(UserCollectionHandler *)self collectionAsMapsSyncCollection];
-  if (v8)
+  collectionAsMapsSyncCollection = [(UserCollectionHandler *)self collectionAsMapsSyncCollection];
+  if (collectionAsMapsSyncCollection)
   {
-    v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count") + 1}];
+    v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(objectsCopy, "count") + 1}];
     objc_initWeak(location, self);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10086B45C;
     v15[3] = &unk_10164CFB8;
     objc_copyWeak(&v21, location);
-    v16 = v6;
+    v16 = objectsCopy;
     v17 = 0;
-    v18 = v8;
+    v18 = collectionAsMapsSyncCollection;
     v19 = v9;
-    v20 = v7;
+    v20 = completionCopy;
     v10 = v9;
     dispatch_async(&_dispatch_main_q, v15);
 
@@ -355,35 +355,35 @@ LABEL_37:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (BOOL)updateImage:(id)a3
+- (BOOL)updateImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(CollectionHandler *)self setHasBeenModified:1];
-  [(UIImage *)v4 size];
+  [(UIImage *)imageCopy size];
   if (v5 > 300.0)
   {
     v10.width = 300.0;
     v10.height = 300.0;
     UIGraphicsBeginImageContext(v10);
-    [(UIImage *)v4 drawInRect:0.0, 0.0, 300.0, 300.0];
+    [(UIImage *)imageCopy drawInRect:0.0, 0.0, 300.0, 300.0];
     v6 = UIGraphicsGetImageFromCurrentImageContext();
 
     UIGraphicsEndImageContext();
-    v4 = v6;
+    imageCopy = v6;
   }
 
-  v7 = UIImagePNGRepresentation(v4);
-  v8 = [(CollectionHandler *)self collection];
-  [v8 setImage:v7];
+  v7 = UIImagePNGRepresentation(imageCopy);
+  collection = [(CollectionHandler *)self collection];
+  [collection setImage:v7];
 
-  [(CollectionHandler *)self setStagedImage:v4];
+  [(CollectionHandler *)self setStagedImage:imageCopy];
   if (!self->_needsToBePersisted)
   {
     [(UserCollectionHandler *)self updateCollection:&stru_10162C1C8];
@@ -394,14 +394,14 @@ LABEL_37:
   return 1;
 }
 
-- (BOOL)updateTitle:(id)a3
+- (BOOL)updateTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   [(CollectionHandler *)self setHasBeenModified:1];
-  v5 = [(CollectionHandler *)self collection];
-  [v5 setTitle:v4];
+  collection = [(CollectionHandler *)self collection];
+  [collection setTitle:titleCopy];
 
-  [(UserCollectionHandler *)self setStagedTitle:v4];
+  [(UserCollectionHandler *)self setStagedTitle:titleCopy];
   [(CollectionHandler *)self notifyObserversInfoUpdated];
   [(UserCollectionHandler *)self updateCollection:&stru_10162C1A8];
   return 1;
@@ -409,28 +409,28 @@ LABEL_37:
 
 - (BOOL)canEditTitle
 {
-  v2 = [(CollectionHandler *)self collection];
-  v3 = [v2 isLegacyFavoritesCollection];
+  collection = [(CollectionHandler *)self collection];
+  isLegacyFavoritesCollection = [collection isLegacyFavoritesCollection];
 
-  return v3 ^ 1;
+  return isLegacyFavoritesCollection ^ 1;
 }
 
 - (BOOL)canDelete
 {
-  v2 = [(CollectionHandler *)self collection];
-  v3 = [v2 isLegacyFavoritesCollection];
+  collection = [(CollectionHandler *)self collection];
+  isLegacyFavoritesCollection = [collection isLegacyFavoritesCollection];
 
-  return v3 ^ 1;
+  return isLegacyFavoritesCollection ^ 1;
 }
 
 - (id)numberOfItems
 {
-  v3 = [(CollectionHandler *)self collection];
+  collection = [(CollectionHandler *)self collection];
 
-  if (v3)
+  if (collection)
   {
-    v4 = [(UserCollectionHandler *)self collectionAsMapsSyncCollection];
-    v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 placesCount]);
+    collectionAsMapsSyncCollection = [(UserCollectionHandler *)self collectionAsMapsSyncCollection];
+    v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [collectionAsMapsSyncCollection placesCount]);
   }
 
   else
@@ -443,31 +443,31 @@ LABEL_37:
 
 - (id)title
 {
-  v3 = [(UserCollectionHandler *)self stagedTitle];
-  v4 = v3;
-  if (v3)
+  stagedTitle = [(UserCollectionHandler *)self stagedTitle];
+  v4 = stagedTitle;
+  if (stagedTitle)
   {
-    v5 = v3;
+    title = stagedTitle;
   }
 
   else
   {
-    v6 = [(CollectionHandler *)self collection];
-    v5 = [v6 title];
+    collection = [(CollectionHandler *)self collection];
+    title = [collection title];
   }
 
-  return v5;
+  return title;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(UserCollectionHandler *)self identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [equalCopy identifier];
+    identifier2 = [(UserCollectionHandler *)self identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -504,13 +504,13 @@ LABEL_37:
 
 - (MSCollection)collectionAsMapsSyncCollection
 {
-  v3 = [(CollectionHandler *)self collection];
+  collection = [(CollectionHandler *)self collection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CollectionHandler *)self collection];
+    collection2 = [(CollectionHandler *)self collection];
   }
 
   else
@@ -542,15 +542,15 @@ LABEL_37:
       }
     }
 
-    v5 = 0;
+    collection2 = 0;
   }
 
-  return v5;
+  return collection2;
 }
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -584,18 +584,18 @@ LABEL_37:
 
   v9.receiver = self;
   v9.super_class = UserCollectionHandler;
-  [(CollectionHandler *)&v9 setCollection:v4];
+  [(CollectionHandler *)&v9 setCollection:collectionCopy];
 }
 
-- (UserCollectionHandler)initWithCollection:(id)a3
+- (UserCollectionHandler)initWithCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13.receiver = self;
     v13.super_class = UserCollectionHandler;
-    v5 = [(CollectionHandler *)&v13 initWithCollection:v4];
+    v5 = [(CollectionHandler *)&v13 initWithCollection:collectionCopy];
     v6 = v5;
     if (v5)
     {
@@ -604,7 +604,7 @@ LABEL_37:
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -636,10 +636,10 @@ LABEL_37:
       }
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

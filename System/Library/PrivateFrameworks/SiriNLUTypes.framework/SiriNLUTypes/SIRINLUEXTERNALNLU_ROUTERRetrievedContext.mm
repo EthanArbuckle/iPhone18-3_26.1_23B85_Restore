@@ -1,25 +1,25 @@
 @interface SIRINLUEXTERNALNLU_ROUTERRetrievedContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERRetrievedContext
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[6])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
-    self->_type = v4[2];
+    self->_type = fromCopy[2];
     *&self->_has |= 1u;
   }
 
@@ -56,24 +56,24 @@
   return [(SIRINLUEXTERNALNLU_ROUTERTypedValue *)self->_typedValue hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_type != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_type != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -81,7 +81,7 @@ LABEL_9:
   }
 
   typedValue = self->_typedValue;
-  if (typedValue | *(v4 + 2))
+  if (typedValue | *(equalCopy + 2))
   {
     v7 = [(SIRINLUEXTERNALNLU_ROUTERTypedValue *)typedValue isEqual:?];
   }
@@ -96,9 +96,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -106,51 +106,51 @@ LABEL_10:
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(SIRINLUEXTERNALNLU_ROUTERTypedValue *)self->_typedValue copyWithZone:a3];
+  v7 = [(SIRINLUEXTERNALNLU_ROUTERTypedValue *)self->_typedValue copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_type;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_type;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_typedValue)
   {
-    v5 = v4;
-    [v4 setTypedValue:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setTypedValue:?];
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_typedValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     type = self->_type;
@@ -182,7 +182,7 @@ LABEL_10:
         case 50:
           v5 = @"CONTEXT_TYPE_OTHER";
 LABEL_14:
-          [v3 setObject:v5 forKey:@"type"];
+          [dictionary setObject:v5 forKey:@"type"];
 
           goto LABEL_15;
       }
@@ -196,11 +196,11 @@ LABEL_15:
   typedValue = self->_typedValue;
   if (typedValue)
   {
-    v7 = [(SIRINLUEXTERNALNLU_ROUTERTypedValue *)typedValue dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"typed_value"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERTypedValue *)typedValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"typed_value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -209,36 +209,36 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERRetrievedContext;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERRetrievedContext *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERRetrievedContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERRetrievedContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CONTEXT_TYPE_UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"CONTEXT_TYPE_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_TYPE_APP_IN_FOCUS_BUNDLE_ID"])
+  else if ([typeCopy isEqualToString:@"CONTEXT_TYPE_APP_IN_FOCUS_BUNDLE_ID"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_TYPE_HAS_FOCUSED_ON_SCREEN_IMAGE"])
+  else if ([typeCopy isEqualToString:@"CONTEXT_TYPE_HAS_FOCUSED_ON_SCREEN_IMAGE"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_TYPE_HAS_FOCUSED_ON_SCREEN_DOCUMENT"])
+  else if ([typeCopy isEqualToString:@"CONTEXT_TYPE_HAS_FOCUSED_ON_SCREEN_DOCUMENT"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_TYPE_OTHER"])
+  else if ([typeCopy isEqualToString:@"CONTEXT_TYPE_OTHER"])
   {
     v4 = 50;
   }

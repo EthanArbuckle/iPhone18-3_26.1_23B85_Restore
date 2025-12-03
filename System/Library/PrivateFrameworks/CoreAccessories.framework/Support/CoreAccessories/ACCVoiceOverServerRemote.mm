@@ -1,16 +1,16 @@
 @interface ACCVoiceOverServerRemote
-- (ACCVoiceOverServerRemote)initWithXPCConnection:(id)a3;
+- (ACCVoiceOverServerRemote)initWithXPCConnection:(id)connection;
 - (void)dealloc;
-- (void)initConnection:(id)a3;
-- (void)update:(id)a3 cursorInfo:(id)a4;
-- (void)update:(id)a3 info:(id)a4;
+- (void)initConnection:(id)connection;
+- (void)update:(id)update cursorInfo:(id)info;
+- (void)update:(id)update info:(id)info;
 @end
 
 @implementation ACCVoiceOverServerRemote
 
-- (ACCVoiceOverServerRemote)initWithXPCConnection:(id)a3
+- (ACCVoiceOverServerRemote)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 5;
@@ -40,7 +40,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = [v5 hash];
+    v14 = [connectionCopy hash];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "initWithXPCConnection: XPCConnection=%lu", buf, 0xCu);
   }
 
@@ -50,9 +50,9 @@
   v10 = v9;
   if (v9)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v9->_XPCConnection, a3);
+      objc_storeStrong(&v9->_XPCConnection, connection);
     }
 
     else
@@ -75,14 +75,14 @@
   [(ACCVoiceOverServerRemote *)&v4 dealloc];
 }
 
-- (void)initConnection:(id)a3
+- (void)initConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ACCVoiceOverServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCVoiceOverServerRemote *)self XPCConnection];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    xPCConnection = [(ACCVoiceOverServerRemote *)self XPCConnection];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -151,13 +151,13 @@
     [v13 sendUpdatedSubscriberList];
   }
 
-  v4[2](v4, v7);
+  connectionCopy[2](connectionCopy, v7);
 }
 
-- (void)update:(id)a3 info:(id)a4
+- (void)update:(id)update info:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  updateCopy = update;
+  infoCopy = info;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -187,15 +187,15 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v19 = 138412546;
-    v20 = v5;
+    v20 = updateCopy;
     v21 = 2112;
-    v22 = v6;
+    v22 = infoCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "VoiceOver server remote update:info: voiceOverUID %@, updateDict=%@", &v19, 0x16u);
   }
 
-  v10 = [v6 objectForKey:@"ACCVoiceOverInformationUpdateSpeakingVolumeKey"];
-  v11 = [v6 objectForKey:@"ACCVoiceOverInformationUpdateSpeakingRateKey"];
-  v12 = [v6 objectForKey:@"ACCVoiceOverInformationUpdateEnabledKey"];
+  v10 = [infoCopy objectForKey:@"ACCVoiceOverInformationUpdateSpeakingVolumeKey"];
+  v11 = [infoCopy objectForKey:@"ACCVoiceOverInformationUpdateSpeakingRateKey"];
+  v12 = [infoCopy objectForKey:@"ACCVoiceOverInformationUpdateEnabledKey"];
   v13 = 0.0;
   if (v10)
   {
@@ -223,22 +223,22 @@ LABEL_13:
 LABEL_14:
   if (v12)
   {
-    v18 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
     v16 |= 4u;
   }
 
   else
   {
-    v18 = 0;
+    bOOLValue = 0;
   }
 
-  platform_voiceOver_informationUpdateHandler(v16, v18, v15, v13);
+  platform_voiceOver_informationUpdateHandler(v16, bOOLValue, v15, v13);
 }
 
-- (void)update:(id)a3 cursorInfo:(id)a4
+- (void)update:(id)update cursorInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  updateCopy = update;
+  infoCopy = info;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -268,16 +268,16 @@ LABEL_14:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v30 = v5;
+    v30 = updateCopy;
     v31 = 2112;
-    v32 = v6;
+    v32 = infoCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "VoiceOver server remote update:cursorInfo: voiceOverUID %@, updateDict=%@", buf, 0x16u);
   }
 
-  v10 = [v6 objectForKey:@"ACCVoiceOverCursorInformationUpdateLabelKey"];
-  v11 = [v6 objectForKey:@"ACCVoiceOverCursorInformationUpdateValueKey"];
-  v12 = [v6 objectForKey:@"ACCVoiceOverCursorInformationUpdateHintKey"];
-  v13 = [v6 objectForKey:@"ACCVoiceOverCursorInformationUpdateTraitsKey"];
+  v10 = [infoCopy objectForKey:@"ACCVoiceOverCursorInformationUpdateLabelKey"];
+  v11 = [infoCopy objectForKey:@"ACCVoiceOverCursorInformationUpdateValueKey"];
+  v12 = [infoCopy objectForKey:@"ACCVoiceOverCursorInformationUpdateHintKey"];
+  v13 = [infoCopy objectForKey:@"ACCVoiceOverCursorInformationUpdateTraitsKey"];
   v14 = v13;
   v15 = v10 != 0;
   if (v10)

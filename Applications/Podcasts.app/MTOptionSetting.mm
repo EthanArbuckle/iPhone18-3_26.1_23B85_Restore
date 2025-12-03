@@ -8,16 +8,16 @@
 - (id)currentShortTitle
 {
   options = self->_options;
-  v4 = [(MTSetting *)self value];
-  v5 = -[MTOptionsDescription indexForValue:](options, "indexForValue:", [v4 unsignedIntegerValue]);
+  value = [(MTSetting *)self value];
+  v5 = -[MTOptionsDescription indexForValue:](options, "indexForValue:", [value unsignedIntegerValue]);
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
   }
 
-  v6 = [(MTOptionsDescription *)self->_options shortTitles];
-  v7 = [v6 objectAtIndex:v5];
+  shortTitles = [(MTOptionsDescription *)self->_options shortTitles];
+  v7 = [shortTitles objectAtIndex:v5];
 
   return v7;
 }
@@ -29,8 +29,8 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(MTOptionSetting *)self options];
-  obj = [v3 valueSet];
+  options = [(MTOptionSetting *)self options];
+  obj = [options valueSet];
 
   v4 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v4)
@@ -46,20 +46,20 @@
         }
 
         v7 = *(*(&v25 + 1) + 8 * i);
-        v8 = [(MTOptionSetting *)self options];
-        v9 = [v8 indexForValue:{objc_msgSend(v7, "integerValue")}];
+        options2 = [(MTOptionSetting *)self options];
+        v9 = [options2 indexForValue:{objc_msgSend(v7, "integerValue")}];
 
         if (v9 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v10 = [(MTOptionSetting *)self options];
-          v11 = [v10 valueSet];
-          v12 = v9 < [v11 count];
+          options3 = [(MTOptionSetting *)self options];
+          valueSet = [options3 valueSet];
+          v12 = v9 < [valueSet count];
 
           if (v12)
           {
-            v13 = [(MTOptionSetting *)self options];
-            v14 = [v13 longTitles];
-            v15 = [v14 objectAtIndexedSubscript:v9];
+            options4 = [(MTOptionSetting *)self options];
+            longTitles = [options4 longTitles];
+            v15 = [longTitles objectAtIndexedSubscript:v9];
 
             objc_initWeak(&location, self);
             v22[0] = _NSConcreteStackBlock;
@@ -69,8 +69,8 @@
             objc_copyWeak(&v23, &location);
             v22[4] = v7;
             v16 = [UIAction actionWithTitle:v15 image:0 identifier:0 handler:v22];
-            v17 = [(MTSetting *)self value];
-            [v16 setState:{objc_msgSend(v7, "isEqualToNumber:", v17)}];
+            value = [(MTSetting *)self value];
+            [v16 setState:{objc_msgSend(v7, "isEqualToNumber:", value)}];
 
             [v20 addObject:v16];
             objc_destroyWeak(&v23);

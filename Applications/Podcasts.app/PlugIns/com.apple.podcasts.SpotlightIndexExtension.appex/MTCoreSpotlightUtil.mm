@@ -1,30 +1,30 @@
 @interface MTCoreSpotlightUtil
-+ (id)_uniqueIdentifierForPodcast:(id)a3;
++ (id)_uniqueIdentifierForPodcast:(id)podcast;
 + (id)artworkBridge;
-+ (id)fetchRequestForIndexType:(unint64_t)a3;
-+ (id)fetchRequestForIndexType:(unint64_t)a3 additionalPredicate:(id)a4;
-+ (id)indexPathForObjectType:(unint64_t)a3 batch:(unint64_t)a4 indexInBatch:(unint64_t)a5;
-+ (id)uniqueIdentifierForObject:(id)a3;
-+ (void)configureArtworkForSearchableItemAttributeSet:(id)a3 withPodcast:(id)a4 completion:(id)a5;
-+ (void)prepareSearchableItemForEpisode:(id)a3 annotator:(id)a4 completion:(id)a5;
-+ (void)prepareSearchableItemForObject:(id)a3 annotator:(id)a4 completion:(id)a5;
-+ (void)prepareSearchableItemForPodcast:(id)a3 annotator:(id)a4 completion:(id)a5;
-+ (void)prepareSearchableItemForStation:(id)a3 annotator:(id)a4 completion:(id)a5;
-+ (void)prepareSearchableItemsForObjectInArray:(id)a3 annotator:(id)a4 completion:(id)a5;
++ (id)fetchRequestForIndexType:(unint64_t)type;
++ (id)fetchRequestForIndexType:(unint64_t)type additionalPredicate:(id)predicate;
++ (id)indexPathForObjectType:(unint64_t)type batch:(unint64_t)batch indexInBatch:(unint64_t)inBatch;
++ (id)uniqueIdentifierForObject:(id)object;
++ (void)configureArtworkForSearchableItemAttributeSet:(id)set withPodcast:(id)podcast completion:(id)completion;
++ (void)prepareSearchableItemForEpisode:(id)episode annotator:(id)annotator completion:(id)completion;
++ (void)prepareSearchableItemForObject:(id)object annotator:(id)annotator completion:(id)completion;
++ (void)prepareSearchableItemForPodcast:(id)podcast annotator:(id)annotator completion:(id)completion;
++ (void)prepareSearchableItemForStation:(id)station annotator:(id)annotator completion:(id)completion;
++ (void)prepareSearchableItemsForObjectInArray:(id)array annotator:(id)annotator completion:(id)completion;
 @end
 
 @implementation MTCoreSpotlightUtil
 
-+ (void)prepareSearchableItemForObject:(id)a3 annotator:(id)a4 completion:(id)a5
++ (void)prepareSearchableItemForObject:(id)object annotator:(id)annotator completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  annotatorCopy = annotator;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 prepareSearchableItemForPodcast:v8 annotator:v9 completion:v10];
+    [self prepareSearchableItemForPodcast:objectCopy annotator:annotatorCopy completion:completionCopy];
   }
 
   else
@@ -32,7 +32,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 prepareSearchableItemForEpisode:v8 annotator:v9 completion:v10];
+      [self prepareSearchableItemForEpisode:objectCopy annotator:annotatorCopy completion:completionCopy];
     }
 
     else
@@ -40,7 +40,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 prepareSearchableItemForStation:v8 annotator:v9 completion:v10];
+        [self prepareSearchableItemForStation:objectCopy annotator:annotatorCopy completion:completionCopy];
       }
 
       else
@@ -49,11 +49,11 @@
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v13 = 138412290;
-          v14 = v8;
+          v14 = objectCopy;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Invalid object, can not index %@", &v13, 0xCu);
         }
 
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
   }
@@ -61,13 +61,13 @@
   objc_autoreleasePoolPop(v11);
 }
 
-+ (void)prepareSearchableItemsForObjectInArray:(id)a3 annotator:(id)a4 completion:(id)a5
++ (void)prepareSearchableItemsForObjectInArray:(id)array annotator:(id)annotator completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  annotatorCopy = annotator;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v9 = a3;
+    arrayCopy = array;
     v10 = +[NSMutableArray array];
     v11 = dispatch_group_create();
     v26[0] = _NSConcreteStackBlock;
@@ -84,11 +84,11 @@
     v22[2] = sub_100009148;
     v22[3] = &unk_100014B80;
     v23 = v11;
-    v24 = v7;
+    v24 = annotatorCopy;
     v25 = v14;
     v15 = v14;
     v16 = v11;
-    [v9 enumerateObjectsUsingBlock:v22];
+    [arrayCopy enumerateObjectsUsingBlock:v22];
 
     v17 = dispatch_get_global_queue(-32768, 0);
     block[0] = _NSConcreteStackBlock;
@@ -96,19 +96,19 @@
     block[2] = sub_100009270;
     block[3] = &unk_100014BA8;
     v20 = v12;
-    v21 = v8;
+    v21 = completionCopy;
     v18 = v12;
     dispatch_group_notify(v16, v17, block);
   }
 }
 
-+ (id)uniqueIdentifierForObject:(id)a3
++ (id)uniqueIdentifierForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 _uniqueIdentifierForPodcast:v4];
+    v5 = [self _uniqueIdentifierForPodcast:objectCopy];
 LABEL_3:
     v6 = &stru_100015080;
     goto LABEL_16;
@@ -117,11 +117,11 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 guid];
-    v8 = v7;
-    if (v7)
+    guid = [objectCopy guid];
+    v8 = guid;
+    if (guid)
     {
-      v6 = v7;
+      v6 = guid;
     }
 
     else
@@ -141,11 +141,11 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v9 = [v4 uuid];
-    v8 = v9;
-    if (v9)
+    uuid = [objectCopy uuid];
+    v8 = uuid;
+    if (uuid)
     {
-      v6 = v9;
+      v6 = uuid;
     }
 
     else
@@ -163,10 +163,10 @@ LABEL_16:
   return v5;
 }
 
-+ (id)fetchRequestForIndexType:(unint64_t)a3
++ (id)fetchRequestForIndexType:(unint64_t)type
 {
   v5 = [NSPredicate predicateWithValue:1];
-  v6 = [a1 fetchRequestForIndexType:a3 additionalPredicate:v5];
+  v6 = [self fetchRequestForIndexType:type additionalPredicate:v5];
 
   return v6;
 }
@@ -183,58 +183,58 @@ LABEL_16:
   return v3;
 }
 
-+ (void)configureArtworkForSearchableItemAttributeSet:(id)a3 withPodcast:(id)a4 completion:(id)a5
++ (void)configureArtworkForSearchableItemAttributeSet:(id)set withPodcast:(id)podcast completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100009560;
   v7[3] = &unk_100014BF0;
-  v8 = a5;
-  v5 = v8;
+  completionCopy = completion;
+  v5 = completionCopy;
   v6 = objc_retainBlock(v7);
   (v6[2])(v6, 0);
 }
 
-+ (id)_uniqueIdentifierForPodcast:(id)a3
++ (id)_uniqueIdentifierForPodcast:(id)podcast
 {
-  v3 = a3;
-  v4 = [v3 currentFeedURL];
-  v5 = v4;
-  if (v4)
+  podcastCopy = podcast;
+  currentFeedURL = [podcastCopy currentFeedURL];
+  v5 = currentFeedURL;
+  if (currentFeedURL)
   {
-    v6 = [v4 absoluteString];
+    absoluteString = [currentFeedURL absoluteString];
   }
 
   else
   {
-    v7 = [v3 uuid];
-    v8 = v7;
-    if (v7)
+    uuid = [podcastCopy uuid];
+    v8 = uuid;
+    if (uuid)
     {
-      v6 = v7;
+      absoluteString = uuid;
     }
 
     else
     {
-      v6 = &stru_100015080;
+      absoluteString = &stru_100015080;
     }
   }
 
-  v9 = [@"p" stringByAppendingString:v6];
+  v9 = [@"p" stringByAppendingString:absoluteString];
 
   return v9;
 }
 
-+ (id)fetchRequestForIndexType:(unint64_t)a3 additionalPredicate:(id)a4
++ (id)fetchRequestForIndexType:(unint64_t)type additionalPredicate:(id)predicate
 {
-  v5 = a4;
-  switch(a3)
+  predicateCopy = predicate;
+  switch(type)
   {
     case 2uLL:
       v17 = [NSFetchRequest alloc];
       v7 = [v17 initWithEntityName:kMTPlaylistEntityName];
       v18 = +[MTPlaylist topLevelPlaylistsPredicate];
-      v19 = [v18 AND:v5];
+      v19 = [v18 AND:predicateCopy];
       [v7 setPredicate:v19];
 
       v20 = [NSSortDescriptor alloc];
@@ -246,7 +246,7 @@ LABEL_16:
       v13 = [NSFetchRequest alloc];
       v7 = [v13 initWithEntityName:kMTEpisodeEntityName];
       v14 = +[MTEpisode predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
-      v15 = [v14 AND:v5];
+      v15 = [v14 AND:predicateCopy];
       [v7 setPredicate:v15];
 
       v16 = [NSSortDescriptor alloc];
@@ -258,7 +258,7 @@ LABEL_16:
       v6 = [NSFetchRequest alloc];
       v7 = [v6 initWithEntityName:kMTPodcastEntityName];
       v8 = +[MTPodcast predicateForNotHiddenNotImplicitlyFollowedPodcasts];
-      v9 = [v8 AND:v5];
+      v9 = [v8 AND:predicateCopy];
       [v7 setPredicate:v9];
 
       v10 = [NSSortDescriptor alloc];
@@ -279,237 +279,237 @@ LABEL_9:
   return v7;
 }
 
-+ (void)prepareSearchableItemForPodcast:(id)a3 annotator:(id)a4 completion:(id)a5
++ (void)prepareSearchableItemForPodcast:(id)podcast annotator:(id)annotator completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  podcastCopy = podcast;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = a4;
-    v11 = [v8 uuid];
-    v12 = [v8 title];
+    annotatorCopy = annotator;
+    uuid = [podcastCopy uuid];
+    title = [podcastCopy title];
     v13 = [[CSSearchableItemAttributeSet alloc] initWithContentType:UTTypeAudiovisualContent];
     v14 = +[NSDate distantFuture];
     [v13 setExpirationDate:v14];
 
-    [v13 setDisplayName:v12];
-    v15 = [v8 currentFeedURL];
-    [v13 setContentURL:v15];
+    [v13 setDisplayName:title];
+    currentFeedURL = [podcastCopy currentFeedURL];
+    [v13 setContentURL:currentFeedURL];
 
-    v16 = [v8 bestDescription];
-    [v13 setContentDescription:v16];
+    bestDescription = [podcastCopy bestDescription];
+    [v13 setContentDescription:bestDescription];
 
     [v13 setContentType:@"com.apple.podcasts.show"];
-    v17 = [v8 bestDescription];
-    [v13 setInformation:v17];
+    bestDescription2 = [podcastCopy bestDescription];
+    [v13 setInformation:bestDescription2];
 
-    [v8 downloadedDate];
+    [podcastCopy downloadedDate];
     if (v18 != 0.0)
     {
-      [v8 downloadedDate];
+      [podcastCopy downloadedDate];
       v19 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
       [v13 setDownloadedDate:v19];
     }
 
-    [v8 lastTouchDate];
+    [podcastCopy lastTouchDate];
     if (v20 != 0.0)
     {
-      [v8 lastTouchDate];
+      [podcastCopy lastTouchDate];
       v21 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
       [v13 setLastUsedDate:v21];
     }
 
-    v22 = [v8 author];
+    author = [podcastCopy author];
 
-    if (v22)
+    if (author)
     {
-      v23 = [v8 author];
-      v36 = v23;
+      author2 = [podcastCopy author];
+      v36 = author2;
       v24 = [NSArray arrayWithObjects:&v36 count:1];
       [v13 setAuthorNames:v24];
     }
 
-    v25 = [a1 uniqueIdentifierForObject:v8];
+    v25 = [self uniqueIdentifierForObject:podcastCopy];
     v26 = objc_alloc_init(CSSearchableItem);
     [v26 setUniqueIdentifier:v25];
     [v26 setAttributeSet:v13];
-    v27 = [v10 annotateItem:v26 withManagedObject:v8];
+    v27 = [annotatorCopy annotateItem:v26 withManagedObject:podcastCopy];
 
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_100009BF0;
     v31[3] = &unk_100014C18;
     v32 = v27;
-    v33 = v11;
-    v34 = v12;
-    v35 = v9;
-    v28 = v12;
-    v29 = v11;
+    v33 = uuid;
+    v34 = title;
+    v35 = completionCopy;
+    v28 = title;
+    v29 = uuid;
     v30 = v27;
-    [a1 configureArtworkForSearchableItemAttributeSet:v13 withPodcast:v8 completion:v31];
+    [self configureArtworkForSearchableItemAttributeSet:v13 withPodcast:podcastCopy completion:v31];
   }
 }
 
-+ (void)prepareSearchableItemForEpisode:(id)a3 annotator:(id)a4 completion:(id)a5
++ (void)prepareSearchableItemForEpisode:(id)episode annotator:(id)annotator completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  episodeCopy = episode;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = a4;
-    v47 = [v8 uuid];
-    v11 = [v8 title];
+    annotatorCopy = annotator;
+    uuid = [episodeCopy uuid];
+    title = [episodeCopy title];
     v12 = [[CSSearchableItemAttributeSet alloc] initWithContentType:UTTypeAudiovisualContent];
     v13 = +[NSDate distantFuture];
     [v12 setExpirationDate:v13];
 
-    v14 = [v8 bestTitle];
-    [v12 setDisplayName:v14];
+    bestTitle = [episodeCopy bestTitle];
+    [v12 setDisplayName:bestTitle];
 
-    v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v8 playCount]);
+    v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [episodeCopy playCount]);
     [v12 setPlayCount:v15];
 
-    v16 = [v8 podcast];
-    v17 = [v16 title];
-    [v12 setContainerTitle:v17];
+    podcast = [episodeCopy podcast];
+    title2 = [podcast title];
+    [v12 setContainerTitle:title2];
 
-    v18 = [v8 bestSummary];
-    [v12 setContentDescription:v18];
+    bestSummary = [episodeCopy bestSummary];
+    [v12 setContentDescription:bestSummary];
 
     [v12 setContentType:@"com.apple.podcasts.episode"];
-    v19 = [v8 bestSummary];
-    [v12 setInformation:v19];
+    bestSummary2 = [episodeCopy bestSummary];
+    [v12 setInformation:bestSummary2];
 
-    [v8 duration];
+    [episodeCopy duration];
     v20 = [NSNumber numberWithDouble:?];
     [v12 setDuration:v20];
 
-    v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 isDownloaded]);
+    v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [episodeCopy isDownloaded]);
     [v12 setLocal:v21];
 
-    v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 externalType]);
+    v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [episodeCopy externalType]);
     [v12 setStreamable:v22];
 
-    v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 isExplicit]);
+    v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [episodeCopy isExplicit]);
     [v12 setContentRating:v23];
 
-    [v8 pubDate];
+    [episodeCopy pubDate];
     if (v24 != 0.0)
     {
-      [v8 pubDate];
+      [episodeCopy pubDate];
       v25 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
       [v12 setContentCreationDate:v25];
     }
 
-    [v8 downloadDate];
+    [episodeCopy downloadDate];
     if (v26 != 0.0)
     {
-      [v8 downloadDate];
+      [episodeCopy downloadDate];
       v27 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
       [v12 setDownloadedDate:v27];
     }
 
-    [v8 lastDatePlayed];
+    [episodeCopy lastDatePlayed];
     if (v28 != 0.0)
     {
-      [v8 lastDatePlayed];
+      [episodeCopy lastDatePlayed];
       v29 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
       [v12 setLastUsedDate:v29];
     }
 
-    if (![v8 playState])
+    if (![episodeCopy playState])
     {
-      [v8 lastDatePlayed];
+      [episodeCopy lastDatePlayed];
       if (v30 != 0.0)
       {
-        [v8 lastDatePlayed];
+        [episodeCopy lastDatePlayed];
         v31 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
         [v12 setCompletionDate:v31];
       }
     }
 
-    v32 = [v8 author];
+    author = [episodeCopy author];
 
-    if (v32)
+    if (author)
     {
-      v33 = [v8 author];
-      v53 = v33;
+      author2 = [episodeCopy author];
+      v53 = author2;
       v34 = [NSArray arrayWithObjects:&v53 count:1];
       [v12 setAuthorNames:v34];
     }
 
-    v35 = [v8 assetURL];
+    assetURL = [episodeCopy assetURL];
 
-    if (v35)
+    if (assetURL)
     {
-      v36 = [v8 assetURL];
-      v37 = [NSURL URLWithString:v36];
+      assetURL2 = [episodeCopy assetURL];
+      v37 = [NSURL URLWithString:assetURL2];
       [v12 setContentURL:v37];
     }
 
-    v38 = [a1 uniqueIdentifierForObject:v8];
-    v39 = [v8 podcast];
-    v40 = [MTCoreSpotlightUtil uniqueIdentifierForObject:v39];
+    v38 = [self uniqueIdentifierForObject:episodeCopy];
+    podcast2 = [episodeCopy podcast];
+    v40 = [MTCoreSpotlightUtil uniqueIdentifierForObject:podcast2];
 
     [v12 setRelatedUniqueIdentifier:v40];
     [v12 setDomainIdentifier:v40];
     v41 = objc_alloc_init(CSSearchableItem);
     [v41 setUniqueIdentifier:v38];
     [v41 setAttributeSet:v12];
-    v42 = [v10 annotateItem:v41 withManagedObject:v8];
+    v42 = [annotatorCopy annotateItem:v41 withManagedObject:episodeCopy];
 
-    v43 = [v8 podcast];
+    podcast3 = [episodeCopy podcast];
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_10000A218;
     v48[3] = &unk_100014C18;
     v49 = v42;
-    v50 = v47;
-    v51 = v11;
-    v52 = v9;
-    v44 = v11;
-    v45 = v47;
+    v50 = uuid;
+    v51 = title;
+    v52 = completionCopy;
+    v44 = title;
+    v45 = uuid;
     v46 = v42;
-    [a1 configureArtworkForSearchableItemAttributeSet:v12 withPodcast:v43 completion:v48];
+    [self configureArtworkForSearchableItemAttributeSet:v12 withPodcast:podcast3 completion:v48];
   }
 }
 
-+ (void)prepareSearchableItemForStation:(id)a3 annotator:(id)a4 completion:(id)a5
++ (void)prepareSearchableItemForStation:(id)station annotator:(id)annotator completion:(id)completion
 {
-  v18 = a3;
-  v8 = a5;
-  v9 = a4;
+  stationCopy = station;
+  completionCopy = completion;
+  annotatorCopy = annotator;
   v10 = [[CSSearchableItemAttributeSet alloc] initWithContentType:UTTypeAudiovisualContent];
   v11 = +[NSDate distantFuture];
   [v10 setExpirationDate:v11];
 
-  v12 = [v18 title];
-  [v10 setDisplayName:v12];
+  title = [stationCopy title];
+  [v10 setDisplayName:title];
 
   [v10 setContentType:@"com.apple.podcasts.station"];
-  [v18 generatedDate];
+  [stationCopy generatedDate];
   if (v13 != 0.0)
   {
-    [v18 generatedDate];
+    [stationCopy generatedDate];
     v14 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     [v10 setContentCreationDate:v14];
   }
 
   v15 = objc_alloc_init(CSSearchableItem);
-  v16 = [a1 uniqueIdentifierForObject:v18];
+  v16 = [self uniqueIdentifierForObject:stationCopy];
   [v15 setUniqueIdentifier:v16];
 
   [v15 setAttributeSet:v10];
-  v17 = [v9 annotateItem:v15 withManagedObject:v18];
+  v17 = [annotatorCopy annotateItem:v15 withManagedObject:stationCopy];
 
-  v8[2](v8, v17);
+  completionCopy[2](completionCopy, v17);
 }
 
-+ (id)indexPathForObjectType:(unint64_t)a3 batch:(unint64_t)a4 indexInBatch:(unint64_t)a5
++ (id)indexPathForObjectType:(unint64_t)type batch:(unint64_t)batch indexInBatch:(unint64_t)inBatch
 {
-  v7[0] = a3;
-  v7[1] = a4;
-  v7[2] = a5;
+  v7[0] = type;
+  v7[1] = batch;
+  v7[2] = inBatch;
   v5 = [[NSIndexPath alloc] initWithIndexes:v7 length:3];
 
   return v5;

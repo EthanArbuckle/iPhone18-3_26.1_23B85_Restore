@@ -9,10 +9,10 @@
 {
   v4.receiver = self;
   v4.super_class = NCNotificationContentViewInvertColorsAccessibility;
-  v2 = [(NCNotificationContentViewInvertColorsAccessibility *)&v4 _lazyThumbnailImageView];
-  [v2 setAccessibilityIgnoresInvertColors:1];
+  _lazyThumbnailImageView = [(NCNotificationContentViewInvertColorsAccessibility *)&v4 _lazyThumbnailImageView];
+  [_lazyThumbnailImageView setAccessibilityIgnoresInvertColors:1];
 
-  return v2;
+  return _lazyThumbnailImageView;
 }
 
 - (void)_accessibilityLoadInvertColors

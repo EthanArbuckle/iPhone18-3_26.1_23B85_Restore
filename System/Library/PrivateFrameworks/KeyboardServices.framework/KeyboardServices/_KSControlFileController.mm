@@ -1,25 +1,25 @@
 @interface _KSControlFileController
 - (BOOL)checkIfExists;
-- (_KSControlFileController)initWithName:(id)a3 inDirectory:(id)a4;
+- (_KSControlFileController)initWithName:(id)name inDirectory:(id)directory;
 - (id)description;
 - (void)reset;
-- (void)setContents:(id)a3;
+- (void)setContents:(id)contents;
 @end
 
 @implementation _KSControlFileController
 
-- (_KSControlFileController)initWithName:(id)a3 inDirectory:(id)a4
+- (_KSControlFileController)initWithName:(id)name inDirectory:(id)directory
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  directoryCopy = directory;
   v15.receiver = self;
   v15.super_class = _KSControlFileController;
   v8 = [(_KSControlFileController *)&v15 init];
   if (v8)
   {
     v9 = MEMORY[0x277CBEBC0];
-    v10 = [v6 stringByAppendingString:@".ctrl"];
-    v11 = [v7 stringByAppendingPathComponent:v10];
+    v10 = [nameCopy stringByAppendingString:@".ctrl"];
+    v11 = [directoryCopy stringByAppendingPathComponent:v10];
     v12 = [v9 fileURLWithPath:v11];
     url = v8->_url;
     v8->_url = v12;
@@ -56,15 +56,15 @@
 - (void)reset
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_2_0(&dword_2557E2000, v2, v3, "%s  Failed to delete %@", v4, v5, v6, v7, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v5 = open([(NSURL *)self->_url fileSystemRepresentation], 1573, 384);
   if (v5 < 0)
   {
@@ -78,9 +78,9 @@
   else
   {
     v6 = v5;
-    if (v4)
+    if (contentsCopy)
     {
-      write(v5, [v4 bytes], objc_msgSend(v4, "length"));
+      write(v5, [contentsCopy bytes], objc_msgSend(contentsCopy, "length"));
     }
 
     close(v6);

@@ -1,24 +1,24 @@
 @interface CKSendMenuViewController
 - (BOOL)isPresentingAudioRecordingQuickSend;
 - (BOOL)prefersStatusBarHidden;
-- (CKSendMenuViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CKSendMenuViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CKSendMenuViewControllerDelegate)sendMenuViewControllerDelegate;
 - (NSArray)accessibilityCustomActions;
-- (void)_handleReorderingGesture:(id)a3;
+- (void)_handleReorderingGesture:(id)gesture;
 - (void)anchorViewDidMove;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionViewBackgroundTapped:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionViewBackgroundTapped:(id)tapped;
 - (void)loadView;
-- (void)performFullScreenDismissAnimationWithCompletion:(id)a3;
-- (void)pluginIconUpdatedWithNotification:(id)a3;
+- (void)performFullScreenDismissAnimationWithCompletion:(id)completion;
+- (void)pluginIconUpdatedWithNotification:(id)notification;
 - (void)rePresentSendMenu;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setIsPresentingAudioRecordingQuickSend:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setIsPresentingAudioRecordingQuickSend:(BOOL)send;
 - (void)updatePreferredContentSize;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKSendMenuViewController
@@ -38,47 +38,47 @@
   return *(self + v3);
 }
 
-- (void)setIsPresentingAudioRecordingQuickSend:(BOOL)a3
+- (void)setIsPresentingAudioRecordingQuickSend:(BOOL)send
 {
   v5 = OBJC_IVAR___CKSendMenuViewController_isPresentingAudioRecordingQuickSend;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = send;
 }
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_19097C498();
-  [(CKSendMenuViewController *)v3 setView:v2];
+  [(CKSendMenuViewController *)selfCopy setView:v2];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_19097CB1C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_19097D630(a3);
+  selfCopy = self;
+  sub_19097D630(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_19097D7A4(a3);
+  selfCopy = self;
+  sub_19097D7A4(appear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19097DEAC();
 }
 
 - (void)updatePreferredContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_19097FACC();
 }
 
@@ -91,7 +91,7 @@
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   v7 = OBJC_IVAR___CKSendMenuViewController_activeDismissAnimationIdentifier;
   swift_beginAccess();
-  v8 = self;
+  selfCopy = self;
   sub_1909842FC(v5, self + v7);
   swift_endAccess();
   v9 = sub_19097C498();
@@ -102,9 +102,9 @@
   sub_19097D8C4(0);
 }
 
-- (void)performFullScreenDismissAnimationWithCompletion:(id)a3
+- (void)performFullScreenDismissAnimationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -119,32 +119,32 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1909803CC(v7, v6);
   sub_19022123C(v7);
 }
 
-- (void)pluginIconUpdatedWithNotification:(id)a3
+- (void)pluginIconUpdatedWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_19098290C(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_19098290C(notificationCopy);
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190982E40();
 
   return v3 & 1;
 }
 
-- (void)collectionViewBackgroundTapped:(id)a3
+- (void)collectionViewBackgroundTapped:(id)tapped
 {
   v4 = objc_opt_self();
-  v7 = self;
-  v5 = [v4 sharedFeatureFlags];
-  LODWORD(v4) = [v5 isPopoverSendMenuEnabled];
+  selfCopy = self;
+  sharedFeatureFlags = [v4 sharedFeatureFlags];
+  LODWORD(v4) = [sharedFeatureFlags isPopoverSendMenuEnabled];
 
   if (v4)
   {
@@ -164,7 +164,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190983288();
 
   if (v3)
@@ -183,44 +183,44 @@
 
 - (void)anchorViewDidMove
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909836C4();
 }
 
-- (CKSendMenuViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CKSendMenuViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)_handleReorderingGesture:(id)a3
+- (void)_handleReorderingGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  SendMenuViewController.handleReorderingGesture(_:)(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  SendMenuViewController.handleReorderingGesture(_:)(gestureCopy);
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_190D51C00();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D51BC0();
-  v10 = a3;
-  v11 = self;
-  SendMenuViewController.collectionView(_:didSelectItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  SendMenuViewController.collectionView(_:didSelectItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4 = objc_opt_self();
-  v6 = self;
-  v5 = [v4 sharedFeatureFlags];
-  LOBYTE(v4) = [v5 isPopoverSendMenuEnabled];
+  selfCopy = self;
+  sharedFeatureFlags = [v4 sharedFeatureFlags];
+  LOBYTE(v4) = [sharedFeatureFlags isPopoverSendMenuEnabled];
 
   if ((v4 & 1) == 0)
   {

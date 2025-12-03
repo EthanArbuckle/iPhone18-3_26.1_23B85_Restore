@@ -1,24 +1,24 @@
 @interface IDSQRProtoChannelExperiment
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)experimentIdAsString:(int)a3;
-- (id)testValueAsString:(int)a3;
-- (int)StringAsTestValue:(id)a3;
+- (id)experimentIdAsString:(int)string;
+- (id)testValueAsString:(int)string;
+- (int)StringAsTestValue:(id)value;
 - (int)experimentId;
 - (int)testValue;
 - (unint64_t)hash;
 - (void)clearOneofValuesForTestValue;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setBoolValue:(BOOL)a3;
-- (void)setHasBoolValue:(BOOL)a3;
-- (void)setHasInt32Value:(BOOL)a3;
-- (void)setHasTestValue:(BOOL)a3;
-- (void)setInt32Value:(int)a3;
-- (void)setStringValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setBoolValue:(BOOL)value;
+- (void)setHasBoolValue:(BOOL)value;
+- (void)setHasInt32Value:(BOOL)value;
+- (void)setHasTestValue:(BOOL)value;
+- (void)setInt32Value:(int)value;
+- (void)setStringValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoChannelExperiment
@@ -36,11 +36,11 @@
   }
 }
 
-- (id)experimentIdAsString:(int)a3
+- (id)experimentIdAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
@@ -51,18 +51,18 @@
   return v4;
 }
 
-- (void)setBoolValue:(BOOL)a3
+- (void)setBoolValue:(BOOL)value
 {
   [(IDSQRProtoChannelExperiment *)self clearOneofValuesForTestValue];
   *&self->_has |= 4u;
   self->_testValue = 1;
   *&self->_has |= 8u;
-  self->_BOOLValue = a3;
+  self->_BOOLValue = value;
 }
 
-- (void)setHasBoolValue:(BOOL)a3
+- (void)setHasBoolValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -75,28 +75,28 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   [(IDSQRProtoChannelExperiment *)self clearOneofValuesForTestValue];
   *&self->_has |= 4u;
   self->_testValue = 2;
   stringValue = self->_stringValue;
-  self->_stringValue = v4;
+  self->_stringValue = valueCopy;
 }
 
-- (void)setInt32Value:(int)a3
+- (void)setInt32Value:(int)value
 {
   [(IDSQRProtoChannelExperiment *)self clearOneofValuesForTestValue];
   *&self->_has |= 4u;
   self->_testValue = 3;
   *&self->_has |= 2u;
-  self->_int32Value = a3;
+  self->_int32Value = value;
 }
 
-- (void)setHasInt32Value:(BOOL)a3
+- (void)setHasInt32Value:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -122,9 +122,9 @@
   }
 }
 
-- (void)setHasTestValue:(BOOL)a3
+- (void)setHasTestValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -137,40 +137,40 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)testValueAsString:(int)a3
+- (id)testValueAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E77E2C00[a3];
+    v4 = off_1E77E2C00[string];
   }
 
   return v4;
 }
 
-- (int)StringAsTestValue:(id)a3
+- (int)StringAsTestValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BOOL_value"])
+  else if ([valueCopy isEqualToString:@"BOOL_value"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"string_value"])
+  else if ([valueCopy isEqualToString:@"string_value"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"int32_value"])
+  else if ([valueCopy isEqualToString:@"int32_value"])
   {
     v4 = 3;
   }
@@ -202,15 +202,15 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoChannelExperiment;
   v4 = [(IDSQRProtoChannelExperiment *)&v8 description];
-  v5 = [(IDSQRProtoChannelExperiment *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoChannelExperiment *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     if (self->_experimentId)
@@ -223,32 +223,32 @@
       v4 = @"TRANSPORT_LEVEL_ENCRYPTION_DISABLED";
     }
 
-    [v3 setObject:v4 forKey:@"experiment_id"];
+    [dictionary setObject:v4 forKey:@"experiment_id"];
   }
 
   experimentName = self->_experimentName;
   if (experimentName)
   {
-    [v3 setObject:experimentName forKey:@"experiment_name"];
+    [dictionary setObject:experimentName forKey:@"experiment_name"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_BOOLValue];
-    [v3 setObject:v6 forKey:@"BOOL_value"];
+    [dictionary setObject:v6 forKey:@"BOOL_value"];
   }
 
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"string_value"];
+    [dictionary setObject:stringValue forKey:@"string_value"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:self->_int32Value];
-    [v3 setObject:v9 forKey:@"int32_value"];
+    [dictionary setObject:v9 forKey:@"int32_value"];
 
     has = self->_has;
   }
@@ -266,57 +266,57 @@
       v11 = off_1E77E2C00[testValue];
     }
 
-    [v3 setObject:v11 forKey:@"test_value"];
+    [dictionary setObject:v11 forKey:@"test_value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_experimentName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[10] = self->_testValue;
-    *(v4 + 48) |= 4u;
+    toCopy[10] = self->_testValue;
+    *(toCopy + 48) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -335,39 +335,39 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_experimentId;
-  *(v4 + 48) |= 1u;
+  toCopy[2] = self->_experimentId;
+  *(toCopy + 48) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_4:
-    *(v4 + 44) = self->_BOOLValue;
-    *(v4 + 48) |= 8u;
+    *(toCopy + 44) = self->_BOOLValue;
+    *(toCopy + 48) |= 8u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_stringValue)
   {
-    [v4 setStringValue:?];
-    v4 = v6;
+    [toCopy setStringValue:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[6] = self->_int32Value;
-    *(v4 + 48) |= 2u;
+    toCopy[6] = self->_int32Value;
+    *(toCopy + 48) |= 2u;
   }
 
   if (self->_experimentName)
   {
     [v6 setExperimentName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -402,7 +402,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v8 = [(NSString *)self->_stringValue copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
@@ -412,17 +412,17 @@ LABEL_5:
     *(v6 + 48) |= 2u;
   }
 
-  v10 = [(NSString *)self->_experimentName copyWithZone:a3];
+  v10 = [(NSString *)self->_experimentName copyWithZone:zone];
   v11 = *(v6 + 16);
   *(v6 + 16) = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
@@ -430,58 +430,58 @@ LABEL_5:
   has = self->_has;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_testValue != *(v4 + 10))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_testValue != *(equalCopy + 10))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_experimentId != *(v4 + 2))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_experimentId != *(equalCopy + 2))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0)
+    if ((*(equalCopy + 48) & 8) == 0)
     {
       goto LABEL_29;
     }
 
     if (self->_BOOLValue)
     {
-      if ((*(v4 + 44) & 1) == 0)
+      if ((*(equalCopy + 44) & 1) == 0)
       {
         goto LABEL_29;
       }
     }
 
-    else if (*(v4 + 44))
+    else if (*(equalCopy + 44))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_29;
   }
 
   stringValue = self->_stringValue;
-  if (!(stringValue | *(v4 + 4)))
+  if (!(stringValue | *(equalCopy + 4)))
   {
     goto LABEL_17;
   }
@@ -497,19 +497,19 @@ LABEL_29:
 LABEL_17:
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_int32Value != *(v4 + 6))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_int32Value != *(equalCopy + 6))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   experimentName = self->_experimentName;
-  if (experimentName | *(v4 + 2))
+  if (experimentName | *(equalCopy + 2))
   {
     v8 = [(NSString *)experimentName isEqual:?];
   }
@@ -576,15 +576,15 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v7 ^ v6 ^ [(NSString *)self->_experimentName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if ((v5 & 4) != 0)
   {
-    self->_testValue = *(v4 + 10);
+    self->_testValue = *(fromCopy + 10);
     *&self->_has |= 4u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -597,38 +597,38 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 48) & 1) == 0)
+  else if ((*(fromCopy + 48) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_experimentId = *(v4 + 2);
+  self->_experimentId = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 48) & 8) != 0)
+  if ((*(fromCopy + 48) & 8) != 0)
   {
 LABEL_4:
-    self->_BOOLValue = *(v4 + 44);
+    self->_BOOLValue = *(fromCopy + 44);
     *&self->_has |= 8u;
   }
 
 LABEL_5:
-  v6 = v4;
-  if (*(v4 + 4))
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(IDSQRProtoChannelExperiment *)self setStringValue:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 48) & 2) != 0)
+  if ((*(fromCopy + 48) & 2) != 0)
   {
-    self->_int32Value = *(v4 + 6);
+    self->_int32Value = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(IDSQRProtoChannelExperiment *)self setExperimentName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

@@ -1,37 +1,37 @@
 @interface PKSpendNotificationLimitViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (PKSpendNotificationLimitViewController)initWithTitle:(id)a3 footerText:(id)a4 provider:(id)a5;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_deleteOptionAtIndexPath:(id)a3;
-- (void)_doneButtonTapped:(id)a3;
-- (void)_updateNavigationItemsIsEditing:(BOOL)a3;
-- (void)_updateSnapshotAnimated:(BOOL)a3 completion:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (PKSpendNotificationLimitViewController)initWithTitle:(id)title footerText:(id)text provider:(id)provider;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_deleteOptionAtIndexPath:(id)path;
+- (void)_doneButtonTapped:(id)tapped;
+- (void)_updateNavigationItemsIsEditing:(BOOL)editing;
+- (void)_updateSnapshotAnimated:(BOOL)animated completion:(id)completion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKSpendNotificationLimitViewController
 
-- (PKSpendNotificationLimitViewController)initWithTitle:(id)a3 footerText:(id)a4 provider:(id)a5
+- (PKSpendNotificationLimitViewController)initWithTitle:(id)title footerText:(id)text provider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  textCopy = text;
+  providerCopy = provider;
   v27.receiver = self;
   v27.super_class = PKSpendNotificationLimitViewController;
   v11 = -[PKSpendNotificationLimitViewController initWithStyle:](&v27, sel_initWithStyle_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1]);
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [textCopy copy];
     footerText = v11->_footerText;
     v11->_footerText = v12;
 
-    objc_storeStrong(&v11->_provider, a5);
+    objc_storeStrong(&v11->_provider, provider);
     v14 = [PKCurrencyAmountSelectorCustomEntryItem alloc];
-    v15 = [(PKCurrencyAmountSelectorOptionProvider *)v11->_provider currencyCode];
-    v16 = [(PKCurrencyAmountSelectorCustomEntryItem *)v14 initWithCurrencyCode:v15];
+    currencyCode = [(PKCurrencyAmountSelectorOptionProvider *)v11->_provider currencyCode];
+    v16 = [(PKCurrencyAmountSelectorCustomEntryItem *)v14 initWithCurrencyCode:currencyCode];
     customEntryItem = v11->_customEntryItem;
     v11->_customEntryItem = v16;
 
@@ -50,12 +50,12 @@
     v22[3] = &unk_1E8011180;
     objc_copyWeak(&v23, &location);
     [(PKCurrencyAmountSelectorCustomEntryItem *)v19 setInputValueChangedHandler:v22];
-    [(PKSpendNotificationLimitViewController *)v11 setTitle:v8];
+    [(PKSpendNotificationLimitViewController *)v11 setTitle:titleCopy];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v20 = [(PKSpendNotificationLimitViewController *)v11 navigationItem];
-      [v20 pkui_setupScrollEdgeChromelessAppearance];
-      [v20 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      navigationItem = [(PKSpendNotificationLimitViewController *)v11 navigationItem];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
     [(PKSpendNotificationLimitViewController *)v11 _updateNavigationItemsIsEditing:0];
@@ -88,9 +88,9 @@ void __76__PKSpendNotificationLimitViewController_initWithTitle_footerText_provi
   [(PKSpendNotificationLimitViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKSpendNotificationLimitViewController *)self tableView];
-    v4 = [(PKSpendNotificationLimitViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    tableView = [(PKSpendNotificationLimitViewController *)self tableView];
+    navigationItem = [(PKSpendNotificationLimitViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
@@ -99,16 +99,16 @@ void __76__PKSpendNotificationLimitViewController_initWithTitle_footerText_provi
   v17.receiver = self;
   v17.super_class = PKSpendNotificationLimitViewController;
   [(PKSpendNotificationLimitViewController *)&v17 viewDidLoad];
-  v3 = [(PKSpendNotificationLimitViewController *)self tableView];
+  tableView = [(PKSpendNotificationLimitViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = +[PKCurrencyAmountSelectorOption cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [tableView registerClass:v4 forCellReuseIdentifier:v5];
 
   v6 = objc_opt_class();
   v7 = +[PKCurrencyAmountSelectorCustomEntryItem cellReuseIdentifier];
-  [v3 registerClass:v6 forCellReuseIdentifier:v7];
+  [tableView registerClass:v6 forCellReuseIdentifier:v7];
 
-  v8 = [(UITableViewDiffableDataSource *)[PKTableViewDiffableDataSource alloc] initWithTableView:v3 cellProvider:&__block_literal_global_271];
+  v8 = [(UITableViewDiffableDataSource *)[PKTableViewDiffableDataSource alloc] initWithTableView:tableView cellProvider:&__block_literal_global_271];
   dataSource = self->_dataSource;
   self->_dataSource = v8;
 
@@ -130,7 +130,7 @@ void __76__PKSpendNotificationLimitViewController_initWithTitle_footerText_provi
   objc_copyWeak(&v13, &location);
   [(PKCurrencyAmountSelectorOptionProvider *)provider setOptionsUpdateHandler:v12];
   [(PKSpendNotificationLimitViewController *)self _updateSnapshotAnimated:0 completion:0];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9D58]];
+  [tableView setAccessibilityIdentifier:*MEMORY[0x1E69B9D58]];
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -172,55 +172,55 @@ void __53__PKSpendNotificationLimitViewController_viewDidLoad__block_invoke_6(ui
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v17 = a4;
-  [a3 deselectRowAtIndexPath:v17 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   [(PKCurrencyAmountSelectorCustomEntryItem *)self->_customEntryItem clear];
   [(PKCurrencyAmountSelectorCustomEntryItem *)self->_customEntryItem endEditing];
-  v6 = [v17 section];
-  v7 = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
-  v8 = [v7 sectionIdentifiers];
-  v9 = [v8 objectAtIndexedSubscript:v6];
-  v10 = [v9 identifier];
+  section = [pathCopy section];
+  snapshot = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v9 = [sectionIdentifiers objectAtIndexedSubscript:section];
+  identifier = [v9 identifier];
 
-  v11 = v10;
+  v11 = identifier;
   v12 = v11;
   if (v11 == @"SpendLimitOptionsSectionIdentifier" || v11 && (v13 = [(__CFString *)v11 isEqualToString:@"SpendLimitOptionsSectionIdentifier"], v12, v13))
   {
-    v14 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v17];
-    v15 = [v14 currencyAmount];
-    v16 = [v15 amount];
+    v14 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
+    currencyAmount = [v14 currencyAmount];
+    amount = [currencyAmount amount];
 
-    [(PKCurrencyAmountSelectorOptionProvider *)self->_provider selectAmount:v16];
+    [(PKCurrencyAmountSelectorOptionProvider *)self->_provider selectAmount:amount];
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a4];
-  v5 = [v4 shouldHighlight];
+  v4 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
+  shouldHighlight = [v4 shouldHighlight];
 
-  return v5;
+  return shouldHighlight;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a4];
-  v5 = [v4 editingStyle];
+  v4 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
+  editingStyle = [v4 editingStyle];
 
-  return v5;
+  return editingStyle;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v5 = [a4 section];
-  v6 = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
-  v7 = [v6 sectionIdentifiers];
-  v8 = [v7 objectAtIndexedSubscript:v5];
-  v9 = [v8 identifier];
+  section = [path section];
+  snapshot = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v8 = [sectionIdentifiers objectAtIndexedSubscript:section];
+  identifier = [v8 identifier];
 
-  v10 = v9;
+  v10 = identifier;
   v11 = v10;
   if (v10 == @"SpendLimitOptionsSectionIdentifier")
   {
@@ -240,54 +240,54 @@ void __53__PKSpendNotificationLimitViewController_viewDidLoad__block_invoke_6(ui
   return v12;
 }
 
-- (void)_deleteOptionAtIndexPath:(id)a3
+- (void)_deleteOptionAtIndexPath:(id)path
 {
-  v7 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a3];
+  v7 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
   provider = self->_provider;
-  v5 = [v7 currencyAmount];
-  v6 = [v5 amount];
-  [(PKCurrencyAmountSelectorOptionProvider *)provider removeCustomAmount:v6];
+  currencyAmount = [v7 currencyAmount];
+  amount = [currencyAmount amount];
+  [(PKCurrencyAmountSelectorOptionProvider *)provider removeCustomAmount:amount];
 }
 
-- (void)_updateNavigationItemsIsEditing:(BOOL)a3
+- (void)_updateNavigationItemsIsEditing:(BOOL)editing
 {
-  if (a3)
+  if (editing)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped_];
-    [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9740]];
-    v4 = [(PKSpendNotificationLimitViewController *)self navigationItem];
-    v5 = v4;
-    v6 = v7;
+    navigationItem2 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped_];
+    [navigationItem2 setAccessibilityIdentifier:*MEMORY[0x1E69B9740]];
+    navigationItem = [(PKSpendNotificationLimitViewController *)self navigationItem];
+    editButtonItem = navigationItem;
+    v6 = navigationItem2;
   }
 
   else
   {
-    v7 = [(PKSpendNotificationLimitViewController *)self navigationItem];
-    v5 = [(PKSpendNotificationLimitViewController *)self editButtonItem];
-    v4 = v7;
-    v6 = v5;
+    navigationItem2 = [(PKSpendNotificationLimitViewController *)self navigationItem];
+    editButtonItem = [(PKSpendNotificationLimitViewController *)self editButtonItem];
+    navigationItem = navigationItem2;
+    v6 = editButtonItem;
   }
 
-  [v4 setRightBarButtonItem:v6];
+  [navigationItem setRightBarButtonItem:v6];
 }
 
-- (void)_doneButtonTapped:(id)a3
+- (void)_doneButtonTapped:(id)tapped
 {
   [(PKCurrencyAmountSelectorCustomEntryItem *)self->_customEntryItem endEditing];
-  v4 = [(PKCurrencyAmountSelectorCustomEntryItem *)self->_customEntryItem decimalNumberValue];
-  if (v4)
+  decimalNumberValue = [(PKCurrencyAmountSelectorCustomEntryItem *)self->_customEntryItem decimalNumberValue];
+  if (decimalNumberValue)
   {
-    [(PKCurrencyAmountSelectorOptionProvider *)self->_provider insertCustomAmount:v4];
+    [(PKCurrencyAmountSelectorOptionProvider *)self->_provider insertCustomAmount:decimalNumberValue];
   }
 
   [(PKCurrencyAmountSelectorCustomEntryItem *)self->_customEntryItem clear];
 }
 
-- (void)_updateSnapshotAnimated:(BOOL)a3 completion:(id)a4
+- (void)_updateSnapshotAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x1E69955A0]);
   v8 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"SpendLimitOptionsSectionIdentifier"];
   v9 = v8;
@@ -300,8 +300,8 @@ void __53__PKSpendNotificationLimitViewController_viewDidLoad__block_invoke_6(ui
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   [v7 appendSectionsWithIdentifiers:v10];
 
-  v11 = [(PKCurrencyAmountSelectorOptionProvider *)self->_provider options];
-  [v7 appendItemsWithIdentifiers:v11 intoSectionWithIdentifier:v9];
+  options = [(PKCurrencyAmountSelectorOptionProvider *)self->_provider options];
+  [v7 appendItemsWithIdentifiers:options intoSectionWithIdentifier:v9];
 
   if (self->_customEntryItem)
   {
@@ -316,7 +316,7 @@ void __53__PKSpendNotificationLimitViewController_viewDidLoad__block_invoke_6(ui
     [v7 appendItemsWithIdentifiers:v14 intoSectionWithIdentifier:v12];
   }
 
-  [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:v7 animatingDifferences:v4 completion:v6];
+  [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:v7 animatingDifferences:animatedCopy completion:completionCopy];
 }
 
 @end

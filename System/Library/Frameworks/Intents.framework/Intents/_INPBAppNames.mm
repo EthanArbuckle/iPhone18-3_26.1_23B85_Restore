@@ -1,51 +1,51 @@
 @interface _INPBAppNames
-- (BOOL)isEqual:(id)a3;
-- (_INPBAppNames)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBAppNames)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAppName:(id)a3;
-- (void)setAxSpokenName:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setSpotlightName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAppName:(id)name;
+- (void)setAxSpokenName:(id)name;
+- (void)setDisplayName:(id)name;
+- (void)setSpotlightName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBAppNames
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appName)
   {
-    v4 = [(_INPBAppNames *)self appName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"app_name"];
+    appName = [(_INPBAppNames *)self appName];
+    v5 = [appName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"app_name"];
   }
 
   if (self->_axSpokenName)
   {
-    v6 = [(_INPBAppNames *)self axSpokenName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"ax_spoken_name"];
+    axSpokenName = [(_INPBAppNames *)self axSpokenName];
+    v7 = [axSpokenName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"ax_spoken_name"];
   }
 
   if (self->_displayName)
   {
-    v8 = [(_INPBAppNames *)self displayName];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"display_name"];
+    displayName = [(_INPBAppNames *)self displayName];
+    v9 = [displayName copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"display_name"];
   }
 
   if (self->_spotlightName)
   {
-    v10 = [(_INPBAppNames *)self spotlightName];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"spotlight_name"];
+    spotlightName = [(_INPBAppNames *)self spotlightName];
+    v11 = [spotlightName copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"spotlight_name"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -56,28 +56,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_spotlightName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBAppNames *)self appName];
-  v6 = [v4 appName];
-  if ((v5 != 0) == (v6 == 0))
+  appName = [(_INPBAppNames *)self appName];
+  appName2 = [equalCopy appName];
+  if ((appName != 0) == (appName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBAppNames *)self appName];
-  if (v7)
+  appName3 = [(_INPBAppNames *)self appName];
+  if (appName3)
   {
-    v8 = v7;
-    v9 = [(_INPBAppNames *)self appName];
-    v10 = [v4 appName];
-    v11 = [v9 isEqual:v10];
+    v8 = appName3;
+    appName4 = [(_INPBAppNames *)self appName];
+    appName5 = [equalCopy appName];
+    v11 = [appName4 isEqual:appName5];
 
     if (!v11)
     {
@@ -89,20 +89,20 @@
   {
   }
 
-  v5 = [(_INPBAppNames *)self axSpokenName];
-  v6 = [v4 axSpokenName];
-  if ((v5 != 0) == (v6 == 0))
+  appName = [(_INPBAppNames *)self axSpokenName];
+  appName2 = [equalCopy axSpokenName];
+  if ((appName != 0) == (appName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBAppNames *)self axSpokenName];
-  if (v12)
+  axSpokenName = [(_INPBAppNames *)self axSpokenName];
+  if (axSpokenName)
   {
-    v13 = v12;
-    v14 = [(_INPBAppNames *)self axSpokenName];
-    v15 = [v4 axSpokenName];
-    v16 = [v14 isEqual:v15];
+    v13 = axSpokenName;
+    axSpokenName2 = [(_INPBAppNames *)self axSpokenName];
+    axSpokenName3 = [equalCopy axSpokenName];
+    v16 = [axSpokenName2 isEqual:axSpokenName3];
 
     if (!v16)
     {
@@ -114,20 +114,20 @@
   {
   }
 
-  v5 = [(_INPBAppNames *)self displayName];
-  v6 = [v4 displayName];
-  if ((v5 != 0) == (v6 == 0))
+  appName = [(_INPBAppNames *)self displayName];
+  appName2 = [equalCopy displayName];
+  if ((appName != 0) == (appName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBAppNames *)self displayName];
-  if (v17)
+  displayName = [(_INPBAppNames *)self displayName];
+  if (displayName)
   {
-    v18 = v17;
-    v19 = [(_INPBAppNames *)self displayName];
-    v20 = [v4 displayName];
-    v21 = [v19 isEqual:v20];
+    v18 = displayName;
+    displayName2 = [(_INPBAppNames *)self displayName];
+    displayName3 = [equalCopy displayName];
+    v21 = [displayName2 isEqual:displayName3];
 
     if (!v21)
     {
@@ -139,12 +139,12 @@
   {
   }
 
-  v5 = [(_INPBAppNames *)self spotlightName];
-  v6 = [v4 spotlightName];
-  if ((v5 != 0) != (v6 == 0))
+  appName = [(_INPBAppNames *)self spotlightName];
+  appName2 = [equalCopy spotlightName];
+  if ((appName != 0) != (appName2 == 0))
   {
-    v22 = [(_INPBAppNames *)self spotlightName];
-    if (!v22)
+    spotlightName = [(_INPBAppNames *)self spotlightName];
+    if (!spotlightName)
     {
 
 LABEL_25:
@@ -152,10 +152,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBAppNames *)self spotlightName];
-    v25 = [v4 spotlightName];
-    v26 = [v24 isEqual:v25];
+    v23 = spotlightName;
+    spotlightName2 = [(_INPBAppNames *)self spotlightName];
+    spotlightName3 = [equalCopy spotlightName];
+    v26 = [spotlightName2 isEqual:spotlightName3];
 
     if (v26)
     {
@@ -175,116 +175,116 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBAppNames allocWithZone:](_INPBAppNames init];
-  v6 = [(NSString *)self->_appName copyWithZone:a3];
+  v6 = [(NSString *)self->_appName copyWithZone:zone];
   [(_INPBAppNames *)v5 setAppName:v6];
 
-  v7 = [(NSString *)self->_axSpokenName copyWithZone:a3];
+  v7 = [(NSString *)self->_axSpokenName copyWithZone:zone];
   [(_INPBAppNames *)v5 setAxSpokenName:v7];
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   [(_INPBAppNames *)v5 setDisplayName:v8];
 
-  v9 = [(NSString *)self->_spotlightName copyWithZone:a3];
+  v9 = [(NSString *)self->_spotlightName copyWithZone:zone];
   [(_INPBAppNames *)v5 setSpotlightName:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBAppNames *)self data];
+  coderCopy = coder;
+  data = [(_INPBAppNames *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBAppNames)initWithCoder:(id)a3
+- (_INPBAppNames)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBAppNames *)self initWithData:v6];
+    self = [(_INPBAppNames *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_INPBAppNames *)self appName];
+  toCopy = to;
+  appName = [(_INPBAppNames *)self appName];
 
-  if (v4)
+  if (appName)
   {
     appName = self->_appName;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBAppNames *)self axSpokenName];
+  axSpokenName = [(_INPBAppNames *)self axSpokenName];
 
-  if (v6)
+  if (axSpokenName)
   {
     axSpokenName = self->_axSpokenName;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBAppNames *)self displayName];
+  displayName = [(_INPBAppNames *)self displayName];
 
-  if (v8)
+  if (displayName)
   {
     displayName = self->_displayName;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_INPBAppNames *)self spotlightName];
+  spotlightName = [(_INPBAppNames *)self spotlightName];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (spotlightName)
   {
     spotlightName = self->_spotlightName;
     PBDataWriterWriteStringField();
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setSpotlightName:(id)a3
+- (void)setSpotlightName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   spotlightName = self->_spotlightName;
   self->_spotlightName = v4;
 
   MEMORY[0x1EEE66BB8](v4, spotlightName);
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   displayName = self->_displayName;
   self->_displayName = v4;
 
   MEMORY[0x1EEE66BB8](v4, displayName);
 }
 
-- (void)setAxSpokenName:(id)a3
+- (void)setAxSpokenName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   axSpokenName = self->_axSpokenName;
   self->_axSpokenName = v4;
 
   MEMORY[0x1EEE66BB8](v4, axSpokenName);
 }
 
-- (void)setAppName:(id)a3
+- (void)setAppName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   appName = self->_appName;
   self->_appName = v4;
 

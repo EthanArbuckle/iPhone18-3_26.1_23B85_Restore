@@ -1,9 +1,9 @@
 @interface PHMeCardGeocoder
 - (BOOL)_isNetworkAvailable;
-- (BOOL)_unschedulePerformGeocodesWakeTaskIfEarlierThan:(id)a3;
+- (BOOL)_unschedulePerformGeocodesWakeTaskIfEarlierThan:(id)than;
 - (BOOL)isActivelyUsing;
 - (NSArray)currentValidLocations;
-- (PHMeCardGeocoder)initWithCall:(id)a3;
+- (PHMeCardGeocoder)initWithCall:(id)call;
 - (id)_dateOfOldestAddress;
 - (void)_doWork;
 - (void)_networkPreferencesLoaded;
@@ -11,19 +11,19 @@
 - (void)_saveGeoCache;
 - (void)_scheduleLongTermRebuild;
 - (void)_scheduleNextGeocode;
-- (void)_schedulePerformGeocodesTaskWithStartWakeTime:(id)a3 dropDeadDelay:(int64_t)a4;
+- (void)_schedulePerformGeocodesTaskWithStartWakeTime:(id)time dropDeadDelay:(int64_t)delay;
 - (void)dealloc;
-- (void)handleCNContactStoreDidChangeNotification:(id)a3;
+- (void)handleCNContactStoreDidChangeNotification:(id)notification;
 - (void)scheduleImmediateGeocode;
 - (void)scheduleNextGeocode;
-- (void)setActivelyUsing:(BOOL)a3;
+- (void)setActivelyUsing:(BOOL)using;
 @end
 
 @implementation PHMeCardGeocoder
 
-- (PHMeCardGeocoder)initWithCall:(id)a3
+- (PHMeCardGeocoder)initWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if ((+[EKAlarm areLocationsAvailable]& 1) != 0)
   {
     v30.receiver = self;
@@ -33,11 +33,11 @@
     {
 LABEL_15:
       self = v5;
-      v23 = self;
+      selfCopy = self;
       goto LABEL_16;
     }
 
-    v6 = [CNContactStoreConfiguration tu_contactStoreConfigurationForCall:v4];
+    v6 = [CNContactStoreConfiguration tu_contactStoreConfigurationForCall:callCopy];
     v7 = [[CNContactStore alloc] initWithConfiguration:v6];
     contactStore = v5->_contactStore;
     v5->_contactStore = v7;
@@ -109,10 +109,10 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Device type doesn't allow location-based reminders, so +[PHMeCardGeocoder sharedMeCardGeocoder] will return nil", buf, 2u);
   }
 
-  v23 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v23;
+  return selfCopy;
 }
 
 - (void)_networkPreferencesLoaded
@@ -199,10 +199,10 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "-scheduleImmediateGeocode", buf, 2u);
   }
 
-  v4 = [(PHMeCardGeocoder *)self _isNetworkAvailable];
+  _isNetworkAvailable = [(PHMeCardGeocoder *)self _isNetworkAvailable];
   v5 = sub_100004F84();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (_isNetworkAvailable)
   {
     if (v6)
     {
@@ -358,12 +358,12 @@ LABEL_24:
   [(PHMeCardGeocoder *)self _saveGeoCache];
 }
 
-- (BOOL)_unschedulePerformGeocodesWakeTaskIfEarlierThan:(id)a3
+- (BOOL)_unschedulePerformGeocodesWakeTaskIfEarlierThan:(id)than
 {
-  v4 = a3;
-  v5 = [(PHMeCardGeocoder *)self lastScheduledTime];
+  thanCopy = than;
+  lastScheduledTime = [(PHMeCardGeocoder *)self lastScheduledTime];
 
-  if (!v5)
+  if (!lastScheduledTime)
   {
     v11 = sub_100004F84();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -375,7 +375,7 @@ LABEL_24:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!thanCopy)
   {
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -387,8 +387,8 @@ LABEL_24:
     goto LABEL_11;
   }
 
-  v6 = [(PHMeCardGeocoder *)self lastScheduledTime];
-  v7 = [v6 compare:v4];
+  lastScheduledTime2 = [(PHMeCardGeocoder *)self lastScheduledTime];
+  v7 = [lastScheduledTime2 compare:thanCopy];
 
   v8 = sub_100004F84();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -396,11 +396,11 @@ LABEL_24:
   {
     if (v9)
     {
-      v10 = [(PHMeCardGeocoder *)self lastScheduledTime];
+      lastScheduledTime3 = [(PHMeCardGeocoder *)self lastScheduledTime];
       v15 = 138412546;
-      v16 = v10;
+      v16 = lastScheduledTime3;
       v17 = 2112;
-      v18 = v4;
+      v18 = thanCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Unscheduling previous job with date %@ since we need to fire at %@ which is earlier", &v15, 0x16u);
     }
 
@@ -415,11 +415,11 @@ LABEL_12:
 
   if (v9)
   {
-    v14 = [(PHMeCardGeocoder *)self lastScheduledTime];
+    lastScheduledTime4 = [(PHMeCardGeocoder *)self lastScheduledTime];
     v15 = 138412546;
-    v16 = v14;
+    v16 = lastScheduledTime4;
     v17 = 2112;
-    v18 = v4;
+    v18 = thanCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Won't unschedule previous job with date %@ since we need to fire at %@ which is later", &v15, 0x16u);
   }
 
@@ -429,17 +429,17 @@ LABEL_13:
   return v12;
 }
 
-- (void)_schedulePerformGeocodesTaskWithStartWakeTime:(id)a3 dropDeadDelay:(int64_t)a4
+- (void)_schedulePerformGeocodesTaskWithStartWakeTime:(id)time dropDeadDelay:(int64_t)delay
 {
-  v6 = a3;
-  [(PHMeCardGeocoder *)self setLastScheduledTime:v6];
+  timeCopy = time;
+  [(PHMeCardGeocoder *)self setLastScheduledTime:timeCopy];
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_BOOL(v7, XPC_ACTIVITY_REQUIRE_NETWORK_CONNECTIVITY, 1);
-  [v6 timeIntervalSinceNow];
+  [timeCopy timeIntervalSinceNow];
   v9 = v8;
 
   xpc_dictionary_set_int64(v7, XPC_ACTIVITY_DELAY, v9);
-  xpc_dictionary_set_int64(v7, XPC_ACTIVITY_GRACE_PERIOD, a4);
+  xpc_dictionary_set_int64(v7, XPC_ACTIVITY_GRACE_PERIOD, delay);
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -487,25 +487,25 @@ LABEL_22:
       }
 
       v10 = *(*(&v23 + 1) + 8 * i);
-      v11 = [v10 checkGeocodeAfterDateForSanity];
-      v12 = [v10 nextGeocodeAttempt];
-      v13 = v12;
-      if (v12)
+      checkGeocodeAfterDateForSanity = [v10 checkGeocodeAfterDateForSanity];
+      nextGeocodeAttempt = [v10 nextGeocodeAttempt];
+      v13 = nextGeocodeAttempt;
+      if (nextGeocodeAttempt)
       {
         if (v7)
         {
-          v14 = [v7 earlierDate:v12];
+          v14 = [v7 earlierDate:nextGeocodeAttempt];
 
           v7 = v14;
         }
 
         else
         {
-          v7 = v12;
+          v7 = nextGeocodeAttempt;
         }
       }
 
-      v6 |= v11;
+      v6 |= checkGeocodeAfterDateForSanity;
     }
 
     v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -618,18 +618,18 @@ LABEL_14:
         objc_enumerationMutation(v2);
       }
 
-      v8 = [*(*(&v12 + 1) + 8 * i) lastGeocodeAttempt];
-      v9 = v8;
+      lastGeocodeAttempt = [*(*(&v12 + 1) + 8 * i) lastGeocodeAttempt];
+      v9 = lastGeocodeAttempt;
       if (v5)
       {
-        v10 = [v8 earlierDate:v5];
+        v10 = [lastGeocodeAttempt earlierDate:v5];
 
         v5 = v10;
       }
 
       else
       {
-        v5 = v8;
+        v5 = lastGeocodeAttempt;
       }
     }
 
@@ -653,8 +653,8 @@ LABEL_15:
   [(PHMeCardGeocoder *)self _unscheduleLongTermRebuild];
   v3 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_BOOL(v3, XPC_ACTIVITY_REQUIRE_NETWORK_CONNECTIVITY, 1);
-  v4 = [(PHMeCardGeocoder *)self _dateOfOldestAddress];
-  v5 = [v4 dateByAddingTimeInterval:2592000.0];
+  _dateOfOldestAddress = [(PHMeCardGeocoder *)self _dateOfOldestAddress];
+  v5 = [_dateOfOldestAddress dateByAddingTimeInterval:2592000.0];
 
   v6 = +[NSDate date];
   if ([v5 compare:v6] == -1)
@@ -700,14 +700,14 @@ LABEL_15:
   }
 
   v41 = [[NSMutableArray alloc] initWithArray:self->_addresses];
-  v6 = [(PHMeCardGeocoder *)self contactStore];
+  contactStore = [(PHMeCardGeocoder *)self contactStore];
   v7 = [CNContactFormatter descriptorForRequiredKeysForStyle:0];
   v66[0] = v7;
   v66[1] = CNContactPostalAddressesKey;
   v66[2] = CNContactTypeKey;
   v8 = [NSArray arrayWithObjects:v66 count:3];
   v60 = 0;
-  v9 = [v6 _ios_meContactWithKeysToFetch:v8 error:&v60];
+  v9 = [contactStore _ios_meContactWithKeysToFetch:v8 error:&v60];
   v10 = v60;
 
   obj = sub_100004F84();
@@ -733,7 +733,7 @@ LABEL_15:
     {
       v40 = v10;
       v45 = *v57;
-      v44 = self;
+      selfCopy = self;
       do
       {
         v13 = 0;
@@ -753,10 +753,10 @@ LABEL_15:
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Considering postal address labeled value %@.", buf, 0xCu);
           }
 
-          v16 = [(_PHMeCardGeocoderAddress *)v14 label];
-          if (([v16 isEqualToString:CNLabelHome] & 1) != 0 || objc_msgSend(v16, "isEqualToString:", CNLabelWork))
+          label = [(_PHMeCardGeocoderAddress *)v14 label];
+          if (([label isEqualToString:CNLabelHome] & 1) != 0 || objc_msgSend(label, "isEqualToString:", CNLabelWork))
           {
-            v47 = v16;
+            v47 = label;
             v54 = 0u;
             v55 = 0u;
             v52 = 0u;
@@ -777,11 +777,11 @@ LABEL_19:
                 }
 
                 v22 = *(*(&v52 + 1) + 8 * v21);
-                v23 = [(_PHMeCardGeocoderAddress *)v22 labeledValue];
-                v24 = [v23 value];
+                labeledValue = [(_PHMeCardGeocoderAddress *)v22 labeledValue];
+                value = [labeledValue value];
 
-                v25 = [(_PHMeCardGeocoderAddress *)v14 value];
-                v26 = [v24 isEqual:v25];
+                value2 = [(_PHMeCardGeocoderAddress *)v14 value];
+                v26 = [value isEqual:value2];
 
                 if (v26)
                 {
@@ -821,7 +821,7 @@ LABEL_19:
               }
 
               v31 = sub_100004F84();
-              v16 = v47;
+              label = v47;
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
@@ -830,7 +830,7 @@ LABEL_19:
               }
 
               [(_PHMeCardGeocoderAddress *)v41 removeObject:v28];
-              self = v44;
+              self = selfCopy;
             }
 
             else
@@ -838,7 +838,7 @@ LABEL_19:
 LABEL_30:
 
 LABEL_31:
-              v16 = v47;
+              label = v47;
               v28 = EKUILabeledDisplayStringForContact();
               v29 = [[_PHMeCardGeocoderAddress alloc] initWithLabeledValue:v14 entityID:v28];
               v30 = sub_100004F84();
@@ -849,8 +849,8 @@ LABEL_31:
                 _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Totally new address encountered, adding: %@", buf, 0xCu);
               }
 
-              self = v44;
-              [(NSMutableArray *)v44->_addresses addObject:v29];
+              self = selfCopy;
+              [(NSMutableArray *)selfCopy->_addresses addObject:v29];
             }
           }
 
@@ -870,9 +870,9 @@ LABEL_31:
 
   else if (v11)
   {
-    v33 = [(PHMeCardGeocoder *)self contactStore];
+    contactStore2 = [(PHMeCardGeocoder *)self contactStore];
     *buf = 138412290;
-    v65 = v33;
+    v65 = contactStore2;
     _os_log_impl(&_mh_execute_header, obj, OS_LOG_TYPE_DEFAULT, "Could not retrieve a Me card using contact store %@.", buf, 0xCu);
   }
 
@@ -939,10 +939,10 @@ LABEL_31:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) locationDictionary];
-        if (v9)
+        locationDictionary = [*(*(&v12 + 1) + 8 * i) locationDictionary];
+        if (locationDictionary)
         {
-          [v3 addObject:v9];
+          [v3 addObject:locationDictionary];
         }
       }
 
@@ -960,20 +960,20 @@ LABEL_31:
 - (BOOL)isActivelyUsing
 {
   v2 = +[_PHMeCardGeocoderPreferences sharedPreferences];
-  v3 = [v2 isActivelyUsing];
+  isActivelyUsing = [v2 isActivelyUsing];
 
-  return v3;
+  return isActivelyUsing;
 }
 
-- (void)setActivelyUsing:(BOOL)a3
+- (void)setActivelyUsing:(BOOL)using
 {
-  v3 = a3;
-  if ([(PHMeCardGeocoder *)self isActivelyUsing]!= a3)
+  usingCopy = using;
+  if ([(PHMeCardGeocoder *)self isActivelyUsing]!= using)
   {
     v5 = +[_PHMeCardGeocoderPreferences sharedPreferences];
-    [v5 setActivelyUsing:v3];
+    [v5 setActivelyUsing:usingCopy];
 
-    if (v3)
+    if (usingCopy)
     {
       v6 = sub_100004F84();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -993,29 +993,29 @@ LABEL_31:
   }
 }
 
-- (void)handleCNContactStoreDidChangeNotification:(id)a3
+- (void)handleCNContactStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412546;
     v12 = v6;
     v13 = 2112;
-    v14 = v8;
+    v14 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", buf, 0x16u);
   }
 
-  v9 = [(PHMeCardGeocoder *)self workQueue];
+  workQueue = [(PHMeCardGeocoder *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B773C;
   block[3] = &unk_100356988;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(workQueue, block);
 }
 
 @end

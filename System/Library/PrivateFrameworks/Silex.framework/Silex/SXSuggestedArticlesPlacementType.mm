@@ -1,44 +1,44 @@
 @interface SXSuggestedArticlesPlacementType
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4;
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
++ (Class)classForProtocolProperty:(id)property withValue:(id)value;
++ (id)valueClassBlockForPropertyWithName:(id)name;
 - (NSString)description;
-- (unint64_t)themeWithValue:(id)a3 withType:(int)a4;
+- (unint64_t)themeWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXSuggestedArticlesPlacementType
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"conditional"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"conditional"])
   {
     v5 = &__block_literal_global_15;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXSuggestedArticlesPlacementType;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4
++ (Class)classForProtocolProperty:(id)property withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"layout"])
+  propertyCopy = property;
+  valueCopy = value;
+  if ([propertyCopy isEqualToString:@"layout"])
   {
     v8 = objc_opt_class();
   }
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___SXSuggestedArticlesPlacementType;
-    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, v6, v7);
+    v8 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, propertyCopy, valueCopy);
   }
 
   v9 = v8;
@@ -46,16 +46,16 @@
   return v9;
 }
 
-- (unint64_t)themeWithValue:(id)a3 withType:(int)a4
+- (unint64_t)themeWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 != 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type != 3)
   {
     goto LABEL_8;
   }
 
-  if (([v5 isEqualToString:@"dark"] & 1) == 0)
+  if (([valueCopy isEqualToString:@"dark"] & 1) == 0)
   {
     if ([v6 isEqualToString:@"light"])
     {
@@ -84,8 +84,8 @@ LABEL_9:
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
   [v3 appendFormat:@"; enabled: %d", -[SXSuggestedArticlesPlacementType enabled](self, "enabled")];
-  v4 = [(SXSuggestedArticlesPlacementType *)self layout];
-  [v3 appendFormat:@"; layout: %@", v4];
+  layout = [(SXSuggestedArticlesPlacementType *)self layout];
+  [v3 appendFormat:@"; layout: %@", layout];
 
   [v3 appendFormat:@"; theme: %lu", -[SXSuggestedArticlesPlacementType theme](self, "theme")];
   [v3 appendString:@">"];

@@ -2,28 +2,28 @@
 - (UIEdgeInsets)layoutInsets;
 - (_MFStackContainerViewDelegate)delegate;
 - (void)didMoveToWindow;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _MFStackContainerView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
-    v4 = [(_MFStackContainerView *)self delegate];
-    [v4 stackContainerViewWillBecomeVisible:self];
+    delegate = [(_MFStackContainerView *)self delegate];
+    [delegate stackContainerViewWillBecomeVisible:self];
   }
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(_MFStackContainerView *)self window];
+  window = [(_MFStackContainerView *)self window];
 
-  if (!v3)
+  if (!window)
   {
-    v4 = [(_MFStackContainerView *)self delegate];
-    [v4 stackContainerViewDidBecomeInvisible:self];
+    delegate = [(_MFStackContainerView *)self delegate];
+    [delegate stackContainerViewDidBecomeInvisible:self];
   }
 }
 

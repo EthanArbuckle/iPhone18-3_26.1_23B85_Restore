@@ -1,64 +1,64 @@
 @interface AEAnnotation
-+ (id)predicateForAnnotationsWithAssetID:(id)a3 ordinal:(int)a4;
++ (id)predicateForAnnotationsWithAssetID:(id)d ordinal:(int)ordinal;
 - (BKLocation)location;
-- (BOOL)isLocationSame:(id)a3;
+- (BOOL)isLocationSame:(id)same;
 - (int64_t)ordinal;
-- (void)setLocation:(id)a3;
-- (void)setOrdinal:(int64_t)a3;
+- (void)setLocation:(id)location;
+- (void)setOrdinal:(int64_t)ordinal;
 @end
 
 @implementation AEAnnotation
 
-+ (id)predicateForAnnotationsWithAssetID:(id)a3 ordinal:(int)a4
++ (id)predicateForAnnotationsWithAssetID:(id)d ordinal:(int)ordinal
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&ordinal;
+  dCopy = d;
   v6 = +[AEAnnotation userAnnotationTypeValues];
-  v7 = [NSPredicate predicateWithFormat:@"annotationAssetID ==[n] %@ AND plLocationRangeStart == %d AND (annotationType IN %@) AND annotationDeleted == 0", v5, v4, v6, 0];
+  v7 = [NSPredicate predicateWithFormat:@"annotationAssetID ==[n] %@ AND plLocationRangeStart == %d AND (annotationType IN %@) AND annotationDeleted == 0", dCopy, v4, v6, 0];
 
   return v7;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v7 = a3;
+  locationCopy = location;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v7 cfiString];
-    [(AEAnnotation *)self setAnnotationLocation:v4];
+    cfiString = [locationCopy cfiString];
+    [(AEAnnotation *)self setAnnotationLocation:cfiString];
 
     [(AEAnnotation *)self setPlUserData:0];
   }
 
   else
   {
-    if (v7)
+    if (locationCopy)
     {
-      v5 = [v7 serializeLocationToData];
+      serializeLocationToData = [locationCopy serializeLocationToData];
     }
 
     else
     {
-      v5 = 0;
+      serializeLocationToData = 0;
     }
 
-    [(AEAnnotation *)self setPlUserData:v5];
+    [(AEAnnotation *)self setPlUserData:serializeLocationToData];
     [(AEAnnotation *)self setAnnotationLocation:0];
   }
 
-  v6 = [[NSNumber alloc] initWithInteger:{objc_msgSend(v7, "ordinal")}];
+  v6 = [[NSNumber alloc] initWithInteger:{objc_msgSend(locationCopy, "ordinal")}];
   [(AEAnnotation *)self setPlLocationRangeStart:v6];
 }
 
 - (BKLocation)location
 {
-  v3 = [(AEAnnotation *)self annotationLocation];
-  if ([v3 length])
+  annotationLocation = [(AEAnnotation *)self annotationLocation];
+  if ([annotationLocation length])
   {
     v13 = 0;
-    v4 = [BKEpubCFILocation locationForCFI:v3 error:&v13];
-    v5 = v13;
+    v4 = [BKEpubCFILocation locationForCFI:annotationLocation error:&v13];
+    plUserData = v13;
     if (v4)
     {
       goto LABEL_23;
@@ -80,21 +80,21 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v15 = v3;
+      v15 = annotationLocation;
       v16 = 2112;
-      v17 = v5;
+      v17 = plUserData;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "@Failed to create BKLocation from CFI {%@} error {%@}", buf, 0x16u);
     }
   }
 
-  v5 = [(AEAnnotation *)self plUserData];
-  if (!v5)
+  plUserData = [(AEAnnotation *)self plUserData];
+  if (!plUserData)
   {
     v4 = 0;
     goto LABEL_23;
   }
 
-  v8 = [NSPropertyListSerialization propertyListWithData:v5 options:0 format:0 error:0];
+  v8 = [NSPropertyListSerialization propertyListWithData:plUserData options:0 format:0 error:0];
   v9 = [v8 objectForKey:@"class"];
   if ([v9 isEqualToString:@"BKEpubLocation"])
   {
@@ -134,18 +134,18 @@ LABEL_23:
   return v4;
 }
 
-- (BOOL)isLocationSame:(id)a3
+- (BOOL)isLocationSame:(id)same
 {
-  v4 = a3;
-  v5 = [(AEAnnotation *)self plUserData];
+  sameCopy = same;
+  plUserData = [(AEAnnotation *)self plUserData];
 
-  if (!v5)
+  if (!plUserData)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v4 cfiString];
-      v8 = [(AEAnnotation *)self annotationLocation];
+      cfiString = [sameCopy cfiString];
+      annotationLocation = [(AEAnnotation *)self annotationLocation];
       goto LABEL_6;
     }
 
@@ -154,34 +154,34 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(AEAnnotation *)self ordinal];
-  if (v6 != [v4 ordinal])
+  ordinal = [(AEAnnotation *)self ordinal];
+  if (ordinal != [sameCopy ordinal])
   {
     goto LABEL_7;
   }
 
-  v7 = [v4 serializeLocationToData];
-  v8 = [(AEAnnotation *)self plUserData];
+  cfiString = [sameCopy serializeLocationToData];
+  annotationLocation = [(AEAnnotation *)self plUserData];
 LABEL_6:
-  v9 = v8;
-  v10 = [v7 isEqual:v8];
+  v9 = annotationLocation;
+  v10 = [cfiString isEqual:annotationLocation];
 
 LABEL_8:
   return v10;
 }
 
-- (void)setOrdinal:(int64_t)a3
+- (void)setOrdinal:(int64_t)ordinal
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:ordinal];
   [(AEAnnotation *)self setPlLocationRangeStart:v4];
 }
 
 - (int64_t)ordinal
 {
-  v2 = [(AEAnnotation *)self plLocationRangeStart];
-  v3 = [v2 integerValue];
+  plLocationRangeStart = [(AEAnnotation *)self plLocationRangeStart];
+  integerValue = [plLocationRangeStart integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 @end

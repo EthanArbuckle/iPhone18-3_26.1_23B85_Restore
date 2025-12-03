@@ -1,20 +1,20 @@
 @interface STKTextAlertViewController
 - (BOOL)_sendsResponseUponDisplay;
-- (BOOL)validateAction:(id)a3;
+- (BOOL)validateAction:(id)action;
 - (id)alertText;
 - (id)newBottomBar;
 - (id)newTopBar;
-- (void)accept:(id)a3;
+- (void)accept:(id)accept;
 - (void)dismiss;
-- (void)dismiss:(id)a3;
+- (void)dismiss:(id)dismiss;
 - (void)leftNavigationButtonPressed;
 @end
 
 @implementation STKTextAlertViewController
 
-- (BOOL)validateAction:(id)a3
+- (BOOL)validateAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -23,11 +23,11 @@
 
 - (BOOL)_sendsResponseUponDisplay
 {
-  v2 = [(STKBaseAlertViewController *)self sessionAction];
-  v3 = [v2 behavior];
-  v4 = [v3 shouldSendResponseUponDisplay];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  behavior = [sessionAction behavior];
+  shouldSendResponseUponDisplay = [behavior shouldSendResponseUponDisplay];
 
-  return v4;
+  return shouldSendResponseUponDisplay;
 }
 
 - (id)newTopBar
@@ -58,10 +58,10 @@
 
 - (id)newBottomBar
 {
-  v3 = [(STKTextAlertViewController *)self interfaceOrientation];
+  interfaceOrientation = [(STKTextAlertViewController *)self interfaceOrientation];
   if ([(STKTextAlertViewController *)self _sendsResponseUponDisplay])
   {
-    v4 = [[TPBottomSingleButtonBar alloc] initWithDefaultSizeForOrientation:v3];
+    v4 = [[TPBottomSingleButtonBar alloc] initWithDefaultSizeForOrientation:interfaceOrientation];
     v5 = [TPButton alloc];
     v6 = [NSBundle bundleWithIdentifier:@"com.apple.CTNotifyUIService"];
     v7 = [v6 localizedStringForKey:@"DISMISS_SIM_TOOLKIT" value:&stru_100018670 table:@"SIMToolkitUI"];
@@ -77,7 +77,7 @@
 
   else
   {
-    v4 = [[TPBottomDoubleButtonBar alloc] initWithDefaultSizeForOrientation:v3];
+    v4 = [[TPBottomDoubleButtonBar alloc] initWithDefaultSizeForOrientation:interfaceOrientation];
     v10 = [TPButton alloc];
     v11 = [NSBundle bundleWithIdentifier:@"com.apple.CTNotifyUIService"];
     v12 = [v11 localizedStringForKey:@"CANCEL" value:&stru_100018670 table:@"SIMToolkitUI"];
@@ -121,8 +121,8 @@
 {
   if (![(STKTextAlertViewController *)self _sendsResponseUponDisplay])
   {
-    v3 = [(STKBaseAlertViewController *)self sessionAction];
-    [v3 sendResponse:4];
+    sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+    [sessionAction sendResponse:4];
   }
 
   [(STKTextAlertViewController *)self dismiss];
@@ -130,30 +130,30 @@
 
 - (id)alertText
 {
-  v2 = [(STKBaseAlertViewController *)self sessionAction];
-  v3 = [v2 sessionData];
-  v4 = [v3 text];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  sessionData = [sessionAction sessionData];
+  text = [sessionData text];
 
-  return v4;
+  return text;
 }
 
-- (void)accept:(id)a3
+- (void)accept:(id)accept
 {
   if (![(STKTextAlertViewController *)self _sendsResponseUponDisplay])
   {
-    v4 = [(STKBaseAlertViewController *)self sessionAction];
-    [v4 sendResponse:0];
+    sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+    [sessionAction sendResponse:0];
   }
 
   [(STKTextAlertViewController *)self dismiss];
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
   if (![(STKTextAlertViewController *)self _sendsResponseUponDisplay])
   {
-    v4 = [(STKBaseAlertViewController *)self sessionAction];
-    [v4 sendResponse:1];
+    sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+    [sessionAction sendResponse:1];
   }
 
   [(STKTextAlertViewController *)self dismiss];

@@ -1,21 +1,21 @@
 @interface RBSNotPredicate
-- (BOOL)isEqual:(id)a3;
-- (RBSNotPredicate)initWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RBSNotPredicate)initWithRBSXPCCoder:(id)coder;
 - (id)description;
-- (id)initNotWithPredicate:(id *)a1;
+- (id)initNotWithPredicate:(id *)predicate;
 @end
 
 @implementation RBSNotPredicate
 
-- (RBSNotPredicate)initWithRBSXPCCoder:(id)a3
+- (RBSNotPredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RBSNotPredicate;
   v5 = [(RBSNotPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_predicate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_predicate"];
     predicate = v5->_predicate;
     v5->_predicate = v6;
   }
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_10;
   }
@@ -38,7 +38,7 @@
   }
 
   predicate = self->_predicate;
-  v8 = v4->_predicate;
+  v8 = equalCopy->_predicate;
   if (predicate == v8)
   {
 LABEL_10:
@@ -78,22 +78,22 @@ LABEL_11:
   return v5;
 }
 
-- (id)initNotWithPredicate:(id *)a1
+- (id)initNotWithPredicate:(id *)predicate
 {
   v4 = a2;
-  if (a1)
+  if (predicate)
   {
-    v7.receiver = a1;
+    v7.receiver = predicate;
     v7.super_class = RBSNotPredicate;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    predicate = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return predicate;
 }
 
 @end

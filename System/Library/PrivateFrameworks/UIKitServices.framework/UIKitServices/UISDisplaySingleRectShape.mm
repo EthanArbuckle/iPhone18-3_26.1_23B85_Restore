@@ -1,9 +1,9 @@
 @interface UISDisplaySingleRectShape
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)rect;
-- (UISDisplaySingleRectShape)initWithRect:(CGRect)a3;
-- (UISDisplaySingleRectShape)initWithXPCDictionary:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (UISDisplaySingleRectShape)initWithRect:(CGRect)rect;
+- (UISDisplaySingleRectShape)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation UISDisplaySingleRectShape
@@ -21,12 +21,12 @@
   return result;
 }
 
-- (UISDisplaySingleRectShape)initWithRect:(CGRect)a3
+- (UISDisplaySingleRectShape)initWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = UISDisplaySingleRectShape;
   result = [(UISDisplaySingleRectShape *)&v8 init];
@@ -41,21 +41,21 @@
   return result;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v4.receiver = self;
   v4.super_class = UISDisplaySingleRectShape;
-  v3 = a3;
-  [(UISDisplayShape *)&v4 encodeWithXPCDictionary:v3];
+  dictionaryCopy = dictionary;
+  [(UISDisplayShape *)&v4 encodeWithXPCDictionary:dictionaryCopy];
   BSSerializeCGRectToXPCDictionaryWithKey();
 }
 
-- (UISDisplaySingleRectShape)initWithXPCDictionary:(id)a3
+- (UISDisplaySingleRectShape)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = UISDisplaySingleRectShape;
-  v5 = [(UISDisplayShape *)&v13 initWithXPCDictionary:v4];
+  v5 = [(UISDisplayShape *)&v13 initWithXPCDictionary:dictionaryCopy];
   v6 = v5;
   if (v5)
   {
@@ -70,16 +70,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v18 = 1;
     goto LABEL_7;

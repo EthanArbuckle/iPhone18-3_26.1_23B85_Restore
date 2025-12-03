@@ -1,40 +1,40 @@
 @interface HFAbstractRangeStatusItem
-+ (BOOL)shouldShowAverageForRange:(id)a3;
++ (BOOL)shouldShowAverageForRange:(id)range;
 + (NSSet)serviceTypes;
 + (id)_defaultValueFormatter;
 + (id)controllableServiceTypes;
 + (id)currentModeCharacteristicTypes;
 + (id)currentValueCharacteristicType;
-+ (id)descriptionStringForCharacteristicType:(id)a3 withResponses:(id)a4;
++ (id)descriptionStringForCharacteristicType:(id)type withResponses:(id)responses;
 + (id)displayValueComparator;
-+ (id)formatValue:(id)a3 forCharacteristic:(id)a4;
++ (id)formatValue:(id)value forCharacteristic:(id)characteristic;
 + (id)maximumTargetValueCharacteristicType;
 + (id)minimumTargetValueCharacteristicType;
 + (id)sensorServiceTypes;
 + (id)targetModeCharacteristicTypes;
 + (id)targetValueCharacteristicType;
 + (id)unknownValueDescriptionString;
-+ (id)valueRangeForCharacteristicType:(id)a3 withResponses:(id)a4;
-+ (unint64_t)abstractCurrentModeInResponse:(id)a3;
-+ (unint64_t)abstractTargetModeInResponse:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
++ (id)valueRangeForCharacteristicType:(id)type withResponses:(id)responses;
++ (unint64_t)abstractCurrentModeInResponse:(id)response;
++ (unint64_t)abstractTargetModeInResponse:(id)response;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFAbstractRangeStatusItem
 
 + (NSSet)serviceTypes
 {
-  v3 = [a1 controllableServiceTypes];
-  v4 = [a1 sensorServiceTypes];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  controllableServiceTypes = [self controllableServiceTypes];
+  sensorServiceTypes = [self sensorServiceTypes];
+  v5 = [controllableServiceTypes setByAddingObjectsFromSet:sensorServiceTypes];
 
   return v5;
 }
 
 + (id)controllableServiceTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:55 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem controllableServiceTypes]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:55 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem controllableServiceTypes]", objc_opt_class()}];
 
   v5 = MEMORY[0x277CBEB98];
 
@@ -43,8 +43,8 @@
 
 + (id)sensorServiceTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:62 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem sensorServiceTypes]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:62 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem sensorServiceTypes]", objc_opt_class()}];
 
   v5 = MEMORY[0x277CBEB98];
 
@@ -53,40 +53,40 @@
 
 + (id)currentValueCharacteristicType
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:69 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem currentValueCharacteristicType]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:69 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem currentValueCharacteristicType]", objc_opt_class()}];
 
   return 0;
 }
 
 + (id)targetValueCharacteristicType
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:76 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem targetValueCharacteristicType]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:76 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem targetValueCharacteristicType]", objc_opt_class()}];
 
   return 0;
 }
 
 + (id)minimumTargetValueCharacteristicType
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:83 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem minimumTargetValueCharacteristicType]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:83 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem minimumTargetValueCharacteristicType]", objc_opt_class()}];
 
   return 0;
 }
 
 + (id)maximumTargetValueCharacteristicType
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:90 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem maximumTargetValueCharacteristicType]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:90 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem maximumTargetValueCharacteristicType]", objc_opt_class()}];
 
   return 0;
 }
 
 + (id)currentModeCharacteristicTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:97 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem currentModeCharacteristicTypes]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:97 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem currentModeCharacteristicTypes]", objc_opt_class()}];
 
   v5 = MEMORY[0x277CBEB98];
 
@@ -95,8 +95,8 @@
 
 + (id)targetModeCharacteristicTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:104 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem targetModeCharacteristicTypes]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:104 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem targetModeCharacteristicTypes]", objc_opt_class()}];
 
   v5 = MEMORY[0x277CBEB98];
 
@@ -105,51 +105,51 @@
 
 + (id)unknownValueDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:111 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem unknownValueDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:111 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem unknownValueDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 + (id)displayValueComparator
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:124 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem displayValueComparator]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:124 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem displayValueComparator]", objc_opt_class()}];
 
   return 0;
 }
 
-+ (unint64_t)abstractTargetModeInResponse:(id)a3
++ (unint64_t)abstractTargetModeInResponse:(id)response
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:136 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem abstractTargetModeInResponse:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:136 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem abstractTargetModeInResponse:]", objc_opt_class()}];
 
   return 0;
 }
 
-+ (unint64_t)abstractCurrentModeInResponse:(id)a3
++ (unint64_t)abstractCurrentModeInResponse:(id)response
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:142 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem abstractCurrentModeInResponse:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:142 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem abstractCurrentModeInResponse:]", objc_opt_class()}];
 
   return 0;
 }
 
-+ (BOOL)shouldShowAverageForRange:(id)a3
++ (BOOL)shouldShowAverageForRange:(id)range
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"HFAbstractRangeStatusItem.m" lineNumber:155 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem shouldShowAverageForRange:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractRangeStatusItem.m" lineNumber:155 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractRangeStatusItem shouldShowAverageForRange:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() controllableServiceTypes];
-  v6 = [objc_opt_class() sensorServiceTypes];
-  v7 = [v5 setByAddingObjectsFromSet:v6];
+  optionsCopy = options;
+  controllableServiceTypes = [objc_opt_class() controllableServiceTypes];
+  sensorServiceTypes = [objc_opt_class() sensorServiceTypes];
+  v7 = [controllableServiceTypes setByAddingObjectsFromSet:sensorServiceTypes];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -159,42 +159,42 @@
   v8 = [v7 na_flatMap:v39];
   v9 = [v8 mutableCopy];
 
-  v10 = [objc_opt_class() currentValueCharacteristicType];
-  [v9 addObject:v10];
+  currentValueCharacteristicType = [objc_opt_class() currentValueCharacteristicType];
+  [v9 addObject:currentValueCharacteristicType];
 
-  v11 = [objc_opt_class() targetValueCharacteristicType];
-  [v9 na_safeAddObject:v11];
+  targetValueCharacteristicType = [objc_opt_class() targetValueCharacteristicType];
+  [v9 na_safeAddObject:targetValueCharacteristicType];
 
-  v12 = [objc_opt_class() minimumTargetValueCharacteristicType];
-  [v9 addObject:v12];
+  minimumTargetValueCharacteristicType = [objc_opt_class() minimumTargetValueCharacteristicType];
+  [v9 addObject:minimumTargetValueCharacteristicType];
 
-  v13 = [objc_opt_class() maximumTargetValueCharacteristicType];
-  [v9 addObject:v13];
+  maximumTargetValueCharacteristicType = [objc_opt_class() maximumTargetValueCharacteristicType];
+  [v9 addObject:maximumTargetValueCharacteristicType];
 
-  v14 = [objc_opt_class() currentModeCharacteristicTypes];
-  [v9 unionSet:v14];
+  currentModeCharacteristicTypes = [objc_opt_class() currentModeCharacteristicTypes];
+  [v9 unionSet:currentModeCharacteristicTypes];
 
-  v15 = [objc_opt_class() targetModeCharacteristicTypes];
-  [v9 unionSet:v15];
+  targetModeCharacteristicTypes = [objc_opt_class() targetModeCharacteristicTypes];
+  [v9 unionSet:targetModeCharacteristicTypes];
 
-  v16 = [objc_opt_class() controllableServiceTypes];
-  v17 = [v16 allObjects];
-  v18 = [objc_opt_class() currentValueCharacteristicType];
-  v41[0] = v18;
+  controllableServiceTypes2 = [objc_opt_class() controllableServiceTypes];
+  allObjects = [controllableServiceTypes2 allObjects];
+  currentValueCharacteristicType2 = [objc_opt_class() currentValueCharacteristicType];
+  v41[0] = currentValueCharacteristicType2;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
-  v20 = [(HFStatusItem *)self filteredServicesOfTypes:v17 containingCharacteristicTypes:v19];
+  v20 = [(HFStatusItem *)self filteredServicesOfTypes:allObjects containingCharacteristicTypes:v19];
 
-  v21 = [objc_opt_class() sensorServiceTypes];
-  v22 = [v21 allObjects];
-  v23 = [objc_opt_class() currentValueCharacteristicType];
-  v40 = v23;
+  sensorServiceTypes2 = [objc_opt_class() sensorServiceTypes];
+  allObjects2 = [sensorServiceTypes2 allObjects];
+  currentValueCharacteristicType3 = [objc_opt_class() currentValueCharacteristicType];
+  v40 = currentValueCharacteristicType3;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
-  v25 = [(HFStatusItem *)self filteredServicesOfTypes:v22 containingCharacteristicTypes:v24];
+  v25 = [(HFStatusItem *)self filteredServicesOfTypes:allObjects2 containingCharacteristicTypes:v24];
 
   v26 = [v20 setByAddingObjectsFromSet:v25];
   objc_initWeak(&location, self);
-  v27 = [(HFStatusItem *)self valueSource];
-  v28 = [v27 readValuesForCharacteristicTypes:v9 inServices:v26];
+  valueSource = [(HFStatusItem *)self valueSource];
+  v28 = [valueSource readValuesForCharacteristicTypes:v9 inServices:v26];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __57__HFAbstractRangeStatusItem__subclass_updateWithOptions___block_invoke_2;
@@ -326,17 +326,17 @@ BOOL __57__HFAbstractRangeStatusItem__subclass_updateWithOptions___block_invoke_
   return v3;
 }
 
-+ (id)valueRangeForCharacteristicType:(id)a3 withResponses:(id)a4
++ (id)valueRangeForCharacteristicType:(id)type withResponses:(id)responses
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  responsesCopy = responses;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __75__HFAbstractRangeStatusItem_valueRangeForCharacteristicType_withResponses___block_invoke;
   v32[3] = &unk_277DF7BA8;
-  v8 = v6;
+  v8 = typeCopy;
   v33 = v8;
-  v9 = [v7 na_map:v32];
+  v9 = [responsesCopy na_map:v32];
   if ([v9 count])
   {
     v26 = 0;
@@ -344,13 +344,13 @@ BOOL __57__HFAbstractRangeStatusItem__subclass_updateWithOptions___block_invoke_
     v28 = 0x3032000000;
     v29 = __Block_byref_object_copy__9;
     v30 = __Block_byref_object_dispose__9;
-    v31 = [v9 anyObject];
+    anyObject = [v9 anyObject];
     v20 = 0;
     v21 = &v20;
     v22 = 0x3032000000;
     v23 = __Block_byref_object_copy__9;
     v24 = __Block_byref_object_dispose__9;
-    v25 = [v9 anyObject];
+    anyObject2 = [v9 anyObject];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __75__HFAbstractRangeStatusItem_valueRangeForCharacteristicType_withResponses___block_invoke_24;
@@ -359,7 +359,7 @@ BOOL __57__HFAbstractRangeStatusItem__subclass_updateWithOptions___block_invoke_
     v19[5] = &v20;
     [v9 na_each:v19];
     v10 = [HFNumberRange rangeWithMaxValue:v21[5] minValue:v27[5]];
-    if ([a1 shouldShowAverageForRange:v10])
+    if ([self shouldShowAverageForRange:v10])
     {
       v15 = 0;
       v16 = &v15;
@@ -431,87 +431,87 @@ double __75__HFAbstractRangeStatusItem_valueRangeForCharacteristicType_withRespo
   return result;
 }
 
-+ (id)descriptionStringForCharacteristicType:(id)a3 withResponses:(id)a4
++ (id)descriptionStringForCharacteristicType:(id)type withResponses:(id)responses
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 anyObject];
-  v9 = [v8 responseForCharacteristicType:v7];
-  v10 = [v9 characteristic];
+  responsesCopy = responses;
+  typeCopy = type;
+  anyObject = [responsesCopy anyObject];
+  v9 = [anyObject responseForCharacteristicType:typeCopy];
+  characteristic = [v9 characteristic];
 
-  v11 = [objc_opt_class() valueRangeForCharacteristicType:v7 withResponses:v6];
+  v11 = [objc_opt_class() valueRangeForCharacteristicType:typeCopy withResponses:responsesCopy];
 
-  v12 = [v11 midValue];
-  v13 = [v12 integerValue];
+  midValue = [v11 midValue];
+  integerValue = [midValue integerValue];
 
-  if (v13 == 0x7FFFFFFFFFFFFFFFLL)
+  if (integerValue == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [objc_opt_class() unknownValueDescriptionString];
+    unknownValueDescriptionString = [objc_opt_class() unknownValueDescriptionString];
     goto LABEL_12;
   }
 
-  if ([a1 shouldShowAverageForRange:v11])
+  if ([self shouldShowAverageForRange:v11])
   {
-    v15 = [v11 midValue];
-    v14 = [a1 formatValue:v15 forCharacteristic:v10];
+    midValue2 = [v11 midValue];
+    unknownValueDescriptionString = [self formatValue:midValue2 forCharacteristic:characteristic];
 
     goto LABEL_12;
   }
 
-  v16 = [objc_opt_class() customValueFormatter];
-  v17 = v16;
-  if (v16)
+  customValueFormatter = [objc_opt_class() customValueFormatter];
+  v17 = customValueFormatter;
+  if (customValueFormatter)
   {
-    v18 = v16;
+    _defaultValueFormatter = customValueFormatter;
 LABEL_10:
-    v20 = v18;
+    percentFormatter = _defaultValueFormatter;
     goto LABEL_11;
   }
 
   if (([objc_opt_class() isPercentRange] & 1) == 0)
   {
-    v18 = [objc_opt_class() _defaultValueFormatter];
+    _defaultValueFormatter = [objc_opt_class() _defaultValueFormatter];
     goto LABEL_10;
   }
 
   v19 = +[HFFormatterManager sharedInstance];
-  v20 = [v19 percentFormatter];
+  percentFormatter = [v19 percentFormatter];
 
 LABEL_11:
-  v21 = [[HFNumberRangeFormatter alloc] initWithNumberFormatter:v20];
+  v21 = [[HFNumberRangeFormatter alloc] initWithNumberFormatter:percentFormatter];
   [(HFNumberRangeFormatter *)v21 setConsolidatesUnit:1];
   [(HFNumberRangeFormatter *)v21 setSimplifiesEqualValues:1];
-  v14 = [(HFNumberRangeFormatter *)v21 stringForNumberRange:v11];
+  unknownValueDescriptionString = [(HFNumberRangeFormatter *)v21 stringForNumberRange:v11];
 
 LABEL_12:
 
-  return v14;
+  return unknownValueDescriptionString;
 }
 
-+ (id)formatValue:(id)a3 forCharacteristic:(id)a4
++ (id)formatValue:(id)value forCharacteristic:(id)characteristic
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() customValueFormatter];
-  if (v7)
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  customValueFormatter = [objc_opt_class() customValueFormatter];
+  if (customValueFormatter)
   {
 
 LABEL_5:
-    v12 = [objc_opt_class() customValueFormatter];
-    v13 = v12;
-    if (v12)
+    customValueFormatter2 = [objc_opt_class() customValueFormatter];
+    v13 = customValueFormatter2;
+    if (customValueFormatter2)
     {
-      v14 = v12;
+      _defaultValueFormatter = customValueFormatter2;
     }
 
     else
     {
-      v14 = [objc_opt_class() _defaultValueFormatter];
+      _defaultValueFormatter = [objc_opt_class() _defaultValueFormatter];
     }
 
-    v9 = v14;
+    percentFormatter = _defaultValueFormatter;
 
-    v11 = [v9 stringForObjectValue:v5];
+    v11 = [percentFormatter stringForObjectValue:valueCopy];
     goto LABEL_9;
   }
 
@@ -521,10 +521,10 @@ LABEL_5:
   }
 
   v8 = +[HFFormatterManager sharedInstance];
-  v9 = [v8 percentFormatter];
+  percentFormatter = [v8 percentFormatter];
 
-  v10 = [[HFRelativePercentValue alloc] initWithValue:v5 forCharacteristic:v6];
-  v11 = [v9 stringForRelativePercentValue:v10];
+  v10 = [[HFRelativePercentValue alloc] initWithValue:valueCopy forCharacteristic:characteristicCopy];
+  v11 = [percentFormatter stringForRelativePercentValue:v10];
 
 LABEL_9:
 
@@ -536,15 +536,15 @@ LABEL_9:
   if ([objc_opt_class() isPercentRange])
   {
     v2 = +[HFFormatterManager sharedInstance];
-    v3 = [v2 percentFormatter];
+    percentFormatter = [v2 percentFormatter];
   }
 
   else
   {
-    v3 = objc_alloc_init(MEMORY[0x277CCABB8]);
+    percentFormatter = objc_alloc_init(MEMORY[0x277CCABB8]);
   }
 
-  return v3;
+  return percentFormatter;
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface HDWorkoutBasicDataSource
-- (HDWorkoutBasicDataSource)initWithConfiguration:(id)a3 client:(id)a4;
+- (HDWorkoutBasicDataSource)initWithConfiguration:(id)configuration client:(id)client;
 - (NSSet)sampleTypesToCollect;
 - (id)_takeHeartRateCollectionAssertion;
-- (id)transactionalQuantityInsertHandlerForProfile:(id)a3 journaled:(BOOL)a4 count:(int64_t)a5;
+- (id)transactionalQuantityInsertHandlerForProfile:(id)profile journaled:(BOOL)journaled count:(int64_t)count;
 - (uint64_t)_stopCollection;
-- (void)_stopObservingSampleTypes:(uint64_t)a1;
-- (void)aggregator:(id)a3 didCollectSensorData:(id)a4 objectType:(id)a5 device:(id)a6;
-- (void)dataCollectionObservationStateDidChangeForClient:(id)a3;
+- (void)_stopObservingSampleTypes:(uint64_t)types;
+- (void)aggregator:(id)aggregator didCollectSensorData:(id)data objectType:(id)type device:(id)device;
+- (void)dataCollectionObservationStateDidChangeForClient:(id)client;
 - (void)dealloc;
-- (void)setSampleTypesToCollect:(id)a3;
-- (void)setSessionServer:(id)a3;
+- (void)setSampleTypesToCollect:(id)collect;
+- (void)setSessionServer:(id)server;
 - (void)stopCollectionOnConnectionInvalidation;
-- (void)workoutDataDestination:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)workoutDataDestination:(id)a3 didUpdateConfiguration:(id)a4;
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5;
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6;
+- (void)workoutDataDestination:(id)destination didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)workoutDataDestination:(id)destination didUpdateConfiguration:(id)configuration;
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to;
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date;
 @end
 
 @implementation HDWorkoutBasicDataSource
 
-- (HDWorkoutBasicDataSource)initWithConfiguration:(id)a3 client:(id)a4
+- (HDWorkoutBasicDataSource)initWithConfiguration:(id)configuration client:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  clientCopy = client;
   v27.receiver = self;
   v27.super_class = HDWorkoutBasicDataSource;
   v9 = [(HDWorkoutBasicDataSource *)&v27 init];
   if (v9)
   {
-    v10 = [v8 profile];
-    objc_storeWeak(&v9->_profile, v10);
+    profile = [clientCopy profile];
+    objc_storeWeak(&v9->_profile, profile);
 
-    objc_storeStrong(&v9->_client, a4);
-    objc_storeStrong(&v9->_workoutConfiguration, a3);
+    objc_storeStrong(&v9->_client, client);
+    objc_storeStrong(&v9->_workoutConfiguration, configuration);
     v11 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     lock = v9->_lock;
     v9->_lock = v11;
@@ -51,7 +51,7 @@
     sampleTypesToCollect = v9->_sampleTypesToCollect;
     v9->_sampleTypesToCollect = v18;
 
-    v20 = [[HDClientDataCollectionObservationStateMonitor alloc] initWithClient:v8 delegate:v9];
+    v20 = [[HDClientDataCollectionObservationStateMonitor alloc] initWithClient:clientCopy delegate:v9];
     clientStateMonitor = v9->_clientStateMonitor;
     v9->_clientStateMonitor = v20;
 
@@ -74,7 +74,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@:stopping collection on connection invalidation", &v5, 0xCu);
   }
 
@@ -106,9 +106,9 @@
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(HDWorkoutBasicDataSource *)self workoutDataProcessorUUID];
+    workoutDataProcessorUUID = [(HDWorkoutBasicDataSource *)self workoutDataProcessorUUID];
     *buf = 138412290;
-    v9 = v5;
+    v9 = workoutDataProcessorUUID;
     _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "Basic data source deallocated: %@.", buf, 0xCu);
   }
 
@@ -160,18 +160,18 @@ void __43__HDWorkoutBasicDataSource__stopCollection__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopObservingSampleTypes:(uint64_t)a1
+- (void)_stopObservingSampleTypes:(uint64_t)types
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (types)
   {
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v25 = a1;
+      typesCopy = types;
       v26 = 2114;
       v27 = v3;
       _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Ending observation of types: %{public}@", buf, 0x16u);
@@ -202,16 +202,16 @@ void __43__HDWorkoutBasicDataSource__stopCollection__block_invoke(uint64_t a1)
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            WeakRetained = objc_loadWeakRetained((a1 + 8));
-            v12 = [WeakRetained dataManager];
-            v13 = [v12 quantitySeriesManager];
-            [v13 removeObserver:a1 forType:v10];
+            WeakRetained = objc_loadWeakRetained((types + 8));
+            dataManager = [WeakRetained dataManager];
+            quantitySeriesManager = [dataManager quantitySeriesManager];
+            [quantitySeriesManager removeObserver:types forType:v10];
 
-            v14 = objc_loadWeakRetained((a1 + 8));
-            v15 = [v14 dataCollectionManager];
-            v16 = [v15 aggregatorForType:v10];
+            v14 = objc_loadWeakRetained((types + 8));
+            dataCollectionManager = [v14 dataCollectionManager];
+            v16 = [dataCollectionManager aggregatorForType:v10];
 
-            [v16 unregisterSensorDataObserver:a1];
+            [v16 unregisterSensorDataObserver:types];
           }
 
           ++v9;
@@ -230,18 +230,18 @@ void __43__HDWorkoutBasicDataSource__stopCollection__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSampleTypesToCollect:(id)a3
+- (void)setSampleTypesToCollect:(id)collect
 {
-  v4 = a3;
-  [HDActiveDataCollectionObserverServer launchObservingProcessesForTypes:v4];
+  collectCopy = collect;
+  [HDActiveDataCollectionObserverServer launchObservingProcessesForTypes:collectCopy];
   lock = self->_lock;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __52__HDWorkoutBasicDataSource_setSampleTypesToCollect___block_invoke;
   v17[3] = &unk_278613920;
   v17[4] = self;
-  v18 = v4;
-  v6 = v4;
+  v18 = collectCopy;
+  v6 = collectCopy;
   [(NSLock *)lock hk_withLock:v17];
   self->_sampleTypesContainHeartRate = 0;
   v7 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB90]];
@@ -250,7 +250,7 @@ void __43__HDWorkoutBasicDataSource__stopCollection__block_invoke(uint64_t a1)
   v14[2] = __52__HDWorkoutBasicDataSource_setSampleTypesToCollect___block_invoke_416;
   v14[3] = &unk_27862A630;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v8 = v7;
   v9 = [v6 hk_mapToDictionary:v14];
   v10 = self->_lock;
@@ -454,26 +454,26 @@ void __52__HDWorkoutBasicDataSource_setSampleTypesToCollect___block_invoke_2(uin
 
 - (id)_takeHeartRateCollectionAssertion
 {
-  v1 = a1;
+  selfCopy = self;
   v21[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB90]];
-    if (*(v1 + 88) == 1)
+    if (*(selfCopy + 88) == 1)
     {
       v3 = MEMORY[0x277CCACA8];
-      v4 = [v1[3] process];
-      v5 = [v4 applicationIdentifier];
+      process = [selfCopy[3] process];
+      applicationIdentifier = [process applicationIdentifier];
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [v3 stringWithFormat:@"%@-%@", v5, v7];
+      v8 = [v3 stringWithFormat:@"%@-%@", applicationIdentifier, v7];
 
-      WeakRetained = objc_loadWeakRetained(v1 + 1);
-      v10 = [WeakRetained dataCollectionManager];
+      WeakRetained = objc_loadWeakRetained(selfCopy + 1);
+      dataCollectionManager = [WeakRetained dataCollectionManager];
       v20 = v2;
       v11 = MEMORY[0x277CCABB0];
-      v12 = [v2 code];
-      v13 = v12 == 179 || v12 == 75;
+      code = [v2 code];
+      v13 = code == 179 || code == 75;
       v14 = 60.0;
       if (!v13)
       {
@@ -483,19 +483,19 @@ void __52__HDWorkoutBasicDataSource_setSampleTypesToCollect___block_invoke_2(uin
       v15 = [v11 numberWithDouble:v14];
       v21[0] = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      v17 = [v1[12] currentObserverState];
-      v1 = [v10 takeCollectionAssertionWithOwnerIdentifier:v8 collectionIntervalsByType:v16 observerState:v17];
+      currentObserverState = [selfCopy[12] currentObserverState];
+      selfCopy = [dataCollectionManager takeCollectionAssertionWithOwnerIdentifier:v8 collectionIntervalsByType:v16 observerState:currentObserverState];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return selfCopy;
 }
 
 - (NSSet)sampleTypesToCollect
@@ -661,21 +661,21 @@ LABEL_5:
   return MEMORY[0x2821F96F8](v10, v11);
 }
 
-- (void)setSessionServer:(id)a3
+- (void)setSessionServer:(id)server
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_sessionServer, v5);
-  [v5 addObserver:self queue:0];
+  serverCopy = server;
+  v4 = objc_storeWeak(&self->_sessionServer, serverCopy);
+  [serverCopy addObserver:self queue:0];
 }
 
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
-  v12 = v10;
+  destinationCopy = destination;
+  fromCopy = from;
+  toCopy = to;
+  v11 = fromCopy;
+  v12 = toCopy;
   v13 = v11;
   v42 = v11;
   if (!v11)
@@ -688,7 +688,7 @@ LABEL_5:
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v52 = self;
+      selfCopy6 = self;
       v53 = 2114;
       v54 = v13;
       _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "%{public}@: Start date is nil. Updating start date to %{public}@", buf, 0x16u);
@@ -705,7 +705,7 @@ LABEL_5:
     if (os_log_type_enabled(*v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v52 = self;
+      selfCopy6 = self;
       v53 = 2114;
       v54 = v16;
       _os_log_impl(&dword_228986000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: End date is nil. Updating end date to %{public}@", buf, 0x16u);
@@ -718,7 +718,7 @@ LABEL_5:
   if (os_log_type_enabled(*v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v52 = self;
+    selfCopy6 = self;
     v53 = 2114;
     v54 = v13;
     v55 = 2114;
@@ -740,7 +740,7 @@ LABEL_5:
     if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
     {
       *buf = 138543618;
-      v52 = v13;
+      selfCopy6 = v13;
       v53 = 2114;
       v54 = v16;
       _os_signpost_emit_with_name_impl(&dword_228986000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v22, "workout-basic-data-source", "request data from startDate=%{public}@ to endDate=%{public}@", buf, 0x16u);
@@ -748,7 +748,7 @@ LABEL_5:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v27 = [WeakRetained database];
+  database = [WeakRetained database];
   v50 = 0;
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
@@ -757,14 +757,14 @@ LABEL_5:
   v28 = v20;
   v49 = v22;
   v44 = v28;
-  v45 = self;
-  v29 = v8;
+  selfCopy4 = self;
+  v29 = destinationCopy;
   v46 = v29;
   v30 = v13;
   v47 = v30;
   v31 = v16;
   v48 = v31;
-  v32 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:v27 error:&v50 block:v43];
+  v32 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:database error:&v50 block:v43];
   v33 = v50;
 
   _HKInitializeLogging();
@@ -786,7 +786,7 @@ LABEL_5:
   if (os_log_type_enabled(*v34, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v52 = self;
+    selfCopy6 = self;
     v53 = 2114;
     v54 = v30;
     v55 = 2114;
@@ -801,7 +801,7 @@ LABEL_5:
     if (os_log_type_enabled(*v34, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v52 = self;
+      selfCopy6 = self;
       v53 = 2114;
       v54 = v33;
       _os_log_error_impl(&dword_228986000, v39, OS_LOG_TYPE_ERROR, "%{public}@: Read transaction handling data request failed: %{public}@", buf, 0x16u);
@@ -1087,41 +1087,41 @@ uint64_t __71__HDWorkoutBasicDataSource_workoutDataDestination_requestsDataFrom_
   return 1;
 }
 
-- (void)workoutDataDestination:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)workoutDataDestination:(id)destination didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  if (a5 == 4 || a5 == 2)
+  if (toState == 4 || toState == 2)
   {
     [(HDWorkoutBasicDataSource *)self _stopCollection];
   }
 }
 
-- (void)workoutDataDestination:(id)a3 didUpdateConfiguration:(id)a4
+- (void)workoutDataDestination:(id)destination didUpdateConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  [(HDWorkoutBasicDataSource *)self setWorkoutConfiguration:v5];
+  configurationCopy = configuration;
+  [(HDWorkoutBasicDataSource *)self setWorkoutConfiguration:configurationCopy];
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_INFO))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v5;
+    v11 = configurationCopy;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_INFO, "%{public}@: Updated workout configuration : %{public}@", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)transactionalQuantityInsertHandlerForProfile:(id)a3 journaled:(BOOL)a4 count:(int64_t)a5
+- (id)transactionalQuantityInsertHandlerForProfile:(id)profile journaled:(BOOL)journaled count:(int64_t)count
 {
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__HDWorkoutBasicDataSource_transactionalQuantityInsertHandlerForProfile_journaled_count___block_invoke;
   aBlock[3] = &unk_27862A6D0;
-  v13 = a4;
+  journaledCopy = journaled;
   aBlock[4] = self;
   v12 = v7;
   v8 = v7;
@@ -1161,21 +1161,21 @@ void __89__HDWorkoutBasicDataSource_transactionalQuantityInsertHandlerForProfile
   }
 }
 
-- (void)dataCollectionObservationStateDidChangeForClient:(id)a3
+- (void)dataCollectionObservationStateDidChangeForClient:(id)client
 {
-  v4 = [(HDClientDataCollectionObservationStateMonitor *)self->_clientStateMonitor currentObserverState];
-  [(HDDataCollectionAssertion *)self->_collectionAssertion setObserverState:v4];
+  currentObserverState = [(HDClientDataCollectionObservationStateMonitor *)self->_clientStateMonitor currentObserverState];
+  [(HDDataCollectionAssertion *)self->_collectionAssertion setObserverState:currentObserverState];
 
-  v5 = [(HDClientDataCollectionObservationStateMonitor *)self->_clientStateMonitor currentObserverState];
-  [(HDDataCollectionAssertion *)self->_heartRateDataCollectionAssertion setObserverState:v5];
+  currentObserverState2 = [(HDClientDataCollectionObservationStateMonitor *)self->_clientStateMonitor currentObserverState];
+  [(HDDataCollectionAssertion *)self->_heartRateDataCollectionAssertion setObserverState:currentObserverState2];
 }
 
-- (void)aggregator:(id)a3 didCollectSensorData:(id)a4 objectType:(id)a5 device:(id)a6
+- (void)aggregator:(id)aggregator didCollectSensorData:(id)data objectType:(id)type device:(id)device
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [a5 identifier];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCCB68]];
+  dataCopy = data;
+  identifier = [type identifier];
+  v10 = [identifier isEqualToString:*MEMORY[0x277CCCB68]];
 
   if (v10)
   {
@@ -1183,7 +1183,7 @@ void __89__HDWorkoutBasicDataSource_transactionalQuantityInsertHandlerForProfile
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v8;
+    obj = dataCopy;
     v11 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v11)
     {
@@ -1205,8 +1205,8 @@ void __89__HDWorkoutBasicDataSource_transactionalQuantityInsertHandlerForProfile
           {
             v31 = v14;
             v17 = v16;
-            v18 = [v17 quantity];
-            v32 = v18;
+            quantity = [v17 quantity];
+            v32 = quantity;
             v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
 
             workoutDataFlowLink = self->_workoutDataFlowLink;
@@ -1252,12 +1252,12 @@ void __78__HDWorkoutBasicDataSource_aggregator_didCollectSensorData_objectType_d
   }
 }
 
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (a4 == 10)
+  sessionCopy = session;
+  dateCopy = date;
+  if (state == 10)
   {
     lock = self->_lock;
     v19[0] = MEMORY[0x277D85DD0];
@@ -1268,7 +1268,7 @@ void __78__HDWorkoutBasicDataSource_aggregator_didCollectSensorData_objectType_d
     [(NSLock *)lock hk_withLock:v19];
   }
 
-  else if (a4 == 7 && a5 == 10)
+  else if (state == 7 && fromState == 10)
   {
     v23 = 0;
     v24 = &v23;
@@ -1289,21 +1289,21 @@ void __78__HDWorkoutBasicDataSource_aggregator_didCollectSensorData_objectType_d
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v28 = self;
+        selfCopy = self;
         _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Entering running state and collection stopped. Will not take assertion.", buf, 0xCu);
       }
     }
 
     else
     {
-      v15 = [(HDWorkoutBasicDataSource *)&self->super.isa _takeHeartRateCollectionAssertion];
+      _takeHeartRateCollectionAssertion = [(HDWorkoutBasicDataSource *)&self->super.isa _takeHeartRateCollectionAssertion];
       v16 = self->_lock;
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __75__HDWorkoutBasicDataSource_workoutSession_didChangeToState_fromState_date___block_invoke_443;
       v20[3] = &unk_278613920;
       v20[4] = self;
-      v17 = v15;
+      v17 = _takeHeartRateCollectionAssertion;
       v21 = v17;
       [(NSLock *)v16 hk_withLock:v20];
     }

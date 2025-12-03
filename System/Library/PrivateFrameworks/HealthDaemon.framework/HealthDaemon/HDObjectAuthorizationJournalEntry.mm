@@ -1,21 +1,21 @@
 @interface HDObjectAuthorizationJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (HDObjectAuthorizationJournalEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (HDObjectAuthorizationJournalEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDObjectAuthorizationJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = v5;
+  v7 = entriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v8)
   {
@@ -38,20 +38,20 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v6 syncIdentityManager];
-          v16 = [v15 legacySyncIdentity];
-          v17 = [v16 entity];
-          v18 = [v17 persistentID];
+          syncIdentityManager = [profileCopy syncIdentityManager];
+          legacySyncIdentity = [syncIdentityManager legacySyncIdentity];
+          entity = [legacySyncIdentity entity];
+          persistentID = [entity persistentID];
 
           if ([v13 syncIdentity] != -1)
           {
-            v18 = [v13 syncIdentity];
+            persistentID = [v13 syncIdentity];
           }
 
-          v19 = [v13 records];
-          v20 = [v13 syncProvenance];
+          records = [v13 records];
+          syncProvenance = [v13 syncProvenance];
           v42 = 0;
-          v21 = [HDObjectAuthorizationEntity setObjectAuthorizationRecords:v19 syncProvenance:v20 syncIdentity:v18 profile:v6 error:&v42];
+          v21 = [HDObjectAuthorizationEntity setObjectAuthorizationRecords:records syncProvenance:syncProvenance syncIdentity:persistentID profile:profileCopy error:&v42];
           v22 = v42;
 
           if (!v21)
@@ -77,17 +77,17 @@
             }
 
             v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", objc_opt_class()];
-            v25 = [v6 daemon];
-            v26 = [v25 autoBugCaptureReporter];
-            v27 = v6;
+            daemon = [profileCopy daemon];
+            autoBugCaptureReporter = [daemon autoBugCaptureReporter];
+            v27 = profileCopy;
             v28 = v10;
             v29 = v7;
             v30 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v13, "syncProvenance")}];
-            [v26 reportJournalFailureWithErrorDescription:v24 provenance:v30 error:v22];
+            [autoBugCaptureReporter reportJournalFailureWithErrorDescription:v24 provenance:v30 error:v22];
 
             v7 = v29;
             v10 = v28;
-            v6 = v27;
+            profileCopy = v27;
             v11 = off_27860F000;
           }
 
@@ -132,38 +132,38 @@ LABEL_21:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (HDObjectAuthorizationJournalEntry)initWithCoder:(id)a3
+- (HDObjectAuthorizationJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = HDObjectAuthorizationJournalEntry;
-  v5 = [(HDJournalEntry *)&v14 initWithCoder:v4];
+  v5 = [(HDJournalEntry *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 containsValueForKey:@"records"];
+    v6 = [coderCopy containsValueForKey:@"records"];
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     [v7 setWithObjects:{v8, objc_opt_class(), 0}];
     if (v6)
       v9 = {;
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"records"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"records"];
 
       [v10 hk_map:&__block_literal_global_170];
     }
 
     else
       v10 = {;
-      [v4 decodeObjectOfClasses:v10 forKey:@"expectedRecords"];
+      [coderCopy decodeObjectOfClasses:v10 forKey:@"expectedRecords"];
     }
     v11 = ;
     records = v5->_records;
     v5->_records = v11;
 
-    v5->_syncProvenance = [v4 decodeInt64ForKey:@"sp"];
+    v5->_syncProvenance = [coderCopy decodeInt64ForKey:@"sp"];
     v5->_syncIdentity = -1;
-    if ([v4 containsValueForKey:@"syncIdentity"])
+    if ([coderCopy containsValueForKey:@"syncIdentity"])
     {
-      v5->_syncIdentity = [v4 decodeInt64ForKey:@"syncIdentity"];
+      v5->_syncIdentity = [coderCopy decodeInt64ForKey:@"syncIdentity"];
     }
   }
 
@@ -191,13 +191,13 @@ id __51__HDObjectAuthorizationJournalEntry_initWithCoder___block_invoke(uint64_t
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   records = self->_records;
-  v5 = a3;
-  [v5 encodeObject:records forKey:@"expectedRecords"];
-  [v5 encodeInt64:self->_syncProvenance forKey:@"sp"];
-  [v5 encodeInt64:self->_syncIdentity forKey:@"syncIdentity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:records forKey:@"expectedRecords"];
+  [coderCopy encodeInt64:self->_syncProvenance forKey:@"sp"];
+  [coderCopy encodeInt64:self->_syncIdentity forKey:@"syncIdentity"];
 }
 
 @end

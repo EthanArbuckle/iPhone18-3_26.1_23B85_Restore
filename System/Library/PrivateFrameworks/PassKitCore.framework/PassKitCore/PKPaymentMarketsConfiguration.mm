@@ -1,49 +1,49 @@
 @interface PKPaymentMarketsConfiguration
-+ (id)closestMarketFromSet:(id)a3 forLocation:(id)a4;
-+ (void)paymentMarketsConfigurationWithURL:(id)a3 forDeviceClass:(id)a4 version:(id)a5 completion:(id)a6;
-- (PKPaymentMarketsConfiguration)initWithCoder:(id)a3;
-- (PKPaymentMarketsConfiguration)initWithDictionary:(id)a3 url:(id)a4 forDeviceClass:(id)a5 version:(id)a6;
-- (id)expressTransitNetworksForLocation:(id)a3;
-- (id)marketsForLocation:(id)a3;
-- (id)marketsForLocation:(id)a3 ofType:(int64_t)a4;
-- (id)marketsForLocation:(id)a3 passingTest:(id)a4;
-- (id)marketsForRegions:(id)a3;
-- (id)supportedTransitNetworksForLocation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)closestMarketFromSet:(id)set forLocation:(id)location;
++ (void)paymentMarketsConfigurationWithURL:(id)l forDeviceClass:(id)class version:(id)version completion:(id)completion;
+- (PKPaymentMarketsConfiguration)initWithCoder:(id)coder;
+- (PKPaymentMarketsConfiguration)initWithDictionary:(id)dictionary url:(id)url forDeviceClass:(id)class version:(id)version;
+- (id)expressTransitNetworksForLocation:(id)location;
+- (id)marketsForLocation:(id)location;
+- (id)marketsForLocation:(id)location ofType:(int64_t)type;
+- (id)marketsForLocation:(id)location passingTest:(id)test;
+- (id)marketsForRegions:(id)regions;
+- (id)supportedTransitNetworksForLocation:(id)location;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentMarketsConfiguration
 
-+ (void)paymentMarketsConfigurationWithURL:(id)a3 forDeviceClass:(id)a4 version:(id)a5 completion:(id)a6
++ (void)paymentMarketsConfigurationWithURL:(id)l forDeviceClass:(id)class version:(id)version completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  classCopy = class;
+  versionCopy = version;
+  completionCopy = completion;
   v13 = PKDeviceClass();
   v14 = +[PKOSVersionRequirement fromDeviceVersion];
-  if (!v10)
+  if (!classCopy)
   {
-    v10 = v13;
-    if (v11)
+    classCopy = v13;
+    if (versionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_13:
-    v11 = v14;
+    versionCopy = v14;
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!versionCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  if ([v10 isEqualToString:v13] && objc_msgSend(v11, "isEqual:", v14))
+  if ([classCopy isEqualToString:v13] && objc_msgSend(versionCopy, "isEqual:", v14))
   {
-    if (([qword_1ED6D17E0 isEqual:v9] & 1) == 0)
+    if (([qword_1ED6D17E0 isEqual:lCopy] & 1) == 0)
     {
       v15 = qword_1ED6D17F0;
       qword_1ED6D17F0 = 0;
@@ -70,15 +70,15 @@ LABEL_3:
   v23[1] = 3221225472;
   v23[2] = __102__PKPaymentMarketsConfiguration_paymentMarketsConfigurationWithURL_forDeviceClass_version_completion___block_invoke_2;
   v23[3] = &unk_1E79C9328;
-  v24 = v9;
-  v25 = v10;
-  v26 = v11;
-  v27 = v12;
+  v24 = lCopy;
+  v25 = classCopy;
+  v26 = versionCopy;
+  v27 = completionCopy;
   v28 = v17;
-  v19 = v11;
-  v20 = v10;
-  v21 = v9;
-  v22 = v12;
+  v19 = versionCopy;
+  v20 = classCopy;
+  v21 = lCopy;
+  v22 = completionCopy;
   [v18 downloadFromUrl:v21 completionHandler:v23];
 }
 
@@ -246,34 +246,34 @@ LABEL_14:
 LABEL_40:
 }
 
-- (PKPaymentMarketsConfiguration)initWithDictionary:(id)a3 url:(id)a4 forDeviceClass:(id)a5 version:(id)a6
+- (PKPaymentMarketsConfiguration)initWithDictionary:(id)dictionary url:(id)url forDeviceClass:(id)class version:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dictionaryCopy = dictionary;
+  urlCopy = url;
+  classCopy = class;
+  versionCopy = version;
   v30.receiver = self;
   v30.super_class = PKPaymentMarketsConfiguration;
   v14 = [(PKPaymentMarketsConfiguration *)&v30 init];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [urlCopy copy];
     url = v14->_url;
     v14->_url = v15;
 
-    v17 = [v10 PKStringForKey:@"Version"];
+    v17 = [dictionaryCopy PKStringForKey:@"Version"];
     v18 = [v17 copy];
     version = v14->_version;
     v14->_version = v18;
 
-    v20 = [v10 PKArrayForKey:@"MarketGeos"];
+    v20 = [dictionaryCopy PKArrayForKey:@"MarketGeos"];
     v21 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __79__PKPaymentMarketsConfiguration_initWithDictionary_url_forDeviceClass_version___block_invoke;
     v26[3] = &unk_1E79C9350;
-    v27 = v12;
-    v28 = v13;
+    v27 = classCopy;
+    v28 = versionCopy;
     v29 = v21;
     v22 = v21;
     [v20 enumerateObjectsUsingBlock:v26];
@@ -298,26 +298,26 @@ void __79__PKPaymentMarketsConfiguration_initWithDictionary_url_forDeviceClass_v
   }
 }
 
-- (PKPaymentMarketsConfiguration)initWithCoder:(id)a3
+- (PKPaymentMarketsConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKPaymentMarketsConfiguration;
   v5 = [(PKPaymentMarketsConfiguration *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v5->_version;
     v5->_version = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"markets"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"markets"];
     markets = v5->_markets;
     v5->_markets = v13;
   }
@@ -325,28 +325,28 @@ void __79__PKPaymentMarketsConfiguration_initWithDictionary_url_forDeviceClass_v
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   url = self->_url;
-  v5 = a3;
-  [v5 encodeObject:url forKey:@"url"];
-  [v5 encodeObject:self->_version forKey:@"version"];
-  [v5 encodeObject:self->_markets forKey:@"markets"];
+  coderCopy = coder;
+  [coderCopy encodeObject:url forKey:@"url"];
+  [coderCopy encodeObject:self->_version forKey:@"version"];
+  [coderCopy encodeObject:self->_markets forKey:@"markets"];
 }
 
-- (id)marketsForLocation:(id)a3
+- (id)marketsForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   markets = self->_markets;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __52__PKPaymentMarketsConfiguration_marketsForLocation___block_invoke;
   v14 = &unk_1E79C9378;
-  v15 = v4;
+  v15 = locationCopy;
   v16 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = locationCopy;
   [(NSSet *)markets enumerateObjectsUsingBlock:&v11];
   v9 = [v7 copy];
 
@@ -362,10 +362,10 @@ void __52__PKPaymentMarketsConfiguration_marketsForLocation___block_invoke(uint6
   }
 }
 
-- (id)marketsForLocation:(id)a3 passingTest:(id)a4
+- (id)marketsForLocation:(id)location passingTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  testCopy = test;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   markets = self->_markets;
   v15[0] = MEMORY[0x1E69E9820];
@@ -373,11 +373,11 @@ void __52__PKPaymentMarketsConfiguration_marketsForLocation___block_invoke(uint6
   v15[2] = __64__PKPaymentMarketsConfiguration_marketsForLocation_passingTest___block_invoke;
   v15[3] = &unk_1E79C93A0;
   v17 = v8;
-  v18 = v7;
-  v16 = v6;
+  v18 = testCopy;
+  v16 = locationCopy;
   v10 = v8;
-  v11 = v6;
-  v12 = v7;
+  v11 = locationCopy;
+  v12 = testCopy;
   [(NSSet *)markets enumerateObjectsUsingBlock:v15];
   v13 = [v10 copy];
 
@@ -393,28 +393,28 @@ void __64__PKPaymentMarketsConfiguration_marketsForLocation_passingTest___block_
   }
 }
 
-- (id)marketsForLocation:(id)a3 ofType:(int64_t)a4
+- (id)marketsForLocation:(id)location ofType:(int64_t)type
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PKPaymentMarketsConfiguration_marketsForLocation_ofType___block_invoke;
   v6[3] = &__block_descriptor_40_e25_B16__0__PKPaymentMarket_8l;
-  v6[4] = a4;
-  v4 = [(PKPaymentMarketsConfiguration *)self marketsForLocation:a3 passingTest:v6];
+  v6[4] = type;
+  v4 = [(PKPaymentMarketsConfiguration *)self marketsForLocation:location passingTest:v6];
 
   return v4;
 }
 
-+ (id)closestMarketFromSet:(id)a3 forLocation:(id)a4
++ (id)closestMarketFromSet:(id)set forLocation:(id)location
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  locationCopy = location;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [setCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -427,11 +427,11 @@ void __64__PKPaymentMarketsConfiguration_marketsForLocation_passingTest___block_
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(setCopy);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        [v13 shortestDistanceFromLocation:v6];
+        [v13 shortestDistanceFromLocation:locationCopy];
         if (v14 < v10)
         {
           v15 = v14;
@@ -442,7 +442,7 @@ void __64__PKPaymentMarketsConfiguration_marketsForLocation_passingTest___block_
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [setCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -456,19 +456,19 @@ void __64__PKPaymentMarketsConfiguration_marketsForLocation_passingTest___block_
   return v9;
 }
 
-- (id)marketsForRegions:(id)a3
+- (id)marketsForRegions:(id)regions
 {
-  v4 = a3;
+  regionsCopy = regions;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   markets = self->_markets;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __51__PKPaymentMarketsConfiguration_marketsForRegions___block_invoke;
   v14 = &unk_1E79C9378;
-  v15 = v4;
+  v15 = regionsCopy;
   v16 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = regionsCopy;
   [(NSSet *)markets enumerateObjectsUsingBlock:&v11];
   v9 = [v7 copy];
 
@@ -489,9 +489,9 @@ void __51__PKPaymentMarketsConfiguration_marketsForRegions___block_invoke(uint64
   }
 }
 
-- (id)supportedTransitNetworksForLocation:(id)a3
+- (id)supportedTransitNetworksForLocation:(id)location
 {
-  v3 = [(PKPaymentMarketsConfiguration *)self marketsForLocation:a3];
+  v3 = [(PKPaymentMarketsConfiguration *)self marketsForLocation:location];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -521,9 +521,9 @@ void __69__PKPaymentMarketsConfiguration_supportedTransitNetworksForLocation___b
   [v2 unionSet:v3];
 }
 
-- (id)expressTransitNetworksForLocation:(id)a3
+- (id)expressTransitNetworksForLocation:(id)location
 {
-  v3 = [(PKPaymentMarketsConfiguration *)self marketsForLocation:a3];
+  v3 = [(PKPaymentMarketsConfiguration *)self marketsForLocation:location];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);

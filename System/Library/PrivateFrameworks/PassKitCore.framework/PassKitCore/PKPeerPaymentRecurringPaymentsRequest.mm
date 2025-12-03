@@ -1,32 +1,32 @@
 @interface PKPeerPaymentRecurringPaymentsRequest
-- (PKPeerPaymentRecurringPaymentsRequest)initWithAccountIdentifier:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (PKPeerPaymentRecurringPaymentsRequest)initWithAccountIdentifier:(id)identifier;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentsRequest
 
-- (PKPeerPaymentRecurringPaymentsRequest)initWithAccountIdentifier:(id)a3
+- (PKPeerPaymentRecurringPaymentsRequest)initWithAccountIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentRecurringPaymentsRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountIdentifier, a3);
+    objc_storeStrong(&v6->_accountIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -70,7 +70,7 @@ LABEL_11:
     v18[1] = accountIdentifier;
     v18[2] = @"recurringPayments";
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
-    v11 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:v10 queryParameters:0 appleAccountInformation:v8];
+    v11 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v10 queryParameters:0 appleAccountInformation:v8];
 
     [v11 setHTTPMethod:@"GET"];
     [v11 setCachePolicy:1];

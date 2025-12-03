@@ -1,12 +1,12 @@
 @interface HKHealthManageStorageViewController
 - (HKHealthManageStorageViewController)init;
 - (id)specifiers;
-- (void)_disableAndDelete:(id)a3;
+- (void)_disableAndDelete:(id)delete;
 - (void)_loadCloudSyncStorageStatus;
-- (void)confirmDisable:(id)a3;
+- (void)confirmDisable:(id)disable;
 - (void)hideSpinner;
-- (void)showSpinnerMessage:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)showSpinnerMessage:(id)message;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HKHealthManageStorageViewController
@@ -31,15 +31,15 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = HKHealthManageStorageViewController;
-  [(HKHealthManageStorageViewController *)&v7 viewWillAppear:a3];
+  [(HKHealthManageStorageViewController *)&v7 viewWillAppear:appear];
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = [v4 localizedStringForKey:@"HEALTH" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v6 = [(HKHealthManageStorageViewController *)self navigationItem];
-  [v6 setTitle:v5];
+  navigationItem = [(HKHealthManageStorageViewController *)self navigationItem];
+  [navigationItem setTitle:v5];
 }
 
 - (id)specifiers
@@ -71,10 +71,10 @@
 
   v8 = v7;
   _Block_object_dispose(&v30, 8);
-  v9 = [MEMORY[0x1E696C608] sharedBehavior];
-  v10 = [v9 healthAppNotInstalled];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  healthAppNotInstalled = [mEMORY[0x1E696C608] healthAppNotInstalled];
 
-  if (v10)
+  if (healthAppNotInstalled)
   {
     v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v12 = [v11 localizedStringForKey:@"HEALTH_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -185,12 +185,12 @@ uint64_t __66__HKHealthManageStorageViewController__loadCloudSyncStorageStatus__
   return result;
 }
 
-- (void)showSpinnerMessage:(id)a3
+- (void)showSpinnerMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(HKHealthManageStorageViewController *)self view];
-  v6 = [v5 window];
-  [v6 setUserInteractionEnabled:0];
+  messageCopy = message;
+  view = [(HKHealthManageStorageViewController *)self view];
+  window = [view window];
+  [window setUserInteractionEnabled:0];
 
   v7 = objc_alloc_init(MEMORY[0x1E69DCE40]);
   spinnerView = self->_spinnerView;
@@ -198,24 +198,24 @@ uint64_t __66__HKHealthManageStorageViewController__loadCloudSyncStorageStatus__
 
   [(UIProgressHUD *)self->_spinnerView setAutoresizingMask:45];
   [(UIProgressHUD *)self->_spinnerView setFontSize:16];
-  [(UIProgressHUD *)self->_spinnerView setText:v4];
+  [(UIProgressHUD *)self->_spinnerView setText:messageCopy];
 
-  v9 = [MEMORY[0x1E69DC938] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
-  v11 = [(HKHealthManageStorageViewController *)self rootController];
-  v12 = v11;
-  if (v10 == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  rootController = [(HKHealthManageStorageViewController *)self rootController];
+  v12 = rootController;
+  if (userInterfaceIdiom == 1)
   {
-    v13 = [v11 parentViewController];
-    v14 = [v13 view];
+    parentViewController = [rootController parentViewController];
+    view2 = [parentViewController view];
   }
 
   else
   {
-    v14 = [v11 view];
+    view2 = [rootController view];
   }
 
-  [(UIProgressHUD *)self->_spinnerView showInView:v14];
+  [(UIProgressHUD *)self->_spinnerView showInView:view2];
 }
 
 - (void)hideSpinner
@@ -224,12 +224,12 @@ uint64_t __66__HKHealthManageStorageViewController__loadCloudSyncStorageStatus__
   spinnerView = self->_spinnerView;
   self->_spinnerView = 0;
 
-  v5 = [(HKHealthManageStorageViewController *)self view];
-  v4 = [v5 window];
-  [v4 setUserInteractionEnabled:1];
+  view = [(HKHealthManageStorageViewController *)self view];
+  window = [view window];
+  [window setUserInteractionEnabled:1];
 }
 
-- (void)confirmDisable:(id)a3
+- (void)confirmDisable:(id)disable
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E69C56F0]);
@@ -254,7 +254,7 @@ uint64_t __66__HKHealthManageStorageViewController__loadCloudSyncStorageStatus__
   [(HKHealthManageStorageViewController *)self showConfirmationViewForSpecifier:v4];
 }
 
-- (void)_disableAndDelete:(id)a3
+- (void)_disableAndDelete:(id)delete
 {
   if (self->_status == 1)
   {

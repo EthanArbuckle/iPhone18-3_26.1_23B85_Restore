@@ -1,10 +1,10 @@
 @interface HDHRHeartCLogEntity
-+ (BOOL)_enumerateJournalsWithPredicate:(id)a3 limit:(unint64_t)a4 orderingTerms:(id)a5 transaction:(id)a6 error:(id *)a7 enumerationHandler:(id)a8;
-+ (BOOL)_insertTimeIntervals:(id)a3 journalPrimaryKey:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)insertBloodPressureJournal:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)_insertJournal:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (BOOL)_enumerateJournalsWithPredicate:(id)predicate limit:(unint64_t)limit orderingTerms:(id)terms transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)_insertTimeIntervals:(id)intervals journalPrimaryKey:(id)key transaction:(id)transaction error:(id *)error;
++ (BOOL)insertBloodPressureJournal:(id)journal profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (id)_insertJournal:(id)journal transaction:(id)transaction error:(id *)error;
 + (id)_journalEntityProperties;
-+ (id)_journalFromRow:(HDSQLiteRow *)a3 persistentID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
++ (id)_journalFromRow:(HDSQLiteRow *)row persistentID:(int64_t)d transaction:(id)transaction error:(id *)error;
 + (id)privateSubEntities;
 @end
 
@@ -26,10 +26,10 @@
   return v2;
 }
 
-+ (id)_journalFromRow:(HDSQLiteRow *)a3 persistentID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (id)_journalFromRow:(HDSQLiteRow *)row persistentID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  transactionCopy = transaction;
   v8 = HDSQLiteColumnWithNameAsUUID();
   v9 = HDSQLiteColumnWithNameAsDate();
   v10 = HDSQLiteColumnWithNameAsDate();
@@ -46,7 +46,7 @@
   v28[3] = &unk_27865FA08;
   v17 = v16;
   v29 = v17;
-  v18 = [HDHRHeartCLogScheduleTimeIntervalEntity enumerateJournalScheduleIntervalWithOwnerID:a4 transaction:v7 error:&v30 enumerationHandler:v28];
+  v18 = [HDHRHeartCLogScheduleTimeIntervalEntity enumerateJournalScheduleIntervalWithOwnerID:d transaction:transactionCopy error:&v30 enumerationHandler:v28];
 
   v19 = v30;
   if (v18)
@@ -61,7 +61,7 @@
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v32 = a1;
+      selfCopy = self;
       v33 = 2114;
       v34 = v8;
       v35 = 2114;
@@ -72,10 +72,10 @@
     v22 = v19;
     if (v22)
     {
-      if (a6)
+      if (error)
       {
         v23 = v22;
-        *a6 = v22;
+        *error = v22;
       }
 
       else
@@ -102,28 +102,28 @@
   return v2;
 }
 
-+ (BOOL)_enumerateJournalsWithPredicate:(id)a3 limit:(unint64_t)a4 orderingTerms:(id)a5 transaction:(id)a6 error:(id *)a7 enumerationHandler:(id)a8
++ (BOOL)_enumerateJournalsWithPredicate:(id)predicate limit:(unint64_t)limit orderingTerms:(id)terms transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v14 = a6;
-  v15 = a8;
-  v16 = a5;
-  v17 = a3;
-  v18 = [v14 databaseForEntityClass:a1];
-  v19 = [a1 queryWithDatabase:v18 predicate:v17 limit:a4 orderingTerms:v16 groupBy:0];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  termsCopy = terms;
+  predicateCopy = predicate;
+  v18 = [transactionCopy databaseForEntityClass:self];
+  v19 = [self queryWithDatabase:v18 predicate:predicateCopy limit:limit orderingTerms:termsCopy groupBy:0];
 
-  v20 = [a1 _journalEntityProperties];
+  _journalEntityProperties = [self _journalEntityProperties];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __112__HDHRHeartCLogEntity__enumerateJournalsWithPredicate_limit_orderingTerms_transaction_error_enumerationHandler___block_invoke;
   v24[3] = &unk_27865FAF0;
-  v26 = v15;
-  v27 = a1;
-  v25 = v14;
-  v21 = v15;
-  v22 = v14;
-  LOBYTE(a7) = [v19 enumeratePersistentIDsAndProperties:v20 error:a7 enumerationHandler:v24];
+  v26 = handlerCopy;
+  selfCopy = self;
+  v25 = transactionCopy;
+  v21 = handlerCopy;
+  v22 = transactionCopy;
+  LOBYTE(error) = [v19 enumeratePersistentIDsAndProperties:_journalEntityProperties error:error enumerationHandler:v24];
 
-  return a7;
+  return error;
 }
 
 uint64_t __112__HDHRHeartCLogEntity__enumerateJournalsWithPredicate_limit_orderingTerms_transaction_error_enumerationHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5)
@@ -142,15 +142,15 @@ uint64_t __112__HDHRHeartCLogEntity__enumerateJournalsWithPredicate_limit_orderi
   return v7;
 }
 
-+ (BOOL)insertBloodPressureJournal:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertBloodPressureJournal:(id)journal profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [a1 _insertJournal:v9 transaction:v10 error:a6];
+  journalCopy = journal;
+  transactionCopy = transaction;
+  v11 = [self _insertJournal:journalCopy transaction:transactionCopy error:error];
   if (v11)
   {
-    v12 = [v9 timeIntervals];
-    v13 = [a1 _insertTimeIntervals:v12 journalPrimaryKey:v11 transaction:v10 error:a6];
+    timeIntervals = [journalCopy timeIntervals];
+    v13 = [self _insertTimeIntervals:timeIntervals journalPrimaryKey:v11 transaction:transactionCopy error:error];
   }
 
   else
@@ -161,19 +161,19 @@ uint64_t __112__HDHRHeartCLogEntity__enumerateJournalsWithPredicate_limit_orderi
   return v13;
 }
 
-+ (id)_insertJournal:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)_insertJournal:(id)journal transaction:(id)transaction error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a4 protectedDatabase];
-  v10 = [a1 _journalEntityProperties];
+  journalCopy = journal;
+  protectedDatabase = [transaction protectedDatabase];
+  _journalEntityProperties = [self _journalEntityProperties];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __56__HDHRHeartCLogEntity__insertJournal_transaction_error___block_invoke;
   v25 = &unk_27865FB18;
-  v26 = v8;
-  v11 = v8;
-  v12 = [a1 insertOrReplaceEntity:1 database:v9 properties:v10 error:a5 bindingHandler:&v22];
+  v26 = journalCopy;
+  v11 = journalCopy;
+  v12 = [self insertOrReplaceEntity:1 database:protectedDatabase properties:_journalEntityProperties error:error bindingHandler:&v22];
 
   if (!v12)
   {
@@ -182,21 +182,21 @@ uint64_t __112__HDHRHeartCLogEntity__enumerateJournalsWithPredicate_limit_orderi
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v28 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_229486000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did not successfully insert journal", buf, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  if ([v9 getChangesCount] < 1)
+  if ([protectedDatabase getChangesCount] < 1)
   {
     v18 = MEMORY[0x277CCA9B8];
-    v19 = [v11 UUID];
-    [v18 hk_assignError:a5 code:124 format:{@"Could not insert journal with UUID %@", v19, v22, v23, v24, v25, v26}];
+    uUID = [v11 UUID];
+    [v18 hk_assignError:error code:124 format:{@"Could not insert journal with UUID %@", uUID, v22, v23, v24, v25, v26}];
 
 LABEL_10:
-    v16 = 0;
+    lastInsertRowID2 = 0;
     goto LABEL_11;
   }
 
@@ -204,21 +204,21 @@ LABEL_10:
   v13 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v9 lastInsertRowID];
-    v15 = [v14 longLongValue];
+    lastInsertRowID = [protectedDatabase lastInsertRowID];
+    longLongValue = [lastInsertRowID longLongValue];
     *buf = 138543618;
-    v28 = a1;
+    selfCopy2 = self;
     v29 = 2050;
-    v30 = v15;
+    v30 = longLongValue;
     _os_log_impl(&dword_229486000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Inserted journal with persistent ID: %{public}lld", buf, 0x16u);
   }
 
-  v16 = [v9 lastInsertRowID];
+  lastInsertRowID2 = [protectedDatabase lastInsertRowID];
 LABEL_11:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return lastInsertRowID2;
 }
 
 void __56__HDHRHeartCLogEntity__insertJournal_transaction_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -241,18 +241,18 @@ void __56__HDHRHeartCLogEntity__insertJournal_transaction_error___block_invoke(u
   JUMPOUT(0x22AACD1B0);
 }
 
-+ (BOOL)_insertTimeIntervals:(id)a3 journalPrimaryKey:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)_insertTimeIntervals:(id)intervals journalPrimaryKey:(id)key transaction:(id)transaction error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 databaseForEntityClass:objc_opt_class()];
+  intervalsCopy = intervals;
+  keyCopy = key;
+  transactionCopy = transaction;
+  v12 = [transactionCopy databaseForEntityClass:objc_opt_class()];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = v9;
+  v13 = intervalsCopy;
   v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v14)
   {
@@ -267,7 +267,7 @@ void __56__HDHRHeartCLogEntity__insertJournal_transaction_error___block_invoke(u
           objc_enumerationMutation(v13);
         }
 
-        v18 = [HDHRHeartCLogScheduleTimeIntervalEntity insertJournalScheduleInterval:*(*(&v22 + 1) + 8 * i) ownerID:v10 database:v12 error:a6, v22];
+        v18 = [HDHRHeartCLogScheduleTimeIntervalEntity insertJournalScheduleInterval:*(*(&v22 + 1) + 8 * i) ownerID:keyCopy database:v12 error:error, v22];
 
         if (!v18)
         {

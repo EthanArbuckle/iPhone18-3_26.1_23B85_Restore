@@ -1,13 +1,13 @@
 @interface EDFontsCollection
-- (unint64_t)indexOfObjectWithFontName:(id)a3 color:(id)a4;
+- (unint64_t)indexOfObjectWithFontName:(id)name color:(id)color;
 @end
 
 @implementation EDFontsCollection
 
-- (unint64_t)indexOfObjectWithFontName:(id)a3 color:(id)a4
+- (unint64_t)indexOfObjectWithFontName:(id)name color:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  colorCopy = color;
   v8 = [(EDCollection *)self count];
   if (v8)
   {
@@ -15,11 +15,11 @@
     do
     {
       v10 = [(EDCollection *)self objectAtIndex:v9];
-      v11 = [v10 name];
-      v12 = v11;
-      if (v11 && ([v11 isEqual:v6] & 1) != 0 && (objc_msgSend(v10, "color"), v13 = objc_claimAutoreleasedReturnValue(), (v14 = v13) != 0))
+      name = [v10 name];
+      v12 = name;
+      if (name && ([name isEqual:nameCopy] & 1) != 0 && (objc_msgSend(v10, "color"), v13 = objc_claimAutoreleasedReturnValue(), (v14 = v13) != 0))
       {
-        v15 = [v13 isEqual:v7];
+        v15 = [v13 isEqual:colorCopy];
 
         if (v15)
         {

@@ -1,14 +1,14 @@
 @interface SKGPhotoNode
-+ (id)photoWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4;
-- (SKGPhotoNode)initWithIdentifier:(id)a3;
++ (id)photoWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (SKGPhotoNode)initWithIdentifier:(id)identifier;
 @end
 
 @implementation SKGPhotoNode
 
-+ (id)photoWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)photoWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v5 = [a4 graph];
-  v6 = [v5 nodeForIdentifier:a3];
+  graph = [graph graph];
+  v6 = [graph nodeForIdentifier:identifier];
 
   v7 = [SKGPhotoNode alloc];
   v8 = [v6 propertyForKey:@"value"];
@@ -17,11 +17,11 @@
   return v9;
 }
 
-- (SKGPhotoNode)initWithIdentifier:(id)a3
+- (SKGPhotoNode)initWithIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = SKGPhotoNode;
-  return [(SKGNode *)&v4 initWithValue:a3];
+  return [(SKGNode *)&v4 initWithValue:identifier];
 }
 
 @end

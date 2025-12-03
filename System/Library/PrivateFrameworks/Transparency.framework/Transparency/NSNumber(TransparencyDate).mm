@@ -6,7 +6,7 @@
 
 - (unint64_t)kt_enumValueWithMax:()TransparencyDate defaultValue:
 {
-  result = [a1 unsignedIntegerValue];
+  result = [self unsignedIntegerValue];
   if (result > a3)
   {
     return a4;

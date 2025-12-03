@@ -1,16 +1,16 @@
 @interface GKARC4RandomSource
 - (BOOL)nextBool;
 - (GKARC4RandomSource)init;
-- (GKARC4RandomSource)initWithCoder:(id)a3;
+- (GKARC4RandomSource)initWithCoder:(id)coder;
 - (GKARC4RandomSource)initWithSeed:(NSData *)seed;
 - (float)nextUniform;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)nextInt;
-- (unint64_t)nextBits:(int)a3;
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3;
+- (unint64_t)nextBits:(int)bits;
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound;
 - (void)dealloc;
 - (void)dropValuesWithCount:(NSUInteger)count;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setSeed:(NSData *)seed;
 @end
 
@@ -63,7 +63,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithSeed:self->_seed];
   state = self->_state;
@@ -102,9 +102,9 @@
   return result;
 }
 
-- (GKARC4RandomSource)initWithCoder:(id)a3
+- (GKARC4RandomSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(GKARC4RandomSource *)self init];
   if (v5)
   {
@@ -126,10 +126,10 @@
       while (v9 != 256);
     }
 
-    v5->_state->var0 = [v4 decodeIntForKey:@"i"];
-    v5->_state->var1 = [v4 decodeIntForKey:@"j"];
+    v5->_state->var0 = [coderCopy decodeIntForKey:@"i"];
+    v5->_state->var1 = [coderCopy decodeIntForKey:@"j"];
     v13 = 0;
-    v10 = [v4 decodeBytesForKey:@"bytes" returnedLength:&v13];
+    v10 = [coderCopy decodeBytesForKey:@"bytes" returnedLength:&v13];
     if (v13 >= 0x100)
     {
       v11 = 256;
@@ -146,15 +146,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GKARC4RandomSource;
-  v4 = a3;
-  [(GKRandomSource *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt:self->_state->var0 forKey:{@"i", v5.receiver, v5.super_class}];
-  [v4 encodeInt:self->_state->var1 forKey:@"j"];
-  [v4 encodeBytes:self->_state->var2 length:256 forKey:@"bytes"];
+  coderCopy = coder;
+  [(GKRandomSource *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:self->_state->var0 forKey:{@"i", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt:self->_state->var1 forKey:@"j"];
+  [coderCopy encodeBytes:self->_state->var2 length:256 forKey:@"bytes"];
 }
 
 - (void)dealloc
@@ -180,7 +180,7 @@
   self->_seed = v4;
 
   state = self->_state;
-  v7 = [(NSData *)self->_seed bytes];
+  bytes = [(NSData *)self->_seed bytes];
   v8 = [(NSData *)self->_seed length];
   v9 = 0;
   v10 = 0;
@@ -188,7 +188,7 @@
   do
   {
     v12 = var2[v9];
-    v10 += v12 + v7[v9 % v8];
+    v10 += v12 + bytes[v9 % v8];
     var2[v9] = var2[v10];
     var2[v10] = v12;
     ++v9;
@@ -197,10 +197,10 @@
   while (v9 != 255);
 }
 
-- (unint64_t)nextBits:(int)a3
+- (unint64_t)nextBits:(int)bits
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a3 < 1)
+  if (bits < 1)
   {
     result = 0;
     v22 = *MEMORY[0x277D85DE8];
@@ -208,18 +208,18 @@
 
   else
   {
-    if (a3 >= 0x40)
+    if (bits >= 0x40)
     {
-      v3 = 64;
+      bitsCopy = 64;
     }
 
     else
     {
-      v3 = a3;
+      bitsCopy = bits;
     }
 
     state = self->_state;
-    v5 = (v3 + 7) >> 3;
+    v5 = (bitsCopy + 7) >> 3;
     var2 = state->var2;
     var0 = state->var0;
     v8 = (state->var0 + 1);
@@ -302,7 +302,7 @@
     }
 
     while (v5 != v18);
-    result = v19 >> (((v3 + 7) & 0xF8u) - v3);
+    result = v19 >> (((bitsCopy + 7) & 0xF8u) - bitsCopy);
     v21 = *MEMORY[0x277D85DE8];
   }
 
@@ -344,14 +344,14 @@
   return (v8 << 24) | (v12 << 16) | (v16 << 8) | v20;
 }
 
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound
 {
-  if (a3 < 2)
+  if (bound < 2)
   {
     return 0;
   }
 
-  if ((a3 & (a3 - 1)) != 0)
+  if ((bound & (bound - 1)) != 0)
   {
     do
     {
@@ -387,8 +387,8 @@
       v42 = (v29 << 24) | (v33 << 16) | (v37 << 8) | v41;
     }
 
-    while (a3 - 1 + v42 < v42 % a3);
-    return v42 % a3;
+    while (bound - 1 + v42 < v42 % bound);
+    return v42 % bound;
   }
 
   else
@@ -422,7 +422,7 @@
     v22 = v5[(v5[v19] + v20)];
     v4->var0 = v19;
     v4->var1 = v21;
-    return (((v10 << 24) | (v14 << 16) | (v18 << 8) | v22) * a3) >> 32;
+    return (((v10 << 24) | (v14 << 16) | (v18 << 8) | v22) * bound) >> 32;
   }
 }
 

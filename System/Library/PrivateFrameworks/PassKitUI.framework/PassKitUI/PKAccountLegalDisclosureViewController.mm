@@ -1,20 +1,20 @@
 @interface PKAccountLegalDisclosureViewController
-- (PKAccountLegalDisclosureViewController)initWithFeature:(unint64_t)a3 associatedAccountFeature:(unint64_t)a4;
-- (void)explanationViewDidUpdateLayout:(id)a3;
+- (PKAccountLegalDisclosureViewController)initWithFeature:(unint64_t)feature associatedAccountFeature:(unint64_t)accountFeature;
+- (void)explanationViewDidUpdateLayout:(id)layout;
 - (void)viewDidLoad;
 @end
 
 @implementation PKAccountLegalDisclosureViewController
 
-- (PKAccountLegalDisclosureViewController)initWithFeature:(unint64_t)a3 associatedAccountFeature:(unint64_t)a4
+- (PKAccountLegalDisclosureViewController)initWithFeature:(unint64_t)feature associatedAccountFeature:(unint64_t)accountFeature
 {
   v7.receiver = self;
   v7.super_class = PKAccountLegalDisclosureViewController;
   result = [(PKExplanationViewController *)&v7 init];
   if (result)
   {
-    result->_feature = a3;
-    result->_associatedAccountFeature = a4;
+    result->_feature = feature;
+    result->_associatedAccountFeature = accountFeature;
   }
 
   return result;
@@ -25,17 +25,17 @@
   v8.receiver = self;
   v8.super_class = PKAccountLegalDisclosureViewController;
   [(PKExplanationViewController *)&v8 viewDidLoad];
-  v3 = [(PKAccountLegalDisclosureViewController *)self navigationItem];
+  navigationItem = [(PKAccountLegalDisclosureViewController *)self navigationItem];
   v4 = PKDynamicLocalizedFeatureString();
-  [v3 setTitle:v4];
+  [navigationItem setTitle:v4];
 
-  v5 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v6 = PKDynamicLocalizedFeatureString();
-  [v5 setBodyText:v6];
+  [explanationView setBodyText:v6];
 
-  [v5 setBodyTextAlignment:4];
-  [v5 setHideTitleText:1];
-  [v5 setShowPrivacyView:0];
+  [explanationView setBodyTextAlignment:4];
+  [explanationView setHideTitleText:1];
+  [explanationView setShowPrivacyView:0];
   if (PKIsVision())
   {
     [(PKExplanationViewController *)self setShowCloseButton:1];
@@ -47,18 +47,18 @@
   }
 
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  v7 = [v5 dockView];
-  [v7 setPrimaryButton:0];
+  dockView = [explanationView dockView];
+  [dockView setPrimaryButton:0];
 }
 
-- (void)explanationViewDidUpdateLayout:(id)a3
+- (void)explanationViewDidUpdateLayout:(id)layout
 {
-  v6 = a3;
+  layoutCopy = layout;
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v4 = [v6 scrollView];
-    v5 = [(PKAccountLegalDisclosureViewController *)self navigationItem];
-    [v4 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v5];
+    scrollView = [layoutCopy scrollView];
+    navigationItem = [(PKAccountLegalDisclosureViewController *)self navigationItem];
+    [scrollView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 

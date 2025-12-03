@@ -5,11 +5,11 @@
 - (int)linkType;
 - (int)messageType;
 - (unint64_t)messageSize;
-- (void)setLinkType:(int)a3;
-- (void)setMessageSize:(unint64_t)a3;
-- (void)setMessageType:(int)a3;
-- (void)setPeerDeviceModel:(id)a3;
-- (void)setPeerOSVersion:(id *)a3;
+- (void)setLinkType:(int)type;
+- (void)setMessageSize:(unint64_t)size;
+- (void)setMessageType:(int)type;
+- (void)setPeerDeviceModel:(id)model;
+- (void)setPeerOSVersion:(id *)version;
 @end
 
 @implementation RPNWActivityMessageMetrics
@@ -54,15 +54,15 @@
 - (id)_metricsDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(RPNWActivityMessageMetrics *)self messageType];
-  if (v4 > 3)
+  messageType = [(RPNWActivityMessageMetrics *)self messageType];
+  if (messageType > 3)
   {
     v5 = "?";
   }
 
   else
   {
-    v5 = off_1E7C94B40[v4];
+    v5 = off_1E7C94B40[messageType];
   }
 
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
@@ -71,30 +71,30 @@
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{-[RPNWActivityMessageMetrics messageSize](self, "messageSize")}];
   [v3 setObject:v7 forKeyedSubscript:@"bytesOut"];
 
-  v8 = [(RPNWActivityMessageMetrics *)self linkType];
-  if (v8 > 0xB)
+  linkType = [(RPNWActivityMessageMetrics *)self linkType];
+  if (linkType > 0xB)
   {
     v9 = "?";
   }
 
   else
   {
-    v9 = off_1E7C94B60[v8];
+    v9 = off_1E7C94B60[linkType];
   }
 
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
   [v3 setObject:v10 forKeyedSubscript:@"linkType"];
 
-  v11 = [(RPNWActivityMessageMetrics *)self peerDeviceModel];
-  if (v11)
+  peerDeviceModel = [(RPNWActivityMessageMetrics *)self peerDeviceModel];
+  if (peerDeviceModel)
   {
-    [v3 setObject:v11 forKeyedSubscript:@"peerModel"];
+    [v3 setObject:peerDeviceModel forKeyedSubscript:@"peerModel"];
   }
 
-  v12 = [(RPNWActivityMessageMetrics *)self peerOSVersion];
-  if (v12)
+  peerOSVersion = [(RPNWActivityMessageMetrics *)self peerOSVersion];
+  if (peerOSVersion)
   {
-    [v3 setObject:v12 forKeyedSubscript:@"peerOSVersion"];
+    [v3 setObject:peerOSVersion forKeyedSubscript:@"peerOSVersion"];
   }
 
   return v3;
@@ -165,30 +165,30 @@ void __47__RPNWActivityMessageMetrics_setPeerOSVersion___block_invoke(uint64_t a
   *(v3 + 48) = v2;
 }
 
-- (void)setMessageType:(int)a3
+- (void)setMessageType:(int)type
 {
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_6_0(v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16);
 }
 
-- (void)setMessageSize:(unint64_t)a3
+- (void)setMessageSize:(unint64_t)size
 {
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_3_2(v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16);
 }
 
-- (void)setLinkType:(int)a3
+- (void)setLinkType:(int)type
 {
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_6_0(v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16);
 }
 
-- (void)setPeerDeviceModel:(id)a3
+- (void)setPeerDeviceModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_2_2();
   v15 = v5;
@@ -196,7 +196,7 @@ void __47__RPNWActivityMessageMetrics_setPeerOSVersion___block_invoke(uint64_t a
   OUTLINED_FUNCTION_5_0(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)setPeerOSVersion:(id *)a3
+- (void)setPeerOSVersion:(id *)version
 {
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_2_2();

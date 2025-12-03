@@ -1,32 +1,32 @@
 @interface _IMDMetadataItem
-- (BOOL)markWithSender:(id)a3 recipients:(id)a4 isIncoming:(BOOL)a5;
-- (_IMDMetadataItem)initWithFilePath:(id)a3;
+- (BOOL)markWithSender:(id)sender recipients:(id)recipients isIncoming:(BOOL)incoming;
+- (_IMDMetadataItem)initWithFilePath:(id)path;
 @end
 
 @implementation _IMDMetadataItem
 
-- (_IMDMetadataItem)initWithFilePath:(id)a3
+- (_IMDMetadataItem)initWithFilePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _IMDMetadataItem;
   v6 = [(_IMDMetadataItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_filePath, a3);
+    objc_storeStrong(&v6->_filePath, path);
   }
 
   return v7;
 }
 
-- (BOOL)markWithSender:(id)a3 recipients:(id)a4 isIncoming:(BOOL)a5
+- (BOOL)markWithSender:(id)sender recipients:(id)recipients isIncoming:(BOOL)incoming
 {
-  v5 = a5;
+  incomingCopy = incoming;
   v51 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v45 = a4;
-  v10 = objc_msgSend__stripFZIDPrefix(v44, v8, v9);
+  senderCopy = sender;
+  recipientsCopy = recipients;
+  v10 = objc_msgSend__stripFZIDPrefix(senderCopy, v8, v9);
   v13 = _IMDCoreSpotlightCNContactForAddress(v10);
   if (!v13 || (objc_msgSend_sharedInstance(IMDContactCache, v11, v12), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_fullNameForContact_(v14, v15, v13), v16 = objc_claimAutoreleasedReturnValue(), v14, !v16))
   {
@@ -43,8 +43,8 @@
   v47 = v19;
   v20 = v18;
   v48 = v20;
-  objc_msgSend_enumerateObjectsUsingBlock_(v45, v21, v46);
-  if (v5)
+  objc_msgSend_enumerateObjectsUsingBlock_(recipientsCopy, v21, v46);
+  if (incomingCopy)
   {
     if (objc_msgSend_count(v19, v22, v23))
     {

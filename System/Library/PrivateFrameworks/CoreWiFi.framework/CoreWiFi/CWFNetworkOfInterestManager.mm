@@ -1,18 +1,18 @@
 @interface CWFNetworkOfInterestManager
 + (CWFNetworkOfInterestManager)sharedInstance;
 - (CWFNetworkOfInterestManager)init;
-- (int64_t)homeTypeForNetworkName:(id)a3;
-- (int64_t)homeTypeForNetworkSignature:(id)a3;
-- (int64_t)workTypeForNetworkName:(id)a3;
-- (int64_t)workTypeForNetworkSignature:(id)a3;
+- (int64_t)homeTypeForNetworkName:(id)name;
+- (int64_t)homeTypeForNetworkSignature:(id)signature;
+- (int64_t)workTypeForNetworkName:(id)name;
+- (int64_t)workTypeForNetworkSignature:(id)signature;
 - (void)_homeNetworkDeterminationDidChange;
 - (void)_workNetworkDeterminationDidChange;
 - (void)activate;
-- (void)didStartTrackingNOI:(id)a3;
-- (void)didStopTrackingAllNOIs:(id)a3;
-- (void)didStopTrackingNOI:(id)a3;
+- (void)didStartTrackingNOI:(id)i;
+- (void)didStopTrackingAllNOIs:(id)is;
+- (void)didStopTrackingNOI:(id)i;
 - (void)fetchHomeWiFiInfoFromHomeKit;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)invalidate;
 @end
 
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_1E0D5EB08;
   block[3] = &unk_1E86E55D8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED7E3A70 != -1)
   {
     dispatch_once(&qword_1ED7E3A70, block);
@@ -181,24 +181,24 @@
   dispatch_async(noiQueue, block);
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   noiQueue = self->_noiQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0D5F308;
   v7[3] = &unk_1E86E6420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = homesCopy;
+  selfCopy = self;
+  v6 = homesCopy;
   dispatch_async(noiQueue, v7);
 }
 
 - (void)fetchHomeWiFiInfoFromHomeKit
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   if (_os_feature_enabled_impl())
   {
     if (_os_feature_enabled_impl())
@@ -219,7 +219,7 @@
 
   if (self->_lastHomeKitWiFiFetchTimestamp)
   {
-    [v3 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     if (v5 < v4)
     {
       v6 = CWFGetOSLog();
@@ -392,9 +392,9 @@ LABEL_43:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)homeTypeForNetworkName:(id)a3
+- (int64_t)homeTypeForNetworkName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -404,10 +404,10 @@ LABEL_43:
   block[1] = 3221225472;
   block[2] = sub_1E0D60608;
   block[3] = &unk_1E86E7BE0;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(noiQueue, block);
   v7 = v13[3];
 
@@ -415,25 +415,25 @@ LABEL_43:
   return v7;
 }
 
-- (int64_t)homeTypeForNetworkSignature:(id)a3
+- (int64_t)homeTypeForNetworkSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   noiQueue = self->_noiQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1E0D60B64;
   v8[3] = &unk_1E86E6420;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = signatureCopy;
+  v6 = signatureCopy;
   dispatch_sync(noiQueue, v8);
 
   return 0;
 }
 
-- (int64_t)workTypeForNetworkName:(id)a3
+- (int64_t)workTypeForNetworkName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -443,10 +443,10 @@ LABEL_43:
   block[1] = 3221225472;
   block[2] = sub_1E0D60E40;
   block[3] = &unk_1E86E7BE0;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(noiQueue, block);
   v7 = v13[3];
 
@@ -454,7 +454,7 @@ LABEL_43:
   return v7;
 }
 
-- (int64_t)workTypeForNetworkSignature:(id)a3
+- (int64_t)workTypeForNetworkSignature:(id)signature
 {
   noiQueue = self->_noiQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -466,35 +466,35 @@ LABEL_43:
   return 0;
 }
 
-- (void)didStartTrackingNOI:(id)a3
+- (void)didStartTrackingNOI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   noiManager = self->_noiManager;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0D61374;
   v7[3] = &unk_1E86E9C38;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = iCopy;
+  selfCopy = self;
+  v6 = iCopy;
   [(NWNetworkOfInterestManager *)noiManager networkAttachmentInfoForScopedNOI:v6 reply:v7];
 }
 
-- (void)didStopTrackingNOI:(id)a3
+- (void)didStopTrackingNOI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   noiQueue = self->_noiQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0D61940;
   v7[3] = &unk_1E86E6420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = iCopy;
+  selfCopy = self;
+  v6 = iCopy;
   dispatch_async(noiQueue, v7);
 }
 
-- (void)didStopTrackingAllNOIs:(id)a3
+- (void)didStopTrackingAllNOIs:(id)is
 {
   noiQueue = self->_noiQueue;
   block[0] = MEMORY[0x1E69E9820];

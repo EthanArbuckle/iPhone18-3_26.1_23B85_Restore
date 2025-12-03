@@ -1,23 +1,23 @@
 @interface HFNetworkConfigurationGroupItemProvider
 - (HFNetworkConfigurationGroupItemProvider)init;
-- (HFNetworkConfigurationGroupItemProvider)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFNetworkConfigurationGroupItemProvider)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFNetworkConfigurationGroupItemProvider
 
-- (HFNetworkConfigurationGroupItemProvider)initWithHome:(id)a3
+- (HFNetworkConfigurationGroupItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFNetworkConfigurationGroupItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     groupItems = v7->_groupItems;
     v7->_groupItems = v8;
@@ -28,18 +28,18 @@
 
 - (HFNetworkConfigurationGroupItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFNetworkConfigurationGroupItemProvider.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HFNetworkConfigurationGroupItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFNetworkConfigurationGroupItemProvider.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HFNetworkConfigurationGroupItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFNetworkConfigurationGroupItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFNetworkConfigurationGroupItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -47,14 +47,14 @@
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HFNetworkConfigurationGroupItemProvider *)self home];
-  v4 = [v3 accessoryProtectionGroups];
+  home = [(HFNetworkConfigurationGroupItemProvider *)self home];
+  accessoryProtectionGroups = [home accessoryProtectionGroups];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__HFNetworkConfigurationGroupItemProvider_reloadItems__block_invoke_2;
   v10[3] = &unk_277DF5228;
   objc_copyWeak(&v11, &location);
-  v5 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v4 filter:&__block_literal_global_142 itemMap:v10];
+  v5 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:accessoryProtectionGroups filter:&__block_literal_global_142 itemMap:v10];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__HFNetworkConfigurationGroupItemProvider_reloadItems__block_invoke_3;
@@ -168,10 +168,10 @@ id __54__HFNetworkConfigurationGroupItemProvider_reloadItems__block_invoke_3(uin
   v8[1] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFNetworkConfigurationGroupItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"accessory";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 

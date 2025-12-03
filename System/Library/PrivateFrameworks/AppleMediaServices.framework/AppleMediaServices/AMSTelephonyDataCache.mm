@@ -1,13 +1,13 @@
 @interface AMSTelephonyDataCache
 + (id)sharedCache;
-- (AMSTelephonyDataCache)initWithClientClass:(Class)a3;
-- (AMSTelephonyDataCache)initWithTelephonyClient:(id)a3 queue:(id)a4;
+- (AMSTelephonyDataCache)initWithClientClass:(Class)class;
+- (AMSTelephonyDataCache)initWithTelephonyClient:(id)client queue:(id)queue;
 - (CTXPCContexts)activeContexts;
 - (id)carrierNamesPromise;
-- (id)carrierNamesWithError:(id *)a3;
-- (void)_clearCaches:(id)a3;
+- (id)carrierNamesWithError:(id *)error;
+- (void)_clearCaches:(id)caches;
 - (void)activeSubscriptionsDidChange;
-- (void)phoneNumberChanged:(id)a3;
+- (void)phoneNumberChanged:(id)changed;
 @end
 
 @implementation AMSTelephonyDataCache
@@ -31,32 +31,32 @@ uint64_t __36__AMSTelephonyDataCache_sharedCache__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (AMSTelephonyDataCache)initWithClientClass:(Class)a3
+- (AMSTelephonyDataCache)initWithClientClass:(Class)class
 {
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_create("com.apple.AppleMediaServices.CoreTelephonyDataCache", v5);
 
-  v7 = [[a3 alloc] initWithQueue:v6];
+  v7 = [[class alloc] initWithQueue:v6];
   v8 = [(AMSTelephonyDataCache *)self initWithTelephonyClient:v7 queue:v6];
 
   return v8;
 }
 
-- (AMSTelephonyDataCache)initWithTelephonyClient:(id)a3 queue:(id)a4
+- (AMSTelephonyDataCache)initWithTelephonyClient:(id)client queue:(id)queue
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  queueCopy = queue;
   v10 = +[AMSLogConfig sharedConfig];
   if (!v10)
   {
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
-    v21 = v9;
+    v21 = queueCopy;
     v12 = AMSLogKey();
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
@@ -74,14 +74,14 @@ uint64_t __36__AMSTelephonyDataCache_sharedCache__block_invoke()
     v16 = ;
     *buf = 138543362;
     v24 = v16;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_INFO, "%{public}@Creating a new telephony data cache.", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@Creating a new telephony data cache.", buf, 0xCu);
     if (v12)
     {
 
       v16 = v4;
     }
 
-    v9 = v21;
+    queueCopy = v21;
   }
 
   v22.receiver = self;
@@ -90,11 +90,11 @@ uint64_t __36__AMSTelephonyDataCache_sharedCache__block_invoke()
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_client, a3);
-    [v8 setDelegate:v18];
-    objc_storeStrong(&v18->_queue, a4);
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v18 selector:sel__clearCaches_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    objc_storeStrong(&v17->_client, client);
+    [clientCopy setDelegate:v18];
+    objc_storeStrong(&v18->_queue, queue);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v18 selector:sel__clearCaches_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
   }
 
   return v18;
@@ -102,8 +102,8 @@ uint64_t __36__AMSTelephonyDataCache_sharedCache__block_invoke()
 
 - (CTXPCContexts)activeContexts
 {
-  v3 = [(AMSTelephonyDataCache *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(AMSTelephonyDataCache *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v8 = 0;
   v9 = &v8;
@@ -111,14 +111,14 @@ uint64_t __36__AMSTelephonyDataCache_sharedCache__block_invoke()
   v11 = __Block_byref_object_copy__66;
   v12 = __Block_byref_object_dispose__66;
   v13 = 0;
-  v4 = [(AMSTelephonyDataCache *)self queue];
+  queue2 = [(AMSTelephonyDataCache *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__AMSTelephonyDataCache_activeContexts__block_invoke;
   v7[3] = &unk_1E73B82D0;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -261,38 +261,38 @@ void __39__AMSTelephonyDataCache_activeContexts__block_invoke(uint64_t a1)
   *(v32 + 40) = v31;
 }
 
-- (id)carrierNamesWithError:(id *)a3
+- (id)carrierNamesWithError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [(AMSTelephonyDataCache *)self client];
+  client = [(AMSTelephonyDataCache *)self client];
   v27 = 0;
-  v6 = [v5 getSubscriptionInfoWithError:&v27];
+  v6 = [client getSubscriptionInfoWithError:&v27];
   v7 = v27;
 
   if (v6 || !v7)
   {
     if (v6)
     {
-      v15 = [v6 subscriptionsInUse];
-      if ([v15 count])
+      subscriptionsInUse = [v6 subscriptionsInUse];
+      if ([subscriptionsInUse count])
       {
-        v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v15, "count")}];
+        v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(subscriptionsInUse, "count")}];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __47__AMSTelephonyDataCache_carrierNamesWithError___block_invoke;
         v25[3] = &unk_1E73BC9C0;
-        v25[4] = v4;
+        v25[4] = selfCopy;
         v17 = v16;
         v26 = v17;
-        v18 = [v15 ams_mapWithTransformIgnoresNil:v25];
+        v18 = [subscriptionsInUse ams_mapWithTransformIgnoresNil:v25];
         v19 = [v17 count];
-        if (v19 == [v15 count])
+        if (v19 == [subscriptionsInUse count])
         {
-          if (a3)
+          if (error)
           {
             v20 = [v17 copy];
-            *a3 = AMSErrorWithMultipleUnderlyingErrors(15, @"Error fetching carrier names", 0, v20);
+            *error = AMSErrorWithMultipleUnderlyingErrors(15, @"Error fetching carrier names", 0, v20);
           }
 
           v21 = 0;
@@ -324,8 +324,8 @@ void __39__AMSTelephonyDataCache_activeContexts__block_invoke(uint64_t a1)
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = AMSLogKey();
       v11 = MEMORY[0x1E696AEC0];
@@ -333,8 +333,8 @@ void __39__AMSTelephonyDataCache_activeContexts__block_invoke(uint64_t a1)
       v13 = v12;
       if (v10)
       {
-        v4 = AMSLogKey();
-        [v11 stringWithFormat:@"%@: [%@] ", v13, v4];
+        selfCopy = AMSLogKey();
+        [v11 stringWithFormat:@"%@: [%@] ", v13, selfCopy];
       }
 
       else
@@ -347,19 +347,19 @@ void __39__AMSTelephonyDataCache_activeContexts__block_invoke(uint64_t a1)
       v29 = v14;
       v30 = 2114;
       v31 = v22;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@Error fetching subscription info: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Error fetching subscription info: %{public}@", buf, 0x16u);
       if (v10)
       {
 
-        v14 = v4;
+        v14 = selfCopy;
       }
     }
 
-    if (a3)
+    if (error)
     {
       v23 = v7;
       v21 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -484,9 +484,9 @@ LABEL_25:
 - (id)carrierNamesPromise
 {
   v3 = objc_alloc_init(AMSPromise);
-  v4 = [(AMSTelephonyDataCache *)self client];
-  v5 = [(AMSPromise *)v3 completionHandlerAdapter];
-  [v4 getSubscriptionInfo:v5];
+  client = [(AMSTelephonyDataCache *)self client];
+  completionHandlerAdapter = [(AMSPromise *)v3 completionHandlerAdapter];
+  [client getSubscriptionInfo:completionHandlerAdapter];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -569,7 +569,7 @@ void __44__AMSTelephonyDataCache_carrierNamesPromise__block_invoke_3(uint64_t a1
 LABEL_6:
 }
 
-- (void)_clearCaches:(id)a3
+- (void)_clearCaches:(id)caches
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = +[AMSLogConfig sharedConfig];
@@ -578,8 +578,8 @@ LABEL_6:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 = AMSLogKey();
     v8 = MEMORY[0x1E696AEC0];
@@ -598,7 +598,7 @@ LABEL_6:
     v11 = ;
     *buf = 138543362;
     v16 = v11;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_INFO, "%{public}@Received UIApplicationDidEnterBackgroundNotification notification, clearing caches.", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@Received UIApplicationDidEnterBackgroundNotification notification, clearing caches.", buf, 0xCu);
     if (v7)
     {
 
@@ -606,16 +606,16 @@ LABEL_6:
     }
   }
 
-  v12 = [(AMSTelephonyDataCache *)self queue];
-  dispatch_assert_queue_not_V2(v12);
+  queue = [(AMSTelephonyDataCache *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v13 = [(AMSTelephonyDataCache *)self queue];
+  queue2 = [(AMSTelephonyDataCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__AMSTelephonyDataCache__clearCaches___block_invoke;
   block[3] = &unk_1E73B3680;
   block[4] = self;
-  dispatch_async(v13, block);
+  dispatch_async(queue2, block);
 }
 
 void __38__AMSTelephonyDataCache__clearCaches___block_invoke(uint64_t a1)
@@ -628,8 +628,8 @@ void __38__AMSTelephonyDataCache__clearCaches___block_invoke(uint64_t a1)
 - (void)activeSubscriptionsDidChange
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(AMSTelephonyDataCache *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(AMSTelephonyDataCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[AMSLogConfig sharedConfig];
   if (!v6)
@@ -637,8 +637,8 @@ void __38__AMSTelephonyDataCache__clearCaches___block_invoke(uint64_t a1)
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -660,7 +660,7 @@ void __38__AMSTelephonyDataCache__clearCaches___block_invoke(uint64_t a1)
     v16 = v12;
     v17 = 2114;
     v18 = v13;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_INFO, "%{public}@%{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@%{public}@", buf, 0x16u);
     if (v8)
     {
 
@@ -672,11 +672,11 @@ void __38__AMSTelephonyDataCache__clearCaches___block_invoke(uint64_t a1)
   self->_activeContexts = 0;
 }
 
-- (void)phoneNumberChanged:(id)a3
+- (void)phoneNumberChanged:(id)changed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = [(AMSTelephonyDataCache *)self queue];
-  dispatch_assert_queue_V2(v6);
+  queue = [(AMSTelephonyDataCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = +[AMSLogConfig sharedConfig];
   if (!v7)
@@ -684,8 +684,8 @@ void __38__AMSTelephonyDataCache__clearCaches___block_invoke(uint64_t a1)
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v9 = AMSLogKey();
     v10 = MEMORY[0x1E696AEC0];
@@ -707,7 +707,7 @@ void __38__AMSTelephonyDataCache__clearCaches___block_invoke(uint64_t a1)
     v17 = v13;
     v18 = 2114;
     v19 = v14;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_INFO, "%{public}@%{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@%{public}@", buf, 0x16u);
     if (v9)
     {
 

@@ -1,10 +1,10 @@
 @interface ATXProactivePredictionClientHelper
 - (ATXProactivePredictionClientHelper)init;
 - (id)_getConnection;
-- (id)suggestionMetadataForActions:(id)a3 error:(id *)a4;
+- (id)suggestionMetadataForActions:(id)actions error:(id *)error;
 - (void)dealloc;
-- (void)parameterSuggestionsForBundleID:(id)a3 intentName:(id)a4 toolID:(id)a5 limit:(unint64_t)a6 withCompletion:(id)a7;
-- (void)suggestionMetadataForActions:(id)a3 withCompletion:(id)a4;
+- (void)parameterSuggestionsForBundleID:(id)d intentName:(id)name toolID:(id)iD limit:(unint64_t)limit withCompletion:(id)completion;
+- (void)suggestionMetadataForActions:(id)actions withCompletion:(id)completion;
 @end
 
 @implementation ATXProactivePredictionClientHelper
@@ -59,21 +59,21 @@ void __52__ATXProactivePredictionClientHelper__getConnection__block_invoke()
   }
 }
 
-- (void)parameterSuggestionsForBundleID:(id)a3 intentName:(id)a4 toolID:(id)a5 limit:(unint64_t)a6 withCompletion:(id)a7
+- (void)parameterSuggestionsForBundleID:(id)d intentName:(id)name toolID:(id)iD limit:(unint64_t)limit withCompletion:(id)completion
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(ATXProactivePredictionClientHelper *)self _getConnection];
-  v17 = [v16 remoteObjectProxy];
+  completionCopy = completion;
+  iDCopy = iD;
+  nameCopy = name;
+  dCopy = d;
+  _getConnection = [(ATXProactivePredictionClientHelper *)self _getConnection];
+  remoteObjectProxy = [_getConnection remoteObjectProxy];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __109__ATXProactivePredictionClientHelper_parameterSuggestionsForBundleID_intentName_toolID_limit_withCompletion___block_invoke;
   v19[3] = &unk_279AC3278;
-  v20 = v12;
-  v18 = v12;
-  [v17 parameterSuggestionsForBundleID:v15 intentName:v14 toolID:v13 limit:a6 withCompletion:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [remoteObjectProxy parameterSuggestionsForBundleID:dCopy intentName:nameCopy toolID:iDCopy limit:limit withCompletion:v19];
 }
 
 void __109__ATXProactivePredictionClientHelper_parameterSuggestionsForBundleID_intentName_toolID_limit_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -96,30 +96,30 @@ void __109__ATXProactivePredictionClientHelper_parameterSuggestionsForBundleID_i
   }
 }
 
-- (void)suggestionMetadataForActions:(id)a3 withCompletion:(id)a4
+- (void)suggestionMetadataForActions:(id)actions withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXProactivePredictionClientHelper *)self _getConnection];
+  completionCopy = completion;
+  actionsCopy = actions;
+  _getConnection = [(ATXProactivePredictionClientHelper *)self _getConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__ATXProactivePredictionClientHelper_suggestionMetadataForActions_withCompletion___block_invoke;
   v14[3] = &unk_279AC32A0;
-  v9 = v6;
+  v9 = completionCopy;
   v15 = v9;
-  v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v10 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__ATXProactivePredictionClientHelper_suggestionMetadataForActions_withCompletion___block_invoke_2;
   v12[3] = &unk_279AC3278;
   v13 = v9;
   v11 = v9;
-  [v10 suggestionMetadataForActions:v7 withCompletion:v12];
+  [v10 suggestionMetadataForActions:actionsCopy withCompletion:v12];
 }
 
-- (id)suggestionMetadataForActions:(id)a3 error:(id *)a4
+- (id)suggestionMetadataForActions:(id)actions error:(id *)error
 {
-  v6 = a3;
+  actionsCopy = actions;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -138,13 +138,13 @@ void __109__ATXProactivePredictionClientHelper_parameterSuggestionsForBundleID_i
   v10[3] = &unk_279AC32C8;
   v10[4] = &v11;
   v10[5] = &v17;
-  [(ATXProactivePredictionClientHelper *)self suggestionMetadataForActions:v6 withCompletion:v10];
-  if (a4)
+  [(ATXProactivePredictionClientHelper *)self suggestionMetadataForActions:actionsCopy withCompletion:v10];
+  if (error)
   {
     v7 = v12[5];
     if (v7)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 

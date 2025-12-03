@@ -1,5 +1,5 @@
 @interface FCNewsTabiFeedPersonalizationOutputConfiguration
-- (FCNewsTabiFeedPersonalizationOutputConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiFeedPersonalizationOutputConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,252 +8,252 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self defaultHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tdefaultHeadlineScoringOutputName: %@;", v4];
+  defaultHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self defaultHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tdefaultHeadlineScoringOutputName: %@;", defaultHeadlineScoringOutputName];
 
-  v5 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self topicFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\ttopicFeedHeadlineScoringOutputName: %@;", v5];
+  topicFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self topicFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\ttopicFeedHeadlineScoringOutputName: %@;", topicFeedHeadlineScoringOutputName];
 
-  v6 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self magazineFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tmagazineFeedHeadlineScoringOutputName: %@;", v6];
+  magazineFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self magazineFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tmagazineFeedHeadlineScoringOutputName: %@;", magazineFeedHeadlineScoringOutputName];
 
-  v7 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self magazineFeedIssuesHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tmagazineFeedIssuesHeadlineScoringOutputName: %@;", v7];
+  magazineFeedIssuesHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self magazineFeedIssuesHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tmagazineFeedIssuesHeadlineScoringOutputName: %@;", magazineFeedIssuesHeadlineScoringOutputName];
 
-  v8 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self legacyAudioFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tlegacyAudioFeedHeadlineScoringOutputName: %@;", v8];
+  legacyAudioFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self legacyAudioFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tlegacyAudioFeedHeadlineScoringOutputName: %@;", legacyAudioFeedHeadlineScoringOutputName];
 
-  v9 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self audioFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\taudioFeedHeadlineScoringOutputName: %@;", v9];
+  audioFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self audioFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\taudioFeedHeadlineScoringOutputName: %@;", audioFeedHeadlineScoringOutputName];
 
-  v10 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleRecirculationPrimaryHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tarticleRecirculationPrimaryHeadlineScoringOutputName: %@;", v10];
+  articleRecirculationPrimaryHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleRecirculationPrimaryHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tarticleRecirculationPrimaryHeadlineScoringOutputName: %@;", articleRecirculationPrimaryHeadlineScoringOutputName];
 
-  v11 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleRecirculationSecondaryHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tarticleRecirculationSecondaryHeadlineScoringOutputName: %@;", v11];
+  articleRecirculationSecondaryHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleRecirculationSecondaryHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tarticleRecirculationSecondaryHeadlineScoringOutputName: %@;", articleRecirculationSecondaryHeadlineScoringOutputName];
 
-  v12 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleRecirculationTertiaryHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tarticleRecirculationTertiaryHeadlineScoringOutputName: %@;", v12];
+  articleRecirculationTertiaryHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleRecirculationTertiaryHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tarticleRecirculationTertiaryHeadlineScoringOutputName: %@;", articleRecirculationTertiaryHeadlineScoringOutputName];
 
-  v13 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleRecirculationQuaternaryHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tarticleRecirculationQuaternaryHeadlineScoringOutputName: %@;", v13];
+  articleRecirculationQuaternaryHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleRecirculationQuaternaryHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tarticleRecirculationQuaternaryHeadlineScoringOutputName: %@;", articleRecirculationQuaternaryHeadlineScoringOutputName];
 
-  v14 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self bestOfBundleHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tbestOfBundleHeadlineScoringOutputName: %@;", v14];
+  bestOfBundleHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self bestOfBundleHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tbestOfBundleHeadlineScoringOutputName: %@;", bestOfBundleHeadlineScoringOutputName];
 
-  v15 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self forYouGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tforYouGroupHeadlineScoringOutputName: %@;", v15];
+  forYouGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self forYouGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tforYouGroupHeadlineScoringOutputName: %@;", forYouGroupHeadlineScoringOutputName];
 
-  v16 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self greatStoriesYouMissedGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tgreatStoriesYouMissedGroupHeadlineScoringOutputName: %@;", v16];
+  greatStoriesYouMissedGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self greatStoriesYouMissedGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tgreatStoriesYouMissedGroupHeadlineScoringOutputName: %@;", greatStoriesYouMissedGroupHeadlineScoringOutputName];
 
-  v17 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self latestStoriesGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tlatestStoriesGroupHeadlineScoringOutputName: %@;", v17];
+  latestStoriesGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self latestStoriesGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tlatestStoriesGroupHeadlineScoringOutputName: %@;", latestStoriesGroupHeadlineScoringOutputName];
 
-  v18 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self localNewsGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tlocalNewsGroupHeadlineScoringOutputName: %@;", v18];
+  localNewsGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self localNewsGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tlocalNewsGroupHeadlineScoringOutputName: %@;", localNewsGroupHeadlineScoringOutputName];
 
-  v19 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self newspaperGroupMagazineFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tnewspaperGroupMagazineFeedHeadlineScoringOutputName: %@;", v19];
+  newspaperGroupMagazineFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self newspaperGroupMagazineFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tnewspaperGroupMagazineFeedHeadlineScoringOutputName: %@;", newspaperGroupMagazineFeedHeadlineScoringOutputName];
 
-  v20 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self todayWidgetHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\ttodayWidgetHeadlineScoringOutputName: %@;", v20];
+  todayWidgetHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self todayWidgetHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\ttodayWidgetHeadlineScoringOutputName: %@;", todayWidgetHeadlineScoringOutputName];
 
-  v21 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagWidgetHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\ttagWidgetHeadlineScoringOutputName: %@;", v21];
+  tagWidgetHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagWidgetHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\ttagWidgetHeadlineScoringOutputName: %@;", tagWidgetHeadlineScoringOutputName];
 
-  v22 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self notificationHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tnotificationHeadlineScoringOutputName: %@;", v22];
+  notificationHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self notificationHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tnotificationHeadlineScoringOutputName: %@;", notificationHeadlineScoringOutputName];
 
-  v23 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self mySportsGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tmySportsGroupHeadlineScoringOutputName: %@;", v23];
+  mySportsGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self mySportsGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tmySportsGroupHeadlineScoringOutputName: %@;", mySportsGroupHeadlineScoringOutputName];
 
-  v24 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self sportsTopStoriesHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tsportsTopStoriesHeadlineScoringOutputName: %@;", v24];
+  sportsTopStoriesHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self sportsTopStoriesHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tsportsTopStoriesHeadlineScoringOutputName: %@;", sportsTopStoriesHeadlineScoringOutputName];
 
-  v25 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self introToSportsGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tintroToSportsGroupHeadlineScoringOutputName: %@;", v25];
+  introToSportsGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self introToSportsGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tintroToSportsGroupHeadlineScoringOutputName: %@;", introToSportsGroupHeadlineScoringOutputName];
 
-  v26 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self highlightsGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\thighlightsGroupHeadlineScoringOutputName: %@;", v26];
+  highlightsGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self highlightsGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\thighlightsGroupHeadlineScoringOutputName: %@;", highlightsGroupHeadlineScoringOutputName];
 
-  v27 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleListTagFeedGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tarticleListTagFeedGroupHeadlineScoringOutputName: %@;", v27];
+  articleListTagFeedGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self articleListTagFeedGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tarticleListTagFeedGroupHeadlineScoringOutputName: %@;", articleListTagFeedGroupHeadlineScoringOutputName];
 
-  v28 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\ttagFeedHeadlineScoringOutputName: %@;", v28];
+  tagFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\ttagFeedHeadlineScoringOutputName: %@;", tagFeedHeadlineScoringOutputName];
 
-  v29 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self newspaperGroupTodayFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tnewspaperGroupTodayFeedHeadlineScoringOutputName: %@;", v29];
+  newspaperGroupTodayFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self newspaperGroupTodayFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tnewspaperGroupTodayFeedHeadlineScoringOutputName: %@;", newspaperGroupTodayFeedHeadlineScoringOutputName];
 
-  v30 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self moreForYouGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tmoreForYouGroupHeadlineScoringOutputName: %@;", v30];
+  moreForYouGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self moreForYouGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tmoreForYouGroupHeadlineScoringOutputName: %@;", moreForYouGroupHeadlineScoringOutputName];
 
-  v31 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self introToSportsGroupForYouHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tintroToSportsGroupForYouHeadlineScoringOutputName: %@;", v31];
+  introToSportsGroupForYouHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self introToSportsGroupForYouHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tintroToSportsGroupForYouHeadlineScoringOutputName: %@;", introToSportsGroupForYouHeadlineScoringOutputName];
 
-  v32 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self mySportsGroupForYouHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tmySportsGroupForYouHeadlineScoringOutputName: %@;", v32];
+  mySportsGroupForYouHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self mySportsGroupForYouHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tmySportsGroupForYouHeadlineScoringOutputName: %@;", mySportsGroupForYouHeadlineScoringOutputName];
 
-  v33 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self mySportsTopicsHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tmySportsTopicsHeadlineScoringOutputName: %@;", v33];
+  mySportsTopicsHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self mySportsTopicsHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tmySportsTopicsHeadlineScoringOutputName: %@;", mySportsTopicsHeadlineScoringOutputName];
 
-  v34 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self curatedGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tcuratedGroupHeadlineScoringOutputName: %@;", v34];
+  curatedGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self curatedGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tcuratedGroupHeadlineScoringOutputName: %@;", curatedGroupHeadlineScoringOutputName];
 
-  v35 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self curatedGroupIssuesHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tcuratedGroupIssuesHeadlineScoringOutputName: %@;", v35];
+  curatedGroupIssuesHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self curatedGroupIssuesHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tcuratedGroupIssuesHeadlineScoringOutputName: %@;", curatedGroupIssuesHeadlineScoringOutputName];
 
-  v36 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self localSectionGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tlocalSectionGroupHeadlineScoringOutputName: %@;", v36];
+  localSectionGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self localSectionGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tlocalSectionGroupHeadlineScoringOutputName: %@;", localSectionGroupHeadlineScoringOutputName];
 
-  v37 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self newspaperSectionGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tnewspaperSectionGroupHeadlineScoringOutputName: %@;", v37];
+  newspaperSectionGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self newspaperSectionGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tnewspaperSectionGroupHeadlineScoringOutputName: %@;", newspaperSectionGroupHeadlineScoringOutputName];
 
-  v38 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self sportsEventArticlesGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tsportsEventArticlesGroupHeadlineScoringOutputName: %@;", v38];
+  sportsEventArticlesGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self sportsEventArticlesGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tsportsEventArticlesGroupHeadlineScoringOutputName: %@;", sportsEventArticlesGroupHeadlineScoringOutputName];
 
-  v39 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagFeedForYouGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\ttagFeedForYouGroupHeadlineScoringOutputName: %@;", v39];
+  tagFeedForYouGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagFeedForYouGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\ttagFeedForYouGroupHeadlineScoringOutputName: %@;", tagFeedForYouGroupHeadlineScoringOutputName];
 
-  v40 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagRecentStoriesGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\ttagRecentStoriesGroupHeadlineScoringOutputName: %@;", v40];
+  tagRecentStoriesGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagRecentStoriesGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\ttagRecentStoriesGroupHeadlineScoringOutputName: %@;", tagRecentStoriesGroupHeadlineScoringOutputName];
 
-  v41 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagDateRangeGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\ttagDateRangeGroupHeadlineScoringOutputName: %@;", v41];
+  tagDateRangeGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self tagDateRangeGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\ttagDateRangeGroupHeadlineScoringOutputName: %@;", tagDateRangeGroupHeadlineScoringOutputName];
 
-  v42 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self sportsEventTopicGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tsportsEventTopicGroupHeadlineScoringOutputName: %@;", v42];
+  sportsEventTopicGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self sportsEventTopicGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tsportsEventTopicGroupHeadlineScoringOutputName: %@;", sportsEventTopicGroupHeadlineScoringOutputName];
 
-  v43 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self foodForYouGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tfoodForYouGroupHeadlineScoringOutputName: %@;", v43];
+  foodForYouGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self foodForYouGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tfoodForYouGroupHeadlineScoringOutputName: %@;", foodForYouGroupHeadlineScoringOutputName];
 
-  v44 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowDefaultHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowDefaultHeadlineScoringOutputName: %@;", v44];
+  shadowDefaultHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowDefaultHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowDefaultHeadlineScoringOutputName: %@;", shadowDefaultHeadlineScoringOutputName];
 
-  v45 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTopicFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowTopicFeedHeadlineScoringOutputName: %@;", v45];
+  shadowTopicFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTopicFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowTopicFeedHeadlineScoringOutputName: %@;", shadowTopicFeedHeadlineScoringOutputName];
 
-  v46 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMagazineFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowMagazineFeedHeadlineScoringOutputName: %@;", v46];
+  shadowMagazineFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMagazineFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowMagazineFeedHeadlineScoringOutputName: %@;", shadowMagazineFeedHeadlineScoringOutputName];
 
-  v47 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMagazineFeedIssuesHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowMagazineFeedIssuesHeadlineScoringOutputName: %@;", v47];
+  shadowMagazineFeedIssuesHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMagazineFeedIssuesHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowMagazineFeedIssuesHeadlineScoringOutputName: %@;", shadowMagazineFeedIssuesHeadlineScoringOutputName];
 
-  v48 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowLegacyAudioFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowLegacyAudioFeedHeadlineScoringOutputName: %@;", v48];
+  shadowLegacyAudioFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowLegacyAudioFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowLegacyAudioFeedHeadlineScoringOutputName: %@;", shadowLegacyAudioFeedHeadlineScoringOutputName];
 
-  v49 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowAudioFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowAudioFeedHeadlineScoringOutputName: %@;", v49];
+  shadowAudioFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowAudioFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowAudioFeedHeadlineScoringOutputName: %@;", shadowAudioFeedHeadlineScoringOutputName];
 
-  v50 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleRecirculationPrimaryHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowArticleRecirculationPrimaryHeadlineScoringOutputName: %@;", v50];
+  shadowArticleRecirculationPrimaryHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleRecirculationPrimaryHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowArticleRecirculationPrimaryHeadlineScoringOutputName: %@;", shadowArticleRecirculationPrimaryHeadlineScoringOutputName];
 
-  v51 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleRecirculationSecondaryHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowArticleRecirculationSecondaryHeadlineScoringOutputName: %@;", v51];
+  shadowArticleRecirculationSecondaryHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleRecirculationSecondaryHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowArticleRecirculationSecondaryHeadlineScoringOutputName: %@;", shadowArticleRecirculationSecondaryHeadlineScoringOutputName];
 
-  v52 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleRecirculationTertiaryHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowArticleRecirculationTertiaryHeadlineScoringOutputName: %@;", v52];
+  shadowArticleRecirculationTertiaryHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleRecirculationTertiaryHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowArticleRecirculationTertiaryHeadlineScoringOutputName: %@;", shadowArticleRecirculationTertiaryHeadlineScoringOutputName];
 
-  v53 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleRecirculationQuaternaryHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowArticleRecirculationQuaternaryHeadlineScoringOutputName: %@;", v53];
+  shadowArticleRecirculationQuaternaryHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleRecirculationQuaternaryHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowArticleRecirculationQuaternaryHeadlineScoringOutputName: %@;", shadowArticleRecirculationQuaternaryHeadlineScoringOutputName];
 
-  v54 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowBestOfBundleHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowBestOfBundleHeadlineScoringOutputName: %@;", v54];
+  shadowBestOfBundleHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowBestOfBundleHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowBestOfBundleHeadlineScoringOutputName: %@;", shadowBestOfBundleHeadlineScoringOutputName];
 
-  v55 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowForYouGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowForYouGroupHeadlineScoringOutputName: %@;", v55];
+  shadowForYouGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowForYouGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowForYouGroupHeadlineScoringOutputName: %@;", shadowForYouGroupHeadlineScoringOutputName];
 
-  v56 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowGreatStoriesYouMissedGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowGreatStoriesYouMissedGroupHeadlineScoringOutputName: %@;", v56];
+  shadowGreatStoriesYouMissedGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowGreatStoriesYouMissedGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowGreatStoriesYouMissedGroupHeadlineScoringOutputName: %@;", shadowGreatStoriesYouMissedGroupHeadlineScoringOutputName];
 
-  v57 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowLatestStoriesGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowLatestStoriesGroupHeadlineScoringOutputName: %@;", v57];
+  shadowLatestStoriesGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowLatestStoriesGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowLatestStoriesGroupHeadlineScoringOutputName: %@;", shadowLatestStoriesGroupHeadlineScoringOutputName];
 
-  v58 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowLocalNewsGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowLocalNewsGroupHeadlineScoringOutputName: %@;", v58];
+  shadowLocalNewsGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowLocalNewsGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowLocalNewsGroupHeadlineScoringOutputName: %@;", shadowLocalNewsGroupHeadlineScoringOutputName];
 
-  v59 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowNewspaperGroupMagazineFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowNewspaperGroupMagazineFeedHeadlineScoringOutputName: %@;", v59];
+  shadowNewspaperGroupMagazineFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowNewspaperGroupMagazineFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowNewspaperGroupMagazineFeedHeadlineScoringOutputName: %@;", shadowNewspaperGroupMagazineFeedHeadlineScoringOutputName];
 
-  v60 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTodayWidgetHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowTodayWidgetHeadlineScoringOutputName: %@;", v60];
+  shadowTodayWidgetHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTodayWidgetHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowTodayWidgetHeadlineScoringOutputName: %@;", shadowTodayWidgetHeadlineScoringOutputName];
 
-  v61 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagWidgetHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowTagWidgetHeadlineScoringOutputName: %@;", v61];
+  shadowTagWidgetHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagWidgetHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowTagWidgetHeadlineScoringOutputName: %@;", shadowTagWidgetHeadlineScoringOutputName];
 
-  v62 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowNotificationHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowNotificationHeadlineScoringOutputName: %@;", v62];
+  shadowNotificationHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowNotificationHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowNotificationHeadlineScoringOutputName: %@;", shadowNotificationHeadlineScoringOutputName];
 
-  v63 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMySportsGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowMySportsGroupHeadlineScoringOutputName: %@;", v63];
+  shadowMySportsGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMySportsGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowMySportsGroupHeadlineScoringOutputName: %@;", shadowMySportsGroupHeadlineScoringOutputName];
 
-  v64 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowSportsTopStoriesHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowSportsTopStoriesHeadlineScoringOutputName: %@;", v64];
+  shadowSportsTopStoriesHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowSportsTopStoriesHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowSportsTopStoriesHeadlineScoringOutputName: %@;", shadowSportsTopStoriesHeadlineScoringOutputName];
 
-  v65 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowIntroToSportsGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowIntroToSportsGroupHeadlineScoringOutputName: %@;", v65];
+  shadowIntroToSportsGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowIntroToSportsGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowIntroToSportsGroupHeadlineScoringOutputName: %@;", shadowIntroToSportsGroupHeadlineScoringOutputName];
 
-  v66 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowHighlightsGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowHighlightsGroupHeadlineScoringOutputName: %@;", v66];
+  shadowHighlightsGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowHighlightsGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowHighlightsGroupHeadlineScoringOutputName: %@;", shadowHighlightsGroupHeadlineScoringOutputName];
 
-  v67 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleListTagFeedGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowArticleListTagFeedGroupHeadlineScoringOutputName: %@;", v67];
+  shadowArticleListTagFeedGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowArticleListTagFeedGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowArticleListTagFeedGroupHeadlineScoringOutputName: %@;", shadowArticleListTagFeedGroupHeadlineScoringOutputName];
 
-  v68 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowTagFeedHeadlineScoringOutputName: %@;", v68];
+  shadowTagFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowTagFeedHeadlineScoringOutputName: %@;", shadowTagFeedHeadlineScoringOutputName];
 
-  v69 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowNewspaperGroupTodayFeedHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowNewspaperGroupTodayFeedHeadlineScoringOutputName: %@;", v69];
+  shadowNewspaperGroupTodayFeedHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowNewspaperGroupTodayFeedHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowNewspaperGroupTodayFeedHeadlineScoringOutputName: %@;", shadowNewspaperGroupTodayFeedHeadlineScoringOutputName];
 
-  v70 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMoreForYouGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowMoreForYouGroupHeadlineScoringOutputName: %@;", v70];
+  shadowMoreForYouGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMoreForYouGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowMoreForYouGroupHeadlineScoringOutputName: %@;", shadowMoreForYouGroupHeadlineScoringOutputName];
 
-  v71 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowIntroToSportsGroupForYouHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowIntroToSportsGroupForYouHeadlineScoringOutputName: %@;", v71];
+  shadowIntroToSportsGroupForYouHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowIntroToSportsGroupForYouHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowIntroToSportsGroupForYouHeadlineScoringOutputName: %@;", shadowIntroToSportsGroupForYouHeadlineScoringOutputName];
 
-  v72 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMySportsGroupForYouHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowMySportsGroupForYouHeadlineScoringOutputName: %@;", v72];
+  shadowMySportsGroupForYouHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMySportsGroupForYouHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowMySportsGroupForYouHeadlineScoringOutputName: %@;", shadowMySportsGroupForYouHeadlineScoringOutputName];
 
-  v73 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMySportsTopicsHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowMySportsTopicsHeadlineScoringOutputName: %@;", v73];
+  shadowMySportsTopicsHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowMySportsTopicsHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowMySportsTopicsHeadlineScoringOutputName: %@;", shadowMySportsTopicsHeadlineScoringOutputName];
 
-  v74 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowCuratedGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowCuratedGroupHeadlineScoringOutputName: %@;", v74];
+  shadowCuratedGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowCuratedGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowCuratedGroupHeadlineScoringOutputName: %@;", shadowCuratedGroupHeadlineScoringOutputName];
 
-  v75 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowCuratedGroupIssuesHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowCuratedGroupIssuesHeadlineScoringOutputName: %@;", v75];
+  shadowCuratedGroupIssuesHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowCuratedGroupIssuesHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowCuratedGroupIssuesHeadlineScoringOutputName: %@;", shadowCuratedGroupIssuesHeadlineScoringOutputName];
 
-  v76 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowLocalSectionGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowLocalSectionGroupHeadlineScoringOutputName: %@;", v76];
+  shadowLocalSectionGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowLocalSectionGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowLocalSectionGroupHeadlineScoringOutputName: %@;", shadowLocalSectionGroupHeadlineScoringOutputName];
 
-  v77 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowNewspaperSectionGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowNewspaperSectionGroupHeadlineScoringOutputName: %@;", v77];
+  shadowNewspaperSectionGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowNewspaperSectionGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowNewspaperSectionGroupHeadlineScoringOutputName: %@;", shadowNewspaperSectionGroupHeadlineScoringOutputName];
 
-  v78 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowSportsEventArticlesGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowSportsEventArticlesGroupHeadlineScoringOutputName: %@;", v78];
+  shadowSportsEventArticlesGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowSportsEventArticlesGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowSportsEventArticlesGroupHeadlineScoringOutputName: %@;", shadowSportsEventArticlesGroupHeadlineScoringOutputName];
 
-  v79 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagFeedForYouGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowTagFeedForYouGroupHeadlineScoringOutputName: %@;", v79];
+  shadowTagFeedForYouGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagFeedForYouGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowTagFeedForYouGroupHeadlineScoringOutputName: %@;", shadowTagFeedForYouGroupHeadlineScoringOutputName];
 
-  v80 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagRecentStoriesGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowTagRecentStoriesGroupHeadlineScoringOutputName: %@;", v80];
+  shadowTagRecentStoriesGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagRecentStoriesGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowTagRecentStoriesGroupHeadlineScoringOutputName: %@;", shadowTagRecentStoriesGroupHeadlineScoringOutputName];
 
-  v81 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagDateRangeGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowTagDateRangeGroupHeadlineScoringOutputName: %@;", v81];
+  shadowTagDateRangeGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowTagDateRangeGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowTagDateRangeGroupHeadlineScoringOutputName: %@;", shadowTagDateRangeGroupHeadlineScoringOutputName];
 
-  v82 = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowSportsEventTopicGroupHeadlineScoringOutputName];
-  [v3 appendFormat:@"\n\tshadowSportsEventTopicGroupHeadlineScoringOutputName: %@;", v82];
+  shadowSportsEventTopicGroupHeadlineScoringOutputName = [(FCNewsTabiFeedPersonalizationOutputConfiguration *)self shadowSportsEventTopicGroupHeadlineScoringOutputName];
+  [v3 appendFormat:@"\n\tshadowSportsEventTopicGroupHeadlineScoringOutputName: %@;", shadowSportsEventTopicGroupHeadlineScoringOutputName];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiFeedPersonalizationOutputConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiFeedPersonalizationOutputConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"defaultHeadlineScoringOutputName", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"defaultHeadlineScoringOutputName", 0);
   v6 = v5;
   if (v5)
   {
@@ -265,317 +265,317 @@
     if (v8)
     {
       objc_storeStrong(&v8->_defaultHeadlineScoringOutputName, v6);
-      v10 = FCAppConfigurationStringValue(v4, @"topicFeedHeadlineScoringOutputName", v7);
+      v10 = FCAppConfigurationStringValue(dictionaryCopy, @"topicFeedHeadlineScoringOutputName", v7);
       topicFeedHeadlineScoringOutputName = v9->_topicFeedHeadlineScoringOutputName;
       v9->_topicFeedHeadlineScoringOutputName = v10;
 
-      v12 = FCAppConfigurationStringValue(v4, @"magazineFeedHeadlineScoringOutputName", v7);
+      v12 = FCAppConfigurationStringValue(dictionaryCopy, @"magazineFeedHeadlineScoringOutputName", v7);
       magazineFeedHeadlineScoringOutputName = v9->_magazineFeedHeadlineScoringOutputName;
       v9->_magazineFeedHeadlineScoringOutputName = v12;
 
-      v14 = FCAppConfigurationStringValue(v4, @"magazineFeedIssuesHeadlineScoringOutputName", v7);
+      v14 = FCAppConfigurationStringValue(dictionaryCopy, @"magazineFeedIssuesHeadlineScoringOutputName", v7);
       magazineFeedIssuesHeadlineScoringOutputName = v9->_magazineFeedIssuesHeadlineScoringOutputName;
       v9->_magazineFeedIssuesHeadlineScoringOutputName = v14;
 
-      v16 = FCAppConfigurationStringValue(v4, @"legacyAudioFeedHeadlineScoringOutputName", v7);
+      v16 = FCAppConfigurationStringValue(dictionaryCopy, @"legacyAudioFeedHeadlineScoringOutputName", v7);
       legacyAudioFeedHeadlineScoringOutputName = v9->_legacyAudioFeedHeadlineScoringOutputName;
       v9->_legacyAudioFeedHeadlineScoringOutputName = v16;
 
-      v18 = FCAppConfigurationStringValue(v4, @"audioFeedHeadlineScoringOutputName", v7);
+      v18 = FCAppConfigurationStringValue(dictionaryCopy, @"audioFeedHeadlineScoringOutputName", v7);
       audioFeedHeadlineScoringOutputName = v9->_audioFeedHeadlineScoringOutputName;
       v9->_audioFeedHeadlineScoringOutputName = v18;
 
-      v20 = FCAppConfigurationStringValue(v4, @"articleRecirculationPrimaryHeadlineScoringOutputName", v7);
+      v20 = FCAppConfigurationStringValue(dictionaryCopy, @"articleRecirculationPrimaryHeadlineScoringOutputName", v7);
       articleRecirculationPrimaryHeadlineScoringOutputName = v9->_articleRecirculationPrimaryHeadlineScoringOutputName;
       v9->_articleRecirculationPrimaryHeadlineScoringOutputName = v20;
 
-      v22 = FCAppConfigurationStringValue(v4, @"articleRecirculationSecondaryHeadlineScoringOutputName", v7);
+      v22 = FCAppConfigurationStringValue(dictionaryCopy, @"articleRecirculationSecondaryHeadlineScoringOutputName", v7);
       articleRecirculationSecondaryHeadlineScoringOutputName = v9->_articleRecirculationSecondaryHeadlineScoringOutputName;
       v9->_articleRecirculationSecondaryHeadlineScoringOutputName = v22;
 
-      v24 = FCAppConfigurationStringValue(v4, @"articleRecirculationTertiaryHeadlineScoringOutputName", v7);
+      v24 = FCAppConfigurationStringValue(dictionaryCopy, @"articleRecirculationTertiaryHeadlineScoringOutputName", v7);
       articleRecirculationTertiaryHeadlineScoringOutputName = v9->_articleRecirculationTertiaryHeadlineScoringOutputName;
       v9->_articleRecirculationTertiaryHeadlineScoringOutputName = v24;
 
-      v26 = FCAppConfigurationStringValue(v4, @"articleRecirculationQuaternaryHeadlineScoringOutputName", v7);
+      v26 = FCAppConfigurationStringValue(dictionaryCopy, @"articleRecirculationQuaternaryHeadlineScoringOutputName", v7);
       articleRecirculationQuaternaryHeadlineScoringOutputName = v9->_articleRecirculationQuaternaryHeadlineScoringOutputName;
       v9->_articleRecirculationQuaternaryHeadlineScoringOutputName = v26;
 
-      v28 = FCAppConfigurationStringValue(v4, @"bestOfBundleHeadlineScoringOutputName", v7);
+      v28 = FCAppConfigurationStringValue(dictionaryCopy, @"bestOfBundleHeadlineScoringOutputName", v7);
       bestOfBundleHeadlineScoringOutputName = v9->_bestOfBundleHeadlineScoringOutputName;
       v9->_bestOfBundleHeadlineScoringOutputName = v28;
 
-      v30 = FCAppConfigurationStringValue(v4, @"forYouGroupHeadlineScoringOutputName", v7);
+      v30 = FCAppConfigurationStringValue(dictionaryCopy, @"forYouGroupHeadlineScoringOutputName", v7);
       forYouGroupHeadlineScoringOutputName = v9->_forYouGroupHeadlineScoringOutputName;
       v9->_forYouGroupHeadlineScoringOutputName = v30;
 
-      v32 = FCAppConfigurationStringValue(v4, @"greatStoriesYouMissedGroupHeadlineScoringOutputName", v7);
+      v32 = FCAppConfigurationStringValue(dictionaryCopy, @"greatStoriesYouMissedGroupHeadlineScoringOutputName", v7);
       greatStoriesYouMissedGroupHeadlineScoringOutputName = v9->_greatStoriesYouMissedGroupHeadlineScoringOutputName;
       v9->_greatStoriesYouMissedGroupHeadlineScoringOutputName = v32;
 
-      v34 = FCAppConfigurationStringValue(v4, @"latestStoriesGroupHeadlineScoringOutputName", v7);
+      v34 = FCAppConfigurationStringValue(dictionaryCopy, @"latestStoriesGroupHeadlineScoringOutputName", v7);
       latestStoriesGroupHeadlineScoringOutputName = v9->_latestStoriesGroupHeadlineScoringOutputName;
       v9->_latestStoriesGroupHeadlineScoringOutputName = v34;
 
-      v36 = FCAppConfigurationStringValue(v4, @"localNewsGroupHeadlineScoringOutputName", v7);
+      v36 = FCAppConfigurationStringValue(dictionaryCopy, @"localNewsGroupHeadlineScoringOutputName", v7);
       localNewsGroupHeadlineScoringOutputName = v9->_localNewsGroupHeadlineScoringOutputName;
       v9->_localNewsGroupHeadlineScoringOutputName = v36;
 
-      v38 = FCAppConfigurationStringValue(v4, @"newspaperGroupMagazineFeedHeadlineScoringOutputName", v7);
+      v38 = FCAppConfigurationStringValue(dictionaryCopy, @"newspaperGroupMagazineFeedHeadlineScoringOutputName", v7);
       newspaperGroupMagazineFeedHeadlineScoringOutputName = v9->_newspaperGroupMagazineFeedHeadlineScoringOutputName;
       v9->_newspaperGroupMagazineFeedHeadlineScoringOutputName = v38;
 
-      v40 = FCAppConfigurationStringValue(v4, @"todayWidgetHeadlineScoringOutputName", v7);
+      v40 = FCAppConfigurationStringValue(dictionaryCopy, @"todayWidgetHeadlineScoringOutputName", v7);
       todayWidgetHeadlineScoringOutputName = v9->_todayWidgetHeadlineScoringOutputName;
       v9->_todayWidgetHeadlineScoringOutputName = v40;
 
-      v42 = FCAppConfigurationStringValue(v4, @"tagWidgetHeadlineScoringOutputName", v7);
+      v42 = FCAppConfigurationStringValue(dictionaryCopy, @"tagWidgetHeadlineScoringOutputName", v7);
       tagWidgetHeadlineScoringOutputName = v9->_tagWidgetHeadlineScoringOutputName;
       v9->_tagWidgetHeadlineScoringOutputName = v42;
 
-      v44 = FCAppConfigurationStringValue(v4, @"notificationHeadlineScoringOutputName", v7);
+      v44 = FCAppConfigurationStringValue(dictionaryCopy, @"notificationHeadlineScoringOutputName", v7);
       notificationHeadlineScoringOutputName = v9->_notificationHeadlineScoringOutputName;
       v9->_notificationHeadlineScoringOutputName = v44;
 
-      v46 = FCAppConfigurationStringValue(v4, @"mySportsGroupHeadlineScoringOutputName", v7);
+      v46 = FCAppConfigurationStringValue(dictionaryCopy, @"mySportsGroupHeadlineScoringOutputName", v7);
       mySportsGroupHeadlineScoringOutputName = v9->_mySportsGroupHeadlineScoringOutputName;
       v9->_mySportsGroupHeadlineScoringOutputName = v46;
 
-      v48 = FCAppConfigurationStringValue(v4, @"sportsTopStoriesHeadlineScoringOutputName", v7);
+      v48 = FCAppConfigurationStringValue(dictionaryCopy, @"sportsTopStoriesHeadlineScoringOutputName", v7);
       sportsTopStoriesHeadlineScoringOutputName = v9->_sportsTopStoriesHeadlineScoringOutputName;
       v9->_sportsTopStoriesHeadlineScoringOutputName = v48;
 
-      v50 = FCAppConfigurationStringValue(v4, @"introToSportsGroupHeadlineScoringOutputName", v7);
+      v50 = FCAppConfigurationStringValue(dictionaryCopy, @"introToSportsGroupHeadlineScoringOutputName", v7);
       introToSportsGroupHeadlineScoringOutputName = v9->_introToSportsGroupHeadlineScoringOutputName;
       v9->_introToSportsGroupHeadlineScoringOutputName = v50;
 
-      v52 = FCAppConfigurationStringValue(v4, @"highlightsGroupHeadlineScoringOutputName", v7);
+      v52 = FCAppConfigurationStringValue(dictionaryCopy, @"highlightsGroupHeadlineScoringOutputName", v7);
       highlightsGroupHeadlineScoringOutputName = v9->_highlightsGroupHeadlineScoringOutputName;
       v9->_highlightsGroupHeadlineScoringOutputName = v52;
 
-      v54 = FCAppConfigurationStringValue(v4, @"articleListTagFeedGroupHeadlineScoringOutputName", v7);
+      v54 = FCAppConfigurationStringValue(dictionaryCopy, @"articleListTagFeedGroupHeadlineScoringOutputName", v7);
       articleListTagFeedGroupHeadlineScoringOutputName = v9->_articleListTagFeedGroupHeadlineScoringOutputName;
       v9->_articleListTagFeedGroupHeadlineScoringOutputName = v54;
 
-      v56 = FCAppConfigurationStringValue(v4, @"tagFeedHeadlineScoringOutputName", v7);
+      v56 = FCAppConfigurationStringValue(dictionaryCopy, @"tagFeedHeadlineScoringOutputName", v7);
       tagFeedHeadlineScoringOutputName = v9->_tagFeedHeadlineScoringOutputName;
       v9->_tagFeedHeadlineScoringOutputName = v56;
 
-      v58 = FCAppConfigurationStringValue(v4, @"newspaperGroupTodayFeedHeadlineScoringOutputName", v7);
+      v58 = FCAppConfigurationStringValue(dictionaryCopy, @"newspaperGroupTodayFeedHeadlineScoringOutputName", v7);
       newspaperGroupTodayFeedHeadlineScoringOutputName = v9->_newspaperGroupTodayFeedHeadlineScoringOutputName;
       v9->_newspaperGroupTodayFeedHeadlineScoringOutputName = v58;
 
-      v60 = FCAppConfigurationStringValue(v4, @"moreForYouGroupHeadlineScoringOutputName", v7);
+      v60 = FCAppConfigurationStringValue(dictionaryCopy, @"moreForYouGroupHeadlineScoringOutputName", v7);
       moreForYouGroupHeadlineScoringOutputName = v9->_moreForYouGroupHeadlineScoringOutputName;
       v9->_moreForYouGroupHeadlineScoringOutputName = v60;
 
-      v62 = FCAppConfigurationStringValue(v4, @"introToSportsGroupForYouHeadlineScoringOutputName", v7);
+      v62 = FCAppConfigurationStringValue(dictionaryCopy, @"introToSportsGroupForYouHeadlineScoringOutputName", v7);
       introToSportsGroupForYouHeadlineScoringOutputName = v9->_introToSportsGroupForYouHeadlineScoringOutputName;
       v9->_introToSportsGroupForYouHeadlineScoringOutputName = v62;
 
-      v64 = FCAppConfigurationStringValue(v4, @"mySportsGroupForYouHeadlineScoringOutputName", v7);
+      v64 = FCAppConfigurationStringValue(dictionaryCopy, @"mySportsGroupForYouHeadlineScoringOutputName", v7);
       mySportsGroupForYouHeadlineScoringOutputName = v9->_mySportsGroupForYouHeadlineScoringOutputName;
       v9->_mySportsGroupForYouHeadlineScoringOutputName = v64;
 
-      v66 = FCAppConfigurationStringValue(v4, @"mySportsTopicsHeadlineScoringOutputName", v7);
+      v66 = FCAppConfigurationStringValue(dictionaryCopy, @"mySportsTopicsHeadlineScoringOutputName", v7);
       mySportsTopicsHeadlineScoringOutputName = v9->_mySportsTopicsHeadlineScoringOutputName;
       v9->_mySportsTopicsHeadlineScoringOutputName = v66;
 
-      v68 = FCAppConfigurationStringValue(v4, @"curatedGroupHeadlineScoringOutputName", v7);
+      v68 = FCAppConfigurationStringValue(dictionaryCopy, @"curatedGroupHeadlineScoringOutputName", v7);
       curatedGroupHeadlineScoringOutputName = v9->_curatedGroupHeadlineScoringOutputName;
       v9->_curatedGroupHeadlineScoringOutputName = v68;
 
-      v70 = FCAppConfigurationStringValue(v4, @"curatedGroupIssuesHeadlineScoringOutputName", v7);
+      v70 = FCAppConfigurationStringValue(dictionaryCopy, @"curatedGroupIssuesHeadlineScoringOutputName", v7);
       curatedGroupIssuesHeadlineScoringOutputName = v9->_curatedGroupIssuesHeadlineScoringOutputName;
       v9->_curatedGroupIssuesHeadlineScoringOutputName = v70;
 
-      v72 = FCAppConfigurationStringValue(v4, @"localSectionGroupHeadlineScoringOutputName", v7);
+      v72 = FCAppConfigurationStringValue(dictionaryCopy, @"localSectionGroupHeadlineScoringOutputName", v7);
       localSectionGroupHeadlineScoringOutputName = v9->_localSectionGroupHeadlineScoringOutputName;
       v9->_localSectionGroupHeadlineScoringOutputName = v72;
 
-      v74 = FCAppConfigurationStringValue(v4, @"newspaperSectionGroupHeadlineScoringOutputName", v7);
+      v74 = FCAppConfigurationStringValue(dictionaryCopy, @"newspaperSectionGroupHeadlineScoringOutputName", v7);
       newspaperSectionGroupHeadlineScoringOutputName = v9->_newspaperSectionGroupHeadlineScoringOutputName;
       v9->_newspaperSectionGroupHeadlineScoringOutputName = v74;
 
-      v76 = FCAppConfigurationStringValue(v4, @"sportsEventArticlesGroupHeadlineScoringOutputName", v7);
+      v76 = FCAppConfigurationStringValue(dictionaryCopy, @"sportsEventArticlesGroupHeadlineScoringOutputName", v7);
       sportsEventArticlesGroupHeadlineScoringOutputName = v9->_sportsEventArticlesGroupHeadlineScoringOutputName;
       v9->_sportsEventArticlesGroupHeadlineScoringOutputName = v76;
 
-      v78 = FCAppConfigurationStringValue(v4, @"tagFeedForYouGroupHeadlineScoringOutputName", v7);
+      v78 = FCAppConfigurationStringValue(dictionaryCopy, @"tagFeedForYouGroupHeadlineScoringOutputName", v7);
       tagFeedForYouGroupHeadlineScoringOutputName = v9->_tagFeedForYouGroupHeadlineScoringOutputName;
       v9->_tagFeedForYouGroupHeadlineScoringOutputName = v78;
 
-      v80 = FCAppConfigurationStringValue(v4, @"tagRecentStoriesGroupHeadlineScoringOutputName", v7);
+      v80 = FCAppConfigurationStringValue(dictionaryCopy, @"tagRecentStoriesGroupHeadlineScoringOutputName", v7);
       tagRecentStoriesGroupHeadlineScoringOutputName = v9->_tagRecentStoriesGroupHeadlineScoringOutputName;
       v9->_tagRecentStoriesGroupHeadlineScoringOutputName = v80;
 
-      v82 = FCAppConfigurationStringValue(v4, @"tagDateRangeGroupHeadlineScoringOutputName", v7);
+      v82 = FCAppConfigurationStringValue(dictionaryCopy, @"tagDateRangeGroupHeadlineScoringOutputName", v7);
       tagDateRangeGroupHeadlineScoringOutputName = v9->_tagDateRangeGroupHeadlineScoringOutputName;
       v9->_tagDateRangeGroupHeadlineScoringOutputName = v82;
 
-      v84 = FCAppConfigurationStringValue(v4, @"sportsEventTopicGroupHeadlineScoringOutputName", v7);
+      v84 = FCAppConfigurationStringValue(dictionaryCopy, @"sportsEventTopicGroupHeadlineScoringOutputName", v7);
       sportsEventTopicGroupHeadlineScoringOutputName = v9->_sportsEventTopicGroupHeadlineScoringOutputName;
       v9->_sportsEventTopicGroupHeadlineScoringOutputName = v84;
 
-      v86 = FCAppConfigurationStringValue(v4, @"foodForYouGroupHeadlineScoringOutputName", v7);
+      v86 = FCAppConfigurationStringValue(dictionaryCopy, @"foodForYouGroupHeadlineScoringOutputName", v7);
       foodForYouGroupHeadlineScoringOutputName = v9->_foodForYouGroupHeadlineScoringOutputName;
       v9->_foodForYouGroupHeadlineScoringOutputName = v86;
 
-      v88 = FCAppConfigurationStringValue(v4, @"shadowDefaultHeadlineScoringOutputName", v7);
+      v88 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowDefaultHeadlineScoringOutputName", v7);
       shadowDefaultHeadlineScoringOutputName = v9->_shadowDefaultHeadlineScoringOutputName;
       v9->_shadowDefaultHeadlineScoringOutputName = v88;
 
-      v90 = FCAppConfigurationStringValue(v4, @"shadowMagazineFeedHeadlineScoringOutputName", v9->_magazineFeedHeadlineScoringOutputName);
+      v90 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowMagazineFeedHeadlineScoringOutputName", v9->_magazineFeedHeadlineScoringOutputName);
       shadowMagazineFeedHeadlineScoringOutputName = v9->_shadowMagazineFeedHeadlineScoringOutputName;
       v9->_shadowMagazineFeedHeadlineScoringOutputName = v90;
 
-      v92 = FCAppConfigurationStringValue(v4, @"shadowMagazineFeedIssuesHeadlineScoringOutputName", v9->_magazineFeedIssuesHeadlineScoringOutputName);
+      v92 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowMagazineFeedIssuesHeadlineScoringOutputName", v9->_magazineFeedIssuesHeadlineScoringOutputName);
       shadowMagazineFeedIssuesHeadlineScoringOutputName = v9->_shadowMagazineFeedIssuesHeadlineScoringOutputName;
       v9->_shadowMagazineFeedIssuesHeadlineScoringOutputName = v92;
 
-      v94 = FCAppConfigurationStringValue(v4, @"shadowLegacyAudioFeedHeadlineScoringOutputName", v9->_legacyAudioFeedHeadlineScoringOutputName);
+      v94 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowLegacyAudioFeedHeadlineScoringOutputName", v9->_legacyAudioFeedHeadlineScoringOutputName);
       shadowLegacyAudioFeedHeadlineScoringOutputName = v9->_shadowLegacyAudioFeedHeadlineScoringOutputName;
       v9->_shadowLegacyAudioFeedHeadlineScoringOutputName = v94;
 
-      v96 = FCAppConfigurationStringValue(v4, @"shadowAudioFeedHeadlineScoringOutputName", v9->_audioFeedHeadlineScoringOutputName);
+      v96 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowAudioFeedHeadlineScoringOutputName", v9->_audioFeedHeadlineScoringOutputName);
       shadowAudioFeedHeadlineScoringOutputName = v9->_shadowAudioFeedHeadlineScoringOutputName;
       v9->_shadowAudioFeedHeadlineScoringOutputName = v96;
 
-      v98 = FCAppConfigurationStringValue(v4, @"shadowArticleRecirculationPrimaryHeadlineScoringOutputName", v9->_articleRecirculationPrimaryHeadlineScoringOutputName);
+      v98 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowArticleRecirculationPrimaryHeadlineScoringOutputName", v9->_articleRecirculationPrimaryHeadlineScoringOutputName);
       shadowArticleRecirculationPrimaryHeadlineScoringOutputName = v9->_shadowArticleRecirculationPrimaryHeadlineScoringOutputName;
       v9->_shadowArticleRecirculationPrimaryHeadlineScoringOutputName = v98;
 
-      v100 = FCAppConfigurationStringValue(v4, @"shadowArticleRecirculationSecondaryHeadlineScoringOutputName", v9->_articleRecirculationSecondaryHeadlineScoringOutputName);
+      v100 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowArticleRecirculationSecondaryHeadlineScoringOutputName", v9->_articleRecirculationSecondaryHeadlineScoringOutputName);
       shadowArticleRecirculationSecondaryHeadlineScoringOutputName = v9->_shadowArticleRecirculationSecondaryHeadlineScoringOutputName;
       v9->_shadowArticleRecirculationSecondaryHeadlineScoringOutputName = v100;
 
-      v102 = FCAppConfigurationStringValue(v4, @"shadowArticleRecirculationTertiaryHeadlineScoringOutputName", v9->_articleRecirculationTertiaryHeadlineScoringOutputName);
+      v102 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowArticleRecirculationTertiaryHeadlineScoringOutputName", v9->_articleRecirculationTertiaryHeadlineScoringOutputName);
       shadowArticleRecirculationTertiaryHeadlineScoringOutputName = v9->_shadowArticleRecirculationTertiaryHeadlineScoringOutputName;
       v9->_shadowArticleRecirculationTertiaryHeadlineScoringOutputName = v102;
 
-      v104 = FCAppConfigurationStringValue(v4, @"shadowArticleRecirculationQuaternaryHeadlineScoringOutputName", v9->_articleRecirculationQuaternaryHeadlineScoringOutputName);
+      v104 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowArticleRecirculationQuaternaryHeadlineScoringOutputName", v9->_articleRecirculationQuaternaryHeadlineScoringOutputName);
       shadowArticleRecirculationQuaternaryHeadlineScoringOutputName = v9->_shadowArticleRecirculationQuaternaryHeadlineScoringOutputName;
       v9->_shadowArticleRecirculationQuaternaryHeadlineScoringOutputName = v104;
 
-      v106 = FCAppConfigurationStringValue(v4, @"shadowBestOfBundleHeadlineScoringOutputName", v9->_bestOfBundleHeadlineScoringOutputName);
+      v106 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowBestOfBundleHeadlineScoringOutputName", v9->_bestOfBundleHeadlineScoringOutputName);
       shadowBestOfBundleHeadlineScoringOutputName = v9->_shadowBestOfBundleHeadlineScoringOutputName;
       v9->_shadowBestOfBundleHeadlineScoringOutputName = v106;
 
-      v108 = FCAppConfigurationStringValue(v4, @"shadowForYouGroupHeadlineScoringOutputName", v9->_forYouGroupHeadlineScoringOutputName);
+      v108 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowForYouGroupHeadlineScoringOutputName", v9->_forYouGroupHeadlineScoringOutputName);
       shadowForYouGroupHeadlineScoringOutputName = v9->_shadowForYouGroupHeadlineScoringOutputName;
       v9->_shadowForYouGroupHeadlineScoringOutputName = v108;
 
-      v110 = FCAppConfigurationStringValue(v4, @"shadowGreatStoriesYouMissedGroupHeadlineScoringOutputName", v9->_greatStoriesYouMissedGroupHeadlineScoringOutputName);
+      v110 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowGreatStoriesYouMissedGroupHeadlineScoringOutputName", v9->_greatStoriesYouMissedGroupHeadlineScoringOutputName);
       shadowGreatStoriesYouMissedGroupHeadlineScoringOutputName = v9->_shadowGreatStoriesYouMissedGroupHeadlineScoringOutputName;
       v9->_shadowGreatStoriesYouMissedGroupHeadlineScoringOutputName = v110;
 
-      v112 = FCAppConfigurationStringValue(v4, @"shadowLatestStoriesGroupHeadlineScoringOutputName", v9->_latestStoriesGroupHeadlineScoringOutputName);
+      v112 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowLatestStoriesGroupHeadlineScoringOutputName", v9->_latestStoriesGroupHeadlineScoringOutputName);
       shadowLatestStoriesGroupHeadlineScoringOutputName = v9->_shadowLatestStoriesGroupHeadlineScoringOutputName;
       v9->_shadowLatestStoriesGroupHeadlineScoringOutputName = v112;
 
-      v114 = FCAppConfigurationStringValue(v4, @"shadowLocalNewsGroupHeadlineScoringOutputName", v9->_localNewsGroupHeadlineScoringOutputName);
+      v114 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowLocalNewsGroupHeadlineScoringOutputName", v9->_localNewsGroupHeadlineScoringOutputName);
       shadowLocalNewsGroupHeadlineScoringOutputName = v9->_shadowLocalNewsGroupHeadlineScoringOutputName;
       v9->_shadowLocalNewsGroupHeadlineScoringOutputName = v114;
 
-      v116 = FCAppConfigurationStringValue(v4, @"shadowNewspaperGroupMagazineFeedHeadlineScoringOutputName", v9->_newspaperGroupMagazineFeedHeadlineScoringOutputName);
+      v116 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowNewspaperGroupMagazineFeedHeadlineScoringOutputName", v9->_newspaperGroupMagazineFeedHeadlineScoringOutputName);
       shadowNewspaperGroupMagazineFeedHeadlineScoringOutputName = v9->_shadowNewspaperGroupMagazineFeedHeadlineScoringOutputName;
       v9->_shadowNewspaperGroupMagazineFeedHeadlineScoringOutputName = v116;
 
-      v118 = FCAppConfigurationStringValue(v4, @"shadowTodayWidgetHeadlineScoringOutputName", v9->_todayWidgetHeadlineScoringOutputName);
+      v118 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowTodayWidgetHeadlineScoringOutputName", v9->_todayWidgetHeadlineScoringOutputName);
       shadowTodayWidgetHeadlineScoringOutputName = v9->_shadowTodayWidgetHeadlineScoringOutputName;
       v9->_shadowTodayWidgetHeadlineScoringOutputName = v118;
 
-      v120 = FCAppConfigurationStringValue(v4, @"shadowTagWidgetHeadlineScoringOutputName", v9->_tagWidgetHeadlineScoringOutputName);
+      v120 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowTagWidgetHeadlineScoringOutputName", v9->_tagWidgetHeadlineScoringOutputName);
       shadowTagWidgetHeadlineScoringOutputName = v9->_shadowTagWidgetHeadlineScoringOutputName;
       v9->_shadowTagWidgetHeadlineScoringOutputName = v120;
 
-      v122 = FCAppConfigurationStringValue(v4, @"shadowNotificationHeadlineScoringOutputName", v9->_notificationHeadlineScoringOutputName);
+      v122 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowNotificationHeadlineScoringOutputName", v9->_notificationHeadlineScoringOutputName);
       shadowNotificationHeadlineScoringOutputName = v9->_shadowNotificationHeadlineScoringOutputName;
       v9->_shadowNotificationHeadlineScoringOutputName = v122;
 
-      v124 = FCAppConfigurationStringValue(v4, @"shadowMySportsGroupHeadlineScoringOutputName", v9->_mySportsGroupHeadlineScoringOutputName);
+      v124 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowMySportsGroupHeadlineScoringOutputName", v9->_mySportsGroupHeadlineScoringOutputName);
       shadowMySportsGroupHeadlineScoringOutputName = v9->_shadowMySportsGroupHeadlineScoringOutputName;
       v9->_shadowMySportsGroupHeadlineScoringOutputName = v124;
 
-      v126 = FCAppConfigurationStringValue(v4, @"shadowSportsTopStoriesHeadlineScoringOutputName", v9->_sportsTopStoriesHeadlineScoringOutputName);
+      v126 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowSportsTopStoriesHeadlineScoringOutputName", v9->_sportsTopStoriesHeadlineScoringOutputName);
       shadowSportsTopStoriesHeadlineScoringOutputName = v9->_shadowSportsTopStoriesHeadlineScoringOutputName;
       v9->_shadowSportsTopStoriesHeadlineScoringOutputName = v126;
 
-      v128 = FCAppConfigurationStringValue(v4, @"shadowIntroToSportsGroupHeadlineScoringOutputName", v9->_introToSportsGroupHeadlineScoringOutputName);
+      v128 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowIntroToSportsGroupHeadlineScoringOutputName", v9->_introToSportsGroupHeadlineScoringOutputName);
       shadowIntroToSportsGroupHeadlineScoringOutputName = v9->_shadowIntroToSportsGroupHeadlineScoringOutputName;
       v9->_shadowIntroToSportsGroupHeadlineScoringOutputName = v128;
 
-      v130 = FCAppConfigurationStringValue(v4, @"shadowHighlightsGroupHeadlineScoringOutputName", v9->_highlightsGroupHeadlineScoringOutputName);
+      v130 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowHighlightsGroupHeadlineScoringOutputName", v9->_highlightsGroupHeadlineScoringOutputName);
       shadowHighlightsGroupHeadlineScoringOutputName = v9->_shadowHighlightsGroupHeadlineScoringOutputName;
       v9->_shadowHighlightsGroupHeadlineScoringOutputName = v130;
 
-      v132 = FCAppConfigurationStringValue(v4, @"shadowArticleListTagFeedGroupHeadlineScoringOutputName", v9->_articleListTagFeedGroupHeadlineScoringOutputName);
+      v132 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowArticleListTagFeedGroupHeadlineScoringOutputName", v9->_articleListTagFeedGroupHeadlineScoringOutputName);
       shadowArticleListTagFeedGroupHeadlineScoringOutputName = v9->_shadowArticleListTagFeedGroupHeadlineScoringOutputName;
       v9->_shadowArticleListTagFeedGroupHeadlineScoringOutputName = v132;
 
-      v134 = FCAppConfigurationStringValue(v4, @"shadowTagFeedHeadlineScoringOutputName", v9->_tagFeedHeadlineScoringOutputName);
+      v134 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowTagFeedHeadlineScoringOutputName", v9->_tagFeedHeadlineScoringOutputName);
       shadowTagFeedHeadlineScoringOutputName = v9->_shadowTagFeedHeadlineScoringOutputName;
       v9->_shadowTagFeedHeadlineScoringOutputName = v134;
 
-      v136 = FCAppConfigurationStringValue(v4, @"shadowNewspaperGroupTodayFeedHeadlineScoringOutputName", v9->_newspaperGroupTodayFeedHeadlineScoringOutputName);
+      v136 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowNewspaperGroupTodayFeedHeadlineScoringOutputName", v9->_newspaperGroupTodayFeedHeadlineScoringOutputName);
       shadowNewspaperGroupTodayFeedHeadlineScoringOutputName = v9->_shadowNewspaperGroupTodayFeedHeadlineScoringOutputName;
       v9->_shadowNewspaperGroupTodayFeedHeadlineScoringOutputName = v136;
 
-      v138 = FCAppConfigurationStringValue(v4, @"shadowMoreForYouGroupHeadlineScoringOutputName", v9->_moreForYouGroupHeadlineScoringOutputName);
+      v138 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowMoreForYouGroupHeadlineScoringOutputName", v9->_moreForYouGroupHeadlineScoringOutputName);
       shadowMoreForYouGroupHeadlineScoringOutputName = v9->_shadowMoreForYouGroupHeadlineScoringOutputName;
       v9->_shadowMoreForYouGroupHeadlineScoringOutputName = v138;
 
-      v140 = FCAppConfigurationStringValue(v4, @"shadowIntroToSportsGroupForYouHeadlineScoringOutputName", v9->_introToSportsGroupForYouHeadlineScoringOutputName);
+      v140 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowIntroToSportsGroupForYouHeadlineScoringOutputName", v9->_introToSportsGroupForYouHeadlineScoringOutputName);
       shadowIntroToSportsGroupForYouHeadlineScoringOutputName = v9->_shadowIntroToSportsGroupForYouHeadlineScoringOutputName;
       v9->_shadowIntroToSportsGroupForYouHeadlineScoringOutputName = v140;
 
-      v142 = FCAppConfigurationStringValue(v4, @"shadowMySportsGroupForYouHeadlineScoringOutputName", v9->_mySportsGroupForYouHeadlineScoringOutputName);
+      v142 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowMySportsGroupForYouHeadlineScoringOutputName", v9->_mySportsGroupForYouHeadlineScoringOutputName);
       shadowMySportsGroupForYouHeadlineScoringOutputName = v9->_shadowMySportsGroupForYouHeadlineScoringOutputName;
       v9->_shadowMySportsGroupForYouHeadlineScoringOutputName = v142;
 
-      v144 = FCAppConfigurationStringValue(v4, @"shadowMySportsTopicsHeadlineScoringOutputName", v9->_mySportsTopicsHeadlineScoringOutputName);
+      v144 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowMySportsTopicsHeadlineScoringOutputName", v9->_mySportsTopicsHeadlineScoringOutputName);
       shadowMySportsTopicsHeadlineScoringOutputName = v9->_shadowMySportsTopicsHeadlineScoringOutputName;
       v9->_shadowMySportsTopicsHeadlineScoringOutputName = v144;
 
-      v146 = FCAppConfigurationStringValue(v4, @"shadowCuratedGroupHeadlineScoringOutputName", v9->_curatedGroupHeadlineScoringOutputName);
+      v146 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowCuratedGroupHeadlineScoringOutputName", v9->_curatedGroupHeadlineScoringOutputName);
       shadowCuratedGroupHeadlineScoringOutputName = v9->_shadowCuratedGroupHeadlineScoringOutputName;
       v9->_shadowCuratedGroupHeadlineScoringOutputName = v146;
 
-      v148 = FCAppConfigurationStringValue(v4, @"shadowCuratedGroupIssuesHeadlineScoringOutputName", v9->_curatedGroupIssuesHeadlineScoringOutputName);
+      v148 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowCuratedGroupIssuesHeadlineScoringOutputName", v9->_curatedGroupIssuesHeadlineScoringOutputName);
       shadowCuratedGroupIssuesHeadlineScoringOutputName = v9->_shadowCuratedGroupIssuesHeadlineScoringOutputName;
       v9->_shadowCuratedGroupIssuesHeadlineScoringOutputName = v148;
 
-      v150 = FCAppConfigurationStringValue(v4, @"shadowLocalSectionGroupHeadlineScoringOutputName", v9->_localSectionGroupHeadlineScoringOutputName);
+      v150 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowLocalSectionGroupHeadlineScoringOutputName", v9->_localSectionGroupHeadlineScoringOutputName);
       shadowLocalSectionGroupHeadlineScoringOutputName = v9->_shadowLocalSectionGroupHeadlineScoringOutputName;
       v9->_shadowLocalSectionGroupHeadlineScoringOutputName = v150;
 
-      v152 = FCAppConfigurationStringValue(v4, @"shadowNewspaperSectionGroupHeadlineScoringOutputName", v9->_newspaperSectionGroupHeadlineScoringOutputName);
+      v152 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowNewspaperSectionGroupHeadlineScoringOutputName", v9->_newspaperSectionGroupHeadlineScoringOutputName);
       shadowNewspaperSectionGroupHeadlineScoringOutputName = v9->_shadowNewspaperSectionGroupHeadlineScoringOutputName;
       v9->_shadowNewspaperSectionGroupHeadlineScoringOutputName = v152;
 
-      v154 = FCAppConfigurationStringValue(v4, @"shadowSportsEventArticlesGroupHeadlineScoringOutputName", v9->_sportsEventArticlesGroupHeadlineScoringOutputName);
+      v154 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowSportsEventArticlesGroupHeadlineScoringOutputName", v9->_sportsEventArticlesGroupHeadlineScoringOutputName);
       shadowSportsEventArticlesGroupHeadlineScoringOutputName = v9->_shadowSportsEventArticlesGroupHeadlineScoringOutputName;
       v9->_shadowSportsEventArticlesGroupHeadlineScoringOutputName = v154;
 
-      v156 = FCAppConfigurationStringValue(v4, @"shadowTagFeedForYouGroupHeadlineScoringOutputName", v9->_tagFeedForYouGroupHeadlineScoringOutputName);
+      v156 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowTagFeedForYouGroupHeadlineScoringOutputName", v9->_tagFeedForYouGroupHeadlineScoringOutputName);
       shadowTagFeedForYouGroupHeadlineScoringOutputName = v9->_shadowTagFeedForYouGroupHeadlineScoringOutputName;
       v9->_shadowTagFeedForYouGroupHeadlineScoringOutputName = v156;
 
-      v158 = FCAppConfigurationStringValue(v4, @"shadowTagRecentStoriesGroupHeadlineScoringOutputName", v9->_tagRecentStoriesGroupHeadlineScoringOutputName);
+      v158 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowTagRecentStoriesGroupHeadlineScoringOutputName", v9->_tagRecentStoriesGroupHeadlineScoringOutputName);
       shadowTagRecentStoriesGroupHeadlineScoringOutputName = v9->_shadowTagRecentStoriesGroupHeadlineScoringOutputName;
       v9->_shadowTagRecentStoriesGroupHeadlineScoringOutputName = v158;
 
-      v160 = FCAppConfigurationStringValue(v4, @"shadowTagDateRangeGroupHeadlineScoringOutputName", v9->_tagDateRangeGroupHeadlineScoringOutputName);
+      v160 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowTagDateRangeGroupHeadlineScoringOutputName", v9->_tagDateRangeGroupHeadlineScoringOutputName);
       shadowTagDateRangeGroupHeadlineScoringOutputName = v9->_shadowTagDateRangeGroupHeadlineScoringOutputName;
       v9->_shadowTagDateRangeGroupHeadlineScoringOutputName = v160;
 
-      v162 = FCAppConfigurationStringValue(v4, @"shadowSportsEventTopicGroupHeadlineScoringOutputName", v9->_sportsEventTopicGroupHeadlineScoringOutputName);
+      v162 = FCAppConfigurationStringValue(dictionaryCopy, @"shadowSportsEventTopicGroupHeadlineScoringOutputName", v9->_sportsEventTopicGroupHeadlineScoringOutputName);
       shadowSportsEventTopicGroupHeadlineScoringOutputName = v9->_shadowSportsEventTopicGroupHeadlineScoringOutputName;
       v9->_shadowSportsEventTopicGroupHeadlineScoringOutputName = v162;
     }
 
     self = v9;
-    v164 = self;
+    selfCopy = self;
   }
 
   else
@@ -584,12 +584,12 @@
     v167[1] = 3221225472;
     v167[2] = __71__FCNewsTabiFeedPersonalizationOutputConfiguration_initWithDictionary___block_invoke;
     v167[3] = &unk_1E7C36F98;
-    v168 = v4;
-    v164 = __71__FCNewsTabiFeedPersonalizationOutputConfiguration_initWithDictionary___block_invoke(v167);
+    v168 = dictionaryCopy;
+    selfCopy = __71__FCNewsTabiFeedPersonalizationOutputConfiguration_initWithDictionary___block_invoke(v167);
     v7 = v168;
   }
 
-  return v164;
+  return selfCopy;
 }
 
 uint64_t __71__FCNewsTabiFeedPersonalizationOutputConfiguration_initWithDictionary___block_invoke(uint64_t a1)

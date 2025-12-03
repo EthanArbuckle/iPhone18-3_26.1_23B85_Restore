@@ -1,16 +1,16 @@
 @interface PXGViewRecordingFrameStartEvent
-+ (id)eventWithViewSize:(CGSize)a3 renderOrigin:(CGPoint)a4 screenScale:(double)a5;
-- (PXGViewRecordingFrameStartEvent)initWithViewSize:(CGSize)a3 renderOrigin:(CGPoint)a4 screenScale:(double)a5;
++ (id)eventWithViewSize:(CGSize)size renderOrigin:(CGPoint)origin screenScale:(double)scale;
+- (PXGViewRecordingFrameStartEvent)initWithViewSize:(CGSize)size renderOrigin:(CGPoint)origin screenScale:(double)scale;
 @end
 
 @implementation PXGViewRecordingFrameStartEvent
 
-- (PXGViewRecordingFrameStartEvent)initWithViewSize:(CGSize)a3 renderOrigin:(CGPoint)a4 screenScale:(double)a5
+- (PXGViewRecordingFrameStartEvent)initWithViewSize:(CGSize)size renderOrigin:(CGPoint)origin screenScale:(double)scale
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
+  y = origin.y;
+  x = origin.x;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = PXGViewRecordingFrameStartEvent;
   v10 = [(PXGTungstenRecordingEvent *)&v14 initWithComponent:2 eventName:@"frameStart"];
@@ -22,17 +22,17 @@
 
     [(PXGViewRecordingFrameStartEventSerializable *)v10->_serializable setViewSize:width, height];
     [(PXGViewRecordingFrameStartEventSerializable *)v10->_serializable setRenderOrigin:x, y];
-    [(PXGViewRecordingFrameStartEventSerializable *)v10->_serializable setScreenScale:a5];
+    [(PXGViewRecordingFrameStartEventSerializable *)v10->_serializable setScreenScale:scale];
   }
 
   return v10;
 }
 
-+ (id)eventWithViewSize:(CGSize)a3 renderOrigin:(CGPoint)a4 screenScale:(double)a5
++ (id)eventWithViewSize:(CGSize)size renderOrigin:(CGPoint)origin screenScale:(double)scale
 {
-  v5 = [[PXGViewRecordingFrameStartEvent alloc] initWithViewSize:a3.width renderOrigin:a3.height screenScale:a4.x, a4.y, a5];
+  scale = [[PXGViewRecordingFrameStartEvent alloc] initWithViewSize:size.width renderOrigin:size.height screenScale:origin.x, origin.y, scale];
 
-  return v5;
+  return scale;
 }
 
 @end

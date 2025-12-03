@@ -2,8 +2,8 @@
 - (CDPDaemonConnection)init;
 - (id)connection;
 - (id)daemon;
-- (id)daemonWithErrorHandler:(id)a3;
-- (id)synchronousDaemonWithErrorHandler:(id)a3;
+- (id)daemonWithErrorHandler:(id)handler;
+- (id)synchronousDaemonWithErrorHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -125,13 +125,13 @@ void __33__CDPDaemonConnection_connection__block_invoke_21(uint64_t a1)
 
 - (id)daemon
 {
-  v3 = [(CDPDaemonConnection *)self connection];
+  connection = [(CDPDaemonConnection *)self connection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__CDPDaemonConnection_daemon__block_invoke;
   v6[3] = &unk_1E869D4F0;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [connection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
@@ -148,18 +148,18 @@ void __29__CDPDaemonConnection_daemon__block_invoke(uint64_t a1, void *a2)
   [*(*(a1 + 32) + 8) invalidate];
 }
 
-- (id)daemonWithErrorHandler:(id)a3
+- (id)daemonWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CDPDaemonConnection *)self connection];
+  handlerCopy = handler;
+  connection = [(CDPDaemonConnection *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__CDPDaemonConnection_daemonWithErrorHandler___block_invoke;
   v9[3] = &unk_1E869D440;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -175,18 +175,18 @@ void __46__CDPDaemonConnection_daemonWithErrorHandler___block_invoke(uint64_t a1
   }
 }
 
-- (id)synchronousDaemonWithErrorHandler:(id)a3
+- (id)synchronousDaemonWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CDPDaemonConnection *)self connection];
+  handlerCopy = handler;
+  connection = [(CDPDaemonConnection *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__CDPDaemonConnection_synchronousDaemonWithErrorHandler___block_invoke;
   v9[3] = &unk_1E869D440;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }

@@ -2,35 +2,35 @@
 + (id)_sampleDemoConifg;
 + (id)_shuffleConfig;
 + (id)_suggestedPhotoConfig;
-- (PHAWallpaperGalleryDemoHelper)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4;
+- (PHAWallpaperGalleryDemoHelper)initWithPhotoLibrary:(id)library loggingConnection:(id)connection;
 - (id)_demoShuffleDescriptors;
 - (id)_demoSuggestedPhotoDescriptors;
-- (id)_descriptorConfigsFromDictionaries:(id)a3;
-- (id)_fetchWallpaperSuggestionWithKeyAssetUUID:(id)a3;
+- (id)_descriptorConfigsFromDictionaries:(id)dictionaries;
+- (id)_fetchWallpaperSuggestionWithKeyAssetUUID:(id)d;
 - (id)demoDescriptors;
 @end
 
 @implementation PHAWallpaperGalleryDemoHelper
 
-- (id)_fetchWallpaperSuggestionWithKeyAssetUUID:(id)a3
+- (id)_fetchWallpaperSuggestionWithKeyAssetUUID:(id)d
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277CD97A8];
-  v18[0] = v4;
+  v18[0] = dCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  v7 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v8 = [v5 fetchAssetsWithUUIDs:v6 options:v7];
-  v9 = [v8 firstObject];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v8 = [v5 fetchAssetsWithUUIDs:v6 options:librarySpecificFetchOptions];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v10 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-    v11 = [MEMORY[0x277CD99E0] predicateForAllTopWallpaperSuggestions];
-    [v10 setPredicate:v11];
+    librarySpecificFetchOptions2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    predicateForAllTopWallpaperSuggestions = [MEMORY[0x277CD99E0] predicateForAllTopWallpaperSuggestions];
+    [librarySpecificFetchOptions2 setPredicate:predicateForAllTopWallpaperSuggestions];
 
-    v12 = [MEMORY[0x277CD99E0] fetchAssetCollectionsContainingAsset:v9 withType:8 options:v10];
-    v13 = [v12 firstObject];
+    v12 = [MEMORY[0x277CD99E0] fetchAssetCollectionsContainingAsset:firstObject withType:8 options:librarySpecificFetchOptions2];
+    firstObject2 = [v12 firstObject];
   }
 
   else
@@ -39,26 +39,26 @@
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = dCopy;
       _os_log_debug_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEBUG, "[PHAWallpaperGalleryDemoHelper] cannot find asset: %@", &v16, 0xCu);
     }
 
-    v13 = 0;
+    firstObject2 = 0;
   }
 
-  return v13;
+  return firstObject2;
 }
 
-- (id)_descriptorConfigsFromDictionaries:(id)a3
+- (id)_descriptorConfigsFromDictionaries:(id)dictionaries
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionariesCopy = dictionaries;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = dictionariesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v7)
   {
@@ -117,8 +117,8 @@
       do
       {
         v6 = [v4 objectAtIndexedSubscript:v5];
-        v7 = [v6 assetUUID];
-        v8 = [(PHAWallpaperGalleryDemoHelper *)self _fetchWallpaperSuggestionWithKeyAssetUUID:v7];
+        assetUUID = [v6 assetUUID];
+        v8 = [(PHAWallpaperGalleryDemoHelper *)self _fetchWallpaperSuggestionWithKeyAssetUUID:assetUUID];
 
         if (v8)
         {
@@ -130,16 +130,16 @@
           v12 = [(PHAWallpaperShuffleDescriptorGenerator *)v21 descriptorForSuggestion:v11];
           v13 = MEMORY[0x277CCACA8];
           v14 = [MEMORY[0x277D3B498] descriptorTypeStringWithType:2];
-          v15 = [v8 uuid];
-          v16 = [v13 stringWithFormat:@"%@|%d|%@", v14, v5, v15];
+          uuid = [v8 uuid];
+          v16 = [v13 stringWithFormat:@"%@|%d|%@", v14, v5, uuid];
           [v12 setIdentifier:v16];
 
-          v17 = [v6 titleKey];
+          titleKey = [v6 titleKey];
 
-          if (v17)
+          if (titleKey)
           {
-            v18 = [v6 titleKey];
-            [v12 setDisplayNameLocalizationKey:v18];
+            titleKey2 = [v6 titleKey];
+            [v12 setDisplayNameLocalizationKey:titleKey2];
           }
 
           [v22 addObject:v12];
@@ -164,29 +164,29 @@
 
 - (id)_demoSuggestedPhotoDescriptors
 {
-  v2 = self;
+  selfCopy = self;
   v30[1] = *MEMORY[0x277D85DE8];
   v3 = [(NSDictionary *)self->_config objectForKeyedSubscript:@"SuggestedPhoto"];
   if ([v3 count])
   {
     v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v25 = v3;
-    v4 = [(PHAWallpaperGalleryDemoHelper *)v2 _descriptorConfigsFromDictionaries:v3];
+    v4 = [(PHAWallpaperGalleryDemoHelper *)selfCopy _descriptorConfigsFromDictionaries:v3];
     if ([v4 count])
     {
       v5 = 0;
       v26 = v4;
-      v27 = v2;
+      v27 = selfCopy;
       do
       {
         v6 = [v4 objectAtIndexedSubscript:v5];
-        v7 = [v6 assetUUID];
-        v8 = [(PHAWallpaperGalleryDemoHelper *)v2 _fetchWallpaperSuggestionWithKeyAssetUUID:v7];
+        assetUUID = [v6 assetUUID];
+        v8 = [(PHAWallpaperGalleryDemoHelper *)selfCopy _fetchWallpaperSuggestionWithKeyAssetUUID:assetUUID];
         if (v8)
         {
           v9 = objc_alloc(MEMORY[0x277D3B4A8]);
-          v10 = [v8 uuid];
-          v11 = [v9 initWithAssetUUID:v7 suggestionUUID:v10 suggestionSubtype:{objc_msgSend(v8, "subtype")}];
+          uuid = [v8 uuid];
+          v11 = [v9 initWithAssetUUID:assetUUID suggestionUUID:uuid suggestionSubtype:{objc_msgSend(v8, "subtype")}];
 
           if ([v8 availableFeatures])
           {
@@ -214,26 +214,26 @@
           v16 = [v14 initWithDescriptorType:v13 media:v15];
 
           v17 = MEMORY[0x277D3B498];
-          v18 = [v8 uuid];
-          v29 = v18;
+          uuid2 = [v8 uuid];
+          v29 = uuid2;
           v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
           v20 = [v17 descriptorIdentifierForDescriptorType:v13 uuids:v19];
 
           v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d-%@", v5, v20];
           [v16 setIdentifier:v21];
 
-          v22 = [v6 styleCategory];
+          styleCategory = [v6 styleCategory];
 
-          if (v22)
+          if (styleCategory)
           {
-            v23 = [v6 styleCategory];
-            [v16 setStyleCategory:v23];
+            styleCategory2 = [v6 styleCategory];
+            [v16 setStyleCategory:styleCategory2];
           }
 
           [v28 addObject:v16];
 
           v4 = v26;
-          v2 = v27;
+          selfCopy = v27;
         }
 
         ++v5;
@@ -256,27 +256,27 @@
 - (id)demoDescriptors
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(PHAWallpaperGalleryDemoHelper *)self _demoSuggestedPhotoDescriptors];
-  [v3 addObjectsFromArray:v4];
+  _demoSuggestedPhotoDescriptors = [(PHAWallpaperGalleryDemoHelper *)self _demoSuggestedPhotoDescriptors];
+  [v3 addObjectsFromArray:_demoSuggestedPhotoDescriptors];
 
-  v5 = [(PHAWallpaperGalleryDemoHelper *)self _demoShuffleDescriptors];
-  [v3 addObjectsFromArray:v5];
+  _demoShuffleDescriptors = [(PHAWallpaperGalleryDemoHelper *)self _demoShuffleDescriptors];
+  [v3 addObjectsFromArray:_demoShuffleDescriptors];
 
   return v3;
 }
 
-- (PHAWallpaperGalleryDemoHelper)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4
+- (PHAWallpaperGalleryDemoHelper)initWithPhotoLibrary:(id)library loggingConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = PHAWallpaperGalleryDemoHelper;
   v9 = [(PHAWallpaperGalleryDemoHelper *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    objc_storeStrong(&v10->_loggingConnection, a4);
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_loggingConnection, connection);
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:@"/var/mobile/Media/PhotoData/Configuration/WallpaperDemo/DemoConfig.plist"];
     config = v10->_config;
     v10->_config = v11;
@@ -359,11 +359,11 @@
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"SuggestedPhoto";
-  v3 = [a1 _suggestedPhotoConfig];
+  _suggestedPhotoConfig = [self _suggestedPhotoConfig];
   v7[1] = @"Shuffle";
-  v8[0] = v3;
-  v4 = [a1 _shuffleConfig];
-  v8[1] = v4;
+  v8[0] = _suggestedPhotoConfig;
+  _shuffleConfig = [self _shuffleConfig];
+  v8[1] = _shuffleConfig;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;

@@ -1,24 +1,24 @@
 @interface CCToolKitToolRuntimeRequirementDeviceCapability
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolRuntimeRequirementDeviceCapability)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolRuntimeRequirementDeviceCapability)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolRuntimeRequirementDeviceCapability)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolRuntimeRequirementDeviceCapability)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error;
 - (CCToolKitToolRuntimeRequirementDeviceCapabilityMobileGestalt)mobileGestalt;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRuntimeRequirementDeviceCapability
 
-- (CCToolKitToolRuntimeRequirementDeviceCapability)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRuntimeRequirementDeviceCapability)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v17[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"mobileGestalt"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"mobileGestalt"];
     if (v9)
     {
       v17[0] = 0;
@@ -37,7 +37,7 @@ LABEL_14:
       v9 = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"capability"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"capability"];
     if (v9)
     {
       v13 = v9;
@@ -57,7 +57,7 @@ LABEL_14:
       v14 = 2;
     }
 
-    v15 = [[CCToolKitToolRuntimeRequirementDeviceCapability alloc] initWithKind:v10 kindType:v14 error:a4];
+    v15 = [[CCToolKitToolRuntimeRequirementDeviceCapability alloc] initWithKind:v10 kindType:v14 error:error];
     goto LABEL_14;
   }
 
@@ -79,9 +79,9 @@ LABEL_15:
       goto LABEL_6;
     }
 
-    v5 = [(CCToolKitToolRuntimeRequirementDeviceCapability *)self mobileGestalt];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"mobileGestalt"];
+    mobileGestalt = [(CCToolKitToolRuntimeRequirementDeviceCapability *)self mobileGestalt];
+    jsonDictionary = [mobileGestalt jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"mobileGestalt"];
 
     kindType = self->_kindType;
   }
@@ -98,15 +98,15 @@ LABEL_6:
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   if (self->_mobileGestalt)
   {
     v5 = objc_alloc(MEMORY[0x1E69939F0]);
     v6 = *MEMORY[0x1E69939A8];
     v7 = [v5 initWithFieldType:v6 subMessageValue:self->_mobileGestalt];
-    v9[2](v9, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   else
@@ -115,7 +115,7 @@ LABEL_6:
   }
 
   v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_capability];
-  v9[2](v9, v8);
+  blockCopy[2](blockCopy, v8);
 }
 
 - (CCToolKitToolRuntimeRequirementDeviceCapabilityMobileGestalt)mobileGestalt
@@ -125,10 +125,10 @@ LABEL_6:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v43 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v43];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   v8 = MEMORY[0x1E6993AA8];
@@ -321,11 +321,11 @@ LABEL_46:
   return v41;
 }
 
-- (CCToolKitToolRuntimeRequirementDeviceCapability)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5
+- (CCToolKitToolRuntimeRequirementDeviceCapability)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  kindCopy = kind;
   v9 = objc_opt_new();
-  if (v8 && a4 == 1)
+  if (kindCopy && type == 1)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -333,18 +333,18 @@ LABEL_46:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v17 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
-    v12 = [v8 data];
+    data = [kindCopy data];
     CCPBDataWriterWriteDataField();
   }
 
   else
   {
     v11 = 0;
-    if (v8 && a4 == 2)
+    if (kindCopy && type == 2)
     {
       objc_opt_class();
       v13 = CCValidateIsInstanceOfExpectedClass();
@@ -352,12 +352,12 @@ LABEL_46:
       if (!v13)
       {
         CCSetError();
-        v17 = 0;
+        selfCopy = 0;
         v11 = v14;
         goto LABEL_13;
       }
 
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v15 = CCValidateEnumField();
       v11 = v14;
 
@@ -368,13 +368,13 @@ LABEL_46:
     }
   }
 
-  v16 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v16 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v17 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v17;
+  return selfCopy;
 }
 
 @end

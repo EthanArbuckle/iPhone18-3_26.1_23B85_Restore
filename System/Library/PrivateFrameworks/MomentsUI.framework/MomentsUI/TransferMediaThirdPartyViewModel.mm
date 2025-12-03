@@ -1,14 +1,14 @@
 @interface TransferMediaThirdPartyViewModel
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TransferMediaThirdPartyViewModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TransferMediaThirdPartyViewModel.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TransferMediaThirdPartyViewModel.encode(with:)(coderCopy);
 }
 
 @end

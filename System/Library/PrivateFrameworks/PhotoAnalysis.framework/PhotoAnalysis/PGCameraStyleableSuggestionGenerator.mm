@@ -1,16 +1,16 @@
 @interface PGCameraStyleableSuggestionGenerator
 - (PGCameraStyleableSuggestionGenerator)init;
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4;
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter;
 @end
 
 @implementation PGCameraStyleableSuggestionGenerator
 
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22FB5990C(v6, v7);
+  managerCopy = manager;
+  reporterCopy = reporter;
+  selfCopy = self;
+  sub_22FB5990C(managerCopy, reporterCopy);
 
   v9 = sub_22FCC8C24();
 

@@ -1,13 +1,13 @@
 @interface CDPUIInheritanceAccessCodeScannerView
-- (CDPUIInheritanceAccessCodeScannerView)initWithFrame:(CGRect)a3;
+- (CDPUIInheritanceAccessCodeScannerView)initWithFrame:(CGRect)frame;
 - (CDPUIInheritanceAccessCodeScannerViewDelegate)delegate;
 - (CGRect)_bezierRect;
-- (CGRect)_circleRectForCenter:(CGPoint)a3;
+- (CGRect)_circleRectForCenter:(CGPoint)center;
 - (CGSize)lastKnownDimensions;
-- (id)_spotOverlayLayerWithBezierRect:(CGRect)a3 CircleRect:(CGRect)a4;
+- (id)_spotOverlayLayerWithBezierRect:(CGRect)rect CircleRect:(CGRect)circleRect;
 - (void)_setupLivePreview;
 - (void)_setupPreviewIfNeeded;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
@@ -15,11 +15,11 @@
 
 @implementation CDPUIInheritanceAccessCodeScannerView
 
-- (CDPUIInheritanceAccessCodeScannerView)initWithFrame:(CGRect)a3
+- (CDPUIInheritanceAccessCodeScannerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CDPUIInheritanceAccessCodeScannerView;
-  v3 = [(CDPUIInheritanceAccessCodeScannerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CDPUIInheritanceAccessCodeScannerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,7 +33,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2451DB000, a2, OS_LOG_TYPE_ERROR, "Error creating capture input: %@", &v2, 0xCu);
 }
 
@@ -47,9 +47,9 @@
 
 - (void)_setupLivePreview
 {
-  v3 = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
+  previewLayer = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
 
-  if (!v3)
+  if (!previewLayer)
   {
     v4 = _CDPLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -58,24 +58,24 @@
     }
 
     v5 = MEMORY[0x277CE5B68];
-    v6 = [(CDPUIInheritanceAccessCodeScannerView *)self captureSession];
-    v7 = [v5 layerWithSession:v6];
+    captureSession = [(CDPUIInheritanceAccessCodeScannerView *)self captureSession];
+    v7 = [v5 layerWithSession:captureSession];
     [(CDPUIInheritanceAccessCodeScannerView *)self setPreviewLayer:v7];
 
-    v8 = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
+    previewLayer2 = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
 
-    if (v8)
+    if (previewLayer2)
     {
       v9 = *MEMORY[0x277CE5DD8];
-      v10 = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
-      [v10 setVideoGravity:v9];
+      previewLayer3 = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
+      [previewLayer3 setVideoGravity:v9];
 
-      v11 = [(CDPUIInheritanceAccessCodeScannerView *)self layer];
-      v12 = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
-      [v11 addSublayer:v12];
+      layer = [(CDPUIInheritanceAccessCodeScannerView *)self layer];
+      previewLayer4 = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
+      [layer addSublayer:previewLayer4];
 
-      v13 = [(CDPUIInheritanceAccessCodeScannerView *)self layer];
-      [v13 setCornerRadius:20.0];
+      layer2 = [(CDPUIInheritanceAccessCodeScannerView *)self layer];
+      [layer2 setCornerRadius:20.0];
 
       objc_initWeak(&location, self);
       v14 = dispatch_get_global_queue(0, 0);
@@ -137,12 +137,12 @@ void __58__CDPUIInheritanceAccessCodeScannerView__setupLivePreview__block_invoke
       [CDPUIInheritanceAccessCodeScannerView _setupPreviewIfNeeded];
     }
 
-    v11 = [(CDPUIInheritanceAccessCodeScannerView *)self spotlightLayer];
+    spotlightLayer = [(CDPUIInheritanceAccessCodeScannerView *)self spotlightLayer];
 
-    if (v11)
+    if (spotlightLayer)
     {
-      v12 = [(CDPUIInheritanceAccessCodeScannerView *)self spotlightLayer];
-      [v12 removeFromSuperlayer];
+      spotlightLayer2 = [(CDPUIInheritanceAccessCodeScannerView *)self spotlightLayer];
+      [spotlightLayer2 removeFromSuperlayer];
     }
 
     [(CDPUIInheritanceAccessCodeScannerView *)self _bezierRect];
@@ -159,46 +159,46 @@ void __58__CDPUIInheritanceAccessCodeScannerView__setupLivePreview__block_invoke
     v22 = [(CDPUIInheritanceAccessCodeScannerView *)self _spotOverlayLayerWithBezierRect:x CircleRect:y, width, height, v18, v19, v20, v21];
     [(CDPUIInheritanceAccessCodeScannerView *)self setSpotlightLayer:v22];
 
-    v23 = [(CDPUIInheritanceAccessCodeScannerView *)self layer];
-    v24 = [(CDPUIInheritanceAccessCodeScannerView *)self spotlightLayer];
-    v25 = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
-    [v23 insertSublayer:v24 above:v25];
+    layer = [(CDPUIInheritanceAccessCodeScannerView *)self layer];
+    spotlightLayer3 = [(CDPUIInheritanceAccessCodeScannerView *)self spotlightLayer];
+    previewLayer = [(CDPUIInheritanceAccessCodeScannerView *)self previewLayer];
+    [layer insertSublayer:spotlightLayer3 above:previewLayer];
 
     [(CDPUIInheritanceAccessCodeScannerView *)self bounds];
     [(CDPUIInheritanceAccessCodeScannerView *)self setLastKnownDimensions:v26, v27];
   }
 }
 
-- (id)_spotOverlayLayerWithBezierRect:(CGRect)a3 CircleRect:(CGRect)a4
+- (id)_spotOverlayLayerWithBezierRect:(CGRect)rect CircleRect:(CGRect)circleRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [MEMORY[0x277D75208] bezierPathWithRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  height = circleRect.size.height;
+  width = circleRect.size.width;
+  y = circleRect.origin.y;
+  x = circleRect.origin.x;
+  v8 = [MEMORY[0x277D75208] bezierPathWithRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   v9 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:x cornerRadius:{y, width, height, 90.0}];
   [v8 appendPath:v9];
   [v8 setUsesEvenOddFillRule:1];
-  v10 = [MEMORY[0x277CD9F90] layer];
-  [v10 setPath:{objc_msgSend(v8, "CGPath")}];
-  [v10 setFillRule:*MEMORY[0x277CDA248]];
-  v11 = [MEMORY[0x277D75348] blackColor];
-  [v10 setFillColor:{objc_msgSend(v11, "CGColor")}];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setPath:{objc_msgSend(v8, "CGPath")}];
+  [layer setFillRule:*MEMORY[0x277CDA248]];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [layer setFillColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  v12 = [MEMORY[0x277D75348] systemBlueColor];
-  [v10 setStrokeColor:{objc_msgSend(v12, "CGColor")}];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [layer setStrokeColor:{objc_msgSend(systemBlueColor, "CGColor")}];
 
-  [v10 setLineWidth:2.0];
+  [layer setLineWidth:2.0];
   LODWORD(v13) = *"333?";
-  [v10 setOpacity:v13];
+  [layer setOpacity:v13];
 
-  return v10;
+  return layer;
 }
 
-- (CGRect)_circleRectForCenter:(CGPoint)a3
+- (CGRect)_circleRectForCenter:(CGPoint)center
 {
-  v3 = a3.x + -90.0;
-  v4 = a3.y + -90.0;
+  v3 = center.x + -90.0;
+  v4 = center.y + -90.0;
   v5 = 180.0;
   v6 = 180.0;
   result.size.height = v6;
@@ -226,8 +226,8 @@ void __58__CDPUIInheritanceAccessCodeScannerView__setupLivePreview__block_invoke
 
 - (void)dealloc
 {
-  v3 = [(CDPUIInheritanceAccessCodeScannerView *)self captureSession];
-  [v3 stopRunning];
+  captureSession = [(CDPUIInheritanceAccessCodeScannerView *)self captureSession];
+  [captureSession stopRunning];
 
   [(CDPUIInheritanceAccessCodeScannerView *)self setCaptureSession:0];
   v4.receiver = self;
@@ -235,19 +235,19 @@ void __58__CDPUIInheritanceAccessCodeScannerView__setupLivePreview__block_invoke
   [(CDPUIInheritanceAccessCodeScannerView *)&v4 dealloc];
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
-  v6 = a4;
+  objectsCopy = objects;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [CDPUIInheritanceAccessCodeScannerView captureOutput:didOutputMetadataObjects:fromConnection:];
   }
 
-  v8 = [v6 firstObject];
+  firstObject = [objectsCopy firstObject];
 
-  v9 = [v8 type];
-  if (v9 != *MEMORY[0x277CE5A80])
+  type = [firstObject type];
+  if (type != *MEMORY[0x277CE5A80])
   {
     goto LABEL_4;
   }
@@ -260,21 +260,21 @@ void __58__CDPUIInheritanceAccessCodeScannerView__setupLivePreview__block_invoke
     goto LABEL_5;
   }
 
-  v9 = v8;
-  v11 = [v9 stringValue];
-  if (![v11 length])
+  type = firstObject;
+  stringValue = [type stringValue];
+  if (![stringValue length])
   {
     goto LABEL_10;
   }
 
-  v12 = [(CDPUIInheritanceAccessCodeScannerView *)self delegate];
-  v13 = [v9 stringValue];
-  v14 = [v12 accessCodeScanner:self didScanCode:v13];
+  delegate = [(CDPUIInheritanceAccessCodeScannerView *)self delegate];
+  stringValue2 = [type stringValue];
+  v14 = [delegate accessCodeScanner:self didScanCode:stringValue2];
 
   if (v14)
   {
-    v11 = [(CDPUIInheritanceAccessCodeScannerView *)self captureSession];
-    [v11 stopRunning];
+    stringValue = [(CDPUIInheritanceAccessCodeScannerView *)self captureSession];
+    [stringValue stopRunning];
 LABEL_10:
   }
 

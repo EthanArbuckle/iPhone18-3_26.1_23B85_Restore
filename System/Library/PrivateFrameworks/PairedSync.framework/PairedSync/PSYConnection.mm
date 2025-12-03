@@ -2,7 +2,7 @@
 - (PSYConnection)init;
 - (PSYConnectionDelegate)delegate;
 - (id)remoteConnection;
-- (void)startSyncWithOptions:(id)a3;
+- (void)startSyncWithOptions:(id)options;
 @end
 
 @implementation PSYConnection
@@ -28,13 +28,13 @@
   return v2;
 }
 
-- (void)startSyncWithOptions:(id)a3
+- (void)startSyncWithOptions:(id)options
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v4 = objc_alloc_init(PSYOptions);
+    optionsCopy = objc_alloc_init(PSYOptions);
   }
 
   v5 = psy_log();
@@ -46,24 +46,24 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = optionsCopy;
       _os_log_impl(&dword_25DF25000, v7, OS_LOG_TYPE_DEFAULT, "Starting sync with options: %{public}@", &v10, 0xCu);
     }
   }
 
-  [(PSYConnection *)self setOptions:v4];
-  v8 = [(PSYConnection *)self remoteConnection];
-  [v8 startSyncWithOptions:v4];
+  [(PSYConnection *)self setOptions:optionsCopy];
+  remoteConnection = [(PSYConnection *)self remoteConnection];
+  [remoteConnection startSyncWithOptions:optionsCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (id)remoteConnection
 {
-  v2 = [(PSYConnection *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(PSYConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (PSYConnectionDelegate)delegate

@@ -1,44 +1,44 @@
 @interface PLOSMetricsUtilities
-+ (id)createCounter:(id)a3 withLabel:(id)a4;
-+ (id)createCounter:(id)a3 withLabel:(id)a4 withDimensions:(id)a5 withFlags:(unsigned __int8)a6;
-+ (id)createDimensions:(unsigned __int8)a3;
-+ (id)createGauge:(id)a3 withLabel:(id)a4;
-+ (id)createGauge:(id)a3 withLabel:(id)a4 withDimensions:(id)a5 withLevel:(unsigned __int8)a6 withFlags:(unsigned __int8)a7;
-+ (id)createHistogram:(id)a3 withLabel:(id)a4 withBins:(unsigned __int8)a5 withInterval:(unsigned int)a6;
-+ (id)createHistogram:(id)a3 withLabel:(id)a4 withDimensions:(id)a5 withLevel:(unsigned __int8)a6 withBins:(unsigned __int8)a7 withInterval:(unsigned int)a8 withFlags:(unsigned __int8)a9;
-+ (id)createMetricGroup:(id)a3 withDimensions:(id)a4;
-+ (void)addDimensions:(id)a3 withKey:(id)a4 withValue:(id)a5;
++ (id)createCounter:(id)counter withLabel:(id)label;
++ (id)createCounter:(id)counter withLabel:(id)label withDimensions:(id)dimensions withFlags:(unsigned __int8)flags;
++ (id)createDimensions:(unsigned __int8)dimensions;
++ (id)createGauge:(id)gauge withLabel:(id)label;
++ (id)createGauge:(id)gauge withLabel:(id)label withDimensions:(id)dimensions withLevel:(unsigned __int8)level withFlags:(unsigned __int8)flags;
++ (id)createHistogram:(id)histogram withLabel:(id)label withBins:(unsigned __int8)bins withInterval:(unsigned int)interval;
++ (id)createHistogram:(id)histogram withLabel:(id)label withDimensions:(id)dimensions withLevel:(unsigned __int8)level withBins:(unsigned __int8)bins withInterval:(unsigned int)interval withFlags:(unsigned __int8)flags;
++ (id)createMetricGroup:(id)group withDimensions:(id)dimensions;
++ (void)addDimensions:(id)dimensions withKey:(id)key withValue:(id)value;
 @end
 
 @implementation PLOSMetricsUtilities
 
-+ (id)createMetricGroup:(id)a3 withDimensions:(id)a4
++ (id)createMetricGroup:(id)group withDimensions:(id)dimensions
 {
-  v6 = a3;
-  v7 = a4;
-  [a3 UTF8String];
+  groupCopy = group;
+  dimensionsCopy = dimensions;
+  [group UTF8String];
   v8 = os_metric_group_create();
 
   return v8;
 }
 
-+ (id)createDimensions:(unsigned __int8)a3
++ (id)createDimensions:(unsigned __int8)dimensions
 {
   v3 = os_metric_dimensions_create();
 
   return v3;
 }
 
-+ (void)addDimensions:(id)a3 withKey:(id)a4 withValue:(id)a5
++ (void)addDimensions:(id)dimensions withKey:(id)key withValue:(id)value
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  [a4 UTF8String];
-  [v9 UTF8String];
+  keyCopy = key;
+  valueCopy = value;
+  dimensionsCopy = dimensions;
+  [key UTF8String];
+  [valueCopy UTF8String];
 
-  LOBYTE(v9) = os_metric_dimensions_add();
-  if ((v9 & 1) == 0)
+  LOBYTE(valueCopy) = os_metric_dimensions_add();
+  if ((valueCopy & 1) == 0)
   {
     v11 = PLLogOSMetrics();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -48,58 +48,58 @@
   }
 }
 
-+ (id)createCounter:(id)a3 withLabel:(id)a4 withDimensions:(id)a5 withFlags:(unsigned __int8)a6
++ (id)createCounter:(id)counter withLabel:(id)label withDimensions:(id)dimensions withFlags:(unsigned __int8)flags
 {
-  v8 = a3;
-  v9 = a5;
-  [a4 UTF8String];
+  counterCopy = counter;
+  dimensionsCopy = dimensions;
+  [label UTF8String];
   impl = _os_metric_uint64_create_impl();
 
   return impl;
 }
 
-+ (id)createCounter:(id)a3 withLabel:(id)a4
++ (id)createCounter:(id)counter withLabel:(id)label
 {
-  v5 = a3;
-  [a4 UTF8String];
+  counterCopy = counter;
+  [label UTF8String];
   impl = _os_metric_uint64_create_impl();
 
   return impl;
 }
 
-+ (id)createGauge:(id)a3 withLabel:(id)a4 withDimensions:(id)a5 withLevel:(unsigned __int8)a6 withFlags:(unsigned __int8)a7
++ (id)createGauge:(id)gauge withLabel:(id)label withDimensions:(id)dimensions withLevel:(unsigned __int8)level withFlags:(unsigned __int8)flags
 {
-  v9 = a3;
-  v10 = a5;
-  [a4 UTF8String];
+  gaugeCopy = gauge;
+  dimensionsCopy = dimensions;
+  [label UTF8String];
   impl = _os_metric_double_create_impl();
 
   return impl;
 }
 
-+ (id)createGauge:(id)a3 withLabel:(id)a4
++ (id)createGauge:(id)gauge withLabel:(id)label
 {
-  v5 = a3;
-  [a4 UTF8String];
+  gaugeCopy = gauge;
+  [label UTF8String];
   impl = _os_metric_double_create_impl();
 
   return impl;
 }
 
-+ (id)createHistogram:(id)a3 withLabel:(id)a4 withDimensions:(id)a5 withLevel:(unsigned __int8)a6 withBins:(unsigned __int8)a7 withInterval:(unsigned int)a8 withFlags:(unsigned __int8)a9
++ (id)createHistogram:(id)histogram withLabel:(id)label withDimensions:(id)dimensions withLevel:(unsigned __int8)level withBins:(unsigned __int8)bins withInterval:(unsigned int)interval withFlags:(unsigned __int8)flags
 {
-  v11 = a3;
-  v12 = a5;
-  [a4 UTF8String];
+  histogramCopy = histogram;
+  dimensionsCopy = dimensions;
+  [label UTF8String];
   impl = _os_metric_double_create_impl();
 
   return impl;
 }
 
-+ (id)createHistogram:(id)a3 withLabel:(id)a4 withBins:(unsigned __int8)a5 withInterval:(unsigned int)a6
++ (id)createHistogram:(id)histogram withLabel:(id)label withBins:(unsigned __int8)bins withInterval:(unsigned int)interval
 {
-  v7 = a3;
-  [a4 UTF8String];
+  histogramCopy = histogram;
+  [label UTF8String];
   impl = _os_metric_double_create_impl();
 
   return impl;

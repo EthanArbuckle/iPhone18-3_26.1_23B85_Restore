@@ -1,27 +1,27 @@
 @interface SVXServiceCommandHandlerUIDelayedActionCommand
-- (SVXServiceCommandHandlerUIDelayedActionCommand)initWithDelayedActionStore:(id)a3 sessionManager:(id)a4 performer:(id)a5;
-- (void)_performDelayedAction:(id)a3;
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6;
+- (SVXServiceCommandHandlerUIDelayedActionCommand)initWithDelayedActionStore:(id)store sessionManager:(id)manager performer:(id)performer;
+- (void)_performDelayedAction:(id)action;
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion;
 @end
 
 @implementation SVXServiceCommandHandlerUIDelayedActionCommand
 
-- (void)_performDelayedAction:(id)a3
+- (void)_performDelayedAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 command];
-  v6 = [v5 commands];
-  v7 = [v4 taskTracker];
+  actionCopy = action;
+  command = [actionCopy command];
+  commands = [command commands];
+  taskTracker = [actionCopy taskTracker];
 
   sessionManager = self->_sessionManager;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__SVXServiceCommandHandlerUIDelayedActionCommand__performDelayedAction___block_invoke;
   v11[3] = &unk_279C67838;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = commands;
+  v13 = taskTracker;
+  v9 = taskTracker;
+  v10 = commands;
   [(SVXSessionManager *)sessionManager getCurrentSessionUsingBlock:v11];
 }
 
@@ -62,20 +62,20 @@ void __72__SVXServiceCommandHandlerUIDelayedActionCommand__performDelayedAction_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  commandCopy = command;
+  trackerCopy = tracker;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIDelayedActionCommand.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIDelayedActionCommand class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIDelayedActionCommand.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIDelayedActionCommand class]]"}];
   }
 
-  v13 = v10;
-  v14 = [v13 aceId];
+  v13 = commandCopy;
+  aceId = [v13 aceId];
   performer = self->_performer;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -83,14 +83,14 @@ void __72__SVXServiceCommandHandlerUIDelayedActionCommand__performDelayedAction_
   v28[3] = &unk_279C68930;
   v16 = v13;
   v29 = v16;
-  v17 = v11;
+  v17 = trackerCopy;
   v30 = v17;
-  v31 = self;
-  v18 = v14;
+  selfCopy = self;
+  v18 = aceId;
   v32 = v18;
   [(SVXPerforming *)performer performBlock:v28];
-  v19 = [v16 timerValue];
-  [v19 doubleValue];
+  timerValue = [v16 timerValue];
+  [timerValue doubleValue];
   v21 = v20;
 
   v22 = self->_performer;
@@ -102,10 +102,10 @@ void __72__SVXServiceCommandHandlerUIDelayedActionCommand__performDelayedAction_
   v23 = v18;
   v27 = v23;
   [(SVXPerforming *)v22 performBlock:v26 afterDelay:v21 / 1000.0];
-  if (v12)
+  if (completionCopy)
   {
     v24 = +[SVXServiceCommandResult resultSuccess];
-    v12[2](v12, v24);
+    completionCopy[2](completionCopy, v24);
   }
 }
 
@@ -127,23 +127,23 @@ uint64_t __99__SVXServiceCommandHandlerUIDelayedActionCommand_handleCommand_with
   return MEMORY[0x2821F96F8]();
 }
 
-- (SVXServiceCommandHandlerUIDelayedActionCommand)initWithDelayedActionStore:(id)a3 sessionManager:(id)a4 performer:(id)a5
+- (SVXServiceCommandHandlerUIDelayedActionCommand)initWithDelayedActionStore:(id)store sessionManager:(id)manager performer:(id)performer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  managerCopy = manager;
+  performerCopy = performer;
   v20.receiver = self;
   v20.super_class = SVXServiceCommandHandlerUIDelayedActionCommand;
   v12 = [(SVXServiceCommandHandlerUIDelayedActionCommand *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_delayedActionStore, a3);
-    objc_storeStrong(&v13->_sessionManager, a4);
-    objc_storeStrong(&v13->_performer, a5);
+    objc_storeStrong(&v12->_delayedActionStore, store);
+    objc_storeStrong(&v13->_sessionManager, manager);
+    objc_storeStrong(&v13->_performer, performer);
     v14 = objc_alloc(MEMORY[0x277CCACA8]);
-    v15 = [objc_opt_class() supportedCommandClass];
-    v16 = NSStringFromClass(v15);
+    supportedCommandClass = [objc_opt_class() supportedCommandClass];
+    v16 = NSStringFromClass(supportedCommandClass);
     v17 = [v14 initWithFormat:@"com.apple.SiriVOXService.service-command.%@", v16];
     identifier = v13->_identifier;
     v13->_identifier = v17;

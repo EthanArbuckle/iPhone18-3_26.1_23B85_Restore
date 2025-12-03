@@ -1,7 +1,7 @@
 @interface WCDefaultCityManager
 - (NSArray)defaultCities;
 - (id)defaultCityForLocalTimeZone;
-- (id)initDeferLoading:(BOOL)a3;
+- (id)initDeferLoading:(BOOL)loading;
 - (id)reloadDefaultCities;
 @end
 
@@ -10,21 +10,21 @@
 - (id)reloadDefaultCities
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v4 countryCode];
-  v6 = [v4 localeIdentifier];
+  array = [MEMORY[0x1E695DF70] array];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  countryCode = [currentLocale countryCode];
+  localeIdentifier = [currentLocale localeIdentifier];
   if (+[WCMobileGestaltBridge isChineseSKU])
   {
     v7 = WCLogForCategory(1uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v6;
+      v39 = localeIdentifier;
       _os_log_impl(&dword_1C945E000, v7, OS_LOG_TYPE_DEFAULT, "Previous localeCode=%@, overriding localeCode to the countryCode CN", buf, 0xCu);
     }
 
-    v6 = @"CN";
+    localeIdentifier = @"CN";
   }
 
   if (+[WCMobileGestaltBridge isJapaneseSKU])
@@ -33,27 +33,27 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v6;
+      v39 = localeIdentifier;
       _os_log_impl(&dword_1C945E000, v8, OS_LOG_TYPE_DEFAULT, "Previous localeCode=%@, overriding localeCode to the countryCode JP", buf, 0xCu);
     }
 
-    v6 = @"JP";
+    localeIdentifier = @"JP";
   }
 
   v9 = WCLogForCategory(1uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v39 = v6;
+    v39 = localeIdentifier;
     v40 = 2112;
-    v41 = v5;
+    v41 = countryCode;
     v42 = 2112;
-    v43 = v4;
+    v43 = currentLocale;
     _os_log_impl(&dword_1C945E000, v9, OS_LOG_TYPE_DEFAULT, "About to ask the ALCityManager for our default cities. LocaleCode=%@, countryCode=%@, currentLocale=%@", buf, 0x20u);
   }
 
-  v10 = [MEMORY[0x1E698B670] sharedManager];
-  v11 = [v10 defaultCitiesForLocaleCode:v6];
+  mEMORY[0x1E698B670] = [MEMORY[0x1E698B670] sharedManager];
+  v11 = [mEMORY[0x1E698B670] defaultCitiesForLocaleCode:localeIdentifier];
 
   v12 = [(__CFString *)v11 count];
   v13 = WCLogForCategory(1uLL);
@@ -63,7 +63,7 @@
     if (v14)
     {
       *buf = 138412546;
-      v39 = v6;
+      v39 = localeIdentifier;
       v40 = 2112;
       v41 = v11;
       _os_log_impl(&dword_1C945E000, v13, OS_LOG_TYPE_DEFAULT, "[ALCityManager.defaultCitiesForLocaleCode:%@] returned the following cities:%@", buf, 0x16u);
@@ -77,14 +77,14 @@
     if (v14)
     {
       *buf = 138412546;
-      v39 = v6;
+      v39 = localeIdentifier;
       v40 = 2112;
-      v41 = v5;
+      v41 = countryCode;
       _os_log_impl(&dword_1C945E000, v13, OS_LOG_TYPE_DEFAULT, "[ALCityManager.defaultCitiesForLocaleCode:%@] returned NO cities.  Trying [ALCityManager.defaultCitiesForLocaleCode:%@]", buf, 0x16u);
     }
 
-    v16 = [MEMORY[0x1E698B670] sharedManager];
-    v15 = [v16 defaultCitiesForLocaleCode:v5];
+    mEMORY[0x1E698B670]2 = [MEMORY[0x1E698B670] sharedManager];
+    v15 = [mEMORY[0x1E698B670]2 defaultCitiesForLocaleCode:countryCode];
 
     v17 = [(__CFString *)v15 count];
     v13 = WCLogForCategory(1uLL);
@@ -97,7 +97,7 @@
       }
 
       *buf = 138412546;
-      v39 = v5;
+      v39 = countryCode;
       v40 = 2112;
       v41 = v15;
       v19 = "[ALCityManager.defaultCitiesForLocaleCode:%@] returned the following cities:%@";
@@ -113,7 +113,7 @@
       }
 
       *buf = 138412290;
-      v39 = v5;
+      v39 = countryCode;
       v19 = "[ALCityManager.defaultCitiesForLocaleCode:%@] returned NO cities.  We are out of luck";
       v20 = v13;
       v21 = 12;
@@ -126,9 +126,9 @@ LABEL_23:
 
   if ([(__CFString *)v15 count])
   {
-    v31 = v5;
-    v32 = v4;
-    v22 = self;
+    v31 = countryCode;
+    v32 = currentLocale;
+    selfCopy = self;
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -151,7 +151,7 @@ LABEL_23:
           v28 = [WCDefaultCity cityFromAlCity:*(*(&v33 + 1) + 8 * i), v31, v32, v33];
           if (v28)
           {
-            [(__CFString *)v3 addObject:v28];
+            [(__CFString *)array addObject:v28];
           }
         }
 
@@ -161,40 +161,40 @@ LABEL_23:
       while (v25);
     }
 
-    self = v22;
-    v5 = v31;
-    v4 = v32;
+    self = selfCopy;
+    countryCode = v31;
+    currentLocale = v32;
   }
 
   v29 = WCLogForCategory(1uLL);
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v39 = v3;
+    v39 = array;
     _os_log_impl(&dword_1C945E000, v29, OS_LOG_TYPE_DEFAULT, "Built and returning the following WCDefaultCities:%@", buf, 0xCu);
   }
 
   os_unfair_lock_lock_with_options();
-  objc_storeStrong(&self->_defaultCities, v3);
+  objc_storeStrong(&self->_defaultCities, array);
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
 
-  return v3;
+  return array;
 }
 
 - (NSArray)defaultCities
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSArray *)self->_defaultCities copy];
+  reloadDefaultCities = [(NSArray *)self->_defaultCities copy];
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
-  if (!v3)
+  if (!reloadDefaultCities)
   {
-    v3 = [(WCDefaultCityManager *)self reloadDefaultCities];
+    reloadDefaultCities = [(WCDefaultCityManager *)self reloadDefaultCities];
   }
 
-  return v3;
+  return reloadDefaultCities;
 }
 
-- (id)initDeferLoading:(BOOL)a3
+- (id)initDeferLoading:(BOOL)loading
 {
   v14.receiver = self;
   v14.super_class = WCDefaultCityManager;
@@ -208,10 +208,10 @@ LABEL_23:
     reloadQueue = v5->_reloadQueue;
     v5->_reloadQueue = v7;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v5 selector:sel_reloadDefaultCities name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_reloadDefaultCities name:*MEMORY[0x1E695D8F0] object:0];
 
-    if (!a3)
+    if (!loading)
     {
       v10 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -236,9 +236,9 @@ LABEL_23:
     _os_log_impl(&dword_1C945E000, v2, OS_LOG_TYPE_DEFAULT, "About to ask the ALCityManager for our defaultCityForTimeZone:localTimeZone", &v9, 2u);
   }
 
-  v3 = [MEMORY[0x1E698B670] sharedManager];
-  v4 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v5 = [v3 defaultCityForTimeZone:v4];
+  mEMORY[0x1E698B670] = [MEMORY[0x1E698B670] sharedManager];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v5 = [mEMORY[0x1E698B670] defaultCityForTimeZone:localTimeZone];
 
   v6 = WCLogForCategory(1uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

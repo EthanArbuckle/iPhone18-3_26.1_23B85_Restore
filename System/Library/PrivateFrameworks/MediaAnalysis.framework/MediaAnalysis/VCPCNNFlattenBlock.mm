@@ -1,12 +1,12 @@
 @interface VCPCNNFlattenBlock
-- (VCPCNNFlattenBlock)initWithParameters:(int)a3;
-- (int)constructBlock:(id)a3 context:(id)a4;
+- (VCPCNNFlattenBlock)initWithParameters:(int)parameters;
+- (int)constructBlock:(id)block context:(id)context;
 - (int)forward;
 @end
 
 @implementation VCPCNNFlattenBlock
 
-- (VCPCNNFlattenBlock)initWithParameters:(int)a3
+- (VCPCNNFlattenBlock)initWithParameters:(int)parameters
 {
   v8.receiver = self;
   v8.super_class = VCPCNNFlattenBlock;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    *(&v4->super._executedOnGPU + 3) = a3;
+    *(&v4->super._executedOnGPU + 3) = parameters;
     v6 = v4;
   }
 
@@ -25,54 +25,54 @@
 {
   if (*(&self->super._executedOnGPU + 3) == 1)
   {
-    v3 = [(VCPCNNData *)self->super._output data];
+    data = [(VCPCNNData *)self->super._output data];
     WeakRetained = objc_loadWeakRetained(&self->super._input);
-    v5 = [WeakRetained data];
+    data2 = [WeakRetained data];
     v6 = [(NSMutableArray *)self->super._outputSize objectAtIndexedSubscript:0];
-    memcpy(v3, v5, 4 * [v6 intValue]);
+    memcpy(data, data2, 4 * [v6 intValue]);
   }
 
   else
   {
     v7 = objc_loadWeakRetained(&self->super._inputSize);
     v8 = [v7 objectAtIndexedSubscript:0];
-    v24 = [v8 intValue];
+    intValue = [v8 intValue];
 
     v9 = objc_loadWeakRetained(&self->super._inputSize);
     v10 = [v9 objectAtIndexedSubscript:1];
-    v23 = [v10 intValue];
+    intValue2 = [v10 intValue];
 
     v11 = objc_loadWeakRetained(&self->super._inputSize);
     v12 = [v11 objectAtIndexedSubscript:2];
-    v25 = [v12 intValue];
+    intValue3 = [v12 intValue];
 
     v13 = objc_loadWeakRetained(&self->super._input);
-    v14 = [v13 data];
+    data3 = [v13 data];
 
     v15 = *(&self->super._executedOnGPU + 3);
-    if (v24 / v15 >= 1)
+    if (intValue / v15 >= 1)
     {
       v16 = 0;
       do
       {
-        if (v23 >= 1)
+        if (intValue2 >= 1)
         {
           v17 = 0;
           do
           {
             v26 = v17;
-            if (v25 >= 1)
+            if (intValue3 >= 1)
             {
               v18 = 0;
-              v19 = v17 * v25;
+              v19 = v17 * intValue3;
               do
               {
                 if (v15 >= 1)
                 {
                   for (i = 0; i < v15; ++i)
                   {
-                    v21 = *v14++;
-                    *([(VCPCNNData *)self->super._output data]+ 4 * v25 * v23 * (i + v16 * v15) + 4 * v19 + 4 * v18) = v21;
+                    v21 = *data3++;
+                    *([(VCPCNNData *)self->super._output data]+ 4 * intValue3 * intValue2 * (i + v16 * v15) + 4 * v19 + 4 * v18) = v21;
                     v15 = *(&self->super._executedOnGPU + 3);
                   }
                 }
@@ -80,46 +80,46 @@
                 ++v18;
               }
 
-              while (v18 != v25);
+              while (v18 != intValue3);
             }
 
             v17 = v26 + 1;
           }
 
-          while (v26 + 1 != v23);
+          while (v26 + 1 != intValue2);
         }
 
         ++v16;
       }
 
-      while (v16 < v24 / v15);
+      while (v16 < intValue / v15);
     }
   }
 
   return 0;
 }
 
-- (int)constructBlock:(id)a3 context:(id)a4
+- (int)constructBlock:(id)block context:(id)context
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = +[VCPCNNData cnnData];
   output = self->super._output;
   self->super._output = v6;
 
   if (self->super._output && (v8 = objc_alloc_init(MEMORY[0x1E695DF70]), v9 = self->super._outputSize, self->super._outputSize = v8, v9, self->super._outputSize))
   {
-    v10 = objc_storeWeak(&self->super._inputSize, v5);
+    v10 = objc_storeWeak(&self->super._inputSize, blockCopy);
     outputSize = self->super._outputSize;
     v12 = MEMORY[0x1E696AD98];
     v13 = v10;
-    v23 = [v5 objectAtIndexedSubscript:0];
-    v14 = [v23 intValue];
+    v23 = [blockCopy objectAtIndexedSubscript:0];
+    intValue = [v23 intValue];
     WeakRetained = objc_loadWeakRetained(&self->super._inputSize);
     v21 = [WeakRetained objectAtIndexedSubscript:1];
-    v15 = [v21 intValue];
+    intValue2 = [v21 intValue];
     v16 = objc_loadWeakRetained(&self->super._inputSize);
     v17 = [v16 objectAtIndexedSubscript:2];
-    v18 = [v12 numberWithInt:{v15 * v14 * objc_msgSend(v17, "intValue")}];
+    v18 = [v12 numberWithInt:{intValue2 * intValue * objc_msgSend(v17, "intValue")}];
     [(NSMutableArray *)outputSize addObject:v18];
 
     [(VCPCNNData *)self->super._output setSize:self->super._outputSize];

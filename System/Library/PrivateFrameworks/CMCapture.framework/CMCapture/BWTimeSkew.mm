@@ -1,39 +1,39 @@
 @interface BWTimeSkew
-- (BWTimeSkew)initWithNativeTime:(id *)a3 originalTime:(id *)a4 isBracketFrame:(BOOL)a5 isSISFrame:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BWTimeSkew)initWithNativeTime:(id *)time originalTime:(id *)originalTime isBracketFrame:(BOOL)frame isSISFrame:(BOOL)sFrame;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setAdjusted:(id *)a3;
+- (void)setAdjusted:(id *)adjusted;
 @end
 
 @implementation BWTimeSkew
 
-- (BWTimeSkew)initWithNativeTime:(id *)a3 originalTime:(id *)a4 isBracketFrame:(BOOL)a5 isSISFrame:(BOOL)a6
+- (BWTimeSkew)initWithNativeTime:(id *)time originalTime:(id *)originalTime isBracketFrame:(BOOL)frame isSISFrame:(BOOL)sFrame
 {
   v14.receiver = self;
   v14.super_class = BWTimeSkew;
   result = [(BWTimeSkew *)&v14 init];
   if (result)
   {
-    v11 = *&a3->var0;
-    result->_native.epoch = a3->var3;
+    v11 = *&time->var0;
+    result->_native.epoch = time->var3;
     *&result->_native.value = v11;
-    v12 = *&a4->var0;
-    result->_original.epoch = a4->var3;
+    v12 = *&originalTime->var0;
+    result->_original.epoch = originalTime->var3;
     *&result->_original.value = v12;
     v13 = MEMORY[0x1E6960C70];
     *&result->_adjusted.value = *MEMORY[0x1E6960C70];
     result->_adjusted.epoch = *(v13 + 16);
-    result->_isBracketFrame = a5;
-    result->_isSISFrame = a6;
+    result->_isBracketFrame = frame;
+    result->_isSISFrame = sFrame;
     result->_isStartOfDiscontinuity = 0;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   v5 = *&self->_native.value;
   *(result + 3) = self->_native.epoch;
   *(result + 8) = v5;
@@ -91,10 +91,10 @@
   return [v3 stringWithFormat:@"%.4lf:%.4lf:%.4lf:Bracket=%c:SIS=%c:StartsDiscontinuity:%c", *&Seconds, *&v5, *&v6, v9, v8, v7];
 }
 
-- (void)setAdjusted:(id *)a3
+- (void)setAdjusted:(id *)adjusted
 {
-  v3 = *&a3->var0;
-  self->_adjusted.epoch = a3->var3;
+  v3 = *&adjusted->var0;
+  self->_adjusted.epoch = adjusted->var3;
   *&self->_adjusted.value = v3;
 }
 

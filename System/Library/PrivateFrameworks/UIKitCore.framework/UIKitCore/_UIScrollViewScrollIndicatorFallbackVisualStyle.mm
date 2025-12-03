@@ -1,8 +1,8 @@
 @interface _UIScrollViewScrollIndicatorFallbackVisualStyle
-- ($600A803A2DA5524344F8C742CF1B11BB)valuesForLayoutSizeAnimationWhenExpanding:(SEL)a3;
-- (CGRect)hitTestingRectForIndicatorRect:(CGRect)a3;
+- ($600A803A2DA5524344F8C742CF1B11BB)valuesForLayoutSizeAnimationWhenExpanding:(SEL)expanding;
+- (CGRect)hitTestingRectForIndicatorRect:(CGRect)rect;
 - (UIEdgeInsets)cursorHitTestingInsets;
-- (id)feedbackGeneratorWithView:(id)a3;
+- (id)feedbackGeneratorWithView:(id)view;
 - (id)fillView;
 @end
 
@@ -15,12 +15,12 @@
   return v2;
 }
 
-- (CGRect)hitTestingRectForIndicatorRect:(CGRect)a3
+- (CGRect)hitTestingRectForIndicatorRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(_UIScrollViewScrollIndicatorFallbackVisualStyle *)self cursorHitTestingInsets];
   v8 = y + v7;
   v11 = width - (v9 + v10);
@@ -48,7 +48,7 @@
   return result;
 }
 
-- ($600A803A2DA5524344F8C742CF1B11BB)valuesForLayoutSizeAnimationWhenExpanding:(SEL)a3
+- ($600A803A2DA5524344F8C742CF1B11BB)valuesForLayoutSizeAnimationWhenExpanding:(SEL)expanding
 {
   retstr->var4 = 0;
   *&retstr->var0 = 0u;
@@ -56,10 +56,10 @@
   return self;
 }
 
-- (id)feedbackGeneratorWithView:(id)a3
+- (id)feedbackGeneratorWithView:(id)view
 {
-  v3 = a3;
-  v4 = [[_UIClickFeedbackGenerator alloc] initWithView:v3];
+  viewCopy = view;
+  v4 = [[_UIClickFeedbackGenerator alloc] initWithView:viewCopy];
 
   return v4;
 }

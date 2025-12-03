@@ -1,12 +1,12 @@
 @interface MRDAVHostedExternalDevice
-- (BOOL)_endpointShouldPostVolumeNotifications:(id)a3 outputDevice:(id)a4;
-- (BOOL)_endpointSupportsVolumeControl:(id)a3;
-- (BOOL)_onSerialQueue_isEndpointsDesignatedGroupLeader:(id)a3;
-- (BOOL)_shouldReevaluateVolumeControlCapabilitiesForEndpoint:(id)a3 previousEndpoint:(id)a4 externalDevice:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_endpointShouldPostVolumeNotifications:(id)notifications outputDevice:(id)device;
+- (BOOL)_endpointSupportsVolumeControl:(id)control;
+- (BOOL)_onSerialQueue_isEndpointsDesignatedGroupLeader:(id)leader;
+- (BOOL)_shouldReevaluateVolumeControlCapabilitiesForEndpoint:(id)endpoint previousEndpoint:(id)previousEndpoint externalDevice:(id)device;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MRAVDistantEndpoint)endpoint;
 - (MRAVRoutingDiscoverySession)silentDiscoverySession;
-- (MRDAVHostedExternalDevice)initWithExternalDevice:(id)a3;
+- (MRDAVHostedExternalDevice)initWithExternalDevice:(id)device;
 - (MRExternalDevice)externalDevice;
 - (MROrigin)origin;
 - (NSArray)personalOutputDevices;
@@ -17,84 +17,84 @@
 - (id)_allExternalDeviceClients;
 - (id)_connectedExternalDeviceClients;
 - (id)_connectingExternalDeviceClients;
-- (id)_externalDeviceClientForConnection:(id)a3;
-- (id)_mutableExternalDeviceClientsWithRegisteredCallbacks:(unint64_t)a3;
-- (id)_mutableExternalDeviceClientsWithRegisteredNotification:(unint64_t)a3;
+- (id)_externalDeviceClientForConnection:(id)connection;
+- (id)_mutableExternalDeviceClientsWithRegisteredCallbacks:(unint64_t)callbacks;
+- (id)_mutableExternalDeviceClientsWithRegisteredNotification:(unint64_t)notification;
 - (id)externalDeviceClients;
 - (id)groupSessionToken;
 - (unint64_t)notifications;
 - (unint64_t)registeredCallbacks;
-- (void)_externalDeviceClientDidInvalidate:(id)a3 withError:(id)a4;
-- (void)_handleExternalDeviceConnectionDidChange:(id)a3;
-- (void)_handleExternalDeviceConnectionStateDidChange:(id)a3;
-- (void)_handleExternalDeviceDeviceInfoDidChange:(id)a3;
-- (void)_handleMaybeCanMigrateToLocalEndpointDidChange:(id)a3;
-- (void)_initializeExternalDevice:(id)a3;
-- (void)_maybePostEndpointDidAddOutputDevice:(id)a3;
-- (void)_maybePostEndpointDidChangeOutputDevice:(id)a3;
-- (void)_maybePostEndpointDidRemoveOutputDevice:(id)a3;
-- (void)_maybePostVolumeDidChange:(float)a3 outputDevice:(id)a4;
-- (void)_onReloadQueue_hostedExternalDeviceEndpointDidChange:(id)a3;
-- (void)_processCanMigrateToLocalEndpointEvent:(id)a3 timestamp:(id)a4 error:(id)a5;
-- (void)_reevaluateVolumeControlCapabilitiesForEndpoint:(id)a3;
+- (void)_externalDeviceClientDidInvalidate:(id)invalidate withError:(id)error;
+- (void)_handleExternalDeviceConnectionDidChange:(id)change;
+- (void)_handleExternalDeviceConnectionStateDidChange:(id)change;
+- (void)_handleExternalDeviceDeviceInfoDidChange:(id)change;
+- (void)_handleMaybeCanMigrateToLocalEndpointDidChange:(id)change;
+- (void)_initializeExternalDevice:(id)device;
+- (void)_maybePostEndpointDidAddOutputDevice:(id)device;
+- (void)_maybePostEndpointDidChangeOutputDevice:(id)device;
+- (void)_maybePostEndpointDidRemoveOutputDevice:(id)device;
+- (void)_maybePostVolumeDidChange:(float)change outputDevice:(id)device;
+- (void)_onReloadQueue_hostedExternalDeviceEndpointDidChange:(id)change;
+- (void)_processCanMigrateToLocalEndpointEvent:(id)event timestamp:(id)timestamp error:(id)error;
+- (void)_reevaluateVolumeControlCapabilitiesForEndpoint:(id)endpoint;
 - (void)_reloadEndpoint;
 - (void)_reloadHostedExternalDeviceCallbacks;
 - (void)_reloadHostedExternalDeviceNotifications;
 - (void)_reloadHostedExternalDeviceSubscribedPlayerPaths;
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5 completion:(id)a6;
-- (void)connectWithOptions:(unsigned int)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 completion:(id)a5;
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details completion:(id)completion;
+- (void)connectWithOptions:(unsigned int)options userInfo:(id)info completion:(id)completion;
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details completion:(id)completion;
 - (void)dealloc;
-- (void)disconnect:(id)a3;
-- (void)disconnectOrigin:(id)a3;
-- (void)expanseManagerTelevisionDidJoinSession:(id)a3;
-- (void)expanseManagerTelevisionDidLeaveSession:(id)a3;
-- (void)getCustomOriginDataWithCompletion:(id)a3;
-- (void)getDeviceInfoWithCompletion:(id)a3;
-- (void)getExternalOutputContextWithCompletion:(id)a3;
-- (void)getPersonalOutputDevices:(id)a3;
-- (void)hostedExternalDeviceDeviceInfoDidChange:(id)a3;
-- (void)hostedExternalDeviceDidAddOutputDevice:(id)a3;
-- (void)hostedExternalDeviceDidChangeOutputDevice:(id)a3;
-- (void)hostedExternalDeviceDidReceiveCustomData:(id)a3 withName:(id)a4;
-- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)a3;
-- (void)hostedExternalDeviceEndpointDidChange:(id)a3;
-- (void)hostedExternalDeviceVolumeDidChange:(float)a3 forOutputDevice:(id)a4;
-- (void)modifyTopologyWithRequest:(id)a3 completion:(id)a4;
-- (void)outputContextDataSourceDidAddOutputDevice:(id)a3;
-- (void)outputContextDataSourceDidChangeOutputDevice:(id)a3;
-- (void)outputContextDataSourceDidRemoveOutputDevice:(id)a3;
-- (void)outputContextDataSourceOutputDeviceDidChangeVolume:(id)a3;
-- (void)outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:(id)a3;
-- (void)outputContextDataSourceOutputDeviceDidChangeVolumeMuted:(id)a3;
-- (void)pingWithTimeout:(double)a3 callback:(id)a4;
-- (void)registerForOutputContextNotifications:(id)a3;
-- (void)requestGroupSessionWithDetails:(id)a3 completion:(id)a4;
-- (void)requestMicrophoneConnectionWithDetails:(id)a3 completion:(id)a4;
-- (void)sendCustomData:(id)a3 withName:(id)a4;
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 completion:(id)a5;
-- (void)setNotifications:(unint64_t)a3;
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5 completion:(id)a6;
-- (void)setRegisteredCallbacks:(unint64_t)a3;
-- (void)setSubscribedPlayerPaths:(id)a3;
-- (void)tombstoneWithError:(id)a3;
+- (void)disconnect:(id)disconnect;
+- (void)disconnectOrigin:(id)origin;
+- (void)expanseManagerTelevisionDidJoinSession:(id)session;
+- (void)expanseManagerTelevisionDidLeaveSession:(id)session;
+- (void)getCustomOriginDataWithCompletion:(id)completion;
+- (void)getDeviceInfoWithCompletion:(id)completion;
+- (void)getExternalOutputContextWithCompletion:(id)completion;
+- (void)getPersonalOutputDevices:(id)devices;
+- (void)hostedExternalDeviceDeviceInfoDidChange:(id)change;
+- (void)hostedExternalDeviceDidAddOutputDevice:(id)device;
+- (void)hostedExternalDeviceDidChangeOutputDevice:(id)device;
+- (void)hostedExternalDeviceDidReceiveCustomData:(id)data withName:(id)name;
+- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)device;
+- (void)hostedExternalDeviceEndpointDidChange:(id)change;
+- (void)hostedExternalDeviceVolumeDidChange:(float)change forOutputDevice:(id)device;
+- (void)modifyTopologyWithRequest:(id)request completion:(id)completion;
+- (void)outputContextDataSourceDidAddOutputDevice:(id)device;
+- (void)outputContextDataSourceDidChangeOutputDevice:(id)device;
+- (void)outputContextDataSourceDidRemoveOutputDevice:(id)device;
+- (void)outputContextDataSourceOutputDeviceDidChangeVolume:(id)volume;
+- (void)outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:(id)capabilities;
+- (void)outputContextDataSourceOutputDeviceDidChangeVolumeMuted:(id)muted;
+- (void)pingWithTimeout:(double)timeout callback:(id)callback;
+- (void)registerForOutputContextNotifications:(id)notifications;
+- (void)requestGroupSessionWithDetails:(id)details completion:(id)completion;
+- (void)requestMicrophoneConnectionWithDetails:(id)details completion:(id)completion;
+- (void)sendCustomData:(id)data withName:(id)name;
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d completion:(id)completion;
+- (void)setNotifications:(unint64_t)notifications;
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d details:(id)details completion:(id)completion;
+- (void)setRegisteredCallbacks:(unint64_t)callbacks;
+- (void)setSubscribedPlayerPaths:(id)paths;
+- (void)tombstoneWithError:(id)error;
 @end
 
 @implementation MRDAVHostedExternalDevice
 
 - (NSArray)personalOutputDevices
 {
-  v3 = [(MRDAVHostedExternalDevice *)self canMigrateToLocalEndpointError];
-  if (v3)
+  canMigrateToLocalEndpointError = [(MRDAVHostedExternalDevice *)self canMigrateToLocalEndpointError];
+  if (canMigrateToLocalEndpointError)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(MRDAVHostedExternalDevice *)self silentDiscoverySession];
-    v6 = [v5 availableOutputDevices];
-    v4 = [v6 msv_compactMap:&stru_1004BC8E0];
+    silentDiscoverySession = [(MRDAVHostedExternalDevice *)self silentDiscoverySession];
+    availableOutputDevices = [silentDiscoverySession availableOutputDevices];
+    v4 = [availableOutputDevices msv_compactMap:&stru_1004BC8E0];
   }
 
   return v4;
@@ -191,8 +191,8 @@
 
 - (id)_connectedExternalDeviceClients
 {
-  v2 = [(MRDAVHostedExternalDevice *)self _allExternalDeviceClients];
-  v3 = [v2 msv_filter:&stru_1004BCA78];
+  _allExternalDeviceClients = [(MRDAVHostedExternalDevice *)self _allExternalDeviceClients];
+  v3 = [_allExternalDeviceClients msv_filter:&stru_1004BCA78];
 
   return v3;
 }
@@ -262,16 +262,16 @@
   return v3;
 }
 
-- (MRDAVHostedExternalDevice)initWithExternalDevice:(id)a3
+- (MRDAVHostedExternalDevice)initWithExternalDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = MRDAVHostedExternalDevice;
   v6 = [(MRDAVHostedExternalDevice *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_externalDevice, a3);
+    objc_storeStrong(&v6->_externalDevice, device);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.mediaremoted.hostedExternalDevice.serialQueue", v8);
     serialQueue = v7->_serialQueue;
@@ -296,7 +296,7 @@
     canMigrateEvaluationTimestamp = v7->_canMigrateEvaluationTimestamp;
     v7->_canMigrateEvaluationTimestamp = v16;
 
-    if (v5)
+    if (deviceCopy)
     {
       v18 = +[NSXPCListener anonymousListener];
       xpcListener = v7->_xpcListener;
@@ -304,7 +304,7 @@
 
       [(NSXPCListener *)v7->_xpcListener setDelegate:v7];
       [(NSXPCListener *)v7->_xpcListener resume];
-      [(MRDAVHostedExternalDevice *)v7 _initializeExternalDevice:v5];
+      [(MRDAVHostedExternalDevice *)v7 _initializeExternalDevice:deviceCopy];
     }
   }
 
@@ -321,8 +321,8 @@
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 
-  v5 = [(MRDAVHostedExternalDevice *)self silentDiscoverySession];
-  [v5 removeOutputDevicesChangedCallback:self->_silentDiscoverySessionCallbackToken];
+  silentDiscoverySession = [(MRDAVHostedExternalDevice *)self silentDiscoverySession];
+  [silentDiscoverySession removeOutputDevicesChangedCallback:self->_silentDiscoverySessionCallbackToken];
 
   silentDiscoverySessionCallbackToken = self->_silentDiscoverySessionCallbackToken;
   self->_silentDiscoverySessionCallbackToken = 0;
@@ -372,10 +372,10 @@
 
 - (id)groupSessionToken
 {
-  v2 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  v3 = [v2 groupSessionToken];
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  groupSessionToken = [externalDevice groupSessionToken];
 
-  return v3;
+  return groupSessionToken;
 }
 
 - (NSString)outputDeviceUID
@@ -394,16 +394,16 @@
   return v3;
 }
 
-- (void)tombstoneWithError:(id)a3
+- (void)tombstoneWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MRLogCategoryConnections();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] Hosted endpoint %{public}@ did tombstone with error %@", buf, 0x16u);
   }
 
@@ -416,10 +416,10 @@
   dispatch_async(serialQueue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v25 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -441,14 +441,14 @@
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v6;
+      *&buf[14] = connectionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] %{public}@ is tombstoned, rejecting new XPC connection %{public}@", buf, 0x16u);
     }
   }
 
   else
   {
-    v10 = [[MRDAVHostedExternalDeviceClient alloc] initWithConnection:v6];
+    v10 = [[MRDAVHostedExternalDeviceClient alloc] initWithConnection:connectionCopy];
     v11 = MRLogCategoryConnections();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -477,15 +477,15 @@
     objc_copyWeak(&v37, &from);
     v13 = objc_retainBlock(v33);
     v14 = +[MRDistantExternalDevice serviceInterface];
-    [v6 setExportedInterface:v14];
+    [connectionCopy setExportedInterface:v14];
 
-    v15 = [v6 exportedInterface];
-    v16 = [v15 protocol];
-    v17 = [MRWeakProxy weakProxyWithObject:self protocol:v16];
-    [v6 setExportedObject:v17];
+    exportedInterface = [connectionCopy exportedInterface];
+    protocol = [exportedInterface protocol];
+    v17 = [MRWeakProxy weakProxyWithObject:self protocol:protocol];
+    [connectionCopy setExportedObject:v17];
 
     v18 = +[MRDistantExternalDevice clientInterface];
-    [v6 setRemoteObjectInterface:v18];
+    [connectionCopy setRemoteObjectInterface:v18];
 
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
@@ -493,15 +493,15 @@
     v31[3] = &unk_1004B79A0;
     v19 = v13;
     v32 = v19;
-    [v6 setInterruptionHandler:v31];
+    [connectionCopy setInterruptionHandler:v31];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1000FE2E4;
     v29[3] = &unk_1004B79A0;
     v20 = v19;
     v30 = v20;
-    [v6 setInvalidationHandler:v29];
-    [v6 resume];
+    [connectionCopy setInvalidationHandler:v29];
+    [connectionCopy resume];
     v21 = self->_serialQueue;
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
@@ -526,42 +526,42 @@
   return v8 ^ 1;
 }
 
-- (void)getCustomOriginDataWithCompletion:(id)a3
+- (void)getCustomOriginDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  v6 = [v5 customOrigin];
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  customOrigin = [externalDevice customOrigin];
+  v7 = customOrigin;
+  if (customOrigin)
   {
-    v8 = [v6 data];
+    data = [customOrigin data];
     Error = 0;
   }
 
   else
   {
     Error = MRMediaRemoteCreateError();
-    v8 = 0;
+    data = 0;
   }
 
-  v10 = v8;
-  v4[2](v4);
+  v10 = data;
+  completionCopy[2](completionCopy);
 }
 
 - (unint64_t)registeredCallbacks
 {
   v3 = +[NSXPCConnection currentConnection];
   v4 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v3];
-  v5 = [v4 registeredCallbacks];
+  registeredCallbacks = [v4 registeredCallbacks];
 
-  return v5;
+  return registeredCallbacks;
 }
 
-- (void)setRegisteredCallbacks:(unint64_t)a3
+- (void)setRegisteredCallbacks:(unint64_t)callbacks
 {
   v5 = +[NSXPCConnection currentConnection];
   v6 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v5];
-  [v6 setRegisteredCallbacks:a3];
+  [v6 setRegisteredCallbacks:callbacks];
   v7 = MRLogCategoryConnections();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -569,7 +569,7 @@
     v9 = 138543874;
     v10 = v6;
     v11 = 2114;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
     v14 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Client %{public}@ is setting the following registered callbacks on %{public}@: %{public}@", &v9, 0x20u);
@@ -582,16 +582,16 @@
 {
   v3 = +[NSXPCConnection currentConnection];
   v4 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v3];
-  v5 = [v4 notifications];
+  notifications = [v4 notifications];
 
-  return v5;
+  return notifications;
 }
 
-- (void)setNotifications:(unint64_t)a3
+- (void)setNotifications:(unint64_t)notifications
 {
   v5 = +[NSXPCConnection currentConnection];
   v6 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v5];
-  [v6 setNotifications:a3];
+  [v6 setNotifications:notifications];
   v7 = MRLogCategoryConnections();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -599,7 +599,7 @@
     v9 = 138543874;
     v10 = v6;
     v11 = 2114;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
     v14 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Client %{public}@ is setting the following notifications on %{public}@: %{public}@", &v9, 0x20u);
@@ -608,44 +608,44 @@
   [(MRDAVHostedExternalDevice *)self _reloadHostedExternalDeviceNotifications];
 }
 
-- (void)setSubscribedPlayerPaths:(id)a3
+- (void)setSubscribedPlayerPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v5 = +[NSXPCConnection currentConnection];
   v6 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v5];
-  [v6 setSubscribedPlayerPaths:v4];
+  [v6 setSubscribedPlayerPaths:pathsCopy];
   v7 = MRLogCategoryConnections();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138543874;
     v9 = v6;
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = pathsCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Client %{public}@ is subscribing to the following player paths on %{public}@: %{public}@", &v8, 0x20u);
   }
 
   [(MRDAVHostedExternalDevice *)self _reloadHostedExternalDeviceSubscribedPlayerPaths];
 }
 
-- (void)connectWithOptions:(unsigned int)a3 userInfo:(id)a4 completion:(id)a5
+- (void)connectWithOptions:(unsigned int)options userInfo:(id)info completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  infoCopy = info;
   v10 = +[NSDate now];
   v36 = +[NSXPCConnection currentConnection];
   v11 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:?];
-  v12 = [v9 mutableCopy];
+  v12 = [infoCopy mutableCopy];
 
   v13 = [v12 objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
-  v14 = [v11 bundleIdentifier];
+  bundleIdentifier = [v11 bundleIdentifier];
   v35 = v12;
-  [v12 setObject:v14 forKeyedSubscript:MRExternalDeviceConnectionClientBundleIDUserInfoKey];
+  [v12 setObject:bundleIdentifier forKeyedSubscript:MRExternalDeviceConnectionClientBundleIDUserInfoKey];
 
   v15 = [NSString alloc];
   v16 = objc_opt_class();
-  v33 = a3;
+  optionsCopy = options;
   v17 = MRExternalDeviceConnectOptionsCopyDescription();
   v18 = [v15 initWithFormat:@"%@:%p (%@)", v16, self, v17];
 
@@ -680,7 +680,7 @@
   v46 = v23;
   v34 = v10;
   v47 = v34;
-  v24 = v8;
+  v24 = completionCopy;
   v48 = v24;
   v25 = objc_retainBlock(v43);
   [v11 setHasAttemptedToConnect:1];
@@ -694,8 +694,8 @@
   v42 = v28;
   v29 = [v26 initWithTimeout:v27 reason:v41 handler:30.0];
 
-  v30 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  if (v30)
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  if (externalDevice)
   {
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
@@ -705,7 +705,7 @@
     v39 = v29;
     v40 = v28;
     v31 = v35;
-    [v30 connectWithOptions:v33 userInfo:v35 completion:v37];
+    [externalDevice connectWithOptions:optionsCopy userInfo:v35 completion:v37];
 
     v32 = v38;
 LABEL_11:
@@ -724,16 +724,16 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)disconnect:(id)a3
+- (void)disconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = +[NSXPCConnection currentConnection];
   v6 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v5];
-  v7 = [v6 connection];
-  v8 = [v7 valueForEntitlement:@"com.apple.mediaremote.externaldevice.disconnect"];
-  v9 = [v8 BOOLValue];
+  connection = [v6 connection];
+  v8 = [connection valueForEntitlement:@"com.apple.mediaremote.externaldevice.disconnect"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = MRLogCategoryConnections();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -741,31 +741,31 @@ LABEL_12:
       v12 = 138543618;
       v13 = v6;
       v14 = 2114;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] Client %{public}@ is requesting to disconnect from external device using hosted endpoint %{public}@", &v12, 0x16u);
     }
 
-    v11 = [(MRDAVHostedExternalDevice *)self externalDevice];
-    [v11 disconnect:v4];
+    externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+    [externalDevice disconnect:disconnectCopy];
   }
 }
 
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5 completion:(id)a6
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d details:(id)details completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  detailsCopy = details;
+  completionCopy = completion;
   v13 = +[NSDate now];
   v36 = +[NSXPCConnection currentConnection];
   v14 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v36];
-  v15 = [[NSString alloc] initWithFormat:@"%@:%p %@ -> %lf", objc_opt_class(), self, v10, a3];
+  volume = [[NSString alloc] initWithFormat:@"%@:%p %@ -> %lf", objc_opt_class(), self, dCopy, volume];
   v16 = [NSMutableString alloc];
-  v17 = [v11 requestID];
-  v18 = [v16 initWithFormat:@"%@<%@>", @"HostedExternalDevice.setOutputDeviceVolume", v17];
+  requestID = [detailsCopy requestID];
+  v18 = [v16 initWithFormat:@"%@<%@>", @"HostedExternalDevice.setOutputDeviceVolume", requestID];
 
-  if (v15)
+  if (volume)
   {
-    [v18 appendFormat:@" for %@", v15];
+    [v18 appendFormat:@" for %@", volume];
   }
 
   if (v14)
@@ -785,15 +785,15 @@ LABEL_12:
   v47[1] = 3221225472;
   v47[2] = sub_1000FF65C;
   v47[3] = &unk_1004BC930;
-  v20 = v15;
+  v20 = volume;
   v48 = v20;
   v49 = @"HostedExternalDevice.setOutputDeviceVolume";
-  v21 = v11;
+  v21 = detailsCopy;
   v50 = v21;
   v22 = v13;
   v51 = v22;
-  v23 = v12;
-  v52 = self;
+  v23 = completionCopy;
+  selfCopy = self;
   v53 = v23;
   v24 = objc_retainBlock(v47);
   v43 = 0;
@@ -816,14 +816,14 @@ LABEL_12:
   block[6] = &buf;
   dispatch_sync(serialQueue, block);
   v26 = [MRBlockGuard alloc];
-  v27 = [v21 name];
+  name = [v21 name];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_1000FF9B0;
   v40[3] = &unk_1004B6FE8;
   v28 = v24;
   v41 = v28;
-  v29 = [v26 initWithTimeout:v27 reason:v40 handler:7.0];
+  v29 = [v26 initWithTimeout:name reason:v40 handler:7.0];
 
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
@@ -851,30 +851,30 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  *&v33 = a3;
-  [v34 setOutputDeviceVolume:v10 outputDeviceUID:v21 details:self->_externalDeviceCallbackQueue queue:v32 completion:v33];
+  *&v33 = volume;
+  [v34 setOutputDeviceVolume:dCopy outputDeviceUID:v21 details:self->_externalDeviceCallbackQueue queue:v32 completion:v33];
 LABEL_13:
 
   _Block_object_dispose(&buf, 8);
   _Block_object_dispose(&v43, 8);
 }
 
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5 completion:(id)a6
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details completion:(id)completion
 {
-  v38 = a4;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  detailsCopy = details;
+  completionCopy = completion;
   v12 = +[NSDate now];
   v37 = +[NSXPCConnection currentConnection];
   v13 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v37];
   v14 = [NSString alloc];
   v15 = objc_opt_class();
   v16 = MRMediaRemoteVolumeControlAdjustmentDescription();
-  v17 = [v14 initWithFormat:@"%@:%p %@ -> %@", v15, self, v38, v16];
+  v17 = [v14 initWithFormat:@"%@:%p %@ -> %@", v15, self, dCopy, v16];
 
   v18 = [NSMutableString alloc];
-  v19 = [v10 requestID];
-  v20 = [v18 initWithFormat:@"%@<%@>", @"HostedExternalDevice.adjustOutputDeviceVolume", v19];
+  requestID = [detailsCopy requestID];
+  v20 = [v18 initWithFormat:@"%@<%@>", @"HostedExternalDevice.adjustOutputDeviceVolume", requestID];
 
   if (v17)
   {
@@ -901,12 +901,12 @@ LABEL_13:
   v22 = v17;
   v50 = v22;
   v51 = @"HostedExternalDevice.adjustOutputDeviceVolume";
-  v23 = v10;
+  v23 = detailsCopy;
   v52 = v23;
   v24 = v12;
   v53 = v24;
-  v25 = v11;
-  v54 = self;
+  v25 = completionCopy;
+  selfCopy = self;
   v55 = v25;
   v26 = objc_retainBlock(v49);
   v45 = 0;
@@ -929,14 +929,14 @@ LABEL_13:
   block[6] = &buf;
   dispatch_sync(serialQueue, block);
   v28 = [MRBlockGuard alloc];
-  v29 = [v23 name];
+  name = [v23 name];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1001002D0;
   v42[3] = &unk_1004B6FE8;
   v30 = v26;
   v43 = v30;
-  v31 = [v28 initWithTimeout:v29 reason:v42 handler:7.0];
+  v31 = [v28 initWithTimeout:name reason:v42 handler:7.0];
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
@@ -964,63 +964,63 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [v35 adjustOutputDeviceVolume:a3 outputDeviceUID:v38 details:v23 queue:self->_externalDeviceCallbackQueue completion:v34];
+  [v35 adjustOutputDeviceVolume:volume outputDeviceUID:dCopy details:v23 queue:self->_externalDeviceCallbackQueue completion:v34];
 LABEL_13:
 
   _Block_object_dispose(&buf, 8);
   _Block_object_dispose(&v45, 8);
 }
 
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 completion:(id)a5
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  [v11 setListeningMode:v10 outputDeviceUID:v9 queue:self->_externalDeviceCallbackQueue completion:v8];
+  completionCopy = completion;
+  dCopy = d;
+  modeCopy = mode;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  [externalDevice setListeningMode:modeCopy outputDeviceUID:dCopy queue:self->_externalDeviceCallbackQueue completion:completionCopy];
 }
 
-- (void)modifyTopologyWithRequest:(id)a3 completion:(id)a4
+- (void)modifyTopologyWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDAVHostedExternalDevice *)self externalDevice];
+  requestCopy = request;
+  completionCopy = completion;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
   v9 = +[NSXPCConnection currentConnection];
   v10 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v9];
   v11 = MRLogCategoryConnections();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 outputDeviceUIDs];
+    outputDeviceUIDs = [requestCopy outputDeviceUIDs];
     *buf = 138543874;
     v20 = v10;
     v21 = 2114;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v12;
+    selfCopy2 = outputDeviceUIDs;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] Client %{public}@ is requesting to modify hosted endpoint %{public}@ - %@", buf, 0x20u);
   }
 
   v13 = MRLogCategoryConnections();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    [v6 type];
+    [requestCopy type];
     v14 = MRGroupTopologyModificationRequestTypeDescription();
-    v15 = [v6 outputDeviceUIDs];
+    outputDeviceUIDs2 = [requestCopy outputDeviceUIDs];
     *buf = 138544130;
     v20 = v10;
     v21 = 2114;
-    v22 = v14;
+    selfCopy = v14;
     v23 = 2114;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
-    v26 = v15;
+    v26 = outputDeviceUIDs2;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] Client %{public}@ is requesting to %{public}@ hosted endpoint %{public}@ - %@", buf, 0x2Au);
   }
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
-  if (v8)
+  if (externalDevice)
   {
-    [v8 modifyTopologyWithRequest:v6 withReplyQueue:externalDeviceCallbackQueue completion:v7];
+    [externalDevice modifyTopologyWithRequest:requestCopy withReplyQueue:externalDeviceCallbackQueue completion:completionCopy];
   }
 
   else
@@ -1029,17 +1029,17 @@ LABEL_13:
     block[1] = 3221225472;
     block[2] = sub_100100FD4;
     block[3] = &unk_1004B79A0;
-    v18 = v7;
+    v18 = completionCopy;
     dispatch_async(externalDeviceCallbackQueue, block);
   }
 }
 
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 completion:(id)a5
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MRDAVHostedExternalDevice *)self externalDevice];
+  dsCopy = ds;
+  detailsCopy = details;
+  completionCopy = completion;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
   v12 = +[NSXPCConnection currentConnection];
   v13 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v12];
   v14 = MRLogCategoryConnections();
@@ -1048,16 +1048,16 @@ LABEL_13:
     *buf = 138543874;
     v19 = v13;
     v20 = 2114;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v8;
+    v23 = dsCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] Client %{public}@ is requesting to create hosted endpoint %{public}@ with output devices: %{public}@", buf, 0x20u);
   }
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
-  if (v11)
+  if (externalDevice)
   {
-    [v11 createHostedEndpointWithOutputDeviceUIDs:v8 details:v9 queue:externalDeviceCallbackQueue completion:v10];
+    [externalDevice createHostedEndpointWithOutputDeviceUIDs:dsCopy details:detailsCopy queue:externalDeviceCallbackQueue completion:completionCopy];
   }
 
   else
@@ -1066,15 +1066,15 @@ LABEL_13:
     block[1] = 3221225472;
     block[2] = sub_100101200;
     block[3] = &unk_1004B79A0;
-    v17 = v10;
+    v17 = completionCopy;
     dispatch_async(externalDeviceCallbackQueue, block);
   }
 }
 
-- (void)sendCustomData:(id)a3 withName:(id)a4
+- (void)sendCustomData:(id)data withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  nameCopy = name;
   v8 = self->_externalDevice;
   v9 = +[NSXPCConnection currentConnection];
   v10 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v9];
@@ -1084,21 +1084,21 @@ LABEL_13:
     v12 = 138544130;
     v13 = v10;
     v14 = 2048;
-    v15 = [v6 length];
+    v15 = [dataCopy length];
     v16 = 2114;
-    v17 = v7;
+    v17 = nameCopy;
     v18 = 2114;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] Client %{public}@ is requesting to send %llu bytes of custom data with name %{public}@ using hosted endpoint %{public}@", &v12, 0x2Au);
   }
 
-  [(MRExternalDevice *)v8 sendCustomData:v6 withName:v7];
+  [(MRExternalDevice *)v8 sendCustomData:dataCopy withName:nameCopy];
 }
 
-- (void)pingWithTimeout:(double)a3 callback:(id)a4
+- (void)pingWithTimeout:(double)timeout callback:(id)callback
 {
-  v6 = a4;
-  v7 = [(MRDAVHostedExternalDevice *)self externalDevice];
+  callbackCopy = callback;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
   v8 = +[NSXPCConnection currentConnection];
   v9 = [(MRDAVHostedExternalDevice *)self _externalDeviceClientForConnection:v8];
   v10 = MRLogCategoryConnections();
@@ -1107,23 +1107,23 @@ LABEL_13:
     *buf = 138543874;
     v21 = v9;
     v22 = 2048;
-    v23 = a3;
+    timeoutCopy = timeout;
     v24 = 2114;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] [Client %{public}@ is requesting to ping external device with timeout %f using hosted endpoint %{public}@", buf, 0x20u);
   }
 
-  if (v7)
+  if (externalDevice)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1001015BC;
     v18[3] = &unk_1004BC958;
     v11 = &v19;
-    v19 = v6;
+    v19 = callbackCopy;
     externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
-    v13 = v6;
-    [v7 ping:v18 callback:externalDeviceCallbackQueue withQueue:a3];
+    v13 = callbackCopy;
+    [externalDevice ping:v18 callback:externalDeviceCallbackQueue withQueue:timeout];
   }
 
   else
@@ -1134,73 +1134,73 @@ LABEL_13:
     v16[2] = sub_1001015D4;
     v16[3] = &unk_1004B79A0;
     v11 = &v17;
-    v17 = v6;
-    v15 = v6;
+    v17 = callbackCopy;
+    v15 = callbackCopy;
     dispatch_async(v14, v16);
   }
 }
 
-- (void)getPersonalOutputDevices:(id)a3
+- (void)getPersonalOutputDevices:(id)devices
 {
-  v5 = a3;
-  v7 = [(MRDAVHostedExternalDevice *)self personalOutputDevices];
-  v6 = [v7 copy];
-  (*(a3 + 2))(v5, v6);
+  devicesCopy = devices;
+  personalOutputDevices = [(MRDAVHostedExternalDevice *)self personalOutputDevices];
+  v6 = [personalOutputDevices copy];
+  (*(devices + 2))(devicesCopy, v6);
 }
 
-- (void)getExternalOutputContextWithCompletion:(id)a3
+- (void)getExternalOutputContextWithCompletion:(id)completion
 {
-  v5 = a3;
-  v8 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  v6 = [v8 externalOutputContext];
-  v7 = [v6 externalOutputContextRepresentation];
-  (*(a3 + 2))(v5, v7);
+  completionCopy = completion;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  externalOutputContext = [externalDevice externalOutputContext];
+  externalOutputContextRepresentation = [externalOutputContext externalOutputContextRepresentation];
+  (*(completion + 2))(completionCopy, externalOutputContextRepresentation);
 }
 
-- (void)getDeviceInfoWithCompletion:(id)a3
+- (void)getDeviceInfoWithCompletion:(id)completion
 {
-  v5 = a3;
-  v7 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  v6 = [v7 deviceInfo];
-  (*(a3 + 2))(v5, v6);
+  completionCopy = completion;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  deviceInfo = [externalDevice deviceInfo];
+  (*(completion + 2))(completionCopy, deviceInfo);
 }
 
-- (void)requestGroupSessionWithDetails:(id)a3 completion:(id)a4
+- (void)requestGroupSessionWithDetails:(id)details completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  [v8 requestGroupSessionWithDetails:v7 queue:self->_externalDeviceCallbackQueue completion:v6];
+  completionCopy = completion;
+  detailsCopy = details;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  [externalDevice requestGroupSessionWithDetails:detailsCopy queue:self->_externalDeviceCallbackQueue completion:completionCopy];
 }
 
-- (void)requestMicrophoneConnectionWithDetails:(id)a3 completion:(id)a4
+- (void)requestMicrophoneConnectionWithDetails:(id)details completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  [v8 requestMicrophoneConnectionWithDetails:v7 queue:self->_externalDeviceCallbackQueue completion:v6];
+  completionCopy = completion;
+  detailsCopy = details;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  [externalDevice requestMicrophoneConnectionWithDetails:detailsCopy queue:self->_externalDeviceCallbackQueue completion:completionCopy];
 }
 
-- (void)expanseManagerTelevisionDidJoinSession:(id)a3
+- (void)expanseManagerTelevisionDidJoinSession:(id)session
 {
   v4 = MRLogCategoryConnections();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] %{public}@ check for local route because TV join.", &v5, 0xCu);
   }
 
   [(MRDAVHostedExternalDevice *)self _handleMaybeCanMigrateToLocalEndpointDidChange:0];
 }
 
-- (void)expanseManagerTelevisionDidLeaveSession:(id)a3
+- (void)expanseManagerTelevisionDidLeaveSession:(id)session
 {
   v4 = MRLogCategoryConnections();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] %{public}@ check for local route because TV leave.", &v5, 0xCu);
   }
 
@@ -1209,24 +1209,24 @@ LABEL_13:
 
 - (MROrigin)origin
 {
-  v2 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  v3 = [v2 customOrigin];
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  customOrigin = [externalDevice customOrigin];
 
-  return v3;
+  return customOrigin;
 }
 
-- (void)disconnectOrigin:(id)a3
+- (void)disconnectOrigin:(id)origin
 {
-  v4 = [(MRDAVHostedExternalDevice *)self externalDevice];
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
   v3 = [[NSError alloc] initWithMRError:124];
-  [v4 disconnect:v3];
+  [externalDevice disconnect:v3];
 }
 
-- (void)_handleExternalDeviceConnectionDidChange:(id)a3
+- (void)_handleExternalDeviceConnectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 object];
-  if ([v5 connectionState] != 2)
+  changeCopy = change;
+  object = [changeCopy object];
+  if ([object connectionState] != 2)
   {
     serialQueue = self->_serialQueue;
     v12[0] = _NSConcreteStackBlock;
@@ -1252,40 +1252,40 @@ LABEL_13:
   block[4] = self;
   block[5] = &v15;
   dispatch_sync(v6, block);
-  v7 = +[MRUserSettings currentSettings];
-  if (![v7 remoteDeviceIdleDisconnection]|| v16[5])
+  serialQueue = +[MRUserSettings currentSettings];
+  if (![serialQueue remoteDeviceIdleDisconnection]|| v16[5])
   {
     goto LABEL_6;
   }
 
-  v8 = [v5 supportsIdleDisconnection];
+  supportsIdleDisconnection = [object supportsIdleDisconnection];
 
-  if (v8)
+  if (supportsIdleDisconnection)
   {
     v9 = [[MRDConnectionLifetimeController alloc] initWithDataSource:self delegate:self];
     v10 = v16[5];
     v16[5] = v9;
 
-    v7 = [(MRDAVHostedExternalDevice *)self serialQueue];
+    serialQueue = [(MRDAVHostedExternalDevice *)self serialQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100101F80;
     v13[3] = &unk_1004B6958;
     v13[4] = self;
     v13[5] = &v15;
-    dispatch_sync(v7, v13);
+    dispatch_sync(serialQueue, v13);
 LABEL_6:
   }
 
-  [(MRDAVHostedExternalDevice *)self _handleMaybeCanMigrateToLocalEndpointDidChange:v4];
+  [(MRDAVHostedExternalDevice *)self _handleMaybeCanMigrateToLocalEndpointDidChange:changeCopy];
   _Block_object_dispose(&v15, 8);
 
 LABEL_9:
 }
 
-- (void)_handleMaybeCanMigrateToLocalEndpointDidChange:(id)a3
+- (void)_handleMaybeCanMigrateToLocalEndpointDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -1315,10 +1315,10 @@ LABEL_9:
   block[7] = &v39;
   dispatch_sync(serialQueue, block);
   v6 = +[NSDate date];
-  v7 = [v4 playerPath];
-  v8 = [v7 origin];
+  playerPath = [changeCopy playerPath];
+  origin = [playerPath origin];
 
-  if (!v8 || ([v8 isLocal] & 1) != 0 || (objc_msgSend(v8, "isEqual:", v46[5]) & 1) != 0 || !v40[5])
+  if (!origin || ([origin isLocal] & 1) != 0 || (objc_msgSend(origin, "isEqual:", v46[5]) & 1) != 0 || !v40[5])
   {
     v9 = MRMediaRemoteCopyDeviceUID();
     v10 = v9 == 0;
@@ -1328,25 +1328,25 @@ LABEL_9:
       if ([v40[5] connectionState] == 2)
       {
         v13 = +[MRUserSettings currentSettings];
-        v14 = [v13 supportExpanseMigration];
+        supportExpanseMigration = [v13 supportExpanseMigration];
 
-        if (v14)
+        if (supportExpanseMigration)
         {
           v15 = +[MRExpanseManager sharedManager];
-          v29 = [v15 activeTelevisionRouteID];
+          activeTelevisionRouteID = [v15 activeTelevisionRouteID];
 
-          if (v29)
+          if (activeTelevisionRouteID)
           {
             v16 = MRLogCategoryConnections();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
               v17 = v52[5];
               *buf = 138543874;
-              v59 = self;
+              selfCopy = self;
               v60 = 2114;
               v61 = v17;
               v62 = 2114;
-              v63 = v29;
+              v63 = activeTelevisionRouteID;
               _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] %{public}@ Checking for match of endpoint: %{public}@ and active TV: %{public}@", buf, 0x20u);
             }
 
@@ -1354,8 +1354,8 @@ LABEL_9:
             v37 = 0u;
             v34 = 0u;
             v35 = 0u;
-            v18 = [v52[5] outputDevices];
-            v19 = [v18 countByEnumeratingWithState:&v34 objects:v57 count:16];
+            outputDevices = [v52[5] outputDevices];
+            v19 = [outputDevices countByEnumeratingWithState:&v34 objects:v57 count:16];
             if (v19)
             {
               v20 = *v35;
@@ -1366,7 +1366,7 @@ LABEL_9:
                 {
                   if (*v35 != v20)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(outputDevices);
                   }
 
                   v22 = *(*(&v34 + 1) + 8 * v21);
@@ -1384,7 +1384,7 @@ LABEL_9:
                 }
 
                 while (v19 != v21);
-                v19 = [v18 countByEnumeratingWithState:&v34 objects:v57 count:16];
+                v19 = [outputDevices countByEnumeratingWithState:&v34 objects:v57 count:16];
                 if (v19)
                 {
                   continue;
@@ -1405,7 +1405,7 @@ LABEL_9:
         v30[2] = sub_100102604;
         v30[3] = &unk_1004BC9D0;
         objc_copyWeak(&v33, buf);
-        v31 = v4;
+        v31 = changeCopy;
         v32 = v6;
         [v24 canMigrateToEndpoint:v25 queue:&_dispatch_main_q completion:v30];
 
@@ -1415,17 +1415,17 @@ LABEL_9:
 
       else
       {
-        v27 = [v4 name];
+        name = [changeCopy name];
         v28 = [[NSError alloc] initWithMRError:3 format:@"Not already connected to endpoint"];
-        [(MRDAVHostedExternalDevice *)self _processCanMigrateToLocalEndpointEvent:v27 timestamp:v6 error:v28];
+        [(MRDAVHostedExternalDevice *)self _processCanMigrateToLocalEndpointEvent:name timestamp:v6 error:v28];
       }
     }
 
     else
     {
-      v11 = [v4 name];
+      name2 = [changeCopy name];
       v12 = [[NSError alloc] initWithMRError:6 format:@"Local device is groupable"];
-      [(MRDAVHostedExternalDevice *)self _processCanMigrateToLocalEndpointEvent:v11 timestamp:v6 error:v12];
+      [(MRDAVHostedExternalDevice *)self _processCanMigrateToLocalEndpointEvent:name2 timestamp:v6 error:v12];
     }
   }
 
@@ -1437,11 +1437,11 @@ LABEL_24:
   _Block_object_dispose(&v51, 8);
 }
 
-- (void)_processCanMigrateToLocalEndpointEvent:(id)a3 timestamp:(id)a4 error:(id)a5
+- (void)_processCanMigrateToLocalEndpointEvent:(id)event timestamp:(id)timestamp error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  timestampCopy = timestamp;
+  errorCopy = error;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1451,12 +1451,12 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = sub_1001027D8;
   block[3] = &unk_1004BC9F8;
-  v12 = v9;
+  v12 = timestampCopy;
   v16 = v12;
-  v17 = self;
-  v13 = v10;
+  selfCopy = self;
+  v13 = errorCopy;
   v18 = v13;
-  v14 = v8;
+  v14 = eventCopy;
   v19 = v14;
   v20 = &v21;
   dispatch_sync(serialQueue, block);
@@ -1468,40 +1468,40 @@ LABEL_24:
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:(id)a3
+- (void)outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:MROutputContextDataSourceVolumeCapabilitiesUserInfoKey];
-  v7 = [v6 intValue];
+  capabilitiesCopy = capabilities;
+  userInfo = [capabilitiesCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:MROutputContextDataSourceVolumeCapabilitiesUserInfoKey];
+  intValue = [v6 intValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [capabilitiesCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
+  v9 = [userInfo2 objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100102B1C;
   block[3] = &unk_1004B87F8;
-  v14 = v7;
+  v14 = intValue;
   block[4] = self;
   v13 = v9;
   v11 = v9;
   dispatch_async(externalDeviceCallbackQueue, block);
 }
 
-- (void)outputContextDataSourceOutputDeviceDidChangeVolume:(id)a3
+- (void)outputContextDataSourceOutputDeviceDidChangeVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:MROutputContextDataSourceVolumeUserInfoKey];
+  volumeCopy = volume;
+  userInfo = [volumeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:MROutputContextDataSourceVolumeUserInfoKey];
   [v6 floatValue];
   v8 = v7;
 
-  v9 = [v4 userInfo];
+  userInfo2 = [volumeCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
+  v10 = [userInfo2 objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1515,33 +1515,33 @@ LABEL_24:
   dispatch_async(externalDeviceCallbackQueue, block);
 }
 
-- (void)outputContextDataSourceOutputDeviceDidChangeVolumeMuted:(id)a3
+- (void)outputContextDataSourceOutputDeviceDidChangeVolumeMuted:(id)muted
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:MROutputContextDataSourceVolumeMutedUserInfoKey];
-  v7 = [v6 BOOLValue];
+  mutedCopy = muted;
+  userInfo = [mutedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:MROutputContextDataSourceVolumeMutedUserInfoKey];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [mutedCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
+  v9 = [userInfo2 objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100102E0C;
   block[3] = &unk_1004B8870;
-  v14 = v7;
+  v14 = bOOLValue;
   block[4] = self;
   v13 = v9;
   v11 = v9;
   dispatch_async(externalDeviceCallbackQueue, block);
 }
 
-- (void)outputContextDataSourceDidAddOutputDevice:(id)a3
+- (void)outputContextDataSourceDidAddOutputDevice:(id)device
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
+  userInfo = [device userInfo];
+  v5 = [userInfo objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -1554,10 +1554,10 @@ LABEL_24:
   dispatch_async(externalDeviceCallbackQueue, v8);
 }
 
-- (void)outputContextDataSourceDidChangeOutputDevice:(id)a3
+- (void)outputContextDataSourceDidChangeOutputDevice:(id)device
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
+  userInfo = [device userInfo];
+  v5 = [userInfo objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -1570,10 +1570,10 @@ LABEL_24:
   dispatch_async(externalDeviceCallbackQueue, v8);
 }
 
-- (void)outputContextDataSourceDidRemoveOutputDevice:(id)a3
+- (void)outputContextDataSourceDidRemoveOutputDevice:(id)device
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
+  userInfo = [device userInfo];
+  v5 = [userInfo objectForKeyedSubscript:MROutputContextDataSourceOutputDeviceUserInfoKey];
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -1586,33 +1586,33 @@ LABEL_24:
   dispatch_async(externalDeviceCallbackQueue, v8);
 }
 
-- (void)_handleExternalDeviceConnectionStateDidChange:(id)a3
+- (void)_handleExternalDeviceConnectionStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:kMRExternalDeviceConnectionStateUserInfoKey];
-  v7 = [v6 intValue];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:kMRExternalDeviceConnectionStateUserInfoKey];
+  intValue = [v6 intValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [changeCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  v9 = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001032D4;
   block[3] = &unk_1004B87F8;
-  v14 = v7;
+  v14 = intValue;
   block[4] = self;
   v13 = v9;
   v11 = v9;
   dispatch_async(externalDeviceCallbackQueue, block);
 }
 
-- (void)_handleExternalDeviceDeviceInfoDidChange:(id)a3
+- (void)_handleExternalDeviceDeviceInfoDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:MRExternalDeviceDeviceInfoUserInfoKey];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:MRExternalDeviceDeviceInfoUserInfoKey];
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -1625,16 +1625,16 @@ LABEL_24:
   dispatch_async(externalDeviceCallbackQueue, v8);
 }
 
-- (void)hostedExternalDeviceDeviceInfoDidChange:(id)a3
+- (void)hostedExternalDeviceDeviceInfoDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = MRLogCategoryConnections();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v4;
+    v19 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Hosted endpoint %{public}@ device deviceInfo did change to %{public}@", buf, 0x16u);
   }
 
@@ -1658,7 +1658,7 @@ LABEL_24:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) hostedExternalDeviceDeviceInfoDidChange:v4];
+        [*(*(&v11 + 1) + 8 * v10) hostedExternalDeviceDeviceInfoDidChange:changeCopy];
         v10 = v10 + 1;
       }
 
@@ -1670,19 +1670,19 @@ LABEL_24:
   }
 }
 
-- (void)hostedExternalDeviceDidReceiveCustomData:(id)a3 withName:(id)a4
+- (void)hostedExternalDeviceDidReceiveCustomData:(id)data withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  nameCopy = name;
   v8 = MRLogCategoryConnections();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543874;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = [v6 length];
+    v22 = [dataCopy length];
     v23 = 2114;
-    v24 = v7;
+    v24 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Hosted endpoint %{public}@ did receive %llu bytes of custom data with name %{public}@", buf, 0x20u);
   }
 
@@ -1706,7 +1706,7 @@ LABEL_24:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) hostedExternalDeviceDidReceiveCustomData:v6 withName:v7];
+        [*(*(&v14 + 1) + 8 * v13) hostedExternalDeviceDidReceiveCustomData:dataCopy withName:nameCopy];
         v13 = v13 + 1;
       }
 
@@ -1718,32 +1718,32 @@ LABEL_24:
   }
 }
 
-- (void)hostedExternalDeviceEndpointDidChange:(id)a3
+- (void)hostedExternalDeviceEndpointDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   reloadQueue = self->_reloadQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001038E4;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_sync(reloadQueue, v7);
 }
 
-- (void)hostedExternalDeviceVolumeDidChange:(float)a3 forOutputDevice:(id)a4
+- (void)hostedExternalDeviceVolumeDidChange:(float)change forOutputDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v7 = MRLogCategoryConnections();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543874;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a3;
+    changeCopy = change;
     v23 = 2114;
-    v24 = v6;
+    v24 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Hosted endpoint %{public}@ volume did change to %f for outputDevice %{public}@", buf, 0x20u);
   }
 
@@ -1767,8 +1767,8 @@ LABEL_24:
           objc_enumerationMutation(v8);
         }
 
-        *&v10 = a3;
-        [*(*(&v14 + 1) + 8 * v13) hostedExternalDeviceVolumeDidChange:v6 forOutputDevice:v10];
+        *&v10 = change;
+        [*(*(&v14 + 1) + 8 * v13) hostedExternalDeviceVolumeDidChange:deviceCopy forOutputDevice:v10];
         v13 = v13 + 1;
       }
 
@@ -1780,15 +1780,15 @@ LABEL_24:
   }
 }
 
-- (void)hostedExternalDeviceDidAddOutputDevice:(id)a3
+- (void)hostedExternalDeviceDidAddOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = MRLogCategoryConnections();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 uid];
+    v6 = [deviceCopy uid];
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Hosted endpoint %{public}@ did add output device %{public}@", buf, 0x16u);
@@ -1814,7 +1814,7 @@ LABEL_24:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) hostedExternalDeviceDidAddOutputDevice:v4];
+        [*(*(&v12 + 1) + 8 * v11) hostedExternalDeviceDidAddOutputDevice:deviceCopy];
         v11 = v11 + 1;
       }
 
@@ -1826,15 +1826,15 @@ LABEL_24:
   }
 }
 
-- (void)hostedExternalDeviceDidChangeOutputDevice:(id)a3
+- (void)hostedExternalDeviceDidChangeOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = MRLogCategoryConnections();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 uid];
+    v6 = [deviceCopy uid];
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Hosted endpoint %{public}@ did change output device %{public}@", buf, 0x16u);
@@ -1860,7 +1860,7 @@ LABEL_24:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) hostedExternalDeviceDidChangeOutputDevice:v4];
+        [*(*(&v12 + 1) + 8 * v11) hostedExternalDeviceDidChangeOutputDevice:deviceCopy];
         v11 = v11 + 1;
       }
 
@@ -1872,15 +1872,15 @@ LABEL_24:
   }
 }
 
-- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)a3
+- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = MRLogCategoryConnections();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 uid];
+    v6 = [deviceCopy uid];
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Hosted endpoint %{public}@ did remove output device %{public}@", buf, 0x16u);
@@ -1906,7 +1906,7 @@ LABEL_24:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) hostedExternalDeviceDidRemoveOutputDevice:v4];
+        [*(*(&v12 + 1) + 8 * v11) hostedExternalDeviceDidRemoveOutputDevice:deviceCopy];
         v11 = v11 + 1;
       }
 
@@ -1918,21 +1918,21 @@ LABEL_24:
   }
 }
 
-- (void)_onReloadQueue_hostedExternalDeviceEndpointDidChange:(id)a3
+- (void)_onReloadQueue_hostedExternalDeviceEndpointDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_reloadQueue);
-  if ([v4 connectionType] != 1)
+  if ([changeCopy connectionType] != 1)
   {
-    v5 = [(MRDAVHostedExternalDevice *)self personalOutputDevices];
-    [v4 setDistantPersonalOutputDevices:v5];
+    personalOutputDevices = [(MRDAVHostedExternalDevice *)self personalOutputDevices];
+    [changeCopy setDistantPersonalOutputDevices:personalOutputDevices];
 
-    v6 = [(MRDAVHostedExternalDevice *)self _allExternalDeviceClients];
+    _allExternalDeviceClients = [(MRDAVHostedExternalDevice *)self _allExternalDeviceClients];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [_allExternalDeviceClients countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1943,17 +1943,17 @@ LABEL_24:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_allExternalDeviceClients);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
           if (([v11 notifications] & 8) != 0)
           {
-            [v11 hostedExternalDeviceEndpointDidChange:v4];
+            [v11 hostedExternalDeviceEndpointDidChange:changeCopy];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [_allExternalDeviceClients countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -1961,19 +1961,19 @@ LABEL_24:
   }
 }
 
-- (void)_externalDeviceClientDidInvalidate:(id)a3 withError:(id)a4
+- (void)_externalDeviceClientDidInvalidate:(id)invalidate withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  invalidateCopy = invalidate;
+  errorCopy = error;
   v8 = MRLogCategoryConnections();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v6;
+    v28 = invalidateCopy;
     v29 = 2112;
-    v30 = v7;
+    v30 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDAVHostedExternalDevice] Hosted endpoint %{public}@ client did invalidate: %{public}@ with error %@", buf, 0x20u);
   }
 
@@ -1983,7 +1983,7 @@ LABEL_24:
   block[2] = sub_100104870;
   block[3] = &unk_1004B68F0;
   block[4] = self;
-  v10 = v6;
+  v10 = invalidateCopy;
   v23 = v10;
   dispatch_sync(serialQueue, block);
   [(MRDAVHostedExternalDevice *)self _reloadHostedExternalDeviceCallbacks];
@@ -1993,8 +1993,8 @@ LABEL_24:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v10 discoveryTokens];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  discoveryTokens = [v10 discoveryTokens];
+  v12 = [discoveryTokens countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2006,29 +2006,29 @@ LABEL_24:
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(discoveryTokens);
         }
 
         v16 = *(*(&v18 + 1) + 8 * v15);
-        v17 = [(MRDAVHostedExternalDevice *)self externalDevice];
-        [v17 unregisterDiscoveryToken:v16];
+        externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+        [externalDevice unregisterDiscoveryToken:v16];
 
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v13 = [discoveryTokens countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v13);
   }
 
-  [v10 invalidateWithError:v7];
+  [v10 invalidateWithError:errorCopy];
 }
 
-- (id)_externalDeviceClientForConnection:(id)a3
+- (id)_externalDeviceClientForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -2041,9 +2041,9 @@ LABEL_24:
   block[2] = sub_10010498C;
   block[3] = &unk_1004B78D8;
   block[4] = self;
-  v10 = v4;
+  v10 = connectionCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = connectionCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -2052,80 +2052,80 @@ LABEL_24:
   return v7;
 }
 
-- (id)_mutableExternalDeviceClientsWithRegisteredCallbacks:(unint64_t)a3
+- (id)_mutableExternalDeviceClientsWithRegisteredCallbacks:(unint64_t)callbacks
 {
-  v4 = [(MRDAVHostedExternalDevice *)self _connectedExternalDeviceClients];
+  _connectedExternalDeviceClients = [(MRDAVHostedExternalDevice *)self _connectedExternalDeviceClients];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100104B6C;
   v7[3] = &unk_1004BCA38;
-  v7[4] = a3;
-  v5 = [v4 msv_filter:v7];
+  v7[4] = callbacks;
+  v5 = [_connectedExternalDeviceClients msv_filter:v7];
 
   return v5;
 }
 
-- (id)_mutableExternalDeviceClientsWithRegisteredNotification:(unint64_t)a3
+- (id)_mutableExternalDeviceClientsWithRegisteredNotification:(unint64_t)notification
 {
-  v4 = [(MRDAVHostedExternalDevice *)self _connectedExternalDeviceClients];
+  _connectedExternalDeviceClients = [(MRDAVHostedExternalDevice *)self _connectedExternalDeviceClients];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100104C44;
   v7[3] = &unk_1004BCA38;
-  v7[4] = a3;
-  v5 = [v4 msv_filter:v7];
+  v7[4] = notification;
+  v5 = [_connectedExternalDeviceClients msv_filter:v7];
 
   return v5;
 }
 
 - (id)_connectingExternalDeviceClients
 {
-  v2 = [(MRDAVHostedExternalDevice *)self _allExternalDeviceClients];
-  v3 = [v2 msv_filter:&stru_1004BCA98];
+  _allExternalDeviceClients = [(MRDAVHostedExternalDevice *)self _allExternalDeviceClients];
+  v3 = [_allExternalDeviceClients msv_filter:&stru_1004BCA98];
 
   return v3;
 }
 
-- (void)_initializeExternalDevice:(id)a3
+- (void)_initializeExternalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   objc_initWeak(&location, self);
-  [v4 setConnectionRecoveryBehavior:1];
-  v5 = [v4 externalOutputContext];
-  [(MRDAVHostedExternalDevice *)self registerForOutputContextNotifications:v5];
+  [deviceCopy setConnectionRecoveryBehavior:1];
+  externalOutputContext = [deviceCopy externalOutputContext];
+  [(MRDAVHostedExternalDevice *)self registerForOutputContextNotifications:externalOutputContext];
 
   v6 = +[NSNotificationCenter defaultCenter];
   v7 = kMRExternalDeviceConnectionStateDidChangeNotification;
-  [v6 addObserver:self selector:"_handleExternalDeviceConnectionStateDidChange:" name:kMRExternalDeviceConnectionStateDidChangeNotification object:v4];
+  [v6 addObserver:self selector:"_handleExternalDeviceConnectionStateDidChange:" name:kMRExternalDeviceConnectionStateDidChangeNotification object:deviceCopy];
 
   v8 = +[NSNotificationCenter defaultCenter];
-  [v8 addObserver:self selector:"_handleExternalDeviceDeviceInfoDidChange:" name:MRExternalDeviceDeviceInfoDidChangeNotification object:v4];
+  [v8 addObserver:self selector:"_handleExternalDeviceDeviceInfoDidChange:" name:MRExternalDeviceDeviceInfoDidChangeNotification object:deviceCopy];
 
   v9 = +[NSDate date];
   ErrorWithDescription = MRMediaRemoteCreateErrorWithDescription();
   [(MRDAVHostedExternalDevice *)self _processCanMigrateToLocalEndpointEvent:@"init" timestamp:v9 error:ErrorWithDescription];
 
-  v11 = [(MRDAVHostedExternalDevice *)self silentDiscoverySession];
+  silentDiscoverySession = [(MRDAVHostedExternalDevice *)self silentDiscoverySession];
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_100104FBC;
   v20 = &unk_1004B9B48;
   objc_copyWeak(&v21, &location);
-  v12 = [v11 addOutputDevicesChangedCallback:&v17];
+  v12 = [silentDiscoverySession addOutputDevicesChangedCallback:&v17];
   [(MRDAVHostedExternalDevice *)self setSilentDiscoverySessionCallbackToken:v12, v17, v18, v19, v20];
 
   v13 = +[MRExpanseManager sharedManager];
   [v13 addObserver:self];
 
-  [v4 setWantsVolumeNotifications:1];
-  [v4 setWantsNowPlayingNotifications:1];
-  [v4 setWantsOutputDeviceNotifications:1];
-  [v4 setWantsEndpointChangeNotifications:1];
+  [deviceCopy setWantsVolumeNotifications:1];
+  [deviceCopy setWantsNowPlayingNotifications:1];
+  [deviceCopy setWantsOutputDeviceNotifications:1];
+  [deviceCopy setWantsEndpointChangeNotifications:1];
   v14 = +[NSNotificationCenter defaultCenter];
   [v14 addObserver:self selector:"_handleMaybeCanMigrateToLocalEndpointDidChange:" name:kMRMediaRemoteOriginSupportedCommandsDidChangeNotification object:0];
 
   v15 = +[NSNotificationCenter defaultCenter];
-  [v15 addObserver:self selector:"_handleExternalDeviceConnectionDidChange:" name:v7 object:v4];
+  [v15 addObserver:self selector:"_handleExternalDeviceConnectionDidChange:" name:v7 object:deviceCopy];
 
   v16 = +[NSNotificationCenter defaultCenter];
   [v16 addObserver:self selector:"_handleMaybeCanMigrateToLocalEndpointDidChange:" name:kMRDeviceInfoDidChangeNotification object:0];
@@ -2134,16 +2134,16 @@ LABEL_24:
   objc_destroyWeak(&location);
 }
 
-- (void)registerForOutputContextNotifications:(id)a3
+- (void)registerForOutputContextNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 addObserver:self selector:"outputContextDataSourceOutputDeviceDidChangeVolume:" name:MROutputContextDataSourceOutputDeviceDidChangeVolumeNotification object:v4];
-  [v5 addObserver:self selector:"outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:" name:MROutputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilitiesNotification object:v4];
-  [v5 addObserver:self selector:"outputContextDataSourceOutputDeviceDidChangeVolumeMuted:" name:MROutputContextDataSourceOutputDeviceDidChangeVolumeMutedNotification object:v4];
-  [v5 addObserver:self selector:"outputContextDataSourceDidAddOutputDevice:" name:MROutputContextDataSourceDidAddOutputDeviceNotification object:v4];
-  [v5 addObserver:self selector:"outputContextDataSourceDidChangeOutputDevice:" name:MROutputContextDataSourceDidChangeOutputDeviceNotification object:v4];
-  [v5 addObserver:self selector:"outputContextDataSourceDidRemoveOutputDevice:" name:MROutputContextDataSourceDidRemoveOutputDeviceNotification object:v4];
+  [v5 addObserver:self selector:"outputContextDataSourceOutputDeviceDidChangeVolume:" name:MROutputContextDataSourceOutputDeviceDidChangeVolumeNotification object:notificationsCopy];
+  [v5 addObserver:self selector:"outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:" name:MROutputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilitiesNotification object:notificationsCopy];
+  [v5 addObserver:self selector:"outputContextDataSourceOutputDeviceDidChangeVolumeMuted:" name:MROutputContextDataSourceOutputDeviceDidChangeVolumeMutedNotification object:notificationsCopy];
+  [v5 addObserver:self selector:"outputContextDataSourceDidAddOutputDevice:" name:MROutputContextDataSourceDidAddOutputDeviceNotification object:notificationsCopy];
+  [v5 addObserver:self selector:"outputContextDataSourceDidChangeOutputDevice:" name:MROutputContextDataSourceDidChangeOutputDeviceNotification object:notificationsCopy];
+  [v5 addObserver:self selector:"outputContextDataSourceDidRemoveOutputDevice:" name:MROutputContextDataSourceDidRemoveOutputDeviceNotification object:notificationsCopy];
 }
 
 - (void)_reloadHostedExternalDeviceCallbacks
@@ -2210,17 +2210,17 @@ LABEL_24:
   v5 = v3;
   v9 = v5;
   dispatch_sync(serialQueue, block);
-  v6 = [v5 allObjects];
+  allObjects = [v5 allObjects];
   subscribedPlayerPaths = self->_subscribedPlayerPaths;
-  self->_subscribedPlayerPaths = v6;
+  self->_subscribedPlayerPaths = allObjects;
 
   [v12[5] setSubscribedPlayerPaths:self->_subscribedPlayerPaths];
   _Block_object_dispose(&v11, 8);
 }
 
-- (void)_maybePostVolumeDidChange:(float)a3 outputDevice:(id)a4
+- (void)_maybePostVolumeDidChange:(float)change outputDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -2235,18 +2235,18 @@ LABEL_24:
   v9[4] = self;
   v9[5] = &v10;
   dispatch_sync(serialQueue, v9);
-  if ([(MRDAVHostedExternalDevice *)self _endpointShouldPostVolumeNotifications:v11[5] outputDevice:v6])
+  if ([(MRDAVHostedExternalDevice *)self _endpointShouldPostVolumeNotifications:v11[5] outputDevice:deviceCopy])
   {
-    *&v8 = a3;
-    [(MRDAVHostedExternalDevice *)self hostedExternalDeviceVolumeDidChange:v6 forOutputDevice:v8];
+    *&v8 = change;
+    [(MRDAVHostedExternalDevice *)self hostedExternalDeviceVolumeDidChange:deviceCopy forOutputDevice:v8];
   }
 
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)_maybePostEndpointDidAddOutputDevice:(id)a3
+- (void)_maybePostEndpointDidAddOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -2263,15 +2263,15 @@ LABEL_24:
   dispatch_sync(serialQueue, v6);
   if ([(MRDAVHostedExternalDevice *)self _endpointShouldNotifyClientsOfTopologyChanges:v8[5]])
   {
-    [(MRDAVHostedExternalDevice *)self hostedExternalDeviceDidAddOutputDevice:v4];
+    [(MRDAVHostedExternalDevice *)self hostedExternalDeviceDidAddOutputDevice:deviceCopy];
   }
 
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)_maybePostEndpointDidChangeOutputDevice:(id)a3
+- (void)_maybePostEndpointDidChangeOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -2288,15 +2288,15 @@ LABEL_24:
   dispatch_sync(serialQueue, v6);
   if ([(MRDAVHostedExternalDevice *)self _endpointShouldNotifyClientsOfTopologyChanges:v8[5]])
   {
-    [(MRDAVHostedExternalDevice *)self hostedExternalDeviceDidChangeOutputDevice:v4];
+    [(MRDAVHostedExternalDevice *)self hostedExternalDeviceDidChangeOutputDevice:deviceCopy];
   }
 
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)_maybePostEndpointDidRemoveOutputDevice:(id)a3
+- (void)_maybePostEndpointDidRemoveOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -2313,43 +2313,43 @@ LABEL_24:
   dispatch_sync(serialQueue, v6);
   if ([(MRDAVHostedExternalDevice *)self _endpointShouldNotifyClientsOfTopologyChanges:v8[5]])
   {
-    [(MRDAVHostedExternalDevice *)self hostedExternalDeviceDidRemoveOutputDevice:v4];
+    [(MRDAVHostedExternalDevice *)self hostedExternalDeviceDidRemoveOutputDevice:deviceCopy];
   }
 
   _Block_object_dispose(&v7, 8);
 }
 
-- (BOOL)_shouldReevaluateVolumeControlCapabilitiesForEndpoint:(id)a3 previousEndpoint:(id)a4 externalDevice:(id)a5
+- (BOOL)_shouldReevaluateVolumeControlCapabilitiesForEndpoint:(id)endpoint previousEndpoint:(id)previousEndpoint externalDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 connectionType] == 1)
+  endpointCopy = endpoint;
+  previousEndpointCopy = previousEndpoint;
+  deviceCopy = device;
+  if ([endpointCopy connectionType] == 1)
   {
     goto LABEL_14;
   }
 
-  v11 = [v8 designatedGroupLeader];
-  v12 = [v10 uid];
-  v13 = [v11 containsUID:v12];
+  designatedGroupLeader = [endpointCopy designatedGroupLeader];
+  v12 = [deviceCopy uid];
+  v13 = [designatedGroupLeader containsUID:v12];
 
   if (!v13)
   {
     goto LABEL_14;
   }
 
-  v14 = [v9 designatedGroupLeader];
-  v15 = [v14 groupContainsGroupLeader];
-  v16 = [v8 designatedGroupLeader];
-  v17 = [v16 groupContainsGroupLeader];
+  designatedGroupLeader2 = [previousEndpointCopy designatedGroupLeader];
+  groupContainsGroupLeader = [designatedGroupLeader2 groupContainsGroupLeader];
+  designatedGroupLeader3 = [endpointCopy designatedGroupLeader];
+  groupContainsGroupLeader2 = [designatedGroupLeader3 groupContainsGroupLeader];
 
-  if (v15 != v17)
+  if (groupContainsGroupLeader != groupContainsGroupLeader2)
   {
     v18 = MRLogCategoryConnections();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [v9 designatedGroupLeader];
-      if ([(__CFString *)v19 groupContainsGroupLeader])
+      designatedGroupLeader4 = [previousEndpointCopy designatedGroupLeader];
+      if ([(__CFString *)designatedGroupLeader4 groupContainsGroupLeader])
       {
         v20 = @"YES";
       }
@@ -2359,9 +2359,9 @@ LABEL_24:
         v20 = @"NO";
       }
 
-      v21 = [v8 designatedGroupLeader];
+      designatedGroupLeader5 = [endpointCopy designatedGroupLeader];
       v37 = 138544130;
-      if ([(__CFString *)v21 groupContainsGroupLeader])
+      if ([(__CFString *)designatedGroupLeader5 groupContainsGroupLeader])
       {
         v22 = @"YES";
       }
@@ -2371,7 +2371,7 @@ LABEL_24:
         v22 = @"NO";
       }
 
-      v38 = self;
+      selfCopy3 = self;
       v39 = 2114;
       v40 = @"groupContainsGroupLeader";
       v41 = 2114;
@@ -2387,10 +2387,10 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v23 = [v9 designatedGroupLeader];
-  v24 = [v23 uid];
-  v25 = [v8 designatedGroupLeader];
-  v26 = [v25 uid];
+  designatedGroupLeader6 = [previousEndpointCopy designatedGroupLeader];
+  v24 = [designatedGroupLeader6 uid];
+  designatedGroupLeader7 = [endpointCopy designatedGroupLeader];
+  v26 = [designatedGroupLeader7 uid];
   v27 = [v24 isEqualToString:v26];
 
   if ((v27 & 1) == 0)
@@ -2401,16 +2401,16 @@ LABEL_20:
       goto LABEL_20;
     }
 
-    v19 = [v9 designatedGroupLeader];
-    v21 = [v8 designatedGroupLeader];
+    designatedGroupLeader4 = [previousEndpointCopy designatedGroupLeader];
+    designatedGroupLeader5 = [endpointCopy designatedGroupLeader];
     v37 = 138544130;
-    v38 = self;
+    selfCopy3 = self;
     v39 = 2114;
     v40 = @"groupLeader";
     v41 = 2114;
-    v42 = v19;
+    v42 = designatedGroupLeader4;
     v43 = 2114;
-    v44 = v21;
+    v44 = designatedGroupLeader5;
 LABEL_19:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[MRDAVHostedExternalDevice] Hosted endpoint <%{public}@> reevaluating volume control because %{public}@ changed from <%{public}@> to <%{public}@>", &v37, 0x2Au);
 
@@ -2418,11 +2418,11 @@ LABEL_19:
   }
 
   v28 = [NSOrderedSet alloc];
-  v29 = [(MRAVDistantEndpoint *)self->_endpoint outputDeviceUIDs];
-  v30 = [v28 initWithArray:v29];
+  outputDeviceUIDs = [(MRAVDistantEndpoint *)self->_endpoint outputDeviceUIDs];
+  v30 = [v28 initWithArray:outputDeviceUIDs];
   v31 = [NSOrderedSet alloc];
-  v32 = [v8 outputDeviceUIDs];
-  v33 = [v31 initWithArray:v32];
+  outputDeviceUIDs2 = [endpointCopy outputDeviceUIDs];
+  v33 = [v31 initWithArray:outputDeviceUIDs2];
   v34 = [v30 isEqualToOrderedSet:v33];
 
   if ((v34 & 1) == 0)
@@ -2433,16 +2433,16 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v19 = [v9 outputDeviceUIDs];
-    v21 = [v8 outputDeviceUIDs];
+    designatedGroupLeader4 = [previousEndpointCopy outputDeviceUIDs];
+    designatedGroupLeader5 = [endpointCopy outputDeviceUIDs];
     v37 = 138544130;
-    v38 = self;
+    selfCopy3 = self;
     v39 = 2114;
     v40 = @"topology";
     v41 = 2114;
-    v42 = v19;
+    v42 = designatedGroupLeader4;
     v43 = 2114;
-    v44 = v21;
+    v44 = designatedGroupLeader5;
     goto LABEL_19;
   }
 
@@ -2453,24 +2453,24 @@ LABEL_21:
   return v35;
 }
 
-- (void)_reevaluateVolumeControlCapabilitiesForEndpoint:(id)a3
+- (void)_reevaluateVolumeControlCapabilitiesForEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(MRDAVHostedExternalDevice *)self externalDevice];
-  v6 = [v5 externalOutputContext];
+  endpointCopy = endpoint;
+  externalDevice = [(MRDAVHostedExternalDevice *)self externalDevice];
+  externalOutputContext = [externalDevice externalOutputContext];
 
-  [v6 volume];
+  [externalOutputContext volume];
   v8 = v7;
-  LODWORD(v5) = [(MRDAVHostedExternalDevice *)self _endpointSupportsVolumeControl:v4];
+  LODWORD(externalDevice) = [(MRDAVHostedExternalDevice *)self _endpointSupportsVolumeControl:endpointCopy];
 
-  if (v5)
+  if (externalDevice)
   {
-    v9 = [v6 volumeControlCapabilities];
+    volumeControlCapabilities = [externalOutputContext volumeControlCapabilities];
   }
 
   else
   {
-    v9 = 0;
+    volumeControlCapabilities = 0;
   }
 
   externalDeviceCallbackQueue = self->_externalDeviceCallbackQueue;
@@ -2479,30 +2479,30 @@ LABEL_21:
   v11[2] = sub_100106458;
   v11[3] = &unk_1004B7650;
   v11[4] = self;
-  v12 = v9;
+  v12 = volumeControlCapabilities;
   v13 = v8;
   dispatch_async(externalDeviceCallbackQueue, v11);
 }
 
-- (BOOL)_endpointShouldPostVolumeNotifications:(id)a3 outputDevice:(id)a4
+- (BOOL)_endpointShouldPostVolumeNotifications:(id)notifications outputDevice:(id)device
 {
-  v5 = a3;
-  if ([v5 connectionType] == 1)
+  notificationsCopy = notifications;
+  if ([notificationsCopy connectionType] == 1)
   {
     goto LABEL_2;
   }
 
-  if ([v5 connectionType] == 6 || objc_msgSend(v5, "connectionType") == 5)
+  if ([notificationsCopy connectionType] == 6 || objc_msgSend(notificationsCopy, "connectionType") == 5)
   {
 LABEL_5:
     v6 = 1;
     goto LABEL_6;
   }
 
-  v8 = [v5 designatedGroupLeader];
-  if ([v8 groupContainsGroupLeader])
+  designatedGroupLeader = [notificationsCopy designatedGroupLeader];
+  if ([designatedGroupLeader groupContainsGroupLeader])
   {
-    v9 = [(MRDAVHostedExternalDevice *)self _onSerialQueue_isEndpointsDesignatedGroupLeader:v5];
+    v9 = [(MRDAVHostedExternalDevice *)self _onSerialQueue_isEndpointsDesignatedGroupLeader:notificationsCopy];
 
     if (v9)
     {
@@ -2514,7 +2514,7 @@ LABEL_5:
   {
   }
 
-  if ([(MRDAVHostedExternalDevice *)self _endpointIsSolo:v5]&& [(MRDAVHostedExternalDevice *)self _onSerialQueue_isEndpointsDesignatedGroupLeader:v5])
+  if ([(MRDAVHostedExternalDevice *)self _endpointIsSolo:notificationsCopy]&& [(MRDAVHostedExternalDevice *)self _onSerialQueue_isEndpointsDesignatedGroupLeader:notificationsCopy])
   {
     goto LABEL_5;
   }
@@ -2526,25 +2526,25 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_endpointSupportsVolumeControl:(id)a3
+- (BOOL)_endpointSupportsVolumeControl:(id)control
 {
-  v4 = a3;
-  if ([v4 connectionType] == 3)
+  controlCopy = control;
+  if ([controlCopy connectionType] == 3)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 designatedGroupLeader];
-    if ([v6 groupContainsGroupLeader])
+    designatedGroupLeader = [controlCopy designatedGroupLeader];
+    if ([designatedGroupLeader groupContainsGroupLeader])
     {
       v5 = 1;
     }
 
-    else if ([(MRDAVHostedExternalDevice *)self _endpointIsSolo:v4])
+    else if ([(MRDAVHostedExternalDevice *)self _endpointIsSolo:controlCopy])
     {
-      v5 = [(MRDAVHostedExternalDevice *)self _onSerialQueue_isEndpointsDesignatedGroupLeader:v4];
+      v5 = [(MRDAVHostedExternalDevice *)self _onSerialQueue_isEndpointsDesignatedGroupLeader:controlCopy];
     }
 
     else
@@ -2556,11 +2556,11 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_onSerialQueue_isEndpointsDesignatedGroupLeader:(id)a3
+- (BOOL)_onSerialQueue_isEndpointsDesignatedGroupLeader:(id)leader
 {
-  v4 = [a3 designatedGroupLeader];
+  designatedGroupLeader = [leader designatedGroupLeader];
   v5 = [(MRExternalDevice *)self->_externalDevice uid];
-  v6 = [v4 containsUID:v5];
+  v6 = [designatedGroupLeader containsUID:v5];
 
   return v6;
 }

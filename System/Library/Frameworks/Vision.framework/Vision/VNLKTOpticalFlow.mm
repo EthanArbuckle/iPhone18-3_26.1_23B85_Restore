@@ -1,42 +1,42 @@
 @interface VNLKTOpticalFlow
-- (BOOL)_validateInputImage:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)_validateOutputImage:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)estimateFlowFromReference:(__CVBuffer *)a3 target:(__CVBuffer *)a4 error:(id *)a5;
-- (BOOL)estimateFlowStream:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)setOutputUV:(__CVBuffer *)a3 error:(id *)a4;
-- (VNLKTOpticalFlow)initWithWidth:(int)a3 height:(int)a4 numScales:(int)a5;
+- (BOOL)_validateInputImage:(__CVBuffer *)image error:(id *)error;
+- (BOOL)_validateOutputImage:(__CVBuffer *)image error:(id *)error;
+- (BOOL)estimateFlowFromReference:(__CVBuffer *)reference target:(__CVBuffer *)target error:(id *)error;
+- (BOOL)estimateFlowStream:(__CVBuffer *)stream error:(id *)error;
+- (BOOL)setOutputUV:(__CVBuffer *)v error:(id *)error;
+- (VNLKTOpticalFlow)initWithWidth:(int)width height:(int)height numScales:(int)scales;
 @end
 
 @implementation VNLKTOpticalFlow
 
-- (BOOL)_validateOutputImage:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)_validateOutputImage:(__CVBuffer *)image error:(id *)error
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
   if (PixelFormatType == 843264102 || PixelFormatType == 843264104)
   {
-    Width = CVPixelBufferGetWidth(a3);
+    Width = CVPixelBufferGetWidth(image);
     if (Width == [(VNLKTOpticalFlow *)self width])
     {
-      Height = CVPixelBufferGetHeight(a3);
+      Height = CVPixelBufferGetHeight(image);
       if (Height == [(VNLKTOpticalFlow *)self height])
       {
         return 1;
       }
     }
 
-    if (a4)
+    if (error)
     {
       v11 = @"Output image has invalid width/height";
 LABEL_10:
       v12 = [VNError errorWithCode:14 message:v11];
       v13 = v12;
       result = 0;
-      *a4 = v12;
+      *error = v12;
       return result;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = @"Output image has invalid pixel format";
     goto LABEL_10;
@@ -45,72 +45,72 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)_validateInputImage:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)_validateInputImage:(__CVBuffer *)image error:(id *)error
 {
-  if (CVPixelBufferGetPixelFormatType(a3) == 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) == 1111970369)
   {
-    Width = CVPixelBufferGetWidth(a3);
+    Width = CVPixelBufferGetWidth(image);
     if (Width == [(VNLKTOpticalFlow *)self width])
     {
-      Height = CVPixelBufferGetHeight(a3);
+      Height = CVPixelBufferGetHeight(image);
       if (Height == [(VNLKTOpticalFlow *)self height])
       {
         return 1;
       }
     }
 
-    if (a4)
+    if (error)
     {
       v10 = @"Input image has invalid width/height";
       goto LABEL_9;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = @"Input image has invalid pixel format";
 LABEL_9:
     v11 = [VNError errorWithCode:14 message:v10];
     v12 = v11;
     result = 0;
-    *a4 = v11;
+    *error = v11;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)estimateFlowStream:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)estimateFlowStream:(__CVBuffer *)stream error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [VNError errorForInternalErrorWithLocalizedDescription:@"Not implemented in abstract class"];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Not implemented in abstract class"];
   }
 
   return 0;
 }
 
-- (BOOL)estimateFlowFromReference:(__CVBuffer *)a3 target:(__CVBuffer *)a4 error:(id *)a5
+- (BOOL)estimateFlowFromReference:(__CVBuffer *)reference target:(__CVBuffer *)target error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [VNError errorForInternalErrorWithLocalizedDescription:@"Not implemented in abstract class", a4];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Not implemented in abstract class", target];
   }
 
   return 0;
 }
 
-- (BOOL)setOutputUV:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)setOutputUV:(__CVBuffer *)v error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [VNError errorForInternalErrorWithLocalizedDescription:@"Not implemented in abstract class"];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Not implemented in abstract class"];
   }
 
   return 0;
 }
 
-- (VNLKTOpticalFlow)initWithWidth:(int)a3 height:(int)a4 numScales:(int)a5
+- (VNLKTOpticalFlow)initWithWidth:(int)width height:(int)height numScales:(int)scales
 {
   v9.receiver = self;
   v9.super_class = VNLKTOpticalFlow;
@@ -118,10 +118,10 @@ LABEL_9:
   if (result)
   {
     result->_isValid = 0;
-    result->_width = a3;
-    result->_height = a4;
-    result->_levelCount = a5;
-    result->_numScales = a5;
+    result->_width = width;
+    result->_height = height;
+    result->_levelCount = scales;
+    result->_numScales = scales;
   }
 
   return result;

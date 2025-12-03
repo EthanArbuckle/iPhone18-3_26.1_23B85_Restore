@@ -1,15 +1,15 @@
 @interface ML3SetValuesForPropertiesOperation
-- (BOOL)_execute:(id *)a3;
-- (BOOL)_setValues:(id)a3 forProperties:(id)a4 withEntityClass:(Class)a5 usingPersistentID:(int64_t)a6 connection:(id)a7 error:(id *)a8;
+- (BOOL)_execute:(id *)_execute;
+- (BOOL)_setValues:(id)values forProperties:(id)properties withEntityClass:(Class)class usingPersistentID:(int64_t)d connection:(id)connection error:(id *)error;
 @end
 
 @implementation ML3SetValuesForPropertiesOperation
 
-- (BOOL)_setValues:(id)a3 forProperties:(id)a4 withEntityClass:(Class)a5 usingPersistentID:(int64_t)a6 connection:(id)a7 error:(id *)a8
+- (BOOL)_setValues:(id)values forProperties:(id)properties withEntityClass:(Class)class usingPersistentID:(int64_t)d connection:(id)connection error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
+  valuesCopy = values;
+  propertiesCopy = properties;
+  connectionCopy = connection;
   if (([(ML3SetValuesForPropertiesOperation *)self isCancelled]& 1) != 0)
   {
 LABEL_10:
@@ -17,15 +17,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v14 count])
+  if ([valuesCopy count])
   {
-    v17 = [v14 count];
-    if (v17 == [v15 count])
+    v17 = [valuesCopy count];
+    if (v17 == [propertiesCopy count])
     {
-      v29 = [(ML3DatabaseOperation *)self library];
-      v30 = [(objc_class *)a5 newWithPersistentID:a6 inLibrary:?];
-      v18 = [(objc_class *)a5 databaseTable];
-      v19 = [(objc_class *)a5 unsettableProperties];
+      library = [(ML3DatabaseOperation *)self library];
+      v30 = [(objc_class *)class newWithPersistentID:d inLibrary:?];
+      databaseTable = [(objc_class *)class databaseTable];
+      unsettableProperties = [(objc_class *)class unsettableProperties];
       v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
       if (([(ML3SetValuesForPropertiesOperation *)self isCancelled]& 1) != 0)
       {
@@ -49,29 +49,29 @@ LABEL_22:
       v45[1] = 3221225472;
       v45[2] = __114__ML3SetValuesForPropertiesOperation__setValues_forProperties_withEntityClass_usingPersistentID_connection_error___block_invoke;
       v45[3] = &unk_2787639D0;
-      v28 = v19;
-      v52 = a5;
-      v46 = v19;
+      v28 = unsettableProperties;
+      classCopy = class;
+      v46 = unsettableProperties;
       v50 = v59;
-      v24 = v18;
+      v24 = databaseTable;
       v47 = v24;
       v51 = &v53;
       v25 = v20;
       v48 = v25;
-      v49 = v14;
-      [v15 enumerateObjectsUsingBlock:v45];
+      v49 = valuesCopy;
+      [propertiesCopy enumerateObjectsUsingBlock:v45];
       v26 = v54[5];
       if (v26)
       {
-        if (a8)
+        if (error)
         {
           v21 = 0;
-          *a8 = v26;
+          *error = v26;
 LABEL_21:
 
           _Block_object_dispose(&v53, 8);
           _Block_object_dispose(v59, 8);
-          v19 = v28;
+          unsettableProperties = v28;
           goto LABEL_22;
         }
       }
@@ -87,21 +87,21 @@ LABEL_21:
         v31[2] = __114__ML3SetValuesForPropertiesOperation__setValues_forProperties_withEntityClass_usingPersistentID_connection_error___block_invoke_2;
         v31[3] = &unk_278763A20;
         v32 = v25;
-        v40 = a5;
+        classCopy2 = class;
         v33 = v24;
         v37 = &v53;
-        v34 = v16;
+        v34 = connectionCopy;
         v35 = v30;
         v38 = &v41;
         v39 = v59;
-        v36 = v29;
+        v36 = library;
         [v34 performTransactionWithBlock:v31];
-        if (a8)
+        if (error)
         {
           v27 = v54[5];
           if (v27)
           {
-            *a8 = v27;
+            *error = v27;
           }
         }
 
@@ -116,10 +116,10 @@ LABEL_21:
     }
 
     v22 = [ML3MediaLibraryWriter writerErrorWithCode:500 description:@"Values and properties arrays are not equal length."];
-    if (a8)
+    if (error)
     {
       v22 = v22;
-      *a8 = v22;
+      *error = v22;
     }
 
     goto LABEL_10;
@@ -345,28 +345,28 @@ void __114__ML3SetValuesForPropertiesOperation__setValues_forProperties_withEnti
   [*(a1 + 40) addObject:v8];
 }
 
-- (BOOL)_execute:(id *)a3
+- (BOOL)_execute:(id *)_execute
 {
   v58 = *MEMORY[0x277D85DE8];
-  v40 = [(ML3DatabaseOperation *)self attributes];
-  v33 = [v40 objectForKeyedSubscript:@"MLDatabaseOperationAttributePersistentIDsArrayKey"];
-  v3 = [v40 objectForKeyedSubscript:@"MLDatabaseOperationAttributeApplyDifferentValuesToPIDs"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v33 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributePersistentIDsArrayKey"];
+  v3 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributeApplyDifferentValuesToPIDs"];
   v32 = v3;
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  v5 = [v40 objectForKeyedSubscript:@"MLDatabaseOperationAttributeEntityClassKey"];
+  v5 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributeEntityClassKey"];
   v38 = NSClassFromString(v5);
 
-  v39 = [v40 objectForKeyedSubscript:@"MLDatabaseOperationAttributeValuesKey"];
-  if (v4)
+  v39 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributeValuesKey"];
+  if (bOOLValue)
   {
     v51 = 0uLL;
     v49 = 0uLL;
@@ -392,24 +392,24 @@ void __114__ML3SetValuesForPropertiesOperation__setValues_forProperties_withEnti
           }
 
           v10 = *(*(&v48 + 1) + 8 * v8);
-          v11 = [v10 longLongValue];
+          longLongValue = [v10 longLongValue];
           v12 = [v39 objectAtIndexedSubscript:v6];
-          v13 = [v40 objectForKeyedSubscript:@"MLDatabaseOperationAttributePropertiesKey"];
-          v14 = [(ML3DatabaseOperation *)self transaction];
-          v15 = [v14 connection];
+          v13 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributePropertiesKey"];
+          transaction = [(ML3DatabaseOperation *)self transaction];
+          connection = [transaction connection];
 
           v47 = v9;
-          LOBYTE(v14) = [(ML3SetValuesForPropertiesOperation *)self _setValues:v12 forProperties:v13 withEntityClass:v38 usingPersistentID:v11 connection:v15 error:&v47];
+          LOBYTE(transaction) = [(ML3SetValuesForPropertiesOperation *)self _setValues:v12 forProperties:v13 withEntityClass:v38 usingPersistentID:longLongValue connection:connection error:&v47];
           v7 = v47;
 
-          if ((v14 & 1) == 0)
+          if ((transaction & 1) == 0)
           {
             v27 = os_log_create("com.apple.amp.medialibrary", "Default");
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
-              v28 = [v10 longLongValue];
+              longLongValue2 = [v10 longLongValue];
               *buf = 134218242;
-              v54 = v28;
+              v54 = longLongValue2;
               v55 = 2114;
               v56 = v7;
               _os_log_impl(&dword_22D2FA000, v27, OS_LOG_TYPE_DEFAULT, "[ML3SetValuesForPropertiesOperation] Failed to set values for persistent ID %lld, error=%{public}@", buf, 0x16u);
@@ -467,23 +467,23 @@ LABEL_23:
       }
 
       v21 = *(*(&v43 + 1) + 8 * v19);
-      v22 = [v21 longLongValue];
-      v12 = [v40 objectForKeyedSubscript:@"MLDatabaseOperationAttributePropertiesKey"];
-      v23 = [(ML3DatabaseOperation *)self transaction];
-      v24 = [v23 connection];
+      longLongValue3 = [v21 longLongValue];
+      v12 = [attributes objectForKeyedSubscript:@"MLDatabaseOperationAttributePropertiesKey"];
+      transaction2 = [(ML3DatabaseOperation *)self transaction];
+      connection2 = [transaction2 connection];
 
       v42 = v20;
-      LOBYTE(v23) = [(ML3SetValuesForPropertiesOperation *)self _setValues:v39 forProperties:v12 withEntityClass:v38 usingPersistentID:v22 connection:v24 error:&v42];
+      LOBYTE(transaction2) = [(ML3SetValuesForPropertiesOperation *)self _setValues:v39 forProperties:v12 withEntityClass:v38 usingPersistentID:longLongValue3 connection:connection2 error:&v42];
       v7 = v42;
 
-      if ((v23 & 1) == 0)
+      if ((transaction2 & 1) == 0)
       {
         v25 = os_log_create("com.apple.amp.medialibrary", "Default");
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v21 longLongValue];
+          longLongValue4 = [v21 longLongValue];
           *buf = 134218242;
-          v54 = v26;
+          v54 = longLongValue4;
           v55 = 2114;
           v56 = v7;
           _os_log_impl(&dword_22D2FA000, v25, OS_LOG_TYPE_DEFAULT, "[ML3SetValuesForPropertiesOperation] Failed to set values for persistent ID %lld, error=%{public}@", buf, 0x16u);
@@ -513,7 +513,7 @@ LABEL_30:
 LABEL_31:
 
   v29 = v7;
-  *a3 = v7;
+  *_execute = v7;
 
   return v16 & 1;
 }

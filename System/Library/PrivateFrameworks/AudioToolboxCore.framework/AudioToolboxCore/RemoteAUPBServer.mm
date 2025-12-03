@@ -1,8 +1,8 @@
 @interface RemoteAUPBServer
 - (id).cxx_construct;
-- (void)addSema:(id)a3;
+- (void)addSema:(id)sema;
 - (void)dealloc;
-- (void)removeSema:(id)a3;
+- (void)removeSema:(id)sema;
 - (void)signalAllSemaphores;
 @end
 
@@ -23,7 +23,7 @@
   var0 = self->replySemas.var0;
   if (begin != var0)
   {
-    v8 = self;
+    selfCopy = self;
     v4 = self->replySemas.__begin_;
     while (gLogScope)
     {
@@ -39,8 +39,8 @@ LABEL_9:
       ++v4;
       if (begin == var0)
       {
-        self = v8;
-        begin = v8->replySemas.__begin_;
+        self = selfCopy;
+        begin = selfCopy->replySemas.__begin_;
         goto LABEL_11;
       }
     }
@@ -66,13 +66,13 @@ LABEL_11:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeSema:(id)a3
+- (void)removeSema:(id)sema
 {
   begin = self->replySemas.__begin_;
   var0 = self->replySemas.var0;
   if (begin != var0)
   {
-    while (*begin != a3)
+    while (*begin != sema)
     {
       if (++begin == var0)
       {
@@ -90,7 +90,7 @@ LABEL_11:
   }
 }
 
-- (void)addSema:(id)a3
+- (void)addSema:(id)sema
 {
   var0 = self->replySemas.var0;
   var1 = self->replySemas.var1;
@@ -134,7 +134,7 @@ LABEL_11:
     v14 = var0 - begin;
     v15 = (8 * v10);
     v16 = (8 * v10 - 8 * v14);
-    *v15 = a3;
+    *v15 = sema;
     v7 = (v15 + 1);
     memcpy(v16, begin, v9);
     self->replySemas.__begin_ = v16;
@@ -148,7 +148,7 @@ LABEL_11:
 
   else
   {
-    *var0 = a3;
+    *var0 = sema;
     v7 = var0 + 1;
   }
 

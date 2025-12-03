@@ -1,10 +1,10 @@
 @interface APDeviceInfoSettings
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 @end
 
 @implementation APDeviceInfoSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
   v3 = NSStringFromSelector("isTest");
   v7 = v3;

@@ -1,29 +1,29 @@
 @interface UISUIActivityExtensionItemData
-+ (id)_extensionItemsByPreparingToSendExtensionItems:(id)a3 toDestinationExtension:(id)a4;
-+ (id)_onBackgroundQueue_extensionItemsByPreparingToSendExtensionItems:(id)a3 toDestinationExtension:(id)a4;
++ (id)_extensionItemsByPreparingToSendExtensionItems:(id)items toDestinationExtension:(id)extension;
++ (id)_onBackgroundQueue_extensionItemsByPreparingToSendExtensionItems:(id)items toDestinationExtension:(id)extension;
 - (UISUIActivityExtensionItemData)init;
-- (UISUIActivityExtensionItemData)initWithCoder:(id)a3;
-- (id)_getItemUUIDForItem:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)_uuidMappingDataForTemporaryAttachmentToExtensionItem:(id)a3 attachments:(id)a4;
-- (id)attachmentNameForItem:(id)a3;
-- (id)dataTypeForItem:(id)a3;
-- (id)previewImageDataForItem:(id)a3;
-- (id)previewImageForItem:(id)a3;
-- (id)subjectForItem:(id)a3;
-- (void)_appendTemporaryUUIDMappingAttachmentToExtensionItem:(id)a3;
-- (void)_changeUUIDMappingFromExtensionItems:(id)a3 toClonedExtensionItems:(id)a4;
-- (void)_loadItemProviderOrExtensionItemWithMetadataToUUIDFromTemporaryUUIDMappingAttachedToExtensionItems:(id)a3;
-- (void)_removeTemporaryUUIDMappingAttachmentFromExtensionItems:(id)a3;
-- (void)_setItemUUID:(id)a3 forItem:(id)a4;
-- (void)addAttachmentName:(id)a3 forItem:(id)a4;
-- (void)addDataType:(id)a3 forItem:(id)a4;
-- (void)addPreviewImage:(id)a3 forItem:(id)a4;
-- (void)addPreviewImageData:(id)a3 forItem:(id)a4;
-- (void)addSubject:(id)a3 forItem:(id)a4;
+- (UISUIActivityExtensionItemData)initWithCoder:(id)coder;
+- (id)_getItemUUIDForItem:(id)item createIfNeeded:(BOOL)needed;
+- (id)_uuidMappingDataForTemporaryAttachmentToExtensionItem:(id)item attachments:(id)attachments;
+- (id)attachmentNameForItem:(id)item;
+- (id)dataTypeForItem:(id)item;
+- (id)previewImageDataForItem:(id)item;
+- (id)previewImageForItem:(id)item;
+- (id)subjectForItem:(id)item;
+- (void)_appendTemporaryUUIDMappingAttachmentToExtensionItem:(id)item;
+- (void)_changeUUIDMappingFromExtensionItems:(id)items toClonedExtensionItems:(id)extensionItems;
+- (void)_loadItemProviderOrExtensionItemWithMetadataToUUIDFromTemporaryUUIDMappingAttachedToExtensionItems:(id)items;
+- (void)_removeTemporaryUUIDMappingAttachmentFromExtensionItems:(id)items;
+- (void)_setItemUUID:(id)d forItem:(id)item;
+- (void)addAttachmentName:(id)name forItem:(id)item;
+- (void)addDataType:(id)type forItem:(id)item;
+- (void)addPreviewImage:(id)image forItem:(id)item;
+- (void)addPreviewImageData:(id)data forItem:(id)item;
+- (void)addSubject:(id)subject forItem:(id)item;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)prepareForSendingAsCompletionToHostWithAuditToken:(id *)a3;
-- (void)prepareForSendingToExtension:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)prepareForSendingAsCompletionToHostWithAuditToken:(id *)token;
+- (void)prepareForSendingToExtension:(id)extension;
 @end
 
 @implementation UISUIActivityExtensionItemData
@@ -35,29 +35,29 @@
   v2 = [(UISUIActivityExtensionItemData *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     attachmentNamesByItemUUID = v2->_attachmentNamesByItemUUID;
-    v2->_attachmentNamesByItemUUID = v3;
+    v2->_attachmentNamesByItemUUID = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     subjectsByItemUUID = v2->_subjectsByItemUUID;
-    v2->_subjectsByItemUUID = v5;
+    v2->_subjectsByItemUUID = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     previewImagesByItemUUID = v2->_previewImagesByItemUUID;
-    v2->_previewImagesByItemUUID = v7;
+    v2->_previewImagesByItemUUID = dictionary3;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     previewImageDataByItemUUID = v2->_previewImageDataByItemUUID;
-    v2->_previewImageDataByItemUUID = v9;
+    v2->_previewImageDataByItemUUID = dictionary4;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
     dataTypesByItemUUID = v2->_dataTypesByItemUUID;
-    v2->_dataTypesByItemUUID = v11;
+    v2->_dataTypesByItemUUID = dictionary5;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary6 = [MEMORY[0x1E695DF90] dictionary];
     openURLAnnotationsByURL = v2->_openURLAnnotationsByURL;
-    v2->_openURLAnnotationsByURL = v13;
+    v2->_openURLAnnotationsByURL = dictionary6;
 
     v2->_itemProviderOrExtensionItemWithMetadataToUUID = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x1E695E9E8]);
   }
@@ -65,47 +65,47 @@
   return v2;
 }
 
-- (UISUIActivityExtensionItemData)initWithCoder:(id)a3
+- (UISUIActivityExtensionItemData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UISUIActivityExtensionItemData *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_extensionItems);
-    v7 = _UISecureDecodeExtensionItemsWithKey(v4, v6);
+    v7 = _UISecureDecodeExtensionItemsWithKey(coderCopy, v6);
     extensionItems = v5->_extensionItems;
     v5->_extensionItems = v7;
 
     [(UISUIActivityExtensionItemData *)v5 _loadItemProviderOrExtensionItemWithMetadataToUUIDFromTemporaryUUIDMappingAttachedToExtensionItems:v5->_extensionItems];
     [(UISUIActivityExtensionItemData *)v5 _removeTemporaryUUIDMappingAttachmentFromExtensionItems:v5->_extensionItems];
     v9 = NSStringFromSelector(sel_attachmentNamesByItemUUID);
-    v10 = _UISecureDecodeExtensionItemsWithKey(v4, v9);
+    v10 = _UISecureDecodeExtensionItemsWithKey(coderCopy, v9);
     attachmentNamesByItemUUID = v5->_attachmentNamesByItemUUID;
     v5->_attachmentNamesByItemUUID = v10;
 
     v12 = NSStringFromSelector(sel_subjectsByItemUUID);
-    v13 = _UISecureDecodeExtensionItemsWithKey(v4, v12);
+    v13 = _UISecureDecodeExtensionItemsWithKey(coderCopy, v12);
     subjectsByItemUUID = v5->_subjectsByItemUUID;
     v5->_subjectsByItemUUID = v13;
 
     v15 = NSStringFromSelector(sel_previewImagesByItemUUID);
-    v16 = _UISecureDecodeExtensionItemsWithKey(v4, v15);
+    v16 = _UISecureDecodeExtensionItemsWithKey(coderCopy, v15);
     previewImagesByItemUUID = v5->_previewImagesByItemUUID;
     v5->_previewImagesByItemUUID = v16;
 
     v18 = NSStringFromSelector(sel_previewImageDataByItemUUID);
-    v19 = _UISecureDecodeExtensionItemsWithKey(v4, v18);
+    v19 = _UISecureDecodeExtensionItemsWithKey(coderCopy, v18);
     previewImageDataByItemUUID = v5->_previewImageDataByItemUUID;
     v5->_previewImageDataByItemUUID = v19;
 
     v21 = NSStringFromSelector(sel_dataTypesByItemUUID);
-    v22 = _UISecureDecodeExtensionItemsWithKey(v4, v21);
+    v22 = _UISecureDecodeExtensionItemsWithKey(coderCopy, v21);
     dataTypesByItemUUID = v5->_dataTypesByItemUUID;
     v5->_dataTypesByItemUUID = v22;
 
     v24 = _UISecureStandardPropertyListClasses();
     v25 = NSStringFromSelector(sel_openURLAnnotationsByURL);
-    v26 = [v4 decodeObjectOfClasses:v24 forKey:v25];
+    v26 = [coderCopy decodeObjectOfClasses:v24 forKey:v25];
     openURLAnnotationsByURL = v5->_openURLAnnotationsByURL;
     v5->_openURLAnnotationsByURL = v26;
   }
@@ -113,39 +113,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   extensionItems = self->_extensionItems;
-  v5 = a3;
+  coderCopy = coder;
   [(UISUIActivityExtensionItemData *)self _appendTemporaryUUIDMappingAttachmentToExtensionItem:extensionItems];
   v6 = self->_extensionItems;
   v7 = NSStringFromSelector(sel_extensionItems);
-  [v5 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 
   [(UISUIActivityExtensionItemData *)self _removeTemporaryUUIDMappingAttachmentFromExtensionItems:self->_extensionItems];
   attachmentNamesByItemUUID = self->_attachmentNamesByItemUUID;
   v9 = NSStringFromSelector(sel_attachmentNamesByItemUUID);
-  [v5 encodeObject:attachmentNamesByItemUUID forKey:v9];
+  [coderCopy encodeObject:attachmentNamesByItemUUID forKey:v9];
 
   subjectsByItemUUID = self->_subjectsByItemUUID;
   v11 = NSStringFromSelector(sel_subjectsByItemUUID);
-  [v5 encodeObject:subjectsByItemUUID forKey:v11];
+  [coderCopy encodeObject:subjectsByItemUUID forKey:v11];
 
   previewImagesByItemUUID = self->_previewImagesByItemUUID;
   v13 = NSStringFromSelector(sel_previewImagesByItemUUID);
-  [v5 encodeObject:previewImagesByItemUUID forKey:v13];
+  [coderCopy encodeObject:previewImagesByItemUUID forKey:v13];
 
   previewImageDataByItemUUID = self->_previewImageDataByItemUUID;
   v15 = NSStringFromSelector(sel_previewImageDataByItemUUID);
-  [v5 encodeObject:previewImageDataByItemUUID forKey:v15];
+  [coderCopy encodeObject:previewImageDataByItemUUID forKey:v15];
 
   dataTypesByItemUUID = self->_dataTypesByItemUUID;
   v17 = NSStringFromSelector(sel_dataTypesByItemUUID);
-  [v5 encodeObject:dataTypesByItemUUID forKey:v17];
+  [coderCopy encodeObject:dataTypesByItemUUID forKey:v17];
 
   openURLAnnotationsByURL = self->_openURLAnnotationsByURL;
   v19 = NSStringFromSelector(sel_openURLAnnotationsByURL);
-  [v5 encodeObject:openURLAnnotationsByURL forKey:v19];
+  [coderCopy encodeObject:openURLAnnotationsByURL forKey:v19];
 }
 
 - (void)dealloc
@@ -161,100 +161,100 @@
   [(UISUIActivityExtensionItemData *)&v4 dealloc];
 }
 
-- (void)addAttachmentName:(id)a3 forItem:(id)a4
+- (void)addAttachmentName:(id)name forItem:(id)item
 {
-  v6 = a3;
-  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a4 createIfNeeded:1];
-  [(NSMutableDictionary *)self->_attachmentNamesByItemUUID setObject:v6 forKey:v7];
+  nameCopy = name;
+  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:1];
+  [(NSMutableDictionary *)self->_attachmentNamesByItemUUID setObject:nameCopy forKey:v7];
 }
 
-- (id)attachmentNameForItem:(id)a3
+- (id)attachmentNameForItem:(id)item
 {
-  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a3 createIfNeeded:0];
+  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:0];
   v5 = [(NSMutableDictionary *)self->_attachmentNamesByItemUUID objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)addSubject:(id)a3 forItem:(id)a4
+- (void)addSubject:(id)subject forItem:(id)item
 {
-  v6 = a3;
-  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a4 createIfNeeded:1];
-  [(NSMutableDictionary *)self->_subjectsByItemUUID setObject:v6 forKey:v7];
+  subjectCopy = subject;
+  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:1];
+  [(NSMutableDictionary *)self->_subjectsByItemUUID setObject:subjectCopy forKey:v7];
 }
 
-- (id)subjectForItem:(id)a3
+- (id)subjectForItem:(id)item
 {
-  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a3 createIfNeeded:0];
+  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:0];
   v5 = [(NSMutableDictionary *)self->_subjectsByItemUUID objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)addPreviewImage:(id)a3 forItem:(id)a4
+- (void)addPreviewImage:(id)image forItem:(id)item
 {
-  v6 = a3;
-  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a4 createIfNeeded:1];
-  [(NSMutableDictionary *)self->_previewImagesByItemUUID setObject:v6 forKey:v7];
+  imageCopy = image;
+  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:1];
+  [(NSMutableDictionary *)self->_previewImagesByItemUUID setObject:imageCopy forKey:v7];
 }
 
-- (id)previewImageForItem:(id)a3
+- (id)previewImageForItem:(id)item
 {
-  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a3 createIfNeeded:0];
+  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:0];
   v5 = [(NSMutableDictionary *)self->_previewImagesByItemUUID objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)addPreviewImageData:(id)a3 forItem:(id)a4
+- (void)addPreviewImageData:(id)data forItem:(id)item
 {
-  v6 = a3;
-  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a4 createIfNeeded:1];
-  [(NSMutableDictionary *)self->_previewImageDataByItemUUID setObject:v6 forKey:v7];
+  dataCopy = data;
+  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:1];
+  [(NSMutableDictionary *)self->_previewImageDataByItemUUID setObject:dataCopy forKey:v7];
 }
 
-- (id)previewImageDataForItem:(id)a3
+- (id)previewImageDataForItem:(id)item
 {
-  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a3 createIfNeeded:0];
+  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:0];
   v5 = [(NSMutableDictionary *)self->_previewImageDataByItemUUID objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)addDataType:(id)a3 forItem:(id)a4
+- (void)addDataType:(id)type forItem:(id)item
 {
-  v6 = a3;
-  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a4 createIfNeeded:1];
-  [(NSMutableDictionary *)self->_dataTypesByItemUUID setObject:v6 forKey:v7];
+  typeCopy = type;
+  v7 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:1];
+  [(NSMutableDictionary *)self->_dataTypesByItemUUID setObject:typeCopy forKey:v7];
 }
 
-- (id)dataTypeForItem:(id)a3
+- (id)dataTypeForItem:(id)item
 {
-  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:a3 createIfNeeded:0];
+  v4 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:item createIfNeeded:0];
   v5 = [(NSMutableDictionary *)self->_dataTypesByItemUUID objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)prepareForSendingToExtension:(id)a3
+- (void)prepareForSendingToExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = objc_opt_class();
-  v6 = [(UISUIActivityExtensionItemData *)self extensionItems];
-  v7 = [v5 _extensionItemsByPreparingToSendExtensionItems:v6 toDestinationExtension:v4];
+  extensionItems = [(UISUIActivityExtensionItemData *)self extensionItems];
+  v7 = [v5 _extensionItemsByPreparingToSendExtensionItems:extensionItems toDestinationExtension:extensionCopy];
 
   [(UISUIActivityExtensionItemData *)self _changeUUIDMappingFromExtensionItems:self->_extensionItems toClonedExtensionItems:v7];
   [(UISUIActivityExtensionItemData *)self setExtensionItems:v7];
 }
 
-- (void)prepareForSendingAsCompletionToHostWithAuditToken:(id *)a3
+- (void)prepareForSendingAsCompletionToHostWithAuditToken:(id *)token
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = [(UISUIActivityExtensionItemData *)self extensionItems];
-  v5 = *&a3->var0[4];
-  v30 = *a3->var0;
+  extensionItems = [(UISUIActivityExtensionItemData *)self extensionItems];
+  v5 = *&token->var0[4];
+  v30 = *token->var0;
   v31 = v5;
-  v6 = v4;
+  v6 = extensionItems;
   v7 = NSClassFromString(&cfstr_Nsitemprovider.isa);
   v26 = 0u;
   v27 = 0u;
@@ -280,8 +280,8 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = [v9 attachments];
-        v11 = [v10 countByEnumeratingWithState:&v22 objects:v32 count:16];
+        attachments = [v9 attachments];
+        v11 = [attachments countByEnumeratingWithState:&v22 objects:v32 count:16];
         if (v11)
         {
           v12 = v11;
@@ -293,7 +293,7 @@
             {
               if (*v23 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(attachments);
               }
 
               v15 = *(*(&v22 + 1) + 8 * v14);
@@ -311,7 +311,7 @@
             }
 
             while (v12 != v14);
-            v12 = [v10 countByEnumeratingWithState:&v22 objects:v32 count:16];
+            v12 = [attachments countByEnumeratingWithState:&v22 objects:v32 count:16];
           }
 
           while (v12);
@@ -328,10 +328,10 @@
   }
 }
 
-+ (id)_onBackgroundQueue_extensionItemsByPreparingToSendExtensionItems:(id)a3 toDestinationExtension:(id)a4
++ (id)_onBackgroundQueue_extensionItemsByPreparingToSendExtensionItems:(id)items toDestinationExtension:(id)extension
 {
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  extensionCopy = extension;
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
   v16 = 0;
@@ -344,12 +344,12 @@
   v12[1] = 3221225472;
   v12[2] = __122__UISUIActivityExtensionItemData__onBackgroundQueue_extensionItemsByPreparingToSendExtensionItems_toDestinationExtension___block_invoke;
   v12[3] = &unk_1E71FAA48;
-  v8 = v6;
+  v8 = extensionCopy;
   v13 = v8;
   v15 = &v16;
   v9 = v7;
   v14 = v9;
-  [v8 beginExtensionRequestWithInputItems:v5 completion:v12];
+  [v8 beginExtensionRequestWithInputItems:itemsCopy completion:v12];
   dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v17[5];
 
@@ -369,37 +369,37 @@ void __122__UISUIActivityExtensionItemData__onBackgroundQueue_extensionItemsByPr
   dispatch_group_leave(*(a1 + 40));
 }
 
-+ (id)_extensionItemsByPreparingToSendExtensionItems:(id)a3 toDestinationExtension:(id)a4
++ (id)_extensionItemsByPreparingToSendExtensionItems:(id)items toDestinationExtension:(id)extension
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  extensionCopy = extension;
   v13 = 0;
-  v6 = [v5 beginExtensionRequestWithInputItems:a3 error:&v13];
+  v6 = [extensionCopy beginExtensionRequestWithInputItems:items error:&v13];
   v7 = v13;
   if (v7)
   {
     v8 = share_sheet_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 identifier];
+      identifier = [extensionCopy identifier];
       *buf = 138543618;
-      v15 = v9;
+      v15 = identifier;
       v16 = 2114;
       v17 = v7;
       _os_log_impl(&dword_18B359000, v8, OS_LOG_TYPE_DEFAULT, "Error preparing extension items to send to destination extension (%{public}@). Error = %{public}@", buf, 0x16u);
     }
   }
 
-  v10 = [v5 _extensionContextForUUID:v6];
-  v11 = [v10 inputItems];
+  v10 = [extensionCopy _extensionContextForUUID:v6];
+  inputItems = [v10 inputItems];
 
-  return v11;
+  return inputItems;
 }
 
-- (void)_loadItemProviderOrExtensionItemWithMetadataToUUIDFromTemporaryUUIDMappingAttachedToExtensionItems:(id)a3
+- (void)_loadItemProviderOrExtensionItemWithMetadataToUUIDFromTemporaryUUIDMappingAttachedToExtensionItems:(id)items
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __133__UISUIActivityExtensionItemData__loadItemProviderOrExtensionItemWithMetadataToUUIDFromTemporaryUUIDMappingAttachedToExtensionItems___block_invoke;
@@ -417,7 +417,7 @@ void __122__UISUIActivityExtensionItemData__onBackgroundQueue_extensionItemsByPr
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = itemsCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
@@ -436,10 +436,10 @@ void __122__UISUIActivityExtensionItemData__onBackgroundQueue_extensionItemsByPr
         }
 
         v10 = *(*(&v29 + 1) + 8 * v9);
-        v11 = [v10 attachments];
-        v12 = [v11 lastObject];
-        v13 = [v12 userInfo];
-        v14 = [v13 objectForKeyedSubscript:@"UUIDMappingData"];
+        attachments = [v10 attachments];
+        lastObject = [attachments lastObject];
+        userInfo = [lastObject userInfo];
+        v14 = [userInfo objectForKeyedSubscript:@"UUIDMappingData"];
 
         if (v14)
         {
@@ -459,8 +459,8 @@ void __122__UISUIActivityExtensionItemData__onBackgroundQueue_extensionItemsByPr
               v20 = 0;
               do
               {
-                v21 = [v10 attachments];
-                v22 = [v21 objectAtIndexedSubscript:v20];
+                attachments2 = [v10 attachments];
+                v22 = [attachments2 objectAtIndexedSubscript:v20];
                 v23 = [v19 objectAtIndexedSubscript:v20];
                 (v5)[2](v5, v22, v23);
 
@@ -499,14 +499,14 @@ void __133__UISUIActivityExtensionItemData__loadItemProviderOrExtensionItemWithM
   }
 }
 
-- (void)_appendTemporaryUUIDMappingAttachmentToExtensionItem:(id)a3
+- (void)_appendTemporaryUUIDMappingAttachmentToExtensionItem:(id)item
 {
   v25 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a3;
+  obj = item;
   v4 = [obj countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v4)
   {
@@ -522,20 +522,20 @@ void __133__UISUIActivityExtensionItemData__loadItemProviderOrExtensionItemWithM
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 attachments];
-        v10 = [v9 mutableCopy];
+        attachments = [v8 attachments];
+        v10 = [attachments mutableCopy];
         v11 = v10;
         if (v10)
         {
-          v12 = v10;
+          array = v10;
         }
 
         else
         {
-          v12 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        v13 = v12;
+        v13 = array;
 
         v14 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithItem:&stru_1EFE999E0 typeIdentifier:@"com.apple.UISUIActivityExtensionItemData.uuidMapping"];
         v22 = @"UUIDMappingData";
@@ -555,15 +555,15 @@ void __133__UISUIActivityExtensionItemData__loadItemProviderOrExtensionItemWithM
   }
 }
 
-- (void)_removeTemporaryUUIDMappingAttachmentFromExtensionItems:(id)a3
+- (void)_removeTemporaryUUIDMappingAttachmentFromExtensionItems:(id)items
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -574,59 +574,59 @@ void __133__UISUIActivityExtensionItemData__loadItemProviderOrExtensionItemWithM
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 attachments];
-        v10 = [v9 lastObject];
-        v11 = [v10 userInfo];
-        v12 = [v11 objectForKey:@"UUIDMappingData"];
+        attachments = [v8 attachments];
+        lastObject = [attachments lastObject];
+        userInfo = [lastObject userInfo];
+        v12 = [userInfo objectForKey:@"UUIDMappingData"];
 
         if (v12)
         {
-          v13 = [v8 attachments];
-          v14 = [v13 mutableCopy];
+          attachments2 = [v8 attachments];
+          v14 = [attachments2 mutableCopy];
 
           [v14 removeLastObject];
           [v8 setAttachments:v14];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_uuidMappingDataForTemporaryAttachmentToExtensionItem:(id)a3 attachments:(id)a4
+- (id)_uuidMappingDataForTemporaryAttachmentToExtensionItem:(id)item attachments:(id)attachments
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v25 = v6;
-  v9 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:v6 createIfNeeded:0];
+  itemCopy = item;
+  attachmentsCopy = attachments;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v25 = itemCopy;
+  v9 = [(UISUIActivityExtensionItemData *)self _getItemUUIDForItem:itemCopy createIfNeeded:0];
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    null = v9;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v11;
+  v24 = null;
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = v7;
+  v13 = attachmentsCopy;
   v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v14)
   {
@@ -645,17 +645,17 @@ void __133__UISUIActivityExtensionItemData__loadItemProviderOrExtensionItemWithM
         v19 = v18;
         if (v18)
         {
-          v20 = v18;
+          null2 = v18;
         }
 
         else
         {
-          v20 = [MEMORY[0x1E695DFB0] null];
+          null2 = [MEMORY[0x1E695DFB0] null];
         }
 
-        v21 = v20;
+        v21 = null2;
 
-        [v12 addObject:v21];
+        [array addObject:v21];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -664,26 +664,26 @@ void __133__UISUIActivityExtensionItemData__loadItemProviderOrExtensionItemWithM
     while (v15);
   }
 
-  [v8 setObject:v24 forKeyedSubscript:@"extensionItemUUID"];
-  [v8 setObject:v12 forKeyedSubscript:@"attachmentUUIDs"];
-  v22 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+  [dictionary setObject:v24 forKeyedSubscript:@"extensionItemUUID"];
+  [dictionary setObject:array forKeyedSubscript:@"attachmentUUIDs"];
+  v22 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionary requiringSecureCoding:1 error:0];
 
   return v22;
 }
 
-- (void)_changeUUIDMappingFromExtensionItems:(id)a3 toClonedExtensionItems:(id)a4
+- (void)_changeUUIDMappingFromExtensionItems:(id)items toClonedExtensionItems:(id)extensionItems
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  extensionItemsCopy = extensionItems;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __94__UISUIActivityExtensionItemData__changeUUIDMappingFromExtensionItems_toClonedExtensionItems___block_invoke;
   v27[3] = &unk_1E71F9930;
   v27[4] = self;
   v8 = MEMORY[0x18CFF58E0](v27);
-  v26 = v6;
-  v9 = [v6 count];
-  v10 = [v7 count];
+  v26 = itemsCopy;
+  v9 = [itemsCopy count];
+  v10 = [extensionItemsCopy count];
   if (v9 >= v10)
   {
     v11 = v10;
@@ -701,17 +701,17 @@ void __133__UISUIActivityExtensionItemData__loadItemProviderOrExtensionItemWithM
     do
     {
       v13 = [v26 objectAtIndexedSubscript:v12];
-      v14 = [v7 objectAtIndexedSubscript:v12];
+      v14 = [extensionItemsCopy objectAtIndexedSubscript:v12];
       (v8)[2](v8, v13, v14);
 
       v15 = [v26 objectAtIndexedSubscript:v12];
-      v16 = [v15 attachments];
+      attachments = [v15 attachments];
 
-      v17 = [v7 objectAtIndexedSubscript:v12];
-      v18 = [v17 attachments];
+      v17 = [extensionItemsCopy objectAtIndexedSubscript:v12];
+      attachments2 = [v17 attachments];
 
-      v19 = [v16 count];
-      v20 = [v18 count];
+      v19 = [attachments count];
+      v20 = [attachments2 count];
       if (v19 >= v20)
       {
         v21 = v20;
@@ -726,8 +726,8 @@ void __133__UISUIActivityExtensionItemData__loadItemProviderOrExtensionItemWithM
       {
         for (i = 0; i != v21; ++i)
         {
-          v23 = [v16 objectAtIndexedSubscript:i];
-          v24 = [v18 objectAtIndexedSubscript:i];
+          v23 = [attachments objectAtIndexedSubscript:i];
+          v24 = [attachments2 objectAtIndexedSubscript:i];
           (v8)[2](v8, v23, v24);
         }
       }
@@ -751,46 +751,46 @@ void __94__UISUIActivityExtensionItemData__changeUUIDMappingFromExtensionItems_t
   }
 }
 
-- (void)_setItemUUID:(id)a3 forItem:(id)a4
+- (void)_setItemUUID:(id)d forItem:(id)item
 {
-  value = a3;
-  v6 = a4;
-  if (value || !v6)
+  value = d;
+  itemCopy = item;
+  if (value || !itemCopy)
   {
-    if (value && v6)
+    if (value && itemCopy)
     {
-      CFDictionarySetValue(self->_itemProviderOrExtensionItemWithMetadataToUUID, v6, value);
+      CFDictionarySetValue(self->_itemProviderOrExtensionItemWithMetadataToUUID, itemCopy, value);
     }
   }
 
   else
   {
-    CFDictionaryRemoveValue(self->_itemProviderOrExtensionItemWithMetadataToUUID, v6);
+    CFDictionaryRemoveValue(self->_itemProviderOrExtensionItemWithMetadataToUUID, itemCopy);
   }
 }
 
-- (id)_getItemUUIDForItem:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_getItemUUIDForItem:(id)item createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = CFDictionaryGetValue(self->_itemProviderOrExtensionItemWithMetadataToUUID, v6);
-  if (v7)
+  neededCopy = needed;
+  itemCopy = item;
+  uUID = CFDictionaryGetValue(self->_itemProviderOrExtensionItemWithMetadataToUUID, itemCopy);
+  if (uUID)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = !v4;
+    v8 = !neededCopy;
   }
 
   if (!v8)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    [(UISUIActivityExtensionItemData *)self _setItemUUID:v7 forItem:v6];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [(UISUIActivityExtensionItemData *)self _setItemUUID:uUID forItem:itemCopy];
   }
 
-  return v7;
+  return uUID;
 }
 
 @end

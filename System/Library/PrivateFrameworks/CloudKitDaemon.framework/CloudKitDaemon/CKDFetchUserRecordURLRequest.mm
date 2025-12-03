@@ -1,17 +1,17 @@
 @interface CKDFetchUserRecordURLRequest
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
 @end
 
 @implementation CKDFetchUserRecordURLRequest
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v3.receiver = self;
   v3.super_class = CKDFetchUserRecordURLRequest;
-  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:a3];
+  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:builder];
 }
 
 - (id)requestOperationClasses
@@ -40,11 +40,11 @@
   return v10;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_hasUserRetrieveResponse(v4, v5, v6) && (objc_msgSend_userRetrieveResponse(v4, v7, v8), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_user(v9, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v9, v12))
+  objectCopy = object;
+  if (objc_msgSend_hasUserRetrieveResponse(objectCopy, v5, v6) && (objc_msgSend_userRetrieveResponse(objectCopy, v7, v8), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_user(v9, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v9, v12))
   {
     v15 = objc_msgSend_translator(self, v13, v14);
     v52 = 0;
@@ -106,7 +106,7 @@
           _os_log_error_impl(&dword_22506F000, v48, OS_LOG_TYPE_ERROR, "req: %{public}@, Inlining fake response operation result", buf, 0xCu);
         }
 
-        objc_msgSend_setResult_(v4, v33, v31);
+        objc_msgSend_setResult_(objectCopy, v33, v31);
         v34 = self->_userRecord;
         self->_userRecord = 0;
       }
@@ -120,7 +120,7 @@
     v38 = objc_msgSend_recordFetchedBlock(self, v36, v37);
     v39 = self->_userRecord;
     v42 = objc_msgSend_recordID(v39, v40, v41);
-    v45 = objc_msgSend_result(v4, v43, v44);
+    v45 = objc_msgSend_result(objectCopy, v43, v44);
     (v38)[2](v38, v39, v42, v45);
   }
 

@@ -1,12 +1,12 @@
 @interface TSCH3DLightingModel
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 + (id)lightingModel;
 - (BOOL)hasCompleteData;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DLightingModel)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSCH3DLightingModel)lightingModelWithLightings:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DLightingModel)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCH3DLightingModel)lightingModelWithLightings:(id)lightings;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -14,27 +14,27 @@
 
 + (id)lightingModel
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v16 = objc_msgSend_init(v10, v11, v12, v13, v14);
   if (v16)
   {
-    v20 = objc_msgSend_copyWithZone_(self->_materials, v15, v17, v18, v19, a3);
+    v20 = objc_msgSend_copyWithZone_(self->_materials, v15, v17, v18, v19, zone);
     v21 = v16[1];
     v16[1] = v20;
 
-    v26 = objc_msgSend_copyWithZone_(self->_lightings, v22, v23, v24, v25, a3);
+    v26 = objc_msgSend_copyWithZone_(self->_lightings, v22, v23, v24, v25, zone);
     v27 = v16[2];
     v16[2] = v26;
 
-    v32 = objc_msgSend_copyWithZone_(self->_environment, v28, v29, v30, v31, a3);
+    v32 = objc_msgSend_copyWithZone_(self->_environment, v28, v29, v30, v31, zone);
     v33 = v16[3];
     v16[3] = v32;
   }
@@ -56,10 +56,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -123,22 +123,22 @@
   return hasCompleteData;
 }
 
-- (TSCH3DLightingModel)lightingModelWithLightings:(id)a3
+- (TSCH3DLightingModel)lightingModelWithLightings:(id)lightings
 {
-  v4 = a3;
+  lightingsCopy = lightings;
   v9 = objc_msgSend_clone(self, v5, v6, v7, v8);
-  objc_msgSend_setLightings_(v9, v10, v11, v12, v13, v4);
+  objc_msgSend_setLightings_(v9, v10, v11, v12, v13, lightingsCopy);
 
   return v9;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v10 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v10 = *(archive + 4);
   if ((v10 & 2) != 0 || (v10) && (v11 = objc_opt_class()) != 0)
   {
-    v12 = objc_msgSend_instanceWithArchive_unarchiver_(v11, v5, v7, v8, v9, a3, v6);
+    v12 = objc_msgSend_instanceWithArchive_unarchiver_(v11, v5, v7, v8, v9, archive, unarchiverCopy);
   }
 
   else
@@ -157,14 +157,14 @@
   return v32;
 }
 
-- (TSCH3DLightingModel)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DLightingModel)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v15.receiver = self;
   v15.super_class = TSCH3DLightingModel;
   v7 = [(TSCH3DLightingModel *)&v15 init];
   v8 = objc_opt_class();
-  v13 = objc_msgSend_instanceWithArchive_unarchiver_(v8, v9, v10, v11, v12, a3, v6);
+  v13 = objc_msgSend_instanceWithArchive_unarchiver_(v8, v9, v10, v11, v12, archive, unarchiverCopy);
 
   return v13;
 }

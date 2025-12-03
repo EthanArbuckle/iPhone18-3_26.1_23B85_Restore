@@ -15,7 +15,7 @@
   v11 = v4;
   v6 = v4;
   v7 = [v5 predicateWithBlock:v10];
-  v8 = [a1 filteredArrayUsingPredicate:v7];
+  v8 = [self filteredArrayUsingPredicate:v7];
 
   return v8;
 }

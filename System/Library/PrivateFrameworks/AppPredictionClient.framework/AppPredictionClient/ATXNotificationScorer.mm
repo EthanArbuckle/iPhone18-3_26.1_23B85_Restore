@@ -1,20 +1,20 @@
 @interface ATXNotificationScorer
-- (double)getDigestScoreForNotification:(id)a3 modeId:(id)a4;
+- (double)getDigestScoreForNotification:(id)notification modeId:(id)id;
 @end
 
 @implementation ATXNotificationScorer
 
-- (double)getDigestScoreForNotification:(id)a3 modeId:(id)a4
+- (double)getDigestScoreForNotification:(id)notification modeId:(id)id
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [a3 derivedData];
-  v5 = [v4 getPublicScores];
+  derivedData = [notification derivedData];
+  getPublicScores = [derivedData getPublicScores];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [getPublicScores countByEnumeratingWithState:&v16 objects:v20 count:16];
   v7 = 0.0;
   if (v6)
   {
@@ -26,12 +26,12 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(getPublicScores);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 modelId];
-        v13 = [v12 isEqualToString:@"ATXModeEntityScorer"];
+        modelId = [v11 modelId];
+        v13 = [modelId isEqualToString:@"ATXModeEntityScorer"];
 
         if (v13)
         {
@@ -41,7 +41,7 @@
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [getPublicScores countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;

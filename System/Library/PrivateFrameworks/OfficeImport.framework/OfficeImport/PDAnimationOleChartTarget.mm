@@ -1,5 +1,5 @@
 @interface PDAnimationOleChartTarget
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PDAnimationOleChartTarget)init;
 - (unint64_t)hash;
 @end
@@ -22,14 +22,14 @@
   return &v4[[(PDAnimationOleChartTarget *)self chartSubElementType]];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = PDAnimationOleChartTarget, -[PDAnimationShapeTarget isEqual:](&v9, sel_isEqual_, v4)) && (v5 = -[PDAnimationOleChartTarget level](self, "level"), v5 == [v4 level]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = PDAnimationOleChartTarget, -[PDAnimationShapeTarget isEqual:](&v9, sel_isEqual_, equalCopy)) && (v5 = -[PDAnimationOleChartTarget level](self, "level"), v5 == [equalCopy level]))
   {
-    v6 = [(PDAnimationOleChartTarget *)self chartSubElementType];
-    v7 = v6 == [v4 chartSubElementType];
+    chartSubElementType = [(PDAnimationOleChartTarget *)self chartSubElementType];
+    v7 = chartSubElementType == [equalCopy chartSubElementType];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface USTrustIdentifier
-- (BOOL)isEqual:(id)a3;
-- (USTrustIdentifier)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (USTrustIdentifier)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_USTrustIdentifierCommonInitWithIdentifier:(id)a3 trusted:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_USTrustIdentifierCommonInitWithIdentifier:(id)identifier trusted:(BOOL)trusted;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USTrustIdentifier
 
-- (USTrustIdentifier)initWithCoder:(id)a3
+- (USTrustIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
-  v6 = [v4 containsValueForKey:@"Trusted"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+  v6 = [coderCopy containsValueForKey:@"Trusted"];
   if (v5)
   {
     v7 = v6 == 0;
@@ -42,27 +42,27 @@
     v11.receiver = self;
     v11.super_class = USTrustIdentifier;
     v9 = [(USTrustIdentifier *)&v11 init];
-    -[USTrustIdentifier _USTrustIdentifierCommonInitWithIdentifier:trusted:](v9, "_USTrustIdentifierCommonInitWithIdentifier:trusted:", v5, [v4 decodeBoolForKey:@"Trusted"]);
+    -[USTrustIdentifier _USTrustIdentifierCommonInitWithIdentifier:trusted:](v9, "_USTrustIdentifierCommonInitWithIdentifier:trusted:", v5, [coderCopy decodeBoolForKey:@"Trusted"]);
   }
 
   return v9;
 }
 
-- (void)_USTrustIdentifierCommonInitWithIdentifier:(id)a3 trusted:(BOOL)a4
+- (void)_USTrustIdentifierCommonInitWithIdentifier:(id)identifier trusted:(BOOL)trusted
 {
-  v6 = [a3 copy];
+  v6 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v6;
 
-  self->_trusted = a4;
+  self->_trusted = trusted;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"Identifier"];
-  [v5 encodeBool:self->_trusted forKey:@"Trusted"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
+  [coderCopy encodeBool:self->_trusted forKey:@"Trusted"];
 }
 
 - (id)description
@@ -71,25 +71,25 @@
   v8.receiver = self;
   v8.super_class = USTrustIdentifier;
   v4 = [(USTrustIdentifier *)&v8 description];
-  v5 = [(USTrustIdentifier *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@, Identifier: %@, Trusted: %d", v4, v5, -[USTrustIdentifier trusted](self, "trusted")];
+  identifier = [(USTrustIdentifier *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@, Identifier: %@, Trusted: %d", v4, identifier, -[USTrustIdentifier trusted](self, "trusted")];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(USTrustIdentifier *)self identifier];
-    v7 = [v5 identifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    identifier = [(USTrustIdentifier *)self identifier];
+    identifier2 = [v5 identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v8 = [(USTrustIdentifier *)self trusted];
-      v9 = v8 ^ [v5 trusted] ^ 1;
+      trusted = [(USTrustIdentifier *)self trusted];
+      v9 = trusted ^ [v5 trusted] ^ 1;
     }
 
     else
@@ -108,20 +108,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(USTrustIdentifier *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(USTrustIdentifier *)self trusted];
+  identifier = [(USTrustIdentifier *)self identifier];
+  v4 = [identifier hash];
+  trusted = [(USTrustIdentifier *)self trusted];
 
-  return v4 ^ v5;
+  return v4 ^ trusted;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  identifier = v3->_identifier;
-  trusted = v3->_trusted;
+  selfCopy = self;
+  identifier = selfCopy->_identifier;
+  trusted = selfCopy->_trusted;
 
-  return [(USTrustIdentifier *)v3 initWithIdentifier:identifier trusted:trusted];
+  return [(USTrustIdentifier *)selfCopy initWithIdentifier:identifier trusted:trusted];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, char a2)

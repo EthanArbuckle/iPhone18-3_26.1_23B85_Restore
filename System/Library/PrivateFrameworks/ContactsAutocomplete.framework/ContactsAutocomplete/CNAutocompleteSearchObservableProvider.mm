@@ -1,13 +1,13 @@
 @interface CNAutocompleteSearchObservableProvider
-+ (id)providerWithSearchProvider:(id)a3 fetchRequest:(id)a4 scheduler:(id)a5;
++ (id)providerWithSearchProvider:(id)provider fetchRequest:(id)request scheduler:(id)scheduler;
 - (BOOL)shouldAllowPredictionSearchToSourceResults;
-- (CNAutocompleteSearchObservableProvider)initWithSearchProvider:(id)a3 fetchRequest:(id)a4 scheduler:(id)a5;
+- (CNAutocompleteSearchObservableProvider)initWithSearchProvider:(id)provider fetchRequest:(id)request scheduler:(id)scheduler;
 - (id)calendarServersSearchObservable;
 - (id)directoryServersSearchObservable;
 - (id)localExtensionSearchObservables;
 - (id)localSearchObservable;
-- (id)observableWithWrappedSearchProviderGetter:(id)a3 name:(id)a4;
-- (id)predictionsSearchObservableWithUnfilteredResultPromise:(id)a3;
+- (id)observableWithWrappedSearchProviderGetter:(id)getter name:(id)name;
+- (id)predictionsSearchObservableWithUnfilteredResultPromise:(id)promise;
 - (id)recentsSearchObservable;
 - (id)stewieSearchObservable;
 - (id)suggestionsSearchObservable;
@@ -17,8 +17,8 @@
 
 - (BOOL)shouldAllowPredictionSearchToSourceResults
 {
-  v3 = [(CNAutocompleteSearchObservableProvider *)self fetchRequest];
-  if ([v3 searchType] == 2)
+  fetchRequest = [(CNAutocompleteSearchObservableProvider *)self fetchRequest];
+  if ([fetchRequest searchType] == 2)
   {
     v4 = 1;
 LABEL_9:
@@ -26,18 +26,18 @@ LABEL_9:
     return v4;
   }
 
-  v5 = [(CNAutocompleteSearchObservableProvider *)self fetchRequest];
-  v6 = [v5 searchType];
+  fetchRequest2 = [(CNAutocompleteSearchObservableProvider *)self fetchRequest];
+  searchType = [fetchRequest2 searchType];
 
-  if (v6 != 1)
+  if (searchType != 1)
   {
-    v3 = [(CNAutocompleteSearchObservableProvider *)self fetchRequest];
-    v7 = [v3 searchString];
-    if (v7)
+    fetchRequest = [(CNAutocompleteSearchObservableProvider *)self fetchRequest];
+    searchString = [fetchRequest searchString];
+    if (searchString)
     {
-      v8 = [(CNAutocompleteSearchObservableProvider *)self fetchRequest];
-      v9 = [v8 searchString];
-      v4 = [v9 length] == 0;
+      fetchRequest3 = [(CNAutocompleteSearchObservableProvider *)self fetchRequest];
+      searchString2 = [fetchRequest3 searchString];
+      v4 = [searchString2 length] == 0;
     }
 
     else
@@ -51,30 +51,30 @@ LABEL_9:
   return 1;
 }
 
-+ (id)providerWithSearchProvider:(id)a3 fetchRequest:(id)a4 scheduler:(id)a5
++ (id)providerWithSearchProvider:(id)provider fetchRequest:(id)request scheduler:(id)scheduler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithSearchProvider:v10 fetchRequest:v9 scheduler:v8];
+  schedulerCopy = scheduler;
+  requestCopy = request;
+  providerCopy = provider;
+  v11 = [[self alloc] initWithSearchProvider:providerCopy fetchRequest:requestCopy scheduler:schedulerCopy];
 
   return v11;
 }
 
-- (CNAutocompleteSearchObservableProvider)initWithSearchProvider:(id)a3 fetchRequest:(id)a4 scheduler:(id)a5
+- (CNAutocompleteSearchObservableProvider)initWithSearchProvider:(id)provider fetchRequest:(id)request scheduler:(id)scheduler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  requestCopy = request;
+  schedulerCopy = scheduler;
   v18.receiver = self;
   v18.super_class = CNAutocompleteSearchObservableProvider;
   v12 = [(CNAutocompleteSearchObservableProvider *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_searchProvider, a3);
-    objc_storeStrong(&v13->_fetchRequest, a4);
-    objc_storeStrong(&v13->_scheduler, a5);
+    objc_storeStrong(&v12->_searchProvider, provider);
+    objc_storeStrong(&v13->_fetchRequest, request);
+    objc_storeStrong(&v13->_scheduler, scheduler);
     v14 = os_log_create("com.apple.contacts.autocomplete", "debug");
     log = v13->_log;
     v13->_log = v14;
@@ -87,13 +87,13 @@ LABEL_9:
 
 - (id)localSearchObservable
 {
-  v3 = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
+  searchProvider = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__CNAutocompleteSearchObservableProvider_localSearchObservable__block_invoke;
   v7[3] = &unk_2781C43F0;
-  v8 = v3;
-  v4 = v3;
+  v8 = searchProvider;
+  v4 = searchProvider;
   v5 = [(CNAutocompleteSearchObservableProvider *)self observableWithWrappedSearchProviderGetter:v7 name:@"Local Contacts"];
 
   return v5;
@@ -101,13 +101,13 @@ LABEL_9:
 
 - (id)recentsSearchObservable
 {
-  v3 = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
+  searchProvider = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__CNAutocompleteSearchObservableProvider_recentsSearchObservable__block_invoke;
   v7[3] = &unk_2781C43F0;
-  v8 = v3;
-  v4 = v3;
+  v8 = searchProvider;
+  v4 = searchProvider;
   v5 = [(CNAutocompleteSearchObservableProvider *)self observableWithWrappedSearchProviderGetter:v7 name:@"Recent Contacts"];
 
   return v5;
@@ -115,13 +115,13 @@ LABEL_9:
 
 - (id)stewieSearchObservable
 {
-  v3 = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
+  searchProvider = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__CNAutocompleteSearchObservableProvider_stewieSearchObservable__block_invoke;
   v7[3] = &unk_2781C43F0;
-  v8 = v3;
-  v4 = v3;
+  v8 = searchProvider;
+  v4 = searchProvider;
   v5 = [(CNAutocompleteSearchObservableProvider *)self observableWithWrappedSearchProviderGetter:v7 name:@"Stewie"];
 
   return v5;
@@ -129,34 +129,34 @@ LABEL_9:
 
 - (id)suggestionsSearchObservable
 {
-  v3 = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
+  searchProvider = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__CNAutocompleteSearchObservableProvider_suggestionsSearchObservable__block_invoke;
   v7[3] = &unk_2781C43F0;
-  v8 = v3;
-  v4 = v3;
+  v8 = searchProvider;
+  v4 = searchProvider;
   v5 = [(CNAutocompleteSearchObservableProvider *)self observableWithWrappedSearchProviderGetter:v7 name:@"Suggested Contacts"];
 
   return v5;
 }
 
-- (id)predictionsSearchObservableWithUnfilteredResultPromise:(id)a3
+- (id)predictionsSearchObservableWithUnfilteredResultPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
+  promiseCopy = promise;
+  searchProvider = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __97__CNAutocompleteSearchObservableProvider_predictionsSearchObservableWithUnfilteredResultPromise___block_invoke;
   v18[3] = &unk_2781C43F0;
-  v19 = v5;
-  v6 = v5;
+  v19 = searchProvider;
+  v6 = searchProvider;
   v7 = [(CNAutocompleteSearchObservableProvider *)self observableWithWrappedSearchProviderGetter:v18 name:@"Predictions"];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __97__CNAutocompleteSearchObservableProvider_predictionsSearchObservableWithUnfilteredResultPromise___block_invoke_2;
   v16[3] = &unk_2781C4418;
-  v8 = v4;
+  v8 = promiseCopy;
   v17 = v8;
   v9 = [v7 doOnNext:v16];
   v14[0] = MEMORY[0x277D85DD0];
@@ -179,14 +179,14 @@ LABEL_9:
 
 - (id)localExtensionSearchObservables
 {
-  v3 = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
-  v4 = [v3 localExtensionSearches];
+  searchProvider = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
+  localExtensionSearches = [searchProvider localExtensionSearches];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__CNAutocompleteSearchObservableProvider_localExtensionSearchObservables__block_invoke;
   v7[3] = &unk_2781C4488;
   v7[4] = self;
-  v5 = [v4 _cn_map:v7];
+  v5 = [localExtensionSearches _cn_map:v7];
 
   return v5;
 }
@@ -208,13 +208,13 @@ id __73__CNAutocompleteSearchObservableProvider_localExtensionSearchObservables_
 
 - (id)directoryServersSearchObservable
 {
-  v3 = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
+  searchProvider = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__CNAutocompleteSearchObservableProvider_directoryServersSearchObservable__block_invoke;
   v7[3] = &unk_2781C43F0;
-  v8 = v3;
-  v4 = v3;
+  v8 = searchProvider;
+  v4 = searchProvider;
   v5 = [(CNAutocompleteSearchObservableProvider *)self observableWithWrappedSearchProviderGetter:v7 name:@"Directory Servers"];
 
   return v5;
@@ -222,37 +222,37 @@ id __73__CNAutocompleteSearchObservableProvider_localExtensionSearchObservables_
 
 - (id)calendarServersSearchObservable
 {
-  v3 = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
+  searchProvider = [(CNAutocompleteSearchObservableProvider *)self searchProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__CNAutocompleteSearchObservableProvider_calendarServersSearchObservable__block_invoke;
   v7[3] = &unk_2781C43F0;
-  v8 = v3;
-  v4 = v3;
+  v8 = searchProvider;
+  v4 = searchProvider;
   v5 = [(CNAutocompleteSearchObservableProvider *)self observableWithWrappedSearchProviderGetter:v7 name:@"Calendar Server"];
 
   return v5;
 }
 
-- (id)observableWithWrappedSearchProviderGetter:(id)a3 name:(id)a4
+- (id)observableWithWrappedSearchProviderGetter:(id)getter name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  getterCopy = getter;
+  nameCopy = name;
   v8 = [(CNAutocompleteSearchObservableProvider *)self log];
   v9 = [CNAutocompleteObservable alloc];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __89__CNAutocompleteSearchObservableProvider_observableWithWrappedSearchProviderGetter_name___block_invoke;
   v18 = &unk_2781C44D8;
-  v19 = self;
+  selfCopy = self;
   v20 = v8;
-  v21 = v7;
-  v22 = v6;
-  v10 = v7;
+  v21 = nameCopy;
+  v22 = getterCopy;
+  v10 = nameCopy;
   v11 = v8;
-  v12 = v6;
+  v12 = getterCopy;
   v13 = [(CNAutocompleteObservable *)v9 initWithBlock:&v15];
-  [(CNAutocompleteObservable *)v13 setDebugDescription:v10, v15, v16, v17, v18, v19];
+  [(CNAutocompleteObservable *)v13 setDebugDescription:v10, v15, v16, v17, v18, selfCopy];
 
   return v13;
 }

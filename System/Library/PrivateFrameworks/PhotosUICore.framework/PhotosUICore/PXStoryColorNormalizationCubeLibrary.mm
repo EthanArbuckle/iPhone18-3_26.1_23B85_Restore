@@ -1,78 +1,78 @@
 @interface PXStoryColorNormalizationCubeLibrary
 + (PXStoryColorNormalizationCubeLibrary)sharedInstance;
-- (BOOL)_isRequestActive:(int64_t)a3;
+- (BOOL)_isRequestActive:(int64_t)active;
 - (PXStoryColorNormalizationCubeLibrary)init;
-- (PXStoryColorNormalizationCubeLibrary)initWithColorSpace:(CGColorSpace *)a3;
-- (int64_t)requestColorCubeForAssetNormalization:(id)a3 completionHandler:(id)a4;
-- (void)_cacheColorCube:(id)a3 forAssetNormalization:(id)a4;
-- (void)_queue_performRequestWithID:(int64_t)a3 forAssetNormalization:(id)a4 completionHandler:(id)a5;
-- (void)cancelRequest:(int64_t)a3;
+- (PXStoryColorNormalizationCubeLibrary)initWithColorSpace:(CGColorSpace *)space;
+- (int64_t)requestColorCubeForAssetNormalization:(id)normalization completionHandler:(id)handler;
+- (void)_cacheColorCube:(id)cube forAssetNormalization:(id)normalization;
+- (void)_queue_performRequestWithID:(int64_t)d forAssetNormalization:(id)normalization completionHandler:(id)handler;
+- (void)cancelRequest:(int64_t)request;
 - (void)dealloc;
 @end
 
 @implementation PXStoryColorNormalizationCubeLibrary
 
-- (void)_queue_performRequestWithID:(int64_t)a3 forAssetNormalization:(id)a4 completionHandler:(id)a5
+- (void)_queue_performRequestWithID:(int64_t)d forAssetNormalization:(id)normalization completionHandler:(id)handler
 {
-  v15 = a4;
-  v9 = a5;
-  if ([(PXStoryColorNormalizationCubeLibrary *)self _isRequestActive:a3])
+  normalizationCopy = normalization;
+  handlerCopy = handler;
+  if ([(PXStoryColorNormalizationCubeLibrary *)self _isRequestActive:d])
   {
-    v10 = [PXStoryColorNormalizationAdjustment colorCubeForNormalization:v15 targetColorSpace:self->_colorspace];
+    v10 = [PXStoryColorNormalizationAdjustment colorCubeForNormalization:normalizationCopy targetColorSpace:self->_colorspace];
     if (!v10)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXStoryColorNormalizationCubeLibrary.m" lineNumber:150 description:{@"Unable to create colorCubeData for assetNormalization:%@", v15}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryColorNormalizationCubeLibrary.m" lineNumber:150 description:{@"Unable to create colorCubeData for assetNormalization:%@", normalizationCopy}];
     }
 
     v11 = [[off_1E77216F8 alloc] initWithData:v10 edgeSize:self->_cubeEdgeSize pixelFormat:70];
     if (!v11)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryColorNormalizationCubeLibrary _queue_performRequestWithID:forAssetNormalization:completionHandler:]"];
-      [v13 handleFailureInFunction:v14 file:@"PXStoryColorNormalizationCubeLibrary.m" lineNumber:153 description:{@"Unable to create cube for %@ data:%@", v15, v10}];
+      [currentHandler2 handleFailureInFunction:v14 file:@"PXStoryColorNormalizationCubeLibrary.m" lineNumber:153 description:{@"Unable to create cube for %@ data:%@", normalizationCopy, v10}];
     }
 
-    [(PXStoryColorNormalizationCubeLibrary *)self _cacheColorCube:v11 forAssetNormalization:v15];
-    v9[2](v9, v11, 2, a3);
+    [(PXStoryColorNormalizationCubeLibrary *)self _cacheColorCube:v11 forAssetNormalization:normalizationCopy];
+    handlerCopy[2](handlerCopy, v11, 2, d);
   }
 }
 
-- (void)_cacheColorCube:(id)a3 forAssetNormalization:(id)a4
+- (void)_cacheColorCube:(id)cube forAssetNormalization:(id)normalization
 {
-  v6 = a4;
-  v7 = a3;
+  normalizationCopy = normalization;
+  cubeCopy = cube;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_lock_aliveCubesByAssetNormalization setObject:v7 forKey:v6];
-  [(NSCache *)self->_lock_cubeByAssetNormalization setObject:v7 forKey:v6];
+  [(NSMapTable *)self->_lock_aliveCubesByAssetNormalization setObject:cubeCopy forKey:normalizationCopy];
+  [(NSCache *)self->_lock_cubeByAssetNormalization setObject:cubeCopy forKey:normalizationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_isRequestActive:(int64_t)a3
+- (BOOL)_isRequestActive:(int64_t)active
 {
   os_unfair_lock_lock(&self->_lock);
-  LOBYTE(a3) = [(NSMutableIndexSet *)self->_lock_activeRequests containsIndex:a3];
+  LOBYTE(active) = [(NSMutableIndexSet *)self->_lock_activeRequests containsIndex:active];
   os_unfair_lock_unlock(&self->_lock);
-  return a3;
+  return active;
 }
 
-- (int64_t)requestColorCubeForAssetNormalization:(id)a3 completionHandler:(id)a4
+- (int64_t)requestColorCubeForAssetNormalization:(id)normalization completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  normalizationCopy = normalization;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   add = atomic_fetch_add(_makeNextTextureRequestID_lastRequestID, 1u);
   [(NSMutableIndexSet *)self->_lock_activeRequests addIndex:add];
-  if (v6)
+  if (normalizationCopy)
   {
-    v9 = [(NSCache *)self->_lock_cubeByAssetNormalization objectForKey:v6];
+    v9 = [(NSCache *)self->_lock_cubeByAssetNormalization objectForKey:normalizationCopy];
     if (!v9)
     {
-      v9 = [(NSMapTable *)self->_lock_aliveCubesByAssetNormalization objectForKey:v6];
+      v9 = [(NSMapTable *)self->_lock_aliveCubesByAssetNormalization objectForKey:normalizationCopy];
       if (v9)
       {
-        [(NSCache *)self->_lock_cubeByAssetNormalization setObject:v9 forKey:v6];
+        [(NSCache *)self->_lock_cubeByAssetNormalization setObject:v9 forKey:normalizationCopy];
       }
     }
   }
@@ -83,7 +83,7 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v6)
+  if (normalizationCopy)
   {
     v10 = v9 == 0;
   }
@@ -94,7 +94,7 @@
   }
 
   v11 = !v10;
-  v7[2](v7, v9, v11, add);
+  handlerCopy[2](handlerCopy, v9, v11, add);
   if ((v11 & 1) == 0)
   {
     objc_initWeak(&location, self);
@@ -105,8 +105,8 @@
     block[3] = &unk_1E7743E48;
     objc_copyWeak(v17, &location);
     v17[1] = add;
-    v15 = v6;
-    v16 = v7;
+    v15 = normalizationCopy;
+    v16 = handlerCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(v17);
@@ -122,10 +122,10 @@ void __96__PXStoryColorNormalizationCubeLibrary_requestColorCubeForAssetNormaliz
   [WeakRetained _queue_performRequestWithID:*(a1 + 56) forAssetNormalization:*(a1 + 32) completionHandler:*(a1 + 40)];
 }
 
-- (void)cancelRequest:(int64_t)a3
+- (void)cancelRequest:(int64_t)request
 {
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableIndexSet *)self->_lock_activeRequests removeIndex:a3];
+  [(NSMutableIndexSet *)self->_lock_activeRequests removeIndex:request];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -140,13 +140,13 @@ void __96__PXStoryColorNormalizationCubeLibrary_requestColorCubeForAssetNormaliz
 
 - (PXStoryColorNormalizationCubeLibrary)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryColorNormalizationCubeLibrary.m" lineNumber:78 description:{@"%s is not available as initializer", "-[PXStoryColorNormalizationCubeLibrary init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryColorNormalizationCubeLibrary.m" lineNumber:78 description:{@"%s is not available as initializer", "-[PXStoryColorNormalizationCubeLibrary init]"}];
 
   abort();
 }
 
-- (PXStoryColorNormalizationCubeLibrary)initWithColorSpace:(CGColorSpace *)a3
+- (PXStoryColorNormalizationCubeLibrary)initWithColorSpace:(CGColorSpace *)space
 {
   v18.receiver = self;
   v18.super_class = PXStoryColorNormalizationCubeLibrary;
@@ -170,14 +170,14 @@ void __96__PXStoryColorNormalizationCubeLibrary_requestColorCubeForAssetNormaliz
     v5->_lock_cubeByAssetNormalization = v12;
 
     [(NSCache *)v5->_lock_cubeByAssetNormalization setCountLimit:150];
-    v14 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     lock_aliveCubesByAssetNormalization = v5->_lock_aliveCubesByAssetNormalization;
-    v5->_lock_aliveCubesByAssetNormalization = v14;
+    v5->_lock_aliveCubesByAssetNormalization = strongToWeakObjectsMapTable;
 
     v16 = +[PXStorySettings sharedInstance];
     v5->_cubeEdgeSize = [v16 colorNormalizationCubeEdgeSize];
 
-    v5->_colorspace = CGColorSpaceRetain(a3);
+    v5->_colorspace = CGColorSpaceRetain(space);
   }
 
   return v5;

@@ -5,17 +5,17 @@
 - (id)EKUI_viewHierarchy;
 - (id)_popoverPresentationOperationInQueue;
 - (id)enqueuedViewControllers;
-- (void)_addDoneButtonIfNeededToViewController:(id)a3;
+- (void)_addDoneButtonIfNeededToViewController:(id)controller;
 - (void)_doneButtonTapped;
 - (void)cancelOutstandingOperations;
 - (void)dealloc;
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4;
-- (void)dismissViewControllerWithoutEnqueuingWithTransition:(int)a3 completion:(id)a4;
-- (void)enqueueBlock:(id)a3;
-- (void)enqueueStackResetOperationDismissingPresentations:(BOOL)a3 cancelOperations:(BOOL)a4 completionBlock:(id)a5;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)sourceViewController:(id)a3 notifiesReadinessForPresentation:(BOOL)a4;
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion;
+- (void)dismissViewControllerWithoutEnqueuingWithTransition:(int)transition completion:(id)completion;
+- (void)enqueueBlock:(id)block;
+- (void)enqueueStackResetOperationDismissingPresentations:(BOOL)presentations cancelOperations:(BOOL)operations completionBlock:(id)block;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion;
+- (void)sourceViewController:(id)controller notifiesReadinessForPresentation:(BOOL)presentation;
 @end
 
 @implementation EnqueueableManagedNavigationController
@@ -40,9 +40,9 @@
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG))
     {
       v8 = v7;
-      v9 = [v3 name];
+      name = [v3 name];
       *buf = 138412290;
-      v13 = v9;
+      v13 = name;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Created showViewControllers queue named [%@]", buf, 0xCu);
     }
 
@@ -72,17 +72,17 @@
 
 - (void)cancelOutstandingOperations
 {
-  v2 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-  [v2 cancelAllOperations];
+  showViewControllersWhenReadyQueue = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+  [showViewControllersWhenReadyQueue cancelAllOperations];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = EnqueueableManagedNavigationController;
-  v4 = a3;
-  [(EnqueueableManagedNavigationController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(EnqueueableManagedNavigationController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
@@ -97,14 +97,14 @@
   v11 = sub_1000AC0D4;
   v12 = sub_1000AC0E4;
   v13 = +[NSMutableArray array];
-  v3 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-  v4 = [v3 operations];
+  showViewControllersWhenReadyQueue = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+  operations = [showViewControllersWhenReadyQueue operations];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000AC0EC;
   v7[3] = &unk_1002106D8;
   v7[4] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [operations enumerateObjectsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -112,9 +112,9 @@
   return v5;
 }
 
-- (void)sourceViewController:(id)a3 notifiesReadinessForPresentation:(BOOL)a4
+- (void)sourceViewController:(id)controller notifiesReadinessForPresentation:(BOOL)presentation
 {
-  v4 = [(EnqueueableManagedNavigationController *)self _popoverPresentationOperationInQueue:a3];
+  v4 = [(EnqueueableManagedNavigationController *)self _popoverPresentationOperationInQueue:controller];
   [v4 isReady];
 }
 
@@ -126,14 +126,14 @@
   v10 = sub_1000AC0D4;
   v11 = sub_1000AC0E4;
   v12 = 0;
-  v2 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-  v3 = [v2 operations];
+  showViewControllersWhenReadyQueue = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+  operations = [showViewControllersWhenReadyQueue operations];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000AC2DC;
   v6[3] = &unk_1002106D8;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [operations enumerateObjectsUsingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -141,31 +141,31 @@
   return v4;
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v72 = a6;
-  if (v10)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  senderCopy = sender;
+  completionCopy = completion;
+  if (controllerCopy)
   {
-    v12 = [v10 prefersForcedModalShowViewController];
-    v13 = [(EnqueueableManagedNavigationController *)self _shouldDoExternalPresentationOfManagedNavigationController];
-    v14 = [(EnqueueableManagedNavigationController *)self sourceViewController];
-    v15 = [v14 presentationStyleOverrideForChildViewControllers];
+    prefersForcedModalShowViewController = [controllerCopy prefersForcedModalShowViewController];
+    _shouldDoExternalPresentationOfManagedNavigationController = [(EnqueueableManagedNavigationController *)self _shouldDoExternalPresentationOfManagedNavigationController];
+    sourceViewController = [(EnqueueableManagedNavigationController *)self sourceViewController];
+    presentationStyleOverrideForChildViewControllers = [sourceViewController presentationStyleOverrideForChildViewControllers];
 
-    if (v15 == -52534682)
+    if (presentationStyleOverrideForChildViewControllers == -52534682)
     {
       goto LABEL_51;
     }
 
-    [(EnqueueableManagedNavigationController *)self _addDoneButtonIfNeededToViewController:v10];
-    v16 = [(EnqueueableManagedNavigationController *)self showViewControllerOperationClass];
-    v71 = v11;
-    v70 = v12;
-    if ((v13 & v12) != 1 || v15 == 7)
+    [(EnqueueableManagedNavigationController *)self _addDoneButtonIfNeededToViewController:controllerCopy];
+    showViewControllerOperationClass = [(EnqueueableManagedNavigationController *)self showViewControllerOperationClass];
+    v71 = senderCopy;
+    v70 = prefersForcedModalShowViewController;
+    if ((_shouldDoExternalPresentationOfManagedNavigationController & prefersForcedModalShowViewController) != 1 || presentationStyleOverrideForChildViewControllers == 7)
     {
-      if (v12)
+      if (prefersForcedModalShowViewController)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -178,20 +178,20 @@
           v23 = 18;
         }
 
-        [v10 setModalPresentationStyle:v23];
+        [controllerCopy setModalPresentationStyle:v23];
       }
 
-      v24 = [(EnqueueableManagedNavigationController *)self viewControllers];
-      if ([v24 count] == 1)
+      viewControllers = [(EnqueueableManagedNavigationController *)self viewControllers];
+      if ([viewControllers count] == 1)
       {
         [(EnqueueableManagedNavigationController *)self viewControllers];
-        v25 = v69 = v16;
-        v26 = [v25 firstObject];
+        v25 = v69 = showViewControllerOperationClass;
+        firstObject = [v25 firstObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
-        v7 = v7;
-        v16 = v69;
+        animatedCopy = animatedCopy;
+        showViewControllerOperationClass = v69;
       }
 
       else
@@ -199,25 +199,25 @@
         isKindOfClass = 0;
       }
 
-      v19 = [[v16 alloc] initWithViewControllerToShow:v10 toBeShownInViewController:self shouldBeModal:v12 shouldShowWithAnimation:isKindOfClass & 1];
+      v19 = [[showViewControllerOperationClass alloc] initWithViewControllerToShow:controllerCopy toBeShownInViewController:self shouldBeModal:prefersForcedModalShowViewController shouldShowWithAnimation:isKindOfClass & 1];
     }
 
     else
     {
-      [v10 setModalPresentationStyle:v15];
-      v17 = [v16 alloc];
-      v18 = [(EnqueueableManagedNavigationController *)self modalPresentationDelegate];
-      v19 = [v17 initWithViewControllerToShow:v10 toBeShownInViewController:v18 shouldBeModal:1 shouldShowWithAnimation:v7];
+      [controllerCopy setModalPresentationStyle:presentationStyleOverrideForChildViewControllers];
+      v17 = [showViewControllerOperationClass alloc];
+      modalPresentationDelegate = [(EnqueueableManagedNavigationController *)self modalPresentationDelegate];
+      v19 = [v17 initWithViewControllerToShow:controllerCopy toBeShownInViewController:modalPresentationDelegate shouldBeModal:1 shouldShowWithAnimation:animatedCopy];
 
-      v13 = 0;
+      _shouldDoExternalPresentationOfManagedNavigationController = 0;
     }
 
-    [(DeferredPopoverPresentationOperation *)v19 setCompletionBlock:v72];
+    [(DeferredPopoverPresentationOperation *)v19 setCompletionBlock:completionCopy];
     v28 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v29 = v28;
-      v30 = v16;
+      v30 = showViewControllerOperationClass;
       v31 = objc_opt_class();
       v32 = v31;
       *buf = 138412546;
@@ -227,16 +227,16 @@
       v33 = v76;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%@ queueing show view controller operation to show %@", buf, 0x16u);
 
-      v16 = v30;
+      showViewControllerOperationClass = v30;
     }
 
-    if (v13)
+    if (_shouldDoExternalPresentationOfManagedNavigationController)
     {
-      [(EnqueueableManagedNavigationController *)self setModalPresentationStyle:v15];
-      if (v15 == 7)
+      [(EnqueueableManagedNavigationController *)self setModalPresentationStyle:presentationStyleOverrideForChildViewControllers];
+      if (presentationStyleOverrideForChildViewControllers == 7)
       {
-        v34 = [(EnqueueableManagedNavigationController *)self _popoverPresentationOperationInQueue];
-        if (v34 || (-[EnqueueableManagedNavigationController showViewControllersWhenReadyQueue](self, "showViewControllersWhenReadyQueue"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 operationCount], v35, v36))
+        _popoverPresentationOperationInQueue = [(EnqueueableManagedNavigationController *)self _popoverPresentationOperationInQueue];
+        if (_popoverPresentationOperationInQueue || (-[EnqueueableManagedNavigationController showViewControllersWhenReadyQueue](self, "showViewControllersWhenReadyQueue"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 operationCount], v35, v36))
         {
           v37 = kCalUILogHandle;
           if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
@@ -244,11 +244,11 @@
             v38 = v37;
             v39 = objc_opt_class();
             v40 = v39;
-            v41 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+            showViewControllersWhenReadyQueue = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
             *buf = 138412546;
             v74 = v39;
             v75 = 2112;
-            v76 = v41;
+            v76 = showViewControllersWhenReadyQueue;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%@ won't create a popover presentation operation because the queue is not empty: \n %@", buf, 0x16u);
           }
 
@@ -257,7 +257,7 @@
 
         else
         {
-          v42 = [[DeferredPopoverPresentationOperation alloc] initWithViewController:self shouldShowWithAnimation:v7];
+          v42 = [[DeferredPopoverPresentationOperation alloc] initWithViewController:self shouldShowWithAnimation:animatedCopy];
           v65 = kCalUILogHandle;
           if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
           {
@@ -270,24 +270,24 @@
           }
         }
 
-        v43 = [(EnqueueableManagedNavigationController *)self sourceViewController];
-        v44 = [v43 conformsToProtocol:&OBJC_PROTOCOL___EnqueuablePopoverPresentationManagedNavigationControllerDelegate];
+        sourceViewController2 = [(EnqueueableManagedNavigationController *)self sourceViewController];
+        v44 = [sourceViewController2 conformsToProtocol:&OBJC_PROTOCOL___EnqueuablePopoverPresentationManagedNavigationControllerDelegate];
 
         if (v44)
         {
-          v45 = [(EnqueueableManagedNavigationController *)self sourceViewController];
-          [v45 enqueuableNavigationController:self requestsDeferShowViewControllerUntilReady:0];
+          sourceViewController3 = [(EnqueueableManagedNavigationController *)self sourceViewController];
+          [sourceViewController3 enqueuableNavigationController:self requestsDeferShowViewControllerUntilReady:0];
         }
 
         v46 = v70 ^ 1;
-        if (!v34)
+        if (!_popoverPresentationOperationInQueue)
         {
           v46 = 1;
         }
 
         if ((v46 & 1) == 0)
         {
-          [(DeferredPopoverPresentationOperation *)v19 addDependency:v34];
+          [(DeferredPopoverPresentationOperation *)v19 addDependency:_popoverPresentationOperationInQueue];
         }
 
         v47 = v44 ^ 1;
@@ -295,9 +295,9 @@
 
       else
       {
-        v48 = [v16 alloc];
-        v49 = [(EnqueueableManagedNavigationController *)self modalPresentationDelegate];
-        v42 = [v48 initWithViewControllerToShow:self toBeShownInViewController:v49 shouldBeModal:1 shouldShowWithAnimation:v7];
+        v48 = [showViewControllerOperationClass alloc];
+        modalPresentationDelegate2 = [(EnqueueableManagedNavigationController *)self modalPresentationDelegate];
+        v42 = [v48 initWithViewControllerToShow:self toBeShownInViewController:modalPresentationDelegate2 shouldBeModal:1 shouldShowWithAnimation:animatedCopy];
 
         v47 = 0;
       }
@@ -309,13 +309,13 @@
       v42 = 0;
     }
 
-    v50 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-    v51 = [v50 operations];
+    showViewControllersWhenReadyQueue2 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+    operations = [showViewControllersWhenReadyQueue2 operations];
 
-    if ([v51 count] >= 2)
+    if ([operations count] >= 2)
     {
-      v52 = [v51 lastObject];
-      [(DeferredPopoverPresentationOperation *)v19 addDependency:v52];
+      lastObject = [operations lastObject];
+      [(DeferredPopoverPresentationOperation *)v19 addDependency:lastObject];
     }
 
     if ([(ShowViewControllerOperation *)v19 shouldBeModal])
@@ -333,17 +333,17 @@
       if ((v53 & 1) == 0)
       {
         [(DeferredPopoverPresentationOperation *)v19 addDependency:v42];
-        v54 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-        [v54 addOperation:v42];
+        showViewControllersWhenReadyQueue3 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+        [showViewControllersWhenReadyQueue3 addOperation:v42];
       }
     }
 
     else if (v42)
     {
       [(DeferredPopoverPresentationOperation *)v19 setCompletionBlock:0];
-      [(DeferredPopoverPresentationOperation *)v42 setCompletionBlock:v72];
-      v55 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-      [v55 addOperation:v19];
+      [(DeferredPopoverPresentationOperation *)v42 setCompletionBlock:completionCopy];
+      showViewControllersWhenReadyQueue4 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+      [showViewControllersWhenReadyQueue4 addOperation:v19];
 
       if (v47)
       {
@@ -354,32 +354,32 @@ LABEL_48:
           v60 = v59;
           v61 = objc_opt_class();
           v62 = v61;
-          v63 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+          showViewControllersWhenReadyQueue5 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
           *buf = 138412546;
           v74 = v61;
           v75 = 2112;
-          v76 = v63;
+          v76 = showViewControllersWhenReadyQueue5;
           _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "%@'s operation queue is ready for execution:\n%@", buf, 0x16u);
         }
 
-        v64 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-        [v64 setSuspended:0];
+        showViewControllersWhenReadyQueue6 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+        [showViewControllersWhenReadyQueue6 setSuspended:0];
 
-        v11 = v71;
+        senderCopy = v71;
         goto LABEL_51;
       }
 
-      v56 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-      v57 = v56;
+      showViewControllersWhenReadyQueue7 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+      v57 = showViewControllersWhenReadyQueue7;
       v58 = v42;
 LABEL_47:
-      [v56 addOperation:v58];
+      [showViewControllersWhenReadyQueue7 addOperation:v58];
 
       goto LABEL_48;
     }
 
-    v56 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-    v57 = v56;
+    showViewControllersWhenReadyQueue7 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+    v57 = showViewControllersWhenReadyQueue7;
     v58 = v19;
     goto LABEL_47;
   }
@@ -401,23 +401,23 @@ LABEL_51:
 
 - (BOOL)_shouldDoExternalPresentationOfManagedNavigationController
 {
-  v3 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-  if ([v3 operationCount])
+  showViewControllersWhenReadyQueue = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+  if ([showViewControllersWhenReadyQueue operationCount])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(EnqueueableManagedNavigationController *)self modalPresentationDelegate];
-    if (v5)
+    modalPresentationDelegate = [(EnqueueableManagedNavigationController *)self modalPresentationDelegate];
+    if (modalPresentationDelegate)
     {
-      v6 = [(EnqueueableManagedNavigationController *)self view];
-      v7 = [v6 window];
-      if (v7)
+      view = [(EnqueueableManagedNavigationController *)self view];
+      window = [view window];
+      if (window)
       {
-        v8 = [(EnqueueableManagedNavigationController *)self presentingViewController];
-        v4 = v8 == 0;
+        presentingViewController = [(EnqueueableManagedNavigationController *)self presentingViewController];
+        v4 = presentingViewController == 0;
       }
 
       else
@@ -435,13 +435,13 @@ LABEL_51:
   return v4;
 }
 
-- (void)_addDoneButtonIfNeededToViewController:(id)a3
+- (void)_addDoneButtonIfNeededToViewController:(id)controller
 {
-  v10 = a3;
+  controllerCopy = controller;
   if ([(EnqueueableManagedNavigationController *)self _shouldDoExternalPresentationOfManagedNavigationController])
   {
-    v4 = [(EnqueueableManagedNavigationController *)self viewControllers];
-    v5 = [v4 count] == 0;
+    viewControllers = [(EnqueueableManagedNavigationController *)self viewControllers];
+    v5 = [viewControllers count] == 0;
   }
 
   else
@@ -449,7 +449,7 @@ LABEL_51:
     v5 = 0;
   }
 
-  v6 = [(EnqueueableManagedNavigationController *)self view];
+  view = [(EnqueueableManagedNavigationController *)self view];
   v7 = EKUICurrentWindowInterfaceParadigm();
 
   if (v5 && v7 == 8)
@@ -458,31 +458,31 @@ LABEL_51:
     if (objc_opt_isKindOfClass())
     {
       v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_doneButtonTapped"];
-      v9 = [v10 navigationItem];
-      [v9 setLeftBarButtonItem:v8];
+      navigationItem = [controllerCopy navigationItem];
+      [navigationItem setLeftBarButtonItem:v8];
     }
   }
 }
 
 - (void)_doneButtonTapped
 {
-  v3 = [(EnqueueableManagedNavigationController *)self presentingViewController];
+  presentingViewController = [(EnqueueableManagedNavigationController *)self presentingViewController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000ACD24;
   v4[3] = &unk_10020EB00;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v4];
 }
 
-- (void)enqueueStackResetOperationDismissingPresentations:(BOOL)a3 cancelOperations:(BOOL)a4 completionBlock:(id)a5
+- (void)enqueueStackResetOperationDismissingPresentations:(BOOL)presentations cancelOperations:(BOOL)operations completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  operationsCopy = operations;
+  presentationsCopy = presentations;
+  blockCopy = block;
   v9 = kCalUILogHandle;
   v10 = os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (operationsCopy)
   {
     if (v10)
     {
@@ -505,12 +505,12 @@ LABEL_51:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%@ queueing stack reset operation.", buf, 0xCu);
   }
 
-  v15 = [(EnqueueableManagedNavigationController *)self presentedViewController];
-  if (v15)
+  presentedViewController = [(EnqueueableManagedNavigationController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v16 = [(EnqueueableManagedNavigationController *)self presentedViewController];
-    v17 = [v16 presentingViewController];
-    v18 = v17 == self;
+    presentedViewController2 = [(EnqueueableManagedNavigationController *)self presentedViewController];
+    presentingViewController = [presentedViewController2 presentingViewController];
+    v18 = presentingViewController == self;
   }
 
   else
@@ -518,7 +518,7 @@ LABEL_51:
     v18 = 0;
   }
 
-  if ([(EnqueueableManagedNavigationController *)self _shouldEnqueueDismissals]&& v6 && v18)
+  if ([(EnqueueableManagedNavigationController *)self _shouldEnqueueDismissals]&& presentationsCopy && v18)
   {
     objc_initWeak(buf, self);
     v24[0] = _NSConcreteStackBlock;
@@ -527,7 +527,7 @@ LABEL_51:
     v24[3] = &unk_100210700;
     objc_copyWeak(&v26, buf);
     v24[4] = self;
-    v25 = v8;
+    v25 = blockCopy;
     [(EnqueueableManagedNavigationController *)self dismissViewControllerWithTransition:0 completion:v24];
 
     objc_destroyWeak(&v26);
@@ -541,11 +541,11 @@ LABEL_51:
     v19[1] = 3221225472;
     v19[2] = sub_1000AD1DC;
     v19[3] = &unk_100210750;
-    v22 = v6;
+    v22 = presentationsCopy;
     v23 = v18;
     objc_copyWeak(&v21, buf);
     v19[4] = self;
-    v20 = v8;
+    v20 = blockCopy;
     [(EnqueueableManagedNavigationController *)self enqueueBlock:v19];
 
     objc_destroyWeak(&v21);
@@ -553,10 +553,10 @@ LABEL_51:
   }
 }
 
-- (void)enqueueBlock:(id)a3
+- (void)enqueueBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG))
@@ -573,19 +573,19 @@ LABEL_51:
     v15 = sub_1000AD84C;
     v16 = &unk_100210778;
     v18 = objc_opt_class();
-    v17 = v4;
+    v17 = blockCopy;
     v8 = [NSBlockOperation blockOperationWithBlock:&v13];
     v9 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue:v13];
-    v10 = [v9 operations];
-    v11 = [v10 lastObject];
+    operations = [v9 operations];
+    lastObject = [operations lastObject];
 
-    if (v11)
+    if (lastObject)
     {
-      [v8 addDependency:v11];
+      [v8 addDependency:lastObject];
     }
 
-    v12 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-    [v12 addOperation:v8];
+    showViewControllersWhenReadyQueue = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+    [showViewControllersWhenReadyQueue addOperation:v8];
   }
 }
 
@@ -596,18 +596,18 @@ LABEL_51:
     return 0;
   }
 
-  v3 = [(EnqueueableManagedNavigationController *)self sourceViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___EnqueueablePresentationDismissalManagedNavigationControllerDelegate];
+  sourceViewController = [(EnqueueableManagedNavigationController *)self sourceViewController];
+  v4 = [sourceViewController conformsToProtocol:&OBJC_PROTOCOL___EnqueueablePresentationDismissalManagedNavigationControllerDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(EnqueueableManagedNavigationController *)self sourceViewController];
+  sourceViewController2 = [(EnqueueableManagedNavigationController *)self sourceViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 enqueueableManagedNavigationControllerShouldEnqueuePresentationDismissals:self];
+    v6 = [sourceViewController2 enqueueableManagedNavigationControllerShouldEnqueuePresentationDismissals:self];
   }
 
   else
@@ -618,10 +618,10 @@ LABEL_51:
   return v6;
 }
 
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&transition;
+  completionCopy = completion;
   if ([(EnqueueableManagedNavigationController *)self _shouldEnqueueDismissals])
   {
     v7 = kCalUILogHandle;
@@ -634,54 +634,54 @@ LABEL_51:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@ queueing show view controller operation to dismiss presented view controller", v16, 0xCu);
     }
 
-    v10 = [[DismissPresentedViewControllerOperation alloc] initWithPresentingViewController:self transition:v4 completion:v6];
-    v11 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-    v12 = [v11 operations];
+    v10 = [[DismissPresentedViewControllerOperation alloc] initWithPresentingViewController:self transition:v4 completion:completionCopy];
+    showViewControllersWhenReadyQueue = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+    operations = [showViewControllersWhenReadyQueue operations];
 
-    if ([v12 count] >= 2)
+    if ([operations count] >= 2)
     {
-      v13 = [v12 lastObject];
-      [(DismissPresentedViewControllerOperation *)v10 addDependency:v13];
+      lastObject = [operations lastObject];
+      [(DismissPresentedViewControllerOperation *)v10 addDependency:lastObject];
     }
 
-    v14 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-    [v14 addOperation:v10];
+    showViewControllersWhenReadyQueue2 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+    [showViewControllersWhenReadyQueue2 addOperation:v10];
 
-    v15 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
-    [v15 setSuspended:0];
+    showViewControllersWhenReadyQueue3 = [(EnqueueableManagedNavigationController *)self showViewControllersWhenReadyQueue];
+    [showViewControllersWhenReadyQueue3 setSuspended:0];
   }
 
   else
   {
-    [(EnqueueableManagedNavigationController *)self dismissViewControllerWithoutEnqueuingWithTransition:v4 completion:v6];
+    [(EnqueueableManagedNavigationController *)self dismissViewControllerWithoutEnqueuingWithTransition:v4 completion:completionCopy];
   }
 }
 
-- (void)dismissViewControllerWithoutEnqueuingWithTransition:(int)a3 completion:(id)a4
+- (void)dismissViewControllerWithoutEnqueuingWithTransition:(int)transition completion:(id)completion
 {
   v4.receiver = self;
   v4.super_class = EnqueueableManagedNavigationController;
-  [(EnqueueableManagedNavigationController *)&v4 dismissViewControllerWithTransition:*&a3 completion:a4];
+  [(EnqueueableManagedNavigationController *)&v4 dismissViewControllerWithTransition:*&transition completion:completion];
 }
 
 - (id)EKUI_viewHierarchy
 {
-  v3 = [(EnqueueableManagedNavigationController *)self sourceViewController];
+  sourceViewController = [(EnqueueableManagedNavigationController *)self sourceViewController];
 
-  if (v3)
+  if (sourceViewController)
   {
-    v4 = [(EnqueueableManagedNavigationController *)self sourceViewController];
-    v5 = [v4 EKUI_viewHierarchy];
+    sourceViewController2 = [(EnqueueableManagedNavigationController *)self sourceViewController];
+    eKUI_viewHierarchy = [sourceViewController2 EKUI_viewHierarchy];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = EnqueueableManagedNavigationController;
-    v5 = [(EnqueueableManagedNavigationController *)&v7 EKUI_viewHierarchy];
+    eKUI_viewHierarchy = [(EnqueueableManagedNavigationController *)&v7 EKUI_viewHierarchy];
   }
 
-  return v5;
+  return eKUI_viewHierarchy;
 }
 
 @end

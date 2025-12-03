@@ -1,17 +1,17 @@
 @interface ACRemoteAccountStoreSession
-- (ACRemoteAccountStoreSession)initWithListenerEndpoint:(id)a3;
+- (ACRemoteAccountStoreSession)initWithListenerEndpoint:(id)endpoint;
 - (id)_connection;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_locked_configureRemoteAccountStoreWithConnection:(id)a3;
-- (void)_locked_connection:(id)a3 setEffectiveBundleID:(id)a4;
-- (void)_locked_connection:(id)a3 setNotificationsEnabled:(BOOL)a4;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_locked_configureRemoteAccountStoreWithConnection:(id)connection;
+- (void)_locked_connection:(id)_locked_connection setEffectiveBundleID:(id)d;
+- (void)_locked_connection:(id)_locked_connection setNotificationsEnabled:(BOOL)enabled;
 - (void)_setConnectionInterrupted;
 - (void)_setConnectionInvalidated;
 - (void)dealloc;
-- (void)setEffectiveBundleID:(id)a3;
-- (void)setNotificationsEnabled:(BOOL)a3;
+- (void)setEffectiveBundleID:(id)d;
+- (void)setNotificationsEnabled:(BOOL)enabled;
 @end
 
 @implementation ACRemoteAccountStoreSession
@@ -22,7 +22,7 @@
   v6[1] = 3221225472;
   v7 = __42__ACRemoteAccountStoreSession__connection__block_invoke;
   v8 = &unk_1E79771F8;
-  v9 = self;
+  selfCopy = self;
   v3 = v6;
   os_unfair_lock_lock(&self->_connectionLock);
   v4 = v7(v3);
@@ -121,9 +121,9 @@ void __42__ACRemoteAccountStoreSession__connection__block_invoke_52(uint64_t a1)
   [WeakRetained _setConnectionInvalidated];
 }
 
-- (ACRemoteAccountStoreSession)initWithListenerEndpoint:(id)a3
+- (ACRemoteAccountStoreSession)initWithListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = ACRemoteAccountStoreSession;
   v6 = [(ACRemoteAccountStoreSession *)&v11 init];
@@ -131,7 +131,7 @@ void __42__ACRemoteAccountStoreSession__connection__block_invoke_52(uint64_t a1)
   if (v6)
   {
     v6->_connectionLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_listenerEndpoint, a3);
+    objc_storeStrong(&v6->_listenerEndpoint, endpoint);
     v7->_notificationsEnabled = 1;
     v8 = objc_alloc_init(ACAccountStoreClientSideListener);
     clientSideListener = v7->_clientSideListener;
@@ -154,10 +154,10 @@ void __42__ACRemoteAccountStoreSession__connection__block_invoke_3(uint64_t a1)
   [WeakRetained _setConnectionInterrupted];
 }
 
-- (void)_locked_configureRemoteAccountStoreWithConnection:(id)a3
+- (void)_locked_configureRemoteAccountStoreWithConnection:(id)connection
 {
-  v6 = a3;
-  if (!v6)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     [(ACRemoteAccountStoreSession *)a2 _locked_configureRemoteAccountStoreWithConnection:?];
   }
@@ -166,21 +166,21 @@ void __42__ACRemoteAccountStoreSession__connection__block_invoke_3(uint64_t a1)
   v5 = self->_effectiveBundleID;
   if (v5)
   {
-    [(ACRemoteAccountStoreSession *)self _locked_connection:v6 setEffectiveBundleID:v5];
+    [(ACRemoteAccountStoreSession *)self _locked_connection:connectionCopy setEffectiveBundleID:v5];
   }
 
   if (!self->_notificationsEnabled)
   {
-    [(ACRemoteAccountStoreSession *)self _locked_connection:v6 setNotificationsEnabled:0];
+    [(ACRemoteAccountStoreSession *)self _locked_connection:connectionCopy setNotificationsEnabled:0];
   }
 }
 
-- (void)setEffectiveBundleID:(id)a3
+- (void)setEffectiveBundleID:(id)d
 {
-  v4 = a3;
-  if (![(NSString *)self->_effectiveBundleID isEqualToString:v4])
+  dCopy = d;
+  if (![(NSString *)self->_effectiveBundleID isEqualToString:dCopy])
   {
-    v5 = [v4 copy];
+    v5 = [dCopy copy];
     effectiveBundleID = self->_effectiveBundleID;
     self->_effectiveBundleID = v5;
 
@@ -188,8 +188,8 @@ void __42__ACRemoteAccountStoreSession__connection__block_invoke_3(uint64_t a1)
     v8[1] = 3221225472;
     v9 = __52__ACRemoteAccountStoreSession_setEffectiveBundleID___block_invoke;
     v10 = &unk_1E7975590;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = dCopy;
     v7 = v8;
     os_unfair_lock_lock(&self->_connectionLock);
     v9(v7);
@@ -209,17 +209,17 @@ void *__52__ACRemoteAccountStoreSession_setEffectiveBundleID___block_invoke(uint
   return result;
 }
 
-- (void)setNotificationsEnabled:(BOOL)a3
+- (void)setNotificationsEnabled:(BOOL)enabled
 {
-  if (self->_notificationsEnabled != a3)
+  if (self->_notificationsEnabled != enabled)
   {
-    self->_notificationsEnabled = a3;
+    self->_notificationsEnabled = enabled;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v6 = __55__ACRemoteAccountStoreSession_setNotificationsEnabled___block_invoke;
     v7 = &unk_1E7977220;
-    v8 = self;
-    v9 = a3;
+    selfCopy = self;
+    enabledCopy = enabled;
     v4 = v5;
     os_unfair_lock_lock(&self->_connectionLock);
     v6(v4);
@@ -245,7 +245,7 @@ void *__55__ACRemoteAccountStoreSession_setNotificationsEnabled___block_invoke(u
   v4[1] = 3221225472;
   v5 = __56__ACRemoteAccountStoreSession__setConnectionInterrupted__block_invoke;
   v6 = &unk_1E7975AD8;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_connectionLock);
   v5(v3);
@@ -266,7 +266,7 @@ void __56__ACRemoteAccountStoreSession__setConnectionInterrupted__block_invoke(u
   v4[1] = 3221225472;
   v5 = __56__ACRemoteAccountStoreSession__setConnectionInvalidated__block_invoke;
   v6 = &unk_1E7975AD8;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_connectionLock);
   v5(v3);
@@ -280,23 +280,23 @@ void __56__ACRemoteAccountStoreSession__setConnectionInvalidated__block_invoke(u
   *(v1 + 8) = 0;
 }
 
-- (void)_locked_connection:(id)a3 setEffectiveBundleID:(id)a4
+- (void)_locked_connection:(id)_locked_connection setEffectiveBundleID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  _locked_connectionCopy = _locked_connection;
+  dCopy = d;
+  if (!_locked_connectionCopy)
   {
     [ACRemoteAccountStoreSession _locked_connection:a2 setEffectiveBundleID:self];
   }
 
   os_unfair_lock_assert_owner(&self->_connectionLock);
-  v9 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_9];
+  v9 = [_locked_connectionCopy remoteObjectProxyWithErrorHandler:&__block_literal_global_9];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__ACRemoteAccountStoreSession__locked_connection_setEffectiveBundleID___block_invoke_65;
   v11[3] = &unk_1E7977248;
-  v12 = v8;
-  v10 = v8;
+  v12 = dCopy;
+  v10 = dCopy;
   [v9 setClientBundleID:v10 withHandler:v11];
 }
 
@@ -329,41 +329,41 @@ void __71__ACRemoteAccountStoreSession__locked_connection_setEffectiveBundleID__
   }
 }
 
-- (void)_locked_connection:(id)a3 setNotificationsEnabled:(BOOL)a4
+- (void)_locked_connection:(id)_locked_connection setNotificationsEnabled:(BOOL)enabled
 {
-  v7 = a3;
-  if (!v7)
+  _locked_connectionCopy = _locked_connection;
+  if (!_locked_connectionCopy)
   {
     [ACRemoteAccountStoreSession _locked_connection:a2 setNotificationsEnabled:self];
   }
 
   os_unfair_lock_assert_owner(&self->_connectionLock);
-  v6 = [v7 remoteObjectProxy];
-  [v6 setNotificationsEnabled:0];
+  remoteObjectProxy = [_locked_connectionCopy remoteObjectProxy];
+  [remoteObjectProxy setNotificationsEnabled:0];
 }
 
 - (id)remoteObjectProxy
 {
-  v2 = [(ACRemoteAccountStoreSession *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(ACRemoteAccountStoreSession *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ACRemoteAccountStoreSession *)self _connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _connection = [(ACRemoteAccountStoreSession *)self _connection];
+  v6 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ACRemoteAccountStoreSession *)self _connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _connection = [(ACRemoteAccountStoreSession *)self _connection];
+  v6 = [_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

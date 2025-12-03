@@ -1,24 +1,24 @@
 @interface _MKZoomSliderView
-- (_MKZoomSliderView)initWithFrame:(CGRect)a3;
+- (_MKZoomSliderView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
-- (void)setActive:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
+- (void)setActive:(BOOL)active;
+- (void)setBounds:(CGRect)bounds;
 - (void)updateConstraints;
 @end
 
 @implementation _MKZoomSliderView
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v51[3] = *MEMORY[0x1E69E9840];
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
-    v5 = [(UIView *)self->_knob layer];
-    v6 = [v5 currentLayer];
+    activeCopy = active;
+    self->_active = active;
+    layer = [(UIView *)self->_knob layer];
+    currentLayer = [layer currentLayer];
 
-    if (v3)
+    if (activeCopy)
     {
       memset(&v49, 0, sizeof(v49));
       CATransform3DMakeScale(&v49, 2.0, 2.0, 1.0);
@@ -27,9 +27,9 @@
       [v7 setStiffness:300.0];
       [v7 setDamping:30.0];
       v8 = MEMORY[0x1E696B098];
-      if (v6)
+      if (currentLayer)
       {
-        [v6 transform];
+        [currentLayer transform];
       }
 
       else
@@ -49,7 +49,7 @@
       [v12 setStiffness:300.0];
       [v12 setDamping:30.0];
       v13 = MEMORY[0x1E696B098];
-      [v6 shadowOffset];
+      [currentLayer shadowOffset];
       v14 = [v13 valueWithCGSize:?];
       [v12 setFromValue:v14];
 
@@ -61,32 +61,32 @@
       [v16 setStiffness:300.0];
       [v16 setDamping:30.0];
       v17 = MEMORY[0x1E696AD98];
-      [v6 shadowOpacity];
+      [currentLayer shadowOpacity];
       v18 = [v17 numberWithFloat:?];
       [v16 setFromValue:v18];
 
       [v16 setToValue:&unk_1F1610CC0];
-      v19 = [MEMORY[0x1E6979308] animation];
-      [v19 setDuration:0.300000012];
+      animation = [MEMORY[0x1E6979308] animation];
+      [animation setDuration:0.300000012];
       v51[0] = v7;
       v51[1] = v12;
       v51[2] = v16;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:3];
-      [v19 setAnimations:v20];
+      [animation setAnimations:v20];
 
-      v21 = [(UIView *)self->_knob layer];
-      [v21 addAnimation:v19 forKey:@"Active"];
+      layer2 = [(UIView *)self->_knob layer];
+      [layer2 addAnimation:animation forKey:@"Active"];
 
       v47 = v49;
-      v22 = [(UIView *)self->_knob layer];
+      layer3 = [(UIView *)self->_knob layer];
       v48 = v47;
-      [v22 setTransform:&v48];
+      [layer3 setTransform:&v48];
 
-      v23 = [(UIView *)self->_knob layer];
-      [v23 setShadowOffset:{0.0, 12.0}];
+      layer4 = [(UIView *)self->_knob layer];
+      [layer4 setShadowOffset:{0.0, 12.0}];
 
-      v24 = [(UIView *)self->_knob layer];
-      v25 = v24;
+      layer5 = [(UIView *)self->_knob layer];
+      v25 = layer5;
       LODWORD(v26) = 1045220557;
     }
 
@@ -97,9 +97,9 @@
       [v7 setStiffness:300.0];
       [v7 setDamping:30.0];
       v9 = MEMORY[0x1E696B098];
-      if (v6)
+      if (currentLayer)
       {
-        [v6 transform];
+        [currentLayer transform];
       }
 
       else
@@ -134,7 +134,7 @@
       [v12 setStiffness:300.0];
       [v12 setDamping:30.0];
       v29 = MEMORY[0x1E696B098];
-      [v6 shadowOffset];
+      [currentLayer shadowOffset];
       v30 = [v29 valueWithCGSize:?];
       [v12 setFromValue:v30];
 
@@ -146,26 +146,26 @@
       [v16 setStiffness:300.0];
       [v16 setDamping:30.0];
       v32 = MEMORY[0x1E696AD98];
-      [v6 shadowOpacity];
+      [currentLayer shadowOpacity];
       v33 = [v32 numberWithFloat:?];
       [v16 setFromValue:v33];
 
       [v16 setToValue:&unk_1F1610CD0];
-      v19 = [MEMORY[0x1E6979308] animation];
-      [v19 setDuration:0.300000012];
+      animation = [MEMORY[0x1E6979308] animation];
+      [animation setDuration:0.300000012];
       v50[0] = v7;
       v50[1] = v12;
       v50[2] = v16;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:3];
-      [v19 setAnimations:v34];
+      [animation setAnimations:v34];
 
-      v35 = [(UIView *)self->_knob layer];
-      [v35 removeAnimationForKey:@"Active"];
+      layer6 = [(UIView *)self->_knob layer];
+      [layer6 removeAnimationForKey:@"Active"];
 
-      v36 = [(UIView *)self->_knob layer];
-      [v36 addAnimation:v19 forKey:@"Active"];
+      layer7 = [(UIView *)self->_knob layer];
+      [layer7 addAnimation:animation forKey:@"Active"];
 
-      v37 = [(UIView *)self->_knob layer];
+      layer8 = [(UIView *)self->_knob layer];
       *&v49.m31 = v46;
       *&v49.m33 = v45;
       *&v49.m41 = v44;
@@ -174,17 +174,17 @@
       *&v49.m13 = v41;
       *&v49.m21 = v40;
       *&v49.m23 = v39;
-      [v37 setTransform:&v49];
+      [layer8 setTransform:&v49];
 
-      v38 = [(UIView *)self->_knob layer];
-      [v38 setShadowOffset:{0.0, 4.0}];
+      layer9 = [(UIView *)self->_knob layer];
+      [layer9 setShadowOffset:{0.0, 4.0}];
 
-      v24 = [(UIView *)self->_knob layer];
-      v25 = v24;
+      layer5 = [(UIView *)self->_knob layer];
+      v25 = layer5;
       LODWORD(v26) = 1053609165;
     }
 
-    [v24 setShadowOpacity:v26];
+    [layer5 setShadowOpacity:v26];
   }
 }
 
@@ -216,11 +216,11 @@
   [(NSLayoutConstraint *)self->_knobCenterYConstraint setConstant:v8 * v7];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _MKZoomSliderView;
-  [(_MKZoomSliderView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_MKZoomSliderView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_MKZoomSliderView *)self setNeedsUpdateConstraints];
 }
 
@@ -229,13 +229,13 @@
   v9.receiver = self;
   v9.super_class = _MKZoomSliderView;
   [(_MKZoomSliderView *)&v9 didMoveToWindow];
-  v3 = [(_MKZoomSliderView *)self window];
+  window = [(_MKZoomSliderView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(_MKZoomSliderView *)self window];
-    v5 = [v4 screen];
-    [v5 scale];
+    window2 = [(_MKZoomSliderView *)self window];
+    screen = [window2 screen];
+    [screen scale];
     v7 = v6;
 
     if (vabdd_f64(v7, self->_lastTrackShadowImageScale) >= 0.000001)
@@ -247,23 +247,23 @@
   }
 }
 
-- (_MKZoomSliderView)initWithFrame:(CGRect)a3
+- (_MKZoomSliderView)initWithFrame:(CGRect)frame
 {
   v53.receiver = self;
   v53.super_class = _MKZoomSliderView;
-  v3 = [(_MKZoomSliderView *)&v53 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MKZoomSliderView *)&v53 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v7 = _trackShadowImage(v6);
     v8 = [v4 initWithImage:v7];
     shadowImageView = v3->_shadowImageView;
     v3->_shadowImageView = v8;
 
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
     v3->_lastTrackShadowImageScale = v11;
 
     [(UIImageView *)v3->_shadowImageView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -297,25 +297,25 @@
 
     v24 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(UIView *)v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [MEMORY[0x1E69DC888] blackColor];
-    v26 = [v25 CGColor];
-    v27 = [(UIView *)v24 layer];
-    [v27 setShadowColor:v26];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [(UIView *)v24 layer];
+    [layer setShadowColor:cGColor];
 
-    v28 = [(UIView *)v24 layer];
-    [v28 setShadowRadius:6.0];
+    layer2 = [(UIView *)v24 layer];
+    [layer2 setShadowRadius:6.0];
 
-    v29 = [(UIView *)v24 layer];
+    layer3 = [(UIView *)v24 layer];
     LODWORD(v30) = 1053609165;
-    [v29 setShadowOpacity:v30];
+    [layer3 setShadowOpacity:v30];
 
-    v31 = [(UIView *)v24 layer];
-    [v31 setShadowOffset:{0.0, 4.0}];
+    layer4 = [(UIView *)v24 layer];
+    [layer4 setShadowOffset:{0.0, 4.0}];
 
     v32 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{0.0, 0.0, 24.0, 24.0}];
-    v33 = [v32 CGPath];
-    v34 = [(UIView *)v24 layer];
-    [v34 setShadowPath:v33];
+    cGPath = [v32 CGPath];
+    layer5 = [(UIView *)v24 layer];
+    [layer5 setShadowPath:cGPath];
 
     [(_MKZoomSliderView *)v3 addSubview:v24];
     v35 = [MEMORY[0x1E696ACD8] constraintWithItem:v24 attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
@@ -334,14 +334,14 @@
 
     v40 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v41 = [MEMORY[0x1E69DC888] whiteColor];
-    [v40 setBackgroundColor:v41];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v40 setBackgroundColor:whiteColor];
 
-    v42 = [v40 layer];
-    [v42 setMasksToBounds:1];
+    layer6 = [v40 layer];
+    [layer6 setMasksToBounds:1];
 
-    v43 = [v40 layer];
-    [v43 setCornerRadius:12.0];
+    layer7 = [v40 layer];
+    [layer7 setCornerRadius:12.0];
 
     [(UIView *)v24 addSubview:v40];
     v44 = MEMORY[0x1E696ACD8];

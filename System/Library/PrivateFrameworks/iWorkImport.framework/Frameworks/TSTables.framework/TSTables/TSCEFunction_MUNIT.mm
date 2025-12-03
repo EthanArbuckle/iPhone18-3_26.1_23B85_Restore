@@ -1,37 +1,37 @@
 @interface TSCEFunction_MUNIT
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_MUNIT
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v68 = 0;
-  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, a2, a3, a4, 0, &v68);
+  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, a2, context, spec, 0, &v68);
   v13 = v68;
   if (v13)
   {
-    v14 = objc_msgSend_raiseErrorOrConvert_(a3, v10, v13, v11, v12);
+    v14 = objc_msgSend_raiseErrorOrConvert_(context, v10, v13, v11, v12);
 LABEL_3:
     v15 = v14;
     goto LABEL_13;
   }
 
-  v20 = objc_msgSend_errorForDuration_argumentIndex_(v9, v10, a4, 1, v12);
+  v20 = objc_msgSend_errorForDuration_argumentIndex_(v9, v10, spec, 1, v12);
   if (v20)
   {
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v16, v20, v18, v19);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v16, v20, v18, v19);
     v13 = v20;
   }
 
   else
   {
-    v21 = objc_msgSend_nativeType(**a5, v16, v17, v18, v19);
+    v21 = objc_msgSend_nativeType(**arguments, v16, v17, v18, v19);
     if (v21 == 16 || v21 == 1)
     {
       v27 = objc_msgSend_argumentSetUsedOutOfContextError(TSCEError, v22, v23, v24, v25);
-      v15 = objc_msgSend_raiseErrorOrConvert_(a3, v28, v27, v29, v30);
+      v15 = objc_msgSend_raiseErrorOrConvert_(context, v28, v27, v29, v30);
     }
 
     else
@@ -39,12 +39,12 @@ LABEL_3:
       v67._decimal.w[0] = objc_msgSend_decimalRepresentation(v9, v22, v23, v24, v25);
       v67._decimal.w[1] = v32;
       v33 = TSUDecimal::truncatedIntegerValue(&v67);
-      v38 = objc_msgSend_functionName(a4, v34, v35, v36, v37);
+      v38 = objc_msgSend_functionName(spec, v34, v35, v36, v37);
       v13 = objc_msgSend_checkForTooLargeMatrixNumColumns_numRows_functionName_(TSCEError, v39, v33, v33, v38);
 
       if (v13)
       {
-        v14 = objc_msgSend_raiseErrorOrConvert_(a3, v40, v13, v41, v42);
+        v14 = objc_msgSend_raiseErrorOrConvert_(context, v40, v13, v41, v42);
         goto LABEL_3;
       }
 

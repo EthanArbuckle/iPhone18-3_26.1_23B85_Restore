@@ -1,5 +1,5 @@
 @interface HMDAccessoryNetworkProtectionGroupModel
-+ (id)modelIDForHome:(id)a3 manufacturer:(id)a4 category:(id)a5;
++ (id)modelIDForHome:(id)home manufacturer:(id)manufacturer category:(id)category;
 + (id)modelNamespace;
 + (id)properties;
 + (id)shortDescription;
@@ -50,29 +50,29 @@ void __53__HMDAccessoryNetworkProtectionGroupModel_properties__block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)modelIDForHome:(id)a3 manufacturer:(id)a4 category:(id)a5
++ (id)modelIDForHome:(id)home manufacturer:(id)manufacturer category:(id)category
 {
   v7 = MEMORY[0x277CBEB28];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  categoryCopy = category;
+  manufacturerCopy = manufacturer;
+  homeCopy = home;
   v11 = objc_alloc_init(v7);
   v12 = [MEMORY[0x277CBEB28] dataWithLength:16];
-  v13 = [v10 uuid];
+  uuid = [homeCopy uuid];
 
-  [v13 getUUIDBytes:{objc_msgSend(v12, "mutableBytes")}];
+  [uuid getUUIDBytes:{objc_msgSend(v12, "mutableBytes")}];
   [v11 appendData:v12];
-  v14 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [categoryCopy unsignedIntegerValue];
 
-  v21 = v14;
+  v21 = unsignedIntegerValue;
   v15 = [MEMORY[0x277CBEA90] dataWithBytes:&v21 length:8];
   [v11 appendData:v15];
-  v16 = [v9 dataUsingEncoding:4];
+  v16 = [manufacturerCopy dataUsingEncoding:4];
 
   [v11 appendData:v16];
   v17 = MEMORY[0x277CCAD78];
-  v18 = [objc_opt_class() modelNamespace];
-  v19 = [v17 hmf_UUIDWithNamespace:v18 data:v11];
+  modelNamespace = [objc_opt_class() modelNamespace];
+  v19 = [v17 hmf_UUIDWithNamespace:modelNamespace data:v11];
 
   return v19;
 }
@@ -88,24 +88,24 @@ void __53__HMDAccessoryNetworkProtectionGroupModel_properties__block_invoke()
 {
   v21[5] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v20 = [(HMDBackingStoreModelObject *)self uuid];
-  v4 = [v3 initWithName:@"uuid" value:v20];
+  uuid = [(HMDBackingStoreModelObject *)self uuid];
+  v4 = [v3 initWithName:@"uuid" value:uuid];
   v21[0] = v4;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v6 = [(HMDBackingStoreModelObject *)self bsoDataVersion];
-  v7 = [v5 initWithName:@"version" value:v6];
+  bsoDataVersion = [(HMDBackingStoreModelObject *)self bsoDataVersion];
+  v7 = [v5 initWithName:@"version" value:bsoDataVersion];
   v21[1] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMDAccessoryNetworkProtectionGroupModel *)self manufacturer];
-  v10 = [v8 initWithName:@"manufacturer" value:v9];
+  manufacturer = [(HMDAccessoryNetworkProtectionGroupModel *)self manufacturer];
+  v10 = [v8 initWithName:@"manufacturer" value:manufacturer];
   v21[2] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
-  v12 = [(HMDAccessoryNetworkProtectionGroupModel *)self category];
-  v13 = [v11 initWithName:@"category" value:v12];
+  category = [(HMDAccessoryNetworkProtectionGroupModel *)self category];
+  v13 = [v11 initWithName:@"category" value:category];
   v21[3] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
-  v15 = [(HMDAccessoryNetworkProtectionGroupModel *)self targetProtectionMode];
-  v16 = [v14 initWithName:@"targetProtectionMode" value:v15];
+  targetProtectionMode = [(HMDAccessoryNetworkProtectionGroupModel *)self targetProtectionMode];
+  v16 = [v14 initWithName:@"targetProtectionMode" value:targetProtectionMode];
   v21[4] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:5];
 

@@ -1,31 +1,31 @@
 @interface HMIVideoFrameSamplerDelegateAdapter
-- (void)frameSampler:(id)a3 didDropFrame:(opaqueCMSampleBuffer *)a4;
-- (void)frameSampler:(id)a3 didSampleFrame:(opaqueCMSampleBuffer *)a4;
+- (void)frameSampler:(id)sampler didDropFrame:(opaqueCMSampleBuffer *)frame;
+- (void)frameSampler:(id)sampler didSampleFrame:(opaqueCMSampleBuffer *)frame;
 @end
 
 @implementation HMIVideoFrameSamplerDelegateAdapter
 
-- (void)frameSampler:(id)a3 didSampleFrame:(opaqueCMSampleBuffer *)a4
+- (void)frameSampler:(id)sampler didSampleFrame:(opaqueCMSampleBuffer *)frame
 {
-  v8 = a3;
-  v6 = [(HMIVideoFrameSamplerDelegateAdapter *)self frameSamplerDidSampleFrame];
+  samplerCopy = sampler;
+  frameSamplerDidSampleFrame = [(HMIVideoFrameSamplerDelegateAdapter *)self frameSamplerDidSampleFrame];
 
-  if (v6)
+  if (frameSamplerDidSampleFrame)
   {
-    v7 = [(HMIVideoFrameSamplerDelegateAdapter *)self frameSamplerDidSampleFrame];
-    (v7)[2](v7, v8, a4);
+    frameSamplerDidSampleFrame2 = [(HMIVideoFrameSamplerDelegateAdapter *)self frameSamplerDidSampleFrame];
+    (frameSamplerDidSampleFrame2)[2](frameSamplerDidSampleFrame2, samplerCopy, frame);
   }
 }
 
-- (void)frameSampler:(id)a3 didDropFrame:(opaqueCMSampleBuffer *)a4
+- (void)frameSampler:(id)sampler didDropFrame:(opaqueCMSampleBuffer *)frame
 {
-  v8 = a3;
-  v6 = [(HMIVideoFrameSamplerDelegateAdapter *)self frameSamplerDidDropFrame];
+  samplerCopy = sampler;
+  frameSamplerDidDropFrame = [(HMIVideoFrameSamplerDelegateAdapter *)self frameSamplerDidDropFrame];
 
-  if (v6)
+  if (frameSamplerDidDropFrame)
   {
-    v7 = [(HMIVideoFrameSamplerDelegateAdapter *)self frameSamplerDidDropFrame];
-    (v7)[2](v7, v8, a4);
+    frameSamplerDidDropFrame2 = [(HMIVideoFrameSamplerDelegateAdapter *)self frameSamplerDidDropFrame];
+    (frameSamplerDidDropFrame2)[2](frameSamplerDidDropFrame2, samplerCopy, frame);
   }
 }
 

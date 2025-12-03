@@ -1,8 +1,8 @@
 @interface NTKEsterbrookSceneLoader
 + (NSBundle)esterbrookBundle;
 - (NTKEsterbrookSceneLoader)init;
-- (id)allSceneURLsAt:(id)a3;
-- (id)allSceneURLsIn:(id)a3;
+- (id)allSceneURLsAt:(id)at;
+- (id)allSceneURLsIn:(id)in;
 @end
 
 @implementation NTKEsterbrookSceneLoader
@@ -15,15 +15,15 @@
   return v2;
 }
 
-- (id)allSceneURLsIn:(id)a3
+- (id)allSceneURLsIn:(id)in
 {
   v5 = sub_23BE32658();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
-  v11 = [v9 bundleURL];
+  inCopy = in;
+  selfCopy = self;
+  bundleURL = [inCopy bundleURL];
   sub_23BE32648();
 
   sub_23BDF5274(v8);
@@ -33,7 +33,7 @@
   return v12;
 }
 
-- (id)allSceneURLsAt:(id)a3
+- (id)allSceneURLsAt:(id)at
 {
   v3 = sub_23BE32658();
   v4 = *(v3 - 8);

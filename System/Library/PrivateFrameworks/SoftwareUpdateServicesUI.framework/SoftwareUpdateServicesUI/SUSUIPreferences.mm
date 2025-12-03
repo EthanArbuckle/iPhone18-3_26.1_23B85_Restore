@@ -1,15 +1,15 @@
 @interface SUSUIPreferences
 + (id)sharedInstance;
-- (BOOL)_getBooleanPreferenceForKey:(id)a3 withDefaultValue:(BOOL)a4;
+- (BOOL)_getBooleanPreferenceForKey:(id)key withDefaultValue:(BOOL)value;
 - (SUSUIPreferences)init;
-- (id)_copyNumberPreferenceForKey:(id)a3;
-- (id)_copyStringPreferenceForKey:(id)a3;
-- (void)_copyPreferenceForKey:(__CFString *)a3 ofType:(unint64_t)a4;
+- (id)_copyNumberPreferenceForKey:(id)key;
+- (id)_copyStringPreferenceForKey:(id)key;
+- (void)_copyPreferenceForKey:(__CFString *)key ofType:(unint64_t)type;
 - (void)_loadPreferences;
-- (void)_setBooleanPreferenceForKey:(id)a3 value:(BOOL)a4;
+- (void)_setBooleanPreferenceForKey:(id)key value:(BOOL)value;
 - (void)dealloc;
-- (void)setNeedsAlertPresentationAfterOTAUpdate:(BOOL)a3;
-- (void)setRestartCountdownOverrideIntervalSeconds:(id)a3;
+- (void)setNeedsAlertPresentationAfterOTAUpdate:(BOOL)update;
+- (void)setRestartCountdownOverrideIntervalSeconds:(id)seconds;
 @end
 
 @implementation SUSUIPreferences
@@ -37,11 +37,11 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v5, @"SUSUIPreferencesChangedNotification", 0);
-  v3.receiver = v5;
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, selfCopy, @"SUSUIPreferencesChangedNotification", 0);
+  v3.receiver = selfCopy;
   v3.super_class = SUSUIPreferences;
   [(SUSUIPreferences *)&v3 dealloc];
 }
@@ -95,55 +95,55 @@ uint64_t __34__SUSUIPreferences_sharedInstance__block_invoke()
   self->_useMobileInboxUpdaterRebootDelay = [(SUSUIPreferences *)self _getBooleanPreferenceForKey:@"useMobileInboxUpdaterRebootDelay" withDefaultValue:0];
 }
 
-- (BOOL)_getBooleanPreferenceForKey:(id)a3 withDefaultValue:(BOOL)a4
+- (BOOL)_getBooleanPreferenceForKey:(id)key withDefaultValue:(BOOL)value
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  BOOLean = [(SUSUIPreferences *)v9 _copyPreferenceForKey:location[0] ofType:CFBooleanGetTypeID()];
+  objc_storeStrong(location, key);
+  BOOLean = [(SUSUIPreferences *)selfCopy _copyPreferenceForKey:location[0] ofType:CFBooleanGetTypeID()];
   if (BOOLean)
   {
     v6 = CFBooleanGetValue(BOOLean) != 0;
     CFRelease(BOOLean);
-    v10 = v6;
+    valueCopy = v6;
   }
 
   else
   {
-    v10 = a4;
+    valueCopy = value;
   }
 
   objc_storeStrong(location, 0);
-  return v10;
+  return valueCopy;
 }
 
-- (id)_copyStringPreferenceForKey:(id)a3
+- (id)_copyStringPreferenceForKey:(id)key
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(SUSUIPreferences *)v6 _copyPreferenceForKey:location[0] ofType:CFStringGetTypeID()];
+  objc_storeStrong(location, key);
+  v4 = [(SUSUIPreferences *)selfCopy _copyPreferenceForKey:location[0] ofType:CFStringGetTypeID()];
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (id)_copyNumberPreferenceForKey:(id)a3
+- (id)_copyNumberPreferenceForKey:(id)key
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(SUSUIPreferences *)v6 _copyPreferenceForKey:location[0] ofType:CFNumberGetTypeID()];
+  objc_storeStrong(location, key);
+  v4 = [(SUSUIPreferences *)selfCopy _copyPreferenceForKey:location[0] ofType:CFNumberGetTypeID()];
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (void)_copyPreferenceForKey:(__CFString *)a3 ofType:(unint64_t)a4
+- (void)_copyPreferenceForKey:(__CFString *)key ofType:(unint64_t)type
 {
-  cf = CFPreferencesCopyValue(a3, @"com.apple.susui", @"mobile", *MEMORY[0x277CBF010]);
-  if (cf && CFGetTypeID(cf) == a4)
+  cf = CFPreferencesCopyValue(key, @"com.apple.susui", @"mobile", *MEMORY[0x277CBF010]);
+  if (cf && CFGetTypeID(cf) == type)
   {
     return cf;
   }
@@ -156,22 +156,22 @@ uint64_t __34__SUSUIPreferences_sharedInstance__block_invoke()
   return 0;
 }
 
-- (void)setNeedsAlertPresentationAfterOTAUpdate:(BOOL)a3
+- (void)setNeedsAlertPresentationAfterOTAUpdate:(BOOL)update
 {
-  if (a3 != self->_needsAlertPresentationAfterOTAUpdate)
+  if (update != self->_needsAlertPresentationAfterOTAUpdate)
   {
-    self->_needsAlertPresentationAfterOTAUpdate = a3;
-    [(SUSUIPreferences *)self _setBooleanPreferenceForKey:@"needsAlertAfterOTAUpdate" value:a3];
+    self->_needsAlertPresentationAfterOTAUpdate = update;
+    [(SUSUIPreferences *)self _setBooleanPreferenceForKey:@"needsAlertAfterOTAUpdate" value:update];
   }
 }
 
-- (void)_setBooleanPreferenceForKey:(id)a3 value:(BOOL)a4
+- (void)_setBooleanPreferenceForKey:(id)key value:(BOOL)value
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4)
+  objc_storeStrong(location, key);
+  if (value)
   {
     value = *MEMORY[0x277CBED28];
   }
@@ -186,13 +186,13 @@ uint64_t __34__SUSUIPreferences_sharedInstance__block_invoke()
   objc_storeStrong(location, 0);
 }
 
-- (void)setRestartCountdownOverrideIntervalSeconds:(id)a3
+- (void)setRestartCountdownOverrideIntervalSeconds:(id)seconds
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_restartCountdownOverrideIntervalSeconds, location[0]);
+  objc_storeStrong(location, seconds);
+  objc_storeStrong(&selfCopy->_restartCountdownOverrideIntervalSeconds, location[0]);
   objc_storeStrong(location, 0);
 }
 

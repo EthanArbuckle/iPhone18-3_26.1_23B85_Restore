@@ -1,10 +1,10 @@
 @interface TRIFPNamespaceFactorProvider
-- (TRIFPNamespaceFactorProvider)initWithParentId:(id)a3 deploymentId:(int)a4 promotable:(BOOL)a5;
-- (TRIFPNamespaceFactorProvider)initWithPath:(id)a3 parentId:(id)a4 deploymentId:(int)a5 treatmentId:(id)a6 promotable:(BOOL)a7;
-- (id)_factorLevelsWithFactorPackData:(id)a3 referencePath:(id)a4 outFactorPackId:(id *)a5 outNamespaceName:(id *)a6 outNCVs:(id *)a7;
+- (TRIFPNamespaceFactorProvider)initWithParentId:(id)id deploymentId:(int)deploymentId promotable:(BOOL)promotable;
+- (TRIFPNamespaceFactorProvider)initWithPath:(id)path parentId:(id)id deploymentId:(int)deploymentId treatmentId:(id)treatmentId promotable:(BOOL)promotable;
+- (id)_factorLevelsWithFactorPackData:(id)data referencePath:(id)path outFactorPackId:(id *)id outNamespaceName:(id *)name outNCVs:(id *)vs;
 - (id)_readAllFactorLevelsFromStorage;
 - (id)factorLevels;
-- (id)levelForFactor:(id)a3;
+- (id)levelForFactor:(id)factor;
 - (id)namespaceName;
 - (id)rolloutId;
 - (id)treatmentId;
@@ -21,12 +21,12 @@
   *&v20[13] = *MEMORY[0x277D85DE8];
   if (self->_isFlatbufferWriteEnabled && !self->_isFlatbufferReadEnabled)
   {
-    v3 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels sourceAsFactorPackId];
+    sourceAsFactorPackId = [(TRIFBFastFactorLevels *)self->_fastFactorLevels sourceAsFactorPackId];
 
-    if (v3)
+    if (sourceAsFactorPackId)
     {
-      v4 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels sourceAsFactorPackId];
-      v5 = TRIValidateFactorPackId(v4);
+      sourceAsFactorPackId2 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels sourceAsFactorPackId];
+      v5 = TRIValidateFactorPackId(sourceAsFactorPackId2);
 
       if (([v5 isEqualToString:self->_factorPackId]& 1) == 0)
       {
@@ -99,14 +99,14 @@
   v32 = *MEMORY[0x277D85DE8];
   if (self->_isFlatbufferWriteEnabled && !self->_isFlatbufferReadEnabled)
   {
-    v3 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels ncvs];
-    if (v3)
+    ncvs = [(TRIFBFastFactorLevels *)self->_fastFactorLevels ncvs];
+    if (ncvs)
     {
-      v4 = v3;
+      v4 = ncvs;
       namespaceCompatibilityVersions = self->_namespaceCompatibilityVersions;
       v6 = MEMORY[0x277CBEB98];
-      v7 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels ncvs];
-      v8 = [v6 setWithArray:v7];
+      ncvs2 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels ncvs];
+      v8 = [v6 setWithArray:ncvs2];
       LOBYTE(namespaceCompatibilityVersions) = [(NSSet *)namespaceCompatibilityVersions isEqual:v8];
 
       if ((namespaceCompatibilityVersions & 1) == 0)
@@ -115,8 +115,8 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           v19 = MEMORY[0x277CBEB98];
-          v20 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels ncvs];
-          v21 = [v19 setWithArray:v20];
+          ncvs3 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels ncvs];
+          v21 = [v19 setWithArray:ncvs3];
           v22 = self->_namespaceCompatibilityVersions;
           *buf = 138412546;
           v29 = v21;
@@ -154,10 +154,10 @@ LABEL_20:
         objc_enumerationMutation(v10);
       }
 
-      v16 = [*(*(&v23 + 1) + 8 * i) intValue];
-      if (v14 <= v16)
+      intValue = [*(*(&v23 + 1) + 8 * i) intValue];
+      if (v14 <= intValue)
       {
-        v14 = v16;
+        v14 = intValue;
       }
     }
 
@@ -217,10 +217,10 @@ LABEL_21:
   if (self->_isFlatbufferWriteEnabled)
   {
     v7 = objc_alloc(MEMORY[0x277CBEB18]);
-    v8 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels levels];
-    v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+    levels = [(TRIFBFastFactorLevels *)self->_fastFactorLevels levels];
+    v9 = [v7 initWithCapacity:{objc_msgSend(levels, "count")}];
 
-    v10 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels levels];
+    levels2 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels levels];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __63__TRIFPNamespaceFactorProvider__readAllFactorLevelsFromStorage__block_invoke_2;
@@ -228,7 +228,7 @@ LABEL_21:
     v56[4] = self;
     v11 = v9;
     v57 = v11;
-    [v10 enumerateObjectsUsingBlock:v56];
+    [levels2 enumerateObjectsUsingBlock:v56];
 
     if (!self->_isFlatbufferReadEnabled)
     {
@@ -253,11 +253,11 @@ LABEL_21:
             {
               v16 = [v12 objectAtIndexedSubscript:{v15, v49}];
               v17 = [v55 objectAtIndexedSubscript:v15];
-              v18 = [v16 factor];
-              v19 = [v18 id_p];
-              v20 = [v17 factor];
-              v21 = [v20 id_p];
-              v22 = [v19 isEqualToString:v21];
+              factor = [v16 factor];
+              id_p = [factor id_p];
+              factor2 = [v17 factor];
+              id_p2 = [factor2 id_p];
+              v22 = [id_p isEqualToString:id_p2];
 
               if (v22)
               {
@@ -270,14 +270,14 @@ LABEL_21:
                 v34 = TRILogCategory_ClientFramework();
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                 {
-                  v35 = [v16 factor];
-                  v36 = [v35 id_p];
-                  v37 = [v17 factor];
-                  v38 = [v37 id_p];
+                  factor3 = [v16 factor];
+                  id_p3 = [factor3 id_p];
+                  factor4 = [v17 factor];
+                  id_p4 = [factor4 id_p];
                   *buf = 138412546;
-                  v61 = v36;
+                  v61 = id_p3;
                   v62 = 2112;
-                  v63 = v38;
+                  v63 = id_p4;
                   _os_log_error_impl(&dword_22EA6B000, v34, OS_LOG_TYPE_ERROR, "primary id does not match for factors in arrays, pb:%@, fb:%@", buf, 0x16u);
 
                   v32 = v53;
@@ -303,21 +303,21 @@ LABEL_23:
               goto LABEL_23;
             }
 
-            v23 = [v17 factor];
-            v24 = [v23 metadataKeysArray];
-            v25 = [v16 factor];
-            v26 = [v25 metadataKeysArray];
+            factor5 = [v17 factor];
+            metadataKeysArray = [factor5 metadataKeysArray];
+            factor6 = [v16 factor];
+            metadataKeysArray2 = [factor6 metadataKeysArray];
 
-            if (v24 == v26)
+            if (metadataKeysArray == metadataKeysArray2)
             {
               goto LABEL_23;
             }
 
-            v27 = [v17 level];
-            v28 = [v27 metadata];
-            v29 = [v16 level];
-            v30 = [v29 metadata];
-            v31 = [v28 isEqualToDictionary:v30];
+            level = [v17 level];
+            metadata = [level metadata];
+            level2 = [v16 level];
+            metadata2 = [level2 metadata];
+            v31 = [metadata isEqualToDictionary:metadata2];
 
             if (v31)
             {
@@ -420,33 +420,33 @@ void __63__TRIFPNamespaceFactorProvider__readAllFactorLevelsFromStorage__block_i
   objc_autoreleasePoolPop(v3);
 }
 
-- (TRIFPNamespaceFactorProvider)initWithParentId:(id)a3 deploymentId:(int)a4 promotable:(BOOL)a5
+- (TRIFPNamespaceFactorProvider)initWithParentId:(id)id deploymentId:(int)deploymentId promotable:(BOOL)promotable
 {
-  v9 = a3;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = TRIFPNamespaceFactorProvider;
   v10 = [(TRIFPNamespaceFactorProvider *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_parentId, a3);
-    v11->_deploymentId = a4;
-    v11->_promotable = a5;
+    objc_storeStrong(&v10->_parentId, id);
+    v11->_deploymentId = deploymentId;
+    v11->_promotable = promotable;
   }
 
   return v11;
 }
 
-- (TRIFPNamespaceFactorProvider)initWithPath:(id)a3 parentId:(id)a4 deploymentId:(int)a5 treatmentId:(id)a6 promotable:(BOOL)a7
+- (TRIFPNamespaceFactorProvider)initWithPath:(id)path parentId:(id)id deploymentId:(int)deploymentId treatmentId:(id)treatmentId promotable:(BOOL)promotable
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  if (!v14)
+  pathCopy = path;
+  idCopy = id;
+  treatmentIdCopy = treatmentId;
+  if (!pathCopy)
   {
-    v62 = [MEMORY[0x277CCA890] currentHandler];
-    [v62 handleFailureInMethod:a2 object:self file:@"TRIFPNamespaceFactorProvider.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFPNamespaceFactorProvider.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v69.receiver = self;
@@ -458,11 +458,11 @@ void __63__TRIFPNamespaceFactorProvider__readAllFactorLevelsFromStorage__block_i
     goto LABEL_36;
   }
 
-  objc_storeStrong(&v17->_parentId, a4);
-  v18->_deploymentId = a5;
-  objc_storeStrong(&v18->_treatmentId, a6);
-  v18->_promotable = a7;
-  v19 = [[TRIReferenceManagedDirReaderLock alloc] initWithDir:v14];
+  objc_storeStrong(&v17->_parentId, id);
+  v18->_deploymentId = deploymentId;
+  objc_storeStrong(&v18->_treatmentId, treatmentId);
+  v18->_promotable = promotable;
+  v19 = [[TRIReferenceManagedDirReaderLock alloc] initWithDir:pathCopy];
   dirLock = v18->_dirLock;
   v18->_dirLock = v19;
 
@@ -473,9 +473,9 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  v22 = [v14 stringByAppendingPathComponent:@"factorPack.fb"];
-  if ([v21 fileExistsAtPath:v22])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v22 = [pathCopy stringByAppendingPathComponent:@"factorPack.fb"];
+  if ([defaultManager fileExistsAtPath:v22])
   {
     v18->_isFlatbufferReadEnabled = _os_feature_enabled_impl();
     v18->_isFlatbufferWriteEnabled = _os_feature_enabled_impl();
@@ -520,26 +520,26 @@ LABEL_43:
     fastFactorLevels = v18->_fastFactorLevels;
     v18->_fastFactorLevels = v30;
 
-    objc_storeStrong(&v18->_referencePath, a3);
-    v32 = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels ncvs];
+    objc_storeStrong(&v18->_referencePath, path);
+    ncvs = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels ncvs];
 
-    if (v32)
+    if (ncvs)
     {
       v33 = MEMORY[0x277CBEB98];
-      v34 = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels ncvs];
-      v35 = [v33 setWithArray:v34];
+      ncvs2 = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels ncvs];
+      v35 = [v33 setWithArray:ncvs2];
       namespaceCompatibilityVersions = v18->_namespaceCompatibilityVersions;
       v18->_namespaceCompatibilityVersions = v35;
     }
 
     if (v18->_isFlatbufferReadEnabled)
     {
-      v37 = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels namespaceName];
+      namespaceName = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels namespaceName];
       namespaceName = v18->_namespaceName;
-      v18->_namespaceName = v37;
+      v18->_namespaceName = namespaceName;
 
-      v39 = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels sourceAsFactorPackId];
-      v40 = v39 == 0;
+      sourceAsFactorPackId = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels sourceAsFactorPackId];
+      v40 = sourceAsFactorPackId == 0;
 
       if (v40)
       {
@@ -555,8 +555,8 @@ LABEL_43:
 
       else
       {
-        v41 = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels sourceAsFactorPackId];
-        v42 = TRIValidateFactorPackId(v41);
+        sourceAsFactorPackId2 = [(TRIFBFastFactorLevels *)v18->_fastFactorLevels sourceAsFactorPackId];
+        v42 = TRIValidateFactorPackId(sourceAsFactorPackId2);
 
         if (v42)
         {
@@ -568,12 +568,12 @@ LABEL_43:
 
   if (!v18->_isFlatbufferReadEnabled)
   {
-    v44 = [v14 stringByAppendingPathComponent:@"factorPack.pb"];
+    v44 = [pathCopy stringByAppendingPathComponent:@"factorPack.pb"];
     pbFactorPath = v18->_pbFactorPath;
     v18->_pbFactorPath = v44;
 
-    v46 = [MEMORY[0x277CCAA00] defaultManager];
-    v47 = [v46 fileExistsAtPath:v18->_pbFactorPath];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v47 = [defaultManager2 fileExistsAtPath:v18->_pbFactorPath];
 
     if (v47)
     {
@@ -584,7 +584,7 @@ LABEL_43:
       v27 = v67;
       if (v50)
       {
-        v51 = [(TRIFPNamespaceFactorProvider *)v18 _factorLevelsWithFactorPackData:v50 referencePath:v14 outFactorPackId:&v18->_factorPackId outNamespaceName:&v18->_namespaceName outNCVs:&v18->_namespaceCompatibilityVersions];
+        v51 = [(TRIFPNamespaceFactorProvider *)v18 _factorLevelsWithFactorPackData:v50 referencePath:pathCopy outFactorPackId:&v18->_factorPackId outNamespaceName:&v18->_namespaceName outNCVs:&v18->_namespaceCompatibilityVersions];
         v52 = v51;
         if (v51)
         {
@@ -605,7 +605,7 @@ LABEL_43:
             v63[3] = &unk_27885E4B8;
             objc_copyWeak(&v66, location);
             v64 = v50;
-            v65 = v14;
+            v65 = pathCopy;
             v54 = [(TRIPruningFactorLevelCache *)v53 initWithPruningDelaySeconds:v63 loadFactorLevels:5.0];
             v55 = v18->_factorLevels;
             v18->_factorLevels = v54;
@@ -674,14 +674,14 @@ id __90__TRIFPNamespaceFactorProvider_initWithPath_parentId_deploymentId_treatme
   return v4;
 }
 
-- (id)_factorLevelsWithFactorPackData:(id)a3 referencePath:(id)a4 outFactorPackId:(id *)a5 outNamespaceName:(id *)a6 outNCVs:(id *)a7
+- (id)_factorLevelsWithFactorPackData:(id)data referencePath:(id)path outFactorPackId:(id *)id outNamespaceName:(id *)name outNCVs:(id *)vs
 {
   v62 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  dataCopy = data;
+  pathCopy = path;
   v13 = objc_autoreleasePoolPush();
   v57 = 0;
-  v14 = [[TRIClientFactorPackStreamingParser alloc] initWithData:v11 error:&v57];
+  v14 = [[TRIClientFactorPackStreamingParser alloc] initWithData:dataCopy error:&v57];
   v15 = v14;
   if (!v14)
   {
@@ -692,7 +692,7 @@ id __90__TRIFPNamespaceFactorProvider_initWithPath_parentId_deploymentId_treatme
     }
 
     *buf = 138412546;
-    v59 = v12;
+    v59 = pathCopy;
     v60 = 2112;
     v61 = v57;
     v45 = "Unable to parse factor pack %@: %@";
@@ -708,25 +708,25 @@ LABEL_26:
     goto LABEL_17;
   }
 
-  v16 = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
-  if (([v16 hasName] & 1) == 0)
+  selectedNamespace = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
+  if (([selectedNamespace hasName] & 1) == 0)
   {
 
     goto LABEL_17;
   }
 
   [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
-  v17 = v50 = v11;
+  v17 = v50 = dataCopy;
   [v17 name];
-  v18 = v12;
+  v18 = pathCopy;
   v20 = v19 = v13;
   v21 = [v20 length];
 
   v13 = v19;
-  v12 = v18;
-  v22 = a7;
+  pathCopy = v18;
+  vsCopy = vs;
 
-  v11 = v50;
+  dataCopy = v50;
   if (!v21)
   {
 LABEL_17:
@@ -737,7 +737,7 @@ LABEL_17:
     }
 
     *buf = 138412290;
-    v59 = v12;
+    v59 = pathCopy;
     v45 = "Factor pack has unset or empty namespace name: %@";
     goto LABEL_25;
   }
@@ -751,7 +751,7 @@ LABEL_17:
     }
 
     *buf = 138412290;
-    v59 = v12;
+    v59 = pathCopy;
     v45 = "Factor pack has unset factor pack id: %@";
 LABEL_25:
     v46 = v24;
@@ -759,8 +759,8 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v23 = [(TRIClientFactorPackStreamingParser *)v15 factorPackId];
-  v24 = TRIValidateFactorPackId(v23);
+  factorPackId = [(TRIClientFactorPackStreamingParser *)v15 factorPackId];
+  v24 = TRIValidateFactorPackId(factorPackId);
 
   if (!v24)
   {
@@ -769,51 +769,51 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a5)
+  if (id)
   {
-    objc_storeStrong(a5, v24);
+    objc_storeStrong(id, v24);
   }
 
-  if (a6)
+  if (name)
   {
-    v25 = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
-    v26 = [v25 name];
-    v27 = *a6;
-    *a6 = v26;
+    selectedNamespace2 = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
+    name = [selectedNamespace2 name];
+    v27 = *name;
+    *name = name;
   }
 
-  if (v22)
+  if (vsCopy)
   {
     v28 = objc_alloc(MEMORY[0x277CBEB58]);
-    v29 = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
-    v30 = [v28 initWithCapacity:{objc_msgSend(v29, "compatibilityVersionArray_Count")}];
+    selectedNamespace3 = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
+    v30 = [v28 initWithCapacity:{objc_msgSend(selectedNamespace3, "compatibilityVersionArray_Count")}];
 
-    v31 = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
-    v32 = [v31 compatibilityVersionArray];
+    selectedNamespace4 = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
+    compatibilityVersionArray = [selectedNamespace4 compatibilityVersionArray];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __119__TRIFPNamespaceFactorProvider__factorLevelsWithFactorPackData_referencePath_outFactorPackId_outNamespaceName_outNCVs___block_invoke;
     v55[3] = &unk_27885E4E0;
     v33 = v30;
     v56 = v33;
-    [v32 enumerateValuesWithBlock:v55];
+    [compatibilityVersionArray enumerateValuesWithBlock:v55];
 
-    v34 = *v22;
-    *v22 = v33;
+    v34 = *vsCopy;
+    *vsCopy = v33;
     v35 = v33;
   }
 
   v36 = [objc_alloc(MEMORY[0x277D425C0]) initWithBehavior:1 copyWithZone:0];
-  v37 = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
-  v38 = [v37 name];
-  v39 = [v36 intern:v38];
+  selectedNamespace5 = [(TRIClientFactorPackStreamingParser *)v15 selectedNamespace];
+  name2 = [selectedNamespace5 name];
+  v39 = [v36 intern:name2];
 
   v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __119__TRIFPNamespaceFactorProvider__factorLevelsWithFactorPackData_referencePath_outFactorPackId_outNamespaceName_outNCVs___block_invoke_2;
   v51[3] = &unk_27885E508;
-  v41 = v12;
+  v41 = pathCopy;
   v52 = v41;
   v53 = v36;
   v54 = v40;
@@ -822,7 +822,7 @@ LABEL_18:
   [(TRIClientFactorPackStreamingParser *)v15 enumerateFactorLevelsWithBlock:v51];
   v44 = [TRINamespaceFactorProvider populateMAPathsForFactorLevels:v42 loadedFromParentDir:v41];
 
-  v11 = v50;
+  dataCopy = v50;
 LABEL_19:
 
   objc_autoreleasePoolPop(v13);
@@ -916,18 +916,18 @@ LABEL_12:
   if (self->_isFlatbufferWriteEnabled && !self->_isFlatbufferReadEnabled)
   {
     namespaceName = self->_namespaceName;
-    v4 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels namespaceName];
-    LOBYTE(namespaceName) = [(NSString *)namespaceName isEqualToString:v4];
+    namespaceName = [(TRIFBFastFactorLevels *)self->_fastFactorLevels namespaceName];
+    LOBYTE(namespaceName) = [(NSString *)namespaceName isEqualToString:namespaceName];
 
     if ((namespaceName & 1) == 0)
     {
       v5 = TRILogCategory_ClientFramework();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels namespaceName];
+        namespaceName2 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels namespaceName];
         v10 = self->_namespaceName;
         v11 = 138412546;
-        v12 = v9;
+        v12 = namespaceName2;
         v13 = 2112;
         v14 = v10;
         _os_log_error_impl(&dword_22EA6B000, v5, OS_LOG_TYPE_ERROR, "Flatbuffer namespace name: %@ does not match with protobuf name: %@", &v11, 0x16u);
@@ -946,12 +946,12 @@ LABEL_12:
   *&v17[13] = *MEMORY[0x277D85DE8];
   if (self->_isFlatbufferWriteEnabled && !self->_isFlatbufferReadEnabled)
   {
-    v3 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels sourceAsFactorPackId];
+    sourceAsFactorPackId = [(TRIFBFastFactorLevels *)self->_fastFactorLevels sourceAsFactorPackId];
 
-    if (v3)
+    if (sourceAsFactorPackId)
     {
-      v4 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels sourceAsFactorPackId];
-      v5 = TRIValidateFactorPackId(v4);
+      sourceAsFactorPackId2 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels sourceAsFactorPackId];
+      v5 = TRIValidateFactorPackId(sourceAsFactorPackId2);
 
       if (([v5 isEqualToString:self->_factorPackId]& 1) == 0)
       {
@@ -993,13 +993,13 @@ LABEL_12:
   return v7;
 }
 
-- (id)levelForFactor:(id)a3
+- (id)levelForFactor:(id)factor
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  factorCopy = factor;
   if ([(NSMutableDictionary *)self->_warmupPersistentFactorLevelCache count])
   {
-    v5 = [(NSMutableDictionary *)self->_warmupPersistentFactorLevelCache objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_warmupPersistentFactorLevelCache objectForKey:factorCopy];
     v6 = v5;
     if (!v5 || ![v5 hasLevel])
     {
@@ -1007,52 +1007,52 @@ LABEL_12:
       goto LABEL_40;
     }
 
-    v7 = [v6 level];
-    v8 = [TRILevelChecked wrapLevel:v7];
+    level = [v6 level];
+    v8 = [TRILevelChecked wrapLevel:level];
   }
 
   else
   {
     if (self->_isFlatbufferReadEnabled)
     {
-      v7 = 0;
+      level = 0;
       v6 = 0;
     }
 
     else
     {
-      v9 = [(TRIFactorLevelCaching *)self->_factorLevels objectForKeyedSubscript:v4];
+      v9 = [(TRIFactorLevelCaching *)self->_factorLevels objectForKeyedSubscript:factorCopy];
       v6 = v9;
       if (v9)
       {
-        v10 = [v9 level];
-        if (v10)
+        level2 = [v9 level];
+        if (level2)
         {
-          v7 = [TRILevelChecked wrapLevel:v10];
+          level = [TRILevelChecked wrapLevel:level2];
         }
 
         else
         {
-          v7 = 0;
+          level = 0;
         }
       }
 
       else
       {
-        v7 = 0;
+        level = 0;
       }
     }
 
     if (self->_isFlatbufferWriteEnabled)
     {
-      v11 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels levelsAsDict];
-      v12 = [v11 objectForKeyedSubscript:v4];
+      levelsAsDict = [(TRIFBFastFactorLevels *)self->_fastFactorLevels levelsAsDict];
+      v12 = [levelsAsDict objectForKeyedSubscript:factorCopy];
 
       if (v12)
       {
-        v13 = [(NSString *)self->_fbFactorPath stringByDeletingLastPathComponent];
-        v14 = [(TRIFBFastFactorLevels *)self->_fastFactorLevels namespaceName];
-        v15 = [TRIFlatbufferUtils convertFBFactorLevelToProtoFactorLevel:v12 parentDir:v13 namespaceName:v14 isRelativePath:0];
+        stringByDeletingLastPathComponent = [(NSString *)self->_fbFactorPath stringByDeletingLastPathComponent];
+        namespaceName = [(TRIFBFastFactorLevels *)self->_fastFactorLevels namespaceName];
+        v15 = [TRIFlatbufferUtils convertFBFactorLevelToProtoFactorLevel:v12 parentDir:stringByDeletingLastPathComponent namespaceName:namespaceName isRelativePath:0];
       }
 
       else
@@ -1062,20 +1062,20 @@ LABEL_12:
 
       if (!self->_isFlatbufferReadEnabled && ([v6 isEqual:v15] & 1) == 0)
       {
-        v17 = [v15 factor];
-        v18 = [v17 metadataKeysArray];
-        v19 = [v6 factor];
-        v20 = [v19 metadataKeysArray];
+        factor = [v15 factor];
+        metadataKeysArray = [factor metadataKeysArray];
+        factor2 = [v6 factor];
+        metadataKeysArray2 = [factor2 metadataKeysArray];
 
-        if (v18 != v20)
+        if (metadataKeysArray != metadataKeysArray2)
         {
-          v33 = [v15 level];
-          v21 = [v33 metadata];
-          v22 = [v6 level];
-          v23 = [v22 metadata];
-          v24 = v23;
-          v25 = v23 ? v23 : MEMORY[0x277CBEC10];
-          v26 = [v21 isEqualToDictionary:v25];
+          level3 = [v15 level];
+          metadata = [level3 metadata];
+          level4 = [v6 level];
+          metadata2 = [level4 metadata];
+          v24 = metadata2;
+          v25 = metadata2 ? metadata2 : MEMORY[0x277CBEC10];
+          v26 = [metadata isEqualToDictionary:v25];
 
           if ((v26 & 1) == 0)
           {
@@ -1100,8 +1100,8 @@ LABEL_12:
 
       if (v15)
       {
-        v29 = [v15 level];
-        v16 = [TRILevelChecked wrapLevel:v29];
+        level5 = [v15 level];
+        v16 = [TRILevelChecked wrapLevel:level5];
       }
 
       else
@@ -1122,7 +1122,7 @@ LABEL_12:
 
     else
     {
-      v30 = v7;
+      v30 = level;
     }
 
     v8 = v30;
@@ -1149,13 +1149,13 @@ uint64_t __63__TRIFPNamespaceFactorProvider__readAllFactorLevelsFromStorage__blo
 
 - (void)cacheFactorLevels
 {
-  v3 = [(TRIFPNamespaceFactorProvider *)self _readAllFactorLevelsFromStorage];
+  _readAllFactorLevelsFromStorage = [(TRIFPNamespaceFactorProvider *)self _readAllFactorLevelsFromStorage];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__TRIFPNamespaceFactorProvider_cacheFactorLevels__block_invoke;
   v4[3] = &unk_27885E350;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [_readAllFactorLevelsFromStorage enumerateObjectsUsingBlock:v4];
 }
 
 void __49__TRIFPNamespaceFactorProvider_cacheFactorLevels__block_invoke(uint64_t a1, void *a2)

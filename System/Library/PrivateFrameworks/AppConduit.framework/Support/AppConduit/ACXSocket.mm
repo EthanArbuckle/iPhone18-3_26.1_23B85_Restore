@@ -1,15 +1,15 @@
 @interface ACXSocket
-- (ACXSocket)initWithIDSDeviceConnection:(id)a3 boostingMessageContext:(id)a4 streamName:(id)a5 creationTime:(id)a6 readEventHandler:(id)a7;
-- (ACXSocket)initWithSocket:(int)a3 streamName:(id)a4 creationTime:(id)a5 readEventHandler:(id)a6;
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeData:(id)a3 error:(id *)a4;
-- (BOOL)writeDictionary:(id)a3 error:(id *)a4;
-- (BOOL)writePingWithError:(id *)a3;
-- (BOOL)writeShutdownMessageWithError:(id *)a3;
+- (ACXSocket)initWithIDSDeviceConnection:(id)connection boostingMessageContext:(id)context streamName:(id)name creationTime:(id)time readEventHandler:(id)handler;
+- (ACXSocket)initWithSocket:(int)socket streamName:(id)name creationTime:(id)time readEventHandler:(id)handler;
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length error:(id *)error;
+- (BOOL)writeData:(id)data error:(id *)error;
+- (BOOL)writeDictionary:(id)dictionary error:(id *)error;
+- (BOOL)writePingWithError:(id *)error;
+- (BOOL)writeShutdownMessageWithError:(id *)error;
 - (NSDictionary)errorInfoDict;
-- (id)readDataOrDictionaryWithError:(id *)a3;
-- (id)readDataWithError:(id *)a3;
-- (id)readDictionaryWithError:(id *)a3;
+- (id)readDataOrDictionaryWithError:(id *)error;
+- (id)readDataWithError:(id *)error;
+- (id)readDictionaryWithError:(id *)error;
 - (void)_setUpSocketReadSource;
 - (void)invalidate;
 - (void)resumeReadSource;
@@ -18,51 +18,51 @@
 
 @implementation ACXSocket
 
-- (ACXSocket)initWithSocket:(int)a3 streamName:(id)a4 creationTime:(id)a5 readEventHandler:(id)a6
+- (ACXSocket)initWithSocket:(int)socket streamName:(id)name creationTime:(id)time readEventHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  timeCopy = time;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = ACXSocket;
   v14 = [(ACXSocket *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_socketFD = a3;
-    v16 = objc_retainBlock(v13);
+    v14->_socketFD = socket;
+    v16 = objc_retainBlock(handlerCopy);
     eventHandler = v15->_eventHandler;
     v15->_eventHandler = v16;
 
-    objc_storeStrong(&v15->_streamName, a4);
-    objc_storeStrong(&v15->_creationTime, a5);
+    objc_storeStrong(&v15->_streamName, name);
+    objc_storeStrong(&v15->_creationTime, time);
     [(ACXSocket *)v15 _setUpSocketReadSource];
   }
 
   return v15;
 }
 
-- (ACXSocket)initWithIDSDeviceConnection:(id)a3 boostingMessageContext:(id)a4 streamName:(id)a5 creationTime:(id)a6 readEventHandler:(id)a7
+- (ACXSocket)initWithIDSDeviceConnection:(id)connection boostingMessageContext:(id)context streamName:(id)name creationTime:(id)time readEventHandler:(id)handler
 {
-  v13 = a3;
-  v21 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  connectionCopy = connection;
+  contextCopy = context;
+  nameCopy = name;
+  timeCopy = time;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = ACXSocket;
   v17 = [(ACXSocket *)&v22 init];
   if (v17)
   {
-    v17->_socketFD = [v13 socket];
-    v18 = objc_retainBlock(v16);
+    v17->_socketFD = [connectionCopy socket];
+    v18 = objc_retainBlock(handlerCopy);
     eventHandler = v17->_eventHandler;
     v17->_eventHandler = v18;
 
-    objc_storeStrong(&v17->_deviceConnection, a3);
-    objc_storeStrong(&v17->_boostingMessageContext, a4);
-    objc_storeStrong(&v17->_streamName, a5);
-    objc_storeStrong(&v17->_creationTime, a6);
+    objc_storeStrong(&v17->_deviceConnection, connection);
+    objc_storeStrong(&v17->_boostingMessageContext, context);
+    objc_storeStrong(&v17->_streamName, name);
+    objc_storeStrong(&v17->_creationTime, time);
     [(ACXSocket *)v17 _setUpSocketReadSource];
   }
 
@@ -77,8 +77,8 @@
   }
 
   [(ACXSocket *)self setReadSourceIsRunning:1];
-  v3 = [(ACXSocket *)self socketReadSource];
-  dispatch_resume(v3);
+  socketReadSource = [(ACXSocket *)self socketReadSource];
+  dispatch_resume(socketReadSource);
 }
 
 - (void)suspendReadSource
@@ -89,8 +89,8 @@
   }
 
   [(ACXSocket *)self setReadSourceIsRunning:0];
-  v3 = [(ACXSocket *)self socketReadSource];
-  dispatch_suspend(v3);
+  socketReadSource = [(ACXSocket *)self socketReadSource];
+  dispatch_suspend(socketReadSource);
 }
 
 - (void)invalidate
@@ -100,21 +100,21 @@
     [(ACXSocket *)self setInvalidated:1];
     if (shutdown([(ACXSocket *)self socketFD], 2) && (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3))
     {
-      v3 = [(ACXSocket *)self socketFD];
+      socketFD = [(ACXSocket *)self socketFD];
       v4 = __error();
-      v6 = v3;
+      v6 = socketFD;
       v7 = strerror(*v4);
       MOLogWrite();
     }
 
     if (![(ACXSocket *)self readSourceIsRunning:v6])
     {
-      v5 = [(ACXSocket *)self socketReadSource];
-      dispatch_resume(v5);
+      socketReadSource = [(ACXSocket *)self socketReadSource];
+      dispatch_resume(socketReadSource);
     }
 
-    v8 = [(ACXSocket *)self socketReadSource];
-    dispatch_source_cancel(v8);
+    socketReadSource2 = [(ACXSocket *)self socketReadSource];
+    dispatch_source_cancel(socketReadSource2);
   }
 }
 
@@ -125,9 +125,9 @@
   socketQueue = self->_socketQueue;
   self->_socketQueue = v4;
 
-  v6 = [(ACXSocket *)self socketFD];
-  v7 = [(ACXSocket *)self socketQueue];
-  v8 = dispatch_source_create(&_dispatch_source_type_read, v6, 0, v7);
+  socketFD = [(ACXSocket *)self socketFD];
+  socketQueue = [(ACXSocket *)self socketQueue];
+  v8 = dispatch_source_create(&_dispatch_source_type_read, socketFD, 0, socketQueue);
   socketReadSource = self->_socketReadSource;
   self->_socketReadSource = v8;
 
@@ -148,27 +148,27 @@
   [(ACXSocket *)self setReadSourceIsRunning:0];
 }
 
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length error:(id *)error
 {
-  if (!a4)
+  if (!length)
   {
     return 1;
   }
 
-  v6 = a4;
+  lengthCopy = length;
   while (1)
   {
-    v9 = (v6 >= 0x40000 ? 0x40000 : v6);
+    v9 = (lengthCopy >= 0x40000 ? 0x40000 : lengthCopy);
     v11 = 2;
     v12 = v9;
-    if (!sub_10002DCF0(self, &v11, 5, a5) || (sub_10002DCF0(self, a3, v9, a5) & 1) == 0)
+    if (!sub_10002DCF0(self, &v11, 5, error) || (sub_10002DCF0(self, bytes, v9, error) & 1) == 0)
     {
       break;
     }
 
-    a3 = &v9[a3];
-    v6 -= v9;
-    if (!v6)
+    bytes = &v9[bytes];
+    lengthCopy -= v9;
+    if (!lengthCopy)
     {
       return 1;
     }
@@ -177,21 +177,21 @@
   return 0;
 }
 
-- (BOOL)writeData:(id)a3 error:(id *)a4
+- (BOOL)writeData:(id)data error:(id *)error
 {
-  v7 = a3;
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v10 = [dataCopy2 length];
 
-  return [(ACXSocket *)self writeBytes:v9 length:v10 error:a4];
+  return [(ACXSocket *)self writeBytes:bytes length:v10 error:error];
 }
 
-- (BOOL)writeDictionary:(id)a3 error:(id *)a4
+- (BOOL)writeDictionary:(id)dictionary error:(id *)error
 {
   memset(v20, 0, 5);
   v19 = 0;
-  v6 = [NSPropertyListSerialization dataWithPropertyList:a3 format:200 options:0 error:&v19];
+  v6 = [NSPropertyListSerialization dataWithPropertyList:dictionary format:200 options:0 error:&v19];
   v7 = v19;
   if (v6)
   {
@@ -201,13 +201,13 @@
       *(v20 + 1) = [v6 length];
       v18 = v7;
       v13 = sub_10002DCF0(self, v20, 5, &v18);
-      v8 = v18;
+      errorInfoDict = v18;
 
       if (!v13)
       {
         v12 = 0;
-        v7 = v8;
-        if (!a4)
+        v7 = errorInfoDict;
+        if (!error)
         {
           goto LABEL_13;
         }
@@ -215,23 +215,23 @@
         goto LABEL_11;
       }
 
-      v14 = [v6 bytes];
-      v17 = v8;
-      v12 = sub_10002DCF0(self, v14, *(v20 + 1), &v17);
+      bytes = [v6 bytes];
+      v17 = errorInfoDict;
+      v12 = sub_10002DCF0(self, bytes, *(v20 + 1), &v17);
       v7 = v17;
     }
 
     else
     {
-      v8 = [(ACXSocket *)self errorInfoDict];
+      errorInfoDict = [(ACXSocket *)self errorInfoDict];
       v9 = [v6 length];
-      v11 = sub_1000061DC("[ACXSocket writeDictionary:error:]", 230, @"ACXErrorDomain", 16, 0, v8, @"Dictionary was too big to send (was %lu bytes)", v10, v9);
+      v11 = sub_1000061DC("[ACXSocket writeDictionary:error:]", 230, @"ACXErrorDomain", 16, 0, errorInfoDict, @"Dictionary was too big to send (was %lu bytes)", v10, v9);
 
       v12 = 0;
       v7 = v11;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -240,7 +240,7 @@
   else
   {
     v12 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -250,7 +250,7 @@ LABEL_11:
   if ((v12 & 1) == 0)
   {
     v15 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_13:
@@ -258,39 +258,39 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)writePingWithError:(id *)a3
+- (BOOL)writePingWithError:(id *)error
 {
   v9 = 0;
   v8 = 3;
   v7 = 0;
   v4 = sub_10002DCF0(self, &v8, 5, &v7);
   v5 = v7;
-  if (a3 && (v4 & 1) == 0)
+  if (error && (v4 & 1) == 0)
   {
     v5 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
   return v4;
 }
 
-- (BOOL)writeShutdownMessageWithError:(id *)a3
+- (BOOL)writeShutdownMessageWithError:(id *)error
 {
   v9 = 0;
   v8 = 4;
   v7 = 0;
   v4 = sub_10002DCF0(self, &v8, 5, &v7);
   v5 = v7;
-  if (a3 && (v4 & 1) == 0)
+  if (error && (v4 & 1) == 0)
   {
     v5 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
   return v4;
 }
 
-- (id)readDataWithError:(id *)a3
+- (id)readDataWithError:(id *)error
 {
   v5 = [(ACXSocket *)self readDataOrDictionaryWithError:?];
   if (v5)
@@ -313,13 +313,13 @@ LABEL_13:
       goto LABEL_11;
     }
 
-    v9 = [(ACXSocket *)self errorInfoDict];
-    v11 = sub_1000061DC("[ACXSocket readDataWithError:]", 346, @"ACXErrorDomain", 14, 0, v9, @"Expected to read data but got dictionary.", v10, v14);
+    errorInfoDict = [(ACXSocket *)self errorInfoDict];
+    v11 = sub_1000061DC("[ACXSocket readDataWithError:]", 346, @"ACXErrorDomain", 14, 0, errorInfoDict, @"Expected to read data but got dictionary.", v10, v14);
 
-    if (a3)
+    if (error)
     {
       v12 = v11;
-      *a3 = v11;
+      *error = v11;
     }
   }
 
@@ -329,7 +329,7 @@ LABEL_11:
   return v8;
 }
 
-- (id)readDictionaryWithError:(id *)a3
+- (id)readDictionaryWithError:(id *)error
 {
   v5 = [(ACXSocket *)self readDataOrDictionaryWithError:?];
   if (v5)
@@ -352,13 +352,13 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v9 = [(ACXSocket *)self errorInfoDict];
-    v11 = sub_1000061DC("[ACXSocket readDictionaryWithError:]", 360, @"ACXErrorDomain", 14, 0, v9, @"Expected to read dictionary but got data.", v10, v14);
+    errorInfoDict = [(ACXSocket *)self errorInfoDict];
+    v11 = sub_1000061DC("[ACXSocket readDictionaryWithError:]", 360, @"ACXErrorDomain", 14, 0, errorInfoDict, @"Expected to read dictionary but got data.", v10, v14);
 
-    if (a3)
+    if (error)
     {
       v12 = v11;
-      *a3 = v11;
+      *error = v11;
     }
   }
 
@@ -368,7 +368,7 @@ LABEL_11:
   return v8;
 }
 
-- (id)readDataOrDictionaryWithError:(id *)a3
+- (id)readDataOrDictionaryWithError:(id *)error
 {
   v31 = 0;
   v5 = sub_10002E758(self, 5, &v31);
@@ -378,7 +378,7 @@ LABEL_11:
     v10 = 0;
     v11 = 0;
     v12 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_26;
     }
@@ -397,8 +397,8 @@ LABEL_11:
 
     if (v8)
     {
-      v13 = [(ACXSocket *)self errorInfoDict];
-      sub_1000061DC("[ACXSocket readDataOrDictionaryWithError:]", 386, @"ACXErrorDomain", 15, 0, v13, @"Got ping packet with non-zero (%u) length", v18, *(v5 + 1));
+      errorInfoDict = [(ACXSocket *)self errorInfoDict];
+      sub_1000061DC("[ACXSocket readDataOrDictionaryWithError:]", 386, @"ACXErrorDomain", 15, 0, errorInfoDict, @"Got ping packet with non-zero (%u) length", v18, *(v5 + 1));
       v19 = LABEL_18:;
 
       v10 = 0;
@@ -423,8 +423,8 @@ LABEL_11:
   {
     if (v8)
     {
-      v13 = [(ACXSocket *)self errorInfoDict];
-      sub_1000061DC("[ACXSocket readDataOrDictionaryWithError:]", 397, @"ACXErrorDomain", 15, 0, v13, @"Got shutdown packet with non-zero (%u) length", v14, *(v5 + 1));
+      errorInfoDict = [(ACXSocket *)self errorInfoDict];
+      sub_1000061DC("[ACXSocket readDataOrDictionaryWithError:]", 397, @"ACXErrorDomain", 15, 0, errorInfoDict, @"Got shutdown packet with non-zero (%u) length", v14, *(v5 + 1));
       goto LABEL_18;
     }
 
@@ -437,7 +437,7 @@ LABEL_11:
 LABEL_19:
     v12 = 0;
     v6 = v19;
-    if (a3)
+    if (error)
     {
       goto LABEL_24;
     }
@@ -478,13 +478,13 @@ LABEL_6:
       goto LABEL_26;
     }
 
-    v16 = [(ACXSocket *)self errorInfoDict];
-    v9 = sub_1000061DC("[ACXSocket readDataOrDictionaryWithError:]", 418, @"ACXErrorDomain", 15, v6, v16, @"Failed to deserialize dictionary from data: %@", v17, v11);
+    errorInfoDict2 = [(ACXSocket *)self errorInfoDict];
+    v9 = sub_1000061DC("[ACXSocket readDataOrDictionaryWithError:]", 418, @"ACXErrorDomain", 15, v6, errorInfoDict2, @"Failed to deserialize dictionary from data: %@", v17, v11);
 
     v10 = 0;
 LABEL_23:
     v6 = v9;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_26;
     }
@@ -493,19 +493,19 @@ LABEL_24:
     if (!v10)
     {
       v23 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     goto LABEL_26;
   }
 
-  v25 = [(ACXSocket *)self errorInfoDict];
+  errorInfoDict3 = [(ACXSocket *)self errorInfoDict];
   v28 = *(v5 + 1);
-  v6 = sub_1000061DC("[ACXSocket readDataOrDictionaryWithError:]", 424, @"ACXErrorDomain", 14, 0, v25, @"Got unknown message type %hhu (length %u)", v26, *v5);
+  v6 = sub_1000061DC("[ACXSocket readDataOrDictionaryWithError:]", 424, @"ACXErrorDomain", 14, 0, errorInfoDict3, @"Got unknown message type %hhu (length %u)", v26, *v5);
 
   v10 = 0;
   v11 = 0;
-  if (a3)
+  if (error)
   {
     goto LABEL_24;
   }
@@ -519,16 +519,16 @@ LABEL_26:
 
 - (NSDictionary)errorInfoDict
 {
-  v3 = [(ACXSocket *)self streamName];
-  v4 = [(ACXSocket *)self creationTime];
-  if (!v4)
+  streamName = [(ACXSocket *)self streamName];
+  creationTime = [(ACXSocket *)self creationTime];
+  if (!creationTime)
   {
-    v4 = [NSDate dateWithTimeIntervalSinceReferenceDate:0.0];
+    creationTime = [NSDate dateWithTimeIntervalSinceReferenceDate:0.0];
   }
 
-  if (v3)
+  if (streamName)
   {
-    v5 = v3;
+    v5 = streamName;
   }
 
   else
@@ -539,7 +539,7 @@ LABEL_26:
   v9[0] = @"ConnectionIdentifier";
   v9[1] = @"ConnectionCreationDate";
   v10[0] = v5;
-  v10[1] = v4;
+  v10[1] = creationTime;
   v9[2] = @"WifiAsserted";
   v6 = [NSNumber numberWithBool:[(ACXSocket *)self wifiAsserted]];
   v10[2] = v6;

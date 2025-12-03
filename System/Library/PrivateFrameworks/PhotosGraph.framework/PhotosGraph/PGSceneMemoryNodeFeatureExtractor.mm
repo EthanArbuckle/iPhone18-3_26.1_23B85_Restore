@@ -1,22 +1,22 @@
 @interface PGSceneMemoryNodeFeatureExtractor
-- (PGSceneMemoryNodeFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
-- (id)labelsForVersion:(int64_t)a3;
+- (PGSceneMemoryNodeFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
+- (id)labelsForVersion:(int64_t)version;
 @end
 
 @implementation PGSceneMemoryNodeFeatureExtractor
 
-- (id)labelsForVersion:(int64_t)a3
+- (id)labelsForVersion:(int64_t)version
 {
   v7[17] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEBF8];
-  if (a3 > 2)
+  if (version > 2)
   {
-    if (a3 == 3)
+    if (version == 3)
     {
       v3 = &unk_2844863C0;
     }
 
-    else if (a3 == 4)
+    else if (version == 4)
     {
       v7[0] = @"Snow";
       v7[1] = @"SunriseSunset";
@@ -42,12 +42,12 @@
   else
   {
     v4 = &unk_2844863A8;
-    if (a3 != 2)
+    if (version != 2)
     {
       v4 = MEMORY[0x277CBEBF8];
     }
 
-    if (a3 == 1)
+    if (version == 1)
     {
       v3 = &unk_284486390;
     }
@@ -63,20 +63,20 @@
   return v3;
 }
 
-- (PGSceneMemoryNodeFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGSceneMemoryNodeFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = [(PGSceneMemoryNodeFeatureExtractor *)self labelsForVersion:a3, a4];
+  error = [(PGSceneMemoryNodeFeatureExtractor *)self labelsForVersion:version, error];
   v6 = MEMORY[0x277D22C90];
   v7 = +[PGGraphSceneFeatureNode filter];
-  v8 = [v7 relation];
-  v15[0] = v8;
+  relation = [v7 relation];
+  v15[0] = relation;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v10 = [v6 chain:v9];
 
   v14.receiver = self;
   v14.super_class = PGSceneMemoryNodeFeatureExtractor;
-  v11 = [(PGGraphMemoryNodeFeatureExtractor *)&v14 initWithName:@"Scene" featureNames:v5 relation:v10 labelForTargetBlock:&__block_literal_global_156];
+  v11 = [(PGGraphMemoryNodeFeatureExtractor *)&v14 initWithName:@"Scene" featureNames:error relation:v10 labelForTargetBlock:&__block_literal_global_156];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;

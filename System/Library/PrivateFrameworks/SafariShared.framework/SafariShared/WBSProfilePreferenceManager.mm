@@ -1,27 +1,27 @@
 @interface WBSProfilePreferenceManager
-- (WBSProfilePreferenceManager)initWithPerSitePreferencesStore:(id)a3 profileProvider:(id)a4;
-- (id)identifierForProfilePreferenceForDomain:(id)a3;
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4;
+- (WBSProfilePreferenceManager)initWithPerSitePreferencesStore:(id)store profileProvider:(id)provider;
+- (id)identifierForProfilePreferenceForDomain:(id)domain;
+- (id)localizedStringForValue:(id)value inPreference:(id)preference;
 - (id)preferences;
-- (id)valuesForPreference:(id)a3;
-- (void)didRemoveProfileWithIdentifier:(id)a3 hasMultipleProfiles:(BOOL)a4;
-- (void)getProfilePreferenceValueForDomain:(id)a3 withTimeout:(double)a4 fallbackValue:(id)a5 usingBlock:(id)a6;
+- (id)valuesForPreference:(id)preference;
+- (void)didRemoveProfileWithIdentifier:(id)identifier hasMultipleProfiles:(BOOL)profiles;
+- (void)getProfilePreferenceValueForDomain:(id)domain withTimeout:(double)timeout fallbackValue:(id)value usingBlock:(id)block;
 @end
 
 @implementation WBSProfilePreferenceManager
 
-- (WBSProfilePreferenceManager)initWithPerSitePreferencesStore:(id)a3 profileProvider:(id)a4
+- (WBSProfilePreferenceManager)initWithPerSitePreferencesStore:(id)store profileProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = WBSProfilePreferenceManager;
   v9 = [(WBSProfilePreferenceManager *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_perSitePreferencesStore, a3);
-    objc_storeStrong(&v10->_profileProvider, a4);
+    objc_storeStrong(&v9->_perSitePreferencesStore, store);
+    objc_storeStrong(&v10->_profileProvider, provider);
     v11 = [[WBSPerSitePreference alloc] initWithIdentifier:@"ProfilePreference"];
     profilePreference = v10->_profilePreference;
     v10->_profilePreference = v11;
@@ -34,71 +34,71 @@
   return v10;
 }
 
-- (id)identifierForProfilePreferenceForDomain:(id)a3
+- (id)identifierForProfilePreferenceForDomain:(id)domain
 {
-  v4 = a3;
-  if ([v4 length])
+  domainCopy = domain;
+  if ([domainCopy length])
   {
-    v5 = [(WBSPerSitePreferenceManager *)self valueOfPreference:self->_profilePreference forDomain:v4];
+    v5 = [(WBSPerSitePreferenceManager *)self valueOfPreference:self->_profilePreference forDomain:domainCopy];
     v6 = v5;
     if (v5 && ([v5 isEqualToString:@"MostRecentProfile"] & 1) == 0)
     {
       v8 = [(WBSProfileProviding *)self->_profileProvider profileWithServerID:v6];
-      v7 = [v8 identifier];
+      identifier = [v8 identifier];
     }
 
     else
     {
-      v7 = 0;
+      identifier = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    identifier = 0;
   }
 
-  return v7;
+  return identifier;
 }
 
-- (void)getProfilePreferenceValueForDomain:(id)a3 withTimeout:(double)a4 fallbackValue:(id)a5 usingBlock:(id)a6
+- (void)getProfilePreferenceValueForDomain:(id)domain withTimeout:(double)timeout fallbackValue:(id)value usingBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   profilePreference = self->_profilePreference;
-  v12 = a3;
-  v13 = [WBSPerSitePreferenceTimeout timeoutWithInterval:a5 fallbackValue:a4];
+  domainCopy = domain;
+  v13 = [WBSPerSitePreferenceTimeout timeoutWithInterval:value fallbackValue:timeout];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __103__WBSProfilePreferenceManager_getProfilePreferenceValueForDomain_withTimeout_fallbackValue_usingBlock___block_invoke;
   v15[3] = &unk_1E7FB6CA8;
-  v16 = v10;
-  v14 = v10;
-  [(WBSPerSitePreferenceManager *)self getValueOfPreference:profilePreference forDomain:v12 withTimeout:v13 usingBlock:v15];
+  v16 = blockCopy;
+  v14 = blockCopy;
+  [(WBSPerSitePreferenceManager *)self getValueOfPreference:profilePreference forDomain:domainCopy withTimeout:v13 usingBlock:v15];
 }
 
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4
+- (id)localizedStringForValue:(id)value inPreference:(id)preference
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  valueCopy = value;
+  preferenceCopy = preference;
+  v8 = valueCopy;
   v9 = v8;
   if (v8 && ![v8 isEqualToString:@"MostRecentProfile"])
   {
     v11 = [(WBSProfileProviding *)self->_profileProvider profileWithServerID:v9];
-    v10 = [v11 title];
+    title = [v11 title];
   }
 
   else
   {
-    v10 = _WBSLocalizedString();
+    title = _WBSLocalizedString();
   }
 
-  return v10;
+  return title;
 }
 
-- (void)didRemoveProfileWithIdentifier:(id)a3 hasMultipleProfiles:(BOOL)a4
+- (void)didRemoveProfileWithIdentifier:(id)identifier hasMultipleProfiles:(BOOL)profiles
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = self->_profilePreference;
   v8 = [MEMORY[0x1E695DFA8] set];
   v12[0] = MEMORY[0x1E69E9820];
@@ -107,11 +107,11 @@
   v12[3] = &unk_1E7FC99B8;
   v12[4] = self;
   v13 = v7;
-  v16 = a4;
-  v14 = v6;
+  profilesCopy = profiles;
+  v14 = identifierCopy;
   v15 = v8;
   v9 = v8;
-  v10 = v6;
+  v10 = identifierCopy;
   v11 = v7;
   [(WBSPerSitePreferenceManager *)self getAllDomainsConfiguredForPreference:v11 usingBlock:v12];
 }
@@ -164,14 +164,14 @@ void __82__WBSProfilePreferenceManager_didRemoveProfileWithIdentifier_hasMultipl
   return v2;
 }
 
-- (id)valuesForPreference:(id)a3
+- (id)valuesForPreference:(id)preference
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [(WBSProfilePreferenceManager *)self defaultPreferenceValueForPreferenceIfNotCustomized:a3];
+  v4 = [(WBSProfilePreferenceManager *)self defaultPreferenceValueForPreferenceIfNotCustomized:preference];
   v10[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v6 = [(WBSProfileProviding *)self->_profileProvider profiles];
-  v7 = [v6 safari_mapObjectsUsingBlock:&__block_literal_global_91];
+  profiles = [(WBSProfileProviding *)self->_profileProvider profiles];
+  v7 = [profiles safari_mapObjectsUsingBlock:&__block_literal_global_91];
   v8 = [v5 arrayByAddingObjectsFromArray:v7];
 
   return v8;

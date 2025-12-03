@@ -1,31 +1,31 @@
 @interface PLGraphNodeContainer
 + (NSSet)sortableKeys;
-+ (id)changeFlagKeysForNodeContainerKey:(id)a3;
-+ (id)defaultValueForRequiredNodeValueCode:(int)a3 forNode:(id)a4;
-+ (id)newNodeContainerWithManagedObjectContext:(id)a3;
-+ (id)newNodeContainerWithNode:(id)a3;
-+ (id)newNodeContainerWithNode:(id)a3 containerClass:(Class)a4;
++ (id)changeFlagKeysForNodeContainerKey:(id)key;
++ (id)defaultValueForRequiredNodeValueCode:(int)code forNode:(id)node;
++ (id)newNodeContainerWithManagedObjectContext:(id)context;
++ (id)newNodeContainerWithNode:(id)node;
++ (id)newNodeContainerWithNode:(id)node containerClass:(Class)class;
 + (id)nodeContainerKeysByChangeFlagKey;
-+ (void)validateAllKnownSubclassesWithManagedObjectContext:(id)a3;
-+ (void)willSaveWithNode:(id)a3;
++ (void)validateAllKnownSubclassesWithManagedObjectContext:(id)context;
++ (void)willSaveWithNode:(id)node;
 - (NSString)uuid;
-- (PLGraphNodeContainer)initWithNode:(id)a3;
+- (PLGraphNodeContainer)initWithNode:(id)node;
 - (int64_t)externalIdentifier;
 - (signed)cloudDeleteState;
 - (signed)cloudLocalState;
-- (void)setCloudDeleteState:(signed __int16)a3;
-- (void)setCloudLocalState:(signed __int16)a3;
-- (void)setUuid:(id)a3;
-- (void)updateChangeFlagsForNodeContainerKey:(id)a3;
+- (void)setCloudDeleteState:(signed __int16)state;
+- (void)setCloudLocalState:(signed __int16)state;
+- (void)setUuid:(id)uuid;
+- (void)updateChangeFlagsForNodeContainerKey:(id)key;
 @end
 
 @implementation PLGraphNodeContainer
 
-- (void)updateChangeFlagsForNodeContainerKey:(id)a3
+- (void)updateChangeFlagsForNodeContainerKey:(id)key
 {
-  v4 = a3;
-  v5 = [objc_opt_class() changeFlagsKeysByNodeContainerKey];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  changeFlagsKeysByNodeContainerKey = [objc_opt_class() changeFlagsKeysByNodeContainerKey];
+  v6 = [changeFlagsKeysByNodeContainerKey objectForKeyedSubscript:keyCopy];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -48,93 +48,93 @@ void __61__PLGraphNodeContainer_updateChangeFlagsForNodeContainerKey___block_inv
   [v9 setValue:v8 forKey:v4];
 }
 
-- (void)setCloudDeleteState:(signed __int16)a3
+- (void)setCloudDeleteState:(signed __int16)state
 {
-  v3 = a3;
-  v4 = [(PLGraphNodeContainer *)self sourceNode];
-  [v4 setCloudDeleteState:v3];
+  stateCopy = state;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  [sourceNode setCloudDeleteState:stateCopy];
 }
 
 - (signed)cloudDeleteState
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 cloudDeleteState];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  cloudDeleteState = [sourceNode cloudDeleteState];
 
-  return v3;
+  return cloudDeleteState;
 }
 
-- (void)setCloudLocalState:(signed __int16)a3
+- (void)setCloudLocalState:(signed __int16)state
 {
-  v3 = a3;
-  v4 = [(PLGraphNodeContainer *)self sourceNode];
-  [v4 setCloudLocalState:v3];
+  stateCopy = state;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  [sourceNode setCloudLocalState:stateCopy];
 }
 
 - (signed)cloudLocalState
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 cloudLocalState];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  cloudLocalState = [sourceNode cloudLocalState];
 
-  return v3;
+  return cloudLocalState;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  [v5 setUuid:v4];
+  uuidCopy = uuid;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  [sourceNode setUuid:uuidCopy];
 }
 
 - (NSString)uuid
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 uuid];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  uuid = [sourceNode uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (int64_t)externalIdentifier
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 externalIdentifier];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  externalIdentifier = [sourceNode externalIdentifier];
 
-  return v3;
+  return externalIdentifier;
 }
 
-- (PLGraphNodeContainer)initWithNode:(id)a3
+- (PLGraphNodeContainer)initWithNode:(id)node
 {
-  v6 = a3;
+  nodeCopy = node;
   v10.receiver = self;
   v10.super_class = PLGraphNodeContainer;
   v7 = [(PLGraphNodeContainer *)&v10 init];
   if (v7)
   {
-    if (!v6)
+    if (!nodeCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v7 file:@"PLGraphNodeContainer.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"node"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"PLGraphNodeContainer.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"node"}];
     }
 
-    objc_storeStrong(&v7->_sourceNode, a3);
+    objc_storeStrong(&v7->_sourceNode, node);
   }
 
   return v7;
 }
 
-+ (id)newNodeContainerWithManagedObjectContext:(id)a3
++ (id)newNodeContainerWithManagedObjectContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   IsAbstract = _PFThrowMethodIsAbstract();
   [(PLGraphNodeContainer *)IsAbstract validateAllKnownSubclassesWithManagedObjectContext:v5, v6];
   return result;
 }
 
-+ (void)validateAllKnownSubclassesWithManagedObjectContext:(id)a3
++ (void)validateAllKnownSubclassesWithManagedObjectContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   objc_opt_class();
-  v5 = v3;
-  v4 = v3;
+  v5 = contextCopy;
+  v4 = contextCopy;
   PFObjc_enumerateSubclassesForHeader();
 }
 
@@ -216,14 +216,14 @@ void __75__PLGraphNodeContainer_validateAllKnownSubclassesWithManagedObjectConte
   }
 }
 
-+ (id)defaultValueForRequiredNodeValueCode:(int)a3 forNode:(id)a4
++ (id)defaultValueForRequiredNodeValueCode:(int)code forNode:(id)node
 {
-  v4 = *&a3;
-  v5 = a4;
-  v6 = [v5 managedObjectContext];
-  v7 = [(PLManagedObject *)PLGraphNodeValue insertInManagedObjectContext:v6];
+  v4 = *&code;
+  nodeCopy = node;
+  managedObjectContext = [nodeCopy managedObjectContext];
+  v7 = [(PLManagedObject *)PLGraphNodeValue insertInManagedObjectContext:managedObjectContext];
 
-  [v7 setNode:v5];
+  [v7 setNode:nodeCopy];
   [v7 setNameCode:v4];
 
   return v7;
@@ -232,14 +232,14 @@ void __75__PLGraphNodeContainer_validateAllKnownSubclassesWithManagedObjectConte
 + (id)nodeContainerKeysByChangeFlagKey
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [a1 changeFlagsKeysByNodeContainerKey];
+  changeFlagsKeysByNodeContainerKey = [self changeFlagsKeysByNodeContainerKey];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__PLGraphNodeContainer_nodeContainerKeysByChangeFlagKey__block_invoke;
   v7[3] = &unk_1E75784C8;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [changeFlagsKeysByNodeContainerKey enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -270,11 +270,11 @@ void __56__PLGraphNodeContainer_nodeContainerKeysByChangeFlagKey__block_invoke_2
   [v3 addObject:*(a1 + 40)];
 }
 
-+ (id)changeFlagKeysForNodeContainerKey:(id)a3
++ (id)changeFlagKeysForNodeContainerKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 changeFlagsKeysByNodeContainerKey];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  changeFlagsKeysByNodeContainerKey = [self changeFlagsKeysByNodeContainerKey];
+  v6 = [changeFlagsKeysByNodeContainerKey objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
@@ -290,33 +290,33 @@ void __56__PLGraphNodeContainer_nodeContainerKeysByChangeFlagKey__block_invoke_2
   return v4;
 }
 
-+ (void)willSaveWithNode:(id)a3
++ (void)willSaveWithNode:(id)node
 {
-  v4 = a3;
-  if ([a1 needsConstraintConflictResolutionForNode:?])
+  nodeCopy = node;
+  if ([self needsConstraintConflictResolutionForNode:?])
   {
-    [a1 resolveConstraintConflictsForNode:v4];
+    [self resolveConstraintConflictsForNode:nodeCopy];
   }
 }
 
-+ (id)newNodeContainerWithNode:(id)a3
++ (id)newNodeContainerWithNode:(id)node
 {
-  v4 = a3;
-  v5 = [a1 newNodeContainerWithNode:v4 containerClass:{objc_msgSend(v4, "nodeContainerClass")}];
+  nodeCopy = node;
+  v5 = [self newNodeContainerWithNode:nodeCopy containerClass:{objc_msgSend(nodeCopy, "nodeContainerClass")}];
 
   return v5;
 }
 
-+ (id)newNodeContainerWithNode:(id)a3 containerClass:(Class)a4
++ (id)newNodeContainerWithNode:(id)node containerClass:(Class)class
 {
-  v7 = a3;
-  if (!a4)
+  nodeCopy = node;
+  if (!class)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PLGraphNodeContainer.m" lineNumber:35 description:{@"Couldn't find container class for node: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNodeContainer.m" lineNumber:35 description:{@"Couldn't find container class for node: %@", nodeCopy}];
   }
 
-  v8 = [[(objc_class *)a4 alloc] initWithNode:v7];
+  v8 = [[(objc_class *)class alloc] initWithNode:nodeCopy];
 
   return v8;
 }

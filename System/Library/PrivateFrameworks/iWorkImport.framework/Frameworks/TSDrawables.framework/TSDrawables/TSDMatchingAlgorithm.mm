@@ -1,14 +1,14 @@
 @interface TSDMatchingAlgorithm
-+ (id)bestMatchesFromArray:(id)a3;
-- (BOOL)p_step4FindAZeroAndReturnRow:(int *)a3 column:(int *)a4;
-- (id)p_bestMatchesFromArray:(id)a3;
++ (id)bestMatchesFromArray:(id)array;
+- (BOOL)p_step4FindAZeroAndReturnRow:(int *)row column:(int *)column;
+- (id)p_bestMatchesFromArray:(id)array;
 - (int)p_doStep1;
 - (int)p_doStep2;
 - (int)p_doStep3;
 - (int)p_doStep4;
 - (int)p_doStep5;
 - (int)p_doStep6;
-- (int)p_step4IndexOfStarredZeroInRow:(int)a3;
+- (int)p_step4IndexOfStarredZeroInRow:(int)row;
 - (void)p_allocateMatrices;
 - (void)p_deallocateMatrices;
 @end
@@ -196,7 +196,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)p_step4FindAZeroAndReturnRow:(int *)a3 column:(int *)a4
+- (BOOL)p_step4FindAZeroAndReturnRow:(int *)row column:(int *)column
 {
   mMatrixDimension = self->mMatrixDimension;
   if (mMatrixDimension < 1)
@@ -226,12 +226,12 @@ LABEL_8:
     }
   }
 
-  *a3 = v6;
-  *a4 = v7;
+  *row = v6;
+  *column = v7;
   return 1;
 }
 
-- (int)p_step4IndexOfStarredZeroInRow:(int)a3
+- (int)p_step4IndexOfStarredZeroInRow:(int)row
 {
   mMatrixDimension = self->mMatrixDimension;
   if (mMatrixDimension < 1)
@@ -243,7 +243,7 @@ LABEL_5:
   else
   {
     v5 = 0;
-    v6 = &self->mMaskMatrix[mMatrixDimension * a3];
+    v6 = &self->mMaskMatrix[mMatrixDimension * row];
     while (v6[v5] != 1)
     {
       if (mMatrixDimension == ++v5)
@@ -572,11 +572,11 @@ LABEL_18:
   return 4;
 }
 
-- (id)p_bestMatchesFromArray:(id)a3
+- (id)p_bestMatchesFromArray:(id)array
 {
   v180 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6) > 1)
+  arrayCopy = array;
+  if (objc_msgSend_count(arrayCopy, v5, v6) > 1)
   {
     v157 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v7, v8);
     v12 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v10, v11);
@@ -584,8 +584,8 @@ LABEL_18:
     v173 = 0u;
     v174 = 0u;
     v175 = 0u;
-    v149 = v4;
-    obj = v4;
+    v149 = arrayCopy;
+    obj = arrayCopy;
     v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v13, &v172, v179, 16);
     if (v14)
     {
@@ -676,7 +676,7 @@ LABEL_18:
       v140 = objc_msgSend_sortedArrayUsingComparator_(v142, v62, v64);
       v124 = objc_msgSend_firstObject(v140, v144, v145);
       v9 = objc_msgSend_arrayWithObject_(v141, v146, v124);
-      v4 = v149;
+      arrayCopy = v149;
     }
 
     else
@@ -915,24 +915,24 @@ LABEL_82:
       }
 
       v143 = v148;
-      v4 = v149;
+      arrayCopy = v149;
       v12 = v154;
     }
   }
 
   else
   {
-    v9 = v4;
+    v9 = arrayCopy;
   }
 
   return v9;
 }
 
-+ (id)bestMatchesFromArray:(id)a3
++ (id)bestMatchesFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(TSDMatchingAlgorithm);
-  v6 = objc_msgSend_p_bestMatchesFromArray_(v4, v5, v3);
+  v6 = objc_msgSend_p_bestMatchesFromArray_(v4, v5, arrayCopy);
 
   return v6;
 }

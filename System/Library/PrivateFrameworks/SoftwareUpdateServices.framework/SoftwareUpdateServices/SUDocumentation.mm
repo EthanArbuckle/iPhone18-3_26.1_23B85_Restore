@@ -1,9 +1,9 @@
 @interface SUDocumentation
 - (BOOL)hasAnyDocumentation;
 - (SUDocumentation)init;
-- (SUDocumentation)initWithCoder:(id)a3;
-- (SUDocumentation)initWithSUCoreDocumentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUDocumentation)initWithCoder:(id)coder;
+- (SUDocumentation)initWithSUCoreDocumentation:(id)documentation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)humanReadableUpdateName;
 - (id)iconImage;
@@ -20,7 +20,7 @@
 - (id)releaseNotesSummaryFileName;
 - (id)slaVersion;
 - (void)_resetIfNecessary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUDocumentation
@@ -32,257 +32,257 @@
   return [(SUDocumentation *)&v3 init];
 }
 
-- (SUDocumentation)initWithSUCoreDocumentation:(id)a3
+- (SUDocumentation)initWithSUCoreDocumentation:(id)documentation
 {
-  v4 = a3;
+  documentationCopy = documentation;
   v5 = [(SUDocumentation *)self init];
   v6 = v5;
   if (v5)
   {
-    [(SUDocumentation *)v5 setCoreDocumentation:v4];
+    [(SUDocumentation *)v5 setCoreDocumentation:documentationCopy];
   }
 
   return v6;
 }
 
-- (SUDocumentation)initWithCoder:(id)a3
+- (SUDocumentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SUDocumentation *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coreDocumentation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coreDocumentation"];
     [(SUDocumentation *)v5 setCoreDocumentation:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v5 encodeObject:v4->_coreDocumentation forKey:@"coreDocumentation"];
-  objc_sync_exit(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeObject:selfCopy->_coreDocumentation forKey:@"coreDocumentation"];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 setCoreDocumentation:v5->_coreDocumentation];
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [v4 setCoreDocumentation:selfCopy->_coreDocumentation];
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)slaVersion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation slaVersion];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  slaVersion = [(SUCoreDocumentation *)selfCopy->_coreDocumentation slaVersion];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return slaVersion;
 }
 
 - (id)iconImage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation softwareUpdateIconImage];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  softwareUpdateIconImage = [(SUCoreDocumentation *)selfCopy->_coreDocumentation softwareUpdateIconImage];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return softwareUpdateIconImage;
 }
 
 - (id)humanReadableUpdateName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation humanReadableUpdateName];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  humanReadableUpdateName = [(SUCoreDocumentation *)selfCopy->_coreDocumentation humanReadableUpdateName];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return humanReadableUpdateName;
 }
 
 - (id)notificationTitleString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  if ([(SUCoreDocumentation *)v2->_coreDocumentation notificationEnabled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  if ([(SUCoreDocumentation *)selfCopy->_coreDocumentation notificationEnabled])
   {
-    v3 = [(SUCoreDocumentation *)v2->_coreDocumentation notificationTitleString];
+    notificationTitleString = [(SUCoreDocumentation *)selfCopy->_coreDocumentation notificationTitleString];
   }
 
   else
   {
-    v3 = 0;
+    notificationTitleString = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return notificationTitleString;
 }
 
 - (id)notificationBodyString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  if ([(SUCoreDocumentation *)v2->_coreDocumentation notificationEnabled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  if ([(SUCoreDocumentation *)selfCopy->_coreDocumentation notificationEnabled])
   {
-    v3 = [(SUCoreDocumentation *)v2->_coreDocumentation notificationBodyString];
+    notificationBodyString = [(SUCoreDocumentation *)selfCopy->_coreDocumentation notificationBodyString];
   }
 
   else
   {
-    v3 = 0;
+    notificationBodyString = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return notificationBodyString;
 }
 
 - (id)recommendedUpdateTitleString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation recommendedUpdateTitleString];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  recommendedUpdateTitleString = [(SUCoreDocumentation *)selfCopy->_coreDocumentation recommendedUpdateTitleString];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return recommendedUpdateTitleString;
 }
 
 - (id)recommendedUpdateAlertBodyString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation recommendedUpdateAlertBodyString];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  recommendedUpdateAlertBodyString = [(SUCoreDocumentation *)selfCopy->_coreDocumentation recommendedUpdateAlertBodyString];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return recommendedUpdateAlertBodyString;
 }
 
 - (id)mandatoryUpdateBodyString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation mandatoryUpdateBodyString];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  mandatoryUpdateBodyString = [(SUCoreDocumentation *)selfCopy->_coreDocumentation mandatoryUpdateBodyString];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return mandatoryUpdateBodyString;
 }
 
 - (id)releaseNotesSummaryFileName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation releaseNotesSummaryFileName];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  releaseNotesSummaryFileName = [(SUCoreDocumentation *)selfCopy->_coreDocumentation releaseNotesSummaryFileName];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return releaseNotesSummaryFileName;
 }
 
 - (id)releaseNotesSummary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation releaseNotesSummary];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  releaseNotesSummary = [(SUCoreDocumentation *)selfCopy->_coreDocumentation releaseNotesSummary];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return releaseNotesSummary;
 }
 
 - (id)releaseNotesFileName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation releaseNotesFileName];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  releaseNotesFileName = [(SUCoreDocumentation *)selfCopy->_coreDocumentation releaseNotesFileName];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return releaseNotesFileName;
 }
 
 - (id)releaseNotes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation releaseNotes];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  releaseNotes = [(SUCoreDocumentation *)selfCopy->_coreDocumentation releaseNotes];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return releaseNotes;
 }
 
 - (id)licenseAgreementFileName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation licenseAgreementFileName];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  licenseAgreementFileName = [(SUCoreDocumentation *)selfCopy->_coreDocumentation licenseAgreementFileName];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return licenseAgreementFileName;
 }
 
 - (id)licenseAgreement
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation licenseAgreement];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  licenseAgreement = [(SUCoreDocumentation *)selfCopy->_coreDocumentation licenseAgreement];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return licenseAgreement;
 }
 
 - (BOOL)hasAnyDocumentation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
-  v3 = [(SUCoreDocumentation *)v2->_coreDocumentation releaseNotesSummary];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
+  releaseNotesSummary = [(SUCoreDocumentation *)selfCopy->_coreDocumentation releaseNotesSummary];
+  if (releaseNotesSummary)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SUCoreDocumentation *)v2->_coreDocumentation releaseNotes];
-    if (v5)
+    releaseNotes = [(SUCoreDocumentation *)selfCopy->_coreDocumentation releaseNotes];
+    if (releaseNotes)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(SUCoreDocumentation *)v2->_coreDocumentation licenseAgreement];
-      v4 = v6 != 0;
+      licenseAgreement = [(SUCoreDocumentation *)selfCopy->_coreDocumentation licenseAgreement];
+      v4 = licenseAgreement != 0;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUDocumentation *)v2 _resetIfNecessary];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUDocumentation *)selfCopy _resetIfNecessary];
   v20 = MEMORY[0x277CCACA8];
-  v23 = [(SUCoreDocumentation *)v2->_coreDocumentation releaseNotesSummary];
-  if (v23)
+  releaseNotesSummary = [(SUCoreDocumentation *)selfCopy->_coreDocumentation releaseNotesSummary];
+  if (releaseNotesSummary)
   {
     v3 = @"Yes";
   }
@@ -293,8 +293,8 @@
   }
 
   v19 = v3;
-  v22 = [(SUCoreDocumentation *)v2->_coreDocumentation releaseNotes];
-  if (v22)
+  releaseNotes = [(SUCoreDocumentation *)selfCopy->_coreDocumentation releaseNotes];
+  if (releaseNotes)
   {
     v4 = @"Yes";
   }
@@ -305,8 +305,8 @@
   }
 
   v18 = v4;
-  v21 = [(SUCoreDocumentation *)v2->_coreDocumentation licenseAgreement];
-  if (v21)
+  licenseAgreement = [(SUCoreDocumentation *)selfCopy->_coreDocumentation licenseAgreement];
+  if (licenseAgreement)
   {
     v5 = @"Yes";
   }
@@ -317,9 +317,9 @@
   }
 
   v17 = v5;
-  v6 = [(SUCoreDocumentation *)v2->_coreDocumentation preferencesIconFileName];
-  v7 = [(SUCoreDocumentation *)v2->_coreDocumentation softwareUpdateIconImage];
-  if (v7)
+  preferencesIconFileName = [(SUCoreDocumentation *)selfCopy->_coreDocumentation preferencesIconFileName];
+  softwareUpdateIconImage = [(SUCoreDocumentation *)selfCopy->_coreDocumentation softwareUpdateIconImage];
+  if (softwareUpdateIconImage)
   {
     v8 = @"YES";
   }
@@ -329,24 +329,24 @@
     v8 = @"NO";
   }
 
-  v9 = [(SUCoreDocumentation *)v2->_coreDocumentation humanReadableUpdateName];
-  v10 = [(SUDocumentation *)v2 notificationTitleString];
-  v11 = [(SUDocumentation *)v2 notificationBodyString];
-  v12 = [(SUDocumentation *)v2 recommendedUpdateTitleString];
-  v13 = [(SUDocumentation *)v2 recommendedUpdateAlertBodyString];
-  v14 = [(SUDocumentation *)v2 mandatoryUpdateBodyString];
-  v15 = [v20 stringWithFormat:@"\n                \thasReadMeSummary: %@\n                \thasReadMe: %@\n                \thasLicenseAgreement: %@\n                \thasIconImageName: %@\n                \thasIconImage: %@\n                \thumanReadableUpdateName: %@\n                \tnotificationTitle:%@\n                \tnotificationBody:%@\n                \trecommendedUpdateTitle:%@\n                \trecommendedUpdateBody:%@\n                \tmandatoryUpdateBody:%@", v19, v18, v17, v6, v8, v9, v10, v11, v12, v13, v14];
+  humanReadableUpdateName = [(SUCoreDocumentation *)selfCopy->_coreDocumentation humanReadableUpdateName];
+  notificationTitleString = [(SUDocumentation *)selfCopy notificationTitleString];
+  notificationBodyString = [(SUDocumentation *)selfCopy notificationBodyString];
+  recommendedUpdateTitleString = [(SUDocumentation *)selfCopy recommendedUpdateTitleString];
+  recommendedUpdateAlertBodyString = [(SUDocumentation *)selfCopy recommendedUpdateAlertBodyString];
+  mandatoryUpdateBodyString = [(SUDocumentation *)selfCopy mandatoryUpdateBodyString];
+  v15 = [v20 stringWithFormat:@"\n                \thasReadMeSummary: %@\n                \thasReadMe: %@\n                \thasLicenseAgreement: %@\n                \thasIconImageName: %@\n                \thasIconImage: %@\n                \thumanReadableUpdateName: %@\n                \tnotificationTitle:%@\n                \tnotificationBody:%@\n                \trecommendedUpdateTitle:%@\n                \trecommendedUpdateBody:%@\n                \tmandatoryUpdateBody:%@", v19, v18, v17, preferencesIconFileName, v8, humanReadableUpdateName, notificationTitleString, notificationBodyString, recommendedUpdateTitleString, recommendedUpdateAlertBodyString, mandatoryUpdateBodyString];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
 
 - (void)_resetIfNecessary
 {
-  v3 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v4 = v3;
-  if (v3 && [v3 count])
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v4 = preferredLanguages;
+  if (preferredLanguages && [preferredLanguages count])
   {
     v5 = [v4 objectAtIndex:0];
   }
@@ -360,7 +360,7 @@
   if (([(__CFString *)v5 isEqualToString:self->_primaryLanguage]& 1) == 0)
   {
     [(SUDocumentation *)self setPrimaryLanguage:v7];
-    v6 = [(SUCoreDocumentation *)self->_coreDocumentation extendDocumentationProperties];
+    extendDocumentationProperties = [(SUCoreDocumentation *)self->_coreDocumentation extendDocumentationProperties];
   }
 }
 

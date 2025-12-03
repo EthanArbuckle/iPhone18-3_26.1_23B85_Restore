@@ -6,7 +6,7 @@
 - (id)nonce;
 - (void)setDisabled:(BOOL)disabled;
 - (void)setMedia:(NSString *)media;
-- (void)setNonce:(id)a3;
+- (void)setNonce:(id)nonce;
 - (void)setType:(NSString *)type;
 @end
 
@@ -171,10 +171,10 @@
   return v4;
 }
 
-- (void)setNonce:(id)a3
+- (void)setNonce:(id)nonce
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, nonce, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)

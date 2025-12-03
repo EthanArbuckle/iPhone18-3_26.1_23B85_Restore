@@ -1,40 +1,40 @@
 @interface _VUISBInstallProgressStateTransition
-+ (Class)_classForTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
-+ (id)newTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
-- (id)_initWithFromState:(int64_t)a3 toState:(int64_t)a4;
-- (void)_updateView:(id)a3;
++ (Class)_classForTransitionFromState:(int64_t)state toState:(int64_t)toState;
++ (id)newTransitionFromState:(int64_t)state toState:(int64_t)toState;
+- (id)_initWithFromState:(int64_t)state toState:(int64_t)toState;
+- (void)_updateView:(id)view;
 - (void)dealloc;
-- (void)updateView:(id)a3 withElapsedTime:(double)a4;
+- (void)updateView:(id)view withElapsedTime:(double)time;
 @end
 
 @implementation _VUISBInstallProgressStateTransition
 
-+ (id)newTransitionFromState:(int64_t)a3 toState:(int64_t)a4
++ (id)newTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  v6 = objc_alloc([a1 _classForTransitionFromState:? toState:?]);
+  v6 = objc_alloc([self _classForTransitionFromState:? toState:?]);
 
-  return [v6 _initWithFromState:a3 toState:a4];
+  return [v6 _initWithFromState:state toState:toState];
 }
 
-+ (Class)_classForTransitionFromState:(int64_t)a3 toState:(int64_t)a4
++ (Class)_classForTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  if (a3 == 2)
+  if (state == 2)
   {
-    if (a4 > 1)
+    if (toState > 1)
     {
       return 0;
     }
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
-    if (a4 && a4 != 2)
+    if (toState && toState != 2)
     {
       return 0;
     }
   }
 
-  else if (a3 || a4 != 1 && a4 != 2)
+  else if (state || toState != 1 && toState != 2)
   {
     return 0;
   }
@@ -42,7 +42,7 @@
   return objc_opt_class();
 }
 
-- (id)_initWithFromState:(int64_t)a3 toState:(int64_t)a4
+- (id)_initWithFromState:(int64_t)state toState:(int64_t)toState
 {
   v10.receiver = self;
   v10.super_class = _VUISBInstallProgressStateTransition;
@@ -50,9 +50,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_fromState = a3;
-    v6->_toState = a4;
-    if (v6->_fromState >= a4)
+    v6->_fromState = state;
+    v6->_toState = toState;
+    if (v6->_fromState >= toState)
     {
       v8 = MEMORY[0x1E6979EB0];
     }
@@ -76,9 +76,9 @@
   [(_VUISBInstallProgressStateTransition *)&v3 dealloc];
 }
 
-- (void)updateView:(id)a3 withElapsedTime:(double)a4
+- (void)updateView:(id)view withElapsedTime:(double)time
 {
-  v6 = self->_totalElapsedTime + a4;
+  v6 = self->_totalElapsedTime + time;
   self->_totalElapsedTime = v6;
   duration = self->_duration;
   v8 = 1.0;
@@ -92,16 +92,16 @@
 
   self->_fraction = v8;
 
-  [(_VUISBInstallProgressStateTransition *)self _updateView:a3];
+  [(_VUISBInstallProgressStateTransition *)self _updateView:view];
 }
 
-- (void)_updateView:(id)a3
+- (void)_updateView:(id)view
 {
-  [a3 setDisplayedState:self->_toState];
-  if ([(_VUISBInstallProgressStateTransition *)self isCompleteWithView:a3]&& self->_toState != 2)
+  [view setDisplayedState:self->_toState];
+  if ([(_VUISBInstallProgressStateTransition *)self isCompleteWithView:view]&& self->_toState != 2)
   {
 
-    [a3 setDisplayedFraction:0.0];
+    [view setDisplayedFraction:0.0];
   }
 }
 

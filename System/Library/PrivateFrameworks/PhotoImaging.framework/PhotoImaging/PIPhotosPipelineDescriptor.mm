@@ -1,16 +1,16 @@
 @interface PIPhotosPipelineDescriptor
-+ (id)photosPipelineDescriptorWithAsset:(id)a3 version:(id)a4;
++ (id)photosPipelineDescriptorWithAsset:(id)asset version:(id)version;
 - (PIPhotosPipelineDescriptor)init;
-- (PIPhotosPipelineDescriptor)initWithAsset:(id)a3;
+- (PIPhotosPipelineDescriptor)initWithAsset:(id)asset;
 @end
 
 @implementation PIPhotosPipelineDescriptor
 
-- (PIPhotosPipelineDescriptor)initWithAsset:(id)a3
+- (PIPhotosPipelineDescriptor)initWithAsset:(id)asset
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v18 = NUAssertLogger_28537();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -32,8 +32,8 @@
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v26;
         v34 = 2114;
@@ -44,8 +44,8 @@
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -54,7 +54,7 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = assetCopy;
   v31.receiver = self;
   v31.super_class = PIPhotosPipelineDescriptor;
   v6 = [(PIPhotosPipelineDescriptor *)&v31 init];
@@ -120,8 +120,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -148,8 +148,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -167,12 +167,12 @@ LABEL_14:
   }
 }
 
-+ (id)photosPipelineDescriptorWithAsset:(id)a3 version:(id)a4
++ (id)photosPipelineDescriptorWithAsset:(id)asset version:(id)version
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  assetCopy = asset;
+  versionCopy = version;
+  if (!versionCopy)
   {
     v12 = NUAssertLogger_28537();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -194,8 +194,8 @@ LABEL_14:
         v20 = dispatch_get_specific(*v14);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v20;
         v27 = 2114;
@@ -206,8 +206,8 @@ LABEL_14:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v19;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -216,8 +216,8 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [[PIPhotosPipelineDescriptor alloc] initWithAsset:v5];
+  v7 = versionCopy;
+  v8 = [[PIPhotosPipelineDescriptor alloc] initWithAsset:assetCopy];
   [(PIPhotosPipelineDescriptor *)v8 setBasePipelineVersion:v7];
   v9 = [objc_alloc(MEMORY[0x1E69B3AD0]) initWithNamespace:@"com.apple.photos" name:@"PhotosPipeline" version:v7];
   [(PIPhotosPipelineDescriptor *)v8 setPipelineIdentifier:v9];

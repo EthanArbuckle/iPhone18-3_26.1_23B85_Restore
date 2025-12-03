@@ -3,83 +3,83 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-- (AMSCarrierLinkTask)initWithAccount:(id)a3 bag:(id)a4 engagementHandler:(id)a5 guid:(id)a6 linkParams:(id)a7 metrics:(id)a8 msisdn:(id)a9 pacTokenPromise:(id)a10 productCode:(id)a11 requestEncoder:(id)a12 urlSession:(id)a13;
-- (AMSCarrierLinkTask)initWithAccount:(id)a3 bag:(id)a4 linkParams:(id)a5 productCode:(id)a6;
+- (AMSCarrierLinkTask)initWithAccount:(id)account bag:(id)bag engagementHandler:(id)handler guid:(id)guid linkParams:(id)params metrics:(id)metrics msisdn:(id)msisdn pacTokenPromise:(id)self0 productCode:(id)self1 requestEncoder:(id)self2 urlSession:(id)self3;
+- (AMSCarrierLinkTask)initWithAccount:(id)account bag:(id)bag linkParams:(id)params productCode:(id)code;
 - (AMSCarrierLinkTaskDelegate)delegate;
-- (id)_linkFailureFromResult:(id)a3;
+- (id)_linkFailureFromResult:(id)result;
 - (id)_linkParameters;
 - (id)_linkURLRequest;
-- (id)_metricsEventFromCarrierLinkResult:(id)a3 error:(id)a4;
+- (id)_metricsEventFromCarrierLinkResult:(id)result error:(id)error;
 - (id)_pacToken;
 - (id)_performLinking;
 - (id)_performLinkingWithValidations;
 - (id)_promptForAccount;
-- (id)_recordEngagementMetricsEvent:(id)a3;
-- (id)_resultDecodingURLResult:(id)a3;
+- (id)_recordEngagementMetricsEvent:(id)event;
+- (id)_resultDecodingURLResult:(id)result;
 - (id)perform;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)_delegateHandleEngagementRequest:(id)a3 completion:(id)a4;
-- (void)_performDelegateAuthenticationWithRequest:(id)a3 completion:(id)a4;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)_delegateHandleEngagementRequest:(id)request completion:(id)completion;
+- (void)_performDelegateAuthenticationWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSCarrierLinkTask
 
-- (AMSCarrierLinkTask)initWithAccount:(id)a3 bag:(id)a4 linkParams:(id)a5 productCode:(id)a6
+- (AMSCarrierLinkTask)initWithAccount:(id)account bag:(id)bag linkParams:(id)params productCode:(id)code
 {
   v9 = MEMORY[0x1E695AC80];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  codeCopy = code;
+  paramsCopy = params;
+  bagCopy = bag;
+  accountCopy = account;
   v14 = +[AMSProcessInfo currentProcess];
   v27 = [v9 ams_configurationWithProcessInfo:v14 bag:0];
 
   v21 = [[AMSURLSession alloc] initWithConfiguration:v27 delegate:0 delegateQueue:0];
   v24 = objc_alloc_init(AMSEngagement);
   v23 = +[AMSDevice deviceGUID];
-  v20 = [[AMSCarrierLinkParams alloc] initWithString:v11];
+  v20 = [[AMSCarrierLinkParams alloc] initWithString:paramsCopy];
 
-  v15 = [AMSMetrics internalInstanceUsingBag:v12];
+  v15 = [AMSMetrics internalInstanceUsingBag:bagCopy];
   v22 = objc_opt_new();
-  v16 = [v22 msisdn];
+  msisdn = [v22 msisdn];
   v17 = +[AMSDevice voicePreferredPACToken];
-  v18 = [[AMSURLRequestEncoder alloc] initWithBag:v12];
-  v26 = [(AMSCarrierLinkTask *)self initWithAccount:v13 bag:v12 engagementHandler:v24 guid:v23 linkParams:v20 metrics:v15 msisdn:v16 pacTokenPromise:v17 productCode:v10 requestEncoder:v18 urlSession:v21];
+  v18 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
+  v26 = [(AMSCarrierLinkTask *)self initWithAccount:accountCopy bag:bagCopy engagementHandler:v24 guid:v23 linkParams:v20 metrics:v15 msisdn:msisdn pacTokenPromise:v17 productCode:codeCopy requestEncoder:v18 urlSession:v21];
 
   return v26;
 }
 
-- (AMSCarrierLinkTask)initWithAccount:(id)a3 bag:(id)a4 engagementHandler:(id)a5 guid:(id)a6 linkParams:(id)a7 metrics:(id)a8 msisdn:(id)a9 pacTokenPromise:(id)a10 productCode:(id)a11 requestEncoder:(id)a12 urlSession:(id)a13
+- (AMSCarrierLinkTask)initWithAccount:(id)account bag:(id)bag engagementHandler:(id)handler guid:(id)guid linkParams:(id)params metrics:(id)metrics msisdn:(id)msisdn pacTokenPromise:(id)self0 productCode:(id)self1 requestEncoder:(id)self2 urlSession:(id)self3
 {
-  v34 = a3;
-  v33 = a4;
-  v32 = a5;
-  v26 = a6;
-  v31 = a6;
-  v30 = a7;
-  v29 = a8;
-  v28 = a9;
-  v18 = a10;
-  v19 = a11;
-  v20 = a12;
-  v21 = a13;
+  accountCopy = account;
+  bagCopy = bag;
+  handlerCopy = handler;
+  guidCopy = guid;
+  guidCopy2 = guid;
+  paramsCopy = params;
+  metricsCopy = metrics;
+  msisdnCopy = msisdn;
+  promiseCopy = promise;
+  codeCopy = code;
+  encoderCopy = encoder;
+  sessionCopy = session;
   v35.receiver = self;
   v35.super_class = AMSCarrierLinkTask;
   v22 = [(AMSTask *)&v35 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_account, a3);
-    objc_storeStrong(&v23->_bag, a4);
-    objc_storeStrong(&v23->_engagementHandler, a5);
-    objc_storeStrong(&v23->_guid, v26);
-    objc_storeStrong(&v23->_linkParams, a7);
-    objc_storeStrong(&v23->_metrics, a8);
-    objc_storeStrong(&v23->_msisdn, a9);
-    objc_storeStrong(&v23->_pacTokenPromise, a10);
-    objc_storeStrong(&v23->_productCode, a11);
-    objc_storeStrong(&v23->_requestEncoder, a12);
-    objc_storeStrong(&v23->_urlSession, a13);
+    objc_storeStrong(&v22->_account, account);
+    objc_storeStrong(&v23->_bag, bag);
+    objc_storeStrong(&v23->_engagementHandler, handler);
+    objc_storeStrong(&v23->_guid, guidCopy);
+    objc_storeStrong(&v23->_linkParams, params);
+    objc_storeStrong(&v23->_metrics, metrics);
+    objc_storeStrong(&v23->_msisdn, msisdn);
+    objc_storeStrong(&v23->_pacTokenPromise, promise);
+    objc_storeStrong(&v23->_productCode, code);
+    objc_storeStrong(&v23->_requestEncoder, encoder);
+    objc_storeStrong(&v23->_urlSession, session);
     [(AMSURLSession *)v23->_urlSession setDelegate:v23];
   }
 
@@ -115,16 +115,16 @@ id __29__AMSCarrierLinkTask_perform__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_delegateHandleEngagementRequest:(id)a3 completion:(id)a4
+- (void)_delegateHandleEngagementRequest:(id)request completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSCarrierLinkTask *)self delegate];
+  completionCopy = completion;
+  requestCopy = request;
+  delegate = [(AMSCarrierLinkTask *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(AMSCarrierLinkTask *)self delegate];
+    delegate2 = [(AMSCarrierLinkTask *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
@@ -152,8 +152,8 @@ id __29__AMSCarrierLinkTask_perform__block_invoke(uint64_t a1)
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -163,7 +163,7 @@ id __29__AMSCarrierLinkTask_perform__block_invoke(uint64_t a1)
       v26 = v17;
       v27 = 2114;
       v28 = v11;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There is no delegate set to handle engagement request challenge: %{public}@ for this task. Terminating carrier linking", &v23, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There is no delegate set to handle engagement request challenge: %{public}@ for this task. Terminating carrier linking", &v23, 0x20u);
     }
   }
 
@@ -174,8 +174,8 @@ LABEL_12:
     v18 = +[AMSLogConfig sharedConfig];
   }
 
-  v19 = [v18 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v18 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v20 = objc_opt_class();
     v21 = AMSLogKey();
@@ -183,33 +183,33 @@ LABEL_12:
     v24 = v20;
     v25 = 2114;
     v26 = v21;
-    _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate to handle engagement request", &v23, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate to handle engagement request", &v23, 0x16u);
   }
 
-  v22 = [(AMSCarrierLinkTask *)self delegate];
-  [v22 handleEngagementRequest:v7 completion:v6];
+  delegate3 = [(AMSCarrierLinkTask *)self delegate];
+  [delegate3 handleEngagementRequest:requestCopy completion:completionCopy];
 }
 
-- (id)_linkFailureFromResult:(id)a3
+- (id)_linkFailureFromResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 statusCode];
+  resultCopy = result;
+  statusCode = [resultCopy statusCode];
 
-  if (v4)
+  if (statusCode)
   {
-    v5 = [v3 statusCode];
-    v6 = [v5 integerValue];
+    statusCode2 = [resultCopy statusCode];
+    integerValue = [statusCode2 integerValue];
 
-    if (!v6)
+    if (!integerValue)
     {
       goto LABEL_10;
     }
 
-    v7 = [v3 error];
-    if (!v7)
+    error = [resultCopy error];
+    if (!error)
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown error - no error on server response. Code: %ld", v6];
-      v6 = AMSError(0, @"Carrier linking failed", v8, 0);
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown error - no error on server response. Code: %ld", integerValue];
+      integerValue = AMSError(0, @"Carrier linking failed", v8, 0);
 
 LABEL_8:
       v9 = 0;
@@ -219,48 +219,48 @@ LABEL_8:
 
   else
   {
-    v7 = [v3 error];
-    if (!v7)
+    error = [resultCopy error];
+    if (!error)
     {
-      v6 = AMSError(0, @"Carrier linking failed", @"Unknown error - no status code or error in response", 0);
+      integerValue = AMSError(0, @"Carrier linking failed", @"Unknown error - no status code or error in response", 0);
       goto LABEL_8;
     }
   }
 
-  v9 = v7;
-  v6 = v9;
+  v9 = error;
+  integerValue = v9;
 LABEL_9:
 
 LABEL_10:
 
-  return v6;
+  return integerValue;
 }
 
 - (id)_linkParameters
 {
   v3 = objc_opt_new();
-  v4 = [(AMSCarrierLinkTask *)self guid];
-  [v3 setObject:v4 forKeyedSubscript:@"guid"];
+  guid = [(AMSCarrierLinkTask *)self guid];
+  [v3 setObject:guid forKeyedSubscript:@"guid"];
 
-  v5 = [(AMSCarrierLinkTask *)self msisdn];
-  [v3 setObject:v5 forKeyedSubscript:@"channelCustomerId"];
+  msisdn = [(AMSCarrierLinkTask *)self msisdn];
+  [v3 setObject:msisdn forKeyedSubscript:@"channelCustomerId"];
 
-  v6 = [(AMSCarrierLinkTask *)self linkParams];
-  v7 = [v6 linkParamsString];
-  [v3 setObject:v7 forKeyedSubscript:@"linkParams"];
+  linkParams = [(AMSCarrierLinkTask *)self linkParams];
+  linkParamsString = [linkParams linkParamsString];
+  [v3 setObject:linkParamsString forKeyedSubscript:@"linkParams"];
 
-  v8 = [(AMSCarrierLinkTask *)self productCode];
-  [v3 setObject:v8 forKeyedSubscript:@"productCode"];
+  productCode = [(AMSCarrierLinkTask *)self productCode];
+  [v3 setObject:productCode forKeyedSubscript:@"productCode"];
 
-  v9 = [(AMSCarrierLinkTask *)self _pacToken];
-  [v3 setObject:v9 forKeyedSubscript:@"pac"];
+  _pacToken = [(AMSCarrierLinkTask *)self _pacToken];
+  [v3 setObject:_pacToken forKeyedSubscript:@"pac"];
 
-  v10 = [(AMSCarrierLinkTask *)self additionalLinkingParameters];
+  additionalLinkingParameters = [(AMSCarrierLinkTask *)self additionalLinkingParameters];
 
-  if (v10)
+  if (additionalLinkingParameters)
   {
-    v11 = [(AMSCarrierLinkTask *)self additionalLinkingParameters];
-    [v3 addEntriesFromDictionary:v11];
+    additionalLinkingParameters2 = [(AMSCarrierLinkTask *)self additionalLinkingParameters];
+    [v3 addEntriesFromDictionary:additionalLinkingParameters2];
   }
 
   v12 = [v3 copy];
@@ -275,19 +275,19 @@ LABEL_10:
 
   if (v4)
   {
-    v5 = [v4 valuePromise];
+    valuePromise = [v4 valuePromise];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __37__AMSCarrierLinkTask__linkURLRequest__block_invoke;
     v9[3] = &unk_1E73B5A70;
     v9[4] = self;
-    v6 = [v5 thenWithBlock:v9];
+    v6 = [valuePromise thenWithBlock:v9];
   }
 
   else
   {
-    v5 = AMSError(2, @"URL Request could not be created", @"bagURL is nil", 0);
-    v6 = [AMSPromise promiseWithError:v5];
+    valuePromise = AMSError(2, @"URL Request could not be created", @"bagURL is nil", 0);
+    v6 = [AMSPromise promiseWithError:valuePromise];
   }
 
   v7 = v6;
@@ -310,76 +310,76 @@ id __37__AMSCarrierLinkTask__linkURLRequest__block_invoke(uint64_t a1, uint64_t 
   return v8;
 }
 
-- (id)_metricsEventFromCarrierLinkResult:(id)a3 error:(id)a4
+- (id)_metricsEventFromCarrierLinkResult:(id)result error:(id)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 | v7)
+  resultCopy = result;
+  errorCopy = error;
+  if (resultCopy | errorCopy)
   {
-    v13 = [v6 error];
-    v14 = v13;
-    if (v13)
+    error = [resultCopy error];
+    v14 = error;
+    if (error)
     {
-      v15 = v13;
+      v15 = error;
     }
 
     else
     {
-      v15 = v7;
+      v15 = errorCopy;
     }
 
     v8 = v15;
 
-    v16 = [[AMSMetricsEvent alloc] initForEngagement];
-    [v16 setProperty:@"carrier-link" forBodyKey:@"eventType"];
-    [v16 setProperty:@"AMS" forBodyKey:@"source"];
+    initForEngagement = [[AMSMetricsEvent alloc] initForEngagement];
+    [initForEngagement setProperty:@"carrier-link" forBodyKey:@"eventType"];
+    [initForEngagement setProperty:@"AMS" forBodyKey:@"source"];
     v17 = [MEMORY[0x1E696AD98] numberWithBool:v8 == 0];
-    [v16 setProperty:v17 forBodyKey:@"success"];
+    [initForEngagement setProperty:v17 forBodyKey:@"success"];
 
-    v18 = [v6 channelCustomerId];
-    [v16 setProperty:v18 forBodyKey:@"channelCustomerId"];
+    channelCustomerId = [resultCopy channelCustomerId];
+    [initForEngagement setProperty:channelCustomerId forBodyKey:@"channelCustomerId"];
 
-    v19 = [v6 linkParams];
-    v20 = [v19 dictionary];
-    [v16 setProperty:v20 forBodyKey:@"linkParams"];
+    linkParams = [resultCopy linkParams];
+    dictionary = [linkParams dictionary];
+    [initForEngagement setProperty:dictionary forBodyKey:@"linkParams"];
 
-    v21 = [v6 productCode];
-    [v16 setProperty:v21 forBodyKey:@"productCode"];
+    productCode = [resultCopy productCode];
+    [initForEngagement setProperty:productCode forBodyKey:@"productCode"];
 
-    v22 = [v6 response];
-    v23 = [AMSMetricsEvent sanitizedObject:v22];
-    [v16 setProperty:v23 forBodyKey:@"responseDictionary"];
+    response = [resultCopy response];
+    v23 = [AMSMetricsEvent sanitizedObject:response];
+    [initForEngagement setProperty:v23 forBodyKey:@"responseDictionary"];
 
-    v24 = [(AMSCarrierLinkTask *)self additionalLinkingParameters];
-    v25 = [AMSMetricsEvent sanitizedObject:v24];
-    [v16 setProperty:v25 forBodyKey:@"additionalLinkingParameters"];
+    additionalLinkingParameters = [(AMSCarrierLinkTask *)self additionalLinkingParameters];
+    v25 = [AMSMetricsEvent sanitizedObject:additionalLinkingParameters];
+    [initForEngagement setProperty:v25 forBodyKey:@"additionalLinkingParameters"];
 
-    v26 = [(AMSCarrierLinkTask *)self account];
-    v27 = [v26 ams_DSID];
-    v28 = [v27 description];
-    [v16 setProperty:v28 forBodyKey:@"accountId"];
+    account = [(AMSCarrierLinkTask *)self account];
+    ams_DSID = [account ams_DSID];
+    v28 = [ams_DSID description];
+    [initForEngagement setProperty:v28 forBodyKey:@"accountId"];
 
-    v29 = [(AMSCarrierLinkTask *)self metricsOverlay];
+    metricsOverlay = [(AMSCarrierLinkTask *)self metricsOverlay];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __63__AMSCarrierLinkTask__metricsEventFromCarrierLinkResult_error___block_invoke;
     v42[3] = &unk_1E73B55D8;
-    v12 = v16;
+    v12 = initForEngagement;
     v43 = v12;
-    [v29 enumerateKeysAndObjectsUsingBlock:v42];
+    [metricsOverlay enumerateKeysAndObjectsUsingBlock:v42];
 
-    if (v7)
+    if (errorCopy)
     {
       v44[0] = @"code";
-      v30 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "code")}];
+      v30 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
       v45[0] = v30;
       v44[1] = @"domain";
-      v31 = [v7 domain];
-      v32 = v31;
-      if (v31)
+      domain = [errorCopy domain];
+      v32 = domain;
+      if (domain)
       {
-        v33 = v31;
+        v33 = domain;
       }
 
       else
@@ -389,11 +389,11 @@ id __37__AMSCarrierLinkTask__linkURLRequest__block_invoke(uint64_t a1, uint64_t 
 
       v45[1] = v33;
       v44[2] = @"title";
-      v34 = [v7 ams_title];
-      v35 = v34;
-      if (v34)
+      ams_title = [errorCopy ams_title];
+      v35 = ams_title;
+      if (ams_title)
       {
-        v36 = v34;
+        v36 = ams_title;
       }
 
       else
@@ -403,11 +403,11 @@ id __37__AMSCarrierLinkTask__linkURLRequest__block_invoke(uint64_t a1, uint64_t 
 
       v45[2] = v36;
       v44[3] = @"message";
-      v37 = [v7 ams_message];
-      v38 = v37;
-      if (v37)
+      ams_message = [errorCopy ams_message];
+      v38 = ams_message;
+      if (ams_message)
       {
-        v39 = v37;
+        v39 = ams_message;
       }
 
       else
@@ -421,7 +421,7 @@ id __37__AMSCarrierLinkTask__linkURLRequest__block_invoke(uint64_t a1, uint64_t 
       [v12 setProperty:v40 forBodyKey:@"error"];
     }
 
-    v9 = v43;
+    oSLogObject = v43;
   }
 
   else
@@ -432,8 +432,8 @@ id __37__AMSCarrierLinkTask__linkURLRequest__block_invoke(uint64_t a1, uint64_t 
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -441,7 +441,7 @@ id __37__AMSCarrierLinkTask__linkURLRequest__block_invoke(uint64_t a1, uint64_t 
       v47 = v10;
       v48 = 2114;
       v49 = v11;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No result or error to form metrics around.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No result or error to form metrics around.", buf, 0x16u);
     }
 
     v12 = 0;
@@ -453,16 +453,16 @@ id __37__AMSCarrierLinkTask__linkURLRequest__block_invoke(uint64_t a1, uint64_t 
 - (id)_pacToken
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSCarrierLinkTask *)self pacTokenPromise];
+  pacTokenPromise = [(AMSCarrierLinkTask *)self pacTokenPromise];
 
-  if (!v3)
+  if (!pacTokenPromise)
   {
     goto LABEL_9;
   }
 
-  v4 = [(AMSCarrierLinkTask *)self pacTokenPromise];
+  pacTokenPromise2 = [(AMSCarrierLinkTask *)self pacTokenPromise];
   v17 = 0;
-  v5 = [v4 resultWithError:&v17];
+  v5 = [pacTokenPromise2 resultWithError:&v17];
   v6 = v17;
 
   if (v6)
@@ -473,8 +473,8 @@ id __37__AMSCarrierLinkTask__linkURLRequest__block_invoke(uint64_t a1, uint64_t 
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -485,7 +485,7 @@ id __37__AMSCarrierLinkTask__linkURLRequest__block_invoke(uint64_t a1, uint64_t 
       v21 = v10;
       v22 = 2114;
       v23 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Could not retrieve PAC. Error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Could not retrieve PAC. Error: %{public}@", buf, 0x20u);
     }
   }
 
@@ -498,8 +498,8 @@ LABEL_9:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
@@ -507,7 +507,7 @@ LABEL_9:
       v19 = v14;
       v20 = 2114;
       v21 = v15;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No PAC token available", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No PAC token available", buf, 0x16u);
     }
 
     v5 = 0;
@@ -516,16 +516,16 @@ LABEL_9:
   return v5;
 }
 
-- (void)_performDelegateAuthenticationWithRequest:(id)a3 completion:(id)a4
+- (void)_performDelegateAuthenticationWithRequest:(id)request completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSCarrierLinkTask *)self delegate];
+  requestCopy = request;
+  completionCopy = completion;
+  delegate = [(AMSCarrierLinkTask *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(AMSCarrierLinkTask *)self delegate];
+    delegate2 = [(AMSCarrierLinkTask *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
@@ -551,8 +551,8 @@ LABEL_9:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -563,10 +563,10 @@ LABEL_9:
       v29 = v17;
       v30 = 2114;
       v31 = v18;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to perform auth request. Error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to perform auth request. Error: %{public}@", buf, 0x20u);
     }
 
-    v7[2](v7, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
     goto LABEL_16;
   }
 
@@ -577,8 +577,8 @@ LABEL_11:
     v19 = +[AMSLogConfig sharedConfig];
   }
 
-  v20 = [v19 OSLogObject];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v19 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v21 = objc_opt_class();
     v22 = AMSLogKey();
@@ -586,16 +586,16 @@ LABEL_11:
     v27 = v21;
     v28 = 2114;
     v29 = v22;
-    _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate to handle authentication request", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate to handle authentication request", buf, 0x16u);
   }
 
-  v23 = [(AMSCarrierLinkTask *)self delegate];
+  delegate3 = [(AMSCarrierLinkTask *)self delegate];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __75__AMSCarrierLinkTask__performDelegateAuthenticationWithRequest_completion___block_invoke;
   v24[3] = &unk_1E73B5A98;
-  v25 = v7;
-  [v23 handleAuthenticateRequest:v6 completion:v24];
+  v25 = completionCopy;
+  [delegate3 handleAuthenticateRequest:requestCopy completion:v24];
 
   v13 = v25;
 LABEL_16:
@@ -604,9 +604,9 @@ LABEL_16:
 - (id)_performLinkingWithValidations
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSCarrierLinkTask *)self linkParams];
+  linkParams = [(AMSCarrierLinkTask *)self linkParams];
 
-  if (!v3)
+  if (!linkParams)
   {
     v7 = AMSError(7, @"Missing required field.", @"linkParams is missing", 0);
     v8 = +[AMSLogConfig sharedPrivacyConfig];
@@ -615,8 +615,8 @@ LABEL_16:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_13;
     }
@@ -631,17 +631,17 @@ LABEL_12:
     v36 = v11;
     v37 = 2114;
     v38 = v12;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Aborting carrier link task. Error: %{public}@.", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Aborting carrier link task. Error: %{public}@.", buf, 0x20u);
 
 LABEL_13:
-    v6 = [AMSPromise promiseWithError:v7];
+    _performLinking = [AMSPromise promiseWithError:v7];
 
     goto LABEL_14;
   }
 
-  v4 = [(AMSCarrierLinkTask *)self productCode];
+  productCode = [(AMSCarrierLinkTask *)self productCode];
 
-  if (!v4)
+  if (!productCode)
   {
     v7 = AMSError(7, @"Missing required field.", @"productCode is missing", 0);
     v8 = +[AMSLogConfig sharedPrivacyConfig];
@@ -650,8 +650,8 @@ LABEL_13:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_13;
     }
@@ -659,11 +659,11 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v5 = [(AMSCarrierLinkTask *)self account];
+  account = [(AMSCarrierLinkTask *)self account];
 
-  if (v5)
+  if (account)
   {
-    v6 = [(AMSCarrierLinkTask *)self _performLinking];
+    _performLinking = [(AMSCarrierLinkTask *)self _performLinking];
   }
 
   else
@@ -674,8 +674,8 @@ LABEL_13:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -683,12 +683,12 @@ LABEL_13:
       v34 = v16;
       v35 = 2114;
       v36 = v17;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Account is missing. Prompting for account.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Account is missing. Prompting for account.", buf, 0x16u);
     }
 
-    v18 = [(AMSCarrierLinkTask *)self _promptForAccount];
+    _promptForAccount = [(AMSCarrierLinkTask *)self _promptForAccount];
     v32 = 0;
-    v19 = [v18 resultWithError:&v32];
+    v19 = [_promptForAccount resultWithError:&v32];
     v20 = v32;
 
     v21 = +[AMSLogConfig sharedPrivacyConfig];
@@ -700,8 +700,8 @@ LABEL_13:
         v22 = +[AMSLogConfig sharedConfig];
       }
 
-      v23 = [v22 OSLogObject];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v22 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v24 = objc_opt_class();
         v25 = AMSLogKey();
@@ -712,10 +712,10 @@ LABEL_13:
         v36 = v25;
         v37 = 2114;
         v38 = v26;
-        _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to get account. Error: %{public}@.", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to get account. Error: %{public}@.", buf, 0x20u);
       }
 
-      v27 = [AMSPromise promiseWithError:v20];
+      _performLinking2 = [AMSPromise promiseWithError:v20];
     }
 
     else
@@ -725,8 +725,8 @@ LABEL_13:
         v22 = +[AMSLogConfig sharedConfig];
       }
 
-      v28 = [v22 OSLogObject];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      oSLogObject4 = [v22 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
       {
         v29 = objc_opt_class();
         v30 = AMSLogKey();
@@ -734,21 +734,21 @@ LABEL_13:
         v34 = v29;
         v35 = 2114;
         v36 = v30;
-        _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Authentication prompt succeeded. Updating account value.", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Authentication prompt succeeded. Updating account value.", buf, 0x16u);
       }
 
-      v31 = [v19 account];
-      [(AMSCarrierLinkTask *)self setAccount:v31];
+      account2 = [v19 account];
+      [(AMSCarrierLinkTask *)self setAccount:account2];
 
-      v27 = [(AMSCarrierLinkTask *)self _performLinking];
+      _performLinking2 = [(AMSCarrierLinkTask *)self _performLinking];
     }
 
-    v6 = v27;
+    _performLinking = _performLinking2;
   }
 
 LABEL_14:
 
-  return v6;
+  return _performLinking;
 }
 
 - (id)_performLinking
@@ -760,8 +760,8 @@ LABEL_14:
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -769,21 +769,21 @@ LABEL_14:
     v26 = v5;
     v27 = 2114;
     v28 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Beginning linking.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Beginning linking.", buf, 0x16u);
   }
 
-  v7 = [(AMSCarrierLinkTask *)self account];
+  account = [(AMSCarrierLinkTask *)self account];
 
-  if (v7)
+  if (account)
   {
-    v8 = [(AMSCarrierLinkTask *)self account];
-    v9 = [(AMSCarrierLinkTask *)self requestEncoder];
-    [v9 setAccount:v8];
+    account2 = [(AMSCarrierLinkTask *)self account];
+    requestEncoder = [(AMSCarrierLinkTask *)self requestEncoder];
+    [requestEncoder setAccount:account2];
 
     v10 = objc_opt_new();
-    v11 = [(AMSCarrierLinkTask *)self urlSession];
-    v12 = [(AMSCarrierLinkTask *)self _linkURLRequest];
-    v13 = [v11 dataTaskPromiseWithRequestPromise:v12];
+    urlSession = [(AMSCarrierLinkTask *)self urlSession];
+    _linkURLRequest = [(AMSCarrierLinkTask *)self _linkURLRequest];
+    v13 = [urlSession dataTaskPromiseWithRequestPromise:_linkURLRequest];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __37__AMSCarrierLinkTask__performLinking__block_invoke;
@@ -807,8 +807,8 @@ LABEL_14:
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v20 = objc_opt_class();
       v21 = AMSLogKey();
@@ -816,7 +816,7 @@ LABEL_14:
       v26 = v20;
       v27 = 2114;
       v28 = v21;
-      _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Linking failure. Account is nil.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Linking failure. Account is nil.", buf, 0x16u);
     }
 
     v16 = AMSError(12, @"Carrier linking failed", @"No account at link time", 0);
@@ -899,30 +899,30 @@ void __37__AMSCarrierLinkTask__performLinking__block_invoke(uint64_t a1, uint64_
   v4 = objc_opt_new();
   [v4 setEnableAccountCreation:1];
   [v4 setAuthenticationType:2];
-  v5 = [(AMSCarrierLinkTask *)self clientInfo];
-  [v4 setClientInfo:v5];
+  clientInfo = [(AMSCarrierLinkTask *)self clientInfo];
+  [v4 setClientInfo:clientInfo];
 
   [v4 setDebugReason:@"Account is not present while attempting carrier linking."];
   v6 = objc_alloc_init(AMSAuthenticateRequest);
   [(AMSAuthenticateRequest *)v6 setOptions:v4];
-  v7 = [v3 completionHandlerAdapter];
-  [(AMSCarrierLinkTask *)self _performDelegateAuthenticationWithRequest:v6 completion:v7];
+  completionHandlerAdapter = [v3 completionHandlerAdapter];
+  [(AMSCarrierLinkTask *)self _performDelegateAuthenticationWithRequest:v6 completion:completionHandlerAdapter];
 
   return v3;
 }
 
-- (id)_recordEngagementMetricsEvent:(id)a3
+- (id)_recordEngagementMetricsEvent:(id)event
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = +[AMSLogConfig sharedConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -930,13 +930,13 @@ void __37__AMSCarrierLinkTask__performLinking__block_invoke(uint64_t a1, uint64_
     v21 = v7;
     v22 = 2114;
     v23 = v8;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Recording engagement event.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Recording engagement event.", buf, 0x16u);
   }
 
-  v9 = [(AMSCarrierLinkTask *)self engagementHandler];
-  v10 = [v4 dictionaryForPosting];
+  engagementHandler = [(AMSCarrierLinkTask *)self engagementHandler];
+  dictionaryForPosting = [eventCopy dictionaryForPosting];
 
-  v11 = [v9 enqueueData:v10];
+  v11 = [engagementHandler enqueueData:dictionaryForPosting];
 
   v12 = objc_alloc_init(AMSMutableBinaryPromise);
   v17[0] = MEMORY[0x1E69E9820];
@@ -945,7 +945,7 @@ void __37__AMSCarrierLinkTask__performLinking__block_invoke(uint64_t a1, uint64_
   v17[3] = &unk_1E73B5AE8;
   v13 = v12;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   [v11 addFinishBlock:v17];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -1052,13 +1052,13 @@ void __52__AMSCarrierLinkTask__recordEngagementMetricsEvent___block_invoke_140(u
   }
 }
 
-- (id)_resultDecodingURLResult:(id)a3
+- (id)_resultDecodingURLResult:(id)result
 {
-  v4 = [a3 object];
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -1067,22 +1067,22 @@ void __52__AMSCarrierLinkTask__recordEngagementMetricsEvent___block_invoke_140(u
   }
 
   v6 = [AMSCarrierLinkResult alloc];
-  v7 = [(AMSCarrierLinkTask *)self linkParams];
-  v8 = [(AMSCarrierLinkResult *)v6 initWithResponse:v5 linkParams:v7];
+  linkParams = [(AMSCarrierLinkTask *)self linkParams];
+  v8 = [(AMSCarrierLinkResult *)v6 initWithResponse:v5 linkParams:linkParams];
 
   return v8;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a6;
-  v9 = a5;
-  v10 = [(AMSCarrierLinkTask *)self delegate];
+  completionCopy = completion;
+  requestCopy = request;
+  delegate = [(AMSCarrierLinkTask *)self delegate];
 
-  if (v10)
+  if (delegate)
   {
-    v11 = [(AMSCarrierLinkTask *)self delegate];
+    delegate2 = [(AMSCarrierLinkTask *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
@@ -1109,8 +1109,8 @@ void __52__AMSCarrierLinkTask__recordEngagementMetricsEvent___block_invoke_140(u
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v18 = objc_opt_class();
       v19 = AMSLogKey();
@@ -1121,7 +1121,7 @@ void __52__AMSCarrierLinkTask__recordEngagementMetricsEvent___block_invoke_140(u
       v29 = v19;
       v30 = 2114;
       v31 = v20;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to handle dialog request. Error: %{public}@", &v26, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to handle dialog request. Error: %{public}@", &v26, 0x20u);
     }
   }
 
@@ -1132,8 +1132,8 @@ LABEL_11:
     v21 = +[AMSLogConfig sharedConfig];
   }
 
-  v22 = [v21 OSLogObject];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v21 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v23 = objc_opt_class();
     v24 = AMSLogKey();
@@ -1141,11 +1141,11 @@ LABEL_11:
     v27 = v23;
     v28 = 2114;
     v29 = v24;
-    _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate to handle engagement request", &v26, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Calling delegate to handle engagement request", &v26, 0x16u);
   }
 
-  v25 = [(AMSCarrierLinkTask *)self delegate];
-  [v25 handleDialogRequest:v9 completion:v8];
+  delegate3 = [(AMSCarrierLinkTask *)self delegate];
+  [delegate3 handleDialogRequest:requestCopy completion:completionCopy];
 }
 
 + (NSString)bagSubProfile
@@ -1186,9 +1186,9 @@ void __42__AMSCarrierLinkTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

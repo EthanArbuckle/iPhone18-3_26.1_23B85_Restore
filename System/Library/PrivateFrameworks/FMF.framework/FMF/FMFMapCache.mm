@@ -1,19 +1,19 @@
 @interface FMFMapCache
-- (BOOL)pendingMapImageForLocation:(id)a3 altitude:(double)a4 pitch:(double)a5 width:(double)a6 andHeight:(double)a7;
-- (BOOL)pendingMapImageForRequest:(id)a3;
+- (BOOL)pendingMapImageForLocation:(id)location altitude:(double)altitude pitch:(double)pitch width:(double)width andHeight:(double)height;
+- (BOOL)pendingMapImageForRequest:(id)request;
 - (FMFMapCache)init;
 - (double)cacheExpiryInSeconds;
 - (double)pruneIntervalInSeconds;
-- (id)cachedGridImageForWidth:(double)a3 andHeight:(double)a4;
-- (id)cachedMapImageForLocation:(id)a3 altitude:(double)a4 pitch:(double)a5 width:(double)a6 andHeight:(double)a7;
-- (id)cachedMapImageForRequest:(id)a3;
-- (id)cachedNoLocationImageForWidth:(double)a3 andHeight:(double)a4;
-- (id)gridKeyForWidth:(double)a3 andHeight:(double)a4;
-- (id)noLocationKeyForWidth:(double)a3 andHeight:(double)a4;
-- (void)cacheGridImage:(id)a3 forWidth:(double)a4 andHeight:(double)a5;
-- (void)cacheMapImage:(id)a3 forLocation:(id)a4 altitude:(double)a5 pitch:(double)a6 width:(double)a7 andHeight:(double)a8;
-- (void)cacheMapImage:(id)a3 forRequest:(id)a4;
-- (void)cacheNoLocationImage:(id)a3 forWidth:(double)a4 andHeight:(double)a5;
+- (id)cachedGridImageForWidth:(double)width andHeight:(double)height;
+- (id)cachedMapImageForLocation:(id)location altitude:(double)altitude pitch:(double)pitch width:(double)width andHeight:(double)height;
+- (id)cachedMapImageForRequest:(id)request;
+- (id)cachedNoLocationImageForWidth:(double)width andHeight:(double)height;
+- (id)gridKeyForWidth:(double)width andHeight:(double)height;
+- (id)noLocationKeyForWidth:(double)width andHeight:(double)height;
+- (void)cacheGridImage:(id)image forWidth:(double)width andHeight:(double)height;
+- (void)cacheMapImage:(id)image forLocation:(id)location altitude:(double)altitude pitch:(double)pitch width:(double)width andHeight:(double)height;
+- (void)cacheMapImage:(id)image forRequest:(id)request;
+- (void)cacheNoLocationImage:(id)image forWidth:(double)width andHeight:(double)height;
 - (void)flushCache;
 - (void)pruneCacheIfNeeded;
 - (void)readMetaData;
@@ -38,12 +38,12 @@
     v5 = LogCategory_FMFMapXPC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FMFMapCache *)v2 fileProtectionDeactivated];
-      v7 = [(FMFMapCache *)v2 lastPruneDate];
+      fileProtectionDeactivated = [(FMFMapCache *)v2 fileProtectionDeactivated];
+      lastPruneDate = [(FMFMapCache *)v2 lastPruneDate];
       *buf = 67109378;
-      v31 = v6;
+      v31 = fileProtectionDeactivated;
       v32 = 2112;
-      v33 = v7;
+      v33 = lastPruneDate;
       _os_log_impl(&dword_24A33F000, v5, OS_LOG_TYPE_DEFAULT, "FMFMapCache: File protection deactivated? %i last prune date? %@", buf, 0x12u);
     }
 
@@ -64,8 +64,8 @@
     [(FMFMapCache *)v2 setPendingMapImageMetaData:v12];
 
     v13 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v14 = [v13 firstObject];
-    v15 = [v14 stringByAppendingPathComponent:@"com.apple.icloud.FMF.FMFMapXPCService"];
+    firstObject = [v13 firstObject];
+    v15 = [firstObject stringByAppendingPathComponent:@"com.apple.icloud.FMF.FMFMapXPCService"];
 
     v16 = [v15 stringByAppendingPathComponent:@"FMFMapCacheMeta.data"];
     [(FMFMapCache *)v2 setCachePath:v16];
@@ -87,8 +87,8 @@
     v22 = dispatch_queue_create("com.apple.icloud.FMF.PendingImageQueue", v17);
     [(FMFMapCache *)v2 setPendingImageQueue:v22];
 
-    v23 = [MEMORY[0x277CCAA00] defaultManager];
-    v24 = [v23 fileExistsAtPath:v15];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v24 = [defaultManager fileExistsAtPath:v15];
 
     if ((v24 & 1) == 0)
     {
@@ -99,8 +99,8 @@
         _os_log_impl(&dword_24A33F000, v25, OS_LOG_TYPE_DEFAULT, "FMFMapCache: Creating cache folder", buf, 2u);
       }
 
-      v26 = [MEMORY[0x277CCAA00] defaultManager];
-      [v26 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:0];
     }
 
     [(FMFMapCache *)v2 readMetaData];
@@ -110,18 +110,18 @@
   return v2;
 }
 
-- (id)cachedGridImageForWidth:(double)a3 andHeight:(double)a4
+- (id)cachedGridImageForWidth:(double)width andHeight:(double)height
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(FMFMapCache *)self gridKeyForWidth:a3 andHeight:a4];
-  v6 = [(FMFMapCache *)self gridImageMetaData];
-  v7 = [v6 objectForKey:v5];
+  v5 = [(FMFMapCache *)self gridKeyForWidth:width andHeight:height];
+  gridImageMetaData = [(FMFMapCache *)self gridImageMetaData];
+  v7 = [gridImageMetaData objectForKey:v5];
 
   if (v7)
   {
     v8 = MEMORY[0x277CBEA90];
-    v9 = [v7 path];
-    v10 = [v8 dataWithContentsOfFile:v9];
+    path = [v7 path];
+    v10 = [v8 dataWithContentsOfFile:path];
 
     v11 = LogCategory_FMFMapXPC();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -142,23 +142,23 @@
   return v10;
 }
 
-- (void)cacheGridImage:(id)a3 forWidth:(double)a4 andHeight:(double)a5
+- (void)cacheGridImage:(id)image forWidth:(double)width andHeight:(double)height
 {
-  v8 = a3;
-  v9 = self;
-  v10 = [(FMFMapCache *)v9 gridImageQueue];
+  imageCopy = image;
+  selfCopy = self;
+  gridImageQueue = [(FMFMapCache *)selfCopy gridImageQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__FMFMapCache_cacheGridImage_forWidth_andHeight___block_invoke;
   block[3] = &unk_278FDE520;
-  v17 = a4;
-  v18 = a5;
-  v14 = v9;
-  v15 = v8;
-  v16 = v9;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, block);
+  widthCopy = width;
+  heightCopy = height;
+  v14 = selfCopy;
+  v15 = imageCopy;
+  v16 = selfCopy;
+  v11 = imageCopy;
+  v12 = selfCopy;
+  dispatch_async(gridImageQueue, block);
 }
 
 void __49__FMFMapCache_cacheGridImage_forWidth_andHeight___block_invoke(uint64_t a1)
@@ -224,18 +224,18 @@ void __49__FMFMapCache_cacheGridImage_forWidth_andHeight___block_invoke(uint64_t
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cachedNoLocationImageForWidth:(double)a3 andHeight:(double)a4
+- (id)cachedNoLocationImageForWidth:(double)width andHeight:(double)height
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(FMFMapCache *)self noLocationKeyForWidth:a3 andHeight:a4];
-  v6 = [(FMFMapCache *)self noLocationImageMetaData];
-  v7 = [v6 objectForKey:v5];
+  v5 = [(FMFMapCache *)self noLocationKeyForWidth:width andHeight:height];
+  noLocationImageMetaData = [(FMFMapCache *)self noLocationImageMetaData];
+  v7 = [noLocationImageMetaData objectForKey:v5];
 
   if (v7)
   {
     v8 = MEMORY[0x277CBEA90];
-    v9 = [v7 path];
-    v10 = [v8 dataWithContentsOfFile:v9];
+    path = [v7 path];
+    v10 = [v8 dataWithContentsOfFile:path];
 
     v11 = LogCategory_FMFMapXPC();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -256,23 +256,23 @@ void __49__FMFMapCache_cacheGridImage_forWidth_andHeight___block_invoke(uint64_t
   return v10;
 }
 
-- (void)cacheNoLocationImage:(id)a3 forWidth:(double)a4 andHeight:(double)a5
+- (void)cacheNoLocationImage:(id)image forWidth:(double)width andHeight:(double)height
 {
-  v8 = a3;
-  v9 = self;
-  v10 = [(FMFMapCache *)v9 noLocationImageQueue];
+  imageCopy = image;
+  selfCopy = self;
+  noLocationImageQueue = [(FMFMapCache *)selfCopy noLocationImageQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__FMFMapCache_cacheNoLocationImage_forWidth_andHeight___block_invoke;
   block[3] = &unk_278FDE520;
-  v17 = a4;
-  v18 = a5;
-  v14 = v9;
-  v15 = v8;
-  v16 = v9;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, block);
+  widthCopy = width;
+  heightCopy = height;
+  v14 = selfCopy;
+  v15 = imageCopy;
+  v16 = selfCopy;
+  v11 = imageCopy;
+  v12 = selfCopy;
+  dispatch_async(noLocationImageQueue, block);
 }
 
 void __55__FMFMapCache_cacheNoLocationImage_forWidth_andHeight___block_invoke(uint64_t a1)
@@ -338,20 +338,20 @@ void __55__FMFMapCache_cacheNoLocationImage_forWidth_andHeight___block_invoke(ui
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cachedMapImageForRequest:(id)a3
+- (id)cachedMapImageForRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(FMFMapCache *)self mapImageMetaData];
-  v6 = [v4 key];
+  requestCopy = request;
+  mapImageMetaData = [(FMFMapCache *)self mapImageMetaData];
+  v6 = [requestCopy key];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [mapImageMetaData objectForKey:v6];
 
   if (v7)
   {
     v8 = MEMORY[0x277CBEA90];
-    v9 = [v7 path];
-    v10 = [v8 dataWithContentsOfFile:v9];
+    path = [v7 path];
+    v10 = [v8 dataWithContentsOfFile:path];
 
     v11 = LogCategory_FMFMapXPC();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -372,33 +372,33 @@ void __55__FMFMapCache_cacheNoLocationImage_forWidth_andHeight___block_invoke(ui
   return v10;
 }
 
-- (id)cachedMapImageForLocation:(id)a3 altitude:(double)a4 pitch:(double)a5 width:(double)a6 andHeight:(double)a7
+- (id)cachedMapImageForLocation:(id)location altitude:(double)altitude pitch:(double)pitch width:(double)width andHeight:(double)height
 {
-  v12 = a3;
-  v13 = [[FMFMapImageRequest alloc] initWithLocation:v12 altitude:1 pitch:a4 width:a5 height:a6 andCachingEnabled:a7];
+  locationCopy = location;
+  v13 = [[FMFMapImageRequest alloc] initWithLocation:locationCopy altitude:1 pitch:altitude width:pitch height:width andCachingEnabled:height];
 
   v14 = [(FMFMapCache *)self cachedMapImageForRequest:v13];
 
   return v14;
 }
 
-- (void)cacheMapImage:(id)a3 forRequest:(id)a4
+- (void)cacheMapImage:(id)image forRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  requestCopy = request;
   objc_initWeak(&location, self);
-  v8 = [(FMFMapCache *)self mapImageQueue];
+  mapImageQueue = [(FMFMapCache *)self mapImageQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__FMFMapCache_cacheMapImage_forRequest___block_invoke;
   block[3] = &unk_278FDE570;
   objc_copyWeak(&v15, &location);
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = requestCopy;
+  v13 = imageCopy;
+  selfCopy = self;
+  v9 = imageCopy;
+  v10 = requestCopy;
+  dispatch_async(mapImageQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -493,39 +493,39 @@ void __40__FMFMapCache_cacheMapImage_forRequest___block_invoke_59(uint64_t a1)
   }
 }
 
-- (void)cacheMapImage:(id)a3 forLocation:(id)a4 altitude:(double)a5 pitch:(double)a6 width:(double)a7 andHeight:(double)a8
+- (void)cacheMapImage:(id)image forLocation:(id)location altitude:(double)altitude pitch:(double)pitch width:(double)width andHeight:(double)height
 {
-  v14 = a4;
-  v15 = a3;
-  v16 = [[FMFMapImageRequest alloc] initWithLocation:v14 altitude:1 pitch:a5 width:a6 height:a7 andCachingEnabled:a8];
+  locationCopy = location;
+  imageCopy = image;
+  v16 = [[FMFMapImageRequest alloc] initWithLocation:locationCopy altitude:1 pitch:altitude width:pitch height:width andCachingEnabled:height];
 
-  [(FMFMapCache *)self cacheMapImage:v15 forRequest:v16];
+  [(FMFMapCache *)self cacheMapImage:imageCopy forRequest:v16];
 }
 
-- (BOOL)pendingMapImageForRequest:(id)a3
+- (BOOL)pendingMapImageForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v5 = [(FMFMapCache *)self pendingImageQueue];
+  pendingImageQueue = [(FMFMapCache *)self pendingImageQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__FMFMapCache_pendingMapImageForRequest___block_invoke;
   v8[3] = &unk_278FDE598;
   objc_copyWeak(&v11, &location);
-  v9 = v4;
+  v9 = requestCopy;
   v10 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, v8);
+  v6 = requestCopy;
+  dispatch_sync(pendingImageQueue, v8);
 
-  LOBYTE(v5) = *(v13 + 24);
+  LOBYTE(pendingImageQueue) = *(v13 + 24);
   objc_destroyWeak(&v11);
   _Block_object_dispose(&v12, 8);
   objc_destroyWeak(&location);
-  return v5;
+  return pendingImageQueue;
 }
 
 void __41__FMFMapCache_pendingMapImageForRequest___block_invoke(uint64_t a1)
@@ -557,10 +557,10 @@ void __41__FMFMapCache_pendingMapImageForRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)pendingMapImageForLocation:(id)a3 altitude:(double)a4 pitch:(double)a5 width:(double)a6 andHeight:(double)a7
+- (BOOL)pendingMapImageForLocation:(id)location altitude:(double)altitude pitch:(double)pitch width:(double)width andHeight:(double)height
 {
-  v12 = a3;
-  v13 = [[FMFMapImageRequest alloc] initWithLocation:v12 altitude:1 pitch:a4 width:a5 height:a6 andCachingEnabled:a7];
+  locationCopy = location;
+  v13 = [[FMFMapImageRequest alloc] initWithLocation:locationCopy altitude:1 pitch:altitude width:pitch height:width andCachingEnabled:height];
 
   LOBYTE(self) = [(FMFMapCache *)self pendingMapImageForRequest:v13];
   return self;
@@ -568,16 +568,16 @@ void __41__FMFMapCache_pendingMapImageForRequest___block_invoke(uint64_t a1)
 
 - (void)readMetaData
 {
-  v2 = self;
-  v3 = [(FMFMapCache *)v2 cacheMetaQueue];
+  selfCopy = self;
+  cacheMetaQueue = [(FMFMapCache *)selfCopy cacheMetaQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __27__FMFMapCache_readMetaData__block_invoke;
   v5[3] = &unk_278FDE548;
-  v6 = v2;
-  v7 = v2;
-  v4 = v2;
-  dispatch_sync(v3, v5);
+  v6 = selfCopy;
+  v7 = selfCopy;
+  v4 = selfCopy;
+  dispatch_sync(cacheMetaQueue, v5);
 }
 
 void __27__FMFMapCache_readMetaData__block_invoke(uint64_t a1)
@@ -669,16 +669,16 @@ LABEL_18:
 
 - (void)saveMetaData
 {
-  v2 = self;
-  v3 = [(FMFMapCache *)v2 cacheMetaQueue];
+  selfCopy = self;
+  cacheMetaQueue = [(FMFMapCache *)selfCopy cacheMetaQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __27__FMFMapCache_saveMetaData__block_invoke;
   v5[3] = &unk_278FDE548;
-  v6 = v2;
-  v7 = v2;
-  v4 = v2;
-  dispatch_sync(v3, v5);
+  v6 = selfCopy;
+  v7 = selfCopy;
+  v4 = selfCopy;
+  dispatch_sync(cacheMetaQueue, v5);
 }
 
 void __27__FMFMapCache_saveMetaData__block_invoke(uint64_t a1)
@@ -785,14 +785,14 @@ LABEL_19:
 - (void)flushCache
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(FMFMapCache *)self imageCachePath];
-  v5 = [v3 enumeratorAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  imageCachePath = [(FMFMapCache *)self imageCachePath];
+  v5 = [defaultManager enumeratorAtPath:imageCachePath];
 
-  v6 = [v5 nextObject];
-  if (v6)
+  nextObject = [v5 nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     do
     {
       v8 = LogCategory_FMFMapXPC();
@@ -802,11 +802,11 @@ LABEL_19:
         _os_log_impl(&dword_24A33F000, v8, OS_LOG_TYPE_DEFAULT, "FMFMapCache: clearing file", buf, 2u);
       }
 
-      v9 = [(FMFMapCache *)self imageCachePath];
-      v10 = [v9 stringByAppendingPathComponent:v7];
+      imageCachePath2 = [(FMFMapCache *)self imageCachePath];
+      v10 = [imageCachePath2 stringByAppendingPathComponent:v7];
 
       v17 = 0;
-      v11 = [v3 removeItemAtPath:v10 error:&v17];
+      v11 = [defaultManager removeItemAtPath:v10 error:&v17];
       v12 = v17;
       v13 = v12;
       if ((v11 & 1) == 0 && v12)
@@ -822,12 +822,12 @@ LABEL_19:
         }
       }
 
-      v15 = [v5 nextObject];
+      nextObject2 = [v5 nextObject];
 
-      v7 = v15;
+      v7 = nextObject2;
     }
 
-    while (v15);
+    while (nextObject2);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -843,18 +843,18 @@ LABEL_19:
     _os_log_impl(&dword_24A33F000, v3, OS_LOG_TYPE_DEFAULT, "FMFMapCache: pruneCacheIfNeeded", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v6 = v5;
-  v7 = [(FMFMapCache *)self lastPruneDate];
-  [v7 timeIntervalSince1970];
+  lastPruneDate = [(FMFMapCache *)self lastPruneDate];
+  [lastPruneDate timeIntervalSince1970];
   v9 = v6 - v8;
   [(FMFMapCache *)self pruneIntervalInSeconds];
   v11 = v10;
 
   if (v9 > v11)
   {
-    v39 = v4;
+    v39 = date;
     v12 = LogCategory_FMFMapXPC();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -862,20 +862,20 @@ LABEL_19:
       _os_log_impl(&dword_24A33F000, v12, OS_LOG_TYPE_DEFAULT, "FMFMapCache: prunning cache....", buf, 2u);
     }
 
-    v41 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [(FMFMapCache *)self mapImageMetaData];
-    v40 = [v13 mutableCopy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    mapImageMetaData = [(FMFMapCache *)self mapImageMetaData];
+    v40 = [mapImageMetaData mutableCopy];
 
-    v14 = [MEMORY[0x277CBEAA8] date];
-    [v14 timeIntervalSince1970];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSince1970];
     v16 = v15;
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v17 = [(FMFMapCache *)self mapImageMetaData];
-    v18 = [v17 countByEnumeratingWithState:&v43 objects:v51 count:16];
+    mapImageMetaData2 = [(FMFMapCache *)self mapImageMetaData];
+    v18 = [mapImageMetaData2 countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (v18)
     {
       v19 = v18;
@@ -887,15 +887,15 @@ LABEL_19:
         {
           if (*v44 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(mapImageMetaData2);
           }
 
           v22 = *(*(&v43 + 1) + 8 * v21);
-          v23 = [(FMFMapCache *)self mapImageMetaData];
-          v24 = [v23 objectForKeyedSubscript:v22];
+          mapImageMetaData3 = [(FMFMapCache *)self mapImageMetaData];
+          v24 = [mapImageMetaData3 objectForKeyedSubscript:v22];
 
-          v25 = [v24 timestamp];
-          [v25 timeIntervalSince1970];
+          timestamp = [v24 timestamp];
+          [timestamp timeIntervalSince1970];
           v27 = v16 - v26;
           [(FMFMapCache *)self cacheExpiryInSeconds];
           v29 = v28;
@@ -910,9 +910,9 @@ LABEL_19:
               _os_log_impl(&dword_24A33F000, v30, OS_LOG_TYPE_DEFAULT, "FMFMapCache: removing file: %@", buf, 0xCu);
             }
 
-            v31 = [v24 path];
+            path = [v24 path];
             v42 = 0;
-            v32 = [v41 removeItemAtPath:v31 error:&v42];
+            v32 = [defaultManager removeItemAtPath:path error:&v42];
             v33 = v42;
 
             if ((v32 & 1) == 0 && v33)
@@ -920,9 +920,9 @@ LABEL_19:
               v34 = LogCategory_FMFMapXPC();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
               {
-                v35 = [v24 path];
+                path2 = [v24 path];
                 *buf = 138412546;
-                v48 = v35;
+                v48 = path2;
                 v49 = 2112;
                 v50 = v33;
                 _os_log_error_impl(&dword_24A33F000, v34, OS_LOG_TYPE_ERROR, "FMFMapCache: error pruning file: %@ error: %@", buf, 0x16u);
@@ -936,13 +936,13 @@ LABEL_19:
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        v19 = [mapImageMetaData2 countByEnumeratingWithState:&v43 objects:v51 count:16];
       }
 
       while (v19);
     }
 
-    v4 = v39;
+    date = v39;
     [(FMFMapCache *)self setLastPruneDate:v39];
     [(FMFMapCache *)self setMapImageMetaData:v40];
     v36 = MEMORY[0x277D07B70];
@@ -953,26 +953,26 @@ LABEL_19:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (id)gridKeyForWidth:(double)a3 andHeight:(double)a4
+- (id)gridKeyForWidth:(double)width andHeight:(double)height
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v6 = [v5 stringValue];
-  v7 = [@"gridImage" stringByAppendingString:v6];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  v9 = [v8 stringValue];
-  v10 = [v7 stringByAppendingString:v9];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:width];
+  stringValue = [v5 stringValue];
+  v7 = [@"gridImage" stringByAppendingString:stringValue];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:height];
+  stringValue2 = [v8 stringValue];
+  v10 = [v7 stringByAppendingString:stringValue2];
 
   return v10;
 }
 
-- (id)noLocationKeyForWidth:(double)a3 andHeight:(double)a4
+- (id)noLocationKeyForWidth:(double)width andHeight:(double)height
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v6 = [v5 stringValue];
-  v7 = [@"noLocationImage" stringByAppendingString:v6];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  v9 = [v8 stringValue];
-  v10 = [v7 stringByAppendingString:v9];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:width];
+  stringValue = [v5 stringValue];
+  v7 = [@"noLocationImage" stringByAppendingString:stringValue];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:height];
+  stringValue2 = [v8 stringValue];
+  v10 = [v7 stringByAppendingString:stringValue2];
 
   return v10;
 }

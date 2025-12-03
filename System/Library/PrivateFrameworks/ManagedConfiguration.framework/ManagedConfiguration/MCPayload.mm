@@ -9,18 +9,18 @@
 + (id)_sharedWatchPayloadClasses;
 + (id)accountPayloads;
 + (id)availablePayloadsForUserEnrollment;
-+ (id)badFieldTypeErrorWithField:(id)a3;
-+ (id)badFieldValueErrorWithField:(id)a3 underlyingError:(id)a4;
++ (id)badFieldTypeErrorWithField:(id)field;
++ (id)badFieldValueErrorWithField:(id)field underlyingError:(id)error;
 + (id)cellularRequiredPayloads;
-+ (id)conflictingFieldValueErrorWithUnderlyingError:(id)a3;
++ (id)conflictingFieldValueErrorWithUnderlyingError:(id)error;
 + (id)hrnRequiredPayloads;
 + (id)installableHomePodConfigurationPayloadClasses;
 + (id)installableWatchConfigurationPayloadClasses;
-+ (id)localizedDescriptionForPayloadCount:(unint64_t)a3;
-+ (id)localizedParenthesizedFormDescriptionForPayloadCount:(unint64_t)a3;
++ (id)localizedDescriptionForPayloadCount:(unint64_t)count;
++ (id)localizedParenthesizedFormDescriptionForPayloadCount:(unint64_t)count;
 + (id)mdmAdoptablePayloads;
-+ (id)missingFieldErrorWithField:(id)a3 underlyingError:(id)a4;
-+ (id)payloadFromDictionary:(id)a3 isStub:(BOOL)a4 profile:(id)a5 outError:(id *)a6;
++ (id)missingFieldErrorWithField:(id)field underlyingError:(id)error;
++ (id)payloadFromDictionary:(id)dictionary isStub:(BOOL)stub profile:(id)profile outError:(id *)error;
 + (id)payloadsRequiringRatchetWithStolenDeviceProtection;
 + (id)remoteQueueableHomePodPayloadClasses;
 + (id)remoteQueueableWatchPayloadClasses;
@@ -29,16 +29,16 @@
 + (id)unavailableSystemPayloadsInEphemeralMultiUser;
 + (id)unavailableUserPayloadsInEphemeralMultiUser;
 + (id)wrapperPayloadDictionary;
-- (BOOL)isSupportedByWatchVersions:(id)a3;
-- (MCPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (BOOL)isSupportedByWatchVersions:(id)versions;
+- (MCPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (MCProfile)profile;
 - (NSString)friendlyName;
 - (id)description;
-- (id)filterForUserEnrollmentOutError:(id *)a3;
-- (id)malformedPayloadErrorWithError:(id)a3;
+- (id)filterForUserEnrollmentOutError:(id *)error;
+- (id)malformedPayloadErrorWithError:(id)error;
 - (id)serializedDictionary;
 - (id)stubDictionary;
-- (void)setPersistentResourceID:(id)a3;
+- (void)setPersistentResourceID:(id)d;
 @end
 
 @implementation MCPayload
@@ -78,8 +78,8 @@
 + (id)installableHomePodConfigurationPayloadClasses
 {
   v2 = MEMORY[0x1E695DFA8];
-  v3 = [a1 _sharedHomePodPayloadClasses];
-  v4 = [v2 setWithSet:v3];
+  _sharedHomePodPayloadClasses = [self _sharedHomePodPayloadClasses];
+  v4 = [v2 setWithSet:_sharedHomePodPayloadClasses];
 
   [v4 addObject:objc_opt_class()];
   [v4 addObject:objc_opt_class()];
@@ -91,8 +91,8 @@
 + (id)remoteQueueableHomePodPayloadClasses
 {
   v2 = MEMORY[0x1E695DFA8];
-  v3 = [a1 _sharedHomePodPayloadClasses];
-  v4 = [v2 setWithSet:v3];
+  _sharedHomePodPayloadClasses = [self _sharedHomePodPayloadClasses];
+  v4 = [v2 setWithSet:_sharedHomePodPayloadClasses];
 
   [v4 addObject:objc_opt_class()];
   keyExistsAndHasValidFormat = 0;
@@ -132,8 +132,8 @@
 + (id)installableWatchConfigurationPayloadClasses
 {
   v2 = MEMORY[0x1E695DFA8];
-  v3 = [a1 _sharedWatchPayloadClasses];
-  v4 = [v2 setWithSet:v3];
+  _sharedWatchPayloadClasses = [self _sharedWatchPayloadClasses];
+  v4 = [v2 setWithSet:_sharedWatchPayloadClasses];
 
   [v4 addObject:objc_opt_class()];
   [v4 addObject:objc_opt_class()];
@@ -143,25 +143,25 @@
 
 + (id)remoteQueueableWatchPayloadClasses
 {
-  v2 = [a1 _sharedWatchPayloadClasses];
+  _sharedWatchPayloadClasses = [self _sharedWatchPayloadClasses];
   if (MCGestaltIsInternalBuild())
   {
-    v3 = [MEMORY[0x1E695DFA8] setWithSet:v2];
+    v3 = [MEMORY[0x1E695DFA8] setWithSet:_sharedWatchPayloadClasses];
     [v3 addObject:objc_opt_class()];
   }
 
   else
   {
-    v3 = v2;
+    v3 = _sharedWatchPayloadClasses;
   }
 
   return v3;
 }
 
-- (BOOL)isSupportedByWatchVersions:(id)a3
+- (BOOL)isSupportedByWatchVersions:(id)versions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  versionsCopy = versions;
   v4 = +[MCPayload _minimumWatchVersionRequirementsForPayloads];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -173,7 +173,7 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v3;
+    v8 = versionsCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -187,8 +187,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) unsignedIntegerValue];
-          if (v12 >= [v7 unsignedIntegerValue])
+          unsignedIntegerValue = [*(*(&v15 + 1) + 8 * i) unsignedIntegerValue];
+          if (unsignedIntegerValue >= [v7 unsignedIntegerValue])
           {
             LOBYTE(v9) = 1;
             goto LABEL_12;
@@ -331,45 +331,45 @@ void __71__MCPayload_RemoteDevices___minimumWatchVersionRequirementsForPayloads_
   v34 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)localizedDescriptionForPayloadCount:(unint64_t)a3
++ (id)localizedDescriptionForPayloadCount:(unint64_t)count
 {
-  if (a3 < 2)
+  if (count < 2)
   {
-    v12 = [a1 localizedSingularForm];
+    localizedSingularForm = [self localizedSingularForm];
   }
 
   else
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    v14 = [a1 localizedPluralForm];
-    v12 = MCLocalizedFormat(@"PAYLOAD_PLURAL_FORMAT", v5, v6, v7, v8, v9, v10, v11, v4);
+    localizedPluralForm = [self localizedPluralForm];
+    localizedSingularForm = MCLocalizedFormat(@"PAYLOAD_PLURAL_FORMAT", v5, v6, v7, v8, v9, v10, v11, v4);
   }
 
-  return v12;
+  return localizedSingularForm;
 }
 
-+ (id)localizedParenthesizedFormDescriptionForPayloadCount:(unint64_t)a3
++ (id)localizedParenthesizedFormDescriptionForPayloadCount:(unint64_t)count
 {
-  if (a3 < 2)
+  if (count < 2)
   {
-    v12 = [a1 localizedSingularForm];
+    localizedSingularForm = [self localizedSingularForm];
   }
 
   else
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    v14 = [a1 localizedPluralForm];
-    v12 = MCLocalizedFormat(@"PAYLOAD_PAREN_PLURAL_FORMAT", v5, v6, v7, v8, v9, v10, v11, v4);
+    localizedPluralForm = [self localizedPluralForm];
+    localizedSingularForm = MCLocalizedFormat(@"PAYLOAD_PAREN_PLURAL_FORMAT", v5, v6, v7, v8, v9, v10, v11, v4);
   }
 
-  return v12;
+  return localizedSingularForm;
 }
 
-- (void)setPersistentResourceID:(id)a3
+- (void)setPersistentResourceID:(id)d
 {
-  if (self->_persistentResourceID != a3)
+  if (self->_persistentResourceID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     persistentResourceID = self->_persistentResourceID;
     self->_persistentResourceID = v5;
 
@@ -380,32 +380,32 @@ void __71__MCPayload_RemoteDevices___minimumWatchVersionRequirementsForPayloads_
 - (NSString)friendlyName
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(MCPayload *)self displayName];
-  v4 = [v3 length];
+  displayName = [(MCPayload *)self displayName];
+  v4 = [displayName length];
 
   if (v4)
   {
-    v5 = [(MCPayload *)self displayName];
+    displayName2 = [(MCPayload *)self displayName];
   }
 
   else
   {
-    v6 = [(MCPayload *)self identifier];
-    v7 = [v6 length];
+    identifier = [(MCPayload *)self identifier];
+    v7 = [identifier length];
 
     if (v7)
     {
-      v5 = [(MCPayload *)self identifier];
+      displayName2 = [(MCPayload *)self identifier];
     }
 
     else
     {
-      v8 = [(MCPayload *)self UUID];
-      v9 = [v8 length];
+      uUID = [(MCPayload *)self UUID];
+      v9 = [uUID length];
 
       if (v9)
       {
-        v5 = [(MCPayload *)self UUID];
+        displayName2 = [(MCPayload *)self UUID];
       }
 
       else
@@ -417,19 +417,19 @@ void __71__MCPayload_RemoteDevices___minimumWatchVersionRequirementsForPayloads_
           v15 = 138543618;
           v16 = objc_opt_class();
           v17 = 2048;
-          v18 = self;
+          selfCopy = self;
           v12 = v16;
           _os_log_impl(&dword_1A795B000, v11, OS_LOG_TYPE_ERROR, "Payload %{public}@ %p has no friendly name.", &v15, 0x16u);
         }
 
-        v5 = @"Payload";
+        displayName2 = @"Payload";
       }
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return displayName2;
 }
 
 - (id)description
@@ -471,11 +471,11 @@ void __71__MCPayload_RemoteDevices___minimumWatchVersionRequirementsForPayloads_
     [v4 appendFormat:@"Persistent Resource ID: %@\n", self->_persistentResourceID];
   }
 
-  v5 = [(MCPayload *)self restrictions];
-  v6 = v5;
-  if (v5)
+  restrictions = [(MCPayload *)self restrictions];
+  v6 = restrictions;
+  if (restrictions)
   {
-    [v4 appendFormat:@"Restrictions: %@\n", v5];
+    [v4 appendFormat:@"Restrictions: %@\n", restrictions];
   }
 
   return v4;
@@ -533,10 +533,10 @@ void __71__MCPayload_RemoteDevices___minimumWatchVersionRequirementsForPayloads_
     [v3 setObject:persistentResourceID forKeyedSubscript:@"Persistent Resource ID"];
   }
 
-  v14 = [(MCPayload *)self restrictions];
-  if (v14)
+  restrictions = [(MCPayload *)self restrictions];
+  if (restrictions)
   {
-    [v3 setObject:v14 forKeyedSubscript:@"Restrictions"];
+    [v3 setObject:restrictions forKeyedSubscript:@"Restrictions"];
   }
 
   return v3;
@@ -1130,14 +1130,14 @@ void __56__MCPayload_Private__availablePayloadsForUserEnrollment__block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)payloadFromDictionary:(id)a3 isStub:(BOOL)a4 profile:(id)a5 outError:(id *)a6
++ (id)payloadFromDictionary:(id)dictionary isStub:(BOOL)stub profile:(id)profile outError:(id *)error
 {
   v74 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 objectForKey:@"PayloadType"];
-  v56 = v10;
-  if (a4)
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
+  v11 = [dictionaryCopy objectForKey:@"PayloadType"];
+  v56 = profileCopy;
+  if (stub)
   {
     v12 = 0;
   }
@@ -1168,8 +1168,8 @@ LABEL_7:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v64 + 1) + 8 * v17) typeStrings];
-        v19 = [v18 containsObject:v11];
+        typeStrings = [*(*(&v64 + 1) + 8 * v17) typeStrings];
+        v19 = [typeStrings containsObject:v11];
 
         if (v19)
         {
@@ -1197,12 +1197,12 @@ LABEL_7:
       }
 
       v21 = [MCUnknownPayload alloc];
-      v22 = [v9 mutableCopy];
+      v22 = [dictionaryCopy mutableCopy];
       v63 = 0;
       v23 = [(MCUnknownPayload *)v21 initWithDictionary:v22 profile:v56 outError:&v63];
       v12 = v63;
 
-      v10 = v56;
+      profileCopy = v56;
       if (!v23)
       {
         goto LABEL_23;
@@ -1219,34 +1219,34 @@ LABEL_7:
 LABEL_13:
 
     v12 = 0;
-    v10 = v56;
+    profileCopy = v56;
   }
 
 LABEL_23:
   v29 = +[MCFeatureOverrides shouldDisablePlatformPayloadFilter];
-  v30 = [a1 _platformSpecificConfigurationPayloadClasses];
-  v31 = v30;
+  _platformSpecificConfigurationPayloadClasses = [self _platformSpecificConfigurationPayloadClasses];
+  v31 = _platformSpecificConfigurationPayloadClasses;
   if (v29)
   {
-    v32 = [a1 _allKnownPayloadClasses];
+    _allKnownPayloadClasses = [self _allKnownPayloadClasses];
   }
 
   else
   {
-    v32 = v30;
+    _allKnownPayloadClasses = _platformSpecificConfigurationPayloadClasses;
   }
 
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v33 = v32;
+  v33 = _allKnownPayloadClasses;
   v34 = [v33 countByEnumeratingWithState:&v59 objects:v72 count:16];
   if (v34)
   {
     v35 = v34;
     v53 = v31;
-    v54 = v9;
+    v54 = dictionaryCopy;
     v36 = *v60;
 LABEL_28:
     v37 = 0;
@@ -1258,8 +1258,8 @@ LABEL_28:
       }
 
       v38 = *(*(&v59 + 1) + 8 * v37);
-      v39 = [v38 typeStrings];
-      v40 = [v39 containsObject:v11];
+      typeStrings2 = [v38 typeStrings];
+      v40 = [typeStrings2 containsObject:v11];
 
       if (v40)
       {
@@ -1275,8 +1275,8 @@ LABEL_28:
         }
 
         v23 = 0;
-        v9 = v54;
-        v10 = v56;
+        dictionaryCopy = v54;
+        profileCopy = v56;
         goto LABEL_42;
       }
     }
@@ -1284,14 +1284,14 @@ LABEL_28:
     v41 = [v38 alloc];
     v42 = [v54 mutableCopy];
     v58 = v12;
-    v10 = v56;
+    profileCopy = v56;
     v23 = [v41 initWithDictionary:v42 profile:v56 outError:&v58];
     v43 = v58;
 
     if (!v29)
     {
       v12 = v43;
-      v9 = v54;
+      dictionaryCopy = v54;
 LABEL_42:
       v31 = v53;
       goto LABEL_43;
@@ -1314,7 +1314,7 @@ LABEL_42:
     }
 
     v12 = v43;
-    v9 = v54;
+    dictionaryCopy = v54;
   }
 
   else
@@ -1336,9 +1336,9 @@ LABEL_43:
     }
 
     v49 = [MCUnknownPayload alloc];
-    v50 = [v9 mutableCopy];
+    v50 = [dictionaryCopy mutableCopy];
     v57 = 0;
-    v23 = [(MCUnknownPayload *)v49 initWithDictionary:v50 profile:v10 outError:&v57];
+    v23 = [(MCUnknownPayload *)v49 initWithDictionary:v50 profile:profileCopy outError:&v57];
     v12 = v57;
 
     v31 = v47;
@@ -1352,21 +1352,21 @@ LABEL_48:
   }
 
 LABEL_18:
-  if (a6)
+  if (error)
   {
     v24 = v12;
-    *a6 = v12;
+    *error = v12;
   }
 
   v25 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
   {
     v26 = v25;
-    v27 = [v12 MCVerboseDescription];
+    mCVerboseDescription = [v12 MCVerboseDescription];
     *buf = 138543618;
     v69 = v11;
     v70 = 2114;
-    v71 = v27;
+    v71 = mCVerboseDescription;
     _os_log_impl(&dword_1A795B000, v26, OS_LOG_TYPE_ERROR, "Cannot create profile of type “%{public}@”. Error: %{public}@", buf, 0x16u);
   }
 
@@ -1378,49 +1378,49 @@ LABEL_49:
   return v28;
 }
 
-+ (id)missingFieldErrorWithField:(id)a3 underlyingError:(id)a4
++ (id)missingFieldErrorWithField:(id)field underlyingError:(id)error
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = MCErrorArray(@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD", a2, a3, a4, v4, v5, v6, v7, a3);
+  v9 = MCErrorArray(@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD", a2, field, error, v4, v5, v6, v7, field);
   v10 = [v8 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2002 descriptionArray:v9 errorType:@"MCFatalError"];
 
   return v10;
 }
 
-+ (id)badFieldTypeErrorWithField:(id)a3
++ (id)badFieldTypeErrorWithField:(id)field
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = MCErrorArray(@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD", a2, a3, v3, v4, v5, v6, v7, a3);
+  v9 = MCErrorArray(@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD", a2, field, v3, v4, v5, v6, v7, field);
   v10 = [v8 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2003 descriptionArray:v9 errorType:@"MCFatalError"];
 
   return v10;
 }
 
-+ (id)badFieldValueErrorWithField:(id)a3 underlyingError:(id)a4
++ (id)badFieldValueErrorWithField:(id)field underlyingError:(id)error
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
-  v14 = MCErrorArray(@"ERROR_PAYLOAD_FIELD_BAD_VALUE_P_FIELD", v7, v8, v9, v10, v11, v12, v13, a3);
-  v15 = [v5 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2004 descriptionArray:v14 underlyingError:v6 errorType:@"MCFatalError"];
+  errorCopy = error;
+  v14 = MCErrorArray(@"ERROR_PAYLOAD_FIELD_BAD_VALUE_P_FIELD", v7, v8, v9, v10, v11, v12, v13, field);
+  v15 = [v5 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2004 descriptionArray:v14 underlyingError:errorCopy errorType:@"MCFatalError"];
 
   return v15;
 }
 
-+ (id)conflictingFieldValueErrorWithUnderlyingError:(id)a3
++ (id)conflictingFieldValueErrorWithUnderlyingError:(id)error
 {
   v3 = MEMORY[0x1E696ABC0];
-  v4 = a3;
+  errorCopy = error;
   v5 = MCErrorVaArray(@"ERROR_PAYLOAD_FIELD_CONFLICTING_P_FIELDS", &v9);
-  v6 = [v3 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2004 descriptionArray:v5 underlyingError:v4 errorType:@"MCFatalError"];
+  v6 = [v3 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2004 descriptionArray:v5 underlyingError:errorCopy errorType:@"MCFatalError"];
 
   return v6;
 }
 
-- (MCPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v62.receiver = self;
   v62.super_class = MCPayload;
   v10 = [(MCPayload *)&v62 init];
@@ -1430,14 +1430,14 @@ LABEL_49:
   }
 
   v61 = 0;
-  v11 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"PayloadVersion" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v61];
+  v11 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"PayloadVersion" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v61];
   v12 = v61;
   if (!v12)
   {
     v10->_version = [v11 intValue];
-    v14 = [v9 isStub];
+    isStub = [profileCopy isStub];
     version = v10->_version;
-    if (v14)
+    if (isStub)
     {
       if (version != 1)
       {
@@ -1455,68 +1455,68 @@ LABEL_49:
       v32 = MEMORY[0x1E696ABC0];
       v33 = MCErrorArray(@"ERROR_PAYLOAD_UNSUPPORTED_VERSION", v15, v16, v17, v18, v19, v20, v21, 0);
       persistentResourceID = [v32 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2001 descriptionArray:v33 errorType:@"MCFatalError"];
-      v13 = [persistentResourceID MCCopyAsPrimaryError];
+      mCCopyAsPrimaryError = [persistentResourceID MCCopyAsPrimaryError];
       goto LABEL_27;
     }
 
-    objc_storeWeak(&v10->_profile, v9);
+    objc_storeWeak(&v10->_profile, profileCopy);
     v60 = 0;
-    v24 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:v8 key:@"PayloadType" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v60];
-    v13 = v60;
+    v24 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:dictionaryCopy key:@"PayloadType" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v60];
+    mCCopyAsPrimaryError = v60;
     type = v10->_type;
     v10->_type = v24;
 
-    if (!v13)
+    if (!mCCopyAsPrimaryError)
     {
       v59 = 0;
-      v26 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:v8 key:@"PayloadIdentifier" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v59];
-      v13 = v59;
+      v26 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:dictionaryCopy key:@"PayloadIdentifier" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v59];
+      mCCopyAsPrimaryError = v59;
       identifier = v10->_identifier;
       v10->_identifier = v26;
 
-      if (!v13)
+      if (!mCCopyAsPrimaryError)
       {
         v58 = 0;
-        v28 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:v8 key:@"PayloadUUID" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v58];
-        v13 = v58;
+        v28 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:dictionaryCopy key:@"PayloadUUID" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v58];
+        mCCopyAsPrimaryError = v58;
         UUID = v10->_UUID;
         v10->_UUID = v28;
       }
     }
 
-    v33 = [v8 objectForKey:@"PayloadDescription"];
+    v33 = [dictionaryCopy objectForKey:@"PayloadDescription"];
     if (!v33)
     {
 LABEL_21:
-      [v8 removeObjectForKey:@"PayloadDescription"];
-      if (v13)
+      [dictionaryCopy removeObjectForKey:@"PayloadDescription"];
+      if (mCCopyAsPrimaryError)
       {
         goto LABEL_28;
       }
 
       v57 = 0;
-      v38 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v8 key:@"PayloadDisplayName" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v57];
-      v13 = v57;
+      v38 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"PayloadDisplayName" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v57];
+      mCCopyAsPrimaryError = v57;
       displayName = v10->_displayName;
       v10->_displayName = v38;
 
-      if (!v13)
+      if (!mCCopyAsPrimaryError)
       {
         v56 = 0;
-        v40 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v8 key:@"PayloadOrganization" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v56];
-        v13 = v56;
+        v40 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"PayloadOrganization" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v56];
+        mCCopyAsPrimaryError = v56;
         organization = v10->_organization;
         v10->_organization = v40;
       }
 
       WeakRetained = objc_loadWeakRetained(&v10->_profile);
-      v43 = [WeakRetained isStub];
+      isStub2 = [WeakRetained isStub];
 
-      if (!v43 || v13)
+      if (!isStub2 || mCCopyAsPrimaryError)
       {
 LABEL_28:
 
-        if (!v13)
+        if (!mCCopyAsPrimaryError)
         {
           goto LABEL_34;
         }
@@ -1525,8 +1525,8 @@ LABEL_28:
       }
 
       v55 = 0;
-      v44 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v8 key:@"PersistentResourceID" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v55];
-      v13 = v55;
+      v44 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"PersistentResourceID" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v55];
+      mCCopyAsPrimaryError = v55;
       persistentResourceID = v10->_persistentResourceID;
       v10->_persistentResourceID = v44;
 LABEL_27:
@@ -1562,20 +1562,20 @@ LABEL_20:
     }
 
     v37 = [MCPayload badFieldTypeErrorWithField:@"PayloadDescription"];
-    v36 = v13;
-    v13 = v37;
+    v36 = mCCopyAsPrimaryError;
+    mCCopyAsPrimaryError = v37;
     goto LABEL_20;
   }
 
-  v13 = v12;
+  mCCopyAsPrimaryError = v12;
 
 LABEL_29:
-  v45 = [(MCPayload *)v10 malformedPayloadErrorWithError:v13];
+  v45 = [(MCPayload *)v10 malformedPayloadErrorWithError:mCCopyAsPrimaryError];
   v46 = v45;
-  if (a5)
+  if (error)
   {
     v47 = v45;
-    *a5 = v46;
+    *error = v46;
   }
 
   v48 = _MCLogObjects;
@@ -1584,11 +1584,11 @@ LABEL_29:
     v49 = v48;
     v50 = objc_opt_class();
     v51 = v50;
-    v52 = [v46 MCVerboseDescription];
+    mCVerboseDescription = [v46 MCVerboseDescription];
     *buf = 138543618;
     v64 = v50;
     v65 = 2114;
-    v66 = v52;
+    v66 = mCVerboseDescription;
     _os_log_impl(&dword_1A795B000, v49, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
   }
 
@@ -1599,16 +1599,16 @@ LABEL_34:
   return v10;
 }
 
-- (id)malformedPayloadErrorWithError:(id)a3
+- (id)malformedPayloadErrorWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(MCPayload *)self profile];
-  v6 = [v5 friendlyName];
+  errorCopy = error;
+  profile = [(MCPayload *)self profile];
+  friendlyName = [profile friendlyName];
 
   v14 = MEMORY[0x1E696ABC0];
-  if (v6)
+  if (friendlyName)
   {
-    MCErrorArray(@"ERROR_PAYLOAD_MALFORMED_P_ID", v7, v8, v9, v10, v11, v12, v13, v6);
+    MCErrorArray(@"ERROR_PAYLOAD_MALFORMED_P_ID", v7, v8, v9, v10, v11, v12, v13, friendlyName);
   }
 
   else
@@ -1616,7 +1616,7 @@ LABEL_34:
     MCErrorArray(@"ERROR_PAYLOAD_MALFORMED", v7, v8, v9, v10, v11, v12, v13, 0);
   }
   v15 = ;
-  v16 = [v14 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2000 descriptionArray:v15 underlyingError:v4 errorType:@"MCFatalError"];
+  v16 = [v14 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2000 descriptionArray:v15 underlyingError:errorCopy errorType:@"MCFatalError"];
 
   return v16;
 }
@@ -1640,23 +1640,23 @@ LABEL_34:
 
 + (id)wrapperPayloadDictionary
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:1];
-  [v2 setObject:v3 forKey:@"PayloadVersion"];
+  [dictionary setObject:v3 forKey:@"PayloadVersion"];
 
-  return v2;
+  return dictionary;
 }
 
-- (id)filterForUserEnrollmentOutError:(id *)a3
+- (id)filterForUserEnrollmentOutError:(id *)error
 {
   v5 = +[MCPayload availablePayloadsForUserEnrollment];
   v6 = [v5 containsObject:objc_opt_class()];
-  if (a3 && (v6 & 1) == 0)
+  if (error && (v6 & 1) == 0)
   {
     v7 = MEMORY[0x1E696ABC0];
-    v8 = [(MCPayload *)self type];
-    v16 = MCErrorArray(@"ERROR_UNACCEPTABLE_PAYLOAD_IN_USER_ENROLLMENT_P_TYPE", v9, v10, v11, v12, v13, v14, v15, v8);
-    *a3 = [v7 MCErrorWithDomain:@"MCInstallationErrorDomain" code:4029 descriptionArray:v16 errorType:@"MCFatalError"];
+    type = [(MCPayload *)self type];
+    v16 = MCErrorArray(@"ERROR_UNACCEPTABLE_PAYLOAD_IN_USER_ENROLLMENT_P_TYPE", v9, v10, v11, v12, v13, v14, v15, type);
+    *error = [v7 MCErrorWithDomain:@"MCInstallationErrorDomain" code:4029 descriptionArray:v16 errorType:@"MCFatalError"];
   }
 
   return 0;

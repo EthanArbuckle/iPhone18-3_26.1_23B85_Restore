@@ -1,32 +1,32 @@
 @interface TRFetchAnisetteDataRequest
-- (TRFetchAnisetteDataRequest)initWithCoder:(id)a3;
+- (TRFetchAnisetteDataRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRFetchAnisetteDataRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = TRFetchAnisetteDataRequest;
-  [(TRMessage *)&v5 encodeWithCoder:v4];
+  [(TRMessage *)&v5 encodeWithCoder:coderCopy];
   if (self->_shouldProvision)
   {
-    [v4 encodeBool:1 forKey:@"TRAnisetteDataMessages_sP"];
+    [coderCopy encodeBool:1 forKey:@"TRAnisetteDataMessages_sP"];
   }
 }
 
-- (TRFetchAnisetteDataRequest)initWithCoder:(id)a3
+- (TRFetchAnisetteDataRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TRFetchAnisetteDataRequest;
-  v5 = [(TRMessage *)&v7 initWithCoder:v4];
+  v5 = [(TRMessage *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_shouldProvision = [v4 decodeBoolForKey:@"TRAnisetteDataMessages_sP"];
+    v5->_shouldProvision = [coderCopy decodeBoolForKey:@"TRAnisetteDataMessages_sP"];
   }
 
   return v5;

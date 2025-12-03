@@ -1,7 +1,7 @@
 @interface MCDForYouTableViewController
 - (MCDForYouTableViewController)init;
 - (id)_contentManager;
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5;
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -36,28 +36,28 @@
   }
 
   objc_initWeak(buf, self);
-  v4 = [(MCDForYouTableViewController *)self recentlyPlayedObserver];
+  recentlyPlayedObserver = [(MCDForYouTableViewController *)self recentlyPlayedObserver];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000DDF44;
   v6[3] = &unk_101097D20;
   objc_copyWeak(&v7, buf);
-  [v4 registerHandler:v6];
+  [recentlyPlayedObserver registerHandler:v6];
 
-  v5 = [(MCDFuseTableViewController *)self contentManager];
-  [v5 setTableCellConfigurationBlock:&stru_101097DF0];
+  contentManager = [(MCDFuseTableViewController *)self contentManager];
+  [contentManager setTableCellConfigurationBlock:&stru_101097DF0];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(buf);
 }
 
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = itemCopy;
     v7 = [[MCDForYouGroupTableViewController alloc] initWithRecommendationGroup:v6];
   }
 
@@ -73,9 +73,9 @@
 {
   v3 = [MCDForYouContentManager alloc];
   v4 = [[MCDForYouDataSource alloc] initWithRecommendationGroup:0];
-  v5 = [(MCDFuseTableViewController *)self playbackManager];
-  v6 = [(MCDForYouTableViewController *)self traitCollection];
-  v7 = -[MCDFuseContentManager initWithDataSource:delegate:viewController:playbackManager:limitedUI:](v3, "initWithDataSource:delegate:viewController:playbackManager:limitedUI:", v4, self, self, v5, [v6 shouldLimitMusicLists]);
+  playbackManager = [(MCDFuseTableViewController *)self playbackManager];
+  traitCollection = [(MCDForYouTableViewController *)self traitCollection];
+  v7 = -[MCDFuseContentManager initWithDataSource:delegate:viewController:playbackManager:limitedUI:](v3, "initWithDataSource:delegate:viewController:playbackManager:limitedUI:", v4, self, self, playbackManager, [traitCollection shouldLimitMusicLists]);
 
   return v7;
 }

@@ -1,15 +1,15 @@
 @interface BPSMultipleWatchMigrationViewCell
-- (BPSMultipleWatchMigrationViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BPSMultipleWatchMigrationViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation BPSMultipleWatchMigrationViewCell
 
-- (BPSMultipleWatchMigrationViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BPSMultipleWatchMigrationViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v28.receiver = self;
   v28.super_class = BPSMultipleWatchMigrationViewCell;
-  v4 = [(BPSMultipleWatchMigrationViewCell *)&v28 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(BPSMultipleWatchMigrationViewCell *)&v28 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(BPSCheckMarkView);
@@ -17,8 +17,8 @@
     v4->_checkmarkView = v5;
 
     [(BPSCheckMarkView *)v4->_checkmarkView setIsChecked:0];
-    v7 = [(BPSMultipleWatchMigrationViewCell *)v4 contentView];
-    [v7 addSubview:v4->_checkmarkView];
+    contentView = [(BPSMultipleWatchMigrationViewCell *)v4 contentView];
+    [contentView addSubview:v4->_checkmarkView];
 
     v8 = [BPSRemoveMigrationWatchView alloc];
     v9 = *MEMORY[0x277CBF3A0];
@@ -29,14 +29,14 @@
     watchView = v4->_watchView;
     v4->_watchView = v13;
 
-    v15 = [(BPSMultipleWatchMigrationViewCell *)v4 contentView];
-    [v15 addSubview:v4->_watchView];
+    contentView2 = [(BPSMultipleWatchMigrationViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_watchView];
 
-    v16 = [MEMORY[0x277D3FA48] appearance];
-    v17 = [v16 textColor];
+    appearance = [MEMORY[0x277D3FA48] appearance];
+    textColor = [appearance textColor];
 
-    v18 = [(BPSMultipleWatchMigrationViewCell *)v4 textLabel];
-    [v18 setTextColor:v17];
+    textLabel = [(BPSMultipleWatchMigrationViewCell *)v4 textLabel];
+    [textLabel setTextColor:textColor];
 
     v19 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v9, v10, v11, v12}];
     deviceDetailLabel = v4->_deviceDetailLabel;
@@ -46,17 +46,17 @@
     v22 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
     [(UILabel *)v21 setFont:v22];
 
-    [(UILabel *)v4->_deviceDetailLabel setTextColor:v17];
-    v23 = [(BPSMultipleWatchMigrationViewCell *)v4 contentView];
-    [v23 addSubview:v4->_deviceDetailLabel];
+    [(UILabel *)v4->_deviceDetailLabel setTextColor:textColor];
+    contentView3 = [(BPSMultipleWatchMigrationViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_deviceDetailLabel];
 
-    v24 = [MEMORY[0x277D3FA48] appearance];
-    v25 = [v24 cellHighlightColor];
+    appearance2 = [MEMORY[0x277D3FA48] appearance];
+    cellHighlightColor = [appearance2 cellHighlightColor];
 
-    if (v25)
+    if (cellHighlightColor)
     {
       v26 = objc_alloc_init(MEMORY[0x277D75D18]);
-      [v26 setBackgroundColor:v25];
+      [v26 setBackgroundColor:cellHighlightColor];
       [(BPSMultipleWatchMigrationViewCell *)v4 setSelectedBackgroundView:v26];
     }
   }
@@ -97,13 +97,13 @@
   v44.size.height = v10;
   v20 = (CGRectGetHeight(v44) - v19) * 0.5;
   [(BPSCheckMarkView *)self->_checkmarkView setFrame:20.0, floorf(v20), v17, v19];
-  v21 = [(BPSMultipleWatchMigrationViewCell *)self textLabel];
-  [v21 sizeThatFits:{v36, v11}];
+  textLabel = [(BPSMultipleWatchMigrationViewCell *)self textLabel];
+  [textLabel sizeThatFits:{v36, v11}];
   v23 = v22;
   v25 = v24;
 
-  v26 = [(BPSMultipleWatchMigrationViewCell *)self deviceDetailLabel];
-  [v26 sizeThatFits:{v36, v11}];
+  deviceDetailLabel = [(BPSMultipleWatchMigrationViewCell *)self deviceDetailLabel];
+  [deviceDetailLabel sizeThatFits:{v36, v11}];
   v37 = v27;
   v29 = v28;
 
@@ -123,11 +123,11 @@
   v47.size.width = v23;
   v47.size.height = v25;
   v33 = CGRectGetMaxY(v47) + 4.0;
-  v34 = [(BPSMultipleWatchMigrationViewCell *)self textLabel];
-  [v34 setFrame:{v30, v32, v23, v25}];
+  textLabel2 = [(BPSMultipleWatchMigrationViewCell *)self textLabel];
+  [textLabel2 setFrame:{v30, v32, v23, v25}];
 
-  v35 = [(BPSMultipleWatchMigrationViewCell *)self deviceDetailLabel];
-  [v35 setFrame:{v30, v33, v37, v29}];
+  deviceDetailLabel2 = [(BPSMultipleWatchMigrationViewCell *)self deviceDetailLabel];
+  [deviceDetailLabel2 setFrame:{v30, v33, v37, v29}];
 }
 
 @end

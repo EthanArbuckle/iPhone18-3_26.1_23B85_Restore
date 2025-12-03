@@ -5,21 +5,21 @@
 + (id)filledSquare;
 + (id)invertedArrow;
 + (id)line;
-+ (id)lineEndWithIdentifier:(id)a3;
-+ (id)lineEndWithPath:(CGPath *)a3 endPoint:(CGPoint)a4 isFilled:(BOOL)a5 identifier:(id)a6;
-+ (id)lineEndWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7;
-+ (id)lineEndWithType:(int)a3;
++ (id)lineEndWithIdentifier:(id)identifier;
++ (id)lineEndWithPath:(CGPath *)path endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier;
++ (id)lineEndWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier;
++ (id)lineEndWithType:(int)type;
 + (id)openArrow;
 + (id)openCircle;
 + (id)openSquare;
 + (id)simpleArrow;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNone;
-- (CGImage)newLineEndImageOnRight:(BOOL)a3 forContentsScale:(double)a4 withSize:(CGSize)a5;
+- (CGImage)newLineEndImageOnRight:(BOOL)right forContentsScale:(double)scale withSize:(CGSize)size;
 - (CGPath)wrapPath;
 - (CGPoint)endPoint;
-- (TSDLineEnd)initWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSDLineEnd)initWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -223,18 +223,18 @@
   return v3;
 }
 
-+ (id)lineEndWithType:(int)a3
++ (id)lineEndWithType:(int)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 <= 7)
+    if (type <= 7)
     {
-      if (a3 == 5)
+      if (type == 5)
       {
         return +[TSDLineEnd filledSquare];
       }
 
-      if (a3 == 6)
+      if (type == 6)
       {
         return +[TSDLineEnd openSquare];
       }
@@ -242,7 +242,7 @@
       return +[TSDLineEnd openCircle];
     }
 
-    switch(a3)
+    switch(type)
     {
       case 8:
         return +[TSDLineEnd invertedArrow];
@@ -255,14 +255,14 @@
     return 0;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       return +[TSDLineEnd simpleArrow];
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       return +[TSDLineEnd filledCircle];
     }
@@ -270,12 +270,12 @@
     return 0;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return +[TSDLineEnd filledDiamond];
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return +[TSDLineEnd openArrow];
   }
@@ -283,69 +283,69 @@
   return +[TSDLineEnd filledArrow];
 }
 
-+ (id)lineEndWithIdentifier:(id)a3
++ (id)lineEndWithIdentifier:(id)identifier
 {
-  if ([a3 isEqualToString:@"simple arrow"])
+  if ([identifier isEqualToString:@"simple arrow"])
   {
 
     return +[TSDLineEnd simpleArrow];
   }
 
-  else if ([a3 isEqualToString:@"filled circle"])
+  else if ([identifier isEqualToString:@"filled circle"])
   {
 
     return +[TSDLineEnd filledCircle];
   }
 
-  else if ([a3 isEqualToString:@"filled diamond"])
+  else if ([identifier isEqualToString:@"filled diamond"])
   {
 
     return +[TSDLineEnd filledDiamond];
   }
 
-  else if ([a3 isEqualToString:@"open arrow"])
+  else if ([identifier isEqualToString:@"open arrow"])
   {
 
     return +[TSDLineEnd openArrow];
   }
 
-  else if ([a3 isEqualToString:@"filled arrow"])
+  else if ([identifier isEqualToString:@"filled arrow"])
   {
 
     return +[TSDLineEnd filledArrow];
   }
 
-  else if ([a3 isEqualToString:@"filled square"])
+  else if ([identifier isEqualToString:@"filled square"])
   {
 
     return +[TSDLineEnd filledSquare];
   }
 
-  else if ([a3 isEqualToString:@"open square"])
+  else if ([identifier isEqualToString:@"open square"])
   {
 
     return +[TSDLineEnd openSquare];
   }
 
-  else if ([a3 isEqualToString:@"open circle"])
+  else if ([identifier isEqualToString:@"open circle"])
   {
 
     return +[TSDLineEnd openCircle];
   }
 
-  else if ([a3 isEqualToString:@"inverted arrow"])
+  else if ([identifier isEqualToString:@"inverted arrow"])
   {
 
     return +[TSDLineEnd invertedArrow];
   }
 
-  else if ([a3 isEqualToString:@"line"])
+  else if ([identifier isEqualToString:@"line"])
   {
 
     return +[TSDLineEnd line];
   }
 
-  else if ([a3 isEqualToString:@"none"])
+  else if ([identifier isEqualToString:@"none"])
   {
 
     return +[TSDLineEnd none];
@@ -357,36 +357,36 @@
   }
 }
 
-+ (id)lineEndWithPath:(CGPath *)a3 endPoint:(CGPoint)a4 isFilled:(BOOL)a5 identifier:(id)a6
++ (id)lineEndWithPath:(CGPath *)path endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier
 {
-  v6 = [objc_alloc(objc_opt_class()) initWithPath:a3 endPoint:a5 isFilled:a6 identifier:{a4.x, a4.y}];
+  v6 = [objc_alloc(objc_opt_class()) initWithPath:path endPoint:filled isFilled:identifier identifier:{point.x, point.y}];
 
   return v6;
 }
 
-+ (id)lineEndWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7
++ (id)lineEndWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier
 {
-  v7 = [objc_alloc(objc_opt_class()) initWithPath:a3 wrapPath:a4 endPoint:a6 isFilled:a7 identifier:0 lineJoin:{a5.x, a5.y}];
+  v7 = [objc_alloc(objc_opt_class()) initWithPath:path wrapPath:wrapPath endPoint:filled isFilled:identifier identifier:0 lineJoin:{point.x, point.y}];
 
   return v7;
 }
 
-- (TSDLineEnd)initWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8
+- (TSDLineEnd)initWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   v17.receiver = self;
   v17.super_class = TSDLineEnd;
   v15 = [(TSDLineEnd *)&v17 init];
   if (v15)
   {
-    v15->mIdentifier = [a7 copy];
-    v15->mLineJoin = a8;
-    v15->mPath = CGPathCreateMutableCopy(a3);
-    v15->mWrapPath = CGPathCreateMutableCopy(a4);
+    v15->mIdentifier = [identifier copy];
+    v15->mLineJoin = join;
+    v15->mPath = CGPathCreateMutableCopy(path);
+    v15->mWrapPath = CGPathCreateMutableCopy(wrapPath);
     v15->mEndPoint.x = x;
     v15->mEndPoint.y = y;
-    v15->mIsFilled = a6;
+    v15->mIsFilled = filled;
   }
 
   return v15;
@@ -402,31 +402,31 @@
   [(TSDLineEnd *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [a3 isMemberOfClass:objc_opt_class()];
+    v5 = [equal isMemberOfClass:objc_opt_class()];
     if (v5)
     {
       mIdentifier = self->mIdentifier;
-      v7 = [a3 identifier];
+      identifier = [equal identifier];
 
-      LOBYTE(v5) = [(NSString *)mIdentifier isEqualToString:v7];
+      LOBYTE(v5) = [(NSString *)mIdentifier isEqualToString:identifier];
     }
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mPath = self->mPath;
   mWrapPath = self->mWrapPath;
   mIsFilled = self->mIsFilled;
@@ -438,12 +438,12 @@
   return [v4 initWithPath:mPath wrapPath:mWrapPath endPoint:mIsFilled isFilled:mIdentifier identifier:mLineJoin lineJoin:{x, y}];
 }
 
-- (CGImage)newLineEndImageOnRight:(BOOL)a3 forContentsScale:(double)a4 withSize:(CGSize)a5
+- (CGImage)newLineEndImageOnRight:(BOOL)right forContentsScale:(double)scale withSize:(CGSize)size
 {
-  width = a5.width;
-  v7 = a3;
-  v9 = TSDBitmapContextCreate(11, a5.width * a4);
-  CGContextScaleCTM(v9, a4, a4);
+  width = size.width;
+  rightCopy = right;
+  v9 = TSDBitmapContextCreate(11, size.width * scale);
+  CGContextScaleCTM(v9, scale, scale);
   CGContextSetRGBFillColor(v9, 0.0, 0.0, 0.0, 1.0);
   CGContextSetRGBStrokeColor(v9, 0.0, 0.0, 0.0, 1.0);
   v10 = *MEMORY[0x277CBF2C0];
@@ -453,7 +453,7 @@
   v12 = *(MEMORY[0x277CBF2C0] + 32);
   *&v23.tx = v12;
   v13 = -width;
-  if (v7)
+  if (rightCopy)
   {
     *&transform.a = v10;
     *&transform.c = v11;
@@ -524,9 +524,9 @@
 
 - (BOOL)isNone
 {
-  v2 = [(TSDLineEnd *)self identifier];
+  identifier = [(TSDLineEnd *)self identifier];
 
-  return [(NSString *)v2 isEqualToString:@"none"];
+  return [(NSString *)identifier isEqualToString:@"none"];
 }
 
 - (id)description

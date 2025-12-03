@@ -1,30 +1,30 @@
 @interface DSBlockingPermissionsController
 - (BOOL)isFindMyASource;
-- (DSBlockingPermissionsController)initWithPeople:(id)a3 permissions:(id)a4;
+- (DSBlockingPermissionsController)initWithPeople:(id)people permissions:(id)permissions;
 - (DSNavigationDelegate)delegate;
-- (id)blockedPersonForIndex:(int64_t)a3;
-- (id)tableIconForPerson:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)blockedPersonForIndex:(int64_t)index;
+- (id)tableIconForPerson:(id)person;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_selectAll;
-- (void)_sharingStoppedForPerson:(id)a3 sourceNames:(id)a4;
+- (void)_sharingStoppedForPerson:(id)person sourceNames:(id)names;
 - (void)_sortSharingPeople;
 - (void)_updateButton;
 - (void)next;
-- (void)presentFetchErrorMessage:(id)a3;
+- (void)presentFetchErrorMessage:(id)message;
 - (void)reloadTableViewData;
 - (void)reviewSelectedSharing;
 - (void)reviewSelectedSharingFlowCompleted;
 - (void)selectAndStopAllSharing;
-- (void)sharingStoppedForPerson:(id)a3 sourceNames:(id)a4;
+- (void)sharingStoppedForPerson:(id)person sourceNames:(id)names;
 @end
 
 @implementation DSBlockingPermissionsController
 
-- (DSBlockingPermissionsController)initWithPeople:(id)a3 permissions:(id)a4
+- (DSBlockingPermissionsController)initWithPeople:(id)people permissions:(id)permissions
 {
-  v6 = a3;
-  v7 = a4;
+  peopleCopy = people;
+  permissionsCopy = permissions;
   if (+[DSFeatureFlags isNaturalUIEnabled])
   {
     v8 = DSUILocStringForKey(@"SHARING_PERMISSIONS_PEOPLE");
@@ -37,8 +37,8 @@
   else
   {
     v11 = MEMORY[0x277D755D0];
-    v12 = [MEMORY[0x277D75348] systemBlueColor];
-    v8 = [v11 configurationWithHierarchicalColor:v12];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v8 = [v11 configurationWithHierarchicalColor:systemBlueColor];
 
     v9 = DSUILocStringForKey(@"SHARING_PERMISSIONS_PEOPLE");
     v13 = DSUILocStringForKey(@"SHARING_PERMISSIONS_BY_PEOPLE_DETAIL");
@@ -54,13 +54,13 @@
     v16 = DSLog_14;
     DSLog_14 = v15;
 
-    [(DSBlockingPermissionsController *)v10 setPermissions:v7];
-    v17 = [MEMORY[0x277CBEB40] orderedSetWithArray:v6];
+    [(DSBlockingPermissionsController *)v10 setPermissions:permissionsCopy];
+    v17 = [MEMORY[0x277CBEB40] orderedSetWithArray:peopleCopy];
     [(DSBlockingPermissionsController *)v10 setBlockedPeople:v17];
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     personIconCache = v10->_personIconCache;
-    v10->_personIconCache = v18;
+    v10->_personIconCache = dictionary;
 
     v20 = DSUILocStringForKey(@"REVIEW_SHARING");
     v21 = [DSUIUtilities setUpBoldButtonForController:v10 title:v20 target:v10 selector:sel_reviewSelectedSharing];
@@ -225,8 +225,8 @@ void __58__DSBlockingPermissionsController_selectAndStopAllSharing__block_invoke
 - (void)next
 {
   [(DSBlockingPermissionsController *)self postAnalytics];
-  v3 = [(DSBlockingPermissionsController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(DSBlockingPermissionsController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 id __48__DSBlockingPermissionsController_postAnalytics__block_invoke(uint64_t a1)
@@ -255,21 +255,21 @@ id __48__DSBlockingPermissionsController_postAnalytics__block_invoke(uint64_t a1
   return v10;
 }
 
-- (void)presentFetchErrorMessage:(id)a3
+- (void)presentFetchErrorMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = DSLog_14;
   if (os_log_type_enabled(DSLog_14, OS_LOG_TYPE_ERROR))
   {
-    [(DSSharingPermissionsController *)v4 presentFetchErrorMessage:v5];
+    [(DSSharingPermissionsController *)messageCopy presentFetchErrorMessage:v5];
   }
 
-  v6 = [(DSBlockingPermissionsController *)self navigationController];
-  v7 = [v6 visibleViewController];
+  navigationController = [(DSBlockingPermissionsController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
 
-  if (v7 == self)
+  if (visibleViewController == self)
   {
-    v9 = [MEMORY[0x277D75110] ds_alertControllerWithFetchSharingError:v4];
+    v9 = [MEMORY[0x277D75110] ds_alertControllerWithFetchSharingError:messageCopy];
     [(DSTableWelcomeController *)self presentErrorAlertController:v9];
   }
 
@@ -282,7 +282,7 @@ id __48__DSBlockingPermissionsController_postAnalytics__block_invoke(uint64_t a1
       _os_log_impl(&dword_248C7E000, v8, OS_LOG_TYPE_INFO, "Caching fetch error until we are the visible view controller", v10, 2u);
     }
 
-    [(DSBlockingPermissionsController *)self setPermissionsFetchError:v4];
+    [(DSBlockingPermissionsController *)self setPermissionsFetchError:messageCopy];
   }
 }
 
@@ -293,8 +293,8 @@ id __48__DSBlockingPermissionsController_postAnalytics__block_invoke(uint64_t a1
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(DSBlockingPermissionsController *)self blockedPeople];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  blockedPeople = [(DSBlockingPermissionsController *)self blockedPeople];
+  v3 = [blockedPeople countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -306,11 +306,11 @@ id __48__DSBlockingPermissionsController_postAnalytics__block_invoke(uint64_t a1
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(blockedPeople);
         }
 
-        v8 = [*(*(&v13 + 1) + 8 * i) sourceNames];
-        v9 = [v8 containsObject:v6];
+        sourceNames = [*(*(&v13 + 1) + 8 * i) sourceNames];
+        v9 = [sourceNames containsObject:v6];
 
         if (v9)
         {
@@ -319,7 +319,7 @@ id __48__DSBlockingPermissionsController_postAnalytics__block_invoke(uint64_t a1
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [blockedPeople countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -338,14 +338,14 @@ LABEL_11:
 
 - (void)_updateButton
 {
-  v3 = [(DSTableWelcomeController *)self boldButton];
-  [v3 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
-  v5 = [v4 indexPathsForSelectedRows];
-  v6 = [v5 count];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v6 = [indexPathsForSelectedRows count];
 
-  v7 = [(DSTableWelcomeController *)self boldButton];
+  boldButton2 = [(DSTableWelcomeController *)self boldButton];
   if (v6)
   {
     v8 = @"REVIEW_SHARING";
@@ -367,10 +367,10 @@ LABEL_11:
   }
 
   v10 = DSUILocStringForKey(v8);
-  [v7 setTitle:v10 forState:0];
+  [boldButton2 setTitle:v10 forState:0];
 
-  v11 = [(DSTableWelcomeController *)self boldButton];
-  [v11 addTarget:self action:*v9 forControlEvents:64];
+  boldButton3 = [(DSTableWelcomeController *)self boldButton];
+  [boldButton3 addTarget:self action:*v9 forControlEvents:64];
 }
 
 - (void)_selectAll
@@ -380,10 +380,10 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 indexPathsForVisibleRows];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [indexPathsForVisibleRows countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -395,18 +395,18 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleRows);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(OBTableWelcomeController *)self tableView];
-        [v10 selectRowAtIndexPath:v9 animated:0 scrollPosition:0];
+        tableView2 = [(OBTableWelcomeController *)self tableView];
+        [tableView2 selectRowAtIndexPath:v9 animated:0 scrollPosition:0];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [indexPathsForVisibleRows countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -415,43 +415,43 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sharingStoppedForPerson:(id)a3 sourceNames:(id)a4
+- (void)_sharingStoppedForPerson:(id)person sourceNames:(id)names
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DSBlockingPermissionsController *)self blockedPeople];
-  v9 = [v8 indexOfObject:v6];
+  personCopy = person;
+  namesCopy = names;
+  blockedPeople = [(DSBlockingPermissionsController *)self blockedPeople];
+  v9 = [blockedPeople indexOfObject:personCopy];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = DSLog_14;
     if (os_log_type_enabled(DSLog_14, OS_LOG_TYPE_ERROR))
     {
-      [DSBlockingPermissionsController _sharingStoppedForPerson:v6 sourceNames:v10];
+      [DSBlockingPermissionsController _sharingStoppedForPerson:personCopy sourceNames:v10];
     }
   }
 
   else
   {
-    v11 = [(DSBlockingPermissionsController *)self blockedPeople];
-    v12 = [v11 objectAtIndexedSubscript:v9];
+    blockedPeople2 = [(DSBlockingPermissionsController *)self blockedPeople];
+    v12 = [blockedPeople2 objectAtIndexedSubscript:v9];
 
-    [v12 removeSources:v7];
-    v13 = [v12 sourceNames];
-    v14 = [v13 count];
+    [v12 removeSources:namesCopy];
+    sourceNames = [v12 sourceNames];
+    v14 = [sourceNames count];
 
-    v15 = [(DSBlockingPermissionsController *)self blockedPeople];
-    v16 = v15;
+    blockedPeople3 = [(DSBlockingPermissionsController *)self blockedPeople];
+    v16 = blockedPeople3;
     if (v14)
     {
-      [v15 setObject:v12 atIndex:v9];
+      [blockedPeople3 setObject:v12 atIndex:v9];
 
       [(DSBlockingPermissionsController *)self _sortSharingPeople];
     }
 
     else
     {
-      [v15 removeObjectAtIndex:v9];
+      [blockedPeople3 removeObjectAtIndex:v9];
     }
   }
 }
@@ -459,17 +459,17 @@ LABEL_11:
 - (void)_sortSharingPeople
 {
   v3 = MEMORY[0x277D054F0];
-  v4 = [(DSBlockingPermissionsController *)self blockedPeople];
-  v5 = [v4 array];
-  v7 = [v3 sortedXPCArray:v5];
+  blockedPeople = [(DSBlockingPermissionsController *)self blockedPeople];
+  array = [blockedPeople array];
+  v7 = [v3 sortedXPCArray:array];
 
   v6 = [MEMORY[0x277CBEB40] orderedSetWithArray:v7];
   [(DSBlockingPermissionsController *)self setBlockedPeople:v6];
 }
 
-- (void)sharingStoppedForPerson:(id)a3 sourceNames:(id)a4
+- (void)sharingStoppedForPerson:(id)person sourceNames:(id)names
 {
-  [(DSBlockingPermissionsController *)self _sharingStoppedForPerson:a3 sourceNames:a4];
+  [(DSBlockingPermissionsController *)self _sharingStoppedForPerson:person sourceNames:names];
 
   [(DSBlockingPermissionsController *)self reloadTableViewData];
 }
@@ -481,10 +481,10 @@ LABEL_11:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [indexPathsForSelectedRows countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -495,25 +495,25 @@ LABEL_11:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [(OBTableWelcomeController *)self tableView];
-        [v10 deselectRowAtIndexPath:v9 animated:0];
+        tableView2 = [(OBTableWelcomeController *)self tableView];
+        [tableView2 deselectRowAtIndexPath:v9 animated:0];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [indexPathsForSelectedRows countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [(DSBlockingPermissionsController *)self navigationController];
-  v12 = [v11 popToViewController:self animated:1];
+  navigationController = [(DSBlockingPermissionsController *)self navigationController];
+  v12 = [navigationController popToViewController:self animated:1];
 
-  v13 = [(DSBlockingPermissionsController *)self blockedPeople];
-  v14 = [v13 count];
+  blockedPeople = [(DSBlockingPermissionsController *)self blockedPeople];
+  v14 = [blockedPeople count];
 
   if (v14)
   {
@@ -528,16 +528,16 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = -[DSBlockingPermissionsController blockedPersonForIndex:](self, "blockedPersonForIndex:", [a4 row]);
+  v5 = -[DSBlockingPermissionsController blockedPersonForIndex:](self, "blockedPersonForIndex:", [path row]);
   if (v5)
   {
-    v6 = [(OBTableWelcomeController *)self tableView];
-    v7 = [v5 displayName];
-    v8 = [v5 localizedDetail];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    displayName = [v5 displayName];
+    localizedDetail = [v5 localizedDetail];
     v9 = [(DSBlockingPermissionsController *)self tableIconForPerson:v5];
-    v10 = [DSIconTableViewCell iconTableViewCellFromTableView:v6 withText:v7 detail:v8 icon:v9];
+    v10 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView withText:displayName detail:localizedDetail icon:v9];
 
     [v10 setAccessoryType:0];
   }
@@ -550,9 +550,9 @@ LABEL_11:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(DSBlockingPermissionsController *)self blockedPeople:a3];
+  v4 = [(DSBlockingPermissionsController *)self blockedPeople:view];
   v5 = [v4 count];
 
   return v5;
@@ -560,24 +560,24 @@ LABEL_11:
 
 - (void)reloadTableViewData
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
+  tableView = [(OBTableWelcomeController *)self tableView];
   v4 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-  [v3 reloadSections:v4 withRowAnimation:100];
+  [tableView reloadSections:v4 withRowAnimation:100];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 layoutIfNeeded];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 layoutIfNeeded];
 
   [(DSBlockingPermissionsController *)self _updateButton];
 }
 
-- (id)blockedPersonForIndex:(int64_t)a3
+- (id)blockedPersonForIndex:(int64_t)index
 {
-  if (a3 < 0 || (-[DSBlockingPermissionsController blockedPeople](self, "blockedPeople"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (index < 0 || (-[DSBlockingPermissionsController blockedPeople](self, "blockedPeople"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= index))
   {
     v9 = DSLog_14;
     if (os_log_type_enabled(DSLog_14, OS_LOG_TYPE_FAULT))
     {
-      [(DSBlockingPermissionsController *)a3 blockedPersonForIndex:v9];
+      [(DSBlockingPermissionsController *)index blockedPersonForIndex:v9];
     }
 
     v8 = 0;
@@ -585,40 +585,40 @@ LABEL_11:
 
   else
   {
-    v7 = [(DSBlockingPermissionsController *)self blockedPeople];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    blockedPeople = [(DSBlockingPermissionsController *)self blockedPeople];
+    v8 = [blockedPeople objectAtIndexedSubscript:index];
   }
 
   return v8;
 }
 
-- (id)tableIconForPerson:(id)a3
+- (id)tableIconForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 contact];
-  v6 = [v5 identifier];
+  personCopy = person;
+  contact = [personCopy contact];
+  identifier = [contact identifier];
 
-  if (v6)
+  if (identifier)
   {
-    v7 = [(DSBlockingPermissionsController *)self personIconCache];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    personIconCache = [(DSBlockingPermissionsController *)self personIconCache];
+    iconForTable = [personIconCache objectForKeyedSubscript:identifier];
 
-    if (!v8)
+    if (!iconForTable)
     {
-      v8 = [v4 iconForTable];
-      v9 = [(DSBlockingPermissionsController *)self personIconCache];
-      [v9 setObject:v8 forKeyedSubscript:v6];
+      iconForTable = [personCopy iconForTable];
+      personIconCache2 = [(DSBlockingPermissionsController *)self personIconCache];
+      [personIconCache2 setObject:iconForTable forKeyedSubscript:identifier];
     }
 
-    v10 = v8;
+    iconForTable2 = iconForTable;
   }
 
   else
   {
-    v10 = [v4 iconForTable];
+    iconForTable2 = [personCopy iconForTable];
   }
 
-  return v10;
+  return iconForTable2;
 }
 
 - (DSNavigationDelegate)delegate

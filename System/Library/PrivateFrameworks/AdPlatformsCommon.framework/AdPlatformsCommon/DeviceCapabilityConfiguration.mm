@@ -1,16 +1,16 @@
 @interface DeviceCapabilityConfiguration
-- (BOOL)isCapabilityAvailable:(unsigned int)a3;
+- (BOOL)isCapabilityAvailable:(unsigned int)available;
 - (_TtC17AdPlatformsCommon29DeviceCapabilityConfiguration)init;
 @end
 
 @implementation DeviceCapabilityConfiguration
 
-- (BOOL)isCapabilityAvailable:(unsigned int)a3
+- (BOOL)isCapabilityAvailable:(unsigned int)available
 {
-  v4 = self;
-  LOBYTE(a3) = sub_1BAFF2C98(a3);
+  selfCopy = self;
+  LOBYTE(available) = sub_1BAFF2C98(available);
 
-  return a3 & 1;
+  return available & 1;
 }
 
 - (_TtC17AdPlatformsCommon29DeviceCapabilityConfiguration)init

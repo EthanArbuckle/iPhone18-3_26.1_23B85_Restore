@@ -1,42 +1,42 @@
 @interface PKTextInputDebugLogEntryRerun
-- (PKTextInputDebugLogEntryRerun)initWithLogEntry:(id)a3;
-- (PKTextInputDebugLogEntryRerun)runWithCompletion:(id)a3;
-- (id)recognitionManager:(id)a3 textInputTargetForItemStableIdentifier:(id)a4 strokeIdentifiers:(id)a5 simultaneousItemStableIdentifiers:(id)a6;
-- (void)_finishRerunWithQueryItems:(id)a3 error:(id)a4;
-- (void)recognitionManager:(id)a3 fetchContentInfoForTextInputTarget:(id)a4 strokeIdentifiers:(id)a5 completion:(id)a6;
+- (PKTextInputDebugLogEntryRerun)initWithLogEntry:(id)entry;
+- (PKTextInputDebugLogEntryRerun)runWithCompletion:(id)completion;
+- (id)recognitionManager:(id)manager textInputTargetForItemStableIdentifier:(id)identifier strokeIdentifiers:(id)identifiers simultaneousItemStableIdentifiers:(id)stableIdentifiers;
+- (void)_finishRerunWithQueryItems:(id)items error:(id)error;
+- (void)recognitionManager:(id)manager fetchContentInfoForTextInputTarget:(id)target strokeIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation PKTextInputDebugLogEntryRerun
 
-- (PKTextInputDebugLogEntryRerun)initWithLogEntry:(id)a3
+- (PKTextInputDebugLogEntryRerun)initWithLogEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v9.receiver = self;
   v9.super_class = PKTextInputDebugLogEntryRerun;
   v6 = [(PKTextInputDebugLogEntryRerun *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logEntry, a3);
+    objc_storeStrong(&v6->_logEntry, entry);
   }
 
   return v7;
 }
 
-- (PKTextInputDebugLogEntryRerun)runWithCompletion:(id)a3
+- (PKTextInputDebugLogEntryRerun)runWithCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 
-  v6 = [(PKTextInputDebugLogEntry *)self->_logEntry recognitionLocaleIdentifiers];
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  recognitionLocaleIdentifiers = [(PKTextInputDebugLogEntry *)self->_logEntry recognitionLocaleIdentifiers];
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(recognitionLocaleIdentifiers, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = v6;
+  v8 = recognitionLocaleIdentifiers;
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v9)
   {
@@ -83,15 +83,15 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v14 = [(PKTextInputDebugLogEntry *)self->_logEntry inputDrawing];
-  if (!v14)
+  inputDrawing = [(PKTextInputDebugLogEntry *)self->_logEntry inputDrawing];
+  if (!inputDrawing)
   {
     v23 = @"Invalid input drawing.";
     goto LABEL_17;
   }
 
-  v15 = v14;
-  v16 = [[PKTextInputStrokeProvider alloc] initWithDrawing:v14];
+  v15 = inputDrawing;
+  v16 = [[PKTextInputStrokeProvider alloc] initWithDrawing:inputDrawing];
   strokeProvider = self->_strokeProvider;
   self->_strokeProvider = v16;
 
@@ -115,27 +115,27 @@ LABEL_18:
   return result;
 }
 
-- (void)_finishRerunWithQueryItems:(id)a3 error:(id)a4
+- (void)_finishRerunWithQueryItems:(id)items error:(id)error
 {
   (*(self->_completionBlock + 2))();
   completionBlock = self->_completionBlock;
   self->_completionBlock = 0;
 }
 
-- (id)recognitionManager:(id)a3 textInputTargetForItemStableIdentifier:(id)a4 strokeIdentifiers:(id)a5 simultaneousItemStableIdentifiers:(id)a6
+- (id)recognitionManager:(id)manager textInputTargetForItemStableIdentifier:(id)identifier strokeIdentifiers:(id)identifiers simultaneousItemStableIdentifiers:(id)stableIdentifiers
 {
-  v6 = [(PKTextInputDebugLogEntry *)self->_logEntry inputTargetContentInfo:a3];
-  v7 = [v6 textInputTarget];
+  v6 = [(PKTextInputDebugLogEntry *)self->_logEntry inputTargetContentInfo:manager];
+  textInputTarget = [v6 textInputTarget];
 
-  return v7;
+  return textInputTarget;
 }
 
-- (void)recognitionManager:(id)a3 fetchContentInfoForTextInputTarget:(id)a4 strokeIdentifiers:(id)a5 completion:(id)a6
+- (void)recognitionManager:(id)manager fetchContentInfoForTextInputTarget:(id)target strokeIdentifiers:(id)identifiers completion:(id)completion
 {
   logEntry = self->_logEntry;
-  v8 = a6;
-  v9 = [(PKTextInputDebugLogEntry *)logEntry inputTargetContentInfo];
-  (*(a6 + 2))(v8, v9);
+  completionCopy = completion;
+  inputTargetContentInfo = [(PKTextInputDebugLogEntry *)logEntry inputTargetContentInfo];
+  (*(completion + 2))(completionCopy, inputTargetContentInfo);
 }
 
 @end

@@ -2,9 +2,9 @@
 - (SSEventMonitor)init;
 - (SSEventMonitorDelegate)delegate;
 - (void)_connectEventConnection;
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4;
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SSEventMonitor
@@ -37,15 +37,15 @@
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -81,7 +81,7 @@
     v23 = 0x3052000000;
     v24 = __Block_byref_object_copy__41;
     v25 = __Block_byref_object_dispose__41;
-    v26 = self;
+    selfCopy = self;
     v16 = objc_alloc_init(SSXPCConnection);
     self->_eventConnection = v16;
     v21[0] = MEMORY[0x1E69E9820];
@@ -97,9 +97,9 @@
   v17 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
   v18 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v18, "0", 50);
-  v19 = [(SSXPCConnection *)self->_eventConnection createXPCEndpoint];
-  xpc_dictionary_set_value(v18, "1", v19);
-  xpc_release(v19);
+  createXPCEndpoint = [(SSXPCConnection *)self->_eventConnection createXPCEndpoint];
+  xpc_dictionary_set_value(v18, "1", createXPCEndpoint);
+  xpc_release(createXPCEndpoint);
   [(SSXPCConnection *)v17 sendMessage:v18];
   xpc_release(v18);
 }
@@ -181,7 +181,7 @@ id __26__SSEventMonitor_delegate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -189,19 +189,19 @@ id __26__SSEventMonitor_delegate__block_invoke(uint64_t a1)
   v4[2] = __30__SSEventMonitor_setDelegate___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = delegate;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection
 {
   objc_opt_class();
-  v6 = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+  v6 = SSXPCDictionaryCopyCFObjectWithClass(message, "0");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v7 = SSXPCDictionaryCopyCFObjectWithClass(a3, "1");
+    v7 = SSXPCDictionaryCopyCFObjectWithClass(message, "1");
     delegateQueue = self->_delegateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;

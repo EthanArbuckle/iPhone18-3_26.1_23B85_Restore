@@ -1,87 +1,87 @@
 @interface AFUISiriView
-+ (void)_animateView:(id)a3 fromYPosition:(double)a4 toYPosition:(double)a5 fade:(int64_t)a6 completion:(id)a7;
-- (AFUISiriView)initWithFrame:(CGRect)a3 configuration:(id)a4;
++ (void)_animateView:(id)view fromYPosition:(double)position toYPosition:(double)yPosition fade:(int64_t)fade completion:(id)completion;
+- (AFUISiriView)initWithFrame:(CGRect)frame configuration:(id)configuration;
 - (AFUISiriViewDataSource)dataSource;
 - (AFUISiriViewDelegate)delegate;
 - (BOOL)_helpButtonIsVisible;
 - (BOOL)_isTextInputEnabled;
 - (BOOL)_shouldIndicateHoldToTalkMode;
 - (BOOL)_showsReportBugButton;
-- (BOOL)_wantsBackdropView:(int64_t)a3;
-- (BOOL)passcodeView:(id)a3 attemptUnlockWithPassword:(id)a4;
+- (BOOL)_wantsBackdropView:(int64_t)view;
+- (BOOL)passcodeView:(id)view attemptUnlockWithPassword:(id)password;
 - (CGRect)_lockViewFrame;
 - (CGRect)_remoteContentViewFrame;
 - (CGRect)_statusViewContainerFrame;
 - (UIEdgeInsets)safeAreaInsets;
 - (double)_buttonInset;
-- (float)audioLevelForSiriStatusView:(id)a3;
+- (float)audioLevelForSiriStatusView:(id)view;
 - (id)dimBackdropSettings;
-- (void)_animateButtonsHidden:(BOOL)a3;
-- (void)_animateLockViewIsAnimatingIn:(BOOL)a3 completion:(id)a4;
-- (void)_audioRouteButtonTapped:(id)a3;
+- (void)_animateButtonsHidden:(BOOL)hidden;
+- (void)_animateLockViewIsAnimatingIn:(BOOL)in completion:(id)completion;
+- (void)_audioRouteButtonTapped:(id)tapped;
 - (void)_configureEyesFreeLogo;
 - (void)_configureHelpButton;
-- (void)_configureReportBugButtonWithHoldToTalkState:(BOOL)a3;
+- (void)_configureReportBugButtonWithHoldToTalkState:(BOOL)state;
 - (void)_createAssistantVersionLabelIfNecessary;
-- (void)_createReportBugButtonWithTemplateImage:(id)a3 andConfigureWithHoldToTalkState:(BOOL)a4;
+- (void)_createReportBugButtonWithTemplateImage:(id)image andConfigureWithHoldToTalkState:(BOOL)state;
 - (void)_destroyAssistantVersionLabelIfNecessary;
-- (void)_helpButtonTapped:(id)a3;
+- (void)_helpButtonTapped:(id)tapped;
 - (void)_layoutReportBugButton;
-- (void)_loadReportBugButtonTemplateImageInBackgroundWithCompletion:(id)a3;
+- (void)_loadReportBugButtonTemplateImageInBackgroundWithCompletion:(id)completion;
 - (void)_placeRemoteContentView;
-- (void)_preferencesDidChange:(id)a3;
+- (void)_preferencesDidChange:(id)change;
 - (void)_reportBugButtonLongPressed;
 - (void)_reportBugButtonTapped;
-- (void)_setSafeAreaInsetsSuspended:(BOOL)a3;
+- (void)_setSafeAreaInsetsSuspended:(BOOL)suspended;
 - (void)_setupContentViews;
 - (void)_setupVoiceActivationMaskView;
 - (void)_updateControlsAppearance;
-- (void)_updateSiriStatusViewForMode:(int64_t)a3;
-- (void)configureReportBugButtonToShowHoldToTalkState:(BOOL)a3;
+- (void)_updateSiriStatusViewForMode:(int64_t)mode;
+- (void)configureReportBugButtonToShowHoldToTalkState:(BOOL)state;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)passcodeView:(id)a3 animateShowPasscodeWithCompletionHandler:(id)a4;
-- (void)passcodeView:(id)a3 hideLockViewWithResult:(int64_t)a4 unlockCompletionHandler:(id)a5;
+- (void)passcodeView:(id)view animateShowPasscodeWithCompletionHandler:(id)handler;
+- (void)passcodeView:(id)view hideLockViewWithResult:(int64_t)result unlockCompletionHandler:(id)handler;
 - (void)pulseHelpButton;
 - (void)reloadData;
-- (void)setBackdropVisible:(BOOL)a3;
-- (void)setContentViewsAlpha:(double)a3;
-- (void)setDataSource:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setFlamesViewDeferred:(BOOL)a3;
-- (void)setHelpButtonDeferred:(BOOL)a3;
-- (void)setHelpButtonEmphasized:(BOOL)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setRemoteContentView:(id)a3;
-- (void)setShowAudioRoutePicker:(BOOL)a3;
-- (void)setSiriSessionState:(int64_t)a3;
-- (void)setStatusViewHidden:(BOOL)a3;
-- (void)setVoiceActivationMaskViewVisible:(BOOL)a3;
-- (void)siriDidActivateFromSource:(int64_t)a3;
-- (void)siriStatusViewHoldDidBegin:(id)a3;
-- (void)siriStatusViewHoldDidEnd:(id)a3;
-- (void)siriStatusViewWasTapped:(id)a3;
+- (void)setBackdropVisible:(BOOL)visible;
+- (void)setContentViewsAlpha:(double)alpha;
+- (void)setDataSource:(id)source;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setFlamesViewDeferred:(BOOL)deferred;
+- (void)setHelpButtonDeferred:(BOOL)deferred;
+- (void)setHelpButtonEmphasized:(BOOL)emphasized;
+- (void)setMode:(int64_t)mode;
+- (void)setRemoteContentView:(id)view;
+- (void)setShowAudioRoutePicker:(BOOL)picker;
+- (void)setSiriSessionState:(int64_t)state;
+- (void)setStatusViewHidden:(BOOL)hidden;
+- (void)setVoiceActivationMaskViewVisible:(BOOL)visible;
+- (void)siriDidActivateFromSource:(int64_t)source;
+- (void)siriStatusViewHoldDidBegin:(id)begin;
+- (void)siriStatusViewHoldDidEnd:(id)end;
+- (void)siriStatusViewWasTapped:(id)tapped;
 - (void)teardownStatusView;
-- (void)updateForPercentageRevealed:(double)a3;
+- (void)updateForPercentageRevealed:(double)revealed;
 @end
 
 @implementation AFUISiriView
 
-- (AFUISiriView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (AFUISiriView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = AFUISiriView;
-  v11 = [(AFUISiriView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(AFUISiriView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_configuration, a4);
-    v12->_mode = [v10 siriViewMode];
+    objc_storeStrong(&height->_configuration, configuration);
+    v12->_mode = [configurationCopy siriViewMode];
     v12->_remoteContentViewHidden = 0;
     v12->_lockViewHidden = 1;
     v12->_helpButtonDeferred = 1;
@@ -116,8 +116,8 @@
   foregroundContainerView = self->_foregroundContainerView;
   self->_foregroundContainerView = v8;
 
-  v10 = [(UIView *)self->_foregroundContainerView layer];
-  [v10 setAllowsGroupOpacity:0];
+  layer = [(UIView *)self->_foregroundContainerView layer];
+  [layer setAllowsGroupOpacity:0];
 
   [(AFUISiriView *)self addSubview:self->_foregroundContainerView];
   v11 = objc_alloc(MEMORY[0x277D75D18]);
@@ -126,8 +126,8 @@
   foregroundView = self->_foregroundView;
   self->_foregroundView = v12;
 
-  v14 = [(UIView *)self->_foregroundView layer];
-  [v14 setAllowsGroupOpacity:0];
+  layer2 = [(UIView *)self->_foregroundView layer];
+  [layer2 setAllowsGroupOpacity:0];
 
   [(UIView *)self->_foregroundContainerView addSubview:self->_foregroundView];
   v15 = objc_alloc(MEMORY[0x277D75D18]);
@@ -156,11 +156,11 @@
   [(UIView *)v26 addSubview:v27];
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(SiriUIHelpButton *)self->_helpButton removeFromSuperview];
     helpButton = self->_helpButton;
     self->_helpButton = 0;
@@ -182,15 +182,15 @@
     self->_reportBugButton = 0;
 
     [(AFUISiriView *)self _destroyAssistantVersionLabelIfNecessary];
-    [(AFUISiriView *)self _updateSiriStatusViewForMode:a3];
+    [(AFUISiriView *)self _updateSiriStatusViewForMode:mode];
 
     [(AFUISiriView *)self setNeedsLayout];
   }
 }
 
-- (void)_updateSiriStatusViewForMode:(int64_t)a3
+- (void)_updateSiriStatusViewForMode:(int64_t)mode
 {
-  if ((a3 - 7) < 2 || a3 == 4)
+  if ((mode - 7) < 2 || mode == 4)
   {
     v5 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
@@ -199,7 +199,7 @@
     }
   }
 
-  else if (a3 == 5)
+  else if (mode == 5)
   {
     v6 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
@@ -271,11 +271,11 @@
   }
 }
 
-- (BOOL)_wantsBackdropView:(int64_t)a3
+- (BOOL)_wantsBackdropView:(int64_t)view
 {
-  if (a3)
+  if (view)
   {
-    v3 = (a3 - 8) >= 0xFFFFFFFFFFFFFFFELL;
+    v3 = (view - 8) >= 0xFFFFFFFFFFFFFFFELL;
   }
 
   else
@@ -288,8 +288,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CEF060] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CEF060] object:0];
 
   v4.receiver = self;
   v4.super_class = AFUISiriView;
@@ -443,8 +443,8 @@
 {
   [(AFUISiriView *)self _buttonInset];
   v4 = v3;
-  v5 = [(SiriUIContentButton *)self->_reportBugButton superview];
-  [v5 bounds];
+  superview = [(SiriUIContentButton *)self->_reportBugButton superview];
+  [superview bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -530,11 +530,11 @@
   return result;
 }
 
-- (void)_setSafeAreaInsetsSuspended:(BOOL)a3
+- (void)_setSafeAreaInsetsSuspended:(BOOL)suspended
 {
-  if (self->_safeAreaInsetsSuspended != a3)
+  if (self->_safeAreaInsetsSuspended != suspended)
   {
-    if (a3)
+    if (suspended)
     {
       p_suspendedSafeAreaInsets = &self->_suspendedSafeAreaInsets;
       v10.receiver = self;
@@ -544,7 +544,7 @@
       self->_suspendedSafeAreaInsets.left = v7;
       self->_suspendedSafeAreaInsets.bottom = v8;
       self->_suspendedSafeAreaInsets.right = v9;
-      self->_safeAreaInsetsSuspended = a3;
+      self->_safeAreaInsetsSuspended = suspended;
     }
 
     else
@@ -556,28 +556,28 @@
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     [(AFUISiriView *)self _updateControlsAppearance];
   }
 }
 
-- (void)setStatusViewHidden:(BOOL)a3
+- (void)setStatusViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ((a3 || !self->_inShowUnlockViewAnimation && (self->_inHideUnlockViewAnimation || self->_lockViewHidden)) && self->_statusViewHidden != a3 && (!self->_keepStatusViewHidden || a3))
+  hiddenCopy = hidden;
+  if ((hidden || !self->_inShowUnlockViewAnimation && (self->_inHideUnlockViewAnimation || self->_lockViewHidden)) && self->_statusViewHidden != hidden && (!self->_keepStatusViewHidden || hidden))
   {
     [(AFUISiriView *)self _statusViewContainerFrame];
     MinY = CGRectGetMinY(v12);
-    self->_statusViewHidden = v3;
+    self->_statusViewHidden = hiddenCopy;
     v7 = objc_opt_class();
     statusViewContainer = self->_statusViewContainer;
     [(AFUISiriView *)self _statusViewContainerFrame];
     v9 = CGRectGetMinY(v13);
-    if (v3)
+    if (hiddenCopy)
     {
       v10 = 2;
     }
@@ -655,9 +655,9 @@ LABEL_14:
   [(SiriUIContentButton *)reportBugButton setHidden:v8];
 }
 
-- (void)_animateButtonsHidden:(BOOL)a3
+- (void)_animateButtonsHidden:(BOOL)hidden
 {
-  if (self->_helpButtonDeferred || a3)
+  if (self->_helpButtonDeferred || hidden)
   {
     if (self->_helpButtonDeferred)
     {
@@ -674,7 +674,7 @@ LABEL_14:
   v5[1] = 3221225472;
   v5[2] = __38__AFUISiriView__animateButtonsHidden___block_invoke;
   v5[3] = &unk_278CD5578;
-  v6 = a3;
+  hiddenCopy = hidden;
   v5[4] = self;
   [MEMORY[0x277D75D18] animateWithDuration:0 delay:v5 usingSpringWithDamping:0 initialSpringVelocity:0.25 options:0.0 animations:1.0 completion:0.0];
 }
@@ -700,15 +700,15 @@ uint64_t __38__AFUISiriView__animateButtonsHidden___block_invoke(uint64_t a1)
   return [v5 setAlpha:v4];
 }
 
-- (void)setFlamesViewDeferred:(BOOL)a3
+- (void)setFlamesViewDeferred:(BOOL)deferred
 {
-  v3 = a3;
+  deferredCopy = deferred;
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (deferredCopy)
     {
       v6 = @"YES";
     }
@@ -720,8 +720,8 @@ uint64_t __38__AFUISiriView__animateButtonsHidden___block_invoke(uint64_t a1)
     _os_log_impl(&dword_241432000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v7, 0x16u);
   }
 
-  self->_flamesViewDeferred = v3;
-  [(SiriUISiriStatusViewProtocol *)self->_siriStatusView setFlamesViewDeferred:v3];
+  self->_flamesViewDeferred = deferredCopy;
+  [(SiriUISiriStatusViewProtocol *)self->_siriStatusView setFlamesViewDeferred:deferredCopy];
 }
 
 - (void)teardownStatusView
@@ -731,9 +731,9 @@ uint64_t __38__AFUISiriView__animateButtonsHidden___block_invoke(uint64_t a1)
   self->_siriStatusView = 0;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -773,13 +773,13 @@ uint64_t __38__AFUISiriView__animateButtonsHidden___block_invoke(uint64_t a1)
   [(AFUISiriView *)self setNeedsLayout];
 }
 
-- (void)setBackdropVisible:(BOOL)a3
+- (void)setBackdropVisible:(BOOL)visible
 {
-  self->_backdropViewVisible = a3;
-  if (a3)
+  self->_backdropViewVisible = visible;
+  if (visible)
   {
-    v5 = [(AFUISiriView *)self dimBackdropSettings];
-    [(_UIBackdropView *)self->_backdropView transitionToSettings:v5];
+    dimBackdropSettings = [(AFUISiriView *)self dimBackdropSettings];
+    [(_UIBackdropView *)self->_backdropView transitionToSettings:dimBackdropSettings];
   }
 
   else
@@ -810,12 +810,12 @@ uint64_t __38__AFUISiriView__animateButtonsHidden___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setRemoteContentView:(id)a3
+- (void)setRemoteContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_remoteContentView removeFromSuperview];
   remoteContentView = self->_remoteContentView;
-  self->_remoteContentView = v4;
+  self->_remoteContentView = viewCopy;
 
   [(AFUISiriView *)self _placeRemoteContentView];
 }
@@ -829,26 +829,26 @@ uint64_t __38__AFUISiriView__animateButtonsHidden___block_invoke(uint64_t a1)
     [(UIView *)remoteContentView setFrame:?];
     [(UIView *)self->_foregroundView insertSubview:self->_remoteContentView aboveSubview:self->_dimmingAndLockContainer];
     foregroundView = self->_foregroundView;
-    v5 = [(SiriUISiriStatusViewProtocol *)self->_siriStatusView flamesContainerView];
-    [(UIView *)foregroundView insertSubview:v5 belowSubview:self->_remoteContentView];
+    flamesContainerView = [(SiriUISiriStatusViewProtocol *)self->_siriStatusView flamesContainerView];
+    [(UIView *)foregroundView insertSubview:flamesContainerView belowSubview:self->_remoteContentView];
   }
 
   voiceActivationMaskView = self->_voiceActivationMaskView;
   if (voiceActivationMaskView)
   {
     v7 = self->_foregroundView;
-    v8 = [(SiriUISiriStatusViewProtocol *)self->_siriStatusView flamesContainerView];
-    [(UIView *)v7 insertSubview:voiceActivationMaskView below:v8];
+    flamesContainerView2 = [(SiriUISiriStatusViewProtocol *)self->_siriStatusView flamesContainerView];
+    [(UIView *)v7 insertSubview:voiceActivationMaskView below:flamesContainerView2];
   }
 }
 
-- (void)setVoiceActivationMaskViewVisible:(BOOL)a3
+- (void)setVoiceActivationMaskViewVisible:(BOOL)visible
 {
   v18 = *MEMORY[0x277D85DE8];
   mode = self->_mode;
   if (mode == 4 || mode == 8)
   {
-    if (a3)
+    if (visible)
     {
 
       [(AFUISiriView *)self _setupVoiceActivationMaskView];
@@ -928,8 +928,8 @@ void __50__AFUISiriView_setVoiceActivationMaskViewVisible___block_invoke_2(uint6
   self->_voiceActivationMaskView = v4;
 
   v6 = self->_voiceActivationMaskView;
-  v7 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)v6 setBackgroundColor:v7];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)v6 setBackgroundColor:blackColor];
 
   foregroundView = self->_foregroundView;
   v9 = self->_voiceActivationMaskView;
@@ -962,7 +962,7 @@ void __50__AFUISiriView_setVoiceActivationMaskViewVisible___block_invoke_2(uint6
   return result;
 }
 
-- (void)updateForPercentageRevealed:(double)a3
+- (void)updateForPercentageRevealed:(double)revealed
 {
   if (!self->_backdropViewVisible)
   {
@@ -971,9 +971,9 @@ void __50__AFUISiriView_setVoiceActivationMaskViewVisible___block_invoke_2(uint6
 
   [(SiriUISiriStatusViewProtocol *)self->_siriStatusView forceMicVisible:1];
   siriStatusView = self->_siriStatusView;
-  if (a3 <= 0.2)
+  if (revealed <= 0.2)
   {
-    v6 = a3 * 5.0;
+    v6 = revealed * 5.0;
   }
 
   else
@@ -1044,9 +1044,9 @@ void __50__AFUISiriView_setVoiceActivationMaskViewVisible___block_invoke_2(uint6
   return result;
 }
 
-- (void)setShowAudioRoutePicker:(BOOL)a3
+- (void)setShowAudioRoutePicker:(BOOL)picker
 {
-  if (a3 && !self->_audioRoutePickerButton)
+  if (picker && !self->_audioRoutePickerButton)
   {
     v5 = objc_alloc(MEMORY[0x277D61970]);
     v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -1071,15 +1071,15 @@ void __50__AFUISiriView_setVoiceActivationMaskViewVisible___block_invoke_2(uint6
     v17[2] = __40__AFUISiriView_setShowAudioRoutePicker___block_invoke;
     v17[3] = &unk_278CD5578;
     v18 = v9;
-    v19 = a3;
+    pickerCopy = picker;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __40__AFUISiriView_setShowAudioRoutePicker___block_invoke_2;
     v13[3] = &unk_278CD55F0;
-    v16 = a3;
+    pickerCopy2 = picker;
     v11 = v18;
     v14 = v11;
-    v15 = self;
+    selfCopy = self;
     [v10 animateWithDuration:v17 animations:v13 completion:0.2];
     if ([(AFUISiriView *)self _showsReportBugButton])
     {
@@ -1107,19 +1107,19 @@ void __40__AFUISiriView_setShowAudioRoutePicker___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_audioRouteButtonTapped:(id)a3
+- (void)_audioRouteButtonTapped:(id)tapped
 {
-  v4 = [(AFUISiriView *)self delegate];
-  [v4 siriViewDidReceiveAudioRouteAction:self];
+  delegate = [(AFUISiriView *)self delegate];
+  [delegate siriViewDidReceiveAudioRouteAction:self];
 }
 
-- (void)_preferencesDidChange:(id)a3
+- (void)_preferencesDidChange:(id)change
 {
-  v4 = [(AFUISiriView *)self _showsReportBugButton];
-  [(SiriUIContentButton *)self->_reportBugButton setHidden:!v4];
+  _showsReportBugButton = [(AFUISiriView *)self _showsReportBugButton];
+  [(SiriUIContentButton *)self->_reportBugButton setHidden:!_showsReportBugButton];
   assistantVersionVisualEffectView = self->_assistantVersionVisualEffectView;
 
-  [(SiriUIVisualEffectView *)assistantVersionVisualEffectView setHidden:!v4];
+  [(SiriUIVisualEffectView *)assistantVersionVisualEffectView setHidden:!_showsReportBugButton];
 }
 
 - (BOOL)_showsReportBugButton
@@ -1129,8 +1129,8 @@ void __40__AFUISiriView_setShowAudioRoutePicker___block_invoke_2(uint64_t a1)
     return 0;
   }
 
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  if ([v3 debugButtonIsEnabled])
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  if ([mEMORY[0x277CEF368] debugButtonIsEnabled])
   {
     v4 = self->_mode != 5;
   }
@@ -1148,26 +1148,26 @@ void __40__AFUISiriView_setShowAudioRoutePicker___block_invoke_2(uint64_t a1)
   v2 = AFIsInternalInstall();
   if (v2)
   {
-    v3 = [MEMORY[0x277CEF368] sharedPreferences];
-    v4 = [v3 showsHoldToTalkIndicator];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    showsHoldToTalkIndicator = [mEMORY[0x277CEF368] showsHoldToTalkIndicator];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = showsHoldToTalkIndicator;
   }
 
   return v2;
 }
 
-- (void)configureReportBugButtonToShowHoldToTalkState:(BOOL)a3
+- (void)configureReportBugButtonToShowHoldToTalkState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(AFUISiriView *)self _showsReportBugButton];
+  stateCopy = state;
+  _showsReportBugButton = [(AFUISiriView *)self _showsReportBugButton];
   reportBugButton = self->_reportBugButton;
-  if (v5)
+  if (_showsReportBugButton)
   {
     if (reportBugButton)
     {
 
-      [(AFUISiriView *)self _configureReportBugButtonWithHoldToTalkState:v3];
+      [(AFUISiriView *)self _configureReportBugButtonWithHoldToTalkState:stateCopy];
     }
 
     else
@@ -1178,7 +1178,7 @@ void __40__AFUISiriView_setShowAudioRoutePicker___block_invoke_2(uint64_t a1)
       v7[2] = __62__AFUISiriView_configureReportBugButtonToShowHoldToTalkState___block_invoke;
       v7[3] = &unk_278CD5668;
       objc_copyWeak(&v8, &location);
-      v9 = v3;
+      v9 = stateCopy;
       [(AFUISiriView *)self _loadReportBugButtonTemplateImageInBackgroundWithCompletion:v7];
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
@@ -1214,12 +1214,12 @@ void __62__AFUISiriView_configureReportBugButtonToShowHoldToTalkState___block_in
   [WeakRetained _createReportBugButtonWithTemplateImage:*(a1 + 32) andConfigureWithHoldToTalkState:*(a1 + 48)];
 }
 
-- (void)_createReportBugButtonWithTemplateImage:(id)a3 andConfigureWithHoldToTalkState:(BOOL)a4
+- (void)_createReportBugButtonWithTemplateImage:(id)image andConfigureWithHoldToTalkState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   if (!self->_reportBugButton)
   {
-    v6 = [MEMORY[0x277D619A0] buttonWithImageTemplate:a3 style:0];
+    v6 = [MEMORY[0x277D619A0] buttonWithImageTemplate:image style:0];
     reportBugButton = self->_reportBugButton;
     self->_reportBugButton = v6;
 
@@ -1233,44 +1233,44 @@ void __62__AFUISiriView_configureReportBugButtonToShowHoldToTalkState___block_in
     [(AFUISiriView *)self setNeedsLayout];
   }
 
-  [(AFUISiriView *)self _configureReportBugButtonWithHoldToTalkState:v4];
+  [(AFUISiriView *)self _configureReportBugButtonWithHoldToTalkState:stateCopy];
 
   [(AFUISiriView *)self _updateControlsAppearance];
 }
 
-- (void)_configureReportBugButtonWithHoldToTalkState:(BOOL)a3
+- (void)_configureReportBugButtonWithHoldToTalkState:(BOOL)state
 {
   if ([(AFUISiriView *)self _shouldIndicateHoldToTalkMode])
   {
     v5 = [MEMORY[0x277D75348] colorWithRed:0.7 green:1.0 blue:0.4 alpha:1.0];
     v8 = v5;
-    if (a3)
+    if (state)
     {
-      v6 = [v5 colorWithAlphaComponent:0.6];
+      siriui_transparantButtonColor = [v5 colorWithAlphaComponent:0.6];
       [v8 colorWithAlphaComponent:0.2];
     }
 
     else
     {
-      v6 = [MEMORY[0x277D75348] siriui_transparantButtonColor];
+      siriui_transparantButtonColor = [MEMORY[0x277D75348] siriui_transparantButtonColor];
       [MEMORY[0x277D75348] siriui_transparantHighlightedButtonColor];
     }
     v7 = ;
-    [(SiriUIContentButton *)self->_reportBugButton setDefaultColorForTemplate:v6];
+    [(SiriUIContentButton *)self->_reportBugButton setDefaultColorForTemplate:siriui_transparantButtonColor];
     [(SiriUIContentButton *)self->_reportBugButton setHighlightColorForTemplate:v7];
   }
 }
 
-- (void)_loadReportBugButtonTemplateImageInBackgroundWithCompletion:(id)a3
+- (void)_loadReportBugButtonTemplateImageInBackgroundWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = dispatch_get_global_queue(9, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCompletion___block_invoke;
   block[3] = &unk_278CD5690;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
@@ -1313,11 +1313,11 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
   [WeakRetained siriViewDidReceiveBugButtonLongPress:self];
 }
 
-- (void)setSiriSessionState:(int64_t)a3
+- (void)setSiriSessionState:(int64_t)state
 {
-  if (self->_siriSessionState != a3)
+  if (self->_siriSessionState != state)
   {
-    self->_siriSessionState = a3;
+    self->_siriSessionState = state;
     [(AFUISiriView *)self _updateControlsAppearance];
   }
 }
@@ -1326,9 +1326,9 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
 {
   if (!self->_helpButton)
   {
-    v3 = [MEMORY[0x277D619A8] buttonWithHelpImageMask];
+    buttonWithHelpImageMask = [MEMORY[0x277D619A8] buttonWithHelpImageMask];
     helpButton = self->_helpButton;
-    self->_helpButton = v3;
+    self->_helpButton = buttonWithHelpImageMask;
 
     [(SiriUIHelpButton *)self->_helpButton setAlpha:0.0];
     [(SiriUIHelpButton *)self->_helpButton _setTouchInsets:-0.5, -0.5, -0.5, -0.5];
@@ -1341,28 +1341,28 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
   }
 }
 
-- (void)_helpButtonTapped:(id)a3
+- (void)_helpButtonTapped:(id)tapped
 {
-  v4 = [(AFUISiriView *)self delegate];
-  [v4 siriViewDidReceiveHelpAction:self];
+  delegate = [(AFUISiriView *)self delegate];
+  [delegate siriViewDidReceiveHelpAction:self];
 }
 
-- (void)setHelpButtonEmphasized:(BOOL)a3
+- (void)setHelpButtonEmphasized:(BOOL)emphasized
 {
-  v3 = a3;
+  emphasizedCopy = emphasized;
   if ([(AFUISiriView *)self _helpButtonIsVisible])
   {
     helpButton = self->_helpButton;
 
-    [(SiriUIHelpButton *)helpButton setEmphasized:v3];
+    [(SiriUIHelpButton *)helpButton setEmphasized:emphasizedCopy];
   }
 }
 
-- (void)setHelpButtonDeferred:(BOOL)a3
+- (void)setHelpButtonDeferred:(BOOL)deferred
 {
-  if (self->_helpButtonDeferred != a3)
+  if (self->_helpButtonDeferred != deferred)
   {
-    self->_helpButtonDeferred = a3;
+    self->_helpButtonDeferred = deferred;
   }
 }
 
@@ -1390,18 +1390,18 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
 - (void)_configureEyesFreeLogo
 {
   v3 = objc_alloc(MEMORY[0x277D619E0]);
-  v4 = [MEMORY[0x277D75D00] siriui_platterVibrancyEffect];
-  v5 = [v3 initWithEffect:v4];
+  siriui_platterVibrancyEffect = [MEMORY[0x277D75D00] siriui_platterVibrancyEffect];
+  v5 = [v3 initWithEffect:siriui_platterVibrancyEffect];
   eyesFreeEffectView = self->_eyesFreeEffectView;
   self->_eyesFreeEffectView = v5;
 
   v7 = MEMORY[0x277D755B8];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  v10 = [v9 traitCollection];
-  v11 = [v7 imageNamed:@"DnDwDSiri" inBundle:v8 compatibleWithTraitCollection:v10];
-  v12 = [MEMORY[0x277D75348] whiteColor];
-  v15 = [v11 _flatImageWithColor:v12];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v11 = [v7 imageNamed:@"DnDwDSiri" inBundle:v8 compatibleWithTraitCollection:traitCollection];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v15 = [v11 _flatImageWithColor:whiteColor];
 
   v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v15];
   eyesFreeLogoView = self->_eyesFreeLogoView;
@@ -1411,19 +1411,19 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
   [(UIView *)self->_statusViewContainer insertSubview:self->_eyesFreeEffectView above:self->_backdropView];
 }
 
-- (void)_animateLockViewIsAnimatingIn:(BOOL)a3 completion:(id)a4
+- (void)_animateLockViewIsAnimatingIn:(BOOL)in completion:(id)completion
 {
-  v4 = a3;
-  v16 = a4;
+  inCopy = in;
+  completionCopy = completion;
   [MEMORY[0x277CD9FF0] begin];
-  if (v16)
+  if (completionCopy)
   {
-    [MEMORY[0x277CD9FF0] setCompletionBlock:v16];
+    [MEMORY[0x277CD9FF0] setCompletionBlock:completionCopy];
   }
 
   [(AFUISiriView *)self _remoteContentViewFrame];
   MinY = CGRectGetMinY(v18);
-  self->_remoteContentViewHidden = v4;
+  self->_remoteContentViewHidden = inCopy;
   v7 = objc_opt_class();
   remoteContentView = self->_remoteContentView;
   [(AFUISiriView *)self _remoteContentViewFrame];
@@ -1441,7 +1441,7 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
   [v7 _animateView:remoteContentView fromYPosition:v10 toYPosition:0 fade:MinY completion:v9];
   [(AFUISiriView *)self _lockViewFrame];
   v11 = CGRectGetMinY(v20);
-  self->_lockViewHidden = !v4;
+  self->_lockViewHidden = !inCopy;
   v12 = objc_opt_class();
   lockContainerView = self->_lockContainerView;
   [(AFUISiriView *)self _lockViewFrame];
@@ -1457,37 +1457,37 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
   }
 
   [v12 _animateView:lockContainerView fromYPosition:v15 toYPosition:0 fade:v11 completion:v14];
-  [(AFUISiriView *)self setStatusViewHidden:v4];
+  [(AFUISiriView *)self setStatusViewHidden:inCopy];
   [MEMORY[0x277CD9FF0] commit];
 }
 
-+ (void)_animateView:(id)a3 fromYPosition:(double)a4 toYPosition:(double)a5 fade:(int64_t)a6 completion:(id)a7
++ (void)_animateView:(id)view fromYPosition:(double)position toYPosition:(double)yPosition fade:(int64_t)fade completion:(id)completion
 {
-  v28 = a3;
-  v11 = a7;
+  viewCopy = view;
+  completionCopy = completion;
   [MEMORY[0x277CD9FF0] begin];
-  if (v11)
+  if (completionCopy)
   {
-    [MEMORY[0x277CD9FF0] setCompletionBlock:v11];
+    [MEMORY[0x277CD9FF0] setCompletionBlock:completionCopy];
   }
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = objc_alloc_init(MEMORY[0x277CD9FA0]);
   [v13 setKeyPath:@"position.y"];
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:position];
   [v13 setFromValue:v14];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v15 = [MEMORY[0x277CCABB0] numberWithDouble:yPosition];
   [v13 setToValue:v15];
 
   [v13 setMass:4.0];
   [v13 setStiffness:600.0];
   [v13 setDamping:800.0];
   [v12 addObject:v13];
-  if (a6)
+  if (fade)
   {
-    v16 = a6 == 2;
-    v17 = a6 != 2;
+    v16 = fade == 2;
+    v17 = fade != 2;
     v18 = v16;
     if (v16)
     {
@@ -1500,11 +1500,11 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
     }
 
     v20 = [MEMORY[0x277CCABB0] numberWithInt:v18];
-    a6 = [MEMORY[0x277CCABB0] numberWithInt:v17];
+    fade = [MEMORY[0x277CCABB0] numberWithInt:v17];
     v21 = objc_alloc_init(MEMORY[0x277CD9FA0]);
     [v21 setKeyPath:@"opacity"];
     [v21 setFromValue:v20];
-    [v21 setToValue:a6];
+    [v21 setToValue:fade];
     [v21 setMass:v19];
     [v21 setStiffness:600.0];
     [v21 setDamping:800.0];
@@ -1513,69 +1513,69 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
 
   v22 = objc_alloc_init(MEMORY[0x277CD9E00]);
   [v22 setRemovedOnCompletion:1];
-  v23 = [MEMORY[0x277D60100] defaultTimingFunction];
-  [v22 setTimingFunction:v23];
+  defaultTimingFunction = [MEMORY[0x277D60100] defaultTimingFunction];
+  [v22 setTimingFunction:defaultTimingFunction];
 
   [MEMORY[0x277D60100] defaultAnimationDuration];
   [v22 setDuration:?];
   [v22 setBeginTime:CACurrentMediaTime()];
   [v22 setFillMode:*MEMORY[0x277CDA228]];
   [v22 setAnimations:v12];
-  v24 = [v28 layer];
-  [v24 addAnimation:v22 forKey:@"Animation Group"];
+  layer = [viewCopy layer];
+  [layer addAnimation:v22 forKey:@"Animation Group"];
 
   [MEMORY[0x277CD9FF0] commit];
-  if (a6)
+  if (fade)
   {
-    v25 = [v28 layer];
-    [a6 floatValue];
-    [v25 setOpacity:?];
+    layer2 = [viewCopy layer];
+    [fade floatValue];
+    [layer2 setOpacity:?];
   }
 
-  v26 = [v28 layer];
-  [v26 setAnchorPoint:{0.0, 0.0}];
+  layer3 = [viewCopy layer];
+  [layer3 setAnchorPoint:{0.0, 0.0}];
 
-  v27 = [v28 layer];
-  [v27 setPosition:{0.0, a5}];
+  layer4 = [viewCopy layer];
+  [layer4 setPosition:{0.0, yPosition}];
 }
 
-- (float)audioLevelForSiriStatusView:(id)a3
+- (float)audioLevelForSiriStatusView:(id)view
 {
-  v4 = [(AFUISiriView *)self delegate];
-  [v4 audioRecordingPowerLevelForSiriView:self];
+  delegate = [(AFUISiriView *)self delegate];
+  [delegate audioRecordingPowerLevelForSiriView:self];
   v6 = v5;
 
   return v6;
 }
 
-- (void)siriStatusViewWasTapped:(id)a3
+- (void)siriStatusViewWasTapped:(id)tapped
 {
-  v4 = [(AFUISiriView *)self delegate];
-  [v4 siriViewDidRecieveStatusViewTappedAction:self];
+  delegate = [(AFUISiriView *)self delegate];
+  [delegate siriViewDidRecieveStatusViewTappedAction:self];
 }
 
-- (void)siriStatusViewHoldDidBegin:(id)a3
+- (void)siriStatusViewHoldDidBegin:(id)begin
 {
-  v4 = [(AFUISiriView *)self delegate];
-  [v4 siriViewDidRecieveStatusViewHoldDidBeginAction:self];
+  delegate = [(AFUISiriView *)self delegate];
+  [delegate siriViewDidRecieveStatusViewHoldDidBeginAction:self];
 }
 
-- (void)siriStatusViewHoldDidEnd:(id)a3
+- (void)siriStatusViewHoldDidEnd:(id)end
 {
-  v4 = [(AFUISiriView *)self delegate];
-  [v4 siriViewDidRecieveStatusViewHoldDidEndAction:self];
+  delegate = [(AFUISiriView *)self delegate];
+  [delegate siriViewDidRecieveStatusViewHoldDidEndAction:self];
 }
 
 - (BOOL)_isTextInputEnabled
 {
-  v2 = self;
-  v3 = [(AFUISiriView *)self delegate];
-  LOBYTE(v2) = [v3 siriViewShouldSupportTextInput:v2];
+  selfCopy = self;
+  delegate = [(AFUISiriView *)self delegate];
+  LOBYTE(selfCopy) = [delegate siriViewShouldSupportTextInput:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)siriDidActivateFromSource:(int64_t)a3
+- (void)siriDidActivateFromSource:(int64_t)source
 {
   v9 = *MEMORY[0x277D85DE8];
   if (+[AFUISiriSession availabilityState]== 2)
@@ -1591,19 +1591,19 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
 
   else
   {
-    if (a3 <= 0x18 && ((1 << a3) & 0x1180000) != 0)
+    if (source <= 0x18 && ((1 << source) & 0x1180000) != 0)
     {
       [(SiriUISiriStatusViewProtocol *)self->_siriStatusView forceMicVisible:1];
     }
 
-    v6 = [(AFUISiriView *)self delegate];
-    [v6 siriView:self didReceiveSiriActivationMessageWithSource:a3];
+    delegate = [(AFUISiriView *)self delegate];
+    [delegate siriView:self didReceiveSiriActivationMessageWithSource:source];
   }
 }
 
-- (void)passcodeView:(id)a3 hideLockViewWithResult:(int64_t)a4 unlockCompletionHandler:(id)a5
+- (void)passcodeView:(id)view hideLockViewWithResult:(int64_t)result unlockCompletionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     [MEMORY[0x277D60100] defaultAnimationDuration];
@@ -1613,7 +1613,7 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
     block[2] = __76__AFUISiriView_passcodeView_hideLockViewWithResult_unlockCompletionHandler___block_invoke;
     block[3] = &unk_278CD56B8;
     v12 = v7;
-    v13 = a4;
+    resultCopy = result;
     dispatch_after(v9, MEMORY[0x277D85CD0], block);
   }
 
@@ -1627,18 +1627,18 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
   [(AFUISiriView *)self _animateLockViewIsAnimatingIn:0 completion:v10];
 }
 
-- (BOOL)passcodeView:(id)a3 attemptUnlockWithPassword:(id)a4
+- (BOOL)passcodeView:(id)view attemptUnlockWithPassword:(id)password
 {
-  v5 = a4;
+  passwordCopy = password;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained siriView:self attemptUnlockWithPassword:v5];
+  LOBYTE(self) = [WeakRetained siriView:self attemptUnlockWithPassword:passwordCopy];
 
   return self;
 }
 
-- (void)passcodeView:(id)a3 animateShowPasscodeWithCompletionHandler:(id)a4
+- (void)passcodeView:(id)view animateShowPasscodeWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   self->_inShowUnlockViewAnimation = 1;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -1652,8 +1652,8 @@ uint64_t __76__AFUISiriView__loadReportBugButtonTemplateImageInBackgroundWithCom
   v9[1] = 3221225472;
   v9[2] = __70__AFUISiriView_passcodeView_animateShowPasscodeWithCompletionHandler___block_invoke_2;
   v9[3] = &unk_278CD5690;
-  v10 = v5;
-  v8 = v5;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_after(v7, MEMORY[0x277D85CD0], v9);
 }
 
@@ -1676,10 +1676,10 @@ uint64_t __70__AFUISiriView_passcodeView_animateShowPasscodeWithCompletionHandle
   return result;
 }
 
-- (void)setContentViewsAlpha:(double)a3
+- (void)setContentViewsAlpha:(double)alpha
 {
-  v4 = [(AFUISiriView *)self foregroundContainerView];
-  [v4 setAlpha:a3];
+  foregroundContainerView = [(AFUISiriView *)self foregroundContainerView];
+  [foregroundContainerView setAlpha:alpha];
 }
 
 - (AFUISiriViewDataSource)dataSource

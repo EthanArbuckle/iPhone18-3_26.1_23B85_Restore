@@ -1,8 +1,8 @@
 @interface _GCLegacyPublishedControllerStore
 + (id)sharedInstance;
 - (_GCLegacyPublishedControllerStore)init;
-- (uint64_t)_publishCustomController:(uint64_t)a1;
-- (uint64_t)_unpublishCustomController:(uint64_t)a1;
+- (uint64_t)_publishCustomController:(uint64_t)controller;
+- (uint64_t)_unpublishCustomController:(uint64_t)controller;
 @end
 
 @implementation _GCLegacyPublishedControllerStore
@@ -33,13 +33,13 @@
   return v2;
 }
 
-- (uint64_t)_publishCustomController:(uint64_t)a1
+- (uint64_t)_publishCustomController:(uint64_t)controller
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (controller && v3)
   {
     os_unfair_recursive_lock_lock_with_options();
     v6 = [OUTLINED_FUNCTION_2_14() member:?];
@@ -62,8 +62,8 @@
       v5 = 1;
       [OUTLINED_FUNCTION_1_20() willChangeValueForKey:? withSetMutation:? usingObjects:?];
       v15 = [OUTLINED_FUNCTION_2_14() setByAddingObject:?];
-      v16 = *(a1 + 16);
-      *(a1 + 16) = v15;
+      v16 = *(controller + 16);
+      *(controller + 16) = v15;
 
       [OUTLINED_FUNCTION_1_20() didChangeValueForKey:? withSetMutation:? usingObjects:?];
       os_unfair_recursive_lock_unlock();
@@ -74,13 +74,13 @@
   return v5;
 }
 
-- (uint64_t)_unpublishCustomController:(uint64_t)a1
+- (uint64_t)_unpublishCustomController:(uint64_t)controller
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (controller && v3)
   {
     os_unfair_recursive_lock_lock_with_options();
     v6 = [OUTLINED_FUNCTION_2_14() member:?];
@@ -90,8 +90,8 @@
       v7 = [MEMORY[0x1E695DFD8] setWithObject:v4];
       [OUTLINED_FUNCTION_0_25() willChangeValueForKey:? withSetMutation:? usingObjects:?];
       v8 = [OUTLINED_FUNCTION_2_14() gc_setByRemovingObject:?];
-      v9 = *(a1 + 16);
-      *(a1 + 16) = v8;
+      v9 = *(controller + 16);
+      *(controller + 16) = v8;
 
       [OUTLINED_FUNCTION_0_25() didChangeValueForKey:? withSetMutation:? usingObjects:?];
       os_unfair_recursive_lock_unlock();

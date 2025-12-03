@@ -1,6 +1,6 @@
 @interface CompactCalendarViewLayout
 - (_TtC24MenstrualCyclesAppPlugin25CompactCalendarViewLayout)init;
-- (_TtC24MenstrualCyclesAppPlugin25CompactCalendarViewLayout)initWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin25CompactCalendarViewLayout)initWithCoder:(id)coder;
 - (void)prepareLayout;
 @end
 
@@ -17,7 +17,7 @@
   return v2;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin25CompactCalendarViewLayout)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin25CompactCalendarViewLayout)initWithCoder:(id)coder
 {
   result = sub_29E2C4724();
   __break(1u);
@@ -26,7 +26,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E0AF4F4();
 }
 

@@ -1,41 +1,41 @@
 @interface DAManager
-+ (BOOL)isCarKeySupportedForManufacturer:(id)a3 brand:(id)a4 ppid:(id)a5 error:(id *)a6;
-+ (BOOL)isSharingEnabledForManufacturer:(id)a3 brand:(id)a4 ppid:(id)a5 error:(id *)a6;
-+ (id)createAliroHomeKey:(id)a3 seid:(id)a4 readerIdentifier:(id)a5 readerPublicKey:(id)a6 homeUUID:(id)a7 outError:(id *)a8;
-+ (id)createAliroHydraKey:(id)a3 seid:(id)a4 serverParameters:(id)a5 outError:(id *)a6;
-+ (id)createHomeKey:(id)a3 seid:(id)a4 readerIdentifier:(id)a5 readerPublicKey:(id)a6 outError:(id *)a7;
-+ (id)createHydraKey:(id)a3 seid:(id)a4 serverParameters:(id)a5 outError:(id *)a6;
++ (BOOL)isCarKeySupportedForManufacturer:(id)manufacturer brand:(id)brand ppid:(id)ppid error:(id *)error;
++ (BOOL)isSharingEnabledForManufacturer:(id)manufacturer brand:(id)brand ppid:(id)ppid error:(id *)error;
++ (id)createAliroHomeKey:(id)key seid:(id)seid readerIdentifier:(id)identifier readerPublicKey:(id)publicKey homeUUID:(id)d outError:(id *)error;
++ (id)createAliroHydraKey:(id)key seid:(id)seid serverParameters:(id)parameters outError:(id *)error;
++ (id)createHomeKey:(id)key seid:(id)seid readerIdentifier:(id)identifier readerPublicKey:(id)publicKey outError:(id *)error;
++ (id)createHydraKey:(id)key seid:(id)seid serverParameters:(id)parameters outError:(id *)error;
 + (id)sharedManager;
-+ (void)handleSharingMessage:(id)a3 forInvitationIdentifier:(id)a4 fromMailboxIdentifier:(id)a5 completionHandler:(id)a6;
-+ (void)listKeysWithSession:(id)a3 seid:(id)a4 callback:(id)a5;
-+ (void)rejectSharingInvitation:(id)a3 completionHandler:(id)a4;
++ (void)handleSharingMessage:(id)message forInvitationIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler;
++ (void)listKeysWithSession:(id)session seid:(id)seid callback:(id)callback;
++ (void)rejectSharingInvitation:(id)invitation completionHandler:(id)handler;
 - (DAManager)init;
-- (id)createManagementSessionWithDelegate:(id)a3;
-- (id)createPairingSessionWithDelegate:(id)a3;
-- (id)createSharingSessionWithDelegate:(id)a3;
+- (id)createManagementSessionWithDelegate:(id)delegate;
+- (id)createPairingSessionWithDelegate:(id)delegate;
+- (id)createSharingSessionWithDelegate:(id)delegate;
 - (uint64_t)releaseConnection;
 - (void)cleanup;
 - (void)establishXpcConnection;
-- (void)handleSharingMessage:(void *)a3 forInvitationIdentifier:(void *)a4 fromMailboxIdentifier:;
+- (void)handleSharingMessage:(void *)message forInvitationIdentifier:(void *)identifier fromMailboxIdentifier:;
 - (void)invalidateSessions;
-- (void)registerCrossPlatformTestMessageOverIDSHandler:(id)a3;
-- (void)registerCrossPlatformTestMessageSendHandler:(id)a3;
-- (void)registerFriendSideInvitationUnusableHandler:(id)a3;
-- (void)registerFriendSidePasscodeRetryRequestTestHandler:(id)a3;
-- (void)registerFriendSideSharingTestCompletion:(id)a3;
-- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)a3;
-- (void)registerOwnerSideInvitationRequestHandler:(id)a3;
-- (void)registerOwnerSideSharingTestInvitations:(id)a3 callback:(id)a4;
-- (void)registerSession:(id)a3;
-- (void)sendCrossPlatformTestData:(id)a3 toIdsIdentifier:(id)a4;
-- (void)setServiceName:(uint64_t)a1;
-- (void)unregisterSession:(id)a3;
+- (void)registerCrossPlatformTestMessageOverIDSHandler:(id)handler;
+- (void)registerCrossPlatformTestMessageSendHandler:(id)handler;
+- (void)registerFriendSideInvitationUnusableHandler:(id)handler;
+- (void)registerFriendSidePasscodeRetryRequestTestHandler:(id)handler;
+- (void)registerFriendSideSharingTestCompletion:(id)completion;
+- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)handler;
+- (void)registerOwnerSideInvitationRequestHandler:(id)handler;
+- (void)registerOwnerSideSharingTestInvitations:(id)invitations callback:(id)callback;
+- (void)registerSession:(id)session;
+- (void)sendCrossPlatformTestData:(id)data toIdsIdentifier:(id)identifier;
+- (void)setServiceName:(uint64_t)name;
+- (void)unregisterSession:(id)session;
 - (void)unregisterSharingTestHandlers;
 @end
 
 @implementation DAManager
 
-+ (id)createHydraKey:(id)a3 seid:(id)a4 serverParameters:(id)a5 outError:(id *)a6
++ (id)createHydraKey:(id)key seid:(id)seid serverParameters:(id)parameters outError:(id *)error
 {
   v6 = SESEndPointCreateForHydraWithSession();
   if (v6)
@@ -88,15 +88,15 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isCarKeySupportedForManufacturer:(id)a3 brand:(id)a4 ppid:(id)a5 error:(id *)a6
++ (BOOL)isCarKeySupportedForManufacturer:(id)manufacturer brand:(id)brand ppid:(id)ppid error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v11)
+  manufacturerCopy = manufacturer;
+  brandCopy = brand;
+  ppidCopy = ppid;
+  v12 = ppidCopy;
+  if (ppidCopy)
   {
-    v13 = kmlUtilDataForHexString(v11);
+    v13 = kmlUtilDataForHexString(ppidCopy);
   }
 
   else
@@ -110,28 +110,28 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
   {
   }
 
-  if (a6 && v15)
+  if (error && v15)
   {
     v16 = sesErrorToKmlError(v15, 0xD6u);
 
-    *a6 = kmlErrorToDAError(v16);
+    *error = kmlErrorToDAError(v16);
     v15 = v16;
   }
 
-  v17 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
-  return v17;
+  return bOOLValue;
 }
 
-+ (BOOL)isSharingEnabledForManufacturer:(id)a3 brand:(id)a4 ppid:(id)a5 error:(id *)a6
++ (BOOL)isSharingEnabledForManufacturer:(id)manufacturer brand:(id)brand ppid:(id)ppid error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v11)
+  manufacturerCopy = manufacturer;
+  brandCopy = brand;
+  ppidCopy = ppid;
+  v12 = ppidCopy;
+  if (ppidCopy)
   {
-    v13 = kmlUtilDataForHexString(v11);
+    v13 = kmlUtilDataForHexString(ppidCopy);
   }
 
   else
@@ -145,33 +145,33 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
   {
   }
 
-  if (a6 && v15)
+  if (error && v15)
   {
     v16 = sesErrorToKmlError(v15, 0xD6u);
 
-    *a6 = kmlErrorToDAError(v16);
+    *error = kmlErrorToDAError(v16);
     v15 = v16;
   }
 
   if (v14)
   {
-    v17 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
   }
 
   else
   {
-    v17 = 1;
+    bOOLValue = 1;
   }
 
-  return v17;
+  return bOOLValue;
 }
 
-+ (void)listKeysWithSession:(id)a3 seid:(id)a4 callback:(id)a5
++ (void)listKeysWithSession:(id)session seid:(id)seid callback:(id)callback
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  seidCopy = seid;
+  callbackCopy = callback;
   v10 = KmlLogger();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -182,7 +182,7 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
     _os_log_impl(&dword_248BF3000, v10, OS_LOG_TYPE_DEBUG, "%s : %i : ", buf, 0x12u);
   }
 
-  if (v7 && v8)
+  if (sessionCopy && seidCopy)
   {
     v39 = 0;
     v11 = SESEndPointListWithSession();
@@ -191,17 +191,17 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
     if (v12)
     {
       v14 = MEMORY[0x277CCA9B8];
-      v15 = [v12 userInfo];
-      v16 = [v14 errorWithDomain:@"DigitalAccessError" code:209 userInfo:v15];
+      userInfo = [v12 userInfo];
+      v16 = [v14 errorWithDomain:@"DigitalAccessError" code:209 userInfo:userInfo];
 
-      v9[2](v9, 0, v16);
+      callbackCopy[2](callbackCopy, 0, v16);
     }
 
     else
     {
-      v32 = v9;
-      v33 = v8;
-      v34 = v7;
+      v32 = callbackCopy;
+      v33 = seidCopy;
+      v34 = sessionCopy;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
@@ -225,13 +225,13 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
             v26 = KmlLogger();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
             {
-              v27 = [v25 publicKeyIdentifier];
+              publicKeyIdentifier = [v25 publicKeyIdentifier];
               *buf = 136315650;
               v44 = "+[DAManager listKeysWithSession:seid:callback:]";
               v45 = 1024;
               v46 = 148;
               v47 = 2112;
-              v48 = v27;
+              v48 = publicKeyIdentifier;
               _os_log_impl(&dword_248BF3000, v26, OS_LOG_TYPE_INFO, "%s : %i : Key id = %@", buf, 0x1Cu);
             }
 
@@ -260,10 +260,10 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
         _os_log_impl(&dword_248BF3000, v29, OS_LOG_TYPE_INFO, "%s : %i : key count = %lu", buf, 0x1Cu);
       }
 
-      v9 = v32;
+      callbackCopy = v32;
       (v32)[2](v32, v13, 0);
-      v8 = v33;
-      v7 = v34;
+      seidCopy = v33;
+      sessionCopy = v34;
     }
   }
 
@@ -277,9 +277,9 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
       v45 = 1024;
       v46 = 137;
       v47 = 2112;
-      v48 = v7;
+      v48 = sessionCopy;
       v49 = 2112;
-      v50 = v8;
+      v50 = seidCopy;
       _os_log_impl(&dword_248BF3000, v17, OS_LOG_TYPE_ERROR, "%s : %i : Null arguments provided. Session : %@, seid : %@", buf, 0x26u);
     }
 
@@ -289,19 +289,19 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
     v42 = v11;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v19 = [v18 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v13];
-    v9[2](v9, 0, v19);
+    callbackCopy[2](callbackCopy, 0, v19);
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)handleSharingMessage:(id)a3 forInvitationIdentifier:(id)a4 fromMailboxIdentifier:(id)a5 completionHandler:(id)a6
++ (void)handleSharingMessage:(id)message forInvitationIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  mailboxIdentifierCopy = mailboxIdentifier;
+  identifierCopy = identifier;
+  messageCopy = message;
   v13 = KmlLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -313,19 +313,19 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
   }
 
   v14 = +[DAManager sharedManager];
-  v15 = [(DAManager *)v14 handleSharingMessage:v12 forInvitationIdentifier:v11 fromMailboxIdentifier:v10];
+  v15 = [(DAManager *)v14 handleSharingMessage:messageCopy forInvitationIdentifier:identifierCopy fromMailboxIdentifier:mailboxIdentifierCopy];
 
-  v9[2](v9, v15);
+  handlerCopy[2](handlerCopy, v15);
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSharingMessage:(void *)a3 forInvitationIdentifier:(void *)a4 fromMailboxIdentifier:
+- (void)handleSharingMessage:(void *)message forInvitationIdentifier:(void *)identifier fromMailboxIdentifier:
 {
   v21 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  messageCopy = message;
+  identifierCopy = identifier;
+  if (self)
   {
     v10 = KmlLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -337,14 +337,14 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
       _os_log_impl(&dword_248BF3000, v10, OS_LOG_TYPE_INFO, "%s : %i : ", buf, 0x12u);
     }
 
-    [(DAManager *)a1 establishXpcConnection];
+    [(DAManager *)self establishXpcConnection];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v18 = __Block_byref_object_copy__3;
     v19 = __Block_byref_object_dispose__3;
     v20 = 0;
-    v11 = a1[2];
+    v11 = self[2];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __80__DAManager_handleSharingMessage_forInvitationIdentifier_fromMailboxIdentifier___block_invoke;
@@ -356,22 +356,22 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
     v15[2] = __80__DAManager_handleSharingMessage_forInvitationIdentifier_fromMailboxIdentifier___block_invoke_84;
     v15[3] = &unk_278F6FB00;
     v15[4] = buf;
-    [v12 queueCrossPlatformSharingMessage:v7 forInvitationIdentifier:v8 fromMailboxIdentifier:v9 callback:v15];
+    [v12 queueCrossPlatformSharingMessage:v7 forInvitationIdentifier:messageCopy fromMailboxIdentifier:identifierCopy callback:v15];
 
-    a1 = *(*&buf[8] + 40);
+    self = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-+ (void)rejectSharingInvitation:(id)a3 completionHandler:(id)a4
++ (void)rejectSharingInvitation:(id)invitation completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  invitationCopy = invitation;
+  handlerCopy = handler;
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -382,43 +382,43 @@ uint64_t __26__DAManager_sharedManager__block_invoke()
     _os_log_impl(&dword_248BF3000, v7, OS_LOG_TYPE_DEBUG, "%s : %i : ", buf, 0x12u);
   }
 
-  v8 = [v5 genericData];
-  if (!v8)
+  genericData = [invitationCopy genericData];
+  if (!genericData)
   {
     goto LABEL_8;
   }
 
-  v9 = v8;
-  v10 = [v5 genericData];
-  v11 = [v10 sharingIdentifier];
+  v9 = genericData;
+  genericData2 = [invitationCopy genericData];
+  sharingIdentifier = [genericData2 sharingIdentifier];
 
-  if (v11)
+  if (sharingIdentifier)
   {
     v12 = KmlLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v5 genericData];
-      v14 = [v13 sharingIdentifier];
+      genericData3 = [invitationCopy genericData];
+      sharingIdentifier2 = [genericData3 sharingIdentifier];
       *buf = 136315650;
       v31 = "+[DAManager rejectSharingInvitation:completionHandler:]";
       v32 = 1024;
       v33 = 179;
       v34 = 2112;
-      v35 = v14;
+      v35 = sharingIdentifier2;
       _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_INFO, "%s : %i : Cancel invite with id : %@", buf, 0x1Cu);
     }
 
     v15 = [[KmlCancelMessage alloc] initWithCCCErrorCode:34];
-    v16 = [(KmlCancelMessage *)v15 asData];
+    asData = [(KmlCancelMessage *)v15 asData];
 
     v17 = [DACarKeyGenericCrossPlatformSharingData alloc];
-    v18 = [v5 genericData];
-    v19 = [v18 sharingIdentifier];
-    v20 = [(DACarKeyGenericCrossPlatformSharingData *)v17 initWithSharingIdentifier:v19 friendKeyIdentifier:0 sharingMessageType:5 message:v16];
+    genericData4 = [invitationCopy genericData];
+    sharingIdentifier3 = [genericData4 sharingIdentifier];
+    v20 = [(DACarKeyGenericCrossPlatformSharingData *)v17 initWithSharingIdentifier:sharingIdentifier3 friendKeyIdentifier:0 sharingMessageType:5 message:asData];
 
     v21 = [DACarKeySharingMessage alloc];
-    v22 = [v5 additionalData];
-    v23 = [(DACarKeySharingMessage *)v21 initWithGenericCrossPlatformSharingData:v20 additionalData:v22 privateData:0];
+    additionalData = [invitationCopy additionalData];
+    v23 = [(DACarKeySharingMessage *)v21 initWithGenericCrossPlatformSharingData:v20 additionalData:additionalData privateData:0];
 
     v24 = 0;
   }
@@ -438,20 +438,20 @@ LABEL_8:
 
     v26 = MEMORY[0x277CCA9B8];
     v28 = *MEMORY[0x277CCA450];
-    v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:{DAErrorString(109), v28}];
-    v29 = v16;
+    asData = [MEMORY[0x277CCACA8] stringWithUTF8String:{DAErrorString(109), v28}];
+    v29 = asData;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v24 = [v26 errorWithDomain:@"DigitalAccessError" code:109 userInfo:v20];
     v23 = 0;
   }
 
-  v6[2](v6, v23, v24);
+  handlerCopy[2](handlerCopy, v23, v24);
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createHomeKey:(id)a3 seid:(id)a4 readerIdentifier:(id)a5 readerPublicKey:(id)a6 outError:(id *)a7
++ (id)createHomeKey:(id)key seid:(id)seid readerIdentifier:(id)identifier readerPublicKey:(id)publicKey outError:(id *)error
 {
-  v7 = MEMORY[0x24C1E74E0](a3, a4, a5, a6, a7);
+  v7 = MEMORY[0x24C1E74E0](key, seid, identifier, publicKey, error);
   if (v7)
   {
     v8 = [[DAKeyInformation alloc] initWithEndpoint:v7];
@@ -465,10 +465,10 @@ LABEL_8:
   return v8;
 }
 
-- (void)registerSession:(id)a3
+- (void)registerSession:(id)session
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -477,22 +477,22 @@ LABEL_8:
     v10 = 1024;
     v11 = 217;
     v12 = 2112;
-    v13 = v4;
+    v13 = sessionCopy;
     _os_log_impl(&dword_248BF3000, v5, OS_LOG_TYPE_DEBUG, "%s : %i : %@", &v8, 0x1Cu);
   }
 
   v6 = self->_activeSessions;
   objc_sync_enter(v6);
-  [(NSMutableSet *)self->_activeSessions addObject:v4];
+  [(NSMutableSet *)self->_activeSessions addObject:sessionCopy];
   objc_sync_exit(v6);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterSession:(id)a3
+- (void)unregisterSession:(id)session
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -501,13 +501,13 @@ LABEL_8:
     v10 = 1024;
     v11 = 225;
     v12 = 2112;
-    v13 = v4;
+    v13 = sessionCopy;
     _os_log_impl(&dword_248BF3000, v5, OS_LOG_TYPE_DEBUG, "%s : %i : %@", &v8, 0x1Cu);
   }
 
   v6 = self->_activeSessions;
   objc_sync_enter(v6);
-  [(NSMutableSet *)self->_activeSessions removeObject:v4];
+  [(NSMutableSet *)self->_activeSessions removeObject:sessionCopy];
   objc_sync_exit(v6);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -515,7 +515,7 @@ LABEL_8:
 
 - (void)invalidateSessions
 {
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
 
   [a2 enumerateObjectsUsingBlock:&__block_literal_global_28];
 }
@@ -550,11 +550,11 @@ void __31__DAManager_invalidateSessions__block_invoke(uint64_t a1, void *a2)
 - (void)establishXpcConnection
 {
   v5 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_INFO))
   {
     OUTLINED_FUNCTION_1();
     v4 = 285;
-    _os_log_impl(&dword_248BF3000, a1, OS_LOG_TYPE_INFO, "%s : %i : DAKeyManager: XPC connection already established", v3, 0x12u);
+    _os_log_impl(&dword_248BF3000, self, OS_LOG_TYPE_INFO, "%s : %i : DAKeyManager: XPC connection already established", v3, 0x12u);
   }
 
   v2 = *MEMORY[0x277D85DE8];
@@ -580,10 +580,10 @@ void __35__DAManager_establishXpcConnection__block_invoke_73(uint64_t a1)
   }
 }
 
-- (id)createPairingSessionWithDelegate:(id)a3
+- (id)createPairingSessionWithDelegate:(id)delegate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -599,7 +599,7 @@ void __35__DAManager_establishXpcConnection__block_invoke_73(uint64_t a1)
   *&buf[16] = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
-  v17 = [[DAKeyPairingSession alloc] initWithDelegate:v4];
+  v17 = [[DAKeyPairingSession alloc] initWithDelegate:delegateCopy];
   [(DAManager *)self establishXpcConnection];
   [(DAManager *)self registerSession:*(*&buf[8] + 40)];
   clientConnection = self->_clientConnection;
@@ -686,10 +686,10 @@ void __46__DAManager_createPairingSessionWithDelegate___block_invoke_76(uint64_t
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createSharingSessionWithDelegate:(id)a3
+- (id)createSharingSessionWithDelegate:(id)delegate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -705,7 +705,7 @@ void __46__DAManager_createPairingSessionWithDelegate___block_invoke_76(uint64_t
   *&buf[16] = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
-  v17 = [[DAKeySharingSession alloc] initWithDelegate:v4];
+  v17 = [[DAKeySharingSession alloc] initWithDelegate:delegateCopy];
   [(DAManager *)self establishXpcConnection];
   [(DAManager *)self registerSession:*(*&buf[8] + 40)];
   clientConnection = self->_clientConnection;
@@ -792,10 +792,10 @@ void __46__DAManager_createSharingSessionWithDelegate___block_invoke_79(uint64_t
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createManagementSessionWithDelegate:(id)a3
+- (id)createManagementSessionWithDelegate:(id)delegate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -811,7 +811,7 @@ void __46__DAManager_createSharingSessionWithDelegate___block_invoke_79(uint64_t
   *&buf[16] = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
-  v17 = [[DAKeyManagementSession alloc] initWithDelegate:v4];
+  v17 = [[DAKeyManagementSession alloc] initWithDelegate:delegateCopy];
   [(DAManager *)self establishXpcConnection];
   [(DAManager *)self registerSession:*(*&buf[8] + 40)];
   clientConnection = self->_clientConnection;
@@ -922,11 +922,11 @@ void __80__DAManager_handleSharingMessage_forInvitationIdentifier_fromMailboxIde
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerOwnerSideSharingTestInvitations:(id)a3 callback:(id)a4
+- (void)registerOwnerSideSharingTestInvitations:(id)invitations callback:(id)callback
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  invitationsCopy = invitations;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -939,7 +939,7 @@ void __80__DAManager_handleSharingMessage_forInvitationIdentifier_fromMailboxIde
 
   [(DAManager *)self establishXpcConnection];
   v9 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_86];
-  [v9 registerOwnerSideSharingTestInvitations:v7 callback:v6];
+  [v9 registerOwnerSideSharingTestInvitations:invitationsCopy callback:callbackCopy];
 
   v10 = KmlLogger();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -973,10 +973,10 @@ void __62__DAManager_registerOwnerSideSharingTestInvitations_callback___block_in
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerOwnerSideInvitationRequestHandler:(id)a3
+- (void)registerOwnerSideInvitationRequestHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -989,7 +989,7 @@ void __62__DAManager_registerOwnerSideSharingTestInvitations_callback___block_in
 
   [(DAManager *)self establishXpcConnection];
   v6 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_88];
-  [v6 registerOwnerSideInvitationRequestHandler:v4];
+  [v6 registerOwnerSideInvitationRequestHandler:handlerCopy];
 
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1023,10 +1023,10 @@ void __55__DAManager_registerOwnerSideInvitationRequestHandler___block_invoke(ui
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerFriendSideSharingTestCompletion:(id)a3
+- (void)registerFriendSideSharingTestCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1039,7 +1039,7 @@ void __55__DAManager_registerOwnerSideInvitationRequestHandler___block_invoke(ui
 
   [(DAManager *)self establishXpcConnection];
   v6 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_90];
-  [v6 registerFriendSideSharingTestCompletion:v4];
+  [v6 registerFriendSideSharingTestCompletion:completionCopy];
 
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1073,10 +1073,10 @@ void __53__DAManager_registerFriendSideSharingTestCompletion___block_invoke(uint
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)a3
+- (void)registerFriendSideSharingTestInvitationUUIDHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1089,7 +1089,7 @@ void __53__DAManager_registerFriendSideSharingTestCompletion___block_invoke(uint
 
   [(DAManager *)self establishXpcConnection];
   v6 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_92];
-  [v6 registerFriendSideSharingTestInvitationUUIDHandler:v4];
+  [v6 registerFriendSideSharingTestInvitationUUIDHandler:handlerCopy];
 
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1123,10 +1123,10 @@ void __64__DAManager_registerFriendSideSharingTestInvitationUUIDHandler___block_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerFriendSideInvitationUnusableHandler:(id)a3
+- (void)registerFriendSideInvitationUnusableHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1139,7 +1139,7 @@ void __64__DAManager_registerFriendSideSharingTestInvitationUUIDHandler___block_
 
   [(DAManager *)self establishXpcConnection];
   v6 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_94];
-  [v6 registerFriendSideInvitationUnusableHandler:v4];
+  [v6 registerFriendSideInvitationUnusableHandler:handlerCopy];
 
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1173,10 +1173,10 @@ void __57__DAManager_registerFriendSideInvitationUnusableHandler___block_invoke(
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerCrossPlatformTestMessageOverIDSHandler:(id)a3
+- (void)registerCrossPlatformTestMessageOverIDSHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1189,7 +1189,7 @@ void __57__DAManager_registerFriendSideInvitationUnusableHandler___block_invoke(
 
   [(DAManager *)self establishXpcConnection];
   v6 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_96];
-  [v6 registerCrossPlatformTestMessageOverIDSHandler:v4];
+  [v6 registerCrossPlatformTestMessageOverIDSHandler:handlerCopy];
 
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1223,10 +1223,10 @@ void __60__DAManager_registerCrossPlatformTestMessageOverIDSHandler___block_invo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerCrossPlatformTestMessageSendHandler:(id)a3
+- (void)registerCrossPlatformTestMessageSendHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1239,7 +1239,7 @@ void __60__DAManager_registerCrossPlatformTestMessageOverIDSHandler___block_invo
 
   [(DAManager *)self establishXpcConnection];
   v6 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_98];
-  [v6 registerCrossPlatformTestMessageSendHandler:v4];
+  [v6 registerCrossPlatformTestMessageSendHandler:handlerCopy];
 
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1273,11 +1273,11 @@ void __57__DAManager_registerCrossPlatformTestMessageSendHandler___block_invoke(
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendCrossPlatformTestData:(id)a3 toIdsIdentifier:(id)a4
+- (void)sendCrossPlatformTestData:(id)data toIdsIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1290,7 +1290,7 @@ void __57__DAManager_registerCrossPlatformTestMessageSendHandler___block_invoke(
 
   [(DAManager *)self establishXpcConnection];
   v9 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_100];
-  [v9 sendCrossPlatformTestData:v7 toIdsIdentifier:v6];
+  [v9 sendCrossPlatformTestData:dataCopy toIdsIdentifier:identifierCopy];
 
   v10 = KmlLogger();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -1324,10 +1324,10 @@ void __55__DAManager_sendCrossPlatformTestData_toIdsIdentifier___block_invoke(ui
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerFriendSidePasscodeRetryRequestTestHandler:(id)a3
+- (void)registerFriendSidePasscodeRetryRequestTestHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1340,7 +1340,7 @@ void __55__DAManager_sendCrossPlatformTestData_toIdsIdentifier___block_invoke(ui
 
   [(DAManager *)self establishXpcConnection];
   v6 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_102];
-  [v6 registerFriendSidePasscodeRetryRequestHandler:v4];
+  [v6 registerFriendSidePasscodeRetryRequestHandler:handlerCopy];
 
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1423,14 +1423,14 @@ void __42__DAManager_unregisterSharingTestHandlers__block_invoke(uint64_t a1, vo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createAliroHomeKey:(id)a3 seid:(id)a4 readerIdentifier:(id)a5 readerPublicKey:(id)a6 homeUUID:(id)a7 outError:(id *)a8
++ (id)createAliroHomeKey:(id)key seid:(id)seid readerIdentifier:(id)identifier readerPublicKey:(id)publicKey homeUUID:(id)d outError:(id *)error
 {
   v12 = MEMORY[0x277CCABB0];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  dCopy = d;
+  publicKeyCopy = publicKey;
+  identifierCopy = identifier;
+  seidCopy = seid;
+  keyCopy = key;
   v18 = [v12 numberWithInt:0];
   v19 = SESEndPointCreateForLyonWithSession();
 
@@ -1447,7 +1447,7 @@ void __42__DAManager_unregisterSharingTestHandlers__block_invoke(uint64_t a1, vo
   return v20;
 }
 
-+ (id)createAliroHydraKey:(id)a3 seid:(id)a4 serverParameters:(id)a5 outError:(id *)a6
++ (id)createAliroHydraKey:(id)key seid:(id)seid serverParameters:(id)parameters outError:(id *)error
 {
   v6 = SESEndPointCreateForLyonHydraWithSession();
   if (v6)
@@ -1463,18 +1463,18 @@ void __42__DAManager_unregisterSharingTestHandlers__block_invoke(uint64_t a1, vo
   return v7;
 }
 
-- (void)setServiceName:(uint64_t)a1
+- (void)setServiceName:(uint64_t)name
 {
-  if (a1)
+  if (name)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((name + 24), a2);
   }
 }
 
 - (void)cleanup
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v3 = KmlLogger();
     if (OUTLINED_FUNCTION_2_2(v3))
@@ -1483,13 +1483,13 @@ void __42__DAManager_unregisterSharingTestHandlers__block_invoke(uint64_t a1, vo
       OUTLINED_FUNCTION_6(&dword_248BF3000, v4, v5, "%s : %i : ", v6, v7, v8, v9, v13);
     }
 
-    [(DAManager *)a1 invalidateSessions];
-    v10 = a1;
-    objc_sync_enter(v10);
-    v11 = v10[2];
-    v10[2] = 0;
+    [(DAManager *)self invalidateSessions];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = selfCopy[2];
+    selfCopy[2] = 0;
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   v12 = *MEMORY[0x277D85DE8];

@@ -1,8 +1,8 @@
 @interface CTDPSDPreviewRef
 - (BOOL)hasGradient;
 - (BOOL)hasRegularSliceGrid;
-- (CTDPSDPreviewRef)initWithPath:(id)a3;
-- (int64_t)indexOfDrawingLayerType:(int64_t)a3;
+- (CTDPSDPreviewRef)initWithPath:(id)path;
+- (int64_t)indexOfDrawingLayerType:(int64_t)type;
 - (int64_t)numberOfGradientLayers;
 - (void)dealloc;
 - (void)evaluateSliceGrid;
@@ -10,11 +10,11 @@
 
 @implementation CTDPSDPreviewRef
 
-- (CTDPSDPreviewRef)initWithPath:(id)a3
+- (CTDPSDPreviewRef)initWithPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = CTDPSDPreviewRef;
-  v3 = [(CUIPSDImageRef *)&v6 initWithPath:a3];
+  v3 = [(CUIPSDImageRef *)&v6 initWithPath:path];
   v4 = v3;
   if (v3)
   {
@@ -47,15 +47,15 @@
 
   *&p_imageInfo->width = v26;
   p_imageInfo->isDrawable = v27;
-  v4 = [(CUIPSDImageRef *)self numberOfSlices];
-  if (v4 <= 1)
+  numberOfSlices = [(CUIPSDImageRef *)self numberOfSlices];
+  if (numberOfSlices <= 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = v4;
+    v5 = numberOfSlices;
   }
 
   self->_sliceCount = v5;
@@ -214,15 +214,15 @@ LABEL_25:
   return v4;
 }
 
-- (int64_t)indexOfDrawingLayerType:(int64_t)a3
+- (int64_t)indexOfDrawingLayerType:(int64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(CUIPSDImageRef *)self layerNames];
+  layerNames = [(CUIPSDImageRef *)self layerNames];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [layerNames countByEnumeratingWithState:&v13 objects:v17 count:16];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (v5)
   {
@@ -234,18 +234,18 @@ LABEL_25:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layerNames);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 rangeOfString:indexOfDrawingLayerType__drawingLayerNames[a3]] != 0x7FFFFFFFFFFFFFFFLL)
+        if ([v10 rangeOfString:indexOfDrawingLayerType__drawingLayerNames[type]] != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v6 = [v4 indexOfObject:v10];
+          v6 = [layerNames indexOfObject:v10];
           goto LABEL_11;
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [layerNames countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;

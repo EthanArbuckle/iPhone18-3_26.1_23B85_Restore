@@ -1,18 +1,18 @@
 @interface DMDAccountNotificationPlugin
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation DMDAccountNotificationPlugin
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v7 = a6;
-  v10 = [a3 aa_personID];
-  v8 = [v7 aa_personID];
+  oldAccountCopy = oldAccount;
+  aa_personID = [account aa_personID];
+  aa_personID2 = [oldAccountCopy aa_personID];
 
-  if (!v10 || !v8)
+  if (!aa_personID || !aa_personID2)
   {
-    if (!(v10 | v8))
+    if (!(aa_personID | aa_personID2))
     {
       goto LABEL_7;
     }
@@ -20,7 +20,7 @@
     goto LABEL_6;
   }
 
-  if (([v10 isEqualToString:v8] & 1) == 0)
+  if (([aa_personID isEqualToString:aa_personID2] & 1) == 0)
   {
 LABEL_6:
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();

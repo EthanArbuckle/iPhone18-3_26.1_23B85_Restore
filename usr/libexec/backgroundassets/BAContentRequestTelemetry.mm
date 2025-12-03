@@ -1,30 +1,30 @@
 @interface BAContentRequestTelemetry
-- (BAContentRequestTelemetry)initWithContentRequest:(int64_t)a3 applicationIdentifier:(id)a4 installSource:(int64_t)a5 downloads:(id)a6;
+- (BAContentRequestTelemetry)initWithContentRequest:(int64_t)request applicationIdentifier:(id)identifier installSource:(int64_t)source downloads:(id)downloads;
 - (BOOL)allDownloadsCompleted;
-- (id)_average:(id)a3;
+- (id)_average:(id)_average;
 - (id)_formatMostFrequentError;
-- (id)_median:(id)a3;
+- (id)_median:(id)_median;
 - (id)description;
-- (id)formatError:(id)a3 withCount:(unint64_t)a4;
+- (id)formatError:(id)error withCount:(unint64_t)count;
 - (id)payload;
-- (void)recordDownloadCompletion:(id)a3 error:(id)a4;
+- (void)recordDownloadCompletion:(id)completion error:(id)error;
 @end
 
 @implementation BAContentRequestTelemetry
 
-- (BAContentRequestTelemetry)initWithContentRequest:(int64_t)a3 applicationIdentifier:(id)a4 installSource:(int64_t)a5 downloads:(id)a6
+- (BAContentRequestTelemetry)initWithContentRequest:(int64_t)request applicationIdentifier:(id)identifier installSource:(int64_t)source downloads:(id)downloads
 {
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  downloadsCopy = downloads;
   v33.receiver = self;
   v33.super_class = BAContentRequestTelemetry;
   v13 = [(BAContentRequestTelemetry *)&v33 init];
   v14 = v13;
   if (v13)
   {
-    v13->_contentRequest = a3;
-    v13->_installSource = a5;
-    objc_storeStrong(&v13->_applicationIdentifier, a4);
+    v13->_contentRequest = request;
+    v13->_installSource = source;
+    objc_storeStrong(&v13->_applicationIdentifier, identifier);
     v14->_invalid = 0;
     v15 = +[NSMutableArray array];
     fileSizes = v14->_fileSizes;
@@ -34,7 +34,7 @@
     uniqueErrorCounts = v14->_uniqueErrorCounts;
     v14->_uniqueErrorCounts = v17;
 
-    v19 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v12 count]);
+    v19 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [downloadsCopy count]);
     remainingDownloadUniqueIdentifiers = v14->_remainingDownloadUniqueIdentifiers;
     v14->_remainingDownloadUniqueIdentifiers = v19;
 
@@ -42,7 +42,7 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v21 = v12;
+    v21 = downloadsCopy;
     v22 = [v21 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v22)
     {
@@ -59,8 +59,8 @@
           }
 
           v26 = v14->_remainingDownloadUniqueIdentifiers;
-          v27 = [*(*(&v29 + 1) + 8 * v25) uniqueIdentifier];
-          [(NSMutableSet *)v26 addObject:v27];
+          uniqueIdentifier = [*(*(&v29 + 1) + 8 * v25) uniqueIdentifier];
+          [(NSMutableSet *)v26 addObject:uniqueIdentifier];
 
           v25 = v25 + 1;
         }
@@ -76,59 +76,59 @@
   return v14;
 }
 
-- (void)recordDownloadCompletion:(id)a3 error:(id)a4
+- (void)recordDownloadCompletion:(id)completion error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAContentRequestTelemetry *)self remainingDownloadUniqueIdentifiers];
-  v9 = [v6 uniqueIdentifier];
-  v10 = [v8 containsObject:v9];
+  completionCopy = completion;
+  errorCopy = error;
+  remainingDownloadUniqueIdentifiers = [(BAContentRequestTelemetry *)self remainingDownloadUniqueIdentifiers];
+  uniqueIdentifier = [completionCopy uniqueIdentifier];
+  v10 = [remainingDownloadUniqueIdentifiers containsObject:uniqueIdentifier];
 
   if ((v10 & 1) == 0)
   {
-    v14 = sub_1000104FC();
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    downloadedFileSize = sub_1000104FC();
+    if (!os_log_type_enabled(downloadedFileSize, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_12;
     }
 
-    v20 = [v6 uniqueIdentifier];
+    uniqueIdentifier2 = [completionCopy uniqueIdentifier];
     v22 = 138543362;
-    v23 = v20;
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "BAContentRequestTelemetry informed about unknown download with identifier %{public}@", &v22, 0xCu);
+    v23 = uniqueIdentifier2;
+    _os_log_impl(&_mh_execute_header, downloadedFileSize, OS_LOG_TYPE_DEFAULT, "BAContentRequestTelemetry informed about unknown download with identifier %{public}@", &v22, 0xCu);
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v11 = [(BAContentRequestTelemetry *)self remainingDownloadUniqueIdentifiers];
-  v12 = [v6 uniqueIdentifier];
-  [v11 removeObject:v12];
+  remainingDownloadUniqueIdentifiers2 = [(BAContentRequestTelemetry *)self remainingDownloadUniqueIdentifiers];
+  uniqueIdentifier3 = [completionCopy uniqueIdentifier];
+  [remainingDownloadUniqueIdentifiers2 removeObject:uniqueIdentifier3];
 
-  os_unfair_lock_lock([v6 downloadLock]);
-  v13 = [v6 necessity];
-  v14 = [v6 downloadedFileSize];
-  os_unfair_lock_unlock([v6 downloadLock]);
-  if (self->_invalid || !(v7 | v14))
+  os_unfair_lock_lock([completionCopy downloadLock]);
+  necessity = [completionCopy necessity];
+  downloadedFileSize = [completionCopy downloadedFileSize];
+  os_unfair_lock_unlock([completionCopy downloadLock]);
+  if (self->_invalid || !(errorCopy | downloadedFileSize))
   {
     self->_invalid = 1;
-    v20 = sub_1000104FC();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    uniqueIdentifier2 = sub_1000104FC();
+    if (os_log_type_enabled(uniqueIdentifier2, OS_LOG_TYPE_ERROR))
     {
-      sub_100047B64(v6, v20);
+      sub_100047B64(completionCopy, uniqueIdentifier2);
     }
 
     goto LABEL_11;
   }
 
-  if (v7)
+  if (errorCopy)
   {
     ++self->_failureCount;
-    v15 = [v7 domain];
-    v16 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v15, [v7 code], 0);
+    domain = [errorCopy domain];
+    fileSizes = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [errorCopy code], 0);
 
-    v17 = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
-    v18 = [v17 objectForKey:v16];
+    uniqueErrorCounts = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
+    v18 = [uniqueErrorCounts objectForKey:fileSizes];
 
     if (v18)
     {
@@ -140,18 +140,18 @@ LABEL_11:
       v19 = &off_10007D430;
     }
 
-    v21 = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
-    [v21 setObject:v19 forKeyedSubscript:v16];
+    uniqueErrorCounts2 = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
+    [uniqueErrorCounts2 setObject:v19 forKeyedSubscript:fileSizes];
   }
 
   else
   {
     ++self->_successCount;
-    v16 = [(BAContentRequestTelemetry *)self fileSizes];
-    [v16 addObject:v14];
+    fileSizes = [(BAContentRequestTelemetry *)self fileSizes];
+    [fileSizes addObject:downloadedFileSize];
   }
 
-  if (v13 == 1)
+  if (necessity == 1)
   {
     ++self->_essentialAssetsCount;
   }
@@ -166,8 +166,8 @@ LABEL_12:
 
 - (BOOL)allDownloadsCompleted
 {
-  v2 = [(BAContentRequestTelemetry *)self remainingDownloadUniqueIdentifiers];
-  v3 = [v2 count] == 0;
+  remainingDownloadUniqueIdentifiers = [(BAContentRequestTelemetry *)self remainingDownloadUniqueIdentifiers];
+  v3 = [remainingDownloadUniqueIdentifiers count] == 0;
 
   return v3;
 }
@@ -176,23 +176,23 @@ LABEL_12:
 {
   if (self->_invalid)
   {
-    v2 = &__NSDictionary0__struct;
+    eventPayload2 = &__NSDictionary0__struct;
     goto LABEL_16;
   }
 
-  v4 = [(BAContentRequestTelemetry *)self eventPayload];
+  eventPayload = [(BAContentRequestTelemetry *)self eventPayload];
 
-  if (!v4)
+  if (!eventPayload)
   {
-    v5 = [(BAContentRequestTelemetry *)self _formatMostFrequentError];
-    v6 = [(BAContentRequestTelemetry *)self fileSizes];
-    [v6 sortUsingSelector:"compare:"];
+    _formatMostFrequentError = [(BAContentRequestTelemetry *)self _formatMostFrequentError];
+    fileSizes = [(BAContentRequestTelemetry *)self fileSizes];
+    [fileSizes sortUsingSelector:"compare:"];
 
-    v7 = [(BAContentRequestTelemetry *)self fileSizes];
-    v8 = [(BAContentRequestTelemetry *)self _median:v7];
+    fileSizes2 = [(BAContentRequestTelemetry *)self fileSizes];
+    v8 = [(BAContentRequestTelemetry *)self _median:fileSizes2];
 
-    v9 = [(BAContentRequestTelemetry *)self fileSizes];
-    v10 = [(BAContentRequestTelemetry *)self _average:v9];
+    fileSizes3 = [(BAContentRequestTelemetry *)self fileSizes];
+    v10 = [(BAContentRequestTelemetry *)self _average:fileSizes3];
 
     v23 = sub_10000A16C(self->_installSource);
     v24[0] = @"AssetCount";
@@ -230,8 +230,8 @@ LABEL_12:
     v14 = sub_10002B004(self->_contentRequest);
     v25[7] = v14;
     v24[8] = @"MostFrequentError";
-    v15 = v5;
-    if (!v5)
+    v15 = _formatMostFrequentError;
+    if (!_formatMostFrequentError)
     {
       v15 = +[NSNull null];
     }
@@ -245,7 +245,7 @@ LABEL_12:
     v17 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:11];
     [(BAContentRequestTelemetry *)self setEventPayload:v17];
 
-    if (!v5)
+    if (!_formatMostFrequentError)
     {
     }
 
@@ -272,19 +272,19 @@ LABEL_14:
   }
 
 LABEL_15:
-  v2 = [(BAContentRequestTelemetry *)self eventPayload];
+  eventPayload2 = [(BAContentRequestTelemetry *)self eventPayload];
 LABEL_16:
 
-  return v2;
+  return eventPayload2;
 }
 
-- (id)formatError:(id)a3 withCount:(unint64_t)a4
+- (id)formatError:(id)error withCount:(unint64_t)count
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  v7 = [v5 code];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  code = [errorCopy code];
 
-  v8 = [NSString stringWithFormat:@"[%@:%ld:%lu]", v6, v7, a4];
+  v8 = [NSString stringWithFormat:@"[%@:%ld:%lu]", domain, code, count];
 
   return v8;
 }
@@ -295,39 +295,39 @@ LABEL_16:
   successCount = self->_successCount;
   essentialAssetsCount = self->_essentialAssetsCount;
   optionalAssetsCount = self->_optionalAssetsCount;
-  v7 = [(BAContentRequestTelemetry *)self fileSizes];
-  v8 = [v7 componentsJoinedByString:{@", "}];
-  v9 = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
-  v10 = [NSString stringWithFormat:@"Successes=%d, failures=%d, essentials=%d, optionals=%d, sizes=%@, errors=%@", successCount, failureCount, essentialAssetsCount, optionalAssetsCount, v8, v9];
+  fileSizes = [(BAContentRequestTelemetry *)self fileSizes];
+  v8 = [fileSizes componentsJoinedByString:{@", "}];
+  uniqueErrorCounts = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
+  v10 = [NSString stringWithFormat:@"Successes=%d, failures=%d, essentials=%d, optionals=%d, sizes=%@, errors=%@", successCount, failureCount, essentialAssetsCount, optionalAssetsCount, v8, uniqueErrorCounts];
 
   return v10;
 }
 
-- (id)_median:(id)a3
+- (id)_median:(id)_median
 {
-  v3 = a3;
-  v4 = [v3 count];
+  _medianCopy = _median;
+  v4 = [_medianCopy count];
   if (v4)
   {
     v5 = v4 >> 1;
     if (v4)
     {
-      v12 = [v3 objectAtIndex:v5];
-      v10 = [v12 unsignedLongLongValue];
+      v12 = [_medianCopy objectAtIndex:v5];
+      unsignedLongLongValue = [v12 unsignedLongLongValue];
     }
 
     else
     {
-      v6 = [v3 objectAtIndex:v5 - 1];
-      v7 = [v6 unsignedLongLongValue];
+      v6 = [_medianCopy objectAtIndex:v5 - 1];
+      unsignedLongLongValue2 = [v6 unsignedLongLongValue];
 
-      v8 = [v3 objectAtIndex:v5];
-      v9 = [v8 unsignedLongLongValue];
+      v8 = [_medianCopy objectAtIndex:v5];
+      unsignedLongLongValue3 = [v8 unsignedLongLongValue];
 
-      v10 = ((v7 + v9) >> 1);
+      unsignedLongLongValue = ((unsignedLongLongValue2 + unsignedLongLongValue3) >> 1);
     }
 
-    v11 = [NSNumber numberWithUnsignedInteger:v10];
+    v11 = [NSNumber numberWithUnsignedInteger:unsignedLongLongValue];
   }
 
   else
@@ -338,16 +338,16 @@ LABEL_16:
   return v11;
 }
 
-- (id)_average:(id)a3
+- (id)_average:(id)_average
 {
-  v3 = a3;
-  if ([v3 count])
+  _averageCopy = _average;
+  if ([_averageCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v3;
+    v4 = _averageCopy;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -390,8 +390,8 @@ LABEL_16:
 
 - (id)_formatMostFrequentError
 {
-  v3 = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
-  v4 = [v3 count];
+  uniqueErrorCounts = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
+  v4 = [uniqueErrorCounts count];
 
   if (v4)
   {
@@ -417,15 +417,15 @@ LABEL_16:
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
-          v13 = [v12 objectForKeyedSubscript:v11];
-          v14 = [v13 unsignedLongLongValue];
+          uniqueErrorCounts2 = [(BAContentRequestTelemetry *)self uniqueErrorCounts];
+          v13 = [uniqueErrorCounts2 objectForKeyedSubscript:v11];
+          unsignedLongLongValue = [v13 unsignedLongLongValue];
 
-          if (v14 > v7)
+          if (unsignedLongLongValue > v7)
           {
             v15 = v11;
 
-            v7 = v14;
+            v7 = unsignedLongLongValue;
             v8 = v15;
           }
         }

@@ -1,82 +1,82 @@
 @interface SKConnection
 - (NSString)description;
 - (SKConnection)init;
-- (id)deriveKeyWithSaltPtr:(const void *)a3 saltLen:(unint64_t)a4 infoPtr:(const void *)a5 infoLen:(unint64_t)a6 keyLen:(unint64_t)a7 error:(id *)a8;
-- (void)_abortRequestsWithError:(id)a3;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_clientConnectCompleted:(id)a3;
+- (id)deriveKeyWithSaltPtr:(const void *)ptr saltLen:(unint64_t)len infoPtr:(const void *)infoPtr infoLen:(unint64_t)infoLen keyLen:(unint64_t)keyLen error:(id *)error;
+- (void)_abortRequestsWithError:(id)error;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_clientConnectCompleted:(id)completed;
 - (void)_clientConnectStart;
 - (void)_clientConnectStartBLE;
-- (void)_clientError:(id)a3;
-- (void)_clientPairSetupCompleted:(id)a3;
-- (void)_clientPairSetupContinueWithData:(id)a3;
+- (void)_clientError:(id)error;
+- (void)_clientPairSetupCompleted:(id)completed;
+- (void)_clientPairSetupContinueWithData:(id)data;
 - (void)_clientPairSetupStart;
 - (void)_clientPairSetupStartReverse;
-- (void)_clientPairVerifyCompleted:(id)a3;
+- (void)_clientPairVerifyCompleted:(id)completed;
 - (void)_clientPairVerifyStart;
-- (void)_clientPairVerifyWithData:(id)a3;
+- (void)_clientPairVerifyWithData:(id)data;
 - (void)_clientRun;
-- (void)_invalidateCore:(id)a3;
-- (void)_invalidateWithError:(id)a3;
+- (void)_invalidateCore:(id)core;
+- (void)_invalidateWithError:(id)error;
 - (void)_invalidated;
 - (void)_pairSetupInvalidate;
 - (void)_pairVerifyInvalidate;
 - (void)_processSends;
-- (void)_receiveCompletion:(id)a3;
-- (void)_receiveStart:(id)a3;
-- (void)_receivedEvent:(id)a3;
-- (void)_receivedHeader:(id *)a3 body:(id)a4;
-- (void)_receivedHeader:(id *)a3 encryptedObjectData:(id)a4;
-- (void)_receivedHeader:(id *)a3 unencryptedObjectData:(id)a4;
-- (void)_receivedObject:(id)a3;
-- (void)_receivedRequest:(id)a3;
-- (void)_receivedResponse:(id)a3;
+- (void)_receiveCompletion:(id)completion;
+- (void)_receiveStart:(id)start;
+- (void)_receivedEvent:(id)event;
+- (void)_receivedHeader:(id *)header body:(id)body;
+- (void)_receivedHeader:(id *)header encryptedObjectData:(id)data;
+- (void)_receivedHeader:(id *)header unencryptedObjectData:(id)data;
+- (void)_receivedObject:(id)object;
+- (void)_receivedRequest:(id)request;
+- (void)_receivedResponse:(id)response;
 - (void)_run;
-- (void)_sendHeaderData:(id)a3 bodyData:(id)a4 completion:(id)a5;
-- (void)_sendRequestID:(id)a3 request:(id)a4 options:(id)a5 sendEntry:(id)a6 responseHandler:(id)a7;
-- (void)_sendResponse:(id)a3 error:(id)a4 xid:(id)a5 requestID:(id)a6 completion:(id)a7;
+- (void)_sendHeaderData:(id)data bodyData:(id)bodyData completion:(id)completion;
+- (void)_sendRequestID:(id)d request:(id)request options:(id)options sendEntry:(id)entry responseHandler:(id)handler;
+- (void)_sendResponse:(id)response error:(id)error xid:(id)xid requestID:(id)d completion:(id)completion;
 - (void)_serverAccept;
 - (void)_serverAcceptBLE;
-- (void)_serverError:(id)a3;
-- (void)_serverPairSetupCompleted:(id)a3;
-- (void)_serverPairSetupContinueWithData:(id)a3 start:(BOOL)a4;
-- (void)_serverPairVerifyCompleted:(id)a3;
-- (void)_serverPairVerifyContinueWithData:(id)a3 start:(BOOL)a4;
+- (void)_serverError:(id)error;
+- (void)_serverPairSetupCompleted:(id)completed;
+- (void)_serverPairSetupContinueWithData:(id)data start:(BOOL)start;
+- (void)_serverPairVerifyCompleted:(id)completed;
+- (void)_serverPairVerifyContinueWithData:(id)data start:(BOOL)start;
 - (void)_serverRun;
-- (void)_timeoutForSendEntry:(id)a3;
-- (void)_timeoutForXID:(id)a3;
+- (void)_timeoutForSendEntry:(id)entry;
+- (void)_timeoutForXID:(id)d;
 - (void)_updateExternalState;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)receivedData:(id)a3;
-- (void)sendEventID:(id)a3 event:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)sendRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6;
-- (void)setLabel:(id)a3;
-- (void)tryPassword:(id)a3;
-- (void)updatePasswordType:(int)a3;
+- (void)receivedData:(id)data;
+- (void)sendEventID:(id)d event:(id)event options:(id)options completion:(id)completion;
+- (void)sendRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler;
+- (void)setLabel:(id)label;
+- (void)tryPassword:(id)password;
+- (void)updatePasswordType:(int)type;
 @end
 
 @implementation SKConnection
 
-- (void)_receivedResponse:(id)a3
+- (void)_receivedResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = NSDictionaryGetNSNumber();
-  v6 = [v5 unsignedIntValue];
-  if (v6)
+  unsignedIntValue = [v5 unsignedIntValue];
+  if (unsignedIntValue)
   {
-    v7 = v6;
+    v7 = unsignedIntValue;
     v8 = [(NSMutableDictionary *)self->_requests objectForKeyedSubscript:v5];
     if (v8)
     {
       v9 = v8;
       [(NSMutableDictionary *)self->_requests setObject:0 forKeyedSubscript:v5];
-      v10 = [v9 timer];
+      timer = [v9 timer];
       [v9 setTimer:0];
-      if (v10)
+      if (timer)
       {
-        dispatch_source_cancel(v10);
+        dispatch_source_cancel(timer);
       }
 
       CFDictionaryGetTypeID();
@@ -135,8 +135,8 @@ LABEL_19:
         }
 
 LABEL_14:
-        v16 = [v9 responseHandler];
-        v17 = v16[2];
+        responseHandler = [v9 responseHandler];
+        v17 = responseHandler[2];
 LABEL_17:
         v17();
 
@@ -162,8 +162,8 @@ LABEL_17:
       }
 
 LABEL_16:
-      v16 = [v9 responseHandler];
-      v17 = v16[2];
+      responseHandler = [v9 responseHandler];
+      v17 = responseHandler[2];
       goto LABEL_17;
     }
 
@@ -212,15 +212,15 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_receivedRequest:(id)a3
+- (void)_receivedRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v34 = 0;
   v5 = NSDictionaryGetNSNumber();
-  v6 = [v5 unsignedIntValue];
-  if (v6)
+  unsignedIntValue = [v5 unsignedIntValue];
+  if (unsignedIntValue)
   {
-    v7 = v6;
+    v7 = unsignedIntValue;
     CFStringGetTypeID();
     v8 = CFDictionaryGetTypedValue();
     if (v8)
@@ -406,9 +406,9 @@ LABEL_8:
 LABEL_3:
 }
 
-- (void)_receivedEvent:(id)a3
+- (void)_receivedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   CFDictionaryGetTypeID();
   v5 = CFDictionaryGetTypedValue();
   if (v5)
@@ -497,28 +497,28 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_receivedObject:(id)a3
+- (void)_receivedObject:(id)object
 {
-  v8 = a3;
+  objectCopy = object;
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (Int64Ranged == 3)
   {
-    p_var0 = [(SKConnection *)self _receivedResponse:v8];
+    p_var0 = [(SKConnection *)self _receivedResponse:objectCopy];
     goto LABEL_10;
   }
 
   if (Int64Ranged == 2)
   {
-    p_var0 = [(SKConnection *)self _receivedRequest:v8];
+    p_var0 = [(SKConnection *)self _receivedRequest:objectCopy];
     goto LABEL_10;
   }
 
-  v5 = v8;
+  v5 = objectCopy;
   if (Int64Ranged == 1)
   {
-    p_var0 = [(SKConnection *)self _receivedEvent:v8];
+    p_var0 = [(SKConnection *)self _receivedEvent:objectCopy];
 LABEL_10:
-    v5 = v8;
+    v5 = objectCopy;
     goto LABEL_11;
   }
 
@@ -536,7 +536,7 @@ LABEL_9:
   }
 
   p_var0 = _LogCategory_Initialize();
-  v5 = v8;
+  v5 = objectCopy;
   if (p_var0)
   {
     ucat = self->_ucat;
@@ -548,9 +548,9 @@ LABEL_11:
   MEMORY[0x2821F96F8](p_var0, v5);
 }
 
-- (void)_receivedHeader:(id *)a3 unencryptedObjectData:(id)a4
+- (void)_receivedHeader:(id *)header unencryptedObjectData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -585,7 +585,7 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  var0 = a3->var0;
+  var0 = header->var0;
   v10 = self->_ucat->var0;
   if (var0 == 8)
   {
@@ -629,7 +629,7 @@ LABEL_12:
       }
 
       v15 = self->_ucat;
-      var0 = a3->var0;
+      var0 = header->var0;
     }
 
     if (var0 <= 8)
@@ -637,7 +637,7 @@ LABEL_12:
       v11 = off_279BB7D50[var0];
     }
 
-    [v6 length];
+    [dataCopy length];
     LogPrintF();
   }
 
@@ -672,9 +672,9 @@ void __54__SKConnection__receivedHeader_unencryptedObjectData___block_invoke(uin
   }
 }
 
-- (void)_receivedHeader:(id *)a3 encryptedObjectData:(id)a4
+- (void)_receivedHeader:(id *)header encryptedObjectData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -694,7 +694,7 @@ void __54__SKConnection__receivedHeader_unencryptedObjectData___block_invoke(uin
   {
     v10 = (v25 + 5);
     obj = v25[5];
-    v11 = [(CUPairingStream *)v8 decryptData:v6 aadBytes:a3 aadLength:4 error:&obj];
+    v11 = [(CUPairingStream *)v8 decryptData:dataCopy aadBytes:header aadLength:4 error:&obj];
     objc_storeStrong(v10, obj);
     if (v11)
     {
@@ -763,12 +763,12 @@ void __52__SKConnection__receivedHeader_encryptedObjectData___block_invoke(uint6
   }
 }
 
-- (void)_receivedHeader:(id *)a3 body:(id)a4
+- (void)_receivedHeader:(id *)header body:(id)body
 {
-  v6 = a4;
-  var0 = a3->var0;
-  v37 = v6;
-  v8 = [v6 length];
+  bodyCopy = body;
+  var0 = header->var0;
+  v37 = bodyCopy;
+  v8 = [bodyCopy length];
   if (var0 == 5)
   {
     v9 = 10;
@@ -827,7 +827,7 @@ LABEL_14:
     {
       if (var0 == 5)
       {
-        [(SKConnection *)self _receivedHeader:a3 encryptedObjectData:v37];
+        [(SKConnection *)self _receivedHeader:header encryptedObjectData:v37];
         goto LABEL_52;
       }
 
@@ -855,17 +855,17 @@ LABEL_51:
         goto LABEL_52;
       }
 
-      v24 = self;
+      selfCopy2 = self;
       v25 = v37;
       v26 = 1;
 LABEL_43:
-      [(SKConnection *)v24 _serverPairVerifyContinueWithData:v25 start:v26, v32, v33, v34, v35, v36];
+      [(SKConnection *)selfCopy2 _serverPairVerifyContinueWithData:v25 start:v26, v32, v33, v34, v35, v36];
       goto LABEL_52;
     }
 
     if (var0 == 7)
     {
-      v24 = self;
+      selfCopy2 = self;
       if (self->_clientMode)
       {
         [(SKConnection *)self _clientPairVerifyWithData:v37];
@@ -879,7 +879,7 @@ LABEL_43:
 
     if (var0 == 8)
     {
-      [(SKConnection *)self _receivedHeader:a3 unencryptedObjectData:v37];
+      [(SKConnection *)self _receivedHeader:header unencryptedObjectData:v37];
       goto LABEL_52;
     }
 
@@ -928,17 +928,17 @@ LABEL_30:
       goto LABEL_52;
     }
 
-    v19 = self;
+    selfCopy4 = self;
     v20 = v37;
     v21 = 0;
 LABEL_40:
-    [(SKConnection *)v19 _serverPairSetupContinueWithData:v20 start:v21, v32, v33, v34, v35, v36];
+    [(SKConnection *)selfCopy4 _serverPairSetupContinueWithData:v20 start:v21, v32, v33, v34, v35, v36];
     goto LABEL_52;
   }
 
   if (!self->_clientMode || self->_reversePairing)
   {
-    v19 = self;
+    selfCopy4 = self;
     v20 = v37;
     v21 = 1;
     goto LABEL_40;
@@ -964,22 +964,22 @@ LABEL_40:
 LABEL_52:
 }
 
-- (void)_receiveCompletion:(id)a3
+- (void)_receiveCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   self->_readRequested = 0;
-  v5 = [v4 error];
-  v6 = v5;
-  if (!v5)
+  error = [completionCopy error];
+  v6 = error;
+  if (!error)
   {
-    v9 = [v4 length];
-    v10 = [v4 bufferData];
-    [v10 setLength:v9];
+    v9 = [completionCopy length];
+    bufferData = [completionCopy bufferData];
+    [bufferData setLength:v9];
 
     if (self->_receivingHeader)
     {
-      v11 = [v4 data];
-      if ([v11 length] <= 3)
+      data = [completionCopy data];
+      if ([data length] <= 3)
       {
         var0 = self->_ucat->var0;
         if (var0 <= 90)
@@ -995,7 +995,7 @@ LABEL_52:
             v30 = self->_ucat;
           }
 
-          [v11 length];
+          [data length];
           LogPrintF();
         }
 
@@ -1004,9 +1004,9 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v12 = [v11 bytes];
-      v13 = *v12;
-      self->_frameHeader = *v12;
+      bytes = [data bytes];
+      v13 = *bytes;
+      self->_frameHeader = *bytes;
       v14 = (*&v13 << 8) & 0xFF0000 | (*&v13 >> 8) & 0xFF00 | v13.frameLen[2];
       v15 = self->_ucat->var0;
       if (v14)
@@ -1029,14 +1029,14 @@ LABEL_36:
 
 LABEL_31:
         self->_receivingHeader = 0;
-        [v4 setMinLength:{v14, v33}];
-        [v4 setMaxLength:v14];
+        [completionCopy setMinLength:{v14, v33}];
+        [completionCopy setMaxLength:v14];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __35__SKConnection__receiveCompletion___block_invoke;
         v34[3] = &unk_279BB8648;
         v34[4] = self;
-        v23 = v4;
+        v23 = completionCopy;
         v35 = v23;
         [v23 setCompletion:v34];
         [(CUReadWriteRequestable *)self->_requestable readWithRequest:v23];
@@ -1061,10 +1061,10 @@ LABEL_31:
       }
 
 LABEL_35:
-      v26 = [MEMORY[0x277CBEA90] data];
-      [(SKConnection *)self _receivedHeader:&self->_frameHeader body:v26];
+      data2 = [MEMORY[0x277CBEA90] data];
+      [(SKConnection *)self _receivedHeader:&self->_frameHeader body:data2];
 
-      [(SKConnection *)self _receiveStart:v4];
+      [(SKConnection *)self _receiveStart:completionCopy];
       goto LABEL_36;
     }
 
@@ -1082,28 +1082,28 @@ LABEL_35:
         v28 = self->_ucat;
       }
 
-      v33 = [v4 length];
+      v33 = [completionCopy length];
       LogPrintF();
     }
 
 LABEL_26:
-    v21 = [v4 data];
-    if (v21)
+    data3 = [completionCopy data];
+    if (data3)
     {
-      [(SKConnection *)self _receivedHeader:&self->_frameHeader body:v21];
+      [(SKConnection *)self _receivedHeader:&self->_frameHeader body:data3];
     }
 
     else
     {
-      v22 = [MEMORY[0x277CBEA90] data];
-      [(SKConnection *)self _receivedHeader:&self->_frameHeader body:v22];
+      data4 = [MEMORY[0x277CBEA90] data];
+      [(SKConnection *)self _receivedHeader:&self->_frameHeader body:data4];
     }
 
-    [(SKConnection *)self _receiveStart:v4];
+    [(SKConnection *)self _receiveStart:completionCopy];
     goto LABEL_37;
   }
 
-  if ([v5 code] != -6753 && objc_msgSend(v6, "code") != -71148 && objc_msgSend(v6, "code") != -71143)
+  if ([error code] != -6753 && objc_msgSend(v6, "code") != -71148 && objc_msgSend(v6, "code") != -71143)
   {
     v19 = self->_ucat->var0;
     if (v19 > 90)
@@ -1149,11 +1149,11 @@ LABEL_7:
 LABEL_37:
 }
 
-- (void)_receiveStart:(id)a3
+- (void)_receiveStart:(id)start
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  startCopy = start;
+  v5 = startCopy;
+  if (!startCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277D02908]);
   }
@@ -1182,25 +1182,25 @@ LABEL_7:
   v10 = 3221225472;
   v11 = __30__SKConnection__receiveStart___block_invoke;
   v12 = &unk_279BB8648;
-  v13 = self;
+  selfCopy = self;
   v14 = v5;
   v7 = v5;
   [v7 setCompletion:&v9];
-  [(CUReadWriteRequestable *)self->_requestable readWithRequest:v7, v9, v10, v11, v12, v13];
+  [(CUReadWriteRequestable *)self->_requestable readWithRequest:v7, v9, v10, v11, v12, selfCopy];
   self->_readRequested = 1;
 }
 
-- (void)receivedData:(id)a3
+- (void)receivedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__SKConnection_receivedData___block_invoke;
   v7[3] = &unk_279BB8648;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1234,14 +1234,14 @@ void __29__SKConnection_receivedData___block_invoke(uint64_t a1)
   [*(a1 + 40) _receivedHeader:v3 body:v6];
 }
 
-- (void)_timeoutForXID:(id)a3
+- (void)_timeoutForXID:(id)d
 {
-  v17 = a3;
-  v4 = [v17 unsignedIntValue];
-  v5 = [(NSMutableDictionary *)self->_requests objectForKeyedSubscript:v17];
+  dCopy = d;
+  unsignedIntValue = [dCopy unsignedIntValue];
+  v5 = [(NSMutableDictionary *)self->_requests objectForKeyedSubscript:dCopy];
   if (v5)
   {
-    [(NSMutableDictionary *)self->_requests setObject:0 forKeyedSubscript:v17];
+    [(NSMutableDictionary *)self->_requests setObject:0 forKeyedSubscript:dCopy];
     mach_absolute_time();
     [v5 sendTicks];
     UpTicksToSecondsF();
@@ -1260,15 +1260,15 @@ void __29__SKConnection_receivedData___block_invoke(uint64_t a1)
       }
 
       v16 = v8;
-      v15 = v4;
+      v15 = unsignedIntValue;
       LogPrintF();
     }
 
 LABEL_6:
-    v9 = [v5 responseHandler];
+    responseHandler = [v5 responseHandler];
     v10 = *MEMORY[0x277CCA590];
     v11 = NSErrorF_safe();
-    (v9)[2](v9, 0, 0, v11);
+    (responseHandler)[2](responseHandler, 0, 0, v11);
 
     goto LABEL_7;
   }
@@ -1293,28 +1293,28 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)_timeoutForSendEntry:(id)a3
+- (void)_timeoutForSendEntry:(id)entry
 {
-  v20 = a3;
-  v4 = [v20 xidObj];
-  if (v4)
+  entryCopy = entry;
+  xidObj = [entryCopy xidObj];
+  if (xidObj)
   {
-    [(SKConnection *)self _timeoutForXID:v4];
+    [(SKConnection *)self _timeoutForXID:xidObj];
     goto LABEL_15;
   }
 
   mach_absolute_time();
-  [v20 queueTicks];
+  [entryCopy queueTicks];
   UpTicksToSecondsF();
   v6 = v5;
-  v7 = [(NSMutableArray *)self->_sendArray indexOfObject:v20];
+  v7 = [(NSMutableArray *)self->_sendArray indexOfObject:entryCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_sendArray removeObjectAtIndex:v7];
     var0 = self->_ucat->var0;
     if (var0 <= 60)
     {
-      v11 = v20;
+      v11 = entryCopy;
       if (var0 == -1)
       {
         ucat = self->_ucat;
@@ -1324,7 +1324,7 @@ LABEL_7:
         }
 
         v17 = self->_ucat;
-        v11 = v20;
+        v11 = entryCopy;
       }
 
       [v11 requestID];
@@ -1333,10 +1333,10 @@ LABEL_7:
     }
 
 LABEL_13:
-    v9 = [v20 responseHandler];
+    responseHandler = [entryCopy responseHandler];
     v15 = *MEMORY[0x277CCA590];
     v16 = NSErrorF_safe();
-    (v9)[2](v9, 0, 0, v16);
+    (responseHandler)[2](responseHandler, 0, 0, v16);
 
     goto LABEL_14;
   }
@@ -1358,24 +1358,24 @@ LABEL_13:
     v13 = self->_ucat;
   }
 
-  v9 = [v20 requestID];
+  responseHandler = [entryCopy requestID];
   LogPrintF();
 LABEL_14:
 
 LABEL_15:
 }
 
-- (void)_abortRequestsWithError:(id)a3
+- (void)_abortRequestsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   requests = self->_requests;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __40__SKConnection__abortRequestsWithError___block_invoke;
   v10 = &unk_279BB7BD0;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = errorCopy;
+  v6 = errorCopy;
   [(NSMutableDictionary *)requests enumerateKeysAndObjectsUsingBlock:&v7];
   [(NSMutableDictionary *)self->_requests removeAllObjects:v7];
 }
@@ -1425,66 +1425,66 @@ LABEL_5:
 
 - (void)_processSends
 {
-  v3 = [(NSMutableArray *)self->_sendArray popFirstObject];
-  if (v3)
+  popFirstObject = [(NSMutableArray *)self->_sendArray popFirstObject];
+  if (popFirstObject)
   {
-    v4 = v3;
+    popFirstObject2 = popFirstObject;
     do
     {
-      v5 = [v4 eventID];
-      if (v5)
+      eventID = [popFirstObject2 eventID];
+      if (eventID)
       {
-        v6 = [v4 eventData];
-        v7 = v6;
-        if (v6)
+        eventData = [popFirstObject2 eventData];
+        v7 = eventData;
+        if (eventData)
         {
-          v8 = v6;
+          data = eventData;
         }
 
         else
         {
-          v8 = [MEMORY[0x277CBEA90] data];
+          data = [MEMORY[0x277CBEA90] data];
         }
 
-        v10 = v8;
+        v10 = data;
 
-        v14 = [v4 completion];
-        v15 = v14;
-        if (!v14)
+        completion = [popFirstObject2 completion];
+        v15 = completion;
+        if (!completion)
         {
-          v14 = &__block_literal_global_243;
+          completion = &__block_literal_global_243;
         }
 
-        v16 = MEMORY[0x26676A4C0](v14);
+        v16 = MEMORY[0x26676A4C0](completion);
 
-        v17 = [v4 xid];
-        v18 = [v4 options];
-        [(SKConnection *)self _sendEventID:v5 data:v10 xid:v17 options:v18 completion:v16];
+        v17 = [popFirstObject2 xid];
+        options = [popFirstObject2 options];
+        [(SKConnection *)self _sendEventID:eventID data:v10 xid:v17 options:options completion:v16];
 
         goto LABEL_20;
       }
 
-      v9 = [v4 requestID];
-      if (v9)
+      requestID = [popFirstObject2 requestID];
+      if (requestID)
       {
-        v10 = v9;
-        v11 = [v4 request];
-        v12 = v11;
-        if (v11)
+        v10 = requestID;
+        request = [popFirstObject2 request];
+        v12 = request;
+        if (request)
         {
-          v13 = v11;
+          dictionary = request;
         }
 
         else
         {
-          v13 = [MEMORY[0x277CBEAC0] dictionary];
+          dictionary = [MEMORY[0x277CBEAC0] dictionary];
         }
 
-        v20 = v13;
+        v20 = dictionary;
 
-        v21 = [v4 responseHandler];
-        v22 = [v4 options];
-        [(SKConnection *)self _sendRequestID:v10 request:v20 options:v22 sendEntry:v4 responseHandler:v21];
+        responseHandler = [popFirstObject2 responseHandler];
+        options2 = [popFirstObject2 options];
+        [(SKConnection *)self _sendRequestID:v10 request:v20 options:options2 sendEntry:popFirstObject2 responseHandler:responseHandler];
 
         goto LABEL_20;
       }
@@ -1509,19 +1509,19 @@ LABEL_19:
       v10 = 0;
 LABEL_20:
 
-      v4 = [(NSMutableArray *)self->_sendArray popFirstObject];
+      popFirstObject2 = [(NSMutableArray *)self->_sendArray popFirstObject];
     }
 
-    while (v4);
+    while (popFirstObject2);
   }
 }
 
-- (void)_sendHeaderData:(id)a3 bodyData:(id)a4 completion:(id)a5
+- (void)_sendHeaderData:(id)data bodyData:(id)bodyData completion:(id)completion
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  bodyDataCopy = bodyData;
+  completionCopy = completion;
   v11 = self->_requestable;
   if (v11)
   {
@@ -1531,12 +1531,12 @@ LABEL_20:
     v23 = __52__SKConnection__sendHeaderData_bodyData_completion___block_invoke;
     v24 = &unk_279BB82D0;
     v25 = v12;
-    v26 = v10;
+    v26 = completionCopy;
     [v12 setCompletion:&v21];
-    if ([v9 length])
+    if ([bodyDataCopy length])
     {
-      v28[0] = v8;
-      v28[1] = v9;
+      v28[0] = dataCopy;
+      v28[1] = bodyDataCopy;
       v13 = MEMORY[0x277CBEA60];
       v14 = v28;
       v15 = 2;
@@ -1544,7 +1544,7 @@ LABEL_20:
 
     else
     {
-      v27 = v8;
+      v27 = dataCopy;
       v13 = MEMORY[0x277CBEA60];
       v14 = &v27;
       v15 = 1;
@@ -1562,10 +1562,10 @@ LABEL_20:
     if (v12)
     {
       v16 = objc_alloc_init(MEMORY[0x277CBEB28]);
-      [v16 appendData:v8];
-      if ([v9 length])
+      [v16 appendData:dataCopy];
+      if ([bodyDataCopy length])
       {
-        [v16 appendData:v9];
+        [v16 appendData:bodyDataCopy];
       }
 
       (*(v12 + 2))(v12, v16);
@@ -1579,7 +1579,7 @@ LABEL_20:
       v16 = v17;
     }
 
-    (*(v10 + 2))(v10, v17);
+    (*(completionCopy + 2))(completionCopy, v17);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1603,40 +1603,40 @@ void __52__SKConnection__sendHeaderData_bodyData_completion___block_invoke(uint6
   }
 }
 
-- (void)_sendResponse:(id)a3 error:(id)a4 xid:(id)a5 requestID:(id)a6 completion:(id)a7
+- (void)_sendResponse:(id)response error:(id)error xid:(id)xid requestID:(id)d completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  responseCopy = response;
+  errorCopy = error;
+  xidCopy = xid;
+  dCopy = d;
+  completionCopy = completion;
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
   v65 = __Block_byref_object_copy__243;
   v66 = __Block_byref_object_dispose__244;
   v67 = 0;
-  v17 = [v14 unsignedIntValue];
+  unsignedIntValue = [xidCopy unsignedIntValue];
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __61__SKConnection__sendResponse_error_xid_requestID_completion___block_invoke;
   v58[3] = &unk_279BB7BA8;
   v60 = &v62;
   v58[4] = self;
-  v61 = v17;
-  v54 = v16;
+  v61 = unsignedIntValue;
+  v54 = completionCopy;
   v59 = v54;
   v53 = MEMORY[0x26676A4C0](v58);
   v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v19 = v18;
-  if (v13)
+  if (errorCopy)
   {
     v20 = 1;
   }
 
   else
   {
-    v20 = v12 == 0;
+    v20 = responseCopy == 0;
   }
 
   if (v20)
@@ -1646,13 +1646,13 @@ void __52__SKConnection__sendHeaderData_bodyData_completion___block_invoke(uint6
 
   else
   {
-    v21 = v12;
+    v21 = responseCopy;
   }
 
   [v18 setObject:v21 forKeyedSubscript:&unk_28776E120];
   [v19 setObject:&unk_28776E1B0 forKeyedSubscript:&unk_28776E150];
-  [v19 setObject:v14 forKeyedSubscript:&unk_28776E180];
-  if (v13)
+  [v19 setObject:xidCopy forKeyedSubscript:&unk_28776E180];
+  if (errorCopy)
   {
     var0 = self->_ucat->var0;
     if (var0 <= 60)
@@ -1669,7 +1669,7 @@ void __52__SKConnection__sendHeaderData_bodyData_completion___block_invoke(uint6
       }
 
       CUPrintNSError();
-      v45 = v44 = v17;
+      v45 = v44 = unsignedIntValue;
       LogPrintF();
     }
 
@@ -1677,8 +1677,8 @@ LABEL_12:
     CUEncodeNSErrorDictionary();
   }
 
-  v49 = v17;
-  v52 = v15;
+  v49 = unsignedIntValue;
+  v52 = dCopy;
   v57 = 0;
   v24 = MEMORY[0x26676A090](v19, 0, &v57);
   v25 = v24;
@@ -1709,8 +1709,8 @@ LABEL_12:
   v27 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v56 length:4];
   v28 = self->_mainStream;
   v29 = v28;
-  v50 = v14;
-  v51 = v12;
+  v50 = xidCopy;
+  v51 = responseCopy;
   if (!v28)
   {
     v40 = *MEMORY[0x277CCA590];
@@ -1753,8 +1753,8 @@ LABEL_19:
 
 LABEL_22:
 
-  v14 = v50;
-  v12 = v51;
+  xidCopy = v50;
+  responseCopy = v51;
 LABEL_23:
 
 LABEL_24:
@@ -1803,14 +1803,14 @@ LABEL_7:
   return v9();
 }
 
-- (void)_sendRequestID:(id)a3 request:(id)a4 options:(id)a5 sendEntry:(id)a6 responseHandler:(id)a7
+- (void)_sendRequestID:(id)d request:(id)request options:(id)options sendEntry:(id)entry responseHandler:(id)handler
 {
   v71[4] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v50 = a4;
-  v54 = a5;
-  v52 = a6;
-  v13 = a7;
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  entryCopy = entry;
+  handlerCopy = handler;
   xidLast = self->_xidLast;
   if (xidLast + 1 > 1)
   {
@@ -1835,16 +1835,16 @@ LABEL_7:
   v59[3] = &unk_279BB7B58;
   v62 = &v64;
   v59[4] = self;
-  v53 = v12;
+  v53 = dCopy;
   v60 = v53;
   v63 = v15;
-  v49 = v13;
+  v49 = handlerCopy;
   v61 = v49;
   v48 = MEMORY[0x26676A4C0](v59);
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v15];
   v70[0] = &unk_28776E120;
   v70[1] = &unk_28776E138;
-  v71[0] = v50;
+  v71[0] = requestCopy;
   v71[1] = v53;
   v70[2] = &unk_28776E150;
   v70[3] = &unk_28776E180;
@@ -1891,16 +1891,16 @@ LABEL_7:
     if (v24)
     {
       v25 = objc_alloc_init(SKRequestEntry);
-      [(SKRequestEntry *)v25 setOptions:v54];
+      [(SKRequestEntry *)v25 setOptions:optionsCopy];
       [(SKRequestEntry *)v25 setRequestID:v53];
       [(SKRequestEntry *)v25 setResponseHandler:v49];
       [(SKRequestEntry *)v25 setSendTicks:mach_absolute_time()];
-      if (v52)
+      if (entryCopy)
       {
-        v26 = [v52 timer];
-        [(SKRequestEntry *)v25 setTimer:v26];
+        timer = [entryCopy timer];
+        [(SKRequestEntry *)v25 setTimer:timer];
 
-        [v52 setXidObj:v51];
+        [entryCopy setXidObj:v51];
       }
 
       requests = self->_requests;
@@ -1927,7 +1927,7 @@ LABEL_7:
         {
 LABEL_16:
           [(SKConnection *)self _sendHeaderData:v20 bodyData:v24 completion:&__block_literal_global_250, v43, v44, v45, v46];
-          if (v54)
+          if (optionsCopy)
           {
             CFDictionaryGetDouble();
             if (v32 > 0.0)
@@ -2032,12 +2032,12 @@ uint64_t __73__SKConnection__sendRequestID_request_options_sendEntry_responseHan
   return [v2 _timeoutForXID:v3];
 }
 
-- (void)sendRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6
+- (void)sendRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
   {
@@ -2060,14 +2060,14 @@ uint64_t __73__SKConnection__sendRequestID_request_options_sendEntry_responseHan
 LABEL_11:
     v16 = *MEMORY[0x277CCA590];
     v17 = NSErrorF_safe();
-    (*(v13 + 2))(v13, 0, 0, v17);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v17);
 
     goto LABEL_18;
   }
 
   if ((self->_runState & 0xFFFFFFF7) == 0x14 && ![(NSMutableArray *)self->_sendArray count])
   {
-    [(SKConnection *)self _sendRequestID:v10 request:v11 options:v12 sendEntry:0 responseHandler:v13];
+    [(SKConnection *)self _sendRequestID:dCopy request:requestCopy options:optionsCopy sendEntry:0 responseHandler:handlerCopy];
     goto LABEL_18;
   }
 
@@ -2077,7 +2077,7 @@ LABEL_11:
     if (v15 != -1)
     {
 LABEL_9:
-      v24 = v10;
+      v24 = dCopy;
       v25 = [(NSMutableArray *)self->_sendArray count];
       LogPrintF();
       goto LABEL_14;
@@ -2093,12 +2093,12 @@ LABEL_9:
 
 LABEL_14:
   v19 = objc_alloc_init(SKSendEntry);
-  [(SKSendEntry *)v19 setOptions:v12];
+  [(SKSendEntry *)v19 setOptions:optionsCopy];
   [(SKSendEntry *)v19 setQueueTicks:mach_absolute_time()];
-  [(SKSendEntry *)v19 setRequestID:v10];
-  [(SKSendEntry *)v19 setRequest:v11];
-  [(SKSendEntry *)v19 setResponseHandler:v13];
-  if (v12)
+  [(SKSendEntry *)v19 setRequestID:dCopy];
+  [(SKSendEntry *)v19 setRequest:requestCopy];
+  [(SKSendEntry *)v19 setResponseHandler:handlerCopy];
+  if (optionsCopy)
   {
     CFDictionaryGetDouble();
     if (v20 > 0.0)
@@ -2173,14 +2173,14 @@ LABEL_7:
   return v10();
 }
 
-- (void)sendEventID:(id)a3 event:(id)a4 options:(id)a5 completion:(id)a6
+- (void)sendEventID:(id)d event:(id)event options:(id)options completion:(id)completion
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
-  v14 = a4;
+  eventCopy = event;
   dispatch_assert_queue_V2(dispatchQueue);
   xidLast = self->_xidLast;
   if (xidLast + 1 > 1)
@@ -2196,8 +2196,8 @@ LABEL_7:
   self->_xidLast = v16;
   v24[0] = &unk_28776E120;
   v24[1] = &unk_28776E138;
-  v25[0] = v14;
-  v25[1] = v10;
+  v25[0] = eventCopy;
+  v25[1] = dCopy;
   v25[2] = &unk_28776E168;
   v24[2] = &unk_28776E150;
   v24[3] = &unk_28776E180;
@@ -2209,24 +2209,24 @@ LABEL_7:
   v19 = MEMORY[0x26676A090](v18, 0, &v23);
   if (v19)
   {
-    [(SKConnection *)self sendEventID:v10 data:v19 xid:v16 options:v11 completion:v12];
+    [(SKConnection *)self sendEventID:dCopy data:v19 xid:v16 options:optionsCopy completion:completionCopy];
   }
 
   else
   {
     v21 = *MEMORY[0x277CCA590];
     v22 = NSErrorF_safe();
-    v12[2](v12, v22);
+    completionCopy[2](completionCopy, v22);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_serverError:(id)a3
+- (void)_serverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   var0 = self->_ucat->var0;
-  v9 = v4;
+  v9 = errorCopy;
   if (var0 <= 30)
   {
     if (var0 != -1)
@@ -2235,12 +2235,12 @@ LABEL_3:
       v8 = CUPrintNSError();
       LogPrintF();
 
-      v4 = v9;
+      errorCopy = v9;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v9;
+    errorCopy = v9;
     if (v6)
     {
       ucat = self->_ucat;
@@ -2249,14 +2249,14 @@ LABEL_3:
   }
 
 LABEL_5:
-  [(SKConnection *)self _invalidateWithError:v4, v8];
+  [(SKConnection *)self _invalidateWithError:errorCopy, v8];
 }
 
-- (void)_serverPairVerifyCompleted:(id)a3
+- (void)_serverPairVerifyCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completedCopy = completed;
+  v5 = completedCopy;
+  if (completedCopy)
   {
     goto LABEL_3;
   }
@@ -2330,9 +2330,9 @@ LABEL_13:
 LABEL_8:
 }
 
-- (void)_serverPairVerifyContinueWithData:(id)a3 start:(BOOL)a4
+- (void)_serverPairVerifyContinueWithData:(id)data start:(BOOL)start
 {
-  v6 = a3;
+  dataCopy = data;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -2370,7 +2370,7 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  if (a4 || !self->_pairVerifySession)
+  if (start || !self->_pairVerifySession)
   {
     var0 = self->_ucat->var0;
     if (var0 > 30)
@@ -2432,7 +2432,7 @@ LABEL_12:
       v28 = self->_ucat;
     }
 
-    v12 = [v6 length];
+    v12 = [dataCopy length];
     CUPrintNSObjectOneLineEx();
     v30 = v29 = v12;
     LogPrintF();
@@ -2456,7 +2456,7 @@ LABEL_12:
   {
     v18 = self->_ucat;
 LABEL_7:
-    [v6 length];
+    [dataCopy length];
     v10 = CUPrintNSObjectOneLineEx();
     LogPrintF();
 LABEL_20:
@@ -2556,11 +2556,11 @@ void *__56__SKConnection__serverPairVerifyContinueWithData_start___block_invoke_
   return result;
 }
 
-- (void)_serverPairSetupCompleted:(id)a3
+- (void)_serverPairSetupCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  completedCopy = completed;
+  v5 = completedCopy;
+  if (!completedCopy)
   {
     pairSetupSession = self->_pairSetupSession;
     v19 = 0;
@@ -2640,10 +2640,10 @@ LABEL_8:
   }
 }
 
-- (void)_serverPairSetupContinueWithData:(id)a3 start:(BOOL)a4
+- (void)_serverPairSetupContinueWithData:(id)data start:(BOOL)start
 {
-  v4 = a4;
-  v6 = a3;
+  startCopy = start;
+  dataCopy = data;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -2664,7 +2664,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v4)
+      if (startCopy)
       {
         Int64 = CFDictionaryGetInt64();
         self->_reversePairing = Int64 != 0;
@@ -2729,7 +2729,7 @@ LABEL_31:
           v20 = self->_ucat;
         }
 
-        [v6 length];
+        [dataCopy length];
         v12 = CUPrintNSObjectOneLineEx();
         LogPrintF();
 LABEL_30:
@@ -2751,7 +2751,7 @@ LABEL_30:
           v30 = self->_ucat;
         }
 
-        v14 = [v6 length];
+        v14 = [dataCopy length];
         CUPrintNSObjectOneLineEx();
         v33 = v32 = v14;
         LogPrintF();
@@ -3223,11 +3223,11 @@ LABEL_26:
   }
 }
 
-- (void)_clientError:(id)a3
+- (void)_clientError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   var0 = self->_ucat->var0;
-  v14 = v4;
+  v14 = errorCopy;
   if (var0 <= 90)
   {
     if (var0 != -1)
@@ -3236,12 +3236,12 @@ LABEL_3:
       v13 = CUPrintNSError();
       LogPrintF();
 
-      v4 = v14;
+      errorCopy = v14;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v14;
+    errorCopy = v14;
     if (v6)
     {
       ucat = self->_ucat;
@@ -3258,10 +3258,10 @@ LABEL_5:
     v9 = self->_startTimer;
     self->_startTimer = 0;
 
-    v4 = v14;
+    errorCopy = v14;
   }
 
-  if (v4)
+  if (errorCopy)
   {
     [(SKConnection *)self _abortRequestsWithError:?];
   }
@@ -3277,11 +3277,11 @@ LABEL_5:
   [(SKConnection *)self _invalidateWithError:v14];
 }
 
-- (void)_clientPairVerifyCompleted:(id)a3
+- (void)_clientPairVerifyCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  completedCopy = completed;
+  v5 = completedCopy;
+  if (!completedCopy)
   {
     pairVerifySession = self->_pairVerifySession;
     v18 = 0;
@@ -3354,9 +3354,9 @@ LABEL_8:
   [(SKConnection *)self _run];
 }
 
-- (void)_clientPairVerifyWithData:(id)a3
+- (void)_clientPairVerifyWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -3421,7 +3421,7 @@ LABEL_8:
         v22 = self->_ucat;
       }
 
-      [v4 length];
+      [dataCopy length];
       v23 = CUPrintNSObjectOneLineEx();
       LogPrintF();
 
@@ -3595,9 +3595,9 @@ void *__38__SKConnection__clientPairVerifyStart__block_invoke_2(uint64_t a1, uin
   return result;
 }
 
-- (void)_clientPairSetupCompleted:(id)a3
+- (void)_clientPairSetupCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   authThrottleTimer = self->_authThrottleTimer;
   if (authThrottleTimer)
   {
@@ -3607,7 +3607,7 @@ void *__38__SKConnection__clientPairVerifyStart__block_invoke_2(uint64_t a1, uin
     self->_authThrottleTimer = 0;
   }
 
-  v8 = v4;
+  v8 = completedCopy;
   v9 = v8;
   if (!v8)
   {
@@ -3758,9 +3758,9 @@ LABEL_9:
   }
 }
 
-- (void)_clientPairSetupContinueWithData:(id)a3
+- (void)_clientPairSetupContinueWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -3824,7 +3824,7 @@ LABEL_19:
     if (var0 != -1)
     {
 LABEL_7:
-      [v4 length];
+      [dataCopy length];
       v26 = CUPrintNSObjectOneLineEx();
       LogPrintF();
 
@@ -4053,12 +4053,12 @@ void *__37__SKConnection__clientPairSetupStart__block_invoke_3(uint64_t a1, uint
   return result;
 }
 
-- (void)_clientConnectCompleted:(id)a3
+- (void)_clientConnectCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   var0 = self->_ucat->var0;
-  v12 = v4;
-  if (v4)
+  v12 = completedCopy;
+  if (completedCopy)
   {
     if (var0 > 90)
     {
@@ -4147,10 +4147,10 @@ LABEL_5:
   bleConnection = self->_bleConnection;
   self->_bleConnection = v5;
 
-  v7 = [(SKDevice *)self->_blePeerDevice blePSM];
-  if (v7)
+  blePSM = [(SKDevice *)self->_blePeerDevice blePSM];
+  if (blePSM)
   {
-    v8 = v7;
+    v8 = blePSM;
   }
 
   else
@@ -4174,11 +4174,11 @@ LABEL_5:
 
   [(CBConnection *)v5 setLabel:label];
   [(CBConnection *)v5 setUseCase:self->_bluetoothUseCase];
-  v10 = [(SKDevice *)self->_blePeerDevice identifier];
-  if (v10)
+  identifier = [(SKDevice *)self->_blePeerDevice identifier];
+  if (identifier)
   {
     v11 = objc_alloc_init(MEMORY[0x277CBE020]);
-    [v11 setIdentifier:v10];
+    [v11 setIdentifier:identifier];
     [(CBConnection *)v5 setPeerDevice:v11];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -4547,7 +4547,7 @@ LABEL_6:
   }
 }
 
-- (void)updatePasswordType:(int)a3
+- (void)updatePasswordType:(int)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -4555,7 +4555,7 @@ LABEL_6:
   v4[2] = __35__SKConnection_updatePasswordType___block_invoke;
   v4[3] = &unk_279BB7FA0;
   v4[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -4575,17 +4575,17 @@ void __35__SKConnection_updatePasswordType___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tryPassword:(id)a3
+- (void)tryPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__SKConnection_tryPassword___block_invoke;
   v7[3] = &unk_279BB8648;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passwordCopy;
+  v6 = passwordCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -4691,21 +4691,21 @@ LABEL_6:
   self->_pairSetupSession = 0;
 }
 
-- (id)deriveKeyWithSaltPtr:(const void *)a3 saltLen:(unint64_t)a4 infoPtr:(const void *)a5 infoLen:(unint64_t)a6 keyLen:(unint64_t)a7 error:(id *)a8
+- (id)deriveKeyWithSaltPtr:(const void *)ptr saltLen:(unint64_t)len infoPtr:(const void *)infoPtr infoLen:(unint64_t)infoLen keyLen:(unint64_t)keyLen error:(id *)error
 {
   pairSetupSession = self->_pairSetupSession;
   if (pairSetupSession)
   {
     v15 = pairSetupSession;
 LABEL_4:
-    v16 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:a7];
-    if (-[CUPairingSession deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:](v15, "deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:", a3, a4, a5, a6, a7, [v16 mutableBytes]))
+    v16 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:keyLen];
+    if (-[CUPairingSession deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:](v15, "deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:", ptr, len, infoPtr, infoLen, keyLen, [v16 mutableBytes]))
     {
-      if (a8)
+      if (error)
       {
         v20 = *MEMORY[0x277CCA590];
         NSErrorF_safe();
-        *a8 = v17 = 0;
+        *error = v17 = 0;
       }
 
       else
@@ -4728,11 +4728,11 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (a8)
+  if (error)
   {
     v19 = *MEMORY[0x277CCA590];
     NSErrorF_safe();
-    *a8 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -4829,10 +4829,10 @@ LABEL_12:
   MEMORY[0x2821F96F8](p_var0, v17);
 }
 
-- (void)_invalidateCore:(id)a3
+- (void)_invalidateCore:(id)core
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coreCopy = core;
   startTimer = self->_startTimer;
   if (startTimer)
   {
@@ -4854,9 +4854,9 @@ LABEL_12:
     }
   }
 
-  stepError = v4;
-  v31 = v4;
-  if (v4 || (stepError = self->_stepError) != 0)
+  stepError = coreCopy;
+  v31 = coreCopy;
+  if (coreCopy || (stepError = self->_stepError) != 0)
   {
     v11 = stepError;
   }
@@ -4904,45 +4904,45 @@ LABEL_12:
             v25 = self->_ucat;
           }
 
-          v19 = [v17 requestID];
-          v20 = v19;
-          if (!v19)
+          requestID = [v17 requestID];
+          eventID = requestID;
+          if (!requestID)
           {
-            v20 = [v17 eventID];
-            v32 = v20;
+            eventID = [v17 eventID];
+            v32 = eventID;
           }
 
           CUPrintNSError();
-          v30 = v29 = v20;
+          v30 = v29 = eventID;
           LogPrintF();
 
-          if (!v19)
+          if (!requestID)
           {
           }
         }
 
 LABEL_23:
-        v22 = [v17 timer];
+        timer = [v17 timer];
         [v17 setTimer:0];
-        if (v22)
+        if (timer)
         {
-          dispatch_source_cancel(v22);
+          dispatch_source_cancel(timer);
         }
 
-        v23 = [v17 completion];
+        completion = [v17 completion];
         [v17 setCompletion:0];
-        if (v23)
+        if (completion)
         {
-          (v23)[2](v23, v12);
+          (completion)[2](completion, v12);
         }
 
         else
         {
-          v24 = [v17 responseHandler];
+          responseHandler = [v17 responseHandler];
           [v17 setResponseHandler:0];
-          if (v24)
+          if (responseHandler)
           {
-            (v24)[2](v24, 0, 0, v12);
+            (responseHandler)[2](responseHandler, 0, 0, v12);
           }
         }
 
@@ -4961,15 +4961,15 @@ LABEL_23:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateWithError:(id)a3
+- (void)_invalidateWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
+  errorCopy = error;
+  v5 = errorCopy;
   if (!self->_invalidateCalled)
   {
     self->_invalidateCalled = 1;
     var0 = self->_ucat->var0;
-    v9 = v4;
+    v9 = errorCopy;
     if (var0 <= 30)
     {
       if (var0 == -1)
@@ -4988,11 +4988,11 @@ LABEL_23:
 
 LABEL_6:
     [(SKConnection *)self _invalidateCore:v9, v8];
-    v4 = [(SKConnection *)self _invalidated];
+    errorCopy = [(SKConnection *)self _invalidated];
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](errorCopy, v5);
 }
 
 - (void)invalidate
@@ -5006,9 +5006,9 @@ LABEL_6:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -5020,8 +5020,8 @@ LABEL_6:
   v16 = __40__SKConnection__activateWithCompletion___block_invoke;
   v17 = &unk_279BB8500;
   v20 = &v21;
-  v18 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = completionCopy;
   v19 = v5;
   v6 = MEMORY[0x26676A4C0](&v14);
   if (self->_activateCalled || self->_invalidateCalled)
@@ -5068,13 +5068,13 @@ LABEL_8:
       ucat = self->_ucat;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     LogPrintF();
   }
 
 LABEL_12:
   self->_activateCalled = 1;
-  [(SKConnection *)self _run:v13];
+  [(SKConnection *)self _run:selfCopy2];
   (*(v5 + 2))(v5, 0);
 LABEL_13:
   v6[2](v6);
@@ -5121,25 +5121,25 @@ LABEL_7:
   return v8();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SKConnection_activateWithCompletion___block_invoke;
   v7[3] = &unk_279BB82D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v4 = a3;
-  [v4 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  [labelCopy UTF8String];
 
   LogCategoryReplaceF();
 }

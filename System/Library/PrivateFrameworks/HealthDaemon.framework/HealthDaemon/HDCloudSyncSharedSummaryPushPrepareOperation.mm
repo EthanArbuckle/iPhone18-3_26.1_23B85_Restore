@@ -1,7 +1,7 @@
 @interface HDCloudSyncSharedSummaryPushPrepareOperation
-- (void)_fetchAllTransactionsWithCompletion:(id)a3;
-- (void)_fetchAuthorizationIdentifiersByContactIdentifierForParticipants:(id)a3 completion:(id)a4;
-- (void)_pendingAndAcceptedParticipantRecordsInZone:(id)a3 completion:(id)a4;
+- (void)_fetchAllTransactionsWithCompletion:(id)completion;
+- (void)_fetchAuthorizationIdentifiersByContactIdentifierForParticipants:(id)participants completion:(id)completion;
+- (void)_pendingAndAcceptedParticipantRecordsInZone:(id)zone completion:(id)completion;
 - (void)main;
 @end
 
@@ -10,15 +10,15 @@
 - (void)main
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
 
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [v5 cachedCloudState];
-  v7 = [v4 primaryCKContainer];
-  v8 = [v7 containerIdentifier];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration2 cachedCloudState];
+  primaryCKContainer = [repository primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
   v20 = 0;
-  v9 = [v6 privateMetadataZoneForContainerID:v8 error:&v20];
+  v9 = [cachedCloudState privateMetadataZoneForContainerID:containerIdentifier error:&v20];
   v10 = v20;
   privateMetadataZone = self->_privateMetadataZone;
   self->_privateMetadataZone = v9;
@@ -36,11 +36,11 @@
 
   if (!v13)
   {
-    v14 = self;
+    selfCopy3 = self;
     v15 = 0;
     v16 = v10;
 LABEL_11:
-    [(HDCloudSyncOperation *)v14 finishWithSuccess:v15 error:v16];
+    [(HDCloudSyncOperation *)selfCopy3 finishWithSuccess:v15 error:v16];
     goto LABEL_12;
   }
 
@@ -51,11 +51,11 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_228986000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: [summary-sharing] The metadata zone does not exist. Unable to continue push operation.", buf, 0xCu);
     }
 
-    v14 = self;
+    selfCopy3 = self;
     v15 = 1;
     v16 = 0;
     goto LABEL_11;
@@ -164,56 +164,56 @@ void __52__HDCloudSyncSharedSummaryPushPrepareOperation_main__block_invoke_292(u
   [v9 finishWithSuccess:v10 error:v8];
 }
 
-- (void)_fetchAllTransactionsWithCompletion:(id)a3
+- (void)_fetchAllTransactionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [v5 repository];
-  v7 = [v6 cloudSyncShimProvider];
-  v8 = [v7 sharedSummariesShim];
+  completionCopy = completion;
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  cloudSyncShimProvider = [repository cloudSyncShimProvider];
+  sharedSummariesShim = [cloudSyncShimProvider sharedSummariesShim];
 
-  v9 = [(HDCloudSyncOperation *)self configuration];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__HDCloudSyncSharedSummaryPushPrepareOperation__fetchAllTransactionsWithCompletion___block_invoke;
   v11[3] = &unk_27861BB88;
-  v12 = v4;
-  v10 = v4;
-  [v8 fetchAllTransactionsWithConfiguration:v9 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [sharedSummariesShim fetchAllTransactionsWithConfiguration:configuration2 completion:v11];
 }
 
-- (void)_pendingAndAcceptedParticipantRecordsInZone:(id)a3 completion:(id)a4
+- (void)_pendingAndAcceptedParticipantRecordsInZone:(id)zone completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  zoneCopy = zone;
   v21 = 0;
-  v8 = [v7 recordsForClass:objc_opt_class() error:&v21];
+  v8 = [zoneCopy recordsForClass:objc_opt_class() error:&v21];
 
   v9 = v21;
   if (v8)
   {
-    v10 = [(HDCloudSyncOperation *)self configuration];
-    v11 = [v10 repository];
-    v12 = [v11 cloudSyncShimProvider];
-    v13 = [v12 summarySharingEntryShim];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration repository];
+    cloudSyncShimProvider = [repository cloudSyncShimProvider];
+    summarySharingEntryShim = [cloudSyncShimProvider summarySharingEntryShim];
 
     v14 = [v8 hk_filter:&__block_literal_global_63];
     v15 = [v14 hk_map:&__block_literal_global_298];
-    v16 = [(HDCloudSyncOperation *)self configuration];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __103__HDCloudSyncSharedSummaryPushPrepareOperation__pendingAndAcceptedParticipantRecordsInZone_completion___block_invoke_3;
     v18[3] = &unk_27861BBD0;
     v18[4] = self;
     v19 = v14;
-    v20 = v6;
+    v20 = completionCopy;
     v17 = v14;
-    [v13 pauseStatusForEntriesWithUUIDs:v15 configuration:v16 completion:v18];
+    [summarySharingEntryShim pauseStatusForEntriesWithUUIDs:v15 configuration:configuration2 completion:v18];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 
@@ -297,23 +297,23 @@ uint64_t __103__HDCloudSyncSharedSummaryPushPrepareOperation__pendingAndAccepted
   return v9;
 }
 
-- (void)_fetchAuthorizationIdentifiersByContactIdentifierForParticipants:(id)a3 completion:(id)a4
+- (void)_fetchAuthorizationIdentifiersByContactIdentifierForParticipants:(id)participants completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 hk_mapToSet:&__block_literal_global_301_0];
-  v8 = [(HDCloudSyncOperation *)self configuration];
-  v9 = [v8 repository];
-  v10 = [v9 cloudSyncShimProvider];
-  v11 = [v10 summarySharingEntryShim];
+  completionCopy = completion;
+  v7 = [participants hk_mapToSet:&__block_literal_global_301_0];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  cloudSyncShimProvider = [repository cloudSyncShimProvider];
+  summarySharingEntryShim = [cloudSyncShimProvider summarySharingEntryShim];
 
-  v12 = [(HDCloudSyncOperation *)self configuration];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __124__HDCloudSyncSharedSummaryPushPrepareOperation__fetchAuthorizationIdentifiersByContactIdentifierForParticipants_completion___block_invoke_2;
   v14[3] = &unk_27861BBF8;
-  v15 = v6;
-  v13 = v6;
-  [v11 authorizationIdentifiersByContactIdentifierForParticipants:v7 configuration:v12 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [summarySharingEntryShim authorizationIdentifiersByContactIdentifierForParticipants:v7 configuration:configuration2 completion:v14];
 }
 
 @end

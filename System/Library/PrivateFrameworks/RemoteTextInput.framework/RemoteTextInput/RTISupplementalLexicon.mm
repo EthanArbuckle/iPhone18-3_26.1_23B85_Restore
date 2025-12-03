@@ -1,30 +1,30 @@
 @interface RTISupplementalLexicon
-- (BOOL)isEqual:(id)a3;
-- (RTISupplementalLexicon)initWithCoder:(id)a3;
-- (RTISupplementalLexicon)initWithTISupplementalLexicon:(id)a3 iconForIdentifier:(id)a4;
-- (RTISupplementalLexicon)initWithTISupplementalLexicon:(id)a3 iconProvider:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (RTISupplementalLexicon)initWithCoder:(id)coder;
+- (RTISupplementalLexicon)initWithTISupplementalLexicon:(id)lexicon iconForIdentifier:(id)identifier;
+- (RTISupplementalLexicon)initWithTISupplementalLexicon:(id)lexicon iconProvider:(id)provider;
 - (id)description;
-- (id)iconForIdentifier:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateSupplementalItems:(id)a3;
+- (id)iconForIdentifier:(unint64_t)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateSupplementalItems:(id)items;
 @end
 
 @implementation RTISupplementalLexicon
 
-- (RTISupplementalLexicon)initWithTISupplementalLexicon:(id)a3 iconForIdentifier:(id)a4
+- (RTISupplementalLexicon)initWithTISupplementalLexicon:(id)lexicon iconForIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  lexiconCopy = lexicon;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = RTISupplementalLexicon;
   v8 = [(RTISupplementalLexicon *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lexiconCopy copy];
     lexicon = v8->_lexicon;
     v8->_lexicon = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     iconForIdentifier = v8->_iconForIdentifier;
     v8->_iconForIdentifier = v11;
   }
@@ -32,24 +32,24 @@
   return v8;
 }
 
-- (RTISupplementalLexicon)initWithTISupplementalLexicon:(id)a3 iconProvider:(id)a4
+- (RTISupplementalLexicon)initWithTISupplementalLexicon:(id)lexicon iconProvider:(id)provider
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lexiconCopy = lexicon;
+  providerCopy = provider;
   v8 = objc_alloc(MEMORY[0x1E695DF90]);
-  v9 = [v6 items];
-  v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  items = [lexiconCopy items];
+  v10 = [v8 initWithCapacity:{objc_msgSend(items, "count")}];
 
-  if (v7)
+  if (providerCopy)
   {
-    v22 = v6;
+    v22 = lexiconCopy;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = [v6 items];
-    v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    items2 = [lexiconCopy items];
+    v12 = [items2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -60,11 +60,11 @@
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(items2);
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
-          v17 = v7[2](v7, [v16 identifier]);
+          v17 = providerCopy[2](providerCopy, [v16 identifier]);
           if (v17)
           {
             v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v16, "identifier")}];
@@ -72,36 +72,36 @@
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v13 = [items2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v13);
     }
 
-    v6 = v22;
+    lexiconCopy = v22;
   }
 
-  v19 = [(RTISupplementalLexicon *)self initWithTISupplementalLexicon:v6 iconForIdentifier:v10];
+  v19 = [(RTISupplementalLexicon *)self initWithTISupplementalLexicon:lexiconCopy iconForIdentifier:v10];
 
   v20 = *MEMORY[0x1E69E9840];
   return v19;
 }
 
-- (void)enumerateSupplementalItems:(id)a3
+- (void)enumerateSupplementalItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  itemsCopy = items;
+  if (itemsCopy)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(RTISupplementalLexicon *)self lexicon];
-    v6 = [v5 items];
+    lexicon = [(RTISupplementalLexicon *)self lexicon];
+    items = [lexicon items];
 
-    obj = v6;
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    obj = items;
+    v7 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -116,12 +116,12 @@
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          v13 = [(RTISupplementalLexicon *)self iconForIdentifier];
-          v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v12];
-          v15 = [v13 objectForKey:v14];
+          identifier = [v11 identifier];
+          iconForIdentifier = [(RTISupplementalLexicon *)self iconForIdentifier];
+          v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
+          v15 = [iconForIdentifier objectForKey:v14];
 
-          v4[2](v4, v11, v15);
+          itemsCopy[2](itemsCopy, v11, v15);
         }
 
         v8 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -134,32 +134,32 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)iconForIdentifier:(unint64_t)a3
+- (id)iconForIdentifier:(unint64_t)identifier
 {
-  v4 = [(RTISupplementalLexicon *)self iconForIdentifier];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
-  v6 = [v4 objectForKey:v5];
+  iconForIdentifier = [(RTISupplementalLexicon *)self iconForIdentifier];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
+  v6 = [iconForIdentifier objectForKey:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
 
-  [v4 encodeObject:self->_lexicon forKey:@"suppLex"];
-  [v4 encodeObject:self->_iconForIdentifier forKey:@"iconForId"];
+  [coderCopy encodeObject:self->_lexicon forKey:@"suppLex"];
+  [coderCopy encodeObject:self->_iconForIdentifier forKey:@"iconForId"];
 }
 
-- (RTISupplementalLexicon)initWithCoder:(id)a3
+- (RTISupplementalLexicon)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -172,9 +172,9 @@
     v14 = objc_opt_class();
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:3];
     v7 = [v5 setWithArray:{v6, v12, v13}];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"iconForId"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"iconForId"];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suppLex"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suppLex"];
     self = [(RTISupplementalLexicon *)self initWithTISupplementalLexicon:v9 iconForIdentifier:v8];
   }
 
@@ -182,10 +182,10 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -195,13 +195,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(RTISupplementalLexicon *)self lexicon];
-      v6 = [(RTISupplementalLexicon *)v4 lexicon];
-      if ([v5 isEqualToSupplementalLexicon:v6])
+      lexicon = [(RTISupplementalLexicon *)self lexicon];
+      lexicon2 = [(RTISupplementalLexicon *)equalCopy lexicon];
+      if ([lexicon isEqualToSupplementalLexicon:lexicon2])
       {
-        v7 = [(RTISupplementalLexicon *)self iconForIdentifier];
-        v8 = [(RTISupplementalLexicon *)v4 iconForIdentifier];
-        v9 = [v7 isEqualToDictionary:v8];
+        iconForIdentifier = [(RTISupplementalLexicon *)self iconForIdentifier];
+        iconForIdentifier2 = [(RTISupplementalLexicon *)equalCopy iconForIdentifier];
+        v9 = [iconForIdentifier isEqualToDictionary:iconForIdentifier2];
       }
 
       else
@@ -222,11 +222,11 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p identifier=%llu", objc_opt_class(), self, -[RTISupplementalLexicon identifier](self, "identifier")];;
-  v4 = [(RTISupplementalLexicon *)self lexicon];
-  [v3 appendFormat:@", lexicon=%@", v4];
+  lexicon = [(RTISupplementalLexicon *)self lexicon];
+  [v3 appendFormat:@", lexicon=%@", lexicon];
 
-  v5 = [(RTISupplementalLexicon *)self iconForIdentifier];
-  [v3 appendFormat:@", iconForIdentifier=%@>", v5];
+  iconForIdentifier = [(RTISupplementalLexicon *)self iconForIdentifier];
+  [v3 appendFormat:@", iconForIdentifier=%@>", iconForIdentifier];
 
   return v3;
 }

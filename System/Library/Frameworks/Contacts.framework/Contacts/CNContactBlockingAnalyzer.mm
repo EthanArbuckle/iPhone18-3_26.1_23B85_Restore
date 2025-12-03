@@ -1,7 +1,7 @@
 @interface CNContactBlockingAnalyzer
 + (CNContactBlockingAnalyzer)sharedAnalyzer;
 + (CNKeyDescriptor)descriptorForRequiredKeys;
-- (BOOL)isBlockedContact:(id)a3;
+- (BOOL)isBlockedContact:(id)contact;
 @end
 
 @implementation CNContactBlockingAnalyzer
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __43__CNContactBlockingAnalyzer_sharedAnalyzer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAnalyzer_cn_once_token_0 != -1)
   {
     dispatch_once(&sharedAnalyzer_cn_once_token_0, block);
@@ -43,35 +43,35 @@ uint64_t __43__CNContactBlockingAnalyzer_sharedAnalyzer__block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (BOOL)isBlockedContact:(id)a3
+- (BOOL)isBlockedContact:(id)contact
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contactCopy = contact;
   v20[0] = @"phoneNumbers";
   v20[1] = @"emailAddresses";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
-  [v3 assertKeysAreAvailable:v4];
+  [contactCopy assertKeysAreAvailable:v4];
 
-  v5 = [v3 phoneNumbers];
-  v6 = [v5 firstObject];
+  phoneNumbers = [contactCopy phoneNumbers];
+  firstObject = [phoneNumbers firstObject];
 
-  if (v6 && ([MEMORY[0x1E69966E8] currentEnvironment], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "handleBlocking"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "value"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "unformattedInternationalStringValue"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isHandleBlocked:", v10), v10, v9, v8, v7, (v11 & 1) != 0))
+  if (firstObject && ([MEMORY[0x1E69966E8] currentEnvironment], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "handleBlocking"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(firstObject, "value"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "unformattedInternationalStringValue"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isHandleBlocked:", v10), v10, v9, v8, v7, (v11 & 1) != 0))
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = [v3 emailAddresses];
-    v14 = [v13 firstObject];
+    emailAddresses = [contactCopy emailAddresses];
+    firstObject2 = [emailAddresses firstObject];
 
     v12 = 0;
-    if (v14)
+    if (firstObject2)
     {
-      v15 = [MEMORY[0x1E69966E8] currentEnvironment];
-      v16 = [v15 handleBlocking];
-      v17 = [v14 value];
-      v18 = [v16 isHandleBlocked:v17];
+      currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+      handleBlocking = [currentEnvironment handleBlocking];
+      value = [firstObject2 value];
+      v18 = [handleBlocking isHandleBlocked:value];
 
       if (v18)
       {

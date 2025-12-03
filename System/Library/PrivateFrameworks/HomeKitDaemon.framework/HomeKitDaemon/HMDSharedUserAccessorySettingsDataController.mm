@@ -1,30 +1,30 @@
 @interface HMDSharedUserAccessorySettingsDataController
 - (BOOL)assistantAccessControlActivityNotificationsEnabledForPersonalRequests;
-- (HMDSharedUserAccessorySettingsDataController)initWithUserModelID:(id)a3 homeModelID:(id)a4 privateStore:(id)a5 managedObjectContext:(id)a6;
+- (HMDSharedUserAccessorySettingsDataController)initWithUserModelID:(id)d homeModelID:(id)iD privateStore:(id)store managedObjectContext:(id)context;
 - (NSArray)assistantAccessControlAccessoriesToEncode;
 - (NSArray)mediaContentProfileAccessControlAccessoriesToEncode;
 - (NSArray)userListeningHistoryUpdateControlModelAccessoriesToEncode;
-- (id)_fetchDataRootWithError:(id *)a3;
-- (void)_addMissingAccessorySettingsFromAccessoryModelIDs:(id)a3 dataRoot:(id)a4;
-- (void)enableUserListeningHistoryForAccessory:(id)a3;
-- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)a3 activityNotificationsEnabledForPersonalRequests:(BOOL)a4 completion:(id)a5;
-- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4;
-- (void)handleRemovedAccessoryWithModelID:(id)a3;
-- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4;
+- (id)_fetchDataRootWithError:(id *)error;
+- (void)_addMissingAccessorySettingsFromAccessoryModelIDs:(id)ds dataRoot:(id)root;
+- (void)enableUserListeningHistoryForAccessory:(id)accessory;
+- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)updated activityNotificationsEnabledForPersonalRequests:(BOOL)requests completion:(id)completion;
+- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion;
+- (void)handleRemovedAccessoryWithModelID:(id)d;
+- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation HMDSharedUserAccessorySettingsDataController
 
-- (void)_addMissingAccessorySettingsFromAccessoryModelIDs:(id)a3 dataRoot:(id)a4
+- (void)_addMissingAccessorySettingsFromAccessoryModelIDs:(id)ds dataRoot:(id)root
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 accessorySettings];
-  v9 = v8;
-  if (v8)
+  dsCopy = ds;
+  rootCopy = root;
+  accessorySettings = [rootCopy accessorySettings];
+  v9 = accessorySettings;
+  if (accessorySettings)
   {
-    v10 = v8;
+    v10 = accessorySettings;
   }
 
   else
@@ -41,8 +41,8 @@
   v26[3] = &unk_27868A1B0;
   v13 = v12;
   v27 = v13;
-  v21 = v6;
-  v14 = [v6 na_filter:v26];
+  v21 = dsCopy;
+  v14 = [dsCopy na_filter:v26];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -62,8 +62,8 @@
         }
 
         v19 = [MKFCKSharedUserAccessorySettings createWithHomeModelID:self->_homeModelID accessoryModelID:*(*(&v22 + 1) + 8 * i) persistentStore:self->_privateStore context:self->_moc];
-        [v19 setRoot:v7];
-        [v7 addAccessorySettingsObject:v19];
+        [v19 setRoot:rootCopy];
+        [rootCopy addAccessorySettingsObject:v19];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v22 objects:v28 count:16];
@@ -75,7 +75,7 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchDataRootWithError:(id *)a3
+- (id)_fetchDataRootWithError:(id *)error
 {
   v39[1] = *MEMORY[0x277D85DE8];
   v5 = +[MKFCKSharedUserDataRoot fetchRequest];
@@ -86,12 +86,12 @@
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
   [v5 setAffectedStores:v7];
 
-  v8 = [(HMDManagedObjectContext *)self->_moc executeFetchRequest:v5 error:a3];
+  v8 = [(HMDManagedObjectContext *)self->_moc executeFetchRequest:v5 error:error];
   v9 = v8;
   if (!v8)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -111,14 +111,14 @@
 
     objc_autoreleasePoolPop(v18);
 LABEL_10:
-    v17 = 0;
+    firstObject = 0;
     goto LABEL_16;
   }
 
   if ([v8 hmf_isEmpty])
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -140,10 +140,10 @@ LABEL_10:
     v16 = +[HMDTTRManager sharedManager];
     [v16 requestRadarWithDisplayReason:@"detected issue related to HomeKit Shared User functionality" radarTitle:@"MKFCKSharedUserDataRoot missing during accessory settings fetch" componentName:@"HomeKit" componentVersion:@"Users+Invitations" componentID:938670];
 
-    if (a3)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      *a3 = v17 = 0;
+      *error = firstObject = 0;
       goto LABEL_16;
     }
 
@@ -153,7 +153,7 @@ LABEL_10:
   if ([v9 count] >= 2)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy3 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -169,25 +169,25 @@ LABEL_10:
     objc_autoreleasePoolPop(v24);
   }
 
-  v17 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 LABEL_16:
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return firstObject;
 }
 
-- (void)handleRemovedAccessoryWithModelID:(id)a3
+- (void)handleRemovedAccessoryWithModelID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   moc = self->_moc;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__HMDSharedUserAccessorySettingsDataController_handleRemovedAccessoryWithModelID___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [(HMDManagedObjectContext *)moc performBlock:v7];
 }
 
@@ -296,17 +296,17 @@ void __82__HMDSharedUserAccessorySettingsDataController_handleRemovedAccessoryWi
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableUserListeningHistoryForAccessory:(id)a3
+- (void)enableUserListeningHistoryForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   moc = self->_moc;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __87__HMDSharedUserAccessorySettingsDataController_enableUserListeningHistoryForAccessory___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
   [(HMDManagedObjectContext *)moc performBlock:v7];
 }
 
@@ -426,20 +426,20 @@ LABEL_24:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4
+- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   moc = self->_moc;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __120__HMDSharedUserAccessorySettingsDataController_handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs_completion___block_invoke;
   v11[3] = &unk_278689F98;
-  v12 = v6;
-  v13 = v7;
+  v12 = dsCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dsCopy;
+  v10 = completionCopy;
   [(HMDManagedObjectContext *)moc performBlock:v11];
 }
 
@@ -563,20 +563,20 @@ void __120__HMDSharedUserAccessorySettingsDataController_handleUserListeningHist
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4
+- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   moc = self->_moc;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __119__HMDSharedUserAccessorySettingsDataController_handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs_completion___block_invoke;
   v11[3] = &unk_278689F98;
-  v12 = v6;
-  v13 = v7;
+  v12 = dsCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dsCopy;
+  v10 = completionCopy;
   [(HMDManagedObjectContext *)moc performBlock:v11];
 }
 
@@ -700,21 +700,21 @@ void __119__HMDSharedUserAccessorySettingsDataController_handleMediaContentProfi
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)a3 activityNotificationsEnabledForPersonalRequests:(BOOL)a4 completion:(id)a5
+- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)updated activityNotificationsEnabledForPersonalRequests:(BOOL)requests completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  updatedCopy = updated;
+  completionCopy = completion;
   moc = self->_moc;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __157__HMDSharedUserAccessorySettingsDataController_handleAssistantAccessControlAccessoryUUIDsUpdated_activityNotificationsEnabledForPersonalRequests_completion___block_invoke;
   v13[3] = &unk_278685C18;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
+  v14 = updatedCopy;
+  v15 = completionCopy;
+  requestsCopy = requests;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
+  v11 = updatedCopy;
+  v12 = completionCopy;
   [(HMDManagedObjectContext *)moc performBlock:v13];
 }
 
@@ -858,15 +858,15 @@ void __157__HMDSharedUserAccessorySettingsDataController_handleAssistantAccessCo
   v3 = v9[5];
   if (v3)
   {
-    v4 = v3;
+    array = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v5 = v4;
+  v5 = array;
   _Block_object_dispose(&v8, 8);
 
   return v5;
@@ -950,15 +950,15 @@ id __105__HMDSharedUserAccessorySettingsDataController_userListeningHistoryUpdat
   v3 = v9[5];
   if (v3)
   {
-    v4 = v3;
+    array = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v5 = v4;
+  v5 = array;
   _Block_object_dispose(&v8, 8);
 
   return v5;
@@ -1042,15 +1042,15 @@ id __99__HMDSharedUserAccessorySettingsDataController_mediaContentProfileAccessC
   v3 = v9[5];
   if (v3)
   {
-    v4 = v3;
+    array = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v5 = v4;
+  v5 = array;
   _Block_object_dispose(&v8, 8);
 
   return v5;
@@ -1168,22 +1168,22 @@ void __117__HMDSharedUserAccessorySettingsDataController_assistantAccessControlA
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSharedUserAccessorySettingsDataController)initWithUserModelID:(id)a3 homeModelID:(id)a4 privateStore:(id)a5 managedObjectContext:(id)a6
+- (HMDSharedUserAccessorySettingsDataController)initWithUserModelID:(id)d homeModelID:(id)iD privateStore:(id)store managedObjectContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  storeCopy = store;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = HMDSharedUserAccessorySettingsDataController;
   v15 = [(HMDSharedUserAccessorySettingsDataController *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_userModelID, a3);
-    objc_storeStrong(&v16->_homeModelID, a4);
-    objc_storeStrong(&v16->_privateStore, a5);
-    objc_storeStrong(&v16->_moc, a6);
+    objc_storeStrong(&v15->_userModelID, d);
+    objc_storeStrong(&v16->_homeModelID, iD);
+    objc_storeStrong(&v16->_privateStore, store);
+    objc_storeStrong(&v16->_moc, context);
   }
 
   return v16;

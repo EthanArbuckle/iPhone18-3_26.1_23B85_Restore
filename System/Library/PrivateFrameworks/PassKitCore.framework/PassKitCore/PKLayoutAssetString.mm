@@ -1,34 +1,34 @@
 @interface PKLayoutAssetString
-+ (id)nameToAssetsMapFromDictionaries:(id)a3;
-- (PKLayoutAssetString)initWithDictionary:(id)a3;
++ (id)nameToAssetsMapFromDictionaries:(id)dictionaries;
+- (PKLayoutAssetString)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKLayoutAssetString
 
-+ (id)nameToAssetsMapFromDictionaries:(id)a3
++ (id)nameToAssetsMapFromDictionaries:(id)dictionaries
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionariesCopy = dictionaries;
+  v4 = dictionariesCopy;
+  if (dictionariesCopy)
   {
-    if ([v3 count])
+    if ([dictionariesCopy count])
     {
       v5 = [v4 pk_arrayBySafelyApplyingBlock:&__block_literal_global_25];
-      v6 = [v5 pk_groupDictionaryByApplyingBlock:&__block_literal_global_29];
+      dictionary = [v5 pk_groupDictionaryByApplyingBlock:&__block_literal_global_29];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DF20] dictionary];
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
     }
   }
 
   else
   {
-    v6 = 0;
+    dictionary = 0;
   }
 
-  return v6;
+  return dictionary;
 }
 
 PKLayoutAssetString *__55__PKLayoutAssetString_nameToAssetsMapFromDictionaries___block_invoke(uint64_t a1, void *a2)
@@ -39,28 +39,28 @@ PKLayoutAssetString *__55__PKLayoutAssetString_nameToAssetsMapFromDictionaries__
   return v3;
 }
 
-- (PKLayoutAssetString)initWithDictionary:(id)a3
+- (PKLayoutAssetString)initWithDictionary:(id)dictionary
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PKLayoutAssetString;
   v5 = [(PKLayoutAssetString *)&v21 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"key"];
+    v6 = [dictionaryCopy PKStringForKey:@"key"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 PKStringForKey:@"value"];
+    v8 = [dictionaryCopy PKStringForKey:@"value"];
     displayText = v5->_displayText;
     v5->_displayText = v8;
 
-    v10 = [v4 PKStringForKey:@"markdownValue"];
+    v10 = [dictionaryCopy PKStringForKey:@"markdownValue"];
     markdownText = v5->_markdownText;
     v5->_markdownText = v10;
 
-    v12 = PKOSVersionRequirementRangeFromLayoutAssetDictionary(v4);
+    v12 = PKOSVersionRequirementRangeFromLayoutAssetDictionary(dictionaryCopy);
     osVersionRange = v5->_osVersionRange;
     v5->_osVersionRange = v12;
 
@@ -71,7 +71,7 @@ PKLayoutAssetString *__55__PKLayoutAssetString_nameToAssetsMapFromDictionaries__
       goto LABEL_11;
     }
 
-    v15 = [v4 mutableCopy];
+    v15 = [dictionaryCopy mutableCopy];
     v22[0] = @"key";
     v22[1] = @"value";
     v22[2] = @"markdownValue";

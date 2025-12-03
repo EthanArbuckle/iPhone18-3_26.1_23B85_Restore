@@ -1,21 +1,21 @@
 @interface _LTMatch
-- (_LTMatch)initWithNode:(id)a3 range:(_NSRange)a4;
+- (_LTMatch)initWithNode:(id)node range:(_NSRange)range;
 - (_NSRange)range;
 - (id)description;
 @end
 
 @implementation _LTMatch
 
-- (_LTMatch)initWithNode:(id)a3 range:(_NSRange)a4
+- (_LTMatch)initWithNode:(id)node range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  nodeCopy = node;
   v9 = [(_LTMatch *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_node, a3);
+    objc_storeStrong(&v9->_node, node);
     v10->_range.location = location;
     v10->_range.length = length;
     v11 = v10;

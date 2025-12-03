@@ -2,50 +2,50 @@
 - (void)clearAirportArrivalBulletin;
 - (void)clearMapsSuggestionsBulletin;
 - (void)clearVenueBulletin;
-- (void)showAirportArrivalBulletinWithTitle:(id)a3 message:(id)a4 mapRegion:(id)a5 regionName:(id)a6;
-- (void)showMapsSuggestionsBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5;
-- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)a3;
-- (void)showVenueBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5;
+- (void)showAirportArrivalBulletinWithTitle:(id)title message:(id)message mapRegion:(id)region regionName:(id)name;
+- (void)showMapsSuggestionsBulletinWithTitle:(id)title message:(id)message actionURL:(id)l;
+- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)details;
+- (void)showVenueBulletinWithTitle:(id)title message:(id)message actionURL:(id)l;
 @end
 
 @implementation NavdNotificationManager
 
-- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)a3
+- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 title];
-    v6 = [v3 message];
+    title = [detailsCopy title];
+    message = [detailsCopy message];
     v8 = 138412546;
-    v9 = v5;
+    v9 = title;
     v10 = 2112;
-    v11 = v6;
+    v11 = message;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Traffic notification posted with title: %@ and message: %@", &v8, 0x16u);
   }
 
   v7 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
-  [v7 showPredictedRouteTrafficIncidentBulletinForCommuteDetails:v3];
+  [v7 showPredictedRouteTrafficIncidentBulletinForCommuteDetails:detailsCopy];
 }
 
-- (void)showMapsSuggestionsBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5
+- (void)showMapsSuggestionsBulletinWithTitle:(id)title message:(id)message actionURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v12 = 138412546;
-    v13 = v7;
+    v13 = titleCopy;
     v14 = 2112;
-    v15 = v8;
+    v15 = messageCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "MapsSuggestions notification posted with title: %@ and message: %@", &v12, 0x16u);
   }
 
   v11 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
-  [v11 showMapsSuggestionsBulletinWithTitle:v7 message:v8 actionURL:v9];
+  [v11 showMapsSuggestionsBulletinWithTitle:titleCopy message:messageCopy actionURL:lCopy];
 }
 
 - (void)clearMapsSuggestionsBulletin
@@ -54,24 +54,24 @@
   [v2 clearMapsSuggestionsBulletin];
 }
 
-- (void)showAirportArrivalBulletinWithTitle:(id)a3 message:(id)a4 mapRegion:(id)a5 regionName:(id)a6
+- (void)showAirportArrivalBulletinWithTitle:(id)title message:(id)message mapRegion:(id)region regionName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  nameCopy = name;
+  regionCopy = region;
   v13 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v15 = 138412546;
-    v16 = v9;
+    v16 = titleCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = messageCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Airport arrival notification posted with title: %@ and message: %@", &v15, 0x16u);
   }
 
   v14 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
-  [v14 showAirportArrivalBulletinWithTitle:v9 message:v10 mapRegion:v12 regionName:v11];
+  [v14 showAirportArrivalBulletinWithTitle:titleCopy message:messageCopy mapRegion:regionCopy regionName:nameCopy];
 }
 
 - (void)clearAirportArrivalBulletin
@@ -80,23 +80,23 @@
   [v2 clearAirportArrivalBulletin];
 }
 
-- (void)showVenueBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5
+- (void)showVenueBulletinWithTitle:(id)title message:(id)message actionURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v12 = 138412546;
-    v13 = v7;
+    v13 = titleCopy;
     v14 = 2112;
-    v15 = v8;
+    v15 = messageCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Venue notification posted with title: %@ and message: %@", &v12, 0x16u);
   }
 
   v11 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
-  [v11 showVenueBulletinWithTitle:v7 message:v8 actionURL:v9];
+  [v11 showVenueBulletinWithTitle:titleCopy message:messageCopy actionURL:lCopy];
 }
 
 - (void)clearVenueBulletin

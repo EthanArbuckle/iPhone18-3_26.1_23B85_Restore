@@ -1,5 +1,5 @@
 @interface VKDebugTreeNode
-- (VKDebugTreeNode)initWithParent:(id)a3;
+- (VKDebugTreeNode)initWithParent:(id)parent;
 - (VKDebugTreeNode)parent;
 @end
 
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (VKDebugTreeNode)initWithParent:(id)a3
+- (VKDebugTreeNode)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v8.receiver = self;
   v8.super_class = VKDebugTreeNode;
   v5 = [(VKDebugTreeNode *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parent, v4);
+    objc_storeWeak(&v5->_parent, parentCopy);
   }
 
   return v6;

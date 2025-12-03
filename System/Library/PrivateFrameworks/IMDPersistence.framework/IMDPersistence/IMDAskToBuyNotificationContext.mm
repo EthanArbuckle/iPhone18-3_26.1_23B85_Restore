@@ -1,8 +1,8 @@
 @interface IMDAskToBuyNotificationContext
-- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)a3;
+- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)d;
 - (NSArray)actions;
 - (id)notificationCategories;
-- (void)populateUserInfoForNotificationContent:(id)a3 messageBalloonBundleID:(id)a4 payloadData:(id)a5;
+- (void)populateUserInfoForNotificationContent:(id)content messageBalloonBundleID:(id)d payloadData:(id)data;
 @end
 
 @implementation IMDAskToBuyNotificationContext
@@ -31,24 +31,24 @@
   return actions;
 }
 
-- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)a3
+- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)d
 {
   v3 = *MEMORY[0x1E69A6908];
-  v4 = a3;
+  dCopy = d;
   v5 = IMBalloonExtensionIDWithSuffix();
-  isEqualToString = objc_msgSend_isEqualToString_(v4, v6, v5);
+  isEqualToString = objc_msgSend_isEqualToString_(dCopy, v6, v5);
 
   return isEqualToString;
 }
 
-- (void)populateUserInfoForNotificationContent:(id)a3 messageBalloonBundleID:(id)a4 payloadData:(id)a5
+- (void)populateUserInfoForNotificationContent:(id)content messageBalloonBundleID:(id)d payloadData:(id)data
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(self, v10, a4))
+  contentCopy = content;
+  dataCopy = data;
+  if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(self, v10, d))
   {
-    objc_msgSend_setCategoryIdentifier_(v8, v11, *MEMORY[0x1E69A7818]);
+    objc_msgSend_setCategoryIdentifier_(contentCopy, v11, *MEMORY[0x1E69A7818]);
     v47 = IMDictionaryFromPayloadData();
     v46 = IMSanitizedURLForIMExtensionPayloadURLKey();
     objc_msgSend_componentsWithURL_resolvingAgainstBaseURL_(MEMORY[0x1E696AF20], v12, v46, 0);
@@ -112,10 +112,10 @@ LABEL_10:
 LABEL_13:
     if (objc_msgSend_length(v28, v29, v30))
     {
-      objc_msgSend_setBody_(v8, v31, v28);
+      objc_msgSend_setBody_(contentCopy, v31, v28);
     }
 
-    v33 = objc_msgSend_userInfo(v8, v31, v32);
+    v33 = objc_msgSend_userInfo(contentCopy, v31, v32);
     Mutable = objc_msgSend_mutableCopy(v33, v34, v35);
 
     if (!Mutable)
@@ -127,8 +127,8 @@ LABEL_13:
     objc_msgSend_setObject_forKey_(Mutable, v40, v39, *MEMORY[0x1E69A7820]);
 
     objc_msgSend_setObject_forKey_(Mutable, v41, MEMORY[0x1E695E118], *MEMORY[0x1E69A7830]);
-    objc_msgSend_setUserInfo_(v8, v42, Mutable);
-    objc_msgSend_setInterruptionLevel_(v8, v43, 2);
+    objc_msgSend_setUserInfo_(contentCopy, v42, Mutable);
+    objc_msgSend_setInterruptionLevel_(contentCopy, v43, 2);
   }
 
   v44 = *MEMORY[0x1E69E9840];

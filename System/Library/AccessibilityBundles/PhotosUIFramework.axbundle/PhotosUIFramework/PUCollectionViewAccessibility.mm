@@ -1,19 +1,19 @@
 @interface PUCollectionViewAccessibility
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4;
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished;
 @end
 
 @implementation PUCollectionViewAccessibility
 
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v6.receiver = self;
   v6.super_class = PUCollectionViewAccessibility;
-  [(PUCollectionViewAccessibility *)&v6 _scrollViewAnimationEnded:a3 finished:?];
-  if (v4)
+  [(PUCollectionViewAccessibility *)&v6 _scrollViewAnimationEnded:ended finished:?];
+  if (finishedCopy)
   {
-    v5 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v5 postNotificationName:@"AXPhotoCollectionViewScrolled" object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter postNotificationName:@"AXPhotoCollectionViewScrolled" object:0];
   }
 }
 

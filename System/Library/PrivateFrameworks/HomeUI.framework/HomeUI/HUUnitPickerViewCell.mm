@@ -1,23 +1,23 @@
 @interface HUUnitPickerViewCell
-- (CGSize)_estimatedSizeForAttributedString:(id)a3;
+- (CGSize)_estimatedSizeForAttributedString:(id)string;
 - (CGSize)longestValueSize;
-- (HUUnitPickerViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUUnitPickerViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSAttributedString)longestValue;
 - (id)effectiveUnitText;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)reloadPickerView;
-- (void)setUnitText:(id)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setUnitText:(id)text;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUUnitPickerViewCell
 
-- (HUUnitPickerViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUUnitPickerViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = HUUnitPickerViewCell;
-  v4 = [(HUPickerViewCell *)&v15 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUPickerViewCell *)&v15 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -26,17 +26,17 @@
     [(HUUnitPickerViewCell *)v5 setUnitLabel:v6];
 
     v7 = [MEMORY[0x277D74300] systemFontOfSize:20.0];
-    v8 = [(HUUnitPickerViewCell *)v5 unitLabel];
-    [v8 setFont:v7];
+    unitLabel = [(HUUnitPickerViewCell *)v5 unitLabel];
+    [unitLabel setFont:v7];
 
-    v9 = [(HUPickerViewCell *)v5 pickerView];
-    v10 = [v9 _textColor];
-    v11 = [(HUUnitPickerViewCell *)v5 unitLabel];
-    [v11 setTextColor:v10];
+    pickerView = [(HUPickerViewCell *)v5 pickerView];
+    _textColor = [pickerView _textColor];
+    unitLabel2 = [(HUUnitPickerViewCell *)v5 unitLabel];
+    [unitLabel2 setTextColor:_textColor];
 
-    v12 = [(HUUnitPickerViewCell *)v5 contentView];
-    v13 = [(HUUnitPickerViewCell *)v5 unitLabel];
-    [v12 addSubview:v13];
+    contentView = [(HUUnitPickerViewCell *)v5 contentView];
+    unitLabel3 = [(HUUnitPickerViewCell *)v5 unitLabel];
+    [contentView addSubview:unitLabel3];
   }
 
   return v5;
@@ -64,11 +64,11 @@
   [(HUPickerViewCell *)&v4 reloadPickerView];
 }
 
-- (void)setUnitText:(id)a3
+- (void)setUnitText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = self->_unitText;
-  v7 = v5;
+  v7 = textCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -87,23 +87,23 @@
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_unitText, a3);
+    objc_storeStrong(&self->_unitText, text);
     [(HUUnitPickerViewCell *)self updateUIWithAnimation:1];
   }
 
 LABEL_8:
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v13.receiver = self;
   v13.super_class = HUUnitPickerViewCell;
-  [(HUPickerViewCell *)&v13 updateUIWithAnimation:a3];
-  v4 = [(HUUnitPickerViewCell *)self unitLabel];
-  v5 = [v4 text];
-  v6 = [(HUUnitPickerViewCell *)self effectiveUnitText];
-  v7 = v5;
-  v8 = v6;
+  [(HUPickerViewCell *)&v13 updateUIWithAnimation:animation];
+  unitLabel = [(HUUnitPickerViewCell *)self unitLabel];
+  text = [unitLabel text];
+  effectiveUnitText = [(HUUnitPickerViewCell *)self effectiveUnitText];
+  v7 = text;
+  v8 = effectiveUnitText;
   v9 = v8;
   if (v7 == v8)
   {
@@ -122,9 +122,9 @@ LABEL_8:
   if ((v10 & 1) == 0)
   {
 LABEL_7:
-    v11 = [(HUUnitPickerViewCell *)self effectiveUnitText];
-    v12 = [(HUUnitPickerViewCell *)self unitLabel];
-    [v12 setText:v11];
+    effectiveUnitText2 = [(HUUnitPickerViewCell *)self effectiveUnitText];
+    unitLabel2 = [(HUUnitPickerViewCell *)self unitLabel];
+    [unitLabel2 setText:effectiveUnitText2];
 
     [(HUUnitPickerViewCell *)self setNeedsLayout];
   }
@@ -135,41 +135,41 @@ LABEL_7:
   v18.receiver = self;
   v18.super_class = HUUnitPickerViewCell;
   [(HUUnitPickerViewCell *)&v18 layoutSubviews];
-  v3 = [(HUUnitPickerViewCell *)self unitLabel];
-  [v3 sizeToFit];
+  unitLabel = [(HUUnitPickerViewCell *)self unitLabel];
+  [unitLabel sizeToFit];
 
-  v4 = [(HUUnitPickerViewCell *)self unitLabel];
-  [v4 frame];
+  unitLabel2 = [(HUUnitPickerViewCell *)self unitLabel];
+  [unitLabel2 frame];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(HUPickerViewCell *)self pickerView];
-  [v9 center];
+  pickerView = [(HUPickerViewCell *)self pickerView];
+  [pickerView center];
   v11 = v10;
   [(HUUnitPickerViewCell *)self longestValueSize];
   v13 = v11 + v12 * 0.5 + 8.0;
-  v14 = [(HUPickerViewCell *)self pickerView];
-  [v14 center];
+  pickerView2 = [(HUPickerViewCell *)self pickerView];
+  [pickerView2 center];
   v16 = v15 - v8 * 0.5;
 
-  v17 = [(HUUnitPickerViewCell *)self unitLabel];
-  [v17 setFrame:{v13, v16, v6, v8}];
+  unitLabel3 = [(HUUnitPickerViewCell *)self unitLabel];
+  [unitLabel3 setFrame:{v13, v16, v6, v8}];
 }
 
 - (id)effectiveUnitText
 {
-  v3 = [(HUUnitPickerViewCell *)self unitText];
-  v4 = v3;
-  if (v3)
+  unitText = [(HUUnitPickerViewCell *)self unitText];
+  v4 = unitText;
+  if (unitText)
   {
-    v5 = v3;
+    v5 = unitText;
   }
 
   else
   {
-    v6 = [(HUPickerViewCell *)self item];
-    v7 = [v6 latestResults];
-    v5 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F78]];
+    item = [(HUPickerViewCell *)self item];
+    latestResults = [item latestResults];
+    v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F78]];
   }
 
   return v5;
@@ -187,16 +187,16 @@ LABEL_7:
       v6 = 0.0;
       while (1)
       {
-        v7 = [(HUPickerViewCell *)self pickerView];
-        v8 = [(HUPickerViewCell *)self pickerView:v7 attributedTitleForRow:v5 forComponent:0];
+        pickerView = [(HUPickerViewCell *)self pickerView];
+        v8 = [(HUPickerViewCell *)self pickerView:pickerView attributedTitleForRow:v5 forComponent:0];
 
         if (v8)
         {
           break;
         }
 
-        v11 = [(HUPickerViewCell *)self pickerView];
-        v12 = [(HUPickerViewCell *)self pickerView:v11 titleForRow:v5 forComponent:0];
+        pickerView2 = [(HUPickerViewCell *)self pickerView];
+        v12 = [(HUPickerViewCell *)self pickerView:pickerView2 titleForRow:v5 forComponent:0];
 
         if (v12)
         {
@@ -251,8 +251,8 @@ LABEL_12:
   height = self->_longestValueSize.height;
   if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v7 = [(HUUnitPickerViewCell *)self longestValue];
-    [(HUUnitPickerViewCell *)self _estimatedSizeForAttributedString:v7];
+    longestValue = [(HUUnitPickerViewCell *)self longestValue];
+    [(HUUnitPickerViewCell *)self _estimatedSizeForAttributedString:longestValue];
     p_longestValueSize->width = v8;
     p_longestValueSize->height = v9;
 
@@ -265,16 +265,16 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)_estimatedSizeForAttributedString:(id)a3
+- (CGSize)_estimatedSizeForAttributedString:(id)string
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16 = *MEMORY[0x277D740A8];
-  v4 = a3;
-  v5 = [(HUUnitPickerViewCell *)self unitLabel];
-  v6 = [v5 font];
-  v17[0] = v6;
+  stringCopy = string;
+  unitLabel = [(HUUnitPickerViewCell *)self unitLabel];
+  font = [unitLabel font];
+  v17[0] = font;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  v8 = [v4 hf_attributedStringWithDefaultAttributes:v7];
+  v8 = [stringCopy hf_attributedStringWithDefaultAttributes:v7];
 
   v9 = [v8 hf_attributedStringScaledByFactor:1.2];
 

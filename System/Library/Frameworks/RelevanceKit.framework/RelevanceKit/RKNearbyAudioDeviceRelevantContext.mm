@@ -1,54 +1,54 @@
 @interface RKNearbyAudioDeviceRelevantContext
-- (BOOL)isEqual:(id)a3;
-- (RKNearbyAudioDeviceRelevantContext)initWithCoder:(id)a3;
-- (RKNearbyAudioDeviceRelevantContext)initWithDeviceIdentifier:(id)a3 isPlaying:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (RKNearbyAudioDeviceRelevantContext)initWithCoder:(id)coder;
+- (RKNearbyAudioDeviceRelevantContext)initWithDeviceIdentifier:(id)identifier isPlaying:(id)playing;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RKNearbyAudioDeviceRelevantContext
 
-- (RKNearbyAudioDeviceRelevantContext)initWithDeviceIdentifier:(id)a3 isPlaying:(id)a4
+- (RKNearbyAudioDeviceRelevantContext)initWithDeviceIdentifier:(id)identifier isPlaying:(id)playing
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  playingCopy = playing;
   v12.receiver = self;
   v12.super_class = RKNearbyAudioDeviceRelevantContext;
-  v8 = [(RKRelevantContext *)&v12 _init];
-  if (v8)
+  _init = [(RKRelevantContext *)&v12 _init];
+  if (_init)
   {
-    v9 = [v6 copy];
-    deviceIdentifier = v8->_deviceIdentifier;
-    v8->_deviceIdentifier = v9;
+    v9 = [identifierCopy copy];
+    deviceIdentifier = _init->_deviceIdentifier;
+    _init->_deviceIdentifier = v9;
 
-    objc_storeStrong(&v8->_isPlaying, a4);
+    objc_storeStrong(&_init->_isPlaying, playing);
   }
 
-  return v8;
+  return _init;
 }
 
-- (RKNearbyAudioDeviceRelevantContext)initWithCoder:(id)a3
+- (RKNearbyAudioDeviceRelevantContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isPlaying"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isPlaying"];
 
   v7 = [(RKNearbyAudioDeviceRelevantContext *)self initWithDeviceIdentifier:v5 isPlaying:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceIdentifier = self->_deviceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:deviceIdentifier forKey:@"deviceIdentifier"];
-  [v5 encodeObject:self->_isPlaying forKey:@"isPlaying"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceIdentifier forKey:@"deviceIdentifier"];
+  [coderCopy encodeObject:self->_isPlaying forKey:@"isPlaying"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -58,19 +58,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       deviceIdentifier = self->_deviceIdentifier;
-      v7 = [(RKNearbyAudioDeviceRelevantContext *)v5 deviceIdentifier];
-      v8 = v7;
-      if (deviceIdentifier == v7)
+      deviceIdentifier = [(RKNearbyAudioDeviceRelevantContext *)v5 deviceIdentifier];
+      v8 = deviceIdentifier;
+      if (deviceIdentifier == deviceIdentifier)
       {
       }
 
       else
       {
         v9 = self->_deviceIdentifier;
-        v10 = [(RKNearbyAudioDeviceRelevantContext *)v5 deviceIdentifier];
-        LODWORD(v9) = [(NSString *)v9 isEqualToString:v10];
+        deviceIdentifier2 = [(RKNearbyAudioDeviceRelevantContext *)v5 deviceIdentifier];
+        LODWORD(v9) = [(NSString *)v9 isEqualToString:deviceIdentifier2];
 
         if (!v9)
         {
@@ -82,8 +82,8 @@ LABEL_13:
       }
 
       isPlaying = self->_isPlaying;
-      v13 = [(RKNearbyAudioDeviceRelevantContext *)v5 isPlaying];
-      if (isPlaying == v13)
+      isPlaying = [(RKNearbyAudioDeviceRelevantContext *)v5 isPlaying];
+      if (isPlaying == isPlaying)
       {
         v11 = 1;
       }
@@ -91,8 +91,8 @@ LABEL_13:
       else
       {
         v14 = self->_isPlaying;
-        v15 = [(RKNearbyAudioDeviceRelevantContext *)v5 isPlaying];
-        v11 = [(NSNumber *)v14 isEqual:v15];
+        isPlaying2 = [(RKNearbyAudioDeviceRelevantContext *)v5 isPlaying];
+        v11 = [(NSNumber *)v14 isEqual:isPlaying2];
       }
 
       goto LABEL_13;
@@ -108,20 +108,20 @@ LABEL_14:
 
 - (id)description
 {
-  v3 = [(RKNearbyAudioDeviceRelevantContext *)self isPlaying];
+  isPlaying = [(RKNearbyAudioDeviceRelevantContext *)self isPlaying];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(RKNearbyAudioDeviceRelevantContext *)self deviceIdentifier];
-  v6 = v5;
-  if (v3)
+  deviceIdentifier = [(RKNearbyAudioDeviceRelevantContext *)self deviceIdentifier];
+  v6 = deviceIdentifier;
+  if (isPlaying)
   {
-    v7 = [(RKNearbyAudioDeviceRelevantContext *)self isPlaying];
-    v8 = [v4 stringWithFormat:@"<nearby audio device: %@, isPlaying: %{BOOL}d>", v6, objc_msgSend(v7, "BOOLValue")];
+    isPlaying2 = [(RKNearbyAudioDeviceRelevantContext *)self isPlaying];
+    v8 = [v4 stringWithFormat:@"<nearby audio device: %@, isPlaying: %{BOOL}d>", v6, objc_msgSend(isPlaying2, "BOOLValue")];
   }
 
   else
   {
-    v8 = [v4 stringWithFormat:@"<nearby audio device: %@>", v5];
+    v8 = [v4 stringWithFormat:@"<nearby audio device: %@>", deviceIdentifier];
   }
 
   return v8;

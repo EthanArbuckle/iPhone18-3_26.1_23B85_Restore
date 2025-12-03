@@ -1,20 +1,20 @@
 @interface CUITextEffectStack
-- (CGColor)newBackgroundPatternColorWithSize:(CGSize)a3 contentScale:(double)a4 forContext:(CGContext *)a5;
-- (CGContext)newGlyphMaskContextForBounds:(CGRect)a3 fromContext:(CGContext *)a4 withScale:(double)a5;
-- (CUITextEffectStack)initWithEffectPreset:(id)a3;
+- (CGColor)newBackgroundPatternColorWithSize:(CGSize)size contentScale:(double)scale forContext:(CGContext *)context;
+- (CGContext)newGlyphMaskContextForBounds:(CGRect)bounds fromContext:(CGContext *)context withScale:(double)scale;
+- (CUITextEffectStack)initWithEffectPreset:(id)preset;
 - (double)effectiveInteriorFillOpacity;
-- (void)_drawShadow:(id *)a3 forGlyphs:(const unsigned __int16 *)a4 inContext:(CGContext *)a5 usingFont:(__CTFont *)a6 atPositions:(const CGPoint *)a7 count:(unint64_t)a8;
-- (void)_drawShadow:(id *)a3 forGlyphs:(const unsigned __int16 *)a4 inContext:(CGContext *)a5 usingFont:(__CTFont *)a6 withAdvances:(const CGSize *)a7 count:(unint64_t)a8;
-- (void)_drawShadow:(id *)a3 usingQuartz:(id)a4 inContext:(CGContext *)a5;
-- (void)drawGlyphs:(const unsigned __int16 *)a3 inContext:(CGContext *)a4 usingFont:(__CTFont *)a5 atPositions:(const CGPoint *)a6 count:(unint64_t)a7 lineHeight:(double)a8 inBounds:(CGRect)a9 atScale:(double)a10;
-- (void)drawGlyphs:(const unsigned __int16 *)a3 inContext:(CGContext *)a4 usingFont:(__CTFont *)a5 withAdvances:(const CGSize *)a6 count:(unint64_t)a7 lineHeight:(double)a8 inBounds:(CGRect)a9 atScale:(double)a10;
-- (void)drawProcessedMask:(CGContext *)a3 atBounds:(CGRect)a4 inContext:(CGContext *)a5 withScale:(double)a6;
-- (void)drawUsingQuartz:(id)a3 inContext:(CGContext *)a4 inBounds:(CGRect)a5 atScale:(double)a6;
+- (void)_drawShadow:(id *)shadow forGlyphs:(const unsigned __int16 *)glyphs inContext:(CGContext *)context usingFont:(__CTFont *)font atPositions:(const CGPoint *)positions count:(unint64_t)count;
+- (void)_drawShadow:(id *)shadow forGlyphs:(const unsigned __int16 *)glyphs inContext:(CGContext *)context usingFont:(__CTFont *)font withAdvances:(const CGSize *)advances count:(unint64_t)count;
+- (void)_drawShadow:(id *)shadow usingQuartz:(id)quartz inContext:(CGContext *)context;
+- (void)drawGlyphs:(const unsigned __int16 *)glyphs inContext:(CGContext *)context usingFont:(__CTFont *)font atPositions:(const CGPoint *)positions count:(unint64_t)count lineHeight:(double)height inBounds:(CGRect)bounds atScale:(double)self0;
+- (void)drawGlyphs:(const unsigned __int16 *)glyphs inContext:(CGContext *)context usingFont:(__CTFont *)font withAdvances:(const CGSize *)advances count:(unint64_t)count lineHeight:(double)height inBounds:(CGRect)bounds atScale:(double)self0;
+- (void)drawProcessedMask:(CGContext *)mask atBounds:(CGRect)bounds inContext:(CGContext *)context withScale:(double)scale;
+- (void)drawUsingQuartz:(id)quartz inContext:(CGContext *)context inBounds:(CGRect)bounds atScale:(double)scale;
 @end
 
 @implementation CUITextEffectStack
 
-- (CUITextEffectStack)initWithEffectPreset:(id)a3
+- (CUITextEffectStack)initWithEffectPreset:(id)preset
 {
   v14.receiver = self;
   v14.super_class = CUITextEffectStack;
@@ -24,16 +24,16 @@
   {
     if ([(CUIShapeEffectStack *)v4 hasInnerGlow]|| [(CUIShapeEffectStack *)v5 hasInnerShadow]|| [(CUIShapeEffectStack *)v5 hasOuterGlow]|| [(CUIShapeEffectStack *)v5 hasBevelEmboss])
     {
-      v6 = 1;
+      hasHueSaturation = 1;
     }
 
     else
     {
-      v6 = [(CUIShapeEffectStack *)v5 hasHueSaturation];
+      hasHueSaturation = [(CUIShapeEffectStack *)v5 hasHueSaturation];
     }
 
-    *(&v5->super._bypassColorFills + 1) = v6;
-    [a3 minimumShadowSpread];
+    *(&v5->super._bypassColorFills + 1) = hasHueSaturation;
+    [preset minimumShadowSpread];
     v8 = v7;
     if (!*(&v5->super._bypassColorFills + 1) && [(CUIShapeEffectStack *)v5 engraveShadowCount]&& [(CUIShapeEffectStack *)v5 engraveShadowCount])
     {
@@ -89,22 +89,22 @@ LABEL_15:
   return v5 + v3 * (1.0 - v5);
 }
 
-- (CGColor)newBackgroundPatternColorWithSize:(CGSize)a3 contentScale:(double)a4 forContext:(CGContext *)a5
+- (CGColor)newBackgroundPatternColorWithSize:(CGSize)size contentScale:(double)scale forContext:(CGContext *)context
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a3.width * a4;
-  v10 = a3.height * a4;
+  height = size.height;
+  width = size.width;
+  v9 = size.width * scale;
+  v10 = size.height * scale;
   SRGB = _CUIColorSpaceGetSRGB();
   v14 = CUICGBitmapContextCreate(v9, v10, 8uLL, 0, SRGB, 8194, v12, v13);
   if (v14)
   {
     v15 = v14;
-    CGContextScaleCTM(v14, a4, a4);
+    CGContextScaleCTM(v14, scale, scale);
     if ([(CUIShapeEffectStack *)self hasInnerGradient])
     {
-      v16 = [(CUIShapeEffectStack *)self innerGlowCount];
-      if (v16)
+      innerGlowCount = [(CUIShapeEffectStack *)self innerGlowCount];
+      if (innerGlowCount)
       {
         v17 = 0;
         do
@@ -129,19 +129,19 @@ LABEL_15:
           CGContextDrawLinearGradient(v15, v18, v34, v35, 3u);
           CGGradientRelease(v18);
           v17 += 32;
-          --v16;
+          --innerGlowCount;
         }
 
-        while (v16);
+        while (innerGlowCount);
       }
     }
 
     if ([(CUIShapeEffectStack *)self hasColorOverlay:v28])
     {
-      v21 = [(CUIShapeEffectStack *)self colorOverlayCount];
-      if (v21)
+      colorOverlayCount = [(CUIShapeEffectStack *)self colorOverlayCount];
+      if (colorOverlayCount)
       {
-        v22 = v21;
+        v22 = colorOverlayCount;
         v23 = 0;
         do
         {
@@ -166,7 +166,7 @@ LABEL_15:
 
     Image = CGBitmapContextCreateImage(v15);
     memset(&components, 0, sizeof(components));
-    CGAffineTransformMakeScale(&components, 1.0 / a4, 1.0 / a4);
+    CGAffineTransformMakeScale(&components, 1.0 / scale, 1.0 / scale);
     *(&v28 + 1) = *&components.b;
     v29 = *&components.c;
     v30 = *&components.tx;
@@ -191,14 +191,14 @@ LABEL_15:
   return v20;
 }
 
-- (CGContext)newGlyphMaskContextForBounds:(CGRect)a3 fromContext:(CGContext *)a4 withScale:(double)a5
+- (CGContext)newGlyphMaskContextForBounds:(CGRect)bounds fromContext:(CGContext *)context withScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   memset(&v29, 0, sizeof(v29));
-  CGContextGetCTM(&v29, a4);
+  CGContextGetCTM(&v29, context);
   v28 = v29;
   v27 = v29;
   v31.origin.x = x;
@@ -221,9 +221,9 @@ LABEL_15:
   CGAffineTransformConcat(&v26, &t1, &v25);
   t1 = v26;
   CGContextConcatCTM(v17, &t1);
-  TextPosition = CGContextGetTextPosition(a4);
+  TextPosition = CGContextGetTextPosition(context);
   CGContextSetTextPosition(v17, TextPosition.x, TextPosition.y);
-  CGContextGetTextMatrix(&t1, a4);
+  CGContextGetTextMatrix(&t1, context);
   CGContextSetTextMatrix(v17, &t1);
   Font = CGContextGetFont();
   CGContextSetFont(v17, Font);
@@ -247,12 +247,12 @@ LABEL_15:
   return v17;
 }
 
-- (void)drawProcessedMask:(CGContext *)a3 atBounds:(CGRect)a4 inContext:(CGContext *)a5 withScale:(double)a6
+- (void)drawProcessedMask:(CGContext *)mask atBounds:(CGRect)bounds inContext:(CGContext *)context withScale:(double)scale
 {
-  Width = CGBitmapContextGetWidth(a3);
-  Height = CGBitmapContextGetHeight(a3);
-  BytesPerRow = CGBitmapContextGetBytesPerRow(a3);
-  v13 = [[NSData alloc] initWithBytesNoCopy:CGBitmapContextGetData(a3) length:(Height * BytesPerRow) freeWhenDone:0];
+  Width = CGBitmapContextGetWidth(mask);
+  Height = CGBitmapContextGetHeight(mask);
+  BytesPerRow = CGBitmapContextGetBytesPerRow(mask);
+  v13 = [[NSData alloc] initWithBytesNoCopy:CGBitmapContextGetData(mask) length:(Height * BytesPerRow) freeWhenDone:0];
   v14 = kCIFormatBGRA8;
   v15 = [CIImage alloc];
   v45 = kCIImageEdgesAreClear;
@@ -260,9 +260,9 @@ LABEL_15:
   v16 = [v15 initWithBitmapData:v13 bytesPerRow:BytesPerRow size:v14 format:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary options:{"dictionaryWithObjects:forKeys:count:", &v46, &v45, 1), Width, Height}];
 
   memset(&v44, 0, sizeof(v44));
-  CGContextGetCTM(&v44, a3);
-  v17 = [(CUIShapeEffectStack *)self processedImageFromShapeImage:v16 withScale:v44.d > 0.0 invertShadows:a6];
-  [(CUIShapeEffectStack *)self effectPaddingWithScale:a6];
+  CGContextGetCTM(&v44, mask);
+  v17 = [(CUIShapeEffectStack *)self processedImageFromShapeImage:v16 withScale:v44.d > 0.0 invertShadows:scale];
+  [(CUIShapeEffectStack *)self effectPaddingWithScale:scale];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -270,9 +270,9 @@ LABEL_15:
   [v16 extent];
   v27 = v23 + v26;
   v29 = v25 + v28;
-  v30 = [objc_opt_class() sharedCIContext];
+  sharedCIContext = [objc_opt_class() sharedCIContext];
   memset(&v43, 0, sizeof(v43));
-  CGContextGetCTM(&v42, a3);
+  CGContextGetCTM(&v42, mask);
   CGAffineTransformInvert(&v43, &v42);
   v42 = v43;
   v47.origin.x = v19;
@@ -284,13 +284,13 @@ LABEL_15:
   y = v48.origin.y;
   v33 = v48.size.width;
   v34 = v48.size.height;
-  v35 = [v30 createCGImage:v17 fromRect:{v19, v21, v27, v29}];
-  CGContextSaveGState(a5);
+  v35 = [sharedCIContext createCGImage:v17 fromRect:{v19, v21, v27, v29}];
+  CGContextSaveGState(context);
   memset(&v42, 0, sizeof(v42));
-  CGContextGetCTM(&v42, a5);
+  CGContextGetCTM(&v42, context);
   v40 = v42;
   CGAffineTransformInvert(&transform, &v40);
-  CGContextConcatCTM(a5, &transform);
+  CGContextConcatCTM(context, &transform);
   transform = v42;
   v49.origin.x = x;
   v49.origin.y = y;
@@ -303,28 +303,28 @@ LABEL_15:
   v39 = v50.size.height;
   if ([(CUIShapeEffectStack *)self outputBlendMode])
   {
-    CGContextSetBlendMode(a5, [(CUIShapeEffectStack *)self cgBlendModeForOutputBlending]);
+    CGContextSetBlendMode(context, [(CUIShapeEffectStack *)self cgBlendModeForOutputBlending]);
   }
 
   v51.origin.x = v36;
   v51.origin.y = v37;
   v51.size.width = v38;
   v51.size.height = v39;
-  CGContextDrawImage(a5, v51, v35);
-  CGContextRestoreGState(a5);
+  CGContextDrawImage(context, v51, v35);
+  CGContextRestoreGState(context);
   CGImageRelease(v35);
 }
 
-- (void)_drawShadow:(id *)a3 forGlyphs:(const unsigned __int16 *)a4 inContext:(CGContext *)a5 usingFont:(__CTFont *)a6 withAdvances:(const CGSize *)a7 count:(unint64_t)a8
+- (void)_drawShadow:(id *)shadow forGlyphs:(const unsigned __int16 *)glyphs inContext:(CGContext *)context usingFont:(__CTFont *)font withAdvances:(const CGSize *)advances count:(unint64_t)count
 {
   SRGB = _CUIColorSpaceGetSRGB();
-  v12 = vcvtq_f64_f32(*&a3->var0);
-  v13 = vcvtq_f64_f32(*&a3->var2);
+  v12 = vcvtq_f64_f32(*&shadow->var0);
+  v13 = vcvtq_f64_f32(*&shadow->var2);
   *components = v12;
   v32 = v13;
-  v12.f64[0] = a3->var8.x;
+  v12.f64[0] = shadow->var8.x;
   v23 = v12;
-  v12.f64[0] = a3->var8.y;
+  v12.f64[0] = shadow->var8.y;
   v21 = v12;
   v29 = 0u;
   v30 = 0u;
@@ -337,34 +337,34 @@ LABEL_15:
   v17 = vnegq_f64(v16);
   *&v24 = vbslq_s8(v17, v23, v14).u64[0];
   *&v22 = vbslq_s8(v17, v21, v15).u64[0];
-  if (a3->var4 <= 0.0)
+  if (shadow->var4 <= 0.0)
   {
-    CGContextSetFillColorSpace(a5, SRGB);
-    CGContextSetFillColor(a5, components);
+    CGContextSetFillColorSpace(context, SRGB);
+    CGContextSetFillColor(context, components);
     memset(&v27, 0, sizeof(v27));
-    CGContextGetCTM(&v27, a5);
+    CGContextGetCTM(&v27, context);
     v25 = v27;
     CGAffineTransformInvert(&transform, &v25);
-    CGContextConcatCTM(a5, &transform);
+    CGContextConcatCTM(context, &transform);
     CGContextGetBaseCTM();
-    CGContextConcatCTM(a5, &transform);
-    CGContextTranslateCTM(a5, v24, v22);
+    CGContextConcatCTM(context, &transform);
+    CGContextTranslateCTM(context, v24, v22);
     CGContextGetBaseCTM();
     CGAffineTransformInvert(&transform, &v25);
-    CGContextConcatCTM(a5, &transform);
+    CGContextConcatCTM(context, &transform);
     transform = v27;
-    CGContextConcatCTM(a5, &transform);
-    CGContextTranslateCTM(a5, v24, v22);
-    TextPosition = CGContextGetTextPosition(a5);
+    CGContextConcatCTM(context, &transform);
+    CGContextTranslateCTM(context, v24, v22);
+    TextPosition = CGContextGetTextPosition(context);
     CTFontDrawGlyphsWithAdvances();
     transform = v27;
     CGContextSetCTM();
-    CGContextSetTextPosition(a5, TextPosition.x, TextPosition.y);
+    CGContextSetTextPosition(context, TextPosition.x, TextPosition.y);
   }
 
   else
   {
-    v32.f64[1] = a3->var3;
+    v32.f64[1] = shadow->var3;
     v18 = CGColorCreate(SRGB, components);
     CGStyleCreateShadow2();
     Style = CGContextGetStyle();
@@ -377,24 +377,24 @@ LABEL_15:
     }
 
     CGContextSetStyle();
-    v32.f64[1] = a3->var3;
-    CGContextSetFillColorSpace(a5, SRGB);
-    CGContextSetFillColor(a5, components);
+    v32.f64[1] = shadow->var3;
+    CGContextSetFillColorSpace(context, SRGB);
+    CGContextSetFillColor(context, components);
     CGStyleRelease();
     CGColorRelease(v18);
   }
 }
 
-- (void)drawGlyphs:(const unsigned __int16 *)a3 inContext:(CGContext *)a4 usingFont:(__CTFont *)a5 withAdvances:(const CGSize *)a6 count:(unint64_t)a7 lineHeight:(double)a8 inBounds:(CGRect)a9 atScale:(double)a10
+- (void)drawGlyphs:(const unsigned __int16 *)glyphs inContext:(CGContext *)context usingFont:(__CTFont *)font withAdvances:(const CGSize *)advances count:(unint64_t)count lineHeight:(double)height inBounds:(CGRect)bounds atScale:(double)self0
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CUIShapeEffectStack *)self scalefactor];
-  if (v21 != a10)
+  if (v21 != scale)
   {
-    [(CUIShapeEffectStack *)self scaleEffectParametersBy:a10];
+    [(CUIShapeEffectStack *)self scaleEffectParametersBy:scale];
   }
 
   if ([(CUITextEffectStack *)self useCoreImageRendering])
@@ -408,33 +408,33 @@ LABEL_15:
     v23 = v56.origin.y;
     v24 = v56.size.width;
     v25 = v56.size.height;
-    v26 = [CUITextEffectStack newGlyphMaskContextForBounds:"newGlyphMaskContextForBounds:fromContext:withScale:" fromContext:a4 withScale:?];
+    v26 = [CUITextEffectStack newGlyphMaskContextForBounds:"newGlyphMaskContextForBounds:fromContext:withScale:" fromContext:context withScale:?];
     CTFontDrawGlyphsWithAdvances();
-    [(CUITextEffectStack *)self drawProcessedMask:v26 atBounds:a4 inContext:v22 withScale:v23, v24, v25, a10];
+    [(CUITextEffectStack *)self drawProcessedMask:v26 atBounds:context inContext:v22 withScale:v23, v24, v25, scale];
 
     CGContextRelease(v26);
   }
 
   else
   {
-    v27 = [(CUITextEffectStack *)self newBackgroundPatternColorWithSize:a4 contentScale:10.0 forContext:height, a10];
-    CGContextSaveGState(a4);
+    scale = [(CUITextEffectStack *)self newBackgroundPatternColorWithSize:context contentScale:10.0 forContext:height, scale];
+    CGContextSaveGState(context);
     if ([(CUIShapeEffectStack *)self hasEngraveShadow])
     {
-      v28 = [(CUIShapeEffectStack *)self engraveShadowCount];
-      if (v28)
+      engraveShadowCount = [(CUIShapeEffectStack *)self engraveShadowCount];
+      if (engraveShadowCount)
       {
-        v29 = v28;
+        v29 = engraveShadowCount;
         v30 = 0;
         do
         {
-          v31 = [(CUIShapeEffectStack *)self engraveShadow];
-          v32 = *&v31[v30].var0;
-          var8 = v31[v30].var8;
-          *&v52.c = *&v31[v30].var4;
+          engraveShadow = [(CUIShapeEffectStack *)self engraveShadow];
+          v32 = *&engraveShadow[v30].var0;
+          var8 = engraveShadow[v30].var8;
+          *&v52.c = *&engraveShadow[v30].var4;
           *&v52.tx = var8;
           *&v52.a = v32;
-          [(CUITextEffectStack *)self _drawShadow:&v52 forGlyphs:a3 inContext:a4 usingFont:a5 withAdvances:a6 count:a7];
+          [(CUITextEffectStack *)self _drawShadow:&v52 forGlyphs:glyphs inContext:context usingFont:font withAdvances:advances count:count];
           ++v30;
           --v29;
         }
@@ -445,20 +445,20 @@ LABEL_15:
 
     if ([(CUIShapeEffectStack *)self hasExtraShadow])
     {
-      v34 = [(CUIShapeEffectStack *)self extraShadowCount];
-      if (v34)
+      extraShadowCount = [(CUIShapeEffectStack *)self extraShadowCount];
+      if (extraShadowCount)
       {
-        v35 = v34;
+        v35 = extraShadowCount;
         v36 = 0;
         do
         {
-          v37 = [(CUIShapeEffectStack *)self extraShadow];
-          v38 = *&v37[v36].var0;
-          v39 = v37[v36].var8;
-          *&v52.c = *&v37[v36].var4;
+          extraShadow = [(CUIShapeEffectStack *)self extraShadow];
+          v38 = *&extraShadow[v36].var0;
+          v39 = extraShadow[v36].var8;
+          *&v52.c = *&extraShadow[v36].var4;
           *&v52.tx = v39;
           *&v52.a = v38;
-          [(CUITextEffectStack *)self _drawShadow:&v52 forGlyphs:a3 inContext:a4 usingFont:a5 withAdvances:a6 count:a7];
+          [(CUITextEffectStack *)self _drawShadow:&v52 forGlyphs:glyphs inContext:context usingFont:font withAdvances:advances count:count];
           ++v36;
           --v35;
         }
@@ -468,7 +468,7 @@ LABEL_15:
     }
 
     memset(&v52, 0, sizeof(v52));
-    CGContextGetCTM(&v52, a4);
+    CGContextGetCTM(&v52, context);
     d = v52.d;
     v41 = fabs(v52.d);
     v57.origin.x = x;
@@ -479,7 +479,7 @@ LABEL_15:
     v43 = x;
     v44 = y;
     v45 = width;
-    v46 = height;
+    heightCopy = height;
     if (d >= v41)
     {
       MinY = CGRectGetMinY(*&v43);
@@ -496,27 +496,27 @@ LABEL_15:
     CGAffineTransformInvert(&v51, &v50);
     v54.height = v51.ty + v49 * v51.d + v51.b * v48;
     v54.width = 0.0;
-    CGContextSetPatternPhase(a4, v54);
-    CGContextSetFillColorWithColor(a4, v27);
+    CGContextSetPatternPhase(context, v54);
+    CGContextSetFillColorWithColor(context, scale);
     if ([(CUIShapeEffectStack *)self outputBlendMode])
     {
-      CGContextSetBlendMode(a4, [(CUIShapeEffectStack *)self cgBlendModeForOutputBlending]);
+      CGContextSetBlendMode(context, [(CUIShapeEffectStack *)self cgBlendModeForOutputBlending]);
     }
 
     CTFontDrawGlyphsWithAdvances();
-    CGColorRelease(v27);
-    CGContextRestoreGState(a4);
+    CGColorRelease(scale);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)_drawShadow:(id *)a3 forGlyphs:(const unsigned __int16 *)a4 inContext:(CGContext *)a5 usingFont:(__CTFont *)a6 atPositions:(const CGPoint *)a7 count:(unint64_t)a8
+- (void)_drawShadow:(id *)shadow forGlyphs:(const unsigned __int16 *)glyphs inContext:(CGContext *)context usingFont:(__CTFont *)font atPositions:(const CGPoint *)positions count:(unint64_t)count
 {
   SRGB = _CUIColorSpaceGetSRGB();
-  v12 = vcvtq_f64_f32(*&a3->var2);
-  *components = vcvtq_f64_f32(*&a3->var0);
+  v12 = vcvtq_f64_f32(*&shadow->var2);
+  *components = vcvtq_f64_f32(*&shadow->var0);
   v26 = v12;
-  txa = a3->var8.x;
-  v15 = -a3->var8.y;
+  txa = shadow->var8.x;
+  v15 = -shadow->var8.y;
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
@@ -525,23 +525,23 @@ LABEL_15:
   memset(&v21, 0, sizeof(v21));
   CGAffineTransformInvert(&v21, &v20);
   tx = vmlsq_lane_f64(vmulq_n_f64(*&v21.c, v15), *&v21.a, txa, 0);
-  if (a3->var4 <= 0.0)
+  if (shadow->var4 <= 0.0)
   {
-    CGContextSetFillColorSpace(a5, SRGB);
-    CGContextSetFillColor(a5, components);
+    CGContextSetFillColorSpace(context, SRGB);
+    CGContextSetFillColor(context, components);
     memset(&v20, 0, sizeof(v20));
-    CGContextGetCTM(&v20, a5);
+    CGContextGetCTM(&v20, context);
     v18 = v20;
     CGAffineTransformInvert(&transform, &v18);
-    CGContextConcatCTM(a5, &transform);
+    CGContextConcatCTM(context, &transform);
     CGContextGetBaseCTM();
-    CGContextConcatCTM(a5, &transform);
-    CGContextTranslateCTM(a5, tx.f64[0], tx.f64[1]);
+    CGContextConcatCTM(context, &transform);
+    CGContextTranslateCTM(context, tx.f64[0], tx.f64[1]);
     CGContextGetBaseCTM();
     CGAffineTransformInvert(&transform, &v18);
-    CGContextConcatCTM(a5, &transform);
+    CGContextConcatCTM(context, &transform);
     transform = v20;
-    CGContextConcatCTM(a5, &transform);
+    CGContextConcatCTM(context, &transform);
     CTFontDrawGlyphsAtPositions();
     transform = v20;
     CGContextSetCTM();
@@ -549,7 +549,7 @@ LABEL_15:
 
   else
   {
-    v26.f64[1] = a3->var3;
+    v26.f64[1] = shadow->var3;
     v13 = CGColorCreate(SRGB, components);
     CGStyleCreateShadow2();
     Style = CGContextGetStyle();
@@ -562,27 +562,27 @@ LABEL_15:
     }
 
     CGContextSetStyle();
-    v26.f64[1] = a3->var3;
-    CGContextSetFillColorSpace(a5, SRGB);
-    CGContextSetFillColor(a5, components);
+    v26.f64[1] = shadow->var3;
+    CGContextSetFillColorSpace(context, SRGB);
+    CGContextSetFillColor(context, components);
     CGStyleRelease();
     CGColorRelease(v13);
   }
 }
 
-- (void)drawGlyphs:(const unsigned __int16 *)a3 inContext:(CGContext *)a4 usingFont:(__CTFont *)a5 atPositions:(const CGPoint *)a6 count:(unint64_t)a7 lineHeight:(double)a8 inBounds:(CGRect)a9 atScale:(double)a10
+- (void)drawGlyphs:(const unsigned __int16 *)glyphs inContext:(CGContext *)context usingFont:(__CTFont *)font atPositions:(const CGPoint *)positions count:(unint64_t)count lineHeight:(double)height inBounds:(CGRect)bounds atScale:(double)self0
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CUIShapeEffectStack *)self scalefactor];
-  if (v21 != a10)
+  if (v21 != scale)
   {
-    [(CUIShapeEffectStack *)self scaleEffectParametersBy:a10];
+    [(CUIShapeEffectStack *)self scaleEffectParametersBy:scale];
   }
 
-  SymbolicTraits = CTFontGetSymbolicTraits(a5);
+  SymbolicTraits = CTFontGetSymbolicTraits(font);
   if ((SymbolicTraits & 0x2000) != 0)
   {
     [(CUIShapeEffectStack *)self setInnerGradientCount:0];
@@ -591,10 +591,10 @@ LABEL_15:
     [(CUIShapeEffectStack *)self setColorOverlayCount:0];
     if ([(CUIShapeEffectStack *)self hasEngraveShadow])
     {
-      v23 = [(CUIShapeEffectStack *)self engraveShadowCount];
-      if (v23)
+      engraveShadowCount = [(CUIShapeEffectStack *)self engraveShadowCount];
+      if (engraveShadowCount)
       {
-        v24 = v23;
+        v24 = engraveShadowCount;
         v25 = 28;
         while (fabs(*([(CUIShapeEffectStack *)self engraveShadow]+ v25) + -1.57079633) <= 0.00100000005)
         {
@@ -627,14 +627,14 @@ LABEL_9:
     v27 = v61.origin.y;
     v28 = v61.size.width;
     v29 = v61.size.height;
-    v30 = [CUITextEffectStack newGlyphMaskContextForBounds:"newGlyphMaskContextForBounds:fromContext:withScale:" fromContext:a4 withScale:?];
+    v30 = [CUITextEffectStack newGlyphMaskContextForBounds:"newGlyphMaskContextForBounds:fromContext:withScale:" fromContext:context withScale:?];
     CTFontDrawGlyphsAtPositions();
-    [(CUITextEffectStack *)self drawProcessedMask:v30 atBounds:a4 inContext:v26 withScale:v27, v28, v29, a10];
+    [(CUITextEffectStack *)self drawProcessedMask:v30 atBounds:context inContext:v26 withScale:v27, v28, v29, scale];
     CGContextRelease(v30);
     if ((SymbolicTraits & 0x2000) != 0)
     {
 
-      CTFontDrawGlyphs(a5, a3, a6, a7, a4);
+      CTFontDrawGlyphs(font, glyphs, positions, count, context);
     }
   }
 
@@ -642,7 +642,7 @@ LABEL_9:
   {
     if ([(CUIShapeEffectStack *)self hasInnerGradient])
     {
-      FillColorAsColor = [(CUITextEffectStack *)self newBackgroundPatternColorWithSize:a4 contentScale:10.0 forContext:height, a10];
+      FillColorAsColor = [(CUITextEffectStack *)self newBackgroundPatternColorWithSize:context contentScale:10.0 forContext:height, scale];
     }
 
     else
@@ -661,10 +661,10 @@ LABEL_9:
       }
     }
 
-    CGContextSaveGState(a4);
+    CGContextSaveGState(context);
     if (_CUIDebugUseSimplifiedTextAntialiasing())
     {
-      CGContextSetShouldSmoothFonts(a4, 0);
+      CGContextSetShouldSmoothFonts(context, 0);
       CGContextSetFontAntialiasingStyle();
       DeviceGray = CGColorSpaceCreateDeviceGray();
       *&components.a = xmmword_18E0249F0;
@@ -678,25 +678,25 @@ LABEL_9:
     if (v36 < 1.0)
     {
       [(CUIShapeEffectStack *)self outputOpacity];
-      CGContextSetAlpha(a4, v37);
+      CGContextSetAlpha(context, v37);
     }
 
     if ([(CUIShapeEffectStack *)self hasEngraveShadow])
     {
-      v38 = [(CUIShapeEffectStack *)self engraveShadowCount];
-      if (v38)
+      engraveShadowCount2 = [(CUIShapeEffectStack *)self engraveShadowCount];
+      if (engraveShadowCount2)
       {
-        v39 = v38;
+        v39 = engraveShadowCount2;
         v40 = 0;
         do
         {
-          v41 = [(CUIShapeEffectStack *)self engraveShadow];
-          v42 = *&v41[v40].var0;
-          var8 = v41[v40].var8;
-          *&components.c = *&v41[v40].var4;
+          engraveShadow = [(CUIShapeEffectStack *)self engraveShadow];
+          v42 = *&engraveShadow[v40].var0;
+          var8 = engraveShadow[v40].var8;
+          *&components.c = *&engraveShadow[v40].var4;
           *&components.tx = var8;
           *&components.a = v42;
-          [(CUITextEffectStack *)self _drawShadow:&components forGlyphs:a3 inContext:a4 usingFont:a5 atPositions:a6 count:a7];
+          [(CUITextEffectStack *)self _drawShadow:&components forGlyphs:glyphs inContext:context usingFont:font atPositions:positions count:count];
           ++v40;
           --v39;
         }
@@ -707,20 +707,20 @@ LABEL_9:
 
     if ([(CUIShapeEffectStack *)self hasExtraShadow])
     {
-      v44 = [(CUIShapeEffectStack *)self extraShadowCount];
-      if (v44)
+      extraShadowCount = [(CUIShapeEffectStack *)self extraShadowCount];
+      if (extraShadowCount)
       {
-        v45 = v44;
+        v45 = extraShadowCount;
         v46 = 0;
         do
         {
-          v47 = [(CUIShapeEffectStack *)self extraShadow];
-          v48 = *&v47[v46].var0;
-          v49 = v47[v46].var8;
-          *&components.c = *&v47[v46].var4;
+          extraShadow = [(CUIShapeEffectStack *)self extraShadow];
+          v48 = *&extraShadow[v46].var0;
+          v49 = extraShadow[v46].var8;
+          *&components.c = *&extraShadow[v46].var4;
           *&components.tx = v49;
           *&components.a = v48;
-          [(CUITextEffectStack *)self _drawShadow:&components forGlyphs:a3 inContext:a4 usingFont:a5 atPositions:a6 count:a7];
+          [(CUITextEffectStack *)self _drawShadow:&components forGlyphs:glyphs inContext:context usingFont:font atPositions:positions count:count];
           ++v46;
           --v45;
         }
@@ -730,7 +730,7 @@ LABEL_9:
     }
 
     memset(&components, 0, sizeof(components));
-    CGContextGetCTM(&components, a4);
+    CGContextGetCTM(&components, context);
     v62.origin.x = x;
     v62.origin.y = y;
     v62.size.width = width;
@@ -747,13 +747,13 @@ LABEL_9:
     CGAffineTransformInvert(&v56, &v55);
     v59.height = v56.ty + v53 * v56.d + v56.b * v52;
     v59.width = 0.0;
-    CGContextSetPatternPhase(a4, v59);
-    CGContextSetFillColorWithColor(a4, FillColorAsColor);
-    if ([(CUIShapeEffectStack *)self outputBlendMode]&& (CGContextSetBlendMode(a4, [(CUIShapeEffectStack *)self cgBlendModeForOutputBlending]), FontSmoothingStyle = CGContextGetFontSmoothingStyle(), CGContextGetShouldSmoothFonts()) && FontSmoothingStyle >= 0x11)
+    CGContextSetPatternPhase(context, v59);
+    CGContextSetFillColorWithColor(context, FillColorAsColor);
+    if ([(CUIShapeEffectStack *)self outputBlendMode]&& (CGContextSetBlendMode(context, [(CUIShapeEffectStack *)self cgBlendModeForOutputBlending]), FontSmoothingStyle = CGContextGetFontSmoothingStyle(), CGContextGetShouldSmoothFonts()) && FontSmoothingStyle >= 0x11)
     {
-      CGContextBeginTransparencyLayer(a4, 0);
+      CGContextBeginTransparencyLayer(context, 0);
       CTFontDrawGlyphsAtPositions();
-      CGContextEndTransparencyLayer(a4);
+      CGContextEndTransparencyLayer(context);
     }
 
     else
@@ -762,15 +762,15 @@ LABEL_9:
     }
 
     CGColorRelease(FillColorAsColor);
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)_drawShadow:(id *)a3 usingQuartz:(id)a4 inContext:(CGContext *)a5
+- (void)_drawShadow:(id *)shadow usingQuartz:(id)quartz inContext:(CGContext *)context
 {
   SRGB = _CUIColorSpaceGetSRGB();
-  *components = vcvtq_f64_f32(*&a3->var0);
-  var2 = a3->var2;
+  *components = vcvtq_f64_f32(*&shadow->var0);
+  var2 = shadow->var2;
   v15 = 0u;
   v16 = 0u;
   v14 = 0u;
@@ -778,31 +778,31 @@ LABEL_9:
   memset(&v12, 0, sizeof(v12));
   memset(&v13, 0, sizeof(v13));
   CGAffineTransformInvert(&v13, &v12);
-  var3 = a3->var3;
+  var3 = shadow->var3;
   v10 = CGColorCreate(SRGB, components);
   CGStyleCreateShadow2();
   Style = CGContextGetStyle();
   if ([(CUIShapeEffectStack *)self hasEngraveShadow]&& Style)
   {
-    (*(a4 + 2))(a4, a5);
+    (*(quartz + 2))(quartz, context);
   }
 
   CGContextSetStyle();
-  var3 = a3->var3;
-  CGContextSetFillColorSpace(a5, SRGB);
-  CGContextSetFillColor(a5, components);
-  CGContextSetStrokeColorSpace(a5, SRGB);
-  CGContextSetStrokeColor(a5, components);
+  var3 = shadow->var3;
+  CGContextSetFillColorSpace(context, SRGB);
+  CGContextSetFillColor(context, components);
+  CGContextSetStrokeColorSpace(context, SRGB);
+  CGContextSetStrokeColor(context, components);
   CGStyleRelease();
   CGColorRelease(v10);
 }
 
-- (void)drawUsingQuartz:(id)a3 inContext:(CGContext *)a4 inBounds:(CGRect)a5 atScale:(double)a6
+- (void)drawUsingQuartz:(id)quartz inContext:(CGContext *)context inBounds:(CGRect)bounds atScale:(double)scale
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(CUITextEffectStack *)self useCoreImageRendering])
   {
     v43.origin.x = x;
@@ -814,10 +814,10 @@ LABEL_9:
     v15 = v44.origin.y;
     v16 = v44.size.width;
     v17 = v44.size.height;
-    v18 = [CUITextEffectStack newGlyphMaskContextForBounds:"newGlyphMaskContextForBounds:fromContext:withScale:" fromContext:a4 withScale:?];
-    (*(a3 + 2))(a3, v18);
-    [(CUITextEffectStack *)self drawProcessedMask:v18 atBounds:a4 inContext:v14 withScale:v15, v16, v17, a6];
-    CGContextBeginPath(a4);
+    v18 = [CUITextEffectStack newGlyphMaskContextForBounds:"newGlyphMaskContextForBounds:fromContext:withScale:" fromContext:context withScale:?];
+    (*(quartz + 2))(quartz, v18);
+    [(CUITextEffectStack *)self drawProcessedMask:v18 atBounds:context inContext:v14 withScale:v15, v16, v17, scale];
+    CGContextBeginPath(context);
 
     CGContextRelease(v18);
   }
@@ -826,7 +826,7 @@ LABEL_9:
   {
     if ([(CUIShapeEffectStack *)self hasInnerGradient])
     {
-      FillColorAsColor = [(CUITextEffectStack *)self newBackgroundPatternColorWithSize:a4 contentScale:10.0 forContext:height, a6];
+      FillColorAsColor = [(CUITextEffectStack *)self newBackgroundPatternColorWithSize:context contentScale:10.0 forContext:height, scale];
     }
 
     else
@@ -845,23 +845,23 @@ LABEL_9:
       }
     }
 
-    CGContextSaveGState(a4);
+    CGContextSaveGState(context);
     if ([(CUIShapeEffectStack *)self hasEngraveShadow])
     {
-      v22 = [(CUIShapeEffectStack *)self engraveShadowCount];
-      if (v22)
+      engraveShadowCount = [(CUIShapeEffectStack *)self engraveShadowCount];
+      if (engraveShadowCount)
       {
-        v23 = v22;
+        v23 = engraveShadowCount;
         v24 = 0;
         do
         {
-          v25 = [(CUIShapeEffectStack *)self engraveShadow];
-          v26 = *&v25[v24].var0;
-          var8 = v25[v24].var8;
-          *&v40.c = *&v25[v24].var4;
+          engraveShadow = [(CUIShapeEffectStack *)self engraveShadow];
+          v26 = *&engraveShadow[v24].var0;
+          var8 = engraveShadow[v24].var8;
+          *&v40.c = *&engraveShadow[v24].var4;
           *&v40.tx = var8;
           *&v40.a = v26;
-          [(CUITextEffectStack *)self _drawShadow:&v40 usingQuartz:a3 inContext:a4];
+          [(CUITextEffectStack *)self _drawShadow:&v40 usingQuartz:quartz inContext:context];
           ++v24;
           --v23;
         }
@@ -872,20 +872,20 @@ LABEL_9:
 
     if ([(CUIShapeEffectStack *)self hasExtraShadow])
     {
-      v28 = [(CUIShapeEffectStack *)self extraShadowCount];
-      if (v28)
+      extraShadowCount = [(CUIShapeEffectStack *)self extraShadowCount];
+      if (extraShadowCount)
       {
-        v29 = v28;
+        v29 = extraShadowCount;
         v30 = 0;
         do
         {
-          v31 = [(CUIShapeEffectStack *)self extraShadow];
-          v32 = *&v31[v30].var0;
-          v33 = v31[v30].var8;
-          *&v40.c = *&v31[v30].var4;
+          extraShadow = [(CUIShapeEffectStack *)self extraShadow];
+          v32 = *&extraShadow[v30].var0;
+          v33 = extraShadow[v30].var8;
+          *&v40.c = *&extraShadow[v30].var4;
           *&v40.tx = v33;
           *&v40.a = v32;
-          [(CUITextEffectStack *)self _drawShadow:&v40 usingQuartz:a3 inContext:a4];
+          [(CUITextEffectStack *)self _drawShadow:&v40 usingQuartz:quartz inContext:context];
           ++v30;
           --v29;
         }
@@ -895,7 +895,7 @@ LABEL_9:
     }
 
     memset(&v40, 0, sizeof(v40));
-    CGContextGetCTM(&v40, a4);
+    CGContextGetCTM(&v40, context);
     v45.origin.x = x;
     v45.origin.y = y;
     v45.size.width = width;
@@ -912,17 +912,17 @@ LABEL_9:
     CGAffineTransformInvert(&v39, &v38);
     v42.height = v39.ty + v37 * v39.d + v39.b * v36;
     v42.width = 0.0;
-    CGContextSetPatternPhase(a4, v42);
-    CGContextSetFillColorWithColor(a4, FillColorAsColor);
-    CGContextSetStrokeColorWithColor(a4, FillColorAsColor);
+    CGContextSetPatternPhase(context, v42);
+    CGContextSetFillColorWithColor(context, FillColorAsColor);
+    CGContextSetStrokeColorWithColor(context, FillColorAsColor);
     if ([(CUIShapeEffectStack *)self outputBlendMode])
     {
-      CGContextSetBlendMode(a4, [(CUIShapeEffectStack *)self cgBlendModeForOutputBlending]);
+      CGContextSetBlendMode(context, [(CUIShapeEffectStack *)self cgBlendModeForOutputBlending]);
     }
 
-    (*(a3 + 2))(a3, a4);
+    (*(quartz + 2))(quartz, context);
     CGColorRelease(FillColorAsColor);
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 

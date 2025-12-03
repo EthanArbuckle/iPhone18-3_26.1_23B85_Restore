@@ -1,133 +1,133 @@
 @interface SUCoreUpdate
 + (id)_generateStateTable;
-- (SUCoreUpdate)initWithDelegate:(id)a3 updateDescriptor:(id)a4 updateUUID:(id)a5 withCallbackQueue:(id)a6;
+- (SUCoreUpdate)initWithDelegate:(id)delegate updateDescriptor:(id)descriptor updateUUID:(id)d withCallbackQueue:(id)queue;
 - (id)copyCurrentState;
 - (id)previousRollback;
 - (id)rollbackAvailable;
 - (id)updateDelegate;
-- (int64_t)actionAdvanceBrainLoadSuccess:(id)a3 error:(id *)a4;
-- (int64_t)actionAdvanceDownloadPreflighted:(id)a3 error:(id *)a4;
-- (int64_t)actionAdvanceSUDownloaded:(id)a3 error:(id *)a4;
-- (int64_t)actionAdvanceSuspended:(id)a3 error:(id *)a4;
-- (int64_t)actionApplyUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionCancelPrepare:(id)a3 error:(id *)a4;
-- (int64_t)actionCheckSpace:(id)a3 error:(id *)a4;
-- (int64_t)actionChooseErrorSpaceCheck:(id)a3 error:(id *)a4;
-- (int64_t)actionDecideApplyUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionDecideBeginRollback:(id)a3 error:(id *)a4;
-- (int64_t)actionDecideCancelBeforeRollback:(id)a3 error:(id *)a4;
-- (int64_t)actionDecideDownloadSU:(id)a3 error:(id *)a4;
-- (int64_t)actionDecideDownloadSpaceCheck:(id)a3 error:(id *)a4;
-- (int64_t)actionDecideLoadBrain:(id)a3 error:(id *)a4;
-- (int64_t)actionDecidePreflightDownloadSU:(id)a3 error:(id *)a4;
-- (int64_t)actionDecidePrepareUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionDecideResumeUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionDecideRollbackUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionDecideSuspendUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionDownloadSU:(id)a3 error:(id *)a4;
-- (int64_t)actionLoadBrain:(id)a3 error:(id *)a4;
-- (int64_t)actionLoadBrainRollback:(id)a3 error:(id *)a4;
-- (int64_t)actionPreflightDownloadSU:(id)a3 error:(id *)a4;
-- (int64_t)actionPrepareUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionRemovePrepared:(id)a3 error:(id *)a4;
-- (int64_t)actionRemoveSU:(id)a3 error:(id *)a4;
-- (int64_t)actionReportAnomalyAPI:(id)a3 error:(id *)a4;
-- (int64_t)actionReportAnomalyAPIEnd:(id)a3 error:(id *)a4;
-- (int64_t)actionReportApplied:(id)a3 error:(id *)a4;
-- (int64_t)actionReportApplyFailed:(id)a3 error:(id *)a4;
-- (int64_t)actionReportApplyProgress:(id)a3 error:(id *)a4;
-- (int64_t)actionReportAttemptFailure:(id)a3 error:(id *)a4;
-- (int64_t)actionReportBrainLoadProgress:(id)a3 error:(id *)a4;
-- (int64_t)actionReportBrainLoadSuccess:(id)a3 error:(id *)a4;
-- (int64_t)actionReportCanceled:(id)a3 error:(id *)a4;
-- (int64_t)actionReportDownloadPreflighted:(id)a3 error:(id *)a4;
-- (int64_t)actionReportDownloadProgress:(id)a3 error:(id *)a4;
-- (int64_t)actionReportDownloadStalled:(id)a3 error:(id *)a4;
-- (int64_t)actionReportPrepareProgress:(id)a3 error:(id *)a4;
-- (int64_t)actionReportPrepared:(id)a3 error:(id *)a4;
-- (int64_t)actionReportResumeCurrentFailed:(id)a3 error:(id *)a4;
-- (int64_t)actionReportResumeCurrentSuccess:(id)a3 error:(id *)a4;
-- (int64_t)actionReportRollbackFailed:(id)a3 error:(id *)a4;
-- (int64_t)actionReportRollbackSuccess:(id)a3 error:(id *)a4;
-- (int64_t)actionReportSUDownloaded:(id)a3 error:(id *)a4;
-- (int64_t)actionResumeCurrentUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionResumeUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionRollbackUpdateApply:(id)a3 error:(id *)a4;
-- (int64_t)actionRollbackUpdateDecideApply:(id)a3 error:(id *)a4;
-- (int64_t)actionRollbackUpdateDecideResume:(id)a3 error:(id *)a4;
-- (int64_t)actionRollbackUpdateDecideSuspend:(id)a3 error:(id *)a4;
-- (int64_t)actionRollbackUpdatePrepare:(id)a3 error:(id *)a4;
-- (int64_t)actionRollbackUpdateResume:(id)a3 error:(id *)a4;
-- (int64_t)actionRollbackUpdateSuspend:(id)a3 error:(id *)a4;
-- (int64_t)actionSuspendUpdate:(id)a3 error:(id *)a4;
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4;
-- (int64_t)actionUpdateTarget:(id)a3 error:(id *)a4;
-- (int64_t)actionUpdateTargetReconfig:(id)a3 error:(id *)a4;
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8;
-- (void)_adjustTarget:(int64_t)a3 withPolicy:(id)a4;
-- (void)_applyAttemptFailed:(id)a3;
+- (int64_t)actionAdvanceBrainLoadSuccess:(id)success error:(id *)error;
+- (int64_t)actionAdvanceDownloadPreflighted:(id)preflighted error:(id *)error;
+- (int64_t)actionAdvanceSUDownloaded:(id)downloaded error:(id *)error;
+- (int64_t)actionAdvanceSuspended:(id)suspended error:(id *)error;
+- (int64_t)actionApplyUpdate:(id)update error:(id *)error;
+- (int64_t)actionCancelPrepare:(id)prepare error:(id *)error;
+- (int64_t)actionCheckSpace:(id)space error:(id *)error;
+- (int64_t)actionChooseErrorSpaceCheck:(id)check error:(id *)error;
+- (int64_t)actionDecideApplyUpdate:(id)update error:(id *)error;
+- (int64_t)actionDecideBeginRollback:(id)rollback error:(id *)error;
+- (int64_t)actionDecideCancelBeforeRollback:(id)rollback error:(id *)error;
+- (int64_t)actionDecideDownloadSU:(id)u error:(id *)error;
+- (int64_t)actionDecideDownloadSpaceCheck:(id)check error:(id *)error;
+- (int64_t)actionDecideLoadBrain:(id)brain error:(id *)error;
+- (int64_t)actionDecidePreflightDownloadSU:(id)u error:(id *)error;
+- (int64_t)actionDecidePrepareUpdate:(id)update error:(id *)error;
+- (int64_t)actionDecideResumeUpdate:(id)update error:(id *)error;
+- (int64_t)actionDecideRollbackUpdate:(id)update error:(id *)error;
+- (int64_t)actionDecideSuspendUpdate:(id)update error:(id *)error;
+- (int64_t)actionDownloadSU:(id)u error:(id *)error;
+- (int64_t)actionLoadBrain:(id)brain error:(id *)error;
+- (int64_t)actionLoadBrainRollback:(id)rollback error:(id *)error;
+- (int64_t)actionPreflightDownloadSU:(id)u error:(id *)error;
+- (int64_t)actionPrepareUpdate:(id)update error:(id *)error;
+- (int64_t)actionRemovePrepared:(id)prepared error:(id *)error;
+- (int64_t)actionRemoveSU:(id)u error:(id *)error;
+- (int64_t)actionReportAnomalyAPI:(id)i error:(id *)error;
+- (int64_t)actionReportAnomalyAPIEnd:(id)end error:(id *)error;
+- (int64_t)actionReportApplied:(id)applied error:(id *)error;
+- (int64_t)actionReportApplyFailed:(id)failed error:(id *)error;
+- (int64_t)actionReportApplyProgress:(id)progress error:(id *)error;
+- (int64_t)actionReportAttemptFailure:(id)failure error:(id *)error;
+- (int64_t)actionReportBrainLoadProgress:(id)progress error:(id *)error;
+- (int64_t)actionReportBrainLoadSuccess:(id)success error:(id *)error;
+- (int64_t)actionReportCanceled:(id)canceled error:(id *)error;
+- (int64_t)actionReportDownloadPreflighted:(id)preflighted error:(id *)error;
+- (int64_t)actionReportDownloadProgress:(id)progress error:(id *)error;
+- (int64_t)actionReportDownloadStalled:(id)stalled error:(id *)error;
+- (int64_t)actionReportPrepareProgress:(id)progress error:(id *)error;
+- (int64_t)actionReportPrepared:(id)prepared error:(id *)error;
+- (int64_t)actionReportResumeCurrentFailed:(id)failed error:(id *)error;
+- (int64_t)actionReportResumeCurrentSuccess:(id)success error:(id *)error;
+- (int64_t)actionReportRollbackFailed:(id)failed error:(id *)error;
+- (int64_t)actionReportRollbackSuccess:(id)success error:(id *)error;
+- (int64_t)actionReportSUDownloaded:(id)downloaded error:(id *)error;
+- (int64_t)actionResumeCurrentUpdate:(id)update error:(id *)error;
+- (int64_t)actionResumeUpdate:(id)update error:(id *)error;
+- (int64_t)actionRollbackUpdateApply:(id)apply error:(id *)error;
+- (int64_t)actionRollbackUpdateDecideApply:(id)apply error:(id *)error;
+- (int64_t)actionRollbackUpdateDecideResume:(id)resume error:(id *)error;
+- (int64_t)actionRollbackUpdateDecideSuspend:(id)suspend error:(id *)error;
+- (int64_t)actionRollbackUpdatePrepare:(id)prepare error:(id *)error;
+- (int64_t)actionRollbackUpdateResume:(id)resume error:(id *)error;
+- (int64_t)actionRollbackUpdateSuspend:(id)suspend error:(id *)error;
+- (int64_t)actionSuspendUpdate:(id)update error:(id *)error;
+- (int64_t)actionUnknownAction:(id)action error:(id *)error;
+- (int64_t)actionUpdateTarget:(id)target error:(id *)error;
+- (int64_t)actionUpdateTargetReconfig:(id)reconfig error:(id *)error;
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error;
+- (void)_adjustTarget:(int64_t)target withPolicy:(id)policy;
+- (void)_applyAttemptFailed:(id)failed;
 - (void)_cleanupAfterAttempt;
-- (void)_eventAfterReachingPhase:(int64_t)a3;
-- (void)_eventAfterReachingRollbackPhase:(int64_t)a3;
-- (void)_rollbackAttemptFailed:(id)a3 withError:(id)a4;
-- (void)_trackUpdateAnomaly:(id)a3 result:(int64_t)a4 description:(id)a5;
-- (void)_trackUpdateError:(id)a3 forReason:(id)a4 error:(id)a5;
-- (void)_updateAnomaly:(id)a3;
+- (void)_eventAfterReachingPhase:(int64_t)phase;
+- (void)_eventAfterReachingRollbackPhase:(int64_t)phase;
+- (void)_rollbackAttemptFailed:(id)failed withError:(id)error;
+- (void)_trackUpdateAnomaly:(id)anomaly result:(int64_t)result description:(id)description;
+- (void)_trackUpdateError:(id)error forReason:(id)reason error:(id)a5;
+- (void)_updateAnomaly:(id)anomaly;
 - (void)_updateApplied;
-- (void)_updateApplyProgress:(id)a3;
+- (void)_updateApplyProgress:(id)progress;
 - (void)_updateAssetDownloadPreflighted;
-- (void)_updateAssetDownloadProgress:(id)a3;
-- (void)_updateAssetDownloadStalled:(id)a3;
-- (void)_updateAssetDownloaded:(id)a3;
-- (void)_updateAttemptFailed:(id)a3;
-- (void)_updateBrainLoadProgress:(id)a3;
-- (void)_updateBrainLoadStalled:(id)a3;
-- (void)_updateBrainLoaded:(id)a3;
+- (void)_updateAssetDownloadProgress:(id)progress;
+- (void)_updateAssetDownloadStalled:(id)stalled;
+- (void)_updateAssetDownloaded:(id)downloaded;
+- (void)_updateAttemptFailed:(id)failed;
+- (void)_updateBrainLoadProgress:(id)progress;
+- (void)_updateBrainLoadStalled:(id)stalled;
+- (void)_updateBrainLoaded:(id)loaded;
 - (void)_updateCanceled;
-- (void)_updateCurrentResumeFailed:(id)a3;
+- (void)_updateCurrentResumeFailed:(id)failed;
 - (void)_updateCurrentResumed;
-- (void)_updatePrepareProgress:(id)a3;
-- (void)_updatePrepared:(id)a3;
-- (void)_updateRolledBack:(id)a3;
-- (void)anomaly:(id)a3;
+- (void)_updatePrepareProgress:(id)progress;
+- (void)_updatePrepared:(id)prepared;
+- (void)_updateRolledBack:(id)back;
+- (void)anomaly:(id)anomaly;
 - (void)cancelCurrentUpdate;
-- (void)downloadFailed:(id)a3;
-- (void)downloadProgress:(id)a3;
-- (void)downloadStalled:(id)a3;
-- (void)downloaded:(id)a3;
+- (void)downloadFailed:(id)failed;
+- (void)downloadProgress:(id)progress;
+- (void)downloadStalled:(id)stalled;
+- (void)downloaded:(id)downloaded;
 - (void)msuApplied;
-- (void)msuApplyFailed:(id)a3;
-- (void)msuApplyProgress:(id)a3;
-- (void)msuBrainLoadFailed:(id)a3;
-- (void)msuBrainLoadProgress:(id)a3;
-- (void)msuBrainLoadStalled:(id)a3;
-- (void)msuBrainLoaded:(id)a3;
-- (void)msuPrepareFailed:(id)a3;
-- (void)msuPrepareProgress:(id)a3;
-- (void)msuPrepared:(id)a3;
-- (void)msuRemoveFailed:(id)a3;
+- (void)msuApplyFailed:(id)failed;
+- (void)msuApplyProgress:(id)progress;
+- (void)msuBrainLoadFailed:(id)failed;
+- (void)msuBrainLoadProgress:(id)progress;
+- (void)msuBrainLoadStalled:(id)stalled;
+- (void)msuBrainLoaded:(id)loaded;
+- (void)msuPrepareFailed:(id)failed;
+- (void)msuPrepareProgress:(id)progress;
+- (void)msuPrepared:(id)prepared;
+- (void)msuRemoveFailed:(id)failed;
 - (void)msuRemoved;
-- (void)msuResumeFailed:(id)a3;
+- (void)msuResumeFailed:(id)failed;
 - (void)msuResumed;
-- (void)msuRollbackApplyFailed:(id)a3;
+- (void)msuRollbackApplyFailed:(id)failed;
 - (void)msuRollbackApplySuccess;
-- (void)msuRollbackFailed:(id)a3;
+- (void)msuRollbackFailed:(id)failed;
 - (void)msuRollbackPrepareSuccess;
 - (void)msuRollbackResumeSuccess;
 - (void)msuRollbackSuspendSuccess;
-- (void)msuSUDownloadPreflightFailed:(id)a3;
+- (void)msuSUDownloadPreflightFailed:(id)failed;
 - (void)msuSUDownloadPreflighted;
-- (void)msuSuspendFailed:(id)a3;
+- (void)msuSuspendFailed:(id)failed;
 - (void)msuSuspended;
-- (void)preSUStagingFinished:(id)a3;
+- (void)preSUStagingFinished:(id)finished;
 - (void)resumeCurrentUpdate;
-- (void)targetApplied:(id)a3;
-- (void)targetBrainLoaded:(id)a3;
-- (void)targetDownloadPreflighted:(id)a3;
-- (void)targetDownloaded:(id)a3;
-- (void)targetPrepared:(id)a3;
-- (void)targetRollback:(id)a3;
-- (void)updateRemoveFailed:(id)a3;
+- (void)targetApplied:(id)applied;
+- (void)targetBrainLoaded:(id)loaded;
+- (void)targetDownloadPreflighted:(id)preflighted;
+- (void)targetDownloaded:(id)downloaded;
+- (void)targetPrepared:(id)prepared;
+- (void)targetRollback:(id)rollback;
+- (void)updateRemoveFailed:(id)failed;
 - (void)updateRemoved;
 @end
 
@@ -3522,305 +3522,305 @@
   return v11;
 }
 
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
-  if ([v11 isEqualToString:*MEMORY[0x277D647D0]])
+  actionCopy = action;
+  infoCopy = info;
+  if ([actionCopy isEqualToString:*MEMORY[0x277D647D0]])
   {
     v13 = 0;
   }
 
   else
   {
-    if ([v11 isEqualToString:@"DecideLoadBrain"])
+    if ([actionCopy isEqualToString:@"DecideLoadBrain"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecideLoadBrain:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecideLoadBrain:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"LoadBrain"])
+    else if ([actionCopy isEqualToString:@"LoadBrain"])
     {
-      v14 = [(SUCoreUpdate *)self actionLoadBrain:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionLoadBrain:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportBrainLoadProgress"])
+    else if ([actionCopy isEqualToString:@"ReportBrainLoadProgress"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportBrainLoadProgress:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportBrainLoadProgress:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"AdvanceBrainLoadSuccess"])
+    else if ([actionCopy isEqualToString:@"AdvanceBrainLoadSuccess"])
     {
-      v14 = [(SUCoreUpdate *)self actionAdvanceBrainLoadSuccess:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionAdvanceBrainLoadSuccess:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportBrainLoadSuccess"])
+    else if ([actionCopy isEqualToString:@"ReportBrainLoadSuccess"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportBrainLoadSuccess:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportBrainLoadSuccess:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecidePreflightDownloadSU"])
+    else if ([actionCopy isEqualToString:@"DecidePreflightDownloadSU"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecidePreflightDownloadSU:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecidePreflightDownloadSU:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"PreflightDownloadSU"])
+    else if ([actionCopy isEqualToString:@"PreflightDownloadSU"])
     {
-      v14 = [(SUCoreUpdate *)self actionPreflightDownloadSU:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionPreflightDownloadSU:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"AdvanceDownloadPreflighted"])
+    else if ([actionCopy isEqualToString:@"AdvanceDownloadPreflighted"])
     {
-      v14 = [(SUCoreUpdate *)self actionAdvanceDownloadPreflighted:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionAdvanceDownloadPreflighted:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportDownloadPreflighted"])
+    else if ([actionCopy isEqualToString:@"ReportDownloadPreflighted"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportDownloadPreflighted:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportDownloadPreflighted:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecideDownloadSpaceCheck"])
+    else if ([actionCopy isEqualToString:@"DecideDownloadSpaceCheck"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecideDownloadSpaceCheck:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecideDownloadSpaceCheck:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ChooseErrorSpaceCheck"])
+    else if ([actionCopy isEqualToString:@"ChooseErrorSpaceCheck"])
     {
-      v14 = [(SUCoreUpdate *)self actionChooseErrorSpaceCheck:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionChooseErrorSpaceCheck:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"CheckSpace"])
+    else if ([actionCopy isEqualToString:@"CheckSpace"])
     {
-      v14 = [(SUCoreUpdate *)self actionCheckSpace:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionCheckSpace:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecideDownloadSU"])
+    else if ([actionCopy isEqualToString:@"DecideDownloadSU"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecideDownloadSU:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecideDownloadSU:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DownloadSU"])
+    else if ([actionCopy isEqualToString:@"DownloadSU"])
     {
-      v14 = [(SUCoreUpdate *)self actionDownloadSU:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDownloadSU:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportDownloadProgress"])
+    else if ([actionCopy isEqualToString:@"ReportDownloadProgress"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportDownloadProgress:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportDownloadProgress:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportDownloadStalled"])
+    else if ([actionCopy isEqualToString:@"ReportDownloadStalled"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportDownloadStalled:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportDownloadStalled:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"AdvanceSUDownloaded"])
+    else if ([actionCopy isEqualToString:@"AdvanceSUDownloaded"])
     {
-      v14 = [(SUCoreUpdate *)self actionAdvanceSUDownloaded:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionAdvanceSUDownloaded:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportSUDownloaded"])
+    else if ([actionCopy isEqualToString:@"ReportSUDownloaded"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportSUDownloaded:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportSUDownloaded:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecidePrepareUpdate"])
+    else if ([actionCopy isEqualToString:@"DecidePrepareUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecidePrepareUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecidePrepareUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"PrepareUpdate"])
+    else if ([actionCopy isEqualToString:@"PrepareUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionPrepareUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionPrepareUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportPrepareProgress"])
+    else if ([actionCopy isEqualToString:@"ReportPrepareProgress"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportPrepareProgress:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportPrepareProgress:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecideSuspendUpdate"])
+    else if ([actionCopy isEqualToString:@"DecideSuspendUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecideSuspendUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecideSuspendUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"SuspendUpdate"])
+    else if ([actionCopy isEqualToString:@"SuspendUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionSuspendUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionSuspendUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"AdvanceSuspended"])
+    else if ([actionCopy isEqualToString:@"AdvanceSuspended"])
     {
-      v14 = [(SUCoreUpdate *)self actionAdvanceSuspended:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionAdvanceSuspended:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportPrepared"])
+    else if ([actionCopy isEqualToString:@"ReportPrepared"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportPrepared:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportPrepared:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ResumeCurrentUpdate"])
+    else if ([actionCopy isEqualToString:@"ResumeCurrentUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionResumeCurrentUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionResumeCurrentUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportResumeCurrentSuccess"])
+    else if ([actionCopy isEqualToString:@"ReportResumeCurrentSuccess"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportResumeCurrentSuccess:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportResumeCurrentSuccess:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportResumeCurrentFailed"])
+    else if ([actionCopy isEqualToString:@"ReportResumeCurrentFailed"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportResumeCurrentFailed:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportResumeCurrentFailed:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecideResumeUpdate"])
+    else if ([actionCopy isEqualToString:@"DecideResumeUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecideResumeUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecideResumeUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ResumeUpdate"])
+    else if ([actionCopy isEqualToString:@"ResumeUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionResumeUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionResumeUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecideApplyUpdate"])
+    else if ([actionCopy isEqualToString:@"DecideApplyUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecideApplyUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecideApplyUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportApplyProgress"])
+    else if ([actionCopy isEqualToString:@"ReportApplyProgress"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportApplyProgress:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportApplyProgress:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ApplyUpdate"])
+    else if ([actionCopy isEqualToString:@"ApplyUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionApplyUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionApplyUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportApplyFailed"])
+    else if ([actionCopy isEqualToString:@"ReportApplyFailed"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportApplyFailed:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportApplyFailed:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportApplied"])
+    else if ([actionCopy isEqualToString:@"ReportApplied"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportApplied:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportApplied:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecideCancelBeforeRollback"])
+    else if ([actionCopy isEqualToString:@"DecideCancelBeforeRollback"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecideCancelBeforeRollback:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecideCancelBeforeRollback:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecideBeginRollback"])
+    else if ([actionCopy isEqualToString:@"DecideBeginRollback"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecideBeginRollback:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecideBeginRollback:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"LoadBrainRollback"])
+    else if ([actionCopy isEqualToString:@"LoadBrainRollback"])
     {
-      v14 = [(SUCoreUpdate *)self actionLoadBrainRollback:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionLoadBrainRollback:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecideRollbackUpdate"])
+    else if ([actionCopy isEqualToString:@"DecideRollbackUpdate"])
     {
-      v14 = [(SUCoreUpdate *)self actionDecideRollbackUpdate:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionDecideRollbackUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RollbackUpdatePrepare"])
+    else if ([actionCopy isEqualToString:@"RollbackUpdatePrepare"])
     {
-      v14 = [(SUCoreUpdate *)self actionRollbackUpdatePrepare:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionRollbackUpdatePrepare:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RollbackUpdateDecideSuspend"])
+    else if ([actionCopy isEqualToString:@"RollbackUpdateDecideSuspend"])
     {
-      v14 = [(SUCoreUpdate *)self actionRollbackUpdateDecideSuspend:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionRollbackUpdateDecideSuspend:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RollbackUpdateSuspend"])
+    else if ([actionCopy isEqualToString:@"RollbackUpdateSuspend"])
     {
-      v14 = [(SUCoreUpdate *)self actionRollbackUpdateSuspend:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionRollbackUpdateSuspend:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RollbackUpdateDecideResume"])
+    else if ([actionCopy isEqualToString:@"RollbackUpdateDecideResume"])
     {
-      v14 = [(SUCoreUpdate *)self actionRollbackUpdateDecideResume:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionRollbackUpdateDecideResume:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RollbackUpdateResume"])
+    else if ([actionCopy isEqualToString:@"RollbackUpdateResume"])
     {
-      v14 = [(SUCoreUpdate *)self actionRollbackUpdateResume:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionRollbackUpdateResume:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RollbackUpdateDecideApply"])
+    else if ([actionCopy isEqualToString:@"RollbackUpdateDecideApply"])
     {
-      v14 = [(SUCoreUpdate *)self actionRollbackUpdateDecideApply:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionRollbackUpdateDecideApply:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RollbackUpdateApply"])
+    else if ([actionCopy isEqualToString:@"RollbackUpdateApply"])
     {
-      v14 = [(SUCoreUpdate *)self actionRollbackUpdateApply:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionRollbackUpdateApply:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportRollbackFailed"])
+    else if ([actionCopy isEqualToString:@"ReportRollbackFailed"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportRollbackFailed:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportRollbackFailed:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportRollbackSucceeded"])
+    else if ([actionCopy isEqualToString:@"ReportRollbackSucceeded"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportRollbackSuccess:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportRollbackSuccess:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportAttemptFailure"])
+    else if ([actionCopy isEqualToString:@"ReportAttemptFailure"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportAttemptFailure:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportAttemptFailure:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RemovePrepared"])
+    else if ([actionCopy isEqualToString:@"RemovePrepared"])
     {
-      v14 = [(SUCoreUpdate *)self actionRemovePrepared:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionRemovePrepared:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RemoveSU"])
+    else if ([actionCopy isEqualToString:@"RemoveSU"])
     {
-      v14 = [(SUCoreUpdate *)self actionRemoveSU:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionRemoveSU:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"CancelPrepare"])
+    else if ([actionCopy isEqualToString:@"CancelPrepare"])
     {
-      v14 = [(SUCoreUpdate *)self actionCancelPrepare:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionCancelPrepare:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportCanceled"])
+    else if ([actionCopy isEqualToString:@"ReportCanceled"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportCanceled:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportCanceled:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"UpdateTarget"])
+    else if ([actionCopy isEqualToString:@"UpdateTarget"])
     {
-      v14 = [(SUCoreUpdate *)self actionUpdateTarget:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionUpdateTarget:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"UpdateTargetReconfig"])
+    else if ([actionCopy isEqualToString:@"UpdateTargetReconfig"])
     {
-      v14 = [(SUCoreUpdate *)self actionUpdateTargetReconfig:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionUpdateTargetReconfig:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportAnomalyAPI"])
+    else if ([actionCopy isEqualToString:@"ReportAnomalyAPI"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportAnomalyAPI:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportAnomalyAPI:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportAnomalyAPIEnd"])
+    else if ([actionCopy isEqualToString:@"ReportAnomalyAPIEnd"])
     {
-      v14 = [(SUCoreUpdate *)self actionReportAnomalyAPIEnd:v12 error:a8];
+      v14 = [(SUCoreUpdate *)self actionReportAnomalyAPIEnd:infoCopy error:error];
     }
 
     else
     {
-      v14 = [(SUCoreUpdate *)self actionUnknownAction:v11 error:a8];
+      v14 = [(SUCoreUpdate *)self actionUnknownAction:actionCopy error:error];
     }
 
     v13 = v14;
@@ -3829,551 +3829,551 @@
   return v13;
 }
 
-- (int64_t)actionUpdateTarget:(id)a3 error:(id *)a4
+- (int64_t)actionUpdateTarget:(id)target error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  targetCopy = target;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [targetCopy targetPhase];
+  policy = [targetCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   return 0;
 }
 
-- (int64_t)actionUpdateTargetReconfig:(id)a3 error:(id *)a4
+- (int64_t)actionUpdateTargetReconfig:(id)reconfig error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  reconfigCopy = reconfig;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  targetPhase = [reconfigCopy targetPhase];
+  policy = [reconfigCopy policy];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
 
-  v10 = [v5 policy];
+  policy2 = [reconfigCopy policy];
 
-  if (v10)
+  if (policy2)
   {
-    v11 = [(SUCoreUpdate *)self downloadControl];
-    v12 = [v5 policy];
-    [v11 alterPolicy:v12];
+    downloadControl = [(SUCoreUpdate *)self downloadControl];
+    policy3 = [reconfigCopy policy];
+    [downloadControl alterPolicy:policy3];
   }
 
   return 0;
 }
 
-- (int64_t)actionDecideLoadBrain:(id)a3 error:(id *)a4
+- (int64_t)actionDecideLoadBrain:(id)brain error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  brainCopy = brain;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [brainCopy targetPhase];
+  policy = [brainCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:2];
   return 0;
 }
 
-- (int64_t)actionLoadBrain:(id)a3 error:(id *)a4
+- (int64_t)actionLoadBrain:(id)brain error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  brainCopy = brain;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [brainCopy targetPhase];
+  policy = [brainCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self setFailedAttemptError:0];
-  v10 = [(SUCoreUpdate *)self msuControl];
-  v11 = [(SUCoreUpdate *)self policy];
-  [v10 loadBrain:v11];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [msuControl loadBrain:policy2];
 
   return 0;
 }
 
-- (int64_t)actionDecidePreflightDownloadSU:(id)a3 error:(id *)a4
+- (int64_t)actionDecidePreflightDownloadSU:(id)u error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  uCopy = u;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [uCopy targetPhase];
+  policy = [uCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:3];
   return 0;
 }
 
-- (int64_t)actionPreflightDownloadSU:(id)a3 error:(id *)a4
+- (int64_t)actionPreflightDownloadSU:(id)u error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  uCopy = u;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [uCopy targetPhase];
+  policy = [uCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
-  v10 = [(SUCoreUpdate *)self msuControl];
-  v11 = [(SUCoreUpdate *)self policy];
-  [v10 preflightDownloadSU:v11];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [msuControl preflightDownloadSU:policy2];
 
   return 0;
 }
 
-- (int64_t)actionDecideDownloadSU:(id)a3 error:(id *)a4
+- (int64_t)actionDecideDownloadSU:(id)u error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  uCopy = u;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [uCopy targetPhase];
+  policy = [uCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:5];
   return 0;
 }
 
-- (int64_t)actionDownloadSU:(id)a3 error:(id *)a4
+- (int64_t)actionDownloadSU:(id)u error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  uCopy = u;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [uCopy targetPhase];
+  policy = [uCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
-  v10 = [(SUCoreUpdate *)self updateDescriptor];
-  if ([v10 descriptorType] == 1)
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
+  updateDescriptor = [(SUCoreUpdate *)self updateDescriptor];
+  if ([updateDescriptor descriptorType] == 1)
   {
     goto LABEL_4;
   }
 
-  v11 = [(SUCoreUpdate *)self updateDescriptor];
-  if ([v11 descriptorType] == 3)
+  updateDescriptor2 = [(SUCoreUpdate *)self updateDescriptor];
+  if ([updateDescriptor2 descriptorType] == 3)
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v16 = [(SUCoreUpdate *)self updateDescriptor];
-  v17 = [v16 descriptorType];
+  updateDescriptor3 = [(SUCoreUpdate *)self updateDescriptor];
+  descriptorType = [updateDescriptor3 descriptorType];
 
-  if (v17 != 5)
+  if (descriptorType != 5)
   {
     v18 = objc_alloc(MEMORY[0x277CCACA8]);
-    v19 = [(SUCoreUpdate *)self updateDescriptor];
-    v20 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [v19 descriptorType]);
-    v13 = [v18 initWithFormat:@"Descriptor is not of required type (SUCoreDescriptorTypeAsset, SUCoreDescriptorTypeSFRAsset, or SUCoreDescriptorTypeSplatAsset) for downloading, found %@", v20];
+    updateDescriptor4 = [(SUCoreUpdate *)self updateDescriptor];
+    v20 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [updateDescriptor4 descriptorType]);
+    downloadControl2 = [v18 initWithFormat:@"Descriptor is not of required type (SUCoreDescriptorTypeAsset, SUCoreDescriptorTypeSFRAsset, or SUCoreDescriptorTypeSplatAsset) for downloading, found %@", v20];
 
-    [(SUCoreUpdate *)self _trackUpdateAnomaly:@"DOWNLOAD_SU" result:8116 description:v13];
+    [(SUCoreUpdate *)self _trackUpdateAnomaly:@"DOWNLOAD_SU" result:8116 description:downloadControl2];
     goto LABEL_7;
   }
 
 LABEL_5:
-  v12 = [(SUCoreUpdate *)self downloadControl];
+  downloadControl = [(SUCoreUpdate *)self downloadControl];
 
-  if (!v12)
+  if (!downloadControl)
   {
     [(SUCoreUpdate *)self _trackUpdateAnomaly:@"DOWNLOAD_SU" result:8116 description:@"SUCoreUpdateDownloader instance not available when about to call download"];
     return 0;
   }
 
-  v13 = [(SUCoreUpdate *)self downloadControl];
-  v14 = [(SUCoreUpdate *)self policy];
-  [v13 downloadUpdateWithPolicy:v14];
+  downloadControl2 = [(SUCoreUpdate *)self downloadControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [downloadControl2 downloadUpdateWithPolicy:policy2];
 
 LABEL_7:
   return 0;
 }
 
-- (int64_t)actionDecidePrepareUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionDecidePrepareUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [updateCopy targetPhase];
+  policy = [updateCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:6];
   return 0;
 }
 
-- (int64_t)actionPrepareUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionPrepareUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [updateCopy targetPhase];
+  policy = [updateCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
-  v10 = [(SUCoreUpdate *)self msuControl];
-  v11 = [(SUCoreUpdate *)self policy];
-  [v10 prepareUpdate:v11];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [msuControl prepareUpdate:policy2];
 
   return 0;
 }
 
-- (int64_t)actionDecideSuspendUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionDecideSuspendUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [updateCopy targetPhase];
+  policy = [updateCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:7];
   return 0;
 }
 
-- (int64_t)actionSuspendUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionSuspendUpdate:(id)update error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:update];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUCoreUpdate *)self msuControl];
-  [v7 suspendUpdate];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  [msuControl suspendUpdate];
 
   return 0;
 }
 
-- (int64_t)actionDecideResumeUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionDecideResumeUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [updateCopy targetPhase];
+  policy = [updateCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:8];
   return 0;
 }
 
-- (int64_t)actionResumeUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionResumeUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [updateCopy targetPhase];
+  policy = [updateCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
-  v10 = [(SUCoreUpdate *)self msuControl];
-  v11 = [(SUCoreUpdate *)self policy];
-  [v10 resumeUpdate:v11];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [msuControl resumeUpdate:policy2];
 
   return 0;
 }
 
-- (int64_t)actionResumeCurrentUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionResumeCurrentUpdate:(id)update error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:update];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUCoreUpdate *)self msuControl];
-  v8 = [(SUCoreUpdate *)self policy];
-  [v7 resumeUpdate:v8];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy = [(SUCoreUpdate *)self policy];
+  [msuControl resumeUpdate:policy];
 
   return 0;
 }
 
-- (int64_t)actionDecideApplyUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionDecideApplyUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [updateCopy targetPhase];
+  policy = [updateCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:9];
   return 0;
 }
 
-- (int64_t)actionApplyUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionApplyUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [updateCopy targetPhase];
+  policy = [updateCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
-  v10 = [(SUCoreUpdate *)self msuControl];
-  v11 = [(SUCoreUpdate *)self policy];
-  [v10 applyUpdate:v11];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [msuControl applyUpdate:policy2];
 
   return 0;
 }
 
-- (int64_t)actionDecideCancelBeforeRollback:(id)a3 error:(id *)a4
+- (int64_t)actionDecideCancelBeforeRollback:(id)rollback error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  rollbackCopy = rollback;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [rollbackCopy targetPhase];
+  policy = [rollbackCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingRollbackPhase:1];
   return 0;
 }
 
-- (int64_t)actionDecideBeginRollback:(id)a3 error:(id *)a4
+- (int64_t)actionDecideBeginRollback:(id)rollback error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  rollbackCopy = rollback;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [rollbackCopy targetPhase];
+  policy = [rollbackCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingRollbackPhase:2];
   return 0;
 }
 
-- (int64_t)actionLoadBrainRollback:(id)a3 error:(id *)a4
+- (int64_t)actionLoadBrainRollback:(id)rollback error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  rollbackCopy = rollback;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [rollbackCopy targetPhase];
+  policy = [rollbackCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingRollbackPhase:3];
   return 0;
 }
 
-- (int64_t)actionDecideRollbackUpdate:(id)a3 error:(id *)a4
+- (int64_t)actionDecideRollbackUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [updateCopy targetPhase];
+  policy = [updateCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingRollbackPhase:4];
   return 0;
 }
 
-- (int64_t)actionRollbackUpdatePrepare:(id)a3 error:(id *)a4
+- (int64_t)actionRollbackUpdatePrepare:(id)prepare error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  prepareCopy = prepare;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [prepareCopy targetPhase];
+  policy = [prepareCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
-  v10 = [(SUCoreUpdate *)self msuControl];
-  v11 = [(SUCoreUpdate *)self policy];
-  [v10 rollbackUpdatePrepare:v11];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [msuControl rollbackUpdatePrepare:policy2];
 
   return 0;
 }
 
-- (int64_t)actionRollbackUpdateDecideSuspend:(id)a3 error:(id *)a4
+- (int64_t)actionRollbackUpdateDecideSuspend:(id)suspend error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  suspendCopy = suspend;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [suspendCopy targetPhase];
+  policy = [suspendCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingRollbackPhase:5];
   return 0;
 }
 
-- (int64_t)actionRollbackUpdateSuspend:(id)a3 error:(id *)a4
+- (int64_t)actionRollbackUpdateSuspend:(id)suspend error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  suspendCopy = suspend;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [suspendCopy targetPhase];
+  policy = [suspendCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
-  v10 = [(SUCoreUpdate *)self msuControl];
-  v11 = [(SUCoreUpdate *)self policy];
-  [v10 rollbackUpdateSuspend:v11];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [msuControl rollbackUpdateSuspend:policy2];
 
   return 0;
 }
 
-- (int64_t)actionRollbackUpdateDecideResume:(id)a3 error:(id *)a4
+- (int64_t)actionRollbackUpdateDecideResume:(id)resume error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  resumeCopy = resume;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [resumeCopy targetPhase];
+  policy = [resumeCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingRollbackPhase:6];
   return 0;
 }
 
-- (int64_t)actionRollbackUpdateResume:(id)a3 error:(id *)a4
+- (int64_t)actionRollbackUpdateResume:(id)resume error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  resumeCopy = resume;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [resumeCopy targetPhase];
+  policy = [resumeCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
-  v10 = [(SUCoreUpdate *)self msuControl];
-  v11 = [(SUCoreUpdate *)self policy];
-  [v10 rollbackUpdateResume:v11];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [msuControl rollbackUpdateResume:policy2];
 
   return 0;
 }
 
-- (int64_t)actionRollbackUpdateDecideApply:(id)a3 error:(id *)a4
+- (int64_t)actionRollbackUpdateDecideApply:(id)apply error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  applyCopy = apply;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [applyCopy targetPhase];
+  policy = [applyCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingRollbackPhase:7];
   return 0;
 }
 
-- (int64_t)actionRollbackUpdateApply:(id)a3 error:(id *)a4
+- (int64_t)actionRollbackUpdateApply:(id)apply error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  applyCopy = apply;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [applyCopy targetPhase];
+  policy = [applyCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
-  v10 = [(SUCoreUpdate *)self msuControl];
-  v11 = [(SUCoreUpdate *)self policy];
-  [v10 rollbackUpdateApply:v11];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  policy2 = [(SUCoreUpdate *)self policy];
+  [msuControl rollbackUpdateApply:policy2];
 
   return 0;
 }
 
-- (int64_t)actionDecideDownloadSpaceCheck:(id)a3 error:(id *)a4
+- (int64_t)actionDecideDownloadSpaceCheck:(id)check error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  checkCopy = check;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 targetPhase];
-  v9 = [v5 policy];
+  targetPhase = [checkCopy targetPhase];
+  policy = [checkCopy policy];
 
-  [(SUCoreUpdate *)self _adjustTarget:v8 withPolicy:v9];
+  [(SUCoreUpdate *)self _adjustTarget:targetPhase withPolicy:policy];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:4];
   return 0;
 }
 
-- (int64_t)actionChooseErrorSpaceCheck:(id)a3 error:(id *)a4
+- (int64_t)actionChooseErrorSpaceCheck:(id)check error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  checkCopy = check;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUCoreUpdate *)self policy];
-  LODWORD(v7) = [v8 checkAvailableSpace];
+  policy = [(SUCoreUpdate *)self policy];
+  LODWORD(extendedStateQueue) = [policy checkAvailableSpace];
 
-  v9 = [(SUCoreUpdate *)self updateFSM];
-  v10 = v9;
+  updateFSM2 = [(SUCoreUpdate *)self updateFSM];
+  v10 = updateFSM2;
   v11 = kSU_E_PerformErrorSpaceCheck;
-  if (!v7)
+  if (!extendedStateQueue)
   {
     v11 = kSU_E_SkipErrorSpaceCheck;
   }
 
-  [v9 followupEvent:*v11 withInfo:v5];
+  [updateFSM2 followupEvent:*v11 withInfo:checkCopy];
 
   return 0;
 }
 
-- (int64_t)actionCheckSpace:(id)a3 error:(id *)a4
+- (int64_t)actionCheckSpace:(id)space error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  spaceCopy = space;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUCoreUpdate *)self updateDescriptor];
-  v9 = [v8 msuPrepareSize];
+  updateDescriptor = [(SUCoreUpdate *)self updateDescriptor];
+  msuPrepareSize = [updateDescriptor msuPrepareSize];
 
-  if (v9)
+  if (msuPrepareSize)
   {
-    v10 = [(SUCoreUpdate *)self updateDescriptor];
-    v11 = [v10 totalRequiredFreeSpace];
-    v12 = [(SUCoreUpdate *)self updateDescriptor];
-    v13 = v11 - [v12 msuPrepareSize];
+    updateDescriptor2 = [(SUCoreUpdate *)self updateDescriptor];
+    totalRequiredFreeSpace = [updateDescriptor2 totalRequiredFreeSpace];
+    updateDescriptor3 = [(SUCoreUpdate *)self updateDescriptor];
+    v13 = totalRequiredFreeSpace - [updateDescriptor3 msuPrepareSize];
   }
 
   else
@@ -4381,27 +4381,27 @@ LABEL_7:
     v13 = 0;
   }
 
-  v14 = [(SUCoreUpdate *)self updateDescriptor];
-  v15 = [v14 totalRequiredFreeSpace];
+  updateDescriptor4 = [(SUCoreUpdate *)self updateDescriptor];
+  totalRequiredFreeSpace2 = [updateDescriptor4 totalRequiredFreeSpace];
 
   if (_os_feature_enabled_impl())
   {
-    v16 = [(SUCoreUpdate *)self updateDescriptor];
-    v15 = [v16 totalSnapshotRequiredFreeSpace];
+    updateDescriptor5 = [(SUCoreUpdate *)self updateDescriptor];
+    totalRequiredFreeSpace2 = [updateDescriptor5 totalSnapshotRequiredFreeSpace];
   }
 
-  v17 = [(SUCoreUpdate *)self policy];
-  v18 = [v17 cacheDeleteUrgency];
-  v19 = [(SUCoreUpdate *)self policy];
-  v20 = [v19 updateVolumePath];
+  policy = [(SUCoreUpdate *)self policy];
+  cacheDeleteUrgency = [policy cacheDeleteUrgency];
+  policy2 = [(SUCoreUpdate *)self policy];
+  updateVolumePath = [policy2 updateVolumePath];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __39__SUCoreUpdate_actionCheckSpace_error___block_invoke;
   v23[3] = &unk_27892E068;
   v23[4] = self;
-  v24 = v5;
-  v21 = v5;
-  [SUCoreSpace checkAvailableSpace:v15 allowPurgeWithUrgency:v18 purgingFromBase:v20 minimalRequiredFreeSpace:v13 completion:v23];
+  v24 = spaceCopy;
+  v21 = spaceCopy;
+  [SUCoreSpace checkAvailableSpace:totalRequiredFreeSpace2 allowPurgeWithUrgency:cacheDeleteUrgency purgingFromBase:updateVolumePath minimalRequiredFreeSpace:v13 completion:v23];
 
   return 0;
 }
@@ -4458,47 +4458,47 @@ void __39__SUCoreUpdate_actionCheckSpace_error___block_invoke(uint64_t a1, int a
   }
 }
 
-- (int64_t)actionRemoveSU:(id)a3 error:(id *)a4
+- (int64_t)actionRemoveSU:(id)u error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:u];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUCoreUpdate *)self updateDescriptor];
-  if ([v7 descriptorType] == 1)
+  updateDescriptor = [(SUCoreUpdate *)self updateDescriptor];
+  if ([updateDescriptor descriptorType] == 1)
   {
     goto LABEL_4;
   }
 
-  v8 = [(SUCoreUpdate *)self updateDescriptor];
-  if ([v8 descriptorType] == 3)
+  updateDescriptor2 = [(SUCoreUpdate *)self updateDescriptor];
+  if ([updateDescriptor2 descriptorType] == 3)
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v17 = [(SUCoreUpdate *)self updateDescriptor];
-  v18 = [v17 descriptorType];
+  updateDescriptor3 = [(SUCoreUpdate *)self updateDescriptor];
+  descriptorType = [updateDescriptor3 descriptorType];
 
-  if (v18 != 5)
+  if (descriptorType != 5)
   {
-    v19 = [(SUCoreUpdate *)self updateDescriptor];
-    if ([v19 descriptorType] == 2)
+    updateDescriptor4 = [(SUCoreUpdate *)self updateDescriptor];
+    if ([updateDescriptor4 descriptorType] == 2)
     {
     }
 
     else
     {
-      v20 = [(SUCoreUpdate *)self updateDescriptor];
-      v21 = [v20 descriptorType];
+      updateDescriptor5 = [(SUCoreUpdate *)self updateDescriptor];
+      descriptorType2 = [updateDescriptor5 descriptorType];
 
-      if (v21 != 4)
+      if (descriptorType2 != 4)
       {
         v27 = objc_alloc(MEMORY[0x277CCACA8]);
-        v28 = [(SUCoreUpdate *)self updateDescriptor];
-        v29 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [v28 descriptorType]);
+        updateDescriptor6 = [(SUCoreUpdate *)self updateDescriptor];
+        v29 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [updateDescriptor6 descriptorType]);
         v30 = [v27 initWithFormat:@"Unable to determine a known descriptor type for removal, found %@", v29];
 
         [(SUCoreUpdate *)self _trackUpdateAnomaly:@"REMOVE_SU" result:8116 description:v30];
@@ -4506,52 +4506,52 @@ LABEL_4:
       }
     }
 
-    v22 = [MEMORY[0x277D64460] sharedLogger];
-    v23 = [v22 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(SUCoreUpdate *)self updateDescriptor];
-      v25 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [v24 descriptorType]);
+      updateDescriptor7 = [(SUCoreUpdate *)self updateDescriptor];
+      v25 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [updateDescriptor7 descriptorType]);
       *buf = 138543618;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = v25;
-      _os_log_impl(&dword_23193C000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: Not removing descriptor of type %{public}@; posting removed event", buf, 0x16u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@: Not removing descriptor of type %{public}@; posting removed event", buf, 0x16u);
     }
 
-    v14 = [(SUCoreUpdate *)self updateFSM];
+    updateFSM = [(SUCoreUpdate *)self updateFSM];
     v26 = objc_alloc_init(SUCoreUpdateParam);
-    [v14 followupEvent:@"SURemoved" withInfo:v26];
+    [updateFSM followupEvent:@"SURemoved" withInfo:v26];
 
     goto LABEL_9;
   }
 
 LABEL_5:
-  v9 = [MEMORY[0x277D64460] sharedLogger];
-  v10 = [v9 oslog];
+  mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+  oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(SUCoreUpdate *)self updateDescriptor];
-    v12 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [v11 descriptorType]);
+    updateDescriptor8 = [(SUCoreUpdate *)self updateDescriptor];
+    v12 = +[SUCoreDescriptor nameForDescriptorType:](SUCoreDescriptor, "nameForDescriptorType:", [updateDescriptor8 descriptorType]);
     *buf = 138543618;
-    v32 = self;
+    selfCopy2 = self;
     v33 = 2114;
     v34 = v12;
-    _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing descriptor of type %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing descriptor of type %{public}@", buf, 0x16u);
   }
 
-  v13 = [(SUCoreUpdate *)self downloadControl];
+  downloadControl = [(SUCoreUpdate *)self downloadControl];
 
-  if (!v13)
+  if (!downloadControl)
   {
     [(SUCoreUpdate *)self _trackUpdateAnomaly:@"REMOVE_SU" result:8116 description:@"SUCoreUpdateDownloader instance not available when about to call to remove asset"];
     goto LABEL_11;
   }
 
-  v14 = [(SUCoreUpdate *)self downloadControl];
-  [v14 removeUpdate];
+  updateFSM = [(SUCoreUpdate *)self downloadControl];
+  [updateFSM removeUpdate];
 LABEL_9:
 
 LABEL_11:
@@ -4559,184 +4559,184 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)actionCancelPrepare:(id)a3 error:(id *)a4
+- (int64_t)actionCancelPrepare:(id)prepare error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:prepare];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUCoreUpdate *)self msuControl];
-  [v7 cancelPrepare];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  [msuControl cancelPrepare];
 
   return 0;
 }
 
-- (int64_t)actionRemovePrepared:(id)a3 error:(id *)a4
+- (int64_t)actionRemovePrepared:(id)prepared error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:prepared];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUCoreUpdate *)self msuControl];
-  [v7 removePrepared];
+  msuControl = [(SUCoreUpdate *)self msuControl];
+  [msuControl removePrepared];
 
   return 0;
 }
 
-- (int64_t)actionReportBrainLoadProgress:(id)a3 error:(id *)a4
+- (int64_t)actionReportBrainLoadProgress:(id)progress error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  progressCopy = progress;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 downloadProgress];
-  LODWORD(v7) = [v8 isStalled];
+  downloadProgress = [progressCopy downloadProgress];
+  LODWORD(extendedStateQueue) = [downloadProgress isStalled];
 
-  v9 = [v5 downloadProgress];
+  downloadProgress2 = [progressCopy downloadProgress];
 
-  if (v7)
+  if (extendedStateQueue)
   {
-    [(SUCoreUpdate *)self _updateBrainLoadStalled:v9];
+    [(SUCoreUpdate *)self _updateBrainLoadStalled:downloadProgress2];
   }
 
   else
   {
-    [(SUCoreUpdate *)self _updateBrainLoadProgress:v9];
+    [(SUCoreUpdate *)self _updateBrainLoadProgress:downloadProgress2];
   }
 
   return 0;
 }
 
-- (int64_t)actionAdvanceBrainLoadSuccess:(id)a3 error:(id *)a4
+- (int64_t)actionAdvanceBrainLoadSuccess:(id)success error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  successCopy = success;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 downloadProgress];
+  downloadProgress = [successCopy downloadProgress];
 
-  [(SUCoreUpdate *)self _updateBrainLoaded:v8];
+  [(SUCoreUpdate *)self _updateBrainLoaded:downloadProgress];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:3];
   return 0;
 }
 
-- (int64_t)actionReportBrainLoadSuccess:(id)a3 error:(id *)a4
+- (int64_t)actionReportBrainLoadSuccess:(id)success error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  successCopy = success;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 downloadProgress];
+  downloadProgress = [successCopy downloadProgress];
 
-  [(SUCoreUpdate *)self _updateBrainLoaded:v8];
+  [(SUCoreUpdate *)self _updateBrainLoaded:downloadProgress];
   return 0;
 }
 
-- (int64_t)actionAdvanceDownloadPreflighted:(id)a3 error:(id *)a4
+- (int64_t)actionAdvanceDownloadPreflighted:(id)preflighted error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:preflighted];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUCoreUpdate *)self _updateAssetDownloadPreflighted];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:4];
   return 0;
 }
 
-- (int64_t)actionReportDownloadPreflighted:(id)a3 error:(id *)a4
+- (int64_t)actionReportDownloadPreflighted:(id)preflighted error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:preflighted];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUCoreUpdate *)self _updateAssetDownloadPreflighted];
   return 0;
 }
 
-- (int64_t)actionReportDownloadProgress:(id)a3 error:(id *)a4
+- (int64_t)actionReportDownloadProgress:(id)progress error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  progressCopy = progress;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 downloadProgress];
+  downloadProgress = [progressCopy downloadProgress];
 
-  [(SUCoreUpdate *)self _updateAssetDownloadProgress:v8];
+  [(SUCoreUpdate *)self _updateAssetDownloadProgress:downloadProgress];
   return 0;
 }
 
-- (int64_t)actionReportDownloadStalled:(id)a3 error:(id *)a4
+- (int64_t)actionReportDownloadStalled:(id)stalled error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  stalledCopy = stalled;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 downloadProgress];
+  downloadProgress = [stalledCopy downloadProgress];
 
-  [(SUCoreUpdate *)self _updateAssetDownloadStalled:v8];
+  [(SUCoreUpdate *)self _updateAssetDownloadStalled:downloadProgress];
   return 0;
 }
 
-- (int64_t)actionAdvanceSUDownloaded:(id)a3 error:(id *)a4
+- (int64_t)actionAdvanceSUDownloaded:(id)downloaded error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  downloadedCopy = downloaded;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 downloadProgress];
+  downloadProgress = [downloadedCopy downloadProgress];
 
-  [(SUCoreUpdate *)self _updateAssetDownloaded:v8];
+  [(SUCoreUpdate *)self _updateAssetDownloaded:downloadProgress];
   [(SUCoreUpdate *)self _eventAfterReachingPhase:6];
   return 0;
 }
 
-- (int64_t)actionReportSUDownloaded:(id)a3 error:(id *)a4
+- (int64_t)actionReportSUDownloaded:(id)downloaded error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  downloadedCopy = downloaded;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 downloadProgress];
+  downloadProgress = [downloadedCopy downloadProgress];
 
-  [(SUCoreUpdate *)self _updateAssetDownloaded:v8];
+  [(SUCoreUpdate *)self _updateAssetDownloaded:downloadProgress];
   return 0;
 }
 
-- (int64_t)actionReportPrepareProgress:(id)a3 error:(id *)a4
+- (int64_t)actionReportPrepareProgress:(id)progress error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  progressCopy = progress;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 prepareProgress];
+  prepareProgress = [progressCopy prepareProgress];
 
-  [(SUCoreUpdate *)self _updatePrepareProgress:v8];
+  [(SUCoreUpdate *)self _updatePrepareProgress:prepareProgress];
   return 0;
 }
 
-- (int64_t)actionAdvanceSuspended:(id)a3 error:(id *)a4
+- (int64_t)actionAdvanceSuspended:(id)suspended error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:suspended];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUCoreUpdate *)self _eventAfterReachingPhase:8];
   return 0;
 }
 
-- (int64_t)actionReportPrepared:(id)a3 error:(id *)a4
+- (int64_t)actionReportPrepared:(id)prepared error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:prepared];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v7 = objc_alloc(MEMORY[0x277D64488]);
   LODWORD(v8) = 1.0;
@@ -4746,170 +4746,170 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)actionReportResumeCurrentSuccess:(id)a3 error:(id *)a4
+- (int64_t)actionReportResumeCurrentSuccess:(id)success error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:success];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUCoreUpdate *)self _updateCurrentResumed];
   return 0;
 }
 
-- (int64_t)actionReportResumeCurrentFailed:(id)a3 error:(id *)a4
+- (int64_t)actionReportResumeCurrentFailed:(id)failed error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  failedCopy = failed;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 error];
+  error = [failedCopy error];
 
-  [(SUCoreUpdate *)self _updateCurrentResumeFailed:v8];
+  [(SUCoreUpdate *)self _updateCurrentResumeFailed:error];
   return 0;
 }
 
-- (int64_t)actionReportApplyProgress:(id)a3 error:(id *)a4
+- (int64_t)actionReportApplyProgress:(id)progress error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  progressCopy = progress;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 applyProgress];
+  applyProgress = [progressCopy applyProgress];
 
-  [(SUCoreUpdate *)self _updateApplyProgress:v8];
+  [(SUCoreUpdate *)self _updateApplyProgress:applyProgress];
   return 0;
 }
 
-- (int64_t)actionReportApplied:(id)a3 error:(id *)a4
+- (int64_t)actionReportApplied:(id)applied error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:applied];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUCoreUpdate *)self _updateApplied];
   return 0;
 }
 
-- (int64_t)actionReportRollbackSuccess:(id)a3 error:(id *)a4
+- (int64_t)actionReportRollbackSuccess:(id)success error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  successCopy = success;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 rollback];
+  rollback = [successCopy rollback];
 
-  [(SUCoreUpdate *)self _updateRolledBack:v8];
+  [(SUCoreUpdate *)self _updateRolledBack:rollback];
   return 0;
 }
 
-- (int64_t)actionReportApplyFailed:(id)a3 error:(id *)a4
+- (int64_t)actionReportApplyFailed:(id)failed error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  failedCopy = failed;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 error];
+  error = [failedCopy error];
 
-  [(SUCoreUpdate *)self _applyAttemptFailed:v8];
+  [(SUCoreUpdate *)self _applyAttemptFailed:error];
   return 0;
 }
 
-- (int64_t)actionReportAttemptFailure:(id)a3 error:(id *)a4
+- (int64_t)actionReportAttemptFailure:(id)failure error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  failureCopy = failure;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 error];
+  error = [failureCopy error];
 
-  [(SUCoreUpdate *)self _updateAttemptFailed:v8];
+  [(SUCoreUpdate *)self _updateAttemptFailed:error];
   [(SUCoreUpdate *)self _cleanupAfterAttempt];
   return 0;
 }
 
-- (int64_t)actionReportCanceled:(id)a3 error:(id *)a4
+- (int64_t)actionReportCanceled:(id)canceled error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:canceled];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUCoreUpdate *)self _updateCanceled];
   [(SUCoreUpdate *)self _cleanupAfterAttempt];
   return 0;
 }
 
-- (int64_t)actionReportRollbackFailed:(id)a3 error:(id *)a4
+- (int64_t)actionReportRollbackFailed:(id)failed error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  failedCopy = failed;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 rollback];
-  v9 = [v5 error];
+  rollback = [failedCopy rollback];
+  error = [failedCopy error];
 
-  [(SUCoreUpdate *)self _rollbackAttemptFailed:v8 withError:v9];
+  [(SUCoreUpdate *)self _rollbackAttemptFailed:rollback withError:error];
   return 0;
 }
 
-- (int64_t)actionReportAnomalyAPI:(id)a3 error:(id *)a4
+- (int64_t)actionReportAnomalyAPI:(id)i error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:i];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [MEMORY[0x277D643F8] sharedCore];
-  v8 = [v7 buildError:8115 underlying:0 description:@"API call not valid for current state"];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v8 = [mEMORY[0x277D643F8] buildError:8115 underlying:0 description:@"API call not valid for current state"];
 
   [(SUCoreUpdate *)self _updateAnomaly:v8];
   return 0;
 }
 
-- (int64_t)actionReportAnomalyAPIEnd:(id)a3 error:(id *)a4
+- (int64_t)actionReportAnomalyAPIEnd:(id)end error:(id *)error
 {
-  v5 = [(SUCoreUpdate *)self updateFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUCoreUpdate *)self updateFSM:end];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [MEMORY[0x277D643F8] sharedCore];
-  v8 = [v7 buildError:8115 underlying:0 description:@"API call not valid for current resting state"];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v8 = [mEMORY[0x277D643F8] buildError:8115 underlying:0 description:@"API call not valid for current resting state"];
 
   [(SUCoreUpdate *)self _updateAnomaly:v8];
-  v9 = [(SUCoreUpdate *)self updateTransaction];
+  updateTransaction = [(SUCoreUpdate *)self updateTransaction];
   [(SUCoreUpdate *)self setUpdateTransaction:0];
-  [MEMORY[0x277D643F8] endTransaction:v9 withName:@"update.Transaction"];
+  [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
 
   return 0;
 }
 
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4
+- (int64_t)actionUnknownAction:(id)action error:(id *)error
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithFormat:@"unknown action(%@)", v6];
+  actionCopy = action;
+  actionCopy = [[v5 alloc] initWithFormat:@"unknown action(%@)", actionCopy];
 
-  v8 = [(SUCoreUpdate *)self updateFSM];
-  v9 = [v8 diag];
-  [v9 dumpTracked:v7 dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  diag = [updateFSM diag];
+  [diag dumpTracked:actionCopy dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
 
-  v10 = [MEMORY[0x277D643F8] sharedCore];
-  v11 = [v10 buildError:8116 underlying:0 description:v7];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v11 = [mEMORY[0x277D643F8] buildError:8116 underlying:0 description:actionCopy];
 
   [(SUCoreUpdate *)self _updateAnomaly:v11];
   return 0;
 }
 
-- (SUCoreUpdate)initWithDelegate:(id)a3 updateDescriptor:(id)a4 updateUUID:(id)a5 withCallbackQueue:(id)a6
+- (SUCoreUpdate)initWithDelegate:(id)delegate updateDescriptor:(id)descriptor updateUUID:(id)d withCallbackQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  descriptorCopy = descriptor;
+  dCopy = d;
+  queueCopy = queue;
   v75.receiver = self;
   v75.super_class = SUCoreUpdate;
   v14 = [(SUCoreUpdate *)&v75 init];
@@ -4919,11 +4919,11 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  objc_storeStrong(&v14->_updateDescriptor, a4);
-  objc_storeWeak(&v15->_updateDelegate, v10);
-  objc_storeStrong(&v15->_updateUUID, a5);
-  v16 = [MEMORY[0x277D643F8] sharedCore];
-  v17 = [v16 selectDelegateCallbackQueue:v13];
+  objc_storeStrong(&v14->_updateDescriptor, descriptor);
+  objc_storeWeak(&v15->_updateDelegate, delegateCopy);
+  objc_storeStrong(&v15->_updateUUID, d);
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v17 = [mEMORY[0x277D643F8] selectDelegateCallbackQueue:queueCopy];
   clientDelegateCallbackQueue = v15->_clientDelegateCallbackQueue;
   v15->_clientDelegateCallbackQueue = v17;
 
@@ -4938,16 +4938,16 @@ LABEL_11:
   rollbackControl = v15->_rollbackControl;
   v15->_rollbackControl = v21;
 
-  v23 = [(SUCoreRollback *)v15->_rollbackControl eligibleRollback];
+  eligibleRollback = [(SUCoreRollback *)v15->_rollbackControl eligibleRollback];
   rollbackDescriptor = v15->_rollbackDescriptor;
-  v15->_rollbackDescriptor = v23;
+  v15->_rollbackDescriptor = eligibleRollback;
 
-  v25 = [MEMORY[0x277D64418] sharedDevice];
-  v26 = [v25 releaseType];
+  mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+  releaseType = [mEMORY[0x277D64418] releaseType];
 
-  if (v26)
+  if (releaseType)
   {
-    v27 = v26;
+    v27 = releaseType;
   }
 
   else
@@ -4960,58 +4960,58 @@ LABEL_11:
   {
     if (!v15->_updateDescriptor)
     {
-      v63 = [MEMORY[0x277D64460] sharedLogger];
-      v64 = [v63 oslog];
+      mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460] oslog];
 
-      if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_23193C000, v64, OS_LOG_TYPE_DEFAULT, "[Update]Initializing SUCoreUpdate without an SUCoreDescriptor nor SUCoreRollbackDescriptor instance. Returning nil SUCoreUpdate", buf, 2u);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[Update]Initializing SUCoreUpdate without an SUCoreDescriptor nor SUCoreRollbackDescriptor instance. Returning nil SUCoreUpdate", buf, 2u);
       }
 
       goto LABEL_25;
     }
 
 LABEL_12:
-    v71 = v13;
-    v73 = v10;
+    v71 = queueCopy;
+    v73 = delegateCopy;
     v41 = objc_alloc(MEMORY[0x277CCACA8]);
     updateUUID = v15->_updateUUID;
-    v43 = [MEMORY[0x277D64418] sharedDevice];
-    v44 = [v43 buildVersion];
-    v45 = [(SUCoreDescriptor *)v15->_updateDescriptor productBuildVersion];
-    v46 = [(SUCoreDescriptor *)v15->_updateDescriptor releaseType];
-    v47 = [(SUCoreDescriptor *)v15->_updateDescriptor fullReplacement];
+    mEMORY[0x277D64418]2 = [MEMORY[0x277D64418] sharedDevice];
+    buildVersion = [mEMORY[0x277D64418]2 buildVersion];
+    productBuildVersion = [(SUCoreDescriptor *)v15->_updateDescriptor productBuildVersion];
+    releaseType2 = [(SUCoreDescriptor *)v15->_updateDescriptor releaseType];
+    fullReplacement = [(SUCoreDescriptor *)v15->_updateDescriptor fullReplacement];
     v48 = @"incr";
-    if (v47)
+    if (fullReplacement)
     {
       v48 = @"full";
     }
 
     v72 = v27;
-    v49 = [v41 initWithFormat:@"UUID(%@) %@(%@)->%@(%@) %@", updateUUID, v44, v27, v45, v46, v48];
+    v49 = [v41 initWithFormat:@"UUID(%@) %@(%@)->%@(%@) %@", updateUUID, buildVersion, v27, productBuildVersion, releaseType2, v48];
     updateName = v15->_updateName;
     v15->_updateName = v49;
 
-    v51 = [(SUCoreUpdate *)v15 updateDescriptor];
-    if ([v51 descriptorType] != 1)
+    updateDescriptor = [(SUCoreUpdate *)v15 updateDescriptor];
+    if ([updateDescriptor descriptorType] != 1)
     {
-      v52 = [(SUCoreUpdate *)v15 updateDescriptor];
-      if ([v52 descriptorType] != 3)
+      updateDescriptor2 = [(SUCoreUpdate *)v15 updateDescriptor];
+      if ([updateDescriptor2 descriptorType] != 3)
       {
-        v66 = [(SUCoreUpdate *)v15 updateDescriptor];
-        v67 = [v66 descriptorType];
+        updateDescriptor3 = [(SUCoreUpdate *)v15 updateDescriptor];
+        descriptorType = [updateDescriptor3 descriptorType];
 
-        if (v67 != 5)
+        if (descriptorType != 5)
         {
-          v68 = [MEMORY[0x277D64460] sharedLogger];
-          v69 = [v68 oslog];
+          mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+          oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-          v13 = v71;
-          if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
+          queueCopy = v71;
+          if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&dword_23193C000, v69, OS_LOG_TYPE_DEFAULT, "[Update] Descriptor type does not indicate SUCoreDescriptorTypeAsset or SUCoreDescriptorTypeSFRAsset or SUCoreDescriptorTypeSplatAsset, no SUCoreUpdateDownloader instance will be initialized", buf, 2u);
+            _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[Update] Descriptor type does not indicate SUCoreDescriptorTypeAsset or SUCoreDescriptorTypeSFRAsset or SUCoreDescriptorTypeSplatAsset, no SUCoreUpdateDownloader instance will be initialized", buf, 2u);
           }
 
           v53 = 0;
@@ -5019,8 +5019,8 @@ LABEL_12:
         }
 
 LABEL_18:
-        v53 = [[SUCoreUpdateDownloader alloc] initWithDelegate:v15 forUpdate:v11 updateUUID:v12];
-        v13 = v71;
+        v53 = [[SUCoreUpdateDownloader alloc] initWithDelegate:v15 forUpdate:descriptorCopy updateUUID:dCopy];
+        queueCopy = v71;
 LABEL_19:
         downloadControl = v15->_downloadControl;
         v15->_downloadControl = v53;
@@ -5029,7 +5029,7 @@ LABEL_19:
         msuControl = v15->_msuControl;
         v15->_msuControl = v55;
 
-        [(SUCoreMSU *)v15->_msuControl assignDescriptor:v11 updateUUID:v12];
+        [(SUCoreMSU *)v15->_msuControl assignDescriptor:descriptorCopy updateUUID:dCopy];
         goto LABEL_20;
       }
     }
@@ -5042,25 +5042,25 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  v73 = v10;
+  v73 = delegateCopy;
   v70 = objc_alloc(MEMORY[0x277CCACA8]);
   v29 = v15->_updateUUID;
-  v30 = [(SUCoreRollbackDescriptor *)v15->_rollbackDescriptor productBuildVersion];
-  v31 = [(SUCoreRollbackDescriptor *)v15->_rollbackDescriptor releaseType];
-  v32 = [MEMORY[0x277D64418] sharedDevice];
-  v33 = [v32 buildVersion];
+  productBuildVersion2 = [(SUCoreRollbackDescriptor *)v15->_rollbackDescriptor productBuildVersion];
+  releaseType3 = [(SUCoreRollbackDescriptor *)v15->_rollbackDescriptor releaseType];
+  mEMORY[0x277D64418]3 = [MEMORY[0x277D64418] sharedDevice];
+  buildVersion2 = [mEMORY[0x277D64418]3 buildVersion];
   v72 = v27;
-  v34 = [v70 initWithFormat:@"UUID(%@) %@(%@)->%@(%@)", v29, v30, v31, v33, v27];
+  v34 = [v70 initWithFormat:@"UUID(%@) %@(%@)->%@(%@)", v29, productBuildVersion2, releaseType3, buildVersion2, v27];
   v35 = v15->_updateName;
   v15->_updateName = v34;
 
-  v36 = [MEMORY[0x277D64460] sharedLogger];
-  v37 = [v36 oslog];
+  mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+  oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-  if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_23193C000, v37, OS_LOG_TYPE_DEFAULT, "[Update] Initializing with rollback descriptor. No SUCoreUpdateDownloader instance will be initialized", buf, 2u);
+    _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[Update] Initializing with rollback descriptor. No SUCoreUpdateDownloader instance will be initialized", buf, 2u);
   }
 
   v38 = v15->_downloadControl;
@@ -5070,18 +5070,18 @@ LABEL_19:
   v40 = v15->_msuControl;
   v15->_msuControl = v39;
 
-  [(SUCoreMSU *)v15->_msuControl assignRollbackDescriptor:v15->_rollbackDescriptor updateUUID:v12];
+  [(SUCoreMSU *)v15->_msuControl assignRollbackDescriptor:v15->_rollbackDescriptor updateUUID:dCopy];
 LABEL_20:
-  v57 = [objc_opt_class() _generateStateTable];
+  _generateStateTable = [objc_opt_class() _generateStateTable];
   stateTable = v15->_stateTable;
-  v15->_stateTable = v57;
+  v15->_stateTable = _generateStateTable;
 
   v59 = [objc_alloc(MEMORY[0x277D64458]) initMachine:@"update" ofInstance:v15->_updateName withTable:v15->_stateTable startingIn:@"ReadyToBegin" usingDelegate:v15 registeringAllInfoClass:objc_opt_class()];
   updateFSM = v15->_updateFSM;
   v15->_updateFSM = v59;
 
   v61 = v15->_updateFSM;
-  v10 = v73;
+  delegateCopy = v73;
   if (!v61)
   {
 LABEL_25:
@@ -5096,22 +5096,22 @@ LABEL_26:
   return v62;
 }
 
-- (void)targetBrainLoaded:(id)a3
+- (void)targetBrainLoaded:(id)loaded
 {
-  v4 = a3;
+  loadedCopy = loaded;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"update.Transaction"];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__SUCoreUpdate_targetBrainLoaded___block_invoke;
   block[3] = &unk_27892D340;
   block[4] = self;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = loadedCopy;
+  v8 = loadedCopy;
   v9 = v5;
-  dispatch_async(v7, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __34__SUCoreUpdate_targetBrainLoaded___block_invoke(uint64_t a1)
@@ -5133,22 +5133,22 @@ void __34__SUCoreUpdate_targetBrainLoaded___block_invoke(uint64_t a1)
   [v4 postEvent:@"TargetBrainLoaded" withInfo:v3];
 }
 
-- (void)targetDownloadPreflighted:(id)a3
+- (void)targetDownloadPreflighted:(id)preflighted
 {
-  v4 = a3;
+  preflightedCopy = preflighted;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"update.Transaction"];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SUCoreUpdate_targetDownloadPreflighted___block_invoke;
   block[3] = &unk_27892D340;
   block[4] = self;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = preflightedCopy;
+  v8 = preflightedCopy;
   v9 = v5;
-  dispatch_async(v7, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __42__SUCoreUpdate_targetDownloadPreflighted___block_invoke(uint64_t a1)
@@ -5170,22 +5170,22 @@ void __42__SUCoreUpdate_targetDownloadPreflighted___block_invoke(uint64_t a1)
   [v4 postEvent:@"TargetDownloadPreflighted" withInfo:v3];
 }
 
-- (void)targetDownloaded:(id)a3
+- (void)targetDownloaded:(id)downloaded
 {
-  v4 = a3;
+  downloadedCopy = downloaded;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"update.Transaction"];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__SUCoreUpdate_targetDownloaded___block_invoke;
   block[3] = &unk_27892D340;
   block[4] = self;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = downloadedCopy;
+  v8 = downloadedCopy;
   v9 = v5;
-  dispatch_async(v7, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __33__SUCoreUpdate_targetDownloaded___block_invoke(uint64_t a1)
@@ -5207,22 +5207,22 @@ void __33__SUCoreUpdate_targetDownloaded___block_invoke(uint64_t a1)
   [v4 postEvent:@"TargetDownloaded" withInfo:v3];
 }
 
-- (void)targetPrepared:(id)a3
+- (void)targetPrepared:(id)prepared
 {
-  v4 = a3;
+  preparedCopy = prepared;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"update.Transaction"];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__SUCoreUpdate_targetPrepared___block_invoke;
   block[3] = &unk_27892D340;
   block[4] = self;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = preparedCopy;
+  v8 = preparedCopy;
   v9 = v5;
-  dispatch_async(v7, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __31__SUCoreUpdate_targetPrepared___block_invoke(uint64_t a1)
@@ -5244,22 +5244,22 @@ void __31__SUCoreUpdate_targetPrepared___block_invoke(uint64_t a1)
   [v4 postEvent:@"TargetPrepared" withInfo:v3];
 }
 
-- (void)targetApplied:(id)a3
+- (void)targetApplied:(id)applied
 {
-  v4 = a3;
+  appliedCopy = applied;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"update.Transaction"];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__SUCoreUpdate_targetApplied___block_invoke;
   block[3] = &unk_27892D340;
   block[4] = self;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = appliedCopy;
+  v8 = appliedCopy;
   v9 = v5;
-  dispatch_async(v7, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __30__SUCoreUpdate_targetApplied___block_invoke(uint64_t a1)
@@ -5281,22 +5281,22 @@ void __30__SUCoreUpdate_targetApplied___block_invoke(uint64_t a1)
   [v4 postEvent:@"TargetApplied" withInfo:v3];
 }
 
-- (void)targetRollback:(id)a3
+- (void)targetRollback:(id)rollback
 {
-  v4 = a3;
+  rollbackCopy = rollback;
   v5 = [MEMORY[0x277D643F8] beginTransactionWithName:@"update.Transaction"];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v7 = [v6 extendedStateQueue];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__SUCoreUpdate_targetRollback___block_invoke;
   block[3] = &unk_27892D340;
   block[4] = self;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = rollbackCopy;
+  v8 = rollbackCopy;
   v9 = v5;
-  dispatch_async(v7, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __31__SUCoreUpdate_targetRollback___block_invoke(uint64_t a1)
@@ -5323,8 +5323,8 @@ void __31__SUCoreUpdate_targetRollback___block_invoke(uint64_t a1)
 - (void)resumeCurrentUpdate
 {
   v3 = [MEMORY[0x277D643F8] beginTransactionWithName:@"update.Transaction"];
-  v4 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [v4 extendedStateQueue];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SUCoreUpdate_resumeCurrentUpdate__block_invoke;
@@ -5332,7 +5332,7 @@ void __31__SUCoreUpdate_targetRollback___block_invoke(uint64_t a1)
   v7[4] = self;
   v8 = v3;
   v6 = v3;
-  dispatch_async(v5, v7);
+  dispatch_async(extendedStateQueue, v7);
 }
 
 void __35__SUCoreUpdate_resumeCurrentUpdate__block_invoke(uint64_t a1)
@@ -5357,8 +5357,8 @@ void __35__SUCoreUpdate_resumeCurrentUpdate__block_invoke(uint64_t a1)
 - (void)cancelCurrentUpdate
 {
   v3 = [MEMORY[0x277D643F8] beginTransactionWithName:@"update.Transaction"];
-  v4 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [v4 extendedStateQueue];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SUCoreUpdate_cancelCurrentUpdate__block_invoke;
@@ -5366,7 +5366,7 @@ void __35__SUCoreUpdate_resumeCurrentUpdate__block_invoke(uint64_t a1)
   v7[4] = self;
   v8 = v3;
   v6 = v3;
-  dispatch_async(v5, v7);
+  dispatch_async(extendedStateQueue, v7);
 }
 
 void __35__SUCoreUpdate_cancelCurrentUpdate__block_invoke(uint64_t a1)
@@ -5394,59 +5394,59 @@ void __35__SUCoreUpdate_cancelCurrentUpdate__block_invoke(uint64_t a1)
 
 - (id)copyCurrentState
 {
-  v2 = [(SUCoreUpdate *)self updateFSM];
-  v3 = [v2 copyCurrentState];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  copyCurrentState = [updateFSM copyCurrentState];
 
-  return v3;
+  return copyCurrentState;
 }
 
 - (id)rollbackAvailable
 {
-  v2 = [(SUCoreUpdate *)self rollbackControl];
-  v3 = [v2 eligibleRollback];
+  rollbackControl = [(SUCoreUpdate *)self rollbackControl];
+  eligibleRollback = [rollbackControl eligibleRollback];
 
-  return v3;
+  return eligibleRollback;
 }
 
 - (id)previousRollback
 {
-  v2 = [(SUCoreUpdate *)self rollbackControl];
-  v3 = [v2 previousRollback];
+  rollbackControl = [(SUCoreUpdate *)self rollbackControl];
+  previousRollback = [rollbackControl previousRollback];
 
-  return v3;
+  return previousRollback;
 }
 
-- (void)_updateBrainLoadProgress:(id)a3
+- (void)_updateBrainLoadProgress:(id)progress
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateDelegate];
+  progressCopy = progress;
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __41__SUCoreUpdate__updateBrainLoadProgress___block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = progressCopy;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateBrainLoadProgress:) so not reporting progress=%{public}@", buf, 0x16u);
+      v16 = progressCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateBrainLoadProgress:) so not reporting progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -5459,37 +5459,37 @@ void __41__SUCoreUpdate__updateBrainLoadProgress___block_invoke(uint64_t a1)
   [v2 updateBrainLoadProgress:*(a1 + 40)];
 }
 
-- (void)_updateBrainLoadStalled:(id)a3
+- (void)_updateBrainLoadStalled:(id)stalled
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateDelegate];
+  stalledCopy = stalled;
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __40__SUCoreUpdate__updateBrainLoadStalled___block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = stalledCopy;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateBrainLoadStalled:) so not reporting progress=%{public}@", buf, 0x16u);
+      v16 = stalledCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateBrainLoadStalled:) so not reporting progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -5502,54 +5502,54 @@ void __40__SUCoreUpdate__updateBrainLoadStalled___block_invoke(uint64_t a1)
   [v2 updateBrainLoadStalled:*(a1 + 40)];
 }
 
-- (void)_updateBrainLoaded:(id)a3
+- (void)_updateBrainLoaded:(id)loaded
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loadedCopy = loaded;
   if ([(SUCoreUpdate *)self targetPhase]> 3)
   {
-    v5 = 0;
+    updateTransaction = 0;
   }
 
   else
   {
-    v5 = [(SUCoreUpdate *)self updateTransaction];
+    updateTransaction = [(SUCoreUpdate *)self updateTransaction];
     [(SUCoreUpdate *)self setUpdateTransaction:0];
   }
 
-  v6 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __35__SUCoreUpdate__updateBrainLoaded___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v13 = v4;
-    v14 = v5;
-    dispatch_async(v8, block);
+    v13 = loadedCopy;
+    v14 = updateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64460] sharedLogger];
-    v10 = [v9 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v4;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateBrainLoaded:) so not reporting progress=%{public}@", buf, 0x16u);
+      v18 = loadedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateBrainLoaded:) so not reporting progress=%{public}@", buf, 0x16u);
     }
 
-    if (v5)
+    if (updateTransaction)
     {
-      [MEMORY[0x277D643F8] endTransaction:v5 withName:@"update.Transaction"];
+      [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
     }
   }
 
@@ -5574,45 +5574,45 @@ void __35__SUCoreUpdate__updateBrainLoaded___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
   if ([(SUCoreUpdate *)self targetPhase]> 4)
   {
-    v3 = 0;
+    updateTransaction = 0;
   }
 
   else
   {
-    v3 = [(SUCoreUpdate *)self updateTransaction];
+    updateTransaction = [(SUCoreUpdate *)self updateTransaction];
     [(SUCoreUpdate *)self setUpdateTransaction:0];
   }
 
-  v4 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__SUCoreUpdate__updateAssetDownloadPreflighted__block_invoke;
     v10[3] = &unk_27892D478;
     v10[4] = self;
-    v11 = v3;
-    dispatch_async(v6, v10);
+    v11 = updateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v10);
   }
 
   else
   {
-    v7 = [MEMORY[0x277D64460] sharedLogger];
-    v8 = [v7 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v13 = self;
-      _os_log_impl(&dword_23193C000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAssetDownloadPreflighted) so not reporting", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAssetDownloadPreflighted) so not reporting", buf, 0xCu);
     }
 
-    if (v3)
+    if (updateTransaction)
     {
-      [MEMORY[0x277D643F8] endTransaction:v3 withName:@"update.Transaction"];
+      [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
     }
   }
 
@@ -5632,37 +5632,37 @@ void __47__SUCoreUpdate__updateAssetDownloadPreflighted__block_invoke(uint64_t a
   }
 }
 
-- (void)_updateAssetDownloadProgress:(id)a3
+- (void)_updateAssetDownloadProgress:(id)progress
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateDelegate];
+  progressCopy = progress;
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __45__SUCoreUpdate__updateAssetDownloadProgress___block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = progressCopy;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAssetDownloadProgress:) so not reporting progress=%{public}@", buf, 0x16u);
+      v16 = progressCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAssetDownloadProgress:) so not reporting progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -5675,37 +5675,37 @@ void __45__SUCoreUpdate__updateAssetDownloadProgress___block_invoke(uint64_t a1)
   [v2 updateAssetDownloadProgress:*(a1 + 40)];
 }
 
-- (void)_updateAssetDownloadStalled:(id)a3
+- (void)_updateAssetDownloadStalled:(id)stalled
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateDelegate];
+  stalledCopy = stalled;
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __44__SUCoreUpdate__updateAssetDownloadStalled___block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = stalledCopy;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAssetDownloadStalled:) so not reporting progress=%{public}@", buf, 0x16u);
+      v16 = stalledCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAssetDownloadStalled:) so not reporting progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -5718,54 +5718,54 @@ void __44__SUCoreUpdate__updateAssetDownloadStalled___block_invoke(uint64_t a1)
   [v2 updateAssetDownloadStalled:*(a1 + 40)];
 }
 
-- (void)_updateAssetDownloaded:(id)a3
+- (void)_updateAssetDownloaded:(id)downloaded
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  downloadedCopy = downloaded;
   if ([(SUCoreUpdate *)self targetPhase]> 6)
   {
-    v5 = 0;
+    updateTransaction = 0;
   }
 
   else
   {
-    v5 = [(SUCoreUpdate *)self updateTransaction];
+    updateTransaction = [(SUCoreUpdate *)self updateTransaction];
     [(SUCoreUpdate *)self setUpdateTransaction:0];
   }
 
-  v6 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__SUCoreUpdate__updateAssetDownloaded___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v13 = v4;
-    v14 = v5;
-    dispatch_async(v8, block);
+    v13 = downloadedCopy;
+    v14 = updateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64460] sharedLogger];
-    v10 = [v9 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v4;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAssetDownloaded:) so not reporting progress=%{public}@", buf, 0x16u);
+      v18 = downloadedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAssetDownloaded:) so not reporting progress=%{public}@", buf, 0x16u);
     }
 
-    if (v5)
+    if (updateTransaction)
     {
-      [MEMORY[0x277D643F8] endTransaction:v5 withName:@"update.Transaction"];
+      [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
     }
   }
 
@@ -5785,37 +5785,37 @@ void __39__SUCoreUpdate__updateAssetDownloaded___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updatePrepareProgress:(id)a3
+- (void)_updatePrepareProgress:(id)progress
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateDelegate];
+  progressCopy = progress;
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __39__SUCoreUpdate__updatePrepareProgress___block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = progressCopy;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updatePrepareProgress:) so not reporting progress=%{public}@", buf, 0x16u);
+      v16 = progressCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updatePrepareProgress:) so not reporting progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -5828,54 +5828,54 @@ void __39__SUCoreUpdate__updatePrepareProgress___block_invoke(uint64_t a1)
   [v2 updatePrepareProgress:*(a1 + 40)];
 }
 
-- (void)_updatePrepared:(id)a3
+- (void)_updatePrepared:(id)prepared
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  preparedCopy = prepared;
   if ([(SUCoreUpdate *)self targetPhase]> 7)
   {
-    v5 = 0;
+    updateTransaction = 0;
   }
 
   else
   {
-    v5 = [(SUCoreUpdate *)self updateTransaction];
+    updateTransaction = [(SUCoreUpdate *)self updateTransaction];
     [(SUCoreUpdate *)self setUpdateTransaction:0];
   }
 
-  v6 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __32__SUCoreUpdate__updatePrepared___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v13 = v4;
-    v14 = v5;
-    dispatch_async(v8, block);
+    v13 = preparedCopy;
+    v14 = updateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64460] sharedLogger];
-    v10 = [v9 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v4;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updatePrepared:) so not reporting progress=%{public}@", buf, 0x16u);
+      v18 = preparedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updatePrepared:) so not reporting progress=%{public}@", buf, 0x16u);
     }
 
-    if (v5)
+    if (updateTransaction)
     {
-      [MEMORY[0x277D643F8] endTransaction:v5 withName:@"update.Transaction"];
+      [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
     }
   }
 
@@ -5898,38 +5898,38 @@ void __32__SUCoreUpdate__updatePrepared___block_invoke(uint64_t a1)
 - (void)_updateCurrentResumed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreUpdate *)self updateTransaction];
+  updateTransaction = [(SUCoreUpdate *)self updateTransaction];
   [(SUCoreUpdate *)self setUpdateTransaction:0];
-  v4 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __37__SUCoreUpdate__updateCurrentResumed__block_invoke;
     v10[3] = &unk_27892D478;
     v10[4] = self;
-    v11 = v3;
-    dispatch_async(v6, v10);
+    v11 = updateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v10);
   }
 
   else
   {
-    v7 = [MEMORY[0x277D64460] sharedLogger];
-    v8 = [v7 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v13 = self;
-      _os_log_impl(&dword_23193C000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateCurrentResumed) so not reporting", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateCurrentResumed) so not reporting", buf, 0xCu);
     }
 
-    if (v3)
+    if (updateTransaction)
     {
-      [MEMORY[0x277D643F8] endTransaction:v3 withName:@"update.Transaction"];
+      [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
     }
   }
 
@@ -5949,50 +5949,50 @@ void __37__SUCoreUpdate__updateCurrentResumed__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateCurrentResumeFailed:(id)a3
+- (void)_updateCurrentResumeFailed:(id)failed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateTransaction];
+  failedCopy = failed;
+  updateTransaction = [(SUCoreUpdate *)self updateTransaction];
   [(SUCoreUpdate *)self setUpdateTransaction:0];
-  v6 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreUpdate *)self failedAttemptError];
-    if (!v8)
+    failedAttemptError = [(SUCoreUpdate *)self failedAttemptError];
+    if (!failedAttemptError)
     {
-      v8 = v4;
+      failedAttemptError = failedCopy;
     }
 
-    v9 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __43__SUCoreUpdate__updateCurrentResumeFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v15 = v8;
-    v16 = v5;
-    v10 = v8;
-    dispatch_async(v9, block);
+    v15 = failedAttemptError;
+    v16 = updateTransaction;
+    v10 = failedAttemptError;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v11 = [MEMORY[0x277D64460] sharedLogger];
-    v12 = [v11 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v4;
-      _os_log_impl(&dword_23193C000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateCurrentResumeFailed:) so not reporting error=%{public}@", buf, 0x16u);
+      v20 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateCurrentResumeFailed:) so not reporting error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v5 withName:@"update.Transaction"];
+    [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -6009,37 +6009,37 @@ uint64_t __43__SUCoreUpdate__updateCurrentResumeFailed___block_invoke(uint64_t a
   return [v3 endTransaction:v4 withName:@"update.Transaction"];
 }
 
-- (void)_updateApplyProgress:(id)a3
+- (void)_updateApplyProgress:(id)progress
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateDelegate];
+  progressCopy = progress;
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __37__SUCoreUpdate__updateApplyProgress___block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = progressCopy;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateApplyProgress:) so not reporting progress=%{public}@", buf, 0x16u);
+      v16 = progressCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateApplyProgress:) so not reporting progress=%{public}@", buf, 0x16u);
     }
   }
 
@@ -6057,55 +6057,55 @@ void __37__SUCoreUpdate__updateApplyProgress___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
   if ([(SUCoreUpdate *)self targetPhase]> 10)
   {
-    v3 = 0;
+    updateTransaction = 0;
   }
 
   else
   {
-    v3 = [(SUCoreUpdate *)self updateTransaction];
+    updateTransaction = [(SUCoreUpdate *)self updateTransaction];
     [(SUCoreUpdate *)self setUpdateTransaction:0];
   }
 
-  v4 = [(SUCoreUpdate *)self updateDescriptor];
-  v5 = [v4 splatOnly];
+  updateDescriptor = [(SUCoreUpdate *)self updateDescriptor];
+  splatOnly = [updateDescriptor splatOnly];
 
-  if (v5)
+  if (splatOnly)
   {
-    v6 = [(SUCoreUpdate *)self updateDescriptor];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v6 setSplatInstallDate:v7];
+    updateDescriptor2 = [(SUCoreUpdate *)self updateDescriptor];
+    date = [MEMORY[0x277CBEAA8] date];
+    [updateDescriptor2 setSplatInstallDate:date];
   }
 
-  v8 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __30__SUCoreUpdate__updateApplied__block_invoke;
     v14[3] = &unk_27892D478;
     v14[4] = self;
-    v15 = v3;
-    dispatch_async(v10, v14);
+    v15 = updateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v14);
   }
 
   else
   {
-    v11 = [MEMORY[0x277D64460] sharedLogger];
-    v12 = [v11 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
-      _os_log_impl(&dword_23193C000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateApplied:) so not reporting", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateApplied:) so not reporting", buf, 0xCu);
     }
 
-    if (v3)
+    if (updateTransaction)
     {
-      [MEMORY[0x277D643F8] endTransaction:v3 withName:@"update.Transaction"];
+      [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
     }
   }
 
@@ -6125,50 +6125,50 @@ void __30__SUCoreUpdate__updateApplied__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_applyAttemptFailed:(id)a3
+- (void)_applyAttemptFailed:(id)failed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateTransaction];
+  failedCopy = failed;
+  updateTransaction = [(SUCoreUpdate *)self updateTransaction];
   [(SUCoreUpdate *)self setUpdateTransaction:0];
-  v6 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreUpdate *)self failedAttemptError];
-    if (!v8)
+    failedAttemptError = [(SUCoreUpdate *)self failedAttemptError];
+    if (!failedAttemptError)
     {
-      v8 = v4;
+      failedAttemptError = failedCopy;
     }
 
-    v9 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__SUCoreUpdate__applyAttemptFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v15 = v8;
-    v16 = v5;
-    v10 = v8;
-    dispatch_async(v9, block);
+    v15 = failedAttemptError;
+    v16 = updateTransaction;
+    v10 = failedAttemptError;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v11 = [MEMORY[0x277D64460] sharedLogger];
-    v12 = [v11 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v4;
-      _os_log_impl(&dword_23193C000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(applyAttemptFailed:) so not reporting error=%{public}@", buf, 0x16u);
+      v20 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(applyAttemptFailed:) so not reporting error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v5 withName:@"update.Transaction"];
+    [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -6185,50 +6185,50 @@ uint64_t __36__SUCoreUpdate__applyAttemptFailed___block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"update.Transaction"];
 }
 
-- (void)_updateAttemptFailed:(id)a3
+- (void)_updateAttemptFailed:(id)failed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateTransaction];
+  failedCopy = failed;
+  updateTransaction = [(SUCoreUpdate *)self updateTransaction];
   [(SUCoreUpdate *)self setUpdateTransaction:0];
-  v6 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreUpdate *)self failedAttemptError];
-    if (!v8)
+    failedAttemptError = [(SUCoreUpdate *)self failedAttemptError];
+    if (!failedAttemptError)
     {
-      v8 = v4;
+      failedAttemptError = failedCopy;
     }
 
-    v9 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__SUCoreUpdate__updateAttemptFailed___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v15 = v8;
-    v16 = v5;
-    v10 = v8;
-    dispatch_async(v9, block);
+    v15 = failedAttemptError;
+    v16 = updateTransaction;
+    v10 = failedAttemptError;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v11 = [MEMORY[0x277D64460] sharedLogger];
-    v12 = [v11 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v4;
-      _os_log_impl(&dword_23193C000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAttemptFailed:) so not reporting error=%{public}@", buf, 0x16u);
+      v20 = failedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAttemptFailed:) so not reporting error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v5 withName:@"update.Transaction"];
+    [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -6248,36 +6248,36 @@ uint64_t __37__SUCoreUpdate__updateAttemptFailed___block_invoke(uint64_t a1)
 - (void)_updateCanceled
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreUpdate *)self updateTransaction];
+  updateTransaction = [(SUCoreUpdate *)self updateTransaction];
   [(SUCoreUpdate *)self setUpdateTransaction:0];
-  v4 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __31__SUCoreUpdate__updateCanceled__block_invoke;
     v10[3] = &unk_27892D478;
     v10[4] = self;
-    v11 = v3;
-    dispatch_async(v6, v10);
+    v11 = updateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, v10);
   }
 
   else
   {
-    v7 = [MEMORY[0x277D64460] sharedLogger];
-    v8 = [v7 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v13 = self;
-      _os_log_impl(&dword_23193C000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateCanceled) so not reporting", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateCanceled) so not reporting", buf, 0xCu);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v3 withName:@"update.Transaction"];
+    [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -6294,37 +6294,37 @@ uint64_t __31__SUCoreUpdate__updateCanceled__block_invoke(uint64_t a1)
   return [v3 endTransaction:v4 withName:@"update.Transaction"];
 }
 
-- (void)_updateAnomaly:(id)a3
+- (void)_updateAnomaly:(id)anomaly
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateDelegate];
+  anomalyCopy = anomaly;
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __31__SUCoreUpdate__updateAnomaly___block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = anomalyCopy;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAnomaly:) so not reporting error=%{public}@", buf, 0x16u);
+      v16 = anomalyCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateAnomaly:) so not reporting error=%{public}@", buf, 0x16u);
     }
   }
 
@@ -6337,52 +6337,52 @@ void __31__SUCoreUpdate__updateAnomaly___block_invoke(uint64_t a1)
   [v2 updateAnomaly:*(a1 + 40)];
 }
 
-- (void)_updateRolledBack:(id)a3
+- (void)_updateRolledBack:(id)back
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  backCopy = back;
   if ([(SUCoreUpdate *)self targetPhase]> 11)
   {
-    v5 = 0;
+    updateTransaction = 0;
   }
 
   else
   {
-    v5 = [(SUCoreUpdate *)self updateTransaction];
+    updateTransaction = [(SUCoreUpdate *)self updateTransaction];
     [(SUCoreUpdate *)self setUpdateTransaction:0];
   }
 
-  v6 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__SUCoreUpdate__updateRolledBack___block_invoke;
     block[3] = &unk_27892D340;
-    v13 = v4;
-    v14 = self;
-    v15 = v5;
-    dispatch_async(v8, block);
+    v13 = backCopy;
+    selfCopy = self;
+    v15 = updateTransaction;
+    dispatch_async(clientDelegateCallbackQueue, block);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D64460] sharedLogger];
-    v10 = [v9 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateRolledBack:) so not reporting", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(updateRolledBack:) so not reporting", buf, 0xCu);
     }
 
-    if (v5)
+    if (updateTransaction)
     {
-      [MEMORY[0x277D643F8] endTransaction:v5 withName:@"update.Transaction"];
+      [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
     }
   }
 
@@ -6403,52 +6403,52 @@ void __34__SUCoreUpdate__updateRolledBack___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_rollbackAttemptFailed:(id)a3 withError:(id)a4
+- (void)_rollbackAttemptFailed:(id)failed withError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreUpdate *)self updateTransaction];
+  failedCopy = failed;
+  errorCopy = error;
+  updateTransaction = [(SUCoreUpdate *)self updateTransaction];
   [(SUCoreUpdate *)self setUpdateTransaction:0];
-  v9 = [(SUCoreUpdate *)self updateDelegate];
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(SUCoreUpdate *)self failedAttemptError];
-    if (!v11)
+    failedAttemptError = [(SUCoreUpdate *)self failedAttemptError];
+    if (!failedAttemptError)
     {
-      v11 = v7;
+      failedAttemptError = errorCopy;
     }
 
-    v12 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __49__SUCoreUpdate__rollbackAttemptFailed_withError___block_invoke;
     v17[3] = &unk_27892E090;
     v17[4] = self;
-    v18 = v6;
-    v19 = v11;
-    v20 = v8;
-    v13 = v11;
-    dispatch_async(v12, v17);
+    v18 = failedCopy;
+    v19 = failedAttemptError;
+    v20 = updateTransaction;
+    v13 = failedAttemptError;
+    dispatch_async(clientDelegateCallbackQueue, v17);
   }
 
   else
   {
-    v14 = [MEMORY[0x277D64460] sharedLogger];
-    v15 = [v14 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
-      v24 = v7;
-      _os_log_impl(&dword_23193C000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(rollbackAttemptFailed:) so not reporting error=%{public}@", buf, 0x16u);
+      v24 = errorCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(rollbackAttemptFailed:) so not reporting error=%{public}@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D643F8] endTransaction:v8 withName:@"update.Transaction"];
+    [MEMORY[0x277D643F8] endTransaction:updateTransaction withName:@"update.Transaction"];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -6465,283 +6465,283 @@ uint64_t __49__SUCoreUpdate__rollbackAttemptFailed_withError___block_invoke(uint
   return [v3 endTransaction:v4 withName:@"update.Transaction"];
 }
 
-- (void)msuBrainLoadProgress:(id)a3
+- (void)msuBrainLoadProgress:(id)progress
 {
-  v4 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:v4];
+  progressCopy = progress;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:progressCopy];
 
-  [v6 postEvent:@"BrainLoadProgress" withInfo:v5];
+  [updateFSM postEvent:@"BrainLoadProgress" withInfo:v5];
 }
 
-- (void)msuBrainLoadStalled:(id)a3
+- (void)msuBrainLoadStalled:(id)stalled
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D64460] sharedLogger];
-  v6 = [v5 oslog];
+  stalledCopy = stalled;
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SUCoreUpdate *)self updateName];
+    updateName = [(SUCoreUpdate *)self updateName];
     v9 = 138543618;
-    v10 = v7;
+    v10 = updateName;
     v11 = 2114;
-    v12 = v4;
-    _os_log_impl(&dword_23193C000, v6, OS_LOG_TYPE_DEFAULT, "[UPDATE(%{public}@)] msuBrainLoadStalled - not being reported to policy layer progress=%{public}@", &v9, 0x16u);
+    v12 = stalledCopy;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[UPDATE(%{public}@)] msuBrainLoadStalled - not being reported to policy layer progress=%{public}@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)msuBrainLoaded:(id)a3
+- (void)msuBrainLoaded:(id)loaded
 {
-  v4 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:v4];
+  loadedCopy = loaded;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:loadedCopy];
 
-  [v6 postEvent:@"BrainLoadSuccess" withInfo:v5];
+  [updateFSM postEvent:@"BrainLoadSuccess" withInfo:v5];
 }
 
-- (void)msuBrainLoadFailed:(id)a3
+- (void)msuBrainLoadFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"msuBrainLoadFailed" forReason:0 error:v4];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"msuBrainLoadFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v6 postEvent:@"BrainLoadFailed" withInfo:v5];
+  [updateFSM postEvent:@"BrainLoadFailed" withInfo:v5];
 }
 
 - (void)msuSUDownloadPreflighted
 {
-  v3 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v2 = objc_alloc_init(SUCoreUpdateParam);
-  [v3 postEvent:@"PreflightSuccess" withInfo:v2];
+  [updateFSM postEvent:@"PreflightSuccess" withInfo:v2];
 }
 
-- (void)msuSUDownloadPreflightFailed:(id)a3
+- (void)msuSUDownloadPreflightFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"msuSUDownloadPreflightFailed" forReason:0 error:v4];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"msuSUDownloadPreflightFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v6 postEvent:@"PreflightFailed" withInfo:v5];
+  [updateFSM postEvent:@"PreflightFailed" withInfo:v5];
 }
 
-- (void)msuPrepareProgress:(id)a3
+- (void)msuPrepareProgress:(id)progress
 {
-  v4 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithPrepareProgress:v4];
+  progressCopy = progress;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithPrepareProgress:progressCopy];
 
-  [v6 postEvent:@"PrepareProgress" withInfo:v5];
+  [updateFSM postEvent:@"PrepareProgress" withInfo:v5];
 }
 
-- (void)msuPrepared:(id)a3
+- (void)msuPrepared:(id)prepared
 {
-  v4 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithPrepareProgress:v4];
+  preparedCopy = prepared;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithPrepareProgress:preparedCopy];
 
-  [v6 postEvent:@"PrepareSuccess" withInfo:v5];
+  [updateFSM postEvent:@"PrepareSuccess" withInfo:v5];
 }
 
-- (void)msuPrepareFailed:(id)a3
+- (void)msuPrepareFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"msuPrepareFailed" forReason:0 error:v4];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"msuPrepareFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v6 postEvent:@"PrepareFailed" withInfo:v5];
+  [updateFSM postEvent:@"PrepareFailed" withInfo:v5];
 }
 
 - (void)msuSuspended
 {
-  v3 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v2 = objc_alloc_init(SUCoreUpdateParam);
-  [v3 postEvent:@"SuspendSuccess" withInfo:v2];
+  [updateFSM postEvent:@"SuspendSuccess" withInfo:v2];
 }
 
-- (void)msuSuspendFailed:(id)a3
+- (void)msuSuspendFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"msuSuspendFailed" forReason:0 error:v4];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"msuSuspendFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v6 postEvent:@"SuspendFailed" withInfo:v5];
+  [updateFSM postEvent:@"SuspendFailed" withInfo:v5];
 }
 
 - (void)msuResumed
 {
-  v3 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v2 = objc_alloc_init(SUCoreUpdateParam);
-  [v3 postEvent:@"ResumeSuccess" withInfo:v2];
+  [updateFSM postEvent:@"ResumeSuccess" withInfo:v2];
 }
 
-- (void)msuResumeFailed:(id)a3
+- (void)msuResumeFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"msuResumeFailed" forReason:0 error:v4];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"msuResumeFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v6 postEvent:@"ResumeFailed" withInfo:v5];
+  [updateFSM postEvent:@"ResumeFailed" withInfo:v5];
 }
 
-- (void)msuApplyProgress:(id)a3
+- (void)msuApplyProgress:(id)progress
 {
-  v4 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithApplyProgress:v4];
+  progressCopy = progress;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithApplyProgress:progressCopy];
 
-  [v6 postEvent:@"ApplyProgress" withInfo:v5];
+  [updateFSM postEvent:@"ApplyProgress" withInfo:v5];
 }
 
 - (void)msuApplied
 {
-  v3 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v2 = objc_alloc_init(SUCoreUpdateParam);
-  [v3 postEvent:@"ApplySuccess" withInfo:v2];
+  [updateFSM postEvent:@"ApplySuccess" withInfo:v2];
 }
 
-- (void)msuApplyFailed:(id)a3
+- (void)msuApplyFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"msuApplyFailed" forReason:0 error:v4];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"msuApplyFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v6 postEvent:@"ApplyFailed" withInfo:v5];
+  [updateFSM postEvent:@"ApplyFailed" withInfo:v5];
 }
 
 - (void)msuRollbackPrepareSuccess
 {
-  v6 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v3 = [SUCoreUpdateParam alloc];
-  v4 = [(SUCoreUpdate *)self rollbackControl];
-  v5 = [(SUCoreUpdateParam *)v3 initWithRollback:v4 withError:0];
-  [v6 postEvent:@"RB_RollbackPrepareSuccess" withInfo:v5];
+  rollbackControl = [(SUCoreUpdate *)self rollbackControl];
+  v5 = [(SUCoreUpdateParam *)v3 initWithRollback:rollbackControl withError:0];
+  [updateFSM postEvent:@"RB_RollbackPrepareSuccess" withInfo:v5];
 }
 
 - (void)msuRollbackSuspendSuccess
 {
-  v6 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v3 = [SUCoreUpdateParam alloc];
-  v4 = [(SUCoreUpdate *)self rollbackControl];
-  v5 = [(SUCoreUpdateParam *)v3 initWithRollback:v4 withError:0];
-  [v6 postEvent:@"RB_RollbackSuspendSuccess" withInfo:v5];
+  rollbackControl = [(SUCoreUpdate *)self rollbackControl];
+  v5 = [(SUCoreUpdateParam *)v3 initWithRollback:rollbackControl withError:0];
+  [updateFSM postEvent:@"RB_RollbackSuspendSuccess" withInfo:v5];
 }
 
 - (void)msuRollbackResumeSuccess
 {
-  v6 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v3 = [SUCoreUpdateParam alloc];
-  v4 = [(SUCoreUpdate *)self rollbackControl];
-  v5 = [(SUCoreUpdateParam *)v3 initWithRollback:v4 withError:0];
-  [v6 postEvent:@"RB_RollbackResumeSuccess" withInfo:v5];
+  rollbackControl = [(SUCoreUpdate *)self rollbackControl];
+  v5 = [(SUCoreUpdateParam *)v3 initWithRollback:rollbackControl withError:0];
+  [updateFSM postEvent:@"RB_RollbackResumeSuccess" withInfo:v5];
 }
 
 - (void)msuRollbackApplySuccess
 {
-  v6 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v3 = [SUCoreUpdateParam alloc];
-  v4 = [(SUCoreUpdate *)self rollbackControl];
-  v5 = [(SUCoreUpdateParam *)v3 initWithRollback:v4 withError:0];
-  [v6 postEvent:@"RB_RollbackAppleSuccess" withInfo:v5];
+  rollbackControl = [(SUCoreUpdate *)self rollbackControl];
+  v5 = [(SUCoreUpdateParam *)v3 initWithRollback:rollbackControl withError:0];
+  [updateFSM postEvent:@"RB_RollbackAppleSuccess" withInfo:v5];
 }
 
-- (void)msuRollbackApplyFailed:(id)a3
+- (void)msuRollbackApplyFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"msuRollbackApplyFailed" forReason:0 error:v4];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"msuRollbackApplyFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v6 postEvent:@"RB_RollbackApplyFailed" withInfo:v5];
+  [updateFSM postEvent:@"RB_RollbackApplyFailed" withInfo:v5];
 }
 
-- (void)msuRollbackFailed:(id)a3
+- (void)msuRollbackFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"msuRollbackFailed" forReason:0 error:v4];
-  v8 = [(SUCoreUpdate *)self updateFSM];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"msuRollbackFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v5 = [SUCoreUpdateParam alloc];
-  v6 = [(SUCoreUpdate *)self rollbackControl];
-  v7 = [(SUCoreUpdateParam *)v5 initWithRollback:v6 withError:v4];
+  rollbackControl = [(SUCoreUpdate *)self rollbackControl];
+  v7 = [(SUCoreUpdateParam *)v5 initWithRollback:rollbackControl withError:failedCopy];
 
-  [v8 postEvent:@"RB_RollbackFailed" withInfo:v7];
+  [updateFSM postEvent:@"RB_RollbackFailed" withInfo:v7];
 }
 
 - (void)msuRemoved
 {
-  v3 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v2 = objc_alloc_init(SUCoreUpdateParam);
-  [v3 postEvent:@"SURemoved" withInfo:v2];
+  [updateFSM postEvent:@"SURemoved" withInfo:v2];
 }
 
-- (void)msuRemoveFailed:(id)a3
+- (void)msuRemoveFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"msuRemoveFailed" forReason:0 error:v4];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"msuRemoveFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v6 postEvent:@"SURemoved" withInfo:v5];
+  [updateFSM postEvent:@"SURemoved" withInfo:v5];
 }
 
-- (void)downloadProgress:(id)a3
+- (void)downloadProgress:(id)progress
 {
-  v4 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:v4];
+  progressCopy = progress;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:progressCopy];
 
-  [v6 postEvent:@"DownloadProgress" withInfo:v5];
+  [updateFSM postEvent:@"DownloadProgress" withInfo:v5];
 }
 
-- (void)downloadStalled:(id)a3
+- (void)downloadStalled:(id)stalled
 {
-  v4 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:v4];
+  stalledCopy = stalled;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:stalledCopy];
 
-  [v6 postEvent:@"DownloadStalled" withInfo:v5];
+  [updateFSM postEvent:@"DownloadStalled" withInfo:v5];
 }
 
-- (void)preSUStagingFinished:(id)a3
+- (void)preSUStagingFinished:(id)finished
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateDelegate];
+  finishedCopy = finished;
+  updateDelegate = [(SUCoreUpdate *)self updateDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
+    clientDelegateCallbackQueue = [(SUCoreUpdate *)self clientDelegateCallbackQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __37__SUCoreUpdate_preSUStagingFinished___block_invoke;
     v11[3] = &unk_27892D478;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v7, v11);
+    v12 = finishedCopy;
+    dispatch_async(clientDelegateCallbackQueue, v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D64460] sharedLogger];
-    v9 = [v8 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(preSUStagingFinished:) so not reporting psusOutcome=%{public}@", buf, 0x16u);
+      v16 = finishedCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ delegate does not respond to selector(preSUStagingFinished:) so not reporting psusOutcome=%{public}@", buf, 0x16u);
     }
   }
 
@@ -6754,70 +6754,70 @@ void __37__SUCoreUpdate_preSUStagingFinished___block_invoke(uint64_t a1)
   [v2 preSUStagingFinished:*(a1 + 40)];
 }
 
-- (void)downloaded:(id)a3
+- (void)downloaded:(id)downloaded
 {
-  v4 = a3;
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:v4];
+  downloadedCopy = downloaded;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithDownloadProgress:downloadedCopy];
 
-  [v6 postEvent:@"DownloadSuccess" withInfo:v5];
+  [updateFSM postEvent:@"DownloadSuccess" withInfo:v5];
 }
 
-- (void)downloadFailed:(id)a3
+- (void)downloadFailed:(id)failed
 {
-  v4 = a3;
-  [(SUCoreUpdate *)self _trackUpdateError:@"maDownloadFailed" forReason:0 error:v4];
-  v6 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  failedCopy = failed;
+  [(SUCoreUpdate *)self _trackUpdateError:@"maDownloadFailed" forReason:0 error:failedCopy];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  v5 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v6 postEvent:@"DownloadFailed" withInfo:v5];
+  [updateFSM postEvent:@"DownloadFailed" withInfo:v5];
 }
 
 - (void)updateRemoved
 {
-  v3 = [(SUCoreUpdate *)self updateFSM];
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
   v2 = objc_alloc_init(SUCoreUpdateParam);
-  [v3 postEvent:@"SURemoved" withInfo:v2];
+  [updateFSM postEvent:@"SURemoved" withInfo:v2];
 }
 
-- (void)updateRemoveFailed:(id)a3
+- (void)updateRemoveFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [(SUCoreUpdate *)self updateFSM];
-  v6 = [v5 diag];
+  failedCopy = failed;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  diag = [updateFSM diag];
   v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ remove failed (reported as removed)", self];
-  [v6 trackAnomaly:@"MA-DELEGATE" forReason:v7 withResult:objc_msgSend(v4 withError:{"code"), v4}];
+  [diag trackAnomaly:@"MA-DELEGATE" forReason:v7 withResult:objc_msgSend(failedCopy withError:{"code"), failedCopy}];
 
-  [(SUCoreUpdate *)self _trackUpdateError:@"maAssetRemoveFailed" forReason:0 error:v4];
-  v9 = [(SUCoreUpdate *)self updateFSM];
-  v8 = [[SUCoreUpdateParam alloc] initWithError:v4];
+  [(SUCoreUpdate *)self _trackUpdateError:@"maAssetRemoveFailed" forReason:0 error:failedCopy];
+  updateFSM2 = [(SUCoreUpdate *)self updateFSM];
+  v8 = [[SUCoreUpdateParam alloc] initWithError:failedCopy];
 
-  [v9 postEvent:@"SURemoved" withInfo:v8];
+  [updateFSM2 postEvent:@"SURemoved" withInfo:v8];
 }
 
-- (void)anomaly:(id)a3
+- (void)anomaly:(id)anomaly
 {
-  v4 = a3;
-  v7 = [(SUCoreUpdate *)self updateFSM];
-  v5 = [v7 diag];
+  anomalyCopy = anomaly;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  diag = [updateFSM diag];
   v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ anomaly", self];
-  [v5 trackAnomaly:@"MA-DELEGATE" forReason:v6 withResult:objc_msgSend(v4 withError:{"code"), v4}];
+  [diag trackAnomaly:@"MA-DELEGATE" forReason:v6 withResult:objc_msgSend(anomalyCopy withError:{"code"), anomalyCopy}];
 }
 
-- (void)_adjustTarget:(int64_t)a3 withPolicy:(id)a4
+- (void)_adjustTarget:(int64_t)target withPolicy:(id)policy
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SUCoreUpdate *)self updateFSM];
-  v8 = [v7 extendedStateQueue];
-  dispatch_assert_queue_V2(v8);
+  policyCopy = policy;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  if (a3)
+  if (target)
   {
-    if ([(SUCoreUpdate *)self targetPhase]<= a3)
+    if ([(SUCoreUpdate *)self targetPhase]<= target)
     {
-      [(SUCoreUpdate *)self setTargetPhase:a3];
-      if (!v6)
+      [(SUCoreUpdate *)self setTargetPhase:target];
+      if (!policyCopy)
       {
         goto LABEL_10;
       }
@@ -6826,75 +6826,75 @@ void __37__SUCoreUpdate_preSUStagingFinished___block_invoke(uint64_t a1)
     }
 
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [SUCoreUpdateParam targetPhaseName:a3];
+    v10 = [SUCoreUpdateParam targetPhaseName:target];
     v11 = [SUCoreUpdateParam targetPhaseName:[(SUCoreUpdate *)self targetPhase]];
     v12 = [v9 initWithFormat:@"target requested(%@) when targeting(%@) [no change to target]", v10, v11];
 
     [(SUCoreUpdate *)self _trackUpdateAnomaly:@"TARGET" result:8116 description:v12];
   }
 
-  if (!v6)
+  if (!policyCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_7:
-  [(SUCoreUpdate *)self setPolicy:v6];
-  v13 = [MEMORY[0x277D64460] sharedLogger];
-  v14 = [v13 oslog];
+  [(SUCoreUpdate *)self setPolicy:policyCopy];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(SUCoreUpdate *)self policy];
+    policy = [(SUCoreUpdate *)self policy];
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v15;
-    _os_log_impl(&dword_23193C000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ adjusted policy: %@", buf, 0x16u);
+    v20 = policy;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ adjusted policy: %@", buf, 0x16u);
   }
 
 LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_eventAfterReachingPhase:(int64_t)a3
+- (void)_eventAfterReachingPhase:(int64_t)phase
 {
   v74 = *MEMORY[0x277D85DE8];
-  v5 = [(SUCoreUpdate *)self updateFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  if (a3 <= 5)
+  if (phase <= 5)
   {
-    if (a3 > 3)
+    if (phase > 3)
     {
-      if (a3 != 4)
+      if (phase != 4)
       {
 LABEL_34:
-        v28 = [(SUCoreUpdate *)self policy];
-        v29 = [v28 softwareUpdateDownloadPolicy];
-        v30 = [v29 skipPhase];
+        policy = [(SUCoreUpdate *)self policy];
+        softwareUpdateDownloadPolicy = [policy softwareUpdateDownloadPolicy];
+        skipPhase = [softwareUpdateDownloadPolicy skipPhase];
 
-        if (!v30)
+        if (!skipPhase)
         {
           v14 = kSU_E_PerformDownloadSU;
           goto LABEL_68;
         }
 
-        v31 = [MEMORY[0x277D64460] sharedLogger];
-        v32 = [v31 oslog];
+        mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+        oslog = [mEMORY[0x277D64460] oslog];
 
-        if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [SUCoreUpdateParam targetPhaseName:a3];
+          v33 = [SUCoreUpdateParam targetPhaseName:phase];
           v34 = [SUCoreUpdateParam targetPhaseName:6];
           *buf = 138543874;
-          v69 = self;
+          selfCopy8 = self;
           v70 = 2114;
           v71 = v33;
           v72 = 2114;
           v73 = v34;
-          _os_log_impl(&dword_23193C000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped download of SU asset", buf, 0x20u);
+          _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped download of SU asset", buf, 0x20u);
         }
 
         goto LABEL_38;
@@ -6903,36 +6903,36 @@ LABEL_34:
 
     else
     {
-      if (a3 == 2)
+      if (phase == 2)
       {
-        v7 = [(SUCoreUpdate *)self policy];
-        v8 = [v7 loadBrainPolicy];
-        v9 = [v8 skipPhase];
+        policy2 = [(SUCoreUpdate *)self policy];
+        loadBrainPolicy = [policy2 loadBrainPolicy];
+        skipPhase2 = [loadBrainPolicy skipPhase];
 
-        if (!v9)
+        if (!skipPhase2)
         {
           v14 = kSU_E_PerformLoadBrain;
           goto LABEL_68;
         }
 
-        v10 = [MEMORY[0x277D64460] sharedLogger];
-        v11 = [v10 oslog];
+        mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+        oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
           v12 = [SUCoreUpdateParam targetPhaseName:2];
           v13 = [SUCoreUpdateParam targetPhaseName:3];
           *buf = 138543874;
-          v69 = self;
+          selfCopy8 = self;
           v70 = 2114;
           v71 = v12;
           v72 = 2114;
           v73 = v13;
-          _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped load of update brain", buf, 0x20u);
+          _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped load of update brain", buf, 0x20u);
         }
       }
 
-      else if (a3 != 3)
+      else if (phase != 3)
       {
         goto LABEL_71;
       }
@@ -6943,30 +6943,30 @@ LABEL_34:
         goto LABEL_68;
       }
 
-      v15 = [(SUCoreUpdate *)self policy];
-      v16 = [v15 downloadPreflightPolicy];
-      v17 = [v16 skipPhase];
+      policy3 = [(SUCoreUpdate *)self policy];
+      downloadPreflightPolicy = [policy3 downloadPreflightPolicy];
+      skipPhase3 = [downloadPreflightPolicy skipPhase];
 
-      if (!v17)
+      if (!skipPhase3)
       {
         v14 = kSU_E_PerformPreflightDownloadSU;
         goto LABEL_68;
       }
 
-      v18 = [MEMORY[0x277D64460] sharedLogger];
-      v19 = [v18 oslog];
+      mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+      oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [SUCoreUpdateParam targetPhaseName:a3];
+        v20 = [SUCoreUpdateParam targetPhaseName:phase];
         v21 = [SUCoreUpdateParam targetPhaseName:4];
         *buf = 138543874;
-        v69 = self;
+        selfCopy8 = self;
         v70 = 2114;
         v71 = v20;
         v72 = 2114;
         v73 = v21;
-        _os_log_impl(&dword_23193C000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped preflight of SU asset download", buf, 0x20u);
+        _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped preflight of SU asset download", buf, 0x20u);
       }
     }
 
@@ -6976,63 +6976,63 @@ LABEL_34:
       goto LABEL_68;
     }
 
-    v22 = [(SUCoreUpdate *)self policy];
-    v23 = [v22 checkAvailableSpace];
+    policy4 = [(SUCoreUpdate *)self policy];
+    checkAvailableSpace = [policy4 checkAvailableSpace];
 
-    if (v23)
+    if (checkAvailableSpace)
     {
       v14 = kSU_E_PerformDownloadSpaceCheck;
       goto LABEL_68;
     }
 
-    v24 = [MEMORY[0x277D64460] sharedLogger];
-    v25 = [v24 oslog];
+    mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+    oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [SUCoreUpdateParam targetPhaseName:a3];
+      v26 = [SUCoreUpdateParam targetPhaseName:phase];
       v27 = [SUCoreUpdateParam targetPhaseName:5];
       *buf = 138543874;
-      v69 = self;
+      selfCopy8 = self;
       v70 = 2114;
       v71 = v26;
       v72 = 2114;
       v73 = v27;
-      _os_log_impl(&dword_23193C000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped check of available filesystem space", buf, 0x20u);
+      _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped check of available filesystem space", buf, 0x20u);
     }
 
     goto LABEL_34;
   }
 
-  if (a3 <= 7)
+  if (phase <= 7)
   {
-    if (a3 != 6)
+    if (phase != 6)
     {
 LABEL_44:
-      v42 = [(SUCoreUpdate *)self policy];
-      v43 = [v42 suspendPolicy];
-      v44 = [v43 skipPhase];
+      policy5 = [(SUCoreUpdate *)self policy];
+      suspendPolicy = [policy5 suspendPolicy];
+      skipPhase4 = [suspendPolicy skipPhase];
 
-      if (!v44)
+      if (!skipPhase4)
       {
         v14 = kSU_E_PerformSuspend;
         goto LABEL_68;
       }
 
-      v45 = [MEMORY[0x277D64460] sharedLogger];
-      v46 = [v45 oslog];
+      mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+      oslog5 = [mEMORY[0x277D64460]5 oslog];
 
-      if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = [SUCoreUpdateParam targetPhaseName:a3];
+        v47 = [SUCoreUpdateParam targetPhaseName:phase];
         v48 = [SUCoreUpdateParam targetPhaseName:8];
         *buf = 138543874;
-        v69 = self;
+        selfCopy8 = self;
         v70 = 2114;
         v71 = v47;
         v72 = 2114;
         v73 = v48;
-        _os_log_impl(&dword_23193C000, v46, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped suspend of prepared update", buf, 0x20u);
+        _os_log_impl(&dword_23193C000, oslog5, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped suspend of prepared update", buf, 0x20u);
       }
 
       goto LABEL_48;
@@ -7045,36 +7045,36 @@ LABEL_38:
       goto LABEL_68;
     }
 
-    v35 = [(SUCoreUpdate *)self policy];
-    v36 = [v35 preparePolicy];
-    v37 = [v36 skipPhase];
+    policy6 = [(SUCoreUpdate *)self policy];
+    preparePolicy = [policy6 preparePolicy];
+    skipPhase5 = [preparePolicy skipPhase];
 
-    if (!v37)
+    if (!skipPhase5)
     {
       v14 = kSU_E_PerformPrepare;
       goto LABEL_68;
     }
 
-    v38 = [MEMORY[0x277D64460] sharedLogger];
-    v39 = [v38 oslog];
+    mEMORY[0x277D64460]6 = [MEMORY[0x277D64460] sharedLogger];
+    oslog6 = [mEMORY[0x277D64460]6 oslog];
 
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [SUCoreUpdateParam targetPhaseName:a3];
+      v40 = [SUCoreUpdateParam targetPhaseName:phase];
       v41 = [SUCoreUpdateParam targetPhaseName:7];
       *buf = 138543874;
-      v69 = self;
+      selfCopy8 = self;
       v70 = 2114;
       v71 = v40;
       v72 = 2114;
       v73 = v41;
-      _os_log_impl(&dword_23193C000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped prepare of update", buf, 0x20u);
+      _os_log_impl(&dword_23193C000, oslog6, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped prepare of update", buf, 0x20u);
     }
 
     goto LABEL_44;
   }
 
-  if (a3 == 8)
+  if (phase == 8)
   {
 LABEL_48:
     if ([(SUCoreUpdate *)self targetPhase]< 9)
@@ -7083,38 +7083,38 @@ LABEL_48:
       goto LABEL_68;
     }
 
-    v49 = [(SUCoreUpdate *)self policy];
-    v50 = [v49 resumePolicy];
-    v51 = [v50 skipPhase];
+    policy7 = [(SUCoreUpdate *)self policy];
+    resumePolicy = [policy7 resumePolicy];
+    skipPhase6 = [resumePolicy skipPhase];
 
-    if (!v51)
+    if (!skipPhase6)
     {
       v14 = kSU_E_PerformResume;
       goto LABEL_68;
     }
 
-    v52 = [MEMORY[0x277D64460] sharedLogger];
-    v53 = [v52 oslog];
+    mEMORY[0x277D64460]7 = [MEMORY[0x277D64460] sharedLogger];
+    oslog7 = [mEMORY[0x277D64460]7 oslog];
 
-    if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog7, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = [SUCoreUpdateParam targetPhaseName:a3];
+      v54 = [SUCoreUpdateParam targetPhaseName:phase];
       v55 = [SUCoreUpdateParam targetPhaseName:9];
       *buf = 138543874;
-      v69 = self;
+      selfCopy8 = self;
       v70 = 2114;
       v71 = v54;
       v72 = 2114;
       v73 = v55;
-      _os_log_impl(&dword_23193C000, v53, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped resume of suspended update", buf, 0x20u);
+      _os_log_impl(&dword_23193C000, oslog7, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped resume of suspended update", buf, 0x20u);
     }
 
     goto LABEL_54;
   }
 
-  if (a3 != 9)
+  if (phase != 9)
   {
-    if (a3 != 10)
+    if (phase != 10)
     {
       goto LABEL_71;
     }
@@ -7129,30 +7129,30 @@ LABEL_54:
     goto LABEL_68;
   }
 
-  v56 = [(SUCoreUpdate *)self policy];
-  v57 = [v56 applyPolicy];
-  v58 = [v57 skipPhase];
+  policy8 = [(SUCoreUpdate *)self policy];
+  applyPolicy = [policy8 applyPolicy];
+  skipPhase7 = [applyPolicy skipPhase];
 
-  if (!v58)
+  if (!skipPhase7)
   {
     v14 = kSU_E_PerformApply;
     goto LABEL_68;
   }
 
-  v59 = [MEMORY[0x277D64460] sharedLogger];
-  v60 = [v59 oslog];
+  mEMORY[0x277D64460]8 = [MEMORY[0x277D64460] sharedLogger];
+  oslog8 = [mEMORY[0x277D64460]8 oslog];
 
-  if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog8, OS_LOG_TYPE_DEFAULT))
   {
-    v61 = [SUCoreUpdateParam targetPhaseName:a3];
+    v61 = [SUCoreUpdateParam targetPhaseName:phase];
     v62 = [SUCoreUpdateParam targetPhaseName:10];
     *buf = 138543874;
-    v69 = self;
+    selfCopy8 = self;
     v70 = 2114;
     v71 = v61;
     v72 = 2114;
     v73 = v62;
-    _os_log_impl(&dword_23193C000, v60, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped apply of update", buf, 0x20u);
+    _os_log_impl(&dword_23193C000, oslog8, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped apply of update", buf, 0x20u);
   }
 
 LABEL_60:
@@ -7171,9 +7171,9 @@ LABEL_68:
   if (v64)
   {
     v63 = v64;
-    v65 = [(SUCoreUpdate *)self updateFSM];
+    updateFSM2 = [(SUCoreUpdate *)self updateFSM];
     v66 = objc_alloc_init(SUCoreUpdateParam);
-    [v65 followupEvent:v63 withInfo:v66];
+    [updateFSM2 followupEvent:v63 withInfo:v66];
 
     goto LABEL_70;
   }
@@ -7182,20 +7182,20 @@ LABEL_71:
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_eventAfterReachingRollbackPhase:(int64_t)a3
+- (void)_eventAfterReachingRollbackPhase:(int64_t)phase
 {
   v78 = *MEMORY[0x277D85DE8];
-  v5 = [(SUCoreUpdate *)self updateFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  if (a3 > 4)
+  if (phase > 4)
   {
-    if (a3 > 6)
+    if (phase > 6)
     {
-      if (a3 != 7)
+      if (phase != 7)
       {
-        if (a3 != 8)
+        if (phase != 8)
         {
           goto LABEL_64;
         }
@@ -7204,34 +7204,34 @@ LABEL_71:
       }
 
 LABEL_49:
-      v56 = [(SUCoreUpdate *)self policy];
-      v57 = [v56 rollbackPolicy];
-      v58 = [v57 performPhase];
+      policy = [(SUCoreUpdate *)self policy];
+      rollbackPolicy = [policy rollbackPolicy];
+      performPhase = [rollbackPolicy performPhase];
 
-      if (v58)
+      if (performPhase)
       {
-        v59 = [(SUCoreUpdate *)self policy];
-        v60 = [v59 rollbackPolicy];
-        v61 = [v60 performRollbackApplyPhase];
+        policy2 = [(SUCoreUpdate *)self policy];
+        rollbackPolicy2 = [policy2 rollbackPolicy];
+        performRollbackApplyPhase = [rollbackPolicy2 performRollbackApplyPhase];
 
-        if (v61)
+        if (performRollbackApplyPhase)
         {
           v14 = kSU_E_RB_PerformRollbackApply;
           goto LABEL_60;
         }
 
-        v66 = [MEMORY[0x277D64460] sharedLogger];
-        v29 = [v66 oslog];
+        mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+        oslog = [mEMORY[0x277D64460] oslog];
 
-        if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_57;
         }
 
-        v63 = [SUCoreUpdateParam targetRollbackPhaseName:a3];
+        v63 = [SUCoreUpdateParam targetRollbackPhaseName:phase];
         v64 = [SUCoreUpdateParam targetRollbackPhaseName:8];
         *buf = 138543874;
-        v73 = self;
+        selfCopy7 = self;
         v74 = 2114;
         v75 = v63;
         v76 = 2114;
@@ -7240,23 +7240,23 @@ LABEL_49:
         goto LABEL_56;
       }
 
-      v62 = [MEMORY[0x277D64460] sharedLogger];
-      v29 = [v62 oslog];
+      mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460]2 oslog];
 
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_53:
-        v63 = [SUCoreUpdateParam targetRollbackPhaseName:a3];
+        v63 = [SUCoreUpdateParam targetRollbackPhaseName:phase];
         v64 = [SUCoreUpdateParam targetRollbackPhaseName:8];
         *buf = 138543874;
-        v73 = self;
+        selfCopy7 = self;
         v74 = 2114;
         v75 = v63;
         v76 = 2114;
         v77 = v64;
         v65 = "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped rollback phase";
 LABEL_56:
-        _os_log_impl(&dword_23193C000, v29, OS_LOG_TYPE_DEFAULT, v65, buf, 0x20u);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, v65, buf, 0x20u);
       }
 
 LABEL_57:
@@ -7273,19 +7273,19 @@ LABEL_58:
       goto LABEL_60;
     }
 
-    if (a3 != 5)
+    if (phase != 5)
     {
 LABEL_41:
-      v45 = [(SUCoreUpdate *)self policy];
-      v46 = [v45 rollbackPolicy];
-      v47 = [v46 performPhase];
+      policy3 = [(SUCoreUpdate *)self policy];
+      rollbackPolicy3 = [policy3 rollbackPolicy];
+      performPhase2 = [rollbackPolicy3 performPhase];
 
-      if ((v47 & 1) == 0)
+      if ((performPhase2 & 1) == 0)
       {
-        v51 = [MEMORY[0x277D64460] sharedLogger];
-        v29 = [v51 oslog];
+        mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+        oslog = [mEMORY[0x277D64460]3 oslog];
 
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_53;
         }
@@ -7293,46 +7293,46 @@ LABEL_41:
         goto LABEL_57;
       }
 
-      v48 = [(SUCoreUpdate *)self policy];
-      v49 = [v48 rollbackPolicy];
-      v50 = [v49 performRollbackResumePhase];
+      policy4 = [(SUCoreUpdate *)self policy];
+      rollbackPolicy4 = [policy4 rollbackPolicy];
+      performRollbackResumePhase = [rollbackPolicy4 performRollbackResumePhase];
 
-      if (v50)
+      if (performRollbackResumePhase)
       {
         v14 = kSU_E_RB_PerformRollbackResume;
         goto LABEL_60;
       }
 
-      v52 = [MEMORY[0x277D64460] sharedLogger];
-      v53 = [v52 oslog];
+      mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+      oslog2 = [mEMORY[0x277D64460]4 oslog];
 
-      if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v54 = [SUCoreUpdateParam targetRollbackPhaseName:a3];
+        v54 = [SUCoreUpdateParam targetRollbackPhaseName:phase];
         v55 = [SUCoreUpdateParam targetRollbackPhaseName:7];
         *buf = 138543874;
-        v73 = self;
+        selfCopy7 = self;
         v74 = 2114;
         v75 = v54;
         v76 = 2114;
         v77 = v55;
-        _os_log_impl(&dword_23193C000, v53, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped rollback resume phase", buf, 0x20u);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped rollback resume phase", buf, 0x20u);
       }
 
       goto LABEL_49;
     }
 
 LABEL_33:
-    v34 = [(SUCoreUpdate *)self policy];
-    v35 = [v34 rollbackPolicy];
-    v36 = [v35 performPhase];
+    policy5 = [(SUCoreUpdate *)self policy];
+    rollbackPolicy5 = [policy5 rollbackPolicy];
+    performPhase3 = [rollbackPolicy5 performPhase];
 
-    if ((v36 & 1) == 0)
+    if ((performPhase3 & 1) == 0)
     {
-      v40 = [MEMORY[0x277D64460] sharedLogger];
-      v29 = [v40 oslog];
+      mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460]5 oslog];
 
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_53;
       }
@@ -7340,76 +7340,76 @@ LABEL_33:
       goto LABEL_57;
     }
 
-    v37 = [(SUCoreUpdate *)self policy];
-    v38 = [v37 rollbackPolicy];
-    v39 = [v38 performRollbackSuspendPhase];
+    policy6 = [(SUCoreUpdate *)self policy];
+    rollbackPolicy6 = [policy6 rollbackPolicy];
+    performRollbackSuspendPhase = [rollbackPolicy6 performRollbackSuspendPhase];
 
-    if (v39)
+    if (performRollbackSuspendPhase)
     {
       v14 = kSU_E_RB_PerformRollbackSuspend;
       goto LABEL_60;
     }
 
-    v41 = [MEMORY[0x277D64460] sharedLogger];
-    v42 = [v41 oslog];
+    mEMORY[0x277D64460]6 = [MEMORY[0x277D64460] sharedLogger];
+    oslog3 = [mEMORY[0x277D64460]6 oslog];
 
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
-      v43 = [SUCoreUpdateParam targetRollbackPhaseName:a3];
+      v43 = [SUCoreUpdateParam targetRollbackPhaseName:phase];
       v44 = [SUCoreUpdateParam targetRollbackPhaseName:6];
       *buf = 138543874;
-      v73 = self;
+      selfCopy7 = self;
       v74 = 2114;
       v75 = v43;
       v76 = 2114;
       v77 = v44;
-      _os_log_impl(&dword_23193C000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped rollback suspend phase", buf, 0x20u);
+      _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped rollback suspend phase", buf, 0x20u);
     }
 
     goto LABEL_41;
   }
 
-  if (a3 > 2)
+  if (phase > 2)
   {
-    if (a3 == 3)
+    if (phase == 3)
     {
-      v15 = [(SUCoreUpdate *)self policy];
-      v16 = [v15 loadBrainPolicy];
-      v17 = [v16 skipPhase];
+      policy7 = [(SUCoreUpdate *)self policy];
+      loadBrainPolicy = [policy7 loadBrainPolicy];
+      skipPhase = [loadBrainPolicy skipPhase];
 
-      if (!v17)
+      if (!skipPhase)
       {
         v14 = kSU_E_RB_PerformLoadBrain;
         goto LABEL_60;
       }
 
-      v18 = [MEMORY[0x277D64460] sharedLogger];
-      v19 = [v18 oslog];
+      mEMORY[0x277D64460]7 = [MEMORY[0x277D64460] sharedLogger];
+      oslog4 = [mEMORY[0x277D64460]7 oslog];
 
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
         v20 = [SUCoreUpdateParam targetRollbackPhaseName:3];
         v21 = [SUCoreUpdateParam targetRollbackPhaseName:4];
         *buf = 138543874;
-        v73 = self;
+        selfCopy7 = self;
         v74 = 2114;
         v75 = v20;
         v76 = 2114;
         v77 = v21;
-        _os_log_impl(&dword_23193C000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped load of update brain", buf, 0x20u);
+        _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped load of update brain", buf, 0x20u);
       }
     }
 
-    v22 = [(SUCoreUpdate *)self policy];
-    v23 = [v22 rollbackPolicy];
-    v24 = [v23 performPhase];
+    policy8 = [(SUCoreUpdate *)self policy];
+    rollbackPolicy7 = [policy8 rollbackPolicy];
+    performPhase4 = [rollbackPolicy7 performPhase];
 
-    if ((v24 & 1) == 0)
+    if ((performPhase4 & 1) == 0)
     {
-      v28 = [MEMORY[0x277D64460] sharedLogger];
-      v29 = [v28 oslog];
+      mEMORY[0x277D64460]8 = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460]8 oslog];
 
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_53;
       }
@@ -7417,38 +7417,38 @@ LABEL_33:
       goto LABEL_57;
     }
 
-    v25 = [(SUCoreUpdate *)self policy];
-    v26 = [v25 rollbackPolicy];
-    v27 = [v26 performRollbackPreparePhase];
+    policy9 = [(SUCoreUpdate *)self policy];
+    rollbackPolicy8 = [policy9 rollbackPolicy];
+    performRollbackPreparePhase = [rollbackPolicy8 performRollbackPreparePhase];
 
-    if (v27)
+    if (performRollbackPreparePhase)
     {
       v14 = kSU_E_RB_PerformRollbackPrepare;
       goto LABEL_60;
     }
 
-    v30 = [MEMORY[0x277D64460] sharedLogger];
-    v31 = [v30 oslog];
+    mEMORY[0x277D64460]9 = [MEMORY[0x277D64460] sharedLogger];
+    oslog5 = [mEMORY[0x277D64460]9 oslog];
 
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [SUCoreUpdateParam targetRollbackPhaseName:a3];
+      v32 = [SUCoreUpdateParam targetRollbackPhaseName:phase];
       v33 = [SUCoreUpdateParam targetRollbackPhaseName:5];
       *buf = 138543874;
-      v73 = self;
+      selfCopy7 = self;
       v74 = 2114;
       v75 = v32;
       v76 = 2114;
       v77 = v33;
-      _os_log_impl(&dword_23193C000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped rollback prepare phase", buf, 0x20u);
+      _os_log_impl(&dword_23193C000, oslog5, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped rollback prepare phase", buf, 0x20u);
     }
 
     goto LABEL_33;
   }
 
-  if (a3 != 1)
+  if (phase != 1)
   {
-    if (a3 != 2)
+    if (phase != 2)
     {
       goto LABEL_64;
     }
@@ -7456,26 +7456,26 @@ LABEL_33:
     goto LABEL_18;
   }
 
-  v7 = [(SUCoreUpdate *)self policy];
-  v8 = [v7 rollbackPolicy];
-  v9 = [v8 skipCancelPreviousUpdate];
+  policy10 = [(SUCoreUpdate *)self policy];
+  rollbackPolicy9 = [policy10 rollbackPolicy];
+  skipCancelPreviousUpdate = [rollbackPolicy9 skipCancelPreviousUpdate];
 
-  if (v9)
+  if (skipCancelPreviousUpdate)
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460]10 = [MEMORY[0x277D64460] sharedLogger];
+    oslog6 = [mEMORY[0x277D64460]10 oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
     {
       v12 = [SUCoreUpdateParam targetRollbackPhaseName:1];
       v13 = [SUCoreUpdateParam targetRollbackPhaseName:2];
       *buf = 138543874;
-      v73 = self;
+      selfCopy7 = self;
       v74 = 2114;
       v75 = v12;
       v76 = 2114;
       v77 = v13;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped cancel previous update of SU asset download before rollback", buf, 0x20u);
+      _os_log_impl(&dword_23193C000, oslog6, OS_LOG_TYPE_DEFAULT, "%{public}@ [REACHED_PHASE:%{public}@=>%{public}@] skipped cancel previous update of SU asset download before rollback", buf, 0x20u);
     }
 
 LABEL_18:
@@ -7489,9 +7489,9 @@ LABEL_60:
   if (v67)
   {
     v68 = v67;
-    v69 = [(SUCoreUpdate *)self updateFSM];
+    updateFSM2 = [(SUCoreUpdate *)self updateFSM];
     v70 = objc_alloc_init(SUCoreUpdateParam);
-    [v69 followupEvent:v68 withInfo:v70];
+    [updateFSM2 followupEvent:v68 withInfo:v70];
 
 LABEL_63:
   }
@@ -7500,75 +7500,75 @@ LABEL_64:
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_trackUpdateAnomaly:(id)a3 result:(int64_t)a4 description:(id)a5
+- (void)_trackUpdateAnomaly:(id)anomaly result:(int64_t)result description:(id)description
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SUCoreUpdate *)self updateFSM];
-  v11 = [v10 extendedStateQueue];
-  dispatch_assert_queue_V2(v11);
+  descriptionCopy = description;
+  anomalyCopy = anomaly;
+  updateFSM = [(SUCoreUpdate *)self updateFSM];
+  extendedStateQueue = [updateFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v12 = [MEMORY[0x277D643F8] sharedCore];
-  v17 = [v12 buildError:a4 underlying:0 description:v8];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v17 = [mEMORY[0x277D643F8] buildError:result underlying:0 description:descriptionCopy];
 
-  v13 = [(SUCoreUpdate *)self updateFSM];
-  v14 = [v13 diag];
-  v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[UPDATE] %@", v9];
+  updateFSM2 = [(SUCoreUpdate *)self updateFSM];
+  diag = [updateFSM2 diag];
+  anomalyCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[UPDATE] %@", anomalyCopy];
 
-  v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ %@", self, v8];
-  [v14 trackAnomaly:v15 forReason:v16 withResult:a4 withError:v17];
+  descriptionCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ %@", self, descriptionCopy];
+  [diag trackAnomaly:anomalyCopy forReason:descriptionCopy withResult:result withError:v17];
 
   [(SUCoreUpdate *)self _updateAnomaly:v17];
 }
 
-- (void)_trackUpdateError:(id)a3 forReason:(id)a4 error:(id)a5
+- (void)_trackUpdateError:(id)error forReason:(id)reason error:(id)a5
 {
-  v8 = a3;
+  errorCopy = error;
   v9 = a5;
   if (v9)
   {
     v10 = @"general";
-    if (v8)
+    if (errorCopy)
     {
-      v10 = v8;
+      v10 = errorCopy;
     }
 
     v11 = v10;
-    v12 = a4;
-    v13 = [(SUCoreUpdate *)self failedAttemptError];
+    reasonCopy = reason;
+    failedAttemptError = [(SUCoreUpdate *)self failedAttemptError];
 
-    if (!v13)
+    if (!failedAttemptError)
     {
       [(SUCoreUpdate *)self setFailedAttemptError:v9];
-      v14 = [MEMORY[0x277D64460] sharedLogger];
-      v15 = [v14 oslog];
+      mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460] oslog];
 
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        [SUCoreUpdate _trackUpdateError:v11 forReason:v15 error:?];
+        [SUCoreUpdate _trackUpdateError:v11 forReason:oslog error:?];
       }
     }
 
-    v16 = [(SUCoreUpdate *)self updateFSM];
-    v17 = [v16 diag];
+    updateFSM = [(SUCoreUpdate *)self updateFSM];
+    diag = [updateFSM diag];
     v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[UPDATE] %@", v11];
-    [v17 trackError:v18 forReason:v12 withResult:objc_msgSend(v9 withError:{"code"), v9}];
+    [diag trackError:v18 forReason:reasonCopy withResult:objc_msgSend(v9 withError:{"code"), v9}];
   }
 
   else
   {
     v19 = MEMORY[0x277CCACA8];
-    v20 = a4;
+    reasonCopy2 = reason;
     v21 = [v19 alloc];
     v22 = @"no reason provided";
-    if (v20)
+    if (reasonCopy2)
     {
-      v22 = v20;
+      v22 = reasonCopy2;
     }
 
     v11 = [v21 initWithFormat:@"tracking update error when no error provided (%@)", v22];
 
-    [(SUCoreUpdate *)self _trackUpdateAnomaly:v8 result:8101 description:v11];
+    [(SUCoreUpdate *)self _trackUpdateAnomaly:errorCopy result:8101 description:v11];
   }
 }
 

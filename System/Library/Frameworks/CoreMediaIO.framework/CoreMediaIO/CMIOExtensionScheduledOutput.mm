@@ -1,14 +1,14 @@
 @interface CMIOExtensionScheduledOutput
 + (CMIOExtensionScheduledOutput)scheduledOutputWithSequenceNumber:(uint64_t)sequenceNumber hostTimeInNanoseconds:(uint64_t)hostTimeInNanoseconds;
-- (BOOL)isEqual:(id)a3;
-- (CMIOExtensionScheduledOutput)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CMIOExtensionScheduledOutput)initWithCoder:(id)coder;
 - (CMIOExtensionScheduledOutput)initWithSequenceNumber:(uint64_t)sequenceNumber hostTimeInNanoseconds:(uint64_t)hostTimeInNanoseconds;
-- (CMIOExtensionScheduledOutput)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMIOExtensionScheduledOutput)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCDictionary;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMIOExtensionScheduledOutput
@@ -50,9 +50,9 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -64,36 +64,36 @@
   }
 
   sequenceNumber = self->_sequenceNumber;
-  if (sequenceNumber != [a3 sequenceNumber])
+  if (sequenceNumber != [equal sequenceNumber])
   {
     return 0;
   }
 
   hostTimeInNanoseconds = self->_hostTimeInNanoseconds;
-  return hostTimeInNanoseconds == [a3 hostTimeInNanoseconds];
+  return hostTimeInNanoseconds == [equal hostTimeInNanoseconds];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CMIOExtensionScheduledOutput allocWithZone:a3];
+  v4 = [CMIOExtensionScheduledOutput allocWithZone:zone];
   sequenceNumber = self->_sequenceNumber;
   hostTimeInNanoseconds = self->_hostTimeInNanoseconds;
 
   return [(CMIOExtensionScheduledOutput *)v4 initWithSequenceNumber:sequenceNumber hostTimeInNanoseconds:hostTimeInNanoseconds];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt64:self->_sequenceNumber forKey:@"sequenceNumber"];
+  [coder encodeInt64:self->_sequenceNumber forKey:@"sequenceNumber"];
   hostTimeInNanoseconds = self->_hostTimeInNanoseconds;
 
-  [a3 encodeInt64:hostTimeInNanoseconds forKey:@"hostTimeInNanoseconds"];
+  [coder encodeInt64:hostTimeInNanoseconds forKey:@"hostTimeInNanoseconds"];
 }
 
-- (CMIOExtensionScheduledOutput)initWithCoder:(id)a3
+- (CMIOExtensionScheduledOutput)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeInt64ForKey:@"sequenceNumber"];
-  v6 = [a3 decodeInt64ForKey:@"hostTimeInNanoseconds"];
+  v5 = [coder decodeInt64ForKey:@"sequenceNumber"];
+  v6 = [coder decodeInt64ForKey:@"hostTimeInNanoseconds"];
 
   return [(CMIOExtensionScheduledOutput *)self initWithSequenceNumber:v5 hostTimeInNanoseconds:v6];
 }
@@ -106,12 +106,12 @@
   return v3;
 }
 
-- (CMIOExtensionScheduledOutput)initWithXPCDictionary:(id)a3
+- (CMIOExtensionScheduledOutput)initWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    uint64 = xpc_dictionary_get_uint64(a3, "sequenceNumber");
-    v6 = xpc_dictionary_get_uint64(a3, "hostTimeInNanoseconds");
+    uint64 = xpc_dictionary_get_uint64(dictionary, "sequenceNumber");
+    v6 = xpc_dictionary_get_uint64(dictionary, "hostTimeInNanoseconds");
 
     return [(CMIOExtensionScheduledOutput *)self initWithSequenceNumber:uint64 hostTimeInNanoseconds:v6];
   }

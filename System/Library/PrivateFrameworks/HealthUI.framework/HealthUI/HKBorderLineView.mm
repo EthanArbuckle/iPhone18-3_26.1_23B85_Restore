@@ -1,23 +1,23 @@
 @interface HKBorderLineView
-+ (void)drawBorderLinesInContext:(CGContext *)a3 bounds:(CGRect)a4 verticalDrawRanges:(id)a5 borderEdges:(int64_t)a6 borderLineWidth:(double)a7 borderLineColor:(id)a8 borderInsets:(UIEdgeInsets)a9;
++ (void)drawBorderLinesInContext:(CGContext *)context bounds:(CGRect)bounds verticalDrawRanges:(id)ranges borderEdges:(int64_t)edges borderLineWidth:(double)width borderLineColor:(id)color borderInsets:(UIEdgeInsets)insets;
 - (CGSize)intrinsicContentSize;
-- (HKBorderLineView)initWithCoder:(id)a3;
-- (HKBorderLineView)initWithFrame:(CGRect)a3;
+- (HKBorderLineView)initWithCoder:(id)coder;
+- (HKBorderLineView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)borderInsets;
 - (id)_adjustedVerticalDrawRanges;
 - (void)_initFields;
-- (void)drawRect:(CGRect)a3;
-- (void)setBorderLineColor:(id)a3;
-- (void)setVerticalDrawRanges:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setBorderLineColor:(id)color;
+- (void)setVerticalDrawRanges:(id)ranges;
 @end
 
 @implementation HKBorderLineView
 
-- (HKBorderLineView)initWithFrame:(CGRect)a3
+- (HKBorderLineView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HKBorderLineView;
-  v3 = [(HKBorderLineView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKBorderLineView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (HKBorderLineView)initWithCoder:(id)a3
+- (HKBorderLineView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HKBorderLineView;
-  v3 = [(HKBorderLineView *)&v6 initWithCoder:a3];
+  v3 = [(HKBorderLineView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -45,9 +45,9 @@
 {
   self->_edges = 0;
   self->_borderWidth = HKUIOnePixel();
-  v3 = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
+  hk_chartAxisMajorGridColor = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
   borderLineColor = self->_borderLineColor;
-  self->_borderLineColor = v3;
+  self->_borderLineColor = hk_chartAxisMajorGridColor;
 
   v5 = *(MEMORY[0x1E69DDCE0] + 16);
   *&self->_borderInsets.top = *MEMORY[0x1E69DDCE0];
@@ -83,7 +83,7 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(HKBorderLineView *)self bounds];
@@ -91,25 +91,25 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v21 = [(HKBorderLineView *)self _adjustedVerticalDrawRanges];
-  v13 = [(HKBorderLineView *)self edges];
+  _adjustedVerticalDrawRanges = [(HKBorderLineView *)self _adjustedVerticalDrawRanges];
+  edges = [(HKBorderLineView *)self edges];
   [(HKBorderLineView *)self borderWidth];
   v15 = v14;
-  v16 = [(HKBorderLineView *)self borderLineColor];
+  borderLineColor = [(HKBorderLineView *)self borderLineColor];
   [(HKBorderLineView *)self borderInsets];
-  [HKBorderLineView drawBorderLinesInContext:CurrentContext bounds:v21 verticalDrawRanges:v13 borderEdges:v16 borderLineWidth:v6 borderLineColor:v8 borderInsets:v10, v12, v15, v17, v18, v19, v20];
+  [HKBorderLineView drawBorderLinesInContext:CurrentContext bounds:_adjustedVerticalDrawRanges verticalDrawRanges:edges borderEdges:borderLineColor borderLineWidth:v6 borderLineColor:v8 borderInsets:v10, v12, v15, v17, v18, v19, v20];
 }
 
-- (void)setBorderLineColor:(id)a3
+- (void)setBorderLineColor:(id)color
 {
-  objc_storeStrong(&self->_borderLineColor, a3);
+  objc_storeStrong(&self->_borderLineColor, color);
 
   [(HKBorderLineView *)self setNeedsDisplay];
 }
 
-- (void)setVerticalDrawRanges:(id)a3
+- (void)setVerticalDrawRanges:(id)ranges
 {
-  objc_storeStrong(&self->_verticalDrawRanges, a3);
+  objc_storeStrong(&self->_verticalDrawRanges, ranges);
 
   [(HKBorderLineView *)self setNeedsDisplay];
 }
@@ -117,11 +117,11 @@
 - (id)_adjustedVerticalDrawRanges
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(HKBorderLineView *)self verticalDrawRanges];
+  verticalDrawRanges = [(HKBorderLineView *)self verticalDrawRanges];
 
-  if (v3)
+  if (verticalDrawRanges)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    verticalDrawRanges = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -142,14 +142,14 @@
           }
 
           v8 = *(*(&v24 + 1) + 8 * i);
-          v9 = [v8 minValue];
-          [v9 doubleValue];
+          minValue = [v8 minValue];
+          [minValue doubleValue];
           v11 = v10;
           [(HKBorderLineView *)self frame];
           v13 = v11 - v12;
 
-          v14 = [v8 maxValue];
-          [v14 doubleValue];
+          maxValue = [v8 maxValue];
+          [maxValue doubleValue];
           v16 = v15;
           [(HKBorderLineView *)self frame];
           v18 = v16 - v17;
@@ -158,7 +158,7 @@
           v20 = [MEMORY[0x1E696AD98] numberWithDouble:v18];
           v21 = [HKValueRange valueRangeWithMinValue:v19 maxValue:v20];
 
-          [v3 addObject:v21];
+          [verticalDrawRanges addObject:v21];
         }
 
         v5 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -168,37 +168,37 @@
     }
   }
 
-  return v3;
+  return verticalDrawRanges;
 }
 
-+ (void)drawBorderLinesInContext:(CGContext *)a3 bounds:(CGRect)a4 verticalDrawRanges:(id)a5 borderEdges:(int64_t)a6 borderLineWidth:(double)a7 borderLineColor:(id)a8 borderInsets:(UIEdgeInsets)a9
++ (void)drawBorderLinesInContext:(CGContext *)context bounds:(CGRect)bounds verticalDrawRanges:(id)ranges borderEdges:(int64_t)edges borderLineWidth:(double)width borderLineColor:(id)color borderInsets:(UIEdgeInsets)insets
 {
-  v11 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  edgesCopy = edges;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v50 = *MEMORY[0x1E69E9840];
-  v16 = a5;
-  CGContextSetStrokeColorWithColor(a3, [a8 CGColor]);
-  CGContextSetLineWidth(a3, a7);
-  if (v11)
+  rangesCopy = ranges;
+  CGContextSetStrokeColorWithColor(context, [color CGColor]);
+  CGContextSetLineWidth(context, width);
+  if (edgesCopy)
   {
-    CGContextMoveToPoint(a3, x + a9.left, y + a9.top);
-    CGContextAddLineToPoint(a3, x + width - a9.right, y + a9.top);
+    CGContextMoveToPoint(context, x + insets.left, y + insets.top);
+    CGContextAddLineToPoint(context, x + width - insets.right, y + insets.top);
   }
 
-  if ((v11 & 2) == 0)
+  if ((edgesCopy & 2) == 0)
   {
-    if ((v11 & 4) == 0)
+    if ((edgesCopy & 4) == 0)
     {
       goto LABEL_5;
     }
 
 LABEL_19:
-    CGContextMoveToPoint(a3, x + a9.left, y + height - a9.bottom);
-    CGContextAddLineToPoint(a3, x + width - a9.right, y + height - a9.bottom);
-    if ((v11 & 8) == 0)
+    CGContextMoveToPoint(context, x + insets.left, y + height - insets.bottom);
+    CGContextAddLineToPoint(context, x + width - insets.right, y + height - insets.bottom);
+    if ((edgesCopy & 8) == 0)
     {
       goto LABEL_31;
     }
@@ -206,13 +206,13 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v16 && [v16 count])
+  if (rangesCopy && [rangesCopy count])
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v17 = v16;
+    v17 = rangesCopy;
     v18 = [v17 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v18)
     {
@@ -228,13 +228,13 @@ LABEL_19:
           }
 
           v22 = *(*(&v44 + 1) + 8 * i);
-          v23 = [v22 minValue];
-          [v23 floatValue];
-          CGContextMoveToPoint(a3, x + a9.left, a9.top + v24);
+          minValue = [v22 minValue];
+          [minValue floatValue];
+          CGContextMoveToPoint(context, x + insets.left, insets.top + v24);
 
-          v25 = [v22 maxValue];
-          [v25 floatValue];
-          CGContextAddLineToPoint(a3, x + a9.left, v26 - a9.bottom);
+          maxValue = [v22 maxValue];
+          [maxValue floatValue];
+          CGContextAddLineToPoint(context, x + insets.left, v26 - insets.bottom);
         }
 
         v19 = [v17 countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -243,7 +243,7 @@ LABEL_19:
       while (v19);
     }
 
-    if ((v11 & 4) != 0)
+    if ((edgesCopy & 4) != 0)
     {
       goto LABEL_19;
     }
@@ -251,28 +251,28 @@ LABEL_19:
 
   else
   {
-    CGContextMoveToPoint(a3, x + a9.left, y + a9.top);
-    CGContextAddLineToPoint(a3, x + a9.left, y + height - a9.bottom);
-    if ((v11 & 4) != 0)
+    CGContextMoveToPoint(context, x + insets.left, y + insets.top);
+    CGContextAddLineToPoint(context, x + insets.left, y + height - insets.bottom);
+    if ((edgesCopy & 4) != 0)
     {
       goto LABEL_19;
     }
   }
 
 LABEL_5:
-  if ((v11 & 8) == 0)
+  if ((edgesCopy & 8) == 0)
   {
     goto LABEL_31;
   }
 
 LABEL_20:
-  if (v16 && [v16 count])
+  if (rangesCopy && [rangesCopy count])
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v27 = v16;
+    v27 = rangesCopy;
     v28 = [v27 countByEnumeratingWithState:&v40 objects:v48 count:16];
     if (v28)
     {
@@ -289,13 +289,13 @@ LABEL_20:
           }
 
           v33 = *(*(&v40 + 1) + 8 * j);
-          v34 = [v33 minValue];
-          [v34 floatValue];
-          CGContextMoveToPoint(a3, v31, v35);
+          minValue2 = [v33 minValue];
+          [minValue2 floatValue];
+          CGContextMoveToPoint(context, v31, v35);
 
-          v36 = [v33 maxValue];
-          [v36 floatValue];
-          CGContextAddLineToPoint(a3, v31 - a9.right, v37);
+          maxValue2 = [v33 maxValue];
+          [maxValue2 floatValue];
+          CGContextAddLineToPoint(context, v31 - insets.right, v37);
         }
 
         v29 = [v27 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -307,13 +307,13 @@ LABEL_20:
 
   else
   {
-    v38 = x + width - a9.right;
-    CGContextMoveToPoint(a3, v38, y + a9.top);
-    CGContextAddLineToPoint(a3, v38, y + height - a9.bottom);
+    v38 = x + width - insets.right;
+    CGContextMoveToPoint(context, v38, y + insets.top);
+    CGContextAddLineToPoint(context, v38, y + height - insets.bottom);
   }
 
 LABEL_31:
-  CGContextStrokePath(a3);
+  CGContextStrokePath(context);
 }
 
 - (UIEdgeInsets)borderInsets

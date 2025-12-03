@@ -1,107 +1,107 @@
 @interface ATXPosterSwitch
-- (ATXPosterSwitch)initWithCoder:(id)a3;
-- (ATXPosterSwitch)initWithLockscreenId:(id)a3 switchMechanism:(id)a4 outcome:(id)a5 duration:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPosterSwitch:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXPosterSwitch)initWithCoder:(id)coder;
+- (ATXPosterSwitch)initWithLockscreenId:(id)id switchMechanism:(id)mechanism outcome:(id)outcome duration:(unint64_t)duration;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPosterSwitch:(id)switch;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXPosterSwitch
 
-- (ATXPosterSwitch)initWithLockscreenId:(id)a3 switchMechanism:(id)a4 outcome:(id)a5 duration:(unint64_t)a6
+- (ATXPosterSwitch)initWithLockscreenId:(id)id switchMechanism:(id)mechanism outcome:(id)outcome duration:(unint64_t)duration
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  mechanismCopy = mechanism;
+  outcomeCopy = outcome;
   v21.receiver = self;
   v21.super_class = ATXPosterSwitch;
   v13 = [(ATXPosterSwitch *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [idCopy copy];
     lockscreenId = v13->_lockscreenId;
     v13->_lockscreenId = v14;
 
-    v16 = [v11 copy];
+    v16 = [mechanismCopy copy];
     switchMechanism = v13->_switchMechanism;
     v13->_switchMechanism = v16;
 
-    v18 = [v12 copy];
+    v18 = [outcomeCopy copy];
     outcome = v13->_outcome;
     v13->_outcome = v18;
 
-    v13->_duration = a6;
+    v13->_duration = duration;
   }
 
   return v13;
 }
 
-- (ATXPosterSwitch)initWithCoder:(id)a3
+- (ATXPosterSwitch)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lockscreenId"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"switchMechanism"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outcome"];
-  v8 = [v4 decodeIntegerForKey:@"duration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lockscreenId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"switchMechanism"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outcome"];
+  v8 = [coderCopy decodeIntegerForKey:@"duration"];
 
   v9 = [(ATXPosterSwitch *)self initWithLockscreenId:v5 switchMechanism:v6 outcome:v7 duration:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(ATXPosterSwitch *)self lockscreenId];
-  [v7 encodeObject:v4 forKey:@"lockscreenId"];
+  coderCopy = coder;
+  lockscreenId = [(ATXPosterSwitch *)self lockscreenId];
+  [coderCopy encodeObject:lockscreenId forKey:@"lockscreenId"];
 
-  v5 = [(ATXPosterSwitch *)self switchMechanism];
-  [v7 encodeObject:v5 forKey:@"switchMechanism"];
+  switchMechanism = [(ATXPosterSwitch *)self switchMechanism];
+  [coderCopy encodeObject:switchMechanism forKey:@"switchMechanism"];
 
-  v6 = [(ATXPosterSwitch *)self outcome];
-  [v7 encodeObject:v6 forKey:@"outcome"];
+  outcome = [(ATXPosterSwitch *)self outcome];
+  [coderCopy encodeObject:outcome forKey:@"outcome"];
 
-  [v7 encodeInteger:-[ATXPosterSwitch duration](self forKey:{"duration"), @"duration"}];
+  [coderCopy encodeInteger:-[ATXPosterSwitch duration](self forKey:{"duration"), @"duration"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v4 = [(ATXPosterSwitch *)v3 lockscreenId];
-  v5 = [v4 copy];
-  v6 = [(ATXPosterSwitch *)v3 switchMechanism];
-  v7 = [v6 copy];
-  v8 = [(ATXPosterSwitch *)v3 outcome];
-  v9 = [v8 copy];
-  v10 = [(ATXPosterSwitch *)v3 initWithLockscreenId:v5 switchMechanism:v7 outcome:v9 duration:[(ATXPosterSwitch *)v3 duration]];
+  selfCopy = self;
+  lockscreenId = [(ATXPosterSwitch *)selfCopy lockscreenId];
+  v5 = [lockscreenId copy];
+  switchMechanism = [(ATXPosterSwitch *)selfCopy switchMechanism];
+  v7 = [switchMechanism copy];
+  outcome = [(ATXPosterSwitch *)selfCopy outcome];
+  v9 = [outcome copy];
+  v10 = [(ATXPosterSwitch *)selfCopy initWithLockscreenId:v5 switchMechanism:v7 outcome:v9 duration:[(ATXPosterSwitch *)selfCopy duration]];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPosterSwitch *)self isEqualToATXPosterSwitch:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPosterSwitch *)self isEqualToATXPosterSwitch:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPosterSwitch:(id)a3
+- (BOOL)isEqualToATXPosterSwitch:(id)switch
 {
-  v4 = a3;
+  switchCopy = switch;
   v5 = self->_lockscreenId;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == switchCopy[1])
   {
   }
 
@@ -117,7 +117,7 @@
 
   v8 = self->_switchMechanism;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == switchCopy[2])
   {
   }
 
@@ -133,7 +133,7 @@
 
   v11 = self->_outcome;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == switchCopy[3])
   {
 
     goto LABEL_13;
@@ -145,7 +145,7 @@
   {
 LABEL_13:
     duration = self->_duration;
-    v14 = duration == [v4 duration];
+    v14 = duration == [switchCopy duration];
     goto LABEL_14;
   }
 
@@ -158,14 +158,14 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXPosterSwitch *)self lockscreenId];
-  v4 = [v3 hash];
+  lockscreenId = [(ATXPosterSwitch *)self lockscreenId];
+  v4 = [lockscreenId hash];
 
-  v5 = [(ATXPosterSwitch *)self switchMechanism];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  switchMechanism = [(ATXPosterSwitch *)self switchMechanism];
+  v6 = [switchMechanism hash] - v4 + 32 * v4;
 
-  v7 = [(ATXPosterSwitch *)self outcome];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  outcome = [(ATXPosterSwitch *)self outcome];
+  v8 = [outcome hash] - v6 + 32 * v6;
 
   return [(ATXPosterSwitch *)self duration]- v8 + 32 * v8;
 }

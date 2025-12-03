@@ -1,26 +1,26 @@
 @interface ARMLImageDownScalingTechnique
-- (ARMLImageDownScalingTechnique)initWithSize:(CGSize)a3 requiredTimeInterval:(double)a4;
-- (BOOL)isEqual:(id)a3;
+- (ARMLImageDownScalingTechnique)initWithSize:(CGSize)size requiredTimeInterval:(double)interval;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)imageSize;
-- (id)_fastPassDownscaledResultDataFromImageData:(id)a3 croppedRect:(CGRect)a4 fastPassScaler:(id)a5;
+- (id)_fastPassDownscaledResultDataFromImageData:(id)data croppedRect:(CGRect)rect fastPassScaler:(id)scaler;
 - (id)_fullDescription;
-- (id)_rotateImageDataForNeuralNetwork:(id)a3 deviceOrientation:(int64_t)a4 pRegionOfInterest:(CGSize *)a5 pRotationOfResultTensor:(int64_t *)a6;
-- (id)_scaleImageDataForNeuralNetwork:(id)a3 scaledSize:(CGSize)a4;
-- (id)_twoPassDownscaledResultDataFromImageData:(id)a3 croppedRect:(CGRect)a4;
-- (id)processData:(id)a3;
+- (id)_rotateImageDataForNeuralNetwork:(id)network deviceOrientation:(int64_t)orientation pRegionOfInterest:(CGSize *)interest pRotationOfResultTensor:(int64_t *)tensor;
+- (id)_scaleImageDataForNeuralNetwork:(id)network scaledSize:(CGSize)size;
+- (id)_twoPassDownscaledResultDataFromImageData:(id)data croppedRect:(CGRect)rect;
+- (id)processData:(id)data;
 - (id)resultDataClasses;
-- (int64_t)getDeviceOrientationFromImageData:(id)a3;
-- (void)_processImageDataInBackground:(id)a3;
+- (int64_t)getDeviceOrientationFromImageData:(id)data;
+- (void)_processImageDataInBackground:(id)background;
 - (void)dealloc;
-- (void)prepare:(BOOL)a3;
+- (void)prepare:(BOOL)prepare;
 @end
 
 @implementation ARMLImageDownScalingTechnique
 
-- (ARMLImageDownScalingTechnique)initWithSize:(CGSize)a3 requiredTimeInterval:(double)a4
+- (ARMLImageDownScalingTechnique)initWithSize:(CGSize)size requiredTimeInterval:(double)interval
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = ARMLImageDownScalingTechnique;
   v7 = [(ARImageBasedTechnique *)&v13 init];
@@ -41,7 +41,7 @@
     processingQueue = v8->_processingQueue;
     v8->_processingQueue = v10;
 
-    v8->_resultLatency = a4;
+    v8->_resultLatency = interval;
     v8->_resizeUltraWideImage = 0;
     v8->_saveIntermediateScaleResultData = 0;
     v8->_prepared = 0;
@@ -70,12 +70,12 @@
   [(ARMLImageDownScalingTechnique *)&v5 dealloc];
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
   v9.receiver = self;
   v9.super_class = ARMLImageDownScalingTechnique;
   [(ARTechnique *)&v9 prepare:?];
-  self->_deterministic = a3;
+  self->_deterministic = prepare;
   if (!self->_prepared)
   {
     v5 = [[ARMLImageTransform alloc] initWithScaledSize:[ARKitUserDefaults BOOLForKey:?], 0, self->_imageSize.width, self->_imageSize.height];
@@ -102,13 +102,13 @@
   return v4;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v4;
+  v6 = dataCopy;
   if (isKindOfClass)
   {
     if (self->_prepared)
@@ -117,7 +117,7 @@
       {
         v26.receiver = self;
         v26.super_class = ARMLImageDownScalingTechnique;
-        v17 = [(ARImageBasedTechnique *)&v26 processData:v6, width];
+        width = [(ARImageBasedTechnique *)&v26 processData:v6, width];
         objc_initWeak(&location, self);
         processingQueue = self->_processingQueue;
         block[0] = MEMORY[0x1E69E9820];
@@ -171,16 +171,16 @@ void __45__ARMLImageDownScalingTechnique_processData___block_invoke(uint64_t a1)
   [WeakRetained _processImageDataInBackground:*(a1 + 32)];
 }
 
-- (void)_processImageDataInBackground:(id)a3
+- (void)_processImageDataInBackground:(id)background
 {
   processingQueue = self->_processingQueue;
-  v5 = a3;
+  backgroundCopy = background;
   dispatch_assert_queue_V2(processingQueue);
-  v41 = [[ARModifiedImageData alloc] initWithImageData:v5];
+  v41 = [[ARModifiedImageData alloc] initWithImageData:backgroundCopy];
 
   [(ARImageData *)v41 timestamp];
-  v6 = [(ARImageData *)v41 cameraType];
-  [v6 isEqualToString:*MEMORY[0x1E6986948]];
+  cameraType = [(ARImageData *)v41 cameraType];
+  [cameraType isEqualToString:*MEMORY[0x1E6986948]];
   kdebug_trace();
 
   if ([(ARMLImageDownScalingTechnique *)self centerCropImage])
@@ -208,8 +208,8 @@ void __45__ARMLImageDownScalingTechnique_processData___block_invoke(uint64_t a1)
     }
 
     v19 = [(ARImageCroppingTechnique *)self->_imageCroppingTechnique processData:v41];
-    v20 = [v19 metaData];
-    v21 = [v20 objectForKey:@"croppedRect"];
+    metaData = [v19 metaData];
+    v21 = [metaData objectForKey:@"croppedRect"];
 
     if (v21)
     {
@@ -264,9 +264,9 @@ void __45__ARMLImageDownScalingTechnique_processData___block_invoke(uint64_t a1)
   downSamplingResultData = self->_downSamplingResultData;
   self->_downSamplingResultData = v31;
 
-  v33 = [(ARImageData *)v41 latestUltraWideImage];
-  v34 = v33;
-  if (v33 && self->_resizeUltraWideImage)
+  latestUltraWideImage = [(ARImageData *)v41 latestUltraWideImage];
+  latestUltraWideImage2 = latestUltraWideImage;
+  if (latestUltraWideImage && self->_resizeUltraWideImage)
   {
     v35 = self->_downSamplingResultData;
 
@@ -275,8 +275,8 @@ void __45__ARMLImageDownScalingTechnique_processData___block_invoke(uint64_t a1)
       goto LABEL_19;
     }
 
-    v34 = [(ARImageData *)v41 latestUltraWideImage];
-    v36 = [(ARMLImageDownScalingTechnique *)self _fastPassDownscaledResultDataFromImageData:v34 croppedRect:self->_fastPassUltraWideImageScaler fastPassScaler:0.0, 0.0, 1.0, 1.0];
+    latestUltraWideImage2 = [(ARImageData *)v41 latestUltraWideImage];
+    v36 = [(ARMLImageDownScalingTechnique *)self _fastPassDownscaledResultDataFromImageData:latestUltraWideImage2 croppedRect:self->_fastPassUltraWideImageScaler fastPassScaler:0.0, 0.0, 1.0, 1.0];
     [(ARMLImageDownScalingResultData *)self->_downSamplingResultData setLatestResizedUltraWideImageData:v36];
   }
 
@@ -305,10 +305,10 @@ LABEL_19:
   [(ARImageBasedTechnique *)self pushResultData:v38 forTimestamp:?];
 }
 
-- (int64_t)getDeviceOrientationFromImageData:(id)a3
+- (int64_t)getDeviceOrientationFromImageData:(id)data
 {
-  v4 = a3;
-  if (![v4 deviceOrientation])
+  dataCopy = data;
+  if (![dataCopy deviceOrientation])
   {
     lockedOrientation = self->_lockedOrientation;
     if ((lockedOrientation & 0x80000000) == 0)
@@ -328,7 +328,7 @@ LABEL_19:
 
   v9.receiver = self;
   v9.super_class = ARMLImageDownScalingTechnique;
-  lockedOrientation = [(ARImageBasedTechnique *)&v9 getDeviceOrientationFromImageData:v4];
+  lockedOrientation = [(ARImageBasedTechnique *)&v9 getDeviceOrientationFromImageData:dataCopy];
 LABEL_6:
 
   return lockedOrientation;
@@ -358,114 +358,114 @@ LABEL_7:
   *a4 = -90;
 }
 
-- (id)_twoPassDownscaledResultDataFromImageData:(id)a3 croppedRect:(CGRect)a4
+- (id)_twoPassDownscaledResultDataFromImageData:(id)data croppedRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v31[1] = *MEMORY[0x1E69E9840];
   v9 = self->_imageSize.width;
   v10 = self->_imageSize.height;
-  v11 = a3;
-  v12 = [(ARMLImageDownScalingTechnique *)self _scaleImageDataForNeuralNetwork:v11 scaledSize:v9, v10];
+  dataCopy = data;
+  v12 = [(ARMLImageDownScalingTechnique *)self _scaleImageDataForNeuralNetwork:dataCopy scaledSize:v9, v10];
   v13 = [ARMLImageDownScalingResult alloc];
-  v14 = [v12 pixelBuffer];
+  pixelBuffer = [v12 pixelBuffer];
   [v12 imageResolution];
-  v15 = [ARMLImageDownScalingResult initWithPixelBuffer:v13 regionOfInterest:"initWithPixelBuffer:regionOfInterest:cropRegion:" cropRegion:v14];
+  v15 = [ARMLImageDownScalingResult initWithPixelBuffer:v13 regionOfInterest:"initWithPixelBuffer:regionOfInterest:cropRegion:" cropRegion:pixelBuffer];
   v16 = [ARMLIntermediateDownScalingResultData alloc];
-  v17 = [(ARMLImageDownScalingResult *)v15 pixelBuffer];
-  [v11 timestamp];
-  v18 = [(ARMLIntermediateDownScalingResultData *)v16 initWithPixelBuffer:v17 timestamp:v11 originalImageData:?];
+  pixelBuffer2 = [(ARMLImageDownScalingResult *)v15 pixelBuffer];
+  [dataCopy timestamp];
+  v18 = [(ARMLIntermediateDownScalingResultData *)v16 initWithPixelBuffer:pixelBuffer2 timestamp:dataCopy originalImageData:?];
   intermediateDownSamplingResultData = self->_intermediateDownSamplingResultData;
   self->_intermediateDownSamplingResultData = v18;
 
   v29 = 0.0;
   v30 = 0.0;
   v28 = 0;
-  v20 = [(ARMLImageDownScalingTechnique *)self _rotateImageDataForNeuralNetwork:v12 deviceOrientation:[(ARMLImageDownScalingTechnique *)self getDeviceOrientationFromImageData:v11] pRegionOfInterest:&v29 pRotationOfResultTensor:&v28];
+  v20 = [(ARMLImageDownScalingTechnique *)self _rotateImageDataForNeuralNetwork:v12 deviceOrientation:[(ARMLImageDownScalingTechnique *)self getDeviceOrientationFromImageData:dataCopy] pRegionOfInterest:&v29 pRotationOfResultTensor:&v28];
   v21 = [ARMLImageDownScalingResult alloc];
-  v22 = [v20 pixelBuffer];
-  v23 = [(ARMLImageDownScalingResult *)v21 initWithPixelBuffer:v22 regionOfInterest:v29 cropRegion:v30, x, y, width, height];
+  pixelBuffer3 = [v20 pixelBuffer];
+  height = [(ARMLImageDownScalingResult *)v21 initWithPixelBuffer:pixelBuffer3 regionOfInterest:v29 cropRegion:v30, x, y, width, height];
   v24 = [ARMLImageDownScalingResultData alloc];
-  v31[0] = v23;
+  v31[0] = height;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-  [v11 timestamp];
-  v26 = [(ARMLImageDownScalingResultData *)v24 initWithResultDataArray:v25 timestamp:v28 rotationOfResultTensor:v11 originalImageData:?];
+  [dataCopy timestamp];
+  v26 = [(ARMLImageDownScalingResultData *)v24 initWithResultDataArray:v25 timestamp:v28 rotationOfResultTensor:dataCopy originalImageData:?];
 
   return v26;
 }
 
-- (id)_scaleImageDataForNeuralNetwork:(id)a3 scaledSize:(CGSize)a4
+- (id)_scaleImageDataForNeuralNetwork:(id)network scaledSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  networkCopy = network;
   imageScalingTechnique = self->_imageScalingTechnique;
   if (!imageScalingTechnique || (([(ARImageScalingTechnique *)imageScalingTechnique scaledSize], v10 == width) ? (v11 = v9 == height) : (v11 = 0), !v11))
   {
-    v12 = [[ARImageScalingTechnique alloc] initWithScaledSize:width, height];
+    height = [[ARImageScalingTechnique alloc] initWithScaledSize:width, height];
     v13 = self->_imageScalingTechnique;
-    self->_imageScalingTechnique = v12;
+    self->_imageScalingTechnique = height;
 
     [(ARImageScalingTechnique *)self->_imageScalingTechnique setConversionPixelFormatType:1111970369];
   }
 
-  [v7 timestamp];
-  v14 = [v7 cameraType];
-  [v14 isEqualToString:*MEMORY[0x1E6986948]];
-  [v7 imageResolution];
-  [v7 imageResolution];
+  [networkCopy timestamp];
+  cameraType = [networkCopy cameraType];
+  [cameraType isEqualToString:*MEMORY[0x1E6986948]];
+  [networkCopy imageResolution];
+  [networkCopy imageResolution];
   kdebug_trace();
 
-  [v7 cameraIntrinsics];
-  [v7 cameraIntrinsics];
-  [v7 cameraIntrinsics];
+  [networkCopy cameraIntrinsics];
+  [networkCopy cameraIntrinsics];
+  [networkCopy cameraIntrinsics];
   kdebug_trace();
-  v15 = [(ARImageScalingTechnique *)self->_imageScalingTechnique processData:v7];
+  v15 = [(ARImageScalingTechnique *)self->_imageScalingTechnique processData:networkCopy];
   [v15 cameraIntrinsics];
   [v15 cameraIntrinsics];
   [v15 cameraIntrinsics];
   kdebug_trace();
-  [v7 timestamp];
+  [networkCopy timestamp];
   kdebug_trace();
-  v16 = [[ARModifiedImageData alloc] initWithImageData:v7];
-  [v7 timestamp];
+  v16 = [[ARModifiedImageData alloc] initWithImageData:networkCopy];
+  [networkCopy timestamp];
   [(ARImageData *)v16 setTimestamp:?];
   -[ARImageData setPixelBuffer:](v16, "setPixelBuffer:", [v15 pixelBuffer]);
 
   return v16;
 }
 
-- (id)_rotateImageDataForNeuralNetwork:(id)a3 deviceOrientation:(int64_t)a4 pRegionOfInterest:(CGSize *)a5 pRotationOfResultTensor:(int64_t *)a6
+- (id)_rotateImageDataForNeuralNetwork:(id)network deviceOrientation:(int64_t)orientation pRegionOfInterest:(CGSize *)interest pRotationOfResultTensor:(int64_t *)tensor
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [v10 originalImage];
+  networkCopy = network;
+  originalImage = [networkCopy originalImage];
   v46 = 0;
-  v12 = [(ARMLImageDownScalingTechnique *)self wideRotationStrategy];
+  wideRotationStrategy = [(ARMLImageDownScalingTechnique *)self wideRotationStrategy];
   v13 = MEMORY[0x1E6986948];
-  if (v12 && (v14 = v12, [v11 cameraType], v15 = objc_claimAutoreleasedReturnValue(), v16 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(v15), v15, v14, v16))
+  if (wideRotationStrategy && (v14 = wideRotationStrategy, [originalImage cameraType], v15 = objc_claimAutoreleasedReturnValue(), v16 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(v15), v15, v14, v16))
   {
-    v17 = [(ARMLImageDownScalingTechnique *)self wideRotationStrategy];
+    wideRotationStrategy2 = [(ARMLImageDownScalingTechnique *)self wideRotationStrategy];
   }
 
   else
   {
-    v18 = [(ARMLImageDownScalingTechnique *)self ultrawideRotationStrategy];
-    if (v18 && (v19 = v18, [v11 cameraType], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToString:", *v13), v20, v19, v21))
+    ultrawideRotationStrategy = [(ARMLImageDownScalingTechnique *)self ultrawideRotationStrategy];
+    if (ultrawideRotationStrategy && (v19 = ultrawideRotationStrategy, [originalImage cameraType], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToString:", *v13), v20, v19, v21))
     {
-      v17 = [(ARMLImageDownScalingTechnique *)self ultrawideRotationStrategy];
+      wideRotationStrategy2 = [(ARMLImageDownScalingTechnique *)self ultrawideRotationStrategy];
     }
 
     else
     {
-      v17 = [(ARMLImageDownScalingTechnique *)self defaultRotationStrategy];
+      wideRotationStrategy2 = [(ARMLImageDownScalingTechnique *)self defaultRotationStrategy];
     }
   }
 
-  v22 = v17;
-  (*(v17 + 16))(v17, a4, &v46, a6);
+  v22 = wideRotationStrategy2;
+  (*(wideRotationStrategy2 + 16))(wideRotationStrategy2, orientation, &v46, tensor);
 
   imageRotationTechnique = self->_imageRotationTechnique;
   if (!imageRotationTechnique || (v24 = [(ARImageRotationTechnique *)imageRotationTechnique rotationAngle], v24 != v46) || [(ARImageRotationTechnique *)self->_imageRotationTechnique mirrorMode])
@@ -476,25 +476,25 @@ LABEL_7:
     self->_imageRotationTechnique = v26;
   }
 
-  [v11 timestamp];
-  v28 = [v11 cameraType];
-  [v28 isEqualToString:*v13];
+  [originalImage timestamp];
+  cameraType = [originalImage cameraType];
+  [cameraType isEqualToString:*v13];
   kdebug_trace();
 
-  [v10 imageResolution];
-  [v10 imageResolution];
+  [networkCopy imageResolution];
+  [networkCopy imageResolution];
   kdebug_trace();
-  v29 = [(ARImageRotationTechnique *)self->_imageRotationTechnique processData:v10];
+  v29 = [(ARImageRotationTechnique *)self->_imageRotationTechnique processData:networkCopy];
   [v29 imageResolution];
   [v29 imageResolution];
   kdebug_trace();
-  [v11 timestamp];
+  [originalImage timestamp];
   kdebug_trace();
-  v30 = [v11 pixelBuffer];
-  if (v30)
+  pixelBuffer = [originalImage pixelBuffer];
+  if (pixelBuffer)
   {
-    v31 = v30;
-    Width = CVPixelBufferGetWidth(v30);
+    v31 = pixelBuffer;
+    Width = CVPixelBufferGetWidth(pixelBuffer);
     Height = CVPixelBufferGetHeight(v31);
   }
 
@@ -504,7 +504,7 @@ LABEL_7:
     Height = *(MEMORY[0x1E695F060] + 8);
   }
 
-  [v10 imageResolution];
+  [networkCopy imageResolution];
   *&v34 = v34 / Width;
   v35 = *&v34;
   v36 = (Width * v35);
@@ -519,25 +519,25 @@ LABEL_7:
     v36 = (Height * v35);
   }
 
-  a5->width = v37;
-  a5->height = v36;
-  [v11 timestamp];
+  interest->width = v37;
+  interest->height = v36;
+  [originalImage timestamp];
   [v29 setTimestamp:?];
   v47[0] = @"imageDownScalingRotationOfResultTensorKey";
-  v38 = [MEMORY[0x1E696AD98] numberWithInteger:*a6];
+  v38 = [MEMORY[0x1E696AD98] numberWithInteger:*tensor];
   v47[1] = @"imageDownScalingRegionOfInterest";
   v48[0] = v38;
-  v45 = *a5;
+  v45 = *interest;
   v39 = [MEMORY[0x1E696B098] valueWithBytes:&v45 objCType:"{CGSize=dd}"];
   v48[1] = v39;
   v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
-  v41 = [v29 metaData];
+  metaData = [v29 metaData];
 
-  if (v41)
+  if (metaData)
   {
-    v42 = [v29 metaData];
-    v43 = [v42 mutableCopy];
+    metaData2 = [v29 metaData];
+    v43 = [metaData2 mutableCopy];
 
     [v43 addEntriesFromDictionary:v40];
     [v29 setMetaData:v43];
@@ -548,58 +548,58 @@ LABEL_7:
     [v29 setMetaData:v40];
   }
 
-  [v29 setDeviceOrientation:a4];
+  [v29 setDeviceOrientation:orientation];
 
   return v29;
 }
 
-- (id)_fastPassDownscaledResultDataFromImageData:(id)a3 croppedRect:(CGRect)a4 fastPassScaler:(id)a5
+- (id)_fastPassDownscaledResultDataFromImageData:(id)data croppedRect:(CGRect)rect fastPassScaler:(id)scaler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
-  v13 = [(ARMLImageDownScalingTechnique *)self getDeviceOrientationFromImageData:v11];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  scalerCopy = scaler;
+  v13 = [(ARMLImageDownScalingTechnique *)self getDeviceOrientationFromImageData:dataCopy];
   v26 = 0;
   v27 = 0;
-  v14 = [(ARMLImageDownScalingTechnique *)self wideRotationStrategy];
-  if (v14 && (v15 = v14, [v11 cameraType], v16 = objc_claimAutoreleasedReturnValue(), v17 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(v16), v16, v15, v17))
+  wideRotationStrategy = [(ARMLImageDownScalingTechnique *)self wideRotationStrategy];
+  if (wideRotationStrategy && (v15 = wideRotationStrategy, [dataCopy cameraType], v16 = objc_claimAutoreleasedReturnValue(), v17 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(v16), v16, v15, v17))
   {
-    v18 = [(ARMLImageDownScalingTechnique *)self wideRotationStrategy];
+    wideRotationStrategy2 = [(ARMLImageDownScalingTechnique *)self wideRotationStrategy];
   }
 
   else
   {
-    v19 = [(ARMLImageDownScalingTechnique *)self ultrawideRotationStrategy];
-    if (v19 && (v20 = v19, [v11 cameraType], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", *MEMORY[0x1E6986948]), v21, v20, v22))
+    ultrawideRotationStrategy = [(ARMLImageDownScalingTechnique *)self ultrawideRotationStrategy];
+    if (ultrawideRotationStrategy && (v20 = ultrawideRotationStrategy, [dataCopy cameraType], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", *MEMORY[0x1E6986948]), v21, v20, v22))
     {
-      v18 = [(ARMLImageDownScalingTechnique *)self ultrawideRotationStrategy];
+      wideRotationStrategy2 = [(ARMLImageDownScalingTechnique *)self ultrawideRotationStrategy];
     }
 
     else
     {
-      v18 = [(ARMLImageDownScalingTechnique *)self defaultRotationStrategy];
+      wideRotationStrategy2 = [(ARMLImageDownScalingTechnique *)self defaultRotationStrategy];
     }
   }
 
-  v23 = v18;
-  (*(v18 + 16))(v18, v13, &v27, &v26);
+  v23 = wideRotationStrategy2;
+  (*(wideRotationStrategy2 + 16))(wideRotationStrategy2, v13, &v27, &v26);
 
-  v24 = [v12 fastPassDownscaledResultDataFromImageData:v11 croppedRect:v27 rotation:v26 rotationOfResultTensor:{x, y, width, height}];
+  v24 = [scalerCopy fastPassDownscaledResultDataFromImageData:dataCopy croppedRect:v27 rotation:v26 rotationOfResultTensor:{x, y, width, height}];
 
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = ARMLImageDownScalingTechnique;
-  if ([(ARTechnique *)&v9 isEqual:v4])
+  if ([(ARTechnique *)&v9 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_imageSize.width == v5[27] && self->_imageSize.height == v5[28];
     v7 = v6 && self->_centerCropImage == *(v5 + 194) && self->_resizeUltraWideImage == *(v5 + 195) && self->_saveIntermediateScaleResultData == *(v5 + 196) && self->_restrictDownscalingToMatchingAspectRatio == *(v5 + 197);
   }
@@ -617,8 +617,8 @@ LABEL_7:
   v3 = MEMORY[0x1E696AD60];
   v8.receiver = self;
   v8.super_class = ARMLImageDownScalingTechnique;
-  v4 = [(ARImageBasedTechnique *)&v8 _fullDescription];
-  v5 = [v3 stringWithFormat:@"%@\n", v4];
+  _fullDescription = [(ARImageBasedTechnique *)&v8 _fullDescription];
+  v5 = [v3 stringWithFormat:@"%@\n", _fullDescription];
 
   v6 = CVPixelBufferPoolGetPixelBufferAttributes(self->_bgraPixelBufferPool);
   [v5 appendFormat:@"\tPixelBufferPool attr: %@\n", v6];

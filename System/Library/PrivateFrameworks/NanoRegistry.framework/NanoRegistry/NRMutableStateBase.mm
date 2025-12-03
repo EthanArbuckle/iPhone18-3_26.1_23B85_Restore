@@ -1,15 +1,15 @@
 @interface NRMutableStateBase
 + (id)classTypes;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NRMutableStateBase)init;
-- (id)addObserverQueue:(id)a3 withBlock:(id)a4;
-- (id)applyDiff:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)addObserverQueue:(id)queue withBlock:(id)block;
+- (id)applyDiff:(id)diff;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)parentDelegate;
 - (void)invalidate;
-- (void)notifyObserversWithDiff:(id)a3;
-- (void)notifyParentWithDiff:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)notifyObserversWithDiff:(id)diff;
+- (void)notifyParentWithDiff:(id)diff;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NRMutableStateBase
@@ -39,10 +39,10 @@
   v7[1] = 3221225472;
   v8 = __36__NRMutableStateBase_parentDelegate__block_invoke;
   v9 = &unk_1E86DB8F0;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   v3 = v7;
-  v4 = self;
+  selfCopy2 = self;
   os_unfair_lock_lock_with_options();
   v8(v3);
 
@@ -63,11 +63,11 @@ uint64_t __36__NRMutableStateBase_parentDelegate__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](WeakRetained, v4);
 }
 
-- (id)applyDiff:(id)a3
+- (id)applyDiff:(id)diff
 {
-  if (a3)
+  if (diff)
   {
-    v4 = [(NRMutableStateBase *)self applyDiff:a3 upOnly:0 notifyParent:1 unconditional:0];
+    v4 = [(NRMutableStateBase *)self applyDiff:diff upOnly:0 notifyParent:1 unconditional:0];
   }
 
   else
@@ -80,23 +80,23 @@ uint64_t __36__NRMutableStateBase_parentDelegate__block_invoke(uint64_t a1)
 
 + (id)classTypes
 {
-  v2 = [objc_opt_class() enclosedClassTypes];
-  v3 = [v2 setByAddingObject:objc_opt_class()];
+  enclosedClassTypes = [objc_opt_class() enclosedClassTypes];
+  v3 = [enclosedClassTypes setByAddingObject:objc_opt_class()];
 
   return v3;
 }
 
-- (void)notifyParentWithDiff:(id)a3
+- (void)notifyParentWithDiff:(id)diff
 {
-  v4 = a3;
-  v5 = [(NRMutableStateBase *)self parentDelegate];
-  [v5 child:self didApplyDiff:v4];
+  diffCopy = diff;
+  parentDelegate = [(NRMutableStateBase *)self parentDelegate];
+  [parentDelegate child:self didApplyDiff:diffCopy];
 }
 
-- (void)notifyObserversWithDiff:(id)a3
+- (void)notifyObserversWithDiff:(id)diff
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diffCopy = diff;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -107,10 +107,10 @@ uint64_t __36__NRMutableStateBase_parentDelegate__block_invoke(uint64_t a1)
   v23[1] = 3221225472;
   v24 = __46__NRMutableStateBase_notifyObserversWithDiff___block_invoke;
   v25 = &unk_1E86DB8F0;
-  v26 = self;
+  selfCopy = self;
   v27 = &v28;
   v5 = v23;
-  v6 = self;
+  selfCopy2 = self;
   os_unfair_lock_lock_with_options();
   v24(v5);
 
@@ -145,7 +145,7 @@ uint64_t __36__NRMutableStateBase_parentDelegate__block_invoke(uint64_t a1)
             v17[2] = __46__NRMutableStateBase_notifyObserversWithDiff___block_invoke_2;
             v17[3] = &unk_1E86DAF10;
             v17[4] = v11;
-            v18 = v4;
+            v18 = diffCopy;
             dispatch_async(v12, v17);
 
             goto LABEL_11;
@@ -160,7 +160,7 @@ uint64_t __36__NRMutableStateBase_parentDelegate__block_invoke(uint64_t a1)
         }
 
         v14 = v13;
-        v14[2](v14, v4, v11);
+        v14[2](v14, diffCopy, v11);
 
 LABEL_11:
         ++v10;
@@ -204,10 +204,10 @@ uint64_t __46__NRMutableStateBase_notifyObserversWithDiff___block_invoke_2(uint6
   return (*(v2 + 16))(v2, *(a1 + 40));
 }
 
-- (id)addObserverQueue:(id)a3 withBlock:(id)a4
+- (id)addObserverQueue:(id)queue withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -218,14 +218,14 @@ uint64_t __46__NRMutableStateBase_notifyObserversWithDiff___block_invoke_2(uint6
   v14[1] = 3221225472;
   v15 = __49__NRMutableStateBase_addObserverQueue_withBlock___block_invoke;
   v16 = &unk_1E86DBDE0;
-  v17 = self;
-  v8 = v7;
+  selfCopy = self;
+  v8 = blockCopy;
   v19 = v8;
-  v9 = v6;
+  v9 = queueCopy;
   v18 = v9;
   v20 = &v21;
   v10 = v14;
-  v11 = self;
+  selfCopy2 = self;
   os_unfair_lock_lock_with_options();
   v15(v10);
 
@@ -261,17 +261,17 @@ void __49__NRMutableStateBase_addObserverQueue_withBlock___block_invoke(uint64_t
   *(v7 + 40) = v6;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__NRMutableStateBase_removeObserver___block_invoke;
   v7[3] = &unk_1E86DAF10;
   v7[4] = self;
-  v8 = v4;
-  v5 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   os_unfair_lock_lock_with_options();
   __37__NRMutableStateBase_removeObserver___block_invoke(v7);
   os_unfair_lock_unlock(&self->_lock);
@@ -293,7 +293,7 @@ void __37__NRMutableStateBase_removeObserver___block_invoke(uint64_t a1)
   v4[2] = __32__NRMutableStateBase_invalidate__block_invoke;
   v4[3] = &unk_1E86DAE98;
   v4[4] = self;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock_with_options();
   __32__NRMutableStateBase_invalidate__block_invoke(v4);
   os_unfair_lock_unlock(&self->_lock);
@@ -307,15 +307,15 @@ uint64_t __32__NRMutableStateBase_invalidate__block_invoke(uint64_t a1)
   return [v2 removeAllObjects];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (self)
   {
-    v6 = v4 == 0;
+    v6 = equalCopy == 0;
   }
 
   else
@@ -327,9 +327,9 @@ uint64_t __32__NRMutableStateBase_invalidate__block_invoke(uint64_t a1)
   return (isKindOfClass & 1) != 0 && v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }

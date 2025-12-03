@@ -1,9 +1,9 @@
 @interface _MFDAMessageStoreSearchResultBodyConsumer
-- (BOOL)waitUntilDoneBeforeDate:(id)a3;
+- (BOOL)waitUntilDoneBeforeDate:(id)date;
 - (_MFDAMessageStoreSearchResultBodyConsumer)init;
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5;
-- (void)didEndStreamingForMailMessage:(id)a3;
-- (void)searchResultFetchedWithResponses:(id)a3;
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error;
+- (void)didEndStreamingForMailMessage:(id)message;
+- (void)searchResultFetchedWithResponses:(id)responses;
 - (void)waitUntilDone;
 @end
 
@@ -24,10 +24,10 @@
   return v2;
 }
 
-- (BOOL)waitUntilDoneBeforeDate:(id)a3
+- (BOOL)waitUntilDoneBeforeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MFConditionLock *)self->_doneCondition lockWhenCondition:1 beforeDate:v4];
+  dateCopy = date;
+  v5 = [(MFConditionLock *)self->_doneCondition lockWhenCondition:1 beforeDate:dateCopy];
   if (v5)
   {
     [(MFConditionLock *)self->_doneCondition unlock];
@@ -44,16 +44,16 @@
   [(MFConditionLock *)doneCondition unlock];
 }
 
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error
 {
-  v12 = a3;
-  v6 = a5;
-  v11 = v6;
-  MFWalkUpDAErrorChain(&v11, &v12);
+  failedCopy = failed;
+  errorCopy = error;
+  v11 = errorCopy;
+  MFWalkUpDAErrorChain(&v11, &failedCopy);
   v7 = v11;
 
-  v8 = v12 + 1;
-  if ((v12 + 1) <= 0xD)
+  v8 = failedCopy + 1;
+  if ((failedCopy + 1) <= 0xD)
   {
     if (((1 << v8) & 0x2C0) != 0)
     {
@@ -67,14 +67,14 @@
       goto LABEL_12;
     }
 
-    if (v12 == -1)
+    if (failedCopy == -1)
     {
       v9 = 1028;
       goto LABEL_12;
     }
   }
 
-  if (v12 == 63 || v12 == 79)
+  if (failedCopy == 63 || failedCopy == 79)
   {
     v9 = 1032;
   }
@@ -91,7 +91,7 @@ LABEL_12:
   [(MFConditionLock *)self->_doneCondition unlockWithCondition:1];
 }
 
-- (void)searchResultFetchedWithResponses:(id)a3
+- (void)searchResultFetchedWithResponses:(id)responses
 {
   [(MFConditionLock *)self->_doneCondition lock];
   doneCondition = self->_doneCondition;
@@ -99,11 +99,11 @@ LABEL_12:
   [(MFConditionLock *)doneCondition unlockWithCondition:1];
 }
 
-- (void)didEndStreamingForMailMessage:(id)a3
+- (void)didEndStreamingForMailMessage:(id)message
 {
-  v5 = a3;
-  v4 = [(_MFDAMessageStoreSearchResultBodyConsumer *)self streamConsumer];
-  [v4 didEndStreamingForMailMessage:v5];
+  messageCopy = message;
+  streamConsumer = [(_MFDAMessageStoreSearchResultBodyConsumer *)self streamConsumer];
+  [streamConsumer didEndStreamingForMailMessage:messageCopy];
 }
 
 @end

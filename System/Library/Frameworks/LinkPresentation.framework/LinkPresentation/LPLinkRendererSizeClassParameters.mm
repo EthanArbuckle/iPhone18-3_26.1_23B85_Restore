@@ -1,63 +1,63 @@
 @interface LPLinkRendererSizeClassParameters
-- (BOOL)isEqual:(id)a3;
-- (LPLinkRendererSizeClassParameters)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPLinkRendererSizeClassParameters)initWithCoder:(id)coder;
 - (id)_cacheKey;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPLinkRendererSizeClassParameters
 
-- (LPLinkRendererSizeClassParameters)initWithCoder:(id)a3
+- (LPLinkRendererSizeClassParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = LPLinkRendererSizeClassParameters;
   v5 = [(LPLinkRendererSizeClassParameters *)&v11 init];
   if (v5)
   {
-    v5->_alignButtonWithCaptionTextLeadingEdge = [v4 decodeBoolForKey:@"alignButtonWithCaptionTextLeadingEdge"];
-    v5->_preserveIconAspectRatioAndAlignmentWhenScaling = [v4 decodeBoolForKey:@"preserveIconAspectRatioAndAlignmentWhenScaling"];
-    v5->_onlyShowIcon = [v4 decodeBoolForKey:@"onlyShowIcon"];
-    v5->_neverShowIcon = [v4 decodeBoolForKey:@"neverShowIcon"];
-    v5->_neverShowText = [v4 decodeBoolForKey:@"neverShowText"];
-    v5->_disableTextWrapping = [v4 decodeBoolForKey:@"disableTextWrapping"];
-    [v4 decodeDoubleForKey:@"minimumMediaCornerRadius"];
+    v5->_alignButtonWithCaptionTextLeadingEdge = [coderCopy decodeBoolForKey:@"alignButtonWithCaptionTextLeadingEdge"];
+    v5->_preserveIconAspectRatioAndAlignmentWhenScaling = [coderCopy decodeBoolForKey:@"preserveIconAspectRatioAndAlignmentWhenScaling"];
+    v5->_onlyShowIcon = [coderCopy decodeBoolForKey:@"onlyShowIcon"];
+    v5->_neverShowIcon = [coderCopy decodeBoolForKey:@"neverShowIcon"];
+    v5->_neverShowText = [coderCopy decodeBoolForKey:@"neverShowText"];
+    v5->_disableTextWrapping = [coderCopy decodeBoolForKey:@"disableTextWrapping"];
+    [coderCopy decodeDoubleForKey:@"minimumMediaCornerRadius"];
     v5->_minimumMediaCornerRadius = v6;
-    [v4 decodeDoubleForKey:@"minimumIconCornerRadius"];
+    [coderCopy decodeDoubleForKey:@"minimumIconCornerRadius"];
     v5->_minimumIconCornerRadius = v7;
-    v5->_alignTextAndMediaHorizontalEdges = [v4 decodeBoolForKey:@"alignTextAndMediaHorizontalEdges"];
-    [v4 decodeDoubleForKey:@"mediaFixedAspectRatio"];
+    v5->_alignTextAndMediaHorizontalEdges = [coderCopy decodeBoolForKey:@"alignTextAndMediaHorizontalEdges"];
+    [coderCopy decodeDoubleForKey:@"mediaFixedAspectRatio"];
     v5->_mediaFixedAspectRatio = v8;
-    v5->_needsSpaceAffordanceForDeleteButton = [v4 decodeBoolForKey:@"needsSpaceAffordanceForDeleteButton"];
+    v5->_needsSpaceAffordanceForDeleteButton = [coderCopy decodeBoolForKey:@"needsSpaceAffordanceForDeleteButton"];
     v9 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:self->_alignButtonWithCaptionTextLeadingEdge forKey:@"alignButtonWithCaptionTextLeadingEdge"];
-  [v4 encodeBool:self->_preserveIconAspectRatioAndAlignmentWhenScaling forKey:@"preserveIconAspectRatioAndAlignmentWhenScaling"];
-  [v4 encodeBool:self->_onlyShowIcon forKey:@"onlyShowIcon"];
-  [v4 encodeBool:self->_neverShowIcon forKey:@"neverShowIcon"];
-  [v4 encodeBool:self->_neverShowText forKey:@"neverShowText"];
-  [v4 encodeBool:self->_disableTextWrapping forKey:@"disableTextWrapping"];
-  [v4 encodeDouble:@"minimumMediaCornerRadius" forKey:self->_minimumMediaCornerRadius];
-  [v4 encodeDouble:@"minimumIconCornerRadius" forKey:self->_minimumIconCornerRadius];
-  [v4 encodeBool:self->_alignTextAndMediaHorizontalEdges forKey:@"alignTextAndMediaHorizontalEdges"];
-  [v4 encodeDouble:@"mediaFixedAspectRatio" forKey:self->_mediaFixedAspectRatio];
-  [v4 encodeBool:self->_needsSpaceAffordanceForDeleteButton forKey:@"needsSpaceAffordanceForDeleteButton"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_alignButtonWithCaptionTextLeadingEdge forKey:@"alignButtonWithCaptionTextLeadingEdge"];
+  [coderCopy encodeBool:self->_preserveIconAspectRatioAndAlignmentWhenScaling forKey:@"preserveIconAspectRatioAndAlignmentWhenScaling"];
+  [coderCopy encodeBool:self->_onlyShowIcon forKey:@"onlyShowIcon"];
+  [coderCopy encodeBool:self->_neverShowIcon forKey:@"neverShowIcon"];
+  [coderCopy encodeBool:self->_neverShowText forKey:@"neverShowText"];
+  [coderCopy encodeBool:self->_disableTextWrapping forKey:@"disableTextWrapping"];
+  [coderCopy encodeDouble:@"minimumMediaCornerRadius" forKey:self->_minimumMediaCornerRadius];
+  [coderCopy encodeDouble:@"minimumIconCornerRadius" forKey:self->_minimumIconCornerRadius];
+  [coderCopy encodeBool:self->_alignTextAndMediaHorizontalEdges forKey:@"alignTextAndMediaHorizontalEdges"];
+  [coderCopy encodeDouble:@"mediaFixedAspectRatio" forKey:self->_mediaFixedAspectRatio];
+  [coderCopy encodeBool:self->_needsSpaceAffordanceForDeleteButton forKey:@"needsSpaceAffordanceForDeleteButton"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPLinkRendererSizeClassParameters;
-  if ([(LPLinkRendererSizeClassParameters *)&v8 isEqual:v4])
+  if ([(LPLinkRendererSizeClassParameters *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -67,7 +67,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v5 = *(v6 + 8) == self->_alignButtonWithCaptionTextLeadingEdge && *(v6 + 9) == self->_preserveIconAspectRatioAndAlignmentWhenScaling && *(v6 + 10) == self->_onlyShowIcon && *(v6 + 11) == self->_neverShowIcon && *(v6 + 12) == self->_neverShowText && *(v6 + 13) == self->_disableTextWrapping && v6[2] == self->_minimumMediaCornerRadius && v6[3] == self->_minimumIconCornerRadius && *(v6 + 14) == self->_alignTextAndMediaHorizontalEdges && v6[4] == self->_mediaFixedAspectRatio && *(v6 + 15) == self->_needsSpaceAffordanceForDeleteButton;
     }
 
@@ -80,9 +80,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPLinkRendererSizeClassParameters allocWithZone:a3];
+  v4 = [LPLinkRendererSizeClassParameters allocWithZone:zone];
   if (v4)
   {
     [(LPLinkRendererSizeClassParameters *)v4 setAlignButtonWithCaptionTextLeadingEdge:[(LPLinkRendererSizeClassParameters *)self alignButtonWithCaptionTextLeadingEdge]];
@@ -108,12 +108,12 @@
 - (id)_cacheKey
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LPLinkRendererSizeClassParameters *)self alignButtonWithCaptionTextLeadingEdge];
-  v5 = [(LPLinkRendererSizeClassParameters *)self preserveIconAspectRatioAndAlignmentWhenScaling];
-  v6 = [(LPLinkRendererSizeClassParameters *)self onlyShowIcon];
-  v7 = [(LPLinkRendererSizeClassParameters *)self disableTextWrapping];
+  alignButtonWithCaptionTextLeadingEdge = [(LPLinkRendererSizeClassParameters *)self alignButtonWithCaptionTextLeadingEdge];
+  preserveIconAspectRatioAndAlignmentWhenScaling = [(LPLinkRendererSizeClassParameters *)self preserveIconAspectRatioAndAlignmentWhenScaling];
+  onlyShowIcon = [(LPLinkRendererSizeClassParameters *)self onlyShowIcon];
+  disableTextWrapping = [(LPLinkRendererSizeClassParameters *)self disableTextWrapping];
   [(LPLinkRendererSizeClassParameters *)self minimumMediaCornerRadius];
-  return [v3 stringWithFormat:@"%d%d%d%d%d%d%d", v4, v5, v6, v7, v8, -[LPLinkRendererSizeClassParameters alignTextAndMediaHorizontalEdges](self, "alignTextAndMediaHorizontalEdges"), -[LPLinkRendererSizeClassParameters needsSpaceAffordanceForDeleteButton](self, "needsSpaceAffordanceForDeleteButton")];
+  return [v3 stringWithFormat:@"%d%d%d%d%d%d%d", alignButtonWithCaptionTextLeadingEdge, preserveIconAspectRatioAndAlignmentWhenScaling, onlyShowIcon, disableTextWrapping, v8, -[LPLinkRendererSizeClassParameters alignTextAndMediaHorizontalEdges](self, "alignTextAndMediaHorizontalEdges"), -[LPLinkRendererSizeClassParameters needsSpaceAffordanceForDeleteButton](self, "needsSpaceAffordanceForDeleteButton")];
 }
 
 @end

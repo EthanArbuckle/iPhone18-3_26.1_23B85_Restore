@@ -1,11 +1,11 @@
 @interface SmallLockupCollectionViewTableCell
-- (_TtC22SubscribePageExtension34SmallLockupCollectionViewTableCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension34SmallLockupCollectionViewTableCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SmallLockupCollectionViewTableCell
 
-- (_TtC22SubscribePageExtension34SmallLockupCollectionViewTableCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension34SmallLockupCollectionViewTableCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension34SmallLockupCollectionViewTableCell_lockupView;
   type metadata accessor for SmallLockupView();
@@ -17,7 +17,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004CBDBC();
 }
 

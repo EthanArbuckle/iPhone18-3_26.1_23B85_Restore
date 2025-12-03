@@ -1,6 +1,6 @@
 @interface CLIndoorAvailabilityTileParams
 - (CLIndoorAvailabilityTileParams)init;
-- (CLIndoorAvailabilityTileParams)initWithAvailabilityTile:(void *)a3;
+- (CLIndoorAvailabilityTileParams)initWithAvailabilityTile:(void *)tile;
 - (optional<proto::params::LocalizerParameters>)localizerParams;
 @end
 
@@ -13,7 +13,7 @@
   return [(CLIndoorAvailabilityTileParams *)&v3 init];
 }
 
-- (CLIndoorAvailabilityTileParams)initWithAvailabilityTile:(void *)a3
+- (CLIndoorAvailabilityTileParams)initWithAvailabilityTile:(void *)tile
 {
   v18 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -24,17 +24,17 @@
     goto LABEL_23;
   }
 
-  *(v4 + 50) = sub_245A3935C(a3);
-  *(v4 + 84) = sub_245A38A94(a3);
-  *(v4 + 85) = sub_245A39368(a3);
-  *(v4 + 86) = sub_245A38AA0(a3);
-  *(v4 + 87) = sub_245A38AAC(a3);
-  *(v4 + 88) = sub_245A39384(a3);
-  v5 = sub_245A38C70(a3);
+  *(v4 + 50) = sub_245A3935C(tile);
+  *(v4 + 84) = sub_245A38A94(tile);
+  *(v4 + 85) = sub_245A39368(tile);
+  *(v4 + 86) = sub_245A38AA0(tile);
+  *(v4 + 87) = sub_245A38AAC(tile);
+  *(v4 + 88) = sub_245A39384(tile);
+  v5 = sub_245A38C70(tile);
   v4[328] = v5;
   if (v5)
   {
-    sub_245A82794(a3, &v11);
+    sub_245A82794(tile, &v11);
     v6 = v17;
     v4[329] = v17 & 1;
     if (v6)
@@ -94,14 +94,14 @@ LABEL_17:
 
   *(v4 + 329) = 0;
 LABEL_10:
-  *(v4 + 93) = sub_245A38C64(a3);
-  v4[333] = sub_245A39374(a3);
-  *(v4 + 94) = sub_245A38C80(a3);
-  *(v4 + 95) = sub_245A38B80(a3);
-  *(v4 + 96) = sub_245A39390(a3);
-  *(v4 + 97) = sub_245A38C8C(a3);
-  *(v4 + 98) = sub_245A39474(a3);
-  sub_245A391E0(a3, &v11);
+  *(v4 + 93) = sub_245A38C64(tile);
+  v4[333] = sub_245A39374(tile);
+  *(v4 + 94) = sub_245A38C80(tile);
+  *(v4 + 95) = sub_245A38B80(tile);
+  *(v4 + 96) = sub_245A39390(tile);
+  *(v4 + 97) = sub_245A38C8C(tile);
+  *(v4 + 98) = sub_245A39474(tile);
+  sub_245A391E0(tile, &v11);
   if (v4[8] == 1)
   {
     if (v11)

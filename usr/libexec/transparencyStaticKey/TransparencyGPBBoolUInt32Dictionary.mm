@@ -1,29 +1,29 @@
 @interface TransparencyGPBBoolUInt32Dictionary
-- (BOOL)getUInt32:(unsigned int *)a3 forKey:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (TransparencyGPBBoolUInt32Dictionary)initWithDictionary:(id)a3;
-- (TransparencyGPBBoolUInt32Dictionary)initWithUInt32s:(const unsigned int *)a3 forKeys:(const BOOL *)a4 count:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)getUInt32:(unsigned int *)int32 forKey:(BOOL)key;
+- (BOOL)isEqual:(id)equal;
+- (TransparencyGPBBoolUInt32Dictionary)initWithDictionary:(id)dictionary;
+- (TransparencyGPBBoolUInt32Dictionary)initWithUInt32s:(const unsigned int *)int32s forKeys:(const BOOL *)keys count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)computeSerializedSizeAsField:(id)a3;
-- (void)addEntriesFromDictionary:(id)a3;
-- (void)enumerateForTextFormat:(id)a3;
-- (void)enumerateKeysAndUInt32sUsingBlock:(id)a3;
-- (void)setTransparencyGPBGenericValue:(id *)a3 forTransparencyGPBGenericValueKey:(id *)a4;
-- (void)setUInt32:(unsigned int)a3 forKey:(BOOL)a4;
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4;
+- (unint64_t)computeSerializedSizeAsField:(id)field;
+- (void)addEntriesFromDictionary:(id)dictionary;
+- (void)enumerateForTextFormat:(id)format;
+- (void)enumerateKeysAndUInt32sUsingBlock:(id)block;
+- (void)setTransparencyGPBGenericValue:(id *)value forTransparencyGPBGenericValueKey:(id *)key;
+- (void)setUInt32:(unsigned int)int32 forKey:(BOOL)key;
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field;
 @end
 
 @implementation TransparencyGPBBoolUInt32Dictionary
 
-- (TransparencyGPBBoolUInt32Dictionary)initWithUInt32s:(const unsigned int *)a3 forKeys:(const BOOL *)a4 count:(unint64_t)a5
+- (TransparencyGPBBoolUInt32Dictionary)initWithUInt32s:(const unsigned int *)int32s forKeys:(const BOOL *)keys count:(unint64_t)count
 {
   v13.receiver = self;
   v13.super_class = TransparencyGPBBoolUInt32Dictionary;
   result = [(TransparencyGPBBoolUInt32Dictionary *)&v13 init];
   if (result)
   {
-    v9 = a5 == 0;
+    v9 = count == 0;
   }
 
   else
@@ -35,33 +35,33 @@
   {
     do
     {
-      v11 = *a4++;
+      v11 = *keys++;
       v10 = v11;
-      v12 = *a3++;
+      v12 = *int32s++;
       result->_values[v10] = v12;
       result->_valueSet[v10] = 1;
-      --a5;
+      --count;
     }
 
-    while (a5);
+    while (count);
   }
 
   return result;
 }
 
-- (TransparencyGPBBoolUInt32Dictionary)initWithDictionary:(id)a3
+- (TransparencyGPBBoolUInt32Dictionary)initWithDictionary:(id)dictionary
 {
   result = [(TransparencyGPBBoolUInt32Dictionary *)self initWithUInt32s:0 forKeys:0 count:0];
-  if (a3 && result)
+  if (dictionary && result)
   {
     v5 = 0;
     v6 = 1;
     do
     {
       v7 = v6;
-      if (*(a3 + v5 + 24) == 1)
+      if (*(dictionary + v5 + 24) == 1)
       {
-        result->_values[v5] = *(a3 + v5 + 4);
+        result->_values[v5] = *(dictionary + v5 + 4);
         result->_valueSet[v5] = 1;
       }
 
@@ -75,22 +75,22 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TransparencyGPBBoolUInt32Dictionary allocWithZone:a3];
+  v4 = [TransparencyGPBBoolUInt32Dictionary allocWithZone:zone];
 
   return [(TransparencyGPBBoolUInt32Dictionary *)v4 initWithDictionary:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
   objc_opt_class();
-  return (objc_opt_isKindOfClass() & 1) != 0 && self->_valueSet[0] == *(a3 + 24) && self->_valueSet[1] == *(a3 + 25) && (!self->_valueSet[0] || self->_values[0] == *(a3 + 4)) && (!self->_valueSet[1] || self->_values[1] == *(a3 + 5));
+  return (objc_opt_isKindOfClass() & 1) != 0 && self->_valueSet[0] == *(equal + 24) && self->_valueSet[1] == *(equal + 25) && (!self->_valueSet[0] || self->_values[0] == *(equal + 4)) && (!self->_valueSet[1] || self->_values[1] == *(equal + 5));
 }
 
 - (id)description
@@ -111,58 +111,58 @@
   return v4;
 }
 
-- (BOOL)getUInt32:(unsigned int *)a3 forKey:(BOOL)a4
+- (BOOL)getUInt32:(unsigned int *)int32 forKey:(BOOL)key
 {
-  v5 = self->_valueSet[a4];
-  if (a3 && v5)
+  v5 = self->_valueSet[key];
+  if (int32 && v5)
   {
-    *a3 = self->_values[a4];
+    *int32 = self->_values[key];
   }
 
   return v5;
 }
 
-- (void)setTransparencyGPBGenericValue:(id *)a3 forTransparencyGPBGenericValueKey:(id *)a4
+- (void)setTransparencyGPBGenericValue:(id *)value forTransparencyGPBGenericValueKey:(id *)key
 {
-  var0 = a4->var0;
-  self->_values[var0] = a3->var1;
+  var0 = key->var0;
+  self->_values[var0] = value->var1;
   self->_valueSet[var0] = 1;
 }
 
-- (void)enumerateForTextFormat:(id)a3
+- (void)enumerateForTextFormat:(id)format
 {
   if (self->_valueSet[0])
   {
-    (*(a3 + 2))(a3, @"false", [NSString stringWithFormat:@"%u", self->_values[0]]);
+    (*(format + 2))(format, @"false", [NSString stringWithFormat:@"%u", self->_values[0]]);
   }
 
   if (self->_valueSet[1])
   {
     v5 = [NSString stringWithFormat:@"%u", self->_values[1]];
-    v6 = *(a3 + 2);
+    v6 = *(format + 2);
 
-    v6(a3, @"true", v5);
+    v6(format, @"true", v5);
   }
 }
 
-- (void)enumerateKeysAndUInt32sUsingBlock:(id)a3
+- (void)enumerateKeysAndUInt32sUsingBlock:(id)block
 {
   v5 = 0;
-  if (!self->_valueSet[0] || ((*(a3 + 2))(a3, 0, self->_values[0], &v5), (v5 & 1) == 0))
+  if (!self->_valueSet[0] || ((*(block + 2))(block, 0, self->_values[0], &v5), (v5 & 1) == 0))
   {
     if (self->_valueSet[1])
     {
-      (*(a3 + 2))(a3, 1, self->_values[1], &v5);
+      (*(block + 2))(block, 1, self->_values[1], &v5);
     }
   }
 }
 
-- (unint64_t)computeSerializedSizeAsField:(id)a3
+- (unint64_t)computeSerializedSizeAsField:(id)field
 {
   v3 = 0;
   v4 = 0;
   v5 = 0;
-  v6 = *(a3 + 1);
+  v6 = *(field + 1);
   v7 = *(v6 + 30);
   valueSet = self->_valueSet;
   values = self->_values;
@@ -186,9 +186,9 @@
   return v5 + sub_10001B780(*(v6 + 16), 15) * v4;
 }
 
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field
 {
-  v6 = *(a4 + 1);
+  v6 = *(field + 1);
   v7 = *(v6 + 30);
   v8 = sub_100025184(*(v6 + 16), 2);
   v9 = 0;
@@ -201,19 +201,19 @@
     v14 = v13;
     if (valueSet[v10])
     {
-      [a3 writeInt32NoTag:v8];
+      [stream writeInt32NoTag:v8];
       v15 = sub_10001B224(1);
-      [a3 writeInt32NoTag:{sub_10003A6C4(values[v10], 2, v7) + v15}];
-      [a3 writeBool:1 value:v9 & 1];
+      [stream writeInt32NoTag:{sub_10003A6C4(values[v10], 2, v7) + v15}];
+      [stream writeBool:1 value:v9 & 1];
       v16 = values[v10];
       if (v7 == 1)
       {
-        [a3 writeFixed32:2 value:v16];
+        [stream writeFixed32:2 value:v16];
       }
 
       else if (v7 == 11)
       {
-        [a3 writeUInt32:2 value:v16];
+        [stream writeUInt32:2 value:v16];
       }
     }
 
@@ -225,19 +225,19 @@
   while ((v14 & 1) != 0);
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = 0;
     v5 = 1;
     do
     {
       v6 = v5;
-      if (*(a3 + v4 + 24) == 1)
+      if (*(dictionary + v4 + 24) == 1)
       {
         self->_valueSet[v4] = 1;
-        self->_values[v4] = *(a3 + v4 + 4);
+        self->_values[v4] = *(dictionary + v4 + 4);
       }
 
       v5 = 0;
@@ -253,10 +253,10 @@
   }
 }
 
-- (void)setUInt32:(unsigned int)a3 forKey:(BOOL)a4
+- (void)setUInt32:(unsigned int)int32 forKey:(BOOL)key
 {
-  self->_values[a4] = a3;
-  self->_valueSet[a4] = 1;
+  self->_values[key] = int32;
+  self->_valueSet[key] = 1;
   autocreator = self->_autocreator;
   if (autocreator)
   {

@@ -6,19 +6,19 @@
 - (id)okayButtonTitle;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)okayButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)okayButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation COSTinkerWiFiPickerOptinViewContoller
 
 + (BOOL)controllerNeedsToRun
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 currentWiFiNetworkName];
+  bridgeController = [UIApp bridgeController];
+  currentWiFiNetworkName = [bridgeController currentWiFiNetworkName];
 
-  return v3 != 0;
+  return currentWiFiNetworkName != 0;
 }
 
 - (COSTinkerWiFiPickerOptinViewContoller)init
@@ -40,10 +40,10 @@
   v2 = +[NSBundle mainBundle];
   v3 = SFLocalizableWAPIStringKeyForKey();
   v4 = [v2 localizedStringForKey:v3 value:&stru_10026E598 table:@"Localizable-tinker"];
-  v5 = [UIApp setupController];
-  v6 = [v5 tinkerUserName];
-  v7 = [v6 localizedCapitalizedString];
-  v8 = [NSString stringWithFormat:v4, v7];
+  setupController = [UIApp setupController];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
+  v8 = [NSString stringWithFormat:v4, localizedCapitalizedString];
 
   return v8;
 }
@@ -51,54 +51,54 @@
 - (id)detailString
 {
   v2 = UIApp;
-  v3 = [v2 bridgeController];
-  v4 = [v3 currentWiFiNetworkName];
+  bridgeController = [v2 bridgeController];
+  currentWiFiNetworkName = [bridgeController currentWiFiNetworkName];
 
-  v5 = [v2 setupController];
+  setupController = [v2 setupController];
 
-  v6 = [v5 tinkerUserName];
-  v7 = [v6 localizedCapitalizedString];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
 
   v8 = +[NSBundle mainBundle];
   v9 = SFLocalizableWAPIStringKeyForKey();
   v10 = [v8 localizedStringForKey:v9 value:&stru_10026E598 table:@"Localizable-tinker"];
-  v11 = [NSString stringWithFormat:v10, v4, v7, v7];
+  v11 = [NSString stringWithFormat:v10, currentWiFiNetworkName, localizedCapitalizedString, localizedCapitalizedString];
 
   return v11;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 bridgeController];
-  [v5 sendAllTinkerWirelessCredentials:0];
+  bridgeController = [v4 bridgeController];
+  [bridgeController sendAllTinkerWirelessCredentials:0];
 
-  v6 = [(COSTinkerWiFiPickerOptinViewContoller *)self delegate];
-  [v6 buddyControllerDone:self];
+  delegate = [(COSTinkerWiFiPickerOptinViewContoller *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v4 = [(COSTinkerWiFiPickerOptinViewContoller *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSTinkerWiFiPickerOptinViewContoller *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v4 = [(COSTinkerWiFiPickerOptinViewContoller *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSTinkerWiFiPickerOptinViewContoller *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 currentWiFiNetworkName];
+  bridgeController = [UIApp bridgeController];
+  currentWiFiNetworkName = [bridgeController currentWiFiNetworkName];
 
-  if ([v3 length])
+  if ([currentWiFiNetworkName length])
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"WIFI_TINKER_NAMED_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-    [NSString stringWithFormat:v5, v3];
+    [NSString stringWithFormat:v5, currentWiFiNetworkName];
   }
 
   else

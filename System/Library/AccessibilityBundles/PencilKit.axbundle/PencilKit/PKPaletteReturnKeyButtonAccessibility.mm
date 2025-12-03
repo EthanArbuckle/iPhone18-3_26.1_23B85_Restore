@@ -1,17 +1,17 @@
 @interface PKPaletteReturnKeyButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation PKPaletteReturnKeyButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaletteReturnKeyButton" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"PKPaletteReturnKeyButton" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaletteReturnKeyButtonContentView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaletteReturnKeyButton" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"PKPaletteReturnKeyButton" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaletteReturnKeyButtonContentView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -23,9 +23,9 @@
   {
     v7.receiver = self;
     v7.super_class = PKPaletteReturnKeyButtonAccessibility;
-    v5 = [(PKPaletteReturnKeyButtonAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(PKPaletteReturnKeyButtonAccessibility *)&v7 accessibilityLabel];
 
-    v4 = v5;
+    v4 = accessibilityLabel;
   }
 
   return v4;

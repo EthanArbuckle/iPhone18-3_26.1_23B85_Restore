@@ -4,21 +4,21 @@
 - (VKIconManager)init;
 - (id).cxx_construct;
 - (id)_internalIconManager;
-- (id)balloonIconForStyleAttributes:(id)a3 withStylesheetName:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7;
-- (id)imageForDataID:(unsigned int)a3 text:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7;
-- (id)imageForIconID:(unsigned int)a3 contentScale:(float)a4 sizeGroup:(int64_t)a5 modifiers:(id)a6;
-- (id)imageForImageSourceKey:(id)a3;
-- (id)imageForKey:(unsigned int)a3 value:(unsigned int)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7;
-- (id)imageForName:(id)a3 contentScale:(float)a4 sizeGroup:(int64_t)a5 modifiers:(id)a6;
-- (id)imageForStyleAttributes:(id)a3 styleManager:(shared_ptr<gss:(float)a5 :(int64_t)a6 StylesheetManager<gss:(id)a7 :PropertyID>>)a4 contentScale:sizeGroup:modifiers:;
-- (id)imageForStyleAttributes:(id)a3 withStylesheetName:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7;
+- (id)balloonIconForStyleAttributes:(id)attributes withStylesheetName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForDataID:(unsigned int)d text:(id)text contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForIconID:(unsigned int)d contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForImageSourceKey:(id)key;
+- (id)imageForKey:(unsigned int)key value:(unsigned int)value contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForStyleAttributes:(id)attributes styleManager:(shared_ptr<gss:(float)manager :(int64_t)a6 StylesheetManager<gss:(id)gss :PropertyID>>)a4 contentScale:sizeGroup:modifiers:;
+- (id)imageForStyleAttributes:(id)attributes withStylesheetName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
 - (unsigned)darkVariant;
 - (unsigned)styleAttributeTransitSystemTypeKey;
 - (unsigned)styleAttributeTransitTypeKey;
 - (unsigned)trafficIncidentTypeKey;
 - (void)dealloc;
 - (void)purge;
-- (void)setIsCachingAtlases:(BOOL)a3;
+- (void)setIsCachingAtlases:(BOOL)atlases;
 @end
 
 @implementation VKIconManager
@@ -60,14 +60,14 @@
 
       v3 = *(self + 2);
 LABEL_2:
-      v4 = v3;
+      iconManager = v3;
       goto LABEL_6;
     }
   }
 
-  v4 = [v5 iconManager];
+  iconManager = [v5 iconManager];
 LABEL_6:
-  v8 = v4;
+  v8 = iconManager;
   v9 = *(self + 12);
   if (v9)
   {
@@ -164,119 +164,119 @@ void __37__VKIconManager__internalIconManager__block_invoke(uint64_t a1)
   std::mutex::unlock((self + 32));
 }
 
-- (void)setIsCachingAtlases:(BOOL)a3
+- (void)setIsCachingAtlases:(BOOL)atlases
 {
-  v3 = a3;
-  v4 = [(VKIconManager *)self _internalIconManager];
-  [v4 setIsCachingAtlases:v3];
+  atlasesCopy = atlases;
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  [_internalIconManager setIsCachingAtlases:atlasesCopy];
 }
 
 - (BOOL)isCachingAtlases
 {
-  v2 = [(VKIconManager *)self _internalIconManager];
-  v3 = [v2 isCachingAtlases];
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  isCachingAtlases = [_internalIconManager isCachingAtlases];
 
-  return v3;
+  return isCachingAtlases;
 }
 
 - (unsigned)darkVariant
 {
-  v2 = [(VKIconManager *)self _internalIconManager];
-  v3 = [v2 darkVariant];
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  darkVariant = [_internalIconManager darkVariant];
 
-  return v3;
+  return darkVariant;
 }
 
 - (unsigned)trafficIncidentTypeKey
 {
-  v2 = [(VKIconManager *)self _internalIconManager];
-  v3 = [v2 trafficIncidentTypeKey];
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  trafficIncidentTypeKey = [_internalIconManager trafficIncidentTypeKey];
 
-  return v3;
+  return trafficIncidentTypeKey;
 }
 
 - (unsigned)styleAttributeTransitSystemTypeKey
 {
-  v2 = [(VKIconManager *)self _internalIconManager];
-  v3 = [v2 styleAttributeTransitSystemTypeKey];
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  styleAttributeTransitSystemTypeKey = [_internalIconManager styleAttributeTransitSystemTypeKey];
 
-  return v3;
+  return styleAttributeTransitSystemTypeKey;
 }
 
 - (unsigned)styleAttributeTransitTypeKey
 {
-  v2 = [(VKIconManager *)self _internalIconManager];
-  v3 = [v2 styleAttributeTransitTypeKey];
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  styleAttributeTransitTypeKey = [_internalIconManager styleAttributeTransitTypeKey];
 
-  return v3;
+  return styleAttributeTransitTypeKey;
 }
 
-- (id)imageForIconID:(unsigned int)a3 contentScale:(float)a4 sizeGroup:(int64_t)a5 modifiers:(id)a6
+- (id)imageForIconID:(unsigned int)d contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
-  v8 = *&a3;
-  v10 = a6;
-  v11 = [(VKIconManager *)self _internalIconManager];
-  *&v12 = a4;
-  v13 = [v11 imageForIconID:v8 contentScale:a5 sizeGroup:v10 modifiers:v12];
+  v8 = *&d;
+  modifiersCopy = modifiers;
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  *&v12 = scale;
+  v13 = [_internalIconManager imageForIconID:v8 contentScale:group sizeGroup:modifiersCopy modifiers:v12];
 
   return v13;
 }
 
-- (id)imageForName:(id)a3 contentScale:(float)a4 sizeGroup:(int64_t)a5 modifiers:(id)a6
+- (id)imageForName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(VKIconManager *)self _internalIconManager];
-  *&v13 = a4;
-  v14 = [v12 imageForName:v10 contentScale:a5 sizeGroup:v11 modifiers:v13];
+  nameCopy = name;
+  modifiersCopy = modifiers;
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  *&v13 = scale;
+  v14 = [_internalIconManager imageForName:nameCopy contentScale:group sizeGroup:modifiersCopy modifiers:v13];
 
   return v14;
 }
 
-- (id)imageForKey:(unsigned int)a3 value:(unsigned int)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7
+- (id)imageForKey:(unsigned int)key value:(unsigned int)value contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
-  v9 = *&a4;
-  v10 = *&a3;
-  v12 = a7;
-  v13 = [(VKIconManager *)self _internalIconManager];
-  *&v14 = a5;
-  v15 = [v13 imageForKey:v10 value:v9 contentScale:a6 sizeGroup:v12 modifiers:v14];
+  v9 = *&value;
+  v10 = *&key;
+  modifiersCopy = modifiers;
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  *&v14 = scale;
+  v15 = [_internalIconManager imageForKey:v10 value:v9 contentScale:group sizeGroup:modifiersCopy modifiers:v14];
 
   return v15;
 }
 
-- (id)imageForDataID:(unsigned int)a3 text:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7
+- (id)imageForDataID:(unsigned int)d text:(id)text contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
-  v10 = *&a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [(VKIconManager *)self _internalIconManager];
-  *&v15 = a5;
-  v16 = [v14 imageForDataID:v10 text:v12 contentScale:a6 sizeGroup:v13 modifiers:v15];
+  v10 = *&d;
+  textCopy = text;
+  modifiersCopy = modifiers;
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  *&v15 = scale;
+  v16 = [_internalIconManager imageForDataID:v10 text:textCopy contentScale:group sizeGroup:modifiersCopy modifiers:v15];
 
   return v16;
 }
 
-- (id)imageForStyleAttributes:(id)a3 withStylesheetName:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7
+- (id)imageForStyleAttributes:(id)attributes withStylesheetName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(VKIconManager *)self _internalIconManager];
-  *&v16 = a5;
-  v17 = [v15 imageForStyleAttributes:v12 withStylesheetName:v13 contentScale:a6 sizeGroup:v14 modifiers:v16];
+  attributesCopy = attributes;
+  nameCopy = name;
+  modifiersCopy = modifiers;
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  *&v16 = scale;
+  v17 = [_internalIconManager imageForStyleAttributes:attributesCopy withStylesheetName:nameCopy contentScale:group sizeGroup:modifiersCopy modifiers:v16];
 
   return v17;
 }
 
-- (id)imageForStyleAttributes:(id)a3 styleManager:(shared_ptr<gss:(float)a5 :(int64_t)a6 StylesheetManager<gss:(id)a7 :PropertyID>>)a4 contentScale:sizeGroup:modifiers:
+- (id)imageForStyleAttributes:(id)attributes styleManager:(shared_ptr<gss:(float)manager :(int64_t)a6 StylesheetManager<gss:(id)gss :PropertyID>>)a4 contentScale:sizeGroup:modifiers:
 {
   cntrl = a4.__cntrl_;
   ptr = a4.__ptr_;
-  v12 = a3;
+  attributesCopy = attributes;
   v13 = a6;
-  v14 = [(VKIconManager *)self _internalIconManager];
-  v16 = v14;
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  v16 = _internalIconManager;
   v17 = ptr[1];
   v20 = *ptr;
   v21 = v17;
@@ -285,8 +285,8 @@ void __37__VKIconManager__internalIconManager__block_invoke(uint64_t a1)
     atomic_fetch_add_explicit(&v17->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  *&v15 = a5;
-  v18 = [v14 imageForStyleAttributes:v12 styleManager:&v20 contentScale:cntrl sizeGroup:v13 modifiers:v15];
+  *&v15 = manager;
+  v18 = [_internalIconManager imageForStyleAttributes:attributesCopy styleManager:&v20 contentScale:cntrl sizeGroup:v13 modifiers:v15];
   if (v21)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v21);
@@ -295,23 +295,23 @@ void __37__VKIconManager__internalIconManager__block_invoke(uint64_t a1)
   return v18;
 }
 
-- (id)balloonIconForStyleAttributes:(id)a3 withStylesheetName:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7
+- (id)balloonIconForStyleAttributes:(id)attributes withStylesheetName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(VKIconManager *)self _internalIconManager];
-  *&v16 = a5;
-  v17 = [v15 balloonIconForStyleAttributes:v12 withStylesheetName:v13 contentScale:a6 sizeGroup:v14 modifiers:v16];
+  attributesCopy = attributes;
+  nameCopy = name;
+  modifiersCopy = modifiers;
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  *&v16 = scale;
+  v17 = [_internalIconManager balloonIconForStyleAttributes:attributesCopy withStylesheetName:nameCopy contentScale:group sizeGroup:modifiersCopy modifiers:v16];
 
   return v17;
 }
 
-- (id)imageForImageSourceKey:(id)a3
+- (id)imageForImageSourceKey:(id)key
 {
-  v4 = a3;
-  v5 = [(VKIconManager *)self _internalIconManager];
-  v6 = [v5 imageForImageSourceKey:v4];
+  keyCopy = key;
+  _internalIconManager = [(VKIconManager *)self _internalIconManager];
+  v6 = [_internalIconManager imageForImageSourceKey:keyCopy];
 
   return v6;
 }

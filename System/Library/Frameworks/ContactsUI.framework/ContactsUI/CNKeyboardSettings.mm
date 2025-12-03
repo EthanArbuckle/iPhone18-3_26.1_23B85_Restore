@@ -1,17 +1,17 @@
 @interface CNKeyboardSettings
-+ (BOOL)contentsIsSingleValue:(id)a3;
-+ (BOOL)usesTextSuggestionDelegate:(id)a3;
-+ (id)newKeyboardSettingsForProperty:(id)a3;
-+ (int64_t)autocapitalizationTypeFromDictionary:(id)a3;
-+ (int64_t)autocorrectionTypeFromDictionary:(id)a3;
-+ (int64_t)keyboardTypeFromDictionary:(id)a3;
++ (BOOL)contentsIsSingleValue:(id)value;
++ (BOOL)usesTextSuggestionDelegate:(id)delegate;
++ (id)newKeyboardSettingsForProperty:(id)property;
++ (int64_t)autocapitalizationTypeFromDictionary:(id)dictionary;
++ (int64_t)autocorrectionTypeFromDictionary:(id)dictionary;
++ (int64_t)keyboardTypeFromDictionary:(id)dictionary;
 @end
 
 @implementation CNKeyboardSettings
 
-+ (BOOL)usesTextSuggestionDelegate:(id)a3
++ (BOOL)usesTextSuggestionDelegate:(id)delegate
 {
-  v3 = [a3 valueForKey:@"suggest-delegate"];
+  v3 = [delegate valueForKey:@"suggest-delegate"];
   v4 = v3;
   if (v3)
   {
@@ -26,9 +26,9 @@
   return v5;
 }
 
-+ (BOOL)contentsIsSingleValue:(id)a3
++ (BOOL)contentsIsSingleValue:(id)value
 {
-  v3 = [a3 valueForKey:@"single"];
+  v3 = [value valueForKey:@"single"];
   v4 = v3;
   if (v3)
   {
@@ -43,9 +43,9 @@
   return v5;
 }
 
-+ (int64_t)autocapitalizationTypeFromDictionary:(id)a3
++ (int64_t)autocapitalizationTypeFromDictionary:(id)dictionary
 {
-  v3 = [a3 valueForKey:@"caps"];
+  v3 = [dictionary valueForKey:@"caps"];
   v4 = v3;
   if (!v3)
   {
@@ -90,9 +90,9 @@ LABEL_11:
   return v5;
 }
 
-+ (int64_t)autocorrectionTypeFromDictionary:(id)a3
++ (int64_t)autocorrectionTypeFromDictionary:(id)dictionary
 {
-  v3 = [a3 valueForKey:@"suggest"];
+  v3 = [dictionary valueForKey:@"suggest"];
   v4 = v3;
   if (v3)
   {
@@ -115,9 +115,9 @@ LABEL_11:
   return v5;
 }
 
-+ (int64_t)keyboardTypeFromDictionary:(id)a3
++ (int64_t)keyboardTypeFromDictionary:(id)dictionary
 {
-  v3 = [a3 valueForKey:@"fmt"];
+  v3 = [dictionary valueForKey:@"fmt"];
   v4 = v3;
   if (v3 && [v3 caseInsensitiveCompare:@"alpha"])
   {
@@ -164,16 +164,16 @@ LABEL_11:
   return v5;
 }
 
-+ (id)newKeyboardSettingsForProperty:(id)a3
++ (id)newKeyboardSettingsForProperty:(id)property
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E695C330]])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E695C330]])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"phone", @"none", @"never", &stru_1F0CE7398, @"yes", @"yes", 0}];
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E695C320]])
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E695C320]])
   {
     v5 = objc_alloc(MEMORY[0x1E695DEC8]);
     v13 = @" ";
@@ -182,23 +182,23 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E695C418]])
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E695C418]])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"url", @"none", @"never", &stru_1F0CE7398, @"no", @"no", 0}];
   }
 
   else
   {
-    if (![v3 isEqualToString:*MEMORY[0x1E695C208]])
+    if (![propertyCopy isEqualToString:*MEMORY[0x1E695C208]])
     {
-      if ([v3 isEqualToString:*MEMORY[0x1E695C2B0]])
+      if ([propertyCopy isEqualToString:*MEMORY[0x1E695C2B0]])
       {
         v5 = objc_alloc(MEMORY[0x1E695DEC8]);
       }
 
       else
       {
-        v12 = [v3 isEqualToString:*MEMORY[0x1E695C3D0]];
+        v12 = [propertyCopy isEqualToString:*MEMORY[0x1E695C3D0]];
         v5 = objc_alloc(MEMORY[0x1E695DEC8]);
         if (!v12)
         {

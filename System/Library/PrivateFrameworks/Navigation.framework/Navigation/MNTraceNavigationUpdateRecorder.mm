@@ -1,57 +1,57 @@
 @interface MNTraceNavigationUpdateRecorder
-- (MNTraceNavigationUpdateRecorder)initWithTraceRecorder:(id)a3;
-- (void)_recordRouteChangeWithRouteInfo:(id)a3 reason:(unint64_t)a4;
+- (MNTraceNavigationUpdateRecorder)initWithTraceRecorder:(id)recorder;
+- (void)_recordRouteChangeWithRouteInfo:(id)info reason:(unint64_t)reason;
 @end
 
 @implementation MNTraceNavigationUpdateRecorder
 
-- (void)_recordRouteChangeWithRouteInfo:(id)a3 reason:(unint64_t)a4
+- (void)_recordRouteChangeWithRouteInfo:(id)info reason:(unint64_t)reason
 {
-  v6 = a3;
-  v23 = v6;
-  if (a4 == 13)
+  infoCopy = info;
+  v23 = infoCopy;
+  if (reason == 13)
   {
-    v7 = [v6 route];
-    v8 = [v7 routeInitializerData];
+    route = [infoCopy route];
+    routeInitializerData = [route routeInitializerData];
 
     traceRecorder = self->_traceRecorder;
-    v10 = [v8 directionsRequest];
-    v11 = [v8 directionsResponse];
-    v12 = [v8 waypoints];
+    directionsRequest = [routeInitializerData directionsRequest];
+    directionsResponse = [routeInitializerData directionsResponse];
+    waypoints = [routeInitializerData waypoints];
     [(MNTraceRecorder *)self->_traceRecorder timeSinceRecordingBegan];
     v14 = v13;
     [(MNTraceRecorder *)self->_traceRecorder timeSinceRecordingBegan];
-    [(MNTraceRecorder *)traceRecorder recordDirectionsRequest:v10 response:v11 error:0 waypoints:v12 selectedRouteIndex:0 requestTimestamp:v14 responseTimestamp:v15];
+    [(MNTraceRecorder *)traceRecorder recordDirectionsRequest:directionsRequest response:directionsResponse error:0 waypoints:waypoints selectedRouteIndex:0 requestTimestamp:v14 responseTimestamp:v15];
 
-    v6 = v23;
+    infoCopy = v23;
   }
 
   v16 = self->_traceRecorder;
-  v17 = [v6 route];
-  v18 = [v17 indexInResponse];
-  v19 = [v23 route];
-  v20 = [v19 directionsResponseID];
-  v21 = [v23 route];
-  v22 = [v21 etauResponseID];
-  [(MNTraceRecorder *)v16 recordRouteChangeWithIndex:v18 directionsResponseID:v20 etauResponseID:v22 rerouteReason:a4];
+  route2 = [infoCopy route];
+  indexInResponse = [route2 indexInResponse];
+  route3 = [v23 route];
+  directionsResponseID = [route3 directionsResponseID];
+  route4 = [v23 route];
+  etauResponseID = [route4 etauResponseID];
+  [(MNTraceRecorder *)v16 recordRouteChangeWithIndex:indexInResponse directionsResponseID:directionsResponseID etauResponseID:etauResponseID rerouteReason:reason];
 }
 
-- (MNTraceNavigationUpdateRecorder)initWithTraceRecorder:(id)a3
+- (MNTraceNavigationUpdateRecorder)initWithTraceRecorder:(id)recorder
 {
-  v5 = a3;
-  if (v5 && (v9.receiver = self, v9.super_class = MNTraceNavigationUpdateRecorder, v6 = [(MNTraceNavigationUpdateRecorder *)&v9 init], (self = v6) != 0))
+  recorderCopy = recorder;
+  if (recorderCopy && (v9.receiver = self, v9.super_class = MNTraceNavigationUpdateRecorder, v6 = [(MNTraceNavigationUpdateRecorder *)&v9 init], (self = v6) != 0))
   {
-    objc_storeStrong(&v6->_traceRecorder, a3);
+    objc_storeStrong(&v6->_traceRecorder, recorder);
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

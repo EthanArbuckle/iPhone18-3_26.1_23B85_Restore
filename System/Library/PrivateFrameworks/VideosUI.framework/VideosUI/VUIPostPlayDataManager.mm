@@ -1,28 +1,28 @@
 @interface VUIPostPlayDataManager
-+ (id)_generateMediaInfoFromJSResponse:(id)a3;
-+ (id)_metricsForPostPlayMediaItemFromLibrary:(id)a3;
-+ (void)_fetchContentFromLibraryForCurrentMediaItem:(id)a3 completion:(id)a4;
-+ (void)_fetchPostPlayItemFromJSForSeriesCanonicalID:(id)a3 andVideoCanonicalID:(id)a4 seasonNumber:(id)a5 completion:(id)a6;
-+ (void)_fetchPostPlayItemFromLibraryContentForStoreID:(id)a3 completion:(id)a4;
-+ (void)fetchPostPlayItemForCurrentMediaItem:(id)a3 completion:(id)a4;
++ (id)_generateMediaInfoFromJSResponse:(id)response;
++ (id)_metricsForPostPlayMediaItemFromLibrary:(id)library;
++ (void)_fetchContentFromLibraryForCurrentMediaItem:(id)item completion:(id)completion;
++ (void)_fetchPostPlayItemFromJSForSeriesCanonicalID:(id)d andVideoCanonicalID:(id)iD seasonNumber:(id)number completion:(id)completion;
++ (void)_fetchPostPlayItemFromLibraryContentForStoreID:(id)d completion:(id)completion;
++ (void)fetchPostPlayItemForCurrentMediaItem:(id)item completion:(id)completion;
 @end
 
 @implementation VUIPostPlayDataManager
 
-+ (void)fetchPostPlayItemForCurrentMediaItem:(id)a3 completion:(id)a4
++ (void)fetchPostPlayItemForCurrentMediaItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   if (fetchPostPlayItemForCurrentMediaItem_completion__onceToken != -1)
   {
     +[VUIPostPlayDataManager fetchPostPlayItemForCurrentMediaItem:completion:];
   }
 
-  if (![v5 hasTrait:*MEMORY[0x1E69D5E68]])
+  if (![itemCopy hasTrait:*MEMORY[0x1E69D5E68]])
   {
-    v8 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
-    v9 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-    v10 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D30]];
+    v8 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
+    v9 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+    v10 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D30]];
     if (v9)
     {
       if (+[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable])
@@ -32,7 +32,7 @@
         v18[2] = __74__VUIPostPlayDataManager_fetchPostPlayItemForCurrentMediaItem_completion___block_invoke_74;
         v18[3] = &unk_1E8733088;
         v11 = &v19;
-        v19 = v6;
+        v19 = completionCopy;
         [VUIPostPlayDataManager _fetchPostPlayItemFromJSForSeriesCanonicalID:v8 andVideoCanonicalID:v9 seasonNumber:v10 completion:v18];
 LABEL_15:
 
@@ -44,7 +44,7 @@ LABEL_15:
       v16[2] = __74__VUIPostPlayDataManager_fetchPostPlayItemForCurrentMediaItem_completion___block_invoke_76;
       v16[3] = &unk_1E87330B0;
       v11 = &v17;
-      v17 = v6;
+      v17 = completionCopy;
       v13 = v16;
     }
 
@@ -62,11 +62,11 @@ LABEL_15:
       v14[2] = __74__VUIPostPlayDataManager_fetchPostPlayItemForCurrentMediaItem_completion___block_invoke_78;
       v14[3] = &unk_1E87330B0;
       v11 = &v15;
-      v15 = v6;
+      v15 = completionCopy;
       v13 = v14;
     }
 
-    [VUIPostPlayDataManager _fetchContentFromLibraryForCurrentMediaItem:v5 completion:v13];
+    [VUIPostPlayDataManager _fetchContentFromLibraryForCurrentMediaItem:itemCopy completion:v13];
     goto LABEL_15;
   }
 
@@ -77,7 +77,7 @@ LABEL_15:
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "Current Item is a Scene, no post play allowed", buf, 2u);
   }
 
-  (*(v6 + 2))(v6, 0, 0, 0, 0, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, 0, 0);
 LABEL_16:
 }
 
@@ -136,14 +136,14 @@ void __74__VUIPostPlayDataManager_fetchPostPlayItemForCurrentMediaItem_completio
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)_metricsForPostPlayMediaItemFromLibrary:(id)a3
++ (id)_metricsForPostPlayMediaItemFromLibrary:(id)library
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  libraryCopy = library;
+  v4 = libraryCopy;
+  if (libraryCopy)
   {
-    v5 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+    v5 = [libraryCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
     if ([v5 length])
     {
       v6 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
@@ -196,26 +196,26 @@ void __74__VUIPostPlayDataManager_fetchPostPlayItemForCurrentMediaItem_completio
   return v16;
 }
 
-+ (void)_fetchPostPlayItemFromJSForSeriesCanonicalID:(id)a3 andVideoCanonicalID:(id)a4 seasonNumber:(id)a5 completion:(id)a6
++ (void)_fetchPostPlayItemFromJSForSeriesCanonicalID:(id)d andVideoCanonicalID:(id)iD seasonNumber:(id)number completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  numberCopy = number;
+  completionCopy = completion;
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v9 length])
+  if ([dCopy length])
   {
-    [v13 setObject:v9 forKey:@"showCanonicalId"];
+    [v13 setObject:dCopy forKey:@"showCanonicalId"];
   }
 
-  if ([v10 length])
+  if ([iDCopy length])
   {
-    [v13 setObject:v10 forKey:@"canonicalId"];
+    [v13 setObject:iDCopy forKey:@"canonicalId"];
   }
 
-  if (v11)
+  if (numberCopy)
   {
-    [v13 setObject:v11 forKey:@"seasonNumber"];
+    [v13 setObject:numberCopy forKey:@"seasonNumber"];
   }
 
   v14 = sLogObject_13;
@@ -226,23 +226,23 @@ void __74__VUIPostPlayDataManager_fetchPostPlayItemForCurrentMediaItem_completio
   }
 
   v15 = +[VUITVAppLauncher sharedInstance];
-  v16 = [v15 appController];
+  appController = [v15 appController];
 
-  v17 = [v16 appContext];
-  if (v17)
+  appContext = [appController appContext];
+  if (appContext)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __115__VUIPostPlayDataManager__fetchPostPlayItemFromJSForSeriesCanonicalID_andVideoCanonicalID_seasonNumber_completion___block_invoke;
     v18[3] = &unk_1E872FC68;
     v19 = v13;
-    v20 = v12;
-    [v17 evaluate:v18];
+    v20 = completionCopy;
+    [appContext evaluate:v18];
   }
 
   else
   {
-    (*(v12 + 2))(v12, 0, 0, 0, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, 0, 0);
   }
 }
 
@@ -348,16 +348,16 @@ void __115__VUIPostPlayDataManager__fetchPostPlayItemFromJSForSeriesCanonicalID_
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)_fetchPostPlayItemFromLibraryContentForStoreID:(id)a3 completion:(id)a4
++ (void)_fetchPostPlayItemFromLibraryContentForStoreID:(id)d completion:(id)completion
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v7 = +[VUIMediaLibraryManager defaultManager];
-  v8 = [v7 aggregateMediaLibrary];
+  aggregateMediaLibrary = [v7 aggregateMediaLibrary];
 
   v9 = +[VUIMediaEntityFetchRequest episodesFetchRequest];
-  [v9 addAdamIdPredicate:v5];
+  [v9 addAdamIdPredicate:dCopy];
   v10 = sLogObject_13;
   if (os_log_type_enabled(sLogObject_13, OS_LOG_TYPE_DEFAULT))
   {
@@ -371,11 +371,11 @@ void __115__VUIPostPlayDataManager__fetchPostPlayItemFromJSForSeriesCanonicalID_
   v15[1] = 3221225472;
   v15[2] = __84__VUIPostPlayDataManager__fetchPostPlayItemFromLibraryContentForStoreID_completion___block_invoke;
   v15[3] = &unk_1E8733150;
-  v16 = v5;
-  v17 = v6;
-  v12 = v5;
-  v13 = v6;
-  v14 = [v8 enqueueFetchRequests:v11 completionHandler:v15];
+  v16 = dCopy;
+  v17 = completionCopy;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v14 = [aggregateMediaLibrary enqueueFetchRequests:v11 completionHandler:v15];
 }
 
 void __84__VUIPostPlayDataManager__fetchPostPlayItemFromLibraryContentForStoreID_completion___block_invoke(uint64_t a1, void *a2)
@@ -714,10 +714,10 @@ void __84__VUIPostPlayDataManager__fetchPostPlayItemFromLibraryContentForStoreID
   }
 }
 
-+ (void)_fetchContentFromLibraryForCurrentMediaItem:(id)a3 completion:(id)a4
++ (void)_fetchContentFromLibraryForCurrentMediaItem:(id)item completion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+  completionCopy = completion;
+  v6 = [item mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
   v7 = v6;
   if (v6)
   {
@@ -726,7 +726,7 @@ void __84__VUIPostPlayDataManager__fetchPostPlayItemFromLibraryContentForStoreID
     v11[1] = 3221225472;
     v11[2] = __81__VUIPostPlayDataManager__fetchContentFromLibraryForCurrentMediaItem_completion___block_invoke;
     v11[3] = &unk_1E87330B0;
-    v12 = v5;
+    v12 = completionCopy;
     [VUIPostPlayDataManager _fetchPostPlayItemFromLibraryContentForStoreID:v8 completion:v11];
   }
 
@@ -739,20 +739,20 @@ void __84__VUIPostPlayDataManager__fetchPostPlayItemFromLibraryContentForStoreID
       _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "Failed to find StoreID for currentMediaItem", v10, 2u);
     }
 
-    (*(v5 + 2))(v5, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
-+ (id)_generateMediaInfoFromJSResponse:(id)a3
++ (id)_generateMediaInfoFromJSResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"videosPlayables"];
-  v5 = [v3 objectForKey:@"contentMetadata"];
+  responseCopy = response;
+  v4 = [responseCopy objectForKey:@"videosPlayables"];
+  v5 = [responseCopy objectForKey:@"contentMetadata"];
   v6 = [VUIVideosPlayable videosPlayablesFromDictionaries:v4 andMetadataDictionary:v5];
 
   if ([v6 count])
   {
-    v7 = [v3 vui_stringForKey:@"postPlayPlaybackType"];
+    v7 = [responseCopy vui_stringForKey:@"postPlayPlaybackType"];
     if ([v7 isEqualToString:@"nextEpisodeSameSeason"])
     {
       v8 = 10;

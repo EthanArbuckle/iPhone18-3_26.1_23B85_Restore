@@ -2,57 +2,57 @@
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)requiredThreadsPerMeshThreadgroup;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)requiredThreadsPerObjectThreadgroup;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)requiredThreadsPerTileThreadgroup;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)newFunctionHandle:(id *)a3 associatedWithBaseFunctionHandle:(id)a4 captureFunction:(id)a5;
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 captureDevice:(id)a4;
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 capturePipelineLibrary:(id)a4;
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 captureRenderPipelineState:(id)a4 additionalBinaryFunctions:(id)a5;
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 captureCompiler:(id)a5;
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 dynamicLinkingDescriptor:(id)a5 captureCompiler:(id)a6;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)newFunctionHandle:(id *)handle associatedWithBaseFunctionHandle:(id)functionHandle captureFunction:(id)function;
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object captureDevice:(id)device;
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object capturePipelineLibrary:(id)library;
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object captureRenderPipelineState:(id)state additionalBinaryFunctions:(id)functions;
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor captureCompiler:(id)compiler;
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor captureCompiler:(id)compiler;
 - (NSString)description;
-- (id)fragmentFunctionHandleWithFunction:(id)a3;
+- (id)fragmentFunctionHandleWithFunction:(id)function;
 - (id)functionHandleMap;
-- (id)functionHandleWithBinaryFunction:(id)a3 stage:(unint64_t)a4;
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4;
-- (id)functionHandleWithName:(id)a3 stage:(unint64_t)a4;
-- (id)functionReflectionWithFunctionDescriptor:(id)a3 stage:(unint64_t)a4;
-- (id)meshFunctionHandleWithFunction:(id)a3;
-- (id)newFragmentIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4;
-- (id)newMeshIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newObjectIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 fragmentAdditionalBinaryFunctions:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newTileIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newVertexIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromMeshStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromObjectStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4;
-- (id)objectFunctionHandleWithFunction:(id)a3;
-- (id)reflectionForFunctionDescriptor:(id)a3;
-- (id)tileFunctionHandleWithFunction:(id)a3;
-- (id)vertexFunctionHandleWithFunction:(id)a3;
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3;
+- (id)functionHandleWithBinaryFunction:(id)function stage:(unint64_t)stage;
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage;
+- (id)functionHandleWithName:(id)name stage:(unint64_t)stage;
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)meshFunctionHandleWithFunction:(id)function;
+- (id)newFragmentIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)newMeshIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newObjectIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions fragmentAdditionalBinaryFunctions:(id)binaryFunctions error:(id *)error;
+- (id)newRenderPipelineStateWithBinaryFunctions:(id)functions error:(id *)error;
+- (id)newTileIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newVertexIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromMeshStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromObjectStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)objectFunctionHandleWithFunction:(id)function;
+- (id)reflectionForFunctionDescriptor:(id)descriptor;
+- (id)tileFunctionHandleWithFunction:(id)function;
+- (id)vertexFunctionHandleWithFunction:(id)function;
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions;
 - (unint64_t)streamReference;
-- (void)commonInit:(id)a3 captureDevice:(id)a4;
+- (void)commonInit:(id)init captureDevice:(id)device;
 - (void)dealloc;
-- (void)swapObject:(id)a3;
+- (void)swapObject:(id)object;
 - (void)touch;
 @end
 
 @implementation CaptureMTLRenderPipelineState
 
-- (id)vertexFunctionHandleWithFunction:(id)a3
+- (id)vertexFunctionHandleWithFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   baseObject = self->_baseObject;
-  v6 = [v4 baseObject];
-  v7 = [(MTLRenderPipelineStateSPI *)baseObject vertexFunctionHandleWithFunction:v6];
+  baseObject = [functionCopy baseObject];
+  v7 = [(MTLRenderPipelineStateSPI *)baseObject vertexFunctionHandleWithFunction:baseObject];
 
   v30 = 0;
   if (!v7)
@@ -61,7 +61,7 @@
     goto LABEL_5;
   }
 
-  v8 = [(CaptureMTLRenderPipelineState *)self newFunctionHandle:&v30 associatedWithBaseFunctionHandle:v7 captureFunction:v4];
+  v8 = [(CaptureMTLRenderPipelineState *)self newFunctionHandle:&v30 associatedWithBaseFunctionHandle:v7 captureFunction:functionCopy];
   v9 = v30;
   if (v8)
   {
@@ -92,10 +92,10 @@ LABEL_5:
 
     *(v12 + 13) = v13;
     SaveMTLFunctionHandleInfo(&v27, v7);
-    v17 = [(CaptureMTLRenderPipelineState *)self traceStream];
-    if (v17)
+    traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+    if (traceStream)
     {
-      var0 = v17->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -103,10 +103,10 @@ LABEL_5:
       var0 = 0;
     }
 
-    v19 = [v30 traceStream];
-    if (v19)
+    traceStream2 = [v30 traceStream];
+    if (traceStream2)
     {
-      v20 = *v19;
+      v20 = *traceStream2;
     }
 
     else
@@ -114,10 +114,10 @@ LABEL_5:
       v20 = 0;
     }
 
-    v21 = [v4 traceStream];
-    if (v21)
+    traceStream3 = [functionCopy traceStream];
+    if (traceStream3)
     {
-      v22 = *v21;
+      v22 = *traceStream3;
     }
 
     else
@@ -143,12 +143,12 @@ LABEL_18:
   return v25;
 }
 
-- (id)tileFunctionHandleWithFunction:(id)a3
+- (id)tileFunctionHandleWithFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   baseObject = self->_baseObject;
-  v6 = [v4 baseObject];
-  v7 = [(MTLRenderPipelineStateSPI *)baseObject tileFunctionHandleWithFunction:v6];
+  baseObject = [functionCopy baseObject];
+  v7 = [(MTLRenderPipelineStateSPI *)baseObject tileFunctionHandleWithFunction:baseObject];
 
   v30 = 0;
   if (!v7)
@@ -157,7 +157,7 @@ LABEL_18:
     goto LABEL_5;
   }
 
-  v8 = [(CaptureMTLRenderPipelineState *)self newFunctionHandle:&v30 associatedWithBaseFunctionHandle:v7 captureFunction:v4];
+  v8 = [(CaptureMTLRenderPipelineState *)self newFunctionHandle:&v30 associatedWithBaseFunctionHandle:v7 captureFunction:functionCopy];
   v9 = v30;
   if (v8)
   {
@@ -188,10 +188,10 @@ LABEL_5:
 
     *(v12 + 13) = v13;
     SaveMTLFunctionHandleInfo(&v27, v7);
-    v17 = [(CaptureMTLRenderPipelineState *)self traceStream];
-    if (v17)
+    traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+    if (traceStream)
     {
-      var0 = v17->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -199,10 +199,10 @@ LABEL_5:
       var0 = 0;
     }
 
-    v19 = [v30 traceStream];
-    if (v19)
+    traceStream2 = [v30 traceStream];
+    if (traceStream2)
     {
-      v20 = *v19;
+      v20 = *traceStream2;
     }
 
     else
@@ -210,10 +210,10 @@ LABEL_5:
       v20 = 0;
     }
 
-    v21 = [v4 traceStream];
-    if (v21)
+    traceStream3 = [functionCopy traceStream];
+    if (traceStream3)
     {
-      v22 = *v21;
+      v22 = *traceStream3;
     }
 
     else
@@ -239,34 +239,34 @@ LABEL_18:
   return v25;
 }
 
-- (id)reflectionForFunctionDescriptor:(id)a3
+- (id)reflectionForFunctionDescriptor:(id)descriptor
 {
   baseObject = self->_baseObject;
-  v4 = unwrapMTL4FunctionDescriptor(a3);
+  v4 = unwrapMTL4FunctionDescriptor(descriptor);
   v5 = [(MTLRenderPipelineStateSPI *)baseObject reflectionForFunctionDescriptor:v4];
 
   return v5;
 }
 
-- (id)objectFunctionHandleWithFunction:(id)a3
+- (id)objectFunctionHandleWithFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_objectFunctionHandleWithFunction", "Mesh shaders with Function Pointers", 0, 0);
   baseObject = self->_baseObject;
-  v6 = [v4 baseObject];
+  baseObject = [functionCopy baseObject];
 
-  v7 = [(MTLRenderPipelineStateSPI *)baseObject objectFunctionHandleWithFunction:v6];
+  v7 = [(MTLRenderPipelineStateSPI *)baseObject objectFunctionHandleWithFunction:baseObject];
 
   return v7;
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage
 {
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
   traceContext = self->_traceContext;
-  v7 = a3;
+  descriptorCopy = descriptor;
   v29 = traceContext;
   *&v30 = 0;
   *(&v30 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -280,10 +280,10 @@ LABEL_18:
   *(&v31 + 11) = 0;
   HIBYTE(v31) = 0;
   baseObject = self->_baseObject;
-  v13 = [v7 copy];
-  v14 = [(MTLRenderPipelineStateSPI *)baseObject newVisibleFunctionTableWithDescriptor:v13 stage:a4];
+  v13 = [descriptorCopy copy];
+  v14 = [(MTLRenderPipelineStateSPI *)baseObject newVisibleFunctionTableWithDescriptor:v13 stage:stage];
 
-  v15 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v14 withDescriptor:v7];
+  v15 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v14 withDescriptor:descriptorCopy];
 
   if (v14)
   {
@@ -316,10 +316,10 @@ LABEL_18:
 
   *(v17 + 13) = v18;
   SaveMTLVisibleFunctionTableInfo(&v29, v14);
-  v22 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -327,10 +327,10 @@ LABEL_18:
     var0 = 0;
   }
 
-  v24 = [(CaptureMTLVisibleFunctionTable *)v16 traceStream];
-  if (v24)
+  traceStream2 = [(CaptureMTLVisibleFunctionTable *)v16 traceStream];
+  if (traceStream2)
   {
-    v25 = v24->var0;
+    v25 = traceStream2->var0;
   }
 
   else
@@ -341,7 +341,7 @@ LABEL_18:
   v26 = SaveMTLVisibleFunctionTableDescriptor(&v29, v15);
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a4;
+  *(v19 + 2) = stage;
   v19[24] = v26;
   *(v19 + 25) = 0;
   *(v19 + 7) = 0;
@@ -353,13 +353,13 @@ LABEL_18:
   return v16;
 }
 
-- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)descriptor
 {
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  descriptorCopy = descriptor;
   v27 = traceContext;
   *&v28 = 0;
   *(&v28 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -373,10 +373,10 @@ LABEL_18:
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
   baseObject = self->_baseObject;
-  v11 = [v5 copy];
+  v11 = [descriptorCopy copy];
   v12 = [(MTLRenderPipelineStateSPI *)baseObject newVisibleFunctionTableFromVertexStageWithDescriptor:v11];
 
-  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:v5];
+  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:descriptorCopy];
 
   if (v12)
   {
@@ -409,10 +409,10 @@ LABEL_18:
 
   *(v15 + 13) = v16;
   SaveMTLVisibleFunctionTableInfo(&v27, v12);
-  v20 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -420,10 +420,10 @@ LABEL_18:
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLVisibleFunctionTable *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLVisibleFunctionTable *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -445,13 +445,13 @@ LABEL_18:
   return v14;
 }
 
-- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)descriptor
 {
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  descriptorCopy = descriptor;
   v27 = traceContext;
   *&v28 = 0;
   *(&v28 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -465,10 +465,10 @@ LABEL_18:
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
   baseObject = self->_baseObject;
-  v11 = [v5 copy];
+  v11 = [descriptorCopy copy];
   v12 = [(MTLRenderPipelineStateSPI *)baseObject newVisibleFunctionTableFromTileStageWithDescriptor:v11];
 
-  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:v5];
+  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:descriptorCopy];
 
   if (v12)
   {
@@ -501,10 +501,10 @@ LABEL_18:
 
   *(v15 + 13) = v16;
   SaveMTLVisibleFunctionTableInfo(&v27, v12);
-  v20 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -512,10 +512,10 @@ LABEL_18:
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLVisibleFunctionTable *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLVisibleFunctionTable *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -537,13 +537,13 @@ LABEL_18:
   return v14;
 }
 
-- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)descriptor
 {
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  descriptorCopy = descriptor;
   v27 = traceContext;
   *&v28 = 0;
   *(&v28 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -557,10 +557,10 @@ LABEL_18:
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
   baseObject = self->_baseObject;
-  v11 = [v5 copy];
+  v11 = [descriptorCopy copy];
   v12 = [(MTLRenderPipelineStateSPI *)baseObject newVisibleFunctionTableFromFragmentStageWithDescriptor:v11];
 
-  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:v5];
+  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:descriptorCopy];
 
   if (v12)
   {
@@ -593,10 +593,10 @@ LABEL_18:
 
   *(v15 + 13) = v16;
   SaveMTLVisibleFunctionTableInfo(&v27, v12);
-  v20 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -604,10 +604,10 @@ LABEL_18:
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLVisibleFunctionTable *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLVisibleFunctionTable *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -629,13 +629,13 @@ LABEL_18:
   return v14;
 }
 
-- (id)newVertexIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newVertexIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  descriptorCopy = descriptor;
   v27 = traceContext;
   *&v28 = 0;
   *(&v28 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -649,10 +649,10 @@ LABEL_18:
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
   baseObject = self->_baseObject;
-  v11 = [v5 copy];
+  v11 = [descriptorCopy copy];
   v12 = [(MTLRenderPipelineStateSPI *)baseObject newVertexIntersectionFunctionTableWithDescriptor:v11];
 
-  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:v5];
+  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:descriptorCopy];
 
   if (v12)
   {
@@ -685,10 +685,10 @@ LABEL_18:
 
   *(v15 + 13) = v16;
   SaveMTLIntersectionFunctionTableInfo(&v27, v12);
-  v20 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -696,10 +696,10 @@ LABEL_18:
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLIntersectionFunctionTable *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLIntersectionFunctionTable *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -721,13 +721,13 @@ LABEL_18:
   return v14;
 }
 
-- (id)newTileIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newTileIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  descriptorCopy = descriptor;
   v27 = traceContext;
   *&v28 = 0;
   *(&v28 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -741,10 +741,10 @@ LABEL_18:
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
   baseObject = self->_baseObject;
-  v11 = [v5 copy];
+  v11 = [descriptorCopy copy];
   v12 = [(MTLRenderPipelineStateSPI *)baseObject newTileIntersectionFunctionTableWithDescriptor:v11];
 
-  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:v5];
+  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:descriptorCopy];
 
   if (v12)
   {
@@ -777,10 +777,10 @@ LABEL_18:
 
   *(v15 + 13) = v16;
   SaveMTLIntersectionFunctionTableInfo(&v27, v12);
-  v20 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -788,10 +788,10 @@ LABEL_18:
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLIntersectionFunctionTable *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLIntersectionFunctionTable *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -813,13 +813,13 @@ LABEL_18:
   return v14;
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage
 {
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
   traceContext = self->_traceContext;
-  v7 = a3;
+  descriptorCopy = descriptor;
   v29 = traceContext;
   *&v30 = 0;
   *(&v30 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -833,10 +833,10 @@ LABEL_18:
   *(&v31 + 11) = 0;
   HIBYTE(v31) = 0;
   baseObject = self->_baseObject;
-  v13 = [v7 copy];
-  v14 = [(MTLRenderPipelineStateSPI *)baseObject newIntersectionFunctionTableWithDescriptor:v13 stage:a4];
+  v13 = [descriptorCopy copy];
+  v14 = [(MTLRenderPipelineStateSPI *)baseObject newIntersectionFunctionTableWithDescriptor:v13 stage:stage];
 
-  v15 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v14 withDescriptor:v7];
+  v15 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v14 withDescriptor:descriptorCopy];
 
   if (v14)
   {
@@ -869,10 +869,10 @@ LABEL_18:
 
   *(v17 + 13) = v18;
   SaveMTLIntersectionFunctionTableInfo(&v29, v14);
-  v22 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -880,10 +880,10 @@ LABEL_18:
     var0 = 0;
   }
 
-  v24 = [(CaptureMTLIntersectionFunctionTable *)v16 traceStream];
-  if (v24)
+  traceStream2 = [(CaptureMTLIntersectionFunctionTable *)v16 traceStream];
+  if (traceStream2)
   {
-    v25 = v24->var0;
+    v25 = traceStream2->var0;
   }
 
   else
@@ -894,7 +894,7 @@ LABEL_18:
   v26 = SaveMTLIntersectionFunctionTableDescriptor(&v29, v15);
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a4;
+  *(v19 + 2) = stage;
   v19[24] = v26;
   *(v19 + 25) = 0;
   *(v19 + 7) = 0;
@@ -906,13 +906,13 @@ LABEL_18:
   return v16;
 }
 
-- (id)newFragmentIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newFragmentIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  descriptorCopy = descriptor;
   v27 = traceContext;
   *&v28 = 0;
   *(&v28 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -926,10 +926,10 @@ LABEL_18:
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
   baseObject = self->_baseObject;
-  v11 = [v5 copy];
+  v11 = [descriptorCopy copy];
   v12 = [(MTLRenderPipelineStateSPI *)baseObject newFragmentIntersectionFunctionTableWithDescriptor:v11];
 
-  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:v5];
+  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:descriptorCopy];
 
   if (v12)
   {
@@ -962,10 +962,10 @@ LABEL_18:
 
   *(v15 + 13) = v16;
   SaveMTLIntersectionFunctionTableInfo(&v27, v12);
-  v20 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -973,10 +973,10 @@ LABEL_18:
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLIntersectionFunctionTable *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLIntersectionFunctionTable *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -998,40 +998,40 @@ LABEL_18:
   return v14;
 }
 
-- (id)meshFunctionHandleWithFunction:(id)a3
+- (id)meshFunctionHandleWithFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_meshFunctionHandleWithFunction", "Mesh shaders with Function Pointers", 0, 0);
   baseObject = self->_baseObject;
-  v6 = [v4 baseObject];
+  baseObject = [functionCopy baseObject];
 
-  v7 = [(MTLRenderPipelineStateSPI *)baseObject meshFunctionHandleWithFunction:v6];
+  v7 = [(MTLRenderPipelineStateSPI *)baseObject meshFunctionHandleWithFunction:baseObject];
 
   return v7;
 }
 
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions
 {
   baseObject = self->_baseObject;
-  v5 = *a3;
+  v5 = *dimensions;
   return [(MTLRenderPipelineStateSPI *)baseObject imageblockMemoryLengthForDimensions:&v5];
 }
 
-- (id)functionReflectionWithFunctionDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor stage:(unint64_t)stage
 {
   baseObject = self->_baseObject;
-  v6 = unwrapMTL4FunctionDescriptor(a3);
-  v7 = [(MTLRenderPipelineStateSPI *)baseObject functionReflectionWithFunctionDescriptor:v6 stage:a4];
+  v6 = unwrapMTL4FunctionDescriptor(descriptor);
+  v7 = [(MTLRenderPipelineStateSPI *)baseObject functionReflectionWithFunctionDescriptor:v6 stage:stage];
 
   return v7;
 }
 
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage
 {
-  v6 = a3;
+  functionCopy = function;
   baseObject = self->_baseObject;
-  v8 = [v6 baseObject];
-  v9 = [(MTLRenderPipelineStateSPI *)baseObject functionHandleWithFunction:v8 stage:a4];
+  baseObject = [functionCopy baseObject];
+  v9 = [(MTLRenderPipelineStateSPI *)baseObject functionHandleWithFunction:baseObject stage:stage];
 
   v32 = 0;
   if (!v9)
@@ -1040,7 +1040,7 @@ LABEL_18:
     goto LABEL_5;
   }
 
-  v10 = [(CaptureMTLRenderPipelineState *)self newFunctionHandle:&v32 associatedWithBaseFunctionHandle:v9 captureFunction:v6];
+  v10 = [(CaptureMTLRenderPipelineState *)self newFunctionHandle:&v32 associatedWithBaseFunctionHandle:v9 captureFunction:functionCopy];
   v11 = v32;
   if (v10)
   {
@@ -1071,10 +1071,10 @@ LABEL_5:
 
     *(v14 + 13) = v15;
     SaveMTLFunctionHandleInfo(&v29, v9);
-    v19 = [(CaptureMTLRenderPipelineState *)self traceStream];
-    if (v19)
+    traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+    if (traceStream)
     {
-      var0 = v19->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1082,10 +1082,10 @@ LABEL_5:
       var0 = 0;
     }
 
-    v21 = [v32 traceStream];
-    if (v21)
+    traceStream2 = [v32 traceStream];
+    if (traceStream2)
     {
-      v22 = *v21;
+      v22 = *traceStream2;
     }
 
     else
@@ -1093,10 +1093,10 @@ LABEL_5:
       v22 = 0;
     }
 
-    v23 = [v6 traceStream];
-    if (v23)
+    traceStream3 = [functionCopy traceStream];
+    if (traceStream3)
     {
-      v24 = *v23;
+      v24 = *traceStream3;
     }
 
     else
@@ -1107,7 +1107,7 @@ LABEL_5:
     *v16 = var0;
     *(v16 + 1) = v22;
     *(v16 + 2) = v24;
-    *(v16 + 3) = a4;
+    *(v16 + 3) = stage;
     s();
     *v25 = v26;
     *(v25 + 8) = BYTE8(v31);
@@ -1123,24 +1123,24 @@ LABEL_18:
   return v27;
 }
 
-- (id)functionHandleWithBinaryFunction:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithBinaryFunction:(id)function stage:(unint64_t)stage
 {
-  v6 = a3;
+  functionCopy = function;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_functionHandleWithBinaryFunction_stage", "Metal 4 Additional Binary Functions", 0, 0);
   baseObject = self->_baseObject;
-  v8 = [v6 baseObject];
+  baseObject = [functionCopy baseObject];
 
-  v9 = [(MTLRenderPipelineStateSPI *)baseObject functionHandleWithBinaryFunction:v8 stage:a4];
+  v9 = [(MTLRenderPipelineStateSPI *)baseObject functionHandleWithBinaryFunction:baseObject stage:stage];
 
   return v9;
 }
 
-- (id)fragmentFunctionHandleWithFunction:(id)a3
+- (id)fragmentFunctionHandleWithFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   baseObject = self->_baseObject;
-  v6 = [v4 baseObject];
-  v7 = [(MTLRenderPipelineStateSPI *)baseObject fragmentFunctionHandleWithFunction:v6];
+  baseObject = [functionCopy baseObject];
+  v7 = [(MTLRenderPipelineStateSPI *)baseObject fragmentFunctionHandleWithFunction:baseObject];
 
   v30 = 0;
   if (!v7)
@@ -1149,7 +1149,7 @@ LABEL_18:
     goto LABEL_5;
   }
 
-  v8 = [(CaptureMTLRenderPipelineState *)self newFunctionHandle:&v30 associatedWithBaseFunctionHandle:v7 captureFunction:v4];
+  v8 = [(CaptureMTLRenderPipelineState *)self newFunctionHandle:&v30 associatedWithBaseFunctionHandle:v7 captureFunction:functionCopy];
   v9 = v30;
   if (v8)
   {
@@ -1180,10 +1180,10 @@ LABEL_5:
 
     *(v12 + 13) = v13;
     SaveMTLFunctionHandleInfo(&v27, v7);
-    v17 = [(CaptureMTLRenderPipelineState *)self traceStream];
-    if (v17)
+    traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+    if (traceStream)
     {
-      var0 = v17->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1191,10 +1191,10 @@ LABEL_5:
       var0 = 0;
     }
 
-    v19 = [v30 traceStream];
-    if (v19)
+    traceStream2 = [v30 traceStream];
+    if (traceStream2)
     {
-      v20 = *v19;
+      v20 = *traceStream2;
     }
 
     else
@@ -1202,10 +1202,10 @@ LABEL_5:
       v20 = 0;
     }
 
-    v21 = [v4 traceStream];
-    if (v21)
+    traceStream3 = [functionCopy traceStream];
+    if (traceStream3)
     {
-      v22 = *v21;
+      v22 = *traceStream3;
     }
 
     else
@@ -1257,10 +1257,10 @@ LABEL_18:
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1321,13 +1321,13 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLRenderPipelineStateSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLRenderPipelineStateSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -1382,26 +1382,26 @@ LABEL_18:
   }
 }
 
-- (id)functionHandleWithName:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithName:(id)name stage:(unint64_t)stage
 {
-  v6 = a3;
+  nameCopy = name;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_functionHandleWithName_stage", "Metal 4 Additional Binary Functions", 0, 0);
-  v7 = [(MTLRenderPipelineStateSPI *)self->_baseObject functionHandleWithName:v6 stage:a4];
+  v7 = [(MTLRenderPipelineStateSPI *)self->_baseObject functionHandleWithName:nameCopy stage:stage];
 
   return v7;
 }
 
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 fragmentAdditionalBinaryFunctions:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions fragmentAdditionalBinaryFunctions:(id)binaryFunctions error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  binaryFunctionsCopy = binaryFunctions;
+  functionsCopy = functions;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_newRenderPipelineStateWithAdditionalBinaryFunctions_fragmentAdditionalBinaryFunctions_error", "Binary Linking", 0, 0);
   baseObject = self->_baseObject;
-  v11 = unwrapNSArray(v9);
+  v11 = unwrapNSArray(functionsCopy);
 
-  v12 = unwrapNSArray(v8);
+  v12 = unwrapNSArray(binaryFunctionsCopy);
 
-  v13 = [(MTLRenderPipelineStateSPI *)baseObject newRenderPipelineStateWithAdditionalBinaryFunctions:v11 fragmentAdditionalBinaryFunctions:v12 error:a5];
+  v13 = [(MTLRenderPipelineStateSPI *)baseObject newRenderPipelineStateWithAdditionalBinaryFunctions:v11 fragmentAdditionalBinaryFunctions:v12 error:error];
   if (v13)
   {
     v14 = [[CaptureMTLRenderPipelineState alloc] initWithBaseObject:v13 captureRenderPipelineState:self additionalBinaryFunctions:0];
@@ -1415,14 +1415,14 @@ LABEL_18:
   return v14;
 }
 
-- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
-  v6 = a3;
+  functionsCopy = functions;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_newTileRenderPipelineStateWithAdditionalBinaryFunctions_error", "Binary Linking", 0, 0);
   baseObject = self->_baseObject;
-  v8 = unwrapNSArray(v6);
+  v8 = unwrapNSArray(functionsCopy);
 
-  v9 = [(MTLRenderPipelineStateSPI *)baseObject newTileRenderPipelineStateWithAdditionalBinaryFunctions:v8 error:a4];
+  v9 = [(MTLRenderPipelineStateSPI *)baseObject newTileRenderPipelineStateWithAdditionalBinaryFunctions:v8 error:error];
   if (v9)
   {
     v10 = [[CaptureMTLRenderPipelineState alloc] initWithBaseObject:v9 captureRenderPipelineState:self additionalBinaryFunctions:0];
@@ -1436,14 +1436,14 @@ LABEL_18:
   return v10;
 }
 
-- (id)newRenderPipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithBinaryFunctions:(id)functions error:(id *)error
 {
-  v6 = a3;
+  functionsCopy = functions;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_newRenderPipelineStateWithBinaryFunctions_error", "Metal 4 Additional Binary Functions", 0, 0);
   baseObject = self->_baseObject;
-  v8 = unwrapMTL4RenderPipelineBinaryFunctionsDescriptor(v6);
+  v8 = unwrapMTL4RenderPipelineBinaryFunctionsDescriptor(functionsCopy);
 
-  v9 = [(MTLRenderPipelineStateSPI *)baseObject newRenderPipelineStateWithBinaryFunctions:v8 error:a4];
+  v9 = [(MTLRenderPipelineStateSPI *)baseObject newRenderPipelineStateWithBinaryFunctions:v8 error:error];
   if (v9)
   {
     v10 = [[CaptureMTLRenderPipelineState alloc] initWithBaseObject:v9 captureDevice:self->_captureDevice];
@@ -1457,9 +1457,9 @@ LABEL_18:
   return v10;
 }
 
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
-  v6 = a3;
+  functionsCopy = functions;
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
@@ -1477,13 +1477,13 @@ LABEL_18:
   *(&v34 + 11) = 0;
   HIBYTE(v34) = 0;
   baseObject = self->_baseObject;
-  v13 = unwrapMTLRenderPipelineFunctionsDescriptor(v6);
-  v14 = [(MTLRenderPipelineStateSPI *)baseObject newRenderPipelineStateWithAdditionalBinaryFunctions:v13 error:a4];
+  v13 = unwrapMTLRenderPipelineFunctionsDescriptor(functionsCopy);
+  v14 = [(MTLRenderPipelineStateSPI *)baseObject newRenderPipelineStateWithAdditionalBinaryFunctions:v13 error:error];
 
   if (v14)
   {
     v15 = [CaptureMTLRenderPipelineState alloc];
-    v16 = [v6 copy];
+    v16 = [functionsCopy copy];
     v17 = [(CaptureMTLRenderPipelineState *)v15 initWithBaseObject:v14 captureRenderPipelineState:self additionalBinaryFunctions:v16];
   }
 
@@ -1521,10 +1521,10 @@ LABEL_18:
     SaveMTLRenderPipelineReflectionCommon(&v32, v17, reflection, v24, 0);
   }
 
-  v25 = [(CaptureMTLRenderPipelineState *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLRenderPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1532,11 +1532,11 @@ LABEL_18:
     var0 = 0;
   }
 
-  v27 = [(CaptureMTLRenderPipelineState *)v17 traceStream];
-  if (!v27)
+  traceStream2 = [(CaptureMTLRenderPipelineState *)v17 traceStream];
+  if (!traceStream2)
   {
     v28 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -1544,18 +1544,18 @@ LABEL_18:
     goto LABEL_14;
   }
 
-  v28 = v27->var0;
-  if (a4)
+  v28 = traceStream2->var0;
+  if (error)
   {
 LABEL_14:
-    a4 = *a4;
+    error = *error;
   }
 
 LABEL_15:
-  v29 = SaveMTLRenderPipelineFunctionsDescriptor(&v32, v6);
+  v29 = SaveMTLRenderPipelineFunctionsDescriptor(&v32, functionsCopy);
   *v20 = var0;
   *(v20 + 1) = v28;
-  *(v20 + 2) = a4;
+  *(v20 + 2) = error;
   v20[24] = v29;
   *(v20 + 25) = 0;
   *(v20 + 7) = 0;
@@ -1567,17 +1567,17 @@ LABEL_15:
   return v17;
 }
 
-- (id)newObjectIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newObjectIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_newObjectIntersectionFunctionTableWithDescriptor", "Mesh Shaders with Raytracing", 0, 0);
   baseObject = self->_baseObject;
-  v6 = [v4 copy];
+  v6 = [descriptorCopy copy];
   v7 = [(MTLRenderPipelineStateSPI *)baseObject newObjectIntersectionFunctionTableWithDescriptor:v6];
 
   if (v7)
   {
-    v8 = [[CaptureMTLIntersectionFunctionTable alloc] initWithBaseObject:v7 captureRenderPipelineState:self descriptor:v4];
+    v8 = [[CaptureMTLIntersectionFunctionTable alloc] initWithBaseObject:v7 captureRenderPipelineState:self descriptor:descriptorCopy];
   }
 
   else
@@ -1588,17 +1588,17 @@ LABEL_15:
   return v8;
 }
 
-- (id)newMeshIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newMeshIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_newMeshIntersectionFunctionTableWithDescriptor", "Mesh Shaders with Raytracing", 0, 0);
   baseObject = self->_baseObject;
-  v6 = [v4 copy];
+  v6 = [descriptorCopy copy];
   v7 = [(MTLRenderPipelineStateSPI *)baseObject newMeshIntersectionFunctionTableWithDescriptor:v6];
 
   if (v7)
   {
-    v8 = [[CaptureMTLIntersectionFunctionTable alloc] initWithBaseObject:v7 captureRenderPipelineState:self descriptor:v4];
+    v8 = [[CaptureMTLIntersectionFunctionTable alloc] initWithBaseObject:v7 captureRenderPipelineState:self descriptor:descriptorCopy];
   }
 
   else
@@ -1609,17 +1609,17 @@ LABEL_15:
   return v8;
 }
 
-- (id)newVisibleFunctionTableFromObjectStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromObjectStageWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_newVisibleFunctionTableFromObjectStageWithDescriptor", "Mesh Shaders with Function Pointers", 0, 0);
   baseObject = self->_baseObject;
-  v6 = [v4 copy];
+  v6 = [descriptorCopy copy];
   v7 = [(MTLRenderPipelineStateSPI *)baseObject newVisibleFunctionTableFromObjectStageWithDescriptor:v6];
 
   if (v7)
   {
-    v8 = [[CaptureMTLVisibleFunctionTable alloc] initWithBaseObject:v7 captureRenderPipelineState:self descriptor:v4];
+    v8 = [[CaptureMTLVisibleFunctionTable alloc] initWithBaseObject:v7 captureRenderPipelineState:self descriptor:descriptorCopy];
   }
 
   else
@@ -1630,17 +1630,17 @@ LABEL_15:
   return v8;
 }
 
-- (id)newVisibleFunctionTableFromMeshStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromMeshStageWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLRenderPipelineState_newVisibleFunctionTableFromMeshStageWithDescriptor", "Mesh Shaders with Function Pointers", 0, 0);
   baseObject = self->_baseObject;
-  v6 = [v4 copy];
+  v6 = [descriptorCopy copy];
   v7 = [(MTLRenderPipelineStateSPI *)baseObject newVisibleFunctionTableFromMeshStageWithDescriptor:v6];
 
   if (v7)
   {
-    v8 = [[CaptureMTLVisibleFunctionTable alloc] initWithBaseObject:v7 captureRenderPipelineState:self descriptor:v4];
+    v8 = [[CaptureMTLVisibleFunctionTable alloc] initWithBaseObject:v7 captureRenderPipelineState:self descriptor:descriptorCopy];
   }
 
   else
@@ -1651,24 +1651,24 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)newFunctionHandle:(id *)a3 associatedWithBaseFunctionHandle:(id)a4 captureFunction:(id)a5
+- (BOOL)newFunctionHandle:(id *)handle associatedWithBaseFunctionHandle:(id)functionHandle captureFunction:(id)function
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CaptureMTLRenderPipelineState *)self functionHandleMap];
-  v11 = [v10 objectForKey:v8];
-  v12 = *a3;
-  *a3 = v11;
+  functionHandleCopy = functionHandle;
+  functionCopy = function;
+  functionHandleMap = [(CaptureMTLRenderPipelineState *)self functionHandleMap];
+  v11 = [functionHandleMap objectForKey:functionHandleCopy];
+  v12 = *handle;
+  *handle = v11;
 
-  v13 = *a3;
-  if (!*a3)
+  v13 = *handle;
+  if (!*handle)
   {
-    v14 = [[CaptureMTLFunctionHandle alloc] initWithBaseObject:v8 captureRenderPipelineState:self captureFunction:v9];
-    v15 = *a3;
-    *a3 = v14;
+    v14 = [[CaptureMTLFunctionHandle alloc] initWithBaseObject:functionHandleCopy captureRenderPipelineState:self captureFunction:functionCopy];
+    v15 = *handle;
+    *handle = v14;
 
-    v16 = [(CaptureMTLRenderPipelineState *)self functionHandleMap];
-    [v16 setObject:*a3 forKey:v8];
+    functionHandleMap2 = [(CaptureMTLRenderPipelineState *)self functionHandleMap];
+    [functionHandleMap2 setObject:*handle forKey:functionHandleCopy];
   }
 
   return v13 == 0;
@@ -1689,140 +1689,140 @@ LABEL_15:
   return functionHandleMap;
 }
 
-- (void)swapObject:(id)a3
+- (void)swapObject:(id)object
 {
   p_baseObject = &self->_baseObject;
   v5 = self->_baseObject;
-  objc_storeStrong(p_baseObject, *(a3 + 1));
-  v11 = a3;
-  v6 = *(a3 + 1);
-  *(a3 + 1) = v5;
+  objc_storeStrong(p_baseObject, *(object + 1));
+  objectCopy = object;
+  v6 = *(object + 1);
+  *(object + 1) = v5;
   v7 = v5;
 
   v8 = p_baseObject[7];
-  p_baseObject[7] = v11[8];
-  v11[8] = v8;
+  p_baseObject[7] = objectCopy[8];
+  objectCopy[8] = v8;
   v9 = p_baseObject[7];
   v10 = *(v9 + 2);
   *(v9 + 2) = *(v8 + 2);
   *(v8 + 2) = v10;
 }
 
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 dynamicLinkingDescriptor:(id)a5 captureCompiler:(id)a6
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor captureCompiler:(id)compiler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  objectCopy = object;
+  descriptorCopy = descriptor;
+  linkingDescriptorCopy = linkingDescriptor;
+  compilerCopy = compiler;
   v17.receiver = self;
   v17.super_class = CaptureMTLRenderPipelineState;
   v14 = [(CaptureMTLRenderPipelineState *)&v17 init];
   if (v14)
   {
-    v15 = [v13 captureDevice];
-    [(CaptureMTLRenderPipelineState *)v14 commonInit:v10 captureDevice:v15];
+    captureDevice = [compilerCopy captureDevice];
+    [(CaptureMTLRenderPipelineState *)v14 commonInit:objectCopy captureDevice:captureDevice];
 
-    objc_storeStrong(&v14->_captureCompiler, a6);
-    objc_storeStrong(&v14->_mtl4Descriptor, a4);
-    objc_storeStrong(&v14->_dynamicLinkingDescriptor, a5);
+    objc_storeStrong(&v14->_captureCompiler, compiler);
+    objc_storeStrong(&v14->_mtl4Descriptor, descriptor);
+    objc_storeStrong(&v14->_dynamicLinkingDescriptor, linkingDescriptor);
   }
 
   return v14;
 }
 
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 captureCompiler:(id)a5
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor captureCompiler:(id)compiler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  descriptorCopy = descriptor;
+  compilerCopy = compiler;
   v14.receiver = self;
   v14.super_class = CaptureMTLRenderPipelineState;
   v11 = [(CaptureMTLRenderPipelineState *)&v14 init];
   if (v11)
   {
-    v12 = [v10 captureDevice];
-    [(CaptureMTLRenderPipelineState *)v11 commonInit:v8 captureDevice:v12];
+    captureDevice = [compilerCopy captureDevice];
+    [(CaptureMTLRenderPipelineState *)v11 commonInit:objectCopy captureDevice:captureDevice];
 
-    objc_storeStrong(&v11->_captureCompiler, a5);
-    objc_storeStrong(&v11->_mtl4Descriptor, a4);
+    objc_storeStrong(&v11->_captureCompiler, compiler);
+    objc_storeStrong(&v11->_mtl4Descriptor, descriptor);
   }
 
   return v11;
 }
 
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 capturePipelineLibrary:(id)a4
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object capturePipelineLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = CaptureMTLRenderPipelineState;
   v8 = [(CaptureMTLRenderPipelineState *)&v11 init];
   if (v8)
   {
-    v9 = [v7 device];
-    [(CaptureMTLRenderPipelineState *)v8 commonInit:v6 captureDevice:v9];
+    device = [libraryCopy device];
+    [(CaptureMTLRenderPipelineState *)v8 commonInit:objectCopy captureDevice:device];
 
-    objc_storeStrong(&v8->_retainedPipelineLibrary, a4);
+    objc_storeStrong(&v8->_retainedPipelineLibrary, library);
   }
 
   return v8;
 }
 
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 captureRenderPipelineState:(id)a4 additionalBinaryFunctions:(id)a5
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object captureRenderPipelineState:(id)state additionalBinaryFunctions:(id)functions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  stateCopy = state;
+  functionsCopy = functions;
   v14.receiver = self;
   v14.super_class = CaptureMTLRenderPipelineState;
   v11 = [(CaptureMTLRenderPipelineState *)&v14 init];
   if (v11)
   {
-    v12 = [v9 device];
-    [(CaptureMTLRenderPipelineState *)v11 commonInit:v8 captureDevice:v12];
+    device = [stateCopy device];
+    [(CaptureMTLRenderPipelineState *)v11 commonInit:objectCopy captureDevice:device];
 
-    objc_storeStrong(&v11->_capturePipelineState, a4);
-    objc_storeStrong(&v11->_additionalBinaryFunctions, a5);
+    objc_storeStrong(&v11->_capturePipelineState, state);
+    objc_storeStrong(&v11->_additionalBinaryFunctions, functions);
   }
 
   return v11;
 }
 
-- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLRenderPipelineState)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = CaptureMTLRenderPipelineState;
   v8 = [(CaptureMTLRenderPipelineState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CaptureMTLRenderPipelineState *)v8 commonInit:v6 captureDevice:v7];
+    [(CaptureMTLRenderPipelineState *)v8 commonInit:objectCopy captureDevice:deviceCopy];
   }
 
   return v9;
 }
 
-- (void)commonInit:(id)a3 captureDevice:(id)a4
+- (void)commonInit:(id)init captureDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  initCopy = init;
+  deviceCopy = device;
   baseObject = self->_baseObject;
-  self->_baseObject = v6;
-  v17 = v6;
+  self->_baseObject = initCopy;
+  v17 = initCopy;
 
   captureDevice = self->_captureDevice;
-  self->_captureDevice = v7;
-  v10 = v7;
+  self->_captureDevice = deviceCopy;
+  v10 = deviceCopy;
 
   capturePipelineState = self->_capturePipelineState;
   self->_capturePipelineState = 0;
 
-  v12 = [(CaptureMTLDevice *)v10 traceContext];
-  self->_traceContext = v12;
+  traceContext = [(CaptureMTLDevice *)v10 traceContext];
+  self->_traceContext = traceContext;
   v13 = DEVICEOBJECT(v17);
-  self->_traceStream = GTTraceContext_openStream(v12, v13, self);
+  self->_traceStream = GTTraceContext_openStream(traceContext, v13, self);
 
   additionalBinaryFunctions = self->_additionalBinaryFunctions;
   self->_additionalBinaryFunctions = 0;

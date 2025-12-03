@@ -1,7 +1,7 @@
 @interface MaskLayer
 - (_TtC7SwiftUI9MaskLayer)init;
-- (_TtC7SwiftUI9MaskLayer)initWithCoder:(id)a3;
-- (_TtC7SwiftUI9MaskLayer)initWithLayer:(id)a3;
+- (_TtC7SwiftUI9MaskLayer)initWithCoder:(id)coder;
+- (_TtC7SwiftUI9MaskLayer)initWithLayer:(id)layer;
 @end
 
 @implementation MaskLayer
@@ -19,7 +19,7 @@
   return [(MaskLayer *)&v6 init];
 }
 
-- (_TtC7SwiftUI9MaskLayer)initWithLayer:(id)a3
+- (_TtC7SwiftUI9MaskLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -40,7 +40,7 @@
   return v7;
 }
 
-- (_TtC7SwiftUI9MaskLayer)initWithCoder:(id)a3
+- (_TtC7SwiftUI9MaskLayer)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7SwiftUI9MaskLayer_clips) = MEMORY[0x1E69E7CC0];
@@ -50,8 +50,8 @@
   v6[2] = 0u;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(MaskLayer *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(MaskLayer *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

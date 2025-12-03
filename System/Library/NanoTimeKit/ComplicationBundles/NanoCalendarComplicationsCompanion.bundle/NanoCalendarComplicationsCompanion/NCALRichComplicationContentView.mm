@@ -1,20 +1,20 @@
 @interface NCALRichComplicationContentView
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (void)updateLayout;
 @end
 
 @implementation NCALRichComplicationContentView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v171.receiver = self;
   v171.super_class = NCALRichComplicationContentView;
   v5 = [(NCALRichComplicationContentView *)&v171 init];
   v6 = v5;
   if (v5)
   {
-    sub_EFF4(v5, v4);
+    sub_EFF4(v5, deviceCopy);
     v7 = *&qword_281F8;
     v8 = *&qword_28200;
     v9 = *&qword_28208;
@@ -24,12 +24,12 @@
     v11 = *&qword_28228;
     v12 = *&qword_28230;
     v161 = *&qword_28238;
-    v160 = v4;
+    v160 = deviceCopy;
     v13 = [CLKFont systemFontOfSize:CLKRoundedFontDesignName weight:*&qword_281F8 design:UIFontWeightBold];
-    v164 = [v13 CLKFontWithAlternativePunctuation];
+    cLKFontWithAlternativePunctuation = [v13 CLKFontWithAlternativePunctuation];
 
     v14 = [CLKFont systemFontOfSize:CLKRoundedFontDesignName weight:v7 design:UIFontWeightMedium];
-    v15 = [v14 CLKFontWithAlternativePunctuation];
+    cLKFontWithAlternativePunctuation2 = [v14 CLKFontWithAlternativePunctuation];
 
     v16 = objc_alloc_init(UILayoutGuide);
     v17 = objc_alloc_init(NCALRichComplicationPillView);
@@ -40,8 +40,8 @@
     v19 = +[UIColor whiteColor];
     [(NCALRichComplicationPillView *)v6->_verticalPill setBackgroundColor:v19];
 
-    v20 = [(NCALRichComplicationPillView *)v6->_verticalPill layer];
-    [v20 setCornerRadius:v10];
+    layer = [(NCALRichComplicationPillView *)v6->_verticalPill layer];
+    [layer setCornerRadius:v10];
 
     v21 = objc_alloc_init(NCALRichComplicationPillView);
     verticalPill2 = v6->_verticalPill2;
@@ -51,8 +51,8 @@
     v23 = +[UIColor whiteColor];
     [(NCALRichComplicationPillView *)v6->_verticalPill2 setBackgroundColor:v23];
 
-    v24 = [(NCALRichComplicationPillView *)v6->_verticalPill2 layer];
-    [v24 setCornerRadius:v10];
+    layer2 = [(NCALRichComplicationPillView *)v6->_verticalPill2 layer];
+    [layer2 setCornerRadius:v10];
 
     [(NCALRichComplicationPillView *)v6->_verticalPill2 setHidden:1];
     v25 = [CLKUIColoringLabel alloc];
@@ -68,7 +68,7 @@
     v31 = +[UIColor whiteColor];
     [(CLKUIColoringLabel *)v6->_headerLabel setTextColor:v31];
 
-    [(CLKUIColoringLabel *)v6->_headerLabel setFont:v164];
+    [(CLKUIColoringLabel *)v6->_headerLabel setFont:cLKFontWithAlternativePunctuation];
     v32 = [[CLKUIColoringLabel alloc] initWithFrame:4 options:{CGRectZero.origin.x, y, width, height}];
     bodyLabel = v6->_bodyLabel;
     v6->_bodyLabel = v32;
@@ -78,8 +78,8 @@
     v34 = +[UIColor whiteColor];
     [(CLKUIColoringLabel *)v6->_bodyLabel setTextColor:v34];
 
-    v168 = v15;
-    [(CLKUIColoringLabel *)v6->_bodyLabel setFont:v15];
+    v168 = cLKFontWithAlternativePunctuation2;
+    [(CLKUIColoringLabel *)v6->_bodyLabel setFont:cLKFontWithAlternativePunctuation2];
     v35 = [[CLKUIColoringLabel alloc] initWithFrame:4 options:{CGRectZero.origin.x, y, width, height}];
     body2Label = v6->_body2Label;
     v6->_body2Label = v35;
@@ -89,90 +89,90 @@
     v37 = +[UIColor grayColor];
     [(CLKUIColoringLabel *)v6->_body2Label setTextColor:v37];
 
-    [(CLKUIColoringLabel *)v6->_body2Label setFont:v15];
+    [(CLKUIColoringLabel *)v6->_body2Label setFont:cLKFontWithAlternativePunctuation2];
     [(NCALRichComplicationContentView *)v6 addLayoutGuide:v16];
     [(NCALRichComplicationContentView *)v6 addSubview:v6->_verticalPill];
     [(NCALRichComplicationContentView *)v6 addSubview:v6->_verticalPill2];
     [(NCALRichComplicationContentView *)v6 addSubview:v6->_headerLabel];
     [(NCALRichComplicationContentView *)v6 addSubview:v6->_bodyLabel];
     [(NCALRichComplicationContentView *)v6 addSubview:v6->_body2Label];
-    v153 = [v16 bottomAnchor];
-    v147 = [(NCALRichComplicationContentView *)v6 bottomAnchor];
-    v143 = [v153 constraintEqualToAnchor:v147 constant:-0.0];
+    bottomAnchor = [v16 bottomAnchor];
+    bottomAnchor2 = [(NCALRichComplicationContentView *)v6 bottomAnchor];
+    v143 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-0.0];
     v178[0] = v143;
-    v139 = [v16 leadingAnchor];
-    v135 = [(NCALRichComplicationContentView *)v6 leadingAnchor];
-    v132 = [v139 constraintEqualToAnchor:v135 constant:v12];
+    leadingAnchor = [v16 leadingAnchor];
+    leadingAnchor2 = [(NCALRichComplicationContentView *)v6 leadingAnchor];
+    v132 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v12];
     v178[1] = v132;
-    v129 = [v16 trailingAnchor];
-    v126 = [(NCALRichComplicationContentView *)v6 trailingAnchor];
-    v162 = [v129 constraintEqualToAnchor:v126 constant:-v161];
+    trailingAnchor = [v16 trailingAnchor];
+    trailingAnchor2 = [(NCALRichComplicationContentView *)v6 trailingAnchor];
+    v162 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v161];
     v178[2] = v162;
-    v124 = [v16 topAnchor];
-    v122 = [(NCALRichComplicationContentView *)v6 topAnchor];
-    v120 = [v124 constraintEqualToAnchor:v122 constant:0.0];
+    topAnchor = [v16 topAnchor];
+    topAnchor2 = [(NCALRichComplicationContentView *)v6 topAnchor];
+    v120 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v178[3] = v120;
-    v118 = [(CLKUIColoringLabel *)v6->_headerLabel topAnchor];
-    v117 = [v16 topAnchor];
-    v116 = [v118 constraintEqualToAnchor:v117];
+    topAnchor3 = [(CLKUIColoringLabel *)v6->_headerLabel topAnchor];
+    topAnchor4 = [v16 topAnchor];
+    v116 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v178[4] = v116;
-    v115 = [(CLKUIColoringLabel *)v6->_bodyLabel firstBaselineAnchor];
-    v114 = [(CLKUIColoringLabel *)v6->_headerLabel firstBaselineAnchor];
-    v113 = [v115 constraintEqualToAnchor:v114 constant:v8];
+    firstBaselineAnchor = [(CLKUIColoringLabel *)v6->_bodyLabel firstBaselineAnchor];
+    firstBaselineAnchor2 = [(CLKUIColoringLabel *)v6->_headerLabel firstBaselineAnchor];
+    v113 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:v8];
     v178[5] = v113;
-    v112 = [(CLKUIColoringLabel *)v6->_body2Label firstBaselineAnchor];
-    v111 = [(CLKUIColoringLabel *)v6->_bodyLabel firstBaselineAnchor];
-    v110 = [v112 constraintEqualToAnchor:v111 constant:v8];
+    firstBaselineAnchor3 = [(CLKUIColoringLabel *)v6->_body2Label firstBaselineAnchor];
+    firstBaselineAnchor4 = [(CLKUIColoringLabel *)v6->_bodyLabel firstBaselineAnchor];
+    v110 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4 constant:v8];
     v178[6] = v110;
-    v38 = [(CLKUIColoringLabel *)v6->_headerLabel trailingAnchor];
-    v39 = [v16 trailingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    trailingAnchor3 = [(CLKUIColoringLabel *)v6->_headerLabel trailingAnchor];
+    trailingAnchor4 = [v16 trailingAnchor];
+    v40 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v178[7] = v40;
-    v41 = [(CLKUIColoringLabel *)v6->_bodyLabel trailingAnchor];
+    trailingAnchor5 = [(CLKUIColoringLabel *)v6->_bodyLabel trailingAnchor];
     v42 = v16;
     v170 = v16;
-    v43 = [v16 trailingAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43];
+    trailingAnchor6 = [v16 trailingAnchor];
+    v44 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v178[8] = v44;
-    v45 = [(CLKUIColoringLabel *)v6->_body2Label trailingAnchor];
-    v46 = [v42 trailingAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46];
+    trailingAnchor7 = [(CLKUIColoringLabel *)v6->_body2Label trailingAnchor];
+    trailingAnchor8 = [v42 trailingAnchor];
+    v47 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v178[9] = v47;
     v158 = [NSArray arrayWithObjects:v178 count:10];
 
-    v154 = [(NCALRichComplicationPillView *)v6->_verticalPill topAnchor];
-    v148 = [(CLKUIColoringLabel *)v6->_headerLabel firstBaselineAnchor];
-    [v164 capHeight];
-    v144 = [v154 constraintEqualToAnchor:v148 constant:-v48 - v11];
+    topAnchor5 = [(NCALRichComplicationPillView *)v6->_verticalPill topAnchor];
+    firstBaselineAnchor5 = [(CLKUIColoringLabel *)v6->_headerLabel firstBaselineAnchor];
+    [cLKFontWithAlternativePunctuation capHeight];
+    v144 = [topAnchor5 constraintEqualToAnchor:firstBaselineAnchor5 constant:-v48 - v11];
     v177[0] = v144;
-    v140 = [(NCALRichComplicationPillView *)v6->_verticalPill leadingAnchor];
-    v136 = [v170 leadingAnchor];
-    v133 = [v140 constraintEqualToAnchor:v136];
+    leadingAnchor3 = [(NCALRichComplicationPillView *)v6->_verticalPill leadingAnchor];
+    leadingAnchor4 = [v170 leadingAnchor];
+    v133 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v177[1] = v133;
-    v130 = [(NCALRichComplicationPillView *)v6->_verticalPill widthAnchor];
-    v127 = [v130 constraintEqualToConstant:v156];
+    widthAnchor = [(NCALRichComplicationPillView *)v6->_verticalPill widthAnchor];
+    v127 = [widthAnchor constraintEqualToConstant:v156];
     v177[2] = v127;
-    v49 = [(CLKUIColoringLabel *)v6->_headerLabel leadingAnchor];
-    v50 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:v9];
+    leadingAnchor5 = [(CLKUIColoringLabel *)v6->_headerLabel leadingAnchor];
+    trailingAnchor9 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
+    v51 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor9 constant:v9];
     v177[3] = v51;
-    v52 = [(CLKUIColoringLabel *)v6->_bodyLabel leadingAnchor];
-    v53 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:v9];
+    leadingAnchor6 = [(CLKUIColoringLabel *)v6->_bodyLabel leadingAnchor];
+    trailingAnchor10 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
+    v54 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor10 constant:v9];
     v177[4] = v54;
-    v55 = [(CLKUIColoringLabel *)v6->_body2Label leadingAnchor];
-    v56 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56 constant:v9];
+    leadingAnchor7 = [(CLKUIColoringLabel *)v6->_body2Label leadingAnchor];
+    trailingAnchor11 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
+    v57 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor11 constant:v9];
     v177[5] = v57;
     v163 = [NSArray arrayWithObjects:v177 count:6];
 
-    v155 = [(NCALRichComplicationPillView *)v6->_verticalPill bottomAnchor];
-    v149 = [(CLKUIColoringLabel *)v6->_bodyLabel lastBaselineAnchor];
-    v58 = [v155 constraintEqualToAnchor:v149 constant:v11];
+    bottomAnchor3 = [(NCALRichComplicationPillView *)v6->_verticalPill bottomAnchor];
+    lastBaselineAnchor = [(CLKUIColoringLabel *)v6->_bodyLabel lastBaselineAnchor];
+    v58 = [bottomAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:v11];
     v176[0] = v58;
-    v59 = [(CLKUIColoringLabel *)v6->_bodyLabel bottomAnchor];
-    v60 = [v170 bottomAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    bottomAnchor4 = [(CLKUIColoringLabel *)v6->_bodyLabel bottomAnchor];
+    bottomAnchor5 = [v170 bottomAnchor];
+    v61 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v176[1] = v61;
     v62 = [NSArray arrayWithObjects:v176 count:2];
     v63 = [v163 copy];
@@ -180,13 +180,13 @@
     pillAlignedToBody1BottomConstraints = v6->_pillAlignedToBody1BottomConstraints;
     v6->_pillAlignedToBody1BottomConstraints = v64;
 
-    v150 = [(NCALRichComplicationPillView *)v6->_verticalPill bottomAnchor];
-    v66 = [(CLKUIColoringLabel *)v6->_body2Label lastBaselineAnchor];
-    v67 = [v150 constraintEqualToAnchor:v66 constant:v11];
+    bottomAnchor6 = [(NCALRichComplicationPillView *)v6->_verticalPill bottomAnchor];
+    lastBaselineAnchor2 = [(CLKUIColoringLabel *)v6->_body2Label lastBaselineAnchor];
+    v67 = [bottomAnchor6 constraintEqualToAnchor:lastBaselineAnchor2 constant:v11];
     v175[0] = v67;
-    v68 = [(CLKUIColoringLabel *)v6->_body2Label bottomAnchor];
-    v69 = [v170 bottomAnchor];
-    v70 = [v68 constraintEqualToAnchor:v69];
+    bottomAnchor7 = [(CLKUIColoringLabel *)v6->_body2Label bottomAnchor];
+    bottomAnchor8 = [v170 bottomAnchor];
+    v70 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     v175[1] = v70;
     v71 = [NSArray arrayWithObjects:v175 count:2];
     v72 = [v163 copy];
@@ -194,83 +194,83 @@
     pillAlignedToBody2BottomConstraints = v6->_pillAlignedToBody2BottomConstraints;
     v6->_pillAlignedToBody2BottomConstraints = v73;
 
-    v151 = [(NCALRichComplicationPillView *)v6->_verticalPill topAnchor];
-    v145 = [(CLKUIColoringLabel *)v6->_bodyLabel firstBaselineAnchor];
+    topAnchor6 = [(NCALRichComplicationPillView *)v6->_verticalPill topAnchor];
+    firstBaselineAnchor6 = [(CLKUIColoringLabel *)v6->_bodyLabel firstBaselineAnchor];
     [v168 capHeight];
-    v141 = [v151 constraintEqualToAnchor:v145 constant:-v75 - v11];
+    v141 = [topAnchor6 constraintEqualToAnchor:firstBaselineAnchor6 constant:-v75 - v11];
     v174[0] = v141;
-    v137 = [(NCALRichComplicationPillView *)v6->_verticalPill leadingAnchor];
-    v134 = [v170 leadingAnchor];
-    v131 = [v137 constraintEqualToAnchor:v134];
+    leadingAnchor8 = [(NCALRichComplicationPillView *)v6->_verticalPill leadingAnchor];
+    leadingAnchor9 = [v170 leadingAnchor];
+    v131 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v174[1] = v131;
-    v128 = [(NCALRichComplicationPillView *)v6->_verticalPill widthAnchor];
-    v125 = [v128 constraintEqualToConstant:v156];
+    widthAnchor2 = [(NCALRichComplicationPillView *)v6->_verticalPill widthAnchor];
+    v125 = [widthAnchor2 constraintEqualToConstant:v156];
     v174[2] = v125;
-    v123 = [(NCALRichComplicationPillView *)v6->_verticalPill bottomAnchor];
-    v121 = [(CLKUIColoringLabel *)v6->_bodyLabel lastBaselineAnchor];
-    v119 = [v123 constraintEqualToAnchor:v121 constant:v11];
+    bottomAnchor9 = [(NCALRichComplicationPillView *)v6->_verticalPill bottomAnchor];
+    lastBaselineAnchor3 = [(CLKUIColoringLabel *)v6->_bodyLabel lastBaselineAnchor];
+    v119 = [bottomAnchor9 constraintEqualToAnchor:lastBaselineAnchor3 constant:v11];
     v174[3] = v119;
-    v76 = [(CLKUIColoringLabel *)v6->_headerLabel leadingAnchor];
-    v77 = [v170 leadingAnchor];
-    v78 = [v76 constraintEqualToAnchor:v77 constant:v159];
+    leadingAnchor10 = [(CLKUIColoringLabel *)v6->_headerLabel leadingAnchor];
+    leadingAnchor11 = [v170 leadingAnchor];
+    v78 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11 constant:v159];
     v174[4] = v78;
-    v79 = [(CLKUIColoringLabel *)v6->_bodyLabel leadingAnchor];
-    v80 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
-    v81 = [v79 constraintEqualToAnchor:v80 constant:v9];
+    leadingAnchor12 = [(CLKUIColoringLabel *)v6->_bodyLabel leadingAnchor];
+    trailingAnchor12 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
+    v81 = [leadingAnchor12 constraintEqualToAnchor:trailingAnchor12 constant:v9];
     v174[5] = v81;
-    v82 = [(CLKUIColoringLabel *)v6->_body2Label leadingAnchor];
-    v83 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
-    v84 = [v82 constraintEqualToAnchor:v83 constant:v9];
+    leadingAnchor13 = [(CLKUIColoringLabel *)v6->_body2Label leadingAnchor];
+    trailingAnchor13 = [(NCALRichComplicationPillView *)v6->_verticalPill trailingAnchor];
+    v84 = [leadingAnchor13 constraintEqualToAnchor:trailingAnchor13 constant:v9];
     v174[6] = v84;
     v85 = [NSArray arrayWithObjects:v174 count:7];
     conflictEventsPillAlignmentConstraints = v6->_conflictEventsPillAlignmentConstraints;
     v6->_conflictEventsPillAlignmentConstraints = v85;
 
-    v165 = [(NCALRichComplicationPillView *)v6->_verticalPill2 topAnchor];
-    v152 = [(CLKUIColoringLabel *)v6->_body2Label firstBaselineAnchor];
+    topAnchor7 = [(NCALRichComplicationPillView *)v6->_verticalPill2 topAnchor];
+    firstBaselineAnchor7 = [(CLKUIColoringLabel *)v6->_body2Label firstBaselineAnchor];
     [v168 capHeight];
-    v146 = [v165 constraintEqualToAnchor:v152 constant:-v87 - v11];
+    v146 = [topAnchor7 constraintEqualToAnchor:firstBaselineAnchor7 constant:-v87 - v11];
     v173[0] = v146;
-    v142 = [(NCALRichComplicationPillView *)v6->_verticalPill2 leadingAnchor];
-    v138 = [v170 leadingAnchor];
-    v88 = [v142 constraintEqualToAnchor:v138];
+    leadingAnchor14 = [(NCALRichComplicationPillView *)v6->_verticalPill2 leadingAnchor];
+    leadingAnchor15 = [v170 leadingAnchor];
+    v88 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
     v173[1] = v88;
-    v89 = [(NCALRichComplicationPillView *)v6->_verticalPill2 widthAnchor];
-    v90 = [v89 constraintEqualToConstant:v156];
+    widthAnchor3 = [(NCALRichComplicationPillView *)v6->_verticalPill2 widthAnchor];
+    v90 = [widthAnchor3 constraintEqualToConstant:v156];
     v173[2] = v90;
-    v91 = [(NCALRichComplicationPillView *)v6->_verticalPill2 bottomAnchor];
-    v92 = [(CLKUIColoringLabel *)v6->_body2Label lastBaselineAnchor];
-    v93 = [v91 constraintEqualToAnchor:v92 constant:v11];
+    bottomAnchor10 = [(NCALRichComplicationPillView *)v6->_verticalPill2 bottomAnchor];
+    lastBaselineAnchor4 = [(CLKUIColoringLabel *)v6->_body2Label lastBaselineAnchor];
+    v93 = [bottomAnchor10 constraintEqualToAnchor:lastBaselineAnchor4 constant:v11];
     v173[3] = v93;
-    v94 = [(CLKUIColoringLabel *)v6->_body2Label bottomAnchor];
-    v95 = [v170 bottomAnchor];
-    v96 = [v94 constraintEqualToAnchor:v95];
+    bottomAnchor11 = [(CLKUIColoringLabel *)v6->_body2Label bottomAnchor];
+    bottomAnchor12 = [v170 bottomAnchor];
+    v96 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12];
     v173[4] = v96;
     v97 = [NSArray arrayWithObjects:v173 count:5];
     conflictEventsPill2AlignmentConstraints = v6->_conflictEventsPill2AlignmentConstraints;
     v6->_conflictEventsPill2AlignmentConstraints = v97;
 
-    v167 = [(CLKUIColoringLabel *)v6->_headerLabel leadingAnchor];
-    v166 = [v170 leadingAnchor];
-    v157 = [v167 constraintEqualToAnchor:v166 constant:v159];
+    leadingAnchor16 = [(CLKUIColoringLabel *)v6->_headerLabel leadingAnchor];
+    leadingAnchor17 = [v170 leadingAnchor];
+    v157 = [leadingAnchor16 constraintEqualToAnchor:leadingAnchor17 constant:v159];
     v172[0] = v157;
-    v169 = [(CLKUIColoringLabel *)v6->_bodyLabel leadingAnchor];
-    v99 = [v170 leadingAnchor];
-    v100 = [v169 constraintEqualToAnchor:v99 constant:v159];
+    leadingAnchor18 = [(CLKUIColoringLabel *)v6->_bodyLabel leadingAnchor];
+    leadingAnchor19 = [v170 leadingAnchor];
+    v100 = [leadingAnchor18 constraintEqualToAnchor:leadingAnchor19 constant:v159];
     v172[1] = v100;
-    v101 = [(CLKUIColoringLabel *)v6->_body2Label leadingAnchor];
-    v102 = [v170 leadingAnchor];
-    v103 = [v101 constraintEqualToAnchor:v102 constant:v159];
+    leadingAnchor20 = [(CLKUIColoringLabel *)v6->_body2Label leadingAnchor];
+    leadingAnchor21 = [v170 leadingAnchor];
+    v103 = [leadingAnchor20 constraintEqualToAnchor:leadingAnchor21 constant:v159];
     v172[2] = v103;
-    v104 = [(CLKUIColoringLabel *)v6->_body2Label bottomAnchor];
-    v105 = [v170 bottomAnchor];
-    v106 = [v104 constraintEqualToAnchor:v105];
+    bottomAnchor13 = [(CLKUIColoringLabel *)v6->_body2Label bottomAnchor];
+    bottomAnchor14 = [v170 bottomAnchor];
+    v106 = [bottomAnchor13 constraintEqualToAnchor:bottomAnchor14];
     v172[3] = v106;
     v107 = [NSArray arrayWithObjects:v172 count:4];
     noPillConstraints = v6->_noPillConstraints;
     v6->_noPillConstraints = v107;
 
-    v4 = v160;
+    deviceCopy = v160;
     [NSLayoutConstraint activateConstraints:v158];
     [NSLayoutConstraint activateConstraints:v6->_pillAlignedToBody2BottomConstraints];
   }
@@ -280,9 +280,9 @@
 
 - (void)updateLayout
 {
-  v4 = [(NCALRichComplicationContentView *)self hasConflicts];
-  v5 = [(NCALRichComplicationContentView *)self body2Label];
-  v6 = [v5 textProvider];
+  hasConflicts = [(NCALRichComplicationContentView *)self hasConflicts];
+  body2Label = [(NCALRichComplicationContentView *)self body2Label];
+  textProvider = [body2Label textProvider];
 
   [NSLayoutConstraint deactivateConstraints:self->_pillAlignedToBody1BottomConstraints];
   [NSLayoutConstraint deactivateConstraints:self->_pillAlignedToBody2BottomConstraints];
@@ -290,11 +290,11 @@
   [NSLayoutConstraint deactivateConstraints:self->_conflictEventsPill2AlignmentConstraints];
   p_noPillConstraints = &self->_noPillConstraints;
   [NSLayoutConstraint deactivateConstraints:self->_noPillConstraints];
-  v8 = [(NCALRichComplicationContentView *)self firstEventColor];
-  if (v8)
+  firstEventColor = [(NCALRichComplicationContentView *)self firstEventColor];
+  if (firstEventColor)
   {
-    v2 = [(NCALRichComplicationContentView *)self firstEventColor];
-    v19 = v2;
+    firstEventColor2 = [(NCALRichComplicationContentView *)self firstEventColor];
+    v19 = firstEventColor2;
     v9 = [NSArray arrayWithObjects:&v19 count:1];
   }
 
@@ -303,21 +303,21 @@
     v9 = 0;
   }
 
-  v10 = [(NCALRichComplicationContentView *)self verticalPill];
-  [v10 setPillColors:v9];
+  verticalPill = [(NCALRichComplicationContentView *)self verticalPill];
+  [verticalPill setPillColors:v9];
 
-  if (v8)
+  if (firstEventColor)
   {
   }
 
-  v11 = [(NCALRichComplicationContentView *)self otherEventColors];
-  v12 = [(NCALRichComplicationContentView *)self verticalPill2];
-  [v12 setPillColors:v11];
+  otherEventColors = [(NCALRichComplicationContentView *)self otherEventColors];
+  verticalPill2 = [(NCALRichComplicationContentView *)self verticalPill2];
+  [verticalPill2 setPillColors:otherEventColors];
 
-  v13 = [(NCALRichComplicationContentView *)self verticalPill2];
-  [v13 setHidden:v4 ^ 1];
+  verticalPill22 = [(NCALRichComplicationContentView *)self verticalPill2];
+  [verticalPill22 setHidden:hasConflicts ^ 1];
 
-  if (v6)
+  if (textProvider)
   {
     v14 = 1;
   }
@@ -327,10 +327,10 @@
     v14 = 2;
   }
 
-  v15 = [(NCALRichComplicationContentView *)self bodyLabel];
-  [v15 setNumberOfLines:v14];
+  bodyLabel = [(NCALRichComplicationContentView *)self bodyLabel];
+  [bodyLabel setNumberOfLines:v14];
 
-  if ((v4 ^ 1))
+  if ((hasConflicts ^ 1))
   {
     +[UIColor grayColor];
   }
@@ -340,21 +340,21 @@
     +[UIColor whiteColor];
   }
   v16 = ;
-  v17 = [(NCALRichComplicationContentView *)self body2Label];
-  [v17 setTextColor:v16];
+  body2Label2 = [(NCALRichComplicationContentView *)self body2Label];
+  [body2Label2 setTextColor:v16];
 
-  v18 = [(NCALRichComplicationContentView *)self body2Label];
-  [v18 setHidden:v6 == 0];
+  body2Label3 = [(NCALRichComplicationContentView *)self body2Label];
+  [body2Label3 setHidden:textProvider == 0];
 
   if ([(NCALRichComplicationContentView *)self eventCount])
   {
-    if (v4)
+    if (hasConflicts)
     {
       [NSLayoutConstraint activateConstraints:self->_conflictEventsPillAlignmentConstraints];
       p_noPillConstraints = &self->_conflictEventsPill2AlignmentConstraints;
     }
 
-    else if (v6)
+    else if (textProvider)
     {
       p_noPillConstraints = &self->_pillAlignedToBody2BottomConstraints;
     }

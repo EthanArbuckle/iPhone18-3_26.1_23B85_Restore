@@ -1,23 +1,23 @@
 @interface NTKCBuildNumberComplicationDataSource
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 forDevice:(id)a4;
-- (NTKCBuildNumberComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
++ (BOOL)acceptsComplicationType:(unint64_t)type forDevice:(id)device;
+- (NTKCBuildNumberComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)_currentTimelineEntry;
 - (id)currentSwitcherTemplate;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
 @end
 
 @implementation NTKCBuildNumberComplicationDataSource
 
-- (NTKCBuildNumberComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKCBuildNumberComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v8 = a5;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = NTKCBuildNumberComplicationDataSource;
-  v9 = [(CLKCComplicationDataSource *)&v15 initWithComplication:a3 family:a4 forDevice:v8];
+  v9 = [(CLKCComplicationDataSource *)&v15 initWithComplication:complication family:family forDevice:deviceCopy];
   if (v9)
   {
-    v10 = [v8 pdrDevice];
-    v11 = [v10 valueForProperty:*MEMORY[0x277D37BF8]];
+    pdrDevice = [deviceCopy pdrDevice];
+    v11 = [pdrDevice valueForProperty:*MEMORY[0x277D37BF8]];
     companionBuild = v9->companionBuild;
     v9->companionBuild = v11;
 
@@ -37,24 +37,24 @@
 
 - (id)currentSwitcherTemplate
 {
-  v2 = [(NTKCBuildNumberComplicationDataSource *)self _currentTimelineEntry];
-  v3 = [v2 complicationTemplate];
+  _currentTimelineEntry = [(NTKCBuildNumberComplicationDataSource *)self _currentTimelineEntry];
+  complicationTemplate = [_currentTimelineEntry complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(NTKCBuildNumberComplicationDataSource *)self _currentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  _currentTimelineEntry = [(NTKCBuildNumberComplicationDataSource *)self _currentTimelineEntry];
+  (*(handler + 2))(handlerCopy, _currentTimelineEntry);
 }
 
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationType:(unint64_t)type forDevice:(id)device
 {
-  if (a3 == 53)
+  if (type == 53)
   {
-    return NTKInternalBuild(a1, a2, 53, a4);
+    return NTKInternalBuild(self, a2, 53, device);
   }
 
   else

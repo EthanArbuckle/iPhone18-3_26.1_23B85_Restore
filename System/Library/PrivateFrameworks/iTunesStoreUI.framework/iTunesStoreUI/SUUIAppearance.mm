@@ -5,7 +5,7 @@
 + (id)_defaultDestructiveButtonAppearance;
 + (id)_defaultDoneButtonAppearance;
 + (id)_defaultForwardButtonAppearance;
-+ (id)_defaultShadowWithColor:(id)a3 offset:(CGSize)a4;
++ (id)_defaultShadowWithColor:(id)color offset:(CGSize)offset;
 + (id)_defaultTabBarAppearance;
 + (id)defaultAppearance;
 - (SUControlAppearance)backButtonAppearance;
@@ -14,25 +14,25 @@
 - (SUControlAppearance)exitStoreButtonAppearance;
 - (SUControlAppearance)forwardButtonAppearance;
 - (SUToolbarAppearance)toolbarAppearance;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)navigationBarBackgroundImageForBarMetrics:(int64_t)a3;
-- (id)navigationButtonAppearanceForStyle:(int64_t)a3;
-- (id)segmentedControlAppearanceForStyle:(int64_t)a3 tintStyle:(int64_t)a4;
-- (void)_styleBackBarButtonItem:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)navigationBarBackgroundImageForBarMetrics:(int64_t)metrics;
+- (id)navigationButtonAppearanceForStyle:(int64_t)style;
+- (id)segmentedControlAppearanceForStyle:(int64_t)style tintStyle:(int64_t)tintStyle;
+- (void)_styleBackBarButtonItem:(id)item;
 - (void)dealloc;
-- (void)setNavigationBarBackgroundImage:(id)a3 forBarMetrics:(int64_t)a4;
-- (void)setNavigationButtonAppearance:(id)a3 forStyle:(int64_t)a4;
-- (void)setSegmentedControlAppearance:(id)a3 forStyle:(int64_t)a4 tintStyle:(int64_t)a5;
-- (void)styleBarButtonItem:(id)a3;
-- (void)styleConfirmationButtonItem:(id)a3;
-- (void)styleDestructiveButton:(id)a3;
-- (void)styleExitStoreButtonItem:(id)a3;
-- (void)styleForwardButtonItem:(id)a3;
-- (void)styleNavigationBar:(id)a3;
-- (void)styleSegmentedControl:(id)a3 tintStyle:(int64_t)a4;
-- (void)styleTabBar:(id)a3;
-- (void)styleTabBarItem:(id)a3;
-- (void)styleToolbar:(id)a3;
+- (void)setNavigationBarBackgroundImage:(id)image forBarMetrics:(int64_t)metrics;
+- (void)setNavigationButtonAppearance:(id)appearance forStyle:(int64_t)style;
+- (void)setSegmentedControlAppearance:(id)appearance forStyle:(int64_t)style tintStyle:(int64_t)tintStyle;
+- (void)styleBarButtonItem:(id)item;
+- (void)styleConfirmationButtonItem:(id)item;
+- (void)styleDestructiveButton:(id)button;
+- (void)styleExitStoreButtonItem:(id)item;
+- (void)styleForwardButtonItem:(id)item;
+- (void)styleNavigationBar:(id)bar;
+- (void)styleSegmentedControl:(id)control tintStyle:(int64_t)style;
+- (void)styleTabBar:(id)bar;
+- (void)styleTabBarItem:(id)item;
+- (void)styleToolbar:(id)toolbar;
 @end
 
 @implementation SUUIAppearance
@@ -55,11 +55,11 @@
   v11 = [objc_msgSend(MEMORY[0x1E69DCAB8] imageNamed:@"UINavigationBarMiniDefaultBackground" inBundle:{v4), "resizableImageWithCapInsets:", v6, v7, v8, v9}];
   [v3 setNavigationBarBackgroundImage:v10 forBarMetrics:0];
   [v3 setNavigationBarBackgroundImage:v11 forBarMetrics:1];
-  [v3 setTabBarAppearance:{objc_msgSend(a1, "_defaultTabBarAppearance")}];
+  [v3 setTabBarAppearance:{objc_msgSend(self, "_defaultTabBarAppearance")}];
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = [MEMORY[0x1E69DC888] colorWithWhite:0.784313725 alpha:1.0];
   [v12 setObject:v13 forKey:*MEMORY[0x1E69DB650]];
-  v14 = [a1 _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
+  v14 = [self _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
   [v12 setObject:v14 forKey:*MEMORY[0x1E69DB6A8]];
   [v3 setNavigationBarTitleTextAttributes:v12];
 
@@ -189,42 +189,42 @@
   return v4;
 }
 
-- (id)navigationBarBackgroundImageForBarMetrics:(int64_t)a3
+- (id)navigationBarBackgroundImageForBarMetrics:(int64_t)metrics
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:metrics];
   v5 = [(NSMutableDictionary *)self->_navigationBarBackgroundImages objectForKey:v4];
 
   return v5;
 }
 
-- (id)navigationButtonAppearanceForStyle:(int64_t)a3
+- (id)navigationButtonAppearanceForStyle:(int64_t)style
 {
-  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:style];
   v6 = [-[NSMutableDictionary objectForKey:](self->_navigationButtonAppearance objectForKey:{v5), "copy"}];
   if (!v6)
   {
     if (self->_isDefaultAppearance)
     {
-      if (a3 == 2)
+      if (style == 2)
       {
-        v7 = [objc_opt_class() _defaultDoneButtonAppearance];
+        _defaultDoneButtonAppearance = [objc_opt_class() _defaultDoneButtonAppearance];
       }
 
       else
       {
-        if (a3)
+        if (style)
         {
           goto LABEL_9;
         }
 
-        v7 = [objc_opt_class() _defaultButtonAppearance];
+        _defaultDoneButtonAppearance = [objc_opt_class() _defaultButtonAppearance];
       }
 
-      v8 = v7;
-      if (v7)
+      v8 = _defaultDoneButtonAppearance;
+      if (_defaultDoneButtonAppearance)
       {
-        v6 = [v7 copy];
-        [(SUUIAppearance *)self setNavigationButtonAppearance:v8 forStyle:a3];
+        v6 = [_defaultDoneButtonAppearance copy];
+        [(SUUIAppearance *)self setNavigationButtonAppearance:v8 forStyle:style];
         goto LABEL_10;
       }
     }
@@ -238,7 +238,7 @@ LABEL_10:
   return v6;
 }
 
-- (id)segmentedControlAppearanceForStyle:(int64_t)a3 tintStyle:(int64_t)a4
+- (id)segmentedControlAppearanceForStyle:(int64_t)style tintStyle:(int64_t)tintStyle
 {
   v7 = [SUUIAppearance _copySegmentedControlKeyWithStyle:"_copySegmentedControlKeyWithStyle:tintStyle:" tintStyle:?];
   v8 = [-[NSMutableDictionary objectForKey:](self->_segmentedControlAppearance objectForKey:{v7), "copy"}];
@@ -246,14 +246,14 @@ LABEL_10:
   {
     if (self->_isDefaultAppearance)
     {
-      if (a3 == 7)
+      if (style == 7)
       {
-        v9 = [SUSegmentedControlAppearance defaultOptionsAppearanceForTintStyle:a4];
+        v9 = [SUSegmentedControlAppearance defaultOptionsAppearanceForTintStyle:tintStyle];
       }
 
       else
       {
-        if (a3 != 2)
+        if (style != 2)
         {
           goto LABEL_9;
         }
@@ -265,7 +265,7 @@ LABEL_10:
       if (v9)
       {
         v8 = [v9 copy];
-        [(SUUIAppearance *)self setSegmentedControlAppearance:v10 forStyle:a3 tintStyle:a4];
+        [(SUUIAppearance *)self setSegmentedControlAppearance:v10 forStyle:style tintStyle:tintStyle];
         goto LABEL_10;
       }
     }
@@ -279,12 +279,12 @@ LABEL_10:
   return v8;
 }
 
-- (void)setNavigationBarBackgroundImage:(id)a3 forBarMetrics:(int64_t)a4
+- (void)setNavigationBarBackgroundImage:(id)image forBarMetrics:(int64_t)metrics
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:metrics];
   navigationBarBackgroundImages = self->_navigationBarBackgroundImages;
   v8 = v6;
-  if (a3)
+  if (image)
   {
     if (!navigationBarBackgroundImages)
     {
@@ -293,7 +293,7 @@ LABEL_10:
       self->_navigationBarBackgroundImages = navigationBarBackgroundImages;
     }
 
-    [(NSMutableDictionary *)navigationBarBackgroundImages setObject:a3 forKey:v6];
+    [(NSMutableDictionary *)navigationBarBackgroundImages setObject:image forKey:v6];
   }
 
   else
@@ -302,19 +302,19 @@ LABEL_10:
   }
 }
 
-- (void)setNavigationButtonAppearance:(id)a3 forStyle:(int64_t)a4
+- (void)setNavigationButtonAppearance:(id)appearance forStyle:(int64_t)style
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:style];
   navigationButtonAppearance = self->_navigationButtonAppearance;
   v9 = v6;
-  if (a3)
+  if (appearance)
   {
     if (!navigationButtonAppearance)
     {
       self->_navigationButtonAppearance = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    v8 = [a3 copy];
+    v8 = [appearance copy];
     [(NSMutableDictionary *)self->_navigationButtonAppearance setObject:v8 forKey:v9];
   }
 
@@ -324,19 +324,19 @@ LABEL_10:
   }
 }
 
-- (void)setSegmentedControlAppearance:(id)a3 forStyle:(int64_t)a4 tintStyle:(int64_t)a5
+- (void)setSegmentedControlAppearance:(id)appearance forStyle:(int64_t)style tintStyle:(int64_t)tintStyle
 {
-  v7 = [(SUUIAppearance *)self _copySegmentedControlKeyWithStyle:a4 tintStyle:a5];
+  v7 = [(SUUIAppearance *)self _copySegmentedControlKeyWithStyle:style tintStyle:tintStyle];
   segmentedControlAppearance = self->_segmentedControlAppearance;
   v10 = v7;
-  if (a3)
+  if (appearance)
   {
     if (!segmentedControlAppearance)
     {
       self->_segmentedControlAppearance = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    v9 = [a3 copy];
+    v9 = [appearance copy];
     [(NSMutableDictionary *)self->_segmentedControlAppearance setObject:v9 forKey:v10];
   }
 
@@ -346,37 +346,37 @@ LABEL_10:
   }
 }
 
-- (void)styleBarButtonItem:(id)a3
+- (void)styleBarButtonItem:(id)item
 {
-  v4 = -[SUUIAppearance navigationButtonAppearanceForStyle:](self, "navigationButtonAppearanceForStyle:", [a3 style]);
+  v4 = -[SUUIAppearance navigationButtonAppearanceForStyle:](self, "navigationButtonAppearanceForStyle:", [item style]);
 
-  [v4 styleBarButtonItem:a3];
+  [v4 styleBarButtonItem:item];
 }
 
-- (void)styleConfirmationButtonItem:(id)a3
+- (void)styleConfirmationButtonItem:(id)item
 {
-  v5 = [(SUUIAppearance *)self confirmationButtonAppearance];
-  if ([(SUControlAppearance *)v5 numberOfImages])
+  confirmationButtonAppearance = [(SUUIAppearance *)self confirmationButtonAppearance];
+  if ([(SUControlAppearance *)confirmationButtonAppearance numberOfImages])
   {
-    v6 = v5;
+    selfCopy = confirmationButtonAppearance;
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  [(SUUIAppearance *)v6 styleBarButtonItem:a3];
+  [(SUUIAppearance *)selfCopy styleBarButtonItem:item];
 }
 
-- (void)styleDestructiveButton:(id)a3
+- (void)styleDestructiveButton:(id)button
 {
-  v4 = [(SUUIAppearance *)self destructiveButtonAppearance];
+  destructiveButtonAppearance = [(SUUIAppearance *)self destructiveButtonAppearance];
 
-  [(SUControlAppearance *)v4 styleBarButtonItem:a3];
+  [(SUControlAppearance *)destructiveButtonAppearance styleBarButtonItem:button];
 }
 
-- (void)styleExitStoreButtonItem:(id)a3
+- (void)styleExitStoreButtonItem:(id)item
 {
   if ([(SUControlAppearance *)self->_exitStoreButtonAppearance numberOfImages])
   {
@@ -388,10 +388,10 @@ LABEL_10:
     exitStoreButtonAppearance = self;
   }
 
-  [exitStoreButtonAppearance styleBarButtonItem:a3];
+  [exitStoreButtonAppearance styleBarButtonItem:item];
 }
 
-- (void)styleForwardButtonItem:(id)a3
+- (void)styleForwardButtonItem:(id)item
 {
   if ([(SUControlAppearance *)self->_forwardButtonAppearance numberOfImages])
   {
@@ -403,33 +403,33 @@ LABEL_10:
     forwardButtonAppearance = self;
   }
 
-  [forwardButtonAppearance styleBarButtonItem:a3];
+  [forwardButtonAppearance styleBarButtonItem:item];
 }
 
-- (void)styleNavigationBar:(id)a3
+- (void)styleNavigationBar:(id)bar
 {
   navigationBarBackgroundImages = self->_navigationBarBackgroundImages;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __37__SUUIAppearance_styleNavigationBar___block_invoke;
   v10[3] = &unk_1E81671D8;
-  v10[4] = a3;
+  v10[4] = bar;
   [(NSMutableDictionary *)navigationBarBackgroundImages enumerateKeysAndObjectsUsingBlock:v10];
-  v6 = [(SUUIAppearance *)self backButtonAppearance];
+  backButtonAppearance = [(SUUIAppearance *)self backButtonAppearance];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __37__SUUIAppearance_styleNavigationBar___block_invoke_2;
   v9[3] = &unk_1E8167200;
-  v9[4] = a3;
-  [(SUControlAppearance *)v6 enumerateImagesUsingBlock:v9];
+  v9[4] = bar;
+  [(SUControlAppearance *)backButtonAppearance enumerateImagesUsingBlock:v9];
   v7 = [(SUUIAppearance *)self navigationButtonAppearanceForStyle:0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __37__SUUIAppearance_styleNavigationBar___block_invoke_3;
   v8[3] = &unk_1E8167228;
-  v8[4] = a3;
+  v8[4] = bar;
   [v7 enumerateTextAttributesUsingBlock:v8];
-  [a3 setTitleTextAttributes:{-[SUUIAppearance navigationBarTitleTextAttributes](self, "navigationBarTitleTextAttributes")}];
+  [bar setTitleTextAttributes:{-[SUUIAppearance navigationBarTitleTextAttributes](self, "navigationBarTitleTextAttributes")}];
 }
 
 uint64_t __37__SUUIAppearance_styleNavigationBar___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -472,55 +472,55 @@ LABEL_5:
   return result;
 }
 
-- (void)styleSegmentedControl:(id)a3 tintStyle:(int64_t)a4
+- (void)styleSegmentedControl:(id)control tintStyle:(int64_t)style
 {
-  v5 = -[SUUIAppearance segmentedControlAppearanceForStyle:tintStyle:](self, "segmentedControlAppearanceForStyle:tintStyle:", [a3 segmentControlStyle], a4);
+  v5 = -[SUUIAppearance segmentedControlAppearanceForStyle:tintStyle:](self, "segmentedControlAppearanceForStyle:tintStyle:", [control segmentControlStyle], style);
 
-  [v5 styleSegmentedControl:a3];
+  [v5 styleSegmentedControl:control];
 }
 
-- (void)styleTabBar:(id)a3
+- (void)styleTabBar:(id)bar
 {
-  v4 = [(SUUIAppearance *)self tabBarAppearance];
-  if (v4)
+  tabBarAppearance = [(SUUIAppearance *)self tabBarAppearance];
+  if (tabBarAppearance)
   {
-    v5 = v4;
-    [a3 setBackgroundImage:{-[SUTabBarAppearance backgroundImage](v4, "backgroundImage")}];
-    [a3 _setSelectionIndicatorImage:{-[SUTabBarAppearance selectionIndicatorImage](v5, "selectionIndicatorImage")}];
+    v5 = tabBarAppearance;
+    [bar setBackgroundImage:{-[SUTabBarAppearance backgroundImage](tabBarAppearance, "backgroundImage")}];
+    [bar _setSelectionIndicatorImage:{-[SUTabBarAppearance selectionIndicatorImage](v5, "selectionIndicatorImage")}];
     [(SUTabBarAppearance *)v5 tabBarButtonWidth];
     v7 = v6;
     if (v6 > 0.00000011920929)
     {
-      [a3 setItemPositioning:2];
+      [bar setItemPositioning:2];
       [(SUTabBarAppearance *)v5 tabBarButtonSpacing];
-      [a3 setItemSpacing:?];
-      [a3 setItemWidth:v7];
+      [bar setItemSpacing:?];
+      [bar setItemWidth:v7];
     }
 
-    v8 = [(SUTabBarAppearance *)v5 dividerImage];
-    v9 = [(SUTabBarAppearance *)v5 selectedDividerImage];
-    [a3 _setDividerImage:v8 forLeftButtonState:0 rightButtonState:0];
+    dividerImage = [(SUTabBarAppearance *)v5 dividerImage];
+    selectedDividerImage = [(SUTabBarAppearance *)v5 selectedDividerImage];
+    [bar _setDividerImage:dividerImage forLeftButtonState:0 rightButtonState:0];
 
-    [a3 _setDividerImage:v9 forLeftButtonState:1 rightButtonState:0];
+    [bar _setDividerImage:selectedDividerImage forLeftButtonState:1 rightButtonState:0];
   }
 }
 
-- (void)styleTabBarItem:(id)a3
+- (void)styleTabBarItem:(id)item
 {
-  v4 = [(SUUIAppearance *)self tabBarAppearance];
+  tabBarAppearance = [(SUUIAppearance *)self tabBarAppearance];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__SUUIAppearance_styleTabBarItem___block_invoke;
   v5[3] = &unk_1E8167228;
-  v5[4] = a3;
-  [(SUTabBarAppearance *)v4 enumerateTitleTextAttributesUsingBlock:v5];
+  v5[4] = item;
+  [(SUTabBarAppearance *)tabBarAppearance enumerateTitleTextAttributesUsingBlock:v5];
 }
 
-- (void)styleToolbar:(id)a3
+- (void)styleToolbar:(id)toolbar
 {
-  v4 = [(SUUIAppearance *)self toolbarAppearance];
+  toolbarAppearance = [(SUUIAppearance *)self toolbarAppearance];
 
-  [(SUToolbarAppearance *)v4 styleToolbar:a3];
+  [(SUToolbarAppearance *)toolbarAppearance styleToolbar:toolbar];
 }
 
 - (SUToolbarAppearance)toolbarAppearance
@@ -545,27 +545,27 @@ LABEL_5:
   return v4;
 }
 
-+ (id)_defaultShadowWithColor:(id)a3 offset:(CGSize)a4
++ (id)_defaultShadowWithColor:(id)color offset:(CGSize)offset
 {
-  height = a4.height;
-  width = a4.width;
+  height = offset.height;
+  width = offset.width;
   v7 = objc_alloc_init(MEMORY[0x1E69DB7D8]);
   [v7 setShadowBlurRadius:0.0];
-  [v7 setShadowColor:a3];
+  [v7 setShadowColor:color];
   [v7 setShadowOffset:{width, height}];
 
   return v7;
 }
 
-- (void)_styleBackBarButtonItem:(id)a3
+- (void)_styleBackBarButtonItem:(id)item
 {
-  v4 = self;
+  selfCopy = self;
   if ([(SUControlAppearance *)[(SUUIAppearance *)self backButtonAppearance] numberOfImages])
   {
-    v4 = [(SUUIAppearance *)v4 backButtonAppearance];
+    selfCopy = [(SUUIAppearance *)selfCopy backButtonAppearance];
   }
 
-  [(SUUIAppearance *)v4 styleBarButtonItem:a3];
+  [(SUUIAppearance *)selfCopy styleBarButtonItem:item];
 }
 
 + (id)_defaultBackButtonAppearance
@@ -581,7 +581,7 @@ LABEL_5:
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.784313725 alpha:1.0];
   [v5 setObject:v6 forKey:*MEMORY[0x1E69DB650]];
-  v7 = [a1 _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
+  v7 = [self _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
   [v5 setObject:v7 forKey:*MEMORY[0x1E69DB6A8]];
   [(SUControlAppearance *)v3 setTextAttributes:v5 forState:0];
   [(SUControlAppearance *)v3 setTextAttributes:v5 forState:1];
@@ -601,7 +601,7 @@ LABEL_5:
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.784313725 alpha:1.0];
   v7 = *MEMORY[0x1E69DB650];
   [v5 setObject:v6 forKey:*MEMORY[0x1E69DB650]];
-  v8 = [a1 _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
+  v8 = [self _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
   v9 = *MEMORY[0x1E69DB6A8];
   [v5 setObject:v8 forKey:*MEMORY[0x1E69DB6A8]];
   [(SUControlAppearance *)v3 setTextAttributes:v5 forState:0];
@@ -609,7 +609,7 @@ LABEL_5:
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v10 setObject:objc_msgSend(MEMORY[0x1E69DC888] forKey:{"colorWithWhite:alpha:", 0.490196078, 1.0), v7}];
-  [v10 setObject:objc_msgSend(a1 forKey:{"_defaultShadowWithColor:offset:", objc_msgSend(MEMORY[0x1E69DC888], "blackColor"), 0.0, -1.0), v9}];
+  [v10 setObject:objc_msgSend(self forKey:{"_defaultShadowWithColor:offset:", objc_msgSend(MEMORY[0x1E69DC888], "blackColor"), 0.0, -1.0), v9}];
   [(SUControlAppearance *)v3 setTextAttributes:v10 forState:2];
 
   return v3;
@@ -622,9 +622,9 @@ LABEL_5:
   -[SUControlAppearance setImage:forState:barMetrics:](v3, "setImage:forState:barMetrics:", [MEMORY[0x1E69DCAB8] imageNamed:@"UINavigationBarGreenBuyButton" inBundle:v4], 0, 0);
   -[SUControlAppearance setImage:forState:barMetrics:](v3, "setImage:forState:barMetrics:", [MEMORY[0x1E69DCAB8] imageNamed:@"UINavigationBarGreenBuyButtonPressed" inBundle:v4], 1, 0);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [MEMORY[0x1E69DC888] whiteColor];
-  [v5 setObject:v6 forKey:*MEMORY[0x1E69DB650]];
-  v7 = [a1 _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"colorWithWhite:alpha:", 0.0, 0.5), 0.0, -1.0}];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v5 setObject:whiteColor forKey:*MEMORY[0x1E69DB650]];
+  v7 = [self _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"colorWithWhite:alpha:", 0.0, 0.5), 0.0, -1.0}];
   [v5 setObject:v7 forKey:*MEMORY[0x1E69DB6A8]];
   [(SUControlAppearance *)v3 setTextAttributes:v5 forState:0];
   [(SUControlAppearance *)v3 setTextAttributes:v5 forState:1];
@@ -641,10 +641,10 @@ LABEL_5:
   -[SUControlAppearance setImage:forState:barMetrics:](v3, "setImage:forState:barMetrics:", [MEMORY[0x1E69DCAB8] imageNamed:@"UINavigationBarDestroyButtonPressed" inBundle:v4], 1, 0);
   -[SUControlAppearance setImage:forState:barMetrics:](v3, "setImage:forState:barMetrics:", [MEMORY[0x1E69DCAB8] imageNamed:@"UINavigationBarMiniDestroyButtonPressed" inBundle:v4], 1, 1);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   v7 = *MEMORY[0x1E69DB650];
-  [v5 setObject:v6 forKey:*MEMORY[0x1E69DB650]];
-  v8 = [a1 _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"colorWithWhite:alpha:", 0.0, 0.5), 0.0, 1.0}];
+  [v5 setObject:whiteColor forKey:*MEMORY[0x1E69DB650]];
+  v8 = [self _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"colorWithWhite:alpha:", 0.0, 0.5), 0.0, 1.0}];
   v9 = *MEMORY[0x1E69DB6A8];
   [v5 setObject:v8 forKey:*MEMORY[0x1E69DB6A8]];
   [(SUControlAppearance *)v3 setTextAttributes:v5 forState:0];
@@ -652,7 +652,7 @@ LABEL_5:
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v10 setObject:objc_msgSend(MEMORY[0x1E69DC888] forKey:{"colorWithWhite:alpha:", 0.784313725, 1.0), v7}];
-  [v10 setObject:objc_msgSend(a1 forKey:{"_defaultShadowWithColor:offset:", objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.0, 0.5), 0.0, 1.0), v9}];
+  [v10 setObject:objc_msgSend(self forKey:{"_defaultShadowWithColor:offset:", objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.0, 0.5), 0.0, 1.0), v9}];
   [(SUControlAppearance *)v3 setTextAttributes:v10 forState:2];
 
   return v3;
@@ -670,7 +670,7 @@ LABEL_5:
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.278431373 alpha:1.0];
   v7 = *MEMORY[0x1E69DB650];
   [v5 setObject:v6 forKey:*MEMORY[0x1E69DB650]];
-  v8 = [a1 _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"colorWithWhite:alpha:", 1.0, 0.5), 0.0, 1.0}];
+  v8 = [self _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"colorWithWhite:alpha:", 1.0, 0.5), 0.0, 1.0}];
   v9 = *MEMORY[0x1E69DB6A8];
   [v5 setObject:v8 forKey:*MEMORY[0x1E69DB6A8]];
   [(SUControlAppearance *)v3 setTextAttributes:v5 forState:0];
@@ -678,7 +678,7 @@ LABEL_5:
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v10 setObject:objc_msgSend(MEMORY[0x1E69DC888] forKey:{"colorWithWhite:alpha:", 0.447058824, 1.0), v7}];
-  [v10 setObject:objc_msgSend(a1 forKey:{"_defaultShadowWithColor:offset:", objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 1.0, 0.5), 0.0, 1.0), v9}];
+  [v10 setObject:objc_msgSend(self forKey:{"_defaultShadowWithColor:offset:", objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 1.0, 0.5), 0.0, 1.0), v9}];
   [(SUControlAppearance *)v3 setTextAttributes:v10 forState:2];
 
   return v3;
@@ -697,7 +697,7 @@ LABEL_5:
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.784313725 alpha:1.0];
   [v5 setObject:v6 forKey:*MEMORY[0x1E69DB650]];
-  v7 = [a1 _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
+  v7 = [self _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
   [v5 setObject:v7 forKey:*MEMORY[0x1E69DB6A8]];
   [(SUControlAppearance *)v3 setTextAttributes:v5 forState:0];
   [(SUControlAppearance *)v3 setTextAttributes:v5 forState:1];
@@ -723,33 +723,33 @@ LABEL_5:
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.784313725 alpha:1.0];
   v7 = *MEMORY[0x1E69DB650];
   [v5 setObject:v6 forKey:*MEMORY[0x1E69DB650]];
-  v8 = [a1 _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
+  v8 = [self _defaultShadowWithColor:objc_msgSend(MEMORY[0x1E69DC888] offset:{"blackColor"), 0.0, -1.0}];
   v9 = *MEMORY[0x1E69DB6A8];
   [v5 setObject:v8 forKey:*MEMORY[0x1E69DB6A8]];
   [(SUTabBarAppearance *)v3 setTitleTextAttributes:v5 forState:0];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v10 setObject:objc_msgSend(MEMORY[0x1E69DC888] forKey:{"whiteColor"), v7}];
-  [v10 setObject:objc_msgSend(a1 forKey:{"_defaultShadowWithColor:offset:", objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.0, 0.9), 0.0, 1.0), v9}];
+  [v10 setObject:objc_msgSend(self forKey:{"_defaultShadowWithColor:offset:", objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.0, 0.9), 0.0, 1.0), v9}];
   [(SUTabBarAppearance *)v3 setTitleTextAttributes:v10 forState:4];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  *(v5 + 8) = [(SUControlAppearance *)self->_backButtonAppearance copyWithZone:a3];
-  *(v5 + 16) = [(SUControlAppearance *)self->_confirmationButtonAppearance copyWithZone:a3];
-  *(v5 + 32) = [(SUControlAppearance *)self->_exitStoreButtonAppearance copyWithZone:a3];
-  *(v5 + 40) = [(SUControlAppearance *)self->_forwardButtonAppearance copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  *(v5 + 8) = [(SUControlAppearance *)self->_backButtonAppearance copyWithZone:zone];
+  *(v5 + 16) = [(SUControlAppearance *)self->_confirmationButtonAppearance copyWithZone:zone];
+  *(v5 + 32) = [(SUControlAppearance *)self->_exitStoreButtonAppearance copyWithZone:zone];
+  *(v5 + 40) = [(SUControlAppearance *)self->_forwardButtonAppearance copyWithZone:zone];
   *(v5 + 48) = self->_isDefaultAppearance;
-  *(v5 + 56) = [(NSMutableDictionary *)self->_navigationBarBackgroundImages mutableCopyWithZone:a3];
-  *(v5 + 64) = [(NSDictionary *)self->_navigationBarTitleTextAttributes copyWithZone:a3];
-  *(v5 + 72) = [(NSMutableDictionary *)self->_navigationButtonAppearance copyWithZone:a3];
-  *(v5 + 80) = [(NSMutableDictionary *)self->_segmentedControlAppearance mutableCopyWithZone:a3];
-  *(v5 + 88) = [(SUTabBarAppearance *)self->_tabBarAppearance copyWithZone:a3];
-  *(v5 + 96) = [(SUToolbarAppearance *)self->_toolbarAppearance copyWithZone:a3];
+  *(v5 + 56) = [(NSMutableDictionary *)self->_navigationBarBackgroundImages mutableCopyWithZone:zone];
+  *(v5 + 64) = [(NSDictionary *)self->_navigationBarTitleTextAttributes copyWithZone:zone];
+  *(v5 + 72) = [(NSMutableDictionary *)self->_navigationButtonAppearance copyWithZone:zone];
+  *(v5 + 80) = [(NSMutableDictionary *)self->_segmentedControlAppearance mutableCopyWithZone:zone];
+  *(v5 + 88) = [(SUTabBarAppearance *)self->_tabBarAppearance copyWithZone:zone];
+  *(v5 + 96) = [(SUToolbarAppearance *)self->_toolbarAppearance copyWithZone:zone];
   return v5;
 }
 

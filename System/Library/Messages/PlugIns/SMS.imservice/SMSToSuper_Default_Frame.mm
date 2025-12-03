@@ -1,20 +1,20 @@
 @interface SMSToSuper_Default_Frame
-- (void)_addAttachmentPartWithSource:(id)a3 toContext:(id)a4;
-- (void)parser:(id)a3 context:(id)a4 foundCharacters:(id)a5;
+- (void)_addAttachmentPartWithSource:(id)source toContext:(id)context;
+- (void)parser:(id)parser context:(id)context foundCharacters:(id)characters;
 @end
 
 @implementation SMSToSuper_Default_Frame
 
-- (void)parser:(id)a3 context:(id)a4 foundCharacters:(id)a5
+- (void)parser:(id)parser context:(id)context foundCharacters:(id)characters
 {
   v5.receiver = self;
   v5.super_class = SMSToSuper_Default_Frame;
-  -[SMSToSuper_Default_Frame parser:context:foundCharacters:](&v5, "parser:context:foundCharacters:", a3, a4, [a5 stringByRemovingCharactersFromSet:{+[NSCharacterSet newlineCharacterSet](NSCharacterSet, "newlineCharacterSet")}]);
+  -[SMSToSuper_Default_Frame parser:context:foundCharacters:](&v5, "parser:context:foundCharacters:", parser, context, [characters stringByRemovingCharactersFromSet:{+[NSCharacterSet newlineCharacterSet](NSCharacterSet, "newlineCharacterSet")}]);
 }
 
-- (void)_addAttachmentPartWithSource:(id)a3 toContext:(id)a4
+- (void)_addAttachmentPartWithSource:(id)source toContext:(id)context
 {
-  v5 = [objc_msgSend(a4 "orderedParts")];
+  v5 = [objc_msgSend(context "orderedParts")];
   if (!v5)
   {
     if (IMOSLoggingEnabled())
@@ -28,7 +28,7 @@
     }
 
     v5 = objc_alloc_init(IMDSMSPart);
-    [a4 _addPart:v5];
+    [context _addPart:v5];
   }
 
   v7 = SMSCopySanitizedContentLocation();

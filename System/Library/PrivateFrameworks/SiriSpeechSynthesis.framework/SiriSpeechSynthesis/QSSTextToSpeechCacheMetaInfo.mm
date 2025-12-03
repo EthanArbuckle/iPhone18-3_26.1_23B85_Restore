@@ -2,10 +2,10 @@
 - (BOOL)enable_word_timing_info;
 - (NSString)original_session_id;
 - (NSString)text;
-- (Offset<siri::speech::schema_fb::TextToSpeechCacheMetaInfo>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::TextToSpeechCacheMetaInfo>)addObjectToBuffer:(void *)buffer;
 - (QSSAudioDescription)decoder_description;
 - (QSSAudioDescription)playback_description;
-- (QSSTextToSpeechCacheMetaInfo)initWithFlatbuffData:(id)a3 root:(const TextToSpeechCacheMetaInfo *)a4 verify:(BOOL)a5;
+- (QSSTextToSpeechCacheMetaInfo)initWithFlatbuffData:(id)data root:(const TextToSpeechCacheMetaInfo *)root verify:(BOOL)verify;
 - (QSSTextToSpeechMeta)meta_info;
 - (id)flatbuffData;
 - (int)audio_length;
@@ -43,56 +43,56 @@ flatbuffers::DetachedBuffer *__44__QSSTextToSpeechCacheMetaInfo_flatbuffData__bl
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechCacheMetaInfo>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechCacheMetaInfo>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSTextToSpeechCacheMetaInfo *)self meta_info];
-  v6 = [v5 addObjectToBuffer:a3];
+  meta_info = [(QSSTextToSpeechCacheMetaInfo *)self meta_info];
+  v6 = [meta_info addObjectToBuffer:buffer];
 
-  v7 = [(QSSTextToSpeechCacheMetaInfo *)self audio_type];
-  v8 = [(QSSTextToSpeechCacheMetaInfo *)self enable_word_timing_info];
-  v9 = [(QSSTextToSpeechCacheMetaInfo *)self decoder_description];
-  v25 = [v9 addObjectToBuffer:a3];
+  audio_type = [(QSSTextToSpeechCacheMetaInfo *)self audio_type];
+  enable_word_timing_info = [(QSSTextToSpeechCacheMetaInfo *)self enable_word_timing_info];
+  decoder_description = [(QSSTextToSpeechCacheMetaInfo *)self decoder_description];
+  v25 = [decoder_description addObjectToBuffer:buffer];
 
-  v10 = [(QSSTextToSpeechCacheMetaInfo *)self playback_description];
-  v11 = [v10 addObjectToBuffer:a3];
+  playback_description = [(QSSTextToSpeechCacheMetaInfo *)self playback_description];
+  v11 = [playback_description addObjectToBuffer:buffer];
 
-  v12 = [(QSSTextToSpeechCacheMetaInfo *)self audio_length];
-  v13 = [(QSSTextToSpeechCacheMetaInfo *)self text];
-  v14 = v13;
-  if (!v13)
+  audio_length = [(QSSTextToSpeechCacheMetaInfo *)self audio_length];
+  text = [(QSSTextToSpeechCacheMetaInfo *)self text];
+  v14 = text;
+  if (!text)
   {
-    v13 = &stru_2879AE8E0;
+    text = &stru_2879AE8E0;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String = [(__CFString *)text UTF8String];
+  v16 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v16);
 
-  v18 = [(QSSTextToSpeechCacheMetaInfo *)self original_session_id];
-  v19 = v18;
-  if (!v18)
+  original_session_id = [(QSSTextToSpeechCacheMetaInfo *)self original_session_id];
+  v19 = original_session_id;
+  if (!original_session_id)
   {
-    v18 = &stru_2879AE8E0;
+    original_session_id = &stru_2879AE8E0;
   }
 
-  v20 = [(__CFString *)v18 UTF8String];
-  v21 = strlen(v20);
-  LODWORD(v20) = flatbuffers::FlatBufferBuilder::CreateString(a3, v20, v21);
+  uTF8String2 = [(__CFString *)original_session_id UTF8String];
+  v21 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v21);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v22 = *(a3 + 10);
-  v23 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v6);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 8, v8);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v25);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v11);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 16, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 18, v20);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v22 = *(buffer + 10);
+  v23 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, v6);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, audio_type);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 8, enable_word_timing_info);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v25);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v11);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, audio_length);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 16, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 18, uTF8String2);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v23 + v22);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v23 + v22);
 }
 
 - (NSString)original_session_id
@@ -253,42 +253,42 @@ flatbuffers::DetachedBuffer *__44__QSSTextToSpeechCacheMetaInfo_flatbuffData__bl
   return v3;
 }
 
-- (QSSTextToSpeechCacheMetaInfo)initWithFlatbuffData:(id)a3 root:(const TextToSpeechCacheMetaInfo *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechCacheMetaInfo)initWithFlatbuffData:(id)data root:(const TextToSpeechCacheMetaInfo *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechCacheMetaInfo;
   v10 = [(QSSTextToSpeechCacheMetaInfo *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -310,9 +310,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

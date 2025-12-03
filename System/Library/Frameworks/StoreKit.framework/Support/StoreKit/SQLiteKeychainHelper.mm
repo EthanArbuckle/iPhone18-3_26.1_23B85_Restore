@@ -1,35 +1,35 @@
 @interface SQLiteKeychainHelper
-+ (BOOL)_saveValueToKeychain:(id)a3 forKey:(id)a4 error:(id *)a5;
-+ (BOOL)storeKey:(id)a3 withIdentifier:(id)a4 error:(id *)a5;
-+ (__CFDictionary)_baseQueryForKeyID:(id)a3 additionalCapacity:(unint64_t)a4;
-+ (id)_copyErrorForOSStatus:(int)a3;
-+ (id)_valueFromKeychainForKey:(id)a3 error:(id *)a4;
-+ (id)fetchKeyWithIdentifier:(id)a3 error:(id *)a4;
++ (BOOL)_saveValueToKeychain:(id)keychain forKey:(id)key error:(id *)error;
++ (BOOL)storeKey:(id)key withIdentifier:(id)identifier error:(id *)error;
++ (__CFDictionary)_baseQueryForKeyID:(id)d additionalCapacity:(unint64_t)capacity;
++ (id)_copyErrorForOSStatus:(int)status;
++ (id)_valueFromKeychainForKey:(id)key error:(id *)error;
++ (id)fetchKeyWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation SQLiteKeychainHelper
 
-+ (id)fetchKeyWithIdentifier:(id)a3 error:(id *)a4
++ (id)fetchKeyWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [NSString stringWithFormat:@"%@.%@", @"com.apple.storekitagent.encryption", a3];
-  v7 = [a1 _valueFromKeychainForKey:v6 error:a4];
+  identifier = [NSString stringWithFormat:@"%@.%@", @"com.apple.storekitagent.encryption", identifier];
+  v7 = [self _valueFromKeychainForKey:identifier error:error];
 
   return v7;
 }
 
-+ (BOOL)storeKey:(id)a3 withIdentifier:(id)a4 error:(id *)a5
++ (BOOL)storeKey:(id)key withIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [NSString stringWithFormat:@"%@.%@", @"com.apple.storekitagent.encryption", a4];
-  LOBYTE(a5) = [a1 _saveValueToKeychain:v8 forKey:v9 error:a5];
+  keyCopy = key;
+  identifier = [NSString stringWithFormat:@"%@.%@", @"com.apple.storekitagent.encryption", identifier];
+  LOBYTE(error) = [self _saveValueToKeychain:keyCopy forKey:identifier error:error];
 
-  return a5;
+  return error;
 }
 
-+ (id)_copyErrorForOSStatus:(int)a3
++ (id)_copyErrorForOSStatus:(int)status
 {
-  v3 = *&a3;
-  v4 = SecCopyErrorMessageString(a3, 0);
+  v3 = *&status;
+  v4 = SecCopyErrorMessageString(status, 0);
   if (v4)
   {
     v14[0] = NSDebugDescriptionErrorKey;
@@ -61,21 +61,21 @@
   return v10;
 }
 
-+ (BOOL)_saveValueToKeychain:(id)a3 forKey:(id)a4 error:(id *)a5
++ (BOOL)_saveValueToKeychain:(id)keychain forKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 _baseQueryForKeyID:v8 additionalCapacity:5];
+  keyCopy = key;
+  keychainCopy = keychain;
+  v10 = [self _baseQueryForKeyID:keyCopy additionalCapacity:5];
   CFDictionaryAddValue(v10, kSecAttrLabel, @"StoreKit User Data Encryption");
   CFDictionaryAddValue(v10, kSecAttrCanEncrypt, kCFBooleanTrue);
   CFDictionaryAddValue(v10, kSecAttrCanDecrypt, kCFBooleanTrue);
-  CFDictionaryAddValue(v10, kSecValueData, v9);
+  CFDictionaryAddValue(v10, kSecValueData, keychainCopy);
 
   CFDictionaryAddValue(v10, kSecAttrAccessible, kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly);
   v11 = SecItemAdd(v10, 0);
   if (v11 == -25299)
   {
-    v12 = [a1 _baseQueryForKeyID:v8 additionalCapacity:0];
+    v12 = [self _baseQueryForKeyID:keyCopy additionalCapacity:0];
     SecItemDelete(v12);
     CFRelease(v12);
     v11 = SecItemAdd(v10, 0);
@@ -84,11 +84,11 @@
   CFRelease(v10);
   if (v11)
   {
-    v13 = [a1 _copyErrorForOSStatus:v11];
-    if (a5)
+    v13 = [self _copyErrorForOSStatus:v11];
+    if (error)
     {
       v13 = v13;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -100,9 +100,9 @@
   return v11 == 0;
 }
 
-+ (id)_valueFromKeychainForKey:(id)a3 error:(id *)a4
++ (id)_valueFromKeychainForKey:(id)key error:(id *)error
 {
-  v6 = [a1 _baseQueryForKeyID:a3 additionalCapacity:1];
+  v6 = [self _baseQueryForKeyID:key additionalCapacity:1];
   CFDictionaryAddValue(v6, kSecReturnData, kCFBooleanTrue);
   cf = 0;
   v7 = SecItemCopyMatching(v6, &cf);
@@ -113,7 +113,7 @@
     {
       v9 = 0;
       v10 = cf;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -135,10 +135,10 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v9 = [a1 _copyErrorForOSStatus:?];
+  v9 = [self _copyErrorForOSStatus:?];
 LABEL_10:
   v10 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_13;
   }
@@ -147,7 +147,7 @@ LABEL_11:
   if (!v10)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_13:
@@ -156,11 +156,11 @@ LABEL_13:
   return v10;
 }
 
-+ (__CFDictionary)_baseQueryForKeyID:(id)a3 additionalCapacity:(unint64_t)a4
++ (__CFDictionary)_baseQueryForKeyID:(id)d additionalCapacity:(unint64_t)capacity
 {
-  v5 = a3;
-  Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, a4 + 5, 0, 0);
-  CFDictionaryAddValue(Mutable, kSecAttrApplicationLabel, v5);
+  dCopy = d;
+  Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, capacity + 5, 0, 0);
+  CFDictionaryAddValue(Mutable, kSecAttrApplicationLabel, dCopy);
 
   CFDictionaryAddValue(Mutable, kSecUseDataProtectionKeychain, kCFBooleanTrue);
   CFDictionaryAddValue(Mutable, kSecClass, kSecClassKey);

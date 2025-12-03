@@ -1,15 +1,15 @@
 @interface ISIconSegmentation
-- (BOOL)_computeImageWithCGImage:(CGImage *)a3 ucharTintable:(char *)a4 ucharTintableOpacity:(char *)a5 ucharSolariumTintable:ucharForeground:ucharForegroundOpacity:ucharDark:feedback:;
-- (CGImage)createDarkImageWithCGImage:(CGImage *)a3 feedback:(id *)a4;
-- (CGImage)createForegroundImageWithCGImage:(CGImage *)a3 feedback:(id *)a4;
-- (CGImage)createSolariumTintableImageWithCGImage:(CGImage *)a3 feedback:(id *)a4;
-- (CGImage)createTintableImageMaskWithCGImage:(CGImage *)a3 tintableOpacityImageMask:(CGImage *)a4;
-- (ISIconSegmentation)initWithIdiom:(unint64_t)a3;
+- (BOOL)_computeImageWithCGImage:(CGImage *)image ucharTintable:(char *)tintable ucharTintableOpacity:(char *)opacity ucharSolariumTintable:ucharForeground:ucharForegroundOpacity:ucharDark:feedback:;
+- (CGImage)createDarkImageWithCGImage:(CGImage *)image feedback:(id *)feedback;
+- (CGImage)createForegroundImageWithCGImage:(CGImage *)image feedback:(id *)feedback;
+- (CGImage)createSolariumTintableImageWithCGImage:(CGImage *)image feedback:(id *)feedback;
+- (CGImage)createTintableImageMaskWithCGImage:(CGImage *)image tintableOpacityImageMask:(CGImage *)mask;
+- (ISIconSegmentation)initWithIdiom:(unint64_t)idiom;
 @end
 
 @implementation ISIconSegmentation
 
-- (ISIconSegmentation)initWithIdiom:(unint64_t)a3
+- (ISIconSegmentation)initWithIdiom:(unint64_t)idiom
 {
   v12.receiver = self;
   v12.super_class = ISIconSegmentation;
@@ -28,7 +28,7 @@
     grayscaleConversion = v4->_grayscaleConversion;
     v4->_grayscaleConversion = v9;
 
-    v4->_idiom = a3;
+    v4->_idiom = idiom;
     v4->_maxNumberOfClusteringSamples = 8000;
     *&v4->_enableColorEnhancementInDarkImage = 0;
   }
@@ -36,12 +36,12 @@
   return v4;
 }
 
-- (BOOL)_computeImageWithCGImage:(CGImage *)a3 ucharTintable:(char *)a4 ucharTintableOpacity:(char *)a5 ucharSolariumTintable:ucharForeground:ucharForegroundOpacity:ucharDark:feedback:
+- (BOOL)_computeImageWithCGImage:(CGImage *)image ucharTintable:(char *)tintable ucharTintableOpacity:(char *)opacity ucharSolariumTintable:ucharForeground:ucharForegroundOpacity:ucharDark:feedback:
 {
   v8 = v7;
   v9 = v6;
   v10 = v5;
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(image);
   Model = CGColorSpaceGetModel(ColorSpace);
   if (Model)
   {
@@ -54,18 +54,18 @@ LABEL_35:
 
     v56 = v9;
     v58 = v10;
-    BitsPerPixel = CGImageGetBitsPerPixel(a3);
+    BitsPerPixel = CGImageGetBitsPerPixel(image);
     LOBYTE(v9) = 0;
-    if (CGImageGetBitsPerComponent(a3) == 8)
+    if (CGImageGetBitsPerComponent(image) == 8)
     {
-      v54 = a5;
+      opacityCopy = opacity;
       if (BitsPerPixel == 32)
       {
-        Width = CGImageGetWidth(a3);
-        Height = CGImageGetHeight(a3);
-        BytesPerRow = CGImageGetBytesPerRow(a3);
+        Width = CGImageGetWidth(image);
+        Height = CGImageGetHeight(image);
+        BytesPerRow = CGImageGetBytesPerRow(image);
         v19 = BytesPerRow >= 0 ? BytesPerRow : BytesPerRow + 3;
-        AlphaInfo = CGImageGetAlphaInfo(a3);
+        AlphaInfo = CGImageGetAlphaInfo(image);
         LOBYTE(v9) = 0;
         if (AlphaInfo <= kCGImageAlphaNoneSkipLast)
         {
@@ -78,7 +78,7 @@ LABEL_35:
               v21 = 5;
             }
 
-            DataProvider = CGImageGetDataProvider(a3);
+            DataProvider = CGImageGetDataProvider(image);
             if (!DataProvider)
             {
               goto LABEL_35;
@@ -107,7 +107,7 @@ LABEL_35:
               v63 = 0;
               v66 = malloc_type_malloc(Width * Height, 0x100004077774924uLL);
               v27 = v66;
-              LOBYTE(v9) = [(ISIconSegmentation *)self _computeImageWithWidth:Width height:Height colorSpace:ColorSpace samples:&v67 foregroundMask:&v60 ucharTintable:a4 ucharTintableOpacity:v54 ucharSolariumTintable:v58 ucharForeground:v56 ucharForegroundOpacity:v8 ucharDark:v71 feedback:v72];
+              LOBYTE(v9) = [(ISIconSegmentation *)self _computeImageWithWidth:Width height:Height colorSpace:ColorSpace samples:&v67 foregroundMask:&v60 ucharTintable:tintable ucharTintableOpacity:opacityCopy ucharSolariumTintable:v58 ucharForeground:v56 ucharForegroundOpacity:v8 ucharDark:v71 feedback:v72];
               CFRelease(v25);
               v28 = v27;
 LABEL_31:
@@ -127,17 +127,17 @@ LABEL_31:
   {
     v57 = v9;
     v59 = v10;
-    v29 = CGImageGetBitsPerPixel(a3);
+    v29 = CGImageGetBitsPerPixel(image);
     LOBYTE(v9) = 0;
-    if (CGImageGetBitsPerComponent(a3) == 8)
+    if (CGImageGetBitsPerComponent(image) == 8)
     {
-      v55 = a5;
+      opacityCopy2 = opacity;
       if (v29 == 16)
       {
-        v30 = CGImageGetWidth(a3);
-        v31 = CGImageGetHeight(a3);
-        v53 = CGImageGetBytesPerRow(a3);
-        v32 = CGImageGetAlphaInfo(a3);
+        v30 = CGImageGetWidth(image);
+        v31 = CGImageGetHeight(image);
+        v53 = CGImageGetBytesPerRow(image);
+        v32 = CGImageGetAlphaInfo(image);
         LOBYTE(v9) = 0;
         if (v32 <= kCGImageAlphaNoneSkipLast)
         {
@@ -150,7 +150,7 @@ LABEL_31:
               v33 = 5;
             }
 
-            v35 = CGImageGetDataProvider(a3);
+            v35 = CGImageGetDataProvider(image);
             if (!v35)
             {
               goto LABEL_35;
@@ -195,7 +195,7 @@ LABEL_31:
                 v62 = 0;
                 v63 = 0;
                 v66 = v46;
-                LOBYTE(v9) = [ISIconSegmentation _computeImageWithWidth:"_computeImageWithWidth:height:colorSpace:samples:foregroundMask:ucharTintable:ucharTintableOpacity:ucharSolariumTintable:ucharForeground:ucharForegroundOpacity:ucharDark:feedback:" height:v30 colorSpace:v55 samples:v59 foregroundMask:v57 ucharTintable:v8 ucharTintableOpacity:v71 ucharSolariumTintable:v72 ucharForeground:? ucharForegroundOpacity:? ucharDark:? feedback:?];
+                LOBYTE(v9) = [ISIconSegmentation _computeImageWithWidth:"_computeImageWithWidth:height:colorSpace:samples:foregroundMask:ucharTintable:ucharTintableOpacity:ucharSolariumTintable:ucharForeground:ucharForegroundOpacity:ucharDark:feedback:" height:v30 colorSpace:opacityCopy2 samples:v59 foregroundMask:v57 ucharTintable:v8 ucharTintableOpacity:v71 ucharSolariumTintable:v72 ucharForeground:? ucharForegroundOpacity:? ucharDark:? feedback:?];
                 CGColorSpaceRelease(v47);
                 free(v42);
                 v28 = v46;
@@ -216,18 +216,18 @@ LABEL_34:
   return v9;
 }
 
-- (CGImage)createTintableImageMaskWithCGImage:(CGImage *)a3 tintableOpacityImageMask:(CGImage *)a4
+- (CGImage)createTintableImageMaskWithCGImage:(CGImage *)image tintableOpacityImageMask:(CGImage *)mask
 {
-  v4 = a3;
-  if (!a3)
+  imageCopy = image;
+  if (!image)
   {
-    return v4;
+    return imageCopy;
   }
 
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(v4);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(imageCopy);
   v9 = malloc_type_malloc(Width * Height, 0x100004077774924uLL);
-  if (a4)
+  if (mask)
   {
     v10 = malloc_type_malloc(Width * Height, 0x100004077774924uLL);
   }
@@ -237,24 +237,24 @@ LABEL_34:
     v10 = 0;
   }
 
-  if (![(ISIconSegmentation *)self _computeImageWithCGImage:v4 ucharTintable:v9 ucharTintableOpacity:v10 ucharSolariumTintable:0 ucharForeground:0 ucharForegroundOpacity:0 ucharDark:0 feedback:0])
+  if (![(ISIconSegmentation *)self _computeImageWithCGImage:imageCopy ucharTintable:v9 ucharTintableOpacity:v10 ucharSolariumTintable:0 ucharForeground:0 ucharForegroundOpacity:0 ucharDark:0 feedback:0])
   {
     free(v9);
-    v4 = 0;
+    imageCopy = 0;
     if (!v10)
     {
-      return v4;
+      return imageCopy;
     }
 
 LABEL_11:
     free(v10);
-    return v4;
+    return imageCopy;
   }
 
-  v4 = ISCreateCGImageMaskUchar(Width, Height, v9);
-  if (a4)
+  imageCopy = ISCreateCGImageMaskUchar(Width, Height, v9);
+  if (mask)
   {
-    *a4 = ISCreateCGImageMaskUchar(Width, Height, v10);
+    *mask = ISCreateCGImageMaskUchar(Width, Height, v10);
   }
 
   free(v9);
@@ -263,70 +263,70 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  return v4;
+  return imageCopy;
 }
 
-- (CGImage)createSolariumTintableImageWithCGImage:(CGImage *)a3 feedback:(id *)a4
+- (CGImage)createSolariumTintableImageWithCGImage:(CGImage *)image feedback:(id *)feedback
 {
-  v4 = a3;
-  if (a3)
+  imageCopy = image;
+  if (image)
   {
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(v4);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(imageCopy);
     v9 = malloc_type_malloc(4 * Width * Height, 0x100004052888210uLL);
-    v10 = [(ISIconSegmentation *)self _computeImageWithCGImage:v4 ucharTintable:0 ucharTintableOpacity:0 ucharSolariumTintable:v9 ucharForeground:0 ucharForegroundOpacity:0 ucharDark:0 feedback:a4];
-    v4 = 0;
+    v10 = [(ISIconSegmentation *)self _computeImageWithCGImage:imageCopy ucharTintable:0 ucharTintableOpacity:0 ucharSolariumTintable:v9 ucharForeground:0 ucharForegroundOpacity:0 ucharDark:0 feedback:feedback];
+    imageCopy = 0;
     if (v10)
     {
-      v4 = ISCreateCGImageUchar4AlphaPremultiplied(Width, Height, v9);
+      imageCopy = ISCreateCGImageUchar4AlphaPremultiplied(Width, Height, v9);
     }
 
     free(v9);
   }
 
-  return v4;
+  return imageCopy;
 }
 
-- (CGImage)createForegroundImageWithCGImage:(CGImage *)a3 feedback:(id *)a4
+- (CGImage)createForegroundImageWithCGImage:(CGImage *)image feedback:(id *)feedback
 {
-  v4 = a3;
-  if (a3)
+  imageCopy = image;
+  if (image)
   {
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(v4);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(imageCopy);
     v9 = malloc_type_malloc(4 * Width * Height, 0x100004052888210uLL);
-    v10 = [(ISIconSegmentation *)self _computeImageWithCGImage:v4 ucharTintable:0 ucharTintableOpacity:0 ucharSolariumTintable:0 ucharForeground:v9 ucharForegroundOpacity:0 ucharDark:0 feedback:a4];
-    v4 = 0;
+    v10 = [(ISIconSegmentation *)self _computeImageWithCGImage:imageCopy ucharTintable:0 ucharTintableOpacity:0 ucharSolariumTintable:0 ucharForeground:v9 ucharForegroundOpacity:0 ucharDark:0 feedback:feedback];
+    imageCopy = 0;
     if (v10)
     {
-      v4 = ISCreateCGImageUchar4AlphaPremultiplied(Width, Height, v9);
+      imageCopy = ISCreateCGImageUchar4AlphaPremultiplied(Width, Height, v9);
     }
 
     free(v9);
   }
 
-  return v4;
+  return imageCopy;
 }
 
-- (CGImage)createDarkImageWithCGImage:(CGImage *)a3 feedback:(id *)a4
+- (CGImage)createDarkImageWithCGImage:(CGImage *)image feedback:(id *)feedback
 {
-  v4 = a3;
-  if (a3)
+  imageCopy = image;
+  if (image)
   {
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(v4);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(imageCopy);
     v9 = malloc_type_malloc(4 * Width * Height, 0x100004052888210uLL);
-    v10 = [(ISIconSegmentation *)self _computeImageWithCGImage:v4 ucharTintable:0 ucharTintableOpacity:0 ucharSolariumTintable:0 ucharForeground:0 ucharForegroundOpacity:0 ucharDark:v9 feedback:a4];
-    v4 = 0;
+    v10 = [(ISIconSegmentation *)self _computeImageWithCGImage:imageCopy ucharTintable:0 ucharTintableOpacity:0 ucharSolariumTintable:0 ucharForeground:0 ucharForegroundOpacity:0 ucharDark:v9 feedback:feedback];
+    imageCopy = 0;
     if (v10)
     {
-      v4 = ISCreateCGImageUchar4AlphaPremultiplied(Width, Height, v9);
+      imageCopy = ISCreateCGImageUchar4AlphaPremultiplied(Width, Height, v9);
     }
 
     free(v9);
   }
 
-  return v4;
+  return imageCopy;
 }
 
 @end

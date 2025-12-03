@@ -6,8 +6,8 @@
 
 - (id)localizedMessage
 {
-  v2 = [MEMORY[0x277D79F18] currentDevice];
-  v3 = [v2 hasCapability:*MEMORY[0x277D7A3F8]];
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  v3 = [currentDevice hasCapability:*MEMORY[0x277D7A3F8]];
 
   if (v3)
   {

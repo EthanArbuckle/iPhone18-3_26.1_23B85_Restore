@@ -1,17 +1,17 @@
 @interface RenameService
-- (void)importDocumentAtURL:(id)a3 completionHandler:(id)a4;
-- (void)renameDocumentAtURL:(id)a3 proposedName:(id)a4 completionHandler:(id)a5;
+- (void)importDocumentAtURL:(id)l completionHandler:(id)handler;
+- (void)renameDocumentAtURL:(id)l proposedName:(id)name completionHandler:(id)handler;
 @end
 
 @implementation RenameService
 
-- (void)renameDocumentAtURL:(id)a3 proposedName:(id)a4 completionHandler:(id)a5
+- (void)renameDocumentAtURL:(id)l proposedName:(id)name completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  nameCopy = name;
+  handlerCopy = handler;
   v10 = +[NSXPCConnection currentConnection];
-  v11 = [v7 url];
+  v11 = [lCopy url];
   v12 = [v10 doc_hasSandboxAccessToFile:v11 readonly:0];
 
   if (v12)
@@ -29,11 +29,11 @@
     v32 = 0;
     v21 = [LSBundleRecord bundleRecordForAuditToken:buf error:&v32];
     v13 = v32;
-    v22 = [v21 bundleIdentifier];
+    bundleIdentifier = [v21 bundleIdentifier];
 
-    if (v22)
+    if (bundleIdentifier)
     {
-      v23 = [v21 bundleIdentifier];
+      bundleIdentifier2 = [v21 bundleIdentifier];
     }
 
     else
@@ -50,7 +50,7 @@
         sub_1000015CC(v21, v24);
       }
 
-      v23 = @"com.apple.Fallback";
+      bundleIdentifier2 = @"com.apple.Fallback";
     }
 
     v25 = docRenameLogHandle;
@@ -65,25 +65,25 @@
       *buf = 136315906;
       *&buf[4] = "[RenameService renameDocumentAtURL:proposedName:completionHandler:]";
       *&buf[12] = 2112;
-      *&buf[14] = v7;
+      *&buf[14] = lCopy;
       *&buf[22] = 2112;
-      *&buf[24] = v8;
+      *&buf[24] = nameCopy;
       v34 = 2112;
-      v35 = v23;
+      v35 = bundleIdentifier2;
       _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "[Rename] %s bookmark: %@ proposedName: %@ caller: %@", buf, 0x2Au);
     }
 
-    v26 = [v7 url];
-    v27 = [v26 startAccessingSecurityScopedResource];
+    v26 = [lCopy url];
+    startAccessingSecurityScopedResource = [v26 startAccessingSecurityScopedResource];
 
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100001190;
     v28[3] = &unk_100004120;
-    v30 = v9;
-    v31 = v27;
-    v29 = v7;
-    [DOCFileRenamingSupport _workaroundWrapper_renameDocumentAtURL:v29 newName:v8 hostIdentifier:v23 completionHandler:v28];
+    v30 = handlerCopy;
+    v31 = startAccessingSecurityScopedResource;
+    v29 = lCopy;
+    [DOCFileRenamingSupport _workaroundWrapper_renameDocumentAtURL:v29 newName:nameCopy hostIdentifier:bundleIdentifier2 completionHandler:v28];
   }
 
   else
@@ -101,16 +101,16 @@
       sub_100001560(v13, v14, v15, v16, v17, v18, v19, v20);
     }
 
-    (*(v9 + 2))(v9, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (void)importDocumentAtURL:(id)a3 completionHandler:(id)a4
+- (void)importDocumentAtURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v7 = +[NSXPCConnection currentConnection];
-  v8 = [v5 url];
+  v8 = [lCopy url];
   v9 = [v7 doc_hasSandboxAccessToFile:v8 readonly:1];
 
   if (v9)
@@ -128,27 +128,27 @@
     v34 = 0;
     v18 = [LSBundleRecord bundleRecordForAuditToken:v35 error:&v34];
     v10 = v34;
-    v19 = [v18 bundleIdentifier];
+    bundleIdentifier = [v18 bundleIdentifier];
 
-    if (v19)
+    if (bundleIdentifier)
     {
-      v20 = [v18 bundleIdentifier];
-      v21 = [v5 url];
-      v22 = [v21 startAccessingSecurityScopedResource];
+      bundleIdentifier2 = [v18 bundleIdentifier];
+      v21 = [lCopy url];
+      startAccessingSecurityScopedResource = [v21 startAccessingSecurityScopedResource];
 
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_1000014C8;
       v30[3] = &unk_100004120;
-      v32 = v6;
-      v33 = v22;
-      v31 = v5;
-      [DOCFileRenamingSupport _workaroundWrapper_importDocumentAtURL:v31 hostIdentifier:v20 completionHandler:v30];
+      v32 = handlerCopy;
+      v33 = startAccessingSecurityScopedResource;
+      v31 = lCopy;
+      [DOCFileRenamingSupport _workaroundWrapper_importDocumentAtURL:v31 hostIdentifier:bundleIdentifier2 completionHandler:v30];
     }
 
     else
     {
-      v20 = [NSError errorWithDomain:NSCocoaErrorDomain code:4 userInfo:0];
+      bundleIdentifier2 = [NSError errorWithDomain:NSCocoaErrorDomain code:4 userInfo:0];
       v23 = docRenameLogHandle;
       if (!docRenameLogHandle)
       {
@@ -158,10 +158,10 @@
 
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        sub_1000016C4(v20, v23, v24, v25, v26, v27, v28, v29);
+        sub_1000016C4(bundleIdentifier2, v23, v24, v25, v26, v27, v28, v29);
       }
 
-      (*(v6 + 2))(v6, 0, v20);
+      (*(handlerCopy + 2))(handlerCopy, 0, bundleIdentifier2);
     }
   }
 
@@ -180,7 +180,7 @@
       sub_100001658(v10, v11, v12, v13, v14, v15, v16, v17);
     }
 
-    (*(v6 + 2))(v6, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 }
 

@@ -4,8 +4,8 @@
 - (_WKCustomHeaderFields)init;
 - (uint64_t)setFields:;
 - (void)dealloc;
-- (void)setFields:(id)a3;
-- (void)setThirdPartyDomains:(id)a3;
+- (void)setFields:(id)fields;
+- (void)setThirdPartyDomains:(id)domains;
 @end
 
 @implementation _WKCustomHeaderFields
@@ -19,15 +19,15 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(_WKCustomHeaderFields *)v3 _apiObject];
+    _apiObject = [(_WKCustomHeaderFields *)v3 _apiObject];
     v11 = v3;
-    v12 = v5;
+    v12 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v12, &v11, v10);
-    v6 = [(_WKCustomHeaderFields *)v3 _apiObject];
-    *v6 = 0u;
-    v6[1] = 0u;
-    v6[2] = 0u;
-    v7 = API::Object::Object(v6);
+    _apiObject2 = [(_WKCustomHeaderFields *)v3 _apiObject];
+    *_apiObject2 = 0u;
+    _apiObject2[1] = 0u;
+    _apiObject2[2] = 0u;
+    v7 = API::Object::Object(_apiObject2);
     *v7 = &unk_1F10E5F30;
     *(v7 + 1) = 0u;
     *(v7 + 2) = 0u;
@@ -117,11 +117,11 @@
   return v3;
 }
 
-- (void)setFields:(id)a3
+- (void)setFields:(id)fields
 {
   v11 = 0;
   v12 = 0;
-  v5 = [a3 count];
+  v5 = [fields count];
   if (v5)
   {
     if (v5 >> 28)
@@ -140,7 +140,7 @@
   v6[2] = WTF::BlockPtr<void ()(objc_object *,objc_object *,BOOL *)>::fromCallable<[_WKCustomHeaderFields setFields:]::$_0>([_WKCustomHeaderFields setFields:]::$_0)::{lambda(void *,objc_object *,objc_object *,BOOL *)#1}::__invoke;
   v6[3] = &WTF::BlockPtr<void ()(objc_object *,objc_object *,BOOL *)>::fromCallable<[_WKCustomHeaderFields setFields:]::$_0>([_WKCustomHeaderFields setFields:]::$_0)::descriptor;
   v6[4] = &v11;
-  [a3 enumerateKeysAndObjectsUsingBlock:v6];
+  [fields enumerateKeysAndObjectsUsingBlock:v6];
   _Block_release(v6);
   v8 = *&self->_fields.m_storage.data[28];
   if (v8)
@@ -202,11 +202,11 @@
   return v4;
 }
 
-- (void)setThirdPartyDomains:(id)a3
+- (void)setThirdPartyDomains:(id)domains
 {
-  v11 = a3;
-  v10 = &v11;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v8, [a3 count], &v10, 0);
+  domainsCopy = domains;
+  v10 = &domainsCopy;
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v8, [domains count], &v10, 0);
   v5 = *&self->_fields.m_storage.data[44];
   if (v5)
   {
@@ -265,7 +265,7 @@
         return result;
       }
 
-      v9 = *(a1 + 32);
+      v9 = *(self + 32);
       v10 = *(v9 + 12);
       if (v10 == *(v9 + 8))
       {

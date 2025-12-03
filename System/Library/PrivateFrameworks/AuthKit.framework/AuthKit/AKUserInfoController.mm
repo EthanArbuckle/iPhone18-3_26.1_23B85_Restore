@@ -1,61 +1,61 @@
 @interface AKUserInfoController
 + (id)sharedController;
 - (AKUserInfoController)init;
-- (BOOL)_additionalInfoChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_adpCohortChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_authorizationPropertiesChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_birthYearChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_deviceListPropertiesChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_idmsWalrusStatusChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_loginHandlesChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_managedAppleIDInfoChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_passcodeAuthPropertiesChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_passkeyPropertiesChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_piggybackingApprovalEligibleChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_securityKeysChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_shouldUpdateConfigsForAltDSID:(id)a3 responseParameters:(id)a4;
-- (BOOL)_trustedContactPropertiesChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_trustedPhoneNumbersChangedForAccount:(id)a3 userInformation:(id)a4;
-- (BOOL)_updateAccount:(id)a3 withUserInformationResponse:(id)a4 modifyAliases:(BOOL)a5;
-- (BOOL)_walrusPropertiesChangedForAccount:(id)a3 userInformation:(id)a4;
-- (id)_userInfoChangeNotificationDictionaryForAltDSID:(id)a3 userInformation:(id)a4;
-- (id)authorizationUserInformationForRequest:(id)a3 shouldRequestUpdate:(BOOL *)a4 error:(id *)a5;
-- (id)previousAccountInfoRefreshDateForAccount:(id)a3;
+- (BOOL)_additionalInfoChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_adpCohortChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_authorizationPropertiesChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_birthYearChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_deviceListPropertiesChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_idmsWalrusStatusChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_loginHandlesChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_managedAppleIDInfoChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_passcodeAuthPropertiesChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_passkeyPropertiesChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_piggybackingApprovalEligibleChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_securityKeysChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_shouldUpdateConfigsForAltDSID:(id)d responseParameters:(id)parameters;
+- (BOOL)_trustedContactPropertiesChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_trustedPhoneNumbersChangedForAccount:(id)account userInformation:(id)information;
+- (BOOL)_updateAccount:(id)account withUserInformationResponse:(id)response modifyAliases:(BOOL)aliases;
+- (BOOL)_walrusPropertiesChangedForAccount:(id)account userInformation:(id)information;
+- (id)_userInfoChangeNotificationDictionaryForAltDSID:(id)d userInformation:(id)information;
+- (id)authorizationUserInformationForRequest:(id)request shouldRequestUpdate:(BOOL *)update error:(id *)error;
+- (id)previousAccountInfoRefreshDateForAccount:(id)account;
 - (void)_broadcastEmailChangeNotification;
-- (void)_fetchUserInformationForAltDSID:(id)a3 client:(id)a4 dataCenter:(id)a5 completion:(id)a6;
-- (void)_fetchUserInformationWithContext:(id)a3 client:(id)a4 dataCenter:(id)a5 completion:(id)a6;
-- (void)_processHideMyEmailForAltDSID:(id)a3 userInfo:(id)a4 response:(id)a5;
-- (void)_processIncomingUserInformationForAltDSID:(id)a3 userInformation:(id)a4;
-- (void)_refreshApplicationInformationForAltDSID:(id)a3;
-- (void)_refreshDeviceListForAccount:(id)a3;
-- (void)_sendNotification:(id)a3 withUserInfo:(id)a4;
-- (void)_setPreviousAccountInfoRefreshDate:(id)a3 forAccount:(id)a4;
-- (void)_syncPrivateEmailsForAltDSID:(id)a3 client:(id)a4 userInformation:(id)a5 completion:(id)a6;
-- (void)_updatePrivateEmailsWithInformation:(id)a3;
-- (void)_updateUserConfigIfNecessaryForAltDSID:(id)a3 responseParameters:(id)a4;
-- (void)fetchUserInformationForAltDSID:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)fetchUserInformationWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)processPushMessage:(id)a3;
-- (void)refreshAccountUsernamesForAltDSID:(id)a3 dataCenter:(id)a4;
-- (void)refreshAccountUsernamesForAltDSID:(id)a3 withUserInformation:(id)a4;
-- (void)sendUserInfoChangeNotificationWithPayload:(id)a3;
-- (void)updateBirthdayForAltDSID:(id)a3 userInformation:(id)a4;
-- (void)updateUserInformationForAltDSID:(id)a3 userInformation:(id)a4 completion:(id)a5;
-- (void)updateUserInformationWithContext:(id)a3 userInformation:(id)a4 client:(id)a5 completion:(id)a6;
+- (void)_fetchUserInformationForAltDSID:(id)d client:(id)client dataCenter:(id)center completion:(id)completion;
+- (void)_fetchUserInformationWithContext:(id)context client:(id)client dataCenter:(id)center completion:(id)completion;
+- (void)_processHideMyEmailForAltDSID:(id)d userInfo:(id)info response:(id)response;
+- (void)_processIncomingUserInformationForAltDSID:(id)d userInformation:(id)information;
+- (void)_refreshApplicationInformationForAltDSID:(id)d;
+- (void)_refreshDeviceListForAccount:(id)account;
+- (void)_sendNotification:(id)notification withUserInfo:(id)info;
+- (void)_setPreviousAccountInfoRefreshDate:(id)date forAccount:(id)account;
+- (void)_syncPrivateEmailsForAltDSID:(id)d client:(id)client userInformation:(id)information completion:(id)completion;
+- (void)_updatePrivateEmailsWithInformation:(id)information;
+- (void)_updateUserConfigIfNecessaryForAltDSID:(id)d responseParameters:(id)parameters;
+- (void)fetchUserInformationForAltDSID:(id)d client:(id)client completion:(id)completion;
+- (void)fetchUserInformationWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)processPushMessage:(id)message;
+- (void)refreshAccountUsernamesForAltDSID:(id)d dataCenter:(id)center;
+- (void)refreshAccountUsernamesForAltDSID:(id)d withUserInformation:(id)information;
+- (void)sendUserInfoChangeNotificationWithPayload:(id)payload;
+- (void)updateBirthdayForAltDSID:(id)d userInformation:(id)information;
+- (void)updateUserInformationForAltDSID:(id)d userInformation:(id)information completion:(id)completion;
+- (void)updateUserInformationWithContext:(id)context userInformation:(id)information client:(id)client completion:(id)completion;
 @end
 
 @implementation AKUserInfoController
 
 + (id)sharedController
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000E8C20;
   v8 = &unk_100322AA0;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &unk_100374790;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -92,53 +92,53 @@
   return v5;
 }
 
-- (void)fetchUserInformationForAltDSID:(id)a3 client:(id)a4 completion:(id)a5
+- (void)fetchUserInformationForAltDSID:(id)d client:(id)client completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, client);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKUserInfoController *)v10 _fetchUserInformationForAltDSID:location[0] client:v8 dataCenter:0 completion:v7];
+  objc_storeStrong(&v7, completion);
+  [(AKUserInfoController *)selfCopy _fetchUserInformationForAltDSID:location[0] client:v8 dataCenter:0 completion:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchUserInformationWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)fetchUserInformationWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, client);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKUserInfoController *)v10 _fetchUserInformationWithContext:location[0] client:v8 dataCenter:0 completion:v7];
+  objc_storeStrong(&v7, completion);
+  [(AKUserInfoController *)selfCopy _fetchUserInformationWithContext:location[0] client:v8 dataCenter:0 completion:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchUserInformationForAltDSID:(id)a3 client:(id)a4 dataCenter:(id)a5 completion:(id)a6
+- (void)_fetchUserInformationForAltDSID:(id)d client:(id)client dataCenter:(id)center completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, client);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, center);
   v10 = 0;
-  objc_storeStrong(&v10, a6);
+  objc_storeStrong(&v10, completion);
   v9 = objc_alloc_init(AKAppleIDAuthenticationContext);
   [v9 setAltDSID:location[0]];
-  [(AKUserInfoController *)v14 _fetchUserInformationWithContext:v9 client:v12 dataCenter:v11 completion:v10];
+  [(AKUserInfoController *)selfCopy _fetchUserInformationWithContext:v9 client:v12 dataCenter:v11 completion:v10];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
@@ -146,30 +146,30 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchUserInformationWithContext:(id)a3 client:(id)a4 dataCenter:(id)a5 completion:(id)a6
+- (void)_fetchUserInformationWithContext:(id)context client:(id)client dataCenter:(id)center completion:(id)completion
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, client);
   v35 = 0;
-  objc_storeStrong(&v35, a5);
+  objc_storeStrong(&v35, center);
   v34 = 0;
-  objc_storeStrong(&v34, a6);
-  v18 = [location[0] altDSID];
-  _objc_release(v18);
-  if (v18)
+  objc_storeStrong(&v34, completion);
+  altDSID = [location[0] altDSID];
+  _objc_release(altDSID);
+  if (altDSID)
   {
     v12 = +[AKAccountManager sharedInstance];
-    v11 = [location[0] altDSID];
+    altDSID2 = [location[0] altDSID];
     v32 = [AKAccountManager authKitAccountWithAltDSID:v12 error:"authKitAccountWithAltDSID:error:"];
-    _objc_release(v11);
+    _objc_release(altDSID2);
     _objc_release(v12);
     if (v32)
     {
-      v9 = v38;
+      v9 = selfCopy;
       v10 = +[NSDate date];
       [AKUserInfoController _setPreviousAccountInfoRefreshDate:v9 forAccount:"_setPreviousAccountInfoRefreshDate:forAccount:"];
       _objc_release(v10);
@@ -179,10 +179,10 @@
     v30 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [location[0] altDSID];
-      sub_1000194D4(v39, v8);
+      altDSID3 = [location[0] altDSID];
+      sub_1000194D4(v39, altDSID3);
       _os_log_impl(&_mh_execute_header, v31, v30, "Starting to fetch user info for %@", v39, 0xCu);
-      _objc_release(v8);
+      _objc_release(altDSID3);
     }
 
     objc_storeStrong(&v31, 0);
@@ -204,7 +204,7 @@
     v22 = sub_1000E94B8;
     v23 = &unk_100323190;
     v24 = _objc_retain(location[0]);
-    v25 = _objc_retain(v38);
+    v25 = _objc_retain(selfCopy);
     v26 = _objc_retain(v36);
     v27 = _objc_retain(v34);
     [(AKServiceControllerImpl *)v7 executeRequestWithCompletion:&v19];
@@ -237,28 +237,28 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshAccountUsernamesForAltDSID:(id)a3 dataCenter:(id)a4
+- (void)refreshAccountUsernamesForAltDSID:(id)d dataCenter:(id)center
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, center);
   +[NSXPCConnection beginTransaction];
-  [(AKUserInfoController *)v7 _fetchUserInformationForAltDSID:location[0] client:0 dataCenter:v5 completion:&stru_1003231D0];
+  [(AKUserInfoController *)selfCopy _fetchUserInformationForAltDSID:location[0] client:0 dataCenter:v5 completion:&stru_1003231D0];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldUpdateConfigsForAltDSID:(id)a3 responseParameters:(id)a4
+- (BOOL)_shouldUpdateConfigsForAltDSID:(id)d responseParameters:(id)parameters
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, parameters);
   v6 = +[AKAccountManager sharedInstance];
   v10 = [(AKAccountManager *)v6 authKitAccountWithAltDSID:location[0] error:0];
   _objc_release(v6);
@@ -275,15 +275,15 @@
   return v13;
 }
 
-- (void)_updateUserConfigIfNecessaryForAltDSID:(id)a3 responseParameters:(id)a4
+- (void)_updateUserConfigIfNecessaryForAltDSID:(id)d responseParameters:(id)parameters
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  if ([(AKUserInfoController *)v10 _shouldUpdateConfigsForAltDSID:location[0] responseParameters:v8])
+  objc_storeStrong(&v8, parameters);
+  if ([(AKUserInfoController *)selfCopy _shouldUpdateConfigsForAltDSID:location[0] responseParameters:v8])
   {
     v6 = objc_alloc_init(AKUserConfigController);
     v4 = location[0];
@@ -298,12 +298,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)processPushMessage:(id)a3
+- (void)processPushMessage:(id)message
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   if ([location[0] command] == 1400)
   {
     v18 = _AKLogSystem();
@@ -317,32 +317,32 @@
     }
 
     objc_storeStrong(&v18, 0);
-    v10 = [location[0] userInfo];
-    v15 = [v10 objectForKeyedSubscript:@"userinfodata"];
-    _objc_release(v10);
+    userInfo = [location[0] userInfo];
+    v15 = [userInfo objectForKeyedSubscript:@"userinfodata"];
+    _objc_release(userInfo);
     if (v15)
     {
       v14 = [[AKAppleIDUserInformationResponse alloc] initWithResponseBody:v15];
-      v6 = v20;
-      v7 = [location[0] altDSID];
+      v6 = selfCopy;
+      altDSID = [location[0] altDSID];
       [AKUserInfoController _processIncomingUserInformationForAltDSID:v6 userInformation:"_processIncomingUserInformationForAltDSID:userInformation:"];
-      _objc_release(v7);
-      v8 = v20;
-      v9 = [location[0] altDSID];
+      _objc_release(altDSID);
+      v8 = selfCopy;
+      altDSID2 = [location[0] altDSID];
       [AKUserInfoController _processHideMyEmailForAltDSID:v8 userInfo:"_processHideMyEmailForAltDSID:userInfo:response:" response:?];
-      _objc_release(v9);
+      _objc_release(altDSID2);
       objc_storeStrong(&v14, 0);
     }
 
     else
     {
-      v3 = [location[0] eventDetails];
-      v13 = [v3 objectForKeyedSubscript:@"dataCenter"];
-      _objc_release(v3);
-      v4 = v20;
-      v5 = [location[0] altDSID];
+      eventDetails = [location[0] eventDetails];
+      v13 = [eventDetails objectForKeyedSubscript:@"dataCenter"];
+      _objc_release(eventDetails);
+      v4 = selfCopy;
+      altDSID3 = [location[0] altDSID];
       [AKUserInfoController refreshAccountUsernamesForAltDSID:v4 dataCenter:"refreshAccountUsernamesForAltDSID:dataCenter:"];
-      _objc_release(v5);
+      _objc_release(altDSID3);
       objc_storeStrong(&v13, 0);
     }
 
@@ -352,25 +352,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_processHideMyEmailForAltDSID:(id)a3 userInfo:(id)a4 response:(id)a5
+- (void)_processHideMyEmailForAltDSID:(id)d userInfo:(id)info response:(id)response
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, info);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
+  objc_storeStrong(&v28, response);
   v27 = +[AKAccountManager sharedInstance];
-  v26 = [v27 primaryAuthKitAccount];
-  v25 = [v27 altDSIDForAccount:v26];
+  primaryAuthKitAccount = [v27 primaryAuthKitAccount];
+  v25 = [v27 altDSIDForAccount:primaryAuthKitAccount];
   if ([v25 isEqualToString:location[0]])
   {
     v20 = [[AKPrivateEmailInformation alloc] initWithResponseBody:v29];
     v19 = +[AKPrivateEmailStoreManager sharedInstance];
-    v18 = [v19 currentProtocolVersion];
-    if (v18 < [v20 protocolVersion])
+    currentProtocolVersion = [v19 currentProtocolVersion];
+    if (currentProtocolVersion < [v20 protocolVersion])
     {
       v17 = 0;
       v16 = 0;
@@ -392,9 +392,9 @@
       else
       {
         v6 = v19;
-        v5 = [v20 protocolVersion];
+        protocolVersion = [v20 protocolVersion];
         v13 = v17;
-        v7 = [v6 setProtocolVersion:v5 error:&v13];
+        v7 = [v6 setProtocolVersion:protocolVersion error:&v13];
         objc_storeStrong(&v17, v13);
         if (v7)
         {
@@ -419,12 +419,12 @@
 
     if ([v20 shouldSyncWithServer])
     {
-      [(AKUserInfoController *)v31 _syncPrivateEmailsForAltDSID:location[0] client:0 userInformation:v28 completion:?];
+      [(AKUserInfoController *)selfCopy _syncPrivateEmailsForAltDSID:location[0] client:0 userInformation:v28 completion:?];
     }
 
     else
     {
-      [(AKUserInfoController *)v31 _updatePrivateEmailsWithInformation:v20];
+      [(AKUserInfoController *)selfCopy _updatePrivateEmailsWithInformation:v20];
     }
 
     objc_storeStrong(&v19, 0);
@@ -449,48 +449,48 @@
   }
 
   objc_storeStrong(&v25, 0);
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_processIncomingUserInformationForAltDSID:(id)a3 userInformation:(id)a4
+- (void)_processIncomingUserInformationForAltDSID:(id)d userInformation:(id)information
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [v6 userInformationRepresentation];
-  [(AKUserInfoController *)v8 refreshAccountUsernamesForAltDSID:location[0] withUserInformation:v6];
-  [(AKUserInfoController *)v8 updateUserInformationForAltDSID:location[0] userInformation:v5 completion:0];
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&v6, information);
+  userInformationRepresentation = [v6 userInformationRepresentation];
+  [(AKUserInfoController *)selfCopy refreshAccountUsernamesForAltDSID:location[0] withUserInformation:v6];
+  [(AKUserInfoController *)selfCopy updateUserInformationForAltDSID:location[0] userInformation:userInformationRepresentation completion:0];
+  objc_storeStrong(&userInformationRepresentation, 0);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_syncPrivateEmailsForAltDSID:(id)a3 client:(id)a4 userInformation:(id)a5 completion:(id)a6
+- (void)_syncPrivateEmailsForAltDSID:(id)d client:(id)client userInformation:(id)information completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, client);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
+  objc_storeStrong(&v34, information);
   v33 = 0;
-  objc_storeStrong(&v33, a6);
-  v32 = [v34 userInformationRepresentation];
-  v31 = [v32 privateEmailListVersion];
-  if (v31 && ![v31 isEqualToString:@"0"])
+  objc_storeStrong(&v33, completion);
+  userInformationRepresentation = [v34 userInformationRepresentation];
+  privateEmailListVersion = [userInformationRepresentation privateEmailListVersion];
+  if (privateEmailListVersion && ![privateEmailListVersion isEqualToString:@"0"])
   {
     v30 = +[AKPrivateEmailStoreManager sharedInstance];
-    v29 = [v30 currentEmailListVersion];
-    if (![v31 isEqualToString:v29])
+    currentEmailListVersion = [v30 currentEmailListVersion];
+    if (![privateEmailListVersion isEqualToString:currentEmailListVersion])
     {
       v28 = _AKLogSystem();
       v27 = OS_LOG_TYPE_DEBUG;
@@ -545,48 +545,48 @@
       objc_storeStrong(&v26, 0);
     }
 
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&currentEmailListVersion, 0);
     objc_storeStrong(&v30, 0);
   }
 
-  objc_storeStrong(&v31, 0);
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&privateEmailListVersion, 0);
+  objc_storeStrong(&userInformationRepresentation, 0);
   objc_storeStrong(&v33, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v35, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updatePrivateEmailsWithInformation:(id)a3
+- (void)_updatePrivateEmailsWithInformation:(id)information
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = [location[0] privateEmailListVersion];
+  objc_storeStrong(location, information);
+  privateEmailListVersion = [location[0] privateEmailListVersion];
   v12 = _AKLogHme();
   v11 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000194D4(v17, v13);
+    sub_1000194D4(v17, privateEmailListVersion);
     _os_log_debug_impl(&_mh_execute_header, v12, v11, "Update passedVersion=[%@]", v17, 0xCu);
   }
 
   objc_storeStrong(&v12, 0);
-  if (v13 && ![v13 isEqualToString:@"0"])
+  if (privateEmailListVersion && ![privateEmailListVersion isEqualToString:@"0"])
   {
     v10 = +[AKPrivateEmailStoreManager sharedInstance];
-    v9 = [v10 currentEmailListVersion];
+    currentEmailListVersion = [v10 currentEmailListVersion];
     oslog = _AKLogHme();
     v7 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000194D4(v16, v9);
+      sub_1000194D4(v16, currentEmailListVersion);
       _os_log_debug_impl(&_mh_execute_header, oslog, v7, "Update currentVersion=[%@]", v16, 0xCu);
     }
 
     objc_storeStrong(&oslog, 0);
-    if (![v13 isEqualToString:v9])
+    if (![privateEmailListVersion isEqualToString:currentEmailListVersion])
     {
       v6 = 0;
       obj = 0;
@@ -607,60 +607,60 @@
       objc_storeStrong(&v6, 0);
     }
 
-    objc_storeStrong(&v9, 0);
+    objc_storeStrong(&currentEmailListVersion, 0);
     objc_storeStrong(&v10, 0);
   }
 
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&privateEmailListVersion, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)updateUserInformationForAltDSID:(id)a3 userInformation:(id)a4 completion:(id)a5
+- (void)updateUserInformationForAltDSID:(id)d userInformation:(id)information completion:(id)completion
 {
-  v75 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v73 = 0;
-  objc_storeStrong(&v73, a4);
+  objc_storeStrong(&v73, information);
   v72 = 0;
-  objc_storeStrong(&v72, a5);
-  v71 = [(AKUserInfoController *)v75 _userInfoChangeNotificationDictionaryForAltDSID:location[0] userInformation:v73];
+  objc_storeStrong(&v72, completion);
+  v71 = [(AKUserInfoController *)selfCopy _userInfoChangeNotificationDictionaryForAltDSID:location[0] userInformation:v73];
   if ([v71 count])
   {
-    v70 = [(AKAccountManager *)v75->_accountManager authKitAccountWithAltDSID:location[0] error:0];
+    v70 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAltDSID:location[0] error:0];
     v69 = 0;
     v68 = 0;
-    v67 = [v73 authMode];
+    authMode = [v73 authMode];
     v45 = [v71 objectForKeyedSubscript:AKUserInfoChangedAuthModeKey];
     _objc_release(v45);
     if (v45)
     {
-      [(AKAccountManager *)v75->_accountManager setAuthenticationMode:v67 forAccount:v70];
+      [(AKAccountManager *)selfCopy->_accountManager setAuthenticationMode:authMode forAccount:v70];
       v68 = 1;
       v69 = 1;
     }
 
-    v42 = [v73 isMdmInfoRequired];
-    v43 = [v42 BOOLValue];
-    _objc_release(v42);
-    v66 = v43;
+    isMdmInfoRequired = [v73 isMdmInfoRequired];
+    bOOLValue = [isMdmInfoRequired BOOLValue];
+    _objc_release(isMdmInfoRequired);
+    v66 = bOOLValue;
     v44 = [v71 objectForKeyedSubscript:AKUserInfoChangedMDMInfoRequiredKey];
     _objc_release(v44);
     if (v44)
     {
-      [(AKAccountManager *)v75->_accountManager setMDMInformationRequired:v66 & 1 forAccount:v70];
+      [(AKAccountManager *)selfCopy->_accountManager setMDMInformationRequired:v66 & 1 forAccount:v70];
       v68 = 1;
       v69 = 1;
     }
 
-    v65 = [v73 appleIDSecurityLevel];
+    appleIDSecurityLevel = [v73 appleIDSecurityLevel];
     v41 = [v71 objectForKeyedSubscript:AKUserInfoChangedSecurityLevelKey];
     _objc_release(v41);
     if (v41)
     {
-      [(AKAccountManager *)v75->_accountManager setSecurityLevel:v65 forAccount:v70];
-      if (v65 == 4)
+      [(AKAccountManager *)selfCopy->_accountManager setSecurityLevel:appleIDSecurityLevel forAccount:v70];
+      if (appleIDSecurityLevel == 4)
       {
         v64 = [[AKSatoriController alloc] initWithClient:?];
         [(AKSatoriController *)v64 warmUpVerificationSessionWithCompletionHandler:0];
@@ -675,8 +675,8 @@
     _objc_release(v40);
     if (v40)
     {
-      v63 = [v73 repairState];
-      [(AKAccountManager *)v75->_accountManager setRepairState:v63 forAccount:v70];
+      repairState = [v73 repairState];
+      [(AKAccountManager *)selfCopy->_accountManager setRepairState:repairState forAccount:v70];
       v68 = 1;
       v69 = 1;
     }
@@ -685,10 +685,10 @@
     _objc_release(v39);
     if (v39)
     {
-      accountManager = v75->_accountManager;
-      v38 = [v73 groupKitEligibility];
+      accountManager = selfCopy->_accountManager;
+      groupKitEligibility = [v73 groupKitEligibility];
       [AKAccountManager setGroupKitEligibility:"setGroupKitEligibility:forAccount:" forAccount:?];
-      _objc_release(v38);
+      _objc_release(groupKitEligibility);
       v68 = 1;
       v69 = 1;
     }
@@ -711,11 +711,11 @@
     _objc_release(v35);
     if (v36)
     {
-      v33 = v75->_accountManager;
-      v34 = [v73 hasSOSActiveDevice];
-      v5 = [v34 BOOLValue];
-      [(AKAccountManager *)v33 setHasSOSActiveDevice:v5 forAccount:v70];
-      _objc_release(v34);
+      v33 = selfCopy->_accountManager;
+      hasSOSActiveDevice = [v73 hasSOSActiveDevice];
+      bOOLValue2 = [hasSOSActiveDevice BOOLValue];
+      [(AKAccountManager *)v33 setHasSOSActiveDevice:bOOLValue2 forAccount:v70];
+      _objc_release(hasSOSActiveDevice);
       v68 = 1;
     }
 
@@ -723,31 +723,31 @@
     _objc_release(v32);
     if (v32)
     {
-      v60 = [v73 activeHMECount];
-      [(AKAccountManager *)v75->_accountManager setActiveiCloudPrivateEmailCount:v60 forAccount:v70];
+      activeHMECount = [v73 activeHMECount];
+      [(AKAccountManager *)selfCopy->_accountManager setActiveiCloudPrivateEmailCount:activeHMECount forAccount:v70];
       v68 = 1;
-      objc_storeStrong(&v60, 0);
+      objc_storeStrong(&activeHMECount, 0);
     }
 
     v31 = [v71 objectForKeyedSubscript:@"inActiveHMECount"];
     _objc_release(v31);
     if (v31)
     {
-      v59 = [v73 inActiveHMECount];
-      [(AKAccountManager *)v75->_accountManager setInactiveiCloudPrivateEmailCount:v59 forAccount:v70];
+      inActiveHMECount = [v73 inActiveHMECount];
+      [(AKAccountManager *)selfCopy->_accountManager setInactiveiCloudPrivateEmailCount:inActiveHMECount forAccount:v70];
       v68 = 1;
-      objc_storeStrong(&v59, 0);
+      objc_storeStrong(&inActiveHMECount, 0);
     }
 
     v30 = [v71 objectForKeyedSubscript:AKSOSNeededKey];
     _objc_release(v30);
     if (v30)
     {
-      v28 = v75->_accountManager;
-      v29 = [v73 SOSNeeded];
-      v6 = [v29 BOOLValue];
-      [(AKAccountManager *)v28 setSOSNeeded:v6 forAccount:v70];
-      _objc_release(v29);
+      v28 = selfCopy->_accountManager;
+      sOSNeeded = [v73 SOSNeeded];
+      bOOLValue3 = [sOSNeeded BOOLValue];
+      [(AKAccountManager *)v28 setSOSNeeded:bOOLValue3 forAccount:v70];
+      _objc_release(sOSNeeded);
       v68 = 1;
     }
 
@@ -755,10 +755,10 @@
     _objc_release(v27);
     if (v27)
     {
-      v25 = v75->_accountManager;
-      v26 = [v73 configDataVersion];
+      v25 = selfCopy->_accountManager;
+      configDataVersion = [v73 configDataVersion];
       [AKAccountManager setConfigDataVersion:v25 forAccount:"setConfigDataVersion:forAccount:"];
-      _objc_release(v26);
+      _objc_release(configDataVersion);
       v68 = 1;
     }
 
@@ -766,11 +766,11 @@
     _objc_release(v24);
     if (v24)
     {
-      v22 = v75->_accountManager;
-      v23 = [v73 hasModernRecoveryKey];
-      v7 = [v23 BOOLValue];
-      [(AKAccountManager *)v22 setHasModernRecoveryKey:v7 forAccount:v70];
-      _objc_release(v23);
+      v22 = selfCopy->_accountManager;
+      hasModernRecoveryKey = [v73 hasModernRecoveryKey];
+      bOOLValue4 = [hasModernRecoveryKey BOOLValue];
+      [(AKAccountManager *)v22 setHasModernRecoveryKey:bOOLValue4 forAccount:v70];
+      _objc_release(hasModernRecoveryKey);
       v68 = 1;
     }
 
@@ -778,79 +778,79 @@
     _objc_release(v21);
     if (v21)
     {
-      v19 = v75->_accountManager;
-      v20 = [v73 thirdPartyRegulatoryOverride];
+      v19 = selfCopy->_accountManager;
+      thirdPartyRegulatoryOverride = [v73 thirdPartyRegulatoryOverride];
       [AKAccountManager set3PRegulatoryOverride:v19 forAccount:"set3PRegulatoryOverride:forAccount:"];
-      _objc_release(v20);
+      _objc_release(thirdPartyRegulatoryOverride);
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _authorizationPropertiesChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _authorizationPropertiesChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _passkeyPropertiesChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _passkeyPropertiesChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _walrusPropertiesChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _walrusPropertiesChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _passcodeAuthPropertiesChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _passcodeAuthPropertiesChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _deviceListPropertiesChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _deviceListPropertiesChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _additionalInfoChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _additionalInfoChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _trustedPhoneNumbersChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _trustedPhoneNumbersChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _securityKeysChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _securityKeysChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _loginHandlesChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _loginHandlesChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _managedAppleIDInfoChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _managedAppleIDInfoChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _trustedContactPropertiesChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _trustedContactPropertiesChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _birthYearChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _birthYearChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _adpCohortChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _adpCohortChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _piggybackingApprovalEligibleChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _piggybackingApprovalEligibleChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
@@ -859,15 +859,15 @@
     _objc_release(v18);
     if (v18)
     {
-      v16 = v75->_accountManager;
-      v17 = [v73 isEligibleToMigrateToChild];
+      v16 = selfCopy->_accountManager;
+      isEligibleToMigrateToChild = [v73 isEligibleToMigrateToChild];
       [AKAccountManager setIsEligibleToMigrateToChild:v16 forAccount:"setIsEligibleToMigrateToChild:forAccount:"];
-      _objc_release(v17);
+      _objc_release(isEligibleToMigrateToChild);
       v68 = 1;
       v69 = 1;
     }
 
-    if ([(AKUserInfoController *)v75 _idmsWalrusStatusChangedForAccount:v70 userInformation:v73])
+    if ([(AKUserInfoController *)selfCopy _idmsWalrusStatusChangedForAccount:v70 userInformation:v73])
     {
       v68 = 1;
     }
@@ -876,7 +876,7 @@
     v57 = 0;
     if (v68)
     {
-      v8 = v75->_accountManager;
+      v8 = selfCopy->_accountManager;
       v56 = v57;
       v15 = [(AKAccountManager *)v8 saveAccount:v70 error:&v56];
       objc_storeStrong(&v57, v56);
@@ -896,25 +896,25 @@
       }
 
       objc_storeStrong(&v55, 0);
-      [(AKUserInfoController *)v75 sendUserInfoChangeNotificationWithPayload:v71];
+      [(AKUserInfoController *)selfCopy sendUserInfoChangeNotificationWithPayload:v71];
     }
 
-    v11 = [v73 birthDay];
+    birthDay = [v73 birthDay];
     v51 = 0;
     v12 = 1;
-    if (!v11)
+    if (!birthDay)
     {
-      v52 = [v73 birthMonth];
+      birthMonth = [v73 birthMonth];
       v51 = 1;
-      v12 = v52 != 0;
+      v12 = birthMonth != 0;
     }
 
     if (v51)
     {
-      _objc_release(v52);
+      _objc_release(birthMonth);
     }
 
-    _objc_release(v11);
+    _objc_release(birthDay);
     if (v12)
     {
       v50 = _AKLogSystem();
@@ -928,7 +928,7 @@
       }
 
       objc_storeStrong(&v50, 0);
-      [(AKUserInfoController *)v75 updateBirthdayForAltDSID:location[0] userInformation:v73];
+      [(AKUserInfoController *)selfCopy updateBirthdayForAltDSID:location[0] userInformation:v73];
     }
 
     if (v72)
@@ -951,22 +951,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_piggybackingApprovalEligibleChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_piggybackingApprovalEligibleChangedForAccount:(id)account userInformation:(id)information
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, information);
   v9 = 0;
-  v8 = [(AKAccountManager *)v12->_accountManager piggybackingApprovalEligible:location[0]];
-  v6 = [v10 piggybackingApprovalEligible];
-  v7 = [v6 BOOLValue];
-  _objc_release(v6);
-  if ((v8 & 1) != (v7 & 1))
+  v8 = [(AKAccountManager *)selfCopy->_accountManager piggybackingApprovalEligible:location[0]];
+  piggybackingApprovalEligible = [v10 piggybackingApprovalEligible];
+  bOOLValue = [piggybackingApprovalEligible BOOLValue];
+  _objc_release(piggybackingApprovalEligible);
+  if ((v8 & 1) != (bOOLValue & 1))
   {
-    [(AKAccountManager *)v12->_accountManager setPiggybackingApprovalEligible:v7 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setPiggybackingApprovalEligible:bOOLValue & 1 forAccount:location[0]];
     v9 = 1;
   }
 
@@ -975,228 +975,228 @@
   return v9 & 1;
 }
 
-- (id)_userInfoChangeNotificationDictionaryForAltDSID:(id)a3 userInformation:(id)a4
+- (id)_userInfoChangeNotificationDictionaryForAltDSID:(id)d userInformation:(id)information
 {
-  v70 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v68 = 0;
-  objc_storeStrong(&v68, a4);
+  objc_storeStrong(&v68, information);
   v67 = +[NSMutableDictionary dictionary];
-  v66 = [(AKAccountManager *)v70->_accountManager authKitAccountWithAltDSID:location[0] error:0];
+  v66 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAltDSID:location[0] error:0];
   if (v66)
   {
     [v67 setObject:location[0] forKeyedSubscript:AKUserInfoChangedAltDSIDKey];
-    v65 = [(AKAccountManager *)v70->_accountManager authenticationModeForAccount:v66];
-    v64 = [v68 authMode];
-    if (v64 != v65 && v64)
+    v65 = [(AKAccountManager *)selfCopy->_accountManager authenticationModeForAccount:v66];
+    authMode = [v68 authMode];
+    if (authMode != v65 && authMode)
     {
-      v26 = [NSNumber numberWithUnsignedInteger:v64];
+      v26 = [NSNumber numberWithUnsignedInteger:authMode];
       [v67 setObject:? forKeyedSubscript:?];
       _objc_release(v26);
     }
 
-    v63 = [(AKAccountManager *)v70->_accountManager mdmInformationRequiredForAccount:v66];
-    v24 = [v68 isMdmInfoRequired];
-    v25 = [v24 BOOLValue];
-    _objc_release(v24);
-    v62 = v25;
-    if ((v25 & 1) != (v63 & 1))
+    v63 = [(AKAccountManager *)selfCopy->_accountManager mdmInformationRequiredForAccount:v66];
+    isMdmInfoRequired = [v68 isMdmInfoRequired];
+    bOOLValue = [isMdmInfoRequired BOOLValue];
+    _objc_release(isMdmInfoRequired);
+    v62 = bOOLValue;
+    if ((bOOLValue & 1) != (v63 & 1))
     {
       v23 = [NSNumber numberWithBool:v62 & 1];
       [v67 setObject:? forKeyedSubscript:?];
       _objc_release(v23);
     }
 
-    v61 = [(AKAccountManager *)v70->_accountManager securityLevelForAccount:v66];
-    v60 = [v68 appleIDSecurityLevel];
-    if (v60 != v61 && v60)
+    v61 = [(AKAccountManager *)selfCopy->_accountManager securityLevelForAccount:v66];
+    appleIDSecurityLevel = [v68 appleIDSecurityLevel];
+    if (appleIDSecurityLevel != v61 && appleIDSecurityLevel)
     {
-      v22 = [NSNumber numberWithUnsignedInteger:v60];
+      v22 = [NSNumber numberWithUnsignedInteger:appleIDSecurityLevel];
       [v67 setObject:? forKeyedSubscript:?];
       _objc_release(v22);
     }
 
-    v59 = [(AKAccountManager *)v70->_accountManager hasSOSActiveDeviceForAccount:v66];
-    v58 = [v68 hasSOSActiveDevice];
-    if (v58 && (!v59 || v58 != v59))
+    v59 = [(AKAccountManager *)selfCopy->_accountManager hasSOSActiveDeviceForAccount:v66];
+    hasSOSActiveDevice = [v68 hasSOSActiveDevice];
+    if (hasSOSActiveDevice && (!v59 || hasSOSActiveDevice != v59))
     {
-      v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v58 BOOLValue]);
+      v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [hasSOSActiveDevice BOOLValue]);
       [v67 setObject:? forKeyedSubscript:?];
       _objc_release(v21);
     }
 
-    v57 = [(AKAccountManager *)v70->_accountManager isSOSNeededForAccount:v66];
-    v56 = [v68 SOSNeeded];
-    if (v56 && (!v57 || v56 != v57))
+    v57 = [(AKAccountManager *)selfCopy->_accountManager isSOSNeededForAccount:v66];
+    sOSNeeded = [v68 SOSNeeded];
+    if (sOSNeeded && (!v57 || sOSNeeded != v57))
     {
-      v20 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v56 BOOLValue]);
+      v20 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [sOSNeeded BOOLValue]);
       [v67 setObject:? forKeyedSubscript:?];
       _objc_release(v20);
     }
 
-    v55 = [(AKAccountManager *)v70->_accountManager repairStateForAccount:v66];
-    v54 = [v68 repairState];
-    if (v54 != v55 && v54)
+    v55 = [(AKAccountManager *)selfCopy->_accountManager repairStateForAccount:v66];
+    repairState = [v68 repairState];
+    if (repairState != v55 && repairState)
     {
-      v19 = [NSNumber numberWithUnsignedInteger:v54];
+      v19 = [NSNumber numberWithUnsignedInteger:repairState];
       [v67 setObject:? forKeyedSubscript:?];
       _objc_release(v19);
     }
 
-    v53 = [(AKAccountManager *)v70->_accountManager webAccessEnabledForAccount:v66];
-    v52 = [v68 webAccessEnabled];
-    if (v52)
+    v53 = [(AKAccountManager *)selfCopy->_accountManager webAccessEnabledForAccount:v66];
+    webAccessEnabled = [v68 webAccessEnabled];
+    if (webAccessEnabled)
     {
-      if (!v53 || (v18 = [v52 BOOLValue], v18 != objc_msgSend(v53, "BOOLValue")))
+      if (!v53 || (v18 = [webAccessEnabled BOOLValue], v18 != objc_msgSend(v53, "BOOLValue")))
       {
-        v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v52 BOOLValue]);
+        v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [webAccessEnabled BOOLValue]);
         [v67 setObject:? forKeyedSubscript:?];
         _objc_release(v17);
       }
     }
 
-    v51 = [(AKAccountManager *)v70->_accountManager serverExperimentalFeaturesForAccount:v66];
-    v50 = [v68 serverExperimentalFeatures];
-    if (v50)
+    v51 = [(AKAccountManager *)selfCopy->_accountManager serverExperimentalFeaturesForAccount:v66];
+    serverExperimentalFeatures = [v68 serverExperimentalFeatures];
+    if (serverExperimentalFeatures)
     {
-      if (!v51 || (v16 = [v50 integerValue], v16 != objc_msgSend(v51, "integerValue")))
+      if (!v51 || (v16 = [serverExperimentalFeatures integerValue], v16 != objc_msgSend(v51, "integerValue")))
       {
-        [v67 setObject:v50 forKeyedSubscript:AKServerExperimentalFeaturesKey];
+        [v67 setObject:serverExperimentalFeatures forKeyedSubscript:AKServerExperimentalFeaturesKey];
       }
     }
 
-    v49 = [(AKAccountManager *)v70->_accountManager passkeyEligibleForAccount:v66];
-    v48 = [v68 passkeyEligible];
-    if (v48)
+    v49 = [(AKAccountManager *)selfCopy->_accountManager passkeyEligibleForAccount:v66];
+    passkeyEligible = [v68 passkeyEligible];
+    if (passkeyEligible)
     {
-      if (!v49 || (v15 = [v48 BOOLValue], v15 != objc_msgSend(v49, "BOOLValue")))
+      if (!v49 || (v15 = [passkeyEligible BOOLValue], v15 != objc_msgSend(v49, "BOOLValue")))
       {
-        v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v48 BOOLValue]);
+        v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [passkeyEligible BOOLValue]);
         [v67 setObject:? forKeyedSubscript:?];
         _objc_release(v14);
       }
     }
 
-    v47 = [(AKAccountManager *)v70->_accountManager passkeyPresentForAccount:v66];
-    v46 = [v68 passkeyPresent];
-    if (v46)
+    v47 = [(AKAccountManager *)selfCopy->_accountManager passkeyPresentForAccount:v66];
+    passkeyPresent = [v68 passkeyPresent];
+    if (passkeyPresent)
     {
-      if (!v47 || (v13 = [v46 BOOLValue], v13 != objc_msgSend(v47, "BOOLValue")))
+      if (!v47 || (v13 = [passkeyPresent BOOLValue], v13 != objc_msgSend(v47, "BOOLValue")))
       {
-        v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v46 BOOLValue]);
+        v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [passkeyPresent BOOLValue]);
         [v67 setObject:? forKeyedSubscript:?];
         _objc_release(v12);
       }
     }
 
-    v45 = [(AKAccountManager *)v70->_accountManager groupKitEligibilityForAccount:v66];
-    v44 = [v68 groupKitEligibility];
-    if (v44)
+    v45 = [(AKAccountManager *)selfCopy->_accountManager groupKitEligibilityForAccount:v66];
+    groupKitEligibility = [v68 groupKitEligibility];
+    if (groupKitEligibility)
     {
-      if (!v45 || (v11 = [v44 integerValue], v11 != objc_msgSend(v45, "integerValue")))
+      if (!v45 || (v11 = [groupKitEligibility integerValue], v11 != objc_msgSend(v45, "integerValue")))
       {
-        [v67 setObject:v44 forKeyedSubscript:AKGroupKitEligibilityKey];
+        [v67 setObject:groupKitEligibility forKeyedSubscript:AKGroupKitEligibilityKey];
       }
     }
 
-    v43 = [(AKAccountManager *)v70->_accountManager inactiveiCloudPrivateEmailCountForAccount:v66];
-    v42 = [v68 inActiveHMECount];
-    if (v42)
+    v43 = [(AKAccountManager *)selfCopy->_accountManager inactiveiCloudPrivateEmailCountForAccount:v66];
+    inActiveHMECount = [v68 inActiveHMECount];
+    if (inActiveHMECount)
     {
-      if (!v43 || (v10 = [v42 integerValue], v10 != objc_msgSend(v43, "integerValue")))
+      if (!v43 || (v10 = [inActiveHMECount integerValue], v10 != objc_msgSend(v43, "integerValue")))
       {
-        [v67 setObject:v42 forKeyedSubscript:AKHMEInActiveCountKey];
+        [v67 setObject:inActiveHMECount forKeyedSubscript:AKHMEInActiveCountKey];
       }
     }
 
-    v41 = [(AKAccountManager *)v70->_accountManager activeiCloudPrivateEmailCountForAccount:v66];
-    v40 = [v68 activeHMECount];
-    if (v40)
+    v41 = [(AKAccountManager *)selfCopy->_accountManager activeiCloudPrivateEmailCountForAccount:v66];
+    activeHMECount = [v68 activeHMECount];
+    if (activeHMECount)
     {
-      if (!v41 || (v9 = [v40 integerValue], v9 != objc_msgSend(v41, "integerValue")))
+      if (!v41 || (v9 = [activeHMECount integerValue], v9 != objc_msgSend(v41, "integerValue")))
       {
-        [v67 setObject:v40 forKeyedSubscript:AKHMEActiveCountKey];
+        [v67 setObject:activeHMECount forKeyedSubscript:AKHMEActiveCountKey];
       }
     }
 
-    v39 = [(AKAccountManager *)v70->_accountManager configDataVersionForAccount:v66];
-    v38 = [v68 configDataVersion];
-    if (v38 && !sub_1000E9B2C(v38, v39))
+    v39 = [(AKAccountManager *)selfCopy->_accountManager configDataVersionForAccount:v66];
+    configDataVersion = [v68 configDataVersion];
+    if (configDataVersion && !sub_1000E9B2C(configDataVersion, v39))
     {
-      [v67 setObject:v38 forKeyedSubscript:AKConfigDataVersion];
+      [v67 setObject:configDataVersion forKeyedSubscript:AKConfigDataVersion];
     }
 
-    v37 = [(AKAccountManager *)v70->_accountManager hasModernRecoveryKeyForAccount:v66];
-    v36 = [v68 hasModernRecoveryKey];
-    if (v36 && (!v37 || v36 != v37))
+    v37 = [(AKAccountManager *)selfCopy->_accountManager hasModernRecoveryKeyForAccount:v66];
+    hasModernRecoveryKey = [v68 hasModernRecoveryKey];
+    if (hasModernRecoveryKey && (!v37 || hasModernRecoveryKey != v37))
     {
-      v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v36 BOOLValue]);
+      v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [hasModernRecoveryKey BOOLValue]);
       [v67 setObject:? forKeyedSubscript:?];
       _objc_release(v8);
     }
 
-    v35 = [(AKAccountManager *)v70->_accountManager get3PRegulatoryOverride:v66];
-    v34 = [v68 thirdPartyRegulatoryOverride];
-    if (v34 && !sub_1000E9B2C(v34, v35))
+    v35 = [(AKAccountManager *)selfCopy->_accountManager get3PRegulatoryOverride:v66];
+    thirdPartyRegulatoryOverride = [v68 thirdPartyRegulatoryOverride];
+    if (thirdPartyRegulatoryOverride && !sub_1000E9B2C(thirdPartyRegulatoryOverride, v35))
     {
-      [v67 setObject:v34 forKeyedSubscript:AK3PRegulatoryOverrideKey];
+      [v67 setObject:thirdPartyRegulatoryOverride forKeyedSubscript:AK3PRegulatoryOverrideKey];
     }
 
-    v33 = [(AKAccountManager *)v70->_accountManager adpCohortForAccount:v66];
-    v32 = [v68 adpCohort];
-    if (v32 && (!v33 || v32 != v33))
+    v33 = [(AKAccountManager *)selfCopy->_accountManager adpCohortForAccount:v66];
+    adpCohort = [v68 adpCohort];
+    if (adpCohort && (!v33 || adpCohort != v33))
     {
-      [v67 setObject:v32 forKeyedSubscript:AKADPCohortKey];
+      [v67 setObject:adpCohort forKeyedSubscript:AKADPCohortKey];
     }
 
-    v31 = [(AKAccountManager *)v70->_accountManager isEligibleToMigrateToChildForAccount:v66];
-    v30 = [v68 isEligibleToMigrateToChild];
-    if (v30)
+    v31 = [(AKAccountManager *)selfCopy->_accountManager isEligibleToMigrateToChildForAccount:v66];
+    isEligibleToMigrateToChild = [v68 isEligibleToMigrateToChild];
+    if (isEligibleToMigrateToChild)
     {
-      if (!v31 || (v7 = [v30 integerValue], v7 != objc_msgSend(v31, "integerValue")))
+      if (!v31 || (v7 = [isEligibleToMigrateToChild integerValue], v7 != objc_msgSend(v31, "integerValue")))
       {
-        [v67 setObject:v30 forKeyedSubscript:AKIsEligibleToMigrateToChildKey];
+        [v67 setObject:isEligibleToMigrateToChild forKeyedSubscript:AKIsEligibleToMigrateToChildKey];
       }
     }
 
-    v29 = [(AKAccountManager *)v70->_accountManager idmsWalrusStatusForAccount:v66];
-    v28 = [v68 idmsWalrusStatus];
-    if (v28 && (!v29 || v28 != v29))
+    v29 = [(AKAccountManager *)selfCopy->_accountManager idmsWalrusStatusForAccount:v66];
+    idmsWalrusStatus = [v68 idmsWalrusStatus];
+    if (idmsWalrusStatus && (!v29 || idmsWalrusStatus != v29))
     {
-      [v67 setObject:v28 forKeyedSubscript:AKIdmsWalrusStatusKey];
+      [v67 setObject:idmsWalrusStatus forKeyedSubscript:AKIdmsWalrusStatusKey];
     }
 
-    objc_storeStrong(&v28, 0);
+    objc_storeStrong(&idmsWalrusStatus, 0);
     objc_storeStrong(&v29, 0);
-    objc_storeStrong(&v30, 0);
+    objc_storeStrong(&isEligibleToMigrateToChild, 0);
     objc_storeStrong(&v31, 0);
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&adpCohort, 0);
     objc_storeStrong(&v33, 0);
-    objc_storeStrong(&v34, 0);
+    objc_storeStrong(&thirdPartyRegulatoryOverride, 0);
     objc_storeStrong(&v35, 0);
-    objc_storeStrong(&v36, 0);
+    objc_storeStrong(&hasModernRecoveryKey, 0);
     objc_storeStrong(&v37, 0);
-    objc_storeStrong(&v38, 0);
+    objc_storeStrong(&configDataVersion, 0);
     objc_storeStrong(&v39, 0);
-    objc_storeStrong(&v40, 0);
+    objc_storeStrong(&activeHMECount, 0);
     objc_storeStrong(&v41, 0);
-    objc_storeStrong(&v42, 0);
+    objc_storeStrong(&inActiveHMECount, 0);
     objc_storeStrong(&v43, 0);
-    objc_storeStrong(&v44, 0);
+    objc_storeStrong(&groupKitEligibility, 0);
     objc_storeStrong(&v45, 0);
-    objc_storeStrong(&v46, 0);
+    objc_storeStrong(&passkeyPresent, 0);
     objc_storeStrong(&v47, 0);
-    objc_storeStrong(&v48, 0);
+    objc_storeStrong(&passkeyEligible, 0);
     objc_storeStrong(&v49, 0);
-    objc_storeStrong(&v50, 0);
+    objc_storeStrong(&serverExperimentalFeatures, 0);
     objc_storeStrong(&v51, 0);
-    objc_storeStrong(&v52, 0);
+    objc_storeStrong(&webAccessEnabled, 0);
     objc_storeStrong(&v53, 0);
-    objc_storeStrong(&v56, 0);
+    objc_storeStrong(&sOSNeeded, 0);
     objc_storeStrong(&v57, 0);
-    objc_storeStrong(&v58, 0);
+    objc_storeStrong(&hasSOSActiveDevice, 0);
     objc_storeStrong(&v59, 0);
   }
 
@@ -1209,119 +1209,119 @@
   return v6;
 }
 
-- (BOOL)_passkeyPropertiesChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_passkeyPropertiesChangedForAccount:(id)account userInformation:(id)information
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, information);
   v17 = 0;
-  v16 = [v18 passkeyEligible];
-  v15 = [(AKAccountManager *)v20->_accountManager passkeyEligibleForAccount:location[0]];
-  if (v16)
+  passkeyEligible = [v18 passkeyEligible];
+  v15 = [(AKAccountManager *)selfCopy->_accountManager passkeyEligibleForAccount:location[0]];
+  if (passkeyEligible)
   {
-    if (!v15 || (v11 = [v16 BOOLValue], v11 != objc_msgSend(v15, "BOOLValue")))
+    if (!v15 || (v11 = [passkeyEligible BOOLValue], v11 != objc_msgSend(v15, "BOOLValue")))
     {
-      accountManager = v20->_accountManager;
-      v4 = [v16 BOOLValue];
-      [(AKAccountManager *)accountManager setPasskeyEligible:v4 forAccount:location[0]];
+      accountManager = selfCopy->_accountManager;
+      bOOLValue = [passkeyEligible BOOLValue];
+      [(AKAccountManager *)accountManager setPasskeyEligible:bOOLValue forAccount:location[0]];
       v17 = 1;
     }
   }
 
-  v14 = [v18 passkeyPresent];
-  v13 = [(AKAccountManager *)v20->_accountManager passkeyPresentForAccount:location[0]];
-  if (v14)
+  passkeyPresent = [v18 passkeyPresent];
+  v13 = [(AKAccountManager *)selfCopy->_accountManager passkeyPresentForAccount:location[0]];
+  if (passkeyPresent)
   {
-    if (!v13 || (v9 = [v14 BOOLValue], v9 != objc_msgSend(v13, "BOOLValue")))
+    if (!v13 || (v9 = [passkeyPresent BOOLValue], v9 != objc_msgSend(v13, "BOOLValue")))
     {
-      v8 = v20->_accountManager;
-      v5 = [v14 BOOLValue];
-      [(AKAccountManager *)v8 setPasskeyPresent:v5 forAccount:location[0]];
-      [(AKAccountManager *)v20->_accountManager setPasskeysInKeychainCount:0 forAccount:location[0]];
+      v8 = selfCopy->_accountManager;
+      bOOLValue2 = [passkeyPresent BOOLValue];
+      [(AKAccountManager *)v8 setPasskeyPresent:bOOLValue2 forAccount:location[0]];
+      [(AKAccountManager *)selfCopy->_accountManager setPasskeysInKeychainCount:0 forAccount:location[0]];
       v17 = 1;
     }
   }
 
   v7 = v17;
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&passkeyPresent, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&passkeyEligible, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(location, 0);
   return v7 & 1;
 }
 
-- (BOOL)_walrusPropertiesChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_walrusPropertiesChangedForAccount:(id)account userInformation:(id)information
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, information);
   v15 = 0;
-  v14 = [v16 webAccessEnabled];
-  v13 = [(AKAccountManager *)v18->_accountManager webAccessEnabledForAccount:location[0]];
-  if (v14)
+  webAccessEnabled = [v16 webAccessEnabled];
+  v13 = [(AKAccountManager *)selfCopy->_accountManager webAccessEnabledForAccount:location[0]];
+  if (webAccessEnabled)
   {
-    if (!v13 || (v9 = [v14 BOOLValue], v9 != objc_msgSend(v13, "BOOLValue")))
+    if (!v13 || (v9 = [webAccessEnabled BOOLValue], v9 != objc_msgSend(v13, "BOOLValue")))
     {
-      accountManager = v18->_accountManager;
-      v4 = [v14 BOOLValue];
-      [(AKAccountManager *)accountManager setWebAccessEnabled:v4 forAccount:location[0]];
+      accountManager = selfCopy->_accountManager;
+      bOOLValue = [webAccessEnabled BOOLValue];
+      [(AKAccountManager *)accountManager setWebAccessEnabled:bOOLValue forAccount:location[0]];
       v15 = 1;
     }
   }
 
-  v12 = [v16 serverExperimentalFeatures];
-  v11 = [(AKAccountManager *)v18->_accountManager serverExperimentalFeaturesForAccount:location[0]];
-  if (v12)
+  serverExperimentalFeatures = [v16 serverExperimentalFeatures];
+  v11 = [(AKAccountManager *)selfCopy->_accountManager serverExperimentalFeaturesForAccount:location[0]];
+  if (serverExperimentalFeatures)
   {
-    if (!v11 || (v7 = [v12 integerValue], v7 != objc_msgSend(v11, "integerValue")))
+    if (!v11 || (v7 = [serverExperimentalFeatures integerValue], v7 != objc_msgSend(v11, "integerValue")))
     {
-      [(AKAccountManager *)v18->_accountManager setServerExperimentalFeatures:v12 forAccount:location[0]];
+      [(AKAccountManager *)selfCopy->_accountManager setServerExperimentalFeatures:serverExperimentalFeatures forAccount:location[0]];
       v15 = 1;
     }
   }
 
   v6 = v15;
   objc_storeStrong(&v11, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&serverExperimentalFeatures, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&webAccessEnabled, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
   return v6 & 1;
 }
 
-- (BOOL)_passcodeAuthPropertiesChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_passcodeAuthPropertiesChangedForAccount:(id)account userInformation:(id)information
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, information);
   v10 = 0;
-  v8 = [v11 passcodeAuthEnabled];
-  v9 = [v8 BOOLValue];
-  _objc_release(v8);
-  if ((v9 & 1) != ([(AKAccountManager *)v13->_accountManager isPasscodeAuthEnabledForAccount:location[0]]& 1))
+  passcodeAuthEnabled = [v11 passcodeAuthEnabled];
+  bOOLValue = [passcodeAuthEnabled BOOLValue];
+  _objc_release(passcodeAuthEnabled);
+  if ((bOOLValue & 1) != ([(AKAccountManager *)selfCopy->_accountManager isPasscodeAuthEnabledForAccount:location[0]]& 1))
   {
-    [(AKAccountManager *)v13->_accountManager setPasscodeAuthEnabled:v9 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setPasscodeAuthEnabled:bOOLValue & 1 forAccount:location[0]];
     v10 = 1;
   }
 
-  v5 = [v11 askToBuy];
-  v6 = [v5 BOOLValue];
-  _objc_release(v5);
-  if ((v6 & 1) != ([(AKAccountManager *)v13->_accountManager isAskToBuyForAccount:location[0]]& 1))
+  askToBuy = [v11 askToBuy];
+  bOOLValue2 = [askToBuy BOOLValue];
+  _objc_release(askToBuy);
+  if ((bOOLValue2 & 1) != ([(AKAccountManager *)selfCopy->_accountManager isAskToBuyForAccount:location[0]]& 1))
   {
-    [(AKAccountManager *)v13->_accountManager setAskToBuy:v6 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setAskToBuy:bOOLValue2 & 1 forAccount:location[0]];
     v10 = 1;
   }
 
@@ -1330,35 +1330,35 @@
   return v10 & 1;
 }
 
-- (BOOL)_deviceListPropertiesChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_deviceListPropertiesChangedForAccount:(id)account userInformation:(id)information
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, information);
   v23 = 0;
-  v12 = [v24 deviceListVersion];
-  v13 = [v12 hash];
-  _objc_release(v12);
+  deviceListVersion = [v24 deviceListVersion];
+  v13 = [deviceListVersion hash];
+  _objc_release(deviceListVersion);
   v22[2] = v13;
-  v14 = [(AKAccountManager *)v26->_accountManager deviceListVersionForAccount:location[0]];
+  v14 = [(AKAccountManager *)selfCopy->_accountManager deviceListVersionForAccount:location[0]];
   v15 = [v14 hash];
   _objc_release(v14);
   v22[1] = v15;
   if (v13 != v15)
   {
-    accountManager = v26->_accountManager;
-    v8 = [v24 deviceListVersion];
+    accountManager = selfCopy->_accountManager;
+    deviceListVersion2 = [v24 deviceListVersion];
     [AKAccountManager setDeviceListVersion:"setDeviceListVersion:forAccount:" forAccount:?];
-    _objc_release(v8);
-    [(AKAccountManager *)v26->_accountManager saveAccount:location[0] error:0];
+    _objc_release(deviceListVersion2);
+    [(AKAccountManager *)selfCopy->_accountManager saveAccount:location[0] error:0];
     v23 = 1;
     v9 = +[AKFeatureManager sharedManager];
-    v10 = [v9 isDeviceListCacheEnableDryMode];
+    isDeviceListCacheEnableDryMode = [v9 isDeviceListCacheEnableDryMode];
     _objc_release(v9);
-    if (v10)
+    if (isDeviceListCacheEnableDryMode)
     {
       queue = dispatch_get_global_queue(9, 0);
       v16 = _NSConcreteStackBlock;
@@ -1366,7 +1366,7 @@
       v18 = 0;
       v19 = sub_1000ED58C;
       v20 = &unk_10031F078;
-      v21 = _objc_retain(v26);
+      v21 = _objc_retain(selfCopy);
       v22[0] = _objc_retain(location[0]);
       dispatch_async(queue, &v16);
       _objc_release(queue);
@@ -1381,213 +1381,213 @@
   return v5 & 1;
 }
 
-- (BOOL)_authorizationPropertiesChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_authorizationPropertiesChangedForAccount:(id)account userInformation:(id)information
 {
-  v103 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v101 = 0;
-  objc_storeStrong(&v101, a4);
+  objc_storeStrong(&v101, information);
   v100 = 0;
-  v42 = [v101 vettedPrimaryEmail];
-  v43 = [v42 BOOLValue];
-  _objc_release(v42);
-  v99 = v43;
-  v98 = [(AKAccountManager *)v103->_accountManager verifiedPrimaryEmailForAccount:location[0]];
-  v44 = [v101 vettedPrimaryEmail];
+  vettedPrimaryEmail = [v101 vettedPrimaryEmail];
+  bOOLValue = [vettedPrimaryEmail BOOLValue];
+  _objc_release(vettedPrimaryEmail);
+  v99 = bOOLValue;
+  v98 = [(AKAccountManager *)selfCopy->_accountManager verifiedPrimaryEmailForAccount:location[0]];
+  vettedPrimaryEmail2 = [v101 vettedPrimaryEmail];
   v45 = 0;
-  if (v44)
+  if (vettedPrimaryEmail2)
   {
     v45 = (v99 & 1) != (v98 & 1);
   }
 
-  _objc_release(v44);
+  _objc_release(vettedPrimaryEmail2);
   if (v45)
   {
-    [(AKAccountManager *)v103->_accountManager setVerifiedPrimaryEmail:v99 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setVerifiedPrimaryEmail:v99 & 1 forAccount:location[0]];
     v100 = 1;
   }
 
-  v37 = [v101 phoneAsAppleID];
-  v38 = [v37 BOOLValue];
-  _objc_release(v37);
-  v97 = v38;
-  v96 = [(AKAccountManager *)v103->_accountManager phoneAsAppleIDForAccount:location[0]];
-  v39 = [v101 phoneAsAppleID];
+  phoneAsAppleID = [v101 phoneAsAppleID];
+  bOOLValue2 = [phoneAsAppleID BOOLValue];
+  _objc_release(phoneAsAppleID);
+  v97 = bOOLValue2;
+  v96 = [(AKAccountManager *)selfCopy->_accountManager phoneAsAppleIDForAccount:location[0]];
+  phoneAsAppleID2 = [v101 phoneAsAppleID];
   v40 = 0;
-  if (v39)
+  if (phoneAsAppleID2)
   {
     v40 = (v97 & 1) != (v96 & 1);
   }
 
-  _objc_release(v39);
+  _objc_release(phoneAsAppleID2);
   if (v40)
   {
-    [(AKAccountManager *)v103->_accountManager setPhoneAsAppleID:v97 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setPhoneAsAppleID:v97 & 1 forAccount:location[0]];
     v100 = 1;
   }
 
-  v33 = [v101 previouslyWantedPrivateEmail];
-  v34 = [v33 BOOLValue];
-  _objc_release(v33);
-  v95 = v34;
-  v94 = [(AKAccountManager *)v103->_accountManager selectedPrivateEmailForAccount:location[0]];
-  v35 = [v101 previouslyWantedPrivateEmail];
+  previouslyWantedPrivateEmail = [v101 previouslyWantedPrivateEmail];
+  bOOLValue3 = [previouslyWantedPrivateEmail BOOLValue];
+  _objc_release(previouslyWantedPrivateEmail);
+  v95 = bOOLValue3;
+  v94 = [(AKAccountManager *)selfCopy->_accountManager selectedPrivateEmailForAccount:location[0]];
+  previouslyWantedPrivateEmail2 = [v101 previouslyWantedPrivateEmail];
   v36 = 0;
-  if (v35)
+  if (previouslyWantedPrivateEmail2)
   {
     v36 = (v95 & 1) != (v94 & 1);
   }
 
-  _objc_release(v35);
+  _objc_release(previouslyWantedPrivateEmail2);
   if (v36)
   {
-    [(AKAccountManager *)v103->_accountManager setSelectedPrivateEmail:v95 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setSelectedPrivateEmail:v95 & 1 forAccount:location[0]];
     v100 = 1;
   }
 
-  v93 = [v101 primaryEmailAddress];
-  v92 = [(AKAccountManager *)v103->_accountManager primaryEmailAddressForAccount:location[0]];
-  if (v93 && !sub_1000E9B2C(v93, v92))
+  primaryEmailAddress = [v101 primaryEmailAddress];
+  v92 = [(AKAccountManager *)selfCopy->_accountManager primaryEmailAddressForAccount:location[0]];
+  if (primaryEmailAddress && !sub_1000E9B2C(primaryEmailAddress, v92))
   {
-    [(AKAccountManager *)v103->_accountManager setPrimaryEmailAddress:v93 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setPrimaryEmailAddress:primaryEmailAddress forAccount:location[0]];
     v100 = 1;
   }
 
-  v91 = [v101 givenName];
-  v90 = [(AKAccountManager *)v103->_accountManager givenNameForAccount:location[0]];
-  if (v91 && !sub_1000E9B2C(v91, v90))
+  givenName = [v101 givenName];
+  v90 = [(AKAccountManager *)selfCopy->_accountManager givenNameForAccount:location[0]];
+  if (givenName && !sub_1000E9B2C(givenName, v90))
   {
-    [(AKAccountManager *)v103->_accountManager setGivenName:v91 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setGivenName:givenName forAccount:location[0]];
     v100 = 1;
   }
 
-  v89 = [v101 familyName];
-  v88 = [(AKAccountManager *)v103->_accountManager familyNameForAccount:location[0]];
-  if (v89 && !sub_1000E9B2C(v89, v88))
+  familyName = [v101 familyName];
+  v88 = [(AKAccountManager *)selfCopy->_accountManager familyNameForAccount:location[0]];
+  if (familyName && !sub_1000E9B2C(familyName, v88))
   {
-    [(AKAccountManager *)v103->_accountManager setFamilyName:v89 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setFamilyName:familyName forAccount:location[0]];
     v100 = 1;
   }
 
-  v87 = [v101 forwardingEmail];
-  v86 = [(AKAccountManager *)v103->_accountManager forwardingEmailForAccount:location[0]];
-  if (v87 && !sub_1000E9B2C(v87, v86))
+  forwardingEmail = [v101 forwardingEmail];
+  v86 = [(AKAccountManager *)selfCopy->_accountManager forwardingEmailForAccount:location[0]];
+  if (forwardingEmail && !sub_1000E9B2C(forwardingEmail, v86))
   {
-    [(AKAccountManager *)v103->_accountManager setForwardingEmail:v87 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setForwardingEmail:forwardingEmail forAccount:location[0]];
     v100 = 1;
   }
 
-  v85 = [v101 previouslySelectedEmail];
-  v84 = [(AKAccountManager *)v103->_accountManager selectedAuthorizationEmailForAccount:location[0]];
-  if (v85 && !sub_1000E9B2C(v85, v84))
+  previouslySelectedEmail = [v101 previouslySelectedEmail];
+  v84 = [(AKAccountManager *)selfCopy->_accountManager selectedAuthorizationEmailForAccount:location[0]];
+  if (previouslySelectedEmail && !sub_1000E9B2C(previouslySelectedEmail, v84))
   {
-    [(AKAccountManager *)v103->_accountManager setSelectedAuthorizationEmail:v85 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setSelectedAuthorizationEmail:previouslySelectedEmail forAccount:location[0]];
     v100 = 1;
   }
 
-  v83 = [v101 reachableEmails];
-  v82 = [NSSet setWithArray:v83];
-  v32 = [(AKAccountManager *)v103->_accountManager reachableEmailAddressesForAccount:location[0]];
+  reachableEmails = [v101 reachableEmails];
+  v82 = [NSSet setWithArray:reachableEmails];
+  v32 = [(AKAccountManager *)selfCopy->_accountManager reachableEmailAddressesForAccount:location[0]];
   v81 = [NSSet setWithArray:?];
   _objc_release(v32);
-  if (v83 && ![v82 isEqualToSet:v81])
+  if (reachableEmails && ![v82 isEqualToSet:v81])
   {
-    [(AKAccountManager *)v103->_accountManager setReachableEmailAddresses:v83 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setReachableEmailAddresses:reachableEmails forAccount:location[0]];
     v100 = 1;
   }
 
-  v28 = [v101 hasUsedAuthorization];
-  v29 = [v28 BOOLValue];
-  _objc_release(v28);
-  v80 = v29;
-  v79 = [(AKAccountManager *)v103->_accountManager authorizationUsedForAccount:location[0]];
-  v30 = [v101 hasUsedAuthorization];
+  hasUsedAuthorization = [v101 hasUsedAuthorization];
+  bOOLValue4 = [hasUsedAuthorization BOOLValue];
+  _objc_release(hasUsedAuthorization);
+  v80 = bOOLValue4;
+  v79 = [(AKAccountManager *)selfCopy->_accountManager authorizationUsedForAccount:location[0]];
+  hasUsedAuthorization2 = [v101 hasUsedAuthorization];
   v31 = 0;
-  if (v30)
+  if (hasUsedAuthorization2)
   {
     v31 = (v80 & 1) != (v79 & 1);
   }
 
-  _objc_release(v30);
+  _objc_release(hasUsedAuthorization2);
   if (v31)
   {
-    [(AKAccountManager *)v103->_accountManager setAuthorizationUsed:v80 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setAuthorizationUsed:v80 & 1 forAccount:location[0]];
     v100 = 1;
   }
 
-  v24 = [v101 privateAttestationEnabled];
-  v25 = [v24 BOOLValue];
-  _objc_release(v24);
-  v78 = v25;
-  v77 = [(AKAccountManager *)v103->_accountManager privateAttestationEnabledForAccount:location[0]];
-  v26 = [v101 privateAttestationEnabled];
+  privateAttestationEnabled = [v101 privateAttestationEnabled];
+  bOOLValue5 = [privateAttestationEnabled BOOLValue];
+  _objc_release(privateAttestationEnabled);
+  v78 = bOOLValue5;
+  v77 = [(AKAccountManager *)selfCopy->_accountManager privateAttestationEnabledForAccount:location[0]];
+  privateAttestationEnabled2 = [v101 privateAttestationEnabled];
   v27 = 0;
-  if (v26)
+  if (privateAttestationEnabled2)
   {
     v27 = (v78 & 1) != (v77 & 1);
   }
 
-  _objc_release(v26);
+  _objc_release(privateAttestationEnabled2);
   if (v27)
   {
-    [(AKAccountManager *)v103->_accountManager setPrivateAttestationEnabled:v78 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setPrivateAttestationEnabled:v78 & 1 forAccount:location[0]];
     v100 = 1;
   }
 
-  v20 = [v101 isUnderage];
-  v21 = [v20 BOOLValue];
-  _objc_release(v20);
-  v76 = v21;
-  v75 = [(AKAccountManager *)v103->_accountManager userUnderAgeForAccount:location[0]];
-  v22 = [v101 isUnderage];
+  isUnderage = [v101 isUnderage];
+  bOOLValue6 = [isUnderage BOOLValue];
+  _objc_release(isUnderage);
+  v76 = bOOLValue6;
+  v75 = [(AKAccountManager *)selfCopy->_accountManager userUnderAgeForAccount:location[0]];
+  isUnderage2 = [v101 isUnderage];
   v23 = 0;
-  if (v22)
+  if (isUnderage2)
   {
     v23 = (v76 & 1) != (v75 & 1);
   }
 
-  _objc_release(v22);
+  _objc_release(isUnderage2);
   if (v23)
   {
-    [(AKAccountManager *)v103->_accountManager setUserUnderage:v76 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setUserUnderage:v76 & 1 forAccount:location[0]];
     v100 = 1;
   }
 
-  v16 = [v101 isEligibleForSafetyScreen];
-  v17 = [v16 BOOLValue];
-  _objc_release(v16);
-  v74 = v17;
-  v73 = [(AKAccountManager *)v103->_accountManager isEligibleForSafetyScreenForAccount:location[0]];
-  v18 = [v101 isEligibleForSafetyScreen];
+  isEligibleForSafetyScreen = [v101 isEligibleForSafetyScreen];
+  bOOLValue7 = [isEligibleForSafetyScreen BOOLValue];
+  _objc_release(isEligibleForSafetyScreen);
+  v74 = bOOLValue7;
+  v73 = [(AKAccountManager *)selfCopy->_accountManager isEligibleForSafetyScreenForAccount:location[0]];
+  isEligibleForSafetyScreen2 = [v101 isEligibleForSafetyScreen];
   v19 = 0;
-  if (v18)
+  if (isEligibleForSafetyScreen2)
   {
     v19 = (v74 & 1) != (v73 & 1);
   }
 
-  _objc_release(v18);
+  _objc_release(isEligibleForSafetyScreen2);
   if (v19)
   {
-    [(AKAccountManager *)v103->_accountManager setIsEligibleForSafetyScreen:v74 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setIsEligibleForSafetyScreen:v74 & 1 forAccount:location[0]];
     v100 = 1;
   }
 
-  v13 = [v101 isSiwaForChildEnabled];
-  v14 = [v13 BOOLValue];
-  _objc_release(v13);
-  v72 = v14;
-  v71 = [(AKAccountManager *)v103->_accountManager isSiwaEnabledForChildAccount:location[0]];
-  v70 = [(AKAccountManager *)v103->_accountManager userUnderAgeForAccount:location[0]];
+  isSiwaForChildEnabled = [v101 isSiwaForChildEnabled];
+  bOOLValue8 = [isSiwaForChildEnabled BOOLValue];
+  _objc_release(isSiwaForChildEnabled);
+  v72 = bOOLValue8;
+  v71 = [(AKAccountManager *)selfCopy->_accountManager isSiwaEnabledForChildAccount:location[0]];
+  v70 = [(AKAccountManager *)selfCopy->_accountManager userUnderAgeForAccount:location[0]];
   v68 = 0;
   v15 = 0;
   if (v70)
   {
-    v69 = [v101 isSiwaForChildEnabled];
+    isSiwaForChildEnabled2 = [v101 isSiwaForChildEnabled];
     v68 = 1;
     v15 = 0;
-    if (v69)
+    if (isSiwaForChildEnabled2)
     {
       v15 = (v72 & 1) != (v71 & 1);
     }
@@ -1595,87 +1595,87 @@
 
   if (v68)
   {
-    _objc_release(v69);
+    _objc_release(isSiwaForChildEnabled2);
   }
 
   if (v15)
   {
-    [(AKAccountManager *)v103->_accountManager setIsSiwaEnabled:v72 & 1 forChildAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setIsSiwaEnabled:v72 & 1 forChildAccount:location[0]];
     v100 = 1;
   }
 
-  v9 = [v101 isSenior];
-  v10 = [v9 BOOLValue];
-  _objc_release(v9);
-  v67 = v10;
-  v66 = [(AKAccountManager *)v103->_accountManager userIsSeniorForAccount:location[0]];
-  v11 = [v101 isSenior];
+  isSenior = [v101 isSenior];
+  bOOLValue9 = [isSenior BOOLValue];
+  _objc_release(isSenior);
+  v67 = bOOLValue9;
+  v66 = [(AKAccountManager *)selfCopy->_accountManager userIsSeniorForAccount:location[0]];
+  isSenior2 = [v101 isSenior];
   v12 = 0;
-  if (v11)
+  if (isSenior2)
   {
     v12 = (v67 & 1) != (v66 & 1);
   }
 
-  _objc_release(v11);
+  _objc_release(isSenior2);
   if (v12)
   {
-    [(AKAccountManager *)v103->_accountManager setUserIsSenior:v67 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setUserIsSenior:v67 & 1 forAccount:location[0]];
     v100 = 1;
   }
 
-  v65 = [v101 ageOfMajority];
-  v64 = [(AKAccountManager *)v103->_accountManager ageOfMajorityForAccount:location[0]];
-  if (v65 && v65 != v64)
+  ageOfMajority = [v101 ageOfMajority];
+  v64 = [(AKAccountManager *)selfCopy->_accountManager ageOfMajorityForAccount:location[0]];
+  if (ageOfMajority && ageOfMajority != v64)
   {
-    [(AKAccountManager *)v103->_accountManager setAgeOfMajority:v65 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setAgeOfMajority:ageOfMajority forAccount:location[0]];
     v100 = 1;
   }
 
-  v63 = [v101 canAttestAge];
-  v62 = [(AKAccountManager *)v103->_accountManager canAttestAgeForAccount:location[0]];
-  if (v63 && v62 != v63)
+  canAttestAge = [v101 canAttestAge];
+  v62 = [(AKAccountManager *)selfCopy->_accountManager canAttestAgeForAccount:location[0]];
+  if (canAttestAge && v62 != canAttestAge)
   {
-    [(AKAccountManager *)v103->_accountManager setCanAttestAge:v63 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setCanAttestAge:canAttestAge forAccount:location[0]];
     v100 = 1;
   }
 
-  v61 = [v101 appleIDCountryCode];
-  v60 = [(AKAccountManager *)v103->_accountManager appleIDCountryCodeForAccount:location[0]];
-  if (v61 && !sub_1000E9B2C(v61, v60))
+  appleIDCountryCode = [v101 appleIDCountryCode];
+  v60 = [(AKAccountManager *)selfCopy->_accountManager appleIDCountryCodeForAccount:location[0]];
+  if (appleIDCountryCode && !sub_1000E9B2C(appleIDCountryCode, v60))
   {
-    [(AKAccountManager *)v103->_accountManager setAppleIDCountryCode:v61 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setAppleIDCountryCode:appleIDCountryCode forAccount:location[0]];
     v100 = 1;
   }
 
-  v59 = [v101 isProximityAuthEligible];
-  v58 = [NSNumber numberWithBool:[(AKAccountManager *)v103->_accountManager isProximityAuthEligible:location[0]]];
-  if (v59 && v59 != v58)
+  isProximityAuthEligible = [v101 isProximityAuthEligible];
+  v58 = [NSNumber numberWithBool:[(AKAccountManager *)selfCopy->_accountManager isProximityAuthEligible:location[0]]];
+  if (isProximityAuthEligible && isProximityAuthEligible != v58)
   {
-    accountManager = v103->_accountManager;
-    v4 = [v59 BOOLValue];
-    [(AKAccountManager *)accountManager setIsProximityAuthEligible:v4 forAccount:location[0]];
+    accountManager = selfCopy->_accountManager;
+    bOOLValue10 = [isProximityAuthEligible BOOLValue];
+    [(AKAccountManager *)accountManager setIsProximityAuthEligible:bOOLValue10 forAccount:location[0]];
     v100 = 1;
   }
 
-  v57 = [v101 userAgeRange];
-  v56 = [(AKAccountManager *)v103->_accountManager userAgeRangeForAccount:location[0]];
-  if (v57 && v57 != v56)
+  userAgeRange = [v101 userAgeRange];
+  v56 = [(AKAccountManager *)selfCopy->_accountManager userAgeRangeForAccount:location[0]];
+  if (userAgeRange && userAgeRange != v56)
   {
-    [(AKAccountManager *)v103->_accountManager setUserAgeRange:v57 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setUserAgeRange:userAgeRange forAccount:location[0]];
     v100 = 1;
   }
 
-  v55 = [v101 authorizedApplicationsListVersion];
-  v54 = [(AKAccountManager *)v103->_accountManager altDSIDForAccount:location[0]];
+  authorizedApplicationsListVersion = [v101 authorizedApplicationsListVersion];
+  v54 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:location[0]];
   queue = dispatch_get_global_queue(21, 0);
   v46 = _NSConcreteStackBlock;
   v47 = -1073741824;
   v48 = 0;
   v49 = sub_1000EE744;
   v50 = &unk_10031F050;
-  v51 = _objc_retain(v55);
+  v51 = _objc_retain(authorizedApplicationsListVersion);
   v52 = _objc_retain(v54);
-  v53 = _objc_retain(v103);
+  v53 = _objc_retain(selfCopy);
   dispatch_async(queue, &v46);
   _objc_release(queue);
   v7 = v100;
@@ -1683,161 +1683,161 @@
   objc_storeStrong(&v52, 0);
   objc_storeStrong(&v51, 0);
   objc_storeStrong(&v54, 0);
-  objc_storeStrong(&v55, 0);
+  objc_storeStrong(&authorizedApplicationsListVersion, 0);
   objc_storeStrong(&v58, 0);
-  objc_storeStrong(&v59, 0);
+  objc_storeStrong(&isProximityAuthEligible, 0);
   objc_storeStrong(&v60, 0);
-  objc_storeStrong(&v61, 0);
+  objc_storeStrong(&appleIDCountryCode, 0);
   objc_storeStrong(&v62, 0);
-  objc_storeStrong(&v63, 0);
+  objc_storeStrong(&canAttestAge, 0);
   objc_storeStrong(&v64, 0);
-  objc_storeStrong(&v65, 0);
+  objc_storeStrong(&ageOfMajority, 0);
   objc_storeStrong(&v81, 0);
   objc_storeStrong(&v82, 0);
-  objc_storeStrong(&v83, 0);
+  objc_storeStrong(&reachableEmails, 0);
   objc_storeStrong(&v84, 0);
-  objc_storeStrong(&v85, 0);
+  objc_storeStrong(&previouslySelectedEmail, 0);
   objc_storeStrong(&v86, 0);
-  objc_storeStrong(&v87, 0);
+  objc_storeStrong(&forwardingEmail, 0);
   objc_storeStrong(&v88, 0);
-  objc_storeStrong(&v89, 0);
+  objc_storeStrong(&familyName, 0);
   objc_storeStrong(&v90, 0);
-  objc_storeStrong(&v91, 0);
+  objc_storeStrong(&givenName, 0);
   objc_storeStrong(&v92, 0);
-  objc_storeStrong(&v93, 0);
+  objc_storeStrong(&primaryEmailAddress, 0);
   objc_storeStrong(&v101, 0);
   objc_storeStrong(location, 0);
   return v7 & 1;
 }
 
-- (BOOL)_trustedContactPropertiesChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_trustedContactPropertiesChangedForAccount:(id)account userInformation:(id)information
 {
-  v65 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v63 = 0;
-  objc_storeStrong(&v63, a4);
+  objc_storeStrong(&v63, information);
   v62 = 0;
-  v33 = [v63 canHaveCustodian];
-  v34 = [v33 BOOLValue];
-  _objc_release(v33);
-  v61 = v34;
-  v60 = [(AKAccountManager *)v65->_accountManager canHaveCustodianForAccount:location[0]];
-  v35 = [v63 canHaveCustodian];
+  canHaveCustodian = [v63 canHaveCustodian];
+  bOOLValue = [canHaveCustodian BOOLValue];
+  _objc_release(canHaveCustodian);
+  v61 = bOOLValue;
+  v60 = [(AKAccountManager *)selfCopy->_accountManager canHaveCustodianForAccount:location[0]];
+  canHaveCustodian2 = [v63 canHaveCustodian];
   v36 = 0;
-  if (v35)
+  if (canHaveCustodian2)
   {
     v36 = (v61 & 1) != (v60 & 1);
   }
 
-  _objc_release(v35);
+  _objc_release(canHaveCustodian2);
   if (v36)
   {
-    [(AKAccountManager *)v65->_accountManager setCanHaveCustodian:v61 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setCanHaveCustodian:v61 & 1 forAccount:location[0]];
     v62 = 1;
   }
 
-  v28 = [v63 canBeCustodian];
-  v29 = [v28 BOOLValue];
-  _objc_release(v28);
-  v59 = v29;
-  v58 = [(AKAccountManager *)v65->_accountManager canBeCustodianForAccount:location[0]];
-  v30 = [v63 canBeCustodian];
+  canBeCustodian = [v63 canBeCustodian];
+  bOOLValue2 = [canBeCustodian BOOLValue];
+  _objc_release(canBeCustodian);
+  v59 = bOOLValue2;
+  v58 = [(AKAccountManager *)selfCopy->_accountManager canBeCustodianForAccount:location[0]];
+  canBeCustodian2 = [v63 canBeCustodian];
   v31 = 0;
-  if (v30)
+  if (canBeCustodian2)
   {
     v31 = (v59 & 1) != (v58 & 1);
   }
 
-  _objc_release(v30);
+  _objc_release(canBeCustodian2);
   if (v31)
   {
-    [(AKAccountManager *)v65->_accountManager setCanBeCustodian:v59 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setCanBeCustodian:v59 & 1 forAccount:location[0]];
     v62 = 1;
   }
 
-  v24 = [v63 custodianEnabled];
-  v25 = [v24 BOOLValue];
-  _objc_release(v24);
-  v57 = v25;
-  v56 = [(AKAccountManager *)v65->_accountManager custodianEnabledForAccount:location[0]];
-  v26 = [v63 custodianEnabled];
+  custodianEnabled = [v63 custodianEnabled];
+  bOOLValue3 = [custodianEnabled BOOLValue];
+  _objc_release(custodianEnabled);
+  v57 = bOOLValue3;
+  v56 = [(AKAccountManager *)selfCopy->_accountManager custodianEnabledForAccount:location[0]];
+  custodianEnabled2 = [v63 custodianEnabled];
   v27 = 0;
-  if (v26)
+  if (custodianEnabled2)
   {
     v27 = (v57 & 1) != (v56 & 1);
   }
 
-  _objc_release(v26);
+  _objc_release(custodianEnabled2);
   if (v27)
   {
-    [(AKAccountManager *)v65->_accountManager setCustodianEnabled:v57 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setCustodianEnabled:v57 & 1 forAccount:location[0]];
     v62 = 1;
   }
 
-  v20 = [v63 canHaveBeneficiary];
-  v21 = [v20 BOOLValue];
-  _objc_release(v20);
-  v55 = v21;
-  v54 = [(AKAccountManager *)v65->_accountManager canHaveBeneficiaryForAccount:location[0]];
-  v22 = [v63 canHaveBeneficiary];
+  canHaveBeneficiary = [v63 canHaveBeneficiary];
+  bOOLValue4 = [canHaveBeneficiary BOOLValue];
+  _objc_release(canHaveBeneficiary);
+  v55 = bOOLValue4;
+  v54 = [(AKAccountManager *)selfCopy->_accountManager canHaveBeneficiaryForAccount:location[0]];
+  canHaveBeneficiary2 = [v63 canHaveBeneficiary];
   v23 = 0;
-  if (v22)
+  if (canHaveBeneficiary2)
   {
     v23 = (v55 & 1) != (v54 & 1);
   }
 
-  _objc_release(v22);
+  _objc_release(canHaveBeneficiary2);
   if (v23)
   {
-    [(AKAccountManager *)v65->_accountManager setCanHaveBeneficiary:v55 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setCanHaveBeneficiary:v55 & 1 forAccount:location[0]];
     v62 = 1;
   }
 
-  v16 = [v63 canBeBeneficiary];
-  v17 = [v16 BOOLValue];
-  _objc_release(v16);
-  v53 = v17;
-  v52 = [(AKAccountManager *)v65->_accountManager canBeBeneficiaryForAccount:location[0]];
-  v18 = [v63 canBeBeneficiary];
+  canBeBeneficiary = [v63 canBeBeneficiary];
+  bOOLValue5 = [canBeBeneficiary BOOLValue];
+  _objc_release(canBeBeneficiary);
+  v53 = bOOLValue5;
+  v52 = [(AKAccountManager *)selfCopy->_accountManager canBeBeneficiaryForAccount:location[0]];
+  canBeBeneficiary2 = [v63 canBeBeneficiary];
   v19 = 0;
-  if (v18)
+  if (canBeBeneficiary2)
   {
     v19 = (v53 & 1) != (v52 & 1);
   }
 
-  _objc_release(v18);
+  _objc_release(canBeBeneficiary2);
   if (v19)
   {
-    [(AKAccountManager *)v65->_accountManager setCanBeBeneficiary:v53 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setCanBeBeneficiary:v53 & 1 forAccount:location[0]];
     v62 = 1;
   }
 
-  v51 = [v63 custodianLastModified];
-  v50 = [(AKAccountManager *)v65->_accountManager custodianLastModifiedForAccount:location[0]];
-  if (v51 && v51 != v50)
+  custodianLastModified = [v63 custodianLastModified];
+  v50 = [(AKAccountManager *)selfCopy->_accountManager custodianLastModifiedForAccount:location[0]];
+  if (custodianLastModified && custodianLastModified != v50)
   {
-    [(AKAccountManager *)v65->_accountManager setCustodianLastModified:v51 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setCustodianLastModified:custodianLastModified forAccount:location[0]];
     v62 = 1;
   }
 
-  v49 = [v63 beneficiaryLastModified];
-  v48 = [(AKAccountManager *)v65->_accountManager beneficiaryLastModifiedForAccount:location[0]];
-  if (v49 && v49 != v48)
+  beneficiaryLastModified = [v63 beneficiaryLastModified];
+  v48 = [(AKAccountManager *)selfCopy->_accountManager beneficiaryLastModifiedForAccount:location[0]];
+  if (beneficiaryLastModified && beneficiaryLastModified != v48)
   {
-    [(AKAccountManager *)v65->_accountManager setBeneficiaryLastModified:v49 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setBeneficiaryLastModified:beneficiaryLastModified forAccount:location[0]];
     v62 = 1;
   }
 
-  v47 = [v63 custodianInfos];
-  v46 = [(AKAccountManager *)v65->_accountManager custodianInfosForAccount:location[0]];
+  custodianInfos = [v63 custodianInfos];
+  v46 = [(AKAccountManager *)selfCopy->_accountManager custodianInfosForAccount:location[0]];
   v45 = objc_retainBlock(&stru_100323250);
-  if (v47)
+  if (custodianInfos)
   {
-    v4 = [v47 sortedArrayUsingComparator:v45];
-    v5 = v47;
-    v47 = v4;
+    v4 = [custodianInfos sortedArrayUsingComparator:v45];
+    v5 = custodianInfos;
+    custodianInfos = v4;
     _objc_release(v5);
   }
 
@@ -1849,21 +1849,21 @@
     _objc_release(v7);
   }
 
-  if (v47 && (!v46 || ![v47 isEqualToArray:v46]))
+  if (custodianInfos && (!v46 || ![custodianInfos isEqualToArray:v46]))
   {
-    [(AKAccountManager *)v65->_accountManager setCustodianInfos:v47 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setCustodianInfos:custodianInfos forAccount:location[0]];
     v62 = 1;
   }
 
-  v44 = [v63 beneficiaryInfo];
-  v43 = [(AKAccountManager *)v65->_accountManager beneficiaryInfoForAccount:location[0]];
+  beneficiaryInfo = [v63 beneficiaryInfo];
+  v43 = [(AKAccountManager *)selfCopy->_accountManager beneficiaryInfoForAccount:location[0]];
   v42 = [AKBeneficiaryUpdater removeWrappedKeyFrom:v43];
   v41 = objc_retainBlock(&stru_100323270);
-  if (v44)
+  if (beneficiaryInfo)
   {
-    v8 = [v44 sortedArrayUsingComparator:v41];
-    v9 = v44;
-    v44 = v8;
+    v8 = [beneficiaryInfo sortedArrayUsingComparator:v41];
+    v9 = beneficiaryInfo;
+    beneficiaryInfo = v8;
     _objc_release(v9);
   }
 
@@ -1875,7 +1875,7 @@
     _objc_release(v11);
   }
 
-  if (!v42 || ![v44 isEqualToArray:v42])
+  if (!v42 || ![beneficiaryInfo isEqualToArray:v42])
   {
     v40 = _AKLogSystem();
     v39 = 2;
@@ -1888,8 +1888,8 @@
     }
 
     objc_storeStrong(&v40, 0);
-    v37 = [AKBeneficiaryUpdater saveWrappedKeyInKeychain:v44];
-    [(AKAccountManager *)v65->_accountManager setBeneficiaryInfo:v37 forAccount:location[0]];
+    v37 = [AKBeneficiaryUpdater saveWrappedKeyInKeychain:beneficiaryInfo];
+    [(AKAccountManager *)selfCopy->_accountManager setBeneficiaryInfo:v37 forAccount:location[0]];
     v62 = 1;
     objc_storeStrong(&v37, 0);
   }
@@ -1898,81 +1898,81 @@
   objc_storeStrong(&v41, 0);
   objc_storeStrong(&v42, 0);
   objc_storeStrong(&v43, 0);
-  objc_storeStrong(&v44, 0);
+  objc_storeStrong(&beneficiaryInfo, 0);
   objc_storeStrong(&v45, 0);
   objc_storeStrong(&v46, 0);
-  objc_storeStrong(&v47, 0);
+  objc_storeStrong(&custodianInfos, 0);
   objc_storeStrong(&v48, 0);
-  objc_storeStrong(&v49, 0);
+  objc_storeStrong(&beneficiaryLastModified, 0);
   objc_storeStrong(&v50, 0);
-  objc_storeStrong(&v51, 0);
+  objc_storeStrong(&custodianLastModified, 0);
   objc_storeStrong(&v63, 0);
   objc_storeStrong(location, 0);
   return v13 & 1;
 }
 
-- (BOOL)_adpCohortChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_adpCohortChangedForAccount:(id)account userInformation:(id)information
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, information);
   v10 = 0;
-  v9 = [v11 adpCohort];
-  v8 = [(AKAccountManager *)v13->_accountManager adpCohortForAccount:location[0]];
-  if (v9)
+  adpCohort = [v11 adpCohort];
+  v8 = [(AKAccountManager *)selfCopy->_accountManager adpCohortForAccount:location[0]];
+  if (adpCohort)
   {
-    if (!v8 || (v6 = [v9 integerValue], v6 != objc_msgSend(v8, "integerValue")))
+    if (!v8 || (v6 = [adpCohort integerValue], v6 != objc_msgSend(v8, "integerValue")))
     {
-      [(AKAccountManager *)v13->_accountManager setADPCohort:v9 forAccount:location[0]];
+      [(AKAccountManager *)selfCopy->_accountManager setADPCohort:adpCohort forAccount:location[0]];
       v10 = 1;
     }
   }
 
   v5 = v10;
   objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&adpCohort, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (BOOL)_idmsWalrusStatusChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_idmsWalrusStatusChangedForAccount:(id)account userInformation:(id)information
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, information);
   v10 = 0;
-  v9 = [v11 idmsWalrusStatus];
-  v8 = [(AKAccountManager *)v13->_accountManager idmsWalrusStatusForAccount:location[0]];
-  if (v9)
+  idmsWalrusStatus = [v11 idmsWalrusStatus];
+  v8 = [(AKAccountManager *)selfCopy->_accountManager idmsWalrusStatusForAccount:location[0]];
+  if (idmsWalrusStatus)
   {
-    if (!v8 || (v6 = [v9 integerValue], v6 != objc_msgSend(v8, "integerValue")))
+    if (!v8 || (v6 = [idmsWalrusStatus integerValue], v6 != objc_msgSend(v8, "integerValue")))
     {
-      [(AKAccountManager *)v13->_accountManager setIdmsWalrusStatus:v9 forAccount:location[0]];
+      [(AKAccountManager *)selfCopy->_accountManager setIdmsWalrusStatus:idmsWalrusStatus forAccount:location[0]];
       v10 = 1;
     }
   }
 
   v5 = v10;
   objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&idmsWalrusStatus, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (void)_refreshApplicationInformationForAltDSID:(id)a3
+- (void)_refreshApplicationInformationForAltDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v13 = os_transaction_create();
   v12 = +[AKApplicationInformationController sharedController];
   v4 = v12;
@@ -1992,40 +1992,40 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshAccountUsernamesForAltDSID:(id)a3 withUserInformation:(id)a4
+- (void)refreshAccountUsernamesForAltDSID:(id)d withUserInformation:(id)information
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, information);
   if (location[0])
   {
-    v6 = [v28 allAccountNames];
+    allAccountNames = [v28 allAccountNames];
     v22 = 0;
     v20 = 0;
     v7 = 0;
-    if (![v6 count])
+    if (![allAccountNames count])
     {
-      v23 = [v28 userInformationRepresentation];
+      userInformationRepresentation = [v28 userInformationRepresentation];
       v22 = 1;
-      v21 = [v23 phoneAsAppleID];
+      phoneAsAppleID = [userInformationRepresentation phoneAsAppleID];
       v20 = 1;
-      v7 = [v21 BOOLValue] == 0;
+      v7 = [phoneAsAppleID BOOLValue] == 0;
     }
 
     if (v20)
     {
-      _objc_release(v21);
+      _objc_release(phoneAsAppleID);
     }
 
     if (v22)
     {
-      _objc_release(v23);
+      _objc_release(userInformationRepresentation);
     }
 
-    _objc_release(v6);
+    _objc_release(allAccountNames);
     if (v7)
     {
       v19 = _AKLogSystem();
@@ -2054,27 +2054,27 @@
 
       objc_storeStrong(&oslog, 0);
       v14 = 0;
-      v13 = [(AKAccountManager *)v30->_accountManager authKitAccountWithAltDSID:location[0] error:0];
+      v13 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAltDSID:location[0] error:0];
       if (v13)
       {
-        v14 = (v14 | [(AKUserInfoController *)v30 _updateAccount:v13 withUserInformationResponse:v28 modifyAliases:1]) != 0;
+        v14 = (v14 | [(AKUserInfoController *)selfCopy _updateAccount:v13 withUserInformationResponse:v28 modifyAliases:1]) != 0;
       }
 
-      v12 = [(AKAccountManager *)v30->_accountManager appleIDAccountWithAltDSID:location[0]];
+      v12 = [(AKAccountManager *)selfCopy->_accountManager appleIDAccountWithAltDSID:location[0]];
       if (v12)
       {
-        v14 = (v14 | [(AKUserInfoController *)v30 _updateAccount:v12 withUserInformationResponse:v28 modifyAliases:0]) != 0;
+        v14 = (v14 | [(AKUserInfoController *)selfCopy _updateAccount:v12 withUserInformationResponse:v28 modifyAliases:0]) != 0;
       }
 
-      v11 = [(AKAccountManager *)v30->_accountManager iCloudAccountForAltDSID:location[0]];
+      v11 = [(AKAccountManager *)selfCopy->_accountManager iCloudAccountForAltDSID:location[0]];
       if (v11)
       {
-        v14 = (v14 | [(AKUserInfoController *)v30 _updateAccount:v11 withUserInformationResponse:v28 modifyAliases:0]) != 0;
+        v14 = (v14 | [(AKUserInfoController *)selfCopy _updateAccount:v11 withUserInformationResponse:v28 modifyAliases:0]) != 0;
       }
 
       if (v14)
       {
-        [(AKUserInfoController *)v30 _broadcastEmailChangeNotification];
+        [(AKUserInfoController *)selfCopy _broadcastEmailChangeNotification];
       }
 
       objc_storeStrong(&v11, 0);
@@ -2104,12 +2104,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)previousAccountInfoRefreshDateForAccount:(id)a3
+- (id)previousAccountInfoRefreshDateForAccount:(id)account
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = +[AKAccountManager sharedInstance];
   v6 = [(AKAccountManager *)v5 previousAccountInfoRefreshDateForAccount:location[0]];
   _objc_release(v5);
@@ -2130,14 +2130,14 @@
   return v3;
 }
 
-- (void)_setPreviousAccountInfoRefreshDate:(id)a3 forAccount:(id)a4
+- (void)_setPreviousAccountInfoRefreshDate:(id)date forAccount:(id)account
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, account);
   v6 = _AKLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -2154,50 +2154,50 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_updateAccount:(id)a3 withUserInformationResponse:(id)a4 modifyAliases:(BOOL)a5
+- (BOOL)_updateAccount:(id)account withUserInformationResponse:(id)response modifyAliases:(BOOL)aliases
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
-  v33 = a5;
+  objc_storeStrong(&v34, response);
+  aliasesCopy = aliases;
   v32 = 0;
-  v17 = [v34 userInformationRepresentation];
-  v18 = [v17 accountName];
+  userInformationRepresentation = [v34 userInformationRepresentation];
+  accountName = [userInformationRepresentation accountName];
   v30 = 0;
   v28 = 0;
   v26 = 0;
   v19 = 0;
-  if (v18)
+  if (accountName)
   {
-    v31 = [v34 userInformationRepresentation];
+    userInformationRepresentation2 = [v34 userInformationRepresentation];
     v30 = 1;
-    v29 = [v31 accountName];
+    accountName2 = [userInformationRepresentation2 accountName];
     v28 = 1;
-    v27 = [location[0] username];
+    username = [location[0] username];
     v26 = 1;
-    v19 = [v29 isEqualToString:?] == 0;
+    v19 = [accountName2 isEqualToString:?] == 0;
   }
 
   if (v26)
   {
-    _objc_release(v27);
+    _objc_release(username);
   }
 
   if (v28)
   {
-    _objc_release(v29);
+    _objc_release(accountName2);
   }
 
   if (v30)
   {
-    _objc_release(v31);
+    _objc_release(userInformationRepresentation2);
   }
 
-  _objc_release(v18);
-  _objc_release(v17);
+  _objc_release(accountName);
+  _objc_release(userInformationRepresentation);
   if (v19)
   {
     v25 = _AKLogSystem();
@@ -2210,23 +2210,23 @@
 
     objc_storeStrong(&v25, 0);
     v12 = location[0];
-    v14 = [v34 userInformationRepresentation];
-    v13 = [v14 accountName];
+    userInformationRepresentation3 = [v34 userInformationRepresentation];
+    accountName3 = [userInformationRepresentation3 accountName];
     [v12 setUsername:?];
-    _objc_release(v13);
-    _objc_release(v14);
+    _objc_release(accountName3);
+    _objc_release(userInformationRepresentation3);
     v32 = 1;
   }
 
-  if (v33)
+  if (aliasesCopy)
   {
-    v23 = [(AKAccountManager *)v36->_accountManager aliasesForAccount:location[0]];
+    v23 = [(AKAccountManager *)selfCopy->_accountManager aliasesForAccount:location[0]];
     v22 = [NSSet setWithArray:v23];
-    v11 = [v34 userInformationRepresentation];
-    v10 = [v11 accountAliases];
+    userInformationRepresentation4 = [v34 userInformationRepresentation];
+    accountAliases = [userInformationRepresentation4 accountAliases];
     v21 = [NSSet setWithArray:?];
-    _objc_release(v10);
-    _objc_release(v11);
+    _objc_release(accountAliases);
+    _objc_release(userInformationRepresentation4);
     if (![v21 isEqual:v22])
     {
       v20 = _AKLogSystem();
@@ -2237,12 +2237,12 @@
       }
 
       objc_storeStrong(&v20, 0);
-      accountManager = v36->_accountManager;
-      v9 = [v34 userInformationRepresentation];
-      v8 = [v9 accountAliases];
+      accountManager = selfCopy->_accountManager;
+      userInformationRepresentation5 = [v34 userInformationRepresentation];
+      accountAliases2 = [userInformationRepresentation5 accountAliases];
       [AKAccountManager setAliases:"setAliases:forAccount:" forAccount:?];
-      _objc_release(v8);
-      _objc_release(v9);
+      _objc_release(accountAliases2);
+      _objc_release(userInformationRepresentation5);
       v32 = 1;
     }
 
@@ -2253,7 +2253,7 @@
 
   if (v32)
   {
-    [(AKAccountManager *)v36->_accountManager saveAccount:location[0] error:0];
+    [(AKAccountManager *)selfCopy->_accountManager saveAccount:location[0] error:0];
   }
 
   v6 = v32;
@@ -2281,24 +2281,24 @@
   _objc_release(v3);
 }
 
-- (void)sendUserInfoChangeNotificationWithPayload:(id)a3
+- (void)sendUserInfoChangeNotificationWithPayload:(id)payload
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKUserInfoController *)v4 _sendNotification:AKUserInfoChangedNotification withUserInfo:location[0]];
+  objc_storeStrong(location, payload);
+  [(AKUserInfoController *)selfCopy _sendNotification:AKUserInfoChangedNotification withUserInfo:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_sendNotification:(id)a3 withUserInfo:(id)a4
+- (void)_sendNotification:(id)notification withUserInfo:(id)info
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, info);
   v7 = _AKLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2317,14 +2317,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)authorizationUserInformationForRequest:(id)a3 shouldRequestUpdate:(BOOL *)a4 error:(id *)a5
+- (id)authorizationUserInformationForRequest:(id)request shouldRequestUpdate:(BOOL *)update error:(id *)error
 {
-  v112 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v110 = a4;
-  v109 = a5;
+  objc_storeStrong(location, request);
+  updateCopy = update;
+  errorCopy = error;
   v108 = _AKLogSiwa();
   v107 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v108, OS_LOG_TYPE_DEBUG))
@@ -2334,19 +2334,19 @@
   }
 
   objc_storeStrong(&v108, 0);
-  v106 = [location[0] authkitAccount];
-  v105 = [(AKAccountManager *)v112->_accountManager authorizationUsedForAccount:v106];
-  v104 = [(AKAccountManager *)v112->_accountManager verifiedPrimaryEmailForAccount:v106];
-  v103 = [(AKAccountManager *)v112->_accountManager phoneAsAppleIDForAccount:v106];
-  v102 = [(AKAccountManager *)v112->_accountManager userUnderAgeForAccount:v106];
-  v101 = [(AKAccountManager *)v112->_accountManager isSiwaEnabledForChildAccount:v106];
-  v100 = [(AKAccountManager *)v112->_accountManager userIsSeniorForAccount:v106];
-  v99 = [(AKAccountManager *)v112->_accountManager ageOfMajorityForAccount:v106];
-  v98 = [(AKAccountManager *)v112->_accountManager givenNameForAccount:v106];
-  v97 = [(AKAccountManager *)v112->_accountManager familyNameForAccount:v106];
-  v96 = [(AKAccountManager *)v112->_accountManager primaryEmailAddressForAccount:v106];
-  v95 = [(AKAccountManager *)v112->_accountManager altDSIDForAccount:v106];
-  v94 = [(AKAccountManager *)v112->_accountManager iCloudAccountForAltDSID:v95];
+  authkitAccount = [location[0] authkitAccount];
+  v105 = [(AKAccountManager *)selfCopy->_accountManager authorizationUsedForAccount:authkitAccount];
+  v104 = [(AKAccountManager *)selfCopy->_accountManager verifiedPrimaryEmailForAccount:authkitAccount];
+  v103 = [(AKAccountManager *)selfCopy->_accountManager phoneAsAppleIDForAccount:authkitAccount];
+  v102 = [(AKAccountManager *)selfCopy->_accountManager userUnderAgeForAccount:authkitAccount];
+  v101 = [(AKAccountManager *)selfCopy->_accountManager isSiwaEnabledForChildAccount:authkitAccount];
+  v100 = [(AKAccountManager *)selfCopy->_accountManager userIsSeniorForAccount:authkitAccount];
+  v99 = [(AKAccountManager *)selfCopy->_accountManager ageOfMajorityForAccount:authkitAccount];
+  v98 = [(AKAccountManager *)selfCopy->_accountManager givenNameForAccount:authkitAccount];
+  v97 = [(AKAccountManager *)selfCopy->_accountManager familyNameForAccount:authkitAccount];
+  v96 = [(AKAccountManager *)selfCopy->_accountManager primaryEmailAddressForAccount:authkitAccount];
+  v95 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:authkitAccount];
+  v94 = [(AKAccountManager *)selfCopy->_accountManager iCloudAccountForAltDSID:v95];
   if (!v98 || !v97)
   {
     v93 = _AKLogSiwa();
@@ -2360,17 +2360,17 @@
     }
 
     objc_storeStrong(&v93, 0);
-    v5 = [(AKAccountManager *)v112->_accountManager givenNameForAccount:v94];
+    v5 = [(AKAccountManager *)selfCopy->_accountManager givenNameForAccount:v94];
     v6 = v98;
     v98 = v5;
     _objc_release(v6);
-    v7 = [(AKAccountManager *)v112->_accountManager familyNameForAccount:v94];
+    v7 = [(AKAccountManager *)selfCopy->_accountManager familyNameForAccount:v94];
     v8 = v97;
     v97 = v7;
     _objc_release(v8);
-    if (v110)
+    if (updateCopy)
     {
-      *v110 = 1;
+      *updateCopy = 1;
     }
   }
 
@@ -2380,11 +2380,11 @@
   v44 = [NSNumber numberWithBool:v105 & 1];
   [v90 setHasUsedAuthorization:?];
   _objc_release(v44);
-  v46 = [v106 username];
+  username = [authkitAccount username];
   v45 = [AKUsernameFormatter formattedUsernameFromUsername:?];
   [v90 setAccountName:?];
   _objc_release(v45);
-  _objc_release(v46);
+  _objc_release(username);
   [v90 setPrimaryEmailAddress:v96];
   v47 = [NSNumber numberWithBool:v102 & 1];
   [v90 setIsUnderage:?];
@@ -2396,45 +2396,45 @@
   [v90 setIsSenior:?];
   _objc_release(v49);
   [v90 setAgeOfMajority:v99];
-  [v90 setAppleIDSecurityLevel:{-[AKAccountManager securityLevelForAccount:](v112->_accountManager, "securityLevelForAccount:", v106)}];
-  v50 = [(AKAccountManager *)v112->_accountManager hasSOSActiveDeviceForAccount:v106];
+  [v90 setAppleIDSecurityLevel:{-[AKAccountManager securityLevelForAccount:](selfCopy->_accountManager, "securityLevelForAccount:", authkitAccount)}];
+  v50 = [(AKAccountManager *)selfCopy->_accountManager hasSOSActiveDeviceForAccount:authkitAccount];
   [v90 setHasSOSActiveDevice:?];
   _objc_release(v50);
-  v51 = [(AKAccountManager *)v112->_accountManager isSOSNeededForAccount:v106];
+  v51 = [(AKAccountManager *)selfCopy->_accountManager isSOSNeededForAccount:authkitAccount];
   [v90 setSOSNeeded:?];
   _objc_release(v51);
-  v52 = [(AKAccountManager *)v112->_accountManager configDataVersionForAccount:v106];
+  v52 = [(AKAccountManager *)selfCopy->_accountManager configDataVersionForAccount:authkitAccount];
   [v90 setConfigDataVersion:?];
   _objc_release(v52);
-  v53 = [(AKAccountManager *)v112->_accountManager hasModernRecoveryKeyForAccount:v106];
+  v53 = [(AKAccountManager *)selfCopy->_accountManager hasModernRecoveryKeyForAccount:authkitAccount];
   [v90 setHasModernRecoveryKey:?];
   _objc_release(v53);
-  v54 = [(AKAccountManager *)v112->_accountManager get3PRegulatoryOverride:v106];
+  v54 = [(AKAccountManager *)selfCopy->_accountManager get3PRegulatoryOverride:authkitAccount];
   [v90 setThirdPartyRegulatoryOverride:?];
   _objc_release(v54);
-  v55 = [(AKAccountManager *)v112->_accountManager adpCohortForAccount:v106];
+  v55 = [(AKAccountManager *)selfCopy->_accountManager adpCohortForAccount:authkitAccount];
   [v90 setAdpCohort:?];
   _objc_release(v55);
   if ([v90 isManagedAppleID])
   {
-    v40 = [NSNumber numberWithUnsignedInteger:[(AKAccountManager *)v112->_accountManager managedOrganizationTypeForAccount:v106]];
+    v40 = [NSNumber numberWithUnsignedInteger:[(AKAccountManager *)selfCopy->_accountManager managedOrganizationTypeForAccount:authkitAccount]];
     [v90 setManagedOrganizationType:?];
     _objc_release(v40);
-    v41 = [(AKAccountManager *)v112->_accountManager managedOrganizationNameForAccount:v106];
+    v41 = [(AKAccountManager *)selfCopy->_accountManager managedOrganizationNameForAccount:authkitAccount];
     [v90 setManagedOrganizationName:?];
     _objc_release(v41);
-    v42 = [NSNumber numberWithBool:[(AKAccountManager *)v112->_accountManager isNotificationEmailAvailableForAccount:v106]];
+    v42 = [NSNumber numberWithBool:[(AKAccountManager *)selfCopy->_accountManager isNotificationEmailAvailableForAccount:authkitAccount]];
     [v90 setIsNotificationEmailAvailable:?];
     _objc_release(v42);
-    v43 = [(AKAccountManager *)v112->_accountManager notificationEmailForAccount:v106];
+    v43 = [(AKAccountManager *)selfCopy->_accountManager notificationEmailForAccount:authkitAccount];
     [v90 setNotificationEmail:?];
     _objc_release(v43);
-    [v90 setAuthMode:{-[AKAccountManager authenticationModeForAccount:](v112->_accountManager, "authenticationModeForAccount:", v106)}];
+    [v90 setAuthMode:{-[AKAccountManager authenticationModeForAccount:](selfCopy->_accountManager, "authenticationModeForAccount:", authkitAccount)}];
   }
 
-  v38 = [location[0] requestedScopes];
-  v39 = [v38 containsObject:AKAuthorizationScopeEmail];
-  _objc_release(v38);
+  requestedScopes = [location[0] requestedScopes];
+  v39 = [requestedScopes containsObject:AKAuthorizationScopeEmail];
+  _objc_release(requestedScopes);
   v89 = v39;
   if (v39)
   {
@@ -2449,18 +2449,18 @@
     }
 
     objc_storeStrong(&v85, 0);
-    v82 = [(AKAccountManager *)v112->_accountManager forwardingEmailForAccount:v106];
-    v81 = [(AKAccountManager *)v112->_accountManager selectedPrivateEmailForAccount:v106];
-    v80 = [(AKAccountManager *)v112->_accountManager selectedAuthorizationEmailForAccount:v106];
-    v32 = [(AKAccountManager *)v112->_accountManager combinedAliasesAndReachableEmailsForAccount:v106];
+    v82 = [(AKAccountManager *)selfCopy->_accountManager forwardingEmailForAccount:authkitAccount];
+    v81 = [(AKAccountManager *)selfCopy->_accountManager selectedPrivateEmailForAccount:authkitAccount];
+    v80 = [(AKAccountManager *)selfCopy->_accountManager selectedAuthorizationEmailForAccount:authkitAccount];
+    v32 = [(AKAccountManager *)selfCopy->_accountManager combinedAliasesAndReachableEmailsForAccount:authkitAccount];
     v79 = [v32 mutableCopy];
     _objc_release(v32);
     v33 = [NSNumber numberWithBool:v81 & 1];
     [v90 setPreviouslyWantedPrivateEmail:?];
     _objc_release(v33);
-    v34 = [location[0] requestedScopes];
-    v35 = [v34 containsObject:AKAuthorizationScopeEmail];
-    _objc_release(v34);
+    requestedScopes2 = [location[0] requestedScopes];
+    v35 = [requestedScopes2 containsObject:AKAuthorizationScopeEmail];
+    _objc_release(requestedScopes2);
     if (v35)
     {
       v29 = objc_opt_class();
@@ -2472,9 +2472,9 @@
       if ([v78 count])
       {
         v77 = [NSSet setWithArray:v78];
-        v27 = [location[0] clientID];
+        clientID = [location[0] clientID];
         v28 = [v77 containsObject:?];
-        _objc_release(v27);
+        _objc_release(clientID);
         if (v28)
         {
           v26 = [NSNumber numberWithBool:1];
@@ -2484,10 +2484,10 @@
           v75 = OS_LOG_TYPE_DEBUG;
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
           {
-            v25 = [location[0] clientID];
-            sub_1000194D4(v116, v25);
+            clientID2 = [location[0] clientID];
+            sub_1000194D4(v116, clientID2);
             _os_log_debug_impl(&_mh_execute_header, oslog, v75, "previouslyWantedPrivateEmail for client ID %@", v116, 0xCu);
-            _objc_release(v25);
+            _objc_release(clientID2);
           }
 
           objc_storeStrong(&oslog, 0);
@@ -2545,9 +2545,9 @@
 
         else
         {
-          v17 = [v79 firstObject];
+          firstObject = [v79 firstObject];
           [v90 setForwardingEmail:?];
-          _objc_release(v17);
+          _objc_release(firstObject);
         }
       }
 
@@ -2586,29 +2586,29 @@
           }
 
           objc_storeStrong(&v65, 0);
-          v13 = [v90 reachableEmails];
+          reachableEmails = [v90 reachableEmails];
           v61 = 0;
           v14 = 1;
-          if (v13)
+          if (reachableEmails)
           {
-            v62 = [v90 reachableEmails];
+            reachableEmails2 = [v90 reachableEmails];
             v61 = 1;
-            v14 = [v62 count] == 0;
+            v14 = [reachableEmails2 count] == 0;
           }
 
           if (v61)
           {
-            _objc_release(v62);
+            _objc_release(reachableEmails2);
           }
 
-          _objc_release(v13);
+          _objc_release(reachableEmails);
           if (v14)
           {
-            if (v109)
+            if (errorCopy)
             {
               v12 = [NSError ak_errorWithCode:-7072];
               v9 = v12;
-              *v109 = v12;
+              *errorCopy = v12;
             }
 
             v113 = 0;
@@ -2668,203 +2668,203 @@ LABEL_60:
   objc_storeStrong(&v97, 0);
   objc_storeStrong(&v98, 0);
   objc_storeStrong(&v99, 0);
-  objc_storeStrong(&v106, 0);
+  objc_storeStrong(&authkitAccount, 0);
   objc_storeStrong(location, 0);
   v10 = v113;
 
   return v10;
 }
 
-- (BOOL)_additionalInfoChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_additionalInfoChangedForAccount:(id)account userInformation:(id)information
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, information);
   v14 = 0;
-  v13 = [v15 additionalInfo];
-  v12 = [(AKAccountManager *)v17->_accountManager additionalInfoForAccount:location[0]];
-  if (v13 && ![v13 isEqualToDictionary:v12])
+  additionalInfo = [v15 additionalInfo];
+  v12 = [(AKAccountManager *)selfCopy->_accountManager additionalInfoForAccount:location[0]];
+  if (additionalInfo && ![additionalInfo isEqualToDictionary:v12])
   {
-    [(AKAccountManager *)v17->_accountManager setAdditionalInfo:v13 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setAdditionalInfo:additionalInfo forAccount:location[0]];
     v14 = 1;
   }
 
-  v6 = [v15 hasMDM];
-  v7 = [v6 BOOLValue];
-  _objc_release(v6);
-  v11 = [(AKAccountManager *)v17->_accountManager hasMDMForAccount:location[0]];
-  v8 = [v15 hasMDM];
+  hasMDM = [v15 hasMDM];
+  bOOLValue = [hasMDM BOOLValue];
+  _objc_release(hasMDM);
+  v11 = [(AKAccountManager *)selfCopy->_accountManager hasMDMForAccount:location[0]];
+  hasMDM2 = [v15 hasMDM];
   v9 = 0;
-  if (v8)
+  if (hasMDM2)
   {
-    v9 = (v7 & 1) != (v11 & 1);
+    v9 = (bOOLValue & 1) != (v11 & 1);
   }
 
-  _objc_release(v8);
+  _objc_release(hasMDM2);
   if (v9)
   {
-    [(AKAccountManager *)v17->_accountManager setHasMDM:v7 & 1 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setHasMDM:bOOLValue & 1 forAccount:location[0]];
     v14 = 1;
   }
 
   v5 = v14;
   objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&additionalInfo, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (BOOL)_trustedPhoneNumbersChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_trustedPhoneNumbersChangedForAccount:(id)account userInformation:(id)information
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, information);
   v11 = 0;
-  v10 = [v12 trustedPhoneNumbers];
-  v9 = [NSSet setWithArray:v10];
-  v7 = [(AKAccountManager *)v14->_accountManager trustedPhoneNumbersForAccount:location[0]];
+  trustedPhoneNumbers = [v12 trustedPhoneNumbers];
+  v9 = [NSSet setWithArray:trustedPhoneNumbers];
+  v7 = [(AKAccountManager *)selfCopy->_accountManager trustedPhoneNumbersForAccount:location[0]];
   v8 = [NSSet setWithArray:?];
   _objc_release(v7);
-  if (v10 && ![v9 isEqualToSet:v8])
+  if (trustedPhoneNumbers && ![v9 isEqualToSet:v8])
   {
-    [(AKAccountManager *)v14->_accountManager setTrustedPhoneNumbers:v10 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setTrustedPhoneNumbers:trustedPhoneNumbers forAccount:location[0]];
     v11 = 1;
   }
 
   v5 = v11;
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&trustedPhoneNumbers, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (BOOL)_securityKeysChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_securityKeysChangedForAccount:(id)account userInformation:(id)information
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, information);
   v11 = 0;
-  v10 = [v12 securityKeys];
-  v9 = [NSSet setWithArray:v10];
-  v7 = [(AKAccountManager *)v14->_accountManager securityKeysForAccount:location[0]];
+  securityKeys = [v12 securityKeys];
+  v9 = [NSSet setWithArray:securityKeys];
+  v7 = [(AKAccountManager *)selfCopy->_accountManager securityKeysForAccount:location[0]];
   v8 = [NSSet setWithArray:?];
   _objc_release(v7);
-  if (v10 && ![v9 isEqualToSet:v8])
+  if (securityKeys && ![v9 isEqualToSet:v8])
   {
-    [(AKAccountManager *)v14->_accountManager setSecurityKeys:v10 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setSecurityKeys:securityKeys forAccount:location[0]];
     v11 = 1;
   }
 
   v5 = v11;
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&securityKeys, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (BOOL)_loginHandlesChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_loginHandlesChangedForAccount:(id)account userInformation:(id)information
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, information);
   v11 = 0;
-  v10 = [v12 loginHandles];
-  v9 = [NSSet setWithArray:v10];
-  v7 = [(AKAccountManager *)v14->_accountManager loginHandlesForAccount:location[0]];
+  loginHandles = [v12 loginHandles];
+  v9 = [NSSet setWithArray:loginHandles];
+  v7 = [(AKAccountManager *)selfCopy->_accountManager loginHandlesForAccount:location[0]];
   v8 = [NSSet setWithArray:?];
   _objc_release(v7);
-  if (v10 && ![v9 isEqualToSet:v8])
+  if (loginHandles && ![v9 isEqualToSet:v8])
   {
-    [(AKAccountManager *)v14->_accountManager setLoginHandles:v10 forAccount:location[0]];
+    [(AKAccountManager *)selfCopy->_accountManager setLoginHandles:loginHandles forAccount:location[0]];
     v11 = 1;
   }
 
   v5 = v11;
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&loginHandles, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (BOOL)_managedAppleIDInfoChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_managedAppleIDInfoChangedForAccount:(id)account userInformation:(id)information
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, information);
   v20 = 0;
   if ([v21 isManagedAppleID])
   {
-    v19 = [NSNumber numberWithUnsignedInteger:[(AKAccountManager *)v23->_accountManager managedOrganizationTypeForAccount:location[0]]];
-    v18 = [v21 managedOrganizationType];
-    if (v18 && ![v18 isEqual:v19])
+    v19 = [NSNumber numberWithUnsignedInteger:[(AKAccountManager *)selfCopy->_accountManager managedOrganizationTypeForAccount:location[0]]];
+    managedOrganizationType = [v21 managedOrganizationType];
+    if (managedOrganizationType && ![managedOrganizationType isEqual:v19])
     {
-      v17 = [v18 integerValue];
-      [(AKAccountManager *)v23->_accountManager setManagedOrganizationType:v17 forAccount:location[0]];
+      integerValue = [managedOrganizationType integerValue];
+      [(AKAccountManager *)selfCopy->_accountManager setManagedOrganizationType:integerValue forAccount:location[0]];
       v20 = 1;
     }
 
-    v16 = [(AKAccountManager *)v23->_accountManager managedOrganizationNameForAccount:location[0]];
-    v15 = [v21 managedOrganizationName];
-    if (v15 && ![v15 isEqual:v16])
+    v16 = [(AKAccountManager *)selfCopy->_accountManager managedOrganizationNameForAccount:location[0]];
+    managedOrganizationName = [v21 managedOrganizationName];
+    if (managedOrganizationName && ![managedOrganizationName isEqual:v16])
     {
-      [(AKAccountManager *)v23->_accountManager setManagedOrganizationName:v15 forAccount:location[0]];
+      [(AKAccountManager *)selfCopy->_accountManager setManagedOrganizationName:managedOrganizationName forAccount:location[0]];
       v20 = 1;
     }
 
-    v14 = [(AKAccountManager *)v23->_accountManager isNotificationEmailAvailableForAccount:location[0]];
-    v6 = [v21 isNotificationEmailAvailable];
-    v7 = [v6 BOOLValue];
-    _objc_release(v6);
-    v13 = v7;
-    v8 = [v21 isNotificationEmailAvailable];
+    v14 = [(AKAccountManager *)selfCopy->_accountManager isNotificationEmailAvailableForAccount:location[0]];
+    isNotificationEmailAvailable = [v21 isNotificationEmailAvailable];
+    bOOLValue = [isNotificationEmailAvailable BOOLValue];
+    _objc_release(isNotificationEmailAvailable);
+    v13 = bOOLValue;
+    isNotificationEmailAvailable2 = [v21 isNotificationEmailAvailable];
     v9 = 0;
-    if (v8)
+    if (isNotificationEmailAvailable2)
     {
       v9 = (v13 & 1) != (v14 & 1);
     }
 
-    _objc_release(v8);
+    _objc_release(isNotificationEmailAvailable2);
     if (v9)
     {
-      [(AKAccountManager *)v23->_accountManager setIsNotificationEmailAvailable:v13 & 1 forAccount:location[0]];
+      [(AKAccountManager *)selfCopy->_accountManager setIsNotificationEmailAvailable:v13 & 1 forAccount:location[0]];
       v20 = 1;
     }
 
-    v12 = [(AKAccountManager *)v23->_accountManager notificationEmailForAccount:location[0]];
-    v11 = [v21 notificationEmail];
-    if (v11 && ![v11 isEqual:v12])
+    v12 = [(AKAccountManager *)selfCopy->_accountManager notificationEmailForAccount:location[0]];
+    notificationEmail = [v21 notificationEmail];
+    if (notificationEmail && ![notificationEmail isEqual:v12])
     {
-      [(AKAccountManager *)v23->_accountManager setNotificationEmail:v11 forAccount:location[0]];
+      [(AKAccountManager *)selfCopy->_accountManager setNotificationEmail:notificationEmail forAccount:location[0]];
       v20 = 1;
     }
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&notificationEmail, 0);
     objc_storeStrong(&v12, 0);
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&managedOrganizationName, 0);
     objc_storeStrong(&v16, 0);
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&managedOrganizationType, 0);
     objc_storeStrong(&v19, 0);
   }
 
@@ -2874,12 +2874,12 @@ LABEL_60:
   return v5 & 1;
 }
 
-- (void)_refreshDeviceListForAccount:(id)a3
+- (void)_refreshDeviceListForAccount:(id)account
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v3 = [AKDeviceListRequester alloc];
   v6 = +[AKDeviceListStoreManager sharedManager];
   v5 = objc_opt_new();
@@ -2889,7 +2889,7 @@ LABEL_60:
   _objc_release(v5);
   _objc_release(v6);
   v8 = objc_alloc_init(AKDeviceListRequestContext);
-  v7 = [(AKAccountManager *)v11->_accountManager altDSIDForAccount:location[0]];
+  v7 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:location[0]];
   [v8 setAltDSID:?];
   _objc_release(v7);
   [v8 setForceFetch:1];
@@ -2900,55 +2900,55 @@ LABEL_60:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_birthYearChangedForAccount:(id)a3 userInformation:(id)a4
+- (BOOL)_birthYearChangedForAccount:(id)account userInformation:(id)information
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, information);
   v10 = 0;
-  v9 = [(AKAccountManager *)v13->_accountManager birthYearForAccount:location[0]];
-  v8 = [v11 birthYear];
-  if (v8)
+  v9 = [(AKAccountManager *)selfCopy->_accountManager birthYearForAccount:location[0]];
+  birthYear = [v11 birthYear];
+  if (birthYear)
   {
-    if (!v9 || (v6 = [v8 integerValue], v6 != objc_msgSend(v9, "integerValue")))
+    if (!v9 || (v6 = [birthYear integerValue], v6 != objc_msgSend(v9, "integerValue")))
     {
-      [(AKAccountManager *)v13->_accountManager setBirthYear:v8 forAccount:location[0]];
+      [(AKAccountManager *)selfCopy->_accountManager setBirthYear:birthYear forAccount:location[0]];
       v10 = 1;
     }
   }
 
   v5 = v10;
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&birthYear, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (void)updateBirthdayForAltDSID:(id)a3 userInformation:(id)a4
+- (void)updateBirthdayForAltDSID:(id)d userInformation:(id)information
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, information);
   v41 = objc_alloc_init(AKBirthDayKeychain);
   v40 = 0;
   v38 = 0;
   v15 = [v41 fetchBirthDayForAltDSID:location[0] error:&v38];
   objc_storeStrong(&v40, v38);
   v39 = v15;
-  v18 = [v42 birthMonth];
-  v17 = [v42 birthDay];
-  v16 = [v42 birthYear];
-  v37 = [NSString stringWithFormat:@"%@-%@-%@", v18, v17, v16];
-  _objc_release(v16);
-  _objc_release(v17);
-  _objc_release(v18);
+  birthMonth = [v42 birthMonth];
+  birthDay = [v42 birthDay];
+  birthYear = [v42 birthYear];
+  v37 = [NSString stringWithFormat:@"%@-%@-%@", birthMonth, birthDay, birthYear];
+  _objc_release(birthYear);
+  _objc_release(birthDay);
+  _objc_release(birthMonth);
   v36 = objc_alloc_init(NSDateFormatter);
   [v36 setDateFormat:@"MM-dd-yyyy"];
   v35 = objc_alloc_init(NSDate);
@@ -2984,14 +2984,14 @@ LABEL_60:
     }
 
     objc_storeStrong(&v29, 0);
-    v26 = [(AKAccountManager *)v44->_accountManager primaryiCloudAccount];
-    if (v26)
+    primaryiCloudAccount = [(AKAccountManager *)selfCopy->_accountManager primaryiCloudAccount];
+    if (primaryiCloudAccount)
     {
-      [(AKAccountManager *)v44->_accountManager setPendingDOB:0 forAccount:v26];
+      [(AKAccountManager *)selfCopy->_accountManager setPendingDOB:0 forAccount:primaryiCloudAccount];
       v25 = 0;
-      accountManager = v44->_accountManager;
+      accountManager = selfCopy->_accountManager;
       v24 = 0;
-      v9 = [(AKAccountManager *)accountManager saveAccount:v26 error:&v24];
+      v9 = [(AKAccountManager *)accountManager saveAccount:primaryiCloudAccount error:&v24];
       objc_storeStrong(&v25, v24);
       if (v9)
       {
@@ -3024,7 +3024,7 @@ LABEL_60:
       objc_storeStrong(&v25, 0);
     }
 
-    objc_storeStrong(&v26, 0);
+    objc_storeStrong(&primaryiCloudAccount, 0);
     objc_storeStrong(&v31, 0);
   }
 
@@ -3038,26 +3038,26 @@ LABEL_60:
   objc_storeStrong(location, 0);
 }
 
-- (void)updateUserInformationWithContext:(id)a3 userInformation:(id)a4 client:(id)a5 completion:(id)a6
+- (void)updateUserInformationWithContext:(id)context userInformation:(id)information client:(id)client completion:(id)completion
 {
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, information);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
+  objc_storeStrong(&v36, client);
   v35 = 0;
-  objc_storeStrong(&v35, a6);
+  objc_storeStrong(&v35, completion);
   v34 = _AKLogSystem();
   v33 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [location[0] altDSID];
-    sub_10001CE98(v42, 1752392040, v10);
+    altDSID = [location[0] altDSID];
+    sub_10001CE98(v42, 1752392040, altDSID);
     _os_log_debug_impl(&_mh_execute_header, v34, v33, "Starting server-side user information update for altDSID: %{mask.hash}@", v42, 0x16u);
-    _objc_release(v10);
+    _objc_release(altDSID);
   }
 
   objc_storeStrong(&v34, 0);
@@ -3084,7 +3084,7 @@ LABEL_60:
       v18 = &unk_1003232E0;
       v22 = _objc_retain(v35);
       v19 = _objc_retain(location[0]);
-      v20 = _objc_retain(v39);
+      v20 = _objc_retain(selfCopy);
       v21 = _objc_retain(v37);
       [(AKServiceControllerImpl *)v7 executeRequestWithCompletion:&v14];
       objc_storeStrong(&v21, 0);

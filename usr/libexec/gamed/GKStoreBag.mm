@@ -1,81 +1,81 @@
 @interface GKStoreBag
 + (id)appleIdSession;
-+ (id)contentDumpForDebugging:(id)a3;
++ (id)contentDumpForDebugging:(id)debugging;
 + (id)deviceInfo;
-+ (id)protocolVersionForClient:(id)a3;
-+ (id)redactPasswordFromDebuggingContent:(id)a3;
-+ (id)storeBagForEnvironment:(int64_t)a3;
-+ (id)storeBagForEnvironment:(int64_t)a3 dataRequestManager:(id)a4;
-+ (id)storeBagForURL:(id)a3 dataRequestManager:(id)a4;
-+ (id)storeBagURLForEnvironment:(int64_t)a3;
-+ (id)storeBagURLTemplateForEnvironment:(int64_t)a3;
-+ (void)addAuthHeadersToRequest:(id)a3;
-+ (void)addClientInfoAuthHeaderToRequest:(id)a3;
++ (id)protocolVersionForClient:(id)client;
++ (id)redactPasswordFromDebuggingContent:(id)content;
++ (id)storeBagForEnvironment:(int64_t)environment;
++ (id)storeBagForEnvironment:(int64_t)environment dataRequestManager:(id)manager;
++ (id)storeBagForURL:(id)l dataRequestManager:(id)manager;
++ (id)storeBagURLForEnvironment:(int64_t)environment;
++ (id)storeBagURLTemplateForEnvironment:(int64_t)environment;
++ (void)addAuthHeadersToRequest:(id)request;
++ (void)addClientInfoAuthHeaderToRequest:(id)request;
 - (BOOL)_isLastProtocolVersionUsedValid;
 - (BOOL)_isValidAndNotExpired;
 - (BOOL)_shouldUseHTTPPipelining;
-- (BOOL)isLoadValidForBagKey:(id)a3 date:(id)a4;
+- (BOOL)isLoadValidForBagKey:(id)key date:(id)date;
 - (BOOL)shouldUseHTTPPipelining;
-- (GKStoreBag)initWithURL:(id)a3 dataRequestManager:(id)a4;
+- (GKStoreBag)initWithURL:(id)l dataRequestManager:(id)manager;
 - (id)_bagKeyValidationDict;
 - (id)_networkSynchonizationQueue;
-- (id)_storeBagForData:(id)a3 error:(id *)a4;
+- (id)_storeBagForData:(id)data error:(id *)error;
 - (id)description;
-- (id)omnitureQueryParametersForContext:(id)a3;
-- (id)requestWithURL:(id)a3 playerID:(id)a4 authToken:(id)a5 pushToken:(id)a6 client:(id)a7 gameDescriptor:(id)a8 postData:(id)a9 includeUDID:(BOOL)a10 includeAPNS:(BOOL)a11 sapSession:(id)a12;
-- (id)requestWithURL:(id)a3 playerID:(id)a4 authToken:(id)a5 pushToken:(id)a6 client:(id)a7 gameDescriptor:(id)a8 postData:(id)a9 includeUDID:(BOOL)a10 includeAPNS:(BOOL)a11 sapSession:(id)a12 includeClientInfoAuthHeader:(BOOL)a13 preconnect:(BOOL)a14;
-- (id)valueForUndefinedKey:(id)a3;
-- (id)verifyEligibilityForBagKey:(id)a3 preconnect:(BOOL)a4 checkingAllowedRequestKeys:(id)a5 client:(id)a6;
-- (int)hashForPlayerID:(id)a3;
+- (id)omnitureQueryParametersForContext:(id)context;
+- (id)requestWithURL:(id)l playerID:(id)d authToken:(id)token pushToken:(id)pushToken client:(id)client gameDescriptor:(id)descriptor postData:(id)data includeUDID:(BOOL)self0 includeAPNS:(BOOL)self1 sapSession:(id)self2;
+- (id)requestWithURL:(id)l playerID:(id)d authToken:(id)token pushToken:(id)pushToken client:(id)client gameDescriptor:(id)descriptor postData:(id)data includeUDID:(BOOL)self0 includeAPNS:(BOOL)self1 sapSession:(id)self2 includeClientInfoAuthHeader:(BOOL)self3 preconnect:(BOOL)self4;
+- (id)valueForUndefinedKey:(id)key;
+- (id)verifyEligibilityForBagKey:(id)key preconnect:(BOOL)preconnect checkingAllowedRequestKeys:(id)keys client:(id)client;
+- (int)hashForPlayerID:(id)d;
 - (int64_t)_achievementsThrottleThreshold;
 - (int64_t)_gkSessionRateLimiting;
 - (int64_t)_scoresThrottleThreshold;
 - (int64_t)achievementsThrottleThreshold;
 - (int64_t)gkSessionRateLimiting;
 - (int64_t)scoresThrottleThreshold;
-- (void)_fetchBagWithHandler:(id)a3;
-- (void)_fetchFromCacheWithHandler:(id)a3;
-- (void)_fetchFromServerWithHandler:(id)a3;
-- (void)_loadDataForBagKey:(id)a3 preconnect:(BOOL)a4 postData:(id)a5 client:(id)a6 credential:(id)a7 completion:(id)a8;
-- (void)_metricsThrottleThreshold:(id)a3;
-- (void)_sendAsynchronousRequest:(id)a3 responseMustBeSigned:(BOOL)a4 preconnect:(BOOL)a5 completion:(id)a6;
-- (void)_sendOneAsyncTryWithRequest:(id)a3 responseMustBeSigned:(BOOL)a4 session:(id)a5 retryCount:(int)a6 preconnect:(BOOL)a7 completionHandler:(id)a8;
-- (void)_setupAPNSRequired:(id)a3;
-- (void)_setupResponseSignatureRequired:(id)a3;
-- (void)_setupSignatureRequired:(id)a3;
+- (void)_fetchBagWithHandler:(id)handler;
+- (void)_fetchFromCacheWithHandler:(id)handler;
+- (void)_fetchFromServerWithHandler:(id)handler;
+- (void)_loadDataForBagKey:(id)key preconnect:(BOOL)preconnect postData:(id)data client:(id)client credential:(id)credential completion:(id)completion;
+- (void)_metricsThrottleThreshold:(id)threshold;
+- (void)_sendAsynchronousRequest:(id)request responseMustBeSigned:(BOOL)signed preconnect:(BOOL)preconnect completion:(id)completion;
+- (void)_sendOneAsyncTryWithRequest:(id)request responseMustBeSigned:(BOOL)signed session:(id)session retryCount:(int)count preconnect:(BOOL)preconnect completionHandler:(id)handler;
+- (void)_setupAPNSRequired:(id)required;
+- (void)_setupResponseSignatureRequired:(id)required;
+- (void)_setupSignatureRequired:(id)required;
 - (void)_updatePlayerIDHashParameters;
 - (void)dealloc;
-- (void)getURLForKey:(id)a3 queue:(id)a4 handler:(id)a5;
-- (void)getValuesForKeys:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)getValuesWithCompletion:(id)a3;
-- (void)invalidateBagKeys:(id)a3;
-- (void)performSync:(id)a3;
-- (void)readDataForBagKey:(id)a3 postData:(id)a4 client:(id)a5 credential:(id)a6 completion:(id)a7;
-- (void)readDataForBagKey:(id)a3 preconnect:(BOOL)a4 postData:(id)a5 client:(id)a6 credential:(id)a7 completion:(id)a8;
-- (void)readDataForURL:(id)a3 postData:(id)a4 client:(id)a5 credential:(id)a6 includeUDID:(BOOL)a7 includeAPNS:(BOOL)a8 completion:(id)a9;
-- (void)signRequest:(id)a3 sapSession:(id)a4 postData:(id)a5;
+- (void)getURLForKey:(id)key queue:(id)queue handler:(id)handler;
+- (void)getValuesForKeys:(id)keys queue:(id)queue completion:(id)completion;
+- (void)getValuesWithCompletion:(id)completion;
+- (void)invalidateBagKeys:(id)keys;
+- (void)performSync:(id)sync;
+- (void)readDataForBagKey:(id)key postData:(id)data client:(id)client credential:(id)credential completion:(id)completion;
+- (void)readDataForBagKey:(id)key preconnect:(BOOL)preconnect postData:(id)data client:(id)client credential:(id)credential completion:(id)completion;
+- (void)readDataForURL:(id)l postData:(id)data client:(id)client credential:(id)credential includeUDID:(BOOL)d includeAPNS:(BOOL)s completion:(id)completion;
+- (void)signRequest:(id)request sapSession:(id)session postData:(id)data;
 - (void)updateURLPatternCache;
-- (void)verifyEligibilityForBagKey:(id)a3 preconnect:(BOOL)a4 replyQueue:(id)a5 client:(id)a6 completion:(id)a7;
-- (void)writeDataForBagKey:(id)a3 postData:(id)a4 client:(id)a5 credential:(id)a6 completion:(id)a7;
+- (void)verifyEligibilityForBagKey:(id)key preconnect:(BOOL)preconnect replyQueue:(id)queue client:(id)client completion:(id)completion;
+- (void)writeDataForBagKey:(id)key postData:(id)data client:(id)client credential:(id)credential completion:(id)completion;
 @end
 
 @implementation GKStoreBag
 
-+ (id)storeBagForEnvironment:(int64_t)a3
++ (id)storeBagForEnvironment:(int64_t)environment
 {
   v4 = +[GKDataRequestManager sharedManager];
-  v5 = [GKStoreBag storeBagForEnvironment:a3 dataRequestManager:v4];
+  v5 = [GKStoreBag storeBagForEnvironment:environment dataRequestManager:v4];
 
   return v5;
 }
 
-+ (id)storeBagForEnvironment:(int64_t)a3 dataRequestManager:(id)a4
++ (id)storeBagForEnvironment:(int64_t)environment dataRequestManager:(id)manager
 {
-  v6 = a4;
-  v7 = [a1 storeBagURLForEnvironment:a3];
+  managerCopy = manager;
+  v7 = [self storeBagURLForEnvironment:environment];
   if (v7)
   {
-    v8 = [a1 storeBagForURL:v7 dataRequestManager:v6];
+    v8 = [self storeBagForURL:v7 dataRequestManager:managerCopy];
   }
 
   else
@@ -86,16 +86,16 @@
   return v8;
 }
 
-+ (id)storeBagURLForEnvironment:(int64_t)a3
++ (id)storeBagURLForEnvironment:(int64_t)environment
 {
-  if (a3 == 7)
+  if (environment == 7)
   {
     v4 = +[GKPreferences shared];
-    v5 = [v4 storeBagURL];
+    storeBagURL = [v4 storeBagURL];
 
-    if (v5)
+    if (storeBagURL)
     {
-      v6 = [NSURL URLWithString:v5];
+      v6 = [NSURL URLWithString:storeBagURL];
       if (v6)
       {
         v7 = v6;
@@ -104,8 +104,8 @@
     }
   }
 
-  v5 = [GKStoreBag storeBagURLTemplateForEnvironment:a3];
-  v8 = [v5 stringByReplacingOccurrencesOfString:@"{ix}" withString:@"jgubuxqd"];
+  storeBagURL = [GKStoreBag storeBagURLTemplateForEnvironment:environment];
+  v8 = [storeBagURL stringByReplacingOccurrencesOfString:@"{ix}" withString:@"jgubuxqd"];
   v7 = [NSURL URLWithString:v8];
 
 LABEL_7:
@@ -113,20 +113,20 @@ LABEL_7:
   return v7;
 }
 
-+ (id)storeBagURLTemplateForEnvironment:(int64_t)a3
++ (id)storeBagURLTemplateForEnvironment:(int64_t)environment
 {
-  if ((a3 - 3) > 7)
+  if ((environment - 3) > 7)
   {
     return @"https://init.gc.apple.com/WebObjects/GKInit.woa/wa/getBag?ix={ix}";
   }
 
   else
   {
-    return off_1003675F0[a3 - 3];
+    return off_1003675F0[environment - 3];
   }
 }
 
-- (void)performSync:(id)a3
+- (void)performSync:(id)sync
 {
   syncQueue = self->_syncQueue;
   if (dispatch_get_current_queue() == syncQueue)
@@ -134,7 +134,7 @@ LABEL_7:
     +[NSException raise:format:](NSException, "raise:format:", @"GameKit Exception", @"%@", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (dispatch_get_current_queue() != queue)\n[%s (%s:%d)]", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s invoked on the same queue(%s), would deadlock at %@", "[GKStoreBag performSync:]", dispatch_queue_get_label(syncQueue), +[NSThread callStackSymbols]), "[GKStoreBag performSync:]", [[[NSString stringWithUTF8String:?]] UTF8String], 114));
   }
 
-  dispatch_sync(syncQueue, a3);
+  dispatch_sync(syncQueue, sync);
 }
 
 - (id)description
@@ -144,7 +144,7 @@ LABEL_7:
   return [NSString stringWithFormat:@"%@ : %@", [(GKStoreBag *)&v3 description], [(GKStoreBag *)self url]];
 }
 
-+ (id)storeBagForURL:(id)a3 dataRequestManager:(id)a4
++ (id)storeBagForURL:(id)l dataRequestManager:(id)manager
 {
   if (qword_1003B9390 != -1)
   {
@@ -161,27 +161,27 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = sub_100162C9C;
   block[3] = &unk_100369320;
-  block[5] = a4;
+  block[5] = manager;
   block[6] = &v9;
-  block[4] = a3;
+  block[4] = l;
   dispatch_sync(qword_1003B9380, block);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (GKStoreBag)initWithURL:(id)a3 dataRequestManager:(id)a4
+- (GKStoreBag)initWithURL:(id)l dataRequestManager:(id)manager
 {
   v8.receiver = self;
   v8.super_class = GKStoreBag;
   v6 = [(GKStoreBag *)&v8 init];
   if (v6)
   {
-    v6->_url = [a3 copy];
+    v6->_url = [l copy];
     v6->_syncQueue = dispatch_queue_create("com.apple.GameKit.GKStoreBag.sync", 0);
     *&v6->_playerIDHashMod = vdup_n_s32(0xF4240u);
     v6->_activity = [GKActivity named:@"GKStoreBag initWithURL:"];
-    v6->_dataRequestManager = a4;
+    v6->_dataRequestManager = manager;
   }
 
   return v6;
@@ -216,7 +216,7 @@ LABEL_7:
   return [v2 isEqualToString:v4];
 }
 
-- (void)_fetchFromCacheWithHandler:(id)a3
+- (void)_fetchFromCacheWithHandler:(id)handler
 {
   current_queue = dispatch_get_current_queue();
   syncQueue = self->_syncQueue;
@@ -259,7 +259,7 @@ LABEL_7:
     v16[5] = v10;
     v16[6] = v13;
     v16[7] = v14;
-    v16[8] = a3;
+    v16[8] = handler;
     v15 = v16;
   }
 
@@ -269,19 +269,19 @@ LABEL_7:
     v18[1] = 3221225472;
     v18[2] = sub_1001631F8;
     v18[3] = &unk_100369348;
-    v18[4] = a3;
+    v18[4] = handler;
     v15 = v18;
   }
 
   [(GKStoreBag *)self performAsync:v15];
 }
 
-+ (id)protocolVersionForClient:(id)a3
++ (id)protocolVersionForClient:(id)client
 {
-  if (a3)
+  if (client)
   {
 
-    return [a3 protocolVersion];
+    return [client protocolVersion];
   }
 
   else
@@ -292,7 +292,7 @@ LABEL_7:
   }
 }
 
-- (void)_fetchFromServerWithHandler:(id)a3
+- (void)_fetchFromServerWithHandler:(id)handler
 {
   current_queue = dispatch_get_current_queue();
   syncQueue = self->_syncQueue;
@@ -313,11 +313,11 @@ LABEL_7:
   v11[4] = self;
   v11[5] = v9;
   v11[6] = v8;
-  v11[7] = a3;
+  v11[7] = handler;
   [objc_opt_class() _gkSendAsynchronousRequest:v10 completionHandler:v11];
 }
 
-- (void)_fetchBagWithHandler:(id)a3
+- (void)_fetchBagWithHandler:(id)handler
 {
   if (!os_log_GKGeneral)
   {
@@ -350,7 +350,7 @@ LABEL_7:
     v15[2] = sub_100163B20;
     v15[3] = &unk_1003693E8;
     v15[4] = self;
-    v15[5] = a3;
+    v15[5] = handler;
     [(GKDispatchGroup *)v9 join:fetchGroup queue:v12 block:v15];
   }
 
@@ -383,12 +383,12 @@ LABEL_7:
     v14[2] = sub_100163D54;
     v14[3] = &unk_100369488;
     v14[4] = self;
-    v14[5] = a3;
+    v14[5] = handler;
     [(GKDispatchGroup *)v10 notifyOnQueue:v13 block:v14];
   }
 }
 
-- (void)getValuesWithCompletion:(id)a3
+- (void)getValuesWithCompletion:(id)completion
 {
   if (!os_log_GKGeneral)
   {
@@ -407,13 +407,13 @@ LABEL_7:
   v6[2] = sub_100163E8C;
   v6[3] = &unk_100369488;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = completion;
   [(GKStoreBag *)self performAsync:v6];
 }
 
-- (void)_setupAPNSRequired:(id)a3
+- (void)_setupAPNSRequired:(id)required
 {
-  v4 = [a3 objectForKey:@"gk-push-token-required"];
+  v4 = [required objectForKey:@"gk-push-token-required"];
   if (v4)
   {
     v5 = v4;
@@ -435,9 +435,9 @@ LABEL_7:
   [(GKStoreBag *)self setAPNSRequired:v6];
 }
 
-- (void)_setupSignatureRequired:(id)a3
+- (void)_setupSignatureRequired:(id)required
 {
-  v4 = [a3 objectForKey:@"gk-sap-signed-requests"];
+  v4 = [required objectForKey:@"gk-sap-signed-requests"];
   [(GKStoreBag *)self setSignatureRequired:0];
   if (v4)
   {
@@ -447,16 +447,16 @@ LABEL_7:
   }
 }
 
-- (void)_metricsThrottleThreshold:(id)a3
+- (void)_metricsThrottleThreshold:(id)threshold
 {
-  v4 = [a3 objectForKey:@"gk-metrics-pct"];
+  v4 = [threshold objectForKey:@"gk-metrics-pct"];
 
   [(GKStoreBag *)self setMetricsPassthroughPercentage:v4];
 }
 
-- (void)_setupResponseSignatureRequired:(id)a3
+- (void)_setupResponseSignatureRequired:(id)required
 {
-  v4 = [a3 objectForKey:@"gk-sap-signed-response-include-patterns"];
+  v4 = [required objectForKey:@"gk-sap-signed-response-include-patterns"];
   [(GKStoreBag *)self setResponseSignatureRequired:0];
   if (v4)
   {
@@ -466,20 +466,20 @@ LABEL_7:
   }
 }
 
-- (void)getURLForKey:(id)a3 queue:(id)a4 handler:(id)a5
+- (void)getURLForKey:(id)key queue:(id)queue handler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001642F8;
   v5[3] = &unk_100369528;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
-  v5[7] = a5;
+  v5[5] = key;
+  v5[6] = queue;
+  v5[7] = handler;
   [(GKActivity *)[(GKStoreBag *)self activity] childNamed:[NSString execute:"stringWithFormat:" stringWithFormat:"GKStoreBag+NoARC.m", 460, "[GKStoreBag getURLForKey:queue:handler:]"], v5];
 }
 
-- (void)getValuesForKeys:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)getValuesForKeys:(id)keys queue:(id)queue completion:(id)completion
 {
   if (!os_log_GKGeneral)
   {
@@ -497,14 +497,14 @@ LABEL_7:
   v10[1] = 3221225472;
   v10[2] = sub_10016453C;
   v10[3] = &unk_100369500;
-  v10[4] = a3;
-  v10[5] = a4;
+  v10[4] = keys;
+  v10[5] = queue;
   v10[6] = self;
-  v10[7] = a5;
+  v10[7] = completion;
   [(GKStoreBag *)self getValuesWithCompletion:v10];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v6 = 0;
   v7 = &v6;
@@ -516,7 +516,7 @@ LABEL_7:
   v5[1] = 3221225472;
   v5[2] = sub_1001646E4;
   v5[3] = &unk_100369320;
-  v5[5] = a3;
+  v5[5] = key;
   v5[6] = &v6;
   v5[4] = self;
   [(GKStoreBag *)self performSync:v5];
@@ -525,11 +525,11 @@ LABEL_7:
   return v3;
 }
 
-- (id)omnitureQueryParametersForContext:(id)a3
+- (id)omnitureQueryParametersForContext:(id)context
 {
   v4 = [(NSDictionary *)self->_internalBag objectForKey:GKQueryParamsBagKey];
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:context];
 }
 
 - (BOOL)shouldUseHTTPPipelining
@@ -653,10 +653,10 @@ LABEL_7:
   return result;
 }
 
-- (id)_storeBagForData:(id)a3 error:(id *)a4
+- (id)_storeBagForData:(id)data error:(id *)error
 {
   v22 = 100;
-  v5 = [NSPropertyListSerialization propertyListWithData:a3 options:0 format:&v22 error:a4];
+  v5 = [NSPropertyListSerialization propertyListWithData:data options:0 format:&v22 error:error];
   if (!v5 || (v6 = v5, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (!os_log_GKGeneral)
@@ -671,7 +671,7 @@ LABEL_7:
     }
 
     v11 = objc_opt_class();
-    v12 = *a4;
+    v12 = *error;
     *buf = 138412546;
     v24 = v11;
     v25 = 2112;
@@ -709,14 +709,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = [NSPropertyListSerialization propertyListWithData:v7 options:0 format:&v22 error:a4];
+  v8 = [NSPropertyListSerialization propertyListWithData:v7 options:0 format:&v22 error:error];
   if (v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v9 = 0;
-      if (!a4)
+      if (!error)
       {
         return v8;
       }
@@ -734,7 +734,7 @@ LABEL_13:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v18 = objc_opt_class();
-    v19 = *a4;
+    v19 = *error;
     *buf = 138412546;
     v24 = v18;
     v25 = 2112;
@@ -744,10 +744,10 @@ LABEL_13:
 
 LABEL_14:
   v9 = [NSError userErrorForCode:3 underlyingError:0];
-  if (a4)
+  if (error)
   {
 LABEL_15:
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8;
@@ -777,9 +777,9 @@ LABEL_6:
     return;
   }
 
-  v7 = [(GKStoreBag *)self internalBag];
-  v8 = [(NSDictionary *)v7 objectForKeyedSubscript:@"gk-launch-gamecenter-host-patterns"];
-  v9 = [(NSDictionary *)v7 objectForKeyedSubscript:@"gk-launch-gamecenter-path-patterns"];
+  internalBag = [(GKStoreBag *)self internalBag];
+  v8 = [(NSDictionary *)internalBag objectForKeyedSubscript:@"gk-launch-gamecenter-host-patterns"];
+  v9 = [(NSDictionary *)internalBag objectForKeyedSubscript:@"gk-launch-gamecenter-path-patterns"];
   if (!v8)
   {
     return;
@@ -890,9 +890,9 @@ LABEL_32:
 
 - (void)_updatePlayerIDHashParameters
 {
-  v2 = [(GKStoreBag *)self internalBag];
-  v3 = [(NSDictionary *)v2 objectForKey:GKPlayerIDHashModKey];
-  v4 = [(NSDictionary *)v2 objectForKey:GKPlayerIDHashAddKey];
+  internalBag = [(GKStoreBag *)self internalBag];
+  v3 = [(NSDictionary *)internalBag objectForKey:GKPlayerIDHashModKey];
+  v4 = [(NSDictionary *)internalBag objectForKey:GKPlayerIDHashAddKey];
   if (v3)
   {
     v5 = v4 == 0;
@@ -921,9 +921,9 @@ LABEL_32:
   }
 }
 
-- (int)hashForPlayerID:(id)a3
+- (int)hashForPlayerID:(id)d
 {
-  v4 = [a3 hash];
+  v4 = [d hash];
   if (v4 >= 0)
   {
     v5 = v4;
@@ -937,15 +937,15 @@ LABEL_32:
   return self->_playerIDHashAdd + v5 % self->_playerIDHashMod;
 }
 
-- (void)signRequest:(id)a3 sapSession:(id)a4 postData:(id)a5
+- (void)signRequest:(id)request sapSession:(id)session postData:(id)data
 {
-  [a3 _gkSetSAPSession:a4];
-  [a3 setHTTPShouldUsePipelining:{-[GKStoreBag _shouldUseHTTPPipelining](self, "_shouldUseHTTPPipelining")}];
-  if (a4)
+  [request _gkSetSAPSession:session];
+  [request setHTTPShouldUsePipelining:{-[GKStoreBag _shouldUseHTTPPipelining](self, "_shouldUseHTTPPipelining")}];
+  if (session)
   {
-    if (a5)
+    if (data)
     {
-      v9 = [objc_msgSend(a3 "HTTPBody")];
+      v9 = [objc_msgSend(request "HTTPBody")];
       if (v9)
       {
         v10 = v9;
@@ -972,10 +972,10 @@ LABEL_32:
           v11 = 0;
         }
 
-        [a3 setHTTPBody:v10];
-        [a3 setSAPSignature:{objc_msgSend(a4, "signatureForData:error:", v11, &v15)}];
-        [a3 setSAPversion:{objc_msgSend(a4, "SAPVersion")}];
-        [a3 setValue:@"gzip" forHTTPHeaderField:@"content-encoding"];
+        [request setHTTPBody:v10];
+        [request setSAPSignature:{objc_msgSend(session, "signatureForData:error:", v11, &v15)}];
+        [request setSAPversion:{objc_msgSend(session, "SAPVersion")}];
+        [request setValue:@"gzip" forHTTPHeaderField:@"content-encoding"];
         if (!os_log_GKGeneral)
         {
           GKOSLoggers();
@@ -984,11 +984,11 @@ LABEL_32:
         v13 = os_log_GKDaemon;
         if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
         {
-          v14 = [a3 loggableHeaders];
+          loggableHeaders = [request loggableHeaders];
           *md = 138412546;
-          v18 = a3;
+          requestCopy = request;
           v19 = 2112;
-          v20 = v14;
+          v20 = loggableHeaders;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "MESCAL:signed body of request:%@ %@", md, 0x16u);
         }
       }
@@ -996,41 +996,41 @@ LABEL_32:
   }
 }
 
-- (id)requestWithURL:(id)a3 playerID:(id)a4 authToken:(id)a5 pushToken:(id)a6 client:(id)a7 gameDescriptor:(id)a8 postData:(id)a9 includeUDID:(BOOL)a10 includeAPNS:(BOOL)a11 sapSession:(id)a12
+- (id)requestWithURL:(id)l playerID:(id)d authToken:(id)token pushToken:(id)pushToken client:(id)client gameDescriptor:(id)descriptor postData:(id)data includeUDID:(BOOL)self0 includeAPNS:(BOOL)self1 sapSession:(id)self2
 {
   LOWORD(v14) = 0;
-  LOWORD(v13) = __PAIR16__(a11, a10);
-  return [GKStoreBag requestWithURL:"requestWithURL:playerID:authToken:pushToken:client:gameDescriptor:postData:includeUDID:includeAPNS:sapSession:includeClientInfoAuthHeader:preconnect:" playerID:a3 authToken:a4 pushToken:a5 client:a6 gameDescriptor:a7 postData:a8 includeUDID:a9 includeAPNS:v13 sapSession:a12 includeClientInfoAuthHeader:v14 preconnect:?];
+  LOWORD(v13) = __PAIR16__(s, iD);
+  return [GKStoreBag requestWithURL:"requestWithURL:playerID:authToken:pushToken:client:gameDescriptor:postData:includeUDID:includeAPNS:sapSession:includeClientInfoAuthHeader:preconnect:" playerID:l authToken:d pushToken:token client:pushToken gameDescriptor:client postData:descriptor includeUDID:data includeAPNS:v13 sapSession:session includeClientInfoAuthHeader:v14 preconnect:?];
 }
 
-- (id)requestWithURL:(id)a3 playerID:(id)a4 authToken:(id)a5 pushToken:(id)a6 client:(id)a7 gameDescriptor:(id)a8 postData:(id)a9 includeUDID:(BOOL)a10 includeAPNS:(BOOL)a11 sapSession:(id)a12 includeClientInfoAuthHeader:(BOOL)a13 preconnect:(BOOL)a14
+- (id)requestWithURL:(id)l playerID:(id)d authToken:(id)token pushToken:(id)pushToken client:(id)client gameDescriptor:(id)descriptor postData:(id)data includeUDID:(BOOL)self0 includeAPNS:(BOOL)self1 sapSession:(id)self2 includeClientInfoAuthHeader:(BOOL)self3 preconnect:(BOOL)self4
 {
-  v19 = a3;
-  if (a14)
+  lCopy = l;
+  if (preconnect)
   {
-    v19 = [a3 _gkGetPreconnectURL];
+    lCopy = [l _gkGetPreconnectURL];
   }
 
-  v21 = +[NSMutableURLRequest _gkHTTPRequestWithURL:postData:protocolVersion:](NSMutableURLRequest, "_gkHTTPRequestWithURL:postData:protocolVersion:", v19, a9, [objc_opt_class() protocolVersionForClient:a7]);
-  [v21 setPlayerID:a4 hash:-[GKStoreBag hashForPlayerID:](self authToken:{"hashForPlayerID:", a4), a5}];
-  if (a11)
+  v21 = +[NSMutableURLRequest _gkHTTPRequestWithURL:postData:protocolVersion:](NSMutableURLRequest, "_gkHTTPRequestWithURL:postData:protocolVersion:", lCopy, data, [objc_opt_class() protocolVersionForClient:client]);
+  [v21 setPlayerID:d hash:-[GKStoreBag hashForPlayerID:](self authToken:{"hashForPlayerID:", d), token}];
+  if (s)
   {
-    [v21 setPushToken:a6];
+    [v21 setPushToken:pushToken];
   }
 
-  if (!a8)
+  if (!descriptor)
   {
-    a8 = [a7 gameDescriptor];
+    descriptor = [client gameDescriptor];
   }
 
-  [v21 setGameDescriptor:a8];
-  [v21 setLocale:{objc_msgSend(a7, "locale")}];
-  if (a10)
+  [v21 setGameDescriptor:descriptor];
+  [v21 setLocale:{objc_msgSend(client, "locale")}];
+  if (iD)
   {
     [v21 setDeviceUniqueID];
   }
 
-  if (a13)
+  if (header)
   {
     [objc_opt_class() addClientInfoAuthHeaderToRequest:v21];
   }
@@ -1038,22 +1038,22 @@ LABEL_32:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v21 _gkAddHeadersFromDictionary:{objc_msgSend(a9, "headers")}];
+    [v21 _gkAddHeadersFromDictionary:{objc_msgSend(data, "headers")}];
   }
 
-  [(GKStoreBag *)self signRequest:v21 sapSession:a12 postData:a9];
+  [(GKStoreBag *)self signRequest:v21 sapSession:session postData:data];
   return v21;
 }
 
-+ (id)contentDumpForDebugging:(id)a3
++ (id)contentDumpForDebugging:(id)debugging
 {
-  if (!a3)
+  if (!debugging)
   {
     return @"(null: empty body)";
   }
 
-  v5 = [a3 bytes];
-  v6 = [a3 length];
+  bytes = [debugging bytes];
+  v6 = [debugging length];
   v7 = v6;
   if (v6 < 5)
   {
@@ -1062,15 +1062,15 @@ LABEL_32:
       goto LABEL_19;
     }
 
-    v8 = *v5;
+    v8 = *bytes;
   }
 
   else
   {
-    v8 = *v5;
+    v8 = *bytes;
     if (v8 == 255)
     {
-      if (v5[1] == 216)
+      if (bytes[1] == 216)
       {
         return @"(probably JPEG data)";
       }
@@ -1080,7 +1080,7 @@ LABEL_32:
 
     if (v6 >= 9 && v8 == 137)
     {
-      if (v5[1] == 80 && v5[2] == 78 && v5[3] == 71)
+      if (bytes[1] == 80 && bytes[2] == 78 && bytes[3] == 71)
       {
         return @"(probably PNG data)";
       }
@@ -1089,25 +1089,25 @@ LABEL_32:
     }
   }
 
-  if (v8 == 123 && v5[v6 - 1] == 125)
+  if (v8 == 123 && bytes[v6 - 1] == 125)
   {
     *buf = 0;
-    v10 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:buf];
+    v10 = [NSJSONSerialization JSONObjectWithData:debugging options:0 error:buf];
     if (!v10)
     {
       return @"(probably JSON object data)";
     }
 
-    return [a1 redactPasswordFromDebuggingContent:v10];
+    return [self redactPasswordFromDebuggingContent:v10];
   }
 
 LABEL_19:
   v13 = 0;
   v14 = 100;
-  v10 = [NSPropertyListSerialization propertyListWithData:a3 options:0 format:&v14 error:&v13];
+  v10 = [NSPropertyListSerialization propertyListWithData:debugging options:0 format:&v14 error:&v13];
   if (v10)
   {
-    return [a1 redactPasswordFromDebuggingContent:v10];
+    return [self redactPasswordFromDebuggingContent:v10];
   }
 
   if (v7 >= 128)
@@ -1120,9 +1120,9 @@ LABEL_19:
     v11 = v7;
   }
 
-  if (memmem(v5, v11, "<html", 5uLL) || memmem(v5, v11, "<xml", 4uLL))
+  if (memmem(bytes, v11, "<html", 5uLL) || memmem(bytes, v11, "<xml", 4uLL))
   {
-    return [[NSString alloc] initWithBytes:v5 length:v7 encoding:4];
+    return [[NSString alloc] initWithBytes:bytes length:v7 encoding:4];
   }
 
   if (!os_log_GKGeneral)
@@ -1136,22 +1136,22 @@ LABEL_19:
     *buf = 134218242;
     *&buf[4] = v7;
     v16 = 2112;
-    v17 = a3;
+    debuggingCopy = debugging;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "(couldn't decode data of length:%ld as plist/html or xml) %@", buf, 0x16u);
   }
 
   return 0;
 }
 
-+ (id)redactPasswordFromDebuggingContent:(id)a3
++ (id)redactPasswordFromDebuggingContent:(id)content
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![a3 objectForKeyedSubscript:@"password"])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![content objectForKeyedSubscript:@"password"])
   {
-    return a3;
+    return content;
   }
 
-  v4 = [a3 mutableCopy];
+  v4 = [content mutableCopy];
   [v4 setObject:@"PASSWORD REDACTED" forKeyedSubscript:@"password"];
 
   return v4;
@@ -1177,42 +1177,42 @@ LABEL_19:
   return qword_1003B93A8;
 }
 
-+ (void)addClientInfoAuthHeaderToRequest:(id)a3
++ (void)addClientInfoAuthHeaderToRequest:(id)request
 {
   v4 = +[GKStoreBag deviceInfo];
 
-  [a3 setValue:v4 forHTTPHeaderField:@"X-MMe-Client-Info"];
+  [request setValue:v4 forHTTPHeaderField:@"X-MMe-Client-Info"];
 }
 
-+ (void)addAuthHeadersToRequest:(id)a3
++ (void)addAuthHeadersToRequest:(id)request
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100165C10;
   v3[3] = &unk_1003695B8;
-  v3[4] = a3;
+  v3[4] = request;
   [objc_msgSend(objc_msgSend(objc_opt_class() "appleIdSession")];
 }
 
-- (void)_sendAsynchronousRequest:(id)a3 responseMustBeSigned:(BOOL)a4 preconnect:(BOOL)a5 completion:(id)a6
+- (void)_sendAsynchronousRequest:(id)request responseMustBeSigned:(BOOL)signed preconnect:(BOOL)preconnect completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100165D64;
   v6[3] = &unk_100369608;
   v6[4] = self;
-  v6[5] = a3;
-  v7 = a4;
-  v8 = a5;
-  v6[6] = a6;
+  v6[5] = request;
+  signedCopy = signed;
+  preconnectCopy = preconnect;
+  v6[6] = completion;
   [(GKActivity *)[(GKStoreBag *)self activity] childNamed:[NSString execute:"stringWithFormat:" stringWithFormat:"GKStoreBag+NoARC.m", 953, "[GKStoreBag _sendAsynchronousRequest:responseMustBeSigned:preconnect:completion:]"], v6];
 }
 
-- (void)_sendOneAsyncTryWithRequest:(id)a3 responseMustBeSigned:(BOOL)a4 session:(id)a5 retryCount:(int)a6 preconnect:(BOOL)a7 completionHandler:(id)a8
+- (void)_sendOneAsyncTryWithRequest:(id)request responseMustBeSigned:(BOOL)signed session:(id)session retryCount:(int)count preconnect:(BOOL)preconnect completionHandler:(id)handler
 {
-  if (a3)
+  if (request)
   {
-    v9 = a7;
+    preconnectCopy = preconnect;
     v15 = objc_opt_class();
     v16 = os_log_GKHTTP;
     if (os_log_type_enabled(os_log_GKHTTP, OS_LOG_TYPE_INFO))
@@ -1226,33 +1226,33 @@ LABEL_19:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v25 = a3;
+        requestCopy = request;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "timestamp at which REQUEST %@ was sent", buf, 0xCu);
       }
     }
 
-    [GKStoreBag addAuthHeadersToRequest:a3];
+    [GKStoreBag addAuthHeadersToRequest:request];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100166098;
     v20[3] = &unk_100369630;
-    v20[4] = a5;
-    v20[5] = a3;
-    v21 = a6;
-    v22 = a4;
-    v23 = v9;
+    v20[4] = session;
+    v20[5] = request;
+    countCopy = count;
+    signedCopy = signed;
+    v23 = preconnectCopy;
     v20[6] = self;
-    v20[7] = a8;
-    [v15 _gkSendAsynchronousRequest:a3 preconnect:v9 completionHandler:v20];
+    v20[7] = handler;
+    [v15 _gkSendAsynchronousRequest:request preconnect:preconnectCopy completionHandler:v20];
   }
 
-  else if (a8)
+  else if (handler)
   {
-    v17 = [NSError userErrorForCode:17 userInfo:0, a5, *&a6, a7];
-    v18 = *(a8 + 2);
+    preconnect = [NSError userErrorForCode:17 userInfo:0, session, *&count, preconnect];
+    v18 = *(handler + 2);
     v19.n128_u64[0] = 0;
 
-    v18(a8, 0, v17, v19);
+    v18(handler, 0, preconnect, v19);
   }
 }
 
@@ -1266,18 +1266,18 @@ LABEL_19:
   return qword_1003B93B8;
 }
 
-- (void)invalidateBagKeys:(id)a3
+- (void)invalidateBagKeys:(id)keys
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001668D8;
   v4[3] = &unk_100369678;
-  v4[4] = a3;
+  v4[4] = keys;
   v4[5] = +[NSDate date];
   [-[GKStoreBag _bagKeyValidationDict](self "_bagKeyValidationDict")];
 }
 
-- (BOOL)isLoadValidForBagKey:(id)a3 date:(id)a4
+- (BOOL)isLoadValidForBagKey:(id)key date:(id)date
 {
   v5 = [-[GKStoreBag _bagKeyValidationDict](self "_bagKeyValidationDict")];
   if (!v5)
@@ -1285,7 +1285,7 @@ LABEL_19:
     return 1;
   }
 
-  [a4 timeIntervalSinceDate:v5];
+  [date timeIntervalSinceDate:v5];
   return v6 > 0.0;
 }
 
@@ -1299,7 +1299,7 @@ LABEL_19:
   return qword_1003B93C8;
 }
 
-- (void)verifyEligibilityForBagKey:(id)a3 preconnect:(BOOL)a4 replyQueue:(id)a5 client:(id)a6 completion:(id)a7
+- (void)verifyEligibilityForBagKey:(id)key preconnect:(BOOL)preconnect replyQueue:(id)queue client:(id)client completion:(id)completion
 {
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -1307,32 +1307,32 @@ LABEL_19:
   v13[2] = sub_100166B94;
   v13[3] = &unk_1003696C0;
   objc_copyWeak(&v14, &location);
-  v15 = a4;
-  v13[4] = a3;
-  v13[5] = a6;
-  v13[6] = a5;
-  v13[7] = a7;
+  preconnectCopy = preconnect;
+  v13[4] = key;
+  v13[5] = client;
+  v13[6] = queue;
+  v13[7] = completion;
   [(GKStoreBag *)self getValuesWithCompletion:v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (id)verifyEligibilityForBagKey:(id)a3 preconnect:(BOOL)a4 checkingAllowedRequestKeys:(id)a5 client:(id)a6
+- (id)verifyEligibilityForBagKey:(id)key preconnect:(BOOL)preconnect checkingAllowedRequestKeys:(id)keys client:(id)client
 {
-  v8 = a4;
+  preconnectCopy = preconnect;
   v10 = objc_alloc_init(GKPlayerInternalProvider);
   v11 = [-[GKPlayerInternalProvider localPlayer](v10 "localPlayer")];
 
-  v12 = -[GKNetworkRequestEligibilityChecker initWithHasAcknowledgedLatestGDPR:alwaysAllowedBagKeysObject:isAppDistributorThirdParty:isInDebugMode:isPreconnecting:]([GKNetworkRequestEligibilityChecker alloc], "initWithHasAcknowledgedLatestGDPR:alwaysAllowedBagKeysObject:isAppDistributorThirdParty:isInDebugMode:isPreconnecting:", v11, a5, [a6 isAppDistributorThirdParty], objc_msgSend(a6, "isInDebugMode"), v8);
-  v13 = [(GKNetworkRequestEligibilityChecker *)v12 verifyEligibilityWithBagKey:a3];
+  v12 = -[GKNetworkRequestEligibilityChecker initWithHasAcknowledgedLatestGDPR:alwaysAllowedBagKeysObject:isAppDistributorThirdParty:isInDebugMode:isPreconnecting:]([GKNetworkRequestEligibilityChecker alloc], "initWithHasAcknowledgedLatestGDPR:alwaysAllowedBagKeysObject:isAppDistributorThirdParty:isInDebugMode:isPreconnecting:", v11, keys, [client isAppDistributorThirdParty], objc_msgSend(client, "isInDebugMode"), preconnectCopy);
+  v13 = [(GKNetworkRequestEligibilityChecker *)v12 verifyEligibilityWithBagKey:key];
 
   return v13;
 }
 
-- (void)_loadDataForBagKey:(id)a3 preconnect:(BOOL)a4 postData:(id)a5 client:(id)a6 credential:(id)a7 completion:(id)a8
+- (void)_loadDataForBagKey:(id)key preconnect:(BOOL)preconnect postData:(id)data client:(id)client credential:(id)credential completion:(id)completion
 {
-  v14 = a6;
-  if (!a6)
+  clientCopy = client;
+  if (!client)
   {
     if (!os_log_GKGeneral)
     {
@@ -1346,7 +1346,7 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "_loadDataForBagKey: nil client provided, will instantiate one", buf, 2u);
     }
 
-    v14 = +[GKClientProxy gameCenterClient];
+    clientCopy = +[GKClientProxy gameCenterClient];
   }
 
   *buf = 0;
@@ -1367,16 +1367,16 @@ LABEL_19:
   v22[3] = 0;
   v16 = dispatch_group_create();
   v17 = +[NSDate date];
-  if (!a5)
+  if (!data)
   {
-    if ([a3 isEqual:@"gk-sap-setup-cert-url"])
+    if ([key isEqual:@"gk-sap-setup-cert-url"])
     {
-      a5 = 0;
+      data = 0;
     }
 
     else
     {
-      a5 = -[NSDictionary _gkPlistXMLDataForAppSession:](+[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v17, @"gk-post-data", 0), "_gkPlistXMLDataForAppSession:", [v14 appSessionForCredential:a7]);
+      data = -[NSDictionary _gkPlistXMLDataForAppSession:](+[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v17, @"gk-post-data", 0), "_gkPlistXMLDataForAppSession:", [clientCopy appSessionForCredential:credential]);
     }
   }
 
@@ -1386,24 +1386,24 @@ LABEL_19:
   v19[3] = &unk_1003697D0;
   v19[4] = self;
   v19[5] = v16;
-  v20 = a4;
-  v19[6] = a3;
-  v19[7] = v14;
-  v19[8] = a7;
-  v19[9] = a5;
+  preconnectCopy = preconnect;
+  v19[6] = key;
+  v19[7] = clientCopy;
+  v19[8] = credential;
+  v19[9] = data;
   v19[12] = v23;
   v19[13] = buf;
   v19[14] = v22;
   v19[10] = v17;
-  v19[11] = a8;
-  v21 = a6 == 0;
+  v19[11] = completion;
+  v21 = client == 0;
   [(GKActivity *)[(GKStoreBag *)self activity] childNamed:[NSString execute:"stringWithFormat:" stringWithFormat:"GKStoreBag+NoARC.m", 1234, "[GKStoreBag _loadDataForBagKey:preconnect:postData:client:credential:completion:]"], v19];
   _Block_object_dispose(v22, 8);
   _Block_object_dispose(v23, 8);
   _Block_object_dispose(buf, 8);
 }
 
-- (void)writeDataForBagKey:(id)a3 postData:(id)a4 client:(id)a5 credential:(id)a6 completion:(id)a7
+- (void)writeDataForBagKey:(id)key postData:(id)data client:(id)client credential:(id)credential completion:(id)completion
 {
   if (!os_log_GKGeneral)
   {
@@ -1422,51 +1422,51 @@ LABEL_19:
   v14[2] = sub_100167B14;
   v14[3] = &unk_100369820;
   v14[4] = self;
-  v14[5] = a3;
-  v14[6] = a4;
-  v14[7] = a5;
-  v14[8] = a6;
-  v14[9] = a7;
+  v14[5] = key;
+  v14[6] = data;
+  v14[7] = client;
+  v14[8] = credential;
+  v14[9] = completion;
   dispatch_barrier_async([(GKStoreBag *)self _networkSynchonizationQueue], v14);
 }
 
-- (void)readDataForBagKey:(id)a3 postData:(id)a4 client:(id)a5 credential:(id)a6 completion:(id)a7
+- (void)readDataForBagKey:(id)key postData:(id)data client:(id)client credential:(id)credential completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100167C98;
   v7[3] = &unk_100369820;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
-  v7[7] = a5;
-  v7[8] = a6;
-  v7[9] = a7;
+  v7[5] = key;
+  v7[6] = data;
+  v7[7] = client;
+  v7[8] = credential;
+  v7[9] = completion;
   [(GKActivity *)[(GKStoreBag *)self activity] childNamed:[NSString execute:"stringWithFormat:" stringWithFormat:"GKStoreBag+NoARC.m", 1387, "[GKStoreBag readDataForBagKey:postData:client:credential:completion:]"], v7];
 }
 
-- (void)readDataForBagKey:(id)a3 preconnect:(BOOL)a4 postData:(id)a5 client:(id)a6 credential:(id)a7 completion:(id)a8
+- (void)readDataForBagKey:(id)key preconnect:(BOOL)preconnect postData:(id)data client:(id)client credential:(id)credential completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100167E30;
   v8[3] = &unk_100369848;
   v8[4] = self;
-  v8[5] = a3;
-  v9 = a4;
-  v8[6] = a5;
-  v8[7] = a6;
-  v8[8] = a7;
-  v8[9] = a8;
+  v8[5] = key;
+  preconnectCopy = preconnect;
+  v8[6] = data;
+  v8[7] = client;
+  v8[8] = credential;
+  v8[9] = completion;
   [(GKActivity *)[(GKStoreBag *)self activity] childNamed:[NSString execute:"stringWithFormat:" stringWithFormat:"GKStoreBag+NoARC.m", 1401, "[GKStoreBag readDataForBagKey:preconnect:postData:client:credential:completion:]"], v8];
 }
 
-- (void)readDataForURL:(id)a3 postData:(id)a4 client:(id)a5 credential:(id)a6 includeUDID:(BOOL)a7 includeAPNS:(BOOL)a8 completion:(id)a9
+- (void)readDataForURL:(id)l postData:(id)data client:(id)client credential:(id)credential includeUDID:(BOOL)d includeAPNS:(BOOL)s completion:(id)completion
 {
-  v10 = a5;
-  if (!a5)
+  clientCopy = client;
+  if (!client)
   {
-    v10 = +[GKClientProxy gameCenterClient];
+    clientCopy = +[GKClientProxy gameCenterClient];
   }
 
   v24[0] = 0;
@@ -1492,12 +1492,12 @@ LABEL_19:
   block[2] = sub_100168120;
   block[3] = &unk_100369898;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a6;
-  block[7] = v10;
-  v20 = a7;
-  v21 = a8;
-  block[8] = a4;
+  block[5] = l;
+  block[6] = credential;
+  block[7] = clientCopy;
+  dCopy = d;
+  sCopy = s;
+  block[8] = data;
   block[9] = v14;
   block[10] = v24;
   block[11] = v22;
@@ -1508,7 +1508,7 @@ LABEL_19:
   v18[1] = 3221225472;
   v18[2] = sub_100168334;
   v18[3] = &unk_1003698C0;
-  v18[4] = a9;
+  v18[4] = completion;
   v18[5] = v24;
   v18[6] = v22;
   v18[7] = v23;

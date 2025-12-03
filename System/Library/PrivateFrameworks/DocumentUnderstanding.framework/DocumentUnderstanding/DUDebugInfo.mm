@@ -1,8 +1,8 @@
 @interface DUDebugInfo
 - (NSString)debugString;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDebugString:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDebugString:(id)string;
 @end
 
 @implementation DUDebugInfo
@@ -15,17 +15,17 @@
   return v2;
 }
 
-- (void)setDebugString:(id)a3
+- (void)setDebugString:(id)string
 {
   v4 = sub_232CE9D50();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_232B55940(v4, v6);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232B55AA0(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232B55BA0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232B55BA0(coderCopy);
 }
 
 @end

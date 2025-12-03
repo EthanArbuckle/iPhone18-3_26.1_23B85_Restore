@@ -1,14 +1,14 @@
 @interface BridgeHealthProfileDiffableDataSource
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
 @end
 
 @implementation BridgeHealthProfileDiffableDataSource
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = [(BridgeHealthProfileDiffableDataSource *)self snapshot];
-  v7 = [v6 sectionIdentifiers];
-  v8 = [v7 objectAtIndex:a4];
+  snapshot = [(BridgeHealthProfileDiffableDataSource *)self snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v8 = [sectionIdentifiers objectAtIndex:section];
 
   if ([v8 isEqual:&off_19410])
   {

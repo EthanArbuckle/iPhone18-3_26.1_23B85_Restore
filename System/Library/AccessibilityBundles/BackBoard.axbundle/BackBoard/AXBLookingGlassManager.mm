@@ -54,8 +54,8 @@ uint64_t __43__AXBLookingGlassManager_initializeMonitor__block_invoke()
 {
   if (LookingGlassServicesLibraryCore())
   {
-    v2 = [getLookingGlassServicesClass() sharedInstance];
-    [v2 updateLookingGlassServices];
+    sharedInstance = [getLookingGlassServicesClass() sharedInstance];
+    [sharedInstance updateLookingGlassServices];
   }
 }
 
@@ -70,8 +70,8 @@ uint64_t __43__AXBLookingGlassManager_initializeMonitor__block_invoke()
       _os_log_impl(&dword_29BBBD000, v2, OS_LOG_TYPE_DEFAULT, "About to show looking glass menu", v4, 2u);
     }
 
-    v3 = [getLookingGlassServicesClass() sharedInstance];
-    [v3 showLookingGlassMenu];
+    sharedInstance = [getLookingGlassServicesClass() sharedInstance];
+    [sharedInstance showLookingGlassMenu];
   }
 }
 

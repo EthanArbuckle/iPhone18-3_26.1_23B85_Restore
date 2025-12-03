@@ -1,14 +1,14 @@
 @interface OfflineMapsDownloadFeatureTipSource
 - (BOOL)_allowToShowTip;
 - (GEOObserverHashTable)observers;
-- (OfflineMapsDownloadFeatureTipSource)initWithIsActive:(BOOL)a3;
-- (void)_didOpenUserProfile:(id)a3;
+- (OfflineMapsDownloadFeatureTipSource)initWithIsActive:(BOOL)active;
+- (void)_didOpenUserProfile:(id)profile;
 - (void)_dismissTip;
 - (void)_markAsShown;
 - (void)_notifyObservers;
-- (void)_showDownloadTipModelWithDisplayName:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)subscriptionInfosDidChange:(id)a3;
+- (void)_showDownloadTipModelWithDisplayName:(id)name;
+- (void)setActive:(BOOL)active;
+- (void)subscriptionInfosDidChange:(id)change;
 @end
 
 @implementation OfflineMapsDownloadFeatureTipSource
@@ -18,20 +18,20 @@
   observers = self->_observers;
   if (!observers)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___HomeDataProvidingObserver queue:0];
     v6 = self->_observers;
     self->_observers = v5;
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     observers = self->_observers;
   }
 
   return observers;
 }
 
-- (void)_didOpenUserProfile:(id)a3
+- (void)_didOpenUserProfile:(id)profile
 {
   if ([(OfflineMapsDownloadFeatureTipSource *)self showFeature])
   {
@@ -40,27 +40,27 @@
   }
 }
 
-- (void)subscriptionInfosDidChange:(id)a3
+- (void)subscriptionInfosDidChange:(id)change
 {
-  v9 = a3;
+  changeCopy = change;
   if (![(OfflineMapsDownloadFeatureTipSource *)self showFeature]&& [(OfflineMapsDownloadFeatureTipSource *)self _allowToShowTip])
   {
-    v4 = [v9 lastObject];
-    v5 = [v4 state];
-    v6 = [v5 downloadState];
+    lastObject = [changeCopy lastObject];
+    state = [lastObject state];
+    downloadState = [state downloadState];
 
-    if (v6 == 2)
+    if (downloadState == 2)
     {
-      v7 = [v4 subscription];
-      v8 = [v7 displayName];
-      [(OfflineMapsDownloadFeatureTipSource *)self _showDownloadTipModelWithDisplayName:v8];
+      subscription = [lastObject subscription];
+      displayName = [subscription displayName];
+      [(OfflineMapsDownloadFeatureTipSource *)self _showDownloadTipModelWithDisplayName:displayName];
     }
   }
 }
 
-- (void)_showDownloadTipModelWithDisplayName:(id)a3
+- (void)_showDownloadTipModelWithDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(ImageIconWithBackgroundConfiguration);
   [(ImageIconWithBackgroundConfiguration *)v5 setIconSize:35.0, 35.0];
   [(ImageIconWithBackgroundConfiguration *)v5 setCornerRadius:17.5];
@@ -75,7 +75,7 @@
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"[Offline] download tip title" value:@"localized string not found" table:@"Offline"];
-  v12 = [NSString stringWithFormat:v11, v4];
+  nameCopy = [NSString stringWithFormat:v11, nameCopy];
 
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"[Offline] download tip subtitle" value:@"localized string not found" table:@"Offline"];
@@ -93,7 +93,7 @@
   v21[3] = &unk_101661B98;
   objc_copyWeak(&v22, location);
   LOBYTE(v18) = 1;
-  v16 = [(FeatureDiscoveryModel *)v15 initWithImage:v9 title:v12 subtitle:v14 actionTitle:0 actionHandler:0 bodyTapHandler:0 displayedHandler:v23 dismissHandler:v21 disableAffordanceAfterAction:v18];
+  v16 = [(FeatureDiscoveryModel *)v15 initWithImage:v9 title:nameCopy subtitle:v14 actionTitle:0 actionHandler:0 bodyTapHandler:0 displayedHandler:v23 dismissHandler:v21 disableAffordanceAfterAction:v18];
   model = self->_model;
   self->_model = v16;
 
@@ -209,15 +209,15 @@ LABEL_16:
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v4 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v6 = +[MapsOfflineUIHelper sharedHelper];
     v7 = v6;
-    if (v4)
+    if (activeCopy)
     {
       [v6 addObserver:self];
 
@@ -236,16 +236,16 @@ LABEL_16:
   }
 }
 
-- (OfflineMapsDownloadFeatureTipSource)initWithIsActive:(BOOL)a3
+- (OfflineMapsDownloadFeatureTipSource)initWithIsActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v7.receiver = self;
   v7.super_class = OfflineMapsDownloadFeatureTipSource;
   v4 = [(OfflineMapsDownloadFeatureTipSource *)&v7 init];
   v5 = v4;
   if (v4)
   {
-    [(OfflineMapsDownloadFeatureTipSource *)v4 setActive:v3];
+    [(OfflineMapsDownloadFeatureTipSource *)v4 setActive:activeCopy];
   }
 
   return v5;

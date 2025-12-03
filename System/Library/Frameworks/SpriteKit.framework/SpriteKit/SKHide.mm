@@ -2,10 +2,10 @@
 + (id)hide;
 + (id)unhide;
 - (SKHide)init;
-- (SKHide)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKHide)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKHide
@@ -22,12 +22,12 @@
   return 0;
 }
 
-- (SKHide)initWithCoder:(id)a3
+- (SKHide)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKHide;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -35,13 +35,13 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = SKHide;
-  [(SKAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_mycaction->var19 forKey:@"_hiddenValue"];
+  [(SKAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_mycaction->var19 forKey:@"_hiddenValue"];
 }
 
 + (id)hide
@@ -78,7 +78,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_mycaction->var19)
   {

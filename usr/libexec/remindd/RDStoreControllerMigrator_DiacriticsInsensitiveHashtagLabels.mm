@@ -1,16 +1,16 @@
 @interface RDStoreControllerMigrator_DiacriticsInsensitiveHashtagLabels
 - (_TtC7remindd60RDStoreControllerMigrator_DiacriticsInsensitiveHashtagLabels)init;
-- (void)migrateStoreIfNeeded:(id)a3 metadata:(id)a4;
+- (void)migrateStoreIfNeeded:(id)needed metadata:(id)metadata;
 @end
 
 @implementation RDStoreControllerMigrator_DiacriticsInsensitiveHashtagLabels
 
-- (void)migrateStoreIfNeeded:(id)a3 metadata:(id)a4
+- (void)migrateStoreIfNeeded:(id)needed metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  RDStoreControllerMigrator_DiacriticsInsensitiveHashtagLabels.migrateStoreIfNeeded(_:metadata:)(v6, v7);
+  neededCopy = needed;
+  metadataCopy = metadata;
+  selfCopy = self;
+  RDStoreControllerMigrator_DiacriticsInsensitiveHashtagLabels.migrateStoreIfNeeded(_:metadata:)(neededCopy, metadataCopy);
 }
 
 - (_TtC7remindd60RDStoreControllerMigrator_DiacriticsInsensitiveHashtagLabels)init

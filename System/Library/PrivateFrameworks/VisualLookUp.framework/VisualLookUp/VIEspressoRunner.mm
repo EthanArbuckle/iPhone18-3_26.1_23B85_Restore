@@ -1,38 +1,38 @@
 @interface VIEspressoRunner
-- (BOOL)setFeatures:(id)a3 error:(id *)a4;
-- (BOOL)setFrame:(__CVBuffer *)a3 error:(id *)a4;
-- (VIEspressoRunner)initWithMLNetURL:(id)a3 expectedInputSize:(CGSize)a4 imageInputName:(id)a5 featureNames:(id)a6 outputNames:(id)a7 preferredMetalDevice:(id)a8 usesCPUOnly:(BOOL)a9;
-- (id)classificationErrorWithDescription:(id)a3;
-- (id)processWithError:(id *)a3;
+- (BOOL)setFeatures:(id)features error:(id *)error;
+- (BOOL)setFrame:(__CVBuffer *)frame error:(id *)error;
+- (VIEspressoRunner)initWithMLNetURL:(id)l expectedInputSize:(CGSize)size imageInputName:(id)name featureNames:(id)names outputNames:(id)outputNames preferredMetalDevice:(id)device usesCPUOnly:(BOOL)only;
+- (id)classificationErrorWithDescription:(id)description;
+- (id)processWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation VIEspressoRunner
 
-- (id)classificationErrorWithDescription:(id)a3
+- (id)classificationErrorWithDescription:(id)description
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = *MEMORY[0x1E696A578];
-  v9[0] = a3;
+  v9[0] = description;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.siri.argos.espresso.classification" code:-1 userInfo:v5];
 
   return v6;
 }
 
-- (VIEspressoRunner)initWithMLNetURL:(id)a3 expectedInputSize:(CGSize)a4 imageInputName:(id)a5 featureNames:(id)a6 outputNames:(id)a7 preferredMetalDevice:(id)a8 usesCPUOnly:(BOOL)a9
+- (VIEspressoRunner)initWithMLNetURL:(id)l expectedInputSize:(CGSize)size imageInputName:(id)name featureNames:(id)names outputNames:(id)outputNames preferredMetalDevice:(id)device usesCPUOnly:(BOOL)only
 {
-  v9 = a9;
-  height = a4.height;
-  width = a4.width;
+  onlyCopy = only;
+  height = size.height;
+  width = size.width;
   v83 = *MEMORY[0x1E69E9840];
-  v66 = a3;
-  v17 = a5;
-  v65 = a6;
-  v64 = a7;
-  v18 = a8;
+  lCopy = l;
+  nameCopy = name;
+  namesCopy = names;
+  outputNamesCopy = outputNames;
+  deviceCopy = device;
   v74.receiver = self;
   v74.super_class = VIEspressoRunner;
   v19 = [(VIEspressoRunner *)&v74 init];
@@ -41,10 +41,10 @@
   {
     v19->_expectedInputSize.width = width;
     v19->_expectedInputSize.height = height;
-    objc_storeStrong(&v19->_imageInputName, a5);
-    [(VIEspressoRunner *)v20 setIsImageRequired:v17 != 0];
-    objc_storeStrong(&v20->_outputNames, a7);
-    if (v18)
+    objc_storeStrong(&v19->_imageInputName, name);
+    [(VIEspressoRunner *)v20 setIsImageRequired:nameCopy != 0];
+    objc_storeStrong(&v20->_outputNames, outputNames);
+    if (deviceCopy)
     {
       if (+[_TtC12VisualLookUp8VILogger shouldLogInternalVerboseMessage])
       {
@@ -60,7 +60,7 @@
     }
 
     v22 = +[_TtC12VisualLookUp8VILogger shouldLogInternalVerboseMessage];
-    if (v9)
+    if (onlyCopy)
     {
       if (v22)
       {
@@ -167,9 +167,9 @@ LABEL_70:
       goto LABEL_81;
     }
 
-    v30 = [v66 path];
-    v31 = v30;
-    [v30 UTF8String];
+    path = [lCopy path];
+    v31 = path;
+    [path UTF8String];
     v32 = espresso_plan_add_network() == 0;
 
     if (!v32)
@@ -179,9 +179,9 @@ LABEL_70:
         v33 = +[_TtC12VisualLookUp8VILogger log];
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
-          v34 = [v66 path];
-          v35 = v34;
-          [v34 UTF8String];
+          path2 = [lCopy path];
+          v35 = path2;
+          [path2 UTF8String];
           v36 = espresso_plan_add_network();
           *buf = 67109378;
           *&buf[4] = v36;
@@ -234,14 +234,14 @@ LABEL_44:
     v40 = v20;
     v72 = v40;
     v73 = buf;
-    [v65 enumerateObjectsUsingBlock:v71];
+    [namesCopy enumerateObjectsUsingBlock:v71];
     if (*(v81 + 24))
     {
       v69 = 0u;
       v70 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v41 = v64;
+      v41 = outputNamesCopy;
       v42 = [v41 countByEnumeratingWithState:&v67 objects:v79 count:16];
       if (v42)
       {
@@ -296,7 +296,7 @@ LABEL_44:
         v54 = v40[9];
         v40[9] = v53;
 
-        v55 = [v40[9] mutableBytes];
+        mutableBytes = [v40[9] mutableBytes];
         for (j = 0; ; ++j)
         {
           if ([(NSArray *)v20->_outputNames count]<= j)
@@ -314,7 +314,7 @@ LABEL_44:
             break;
           }
 
-          v55 += 168;
+          mutableBytes += 168;
         }
 
         if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
@@ -429,7 +429,7 @@ void __128__VIEspressoRunner_initWithMLNetURL_expectedInputSize_imageInputName_f
   [(VIEspressoRunner *)&v5 dealloc];
 }
 
-- (BOOL)setFrame:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)setFrame:(__CVBuffer *)frame error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   if (!self->_imageInputName)
@@ -437,7 +437,7 @@ void __128__VIEspressoRunner_initWithMLNetURL_expectedInputSize_imageInputName_f
     return 1;
   }
 
-  if (floor(self->_expectedInputSize.width) != CVPixelBufferGetWidth(a3) || floor(self->_expectedInputSize.height) != CVPixelBufferGetHeight(a3))
+  if (floor(self->_expectedInputSize.width) != CVPixelBufferGetWidth(frame) || floor(self->_expectedInputSize.height) != CVPixelBufferGetHeight(frame))
   {
     v7 = [(VIEspressoRunner *)self classificationErrorWithDescription:@"setFrame(): Image size mismatch"];
     if (+[_TtC12VisualLookUp8VILogger shouldLogInternalVerboseMessage])
@@ -453,10 +453,10 @@ void __128__VIEspressoRunner_initWithMLNetURL_expectedInputSize_imageInputName_f
       }
     }
 
-    if (a4)
+    if (error)
     {
       v9 = v7;
-      *a4 = v7;
+      *error = v7;
     }
 
     return 0;
@@ -482,7 +482,7 @@ void __128__VIEspressoRunner_initWithMLNetURL_expectedInputSize_imageInputName_f
     }
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
@@ -490,13 +490,13 @@ void __128__VIEspressoRunner_initWithMLNetURL_expectedInputSize_imageInputName_f
   v12 = [(VIEspressoRunner *)self classificationErrorWithDescription:@"espresso_network_bind_cvpixelbuffer"];
   v13 = v12;
   result = 0;
-  *a4 = v12;
+  *error = v12;
   return result;
 }
 
-- (BOOL)setFeatures:(id)a3 error:(id *)a4
+- (BOOL)setFeatures:(id)features error:(id *)error
 {
-  v6 = a3;
+  featuresCopy = features;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -514,11 +514,11 @@ void __128__VIEspressoRunner_initWithMLNetURL_expectedInputSize_imageInputName_f
   v9[4] = self;
   v9[5] = &v16;
   v9[6] = &v10;
-  [v6 enumerateKeysAndObjectsUsingBlock:v9];
+  [featuresCopy enumerateKeysAndObjectsUsingBlock:v9];
   v7 = *(v17 + 24);
-  if (a4 && (v17[3] & 1) == 0)
+  if (error && (v17[3] & 1) == 0)
   {
-    *a4 = v11[5];
+    *error = v11[5];
     v7 = *(v17 + 24);
   }
 
@@ -560,7 +560,7 @@ void __38__VIEspressoRunner_setFeatures_error___block_invoke(uint64_t a1, void *
   memcpy(0, [v7 dataPointer], 4 * objc_msgSend(v7, "count"));
 }
 
-- (id)processWithError:(id *)a3
+- (id)processWithError:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   if (espresso_plan_execute_sync())
@@ -578,10 +578,10 @@ void __38__VIEspressoRunner_setFeatures_error___block_invoke(uint64_t a1, void *
       }
     }
 
-    if (a3)
+    if (error)
     {
       [(VIEspressoRunner *)self classificationErrorWithDescription:@"espresso_plan_execute_sync"];
-      *a3 = v6 = 0;
+      *error = v6 = 0;
     }
 
     else
@@ -592,17 +592,17 @@ void __38__VIEspressoRunner_setFeatures_error___block_invoke(uint64_t a1, void *
 
   else
   {
-    v28 = a3;
+    errorCopy = error;
     v7 = objc_opt_new();
-    v31 = [(NSMutableData *)self->_outputBuffers mutableBytes];
+    mutableBytes = [(NSMutableData *)self->_outputBuffers mutableBytes];
     if ([(NSArray *)self->_outputNames count])
     {
       v8 = 0;
       v29 = v7;
-      v30 = self;
+      selfCopy = self;
       while (1)
       {
-        v9 = &v31[168 * v8];
+        v9 = &mutableBytes[168 * v8];
         rank = espresso_buffer_get_rank();
         if (rank >= 6)
         {
@@ -642,12 +642,12 @@ void __38__VIEspressoRunner_setFeatures_error___block_invoke(uint64_t a1, void *
           while (*(v9 + 19) > v22);
         }
 
-        self = v30;
-        v25 = [(NSArray *)v30->_outputNames objectAtIndexedSubscript:v8];
+        self = selfCopy;
+        v25 = [(NSArray *)selfCopy->_outputNames objectAtIndexedSubscript:v8];
         v7 = v29;
         [v29 setObject:v20 forKey:v25];
 
-        if ([(NSArray *)v30->_outputNames count]<= ++v8)
+        if ([(NSArray *)selfCopy->_outputNames count]<= ++v8)
         {
           goto LABEL_15;
         }
@@ -666,10 +666,10 @@ void __38__VIEspressoRunner_setFeatures_error___block_invoke(uint64_t a1, void *
         }
       }
 
-      if (v28)
+      if (errorCopy)
       {
         [(VIEspressoRunner *)self classificationErrorWithDescription:@"outputs up to only rank 5 are supported"];
-        *v28 = v6 = 0;
+        *errorCopy = v6 = 0;
       }
 
       else

@@ -5,108 +5,108 @@
 - (UIStackView)metaScheduleStackView;
 - (UIStackView)scheduleStackView;
 - (_TtC27HealthMedicationsExperience14MedicationView)pillImageView;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)setItemsStackView:(id)a3;
-- (void)setMedicationDetailStackView:(id)a3;
-- (void)setMetaScheduleStackView:(id)a3;
-- (void)setPillImageView:(id)a3;
-- (void)setPrimaryLabel:(id)a3;
-- (void)setScheduleStackView:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)setItemsStackView:(id)view;
+- (void)setMedicationDetailStackView:(id)view;
+- (void)setMetaScheduleStackView:(id)view;
+- (void)setPillImageView:(id)view;
+- (void)setPrimaryLabel:(id)label;
+- (void)setScheduleStackView:(id)view;
 @end
 
 @implementation MedicationListItemCell
 
 - (UILabel)primaryLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22821B974();
 
   return v3;
 }
 
-- (void)setPrimaryLabel:(id)a3
+- (void)setPrimaryLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___primaryLabel);
-  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___primaryLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___primaryLabel) = label;
+  labelCopy = label;
 }
 
 - (_TtC27HealthMedicationsExperience14MedicationView)pillImageView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22821BD64();
 
   return v3;
 }
 
-- (void)setPillImageView:(id)a3
+- (void)setPillImageView:(id)view
 {
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___pillImageView);
-  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___pillImageView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___pillImageView) = view;
+  viewCopy = view;
 }
 
 - (UIStackView)medicationDetailStackView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22821BEA4();
 
   return v3;
 }
 
-- (void)setMedicationDetailStackView:(id)a3
+- (void)setMedicationDetailStackView:(id)view
 {
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___medicationDetailStackView);
-  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___medicationDetailStackView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___medicationDetailStackView) = view;
+  viewCopy = view;
 }
 
 - (UIStackView)scheduleStackView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22821BF40();
 
   return v3;
 }
 
-- (void)setScheduleStackView:(id)a3
+- (void)setScheduleStackView:(id)view
 {
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___scheduleStackView);
-  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___scheduleStackView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___scheduleStackView) = view;
+  viewCopy = view;
 }
 
 - (UIStackView)metaScheduleStackView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22821BFDC();
 
   return v3;
 }
 
-- (void)setMetaScheduleStackView:(id)a3
+- (void)setMetaScheduleStackView:(id)view
 {
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___metaScheduleStackView);
-  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___metaScheduleStackView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___metaScheduleStackView) = view;
+  viewCopy = view;
 }
 
 - (UIStackView)itemsStackView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22821C144();
 
   return v3;
 }
 
-- (void)setItemsStackView:(id)a3
+- (void)setItemsStackView:(id)view
 {
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___itemsStackView);
-  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___itemsStackView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI22MedicationListItemCell____lazy_storage___itemsStackView) = view;
+  viewCopy = view;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_228391350();
   v5 = *(v4 - 8);
@@ -114,7 +114,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_228391340();
-  v9 = self;
+  selfCopy = self;
   sub_22821D4A0();
 
   (*(v5 + 8))(v8, v4);

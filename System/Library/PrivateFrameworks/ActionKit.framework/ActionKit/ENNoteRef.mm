@@ -1,13 +1,13 @@
 @interface ENNoteRef
-+ (id)noteRefFromData:(id)a3;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ENNoteRef)initWithCoder:(id)a3;
++ (id)noteRefFromData:(id)data;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (ENNoteRef)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)wfSerializedRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENNoteRef
@@ -16,8 +16,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"link.contentkit.ennoteref";
-  v2 = [(ENNoteRef *)self asData];
-  v7[0] = v2;
+  asData = [(ENNoteRef *)self asData];
+  v7[0] = asData;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -25,13 +25,13 @@
   return v3;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"link.contentkit.ennoteref"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKey:@"link.contentkit.ennoteref"];
   if (v4)
   {
-    v5 = [v3 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.ennoteref"];
+    v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.ennoteref"];
     v6 = [ENNoteRef noteRefFromData:v5];
   }
 
@@ -46,28 +46,28 @@
 - (NSString)description
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = [(ENNoteRef *)self type];
-  if (v4 > 2)
+  type = [(ENNoteRef *)self type];
+  if (type > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_278C19EB0[v4];
+    v5 = off_278C19EB0[type];
   }
 
   v6 = objc_opt_class();
-  v7 = [(ENNoteRef *)self guid];
-  [v3 appendFormat:@"<%@: %p; guid = %@; type = %@", v6, self, v7, v5];
+  guid = [(ENNoteRef *)self guid];
+  [v3 appendFormat:@"<%@: %p; guid = %@; type = %@", v6, self, guid, v5];
 
-  v8 = [(ENNoteRef *)self linkedNotebook];
+  linkedNotebook = [(ENNoteRef *)self linkedNotebook];
 
-  if (v8)
+  if (linkedNotebook)
   {
-    v9 = [(ENNoteRef *)self linkedNotebook];
-    v10 = [v9 shardId];
-    [v3 appendFormat:@"; link shard = %@", v10];
+    linkedNotebook2 = [(ENNoteRef *)self linkedNotebook];
+    shardId = [linkedNotebook2 shardId];
+    [v3 appendFormat:@"; link shard = %@", shardId];
   }
 
   [v3 appendString:@">"];
@@ -77,35 +77,35 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ENNoteRef *)self type];
-  v4 = [(ENNoteRef *)self guid];
-  v5 = [v4 hash] - v3 + 32 * v3;
+  type = [(ENNoteRef *)self type];
+  guid = [(ENNoteRef *)self guid];
+  v5 = [guid hash] - type + 32 * type;
 
-  v6 = [(ENNoteRef *)self linkedNotebook];
-  v7 = [v6 hash] - v5 + 32 * v5;
+  linkedNotebook = [(ENNoteRef *)self linkedNotebook];
+  v7 = [linkedNotebook hash] - v5 + 32 * v5;
 
   return v7 + 29791;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(ENNoteRef *)v7 type];
-        if (v8 != [(ENNoteRef *)self type])
+        type = [(ENNoteRef *)v7 type];
+        if (type != [(ENNoteRef *)self type])
         {
           v12 = 0;
 LABEL_18:
@@ -113,13 +113,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v9 = [(ENNoteRef *)self guid];
-        v10 = [(ENNoteRef *)v7 guid];
-        if (v9 != v10)
+        guid = [(ENNoteRef *)self guid];
+        guid2 = [(ENNoteRef *)v7 guid];
+        if (guid != guid2)
         {
-          v11 = [(ENNoteRef *)v7 guid];
-          v3 = [(ENNoteRef *)self guid];
-          if (![v11 isEqualToString:v3])
+          guid3 = [(ENNoteRef *)v7 guid];
+          guid4 = [(ENNoteRef *)self guid];
+          if (![guid3 isEqualToString:guid4])
           {
             v12 = 0;
 LABEL_16:
@@ -128,13 +128,13 @@ LABEL_17:
             goto LABEL_18;
           }
 
-          v19 = v11;
+          v19 = guid3;
         }
 
-        v13 = [(ENNoteRef *)self linkedNotebook];
-        v14 = [(ENNoteRef *)v7 linkedNotebook];
-        v15 = v14;
-        if (v13 == v14)
+        linkedNotebook = [(ENNoteRef *)self linkedNotebook];
+        linkedNotebook2 = [(ENNoteRef *)v7 linkedNotebook];
+        v15 = linkedNotebook2;
+        if (linkedNotebook == linkedNotebook2)
         {
 
           v12 = 1;
@@ -142,13 +142,13 @@ LABEL_17:
 
         else
         {
-          v16 = [(ENNoteRef *)v7 linkedNotebook];
-          v17 = [(ENNoteRef *)self linkedNotebook];
-          v12 = [v16 isEqual:v17];
+          linkedNotebook3 = [(ENNoteRef *)v7 linkedNotebook];
+          linkedNotebook4 = [(ENNoteRef *)self linkedNotebook];
+          v12 = [linkedNotebook3 isEqual:linkedNotebook4];
         }
 
-        v11 = v19;
-        if (v9 == v10)
+        guid3 = v19;
+        if (guid == guid2)
         {
           goto LABEL_17;
         }
@@ -165,55 +165,55 @@ LABEL_19:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ENNoteRef);
   [(ENNoteRef *)v4 setType:[(ENNoteRef *)self type]];
-  v5 = [(ENNoteRef *)self guid];
-  [(ENNoteRef *)v4 setGuid:v5];
+  guid = [(ENNoteRef *)self guid];
+  [(ENNoteRef *)v4 setGuid:guid];
 
-  v6 = [(ENNoteRef *)self linkedNotebook];
-  [(ENNoteRef *)v4 setLinkedNotebook:v6];
+  linkedNotebook = [(ENNoteRef *)self linkedNotebook];
+  [(ENNoteRef *)v4 setLinkedNotebook:linkedNotebook];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[ENNoteRef type](self forKey:{"type"), @"type"}];
-  v5 = [(ENNoteRef *)self guid];
-  [v4 encodeObject:v5 forKey:@"guid"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[ENNoteRef type](self forKey:{"type"), @"type"}];
+  guid = [(ENNoteRef *)self guid];
+  [coderCopy encodeObject:guid forKey:@"guid"];
 
-  v6 = [(ENNoteRef *)self linkedNotebook];
-  [v4 encodeObject:v6 forKey:@"linkedNotebook"];
+  linkedNotebook = [(ENNoteRef *)self linkedNotebook];
+  [coderCopy encodeObject:linkedNotebook forKey:@"linkedNotebook"];
 }
 
-- (ENNoteRef)initWithCoder:(id)a3
+- (ENNoteRef)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ENNoteRef;
   v5 = [(ENNoteRef *)&v9 init];
   if (v5)
   {
-    -[ENNoteRef setType:](v5, "setType:", [v4 decodeInt32ForKey:@"type"]);
-    v6 = [v4 decodeObjectForKey:@"guid"];
+    -[ENNoteRef setType:](v5, "setType:", [coderCopy decodeInt32ForKey:@"type"]);
+    v6 = [coderCopy decodeObjectForKey:@"guid"];
     [(ENNoteRef *)v5 setGuid:v6];
 
-    v7 = [v4 decodeObjectForKey:@"linkedNotebook"];
+    v7 = [coderCopy decodeObjectForKey:@"linkedNotebook"];
     [(ENNoteRef *)v5 setLinkedNotebook:v7];
   }
 
   return v5;
 }
 
-+ (id)noteRefFromData:(id)a3
++ (id)noteRefFromData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v4 = [MEMORY[0x277CCAAC8] unarchiveObjectWithData:v3];
+    v4 = [MEMORY[0x277CCAAC8] unarchiveObjectWithData:dataCopy];
     if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v4 = v4;

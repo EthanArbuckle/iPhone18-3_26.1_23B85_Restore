@@ -1,6 +1,6 @@
 @interface SiriGKMapView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SiriGKMapView)initWithCoordinate:(CLLocationCoordinate2D)a3 mapSpan:(double)a4 mapHeight:(double)a5 calloutTitle:(id)a6;
+- (SiriGKMapView)initWithCoordinate:(CLLocationCoordinate2D)coordinate mapSpan:(double)span mapHeight:(double)height calloutTitle:(id)title;
 - (void)layoutSubviews;
 - (void)openInMaps;
 - (void)setupMap;
@@ -8,28 +8,28 @@
 
 @implementation SiriGKMapView
 
-- (SiriGKMapView)initWithCoordinate:(CLLocationCoordinate2D)a3 mapSpan:(double)a4 mapHeight:(double)a5 calloutTitle:(id)a6
+- (SiriGKMapView)initWithCoordinate:(CLLocationCoordinate2D)coordinate mapSpan:(double)span mapHeight:(double)height calloutTitle:(id)title
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v12 = a6;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  titleCopy = title;
   v21.receiver = self;
   v21.super_class = SiriGKMapView;
   v13 = [(SiriGKMapView *)&v21 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_calloutTitle, a6);
+    objc_storeStrong(&v13->_calloutTitle, title);
     v14->_coordinate.latitude = latitude;
     v14->_coordinate.longitude = longitude;
-    v15 = 175.0;
-    if (a5 > 0.0)
+    heightCopy = 175.0;
+    if (height > 0.0)
     {
-      v15 = a5;
+      heightCopy = height;
     }
 
-    v14->_mapHeight = v15;
-    v16 = a4 * 3000.0 * MKMapPointsPerMeterAtLatitude(latitude);
+    v14->_mapHeight = heightCopy;
+    v16 = span * 3000.0 * MKMapPointsPerMeterAtLatitude(latitude);
     v22.latitude = latitude;
     v22.longitude = longitude;
     v17 = MKMapPointForCoordinate(v22);

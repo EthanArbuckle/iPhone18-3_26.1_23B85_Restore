@@ -6,29 +6,29 @@
 
 - (void)selectedNavigationController
 {
-  v2 = [a1 selectedViewController];
+  selectedViewController = [self selectedViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v2 = [v2 navigationController];
+    selectedViewController = [selectedViewController navigationController];
   }
 
-  if (v2)
+  if (selectedViewController)
   {
-    v3 = [a1 moreNavigationController];
-    if (v3)
+    moreNavigationController = [self moreNavigationController];
+    if (moreNavigationController)
     {
-      v4 = v3;
-      v5 = [a1 allViewControllers];
-      v6 = [v5 indexOfObjectIdenticalTo:v2];
-      if (v6 >= [v5 indexOfObjectIdenticalTo:v4])
+      v4 = moreNavigationController;
+      allViewControllers = [self allViewControllers];
+      v6 = [allViewControllers indexOfObjectIdenticalTo:selectedViewController];
+      if (v6 >= [allViewControllers indexOfObjectIdenticalTo:v4])
       {
         return v4;
       }
     }
   }
 
-  return v2;
+  return selectedViewController;
 }
 
 @end

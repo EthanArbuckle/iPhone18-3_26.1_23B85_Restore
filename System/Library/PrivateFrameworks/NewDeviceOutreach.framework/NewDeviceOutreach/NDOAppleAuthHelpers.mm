@@ -7,20 +7,20 @@
 
 + (BOOL)isSignedIntoAppleAccount
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = v3 != 0;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  v4 = aa_primaryAppleAccount != 0;
 
   return v4;
 }
 
 + (id)primaryAccountAltDSID
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 aa_altDSID];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
 
-  return v4;
+  return aa_altDSID;
 }
 
 @end

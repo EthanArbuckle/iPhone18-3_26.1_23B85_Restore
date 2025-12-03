@@ -1,30 +1,30 @@
 @interface ShortcutsCloudKitAccountNotifier
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation ShortcutsCloudKitAccountNotifier
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
   v29 = *MEMORY[0x29EDCA608];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  v13 = (v9 | v11) != 0;
+  accountCopy = account;
+  storeCopy = store;
+  oldAccountCopy = oldAccount;
+  v12 = oldAccountCopy;
+  v13 = (accountCopy | oldAccountCopy) != 0;
   v14 = MEMORY[0x29EDB81F8];
-  if (v9)
+  if (accountCopy)
   {
-    v15 = [v9 accountType];
-    v16 = [v15 identifier];
-    v17 = [v16 isEqualToString:*v14];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
+    v17 = [identifier isEqualToString:*v14];
 
     if (v12)
     {
 LABEL_3:
-      v18 = [v12 accountType];
-      v19 = [v18 identifier];
-      v20 = [v19 isEqualToString:*v14];
+      accountType2 = [v12 accountType];
+      identifier2 = [accountType2 identifier];
+      v20 = [identifier2 isEqualToString:*v14];
 
       goto LABEL_6;
     }
@@ -33,7 +33,7 @@ LABEL_3:
   else
   {
     v17 = 0;
-    if (v11)
+    if (oldAccountCopy)
     {
       goto LABEL_3;
     }
@@ -43,9 +43,9 @@ LABEL_3:
 LABEL_6:
   if ((v13 & (v17 | v20)) == 1)
   {
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         v25 = getWFVoiceShortcutClientLogObject();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -60,7 +60,7 @@ LABEL_6:
 
       else
       {
-        if (a4 != 2)
+        if (type != 2)
         {
           goto LABEL_28;
         }
@@ -80,7 +80,7 @@ LABEL_6:
       goto LABEL_28;
     }
 
-    switch(a4)
+    switch(type)
     {
       case 3:
         v21 = getWFVoiceShortcutClientLogObject();

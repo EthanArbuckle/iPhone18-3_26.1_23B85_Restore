@@ -1,12 +1,12 @@
 @interface NSSimpleAttributeDictionaryEnumerator
-- (NSSimpleAttributeDictionaryEnumerator)initWithAttributeDictionary:(id)a3;
+- (NSSimpleAttributeDictionaryEnumerator)initWithAttributeDictionary:(id)dictionary;
 - (id)nextObject;
 - (void)dealloc;
 @end
 
 @implementation NSSimpleAttributeDictionaryEnumerator
 
-- (NSSimpleAttributeDictionaryEnumerator)initWithAttributeDictionary:(id)a3
+- (NSSimpleAttributeDictionaryEnumerator)initWithAttributeDictionary:(id)dictionary
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -14,7 +14,7 @@
   v4 = [(NSSimpleAttributeDictionaryEnumerator *)&v6 init];
   if (v4)
   {
-    v4->dictionary = a3;
+    v4->dictionary = dictionary;
     v4->nextElement = 0;
   }
 

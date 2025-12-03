@@ -1,35 +1,35 @@
 @interface RESectionPath
-+ (RESectionPath)sectionPathWithSectionName:(id)a3 element:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (RESectionPath)sectionPathWithSectionName:(id)name element:(unint64_t)element;
+- (BOOL)isEqual:(id)equal;
 - (NSString)sectionName;
-- (RESectionPath)initWithSectionName:(id)a3 element:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RESectionPath)initWithSectionName:(id)name element:(unint64_t)element;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation RESectionPath
 
-+ (RESectionPath)sectionPathWithSectionName:(id)a3 element:(unint64_t)a4
++ (RESectionPath)sectionPathWithSectionName:(id)name element:(unint64_t)element
 {
-  v5 = a3;
-  v6 = [[RESectionPath alloc] initWithSectionName:v5 element:a4];
+  nameCopy = name;
+  v6 = [[RESectionPath alloc] initWithSectionName:nameCopy element:element];
 
   return v6;
 }
 
-- (RESectionPath)initWithSectionName:(id)a3 element:(unint64_t)a4
+- (RESectionPath)initWithSectionName:(id)name element:(unint64_t)element
 {
-  v6 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = RESectionPath;
   v7 = [(RESectionPath *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     sectionName = v7->_sectionName;
     v7->_sectionName = v8;
 
-    v7->_element = a4;
+    v7->_element = element;
   }
 
   return v7;
@@ -42,10 +42,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -55,7 +55,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_element == v5->_element)
       {
@@ -101,9 +101,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [RESectionPath allocWithZone:a3];
+  v4 = [RESectionPath allocWithZone:zone];
   sectionName = self->_sectionName;
   element = self->_element;
 

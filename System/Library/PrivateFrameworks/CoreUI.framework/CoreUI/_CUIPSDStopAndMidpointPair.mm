@@ -1,22 +1,22 @@
 @interface _CUIPSDStopAndMidpointPair
-- (_CUIPSDStopAndMidpointPair)initWithStop:(id)a3 midpoint:(id)a4;
-- (int64_t)compare:(id)a3;
+- (_CUIPSDStopAndMidpointPair)initWithStop:(id)stop midpoint:(id)midpoint;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
 @end
 
 @implementation _CUIPSDStopAndMidpointPair
 
-- (_CUIPSDStopAndMidpointPair)initWithStop:(id)a3 midpoint:(id)a4
+- (_CUIPSDStopAndMidpointPair)initWithStop:(id)stop midpoint:(id)midpoint
 {
   v9.receiver = self;
   v9.super_class = _CUIPSDStopAndMidpointPair;
   v6 = [(_CUIPSDStopAndMidpointPair *)&v9 init];
   if (v6)
   {
-    v6->stop = a3;
-    if (a4)
+    v6->stop = stop;
+    if (midpoint)
     {
-      [a4 doubleValue];
+      [midpoint doubleValue];
     }
 
     else
@@ -37,11 +37,11 @@
   [(_CUIPSDStopAndMidpointPair *)&v3 dealloc];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   [self->stop location];
   v5 = v4;
-  [*(a3 + 1) location];
+  [*(compare + 1) location];
   if (v5 < v6)
   {
     return -1;

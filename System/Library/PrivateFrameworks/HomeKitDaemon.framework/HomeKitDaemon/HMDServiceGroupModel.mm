@@ -1,7 +1,7 @@
 @interface HMDServiceGroupModel
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)dependentUUIDs;
 @end
 
@@ -11,23 +11,23 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(HMDServiceGroupModel *)self services];
-  v5 = [v3 setWithCapacity:{objc_msgSend(v4, "count") + 1}];
+  services = [(HMDServiceGroupModel *)self services];
+  v5 = [v3 setWithCapacity:{objc_msgSend(services, "count") + 1}];
 
-  v6 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v6)
+  if (parentUUID)
   {
-    v7 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v5 addObject:v7];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v5 addObject:parentUUID2];
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(HMDServiceGroupModel *)self services];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  services2 = [(HMDServiceGroupModel *)self services];
+  v9 = [services2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -38,14 +38,14 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(services2);
         }
 
         v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v16 + 1) + 8 * i)];
         [v5 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [services2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -84,17 +84,17 @@ void __34__HMDServiceGroupModel_properties__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"services_"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"services_"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"services"])
     {
-      v11 = [(HMDServiceGroupModel *)self services];
-      v12 = [HMDBackingStore cdlsFetchManagedObjectsWithUUIDStrings:v11 ofManagedObjectType:objc_opt_class()];
+      services = [(HMDServiceGroupModel *)self services];
+      v12 = [HMDBackingStore cdlsFetchManagedObjectsWithUUIDStrings:services ofManagedObjectType:objc_opt_class()];
     }
 
     else
@@ -107,29 +107,29 @@ void __34__HMDServiceGroupModel_properties__block_invoke()
   {
     v14.receiver = self;
     v14.super_class = HMDServiceGroupModel;
-    v12 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v12 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   return v12;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 isEqualToString:@"services"])
+  fieldCopy = field;
+  infoCopy = info;
+  objectCopy = object;
+  if ([fieldCopy isEqualToString:@"services"])
   {
-    v11 = [v10 services];
+    services = [objectCopy services];
 
-    v12 = [HMDBackingStore cdlsModelIDStringsForManagedObjects:v11];
+    v12 = [HMDBackingStore cdlsModelIDStringsForManagedObjects:services];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = HMDServiceGroupModel;
-    v12 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:v10 modelObjectField:v8 modelFieldInfo:v9];
+    v12 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
   return v12;

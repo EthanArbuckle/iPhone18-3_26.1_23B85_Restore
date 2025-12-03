@@ -1,17 +1,17 @@
 @interface NDOAgentSwiftHelpers
-+ (void)getAmsPropertiesFor:(id)a3 completion:(id)a4;
++ (void)getAmsPropertiesFor:(id)for completion:(id)completion;
 - (_TtC8ndoagent20NDOAgentSwiftHelpers)init;
 @end
 
 @implementation NDOAgentSwiftHelpers
 
-+ (void)getAmsPropertiesFor:(id)a3 completion:(id)a4
++ (void)getAmsPropertiesFor:(id)for completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v5);
-  v7 = a3;
-  sub_100034440(v7, ObjCClassMetadata, v5);
+  forCopy = for;
+  sub_100034440(forCopy, ObjCClassMetadata, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

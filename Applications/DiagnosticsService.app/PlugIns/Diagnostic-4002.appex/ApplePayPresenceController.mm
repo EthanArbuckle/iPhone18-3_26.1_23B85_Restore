@@ -1,7 +1,7 @@
 @interface ApplePayPresenceController
 - (BOOL)isInIORegistry;
-- (BOOL)pingNearField:(id *)a3;
-- (BOOL)pingiPadNearField:(id *)a3;
+- (BOOL)pingNearField:(id *)field;
+- (BOOL)pingiPadNearField:(id *)field;
 - (id)checkPresence;
 - (void)start;
 - (void)teardown;
@@ -39,9 +39,9 @@
 
     if (self->_nearField)
     {
-      v8 = [(ApplePayPresenceController *)self checkPresence];
-      v9 = [(ApplePayPresenceController *)self result];
-      [v9 setStatusCode:v8];
+      checkPresence = [(ApplePayPresenceController *)self checkPresence];
+      result = [(ApplePayPresenceController *)self result];
+      [result setStatusCode:checkPresence];
     }
 
     else
@@ -53,8 +53,8 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "NearField.fwk is missing, assuming Apple Pay is not present.", v11, 2u);
       }
 
-      v8 = [(ApplePayPresenceController *)self result];
-      [v8 setStatusCode:&off_1000083F8];
+      checkPresence = [(ApplePayPresenceController *)self result];
+      [checkPresence setStatusCode:&off_1000083F8];
     }
   }
 
@@ -72,34 +72,34 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "End of Apple Pay presence test with overridden user NFC enablement. Ensuring original NFC enabled state is restored", v5, 2u);
     }
 
-    v4 = [(ApplePayPresenceController *)self nearField];
-    [v4 restoreNfcEnabledState];
+    nearField = [(ApplePayPresenceController *)self nearField];
+    [nearField restoreNfcEnabledState];
   }
 }
 
-- (BOOL)pingNearField:(id *)a3
+- (BOOL)pingNearField:(id *)field
 {
-  v4 = [(ApplePayPresenceController *)self nearField];
-  v5 = [v4 startCardEmulationWithTimeout:5.0];
+  nearField = [(ApplePayPresenceController *)self nearField];
+  v5 = [nearField startCardEmulationWithTimeout:5.0];
 
   if (v5)
   {
-    v6 = [(ApplePayPresenceController *)self nearField];
-    [v6 stopCardEmulation:5.0];
+    nearField2 = [(ApplePayPresenceController *)self nearField];
+    [nearField2 stopCardEmulation:5.0];
   }
 
   return v5;
 }
 
-- (BOOL)pingiPadNearField:(id *)a3
+- (BOOL)pingiPadNearField:(id *)field
 {
-  v4 = [(ApplePayPresenceController *)self nearField];
-  v5 = [v4 serialNumber];
+  nearField = [(ApplePayPresenceController *)self nearField];
+  serialNumber = [nearField serialNumber];
 
-  valid = isValidSerialNumber(v5);
+  valid = isValidSerialNumber(serialNumber);
   if (!valid)
   {
-    [DAError setError:a3 withCode:1 format:@"Server registration info missing seId"];
+    [DAError setError:field withCode:1 format:@"Server registration info missing seId"];
   }
 
   return valid;
@@ -125,16 +125,16 @@
     v3 = MGGetBoolAnswer();
     if ([(ApplePayPresenceController *)self shouldOverrideUserNFC])
     {
-      v4 = [(ApplePayPresenceController *)self nearField];
-      v5 = [v4 overrideNfcEnabledState];
+      nearField = [(ApplePayPresenceController *)self nearField];
+      overrideNfcEnabledState = [nearField overrideNfcEnabledState];
 
-      if (!v5)
+      if (!overrideNfcEnabledState)
       {
-        v10 = [(ApplePayPresenceController *)self nearField];
-        v11 = [v10 isNfcDisabledByProfile];
+        nearField2 = [(ApplePayPresenceController *)self nearField];
+        isNfcDisabledByProfile = [nearField2 isNfcDisabledByProfile];
 
         v7 = 0;
-        if (v11)
+        if (isNfcDisabledByProfile)
         {
           v8 = &off_100008440;
         }

@@ -1,21 +1,21 @@
 @interface SKUIProductPageFeaturesView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIProductPageFeaturesView)initWithFrame:(CGRect)a3;
-- (id)_gameCenterStringWithFeatures:(unint64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIProductPageFeaturesView)initWithFrame:(CGRect)frame;
+- (id)_gameCenterStringWithFeatures:(unint64_t)features;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFeatures:(int64_t)a3 gameCenterFeatures:(unint64_t)a4;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setFeatures:(int64_t)features gameCenterFeatures:(unint64_t)centerFeatures;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIProductPageFeaturesView
 
-- (SKUIProductPageFeaturesView)initWithFrame:(CGRect)a3
+- (SKUIProductPageFeaturesView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageFeaturesView initWithFrame:];
@@ -23,18 +23,18 @@
 
   v15.receiver = self;
   v15.super_class = SKUIProductPageFeaturesView;
-  v8 = [(SKUIProductPageFeaturesView *)&v15 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIProductPageFeaturesView *)&v15 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D75D18]);
-    bottomBorderView = v8->_bottomBorderView;
-    v8->_bottomBorderView = v9;
+    bottomBorderView = height->_bottomBorderView;
+    height->_bottomBorderView = v9;
 
-    v11 = v8->_bottomBorderView;
-    v12 = [(SKUIColorScheme *)v8->_colorScheme primaryTextColor];
-    if (v12)
+    v11 = height->_bottomBorderView;
+    primaryTextColor = [(SKUIColorScheme *)height->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UIView *)v11 setBackgroundColor:v12];
+      [(UIView *)v11 setBackgroundColor:primaryTextColor];
     }
 
     else
@@ -43,21 +43,21 @@
       [(UIView *)v11 setBackgroundColor:v13];
     }
 
-    [(SKUIProductPageFeaturesView *)v8 addSubview:v8->_bottomBorderView];
+    [(SKUIProductPageFeaturesView *)height addSubview:height->_bottomBorderView];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setFeatures:(int64_t)a3 gameCenterFeatures:(unint64_t)a4
+- (void)setFeatures:(int64_t)features gameCenterFeatures:(unint64_t)centerFeatures
 {
-  gameCenterFeatures = a4;
+  gameCenterFeatures = centerFeatures;
   v36[16] = *MEMORY[0x277D85DE8];
-  if (self->_features != a3 || self->_gameCenterFeatures != a4)
+  if (self->_features != features || self->_gameCenterFeatures != centerFeatures)
   {
     [(NSMutableArray *)self->_featureViews makeObjectsPerformSelector:sel_removeFromSuperview];
     [(NSMutableArray *)self->_featureViews removeAllObjects];
-    self->_features = a3;
+    self->_features = features;
     self->_gameCenterFeatures = gameCenterFeatures;
     if (!self->_featureViews)
     {
@@ -182,8 +182,8 @@
       {
         v32 = objc_alloc_init(SKUIProductPageFeatureView);
         [(SKUIProductPageFeatureView *)v32 setColorScheme:self->_colorScheme];
-        v33 = [(SKUIProductPageFeaturesView *)self backgroundColor];
-        [(SKUIProductPageFeatureView *)v32 setBackgroundColor:v33];
+        backgroundColor = [(SKUIProductPageFeaturesView *)self backgroundColor];
+        [(SKUIProductPageFeatureView *)v32 setBackgroundColor:backgroundColor];
 
         v34 = [MEMORY[0x277D755B8] imageNamed:v36[i + 1] inBundle:v30];
         [(SKUIProductPageFeatureView *)v32 setIcon:v34];
@@ -199,13 +199,13 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v17 = a3;
-  v4 = [(SKUIProductPageFeaturesView *)self title];
-  if (v4 != v17 && ([v4 isEqualToString:v17] & 1) == 0)
+  titleCopy = title;
+  title = [(SKUIProductPageFeaturesView *)self title];
+  if (title != titleCopy && ([title isEqualToString:titleCopy] & 1) == 0)
   {
-    v5 = [v17 length];
+    v5 = [titleCopy length];
     titleLabel = self->_titleLabel;
     if (v5)
     {
@@ -216,31 +216,31 @@
         self->_titleLabel = v7;
 
         v9 = self->_titleLabel;
-        v10 = [(SKUIProductPageFeaturesView *)self backgroundColor];
-        [(UILabel *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SKUIProductPageFeaturesView *)self backgroundColor];
+        [(UILabel *)v9 setBackgroundColor:backgroundColor];
 
         v11 = self->_titleLabel;
         v12 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
         [(UILabel *)v11 setFont:v12];
 
         v13 = self->_titleLabel;
-        v14 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v14)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v13 setTextColor:v14];
+          [(UILabel *)v13 setTextColor:secondaryTextColor];
         }
 
         else
         {
-          v16 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v13 setTextColor:v16];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v13 setTextColor:blackColor];
         }
 
         [(SKUIProductPageFeaturesView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
-      [(UILabel *)titleLabel setText:v17];
+      [(UILabel *)titleLabel setText:titleCopy];
       [(UILabel *)self->_titleLabel sizeToFit];
     }
 
@@ -319,18 +319,18 @@
   }
 
   bottomBorderView = self->_bottomBorderView;
-  v22 = [MEMORY[0x277D759A0] mainScreen];
-  [v22 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v24 = v27 - 1.0 / v23;
-  v25 = [MEMORY[0x277D759A0] mainScreen];
-  [v25 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   [(UIView *)bottomBorderView setFrame:15.0, v24, v4 + -15.0, 1.0 / v26];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -351,7 +351,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:v4];
+        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:colorCopy];
       }
 
       while (v7 != v9);
@@ -361,17 +361,17 @@
     while (v7);
   }
 
-  [(UILabel *)self->_titleLabel setBackgroundColor:v4];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v10.receiver = self;
   v10.super_class = SKUIProductPageFeaturesView;
-  [(SKUIProductPageFeaturesView *)&v10 setBackgroundColor:v4];
+  [(SKUIProductPageFeaturesView *)&v10 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(NSMutableArray *)self->_featureViews count:a3.width];
+  v5 = [(NSMutableArray *)self->_featureViews count:fits.width];
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
@@ -425,9 +425,9 @@
   return result;
 }
 
-- (id)_gameCenterStringWithFeatures:(unint64_t)a3
+- (id)_gameCenterStringWithFeatures:(unint64_t)features
 {
-  if (!a3)
+  if (!features)
   {
     clientContext = self->_clientContext;
     if (clientContext)
@@ -448,7 +448,7 @@
   v7 = 5;
   do
   {
-    if ((*(v6 - 1) & a3) != 0)
+    if ((*(v6 - 1) & features) != 0)
     {
       v8 = self->_clientContext;
       v9 = *v6;

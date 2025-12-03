@@ -1,17 +1,17 @@
 @interface SVXSpeechSynthesisConfigurationStateManager
-- (BOOL)updateConfiguration:(id)a3;
+- (BOOL)updateConfiguration:(id)configuration;
 @end
 
 @implementation SVXSpeechSynthesisConfigurationStateManager
 
-- (BOOL)updateConfiguration:(id)a3
+- (BOOL)updateConfiguration:(id)configuration
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SVXSpeechSynthesisConfiguration *)self->_currentConfiguration locale];
-  v6 = [v4 locale];
-  v7 = v6;
-  if (v6 && ([v6 isEqual:v5] & 1) == 0)
+  configurationCopy = configuration;
+  locale = [(SVXSpeechSynthesisConfiguration *)self->_currentConfiguration locale];
+  locale2 = [configurationCopy locale];
+  v7 = locale2;
+  if (locale2 && ([locale2 isEqual:locale] & 1) == 0)
   {
     v24 = *MEMORY[0x277CEF098];
     v8 = 1;
@@ -20,7 +20,7 @@
       *buf = 136315650;
       v30 = "[SVXSpeechSynthesisConfigurationStateManager updateConfiguration:]";
       v31 = 2112;
-      v32 = v5;
+      v32 = locale;
       v33 = 2112;
       v34 = v7;
       _os_log_impl(&dword_2695B9000, v24, OS_LOG_TYPE_INFO, "%s locale changed from %@ to %@.", buf, 0x20u);
@@ -32,10 +32,10 @@
     v8 = 0;
   }
 
-  v9 = [(SVXSpeechSynthesisConfiguration *)self->_currentConfiguration outputVoiceInfo];
-  v10 = [v4 outputVoiceInfo];
-  v11 = v10;
-  if (v10 && ([v10 isEqual:v9] & 1) == 0)
+  outputVoiceInfo = [(SVXSpeechSynthesisConfiguration *)self->_currentConfiguration outputVoiceInfo];
+  outputVoiceInfo2 = [configurationCopy outputVoiceInfo];
+  v11 = outputVoiceInfo2;
+  if (outputVoiceInfo2 && ([outputVoiceInfo2 isEqual:outputVoiceInfo] & 1) == 0)
   {
     v25 = *MEMORY[0x277CEF098];
     v12 = 1;
@@ -44,7 +44,7 @@
       *buf = 136315650;
       v30 = "[SVXSpeechSynthesisConfigurationStateManager updateConfiguration:]";
       v31 = 2112;
-      v32 = v9;
+      v32 = outputVoiceInfo;
       v33 = 2112;
       v34 = v11;
       _os_log_impl(&dword_2695B9000, v25, OS_LOG_TYPE_INFO, "%s outputVoiceInfo changed from %@ to %@.", buf, 0x20u);
@@ -56,11 +56,11 @@
     v12 = 0;
   }
 
-  v13 = [(SVXSpeechSynthesisConfiguration *)self->_currentConfiguration audioSessionID];
-  v14 = [v4 audioSessionID];
-  if (!v14 || (v15 = v14, v14 == v13))
+  audioSessionID = [(SVXSpeechSynthesisConfiguration *)self->_currentConfiguration audioSessionID];
+  audioSessionID2 = [configurationCopy audioSessionID];
+  if (!audioSessionID2 || (v15 = audioSessionID2, audioSessionID2 == audioSessionID))
   {
-    v15 = v13;
+    v15 = audioSessionID;
     if ((v8 | v12) != 1)
     {
       v23 = 0;
@@ -70,7 +70,7 @@
 
   else
   {
-    v28 = v5;
+    v28 = locale;
     v16 = v8;
     v17 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -78,14 +78,14 @@
       *buf = 136315650;
       v30 = "[SVXSpeechSynthesisConfigurationStateManager updateConfiguration:]";
       v31 = 2048;
-      v32 = v13;
+      v32 = audioSessionID;
       v33 = 2048;
       v34 = v15;
       _os_log_impl(&dword_2695B9000, v17, OS_LOG_TYPE_INFO, "%s audioSessionID changed from %lu to %lu.", buf, 0x20u);
     }
 
     v8 = v16;
-    v5 = v28;
+    locale = v28;
   }
 
   if (v8)
@@ -95,7 +95,7 @@
 
   else
   {
-    v18 = v5;
+    v18 = locale;
   }
 
   v19 = [SVXSpeechSynthesisConfiguration alloc];
@@ -106,7 +106,7 @@
 
   else
   {
-    v20 = v9;
+    v20 = outputVoiceInfo;
   }
 
   v21 = [(SVXSpeechSynthesisConfiguration *)v19 initWithLocale:v18 outputVoiceInfo:v20 audioSessionID:v15];

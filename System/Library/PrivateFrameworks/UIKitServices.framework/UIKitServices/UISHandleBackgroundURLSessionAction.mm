@@ -1,34 +1,34 @@
 @interface UISHandleBackgroundURLSessionAction
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (NSString)sessionIdentifier;
-- (UISHandleBackgroundURLSessionAction)initWithSessionIdentifier:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UISHandleBackgroundURLSessionAction)initWithSessionIdentifier:(id)identifier timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UISHandleBackgroundURLSessionAction
 
-- (UISHandleBackgroundURLSessionAction)initWithSessionIdentifier:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6
+- (UISHandleBackgroundURLSessionAction)initWithSessionIdentifier:(id)identifier timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v10)
+  identifierCopy = identifier;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UISHandleBackgroundURLSessionAction.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"sessionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISHandleBackgroundURLSessionAction.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"sessionIdentifier"}];
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v14 = [v10 copy];
+  v14 = [identifierCopy copy];
   [v13 setObject:v14 forSetting:1];
 
-  if (v12)
+  if (handlerCopy)
   {
-    v15 = [MEMORY[0x1E698E5F8] responderWithHandler:v12];
+    v15 = [MEMORY[0x1E698E5F8] responderWithHandler:handlerCopy];
     v16 = v15;
     if (v15)
     {
-      [v15 setQueue:v11];
+      [v15 setQueue:queueCopy];
     }
   }
 
@@ -46,15 +46,15 @@
 
 - (NSString)sessionIdentifier
 {
-  v2 = [(UISHandleBackgroundURLSessionAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UISHandleBackgroundURLSessionAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"sessionIdentifier";
   }
@@ -65,7 +65,7 @@
   }
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = UISHandleBackgroundURLSessionAction;
@@ -76,7 +76,7 @@
 
   else
   {
-    return [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    return [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 }
 

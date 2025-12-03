@@ -1,30 +1,30 @@
 @interface LNTargetMetadataCondition
 + (LNTargetMetadataCondition)foregroundCondition;
-- (BOOL)isEqual:(id)a3;
-- (LNTargetMetadataCondition)initWithCoder:(id)a3;
-- (LNTargetMetadataCondition)initWithIdentifier:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNTargetMetadataCondition)initWithCoder:(id)coder;
+- (LNTargetMetadataCondition)initWithIdentifier:(int64_t)identifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNTargetMetadataCondition
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNTargetMetadataCondition *)self identifier];
-      v8 = v7 == [(LNTargetMetadataCondition *)v6 identifier];
+      identifier = [(LNTargetMetadataCondition *)self identifier];
+      v8 = identifier == [(LNTargetMetadataCondition *)v6 identifier];
     }
 
     else
@@ -47,20 +47,20 @@
   return v6;
 }
 
-- (LNTargetMetadataCondition)initWithCoder:(id)a3
+- (LNTargetMetadataCondition)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"identifier"];
+  v4 = [coder decodeIntegerForKey:@"identifier"];
 
   return [(LNTargetMetadataCondition *)self initWithIdentifier:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNTargetMetadataCondition identifier](self forKey:{"identifier"), @"identifier"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNTargetMetadataCondition identifier](self forKey:{"identifier"), @"identifier"}];
 }
 
-- (LNTargetMetadataCondition)initWithIdentifier:(int64_t)a3
+- (LNTargetMetadataCondition)initWithIdentifier:(int64_t)identifier
 {
   v8.receiver = self;
   v8.super_class = LNTargetMetadataCondition;
@@ -68,7 +68,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_identifier = a3;
+    v4->_identifier = identifier;
     v6 = v4;
   }
 

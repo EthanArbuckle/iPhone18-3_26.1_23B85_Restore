@@ -1,6 +1,6 @@
 @interface ADApplicationStateChangeEventListener
 - (ADApplicationStateChangeEventListener)init;
-- (void)applicationStateChanged:(id)a3;
+- (void)applicationStateChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -47,7 +47,7 @@
   [(ADApplicationStateChangeEventListener *)&v3 dealloc];
 }
 
-- (void)applicationStateChanged:(id)a3
+- (void)applicationStateChanged:(id)changed
 {
   v5 = mach_absolute_time();
   v6 = *&qword_4EA0;
@@ -61,48 +61,48 @@
     *&qword_4EA0 = v6;
   }
 
-  v9 = [a3 objectForKey:BKSApplicationStateProcessIDKey];
+  v9 = [changed objectForKey:BKSApplicationStateProcessIDKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 intValue];
+    intValue = [v9 intValue];
   }
 
   else
   {
-    v10 = 0xFFFFFFFFLL;
+    intValue = 0xFFFFFFFFLL;
   }
 
   v11 = BKSApplicationStateDisplayIDKey;
-  v12 = [a3 objectForKey:BKSApplicationStateDisplayIDKey];
+  v12 = [changed objectForKey:BKSApplicationStateDisplayIDKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v12 isEqualToString:@"com.apple.webapp"] && (v10 & 0x80000000) == 0)
+    if ([v12 isEqualToString:@"com.apple.webapp"] && (intValue & 0x80000000) == 0)
     {
-      v12 = [-[BKSApplicationStateMonitor applicationInfoForPID:](self->_appStateMonitor applicationInfoForPID:{v10), "objectForKeyedSubscript:", v11}];
+      v12 = [-[BKSApplicationStateMonitor applicationInfoForPID:](self->_appStateMonitor applicationInfoForPID:{intValue), "objectForKeyedSubscript:", v11}];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [a3 objectForKey:BKSApplicationStateKey];
+      v13 = [changed objectForKey:BKSApplicationStateKey];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v14 = v6 * v5;
-        v15 = [v13 intValue];
-        if (v15 == 32)
+        intValue2 = [v13 intValue];
+        if (intValue2 == 32)
         {
           v16 = 8;
         }
 
         else
         {
-          v16 = v15;
+          v16 = intValue2;
         }
 
-        [a3 objectForKey:BKSApplicationStateExtensionKey];
+        [changed objectForKey:BKSApplicationStateExtensionKey];
         session_queue = self->_session_queue;
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
@@ -112,7 +112,7 @@
         block[5] = v12;
         *&block[6] = v14;
         v19 = v16;
-        v20 = v10;
+        v20 = intValue;
         dispatch_async(session_queue, block);
       }
     }

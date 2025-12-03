@@ -1,26 +1,26 @@
 @interface HoldMusicAnsweringMachine
-- (void)answeringMachine:(id)a3 didFinishAnnouncement:(BOOL)a4 error:(id)a5;
-- (void)answeringMachine:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)answeringMachine:(id)a3 didStop:(BOOL)a4 messageRecordingURL:(id)a5 error:(id)a6;
-- (void)serverDidDisconnectForAnsweringMachine:(id)a3;
+- (void)answeringMachine:(id)machine didFinishAnnouncement:(BOOL)announcement error:(id)error;
+- (void)answeringMachine:(id)machine didStart:(BOOL)start error:(id)error;
+- (void)answeringMachine:(id)machine didStop:(BOOL)stop messageRecordingURL:(id)l error:(id)error;
+- (void)serverDidDisconnectForAnsweringMachine:(id)machine;
 @end
 
 @implementation HoldMusicAnsweringMachine
 
-- (void)serverDidDisconnectForAnsweringMachine:(id)a3
+- (void)serverDidDisconnectForAnsweringMachine:(id)machine
 {
-  v4 = a3;
-  v5 = self;
+  machineCopy = machine;
+  selfCopy = self;
   sub_10042F46C();
 }
 
-- (void)answeringMachine:(id)a3 didStop:(BOOL)a4 messageRecordingURL:(id)a5 error:(id)a6
+- (void)answeringMachine:(id)machine didStop:(BOOL)stop messageRecordingURL:(id)l error:(id)error
 {
   v10 = sub_10026D814(&unk_1006A52C0, &unk_10057D930);
   v11 = *(*(v10 - 8) + 64);
   __chkstk_darwin(v10 - 8, v12);
   v14 = &v20 - v13;
-  if (a5)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v15 = type metadata accessor for URL();
@@ -34,28 +34,28 @@
   }
 
   sub_10000AF74(v14, v16, 1, v15);
-  v17 = a3;
-  v18 = a6;
-  v19 = self;
+  machineCopy = machine;
+  errorCopy = error;
+  selfCopy = self;
   sub_10042F574();
 
   sub_100009A04(v14, &unk_1006A52C0, &unk_10057D930);
 }
 
-- (void)answeringMachine:(id)a3 didFinishAnnouncement:(BOOL)a4 error:(id)a5
+- (void)answeringMachine:(id)machine didFinishAnnouncement:(BOOL)announcement error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
+  machineCopy = machine;
+  selfCopy = self;
+  errorCopy = error;
   sub_10042F734();
 }
 
-- (void)answeringMachine:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)answeringMachine:(id)machine didStart:(BOOL)start error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_10042F868(v10, a4, a5);
+  machineCopy = machine;
+  selfCopy = self;
+  errorCopy = error;
+  sub_10042F868(errorCopy, start, error);
 }
 
 @end

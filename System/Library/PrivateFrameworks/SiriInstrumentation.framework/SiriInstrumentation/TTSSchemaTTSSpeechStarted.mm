@@ -1,43 +1,43 @@
 @interface TTSSchemaTTSSpeechStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTSSchemaTTSSpeechStarted)initWithDictionary:(id)a3;
-- (TTSSchemaTTSSpeechStarted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTSSchemaTTSSpeechStarted)initWithDictionary:(id)dictionary;
+- (TTSSchemaTTSSpeechStarted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAssetSelectionLatencyInSecond:(BOOL)a3;
-- (void)setHasAudioQueueLatencyInSecond:(BOOL)a3;
-- (void)setHasCustomerPerceivedLatencyInSecond:(BOOL)a3;
-- (void)setHasIsWarmStart:(BOOL)a3;
-- (void)setHasLlmStylePrompt:(BOOL)a3;
-- (void)setHasSynthesisEffect:(BOOL)a3;
-- (void)setHasSynthesisSource:(BOOL)a3;
-- (void)setHasThermalLevel:(BOOL)a3;
-- (void)setHasThermalState:(BOOL)a3;
-- (void)setHasVolume:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAssetSelectionLatencyInSecond:(BOOL)second;
+- (void)setHasAudioQueueLatencyInSecond:(BOOL)second;
+- (void)setHasCustomerPerceivedLatencyInSecond:(BOOL)second;
+- (void)setHasIsWarmStart:(BOOL)start;
+- (void)setHasLlmStylePrompt:(BOOL)prompt;
+- (void)setHasSynthesisEffect:(BOOL)effect;
+- (void)setHasSynthesisSource:(BOOL)source;
+- (void)setHasThermalLevel:(BOOL)level;
+- (void)setHasThermalState:(BOOL)state;
+- (void)setHasVolume:(BOOL)volume;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTSSchemaTTSSpeechStarted
 
-- (TTSSchemaTTSSpeechStarted)initWithDictionary:(id)a3
+- (TTSSchemaTTSSpeechStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = TTSSchemaTTSSpeechStarted;
   v5 = [(TTSSchemaTTSSpeechStarted *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"audioOutputRoute"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"audioOutputRoute"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSSpeechStarted setAudioOutputRoute:](v5, "setAudioOutputRoute:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"customerPerceivedLatencyInSecond"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"customerPerceivedLatencyInSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
 
     v27 = v7;
     v28 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"synthesisSource"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"synthesisSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
     }
 
     v26 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"voiceContext"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"voiceContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,14 +63,14 @@
       [(TTSSchemaTTSSpeechStarted *)v5 setVoiceContext:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"synthesisEffect"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"synthesisEffect"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSSpeechStarted setSynthesisEffect:](v5, "setSynthesisEffect:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"audioInterface"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"audioInterface"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,7 +78,7 @@
       [(TTSSchemaTTSSpeechStarted *)v5 setAudioInterface:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"volume"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"volume"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,14 +86,14 @@
       [(TTSSchemaTTSSpeechStarted *)v5 setVolume:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"thermalState", v14}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"thermalState", v14}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSSpeechStarted setThermalState:](v5, "setThermalState:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"assetSelectionLatencyInSecond"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"assetSelectionLatencyInSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,7 +102,7 @@
     }
 
     v25 = v9;
-    v17 = [v4 objectForKeyedSubscript:@"audioQueueLatencyInSecond"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"audioQueueLatencyInSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,21 +111,21 @@
     }
 
     v24 = v11;
-    v18 = [v4 objectForKeyedSubscript:@"isWarmStart"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isWarmStart"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSSpeechStarted setIsWarmStart:](v5, "setIsWarmStart:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"llmStylePrompt"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"llmStylePrompt"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSSpeechStarted setLlmStylePrompt:](v5, "setLlmStylePrompt:", [v19 intValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"thermalLevel"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"thermalLevel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,30 +138,30 @@
   return v5;
 }
 
-- (TTSSchemaTTSSpeechStarted)initWithJSON:(id)a3
+- (TTSSchemaTTSSpeechStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTSSchemaTTSSpeechStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTSSchemaTTSSpeechStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTSSchemaTTSSpeechStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -174,28 +174,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x40) != 0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(TTSSchemaTTSSpeechStarted *)self assetSelectionLatencyInSecond];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"assetSelectionLatencyInSecond"];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetSelectionLatencyInSecond"];
   }
 
   if (self->_audioInterface)
   {
-    v6 = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    audioInterface = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
+    dictionaryRepresentation = [audioInterface dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"audioInterface"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioInterface"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"audioInterface"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioInterface"];
     }
   }
 
@@ -213,7 +213,7 @@
       v11 = off_1E78E8100[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"audioOutputRoute"];
+    [dictionary setObject:v11 forKeyedSubscript:@"audioOutputRoute"];
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -235,7 +235,7 @@ LABEL_10:
   v12 = MEMORY[0x1E696AD98];
   [(TTSSchemaTTSSpeechStarted *)self audioQueueLatencyInSecond];
   v13 = [v12 numberWithFloat:?];
-  [v3 setObject:v13 forKeyedSubscript:@"audioQueueLatencyInSecond"];
+  [dictionary setObject:v13 forKeyedSubscript:@"audioQueueLatencyInSecond"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -253,7 +253,7 @@ LABEL_23:
   v14 = MEMORY[0x1E696AD98];
   [(TTSSchemaTTSSpeechStarted *)self customerPerceivedLatencyInSecond];
   v15 = [v14 numberWithFloat:?];
-  [v3 setObject:v15 forKeyedSubscript:@"customerPerceivedLatencyInSecond"];
+  [dictionary setObject:v15 forKeyedSubscript:@"customerPerceivedLatencyInSecond"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -269,7 +269,7 @@ LABEL_12:
 
 LABEL_24:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[TTSSchemaTTSSpeechStarted isWarmStart](self, "isWarmStart")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isWarmStart"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isWarmStart"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -295,7 +295,7 @@ LABEL_25:
     v18 = off_1E78E8140[v17];
   }
 
-  [v3 setObject:v18 forKeyedSubscript:@"llmStylePrompt"];
+  [dictionary setObject:v18 forKeyedSubscript:@"llmStylePrompt"];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -320,7 +320,7 @@ LABEL_29:
     v20 = off_1E78E8160[v19];
   }
 
-  [v3 setObject:v20 forKeyedSubscript:@"synthesisEffect"];
+  [dictionary setObject:v20 forKeyedSubscript:@"synthesisEffect"];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -345,7 +345,7 @@ LABEL_33:
     v22 = off_1E78E8178[v21];
   }
 
-  [v3 setObject:v22 forKeyedSubscript:@"synthesisSource"];
+  [dictionary setObject:v22 forKeyedSubscript:@"synthesisSource"];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -360,7 +360,7 @@ LABEL_16:
 
 LABEL_37:
   v23 = [MEMORY[0x1E696AD98] numberWithInt:{-[TTSSchemaTTSSpeechStarted thermalLevel](self, "thermalLevel")}];
-  [v3 setObject:v23 forKeyedSubscript:@"thermalLevel"];
+  [dictionary setObject:v23 forKeyedSubscript:@"thermalLevel"];
 
   if ((*&self->_has & 0x20) == 0)
   {
@@ -379,21 +379,21 @@ LABEL_38:
     v25 = off_1E78E81C0[v24];
   }
 
-  [v3 setObject:v25 forKeyedSubscript:@"thermalState"];
+  [dictionary setObject:v25 forKeyedSubscript:@"thermalState"];
 LABEL_42:
   if (self->_voiceContext)
   {
-    v26 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
-    v27 = [v26 dictionaryRepresentation];
-    if (v27)
+    voiceContext = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
+    dictionaryRepresentation2 = [voiceContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v27 forKeyedSubscript:@"voiceContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"voiceContext"];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v28 forKeyedSubscript:@"voiceContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"voiceContext"];
     }
   }
 
@@ -402,12 +402,12 @@ LABEL_42:
     v29 = MEMORY[0x1E696AD98];
     [(TTSSchemaTTSSpeechStarted *)self volume];
     v30 = [v29 numberWithFloat:?];
-    [v3 setObject:v30 forKeyedSubscript:@"volume"];
+    [dictionary setObject:v30 forKeyedSubscript:@"volume"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -654,16 +654,16 @@ LABEL_50:
   return v11 ^ v6 ^ v12 ^ v14 ^ v13 ^ v15 ^ v19 ^ v24 ^ v29 ^ v30 ^ v35 ^ v36 ^ v37;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   has = self->_has;
-  v6 = v4[38];
+  v6 = equalCopy[38];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -672,13 +672,13 @@ LABEL_50:
   if (*&has)
   {
     audioOutputRoute = self->_audioOutputRoute;
-    if (audioOutputRoute != [v4 audioOutputRoute])
+    if (audioOutputRoute != [equalCopy audioOutputRoute])
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -687,14 +687,14 @@ LABEL_50:
     if (v8)
     {
       customerPerceivedLatencyInSecond = self->_customerPerceivedLatencyInSecond;
-      [v4 customerPerceivedLatencyInSecond];
+      [equalCopy customerPerceivedLatencyInSecond];
       if (customerPerceivedLatencyInSecond != v10)
       {
         goto LABEL_26;
       }
 
       has = self->_has;
-      v6 = v4[38];
+      v6 = equalCopy[38];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -706,26 +706,26 @@ LABEL_50:
     if (v11)
     {
       synthesisSource = self->_synthesisSource;
-      if (synthesisSource != [v4 synthesisSource])
+      if (synthesisSource != [equalCopy synthesisSource])
       {
         goto LABEL_26;
       }
     }
 
-    v13 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
-    v14 = [v4 voiceContext];
-    if ((v13 != 0) == (v14 == 0))
+    voiceContext = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
+    voiceContext2 = [equalCopy voiceContext];
+    if ((voiceContext != 0) == (voiceContext2 == 0))
     {
       goto LABEL_25;
     }
 
-    v15 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
-    if (v15)
+    voiceContext3 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
+    if (voiceContext3)
     {
-      v16 = v15;
-      v17 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
-      v18 = [v4 voiceContext];
-      v19 = [v17 isEqual:v18];
+      v16 = voiceContext3;
+      voiceContext4 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
+      voiceContext5 = [equalCopy voiceContext];
+      v19 = [voiceContext4 isEqual:voiceContext5];
 
       if (!v19)
       {
@@ -738,7 +738,7 @@ LABEL_50:
     }
 
     v20 = (*&self->_has >> 3) & 1;
-    if (v20 != ((v4[38] >> 3) & 1))
+    if (v20 != ((equalCopy[38] >> 3) & 1))
     {
       goto LABEL_26;
     }
@@ -746,28 +746,28 @@ LABEL_50:
     if (v20)
     {
       synthesisEffect = self->_synthesisEffect;
-      if (synthesisEffect != [v4 synthesisEffect])
+      if (synthesisEffect != [equalCopy synthesisEffect])
       {
         goto LABEL_26;
       }
     }
 
-    v13 = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
-    v14 = [v4 audioInterface];
-    if ((v13 != 0) == (v14 == 0))
+    voiceContext = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
+    voiceContext2 = [equalCopy audioInterface];
+    if ((voiceContext != 0) == (voiceContext2 == 0))
     {
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    v22 = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
-    if (v22)
+    audioInterface = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
+    if (audioInterface)
     {
-      v23 = v22;
-      v24 = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
-      v25 = [v4 audioInterface];
-      v26 = [v24 isEqual:v25];
+      v23 = audioInterface;
+      audioInterface2 = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
+      audioInterface3 = [equalCopy audioInterface];
+      v26 = [audioInterface2 isEqual:audioInterface3];
 
       if (!v26)
       {
@@ -781,20 +781,20 @@ LABEL_25:
 
     v29 = self->_has;
     v30 = (*&v29 >> 4) & 1;
-    v31 = v4[38];
+    v31 = equalCopy[38];
     if (v30 == ((v31 >> 4) & 1))
     {
       if (v30)
       {
         volume = self->_volume;
-        [v4 volume];
+        [equalCopy volume];
         if (volume != v33)
         {
           goto LABEL_26;
         }
 
         v29 = self->_has;
-        v31 = v4[38];
+        v31 = equalCopy[38];
       }
 
       v34 = (*&v29 >> 5) & 1;
@@ -803,13 +803,13 @@ LABEL_25:
         if (v34)
         {
           thermalState = self->_thermalState;
-          if (thermalState != [v4 thermalState])
+          if (thermalState != [equalCopy thermalState])
           {
             goto LABEL_26;
           }
 
           v29 = self->_has;
-          v31 = v4[38];
+          v31 = equalCopy[38];
         }
 
         v36 = (*&v29 >> 6) & 1;
@@ -818,14 +818,14 @@ LABEL_25:
           if (v36)
           {
             assetSelectionLatencyInSecond = self->_assetSelectionLatencyInSecond;
-            [v4 assetSelectionLatencyInSecond];
+            [equalCopy assetSelectionLatencyInSecond];
             if (assetSelectionLatencyInSecond != v38)
             {
               goto LABEL_26;
             }
 
             v29 = self->_has;
-            v31 = v4[38];
+            v31 = equalCopy[38];
           }
 
           v39 = (*&v29 >> 7) & 1;
@@ -834,14 +834,14 @@ LABEL_25:
             if (v39)
             {
               audioQueueLatencyInSecond = self->_audioQueueLatencyInSecond;
-              [v4 audioQueueLatencyInSecond];
+              [equalCopy audioQueueLatencyInSecond];
               if (audioQueueLatencyInSecond != v41)
               {
                 goto LABEL_26;
               }
 
               v29 = self->_has;
-              v31 = v4[38];
+              v31 = equalCopy[38];
             }
 
             v42 = (*&v29 >> 8) & 1;
@@ -850,13 +850,13 @@ LABEL_25:
               if (v42)
               {
                 isWarmStart = self->_isWarmStart;
-                if (isWarmStart != [v4 isWarmStart])
+                if (isWarmStart != [equalCopy isWarmStart])
                 {
                   goto LABEL_26;
                 }
 
                 v29 = self->_has;
-                v31 = v4[38];
+                v31 = equalCopy[38];
               }
 
               v44 = (*&v29 >> 9) & 1;
@@ -865,19 +865,19 @@ LABEL_25:
                 if (v44)
                 {
                   llmStylePrompt = self->_llmStylePrompt;
-                  if (llmStylePrompt != [v4 llmStylePrompt])
+                  if (llmStylePrompt != [equalCopy llmStylePrompt])
                   {
                     goto LABEL_26;
                   }
 
                   v29 = self->_has;
-                  v31 = v4[38];
+                  v31 = equalCopy[38];
                 }
 
                 v46 = (*&v29 >> 10) & 1;
                 if (v46 == ((v31 >> 10) & 1))
                 {
-                  if (!v46 || (thermalLevel = self->_thermalLevel, thermalLevel == [v4 thermalLevel]))
+                  if (!v46 || (thermalLevel = self->_thermalLevel, thermalLevel == [equalCopy thermalLevel]))
                   {
                     v27 = 1;
                     goto LABEL_27;
@@ -898,9 +898,9 @@ LABEL_27:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -931,11 +931,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v5 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
+  voiceContext = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
 
-  if (v5)
+  if (voiceContext)
   {
-    v6 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
+    voiceContext2 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -944,11 +944,11 @@ LABEL_5:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
+  audioInterface = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
 
-  if (v7)
+  if (audioInterface)
   {
-    v8 = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
+    audioInterface2 = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1040,9 +1040,9 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)setHasThermalLevel:(BOOL)a3
+- (void)setHasThermalLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 1024;
   }
@@ -1055,9 +1055,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasLlmStylePrompt:(BOOL)a3
+- (void)setHasLlmStylePrompt:(BOOL)prompt
 {
-  if (a3)
+  if (prompt)
   {
     v3 = 512;
   }
@@ -1070,9 +1070,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsWarmStart:(BOOL)a3
+- (void)setHasIsWarmStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 256;
   }
@@ -1085,9 +1085,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasAudioQueueLatencyInSecond:(BOOL)a3
+- (void)setHasAudioQueueLatencyInSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 128;
   }
@@ -1100,9 +1100,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasAssetSelectionLatencyInSecond:(BOOL)a3
+- (void)setHasAssetSelectionLatencyInSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 64;
   }
@@ -1115,9 +1115,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasThermalState:(BOOL)a3
+- (void)setHasThermalState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -1130,9 +1130,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasVolume:(BOOL)a3
+- (void)setHasVolume:(BOOL)volume
 {
-  if (a3)
+  if (volume)
   {
     v3 = 16;
   }
@@ -1145,9 +1145,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSynthesisEffect:(BOOL)a3
+- (void)setHasSynthesisEffect:(BOOL)effect
 {
-  if (a3)
+  if (effect)
   {
     v3 = 8;
   }
@@ -1160,9 +1160,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSynthesisSource:(BOOL)a3
+- (void)setHasSynthesisSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }
@@ -1175,9 +1175,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasCustomerPerceivedLatencyInSecond:(BOOL)a3
+- (void)setHasCustomerPerceivedLatencyInSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 2;
   }
@@ -1190,26 +1190,26 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = TTSSchemaTTSSpeechStarted;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  voiceContext = [(TTSSchemaTTSSpeechStarted *)self voiceContext];
+  v7 = [voiceContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(TTSSchemaTTSSpeechStarted *)self deleteVoiceContext];
   }
 
-  v9 = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  audioInterface = [(TTSSchemaTTSSpeechStarted *)self audioInterface];
+  v10 = [audioInterface applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(TTSSchemaTTSSpeechStarted *)self deleteAudioInterface];
   }

@@ -1,24 +1,24 @@
 @interface LibraryService
 - (LibraryService)init;
-- (void)catalogRefreshedBundleIDs:(id)a3;
-- (void)catalogRegisteredApps:(id)a3;
-- (void)catalogUnregisteredBundleIDs:(id)a3;
-- (void)deviceUnpairedWithPairingID:(id)a3;
-- (void)executeQueryForUpdatesReloadingFromServer:(BOOL)a3 withReplyHandler:(id)a4;
-- (void)executeQueryWithPredicate:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5;
-- (void)executeQueryWithPredicate:(id)a3 onRemoteDevice:(id)a4 withReplyHandler:(id)a5;
-- (void)executeQueryWithPredicate:(id)a3 withReplyHandler:(id)a4;
-- (void)launchApp:(id)a3 extensionType:(int64_t)a4 withReplyHandler:(id)a5;
-- (void)launchApp:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5;
-- (void)launchApp:(id)a3 withReplyHandler:(id)a4;
-- (void)lookupBundleIDsForDeletableSystemAppsForWatchWithItemIDs:(id)a3 withReplyHandler:(id)a4;
-- (void)lookupBundleIDsForDeletableSystemAppsWithItemIDs:(id)a3 withReplyHandler:(id)a4;
-- (void)lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:(id)a3 withReplyHandler:(id)a4;
-- (void)lookupItemIDsForDeletableSystemAppsWithBundleIDs:(id)a3 withReplyHandler:(id)a4;
-- (void)openableStatusForExecutableAtPath:(id)a3 withReplyHandler:(id)a4;
-- (void)uninstallApp:(id)a3 requestUserConfirmation:(BOOL)a4 withReplyHandler:(id)a5;
-- (void)updateInstallProgressForApplication:(id)a3 progress:(double)a4 installPhase:(int64_t)a5;
-- (void)updateInstallStateForApplication:(id)a3 installState:(int64_t)a4;
+- (void)catalogRefreshedBundleIDs:(id)ds;
+- (void)catalogRegisteredApps:(id)apps;
+- (void)catalogUnregisteredBundleIDs:(id)ds;
+- (void)deviceUnpairedWithPairingID:(id)d;
+- (void)executeQueryForUpdatesReloadingFromServer:(BOOL)server withReplyHandler:(id)handler;
+- (void)executeQueryWithPredicate:(id)predicate onPairedDevice:(id)device withReplyHandler:(id)handler;
+- (void)executeQueryWithPredicate:(id)predicate onRemoteDevice:(id)device withReplyHandler:(id)handler;
+- (void)executeQueryWithPredicate:(id)predicate withReplyHandler:(id)handler;
+- (void)launchApp:(id)app extensionType:(int64_t)type withReplyHandler:(id)handler;
+- (void)launchApp:(id)app onPairedDevice:(id)device withReplyHandler:(id)handler;
+- (void)launchApp:(id)app withReplyHandler:(id)handler;
+- (void)lookupBundleIDsForDeletableSystemAppsForWatchWithItemIDs:(id)ds withReplyHandler:(id)handler;
+- (void)lookupBundleIDsForDeletableSystemAppsWithItemIDs:(id)ds withReplyHandler:(id)handler;
+- (void)lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:(id)ds withReplyHandler:(id)handler;
+- (void)lookupItemIDsForDeletableSystemAppsWithBundleIDs:(id)ds withReplyHandler:(id)handler;
+- (void)openableStatusForExecutableAtPath:(id)path withReplyHandler:(id)handler;
+- (void)uninstallApp:(id)app requestUserConfirmation:(BOOL)confirmation withReplyHandler:(id)handler;
+- (void)updateInstallProgressForApplication:(id)application progress:(double)progress installPhase:(int64_t)phase;
+- (void)updateInstallStateForApplication:(id)application installState:(int64_t)state;
 @end
 
 @implementation LibraryService
@@ -84,10 +84,10 @@
   return v2;
 }
 
-- (void)executeQueryWithPredicate:(id)a3 withReplyHandler:(id)a4
+- (void)executeQueryWithPredicate:(id)predicate withReplyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   v8 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -95,20 +95,20 @@
   v13[2] = sub_10038CDC4;
   v13[3] = &unk_10051C7A8;
   v13[4] = self;
-  v14 = v6;
+  v14 = predicateCopy;
   v15 = v8;
-  v16 = v7;
-  v10 = v7;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v8;
-  v12 = v6;
+  v12 = predicateCopy;
   sub_100005D90(dispatchQueue, v13);
 }
 
-- (void)executeQueryWithPredicate:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5
+- (void)executeQueryWithPredicate:(id)predicate onPairedDevice:(id)device withReplyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  deviceCopy = device;
+  handlerCopy = handler;
   v11 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v17[0] = _NSConcreteStackBlock;
@@ -116,22 +116,22 @@
   v17[2] = sub_10038D784;
   v17[3] = &unk_10051C9E8;
   v17[4] = self;
-  v18 = v8;
+  v18 = predicateCopy;
   v19 = v11;
-  v20 = v9;
-  v21 = v10;
-  v13 = v10;
-  v14 = v9;
+  v20 = deviceCopy;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = deviceCopy;
   v15 = v11;
-  v16 = v8;
+  v16 = predicateCopy;
   sub_100005D90(dispatchQueue, v17);
 }
 
-- (void)executeQueryWithPredicate:(id)a3 onRemoteDevice:(id)a4 withReplyHandler:(id)a5
+- (void)executeQueryWithPredicate:(id)predicate onRemoteDevice:(id)device withReplyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  deviceCopy = device;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v11 = sub_100003B90();
@@ -141,10 +141,10 @@
     v14[2] = sub_10038DF68;
     v14[3] = &unk_10051C9C0;
     v14[4] = self;
-    v15 = v8;
+    v15 = predicateCopy;
     v16 = v11;
-    v18 = v10;
-    v17 = v9;
+    v18 = handlerCopy;
+    v17 = deviceCopy;
     v13 = v11;
     sub_100005D90(dispatchQueue, v14);
   }
@@ -152,123 +152,123 @@
   else
   {
     v13 = ASDErrorWithTitleAndMessage();
-    (*(v10 + 2))(v10, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (void)executeQueryForUpdatesReloadingFromServer:(BOOL)a3 withReplyHandler:(id)a4
+- (void)executeQueryForUpdatesReloadingFromServer:(BOOL)server withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10038E5CC;
   v11[3] = &unk_100526230;
-  v15 = a3;
+  serverCopy = server;
   v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v7;
   sub_100005D90(dispatchQueue, v11);
 }
 
-- (void)openableStatusForExecutableAtPath:(id)a3 withReplyHandler:(id)a4
+- (void)openableStatusForExecutableAtPath:(id)path withReplyHandler:(id)handler
 {
-  v7 = a4;
-  v6 = sub_100346FD8(FairPlay, a3);
-  (*(a4 + 2))(v7, 0, v6);
+  handlerCopy = handler;
+  v6 = sub_100346FD8(FairPlay, path);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)launchApp:(id)a3 extensionType:(int64_t)a4 withReplyHandler:(id)a5
+- (void)launchApp:(id)app extensionType:(int64_t)type withReplyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  appCopy = app;
+  handlerCopy = handler;
   v10 = sub_100003B90();
   v11 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 processInfo];
-    v13 = [v12 bundleIdentifier];
+    processInfo = [v10 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     v14 = 138543874;
     v15 = v10;
     v16 = 2114;
-    v17 = v13;
+    v17 = bundleIdentifier;
     v18 = 2114;
-    v19 = v8;
+    v19 = appCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Launching messages extension for %{public}@: %{public}@", &v14, 0x20u);
   }
 
-  [(LibraryOpen *)self->_libraryOpen launchApp:v8 extensionType:a4 withResultHandler:v9];
+  [(LibraryOpen *)self->_libraryOpen launchApp:appCopy extensionType:type withResultHandler:handlerCopy];
 }
 
-- (void)launchApp:(id)a3 onPairedDevice:(id)a4 withReplyHandler:(id)a5
+- (void)launchApp:(id)app onPairedDevice:(id)device withReplyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appCopy = app;
+  deviceCopy = device;
+  handlerCopy = handler;
   v11 = sub_100003B90();
   v12 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v11 processInfo];
-    v14 = [v13 bundleIdentifier];
+    processInfo = [v11 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     v15 = 138544130;
     v16 = v11;
     v17 = 2114;
-    v18 = v14;
+    v18 = bundleIdentifier;
     v19 = 2114;
-    v20 = v9;
+    v20 = deviceCopy;
     v21 = 2114;
-    v22 = v8;
+    v22 = appCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Launching app for %{public}@ on %{public}@: %{public}@", &v15, 0x2Au);
   }
 
-  [(LibraryOpen *)self->_libraryOpen launchApp:v8 onPairedDevice:v9 withResultHandler:v10];
+  [(LibraryOpen *)self->_libraryOpen launchApp:appCopy onPairedDevice:deviceCopy withResultHandler:handlerCopy];
 }
 
-- (void)launchApp:(id)a3 withReplyHandler:(id)a4
+- (void)launchApp:(id)app withReplyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  handlerCopy = handler;
   v8 = sub_100003B90();
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 processInfo];
-    v11 = [v10 bundleIdentifier];
+    processInfo = [v8 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     v12 = 138543874;
     v13 = v8;
     v14 = 2114;
-    v15 = v11;
+    v15 = bundleIdentifier;
     v16 = 2114;
-    v17 = v6;
+    v17 = appCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Launching app for %{public}@: %{public}@", &v12, 0x20u);
   }
 
-  [(LibraryOpen *)self->_libraryOpen launchApp:v6 withResultHandler:v7];
+  [(LibraryOpen *)self->_libraryOpen launchApp:appCopy withResultHandler:handlerCopy];
 }
 
-- (void)lookupBundleIDsForDeletableSystemAppsWithItemIDs:(id)a3 withReplyHandler:(id)a4
+- (void)lookupBundleIDsForDeletableSystemAppsWithItemIDs:(id)ds withReplyHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v7 = sub_100003B90();
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v5 count];
-    v10 = [v7 processInfo];
-    v11 = [v10 bundleIdentifier];
+    v9 = [dsCopy count];
+    processInfo = [v7 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     *buf = 138544130;
     v19 = v7;
     v20 = 2048;
     v21 = v9;
     v22 = 2114;
-    v23 = v11;
+    v23 = bundleIdentifier;
     v24 = 2114;
-    v25 = v5;
+    v25 = dsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Looking up %lu system app bundleIDs(s) for %{public}@: %{public}@", buf, 0x2Au);
   }
 
@@ -277,32 +277,32 @@
   v15[1] = 3221225472;
   v15[2] = sub_10038F1F4;
   v15[3] = &unk_10051ED90;
-  v16 = v5;
-  v17 = v6;
-  v13 = v6;
-  v14 = v5;
+  v16 = dsCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = dsCopy;
   [v12 bagWithCompletionHandler:v15];
 }
 
-- (void)lookupItemIDsForDeletableSystemAppsWithBundleIDs:(id)a3 withReplyHandler:(id)a4
+- (void)lookupItemIDsForDeletableSystemAppsWithBundleIDs:(id)ds withReplyHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v7 = sub_100003B90();
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v5 count];
-    v10 = [v7 processInfo];
-    v11 = [v10 bundleIdentifier];
+    v9 = [dsCopy count];
+    processInfo = [v7 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     *buf = 138544130;
     v19 = v7;
     v20 = 2048;
     v21 = v9;
     v22 = 2114;
-    v23 = v11;
+    v23 = bundleIdentifier;
     v24 = 2114;
-    v25 = v5;
+    v25 = dsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Looking up %lu system app itemIDs(s) for %{public}@: %{public}@", buf, 0x2Au);
   }
 
@@ -311,32 +311,32 @@
   v15[1] = 3221225472;
   v15[2] = sub_10038F53C;
   v15[3] = &unk_10051ED90;
-  v16 = v5;
-  v17 = v6;
-  v13 = v6;
-  v14 = v5;
+  v16 = dsCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = dsCopy;
   [v12 bagWithCompletionHandler:v15];
 }
 
-- (void)lookupBundleIDsForDeletableSystemAppsForWatchWithItemIDs:(id)a3 withReplyHandler:(id)a4
+- (void)lookupBundleIDsForDeletableSystemAppsForWatchWithItemIDs:(id)ds withReplyHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v7 = sub_100003B90();
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v5 count];
-    v10 = [v7 processInfo];
-    v11 = [v10 bundleIdentifier];
+    v9 = [dsCopy count];
+    processInfo = [v7 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     *buf = 138544130;
     v19 = v7;
     v20 = 2048;
     v21 = v9;
     v22 = 2114;
-    v23 = v11;
+    v23 = bundleIdentifier;
     v24 = 2114;
-    v25 = v5;
+    v25 = dsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Looking up %lu system app for watch bundleIDs(s) for %{public}@: %{public}@", buf, 0x2Au);
   }
 
@@ -345,32 +345,32 @@
   v15[1] = 3221225472;
   v15[2] = sub_10038F87C;
   v15[3] = &unk_10051ED90;
-  v16 = v5;
-  v17 = v6;
-  v13 = v6;
-  v14 = v5;
+  v16 = dsCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = dsCopy;
   [v12 bagWithCompletionHandler:v15];
 }
 
-- (void)lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:(id)a3 withReplyHandler:(id)a4
+- (void)lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:(id)ds withReplyHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v7 = sub_100003B90();
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v5 count];
-    v10 = [v7 processInfo];
-    v11 = [v10 bundleIdentifier];
+    v9 = [dsCopy count];
+    processInfo = [v7 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     *buf = 138544130;
     v19 = v7;
     v20 = 2048;
     v21 = v9;
     v22 = 2114;
-    v23 = v11;
+    v23 = bundleIdentifier;
     v24 = 2114;
-    v25 = v5;
+    v25 = dsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Looking up %lu system app for watch itemIDs(s) for %{public}@: %{public}@", buf, 0x2Au);
   }
 
@@ -379,30 +379,30 @@
   v15[1] = 3221225472;
   v15[2] = sub_10038FBC4;
   v15[3] = &unk_10051ED90;
-  v16 = v5;
-  v17 = v6;
-  v13 = v6;
-  v14 = v5;
+  v16 = dsCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = dsCopy;
   [v12 bagWithCompletionHandler:v15];
 }
 
-- (void)uninstallApp:(id)a3 requestUserConfirmation:(BOOL)a4 withReplyHandler:(id)a5
+- (void)uninstallApp:(id)app requestUserConfirmation:(BOOL)confirmation withReplyHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  confirmationCopy = confirmation;
+  appCopy = app;
+  handlerCopy = handler;
   v10 = sub_100003B90();
   v11 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 processInfo];
-    v13 = [v12 bundleIdentifier];
+    processInfo = [v10 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     *buf = 138543874;
     v21 = v10;
     v22 = 2114;
-    v23 = v13;
+    v23 = bundleIdentifier;
     v24 = 2114;
-    v25 = v8;
+    v25 = appCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Uninstalling app for %{public}@: %{public}@", buf, 0x20u);
   }
 
@@ -411,75 +411,75 @@
   v17[1] = 3221225472;
   v17[2] = sub_10038FEE8;
   v17[3] = &unk_10051B8A8;
-  v18 = v8;
-  v19 = v9;
-  v15 = v9;
-  v16 = v8;
-  [(LibraryUninstall *)libraryUninstall uninstallApp:v16 requestUserConfirmation:v6 withResultHandler:v17];
+  v18 = appCopy;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = appCopy;
+  [(LibraryUninstall *)libraryUninstall uninstallApp:v16 requestUserConfirmation:confirmationCopy withResultHandler:v17];
 }
 
-- (void)catalogRegisteredApps:(id)a3
+- (void)catalogRegisteredApps:(id)apps
 {
-  v4 = sub_1002A24AC(ASDNotification, a3);
+  v4 = sub_1002A24AC(ASDNotification, apps);
   v3 = sub_100003984();
   sub_1003B8178(v3, v4);
 }
 
-- (void)catalogRefreshedBundleIDs:(id)a3
+- (void)catalogRefreshedBundleIDs:(id)ds
 {
-  v4 = sub_1002A20A8(ASDNotification, a3);
+  v4 = sub_1002A20A8(ASDNotification, ds);
   v3 = sub_100003984();
   sub_1003B8178(v3, v4);
 }
 
-- (void)catalogUnregisteredBundleIDs:(id)a3
+- (void)catalogUnregisteredBundleIDs:(id)ds
 {
-  v4 = sub_1002A26C0(ASDNotification, a3);
+  v4 = sub_1002A26C0(ASDNotification, ds);
   v3 = sub_100003984();
   sub_1003B8178(v3, v4);
 }
 
-- (void)deviceUnpairedWithPairingID:(id)a3
+- (void)deviceUnpairedWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100390448;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)updateInstallProgressForApplication:(id)a3 progress:(double)a4 installPhase:(int64_t)a5
+- (void)updateInstallProgressForApplication:(id)application progress:(double)progress installPhase:(int64_t)phase
 {
-  v7 = a3;
+  applicationCopy = application;
   v8 = sub_1002B0154();
   v9 = sub_1002B0280(v8);
 
-  if (v9 && a5 != -1 && v7 && (v9[18] & 1) == 0)
+  if (v9 && phase != -1 && applicationCopy && (v9[18] & 1) == 0)
   {
     v10 = sub_1003649C8();
-    v11 = sub_10036605C(v10, v7);
+    v11 = sub_10036605C(v10, applicationCopy);
 
     if (v11)
     {
       v12 = 0.67;
-      if (a5 != 2)
+      if (phase != 2)
       {
         v12 = 0.0;
       }
 
-      if (a5 == 1)
+      if (phase == 1)
       {
         v12 = 0.33;
       }
 
-      v13 = v12 + a4 * 0.33;
+      v13 = v12 + progress * 0.33;
       v14 = sub_1003649C8();
-      sub_10036695C(v14, v7, v13);
+      sub_10036695C(v14, applicationCopy, v13);
 
       v15 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -492,64 +492,64 @@
   }
 }
 
-- (void)updateInstallStateForApplication:(id)a3 installState:(int64_t)a4
+- (void)updateInstallStateForApplication:(id)application installState:(int64_t)state
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = sub_1002B0154();
   v7 = sub_1002B0280(v6);
 
-  if (v5 && v7 && (*(v7 + 18) & 1) == 0)
+  if (applicationCopy && v7 && (*(v7 + 18) & 1) == 0)
   {
-    if (a4 == 5)
+    if (state == 5)
     {
       v18 = sub_100394290();
-      v22 = v5;
+      v22 = applicationCopy;
       v19 = [NSArray arrayWithObjects:&v22 count:1];
-      v20 = [*(v7 + 8) pairingID];
-      sub_100394990(v18, v19, v20);
+      pairingID = [*(v7 + 8) pairingID];
+      sub_100394990(v18, v19, pairingID);
 
       v21 = sub_1003649C8();
-      sub_100365318(v21, v5);
+      sub_100365318(v21, applicationCopy);
 
       v9 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v24 = v5;
+        v24 = applicationCopy;
         _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "App uninstalled %{public}@", buf, 0xCu);
       }
 
       goto LABEL_13;
     }
 
-    if (a4 == 2)
+    if (state == 2)
     {
       v8 = sub_1003649C8();
-      v9 = sub_100365E5C(v8, v5);
+      v9 = sub_100365E5C(v8, applicationCopy);
 
       if (v9)
       {
         v10 = sub_1003649C8();
-        sub_100366260(v10, v5, @"Companion app installed");
+        sub_100366260(v10, applicationCopy, @"Companion app installed");
 
         v25 = v9;
         v11 = [NSArray arrayWithObjects:&v25 count:1];
-        v12 = [*(v7 + 8) pairingID];
-        v13 = sub_1002A2390(ASDNotification, v11, v12);
+        pairingID2 = [*(v7 + 8) pairingID];
+        v13 = sub_1002A2390(ASDNotification, v11, pairingID2);
 
         v14 = sub_100003984();
         sub_1003B8178(v14, v13);
 
         v15 = sub_1003649C8();
-        v16 = [v9 bundleID];
-        sub_10036689C(v15, v16);
+        bundleID = [v9 bundleID];
+        sub_10036689C(v15, bundleID);
       }
 
       v17 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v24 = v5;
+        v24 = applicationCopy;
         _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "App installed %{public}@", buf, 0xCu);
       }
 

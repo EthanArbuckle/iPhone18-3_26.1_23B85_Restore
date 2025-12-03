@@ -1,40 +1,40 @@
 @interface FMCongestionModel
-- (FMCongestionModel)initWithFMCoreData:(id)a3 locationController:(id)a4 withQueueName:(const char *)a5;
-- (id)basebandSysModeFromCellMonitorRAT:(id)a3;
-- (id)sendPredictionsToBasebandForSubscriptionID:(id)a3 timesUntilCongestion:(id)a4 timesInCongestion:(id)a5 cells:(id)a6 seenCount:(int)a7;
-- (unique_ptr<awd::metrics::InsightTypeCongestion_CongestionCell,)insightCellFromFMCongestionCell:(id)a3;
-- (void)_handleCellMonitorUpdate:(id)a3 info:(id)a4;
-- (void)_handleIncomingMetric:(id)a3 withPayload:(id)a4;
-- (void)_handleRegulatoryDomainEstimateUpdate:(id)a3;
-- (void)_initializeStateForContext:(id)a3 atTime:(id)a4;
-- (void)_updateStateForContext:(id)a3 atTime:(id)a4 withExistingState:(id)a5;
+- (FMCongestionModel)initWithFMCoreData:(id)data locationController:(id)controller withQueueName:(const char *)name;
+- (id)basebandSysModeFromCellMonitorRAT:(id)t;
+- (id)sendPredictionsToBasebandForSubscriptionID:(id)d timesUntilCongestion:(id)congestion timesInCongestion:(id)inCongestion cells:(id)cells seenCount:(int)count;
+- (unique_ptr<awd::metrics::InsightTypeCongestion_CongestionCell,)insightCellFromFMCongestionCell:(id)cell;
+- (void)_handleCellMonitorUpdate:(id)update info:(id)info;
+- (void)_handleIncomingMetric:(id)metric withPayload:(id)payload;
+- (void)_handleRegulatoryDomainEstimateUpdate:(id)update;
+- (void)_initializeStateForContext:(id)context atTime:(id)time;
+- (void)_updateStateForContext:(id)context atTime:(id)time withExistingState:(id)state;
 - (void)dealloc;
-- (void)handleUncongestedCell:(id)a3 forState:(id)a4;
-- (void)sendCongestionPredictionEventWithCongestionArea:(id)a3 isDataContext:(BOOL)a4;
-- (void)sendCongestionPredictionEventWithPrediction:(id)a3 isDataContext:(BOOL)a4;
-- (void)sendFedMobilityPredictionEventWithPredictionCorrect:(BOOL)a3 seenCount:(int)a4;
-- (void)sendQoEEventForCongestionCell:(id)a3;
-- (void)sendRLGSPredictionEventForCell:(id)a3;
+- (void)handleUncongestedCell:(id)cell forState:(id)state;
+- (void)sendCongestionPredictionEventWithCongestionArea:(id)area isDataContext:(BOOL)context;
+- (void)sendCongestionPredictionEventWithPrediction:(id)prediction isDataContext:(BOOL)context;
+- (void)sendFedMobilityPredictionEventWithPredictionCorrect:(BOOL)correct seenCount:(int)count;
+- (void)sendQoEEventForCongestionCell:(id)cell;
+- (void)sendRLGSPredictionEventForCell:(id)cell;
 @end
 
 @implementation FMCongestionModel
 
-- (FMCongestionModel)initWithFMCoreData:(id)a3 locationController:(id)a4 withQueueName:(const char *)a5
+- (FMCongestionModel)initWithFMCoreData:(id)data locationController:(id)controller withQueueName:(const char *)name
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = FMCongestionModel;
-  v10 = [(FMModel *)&v21 initWithFMCoreData:v8 withQueueName:a5];
+  v10 = [(FMModel *)&v21 initWithFMCoreData:dataCopy withQueueName:name];
   v11 = v10;
   if (v10)
   {
-    v12 = [(FMModel *)v10 fmRegulatoryDomainController];
-    v13 = [v12 getCurrentEstimates];
-    [(FMCongestionModel *)v11 _handleRegulatoryDomainEstimateUpdate:v13];
+    fmRegulatoryDomainController = [(FMModel *)v10 fmRegulatoryDomainController];
+    getCurrentEstimates = [fmRegulatoryDomainController getCurrentEstimates];
+    [(FMCongestionModel *)v11 _handleRegulatoryDomainEstimateUpdate:getCurrentEstimates];
 
     [(FMCongestionModel *)v11 setIsLocationAuthorized:0];
-    [v9 addDelegate:v11];
+    [controllerCopy addDelegate:v11];
     v14 = [FMBasebandMetricsController alloc];
     v22[0] = @"com.apple.Telephony.testCongestionInfo";
     v22[1] = @"com.apple.Baseband.cellularCongestionInfo";
@@ -47,9 +47,9 @@
       sub_1001FADD0();
     }
 
-    v17 = [(FMModel *)v11 fmCoreTelephonyController];
-    v18 = [v17 getSubscriptionContextsInUse];
-    [(FMModel *)v11 populateSubscriptionContextsInUse:v18];
+    fmCoreTelephonyController = [(FMModel *)v11 fmCoreTelephonyController];
+    getSubscriptionContextsInUse = [fmCoreTelephonyController getSubscriptionContextsInUse];
+    [(FMModel *)v11 populateSubscriptionContextsInUse:getSubscriptionContextsInUse];
 
     v19 = v11;
   }
@@ -74,25 +74,25 @@
   [(FMModel *)&v3 dealloc];
 }
 
-- (void)_initializeStateForContext:(id)a3 atTime:(id)a4
+- (void)_initializeStateForContext:(id)context atTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  timeCopy = time;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v6 uuid];
-    sub_1001FAE84(v8, &v14);
+    uuid = [contextCopy uuid];
+    sub_1001FAE84(uuid, &v14);
   }
 
   v9 = [FMCongestionContextState alloc];
-  v10 = [v6 subscriptionID];
-  v11 = [(FMCongestionContextState *)v9 initWithStartTime:v7 subscriptionID:v10];
+  subscriptionID = [contextCopy subscriptionID];
+  v11 = [(FMCongestionContextState *)v9 initWithStartTime:timeCopy subscriptionID:subscriptionID];
 
   if (v11)
   {
-    v12 = [(FMModel *)self contextUUIDToStateMap];
-    v13 = [v6 uuid];
-    [v12 setObject:v11 forKey:v13];
+    contextUUIDToStateMap = [(FMModel *)self contextUUIDToStateMap];
+    uuid2 = [contextCopy uuid];
+    [contextUUIDToStateMap setObject:v11 forKey:uuid2];
   }
 
   else if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
@@ -101,47 +101,47 @@
   }
 }
 
-- (void)_updateStateForContext:(id)a3 atTime:(id)a4 withExistingState:(id)a5
+- (void)_updateStateForContext:(id)context atTime:(id)time withExistingState:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  timeCopy = time;
+  stateCopy = state;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    v11 = [v8 uuid];
-    sub_1001FAF48(v11, &v15);
+    uuid = [contextCopy uuid];
+    sub_1001FAF48(uuid, &v15);
   }
 
-  v12 = [v10 subscriptionID];
-  v13 = [v8 subscriptionID];
-  v14 = [v12 isEqualToNumber:v13];
+  subscriptionID = [stateCopy subscriptionID];
+  subscriptionID2 = [contextCopy subscriptionID];
+  v14 = [subscriptionID isEqualToNumber:subscriptionID2];
 
   if ((v14 & 1) == 0)
   {
-    [(FMCongestionModel *)self _initializeStateForContext:v8 atTime:v9];
+    [(FMCongestionModel *)self _initializeStateForContext:contextCopy atTime:timeCopy];
   }
 }
 
-- (void)_handleCellMonitorUpdate:(id)a3 info:(id)a4
+- (void)_handleCellMonitorUpdate:(id)update info:(id)info
 {
-  v66 = a3;
-  v67 = a4;
+  updateCopy = update;
+  infoCopy = info;
   if ([(FMCongestionModel *)self isCongestionPredictionEnabledInCurrentCountry])
   {
-    if (v67)
+    if (infoCopy)
     {
-      v6 = [(FMModel *)self contextUUIDToStateMap];
-      v7 = [v6 objectForKey:v66];
+      contextUUIDToStateMap = [(FMModel *)self contextUUIDToStateMap];
+      v7 = [contextUUIDToStateMap objectForKey:updateCopy];
 
       v65 = v7;
       if (v7)
       {
-        v61 = self;
-        v63 = [WISTelephonyUtils getServingCellInfoFromArray:v67];
+        selfCopy = self;
+        v63 = [WISTelephonyUtils getServingCellInfoFromArray:infoCopy];
         v8 = +[NSDate now];
-        v9 = [v7 subscriptionID];
+        subscriptionID = [v7 subscriptionID];
         v79 = 0;
-        v70 = [FMCoreTelephonyController cellInfoToFMCongestionCell:v63 atTime:v8 inSlot:v9 error:&v79];
+        v70 = [FMCoreTelephonyController cellInfoToFMCongestionCell:v63 atTime:v8 inSlot:subscriptionID error:&v79];
         v64 = v79;
 
         if (v64 || !v70)
@@ -149,38 +149,38 @@
           v11 = *(qword_1002DBE98 + 136);
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
           {
-            v12 = [v64 localizedDescription];
-            sub_1001FAF9C(v66, v12, buf, v11);
+            localizedDescription = [v64 localizedDescription];
+            sub_1001FAF9C(updateCopy, localizedDescription, buf, v11);
           }
         }
 
         else
         {
-          v10 = [v65 prevCells];
-          v62 = [v10 lastObject];
+          prevCells = [v65 prevCells];
+          lastObject = [prevCells lastObject];
 
-          if (v62 && [v62 isEqual:v70])
+          if (lastObject && [lastObject isEqual:v70])
           {
-            v59 = [v70 timestamp];
-            [v62 setLastUpdatedTimestamp:?];
+            timestamp = [v70 timestamp];
+            [lastObject setLastUpdatedTimestamp:?];
           }
 
           else
           {
-            v13 = [v65 prevCells];
-            [v13 addObject:v70];
+            prevCells2 = [v65 prevCells];
+            [prevCells2 addObject:v70];
 
             v14 = +[FMConfiguration sharedInstance];
-            v15 = [v14 congestionPrevCellsInDatabase];
-            v16 = [v65 prevCells];
-            [FMUtil removeFirstElementsForCapacity:v15 + 2 fromArray:v16];
+            congestionPrevCellsInDatabase = [v14 congestionPrevCellsInDatabase];
+            prevCells3 = [v65 prevCells];
+            [FMUtil removeFirstElementsForCapacity:congestionPrevCellsInDatabase + 2 fromArray:prevCells3];
 
             v77 = 0u;
             v78 = 0u;
             v75 = 0u;
             v76 = 0u;
-            v17 = [v65 congestionPredictions];
-            v18 = [v17 countByEnumeratingWithState:&v75 objects:v82 count:16];
+            congestionPredictions = [v65 congestionPredictions];
+            v18 = [congestionPredictions countByEnumeratingWithState:&v75 objects:v82 count:16];
             if (v18)
             {
               v19 = *v76;
@@ -190,28 +190,28 @@
                 {
                   if (*v76 != v19)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(congestionPredictions);
                   }
 
                   v21 = *(*(&v75 + 1) + 8 * i);
                   if (![v21 state])
                   {
-                    v22 = [v70 timestamp];
-                    [v21 activateAtTime:v22];
+                    timestamp2 = [v70 timestamp];
+                    [v21 activateAtTime:timestamp2];
                   }
                 }
 
-                v18 = [v17 countByEnumeratingWithState:&v75 objects:v82 count:16];
+                v18 = [congestionPredictions countByEnumeratingWithState:&v75 objects:v82 count:16];
               }
 
               while (v18);
             }
 
-            v59 = +[NSDate now];
-            v23 = [(FMModel *)v61 fmCoreData];
-            v24 = [v65 subscriptionID];
-            v25 = [v65 prevCells];
-            v60 = [v23 getCongestionPredictionsForSubscriptionID:v24 andPrevCells:v25 atTime:v59];
+            timestamp = +[NSDate now];
+            fmCoreData = [(FMModel *)selfCopy fmCoreData];
+            subscriptionID2 = [v65 subscriptionID];
+            prevCells4 = [v65 prevCells];
+            v60 = [fmCoreData getCongestionPredictionsForSubscriptionID:subscriptionID2 andPrevCells:prevCells4 atTime:timestamp];
 
             if (v60 && [v60 count])
             {
@@ -251,12 +251,12 @@
                       _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "FederatedMobility[FMCongestionModel]:#D Received congestion prediction: %@", buf, 0xCu);
                     }
 
-                    v34 = [v32 seenCount];
-                    v35 = [v32 predictedGoodCells];
-                    [v26 addObjectsFromArray:v35];
+                    seenCount = [v32 seenCount];
+                    predictedGoodCells = [v32 predictedGoodCells];
+                    [v26 addObjectsFromArray:predictedGoodCells];
 
-                    v36 = [v32 predictedBadCells];
-                    [v26 addObjectsFromArray:v36];
+                    predictedBadCells = [v32 predictedBadCells];
+                    [v26 addObjectsFromArray:predictedBadCells];
 
                     v37 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v32 predictedTimeUntilCongestion]);
                     [v69 addObject:v37];
@@ -264,7 +264,7 @@
                     v38 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v32 predictedTimeInCongestion]);
                     [v27 addObject:v38];
 
-                    v28 = v34 + v28;
+                    v28 = seenCount + v28;
                   }
 
                   v29 = [obj countByEnumeratingWithState:&v71 objects:v80 count:16];
@@ -273,13 +273,13 @@
                 while (v29);
               }
 
-              v39 = [(FMModel *)v61 fmCoreTelephonyController];
-              v40 = [v39 isDataContextUuid:v66];
+              fmCoreTelephonyController = [(FMModel *)selfCopy fmCoreTelephonyController];
+              v40 = [fmCoreTelephonyController isDataContextUuid:updateCopy];
 
               if (v40)
               {
-                v41 = [v65 subscriptionID];
-                v42 = [(FMCongestionModel *)v61 sendPredictionsToBasebandForSubscriptionID:v41 timesUntilCongestion:v69 timesInCongestion:v27 cells:v26 seenCount:v28];
+                subscriptionID3 = [v65 subscriptionID];
+                v42 = [(FMCongestionModel *)selfCopy sendPredictionsToBasebandForSubscriptionID:subscriptionID3 timesUntilCongestion:v69 timesInCongestion:v27 cells:v26 seenCount:v28];
 
                 v43 = *(qword_1002DBE98 + 136);
                 if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
@@ -291,8 +291,8 @@
 
                 if (v42)
                 {
-                  v44 = [v65 congestionPredictions];
-                  [v44 addObject:v42];
+                  congestionPredictions2 = [v65 congestionPredictions];
+                  [congestionPredictions2 addObject:v42];
                 }
               }
 
@@ -302,7 +302,7 @@
                 if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v84 = v66;
+                  v84 = updateCopy;
                   _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "FederatedMobility[FMCongestionModel]:#I Context %@ is not the active data context, not sending predictions to baseband", buf, 0xCu);
                 }
               }
@@ -312,7 +312,7 @@
             if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v84 = v66;
+              v84 = updateCopy;
               v85 = 2112;
               v86 = v70;
               _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "FederatedMobility[FMCongestionModel]:#I Cell Monitor Update for context %@: %@", buf, 0x16u);
@@ -326,21 +326,21 @@
               }
 
               v47 = [FMCongestionMetric alloc];
-              v48 = [v70 timestamp];
-              [v48 timeIntervalSince1970];
+              timestamp3 = [v70 timestamp];
+              [timestamp3 timeIntervalSince1970];
               v50 = v49;
               v51 = [v70 gci];
-              v52 = [v70 arfcnOrUarfcn];
-              v53 = [v52 unsignedIntValue];
+              arfcnOrUarfcn = [v70 arfcnOrUarfcn];
+              unsignedIntValue = [arfcnOrUarfcn unsignedIntValue];
               v54 = [v70 rat];
-              v55 = [(FMCongestionModel *)v61 basebandSysModeFromCellMonitorRAT:v54];
-              v56 = [v70 subscriptionID];
+              v55 = [(FMCongestionModel *)selfCopy basebandSysModeFromCellMonitorRAT:v54];
+              subscriptionID4 = [v70 subscriptionID];
               LODWORD(v58) = 0;
-              HIDWORD(v58) = [v56 unsignedIntValue];
-              v57 = [FMCongestionMetric init:v47 gci:"init:gci:arfnc:ratType:rsrp:rsrq:sinr:dlBottleneckScoreInvalid:dlBottleneckScoreNo:dlBottleneckScoreLow:dlBottleneckScoreMedium:dlBottleneckScoreHigh:ulBottleneckScoreInvalid:ulBottleneckScoreNo:ulBottleneckScoreLow:ulBottleneckScoreMedium:ulBottleneckScoreHigh:dataStallIndicatorAVS:dataStallIndicatorUL:isSubway:qoeScore:qoeDuration:psPref:subsId:" arfnc:llround(v50 * 1000.0) ratType:v51 rsrp:v53 rsrq:v55 sinr:0 dlBottleneckScoreInvalid:0 dlBottleneckScoreNo:0 dlBottleneckScoreLow:0 dlBottleneckScoreMedium:0 dlBottleneckScoreHigh:0 ulBottleneckScoreInvalid:0 ulBottleneckScoreNo:0 ulBottleneckScoreLow:0 ulBottleneckScoreMedium:100 ulBottleneckScoreHigh:v58 dataStallIndicatorAVS:? dataStallIndicatorUL:? isSubway:? qoeScore:? qoeDuration:? psPref:? subsId:?];
+              HIDWORD(v58) = [subscriptionID4 unsignedIntValue];
+              v57 = [FMCongestionMetric init:v47 gci:"init:gci:arfnc:ratType:rsrp:rsrq:sinr:dlBottleneckScoreInvalid:dlBottleneckScoreNo:dlBottleneckScoreLow:dlBottleneckScoreMedium:dlBottleneckScoreHigh:ulBottleneckScoreInvalid:ulBottleneckScoreNo:ulBottleneckScoreLow:ulBottleneckScoreMedium:ulBottleneckScoreHigh:dataStallIndicatorAVS:dataStallIndicatorUL:isSubway:qoeScore:qoeDuration:psPref:subsId:" arfnc:llround(v50 * 1000.0) ratType:v51 rsrp:unsignedIntValue rsrq:v55 sinr:0 dlBottleneckScoreInvalid:0 dlBottleneckScoreNo:0 dlBottleneckScoreLow:0 dlBottleneckScoreMedium:0 dlBottleneckScoreHigh:0 ulBottleneckScoreInvalid:0 ulBottleneckScoreNo:0 ulBottleneckScoreLow:0 ulBottleneckScoreMedium:100 ulBottleneckScoreHigh:v58 dataStallIndicatorAVS:? dataStallIndicatorUL:? isSubway:? qoeScore:? qoeDuration:? psPref:? subsId:?];
               [v70 setCongestionMetric:v57];
 
-              [(FMCongestionModel *)v61 handleUncongestedCell:v70 forState:v65];
+              [(FMCongestionModel *)selfCopy handleUncongestedCell:v70 forState:v65];
             }
           }
         }
@@ -359,28 +359,28 @@
   }
 }
 
-- (void)handleUncongestedCell:(id)a3 forState:(id)a4
+- (void)handleUncongestedCell:(id)cell forState:(id)state
 {
-  v6 = a3;
-  v30 = a4;
+  cellCopy = cell;
+  stateCopy = state;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_1001FB198();
   }
 
-  v7 = [v6 congestionMetric];
-  v34 = [v7 psPref];
-  v8 = [v6 congestionMetric];
-  v33 = self;
-  v31 = [v8 subsId];
+  congestionMetric = [cellCopy congestionMetric];
+  psPref = [congestionMetric psPref];
+  congestionMetric2 = [cellCopy congestionMetric];
+  selfCopy = self;
+  subsId = [congestionMetric2 subsId];
 
   v35 = objc_alloc_init(NSMutableArray);
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v9 = [v30 congestionPredictions];
-  v10 = [v9 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  congestionPredictions = [stateCopy congestionPredictions];
+  v10 = [congestionPredictions countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v10)
   {
     v32 = 0;
@@ -391,27 +391,27 @@
       {
         if (*v46 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(congestionPredictions);
         }
 
         v13 = *(*(&v45 + 1) + 8 * i);
-        v14 = [v13 state];
-        if (v14 == 1)
+        state = [v13 state];
+        if (state == 1)
         {
-          v15 = [v6 timestamp];
-          [v13 leftCongestionAtTime:v15];
+          timestamp = [cellCopy timestamp];
+          [v13 leftCongestionAtTime:timestamp];
         }
 
-        else if (v14 != 2)
+        else if (state != 2)
         {
           continue;
         }
 
-        v16 = [v13 actualGoodCells];
-        [v16 addObject:v6];
+        actualGoodCells = [v13 actualGoodCells];
+        [actualGoodCells addObject:cellCopy];
 
-        v17 = [v13 actualGoodCells];
-        v18 = [v17 count];
+        actualGoodCells2 = [v13 actualGoodCells];
+        v18 = [actualGoodCells2 count];
         v19 = +[FMConfiguration sharedInstance];
         LOBYTE(v18) = v18 < [v19 congestionGoodCellsInDatabase];
 
@@ -419,12 +419,12 @@
         {
           [v35 addObject:v13];
           [v13 end];
-          [(FMCongestionModel *)v33 sendCongestionPredictionEventWithPrediction:v13 isDataContext:v34 == v31];
+          [(FMCongestionModel *)selfCopy sendCongestionPredictionEventWithPrediction:v13 isDataContext:psPref == subsId];
           v32 = 1;
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      v10 = [congestionPredictions countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (!v10)
       {
         goto LABEL_18;
@@ -435,52 +435,52 @@
   v32 = 0;
 LABEL_18:
 
-  v20 = [v30 congestionPredictions];
-  [v20 removeObjectsInArray:v35];
+  congestionPredictions2 = [stateCopy congestionPredictions];
+  [congestionPredictions2 removeObjectsInArray:v35];
 
   v21 = objc_alloc_init(NSMutableArray);
   v22 = objc_alloc_init(NSMutableArray);
-  v23 = [v30 activeCongestionAreas];
+  activeCongestionAreas = [stateCopy activeCongestionAreas];
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_10002544C;
   v41[3] = &unk_1002AB128;
-  v24 = v6;
+  v24 = cellCopy;
   v42 = v24;
   v25 = v21;
   v43 = v25;
   v26 = v22;
   v44 = v26;
-  [v23 enumerateObjectsUsingBlock:v41];
+  [activeCongestionAreas enumerateObjectsUsingBlock:v41];
 
-  v27 = [v30 activeCongestionAreas];
-  [v27 removeObjectsInArray:v25];
+  activeCongestionAreas2 = [stateCopy activeCongestionAreas];
+  [activeCongestionAreas2 removeObjectsInArray:v25];
 
-  v28 = [v30 activeCongestionAreas];
-  [v28 removeObjectsInArray:v26];
+  activeCongestionAreas3 = [stateCopy activeCongestionAreas];
+  [activeCongestionAreas3 removeObjectsInArray:v26];
 
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_100025590;
   v36[3] = &unk_1002AB150;
-  v38 = [(FMCongestionModel *)v33 isLocationAuthorized];
+  isLocationAuthorized = [(FMCongestionModel *)selfCopy isLocationAuthorized];
   v39 = v32 & 1;
-  v36[4] = v33;
-  v40 = v34 == v31;
-  v29 = v30;
+  v36[4] = selfCopy;
+  v40 = psPref == subsId;
+  v29 = stateCopy;
   v37 = v29;
   [v25 enumerateObjectsUsingBlock:v36];
 }
 
-- (void)_handleIncomingMetric:(id)a3 withPayload:(id)a4
+- (void)_handleIncomingMetric:(id)metric withPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  payloadCopy = payload;
   if ([(FMCongestionModel *)self isCongestionPredictionEnabledInCurrentCountry])
   {
-    if (v7)
+    if (payloadCopy)
     {
-      v8 = [FMBasebandMetricsController extractFMCongestionMetricFrom:v7];
+      v8 = [FMBasebandMetricsController extractFMCongestionMetricFrom:payloadCopy];
       v9 = *(qword_1002DBE98 + 136);
       if (v8)
       {
@@ -493,15 +493,15 @@ LABEL_18:
         *(&buf + 1) = &buf;
         v17 = 0x2020000000;
         v18 = 0;
-        v10 = [(FMModel *)self contextUUIDToStateMap];
+        contextUUIDToStateMap = [(FMModel *)self contextUUIDToStateMap];
         v12[0] = _NSConcreteStackBlock;
         v12[1] = 3221225472;
         v12[2] = sub_1000258B4;
         v12[3] = &unk_1002AB1A0;
-        v14 = self;
+        selfCopy = self;
         p_buf = &buf;
         v13 = v8;
-        [v10 enumerateKeysAndObjectsUsingBlock:v12];
+        [contextUUIDToStateMap enumerateKeysAndObjectsUsingBlock:v12];
 
         _Block_object_dispose(&buf, 8);
       }
@@ -518,26 +518,26 @@ LABEL_18:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v6;
+        *(&buf + 4) = metricCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "FederatedMobility[FMCongestionModel]:#N Received null metric: %@", &buf, 0xCu);
       }
     }
   }
 }
 
-- (void)_handleRegulatoryDomainEstimateUpdate:(id)a3
+- (void)_handleRegulatoryDomainEstimateUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = +[FMConfiguration sharedInstance];
-  v6 = [v5 congestionPredictionEnabledCountries];
+  congestionPredictionEnabledCountries = [v5 congestionPredictionEnabledCountries];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000261F8;
   v10[3] = &unk_1002AB1C8;
-  v7 = v6;
+  v7 = congestionPredictionEnabledCountries;
   v11 = v7;
-  v8 = [v4 indexOfObjectPassingTest:v10];
+  v8 = [updateCopy indexOfObjectPassingTest:v10];
   v9 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -549,14 +549,14 @@ LABEL_18:
   [(FMCongestionModel *)self setIsCongestionPredictionEnabledInCurrentCountry:v8 != 0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (unique_ptr<awd::metrics::InsightTypeCongestion_CongestionCell,)insightCellFromFMCongestionCell:(id)a3
+- (unique_ptr<awd::metrics::InsightTypeCongestion_CongestionCell,)insightCellFromFMCongestionCell:(id)cell
 {
   v4 = v3;
-  v5 = a3;
-  v6 = [v5 congestionMetric];
-  v7 = [v6 isQoEScoreValid];
+  cellCopy = cell;
+  congestionMetric = [cellCopy congestionMetric];
+  isQoEScoreValid = [congestionMetric isQoEScoreValid];
 
-  if (v7)
+  if (isQoEScoreValid)
   {
     operator new();
   }
@@ -571,11 +571,11 @@ LABEL_18:
   return v8;
 }
 
-- (id)basebandSysModeFromCellMonitorRAT:(id)a3
+- (id)basebandSysModeFromCellMonitorRAT:(id)t
 {
-  v3 = a3;
+  tCopy = t;
   v4 = [NSString stringWithUTF8String:"GSM"];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [tCopy isEqualToString:v4];
 
   if (v5)
   {
@@ -584,7 +584,7 @@ LABEL_18:
   }
 
   v7 = [NSString stringWithUTF8String:"WCDMA"];
-  v8 = [v3 isEqualToString:v7];
+  v8 = [tCopy isEqualToString:v7];
 
   if (v8)
   {
@@ -593,7 +593,7 @@ LABEL_18:
   }
 
   v9 = [NSString stringWithUTF8String:"CDMA"];
-  if ([v3 isEqualToString:v9])
+  if ([tCopy isEqualToString:v9])
   {
 
 LABEL_8:
@@ -602,7 +602,7 @@ LABEL_8:
   }
 
   v10 = [NSString stringWithUTF8String:"TDSCDMA"];
-  v11 = [v3 isEqualToString:v10];
+  v11 = [tCopy isEqualToString:v10];
 
   if (v11)
   {
@@ -610,7 +610,7 @@ LABEL_8:
   }
 
   v15 = [NSString stringWithUTF8String:"LTE"];
-  if ([v3 isEqualToString:v15])
+  if ([tCopy isEqualToString:v15])
   {
 
 LABEL_13:
@@ -619,7 +619,7 @@ LABEL_13:
   }
 
   v16 = [NSString stringWithUTF8String:"NR_NSA"];
-  v17 = [v3 isEqualToString:v16];
+  v17 = [tCopy isEqualToString:v16];
 
   if (v17)
   {
@@ -627,7 +627,7 @@ LABEL_13:
   }
 
   v18 = [NSString stringWithUTF8String:"NR_SA"];
-  v19 = [v3 isEqualToString:v18];
+  v19 = [tCopy isEqualToString:v18];
 
   v6 = off_1002B2820;
   if (v19)
@@ -642,20 +642,20 @@ LABEL_9:
   return v12;
 }
 
-- (void)sendFedMobilityPredictionEventWithPredictionCorrect:(BOOL)a3 seenCount:(int)a4
+- (void)sendFedMobilityPredictionEventWithPredictionCorrect:(BOOL)correct seenCount:(int)count
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000268C8;
   v4[3] = &unk_1002AB1E8;
-  v6 = a3;
-  v5 = a4;
+  correctCopy = correct;
+  countCopy = count;
   sub_1000158DC(@"com.apple.Telephony.fedMobilityPredictions", v4);
 }
 
-- (void)sendRLGSPredictionEventForCell:(id)a3
+- (void)sendRLGSPredictionEventForCell:(id)cell
 {
-  v48 = a3;
+  cellCopy = cell;
   pthread_mutex_lock(&stru_1002D47D8);
   v5 = xmmword_1002D4818;
   if (!xmmword_1002D4818)
@@ -692,8 +692,8 @@ LABEL_9:
 
   if (v9)
   {
-    v10 = [(FMModel *)self fmCoreData];
-    v11 = [v10 getPreviouslyStoredMatchingFMCongestionCell:v48];
+    fmCoreData = [(FMModel *)self fmCoreData];
+    v11 = [fmCoreData getPreviouslyStoredMatchingFMCongestionCell:cellCopy];
 
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
     {
@@ -701,25 +701,25 @@ LABEL_9:
     }
 
     v47 = v11;
-    v12 = [v48 dlBottleneckScoreAsString];
-    v43 = v12;
-    v13 = [v48 ulBottleneckScoreAsString];
-    v41 = v13;
+    dlBottleneckScoreAsString = [cellCopy dlBottleneckScoreAsString];
+    v43 = dlBottleneckScoreAsString;
+    ulBottleneckScoreAsString = [cellCopy ulBottleneckScoreAsString];
+    v41 = ulBottleneckScoreAsString;
     if (v11)
     {
-      v14 = [v11 dlBottleneckScoreAsString];
-      v15 = [v11 ulBottleneckScoreAsString];
-      v16 = v14;
-      v17 = [v14 isEqualToString:v12];
-      v18 = v15;
-      v19 = [v15 isEqualToString:v13];
+      dlBottleneckScoreAsString2 = [v11 dlBottleneckScoreAsString];
+      ulBottleneckScoreAsString2 = [v11 ulBottleneckScoreAsString];
+      v16 = dlBottleneckScoreAsString2;
+      v17 = [dlBottleneckScoreAsString2 isEqualToString:dlBottleneckScoreAsString];
+      v18 = ulBottleneckScoreAsString2;
+      v19 = [ulBottleneckScoreAsString2 isEqualToString:ulBottleneckScoreAsString];
       v20 = [NSNumber numberWithBool:v17];
       v11 = [NSNumber numberWithBool:v19];
       v42 = [NSNumber numberWithBool:v17 & v19];
       v45 = v20;
-      v3 = [v47 congestionMetric];
+      congestionMetric = [v47 congestionMetric];
       v21 = v45;
-      if ([v3 dataStallIndicatorAVS])
+      if ([congestionMetric dataStallIndicatorAVS])
       {
         v44 = 1;
         goto LABEL_20;
@@ -734,63 +734,63 @@ LABEL_9:
       v42 = 0;
     }
 
-    v22 = [v48 congestionMetric];
-    v23 = [v22 dataStallIndicatorAVS];
-    v44 = v23 != 0;
+    congestionMetric2 = [cellCopy congestionMetric];
+    dataStallIndicatorAVS = [congestionMetric2 dataStallIndicatorAVS];
+    v44 = dataStallIndicatorAVS != 0;
 
     if (!v47)
     {
-      v44 = v23 != 0;
+      v44 = dataStallIndicatorAVS != 0;
       goto LABEL_23;
     }
 
 LABEL_20:
 
-    v3 = [v47 congestionMetric];
-    if ([v3 dataStallIndicatorUL])
+    congestionMetric = [v47 congestionMetric];
+    if ([congestionMetric dataStallIndicatorUL])
     {
       v24 = 1;
       goto LABEL_24;
     }
 
 LABEL_23:
-    v25 = [v48 congestionMetric];
-    v26 = [v25 dataStallIndicatorUL];
-    v24 = v26 != 0;
+    congestionMetric3 = [cellCopy congestionMetric];
+    dataStallIndicatorUL = [congestionMetric3 dataStallIndicatorUL];
+    v24 = dataStallIndicatorUL != 0;
 
     if (!v47)
     {
-      v24 = v26 != 0;
+      v24 = dataStallIndicatorUL != 0;
       goto LABEL_27;
     }
 
 LABEL_24:
 
-    v3 = [v47 congestionMetric];
-    if ([v3 isSubway])
+    congestionMetric = [v47 congestionMetric];
+    if ([congestionMetric isSubway])
     {
       v27 = 1;
       goto LABEL_28;
     }
 
 LABEL_27:
-    v28 = [v48 congestionMetric];
-    v27 = [v28 isSubway] != 0;
+    congestionMetric4 = [cellCopy congestionMetric];
+    v27 = [congestionMetric4 isSubway] != 0;
 
     if (!v47)
     {
 LABEL_29:
       v46 = v21;
-      v29 = [v48 congestionMetric];
-      v30 = [v29 psPref];
-      v31 = [v48 congestionMetric];
-      v32 = v30 == [v31 subsId];
+      congestionMetric5 = [cellCopy congestionMetric];
+      psPref = [congestionMetric5 psPref];
+      congestionMetric6 = [cellCopy congestionMetric];
+      v32 = psPref == [congestionMetric6 subsId];
 
       v49[0] = _NSConcreteStackBlock;
       v49[1] = 3221225472;
       v49[2] = sub_1000270C0;
       v49[3] = &unk_1002AB210;
-      v50 = v48;
+      v50 = cellCopy;
       v33 = v16;
       v51 = v33;
       v34 = v43;
@@ -829,49 +829,49 @@ LABEL_28:
 LABEL_30:
 }
 
-- (void)sendCongestionPredictionEventWithPrediction:(id)a3 isDataContext:(BOOL)a4
+- (void)sendCongestionPredictionEventWithPrediction:(id)prediction isDataContext:(BOOL)context
 {
-  v5 = a3;
-  if ([v5 state] == 100)
+  predictionCopy = prediction;
+  if ([predictionCopy state] == 100)
   {
-    v6 = [v5 predictedGoodCells];
+    predictedGoodCells = [predictionCopy predictedGoodCells];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_100027A34;
     v35[3] = &unk_1002AB238;
-    v7 = v5;
+    v7 = predictionCopy;
     v36 = v7;
-    v8 = [v6 indexesOfObjectsPassingTest:v35];
+    v8 = [predictedGoodCells indexesOfObjectsPassingTest:v35];
     v9 = [v8 count];
 
-    v10 = [v7 predictedBadCells];
+    predictedBadCells = [v7 predictedBadCells];
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_100027AA8;
     v33[3] = &unk_1002AB238;
     v11 = v7;
     v34 = v11;
-    v12 = [v10 indexesOfObjectsPassingTest:v33];
+    v12 = [predictedBadCells indexesOfObjectsPassingTest:v33];
     v13 = [v12 count];
 
-    v14 = [v11 predictedGoodCells];
+    predictedGoodCells2 = [v11 predictedGoodCells];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_100027B1C;
     v31[3] = &unk_1002AB238;
     v15 = v11;
     v32 = v15;
-    v16 = [v14 indexesOfObjectsPassingTest:v31];
+    v16 = [predictedGoodCells2 indexesOfObjectsPassingTest:v31];
     v17 = [v16 count];
 
-    v18 = [v15 predictedBadCells];
+    predictedBadCells2 = [v15 predictedBadCells];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_100027B90;
     v29[3] = &unk_1002AB238;
     v19 = v15;
     v30 = v19;
-    v20 = [v18 indexesOfObjectsPassingTest:v29];
+    v20 = [predictedBadCells2 indexesOfObjectsPassingTest:v29];
     v21 = [v20 count];
 
     v22[0] = _NSConcreteStackBlock;
@@ -883,7 +883,7 @@ LABEL_30:
     v25 = v13;
     v26 = v17;
     v27 = v21;
-    v28 = a4;
+    contextCopy = context;
     sub_1000158DC(@"com.apple.Telephony.fedMobilityCongestionPredictions", v22);
   }
 
@@ -893,17 +893,17 @@ LABEL_30:
   }
 }
 
-- (void)sendCongestionPredictionEventWithCongestionArea:(id)a3 isDataContext:(BOOL)a4
+- (void)sendCongestionPredictionEventWithCongestionArea:(id)area isDataContext:(BOOL)context
 {
-  v5 = a3;
-  if ([v5 curState] == 2)
+  areaCopy = area;
+  if ([areaCopy curState] == 2)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000285A4;
     v6[3] = &unk_1002AB288;
-    v7 = v5;
-    v8 = a4;
+    v7 = areaCopy;
+    contextCopy = context;
     sub_1000158DC(@"com.apple.Telephony.fedMobilityCongestionPredictions", v6);
   }
 
@@ -913,24 +913,24 @@ LABEL_30:
   }
 }
 
-- (id)sendPredictionsToBasebandForSubscriptionID:(id)a3 timesUntilCongestion:(id)a4 timesInCongestion:(id)a5 cells:(id)a6 seenCount:(int)a7
+- (id)sendPredictionsToBasebandForSubscriptionID:(id)d timesUntilCongestion:(id)congestion timesInCongestion:(id)inCongestion cells:(id)cells seenCount:(int)count
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a5;
-  v19 = a6;
-  [FMUtil meanOfSample:v11];
+  dCopy = d;
+  congestionCopy = congestion;
+  inCongestionCopy = inCongestion;
+  cellsCopy = cells;
+  [FMUtil meanOfSample:inCongestionCopy];
   v13 = v12;
-  [FMUtil meanOfSample:v10];
+  [FMUtil meanOfSample:congestionCopy];
   v14 = llround(v13);
   v16 = llround(v15);
   v17 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    *&buf[4] = v20;
+    *&buf[4] = dCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v19;
+    *&buf[14] = cellsCopy;
     v22 = 1024;
     v23 = v16;
     v24 = 1024;
@@ -941,21 +941,21 @@ LABEL_30:
   operator new();
 }
 
-- (void)sendQoEEventForCongestionCell:(id)a3
+- (void)sendQoEEventForCongestionCell:(id)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_1001FB8C4();
   }
 
-  v4 = [v3 congestionMetric];
-  v5 = v4;
-  if (v4 && ([v4 isQoEScoreValid] & 1) != 0)
+  congestionMetric = [cellCopy congestionMetric];
+  v5 = congestionMetric;
+  if (congestionMetric && ([congestionMetric isQoEScoreValid] & 1) != 0)
   {
     v6 = +[NSDate now];
-    v7 = [v3 timestamp];
-    [v6 timeIntervalSinceDate:v7];
+    timestamp = [cellCopy timestamp];
+    [v6 timeIntervalSinceDate:timestamp];
     v9 = v8;
 
     if (v9 >= [v5 qoeDuration])

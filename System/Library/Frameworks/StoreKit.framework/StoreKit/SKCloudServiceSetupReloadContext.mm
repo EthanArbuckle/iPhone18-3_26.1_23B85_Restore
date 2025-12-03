@@ -1,12 +1,12 @@
 @interface SKCloudServiceSetupReloadContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)userInfo;
-- (SKCloudServiceSetupReloadContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKCloudServiceSetupReloadContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUserInfo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation SKCloudServiceSetupReloadContext
@@ -30,13 +30,13 @@
   return userInfo;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  infoCopy = info;
+  v12 = infoCopy;
+  if (infoCopy)
   {
-    v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:0 error:0];
+    v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:infoCopy options:0 error:0];
     if (v5)
     {
       v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v5 encoding:4];
@@ -119,10 +119,10 @@
   return v6 ^ v7 ^ [(NSString *)self->_serializedUserInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -132,7 +132,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       cloudServiceSetupURL = self->_cloudServiceSetupURL;
       if ((cloudServiceSetupURL == v5->_cloudServiceSetupURL || [(NSURL *)cloudServiceSetupURL isEqual:?]) && ((action = self->_action, action == v5->_action) || [(NSString *)action isEqualToString:?]) && ((queryItems = self->_queryItems, queryItems == v5->_queryItems) || [(NSArray *)queryItems isEqualToArray:?]) && ((sourceApplicationBundleIdentifier = self->_sourceApplicationBundleIdentifier, sourceApplicationBundleIdentifier == v5->_sourceApplicationBundleIdentifier) || [(NSString *)sourceApplicationBundleIdentifier isEqualToString:?]) && ((referrerURL = self->_referrerURL, referrerURL == v5->_referrerURL) || [(NSURL *)referrerURL isEqual:?]))
       {
@@ -163,7 +163,7 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 2, self->_cloudServiceSetupURL);
@@ -184,17 +184,17 @@
   return v4;
 }
 
-- (SKCloudServiceSetupReloadContext)initWithCoder:(id)a3
+- (SKCloudServiceSetupReloadContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SKCloudServiceSetupReloadContext *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudServiceSetupURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudServiceSetupURL"];
     cloudServiceSetupURL = v5->_cloudServiceSetupURL;
     v5->_cloudServiceSetupURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     v9 = [v8 copy];
     action = v5->_action;
     v5->_action = v9;
@@ -202,21 +202,21 @@
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"queryItems"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"queryItems"];
     v15 = [v14 copy];
     queryItems = v5->_queryItems;
     v5->_queryItems = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationBundleIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationBundleIdentifier"];
     v18 = [v17 copy];
     sourceApplicationBundleIdentifier = v5->_sourceApplicationBundleIdentifier;
     v5->_sourceApplicationBundleIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referrerURL"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referrerURL"];
     referrerURL = v5->_referrerURL;
     v5->_referrerURL = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serializedUserInfo"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedUserInfo"];
     v23 = [v22 copy];
     serializedUserInfo = v5->_serializedUserInfo;
     v5->_serializedUserInfo = v23;
@@ -225,16 +225,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cloudServiceSetupURL = self->_cloudServiceSetupURL;
-  v5 = a3;
-  [v5 encodeObject:cloudServiceSetupURL forKey:@"cloudServiceSetupURL"];
-  [v5 encodeObject:self->_action forKey:@"action"];
-  [v5 encodeObject:self->_queryItems forKey:@"queryItems"];
-  [v5 encodeObject:self->_sourceApplicationBundleIdentifier forKey:@"sourceApplicationBundleIdentifier"];
-  [v5 encodeObject:self->_referrerURL forKey:@"referrerURL"];
-  [v5 encodeObject:self->_serializedUserInfo forKey:@"serializedUserInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:cloudServiceSetupURL forKey:@"cloudServiceSetupURL"];
+  [coderCopy encodeObject:self->_action forKey:@"action"];
+  [coderCopy encodeObject:self->_queryItems forKey:@"queryItems"];
+  [coderCopy encodeObject:self->_sourceApplicationBundleIdentifier forKey:@"sourceApplicationBundleIdentifier"];
+  [coderCopy encodeObject:self->_referrerURL forKey:@"referrerURL"];
+  [coderCopy encodeObject:self->_serializedUserInfo forKey:@"serializedUserInfo"];
 }
 
 @end

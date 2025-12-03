@@ -1,6 +1,6 @@
 @interface TRNetworkOperation
-- (void)_handleResponse:(id)a3;
-- (void)_sendRequestWithSSID:(id)a3 password:(id)a4;
+- (void)_handleResponse:(id)response;
+- (void)_sendRequestWithSSID:(id)d password:(id)password;
 - (void)execute;
 @end
 
@@ -11,7 +11,7 @@
   v16 = *MEMORY[0x277D85DE8];
   if ([(TRNetworkOperation *)self isCancelled])
   {
-    v11 = [objc_opt_class() userCancelledError];
+    userCancelledError = [objc_opt_class() userCancelledError];
     [(TROperation *)self finishWithError:?];
     v3 = *MEMORY[0x277D85DE8];
   }
@@ -60,37 +60,37 @@
   }
 }
 
-- (void)_sendRequestWithSSID:(id)a3 password:(id)a4
+- (void)_sendRequestWithSSID:(id)d password:(id)password
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  passwordCopy = password;
   if ([(TRNetworkOperation *)self isCancelled])
   {
-    v8 = [objc_opt_class() userCancelledError];
-    [(TROperation *)self finishWithError:v8];
+    userCancelledError = [objc_opt_class() userCancelledError];
+    [(TROperation *)self finishWithError:userCancelledError];
   }
 
   else
   {
-    v9 = [(TRNetworkOperation *)self sendingWiFiInfoHandler];
+    sendingWiFiInfoHandler = [(TRNetworkOperation *)self sendingWiFiInfoHandler];
 
-    if (v9)
+    if (sendingWiFiInfoHandler)
     {
-      v10 = [(TRNetworkOperation *)self sendingWiFiInfoHandler];
-      (v10)[2](v10, v6);
+      sendingWiFiInfoHandler2 = [(TRNetworkOperation *)self sendingWiFiInfoHandler];
+      (sendingWiFiInfoHandler2)[2](sendingWiFiInfoHandler2, dCopy);
     }
 
-    v8 = objc_alloc_init(TRSetupNetworkRequest);
-    [(TRSetupNetworkRequest *)v8 setNetworkSSID:v6];
-    [(TRSetupNetworkRequest *)v8 setNetworkPassword:v7];
+    userCancelledError = objc_alloc_init(TRSetupNetworkRequest);
+    [(TRSetupNetworkRequest *)userCancelledError setNetworkSSID:dCopy];
+    [(TRSetupNetworkRequest *)userCancelledError setNetworkPassword:passwordCopy];
     objc_initWeak(&location, self);
-    v11 = [(TROperation *)self session];
+    session = [(TROperation *)self session];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __52__TRNetworkOperation__sendRequestWithSSID_password___block_invoke;
     v12[3] = &unk_279DCECD0;
     objc_copyWeak(&v13, &location);
-    [v11 sendRequest:v8 withResponseHandler:v12];
+    [session sendRequest:userCancelledError withResponseHandler:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -119,10 +119,10 @@ void __52__TRNetworkOperation__sendRequestWithSSID_password___block_invoke(uint6
   }
 }
 
-- (void)_handleResponse:(id)a3
+- (void)_handleResponse:(id)response
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   if (_TRLogEnabled == 1)
   {
     v5 = TRLogHandle();
@@ -131,7 +131,7 @@ void __52__TRNetworkOperation__sendRequestWithSSID_password___block_invoke(uint6
       *buf = 136315394;
       v14 = "[TRNetworkOperation _handleResponse:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = responseCopy;
       _os_log_impl(&dword_26F2A2000, v5, OS_LOG_TYPE_DEFAULT, "%s Handle Network Response: %@", buf, 0x16u);
     }
   }
@@ -140,7 +140,7 @@ void __52__TRNetworkOperation__sendRequestWithSSID_password___block_invoke(uint6
   if (objc_opt_isKindOfClass())
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = v4;
+    v7 = responseCopy;
     v8 = [v6 numberWithBool:{objc_msgSend(v7, "hasNetwork", @"TRNetworkOperationHasNetworkKey"}];
     v12 = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v12 forKeys:&v11 count:1];

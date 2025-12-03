@@ -1,15 +1,15 @@
 @interface _DASActivityProfiler
 + (id)sharedProfiler;
-- (BOOL)errorCheck:(unint64_t)a3 withError:(int)a4 onActivity:(id)a5;
-- (BOOL)isProfilingDelayedForActivity:(id)a3;
-- (BOOL)shouldProfileActivity:(id)a3;
+- (BOOL)errorCheck:(unint64_t)check withError:(int)error onActivity:(id)activity;
+- (BOOL)isProfilingDelayedForActivity:(id)activity;
+- (BOOL)shouldProfileActivity:(id)activity;
 - (_DASActivityProfiler)init;
-- (id)startRecordingNetworkTransfer:(id)a3;
-- (id)stopRecordingNetworkTransfer:(id)a3;
-- (void)endProfilingForActivity:(id)a3 completed:(BOOL)a4 withState:(id)a5;
-- (void)queue_startProfilingForActivity:(id)a3 withState:(id)a4;
-- (void)startProfilingForActivity:(id)a3 withState:(id)a4;
-- (void)startProfilingSnapshotForActivity:(id)a3 withState:(id)a4;
+- (id)startRecordingNetworkTransfer:(id)transfer;
+- (id)stopRecordingNetworkTransfer:(id)transfer;
+- (void)endProfilingForActivity:(id)activity completed:(BOOL)completed withState:(id)state;
+- (void)queue_startProfilingForActivity:(id)activity withState:(id)state;
+- (void)startProfilingForActivity:(id)activity withState:(id)state;
+- (void)startProfilingSnapshotForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASActivityProfiler
@@ -90,7 +90,7 @@
   block[1] = 3221225472;
   block[2] = sub_100087D40;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B5B0 != -1)
   {
     dispatch_once(&qword_10020B5B0, block);
@@ -101,54 +101,54 @@
   return v5;
 }
 
-- (BOOL)isProfilingDelayedForActivity:(id)a3
+- (BOOL)isProfilingDelayedForActivity:(id)activity
 {
   mediaanalysisActivities = self->_mediaanalysisActivities;
-  v4 = [a3 name];
-  LOBYTE(mediaanalysisActivities) = [(NSArray *)mediaanalysisActivities containsObject:v4];
+  name = [activity name];
+  LOBYTE(mediaanalysisActivities) = [(NSArray *)mediaanalysisActivities containsObject:name];
 
   return mediaanalysisActivities;
 }
 
-- (void)startProfilingForActivity:(id)a3 withState:(id)a4
+- (void)startProfilingForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100087EA8;
   block[3] = &unk_1001B56B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = activityCopy;
+  v13 = stateCopy;
+  v9 = stateCopy;
+  v10 = activityCopy;
   dispatch_async(queue, block);
 }
 
-- (void)queue_startProfilingForActivity:(id)a3 withState:(id)a4
+- (void)queue_startProfilingForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(_DASActivityProfiler *)self shouldProfileActivity:v6])
+  activityCopy = activity;
+  stateCopy = state;
+  if ([(_DASActivityProfiler *)self shouldProfileActivity:activityCopy])
   {
     v8 = qword_10020B5A8;
     if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v6;
+      v10 = activityCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Starting profiling on activity %@", &v9, 0xCu);
     }
 
-    [(_DASActivityProfiler *)self startProfilingSnapshotForActivity:v6 withState:v7];
+    [(_DASActivityProfiler *)self startProfilingSnapshotForActivity:activityCopy withState:stateCopy];
   }
 }
 
-- (BOOL)shouldProfileActivity:(id)a3
+- (BOOL)shouldProfileActivity:(id)activity
 {
-  v4 = a3;
-  if (![v4 pid])
+  activityCopy = activity;
+  if (![activityCopy pid])
   {
     v8 = qword_10020B5A8;
     if (!os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_INFO))
@@ -159,9 +159,9 @@ LABEL_8:
     }
 
     v9 = v8;
-    [v4 interval];
+    [activityCopy interval];
     v32 = 138412546;
-    v33 = v4;
+    v33 = activityCopy;
     v34 = 2048;
     v35 = v10;
     v11 = "Profiling not started for %@, interval: %f";
@@ -173,8 +173,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"com.apple.fileproviderd.background-download"];
+  name = [activityCopy name];
+  v6 = [name isEqualToString:@"com.apple.fileproviderd.background-download"];
 
   if (v6)
   {
@@ -182,14 +182,14 @@ LABEL_7:
     if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_INFO))
     {
       v32 = 138412290;
-      v33 = v4;
+      v33 = activityCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Profiling enabled for fileproviderd background-download activity: %@", &v32, 0xCu);
     }
 
     goto LABEL_11;
   }
 
-  if (([v4 isIntensive] & 1) == 0 && (objc_msgSend(v4, "requiresNetwork") & 1) == 0)
+  if (([activityCopy isIntensive] & 1) == 0 && (objc_msgSend(activityCopy, "requiresNetwork") & 1) == 0)
   {
     v30 = qword_10020B5A8;
     if (!os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_INFO))
@@ -199,9 +199,9 @@ LABEL_7:
 
     v9 = v30;
     v32 = 138412546;
-    v33 = v4;
+    v33 = activityCopy;
     v34 = 1024;
-    LODWORD(v35) = [v4 isIntensive];
+    LODWORD(v35) = [activityCopy isIntensive];
     v11 = "Profiling not started for %@, isIntensive: %d";
     v12 = v9;
     v13 = 18;
@@ -210,39 +210,39 @@ LABEL_7:
 
 LABEL_11:
   activityToProfilerStartDates = self->_activityToProfilerStartDates;
-  v16 = [v4 name];
-  v17 = [(NSMutableDictionary *)activityToProfilerStartDates objectForKeyedSubscript:v16];
+  name2 = [activityCopy name];
+  v17 = [(NSMutableDictionary *)activityToProfilerStartDates objectForKeyedSubscript:name2];
 
   if (!v17)
   {
     v18 = [NSMutableArray arrayWithCapacity:3];
     v19 = self->_activityToProfilerStartDates;
-    v20 = [v4 name];
-    [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:v20];
+    name3 = [activityCopy name];
+    [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:name3];
   }
 
   v21 = self->_activityToProfilerStartDates;
-  v22 = [v4 name];
-  v23 = [(NSMutableDictionary *)v21 objectForKeyedSubscript:v22];
+  name4 = [activityCopy name];
+  v23 = [(NSMutableDictionary *)v21 objectForKeyedSubscript:name4];
 
   if ([v23 count] == 3)
   {
-    v24 = [v23 lastObject];
+    lastObject = [v23 lastObject];
     v25 = +[NSDate date];
     v26 = 0;
     while (1)
     {
-      [v25 timeIntervalSinceDate:v24];
+      [v25 timeIntervalSinceDate:lastObject];
       if (v27 <= 60.0)
       {
         break;
       }
 
-      [v23 removeObject:v24];
-      v28 = [v23 lastObject];
+      [v23 removeObject:lastObject];
+      lastObject2 = [v23 lastObject];
 
       --v26;
-      v24 = v28;
+      lastObject = lastObject2;
       if (v26 == -3)
       {
         goto LABEL_20;
@@ -251,7 +251,7 @@ LABEL_11:
 
     if (v26)
     {
-      v28 = v24;
+      lastObject2 = lastObject;
 LABEL_20:
 
       goto LABEL_21;
@@ -261,7 +261,7 @@ LABEL_20:
     if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_DEFAULT))
     {
       v32 = 138412290;
-      v33 = v4;
+      v33 = activityCopy;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Profiling not started for %@, rate limited", &v32, 0xCu);
     }
 
@@ -271,8 +271,8 @@ LABEL_20:
   else
   {
 LABEL_21:
-    v24 = [v4 startDate];
-    [v23 insertObject:v24 atIndex:0];
+    lastObject = [activityCopy startDate];
+    [v23 insertObject:lastObject atIndex:0];
     v14 = 1;
   }
 
@@ -280,28 +280,28 @@ LABEL_23:
   return v14;
 }
 
-- (void)startProfilingSnapshotForActivity:(id)a3 withState:(id)a4
+- (void)startProfilingSnapshotForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
+  activityCopy = activity;
   v61 = 0;
-  v7 = a4;
+  stateCopy = state;
   v8 = +[NSMutableDictionary dictionary];
   [v8 setObject:&off_1001CA090 forKeyedSubscript:@"version"];
-  v9 = [v6 name];
-  [v8 setObject:v9 forKeyedSubscript:@"activityname"];
+  name = [activityCopy name];
+  [v8 setObject:name forKeyedSubscript:@"activityname"];
 
   v10 = [NSNumber numberWithUnsignedLongLong:sub_100009078()];
   [v8 setObject:v10 forKeyedSubscript:@"cpuAwakeTime"];
 
   v11 = +[NSTimeZone localTimeZone];
-  v12 = [v11 secondsFromGMT];
+  secondsFromGMT = [v11 secondsFromGMT];
 
-  v13 = [v6 startDate];
+  startDate = [activityCopy startDate];
 
-  if (v13)
+  if (startDate)
   {
-    v14 = [v6 startDate];
-    [v14 timeIntervalSince1970WithTimeZoneOffset:v12];
+    startDate2 = [activityCopy startDate];
+    [startDate2 timeIntervalSince1970WithTimeZoneOffset:secondsFromGMT];
     v15 = [NSNumber numberWithDouble:?];
     [v8 setObject:v15 forKeyedSubscript:@"startTime"];
   }
@@ -312,31 +312,31 @@ LABEL_23:
   }
 
   v16 = +[_CDContextQueries keyPathForPluginStatus];
-  v17 = [v7 objectForKeyedSubscript:v16];
-  v18 = [v17 BOOLValue];
+  v17 = [stateCopy objectForKeyedSubscript:v16];
+  bOOLValue = [v17 BOOLValue];
 
   v19 = +[_CDContextQueries keyPathForInUseStatus];
-  v20 = [v7 objectForKeyedSubscript:v19];
+  v20 = [stateCopy objectForKeyedSubscript:v19];
 
-  v21 = [v20 unsignedLongLongValue];
-  v22 = v21 == 0;
-  v23 = [(_DASBatteryTemperatureRecorder *)self->_batteryTemperatureRecorder currentBatteryTemperature];
-  v24 = [NSNumber numberWithInt:v18 ^ 1];
+  unsignedLongLongValue = [v20 unsignedLongLongValue];
+  v22 = unsignedLongLongValue == 0;
+  currentBatteryTemperature = [(_DASBatteryTemperatureRecorder *)self->_batteryTemperatureRecorder currentBatteryTemperature];
+  v24 = [NSNumber numberWithInt:bOOLValue ^ 1];
   [v8 setObject:v24 forKeyedSubscript:@"startedOnBattery"];
 
   v25 = [NSNumber numberWithBool:v22];
   [v8 setObject:v25 forKeyedSubscript:@"startedInIdle"];
 
-  v26 = [NSNumber numberWithInteger:v23];
+  v26 = [NSNumber numberWithInteger:currentBatteryTemperature];
   [v8 setObject:v26 forKeyedSubscript:@"startBatteryTemperature"];
 
-  [v6 setStartedOnBattery:v18 ^ 1];
-  [v6 setStartedInIdle:v22];
+  [activityCopy setStartedOnBattery:bOOLValue ^ 1];
+  [activityCopy setStartedInIdle:v22];
   activityToProfile = self->_activityToProfile;
-  v28 = [v6 description];
+  v28 = [activityCopy description];
   [(NSMutableDictionary *)activityToProfile setObject:v8 forKeyedSubscript:v28];
 
-  if ([(_DASActivityProfiler *)self isProfilingDelayedForActivity:v6])
+  if ([(_DASActivityProfiler *)self isProfilingDelayedForActivity:activityCopy])
   {
     v60 = 0;
     state = notify_get_state(self->_pidToken, &v60);
@@ -355,12 +355,12 @@ LABEL_23:
 
     if (v60)
     {
-      [v6 setPid:?];
+      [activityCopy setPid:?];
     }
   }
 
   v31 = pc_session_create();
-  [v6 pid];
+  [activityCopy pid];
   v32 = pc_session_set_procpid();
   if (v32)
   {
@@ -368,14 +368,14 @@ LABEL_23:
     v34 = qword_10020B5A8;
     if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_DEBUG))
     {
-      sub_10012318C(v6, v34, v33);
+      sub_10012318C(activityCopy, v34, v33);
     }
 
     v35 = 0;
 LABEL_19:
     pc_session_destroy();
     activityToSession = self->_activityToSession;
-    v40 = [v6 description];
+    v40 = [activityCopy description];
     [(NSMutableDictionary *)activityToSession removeObjectForKey:v40];
     goto LABEL_20;
   }
@@ -388,7 +388,7 @@ LABEL_19:
   {
     if (v38)
     {
-      sub_100123228(v6, v37, v36);
+      sub_100123228(activityCopy, v37, v36);
     }
 
     goto LABEL_19;
@@ -400,7 +400,7 @@ LABEL_19:
   }
 
   v59 = self->_activityToSession;
-  v40 = [v6 description];
+  v40 = [activityCopy description];
   [(NSMutableDictionary *)v59 setObject:v35 forKeyedSubscript:v40];
 LABEL_20:
 
@@ -435,12 +435,12 @@ LABEL_20:
   v64 = 0u;
   *buf = 0u;
   *__error() = 255;
-  if (proc_pid_rusage([v6 pid], 6, buf) << 24)
+  if (proc_pid_rusage([activityCopy pid], 6, buf) << 24)
   {
     v42 = qword_10020B5A8;
     if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_DEBUG))
     {
-      sub_10012332C(v6, v42);
+      sub_10012332C(activityCopy, v42);
     }
 
     [v41 removeObjectForKey:@"rusage"];
@@ -492,7 +492,7 @@ LABEL_20:
     }
   }
 
-  v56 = [(_DASActivityProfiler *)self startRecordingNetworkTransfer:v6];
+  v56 = [(_DASActivityProfiler *)self startRecordingNetworkTransfer:activityCopy];
   if (v56)
   {
     [v41 setObject:v56 forKeyedSubscript:@"network"];
@@ -512,31 +512,31 @@ LABEL_20:
   }
 
   activityToSnapshot = self->_activityToSnapshot;
-  v58 = [v6 description];
+  v58 = [activityCopy description];
   [(NSMutableDictionary *)activityToSnapshot setObject:v41 forKeyedSubscript:v58];
 }
 
-- (void)endProfilingForActivity:(id)a3 completed:(BOOL)a4 withState:(id)a5
+- (void)endProfilingForActivity:(id)activity completed:(BOOL)completed withState:(id)state
 {
-  v8 = a3;
-  v9 = a5;
+  activityCopy = activity;
+  stateCopy = state;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100088D00;
   v13[3] = &unk_1001B7200;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = activityCopy;
+  completedCopy = completed;
+  v15 = stateCopy;
+  v11 = stateCopy;
+  v12 = activityCopy;
   dispatch_async(queue, v13);
 }
 
-- (id)startRecordingNetworkTransfer:(id)a3
+- (id)startRecordingNetworkTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   v5 = +[NSMutableDictionary dictionary];
   v39 = 0;
   v40 = &v39;
@@ -555,7 +555,7 @@ LABEL_20:
   v38 = 0;
   v42 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [v4 pid]);
+  v7 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [transferCopy pid]);
   if (!v7)
   {
     if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_DEBUG))
@@ -566,7 +566,7 @@ LABEL_20:
     goto LABEL_12;
   }
 
-  if (![v4 pid] || (+[NSSet setWithObject:](NSSet, "setWithObject:", v7), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![transferCopy pid] || (+[NSSet setWithObject:](NSSet, "setWithObject:", v7), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_DEBUG))
     {
@@ -590,7 +590,7 @@ LABEL_12:
   v24 = &v31;
   v25 = &v35;
   v26 = &v27;
-  v21 = v4;
+  v21 = transferCopy;
   v10 = v6;
   v22 = v10;
   v11 = objc_retainBlock(v20);
@@ -643,9 +643,9 @@ LABEL_17:
   return v13;
 }
 
-- (id)stopRecordingNetworkTransfer:(id)a3
+- (id)stopRecordingNetworkTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   v5 = +[NSMutableDictionary dictionary];
   v40 = 0;
   v41 = &v40;
@@ -664,7 +664,7 @@ LABEL_17:
   v39 = 0;
   v43 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [v4 pid]);
+  v7 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [transferCopy pid]);
   if (!v7)
   {
     if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_DEBUG))
@@ -675,10 +675,10 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  if ([v4 requestsApplicationLaunch])
+  if ([transferCopy requestsApplicationLaunch])
   {
-    v8 = [v4 relatedApplications];
-    v9 = [NSSet setWithArray:v8];
+    relatedApplications = [transferCopy relatedApplications];
+    v9 = [NSSet setWithArray:relatedApplications];
 
     if (!v9)
     {
@@ -686,7 +686,7 @@ LABEL_17:
     }
   }
 
-  else if (![v4 pid] || (+[NSSet setWithObject:](NSSet, "setWithObject:", v7), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  else if (![transferCopy pid] || (+[NSSet setWithObject:](NSSet, "setWithObject:", v7), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_13:
     if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_DEBUG))
@@ -711,7 +711,7 @@ LABEL_15:
   v25 = &v32;
   v26 = &v36;
   v27 = &v28;
-  v22 = v4;
+  v22 = transferCopy;
   v11 = v6;
   v23 = v11;
   v12 = objc_retainBlock(v21);
@@ -764,14 +764,14 @@ LABEL_20:
   return v14;
 }
 
-- (BOOL)errorCheck:(unint64_t)a3 withError:(int)a4 onActivity:(id)a5
+- (BOOL)errorCheck:(unint64_t)check withError:(int)error onActivity:(id)activity
 {
-  v6 = a5;
-  if (a4)
+  activityCopy = activity;
+  if (error)
   {
-    if (a4 > 44)
+    if (error > 44)
     {
-      if (a4 == 45)
+      if (error == 45)
       {
         if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_ERROR))
         {
@@ -779,13 +779,13 @@ LABEL_20:
         }
       }
 
-      else if (a4 == 93 && os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_ERROR))
+      else if (error == 93 && os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_ERROR))
       {
         sub_100123C10();
       }
     }
 
-    else if (a4 == 22)
+    else if (error == 22)
     {
       if (os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_ERROR))
       {
@@ -793,13 +793,13 @@ LABEL_20:
       }
     }
 
-    else if (a4 == 34 && os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_ERROR))
+    else if (error == 34 && os_log_type_enabled(qword_10020B5A8, OS_LOG_TYPE_ERROR))
     {
       sub_100123C78();
     }
   }
 
-  return a4 != 0;
+  return error != 0;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface HMDBackingStoreUpdateObjectReference
-- (HMDBackingStoreUpdateObjectReference)initWithObject:(id)a3 uuid:(id)a4;
+- (HMDBackingStoreUpdateObjectReference)initWithObject:(id)object uuid:(id)uuid;
 - (id)object;
 - (void)main;
 @end
@@ -16,16 +16,16 @@
 - (void)main
 {
   v6 = +[HMDBackingStoreSingleton sharedInstance];
-  v3 = [v6 objectLookup];
-  v4 = [(HMDBackingStoreUpdateObjectReference *)self object];
-  v5 = [(HMDBackingStoreUpdateObjectReference *)self uuid];
-  [v3 setObject:v4 forKey:v5];
+  objectLookup = [v6 objectLookup];
+  object = [(HMDBackingStoreUpdateObjectReference *)self object];
+  uuid = [(HMDBackingStoreUpdateObjectReference *)self uuid];
+  [objectLookup setObject:object forKey:uuid];
 }
 
-- (HMDBackingStoreUpdateObjectReference)initWithObject:(id)a3 uuid:(id)a4
+- (HMDBackingStoreUpdateObjectReference)initWithObject:(id)object uuid:(id)uuid
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, object);
+  uuidCopy = uuid;
   v11.receiver = self;
   v11.super_class = HMDBackingStoreUpdateObjectReference;
   v7 = [(HMDBackingStoreUpdateObjectReference *)&v11 init];
@@ -34,7 +34,7 @@
     v8 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v7->_object, v8);
 
-    objc_storeStrong(&v7->_uuid, a4);
+    objc_storeStrong(&v7->_uuid, uuid);
     v9 = v7;
   }
 

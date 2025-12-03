@@ -1,7 +1,7 @@
 @interface SXLayoutParametersManager
 - (SXLayoutParametersManager)init;
-- (id)layoutParametersForTask:(id)a3 previousLayoutOptions:(id)a4;
-- (void)layoutFinishedForTask:(id)a3 result:(id)a4;
+- (id)layoutParametersForTask:(id)task previousLayoutOptions:(id)options;
+- (void)layoutFinishedForTask:(id)task result:(id)result;
 @end
 
 @implementation SXLayoutParametersManager
@@ -13,52 +13,52 @@
   v2 = [(SXLayoutParametersManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     durations = v2->_durations;
-    v2->_durations = v3;
+    v2->_durations = dictionary;
   }
 
   return v2;
 }
 
-- (void)layoutFinishedForTask:(id)a3 result:(id)a4
+- (void)layoutFinishedForTask:(id)task result:(id)result
 {
-  v13 = a3;
-  v6 = a4;
-  [v6 duration];
+  taskCopy = task;
+  resultCopy = result;
+  [resultCopy duration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v13 elapsedDuration];
+    [taskCopy elapsedDuration];
   }
 
-  v7 = [v6 blueprint];
-  v8 = [v7 isComplete];
+  blueprint = [resultCopy blueprint];
+  isComplete = [blueprint isComplete];
 
-  if (v8)
+  if (isComplete)
   {
-    v9 = [(SXLayoutParametersManager *)self durations];
+    durations = [(SXLayoutParametersManager *)self durations];
     v10 = MEMORY[0x1E696AD98];
-    [v6 duration];
+    [resultCopy duration];
     v11 = [v10 numberWithDouble:?];
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "type")}];
-    [v9 setObject:v11 forKey:v12];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(taskCopy, "type")}];
+    [durations setObject:v11 forKey:v12];
   }
 }
 
-- (id)layoutParametersForTask:(id)a3 previousLayoutOptions:(id)a4
+- (id)layoutParametersForTask:(id)task previousLayoutOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 1)
+  taskCopy = task;
+  optionsCopy = options;
+  if ([taskCopy type] == 1)
   {
     v8 = 2;
   }
 
-  else if (v7)
+  else if (optionsCopy)
   {
-    v9 = [v6 options];
-    v10 = [v7 diffWithLayoutOptions:v9];
+    options = [taskCopy options];
+    v10 = [optionsCopy diffWithLayoutOptions:options];
 
     v11 = 2;
     if (((1 << v10) & 0x10110) == 0)
@@ -82,9 +82,9 @@
     v8 = 1;
   }
 
-  v12 = [(SXLayoutParametersManager *)self durations];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "type")}];
-  v14 = [v12 objectForKey:v13];
+  durations = [(SXLayoutParametersManager *)self durations];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(taskCopy, "type")}];
+  v14 = [durations objectForKey:v13];
 
   if (v14)
   {
@@ -98,8 +98,8 @@
   }
 
   v17 = [SXLayoutParameters alloc];
-  v18 = [v6 options];
-  v19 = [(SXLayoutParameters *)v17 initWithLayoutOptions:v18 layoutType:v8 expectedDuration:v16];
+  options2 = [taskCopy options];
+  v19 = [(SXLayoutParameters *)v17 initWithLayoutOptions:options2 layoutType:v8 expectedDuration:v16];
 
   return v19;
 }

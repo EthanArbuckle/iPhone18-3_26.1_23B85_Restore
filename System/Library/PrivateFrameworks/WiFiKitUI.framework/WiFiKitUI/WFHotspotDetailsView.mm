@@ -1,11 +1,11 @@
 @interface WFHotspotDetailsView
 - (CGSize)intrinsicContentSize;
-- (WFHotspotDetailsView)initWithCoder:(id)a3;
-- (WFHotspotDetailsView)initWithFrame:(CGRect)a3;
-- (id)attributedStringFromCellularProtocol:(id)a3;
-- (void)setBatteryCharge:(unint64_t)a3;
-- (void)setCellularProtocolString:(id)a3;
-- (void)setSignalBars:(unint64_t)a3;
+- (WFHotspotDetailsView)initWithCoder:(id)coder;
+- (WFHotspotDetailsView)initWithFrame:(CGRect)frame;
+- (id)attributedStringFromCellularProtocol:(id)protocol;
+- (void)setBatteryCharge:(unint64_t)charge;
+- (void)setCellularProtocolString:(id)string;
+- (void)setSignalBars:(unint64_t)bars;
 - (void)setupSubviews;
 - (void)updateCellularProtocolLabel;
 - (void)updateSignalBars;
@@ -13,11 +13,11 @@
 
 @implementation WFHotspotDetailsView
 
-- (WFHotspotDetailsView)initWithFrame:(CGRect)a3
+- (WFHotspotDetailsView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = WFHotspotDetailsView;
-  v3 = [(WFHotspotDetailsView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFHotspotDetailsView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,11 +32,11 @@
   return v4;
 }
 
-- (WFHotspotDetailsView)initWithCoder:(id)a3
+- (WFHotspotDetailsView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFHotspotDetailsView;
-  v3 = [(WFHotspotDetailsView *)&v7 initWithCoder:a3];
+  v3 = [(WFHotspotDetailsView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -58,8 +58,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(WFHotspotDetailsView *)self arrangedSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  arrangedSubviews = [(WFHotspotDetailsView *)self arrangedSubviews];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -72,7 +72,7 @@
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
@@ -93,7 +93,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
@@ -117,8 +117,8 @@
 {
   [(WFHotspotDetailsView *)self setSpacing:4.0];
   [(WFHotspotDetailsView *)self setAlignment:3];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [(WFHotspotDetailsView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(WFHotspotDetailsView *)self setBackgroundColor:clearColor];
 
   v4 = objc_alloc(MEMORY[0x277D755E8]);
   v5 = *MEMORY[0x277CBF3A0];
@@ -128,52 +128,52 @@
   v9 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], v6, v7, v8}];
   [(WFHotspotDetailsView *)self setSignalImageView:v9];
 
-  v10 = [(WFHotspotDetailsView *)self signalImageView];
-  [(WFHotspotDetailsView *)self addArrangedSubview:v10];
+  signalImageView = [(WFHotspotDetailsView *)self signalImageView];
+  [(WFHotspotDetailsView *)self addArrangedSubview:signalImageView];
 
   [(WFHotspotDetailsView *)self updateSignalBars];
-  v11 = [(WFHotspotDetailsView *)self signalImageView];
+  signalImageView2 = [(WFHotspotDetailsView *)self signalImageView];
   v12 = MEMORY[0x277CCAAD0];
-  v13 = [(WFHotspotDetailsView *)self signalImageView];
-  v14 = [v12 constraintWithItem:v13 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:17.0];
-  [v11 addConstraint:v14];
+  signalImageView3 = [(WFHotspotDetailsView *)self signalImageView];
+  v14 = [v12 constraintWithItem:signalImageView3 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:17.0];
+  [signalImageView2 addConstraint:v14];
 
   v15 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v5, v6, v7, v8}];
   [(WFHotspotDetailsView *)self setNetworkTypeLabel:v15];
 
   [(WFHotspotDetailsView *)self updateCellularProtocolLabel];
-  v16 = [(WFHotspotDetailsView *)self networkTypeLabel];
-  [(WFHotspotDetailsView *)self addArrangedSubview:v16];
+  networkTypeLabel = [(WFHotspotDetailsView *)self networkTypeLabel];
+  [(WFHotspotDetailsView *)self addArrangedSubview:networkTypeLabel];
 
   v17 = [objc_alloc(MEMORY[0x277D75E10]) initWithSizeCategory:0];
   [(WFHotspotDetailsView *)self setBatteryView:v17];
 
   v18 = [(WFHotspotDetailsView *)self batteryCharge]/ 100.0;
-  v19 = [(WFHotspotDetailsView *)self batteryView];
-  [v19 setChargePercent:v18];
+  batteryView = [(WFHotspotDetailsView *)self batteryView];
+  [batteryView setChargePercent:v18];
 
-  v20 = [(WFHotspotDetailsView *)self batteryView];
-  [v20 setNeedsLayout];
+  batteryView2 = [(WFHotspotDetailsView *)self batteryView];
+  [batteryView2 setNeedsLayout];
 
-  v21 = [(WFHotspotDetailsView *)self batteryView];
-  [(WFHotspotDetailsView *)self addArrangedSubview:v21];
+  batteryView3 = [(WFHotspotDetailsView *)self batteryView];
+  [(WFHotspotDetailsView *)self addArrangedSubview:batteryView3];
 
-  v22 = [(WFHotspotDetailsView *)self batteryView];
-  [v22 intrinsicContentSize];
+  batteryView4 = [(WFHotspotDetailsView *)self batteryView];
+  [batteryView4 intrinsicContentSize];
   v24 = v23;
 
-  v25 = [(WFHotspotDetailsView *)self batteryView];
+  batteryView5 = [(WFHotspotDetailsView *)self batteryView];
   v26 = MEMORY[0x277CCAAD0];
-  v27 = [(WFHotspotDetailsView *)self batteryView];
-  v28 = [v26 constraintWithItem:v27 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v24];
-  [v25 addConstraint:v28];
+  batteryView6 = [(WFHotspotDetailsView *)self batteryView];
+  v28 = [v26 constraintWithItem:batteryView6 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v24];
+  [batteryView5 addConstraint:v28];
 
   [(WFHotspotDetailsView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setCellularProtocolString:(id)a3
+- (void)setCellularProtocolString:(id)string
 {
-  objc_storeStrong(&self->_cellularProtocolString, a3);
+  objc_storeStrong(&self->_cellularProtocolString, string);
 
   [(WFHotspotDetailsView *)self updateCellularProtocolLabel];
 }
@@ -182,53 +182,53 @@
 {
   if (self->_cellularProtocolString)
   {
-    v3 = [(WFHotspotDetailsView *)self attributedStringFromCellularProtocol:?];
-    v4 = [(WFHotspotDetailsView *)self networkTypeLabel];
-    [v4 setAttributedText:v3];
+    networkTypeLabel2 = [(WFHotspotDetailsView *)self attributedStringFromCellularProtocol:?];
+    networkTypeLabel = [(WFHotspotDetailsView *)self networkTypeLabel];
+    [networkTypeLabel setAttributedText:networkTypeLabel2];
   }
 
   else
   {
-    v3 = [(WFHotspotDetailsView *)self networkTypeLabel];
-    [v3 setText:&stru_288308678];
+    networkTypeLabel2 = [(WFHotspotDetailsView *)self networkTypeLabel];
+    [networkTypeLabel2 setText:&stru_288308678];
   }
 
-  v5 = [(WFHotspotDetailsView *)self networkTypeLabel];
+  networkTypeLabel3 = [(WFHotspotDetailsView *)self networkTypeLabel];
   LODWORD(v6) = 1148846080;
-  [v5 setContentHuggingPriority:0 forAxis:v6];
+  [networkTypeLabel3 setContentHuggingPriority:0 forAxis:v6];
 
-  v7 = [(WFHotspotDetailsView *)self networkTypeLabel];
-  v8 = [v7 constraints];
+  networkTypeLabel4 = [(WFHotspotDetailsView *)self networkTypeLabel];
+  constraints = [networkTypeLabel4 constraints];
 
-  if (v8)
+  if (constraints)
   {
-    v9 = [(WFHotspotDetailsView *)self networkTypeLabel];
-    v10 = [(WFHotspotDetailsView *)self networkTypeLabel];
-    v11 = [v10 constraints];
-    [v9 removeConstraints:v11];
+    networkTypeLabel5 = [(WFHotspotDetailsView *)self networkTypeLabel];
+    networkTypeLabel6 = [(WFHotspotDetailsView *)self networkTypeLabel];
+    constraints2 = [networkTypeLabel6 constraints];
+    [networkTypeLabel5 removeConstraints:constraints2];
   }
 
-  v12 = [(WFHotspotDetailsView *)self networkTypeLabel];
-  [v12 sizeToFit];
+  networkTypeLabel7 = [(WFHotspotDetailsView *)self networkTypeLabel];
+  [networkTypeLabel7 sizeToFit];
 
-  v13 = [(WFHotspotDetailsView *)self networkTypeLabel];
+  networkTypeLabel8 = [(WFHotspotDetailsView *)self networkTypeLabel];
   v14 = MEMORY[0x277CCAAD0];
-  v15 = [(WFHotspotDetailsView *)self networkTypeLabel];
-  v16 = [(WFHotspotDetailsView *)self networkTypeLabel];
-  [v16 frame];
-  v17 = [v14 constraintWithItem:v15 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:CGRectGetWidth(v19) + 1.0];
-  [v13 addConstraint:v17];
+  networkTypeLabel9 = [(WFHotspotDetailsView *)self networkTypeLabel];
+  networkTypeLabel10 = [(WFHotspotDetailsView *)self networkTypeLabel];
+  [networkTypeLabel10 frame];
+  v17 = [v14 constraintWithItem:networkTypeLabel9 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:CGRectGetWidth(v19) + 1.0];
+  [networkTypeLabel8 addConstraint:v17];
 
   [(WFHotspotDetailsView *)self sizeToFit];
 
   [(WFHotspotDetailsView *)self invalidateIntrinsicContentSize];
 }
 
-- (id)attributedStringFromCellularProtocol:(id)a3
+- (id)attributedStringFromCellularProtocol:(id)protocol
 {
   v3 = MEMORY[0x277CCAB48];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4];
+  protocolCopy = protocol;
+  v5 = [[v3 alloc] initWithString:protocolCopy];
 
   [v5 addAttribute:*MEMORY[0x277D740D0] value:&unk_288322C90 range:{0, objc_msgSend(v5, "length")}];
   v6 = *MEMORY[0x277D740A8];
@@ -238,26 +238,26 @@
   return v5;
 }
 
-- (void)setSignalBars:(unint64_t)a3
+- (void)setSignalBars:(unint64_t)bars
 {
-  v4 = 5;
-  if (a3 < 5)
+  barsCopy = 5;
+  if (bars < 5)
   {
-    v4 = a3;
+    barsCopy = bars;
   }
 
-  self->_signalBars = v4;
+  self->_signalBars = barsCopy;
   [(WFHotspotDetailsView *)self updateSignalBars];
 
   [(WFHotspotDetailsView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setBatteryCharge:(unint64_t)a3
+- (void)setBatteryCharge:(unint64_t)charge
 {
-  self->_batteryCharge = a3;
-  v3 = a3 / 100.0;
-  v4 = [(WFHotspotDetailsView *)self batteryView];
-  [v4 setChargePercent:v3];
+  self->_batteryCharge = charge;
+  v3 = charge / 100.0;
+  batteryView = [(WFHotspotDetailsView *)self batteryView];
+  [batteryView setChargePercent:v3];
 }
 
 - (void)updateSignalBars
@@ -279,9 +279,9 @@
 
   if ([(WFHotspotDetailsView *)self _shouldReverseLayoutDirection])
   {
-    v7 = [v13 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v13 imageFlippedForRightToLeftLayoutDirection];
 
-    v8 = v7;
+    v8 = imageFlippedForRightToLeftLayoutDirection;
   }
 
   else
@@ -295,8 +295,8 @@
   [(UIImageView *)signalImageView setImage:v10];
 
   v11 = self->_signalImageView;
-  v12 = [MEMORY[0x277D75348] defaultTextColor];
-  [(UIImageView *)v11 setTintColor:v12];
+  defaultTextColor = [MEMORY[0x277D75348] defaultTextColor];
+  [(UIImageView *)v11 setTintColor:defaultTextColor];
 
   [(UIImageView *)self->_signalImageView sizeToFit];
 }

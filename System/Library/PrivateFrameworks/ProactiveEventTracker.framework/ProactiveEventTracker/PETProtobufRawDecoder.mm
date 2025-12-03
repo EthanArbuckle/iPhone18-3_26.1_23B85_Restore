@@ -1,22 +1,22 @@
 @interface PETProtobufRawDecoder
-+ (id)filterProtobufData:(id)a3 onField:(id)a4 onNestedMessageEnd:(id)a5;
-+ (id)filterProtobufData:(id)a3 withWhitelist:(id)a4;
++ (id)filterProtobufData:(id)data onField:(id)field onNestedMessageEnd:(id)end;
++ (id)filterProtobufData:(id)data withWhitelist:(id)whitelist;
 @end
 
 @implementation PETProtobufRawDecoder
 
-+ (id)filterProtobufData:(id)a3 withWhitelist:(id)a4
++ (id)filterProtobufData:(id)data withWhitelist:(id)whitelist
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  whitelistCopy = whitelist;
   v8 = objc_opt_new();
-  [v8 addObject:v7];
+  [v8 addObject:whitelistCopy];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy_;
   v19[4] = __Block_byref_object_dispose_;
-  v9 = v7;
+  v9 = whitelistCopy;
   v20 = v9;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -31,7 +31,7 @@
   v10 = v17;
   v14 = v10;
   v15 = v19;
-  v11 = [a1 filterProtobufData:v6 onField:v16 onNestedMessageEnd:v13];
+  v11 = [self filterProtobufData:dataCopy onField:v16 onNestedMessageEnd:v13];
 
   _Block_object_dispose(v19, 8);
 
@@ -84,22 +84,22 @@ uint64_t __58__PETProtobufRawDecoder_filterProtobufData_withWhitelist___block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)filterProtobufData:(id)a3 onField:(id)a4 onNestedMessageEnd:(id)a5
++ (id)filterProtobufData:(id)data onField:(id)field onNestedMessageEnd:(id)end
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 bytes];
+  dataCopy = data;
+  endCopy = end;
+  fieldCopy = field;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
   Mutable = CFDataCreateMutable(0, 0);
   v17 = 0;
-  v14 = [v11 length];
+  v14 = [dataCopy2 length];
 
-  v16[1] = v12 + v14;
-  v16[2] = v12;
-  v16[3] = v12;
+  v16[1] = bytes + v14;
+  v16[2] = bytes;
+  v16[3] = bytes;
   v16[4] = Mutable;
-  parse(v16, v10, v9);
+  parse(v16, fieldCopy, endCopy);
 
   if (v17 == 1)
   {

@@ -3,15 +3,15 @@
 - (NSArray)boardItems;
 - (NSString)description;
 - (_TtC8Freeform19CRLPasteboardObject)init;
-- (_TtC8Freeform19CRLPasteboardObject)initWithContext:(id)a3;
-- (id)makeTextboxFromCopiedTextWith:(id)a3;
-- (void)copyTextFrom:(id)a3;
-- (void)setBoardItems:(id)a3;
+- (_TtC8Freeform19CRLPasteboardObject)initWithContext:(id)context;
+- (id)makeTextboxFromCopiedTextWith:(id)with;
+- (void)copyTextFrom:(id)from;
+- (void)setBoardItems:(id)items;
 @end
 
 @implementation CRLPasteboardObject
 
-- (_TtC8Freeform19CRLPasteboardObject)initWithContext:(id)a3
+- (_TtC8Freeform19CRLPasteboardObject)initWithContext:(id)context
 {
   swift_getObjectType();
   v6[0] = 0x1000000000000;
@@ -19,7 +19,7 @@
   v6[2] = 0x1000000000000;
   v6[3] = 0;
   v7 = 1;
-  v4 = sub_100881284(a3, v6);
+  v4 = sub_100881284(context, v6);
   swift_deallocPartialClassInstance();
   return v4;
 }
@@ -33,26 +33,26 @@
   return v2.super.isa;
 }
 
-- (void)setBoardItems:(id)a3
+- (void)setBoardItems:(id)items
 {
   type metadata accessor for CRLBoardItem(0);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_10087A324(v4);
 }
 
-- (void)copyTextFrom:(id)a3
+- (void)copyTextFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  sub_10087B4DC(v4);
+  fromCopy = from;
+  selfCopy = self;
+  sub_10087B4DC(fromCopy);
 }
 
-- (id)makeTextboxFromCopiedTextWith:(id)a3
+- (id)makeTextboxFromCopiedTextWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10087BD0C(v4);
+  withCopy = with;
+  selfCopy = self;
+  v6 = sub_10087BD0C(withCopy);
 
   return v6;
 }
@@ -81,7 +81,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10087FE2C();
 
   v3 = String._bridgeToObjectiveC()();

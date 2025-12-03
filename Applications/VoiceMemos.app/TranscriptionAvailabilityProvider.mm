@@ -1,8 +1,8 @@
 @interface TranscriptionAvailabilityProvider
 + (_TtC10VoiceMemos33TranscriptionAvailabilityProvider)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (BOOL)deviceIsSupported;
-- (void)registerObserver:(id)a3;
+- (void)registerObserver:(id)observer;
 - (void)updateDeviceIsSupported;
 @end
 
@@ -28,45 +28,45 @@
   v5 = type metadata accessor for TaskPriority();
   (*(*(v5 - 8) + 56))(v4, 1, 1, v5);
   type metadata accessor for MainActor();
-  v6 = self;
+  selfCopy = self;
   v7 = static MainActor.shared.getter();
   v8 = swift_allocObject();
   v8[2] = v7;
   v8[3] = &protocol witness table for MainActor;
-  v8[4] = v6;
+  v8[4] = selfCopy;
   sub_100179578(0, 0, v4, &unk_100247080, v8);
 }
 
 - (BOOL)deviceIsSupported
 {
-  v2 = self;
+  selfCopy = self;
 
   CurrentValueSubject.value.getter();
 
   return v4;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10000685C(a3);
+  selfCopy = self;
+  sub_10000685C(observer);
   swift_unknownObjectRelease();
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_1002CDE28;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
-    v6 = v4;
+    v6 = sharedCopy;
     swift_once();
-    v4 = v6;
+    sharedCopy = v6;
   }
 
   v5 = qword_1002E8DC0;
-  qword_1002E8DC0 = v4;
+  qword_1002E8DC0 = sharedCopy;
 }
 
 @end

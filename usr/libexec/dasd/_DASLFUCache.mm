@@ -1,13 +1,13 @@
 @interface _DASLFUCache
-- (_DASLFUCache)initWithCapacity:(unint64_t)a3;
-- (id)objectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)updateKeyFrequency:(id)a3;
+- (_DASLFUCache)initWithCapacity:(unint64_t)capacity;
+- (id)objectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)updateKeyFrequency:(id)frequency;
 @end
 
 @implementation _DASLFUCache
 
-- (_DASLFUCache)initWithCapacity:(unint64_t)a3
+- (_DASLFUCache)initWithCapacity:(unint64_t)capacity
 {
   v17.receiver = self;
   v17.super_class = _DASLFUCache;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_capacity = a3;
+    v4->_capacity = capacity;
     v6 = +[NSMutableDictionary dictionary];
     keyToValue = v5->_keyToValue;
     v5->_keyToValue = v6;
@@ -39,9 +39,9 @@
   return v5;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -54,9 +54,9 @@
   block[2] = sub_10002B6DC;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -65,64 +65,64 @@
   return v7;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002B860;
   block[3] = &unk_1001B56B8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = keyCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)updateKeyFrequency:(id)a3
+- (void)updateKeyFrequency:(id)frequency
 {
-  v20 = a3;
-  v4 = [(_DASLFUCache *)self keyToFreq];
-  v5 = [v4 objectForKeyedSubscript:v20];
-  v6 = [v5 unsignedIntegerValue];
+  frequencyCopy = frequency;
+  keyToFreq = [(_DASLFUCache *)self keyToFreq];
+  v5 = [keyToFreq objectForKeyedSubscript:frequencyCopy];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [NSNumber numberWithUnsignedInteger:v6 + 1];
-  v8 = [(_DASLFUCache *)self keyToFreq];
-  [v8 setObject:v7 forKeyedSubscript:v20];
+  v7 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  keyToFreq2 = [(_DASLFUCache *)self keyToFreq];
+  [keyToFreq2 setObject:v7 forKeyedSubscript:frequencyCopy];
 
-  v9 = [(_DASLFUCache *)self freqToKeys];
-  v10 = [NSNumber numberWithUnsignedInteger:v6];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  freqToKeys = [(_DASLFUCache *)self freqToKeys];
+  v10 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
+  v11 = [freqToKeys objectForKeyedSubscript:v10];
 
-  [v11 removeObject:v20];
+  [v11 removeObject:frequencyCopy];
   if (![v11 count])
   {
-    v12 = [(_DASLFUCache *)self freqToKeys];
-    v13 = [NSNumber numberWithUnsignedInteger:v6];
-    [v12 removeObjectForKey:v13];
+    freqToKeys2 = [(_DASLFUCache *)self freqToKeys];
+    v13 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
+    [freqToKeys2 removeObjectForKey:v13];
 
-    if ([(_DASLFUCache *)self minFreq]== v6)
+    if ([(_DASLFUCache *)self minFreq]== unsignedIntegerValue)
     {
       [(_DASLFUCache *)self setMinFreq:[(_DASLFUCache *)self minFreq]+ 1];
     }
   }
 
-  v14 = [(_DASLFUCache *)self freqToKeys];
-  v15 = [v14 objectForKeyedSubscript:v7];
+  freqToKeys3 = [(_DASLFUCache *)self freqToKeys];
+  v15 = [freqToKeys3 objectForKeyedSubscript:v7];
 
   if (!v15)
   {
     v16 = +[NSMutableOrderedSet orderedSet];
-    v17 = [(_DASLFUCache *)self freqToKeys];
-    [v17 setObject:v16 forKeyedSubscript:v7];
+    freqToKeys4 = [(_DASLFUCache *)self freqToKeys];
+    [freqToKeys4 setObject:v16 forKeyedSubscript:v7];
   }
 
-  v18 = [(_DASLFUCache *)self freqToKeys];
-  v19 = [v18 objectForKeyedSubscript:v7];
-  [v19 addObject:v20];
+  freqToKeys5 = [(_DASLFUCache *)self freqToKeys];
+  v19 = [freqToKeys5 objectForKeyedSubscript:v7];
+  [v19 addObject:frequencyCopy];
 }
 
 @end

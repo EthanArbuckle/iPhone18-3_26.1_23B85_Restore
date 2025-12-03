@@ -1,15 +1,15 @@
 @interface EQKitMathMLUnaryNode
-- (EQKitMathMLUnaryNode)initWithChild:(id)a3;
-- (EQKitMathMLUnaryNode)initWithChildren:(id)a3;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (EQKitMathMLUnaryNode)initWithChild:(id)child;
+- (EQKitMathMLUnaryNode)initWithChildren:(id)children;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLUnaryNode
 
-- (EQKitMathMLUnaryNode)initWithChild:(id)a3
+- (EQKitMathMLUnaryNode)initWithChild:(id)child
 {
-  if (!a3)
+  if (!child)
   {
     [(EQKitMathMLUnaryNode *)a2 initWithChild:?];
   }
@@ -19,30 +19,30 @@
   v5 = [(EQKitMathMLUnaryNode *)&v8 init];
   if (v5)
   {
-    v6 = a3;
-    v5->mChild = v6;
-    [(EQKitMathMLNode *)v6 setParent:v5];
+    childCopy = child;
+    v5->mChild = childCopy;
+    [(EQKitMathMLNode *)childCopy setParent:v5];
   }
 
   return v5;
 }
 
-- (EQKitMathMLUnaryNode)initWithChildren:(id)a3
+- (EQKitMathMLUnaryNode)initWithChildren:(id)children
 {
   v6.receiver = self;
   v6.super_class = EQKitMathMLUnaryNode;
   v4 = [(EQKitMathMLUnaryNode *)&v6 init];
   if (v4)
   {
-    v4->mChild = [[EQKitMathMLMRow alloc] initWithChildren:a3];
+    v4->mChild = [[EQKitMathMLMRow alloc] initWithChildren:children];
   }
 
   return v4;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v7 = [a4 parseChildrenAsNodeFromXMLNode:?];
+  v7 = [parser parseChildrenAsNodeFromXMLNode:?];
   if (v7)
   {
 
@@ -51,7 +51,7 @@
 
   else
   {
-    [a4 reportError:5 withNode:a3];
+    [parser reportError:5 withNode:node];
 
     return 0;
   }

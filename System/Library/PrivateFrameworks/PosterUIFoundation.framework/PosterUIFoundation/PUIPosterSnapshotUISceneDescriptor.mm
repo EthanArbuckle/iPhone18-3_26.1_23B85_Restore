@@ -1,58 +1,58 @@
 @interface PUIPosterSnapshotUISceneDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSceneDescriptor:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSceneDescriptor:(id)descriptor;
 - (CGRect)canvasBounds;
 - (CGRect)salientContentRectangle;
 - (NSString)description;
 - (PUIPosterSnapshotUISceneDescriptor)init;
-- (PUIPosterSnapshotUISceneDescriptor)initWithBSXPCCoder:(id)a3;
-- (PUIPosterSnapshotUISceneDescriptor)initWithCoder:(id)a3;
-- (PUIPosterSnapshotUISceneDescriptor)initWithDisplayConfiguration:(id)a3;
-- (PUIPosterSnapshotUISceneDescriptor)initWithDisplayConfiguration:(id)a3 canvasBounds:(CGRect)a4 interfaceOrientation:(int64_t)a5 deviceOrientation:(int64_t)a6 userInterfaceStyle:(int64_t)a7 accessibilityContrast:(int64_t)a8 salientContentRectangle:(CGRect)a9 contentOcclusionRectangles:(id)a10;
-- (id)copyWithAccessibilityContrast:(int64_t)a3;
-- (id)copyWithCanvasBounds:(CGRect)a3;
-- (id)copyWithContentOcclusionRectangles:(id)a3;
-- (id)copyWithInterfaceOrientation:(int64_t)a3 deviceOrientation:(int64_t)a4;
-- (id)copyWithSalientContentRectangle:(CGRect)a3;
-- (id)copyWithUserInterfaceStyle:(int64_t)a3;
+- (PUIPosterSnapshotUISceneDescriptor)initWithBSXPCCoder:(id)coder;
+- (PUIPosterSnapshotUISceneDescriptor)initWithCoder:(id)coder;
+- (PUIPosterSnapshotUISceneDescriptor)initWithDisplayConfiguration:(id)configuration;
+- (PUIPosterSnapshotUISceneDescriptor)initWithDisplayConfiguration:(id)configuration canvasBounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation deviceOrientation:(int64_t)deviceOrientation userInterfaceStyle:(int64_t)style accessibilityContrast:(int64_t)contrast salientContentRectangle:(CGRect)rectangle contentOcclusionRectangles:(id)self0;
+- (id)copyWithAccessibilityContrast:(int64_t)contrast;
+- (id)copyWithCanvasBounds:(CGRect)bounds;
+- (id)copyWithContentOcclusionRectangles:(id)rectangles;
+- (id)copyWithInterfaceOrientation:(int64_t)orientation deviceOrientation:(int64_t)deviceOrientation;
+- (id)copyWithSalientContentRectangle:(CGRect)rectangle;
+- (id)copyWithUserInterfaceStyle:(int64_t)style;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIPosterSnapshotUISceneDescriptor
 
 - (PUIPosterSnapshotUISceneDescriptor)init
 {
-  v3 = [MEMORY[0x1E699FB10] pui_sharedDisplayMonitor];
-  v4 = [v3 mainConfiguration];
-  v5 = [(PUIPosterSnapshotUISceneDescriptor *)self initWithDisplayConfiguration:v4];
+  pui_sharedDisplayMonitor = [MEMORY[0x1E699FB10] pui_sharedDisplayMonitor];
+  mainConfiguration = [pui_sharedDisplayMonitor mainConfiguration];
+  v5 = [(PUIPosterSnapshotUISceneDescriptor *)self initWithDisplayConfiguration:mainConfiguration];
 
   return v5;
 }
 
-- (PUIPosterSnapshotUISceneDescriptor)initWithDisplayConfiguration:(id)a3
+- (PUIPosterSnapshotUISceneDescriptor)initWithDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 bounds];
-  v5 = [PUIPosterSnapshotUISceneDescriptor initWithDisplayConfiguration:"initWithDisplayConfiguration:canvasBounds:interfaceOrientation:deviceOrientation:userInterfaceStyle:accessibilityContrast:salientContentRectangle:contentOcclusionRectangles:" canvasBounds:v4 interfaceOrientation:0 deviceOrientation:0 userInterfaceStyle:0 accessibilityContrast:-1 salientContentRectangle:0 contentOcclusionRectangles:?];
+  configurationCopy = configuration;
+  [configurationCopy bounds];
+  v5 = [PUIPosterSnapshotUISceneDescriptor initWithDisplayConfiguration:"initWithDisplayConfiguration:canvasBounds:interfaceOrientation:deviceOrientation:userInterfaceStyle:accessibilityContrast:salientContentRectangle:contentOcclusionRectangles:" canvasBounds:configurationCopy interfaceOrientation:0 deviceOrientation:0 userInterfaceStyle:0 accessibilityContrast:-1 salientContentRectangle:0 contentOcclusionRectangles:?];
 
   return v5;
 }
 
-- (PUIPosterSnapshotUISceneDescriptor)initWithDisplayConfiguration:(id)a3 canvasBounds:(CGRect)a4 interfaceOrientation:(int64_t)a5 deviceOrientation:(int64_t)a6 userInterfaceStyle:(int64_t)a7 accessibilityContrast:(int64_t)a8 salientContentRectangle:(CGRect)a9 contentOcclusionRectangles:(id)a10
+- (PUIPosterSnapshotUISceneDescriptor)initWithDisplayConfiguration:(id)configuration canvasBounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation deviceOrientation:(int64_t)deviceOrientation userInterfaceStyle:(int64_t)style accessibilityContrast:(int64_t)contrast salientContentRectangle:(CGRect)rectangle contentOcclusionRectangles:(id)self0
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v19 = a4.size.height;
-  v20 = a4.size.width;
-  v21 = a4.origin.y;
-  v22 = a4.origin.x;
-  v25 = a3;
-  v26 = a10;
-  if (!v25)
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  v19 = bounds.size.height;
+  v20 = bounds.size.width;
+  v21 = bounds.origin.y;
+  v22 = bounds.origin.x;
+  configurationCopy = configuration;
+  rectanglesCopy = rectangles;
+  if (!configurationCopy)
   {
     [PUIPosterSnapshotUISceneDescriptor initWithDisplayConfiguration:a2 canvasBounds:? interfaceOrientation:? deviceOrientation:? userInterfaceStyle:? accessibilityContrast:? salientContentRectangle:? contentOcclusionRectangles:?];
   }
@@ -67,18 +67,18 @@
     [PUIPosterSnapshotUISceneDescriptor initWithDisplayConfiguration:a2 canvasBounds:? interfaceOrientation:? deviceOrientation:? userInterfaceStyle:? accessibilityContrast:? salientContentRectangle:? contentOcclusionRectangles:?];
   }
 
-  v27 = v26;
+  v27 = rectanglesCopy;
   v35.receiver = self;
   v35.super_class = PUIPosterSnapshotUISceneDescriptor;
   v28 = [(PUIPosterSnapshotUISceneDescriptor *)&v35 init];
   v29 = v28;
   if (v28)
   {
-    v28->_userInterfaceStyle = a7;
-    v28->_interfaceOrientation = a5;
-    v28->_deviceOrientation = a6;
-    v28->_accessibilityContrast = a8;
-    v30 = [v25 copy];
+    v28->_userInterfaceStyle = style;
+    v28->_interfaceOrientation = orientation;
+    v28->_deviceOrientation = deviceOrientation;
+    v28->_accessibilityContrast = contrast;
+    v30 = [configurationCopy copy];
     displayConfiguration = v29->_displayConfiguration;
     v29->_displayConfiguration = v30;
 
@@ -98,13 +98,13 @@
   return v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4 == self || [(PUIPosterSnapshotUISceneDescriptor *)self isEqualToSceneDescriptor:v4];
+    v6 = equalCopy == self || [(PUIPosterSnapshotUISceneDescriptor *)self isEqualToSceneDescriptor:equalCopy];
   }
 
   else
@@ -115,29 +115,29 @@
   return v6;
 }
 
-- (BOOL)isEqualToSceneDescriptor:(id)a3
+- (BOOL)isEqualToSceneDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  descriptorCopy = descriptor;
+  v5 = descriptorCopy;
+  if (self == descriptorCopy)
   {
     v30 = 1;
   }
 
-  else if (v4)
+  else if (descriptorCopy)
   {
     v6 = MEMORY[0x1E698E6A0];
     v7 = objc_opt_self();
     v8 = [v6 builderWithObject:v5 ofExpectedClass:v7];
 
-    v9 = [(PUIPosterSnapshotUISceneDescriptor *)self displayConfiguration];
+    displayConfiguration = [(PUIPosterSnapshotUISceneDescriptor *)self displayConfiguration];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __63__PUIPosterSnapshotUISceneDescriptor_isEqualToSceneDescriptor___block_invoke;
     v49[3] = &unk_1E7856300;
     v10 = v5;
     v50 = v10;
-    v11 = [v8 appendObject:v9 counterpart:v49];
+    v11 = [v8 appendObject:displayConfiguration counterpart:v49];
 
     interfaceOrientation = self->_interfaceOrientation;
     v47[0] = MEMORY[0x1E69E9820];
@@ -185,13 +185,13 @@
     v26 = v24;
     v38 = v26;
     v27 = [v8 appendCGRect:v37 counterpart:{self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
-    v28 = [(PUIPosterSnapshotUISceneDescriptor *)self contentOcclusionRectangles];
+    contentOcclusionRectangles = [(PUIPosterSnapshotUISceneDescriptor *)self contentOcclusionRectangles];
     v32 = MEMORY[0x1E69E9820];
     v33 = 3221225472;
     v34 = __63__PUIPosterSnapshotUISceneDescriptor_isEqualToSceneDescriptor___block_invoke_8;
     v35 = &unk_1E7856300;
     v36 = v26;
-    v29 = [v8 appendObject:v28 counterpart:&v32];
+    v29 = [v8 appendObject:contentOcclusionRectangles counterpart:&v32];
 
     v30 = [v8 isEqual];
   }
@@ -204,9 +204,9 @@
   return v30;
 }
 
-- (id)copyWithInterfaceOrientation:(int64_t)a3 deviceOrientation:(int64_t)a4
+- (id)copyWithInterfaceOrientation:(int64_t)orientation deviceOrientation:(int64_t)deviceOrientation
 {
-  if ([(PUIPosterSnapshotUISceneDescriptor *)self interfaceOrientation]== a3 && [(PUIPosterSnapshotUISceneDescriptor *)self deviceOrientation]== a4)
+  if ([(PUIPosterSnapshotUISceneDescriptor *)self interfaceOrientation]== orientation && [(PUIPosterSnapshotUISceneDescriptor *)self deviceOrientation]== deviceOrientation)
   {
 
     return self;
@@ -228,13 +228,13 @@
     v18 = self->_salientContentRectangle.size.width;
     v19 = self->_salientContentRectangle.size.height;
 
-    return [v7 initWithDisplayConfiguration:displayConfiguration canvasBounds:a3 interfaceOrientation:a4 deviceOrientation:userInterfaceStyle userInterfaceStyle:accessibilityContrast accessibilityContrast:contentOcclusionRectangles salientContentRectangle:x contentOcclusionRectangles:{y, width, height, v16, v17, v18, v19}];
+    return [v7 initWithDisplayConfiguration:displayConfiguration canvasBounds:orientation interfaceOrientation:deviceOrientation deviceOrientation:userInterfaceStyle userInterfaceStyle:accessibilityContrast accessibilityContrast:contentOcclusionRectangles salientContentRectangle:x contentOcclusionRectangles:{y, width, height, v16, v17, v18, v19}];
   }
 }
 
-- (id)copyWithUserInterfaceStyle:(int64_t)a3
+- (id)copyWithUserInterfaceStyle:(int64_t)style
 {
-  if ([(PUIPosterSnapshotUISceneDescriptor *)self userInterfaceStyle]== a3)
+  if ([(PUIPosterSnapshotUISceneDescriptor *)self userInterfaceStyle]== style)
   {
 
     return self;
@@ -257,13 +257,13 @@
     v17 = self->_salientContentRectangle.size.width;
     v18 = self->_salientContentRectangle.size.height;
 
-    return [v5 initWithDisplayConfiguration:displayConfiguration canvasBounds:interfaceOrientation interfaceOrientation:deviceOrientation deviceOrientation:a3 userInterfaceStyle:accessibilityContrast accessibilityContrast:contentOcclusionRectangles salientContentRectangle:x contentOcclusionRectangles:{y, width, height, v15, v16, v17, v18}];
+    return [v5 initWithDisplayConfiguration:displayConfiguration canvasBounds:interfaceOrientation interfaceOrientation:deviceOrientation deviceOrientation:style userInterfaceStyle:accessibilityContrast accessibilityContrast:contentOcclusionRectangles salientContentRectangle:x contentOcclusionRectangles:{y, width, height, v15, v16, v17, v18}];
   }
 }
 
-- (id)copyWithAccessibilityContrast:(int64_t)a3
+- (id)copyWithAccessibilityContrast:(int64_t)contrast
 {
-  if ([(PUIPosterSnapshotUISceneDescriptor *)self accessibilityContrast]== a3)
+  if ([(PUIPosterSnapshotUISceneDescriptor *)self accessibilityContrast]== contrast)
   {
 
     return self;
@@ -286,16 +286,16 @@
     v17 = self->_salientContentRectangle.size.width;
     v18 = self->_salientContentRectangle.size.height;
 
-    return [v5 initWithDisplayConfiguration:displayConfiguration canvasBounds:interfaceOrientation interfaceOrientation:deviceOrientation deviceOrientation:userInterfaceStyle userInterfaceStyle:a3 accessibilityContrast:contentOcclusionRectangles salientContentRectangle:x contentOcclusionRectangles:{y, width, height, v15, v16, v17, v18}];
+    return [v5 initWithDisplayConfiguration:displayConfiguration canvasBounds:interfaceOrientation interfaceOrientation:deviceOrientation deviceOrientation:userInterfaceStyle userInterfaceStyle:contrast accessibilityContrast:contentOcclusionRectangles salientContentRectangle:x contentOcclusionRectangles:{y, width, height, v15, v16, v17, v18}];
   }
 }
 
-- (id)copyWithCanvasBounds:(CGRect)a3
+- (id)copyWithCanvasBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PUIPosterSnapshotUISceneDescriptor *)self canvasBounds];
   v26.origin.x = x;
   v26.origin.y = y;
@@ -329,12 +329,12 @@
   }
 }
 
-- (id)copyWithSalientContentRectangle:(CGRect)a3
+- (id)copyWithSalientContentRectangle:(CGRect)rectangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   [(PUIPosterSnapshotUISceneDescriptor *)self salientContentRectangle];
   v22.origin.x = x;
   v22.origin.y = y;
@@ -364,23 +364,23 @@
   }
 }
 
-- (id)copyWithContentOcclusionRectangles:(id)a3
+- (id)copyWithContentOcclusionRectangles:(id)rectangles
 {
-  v4 = a3;
-  v5 = [(PUIPosterSnapshotUISceneDescriptor *)self contentOcclusionRectangles];
+  rectanglesCopy = rectangles;
+  contentOcclusionRectangles = [(PUIPosterSnapshotUISceneDescriptor *)self contentOcclusionRectangles];
   v6 = BSEqualObjects();
 
   if (v6)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [objc_alloc(objc_opt_class()) initWithDisplayConfiguration:self->_displayConfiguration canvasBounds:self->_interfaceOrientation interfaceOrientation:self->_deviceOrientation deviceOrientation:self->_userInterfaceStyle userInterfaceStyle:self->_accessibilityContrast accessibilityContrast:v4 salientContentRectangle:self->_canvasBounds.origin.x contentOcclusionRectangles:{self->_canvasBounds.origin.y, self->_canvasBounds.size.width, self->_canvasBounds.size.height, self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithDisplayConfiguration:self->_displayConfiguration canvasBounds:self->_interfaceOrientation interfaceOrientation:self->_deviceOrientation deviceOrientation:self->_userInterfaceStyle userInterfaceStyle:self->_accessibilityContrast accessibilityContrast:rectanglesCopy salientContentRectangle:self->_canvasBounds.origin.x contentOcclusionRectangles:{self->_canvasBounds.origin.y, self->_canvasBounds.size.width, self->_canvasBounds.size.height, self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }
@@ -399,99 +399,99 @@
   v7 = [v3 appendInteger:self->_interfaceOrientation withName:@"interfaceOrientation"];
   v8 = [v3 appendInteger:self->_deviceOrientation withName:@"deviceOrientation"];
   v9 = [v3 appendInteger:self->_userInterfaceStyle withName:@"userInterfaceStyle"];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendInteger:self->_accessibilityContrast];
-  v5 = [v3 appendInteger:self->_interfaceOrientation];
-  v6 = [v3 appendInteger:self->_deviceOrientation];
-  v7 = [v3 appendInteger:self->_userInterfaceStyle];
-  v8 = [v3 appendObject:self->_displayConfiguration];
-  v9 = [v3 appendCGRect:{self->_canvasBounds.origin.x, self->_canvasBounds.origin.y, self->_canvasBounds.size.width, self->_canvasBounds.size.height}];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendInteger:self->_accessibilityContrast];
+  v5 = [builder appendInteger:self->_interfaceOrientation];
+  v6 = [builder appendInteger:self->_deviceOrientation];
+  v7 = [builder appendInteger:self->_userInterfaceStyle];
+  v8 = [builder appendObject:self->_displayConfiguration];
+  v9 = [builder appendCGRect:{self->_canvasBounds.origin.x, self->_canvasBounds.origin.y, self->_canvasBounds.size.width, self->_canvasBounds.size.height}];
+  v10 = [builder hash];
 
   return v10;
 }
 
-- (PUIPosterSnapshotUISceneDescriptor)initWithCoder:(id)a3
+- (PUIPosterSnapshotUISceneDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayConfiguration"];
-  [v4 decodeCGRectForKey:@"_canvasBounds"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayConfiguration"];
+  [coderCopy decodeCGRectForKey:@"_canvasBounds"];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 decodeInt64ForKey:@"_accessibilityContrast"];
-  v15 = [v4 decodeInt64ForKey:@"_interfaceOrientation"];
-  v16 = [v4 decodeInt64ForKey:@"_deviceOrientation"];
-  v17 = [v4 decodeInt64ForKey:@"_userInterfaceStyle"];
-  [v4 decodeCGRectForKey:@"_salientContentRectangle"];
+  v14 = [coderCopy decodeInt64ForKey:@"_accessibilityContrast"];
+  v15 = [coderCopy decodeInt64ForKey:@"_interfaceOrientation"];
+  v16 = [coderCopy decodeInt64ForKey:@"_deviceOrientation"];
+  v17 = [coderCopy decodeInt64ForKey:@"_userInterfaceStyle"];
+  [coderCopy decodeCGRectForKey:@"_salientContentRectangle"];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contentOcclusionRectangles"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contentOcclusionRectangles"];
 
   v27 = [(PUIPosterSnapshotUISceneDescriptor *)self initWithDisplayConfiguration:v5 canvasBounds:v15 interfaceOrientation:v16 deviceOrientation:v17 userInterfaceStyle:v14 accessibilityContrast:v26 salientContentRectangle:v7 contentOcclusionRectangles:v9, v11, v13, v19, v21, v23, v25];
   return v27;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accessibilityContrast = self->_accessibilityContrast;
-  v5 = a3;
-  [v5 encodeInt64:accessibilityContrast forKey:@"_accessibilityContrast"];
-  [v5 encodeInt64:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
-  [v5 encodeInt64:self->_deviceOrientation forKey:@"_deviceOrientation"];
-  [v5 encodeInt64:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
-  [v5 encodeObject:self->_displayConfiguration forKey:@"_displayConfiguration"];
-  [v5 encodeCGRect:@"_canvasBounds" forKey:{self->_canvasBounds.origin.x, self->_canvasBounds.origin.y, self->_canvasBounds.size.width, self->_canvasBounds.size.height}];
-  [v5 encodeCGRect:@"_salientContentRectangle" forKey:{self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
-  [v5 encodeObject:self->_contentOcclusionRectangles forKey:@"_contentOcclusionRectangles"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:accessibilityContrast forKey:@"_accessibilityContrast"];
+  [coderCopy encodeInt64:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
+  [coderCopy encodeInt64:self->_deviceOrientation forKey:@"_deviceOrientation"];
+  [coderCopy encodeInt64:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
+  [coderCopy encodeObject:self->_displayConfiguration forKey:@"_displayConfiguration"];
+  [coderCopy encodeCGRect:@"_canvasBounds" forKey:{self->_canvasBounds.origin.x, self->_canvasBounds.origin.y, self->_canvasBounds.size.width, self->_canvasBounds.size.height}];
+  [coderCopy encodeCGRect:@"_salientContentRectangle" forKey:{self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
+  [coderCopy encodeObject:self->_contentOcclusionRectangles forKey:@"_contentOcclusionRectangles"];
 }
 
-- (PUIPosterSnapshotUISceneDescriptor)initWithBSXPCCoder:(id)a3
+- (PUIPosterSnapshotUISceneDescriptor)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayConfiguration"];
-  [v4 decodeCGRectForKey:@"_canvasBounds"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayConfiguration"];
+  [coderCopy decodeCGRectForKey:@"_canvasBounds"];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 decodeInt64ForKey:@"_accessibilityContrast"];
-  v15 = [v4 decodeInt64ForKey:@"_interfaceOrientation"];
-  v16 = [v4 decodeInt64ForKey:@"_deviceOrientation"];
-  v17 = [v4 decodeInt64ForKey:@"_userInterfaceStyle"];
-  [v4 decodeCGRectForKey:@"_salientContentRectangle"];
+  v14 = [coderCopy decodeInt64ForKey:@"_accessibilityContrast"];
+  v15 = [coderCopy decodeInt64ForKey:@"_interfaceOrientation"];
+  v16 = [coderCopy decodeInt64ForKey:@"_deviceOrientation"];
+  v17 = [coderCopy decodeInt64ForKey:@"_userInterfaceStyle"];
+  [coderCopy decodeCGRectForKey:@"_salientContentRectangle"];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contentOcclusionRectangles"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contentOcclusionRectangles"];
 
   v27 = [(PUIPosterSnapshotUISceneDescriptor *)self initWithDisplayConfiguration:v5 canvasBounds:v15 interfaceOrientation:v16 deviceOrientation:v17 userInterfaceStyle:v14 accessibilityContrast:v26 salientContentRectangle:v7 contentOcclusionRectangles:v9, v11, v13, v19, v21, v23, v25];
   return v27;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   accessibilityContrast = self->_accessibilityContrast;
-  v5 = a3;
-  [v5 encodeInt64:accessibilityContrast forKey:@"_accessibilityContrast"];
-  [v5 encodeInt64:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
-  [v5 encodeInt64:self->_deviceOrientation forKey:@"_deviceOrientation"];
-  [v5 encodeInt64:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
-  [v5 encodeObject:self->_displayConfiguration forKey:@"_displayConfiguration"];
-  [v5 encodeCGRect:@"_canvasBounds" forKey:{self->_canvasBounds.origin.x, self->_canvasBounds.origin.y, self->_canvasBounds.size.width, self->_canvasBounds.size.height}];
-  [v5 encodeCGRect:@"_salientContentRectangle" forKey:{self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
-  [v5 encodeObject:self->_contentOcclusionRectangles forKey:@"_contentOcclusionRectangles"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:accessibilityContrast forKey:@"_accessibilityContrast"];
+  [coderCopy encodeInt64:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
+  [coderCopy encodeInt64:self->_deviceOrientation forKey:@"_deviceOrientation"];
+  [coderCopy encodeInt64:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
+  [coderCopy encodeObject:self->_displayConfiguration forKey:@"_displayConfiguration"];
+  [coderCopy encodeCGRect:@"_canvasBounds" forKey:{self->_canvasBounds.origin.x, self->_canvasBounds.origin.y, self->_canvasBounds.size.width, self->_canvasBounds.size.height}];
+  [coderCopy encodeCGRect:@"_salientContentRectangle" forKey:{self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
+  [coderCopy encodeObject:self->_contentOcclusionRectangles forKey:@"_contentOcclusionRectangles"];
 }
 
 - (CGRect)canvasBounds

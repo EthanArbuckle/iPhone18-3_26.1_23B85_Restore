@@ -1,71 +1,71 @@
 @interface DTKPTriggerPMI
-- (int)setPMIEventNamed:(id)a3 threshold:(unint64_t)a4 error:(id *)a5;
-- (int)start:(id *)a3;
-- (int)stop:(id *)a3;
-- (unint64_t)_recordConfigWordsIntoBuffer:(unint64_t *)a3;
+- (int)setPMIEventNamed:(id)named threshold:(unint64_t)threshold error:(id *)error;
+- (int)start:(id *)start;
+- (int)stop:(id *)stop;
+- (unint64_t)_recordConfigWordsIntoBuffer:(unint64_t *)buffer;
 @end
 
 @implementation DTKPTriggerPMI
 
-- (unint64_t)_recordConfigWordsIntoBuffer:(unint64_t *)a3
+- (unint64_t)_recordConfigWordsIntoBuffer:(unint64_t *)buffer
 {
-  v4 = [(DTKPTrigger *)self counterAllocator];
-  v5 = [v4 recordConfigWordsIntoBuffer:a3];
+  counterAllocator = [(DTKPTrigger *)self counterAllocator];
+  v5 = [counterAllocator recordConfigWordsIntoBuffer:buffer];
 
   return v5;
 }
 
-- (int)setPMIEventNamed:(id)a3 threshold:(unint64_t)a4 error:(id *)a5
+- (int)setPMIEventNamed:(id)named threshold:(unint64_t)threshold error:(id *)error
 {
-  v8 = a3;
-  v9 = [(DTKPTrigger *)self counterAllocator];
-  v10 = [v9 setPMIEventName:v8 pmiThreshold:a4 error:a5];
+  namedCopy = named;
+  counterAllocator = [(DTKPTrigger *)self counterAllocator];
+  v10 = [counterAllocator setPMIEventName:namedCopy pmiThreshold:threshold error:error];
 
   if (v10)
   {
     v11 = 0;
-    a4 = 0;
+    threshold = 0;
   }
 
   else
   {
-    v11 = v8;
+    v11 = namedCopy;
   }
 
   pmiEventNameOrAlias = self->_pmiEventNameOrAlias;
   self->_pmiEventNameOrAlias = v11;
 
-  self->_thresholdCount = a4;
+  self->_thresholdCount = threshold;
   return v10;
 }
 
-- (int)start:(id *)a3
+- (int)start:(id *)start
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
+  lock = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_wait(lock, 0xFFFFFFFFFFFFFFFFLL);
 
   v6 = sDTKPLogClient;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(DTKPTrigger *)self triggerID];
-    v8 = [(NSString *)self->_pmiEventNameOrAlias UTF8String];
+    triggerID = [(DTKPTrigger *)self triggerID];
+    uTF8String = [(NSString *)self->_pmiEventNameOrAlias UTF8String];
     thresholdCount = self->_thresholdCount;
     *buf = 67109890;
-    v36 = v7;
+    v36 = triggerID;
     v37 = 2080;
-    v38 = v8;
+    v38 = uTF8String;
     v39 = 2048;
     v40 = thresholdCount;
     v41 = 2048;
-    v42 = [(DTKPTrigger *)self pmcEventCount];
+    pmcEventCount = [(DTKPTrigger *)self pmcEventCount];
     _os_log_impl(&dword_247F67000, v6, OS_LOG_TYPE_DEBUG, "DTKPTriggerPMI: Starting PMI Trigger (%d). Event: %s. Threshold: %lld. PMCs: %lu", buf, 0x26u);
   }
 
-  v10 = [(DTKPTrigger *)self collectKernelStacks];
-  v11 = [(DTKPTrigger *)self collectUserStacks];
-  v12 = [(DTKPTrigger *)self requestsPMCSampling];
-  if (v10)
+  collectKernelStacks = [(DTKPTrigger *)self collectKernelStacks];
+  collectUserStacks = [(DTKPTrigger *)self collectUserStacks];
+  requestsPMCSampling = [(DTKPTrigger *)self requestsPMCSampling];
+  if (collectKernelStacks)
   {
     v13 = 4;
   }
@@ -75,12 +75,12 @@
     v13 = 0;
   }
 
-  if (v11)
+  if (collectUserStacks)
   {
     v13 |= 8u;
   }
 
-  if (v12)
+  if (requestsPMCSampling)
   {
     v14 = 33;
   }
@@ -95,7 +95,7 @@
   if (![(DTKPTrigger *)self actionID])
   {
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error allocating a PMI trigger action"];
-    v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", a3, 0xFFFFFFFFLL, v21);
+    v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", start, 0xFFFFFFFFLL, v21);
 
     goto LABEL_28;
   }
@@ -103,13 +103,13 @@
   [(DTKPTrigger *)self actionID];
   [(DTKPTrigger *)self triggerID];
   kperf_action_userdata_set();
-  v15 = [(DTKPTrigger *)self recountConfiguration];
-  v16 = v15 == 0;
+  recountConfiguration = [(DTKPTrigger *)self recountConfiguration];
+  v16 = recountConfiguration == 0;
 
   if (v16)
   {
-    v22 = [(DTKPTrigger *)self counterAllocator];
-    v20 = [v22 configurePMIActionID:-[DTKPTrigger actionID](self error:{"actionID"), a3}];
+    counterAllocator = [(DTKPTrigger *)self counterAllocator];
+    v20 = [counterAllocator configurePMIActionID:-[DTKPTrigger actionID](self error:{"actionID"), start}];
 
     if (v20)
     {
@@ -119,35 +119,35 @@
 
   else
   {
-    v17 = [(DTKPTrigger *)self recountConfiguration];
-    v18 = [XRBottlenecksAnalysisModeManager applyWithConfig:v17 actionID:[(DTKPTrigger *)self actionID]];
+    recountConfiguration2 = [(DTKPTrigger *)self recountConfiguration];
+    v18 = [XRBottlenecksAnalysisModeManager applyWithConfig:recountConfiguration2 actionID:[(DTKPTrigger *)self actionID]];
 
     if (!v18)
     {
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error applying recount configuration"];
-      v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", a3, 0xFFFFFFFFLL, v19);
+      v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", start, 0xFFFFFFFFLL, v19);
 
       goto LABEL_28;
     }
   }
 
-  v23 = [(DTKPTrigger *)self recountConfiguration];
-  v24 = v23 == 0;
+  recountConfiguration3 = [(DTKPTrigger *)self recountConfiguration];
+  v24 = recountConfiguration3 == 0;
 
-  if (v24 && (-[DTKPTrigger counterAllocator](self, "counterAllocator"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 configureHardwarePMIPeriods:a3], v27, v28))
+  if (v24 && (-[DTKPTrigger counterAllocator](self, "counterAllocator"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 configureHardwarePMIPeriods:start], v27, v28))
   {
-    if (a3)
+    if (start)
     {
-      v29 = [*a3 localizedDescription];
+      localizedDescription = [*start localizedDescription];
     }
 
     else
     {
-      v29 = &stru_285A19CB8;
+      localizedDescription = &stru_285A19CB8;
     }
 
-    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error setting the PMI periods: %@", v29];
-    v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", a3, v28, v31);
+    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error setting the PMI periods: %@", localizedDescription];
+    v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", start, v28, v31);
   }
 
   else
@@ -156,7 +156,7 @@
     if (v25)
     {
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error setting the PMI trigger samplers (0x%x)", -[DTKPTrigger samplers](self, "samplers")];
-      v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", a3, v25, v26);
+      v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", start, v25, v26);
     }
 
     else
@@ -164,7 +164,7 @@
       v30 = [(DTKPTrigger *)self _setFilterByPid:[(DTKPTrigger *)self targetPid] forAction:[(DTKPTrigger *)self actionID]];
       if (v30)
       {
-        v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", a3, v30, @"Error configuring the Time trigger task filter");
+        v20 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerPMI", start, v30, @"Error configuring the Time trigger task filter");
       }
 
       else
@@ -175,17 +175,17 @@
   }
 
 LABEL_28:
-  v32 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_signal(v32);
+  lock2 = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_signal(lock2);
 
   v33 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (int)stop:(id *)a3
+- (int)stop:(id *)stop
 {
-  v4 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+  lock = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_wait(lock, 0xFFFFFFFFFFFFFFFFLL);
 
   if ([(DTKPTrigger *)self actionID])
   {
@@ -193,8 +193,8 @@ LABEL_28:
     [(DTKPTrigger *)self setActionID:0];
   }
 
-  v5 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_signal(v5);
+  lock2 = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_signal(lock2);
 
   return 0;
 }

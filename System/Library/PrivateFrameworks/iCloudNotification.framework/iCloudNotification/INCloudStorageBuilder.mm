@@ -20,16 +20,16 @@
   [v3 setUsedStorage:&off_100058C28];
   [v3 setFreeStorage:&off_100058C40];
   [v3 setCommerceStorage:&off_100058C10];
-  v4 = [a1 _mockMediaStorage];
-  v10 = v4;
+  _mockMediaStorage = [self _mockMediaStorage];
+  v10 = _mockMediaStorage;
   v5 = [NSArray arrayWithObjects:&v10 count:1];
   [v3 setMediaStorage:v5];
 
-  v6 = [a1 _backupInfo];
-  [v3 setBackupInfo:v6];
+  _backupInfo = [self _backupInfo];
+  [v3 setBackupInfo:_backupInfo];
 
-  v7 = [a1 _subscriptionInfo];
-  [v3 setSubscriptionInfo:v7];
+  _subscriptionInfo = [self _subscriptionInfo];
+  [v3 setSubscriptionInfo:_subscriptionInfo];
 
   v8 = [NSURL URLWithString:@"https://p109-quota.icloud.com:443/quotaservice/external/ios/17118882597/00008020-001554E43E63002E/getManageCloudStorage"];
   [v3 setManageStorageURL:v8];
@@ -69,8 +69,8 @@
 {
   v3 = objc_alloc_init(ICQBackupInfo);
   [v3 setNoOfBackupDevices:&off_100058C70];
-  v4 = [a1 _backupDeviceGroup];
-  v7 = v4;
+  _backupDeviceGroup = [self _backupDeviceGroup];
+  v7 = _backupDeviceGroup;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
   [v3 setDeviceGroups:v5];
 
@@ -82,8 +82,8 @@
   v3 = objc_alloc_init(ICQBackupDeviceGroup);
   [v3 setSectionHeader:@"All Device Backups"];
   [v3 setSectionFooter:@"Some footer text"];
-  v4 = [a1 _backupDevice];
-  v7 = v4;
+  _backupDevice = [self _backupDevice];
+  v7 = _backupDevice;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
   [v3 setBackupDevices:v5];
 
@@ -98,8 +98,8 @@
   [v3 setDeviceUDID:@"0123456789"];
   [v3 setStorageUsed:&off_100058C28];
   [v3 setStorageUsedLabel:@"50 GB"];
-  v4 = [a1 _imageURL];
-  [v3 setImageURL:v4];
+  _imageURL = [self _imageURL];
+  [v3 setImageURL:_imageURL];
 
   [v3 setIsActive:1];
 
@@ -110,8 +110,8 @@
 {
   v3 = objc_alloc_init(ICQSubscriptionInfo);
   [v3 setICloudPlusSubscriber:1];
-  v4 = [a1 _specifiersInfo];
-  [v3 setSpecifiersInfo:v4];
+  _specifiersInfo = [self _specifiersInfo];
+  [v3 setSpecifiersInfo:_specifiersInfo];
 
   return v3;
 }
@@ -124,8 +124,8 @@
   [v4 setIdentifier:@"FAMILY_SHARING"];
   [v4 setTitle:@"Share with Family"];
   [v4 setSubTitle:&stru_1000582D8];
-  v5 = [a1 _imageURL];
-  [v4 setIconURL:v5];
+  _imageURL = [self _imageURL];
+  [v4 setIconURL:_imageURL];
 
   v6 = [NSURL URLWithString:@"https://www.apple.com"];
   [v4 setActionURL:v6];
@@ -136,8 +136,8 @@
   [v7 setIdentifier:@"STORAGE_UPGRADE"];
   [v7 setTitle:@"Manage Plan"];
   [v7 setSubTitle:@"iCloud+ with 50 GB"];
-  v8 = [a1 _imageURL];
-  [v7 setIconURL:v8];
+  _imageURL2 = [self _imageURL];
+  [v7 setIconURL:_imageURL2];
 
   v9 = [NSURL URLWithString:@"https://p110-quota.icloud.com:443/quotaservice/external/ios/17118882597/00008020-001554E43E63002E/upsellUI?context=VXBncmFkZVN0b3JhZ2VfbWFuYWdlU3RvcmFnZV9zZXR0aW5nc01hbmFnZVN0b3JhZ2VfbWFuYWdlU3RvcmFnZV9udWxsX251bGw="];
   [v7 setActionURL:v9];

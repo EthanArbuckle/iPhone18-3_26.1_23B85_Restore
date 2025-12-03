@@ -1,44 +1,44 @@
 @interface WADeviceAnalyticsUsageDimension
-+ (id)dimensionWith:(id)a3 forEntity:(id)a4;
-+ (id)dimensionsUsedAsFilterIn:(id)a3;
-+ (id)dimensionsUsedAsGroupBy:(id)a3;
-+ (id)usedDimensionsIn:(id)a3;
-- (BOOL)useDimensionAs:(unint64_t)a3 withPredicate:(id)a4 withError:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)dimensionWith:(id)with forEntity:(id)entity;
++ (id)dimensionsUsedAsFilterIn:(id)in;
++ (id)dimensionsUsedAsGroupBy:(id)by;
++ (id)usedDimensionsIn:(id)in;
+- (BOOL)useDimensionAs:(unint64_t)as withPredicate:(id)predicate withError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation WADeviceAnalyticsUsageDimension
 
-+ (id)dimensionWith:(id)a3 forEntity:(id)a4
++ (id)dimensionWith:(id)with forEntity:(id)entity
 {
-  v5 = a3;
-  v6 = a4;
+  withCopy = with;
+  entityCopy = entity;
   v7 = objc_opt_new();
   v8 = v7;
   if (v7)
   {
-    [v7 setDimension:v5];
+    [v7 setDimension:withCopy];
     [v8 setUseAs:0];
     [v8 setFilterPredicate:0];
-    [v8 setEntity:v6];
-    v9 = [v6 attributesByName];
-    v10 = [v9 objectForKeyedSubscript:v5];
-    v11 = [v10 attributeType];
+    [v8 setEntity:entityCopy];
+    attributesByName = [entityCopy attributesByName];
+    v10 = [attributesByName objectForKeyedSubscript:withCopy];
+    attributeType = [v10 attributeType];
 
     v12 = 0x7FFFFFFFFFFFFFFFLL;
     v13 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v11 == 200)
+    if (attributeType == 200)
     {
       v13 = 0x7FFFFFFFLL;
     }
 
-    if (v11 != 300)
+    if (attributeType != 300)
     {
       v12 = v13;
     }
 
-    if (v11 == 100)
+    if (attributeType == 100)
     {
       v14 = 0x7FFFLL;
     }
@@ -54,12 +54,12 @@
   return v8;
 }
 
-- (BOOL)useDimensionAs:(unint64_t)a3 withPredicate:(id)a4 withError:(id *)a5
+- (BOOL)useDimensionAs:(unint64_t)as withPredicate:(id)predicate withError:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (!v8 && (a3 & 2) != 0)
+  predicateCopy = predicate;
+  v9 = predicateCopy;
+  if (!predicateCopy && (as & 2) != 0)
   {
     v12 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@
       v24 = 92;
     }
 
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v27 = *MEMORY[0x1E696A588];
@@ -80,24 +80,24 @@
       v16 = &v27;
 LABEL_17:
       v18 = [v14 dictionaryWithObjects:v15 forKeys:v16 count:{1, v19, v20}];
-      *a5 = [v13 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v18];
+      *error = [v13 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v18];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    if (!v8 || (a3 & 2) != 0)
+    if (!predicateCopy || (as & 2) != 0)
     {
-      [(WADeviceAnalyticsUsageDimension *)self setUseAs:a3];
+      [(WADeviceAnalyticsUsageDimension *)self setUseAs:as];
       [(WADeviceAnalyticsUsageDimension *)self setFilterPredicate:v9];
-      if (a5)
+      if (error)
       {
-        *a5 = 0;
+        *error = 0;
       }
 
-      LOBYTE(a5) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_8;
     }
 
@@ -109,10 +109,10 @@ LABEL_17:
       v23 = 1024;
       v24 = 96;
       v25 = 2048;
-      v26 = a3;
+      asCopy = as;
     }
 
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v19 = *MEMORY[0x1E696A588];
@@ -127,7 +127,7 @@ LABEL_17:
 LABEL_8:
 
   v10 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
 - (id)description
@@ -169,25 +169,25 @@ LABEL_8:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"dimension:%@ useAs:%@%@%@ %@", self->_dimension, v2, v5, v6, filterPredicate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(WADeviceAnalyticsUsageDimension *)self dimension];
-  v5 = [(WADeviceAnalyticsUsageDimension *)self entity];
-  v6 = [WADeviceAnalyticsUsageDimension dimensionWith:v4 forEntity:v5];
+  dimension = [(WADeviceAnalyticsUsageDimension *)self dimension];
+  entity = [(WADeviceAnalyticsUsageDimension *)self entity];
+  v6 = [WADeviceAnalyticsUsageDimension dimensionWith:dimension forEntity:entity];
 
   [v6 setUseAs:{-[WADeviceAnalyticsUsageDimension useAs](self, "useAs")}];
-  v7 = [(WADeviceAnalyticsUsageDimension *)self filterPredicate];
-  [v6 setFilterPredicate:v7];
+  filterPredicate = [(WADeviceAnalyticsUsageDimension *)self filterPredicate];
+  [v6 setFilterPredicate:filterPredicate];
 
   return v6;
 }
 
-+ (id)usedDimensionsIn:(id)a3
++ (id)usedDimensionsIn:(id)in
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 allValues];
+  allValues = [in allValues];
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"useAs != 0"];
-  v5 = [WAUtil filterArray:v3 usingPredicate:v4];
+  v5 = [WAUtil filterArray:allValues usingPredicate:v4];
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dimension" ascending:1];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -198,22 +198,22 @@ LABEL_8:
   return v8;
 }
 
-+ (id)dimensionsUsedAsFilterIn:(id)a3
++ (id)dimensionsUsedAsFilterIn:(id)in
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  inCopy = in;
   v5 = [v3 predicateWithFormat:@"(useAs & %d) > 0", 2];
-  v6 = [WAUtil filterArray:v4 usingPredicate:v5];
+  v6 = [WAUtil filterArray:inCopy usingPredicate:v5];
 
   return v6;
 }
 
-+ (id)dimensionsUsedAsGroupBy:(id)a3
++ (id)dimensionsUsedAsGroupBy:(id)by
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  byCopy = by;
   v5 = [v3 predicateWithFormat:@"(useAs & %d) > 0", 4];
-  v6 = [WAUtil filterArray:v4 usingPredicate:v5];
+  v6 = [WAUtil filterArray:byCopy usingPredicate:v5];
 
   return v6;
 }

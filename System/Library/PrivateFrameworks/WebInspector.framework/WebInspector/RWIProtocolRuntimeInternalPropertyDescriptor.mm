@@ -1,38 +1,38 @@
 @interface RWIProtocolRuntimeInternalPropertyDescriptor
 - (NSString)name;
-- (RWIProtocolRuntimeInternalPropertyDescriptor)initWithName:(id)a3;
+- (RWIProtocolRuntimeInternalPropertyDescriptor)initWithName:(id)name;
 - (RWIProtocolRuntimeRemoteObject)value;
-- (void)setName:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setName:(id)name;
+- (void)setValue:(id)value;
 @end
 
 @implementation RWIProtocolRuntimeInternalPropertyDescriptor
 
-- (RWIProtocolRuntimeInternalPropertyDescriptor)initWithName:(id)a3
+- (RWIProtocolRuntimeInternalPropertyDescriptor)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = RWIProtocolRuntimeInternalPropertyDescriptor;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!nameCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"name"}];
     }
 
-    [(RWIProtocolRuntimeInternalPropertyDescriptor *)v5 setName:v4];
+    [(RWIProtocolRuntimeInternalPropertyDescriptor *)v5 setName:nameCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeInternalPropertyDescriptor;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -44,11 +44,11 @@
   return v2;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeInternalPropertyDescriptor;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"value"];
+  [(RWIProtocolJSONObject *)&v3 setObject:value forKey:@"value"];
 }
 
 - (RWIProtocolRuntimeRemoteObject)value

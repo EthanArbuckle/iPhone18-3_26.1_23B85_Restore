@@ -1,24 +1,24 @@
 @interface WFEmailTriggerConfigurationViewController
 - (UIViewController)recipientFieldViewController;
 - (UIViewController)senderFieldViewController;
-- (WFEmailTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
-- (id)accountFromAccountIdentifier:(id)a3;
+- (WFEmailTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
+- (id)accountFromAccountIdentifier:(id)identifier;
 - (id)customSections;
-- (id)infoForSection:(int64_t)a3;
+- (id)infoForSection:(int64_t)section;
 - (id)supportedAccountTypeIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)presentNavControllerWithRootViewController:(id)a3;
-- (void)recipientViewControllerDidFinish:(id)a3 cancelled:(BOOL)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)presentNavControllerWithRootViewController:(id)controller;
+- (void)recipientViewControllerDidFinish:(id)finish cancelled:(BOOL)cancelled;
 - (void)setUpAccounts;
 - (void)showSubjectContainsAlert;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options;
 - (void)updateUI;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFEmailTriggerConfigurationViewController
@@ -37,16 +37,16 @@
   return WeakRetained;
 }
 
-- (id)accountFromAccountIdentifier:(id)a3
+- (id)accountFromAccountIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(WFEmailTriggerConfigurationViewController *)self allAccounts];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allAccounts = [(WFEmailTriggerConfigurationViewController *)self allAccounts];
+  v6 = [allAccounts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -56,12 +56,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allAccounts);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -70,7 +70,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allAccounts countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -85,75 +85,75 @@ LABEL_11:
   return v6;
 }
 
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options
 {
-  v5 = a4;
-  v15 = a5;
-  v8 = a3;
-  if (v5)
+  selectedCopy = selected;
+  optionsCopy = options;
+  controllerCopy = controller;
+  if (selectedCopy)
   {
-    v9 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v9 setSelectedAccountIdentifiers:0];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger setSelectedAccountIdentifiers:0];
 
-    v10 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v10 setSelectedAccountDescriptions:0];
+    trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger2 setSelectedAccountDescriptions:0];
   }
 
   else
   {
-    v11 = [v15 if_map:&__block_literal_global_313];
-    v12 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v12 setSelectedAccountIdentifiers:v11];
+    v11 = [optionsCopy if_map:&__block_literal_global_313];
+    trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger3 setSelectedAccountIdentifiers:v11];
 
-    v10 = [v15 if_map:&__block_literal_global_315];
-    v13 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v13 setSelectedAccountDescriptions:v10];
+    trigger2 = [optionsCopy if_map:&__block_literal_global_315];
+    trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger4 setSelectedAccountDescriptions:trigger2];
   }
 
-  [v8 dismissViewControllerAnimated:1 completion:0];
-  v14 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v14 reloadData];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)recipientViewControllerDidFinish:(id)a3 cancelled:(BOOL)a4
+- (void)recipientViewControllerDidFinish:(id)finish cancelled:(BOOL)cancelled
 {
-  v6 = a3;
-  v14 = v6;
-  if (a4)
+  finishCopy = finish;
+  v14 = finishCopy;
+  if (cancelled)
   {
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    [finishCopy dismissViewControllerAnimated:1 completion:0];
     goto LABEL_9;
   }
 
-  [v6 commitRemainingText];
-  v7 = [v14 entries];
-  v8 = [v7 if_compactMap:&__block_literal_global_1495];
-  v9 = [(WFEmailTriggerConfigurationViewController *)self recipientFieldViewController];
+  [finishCopy commitRemainingText];
+  entries = [v14 entries];
+  v8 = [entries if_compactMap:&__block_literal_global_1495];
+  recipientFieldViewController = [(WFEmailTriggerConfigurationViewController *)self recipientFieldViewController];
 
-  if (v9 == v14)
+  if (recipientFieldViewController == v14)
   {
-    v12 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v12 setSelectedRecipients:v8];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger setSelectedRecipients:v8];
     goto LABEL_7;
   }
 
-  v10 = [(WFEmailTriggerConfigurationViewController *)self senderFieldViewController];
+  senderFieldViewController = [(WFEmailTriggerConfigurationViewController *)self senderFieldViewController];
 
   v11 = v14;
-  if (v10 == v14)
+  if (senderFieldViewController == v14)
   {
-    v12 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v12 setSelectedSenders:v8];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger setSelectedSenders:v8];
 LABEL_7:
 
     v11 = v14;
   }
 
   [v11 dismissViewControllerAnimated:1 completion:0];
-  v13 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v13 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 LABEL_9:
@@ -198,7 +198,7 @@ id __88__WFEmailTriggerConfigurationViewController_recipientViewControllerDidFin
   v16[2] = __69__WFEmailTriggerConfigurationViewController_showSubjectContainsAlert__block_invoke;
   v16[3] = &unk_279EE81B0;
   v17 = v6;
-  v18 = self;
+  selfCopy = self;
   v9 = v6;
   v10 = [v7 actionWithTitle:v8 style:0 handler:v16];
 
@@ -271,21 +271,21 @@ void __69__WFEmailTriggerConfigurationViewController_showSubjectContainsAlert__b
   [v3 setPlaceholder:v6];
 }
 
-- (void)presentNavControllerWithRootViewController:(id)a3
+- (void)presentNavControllerWithRootViewController:(id)controller
 {
   v4 = MEMORY[0x277D757A0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [[v4 alloc] initWithRootViewController:controllerCopy];
 
   [(WFEmailTriggerConfigurationViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFEmailTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFEmailTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = getWFTriggersLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -331,17 +331,17 @@ void __69__WFEmailTriggerConfigurationViewController_showSubjectContainsAlert__b
 
     if (v19)
     {
-      v20 = [(WFTriggerConfigurationViewController *)self trigger];
-      v21 = [v20 selectedAccountIdentifiers];
-      v22 = [v21 count] == 0;
+      trigger = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedAccountIdentifiers = [trigger selectedAccountIdentifiers];
+      v22 = [selectedAccountIdentifiers count] == 0;
 
-      v23 = [(WFEmailTriggerConfigurationViewController *)self allAccounts];
+      allAccounts = [(WFEmailTriggerConfigurationViewController *)self allAccounts];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __79__WFEmailTriggerConfigurationViewController_tableView_didSelectRowAtIndexPath___block_invoke;
       v33[3] = &unk_279EE7718;
       v33[4] = self;
-      v11 = [v23 if_map:v33];
+      v11 = [allAccounts if_map:v33];
 
       v24 = [WFTriggerTableViewController alloc];
       v25 = WFLocalizedString(@"Any Account");
@@ -380,9 +380,9 @@ void __69__WFEmailTriggerConfigurationViewController_showSubjectContainsAlert__b
 LABEL_6:
 
 LABEL_9:
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
-  v17 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v17 reloadData];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
@@ -404,21 +404,21 @@ WFSelectableListOption *__79__WFEmailTriggerConfigurationViewController_tableVie
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFEmailTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFEmailTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFEmailTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFEmailTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
@@ -448,12 +448,12 @@ WFSelectableListOption *__79__WFEmailTriggerConfigurationViewController_tableVie
       {
         v15 = v10;
         v35 = WFLocalizedString(@"Account");
-        v36 = [v15 textLabel];
-        [v36 setText:v35];
+        textLabel = [v15 textLabel];
+        [textLabel setText:v35];
 
-        v37 = [(WFTriggerConfigurationViewController *)self trigger];
-        v38 = [v37 selectedAccountIdentifiers];
-        v39 = [v38 count];
+        trigger = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedAccountIdentifiers = [trigger selectedAccountIdentifiers];
+        v39 = [selectedAccountIdentifiers count];
 
         if (!v39)
         {
@@ -461,26 +461,26 @@ WFSelectableListOption *__79__WFEmailTriggerConfigurationViewController_tableVie
           goto LABEL_23;
         }
 
-        v40 = [(WFTriggerConfigurationViewController *)self trigger];
-        v41 = [v40 selectedAccountIdentifiers];
-        v42 = [v41 count];
+        trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedAccountIdentifiers2 = [trigger2 selectedAccountIdentifiers];
+        v42 = [selectedAccountIdentifiers2 count];
 
         if (v42 == 1)
         {
-          v43 = [(WFTriggerConfigurationViewController *)self trigger];
-          v44 = [v43 selectedAccountIdentifiers];
-          v21 = [v44 objectAtIndex:0];
+          trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+          selectedAccountIdentifiers3 = [trigger3 selectedAccountIdentifiers];
+          trigger7 = [selectedAccountIdentifiers3 objectAtIndex:0];
 
-          v22 = [(WFEmailTriggerConfigurationViewController *)self accountFromAccountIdentifier:v21];
-          v23 = [v22 accountDescription];
+          trigger4 = [(WFEmailTriggerConfigurationViewController *)self accountFromAccountIdentifier:trigger7];
+          accountDescription = [trigger4 accountDescription];
           goto LABEL_9;
         }
 
         v56 = MEMORY[0x277CCACA8];
-        v21 = WFLocalizedPluralString(@"Any of %lu Accounts");
-        v22 = [(WFTriggerConfigurationViewController *)self trigger];
-        v64 = [v22 selectedAccountIdentifiers];
-        v57 = [v56 localizedStringWithFormat:v21, objc_msgSend(v64, "count")];
+        trigger7 = WFLocalizedPluralString(@"Any of %lu Accounts");
+        trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedAccountIdentifiers4 = [trigger4 selectedAccountIdentifiers];
+        v57 = [v56 localizedStringWithFormat:trigger7, objc_msgSend(selectedAccountIdentifiers4, "count")];
         [v15 detailTextLabel];
         v59 = v58 = v15;
         [v59 setText:v57];
@@ -500,12 +500,12 @@ WFSelectableListOption *__79__WFEmailTriggerConfigurationViewController_tableVie
 
         v15 = v10;
         v48 = WFLocalizedString(@"Recipient");
-        v49 = [v15 textLabel];
-        [v49 setText:v48];
+        textLabel2 = [v15 textLabel];
+        [textLabel2 setText:v48];
 
-        v50 = [(WFTriggerConfigurationViewController *)self trigger];
-        v51 = [v50 selectedRecipients];
-        v52 = [v51 count];
+        trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedRecipients = [trigger5 selectedRecipients];
+        v52 = [selectedRecipients count];
 
         if (!v52)
         {
@@ -513,25 +513,25 @@ WFSelectableListOption *__79__WFEmailTriggerConfigurationViewController_tableVie
           goto LABEL_23;
         }
 
-        v53 = [(WFTriggerConfigurationViewController *)self trigger];
-        v54 = [v53 selectedRecipients];
-        v55 = [v54 count];
+        trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedRecipients2 = [trigger6 selectedRecipients];
+        v55 = [selectedRecipients2 count];
 
         if (v55 == 1)
         {
-          v21 = [(WFTriggerConfigurationViewController *)self trigger];
-          v22 = [v21 selectedRecipients];
-          v23 = [v22 objectAtIndex:0];
+          trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+          trigger4 = [trigger7 selectedRecipients];
+          accountDescription = [trigger4 objectAtIndex:0];
           goto LABEL_9;
         }
 
         v62 = MEMORY[0x277CCACA8];
-        v21 = WFLocalizedPluralString(@"Any of %lu Recipients");
-        v22 = [(WFTriggerConfigurationViewController *)self trigger];
-        v64 = [v22 selectedRecipients];
-        v57 = [v62 localizedStringWithFormat:v21, objc_msgSend(v64, "count")];
-        v63 = [v15 detailTextLabel];
-        [v63 setText:v57];
+        trigger7 = WFLocalizedPluralString(@"Any of %lu Recipients");
+        trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedAccountIdentifiers4 = [trigger4 selectedRecipients];
+        v57 = [v62 localizedStringWithFormat:trigger7, objc_msgSend(selectedAccountIdentifiers4, "count")];
+        detailTextLabel = [v15 detailTextLabel];
+        [detailTextLabel setText:v57];
       }
 
       goto LABEL_24;
@@ -539,37 +539,37 @@ WFSelectableListOption *__79__WFEmailTriggerConfigurationViewController_tableVie
 
     v15 = v10;
     v26 = WFLocalizedString(@"Subject Contains");
-    v27 = [v15 textLabel];
-    [v27 setText:v26];
+    textLabel3 = [v15 textLabel];
+    [textLabel3 setText:v26];
 
-    v28 = [(WFTriggerConfigurationViewController *)self trigger];
-    v29 = [v28 selectedSubject];
+    trigger8 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedSubject = [trigger8 selectedSubject];
 
-    if (v29)
+    if (selectedSubject)
     {
       v30 = MEMORY[0x277CCACA8];
-      v21 = [(WFTriggerConfigurationViewController *)self trigger];
-      v22 = [v21 selectedSubject];
-      v23 = [v30 stringWithFormat:@"%@", v22];
+      trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+      trigger4 = [trigger7 selectedSubject];
+      accountDescription = [v30 stringWithFormat:@"%@", trigger4];
       goto LABEL_9;
     }
 
     v45 = @"Choose";
 LABEL_23:
-    v21 = WFLocalizedString(v45);
-    v22 = [v15 detailTextLabel];
-    [v22 setText:v21];
+    trigger7 = WFLocalizedString(v45);
+    trigger4 = [v15 detailTextLabel];
+    [trigger4 setText:trigger7];
     goto LABEL_24;
   }
 
   v15 = v10;
   v16 = WFLocalizedString(@"Sender");
-  v17 = [v15 textLabel];
-  [v17 setText:v16];
+  textLabel4 = [v15 textLabel];
+  [textLabel4 setText:v16];
 
-  v18 = [(WFTriggerConfigurationViewController *)self trigger];
-  v19 = [v18 selectedSenders];
-  v20 = [v19 count];
+  trigger9 = [(WFTriggerConfigurationViewController *)self trigger];
+  selectedSenders = [trigger9 selectedSenders];
+  v20 = [selectedSenders count];
 
   if (!v20)
   {
@@ -577,58 +577,58 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v21 = [(WFTriggerConfigurationViewController *)self trigger];
-  v22 = [v21 selectedSenders];
-  v23 = [v22 componentsJoinedByString:{@", "}];
+  trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+  trigger4 = [trigger7 selectedSenders];
+  accountDescription = [trigger4 componentsJoinedByString:{@", "}];
 LABEL_9:
-  v31 = v23;
-  v32 = [v15 detailTextLabel];
-  [v32 setText:v31];
+  v31 = accountDescription;
+  detailTextLabel2 = [v15 detailTextLabel];
+  [detailTextLabel2 setText:v31];
 
 LABEL_24:
 LABEL_25:
-  v60 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:v6 sectionInfo:v8];
+  v60 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:pathCopy sectionInfo:v8];
 
   return v60;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFEmailTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFEmailTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [(WFTriggerConfigurationViewController *)self numberOfRowsInSectionWithInfo:v5];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = WFEmailTriggerConfigurationViewController;
-  [(WFEmailTriggerConfigurationViewController *)&v5 viewWillAppear:a3];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  [(WFEmailTriggerConfigurationViewController *)&v5 viewWillAppear:appear];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)updateUI
 {
-  v2 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)setUpAccounts
@@ -639,8 +639,8 @@ LABEL_25:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(WFEmailTriggerConfigurationViewController *)self supportedAccountTypeIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  supportedAccountTypeIdentifiers = [(WFEmailTriggerConfigurationViewController *)self supportedAccountTypeIdentifiers];
+  v5 = [supportedAccountTypeIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -652,20 +652,20 @@ LABEL_25:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(supportedAccountTypeIdentifiers);
         }
 
         v9 = [v3 accountTypeWithAccountTypeIdentifier:*(*(&v13 + 1) + 8 * v8)];
-        v10 = [(WFEmailTriggerConfigurationViewController *)self allAccounts];
+        allAccounts = [(WFEmailTriggerConfigurationViewController *)self allAccounts];
         v11 = [v3 accountsWithAccountType:v9];
-        v12 = [v10 arrayByAddingObjectsFromArray:v11];
+        v12 = [allAccounts arrayByAddingObjectsFromArray:v11];
         [(WFEmailTriggerConfigurationViewController *)self setAllAccounts:v12];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [supportedAccountTypeIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -748,19 +748,19 @@ LABEL_25:
   return v4;
 }
 
-- (WFEmailTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFEmailTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFEmailTriggerConfigurationViewController.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFEmailTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFEmailTriggerConfigurationViewController.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFEmailTrigger class]]"}];
   }
 
   v14.receiver = self;
   v14.super_class = WFEmailTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v14 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v14 initWithTrigger:triggerCopy mode:mode];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEA60]);

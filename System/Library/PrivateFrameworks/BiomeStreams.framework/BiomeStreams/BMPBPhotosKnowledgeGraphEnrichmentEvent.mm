@@ -1,71 +1,71 @@
 @interface BMPBPhotosKnowledgeGraphEnrichmentEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEntities:(id)a3;
-- (void)addLocations:(id)a3;
-- (void)addTopics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEntities:(id)entities;
+- (void)addLocations:(id)locations;
+- (void)addTopics:(id)topics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBPhotosKnowledgeGraphEnrichmentEvent
 
-- (void)addTopics:(id)a3
+- (void)addTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   topics = self->_topics;
-  v8 = v4;
+  v8 = topicsCopy;
   if (!topics)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_topics;
     self->_topics = v6;
 
-    v4 = v8;
+    topicsCopy = v8;
     topics = self->_topics;
   }
 
-  [(NSMutableArray *)topics addObject:v4];
+  [(NSMutableArray *)topics addObject:topicsCopy];
 }
 
-- (void)addEntities:(id)a3
+- (void)addEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   entities = self->_entities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!entities)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_entities;
     self->_entities = v6;
 
-    v4 = v8;
+    entitiesCopy = v8;
     entities = self->_entities;
   }
 
-  [(NSMutableArray *)entities addObject:v4];
+  [(NSMutableArray *)entities addObject:entitiesCopy];
 }
 
-- (void)addLocations:(id)a3
+- (void)addLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   locations = self->_locations;
-  v8 = v4;
+  v8 = locationsCopy;
   if (!locations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_locations;
     self->_locations = v6;
 
-    v4 = v8;
+    locationsCopy = v8;
     locations = self->_locations;
   }
 
-  [(NSMutableArray *)locations addObject:v4];
+  [(NSMutableArray *)locations addObject:locationsCopy];
 }
 
 - (id)description
@@ -74,8 +74,8 @@
   v8.receiver = self;
   v8.super_class = BMPBPhotosKnowledgeGraphEnrichmentEvent;
   v4 = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)&v8 description];
-  v5 = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -83,11 +83,11 @@
 - (id)dictionaryRepresentation
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_absoluteTimestamp];
-    [v3 setObject:v4 forKey:@"absoluteTimestamp"];
+    [dictionary setObject:v4 forKey:@"absoluteTimestamp"];
   }
 
   if ([(NSMutableArray *)self->_topics count])
@@ -112,8 +112,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v39 objects:v45 count:16];
@@ -122,7 +122,7 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"topics"];
+    [dictionary setObject:v5 forKey:@"topics"];
   }
 
   if ([(NSMutableArray *)self->_entities count])
@@ -147,8 +147,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v35 objects:v44 count:16];
@@ -157,7 +157,7 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"entities"];
+    [dictionary setObject:v12 forKey:@"entities"];
   }
 
   if ([(NSMutableArray *)self->_locations count])
@@ -182,8 +182,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v31 + 1) + 8 * k) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v31 + 1) + 8 * k) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v31 objects:v43 count:16];
@@ -192,36 +192,36 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"locations"];
+    [dictionary setObject:v19 forKey:@"locations"];
   }
 
   uniqueId = self->_uniqueId;
   if (uniqueId)
   {
-    [v3 setObject:uniqueId forKey:@"uniqueId"];
+    [dictionary setObject:uniqueId forKey:@"uniqueId"];
   }
 
   contentProtection = self->_contentProtection;
   if (contentProtection)
   {
-    [v3 setObject:contentProtection forKey:@"contentProtection"];
+    [dictionary setObject:contentProtection forKey:@"contentProtection"];
   }
 
   personaId = self->_personaId;
   if (personaId)
   {
-    [v3 setObject:personaId forKey:@"personaId"];
+    [dictionary setObject:personaId forKey:@"personaId"];
   }
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
@@ -342,23 +342,23 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_absoluteTimestamp;
-    *(v4 + 64) |= 1u;
+    toCopy[1] = *&self->_absoluteTimestamp;
+    *(toCopy + 64) |= 1u;
   }
 
-  v18 = v4;
+  v18 = toCopy;
   if ([(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self topicsCount])
   {
     [v18 clearTopics];
-    v5 = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self topicsCount];
-    if (v5)
+    topicsCount = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self topicsCount];
+    if (topicsCount)
     {
-      v6 = v5;
+      v6 = topicsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self topicsAtIndex:i];
@@ -370,10 +370,10 @@
   if ([(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self entitiesCount])
   {
     [v18 clearEntities];
-    v9 = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self entitiesCount];
-    if (v9)
+    entitiesCount = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self entitiesCount];
+    if (entitiesCount)
     {
-      v10 = v9;
+      v10 = entitiesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self entitiesAtIndex:j];
@@ -385,10 +385,10 @@
   if ([(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self locationsCount])
   {
     [v18 clearLocations];
-    v13 = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self locationsCount];
-    if (v13)
+    locationsCount = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self locationsCount];
+    if (locationsCount)
     {
-      v14 = v13;
+      v14 = locationsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(BMPBPhotosKnowledgeGraphEnrichmentEvent *)self locationsAtIndex:k];
@@ -416,10 +416,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -447,7 +447,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v41 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v41 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addTopics:v12];
 
         ++v11;
@@ -480,7 +480,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v37 + 1) + 8 * v17) copyWithZone:a3];
+        v18 = [*(*(&v37 + 1) + 8 * v17) copyWithZone:zone];
         [v6 addEntities:v18];
 
         ++v17;
@@ -513,7 +513,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v33 + 1) + 8 * v23) copyWithZone:{a3, v33}];
+        v24 = [*(*(&v33 + 1) + 8 * v23) copyWithZone:{zone, v33}];
         [v6 addLocations:v24];
 
         ++v23;
@@ -526,15 +526,15 @@
     while (v21);
   }
 
-  v25 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v25 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v26 = v6[7];
   v6[7] = v25;
 
-  v27 = [(NSString *)self->_contentProtection copyWithZone:a3];
+  v27 = [(NSString *)self->_contentProtection copyWithZone:zone];
   v28 = v6[2];
   v6[2] = v27;
 
-  v29 = [(NSString *)self->_personaId copyWithZone:a3];
+  v29 = [(NSString *)self->_personaId copyWithZone:zone];
   v30 = v6[5];
   v6[5] = v29;
 
@@ -542,24 +542,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -567,13 +567,13 @@ LABEL_19:
   }
 
   topics = self->_topics;
-  if (topics | *(v4 + 6) && ![(NSMutableArray *)topics isEqual:?])
+  if (topics | *(equalCopy + 6) && ![(NSMutableArray *)topics isEqual:?])
   {
     goto LABEL_19;
   }
 
   entities = self->_entities;
-  if (entities | *(v4 + 3))
+  if (entities | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)entities isEqual:?])
     {
@@ -582,7 +582,7 @@ LABEL_19:
   }
 
   locations = self->_locations;
-  if (locations | *(v4 + 4))
+  if (locations | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)locations isEqual:?])
     {
@@ -591,7 +591,7 @@ LABEL_19:
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId | *(v4 + 7))
+  if (uniqueId | *(equalCopy + 7))
   {
     if (![(NSString *)uniqueId isEqual:?])
     {
@@ -600,7 +600,7 @@ LABEL_19:
   }
 
   contentProtection = self->_contentProtection;
-  if (contentProtection | *(v4 + 2))
+  if (contentProtection | *(equalCopy + 2))
   {
     if (![(NSString *)contentProtection isEqual:?])
     {
@@ -609,7 +609,7 @@ LABEL_19:
   }
 
   personaId = self->_personaId;
-  if (personaId | *(v4 + 5))
+  if (personaId | *(equalCopy + 5))
   {
     v12 = [(NSString *)personaId isEqual:?];
   }
@@ -667,14 +667,14 @@ LABEL_20:
   return v11 ^ v13 ^ [(NSString *)self->_personaId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 64))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 64))
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -682,7 +682,7 @@ LABEL_20:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {

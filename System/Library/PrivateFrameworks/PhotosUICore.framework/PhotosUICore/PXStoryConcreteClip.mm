@@ -1,36 +1,36 @@
 @interface PXStoryConcreteClip
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_videoTimeRangeForTargetDuration:(SEL)a3;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)a3;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_videoTimeRangeForTargetDuration:(SEL)duration;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)duration;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)videoTimeRange;
-- (BOOL)isEqualToClip:(id)a3;
-- (BOOL)isVisuallyEqualToClip:(id)a3;
+- (BOOL)isEqualToClip:(id)clip;
+- (BOOL)isVisuallyEqualToClip:(id)clip;
 - (NSString)description;
 - (PFStoryRecipeDisplayAssetNormalization)colorNormalization;
 - (PXStoryConcreteClip)init;
-- (PXStoryConcreteClip)initWithInfo:(id *)a3 resourceKind:(int64_t)a4 resourceIndex:(int64_t)a5 resourceOccurrenceIndex:(int64_t)a6 resourcesDataSource:(id)a7;
-- (id)copyWithInfo:(id *)a3;
+- (PXStoryConcreteClip)initWithInfo:(id *)info resourceKind:(int64_t)kind resourceIndex:(int64_t)index resourceOccurrenceIndex:(int64_t)occurrenceIndex resourcesDataSource:(id)source;
+- (id)copyWithInfo:(id *)info;
 - (id)videoHighlight;
 @end
 
 @implementation PXStoryConcreteClip
 
-- (id)copyWithInfo:(id *)a3
+- (id)copyWithInfo:(id *)info
 {
   v5 = [PXStoryConcreteClip alloc];
-  v6 = [(PXStoryConcreteClip *)self resourceKind];
-  v7 = [(PXStoryConcreteClip *)self resourceIndex];
-  v8 = [(PXStoryConcreteClip *)self resourceOccurrenceIndex];
-  v9 = [(PXStoryConcreteClip *)self resourcesDataSource];
-  memcpy(v12, a3, sizeof(v12));
-  v10 = [(PXStoryConcreteClip *)v5 initWithInfo:v12 resourceKind:v6 resourceIndex:v7 resourceOccurrenceIndex:v8 resourcesDataSource:v9];
+  resourceKind = [(PXStoryConcreteClip *)self resourceKind];
+  resourceIndex = [(PXStoryConcreteClip *)self resourceIndex];
+  resourceOccurrenceIndex = [(PXStoryConcreteClip *)self resourceOccurrenceIndex];
+  resourcesDataSource = [(PXStoryConcreteClip *)self resourcesDataSource];
+  memcpy(v12, info, sizeof(v12));
+  v10 = [(PXStoryConcreteClip *)v5 initWithInfo:v12 resourceKind:resourceKind resourceIndex:resourceIndex resourceOccurrenceIndex:resourceOccurrenceIndex resourcesDataSource:resourcesDataSource];
 
   return v10;
 }
 
-- (BOOL)isVisuallyEqualToClip:(id)a3
+- (BOOL)isVisuallyEqualToClip:(id)clip
 {
-  v4 = a3;
-  if (v4 == self)
+  clipCopy = clip;
+  if (clipCopy == self)
   {
     v7 = 1;
     goto LABEL_15;
@@ -43,7 +43,7 @@
     goto LABEL_15;
   }
 
-  v5 = v4;
+  v5 = clipCopy;
   if ([(PXStoryConcreteClip *)self isEqualToClip:v5]&& self->_info.playbackStyle == v5->_info.playbackStyle)
   {
     v6 = self->_info.clipSize.width == v5->_info.clipSize.width && self->_info.clipSize.height == v5->_info.clipSize.height;
@@ -126,10 +126,10 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)isEqualToClip:(id)a3
+- (BOOL)isEqualToClip:(id)clip
 {
-  v4 = a3;
-  if (v4 == self)
+  clipCopy = clip;
+  if (clipCopy == self)
   {
     v11 = 1;
   }
@@ -139,13 +139,13 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryConcreteClip *)self resourceKind];
-      if (v6 == [(PXStoryConcreteClip *)v5 resourceKind]&& (v7 = [(PXStoryConcreteClip *)self resourceIndex], v7 == [(PXStoryConcreteClip *)v5 resourceIndex]) && (v8 = [(PXStoryConcreteClip *)self resourceOccurrenceIndex], v8 == [(PXStoryConcreteClip *)v5 resourceOccurrenceIndex]))
+      v5 = clipCopy;
+      resourceKind = [(PXStoryConcreteClip *)self resourceKind];
+      if (resourceKind == [(PXStoryConcreteClip *)v5 resourceKind]&& (v7 = [(PXStoryConcreteClip *)self resourceIndex], v7 == [(PXStoryConcreteClip *)v5 resourceIndex]) && (v8 = [(PXStoryConcreteClip *)self resourceOccurrenceIndex], v8 == [(PXStoryConcreteClip *)v5 resourceOccurrenceIndex]))
       {
-        v9 = [(PXStoryConcreteClip *)self resourcesDataSource];
-        v10 = [(PXStoryConcreteClip *)v5 resourcesDataSource];
-        v11 = [v9 isEqual:v10];
+        resourcesDataSource = [(PXStoryConcreteClip *)self resourcesDataSource];
+        resourcesDataSource2 = [(PXStoryConcreteClip *)v5 resourcesDataSource];
+        v11 = [resourcesDataSource isEqual:resourcesDataSource2];
       }
 
       else
@@ -169,30 +169,30 @@ LABEL_15:
   v3 = [(PXStoryResourcesDataSource *)self->_resourcesDataSource displayAssetResourceAtIndex:self->_resourceIndex];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v3 px_storyResourceDisplayAsset];
-    v5 = [v4 uuid];
+    px_storyResourceDisplayAsset = [v3 px_storyResourceDisplayAsset];
+    uuid = [px_storyResourceDisplayAsset uuid];
     v11 = 138412290;
-    v12 = v5;
+    v12 = uuid;
     _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "resource px_storyResourceDisplayAsset uuid is %@", &v11, 0xCu);
   }
 
   if ([(PXStoryConcreteClip *)self resourceKind]== 1 || [(PXStoryConcreteClip *)self resourceKind]== 5)
   {
     v6 = [(PXStoryResourcesDataSource *)self->_resourcesDataSource movieHighlightsForDisplayAssetAtIndex:self->_resourceIndex];
-    v7 = [v6 bestHighlight];
-    v8 = [v7 normalizationData];
+    bestHighlight = [v6 bestHighlight];
+    normalizationData = [bestHighlight normalizationData];
 
-    if (v8)
+    if (normalizationData)
     {
 
 LABEL_8:
-      v9 = [objc_alloc(MEMORY[0x1E69C08C0]) initWithAnalysisData:v8];
+      v9 = [objc_alloc(MEMORY[0x1E69C08C0]) initWithAnalysisData:normalizationData];
       goto LABEL_11;
     }
 
-    v8 = [v3 px_storyResourceFetchNormalizationData];
+    normalizationData = [v3 px_storyResourceFetchNormalizationData];
 
-    if (v8)
+    if (normalizationData)
     {
       goto LABEL_8;
     }
@@ -200,7 +200,7 @@ LABEL_8:
 
   else
   {
-    v8 = 0;
+    normalizationData = 0;
   }
 
   v9 = 0;
@@ -209,7 +209,7 @@ LABEL_11:
   return v9;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)duration
 {
   result = [(PXStoryConcreteClip *)self resourceKind];
   if (result == 1)
@@ -278,23 +278,23 @@ LABEL_11:
   return result;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_videoTimeRangeForTargetDuration:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_videoTimeRangeForTargetDuration:(SEL)duration
 {
   v27 = *MEMORY[0x1E69E9840];
   *&retstr->var0.var3 = 0u;
   *&retstr->var1.var1 = 0u;
   *&retstr->var0.var0 = 0u;
-  v7 = [(PXStoryConcreteClip *)self videoHighlight];
-  if (v7)
+  videoHighlight = [(PXStoryConcreteClip *)self videoHighlight];
+  if (videoHighlight)
   {
     [(PXStoryConcreteClip *)self info];
     time[0] = v25;
     Seconds = CMTimeGetSeconds(time);
     memset(time, 0, sizeof(time));
-    [v7 bestTimeRangeForTargetDuration:Seconds];
+    [videoHighlight bestTimeRangeForTargetDuration:Seconds];
     v23 = 0u;
     memset(v24, 0, sizeof(v24));
-    [v7 timeRange];
+    [videoHighlight timeRange];
     *time2 = *&time[0].value;
     *&time2[16] = *&time[0].epoch;
     v20 = *&time[1].timescale;
@@ -369,9 +369,9 @@ LABEL_11:
     v10 = PLStoryGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(PXStoryConcreteClip *)self resource];
+      resource = [(PXStoryConcreteClip *)self resource];
       LODWORD(time[0].value) = 138412290;
-      *(&time[0].value + 4) = v11;
+      *(&time[0].value + 4) = resource;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "Video clip is missing movie highlight! %@", time, 0xCu);
     }
   }
@@ -393,16 +393,16 @@ LABEL_12:
   v21 = v15;
   memset(&v11, 0, sizeof(v11));
   v5 = +[PXStorySettings sharedInstance];
-  v6 = [(PXStoryConcreteClip *)self resourcesDataSource];
-  if (![v6 shouldOptimizeForInlinePlayback])
+  resourcesDataSource = [(PXStoryConcreteClip *)self resourcesDataSource];
+  if (![resourcesDataSource shouldOptimizeForInlinePlayback])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v5 reduceVideoDurationForInlinePlayback];
+  reduceVideoDurationForInlinePlayback = [v5 reduceVideoDurationForInlinePlayback];
 
-  if (!v7)
+  if (!reduceVideoDurationForInlinePlayback)
   {
 LABEL_5:
     *&v11.value = v21;
@@ -472,56 +472,56 @@ LABEL_14:
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PXStoryConcreteClip identifier](self, "identifier")}];
-  v7 = [(PXStoryConcreteClip *)self resourceKind];
-  if (v7 > 5)
+  resourceKind = [(PXStoryConcreteClip *)self resourceKind];
+  if (resourceKind > 5)
   {
     v8 = @"??";
   }
 
   else
   {
-    v8 = off_1E77400B0[v7];
+    v8 = off_1E77400B0[resourceKind];
   }
 
   v9 = v8;
-  v10 = [(PXStoryConcreteClip *)self resource];
-  v11 = [(PXStoryConcreteClip *)self resourceIndex];
-  v12 = [(PXStoryConcreteClip *)self resourceOccurrenceIndex];
-  v13 = [(PXStoryConcreteClip *)self resourcesDataSource];
-  v14 = [v3 initWithFormat:@"<%@; %p; ID: %@; Resource Kind: %@; Resource:%@ resourceIndex:%ld resourceOccurenceIndex:%ld resourcesDataSource:%@>", v5, self, v6, v9, v10, v11, v12, v13];
+  resource = [(PXStoryConcreteClip *)self resource];
+  resourceIndex = [(PXStoryConcreteClip *)self resourceIndex];
+  resourceOccurrenceIndex = [(PXStoryConcreteClip *)self resourceOccurrenceIndex];
+  resourcesDataSource = [(PXStoryConcreteClip *)self resourcesDataSource];
+  v14 = [v3 initWithFormat:@"<%@; %p; ID: %@; Resource Kind: %@; Resource:%@ resourceIndex:%ld resourceOccurenceIndex:%ld resourcesDataSource:%@>", v5, self, v6, v9, resource, resourceIndex, resourceOccurrenceIndex, resourcesDataSource];
 
   return v14;
 }
 
-- (PXStoryConcreteClip)initWithInfo:(id *)a3 resourceKind:(int64_t)a4 resourceIndex:(int64_t)a5 resourceOccurrenceIndex:(int64_t)a6 resourcesDataSource:(id)a7
+- (PXStoryConcreteClip)initWithInfo:(id *)info resourceKind:(int64_t)kind resourceIndex:(int64_t)index resourceOccurrenceIndex:(int64_t)occurrenceIndex resourcesDataSource:(id)source
 {
-  v14 = a7;
+  sourceCopy = source;
   v21.receiver = self;
   v21.super_class = PXStoryConcreteClip;
   v15 = [(PXStoryConcreteClip *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    v15->_identifier = a3->var0;
-    memcpy(&v15->_info, a3, 0x300uLL);
-    v16->_resourceKind = a4;
-    v16->_resourceIndex = a5;
-    v16->_resourceOccurrenceIndex = a6;
-    objc_storeStrong(&v16->_resourcesDataSource, a7);
+    v15->_identifier = info->var0;
+    memcpy(&v15->_info, info, 0x300uLL);
+    v16->_resourceKind = kind;
+    v16->_resourceIndex = index;
+    v16->_resourceOccurrenceIndex = occurrenceIndex;
+    objc_storeStrong(&v16->_resourcesDataSource, source);
     v17 = 0;
-    if (a4 <= 2)
+    if (kind <= 2)
     {
-      switch(a4)
+      switch(kind)
       {
         case 1:
-          v17 = [v14 displayAssetResourceAtIndex:a5];
+          v17 = [sourceCopy displayAssetResourceAtIndex:index];
           break;
         case 2:
-          v17 = [v14 songResourceAtIndex:a5];
+          v17 = [sourceCopy songResourceAtIndex:index];
           break;
         case 0:
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v20 handleFailureInMethod:a2 object:v16 file:@"PXStoryConcreteClip.m" lineNumber:49 description:@"Code which should be unreachable has been reached"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:v16 file:@"PXStoryConcreteClip.m" lineNumber:49 description:@"Code which should be unreachable has been reached"];
 
           abort();
       }
@@ -529,16 +529,16 @@ LABEL_14:
 
     else
     {
-      switch(a4)
+      switch(kind)
       {
         case 3:
-          v17 = [v14 textResourceAtIndex:a5];
+          v17 = [sourceCopy textResourceAtIndex:index];
           break;
         case 4:
-          v17 = [v14 colorResourceAtIndex:a5];
+          v17 = [sourceCopy colorResourceAtIndex:index];
           break;
         case 5:
-          v17 = [v14 frameFillingEffectResourceAtIndex:a5];
+          v17 = [sourceCopy frameFillingEffectResourceAtIndex:index];
           break;
       }
     }
@@ -552,8 +552,8 @@ LABEL_14:
 
 - (PXStoryConcreteClip)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteClip.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXStoryConcreteClip init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteClip.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXStoryConcreteClip init]"}];
 
   abort();
 }

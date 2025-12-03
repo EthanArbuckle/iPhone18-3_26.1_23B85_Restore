@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (BOOL)_checkClarityBoardStarted;
 - (CSClarityboardStartMonitor)init;
-- (void)_didReceiveClarityboardStarted:(BOOL)a3;
-- (void)_didReceiveClarityboardStartedInQueue:(BOOL)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveClarityboardStarted:(BOOL)started;
+- (void)_didReceiveClarityboardStartedInQueue:(BOOL)queue;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -48,25 +48,25 @@
   return v2;
 }
 
-- (void)_didReceiveClarityboardStarted:(BOOL)a3
+- (void)_didReceiveClarityboardStarted:(BOOL)started
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __61__CSClarityboardStartMonitor__didReceiveClarityboardStarted___block_invoke;
   v3[3] = &unk_1E865CA18;
   v3[4] = self;
-  v4 = a3;
+  startedCopy = started;
   [(CSEventMonitor *)self enumerateObservers:v3];
 }
 
-- (void)_didReceiveClarityboardStartedInQueue:(BOOL)a3
+- (void)_didReceiveClarityboardStartedInQueue:(BOOL)queue
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __68__CSClarityboardStartMonitor__didReceiveClarityboardStartedInQueue___block_invoke;
   v3[3] = &unk_1E865CA18;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(CSEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -90,10 +90,10 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = MEMORY[0x1E69E9820];
@@ -101,7 +101,7 @@
     handler[2] = __56__CSClarityboardStartMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_1E865C9F0;
     handler[4] = self;
-    notify_register_dispatch("com.apple.ClarityBoard.FinishedStartup", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.ClarityBoard.FinishedStartup", &self->_notifyToken, queueCopy, handler);
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {

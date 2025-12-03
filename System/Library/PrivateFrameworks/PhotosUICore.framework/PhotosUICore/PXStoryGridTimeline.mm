@@ -1,10 +1,10 @@
 @interface PXStoryGridTimeline
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3;
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier;
 - (CGSize)size;
-- (PXStoryGridTimeline)initWithOriginalTimeline:(id)a3;
-- (PXStoryGridTimeline)initWithOriginalTimeline:(id)a3 layoutSpec:(id)a4 viewportSize:(CGSize)a5;
+- (PXStoryGridTimeline)initWithOriginalTimeline:(id)timeline;
+- (PXStoryGridTimeline)initWithOriginalTimeline:(id)timeline layoutSpec:(id)spec viewportSize:(CGSize)size;
 - (void)dealloc;
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5;
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block;
 @end
 
 @implementation PXStoryGridTimeline
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier
 {
   v7[0] = 0;
   v7[1] = v7;
@@ -27,10 +27,10 @@
   v5 = *(MEMORY[0x1E695F058] + 16);
   v8 = *MEMORY[0x1E695F058];
   v9 = v5;
-  v6 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  if (v6)
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  if (originalTimeline)
   {
-    [v6 timeRangeForSegmentWithIdentifier:a3];
+    [originalTimeline timeRangeForSegmentWithIdentifier:identifier];
   }
 
   [(PXStoryGridTimeline *)self size];
@@ -58,9 +58,9 @@ void __53__PXStoryGridTimeline_frameForSegmentWithIdentifier___block_invoke(uint
   }
 }
 
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   [(PXStoryDerivedTimeline *)self originalTimeline];
   [objc_claimAutoreleasedReturnValue() size];
   PXRectWithOriginAndSize();
@@ -212,28 +212,28 @@ LABEL_15:
   [(PXStoryGridTimeline *)&v3 dealloc];
 }
 
-- (PXStoryGridTimeline)initWithOriginalTimeline:(id)a3 layoutSpec:(id)a4 viewportSize:(CGSize)a5
+- (PXStoryGridTimeline)initWithOriginalTimeline:(id)timeline layoutSpec:(id)spec viewportSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  v11 = a4;
-  v12 = [v11 browserGridLayoutMetrics];
+  height = size.height;
+  width = size.width;
+  timelineCopy = timeline;
+  specCopy = spec;
+  browserGridLayoutMetrics = [specCopy browserGridLayoutMetrics];
 
-  if (!v12)
+  if (!browserGridLayoutMetrics)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXStoryGridTimeline.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"layoutSpec.browserGridLayoutMetrics"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryGridTimeline.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"layoutSpec.browserGridLayoutMetrics"}];
   }
 
   v18.receiver = self;
   v18.super_class = PXStoryGridTimeline;
-  v13 = [(PXStoryDerivedTimeline *)&v18 initWithOriginalTimeline:v10];
+  v13 = [(PXStoryDerivedTimeline *)&v18 initWithOriginalTimeline:timelineCopy];
   if (v13)
   {
-    [v11 browserGridLayoutMetrics];
+    [specCopy browserGridLayoutMetrics];
     [objc_claimAutoreleasedReturnValue() setReferenceSize:{width, height}];
-    v14 = [v10 numberOfClipsWithResourceKind:1];
+    v14 = [timelineCopy numberOfClipsWithResourceKind:1];
     v13->_numberOfAssetClips = v14;
     v13->_assetClipIdentifiers = malloc_type_calloc(v14, 8uLL, 0x100004000313F17uLL);
     v13->_assetClipGeometries = malloc_type_calloc(v13->_numberOfAssetClips, 0x98uLL, 0x100004050011849uLL);
@@ -241,12 +241,12 @@ LABEL_15:
     v17[1] = v17;
     v17[2] = 0x2020000000;
     v17[3] = 0;
-    if (v10)
+    if (timelineCopy)
     {
-      [v10 timeRange];
+      [timelineCopy timeRange];
     }
 
-    [v10 size];
+    [timelineCopy size];
     PXRectWithOriginAndSize();
   }
 
@@ -293,11 +293,11 @@ id __72__PXStoryGridTimeline_initWithOriginalTimeline_layoutSpec_viewportSize___
   return v8;
 }
 
-- (PXStoryGridTimeline)initWithOriginalTimeline:(id)a3
+- (PXStoryGridTimeline)initWithOriginalTimeline:(id)timeline
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryGridTimeline.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXStoryGridTimeline initWithOriginalTimeline:]"}];
+  timelineCopy = timeline;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryGridTimeline.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXStoryGridTimeline initWithOriginalTimeline:]"}];
 
   abort();
 }

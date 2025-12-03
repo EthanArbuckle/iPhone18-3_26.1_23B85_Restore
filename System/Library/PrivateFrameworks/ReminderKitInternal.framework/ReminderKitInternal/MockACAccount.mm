@@ -1,10 +1,10 @@
 @interface MockACAccount
-- (BOOL)isEnabledForDataclass:(id)a3;
+- (BOOL)isEnabledForDataclass:(id)dataclass;
 - (NSArray)childAccounts;
 - (NSMutableSet)enabledDataclasses;
-- (id)childAccountsWithAccountTypeIdentifier:(id)a3;
-- (void)setEnabled:(BOOL)a3 forDataclass:(id)a4;
-- (void)setEnabledDataclasses:(id)a3;
+- (id)childAccountsWithAccountTypeIdentifier:(id)identifier;
+- (void)setEnabled:(BOOL)enabled forDataclass:(id)dataclass;
+- (void)setEnabledDataclasses:(id)dataclasses;
 @end
 
 @implementation MockACAccount
@@ -18,9 +18,9 @@
   return v2;
 }
 
-- (id)childAccountsWithAccountTypeIdentifier:(id)a3
+- (id)childAccountsWithAccountTypeIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = _sSo15REMSortingStylea19ReminderKitInternalE11descriptionSSvg_0();
     v6 = v5;
@@ -32,7 +32,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_230186514(v4, v6);
 
   if (v8)
@@ -49,14 +49,14 @@
   return v9;
 }
 
-- (BOOL)isEnabledForDataclass:(id)a3
+- (BOOL)isEnabledForDataclass:(id)dataclass
 {
   result = swift_beginAccess();
-  if (a3)
+  if (dataclass)
   {
-    v6 = self;
+    selfCopy = self;
 
-    v7 = a3;
+    dataclassCopy = dataclass;
     v8 = sub_2300AEB10();
 
     return v8 & 1;
@@ -70,39 +70,39 @@
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3 forDataclass:(id)a4
+- (void)setEnabled:(BOOL)enabled forDataclass:(id)dataclass
 {
-  v7 = a4;
-  v8 = self;
-  sub_230186858(a3, a4);
+  dataclassCopy = dataclass;
+  selfCopy = self;
+  sub_230186858(enabled, dataclass);
 }
 
 - (NSMutableSet)enabledDataclasses
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
 
   sub_230141064(v4);
 
   v5 = objc_allocWithZone(MEMORY[0x277CBEB58]);
   v6 = sub_23030FF18();
 
-  v7 = [v5 initWithSet_];
+  initWithSet_ = [v5 initWithSet_];
 
-  return v7;
+  return initWithSet_;
 }
 
-- (void)setEnabledDataclasses:(id)a3
+- (void)setEnabledDataclasses:(id)dataclasses
 {
-  if (a3)
+  if (dataclasses)
   {
-    v4 = self;
-    v5 = a3;
+    selfCopy = self;
+    dataclassesCopy = dataclasses;
     v6 = sub_230127B9C();
 
     v7 = OBJC_IVAR____TtC19ReminderKitInternal13MockACAccount_rem_enabledDataClasses;
     swift_beginAccess();
-    *(&v4->super.super.isa + v7) = v6;
+    *(&selfCopy->super.super.isa + v7) = v6;
   }
 
   else

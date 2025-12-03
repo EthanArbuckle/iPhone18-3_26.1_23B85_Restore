@@ -1,59 +1,59 @@
 @interface DNDScheduleTime
 + (id)defaultEndTime;
 + (id)defaultStartTime;
-- (BOOL)isEqual:(id)a3;
-- (DNDScheduleTime)initWithCoder:(id)a3;
-- (id)_initWithHour:(unint64_t)a3 minute:(unint64_t)a4;
-- (id)_initWithTime:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDScheduleTime)initWithCoder:(id)coder;
+- (id)_initWithHour:(unint64_t)hour minute:(unint64_t)minute;
+- (id)_initWithTime:(id)time;
 - (id)dateComponents;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDScheduleTime
 
 + (id)defaultStartTime
 {
-  v2 = [[a1 alloc] _initWithHour:9 minute:0];
+  v2 = [[self alloc] _initWithHour:9 minute:0];
 
   return v2;
 }
 
 + (id)defaultEndTime
 {
-  v2 = [[a1 alloc] _initWithHour:17 minute:0];
+  v2 = [[self alloc] _initWithHour:17 minute:0];
 
   return v2;
 }
 
-- (id)_initWithTime:(id)a3
+- (id)_initWithTime:(id)time
 {
-  v4 = a3;
-  v5 = [v4 hour];
-  v6 = [v4 minute];
+  timeCopy = time;
+  hour = [timeCopy hour];
+  minute = [timeCopy minute];
 
-  return [(DNDScheduleTime *)self _initWithHour:v5 minute:v6];
+  return [(DNDScheduleTime *)self _initWithHour:hour minute:minute];
 }
 
-- (id)_initWithHour:(unint64_t)a3 minute:(unint64_t)a4
+- (id)_initWithHour:(unint64_t)hour minute:(unint64_t)minute
 {
   v8.receiver = self;
   v8.super_class = DNDScheduleTime;
   result = [(DNDScheduleTime *)&v8 init];
   if (result)
   {
-    *&v7 = a3 % 0x18;
-    *(&v7 + 1) = a4 % 0x3C;
+    *&v7 = hour % 0x18;
+    *(&v7 + 1) = minute % 0x3C;
     *(result + 8) = v7;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -63,12 +63,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDScheduleTime *)self hour];
-      if (v6 == [(DNDScheduleTime *)v5 hour])
+      v5 = equalCopy;
+      hour = [(DNDScheduleTime *)self hour];
+      if (hour == [(DNDScheduleTime *)v5 hour])
       {
-        v7 = [(DNDScheduleTime *)self minute];
-        v8 = v7 == [(DNDScheduleTime *)v5 minute];
+        minute = [(DNDScheduleTime *)self minute];
+        v8 = minute == [(DNDScheduleTime *)v5 minute];
       }
 
       else
@@ -86,27 +86,27 @@
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDMutableScheduleTime alloc];
 
   return [(DNDScheduleTime *)v4 _initWithTime:self];
 }
 
-- (DNDScheduleTime)initWithCoder:(id)a3
+- (DNDScheduleTime)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"hour"];
-  v6 = [v4 decodeIntegerForKey:@"minute"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"hour"];
+  v6 = [coderCopy decodeIntegerForKey:@"minute"];
 
   return [(DNDScheduleTime *)self _initWithHour:v5 minute:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[DNDScheduleTime hour](self forKey:{"hour"), @"hour"}];
-  [v4 encodeInteger:-[DNDScheduleTime minute](self forKey:{"minute"), @"minute"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[DNDScheduleTime hour](self forKey:{"hour"), @"hour"}];
+  [coderCopy encodeInteger:-[DNDScheduleTime minute](self forKey:{"minute"), @"minute"}];
 }
 
 - (id)dateComponents

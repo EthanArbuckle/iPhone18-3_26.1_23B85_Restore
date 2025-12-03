@@ -1,29 +1,29 @@
 @interface GCDirectionalGamepad
-- (BOOL)determineTouchStateWithDigitizerX:(float)a3 digitizerY:(float)a4 touchDown:(BOOL)a5;
+- (BOOL)determineTouchStateWithDigitizerX:(float)x digitizerY:(float)y touchDown:(BOOL)down;
 - (BOOL)ownershipClaimingElementsZero;
-- (CGPoint)addCGPoint:(CGPoint)a3 toPoint:(CGPoint)a4;
-- (CGPoint)clampPoint:(CGPoint)a3 toLength:(double)a4;
-- (CGPoint)mulCGPoint:(CGPoint)a3 byScalar:(double)a4;
-- (CGPoint)normalizeCGPoint:(CGPoint)a3;
-- (CGPoint)scaleCGPoint:(CGPoint)a3 toLength:(double)a4;
-- (CGPoint)subCGPoint:(CGPoint)a3 fromPoint:(CGPoint)a4;
-- (GCDirectionalGamepad)initWithIdentifier:(id)a3;
-- (id)centerButtonEvent:(id)a3 pressed:(BOOL)a4;
-- (id)dpadDirectionEvent:(id)a3 direction:(unint64_t)a4 pressed:(BOOL)a5;
+- (CGPoint)addCGPoint:(CGPoint)point toPoint:(CGPoint)toPoint;
+- (CGPoint)clampPoint:(CGPoint)point toLength:(double)length;
+- (CGPoint)mulCGPoint:(CGPoint)point byScalar:(double)scalar;
+- (CGPoint)normalizeCGPoint:(CGPoint)point;
+- (CGPoint)scaleCGPoint:(CGPoint)point toLength:(double)length;
+- (CGPoint)subCGPoint:(CGPoint)point fromPoint:(CGPoint)fromPoint;
+- (GCDirectionalGamepad)initWithIdentifier:(id)identifier;
+- (id)centerButtonEvent:(id)event pressed:(BOOL)pressed;
+- (id)dpadDirectionEvent:(id)event direction:(unint64_t)direction pressed:(BOOL)pressed;
 - (id)productCategory;
-- (void)reportDigitizerChange:(id)a3;
-- (void)reportDirectionpadChange:(id)a3 onQueue:(id)a4;
-- (void)setDeviceType:(int64_t)a3;
-- (void)setReportsAbsoluteDpadValues:(BOOL)a3;
+- (void)reportDigitizerChange:(id)change;
+- (void)reportDirectionpadChange:(id)change onQueue:(id)queue;
+- (void)setDeviceType:(int64_t)type;
+- (void)setReportsAbsoluteDpadValues:(BOOL)values;
 @end
 
 @implementation GCDirectionalGamepad
 
-- (GCDirectionalGamepad)initWithIdentifier:(id)a3
+- (GCDirectionalGamepad)initWithIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = GCDirectionalGamepad;
-  result = [(GCMicroGamepad *)&v4 initWithIdentifier:a3];
+  result = [(GCMicroGamepad *)&v4 initWithIdentifier:identifier];
   if (result)
   {
     result->_touchState = 0;
@@ -39,66 +39,66 @@
 {
   if (!GCCurrentProcessLinkedOnAfter(0x7E50901FFFFFFFFuLL))
   {
-    v5 = @"Siri Remote";
+    productCategory = @"Siri Remote";
     goto LABEL_9;
   }
 
-  v3 = [(GCDirectionalGamepad *)self deviceType];
-  if (v3 == 5)
+  deviceType = [(GCDirectionalGamepad *)self deviceType];
+  if (deviceType == 5)
   {
     v4 = &GCProductCategorySiriRemote2ndGen;
     goto LABEL_7;
   }
 
-  if (v3 == 4)
+  if (deviceType == 4)
   {
     v4 = &GCProductCategoryUniversalElectronicsRemote;
 LABEL_7:
-    v5 = *v4;
+    productCategory = *v4;
     goto LABEL_9;
   }
 
   v7.receiver = self;
   v7.super_class = GCDirectionalGamepad;
-  v5 = [(GCMicroGamepad *)&v7 productCategory];
+  productCategory = [(GCMicroGamepad *)&v7 productCategory];
 LABEL_9:
 
-  return v5;
+  return productCategory;
 }
 
-- (void)setReportsAbsoluteDpadValues:(BOOL)a3
+- (void)setReportsAbsoluteDpadValues:(BOOL)values
 {
-  v5 = [(GCMicroGamepad *)self dpad];
-  v6 = [v5 nonAnalog];
+  dpad = [(GCMicroGamepad *)self dpad];
+  nonAnalog = [dpad nonAnalog];
 
-  if ((v6 & 1) == 0)
+  if ((nonAnalog & 1) == 0)
   {
-    self->_reportsAbsoluteDpadValues = a3;
+    self->_reportsAbsoluteDpadValues = values;
   }
 }
 
-- (void)setDeviceType:(int64_t)a3
+- (void)setDeviceType:(int64_t)type
 {
   if (gc_isInternalBuild())
   {
     [GCDirectionalGamepad setDeviceType:];
   }
 
-  v5 = [(GCMicroGamepad *)self dpad];
-  [v5 setNonAnalog:0];
+  dpad = [(GCMicroGamepad *)self dpad];
+  [dpad setNonAnalog:0];
 
-  if (a3 == 5)
+  if (type == 5)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
-    v9 = [(GCMicroGamepad *)self dpad];
-    [v9 setNonAnalog:1];
+    dpad2 = [(GCMicroGamepad *)self dpad];
+    [dpad2 setNonAnalog:1];
 
-    v10 = [(GCPhysicalInputProfile *)self controller];
-    [v10 setForwarded:0];
+    controller = [(GCPhysicalInputProfile *)self controller];
+    [controller setForwarded:0];
 
 LABEL_8:
     if (!self->_cardinalDpad)
@@ -136,40 +136,40 @@ LABEL_8:
       cardinalDpad = self->_cardinalDpad;
       self->_cardinalDpad = v15;
 
-      v17 = [(GCMicroGamepad *)self buttonMenu];
-      [v17 setUnmappedNameLocalizationKey:@"DIRECTIONAL_GAMEPAD_BUTTON_MENU"];
+      buttonMenu = [(GCMicroGamepad *)self buttonMenu];
+      [buttonMenu setUnmappedNameLocalizationKey:@"DIRECTIONAL_GAMEPAD_BUTTON_MENU"];
 
       v18 = _GCFConvertStringToLocalizedString();
-      v19 = [(GCMicroGamepad *)self buttonMenu];
-      [v19 setLocalizedName:v18];
+      buttonMenu2 = [(GCMicroGamepad *)self buttonMenu];
+      [buttonMenu2 setLocalizedName:v18];
     }
 
     goto LABEL_14;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
 LABEL_14:
-    v6 = [(GCPhysicalInputProfile *)self controller];
-    v7 = v6;
+    controller2 = [(GCPhysicalInputProfile *)self controller];
+    v7 = controller2;
     v8 = 0;
     goto LABEL_15;
   }
 
-  v6 = [(GCPhysicalInputProfile *)self controller];
-  v7 = v6;
+  controller2 = [(GCPhysicalInputProfile *)self controller];
+  v7 = controller2;
   v8 = 1;
 LABEL_15:
-  [v6 setForwarded:v8];
+  [controller2 setForwarded:v8];
 
-  self->_deviceType = a3;
-  v20 = [(GCPhysicalInputProfile *)self controller];
-  [v20 setVendorName:0];
+  self->_deviceType = type;
+  controller3 = [(GCPhysicalInputProfile *)self controller];
+  [controller3 setVendorName:0];
 }
 
-- (void)reportDigitizerChange:(id)a3
+- (void)reportDigitizerChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = &OBJC_IVAR___GCDirectionalGamepad__relativePosition;
   if (self->_reportsAbsoluteDpadValues)
   {
@@ -179,16 +179,16 @@ LABEL_15:
   touchState = self->_touchState;
   if (!touchState)
   {
-    v27 = v4;
-    v22 = [(GCMicroGamepad *)self dpad];
-    v13 = [(GCPhysicalInputProfile *)self controller];
-    v14 = [v13 handlerQueue];
-    v15 = v22;
-    v23 = [v15 xAxis];
-    v24 = [v23 _setValue:v14 queue:0.0];
+    v27 = changeCopy;
+    dpad = [(GCMicroGamepad *)self dpad];
+    controller = [(GCPhysicalInputProfile *)self controller];
+    handlerQueue = [controller handlerQueue];
+    v15 = dpad;
+    xAxis = [v15 xAxis];
+    v24 = [xAxis _setValue:handlerQueue queue:0.0];
 
-    v25 = [v15 yAxis];
-    v26 = [v25 _setValue:v14 queue:0.0];
+    yAxis = [v15 yAxis];
+    v26 = [yAxis _setValue:handlerQueue queue:0.0];
 
     if ((v24 & 1) == 0 && !v26)
     {
@@ -199,7 +199,7 @@ LABEL_11:
     [0 addObject:v15];
 LABEL_12:
 
-    v4 = v27;
+    changeCopy = v27;
     goto LABEL_13;
   }
 
@@ -208,20 +208,20 @@ LABEL_12:
   v9 = v7[1];
   if (touchState == 2 || touchState == 1)
   {
-    v27 = v4;
-    v10 = [(GCMicroGamepad *)self dpad];
-    v13 = [(GCPhysicalInputProfile *)self controller];
-    v14 = [v13 handlerQueue];
-    v15 = v10;
-    v16 = [v15 xAxis];
+    v27 = changeCopy;
+    dpad2 = [(GCMicroGamepad *)self dpad];
+    controller = [(GCPhysicalInputProfile *)self controller];
+    handlerQueue = [controller handlerQueue];
+    v15 = dpad2;
+    xAxis2 = [v15 xAxis];
     v11 = v8;
     *&v17 = v11;
-    v18 = [v16 _setValue:v14 queue:v17];
+    v18 = [xAxis2 _setValue:handlerQueue queue:v17];
 
-    v19 = [v15 yAxis];
+    yAxis2 = [v15 yAxis];
     v12 = v9;
     *&v20 = v12;
-    v21 = [v19 _setValue:v14 queue:v20];
+    v21 = [yAxis2 _setValue:handlerQueue queue:v20];
 
     if ((v18 & 1) == 0 && (v21 & 1) == 0)
     {
@@ -234,9 +234,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)reportDirectionpadChange:(id)a3 onQueue:(id)a4
+- (void)reportDirectionpadChange:(id)change onQueue:(id)queue
 {
-  v17 = a3;
+  changeCopy = change;
   v6 = -1.0;
   if ((self->_directionPadButtonsState & 8) != 0)
   {
@@ -273,36 +273,36 @@ LABEL_13:
     v9 = v6;
   }
 
-  v10 = a4;
-  v11 = [v17 xAxis];
+  queueCopy = queue;
+  xAxis = [changeCopy xAxis];
   *&v12 = v9;
-  v13 = [v11 _setValue:v10 queue:v12];
+  v13 = [xAxis _setValue:queueCopy queue:v12];
 
-  v14 = [v17 yAxis];
+  yAxis = [changeCopy yAxis];
   *&v15 = v8;
-  v16 = [v14 _setValue:v10 queue:v15];
+  v16 = [yAxis _setValue:queueCopy queue:v15];
 
   if ((v13 & 1) != 0 || v16)
   {
-    [0 addObject:v17];
+    [0 addObject:changeCopy];
   }
 }
 
-- (BOOL)determineTouchStateWithDigitizerX:(float)a3 digitizerY:(float)a4 touchDown:(BOOL)a5
+- (BOOL)determineTouchStateWithDigitizerX:(float)x digitizerY:(float)y touchDown:(BOOL)down
 {
   touchState = self->_touchState;
   if (touchState)
   {
-    v6 = 0;
+    downCopy = 0;
   }
 
   else
   {
-    v6 = a5;
+    downCopy = down;
   }
 
-  v7 = touchState == 1 && a5;
-  if (v6 || v7 || (v8 = self->_touchState, !a5))
+  v7 = touchState == 1 && down;
+  if (downCopy || v7 || (v8 = self->_touchState, !down))
   {
     v9 = !v7;
     v10 = 1;
@@ -311,7 +311,7 @@ LABEL_13:
       v10 = 2;
     }
 
-    if (a5)
+    if (down)
     {
       v8 = v10;
     }
@@ -331,16 +331,16 @@ LABEL_13:
 
   else
   {
-    v11 = !a5;
+    v11 = !down;
   }
 
-  return !v11 && (v8 != 2 || self->_absolutePosition.x != a3 || self->_absolutePosition.y != a4);
+  return !v11 && (v8 != 2 || self->_absolutePosition.x != x || self->_absolutePosition.y != y);
 }
 
-- (CGPoint)normalizeCGPoint:(CGPoint)a3
+- (CGPoint)normalizeCGPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(GCDirectionalGamepad *)self magnitudeForCGPoint:?];
   v6 = y / v5;
   v7 = x / v5;
@@ -349,52 +349,52 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)scaleCGPoint:(CGPoint)a3 toLength:(double)a4
+- (CGPoint)scaleCGPoint:(CGPoint)point toLength:(double)length
 {
-  [(GCDirectionalGamepad *)self normalizeCGPoint:a3.x, a3.y];
-  v6 = v5 * a4;
-  v8 = v7 * a4;
+  [(GCDirectionalGamepad *)self normalizeCGPoint:point.x, point.y];
+  v6 = v5 * length;
+  v8 = v7 * length;
   result.y = v8;
   result.x = v6;
   return result;
 }
 
-- (CGPoint)addCGPoint:(CGPoint)a3 toPoint:(CGPoint)a4
+- (CGPoint)addCGPoint:(CGPoint)point toPoint:(CGPoint)toPoint
 {
-  v4 = a3.x + a4.x;
-  v5 = a3.y + a4.y;
+  v4 = point.x + toPoint.x;
+  v5 = point.y + toPoint.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)subCGPoint:(CGPoint)a3 fromPoint:(CGPoint)a4
+- (CGPoint)subCGPoint:(CGPoint)point fromPoint:(CGPoint)fromPoint
 {
-  v4 = a4.x - a3.x;
-  v5 = a4.y - a3.y;
+  v4 = fromPoint.x - point.x;
+  v5 = fromPoint.y - point.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)mulCGPoint:(CGPoint)a3 byScalar:(double)a4
+- (CGPoint)mulCGPoint:(CGPoint)point byScalar:(double)scalar
 {
-  v4 = a3.x * a4;
-  v5 = a3.y * a4;
+  v4 = point.x * scalar;
+  v5 = point.y * scalar;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)clampPoint:(CGPoint)a3 toLength:(double)a4
+- (CGPoint)clampPoint:(CGPoint)point toLength:(double)length
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(GCDirectionalGamepad *)self magnitudeForCGPoint:?];
-  if (v7 > a4)
+  if (v7 > length)
   {
-    x = x / v7 * a4;
-    y = y / v7 * a4;
+    x = x / v7 * length;
+    y = y / v7 * length;
   }
 
   v8 = x;
@@ -406,22 +406,22 @@ LABEL_13:
 
 - (BOOL)ownershipClaimingElementsZero
 {
-  v3 = [(GCMicroGamepad *)self buttonA];
-  [v3 value];
+  buttonA = [(GCMicroGamepad *)self buttonA];
+  [buttonA value];
   if (v4 == 0.0)
   {
-    v5 = [(GCMicroGamepad *)self buttonX];
-    [v5 value];
+    buttonX = [(GCMicroGamepad *)self buttonX];
+    [buttonX value];
     if (v6 == 0.0)
     {
-      v7 = [(GCMicroGamepad *)self dpad];
-      v8 = [v7 xAxis];
-      [v8 value];
+      dpad = [(GCMicroGamepad *)self dpad];
+      xAxis = [dpad xAxis];
+      [xAxis value];
       if (v9 == 0.0)
       {
-        v10 = [(GCMicroGamepad *)self dpad];
-        v11 = [v10 yAxis];
-        [v11 value];
+        dpad2 = [(GCMicroGamepad *)self dpad];
+        yAxis = [dpad2 yAxis];
+        [yAxis value];
         v13 = v12 == 0.0;
       }
 
@@ -445,12 +445,12 @@ LABEL_13:
   return v13;
 }
 
-- (id)dpadDirectionEvent:(id)a3 direction:(unint64_t)a4 pressed:(BOOL)a5
+- (id)dpadDirectionEvent:(id)event direction:(unint64_t)direction pressed:(BOOL)pressed
 {
   directionPadButtonsState = self->_directionPadButtonsState;
-  v7 = directionPadButtonsState ^ a4;
-  v8 = directionPadButtonsState | a4;
-  if (!a5)
+  v7 = directionPadButtonsState ^ direction;
+  v8 = directionPadButtonsState | direction;
+  if (!pressed)
   {
     v8 = v7;
   }
@@ -461,8 +461,8 @@ LABEL_13:
     [GCDirectionalGamepad(DirectionPadValueChangedDelegate) dpadDirectionEvent:? direction:? pressed:?];
   }
 
-  v9 = [(GCMicroGamepad *)self dpad];
-  v10 = v9;
+  dpad = [(GCMicroGamepad *)self dpad];
+  v10 = dpad;
   if (self->_deviceType == 5)
   {
     v11 = self->_cardinalDpad;
@@ -471,17 +471,17 @@ LABEL_13:
     {
       v12 = self->_directionPadButtonsState;
       v13 = self->_directionPadButtonsState != 0;
-      v14 = [(GCMicroGamepad *)self buttonA];
-      v15 = [v14 isPressed];
+      buttonA = [(GCMicroGamepad *)self buttonA];
+      isPressed = [buttonA isPressed];
 
-      if (v13 != v15 && !self->_centerButtonPressed)
+      if (v13 != isPressed && !self->_centerButtonPressed)
       {
-        v16 = [(GCPhysicalInputProfile *)self controller];
-        v17 = [v16 handlerQueue];
-        v18 = v17;
-        if (v17)
+        controller = [(GCPhysicalInputProfile *)self controller];
+        handlerQueue = [controller handlerQueue];
+        v18 = handlerQueue;
+        if (handlerQueue)
         {
-          v19 = v17;
+          v19 = handlerQueue;
         }
 
         else
@@ -490,15 +490,15 @@ LABEL_13:
           v23 = MEMORY[0x1E69E96A0];
         }
 
-        v24 = [(GCMicroGamepad *)self buttonA];
-        v25 = v24;
+        buttonA2 = [(GCMicroGamepad *)self buttonA];
+        v25 = buttonA2;
         v26 = 0.0;
         if (v12)
         {
           *&v26 = 1.0;
         }
 
-        [v24 _setValue:v19 queue:v26];
+        [buttonA2 _setValue:v19 queue:v26];
 
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -512,12 +512,12 @@ LABEL_13:
 
   else
   {
-    v11 = v9;
+    v11 = dpad;
   }
 
-  v20 = [(GCPhysicalInputProfile *)self controller];
-  v21 = [v20 handlerQueue];
-  [(GCDirectionalGamepad *)self reportDirectionpadChange:v11 onQueue:v21];
+  controller2 = [(GCPhysicalInputProfile *)self controller];
+  handlerQueue2 = [controller2 handlerQueue];
+  [(GCDirectionalGamepad *)self reportDirectionpadChange:v11 onQueue:handlerQueue2];
 
   return v11;
 }
@@ -540,27 +540,27 @@ void __95__GCDirectionalGamepad_DirectionPadValueChangedDelegate__dpadDirectionE
   }
 }
 
-- (id)centerButtonEvent:(id)a3 pressed:(BOOL)a4
+- (id)centerButtonEvent:(id)event pressed:(BOOL)pressed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (self->_centerButtonPressed == v4 || (self->_centerButtonPressed = v4, !self->_treatOnlyCenterRingAsButtonA) && v4 && self->_directionPadButtonsState)
+  pressedCopy = pressed;
+  eventCopy = event;
+  v7 = eventCopy;
+  if (self->_centerButtonPressed == pressedCopy || (self->_centerButtonPressed = pressedCopy, !self->_treatOnlyCenterRingAsButtonA) && pressedCopy && self->_directionPadButtonsState)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v6;
+    v8 = eventCopy;
     if (v8)
     {
-      v9 = [(GCPhysicalInputProfile *)self controller];
-      v10 = [v9 handlerQueue];
-      v11 = v10;
-      if (v10)
+      controller = [(GCPhysicalInputProfile *)self controller];
+      handlerQueue = [controller handlerQueue];
+      v11 = handlerQueue;
+      if (handlerQueue)
       {
-        v12 = v10;
+        v12 = handlerQueue;
       }
 
       else
@@ -569,11 +569,11 @@ void __95__GCDirectionalGamepad_DirectionPadValueChangedDelegate__dpadDirectionE
         v13 = MEMORY[0x1E69E96A0];
       }
 
-      *&v14 = v4;
+      *&v14 = pressedCopy;
       [v8 _setValue:v12 queue:v14];
       if (!self->_treatOnlyCenterRingAsButtonA)
       {
-        *&v15 = v4;
+        *&v15 = pressedCopy;
         [(GCControllerButtonInput *)self->_centerButton _setValue:v12 queue:v15];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;

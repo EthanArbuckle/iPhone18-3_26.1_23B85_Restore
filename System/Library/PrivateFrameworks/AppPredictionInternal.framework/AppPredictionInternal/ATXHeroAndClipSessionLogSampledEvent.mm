@@ -1,20 +1,20 @@
 @interface ATXHeroAndClipSessionLogSampledEvent
-- (id)initFromLaunch:(id)a3;
+- (id)initFromLaunch:(id)launch;
 - (id)location;
 @end
 
 @implementation ATXHeroAndClipSessionLogSampledEvent
 
-- (id)initFromLaunch:(id)a3
+- (id)initFromLaunch:(id)launch
 {
-  v5 = a3;
+  launchCopy = launch;
   v9.receiver = self;
   v9.super_class = ATXHeroAndClipSessionLogSampledEvent;
   v6 = [(ATXHeroAndClipSessionLogSampledEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_launch, a3);
+    objc_storeStrong(&v6->_launch, launch);
   }
 
   return v7;

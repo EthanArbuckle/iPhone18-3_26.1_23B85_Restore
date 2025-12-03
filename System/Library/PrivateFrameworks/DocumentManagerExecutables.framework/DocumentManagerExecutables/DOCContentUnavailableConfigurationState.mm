@@ -1,36 +1,36 @@
 @interface DOCContentUnavailableConfigurationState
-- (DOCContentUnavailableConfigurationState)initWithTraitCollection:(id)a3;
+- (DOCContentUnavailableConfigurationState)initWithTraitCollection:(id)collection;
 - (NSString)searchControllerText;
 - (UITraitCollection)traitCollection;
-- (id)customStateForKey:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)setCustomState:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)setSearchControllerText:(id)a3;
+- (id)customStateForKey:(id)key;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)setCustomState:(id)state forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)setSearchControllerText:(id)text;
 @end
 
 @implementation DOCContentUnavailableConfigurationState
 
 - (NSString)searchControllerText
 {
-  v2 = [(DOCContentUnavailableConfigurationState *)self asUIKit];
-  v3 = [v2 searchControllerText];
+  asUIKit = [(DOCContentUnavailableConfigurationState *)self asUIKit];
+  searchControllerText = [asUIKit searchControllerText];
 
-  return v3;
+  return searchControllerText;
 }
 
-- (void)setSearchControllerText:(id)a3
+- (void)setSearchControllerText:(id)text
 {
-  v4 = a3;
-  v5 = [(DOCContentUnavailableConfigurationState *)self asUIKit];
-  [v5 setSearchControllerText:v4];
+  textCopy = text;
+  asUIKit = [(DOCContentUnavailableConfigurationState *)self asUIKit];
+  [asUIKit setSearchControllerText:textCopy];
 }
 
-- (DOCContentUnavailableConfigurationState)initWithTraitCollection:(id)a3
+- (DOCContentUnavailableConfigurationState)initWithTraitCollection:(id)collection
 {
   v4 = MEMORY[0x277D75398];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithTraitCollection:v5];
+  collectionCopy = collection;
+  v6 = [[v4 alloc] initWithTraitCollection:collectionCopy];
 
   v7 = [objc_opt_class() instanceWrappingImpl:v6];
 
@@ -39,44 +39,44 @@
 
 - (UITraitCollection)traitCollection
 {
-  v2 = [(DOCContentUnavailableConfigurationState *)self asUIKit];
-  v3 = [v2 traitCollection];
+  asUIKit = [(DOCContentUnavailableConfigurationState *)self asUIKit];
+  traitCollection = [asUIKit traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
-- (id)customStateForKey:(id)a3
+- (id)customStateForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(DOCContentUnavailableConfigurationState *)self asUIKit];
-  v6 = [v5 customStateForKey:v4];
+  keyCopy = key;
+  asUIKit = [(DOCContentUnavailableConfigurationState *)self asUIKit];
+  v6 = [asUIKit customStateForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setCustomState:(id)a3 forKey:(id)a4
+- (void)setCustomState:(id)state forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DOCContentUnavailableConfigurationState *)self asUIKit];
-  [v8 setCustomState:v7 forKey:v6];
+  keyCopy = key;
+  stateCopy = state;
+  asUIKit = [(DOCContentUnavailableConfigurationState *)self asUIKit];
+  [asUIKit setCustomState:stateCopy forKey:keyCopy];
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(DOCContentUnavailableConfigurationState *)self asUIKit];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  asUIKit = [(DOCContentUnavailableConfigurationState *)self asUIKit];
+  v6 = [asUIKit objectForKeyedSubscript:subscriptCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DOCContentUnavailableConfigurationState *)self asUIKit];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  subscriptCopy = subscript;
+  objectCopy = object;
+  asUIKit = [(DOCContentUnavailableConfigurationState *)self asUIKit];
+  [asUIKit setObject:objectCopy forKeyedSubscript:subscriptCopy];
 }
 
 @end

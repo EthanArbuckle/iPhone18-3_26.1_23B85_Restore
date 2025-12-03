@@ -1,63 +1,63 @@
 @interface WFLinkActionExecutor
-- (WFLinkActionExecutor)initWithLinkAction:(id)a3 appBundleIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 authenticationPolicy:(int64_t)a6 source:(unsigned __int16)a7 sourceOverride:(id)a8 error:(id *)a9;
+- (WFLinkActionExecutor)initWithLinkAction:(id)action appBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier authenticationPolicy:(int64_t)policy source:(unsigned __int16)source sourceOverride:(id)override error:(id *)error;
 - (id)executorOptions;
-- (void)executor:(id)a3 didPerformActionWithResult:(id)a4 error:(id)a5;
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4;
-- (void)performWithCompletionHandler:(id)a3;
+- (void)executor:(id)executor didPerformActionWithResult:(id)result error:(id)error;
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request;
+- (void)executor:(id)executor needsValueWithRequest:(id)request;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFLinkActionExecutor
 
-- (void)executor:(id)a3 didPerformActionWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didPerformActionWithResult:(id)result error:(id)error
 {
-  v8 = a5;
-  v6 = [(WFLinkActionExecutor *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFLinkActionExecutor *)self completionHandler];
 
-  if (v6)
+  if (completionHandler)
   {
-    v7 = [(WFLinkActionExecutor *)self completionHandler];
-    (v7)[2](v7, v8);
+    completionHandler2 = [(WFLinkActionExecutor *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
 
     [(WFLinkActionExecutor *)self setCompletionHandler:0];
   }
 }
 
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4
+- (void)executor:(id)executor needsValueWithRequest:(id)request
 {
   v4 = MEMORY[0x1E696ABC0];
   v5 = *MEMORY[0x1E69ACB20];
-  v6 = a4;
+  requestCopy = request;
   v7 = [v4 errorWithDomain:v5 code:2010 userInfo:0];
-  [v6 respondWithError:v7];
+  [requestCopy respondWithError:v7];
 }
 
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request
 {
   v4 = MEMORY[0x1E696ABC0];
   v5 = *MEMORY[0x1E69ACB20];
-  v6 = a4;
+  requestCopy = request;
   v7 = [v4 errorWithDomain:v5 code:2010 userInfo:0];
-  [v6 respondWithError:v7];
+  [requestCopy respondWithError:v7];
 }
 
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request
 {
   v4 = MEMORY[0x1E696ABC0];
   v5 = *MEMORY[0x1E69ACB20];
-  v6 = a4;
+  requestCopy = request;
   v7 = [v4 errorWithDomain:v5 code:2010 userInfo:0];
-  [v6 respondWithError:v7];
+  [requestCopy respondWithError:v7];
 }
 
 - (id)executorOptions
 {
   v3 = objc_opt_new();
   v4 = objc_alloc(MEMORY[0x1E69ACF18]);
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [v5 localeIdentifier];
-  v7 = [v4 initWithLocaleIdentifier:v6];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v7 = [v4 initWithLocaleIdentifier:localeIdentifier];
   [v3 setEnvironment:v7];
 
   [v3 setClientLabel:@"App Intent Runner"];
@@ -65,13 +65,13 @@
   [v3 setAllowsPrepareBeforePerform:1];
   [v3 setSource:{-[WFLinkActionExecutor source](self, "source")}];
   [v3 setPriority:2];
-  v9 = [(WFLinkActionExecutor *)self sourceOverride];
-  [v3 setSourceOverride:v9];
+  sourceOverride = [(WFLinkActionExecutor *)self sourceOverride];
+  [v3 setSourceOverride:sourceOverride];
 
-  v10 = [(WFLinkActionExecutor *)self authenticationPolicy];
-  if (v10 != 1)
+  authenticationPolicy = [(WFLinkActionExecutor *)self authenticationPolicy];
+  if (authenticationPolicy != 1)
   {
-    if (v10 != 2)
+    if (authenticationPolicy != 2)
     {
       goto LABEL_5;
     }
@@ -85,38 +85,38 @@ LABEL_5:
   return v3;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  [(WFLinkActionExecutor *)self setCompletionHandler:a3];
+  [(WFLinkActionExecutor *)self setCompletionHandler:handler];
   v14 = objc_opt_new();
-  v4 = [(WFLinkActionExecutor *)self extensionBundleIdentifier];
-  [v14 setPreferredExtensionBundleIdentifier:v4];
+  extensionBundleIdentifier = [(WFLinkActionExecutor *)self extensionBundleIdentifier];
+  [v14 setPreferredExtensionBundleIdentifier:extensionBundleIdentifier];
 
   v5 = MEMORY[0x1E69ACE68];
-  v6 = [(WFLinkActionExecutor *)self metadata];
-  v7 = [v5 policyWithActionMetadata:v6 signals:v14];
+  metadata = [(WFLinkActionExecutor *)self metadata];
+  v7 = [v5 policyWithActionMetadata:metadata signals:v14];
 
   v8 = [v7 connectionWithError:0];
-  v9 = [(WFLinkActionExecutor *)self linkAction];
-  v10 = [v9 parameters];
-  v11 = [v7 actionWithParameters:v10];
+  linkAction = [(WFLinkActionExecutor *)self linkAction];
+  parameters = [linkAction parameters];
+  v11 = [v7 actionWithParameters:parameters];
 
-  v12 = [(WFLinkActionExecutor *)self executorOptions];
-  v13 = [v8 executorForAction:v11 options:v12 delegate:self];
+  executorOptions = [(WFLinkActionExecutor *)self executorOptions];
+  v13 = [v8 executorForAction:v11 options:executorOptions delegate:self];
 
   [v13 perform];
 }
 
-- (WFLinkActionExecutor)initWithLinkAction:(id)a3 appBundleIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 authenticationPolicy:(int64_t)a6 source:(unsigned __int16)a7 sourceOverride:(id)a8 error:(id *)a9
+- (WFLinkActionExecutor)initWithLinkAction:(id)action appBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier authenticationPolicy:(int64_t)policy source:(unsigned __int16)source sourceOverride:(id)override error:(id *)error
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a8;
-  if (v17)
+  actionCopy = action;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  overrideCopy = override;
+  if (actionCopy)
   {
-    if (v18)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -124,17 +124,17 @@ LABEL_5:
 
   else
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"WFLinkActionExecutor.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"linkAction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkActionExecutor.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"linkAction"}];
 
-    if (v18)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v49 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v49 handleFailureInMethod:a2 object:self file:@"WFLinkActionExecutor.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFLinkActionExecutor.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
 
 LABEL_3:
   v50.receiver = self;
@@ -143,33 +143,33 @@ LABEL_3:
   v22 = v21;
   if (v21)
   {
-    v47 = v20;
-    objc_storeStrong(&v21->_linkAction, a3);
-    v23 = [v18 copy];
+    v47 = overrideCopy;
+    objc_storeStrong(&v21->_linkAction, action);
+    v23 = [identifierCopy copy];
     appBundleIdentifier = v22->_appBundleIdentifier;
     v22->_appBundleIdentifier = v23;
 
-    v22->_source = a7;
-    objc_storeStrong(&v22->_sourceOverride, a8);
-    v25 = [v19 copy];
+    v22->_source = source;
+    objc_storeStrong(&v22->_sourceOverride, override);
+    v25 = [bundleIdentifierCopy copy];
     extensionBundleIdentifier = v22->_extensionBundleIdentifier;
     v22->_extensionBundleIdentifier = v25;
 
-    v22->_authenticationPolicy = a6;
+    v22->_authenticationPolicy = policy;
     v27 = [objc_alloc(MEMORY[0x1E69ACF60]) initWithOptions:2];
     metadataProvider = v22->_metadataProvider;
     v22->_metadataProvider = v27;
 
     v29 = v22->_metadataProvider;
     v30 = objc_alloc(MEMORY[0x1E69AC858]);
-    v31 = [v17 identifier];
-    v32 = [v30 initWithActionIdentifier:v31 bundleIdentifier:v18];
+    identifier = [actionCopy identifier];
+    v32 = [v30 initWithActionIdentifier:identifier bundleIdentifier:identifierCopy];
     v53[0] = v32;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
-    v34 = [(LNMetadataProvider *)v29 actionsWithFullyQualifiedIdentifiers:v33 error:a9];
-    v35 = [v34 objectForKeyedSubscript:v18];
-    v36 = [v17 identifier];
-    v37 = [v35 objectForKeyedSubscript:v36];
+    v34 = [(LNMetadataProvider *)v29 actionsWithFullyQualifiedIdentifiers:v33 error:error];
+    v35 = [v34 objectForKeyedSubscript:identifierCopy];
+    identifier2 = [actionCopy identifier];
+    v37 = [v35 objectForKeyedSubscript:identifier2];
     metadata = v22->_metadata;
     v22->_metadata = v37;
 
@@ -180,22 +180,22 @@ LABEL_3:
 
     else
     {
-      if (a9)
+      if (error)
       {
         v40 = MEMORY[0x1E696ABC0];
         v51 = *MEMORY[0x1E696A578];
         v41 = MEMORY[0x1E696AEC0];
-        v42 = [v17 identifier];
+        identifier3 = [actionCopy identifier];
         v43 = objc_claimAutoreleasedReturnValue();
         v52 = v43;
         v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-        *a9 = [v40 errorWithDomain:@"WFLinkActionWorkflowRunnerClientErrorDomain" code:1 userInfo:v44];
+        *error = [v40 errorWithDomain:@"WFLinkActionWorkflowRunnerClientErrorDomain" code:1 userInfo:v44];
       }
 
       v39 = 0;
     }
 
-    v20 = v47;
+    overrideCopy = v47;
   }
 
   else

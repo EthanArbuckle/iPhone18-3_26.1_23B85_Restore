@@ -1,17 +1,17 @@
 @interface OAXMovieContext
-- (BOOL)loadDelayedNode:(id)a3;
+- (BOOL)loadDelayedNode:(id)node;
 - (id)dataRep;
 @end
 
 @implementation OAXMovieContext
 
-- (BOOL)loadDelayedNode:(id)a3
+- (BOOL)loadDelayedNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = nodeCopy;
   }
 
   else
@@ -22,7 +22,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = nodeCopy;
   }
 
   else
@@ -40,8 +40,8 @@
       v11 = v12 != 0;
       if (v12)
       {
-        v13 = [v12 data];
-        [v5 setData:v13];
+        data = [v12 data];
+        [v5 setData:data];
       }
     }
 
@@ -57,8 +57,8 @@
       v11 = v14 != 0;
       if (v14)
       {
-        v15 = [v14 data];
-        [v6 setSoundData:v15];
+        data2 = [v14 data];
+        [v6 setSoundData:data2];
       }
     }
 
@@ -66,9 +66,9 @@
     goto LABEL_16;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [(NSURL *)self->super.mTargetLocation path];
-  v9 = [v7 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->super.mTargetLocation path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (!v9)
   {
@@ -92,16 +92,16 @@ LABEL_22:
   mTargetLocation = self->super.mTargetLocation;
   if (mPackage)
   {
-    v5 = [(OCPPackage *)mPackage partForLocation:mTargetLocation];
+    path2 = [(OCPPackage *)mPackage partForLocation:mTargetLocation];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 zipEntry];
+      zipEntry = [path2 zipEntry];
     }
 
     else
     {
-      v6 = 0;
+      zipEntry = 0;
     }
 
     [(OCPPackage *)self->super.mPackage resetPartForLocation:self->super.mTargetLocation];
@@ -110,25 +110,25 @@ LABEL_22:
 
   if (mTargetLocation)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [(NSURL *)self->super.mTargetLocation path];
-    v9 = [v7 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [(NSURL *)self->super.mTargetLocation path];
+    v9 = [defaultManager fileExistsAtPath:path];
 
     if (v9)
     {
       v10 = [OISFUFileDataRepresentation alloc];
-      v5 = [(NSURL *)self->super.mTargetLocation path];
-      v6 = [(OISFUFileDataRepresentation *)v10 initWithPath:v5];
+      path2 = [(NSURL *)self->super.mTargetLocation path];
+      zipEntry = [(OISFUFileDataRepresentation *)v10 initWithPath:path2];
 LABEL_9:
 
       goto LABEL_11;
     }
   }
 
-  v6 = 0;
+  zipEntry = 0;
 LABEL_11:
 
-  return v6;
+  return zipEntry;
 }
 
 @end

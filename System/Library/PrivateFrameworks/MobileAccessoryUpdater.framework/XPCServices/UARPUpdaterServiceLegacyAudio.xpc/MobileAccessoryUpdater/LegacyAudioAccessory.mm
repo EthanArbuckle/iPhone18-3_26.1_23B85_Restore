@@ -1,32 +1,32 @@
 @interface LegacyAudioAccessory
 - (BOOL)showPersonalizationRequiredDialogAndGetResponse;
 - (BOOL)startFirmwareUpdateStates;
-- (LegacyAudioAccessory)initWithCoder:(id)a3;
-- (LegacyAudioAccessory)initWithDelegate:(id)a3;
+- (LegacyAudioAccessory)initWithCoder:(id)coder;
+- (LegacyAudioAccessory)initWithDelegate:(id)delegate;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deviceClassesForEAIdentifier:(id)a3;
-- (id)getMatchingEntryForEAIdentifier:(id)a3;
-- (void)didApply:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)didBootstrap:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)didDownload:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)didFind:(BOOL)a3 info:(id)a4 updateAvailable:(BOOL)a5 needsDownload:(BOOL)a6 error:(id)a7;
-- (void)didFinish:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)didPrepare:(BOOL)a3 info:(id)a4 error:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleConnect:(id)a3 options:(id)a4;
-- (void)log:(int)a3 format:(id)a4;
-- (void)personalizationDone:(id)a3 response:(id)a4 error:(id)a5;
-- (void)personalizationRequest:(id)a3;
-- (void)progress:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deviceClassesForEAIdentifier:(id)identifier;
+- (id)getMatchingEntryForEAIdentifier:(id)identifier;
+- (void)didApply:(BOOL)apply info:(id)info error:(id)error;
+- (void)didBootstrap:(BOOL)bootstrap info:(id)info error:(id)error;
+- (void)didDownload:(BOOL)download info:(id)info error:(id)error;
+- (void)didFind:(BOOL)find info:(id)info updateAvailable:(BOOL)available needsDownload:(BOOL)download error:(id)error;
+- (void)didFinish:(BOOL)finish info:(id)info error:(id)error;
+- (void)didPrepare:(BOOL)prepare info:(id)info error:(id)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleConnect:(id)connect options:(id)options;
+- (void)log:(int)log format:(id)format;
+- (void)personalizationDone:(id)done response:(id)response error:(id)error;
+- (void)personalizationRequest:(id)request;
+- (void)progress:(double)progress;
 - (void)updateCompleteForActiveDeviceClass;
 @end
 
 @implementation LegacyAudioAccessory
 
-- (LegacyAudioAccessory)initWithDelegate:(id)a3
+- (LegacyAudioAccessory)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = LegacyAudioAccessory;
   v6 = [(LegacyAudioAccessory *)&v17 init];
@@ -36,7 +36,7 @@
     log = v6->_log;
     v6->_log = v7;
 
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v9 = objc_alloc_init(NSMutableArray);
     deviceClasses = v6->_deviceClasses;
     v6->_deviceClasses = v9;
@@ -55,7 +55,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[LegacyAudioAccessory alloc] initWithDelegate:self->_delegate];
   objc_storeStrong(&v4->_serialNumber, self->_serialNumber);
@@ -65,35 +65,35 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serialNumber = self->_serialNumber;
-  v5 = a3;
-  [v5 encodeObject:serialNumber forKey:@"serialNumber"];
-  [v5 encodeObject:self->_activeFirmwareVersion forKey:@"activeFirmwareVersion"];
-  [v5 encodeObject:self->_activeANCVersion forKey:@"activeANCVersion"];
-  [v5 encodeObject:self->_modelName forKey:@"modelName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeObject:self->_activeFirmwareVersion forKey:@"activeFirmwareVersion"];
+  [coderCopy encodeObject:self->_activeANCVersion forKey:@"activeANCVersion"];
+  [coderCopy encodeObject:self->_modelName forKey:@"modelName"];
 }
 
-- (LegacyAudioAccessory)initWithCoder:(id)a3
+- (LegacyAudioAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(LegacyAudioAccessory *)self initWithDelegate:0];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeFirmwareVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeFirmwareVersion"];
     activeFirmwareVersion = v5->_activeFirmwareVersion;
     v5->_activeFirmwareVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeANCVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeANCVersion"];
     activeANCVersion = v5->_activeANCVersion;
     v5->_activeANCVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
     modelName = v5->_modelName;
     v5->_modelName = v12;
   }
@@ -112,20 +112,20 @@
   return v7;
 }
 
-- (void)handleConnect:(id)a3 options:(id)a4
+- (void)handleConnect:(id)connect options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  optionsCopy = options;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003004;
   block[3] = &unk_10002C858;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectCopy;
+  v13 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = connectCopy;
   dispatch_async(queue, block);
 }
 
@@ -187,30 +187,30 @@
   return v14 != 0;
 }
 
-- (id)deviceClassesForEAIdentifier:(id)a3
+- (id)deviceClassesForEAIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(LegacyAudioAccessory *)self getMatchingEntryForEAIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(LegacyAudioAccessory *)self getMatchingEntryForEAIdentifier:identifierCopy];
   v6 = [v5 objectForKeyedSubscript:@"DeviceClasses"];
   if (!v6)
   {
-    v6 = [NSArray arrayWithObjects:v4, 0];
+    v6 = [NSArray arrayWithObjects:identifierCopy, 0];
   }
 
   return v6;
 }
 
-- (id)getMatchingEntryForEAIdentifier:(id)a3
+- (id)getMatchingEntryForEAIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v4 = +[LegacyAudioController sharedInstance];
-  v5 = [v4 matchingAccessoriesList];
+  matchingAccessoriesList = [v4 matchingAccessoriesList];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [matchingAccessoriesList countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -221,12 +221,12 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(matchingAccessoriesList);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"DeviceClass"];
-        v12 = [v11 isEqualToString:v3];
+        v12 = [v11 isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -235,7 +235,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [matchingAccessoriesList countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -319,9 +319,9 @@ LABEL_11:
   [(EAAccessoryUpdater *)self->_updater setDelegate:0];
   if ([(NSMutableArray *)self->_deviceClasses count])
   {
-    v16 = [(NSMutableArray *)self->_deviceClasses firstObject];
+    firstObject = [(NSMutableArray *)self->_deviceClasses firstObject];
     v17 = self->_activeDeviceClass;
-    self->_activeDeviceClass = v16;
+    self->_activeDeviceClass = firstObject;
 
     if (![(LegacyAudioAccessory *)self startFirmwareUpdateStates])
     {
@@ -335,11 +335,11 @@ LABEL_11:
   }
 }
 
-- (void)didBootstrap:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didBootstrap:(BOOL)bootstrap info:(id)info error:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  bootstrapCopy = bootstrap;
+  infoCopy = info;
+  errorCopy = error;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -349,11 +349,11 @@ LABEL_11:
     v17 = 2112;
     v18 = activeDeviceClass;
     v19 = 1024;
-    v20 = v6;
+    v20 = bootstrapCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = infoCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = errorCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: deviceClass=%@, successful=%d, info=%@, error=%@", buf, 0x30u);
   }
 
@@ -362,18 +362,18 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = sub_100003864;
   v13[3] = &unk_10002C880;
-  v14 = v6;
+  v14 = bootstrapCopy;
   v13[4] = self;
   dispatch_async(queue, v13);
 }
 
-- (void)didFind:(BOOL)a3 info:(id)a4 updateAvailable:(BOOL)a5 needsDownload:(BOOL)a6 error:(id)a7
+- (void)didFind:(BOOL)find info:(id)info updateAvailable:(BOOL)available needsDownload:(BOOL)download error:(id)error
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a3;
-  v12 = a4;
-  v13 = a7;
+  downloadCopy = download;
+  availableCopy = available;
+  findCopy = find;
+  infoCopy = info;
+  errorCopy = error;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -383,15 +383,15 @@ LABEL_11:
     v25 = 2112;
     v26 = activeDeviceClass;
     v27 = 1024;
-    v28 = v10;
+    v28 = findCopy;
     v29 = 2112;
-    v30 = v12;
+    v30 = infoCopy;
     v31 = 1024;
-    v32 = v9;
+    v32 = availableCopy;
     v33 = 1024;
-    v34 = v8;
+    v34 = downloadCopy;
     v35 = 2112;
-    v36 = v13;
+    v36 = errorCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: deviceClass=%@, successful=%d, info=%@, updateAvailable=%d, needsDownload=%d, error=%@", buf, 0x3Cu);
   }
 
@@ -401,19 +401,19 @@ LABEL_11:
   block[2] = sub_100003A4C;
   block[3] = &unk_10002C8A8;
   block[4] = self;
-  v19 = v12;
-  v20 = v10;
-  v21 = v9;
-  v22 = v8;
-  v17 = v12;
+  v19 = infoCopy;
+  v20 = findCopy;
+  v21 = availableCopy;
+  v22 = downloadCopy;
+  v17 = infoCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didDownload:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didDownload:(BOOL)download info:(id)info error:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  downloadCopy = download;
+  infoCopy = info;
+  errorCopy = error;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -423,11 +423,11 @@ LABEL_11:
     v17 = 2112;
     v18 = activeDeviceClass;
     v19 = 1024;
-    v20 = v6;
+    v20 = downloadCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = infoCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = errorCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: deviceClass=%@, successful=%d, info=%@, error=%@", buf, 0x30u);
   }
 
@@ -437,15 +437,15 @@ LABEL_11:
   v13[2] = sub_100003DE4;
   v13[3] = &unk_10002C880;
   v13[4] = self;
-  v14 = v6;
+  v14 = downloadCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)didPrepare:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didPrepare:(BOOL)prepare info:(id)info error:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  prepareCopy = prepare;
+  infoCopy = info;
+  errorCopy = error;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -455,11 +455,11 @@ LABEL_11:
     v17 = 2112;
     v18 = activeDeviceClass;
     v19 = 1024;
-    v20 = v6;
+    v20 = prepareCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = infoCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = errorCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: deviceClass=%@, successful=%d, info=%@, error=%@", buf, 0x30u);
   }
 
@@ -468,16 +468,16 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = sub_100003FFC;
   v13[3] = &unk_10002C880;
-  v14 = v6;
+  v14 = prepareCopy;
   v13[4] = self;
   dispatch_async(queue, v13);
 }
 
-- (void)didApply:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didApply:(BOOL)apply info:(id)info error:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  applyCopy = apply;
+  infoCopy = info;
+  errorCopy = error;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -487,11 +487,11 @@ LABEL_11:
     v19 = 2112;
     v20 = activeDeviceClass;
     v21 = 1024;
-    v22 = v6;
+    v22 = applyCopy;
     v23 = 2112;
-    v24 = v8;
+    v24 = infoCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = errorCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: deviceClass=%@, successful=%d, info=%@, error=%@", buf, 0x30u);
   }
 
@@ -501,13 +501,13 @@ LABEL_11:
   block[2] = sub_100004184;
   block[3] = &unk_10002C8D0;
   block[4] = self;
-  v15 = v8;
-  v16 = v6;
-  v13 = v8;
+  v15 = infoCopy;
+  v16 = applyCopy;
+  v13 = infoCopy;
   dispatch_async(queue, block);
 }
 
-- (void)progress:(double)a3
+- (void)progress:(double)progress
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -518,16 +518,16 @@ LABEL_11:
     v9 = 2112;
     v10 = activeDeviceClass;
     v11 = 2048;
-    v12 = a3;
+    progressCopy = progress;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: deviceClass=%@, progress=%f", &v7, 0x20u);
   }
 }
 
-- (void)didFinish:(BOOL)a3 info:(id)a4 error:(id)a5
+- (void)didFinish:(BOOL)finish info:(id)info error:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  finishCopy = finish;
+  infoCopy = info;
+  errorCopy = error;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -537,11 +537,11 @@ LABEL_11:
     v16 = 2112;
     v17 = activeDeviceClass;
     v18 = 1024;
-    v19 = v6;
+    v19 = finishCopy;
     v20 = 2112;
-    v21 = v8;
+    v21 = infoCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = errorCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: deviceClass=%@, successful=%d, info=%@, error=%@", buf, 0x30u);
   }
 
@@ -554,48 +554,48 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)personalizationRequest:(id)a3
+- (void)personalizationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100004524;
   v7[3] = &unk_10002C920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)personalizationDone:(id)a3 response:(id)a4 error:(id)a5
+- (void)personalizationDone:(id)done response:(id)response error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  doneCopy = done;
+  responseCopy = response;
+  errorCopy = error;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315394;
     v15 = "[LegacyAudioAccessory personalizationDone:response:error:]";
     v16 = 2112;
-    v17 = v10;
+    v17 = errorCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: Error during personalization %@.", &v14, 0x16u);
   }
 
-  if (v10)
+  if (errorCopy)
   {
     v12 = 0;
-    v13 = v10;
+    v13 = errorCopy;
   }
 
   else
   {
-    v12 = v9;
+    v12 = responseCopy;
     v13 = 0;
   }
 
-  [(EAAccessoryUpdater *)self->_updater personalizationResponse:v8 response:v12 status:v13];
+  [(EAAccessoryUpdater *)self->_updater personalizationResponse:doneCopy response:v12 status:v13];
 }
 
 - (BOOL)showPersonalizationRequiredDialogAndGetResponse
@@ -638,10 +638,10 @@ LABEL_11:
   return v10;
 }
 
-- (void)log:(int)a3 format:(id)a4
+- (void)log:(int)log format:(id)format
 {
-  v5 = a4;
-  v6 = [[NSString alloc] initWithFormat:v5 arguments:&v10];
+  formatCopy = format;
+  v6 = [[NSString alloc] initWithFormat:formatCopy arguments:&v10];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))

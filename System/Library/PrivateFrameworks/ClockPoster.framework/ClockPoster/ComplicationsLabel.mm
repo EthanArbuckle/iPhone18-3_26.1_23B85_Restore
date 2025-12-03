@@ -1,13 +1,13 @@
 @interface ComplicationsLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC11ClockPoster18ComplicationsLabel)initWithCoder:(id)a3;
-- (_TtC11ClockPoster18ComplicationsLabel)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC11ClockPoster18ComplicationsLabel)initWithCoder:(id)coder;
+- (_TtC11ClockPoster18ComplicationsLabel)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ComplicationsLabel
 
-- (_TtC11ClockPoster18ComplicationsLabel)initWithCoder:(id)a3
+- (_TtC11ClockPoster18ComplicationsLabel)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster18ComplicationsLabel_contentsSpacing) = 0x4020000000000000;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster18ComplicationsLabel_orderedContents) = 0;
@@ -19,15 +19,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E48ECB88();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1E48ECD8C(0, width, height);
   v7 = v6;
   v9 = v8;
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (_TtC11ClockPoster18ComplicationsLabel)initWithFrame:(CGRect)a3
+- (_TtC11ClockPoster18ComplicationsLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

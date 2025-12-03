@@ -1,22 +1,22 @@
 @interface HMFFulfilledFuture
 - (_HMFFutureBlockOutcome)outcomeIfSettled;
-- (id)initWithValue:(id *)a1;
-- (id)then:(id)a3;
-- (id)then:(id)a3 orRecover:(id)a4;
+- (id)initWithValue:(id *)value;
+- (id)then:(id)then;
+- (id)then:(id)then orRecover:(id)recover;
 @end
 
 @implementation HMFFulfilledFuture
 
-- (id)initWithValue:(id *)a1
+- (id)initWithValue:(id *)value
 {
   v4 = a2;
-  if (a1)
+  if (value)
   {
-    objc_storeStrong(a1 + 1, a2);
-    v5 = a1;
+    objc_storeStrong(value + 1, a2);
+    valueCopy = value;
   }
 
-  return a1;
+  return value;
 }
 
 - (_HMFFutureBlockOutcome)outcomeIfSettled
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (id)then:(id)a3
+- (id)then:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v5 = HMFFuture;
-  v6 = v4[2](v4, self->_value);
+  v6 = thenCopy[2](thenCopy, self->_value);
   if (HMFFuture)
   {
     v5 = [HMFFuture _futureWithOutcome:v6, v7];
@@ -45,12 +45,12 @@
   return v5;
 }
 
-- (id)then:(id)a3 orRecover:(id)a4
+- (id)then:(id)then orRecover:(id)recover
 {
-  v6 = a3;
-  v7 = a4;
+  thenCopy = then;
+  recoverCopy = recover;
   v8 = HMFFuture;
-  v9 = v6[2](v6, self->_value);
+  v9 = thenCopy[2](thenCopy, self->_value);
   if (HMFFuture)
   {
     v8 = [HMFFuture _futureWithOutcome:v9, v10];

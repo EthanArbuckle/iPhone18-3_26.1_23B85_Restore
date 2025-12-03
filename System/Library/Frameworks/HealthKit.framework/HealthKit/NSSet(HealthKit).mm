@@ -46,8 +46,8 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = a1;
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    selfCopy = self;
+    v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -58,7 +58,7 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(selfCopy);
           }
 
           v12 = v5[2](v5, *(*(&v15 + 1) + 8 * i));
@@ -68,7 +68,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v9 = [selfCopy countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v9);
@@ -77,7 +77,7 @@
 
   else
   {
-    [(NSSet(HealthKit) *)a2 hk_map:a1, &v19];
+    [(NSSet(HealthKit) *)a2 hk_map:self, &v19];
     v6 = v19;
   }
 
@@ -97,7 +97,7 @@
   v11 = v4;
   v6 = v4;
   v7 = [v5 predicateWithBlock:v10];
-  v8 = [a1 filteredSetUsingPredicate:v7];
+  v8 = [self filteredSetUsingPredicate:v7];
 
   return v8;
 }
@@ -105,7 +105,7 @@
 - (id)hk_minus:()HealthKit
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 minusSet:v4];
 
   return v5;
@@ -114,7 +114,7 @@
 - (id)hk_intersection:()HealthKit
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 intersectSet:v4];
 
   return v5;
@@ -123,13 +123,13 @@
 - (id)hk_symmetricDifference:()HealthKit
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 unionSet:v4];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__NSSet_HealthKit__hk_symmetricDifference___block_invoke;
   v9[3] = &unk_1E7381FB8;
-  v9[4] = a1;
+  v9[4] = self;
   v10 = v4;
   v6 = v4;
   v7 = [v5 hk_filter:v9];
@@ -145,8 +145,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -158,7 +158,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -178,7 +178,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -202,8 +202,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -213,7 +213,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -224,7 +224,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -252,7 +252,7 @@ LABEL_11:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    obj = a1;
+    obj = self;
     v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -285,7 +285,7 @@ LABEL_11:
 
   else
   {
-    [(NSSet(HealthKit) *)a2 hk_mapToDictionary:a1];
+    [(NSSet(HealthKit) *)a2 hk_mapToDictionary:self];
     v6 = MEMORY[0x1E695E0F8];
   }
 
@@ -302,8 +302,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -313,7 +313,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         if (v4[2](v4, *(*(&v11 + 1) + 8 * i)))
@@ -323,7 +323,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -347,8 +347,8 @@ LABEL_11:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -362,7 +362,7 @@ LABEL_11:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v14 = *(*(&v22 + 1) + 8 * v12);
@@ -396,7 +396,7 @@ LABEL_11:
       }
 
       while (v9 != v12);
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [selfCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v9)
       {
         continue;

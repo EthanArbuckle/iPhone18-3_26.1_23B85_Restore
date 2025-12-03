@@ -2,7 +2,7 @@
 - (AKBringDeviceCloseMicaView)init;
 - (BOOL)arePhonesApart;
 - (BOOL)arePhonesTogether;
-- (void)AKUIMicaPlayerDidChangePlaybackTime:(id)a3;
+- (void)AKUIMicaPlayerDidChangePlaybackTime:(id)time;
 - (void)layoutSubviews;
 - (void)loadMicaFile;
 @end
@@ -29,99 +29,99 @@
 
 - (void)loadMicaFile
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   v5 = [AKUIMicaPlayer alloc];
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = [(AKUIMicaPlayer *)v5 initWithFileName:@"SignInProximity" retinaScale:?];
-  [(AKBringDeviceCloseMicaView *)v23 setMicaPlayer:?];
+  [(AKBringDeviceCloseMicaView *)selfCopy setMicaPlayer:?];
   MEMORY[0x277D82BD8](v6);
-  v9 = [(AKBringDeviceCloseMicaView *)v23 micaPlayer];
-  v8 = [(AKBringDeviceCloseMicaView *)v23 layer];
+  micaPlayer = [(AKBringDeviceCloseMicaView *)selfCopy micaPlayer];
+  layer = [(AKBringDeviceCloseMicaView *)selfCopy layer];
   v2 = *MEMORY[0x277CDA710];
-  [AKUIMicaPlayer addToLayer:v9 onTop:"addToLayer:onTop:gravity:" gravity:?];
-  MEMORY[0x277D82BD8](v8);
-  v10 = [(AKBringDeviceCloseMicaView *)v23 micaPlayer];
-  [(AKUIMicaPlayer *)v10 play];
-  v12 = [(AKBringDeviceCloseMicaView *)v23 micaPlayer];
-  v11 = [(AKUIMicaPlayer *)v12 publishedLayerWithKey:@"Dot Cloud" required:1];
-  [(AKBringDeviceCloseMicaView *)v23 setDotCloudLayer:?];
+  [AKUIMicaPlayer addToLayer:micaPlayer onTop:"addToLayer:onTop:gravity:" gravity:?];
+  MEMORY[0x277D82BD8](layer);
+  micaPlayer2 = [(AKBringDeviceCloseMicaView *)selfCopy micaPlayer];
+  [(AKUIMicaPlayer *)micaPlayer2 play];
+  micaPlayer3 = [(AKBringDeviceCloseMicaView *)selfCopy micaPlayer];
+  v11 = [(AKUIMicaPlayer *)micaPlayer3 publishedLayerWithKey:@"Dot Cloud" required:1];
+  [(AKBringDeviceCloseMicaView *)selfCopy setDotCloudLayer:?];
   MEMORY[0x277D82BD8](v11);
-  v15 = [MEMORY[0x277D75348] clearColor];
-  v3 = v15;
-  v13 = [v15 CGColor];
-  v14 = [(AKBringDeviceCloseMicaView *)v23 dotCloudLayer];
-  [(CALayer *)v14 setBackgroundColor:v13];
-  MEMORY[0x277D82BD8](v14);
-  v22[0] = [MEMORY[0x277CCA8D8] bundleWithPath:{@"/System/Library/PrivateFrameworks/AuthKitUI.framework", MEMORY[0x277D82BD8](v15).n128_f64[0]}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v3 = clearColor;
+  cGColor = [clearColor CGColor];
+  dotCloudLayer = [(AKBringDeviceCloseMicaView *)selfCopy dotCloudLayer];
+  [(CALayer *)dotCloudLayer setBackgroundColor:cGColor];
+  MEMORY[0x277D82BD8](dotCloudLayer);
+  v22[0] = [MEMORY[0x277CCA8D8] bundleWithPath:{@"/System/Library/PrivateFrameworks/AuthKitUI.framework", MEMORY[0x277D82BD8](clearColor).n128_f64[0]}];
   v16 = MEMORY[0x277D755B8];
   v19 = [v22[0] pathForResource:@"DotCloud@2x" ofType:@"png"];
   v18 = [v16 imageWithContentsOfFile:?];
-  v17 = [(AKBringDeviceCloseMicaView *)v23 dotCloudLayer];
-  [(CALayer *)v17 setContents:v18];
-  MEMORY[0x277D82BD8](v17);
+  dotCloudLayer2 = [(AKBringDeviceCloseMicaView *)selfCopy dotCloudLayer];
+  [(CALayer *)dotCloudLayer2 setContents:v18];
+  MEMORY[0x277D82BD8](dotCloudLayer2);
   MEMORY[0x277D82BD8](v18);
   *&v4 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-  v20 = v23;
-  v21 = [(AKBringDeviceCloseMicaView *)v23 micaPlayer];
-  [(AKUIMicaPlayer *)v21 setDelegate:v20];
-  MEMORY[0x277D82BD8](v21);
+  v20 = selfCopy;
+  micaPlayer4 = [(AKBringDeviceCloseMicaView *)selfCopy micaPlayer];
+  [(AKUIMicaPlayer *)micaPlayer4 setDelegate:v20];
+  MEMORY[0x277D82BD8](micaPlayer4);
   objc_storeStrong(v22, 0);
 }
 
 - (void)layoutSubviews
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = AKBringDeviceCloseMicaView;
   [(AKBringDeviceCloseMicaView *)&v5 layoutSubviews];
-  micaPlayer = v7->_micaPlayer;
-  v4 = [(AKBringDeviceCloseMicaView *)v7 layer];
+  micaPlayer = selfCopy->_micaPlayer;
+  layer = [(AKBringDeviceCloseMicaView *)selfCopy layer];
   v2 = *MEMORY[0x277CDA710];
   [AKUIMicaPlayer moveAndResizeWithinParentLayer:"moveAndResizeWithinParentLayer:usingGravity:animate:" usingGravity:? animate:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](layer);
 }
 
-- (void)AKUIMicaPlayerDidChangePlaybackTime:(id)a3
+- (void)AKUIMicaPlayerDidChangePlaybackTime:(id)time
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v6->_shouldshowDotCloud)
+  objc_storeStrong(location, time);
+  if (selfCopy->_shouldshowDotCloud)
   {
-    if (v6->_didBeginShowingDotCloud)
+    if (selfCopy->_didBeginShowingDotCloud)
     {
-      [(AKUIMicaPlayer *)v6->_micaPlayer playbackTime];
+      [(AKUIMicaPlayer *)selfCopy->_micaPlayer playbackTime];
       if (v3 >= *&timeToPauseAfterShowingDotCloud)
       {
-        [(AKUIMicaPlayer *)v6->_micaPlayer pause];
+        [(AKUIMicaPlayer *)selfCopy->_micaPlayer pause];
       }
     }
 
-    else if ([(AKBringDeviceCloseMicaView *)v6 arePhonesTogether])
+    else if ([(AKBringDeviceCloseMicaView *)selfCopy arePhonesTogether])
     {
-      [(AKUIMicaPlayer *)v6->_micaPlayer setPlaybackTime:7.0];
+      [(AKUIMicaPlayer *)selfCopy->_micaPlayer setPlaybackTime:7.0];
       timeToPauseAfterShowingDotCloud = 0x401F1EB851EB851FLL;
-      v6->_didBeginShowingDotCloud = 1;
+      selfCopy->_didBeginShowingDotCloud = 1;
     }
 
-    else if ([(AKBringDeviceCloseMicaView *)v6 arePhonesApart])
+    else if ([(AKBringDeviceCloseMicaView *)selfCopy arePhonesApart])
     {
-      [(AKUIMicaPlayer *)v6->_micaPlayer setPlaybackTime:5.0];
+      [(AKUIMicaPlayer *)selfCopy->_micaPlayer setPlaybackTime:5.0];
       timeToPauseAfterShowingDotCloud = 0x40171EB851EB851FLL;
-      v6->_didBeginShowingDotCloud = 1;
+      selfCopy->_didBeginShowingDotCloud = 1;
     }
   }
 
   else
   {
-    [(AKUIMicaPlayer *)v6->_micaPlayer playbackTime];
+    [(AKUIMicaPlayer *)selfCopy->_micaPlayer playbackTime];
     if (v4 >= 4.94999981)
     {
-      [(AKUIMicaPlayer *)v6->_micaPlayer setPlaybackTime:0.0];
+      [(AKUIMicaPlayer *)selfCopy->_micaPlayer setPlaybackTime:0.0];
     }
   }
 

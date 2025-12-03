@@ -1,12 +1,12 @@
 @interface AssetCacheLocatorService
-- (void)reporter:(id)a3 didFinishWithResults:(id)a4;
+- (void)reporter:(id)reporter didFinishWithResults:(id)results;
 @end
 
 @implementation AssetCacheLocatorService
 
-- (void)reporter:(id)a3 didFinishWithResults:(id)a4
+- (void)reporter:(id)reporter didFinishWithResults:(id)results
 {
-  if (a4)
+  if (results)
   {
     v5 = sub_331E4();
   }
@@ -16,7 +16,7 @@
     v5 = 0;
   }
 
-  v6 = a3;
+  reporterCopy = reporter;
 
   sub_2FC18(v5);
 }

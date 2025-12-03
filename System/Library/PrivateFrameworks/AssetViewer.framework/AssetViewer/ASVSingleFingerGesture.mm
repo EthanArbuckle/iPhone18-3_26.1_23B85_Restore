@@ -1,5 +1,5 @@
 @interface ASVSingleFingerGesture
-- (ASVSingleFingerGesture)initWithTouch:(id)a3 dataSource:(id)a4 delegate:(id)a5 enabledGestureTypes:(unint64_t)a6;
+- (ASVSingleFingerGesture)initWithTouch:(id)touch dataSource:(id)source delegate:(id)delegate enabledGestureTypes:(unint64_t)types;
 - (ASVSingleFingerGestureDelegate)delegate;
 - (BOOL)generatesTaps;
 - (void)finishGesture;
@@ -8,26 +8,26 @@
 
 @implementation ASVSingleFingerGesture
 
-- (ASVSingleFingerGesture)initWithTouch:(id)a3 dataSource:(id)a4 delegate:(id)a5 enabledGestureTypes:(unint64_t)a6
+- (ASVSingleFingerGesture)initWithTouch:(id)touch dataSource:(id)source delegate:(id)delegate enabledGestureTypes:(unint64_t)types
 {
-  v11 = a3;
-  v12 = a5;
+  touchCopy = touch;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = ASVSingleFingerGesture;
-  v13 = [(ASVGesture *)&v18 initWithDataSource:a4];
+  v13 = [(ASVGesture *)&v18 initWithDataSource:source];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v12);
-    v14->_enabledGestureTypes = a6;
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v14->_enabledGestureTypes = types;
     v14->_panThresholdPassed = 0;
     v14->_touchStartTime = CACurrentMediaTime();
-    objc_storeStrong(&v14->_touch, a3);
+    objc_storeStrong(&v14->_touch, touch);
     [(ASVTouch *)v14->_touch location];
     *&v14->_initialTouchLocation[7] = v15;
     *&v14->_latestTouchLocation[7] = v15;
-    v16 = [(ASVGesture *)v14 dataSource];
-    -[ASVGesture setFirstTouchWasOnAsset:](v14, "setFirstTouchWasOnAsset:", [v16 screenPointIsOnAsset:*&v14->_initialTouchLocation[7]]);
+    dataSource = [(ASVGesture *)v14 dataSource];
+    -[ASVGesture setFirstTouchWasOnAsset:](v14, "setFirstTouchWasOnAsset:", [dataSource screenPointIsOnAsset:*&v14->_initialTouchLocation[7]]);
   }
 
   return v14;
@@ -35,8 +35,8 @@
 
 - (void)updateGesture
 {
-  v3 = [(ASVSingleFingerGesture *)self touch];
-  [v3 location];
+  touch = [(ASVSingleFingerGesture *)self touch];
+  [touch location];
   [(ASVSingleFingerGesture *)self setLatestTouchLocation:?];
 }
 
@@ -68,16 +68,16 @@
       [ASVSettings floatForKey:@"ASVSettingTapMovementThreshold"];
       if (v8.f32[0] < v11)
       {
-        v12 = [(ASVGesture *)self dataSource];
+        dataSource = [(ASVGesture *)self dataSource];
         [(ASVSingleFingerGesture *)self latestTouchLocation];
-        v13 = [v12 screenPointIsOnAsset:?];
+        v13 = [dataSource screenPointIsOnAsset:?];
 
         v14 = [(ASVGesture *)self firstTouchWasOnAsset]& v13;
         if ((v14 & 1) != 0 || (([(ASVGesture *)self firstTouchWasOnAsset]| v13) & 1) == 0)
         {
-          v15 = [(ASVSingleFingerGesture *)self delegate];
+          delegate = [(ASVSingleFingerGesture *)self delegate];
           [(ASVSingleFingerGesture *)self latestTouchLocation];
-          [v15 gesture:self singleTappedAtScreenPoint:v14 onAsset:?];
+          [delegate gesture:self singleTappedAtScreenPoint:v14 onAsset:?];
         }
       }
     }

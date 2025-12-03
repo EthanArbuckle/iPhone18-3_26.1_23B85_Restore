@@ -1,6 +1,6 @@
 @interface MTRClosureControlClusterSecureStateChangedEvent
 - (MTRClosureControlClusterSecureStateChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRClosureControlClusterSecureStateChangedEvent);
-  v5 = [(MTRClosureControlClusterSecureStateChangedEvent *)self secureValue];
-  [(MTRClosureControlClusterSecureStateChangedEvent *)v4 setSecureValue:v5];
+  secureValue = [(MTRClosureControlClusterSecureStateChangedEvent *)self secureValue];
+  [(MTRClosureControlClusterSecureStateChangedEvent *)v4 setSecureValue:secureValue];
 
   return v4;
 }

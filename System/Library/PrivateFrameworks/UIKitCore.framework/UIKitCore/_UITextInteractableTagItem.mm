@@ -1,18 +1,18 @@
 @interface _UITextInteractableTagItem
-- (BOOL)isEqual:(id)a3;
-- (id)_itemRepresentationWithRange:(_NSRange)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_itemRepresentationWithRange:(_NSRange)range;
 @end
 
 @implementation _UITextInteractableTagItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _UITextInteractableTagItem;
-  if ([(_UITextInteractableItem *)&v12 isEqual:v4])
+  if ([(_UITextInteractableItem *)&v12 isEqual:equalCopy])
   {
-    v5 = [v4 tag];
+    v5 = [equalCopy tag];
     v6 = [(_UITextInteractableTagItem *)self tag];
     v7 = v5;
     v8 = v6;
@@ -40,10 +40,10 @@
   return v10;
 }
 
-- (id)_itemRepresentationWithRange:(_NSRange)a3
+- (id)_itemRepresentationWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [(_UITextInteractableTagItem *)self tag];
   v6 = [UITextItem _itemWithTag:v5 range:location, length];
 

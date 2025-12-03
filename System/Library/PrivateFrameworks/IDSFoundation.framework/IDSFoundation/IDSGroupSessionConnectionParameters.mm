@@ -1,17 +1,17 @@
 @interface IDSGroupSessionConnectionParameters
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGroupSessionConnectionParameters:(id)a3;
-- (IDSGroupSessionConnectionParameters)initWithStringRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGroupSessionConnectionParameters:(id)parameters;
+- (IDSGroupSessionConnectionParameters)initWithStringRepresentation:(id)representation;
 - (id)description;
 - (id)stringRepresentation;
 @end
 
 @implementation IDSGroupSessionConnectionParameters
 
-- (IDSGroupSessionConnectionParameters)initWithStringRepresentation:(id)a3
+- (IDSGroupSessionConnectionParameters)initWithStringRepresentation:(id)representation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v31.receiver = self;
   v31.super_class = IDSGroupSessionConnectionParameters;
   v5 = [(IDSGroupSessionConnectionParameters *)&v31 init];
@@ -20,7 +20,7 @@
     goto LABEL_20;
   }
 
-  v6 = [v4 componentsSeparatedByString:@":"];
+  v6 = [representationCopy componentsSeparatedByString:@":"];
   if ([v6 count] <= 2)
   {
     v7 = +[IDSFoundationLog Multiplexer];
@@ -187,34 +187,34 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSGroupSessionConnectionParameters *)self isEqualToGroupSessionConnectionParameters:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSGroupSessionConnectionParameters *)self isEqualToGroupSessionConnectionParameters:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToGroupSessionConnectionParameters:(id)a3
+- (BOOL)isEqualToGroupSessionConnectionParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 multiplexer];
-  if ([v5 isEqual:self->_multiplexer])
+  parametersCopy = parameters;
+  multiplexer = [parametersCopy multiplexer];
+  if ([multiplexer isEqual:self->_multiplexer])
   {
-    v6 = [v4 sessionID];
-    if ([v6 isEqual:self->_sessionID] && objc_msgSend(v4, "participantID") == self->_participantID)
+    sessionID = [parametersCopy sessionID];
+    if ([sessionID isEqual:self->_sessionID] && objc_msgSend(parametersCopy, "participantID") == self->_participantID)
     {
-      v7 = [v4 salt];
-      if (v7 == self->_salt)
+      salt = [parametersCopy salt];
+      if (salt == self->_salt)
       {
         v9 = 1;
       }
 
       else
       {
-        v8 = [v4 salt];
-        v9 = [v8 isEqual:self->_salt];
+        salt2 = [parametersCopy salt];
+        v9 = [salt2 isEqual:self->_salt];
       }
     }
 

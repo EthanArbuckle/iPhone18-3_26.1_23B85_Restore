@@ -1,46 +1,46 @@
 @interface APMetricsEvent
-+ (id)metricsEventWithAccount:(id)a3 request:(id)a4;
-+ (id)nonIdentifiableMetricsFieldsForAccount:(id)a3;
-- (APMetricsEvent)initWithAccount:(id)a3 request:(id)a4;
++ (id)metricsEventWithAccount:(id)account request:(id)request;
++ (id)nonIdentifiableMetricsFieldsForAccount:(id)account;
+- (APMetricsEvent)initWithAccount:(id)account request:(id)request;
 @end
 
 @implementation APMetricsEvent
 
-- (APMetricsEvent)initWithAccount:(id)a3 request:(id)a4
+- (APMetricsEvent)initWithAccount:(id)account request:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 metricsTopic];
-  v9 = [v7 metricsApp];
+  accountCopy = account;
+  requestCopy = request;
+  metricsTopic = [requestCopy metricsTopic];
+  metricsApp = [requestCopy metricsApp];
   v24.receiver = self;
   v24.super_class = APMetricsEvent;
-  v10 = [(APMetricsEvent *)&v24 initWithTopic:v8];
+  v10 = [(APMetricsEvent *)&v24 initWithTopic:metricsTopic];
   v11 = v10;
   if (v10)
   {
     [(APMetricsEvent *)v10 setEventVersion:&unk_2852E2360];
-    [(APMetricsEvent *)v11 setProperty:v9 forBodyKey:@"app"];
-    v12 = [v6 ams_DSID];
-    [(APMetricsEvent *)v11 setProperty:v12 forBodyKey:@"dsId"];
+    [(APMetricsEvent *)v11 setProperty:metricsApp forBodyKey:@"app"];
+    ams_DSID = [accountCopy ams_DSID];
+    [(APMetricsEvent *)v11 setProperty:ams_DSID forBodyKey:@"dsId"];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "isAuthenticated")}];
-    v14 = [v13 stringValue];
-    [(APMetricsEvent *)v11 setProperty:v14 forBodyKey:@"isSignedIn"];
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(accountCopy, "isAuthenticated")}];
+    stringValue = [v13 stringValue];
+    [(APMetricsEvent *)v11 setProperty:stringValue forBodyKey:@"isSignedIn"];
 
-    v15 = [v7 itemIdentifier];
-    [(APMetricsEvent *)v11 setProperty:v15 forBodyKey:@"pageId"];
+    itemIdentifier = [requestCopy itemIdentifier];
+    [(APMetricsEvent *)v11 setProperty:itemIdentifier forBodyKey:@"pageId"];
 
-    v16 = [MEMORY[0x277CEE470] operatingSystem];
-    [(APMetricsEvent *)v11 setProperty:v16 forBodyKey:@"os"];
+    operatingSystem = [MEMORY[0x277CEE470] operatingSystem];
+    [(APMetricsEvent *)v11 setProperty:operatingSystem forBodyKey:@"os"];
 
-    v17 = [MEMORY[0x277CEE470] buildVersion];
-    [(APMetricsEvent *)v11 setProperty:v17 forBodyKey:@"osBuildNumber"];
+    buildVersion = [MEMORY[0x277CEE470] buildVersion];
+    [(APMetricsEvent *)v11 setProperty:buildVersion forBodyKey:@"osBuildNumber"];
 
-    v18 = [v6 ams_storefront];
-    v19 = v18;
-    if (v18)
+    ams_storefront = [accountCopy ams_storefront];
+    v19 = ams_storefront;
+    if (ams_storefront)
     {
-      v20 = v18;
+      v20 = ams_storefront;
     }
 
     else
@@ -50,37 +50,37 @@
 
     [(APMetricsEvent *)v11 setProperty:v20 forBodyKey:@"storeFrontHeader"];
 
-    v21 = [v7 metricsID];
+    metricsID = [requestCopy metricsID];
 
-    if (v21)
+    if (metricsID)
     {
-      v22 = [v7 metricsID];
-      [(APMetricsEvent *)v11 setProperty:v22 forBodyKey:@"purchaseAuthorizationId"];
+      metricsID2 = [requestCopy metricsID];
+      [(APMetricsEvent *)v11 setProperty:metricsID2 forBodyKey:@"purchaseAuthorizationId"];
     }
   }
 
   return v11;
 }
 
-+ (id)metricsEventWithAccount:(id)a3 request:(id)a4
++ (id)metricsEventWithAccount:(id)account request:(id)request
 {
   v55 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  requestCopy = request;
   v9 = +[APLogConfig sharedFrameworkConfig];
   if (!v9)
   {
     v9 = +[APLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = v8;
-    v12 = v7;
+    v11 = requestCopy;
+    v12 = accountCopy;
     v13 = AMSLogKey();
     v14 = MEMORY[0x277CCACA8];
-    v42 = a1;
+    selfCopy = self;
     v15 = objc_opt_class();
     v41 = a2;
     if (v13)
@@ -104,42 +104,42 @@
     v52 = v18;
     v53 = 2114;
     v54 = v19;
-    _os_log_impl(&dword_241063000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Creating metrics event. Account: %{public}@ | Request: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Creating metrics event. Account: %{public}@ | Request: %{public}@", buf, 0x20u);
     if (v13)
     {
 
       v17 = a2;
     }
 
-    v7 = v12;
-    v8 = v11;
+    accountCopy = v12;
+    requestCopy = v11;
     a2 = v41;
-    a1 = v42;
+    self = selfCopy;
   }
 
-  v20 = [v8 lineOfBusiness];
+  lineOfBusiness = [requestCopy lineOfBusiness];
   v21 = +[APLogConfig sharedFrameworkConfig];
   v22 = v21;
-  if (v20 == 1)
+  if (lineOfBusiness == 1)
   {
     if (!v21)
     {
       v22 = +[APLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v24 = a2;
       v25 = AMSLogKey();
       v26 = MEMORY[0x277CCACA8];
-      v43 = a1;
+      selfCopy2 = self;
       v27 = objc_opt_class();
       if (v25)
       {
         v28 = AMSLogKey();
-        a1 = NSStringFromSelector(v24);
-        [v26 stringWithFormat:@"%@: [%@] %@ ", v27, v28, a1];
+        self = NSStringFromSelector(v24);
+        [v26 stringWithFormat:@"%@: [%@] %@ ", v27, v28, self];
       }
 
       else
@@ -147,29 +147,29 @@
         v28 = NSStringFromSelector(v24);
         [v26 stringWithFormat:@"%@: %@ ", v27, v28];
       }
-      v29 = ;
+      selfCopy3 = ;
       *buf = 138543362;
-      v50 = v29;
-      _os_log_impl(&dword_241063000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@Request is for App Store LOB.", buf, 0xCu);
+      v50 = selfCopy3;
+      _os_log_impl(&dword_241063000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Request is for App Store LOB.", buf, 0xCu);
       if (v25)
       {
 
-        v29 = a1;
+        selfCopy3 = self;
       }
 
       a2 = v24;
-      a1 = v43;
+      self = selfCopy2;
     }
 
-    v36 = [a1 nonIdentifiableMetricsFieldsForAccount:v7];
+    v36 = [self nonIdentifiableMetricsFieldsForAccount:accountCopy];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __50__APMetricsEvent_metricsEventWithAccount_request___block_invoke;
     v44[3] = &unk_278CC1690;
-    v47 = a1;
+    selfCopy4 = self;
     v48 = a2;
-    v45 = v7;
-    v46 = v8;
+    v45 = accountCopy;
+    v46 = requestCopy;
     v37 = [(APMetricsEvent *)v36 continueWithBlock:v44];
   }
 
@@ -180,8 +180,8 @@
       v22 = +[APLogConfig sharedConfig];
     }
 
-    v30 = [v22 OSLogObject];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v31 = AMSLogKey();
       v32 = MEMORY[0x277CCACA8];
@@ -189,8 +189,8 @@
       if (v31)
       {
         v34 = AMSLogKey();
-        a1 = NSStringFromSelector(a2);
-        [v32 stringWithFormat:@"%@: [%@] %@ ", v33, v34, a1];
+        self = NSStringFromSelector(a2);
+        [v32 stringWithFormat:@"%@: [%@] %@ ", v33, v34, self];
       }
 
       else
@@ -198,19 +198,19 @@
         v34 = NSStringFromSelector(a2);
         [v32 stringWithFormat:@"%@: %@ ", v33, v34];
       }
-      v35 = ;
+      selfCopy5 = ;
       *buf = 138543362;
-      v50 = v35;
-      _os_log_impl(&dword_241063000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@LOB is not App Store. Enqueueing standard metrics.", buf, 0xCu);
+      v50 = selfCopy5;
+      _os_log_impl(&dword_241063000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@LOB is not App Store. Enqueueing standard metrics.", buf, 0xCu);
       if (v31)
       {
 
-        v35 = a1;
+        selfCopy5 = self;
       }
     }
 
     v38 = MEMORY[0x277CEE630];
-    v36 = [[APMetricsEvent alloc] initWithAccount:v7 request:v8];
+    v36 = [[APMetricsEvent alloc] initWithAccount:accountCopy request:requestCopy];
     v37 = [v38 promiseWithResult:v36];
   }
 
@@ -335,18 +335,18 @@ id __50__APMetricsEvent_metricsEventWithAccount_request___block_invoke(uint64_t 
   return v28;
 }
 
-+ (id)nonIdentifiableMetricsFieldsForAccount:(id)a3
++ (id)nonIdentifiableMetricsFieldsForAccount:(id)account
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  accountCopy = account;
   v7 = +[APLogConfig sharedFrameworkConfig];
   if (!v7)
   {
     v7 = +[APLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = AMSLogKey();
     v10 = MEMORY[0x277CCACA8];
@@ -369,7 +369,7 @@ id __50__APMetricsEvent_metricsEventWithAccount_request___block_invoke(uint64_t 
     v30 = v13;
     v31 = 2114;
     v32 = v14;
-    _os_log_impl(&dword_241063000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Generating metrics fields for account: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Generating metrics fields for account: %{public}@", buf, 0x16u);
     if (v9)
     {
 
@@ -378,18 +378,18 @@ id __50__APMetricsEvent_metricsEventWithAccount_request___block_invoke(uint64_t 
   }
 
   v15 = MEMORY[0x277CEE5B8];
-  v16 = [MEMORY[0x277CEE3F8] sharedBag];
-  v17 = [v15 identifierStoreWithAccount:v6 bagNamespace:@"APPSTORE_ENGAGEMENT" bag:v16];
+  mEMORY[0x277CEE3F8] = [MEMORY[0x277CEE3F8] sharedBag];
+  v17 = [v15 identifierStoreWithAccount:accountCopy bagNamespace:@"APPSTORE_ENGAGEMENT" bag:mEMORY[0x277CEE3F8]];
 
   v18 = MEMORY[0x277CEE5B8];
-  v19 = [MEMORY[0x277CEE3F8] sharedBag];
-  v20 = [v18 identifierForAccount:v6 bag:v19 bagNamespace:@"APPSTORE_ENGAGEMENT_CLIENT" keyName:@"clientId"];
+  mEMORY[0x277CEE3F8]2 = [MEMORY[0x277CEE3F8] sharedBag];
+  v20 = [v18 identifierForAccount:accountCopy bag:mEMORY[0x277CEE3F8]2 bagNamespace:@"APPSTORE_ENGAGEMENT_CLIENT" keyName:@"clientId"];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __57__APMetricsEvent_nonIdentifiableMetricsFieldsForAccount___block_invoke;
   v25[3] = &unk_278CC16E0;
-  v27 = a1;
+  selfCopy = self;
   v28 = a2;
   v26 = v17;
   v21 = v17;

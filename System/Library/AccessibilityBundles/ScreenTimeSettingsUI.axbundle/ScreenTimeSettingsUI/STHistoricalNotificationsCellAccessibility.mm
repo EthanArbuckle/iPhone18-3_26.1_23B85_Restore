@@ -6,22 +6,22 @@
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(STHistoricalNotificationsCellAccessibility *)self safeValueForKey:@"_historicalUsageViewController"];
-  v5 = [v4 accessibilityElements];
+  accessibilityElements = [v4 accessibilityElements];
 
-  [v3 axSafelyAddObjectsFromArray:v5];
+  [array axSafelyAddObjectsFromArray:accessibilityElements];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __67__STHistoricalNotificationsCellAccessibility_accessibilityElements__block_invoke;
   v7[3] = &unk_29F2F39E0;
   objc_copyWeak(&v8, &location);
-  [v3 enumerateObjectsUsingBlock:v7];
+  [array enumerateObjectsUsingBlock:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 
-  return v3;
+  return array;
 }
 
 void __67__STHistoricalNotificationsCellAccessibility_accessibilityElements__block_invoke(uint64_t a1, void *a2)

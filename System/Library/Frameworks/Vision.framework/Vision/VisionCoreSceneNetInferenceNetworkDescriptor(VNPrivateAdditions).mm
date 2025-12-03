@@ -10,13 +10,13 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 sceneprintOutput];
-  if (v10)
+  sceneprintOutput = [self sceneprintOutput];
+  if (sceneprintOutput)
   {
     if ([v9 requestClassAndReturnError:a5])
     {
       objc_opt_class();
-      v11 = [a1 VNEspressoModelImageprintOfClass:objc_opt_class() fromData:v8 tensorDescriptor:v10 originatingRequestSpecifier:v9 fromBlock:0 error:a5];
+      v11 = [self VNEspressoModelImageprintOfClass:objc_opt_class() fromData:v8 tensorDescriptor:sceneprintOutput originatingRequestSpecifier:v9 fromBlock:0 error:a5];
       goto LABEL_7;
     }
   }
@@ -38,8 +38,8 @@ LABEL_7:
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 sceneprintOutput];
-  if (v10)
+  sceneprintOutput = [self sceneprintOutput];
+  if (sceneprintOutput)
   {
     v19 = 0;
     v20 = &v19;
@@ -52,11 +52,11 @@ LABEL_7:
     aBlock[2] = __132__VisionCoreSceneNetInferenceNetworkDescriptor_VNPrivateAdditions__VNSceneprintFromOutputObjects_originatingRequestSpecifier_error___block_invoke;
     aBlock[3] = &unk_1E77B3C08;
     v18 = &v19;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v17 = v9;
     v11 = _Block_copy(aBlock);
-    v12 = [v10 name];
-    v13 = [v8 accessReadOnlyDataForName:v12 usingBlock:v11 error:a5];
+    name = [sceneprintOutput name];
+    v13 = [v8 accessReadOnlyDataForName:name usingBlock:v11 error:a5];
 
     if (v13)
     {
@@ -87,7 +87,7 @@ LABEL_7:
 
 - (id)VNPublicClassificationDisallowedList
 {
-  if ([a1 model] == 1)
+  if ([self model] == 1)
   {
     v1 = +[VNDisallowedList sceneNetV3];
   }

@@ -3,29 +3,29 @@
 - (CTLazuliDestinationList)destinationList;
 - (CTLazuliFileTransferDescriptor)fileTransferDescriptor;
 - (CTLazuliMessageID)messageID;
-- (CTXPCSendOneToManyFileTransferRequest)initWithContext:(id)a3 to:(id)a4 withMessageID:(id)a5 withDescriptor:(id)a6;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (CTXPCSendOneToManyFileTransferRequest)initWithContext:(id)context to:(id)to withMessageID:(id)d withDescriptor:(id)descriptor;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCSendOneToManyFileTransferRequest
 
-- (CTXPCSendOneToManyFileTransferRequest)initWithContext:(id)a3 to:(id)a4 withMessageID:(id)a5 withDescriptor:(id)a6
+- (CTXPCSendOneToManyFileTransferRequest)initWithContext:(id)context to:(id)to withMessageID:(id)d withDescriptor:(id)descriptor
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  toCopy = to;
+  dCopy = d;
+  descriptorCopy = descriptor;
   v19[0] = @"destinationList";
   v19[1] = @"messageID";
-  v20[0] = v11;
-  v20[1] = v12;
+  v20[0] = toCopy;
+  v20[1] = dCopy;
   v19[2] = @"descriptor";
-  v20[2] = v13;
+  v20[2] = descriptorCopy;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
   v18.receiver = self;
   v18.super_class = CTXPCSendOneToManyFileTransferRequest;
-  v15 = [(CTXPCSubscriptionContextRequest *)&v18 initWithContext:v10 namedArguments:v14];
+  v15 = [(CTXPCSubscriptionContextRequest *)&v18 initWithContext:contextCopy namedArguments:v14];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;
@@ -33,8 +33,8 @@
 
 - (CTLazuliMessageID)messageID
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"messageID"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"messageID"];
   v4 = CTThrowingCastIfClass<CTLazuliMessageID>(v3);
 
   return v4;
@@ -42,8 +42,8 @@
 
 - (CTLazuliFileTransferDescriptor)fileTransferDescriptor
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"descriptor"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"descriptor"];
   v4 = CTThrowingCastIfClass<CTLazuliFileTransferDescriptor>(v3);
 
   return v4;
@@ -51,8 +51,8 @@
 
 - (CTLazuliDestinationList)destinationList
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"destinationList"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"destinationList"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -67,35 +67,35 @@
   return v4;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCSubscriptionContextRequest *)self context];
-  v9 = [(CTXPCSendOneToManyFileTransferRequest *)self messageID];
-  v10 = [(CTXPCSendOneToManyFileTransferRequest *)self fileTransferDescriptor];
-  v11 = [(CTXPCSendOneToManyFileTransferRequest *)self destinationList];
-  if (v11)
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  context = [(CTXPCSubscriptionContextRequest *)self context];
+  messageID = [(CTXPCSendOneToManyFileTransferRequest *)self messageID];
+  fileTransferDescriptor = [(CTXPCSendOneToManyFileTransferRequest *)self fileTransferDescriptor];
+  destinationList = [(CTXPCSendOneToManyFileTransferRequest *)self destinationList];
+  if (destinationList)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __85__CTXPCSendOneToManyFileTransferRequest_performRequestWithHandler_completionHandler___block_invoke;
     v13[3] = &unk_1E6A43CC8;
-    v14 = v7;
-    [v6 sendOneToManyFileTransferMessage:v8 to:v11 withMessageID:v9 withDescriptor:v10 completion:v13];
+    v14 = completionHandlerCopy;
+    [handlerCopy sendOneToManyFileTransferMessage:context to:destinationList withMessageID:messageID withDescriptor:fileTransferDescriptor completion:v13];
   }
 
   else
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, v12);
   }
 }
 
 + (id)allowedClassesForArguments
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCSendOneToManyFileTransferRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();

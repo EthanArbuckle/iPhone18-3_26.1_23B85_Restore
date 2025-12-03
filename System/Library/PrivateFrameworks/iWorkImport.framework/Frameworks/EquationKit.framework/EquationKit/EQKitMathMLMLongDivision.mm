@@ -1,23 +1,23 @@
 @interface EQKitMathMLMLongDivision
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMLongDivision
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v33.receiver = self;
   v33.super_class = EQKitMathMLMLongDivision;
   v8 = [(EQKitMathMLMLongDivision *)&v33 init];
   if (v8)
   {
-    v9 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(a4, v6, a3, v7);
+    v9 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(parser, v6, node, v7);
     if (objc_msgSend_count(v9, v10, v11, v12) < 3)
     {
-      objc_msgSend_reportError_withNode_(a4, v13, 5, a3);
+      objc_msgSend_reportError_withNode_(parser, v13, 5, node);
 
       return 0;
     }
@@ -63,7 +63,7 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 18;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;

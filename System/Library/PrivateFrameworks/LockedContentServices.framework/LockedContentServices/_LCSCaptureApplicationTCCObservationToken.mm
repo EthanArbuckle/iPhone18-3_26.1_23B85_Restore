@@ -8,8 +8,8 @@
 - (void)invalidate
 {
   v4 = +[LCSCaptureApplicationTCCMonitor sharedMonitor];
-  v3 = [(_LCSCaptureApplicationTCCObservationToken *)self observer];
-  [v4 _removeObserver:v3];
+  observer = [(_LCSCaptureApplicationTCCObservationToken *)self observer];
+  [v4 _removeObserver:observer];
 }
 
 - (LCSCaptureApplicationTCCObserver)observer

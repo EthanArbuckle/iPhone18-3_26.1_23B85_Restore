@@ -1,17 +1,17 @@
 @interface HKSeriesSample
-- (HKSeriesSample)initWithCoder:(id)a3;
+- (HKSeriesSample)initWithCoder:(id)coder;
 - (id)_validateSample;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSeriesSample
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v9.receiver = self;
   v9.super_class = HKSeriesSample;
-  v4 = [(HKSample *)&v9 _validateWithConfiguration:a3.var0, a3.var1];
+  v4 = [(HKSample *)&v9 _validateWithConfiguration:configuration.var0, configuration.var1];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -29,32 +29,32 @@
 {
   v4.receiver = self;
   v4.super_class = HKSeriesSample;
-  v2 = [(HKObject *)&v4 _validateConfiguration];
+  _validateConfiguration = [(HKObject *)&v4 _validateConfiguration];
 
-  return v2;
+  return _validateConfiguration;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HKSeriesSample;
-  v4 = a3;
-  [(HKSample *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HKSample *)&v6 encodeWithCoder:coderCopy];
   v5 = atomic_load(&self->_count);
-  [v4 encodeInt64:v5 forKey:{@"cnt", v6.receiver, v6.super_class}];
-  [v4 encodeBool:self->_frozen forKey:@"fzn"];
+  [coderCopy encodeInt64:v5 forKey:{@"cnt", v6.receiver, v6.super_class}];
+  [coderCopy encodeBool:self->_frozen forKey:@"fzn"];
 }
 
-- (HKSeriesSample)initWithCoder:(id)a3
+- (HKSeriesSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKSeriesSample;
-  v5 = [(HKSample *)&v7 initWithCoder:v4];
+  v5 = [(HKSample *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    atomic_store([v4 decodeInt64ForKey:@"cnt"], &v5->_count);
-    v5->_frozen = [v4 decodeBoolForKey:@"fzn"];
+    atomic_store([coderCopy decodeInt64ForKey:@"cnt"], &v5->_count);
+    v5->_frozen = [coderCopy decodeBoolForKey:@"fzn"];
   }
 
   return v5;

@@ -1,12 +1,12 @@
 @interface PassportSceneView.StampLayer
 - (_TtCC9CoreIDVUI17PassportSceneViewP33_18A116326E02D2242132B5B2E61598D210StampLayer)init;
-- (_TtCC9CoreIDVUI17PassportSceneViewP33_18A116326E02D2242132B5B2E61598D210StampLayer)initWithCoder:(id)a3;
-- (_TtCC9CoreIDVUI17PassportSceneViewP33_18A116326E02D2242132B5B2E61598D210StampLayer)initWithLayer:(id)a3;
+- (_TtCC9CoreIDVUI17PassportSceneViewP33_18A116326E02D2242132B5B2E61598D210StampLayer)initWithCoder:(id)coder;
+- (_TtCC9CoreIDVUI17PassportSceneViewP33_18A116326E02D2242132B5B2E61598D210StampLayer)initWithLayer:(id)layer;
 @end
 
 @implementation PassportSceneView.StampLayer
 
-- (_TtCC9CoreIDVUI17PassportSceneViewP33_18A116326E02D2242132B5B2E61598D210StampLayer)initWithLayer:(id)a3
+- (_TtCC9CoreIDVUI17PassportSceneViewP33_18A116326E02D2242132B5B2E61598D210StampLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_245911354();
@@ -21,12 +21,12 @@
   return v5;
 }
 
-- (_TtCC9CoreIDVUI17PassportSceneViewP33_18A116326E02D2242132B5B2E61598D210StampLayer)initWithCoder:(id)a3
+- (_TtCC9CoreIDVUI17PassportSceneViewP33_18A116326E02D2242132B5B2E61598D210StampLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _s10StampLayerCMa();
-  v4 = a3;
-  v5 = [(PassportSceneView.StampLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PassportSceneView.StampLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

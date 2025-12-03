@@ -1,23 +1,23 @@
 @interface NTKKuiperFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)isRestrictedForDevice:(id)device;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)complicationConfiguration;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)applyPreviewConfigurationWithFamily:(int64_t)a3 faceColor:(int64_t)a4;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)applyPreviewConfigurationWithFamily:(int64_t)family faceColor:(int64_t)color;
 @end
 
 @implementation NTKKuiperFace
 
 - (id)_faceDescription
 {
-  v2 = [(NTKKuiperFace *)self device];
-  v3 = [v2 supportsPDRCapability:3171091165];
+  device = [(NTKKuiperFace *)self device];
+  v3 = [device supportsPDRCapability:3171091165];
   v4 = @"FACE_STYLE_KUIPER_DESCRIPTION_COMPANION";
   if (v3)
   {
@@ -43,9 +43,9 @@
   return v3;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  if ([a3 isEqualToString:{NTKComplicationSlotBottomLeft, a4}])
+  if ([slot isEqualToString:{NTKComplicationSlotBottomLeft, device}])
   {
     v4 = [NTKComplication timerComplicationWithDuration:180.0];
   }
@@ -58,20 +58,20 @@
   return v4;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 15)
+  slotCopy = slot;
+  if (mode == 15)
   {
-    v7 = [(NTKKuiperFace *)self device];
-    v8 = [NTKKuiperDialEditOption optionWithKuiperDial:4 forDevice:v7];
+    device = [(NTKKuiperFace *)self device];
+    v8 = [NTKKuiperDialEditOption optionWithKuiperDial:4 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 11)
+  if (mode == 11)
   {
-    v7 = [(NTKKuiperFace *)self device];
-    v8 = [NTKKuiperDensityEditOption optionWithKuiperDensity:0 forDevice:v7];
+    device = [(NTKKuiperFace *)self device];
+    v8 = [NTKKuiperDensityEditOption optionWithKuiperDensity:0 forDevice:device];
 LABEL_5:
     v9 = v8;
 
@@ -84,37 +84,37 @@ LABEL_7:
   return v9;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKKuiperFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKKuiperFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKKuiperFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKKuiperFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKKuiperFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKKuiperFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKKuiperFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKKuiperFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKKuiperFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKKuiperFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKKuiperFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKKuiperFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
     v4 = off_102C0;
 LABEL_5:
@@ -124,7 +124,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
     v4 = &off_102C8;
     goto LABEL_5;
@@ -135,10 +135,10 @@ LABEL_5:
   return v6;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v6 = a4;
-  if (a3 == 11)
+  deviceCopy = device;
+  if (mode == 11)
   {
     v7 = @"EDIT_MODE_LABEL_KUIPER_STYLE";
 LABEL_5:
@@ -152,7 +152,7 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
     v7 = @"EDIT_MODE_LABEL_KUIPER_DIAL";
     goto LABEL_5;
@@ -160,40 +160,40 @@ LABEL_5:
 
   v8 = 0;
 LABEL_8:
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___NTKKuiperFace;
-  v9 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, v6);
+  v9 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, deviceCopy);
 LABEL_9:
 
   return v9;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceCategory] == &dword_0 + 1;
-  v5 = [v3 supportsPDRCapability:360081074];
+  deviceCopy = device;
+  v4 = [deviceCopy deviceCategory] == &dword_0 + 1;
+  v5 = [deviceCopy supportsPDRCapability:360081074];
 
   return v4 || (v5 & 1) == 0;
 }
 
-- (void)applyPreviewConfigurationWithFamily:(int64_t)a3 faceColor:(int64_t)a4
+- (void)applyPreviewConfigurationWithFamily:(int64_t)family faceColor:(int64_t)color
 {
-  if (a4 > 7)
+  if (color > 7)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = **(&off_10768 + a4);
+    v5 = **(&off_10768 + color);
   }
 
   v11 = v5;
   v6 = [NTKPigmentEditOption pigmentNamed:v5];
   [(NTKKuiperFace *)self selectOption:v6 forCustomEditMode:10 slot:0];
-  v7 = [(NTKKuiperFace *)self device];
-  v8 = [NTKKuiperDialEditOption optionWithKuiperDial:0 forDevice:v7];
+  device = [(NTKKuiperFace *)self device];
+  v8 = [NTKKuiperDialEditOption optionWithKuiperDial:0 forDevice:device];
 
   [(NTKKuiperFace *)self selectOption:v8 forCustomEditMode:15 slot:0];
   v9 = [NTKKuiperTypographicSizeProvider keyForTypographicStyleFraction:0.0];

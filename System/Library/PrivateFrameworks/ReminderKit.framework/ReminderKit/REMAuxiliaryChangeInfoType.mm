@@ -1,10 +1,10 @@
 @interface REMAuxiliaryChangeInfoType
-+ (BOOL)resolveInstanceMethod:(SEL)a3;
++ (BOOL)resolveInstanceMethod:(SEL)method;
 + (NSString)cdEntityName;
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
-- (REMAuxiliaryChangeInfoType)initWithREMObjectID:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
++ (id)objectIDWithUUID:(id)d;
+- (REMAuxiliaryChangeInfoType)initWithREMObjectID:(id)d;
+- (id)valueForUndefinedKey:(id)key;
 @end
 
 @implementation REMAuxiliaryChangeInfoType
@@ -20,16 +20,16 @@
   return 0;
 }
 
-- (REMAuxiliaryChangeInfoType)initWithREMObjectID:(id)a3
+- (REMAuxiliaryChangeInfoType)initWithREMObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = REMAuxiliaryChangeInfoType;
   v5 = [(REMAuxiliaryChangeInfoType *)&v8 init];
   v6 = v5;
-  if (v4 && v5)
+  if (dCopy && v5)
   {
-    [(REMAuxiliaryChangeInfoType *)v5 setRemObjectID:v4];
+    [(REMAuxiliaryChangeInfoType *)v5 setRemObjectID:dCopy];
   }
 
   return v6;
@@ -37,34 +37,34 @@
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REMAuxiliaryChangeInfoType *)self storage];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  storage = [(REMAuxiliaryChangeInfoType *)self storage];
+  v6 = [storage valueForKey:keyCopy];
 
   return v6;
 }
 
-+ (BOOL)resolveInstanceMethod:(SEL)a3
++ (BOOL)resolveInstanceMethod:(SEL)method
 {
   v4 = objc_opt_class();
-  class_addMethod(v4, a3, dynamicMethodIMP, "@@:");
+  class_addMethod(v4, method, dynamicMethodIMP, "@@:");
   return 1;
 }
 

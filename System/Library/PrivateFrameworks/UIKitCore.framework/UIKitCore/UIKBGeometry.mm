@@ -1,9 +1,9 @@
 @interface UIKBGeometry
-+ (id)codeStringForValue:(id)a3;
++ (id)codeStringForValue:(id)value;
 + (id)geometry;
-+ (id)geometryWithOriginValue:(id)a3 sizeValue:(id)a4;
-+ (id)geometryWithRect:(CGRect)a3;
-+ (void)performOperations:(id)a3 withScale:(double)a4;
++ (id)geometryWithOriginValue:(id)value sizeValue:(id)sizeValue;
++ (id)geometryWithRect:(CGRect)rect;
++ (void)performOperations:(id)operations withScale:(double)scale;
 - ($000CCD7ED2ADA2E18343834BA3C2DAF0)h;
 - ($000CCD7ED2ADA2E18343834BA3C2DAF0)paddingBottom;
 - ($000CCD7ED2ADA2E18343834BA3C2DAF0)paddingLeft;
@@ -12,24 +12,24 @@
 - ($000CCD7ED2ADA2E18343834BA3C2DAF0)w;
 - ($000CCD7ED2ADA2E18343834BA3C2DAF0)x;
 - ($000CCD7ED2ADA2E18343834BA3C2DAF0)y;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)usesAutomaticMetrics;
 - (BOOL)usesPercentages;
 - (CGRect)frame;
-- (CGRect)frameWithContainingFrame:(CGRect)a3;
-- (CGRect)paddedFrameWithContainingFrame:(CGRect)a3;
-- (CGRect)paddedFrameWithResolvedFrame:(CGRect)a3;
+- (CGRect)frameWithContainingFrame:(CGRect)frame;
+- (CGRect)paddedFrameWithContainingFrame:(CGRect)frame;
+- (CGRect)paddedFrameWithResolvedFrame:(CGRect)frame;
 - (UIKBGeometry)init;
-- (UIKBGeometry)initWithCoder:(id)a3;
-- (UIKBGeometry)initWithName:(id)a3 rect:(id *)a4 padding:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIKBGeometry)initWithCoder:(id)coder;
+- (UIKBGeometry)initWithName:(id)name rect:(id *)rect padding:(id *)padding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initTemplateWithName:(id)a3 rect:(id *)a4 padding:(id *)a5;
-- (id)overrideGeometry:(id)a3;
+- (id)initTemplateWithName:(id)name rect:(id *)rect padding:(id *)padding;
+- (id)overrideGeometry:(id)geometry;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setName:(id)name;
 @end
 
 @implementation UIKBGeometry
@@ -41,12 +41,12 @@
   return v2;
 }
 
-+ (id)geometryWithRect:(CGRect)a3
++ (id)geometryWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = objc_alloc_init(UIKBGeometry);
   [(UIKBGeometry *)v7 setX:*&x, 3];
   [(UIKBGeometry *)v7 setY:*&y, 3];
@@ -56,12 +56,12 @@
   return v7;
 }
 
-+ (id)geometryWithOriginValue:(id)a3 sizeValue:(id)a4
++ (id)geometryWithOriginValue:(id)value sizeValue:(id)sizeValue
 {
-  v4 = *&a4.var1;
-  var0 = a4.var0;
-  v6 = *&a3.var1;
-  v7 = a3.var0;
+  v4 = *&sizeValue.var1;
+  var0 = sizeValue.var0;
+  v6 = *&value.var1;
+  v7 = value.var0;
   v8 = objc_alloc_init(UIKBGeometry);
   [(UIKBGeometry *)v8 setX:*&v7, v6];
   [(UIKBGeometry *)v8 setY:*&v7, v6];
@@ -71,24 +71,24 @@
   return v8;
 }
 
-- (UIKBGeometry)initWithName:(id)a3 rect:(id *)a4 padding:(id *)a5
+- (UIKBGeometry)initWithName:(id)name rect:(id *)rect padding:(id *)padding
 {
-  v9 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = UIKBGeometry;
   v10 = [(UIKBGeometry *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->m_name, a3);
-    v11->m_x = a4->var0[0];
-    v11->m_y = a4->var0[1];
-    v11->m_w = a4->var0[2];
-    v11->m_h = a4->var0[3];
-    v11->m_paddingTop = a5->var0[0];
-    v11->m_paddingLeft = a5->var0[1];
-    v11->m_paddingBottom = a5->var0[2];
-    v11->m_paddingRight = a5->var0[3];
+    objc_storeStrong(&v10->m_name, name);
+    v11->m_x = rect->var0[0];
+    v11->m_y = rect->var0[1];
+    v11->m_w = rect->var0[2];
+    v11->m_h = rect->var0[3];
+    v11->m_paddingTop = padding->var0[0];
+    v11->m_paddingLeft = padding->var0[1];
+    v11->m_paddingBottom = padding->var0[2];
+    v11->m_paddingRight = padding->var0[3];
     v11->m_explicitlySpecified = 1;
     v12 = v11;
   }
@@ -96,21 +96,21 @@
   return v11;
 }
 
-- (id)initTemplateWithName:(id)a3 rect:(id *)a4 padding:(id *)a5
+- (id)initTemplateWithName:(id)name rect:(id *)rect padding:(id *)padding
 {
-  v5 = a4->var0[1];
-  v11[0] = a4->var0[0];
+  v5 = rect->var0[1];
+  v11[0] = rect->var0[0];
   v11[1] = v5;
-  v6 = a4->var0[3];
-  v11[2] = a4->var0[2];
+  v6 = rect->var0[3];
+  v11[2] = rect->var0[2];
   v11[3] = v6;
-  v7 = a5->var0[1];
-  v10[0] = a5->var0[0];
+  v7 = padding->var0[1];
+  v10[0] = padding->var0[0];
   v10[1] = v7;
-  v8 = a5->var0[3];
-  v10[2] = a5->var0[2];
+  v8 = padding->var0[3];
+  v10[2] = padding->var0[2];
   v10[3] = v8;
-  result = [(UIKBGeometry *)self initWithName:a3 rect:v11 padding:v10];
+  result = [(UIKBGeometry *)self initWithName:name rect:v11 padding:v10];
   *(result + 145) = 1;
   return result;
 }
@@ -130,106 +130,106 @@
   return v3;
 }
 
-- (UIKBGeometry)initWithCoder:(id)a3
+- (UIKBGeometry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"name"];
   m_name = self->m_name;
   self->m_name = v5;
 
-  [v4 decodeFloatForKey:@"x-amount"];
+  [coderCopy decodeFloatForKey:@"x-amount"];
   v8 = v7;
-  v9 = [v4 decodeIntForKey:@"x-unit"];
+  v9 = [coderCopy decodeIntForKey:@"x-unit"];
   self->m_x.amount = v8;
   *&self->m_x.unit = v9;
-  [v4 decodeFloatForKey:@"y-amount"];
+  [coderCopy decodeFloatForKey:@"y-amount"];
   v11 = v10;
-  v12 = [v4 decodeIntForKey:@"y-unit"];
+  v12 = [coderCopy decodeIntForKey:@"y-unit"];
   self->m_y.amount = v11;
   *&self->m_y.unit = v12;
-  [v4 decodeFloatForKey:@"w-amount"];
+  [coderCopy decodeFloatForKey:@"w-amount"];
   v14 = v13;
-  v15 = [v4 decodeIntForKey:@"w-unit"];
+  v15 = [coderCopy decodeIntForKey:@"w-unit"];
   self->m_w.amount = v14;
   *&self->m_w.unit = v15;
-  [v4 decodeFloatForKey:@"h-amount"];
+  [coderCopy decodeFloatForKey:@"h-amount"];
   v17 = v16;
-  v18 = [v4 decodeIntForKey:@"h-unit"];
+  v18 = [coderCopy decodeIntForKey:@"h-unit"];
   self->m_h.amount = v17;
   *&self->m_h.unit = v18;
-  [v4 decodeFloatForKey:@"paddingTop-amount"];
+  [coderCopy decodeFloatForKey:@"paddingTop-amount"];
   v20 = v19;
-  v21 = [v4 decodeIntForKey:@"paddingTop-unit"];
+  v21 = [coderCopy decodeIntForKey:@"paddingTop-unit"];
   self->m_paddingTop.amount = v20;
   *&self->m_paddingTop.unit = v21;
-  [v4 decodeFloatForKey:@"paddingLeft-amount"];
+  [coderCopy decodeFloatForKey:@"paddingLeft-amount"];
   v23 = v22;
-  v24 = [v4 decodeIntForKey:@"paddingLeft-unit"];
+  v24 = [coderCopy decodeIntForKey:@"paddingLeft-unit"];
   self->m_paddingLeft.amount = v23;
   *&self->m_paddingLeft.unit = v24;
-  [v4 decodeFloatForKey:@"paddingBottom-amount"];
+  [coderCopy decodeFloatForKey:@"paddingBottom-amount"];
   v26 = v25;
-  v27 = [v4 decodeIntForKey:@"paddingBottom-unit"];
+  v27 = [coderCopy decodeIntForKey:@"paddingBottom-unit"];
   self->m_paddingBottom.amount = v26;
   *&self->m_paddingBottom.unit = v27;
-  [v4 decodeFloatForKey:@"paddingRight-amount"];
+  [coderCopy decodeFloatForKey:@"paddingRight-amount"];
   v29 = v28;
-  v30 = [v4 decodeIntForKey:@"paddingRight-unit"];
+  v30 = [coderCopy decodeIntForKey:@"paddingRight-unit"];
   self->m_paddingRight.amount = v29;
   *&self->m_paddingRight.unit = v30;
-  self->m_explicitlySpecified = [v4 decodeBoolForKey:@"explicit"];
-  v31 = [v4 decodeBoolForKey:@"isTemplate"];
+  self->m_explicitlySpecified = [coderCopy decodeBoolForKey:@"explicit"];
+  v31 = [coderCopy decodeBoolForKey:@"isTemplate"];
 
   self->m_isTemplate = v31;
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   m_name = self->m_name;
-  v13 = a3;
-  [v13 encodeObject:m_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:m_name forKey:@"name"];
   amount = self->m_x.amount;
   *&amount = amount;
-  [v13 encodeFloat:@"x-amount" forKey:amount];
-  [v13 encodeInt:self->m_x.unit forKey:@"x-unit"];
+  [coderCopy encodeFloat:@"x-amount" forKey:amount];
+  [coderCopy encodeInt:self->m_x.unit forKey:@"x-unit"];
   v6 = self->m_y.amount;
   *&v6 = v6;
-  [v13 encodeFloat:@"y-amount" forKey:v6];
-  [v13 encodeInt:self->m_y.unit forKey:@"y-unit"];
+  [coderCopy encodeFloat:@"y-amount" forKey:v6];
+  [coderCopy encodeInt:self->m_y.unit forKey:@"y-unit"];
   v7 = self->m_w.amount;
   *&v7 = v7;
-  [v13 encodeFloat:@"w-amount" forKey:v7];
-  [v13 encodeInt:self->m_w.unit forKey:@"w-unit"];
+  [coderCopy encodeFloat:@"w-amount" forKey:v7];
+  [coderCopy encodeInt:self->m_w.unit forKey:@"w-unit"];
   v8 = self->m_h.amount;
   *&v8 = v8;
-  [v13 encodeFloat:@"h-amount" forKey:v8];
-  [v13 encodeInt:self->m_h.unit forKey:@"h-unit"];
+  [coderCopy encodeFloat:@"h-amount" forKey:v8];
+  [coderCopy encodeInt:self->m_h.unit forKey:@"h-unit"];
   v9 = self->m_paddingTop.amount;
   *&v9 = v9;
-  [v13 encodeFloat:@"paddingTop-amount" forKey:v9];
-  [v13 encodeInt:self->m_paddingTop.unit forKey:@"paddingTop-unit"];
+  [coderCopy encodeFloat:@"paddingTop-amount" forKey:v9];
+  [coderCopy encodeInt:self->m_paddingTop.unit forKey:@"paddingTop-unit"];
   v10 = self->m_paddingLeft.amount;
   *&v10 = v10;
-  [v13 encodeFloat:@"paddingLeft-amount" forKey:v10];
-  [v13 encodeInt:self->m_paddingLeft.unit forKey:@"paddingLeft-unit"];
+  [coderCopy encodeFloat:@"paddingLeft-amount" forKey:v10];
+  [coderCopy encodeInt:self->m_paddingLeft.unit forKey:@"paddingLeft-unit"];
   v11 = self->m_paddingBottom.amount;
   *&v11 = v11;
-  [v13 encodeFloat:@"paddingBottom-amount" forKey:v11];
-  [v13 encodeInt:self->m_paddingBottom.unit forKey:@"paddingBottom-unit"];
+  [coderCopy encodeFloat:@"paddingBottom-amount" forKey:v11];
+  [coderCopy encodeInt:self->m_paddingBottom.unit forKey:@"paddingBottom-unit"];
   v12 = self->m_paddingRight.amount;
   *&v12 = v12;
-  [v13 encodeFloat:@"paddingRight-amount" forKey:v12];
-  [v13 encodeInt:self->m_paddingRight.unit forKey:@"paddingRight-unit"];
-  [v13 encodeBool:self->m_explicitlySpecified forKey:@"explicit"];
-  [v13 encodeBool:self->m_isTemplate forKey:@"isTemplate"];
+  [coderCopy encodeFloat:@"paddingRight-amount" forKey:v12];
+  [coderCopy encodeInt:self->m_paddingRight.unit forKey:@"paddingRight-unit"];
+  [coderCopy encodeBool:self->m_explicitlySpecified forKey:@"explicit"];
+  [coderCopy encodeBool:self->m_isTemplate forKey:@"isTemplate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIKBGeometry);
-  v5 = [(UIKBGeometry *)self name];
-  [(UIKBGeometry *)v4 setName:v5];
+  name = [(UIKBGeometry *)self name];
+  [(UIKBGeometry *)v4 setName:name];
 
   v6 = [(UIKBGeometry *)self x];
   [(UIKBGeometry *)v4 setX:v6, v7];
@@ -239,27 +239,27 @@
   [(UIKBGeometry *)v4 setW:v10, v11];
   v12 = [(UIKBGeometry *)self h];
   [(UIKBGeometry *)v4 setH:v12, v13];
-  v14 = [(UIKBGeometry *)self paddingTop];
-  [(UIKBGeometry *)v4 setPaddingTop:v14, v15];
-  v16 = [(UIKBGeometry *)self paddingLeft];
-  [(UIKBGeometry *)v4 setPaddingLeft:v16, v17];
-  v18 = [(UIKBGeometry *)self paddingBottom];
-  [(UIKBGeometry *)v4 setPaddingBottom:v18, v19];
-  v20 = [(UIKBGeometry *)self paddingRight];
-  [(UIKBGeometry *)v4 setPaddingRight:v20, v21];
+  paddingTop = [(UIKBGeometry *)self paddingTop];
+  [(UIKBGeometry *)v4 setPaddingTop:paddingTop, v15];
+  paddingLeft = [(UIKBGeometry *)self paddingLeft];
+  [(UIKBGeometry *)v4 setPaddingLeft:paddingLeft, v17];
+  paddingBottom = [(UIKBGeometry *)self paddingBottom];
+  [(UIKBGeometry *)v4 setPaddingBottom:paddingBottom, v19];
+  paddingRight = [(UIKBGeometry *)self paddingRight];
+  [(UIKBGeometry *)v4 setPaddingRight:paddingRight, v21];
   [(UIKBGeometry *)v4 setExplicitlySpecified:[(UIKBGeometry *)self explicitlySpecified]];
   [(UIKBGeometry *)v4 setIsTemplate:[(UIKBGeometry *)self isTemplate]];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v57 = v4;
-    v5 = v4;
+    v57 = equalCopy;
+    v5 = equalCopy;
     *&v6 = COERCE_DOUBLE([(UIKBGeometry *)self x]);
     v56 = v7;
     *&v8 = COERCE_DOUBLE([v5 x]);
@@ -280,7 +280,7 @@
     LOBYTE(v26) = 0;
     if (v10 == v11 && v56 == v55 && v12 == v14 && v54 == v16 && v17 == v19 && v53 == v21 && (v27 = v22, v22 == v24))
     {
-      v4 = v57;
+      equalCopy = v57;
       if (v52 == v25)
       {
         v28 = COERCE_DOUBLE([(UIKBGeometry *)self paddingTop]);
@@ -303,14 +303,14 @@
         v44 = COERCE_DOUBLE([(UIKBGeometry *)self paddingRight]);
         v46 = v45;
         v49 = v44 == COERCE_DOUBLE([v5 paddingRight]) && v46 == v47 && v33;
-        v50 = [(UIKBGeometry *)self isTemplate];
-        v26 = v49 & (v50 ^ [v5 isTemplate] ^ 1);
+        isTemplate = [(UIKBGeometry *)self isTemplate];
+        v26 = v49 & (isTemplate ^ [v5 isTemplate] ^ 1);
       }
     }
 
     else
     {
-      v4 = v57;
+      equalCopy = v57;
     }
   }
 
@@ -322,9 +322,9 @@
   return v26;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   m_name = self->m_name;
   self->m_name = v4;
 }
@@ -333,15 +333,15 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UIKBGeometry *)self name];
-  if (v5)
+  name = [(UIKBGeometry *)self name];
+  if (name)
   {
-    v6 = [(UIKBGeometry *)self name];
+    name2 = [(UIKBGeometry *)self name];
   }
 
   else
   {
-    v6 = @"no name";
+    name2 = @"no name";
   }
 
   unit = self->m_x.unit;
@@ -480,8 +480,8 @@
       break;
   }
 
-  v23 = [v3 stringWithFormat:@"<%@ : %@> dims(%.2f%@, %.2f%@, %.2f%@, %.2f%@) padding(%.2f%@, %.2f%@, %.2f%@, %.2f%@)", v4, v6, *&self->m_x.amount, v8, *&self->m_y.amount, v10, *&self->m_w.amount, v12, *&self->m_h.amount, v14, *&self->m_paddingTop.amount, v16, *&self->m_paddingLeft.amount, v18, *&self->m_paddingBottom.amount, v20, *&self->m_paddingRight.amount, v22];
-  if (v5)
+  v23 = [v3 stringWithFormat:@"<%@ : %@> dims(%.2f%@, %.2f%@, %.2f%@, %.2f%@) padding(%.2f%@, %.2f%@, %.2f%@, %.2f%@)", v4, name2, *&self->m_x.amount, v8, *&self->m_y.amount, v10, *&self->m_w.amount, v12, *&self->m_h.amount, v14, *&self->m_paddingTop.amount, v16, *&self->m_paddingLeft.amount, v18, *&self->m_paddingBottom.amount, v20, *&self->m_paddingRight.amount, v22];
+  if (name)
   {
   }
 
@@ -677,17 +677,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(UIKBGeometry *)self name];
+  name = [(UIKBGeometry *)self name];
 
-  if (v3)
+  if (name)
   {
-    v4 = [(UIKBGeometry *)self name];
-    v5 = [v4 hash];
+    name2 = [(UIKBGeometry *)self name];
+    v5 = [name2 hash];
 
-    v3 = 257 * v5;
+    name = 257 * v5;
   }
 
-  v6 = 257 * (v3 + (COERCE_DOUBLE([(UIKBGeometry *)self x]) * 100.0));
+  v6 = 257 * (name + (COERCE_DOUBLE([(UIKBGeometry *)self x]) * 100.0));
   [(UIKBGeometry *)self x];
   v8 = 257 * (257 * (v6 + v7) + (COERCE_DOUBLE([(UIKBGeometry *)self y]) * 100.0));
   [(UIKBGeometry *)self y];
@@ -707,33 +707,33 @@
   return v22 + [(UIKBGeometry *)self isTemplate];
 }
 
-+ (id)codeStringForValue:(id)a3
++ (id)codeStringForValue:(id)value
 {
   v3 = @"UIKBUnitAutomatic";
   v4 = @"UIKBUnitPoints";
   v5 = @"UIKBUnitNone";
-  if (a3.var1 == 2)
+  if (value.var1 == 2)
   {
     v5 = @"UIKBUnitPercent";
   }
 
-  if (a3.var1 != 3)
+  if (value.var1 != 3)
   {
     v4 = v5;
   }
 
-  if (a3.var1 != 100)
+  if (value.var1 != 100)
   {
     v3 = v4;
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"UIKBValueMake(%g, %@)", *&a3.var0, v3];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"UIKBValueMake(%g, %@)", *&value.var0, v3];
 }
 
-+ (void)performOperations:(id)a3 withScale:(double)a4
++ (void)performOperations:(id)operations withScale:(double)scale
 {
-  __UIKBGeometryScale = *&a4;
-  (*(a3 + 2))(a3, a2);
+  __UIKBGeometryScale = *&scale;
+  (*(operations + 2))(operations, a2);
   __UIKBGeometryScale = 0x3FF0000000000000;
 }
 
@@ -747,12 +747,12 @@
   return result;
 }
 
-- (CGRect)frameWithContainingFrame:(CGRect)a3
+- (CGRect)frameWithContainingFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(UIKBGeometry *)self explicitlySpecified])
   {
     amount = self->m_x.amount;
@@ -856,9 +856,9 @@
   return result;
 }
 
-- (CGRect)paddedFrameWithContainingFrame:(CGRect)a3
+- (CGRect)paddedFrameWithContainingFrame:(CGRect)frame
 {
-  [(UIKBGeometry *)self frameWithContainingFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIKBGeometry *)self frameWithContainingFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   [(UIKBGeometry *)self paddedFrameWithResolvedFrame:?];
   result.size.height = v7;
@@ -868,12 +868,12 @@
   return result;
 }
 
-- (CGRect)paddedFrameWithResolvedFrame:(CGRect)a3
+- (CGRect)paddedFrameWithResolvedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(UIKBGeometry *)self explicitlySpecified])
   {
     amount = self->m_paddingLeft.amount;
@@ -997,75 +997,75 @@
   return result;
 }
 
-- (id)overrideGeometry:(id)a3
+- (id)overrideGeometry:(id)geometry
 {
-  v4 = a3;
-  if (v4)
+  geometryCopy = geometry;
+  if (geometryCopy)
   {
-    v5 = [(UIKBGeometry *)self copy];
-    [v4 x];
+    selfCopy = [(UIKBGeometry *)self copy];
+    [geometryCopy x];
     if (v6)
     {
-      v7 = [v4 x];
-      [(UIKBGeometry *)v5 setX:v7, v8];
+      v7 = [geometryCopy x];
+      [(UIKBGeometry *)selfCopy setX:v7, v8];
     }
 
-    [v4 y];
+    [geometryCopy y];
     if (v9)
     {
-      v10 = [v4 y];
-      [(UIKBGeometry *)v5 setY:v10, v11];
+      v10 = [geometryCopy y];
+      [(UIKBGeometry *)selfCopy setY:v10, v11];
     }
 
-    [v4 w];
+    [geometryCopy w];
     if (v12)
     {
-      v13 = [v4 w];
-      [(UIKBGeometry *)v5 setW:v13, v14];
+      v13 = [geometryCopy w];
+      [(UIKBGeometry *)selfCopy setW:v13, v14];
     }
 
-    [v4 h];
+    [geometryCopy h];
     if (v15)
     {
-      v16 = [v4 h];
-      [(UIKBGeometry *)v5 setH:v16, v17];
+      v16 = [geometryCopy h];
+      [(UIKBGeometry *)selfCopy setH:v16, v17];
     }
 
-    [v4 paddingTop];
+    [geometryCopy paddingTop];
     if (v18)
     {
-      v19 = [v4 paddingTop];
-      [(UIKBGeometry *)v5 setPaddingTop:v19, v20];
+      paddingTop = [geometryCopy paddingTop];
+      [(UIKBGeometry *)selfCopy setPaddingTop:paddingTop, v20];
     }
 
-    [v4 paddingLeft];
+    [geometryCopy paddingLeft];
     if (v21)
     {
-      v22 = [v4 paddingLeft];
-      [(UIKBGeometry *)v5 setPaddingLeft:v22, v23];
+      paddingLeft = [geometryCopy paddingLeft];
+      [(UIKBGeometry *)selfCopy setPaddingLeft:paddingLeft, v23];
     }
 
-    [v4 paddingBottom];
+    [geometryCopy paddingBottom];
     if (v24)
     {
-      v25 = [v4 paddingBottom];
-      [(UIKBGeometry *)v5 setPaddingBottom:v25, v26];
+      paddingBottom = [geometryCopy paddingBottom];
+      [(UIKBGeometry *)selfCopy setPaddingBottom:paddingBottom, v26];
     }
 
-    [v4 paddingRight];
+    [geometryCopy paddingRight];
     if (v27)
     {
-      v28 = [v4 paddingRight];
-      [(UIKBGeometry *)v5 setPaddingRight:v28, v29];
+      paddingRight = [geometryCopy paddingRight];
+      [(UIKBGeometry *)selfCopy setPaddingRight:paddingRight, v29];
     }
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (BOOL)usesPercentages

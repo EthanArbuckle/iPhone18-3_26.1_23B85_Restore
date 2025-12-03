@@ -1,8 +1,8 @@
 @interface AMSDeviceOfferRegistrationItem
-- (AMSDeviceOfferRegistrationItem)initWithDatabaseEntry:(id)a3;
-- (AMSDeviceOfferRegistrationItem)initWithSerialNumber:(id)a3 model:(id)a4 validationData:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRegistrationItem:(id)a3;
+- (AMSDeviceOfferRegistrationItem)initWithDatabaseEntry:(id)entry;
+- (AMSDeviceOfferRegistrationItem)initWithSerialNumber:(id)number model:(id)model validationData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRegistrationItem:(id)item;
 - (NSString)description;
 - (id)serializeToDictionary;
 - (unint64_t)hash;
@@ -10,41 +10,41 @@
 
 @implementation AMSDeviceOfferRegistrationItem
 
-- (AMSDeviceOfferRegistrationItem)initWithDatabaseEntry:(id)a3
+- (AMSDeviceOfferRegistrationItem)initWithDatabaseEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"serialNumber"];
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:@"serialNumber"];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"model"];
-    v7 = [v4 objectForKeyedSubscript:@"validationData"];
+    v6 = [entryCopy objectForKeyedSubscript:@"model"];
+    v7 = [entryCopy objectForKeyedSubscript:@"validationData"];
     self = [(AMSDeviceOfferRegistrationItem *)self initWithSerialNumber:v5 model:v6 validationData:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (AMSDeviceOfferRegistrationItem)initWithSerialNumber:(id)a3 model:(id)a4 validationData:(id)a5
+- (AMSDeviceOfferRegistrationItem)initWithSerialNumber:(id)number model:(id)model validationData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  numberCopy = number;
+  modelCopy = model;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = AMSDeviceOfferRegistrationItem;
   v12 = [(AMSDeviceOfferRegistrationItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serialNumber, a3);
-    objc_storeStrong(&v13->_model, a4);
-    objc_storeStrong(&v13->_validationData, a5);
+    objc_storeStrong(&v12->_serialNumber, number);
+    objc_storeStrong(&v13->_model, model);
+    objc_storeStrong(&v13->_validationData, data);
   }
 
   return v13;
@@ -53,10 +53,10 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AMSDeviceOfferRegistrationItem *)self serialNumber];
-  v5 = [(AMSDeviceOfferRegistrationItem *)self model];
-  v6 = [(AMSDeviceOfferRegistrationItem *)self validationData];
-  v7 = [v3 stringWithFormat:@"{serial: %@ model: %@ validationData:%@}", v4, v5, v6];
+  serialNumber = [(AMSDeviceOfferRegistrationItem *)self serialNumber];
+  model = [(AMSDeviceOfferRegistrationItem *)self model];
+  validationData = [(AMSDeviceOfferRegistrationItem *)self validationData];
+  v7 = [v3 stringWithFormat:@"{serial: %@ model: %@ validationData:%@}", serialNumber, model, validationData];
 
   return v7;
 }
@@ -64,14 +64,14 @@
 - (id)serializeToDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(AMSDeviceOfferRegistrationItem *)self model];
-  [v3 setObject:v4 forKeyedSubscript:@"model"];
+  model = [(AMSDeviceOfferRegistrationItem *)self model];
+  [v3 setObject:model forKeyedSubscript:@"model"];
 
-  v5 = [(AMSDeviceOfferRegistrationItem *)self serialNumber];
-  [v3 setObject:v5 forKeyedSubscript:@"serialNumber"];
+  serialNumber = [(AMSDeviceOfferRegistrationItem *)self serialNumber];
+  [v3 setObject:serialNumber forKeyedSubscript:@"serialNumber"];
 
-  v6 = [(AMSDeviceOfferRegistrationItem *)self validationData];
-  [v3 setObject:v6 forKeyedSubscript:@"validationData"];
+  validationData = [(AMSDeviceOfferRegistrationItem *)self validationData];
+  [v3 setObject:validationData forKeyedSubscript:@"validationData"];
 
   v7 = [v3 copy];
 
@@ -80,20 +80,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(AMSDeviceOfferRegistrationItem *)self model];
-  v4 = [v3 hash];
-  v5 = [(AMSDeviceOfferRegistrationItem *)self serialNumber];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(AMSDeviceOfferRegistrationItem *)self validationData];
-  v8 = [v7 hash];
+  model = [(AMSDeviceOfferRegistrationItem *)self model];
+  v4 = [model hash];
+  serialNumber = [(AMSDeviceOfferRegistrationItem *)self serialNumber];
+  v6 = [serialNumber hash] ^ v4;
+  validationData = [(AMSDeviceOfferRegistrationItem *)self validationData];
+  v8 = [validationData hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -101,21 +101,21 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && [(AMSDeviceOfferRegistrationItem *)self isEqualToRegistrationItem:v4];
+    v6 = v5 == objc_opt_class() && [(AMSDeviceOfferRegistrationItem *)self isEqualToRegistrationItem:equalCopy];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRegistrationItem:(id)a3
+- (BOOL)isEqualToRegistrationItem:(id)item
 {
-  v7 = a3;
-  v8 = [(AMSDeviceOfferRegistrationItem *)self model];
-  if (v8 || ([v7 model], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  itemCopy = item;
+  model = [(AMSDeviceOfferRegistrationItem *)self model];
+  if (model || ([itemCopy model], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(AMSDeviceOfferRegistrationItem *)self model];
-    v5 = [v7 model];
-    if (![v4 isEqualToString:v5])
+    model2 = [(AMSDeviceOfferRegistrationItem *)self model];
+    model3 = [itemCopy model];
+    if (![model2 isEqualToString:model3])
     {
       v10 = 0;
       goto LABEL_14;
@@ -129,9 +129,9 @@
     v9 = 0;
   }
 
-  v11 = [(AMSDeviceOfferRegistrationItem *)self serialNumber];
-  v12 = [v7 serialNumber];
-  if (![v11 isEqualToString:v12])
+  serialNumber = [(AMSDeviceOfferRegistrationItem *)self serialNumber];
+  serialNumber2 = [itemCopy serialNumber];
+  if (![serialNumber isEqualToString:serialNumber2])
   {
 
     v10 = 0;
@@ -143,16 +143,16 @@
     goto LABEL_14;
   }
 
-  v13 = [(AMSDeviceOfferRegistrationItem *)self validationData];
-  if (v13 || ([v7 validationData], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+  validationData = [(AMSDeviceOfferRegistrationItem *)self validationData];
+  if (validationData || ([itemCopy validationData], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v19 = v9;
     v20 = v3;
-    v14 = [(AMSDeviceOfferRegistrationItem *)self validationData];
-    v15 = [v7 validationData];
-    v10 = [v14 isEqualToData:v15];
+    validationData2 = [(AMSDeviceOfferRegistrationItem *)self validationData];
+    validationData3 = [itemCopy validationData];
+    v10 = [validationData2 isEqualToData:validationData3];
 
-    if (v13)
+    if (validationData)
     {
 
       v3 = v20;
@@ -183,7 +183,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (!v8)
+  if (!model)
   {
   }
 

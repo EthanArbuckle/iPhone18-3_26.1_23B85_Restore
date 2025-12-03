@@ -1,8 +1,8 @@
 @interface _RMPredicateVisitor
 - (NSSet)statusKeyPaths;
-- (_RMPredicateVisitor)initWithFormat:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
-- (void)visitPredicateOperator:(id)a3;
+- (_RMPredicateVisitor)initWithFormat:(id)format;
+- (void)visitPredicateExpression:(id)expression;
+- (void)visitPredicateOperator:(id)operator;
 @end
 
 @implementation _RMPredicateVisitor
@@ -14,15 +14,15 @@
   return v2;
 }
 
-- (_RMPredicateVisitor)initWithFormat:(id)a3
+- (_RMPredicateVisitor)initWithFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v11.receiver = self;
   v11.super_class = _RMPredicateVisitor;
   v5 = [(_RMPredicateVisitor *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [formatCopy copy];
     format = v5->_format;
     v5->_format = v6;
 
@@ -34,26 +34,26 @@
   return v5;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
-  v6 = a3;
-  if ([v6 expressionType] == 3)
+  expressionCopy = expression;
+  if ([expressionCopy expressionType] == 3)
   {
     statusKeyPaths = self->_statusKeyPaths;
-    v5 = [v6 keyPath];
-    [(NSMutableSet *)statusKeyPaths addObject:v5];
+    keyPath = [expressionCopy keyPath];
+    [(NSMutableSet *)statusKeyPaths addObject:keyPath];
   }
 }
 
-- (void)visitPredicateOperator:(id)a3
+- (void)visitPredicateOperator:(id)operator
 {
-  v10 = a3;
-  if ([v10 operatorType] == 11)
+  operatorCopy = operator;
+  if ([operatorCopy operatorType] == 11)
   {
     v4 = RMErrorDomain;
     v11 = @"error";
-    v5 = [v10 symbol];
-    v6 = [RMErrorUtilities createUnableToParsePredicateErrorWithCustomOperator:v5 predicateFormat:self->_format];
+    symbol = [operatorCopy symbol];
+    v6 = [RMErrorUtilities createUnableToParsePredicateErrorWithCustomOperator:symbol predicateFormat:self->_format];
     v12 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v8 = [NSException exceptionWithName:v4 reason:&stru_1000D3680 userInfo:v7];

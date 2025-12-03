@@ -3,7 +3,7 @@
 - (PHASEGroupPreset)initWithEngine:(PHASEEngine *)engine settings:(NSDictionary *)settings timeToTarget:(double)timeToTarget timeToReset:(double)timeToReset;
 - (void)activate;
 - (void)activateWithTimeToTargetOverride:(double)timeToTargetOverride;
-- (void)activateWithTimeToTargetOverride:(uint64_t)a1;
+- (void)activateWithTimeToTargetOverride:(uint64_t)override;
 - (void)deactivate;
 - (void)deactivateWithTimeToResetOverride:(double)timeToResetOverride;
 @end
@@ -54,7 +54,7 @@
     v6 = objc_loadWeakRetained(&self->_engine);
     v7 = Phase::Controller::TaskManager::GetService<Phase::Controller::GroupManager>(([v6 implementation] + 48), 10);
 
-    v8 = self;
+    selfCopy = self;
     v9 = **(v7 + 8);
     v17 = 0;
     v16 = 1;
@@ -96,13 +96,13 @@
 
     *v10 = &unk_284D36118;
     *(v10 + 8) = v7;
-    *(v10 + 16) = v8;
+    *(v10 + 16) = selfCopy;
     *(v10 + 24) = timeToTargetOverride;
     Phase::LockFreeQueueSPSC::CommitBytes(v9, 32);
     atomic_store(0, (v9 + 40));
 
     v12 = objc_loadWeakRetained(&self->_engine);
-    [v12 setInternalActiveGroupMixerPreset:v8];
+    [v12 setInternalActiveGroupMixerPreset:selfCopy];
   }
 }
 
@@ -114,9 +114,9 @@
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_engine);
-    v5 = [v4 activeGroupPreset];
+    activeGroupPreset = [v4 activeGroupPreset];
 
-    if (v5 == self)
+    if (activeGroupPreset == self)
     {
       v6 = objc_loadWeakRetained(&self->_engine);
       v7 = Phase::Controller::TaskManager::GetService<Phase::Controller::GroupManager>(([v6 implementation] + 48), 10);
@@ -178,9 +178,9 @@
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_engine);
-    v7 = [v6 activeGroupPreset];
+    activeGroupPreset = [v6 activeGroupPreset];
 
-    if (v7 == self)
+    if (activeGroupPreset == self)
     {
       v8 = objc_loadWeakRetained(&self->_engine);
       v9 = Phase::Controller::TaskManager::GetService<Phase::Controller::GroupManager>(([v8 implementation] + 48), 10);
@@ -235,7 +235,7 @@
   }
 }
 
-- (void)activateWithTimeToTargetOverride:(uint64_t)a1
+- (void)activateWithTimeToTargetOverride:(uint64_t)override
 {
 
   JUMPOUT(0x23EE864A0);

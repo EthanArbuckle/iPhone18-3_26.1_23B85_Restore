@@ -1,5 +1,5 @@
 @interface CNGroupIdentityHeaderContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CNGroupIdentityHeaderContainerViewwDelegate)delegate;
 @end
 
@@ -12,12 +12,12 @@
   return WeakRetained;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CNGroupIdentityHeaderContainerView *)self delegate];
-  [v5 estimatedSizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  delegate = [(CNGroupIdentityHeaderContainerView *)self delegate];
+  [delegate estimatedSizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 

@@ -1,10 +1,10 @@
 @interface ASDFairPlayService
 + (ASDFairPlayService)defaultService;
-- (BOOL)importKeybag:(id)a3 error:(id *)a4;
-- (BOOL)importSubscriptionKeybag:(id)a3 error:(id *)a4;
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(uint64_t)a1;
-- (id)generateKeybagRequestForDSID:(unint64_t)a3 error:(id *)a4;
-- (id)generateSubscriptionRequestForDSID:(unint64_t)a3 error:(id *)a4;
+- (BOOL)importKeybag:(id)keybag error:(id *)error;
+- (BOOL)importSubscriptionKeybag:(id)keybag error:(id *)error;
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(uint64_t)handler;
+- (id)generateKeybagRequestForDSID:(unint64_t)d error:(id *)error;
+- (id)generateSubscriptionRequestForDSID:(unint64_t)d error:(id *)error;
 @end
 
 @implementation ASDFairPlayService
@@ -42,7 +42,7 @@ void __36__ASDFairPlayService_defaultService__block_invoke()
   _MergedGlobals_43 = v0;
 }
 
-- (id)generateKeybagRequestForDSID:(unint64_t)a3 error:(id *)a4
+- (id)generateKeybagRequestForDSID:(unint64_t)d error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -68,13 +68,13 @@ void __36__ASDFairPlayService_defaultService__block_invoke()
   v10[3] = &unk_1E7CDD0F8;
   v10[4] = &v18;
   v10[5] = &v12;
-  [v6 generateKeybagRequestForDSID:a3 completionHandler:v10];
-  if (a4)
+  [v6 generateKeybagRequestForDSID:d completionHandler:v10];
+  if (error)
   {
     v7 = v13[5];
     if (v7)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 
@@ -86,12 +86,12 @@ void __36__ASDFairPlayService_defaultService__block_invoke()
   return v8;
 }
 
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(uint64_t)a1
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(uint64_t)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    v4 = *(a1 + 8);
+    v4 = *(handler + 8);
     v9 = 0;
     v5 = [v4 getFairPlayServiceWithError:&v9];
     v6 = v9;
@@ -129,7 +129,7 @@ void __57__ASDFairPlayService_generateKeybagRequestForDSID_error___block_invoke_
   *(v9 + 40) = v6;
 }
 
-- (id)generateSubscriptionRequestForDSID:(unint64_t)a3 error:(id *)a4
+- (id)generateSubscriptionRequestForDSID:(unint64_t)d error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -155,13 +155,13 @@ void __57__ASDFairPlayService_generateKeybagRequestForDSID_error___block_invoke_
   v10[3] = &unk_1E7CDD0F8;
   v10[4] = &v18;
   v10[5] = &v12;
-  [v6 generateSubscriptionRequestForDSID:a3 completionHandler:v10];
-  if (a4)
+  [v6 generateSubscriptionRequestForDSID:d completionHandler:v10];
+  if (error)
   {
     v7 = v13[5];
     if (v7)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 
@@ -187,9 +187,9 @@ void __63__ASDFairPlayService_generateSubscriptionRequestForDSID_error___block_i
   *(v9 + 40) = v6;
 }
 
-- (BOOL)importKeybag:(id)a3 error:(id *)a4
+- (BOOL)importKeybag:(id)keybag error:(id *)error
 {
-  v6 = a3;
+  keybagCopy = keybag;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -207,14 +207,14 @@ void __63__ASDFairPlayService_generateSubscriptionRequestForDSID_error___block_i
   v12[2] = __41__ASDFairPlayService_importKeybag_error___block_invoke_2;
   v12[3] = &unk_1E7CDBB80;
   v12[4] = &v14;
-  [v7 importKeybag:v6 completionHandler:v12];
+  [v7 importKeybag:keybagCopy completionHandler:v12];
   v8 = v15;
-  if (a4)
+  if (error)
   {
     v9 = v15[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
       v8 = v15;
     }
   }
@@ -225,9 +225,9 @@ void __63__ASDFairPlayService_generateSubscriptionRequestForDSID_error___block_i
   return v10;
 }
 
-- (BOOL)importSubscriptionKeybag:(id)a3 error:(id *)a4
+- (BOOL)importSubscriptionKeybag:(id)keybag error:(id *)error
 {
-  v6 = a3;
+  keybagCopy = keybag;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -245,14 +245,14 @@ void __63__ASDFairPlayService_generateSubscriptionRequestForDSID_error___block_i
   v12[2] = __53__ASDFairPlayService_importSubscriptionKeybag_error___block_invoke_2;
   v12[3] = &unk_1E7CDBB80;
   v12[4] = &v14;
-  [v7 importSubscriptionKeybag:v6 completionHandler:v12];
+  [v7 importSubscriptionKeybag:keybagCopy completionHandler:v12];
   v8 = v15;
-  if (a4)
+  if (error)
   {
     v9 = v15[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
       v8 = v15;
     }
   }

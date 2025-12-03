@@ -1,8 +1,8 @@
 @interface PLURLSessionLaunchEventListener
-+ (id)sessionIdentifierFrom:(id)a3;
++ (id)sessionIdentifierFrom:(id)from;
 - (PLPhotoLibraryBundleController)bundleController;
 - (void)handleBackgroundResourceUploaderLaunchEvent;
-- (void)handleURLSessionLaunchEvent:(id)a3;
+- (void)handleURLSessionLaunchEvent:(id)event;
 - (void)registerForLaunchEvents;
 - (void)registerForNoOpURLSessionLaunchEvents;
 - (void)registerForSimulatedBackgroundResourceUploaderLaunchEvent;
@@ -20,37 +20,37 @@
 
 - (void)registerForLaunchEvents
 {
-  v2 = self;
+  selfCopy = self;
   sub_19BF42604();
 }
 
 - (void)registerForNoOpURLSessionLaunchEvents
 {
-  v2 = self;
+  selfCopy = self;
   sub_19BF42710();
 }
 
 - (void)registerForSimulatedBackgroundResourceUploaderLaunchEvent
 {
-  v2 = self;
+  selfCopy = self;
   sub_19BF42A48();
 }
 
 - (void)registerForURLSessionLaunchEvents
 {
-  v2 = self;
+  selfCopy = self;
   sub_19BF42DF8();
 }
 
-- (void)handleURLSessionLaunchEvent:(id)a3
+- (void)handleURLSessionLaunchEvent:(id)event
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_19BF42F84(a3);
+  selfCopy = self;
+  sub_19BF42F84(event);
   swift_unknownObjectRelease();
 }
 
-+ (id)sessionIdentifierFrom:(id)a3
++ (id)sessionIdentifierFrom:(id)from
 {
   swift_getObjCClassMetadata();
   v3 = swift_unknownObjectRetain();
@@ -72,7 +72,7 @@
 
 - (void)handleBackgroundResourceUploaderLaunchEvent
 {
-  v2 = self;
+  selfCopy = self;
   sub_19BF434B4();
 }
 

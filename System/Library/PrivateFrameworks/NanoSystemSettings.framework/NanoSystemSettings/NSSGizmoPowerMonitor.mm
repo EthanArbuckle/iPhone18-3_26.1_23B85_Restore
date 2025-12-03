@@ -1,8 +1,8 @@
 @interface NSSGizmoPowerMonitor
 + (id)sharedMonitor;
-- (BOOL)_droppedFromLastNotifiedLevel:(int64_t)a3;
+- (BOOL)_droppedFromLastNotifiedLevel:(int64_t)level;
 - (BOOL)_powerStatusNotifierEnabled;
-- (BOOL)_shouldPostNotificationForPowerLevel:(int64_t)a3;
+- (BOOL)_shouldPostNotificationForPowerLevel:(int64_t)level;
 - (BOOL)forceEnabledOverride;
 - (NSSGizmoPowerMonitor)init;
 - (id)_activeNRDevice;
@@ -12,23 +12,23 @@
 - (int64_t)substantialChange;
 - (void)_beginMonitoringForPowerUpdates;
 - (void)_beginMonitoringOnWristState;
-- (void)_loadSleepSettingsFrom:(id)a3;
-- (void)_postNotificationForLowPowerModeAutoDisabled:(unint64_t)a3;
-- (void)_postNotificationForPowerLevel:(int64_t)a3;
+- (void)_loadSleepSettingsFrom:(id)from;
+- (void)_postNotificationForLowPowerModeAutoDisabled:(unint64_t)disabled;
+- (void)_postNotificationForPowerLevel:(int64_t)level;
 - (void)_processOffChargerState;
 - (void)_registerForSleepSettingsChanges;
 - (void)_removedFromChargerNotification;
-- (void)_setLevels:(id)a3;
+- (void)_setLevels:(id)levels;
 - (void)_stopMonitoringForPowerUpdates;
 - (void)_updatePowerSourceDescription;
 - (void)_updateSettings;
-- (void)addLevel:(int64_t)a3;
+- (void)addLevel:(int64_t)level;
 - (void)processBatteryUpdate;
-- (void)processLowPowerModeAutoDisableUpdateType:(unint64_t)a3;
+- (void)processLowPowerModeAutoDisableUpdateType:(unint64_t)type;
 - (void)resetLevels;
-- (void)setLastKnownPowerLevelBeforeGoingOffCharger:(int64_t)a3;
-- (void)sleepStore:(id)a3 sleepModeOnDidChange:(BOOL)a4;
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4;
+- (void)setLastKnownPowerLevelBeforeGoingOffCharger:(int64_t)charger;
+- (void)sleepStore:(id)store sleepModeOnDidChange:(BOOL)change;
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change;
 @end
 
 @implementation NSSGizmoPowerMonitor
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = sub_100015340;
   block[3] = &unk_100034E60;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003DD38 != -1)
   {
     dispatch_once(&qword_10003DD38, block);
@@ -94,16 +94,16 @@
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (void)_updatePowerSourceDescription
 {
   v3 = IOPSCopyPowerSourcesByType();
-  v4 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-  v16 = [v4 valueForProperty:NRDevicePropertyName];
+  _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+  v16 = [_activeNRDevice valueForProperty:NRDevicePropertyName];
 
   if (v3)
   {
@@ -158,25 +158,25 @@ LABEL_14:
   }
 }
 
-- (void)_postNotificationForPowerLevel:(int64_t)a3
+- (void)_postNotificationForPowerLevel:(int64_t)level
 {
   if ([(NSSGizmoPowerMonitor *)self _powerStatusNotifierEnabled]|| [(NSSGizmoPowerMonitor *)self forceEnabledOverride])
   {
-    if ([(NSSGizmoPowerMonitor *)self _shouldPostNotificationForPowerLevel:a3])
+    if ([(NSSGizmoPowerMonitor *)self _shouldPostNotificationForPowerLevel:level])
     {
-      v5 = [(NSSGizmoPowerMonitor *)self levels];
-      v6 = [NSNumber numberWithInteger:a3];
-      v7 = [v5 containsObject:v6];
+      levels = [(NSSGizmoPowerMonitor *)self levels];
+      v6 = [NSNumber numberWithInteger:level];
+      v7 = [levels containsObject:v6];
 
       if ((v7 & 1) == 0)
       {
-        [(NSSGizmoPowerMonitor *)self addLevel:a3];
-        [(NSSGizmoPowerMonitor *)self setLastKnownPowerLevelBeforeGoingOffCharger:a3];
+        [(NSSGizmoPowerMonitor *)self addLevel:level];
+        [(NSSGizmoPowerMonitor *)self setLastKnownPowerLevelBeforeGoingOffCharger:level];
         v11 = +[NSSUserNotificationManager sharedInstance];
-        v8 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-        v9 = [v8 valueForProperty:NRDevicePropertyName];
+        _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+        v9 = [_activeNRDevice valueForProperty:NRDevicePropertyName];
 
-        v10 = [NSNumber numberWithLong:a3];
+        v10 = [NSNumber numberWithLong:level];
         [v11 postBatteryNotificationForWatch:v9 withValue:v10];
       }
     }
@@ -187,10 +187,10 @@ LABEL_14:
 {
   v3 = [NPSDomainAccessor alloc];
   v4 = kSFPowerSourceStatusDomain;
-  v5 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-  v6 = [v3 initWithDomain:v4 pairedDevice:v5];
+  _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+  v6 = [v3 initWithDomain:v4 pairedDevice:_activeNRDevice];
 
-  v7 = [v6 synchronize];
+  synchronize = [v6 synchronize];
   v8 = [v6 BOOLForKey:kSFPowerSourceStatusFeatureKey];
   v9 = NSSLogForType();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -311,10 +311,10 @@ LABEL_14:
   dispatch_async(workQueue, block);
 }
 
-- (void)_loadSleepSettingsFrom:(id)a3
+- (void)_loadSleepSettingsFrom:(id)from
 {
   v8 = 0;
-  v4 = [a3 currentSleepSettingsWithError:&v8];
+  v4 = [from currentSleepSettingsWithError:&v8];
   v5 = v8;
   sleepSettings = self->_sleepSettings;
   self->_sleepSettings = v4;
@@ -333,9 +333,9 @@ LABEL_14:
   }
 }
 
-- (void)sleepStore:(id)a3 sleepModeOnDidChange:(BOOL)a4
+- (void)sleepStore:(id)store sleepModeOnDidChange:(BOOL)change
 {
-  v5 = a3;
+  storeCopy = store;
   v6 = NSSLogForType();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -344,11 +344,11 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  [(NSSGizmoPowerMonitor *)self _loadSleepSettingsFrom:v5];
+  [(NSSGizmoPowerMonitor *)self _loadSleepSettingsFrom:storeCopy];
   [(NSSGizmoPowerMonitor *)self _updateSettings];
 }
 
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change
 {
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -368,13 +368,13 @@ LABEL_14:
   {
     if (![(NSSGizmoPowerMonitor *)self _powerStatusNotifierEnabled])
     {
-      v3 = 1;
+      forceEnabledOverride = 1;
 LABEL_6:
       v4 = NSSLogForType();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         v5 = @"disabled";
-        if (v3)
+        if (forceEnabledOverride)
         {
           v5 = @"enabled";
         }
@@ -388,14 +388,14 @@ LABEL_6:
 
       v6 = [NPSDomainAccessor alloc];
       v7 = kSFPowerSourceStatusDomain;
-      v8 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-      v9 = [v6 initWithDomain:v7 pairedDevice:v8];
+      _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+      v9 = [v6 initWithDomain:v7 pairedDevice:_activeNRDevice];
 
       v10 = kSFPowerSourceStatusFeatureKey;
-      [v9 setBool:v3 forKey:kSFPowerSourceStatusFeatureKey];
+      [v9 setBool:forceEnabledOverride forKey:kSFPowerSourceStatusFeatureKey];
       v11 = kSFPowerChargingMonitoringLevelKeys;
       [v9 setObject:&off_1000367E8 forKey:kSFPowerChargingMonitoringLevelKeys];
-      v12 = [v9 synchronize];
+      synchronize = [v9 synchronize];
       npsManager = self->_npsManager;
       v14 = [NSSet setWithObjects:v10, v11, 0];
       [(NPSManager *)npsManager synchronizeNanoDomain:v7 keys:v14];
@@ -406,8 +406,8 @@ LABEL_6:
 
   else
   {
-    v3 = [(NSSGizmoPowerMonitor *)self forceEnabledOverride];
-    if (v3 != [(NSSGizmoPowerMonitor *)self _powerStatusNotifierEnabled])
+    forceEnabledOverride = [(NSSGizmoPowerMonitor *)self forceEnabledOverride];
+    if (forceEnabledOverride != [(NSSGizmoPowerMonitor *)self _powerStatusNotifierEnabled])
     {
       goto LABEL_6;
     }
@@ -423,15 +423,15 @@ LABEL_6:
 LABEL_13:
 }
 
-- (BOOL)_shouldPostNotificationForPowerLevel:(int64_t)a3
+- (BOOL)_shouldPostNotificationForPowerLevel:(int64_t)level
 {
   v5 = [NPSDomainAccessor alloc];
   v6 = kSFPowerSourceStatusDomain;
-  v7 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-  v8 = [v5 initWithDomain:v6 pairedDevice:v7];
+  _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+  v8 = [v5 initWithDomain:v6 pairedDevice:_activeNRDevice];
 
   v9 = [v8 arrayForKey:kSFPowerChargingMonitoringLevelKeys];
-  v10 = [NSNumber numberWithInteger:a3 / 10];
+  v10 = [NSNumber numberWithInteger:level / 10];
   LOBYTE(v6) = [v9 containsObject:v10];
 
   return v6;
@@ -455,13 +455,13 @@ LABEL_13:
     context = self->_context;
     self->_context = v5;
 
-    v7 = [(NSSGizmoPowerMonitor *)self sleepSchedulePredicate];
+    sleepSchedulePredicate = [(NSSGizmoPowerMonitor *)self sleepSchedulePredicate];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000169DC;
     v9[3] = &unk_100035040;
     v9[4] = self;
-    v8 = [_CDContextualChangeRegistration localWakingRegistrationWithIdentifier:@"com.apple.nanosystemsettingsd.contextstore-registration" contextualPredicate:v7 clientIdentifier:@"com.apple.nanosystemsettingsd.contextstore-registration" callback:v9];
+    v8 = [_CDContextualChangeRegistration localWakingRegistrationWithIdentifier:@"com.apple.nanosystemsettingsd.contextstore-registration" contextualPredicate:sleepSchedulePredicate clientIdentifier:@"com.apple.nanosystemsettingsd.contextstore-registration" callback:v9];
 
     [(_CDClientContext *)self->_context registerCallback:v8];
   }
@@ -471,8 +471,8 @@ LABEL_13:
 {
   v3 = [NPSDomainAccessor alloc];
   v4 = kSFPowerSourceStatusDomain;
-  v5 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-  v6 = [v3 initWithDomain:v4 pairedDevice:v5];
+  _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+  v6 = [v3 initWithDomain:v4 pairedDevice:_activeNRDevice];
 
   if (MGGetBoolAnswer())
   {
@@ -491,22 +491,22 @@ LABEL_13:
 {
   v3 = [NPSDomainAccessor alloc];
   v4 = kSFPowerSourceStatusDomain;
-  v5 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-  v6 = [v3 initWithDomain:v4 pairedDevice:v5];
+  _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+  v6 = [v3 initWithDomain:v4 pairedDevice:_activeNRDevice];
 
   v7 = [v6 integerForKey:@"lastKnownPowerLevelBeforeGoingOffCharger"];
   return v7;
 }
 
-- (void)setLastKnownPowerLevelBeforeGoingOffCharger:(int64_t)a3
+- (void)setLastKnownPowerLevelBeforeGoingOffCharger:(int64_t)charger
 {
   v5 = [NPSDomainAccessor alloc];
   v6 = kSFPowerSourceStatusDomain;
-  v7 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-  v9 = [v5 initWithDomain:v6 pairedDevice:v7];
+  _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+  v9 = [v5 initWithDomain:v6 pairedDevice:_activeNRDevice];
 
-  [v9 setInteger:a3 forKey:@"lastKnownPowerLevelBeforeGoingOffCharger"];
-  v8 = [v9 synchronize];
+  [v9 setInteger:charger forKey:@"lastKnownPowerLevelBeforeGoingOffCharger"];
+  synchronize = [v9 synchronize];
 }
 
 - (int64_t)substantialChange
@@ -522,77 +522,77 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)_droppedFromLastNotifiedLevel:(int64_t)a3
+- (BOOL)_droppedFromLastNotifiedLevel:(int64_t)level
 {
-  v4 = [(NSSGizmoPowerMonitor *)self lastKnownPowerLevelBeforeGoingOffCharger];
+  lastKnownPowerLevelBeforeGoingOffCharger = [(NSSGizmoPowerMonitor *)self lastKnownPowerLevelBeforeGoingOffCharger];
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
     v8 = 134218498;
-    v9 = v4;
-    if (v4 > a3)
+    v9 = lastKnownPowerLevelBeforeGoingOffCharger;
+    if (lastKnownPowerLevelBeforeGoingOffCharger > level)
     {
       v6 = @"YES";
     }
 
     v10 = 2048;
-    v11 = a3;
+    levelCopy = level;
     v12 = 2112;
     v13 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "GizmoPowerMonitor: lastKnownPowerLevelBeforeGoingOffCharger (%ld); currentCharge (%ld) = dropped (%@)", &v8, 0x20u);
   }
 
-  return v4 > a3;
+  return lastKnownPowerLevelBeforeGoingOffCharger > level;
 }
 
 - (id)levels
 {
   v3 = [NPSDomainAccessor alloc];
   v4 = kSFPowerSourceStatusDomain;
-  v5 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-  v6 = [v3 initWithDomain:v4 pairedDevice:v5];
+  _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+  v6 = [v3 initWithDomain:v4 pairedDevice:_activeNRDevice];
 
   v7 = [v6 objectForKey:@"power-levels"];
 
   return v7;
 }
 
-- (void)_setLevels:(id)a3
+- (void)_setLevels:(id)levels
 {
-  v4 = a3;
+  levelsCopy = levels;
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = levelsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "GizmoPowerMonitor: Setting levels to %@", &v12, 0xCu);
   }
 
   v6 = [NPSDomainAccessor alloc];
   v7 = kSFPowerSourceStatusDomain;
-  v8 = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
-  v9 = [v6 initWithDomain:v7 pairedDevice:v8];
+  _activeNRDevice = [(NSSGizmoPowerMonitor *)self _activeNRDevice];
+  v9 = [v6 initWithDomain:v7 pairedDevice:_activeNRDevice];
 
-  v10 = [v4 allObjects];
-  [v9 setObject:v10 forKey:@"power-levels"];
+  allObjects = [levelsCopy allObjects];
+  [v9 setObject:allObjects forKey:@"power-levels"];
 
-  v11 = [v9 synchronize];
+  synchronize = [v9 synchronize];
 }
 
-- (void)addLevel:(int64_t)a3
+- (void)addLevel:(int64_t)level
 {
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [NSNumber numberWithInteger:a3];
+    v6 = [NSNumber numberWithInteger:level];
     v13 = 138412290;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "GizmoPowerMonitor: Adding level %@", &v13, 0xCu);
   }
 
-  v7 = [(NSSGizmoPowerMonitor *)self levels];
-  v8 = [v7 mutableCopy];
+  levels = [(NSSGizmoPowerMonitor *)self levels];
+  v8 = [levels mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -606,7 +606,7 @@ LABEL_13:
 
   v11 = v10;
 
-  v12 = [NSNumber numberWithInteger:a3];
+  v12 = [NSNumber numberWithInteger:level];
   [v11 addObject:v12];
 
   [(NSSGizmoPowerMonitor *)self _setLevels:v11];
@@ -624,7 +624,7 @@ LABEL_13:
   [(NSSGizmoPowerMonitor *)self _setLevels:0];
 }
 
-- (void)processLowPowerModeAutoDisableUpdateType:(unint64_t)a3
+- (void)processLowPowerModeAutoDisableUpdateType:(unint64_t)type
 {
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
@@ -633,16 +633,16 @@ LABEL_13:
   block[2] = sub_10001725C;
   block[3] = &unk_100035068;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = type;
   dispatch_async(workQueue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
 }
 
-- (void)_postNotificationForLowPowerModeAutoDisabled:(unint64_t)a3
+- (void)_postNotificationForLowPowerModeAutoDisabled:(unint64_t)disabled
 {
   v4 = +[NSSUserNotificationManager sharedInstance];
-  [v4 postLowPowerModeAutoDisabledNotification:a3];
+  [v4 postLowPowerModeAutoDisabledNotification:disabled];
 }
 
 - (void)_beginMonitoringOnWristState
@@ -650,18 +650,18 @@ LABEL_13:
   v3 = objc_alloc_init(SFClient);
   [(NSSGizmoPowerMonitor *)self setSfClient:v3];
 
-  v4 = [(NSSGizmoPowerMonitor *)self workQueue];
-  v5 = [(NSSGizmoPowerMonitor *)self sfClient];
-  [v5 setDispatchQueue:v4];
+  workQueue = [(NSSGizmoPowerMonitor *)self workQueue];
+  sfClient = [(NSSGizmoPowerMonitor *)self sfClient];
+  [sfClient setDispatchQueue:workQueue];
 
   objc_initWeak(&location, self);
-  v6 = [(NSSGizmoPowerMonitor *)self sfClient];
+  sfClient2 = [(NSSGizmoPowerMonitor *)self sfClient];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017574;
   v7[3] = &unk_100035090;
   objc_copyWeak(&v8, &location);
-  [v6 monitorPairedWatchWristStateWithCompletionHandler:v7];
+  [sfClient2 monitorPairedWatchWristStateWithCompletionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

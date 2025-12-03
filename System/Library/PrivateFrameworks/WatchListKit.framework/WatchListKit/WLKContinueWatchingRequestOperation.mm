@@ -1,15 +1,15 @@
 @interface WLKContinueWatchingRequestOperation
 + (BOOL)isHeicFormatAllowed;
-+ (void)donateMediaItems:(id)a3;
-- (WLKContinueWatchingRequestOperation)initWithQueryParameters:(id)a3;
++ (void)donateMediaItems:(id)items;
+- (WLKContinueWatchingRequestOperation)initWithQueryParameters:(id)parameters;
 - (void)processResponse;
 @end
 
 @implementation WLKContinueWatchingRequestOperation
 
-- (WLKContinueWatchingRequestOperation)initWithQueryParameters:(id)a3
+- (WLKContinueWatchingRequestOperation)initWithQueryParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (WLKIsTVApp())
   {
     v5 = 0;
@@ -21,7 +21,7 @@
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:15.0];
-  v7 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"shelves/uts.col.UpNext" queryParameters:v4 httpMethod:0 headers:0 caller:0 timeout:v6 apiVersion:&unk_288222C08 options:v5];
+  v7 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"shelves/uts.col.UpNext" queryParameters:parametersCopy httpMethod:0 headers:0 caller:0 timeout:v6 apiVersion:&unk_288222C08 options:v5];
 
   v10.receiver = self;
   v10.super_class = WLKContinueWatchingRequestOperation;
@@ -46,38 +46,38 @@
 {
   v10 = objc_alloc_init(WLKDictionaryResponseProcessor);
   [(WLKDictionaryResponseProcessor *)v10 setObjectClass:objc_opt_class()];
-  v3 = [(WLKNetworkRequestOperation *)self data];
-  v4 = [(WLKDictionaryResponseProcessor *)v10 processResponseData:v3 error:0];
+  data = [(WLKNetworkRequestOperation *)self data];
+  v4 = [(WLKDictionaryResponseProcessor *)v10 processResponseData:data error:0];
   [(WLKContinueWatchingRequestOperation *)self setResponse:v4];
 
-  v5 = [(WLKUTSNetworkRequestOperation *)self requestProperties];
-  v6 = [v5 queryParameters];
+  requestProperties = [(WLKUTSNetworkRequestOperation *)self requestProperties];
+  queryParameters = [requestProperties queryParameters];
 
-  if (![v6 count] && WLKIsTVApp())
+  if (![queryParameters count] && WLKIsTVApp())
   {
     if ([(WLKNetworkRequestOperation *)self resourceFetchType]== 1)
     {
-      v7 = [MEMORY[0x277CCA9A0] defaultCenter];
-      [v7 postNotificationName:@"WLKContinueWatchingRequestDidCompleteNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+      [defaultCenter postNotificationName:@"WLKContinueWatchingRequestDidCompleteNotification" object:0];
     }
 
     v8 = objc_opt_class();
-    v9 = [(WLKContinueWatchingResponse *)self->_response items];
-    [v8 donateMediaItems:v9];
+    items = [(WLKContinueWatchingResponse *)self->_response items];
+    [v8 donateMediaItems:items];
   }
 }
 
-+ (void)donateMediaItems:(id)a3
++ (void)donateMediaItems:(id)items
 {
   v137 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v98 = objc_alloc_init(MEMORY[0x277CBEB40]);
   MGGetFloat32Answer();
   v5 = v4;
   v6 = WLKSiriActionsLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "count")}];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(itemsCopy, "count")}];
     *buf = 138412290;
     v133 = v7;
     _os_log_impl(&dword_272A0F000, v6, OS_LOG_TYPE_DEFAULT, "WLKContinueWatchingResponse - UpNext items: %@", buf, 0xCu);
@@ -87,7 +87,7 @@
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  obj = v3;
+  obj = itemsCopy;
   v8 = [obj countByEnumeratingWithState:&v126 objects:v136 count:16];
   if (v8)
   {
@@ -106,14 +106,14 @@
         }
 
         v118 = *(*(&v126 + 1) + 8 * v11);
-        v12 = [v118 movieOrShowContent];
-        v13 = [v12 contentType];
-        v14 = [v12 canonicalID];
-        v15 = [v12 title];
-        v16 = [v12 images];
-        v17 = [v16 artworkVariantOfType:26];
+        movieOrShowContent = [v118 movieOrShowContent];
+        contentType = [movieOrShowContent contentType];
+        canonicalID = [movieOrShowContent canonicalID];
+        title = [movieOrShowContent title];
+        images = [movieOrShowContent images];
+        v17 = [images artworkVariantOfType:26];
         v18 = v17;
-        v121 = v15;
+        v121 = title;
         if (v17)
         {
           v19 = v17;
@@ -121,43 +121,43 @@
 
         else
         {
-          [v12 images];
+          [movieOrShowContent images];
           v115 = v11;
-          v20 = v14;
-          v22 = v21 = v12;
+          v20 = canonicalID;
+          v22 = v21 = movieOrShowContent;
           v19 = [v22 artworkVariantOfType:4];
 
-          v12 = v21;
-          v14 = v20;
+          movieOrShowContent = v21;
+          canonicalID = v20;
           v11 = v115;
         }
 
-        switch(v13)
+        switch(contentType)
         {
           case 1:
-            v120 = v14;
-            v112 = v12;
+            v120 = canonicalID;
+            v112 = movieOrShowContent;
             v31 = 0;
-            v32 = 0;
-            v33 = 0;
+            canonicalShowID = 0;
+            showTitle = 0;
             v34 = 0;
             v116 = 11;
             goto LABEL_29;
           case 4:
             objc_opt_class();
-            v120 = v14;
+            v120 = canonicalID;
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
               v34 = 0;
-              v33 = 0;
-              v32 = 0;
+              showTitle = 0;
+              canonicalShowID = 0;
               v35 = 13;
               goto LABEL_26;
             }
 
-            v23 = v12;
-            v28 = [v23 images];
-            v29 = [v28 artworkVariantOfType:26];
+            movieOrShowContent2 = movieOrShowContent;
+            images2 = [movieOrShowContent2 images];
+            v29 = [images2 artworkVariantOfType:26];
             v30 = v29;
             v105 = v19;
             if (v29)
@@ -167,24 +167,24 @@
 
             else
             {
-              [v23 images];
-              v39 = v38 = v12;
+              [movieOrShowContent2 images];
+              v39 = v38 = movieOrShowContent;
               v27 = [v39 artworkVariantOfType:17];
 
-              v12 = v38;
+              movieOrShowContent = v38;
             }
 
-            v32 = [v23 canonicalShowID];
-            v33 = [v23 showTitle];
+            canonicalShowID = [movieOrShowContent2 canonicalShowID];
+            showTitle = [movieOrShowContent2 showTitle];
             v35 = 13;
             break;
           case 2:
             v105 = v19;
-            v23 = [v118 movieOrShowContent];
-            v24 = [v23 images];
-            v25 = [v24 artworkVariantOfType:26];
+            movieOrShowContent2 = [v118 movieOrShowContent];
+            images3 = [movieOrShowContent2 images];
+            v25 = [images3 artworkVariantOfType:26];
             v26 = v25;
-            v120 = v14;
+            v120 = canonicalID;
             if (v25)
             {
               v27 = v25;
@@ -193,15 +193,15 @@
             else
             {
               [v118 movieOrShowContent];
-              v36 = v113 = v12;
-              v37 = [v36 images];
-              v27 = [v37 artworkVariantOfType:4];
+              v36 = v113 = movieOrShowContent;
+              images4 = [v36 images];
+              v27 = [images4 artworkVariantOfType:4];
 
-              v12 = v113;
+              movieOrShowContent = v113;
             }
 
-            v33 = 0;
-            v32 = 0;
+            showTitle = 0;
+            canonicalShowID = 0;
             v35 = 12;
             break;
           default:
@@ -212,15 +212,15 @@
         v19 = v105;
         v9 = v103;
 LABEL_26:
-        if (![v32 length] || !objc_msgSend(v33, "length"))
+        if (![canonicalShowID length] || !objc_msgSend(showTitle, "length"))
         {
           v42 = WLKSiriActionsLogObject();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v133 = v32;
+            v133 = canonicalShowID;
             v134 = 2112;
-            v135 = v33;
+            v135 = showTitle;
             _os_log_impl(&dword_272A0F000, v42, OS_LOG_TYPE_DEFAULT, "WLKContinueWatchingResponse - Skipping donation, missing media container info. mediaContainerCanonicalId: %@, mediaContainerItemTitle: %@", buf, 0x16u);
           }
 
@@ -228,7 +228,7 @@ LABEL_26:
         }
 
         v116 = v35;
-        v112 = v12;
+        v112 = movieOrShowContent;
         v31 = 1;
 LABEL_29:
         v40 = +[WLKContinueWatchingRequestOperation isHeicFormatAllowed];
@@ -240,7 +240,7 @@ LABEL_29:
 
         v42 = v41;
         v109 = v34;
-        v110 = v32;
+        v110 = canonicalShowID;
         v106 = v31;
         if (v31)
         {
@@ -250,22 +250,22 @@ LABEL_29:
           v46 = v44 / v45;
           v47 = v19;
           v48 = v9;
-          v49 = v33;
-          v50 = v32;
+          v49 = showTitle;
+          v50 = canonicalShowID;
           v51 = MEMORY[0x277CD3D10];
           v52 = [v34 artworkURLForSize:v42 format:{v10, v10 * v46}];
           v53 = [v51 imageWithURL:v52 width:60.0 height:v46 * 60.0];
 
           v54 = objc_alloc(MEMORY[0x277CD3DB8]);
           v55 = v50;
-          v33 = v49;
+          showTitle = v49;
           v9 = v48;
           v19 = v47;
-          v56 = [v54 initWithIdentifier:v55 title:v33 type:v116 artwork:v53];
+          v56 = [v54 initWithIdentifier:v55 title:showTitle type:v116 artwork:v53];
           v57 = 0;
 LABEL_38:
 
-          v32 = v110;
+          canonicalShowID = v110;
           goto LABEL_40;
         }
 
@@ -301,7 +301,7 @@ LABEL_40:
             _os_log_impl(&dword_272A0F000, v88, OS_LOG_TYPE_DEFAULT, "WLKContinueWatchingResponse - Skipping donation, no mediaItem or container %@", buf, 0xCu);
           }
 
-          v12 = v112;
+          movieOrShowContent = v112;
           goto LABEL_63;
         }
 
@@ -313,11 +313,11 @@ LABEL_40:
           v64 = [MEMORY[0x277CBEA60] arrayWithObjects:&v131 count:1];
         }
 
-        v101 = v33;
+        v101 = showTitle;
         v65 = objc_alloc(MEMORY[0x277CD3EC0]);
-        v66 = [v118 playable];
-        v67 = [v66 playEvent];
-        if (v67)
+        playable = [v118 playable];
+        playEvent = [playable playEvent];
+        if (playEvent)
         {
           v68 = MEMORY[0x277CBEC38];
         }
@@ -330,20 +330,20 @@ LABEL_40:
         v107 = v64;
         v69 = [v65 initWithMediaItems:v64 mediaContainer:v114 playShuffled:MEMORY[0x277CBEC28] playbackRepeatMode:1 resumePlayback:v68 playbackQueueLocation:1 playbackSpeed:&unk_288222C20 mediaSearch:0];
 
-        v70 = [v118 siriActionsExpirationEpochMillis];
-        [v70 floatValue];
+        siriActionsExpirationEpochMillis = [v118 siriActionsExpirationEpochMillis];
+        [siriActionsExpirationEpochMillis floatValue];
         v72 = v71 / 1000.0;
 
         [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v72];
         v99 = v104 = v69;
         [v69 setExpirationDate:?];
-        v73 = [v118 siriActionsCategories];
+        siriActionsCategories = [v118 siriActionsCategories];
         v74 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v122 = 0u;
         v123 = 0u;
         v124 = 0u;
         v125 = 0u;
-        v75 = v73;
+        v75 = siriActionsCategories;
         v76 = [v75 countByEnumeratingWithState:&v122 objects:v130 count:16];
         if (v76)
         {
@@ -375,51 +375,51 @@ LABEL_40:
         v82 = WLKTVAppBundleID();
         [v104 _setLaunchId:v82];
         [v104 _setExtensionBundleId:0];
-        v83 = [v118 playable];
-        v84 = [v83 channelDetails];
-        v85 = [v84 appBundleIDs];
-        v86 = [v85 firstObject];
+        playable2 = [v118 playable];
+        channelDetails = [playable2 channelDetails];
+        appBundleIDs = [channelDetails appBundleIDs];
+        firstObject = [appBundleIDs firstObject];
 
-        if (![v86 length])
+        if (![firstObject length])
         {
           goto LABEL_61;
         }
 
-        v87 = [v83 channelDetails];
-        if ([v87 isiTunes])
+        channelDetails2 = [playable2 channelDetails];
+        if ([channelDetails2 isiTunes])
         {
 
 LABEL_61:
           v90 = v82;
 
-          v86 = v90;
+          firstObject = v90;
           goto LABEL_62;
         }
 
-        v89 = [v83 channelDetails];
-        v119 = [v89 isFirstParty];
+        channelDetails3 = [playable2 channelDetails];
+        isFirstParty = [channelDetails3 isFirstParty];
 
-        if (v119)
+        if (isFirstParty)
         {
           goto LABEL_61;
         }
 
 LABEL_62:
         v19 = v81;
-        [v104 setProxiedBundleIdentifier:v86];
+        [v104 setProxiedBundleIdentifier:firstObject];
         [v98 addObject:v104];
 
         v9 = v103;
-        v12 = v112;
+        movieOrShowContent = v112;
         v11 = v117;
         v34 = v109;
-        v32 = v110;
+        canonicalShowID = v110;
         v42 = v100;
-        v33 = v101;
+        showTitle = v101;
 LABEL_63:
 
 LABEL_64:
-        v14 = v120;
+        canonicalID = v120;
 LABEL_65:
 
         ++v11;
@@ -432,18 +432,18 @@ LABEL_65:
     while (v9);
   }
 
-  v91 = [MEMORY[0x277CD42A0] sharedManager];
-  [v91 setPredictionMode:1 forType:12];
+  mEMORY[0x277CD42A0] = [MEMORY[0x277CD42A0] sharedManager];
+  [mEMORY[0x277CD42A0] setPredictionMode:1 forType:12];
 
-  v92 = [MEMORY[0x277CD42A0] sharedManager];
-  [v92 setPredictionMode:1 forType:13];
+  mEMORY[0x277CD42A0]2 = [MEMORY[0x277CD42A0] sharedManager];
+  [mEMORY[0x277CD42A0]2 setPredictionMode:1 forType:13];
 
-  v93 = [MEMORY[0x277CD42A0] sharedManager];
-  [v93 setPredictionMode:1 forType:11];
+  mEMORY[0x277CD42A0]3 = [MEMORY[0x277CD42A0] sharedManager];
+  [mEMORY[0x277CD42A0]3 setPredictionMode:1 forType:11];
 
-  v94 = [MEMORY[0x277CD42A0] sharedManager];
+  mEMORY[0x277CD42A0]4 = [MEMORY[0x277CD42A0] sharedManager];
   v95 = [v98 copy];
-  [v94 setSuggestedMediaIntents:v95];
+  [mEMORY[0x277CD42A0]4 setSuggestedMediaIntents:v95];
 
   v96 = WLKSiriActionsLogObject();
   if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))

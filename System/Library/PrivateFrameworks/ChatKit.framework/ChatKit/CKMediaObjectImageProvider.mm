@@ -1,14 +1,14 @@
 @interface CKMediaObjectImageProvider
-- (BOOL)_lock_cancelImageRequest:(int64_t)a3;
+- (BOOL)_lock_cancelImageRequest:(int64_t)request;
 - (CKMediaObjectImageProvider)init;
-- (id)_imagePreviewForMediaObject:(id)a3 isSynchronous:(BOOL)a4 requestID:(int64_t)a5;
-- (id)_lock_imagePreviewForMediaObject:(id)a3 isSynchronous:(BOOL)a4 requestID:(int64_t)a5;
+- (id)_imagePreviewForMediaObject:(id)object isSynchronous:(BOOL)synchronous requestID:(int64_t)d;
+- (id)_lock_imagePreviewForMediaObject:(id)object isSynchronous:(BOOL)synchronous requestID:(int64_t)d;
 - (int64_t)numberOfOutstandingHandlers;
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)_handleFileTransferDidChangeNotification:(id)a3;
-- (void)_handlePreviewDidChangeNotification:(id)a3;
-- (void)cancelImageRequest:(int64_t)a3;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)_handleFileTransferDidChangeNotification:(id)notification;
+- (void)_handlePreviewDidChangeNotification:(id)notification;
+- (void)cancelImageRequest:(int64_t)request;
 @end
 
 @implementation CKMediaObjectImageProvider
@@ -34,11 +34,11 @@
     lock_activeRequestIDsByTransferGUID = v3->_lock_activeRequestIDsByTransferGUID;
     v3->_lock_activeRequestIDsByTransferGUID = v8;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v3 selector:sel__handlePreviewDidChangeNotification_ name:@"CKPreviewDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__handlePreviewDidChangeNotification_ name:@"CKPreviewDidChangeNotification" object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v3 selector:sel__handleFileTransferDidChangeNotification_ name:@"CKFileTransferUpdatedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__handleFileTransferDidChangeNotification_ name:@"CKFileTransferUpdatedNotification" object:0];
   }
 
   return v3;
@@ -52,31 +52,31 @@
   return v3;
 }
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v50[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v13;
+    v16 = assetCopy;
     v17 = _PhotoKitAssetForMediaObjectAsset(v16);
     if (v17)
     {
       v18 = _PhotoKitMediaProvider();
-      v19 = [v18 requestImageForAsset:v17 targetSize:a5 contentMode:v14 options:v15 resultHandler:{width, height}];
+      v19 = [v18 requestImageForAsset:v17 targetSize:mode contentMode:optionsCopy options:handlerCopy resultHandler:{width, height}];
     }
 
     else
     {
       LODWORD(v19) = atomic_fetch_add(_makeNextRequestID_lastRequestID, 1u);
-      v40 = [v16 mediaObject];
+      mediaObject = [v16 mediaObject];
       v19 = v19;
-      v41 = -[CKMediaObjectImageProvider _imagePreviewForMediaObject:isSynchronous:requestID:](self, "_imagePreviewForMediaObject:isSynchronous:requestID:", v40, [v14 isSynchronous], v19);
+      v41 = -[CKMediaObjectImageProvider _imagePreviewForMediaObject:isSynchronous:requestID:](self, "_imagePreviewForMediaObject:isSynchronous:requestID:", mediaObject, [optionsCopy isSynchronous], v19);
       if (v41)
       {
         if (IMOSLoggingEnabled())
@@ -85,19 +85,19 @@
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             v22 = [MEMORY[0x1E696AD98] numberWithInteger:v19];
-            v23 = [v40 transferGUID];
+            transferGUID = [mediaObject transferGUID];
             *buf = 138412546;
             v46 = v22;
             v47 = 2112;
-            v48 = v23;
+            v48 = transferGUID;
             _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "Got non-nil UIImage preview for %@-%@, calling result handler", buf, 0x16u);
           }
         }
 
-        v15[2](v15, v41, 0);
+        handlerCopy[2](handlerCopy, v41, 0);
       }
 
-      else if (([v14 isSynchronous] & 1) == 0)
+      else if (([optionsCopy isSynchronous] & 1) == 0)
       {
         if (IMOSLoggingEnabled())
         {
@@ -105,20 +105,20 @@
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
             v25 = [MEMORY[0x1E696AD98] numberWithInteger:v19];
-            v26 = [v40 transferGUID];
+            transferGUID2 = [mediaObject transferGUID];
             *buf = 138412546;
             v46 = v25;
             v47 = 2112;
-            v48 = v26;
+            v48 = transferGUID2;
             _os_log_impl(&dword_19020E000, v24, OS_LOG_TYPE_INFO, "Got nil preview for %@-%@, deferring result handler", buf, 0x16u);
           }
         }
 
         os_unfair_lock_lock(&self->_lock);
-        v39 = [v40 transferGUID];
-        if (v39)
+        transferGUID3 = [mediaObject transferGUID];
+        if (transferGUID3)
         {
-          v27 = [(NSMutableDictionary *)self->_lock_activeRequestIDsByTransferGUID objectForKeyedSubscript:v39];
+          v27 = [(NSMutableDictionary *)self->_lock_activeRequestIDsByTransferGUID objectForKeyedSubscript:transferGUID3];
           v28 = v27;
           if (v27)
           {
@@ -128,15 +128,15 @@
           else
           {
             v28 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndex:v19];
-            [(NSMutableDictionary *)self->_lock_activeRequestIDsByTransferGUID setObject:v28 forKeyedSubscript:v39];
+            [(NSMutableDictionary *)self->_lock_activeRequestIDsByTransferGUID setObject:v28 forKeyedSubscript:transferGUID3];
           }
         }
 
-        v29 = [v14 resultHandlerQueue];
-        v30 = v29;
-        if (v29)
+        resultHandlerQueue = [optionsCopy resultHandlerQueue];
+        v30 = resultHandlerQueue;
+        if (resultHandlerQueue)
         {
-          v31 = v29;
+          v31 = resultHandlerQueue;
         }
 
         else
@@ -151,9 +151,9 @@
         v42[2] = __96__CKMediaObjectImageProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
         v42[3] = &unk_1E72F7900;
         v43 = v31;
-        v44 = v15;
+        v44 = handlerCopy;
         v38 = v31;
-        v34 = [(CKMediaRequestDetails *)v33 initWithRequestID:v19 transferGUID:v39 resultHandler:v42];
+        v34 = [(CKMediaRequestDetails *)v33 initWithRequestID:v19 transferGUID:transferGUID3 resultHandler:v42];
         lock_requestDetailsByRequestID = self->_lock_requestDetailsByRequestID;
         v36 = [MEMORY[0x1E696AD98] numberWithInteger:v19];
         [(NSMutableDictionary *)lock_requestDetailsByRequestID setObject:v34 forKeyedSubscript:v36];
@@ -176,11 +176,11 @@
       }
     }
 
-    v16 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"PXDisplayAsset %@ is not a CKMediaObjectBackedAsset", v13}];
+    v16 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"PXDisplayAsset %@ is not a CKMediaObjectBackedAsset", assetCopy}];
     v49 = *MEMORY[0x1E6978DF0];
     v50[0] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:&v49 count:1];
-    (v15)[2](v15, 0, v17);
+    (handlerCopy)[2](handlerCopy, 0, v17);
     v19 = 0;
   }
 
@@ -205,12 +205,12 @@ void __96__CKMediaObjectImageProvider_requestImageForAsset_targetSize_contentMod
   dispatch_async(v7, block);
 }
 
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -225,32 +225,32 @@ void __96__CKMediaObjectImageProvider_requestImageForAsset_targetSize_contentMod
       }
     }
 
-    v10 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"PXDisplayAsset %@ is not a CKMediaObjectBackedAsset", v7}];
+    v10 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"PXDisplayAsset %@ is not a CKMediaObjectBackedAsset", videoCopy}];
     v29 = *MEMORY[0x1E6978DF0];
     v30 = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    v9[2](v9, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
 LABEL_9:
     v13 = 0;
     goto LABEL_10;
   }
 
-  v10 = v7;
+  v10 = videoCopy;
   v11 = _PhotoKitAssetForMediaObjectAsset(v10);
   if (!v11)
   {
-    v16 = [v10 mediaObject];
+    mediaObject = [v10 mediaObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v16 asset];
-      v18 = [MEMORY[0x1E69880B0] playerItemWithAsset:v17];
+      asset = [mediaObject asset];
+      v18 = [MEMORY[0x1E69880B0] playerItemWithAsset:asset];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __78__CKMediaObjectImageProvider_requestPlayerItemForVideo_options_resultHandler___block_invoke;
       block[3] = &unk_1E72EE5D8;
       v25 = v18;
-      v26 = v9;
+      v26 = handlerCopy;
       v19 = v18;
       dispatch_async(MEMORY[0x1E69E96A0], block);
       add = atomic_fetch_add(_makeNextRequestID_lastRequestID, 1u);
@@ -270,85 +270,85 @@ LABEL_9:
       }
     }
 
-    v22 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"CKMediaObject %@ is not a CKMovieMediaObject", v16}];
+    v22 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"CKMediaObject %@ is not a CKMovieMediaObject", mediaObject}];
     v27 = *MEMORY[0x1E6978DF0];
     v28 = v22;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-    v9[2](v9, 0, v23);
+    handlerCopy[2](handlerCopy, 0, v23);
 
     goto LABEL_9;
   }
 
   v12 = _PhotoKitMediaProvider();
-  v13 = [v12 requestPlayerItemForVideo:v11 options:v8 resultHandler:v9];
+  v13 = [v12 requestPlayerItemForVideo:v11 options:optionsCopy resultHandler:handlerCopy];
 
 LABEL_10:
   return v13;
 }
 
-- (void)cancelImageRequest:(int64_t)a3
+- (void)cancelImageRequest:(int64_t)request
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(CKMediaObjectImageProvider *)self _lock_cancelImageRequest:a3];
+  v5 = [(CKMediaObjectImageProvider *)self _lock_cancelImageRequest:request];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
     v6 = _PhotoKitMediaProvider();
-    [v6 cancelImageRequest:a3];
+    [v6 cancelImageRequest:request];
   }
 }
 
-- (id)_imagePreviewForMediaObject:(id)a3 isSynchronous:(BOOL)a4 requestID:(int64_t)a5
+- (id)_imagePreviewForMediaObject:(id)object isSynchronous:(BOOL)synchronous requestID:(int64_t)d
 {
-  v6 = a4;
-  v8 = a3;
+  synchronousCopy = synchronous;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(CKMediaObjectImageProvider *)self _lock_imagePreviewForMediaObject:v8 isSynchronous:v6 requestID:a5];
+  v9 = [(CKMediaObjectImageProvider *)self _lock_imagePreviewForMediaObject:objectCopy isSynchronous:synchronousCopy requestID:d];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v9;
 }
 
-- (id)_lock_imagePreviewForMediaObject:(id)a3 isSynchronous:(BOOL)a4 requestID:(int64_t)a5
+- (id)_lock_imagePreviewForMediaObject:(id)object isSynchronous:(BOOL)synchronous requestID:(int64_t)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  objectCopy = object;
   os_unfair_lock_assert_owner(&self->_lock);
-  v9 = [(CKMediaObjectImageProvider *)self testImage];
+  testImage = [(CKMediaObjectImageProvider *)self testImage];
 
-  if (v9)
+  if (testImage)
   {
-    v10 = [(CKMediaObjectImageProvider *)self testImage];
+    testImage2 = [(CKMediaObjectImageProvider *)self testImage];
     [(CKMediaObjectImageProvider *)self setTestImage:0];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-    v12 = [v8 transfer];
-    if ([v12 isFromMomentShare] && objc_msgSend(v12, "transferState") <= 3)
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:d];
+    transfer = [objectCopy transfer];
+    if ([transfer isFromMomentShare] && objc_msgSend(transfer, "transferState") <= 3)
     {
-      if (!a4)
+      if (!synchronous)
       {
-        [(NSMutableDictionary *)self->_lock_mediaObjectsPendingTransferFinalizationByRequestID setObject:v8 forKeyedSubscript:v11];
+        [(NSMutableDictionary *)self->_lock_mediaObjectsPendingTransferFinalizationByRequestID setObject:objectCopy forKeyedSubscript:v11];
         if (IMOSLoggingEnabled())
         {
           v13 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
-            v14 = [v8 transfer];
-            v15 = [v14 guid];
+            transfer2 = [objectCopy transfer];
+            guid = [transfer2 guid];
             v19 = 138412546;
-            v20 = v15;
+            v20 = guid;
             v21 = 2048;
-            v22 = [v12 transferState];
+            transferState = [transfer transferState];
             _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Transfer %@ is < finished %ld deferring preview generation", &v19, 0x16u);
           }
         }
       }
 
-      v10 = 0;
+      testImage2 = 0;
     }
 
     else
@@ -356,45 +356,45 @@ LABEL_10:
       [(NSMutableDictionary *)self->_lock_mediaObjectsPendingTransferFinalizationByRequestID setObject:0 forKeyedSubscript:v11];
       v16 = +[CKUIBehavior sharedBehaviors];
       [v16 previewMaxWidth];
-      v17 = [v8 previewForWidth:0 orientation:?];
+      v17 = [objectCopy previewForWidth:0 orientation:?];
 
       if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v10 = v17;
+        testImage2 = v17;
       }
 
       else
       {
-        v10 = 0;
+        testImage2 = 0;
       }
     }
   }
 
-  return v10;
+  return testImage2;
 }
 
-- (BOOL)_lock_cancelImageRequest:(int64_t)a3
+- (BOOL)_lock_cancelImageRequest:(int64_t)request
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:request];
   v6 = [(NSMutableDictionary *)self->_lock_requestDetailsByRequestID objectForKeyedSubscript:v5];
   if (v6)
   {
     [(NSMutableDictionary *)self->_lock_requestDetailsByRequestID setObject:0 forKeyedSubscript:v5];
-    v7 = [v6 transferGUID];
+    transferGUID = [v6 transferGUID];
 
-    if (v7)
+    if (transferGUID)
     {
       lock_activeRequestIDsByTransferGUID = self->_lock_activeRequestIDsByTransferGUID;
-      v9 = [v6 transferGUID];
-      v10 = [(NSMutableDictionary *)lock_activeRequestIDsByTransferGUID objectForKeyedSubscript:v9];
+      transferGUID2 = [v6 transferGUID];
+      v10 = [(NSMutableDictionary *)lock_activeRequestIDsByTransferGUID objectForKeyedSubscript:transferGUID2];
 
-      [v10 removeIndex:a3];
+      [v10 removeIndex:request];
       if (v10 && ![v10 count])
       {
         v11 = self->_lock_activeRequestIDsByTransferGUID;
-        v12 = [v6 transferGUID];
-        [(NSMutableDictionary *)v11 setObject:0 forKeyedSubscript:v12];
+        transferGUID3 = [v6 transferGUID];
+        [(NSMutableDictionary *)v11 setObject:0 forKeyedSubscript:transferGUID3];
       }
     }
   }
@@ -404,23 +404,23 @@ LABEL_10:
   return v6 != 0;
 }
 
-- (void)_handlePreviewDidChangeNotification:(id)a3
+- (void)_handlePreviewDidChangeNotification:(id)notification
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [v4 object];
-  v8 = v7;
+  object2 = [notificationCopy object];
+  v8 = object2;
   if (isKindOfClass)
   {
-    v9 = [(__CFString *)v7 transferGUID];
-    if (v9)
+    transferGUID = [(__CFString *)object2 transferGUID];
+    if (transferGUID)
     {
       os_unfair_lock_lock(&self->_lock);
-      v10 = [(NSMutableDictionary *)self->_lock_activeRequestIDsByTransferGUID objectForKeyedSubscript:v9];
+      v10 = [(NSMutableDictionary *)self->_lock_activeRequestIDsByTransferGUID objectForKeyedSubscript:transferGUID];
       v11 = [v10 copy];
 
       v16[0] = MEMORY[0x1E69E9820];
@@ -513,16 +513,16 @@ void __66__CKMediaObjectImageProvider__handlePreviewDidChangeNotification___bloc
   }
 }
 
-- (void)_handleFileTransferDidChangeNotification:(id)a3
+- (void)_handleFileTransferDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__CKMediaObjectImageProvider__handleFileTransferDidChangeNotification___block_invoke;
   v6[3] = &unk_1E72EB8D0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

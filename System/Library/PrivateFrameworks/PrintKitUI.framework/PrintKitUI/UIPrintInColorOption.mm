@@ -1,39 +1,39 @@
 @interface UIPrintInColorOption
 - (BOOL)printInColor;
 - (BOOL)shouldShow;
-- (UIPrintInColorOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintInColorOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (id)createPrintOptionTableViewCell;
 - (id)summary;
-- (void)changePrintInColor:(id)a3;
+- (void)changePrintInColor:(id)color;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setPrintInColor:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setPrintInColor:(BOOL)color;
 - (void)updateFromPrintInfo;
 @end
 
 @implementation UIPrintInColorOption
 
-- (UIPrintInColorOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintInColorOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v12.receiver = self;
   v12.super_class = UIPrintInColorOption;
-  v4 = [(UIPrintOption *)&v12 initWithPrintInfo:a3 printPanelViewController:a4];
+  v4 = [(UIPrintOption *)&v12 initWithPrintInfo:info printPanelViewController:controller];
   if (v4)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"Print in Color" value:@"Print in Color" table:@"Localizable"];
     [(UIPrintOption *)v4 setTitle:v6];
 
-    v7 = [(UIPrintOption *)v4 printPanelViewController];
-    v8 = [v7 printInteractionController];
-    -[UIPrintInColorOption setCanShowColor:](v4, "setCanShowColor:", [v8 _canShowColor]);
+    printPanelViewController = [(UIPrintOption *)v4 printPanelViewController];
+    printInteractionController = [printPanelViewController printInteractionController];
+    -[UIPrintInColorOption setCanShowColor:](v4, "setCanShowColor:", [printInteractionController _canShowColor]);
 
     [(UIPrintInColorOption *)v4 setSavedOutputType:-1];
-    v9 = [(UIPrintOption *)v4 printInfo];
-    [v9 addObserver:v4 forKeyPath:0x2871AF0B0 options:0 context:0];
+    printInfo = [(UIPrintOption *)v4 printInfo];
+    [printInfo addObserver:v4 forKeyPath:0x2871AF0B0 options:0 context:0];
 
-    v10 = [(UIPrintOption *)v4 printInfo];
-    [v10 addObserver:v4 forKeyPath:0x2871AF150 options:0 context:0];
+    printInfo2 = [(UIPrintOption *)v4 printInfo];
+    [printInfo2 addObserver:v4 forKeyPath:0x2871AF150 options:0 context:0];
   }
 
   return v4;
@@ -41,11 +41,11 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF0B0];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF0B0];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 removeObserver:self forKeyPath:0x2871AF150];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  [printInfo2 removeObserver:self forKeyPath:0x2871AF150];
 
   v5.receiver = self;
   v5.super_class = UIPrintInColorOption;
@@ -54,62 +54,62 @@
 
 - (BOOL)shouldShow
 {
-  v2 = [(UIPrintOption *)self printInfo];
-  v3 = [v2 currentPrinter];
-  v4 = [v3 supportsColor];
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  supportsColor = [currentPrinter supportsColor];
 
-  return v4;
+  return supportsColor;
 }
 
 - (id)createPrintOptionTableViewCell
 {
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"UIPrintOptionCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v5 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"UIPrintOptionCell"];
 
-  v6 = [MEMORY[0x277D756E0] valueCellConfiguration];
-  v7 = [(UIPrintOption *)self title];
-  [v6 setText:v7];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+  title = [(UIPrintOption *)self title];
+  [valueCellConfiguration setText:title];
 
-  [v6 setSecondaryText:0];
-  [v5 setContentConfiguration:v6];
+  [valueCellConfiguration setSecondaryText:0];
+  [v5 setContentConfiguration:valueCellConfiguration];
   [v5 setSelectionStyle:0];
   v8 = objc_alloc(MEMORY[0x277D75AE8]);
   v9 = [v8 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(UIPrintInColorOption *)self setPrintInColorSwitch:v9];
 
-  v10 = [(UIPrintOption *)self printPanelViewController];
-  v11 = [v10 controlTintColor];
-  v12 = [(UIPrintInColorOption *)self printInColorSwitch];
-  [v12 setOnTintColor:v11];
+  printPanelViewController2 = [(UIPrintOption *)self printPanelViewController];
+  controlTintColor = [printPanelViewController2 controlTintColor];
+  printInColorSwitch = [(UIPrintInColorOption *)self printInColorSwitch];
+  [printInColorSwitch setOnTintColor:controlTintColor];
 
-  v13 = [(UIPrintInColorOption *)self printInColor];
-  v14 = [(UIPrintInColorOption *)self printInColorSwitch];
-  [v14 setOn:v13];
+  printInColor = [(UIPrintInColorOption *)self printInColor];
+  printInColorSwitch2 = [(UIPrintInColorOption *)self printInColorSwitch];
+  [printInColorSwitch2 setOn:printInColor];
 
-  v15 = [(UIPrintInColorOption *)self printInColorSwitch];
-  [v15 addTarget:self action:sel_changePrintInColor_ forControlEvents:4096];
+  printInColorSwitch3 = [(UIPrintInColorOption *)self printInColorSwitch];
+  [printInColorSwitch3 addTarget:self action:sel_changePrintInColor_ forControlEvents:4096];
 
-  v16 = [(UIPrintInColorOption *)self printInColorSwitch];
-  [v5 setAccessoryView:v16];
+  printInColorSwitch4 = [(UIPrintInColorOption *)self printInColorSwitch];
+  [v5 setAccessoryView:printInColorSwitch4];
 
   [(UIPrintOption *)self setTableViewCell:v5];
 
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (![a3 isEqualToString:{0x2871AF150, a4, a5, a6}])
+  if (![path isEqualToString:{0x2871AF150, object, change, context}])
   {
     goto LABEL_12;
   }
 
   if ([(UIPrintInColorOption *)self canShowColor])
   {
-    v7 = [(UIPrintOption *)self printInfo];
-    v8 = [v7 currentPrinter];
-    -[UIPrintOption setShouldShow:](self, "setShouldShow:", [v8 supportsColor]);
+    printInfo = [(UIPrintOption *)self printInfo];
+    currentPrinter = [printInfo currentPrinter];
+    -[UIPrintOption setShouldShow:](self, "setShouldShow:", [currentPrinter supportsColor]);
   }
 
   else
@@ -117,24 +117,24 @@
     [(UIPrintOption *)self setShouldShow:0];
   }
 
-  v9 = [(UIPrintOption *)self printInfo];
-  v10 = [v9 currentPrinter];
-  if (v10)
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  currentPrinter2 = [printInfo2 currentPrinter];
+  if (currentPrinter2)
   {
-    v11 = v10;
-    v12 = [(UIPrintOption *)self printInfo];
-    v13 = [v12 currentPrinter];
-    v14 = [v13 supportsColor];
+    v11 = currentPrinter2;
+    printInfo3 = [(UIPrintOption *)self printInfo];
+    currentPrinter3 = [printInfo3 currentPrinter];
+    supportsColor = [currentPrinter3 supportsColor];
 
-    if (!v14)
+    if (!supportsColor)
     {
       if ([(UIPrintInColorOption *)self savedOutputType]== -1)
       {
-        v15 = [(UIPrintOption *)self printInfo];
-        -[UIPrintInColorOption setSavedOutputType:](self, "setSavedOutputType:", [v15 outputType]);
+        printInfo4 = [(UIPrintOption *)self printInfo];
+        -[UIPrintInColorOption setSavedOutputType:](self, "setSavedOutputType:", [printInfo4 outputType]);
 
-        v16 = [(UIPrintOption *)self printInfo];
-        [v16 setOutputType:2];
+        printInfo5 = [(UIPrintOption *)self printInfo];
+        [printInfo5 setOutputType:2];
       }
 
       goto LABEL_12;
@@ -147,9 +147,9 @@
 
   if ([(UIPrintInColorOption *)self savedOutputType]!= -1)
   {
-    v17 = [(UIPrintInColorOption *)self savedOutputType];
-    v18 = [(UIPrintOption *)self printInfo];
-    [v18 setOutputType:v17];
+    savedOutputType = [(UIPrintInColorOption *)self savedOutputType];
+    printInfo6 = [(UIPrintOption *)self printInfo];
+    [printInfo6 setOutputType:savedOutputType];
 
     [(UIPrintInColorOption *)self setSavedOutputType:-1];
   }
@@ -165,13 +165,13 @@ LABEL_12:
 
 - (BOOL)printInColor
 {
-  v5 = [(UIPrintOption *)self printInfo];
-  v6 = [v5 currentPrinter];
-  if (v6)
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  if (currentPrinter)
   {
-    v2 = [(UIPrintOption *)self printInfo];
-    v3 = [v2 currentPrinter];
-    if (![v3 supportsColor])
+    printInfo2 = [(UIPrintOption *)self printInfo];
+    currentPrinter2 = [printInfo2 currentPrinter];
+    if (![currentPrinter2 supportsColor])
     {
       v7 = 0;
 LABEL_8:
@@ -180,19 +180,19 @@ LABEL_8:
     }
   }
 
-  v8 = [(UIPrintOption *)self printInfo];
-  if ([v8 outputType] == 1)
+  printInfo3 = [(UIPrintOption *)self printInfo];
+  if ([printInfo3 outputType] == 1)
   {
     v7 = 1;
   }
 
   else
   {
-    v9 = [(UIPrintOption *)self printInfo];
-    v7 = [v9 outputType] == 0;
+    printInfo4 = [(UIPrintOption *)self printInfo];
+    v7 = [printInfo4 outputType] == 0;
   }
 
-  if (v6)
+  if (currentPrinter)
   {
     goto LABEL_8;
   }
@@ -202,42 +202,42 @@ LABEL_9:
   return v7;
 }
 
-- (void)setPrintInColor:(BOOL)a3
+- (void)setPrintInColor:(BOOL)color
 {
-  v3 = a3;
-  v5 = [(UIPrintOption *)self printInfo];
-  v6 = [v5 outputType];
+  colorCopy = color;
+  printInfo = [(UIPrintOption *)self printInfo];
+  outputType = [printInfo outputType];
 
-  v7 = [(UIPrintOption *)self printInfo];
-  v12 = v7;
-  if (v6 != 1 || v3)
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  v12 = printInfo2;
+  if (outputType != 1 || colorCopy)
   {
-    v9 = [v7 outputType];
+    outputType2 = [printInfo2 outputType];
 
-    v7 = [(UIPrintOption *)self printInfo];
-    v12 = v7;
-    if (v9 == 3 && v3)
+    printInfo2 = [(UIPrintOption *)self printInfo];
+    v12 = printInfo2;
+    if (outputType2 == 3 && colorCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [v7 outputType];
+      outputType3 = [printInfo2 outputType];
 
-      v7 = [(UIPrintOption *)self printInfo];
-      v12 = v7;
-      if (v10 || v3)
+      printInfo2 = [(UIPrintOption *)self printInfo];
+      v12 = printInfo2;
+      if (outputType3 || colorCopy)
       {
-        v11 = [v7 outputType];
+        outputType4 = [printInfo2 outputType];
 
-        if (v11 != 2 || !v3)
+        if (outputType4 != 2 || !colorCopy)
         {
           return;
         }
 
-        v7 = [(UIPrintOption *)self printInfo];
-        v12 = v7;
+        printInfo2 = [(UIPrintOption *)self printInfo];
+        v12 = printInfo2;
         v8 = 0;
       }
 
@@ -253,29 +253,29 @@ LABEL_9:
     v8 = 3;
   }
 
-  [v7 setOutputType:v8];
+  [printInfo2 setOutputType:v8];
 }
 
-- (void)changePrintInColor:(id)a3
+- (void)changePrintInColor:(id)color
 {
-  v4 = [a3 isOn];
+  isOn = [color isOn];
 
-  [(UIPrintInColorOption *)self setPrintInColor:v4];
+  [(UIPrintInColorOption *)self setPrintInColor:isOn];
 }
 
 - (void)updateFromPrintInfo
 {
-  v3 = [(UIPrintInColorOption *)self printInColor];
-  v4 = [(UIPrintInColorOption *)self printInColorSwitch];
-  [v4 setOn:v3];
+  printInColor = [(UIPrintInColorOption *)self printInColor];
+  printInColorSwitch = [(UIPrintInColorOption *)self printInColorSwitch];
+  [printInColorSwitch setOn:printInColor];
 }
 
 - (id)summary
 {
-  v2 = [(UIPrintInColorOption *)self printInColor];
+  printInColor = [(UIPrintInColorOption *)self printInColor];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (printInColor)
   {
     v5 = @"Color";
   }

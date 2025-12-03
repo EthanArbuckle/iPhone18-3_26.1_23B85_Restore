@@ -1,7 +1,7 @@
 @interface TDMTestServer
-- (BOOL)validateOutput:(id)a3 TID:(id)a4;
+- (BOOL)validateOutput:(id)output TID:(id)d;
 - (TDMTestServer)init;
-- (id)evaluate:(id)a3 error:(id *)a4;
+- (id)evaluate:(id)evaluate error:(id *)error;
 @end
 
 @implementation TDMTestServer
@@ -21,15 +21,15 @@
   return v2;
 }
 
-- (id)evaluate:(id)a3 error:(id *)a4
+- (id)evaluate:(id)evaluate error:(id *)error
 {
-  v4 = [(TDMServer *)self->_tdmServer evaluateWithBlindedElement:a3 error:a4];
+  v4 = [(TDMServer *)self->_tdmServer evaluateWithBlindedElement:evaluate error:error];
   if (v4)
   {
     v5 = [TDMEvaluation alloc];
-    v6 = [v4 evaluatedElement];
-    v7 = [v4 proof];
-    v8 = [(TDMEvaluation *)v5 initWithEvaluatedElement:v6 proof:v7];
+    evaluatedElement = [v4 evaluatedElement];
+    proof = [v4 proof];
+    v8 = [(TDMEvaluation *)v5 initWithEvaluatedElement:evaluatedElement proof:proof];
   }
 
   else
@@ -40,13 +40,13 @@
   return v8;
 }
 
-- (BOOL)validateOutput:(id)a3 TID:(id)a4
+- (BOOL)validateOutput:(id)output TID:(id)d
 {
   tdmServer = self->_tdmServer;
-  v7 = a4;
-  v8 = a3;
+  dCopy = d;
+  outputCopy = output;
   v9 = [(TDMTestServer *)self FSR];
-  LOBYTE(tdmServer) = [(TDMServer *)tdmServer verifyTokenWithOutput:v8 TID:v7 FSR:v9];
+  LOBYTE(tdmServer) = [(TDMServer *)tdmServer verifyTokenWithOutput:outputCopy TID:dCopy FSR:v9];
 
   return tdmServer;
 }

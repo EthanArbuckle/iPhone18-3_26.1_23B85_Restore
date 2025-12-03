@@ -1,16 +1,16 @@
 @interface PUSidebarDataSectionEnablementController
-- (BOOL)_fromMyMacEnabledSetupObservation:(BOOL)a3;
+- (BOOL)_fromMyMacEnabledSetupObservation:(BOOL)observation;
 - (PHPhotoLibrary)photoLibrary;
-- (PUSidebarDataSectionEnablementController)initWithPhotoLibrary:(id)a3 andOptions:(unint64_t)a4;
-- (void)_accountStoreDidChange:(id)a3;
-- (void)_configureEnablementOfSectionManager:(id)a3 enablementItem:(int64_t)a4 setupObservation:(BOOL)a5;
-- (void)_observeAccountsStoreForManager:(id)a3 enablementItem:(int64_t)a4;
-- (void)_observeDefaultsForManager:(id)a3 enablementItem:(int64_t)a4;
-- (void)_observeMacSyncedAvailabilityForManager:(id)a3 enablementItem:(int64_t)a4;
-- (void)_observeWallpaperAvailabilityForManager:(id)a3 enablementItem:(int64_t)a4;
-- (void)_wallpaperAvailabilityDidChange:(id)a3;
+- (PUSidebarDataSectionEnablementController)initWithPhotoLibrary:(id)library andOptions:(unint64_t)options;
+- (void)_accountStoreDidChange:(id)change;
+- (void)_configureEnablementOfSectionManager:(id)manager enablementItem:(int64_t)item setupObservation:(BOOL)observation;
+- (void)_observeAccountsStoreForManager:(id)manager enablementItem:(int64_t)item;
+- (void)_observeDefaultsForManager:(id)manager enablementItem:(int64_t)item;
+- (void)_observeMacSyncedAvailabilityForManager:(id)manager enablementItem:(int64_t)item;
+- (void)_observeWallpaperAvailabilityForManager:(id)manager enablementItem:(int64_t)item;
+- (void)_wallpaperAvailabilityDidChange:(id)change;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)preferencesDidChange;
 @end
 
@@ -23,20 +23,20 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PXMacSyncedAssetsStatusProviderObservationContext == a5)
+  if ((change & 1) != 0 && PXMacSyncedAssetsStatusProviderObservationContext == context)
   {
     v10[9] = v5;
     v10[10] = v6;
-    v8 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForMacSyncedEnablementChange];
-    v9 = [v8 dictionaryRepresentation];
+    sectionManagersByItemTypeForMacSyncedEnablementChange = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForMacSyncedEnablementChange];
+    dictionaryRepresentation = [sectionManagersByItemTypeForMacSyncedEnablementChange dictionaryRepresentation];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __73__PUSidebarDataSectionEnablementController_observable_didChange_context___block_invoke;
     v10[3] = &unk_1E7B76D40;
     v10[4] = self;
-    [v9 enumerateKeysAndObjectsUsingBlock:v10];
+    [dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:v10];
   }
 }
 
@@ -49,14 +49,14 @@ void __73__PUSidebarDataSectionEnablementController_observable_didChange_context
 
 - (void)preferencesDidChange
 {
-  v3 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForDefaultsChange];
-  v4 = [v3 dictionaryRepresentation];
+  sectionManagersByItemTypeForDefaultsChange = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForDefaultsChange];
+  dictionaryRepresentation = [sectionManagersByItemTypeForDefaultsChange dictionaryRepresentation];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__PUSidebarDataSectionEnablementController_preferencesDidChange__block_invoke;
   v5[3] = &unk_1E7B76D40;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __64__PUSidebarDataSectionEnablementController_preferencesDidChange__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -66,16 +66,16 @@ void __64__PUSidebarDataSectionEnablementController_preferencesDidChange__block_
   [v4 _configureEnablementOfSectionManager:v5 enablementItem:objc_msgSend(a2 setupObservation:{"integerValue"), 0}];
 }
 
-- (void)_wallpaperAvailabilityDidChange:(id)a3
+- (void)_wallpaperAvailabilityDidChange:(id)change
 {
-  v4 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForWallpaperEnablementChange];
-  v5 = [v4 dictionaryRepresentation];
+  sectionManagersByItemTypeForWallpaperEnablementChange = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForWallpaperEnablementChange];
+  dictionaryRepresentation = [sectionManagersByItemTypeForWallpaperEnablementChange dictionaryRepresentation];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__PUSidebarDataSectionEnablementController__wallpaperAvailabilityDidChange___block_invoke;
   v6[3] = &unk_1E7B76D40;
   v6[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v6];
+  [dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:v6];
 }
 
 void __76__PUSidebarDataSectionEnablementController__wallpaperAvailabilityDidChange___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -85,16 +85,16 @@ void __76__PUSidebarDataSectionEnablementController__wallpaperAvailabilityDidCha
   [v4 _configureEnablementOfSectionManager:v5 enablementItem:objc_msgSend(a2 setupObservation:{"integerValue"), 0}];
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
-  v4 = [(PUSidebarDataSectionEnablementController *)self sectionManagerByItemTypeForAccountStoreChange];
-  v5 = [v4 dictionaryRepresentation];
+  sectionManagerByItemTypeForAccountStoreChange = [(PUSidebarDataSectionEnablementController *)self sectionManagerByItemTypeForAccountStoreChange];
+  dictionaryRepresentation = [sectionManagerByItemTypeForAccountStoreChange dictionaryRepresentation];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__PUSidebarDataSectionEnablementController__accountStoreDidChange___block_invoke;
   v6[3] = &unk_1E7B76D40;
   v6[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v6];
+  [dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:v6];
 }
 
 void __67__PUSidebarDataSectionEnablementController__accountStoreDidChange___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -104,48 +104,48 @@ void __67__PUSidebarDataSectionEnablementController__accountStoreDidChange___blo
   [v4 _configureEnablementOfSectionManager:v5 enablementItem:objc_msgSend(a2 setupObservation:{"integerValue"), 0}];
 }
 
-- (void)_observeMacSyncedAvailabilityForManager:(id)a3 enablementItem:(int64_t)a4
+- (void)_observeMacSyncedAvailabilityForManager:(id)manager enablementItem:(int64_t)item
 {
-  v6 = a3;
-  v7 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForMacSyncedEnablementChange];
-  v8 = [v7 count];
+  managerCopy = manager;
+  sectionManagersByItemTypeForMacSyncedEnablementChange = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForMacSyncedEnablementChange];
+  v8 = [sectionManagersByItemTypeForMacSyncedEnablementChange count];
 
   if (!v8)
   {
-    v9 = [(PUSidebarDataSectionEnablementController *)self photoLibrary];
-    v10 = [v9 px_macSyncedAssetsStatusProvider];
+    photoLibrary = [(PUSidebarDataSectionEnablementController *)self photoLibrary];
+    px_macSyncedAssetsStatusProvider = [photoLibrary px_macSyncedAssetsStatusProvider];
 
-    [v10 registerChangeObserver:self context:PXMacSyncedAssetsStatusProviderObservationContext];
+    [px_macSyncedAssetsStatusProvider registerChangeObserver:self context:PXMacSyncedAssetsStatusProviderObservationContext];
   }
 
-  v12 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForMacSyncedEnablementChange];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v12 setObject:v6 forKey:v11];
+  sectionManagersByItemTypeForMacSyncedEnablementChange2 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForMacSyncedEnablementChange];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:item];
+  [sectionManagersByItemTypeForMacSyncedEnablementChange2 setObject:managerCopy forKey:v11];
 }
 
-- (void)_observeWallpaperAvailabilityForManager:(id)a3 enablementItem:(int64_t)a4
+- (void)_observeWallpaperAvailabilityForManager:(id)manager enablementItem:(int64_t)item
 {
-  v6 = a3;
-  v7 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForWallpaperEnablementChange];
-  v8 = [v7 count];
+  managerCopy = manager;
+  sectionManagersByItemTypeForWallpaperEnablementChange = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForWallpaperEnablementChange];
+  v8 = [sectionManagersByItemTypeForWallpaperEnablementChange count];
 
   if (!v8)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:self selector:sel__wallpaperAvailabilityDidChange_ name:@"LemonadeWallpaperData.isFeatureAvailableChanged" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__wallpaperAvailabilityDidChange_ name:@"LemonadeWallpaperData.isFeatureAvailableChanged" object:0];
   }
 
-  v11 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForWallpaperEnablementChange];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v11 setObject:v6 forKey:v10];
+  sectionManagersByItemTypeForWallpaperEnablementChange2 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForWallpaperEnablementChange];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:item];
+  [sectionManagersByItemTypeForWallpaperEnablementChange2 setObject:managerCopy forKey:v10];
 }
 
-- (void)_observeDefaultsForManager:(id)a3 enablementItem:(int64_t)a4
+- (void)_observeDefaultsForManager:(id)manager enablementItem:(int64_t)item
 {
-  v6 = a3;
-  v7 = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForDefaultsChange];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v7 setObject:v6 forKey:v8];
+  managerCopy = manager;
+  sectionManagersByItemTypeForDefaultsChange = [(PUSidebarDataSectionEnablementController *)self sectionManagersByItemTypeForDefaultsChange];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:item];
+  [sectionManagersByItemTypeForDefaultsChange setObject:managerCopy forKey:v8];
 
   if (![(PUSidebarDataSectionEnablementController *)self registeredAsPrefObserver])
   {
@@ -155,43 +155,43 @@ void __67__PUSidebarDataSectionEnablementController__accountStoreDidChange___blo
   }
 }
 
-- (void)_observeAccountsStoreForManager:(id)a3 enablementItem:(int64_t)a4
+- (void)_observeAccountsStoreForManager:(id)manager enablementItem:(int64_t)item
 {
-  v6 = a3;
-  v11 = [(PUSidebarDataSectionEnablementController *)self sectionManagerByItemTypeForAccountStoreChange];
-  if (![v11 count])
+  managerCopy = manager;
+  sectionManagerByItemTypeForAccountStoreChange = [(PUSidebarDataSectionEnablementController *)self sectionManagerByItemTypeForAccountStoreChange];
+  if (![sectionManagerByItemTypeForAccountStoreChange count])
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v8 = *MEMORY[0x1E69BE8E8];
-    v9 = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
-    [v7 addObserver:self selector:sel__accountStoreDidChange_ name:v8 object:v9];
+    pl_sharedAccountStore = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
+    [defaultCenter addObserver:self selector:sel__accountStoreDidChange_ name:v8 object:pl_sharedAccountStore];
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v11 setObject:v6 forKey:v10];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:item];
+  [sectionManagerByItemTypeForAccountStoreChange setObject:managerCopy forKey:v10];
 }
 
-- (BOOL)_fromMyMacEnabledSetupObservation:(BOOL)a3
+- (BOOL)_fromMyMacEnabledSetupObservation:(BOOL)observation
 {
-  v3 = a3;
-  v5 = [(PUSidebarDataSectionEnablementController *)self photoLibrary];
-  v6 = [v5 px_macSyncedAssetsStatusProvider];
+  observationCopy = observation;
+  photoLibrary = [(PUSidebarDataSectionEnablementController *)self photoLibrary];
+  px_macSyncedAssetsStatusProvider = [photoLibrary px_macSyncedAssetsStatusProvider];
 
-  v7 = [v6 hasAnyAssets];
-  if (v3)
+  hasAnyAssets = [px_macSyncedAssetsStatusProvider hasAnyAssets];
+  if (observationCopy)
   {
-    [v6 registerChangeObserver:self context:PXMacSyncedAssetsStatusProviderObservationContext];
+    [px_macSyncedAssetsStatusProvider registerChangeObserver:self context:PXMacSyncedAssetsStatusProviderObservationContext];
   }
 
-  return v7;
+  return hasAnyAssets;
 }
 
-- (void)_configureEnablementOfSectionManager:(id)a3 enablementItem:(int64_t)a4 setupObservation:(BOOL)a5
+- (void)_configureEnablementOfSectionManager:(id)manager enablementItem:(int64_t)item setupObservation:(BOOL)observation
 {
-  v5 = a5;
-  v8 = a3;
-  v22 = v8;
-  switch(a4)
+  observationCopy = observation;
+  managerCopy = manager;
+  v22 = managerCopy;
+  switch(item)
   {
     case 0:
     case 3:
@@ -202,30 +202,30 @@ void __67__PUSidebarDataSectionEnablementController__accountStoreDidChange___blo
     case 1:
       if ([(PUSidebarDataSectionEnablementController *)self isPhotosPicker])
       {
-        v8 = v22;
+        managerCopy = v22;
 LABEL_23:
         v9 = 1;
 LABEL_29:
-        v13 = [v8 setEnabled:v9];
+        isPhotosPicker3 = [managerCopy setEnabled:v9];
         goto LABEL_30;
       }
 
-      v13 = [v22 setEnabled:MEMORY[0x1B8C6D1A0]()];
+      isPhotosPicker3 = [v22 setEnabled:MEMORY[0x1B8C6D1A0]()];
       v14 = v22;
-      if (v5)
+      if (observationCopy)
       {
-        v15 = self;
+        selfCopy4 = self;
         v16 = v22;
         v17 = 1;
 LABEL_44:
-        v13 = [(PUSidebarDataSectionEnablementController *)v15 _observeDefaultsForManager:v16 enablementItem:v17];
+        isPhotosPicker3 = [(PUSidebarDataSectionEnablementController *)selfCopy4 _observeDefaultsForManager:v16 enablementItem:v17];
 LABEL_30:
         v14 = v22;
       }
 
 LABEL_31:
 
-      MEMORY[0x1EEE66BB8](v13, v14);
+      MEMORY[0x1EEE66BB8](isPhotosPicker3, v14);
       return;
     case 2:
       if ([(PUSidebarDataSectionEnablementController *)self excludesHiddenAlbum])
@@ -233,21 +233,21 @@ LABEL_31:
         goto LABEL_27;
       }
 
-      v13 = [v22 setEnabled:PXPreferencesIsHiddenAlbumVisible()];
+      isPhotosPicker3 = [v22 setEnabled:PXPreferencesIsHiddenAlbumVisible()];
       v14 = v22;
-      if (!v5)
+      if (!observationCopy)
       {
         goto LABEL_31;
       }
 
-      v15 = self;
+      selfCopy4 = self;
       v16 = v22;
       v17 = 2;
       goto LABEL_44;
     case 5:
     case 6:
-      v10 = [(PUSidebarDataSectionEnablementController *)self photoLibrary];
-      v11 = [v10 photoLibraryURL];
+      photoLibrary = [(PUSidebarDataSectionEnablementController *)self photoLibrary];
+      photoLibraryURL = [photoLibrary photoLibraryURL];
 
       if ([(PUSidebarDataSectionEnablementController *)self excludesSharedAlbum])
       {
@@ -256,37 +256,37 @@ LABEL_31:
 
       else
       {
-        v18 = [(PUSidebarDataSectionEnablementController *)self isPhotosPicker];
-        if (a4 == 5 && v18)
+        isPhotosPicker = [(PUSidebarDataSectionEnablementController *)self isPhotosPicker];
+        if (item == 5 && isPhotosPicker)
         {
           v19 = 0;
         }
 
         else
         {
-          v19 = [MEMORY[0x1E69BE6A8] sharedStreamsEnabledForPhotoLibraryURL:v11];
+          v19 = [MEMORY[0x1E69BE6A8] sharedStreamsEnabledForPhotoLibraryURL:photoLibraryURL];
         }
 
         [v22 setEnabled:v19];
-        if (v5)
+        if (observationCopy)
         {
-          [(PUSidebarDataSectionEnablementController *)self _observeAccountsStoreForManager:v22 enablementItem:a4];
+          [(PUSidebarDataSectionEnablementController *)self _observeAccountsStoreForManager:v22 enablementItem:item];
         }
       }
 
       goto LABEL_30;
     case 7:
-      v20 = [(PUSidebarDataSectionEnablementController *)self photoLibrary];
-      v21 = [v20 px_macSyncedAssetsStatusProvider];
-      [v22 setEnabled:{objc_msgSend(v21, "hasAnyAssets")}];
+      photoLibrary2 = [(PUSidebarDataSectionEnablementController *)self photoLibrary];
+      px_macSyncedAssetsStatusProvider = [photoLibrary2 px_macSyncedAssetsStatusProvider];
+      [v22 setEnabled:{objc_msgSend(px_macSyncedAssetsStatusProvider, "hasAnyAssets")}];
 
       v14 = v22;
-      if (!v5)
+      if (!observationCopy)
       {
         goto LABEL_31;
       }
 
-      v13 = [(PUSidebarDataSectionEnablementController *)self _observeMacSyncedAvailabilityForManager:v22 enablementItem:7];
+      isPhotosPicker3 = [(PUSidebarDataSectionEnablementController *)self _observeMacSyncedAvailabilityForManager:v22 enablementItem:7];
       goto LABEL_30;
     case 8:
     case 9:
@@ -298,14 +298,14 @@ LABEL_31:
         goto LABEL_27;
       }
 
-      v13 = [v22 setEnabled:{objc_msgSend(MEMORY[0x1E69C3658], "isFeatureAvailable")}];
+      isPhotosPicker3 = [v22 setEnabled:{objc_msgSend(MEMORY[0x1E69C3658], "isFeatureAvailable")}];
       v14 = v22;
-      if (!v5)
+      if (!observationCopy)
       {
         goto LABEL_31;
       }
 
-      v13 = [(PUSidebarDataSectionEnablementController *)self _observeWallpaperAvailabilityForManager:v22 enablementItem:10];
+      isPhotosPicker3 = [(PUSidebarDataSectionEnablementController *)self _observeWallpaperAvailabilityForManager:v22 enablementItem:10];
       goto LABEL_30;
     case 11:
       if ([(PUSidebarDataSectionEnablementController *)self isPhotosPicker])
@@ -313,20 +313,20 @@ LABEL_31:
         goto LABEL_27;
       }
 
-      v13 = [v22 setEnabled:MEMORY[0x1B8C6D1A0]()];
+      isPhotosPicker3 = [v22 setEnabled:MEMORY[0x1B8C6D1A0]()];
       v14 = v22;
-      if (!v5)
+      if (!observationCopy)
       {
         goto LABEL_31;
       }
 
-      v15 = self;
+      selfCopy4 = self;
       v16 = v22;
       v17 = 11;
       goto LABEL_44;
     case 13:
     case 18:
-      v12 = [(PUSidebarDataSectionEnablementController *)self isPhotosPicker];
+      isPhotosPicker2 = [(PUSidebarDataSectionEnablementController *)self isPhotosPicker];
       goto LABEL_8;
     case 14:
     case 16:
@@ -335,42 +335,42 @@ LABEL_31:
       if ([(PUSidebarDataSectionEnablementController *)self isPhotosPicker])
       {
 LABEL_27:
-        v8 = v22;
+        managerCopy = v22;
 LABEL_28:
         v9 = 0;
       }
 
       else
       {
-        v12 = MEMORY[0x1B8C6D1D0]();
+        isPhotosPicker2 = MEMORY[0x1B8C6D1D0]();
 LABEL_8:
-        v9 = v12;
+        v9 = isPhotosPicker2;
 LABEL_9:
-        v8 = v22;
+        managerCopy = v22;
       }
 
       goto LABEL_29;
     case 20:
-      v13 = [v8 setEnabled:PXPreferencesIsRecentlyViewedAndSharedAlbumVisible()];
+      isPhotosPicker3 = [managerCopy setEnabled:PXPreferencesIsRecentlyViewedAndSharedAlbumVisible()];
       v14 = v22;
-      if (!v5)
+      if (!observationCopy)
       {
         goto LABEL_31;
       }
 
-      v15 = self;
+      selfCopy4 = self;
       v16 = v22;
       v17 = 20;
       goto LABEL_44;
     default:
-      v13 = [(PUSidebarDataSectionEnablementController *)self isPhotosPicker];
+      isPhotosPicker3 = [(PUSidebarDataSectionEnablementController *)self isPhotosPicker];
       v14 = v22;
-      if (!v13)
+      if (!isPhotosPicker3)
       {
         goto LABEL_31;
       }
 
-      v8 = v22;
+      managerCopy = v22;
       goto LABEL_28;
   }
 }
@@ -387,35 +387,35 @@ LABEL_9:
   [(PUSidebarDataSectionEnablementController *)&v3 dealloc];
 }
 
-- (PUSidebarDataSectionEnablementController)initWithPhotoLibrary:(id)a3 andOptions:(unint64_t)a4
+- (PUSidebarDataSectionEnablementController)initWithPhotoLibrary:(id)library andOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  libraryCopy = library;
   v18.receiver = self;
   v18.super_class = PUSidebarDataSectionEnablementController;
   v7 = [(PUSidebarDataSectionEnablementController *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_photoLibrary, v6);
-    v8->_isPhotosPicker = (v4 & 2) != 0;
-    v8->_excludesHiddenAlbum = (v4 & 4) != 0;
-    v8->_excludesSharedAlbum = (v4 & 8) != 0;
-    v9 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    objc_storeWeak(&v7->_photoLibrary, libraryCopy);
+    v8->_isPhotosPicker = (optionsCopy & 2) != 0;
+    v8->_excludesHiddenAlbum = (optionsCopy & 4) != 0;
+    v8->_excludesSharedAlbum = (optionsCopy & 8) != 0;
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     sectionManagerByItemTypeForAccountStoreChange = v8->_sectionManagerByItemTypeForAccountStoreChange;
-    v8->_sectionManagerByItemTypeForAccountStoreChange = v9;
+    v8->_sectionManagerByItemTypeForAccountStoreChange = strongToWeakObjectsMapTable;
 
-    v11 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     sectionManagersByItemTypeForDefaultsChange = v8->_sectionManagersByItemTypeForDefaultsChange;
-    v8->_sectionManagersByItemTypeForDefaultsChange = v11;
+    v8->_sectionManagersByItemTypeForDefaultsChange = strongToWeakObjectsMapTable2;
 
-    v13 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     sectionManagersByItemTypeForWallpaperEnablementChange = v8->_sectionManagersByItemTypeForWallpaperEnablementChange;
-    v8->_sectionManagersByItemTypeForWallpaperEnablementChange = v13;
+    v8->_sectionManagersByItemTypeForWallpaperEnablementChange = strongToWeakObjectsMapTable3;
 
-    v15 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable4 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     sectionManagersByItemTypeForMacSyncedEnablementChange = v8->_sectionManagersByItemTypeForMacSyncedEnablementChange;
-    v8->_sectionManagersByItemTypeForMacSyncedEnablementChange = v15;
+    v8->_sectionManagersByItemTypeForMacSyncedEnablementChange = strongToWeakObjectsMapTable4;
   }
 
   return v8;

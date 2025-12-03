@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneUtilAttributeSource_$2
-- (OrgApacheLuceneUtilAttributeSource_$2)initWithOrgApacheLuceneUtilAttributeSource_State:(id)a3;
+- (OrgApacheLuceneUtilAttributeSource_$2)initWithOrgApacheLuceneUtilAttributeSource_State:(id)state;
 - (id)next;
 - (void)dealloc;
 @end
@@ -22,9 +22,9 @@
   return attribute;
 }
 
-- (OrgApacheLuceneUtilAttributeSource_$2)initWithOrgApacheLuceneUtilAttributeSource_State:(id)a3
+- (OrgApacheLuceneUtilAttributeSource_$2)initWithOrgApacheLuceneUtilAttributeSource_State:(id)state
 {
-  JreStrongAssign(&self->val$initState_, a3);
+  JreStrongAssign(&self->val$initState_, state);
   JreStrongAssign(&self->state_, self->val$initState_);
   return self;
 }

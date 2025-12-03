@@ -1,15 +1,15 @@
 @interface WFSlotTemplateTypingTextView
 - (CGRect)accessibilityFrame;
-- (CGRect)caretRectForPosition:(id)a3;
-- (WFSlotTemplateTypingTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (id)selectionRectsForRange:(id)a3;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (WFSlotTemplateTypingTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (id)selectionRectsForRange:(id)range;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)paste:(id)a3;
+- (void)insertText:(id)text;
+- (void)paste:(id)paste;
 - (void)wf_applyEmojiOverrideFont;
-- (void)wf_replaceRange:(_NSRange)a3 withAttributedText:(id)a4;
+- (void)wf_replaceRange:(_NSRange)range withAttributedText:(id)text;
 @end
 
 @implementation WFSlotTemplateTypingTextView
@@ -33,46 +33,46 @@
 
 - (void)wf_applyEmojiOverrideFont
 {
-  v3 = [(WFSlotTemplateTypingTextView *)self emojiOverrideFont];
-  if (v3)
+  emojiOverrideFont = [(WFSlotTemplateTypingTextView *)self emojiOverrideFont];
+  if (emojiOverrideFont)
   {
-    v6 = v3;
-    v4 = [(WFSlotTemplateTypingTextView *)self typingAttributes];
-    v5 = [v4 mutableCopy];
+    v6 = emojiOverrideFont;
+    typingAttributes = [(WFSlotTemplateTypingTextView *)self typingAttributes];
+    v5 = [typingAttributes mutableCopy];
 
     [v5 setValue:v6 forKey:*MEMORY[0x1E69DB648]];
     [(WFSlotTemplateTypingTextView *)self setTypingAttributes:v5];
 
-    v3 = v6;
+    emojiOverrideFont = v6;
   }
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = a3;
+  pasteCopy = paste;
   [(WFSlotTemplateTypingTextView *)self wf_applyEmojiOverrideFont];
-  v5 = [(WFSlotTemplateTypingTextView *)self delegate];
+  delegate = [(WFSlotTemplateTypingTextView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFSlotTemplateTypingTextView *)self delegate];
-    v8 = [(WFSlotTemplateTypingTextView *)self selectedRange];
+    delegate2 = [(WFSlotTemplateTypingTextView *)self delegate];
+    selectedRange = [(WFSlotTemplateTypingTextView *)self selectedRange];
     v10 = v9;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __38__WFSlotTemplateTypingTextView_paste___block_invoke;
     v12[3] = &unk_1E83086D8;
-    v13 = v4;
-    v14 = self;
-    [v7 slotTemplateTypingTextViewDidPaste:self pasteRange:v8 withOriginalBlock:{v10, v12}];
+    v13 = pasteCopy;
+    selfCopy = self;
+    [delegate2 slotTemplateTypingTextViewDidPaste:self pasteRange:selectedRange withOriginalBlock:{v10, v12}];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = WFSlotTemplateTypingTextView;
-    [(WFSlotTemplateTypingTextView *)&v11 paste:v4];
+    [(WFSlotTemplateTypingTextView *)&v11 paste:pasteCopy];
   }
 
   [(WFSlotTemplateTypingTextView *)self wf_applyEmojiOverrideFont];
@@ -86,29 +86,29 @@ id __38__WFSlotTemplateTypingTextView_paste___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_paste_, v1);
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateTypingTextView *)self delegate];
+  copyCopy = copy;
+  delegate = [(WFSlotTemplateTypingTextView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFSlotTemplateTypingTextView *)self delegate];
+    delegate2 = [(WFSlotTemplateTypingTextView *)self delegate];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __37__WFSlotTemplateTypingTextView_copy___block_invoke;
     v9[3] = &unk_1E83086D8;
-    v10 = v4;
-    v11 = self;
-    [v7 slotTemplateTypingTextViewDidCopy:self withOriginalBlock:v9];
+    v10 = copyCopy;
+    selfCopy = self;
+    [delegate2 slotTemplateTypingTextViewDidCopy:self withOriginalBlock:v9];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WFSlotTemplateTypingTextView;
-    [(WFSlotTemplateTypingTextView *)&v8 copy:v4];
+    [(WFSlotTemplateTypingTextView *)&v8 copy:copyCopy];
   }
 }
 
@@ -120,29 +120,29 @@ id __37__WFSlotTemplateTypingTextView_copy___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_copy_, v1);
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateTypingTextView *)self delegate];
+  cutCopy = cut;
+  delegate = [(WFSlotTemplateTypingTextView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFSlotTemplateTypingTextView *)self delegate];
+    delegate2 = [(WFSlotTemplateTypingTextView *)self delegate];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __36__WFSlotTemplateTypingTextView_cut___block_invoke;
     v9[3] = &unk_1E83086D8;
-    v10 = v4;
-    v11 = self;
-    [v7 slotTemplateTypingTextViewDidCut:self withOriginalBlock:v9];
+    v10 = cutCopy;
+    selfCopy = self;
+    [delegate2 slotTemplateTypingTextViewDidCut:self withOriginalBlock:v9];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WFSlotTemplateTypingTextView;
-    [(WFSlotTemplateTypingTextView *)&v8 cut:v4];
+    [(WFSlotTemplateTypingTextView *)&v8 cut:cutCopy];
   }
 }
 
@@ -154,55 +154,55 @@ id __36__WFSlotTemplateTypingTextView_cut___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_cut_, v1);
 }
 
-- (void)wf_replaceRange:(_NSRange)a3 withAttributedText:(id)a4
+- (void)wf_replaceRange:(_NSRange)range withAttributedText:(id)text
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a3.location + a3.length;
-  v8 = a4;
-  v9 = [(WFSlotTemplateTypingTextView *)self attributedText];
-  v10 = [v9 length];
+  length = range.length;
+  location = range.location;
+  v7 = range.location + range.length;
+  textCopy = text;
+  attributedText = [(WFSlotTemplateTypingTextView *)self attributedText];
+  v10 = [attributedText length];
 
   v11 = length;
   if (v7 > v10)
   {
-    v12 = [(WFSlotTemplateTypingTextView *)self attributedText];
-    v11 = [v12 length] - location;
+    attributedText2 = [(WFSlotTemplateTypingTextView *)self attributedText];
+    v11 = [attributedText2 length] - location;
   }
 
-  v13 = [(WFSlotTemplateTypingTextView *)self undoManager];
-  v14 = [v13 prepareWithInvocationTarget:self];
-  v15 = [v8 length];
-  v16 = [(WFSlotTemplateTypingTextView *)self attributedText];
-  v17 = [v16 attributedSubstringFromRange:{location, v11}];
+  undoManager = [(WFSlotTemplateTypingTextView *)self undoManager];
+  v14 = [undoManager prepareWithInvocationTarget:self];
+  v15 = [textCopy length];
+  attributedText3 = [(WFSlotTemplateTypingTextView *)self attributedText];
+  v17 = [attributedText3 attributedSubstringFromRange:{location, v11}];
   [v14 wf_replaceRange:location withAttributedText:{v15, v17}];
 
-  v23 = [v8 mutableCopy];
-  v18 = [(WFSlotTemplateTypingTextView *)self typingAttributes];
-  [v23 addAttributes:v18 range:{0, objc_msgSend(v8, "length")}];
+  v23 = [textCopy mutableCopy];
+  typingAttributes = [(WFSlotTemplateTypingTextView *)self typingAttributes];
+  [v23 addAttributes:typingAttributes range:{0, objc_msgSend(textCopy, "length")}];
 
-  v19 = [(WFSlotTemplateTypingTextView *)self textStorage];
-  [v19 replaceCharactersInRange:location withAttributedString:{length, v23}];
+  textStorage = [(WFSlotTemplateTypingTextView *)self textStorage];
+  [textStorage replaceCharactersInRange:location withAttributedString:{length, v23}];
 
-  v20 = [v8 length];
+  v20 = [textCopy length];
   [(WFSlotTemplateTypingTextView *)self setSelectedRange:v20 + location, 0];
-  v21 = [(WFSlotTemplateTypingTextView *)self delegate];
-  if (v21 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(WFSlotTemplateTypingTextView *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v21 textViewDidChange:self];
+    [delegate textViewDidChange:self];
   }
 
-  v22 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v22 postNotificationName:*MEMORY[0x1E69DE750] object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69DE750] object:self];
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if ([(WFSlotTemplateTypingTextView *)self clearsZeroWhenTyping])
   {
-    v5 = [(WFSlotTemplateTypingTextView *)self text];
-    v6 = [v5 isEqualToString:@"0"];
+    text = [(WFSlotTemplateTypingTextView *)self text];
+    v6 = [text isEqualToString:@"0"];
 
     if (v6)
     {
@@ -213,20 +213,20 @@ id __36__WFSlotTemplateTypingTextView_cut___block_invoke(uint64_t a1)
   [(WFSlotTemplateTypingTextView *)self wf_applyEmojiOverrideFont];
   v7.receiver = self;
   v7.super_class = WFSlotTemplateTypingTextView;
-  [(WFSlotTemplateTypingTextView *)&v7 insertText:v4];
+  [(WFSlotTemplateTypingTextView *)&v7 insertText:textCopy];
 
   [(WFSlotTemplateTypingTextView *)self wf_applyEmojiOverrideFont];
 }
 
 - (void)deleteBackward
 {
-  v3 = [(WFSlotTemplateTypingTextView *)self delegate];
+  delegate = [(WFSlotTemplateTypingTextView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFSlotTemplateTypingTextView *)self delegate];
-    [v5 slotTemplateTypingTextViewDidDelete:self];
+    delegate2 = [(WFSlotTemplateTypingTextView *)self delegate];
+    [delegate2 slotTemplateTypingTextViewDidDelete:self];
   }
 
   v6.receiver = self;
@@ -234,29 +234,29 @@ id __36__WFSlotTemplateTypingTextView_cut___block_invoke(uint64_t a1)
   [(WFSlotTemplateTypingTextView *)&v6 deleteBackward];
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
   v6.receiver = self;
   v6.super_class = WFSlotTemplateTypingTextView;
-  v3 = [(WFSlotTemplateTypingTextView *)&v6 selectionRectsForRange:a3];
+  v3 = [(WFSlotTemplateTypingTextView *)&v6 selectionRectsForRange:range];
   v4 = [v3 if_map:&__block_literal_global_1201];
 
   return v4;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   v3.receiver = self;
   v3.super_class = WFSlotTemplateTypingTextView;
-  [(WFSlotTemplateTypingTextView *)&v3 caretRectForPosition:a3];
+  [(WFSlotTemplateTypingTextView *)&v3 caretRectForPosition:position];
   return CGRectInset(v4, 0.0, 5.0);
 }
 
-- (WFSlotTemplateTypingTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (WFSlotTemplateTypingTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   v8.receiver = self;
   v8.super_class = WFSlotTemplateTypingTextView;
-  v4 = [(WFSlotTemplateTypingTextView *)&v8 initWithFrame:a4 textContainer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(WFSlotTemplateTypingTextView *)&v8 initWithFrame:container textContainer:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {

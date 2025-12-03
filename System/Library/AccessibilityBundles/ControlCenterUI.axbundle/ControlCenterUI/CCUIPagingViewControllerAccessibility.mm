@@ -1,19 +1,19 @@
 @interface CCUIPagingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)controlsGalleryViewControllerWillDismiss:(id)a3;
-- (void)controlsGalleryViewControllerWillPresent:(id)a3;
+- (void)controlsGalleryViewControllerWillDismiss:(id)dismiss;
+- (void)controlsGalleryViewControllerWillPresent:(id)present;
 @end
 
 @implementation CCUIPagingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIPagingViewController" hasInstanceMethod:@"controlsGalleryViewControllerWillPresent:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CCUIPagingViewController" hasInstanceMethod:@"controlsGalleryViewControllerWillDismiss:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CCUIPagingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CCUISControlsGalleryViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIPagingViewController" hasInstanceMethod:@"controlsGalleryViewControllerWillPresent:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CCUIPagingViewController" hasInstanceMethod:@"controlsGalleryViewControllerWillDismiss:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CCUIPagingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CCUISControlsGalleryViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -32,20 +32,20 @@
   }
 }
 
-- (void)controlsGalleryViewControllerWillPresent:(id)a3
+- (void)controlsGalleryViewControllerWillPresent:(id)present
 {
   v5.receiver = self;
   v5.super_class = CCUIPagingViewControllerAccessibility;
-  [(CCUIPagingViewControllerAccessibility *)&v5 controlsGalleryViewControllerWillPresent:a3];
+  [(CCUIPagingViewControllerAccessibility *)&v5 controlsGalleryViewControllerWillPresent:present];
   v4 = [(CCUIPagingViewControllerAccessibility *)self safeValueForKey:@"view"];
   [v4 setAccessibilityElementsHidden:1];
 }
 
-- (void)controlsGalleryViewControllerWillDismiss:(id)a3
+- (void)controlsGalleryViewControllerWillDismiss:(id)dismiss
 {
   v5.receiver = self;
   v5.super_class = CCUIPagingViewControllerAccessibility;
-  [(CCUIPagingViewControllerAccessibility *)&v5 controlsGalleryViewControllerWillDismiss:a3];
+  [(CCUIPagingViewControllerAccessibility *)&v5 controlsGalleryViewControllerWillDismiss:dismiss];
   v4 = [(CCUIPagingViewControllerAccessibility *)self safeValueForKey:@"view"];
   [v4 setAccessibilityElementsHidden:0];
 }

@@ -1,47 +1,47 @@
 @interface CellularCallCount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEndStatusCountConnectedCdma:(id)a3;
-- (void)addEndStatusCountConnectedGw:(id)a3;
-- (void)addEndStatusCountNotConnectedCdma:(id)a3;
-- (void)addEndStatusCountNotConnectedGw:(id)a3;
-- (void)addReleaseCauseCountConnected:(id)a3;
-- (void)addReleaseCauseCountConnectedGsm:(id)a3;
-- (void)addReleaseCauseCountConnectedWcdma:(id)a3;
-- (void)addReleaseCauseCountNotConnected:(id)a3;
-- (void)addReleaseCauseCountNotConnectedGsm:(id)a3;
-- (void)addReleaseCauseCountNotConnectedWcdma:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumConnectedCallsCdma:(BOOL)a3;
-- (void)setHasNumConnectedCallsGsm:(BOOL)a3;
-- (void)setHasNumConnectedCallsGw:(BOOL)a3;
-- (void)setHasNumConnectedCallsWcdma:(BOOL)a3;
-- (void)setHasNumMultiRabEndCalls:(BOOL)a3;
-- (void)setHasNumMultiRabEverCalls:(BOOL)a3;
-- (void)setHasNumNormalReleaseCallsCdma:(BOOL)a3;
-- (void)setHasNumNormalReleaseCallsGsm:(BOOL)a3;
-- (void)setHasNumNormalReleaseCallsGw:(BOOL)a3;
-- (void)setHasNumNormalReleaseCallsWcdma:(BOOL)a3;
-- (void)setHasNumTotalCallsCdma:(BOOL)a3;
-- (void)setHasNumTotalCallsGsm:(BOOL)a3;
-- (void)setHasNumTotalCallsGw:(BOOL)a3;
-- (void)setHasNumTotalCallsWcdma:(BOOL)a3;
-- (void)setHasPeriodSeconds:(BOOL)a3;
-- (void)setHasTotalConnectedSecondsCdma:(BOOL)a3;
-- (void)setHasTotalConnectedSecondsGsm:(BOOL)a3;
-- (void)setHasTotalConnectedSecondsWcdma:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEndStatusCountConnectedCdma:(id)cdma;
+- (void)addEndStatusCountConnectedGw:(id)gw;
+- (void)addEndStatusCountNotConnectedCdma:(id)cdma;
+- (void)addEndStatusCountNotConnectedGw:(id)gw;
+- (void)addReleaseCauseCountConnected:(id)connected;
+- (void)addReleaseCauseCountConnectedGsm:(id)gsm;
+- (void)addReleaseCauseCountConnectedWcdma:(id)wcdma;
+- (void)addReleaseCauseCountNotConnected:(id)connected;
+- (void)addReleaseCauseCountNotConnectedGsm:(id)gsm;
+- (void)addReleaseCauseCountNotConnectedWcdma:(id)wcdma;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumConnectedCallsCdma:(BOOL)cdma;
+- (void)setHasNumConnectedCallsGsm:(BOOL)gsm;
+- (void)setHasNumConnectedCallsGw:(BOOL)gw;
+- (void)setHasNumConnectedCallsWcdma:(BOOL)wcdma;
+- (void)setHasNumMultiRabEndCalls:(BOOL)calls;
+- (void)setHasNumMultiRabEverCalls:(BOOL)calls;
+- (void)setHasNumNormalReleaseCallsCdma:(BOOL)cdma;
+- (void)setHasNumNormalReleaseCallsGsm:(BOOL)gsm;
+- (void)setHasNumNormalReleaseCallsGw:(BOOL)gw;
+- (void)setHasNumNormalReleaseCallsWcdma:(BOOL)wcdma;
+- (void)setHasNumTotalCallsCdma:(BOOL)cdma;
+- (void)setHasNumTotalCallsGsm:(BOOL)gsm;
+- (void)setHasNumTotalCallsGw:(BOOL)gw;
+- (void)setHasNumTotalCallsWcdma:(BOOL)wcdma;
+- (void)setHasPeriodSeconds:(BOOL)seconds;
+- (void)setHasTotalConnectedSecondsCdma:(BOOL)cdma;
+- (void)setHasTotalConnectedSecondsGsm:(BOOL)gsm;
+- (void)setHasTotalConnectedSecondsWcdma:(BOOL)wcdma;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularCallCount
 
-- (void)setHasPeriodSeconds:(BOOL)a3
+- (void)setHasPeriodSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x8000;
   }
@@ -54,9 +54,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasNumTotalCallsCdma:(BOOL)a3
+- (void)setHasNumTotalCallsCdma:(BOOL)cdma
 {
-  if (a3)
+  if (cdma)
   {
     v3 = 2048;
   }
@@ -69,9 +69,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasNumConnectedCallsCdma:(BOOL)a3
+- (void)setHasNumConnectedCallsCdma:(BOOL)cdma
 {
-  if (a3)
+  if (cdma)
   {
     v3 = 2;
   }
@@ -84,9 +84,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasNumNormalReleaseCallsCdma:(BOOL)a3
+- (void)setHasNumNormalReleaseCallsCdma:(BOOL)cdma
 {
-  if (a3)
+  if (cdma)
   {
     v3 = 128;
   }
@@ -99,45 +99,45 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)addEndStatusCountConnectedCdma:(id)a3
+- (void)addEndStatusCountConnectedCdma:(id)cdma
 {
-  v4 = a3;
+  cdmaCopy = cdma;
   endStatusCountConnectedCdmas = self->_endStatusCountConnectedCdmas;
-  v8 = v4;
+  v8 = cdmaCopy;
   if (!endStatusCountConnectedCdmas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_endStatusCountConnectedCdmas;
     self->_endStatusCountConnectedCdmas = v6;
 
-    v4 = v8;
+    cdmaCopy = v8;
     endStatusCountConnectedCdmas = self->_endStatusCountConnectedCdmas;
   }
 
-  [(NSMutableArray *)endStatusCountConnectedCdmas addObject:v4];
+  [(NSMutableArray *)endStatusCountConnectedCdmas addObject:cdmaCopy];
 }
 
-- (void)addEndStatusCountNotConnectedCdma:(id)a3
+- (void)addEndStatusCountNotConnectedCdma:(id)cdma
 {
-  v4 = a3;
+  cdmaCopy = cdma;
   endStatusCountNotConnectedCdmas = self->_endStatusCountNotConnectedCdmas;
-  v8 = v4;
+  v8 = cdmaCopy;
   if (!endStatusCountNotConnectedCdmas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_endStatusCountNotConnectedCdmas;
     self->_endStatusCountNotConnectedCdmas = v6;
 
-    v4 = v8;
+    cdmaCopy = v8;
     endStatusCountNotConnectedCdmas = self->_endStatusCountNotConnectedCdmas;
   }
 
-  [(NSMutableArray *)endStatusCountNotConnectedCdmas addObject:v4];
+  [(NSMutableArray *)endStatusCountNotConnectedCdmas addObject:cdmaCopy];
 }
 
-- (void)setHasTotalConnectedSecondsCdma:(BOOL)a3
+- (void)setHasTotalConnectedSecondsCdma:(BOOL)cdma
 {
-  if (a3)
+  if (cdma)
   {
     v3 = 0x10000;
   }
@@ -150,9 +150,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasNumTotalCallsGw:(BOOL)a3
+- (void)setHasNumTotalCallsGw:(BOOL)gw
 {
-  if (a3)
+  if (gw)
   {
     v3 = 0x2000;
   }
@@ -165,9 +165,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasNumConnectedCallsGw:(BOOL)a3
+- (void)setHasNumConnectedCallsGw:(BOOL)gw
 {
-  if (a3)
+  if (gw)
   {
     v3 = 8;
   }
@@ -180,9 +180,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasNumNormalReleaseCallsGw:(BOOL)a3
+- (void)setHasNumNormalReleaseCallsGw:(BOOL)gw
 {
-  if (a3)
+  if (gw)
   {
     v3 = 512;
   }
@@ -195,45 +195,45 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)addEndStatusCountConnectedGw:(id)a3
+- (void)addEndStatusCountConnectedGw:(id)gw
 {
-  v4 = a3;
+  gwCopy = gw;
   endStatusCountConnectedGws = self->_endStatusCountConnectedGws;
-  v8 = v4;
+  v8 = gwCopy;
   if (!endStatusCountConnectedGws)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_endStatusCountConnectedGws;
     self->_endStatusCountConnectedGws = v6;
 
-    v4 = v8;
+    gwCopy = v8;
     endStatusCountConnectedGws = self->_endStatusCountConnectedGws;
   }
 
-  [(NSMutableArray *)endStatusCountConnectedGws addObject:v4];
+  [(NSMutableArray *)endStatusCountConnectedGws addObject:gwCopy];
 }
 
-- (void)addEndStatusCountNotConnectedGw:(id)a3
+- (void)addEndStatusCountNotConnectedGw:(id)gw
 {
-  v4 = a3;
+  gwCopy = gw;
   endStatusCountNotConnectedGws = self->_endStatusCountNotConnectedGws;
-  v8 = v4;
+  v8 = gwCopy;
   if (!endStatusCountNotConnectedGws)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_endStatusCountNotConnectedGws;
     self->_endStatusCountNotConnectedGws = v6;
 
-    v4 = v8;
+    gwCopy = v8;
     endStatusCountNotConnectedGws = self->_endStatusCountNotConnectedGws;
   }
 
-  [(NSMutableArray *)endStatusCountNotConnectedGws addObject:v4];
+  [(NSMutableArray *)endStatusCountNotConnectedGws addObject:gwCopy];
 }
 
-- (void)setHasNumMultiRabEverCalls:(BOOL)a3
+- (void)setHasNumMultiRabEverCalls:(BOOL)calls
 {
-  if (a3)
+  if (calls)
   {
     v3 = 64;
   }
@@ -246,9 +246,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasNumMultiRabEndCalls:(BOOL)a3
+- (void)setHasNumMultiRabEndCalls:(BOOL)calls
 {
-  if (a3)
+  if (calls)
   {
     v3 = 32;
   }
@@ -261,45 +261,45 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)addReleaseCauseCountConnected:(id)a3
+- (void)addReleaseCauseCountConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   releaseCauseCountConnecteds = self->_releaseCauseCountConnecteds;
-  v8 = v4;
+  v8 = connectedCopy;
   if (!releaseCauseCountConnecteds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_releaseCauseCountConnecteds;
     self->_releaseCauseCountConnecteds = v6;
 
-    v4 = v8;
+    connectedCopy = v8;
     releaseCauseCountConnecteds = self->_releaseCauseCountConnecteds;
   }
 
-  [(NSMutableArray *)releaseCauseCountConnecteds addObject:v4];
+  [(NSMutableArray *)releaseCauseCountConnecteds addObject:connectedCopy];
 }
 
-- (void)addReleaseCauseCountNotConnected:(id)a3
+- (void)addReleaseCauseCountNotConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   releaseCauseCountNotConnecteds = self->_releaseCauseCountNotConnecteds;
-  v8 = v4;
+  v8 = connectedCopy;
   if (!releaseCauseCountNotConnecteds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_releaseCauseCountNotConnecteds;
     self->_releaseCauseCountNotConnecteds = v6;
 
-    v4 = v8;
+    connectedCopy = v8;
     releaseCauseCountNotConnecteds = self->_releaseCauseCountNotConnecteds;
   }
 
-  [(NSMutableArray *)releaseCauseCountNotConnecteds addObject:v4];
+  [(NSMutableArray *)releaseCauseCountNotConnecteds addObject:connectedCopy];
 }
 
-- (void)setHasNumTotalCallsGsm:(BOOL)a3
+- (void)setHasNumTotalCallsGsm:(BOOL)gsm
 {
-  if (a3)
+  if (gsm)
   {
     v3 = 4096;
   }
@@ -312,9 +312,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasNumConnectedCallsGsm:(BOOL)a3
+- (void)setHasNumConnectedCallsGsm:(BOOL)gsm
 {
-  if (a3)
+  if (gsm)
   {
     v3 = 4;
   }
@@ -327,9 +327,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasNumNormalReleaseCallsGsm:(BOOL)a3
+- (void)setHasNumNormalReleaseCallsGsm:(BOOL)gsm
 {
-  if (a3)
+  if (gsm)
   {
     v3 = 256;
   }
@@ -342,45 +342,45 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)addReleaseCauseCountConnectedGsm:(id)a3
+- (void)addReleaseCauseCountConnectedGsm:(id)gsm
 {
-  v4 = a3;
+  gsmCopy = gsm;
   releaseCauseCountConnectedGsms = self->_releaseCauseCountConnectedGsms;
-  v8 = v4;
+  v8 = gsmCopy;
   if (!releaseCauseCountConnectedGsms)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_releaseCauseCountConnectedGsms;
     self->_releaseCauseCountConnectedGsms = v6;
 
-    v4 = v8;
+    gsmCopy = v8;
     releaseCauseCountConnectedGsms = self->_releaseCauseCountConnectedGsms;
   }
 
-  [(NSMutableArray *)releaseCauseCountConnectedGsms addObject:v4];
+  [(NSMutableArray *)releaseCauseCountConnectedGsms addObject:gsmCopy];
 }
 
-- (void)addReleaseCauseCountNotConnectedGsm:(id)a3
+- (void)addReleaseCauseCountNotConnectedGsm:(id)gsm
 {
-  v4 = a3;
+  gsmCopy = gsm;
   releaseCauseCountNotConnectedGsms = self->_releaseCauseCountNotConnectedGsms;
-  v8 = v4;
+  v8 = gsmCopy;
   if (!releaseCauseCountNotConnectedGsms)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_releaseCauseCountNotConnectedGsms;
     self->_releaseCauseCountNotConnectedGsms = v6;
 
-    v4 = v8;
+    gsmCopy = v8;
     releaseCauseCountNotConnectedGsms = self->_releaseCauseCountNotConnectedGsms;
   }
 
-  [(NSMutableArray *)releaseCauseCountNotConnectedGsms addObject:v4];
+  [(NSMutableArray *)releaseCauseCountNotConnectedGsms addObject:gsmCopy];
 }
 
-- (void)setHasTotalConnectedSecondsGsm:(BOOL)a3
+- (void)setHasTotalConnectedSecondsGsm:(BOOL)gsm
 {
-  if (a3)
+  if (gsm)
   {
     v3 = 0x20000;
   }
@@ -393,9 +393,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasNumTotalCallsWcdma:(BOOL)a3
+- (void)setHasNumTotalCallsWcdma:(BOOL)wcdma
 {
-  if (a3)
+  if (wcdma)
   {
     v3 = 0x4000;
   }
@@ -408,9 +408,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasNumConnectedCallsWcdma:(BOOL)a3
+- (void)setHasNumConnectedCallsWcdma:(BOOL)wcdma
 {
-  if (a3)
+  if (wcdma)
   {
     v3 = 16;
   }
@@ -423,9 +423,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasNumNormalReleaseCallsWcdma:(BOOL)a3
+- (void)setHasNumNormalReleaseCallsWcdma:(BOOL)wcdma
 {
-  if (a3)
+  if (wcdma)
   {
     v3 = 1024;
   }
@@ -438,45 +438,45 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)addReleaseCauseCountConnectedWcdma:(id)a3
+- (void)addReleaseCauseCountConnectedWcdma:(id)wcdma
 {
-  v4 = a3;
+  wcdmaCopy = wcdma;
   releaseCauseCountConnectedWcdmas = self->_releaseCauseCountConnectedWcdmas;
-  v8 = v4;
+  v8 = wcdmaCopy;
   if (!releaseCauseCountConnectedWcdmas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_releaseCauseCountConnectedWcdmas;
     self->_releaseCauseCountConnectedWcdmas = v6;
 
-    v4 = v8;
+    wcdmaCopy = v8;
     releaseCauseCountConnectedWcdmas = self->_releaseCauseCountConnectedWcdmas;
   }
 
-  [(NSMutableArray *)releaseCauseCountConnectedWcdmas addObject:v4];
+  [(NSMutableArray *)releaseCauseCountConnectedWcdmas addObject:wcdmaCopy];
 }
 
-- (void)addReleaseCauseCountNotConnectedWcdma:(id)a3
+- (void)addReleaseCauseCountNotConnectedWcdma:(id)wcdma
 {
-  v4 = a3;
+  wcdmaCopy = wcdma;
   releaseCauseCountNotConnectedWcdmas = self->_releaseCauseCountNotConnectedWcdmas;
-  v8 = v4;
+  v8 = wcdmaCopy;
   if (!releaseCauseCountNotConnectedWcdmas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_releaseCauseCountNotConnectedWcdmas;
     self->_releaseCauseCountNotConnectedWcdmas = v6;
 
-    v4 = v8;
+    wcdmaCopy = v8;
     releaseCauseCountNotConnectedWcdmas = self->_releaseCauseCountNotConnectedWcdmas;
   }
 
-  [(NSMutableArray *)releaseCauseCountNotConnectedWcdmas addObject:v4];
+  [(NSMutableArray *)releaseCauseCountNotConnectedWcdmas addObject:wcdmaCopy];
 }
 
-- (void)setHasTotalConnectedSecondsWcdma:(BOOL)a3
+- (void)setHasTotalConnectedSecondsWcdma:(BOOL)wcdma
 {
-  if (a3)
+  if (wcdma)
   {
     v3 = 0x40000;
   }
@@ -494,8 +494,8 @@
   v7.receiver = self;
   v7.super_class = CellularCallCount;
   v3 = [(CellularCallCount *)&v7 description];
-  v4 = [(CellularCallCount *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularCallCount *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -593,8 +593,8 @@ LABEL_7:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v136 + 1) + 8 * v11) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v136 + 1) + 8 * v11) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
 
           v11 = v11 + 1;
         }
@@ -632,8 +632,8 @@ LABEL_7:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v132 + 1) + 8 * v18) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v132 + 1) + 8 * v18) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
 
           v18 = v18 + 1;
         }
@@ -722,8 +722,8 @@ LABEL_30:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v128 + 1) + 8 * v27) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation3 = [*(*(&v128 + 1) + 8 * v27) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation3];
 
           v27 = v27 + 1;
         }
@@ -761,8 +761,8 @@ LABEL_30:
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v124 + 1) + 8 * v34) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation4 = [*(*(&v124 + 1) + 8 * v34) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation4];
 
           v34 = v34 + 1;
         }
@@ -815,8 +815,8 @@ LABEL_30:
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v120 + 1) + 8 * v44) dictionaryRepresentation];
-          [v39 addObject:v45];
+          dictionaryRepresentation5 = [*(*(&v120 + 1) + 8 * v44) dictionaryRepresentation];
+          [v39 addObject:dictionaryRepresentation5];
 
           v44 = v44 + 1;
         }
@@ -854,8 +854,8 @@ LABEL_30:
             objc_enumerationMutation(v47);
           }
 
-          v52 = [*(*(&v116 + 1) + 8 * v51) dictionaryRepresentation];
-          [v46 addObject:v52];
+          dictionaryRepresentation6 = [*(*(&v116 + 1) + 8 * v51) dictionaryRepresentation];
+          [v46 addObject:dictionaryRepresentation6];
 
           v51 = v51 + 1;
         }
@@ -928,8 +928,8 @@ LABEL_74:
             objc_enumerationMutation(v56);
           }
 
-          v61 = [*(*(&v112 + 1) + 8 * v60) dictionaryRepresentation];
-          [v55 addObject:v61];
+          dictionaryRepresentation7 = [*(*(&v112 + 1) + 8 * v60) dictionaryRepresentation];
+          [v55 addObject:dictionaryRepresentation7];
 
           v60 = v60 + 1;
         }
@@ -967,8 +967,8 @@ LABEL_74:
             objc_enumerationMutation(v63);
           }
 
-          v68 = [*(*(&v108 + 1) + 8 * v67) dictionaryRepresentation];
-          [v62 addObject:v68];
+          dictionaryRepresentation8 = [*(*(&v108 + 1) + 8 * v67) dictionaryRepresentation];
+          [v62 addObject:dictionaryRepresentation8];
 
           v67 = v67 + 1;
         }
@@ -1057,8 +1057,8 @@ LABEL_97:
             objc_enumerationMutation(v72);
           }
 
-          v77 = [*(*(&v104 + 1) + 8 * v76) dictionaryRepresentation];
-          [v71 addObject:v77];
+          dictionaryRepresentation9 = [*(*(&v104 + 1) + 8 * v76) dictionaryRepresentation];
+          [v71 addObject:dictionaryRepresentation9];
 
           v76 = v76 + 1;
         }
@@ -1096,8 +1096,8 @@ LABEL_97:
             objc_enumerationMutation(v79);
           }
 
-          v84 = [*(*(&v100 + 1) + 8 * v83) dictionaryRepresentation];
-          [v78 addObject:v84];
+          dictionaryRepresentation10 = [*(*(&v100 + 1) + 8 * v83) dictionaryRepresentation];
+          [v78 addObject:dictionaryRepresentation10];
 
           v83 = v83 + 1;
         }
@@ -1123,9 +1123,9 @@ LABEL_97:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -1663,14 +1663,14 @@ LABEL_80:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 43) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 43) |= 1u;
     has = self->_has;
     if ((*&has & 0x8000) == 0)
     {
@@ -1689,8 +1689,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 26) = self->_periodSeconds;
-  *(v4 + 43) |= 0x8000u;
+  *(toCopy + 26) = self->_periodSeconds;
+  *(toCopy + 43) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1701,8 +1701,8 @@ LABEL_4:
     }
 
 LABEL_72:
-    *(v4 + 12) = self->_numConnectedCallsCdma;
-    *(v4 + 43) |= 2u;
+    *(toCopy + 12) = self->_numConnectedCallsCdma;
+    *(toCopy + 43) |= 2u;
     if ((*&self->_has & 0x80) == 0)
     {
       goto LABEL_7;
@@ -1712,8 +1712,8 @@ LABEL_72:
   }
 
 LABEL_71:
-  *(v4 + 22) = self->_numTotalCallsCdma;
-  *(v4 + 43) |= 0x800u;
+  *(toCopy + 22) = self->_numTotalCallsCdma;
+  *(toCopy + 43) |= 0x800u;
   has = self->_has;
   if ((*&has & 2) != 0)
   {
@@ -1724,19 +1724,19 @@ LABEL_5:
   if ((*&has & 0x80) != 0)
   {
 LABEL_6:
-    *(v4 + 18) = self->_numNormalReleaseCallsCdma;
-    *(v4 + 43) |= 0x80u;
+    *(toCopy + 18) = self->_numNormalReleaseCallsCdma;
+    *(toCopy + 43) |= 0x80u;
   }
 
 LABEL_7:
-  v50 = v4;
+  v50 = toCopy;
   if ([(CellularCallCount *)self endStatusCountConnectedCdmasCount])
   {
     [v50 clearEndStatusCountConnectedCdmas];
-    v6 = [(CellularCallCount *)self endStatusCountConnectedCdmasCount];
-    if (v6)
+    endStatusCountConnectedCdmasCount = [(CellularCallCount *)self endStatusCountConnectedCdmasCount];
+    if (endStatusCountConnectedCdmasCount)
     {
-      v7 = v6;
+      v7 = endStatusCountConnectedCdmasCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularCallCount *)self endStatusCountConnectedCdmaAtIndex:i];
@@ -1748,10 +1748,10 @@ LABEL_7:
   if ([(CellularCallCount *)self endStatusCountNotConnectedCdmasCount])
   {
     [v50 clearEndStatusCountNotConnectedCdmas];
-    v10 = [(CellularCallCount *)self endStatusCountNotConnectedCdmasCount];
-    if (v10)
+    endStatusCountNotConnectedCdmasCount = [(CellularCallCount *)self endStatusCountNotConnectedCdmasCount];
+    if (endStatusCountNotConnectedCdmasCount)
     {
-      v11 = v10;
+      v11 = endStatusCountNotConnectedCdmasCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(CellularCallCount *)self endStatusCountNotConnectedCdmaAtIndex:j];
@@ -1799,10 +1799,10 @@ LABEL_19:
   if ([(CellularCallCount *)self releaseCauseCountConnectedsCount])
   {
     [v50 clearReleaseCauseCountConnecteds];
-    v15 = [(CellularCallCount *)self releaseCauseCountConnectedsCount];
-    if (v15)
+    releaseCauseCountConnectedsCount = [(CellularCallCount *)self releaseCauseCountConnectedsCount];
+    if (releaseCauseCountConnectedsCount)
     {
-      v16 = v15;
+      v16 = releaseCauseCountConnectedsCount;
       for (k = 0; k != v16; ++k)
       {
         v18 = [(CellularCallCount *)self releaseCauseCountConnectedAtIndex:k];
@@ -1814,10 +1814,10 @@ LABEL_19:
   if ([(CellularCallCount *)self releaseCauseCountNotConnectedsCount])
   {
     [v50 clearReleaseCauseCountNotConnecteds];
-    v19 = [(CellularCallCount *)self releaseCauseCountNotConnectedsCount];
-    if (v19)
+    releaseCauseCountNotConnectedsCount = [(CellularCallCount *)self releaseCauseCountNotConnectedsCount];
+    if (releaseCauseCountNotConnectedsCount)
     {
-      v20 = v19;
+      v20 = releaseCauseCountNotConnectedsCount;
       for (m = 0; m != v20; ++m)
       {
         v22 = [(CellularCallCount *)self releaseCauseCountNotConnectedAtIndex:m];
@@ -1865,10 +1865,10 @@ LABEL_31:
   if ([(CellularCallCount *)self endStatusCountConnectedGwsCount])
   {
     [v50 clearEndStatusCountConnectedGws];
-    v24 = [(CellularCallCount *)self endStatusCountConnectedGwsCount];
-    if (v24)
+    endStatusCountConnectedGwsCount = [(CellularCallCount *)self endStatusCountConnectedGwsCount];
+    if (endStatusCountConnectedGwsCount)
     {
-      v25 = v24;
+      v25 = endStatusCountConnectedGwsCount;
       for (n = 0; n != v25; ++n)
       {
         v27 = [(CellularCallCount *)self endStatusCountConnectedGwAtIndex:n];
@@ -1880,10 +1880,10 @@ LABEL_31:
   if ([(CellularCallCount *)self endStatusCountNotConnectedGwsCount])
   {
     [v50 clearEndStatusCountNotConnectedGws];
-    v28 = [(CellularCallCount *)self endStatusCountNotConnectedGwsCount];
-    if (v28)
+    endStatusCountNotConnectedGwsCount = [(CellularCallCount *)self endStatusCountNotConnectedGwsCount];
+    if (endStatusCountNotConnectedGwsCount)
     {
-      v29 = v28;
+      v29 = endStatusCountNotConnectedGwsCount;
       for (ii = 0; ii != v29; ++ii)
       {
         v31 = [(CellularCallCount *)self endStatusCountNotConnectedGwAtIndex:ii];
@@ -1931,10 +1931,10 @@ LABEL_43:
   if ([(CellularCallCount *)self releaseCauseCountConnectedGsmsCount])
   {
     [v50 clearReleaseCauseCountConnectedGsms];
-    v33 = [(CellularCallCount *)self releaseCauseCountConnectedGsmsCount];
-    if (v33)
+    releaseCauseCountConnectedGsmsCount = [(CellularCallCount *)self releaseCauseCountConnectedGsmsCount];
+    if (releaseCauseCountConnectedGsmsCount)
     {
-      v34 = v33;
+      v34 = releaseCauseCountConnectedGsmsCount;
       for (jj = 0; jj != v34; ++jj)
       {
         v36 = [(CellularCallCount *)self releaseCauseCountConnectedGsmAtIndex:jj];
@@ -1946,10 +1946,10 @@ LABEL_43:
   if ([(CellularCallCount *)self releaseCauseCountNotConnectedGsmsCount])
   {
     [v50 clearReleaseCauseCountNotConnectedGsms];
-    v37 = [(CellularCallCount *)self releaseCauseCountNotConnectedGsmsCount];
-    if (v37)
+    releaseCauseCountNotConnectedGsmsCount = [(CellularCallCount *)self releaseCauseCountNotConnectedGsmsCount];
+    if (releaseCauseCountNotConnectedGsmsCount)
     {
-      v38 = v37;
+      v38 = releaseCauseCountNotConnectedGsmsCount;
       for (kk = 0; kk != v38; ++kk)
       {
         v40 = [(CellularCallCount *)self releaseCauseCountNotConnectedGsmAtIndex:kk];
@@ -2009,10 +2009,10 @@ LABEL_56:
   if ([(CellularCallCount *)self releaseCauseCountConnectedWcdmasCount])
   {
     [v50 clearReleaseCauseCountConnectedWcdmas];
-    v42 = [(CellularCallCount *)self releaseCauseCountConnectedWcdmasCount];
-    if (v42)
+    releaseCauseCountConnectedWcdmasCount = [(CellularCallCount *)self releaseCauseCountConnectedWcdmasCount];
+    if (releaseCauseCountConnectedWcdmasCount)
     {
-      v43 = v42;
+      v43 = releaseCauseCountConnectedWcdmasCount;
       for (mm = 0; mm != v43; ++mm)
       {
         v45 = [(CellularCallCount *)self releaseCauseCountConnectedWcdmaAtIndex:mm];
@@ -2024,10 +2024,10 @@ LABEL_56:
   if ([(CellularCallCount *)self releaseCauseCountNotConnectedWcdmasCount])
   {
     [v50 clearReleaseCauseCountNotConnectedWcdmas];
-    v46 = [(CellularCallCount *)self releaseCauseCountNotConnectedWcdmasCount];
-    if (v46)
+    releaseCauseCountNotConnectedWcdmasCount = [(CellularCallCount *)self releaseCauseCountNotConnectedWcdmasCount];
+    if (releaseCauseCountNotConnectedWcdmasCount)
     {
-      v47 = v46;
+      v47 = releaseCauseCountNotConnectedWcdmasCount;
       for (nn = 0; nn != v47; ++nn)
       {
         v49 = [(CellularCallCount *)self releaseCauseCountNotConnectedWcdmaAtIndex:nn];
@@ -2043,9 +2043,9 @@ LABEL_56:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (*&has)
@@ -2130,7 +2130,7 @@ LABEL_7:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v110 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v110 + 1) + 8 * v12) copyWithZone:zone];
         [v6 addEndStatusCountConnectedCdma:v13];
 
         v12 = v12 + 1;
@@ -2163,7 +2163,7 @@ LABEL_7:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v106 + 1) + 8 * v18) copyWithZone:a3];
+        v19 = [*(*(&v106 + 1) + 8 * v18) copyWithZone:zone];
         [v6 addEndStatusCountNotConnectedCdma:v19];
 
         v18 = v18 + 1;
@@ -2229,7 +2229,7 @@ LABEL_25:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v102 + 1) + 8 * v25) copyWithZone:a3];
+        v26 = [*(*(&v102 + 1) + 8 * v25) copyWithZone:zone];
         [v6 addReleaseCauseCountConnected:v26];
 
         v25 = v25 + 1;
@@ -2262,7 +2262,7 @@ LABEL_25:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v98 + 1) + 8 * v31) copyWithZone:a3];
+        v32 = [*(*(&v98 + 1) + 8 * v31) copyWithZone:zone];
         [v6 addReleaseCauseCountNotConnected:v32];
 
         v31 = v31 + 1;
@@ -2328,7 +2328,7 @@ LABEL_43:
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v94 + 1) + 8 * v38) copyWithZone:a3];
+        v39 = [*(*(&v94 + 1) + 8 * v38) copyWithZone:zone];
         [v6 addEndStatusCountConnectedGw:v39];
 
         v38 = v38 + 1;
@@ -2361,7 +2361,7 @@ LABEL_43:
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v90 + 1) + 8 * v44) copyWithZone:a3];
+        v45 = [*(*(&v90 + 1) + 8 * v44) copyWithZone:zone];
         [v6 addEndStatusCountNotConnectedGw:v45];
 
         v44 = v44 + 1;
@@ -2427,7 +2427,7 @@ LABEL_61:
           objc_enumerationMutation(v47);
         }
 
-        v52 = [*(*(&v86 + 1) + 8 * v51) copyWithZone:a3];
+        v52 = [*(*(&v86 + 1) + 8 * v51) copyWithZone:zone];
         [v6 addReleaseCauseCountConnectedGsm:v52];
 
         v51 = v51 + 1;
@@ -2460,7 +2460,7 @@ LABEL_61:
           objc_enumerationMutation(v53);
         }
 
-        v58 = [*(*(&v82 + 1) + 8 * v57) copyWithZone:a3];
+        v58 = [*(*(&v82 + 1) + 8 * v57) copyWithZone:zone];
         [v6 addReleaseCauseCountNotConnectedGsm:v58];
 
         v57 = v57 + 1;
@@ -2541,7 +2541,7 @@ LABEL_80:
           objc_enumerationMutation(v60);
         }
 
-        v65 = [*(*(&v78 + 1) + 8 * v64) copyWithZone:a3];
+        v65 = [*(*(&v78 + 1) + 8 * v64) copyWithZone:zone];
         [v6 addReleaseCauseCountConnectedWcdma:v65];
 
         v64 = v64 + 1;
@@ -2574,7 +2574,7 @@ LABEL_80:
           objc_enumerationMutation(v66);
         }
 
-        v71 = [*(*(&v74 + 1) + 8 * v70) copyWithZone:{a3, v74}];
+        v71 = [*(*(&v74 + 1) + 8 * v70) copyWithZone:{zone, v74}];
         [v6 addReleaseCauseCountNotConnectedWcdma:v71];
 
         v70 = v70 + 1;
@@ -2598,19 +2598,19 @@ LABEL_80:
   return v72;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_117;
   }
 
   has = self->_has;
-  v6 = *(v4 + 43);
+  v6 = *(equalCopy + 43);
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_117;
     }
@@ -2625,7 +2625,7 @@ LABEL_117:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_periodSeconds != *(v4 + 26))
+    if ((v6 & 0x8000) == 0 || self->_periodSeconds != *(equalCopy + 26))
     {
       goto LABEL_117;
     }
@@ -2638,7 +2638,7 @@ LABEL_117:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_numTotalCallsCdma != *(v4 + 22))
+    if ((v6 & 0x800) == 0 || self->_numTotalCallsCdma != *(equalCopy + 22))
     {
       goto LABEL_117;
     }
@@ -2651,7 +2651,7 @@ LABEL_117:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_numConnectedCallsCdma != *(v4 + 12))
+    if ((v6 & 2) == 0 || self->_numConnectedCallsCdma != *(equalCopy + 12))
     {
       goto LABEL_117;
     }
@@ -2664,7 +2664,7 @@ LABEL_117:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_numNormalReleaseCallsCdma != *(v4 + 18))
+    if ((v6 & 0x80) == 0 || self->_numNormalReleaseCallsCdma != *(equalCopy + 18))
     {
       goto LABEL_117;
     }
@@ -2676,13 +2676,13 @@ LABEL_117:
   }
 
   endStatusCountConnectedCdmas = self->_endStatusCountConnectedCdmas;
-  if (endStatusCountConnectedCdmas | *(v4 + 2) && ![(NSMutableArray *)endStatusCountConnectedCdmas isEqual:?])
+  if (endStatusCountConnectedCdmas | *(equalCopy + 2) && ![(NSMutableArray *)endStatusCountConnectedCdmas isEqual:?])
   {
     goto LABEL_117;
   }
 
   endStatusCountNotConnectedCdmas = self->_endStatusCountNotConnectedCdmas;
-  if (endStatusCountNotConnectedCdmas | *(v4 + 4))
+  if (endStatusCountNotConnectedCdmas | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)endStatusCountNotConnectedCdmas isEqual:?])
     {
@@ -2691,10 +2691,10 @@ LABEL_117:
   }
 
   v9 = self->_has;
-  v10 = *(v4 + 43);
+  v10 = *(equalCopy + 43);
   if ((*&v9 & 0x10000) != 0)
   {
-    if ((v10 & 0x10000) == 0 || self->_totalConnectedSecondsCdma != *(v4 + 40))
+    if ((v10 & 0x10000) == 0 || self->_totalConnectedSecondsCdma != *(equalCopy + 40))
     {
       goto LABEL_117;
     }
@@ -2707,7 +2707,7 @@ LABEL_117:
 
   if ((*&v9 & 0x40) != 0)
   {
-    if ((v10 & 0x40) == 0 || self->_numMultiRabEverCalls != *(v4 + 17))
+    if ((v10 & 0x40) == 0 || self->_numMultiRabEverCalls != *(equalCopy + 17))
     {
       goto LABEL_117;
     }
@@ -2720,7 +2720,7 @@ LABEL_117:
 
   if ((*&v9 & 0x20) != 0)
   {
-    if ((v10 & 0x20) == 0 || self->_numMultiRabEndCalls != *(v4 + 16))
+    if ((v10 & 0x20) == 0 || self->_numMultiRabEndCalls != *(equalCopy + 16))
     {
       goto LABEL_117;
     }
@@ -2732,13 +2732,13 @@ LABEL_117:
   }
 
   releaseCauseCountConnecteds = self->_releaseCauseCountConnecteds;
-  if (releaseCauseCountConnecteds | *(v4 + 16) && ![(NSMutableArray *)releaseCauseCountConnecteds isEqual:?])
+  if (releaseCauseCountConnecteds | *(equalCopy + 16) && ![(NSMutableArray *)releaseCauseCountConnecteds isEqual:?])
   {
     goto LABEL_117;
   }
 
   releaseCauseCountNotConnecteds = self->_releaseCauseCountNotConnecteds;
-  if (releaseCauseCountNotConnecteds | *(v4 + 19))
+  if (releaseCauseCountNotConnecteds | *(equalCopy + 19))
   {
     if (![(NSMutableArray *)releaseCauseCountNotConnecteds isEqual:?])
     {
@@ -2747,10 +2747,10 @@ LABEL_117:
   }
 
   v13 = self->_has;
-  v14 = *(v4 + 43);
+  v14 = *(equalCopy + 43);
   if ((*&v13 & 0x2000) != 0)
   {
-    if ((v14 & 0x2000) == 0 || self->_numTotalCallsGw != *(v4 + 24))
+    if ((v14 & 0x2000) == 0 || self->_numTotalCallsGw != *(equalCopy + 24))
     {
       goto LABEL_117;
     }
@@ -2763,7 +2763,7 @@ LABEL_117:
 
   if ((*&v13 & 8) != 0)
   {
-    if ((v14 & 8) == 0 || self->_numConnectedCallsGw != *(v4 + 14))
+    if ((v14 & 8) == 0 || self->_numConnectedCallsGw != *(equalCopy + 14))
     {
       goto LABEL_117;
     }
@@ -2776,7 +2776,7 @@ LABEL_117:
 
   if ((*&v13 & 0x200) != 0)
   {
-    if ((v14 & 0x200) == 0 || self->_numNormalReleaseCallsGw != *(v4 + 20))
+    if ((v14 & 0x200) == 0 || self->_numNormalReleaseCallsGw != *(equalCopy + 20))
     {
       goto LABEL_117;
     }
@@ -2788,13 +2788,13 @@ LABEL_117:
   }
 
   endStatusCountConnectedGws = self->_endStatusCountConnectedGws;
-  if (endStatusCountConnectedGws | *(v4 + 3) && ![(NSMutableArray *)endStatusCountConnectedGws isEqual:?])
+  if (endStatusCountConnectedGws | *(equalCopy + 3) && ![(NSMutableArray *)endStatusCountConnectedGws isEqual:?])
   {
     goto LABEL_117;
   }
 
   endStatusCountNotConnectedGws = self->_endStatusCountNotConnectedGws;
-  if (endStatusCountNotConnectedGws | *(v4 + 5))
+  if (endStatusCountNotConnectedGws | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)endStatusCountNotConnectedGws isEqual:?])
     {
@@ -2803,10 +2803,10 @@ LABEL_117:
   }
 
   v17 = self->_has;
-  v18 = *(v4 + 43);
+  v18 = *(equalCopy + 43);
   if ((*&v17 & 0x1000) != 0)
   {
-    if ((v18 & 0x1000) == 0 || self->_numTotalCallsGsm != *(v4 + 23))
+    if ((v18 & 0x1000) == 0 || self->_numTotalCallsGsm != *(equalCopy + 23))
     {
       goto LABEL_117;
     }
@@ -2819,7 +2819,7 @@ LABEL_117:
 
   if ((*&v17 & 4) != 0)
   {
-    if ((v18 & 4) == 0 || self->_numConnectedCallsGsm != *(v4 + 13))
+    if ((v18 & 4) == 0 || self->_numConnectedCallsGsm != *(equalCopy + 13))
     {
       goto LABEL_117;
     }
@@ -2832,7 +2832,7 @@ LABEL_117:
 
   if ((*&v17 & 0x100) != 0)
   {
-    if ((v18 & 0x100) == 0 || self->_numNormalReleaseCallsGsm != *(v4 + 19))
+    if ((v18 & 0x100) == 0 || self->_numNormalReleaseCallsGsm != *(equalCopy + 19))
     {
       goto LABEL_117;
     }
@@ -2844,13 +2844,13 @@ LABEL_117:
   }
 
   releaseCauseCountConnectedGsms = self->_releaseCauseCountConnectedGsms;
-  if (releaseCauseCountConnectedGsms | *(v4 + 14) && ![(NSMutableArray *)releaseCauseCountConnectedGsms isEqual:?])
+  if (releaseCauseCountConnectedGsms | *(equalCopy + 14) && ![(NSMutableArray *)releaseCauseCountConnectedGsms isEqual:?])
   {
     goto LABEL_117;
   }
 
   releaseCauseCountNotConnectedGsms = self->_releaseCauseCountNotConnectedGsms;
-  if (releaseCauseCountNotConnectedGsms | *(v4 + 17))
+  if (releaseCauseCountNotConnectedGsms | *(equalCopy + 17))
   {
     if (![(NSMutableArray *)releaseCauseCountNotConnectedGsms isEqual:?])
     {
@@ -2859,10 +2859,10 @@ LABEL_117:
   }
 
   v21 = self->_has;
-  v22 = *(v4 + 43);
+  v22 = *(equalCopy + 43);
   if ((*&v21 & 0x20000) != 0)
   {
-    if ((v22 & 0x20000) == 0 || self->_totalConnectedSecondsGsm != *(v4 + 41))
+    if ((v22 & 0x20000) == 0 || self->_totalConnectedSecondsGsm != *(equalCopy + 41))
     {
       goto LABEL_117;
     }
@@ -2875,7 +2875,7 @@ LABEL_117:
 
   if ((*&v21 & 0x4000) != 0)
   {
-    if ((v22 & 0x4000) == 0 || self->_numTotalCallsWcdma != *(v4 + 25))
+    if ((v22 & 0x4000) == 0 || self->_numTotalCallsWcdma != *(equalCopy + 25))
     {
       goto LABEL_117;
     }
@@ -2888,7 +2888,7 @@ LABEL_117:
 
   if ((*&v21 & 0x10) != 0)
   {
-    if ((v22 & 0x10) == 0 || self->_numConnectedCallsWcdma != *(v4 + 15))
+    if ((v22 & 0x10) == 0 || self->_numConnectedCallsWcdma != *(equalCopy + 15))
     {
       goto LABEL_117;
     }
@@ -2901,7 +2901,7 @@ LABEL_117:
 
   if ((*&v21 & 0x400) != 0)
   {
-    if ((v22 & 0x400) == 0 || self->_numNormalReleaseCallsWcdma != *(v4 + 21))
+    if ((v22 & 0x400) == 0 || self->_numNormalReleaseCallsWcdma != *(equalCopy + 21))
     {
       goto LABEL_117;
     }
@@ -2913,13 +2913,13 @@ LABEL_117:
   }
 
   releaseCauseCountConnectedWcdmas = self->_releaseCauseCountConnectedWcdmas;
-  if (releaseCauseCountConnectedWcdmas | *(v4 + 15) && ![(NSMutableArray *)releaseCauseCountConnectedWcdmas isEqual:?])
+  if (releaseCauseCountConnectedWcdmas | *(equalCopy + 15) && ![(NSMutableArray *)releaseCauseCountConnectedWcdmas isEqual:?])
   {
     goto LABEL_117;
   }
 
   releaseCauseCountNotConnectedWcdmas = self->_releaseCauseCountNotConnectedWcdmas;
-  if (releaseCauseCountNotConnectedWcdmas | *(v4 + 18))
+  if (releaseCauseCountNotConnectedWcdmas | *(equalCopy + 18))
   {
     if (![(NSMutableArray *)releaseCauseCountNotConnectedWcdmas isEqual:?])
     {
@@ -2927,10 +2927,10 @@ LABEL_117:
     }
   }
 
-  v25 = *(v4 + 43);
+  v25 = *(equalCopy + 43);
   if ((*(&self->_has + 2) & 4) != 0)
   {
-    if ((v25 & 0x40000) == 0 || self->_totalConnectedSecondsWcdma != *(v4 + 42))
+    if ((v25 & 0x40000) == 0 || self->_totalConnectedSecondsWcdma != *(equalCopy + 42))
     {
       goto LABEL_117;
     }
@@ -3200,16 +3200,16 @@ LABEL_42:
   return v36 ^ v37 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v7 ^ v8 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 43);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 43);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 43);
+    v6 = *(fromCopy + 43);
     if ((v6 & 0x8000) == 0)
     {
 LABEL_3:
@@ -3227,9 +3227,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_periodSeconds = *(v4 + 26);
+  self->_periodSeconds = *(fromCopy + 26);
   *&self->_has |= 0x8000u;
-  v6 = *(v4 + 43);
+  v6 = *(fromCopy + 43);
   if ((v6 & 0x800) == 0)
   {
 LABEL_4:
@@ -3242,9 +3242,9 @@ LABEL_4:
   }
 
 LABEL_99:
-  self->_numTotalCallsCdma = *(v4 + 22);
+  self->_numTotalCallsCdma = *(fromCopy + 22);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 43);
+  v6 = *(fromCopy + 43);
   if ((v6 & 2) == 0)
   {
 LABEL_5:
@@ -3257,12 +3257,12 @@ LABEL_5:
   }
 
 LABEL_100:
-  self->_numConnectedCallsCdma = *(v4 + 12);
+  self->_numConnectedCallsCdma = *(fromCopy + 12);
   *&self->_has |= 2u;
-  if ((*(v4 + 43) & 0x80) != 0)
+  if ((*(fromCopy + 43) & 0x80) != 0)
   {
 LABEL_6:
-    self->_numNormalReleaseCallsCdma = *(v4 + 18);
+    self->_numNormalReleaseCallsCdma = *(fromCopy + 18);
     *&self->_has |= 0x80u;
   }
 
@@ -3271,7 +3271,7 @@ LABEL_7:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v97 objects:v110 count:16];
   if (v8)
   {

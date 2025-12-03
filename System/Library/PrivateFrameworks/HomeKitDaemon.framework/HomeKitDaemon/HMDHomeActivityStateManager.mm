@@ -1,10 +1,10 @@
 @interface HMDHomeActivityStateManager
 + (id)logCategory;
-- (BOOL)didUpdateCachedHomeActivityState:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5;
+- (BOOL)didUpdateCachedHomeActivityState:(unint64_t)state withHoldInfo:(id)info transitionalStateEndDate:(id)date;
 - (BOOL)isActivityStateHoldActive;
 - (BOOL)isCacheLoaded;
-- (HMDHomeActivityStateManager)initWithDataSource:(id)a3 storage:(id)a4;
-- (HMDHomeActivityStateManager)initWithHome:(id)a3;
+- (HMDHomeActivityStateManager)initWithDataSource:(id)source storage:(id)storage;
+- (HMDHomeActivityStateManager)initWithHome:(id)home;
 - (HMDHomeUserActivityStatesDetails)userActivityStatesDetails;
 - (NSDate)activityStateHoldEndDate;
 - (NSDate)transitionalStateEndDate;
@@ -12,55 +12,55 @@
 - (id)currentHomeActivityStateDetails;
 - (id)currentStateHoldDetails;
 - (id)dumpStateForResident;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)logIdentifier;
 - (id)messageReceiveQueue;
 - (id)messageTargetUUID;
 - (unint64_t)activityState;
 - (void)_cachePropertiesForCurrentStateDetailsFromWorkingStore;
 - (void)_registerForMessages;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)configure;
 - (void)configureForResident;
-- (void)handleCancelHoldMessage:(id)a3;
-- (void)handleFetchCurrentHomeActivityState:(id)a3;
-- (void)handlePrimaryResidentDidBecomeCurrentDeviceWithCompletion:(id)a3;
+- (void)handleCancelHoldMessage:(id)message;
+- (void)handleFetchCurrentHomeActivityState:(id)state;
+- (void)handlePrimaryResidentDidBecomeCurrentDeviceWithCompletion:(id)completion;
 - (void)handlePrimaryResidentDidBecomeOtherDevice;
-- (void)handleUserActivityReportUpdated:(id)a3;
-- (void)handleUserRequestToUpdateHomeActivityState:(id)a3;
-- (void)notifyFrameworkClientsAboutHomeActivityStateChange:(unint64_t)a3 isActivityStateHoldActive:(BOOL)a4 activityStateHoldEndDate:(id)a5 transitionalStateEndDate:(id)a6;
-- (void)notifyObserversAboutHomeActivityStateChange:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)setActivityState:(unint64_t)a3;
-- (void)setActivityStateHoldEndDate:(id)a3;
-- (void)setIsActivityStateHoldActive:(BOOL)a3;
-- (void)setIsCacheLoaded:(BOOL)a3;
-- (void)setTransitionalStateEndDate:(id)a3;
-- (void)storageDidUpdateActivityState:(unint64_t)a3 isActivityStateHoldActive:(BOOL)a4 activityStateHoldEndDate:(id)a5 transitionalStateEndDate:(id)a6;
+- (void)handleUserActivityReportUpdated:(id)updated;
+- (void)handleUserRequestToUpdateHomeActivityState:(id)state;
+- (void)notifyFrameworkClientsAboutHomeActivityStateChange:(unint64_t)change isActivityStateHoldActive:(BOOL)active activityStateHoldEndDate:(id)date transitionalStateEndDate:(id)endDate;
+- (void)notifyObserversAboutHomeActivityStateChange:(unint64_t)change withHoldInfo:(id)info transitionalStateEndDate:(id)date;
+- (void)removeObserver:(id)observer;
+- (void)setActivityState:(unint64_t)state;
+- (void)setActivityStateHoldEndDate:(id)date;
+- (void)setIsActivityStateHoldActive:(BOOL)active;
+- (void)setIsCacheLoaded:(BOOL)loaded;
+- (void)setTransitionalStateEndDate:(id)date;
+- (void)storageDidUpdateActivityState:(unint64_t)state isActivityStateHoldActive:(BOOL)active activityStateHoldEndDate:(id)date transitionalStateEndDate:(id)endDate;
 - (void)unconfigure;
 - (void)unconfigureForResident;
 @end
 
 @implementation HMDHomeActivityStateManager
 
-- (void)storageDidUpdateActivityState:(unint64_t)a3 isActivityStateHoldActive:(BOOL)a4 activityStateHoldEndDate:(id)a5 transitionalStateEndDate:(id)a6
+- (void)storageDidUpdateActivityState:(unint64_t)state isActivityStateHoldActive:(BOOL)active activityStateHoldEndDate:(id)date transitionalStateEndDate:(id)endDate
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(HMDHomeActivityStateManager *)self dataSource];
-  v13 = [v12 queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivityStateHoldActive_activityStateHoldEndDate_transitionalStateEndDate___block_invoke;
   block[3] = &unk_27867AD18;
-  v20 = a4;
+  activeCopy = active;
   block[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = a3;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v13, block);
+  v17 = dateCopy;
+  v18 = endDateCopy;
+  stateCopy = state;
+  v14 = endDateCopy;
+  v15 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivityStateHoldActive_activityStateHoldEndDate_transitionalStateEndDate___block_invoke(uint64_t a1)
@@ -86,83 +86,83 @@ void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivity
   }
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
-  v6 = [v5 description];
-  [v4 setObject:v6 forKeyedSubscript:@"activityStateHoldEndDate"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  activityStateHoldEndDate = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
+  v6 = [activityStateHoldEndDate description];
+  [dictionary setObject:v6 forKeyedSubscript:@"activityStateHoldEndDate"];
 
-  v7 = [(HMDHomeActivityStateManager *)self transitionalStateEndDate];
-  v8 = [v7 description];
-  [v4 setObject:v8 forKeyedSubscript:@"transitionalStateEndDate"];
+  transitionalStateEndDate = [(HMDHomeActivityStateManager *)self transitionalStateEndDate];
+  v8 = [transitionalStateEndDate description];
+  [dictionary setObject:v8 forKeyedSubscript:@"transitionalStateEndDate"];
 
   [(HMDHomeActivityStateManager *)self isActivityStateHoldActive];
   v9 = HMFBooleanToString();
-  [v4 setObject:v9 forKeyedSubscript:@"isActivityStateHoldActive"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isActivityStateHoldActive"];
 
   [(HMDHomeActivityStateManager *)self activityState];
   v10 = HMHomeActivityStateToString();
-  [v4 setObject:v10 forKeyedSubscript:@"activityState"];
+  [dictionary setObject:v10 forKeyedSubscript:@"activityState"];
 
-  v11 = [(HMDHomeActivityStateManager *)self dataSource];
-  LODWORD(v8) = [v11 isResidentCapable];
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  LODWORD(v8) = [dataSource isResidentCapable];
 
   if (v8)
   {
-    v12 = [(HMDHomeActivityStateManager *)self dumpStateForResident];
-    [v4 addEntriesFromDictionary:v12];
+    dumpStateForResident = [(HMDHomeActivityStateManager *)self dumpStateForResident];
+    [dictionary addEntriesFromDictionary:dumpStateForResident];
   }
 
-  v13 = [v4 copy];
+  v13 = [dictionary copy];
 
   return v13;
 }
 
 - (id)messageReceiveQueue
 {
-  v2 = [(HMDHomeActivityStateManager *)self dataSource];
-  v3 = [v2 queue];
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  queue = [dataSource queue];
 
-  return v3;
+  return queue;
 }
 
 - (id)messageTargetUUID
 {
-  v2 = [(HMDHomeActivityStateManager *)self dataSource];
-  v3 = [v2 home];
-  v4 = [v3 uuid];
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  home = [dataSource home];
+  uuid = [home uuid];
 
-  return v4;
+  return uuid;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeActivityStateManager *)self dataSource];
-  v3 = [v2 logIdentifier];
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  logIdentifier = [dataSource logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)notifyFrameworkClientsAboutHomeActivityStateChange:(unint64_t)a3 isActivityStateHoldActive:(BOOL)a4 activityStateHoldEndDate:(id)a5 transitionalStateEndDate:(id)a6
+- (void)notifyFrameworkClientsAboutHomeActivityStateChange:(unint64_t)change isActivityStateHoldActive:(BOOL)active activityStateHoldEndDate:(id)date transitionalStateEndDate:(id)endDate
 {
-  v33 = a4;
+  activeCopy = active;
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  v11 = [(HMDHomeActivityStateManager *)self dataSource];
-  v12 = [v11 messageDispatcher];
-  v13 = [v11 home];
-  v14 = [v13 uuid];
+  dateCopy = date;
+  endDateCopy = endDate;
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  messageDispatcher = [dataSource messageDispatcher];
+  home = [dataSource home];
+  uuid = [home uuid];
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   v18 = v17;
-  if (v14 && v12)
+  if (uuid && messageDispatcher)
   {
-    v31 = v10;
-    v32 = v9;
+    v31 = endDateCopy;
+    v32 = dateCopy;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
@@ -171,7 +171,7 @@ void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivity
       *buf = 138544642;
       v37 = v19;
       v38 = 2112;
-      v39 = v14;
+      v39 = uuid;
       v40 = 2112;
       v41 = v20;
       v42 = 2112;
@@ -185,10 +185,10 @@ void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivity
 
     objc_autoreleasePoolPop(v15);
     v34[0] = *MEMORY[0x277CCFDD8];
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:change];
     v35[0] = v22;
     v34[1] = *MEMORY[0x277CCFDD0];
-    v23 = [MEMORY[0x277CCABB0] numberWithBool:v33];
+    v23 = [MEMORY[0x277CCABB0] numberWithBool:activeCopy];
     v35[1] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
     v25 = [v24 mutableCopy];
@@ -196,14 +196,14 @@ void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivity
     [v25 setObject:v32 forKeyedSubscript:*MEMORY[0x277CCFDC8]];
     [v25 setObject:v31 forKeyedSubscript:*MEMORY[0x277CCFE08]];
     v26 = [MEMORY[0x277D0F848] entitledMessageWithName:*MEMORY[0x277CCFEC0] messagePayload:v25];
-    v27 = [objc_alloc(MEMORY[0x277D0F820]) initWithTarget:v14];
+    v27 = [objc_alloc(MEMORY[0x277D0F820]) initWithTarget:uuid];
     [v26 setDestination:v27];
 
     v28 = [v26 copy];
-    [v12 sendMessage:v28];
+    [messageDispatcher sendMessage:v28];
 
-    v9 = v32;
-    v10 = v31;
+    dateCopy = v32;
+    endDateCopy = v31;
   }
 
   else
@@ -214,9 +214,9 @@ void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivity
       *buf = 138543874;
       v37 = v29;
       v38 = 2112;
-      v39 = v14;
+      v39 = uuid;
       v40 = 2112;
-      v41 = v12;
+      v41 = messageDispatcher;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly asked to notify framework clients of state change before data source was configured, expected homeUUID: %@ and messageDispatcher: %@", buf, 0x20u);
     }
 
@@ -226,16 +226,16 @@ void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivity
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversAboutHomeActivityStateChange:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5
+- (void)notifyObserversAboutHomeActivityStateChange:(unint64_t)change withHoldInfo:(id)info transitionalStateEndDate:(id)date
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDHomeActivityStateManager *)self dataSource];
-  v11 = [v10 queue];
-  dispatch_assert_queue_V2(v11);
+  infoCopy = info;
+  dateCopy = date;
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = v8;
+  v12 = infoCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -249,16 +249,16 @@ void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivity
 
   v14 = v13;
 
-  v15 = [(HMDHomeActivityStateManager *)self dataSource];
-  v16 = [v15 currentDate];
-  v17 = [v14 isActiveAtDate:v16];
+  dataSource2 = [(HMDHomeActivityStateManager *)self dataSource];
+  currentDate = [dataSource2 currentDate];
+  v17 = [v14 isActiveAtDate:currentDate];
 
   v31 = v14;
-  v30 = [v14 endDate];
-  v32 = v9;
-  v18 = [[HMDHomeActivityStateDetails alloc] initWithHomeActivityState:a3 holdInPlace:v17 holdExpiryTime:v30 transitionalStateEndDate:v9];
+  endDate = [v14 endDate];
+  v32 = dateCopy;
+  v18 = [[HMDHomeActivityStateDetails alloc] initWithHomeActivityState:change holdInPlace:v17 holdExpiryTime:endDate transitionalStateEndDate:dateCopy];
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -275,7 +275,7 @@ void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivity
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = [(HMDHomeActivityStateManager *)v20 observers];
+  obj = [(HMDHomeActivityStateManager *)selfCopy observers];
   v23 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v23)
   {
@@ -305,7 +305,7 @@ void __137__HMDHomeActivityStateManager_storageDidUpdateActivityState_isActivity
         block[1] = 3221225472;
         block[2] = __113__HMDHomeActivityStateManager_notifyObserversAboutHomeActivityStateChange_withHoldInfo_transitionalStateEndDate___block_invoke;
         block[3] = &unk_27868A010;
-        block[4] = v20;
+        block[4] = selfCopy;
         block[5] = v27;
         v35 = v18;
         dispatch_async(v28, block);
@@ -343,30 +343,30 @@ uint64_t __113__HMDHomeActivityStateManager_notifyObserversAboutHomeActivityStat
   return result;
 }
 
-- (BOOL)didUpdateCachedHomeActivityState:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5
+- (BOOL)didUpdateCachedHomeActivityState:(unint64_t)state withHoldInfo:(id)info transitionalStateEndDate:(id)date
 {
   v75 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDHomeActivityStateManager *)self dataSource];
-  v11 = [v10 queue];
-  dispatch_assert_queue_V2(v11);
+  infoCopy = info;
+  dateCopy = date;
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(HMDHomeActivityStateManager *)self activityState];
-  v68 = a3;
-  v13 = v12 != a3;
-  if (v12 != a3)
+  activityState = [(HMDHomeActivityStateManager *)self activityState];
+  stateCopy = state;
+  v13 = activityState != state;
+  if (activityState != state)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = HMFGetLogIdentifier();
-      [(HMDHomeActivityStateManager *)v15 activityState];
+      [(HMDHomeActivityStateManager *)selfCopy activityState];
       v18 = HMHomeActivityStateToString();
       HMHomeActivityStateToString();
-      v20 = v19 = v9;
+      v20 = v19 = dateCopy;
       *buf = 138543874;
       v70 = v17;
       v71 = 2112;
@@ -375,14 +375,14 @@ uint64_t __113__HMDHomeActivityStateManager_notifyObserversAboutHomeActivityStat
       v74 = v20;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Updating cached activityState: %@ -> %@", buf, 0x20u);
 
-      v9 = v19;
+      dateCopy = v19;
     }
 
     objc_autoreleasePoolPop(v14);
-    [(HMDHomeActivityStateManager *)v15 setActivityState:v68];
+    [(HMDHomeActivityStateManager *)selfCopy setActivityState:stateCopy];
   }
 
-  v21 = v8;
+  v21 = infoCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -396,20 +396,20 @@ uint64_t __113__HMDHomeActivityStateManager_notifyObserversAboutHomeActivityStat
 
   v23 = v22;
 
-  v24 = [(HMDHomeActivityStateManager *)self isActivityStateHoldActive];
+  isActivityStateHoldActive = [(HMDHomeActivityStateManager *)self isActivityStateHoldActive];
   if (v23)
   {
-    if (!v24)
+    if (!isActivityStateHoldActive)
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy2 = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         v28 = HMFGetLogIdentifier();
-        [(HMDHomeActivityStateManager *)v26 isActivityStateHoldActive];
+        [(HMDHomeActivityStateManager *)selfCopy2 isActivityStateHoldActive];
         HMFBooleanToString();
-        v30 = v29 = v9;
+        v30 = v29 = dateCopy;
         v31 = HMFBooleanToString();
         *buf = 138543874;
         v70 = v28;
@@ -419,22 +419,22 @@ uint64_t __113__HMDHomeActivityStateManager_notifyObserversAboutHomeActivityStat
         v74 = v31;
         _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_INFO, "%{public}@Updating cached isActivityStateHoldActive %@ -> %@", buf, 0x20u);
 
-        v9 = v29;
+        dateCopy = v29;
       }
 
       objc_autoreleasePoolPop(v25);
       v13 = 1;
-      [(HMDHomeActivityStateManager *)v26 setIsActivityStateHoldActive:1];
+      [(HMDHomeActivityStateManager *)selfCopy2 setIsActivityStateHoldActive:1];
     }
 
-    v32 = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
-    v33 = [v23 endDate];
+    activityStateHoldEndDate = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
+    endDate = [v23 endDate];
     if ((HMFEqualObjects() & 1) == 0)
     {
       v67 = v23;
-      v34 = v9;
+      v34 = dateCopy;
       v35 = objc_autoreleasePoolPush();
-      v36 = self;
+      selfCopy3 = self;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
@@ -442,34 +442,34 @@ uint64_t __113__HMDHomeActivityStateManager_notifyObserversAboutHomeActivityStat
         *buf = 138543874;
         v70 = v38;
         v71 = 2112;
-        v72 = v32;
+        v72 = activityStateHoldEndDate;
         v73 = 2112;
-        v74 = v33;
+        v74 = endDate;
         _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_INFO, "%{public}@Updating cached activityStateHoldEndDate: %@ -> %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v35);
-      [(HMDHomeActivityStateManager *)v36 setActivityStateHoldEndDate:v33];
+      [(HMDHomeActivityStateManager *)selfCopy3 setActivityStateHoldEndDate:endDate];
       v13 = 1;
-      v9 = v34;
+      dateCopy = v34;
       v23 = v67;
     }
   }
 
   else
   {
-    if (v24)
+    if (isActivityStateHoldActive)
     {
       v39 = objc_autoreleasePoolPush();
-      v40 = self;
+      selfCopy4 = self;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
       {
         v42 = HMFGetLogIdentifier();
-        [(HMDHomeActivityStateManager *)v40 isActivityStateHoldActive];
+        [(HMDHomeActivityStateManager *)selfCopy4 isActivityStateHoldActive];
         v43 = HMFBooleanToString();
         HMFBooleanToString();
-        v45 = v44 = v9;
+        v45 = v44 = dateCopy;
         *buf = 138543874;
         v70 = v42;
         v71 = 2112;
@@ -478,63 +478,63 @@ uint64_t __113__HMDHomeActivityStateManager_notifyObserversAboutHomeActivityStat
         v74 = v45;
         _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_INFO, "%{public}@Updating cached isActivityStateHoldActive %@ -> %@", buf, 0x20u);
 
-        v9 = v44;
+        dateCopy = v44;
       }
 
       objc_autoreleasePoolPop(v39);
-      [(HMDHomeActivityStateManager *)v40 setIsActivityStateHoldActive:0];
+      [(HMDHomeActivityStateManager *)selfCopy4 setIsActivityStateHoldActive:0];
       v13 = 1;
     }
 
-    v46 = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
+    activityStateHoldEndDate2 = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
 
-    if (v46)
+    if (activityStateHoldEndDate2)
     {
       v47 = objc_autoreleasePoolPush();
-      v48 = self;
+      selfCopy5 = self;
       v49 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
         v50 = HMFGetLogIdentifier();
-        v51 = [(HMDHomeActivityStateManager *)v48 activityStateHoldEndDate];
+        activityStateHoldEndDate3 = [(HMDHomeActivityStateManager *)selfCopy5 activityStateHoldEndDate];
         *buf = 138543874;
         v70 = v50;
         v71 = 2112;
-        v72 = v51;
+        v72 = activityStateHoldEndDate3;
         v73 = 2112;
         v74 = 0;
         _os_log_impl(&dword_229538000, v49, OS_LOG_TYPE_INFO, "%{public}@Updating cached activityStateHoldEndDate: %@ -> %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v47);
-      [(HMDHomeActivityStateManager *)v48 setActivityStateHoldEndDate:0];
+      [(HMDHomeActivityStateManager *)selfCopy5 setActivityStateHoldEndDate:0];
       v13 = 1;
     }
   }
 
-  v52 = [(HMDHomeActivityStateManager *)self transitionalStateEndDate];
+  transitionalStateEndDate = [(HMDHomeActivityStateManager *)self transitionalStateEndDate];
   v53 = HMFEqualObjects();
 
   if ((v53 & 1) == 0)
   {
     v60 = objc_autoreleasePoolPush();
-    v61 = self;
+    selfCopy6 = self;
     v62 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
     {
       v63 = HMFGetLogIdentifier();
-      v64 = [(HMDHomeActivityStateManager *)v61 transitionalStateEndDate];
+      transitionalStateEndDate2 = [(HMDHomeActivityStateManager *)selfCopy6 transitionalStateEndDate];
       *buf = 138543874;
       v70 = v63;
       v71 = 2112;
-      v72 = v64;
+      v72 = transitionalStateEndDate2;
       v73 = 2112;
-      v74 = v9;
+      v74 = dateCopy;
       _os_log_impl(&dword_229538000, v62, OS_LOG_TYPE_INFO, "%{public}@Updating cached transitionalStateEndDate: %@ -> %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v60);
-    [(HMDHomeActivityStateManager *)v61 setTransitionalStateEndDate:v9];
+    [(HMDHomeActivityStateManager *)selfCopy6 setTransitionalStateEndDate:dateCopy];
     goto LABEL_34;
   }
 
@@ -546,7 +546,7 @@ LABEL_34:
   }
 
   v54 = objc_autoreleasePoolPush();
-  v55 = self;
+  selfCopy7 = self;
   v56 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
   {
@@ -571,13 +571,13 @@ LABEL_35:
 
 - (void)_cachePropertiesForCurrentStateDetailsFromWorkingStore
 {
-  v3 = [(HMDHomeActivityStateManager *)self storage];
+  storage = [(HMDHomeActivityStateManager *)self storage];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFromWorkingStore__block_invoke;
   v4[3] = &unk_2786718E8;
   v4[4] = self;
-  [v3 fetchCurrentStateDetailsWithCompletion:v4];
+  [storage fetchCurrentStateDetailsWithCompletion:v4];
 }
 
 void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFromWorkingStore__block_invoke(uint64_t a1, void *a2)
@@ -647,24 +647,24 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchCurrentHomeActivityState:(id)a3
+- (void)handleFetchCurrentHomeActivityState:(id)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateManager *)self messageReceiveQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  messageReceiveQueue = [(HMDHomeActivityStateManager *)self messageReceiveQueue];
+  dispatch_assert_queue_V2(messageReceiveQueue);
 
-  v6 = [(HMDHomeActivityStateManager *)self storage];
+  storage = [(HMDHomeActivityStateManager *)self storage];
 
-  if (v6)
+  if (storage)
   {
-    v7 = [(HMDHomeActivityStateManager *)self currentHomeActivityStateDetails];
+    currentHomeActivityStateDetails = [(HMDHomeActivityStateManager *)self currentHomeActivityStateDetails];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -675,12 +675,12 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = [[HMDHomeActivityStateDetails alloc] initWithHomeActivityState:0 holdInPlace:0 holdExpiryTime:0 transitionalStateEndDate:0];
+    currentHomeActivityStateDetails = [[HMDHomeActivityStateDetails alloc] initWithHomeActivityState:0 holdInPlace:0 holdExpiryTime:0 transitionalStateEndDate:0];
   }
 
-  v12 = v7;
+  v12 = currentHomeActivityStateDetails;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy2 = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -693,16 +693,16 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
   }
 
   objc_autoreleasePoolPop(v13);
-  v17 = [(HMDHomeActivityStateDetails *)v12 generatePayload];
-  [v4 respondWithPayload:v17];
+  generatePayload = [(HMDHomeActivityStateDetails *)v12 generatePayload];
+  [stateCopy respondWithPayload:generatePayload];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIsCacheLoaded:(BOOL)a3
+- (void)setIsCacheLoaded:(BOOL)loaded
 {
   os_unfair_lock_lock_with_options();
-  self->_isCacheLoaded = a3;
+  self->_isCacheLoaded = loaded;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -724,12 +724,12 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
   return v3;
 }
 
-- (void)setTransitionalStateEndDate:(id)a3
+- (void)setTransitionalStateEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
   transitionalStateEndDate = self->_transitionalStateEndDate;
-  self->_transitionalStateEndDate = v4;
+  self->_transitionalStateEndDate = dateCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -743,10 +743,10 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
   return v3;
 }
 
-- (void)setIsActivityStateHoldActive:(BOOL)a3
+- (void)setIsActivityStateHoldActive:(BOOL)active
 {
   os_unfair_lock_lock_with_options();
-  self->_isActivityStateHoldActive = a3;
+  self->_isActivityStateHoldActive = active;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -759,12 +759,12 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
   return isActivityStateHoldActive;
 }
 
-- (void)setActivityStateHoldEndDate:(id)a3
+- (void)setActivityStateHoldEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
   activityStateHoldEndDate = self->_activityStateHoldEndDate;
-  self->_activityStateHoldEndDate = v4;
+  self->_activityStateHoldEndDate = dateCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -778,10 +778,10 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
   return v3;
 }
 
-- (void)setActivityState:(unint64_t)a3
+- (void)setActivityState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_activityState = a3;
+  self->_activityState = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -794,12 +794,12 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
   return activityState;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -807,24 +807,24 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = observerCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Removing %@ for home activity state changes, observer", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  [(NSHashTable *)v6->_observers removeObject:v4];
-  os_unfair_lock_unlock(&v6->_lock);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -832,18 +832,18 @@ void __85__HMDHomeActivityStateManager__cachePropertiesForCurrentStateDetailsFro
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = observerCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Registering %@ for home activity state changes", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  if (![(NSHashTable *)v6->_observers containsObject:v4])
+  if (![(NSHashTable *)selfCopy->_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)v6->_observers addObject:v4];
+    [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
   }
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -858,25 +858,25 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v3 = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
+  activityStateHoldEndDate = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
 
-  if (!v3)
+  if (!activityStateHoldEndDate)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      [(HMDHomeActivityStateManager *)v13 isActivityStateHoldActive];
+      [(HMDHomeActivityStateManager *)selfCopy isActivityStateHoldActive];
       v16 = HMFBooleanToString();
-      v17 = [(HMDHomeActivityStateManager *)v13 activityStateHoldEndDate];
+      activityStateHoldEndDate2 = [(HMDHomeActivityStateManager *)selfCopy activityStateHoldEndDate];
       v25 = 138543874;
       v26 = v15;
       v27 = 2112;
       v28 = v16;
       v29 = 2112;
-      v30 = v17;
+      v30 = activityStateHoldEndDate2;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly found invalid state hold properties in cache (isActivityStateHoldActive: %@, activityStateHoldEndDate: %@)", &v25, 0x20u);
     }
 
@@ -884,25 +884,25 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v4 = [(HMDHomeActivityStateManager *)self dataSource];
-  v5 = [v4 currentDate];
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  currentDate = [dataSource currentDate];
 
-  v6 = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
-  v7 = [v6 compare:v5];
+  activityStateHoldEndDate3 = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
+  v7 = [activityStateHoldEndDate3 compare:currentDate];
 
   if (v7 == -1)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [(HMDHomeActivityStateManager *)v19 activityStateHoldEndDate];
+      activityStateHoldEndDate4 = [(HMDHomeActivityStateManager *)selfCopy2 activityStateHoldEndDate];
       v25 = 138543618;
       v26 = v21;
       v27 = 2112;
-      v28 = v22;
+      v28 = activityStateHoldEndDate4;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Not reporting on current state hold because cached activityStateHoldEndDate (%@) indicates that hold has expired)", &v25, 0x16u);
     }
 
@@ -913,9 +913,9 @@ LABEL_8:
   else
   {
     v8 = [HMDHomeActivityStateTimedHoldInfo alloc];
-    v9 = [(HMDHomeActivityStateManager *)self activityState];
-    v10 = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
-    v11 = [(HMDHomeActivityStateTimedHoldInfo *)v8 initWithHomeActivityState:v9 activationDate:v5 endDate:v10];
+    activityState = [(HMDHomeActivityStateManager *)self activityState];
+    activityStateHoldEndDate5 = [(HMDHomeActivityStateManager *)self activityStateHoldEndDate];
+    v11 = [(HMDHomeActivityStateTimedHoldInfo *)v8 initWithHomeActivityState:activityState activationDate:currentDate endDate:activityStateHoldEndDate5];
   }
 
 LABEL_13:
@@ -940,49 +940,49 @@ LABEL_13:
 - (void)_registerForMessages
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityStateManager *)self dataSource];
-  v4 = [v3 messageDispatcher];
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  messageDispatcher = [dataSource messageDispatcher];
   v5 = *MEMORY[0x277CCFD58];
   v6 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v24[0] = v6;
   v7 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
   v24[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-  [v4 registerForMessage:v5 receiver:self policies:v8 selector:sel_handleFetchCurrentHomeActivityState_];
+  [messageDispatcher registerForMessage:v5 receiver:self policies:v8 selector:sel_handleFetchCurrentHomeActivityState_];
 
-  v9 = [(HMDHomeActivityStateManager *)self dataSource];
-  v10 = [v9 administratorHandler];
+  dataSource2 = [(HMDHomeActivityStateManager *)self dataSource];
+  administratorHandler = [dataSource2 administratorHandler];
   v11 = *MEMORY[0x277CD12A0];
   v12 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v23[0] = v12;
   v13 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
   v23[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
-  [v10 registerForMessage:v11 receiver:self policies:v14 selector:sel_handleUserRequestToUpdateHomeActivityState_];
+  [administratorHandler registerForMessage:v11 receiver:self policies:v14 selector:sel_handleUserRequestToUpdateHomeActivityState_];
 
-  v15 = [(HMDHomeActivityStateManager *)self dataSource];
-  v16 = [v15 administratorHandler];
+  dataSource3 = [(HMDHomeActivityStateManager *)self dataSource];
+  administratorHandler2 = [dataSource3 administratorHandler];
   v17 = *MEMORY[0x277CCF6A0];
   v18 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v22[0] = v18;
   v19 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
   v22[1] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
-  [v16 registerForMessage:v17 receiver:self policies:v20 selector:sel_handleCancelHoldMessage_];
+  [administratorHandler2 registerForMessage:v17 receiver:self policies:v20 selector:sel_handleCancelHoldMessage_];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
 - (void)unconfigure
 {
-  v3 = [(HMDHomeActivityStateManager *)self dataSource];
-  v4 = [v3 queue];
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__HMDHomeActivityStateManager_unconfigure__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __42__HMDHomeActivityStateManager_unconfigure__block_invoke(uint64_t a1)
@@ -1015,7 +1015,7 @@ void __42__HMDHomeActivityStateManager_unconfigure__block_invoke(uint64_t a1)
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1026,68 +1026,68 @@ void __42__HMDHomeActivityStateManager_unconfigure__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDHomeActivityStateManager *)v4 _registerForMessages];
-  v7 = [(HMDHomeActivityStateManager *)v4 dataSource];
-  v8 = [v7 isResidentCapable];
+  [(HMDHomeActivityStateManager *)selfCopy _registerForMessages];
+  dataSource = [(HMDHomeActivityStateManager *)selfCopy dataSource];
+  isResidentCapable = [dataSource isResidentCapable];
 
-  if (v8)
+  if (isResidentCapable)
   {
-    v9 = [(HMDHomeActivityStateManager *)v4 storage];
+    storage = [(HMDHomeActivityStateManager *)selfCopy storage];
 
-    if (!v9)
+    if (!storage)
     {
       _HMFPreconditionFailure();
     }
 
-    v10 = [(HMDHomeActivityStateManager *)v4 storage];
-    [v10 setDelegate:v4];
+    storage2 = [(HMDHomeActivityStateManager *)selfCopy storage];
+    [storage2 setDelegate:selfCopy];
 
-    v11 = [(HMDHomeActivityStateManager *)v4 storage];
-    [v11 configure];
+    storage3 = [(HMDHomeActivityStateManager *)selfCopy storage];
+    [storage3 configure];
 
-    [(HMDHomeActivityStateManager *)v4 _cachePropertiesForCurrentStateDetailsFromWorkingStore];
-    [(HMDHomeActivityStateManager *)v4 configureForResident];
+    [(HMDHomeActivityStateManager *)selfCopy _cachePropertiesForCurrentStateDetailsFromWorkingStore];
+    [(HMDHomeActivityStateManager *)selfCopy configureForResident];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeActivityStateManager)initWithDataSource:(id)a3 storage:(id)a4
+- (HMDHomeActivityStateManager)initWithDataSource:(id)source storage:(id)storage
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  storageCopy = storage;
   v14.receiver = self;
   v14.super_class = HMDHomeActivityStateManager;
   v9 = [(HMDHomeActivityStateManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_storage, a4);
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_storage, storage);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v10->_observers;
-    v10->_observers = v11;
+    v10->_observers = weakObjectsHashTable;
   }
 
   return v10;
 }
 
-- (HMDHomeActivityStateManager)initWithHome:(id)a3
+- (HMDHomeActivityStateManager)initWithHome:(id)home
 {
-  v4 = a3;
-  v5 = [[HMDHomeActivityStateManagerDataSource alloc] initWithHome:v4];
+  homeCopy = home;
+  v5 = [[HMDHomeActivityStateManagerDataSource alloc] initWithHome:homeCopy];
 
   if ([(HMDHomeActivityStateManagerDataSource *)v5 isResidentCapable])
   {
-    v6 = [(HMDHomeActivityStateManagerDataSource *)v5 makeHomeActivityStateManagerStorage];
+    makeHomeActivityStateManagerStorage = [(HMDHomeActivityStateManagerDataSource *)v5 makeHomeActivityStateManagerStorage];
   }
 
   else
   {
-    v6 = 0;
+    makeHomeActivityStateManagerStorage = 0;
   }
 
-  v7 = [(HMDHomeActivityStateManager *)self initWithDataSource:v5 storage:v6];
+  v7 = [(HMDHomeActivityStateManager *)self initWithDataSource:v5 storage:makeHomeActivityStateManagerStorage];
 
   return v7;
 }
@@ -1114,128 +1114,128 @@ void __42__HMDHomeActivityStateManager_logCategory__block_invoke()
 
 - (id)dumpStateForResident
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
-  v5 = [v4 dumpStateWithPrivacyLevel:0];
-  [v3 setObject:v5 forKeyedSubscript:@"HMDHomeActivityStateAggregatorManager"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  homeActivityStateAggregatorManager = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+  v5 = [homeActivityStateAggregatorManager dumpStateWithPrivacyLevel:0];
+  [dictionary setObject:v5 forKeyedSubscript:@"HMDHomeActivityStateAggregatorManager"];
 
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
 
   return v6;
 }
 
-- (void)handleCancelHoldMessage:(id)a3
+- (void)handleCancelHoldMessage:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateManager *)self messageReceiveQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  messageReceiveQueue = [(HMDHomeActivityStateManager *)self messageReceiveQueue];
+  dispatch_assert_queue_V2(messageReceiveQueue);
 
-  v6 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+  homeActivityStateAggregatorManager = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
 
-  if (v6)
+  if (homeActivityStateAggregatorManager)
   {
-    v7 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
-    [v7 handleCancelHoldMessage:v4];
+    homeActivityStateAggregatorManager2 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+    [homeActivityStateAggregatorManager2 handleCancelHoldMessage:messageCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v14 = 138543618;
       v15 = v11;
       v16 = 2114;
-      v17 = v12;
+      v17 = shortDescription;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Not the primary resident to handle %{public}@", &v14, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3202];
-    [v4 respondWithError:v7];
+    homeActivityStateAggregatorManager2 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3202];
+    [messageCopy respondWithError:homeActivityStateAggregatorManager2];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUserRequestToUpdateHomeActivityState:(id)a3
+- (void)handleUserRequestToUpdateHomeActivityState:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateManager *)self messageReceiveQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  messageReceiveQueue = [(HMDHomeActivityStateManager *)self messageReceiveQueue];
+  dispatch_assert_queue_V2(messageReceiveQueue);
 
-  v6 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+  homeActivityStateAggregatorManager = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
 
-  if (v6)
+  if (homeActivityStateAggregatorManager)
   {
-    v7 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
-    [v7 handleUserRequestToUpdateHomeActivityState:v4];
+    homeActivityStateAggregatorManager2 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+    [homeActivityStateAggregatorManager2 handleUserRequestToUpdateHomeActivityState:stateCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 shortDescription];
+      shortDescription = [stateCopy shortDescription];
       v14 = 138543618;
       v15 = v11;
       v16 = 2114;
-      v17 = v12;
+      v17 = shortDescription;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Not the primary resident to handle %{public}@", &v14, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3202];
-    [v4 respondWithError:v7];
+    homeActivityStateAggregatorManager2 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3202];
+    [stateCopy respondWithError:homeActivityStateAggregatorManager2];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUserActivityReportUpdated:(id)a3
+- (void)handleUserActivityReportUpdated:(id)updated
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateManager *)self messageReceiveQueue];
-  dispatch_assert_queue_V2(v5);
+  updatedCopy = updated;
+  messageReceiveQueue = [(HMDHomeActivityStateManager *)self messageReceiveQueue];
+  dispatch_assert_queue_V2(messageReceiveQueue);
 
-  v6 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+  homeActivityStateAggregatorManager = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
 
-  if (v6)
+  if (homeActivityStateAggregatorManager)
   {
-    v7 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
-    [v7 handleUserActivityReportUpdated:v4];
+    homeActivityStateAggregatorManager2 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+    [homeActivityStateAggregatorManager2 handleUserActivityReportUpdated:updatedCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 shortDescription];
+      shortDescription = [updatedCopy shortDescription];
       v14 = 138543618;
       v15 = v11;
       v16 = 2114;
-      v17 = v12;
+      v17 = shortDescription;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Not the primary resident to handle %{public}@", &v14, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3202];
-    [v4 respondWithError:v7];
+    homeActivityStateAggregatorManager2 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3202];
+    [updatedCopy respondWithError:homeActivityStateAggregatorManager2];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1243,12 +1243,12 @@ void __42__HMDHomeActivityStateManager_logCategory__block_invoke()
 
 - (void)unconfigureForResident
 {
-  v3 = [(HMDHomeActivityStateManager *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
-  [v5 unconfigure];
+  homeActivityStateAggregatorManager = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+  [homeActivityStateAggregatorManager unconfigure];
 
   [(HMDHomeActivityStateManager *)self setHomeActivityStateAggregatorManager:0];
 }
@@ -1256,41 +1256,41 @@ void __42__HMDHomeActivityStateManager_logCategory__block_invoke()
 - (void)configureForResident
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityStateManager *)self dataSource];
-  v21 = [v3 home];
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  home = [dataSource home];
 
-  if (v21)
+  if (home)
   {
-    v4 = [(HMDHomeActivityStateManager *)self dataSource];
-    v5 = [v4 featuresDataSource];
-    v6 = [v5 isHomeActivityStateReplacesPresenceMonitorFeatureEnabled];
+    dataSource2 = [(HMDHomeActivityStateManager *)self dataSource];
+    featuresDataSource = [dataSource2 featuresDataSource];
+    isHomeActivityStateReplacesPresenceMonitorFeatureEnabled = [featuresDataSource isHomeActivityStateReplacesPresenceMonitorFeatureEnabled];
 
-    if (v6)
+    if (isHomeActivityStateReplacesPresenceMonitorFeatureEnabled)
     {
       v7 = [HMDHomeActivityStateHomePresenceReceiver alloc];
-      v8 = [(HMDHomeActivityStateManager *)self dataSource];
-      v9 = [v8 queue];
-      v10 = [(HMDHomeActivityStateHomePresenceReceiver *)v7 initWithMessageReceiveQueue:v9];
+      dataSource3 = [(HMDHomeActivityStateManager *)self dataSource];
+      queue = [dataSource3 queue];
+      v10 = [(HMDHomeActivityStateHomePresenceReceiver *)v7 initWithMessageReceiveQueue:queue];
       [(HMDHomeActivityStateManager *)self setPresenceReceiver:v10];
 
-      v11 = [(HMDHomeActivityStateManager *)self presenceReceiver];
-      v12 = [v21 msgDispatcher];
-      [v11 configure:v21 messageDispatcher:v12];
+      presenceReceiver = [(HMDHomeActivityStateManager *)self presenceReceiver];
+      msgDispatcher = [home msgDispatcher];
+      [presenceReceiver configure:home messageDispatcher:msgDispatcher];
     }
 
     if (self)
     {
       v13 = +[HMDRemoteMessagePolicy defaultSecurePrimaryResidentPolicy];
-      v14 = [(HMDHomeActivityStateManager *)self dataSource];
-      v15 = [v14 home];
-      v16 = [HMDUserMessagePolicy userMessagePolicyWithHome:v15 userPrivilege:5 remoteAccessRequired:0];
+      dataSource4 = [(HMDHomeActivityStateManager *)self dataSource];
+      home2 = [dataSource4 home];
+      v16 = [HMDUserMessagePolicy userMessagePolicyWithHome:home2 userPrivilege:5 remoteAccessRequired:0];
 
-      v17 = [(HMDHomeActivityStateManager *)self dataSource];
-      v18 = [v17 messageDispatcher];
+      dataSource5 = [(HMDHomeActivityStateManager *)self dataSource];
+      messageDispatcher = [dataSource5 messageDispatcher];
       v22[0] = v13;
       v22[1] = v16;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
-      [v18 registerForMessage:@"HMDUserActivityReportUpdatedMessage" receiver:self policies:v19 selector:sel_handleUserActivityReportUpdated_];
+      [messageDispatcher registerForMessage:@"HMDUserActivityReportUpdatedMessage" receiver:self policies:v19 selector:sel_handleUserActivityReportUpdated_];
     }
   }
 
@@ -1299,28 +1299,28 @@ void __42__HMDHomeActivityStateManager_logCategory__block_invoke()
 
 - (void)handlePrimaryResidentDidBecomeOtherDevice
 {
-  v3 = [(HMDHomeActivityStateManager *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
-  [v5 unconfigure];
+  homeActivityStateAggregatorManager = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+  [homeActivityStateAggregatorManager unconfigure];
 
   [(HMDHomeActivityStateManager *)self setHomeActivityStateAggregatorManager:0];
 }
 
-- (void)handlePrimaryResidentDidBecomeCurrentDeviceWithCompletion:(id)a3
+- (void)handlePrimaryResidentDidBecomeCurrentDeviceWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateManager *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  completionCopy = completion;
+  dataSource = [(HMDHomeActivityStateManager *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(HMDHomeActivityStateManager *)self isCacheLoaded])
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -1334,17 +1334,17 @@ void __42__HMDHomeActivityStateManager_logCategory__block_invoke()
     goto LABEL_9;
   }
 
-  v7 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+  homeActivityStateAggregatorManager = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
 
-  if (v7)
+  if (homeActivityStateAggregatorManager)
   {
 LABEL_9:
-    v4[2](v4);
+    completionCopy[2](completionCopy);
     goto LABEL_10;
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy2 = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1355,14 +1355,14 @@ LABEL_9:
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDHomeActivityStateManager *)v9 dataSource];
-  v13 = [(HMDHomeActivityStateManager *)v9 currentStateHoldDetails];
-  v14 = [v12 createHomeActivityStateAggregatorManagerWithInitialStateHoldDetails:v13];
-  [(HMDHomeActivityStateManager *)v9 setHomeActivityStateAggregatorManager:v14];
+  dataSource2 = [(HMDHomeActivityStateManager *)selfCopy2 dataSource];
+  currentStateHoldDetails = [(HMDHomeActivityStateManager *)selfCopy2 currentStateHoldDetails];
+  v14 = [dataSource2 createHomeActivityStateAggregatorManagerWithInitialStateHoldDetails:currentStateHoldDetails];
+  [(HMDHomeActivityStateManager *)selfCopy2 setHomeActivityStateAggregatorManager:v14];
 
-  v15 = [(HMDHomeActivityStateManager *)v9 homeActivityStateAggregatorManager];
-  v16 = [(HMDHomeActivityStateManager *)v9 presenceReceiver];
-  [v15 configureWithPresenceReceiver:v16 completion:v4];
+  homeActivityStateAggregatorManager2 = [(HMDHomeActivityStateManager *)selfCopy2 homeActivityStateAggregatorManager];
+  presenceReceiver = [(HMDHomeActivityStateManager *)selfCopy2 presenceReceiver];
+  [homeActivityStateAggregatorManager2 configureWithPresenceReceiver:presenceReceiver completion:completionCopy];
 
 LABEL_10:
   v21 = *MEMORY[0x277D85DE8];
@@ -1370,20 +1370,20 @@ LABEL_10:
 
 - (HMDHomeUserActivityStatesDetails)userActivityStatesDetails
 {
-  v3 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+  homeActivityStateAggregatorManager = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
 
-  if (v3)
+  if (homeActivityStateAggregatorManager)
   {
-    v4 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
-    v5 = [v4 userActivityStatesDetails];
+    homeActivityStateAggregatorManager2 = [(HMDHomeActivityStateManager *)self homeActivityStateAggregatorManager];
+    userActivityStatesDetails = [homeActivityStateAggregatorManager2 userActivityStatesDetails];
   }
 
   else
   {
-    v5 = 0;
+    userActivityStatesDetails = 0;
   }
 
-  return v5;
+  return userActivityStatesDetails;
 }
 
 @end

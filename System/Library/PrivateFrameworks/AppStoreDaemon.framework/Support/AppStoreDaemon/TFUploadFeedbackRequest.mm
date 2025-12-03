@@ -1,11 +1,11 @@
 @interface TFUploadFeedbackRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TFUploadFeedbackRequest
@@ -15,8 +15,8 @@
   v7.receiver = self;
   v7.super_class = TFUploadFeedbackRequest;
   v3 = [(TFUploadFeedbackRequest *)&v7 description];
-  v4 = [(TFUploadFeedbackRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(TFUploadFeedbackRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -33,29 +33,29 @@
   feedback = self->_feedback;
   if (feedback)
   {
-    v6 = [(TFFeedback *)feedback dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"feedback"];
+    dictionaryRepresentation = [(TFFeedback *)feedback dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"feedback"];
   }
 
   application = self->_application;
   if (application)
   {
-    v8 = [(TFApplication *)application dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"application"];
+    dictionaryRepresentation2 = [(TFApplication *)application dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"application"];
   }
 
   device = self->_device;
   if (device)
   {
-    v10 = [(TFDevice *)device dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"device"];
+    dictionaryRepresentation3 = [(TFDevice *)device dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"device"];
   }
 
   appleWatch = self->_appleWatch;
   if (appleWatch)
   {
-    v12 = [(TFAppleWatch *)appleWatch dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"appleWatch"];
+    dictionaryRepresentation4 = [(TFAppleWatch *)appleWatch dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"appleWatch"];
   }
 
   has = self->_has;
@@ -76,16 +76,16 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -94,18 +94,18 @@
       while (1)
       {
         LOBYTE(v38) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v38 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v38 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v38 & 0x7F) << v6;
@@ -123,11 +123,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -143,18 +143,18 @@ LABEL_15:
             while (1)
             {
               LOBYTE(v38) = 0;
-              v26 = [a3 position] + 1;
-              if (v26 >= [a3 position] && (v27 = objc_msgSend(a3, "position") + 1, v27 <= objc_msgSend(a3, "length")))
+              v26 = [from position] + 1;
+              if (v26 >= [from position] && (v27 = objc_msgSend(from, "position") + 1, v27 <= objc_msgSend(from, "length")))
               {
-                v28 = [a3 data];
-                [v28 getBytes:&v38 range:{objc_msgSend(a3, "position"), 1}];
+                data2 = [from data];
+                [data2 getBytes:&v38 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v25 |= (v38 & 0x7F) << v23;
@@ -172,7 +172,7 @@ LABEL_15:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v22 = 0;
             }
@@ -190,7 +190,7 @@ LABEL_70:
             objc_storeStrong(&self->_feedback, v15);
             v38 = 0;
             v39 = 0;
-            if (!PBReaderPlaceMark() || !sub_100231000(v15, a3))
+            if (!PBReaderPlaceMark() || !sub_100231000(v15, from))
             {
 LABEL_82:
 
@@ -203,7 +203,7 @@ LABEL_82:
             objc_storeStrong(&self->_application, v15);
             v38 = 0;
             v39 = 0;
-            if (!PBReaderPlaceMark() || !sub_10040B6F8(v15, a3))
+            if (!PBReaderPlaceMark() || !sub_10040B6F8(v15, from))
             {
               goto LABEL_82;
             }
@@ -223,18 +223,18 @@ LABEL_82:
           while (1)
           {
             LOBYTE(v38) = 0;
-            v32 = [a3 position] + 1;
-            if (v32 >= [a3 position] && (v33 = objc_msgSend(a3, "position") + 1, v33 <= objc_msgSend(a3, "length")))
+            v32 = [from position] + 1;
+            if (v32 >= [from position] && (v33 = objc_msgSend(from, "position") + 1, v33 <= objc_msgSend(from, "length")))
             {
-              v34 = [a3 data];
-              [v34 getBytes:&v38 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v38 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v31 |= (v38 & 0x7F) << v29;
@@ -252,7 +252,7 @@ LABEL_82:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -276,18 +276,18 @@ LABEL_74:
           while (1)
           {
             LOBYTE(v38) = 0;
-            v19 = [a3 position] + 1;
-            if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+            v19 = [from position] + 1;
+            if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
             {
-              v21 = [a3 data];
-              [v21 getBytes:&v38 range:{objc_msgSend(a3, "position"), 1}];
+              data4 = [from data];
+              [data4 getBytes:&v38 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v18 |= (v38 & 0x7F) << v16;
@@ -305,7 +305,7 @@ LABEL_74:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -331,7 +331,7 @@ LABEL_79:
           objc_storeStrong(&self->_device, v15);
           v38 = 0;
           v39 = 0;
-          if (!PBReaderPlaceMark() || !sub_10038B93C(v15, a3))
+          if (!PBReaderPlaceMark() || !sub_10038B93C(v15, from))
           {
             goto LABEL_82;
           }
@@ -345,7 +345,7 @@ LABEL_79:
           objc_storeStrong(&self->_appleWatch, v15);
           v38 = 0;
           v39 = 0;
-          if (!PBReaderPlaceMark() || !sub_1003507EC(v15, a3))
+          if (!PBReaderPlaceMark() || !sub_1003507EC(v15, from))
           {
             goto LABEL_82;
           }
@@ -363,18 +363,18 @@ LABEL_66:
       }
 
 LABEL_80:
-      v36 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v36 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteUint64Field();
@@ -413,9 +413,9 @@ LABEL_80:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -423,19 +423,19 @@ LABEL_80:
     *(v5 + 64) |= 2u;
   }
 
-  v7 = [(TFFeedback *)self->_feedback copyWithZone:a3];
+  v7 = [(TFFeedback *)self->_feedback copyWithZone:zone];
   v8 = v6[7];
   v6[7] = v7;
 
-  v9 = [(TFApplication *)self->_application copyWithZone:a3];
+  v9 = [(TFApplication *)self->_application copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
-  v11 = [(TFDevice *)self->_device copyWithZone:a3];
+  v11 = [(TFDevice *)self->_device copyWithZone:zone];
   v12 = v6[6];
   v6[6] = v11;
 
-  v13 = [(TFAppleWatch *)self->_appleWatch copyWithZone:a3];
+  v13 = [(TFAppleWatch *)self->_appleWatch copyWithZone:zone];
   v14 = v6[4];
   v6[4] = v13;
 
@@ -456,23 +456,23 @@ LABEL_80:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_dsid != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_dsid != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
 LABEL_24:
     v9 = 0;
@@ -480,13 +480,13 @@ LABEL_24:
   }
 
   feedback = self->_feedback;
-  if (feedback | *(v4 + 7) && ![(TFFeedback *)feedback isEqual:?])
+  if (feedback | *(equalCopy + 7) && ![(TFFeedback *)feedback isEqual:?])
   {
     goto LABEL_24;
   }
 
   application = self->_application;
-  if (application | *(v4 + 5))
+  if (application | *(equalCopy + 5))
   {
     if (![(TFApplication *)application isEqual:?])
     {
@@ -495,7 +495,7 @@ LABEL_24:
   }
 
   device = self->_device;
-  if (device | *(v4 + 6))
+  if (device | *(equalCopy + 6))
   {
     if (![(TFDevice *)device isEqual:?])
     {
@@ -504,7 +504,7 @@ LABEL_24:
   }
 
   appleWatch = self->_appleWatch;
-  if (appleWatch | *(v4 + 4))
+  if (appleWatch | *(equalCopy + 4))
   {
     if (![(TFAppleWatch *)appleWatch isEqual:?])
     {
@@ -514,21 +514,21 @@ LABEL_24:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_posixTimestampMillis != *(v4 + 3))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_posixTimestampMillis != *(equalCopy + 3))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_24;
   }
 
-  v9 = (*(v4 + 64) & 1) == 0;
+  v9 = (*(equalCopy + 64) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_desiredTTLMillis != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_desiredTTLMillis != *(equalCopy + 1))
     {
       goto LABEL_24;
     }

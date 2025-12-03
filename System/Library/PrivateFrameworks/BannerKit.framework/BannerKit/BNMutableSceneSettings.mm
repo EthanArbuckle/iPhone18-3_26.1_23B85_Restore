@@ -4,35 +4,35 @@
 - (CGSize)presentationSize;
 - (Class)clientContainerViewControllerClass;
 - (NSString)revocationReason;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int)bannerAppearState;
 - (int)viewControllerAppearState;
-- (void)setBannerAppearState:(int)a3;
-- (void)setClientContainerViewControllerClass:(Class)a3;
-- (void)setContainerSize:(CGSize)a3;
-- (void)setPresentationSize:(CGSize)a3;
-- (void)setRevocationReason:(id)a3;
-- (void)setUserInteractionInProgress:(BOOL)a3;
-- (void)setViewControllerAppearState:(int)a3;
+- (void)setBannerAppearState:(int)state;
+- (void)setClientContainerViewControllerClass:(Class)class;
+- (void)setContainerSize:(CGSize)size;
+- (void)setPresentationSize:(CGSize)size;
+- (void)setRevocationReason:(id)reason;
+- (void)setUserInteractionInProgress:(BOOL)progress;
+- (void)setViewControllerAppearState:(int)state;
 @end
 
 @implementation BNMutableSceneSettings
 
 - (int)bannerAppearState
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:504];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:504];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (CGSize)containerSize
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:501];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:501];
   [v3 CGSizeValue];
   v5 = v4;
   v7 = v6;
@@ -44,21 +44,21 @@
   return result;
 }
 
-- (void)setContainerSize:(CGSize)a3
+- (void)setContainerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(FBSSettings *)self otherSettings];
+  height = size.height;
+  width = size.width;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v7 = width;
   *&v7[1] = height;
   v6 = [MEMORY[0x1E696B098] valueWithBytes:v7 objCType:"{CGSize=dd}"];
-  [v5 setObject:v6 forSetting:501];
+  [otherSettings setObject:v6 forSetting:501];
 }
 
 - (CGSize)presentationSize
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:502];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:502];
   [v3 CGSizeValue];
   v5 = v4;
   v7 = v6;
@@ -70,40 +70,40 @@
   return result;
 }
 
-- (void)setPresentationSize:(CGSize)a3
+- (void)setPresentationSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(FBSSettings *)self otherSettings];
+  height = size.height;
+  width = size.width;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v7 = width;
   *&v7[1] = height;
   v6 = [MEMORY[0x1E696B098] valueWithBytes:v7 objCType:"{CGSize=dd}"];
-  [v5 setObject:v6 forSetting:502];
+  [otherSettings setObject:v6 forSetting:502];
 }
 
 - (int)viewControllerAppearState
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:503];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:503];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setViewControllerAppearState:(int)a3
+- (void)setViewControllerAppearState:(int)state
 {
-  v3 = *&a3;
-  v5 = [(FBSSettings *)self otherSettings];
+  v3 = *&state;
+  otherSettings = [(FBSSettings *)self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  [v5 setObject:v4 forSetting:503];
+  [otherSettings setObject:v4 forSetting:503];
 }
 
-- (void)setBannerAppearState:(int)a3
+- (void)setBannerAppearState:(int)state
 {
-  v3 = *&a3;
-  v5 = [(FBSSettings *)self otherSettings];
+  v3 = *&state;
+  otherSettings = [(FBSSettings *)self otherSettings];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  [v5 setObject:v6 forSetting:504];
+  [otherSettings setObject:v6 forSetting:504];
 
   if (v3 && v3 != 3)
   {
@@ -114,118 +114,118 @@
 
 - (NSString)revocationReason
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:505];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:505];
 
   return v3;
 }
 
-- (void)setRevocationReason:(id)a3
+- (void)setRevocationReason:(id)reason
 {
-  v6 = a3;
-  if (v6 && [(BNMutableSceneSettings *)self bannerAppearState]!= 3 && [(BNMutableSceneSettings *)self bannerAppearState])
+  reasonCopy = reason;
+  if (reasonCopy && [(BNMutableSceneSettings *)self bannerAppearState]!= 3 && [(BNMutableSceneSettings *)self bannerAppearState])
   {
     [(BNMutableSceneSettings *)a2 setRevocationReason:?];
   }
 
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v6 forSetting:505];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:reasonCopy forSetting:505];
 }
 
 - (BOOL)isUserInteractionInProgress
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:506];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:506];
 
   return v3;
 }
 
-- (void)setUserInteractionInProgress:(BOOL)a3
+- (void)setUserInteractionInProgress:(BOOL)progress
 {
-  v3 = a3;
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setFlag:v3 forSetting:506];
+  progressCopy = progress;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:progressCopy forSetting:506];
 }
 
 - (Class)clientContainerViewControllerClass
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:507];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:507];
   v4 = NSClassFromString(v3);
 
   return v4;
 }
 
-- (void)setClientContainerViewControllerClass:(Class)a3
+- (void)setClientContainerViewControllerClass:(Class)class
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = NSStringFromClass(a3);
-  [v5 setObject:v4 forSetting:507];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = NSStringFromClass(class);
+  [otherSettings setObject:v4 forSetting:507];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BNSceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 500 > 7)
+  if (setting - 500 > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_1E81E43D8[a3 - 500];
+    return off_1E81E43D8[setting - 500];
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v6 = a4;
-  v7 = v6;
+  objectCopy = object;
+  v7 = objectCopy;
   v8 = 0;
-  if (a5 <= 502)
+  if (setting <= 502)
   {
-    if (a5 - 500 >= 3)
+    if (setting - 500 >= 3)
     {
       goto LABEL_14;
     }
 
-    v9 = [v6 description];
+    v9 = [objectCopy description];
     goto LABEL_13;
   }
 
-  if (a5 <= 505)
+  if (setting <= 505)
   {
-    if (a5 - 503 < 2)
+    if (setting - 503 < 2)
     {
-      v9 = BNStringForAppearState([v6 integerValue]);
+      v9 = BNStringForAppearState([objectCopy integerValue]);
 LABEL_13:
       v8 = v9;
       goto LABEL_14;
     }
 
-    if (a5 != 505)
+    if (setting != 505)
     {
       goto LABEL_14;
     }
 
 LABEL_11:
-    v9 = v6;
+    v9 = objectCopy;
     goto LABEL_13;
   }
 
-  if (a5 == 506)
+  if (setting == 506)
   {
     v9 = BSSettingFlagDescription();
     goto LABEL_13;
   }
 
-  if (a5 == 507)
+  if (setting == 507)
   {
     goto LABEL_11;
   }

@@ -22,12 +22,12 @@
 
 - (unint64_t)titleType
 {
-  v3 = [(MUPlaceRatingReviewTitleBuilder *)self supportsRatings];
-  v4 = [(MUPlaceRatingReviewTitleBuilder *)self supportsReviews];
-  v5 = v4;
-  if (v3)
+  supportsRatings = [(MUPlaceRatingReviewTitleBuilder *)self supportsRatings];
+  supportsReviews = [(MUPlaceRatingReviewTitleBuilder *)self supportsReviews];
+  v5 = supportsReviews;
+  if (supportsRatings)
   {
-    if (v4 && [(MUPlaceRatingReviewTitleBuilder *)self supportsGuides])
+    if (supportsReviews && [(MUPlaceRatingReviewTitleBuilder *)self supportsGuides])
     {
       return 4;
     }
@@ -50,15 +50,15 @@
 
   else
   {
-    v7 = [(MUPlaceRatingReviewTitleBuilder *)self supportsGuides];
+    supportsGuides = [(MUPlaceRatingReviewTitleBuilder *)self supportsGuides];
     v8 = 7;
-    if (!v7)
+    if (!supportsGuides)
     {
       v8 = 0;
     }
 
     v9 = 5;
-    if (v7)
+    if (supportsGuides)
     {
       v9 = 6;
     }

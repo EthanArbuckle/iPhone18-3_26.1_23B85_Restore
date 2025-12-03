@@ -1,69 +1,69 @@
 @interface PSDIDSServiceStatistics
-+ (id)statisticsWithServiceName:(id)a3 serviceStatisticsDictionary:(id)a4;
-- (PSDIDSServiceStatistics)initWithCoder:(id)a3;
++ (id)statisticsWithServiceName:(id)name serviceStatisticsDictionary:(id)dictionary;
+- (PSDIDSServiceStatistics)initWithCoder:(id)coder;
 - (id)description;
-- (id)statisticsByDiffingStatistics:(id)a3;
-- (id)statisticsBySummingStatistics:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)statisticsByDiffingStatistics:(id)statistics;
+- (id)statisticsBySummingStatistics:(id)statistics;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSDIDSServiceStatistics
 
-+ (id)statisticsWithServiceName:(id)a3 serviceStatisticsDictionary:(id)a4
++ (id)statisticsWithServiceName:(id)name serviceStatisticsDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setServiceName:v7];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  v8 = objc_alloc_init(self);
+  [v8 setServiceName:nameCopy];
 
-  v9 = [v6 objectForKey:@"localDeliveryQueueStatBytes"];
+  v9 = [dictionaryCopy objectForKey:@"localDeliveryQueueStatBytes"];
   [v8 setBytes:{objc_msgSend(v9, "integerValue")}];
 
-  v10 = [v6 objectForKey:@"localDeliveryQueueStatMessageCount"];
+  v10 = [dictionaryCopy objectForKey:@"localDeliveryQueueStatMessageCount"];
   [v8 setMessageCount:{objc_msgSend(v10, "integerValue")}];
 
-  v11 = [v6 objectForKey:@"localDeliveryQueueStatDeliveredBytes"];
+  v11 = [dictionaryCopy objectForKey:@"localDeliveryQueueStatDeliveredBytes"];
   [v8 setDeliveredBytes:{objc_msgSend(v11, "integerValue")}];
 
-  v12 = [v6 objectForKey:@"localDeliveryQueueStatDeliveredMessageCount"];
+  v12 = [dictionaryCopy objectForKey:@"localDeliveryQueueStatDeliveredMessageCount"];
 
   [v8 setDeliveredMessageCount:{objc_msgSend(v12, "integerValue")}];
 
   return v8;
 }
 
-- (id)statisticsByDiffingStatistics:(id)a3
+- (id)statisticsByDiffingStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   v5 = objc_alloc_init(PSDIDSServiceStatistics);
-  v6 = [(PSDIDSServiceStatistics *)self serviceName];
-  [(PSDIDSServiceStatistics *)v5 setServiceName:v6];
+  serviceName = [(PSDIDSServiceStatistics *)self serviceName];
+  [(PSDIDSServiceStatistics *)v5 setServiceName:serviceName];
 
-  -[PSDIDSServiceStatistics setBytes:](v5, "setBytes:", -[PSDIDSServiceStatistics bytes](self, "bytes") - [v4 bytes]);
-  -[PSDIDSServiceStatistics setMessageCount:](v5, "setMessageCount:", -[PSDIDSServiceStatistics messageCount](self, "messageCount") - [v4 messageCount]);
-  -[PSDIDSServiceStatistics setDeliveredBytes:](v5, "setDeliveredBytes:", -[PSDIDSServiceStatistics deliveredBytes](self, "deliveredBytes") - [v4 deliveredBytes]);
-  v7 = [(PSDIDSServiceStatistics *)self deliveredMessageCount];
-  v8 = [v4 deliveredMessageCount];
+  -[PSDIDSServiceStatistics setBytes:](v5, "setBytes:", -[PSDIDSServiceStatistics bytes](self, "bytes") - [statisticsCopy bytes]);
+  -[PSDIDSServiceStatistics setMessageCount:](v5, "setMessageCount:", -[PSDIDSServiceStatistics messageCount](self, "messageCount") - [statisticsCopy messageCount]);
+  -[PSDIDSServiceStatistics setDeliveredBytes:](v5, "setDeliveredBytes:", -[PSDIDSServiceStatistics deliveredBytes](self, "deliveredBytes") - [statisticsCopy deliveredBytes]);
+  deliveredMessageCount = [(PSDIDSServiceStatistics *)self deliveredMessageCount];
+  deliveredMessageCount2 = [statisticsCopy deliveredMessageCount];
 
-  [(PSDIDSServiceStatistics *)v5 setDeliveredMessageCount:v7 - v8];
+  [(PSDIDSServiceStatistics *)v5 setDeliveredMessageCount:deliveredMessageCount - deliveredMessageCount2];
 
   return v5;
 }
 
-- (id)statisticsBySummingStatistics:(id)a3
+- (id)statisticsBySummingStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   v5 = objc_alloc_init(PSDIDSServiceStatistics);
-  v6 = [(PSDIDSServiceStatistics *)self serviceName];
-  [(PSDIDSServiceStatistics *)v5 setServiceName:v6];
+  serviceName = [(PSDIDSServiceStatistics *)self serviceName];
+  [(PSDIDSServiceStatistics *)v5 setServiceName:serviceName];
 
-  -[PSDIDSServiceStatistics setBytes:](v5, "setBytes:", -[PSDIDSServiceStatistics bytes](self, "bytes") + [v4 bytes]);
-  -[PSDIDSServiceStatistics setMessageCount:](v5, "setMessageCount:", -[PSDIDSServiceStatistics messageCount](self, "messageCount") + [v4 messageCount]);
-  -[PSDIDSServiceStatistics setDeliveredBytes:](v5, "setDeliveredBytes:", -[PSDIDSServiceStatistics deliveredBytes](self, "deliveredBytes") + [v4 deliveredBytes]);
-  v7 = [(PSDIDSServiceStatistics *)self deliveredMessageCount];
-  v8 = [v4 deliveredMessageCount];
+  -[PSDIDSServiceStatistics setBytes:](v5, "setBytes:", -[PSDIDSServiceStatistics bytes](self, "bytes") + [statisticsCopy bytes]);
+  -[PSDIDSServiceStatistics setMessageCount:](v5, "setMessageCount:", -[PSDIDSServiceStatistics messageCount](self, "messageCount") + [statisticsCopy messageCount]);
+  -[PSDIDSServiceStatistics setDeliveredBytes:](v5, "setDeliveredBytes:", -[PSDIDSServiceStatistics deliveredBytes](self, "deliveredBytes") + [statisticsCopy deliveredBytes]);
+  deliveredMessageCount = [(PSDIDSServiceStatistics *)self deliveredMessageCount];
+  deliveredMessageCount2 = [statisticsCopy deliveredMessageCount];
 
-  [(PSDIDSServiceStatistics *)v5 setDeliveredMessageCount:&v8[v7]];
+  [(PSDIDSServiceStatistics *)v5 setDeliveredMessageCount:&deliveredMessageCount2[deliveredMessageCount]];
 
   return v5;
 }
@@ -72,46 +72,46 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PSDIDSServiceStatistics *)self serviceName];
+  serviceName = [(PSDIDSServiceStatistics *)self serviceName];
   v6 = [NSNumber numberWithInteger:[(PSDIDSServiceStatistics *)self bytes]];
   v7 = [NSNumber numberWithInteger:[(PSDIDSServiceStatistics *)self messageCount]];
   v8 = [NSNumber numberWithInteger:[(PSDIDSServiceStatistics *)self deliveredBytes]];
   v9 = [NSNumber numberWithInteger:[(PSDIDSServiceStatistics *)self deliveredMessageCount]];
-  v10 = [NSString stringWithFormat:@"<%@ %p serviceName=%@; bytes=%@; messageCount=%@; deliveredBytes=%@; deliveredMessageCount=%@>", v4, self, v5, v6, v7, v8, v9];;
+  v10 = [NSString stringWithFormat:@"<%@ %p serviceName=%@; bytes=%@; messageCount=%@; deliveredBytes=%@; deliveredMessageCount=%@>", v4, self, serviceName, v6, v7, v8, v9];;
 
   return v10;
 }
 
-- (PSDIDSServiceStatistics)initWithCoder:(id)a3
+- (PSDIDSServiceStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PSDIDSServiceStatistics;
   v5 = [(PSDIDSServiceStatistics *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceName"];
     serviceName = v5->_serviceName;
     v5->_serviceName = v6;
 
-    v5->_messageCount = [v4 decodeIntegerForKey:@"messageCount"];
-    v5->_bytes = [v4 decodeIntegerForKey:@"bytes"];
-    v5->_deliveredMessageCount = [v4 decodeIntegerForKey:@"deliveredMessageCount"];
-    v5->_deliveredBytes = [v4 decodeIntegerForKey:@"deliveredBytes"];
+    v5->_messageCount = [coderCopy decodeIntegerForKey:@"messageCount"];
+    v5->_bytes = [coderCopy decodeIntegerForKey:@"bytes"];
+    v5->_deliveredMessageCount = [coderCopy decodeIntegerForKey:@"deliveredMessageCount"];
+    v5->_deliveredBytes = [coderCopy decodeIntegerForKey:@"deliveredBytes"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serviceName = self->_serviceName;
-  v5 = a3;
-  [v5 encodeObject:serviceName forKey:@"serviceName"];
-  [v5 encodeInteger:self->_messageCount forKey:@"messageCount"];
-  [v5 encodeInteger:self->_bytes forKey:@"bytes"];
-  [v5 encodeInteger:self->_deliveredMessageCount forKey:@"deliveredMessageCount"];
-  [v5 encodeInteger:self->_deliveredBytes forKey:@"deliveredBytes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serviceName forKey:@"serviceName"];
+  [coderCopy encodeInteger:self->_messageCount forKey:@"messageCount"];
+  [coderCopy encodeInteger:self->_bytes forKey:@"bytes"];
+  [coderCopy encodeInteger:self->_deliveredMessageCount forKey:@"deliveredMessageCount"];
+  [coderCopy encodeInteger:self->_deliveredBytes forKey:@"deliveredBytes"];
 }
 
 @end

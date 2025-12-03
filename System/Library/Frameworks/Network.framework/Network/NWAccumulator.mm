@@ -1,14 +1,14 @@
 @interface NWAccumulator
 - (NSArray)accumulations;
-- (NWAccumulator)initWithName:(id)a3;
-- (id)accumulatedValueForObject:(id)a3 andKeyPath:(id)a4;
+- (NWAccumulator)initWithName:(id)name;
+- (id)accumulatedValueForObject:(id)object andKeyPath:(id)path;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)snapshot;
-- (void)addAccumulation:(id)a3 withName:(id)a4 forKey:(id)a5 stateCallback:(id)a6;
+- (void)addAccumulation:(id)accumulation withName:(id)name forKey:(id)key stateCallback:(id)callback;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerObserverForKeyPath:(id)a3 ofObject:(id)a4 alreadyRegistered:(BOOL)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerObserverForKeyPath:(id)path ofObject:(id)object alreadyRegistered:(BOOL)registered;
 - (void)reset;
 @end
 
@@ -17,15 +17,15 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NWAccumulator *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"name"];
+  name = [(NWAccumulator *)self name];
+  [v3 setObject:name forKeyedSubscript:@"name"];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __41__NWAccumulator_dictionaryRepresentation__block_invoke;
   v11 = &unk_1E6A3D760;
-  v12 = self;
+  selfCopy = self;
   v13 = v5;
   v6 = v5;
   os_unfair_lock_lock(&self->_lock);
@@ -84,8 +84,8 @@ void __41__NWAccumulator_dictionaryRepresentation__block_invoke(uint64_t a1)
 - (id)snapshot
 {
   v3 = [NWAccumulator alloc];
-  v4 = [(NWAccumulator *)self name];
-  v5 = [(NWAccumulator *)v3 initWithName:v4];
+  name = [(NWAccumulator *)self name];
+  v5 = [(NWAccumulator *)v3 initWithName:name];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -144,19 +144,19 @@ void __25__NWAccumulator_snapshot__block_invoke(uint64_t a1)
 - (void)reset
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(NWAccumulator *)self snapshot];
-  [(NWAccumulator *)self setLastSnapshot:v3];
+  snapshot = [(NWAccumulator *)self snapshot];
+  [(NWAccumulator *)self setLastSnapshot:snapshot];
 
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
   v4 = gLogObj;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(NWAccumulator *)self lastSnapshot];
+    lastSnapshot = [(NWAccumulator *)self lastSnapshot];
     *buf = 136446466;
     *&buf[4] = "[NWAccumulator reset]";
     *&buf[12] = 2112;
-    *&buf[14] = v5;
+    *&buf[14] = lastSnapshot;
     _os_log_impl(&dword_181A37000, v4, OS_LOG_TYPE_INFO, "%{public}s Reset, saved snapshot: %@", buf, 0x16u);
   }
 
@@ -194,12 +194,12 @@ void __25__NWAccumulator_snapshot__block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 accumulation];
-        [v11 reset];
+        accumulation = [v10 accumulation];
+        [accumulation reset];
 
-        v12 = [v10 keyPath];
-        v13 = [v10 object];
-        [(NWAccumulator *)self registerObserverForKeyPath:v12 ofObject:v13 alreadyRegistered:1];
+        keyPath = [v10 keyPath];
+        object = [v10 object];
+        [(NWAccumulator *)self registerObserverForKeyPath:keyPath ofObject:object alreadyRegistered:1];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
@@ -219,18 +219,18 @@ void __22__NWAccumulator_reset__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(NWAccumulator *)self accumulatedValueForObject:v10 andKeyPath:v9];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v12 = [(NWAccumulator *)self accumulatedValueForObject:objectCopy andKeyPath:pathCopy];
   if (v12)
   {
-    v13 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-    v14 = [v12 callback];
-    v15 = (v14)[2](v14, v13);
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    callback = [v12 callback];
+    v15 = (callback)[2](callback, v13);
 
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -240,13 +240,13 @@ void __22__NWAccumulator_reset__block_invoke(uint64_t a1)
       v18 = 136447490;
       v19 = "[NWAccumulator observeValueForKeyPath:ofObject:change:context:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
       v23 = v13;
       v24 = 2112;
-      v25 = v9;
+      v25 = pathCopy;
       v26 = 2112;
-      v27 = v10;
+      v27 = objectCopy;
       v28 = 2112;
       v29 = v15;
       _os_log_impl(&dword_181A37000, v16, OS_LOG_TYPE_DEBUG, "%{public}s %@ observing value %@ for keyPath %@ of object %@, state: %@", &v18, 0x3Eu);
@@ -254,9 +254,9 @@ void __22__NWAccumulator_reset__block_invoke(uint64_t a1)
 
     if (v15)
     {
-      v17 = [v12 accumulation];
+      accumulation = [v12 accumulation];
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-      [v17 updateWithState:v15 atTime:?];
+      [accumulation updateWithState:v15 atTime:?];
     }
   }
 
@@ -270,21 +270,21 @@ void __22__NWAccumulator_reset__block_invoke(uint64_t a1)
       v18 = 136446722;
       v19 = "[NWAccumulator observeValueForKeyPath:ofObject:change:context:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = v10;
+      v23 = objectCopy;
       _os_log_impl(&dword_181A37000, v13, OS_LOG_TYPE_ERROR, "%{public}s %@ did not find value for object: %@", &v18, 0x20u);
     }
   }
 }
 
-- (void)registerObserverForKeyPath:(id)a3 ofObject:(id)a4 alreadyRegistered:(BOOL)a5
+- (void)registerObserverForKeyPath:(id)path ofObject:(id)object alreadyRegistered:(BOOL)registered
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  pathCopy = path;
+  objectCopy = object;
+  v10 = objectCopy;
+  if (!pathCopy)
   {
     v11 = __nwlog_obj();
     *buf = 136446210;
@@ -368,16 +368,16 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (v9)
+  if (objectCopy)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __71__NWAccumulator_registerObserverForKeyPath_ofObject_alreadyRegistered___block_invoke;
     v21[3] = &unk_1E6A30870;
-    v25 = a5;
-    v22 = v9;
-    v23 = self;
-    v24 = v8;
+    registeredCopy = registered;
+    v22 = objectCopy;
+    selfCopy = self;
+    v24 = pathCopy;
     os_unfair_lock_lock(&self->_kvo_lock);
     __71__NWAccumulator_registerObserverForKeyPath_ofObject_alreadyRegistered___block_invoke(v21);
     os_unfair_lock_unlock(&self->_kvo_lock);
@@ -472,17 +472,17 @@ uint64_t __71__NWAccumulator_registerObserverForKeyPath_ofObject_alreadyRegister
   return [*(a1 + 32) addObserver:*(a1 + 40) forKeyPath:*(a1 + 48) options:5 context:0];
 }
 
-- (void)addAccumulation:(id)a3 withName:(id)a4 forKey:(id)a5 stateCallback:(id)a6
+- (void)addAccumulation:(id)accumulation withName:(id)name forKey:(id)key stateCallback:(id)callback
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10 && v12 && v13)
+  accumulationCopy = accumulation;
+  nameCopy = name;
+  keyCopy = key;
+  callbackCopy = callback;
+  v14 = callbackCopy;
+  if (accumulationCopy && keyCopy && callbackCopy)
   {
-    v15 = [(NWAccumulator *)self accumulatedValueForObject:v10 andKeyPath:v12];
+    v15 = [(NWAccumulator *)self accumulatedValueForObject:accumulationCopy andKeyPath:keyCopy];
     if (v15)
     {
       v16 = v15;
@@ -494,42 +494,42 @@ uint64_t __71__NWAccumulator_registerObserverForKeyPath_ofObject_alreadyRegister
         *buf = 136447234;
         v30 = "[NWAccumulator addAccumulation:withName:forKey:stateCallback:]";
         v31 = 2112;
-        v32 = v10;
+        selfCopy2 = accumulationCopy;
         v33 = 2112;
-        v34 = v12;
+        v34 = keyCopy;
         v35 = 2112;
         p_super = v16;
         v37 = 2112;
-        v38 = v12;
+        v38 = keyCopy;
         _os_log_impl(&dword_181A37000, v17, OS_LOG_TYPE_INFO, "%{public}s Existing NWAccumulatedValue for object: %@ and keyPath: %@: %@, resetting %@", buf, 0x34u);
       }
 
       [v16 setCallback:v14];
-      v18 = [v16 accumulation];
-      [v18 reset];
+      accumulation = [v16 accumulation];
+      [accumulation reset];
 
-      [(NWAccumulator *)self registerObserverForKeyPath:v12 ofObject:v10 alreadyRegistered:1];
+      [(NWAccumulator *)self registerObserverForKeyPath:keyCopy ofObject:accumulationCopy alreadyRegistered:1];
     }
 
     else
     {
       v20 = objc_alloc_init(NWAccumulatedValue);
-      [(NWAccumulatedValue *)v20 setObject:v10];
-      [(NWAccumulatedValue *)v20 setKeyPath:v12];
+      [(NWAccumulatedValue *)v20 setObject:accumulationCopy];
+      [(NWAccumulatedValue *)v20 setKeyPath:keyCopy];
       [(NWAccumulatedValue *)v20 setCallback:v14];
-      v21 = [[NWAccumulation alloc] initWithName:v11];
+      v21 = [[NWAccumulation alloc] initWithName:nameCopy];
       [(NWAccumulatedValue *)v20 setAccumulation:v21];
       v23 = MEMORY[0x1E69E9820];
       v24 = 3221225472;
       v25 = __63__NWAccumulator_addAccumulation_withName_forKey_stateCallback___block_invoke;
       v26 = &unk_1E6A3D760;
-      v27 = self;
+      selfCopy = self;
       v28 = v20;
       v22 = v20;
       os_unfair_lock_lock(&self->_lock);
       __63__NWAccumulator_addAccumulation_withName_forKey_stateCallback___block_invoke(&v23);
       os_unfair_lock_unlock(&self->_lock);
-      [(NWAccumulator *)self registerObserverForKeyPath:v12 ofObject:v10 alreadyRegistered:0, v23, v24];
+      [(NWAccumulator *)self registerObserverForKeyPath:keyCopy ofObject:accumulationCopy alreadyRegistered:0, v23, v24];
 
       v16 = 0;
     }
@@ -546,11 +546,11 @@ uint64_t __71__NWAccumulator_registerObserverForKeyPath_ofObject_alreadyRegister
       *buf = 136447234;
       v30 = "[NWAccumulator addAccumulation:withName:forKey:stateCallback:]";
       v31 = 2112;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2112;
-      v34 = v10;
+      v34 = accumulationCopy;
       v35 = 2112;
-      p_super = &v12->super;
+      p_super = &keyCopy->super;
       v37 = 2112;
       v38 = v19;
       _os_log_impl(&dword_181A37000, v16, OS_LOG_TYPE_ERROR, "%{public}s %@ invalid value passed to addAccumulation: object (%@), key (%@), callback (%@)", buf, 0x34u);
@@ -558,10 +558,10 @@ uint64_t __71__NWAccumulator_registerObserverForKeyPath_ofObject_alreadyRegister
   }
 }
 
-- (id)accumulatedValueForObject:(id)a3 andKeyPath:(id)a4
+- (id)accumulatedValueForObject:(id)object andKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  pathCopy = path;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -573,9 +573,9 @@ uint64_t __71__NWAccumulator_registerObserverForKeyPath_ofObject_alreadyRegister
   v12[2] = __54__NWAccumulator_accumulatedValueForObject_andKeyPath___block_invoke;
   v12[3] = &unk_1E6A33400;
   v12[4] = self;
-  v8 = v6;
+  v8 = objectCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = pathCopy;
   v14 = v9;
   v15 = &v16;
   os_unfair_lock_lock(&self->_lock);
@@ -650,7 +650,7 @@ LABEL_4:
   v8 = 3221225472;
   v9 = __30__NWAccumulator_accumulations__block_invoke;
   v10 = &unk_1E6A3D760;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   os_unfair_lock_lock(&self->_lock);
@@ -702,9 +702,9 @@ void __30__NWAccumulator_accumulations__block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NWAccumulator *)self name];
-  v5 = [(NWAccumulator *)self accumulatedValues];
-  v6 = [v3 stringWithFormat:@"<NWAccumulator %@, NWAccumulations: %@>", v4, v5];
+  name = [(NWAccumulator *)self name];
+  accumulatedValues = [(NWAccumulator *)self accumulatedValues];
+  v6 = [v3 stringWithFormat:@"<NWAccumulator %@, NWAccumulations: %@>", name, accumulatedValues];
 
   return v6;
 }
@@ -752,7 +752,7 @@ void __30__NWAccumulator_accumulations__block_invoke(uint64_t a1)
         v10 = __24__NWAccumulator_dealloc__block_invoke_2;
         v11 = &unk_1E6A3D760;
         v12 = v7;
-        v13 = self;
+        selfCopy = self;
         os_unfair_lock_lock(&self->_kvo_lock);
         v10(v9);
         os_unfair_lock_unlock(&self->_kvo_lock);
@@ -790,17 +790,17 @@ void __24__NWAccumulator_dealloc__block_invoke_2(uint64_t a1)
   [v4 removeObserver:v2 forKeyPath:v3];
 }
 
-- (NWAccumulator)initWithName:(id)a3
+- (NWAccumulator)initWithName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = NWAccumulator;
   v6 = [(NWAccumulator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     *&v7->_lock._os_unfair_lock_opaque = 0;
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     accumulatedValues = v7->_accumulatedValues;
@@ -811,11 +811,11 @@ void __24__NWAccumulator_dealloc__block_invoke_2(uint64_t a1)
     v10 = gLogObj;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(NWAccumulator *)v7 name];
+      name = [(NWAccumulator *)v7 name];
       *buf = 136446466;
       v15 = "[NWAccumulator initWithName:]";
       v16 = 2112;
-      v17 = v11;
+      v17 = name;
       _os_log_impl(&dword_181A37000, v10, OS_LOG_TYPE_DEBUG, "%{public}s NWAccumulator init %@", buf, 0x16u);
     }
   }

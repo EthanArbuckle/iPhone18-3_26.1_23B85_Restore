@@ -1,20 +1,20 @@
 @interface UIInputActiveSetContainerView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation UIInputActiveSetContainerView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = UIInputActiveSetContainerView;
-  v5 = [(UIView *)&v11 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v11 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
-    v8 = [(UIView *)self layer];
-    v9 = [v8 animationKeys];
-    if ([v9 count])
+    layer = [(UIView *)self layer];
+    animationKeys = [layer animationKeys];
+    if ([animationKeys count])
     {
       v7 = v6;
     }

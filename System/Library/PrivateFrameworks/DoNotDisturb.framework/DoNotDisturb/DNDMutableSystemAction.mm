@@ -1,12 +1,12 @@
 @interface DNDMutableSystemAction
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DNDMutableSystemAction
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [DNDSystemAction allocWithZone:a3];
+  v4 = [DNDSystemAction allocWithZone:zone];
   action = self->super._action;
   reverseAction = self->super._reverseAction;
   enabled = self->super._enabled;

@@ -1,14 +1,14 @@
 @interface _UIEmojiAndStickerCollectionViewController
-+ (id)newInstanceWithConfiguration:(id)a3;
++ (id)newInstanceWithConfiguration:(id)configuration;
 - (_UIEmojiAndStickerCollectionViewControllerDelegate)delegate;
 @end
 
 @implementation _UIEmojiAndStickerCollectionViewController
 
-+ (id)newInstanceWithConfiguration:(id)a3
++ (id)newInstanceWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [objc_alloc(NSClassFromString(&cfstr_Uiemojiandstic.isa)) initWithConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [objc_alloc(NSClassFromString(&cfstr_Uiemojiandstic.isa)) initWithConfiguration:configurationCopy];
 
   return v4;
 }

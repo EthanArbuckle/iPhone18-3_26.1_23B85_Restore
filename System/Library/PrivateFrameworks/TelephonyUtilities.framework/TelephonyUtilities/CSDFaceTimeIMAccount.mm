@@ -5,12 +5,12 @@
 - (id)faceTimeIMAccount;
 - (void)_initializeLastKnownCallerID;
 - (void)_saveLastKnownFaceTimeCallerID;
-- (void)account:(id)a3 aliasesChanged:(id)a4;
-- (void)displayNameChanged:(id)a3;
-- (void)imDaemonDidConnect:(id)a3;
-- (void)preferredAccountChanged:(id)a3;
+- (void)account:(id)account aliasesChanged:(id)changed;
+- (void)displayNameChanged:(id)changed;
+- (void)imDaemonDidConnect:(id)connect;
+- (void)preferredAccountChanged:(id)changed;
 - (void)removeCallerIDFromPreferences;
-- (void)updateCallerID:(id)a3;
+- (void)updateCallerID:(id)d;
 - (void)updateState;
 @end
 
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_10022CAA4;
   block[3] = &unk_10061A860;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006ACF90 != -1)
   {
     dispatch_once(&qword_1006ACF90, block);
@@ -71,14 +71,14 @@
   v10 = sub_100028720;
   v11 = sub_10003290C;
   v12 = 0;
-  v3 = [(CSDFaceTimeIMAccount *)self queue];
+  queue = [(CSDFaceTimeIMAccount *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10022CED8;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -86,26 +86,26 @@
   return v4;
 }
 
-- (void)updateCallerID:(id)a3
+- (void)updateCallerID:(id)d
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10022CF84;
   v4[3] = &unk_100619D88;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  dCopy = d;
+  v3 = dCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)imDaemonDidConnect:(id)a3
+- (void)imDaemonDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = connectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received IMDaemon connected notification: %@", &v8, 0xCu);
   }
 
@@ -120,28 +120,28 @@
   [v7 addObserver:self selector:"displayNameChanged:" name:IMAccountDisplayNameChangedNotification object:0];
 }
 
-- (void)preferredAccountChanged:(id)a3
+- (void)preferredAccountChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received preferred account changed notification: %@", &v6, 0xCu);
   }
 
   [(CSDFaceTimeIMAccount *)self updateState];
 }
 
-- (void)displayNameChanged:(id)a3
+- (void)displayNameChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received display name changed notification: %@", &v6, 0xCu);
   }
 
@@ -150,12 +150,12 @@
 
 - (void)_initializeLastKnownCallerID
 {
-  v3 = [(CSDFaceTimeIMAccount *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDFaceTimeIMAccount *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDFaceTimeIMAccount *)self keychainItem];
+  keychainItem = [(CSDFaceTimeIMAccount *)self keychainItem];
   v16 = 0;
-  v5 = [v4 readPasswordAndReturnError:&v16];
+  v5 = [keychainItem readPasswordAndReturnError:&v16];
   v6 = v16;
 
   v7 = [v5 length];
@@ -244,8 +244,8 @@ LABEL_14:
 
 - (void)_saveLastKnownFaceTimeCallerID
 {
-  v3 = [(CSDFaceTimeIMAccount *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDFaceTimeIMAccount *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -256,10 +256,10 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Saving last known FaceTime caller ID as %@", buf, 0xCu);
   }
 
-  v6 = [(CSDFaceTimeIMAccount *)self keychainItem];
+  keychainItem = [(CSDFaceTimeIMAccount *)self keychainItem];
   v7 = self->_callerID;
   v10 = 0;
-  [v6 savePassword:v7 error:&v10];
+  [keychainItem savePassword:v7 error:&v10];
   v8 = v10;
 
   if (v8)
@@ -286,18 +286,18 @@ LABEL_14:
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if ([(CSDFaceTimeIMAccount *)self isIMDaemonConnected])
   {
-    v3 = [(CSDFaceTimeIMAccount *)self faceTimeIMAccount];
-    v4 = [v3 displayName];
+    faceTimeIMAccount = [(CSDFaceTimeIMAccount *)self faceTimeIMAccount];
+    displayName = [faceTimeIMAccount displayName];
 
-    v5 = [(CSDFaceTimeIMAccount *)self queue];
+    queue = [(CSDFaceTimeIMAccount *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10022D9AC;
     block[3] = &unk_100619D88;
     block[4] = self;
-    v9 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v9 = displayName;
+    v6 = displayName;
+    dispatch_async(queue, block);
   }
 
   else
@@ -311,19 +311,19 @@ LABEL_14:
   }
 }
 
-- (void)account:(id)a3 aliasesChanged:(id)a4
+- (void)account:(id)account aliasesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = accountCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = changedCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ account %@ aliases changed %@", buf, 0x20u);
   }
 

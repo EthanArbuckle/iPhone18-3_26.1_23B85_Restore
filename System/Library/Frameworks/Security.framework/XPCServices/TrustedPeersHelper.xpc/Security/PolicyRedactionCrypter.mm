@@ -1,20 +1,20 @@
 @interface PolicyRedactionCrypter
 - (_TtC18TrustedPeersHelper22PolicyRedactionCrypter)init;
-- (id)decryptData:(id)a3 withKey:(id)a4 error:(id *)a5;
-- (id)encryptData:(id)a3 withKey:(id)a4 error:(id *)a5;
+- (id)decryptData:(id)data withKey:(id)key error:(id *)error;
+- (id)encryptData:(id)data withKey:(id)key error:(id *)error;
 @end
 
 @implementation PolicyRedactionCrypter
 
-- (id)decryptData:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)decryptData:(id)data withKey:(id)key error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  dataCopy = data;
+  keyCopy = key;
+  selfCopy = self;
   v10 = sub_100216224();
   v12 = v11;
 
-  v13 = sub_1000146BC(v7, v10, v12);
+  v13 = sub_1000146BC(dataCopy, v10, v12);
   v15 = v14;
 
   sub_100002BF0(v10, v12);
@@ -24,11 +24,11 @@
   return v16.super.isa;
 }
 
-- (id)encryptData:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)encryptData:(id)data withKey:(id)key error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  dataCopy = data;
+  keyCopy = key;
+  selfCopy = self;
   v10 = sub_100216224();
   v12 = v11;
 

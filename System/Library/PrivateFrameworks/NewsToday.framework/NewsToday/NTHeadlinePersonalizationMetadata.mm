@@ -1,8 +1,8 @@
 @interface NTHeadlinePersonalizationMetadata
 - (NTHeadlinePersonalizationMetadata)init;
-- (NTHeadlinePersonalizationMetadata)initWithArticleID:(id)a3 publisherID:(id)a4 scoredTopicIDs:(id)a5;
-- (NTHeadlinePersonalizationMetadata)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NTHeadlinePersonalizationMetadata)initWithArticleID:(id)d publisherID:(id)iD scoredTopicIDs:(id)ds;
+- (NTHeadlinePersonalizationMetadata)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTHeadlinePersonalizationMetadata
@@ -33,21 +33,21 @@
   objc_exception_throw(v6);
 }
 
-- (NTHeadlinePersonalizationMetadata)initWithArticleID:(id)a3 publisherID:(id)a4 scoredTopicIDs:(id)a5
+- (NTHeadlinePersonalizationMetadata)initWithArticleID:(id)d publisherID:(id)iD scoredTopicIDs:(id)ds
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  iDCopy = iD;
+  dsCopy = ds;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTHeadlinePersonalizationMetadata initWithArticleID:publisherID:scoredTopicIDs:];
-    if (v9)
+    if (iDCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (iDCopy)
   {
     goto LABEL_6;
   }
@@ -58,7 +58,7 @@
   }
 
 LABEL_6:
-  if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTHeadlinePersonalizationMetadata initWithArticleID:publisherID:scoredTopicIDs:];
   }
@@ -68,15 +68,15 @@ LABEL_6:
   v11 = [(NTHeadlinePersonalizationMetadata *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     articleID = v11->_articleID;
     v11->_articleID = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDCopy copy];
     publisherID = v11->_publisherID;
     v11->_publisherID = v14;
 
-    v16 = [v10 copy];
+    v16 = [dsCopy copy];
     scoredTopicIDs = v11->_scoredTopicIDs;
     v11->_scoredTopicIDs = v16;
   }
@@ -84,29 +84,29 @@ LABEL_6:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NTHeadlinePersonalizationMetadata *)self articleID];
-  [v4 encodeObject:v5 forKey:@"a"];
+  coderCopy = coder;
+  articleID = [(NTHeadlinePersonalizationMetadata *)self articleID];
+  [coderCopy encodeObject:articleID forKey:@"a"];
 
-  v6 = [(NTHeadlinePersonalizationMetadata *)self publisherID];
-  [v4 encodeObject:v6 forKey:@"b"];
+  publisherID = [(NTHeadlinePersonalizationMetadata *)self publisherID];
+  [coderCopy encodeObject:publisherID forKey:@"b"];
 
-  v7 = [(NTHeadlinePersonalizationMetadata *)self scoredTopicIDs];
-  [v4 encodeObject:v7 forKey:@"c"];
+  scoredTopicIDs = [(NTHeadlinePersonalizationMetadata *)self scoredTopicIDs];
+  [coderCopy encodeObject:scoredTopicIDs forKey:@"c"];
 }
 
-- (NTHeadlinePersonalizationMetadata)initWithCoder:(id)a3
+- (NTHeadlinePersonalizationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"a"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"b"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"a"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"b"];
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"c"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"c"];
 
   v12 = [(NTHeadlinePersonalizationMetadata *)self initWithArticleID:v5 publisherID:v6 scoredTopicIDs:v11];
   return v12;

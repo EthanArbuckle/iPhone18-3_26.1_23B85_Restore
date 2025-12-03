@@ -1,6 +1,6 @@
 @interface GTContinuation_replayer
 - (GTContinuation_replayer)init;
-- (GTContinuation_replayer)initWithQueue:(id)a3 block:(id)a4;
+- (GTContinuation_replayer)initWithQueue:(id)queue block:(id)block;
 - (void)dealloc;
 @end
 
@@ -14,9 +14,9 @@
   [(GTContinuation_replayer *)&v3 dealloc];
 }
 
-- (GTContinuation_replayer)initWithQueue:(id)a3 block:(id)a4
+- (GTContinuation_replayer)initWithQueue:(id)queue block:(id)block
 {
-  if (!a3)
+  if (!queue)
   {
     if (s_logUsingOsLog == 1)
     {
@@ -36,11 +36,11 @@ LABEL_16:
     v11 = MEMORY[0x277CCACA8];
     v12 = @"fail: queue cannot be NULL";
 LABEL_15:
-    fprintf(v10, "%s\n", [objc_msgSend(v11 stringWithFormat:v12, a4), "UTF8String"]);
+    fprintf(v10, "%s\n", [objc_msgSend(v11 stringWithFormat:v12, block), "UTF8String"]);
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!block)
   {
     if (s_logUsingOsLog == 1)
     {
@@ -68,9 +68,9 @@ LABEL_12:
   v6 = [(GTContinuation_replayer *)&v13 init];
   if (v6)
   {
-    dispatch_retain(a3);
-    v6->queue = a3;
-    v6->block = [a4 copy];
+    dispatch_retain(queue);
+    v6->queue = queue;
+    v6->block = [block copy];
   }
 
   return v6;

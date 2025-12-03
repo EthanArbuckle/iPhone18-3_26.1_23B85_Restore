@@ -1,6 +1,6 @@
 @interface NPDCompanionPeerPaymentStatusObserver
 - (BOOL)_shouldCheckPeerPaymentStatus;
-- (NPDCompanionPeerPaymentStatusObserver)initWithRemoteAdminConnectionServiceAgent:(id)a3;
+- (NPDCompanionPeerPaymentStatusObserver)initWithRemoteAdminConnectionServiceAgent:(id)agent;
 - (void)_compareCompanionAndWatchPeerPaymentRegistrationStatus;
 - (void)handleCompanionPeerPaymentWebServiceContextChanged;
 - (void)handleWatchRequestForCompanionPeerPaymentRegistrationState;
@@ -8,16 +8,16 @@
 
 @implementation NPDCompanionPeerPaymentStatusObserver
 
-- (NPDCompanionPeerPaymentStatusObserver)initWithRemoteAdminConnectionServiceAgent:(id)a3
+- (NPDCompanionPeerPaymentStatusObserver)initWithRemoteAdminConnectionServiceAgent:(id)agent
 {
-  v5 = a3;
+  agentCopy = agent;
   v11.receiver = self;
   v11.super_class = NPDCompanionPeerPaymentStatusObserver;
   v6 = [(NPDCompanionPeerPaymentStatusObserver *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceAgent, a3);
+    objc_storeStrong(&v6->_serviceAgent, agent);
     v8 = NPKDomainAccessorForDomain();
     globalDomainAccessor = v7->_globalDomainAccessor;
     v7->_globalDomainAccessor = v8;
@@ -67,8 +67,8 @@
   v3 = PKCurrentRegion();
   v4 = NPKShouldAllowPeerPaymentRegistrationForWebService();
 
-  v5 = [(NPDCompanionPeerPaymentStatusObserver *)self globalDomainAccessor];
-  v6 = [v5 BOOLForKey:PKUserHasDisabledPeerPaymentKey];
+  globalDomainAccessor = [(NPDCompanionPeerPaymentStatusObserver *)self globalDomainAccessor];
+  v6 = [globalDomainAccessor BOOLForKey:PKUserHasDisabledPeerPaymentKey];
 
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -135,11 +135,11 @@
     v15 = objc_alloc_init(NPKPeerPaymentWebServiceCompanionTargetDevice);
     v16 = [v14 initWithContext:v7 targetDevice:v15];
 
-    v17 = [v16 needsRegistration];
+    needsRegistration = [v16 needsRegistration];
     v18 = pk_Payment_log();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
 
-    if (v17)
+    if (needsRegistration)
     {
       if (v19)
       {
@@ -151,8 +151,8 @@
         }
       }
 
-      v21 = [(NPDCompanionPeerPaymentStatusObserver *)self serviceAgent];
-      [v21 handleCompanionPeerPaymentRegistration];
+      serviceAgent = [(NPDCompanionPeerPaymentStatusObserver *)self serviceAgent];
+      [serviceAgent handleCompanionPeerPaymentRegistration];
     }
 
     else
@@ -162,11 +162,11 @@
         goto LABEL_24;
       }
 
-      v21 = pk_Payment_log();
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      serviceAgent = pk_Payment_log();
+      if (os_log_type_enabled(serviceAgent, OS_LOG_TYPE_DEFAULT))
       {
         *v24 = 0;
-        _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Notice: Companion and watch are both registered.", v24, 2u);
+        _os_log_impl(&_mh_execute_header, serviceAgent, OS_LOG_TYPE_DEFAULT, "Notice: Companion and watch are both registered.", v24, 2u);
       }
     }
 

@@ -1,21 +1,21 @@
 @interface BWStillImageProcessorControllerOutputRouter
-- (BWStillImageProcessorControllerOutputRouter)initWithOutputSampleBufferRouter:(id)a3 name:(id)a4;
+- (BWStillImageProcessorControllerOutputRouter)initWithOutputSampleBufferRouter:(id)router name:(id)name;
 - (NSArray)bypassedProcessorsTypes;
-- (void)addBypassedProcessorType:(unint64_t)a3;
+- (void)addBypassedProcessorType:(unint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation BWStillImageProcessorControllerOutputRouter
 
-- (BWStillImageProcessorControllerOutputRouter)initWithOutputSampleBufferRouter:(id)a3 name:(id)a4
+- (BWStillImageProcessorControllerOutputRouter)initWithOutputSampleBufferRouter:(id)router name:(id)name
 {
   v8.receiver = self;
   v8.super_class = BWStillImageProcessorControllerOutputRouter;
   v6 = [(BWStillImageProcessorControllerOutputRouter *)&v8 init];
   if (v6)
   {
-    v6->_outputSampleBufferRouter = [a3 copy];
-    v6->_name = a4;
+    v6->_outputSampleBufferRouter = [router copy];
+    v6->_name = name;
   }
 
   return v6;
@@ -28,7 +28,7 @@
   [(BWStillImageProcessorControllerOutputRouter *)&v3 dealloc];
 }
 
-- (void)addBypassedProcessorType:(unint64_t)a3
+- (void)addBypassedProcessorType:(unint64_t)type
 {
   bypassedProcessorTypes = self->_bypassedProcessorTypes;
   if (!bypassedProcessorTypes)
@@ -37,7 +37,7 @@
     self->_bypassedProcessorTypes = bypassedProcessorTypes;
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:type];
 
   [(NSMutableArray *)bypassedProcessorTypes addObject:v6];
 }

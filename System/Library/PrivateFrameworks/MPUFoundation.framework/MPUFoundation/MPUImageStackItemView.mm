@@ -1,22 +1,22 @@
 @interface MPUImageStackItemView
 - (CGAffineTransform)imageTransform;
 - (CGRect)imageContentsRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPUImageStackItemView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPUImageStackItemView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setImageAlpha:(double)a3;
-- (void)setImageContentsRect:(CGRect)a3;
-- (void)setImageTransform:(CGAffineTransform *)a3;
+- (void)setImage:(id)image;
+- (void)setImageAlpha:(double)alpha;
+- (void)setImageContentsRect:(CGRect)rect;
+- (void)setImageTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation MPUImageStackItemView
 
-- (MPUImageStackItemView)initWithFrame:(CGRect)a3
+- (MPUImageStackItemView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = MPUImageStackItemView;
-  v3 = [(MPUImageStackItemView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPUImageStackItemView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -47,21 +47,21 @@
   [(UIImageView *)imageView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImageView *)self->_imageView sizeThatFits:a3.width, a3.height];
+  [(UIImageView *)self->_imageView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v7 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
     [(UIImageView *)self->_imageView setImage:self->_image];
@@ -69,15 +69,15 @@
     v6 = self->_imageAlpha + -1.0;
     [(UIImageView *)self->_imageView setOpaque:fabsf(v6) < 0.00000011921];
     [MEMORY[0x277CD9FF0] commit];
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setImageAlpha:(double)a3
+- (void)setImageAlpha:(double)alpha
 {
-  if (self->_imageAlpha != a3)
+  if (self->_imageAlpha != alpha)
   {
-    self->_imageAlpha = a3;
+    self->_imageAlpha = alpha;
     [(UIImageView *)self->_imageView setAlpha:?];
     imageView = self->_imageView;
     v5 = self->_imageAlpha + -1.0;
@@ -87,48 +87,48 @@
   }
 }
 
-- (void)setImageContentsRect:(CGRect)a3
+- (void)setImageContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_imageContentsRect = &self->_imageContentsRect;
-  if (!CGRectEqualToRect(self->_imageContentsRect, a3))
+  if (!CGRectEqualToRect(self->_imageContentsRect, rect))
   {
     p_imageContentsRect->origin.x = x;
     p_imageContentsRect->origin.y = y;
     p_imageContentsRect->size.width = width;
     p_imageContentsRect->size.height = height;
-    v9 = [(UIImageView *)self->_imageView layer];
-    [v9 setContentsRect:{p_imageContentsRect->origin.x, p_imageContentsRect->origin.y, p_imageContentsRect->size.width, p_imageContentsRect->size.height}];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setContentsRect:{p_imageContentsRect->origin.x, p_imageContentsRect->origin.y, p_imageContentsRect->size.width, p_imageContentsRect->size.height}];
   }
 }
 
-- (void)setImageTransform:(CGAffineTransform *)a3
+- (void)setImageTransform:(CGAffineTransform *)transform
 {
   p_imageTransform = &self->_imageTransform;
   v6 = *&self->_imageTransform.c;
   *&t1.a = *&self->_imageTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_imageTransform.tx;
-  v7 = *&a3->c;
-  *&v12.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v12.a = *&transform->a;
   *&v12.c = v7;
-  *&v12.tx = *&a3->tx;
+  *&v12.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v12))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_imageTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_imageTransform->c = *&transform->c;
     *&p_imageTransform->tx = v9;
     *&p_imageTransform->a = v8;
-    v10 = [(UIImageView *)self->_imageView layer];
+    layer = [(UIImageView *)self->_imageView layer];
     v11 = *&p_imageTransform->c;
     *&t1.a = *&p_imageTransform->a;
     *&t1.c = v11;
     *&t1.tx = *&p_imageTransform->tx;
-    [v10 setAffineTransform:&t1];
+    [layer setAffineTransform:&t1];
   }
 }
 

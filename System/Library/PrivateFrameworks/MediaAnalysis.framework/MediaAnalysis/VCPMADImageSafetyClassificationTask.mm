@@ -1,45 +1,45 @@
 @interface VCPMADImageSafetyClassificationTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (BOOL)validateProcessingSettingsForDetections:(unint64_t)a3;
-- (VCPMADImageSafetyClassificationTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (BOOL)validateProcessingSettingsForDetections:(unint64_t)detections;
+- (VCPMADImageSafetyClassificationTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (id).cxx_construct;
-- (int)createUprightPixelBuffer:(__CVBuffer *)a3 fromSourceBuffer:(__CVBuffer *)a4 andOrientation:(unsigned int)a5;
+- (int)createUprightPixelBuffer:(__CVBuffer *)buffer fromSourceBuffer:(__CVBuffer *)sourceBuffer andOrientation:(unsigned int)orientation;
 - (int)run;
-- (int)scalePixelBuffer:(__CVBuffer *)a3 output:(__CVBuffer *)a4 width:(int)a5 height:(int)a6 format:(unsigned int)a7;
-- (unint64_t)fetchCachedResultsForDetections:(unint64_t)a3 results:(id)a4;
-- (unint64_t)performQRCodeForPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 detections:(unint64_t)a5 results:(id)a6;
+- (int)scalePixelBuffer:(__CVBuffer *)buffer output:(__CVBuffer *)output width:(int)width height:(int)height format:(unsigned int)format;
+- (unint64_t)fetchCachedResultsForDetections:(unint64_t)detections results:(id)results;
+- (unint64_t)performQRCodeForPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation detections:(unint64_t)detections results:(id)results;
 @end
 
 @implementation VCPMADImageSafetyClassificationTask
 
-- (VCPMADImageSafetyClassificationTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADImageSafetyClassificationTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v15.receiver = self;
   v15.super_class = VCPMADImageSafetyClassificationTask;
   v12 = [(VCPMADImageSafetyClassificationTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
   }
 
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -63,40 +63,40 @@
   return v11;
 }
 
-- (int)scalePixelBuffer:(__CVBuffer *)a3 output:(__CVBuffer *)a4 width:(int)a5 height:(int)a6 format:(unsigned int)a7
+- (int)scalePixelBuffer:(__CVBuffer *)buffer output:(__CVBuffer *)output width:(int)width height:(int)height format:(unsigned int)format
 {
-  v7 = *&a7;
-  v8 = *&a6;
-  v9 = *&a5;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  v7 = *&format;
+  v8 = *&height;
+  v9 = *&width;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   if (Width == v9 && Height == v8 && PixelFormatType == v7)
   {
-    *a4 = CFRetain(a3);
+    *output = CFRetain(buffer);
     return 0;
   }
 
   else
   {
 
-    Scaler::Scale(&self->_scaler, a3, a4, v9, v8, v7);
+    Scaler::Scale(&self->_scaler, buffer, output, v9, v8, v7);
   }
 
   return result;
 }
 
-- (int)createUprightPixelBuffer:(__CVBuffer *)a3 fromSourceBuffer:(__CVBuffer *)a4 andOrientation:(unsigned int)a5
+- (int)createUprightPixelBuffer:(__CVBuffer *)buffer fromSourceBuffer:(__CVBuffer *)sourceBuffer andOrientation:(unsigned int)orientation
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (a5 == 1)
+  if (orientation == 1)
   {
     v7 = 0;
-    *a3 = CFRetain(a4);
+    *buffer = CFRetain(sourceBuffer);
     return v7;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(sourceBuffer);
   v10 = PixelFormatType;
   if (PixelFormatType > 1111970368)
   {
@@ -121,12 +121,12 @@
   if (PixelFormatType == v11)
   {
 LABEL_9:
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
+    Width = CVPixelBufferGetWidth(sourceBuffer);
+    Height = CVPixelBufferGetHeight(sourceBuffer);
     v14 = Height;
     *v48 = 0u;
     memset(buf, 0, sizeof(buf));
-    if (a5 <= 4)
+    if (orientation <= 4)
     {
       v15 = Width;
     }
@@ -136,7 +136,7 @@ LABEL_9:
       v15 = Height;
     }
 
-    if (a5 <= 4)
+    if (orientation <= 4)
     {
       v16 = Height;
     }
@@ -146,9 +146,9 @@ LABEL_9:
       v16 = Width;
     }
 
-    if (a5 <= 4)
+    if (orientation <= 4)
     {
-      switch(a5)
+      switch(orientation)
       {
         case 2u:
           v18 = Width;
@@ -177,9 +177,9 @@ LABEL_9:
 
     else
     {
-      if (a5 <= 6)
+      if (orientation <= 6)
       {
-        if (a5 != 5)
+        if (orientation != 5)
         {
           v17 = Width;
           *&buf[8] = xmmword_1C9F60750;
@@ -205,18 +205,18 @@ LABEL_38:
           else
           {
             v37 = 0;
-            v38 = a4;
+            sourceBufferCopy = sourceBuffer;
             v39 = 1;
-            if (a4)
+            if (sourceBuffer)
             {
-              v7 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+              v7 = CVPixelBufferLockBaseAddress(sourceBuffer, 1uLL);
               v37 = v7;
-              if (!v7 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v43 = 134218240, *&v43[4] = v38, *&v43[12] = 1024, *&v43[14] = v7, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v43, 0x12u), (v7 = v37) == 0))
+              if (!v7 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v43 = 134218240, *&v43[4] = sourceBufferCopy, *&v43[12] = 1024, *&v43[14] = v7, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v43, 0x12u), (v7 = v37) == 0))
               {
-                *v43 = CVPixelBufferGetBaseAddress(a4);
+                *v43 = CVPixelBufferGetBaseAddress(sourceBuffer);
                 *&v43[8] = v14;
                 *&v43[16] = Width;
-                BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
+                BytesPerRow = CVPixelBufferGetBytesPerRow(sourceBuffer);
                 v34 = 0;
                 pixelBuffer = cf;
                 unlockFlags = 0;
@@ -257,7 +257,7 @@ LABEL_38:
                           }
 
                           v7 = 0;
-                          *a3 = v31;
+                          *buffer = v31;
                         }
                       }
                     }
@@ -279,7 +279,7 @@ LABEL_38:
                   v7 = -50;
                 }
 
-                if (v38 && !v37 && CVPixelBufferUnlockBaseAddress(v38, v39) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+                if (sourceBufferCopy && !v37 && CVPixelBufferUnlockBaseAddress(sourceBufferCopy, v39) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                 {
                   [VCPVideoCNNAnalyzer copyImage:withChannels:settling:];
                 }
@@ -312,7 +312,7 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      if (a5 == 7)
+      if (orientation == 7)
       {
         __asm { FMOV            V0.2D, #1.0 }
 
@@ -322,7 +322,7 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      if (a5 == 8)
+      if (orientation == 8)
       {
         v18 = Height;
         *&buf[8] = xmmword_1C9F60740;
@@ -349,12 +349,12 @@ LABEL_32:
   return -50;
 }
 
-- (BOOL)validateProcessingSettingsForDetections:(unint64_t)a3
+- (BOOL)validateProcessingSettingsForDetections:(unint64_t)detections
 {
   v17[1] = *MEMORY[0x1E69E9840];
   if ([(VCPMADServiceImageAsset *)self->_imageAsset userSafetyEligible])
   {
-    if (a3)
+    if (detections)
     {
       return 1;
     }
@@ -396,30 +396,30 @@ LABEL_32:
   return 0;
 }
 
-- (unint64_t)performQRCodeForPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 detections:(unint64_t)a5 results:(id)a6
+- (unint64_t)performQRCodeForPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation detections:(unint64_t)detections results:(id)results
 {
-  v7 = *&a4;
+  v7 = *&orientation;
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  resultsCopy = results;
   if (+[MADUserSafetyQRCodeDetector enabled])
   {
     v11 = objc_autoreleasePoolPush();
     v12 = objc_alloc_init(MADUserSafetyImageQRCodeDetector);
-    v13 = [(MADUserSafetyImageQRCodeDetector *)v12 sensitivityFromQRCodeForPixelBuffer:a3 orientation:v7 signpostPayload:self->_signpostPayload];
+    v13 = [(MADUserSafetyImageQRCodeDetector *)v12 sensitivityFromQRCodeForPixelBuffer:buffer orientation:v7 signpostPayload:self->_signpostPayload];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 unsignedIntegerValue];
-      if (a5 & v15)
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
+      if (detections & unsignedIntegerValue)
       {
-        [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69AE2E0]];
-        a5 ^= 1uLL;
+        [resultsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69AE2E0]];
+        detections ^= 1uLL;
       }
 
-      if ((v15 & a5 & 2) != 0)
+      if ((unsignedIntegerValue & detections & 2) != 0)
       {
-        [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69AE2D8]];
-        a5 ^= 2uLL;
+        [resultsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69AE2D8]];
+        detections ^= 2uLL;
       }
     }
 
@@ -434,15 +434,15 @@ LABEL_32:
     objc_autoreleasePoolPop(v11);
   }
 
-  return a5;
+  return detections;
 }
 
-- (unint64_t)fetchCachedResultsForDetections:(unint64_t)a3 results:(id)a4
+- (unint64_t)fetchCachedResultsForDetections:(unint64_t)detections results:(id)results
 {
   v36 = *MEMORY[0x1E69E9840];
-  v29 = a4;
-  v26 = [(VCPMADServiceImageAsset *)self->_imageAsset nsfwClassifications];
-  if (v26)
+  resultsCopy = results;
+  nsfwClassifications = [(VCPMADServiceImageAsset *)self->_imageAsset nsfwClassifications];
+  if (nsfwClassifications)
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -464,7 +464,7 @@ LABEL_32:
 
     v30 = 0uLL;
     v31 = 0uLL;
-    v7 = v26;
+    v7 = nsfwClassifications;
     v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v8)
     {
@@ -481,7 +481,7 @@ LABEL_32:
           }
 
           v11 = *(*(&v30 + 1) + 8 * i);
-          if ((a3 & 1) != 0 && [*(*(&v30 + 1) + 8 * i) extendedSceneIdentifier] == 2147481854)
+          if ((detections & 1) != 0 && [*(*(&v30 + 1) + 8 * i) extendedSceneIdentifier] == 2147481854)
           {
             [v11 confidence];
             v13 = v12;
@@ -490,12 +490,12 @@ LABEL_32:
             v16 = [v14 isImageSensitiveForLabel:v15 confidenceScore:2 classificationMode:v13];
 
             v17 = [MEMORY[0x1E696AD98] numberWithBool:v16];
-            [v29 setObject:v17 forKeyedSubscript:v28];
+            [resultsCopy setObject:v17 forKeyedSubscript:v28];
 
-            a3 &= ~1uLL;
+            detections &= ~1uLL;
           }
 
-          if ((a3 & 2) != 0 && v6)
+          if ((detections & 2) != 0 && v6)
           {
             if ([v11 extendedSceneIdentifier] != 2147481342 && objc_msgSend(v11, "extendedSceneIdentifier") != 2147481343)
             {
@@ -525,15 +525,15 @@ LABEL_32:
             }
 
             v24 = [MEMORY[0x1E696AD98] numberWithBool:v22];
-            [v29 setObject:v24 forKeyedSubscript:v27];
+            [resultsCopy setObject:v24 forKeyedSubscript:v27];
 
-            a3 &= ~2uLL;
+            detections &= ~2uLL;
           }
 
-          if (!a3)
+          if (!detections)
           {
 
-            a3 = 0;
+            detections = 0;
             goto LABEL_34;
           }
         }
@@ -544,22 +544,22 @@ LABEL_32:
       while (v8);
     }
 
-    if (a3)
+    if (detections)
     {
-      [v29 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E69AE2E0]];
-      a3 &= ~1uLL;
+      [resultsCopy setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E69AE2E0]];
+      detections &= ~1uLL;
     }
 
-    if ((a3 & 2) != 0)
+    if ((detections & 2) != 0)
     {
-      [v29 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E69AE2D8]];
-      a3 &= ~2uLL;
+      [resultsCopy setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E69AE2D8]];
+      detections &= ~2uLL;
     }
   }
 
 LABEL_34:
 
-  return a3;
+  return detections;
 }
 
 - (int)run
@@ -578,8 +578,8 @@ LABEL_34:
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(MADImageSafetyClassificationRequest *)self->_request enableNudityDetection];
-  v7 = v6;
+  enableNudityDetection = [(MADImageSafetyClassificationRequest *)self->_request enableNudityDetection];
+  v7 = enableNudityDetection;
   if ([(MADImageSafetyClassificationRequest *)self->_request enableGoreViolenceDetection])
   {
     v8 = 2;
@@ -590,7 +590,7 @@ LABEL_34:
     v8 = 0;
   }
 
-  if ([(VCPMADImageSafetyClassificationTask *)self validateProcessingSettingsForDetections:v8 | v6])
+  if ([(VCPMADImageSafetyClassificationTask *)self validateProcessingSettingsForDetections:v8 | enableNudityDetection])
   {
     v9 = [MEMORY[0x1E695DF00] now];
     [v9 timeIntervalSince1970];
@@ -752,7 +752,7 @@ LABEL_34:
               block[2] = __42__VCPMADImageSafetyClassificationTask_run__block_invoke;
               block[3] = &unk_1F496A420;
               v94 = v20;
-              v95 = self;
+              selfCopy = self;
               v98 = cf;
               if (cf)
               {
@@ -772,7 +772,7 @@ LABEL_34:
               v86 = __42__VCPMADImageSafetyClassificationTask_run__block_invoke_387;
               v87 = &unk_1F496A420;
               v88 = v20;
-              v89 = self;
+              selfCopy2 = self;
               v92 = cf;
               if (cf)
               {
@@ -849,8 +849,8 @@ LABEL_34:
               [(MADImageSafetyClassificationRequest *)v68 setResults:v73];
 
               [v22 reset];
-              v74 = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
-              MADPLLogIVSProcessing(v74, 0, [(VCPMADServiceImageAsset *)self->_imageAsset assetType], v11);
+              clientBundleID = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
+              MADPLLogIVSProcessing(clientBundleID, 0, [(VCPMADServiceImageAsset *)self->_imageAsset assetType], v11);
 
               if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
               {
@@ -883,8 +883,8 @@ LABEL_34:
       v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v135 count:1];
       [(MADImageSafetyClassificationRequest *)v40 setResults:v45];
 
-      v46 = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
-      MADPLLogIVSProcessing(v46, 1, [(VCPMADServiceImageAsset *)self->_imageAsset assetType], v11);
+      clientBundleID2 = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
+      MADPLLogIVSProcessing(clientBundleID2, 1, [(VCPMADServiceImageAsset *)self->_imageAsset assetType], v11);
 
       if (MediaAnalysisLogLevel() < 6 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {

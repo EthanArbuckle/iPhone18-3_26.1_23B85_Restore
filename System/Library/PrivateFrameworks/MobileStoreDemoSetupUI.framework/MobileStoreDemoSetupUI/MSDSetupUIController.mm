@@ -2,18 +2,18 @@
 + (MSDSetupUIController)sharedInstance;
 - (BOOL)hasSecureCookie;
 - (void)_restoreLocationServicesState;
-- (void)_setupComplete:(BOOL)a3;
+- (void)_setupComplete:(BOOL)complete;
 - (void)disconnectWiFi;
 - (void)enableLocationServices;
 - (void)popTopmostViewController;
-- (void)pushViewController:(id)a3 andRemoveTopmostView:(BOOL)a4;
+- (void)pushViewController:(id)controller andRemoveTopmostView:(BOOL)view;
 - (void)quitToCustomerFlow;
 - (void)quitToHomeScreen;
 - (void)quitToOfflineMode;
 - (void)saveLocationServicesState;
-- (void)setCompletionHandler:(id)a3;
-- (void)setHelpMenuRowSelection:(id)a3;
-- (void)setupCompleteWithStoreID:(id)a3;
+- (void)setCompletionHandler:(id)handler;
+- (void)setHelpMenuRowSelection:(id)selection;
+- (void)setupCompleteWithStoreID:(id)d;
 @end
 
 @implementation MSDSetupUIController
@@ -37,22 +37,22 @@ uint64_t __38__MSDSetupUIController_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)pushViewController:(id)a3 andRemoveTopmostView:(BOOL)a4
+- (void)pushViewController:(id)controller andRemoveTopmostView:(BOOL)view
 {
-  v6 = a3;
-  v7 = [(MSDSetupUIController *)self navigationController];
-  v8 = [v7 topViewController];
+  controllerCopy = controller;
+  navigationController = [(MSDSetupUIController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__MSDSetupUIController_pushViewController_andRemoveTopmostView___block_invoke;
   v11[3] = &unk_2798F1DD8;
   v11[4] = self;
-  v12 = v6;
-  v14 = a4;
-  v13 = v8;
-  v9 = v8;
-  v10 = v6;
+  v12 = controllerCopy;
+  viewCopy = view;
+  v13 = topViewController;
+  v9 = topViewController;
+  v10 = controllerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 }
 
@@ -115,31 +115,31 @@ void __48__MSDSetupUIController_popTopmostViewController__block_invoke(uint64_t 
   v1 = [v2 popViewControllerAnimated:1];
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = MEMORY[0x259CB1050](a3, a2);
+  v4 = MEMORY[0x259CB1050](handler, a2);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setupCompleteWithStoreID:(id)a3
+- (void)setupCompleteWithStoreID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = defaultLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = dCopy;
     _os_log_impl(&dword_259BCA000, v5, OS_LOG_TYPE_DEFAULT, "MobileStoreDemo setup UI complete with store ID: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
     v12 = *MEMORY[0x277D29550];
-    v13 = v4;
+    v13 = dCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   }
 
@@ -156,11 +156,11 @@ void __48__MSDSetupUIController_popTopmostViewController__block_invoke(uint64_t 
     _os_log_impl(&dword_259BCA000, v7, OS_LOG_TYPE_DEFAULT, "Starting demod with options: %{public}@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277D29520] sharedInstance];
-  [v8 sendAutoEnrollmentResult:v4 withStoreId:self->_helpMenuUserTapped withHelpMenuRowSelection:self->_autoEnrollmentTimeStamp];
+  mEMORY[0x277D29520] = [MEMORY[0x277D29520] sharedInstance];
+  [mEMORY[0x277D29520] sendAutoEnrollmentResult:dCopy withStoreId:self->_helpMenuUserTapped withHelpMenuRowSelection:self->_autoEnrollmentTimeStamp];
 
-  v9 = [MEMORY[0x277D29520] sharedInstance];
-  v10 = [v9 prepareWithOptions:v6];
+  mEMORY[0x277D29520]2 = [MEMORY[0x277D29520] sharedInstance];
+  v10 = [mEMORY[0x277D29520]2 prepareWithOptions:v6];
 
   [(MSDSetupUIController *)self _setupComplete:v10];
   v11 = *MEMORY[0x277D85DE8];
@@ -187,8 +187,8 @@ void __48__MSDSetupUIController_popTopmostViewController__block_invoke(uint64_t 
     _os_log_impl(&dword_259BCA000, v3, OS_LOG_TYPE_DEFAULT, "MobileStoreDemo setup UI exit, proceed to offline mode", v6, 2u);
   }
 
-  v4 = [MEMORY[0x277D29520] sharedInstance];
-  v5 = [v4 enterOfflineModeWithOptions:0 error:0];
+  mEMORY[0x277D29520] = [MEMORY[0x277D29520] sharedInstance];
+  v5 = [mEMORY[0x277D29520] enterOfflineModeWithOptions:0 error:0];
 
   [(MSDSetupUIController *)self _setupComplete:v5];
 }
@@ -196,10 +196,10 @@ void __48__MSDSetupUIController_popTopmostViewController__block_invoke(uint64_t 
 - (BOOL)hasSecureCookie
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D29520] sharedInstance];
-  v3 = [v2 typeOfDemoDevice];
+  mEMORY[0x277D29520] = [MEMORY[0x277D29520] sharedInstance];
+  typeOfDemoDevice = [mEMORY[0x277D29520] typeOfDemoDevice];
 
-  v5 = v3 == 5 || v3 == 3;
+  v5 = typeOfDemoDevice == 5 || typeOfDemoDevice == 3;
   v6 = defaultLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -224,9 +224,9 @@ void __48__MSDSetupUIController_popTopmostViewController__block_invoke(uint64_t 
   [(MSDSetupUIController *)self _setupComplete:1];
 }
 
-- (void)setHelpMenuRowSelection:(id)a3
+- (void)setHelpMenuRowSelection:(id)selection
 {
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:0 error:0];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:selection requiringSecureCoding:0 error:0];
   helpMenuUserTapped = self->_helpMenuUserTapped;
   self->_helpMenuUserTapped = v4;
 
@@ -253,8 +253,8 @@ void __54__MSDSetupUIController_markAsNotDemoAndEraseDataPlan___block_invoke(uin
 
 - (void)disconnectWiFi
 {
-  v2 = [MEMORY[0x277D29520] sharedInstance];
-  [v2 disconnectAndForgetWiFi:0];
+  mEMORY[0x277D29520] = [MEMORY[0x277D29520] sharedInstance];
+  [mEMORY[0x277D29520] disconnectAndForgetWiFi:0];
 }
 
 - (void)enableLocationServices
@@ -340,18 +340,18 @@ intptr_t __49__MSDSetupUIController_saveLocationServicesState__block_invoke_25(u
   return result;
 }
 
-- (void)_setupComplete:(BOOL)a3
+- (void)_setupComplete:(BOOL)complete
 {
   [(MSDSetupUIController *)self _restoreLocationServicesState];
-  v5 = [(MSDSetupUIController *)self completionHandler];
+  completionHandler = [(MSDSetupUIController *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__MSDSetupUIController__setupComplete___block_invoke;
     block[3] = &unk_2798F1E28;
-    v9 = a3;
+    completeCopy = complete;
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }

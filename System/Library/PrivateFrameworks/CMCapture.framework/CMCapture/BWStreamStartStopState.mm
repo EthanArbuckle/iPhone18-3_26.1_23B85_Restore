@@ -2,7 +2,7 @@
 - (BOOL)dependentWillStart;
 - (BOOL)streamWillStart;
 - (BOOL)streamWillStop;
-- (float)initWithStream:(void *)a3 masterState:(float)a4 timeoutInSeconds:;
+- (float)initWithStream:(void *)stream masterState:(float)state timeoutInSeconds:;
 - (void)dealloc;
 - (void)streamDidStop;
 @end
@@ -119,21 +119,21 @@ LABEL_6:
   [(BWStreamStartStopState *)&v3 dealloc];
 }
 
-- (float)initWithStream:(void *)a3 masterState:(float)a4 timeoutInSeconds:
+- (float)initWithStream:(void *)stream masterState:(float)state timeoutInSeconds:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = BWStreamStartStopState;
   v7 = objc_msgSendSuper2(&v10, sel_init);
   if (v7)
   {
     *(v7 + 2) = a2;
-    *(v7 + 6) = a3;
-    v7[16] = a4;
+    *(v7 + 6) = stream;
+    v7[16] = state;
     v8 = dispatch_group_create();
     *(v7 + 3) = v8;
     dispatch_group_enter(v8);
@@ -177,7 +177,7 @@ LABEL_6:
 
 - (void)streamDidStop
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_1_100();
     if (v2 == 3)

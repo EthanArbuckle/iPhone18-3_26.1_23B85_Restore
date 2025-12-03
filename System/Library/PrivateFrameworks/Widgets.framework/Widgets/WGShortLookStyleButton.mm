@@ -1,10 +1,10 @@
 @interface WGShortLookStyleButton
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)_size;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)_fontProvider;
-- (id)fontForTitle:(id)a3;
+- (id)fontForTitle:(id)title;
 - (void)_configureBackgroundViewIfNecessary;
 - (void)_configureMaskIfNecessary;
 - (void)_configureTitleLabelIfNecessary;
@@ -14,35 +14,35 @@
 - (void)_updateTouchInsetsIfNecessary;
 - (void)invalidateCachedGeometry;
 - (void)layoutSubviews;
-- (void)setBackgroundBlurred:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundBlurred:(BOOL)blurred;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WGShortLookStyleButton
 
-- (void)setBackgroundBlurred:(BOOL)a3
+- (void)setBackgroundBlurred:(BOOL)blurred
 {
-  if (self->_backgroundBlurred != a3)
+  if (self->_backgroundBlurred != blurred)
   {
-    self->_backgroundBlurred = a3;
+    self->_backgroundBlurred = blurred;
     [(MTMaterialView *)self->_backgroundView setBlurEnabled:?];
 
     [(WGShortLookStyleButton *)self setNeedsLayout];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(WGShortLookStyleButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(WGShortLookStyleButton *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = WGShortLookStyleButton;
-    [(WGShortLookStyleButton *)&v5 setHighlighted:v3];
-    if (v3)
+    [(WGShortLookStyleButton *)&v5 setHighlighted:highlightedCopy];
+    if (highlightedCopy)
     {
       [(WGShortLookStyleButton *)self _updateHighlight];
     }
@@ -79,9 +79,9 @@
   fontProvider = self->_fontProvider;
   if (!fontProvider)
   {
-    v4 = [MEMORY[0x277CF0D60] preferredFontProvider];
+    preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
     v5 = self->_fontProvider;
-    self->_fontProvider = v4;
+    self->_fontProvider = preferredFontProvider;
 
     fontProvider = self->_fontProvider;
   }
@@ -89,10 +89,10 @@
   return fontProvider;
 }
 
-- (id)fontForTitle:(id)a3
+- (id)fontForTitle:(id)title
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  titleCopy = title;
   v4 = 0;
   v5 = *MEMORY[0x277D743F8];
   v6 = *MEMORY[0x277D740A8];
@@ -105,7 +105,7 @@
     v14 = v6;
     v15[0] = v4;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    [v3 sizeWithAttributes:v9];
+    [titleCopy sizeWithAttributes:v9];
     v11 = v10;
 
     v7 = v7 + -1.0;
@@ -134,8 +134,8 @@
 
 - (void)_updateTitleLabelFont
 {
-  v3 = [(WGShortLookStyleButton *)self title];
-  v4 = [(WGShortLookStyleButton *)self fontForTitle:v3];
+  title = [(WGShortLookStyleButton *)self title];
+  v4 = [(WGShortLookStyleButton *)self fontForTitle:title];
 
   [(UILabel *)self->_titleLabel setFont:v4];
 }
@@ -175,11 +175,11 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   [(WGShortLookStyleButton *)self _configureTitleLabelIfNecessary];
-  [(UILabel *)self->_titleLabel setText:v4];
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(WGShortLookStyleButton *)self _updateTitleLabelFont];
 
@@ -194,10 +194,10 @@
   if (width == 0.0 && height == 0.0)
   {
     [(WGShortLookStyleButton *)self _configureTitleLabelIfNecessary];
-    v6 = [(WGShortLookStyleButton *)self title];
-    v7 = [(WGShortLookStyleButton *)self fontForTitle:v6];
+    title = [(WGShortLookStyleButton *)self title];
+    v7 = [(WGShortLookStyleButton *)self fontForTitle:title];
 
-    v8 = 464;
+    mEMORY[0x277CF0CA8]2 = 464;
     [(UILabel *)self->_titleLabel setFont:v7];
     [(UILabel *)self->_titleLabel sizeToFit];
     titleLabel = self->_titleLabel;
@@ -214,25 +214,25 @@
       v16 = 60.0;
     }
 
-    v17 = [MEMORY[0x277CF0CA8] sharedInstance];
-    v18 = [v17 deviceClass];
-    if (v18)
+    mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+    deviceClass = [mEMORY[0x277CF0CA8] deviceClass];
+    if (deviceClass)
     {
-      v8 = [MEMORY[0x277CF0CA8] sharedInstance];
+      mEMORY[0x277CF0CA8]2 = [MEMORY[0x277CF0CA8] sharedInstance];
       v19 = 26.0;
-      if ([v8 deviceClass] != 1)
+      if ([mEMORY[0x277CF0CA8]2 deviceClass] != 1)
       {
         goto LABEL_14;
       }
     }
 
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     v19 = 26.0;
     if (CGRectGetHeight(v25) > 812.0)
     {
-      v21 = [MEMORY[0x277CF0CA8] sharedInstance];
-      if ([v21 homeButtonType] == 2)
+      mEMORY[0x277CF0CA8]3 = [MEMORY[0x277CF0CA8] sharedInstance];
+      if ([mEMORY[0x277CF0CA8]3 homeButtonType] == 2)
       {
         v19 = 28.0;
       }
@@ -243,7 +243,7 @@
       }
     }
 
-    if (v18)
+    if (deviceClass)
     {
 LABEL_14:
     }
@@ -271,9 +271,9 @@ LABEL_14:
   [(WGShortLookStyleButton *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(WGShortLookStyleButton *)self _configureTitleLabelIfNecessary:a3.width];
+  [(WGShortLookStyleButton *)self _configureTitleLabelIfNecessary:fits.width];
 
   [(WGShortLookStyleButton *)self _size];
   result.height = v5;
@@ -323,26 +323,26 @@ LABEL_14:
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = WGShortLookStyleButton;
-  return [(WGShortLookStyleButton *)&v5 pointInside:a4 withEvent:a3.x, a3.y];
+  return [(WGShortLookStyleButton *)&v5 pointInside:event withEvent:inside.x, inside.y];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = WGShortLookStyleButton;
-  v4 = a3;
-  [(WGShortLookStyleButton *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WGShortLookStyleButton *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(WGShortLookStyleButton *)self traitCollection:v9.receiver];
-  v6 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  if (v6)
+  if (preferredContentSizeCategory)
   {
-    v7 = [v5 preferredContentSizeCategory];
-    v8 = [v7 isEqualToString:v6];
+    preferredContentSizeCategory2 = [v5 preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory2 isEqualToString:preferredContentSizeCategory];
 
     if ((v8 & 1) == 0)
     {
@@ -352,26 +352,26 @@ LABEL_14:
   }
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  v4 = a3;
+  baseCopy = base;
   [(WGShortLookStyleButton *)self _configureBackgroundViewIfNecessary];
-  [(MTMaterialView *)self->_backgroundView setGroupNameBase:v4];
+  [(MTMaterialView *)self->_backgroundView setGroupNameBase:baseCopy];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  if (v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1)
+  beginCopy = begin;
+  view = [beginCopy view];
+  if (view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [v4 numberOfTapsRequired];
+  numberOfTapsRequired = [beginCopy numberOfTapsRequired];
 
-  if (v6 != 1)
+  if (numberOfTapsRequired != 1)
   {
 LABEL_7:
     v7 = 1;

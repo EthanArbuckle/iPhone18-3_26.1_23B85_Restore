@@ -1,103 +1,103 @@
 @interface UIPrintOptionsTableViewController
 - (BOOL)canDismissPrintOptions;
 - (BOOL)keyboardShowing;
-- (UIPrintOptionsTableViewController)initWithTableView:(id)a3 printInfo:(id)a4 printPanelViewController:(id)a5;
+- (UIPrintOptionsTableViewController)initWithTableView:(id)view printInfo:(id)info printPanelViewController:(id)controller;
 - (UIPrintPanelViewController)printPanelViewController;
-- (id)printOptionAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)printOptionAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
 - (void)dismissKeyboard;
 - (void)hideGatheringPrinterInfo;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCurrentPrinter:(id)a3;
-- (void)setShowContactingPrinter:(BOOL)a3;
-- (void)setShowingGatheringPrinterInfo:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCurrentPrinter:(id)printer;
+- (void)setShowContactingPrinter:(BOOL)printer;
+- (void)setShowingGatheringPrinterInfo:(BOOL)info;
 - (void)showGatheringPrinterInfo;
 - (void)startPrinterWarningPoll;
 - (void)stopPrinterWarningPolling;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updatePrintSectionList;
-- (void)updateWarnings:(id)a3 forPrinter:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)updateWarnings:(id)warnings forPrinter:(id)printer;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIPrintOptionsTableViewController
 
-- (UIPrintOptionsTableViewController)initWithTableView:(id)a3 printInfo:(id)a4 printPanelViewController:(id)a5
+- (UIPrintOptionsTableViewController)initWithTableView:(id)view printInfo:(id)info printPanelViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  infoCopy = info;
+  controllerCopy = controller;
   v41.receiver = self;
   v41.super_class = UIPrintOptionsTableViewController;
   v11 = [(UIPrintOptionsTableViewController *)&v41 initWithStyle:2];
   v12 = v11;
   if (v11)
   {
-    [(UIPrintOptionsTableViewController *)v11 setPrintPanelViewController:v10];
-    v13 = [v10 printInteractionController];
-    v14 = [v13 appOptionsViewController];
-    [(UIPrintOptionsTableViewController *)v12 setAppOptionsViewController:v14];
+    [(UIPrintOptionsTableViewController *)v11 setPrintPanelViewController:controllerCopy];
+    printInteractionController = [controllerCopy printInteractionController];
+    appOptionsViewController = [printInteractionController appOptionsViewController];
+    [(UIPrintOptionsTableViewController *)v12 setAppOptionsViewController:appOptionsViewController];
 
-    [(UIPrintOptionsTableViewController *)v12 setPrintInfo:v9];
-    [(UIPrintOptionsTableViewController *)v12 setTableView:v8];
+    [(UIPrintOptionsTableViewController *)v12 setPrintInfo:infoCopy];
+    [(UIPrintOptionsTableViewController *)v12 setTableView:viewCopy];
     v15 = [UIPrintStandardOptionsSection alloc];
-    v16 = [(UIPrintOptionsTableViewController *)v12 printInfo];
-    v17 = [(UIPrintStandardOptionsSection *)v15 initWithPrintInfo:v16 printPanelViewController:v10];
+    printInfo = [(UIPrintOptionsTableViewController *)v12 printInfo];
+    v17 = [(UIPrintStandardOptionsSection *)v15 initWithPrintInfo:printInfo printPanelViewController:controllerCopy];
     [(UIPrintOptionsTableViewController *)v12 setStandardOptionsSection:v17];
 
     v18 = [UIPrintMoreOptionsSection alloc];
-    v19 = [(UIPrintOptionsTableViewController *)v12 printInfo];
-    v20 = [(UIPrintMoreOptionsSection *)v18 initWithPrintInfo:v19 printPanelViewController:v10];
+    printInfo2 = [(UIPrintOptionsTableViewController *)v12 printInfo];
+    v20 = [(UIPrintMoreOptionsSection *)v18 initWithPrintInfo:printInfo2 printPanelViewController:controllerCopy];
     [(UIPrintOptionsTableViewController *)v12 setMoreOptionsSection:v20];
 
     v21 = [UIPrintMediaQualitySection alloc];
-    v22 = [(UIPrintOptionsTableViewController *)v12 printInfo];
-    v23 = [(UIPrintMediaQualitySection *)v21 initWithPrintInfo:v22 printPanelViewController:v10];
+    printInfo3 = [(UIPrintOptionsTableViewController *)v12 printInfo];
+    v23 = [(UIPrintMediaQualitySection *)v21 initWithPrintInfo:printInfo3 printPanelViewController:controllerCopy];
     [(UIPrintOptionsTableViewController *)v12 setMediaQualitySection:v23];
 
     v24 = [UIPrintLayoutSection alloc];
-    v25 = [(UIPrintOptionsTableViewController *)v12 printInfo];
-    v26 = [(UIPrintLayoutSection *)v24 initWithPrintInfo:v25 printPanelViewController:v10];
+    printInfo4 = [(UIPrintOptionsTableViewController *)v12 printInfo];
+    v26 = [(UIPrintLayoutSection *)v24 initWithPrintInfo:printInfo4 printPanelViewController:controllerCopy];
     [(UIPrintOptionsTableViewController *)v12 setLayoutSection:v26];
 
     v27 = [UIFinishingOptionsSection alloc];
-    v28 = [(UIPrintOptionsTableViewController *)v12 printInfo];
-    v29 = [(UIFinishingOptionsSection *)v27 initWithPrintInfo:v28 printPanelViewController:v10];
+    printInfo5 = [(UIPrintOptionsTableViewController *)v12 printInfo];
+    v29 = [(UIFinishingOptionsSection *)v27 initWithPrintInfo:printInfo5 printPanelViewController:controllerCopy];
     [(UIPrintOptionsTableViewController *)v12 setFinishingOptionsSection:v29];
 
-    v30 = [(UIPrintOptionsTableViewController *)v12 appOptionsViewController];
+    appOptionsViewController2 = [(UIPrintOptionsTableViewController *)v12 appOptionsViewController];
 
-    if (v30)
+    if (appOptionsViewController2)
     {
       v31 = [UIPrintAppOptionsSection alloc];
-      v32 = [(UIPrintOptionsTableViewController *)v12 printInfo];
-      v33 = [(UIPrintOptionsTableViewController *)v12 appOptionsViewController];
-      v34 = [(UIPrintAppOptionsSection *)v31 initWithPrintInfo:v32 printPanelViewController:v10 appOptionsViewController:v33];
+      printInfo6 = [(UIPrintOptionsTableViewController *)v12 printInfo];
+      appOptionsViewController3 = [(UIPrintOptionsTableViewController *)v12 appOptionsViewController];
+      v34 = [(UIPrintAppOptionsSection *)v31 initWithPrintInfo:printInfo6 printPanelViewController:controllerCopy appOptionsViewController:appOptionsViewController3];
       [(UIPrintOptionsTableViewController *)v12 setAppOptionsSection:v34];
     }
 
     [(UIPrintOptionsTableViewController *)v12 updatePrintSectionList];
-    [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"UIPrintOptionCell"];
-    [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"UIPrintOptionListCell"];
-    [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"UIPrintOptionViewCell"];
-    [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"UIPrintOptionPopupCell"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"UIPrintOptionCell"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"UIPrintOptionListCell"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"UIPrintOptionViewCell"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"UIPrintOptionPopupCell"];
     v35 = objc_opt_class();
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
-    [v8 registerClass:v35 forHeaderFooterViewReuseIdentifier:v37];
+    [viewCopy registerClass:v35 forHeaderFooterViewReuseIdentifier:v37];
 
-    [v8 setSectionFooterHeight:*MEMORY[0x277D76F30]];
-    [v8 setEstimatedSectionFooterHeight:10.0];
+    [viewCopy setSectionFooterHeight:*MEMORY[0x277D76F30]];
+    [viewCopy setEstimatedSectionFooterHeight:10.0];
     v38 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v12 action:sel_dismissKeyboard];
     [v38 setCancelsTouchesInView:0];
-    v39 = [(UIPrintOptionsTableViewController *)v12 view];
-    [v39 addGestureRecognizer:v38];
+    view = [(UIPrintOptionsTableViewController *)v12 view];
+    [view addGestureRecognizer:v38];
   }
 
   return v12;
@@ -105,8 +105,8 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOptionsTableViewController *)self currentPrinter];
-  [v3 removeObserver:self forKeyPath:0x2871B0290];
+  currentPrinter = [(UIPrintOptionsTableViewController *)self currentPrinter];
+  [currentPrinter removeObserver:self forKeyPath:0x2871B0290];
 
   v4.receiver = self;
   v4.super_class = UIPrintOptionsTableViewController;
@@ -115,16 +115,16 @@
 
 - (BOOL)keyboardShowing
 {
-  v2 = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
-  v3 = [v2 keyboardShowing];
+  moreOptionsSection = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
+  keyboardShowing = [moreOptionsSection keyboardShowing];
 
-  return v3;
+  return keyboardShowing;
 }
 
 - (void)dismissKeyboard
 {
-  v2 = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
-  [v2 dismissKeyboard];
+  moreOptionsSection = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
+  [moreOptionsSection dismissKeyboard];
 }
 
 - (void)updatePrintSectionList
@@ -219,18 +219,18 @@ void __59__UIPrintOptionsTableViewController_updatePrintSectionList__block_invok
 - (BOOL)canDismissPrintOptions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
-  v4 = [v3 canDismiss];
+  standardOptionsSection = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
+  canDismiss = [standardOptionsSection canDismiss];
 
-  if (!v4)
+  if (!canDismiss)
   {
     return 0;
   }
 
-  v5 = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
-  v6 = [v5 canDismiss];
+  moreOptionsSection = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
+  canDismiss2 = [moreOptionsSection canDismiss];
 
-  if (!v6)
+  if (!canDismiss2)
   {
     return 0;
   }
@@ -239,8 +239,8 @@ void __59__UIPrintOptionsTableViewController_updatePrintSectionList__block_invok
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(UIPrintOptionsTableViewController *)self printOptionSections];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  printOptionSections = [(UIPrintOptionsTableViewController *)self printOptionSections];
+  v8 = [printOptionSections countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -251,7 +251,7 @@ void __59__UIPrintOptionsTableViewController_updatePrintSectionList__block_invok
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(printOptionSections);
         }
 
         if (![*(*(&v14 + 1) + 8 * i) canDismiss])
@@ -261,7 +261,7 @@ void __59__UIPrintOptionsTableViewController_updatePrintSectionList__block_invok
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [printOptionSections countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;
@@ -277,13 +277,13 @@ LABEL_14:
   return v12;
 }
 
-- (void)setCurrentPrinter:(id)a3
+- (void)setCurrentPrinter:(id)printer
 {
-  v4 = a3;
+  printerCopy = printer;
   [(UIPrinter *)self->_currentPrinter removeObserver:self forKeyPath:0x2871B0290];
   currentPrinter = self->_currentPrinter;
-  self->_currentPrinter = v4;
-  v6 = v4;
+  self->_currentPrinter = printerCopy;
+  v6 = printerCopy;
 
   [(UIPrinter *)self->_currentPrinter addObserver:self forKeyPath:0x2871B0290 options:0 context:0];
   [(UIPrintOptionsTableViewController *)self stopPrinterWarningPolling];
@@ -293,9 +293,9 @@ LABEL_14:
   [(UIPrintOptionsTableViewController *)self updatePrintSectionList];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{0x2871B0290, a4, a5, a6}])
+  if ([path isEqualToString:{0x2871B0290, object, change, context}])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -306,11 +306,11 @@ LABEL_14:
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(UIPrintOptionsTableViewController *)self appOptionsSection];
+  appOptionsSection = [(UIPrintOptionsTableViewController *)self appOptionsSection];
 
-  if (v4)
+  if (appOptionsSection)
   {
     [(UIPrintOptionsTableViewController *)self setAppOptionsSectionNum:2];
     v5 = 3;
@@ -321,8 +321,8 @@ LABEL_14:
     v5 = 2;
   }
 
-  v6 = [(UIPrintOptionsTableViewController *)self printOptionSections];
-  v7 = [v6 count];
+  printOptionSections = [(UIPrintOptionsTableViewController *)self printOptionSections];
+  v7 = [printOptionSections count];
 
   if (v7)
   {
@@ -332,31 +332,31 @@ LABEL_14:
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
-    v7 = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
+    moreOptionsSection = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!section)
   {
-    v7 = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
+    moreOptionsSection = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
 LABEL_5:
-    v8 = v7;
-    v9 = [v7 printOptions];
-    v10 = [v9 count];
+    printOptionSections = moreOptionsSection;
+    printOptions = [moreOptionsSection printOptions];
+    v10 = [printOptions count];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  if ([(UIPrintOptionsTableViewController *)self appOptionsSectionNum]!= a4 || ([(UIPrintOptionsTableViewController *)self appOptionsSection], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  if ([(UIPrintOptionsTableViewController *)self appOptionsSectionNum]!= section || ([(UIPrintOptionsTableViewController *)self appOptionsSection], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
-    v8 = [(UIPrintOptionsTableViewController *)self printOptionSections];
-    v10 = [v8 count];
+    printOptionSections = [(UIPrintOptionsTableViewController *)self printOptionSections];
+    v10 = [printOptionSections count];
     goto LABEL_10;
   }
 
@@ -366,47 +366,47 @@ LABEL_11:
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
     goto LABEL_2;
   }
 
-  v8 = [(UIPrintOptionsTableViewController *)self printerWarnings];
-  if (v8)
+  printerWarnings = [(UIPrintOptionsTableViewController *)self printerWarnings];
+  if (printerWarnings)
   {
-    v9 = v8;
-    v10 = [(UIPrintOptionsTableViewController *)self printerWarnings];
-    if ([v10 length])
+    v9 = printerWarnings;
+    printerWarnings2 = [(UIPrintOptionsTableViewController *)self printerWarnings];
+    if ([printerWarnings2 length])
     {
 
 LABEL_9:
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v7 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v13];
+      v7 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v13];
 
       if ([(UIPrintOptionsTableViewController *)self showingGatheringPrinterInfo])
       {
-        v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v15 = [v14 localizedStringForKey:@"Gathering printer information" value:@"Gathering printer information" table:@"Localizable"];
+        printerWarnings3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+        v15 = [printerWarnings3 localizedStringForKey:@"Gathering printer information" value:@"Gathering printer information" table:@"Localizable"];
         [v7 setMessageText:v15];
       }
 
       else
       {
-        v14 = [(UIPrintOptionsTableViewController *)self printerWarnings];
-        [v7 setMessageText:v14];
+        printerWarnings3 = [(UIPrintOptionsTableViewController *)self printerWarnings];
+        [v7 setMessageText:printerWarnings3];
       }
 
       [v7 setSpinSpinner:{-[UIPrintOptionsTableViewController showingGatheringPrinterInfo](self, "showingGatheringPrinterInfo")}];
       goto LABEL_13;
     }
 
-    v11 = [(UIPrintOptionsTableViewController *)self showingGatheringPrinterInfo];
+    showingGatheringPrinterInfo = [(UIPrintOptionsTableViewController *)self showingGatheringPrinterInfo];
 
-    if (v11)
+    if (showingGatheringPrinterInfo)
     {
       goto LABEL_9;
     }
@@ -424,118 +424,118 @@ LABEL_13:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
-  v9 = [v7 section];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
+  section = [pathCopy section];
 
-  if (v9 == 1)
+  if (section == 1)
   {
-    v10 = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
+    moreOptionsSection = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
     goto LABEL_5;
   }
 
-  if (!v9)
+  if (!section)
   {
-    v10 = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
+    moreOptionsSection = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
 LABEL_5:
-    v11 = v10;
-    v12 = [v10 printOptions];
-    v13 = [v12 objectAtIndex:v8];
+    v11 = moreOptionsSection;
+    printOptions = [moreOptionsSection printOptions];
+    appOptionsSection = [printOptions objectAtIndex:v8];
 
-    v14 = [v13 createPrintOptionTableViewCell];
+    createPrintOptionTableViewCell = [appOptionsSection createPrintOptionTableViewCell];
     goto LABEL_13;
   }
 
-  if (v9 == [(UIPrintOptionsTableViewController *)self appOptionsSectionNum]&& ([(UIPrintOptionsTableViewController *)self appOptionsSection], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+  if (section == [(UIPrintOptionsTableViewController *)self appOptionsSectionNum]&& ([(UIPrintOptionsTableViewController *)self appOptionsSection], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
   {
-    v13 = [(UIPrintOptionsTableViewController *)self appOptionsSection];
+    appOptionsSection = [(UIPrintOptionsTableViewController *)self appOptionsSection];
   }
 
   else
   {
-    v16 = [(UIPrintOptionsTableViewController *)self printOptionSections];
-    v13 = [v16 objectAtIndex:v8];
+    printOptionSections = [(UIPrintOptionsTableViewController *)self printOptionSections];
+    appOptionsSection = [printOptionSections objectAtIndex:v8];
   }
 
-  v14 = [v6 dequeueReusableCellWithIdentifier:@"PrintSectionCell"];
-  if (!v14)
+  createPrintOptionTableViewCell = [viewCopy dequeueReusableCellWithIdentifier:@"PrintSectionCell"];
+  if (!createPrintOptionTableViewCell)
   {
-    v14 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"PrintSectionCell"];
+    createPrintOptionTableViewCell = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"PrintSectionCell"];
   }
 
-  v17 = [MEMORY[0x277D756E0] cellConfiguration];
-  v18 = [v13 title];
-  [v17 setText:v18];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  title = [appOptionsSection title];
+  [cellConfiguration setText:title];
 
-  v19 = [v13 summaryString];
-  [v17 setSecondaryText:v19];
+  summaryString = [appOptionsSection summaryString];
+  [cellConfiguration setSecondaryText:summaryString];
 
-  v20 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v21 = [v17 secondaryTextProperties];
-  [v21 setColor:v20];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryTextProperties = [cellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v14 setContentConfiguration:v17];
-  v22 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v14 setTintColor:v22];
+  [createPrintOptionTableViewCell setContentConfiguration:cellConfiguration];
+  secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+  [createPrintOptionTableViewCell setTintColor:secondaryLabelColor2];
 
-  [v13 setTableViewCell:v14];
-  [v14 setAccessoryType:1];
-  [v14 setSelectionStyle:3];
+  [appOptionsSection setTableViewCell:createPrintOptionTableViewCell];
+  [createPrintOptionTableViewCell setAccessoryType:1];
+  [createPrintOptionTableViewCell setSelectionStyle:3];
 
 LABEL_13:
 
-  return v14;
+  return createPrintOptionTableViewCell;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = UIPrintOptionsTableViewController;
-  [(UIPrintOptionsTableViewController *)&v8 viewWillAppear:a3];
-  v4 = [(UIPrintOptionsTableViewController *)self printPanelViewController];
-  v5 = [(UIPrintOptionsTableViewController *)self navigationItem];
-  [v4 addPrintShareButtonsToNavItem:v5];
+  [(UIPrintOptionsTableViewController *)&v8 viewWillAppear:appear];
+  printPanelViewController = [(UIPrintOptionsTableViewController *)self printPanelViewController];
+  navigationItem = [(UIPrintOptionsTableViewController *)self navigationItem];
+  [printPanelViewController addPrintShareButtonsToNavItem:navigationItem];
 
-  v6 = [(UIPrintOptionsTableViewController *)self printPanelViewController];
-  v7 = [(UIPrintOptionsTableViewController *)self navigationItem];
-  [v6 addCanelButtonToNavItem:v7];
+  printPanelViewController2 = [(UIPrintOptionsTableViewController *)self printPanelViewController];
+  navigationItem2 = [(UIPrintOptionsTableViewController *)self navigationItem];
+  [printPanelViewController2 addCanelButtonToNavItem:navigationItem2];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UIPrintOptionsTableViewController;
-  [(UIPrintOptionsTableViewController *)&v4 viewDidAppear:a3];
+  [(UIPrintOptionsTableViewController *)&v4 viewDidAppear:appear];
   [(UIPrintOptionsTableViewController *)self startPrinterWarningPoll];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = UIPrintOptionsTableViewController;
-  [(UIPrintOptionsTableViewController *)&v4 viewDidDisappear:a3];
+  [(UIPrintOptionsTableViewController *)&v4 viewDidDisappear:disappear];
   [(UIPrintOptionsTableViewController *)self stopPrinterWarningPolling];
 }
 
-- (id)printOptionAtIndexPath:(id)a3
+- (id)printOptionAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (![v4 section])
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    v5 = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
+    standardOptionsSection = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
     goto LABEL_5;
   }
 
-  if ([v4 section] == 1)
+  if ([pathCopy section] == 1)
   {
-    v5 = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
+    standardOptionsSection = [(UIPrintOptionsTableViewController *)self moreOptionsSection];
 LABEL_5:
-    v6 = v5;
-    v7 = [v5 printOptions];
-    v8 = [v7 objectAtIndex:{objc_msgSend(v4, "row")}];
+    v6 = standardOptionsSection;
+    printOptions = [standardOptionsSection printOptions];
+    v8 = [printOptions objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     goto LABEL_7;
   }
@@ -546,32 +546,32 @@ LABEL_7:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  if ([v10 section] > 1)
+  pathCopy = path;
+  if ([pathCopy section] > 1)
   {
-    v6 = [v10 section];
-    if (v6 == [(UIPrintOptionsTableViewController *)self appOptionsSectionNum]&& ([(UIPrintOptionsTableViewController *)self appOptionsSection], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+    section = [pathCopy section];
+    if (section == [(UIPrintOptionsTableViewController *)self appOptionsSectionNum]&& ([(UIPrintOptionsTableViewController *)self appOptionsSection], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
     {
-      v8 = [(UIPrintOptionsTableViewController *)self appOptionsSection];
-      v5 = v8;
+      appOptionsSection = [(UIPrintOptionsTableViewController *)self appOptionsSection];
+      v5 = appOptionsSection;
     }
 
     else
     {
-      v9 = [(UIPrintOptionsTableViewController *)self printOptionSections];
-      v5 = [v9 objectAtIndex:{objc_msgSend(v10, "row")}];
+      printOptionSections = [(UIPrintOptionsTableViewController *)self printOptionSections];
+      v5 = [printOptionSections objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      v8 = v5;
+      appOptionsSection = v5;
     }
 
-    [v8 didSelectPrintOptionSection];
+    [appOptionsSection didSelectPrintOptionSection];
   }
 
   else
   {
-    v5 = [(UIPrintOptionsTableViewController *)self printOptionAtIndexPath:v10];
+    v5 = [(UIPrintOptionsTableViewController *)self printOptionAtIndexPath:pathCopy];
     [v5 didSelectPrintOption];
   }
 }
@@ -580,9 +580,9 @@ LABEL_7:
 {
   if ([(UIPrintOptionsTableViewController *)self showingGatheringPrinterInfo])
   {
-    v4 = [(UIPrintOptionsTableViewController *)self tableView];
+    tableView = [(UIPrintOptionsTableViewController *)self tableView];
     v3 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-    [v4 _reloadSectionHeaderFooters:v3 withRowAnimation:100];
+    [tableView _reloadSectionHeaderFooters:v3 withRowAnimation:100];
   }
 }
 
@@ -590,20 +590,20 @@ LABEL_7:
 {
   if (![(UIPrintOptionsTableViewController *)self showingGatheringPrinterInfo])
   {
-    v4 = [(UIPrintOptionsTableViewController *)self tableView];
+    tableView = [(UIPrintOptionsTableViewController *)self tableView];
     v3 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-    [v4 _reloadSectionHeaderFooters:v3 withRowAnimation:100];
+    [tableView _reloadSectionHeaderFooters:v3 withRowAnimation:100];
   }
 }
 
-- (void)setShowingGatheringPrinterInfo:(BOOL)a3
+- (void)setShowingGatheringPrinterInfo:(BOOL)info
 {
-  v3 = a3;
+  infoCopy = info;
   [MEMORY[0x277CBEB88] cancelPreviousPerformRequestsWithTarget:self selector:sel_showGatheringPrinterInfo object:0];
   [MEMORY[0x277CBEB88] cancelPreviousPerformRequestsWithTarget:self selector:sel_hideGatheringPrinterInfo object:0];
-  if (self->_showingGatheringPrinterInfo != v3)
+  if (self->_showingGatheringPrinterInfo != infoCopy)
   {
-    if (v3)
+    if (infoCopy)
     {
       self->_showingGatheringPrinterInfo = 1;
       v5 = v8;
@@ -628,10 +628,10 @@ LABEL_7:
   }
 }
 
-- (void)setShowContactingPrinter:(BOOL)a3
+- (void)setShowContactingPrinter:(BOOL)printer
 {
-  v3 = a3;
-  if (a3)
+  printerCopy = printer;
+  if (printer)
   {
     [(UIPrintOptionsTableViewController *)self setPrinterWarnings:0];
     [(UIPrintOptionsTableViewController *)self stopPrinterWarningPolling];
@@ -642,31 +642,31 @@ LABEL_7:
     [(UIPrintOptionsTableViewController *)self startPrinterWarningPoll];
   }
 
-  v5 = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
-  [v5 setShowContactingPrinter:v3];
+  standardOptionsSection = [(UIPrintOptionsTableViewController *)self standardOptionsSection];
+  [standardOptionsSection setShowContactingPrinter:printerCopy];
 }
 
-- (void)updateWarnings:(id)a3 forPrinter:(id)a4
+- (void)updateWarnings:(id)warnings forPrinter:(id)printer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIPrintOptionsTableViewController *)self currentPrinter];
+  warningsCopy = warnings;
+  printerCopy = printer;
+  currentPrinter = [(UIPrintOptionsTableViewController *)self currentPrinter];
 
-  if (v8 == v7)
+  if (currentPrinter == printerCopy)
   {
-    v9 = [(UIPrintOptionsTableViewController *)self printerWarnings];
-    v10 = [v9 isEqual:v6];
+    printerWarnings = [(UIPrintOptionsTableViewController *)self printerWarnings];
+    v10 = [printerWarnings isEqual:warningsCopy];
 
     if ((v10 & 1) == 0)
     {
-      [(UIPrintOptionsTableViewController *)self setPrinterWarnings:v6];
+      [(UIPrintOptionsTableViewController *)self setPrinterWarnings:warningsCopy];
       if (![(UIPrintOptionsTableViewController *)self showingGatheringPrinterInfo])
       {
         if (pthread_main_np() == 1)
         {
-          v11 = [(UIPrintOptionsTableViewController *)self tableView];
+          tableView = [(UIPrintOptionsTableViewController *)self tableView];
           v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-          [v11 reloadSections:v12 withRowAnimation:100];
+          [tableView reloadSections:v12 withRowAnimation:100];
         }
 
         else
@@ -696,26 +696,26 @@ void __63__UIPrintOptionsTableViewController_updateWarnings_forPrinter___block_i
 
 - (void)startPrinterWarningPoll
 {
-  v3 = [(UIPrintOptionsTableViewController *)self printerAttributesService];
+  printerAttributesService = [(UIPrintOptionsTableViewController *)self printerAttributesService];
 
-  if (!v3)
+  if (!printerAttributesService)
   {
     v4 = +[UIPrinterAttributesService instance];
     [(UIPrintOptionsTableViewController *)self setPrinterAttributesService:v4];
   }
 
   objc_initWeak(&location, self);
-  v5 = [(UIPrintOptionsTableViewController *)self currentPrinter];
+  currentPrinter = [(UIPrintOptionsTableViewController *)self currentPrinter];
   printerAttributesService = self->_printerAttributesService;
-  v7 = [v5 pkPrinter];
+  pkPrinter = [currentPrinter pkPrinter];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__UIPrintOptionsTableViewController_startPrinterWarningPoll__block_invoke;
   v9[3] = &unk_279A9CD90;
   objc_copyWeak(&v11, &location);
-  v8 = v5;
+  v8 = currentPrinter;
   v10 = v8;
-  [(UIPrinterAttributesService *)printerAttributesService startPollForPrinterWarningStatus:v7 completionHandler:v9];
+  [(UIPrinterAttributesService *)printerAttributesService startPollForPrinterWarningStatus:pkPrinter completionHandler:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -733,12 +733,12 @@ void __60__UIPrintOptionsTableViewController_startPrinterWarningPoll__block_invo
 
 - (void)stopPrinterWarningPolling
 {
-  v3 = [(UIPrintOptionsTableViewController *)self printerAttributesService];
+  printerAttributesService = [(UIPrintOptionsTableViewController *)self printerAttributesService];
 
-  if (v3)
+  if (printerAttributesService)
   {
-    v4 = [(UIPrintOptionsTableViewController *)self printerAttributesService];
-    [v4 stopPrinterWarningPolling];
+    printerAttributesService2 = [(UIPrintOptionsTableViewController *)self printerAttributesService];
+    [printerAttributesService2 stopPrinterWarningPolling];
   }
 }
 

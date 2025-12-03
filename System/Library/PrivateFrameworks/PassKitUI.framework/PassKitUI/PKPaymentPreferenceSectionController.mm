@@ -1,56 +1,56 @@
 @interface PKPaymentPreferenceSectionController
-- (BOOL)_preferenceIsHideMyEmail:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3 forListCell:(id)a4;
-- (Class)footerViewClassForSectionIdentifier:(id)a3;
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4;
-- (PKPaymentPreferenceSectionController)initWithPreference:(id)a3 style:(int64_t)a4 preferencesChangedHandler:(id)a5;
+- (BOOL)_preferenceIsHideMyEmail:(id)email;
+- (BOOL)textFieldShouldReturn:(id)return forListCell:(id)cell;
+- (Class)footerViewClassForSectionIdentifier:(id)identifier;
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier;
+- (PKPaymentPreferenceSectionController)initWithPreference:(id)preference style:(int64_t)style preferencesChangedHandler:(id)handler;
 - (PKPaymentPreferenceSectionController)linkedSectionController;
 - (PKPaymentPreferenceSectionControllerDelegate)delegate;
 - (id)appendNewItemForEditing;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)footerContentForSectionIdentifier:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)newOptionItemForSubPreference:(id)a3;
-- (id)newOptionItemForSubPreference:(id)a3 hasErrorHandler:(id)a4;
+- (id)cellRegistrationForItem:(id)item;
+- (id)footerContentForSectionIdentifier:(id)identifier;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)newOptionItemForSubPreference:(id)preference;
+- (id)newOptionItemForSubPreference:(id)preference hasErrorHandler:(id)handler;
 - (id)sectionIdentifier;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_updateSelectedIndexIfNeededFromNewItemIndex:(int64_t)a3;
-- (void)configureFooterView:(id)a3 forSectionIdentifier:(id)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
-- (void)didSelectItem:(id)a3;
-- (void)setSelectedIndex:(unint64_t)a3;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_updateSelectedIndexIfNeededFromNewItemIndex:(int64_t)index;
+- (void)configureFooterView:(id)view forSectionIdentifier:(id)identifier;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
+- (void)setSelectedIndex:(unint64_t)index;
 @end
 
 @implementation PKPaymentPreferenceSectionController
 
-- (PKPaymentPreferenceSectionController)initWithPreference:(id)a3 style:(int64_t)a4 preferencesChangedHandler:(id)a5
+- (PKPaymentPreferenceSectionController)initWithPreference:(id)preference style:(int64_t)style preferencesChangedHandler:(id)handler
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   v49.receiver = self;
   v49.super_class = PKPaymentPreferenceSectionController;
   v11 = [(PKPaymentPreferenceSectionController *)&v49 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_preference, a3);
-    v13 = _Block_copy(v10);
+    objc_storeStrong(&v11->_preference, preference);
+    v13 = _Block_copy(handlerCopy);
     handler = v12->_handler;
     v12->_handler = v13;
 
-    v12->_style = a4;
+    v12->_style = style;
     v12->_isEditingFieldThatWasOriginallyInvalid = 0;
-    v15 = [(PKPaymentPreferenceSectionController *)v12 sectionIdentifier];
-    v50[0] = v15;
+    sectionIdentifier = [(PKPaymentPreferenceSectionController *)v12 sectionIdentifier];
+    v50[0] = sectionIdentifier;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
     [(PKDynamicListSectionController *)v12 setIdentifiers:v16];
 
-    v17 = [(PKPaymentPreference *)v12->_preference title];
-    [(PKDynamicListSectionController *)v12 setHeaderText:v17];
+    title = [(PKPaymentPreference *)v12->_preference title];
+    [(PKDynamicListSectionController *)v12 setHeaderText:title];
 
-    v18 = [(PKPaymentPreference *)v12->_preference footer];
-    [(PKDynamicListSectionController *)v12 setFooterText:v18];
+    footer = [(PKPaymentPreference *)v12->_preference footer];
+    [(PKDynamicListSectionController *)v12 setFooterText:footer];
 
     objc_initWeak(&location, v12);
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -59,8 +59,8 @@
 
     for (i = 0; ; ++i)
     {
-      v22 = [(PKPaymentPreference *)v12->_preference preferences];
-      v23 = i < [v22 count];
+      preferences = [(PKPaymentPreference *)v12->_preference preferences];
+      v23 = i < [preferences count];
 
       preference = v12->_preference;
       if (!v23)
@@ -68,22 +68,22 @@
         break;
       }
 
-      v25 = [(PKPaymentPreference *)preference preferences];
-      v26 = [v25 objectAtIndex:i];
+      preferences2 = [(PKPaymentPreference *)preference preferences];
+      v26 = [preferences2 objectAtIndex:i];
 
       v27 = [(PKPaymentPreferenceSectionController *)v12 newOptionItemForSubPreference:v26];
       [(NSMutableArray *)v12->_items addObject:v27];
     }
 
-    v28 = [(PKPaymentPreference *)preference preferences];
-    v29 = [v28 lastObject];
+    preferences3 = [(PKPaymentPreference *)preference preferences];
+    lastObject = [preferences3 lastObject];
 
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && ([v29 isHideMyEmail] & 1) == 0)
+    if (objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && ([lastObject isHideMyEmail] & 1) == 0)
     {
       v30 = v12->_items;
-      v31 = [(PKPaymentPreferenceSectionController *)v12 addPreferenceItems];
-      [(NSMutableArray *)v30 addObjectsFromArray:v31];
+      addPreferenceItems = [(PKPaymentPreferenceSectionController *)v12 addPreferenceItems];
+      [(NSMutableArray *)v30 addObjectsFromArray:addPreferenceItems];
     }
 
     v46[0] = MEMORY[0x1E69E9820];
@@ -250,11 +250,11 @@ void __91__PKPaymentPreferenceSectionController_initWithPreference_style_prefere
 
 - (id)sectionIdentifier
 {
-  v2 = [(PKPaymentPreference *)self->_preference title];
-  v3 = v2;
-  if (v2)
+  title = [(PKPaymentPreference *)self->_preference title];
+  v3 = title;
+  if (title)
   {
-    v4 = v2;
+    v4 = title;
   }
 
   else
@@ -267,37 +267,37 @@ void __91__PKPaymentPreferenceSectionController_initWithPreference_style_prefere
   return v4;
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_items count]> a3)
+  if ([(NSMutableArray *)self->_items count]> index)
   {
-    v5 = [(PKPaymentPreference *)self->_preference selectedIndex];
-    if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+    selectedIndex = [(PKPaymentPreference *)self->_preference selectedIndex];
+    if (selectedIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = v5;
-      v7 = [(NSMutableArray *)self->_items objectAtIndex:v5];
+      v6 = selectedIndex;
+      v7 = [(NSMutableArray *)self->_items objectAtIndex:selectedIndex];
       v8 = [v7 copy];
 
       [(NSMutableArray *)self->_items replaceObjectAtIndex:v6 withObject:v8];
     }
 
-    [(PKPaymentPreference *)self->_preference setSelectedIndex:a3];
-    v9 = [(NSMutableArray *)self->_items objectAtIndex:a3];
+    [(PKPaymentPreference *)self->_preference setSelectedIndex:index];
+    v9 = [(NSMutableArray *)self->_items objectAtIndex:index];
     v10 = [v9 copy];
 
-    [(NSMutableArray *)self->_items replaceObjectAtIndex:a3 withObject:v10];
+    [(NSMutableArray *)self->_items replaceObjectAtIndex:index withObject:v10];
   }
 }
 
 - (id)appendNewItemForEditing
 {
-  v3 = [(PKPaymentPreferenceSectionController *)self appendNewSubPreference];
-  v4 = [(PKPaymentPreferenceSectionController *)self newOptionItemForSubPreference:v3];
-  v5 = [(PKPaymentPreference *)self->_preference preferences];
-  v6 = [v5 lastObject];
-  v7 = [v6 isHideMyEmail];
+  appendNewSubPreference = [(PKPaymentPreferenceSectionController *)self appendNewSubPreference];
+  v4 = [(PKPaymentPreferenceSectionController *)self newOptionItemForSubPreference:appendNewSubPreference];
+  preferences = [(PKPaymentPreference *)self->_preference preferences];
+  lastObject = [preferences lastObject];
+  isHideMyEmail = [lastObject isHideMyEmail];
 
-  if (v7)
+  if (isHideMyEmail)
   {
     v8 = 2;
   }
@@ -307,16 +307,16 @@ void __91__PKPaymentPreferenceSectionController_initWithPreference_style_prefere
     v8 = 1;
   }
 
-  v9 = [(PKPaymentPreference *)self->_preference preferences];
-  if ([v9 count] == v8)
+  preferences2 = [(PKPaymentPreference *)self->_preference preferences];
+  if ([preferences2 count] == v8)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [(PKPaymentPreference *)self->_preference preferences];
-    v10 = [v11 count] - v8;
+    preferences3 = [(PKPaymentPreference *)self->_preference preferences];
+    v10 = [preferences3 count] - v8;
   }
 
   [(NSMutableArray *)self->_items insertObject:v4 atIndex:v10];
@@ -330,33 +330,33 @@ void __91__PKPaymentPreferenceSectionController_initWithPreference_style_prefere
   return v4;
 }
 
-- (void)_updateSelectedIndexIfNeededFromNewItemIndex:(int64_t)a3
+- (void)_updateSelectedIndexIfNeededFromNewItemIndex:(int64_t)index
 {
-  if ([(PKPaymentPreference *)self->_preference selectedIndex]== a3)
+  if ([(PKPaymentPreference *)self->_preference selectedIndex]== index)
   {
-    v5 = [(PKPaymentPreference *)self->_preference preferences];
-    v6 = [v5 lastObject];
-    v7 = [v6 isHideMyEmail];
+    preferences = [(PKPaymentPreference *)self->_preference preferences];
+    lastObject = [preferences lastObject];
+    isHideMyEmail = [lastObject isHideMyEmail];
 
-    if (v7)
+    if (isHideMyEmail)
     {
       preference = self->_preference;
 
-      [(PKPaymentPreference *)preference setSelectedIndex:a3 + 1];
+      [(PKPaymentPreference *)preference setSelectedIndex:index + 1];
     }
   }
 }
 
-- (id)newOptionItemForSubPreference:(id)a3
+- (id)newOptionItemForSubPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PKPaymentPreferenceSectionController_newOptionItemForSubPreference___block_invoke;
   v7[3] = &unk_1E8013BC8;
   objc_copyWeak(&v8, &location);
-  v5 = [(PKPaymentPreferenceSectionController *)self newOptionItemForSubPreference:v4 hasErrorHandler:v7];
+  v5 = [(PKPaymentPreferenceSectionController *)self newOptionItemForSubPreference:preferenceCopy hasErrorHandler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 
@@ -372,37 +372,37 @@ uint64_t __70__PKPaymentPreferenceSectionController_newOptionItemForSubPreferenc
   return v5;
 }
 
-- (id)newOptionItemForSubPreference:(id)a3 hasErrorHandler:(id)a4
+- (id)newOptionItemForSubPreference:(id)preference hasErrorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKPaymentPreferenceOptionListItem alloc] initWithPreference:v7 inSectionPreference:self->_preference hasErrorHandler:v6];
+  handlerCopy = handler;
+  preferenceCopy = preference;
+  v8 = [[PKPaymentPreferenceOptionListItem alloc] initWithPreference:preferenceCopy inSectionPreference:self->_preference hasErrorHandler:handlerCopy];
 
   return v8;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3 forListCell:(id)a4
+- (BOOL)textFieldShouldReturn:(id)return forListCell:(id)cell
 {
-  v5 = [(PKPaymentPreferenceSectionController *)self delegate:a3];
+  v5 = [(PKPaymentPreferenceSectionController *)self delegate:return];
   [v5 setEditing:0 animated:1 forSectionController:self];
 
   return 0;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PKPaymentPreferenceSectionController;
-  v4 = [(PKDynamicListSectionController *)&v6 layoutWithLayoutEnvironment:a3 sectionIdentifier:a4];
+  v4 = [(PKDynamicListSectionController *)&v6 layoutWithLayoutEnvironment:environment sectionIdentifier:identifier];
 
   return v4;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = [a3 supportsInlineEditing];
+  supportsInlineEditing = [item supportsInlineEditing];
   v5 = 5;
-  if (v4)
+  if (supportsInlineEditing)
   {
     v5 = 6;
   }
@@ -412,59 +412,59 @@ uint64_t __70__PKPaymentPreferenceSectionController_newOptionItemForSubPreferenc
   return v6;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (*MEMORY[0x1E69DDC08] == v9)
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  if (*MEMORY[0x1E69DDC08] == kindCopy)
   {
-    [(PKDynamicListSectionController *)&v13 configureSupplementaryRegistration:v8 elementKind:v9 sectionIdentifier:v10, v12.receiver, v12.super_class, self, PKPaymentPreferenceSectionController];
+    [(PKDynamicListSectionController *)&v13 configureSupplementaryRegistration:registrationCopy elementKind:kindCopy sectionIdentifier:identifierCopy, v12.receiver, v12.super_class, self, PKPaymentPreferenceSectionController];
   }
 
-  else if (*MEMORY[0x1E69DDC00] == v9)
+  else if (*MEMORY[0x1E69DDC00] == kindCopy)
   {
-    if ([(PKPaymentPreferenceSectionController *)self footerViewClassForSectionIdentifier:v10])
+    if ([(PKPaymentPreferenceSectionController *)self footerViewClassForSectionIdentifier:identifierCopy])
     {
-      [(PKPaymentPreferenceSectionController *)self configureFooterView:v8 forSectionIdentifier:v10];
+      [(PKPaymentPreferenceSectionController *)self configureFooterView:registrationCopy forSectionIdentifier:identifierCopy];
     }
 
     else
     {
-      v11 = [(PKPaymentPreference *)self->_preference footer];
+      footer = [(PKPaymentPreference *)self->_preference footer];
 
-      if (v11)
+      if (footer)
       {
-        [(PKDynamicListSectionController *)&v12 configureSupplementaryRegistration:v8 elementKind:v9 sectionIdentifier:v10, self, PKPaymentPreferenceSectionController, v13.receiver, v13.super_class];
+        [(PKDynamicListSectionController *)&v12 configureSupplementaryRegistration:registrationCopy elementKind:kindCopy sectionIdentifier:identifierCopy, self, PKPaymentPreferenceSectionController, v13.receiver, v13.super_class];
       }
     }
   }
 }
 
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentPreferenceSectionController *)self footerViewClassForSectionIdentifier:v6];
+  identifierCopy = identifier;
+  kindCopy = kind;
+  v8 = [(PKPaymentPreferenceSectionController *)self footerViewClassForSectionIdentifier:identifierCopy];
   v9 = *MEMORY[0x1E69DDC00];
 
-  if (v9 != v7 || v8 == 0)
+  if (v9 != kindCopy || v8 == 0)
   {
     objc_opt_class();
   }
 
   else
   {
-    [(PKPaymentPreferenceSectionController *)self footerViewClassForSectionIdentifier:v6];
+    [(PKPaymentPreferenceSectionController *)self footerViewClassForSectionIdentifier:identifierCopy];
   }
   v11 = ;
 
   return v11;
 }
 
-- (Class)footerViewClassForSectionIdentifier:(id)a3
+- (Class)footerViewClassForSectionIdentifier:(id)identifier
 {
-  v3 = [(PKPaymentPreferenceSectionController *)self footerContentForSectionIdentifier:a3];
+  v3 = [(PKPaymentPreferenceSectionController *)self footerContentForSectionIdentifier:identifier];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -478,35 +478,35 @@ uint64_t __70__PKPaymentPreferenceSectionController_newOptionItemForSubPreferenc
   return v4;
 }
 
-- (void)configureFooterView:(id)a3 forSectionIdentifier:(id)a4
+- (void)configureFooterView:(id)view forSectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentPreferenceSectionController *)self footerContentForSectionIdentifier:v7];
+  viewCopy = view;
+  identifierCopy = identifier;
+  v8 = [(PKPaymentPreferenceSectionController *)self footerContentForSectionIdentifier:identifierCopy];
   if (v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_initWeak(&location, self);
-      v9 = v6;
+      v9 = viewCopy;
       v10 = objc_loadWeakRetained(&location);
-      v11 = [v10 preference];
-      v12 = [v11 footerLinkActionBlock];
+      preference = [v10 preference];
+      footerLinkActionBlock = [preference footerLinkActionBlock];
 
       v18 = MEMORY[0x1E69E9820];
       v19 = 3221225472;
       v20 = __81__PKPaymentPreferenceSectionController_configureFooterView_forSectionIdentifier___block_invoke;
       v21 = &unk_1E8013BF0;
-      v13 = v12;
+      v13 = footerLinkActionBlock;
       v22 = v13;
       v14 = [PKTextRangeHyperlink hyperlinkSourcesFromApplyFooter:v8 linkTapped:&v18];
       [v9 edgeInsets];
       v16 = v15;
       [v9 edgeInsets];
       [v9 setEdgeInsets:{0.0, v16, 0.0}];
-      v17 = [v8 footerText];
-      [v9 setText:v17];
+      footerText = [v8 footerText];
+      [v9 setText:footerText];
 
       [v9 setTextAlignment:4];
       [v9 setSources:v14];
@@ -527,13 +527,13 @@ uint64_t __81__PKPaymentPreferenceSectionController_configureFooterView_forSecti
   return result;
 }
 
-- (id)footerContentForSectionIdentifier:(id)a3
+- (id)footerContentForSectionIdentifier:(id)identifier
 {
-  v4 = [(PKPaymentPreference *)self->_preference footer];
-  v5 = [(PKPaymentPreference *)self->_preference footerLinkRange];
-  if (v4)
+  footer = [(PKPaymentPreference *)self->_preference footer];
+  footerLinkRange = [(PKPaymentPreference *)self->_preference footerLinkRange];
+  if (footer)
   {
-    v7 = v5 == 0x7FFFFFFFFFFFFFFFLL;
+    v7 = footerLinkRange == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -548,23 +548,23 @@ uint64_t __81__PKPaymentPreferenceSectionController_configureFooterView_forSecti
 
   else
   {
-    v8 = v5;
+    v8 = footerLinkRange;
     v9 = v6;
     v10 = objc_alloc_init(MEMORY[0x1E69B85D0]);
     v11 = objc_alloc_init(MEMORY[0x1E69B85D8]);
-    v12 = [v4 substringWithRange:{v8, v9}];
+    v12 = [footer substringWithRange:{v8, v9}];
     [v11 setLinkText:v12];
 
     v13 = [MEMORY[0x1E695DFD8] setWithObject:v11];
     [v10 setLinks:v13];
 
-    [v10 setFooterText:v4];
+    [v10 setFooterText:footer];
   }
 
   return v10;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v5 appendItems:self->_items];
@@ -572,39 +572,39 @@ uint64_t __81__PKPaymentPreferenceSectionController_configureFooterView_forSecti
   return v5;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v24 = a3;
-  if (![v24 isOptionItem])
+  itemCopy = item;
+  if (![itemCopy isOptionItem])
   {
-    v6 = [v24 isAddItem];
-    v7 = v24;
-    if (!v6)
+    isAddItem = [itemCopy isAddItem];
+    v7 = itemCopy;
+    if (!isAddItem)
     {
       goto LABEL_25;
     }
 
-    v8 = [v24 handler];
-    v8[2]();
+    handler = [itemCopy handler];
+    handler[2]();
 
     goto LABEL_24;
   }
 
-  v4 = [(NSMutableArray *)self->_items indexOfObject:v24];
-  v5 = [(PKPaymentPreferenceSectionController *)self delegate];
-  if ([v5 collectionViewIsEditingForSectionController:self])
+  v4 = [(NSMutableArray *)self->_items indexOfObject:itemCopy];
+  delegate = [(PKPaymentPreferenceSectionController *)self delegate];
+  if ([delegate collectionViewIsEditingForSectionController:self])
   {
-    if ([v24 supportsSwipeActionType:1])
+    if ([itemCopy supportsSwipeActionType:1])
     {
 
 LABEL_15:
-      [(PKPaymentPreferenceSectionController *)self editItem:v24 forRow:v4];
+      [(PKPaymentPreferenceSectionController *)self editItem:itemCopy forRow:v4];
       goto LABEL_24;
     }
 
-    v17 = [v24 supportsInlineEditing];
+    supportsInlineEditing = [itemCopy supportsInlineEditing];
 
-    if (v17)
+    if (supportsInlineEditing)
     {
       goto LABEL_15;
     }
@@ -614,47 +614,47 @@ LABEL_15:
   {
   }
 
-  v9 = [(PKPaymentPreference *)self->_preference isReadOnly];
-  v7 = v24;
-  if (v9)
+  isReadOnly = [(PKPaymentPreference *)self->_preference isReadOnly];
+  v7 = itemCopy;
+  if (isReadOnly)
   {
     goto LABEL_25;
   }
 
-  v10 = [(PKPaymentPreference *)self->_preference selectedIndex];
-  if (v4 == v10)
+  selectedIndex = [(PKPaymentPreference *)self->_preference selectedIndex];
+  if (v4 == selectedIndex)
   {
-    v11 = [(PKPaymentPreference *)self->_preference preferences];
-    v12 = [v11 count];
+    preferences = [(PKPaymentPreference *)self->_preference preferences];
+    v12 = [preferences count];
 
-    v7 = v24;
+    v7 = itemCopy;
     if (v4 >= v12)
     {
       goto LABEL_25;
     }
 
-    v13 = [(PKPaymentPreference *)self->_preference preferences];
-    v14 = [v13 objectAtIndex:v4];
+    preferences2 = [(PKPaymentPreference *)self->_preference preferences];
+    v14 = [preferences2 objectAtIndex:v4];
 
     v15 = [(PKPaymentPreference *)self->_preference errorsForPreference:v14];
     v16 = [v15 count];
 
     if (([(PKPaymentPreference *)self->_preference isReadOnly]& 1) == 0 && v16)
     {
-      [(PKPaymentPreferenceSectionController *)self editItem:v24 forRow:v4];
+      [(PKPaymentPreferenceSectionController *)self editItem:itemCopy forRow:v4];
     }
   }
 
   else
   {
-    v18 = v10;
-    if ([(PKPaymentPreferenceSectionController *)self _preferenceIsHideMyEmail:v24])
+    v18 = selectedIndex;
+    if ([(PKPaymentPreferenceSectionController *)self _preferenceIsHideMyEmail:itemCopy])
     {
       v19 = objc_alloc_init(MEMORY[0x1E69B88F0]);
       if (([v19 isAccountConfigured] & 1) == 0)
       {
-        v23 = [(PKPaymentPreferenceSectionController *)self delegate];
-        [v23 presentHideMyEmailAlertController];
+        delegate2 = [(PKPaymentPreferenceSectionController *)self delegate];
+        [delegate2 presentHideMyEmailAlertController];
 
         goto LABEL_24;
       }
@@ -668,37 +668,37 @@ LABEL_15:
       [(NSMutableArray *)self->_items replaceObjectAtIndex:v18 withObject:v21];
     }
 
-    v14 = [v24 copy];
+    v14 = [itemCopy copy];
     [(NSMutableArray *)self->_items replaceObjectAtIndex:v4 withObject:v14];
     [(PKPaymentPreference *)self->_preference setSelectedIndex:v4];
     handler = self->_handler;
     if (handler)
     {
-      handler[2](handler, self, v24);
+      handler[2](handler, self, itemCopy);
     }
   }
 
 LABEL_24:
-  v7 = v24;
+  v7 = itemCopy;
 LABEL_25:
 }
 
-- (BOOL)_preferenceIsHideMyEmail:(id)a3
+- (BOOL)_preferenceIsHideMyEmail:(id)email
 {
-  v3 = a3;
+  emailCopy = email;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 contactPreference];
-    v5 = [v4 isHideMyEmail];
+    contactPreference = [emailCopy contactPreference];
+    isHideMyEmail = [contactPreference isHideMyEmail];
   }
 
   else
   {
-    v5 = 0;
+    isHideMyEmail = 0;
   }
 
-  return v5;
+  return isHideMyEmail;
 }
 
 - (PKPaymentPreferenceSectionControllerDelegate)delegate

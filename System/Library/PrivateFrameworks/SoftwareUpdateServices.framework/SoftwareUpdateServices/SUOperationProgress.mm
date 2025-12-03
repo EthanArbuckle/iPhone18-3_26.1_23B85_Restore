@@ -1,53 +1,53 @@
 @interface SUOperationProgress
-- (SUOperationProgress)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUOperationProgress)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUOperationProgress
 
-- (SUOperationProgress)initWithCoder:(id)a3
+- (SUOperationProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SUOperationProgress *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
     [(SUOperationProgress *)v5 setPhase:v6];
 
-    [v4 decodeFloatForKey:@"percentComplete"];
+    [coderCopy decodeFloatForKey:@"percentComplete"];
     [(SUOperationProgress *)v5 setPercentComplete:?];
-    [v4 decodeFloatForKey:@"normalizedPercentComplete"];
+    [coderCopy decodeFloatForKey:@"normalizedPercentComplete"];
     [(SUOperationProgress *)v5 setNormalizedPercentComplete:?];
-    [v4 decodeDoubleForKey:@"timeRemaining"];
+    [coderCopy decodeDoubleForKey:@"timeRemaining"];
     [(SUOperationProgress *)v5 setTimeRemaining:?];
-    -[SUOperationProgress setIsDone:](v5, "setIsDone:", [v4 decodeBoolForKey:@"isDone"]);
+    -[SUOperationProgress setIsDone:](v5, "setIsDone:", [coderCopy decodeBoolForKey:@"isDone"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(SUOperationProgress *)self phase];
-  [v5 encodeObject:v4 forKey:@"phase"];
+  coderCopy = coder;
+  phase = [(SUOperationProgress *)self phase];
+  [coderCopy encodeObject:phase forKey:@"phase"];
 
   [(SUOperationProgress *)self percentComplete];
-  [v5 encodeFloat:@"percentComplete" forKey:?];
+  [coderCopy encodeFloat:@"percentComplete" forKey:?];
   [(SUOperationProgress *)self normalizedPercentComplete];
-  [v5 encodeFloat:@"normalizedPercentComplete" forKey:?];
+  [coderCopy encodeFloat:@"normalizedPercentComplete" forKey:?];
   [(SUOperationProgress *)self timeRemaining];
-  [v5 encodeDouble:@"timeRemaining" forKey:?];
-  [v5 encodeBool:-[SUOperationProgress isDone](self forKey:{"isDone"), @"isDone"}];
+  [coderCopy encodeDouble:@"timeRemaining" forKey:?];
+  [coderCopy encodeBool:-[SUOperationProgress isDone](self forKey:{"isDone"), @"isDone"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(SUOperationProgress *)self phase];
-  [v4 setPhase:v5];
+  phase = [(SUOperationProgress *)self phase];
+  [v4 setPhase:phase];
 
   [(SUOperationProgress *)self percentComplete];
   [v4 setPercentComplete:?];
@@ -62,7 +62,7 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUOperationProgress *)self phase];
+  phase = [(SUOperationProgress *)self phase];
   v5 = MEMORY[0x277CCABB8];
   v6 = MEMORY[0x277CCABB0];
   [(SUOperationProgress *)self percentComplete];
@@ -79,7 +79,7 @@
   *&v15 = v15;
   v16 = [v14 numberWithFloat:v15];
   v17 = [v13 localizedStringFromNumber:v16 numberStyle:1];
-  v18 = [v3 stringWithFormat:@"\n            \tPhase: %@\n            \tPercentComplete: %@\n            \tNormalizedPercentComplete: %@\n            \tTimeRemaining: %@", v4, v8, v12, v17];
+  v18 = [v3 stringWithFormat:@"\n            \tPhase: %@\n            \tPercentComplete: %@\n            \tNormalizedPercentComplete: %@\n            \tTimeRemaining: %@", phase, v8, v12, v17];
 
   return v18;
 }

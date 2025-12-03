@@ -1,34 +1,34 @@
 @interface AMSDelegateAuthenticateRequestTask
 + (id)createBagForSubProfile;
-- (AMSDelegateAuthenticateRequestTask)initWithAccount:(id)a3;
-- (AMSDelegateAuthenticateRequestTask)initWithAccount:(id)a3 bag:(id)a4;
+- (AMSDelegateAuthenticateRequestTask)initWithAccount:(id)account;
+- (AMSDelegateAuthenticateRequestTask)initWithAccount:(id)account bag:(id)bag;
 - (id)_encodedURLRequest;
 - (id)perform;
 @end
 
 @implementation AMSDelegateAuthenticateRequestTask
 
-- (AMSDelegateAuthenticateRequestTask)initWithAccount:(id)a3
+- (AMSDelegateAuthenticateRequestTask)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[AMSDelegateAuthenticateRequestTask createBagForSubProfile];
-  v6 = [(AMSDelegateAuthenticateRequestTask *)self initWithAccount:v4 bag:v5];
+  v6 = [(AMSDelegateAuthenticateRequestTask *)self initWithAccount:accountCopy bag:v5];
 
   return v6;
 }
 
-- (AMSDelegateAuthenticateRequestTask)initWithAccount:(id)a3 bag:(id)a4
+- (AMSDelegateAuthenticateRequestTask)initWithAccount:(id)account bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSDelegateAuthenticateRequestTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_bag, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_bag, bag);
   }
 
   return v10;
@@ -222,14 +222,14 @@ void __45__AMSDelegateAuthenticateRequestTask_perform__block_invoke_2(uint64_t a
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2114;
     v21 = v3;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Begin extracting URL endpoint from bag", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Begin extracting URL endpoint from bag", buf, 0x16u);
   }
 
   v6 = objc_alloc_init(AMSMutablePromise);
@@ -243,7 +243,7 @@ void __45__AMSDelegateAuthenticateRequestTask_perform__block_invoke_2(uint64_t a
   [(AMSPromise *)v6 addErrorBlock:v16];
   v8 = [(AMSDelegateAuthenticateRequestTask *)self bag];
   v9 = [v8 URLForKey:@"delegateChallengeTokenUrl"];
-  v10 = [v9 valuePromise];
+  valuePromise = [v9 valuePromise];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__AMSDelegateAuthenticateRequestTask__encodedURLRequest__block_invoke_22;
@@ -251,7 +251,7 @@ void __45__AMSDelegateAuthenticateRequestTask_perform__block_invoke_2(uint64_t a
   v14[4] = self;
   v15 = v7;
   v11 = v7;
-  v12 = [v10 continueWithBlock:v14];
+  v12 = [valuePromise continueWithBlock:v14];
 
   return v12;
 }
@@ -375,9 +375,9 @@ void __56__AMSDelegateAuthenticateRequestTask__encodedURLRequest__block_invoke_2
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

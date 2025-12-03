@@ -1,34 +1,34 @@
 @interface __HMDLegacyResidentUser
 + (void)initialize;
-- (__HMDLegacyResidentUser)initWithResidentUser:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (__HMDLegacyResidentUser)initWithResidentUser:(id)user;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation __HMDLegacyResidentUser
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(__HMDLegacyResidentUser *)self residentUser];
-  [v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  residentUser = [(__HMDLegacyResidentUser *)self residentUser];
+  [residentUser encodeWithCoder:coderCopy];
 }
 
-- (__HMDLegacyResidentUser)initWithResidentUser:(id)a3
+- (__HMDLegacyResidentUser)initWithResidentUser:(id)user
 {
-  v5 = a3;
-  v6 = [v5 accountHandle];
-  v7 = [v5 home];
-  v8 = [v5 pairingIdentity];
+  userCopy = user;
+  accountHandle = [userCopy accountHandle];
+  home = [userCopy home];
+  pairingIdentity = [userCopy pairingIdentity];
   v12.receiver = self;
   v12.super_class = __HMDLegacyResidentUser;
-  v9 = -[HMDUser initWithAccountHandle:home:pairingIdentity:privilege:](&v12, sel_initWithAccountHandle_home_pairingIdentity_privilege_, v6, v7, v8, [v5 privilege]);
+  v9 = -[HMDUser initWithAccountHandle:home:pairingIdentity:privilege:](&v12, sel_initWithAccountHandle_home_pairingIdentity_privilege_, accountHandle, home, pairingIdentity, [userCopy privilege]);
 
   if (v9)
   {
-    v10 = [v5 uuid];
-    [(HMDUser *)v9 _setUuidUnsafely:v10];
+    uuid = [userCopy uuid];
+    [(HMDUser *)v9 _setUuidUnsafely:uuid];
 
-    objc_storeStrong(&v9->_residentUser, a3);
+    objc_storeStrong(&v9->_residentUser, user);
   }
 
   return v9;
@@ -39,7 +39,7 @@
   v3 = MEMORY[0x277CCAAB0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 setClassName:v5 forClass:a1];
+  [v3 setClassName:v5 forClass:self];
 }
 
 @end

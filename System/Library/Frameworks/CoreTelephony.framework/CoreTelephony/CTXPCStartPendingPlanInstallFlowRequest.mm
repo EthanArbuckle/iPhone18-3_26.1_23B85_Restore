@@ -1,22 +1,22 @@
 @interface CTXPCStartPendingPlanInstallFlowRequest
 + (id)allowedClassesForArguments;
-- (CTXPCStartPendingPlanInstallFlowRequest)initWithPlan:(id)a3 carrierName:(id)a4;
+- (CTXPCStartPendingPlanInstallFlowRequest)initWithPlan:(id)plan carrierName:(id)name;
 - (id)carrierName;
 - (id)plan;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCStartPendingPlanInstallFlowRequest
 
-- (CTXPCStartPendingPlanInstallFlowRequest)initWithPlan:(id)a3 carrierName:(id)a4
+- (CTXPCStartPendingPlanInstallFlowRequest)initWithPlan:(id)plan carrierName:(id)name
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  planCopy = plan;
+  nameCopy = name;
   v13[0] = @"plan";
   v13[1] = @"carrier";
-  v14[0] = v6;
-  v14[1] = v7;
+  v14[0] = planCopy;
+  v14[1] = nameCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v12.receiver = self;
   v12.super_class = CTXPCStartPendingPlanInstallFlowRequest;
@@ -26,19 +26,19 @@
   return v9;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCStartPendingPlanInstallFlowRequest *)self plan];
-  v9 = [(CTXPCStartPendingPlanInstallFlowRequest *)self carrierName];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  plan = [(CTXPCStartPendingPlanInstallFlowRequest *)self plan];
+  carrierName = [(CTXPCStartPendingPlanInstallFlowRequest *)self carrierName];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87__CTXPCStartPendingPlanInstallFlowRequest_performRequestWithHandler_completionHandler___block_invoke;
   v11[3] = &unk_1E6A45E60;
-  v10 = v7;
+  v10 = completionHandlerCopy;
   v12 = v10;
-  [v6 startPendingPlanInstallationForPlan:v8 carrierName:v9 completionHandler:v11];
+  [handlerCopy startPendingPlanInstallationForPlan:plan carrierName:carrierName completionHandler:v11];
 }
 
 void __87__CTXPCStartPendingPlanInstallFlowRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -52,7 +52,7 @@ void __87__CTXPCStartPendingPlanInstallFlowRequest_performRequestWithHandler_com
 + (id)allowedClassesForArguments
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCStartPendingPlanInstallFlowRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -67,8 +67,8 @@ void __87__CTXPCStartPendingPlanInstallFlowRequest_performRequestWithHandler_com
 
 - (id)plan
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"plan"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"plan"];
   v4 = CTThrowingCastIfClass<CTPlan>(v3);
 
   return v4;
@@ -76,8 +76,8 @@ void __87__CTXPCStartPendingPlanInstallFlowRequest_performRequestWithHandler_com
 
 - (id)carrierName
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"carrier"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"carrier"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

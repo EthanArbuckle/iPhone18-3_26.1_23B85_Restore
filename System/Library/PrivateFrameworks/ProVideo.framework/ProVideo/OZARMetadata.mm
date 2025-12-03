@@ -1,52 +1,52 @@
 @interface OZARMetadata
 + (NSArray)personSegmentationMediaCharacteristics;
 + (NSArray)sceneDepthMediaCharacteristics;
-+ (id)createWithMetadataItem:(id)a3 error:(id *)a4;
-+ (id)decompressedData:(id)a3 error:(id *)a4;
++ (id)createWithMetadataItem:(id)item error:(id *)error;
++ (id)decompressedData:(id)data error:(id *)error;
 + (id)metadataItemIdentifier;
-+ (id)simplyDecodeFromData:(id)a3 error:(id *)a4;
++ (id)simplyDecodeFromData:(id)data error:(id *)error;
 + (opaqueCMFormatDescription)createMetadataFormat;
 + (opaqueCMFormatDescription)metadataFormat;
-- (OZARMetadata)initWithCoder:(id)a3;
-- (id)compressedDataWithError:(id *)a3;
-- (id)metadataItemWithTimeRange:(id *)a3 error:(id *)a4;
+- (OZARMetadata)initWithCoder:(id)coder;
+- (id)compressedDataWithError:(id *)error;
+- (id)metadataItemWithTimeRange:(id *)range error:(id *)error;
 @end
 
 @implementation OZARMetadata
 
-- (id)compressedDataWithError:(id *)a3
+- (id)compressedDataWithError:(id *)error
 {
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:a3];
-  v5 = [objc_opt_class() metadataCompressionAlgorithm];
-  if (v5 < 0)
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:error];
+  metadataCompressionAlgorithm = [objc_opt_class() metadataCompressionAlgorithm];
+  if (metadataCompressionAlgorithm < 0)
   {
     return v4;
   }
 
-  return [v4 compressedDataUsingAlgorithm:v5 error:a3];
+  return [v4 compressedDataUsingAlgorithm:metadataCompressionAlgorithm error:error];
 }
 
-+ (id)decompressedData:(id)a3 error:(id *)a4
++ (id)decompressedData:(id)data error:(id *)error
 {
-  v6 = [objc_opt_class() metadataCompressionAlgorithm];
-  if (v6 < 0)
+  metadataCompressionAlgorithm = [objc_opt_class() metadataCompressionAlgorithm];
+  if (metadataCompressionAlgorithm < 0)
   {
-    return a3;
+    return data;
   }
 
-  return [a3 decompressedDataUsingAlgorithm:v6 error:a4];
+  return [data decompressedDataUsingAlgorithm:metadataCompressionAlgorithm error:error];
 }
 
 + (opaqueCMFormatDescription)createMetadataFormat
 {
-  v2 = [objc_opt_class() metadataItemIdentifier];
+  metadataItemIdentifier = [objc_opt_class() metadataItemIdentifier];
 
-  return OZSimplyCreateCMMetadataFormatDescriptionForRawDataWithIdentifier(v2);
+  return OZSimplyCreateCMMetadataFormatDescriptionForRawDataWithIdentifier(metadataItemIdentifier);
 }
 
 + (opaqueCMFormatDescription)metadataFormat
 {
-  result = [a1 createMetadataFormat];
+  result = [self createMetadataFormat];
   +[OZARMetadata metadataFormat]::metadataFormat = result;
   return result;
 }
@@ -70,7 +70,7 @@
   return [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:3];
 }
 
-+ (id)simplyDecodeFromData:(id)a3 error:(id *)a4
++ (id)simplyDecodeFromData:(id)data error:(id *)error
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -78,12 +78,12 @@
     return 0;
   }
 
-  if (![a3 length])
+  if (![data length])
   {
     return 0;
   }
 
-  v7 = [a1 decompressedData:a3 error:a4];
+  v7 = [self decompressedData:data error:error];
   if (![v7 length])
   {
     return 0;
@@ -93,37 +93,37 @@
   v8 = MEMORY[0x277CCAAC8];
   v9 = objc_opt_class();
 
-  return [v8 unarchivedObjectOfClass:v9 fromData:v7 error:a4];
+  return [v8 unarchivedObjectOfClass:v9 fromData:v7 error:error];
 }
 
-+ (id)createWithMetadataItem:(id)a3 error:(id *)a4
++ (id)createWithMetadataItem:(id)item error:(id *)error
 {
-  v6 = [a3 value];
+  value = [item value];
 
-  return [a1 simplyDecodeFromData:v6 error:a4];
+  return [self simplyDecodeFromData:value error:error];
 }
 
 + (id)metadataItemIdentifier
 {
-  [a1 doesNotRecognizeSelector:a2];
+  [self doesNotRecognizeSelector:a2];
   v2 = MEMORY[0x277CE6520];
   v3 = *MEMORY[0x277CE5FA8];
 
   return [v2 identifierForKey:@"com.apple.videoapps.arfx.metadata" keySpace:v3];
 }
 
-- (id)metadataItemWithTimeRange:(id *)a3 error:(id *)a4
+- (id)metadataItemWithTimeRange:(id *)range error:(id *)error
 {
   v7 = MEMORY[0x277CE6520];
-  v8 = [objc_opt_class() metadataItemIdentifier];
-  v9 = *&a3->var0.var3;
-  v11[0] = *&a3->var0.var0;
+  metadataItemIdentifier = [objc_opt_class() metadataItemIdentifier];
+  v9 = *&range->var0.var3;
+  v11[0] = *&range->var0.var0;
   v11[1] = v9;
-  v11[2] = *&a3->var1.var1;
-  return [v7 simplyCreateMetadataItemWithObject:self identifier:v8 timeRange:v11 error:a4];
+  v11[2] = *&range->var1.var1;
+  return [v7 simplyCreateMetadataItemWithObject:self identifier:metadataItemIdentifier timeRange:v11 error:error];
 }
 
-- (OZARMetadata)initWithCoder:(id)a3
+- (OZARMetadata)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = OZARMetadata;

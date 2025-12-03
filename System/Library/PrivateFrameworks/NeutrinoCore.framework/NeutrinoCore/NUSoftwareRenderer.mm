@@ -1,6 +1,6 @@
 @interface NUSoftwareRenderer
 - (NUSoftwareRenderer)init;
-- (NUSoftwareRenderer)initWithCIContext:(id)a3 priority:(int64_t)a4;
+- (NUSoftwareRenderer)initWithCIContext:(id)context priority:(int64_t)priority;
 @end
 
 @implementation NUSoftwareRenderer
@@ -21,10 +21,10 @@
   return v6;
 }
 
-- (NUSoftwareRenderer)initWithCIContext:(id)a3 priority:(int64_t)a4
+- (NUSoftwareRenderer)initWithCIContext:(id)context priority:(int64_t)priority
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_23521);
@@ -68,8 +68,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -85,8 +85,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;

@@ -1,25 +1,25 @@
 @interface SIRINLUEXTERNALLanguageVariantResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addMultilingualVariant:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMultilingualVariant:(id)variant;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALLanguageVariantResult
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -44,7 +44,7 @@
   }
 
   parser = self->_parser;
-  v11 = v4[2];
+  v11 = fromCopy[2];
   if (parser)
   {
     if (v11)
@@ -61,13 +61,13 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((multilingualVariants = self->_multilingualVariants, !(multilingualVariants | v4[1])) || -[NSMutableArray isEqual:](multilingualVariants, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((multilingualVariants = self->_multilingualVariants, !(multilingualVariants | equalCopy[1])) || -[NSMutableArray isEqual:](multilingualVariants, "isEqual:")))
   {
     parser = self->_parser;
-    if (parser | v4[2])
+    if (parser | equalCopy[2])
     {
       v7 = [(SIRINLUEXTERNALParser *)parser isEqual:?];
     }
@@ -86,10 +86,10 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -110,7 +110,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{a3, v16}];
+        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{zone, v16}];
         [v5 addMultilingualVariant:v11];
 
         ++v10;
@@ -123,7 +123,7 @@
     while (v8);
   }
 
-  v12 = [(SIRINLUEXTERNALParser *)self->_parser copyWithZone:a3];
+  v12 = [(SIRINLUEXTERNALParser *)self->_parser copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
@@ -131,34 +131,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(SIRINLUEXTERNALLanguageVariantResult *)self multilingualVariantsCount])
   {
-    [v8 clearMultilingualVariants];
-    v4 = [(SIRINLUEXTERNALLanguageVariantResult *)self multilingualVariantsCount];
-    if (v4)
+    [toCopy clearMultilingualVariants];
+    multilingualVariantsCount = [(SIRINLUEXTERNALLanguageVariantResult *)self multilingualVariantsCount];
+    if (multilingualVariantsCount)
     {
-      v5 = v4;
+      v5 = multilingualVariantsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALLanguageVariantResult *)self multilingualVariantAtIndex:i];
-        [v8 addMultilingualVariant:v7];
+        [toCopy addMultilingualVariant:v7];
       }
     }
   }
 
   if (self->_parser)
   {
-    [v8 setParser:?];
+    [toCopy setParser:?];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -202,7 +202,7 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_multilingualVariants count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_multilingualVariants, "count")}];
@@ -225,8 +225,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -235,19 +235,19 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"multilingual_variant"];
+    [dictionary setObject:v4 forKey:@"multilingual_variant"];
   }
 
   parser = self->_parser;
   if (parser)
   {
-    v12 = [(SIRINLUEXTERNALParser *)parser dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"parser"];
+    dictionaryRepresentation2 = [(SIRINLUEXTERNALParser *)parser dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"parser"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -256,28 +256,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALLanguageVariantResult;
   v4 = [(SIRINLUEXTERNALLanguageVariantResult *)&v8 description];
-  v5 = [(SIRINLUEXTERNALLanguageVariantResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALLanguageVariantResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addMultilingualVariant:(id)a3
+- (void)addMultilingualVariant:(id)variant
 {
-  v4 = a3;
+  variantCopy = variant;
   multilingualVariants = self->_multilingualVariants;
-  v8 = v4;
+  v8 = variantCopy;
   if (!multilingualVariants)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_multilingualVariants;
     self->_multilingualVariants = v6;
 
-    v4 = v8;
+    variantCopy = v8;
     multilingualVariants = self->_multilingualVariants;
   }
 
-  [(NSMutableArray *)multilingualVariants addObject:v4];
+  [(NSMutableArray *)multilingualVariants addObject:variantCopy];
 }
 
 @end

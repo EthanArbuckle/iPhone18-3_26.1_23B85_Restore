@@ -1,25 +1,25 @@
 @interface HealthActivityCacheProfileExtension
 - (HDProfile)profile;
-- (HealthActivityCacheProfileExtension)initWithProfile:(id)a3;
+- (HealthActivityCacheProfileExtension)initWithProfile:(id)profile;
 - (id)_activityCacheManager;
 - (void)dealloc;
 @end
 
 @implementation HealthActivityCacheProfileExtension
 
-- (HealthActivityCacheProfileExtension)initWithProfile:(id)a3
+- (HealthActivityCacheProfileExtension)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v15.receiver = self;
   v15.super_class = HealthActivityCacheProfileExtension;
   v5 = [(HealthActivityCacheProfileExtension *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
-    v7 = [(HealthActivityCacheProfileExtension *)v6 _activityCacheManager];
+    objc_storeWeak(&v5->_profile, profileCopy);
+    _activityCacheManager = [(HealthActivityCacheProfileExtension *)v6 _activityCacheManager];
     activityCacheInterface = v6->_activityCacheInterface;
-    v6->_activityCacheInterface = v7;
+    v6->_activityCacheInterface = _activityCacheManager;
 
     objc_initWeak(&location, v6);
     v9 = HKStandalonePhoneFitnessModeDidUpdateNotification;
@@ -54,19 +54,19 @@
 - (id)_activityCacheManager
 {
   v3 = +[_HKBehavior sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  isAppleWatch = [v3 isAppleWatch];
 
   v5 = +[_HKBehavior sharedBehavior];
-  v6 = [v5 fitnessMode];
+  fitnessMode = [v5 fitnessMode];
 
-  if (v6 == &def_21990 + 2)
+  if (fitnessMode == &def_21990 + 2)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v4;
+    v7 = isAppleWatch;
   }
 
   _HKInitializeLogging();
@@ -74,7 +74,7 @@
   if (os_log_type_enabled(HKLogActivityCache, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
-    if (v4)
+    if (isAppleWatch)
     {
       v10 = @"YES";
     }
@@ -84,7 +84,7 @@
       v10 = @"NO";
     }
 
-    if (v6 == &def_21990 + 2)
+    if (fitnessMode == &def_21990 + 2)
     {
       v11 = @"YES";
     }
@@ -111,8 +111,8 @@
   if (v7)
   {
     v12 = [HDActivityCacheManager alloc];
-    v13 = [(HealthActivityCacheProfileExtension *)self profile];
-    v14 = [(HDActivityCacheManager *)v12 initWithProfile:v13];
+    profile = [(HealthActivityCacheProfileExtension *)self profile];
+    v14 = [(HDActivityCacheManager *)v12 initWithProfile:profile];
   }
 
   else

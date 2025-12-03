@@ -1,20 +1,20 @@
 @interface PVEffectComponent
 - (PVEffect)effect;
-- (PVEffectComponent)initWithEffect:(id)a3;
+- (PVEffectComponent)initWithEffect:(id)effect;
 @end
 
 @implementation PVEffectComponent
 
-- (PVEffectComponent)initWithEffect:(id)a3
+- (PVEffectComponent)initWithEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v8.receiver = self;
   v8.super_class = PVEffectComponent;
   v5 = [(PVEffectComponent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PVEffectComponent *)v5 setEffect:v4];
+    [(PVEffectComponent *)v5 setEffect:effectCopy];
   }
 
   return v6;

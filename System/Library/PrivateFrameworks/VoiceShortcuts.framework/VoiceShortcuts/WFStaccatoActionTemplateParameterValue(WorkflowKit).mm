@@ -20,8 +20,8 @@
 
   else
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
     if (v12)
     {
@@ -29,11 +29,11 @@
     }
   }
 
-  v28 = [MEMORY[0x277CCA890] currentHandler];
-  [v28 handleFailureInMethod:a2 object:a1 file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"parameter"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"parameter"}];
 
 LABEL_3:
-  v29.receiver = a1;
+  v29.receiver = self;
   v29.super_class = &off_28460C628;
   v13 = objc_msgSendSuper2(&v29, sel_init);
   if (v13)
@@ -61,9 +61,9 @@ LABEL_3:
         v15 = 0;
       }
 
-      v19 = v15;
+      value2 = v15;
 
-      v18 = [v19 value];
+      value = [value2 value];
     }
 
     else
@@ -71,13 +71,13 @@ LABEL_3:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v18 = 0;
+        value = 0;
 LABEL_20:
         v22 = [v12 localizedLabelForPossibleState:v10];
         v23 = [v12 localizedSubtitleLabelForPossibleState:v10];
         v24 = [v12 accessoryImageForPossibleState:v10];
-        v25 = [v10 serializedRepresentation];
-        v13 = [v13 initWithIdentifier:v18 localizedTitle:v22 localizedSubtitle:v23 image:v24 serializedState:v25];
+        serializedRepresentation = [v10 serializedRepresentation];
+        v13 = [v13 initWithIdentifier:value localizedTitle:v22 localizedSubtitle:v23 image:v24 serializedState:serializedRepresentation];
 
         goto LABEL_21;
       }
@@ -104,10 +104,10 @@ LABEL_20:
 
       v20 = v17;
 
-      v19 = [v20 value];
+      value2 = [v20 value];
 
-      v21 = [v19 value];
-      v18 = WFSerializedIdentifierFromLinkValue();
+      v19Value = [value2 value];
+      value = WFSerializedIdentifierFromLinkValue();
     }
 
     goto LABEL_20;

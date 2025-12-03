@@ -1,20 +1,20 @@
 @interface _PFTConstantFutureImpl
 - (NSString)description;
-- (_PFTConstantFutureImpl)initWithResult:(id)a3;
+- (_PFTConstantFutureImpl)initWithResult:(id)result;
 @end
 
 @implementation _PFTConstantFutureImpl
 
-- (_PFTConstantFutureImpl)initWithResult:(id)a3
+- (_PFTConstantFutureImpl)initWithResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = _PFTConstantFutureImpl;
   v6 = [(_PFTConstantFutureImpl *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_result, a3);
+    objc_storeStrong(&v6->_result, result);
     v8 = v7;
   }
 
@@ -28,7 +28,7 @@
   v8 = 3221225472;
   v9 = __37___PFTConstantFutureImpl_description__block_invoke;
   v10 = &unk_279A52B88;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];

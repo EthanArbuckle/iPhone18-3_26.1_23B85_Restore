@@ -6,30 +6,30 @@
 - (NSNumber)extendedFeatures;
 - (NSNumber)productId;
 - (NSString)transport;
-- (TrackpadFirmwareManager)initWithDevice:(__MTDevice *)a3;
+- (TrackpadFirmwareManager)initWithDevice:(__MTDevice *)device;
 - (id)mtUberDebug;
 - (id)mtfwScanRate;
-- (int)_setReportIntervalUs:(unsigned __int16)a3;
-- (int)setMouseButtonMode:(unsigned __int8)a3 buttonDivision:(unsigned __int8)a4;
+- (int)_setReportIntervalUs:(unsigned __int16)us;
+- (int)setMouseButtonMode:(unsigned __int8)mode buttonDivision:(unsigned __int8)division;
 - (unint64_t)mtDeviceId;
-- (void)_dispatchHIDEvent:(id)a3;
-- (void)_dispatchReportIntervalChangedEvent:(unsigned __int16)a3;
-- (void)_handleGetDebugEvent:(id)a3;
-- (void)_handleHSTNotificationEvent:(id)a3;
-- (void)_handleResetEvent:(id)a3;
+- (void)_dispatchHIDEvent:(id)event;
+- (void)_dispatchReportIntervalChangedEvent:(unsigned __int16)event;
+- (void)_handleGetDebugEvent:(id)event;
+- (void)_handleHSTNotificationEvent:(id)event;
+- (void)_handleResetEvent:(id)event;
 - (void)_sendRegistryPropertiesContinuousRecording;
 - (void)_updateDeviceScanRate;
-- (void)handleActivateEvent:(id)a3;
-- (void)handleConsume:(id)a3;
-- (void)handlePointerSettings:(id)a3;
-- (void)handleSetPropertyEvent:(id)a3;
-- (void)registryPropertyForKey:(id)a3;
-- (void)setActiveSettings:(id)a3;
+- (void)handleActivateEvent:(id)event;
+- (void)handleConsume:(id)consume;
+- (void)handlePointerSettings:(id)settings;
+- (void)handleSetPropertyEvent:(id)event;
+- (void)registryPropertyForKey:(id)key;
+- (void)setActiveSettings:(id)settings;
 @end
 
 @implementation TrackpadFirmwareManager
 
-- (TrackpadFirmwareManager)initWithDevice:(__MTDevice *)a3
+- (TrackpadFirmwareManager)initWithDevice:(__MTDevice *)device
 {
   v10.receiver = self;
   v10.super_class = TrackpadFirmwareManager;
@@ -39,7 +39,7 @@
   v4->_productId = 0;
 
   v4->_mtDeviceId = 0;
-  v4->_mtDeviceRef = a3;
+  v4->_mtDeviceRef = device;
   transport = v4->_transport;
   v4->_transport = 0;
 
@@ -54,13 +54,13 @@
   return v4;
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -70,12 +70,12 @@
 
   if (v5)
   {
-    [(TrackpadFirmwareManager *)self handleSetPropertyEvent:v4];
+    [(TrackpadFirmwareManager *)self handleSetPropertyEvent:consumeCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -161,11 +161,11 @@
   }
 }
 
-- (void)handleSetPropertyEvent:(id)a3
+- (void)handleSetPropertyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [NSString stringWithUTF8String:?];
-  v6 = v4[5];
+  v6 = eventCopy[5];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -184,66 +184,66 @@
 
   v8.receiver = self;
   v8.super_class = TrackpadFirmwareManager;
-  [(HSStage *)&v8 handleConsume:v4];
+  [(HSStage *)&v8 handleConsume:eventCopy];
 }
 
-- (void)handleActivateEvent:(id)a3
+- (void)handleActivateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(TrackpadFirmwareManager *)self setActivated:1];
-  v5 = [(TrackpadFirmwareManager *)self activeSettings];
-  [(TrackpadFirmwareManager *)self setActiveSettings:v5];
+  activeSettings = [(TrackpadFirmwareManager *)self activeSettings];
+  [(TrackpadFirmwareManager *)self setActiveSettings:activeSettings];
 
   v6.receiver = self;
   v6.super_class = TrackpadFirmwareManager;
-  [(HSStage *)&v6 handleConsume:v4];
+  [(HSStage *)&v6 handleConsume:eventCopy];
 }
 
-- (void)_handleResetEvent:(id)a3
+- (void)_handleResetEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(TrackpadFirmwareManager *)self setActivated:0];
   [(TrackpadFirmwareManager *)self setConfiguredMouse:0];
   [(TrackpadFirmwareManager *)self _updateDeviceScanRate];
   v5.receiver = self;
   v5.super_class = TrackpadFirmwareManager;
-  [(HSStage *)&v5 handleConsume:v4];
+  [(HSStage *)&v5 handleConsume:eventCopy];
 }
 
-- (void)_handleHSTNotificationEvent:(id)a3
+- (void)_handleHSTNotificationEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 notification];
-  if (v5 <= 0xB && ((1 << v5) & 0x902) != 0)
+  eventCopy = event;
+  notification = [eventCopy notification];
+  if (notification <= 0xB && ((1 << notification) & 0x902) != 0)
   {
     [(TrackpadFirmwareManager *)self _updateDeviceScanRate];
   }
 
   v7.receiver = self;
   v7.super_class = TrackpadFirmwareManager;
-  [(HSStage *)&v7 handleConsume:v4];
+  [(HSStage *)&v7 handleConsume:eventCopy];
 }
 
-- (void)handlePointerSettings:(id)a3
+- (void)handlePointerSettings:(id)settings
 {
-  v4 = a3;
-  [(TrackpadFirmwareManager *)self setActiveSettings:v4[1]];
+  settingsCopy = settings;
+  [(TrackpadFirmwareManager *)self setActiveSettings:settingsCopy[1]];
   v5.receiver = self;
   v5.super_class = TrackpadFirmwareManager;
-  [(HSStage *)&v5 handleConsume:v4];
+  [(HSStage *)&v5 handleConsume:settingsCopy];
 }
 
-- (void)_handleGetDebugEvent:(id)a3
+- (void)_handleGetDebugEvent:(id)event
 {
-  v4 = a3;
-  v4[16] = 1;
-  v5 = *(v4 + 3);
-  v6 = [(TrackpadFirmwareManager *)self debug];
-  [v5 addObject:v6];
+  eventCopy = event;
+  eventCopy[16] = 1;
+  v5 = *(eventCopy + 3);
+  debug = [(TrackpadFirmwareManager *)self debug];
+  [v5 addObject:debug];
 
   v7.receiver = self;
   v7.super_class = TrackpadFirmwareManager;
-  [(HSStage *)&v7 handleConsume:v4];
+  [(HSStage *)&v7 handleConsume:eventCopy];
 }
 
 - (void)_sendRegistryPropertiesContinuousRecording
@@ -297,12 +297,12 @@
 
 - (void)_updateDeviceScanRate
 {
-  v4 = [(TrackpadFirmwareManager *)self transport];
-  if ([v4 isEqualToString:@"USB"] && -[TrackpadFirmwareManager supports15ms](self, "supports15ms"))
+  transport = [(TrackpadFirmwareManager *)self transport];
+  if ([transport isEqualToString:@"USB"] && -[TrackpadFirmwareManager supports15ms](self, "supports15ms"))
   {
-    v3 = [(TrackpadFirmwareManager *)self builtIn];
+    builtIn = [(TrackpadFirmwareManager *)self builtIn];
 
-    if ((v3 & 1) == 0)
+    if ((builtIn & 1) == 0)
     {
 
       [(TrackpadFirmwareManager *)self _setReportIntervalUs:15000];
@@ -314,9 +314,9 @@
   }
 }
 
-- (int)_setReportIntervalUs:(unsigned __int16)a3
+- (int)_setReportIntervalUs:(unsigned __int16)us
 {
-  v3 = a3;
+  usCopy = us;
   if (![(TrackpadFirmwareManager *)self mtDeviceRef])
   {
     v8 = +[NSAssertionHandler currentHandler];
@@ -333,22 +333,22 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v11 = v3;
+      v11 = usCopy;
       v12 = 2048;
       v13 = 0;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Successfully changed the device report rate to %u (deviceID 0x%llX)", buf, 0x12u);
     }
 
-    [(TrackpadFirmwareManager *)self _dispatchReportIntervalChangedEvent:v3];
+    [(TrackpadFirmwareManager *)self _dispatchReportIntervalChangedEvent:usCopy];
   }
 
   return v5;
 }
 
-- (void)_dispatchReportIntervalChangedEvent:(unsigned __int16)a3
+- (void)_dispatchReportIntervalChangedEvent:(unsigned __int16)event
 {
   v22 = @"ReportInterval";
-  v4 = [NSNumber numberWithUnsignedShort:a3];
+  v4 = [NSNumber numberWithUnsignedShort:event];
   v23 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
@@ -369,7 +369,7 @@
       v16 = 2080;
       v17 = "[TrackpadFirmwareManager _dispatchReportIntervalChangedEvent:]";
       v18 = 2048;
-      v19 = [(TrackpadFirmwareManager *)self mtDeviceId];
+      mtDeviceId = [(TrackpadFirmwareManager *)self mtDeviceId];
       v20 = 2112;
       v21 = v5;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "[HID] [MT] %s%s%s [0x%llX] Dispatching properties event %@", buf, 0x34u);
@@ -390,31 +390,31 @@
       v16 = 2080;
       v17 = "[TrackpadFirmwareManager _dispatchReportIntervalChangedEvent:]";
       v18 = 2048;
-      v19 = [(TrackpadFirmwareManager *)self mtDeviceId];
+      mtDeviceId = [(TrackpadFirmwareManager *)self mtDeviceId];
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s [0x%llX] Failed to serialize report rate update properties dictionary", buf, 0x2Au);
     }
   }
 }
 
-- (void)setActiveSettings:(id)a3
+- (void)setActiveSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TrackpadFirmwareManager *)self activeSettings];
+    v5 = settingsCopy;
+    activeSettings = [(TrackpadFirmwareManager *)self activeSettings];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(TrackpadFirmwareManager *)self activeSettings];
-      v9 = [v8 buttonMode];
-      if (v9 == [(PointerSettings *)v5 buttonMode])
+      activeSettings2 = [(TrackpadFirmwareManager *)self activeSettings];
+      buttonMode = [activeSettings2 buttonMode];
+      if (buttonMode == [(PointerSettings *)v5 buttonMode])
       {
-        v10 = [v8 buttonDivision];
-        v11 = v10 != [(PointerSettings *)v5 buttonDivision];
+        buttonDivision = [activeSettings2 buttonDivision];
+        v11 = buttonDivision != [(PointerSettings *)v5 buttonDivision];
       }
 
       else
@@ -436,13 +436,13 @@
   }
 
   activeSettings = self->_activeSettings;
-  self->_activeSettings = v4;
+  self->_activeSettings = settingsCopy;
 }
 
-- (int)setMouseButtonMode:(unsigned __int8)a3 buttonDivision:(unsigned __int8)a4
+- (int)setMouseButtonMode:(unsigned __int8)mode buttonDivision:(unsigned __int8)division
 {
-  v4 = a4;
-  v5 = a3;
+  divisionCopy = division;
+  modeCopy = mode;
   if (![(TrackpadFirmwareManager *)self mtDeviceRef])
   {
     v10 = +[NSAssertionHandler currentHandler];
@@ -459,9 +459,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109632;
-      v13 = v5;
+      v13 = modeCopy;
       v14 = 1024;
-      v15 = v4;
+      v15 = divisionCopy;
       v16 = 2048;
       v17 = 0;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Successfully updated mouse button config: mode=%u division=%u (deviceID 0x%llX)", buf, 0x18u);
@@ -471,18 +471,18 @@
   return v7;
 }
 
-- (void)_dispatchHIDEvent:(id)a3
+- (void)_dispatchHIDEvent:(id)event
 {
-  v7 = a3;
-  if (v7)
+  eventCopy = event;
+  if (eventCopy)
   {
     v4 = objc_opt_new();
-    std::vector<HIDEvent * {__strong}>::push_back[abi:ne200100](v4 + 1, &v7);
+    std::vector<HIDEvent * {__strong}>::push_back[abi:ne200100](v4 + 1, &eventCopy);
     v6.receiver = self;
     v6.super_class = TrackpadFirmwareManager;
     [(HSStage *)&v6 handleConsume:v4];
 
-    v5 = v7;
+    v5 = eventCopy;
   }
 
   else
@@ -497,18 +497,18 @@
       v12 = 2080;
       v13 = "[TrackpadFirmwareManager _dispatchHIDEvent:]";
       v14 = 2048;
-      v15 = [(TrackpadFirmwareManager *)self mtDeviceId];
+      mtDeviceId = [(TrackpadFirmwareManager *)self mtDeviceId];
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s [0x%llX] Unable to dispatch nil HID event", buf, 0x2Au);
     }
   }
 }
 
-- (void)registryPropertyForKey:(id)a3
+- (void)registryPropertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(TrackpadFirmwareManager *)self mtDeviceRef];
   Service = MTDeviceGetService();
-  CFProperty = IORegistryEntryCreateCFProperty(Service, v4, kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(Service, keyCopy, kCFAllocatorDefault, 0);
 
   return CFProperty;
 }
@@ -558,7 +558,7 @@
       v11 = 2080;
       v12 = "[TrackpadFirmwareManager criticalErrors]";
       v13 = 2048;
-      v14 = [(TrackpadFirmwareManager *)self mtDeviceId];
+      mtDeviceId = [(TrackpadFirmwareManager *)self mtDeviceId];
       v15 = 1024;
       v16 = CriticalErrors;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s [0x%llX] Failed to fetch critical errors with error: 0x%08x", buf, 0x30u);
@@ -623,10 +623,10 @@
 
 - (BOOL)supports15ms
 {
-  v2 = [(TrackpadFirmwareManager *)self extendedFeatures];
-  v3 = [v2 unsignedIntValue];
+  extendedFeatures = [(TrackpadFirmwareManager *)self extendedFeatures];
+  unsignedIntValue = [extendedFeatures unsignedIntValue];
 
-  return v3 & 1;
+  return unsignedIntValue & 1;
 }
 
 - (id)mtfwScanRate
@@ -646,8 +646,8 @@
 - (id)mtUberDebug
 {
   v8 = 0;
-  v2 = [(TrackpadFirmwareManager *)self mtDeviceRef];
-  v4 = HSTPipeline::FirmwareUtil::GetReportData(v2, &stru_B8.reserved1, &v8, v3);
+  mtDeviceRef = [(TrackpadFirmwareManager *)self mtDeviceRef];
+  v4 = HSTPipeline::FirmwareUtil::GetReportData(mtDeviceRef, &stru_B8.reserved1, &v8, v3);
   v5 = v4;
   if (v8)
   {
@@ -672,20 +672,20 @@
   v6 = [NSNumber numberWithBool:[(TrackpadFirmwareManager *)self activated]];
   [v3 setObject:v6 forKeyedSubscript:@"Activated"];
 
-  v7 = [(TrackpadFirmwareManager *)self productId];
-  [v3 setObject:v7 forKeyedSubscript:@"Product"];
+  productId = [(TrackpadFirmwareManager *)self productId];
+  [v3 setObject:productId forKeyedSubscript:@"Product"];
 
-  v8 = [(TrackpadFirmwareManager *)self criticalErrors];
-  [v3 setObject:v8 forKeyedSubscript:@"CriticalErrors"];
+  criticalErrors = [(TrackpadFirmwareManager *)self criticalErrors];
+  [v3 setObject:criticalErrors forKeyedSubscript:@"CriticalErrors"];
 
   v9 = [NSNumber numberWithUnsignedLongLong:[(TrackpadFirmwareManager *)self mtDeviceId]];
   [v3 setObject:v9 forKeyedSubscript:@"MTDeviceID"];
 
-  v10 = [(TrackpadFirmwareManager *)self transport];
-  v11 = v10;
-  if (v10)
+  transport = [(TrackpadFirmwareManager *)self transport];
+  v11 = transport;
+  if (transport)
   {
-    v12 = v10;
+    v12 = transport;
   }
 
   else
@@ -698,18 +698,18 @@
   v13 = [NSNumber numberWithBool:[(TrackpadFirmwareManager *)self builtIn]];
   [v3 setObject:v13 forKeyedSubscript:@"BuiltIn"];
 
-  v14 = [(TrackpadFirmwareManager *)self extendedFeatures];
-  [v3 setObject:v14 forKeyedSubscript:@"ExtendedFeatures"];
+  extendedFeatures = [(TrackpadFirmwareManager *)self extendedFeatures];
+  [v3 setObject:extendedFeatures forKeyedSubscript:@"ExtendedFeatures"];
 
   v15 = [NSNumber numberWithBool:[(TrackpadFirmwareManager *)self configuredMouse]];
   [v3 setObject:v15 forKeyedSubscript:@"ConfiguredMouse"];
 
-  v16 = [(TrackpadFirmwareManager *)self activeSettings];
-  v17 = [v16 debug];
-  v18 = v17;
-  if (v17)
+  activeSettings = [(TrackpadFirmwareManager *)self activeSettings];
+  debug = [activeSettings debug];
+  v18 = debug;
+  if (debug)
   {
-    v19 = v17;
+    v19 = debug;
   }
 
   else
@@ -719,11 +719,11 @@
 
   [v3 setObject:v19 forKeyedSubscript:@"ActiveSettings"];
 
-  v20 = [(TrackpadFirmwareManager *)self mtUberDebug];
-  v21 = v20;
-  if (v20)
+  mtUberDebug = [(TrackpadFirmwareManager *)self mtUberDebug];
+  v21 = mtUberDebug;
+  if (mtUberDebug)
   {
-    v22 = v20;
+    v22 = mtUberDebug;
   }
 
   else
@@ -735,8 +735,8 @@
 
   if ([(TrackpadFirmwareManager *)self supports15ms])
   {
-    v23 = [(TrackpadFirmwareManager *)self mtfwScanRate];
-    [v3 setObject:v23 forKeyedSubscript:@"FWScanRate"];
+    mtfwScanRate = [(TrackpadFirmwareManager *)self mtfwScanRate];
+    [v3 setObject:mtfwScanRate forKeyedSubscript:@"FWScanRate"];
   }
 
   v24 = [v3 copy];

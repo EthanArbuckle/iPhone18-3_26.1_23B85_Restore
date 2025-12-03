@@ -35,37 +35,37 @@
   v7 = [MEMORY[0x277CCABB0] numberWithInt:{-[VTUIAnalytics voiceTrainingStarted](self, "voiceTrainingStarted")}];
   v20[8] = v7;
   v19[9] = @"LanguageCode";
-  v8 = [(VTUIAnalytics *)self languageCode];
-  if (v8)
+  languageCode = [(VTUIAnalytics *)self languageCode];
+  if (languageCode)
   {
-    v9 = [(VTUIAnalytics *)self languageCode];
+    languageCode2 = [(VTUIAnalytics *)self languageCode];
   }
 
   else
   {
-    v9 = &stru_2881E5778;
+    languageCode2 = &stru_2881E5778;
   }
 
-  v20[9] = v9;
+  v20[9] = languageCode2;
   v19[10] = @"SetupMode";
-  v10 = [(VTUIAnalytics *)self setupMode];
-  if (v10)
+  setupMode = [(VTUIAnalytics *)self setupMode];
+  if (setupMode)
   {
-    v11 = [(VTUIAnalytics *)self setupMode];
+    setupMode2 = [(VTUIAnalytics *)self setupMode];
   }
 
   else
   {
-    v11 = &stru_2881E5778;
+    setupMode2 = &stru_2881E5778;
   }
 
-  v20[10] = v11;
+  v20[10] = setupMode2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:11];
-  if (v10)
+  if (setupMode)
   {
   }
 
-  if (v8)
+  if (languageCode)
   {
   }
 

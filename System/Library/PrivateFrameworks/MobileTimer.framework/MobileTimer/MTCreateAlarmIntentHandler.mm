@@ -1,55 +1,55 @@
 @interface MTCreateAlarmIntentHandler
-- (id)_alarmUserActivityWithIntent:(id)a3;
-- (void)confirmMTCreateAlarm:(id)a3 completion:(id)a4;
-- (void)handleMTCreateAlarm:(id)a3 completion:(id)a4;
-- (void)provideRepeatScheduleOptionsForMTCreateAlarm:(id)a3 withCompletion:(id)a4;
-- (void)resolveDateComponentsForMTCreateAlarm:(id)a3 withCompletion:(id)a4;
-- (void)resolveLabelForMTCreateAlarm:(id)a3 withCompletion:(id)a4;
-- (void)resolveRepeatScheduleForMTCreateAlarm:(id)a3 withCompletion:(id)a4;
+- (id)_alarmUserActivityWithIntent:(id)intent;
+- (void)confirmMTCreateAlarm:(id)alarm completion:(id)completion;
+- (void)handleMTCreateAlarm:(id)alarm completion:(id)completion;
+- (void)provideRepeatScheduleOptionsForMTCreateAlarm:(id)alarm withCompletion:(id)completion;
+- (void)resolveDateComponentsForMTCreateAlarm:(id)alarm withCompletion:(id)completion;
+- (void)resolveLabelForMTCreateAlarm:(id)alarm withCompletion:(id)completion;
+- (void)resolveRepeatScheduleForMTCreateAlarm:(id)alarm withCompletion:(id)completion;
 @end
 
 @implementation MTCreateAlarmIntentHandler
 
-- (void)resolveLabelForMTCreateAlarm:(id)a3 withCompletion:(id)a4
+- (void)resolveLabelForMTCreateAlarm:(id)alarm withCompletion:(id)completion
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = [v11 label];
-  v7 = [v6 length];
+  alarmCopy = alarm;
+  completionCopy = completion;
+  label = [alarmCopy label];
+  v7 = [label length];
 
   v8 = MEMORY[0x1E696EA88];
   if (v7)
   {
-    v9 = [v11 label];
-    v10 = [v8 successWithResolvedString:v9];
-    v5[2](v5, v10);
+    label2 = [alarmCopy label];
+    v10 = [v8 successWithResolvedString:label2];
+    completionCopy[2](completionCopy, v10);
 
-    v5 = v10;
+    completionCopy = v10;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696EA88] notRequired];
-    v5[2](v5, v9);
+    label2 = [MEMORY[0x1E696EA88] notRequired];
+    completionCopy[2](completionCopy, label2);
   }
 }
 
-- (void)resolveDateComponentsForMTCreateAlarm:(id)a3 withCompletion:(id)a4
+- (void)resolveDateComponentsForMTCreateAlarm:(id)alarm withCompletion:(id)completion
 {
-  v23 = a3;
-  v5 = a4;
-  v6 = [v23 time];
-  if (v6)
+  alarmCopy = alarm;
+  completionCopy = completion;
+  time = [alarmCopy time];
+  if (time)
   {
-    v7 = v6;
-    v8 = [v23 dateComponents];
+    v7 = time;
+    dateComponents = [alarmCopy dateComponents];
 
-    if (!v8)
+    if (!dateComponents)
     {
       v9 = MEMORY[0x1E695DF00];
-      v10 = [v23 time];
-      v11 = [v10 identifier];
-      [v11 doubleValue];
+      time2 = [alarmCopy time];
+      identifier = [time2 identifier];
+      [identifier doubleValue];
       v12 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
 
       v13 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
@@ -57,57 +57,57 @@
       [v14 setCalendar:v13];
       [v14 setHour:{objc_msgSend(v13, "component:fromDate:", 32, v12)}];
       [v14 setMinute:{objc_msgSend(v13, "component:fromDate:", 64, v12)}];
-      [v23 setDateComponents:v14];
+      [alarmCopy setDateComponents:v14];
     }
   }
 
-  v15 = [v23 dateComponents];
-  if (!v15)
+  dateComponents2 = [alarmCopy dateComponents];
+  if (!dateComponents2)
   {
     goto LABEL_8;
   }
 
-  v16 = v15;
-  v17 = [v23 dateComponents];
-  if ([v17 hour] == 0x7FFFFFFFFFFFFFFFLL)
+  v16 = dateComponents2;
+  dateComponents3 = [alarmCopy dateComponents];
+  if ([dateComponents3 hour] == 0x7FFFFFFFFFFFFFFFLL)
   {
 
 LABEL_8:
-    v20 = [MEMORY[0x1E696E808] needsValue];
-    v5[2](v5, v20);
+    needsValue = [MEMORY[0x1E696E808] needsValue];
+    completionCopy[2](completionCopy, needsValue);
     goto LABEL_9;
   }
 
-  v18 = [v23 dateComponents];
-  v19 = [v18 minute];
+  dateComponents4 = [alarmCopy dateComponents];
+  minute = [dateComponents4 minute];
 
-  if (v19 == 0x7FFFFFFFFFFFFFFFLL)
+  if (minute == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_8;
   }
 
   v21 = MEMORY[0x1E696E808];
-  v20 = [v23 dateComponents];
-  v22 = [v21 successWithResolvedDateComponents:v20];
-  v5[2](v5, v22);
+  needsValue = [alarmCopy dateComponents];
+  v22 = [v21 successWithResolvedDateComponents:needsValue];
+  completionCopy[2](completionCopy, v22);
 
 LABEL_9:
 }
 
-- (void)resolveRepeatScheduleForMTCreateAlarm:(id)a3 withCompletion:(id)a4
+- (void)resolveRepeatScheduleForMTCreateAlarm:(id)alarm withCompletion:(id)completion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 repeatSchedule];
-  v8 = [v7 count];
+  alarmCopy = alarm;
+  completionCopy = completion;
+  repeatSchedule = [alarmCopy repeatSchedule];
+  v8 = [repeatSchedule count];
 
   if (v8)
   {
-    v9 = [v5 repeatSchedule];
-    v10 = [v9 na_map:&__block_literal_global_13];
+    repeatSchedule2 = [alarmCopy repeatSchedule];
+    v10 = [repeatSchedule2 na_map:&__block_literal_global_13];
 
-    v6[2](v6, v10);
+    completionCopy[2](completionCopy, v10);
   }
 
   else
@@ -115,22 +115,22 @@ LABEL_9:
     v11 = +[MTIntentRepeatDayResolutionResult notRequired];
     v14[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    v6[2](v6, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)provideRepeatScheduleOptionsForMTCreateAlarm:(id)a3 withCompletion:(id)a4
+- (void)provideRepeatScheduleOptionsForMTCreateAlarm:(id)alarm withCompletion:(id)completion
 {
-  v10 = a4;
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [v4 firstWeekday] - 1;
+  completionCopy = completion;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v5 = [currentCalendar firstWeekday] - 1;
 
   v6 = MTRepeatDaysForAlarmRepeatSchedule(127);
   if (v5 >= [v6 count])
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -138,80 +138,80 @@ LABEL_9:
     v7 = [v6 subarrayWithRange:{v5, objc_msgSend(v6, "count") - v5}];
     v8 = [v6 subarrayWithRange:{0, v5}];
     v9 = [v7 arrayByAddingObjectsFromArray:v8];
-    (*(v10 + 2))(v10, v9, 0);
+    (*(completionCopy + 2))(completionCopy, v9, 0);
   }
 }
 
-- (void)confirmMTCreateAlarm:(id)a3 completion:(id)a4
+- (void)confirmMTCreateAlarm:(id)alarm completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  alarmCopy = alarm;
   v8 = [MTCreateAlarmIntentResponse alloc];
-  v9 = [(MTCreateAlarmIntentHandler *)self _alarmUserActivityWithIntent:v7];
+  v9 = [(MTCreateAlarmIntentHandler *)self _alarmUserActivityWithIntent:alarmCopy];
 
   v10 = [(MTCreateAlarmIntentResponse *)v8 initWithCode:1 userActivity:v9];
-  v6[2](v6, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)handleMTCreateAlarm:(id)a3 completion:(id)a4
+- (void)handleMTCreateAlarm:(id)alarm completion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 time];
-  if (v8)
+  alarmCopy = alarm;
+  completionCopy = completion;
+  time = [alarmCopy time];
+  if (time)
   {
 
     goto LABEL_3;
   }
 
-  v14 = [v6 dateComponents];
-  if (v14)
+  dateComponents = [alarmCopy dateComponents];
+  if (dateComponents)
   {
-    v15 = v14;
-    v16 = [v6 dateComponents];
-    if ([v16 hour] == 0x7FFFFFFFFFFFFFFFLL)
+    v15 = dateComponents;
+    dateComponents2 = [alarmCopy dateComponents];
+    if ([dateComponents2 hour] == 0x7FFFFFFFFFFFFFFFLL)
     {
     }
 
     else
     {
-      v38 = [v6 dateComponents];
-      v39 = [v38 minute];
+      dateComponents3 = [alarmCopy dateComponents];
+      minute = [dateComponents3 minute];
 
-      if (v39 != 0x7FFFFFFFFFFFFFFFLL)
+      if (minute != 0x7FFFFFFFFFFFFFFFLL)
       {
 LABEL_3:
-        v9 = [v6 dateComponents];
+        dateComponents4 = [alarmCopy dateComponents];
 
-        if (v9)
+        if (dateComponents4)
         {
-          v10 = [v6 dateComponents];
-          v11 = [v10 hour];
+          dateComponents5 = [alarmCopy dateComponents];
+          hour = [dateComponents5 hour];
 
-          v12 = [v6 dateComponents];
-          v13 = [v12 minute];
+          dateComponents6 = [alarmCopy dateComponents];
+          minute2 = [dateComponents6 minute];
         }
 
         else
         {
-          v11 = [v6 time];
+          hour = [alarmCopy time];
 
-          if (!v11)
+          if (!hour)
           {
-            v13 = 0;
+            minute2 = 0;
             goto LABEL_11;
           }
 
           v17 = MEMORY[0x1E695DF00];
-          v18 = [v6 time];
-          v19 = [v18 identifier];
-          [v19 doubleValue];
-          v12 = [v17 dateWithTimeIntervalSinceReferenceDate:?];
+          time2 = [alarmCopy time];
+          identifier = [time2 identifier];
+          [identifier doubleValue];
+          dateComponents6 = [v17 dateWithTimeIntervalSinceReferenceDate:?];
 
           v20 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-          v11 = [v20 component:32 fromDate:v12];
-          v13 = [v20 component:64 fromDate:v12];
+          hour = [v20 component:32 fromDate:dateComponents6];
+          minute2 = [v20 component:64 fromDate:dateComponents6];
         }
 
 LABEL_11:
@@ -219,8 +219,8 @@ LABEL_11:
         v55 = 0u;
         v53 = 0u;
         v52 = 0u;
-        v21 = [v6 repeatSchedule];
-        v22 = [v21 countByEnumeratingWithState:&v52 objects:v56 count:16];
+        repeatSchedule = [alarmCopy repeatSchedule];
+        v22 = [repeatSchedule countByEnumeratingWithState:&v52 objects:v56 count:16];
         if (v22)
         {
           v23 = v22;
@@ -232,14 +232,14 @@ LABEL_11:
             {
               if (*v53 != v25)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(repeatSchedule);
               }
 
-              v27 = [*(*(&v52 + 1) + 8 * i) value];
-              v24 |= [v27 integerValue];
+              value = [*(*(&v52 + 1) + 8 * i) value];
+              v24 |= [value integerValue];
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v52 objects:v56 count:16];
+            v23 = [repeatSchedule countByEnumeratingWithState:&v52 objects:v56 count:16];
           }
 
           while (v23);
@@ -250,24 +250,24 @@ LABEL_11:
           v24 = 0;
         }
 
-        v28 = [(MTAlarm *)MTMutableAlarm alarmWithHour:v11 minute:v13];
-        v29 = [v6 label];
-        [v28 setTitle:v29];
+        v28 = [(MTAlarm *)MTMutableAlarm alarmWithHour:hour minute:minute2];
+        label = [alarmCopy label];
+        [v28 setTitle:label];
 
         [v28 setRepeatSchedule:v24];
         v30 = v28;
-        v31 = [(MTAlarmIntentHandler *)self alarmManager];
-        v32 = [v31 addAlarm:v30];
+        alarmManager = [(MTAlarmIntentHandler *)self alarmManager];
+        v32 = [alarmManager addAlarm:v30];
 
         v48[0] = MEMORY[0x1E69E9820];
         v48[1] = 3221225472;
         v48[2] = __61__MTCreateAlarmIntentHandler_handleMTCreateAlarm_completion___block_invoke;
         v48[3] = &unk_1E7B0D6A0;
         v48[4] = self;
-        v33 = v6;
+        v33 = alarmCopy;
         v49 = v33;
         v50 = v30;
-        v7 = v44;
+        completionCopy = v44;
         v34 = v44;
         v51 = v34;
         v35 = v30;
@@ -293,10 +293,10 @@ LABEL_11:
   }
 
   v41 = [MTCreateAlarmIntentResponse alloc];
-  v42 = [(MTCreateAlarmIntentHandler *)self _alarmUserActivityWithIntent:v6];
+  v42 = [(MTCreateAlarmIntentHandler *)self _alarmUserActivityWithIntent:alarmCopy];
   v35 = [(MTCreateAlarmIntentResponse *)v41 initWithCode:5 userActivity:v42];
 
-  v7[2](v7, v35);
+  completionCopy[2](completionCopy, v35);
 LABEL_25:
 
   v43 = *MEMORY[0x1E69E9840];
@@ -323,18 +323,18 @@ void __61__MTCreateAlarmIntentHandler_handleMTCreateAlarm_completion___block_inv
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_alarmUserActivityWithIntent:(id)a3
+- (id)_alarmUserActivityWithIntent:(id)intent
 {
   v3 = MEMORY[0x1E696B090];
-  v4 = a3;
+  intentCopy = intent;
   v5 = [v3 mtUserActivityWithActivityType:@"com.apple.clock.alarm"];
   v6 = objc_opt_class();
-  v7 = [v4 identifier];
-  v8 = [v4 time];
-  v9 = [v8 displayString];
-  v10 = [v4 label];
+  identifier = [intentCopy identifier];
+  time = [intentCopy time];
+  displayString = [time displayString];
+  label = [intentCopy label];
 
-  v11 = [v6 createUserInfoWithIntentName:v7 alarmIDString:0 time:v9 label:v10];
+  v11 = [v6 createUserInfoWithIntentName:identifier alarmIDString:0 time:displayString label:label];
 
   [v5 setUserInfo:v11];
 

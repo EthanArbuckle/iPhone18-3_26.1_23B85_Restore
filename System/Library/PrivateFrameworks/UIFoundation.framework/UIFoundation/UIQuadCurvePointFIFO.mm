@@ -1,21 +1,21 @@
 @interface UIQuadCurvePointFIFO
-- (UIQuadCurvePointFIFO)initWithFIFO:(id)a3;
-- (UIQuadCurvePointFIFO)initWithFIFO:(id)a3 strokeView:(id)a4;
+- (UIQuadCurvePointFIFO)initWithFIFO:(id)o;
+- (UIQuadCurvePointFIFO)initWithFIFO:(id)o strokeView:(id)view;
 - (void)addPoint:(UIQuadCurvePointFIFO *)self;
 - (void)clear;
 - (void)dealloc;
-- (void)enumerateInterpolationFromPoint:(id)a3 toPoint:controlPoint:usingBlock:;
+- (void)enumerateInterpolationFromPoint:(id)point toPoint:controlPoint:usingBlock:;
 - (void)flush;
-- (void)setUnitScaleForViewSize:(CGSize)a3 normalizedSize:(CGSize)a4 contentScaleFactor:(double)a5;
+- (void)setUnitScaleForViewSize:(CGSize)size normalizedSize:(CGSize)normalizedSize contentScaleFactor:(double)factor;
 @end
 
 @implementation UIQuadCurvePointFIFO
 
-- (UIQuadCurvePointFIFO)initWithFIFO:(id)a3
+- (UIQuadCurvePointFIFO)initWithFIFO:(id)o
 {
   v6.receiver = self;
   v6.super_class = UIQuadCurvePointFIFO;
-  v3 = [(UIPointFIFO *)&v6 initWithFIFO:a3];
+  v3 = [(UIPointFIFO *)&v6 initWithFIFO:o];
   v4 = v3;
   if (v3)
   {
@@ -30,12 +30,12 @@
   return v4;
 }
 
-- (UIQuadCurvePointFIFO)initWithFIFO:(id)a3 strokeView:(id)a4
+- (UIQuadCurvePointFIFO)initWithFIFO:(id)o strokeView:(id)view
 {
-  v5 = [(UIQuadCurvePointFIFO *)self initWithFIFO:a3];
+  v5 = [(UIQuadCurvePointFIFO *)self initWithFIFO:o];
   if (v5)
   {
-    v5->_view = a4;
+    v5->_view = view;
   }
 
   return v5;
@@ -62,7 +62,7 @@
   [(UIPointFIFO *)&v4 dealloc];
 }
 
-- (void)enumerateInterpolationFromPoint:(id)a3 toPoint:controlPoint:usingBlock:
+- (void)enumerateInterpolationFromPoint:(id)point toPoint:controlPoint:usingBlock:
 {
   v17 = *v3.i64;
   v18 = *v4.i64;
@@ -89,7 +89,7 @@
     v14 = objc_opt_class();
     *&v15 = v10 / (v13 - 1);
     [v14 interpolateFromPoint:v17 toPoint:v18 controlPoint:v19 time:v15];
-    (*(a3 + 2))(a3, v10, v13, &v20);
+    (*(point + 2))(point, v10, v13, &v20);
     if (v20)
     {
       break;
@@ -99,11 +99,11 @@
   while (v13 - 1 != v10++);
 }
 
-- (void)setUnitScaleForViewSize:(CGSize)a3 normalizedSize:(CGSize)a4 contentScaleFactor:(double)a5
+- (void)setUnitScaleForViewSize:(CGSize)size normalizedSize:(CGSize)normalizedSize contentScaleFactor:(double)factor
 {
-  v5 = a4.width / (a3.width * a5);
+  v5 = normalizedSize.width / (size.width * factor);
   *&v5 = v5;
-  v6 = a4.height / (a3.height * a5);
+  v6 = normalizedSize.height / (size.height * factor);
   if (*&v5 >= v6)
   {
     *&v5 = v6;
@@ -185,13 +185,13 @@ LABEL_26:
 
     else
     {
-      v22 = [(UIQuadCurvePointFIFO *)self points];
+      points = [(UIQuadCurvePointFIFO *)self points];
       [UIQuadCurvePointFIFO interpolateFromPoint:*aRect_8.i64 toPoint:*aRect_24.i64 controlPoint:*v54.i64 time:0.0];
-      [(_UIPointVector *)v22 addVector:?];
-      v23 = [(UIQuadCurvePointFIFO *)self points];
+      [(_UIPointVector *)points addVector:?];
+      points2 = [(UIQuadCurvePointFIFO *)self points];
       LODWORD(v24) = 1.0;
       [UIQuadCurvePointFIFO interpolateFromPoint:*aRect_8.i64 toPoint:*aRect_24.i64 controlPoint:*v54.i64 time:v24];
-      [(_UIPointVector *)v23 addVector:?];
+      [(_UIPointVector *)points2 addVector:?];
     }
 
     [(_UIPointVector *)[(UIQuadCurvePointFIFO *)self controlPoints] addVector:*v54.i64];
@@ -328,13 +328,13 @@ uint64_t __33__UIQuadCurvePointFIFO_addPoint___block_invoke(uint64_t a1, double 
 
     else
     {
-      v7 = [(UIQuadCurvePointFIFO *)self points];
+      points = [(UIQuadCurvePointFIFO *)self points];
       [UIQuadCurvePointFIFO interpolateFromPoint:*v27.i64 toPoint:*v25.i64 controlPoint:*v26.i64 time:0.0];
-      [(_UIPointVector *)v7 addVector:?];
-      v8 = [(UIQuadCurvePointFIFO *)self points];
+      [(_UIPointVector *)points addVector:?];
+      points2 = [(UIQuadCurvePointFIFO *)self points];
       LODWORD(v9) = 1.0;
       [UIQuadCurvePointFIFO interpolateFromPoint:*v27.i64 toPoint:*v25.i64 controlPoint:*v26.i64 time:v9];
-      [(_UIPointVector *)v8 addVector:?];
+      [(_UIPointVector *)points2 addVector:?];
     }
 
     [(_UIPointVector *)[(UIQuadCurvePointFIFO *)self controlPoints] addVector:*v26.i64];

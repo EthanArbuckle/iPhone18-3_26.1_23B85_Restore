@@ -3,14 +3,14 @@
 - (BOOL)displayingVideoLastFrame;
 - (BOOL)updateImageToVideoLastFrame;
 - (TPSVideoAssetViewDelegate)videoDelegate;
-- (void)avplayerDidFinishPlaying:(id)a3;
-- (void)avplayerItemErrorChanged:(id)a3;
+- (void)avplayerDidFinishPlaying:(id)playing;
+- (void)avplayerItemErrorChanged:(id)changed;
 - (void)cancel;
 - (void)cancelReplayButtonTimer;
 - (void)cancelVideoDownloadTask;
 - (void)commonInit;
 - (void)dealloc;
-- (void)fetchImageWithIdentifier:(id)a3 path:(id)a4;
+- (void)fetchImageWithIdentifier:(id)identifier path:(id)path;
 - (void)layoutSubviews;
 - (void)playVideo;
 - (void)playVideoDelay;
@@ -19,11 +19,11 @@
 - (void)resetVideoPlayer;
 - (void)restartVideoDelay;
 - (void)scrubVideoToFirstFrame;
-- (void)setAspectFillAsset:(BOOL)a3;
-- (void)setVideoDelegate:(id)a3;
-- (void)setVideoPath:(id)a3;
+- (void)setAspectFillAsset:(BOOL)asset;
+- (void)setVideoDelegate:(id)delegate;
+- (void)setVideoPath:(id)path;
 - (void)stopVideoPlayer;
-- (void)updateReplayButtonHiddenState:(BOOL)a3;
+- (void)updateReplayButtonHiddenState:(BOOL)state;
 - (void)updateVideoGravity;
 @end
 
@@ -51,9 +51,9 @@
   self->_videoDelayTime = 0.4;
 }
 
-- (void)setVideoDelegate:(id)a3
+- (void)setVideoDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_videoDelegate);
 
   if (WeakRetained != obj)
@@ -72,33 +72,33 @@
   }
 }
 
-- (void)setAspectFillAsset:(BOOL)a3
+- (void)setAspectFillAsset:(BOOL)asset
 {
-  v3 = a3;
-  if ([(TPSImageAssetView *)self aspectFillAsset]!= a3)
+  assetCopy = asset;
+  if ([(TPSImageAssetView *)self aspectFillAsset]!= asset)
   {
     v5.receiver = self;
     v5.super_class = TPSVideoAssetView;
-    [(TPSImageAssetView *)&v5 setAspectFillAsset:v3];
+    [(TPSImageAssetView *)&v5 setAspectFillAsset:assetCopy];
     [(TPSVideoAssetView *)self updateVideoGravity];
   }
 }
 
-- (void)setVideoPath:(id)a3
+- (void)setVideoPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   if (![(NSString *)self->_videoPath isEqualToString:?])
   {
-    objc_storeStrong(&self->_videoPath, a3);
+    objc_storeStrong(&self->_videoPath, path);
     [(TPSVideoAssetView *)self resetVideoPlayer];
   }
 }
 
 - (void)updateVideoGravity
 {
-  v3 = [(TPSImageAssetView *)self aspectFillAsset];
+  aspectFillAsset = [(TPSImageAssetView *)self aspectFillAsset];
   v4 = MEMORY[0x277CE5DD8];
-  if (!v3)
+  if (!aspectFillAsset)
   {
     v4 = MEMORY[0x277CE5DD0];
   }
@@ -132,9 +132,9 @@
 {
   if (!self->_lastFrameDominant || ![(TPSVideoAssetView *)self displayingVideoLastFrame])
   {
-    v3 = [(AVPlayer *)self->_avplayer currentItem];
+    currentItem = [(AVPlayer *)self->_avplayer currentItem];
 
-    if (v3)
+    if (currentItem)
     {
       avplayer = self->_avplayer;
       v8 = *MEMORY[0x277CC08F0];
@@ -144,8 +144,8 @@
 
     else
     {
-      v5 = [(TPSImageAssetView *)self currentDisplayIdentifier];
-      v7 = [TPSImageAssetController imageFromMemoryCacheForIdentifier:v5];
+      currentDisplayIdentifier = [(TPSImageAssetView *)self currentDisplayIdentifier];
+      v7 = [TPSImageAssetController imageFromMemoryCacheForIdentifier:currentDisplayIdentifier];
 
       v6 = v7;
       if (v7)
@@ -171,19 +171,19 @@
       goto LABEL_9;
     }
 
-    v3 = [(AVPlayerLayer *)self->_avplayerLayer superlayer];
+    superlayer = [(AVPlayerLayer *)self->_avplayerLayer superlayer];
 
-    if (!v3)
+    if (!superlayer)
     {
-      v4 = [(TPSImageAssetView *)self imageView];
-      v5 = [v4 layer];
-      [v5 addSublayer:self->_avplayerLayer];
+      imageView = [(TPSImageAssetView *)self imageView];
+      layer = [imageView layer];
+      [layer addSublayer:self->_avplayerLayer];
     }
 
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x277D716A0] sharedInstance];
+    mEMORY[0x277D716A0] = [MEMORY[0x277D716A0] sharedInstance];
     videoPath = self->_videoPath;
-    v8 = [(TPSVideoAssetView *)self cacheVideoIdentifier];
+    cacheVideoIdentifier = [(TPSVideoAssetView *)self cacheVideoIdentifier];
     v9 = *MEMORY[0x277CCA798];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -191,7 +191,7 @@
     v14[3] = &unk_278451398;
     objc_copyWeak(&v15, &location);
     LODWORD(v10) = v9;
-    v11 = [v6 formattedDataForPath:videoPath identifier:v8 attributionIdentifier:0 priority:v14 completionHandler:v10];
+    v11 = [mEMORY[0x277D716A0] formattedDataForPath:videoPath identifier:cacheVideoIdentifier attributionIdentifier:0 priority:v14 completionHandler:v10];
     videoURLSessionItem = self->_videoURLSessionItem;
     self->_videoURLSessionItem = v11;
 
@@ -304,9 +304,9 @@ void __30__TPSVideoAssetView_playVideo__block_invoke(uint64_t a1, uint64_t a2, v
           avplayerLayer = self->_avplayerLayer;
           self->_avplayerLayer = v12;
 
-          v14 = [(TPSImageAssetView *)self imageView];
-          v15 = [v14 layer];
-          [v15 addSublayer:self->_avplayerLayer];
+          imageView = [(TPSImageAssetView *)self imageView];
+          layer = [imageView layer];
+          [layer addSublayer:self->_avplayerLayer];
 
           [(AVPlayerLayer *)self->_avplayerLayer frame];
           v17 = v16;
@@ -321,20 +321,20 @@ void __30__TPSVideoAssetView_playVideo__block_invoke(uint64_t a1, uint64_t a2, v
           if (!self->_registeredForAVPlayerNotification)
           {
             self->_registeredForAVPlayerNotification = 1;
-            v20 = [MEMORY[0x277CCAB98] defaultCenter];
-            [v20 addObserver:self selector:sel_avplayerDidFinishPlaying_ name:*MEMORY[0x277CE60C0] object:0];
+            defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+            [defaultCenter addObserver:self selector:sel_avplayerDidFinishPlaying_ name:*MEMORY[0x277CE60C0] object:0];
 
             KVOManager = self->_KVOManager;
-            v22 = [(AVPlayer *)self->_avplayer currentItem];
-            [(TPSKVOManager *)KVOManager addKVOObject:v22 forKeyPath:@"error" options:1 context:sel_avplayerItemErrorChanged_];
+            currentItem = [(AVPlayer *)self->_avplayer currentItem];
+            [(TPSKVOManager *)KVOManager addKVOObject:currentItem forKeyPath:@"error" options:1 context:sel_avplayerItemErrorChanged_];
           }
 
           [(TPSVideoAssetView *)self updateReplayButtonHiddenState:1];
           [(AVPlayer *)self->_avplayer play];
           if (self->_supportsVideoAssetStartedPlaying)
           {
-            v23 = [(TPSVideoAssetView *)self videoDelegate];
-            [v23 videoAssetStartedPlaying:self];
+            videoDelegate = [(TPSVideoAssetView *)self videoDelegate];
+            [videoDelegate videoAssetStartedPlaying:self];
           }
         }
       }
@@ -342,54 +342,54 @@ void __30__TPSVideoAssetView_playVideo__block_invoke(uint64_t a1, uint64_t a2, v
   }
 }
 
-- (void)fetchImageWithIdentifier:(id)a3 path:(id)a4
+- (void)fetchImageWithIdentifier:(id)identifier path:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   if (self->_lastFrameDominant && [(TPSVideoAssetView *)self updateImageToVideoLastFrame])
   {
-    [(TPSImageAssetView *)self setCurrentImagePath:v7];
-    v8 = [(TPSImageAssetView *)self delegate];
-    [v8 imageAssetViewImageUpdated:self];
+    [(TPSImageAssetView *)self setCurrentImagePath:pathCopy];
+    delegate = [(TPSImageAssetView *)self delegate];
+    [delegate imageAssetViewImageUpdated:self];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TPSVideoAssetView;
-    [(TPSImageAssetView *)&v9 fetchImageWithIdentifier:v6 path:v7];
+    [(TPSImageAssetView *)&v9 fetchImageWithIdentifier:identifierCopy path:pathCopy];
   }
 }
 
-- (void)avplayerItemErrorChanged:(id)a3
+- (void)avplayerItemErrorChanged:(id)changed
 {
   avplayer = self->_avplayer;
-  v5 = a3;
-  v10 = [(AVPlayer *)avplayer currentItem];
+  changedCopy = changed;
+  currentItem = [(AVPlayer *)avplayer currentItem];
 
-  v6 = v10;
-  if (v10 == v5)
+  v6 = currentItem;
+  if (currentItem == changedCopy)
   {
-    v7 = [v10 error];
+    error = [currentItem error];
 
-    v6 = v10;
-    if (v7)
+    v6 = currentItem;
+    if (error)
     {
-      v8 = [MEMORY[0x277D716A0] sharedInstance];
-      v9 = [(TPSVideoAssetView *)self cacheVideoIdentifier];
-      [v8 removeCacheForIdentifier:v9];
+      mEMORY[0x277D716A0] = [MEMORY[0x277D716A0] sharedInstance];
+      cacheVideoIdentifier = [(TPSVideoAssetView *)self cacheVideoIdentifier];
+      [mEMORY[0x277D716A0] removeCacheForIdentifier:cacheVideoIdentifier];
 
-      v6 = v10;
+      v6 = currentItem;
     }
   }
 }
 
-- (void)updateReplayButtonHiddenState:(BOOL)a3
+- (void)updateReplayButtonHiddenState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   [(UIButton *)self->_replayButton setHidden:?];
-  [(UIImageView *)self->_replayGradientView setHidden:v3];
-  if (!v3)
+  [(UIImageView *)self->_replayGradientView setHidden:stateCopy];
+  if (!stateCopy)
   {
     [(UIButton *)self->_replayButton setAlpha:0.0];
     [(UIImageView *)self->_replayGradientView setAlpha:0.0];
@@ -452,12 +452,12 @@ void __51__TPSVideoAssetView_updateReplayButtonHiddenState___block_invoke_2(uint
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_playVideoDelay object:0];
   if (self->_registeredForAVPlayerNotification)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277CE60C0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CE60C0] object:0];
 
     KVOManager = self->_KVOManager;
-    v5 = [(AVPlayer *)self->_avplayer currentItem];
-    [(TPSKVOManager *)KVOManager removeKVOObject:v5 forKeyPath:@"error"];
+    currentItem = [(AVPlayer *)self->_avplayer currentItem];
+    [(TPSKVOManager *)KVOManager removeKVOObject:currentItem forKeyPath:@"error"];
 
     self->_registeredForAVPlayerNotification = 0;
   }
@@ -472,13 +472,13 @@ void __51__TPSVideoAssetView_updateReplayButtonHiddenState___block_invoke_2(uint
 
 - (BOOL)displayingVideoLastFrame
 {
-  v3 = [(AVPlayer *)self->_avplayer currentItem];
-  v4 = v3;
+  currentItem = [(AVPlayer *)self->_avplayer currentItem];
+  v4 = currentItem;
   if (self->_videoPlaybackFinished)
   {
-    if (v3)
+    if (currentItem)
     {
-      [v3 currentTime];
+      [currentItem currentTime];
       v5 = v10;
       [v4 duration];
       v6 = v9;
@@ -503,12 +503,12 @@ void __51__TPSVideoAssetView_updateReplayButtonHiddenState___block_invoke_2(uint
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime
 {
-  v4 = [(AVPlayer *)self->_avplayer currentItem];
-  if (v4)
+  currentItem = [(AVPlayer *)self->_avplayer currentItem];
+  if (currentItem)
   {
-    v6 = v4;
-    [v4 currentTime];
-    v4 = v6;
+    v6 = currentItem;
+    [currentItem currentTime];
+    currentItem = v6;
   }
 
   else
@@ -525,11 +525,11 @@ void __51__TPSVideoAssetView_updateReplayButtonHiddenState___block_invoke_2(uint
 {
   v10 = 0uLL;
   v11 = 0;
-  v3 = [(AVPlayer *)self->_avplayer currentItem];
-  v4 = v3;
-  if (v3)
+  currentItem = [(AVPlayer *)self->_avplayer currentItem];
+  v4 = currentItem;
+  if (currentItem)
   {
-    [v3 duration];
+    [currentItem duration];
   }
 
   else
@@ -550,12 +550,12 @@ void __51__TPSVideoAssetView_updateReplayButtonHiddenState___block_invoke_2(uint
   return v5 > 0;
 }
 
-- (void)avplayerDidFinishPlaying:(id)a3
+- (void)avplayerDidFinishPlaying:(id)playing
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(AVPlayer *)self->_avplayer currentItem];
-  v7 = [v5 isEqual:v6];
+  playingCopy = playing;
+  object = [playingCopy object];
+  currentItem = [(AVPlayer *)self->_avplayer currentItem];
+  v7 = [object isEqual:currentItem];
 
   if (v7)
   {
@@ -579,8 +579,8 @@ void __51__TPSVideoAssetView_updateReplayButtonHiddenState___block_invoke_2(uint
       replayButtonTimer = self->_replayButtonTimer;
       self->_replayButtonTimer = v10;
 
-      v12 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v12 addTimer:self->_replayButtonTimer forMode:*MEMORY[0x277CBE640]];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [currentRunLoop addTimer:self->_replayButtonTimer forMode:*MEMORY[0x277CBE640]];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
@@ -605,8 +605,8 @@ void __46__TPSVideoAssetView_avplayerDidFinishPlaying___block_invoke(uint64_t a1
 
 - (void)cancelVideoDownloadTask
 {
-  v3 = [MEMORY[0x277D717E0] defaultManager];
-  [v3 cancelSessionItem:self->_videoURLSessionItem];
+  defaultManager = [MEMORY[0x277D717E0] defaultManager];
+  [defaultManager cancelSessionItem:self->_videoURLSessionItem];
 
   videoURLSessionItem = self->_videoURLSessionItem;
   self->_videoURLSessionItem = 0;

@@ -1,55 +1,55 @@
 @interface CDXRetrieveExtensionEnabledStatusOperation
-- (CDXRetrieveExtensionEnabledStatusOperation)initWithExtensionIdentifier:(id)a3 queue:(id)a4 store:(id)a5;
-- (CDXRetrieveExtensionEnabledStatusOperation)initWithExtensionIdentifier:(id)a3 store:(id)a4;
-- (void)performWithCompletionHandler:(id)a3;
+- (CDXRetrieveExtensionEnabledStatusOperation)initWithExtensionIdentifier:(id)identifier queue:(id)queue store:(id)store;
+- (CDXRetrieveExtensionEnabledStatusOperation)initWithExtensionIdentifier:(id)identifier store:(id)store;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation CDXRetrieveExtensionEnabledStatusOperation
 
-- (CDXRetrieveExtensionEnabledStatusOperation)initWithExtensionIdentifier:(id)a3 queue:(id)a4 store:(id)a5
+- (CDXRetrieveExtensionEnabledStatusOperation)initWithExtensionIdentifier:(id)identifier queue:(id)queue store:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = CDXRetrieveExtensionEnabledStatusOperation;
   v11 = [(CDXRetrieveExtensionEnabledStatusOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a4);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_queue, queue);
+    v13 = [identifierCopy copy];
     extensionIdentifier = v12->_extensionIdentifier;
     v12->_extensionIdentifier = v13;
 
-    objc_storeStrong(&v12->_store, a5);
+    objc_storeStrong(&v12->_store, store);
   }
 
   return v12;
 }
 
-- (CDXRetrieveExtensionEnabledStatusOperation)initWithExtensionIdentifier:(id)a3 store:(id)a4
+- (CDXRetrieveExtensionEnabledStatusOperation)initWithExtensionIdentifier:(id)identifier store:(id)store
 {
-  v6 = a4;
-  v7 = a3;
+  storeCopy = store;
+  identifierCopy = identifier;
   v8 = dispatch_queue_create("com.apple.callkit.calldirectory.retrieveextensionenabledstatusoperation", 0);
-  v9 = [(CDXRetrieveExtensionEnabledStatusOperation *)self initWithExtensionIdentifier:v7 queue:v8 store:v6];
+  v9 = [(CDXRetrieveExtensionEnabledStatusOperation *)self initWithExtensionIdentifier:identifierCopy queue:v8 store:storeCopy];
 
   return v9;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CDXRetrieveExtensionEnabledStatusOperation *)self queue];
+  handlerCopy = handler;
+  queue = [(CDXRetrieveExtensionEnabledStatusOperation *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100008A30;
   v7[3] = &unk_100034B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 @end

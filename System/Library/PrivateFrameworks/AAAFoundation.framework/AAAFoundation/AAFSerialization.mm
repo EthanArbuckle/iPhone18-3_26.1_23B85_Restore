@@ -1,12 +1,12 @@
 @interface AAFSerialization
-+ (id)dataFromDictionary:(id)a3 ofType:(id)a4;
-+ (id)dictionaryFromObject:(id)a3 ofType:(id)a4;
++ (id)dataFromDictionary:(id)dictionary ofType:(id)type;
++ (id)dictionaryFromObject:(id)object ofType:(id)type;
 + (id)instance;
-+ (id)ofType:(id)a3;
-+ (id)stringFromDictionary:(id)a3 ofType:(id)a4;
++ (id)ofType:(id)type;
++ (id)stringFromDictionary:(id)dictionary ofType:(id)type;
 - (AAFSerialization)init;
-- (id)serializerOfType:(id)a3;
-- (void)addSerializer:(id)a3;
+- (id)serializerOfType:(id)type;
+- (void)addSerializer:(id)serializer;
 @end
 
 @implementation AAFSerialization
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __28__AAFSerialization_instance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (instance__instanceToken != -1)
   {
     dispatch_once(&instance__instanceToken, block);
@@ -28,38 +28,38 @@
   return v2;
 }
 
-+ (id)dictionaryFromObject:(id)a3 ofType:(id)a4
++ (id)dictionaryFromObject:(id)object ofType:(id)type
 {
-  v6 = a3;
-  v7 = [a1 ofType:a4];
-  v8 = [v7 dictionaryFromObject:v6];
+  objectCopy = object;
+  v7 = [self ofType:type];
+  v8 = [v7 dictionaryFromObject:objectCopy];
 
   return v8;
 }
 
-+ (id)dataFromDictionary:(id)a3 ofType:(id)a4
++ (id)dataFromDictionary:(id)dictionary ofType:(id)type
 {
-  v6 = a3;
-  v7 = [a1 ofType:a4];
-  v8 = [v7 dataFromDictionary:v6];
+  dictionaryCopy = dictionary;
+  v7 = [self ofType:type];
+  v8 = [v7 dataFromDictionary:dictionaryCopy];
 
   return v8;
 }
 
-+ (id)stringFromDictionary:(id)a3 ofType:(id)a4
++ (id)stringFromDictionary:(id)dictionary ofType:(id)type
 {
-  v6 = a3;
-  v7 = [a1 ofType:a4];
-  v8 = [v7 stringFromDictionary:v6];
+  dictionaryCopy = dictionary;
+  v7 = [self ofType:type];
+  v8 = [v7 stringFromDictionary:dictionaryCopy];
 
   return v8;
 }
 
-+ (id)ofType:(id)a3
++ (id)ofType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 instance];
-  v6 = [v5 serializerOfType:v4];
+  typeCopy = type;
+  instance = [self instance];
+  v6 = [instance serializerOfType:typeCopy];
 
   return v6;
 }
@@ -92,28 +92,28 @@ uint64_t __28__AAFSerialization_instance__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)serializerOfType:(id)a3
+- (id)serializerOfType:(id)type
 {
   serializersByType = self->_serializersByType;
-  v4 = [a3 lowercaseString];
-  v5 = [(NSDictionary *)serializersByType valueForKey:v4];
+  lowercaseString = [type lowercaseString];
+  v5 = [(NSDictionary *)serializersByType valueForKey:lowercaseString];
 
   return v5;
 }
 
-- (void)addSerializer:(id)a3
+- (void)addSerializer:(id)serializer
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mediaTypes];
-  if ([v5 aaf_hasObjects])
+  serializerCopy = serializer;
+  mediaTypes = [serializerCopy mediaTypes];
+  if ([mediaTypes aaf_hasObjects])
   {
-    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(mediaTypes, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v5;
+    v7 = mediaTypes;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -129,8 +129,8 @@ uint64_t __28__AAFSerialization_instance__block_invoke(uint64_t a1)
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * v11) lowercaseString];
-          [v6 setValue:v4 forKey:v12];
+          lowercaseString = [*(*(&v16 + 1) + 8 * v11) lowercaseString];
+          [v6 setValue:serializerCopy forKey:lowercaseString];
 
           ++v11;
         }

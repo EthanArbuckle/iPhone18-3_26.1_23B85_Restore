@@ -1,27 +1,27 @@
 @interface MOEventBundleProcessor
-+ (BOOL)_validResource:(id)a3 bundle:(id)a4 denyList:(id)a5 sourceAppBundleIds:(id)a6 removedAppBundleIds:(id)a7 lftaStatusDict:(id)a8;
-+ (BOOL)constructLearnedFromTheAppDictionary:(id)a3 denyList:(id)a4 statusDict:(id)a5;
-+ (id)_filterAndAnnotateResults:(id)a3 denyList:(id)a4;
-+ (id)_getBundleIdSet:(id)a3;
++ (BOOL)_validResource:(id)resource bundle:(id)bundle denyList:(id)list sourceAppBundleIds:(id)ids removedAppBundleIds:(id)bundleIds lftaStatusDict:(id)dict;
++ (BOOL)constructLearnedFromTheAppDictionary:(id)dictionary denyList:(id)list statusDict:(id)dict;
++ (id)_filterAndAnnotateResults:(id)results denyList:(id)list;
++ (id)_getBundleIdSet:(id)set;
 + (id)_learningFromAppDenyList;
-+ (id)approvedForLearnFromThisApp:(id)a3;
-+ (id)onboardingDatesBySourceTypeWithStandardSuite:(BOOL)a3;
++ (id)approvedForLearnFromThisApp:(id)app;
++ (id)onboardingDatesBySourceTypeWithStandardSuite:(BOOL)suite;
 + (id)readLearnedFromTheAppStatusTable;
-+ (void)_stripMediaActions:(id)a3;
-+ (void)persistLearnedFromTheAppStatusTable:(id)a3;
-+ (void)updateLearnedFromTheAppDictionary:(id)a3;
-+ (void)updateLearnedFromTheAppDictionary:(id)a3 denyList:(id)a4 statusDict:(id)a5;
++ (void)_stripMediaActions:(id)actions;
++ (void)persistLearnedFromTheAppStatusTable:(id)table;
++ (void)updateLearnedFromTheAppDictionary:(id)dictionary;
++ (void)updateLearnedFromTheAppDictionary:(id)dictionary denyList:(id)list statusDict:(id)dict;
 @end
 
 @implementation MOEventBundleProcessor
 
-+ (id)approvedForLearnFromThisApp:(id)a3
++ (id)approvedForLearnFromThisApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = +[MOEventBundleProcessor _learningFromAppDenyList];
   if (v4)
   {
-    v5 = [MOEventBundleProcessor _filterAndAnnotateResults:v3 denyList:v4];
+    v5 = [MOEventBundleProcessor _filterAndAnnotateResults:appCopy denyList:v4];
   }
 
   else
@@ -33,7 +33,7 @@
     }
 
     v7 = [MEMORY[0x277CBEB98] set];
-    v5 = [MOEventBundleProcessor _filterAndAnnotateResults:v3 denyList:v7];
+    v5 = [MOEventBundleProcessor _filterAndAnnotateResults:appCopy denyList:v7];
   }
 
   return v5;
@@ -62,46 +62,46 @@
   return v4;
 }
 
-+ (BOOL)_validResource:(id)a3 bundle:(id)a4 denyList:(id)a5 sourceAppBundleIds:(id)a6 removedAppBundleIds:(id)a7 lftaStatusDict:(id)a8
++ (BOOL)_validResource:(id)resource bundle:(id)bundle denyList:(id)list sourceAppBundleIds:(id)ids removedAppBundleIds:(id)bundleIds lftaStatusDict:(id)dict
 {
   v58 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v13 sourceAppBundleIds];
-  if (!v19)
+  resourceCopy = resource;
+  bundleCopy = bundle;
+  listCopy = list;
+  idsCopy = ids;
+  bundleIdsCopy = bundleIds;
+  dictCopy = dict;
+  sourceAppBundleIds = [resourceCopy sourceAppBundleIds];
+  if (!sourceAppBundleIds)
   {
     v20 = _mo_log_facility_get_os_log(MOLogFacilityBundleProcessing);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v40 = [v14 bundleIdentifier];
-      v41 = [v40 UUIDString];
+      bundleIdentifier = [bundleCopy bundleIdentifier];
+      uUIDString = [bundleIdentifier UUIDString];
       *buf = 138412290;
-      v53 = v41;
+      v53 = uUIDString;
       _os_log_impl(&dword_22D8C5000, v20, OS_LOG_TYPE_INFO, "approvedForLearnFromThisApp, dropping resource no source app tagging, bundleId=%@", buf, 0xCu);
     }
 
     goto LABEL_17;
   }
 
-  [v16 unionSet:v19];
-  v20 = [v19 mutableCopy];
-  [v20 intersectSet:v15];
+  [idsCopy unionSet:sourceAppBundleIds];
+  v20 = [sourceAppBundleIds mutableCopy];
+  [v20 intersectSet:listCopy];
   if (!v20 || ![v20 count])
   {
-    v51 = v17;
+    v51 = bundleIdsCopy;
     context = objc_autoreleasePoolPush();
     v25 = objc_alloc_init(MEMORY[0x277CCA968]);
-    v47 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     [v25 setCalendar:?];
     [v25 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    v26 = [v13 getDictionary];
-    v27 = [v26 objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
+    getDictionary = [resourceCopy getDictionary];
+    v27 = [getDictionary objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
 
-    v28 = [v18 objectForKeyedSubscript:v27];
+    v28 = [dictCopy objectForKeyedSubscript:v27];
 
     if (!v28)
     {
@@ -109,18 +109,18 @@
       goto LABEL_19;
     }
 
-    v45 = v16;
-    v46 = v15;
-    [v18 objectForKeyedSubscript:v27];
-    v30 = v29 = v14;
+    v45 = idsCopy;
+    v46 = listCopy;
+    [dictCopy objectForKeyedSubscript:v27];
+    v30 = v29 = bundleCopy;
     v31 = [v30 objectForKeyedSubscript:@"active_time"];
 
-    v32 = [v13 getDictionary];
-    v33 = [v32 objectForKey:@"MOMediaPlayMetaDataKeyPlayerStartDate"];
+    getDictionary2 = [resourceCopy getDictionary];
+    v33 = [getDictionary2 objectForKey:@"MOMediaPlayMetaDataKeyPlayerStartDate"];
     [v33 doubleValue];
     v35 = v34;
 
-    v14 = v29;
+    bundleCopy = v29;
     if (v31 && v35 != 0.0)
     {
       v36 = [v25 dateFromString:v31];
@@ -136,7 +136,7 @@
           v54 = 2112;
           v55 = v36;
           v56 = 2112;
-          v57 = v13;
+          v57 = resourceCopy;
           _os_log_impl(&dword_22D8C5000, log, OS_LOG_TYPE_INFO, "media resource removed due to LFTA switch active time, resource start date, %@, switch active time, %@, resource, %@", buf, 0x20u);
         }
 
@@ -147,12 +147,12 @@
 
     v39 = 1;
 LABEL_14:
-    v16 = v45;
-    v15 = v46;
+    idsCopy = v45;
+    listCopy = v46;
 LABEL_19:
 
     objc_autoreleasePoolPop(context);
-    v17 = v51;
+    bundleIdsCopy = v51;
     goto LABEL_20;
   }
 
@@ -160,21 +160,21 @@ LABEL_19:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     v22 = [v20 description];
-    [v14 bundleIdentifier];
-    v23 = contexta = v14;
+    [bundleCopy bundleIdentifier];
+    v23 = contexta = bundleCopy;
     [v23 UUIDString];
-    v24 = v50 = v17;
+    v24 = v50 = bundleIdsCopy;
     *buf = 138412546;
     v53 = v22;
     v54 = 2112;
     v55 = v24;
     _os_log_impl(&dword_22D8C5000, v21, OS_LOG_TYPE_INFO, "approvedForLearnFromThisApp, dropping resource due to LFTA being off for %@, bundleId=%@", buf, 0x16u);
 
-    v17 = v50;
-    v14 = contexta;
+    bundleIdsCopy = v50;
+    bundleCopy = contexta;
   }
 
-  [v17 unionSet:v20];
+  [bundleIdsCopy unionSet:v20];
 LABEL_17:
   v39 = 0;
 LABEL_20:
@@ -183,17 +183,17 @@ LABEL_20:
   return v39;
 }
 
-+ (void)_stripMediaActions:(id)a3
++ (void)_stripMediaActions:(id)actions
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  actionsCopy = actions;
   v4 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [v3 actions];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  actions = [actionsCopy actions];
+  v6 = [actions countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -204,7 +204,7 @@ LABEL_20:
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actions);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
@@ -214,20 +214,20 @@ LABEL_20:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [actions countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v7);
   }
 
-  [v3 setActions:v4];
+  [actionsCopy setActions:v4];
   v11 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [v3 backgroundActions];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  backgroundActions = [actionsCopy backgroundActions];
+  v13 = [backgroundActions countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v13)
   {
     v14 = v13;
@@ -238,7 +238,7 @@ LABEL_20:
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(backgroundActions);
         }
 
         v17 = *(*(&v19 + 1) + 8 * j);
@@ -248,28 +248,28 @@ LABEL_20:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v14 = [backgroundActions countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v14);
   }
 
-  [v3 setBackgroundActions:v4];
-  [v3 setConcurrentMediaAction:0];
+  [actionsCopy setBackgroundActions:v4];
+  [actionsCopy setConcurrentMediaAction:0];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_getBundleIdSet:(id)a3
++ (id)_getBundleIdSet:(id)set
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  setCopy = set;
   v4 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = setCopy;
   v21 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v21)
   {
@@ -288,8 +288,8 @@ LABEL_20:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v7 = [v6 resources];
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        resources = [v6 resources];
+        v8 = [resources countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v8)
         {
           v9 = v8;
@@ -300,15 +300,15 @@ LABEL_20:
             {
               if (*v23 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(resources);
               }
 
               v12 = *(*(&v22 + 1) + 8 * j);
               v13 = objc_autoreleasePoolPush();
               if ([v12 type] == 3)
               {
-                v14 = [v12 getDictionary];
-                v15 = [v14 objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
+                getDictionary = [v12 getDictionary];
+                v15 = [getDictionary objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
 
                 v16 = [v4 setByAddingObject:v15];
 
@@ -318,7 +318,7 @@ LABEL_20:
               objc_autoreleasePoolPop(v13);
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v9 = [resources countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v9);
@@ -336,24 +336,24 @@ LABEL_20:
   return v4;
 }
 
-+ (id)_filterAndAnnotateResults:(id)a3 denyList:(id)a4
++ (id)_filterAndAnnotateResults:(id)results denyList:(id)list
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  listCopy = list;
   v42 = objc_opt_new();
   v41 = objc_opt_new();
   v37 = objc_opt_new();
   v35 = +[MOEventBundleProcessor readLearnedFromTheAppStatusTable];
   v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v35];
-  v34 = [MOEventBundleProcessor _getBundleIdSet:v5];
-  v8 = v6;
+  v34 = [MOEventBundleProcessor _getBundleIdSet:resultsCopy];
+  v8 = listCopy;
   [MOEventBundleProcessor updateLearnedFromTheAppDictionary:"updateLearnedFromTheAppDictionary:denyList:statusDict:" denyList:? statusDict:?];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v5;
+  obj = resultsCopy;
   v39 = [obj countByEnumeratingWithState:&v47 objects:v58 count:16];
   if (v39)
   {
@@ -373,8 +373,8 @@ LABEL_20:
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v12 = [v10 resources];
-        v13 = [v12 countByEnumeratingWithState:&v43 objects:v57 count:16];
+        resources = [v10 resources];
+        v13 = [resources countByEnumeratingWithState:&v43 objects:v57 count:16];
         if (!v13)
         {
 
@@ -392,7 +392,7 @@ LABEL_20:
           {
             if (*v44 != v16)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(resources);
             }
 
             v18 = *(*(&v43 + 1) + 8 * j);
@@ -414,7 +414,7 @@ LABEL_16:
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v43 objects:v57 count:16];
+          v14 = [resources countByEnumeratingWithState:&v43 objects:v57 count:16];
         }
 
         while (v14);
@@ -427,8 +427,8 @@ LABEL_16:
         }
 
 LABEL_22:
-        v20 = [v10 resources];
-        v21 = [v20 count];
+        resources2 = [v10 resources];
+        v21 = [resources2 count];
 
         if (v21)
         {
@@ -440,10 +440,10 @@ LABEL_22:
           v22 = _mo_log_facility_get_os_log(MOLogFacilityBundleProcessing);
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [v10 bundleIdentifier];
-            v24 = [v23 UUIDString];
+            bundleIdentifier = [v10 bundleIdentifier];
+            uUIDString = [bundleIdentifier UUIDString];
             *buf = 138412290;
-            v52 = v24;
+            v52 = uUIDString;
             _os_log_impl(&dword_22D8C5000, v22, OS_LOG_TYPE_DEFAULT, "approvedForLearnFromThisApp, dropping bundle due to no renderable resource. bundleId=%@", buf, 0xCu);
           }
         }
@@ -479,55 +479,55 @@ LABEL_22:
   return v31;
 }
 
-+ (void)updateLearnedFromTheAppDictionary:(id)a3
++ (void)updateLearnedFromTheAppDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v6 = +[MOEventBundleProcessor _learningFromAppDenyList];
   v4 = +[MOEventBundleProcessor readLearnedFromTheAppStatusTable];
   v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v4];
-  [MOEventBundleProcessor updateLearnedFromTheAppDictionary:v3 denyList:v6 statusDict:v5];
+  [MOEventBundleProcessor updateLearnedFromTheAppDictionary:dictionaryCopy denyList:v6 statusDict:v5];
 }
 
-+ (void)updateLearnedFromTheAppDictionary:(id)a3 denyList:(id)a4 statusDict:(id)a5
++ (void)updateLearnedFromTheAppDictionary:(id)dictionary denyList:(id)list statusDict:(id)dict
 {
   v12 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  if ([MOEventBundleProcessor constructLearnedFromTheAppDictionary:a3 denyList:a4 statusDict:v7])
+  dictCopy = dict;
+  if ([MOEventBundleProcessor constructLearnedFromTheAppDictionary:dictionary denyList:list statusDict:dictCopy])
   {
     v8 = _mo_log_facility_get_os_log(MOLogFacilityBundleProcessing);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = dictCopy;
       _os_log_impl(&dword_22D8C5000, v8, OS_LOG_TYPE_INFO, "LFTA status changed, need to update the status table, %@", &v10, 0xCu);
     }
 
-    [MOEventBundleProcessor persistLearnedFromTheAppStatusTable:v7];
+    [MOEventBundleProcessor persistLearnedFromTheAppStatusTable:dictCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)constructLearnedFromTheAppDictionary:(id)a3 denyList:(id)a4 statusDict:(id)a5
++ (BOOL)constructLearnedFromTheAppDictionary:(id)dictionary denyList:(id)list statusDict:(id)dict
 {
   v65 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v53 = a4;
-  v8 = a5;
+  dictionaryCopy = dictionary;
+  listCopy = list;
+  dictCopy = dict;
   v54 = objc_opt_new();
   v9 = objc_alloc_init(MEMORY[0x277CCA968]);
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
-  [v9 setCalendar:v10];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  [v9 setCalendar:currentCalendar];
   v49 = v9;
   [v9 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v11 = v7;
-  v12 = [v11 countByEnumeratingWithState:&v59 objects:v64 count:16];
+  allKeys = dictionaryCopy;
+  v12 = [allKeys countByEnumeratingWithState:&v59 objects:v64 count:16];
   v13 = v12 != 0;
-  obj = v11;
+  obj = allKeys;
   if (!v12)
   {
     goto LABEL_32;
@@ -535,7 +535,7 @@ LABEL_22:
 
   v14 = v12;
   v47 = v12 != 0;
-  v48 = v10;
+  v48 = currentCalendar;
   v15 = 0;
   v52 = *v60;
   do
@@ -551,8 +551,8 @@ LABEL_22:
 
       v17 = *(*(&v59 + 1) + 8 * v16);
       v18 = objc_autoreleasePoolPush();
-      v19 = [v53 containsObject:v17];
-      v20 = [v8 objectForKeyedSubscript:v17];
+      v19 = [listCopy containsObject:v17];
+      v20 = [dictCopy objectForKeyedSubscript:v17];
 
       if (!v19)
       {
@@ -569,18 +569,18 @@ LABEL_22:
           goto LABEL_21;
         }
 
-        v26 = [v8 objectForKeyedSubscript:v17];
+        v26 = [dictCopy objectForKeyedSubscript:v17];
         v27 = [v26 objectForKey:@"status"];
         if (v27)
         {
           v28 = v27;
-          v29 = [v8 objectForKeyedSubscript:v17];
+          v29 = [dictCopy objectForKeyedSubscript:v17];
           v30 = [v29 objectForKey:@"status"];
           v31 = [v30 isEqualToString:MOLearnedFromTheAppStatusOn];
 
           if (v31)
           {
-            v32 = [v8 objectForKeyedSubscript:v17];
+            v32 = [dictCopy objectForKeyedSubscript:v17];
 LABEL_20:
             v14 = v51;
             goto LABEL_21;
@@ -603,11 +603,11 @@ LABEL_20:
 
       if (v20)
       {
-        v21 = [v8 objectForKeyedSubscript:v17];
+        v21 = [dictCopy objectForKeyedSubscript:v17];
         v22 = [v21 objectForKey:@"status"];
         if (v22)
         {
-          v23 = [v8 objectForKeyedSubscript:v17];
+          v23 = [dictCopy objectForKeyedSubscript:v17];
           v24 = [v23 objectForKey:@"status"];
           v25 = [v24 isEqualToString:MOLearnedFromTheAppStatusOn];
 
@@ -642,8 +642,8 @@ LABEL_21:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v11 = [v54 allKeys];
-    v38 = [v11 countByEnumeratingWithState:&v55 objects:v63 count:16];
+    allKeys = [v54 allKeys];
+    v38 = [allKeys countByEnumeratingWithState:&v55 objects:v63 count:16];
     if (v38)
     {
       v39 = v38;
@@ -654,24 +654,24 @@ LABEL_21:
         {
           if (*v56 != v40)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v42 = *(*(&v55 + 1) + 8 * i);
           v43 = objc_autoreleasePoolPush();
           v44 = [v54 objectForKeyedSubscript:v42];
-          [v8 setObject:v44 forKey:v42];
+          [dictCopy setObject:v44 forKey:v42];
 
           objc_autoreleasePoolPop(v43);
         }
 
-        v39 = [v11 countByEnumeratingWithState:&v55 objects:v63 count:16];
+        v39 = [allKeys countByEnumeratingWithState:&v55 objects:v63 count:16];
       }
 
       while (v39);
     }
 
-    v10 = v48;
+    currentCalendar = v48;
     v13 = v47;
 LABEL_32:
   }
@@ -679,7 +679,7 @@ LABEL_32:
   else
   {
     v13 = 0;
-    v10 = v48;
+    currentCalendar = v48;
   }
 
   v45 = *MEMORY[0x277D85DE8];
@@ -695,9 +695,9 @@ LABEL_32:
     v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:v2 isDirectory:1];
     v4 = [v3 URLByAppendingPathComponent:@"learnedFromTheApp.plist"];
 
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v4 path];
-    v7 = [v5 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v4 path];
+    v7 = [defaultManager fileExistsAtPath:path];
 
     v8 = _mo_log_facility_get_os_log(MOLogFacilityBundleProcessing);
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
@@ -722,7 +722,7 @@ LABEL_32:
         }
 
         v19 = 0;
-        [v5 removeItemAtURL:v4 error:&v19];
+        [defaultManager removeItemAtURL:v4 error:&v19];
         if (v19)
         {
           v13 = _mo_log_facility_get_os_log(MOLogFacilityBundleProcessing);
@@ -771,9 +771,9 @@ LABEL_32:
   return v16;
 }
 
-+ (void)persistLearnedFromTheAppStatusTable:(id)a3
++ (void)persistLearnedFromTheAppStatusTable:(id)table
 {
-  v3 = a3;
+  tableCopy = table;
   v4 = +[MOPersistenceUtilities userCacheDirectoryPath];
   if (v4)
   {
@@ -783,7 +783,7 @@ LABEL_32:
     if (v6)
     {
       v13 = 0;
-      v7 = [v3 writeToURL:v6 error:&v13];
+      v7 = [tableCopy writeToURL:v6 error:&v13];
       v8 = v13;
       v9 = _mo_log_facility_get_os_log(MOLogFacilityBundleProcessing);
       v10 = v9;
@@ -823,10 +823,10 @@ LABEL_32:
 LABEL_15:
 }
 
-+ (id)onboardingDatesBySourceTypeWithStandardSuite:(BOOL)a3
++ (id)onboardingDatesBySourceTypeWithStandardSuite:(BOOL)suite
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (suite)
   {
     v3 = [[MODefaultsManager alloc] initWithSuiteName:@"com.apple.momentsd"];
   }
@@ -868,8 +868,8 @@ LABEL_15:
     while (v8);
   }
 
-  v13 = [(MODefaultsManager *)v4 onboardingDateForJournalingSuggestions];
-  [v5 setObject:v13 forKeyedSubscript:@"OnboardingDate"];
+  onboardingDateForJournalingSuggestions = [(MODefaultsManager *)v4 onboardingDateForJournalingSuggestions];
+  [v5 setObject:onboardingDateForJournalingSuggestions forKeyedSubscript:@"OnboardingDate"];
 
   v14 = *MEMORY[0x277D85DE8];
 

@@ -1,21 +1,21 @@
 @interface PhotosDynamicHeaderLayoutProvider
 - (_TtC12PhotosUICore33PhotosDynamicHeaderLayoutProvider)init;
-- (id)createGlobalHeaderLayoutForPhotosViewModel:(id)a3 dataSource:(id)a4 spec:(id)a5;
-- (void)configureGlobalHeaderLayout:(id)a3 dataSource:(id)a4 spec:(id)a5;
+- (id)createGlobalHeaderLayoutForPhotosViewModel:(id)model dataSource:(id)source spec:(id)spec;
+- (void)configureGlobalHeaderLayout:(id)layout dataSource:(id)source spec:(id)spec;
 @end
 
 @implementation PhotosDynamicHeaderLayoutProvider
 
-- (id)createGlobalHeaderLayoutForPhotosViewModel:(id)a3 dataSource:(id)a4 spec:(id)a5
+- (id)createGlobalHeaderLayoutForPhotosViewModel:(id)model dataSource:(id)source spec:(id)spec
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1A4425524(v8, v9, v10);
+  modelCopy = model;
+  sourceCopy = source;
+  specCopy = spec;
+  selfCopy = self;
+  sub_1A4425524(modelCopy, sourceCopy, specCopy);
 }
 
-- (void)configureGlobalHeaderLayout:(id)a3 dataSource:(id)a4 spec:(id)a5
+- (void)configureGlobalHeaderLayout:(id)layout dataSource:(id)source spec:(id)spec
 {
   type metadata accessor for PhotosDynamicHeaderLayout();
   v8 = swift_dynamicCastClass();
@@ -24,11 +24,11 @@
     v9 = v8;
     v10 = MEMORY[0x1E69E7D40];
     v11 = *((*MEMORY[0x1E69E7D40] & *v8) + 0xC8);
-    v14 = a4;
-    v12 = a3;
-    v13 = a5;
-    v11(a4);
-    (*((*v10 & *v9) + 0xE0))(v13);
+    sourceCopy = source;
+    layoutCopy = layout;
+    specCopy = spec;
+    v11(source);
+    (*((*v10 & *v9) + 0xE0))(specCopy);
   }
 }
 

@@ -1,15 +1,15 @@
 @interface ENArchive
-- (BOOL)_checkEntryAndReturnError:(id *)a3;
-- (BOOL)_openArchiveAndReturnError:(id *)a3;
-- (BOOL)advanceEntryAndReturnError:(id *)a3;
-- (BOOL)readDataIntoBuffer:(void *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)resetAndReturnError:(id *)a3;
-- (BOOL)resetToCurrentEntryAndReturnError:(id *)a3;
-- (BOOL)skipBytes:(unint64_t)a3 error:(id *)a4;
-- (ENArchive)initWithFD:(int)a3 error:(id *)a4;
-- (ENArchive)initWithPath:(id)a3 error:(id *)a4;
+- (BOOL)_checkEntryAndReturnError:(id *)error;
+- (BOOL)_openArchiveAndReturnError:(id *)error;
+- (BOOL)advanceEntryAndReturnError:(id *)error;
+- (BOOL)readDataIntoBuffer:(void *)buffer length:(unint64_t)length error:(id *)error;
+- (BOOL)resetAndReturnError:(id *)error;
+- (BOOL)resetToCurrentEntryAndReturnError:(id *)error;
+- (BOOL)skipBytes:(unint64_t)bytes error:(id *)error;
+- (ENArchive)initWithFD:(int)d error:(id *)error;
+- (ENArchive)initWithPath:(id)path error:(id *)error;
 - (NSString)entryPath;
-- (int64_t)readDataIntoBuffer:(void *)a3 maxLength:(unint64_t)a4 error:(id *)a5;
+- (int64_t)readDataIntoBuffer:(void *)buffer maxLength:(unint64_t)length error:(id *)error;
 - (unsigned)entryFileType;
 - (void)_closeArchive;
 - (void)close;
@@ -18,10 +18,10 @@
 
 @implementation ENArchive
 
-- (ENArchive)initWithPath:(id)a3 error:(id *)a4
+- (ENArchive)initWithPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = realpath_DARWIN_EXTSN([v6 fileSystemRepresentation], 0);
+  pathCopy = path;
+  v7 = realpath_DARWIN_EXTSN([pathCopy fileSystemRepresentation], 0);
   if (v7)
   {
     v8 = v7;
@@ -34,47 +34,47 @@
     v10 = open(v8, 0);
     if ((v10 & 0x80000000) != 0 && (!*__error() || *__error()))
     {
-      if (a4)
+      if (error)
       {
         ENErrorF(2);
-        *a4 = v11 = 0;
+        *error = selfCopy = 0;
       }
 
       else
       {
-        v11 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      self = [(ENArchive *)self initWithFD:v10 error:a4];
-      v11 = self;
+      self = [(ENArchive *)self initWithFD:v10 error:error];
+      selfCopy = self;
     }
 
     v9[2](v9);
   }
 
-  else if (a4)
+  else if (error)
   {
     ENErrorF(2);
-    *a4 = v11 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (ENArchive)initWithFD:(int)a3 error:(id *)a4
+- (ENArchive)initWithFD:(int)d error:(id *)error
 {
-  v5 = self;
-  if (a3 < 0)
+  selfCopy = self;
+  if (d < 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -84,46 +84,46 @@
 
   v10.receiver = self;
   v10.super_class = ENArchive;
-  v5 = [(ENArchive *)&v10 init];
-  if (!v5)
+  selfCopy = [(ENArchive *)&v10 init];
+  if (!selfCopy)
   {
 LABEL_11:
     v8 = 0;
     goto LABEL_12;
   }
 
-  v7 = fdopen(a3, "rb");
+  v7 = fdopen(d, "rb");
   if (!v7 && (!*__error() || *__error()))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
 
 LABEL_9:
     ENErrorF(2);
-    *a4 = v8 = 0;
+    *error = v8 = 0;
     goto LABEL_12;
   }
 
-  v5->_fileHandle = v7;
-  if (![(ENArchive *)v5 _openArchiveAndReturnError:a4])
+  selfCopy->_fileHandle = v7;
+  if (![(ENArchive *)selfCopy _openArchiveAndReturnError:error])
   {
     goto LABEL_11;
   }
 
-  v5 = v5;
-  v8 = v5;
+  selfCopy = selfCopy;
+  v8 = selfCopy;
 LABEL_12:
 
   return v8;
 }
 
-- (BOOL)_openArchiveAndReturnError:(id *)a3
+- (BOOL)_openArchiveAndReturnError:(id *)error
 {
   if (!self->_fileHandle)
   {
-    if (a3)
+    if (error)
     {
       v10 = 16;
       goto LABEL_13;
@@ -134,12 +134,12 @@ LABEL_12:
 
   if (fseeko(self->_fileHandle, 0, 0) && (!*__error() || *__error()))
   {
-    if (a3)
+    if (error)
     {
       v10 = 15;
 LABEL_13:
       ENErrorF(v10);
-      *a3 = v8 = 0;
+      *error = v8 = 0;
       return v8;
     }
 
@@ -158,12 +158,12 @@ LABEL_13:
   v5 = MEMORY[0x2383EE560](v13);
   if (!v15[3])
   {
-    if (a3)
+    if (error)
     {
       v11 = ENErrorF(12);
 LABEL_23:
       v8 = 0;
-      *a3 = v11;
+      *error = v11;
       goto LABEL_9;
     }
 
@@ -172,7 +172,7 @@ LABEL_23:
 
   if (archive_read_support_format_zip())
   {
-    if (a3)
+    if (error)
     {
       goto LABEL_22;
     }
@@ -183,7 +183,7 @@ LABEL_23:
   v6 = v15[3];
   if (archive_read_open_FILE())
   {
-    if (a3)
+    if (error)
     {
 LABEL_22:
       v12 = v15[3];
@@ -232,7 +232,7 @@ uint64_t __40__ENArchive__openArchiveAndReturnError___block_invoke(uint64_t a1)
   [(ENArchive *)&v3 dealloc];
 }
 
-- (BOOL)advanceEntryAndReturnError:(id *)a3
+- (BOOL)advanceEntryAndReturnError:(id *)error
 {
   fileHandle = self->_fileHandle;
   if (fileHandle)
@@ -246,7 +246,7 @@ uint64_t __40__ENArchive__openArchiveAndReturnError___block_invoke(uint64_t a1)
 
   else
   {
-    [ENArchive advanceEntryAndReturnError:a3];
+    [ENArchive advanceEntryAndReturnError:error];
   }
 
   return fileHandle != 0;
@@ -274,11 +274,11 @@ uint64_t __40__ENArchive__openArchiveAndReturnError___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_checkEntryAndReturnError:(id *)a3
+- (BOOL)_checkEntryAndReturnError:(id *)error
 {
   if (!self->_fileHandle)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -287,13 +287,13 @@ LABEL_10:
     v5 = ENErrorF(10);
     v6 = v5;
     result = 0;
-    *a3 = v5;
+    *error = v5;
     return result;
   }
 
   if (self->_endOfArchive)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -306,7 +306,7 @@ LABEL_10:
     return 1;
   }
 
-  if (a3)
+  if (error)
   {
     goto LABEL_10;
   }
@@ -314,20 +314,20 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)readDataIntoBuffer:(void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)readDataIntoBuffer:(void *)buffer length:(unint64_t)length error:(id *)error
 {
-  v7 = [ENArchive readDataIntoBuffer:"readDataIntoBuffer:maxLength:error:" maxLength:a3 error:?];
+  v7 = [ENArchive readDataIntoBuffer:"readDataIntoBuffer:maxLength:error:" maxLength:buffer error:?];
   if (v7 < 1)
   {
     return 0;
   }
 
-  if (v7 == a4)
+  if (v7 == length)
   {
     return 1;
   }
 
-  if (!a5)
+  if (!error)
   {
     return 0;
   }
@@ -335,24 +335,24 @@ LABEL_10:
   v9 = ENErrorF(15);
   v10 = v9;
   result = 0;
-  *a5 = v9;
+  *error = v9;
   return result;
 }
 
-- (BOOL)resetAndReturnError:(id *)a3
+- (BOOL)resetAndReturnError:(id *)error
 {
   if (self->_fileHandle)
   {
     [(ENArchive *)self _closeArchive];
 
-    return [(ENArchive *)self _openArchiveAndReturnError:a3];
+    return [(ENArchive *)self _openArchiveAndReturnError:error];
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = ENErrorF(10);
+      *error = ENErrorF(10);
     }
 
     return 0;
@@ -392,9 +392,9 @@ LABEL_10:
   return v3;
 }
 
-- (int64_t)readDataIntoBuffer:(void *)a3 maxLength:(unint64_t)a4 error:(id *)a5
+- (int64_t)readDataIntoBuffer:(void *)buffer maxLength:(unint64_t)length error:(id *)error
 {
-  if (![(ENArchive *)self _checkEntryAndReturnError:a5])
+  if (![(ENArchive *)self _checkEntryAndReturnError:error])
   {
     return 0;
   }
@@ -403,12 +403,12 @@ LABEL_10:
   data = archive_read_data();
   if (data < 0)
   {
-    if (a5)
+    if (error)
     {
       v10 = self->_archive;
       archive_error_string();
       ENErrorF(16);
-      *a5 = data = 0;
+      *error = data = 0;
       return data;
     }
 
@@ -418,21 +418,21 @@ LABEL_10:
   return data;
 }
 
-- (BOOL)resetToCurrentEntryAndReturnError:(id *)a3
+- (BOOL)resetToCurrentEntryAndReturnError:(id *)error
 {
   if (![(ENArchive *)self _checkEntryAndReturnError:?])
   {
     return 0;
   }
 
-  v5 = [(ENArchive *)self entryPath];
-  if ([(ENArchive *)self resetAndReturnError:a3])
+  entryPath = [(ENArchive *)self entryPath];
+  if ([(ENArchive *)self resetAndReturnError:error])
   {
     while (![(ENArchive *)self endOfArchive])
     {
-      v6 = [(ENArchive *)self entryPath];
-      v7 = v5;
-      v8 = v6;
+      entryPath2 = [(ENArchive *)self entryPath];
+      v7 = entryPath;
+      v8 = entryPath2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -442,7 +442,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      if ((v5 != 0) != (v8 == 0))
+      if ((entryPath != 0) != (v8 == 0))
       {
         v10 = [v7 isEqual:v8];
 
@@ -456,19 +456,19 @@ LABEL_15:
       {
       }
 
-      if (![(ENArchive *)self advanceEntryAndReturnError:a3])
+      if (![(ENArchive *)self advanceEntryAndReturnError:error])
       {
         goto LABEL_13;
       }
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_13;
     }
 
     ENErrorF(16);
-    *a3 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -482,25 +482,25 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)skipBytes:(unint64_t)a3 error:(id *)a4
+- (BOOL)skipBytes:(unint64_t)bytes error:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  if ([(ENArchive *)self _checkEntryAndReturnError:a4])
+  if ([(ENArchive *)self _checkEntryAndReturnError:error])
   {
     bzero(v11, 0x400uLL);
     do
     {
-      v7 = a3 == 0;
-      if (!a3)
+      v7 = bytes == 0;
+      if (!bytes)
       {
         break;
       }
 
-      v8 = a3 >= 0x400 ? 1024 : a3;
-      a3 -= v8;
+      v8 = bytes >= 0x400 ? 1024 : bytes;
+      bytes -= v8;
     }
 
-    while ([(ENArchive *)self readDataIntoBuffer:v11 length:v8 error:a4]);
+    while ([(ENArchive *)self readDataIntoBuffer:v11 length:v8 error:error]);
   }
 
   else

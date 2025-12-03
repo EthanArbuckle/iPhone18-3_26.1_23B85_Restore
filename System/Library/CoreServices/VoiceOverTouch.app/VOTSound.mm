@@ -1,40 +1,40 @@
 @interface VOTSound
 - (BOOL)isPlaying;
 - (BOOL)shouldUseAVAudioPlayer;
-- (VOTSound)initWithSoundPath:(id)a3 thread:(id)a4;
+- (VOTSound)initWithSoundPath:(id)path thread:(id)thread;
 - (void)__updateAudioSessionProperties;
-- (void)_cancelHelperFired:(unint64_t)a3;
+- (void)_cancelHelperFired:(unint64_t)fired;
 - (void)_finishedPlaying;
-- (void)_hearingAidRouteChange:(id)a3;
-- (void)_sendFinishPlayingNotificationsWithCompletionBlock:(id)a3 delegate:(id)a4;
+- (void)_hearingAidRouteChange:(id)change;
+- (void)_sendFinishPlayingNotificationsWithCompletionBlock:(id)block delegate:(id)delegate;
 - (void)_updateAudioSessionProperties;
-- (void)_updatePlayerWithAudioFile:(BOOL)a3;
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4;
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)_updatePlayerWithAudioFile:(BOOL)file;
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 - (void)dealloc;
-- (void)playAvoidingSSS:(BOOL)a3;
+- (void)playAvoidingSSS:(BOOL)s;
 - (void)resetSoundForLostMediaSession;
-- (void)setCompletionBlock:(id)a3;
+- (void)setCompletionBlock:(id)block;
 @end
 
 @implementation VOTSound
 
-- (VOTSound)initWithSoundPath:(id)a3 thread:(id)a4
+- (VOTSound)initWithSoundPath:(id)path thread:(id)thread
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  threadCopy = thread;
   v34.receiver = self;
   v34.super_class = VOTSound;
   v9 = [(VOTSound *)&v34 init];
   v10 = v9;
   v11 = 0;
-  if (v7)
+  if (pathCopy)
   {
     if (v9)
     {
-      [(VOTSound *)v9 setSoundThread:v8];
-      objc_storeStrong(&v10->_soundPath, a3);
-      v12 = [[SCRCTargetSelectorTimer alloc] initWithTarget:v10 selector:0 thread:v8];
+      [(VOTSound *)v9 setSoundThread:threadCopy];
+      objc_storeStrong(&v10->_soundPath, path);
+      v12 = [[SCRCTargetSelectorTimer alloc] initWithTarget:v10 selector:0 thread:threadCopy];
       cancelHelperTimer = v10->_cancelHelperTimer;
       v10->_cancelHelperTimer = v12;
 
@@ -43,15 +43,15 @@
       v10->_hearingAidStreamSerialQueue = v14;
 
       v11 = 0;
-      if (([v7 isEqualToString:@"KeyboardClick"] & 1) == 0)
+      if (([pathCopy isEqualToString:@"KeyboardClick"] & 1) == 0)
       {
         v16 = [NSBundle bundleForClass:objc_opt_class()];
-        v17 = [v16 resourcePath];
+        resourcePath = [v16 resourcePath];
 
         v18 = objc_allocWithZone(NSURL);
-        v29 = v17;
-        v19 = [NSString stringWithFormat:@"%@/%@", v17, v7];
-        v20 = [v18 initFileURLWithPath:v19 isDirectory:0];
+        v29 = resourcePath;
+        pathCopy = [NSString stringWithFormat:@"%@/%@", resourcePath, pathCopy];
+        v20 = [v18 initFileURLWithPath:pathCopy isDirectory:0];
 
         v28 = v20;
         SystemSoundID = AudioServicesCreateSystemSoundID(v20, &v10->_soundID);
@@ -75,7 +75,7 @@
 
         else
         {
-          objc_storeStrong(&v10->_soundPath, a3);
+          objc_storeStrong(&v10->_soundPath, path);
           v10->_completionBlockLock._os_unfair_lock_opaque = 0;
           v10->_volume = 1.0;
           objc_initWeak(&location, v10);
@@ -99,7 +99,7 @@
   return v11;
 }
 
-- (void)_hearingAidRouteChange:(id)a3
+- (void)_hearingAidRouteChange:(id)change
 {
   hearingAidStreamSerialQueue = self->_hearingAidStreamSerialQueue;
   block[0] = _NSConcreteStackBlock;
@@ -164,8 +164,8 @@ LABEL_10:
       else
       {
         v11 = +[AXAudioHardwareManager defaultPort];
-        v12 = [v11 portType];
-        v13 = [v12 isEqualToString:AVAudioSessionPortBuiltInSpeaker];
+        portType = [v11 portType];
+        v13 = [portType isEqualToString:AVAudioSessionPortBuiltInSpeaker];
 
         v3 = VOTLogAudio();
         v14 = os_log_type_enabled(v3, OS_LOG_TYPE_INFO);
@@ -206,7 +206,7 @@ LABEL_10:
       v17 = 2048;
       v18 = hearingAidStreamSelected;
       v19 = 2048;
-      v20 = [(VOTSound *)self isVolumeSound];
+      isVolumeSound = [(VOTSound *)self isVolumeSound];
       v5 = "Should use AVAudioPlayer for sound. soundChannels=%ld _hearingAidStreamSelected=%ld isVolumeSound=%ld";
       LOBYTE(soundChannels) = 1;
       v6 = v3;
@@ -220,24 +220,24 @@ LABEL_11:
   return soundChannels;
 }
 
-- (void)_updatePlayerWithAudioFile:(BOOL)a3
+- (void)_updatePlayerWithAudioFile:(BOOL)file
 {
-  v3 = a3;
-  v5 = [(VOTSound *)self soundPath];
-  v6 = v5;
-  if (v3)
+  fileCopy = file;
+  soundPath = [(VOTSound *)self soundPath];
+  v6 = soundPath;
+  if (fileCopy)
   {
-    v7 = [v5 pathExtension];
-    v8 = [v6 stringByDeletingPathExtension];
-    v9 = [NSString stringWithFormat:@"%@-mono", v8];
-    v10 = [v9 stringByAppendingPathExtension:v7];
+    pathExtension = [soundPath pathExtension];
+    stringByDeletingPathExtension = [v6 stringByDeletingPathExtension];
+    v9 = [NSString stringWithFormat:@"%@-mono", stringByDeletingPathExtension];
+    v10 = [v9 stringByAppendingPathExtension:pathExtension];
 
     v6 = v10;
   }
 
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 resourcePath];
-  v13 = [v12 stringByAppendingPathComponent:v6];
+  resourcePath = [v11 resourcePath];
+  v13 = [resourcePath stringByAppendingPathComponent:v6];
 
   v14 = [objc_allocWithZone(NSURL) initFileURLWithPath:v13 isDirectory:0];
   v20 = 0;
@@ -283,19 +283,19 @@ LABEL_11:
   }
 
   self->_soundChannels = [v5 count];
-  v9 = [(AVAudioPlayer *)self->_player numberOfChannels];
+  numberOfChannels = [(AVAudioPlayer *)self->_player numberOfChannels];
   v10 = VOTLogAudio();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = [v5 count];
     v13 = 67109376;
-    LODWORD(v14[0]) = v9;
+    LODWORD(v14[0]) = numberOfChannels;
     WORD2(v14[0]) = 1024;
     *(v14 + 6) = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Player channels: %d, selected channels: %d", &v13, 0xEu);
   }
 
-  if ([v5 count] && objc_msgSend(v5, "count") == v9)
+  if ([v5 count] && objc_msgSend(v5, "count") == numberOfChannels)
   {
     v12 = [TTSAudioSessionChannel convertChannels:v5];
     [(AVAudioPlayer *)self->_player setChannelAssignments:v12];
@@ -309,8 +309,8 @@ LABEL_11:
 
 - (void)_updateAudioSessionProperties
 {
-  v3 = [(VOTSound *)self soundThread];
-  [v3 performSelector:"__updateAudioSessionProperties" onTarget:self count:0 objects:0];
+  soundThread = [(VOTSound *)self soundThread];
+  [soundThread performSelector:"__updateAudioSessionProperties" onTarget:self count:0 objects:0];
 }
 
 - (void)dealloc
@@ -332,13 +332,13 @@ LABEL_11:
   [(VOTSound *)&v5 dealloc];
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   completionBlock = self->_completionBlock;
-  if (completionBlock != v4)
+  if (completionBlock != blockCopy)
   {
-    v9 = v4;
+    v9 = blockCopy;
     if (completionBlock)
     {
       [(VOTSound *)self _finishedPlaying];
@@ -347,10 +347,10 @@ LABEL_11:
       self->_completionBlock = 0;
 
       os_unfair_lock_unlock(&self->_completionBlockLock);
-      v4 = v9;
+      blockCopy = v9;
     }
 
-    if (v4)
+    if (blockCopy)
     {
       os_unfair_lock_lock(&self->_completionBlockLock);
       v7 = [v9 copy];
@@ -358,7 +358,7 @@ LABEL_11:
       self->_completionBlock = v7;
 
       os_unfair_lock_unlock(&self->_completionBlockLock);
-      v4 = v9;
+      blockCopy = v9;
     }
   }
 }
@@ -367,7 +367,7 @@ LABEL_11:
 {
   os_unfair_lock_lock(&self->_completionBlockLock);
   v3 = objc_retainBlock(self->_completionBlock);
-  v4 = [(VOTSound *)self delegate];
+  delegate = [(VOTSound *)self delegate];
   v5 = objc_retainBlock(v3);
   v6 = objc_getAssociatedObject(v5, &unk_1001FEA00);
 
@@ -387,7 +387,7 @@ LABEL_11:
 
     soundThread = self->_soundThread;
     v10 = objc_retainBlock(v3);
-    [(SCRCThread *)soundThread performSelector:"_sendFinishPlayingNotificationsWithCompletionBlock:delegate:" onTarget:self count:2 objects:v10, v4];
+    [(SCRCThread *)soundThread performSelector:"_sendFinishPlayingNotificationsWithCompletionBlock:delegate:" onTarget:self count:2 objects:v10, delegate];
   }
 
   if (![(VOTSound *)self shouldUseAVAudioPlayer])
@@ -398,16 +398,16 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_completionBlockLock);
 }
 
-- (void)_sendFinishPlayingNotificationsWithCompletionBlock:(id)a3 delegate:(id)a4
+- (void)_sendFinishPlayingNotificationsWithCompletionBlock:(id)block delegate:(id)delegate
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, self);
+    (*(block + 2))(block, self);
   }
 
   else
   {
-    [a4 sound:self didFinishPlaying:1];
+    [delegate sound:self didFinishPlaying:1];
   }
 }
 
@@ -432,7 +432,7 @@ LABEL_11:
   return isPlaying;
 }
 
-- (void)_cancelHelperFired:(unint64_t)a3
+- (void)_cancelHelperFired:(unint64_t)fired
 {
   v5 = VOTLogAudio();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -442,21 +442,21 @@ LABEL_11:
     v8 = 134218496;
     v9 = soundPlayGeneration;
     v10 = 2048;
-    v11 = a3;
+    firedCopy = fired;
     v12 = 1024;
     v13 = isPlaying;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Cancel helper fired, %llu = %llu, playing: %d", &v8, 0x1Cu);
   }
 
-  if (self->_soundPlayGeneration == a3 && self->_isPlaying)
+  if (self->_soundPlayGeneration == fired && self->_isPlaying)
   {
     [(VOTSound *)self _finishedPlaying];
   }
 }
 
-- (void)playAvoidingSSS:(BOOL)a3
+- (void)playAvoidingSSS:(BOOL)s
 {
-  v3 = a3;
+  sCopy = s;
   [(SCRCTargetSelectorTimer *)self->_cancelHelperTimer cancel];
   ++self->_soundPlayGeneration;
   self->_isPlaying = 1;
@@ -468,21 +468,21 @@ LABEL_11:
 
   else
   {
-    v5 = [(VOTSound *)self shouldUseAVAudioPlayer];
+    shouldUseAVAudioPlayer = [(VOTSound *)self shouldUseAVAudioPlayer];
     v6 = VOTLogAudio();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-    if ((v5 & 1) != 0 || v3)
+    if ((shouldUseAVAudioPlayer & 1) != 0 || sCopy)
     {
       if (v7)
       {
-        v12 = v3;
-        v13 = [(VOTSound *)self soundPath];
+        v12 = sCopy;
+        soundPath = [(VOTSound *)self soundPath];
         *buf = 134218498;
-        v20 = v5;
+        v20 = shouldUseAVAudioPlayer;
         v21 = 2048;
         v22 = v12;
         v23 = 2112;
-        v24 = v13;
+        v24 = soundPath;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Will play sound via AVAudioPlayer. useAVAudioPlayer=%ld avoidSSS=%ld path=%@", buf, 0x20u);
       }
 
@@ -503,11 +503,11 @@ LABEL_11:
       if (v7)
       {
         v8 = [NSNumber numberWithBool:0];
-        v9 = [(VOTSound *)self soundPath];
+        soundPath2 = [(VOTSound *)self soundPath];
         *buf = 138412546;
         v20 = v8;
         v21 = 2112;
-        v22 = v9;
+        v22 = soundPath2;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Will play sound via AudioServices. avoidSSS=%@ path=%@", buf, 0x16u);
       }
 
@@ -527,9 +527,9 @@ LABEL_11:
   }
 }
 
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = VOTLogAudio();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -540,13 +540,13 @@ LABEL_11:
   self->_isPlaying = 0;
 }
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
   [(SCRCTargetSelectorTimer *)self->_cancelHelperTimer cancel];
   v6 = VOTLogAudio();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_1001283E0(a4);
+    sub_1001283E0(successfully);
   }
 
   [(VOTSound *)self _finishedPlaying];

@@ -1,5 +1,5 @@
 @interface CIRedEyeCorrections
-- (id)_initFromProperties:(id)a3;
+- (id)_initFromProperties:(id)properties;
 - (id)_outputProperties;
 - (id)outputImage;
 - (void)setDefaults;
@@ -92,9 +92,9 @@
     return 0;
   }
 
-  v123 = [MEMORY[0x1E695DF70] array];
-  v117 = [MEMORY[0x1E695DF70] array];
-  v118 = self;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
   if (v4)
   {
     v140 = 0uLL;
@@ -123,7 +123,7 @@
           v13 = *&v12;
           [objc_msgSend(v10 objectForKeyedSubscript:{@"py", "doubleValue"}];
           *&v14 = 1.0 - v14;
-          [v123 addObject:{objc_msgSend(v11, "stringWithFormat:", @"x = %.5f, y = %.5f, width = 10.0, height = 10.0, alpha = 0.0244, density = 0.86, strength = 0.0757, redBias = 0.253, pupilSize = 0.50, pupilDarkenAmount = 0.75", *&v13, *&v14)}];
+          [array addObject:{objc_msgSend(v11, "stringWithFormat:", @"x = %.5f, y = %.5f, width = 10.0, height = 10.0, alpha = 0.0244, density = 0.86, strength = 0.0757, redBias = 0.253, pupilSize = 0.50, pupilDarkenAmount = 0.75", *&v13, *&v14)}];
         }
 
         v7 = [(NSArray *)inputCorrectionInfo countByEnumeratingWithState:&v138 objects:v155 count:16];
@@ -132,12 +132,12 @@
       while (v7);
     }
 
-    v122 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v134 = 0u;
     v135 = 0u;
     v136 = 0u;
     v137 = 0u;
-    obj = v118->inputCorrectionInfo;
+    obj = selfCopy->inputCorrectionInfo;
     v121 = [(NSArray *)obj countByEnumeratingWithState:&v134 objects:v154 count:16];
     if (v121)
     {
@@ -154,13 +154,13 @@
 
           v124 = v15;
           v125 = *(*(&v134 + 1) + 8 * v15);
-          v16 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v17 = [v125 objectForKeyedSubscript:@"context"];
           v18 = [v17 objectForKeyedSubscript:@"faceRect"];
-          v126 = v16;
-          [v16 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v18, "objectAtIndexedSubscript:", 0), objc_msgSend(v18, "objectAtIndexedSubscript:", 1), objc_msgSend(v18, "objectAtIndexedSubscript:", 2), objc_msgSend(v18, "objectAtIndexedSubscript:", 3)), @"cfr"}];
+          v126 = dictionary;
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v18, "objectAtIndexedSubscript:", 0), objc_msgSend(v18, "objectAtIndexedSubscript:", 1), objc_msgSend(v18, "objectAtIndexedSubscript:", 2), objc_msgSend(v18, "objectAtIndexedSubscript:", 3)), @"cfr"}];
           v19 = [v17 objectForKeyedSubscript:@"leftEye"];
-          [v16 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@", objc_msgSend(v19, "objectAtIndexedSubscript:", 0), objc_msgSend(v19, "objectAtIndexedSubscript:", 1)), @"cle"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@", objc_msgSend(v19, "objectAtIndexedSubscript:", 0), objc_msgSend(v19, "objectAtIndexedSubscript:", 1)), @"cle"}];
           v20 = [v17 objectForKeyedSubscript:@"leftPoly0"];
           v21 = [v17 objectForKeyedSubscript:@"leftPoly1"];
           v22 = [v17 objectForKeyedSubscript:@"leftPoly2"];
@@ -169,13 +169,13 @@
           v25 = [v17 objectForKeyedSubscript:@"leftPoly5"];
           v26 = [v17 objectForKeyedSubscript:@"leftPoly6"];
           v27 = [v17 objectForKeyedSubscript:@"leftPoly7"];
-          [v16 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@", objc_msgSend(v20, "objectAtIndexedSubscript:", 0), objc_msgSend(v20, "objectAtIndexedSubscript:", 1), objc_msgSend(v21, "objectAtIndexedSubscript:", 0), objc_msgSend(v21, "objectAtIndexedSubscript:", 1), objc_msgSend(v22, "objectAtIndexedSubscript:", 0), objc_msgSend(v22, "objectAtIndexedSubscript:", 1), objc_msgSend(v23, "objectAtIndexedSubscript:", 0), objc_msgSend(v23, "objectAtIndexedSubscript:", 1), objc_msgSend(v24, "objectAtIndexedSubscript:", 0), objc_msgSend(v24, "objectAtIndexedSubscript:", 1), objc_msgSend(v25, "objectAtIndexedSubscript:", 0), objc_msgSend(v25, "objectAtIndexedSubscript:", 1), objc_msgSend(v26, "objectAtIndexedSubscript:", 0), objc_msgSend(v26, "objectAtIndexedSubscript:", 1), objc_msgSend(v27, "objectAtIndexedSubscript:", 0), objc_msgSend(v27, "objectAtIndexedSubscript:", 1)), @"clp"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@", objc_msgSend(v20, "objectAtIndexedSubscript:", 0), objc_msgSend(v20, "objectAtIndexedSubscript:", 1), objc_msgSend(v21, "objectAtIndexedSubscript:", 0), objc_msgSend(v21, "objectAtIndexedSubscript:", 1), objc_msgSend(v22, "objectAtIndexedSubscript:", 0), objc_msgSend(v22, "objectAtIndexedSubscript:", 1), objc_msgSend(v23, "objectAtIndexedSubscript:", 0), objc_msgSend(v23, "objectAtIndexedSubscript:", 1), objc_msgSend(v24, "objectAtIndexedSubscript:", 0), objc_msgSend(v24, "objectAtIndexedSubscript:", 1), objc_msgSend(v25, "objectAtIndexedSubscript:", 0), objc_msgSend(v25, "objectAtIndexedSubscript:", 1), objc_msgSend(v26, "objectAtIndexedSubscript:", 0), objc_msgSend(v26, "objectAtIndexedSubscript:", 1), objc_msgSend(v27, "objectAtIndexedSubscript:", 0), objc_msgSend(v27, "objectAtIndexedSubscript:", 1)), @"clp"}];
           v28 = [v17 objectForKeyedSubscript:@"leftRect"];
-          [v16 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v28, "objectAtIndexedSubscript:", 0), objc_msgSend(v28, "objectAtIndexedSubscript:", 1), objc_msgSend(v28, "objectAtIndexedSubscript:", 2), objc_msgSend(v28, "objectAtIndexedSubscript:", 3)), @"clr"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v28, "objectAtIndexedSubscript:", 0), objc_msgSend(v28, "objectAtIndexedSubscript:", 1), objc_msgSend(v28, "objectAtIndexedSubscript:", 2), objc_msgSend(v28, "objectAtIndexedSubscript:", 3)), @"clr"}];
           v29 = [v17 objectForKeyedSubscript:@"leftDistMatrix"];
-          [v16 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v29, "objectAtIndexedSubscript:", 0), objc_msgSend(v29, "objectAtIndexedSubscript:", 1), objc_msgSend(v29, "objectAtIndexedSubscript:", 2), objc_msgSend(v29, "objectAtIndexedSubscript:", 3)), @"clm"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v29, "objectAtIndexedSubscript:", 0), objc_msgSend(v29, "objectAtIndexedSubscript:", 1), objc_msgSend(v29, "objectAtIndexedSubscript:", 2), objc_msgSend(v29, "objectAtIndexedSubscript:", 3)), @"clm"}];
           v30 = [v17 objectForKeyedSubscript:@"rightEye"];
-          [v16 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@", objc_msgSend(v30, "objectAtIndexedSubscript:", 0), objc_msgSend(v30, "objectAtIndexedSubscript:", 1)), @"cre"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@", objc_msgSend(v30, "objectAtIndexedSubscript:", 0), objc_msgSend(v30, "objectAtIndexedSubscript:", 1)), @"cre"}];
           v31 = [v17 objectForKeyedSubscript:@"rightPoly0"];
           v32 = [v17 objectForKeyedSubscript:@"rightPoly1"];
           v33 = [v17 objectForKeyedSubscript:@"rightPoly2"];
@@ -309,7 +309,7 @@ LABEL_40:
           [v126 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@ %@ %@ %@ %@ %@ %@", objc_msgSend(v71, "objectForKeyedSubscript:", @"alignmentTolerance", objc_msgSend(v71, "objectForKeyedSubscript:", @"capture", objc_msgSend(v71, "objectForKeyedSubscript:", @"connectThreshold", objc_msgSend(v71, "objectForKeyedSubscript:", @"downsampleOversizeX", objc_msgSend(v71, "objectForKeyedSubscript:", @"downsampleOversizeY", objc_msgSend(v71, "objectForKeyedSubscript:", @"downsampleType", objc_msgSend(v71, "objectForKeyedSubscript:", @"gradientChannel", objc_msgSend(v71, "objectForKeyedSubscript:", @"edgeFindingChannel", objc_msgSend(v71, "objectForKeyedSubscript:", @"minMagnitude", objc_msgSend(v71, "objectForKeyedSubscript:", @"regressionRadius", @"sp"}];
           v72 = [v71 objectForKeyedSubscript:@"transform"];
           [v126 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@ %@ %@", objc_msgSend(v72, "objectAtIndexedSubscript:", 0), objc_msgSend(v72, "objectAtIndexedSubscript:", 1), objc_msgSend(v72, "objectAtIndexedSubscript:", 2), objc_msgSend(v72, "objectAtIndexedSubscript:", 3), objc_msgSend(v72, "objectAtIndexedSubscript:", 4), objc_msgSend(v72, "objectAtIndexedSubscript:", 5)), @"st"}];
-          [v122 addObject:v126];
+          [array3 addObject:v126];
           v15 = v124 + 1;
         }
 
@@ -320,15 +320,15 @@ LABEL_40:
       while (v121);
     }
 
-    v73 = v118;
-    v74 = [(NSArray *)v118->inputCorrectionInfo objectAtIndex:0];
+    v73 = selfCopy;
+    v74 = [(NSArray *)selfCopy->inputCorrectionInfo objectAtIndex:0];
     [objc_msgSend(v74 objectForKeyedSubscript:{@"xf", "doubleValue"}];
-    v76 = v117;
-    [v117 addObject:metadataPropertyWithDouble(v75)];
+    v76 = array2;
+    [array2 addObject:metadataPropertyWithDouble(v75)];
     [objc_msgSend(v74 objectForKeyedSubscript:{@"yf", "doubleValue"}];
-    [v117 addObject:metadataPropertyWithDouble(v77)];
-    [v117 addObject:metadataPropertyWithDouble(1.0)];
-    [v117 addObject:metadataPropertyWithDouble(1.0)];
+    [array2 addObject:metadataPropertyWithDouble(v77)];
+    [array2 addObject:metadataPropertyWithDouble(1.0)];
+    [array2 addObject:metadataPropertyWithDouble(1.0)];
     v78 = 64.0;
   }
 
@@ -364,7 +364,7 @@ LABEL_40:
           [objc_msgSend(v83 objectForKeyedSubscript:{@"size", "doubleValue"}];
           v90 = v89;
           [objc_msgSend(v83 objectForKeyedSubscript:{@"size", "doubleValue"}];
-          [v123 addObject:{objc_msgSend(v84, "stringWithFormat:", @"x = %.5f, y = %.5f, width = %.5f, height = %.5f, alpha = 0.0244, density = 0.86, strength = 0.0757, redBias = 0.253, pupilSize = 0.50, pupilDarkenAmount = 0.75", *&v86, *&v88, v90, v91)}];
+          [array addObject:{objc_msgSend(v84, "stringWithFormat:", @"x = %.5f, y = %.5f, width = %.5f, height = %.5f, alpha = 0.0244, density = 0.86, strength = 0.0757, redBias = 0.253, pupilSize = 0.50, pupilDarkenAmount = 0.75", *&v86, *&v88, v90, v91)}];
         }
 
         v80 = [(NSArray *)v132 countByEnumeratingWithState:&v146 objects:v157 count:16];
@@ -373,12 +373,12 @@ LABEL_40:
       while (v80);
     }
 
-    v122 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v142 = 0u;
     v143 = 0u;
     v144 = 0u;
     v145 = 0u;
-    v128 = v118->inputCorrectionInfo;
+    v128 = selfCopy->inputCorrectionInfo;
     v133 = [(NSArray *)v128 countByEnumeratingWithState:&v142 objects:v156 count:16];
     if (v133)
     {
@@ -393,39 +393,39 @@ LABEL_40:
           }
 
           v93 = *(*(&v142 + 1) + 8 * k);
-          v94 = [MEMORY[0x1E695DF90] dictionary];
-          [v94 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"pointX", objc_msgSend(v93, "objectForKeyedSubscript:", @"pointY", objc_msgSend(v93, "objectForKeyedSubscript:", @"size", @"p"}];
-          [v94 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"pupilShadeLow", objc_msgSend(v93, "objectForKeyedSubscript:", @"pupilShadeMedium", objc_msgSend(v93, "objectForKeyedSubscript:", @"pupilShadeHigh", objc_msgSend(v93, "objectForKeyedSubscript:", @"pupilShadeAverage", @"ps"}];
-          [v94 setObject:objc_msgSend(v93 forKeyedSubscript:{"objectForKeyedSubscript:", @"interocularDistance", @"iod"}];
-          [v94 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"snappedX", objc_msgSend(v93, "objectForKeyedSubscript:", @"snappedY", @"s"}];
-          [v94 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"bitmaskX", objc_msgSend(v93, "objectForKeyedSubscript:", @"bitmaskY", objc_msgSend(v93, "objectForKeyedSubscript:", @"bitmaskThreshold", @"b"}];
-          [v94 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"cornealReflectionX", objc_msgSend(v93, "objectForKeyedSubscript:", @"cornealReflectionY", objc_msgSend(v93, "objectForKeyedSubscript:", @"cornealReflectionThreshold", @"cr"}];
-          [v94 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"existingPupilLow", objc_msgSend(v93, "objectForKeyedSubscript:", @"existingPupilMedium", objc_msgSend(v93, "objectForKeyedSubscript:", @"existingPupilHigh", objc_msgSend(v93, "objectForKeyedSubscript:", @"existingPupilAverage", @"ep"}];
-          [v94 setObject:objc_msgSend(v93 forKeyedSubscript:{"objectForKeyedSubscript:", @"averageSkinLuminance", @"asl"}];
-          [v94 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"searchRectangleMinimumY", objc_msgSend(v93, "objectForKeyedSubscript:", @"searchRectangleMaximumY", objc_msgSend(v93, "objectForKeyedSubscript:", @"searchRectangleMinimumX", objc_msgSend(v93, "objectForKeyedSubscript:", @"searchRectangleMaximumX", @"sr"}];
-          [v94 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"repairRectangleMinimumY", objc_msgSend(v93, "objectForKeyedSubscript:", @"repairRectangleMaximumY", objc_msgSend(v93, "objectForKeyedSubscript:", @"repairRectangleMinimumX", objc_msgSend(v93, "objectForKeyedSubscript:", @"repairRectangleMaximumX", @"rr"}];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"pointX", objc_msgSend(v93, "objectForKeyedSubscript:", @"pointY", objc_msgSend(v93, "objectForKeyedSubscript:", @"size", @"p"}];
+          [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"pupilShadeLow", objc_msgSend(v93, "objectForKeyedSubscript:", @"pupilShadeMedium", objc_msgSend(v93, "objectForKeyedSubscript:", @"pupilShadeHigh", objc_msgSend(v93, "objectForKeyedSubscript:", @"pupilShadeAverage", @"ps"}];
+          [dictionary2 setObject:objc_msgSend(v93 forKeyedSubscript:{"objectForKeyedSubscript:", @"interocularDistance", @"iod"}];
+          [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"snappedX", objc_msgSend(v93, "objectForKeyedSubscript:", @"snappedY", @"s"}];
+          [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"bitmaskX", objc_msgSend(v93, "objectForKeyedSubscript:", @"bitmaskY", objc_msgSend(v93, "objectForKeyedSubscript:", @"bitmaskThreshold", @"b"}];
+          [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"cornealReflectionX", objc_msgSend(v93, "objectForKeyedSubscript:", @"cornealReflectionY", objc_msgSend(v93, "objectForKeyedSubscript:", @"cornealReflectionThreshold", @"cr"}];
+          [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"existingPupilLow", objc_msgSend(v93, "objectForKeyedSubscript:", @"existingPupilMedium", objc_msgSend(v93, "objectForKeyedSubscript:", @"existingPupilHigh", objc_msgSend(v93, "objectForKeyedSubscript:", @"existingPupilAverage", @"ep"}];
+          [dictionary2 setObject:objc_msgSend(v93 forKeyedSubscript:{"objectForKeyedSubscript:", @"averageSkinLuminance", @"asl"}];
+          [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"searchRectangleMinimumY", objc_msgSend(v93, "objectForKeyedSubscript:", @"searchRectangleMaximumY", objc_msgSend(v93, "objectForKeyedSubscript:", @"searchRectangleMinimumX", objc_msgSend(v93, "objectForKeyedSubscript:", @"searchRectangleMaximumX", @"sr"}];
+          [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithFormat:", @"%@ %@ %@ %@", objc_msgSend(v93, "objectForKeyedSubscript:", @"repairRectangleMinimumY", objc_msgSend(v93, "objectForKeyedSubscript:", @"repairRectangleMaximumY", objc_msgSend(v93, "objectForKeyedSubscript:", @"repairRectangleMinimumX", objc_msgSend(v93, "objectForKeyedSubscript:", @"repairRectangleMaximumX", @"rr"}];
           v95 = [v93 objectForKeyedSubscript:@"forceCase"];
           [v95 floatValue];
           if (v96 != 0.0)
           {
-            [v94 setObject:v95 forKeyedSubscript:@"fc"];
+            [dictionary2 setObject:v95 forKeyedSubscript:@"fc"];
           }
 
           v97 = [v93 objectForKeyedSubscript:@"pupilShadeAlignment"];
           [v97 floatValue];
           if (v98 != 0.0)
           {
-            [v94 setObject:v97 forKeyedSubscript:@"psa"];
+            [dictionary2 setObject:v97 forKeyedSubscript:@"psa"];
           }
 
           v99 = [v93 objectForKeyedSubscript:@"finalEyeCase"];
           [v99 floatValue];
           if (v100 != 0.0)
           {
-            [v94 setObject:v99 forKeyedSubscript:@"fec"];
+            [dictionary2 setObject:v99 forKeyedSubscript:@"fec"];
           }
 
-          [v122 addObject:v94];
+          [array3 addObject:dictionary2];
         }
 
         v133 = [(NSArray *)v128 countByEnumeratingWithState:&v142 objects:v156 count:16];
@@ -434,17 +434,17 @@ LABEL_40:
       while (v133);
     }
 
-    v73 = v118;
-    v101 = [(NSArray *)v118->inputCorrectionInfo objectAtIndex:0];
+    v73 = selfCopy;
+    v101 = [(NSArray *)selfCopy->inputCorrectionInfo objectAtIndex:0];
     [objc_msgSend(v101 objectForKeyedSubscript:{@"fullImageWidth", "doubleValue"}];
-    v76 = v117;
-    [v117 addObject:metadataPropertyWithDouble(v102)];
+    v76 = array2;
+    [array2 addObject:metadataPropertyWithDouble(v102)];
     [objc_msgSend(v101 objectForKeyedSubscript:{@"fullImageHeight", "doubleValue"}];
-    [v117 addObject:metadataPropertyWithDouble(v103)];
+    [array2 addObject:metadataPropertyWithDouble(v103)];
     [objc_msgSend(v101 objectForKeyedSubscript:{@"imageSpecialValue", "doubleValue"}];
-    [v117 addObject:metadataPropertyWithDouble(v104)];
+    [array2 addObject:metadataPropertyWithDouble(v104)];
     [objc_msgSend(v101 objectForKeyedSubscript:{@"imageOrientation", "doubleValue"}];
-    [v117 addObject:metadataPropertyWithDouble(v105)];
+    [array2 addObject:metadataPropertyWithDouble(v105)];
     [objc_msgSend(v101 objectForKeyedSubscript:{@"imageSignalToNoiseRatio", "doubleValue"}];
   }
 
@@ -455,16 +455,16 @@ LABEL_40:
     [v76 addObject:{metadataPropertyWithString(@"http://ns.apple.com/adjustment-settings/1.0/", @"aas", @"RedEyeModel", inputCameraModel)}];
   }
 
-  [v76 addObject:{metadataPropertyWithArrayOfStructs(@"http://ns.apple.com/adjustment-settings/1.0/", @"aas", @"http://ns.apple.com/adjustment-settings/1.0/sType/redeye", @"re", @"RedEyeCorrections", v122)}];
+  [v76 addObject:{metadataPropertyWithArrayOfStructs(@"http://ns.apple.com/adjustment-settings/1.0/", @"aas", @"http://ns.apple.com/adjustment-settings/1.0/sType/redeye", @"re", @"RedEyeCorrections", array3)}];
   [v76 addObject:metadataPropertyWithBool()];
-  [v76 addObject:{metadataPropertyWithArray(@"http://ns.adobe.com/camera-raw-settings/1.0/", @"crs", @"RedEyeInfo", v123)}];
+  [v76 addObject:{metadataPropertyWithArray(@"http://ns.adobe.com/camera-raw-settings/1.0/", @"crs", @"RedEyeInfo", array)}];
   return v76;
 }
 
-- (id)_initFromProperties:(id)a3
+- (id)_initFromProperties:(id)properties
 {
   v260 = *MEMORY[0x1E69E9840];
-  ArrayOfStructs = metadataPropertyArrayGetArrayOfStructs(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"http://ns.apple.com/adjustment-settings/1.0/sType/red-eye");
+  ArrayOfStructs = metadataPropertyArrayGetArrayOfStructs(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"http://ns.apple.com/adjustment-settings/1.0/sType/red-eye");
   if (!ArrayOfStructs)
   {
     goto LABEL_12;
@@ -508,14 +508,14 @@ LABEL_12:
     v224 = 0.0;
     v225 = 0.0;
     v223 = 0.0;
-    if (!metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeW", &v227) || !metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeH", &v226) || !metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeISV", &v225) || !metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeOrt", &v224) || (metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeSNR", &v223) & 1) == 0)
+    if (!metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeW", &v227) || !metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeH", &v226) || !metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeISV", &v225) || !metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeOrt", &v224) || (metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"RedEyeSNR", &v223) & 1) == 0)
     {
       goto LABEL_41;
     }
 
-    v193 = a3;
-    v194 = self;
-    v14 = metadataPropertyArrayGetArrayOfStructs(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"http://ns.apple.com/adjustment-settings/1.0/sType/redeye");
+    propertiesCopy = properties;
+    selfCopy = self;
+    v14 = metadataPropertyArrayGetArrayOfStructs(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"http://ns.apple.com/adjustment-settings/1.0/sType/redeye");
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v14, "count")}];
     v219 = 0u;
     v220 = 0u;
@@ -537,7 +537,7 @@ LABEL_12:
           }
 
           v17 = *(*(&v219 + 1) + 8 * j);
-          if ([v17 objectForKeyedSubscript:{@"hb", v193, v194}])
+          if ([v17 objectForKeyedSubscript:{@"hb", propertiesCopy, selfCopy}])
           {
             v217 = j;
             v218 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:50];
@@ -792,19 +792,19 @@ LABEL_12:
             v233[22] = @"rightDistMatrix";
             v234[22] = v89;
             [v218 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKeyedSubscript:{"dictionaryWithObjects:forKeys:count:", v234, v233, 23), @"context"}];
-            v90 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             v91 = v76;
             v92 = [objc_msgSend(v76 objectForKeyedSubscript:{@"hin", "componentsSeparatedByString:", @" "}];
             v93 = MEMORY[0x1E696AD98];
             [objc_msgSend(v92 objectAtIndexedSubscript:{0), "floatValue"}];
-            [v90 setObject:objc_msgSend(v93 forKeyedSubscript:{"numberWithFloat:"), @"counterClockwise"}];
+            [dictionary setObject:objc_msgSend(v93 forKeyedSubscript:{"numberWithFloat:"), @"counterClockwise"}];
             v94 = MEMORY[0x1E696AD98];
             [objc_msgSend(v92 objectAtIndexedSubscript:{1), "floatValue"}];
-            [v90 setObject:objc_msgSend(v94 forKeyedSubscript:{"numberWithFloat:"), @"maxPoints"}];
+            [dictionary setObject:objc_msgSend(v94 forKeyedSubscript:{"numberWithFloat:"), @"maxPoints"}];
             v95 = MEMORY[0x1E696AD98];
             [objc_msgSend(v92 objectAtIndexedSubscript:{2), "floatValue"}];
-            [v90 setObject:objc_msgSend(v95 forKeyedSubscript:{"numberWithFloat:"), @"nPoints"}];
-            v96 = [MEMORY[0x1E695DF70] array];
+            [dictionary setObject:objc_msgSend(v95 forKeyedSubscript:{"numberWithFloat:"), @"nPoints"}];
+            array = [MEMORY[0x1E695DF70] array];
             v97 = [objc_msgSend(v91 objectForKeyedSubscript:{@"hb", "componentsSeparatedByString:", @" "}];
             if ([v97 count])
             {
@@ -819,15 +819,15 @@ LABEL_12:
                 v101 = v100;
                 v15 = v77;
                 v232[1] = [v101 numberWithFloat:?];
-                [v96 addObject:{objc_msgSend(*(v77 + 3784), "arrayWithObjects:count:", v232, 2)}];
+                [array addObject:{objc_msgSend(*(v77 + 3784), "arrayWithObjects:count:", v232, 2)}];
                 v98 += 2;
               }
 
               while ([v97 count] > v98);
             }
 
-            [v90 setObject:v96 forKeyedSubscript:@"hullBody"];
-            [v218 setObject:v90 forKeyedSubscript:@"convexHull"];
+            [dictionary setObject:array forKeyedSubscript:@"hullBody"];
+            [v218 setObject:dictionary forKeyedSubscript:@"convexHull"];
             v102 = v218;
             v103 = [objc_msgSend(v91 objectForKeyedSubscript:{@"g", "componentsSeparatedByString:", @" "}];
             v104 = MEMORY[0x1E696AD98];
@@ -884,64 +884,64 @@ LABEL_12:
             [objc_msgSend(v115 objectAtIndexedSubscript:{6), "floatValue"}];
             [v218 setObject:objc_msgSend(v122 forKeyedSubscript:{"numberWithFloat:"), @"variance"}];
             [v218 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v115, "objectAtIndexedSubscript:", 7), "intValue")), @"nNonZero"}];
-            v123 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary2 = [MEMORY[0x1E695DF90] dictionary];
             v124 = [objc_msgSend(v91 objectForKeyedSubscript:{@"sg", "componentsSeparatedByString:", @" "}];
             v125 = MEMORY[0x1E696AD98];
             [objc_msgSend(v124 objectAtIndexedSubscript:{0), "floatValue"}];
-            [v123 setObject:objc_msgSend(v125 forKeyedSubscript:{"numberWithFloat:"), @"IOD"}];
-            [v123 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v124, "objectAtIndexedSubscript:", 1), "intValue")), @"faceIndex"}];
-            [v123 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v124, "objectAtIndexedSubscript:", 2), "intValue")), @"side"}];
+            [dictionary2 setObject:objc_msgSend(v125 forKeyedSubscript:{"numberWithFloat:"), @"IOD"}];
+            [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v124, "objectAtIndexedSubscript:", 1), "intValue")), @"faceIndex"}];
+            [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v124, "objectAtIndexedSubscript:", 2), "intValue")), @"side"}];
             v126 = MEMORY[0x1E696AD98];
             [objc_msgSend(v124 objectAtIndexedSubscript:{3), "floatValue"}];
-            [v123 setObject:objc_msgSend(v126 forKeyedSubscript:{"numberWithFloat:"), @"scale"}];
-            [v123 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v124, "objectAtIndexedSubscript:", 4), "intValue")), @"height"}];
+            [dictionary2 setObject:objc_msgSend(v126 forKeyedSubscript:{"numberWithFloat:"), @"scale"}];
+            [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v124, "objectAtIndexedSubscript:", 4), "intValue")), @"height"}];
             v127 = [objc_msgSend(v91 objectForKeyedSubscript:{@"sp", "componentsSeparatedByString:", @" "}];
             v128 = MEMORY[0x1E696AD98];
             [objc_msgSend(v127 objectAtIndexedSubscript:{0), "floatValue"}];
-            [v123 setObject:objc_msgSend(v128 forKeyedSubscript:{"numberWithFloat:"), @"alignmentTolerance"}];
+            [dictionary2 setObject:objc_msgSend(v128 forKeyedSubscript:{"numberWithFloat:"), @"alignmentTolerance"}];
             v129 = MEMORY[0x1E696AD98];
             [objc_msgSend(v127 objectAtIndexedSubscript:{1), "floatValue"}];
-            [v123 setObject:objc_msgSend(v129 forKeyedSubscript:{"numberWithFloat:"), @"capture"}];
+            [dictionary2 setObject:objc_msgSend(v129 forKeyedSubscript:{"numberWithFloat:"), @"capture"}];
             v130 = MEMORY[0x1E696AD98];
             [objc_msgSend(v127 objectAtIndexedSubscript:{2), "floatValue"}];
-            [v123 setObject:objc_msgSend(v130 forKeyedSubscript:{"numberWithFloat:"), @"connectThreshold"}];
+            [dictionary2 setObject:objc_msgSend(v130 forKeyedSubscript:{"numberWithFloat:"), @"connectThreshold"}];
             v131 = MEMORY[0x1E696AD98];
             [objc_msgSend(v127 objectAtIndexedSubscript:{3), "floatValue"}];
-            [v123 setObject:objc_msgSend(v131 forKeyedSubscript:{"numberWithFloat:"), @"downsampleOversizeX"}];
+            [dictionary2 setObject:objc_msgSend(v131 forKeyedSubscript:{"numberWithFloat:"), @"downsampleOversizeX"}];
             v132 = MEMORY[0x1E696AD98];
             [objc_msgSend(v127 objectAtIndexedSubscript:{4), "floatValue"}];
-            [v123 setObject:objc_msgSend(v132 forKeyedSubscript:{"numberWithFloat:"), @"downsampleOversizeY"}];
-            [v123 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v127, "objectAtIndexedSubscript:", 5), "intValue")), @"downsampleType"}];
-            [v123 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v127, "objectAtIndexedSubscript:", 6), "intValue")), @"gradientChannel"}];
-            [v123 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v127, "objectAtIndexedSubscript:", 7), "intValue")), @"edgeFindingChannel"}];
+            [dictionary2 setObject:objc_msgSend(v132 forKeyedSubscript:{"numberWithFloat:"), @"downsampleOversizeY"}];
+            [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v127, "objectAtIndexedSubscript:", 5), "intValue")), @"downsampleType"}];
+            [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v127, "objectAtIndexedSubscript:", 6), "intValue")), @"gradientChannel"}];
+            [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(v127, "objectAtIndexedSubscript:", 7), "intValue")), @"edgeFindingChannel"}];
             v133 = MEMORY[0x1E696AD98];
             [objc_msgSend(v127 objectAtIndexedSubscript:{8), "floatValue"}];
-            [v123 setObject:objc_msgSend(v133 forKeyedSubscript:{"numberWithFloat:"), @"minMagnitude"}];
+            [dictionary2 setObject:objc_msgSend(v133 forKeyedSubscript:{"numberWithFloat:"), @"minMagnitude"}];
             v134 = MEMORY[0x1E696AD98];
             [objc_msgSend(v127 objectAtIndexedSubscript:{9), "floatValue"}];
-            [v123 setObject:objc_msgSend(v134 forKeyedSubscript:{"numberWithFloat:"), @"regressionRadius"}];
-            v135 = [MEMORY[0x1E695DF70] array];
+            [dictionary2 setObject:objc_msgSend(v134 forKeyedSubscript:{"numberWithFloat:"), @"regressionRadius"}];
+            array2 = [MEMORY[0x1E695DF70] array];
             v136 = [objc_msgSend(v91 objectForKeyedSubscript:{@"st", "componentsSeparatedByString:", @" "}];
             v137 = MEMORY[0x1E696AD98];
             [objc_msgSend(v136 objectAtIndexedSubscript:{0), "floatValue"}];
-            [v135 addObject:{objc_msgSend(v137, "numberWithFloat:")}];
+            [array2 addObject:{objc_msgSend(v137, "numberWithFloat:")}];
             v138 = MEMORY[0x1E696AD98];
             [objc_msgSend(v136 objectAtIndexedSubscript:{1), "floatValue"}];
-            [v135 addObject:{objc_msgSend(v138, "numberWithFloat:")}];
+            [array2 addObject:{objc_msgSend(v138, "numberWithFloat:")}];
             v139 = MEMORY[0x1E696AD98];
             [objc_msgSend(v136 objectAtIndexedSubscript:{2), "floatValue"}];
-            [v135 addObject:{objc_msgSend(v139, "numberWithFloat:")}];
+            [array2 addObject:{objc_msgSend(v139, "numberWithFloat:")}];
             v140 = MEMORY[0x1E696AD98];
             [objc_msgSend(v136 objectAtIndexedSubscript:{3), "floatValue"}];
-            [v135 addObject:{objc_msgSend(v140, "numberWithFloat:")}];
+            [array2 addObject:{objc_msgSend(v140, "numberWithFloat:")}];
             v141 = MEMORY[0x1E696AD98];
             [objc_msgSend(v136 objectAtIndexedSubscript:{4), "floatValue"}];
-            [v135 addObject:{objc_msgSend(v141, "numberWithFloat:")}];
+            [array2 addObject:{objc_msgSend(v141, "numberWithFloat:")}];
             v142 = MEMORY[0x1E696AD98];
             [objc_msgSend(v136 objectAtIndexedSubscript:{5), "floatValue"}];
-            [v135 addObject:{objc_msgSend(v142, "numberWithFloat:")}];
-            [v123 setObject:v135 forKeyedSubscript:@"transform"];
-            [v218 setObject:v123 forKeyedSubscript:@"settings"];
+            [array2 addObject:{objc_msgSend(v142, "numberWithFloat:")}];
+            [dictionary2 setObject:array2 forKeyedSubscript:@"transform"];
+            [v218 setObject:dictionary2 forKeyedSubscript:@"settings"];
             j = v217;
           }
 
@@ -1117,7 +1117,7 @@ LABEL_12:
       }
     }
 
-    self = v194;
+    self = selfCopy;
   }
 
   String = metadataPropertyArrayGetString();

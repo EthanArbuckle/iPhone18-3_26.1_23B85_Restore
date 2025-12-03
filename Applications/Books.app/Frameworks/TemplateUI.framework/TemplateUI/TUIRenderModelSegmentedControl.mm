@@ -1,25 +1,25 @@
 @interface TUIRenderModelSegmentedControl
-- (BOOL)isEqualToRenderModel:(id)a3;
-- (TUIRenderModelSegmentedControl)initWithReuseIdentifier:(id)a3 identifier:(id)a4 elementStates:(id)a5 actionHandler:(id)a6 viewState:(id)a7 enabled:(BOOL)a8 name:(id)a9 selectIndex:(int64_t)a10 segments:(id)a11 tintColor:(id)a12;
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4;
+- (BOOL)isEqualToRenderModel:(id)model;
+- (TUIRenderModelSegmentedControl)initWithReuseIdentifier:(id)identifier identifier:(id)a4 elementStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name selectIndex:(int64_t)self0 segments:(id)self1 tintColor:(id)self2;
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc;
 @end
 
 @implementation TUIRenderModelSegmentedControl
 
-- (TUIRenderModelSegmentedControl)initWithReuseIdentifier:(id)a3 identifier:(id)a4 elementStates:(id)a5 actionHandler:(id)a6 viewState:(id)a7 enabled:(BOOL)a8 name:(id)a9 selectIndex:(int64_t)a10 segments:(id)a11 tintColor:(id)a12
+- (TUIRenderModelSegmentedControl)initWithReuseIdentifier:(id)identifier identifier:(id)a4 elementStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name selectIndex:(int64_t)self0 segments:(id)self1 tintColor:(id)self2
 {
-  v19 = a11;
-  v26 = a12;
+  segmentsCopy = segments;
+  colorCopy = color;
   v27.receiver = self;
   v27.super_class = TUIRenderModelSegmentedControl;
-  v25 = a8;
-  v20 = [(TUIRenderModelInteractive *)&v27 initWithReuseIdentifier:a3 identifier:a4 style:0 elementStates:a5 imageModelIDToResource:0 actionHandler:a6 viewState:1.0 enabled:UIEdgeInsetsZero.top pressScale:UIEdgeInsetsZero.left touchInsets:UIEdgeInsetsZero.bottom pointer:UIEdgeInsetsZero.right focusStyle:a7 menu:v25 name:0, 0, 0, a9];
-  v21 = v20;
-  if (v20)
+  enabledCopy = enabled;
+  name = [(TUIRenderModelInteractive *)&v27 initWithReuseIdentifier:identifier identifier:a4 style:0 elementStates:states imageModelIDToResource:0 actionHandler:handler viewState:1.0 enabled:UIEdgeInsetsZero.top pressScale:UIEdgeInsetsZero.left touchInsets:UIEdgeInsetsZero.bottom pointer:UIEdgeInsetsZero.right focusStyle:state menu:enabledCopy name:0, 0, 0, name];
+  v21 = name;
+  if (name)
   {
-    v20->_selectIndex = a10;
-    objc_storeStrong(&v20->_tintColor, a12);
-    v22 = [v19 copy];
+    name->_selectIndex = index;
+    objc_storeStrong(&name->_tintColor, color);
+    v22 = [segmentsCopy copy];
     segments = v21->_segments;
     v21->_segments = v22;
   }
@@ -27,11 +27,11 @@
   return v21;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   v18.receiver = self;
   v18.super_class = TUIRenderModelSegmentedControl;
@@ -41,17 +41,17 @@
   }
 
   tintColor = self->_tintColor;
-  v8 = [v6 tintColor];
-  v9 = v8;
-  if (tintColor == v8)
+  tintColor = [v6 tintColor];
+  v9 = tintColor;
+  if (tintColor == tintColor)
   {
   }
 
   else
   {
     v10 = self->_tintColor;
-    v11 = [v6 tintColor];
-    LODWORD(v10) = [(UIColor *)v10 isEqual:v11];
+    tintColor2 = [v6 tintColor];
+    LODWORD(v10) = [(UIColor *)v10 isEqual:tintColor2];
 
     if (!v10)
     {
@@ -62,8 +62,8 @@ LABEL_4:
   }
 
   segments = self->_segments;
-  v14 = [v6 segments];
-  if (segments == v14)
+  segments = [v6 segments];
+  if (segments == segments)
   {
     v12 = 1;
   }
@@ -71,26 +71,26 @@ LABEL_4:
   else
   {
     v15 = self->_segments;
-    v16 = [v6 segments];
-    v12 = [(NSArray *)v15 isEqualToArray:v16];
+    segments2 = [v6 segments];
+    v12 = [(NSArray *)v15 isEqualToArray:segments2];
   }
 
 LABEL_10:
   return v12;
 }
 
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc
 {
   v6 = objc_alloc(objc_opt_class());
-  v7 = [(TUIRenderModelInteractive *)self reuseIdentifier];
-  v8 = [(TUIRenderModelInteractive *)self identifier];
-  v9 = [(TUIRenderModelInteractive *)self stateToModel];
-  v10 = sub_15CE70(v9, a3, &stru_262DA0);
-  v11 = [(TUIRenderModelInteractive *)self actionHandler];
-  v12 = [(TUIRenderModelInteractive *)self viewState];
-  v13 = [(TUIRenderModelInteractive *)self enabled];
-  v14 = [(TUIRenderModelInteractive *)self name];
-  v15 = [v6 initWithReuseIdentifier:v7 identifier:v8 elementStates:v10 actionHandler:v11 viewState:v12 enabled:v13 name:v14 selectIndex:self->_selectIndex segments:self->_segments tintColor:self->_tintColor];
+  reuseIdentifier = [(TUIRenderModelInteractive *)self reuseIdentifier];
+  identifier = [(TUIRenderModelInteractive *)self identifier];
+  stateToModel = [(TUIRenderModelInteractive *)self stateToModel];
+  v10 = sub_15CE70(stateToModel, flags, &stru_262DA0);
+  actionHandler = [(TUIRenderModelInteractive *)self actionHandler];
+  viewState = [(TUIRenderModelInteractive *)self viewState];
+  enabled = [(TUIRenderModelInteractive *)self enabled];
+  name = [(TUIRenderModelInteractive *)self name];
+  v15 = [v6 initWithReuseIdentifier:reuseIdentifier identifier:identifier elementStates:v10 actionHandler:actionHandler viewState:viewState enabled:enabled name:name selectIndex:self->_selectIndex segments:self->_segments tintColor:self->_tintColor];
 
   TUIRenderModelCopyProperties(v15, self);
   return v15;

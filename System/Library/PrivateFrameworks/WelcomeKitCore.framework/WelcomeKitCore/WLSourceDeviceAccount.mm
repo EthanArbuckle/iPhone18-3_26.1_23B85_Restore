@@ -1,27 +1,27 @@
 @interface WLSourceDeviceAccount
-+ (BOOL)accountInfoArrayContainsNonSyncableAccount:(id)a3;
-+ (BOOL)accountInfoRepresentsSyncableAccount:(id)a3;
-+ (id)accountWithInfo:(id)a3;
-- (WLSourceDeviceAccount)initWithInfo:(id)a3;
++ (BOOL)accountInfoArrayContainsNonSyncableAccount:(id)account;
++ (BOOL)accountInfoRepresentsSyncableAccount:(id)account;
++ (id)accountWithInfo:(id)info;
+- (WLSourceDeviceAccount)initWithInfo:(id)info;
 @end
 
 @implementation WLSourceDeviceAccount
 
-+ (id)accountWithInfo:(id)a3
++ (id)accountWithInfo:(id)info
 {
-  v3 = a3;
-  v4 = [[WLSourceDeviceAccount alloc] initWithInfo:v3];
+  infoCopy = info;
+  v4 = [[WLSourceDeviceAccount alloc] initWithInfo:infoCopy];
 
   return v4;
 }
 
-- (WLSourceDeviceAccount)initWithInfo:(id)a3
+- (WLSourceDeviceAccount)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(WLSourceDeviceAccount *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"itemID"];
+    v6 = [infoCopy objectForKeyedSubscript:@"itemID"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -29,15 +29,15 @@
   return v5;
 }
 
-+ (BOOL)accountInfoArrayContainsNonSyncableAccount:(id)a3
++ (BOOL)accountInfoArrayContainsNonSyncableAccount:(id)account
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  accountCopy = account;
+  v4 = [accountCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -48,7 +48,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accountCopy);
         }
 
         v8 = [*(*(&v13 + 1) + 8 * i) objectForKeyedSubscript:{@"itemID", v13}];
@@ -61,7 +61,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [accountCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -78,9 +78,9 @@ LABEL_11:
   return v10;
 }
 
-+ (BOOL)accountInfoRepresentsSyncableAccount:(id)a3
++ (BOOL)accountInfoRepresentsSyncableAccount:(id)account
 {
-  v3 = [a3 objectForKeyedSubscript:@"itemID"];
+  v3 = [account objectForKeyedSubscript:@"itemID"];
   v4 = [v3 isEqualToString:@"__all"];
 
   return v4;

@@ -1,7 +1,7 @@
 @interface CRLSEImportableItem
 - (BOOL)isHTTP;
 - (BOOL)isPDF;
-- (void)setUrl:(id)a3;
+- (void)setUrl:(id)url;
 @end
 
 @implementation CRLSEImportableItem
@@ -27,11 +27,11 @@
     return 0;
   }
 
-  v4 = [(NSURL *)url scheme];
-  if ([v4 caseInsensitiveCompare:@"http"])
+  scheme = [(NSURL *)url scheme];
+  if ([scheme caseInsensitiveCompare:@"http"])
   {
-    v5 = [(NSURL *)self->_url scheme];
-    v6 = [v5 caseInsensitiveCompare:@"https"] == 0;
+    scheme2 = [(NSURL *)self->_url scheme];
+    v6 = [scheme2 caseInsensitiveCompare:@"https"] == 0;
   }
 
   else
@@ -42,12 +42,12 @@
   return v6;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v5 = a3;
-  if (self->_url != v5)
+  urlCopy = url;
+  if (self->_url != urlCopy)
   {
-    objc_storeStrong(&self->_url, a3);
+    objc_storeStrong(&self->_url, url);
     v11 = NSURLContentTypeKey;
     v6 = [NSArray arrayWithObjects:&v11 count:1];
     v7 = [(NSURL *)self->_url resourceValuesForKeys:v6 error:0];

@@ -1,37 +1,37 @@
 @interface SiriUISuggestionsView
 - (CGPoint)contentOffset;
-- (SiriUISuggestionsView)initWithFrame:(CGRect)a3;
+- (SiriUISuggestionsView)initWithFrame:(CGRect)frame;
 - (SiriUISuggestionsViewDelegate)delegate;
 - (double)_headerToLargeSubheaderOffset;
 - (double)_headerToSubheaderOffset;
 - (double)_suggestionFontSize;
 - (double)_suggestionSpacing;
-- (id)_createSpringAnimation:(double)a3;
+- (id)_createSpringAnimation:(double)animation;
 - (int)_heightType;
 - (unint64_t)_numberOfSuggestionsToDisplay;
 - (void)_animateHeaderIn;
 - (void)_animateHeaderOut;
-- (void)_animateInSuggestionAtIndex:(unint64_t)a3;
-- (void)_animateOutSuggestionAtIndex:(unint64_t)a3;
+- (void)_animateInSuggestionAtIndex:(unint64_t)index;
+- (void)_animateOutSuggestionAtIndex:(unint64_t)index;
 - (void)_loadLargeSubheaderViewIfNeeded;
 - (void)_loadSubheaderViewIfNeeded;
 - (void)_loadSuggestionsViewsIfNeeded;
-- (void)_setHeaderText:(id)a3;
-- (void)_setLargeSubheaderText:(id)a3;
-- (void)_setSubheaderText:(id)a3;
-- (void)_setSuggestionTexts:(id)a3;
+- (void)_setHeaderText:(id)text;
+- (void)_setLargeSubheaderText:(id)text;
+- (void)_setSubheaderText:(id)text;
+- (void)_setSuggestionTexts:(id)texts;
 - (void)_updateSuggestions;
-- (void)acousticIDSpinnerDidHide:(id)a3;
-- (void)animateOutWithCompletion:(id)a3;
+- (void)acousticIDSpinnerDidHide:(id)hide;
+- (void)animateOutWithCompletion:(id)completion;
 - (void)clearCurrentSuggestions;
 - (void)layoutSubviews;
-- (void)setGuideHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setGuideView:(id)a3;
-- (void)setHeaderText:(id)a3;
-- (void)setLargeSubheaderText:(id)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setSubheaderText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setGuideHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setGuideView:(id)view;
+- (void)setHeaderText:(id)text;
+- (void)setLargeSubheaderText:(id)text;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setSubheaderText:(id)text;
+- (void)setTextColor:(id)color;
 - (void)showAcousticIDSpinner;
 - (void)startSuggesting;
 - (void)stopSuggesting;
@@ -39,44 +39,44 @@
 
 @implementation SiriUISuggestionsView
 
-- (SiriUISuggestionsView)initWithFrame:(CGRect)a3
+- (SiriUISuggestionsView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = SiriUISuggestionsView;
-  v3 = [(SiriUISuggestionsView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUISuggestionsView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SiriUISuggestionsView *)v3 setUserInteractionEnabled:0];
     v4->_firstSuggestionPresentation = 1;
-    v5 = [MEMORY[0x277D74300] siriui_dynamicTitle0Font];
+    siriui_dynamicTitle0Font = [MEMORY[0x277D74300] siriui_dynamicTitle0Font];
     v6 = objc_alloc(MEMORY[0x277D75D18]);
     v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     contentView = v4->_contentView;
     v4->_contentView = v7;
 
     [(SiriUISuggestionsView *)v4 addSubview:v4->_contentView];
-    v9 = [MEMORY[0x277D60108] label];
+    label = [MEMORY[0x277D60108] label];
     headerLabel = v4->_headerLabel;
-    v4->_headerLabel = v9;
+    v4->_headerLabel = label;
 
     v11 = v4->_headerLabel;
-    v12 = [MEMORY[0x277D75348] siriui_lightTextColor];
-    [(UILabel *)v11 setTextColor:v12];
+    siriui_lightTextColor = [MEMORY[0x277D75348] siriui_lightTextColor];
+    [(UILabel *)v11 setTextColor:siriui_lightTextColor];
 
-    [(UILabel *)v4->_headerLabel setFont:v5];
+    [(UILabel *)v4->_headerLabel setFont:siriui_dynamicTitle0Font];
     [(UILabel *)v4->_headerLabel setNumberOfLines:0];
     [(UIView *)v4->_contentView addSubview:v4->_headerLabel];
     [(UILabel *)v4->_headerLabel setAlpha:0.0];
-    v13 = [MEMORY[0x277D60108] label];
+    label2 = [MEMORY[0x277D60108] label];
     oldHeaderLabel = v4->_oldHeaderLabel;
-    v4->_oldHeaderLabel = v13;
+    v4->_oldHeaderLabel = label2;
 
     v15 = v4->_oldHeaderLabel;
-    v16 = [MEMORY[0x277D75348] siriui_lightTextColor];
-    [(UILabel *)v15 setTextColor:v16];
+    siriui_lightTextColor2 = [MEMORY[0x277D75348] siriui_lightTextColor];
+    [(UILabel *)v15 setTextColor:siriui_lightTextColor2];
 
-    [(UILabel *)v4->_oldHeaderLabel setFont:v5];
+    [(UILabel *)v4->_oldHeaderLabel setFont:siriui_dynamicTitle0Font];
     [(UILabel *)v4->_oldHeaderLabel setNumberOfLines:0];
     [(UIView *)v4->_contentView addSubview:v4->_oldHeaderLabel];
     [(UILabel *)v4->_oldHeaderLabel setAlpha:0.0];
@@ -97,13 +97,13 @@
 {
   if (!self->_subheaderLabel)
   {
-    v3 = [MEMORY[0x277D60108] label];
+    label = [MEMORY[0x277D60108] label];
     subheaderLabel = self->_subheaderLabel;
-    self->_subheaderLabel = v3;
+    self->_subheaderLabel = label;
 
     v5 = self->_subheaderLabel;
-    v6 = [MEMORY[0x277D75348] siriui_lightTextColor];
-    [(UILabel *)v5 setTextColor:v6];
+    siriui_lightTextColor = [MEMORY[0x277D75348] siriui_lightTextColor];
+    [(UILabel *)v5 setTextColor:siriui_lightTextColor];
 
     v7 = self->_subheaderLabel;
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
@@ -121,13 +121,13 @@
 {
   if (!self->_largeSubheaderLabel)
   {
-    v3 = [MEMORY[0x277D60108] label];
+    label = [MEMORY[0x277D60108] label];
     largeSubheaderLabel = self->_largeSubheaderLabel;
-    self->_largeSubheaderLabel = v3;
+    self->_largeSubheaderLabel = label;
 
     v5 = self->_largeSubheaderLabel;
-    v6 = [MEMORY[0x277D75348] siriui_lightTextColor];
-    [(UILabel *)v5 setTextColor:v6];
+    siriui_lightTextColor = [MEMORY[0x277D75348] siriui_lightTextColor];
+    [(UILabel *)v5 setTextColor:siriui_lightTextColor];
 
     v7 = self->_largeSubheaderLabel;
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
@@ -248,8 +248,8 @@ id __54__SiriUISuggestionsView__loadSuggestionsViewsIfNeeded__block_invoke(uint6
   v133.size.width = v8;
   v133.size.height = v10;
   v24 = CGRectGetWidth(v133) - v18;
-  v25 = [(SiriUISuggestionsHeaderText *)self->_headerText attributedStringForMainScreenTraitCollection];
-  [(SiriUISuggestionsView *)self _setHeaderText:v25];
+  attributedStringForMainScreenTraitCollection = [(SiriUISuggestionsHeaderText *)self->_headerText attributedStringForMainScreenTraitCollection];
+  [(SiriUISuggestionsView *)self _setHeaderText:attributedStringForMainScreenTraitCollection];
 
   v116 = v21;
   rect = v8;
@@ -288,15 +288,15 @@ LABEL_12:
     v137.size.height = v10;
     v37 = v117;
     v40 = (CGRectGetWidth(v137) + -506.0) * 0.5;
-    v34 = [(UILabel *)self->_headerLabel font];
-    [v34 ascender];
+    font = [(UILabel *)self->_headerLabel font];
+    [font ascender];
     v36 = v114;
   }
 
   else
   {
-    v34 = [(UILabel *)self->_headerLabel font];
-    [v34 ascender];
+    font = [(UILabel *)self->_headerLabel font];
+    [font ascender];
     v36 = v35;
     v37 = v117;
     [(UILabel *)self->_headerLabel sizeThatFits:v18, v117];
@@ -309,8 +309,8 @@ LABEL_12:
   [(UILabel *)self->_headerLabel setFrame:v40, v42, v41, v39];
   if (self->_subheaderLabel)
   {
-    v43 = [(SiriUISuggestionsHeaderText *)self->_subheaderText attributedStringForMainScreenTraitCollection];
-    [(SiriUISuggestionsView *)self _setSubheaderText:v43];
+    attributedStringForMainScreenTraitCollection2 = [(SiriUISuggestionsHeaderText *)self->_subheaderText attributedStringForMainScreenTraitCollection];
+    [(SiriUISuggestionsView *)self _setSubheaderText:attributedStringForMainScreenTraitCollection2];
 
     [(UILabel *)self->_subheaderLabel sizeThatFits:v18, v37];
     v45 = v44;
@@ -327,8 +327,8 @@ LABEL_12:
 
   if (self->_largeSubheaderLabel)
   {
-    v49 = [(SiriUISuggestionsHeaderText *)self->_subheaderText attributedStringForMainScreenTraitCollection];
-    [(SiriUISuggestionsView *)self _setSubheaderText:v49];
+    attributedStringForMainScreenTraitCollection3 = [(SiriUISuggestionsHeaderText *)self->_subheaderText attributedStringForMainScreenTraitCollection];
+    [(SiriUISuggestionsView *)self _setSubheaderText:attributedStringForMainScreenTraitCollection3];
 
     [(UILabel *)self->_largeSubheaderLabel sizeThatFits:v18, v37];
     v51 = v50;
@@ -341,21 +341,21 @@ LABEL_12:
     [(UILabel *)self->_largeSubheaderLabel setFrame:v29, v52 + v53 + 0.0, v18, v51];
   }
 
-  v54 = [(SiriUIAcousticIDSpinner *)self->_acousticIDSpinner superview];
+  superview = [(SiriUIAcousticIDSpinner *)self->_acousticIDSpinner superview];
 
-  if (v54 == self)
+  if (superview == self)
   {
     [(SiriUIAcousticIDSpinner *)self->_acousticIDSpinner sizeThatFits:v18, v37];
-    v55 = [MEMORY[0x277D759A0] mainScreen];
-    [v55 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
 
     [(UIView *)self->_contentView bounds];
     UIRectCenteredXInRectScale();
     [(SiriUIAcousticIDSpinner *)self->_acousticIDSpinner setFrame:0];
   }
 
-  v56 = [MEMORY[0x277D759A0] mainScreen];
-  [v56 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v57 = floor((v37 + v116) * 0.25);
   if (v58 >= 2.0)
   {
@@ -433,26 +433,26 @@ LABEL_12:
       if (v69 + v84 > v119)
       {
         [v71 setHidden:{1, 0}];
-        v87 = [v71 text];
+        text = [v71 text];
 
-        if (!v87)
+        if (!text)
         {
           goto LABEL_41;
         }
 
         pendedSuggestions = self->_pendedSuggestions;
-        v89 = [v71 text];
-        [(NSMutableOrderedSet *)pendedSuggestions addObject:v89];
+        text2 = [v71 text];
+        [(NSMutableOrderedSet *)pendedSuggestions addObject:text2];
         goto LABEL_39;
       }
 
-      v90 = [v71 text];
+      text3 = [v71 text];
 
-      if (v90)
+      if (text3)
       {
         v91 = self->_pendedSuggestions;
-        v89 = [v71 text];
-        [(NSMutableOrderedSet *)v91 removeObject:v89];
+        text2 = [v71 text];
+        [(NSMutableOrderedSet *)v91 removeObject:text2];
         v69 = v86;
 LABEL_39:
 
@@ -470,11 +470,11 @@ LABEL_41:
   while (v67);
 LABEL_45:
 
-  v92 = [MEMORY[0x277D759A0] mainScreen];
-  [v92 scale];
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen3 scale];
   v94 = v93;
-  v95 = [MEMORY[0x277D759A0] mainScreen];
-  [v95 scale];
+  mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen4 scale];
 
   v123 = 0u;
   v124 = 0u;
@@ -542,23 +542,23 @@ LABEL_45:
   [(UILabel *)self->_subheaderLabel setAlpha:1.0];
   [(UILabel *)self->_largeSubheaderLabel setAlpha:1.0];
   [v4 setKeyPath:@"opacity"];
-  v5 = [(UILabel *)self->_headerLabel layer];
-  [v5 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
+  layer = [(UILabel *)self->_headerLabel layer];
+  [layer addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
 
-  v6 = [(UILabel *)self->_headerLabel layer];
-  [v6 addAnimation:v11 forKey:@"HeaderLabelTranslationAnimation"];
+  layer2 = [(UILabel *)self->_headerLabel layer];
+  [layer2 addAnimation:v11 forKey:@"HeaderLabelTranslationAnimation"];
 
-  v7 = [(UILabel *)self->_subheaderLabel layer];
-  [v7 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
+  layer3 = [(UILabel *)self->_subheaderLabel layer];
+  [layer3 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
 
-  v8 = [(UILabel *)self->_subheaderLabel layer];
-  [v8 addAnimation:v11 forKey:@"HeaderLabelTranslationAnimation"];
+  layer4 = [(UILabel *)self->_subheaderLabel layer];
+  [layer4 addAnimation:v11 forKey:@"HeaderLabelTranslationAnimation"];
 
-  v9 = [(UILabel *)self->_largeSubheaderLabel layer];
-  [v9 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
+  layer5 = [(UILabel *)self->_largeSubheaderLabel layer];
+  [layer5 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
 
-  v10 = [(UILabel *)self->_largeSubheaderLabel layer];
-  [v10 addAnimation:v11 forKey:@"HeaderLabelTranslationAnimation"];
+  layer6 = [(UILabel *)self->_largeSubheaderLabel layer];
+  [layer6 addAnimation:v11 forKey:@"HeaderLabelTranslationAnimation"];
 }
 
 - (void)_animateHeaderOut
@@ -584,26 +584,26 @@ LABEL_45:
   [(UILabel *)self->_headerLabel setAlpha:0.0];
   [(UILabel *)self->_subheaderLabel setAlpha:0.0];
   [(UILabel *)self->_largeSubheaderLabel setAlpha:0.0];
-  v10 = [(UILabel *)self->_headerLabel layer];
-  [v10 addAnimation:v16 forKey:@"HeaderLabelTranslationAnimation"];
+  layer = [(UILabel *)self->_headerLabel layer];
+  [layer addAnimation:v16 forKey:@"HeaderLabelTranslationAnimation"];
 
-  v11 = [(UILabel *)self->_headerLabel layer];
-  [v11 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
+  layer2 = [(UILabel *)self->_headerLabel layer];
+  [layer2 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
 
-  v12 = [(UILabel *)self->_subheaderLabel layer];
-  [v12 addAnimation:v16 forKey:@"HeaderLabelTranslationAnimation"];
+  layer3 = [(UILabel *)self->_subheaderLabel layer];
+  [layer3 addAnimation:v16 forKey:@"HeaderLabelTranslationAnimation"];
 
-  v13 = [(UILabel *)self->_subheaderLabel layer];
-  [v13 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
+  layer4 = [(UILabel *)self->_subheaderLabel layer];
+  [layer4 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
 
-  v14 = [(UILabel *)self->_largeSubheaderLabel layer];
-  [v14 addAnimation:v16 forKey:@"HeaderLabelTranslationAnimation"];
+  layer5 = [(UILabel *)self->_largeSubheaderLabel layer];
+  [layer5 addAnimation:v16 forKey:@"HeaderLabelTranslationAnimation"];
 
-  v15 = [(UILabel *)self->_largeSubheaderLabel layer];
-  [v15 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
+  layer6 = [(UILabel *)self->_largeSubheaderLabel layer];
+  [layer6 addAnimation:v4 forKey:@"HeaderLabelOpacityAnimation"];
 }
 
-- (void)_animateInSuggestionAtIndex:(unint64_t)a3
+- (void)_animateInSuggestionAtIndex:(unint64_t)index
 {
   v5 = CACurrentMediaTime();
   firstSuggestionPresentation = self->_firstSuggestionPresentation;
@@ -622,7 +622,7 @@ LABEL_45:
   }
 
   v24 = v7;
-  v25 = a3;
+  indexCopy = index;
   v8 = MEMORY[0x26D63F900](&v20);
   v12 = v8[2](v8, v9, v10, v11);
   [v12 setKeyPath:{@"transform.translation.y", v20, v21, v22, v23}];
@@ -635,7 +635,7 @@ LABEL_45:
   [v14 setKeyPath:@"opacity"];
   [v14 setFromValue:&unk_287A0D528];
   [v14 setToValue:&unk_287A0D538];
-  v15 = [(NSArray *)self->_suggestionLabels objectAtIndex:a3];
+  v15 = [(NSArray *)self->_suggestionLabels objectAtIndex:index];
   [v15 setAlpha:1.0];
   v16 = objc_alloc_init(MEMORY[0x277CD9E10]);
   [(SiriUISuggestionsView *)self _updateSuggestionsDelay];
@@ -645,14 +645,14 @@ LABEL_45:
   [v16 setKeyPath:@"transform.translation.y"];
   [v16 setFromValue:&unk_287A0D548];
   [v16 setToValue:&unk_287A0D528];
-  v17 = [v15 layer];
-  [v17 addAnimation:v16 forKey:@"SuggestionLabelSecondaryTranslationAnimation"];
+  layer = [v15 layer];
+  [layer addAnimation:v16 forKey:@"SuggestionLabelSecondaryTranslationAnimation"];
 
-  v18 = [v15 layer];
-  [v18 addAnimation:v12 forKey:@"SuggestionLabelTranslationAnimation"];
+  layer2 = [v15 layer];
+  [layer2 addAnimation:v12 forKey:@"SuggestionLabelTranslationAnimation"];
 
-  v19 = [v15 layer];
-  [v19 addAnimation:v14 forKey:@"SuggestionLabelOpacityAnimation"];
+  layer3 = [v15 layer];
+  [layer3 addAnimation:v14 forKey:@"SuggestionLabelOpacityAnimation"];
 }
 
 id __53__SiriUISuggestionsView__animateInSuggestionAtIndex___block_invoke(uint64_t a1)
@@ -668,13 +668,13 @@ id __53__SiriUISuggestionsView__animateInSuggestionAtIndex___block_invoke(uint64
   return v2;
 }
 
-- (void)_animateOutSuggestionAtIndex:(unint64_t)a3
+- (void)_animateOutSuggestionAtIndex:(unint64_t)index
 {
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__SiriUISuggestionsView__animateOutSuggestionAtIndex___block_invoke;
   v15[3] = &__block_descriptor_40_e24___CASpringAnimation_8__0l;
-  v15[4] = a3;
+  v15[4] = index;
   v5 = MEMORY[0x26D63F900](v15, a2);
   v6 = v5[2]();
   v7 = *MEMORY[0x277CDA7B0];
@@ -695,15 +695,15 @@ id __53__SiriUISuggestionsView__animateInSuggestionAtIndex___block_invoke(uint64
   [v10 setFromValue:&unk_287A0D538];
   [v10 setToValue:&unk_287A0D528];
   [v10 setFillMode:*MEMORY[0x277CDA228]];
-  [v10 setBeginTime:CACurrentMediaTime() + a3 * 0.03];
+  [v10 setBeginTime:CACurrentMediaTime() + index * 0.03];
   [v10 setDuration:0.34];
-  v12 = [(NSArray *)self->_suggestionLabels objectAtIndex:a3];
+  v12 = [(NSArray *)self->_suggestionLabels objectAtIndex:index];
   [v12 setAlpha:0.0];
-  v13 = [v12 layer];
-  [v13 addAnimation:v6 forKey:@"SuggestionLabelTranslationAnimation"];
+  layer = [v12 layer];
+  [layer addAnimation:v6 forKey:@"SuggestionLabelTranslationAnimation"];
 
-  v14 = [v12 layer];
-  [v14 addAnimation:v10 forKey:@"SuggestionLabelOpacityAnimation"];
+  layer2 = [v12 layer];
+  [layer2 addAnimation:v10 forKey:@"SuggestionLabelOpacityAnimation"];
 }
 
 id __54__SiriUISuggestionsView__animateOutSuggestionAtIndex___block_invoke(uint64_t a1)
@@ -718,21 +718,21 @@ id __54__SiriUISuggestionsView__animateOutSuggestionAtIndex___block_invoke(uint6
   return v2;
 }
 
-- (void)animateOutWithCompletion:(id)a3
+- (void)animateOutWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_headerLabel layer];
-  [v5 removeAnimationForKey:@"HeaderLabelOpacityAnimation"];
+  completionCopy = completion;
+  layer = [(UILabel *)self->_headerLabel layer];
+  [layer removeAnimationForKey:@"HeaderLabelOpacityAnimation"];
 
-  v6 = [(UILabel *)self->_subheaderLabel layer];
-  [v6 removeAnimationForKey:@"HeaderLabelOpacityAnimation"];
+  layer2 = [(UILabel *)self->_subheaderLabel layer];
+  [layer2 removeAnimationForKey:@"HeaderLabelOpacityAnimation"];
 
-  v7 = [(UILabel *)self->_largeSubheaderLabel layer];
-  [v7 removeAnimationForKey:@"HeaderLabelOpacityAnimation"];
+  layer3 = [(UILabel *)self->_largeSubheaderLabel layer];
+  [layer3 removeAnimationForKey:@"HeaderLabelOpacityAnimation"];
 
   [(NSArray *)self->_suggestionLabels enumerateObjectsUsingBlock:&__block_literal_global_8];
-  v8 = [(UIView *)self->_guideView layer];
-  [v8 removeAnimationForKey:@"GuideOpacityAnimation"];
+  layer4 = [(UIView *)self->_guideView layer];
+  [layer4 removeAnimationForKey:@"GuideOpacityAnimation"];
 
   v9 = MEMORY[0x277D75D18];
   v13[0] = MEMORY[0x277D85DD0];
@@ -744,8 +744,8 @@ id __54__SiriUISuggestionsView__animateOutSuggestionAtIndex___block_invoke(uint6
   v11[1] = 3221225472;
   v11[2] = __50__SiriUISuggestionsView_animateOutWithCompletion___block_invoke_5;
   v11[3] = &unk_279C5A610;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v9 animateWithDuration:v13 animations:v11 completion:0.25];
 }
 
@@ -786,13 +786,13 @@ uint64_t __50__SiriUISuggestionsView_animateOutWithCompletion___block_invoke_5(u
   return result;
 }
 
-- (void)setGuideView:(id)a3
+- (void)setGuideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_guideView removeFromSuperview];
   guideView = self->_guideView;
-  self->_guideView = v4;
-  v6 = v4;
+  self->_guideView = viewCopy;
+  v6 = viewCopy;
 
   [(UIView *)self->_guideView setHidden:1];
   [(UIView *)self->_contentView addSubview:self->_guideView];
@@ -800,16 +800,16 @@ uint64_t __50__SiriUISuggestionsView_animateOutWithCompletion___block_invoke_5(u
   [(SiriUISuggestionsView *)self setNeedsLayout];
 }
 
-- (void)setGuideHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setGuideHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(SiriUISuggestionsView *)self isGuideHidden]!= a3)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  if ([(SiriUISuggestionsView *)self isGuideHidden]!= hidden)
   {
-    [(SiriUISuggestionsView *)self setUserInteractionEnabled:!v5];
-    if (v5)
+    [(SiriUISuggestionsView *)self setUserInteractionEnabled:!hiddenCopy];
+    if (hiddenCopy)
     {
-      if (v4)
+      if (animatedCopy)
       {
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
@@ -836,7 +836,7 @@ uint64_t __50__SiriUISuggestionsView_animateOutWithCompletion___block_invoke_5(u
     {
       [(UIView *)self->_guideView setHidden:0];
       [(UIView *)self->_guideView setAlpha:1.0];
-      if (v4)
+      if (animatedCopy)
       {
         v12 = [(SiriUISuggestionsView *)self _createSpringAnimation:2.0];
         [v12 setKeyPath:@"transform.translation.y"];
@@ -848,22 +848,22 @@ uint64_t __50__SiriUISuggestionsView_animateOutWithCompletion___block_invoke_5(u
         [v8 setFromValue:&unk_287A0D528];
         [v8 setToValue:&unk_287A0D538];
         [v8 setKeyPath:@"opacity"];
-        v9 = [(UIView *)self->_guideView layer];
-        [v9 addAnimation:v8 forKey:@"GuideOpacityAnimation"];
+        layer = [(UIView *)self->_guideView layer];
+        [layer addAnimation:v8 forKey:@"GuideOpacityAnimation"];
 
-        v10 = [(UIView *)self->_guideView layer];
-        [v10 addAnimation:v12 forKey:@"GuideTranslationAnimation"];
+        layer2 = [(UIView *)self->_guideView layer];
+        [layer2 addAnimation:v12 forKey:@"GuideTranslationAnimation"];
       }
     }
   }
 }
 
-- (void)setHeaderText:(id)a3
+- (void)setHeaderText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   if (![(SiriUISuggestionsHeaderText *)self->_headerText isEqual:?])
   {
-    objc_storeStrong(&self->_headerText, a3);
+    objc_storeStrong(&self->_headerText, text);
     [(SiriUISuggestionsView *)self _animateHeaderOut];
     v5 = self->_headerLabel;
     objc_storeStrong(&self->_headerLabel, self->_oldHeaderLabel);
@@ -871,81 +871,81 @@ uint64_t __50__SiriUISuggestionsView_animateOutWithCompletion___block_invoke_5(u
     self->_oldHeaderLabel = v5;
     v7 = v5;
 
-    v8 = [v9 attributedStringForMainScreenTraitCollection];
-    [(SiriUISuggestionsView *)self _setHeaderText:v8];
+    attributedStringForMainScreenTraitCollection = [textCopy attributedStringForMainScreenTraitCollection];
+    [(SiriUISuggestionsView *)self _setHeaderText:attributedStringForMainScreenTraitCollection];
 
     [(SiriUISuggestionsView *)self setNeedsLayout];
     [(SiriUISuggestionsView *)self _animateHeaderIn];
   }
 }
 
-- (void)setSubheaderText:(id)a3
+- (void)setSubheaderText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(SiriUISuggestionsHeaderText *)self->_subheaderText isEqual:?])
   {
-    objc_storeStrong(&self->_subheaderText, a3);
+    objc_storeStrong(&self->_subheaderText, text);
     [(SiriUISuggestionsView *)self _loadSubheaderViewIfNeeded];
-    v5 = [v6 attributedStringForMainScreenTraitCollection];
-    [(SiriUISuggestionsView *)self _setLargeSubheaderText:v5];
+    attributedStringForMainScreenTraitCollection = [textCopy attributedStringForMainScreenTraitCollection];
+    [(SiriUISuggestionsView *)self _setLargeSubheaderText:attributedStringForMainScreenTraitCollection];
 
     [(SiriUISuggestionsView *)self setNeedsLayout];
   }
 }
 
-- (void)setLargeSubheaderText:(id)a3
+- (void)setLargeSubheaderText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(SiriUISuggestionsHeaderText *)self->_largeSubheaderText isEqual:?])
   {
-    objc_storeStrong(&self->_largeSubheaderText, a3);
+    objc_storeStrong(&self->_largeSubheaderText, text);
     [(SiriUISuggestionsView *)self _loadLargeSubheaderViewIfNeeded];
-    v5 = [v6 attributedStringForMainScreenTraitCollection];
-    [(SiriUISuggestionsView *)self _setLargeSubheaderText:v5];
+    attributedStringForMainScreenTraitCollection = [textCopy attributedStringForMainScreenTraitCollection];
+    [(SiriUISuggestionsView *)self _setLargeSubheaderText:attributedStringForMainScreenTraitCollection];
 
     [(SiriUISuggestionsView *)self setNeedsLayout];
   }
 }
 
-- (void)_setHeaderText:(id)a3
+- (void)_setHeaderText:(id)text
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_headerLabel attributedText];
-  v5 = [v4 isEqualToAttributedString:v6];
+  textCopy = text;
+  attributedText = [(UILabel *)self->_headerLabel attributedText];
+  v5 = [attributedText isEqualToAttributedString:textCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_headerLabel setAttributedText:v6];
+    [(UILabel *)self->_headerLabel setAttributedText:textCopy];
   }
 }
 
-- (void)_setSubheaderText:(id)a3
+- (void)_setSubheaderText:(id)text
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_subheaderLabel attributedText];
-  v5 = [v4 isEqualToAttributedString:v6];
+  textCopy = text;
+  attributedText = [(UILabel *)self->_subheaderLabel attributedText];
+  v5 = [attributedText isEqualToAttributedString:textCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_subheaderLabel setAttributedText:v6];
+    [(UILabel *)self->_subheaderLabel setAttributedText:textCopy];
   }
 }
 
-- (void)_setLargeSubheaderText:(id)a3
+- (void)_setLargeSubheaderText:(id)text
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_largeSubheaderLabel attributedText];
-  v5 = [v4 isEqualToAttributedString:v6];
+  textCopy = text;
+  attributedText = [(UILabel *)self->_largeSubheaderLabel attributedText];
+  v5 = [attributedText isEqualToAttributedString:textCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_largeSubheaderLabel setAttributedText:v6];
+    [(UILabel *)self->_largeSubheaderLabel setAttributedText:textCopy];
   }
 }
 
-- (void)_setSuggestionTexts:(id)a3
+- (void)_setSuggestionTexts:(id)texts
 {
-  v4 = a3;
+  textsCopy = texts;
   [(SiriUISuggestionsView *)self _loadSuggestionsViewsIfNeeded];
   suggestionLabels = self->_suggestionLabels;
   v10[0] = MEMORY[0x277D85DD0];
@@ -965,7 +965,7 @@ uint64_t __50__SiriUISuggestionsView_animateOutWithCompletion___block_invoke_5(u
   v9[2] = __45__SiriUISuggestionsView__setSuggestionTexts___block_invoke_2;
   v9[3] = &unk_279C5A660;
   v9[4] = self;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [textsCopy enumerateObjectsUsingBlock:v9];
 }
 
 void __45__SiriUISuggestionsView__setSuggestionTexts___block_invoke_2(uint64_t a1, void *a2, unint64_t a3, _BYTE *a4)
@@ -1005,8 +1005,8 @@ void __45__SiriUISuggestionsView__setSuggestionTexts___block_invoke_2(uint64_t a
 
 - (void)startSuggesting
 {
-  v3 = [(SiriUIAcousticIDSpinner *)self->_acousticIDSpinner isShowing];
-  if (!self->_updateSuggestionsTimer && !v3)
+  isShowing = [(SiriUIAcousticIDSpinner *)self->_acousticIDSpinner isShowing];
+  if (!self->_updateSuggestionsTimer && !isShowing)
   {
 
     [(SiriUISuggestionsView *)self _updateSuggestions];
@@ -1077,7 +1077,7 @@ void __45__SiriUISuggestionsView__setSuggestionTexts___block_invoke_2(uint64_t a
     v21 = 0x3032000000;
     v22 = __Block_byref_object_copy__1;
     v23 = __Block_byref_object_dispose__1;
-    v24 = [(NSMutableOrderedSet *)self->_pendedSuggestions array];
+    array = [(NSMutableOrderedSet *)self->_pendedSuggestions array];
     [(NSMutableOrderedSet *)self->_pendedSuggestions removeAllObjects];
     numberOfSuggestions = self->_numberOfSuggestions;
     v14 = numberOfSuggestions - [v20[5] count];
@@ -1163,9 +1163,9 @@ void __43__SiriUISuggestionsView__updateSuggestions__block_invoke_2(uint64_t a1)
 
 - (void)showAcousticIDSpinner
 {
-  v3 = [(SiriUIAcousticIDSpinner *)self->_acousticIDSpinner superview];
+  superview = [(SiriUIAcousticIDSpinner *)self->_acousticIDSpinner superview];
 
-  if (v3 != self)
+  if (superview != self)
   {
     [(SiriUISuggestionsView *)self setNeedsLayout];
   }
@@ -1191,19 +1191,19 @@ void __43__SiriUISuggestionsView__updateSuggestions__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  [(UILabel *)self->_headerLabel setTextColor:v4];
-  [(UILabel *)self->_oldHeaderLabel setTextColor:v4];
-  [(UILabel *)self->_subheaderLabel setTextColor:v4];
-  [(UILabel *)self->_largeSubheaderLabel setTextColor:v4];
+  colorCopy = color;
+  [(UILabel *)self->_headerLabel setTextColor:colorCopy];
+  [(UILabel *)self->_oldHeaderLabel setTextColor:colorCopy];
+  [(UILabel *)self->_subheaderLabel setTextColor:colorCopy];
+  [(UILabel *)self->_largeSubheaderLabel setTextColor:colorCopy];
   suggestionLabels = self->_suggestionLabels;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __38__SiriUISuggestionsView_setTextColor___block_invoke;
   v13[3] = &unk_279C5A638;
-  v6 = v4;
+  v6 = colorCopy;
   v14 = v6;
   [(NSArray *)suggestionLabels enumerateObjectsUsingBlock:v13];
   oldSuggestionLabels = self->_oldSuggestionLabels;
@@ -1219,10 +1219,10 @@ void __43__SiriUISuggestionsView__updateSuggestions__block_invoke_2(uint64_t a1)
   v10 = v8;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
     v5 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1231,32 +1231,32 @@ void __43__SiriUISuggestionsView__updateSuggestions__block_invoke_2(uint64_t a1)
       v7 = 136315650;
       v8 = "[SiriUISuggestionsView setOrientation:]";
       v9 = 2048;
-      v10 = orientation;
+      orientationCopy = orientation;
       v11 = 2048;
-      v12 = a3;
+      orientationCopy2 = orientation;
       _os_log_impl(&dword_26948D000, v5, OS_LOG_TYPE_DEFAULT, "%s %zd from:%zd", &v7, 0x20u);
     }
 
-    self->_orientation = a3;
+    self->_orientation = orientation;
     self->_numberOfSuggestions = [(SiriUISuggestionsView *)self _numberOfSuggestionsToDisplay];
   }
 }
 
 - (int)_heightType
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SiriUISuggestionsView *)self _isPortrait];
+  _isPortrait = [(SiriUISuggestionsView *)self _isPortrait];
   v13 = v5;
   v14 = v7;
   v15 = v9;
   v16 = v11;
-  if (v12)
+  if (_isPortrait)
   {
     Height = CGRectGetHeight(*&v13);
   }
@@ -1297,11 +1297,11 @@ void __43__SiriUISuggestionsView__updateSuggestions__block_invoke_2(uint64_t a1)
 
 - (double)_suggestionSpacing
 {
-  v3 = [(SiriUISuggestionsView *)self _heightType];
+  _heightType = [(SiriUISuggestionsView *)self _heightType];
   v4 = 0.0;
-  if (v3 > 2)
+  if (_heightType > 2)
   {
-    if ((v3 - 5) < 2)
+    if ((_heightType - 5) < 2)
     {
       if ([(SiriUISuggestionsView *)self _isPortrait])
       {
@@ -1317,12 +1317,12 @@ void __43__SiriUISuggestionsView__updateSuggestions__block_invoke_2(uint64_t a1)
     else
     {
       v5 = 44.0;
-      if (v3 != 4)
+      if (_heightType != 4)
       {
         v5 = 0.0;
       }
 
-      if (v3 == 3)
+      if (_heightType == 3)
       {
         v4 = 54.0;
       }
@@ -1336,16 +1336,16 @@ void __43__SiriUISuggestionsView__updateSuggestions__block_invoke_2(uint64_t a1)
 
   else
   {
-    if (!v3)
+    if (!_heightType)
     {
 LABEL_5:
       v4 = 44.0;
       goto LABEL_16;
     }
 
-    if (v3 != 1)
+    if (_heightType != 1)
     {
-      if (v3 != 2)
+      if (_heightType != 2)
       {
         goto LABEL_16;
       }
@@ -1357,8 +1357,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = floor(v4);
   if (v8 < 2.0)
   {
@@ -1370,15 +1370,15 @@ LABEL_16:
 
 - (unint64_t)_numberOfSuggestionsToDisplay
 {
-  v2 = [(SiriUISuggestionsView *)self _heightType];
-  if (v2 > 6)
+  _heightType = [(SiriUISuggestionsView *)self _heightType];
+  if (_heightType > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_2694DDD08[v2];
+    return qword_2694DDD08[_heightType];
   }
 }
 
@@ -1394,8 +1394,8 @@ LABEL_16:
     v2 = 5.0;
   }
 
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = ceil(v2);
   if (v5 < 2.0)
   {
@@ -1408,48 +1408,48 @@ LABEL_16:
 - (double)_headerToLargeSubheaderOffset
 {
   [(SiriUISuggestionsView *)self _isPadHeightType];
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
 
   return 10.0;
 }
 
 - (double)_suggestionFontSize
 {
-  v2 = [(SiriUISuggestionsView *)self _heightType];
+  _heightType = [(SiriUISuggestionsView *)self _heightType];
   result = 24.0;
-  if (v2 <= 4)
+  if (_heightType <= 4)
   {
-    return dbl_2694DDD40[v2];
+    return dbl_2694DDD40[_heightType];
   }
 
   return result;
 }
 
-- (id)_createSpringAnimation:(double)a3
+- (id)_createSpringAnimation:(double)animation
 {
-  v4 = [MEMORY[0x277CD9FA0] animation];
-  [v4 setRemovedOnCompletion:0];
-  [v4 setMass:4.0];
-  [v4 setStiffness:400.0];
-  [v4 setDamping:800.0];
-  [v4 setFillMode:*MEMORY[0x277CDA228]];
-  [v4 setBeginTime:CACurrentMediaTime()];
-  [v4 setDuration:a3];
+  animation = [MEMORY[0x277CD9FA0] animation];
+  [animation setRemovedOnCompletion:0];
+  [animation setMass:4.0];
+  [animation setStiffness:400.0];
+  [animation setDamping:800.0];
+  [animation setFillMode:*MEMORY[0x277CDA228]];
+  [animation setBeginTime:CACurrentMediaTime()];
+  [animation setDuration:animation];
 
-  return v4;
+  return animation;
 }
 
-- (void)acousticIDSpinnerDidHide:(id)a3
+- (void)acousticIDSpinnerDidHide:(id)hide
 {
-  v7 = a3;
+  hideCopy = hide;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 suggestionsView:self didHideVibrantView:v7];
+    [v6 suggestionsView:self didHideVibrantView:hideCopy];
   }
 }
 

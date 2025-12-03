@@ -1,6 +1,6 @@
 @interface WiFiUsageInterfaceCapabilities
 - (NSSet)deviceCapabilities;
-- (WiFiUsageInterfaceCapabilities)initWithInterfaceName:(id)a3;
+- (WiFiUsageInterfaceCapabilities)initWithInterfaceName:(id)name;
 - (id)description;
 - (int)supportedPhyModes;
 - (unint64_t)currentNumberOfSpatialStreams;
@@ -40,21 +40,21 @@
   return result;
 }
 
-- (WiFiUsageInterfaceCapabilities)initWithInterfaceName:(id)a3
+- (WiFiUsageInterfaceCapabilities)initWithInterfaceName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     NSLog(&cfstr_SCannotCreateI.isa, "[WiFiUsageInterfaceCapabilities initWithInterfaceName:]", 0);
 LABEL_6:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   v13.receiver = self;
   v13.super_class = WiFiUsageInterfaceCapabilities;
   self = [(WiFiUsageInterfaceCapabilities *)&v13 init];
-  v5 = [v4 copy];
+  v5 = [nameCopy copy];
   interfaceName = self->_interfaceName;
   self->_interfaceName = v5;
 
@@ -77,10 +77,10 @@ LABEL_6:
   self->_maxPHYRate = 0x7FFFFFFFFFFFFFFFLL;
   self->_supportedPhyModes = 0;
   self = self;
-  v11 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v11;
+  return selfCopy;
 }
 
 - (int)supportedPhyModes
@@ -88,7 +88,7 @@ LABEL_7:
   result = self->_supportedPhyModes;
   if (!result)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     a11Ref = self->_a11Ref;
     v6 = Apple80211Get();
     if (v6)
@@ -98,7 +98,7 @@ LABEL_7:
 
     else
     {
-      v7 = [v4 objectForKey:@"PHYMODE_SUPPORTED"];
+      v7 = [dictionary objectForKey:@"PHYMODE_SUPPORTED"];
       self->_supportedPhyModes = [v7 unsignedIntValue];
     }
 

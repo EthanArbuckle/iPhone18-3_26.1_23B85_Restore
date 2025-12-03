@@ -1,15 +1,15 @@
 @interface PKPaymentPushProvisioningCredential
-- (PKPaymentPushProvisioningCredential)initWithCoder:(id)a3;
-- (PKPaymentPushProvisioningCredential)initWithDict:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPaymentPushProvisioningCredential)initWithCoder:(id)coder;
+- (PKPaymentPushProvisioningCredential)initWithDict:(id)dict;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentPushProvisioningCredential
 
-- (PKPaymentPushProvisioningCredential)initWithDict:(id)a3
+- (PKPaymentPushProvisioningCredential)initWithDict:(id)dict
 {
-  v4 = a3;
-  if (v4)
+  dictCopy = dict;
+  if (dictCopy)
   {
     v28.receiver = self;
     v28.super_class = PKPaymentPushProvisioningCredential;
@@ -18,11 +18,11 @@
     {
 LABEL_15:
       self = v5;
-      v20 = self;
+      selfCopy = self;
       goto LABEL_16;
     }
 
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictCopy PKStringForKey:@"type"];
     v7 = v6;
     if (v6 == @"sharedCredential")
     {
@@ -53,27 +53,27 @@ LABEL_6:
         if (!v27)
         {
 LABEL_8:
-          v5->_securityOptions = [v4 PKIntegerForKey:@"securityOptions"];
-          v10 = [v4 PKStringForKey:@"sharingInstanceIdentifier"];
+          v5->_securityOptions = [dictCopy PKIntegerForKey:@"securityOptions"];
+          v10 = [dictCopy PKStringForKey:@"sharingInstanceIdentifier"];
           sharingInstanceIdentifier = v5->_sharingInstanceIdentifier;
           v5->_sharingInstanceIdentifier = v10;
 
-          v12 = [v4 PKStringForKey:@"provisioningCredentialIdentifierHash"];
+          v12 = [dictCopy PKStringForKey:@"provisioningCredentialIdentifierHash"];
           provisioningCredentialIdentifierHash = v5->_provisioningCredentialIdentifierHash;
           v5->_provisioningCredentialIdentifierHash = v12;
 
-          v14 = [v4 PKStringForKey:@"credentialAuthorityIdentifier"];
+          v14 = [dictCopy PKStringForKey:@"credentialAuthorityIdentifier"];
           credentialAuthorityIdentifier = v5->_credentialAuthorityIdentifier;
           v5->_credentialAuthorityIdentifier = v14;
 
-          v16 = [v4 PKNumberForKey:@"source"];
+          v16 = [dictCopy PKNumberForKey:@"source"];
           v17 = v16;
           if (v16)
           {
-            v18 = [v16 integerValue];
-            v5->_source = v18;
+            integerValue = [v16 integerValue];
+            v5->_source = integerValue;
             p_source = &v5->_source;
-            if ((v18 - 1) < 0xB)
+            if ((integerValue - 1) < 0xB)
             {
               goto LABEL_14;
             }
@@ -86,11 +86,11 @@ LABEL_8:
 
           *p_source = 1;
 LABEL_14:
-          v21 = [v4 PKStringForKey:@"accountIdentifier"];
+          v21 = [dictCopy PKStringForKey:@"accountIdentifier"];
           accountIdentifier = v5->_accountIdentifier;
           v5->_accountIdentifier = v21;
 
-          v23 = [v4 PKStringForKey:@"featureIdentifier"];
+          v23 = [dictCopy PKStringForKey:@"featureIdentifier"];
           v5->_feature = PKFeatureIdentifierFromString(v23);
 
           goto LABEL_15;
@@ -104,38 +104,38 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  v20 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v20;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sharingInstanceIdentifier = self->_sharingInstanceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sharingInstanceIdentifier forKey:@"sharingInstanceIdentifier"];
-  [v5 encodeObject:self->_provisioningCredentialIdentifierHash forKey:@"provisioningCredentialIdentifierHash"];
-  [v5 encodeInteger:self->_source forKey:@"source"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sharingInstanceIdentifier forKey:@"sharingInstanceIdentifier"];
+  [coderCopy encodeObject:self->_provisioningCredentialIdentifierHash forKey:@"provisioningCredentialIdentifierHash"];
+  [coderCopy encodeInteger:self->_source forKey:@"source"];
 }
 
-- (PKPaymentPushProvisioningCredential)initWithCoder:(id)a3
+- (PKPaymentPushProvisioningCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentPushProvisioningCredential;
   v5 = [(PKPaymentPushProvisioningCredential *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifier"];
     sharingInstanceIdentifier = v5->_sharingInstanceIdentifier;
     v5->_sharingInstanceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCredentialIdentifierHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCredentialIdentifierHash"];
     provisioningCredentialIdentifierHash = v5->_provisioningCredentialIdentifierHash;
     v5->_provisioningCredentialIdentifierHash = v8;
 
-    v5->_source = [v4 decodeIntegerForKey:@"source"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"source"];
   }
 
   return v5;

@@ -1,16 +1,16 @@
 @interface VCVideoCapture
 - (VCCannedVideoCaptureSource)cannedScreenCaptureSource;
-- (VCVideoCapture)initWithCaptureServer:(id)a3 protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)a4;
-- (unsigned)addSink:(id)a3;
-- (unsigned)removeSink:(id)a3;
+- (VCVideoCapture)initWithCaptureServer:(id)server protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)functions;
+- (unsigned)addSink:(id)sink;
+- (unsigned)removeSink:(id)sink;
 - (unsigned)sinkCount;
-- (void)cleanupSinkEntry:(tagVCVideoCaptureSinkEntry *)a3;
+- (void)cleanupSinkEntry:(tagVCVideoCaptureSinkEntry *)entry;
 - (void)dealloc;
 @end
 
 @implementation VCVideoCapture
 
-- (VCVideoCapture)initWithCaptureServer:(id)a3 protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)a4
+- (VCVideoCapture)initWithCaptureServer:(id)server protocolFunctions:(const tagVCVideoCaptureServerProtocolRealtimeInstanceVTable *)functions
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -19,8 +19,8 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_captureServer, a3);
-    v7->_protocolFunctions = a4->onCaptureVideoFrame;
+    objc_storeWeak(&v6->_captureServer, server);
+    v7->_protocolFunctions = functions->onCaptureVideoFrame;
     v7->_cannedScreenCaptureSource = 0;
     v8 = VCDefaults_CopyStringValueForKey(@"cannedScreenInputFileName");
     v9 = v8;
@@ -80,18 +80,18 @@
   return sinkCount;
 }
 
-- (void)cleanupSinkEntry:(tagVCVideoCaptureSinkEntry *)a3
+- (void)cleanupSinkEntry:(tagVCVideoCaptureSinkEntry *)entry
 {
-  _Block_release(a3->var2);
-  var1 = a3->var1;
+  _Block_release(entry->var2);
+  var1 = entry->var1;
 }
 
-- (unsigned)addSink:(id)a3
+- (unsigned)addSink:(id)sink
 {
   v34 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_sinkArrayMutex);
   LODWORD(v5) = self->_sinkCount;
-  if (!a3)
+  if (!sink)
   {
     [(VCVideoCapture *)self addSink:v30];
     LODWORD(v5) = *v30;
@@ -116,7 +116,7 @@
           *&v30[22] = 1024;
           LODWORD(v31) = 110;
           WORD2(v31) = 2048;
-          *(&v31 + 6) = a3;
+          *(&v31 + 6) = sink;
           v12 = " [%s] %s:%d Failed to allocate the list entry for sink=%p";
           v13 = v27;
           v14 = 38;
@@ -152,9 +152,9 @@
           WORD2(v31) = 2112;
           *(&v31 + 6) = v25;
           HIWORD(v31) = 2048;
-          v32 = self;
+          selfCopy3 = self;
           *v33 = 2048;
-          *&v33[2] = a3;
+          *&v33[2] = sink;
           v12 = " [%s] %s:%d %@(%p) Failed to allocate the list entry for sink=%p";
           v13 = v29;
           v14 = 58;
@@ -167,10 +167,10 @@
   }
 
   v7 = v6;
-  v6[1] = a3;
+  v6[1] = sink;
   if (objc_opt_respondsToSelector())
   {
-    v7[2] = [a3 copyOnVideoFrameBlock];
+    v7[2] = [sink copyOnVideoFrameBlock];
   }
 
   if ((VCSingleLinkedListPush(&self->_sinkList, v7) & 1) == 0)
@@ -196,7 +196,7 @@
       *&v30[22] = 1024;
       LODWORD(v31) = 117;
       WORD2(v31) = 2048;
-      *(&v31 + 6) = a3;
+      *(&v31 + 6) = sink;
       v17 = " [%s] %s:%d VCVideoSink %p was in the array, return directly";
       v18 = v16;
       v19 = 38;
@@ -235,9 +235,9 @@
       WORD2(v31) = 2112;
       *(&v31 + 6) = v9;
       HIWORD(v31) = 2048;
-      v32 = self;
+      selfCopy3 = self;
       *v33 = 2048;
-      *&v33[2] = a3;
+      *&v33[2] = sink;
       v17 = " [%s] %s:%d %@(%p) VCVideoSink %p was in the array, return directly";
       v18 = v23;
       v19 = 58;
@@ -245,7 +245,7 @@
 
     _os_log_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_DEFAULT, v17, v30, v19);
 LABEL_28:
-    [(VCVideoCapture *)self cleanupSinkEntry:v7, *v30, *&v30[16], v31, v32, *v33];
+    [(VCVideoCapture *)self cleanupSinkEntry:v7, *v30, *&v30[16], v31, selfCopy3, *v33];
     free(v7);
     goto LABEL_29;
   }
@@ -267,9 +267,9 @@ LABEL_28:
         *&v30[22] = 1024;
         LODWORD(v31) = 122;
         WORD2(v31) = 2048;
-        *(&v31 + 6) = a3;
+        *(&v31 + 6) = sink;
         HIWORD(v31) = 2048;
-        v32 = v5;
+        selfCopy3 = v5;
         v12 = " [%s] %s:%d Add VCVideoSink %p, new array count = %lu";
         v13 = v11;
         v14 = 48;
@@ -306,9 +306,9 @@ LABEL_22:
         WORD2(v31) = 2112;
         *(&v31 + 6) = v8;
         HIWORD(v31) = 2048;
-        v32 = self;
+        selfCopy3 = self;
         *v33 = 2048;
-        *&v33[2] = a3;
+        *&v33[2] = sink;
         *&v33[10] = 2048;
         *&v33[12] = v5;
         v12 = " [%s] %s:%d %@(%p) Add VCVideoSink %p, new array count = %lu";
@@ -324,12 +324,12 @@ LABEL_29:
   return v5;
 }
 
-- (unsigned)removeSink:(id)a3
+- (unsigned)removeSink:(id)sink
 {
   v40 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_sinkArrayMutex);
   LODWORD(v5) = self->_sinkCount;
-  if (!a3)
+  if (!sink)
   {
     [(VCVideoCapture *)self removeSink:buf];
     LODWORD(v5) = *buf;
@@ -337,7 +337,7 @@ LABEL_29:
   }
 
   v25[0] = 0;
-  v25[1] = a3;
+  v25[1] = sink;
   v25[2] = 0;
   v6 = VCSingleLinkedListRemove(&self->_sinkList, v25);
   if (v6)
@@ -366,9 +366,9 @@ LABEL_29:
       v30 = 1024;
       v31 = 139;
       v32 = 2048;
-      v33 = a3;
+      sinkCopy3 = sink;
       v34 = 2048;
-      v35 = v5;
+      selfCopy2 = v5;
       v12 = " [%s] %s:%d Remove VCVideoSink %p, new array count = %lu";
       v13 = v11;
       v14 = 48;
@@ -405,11 +405,11 @@ LABEL_29:
       v30 = 1024;
       v31 = 139;
       v32 = 2112;
-      v33 = v8;
+      sinkCopy3 = v8;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2048;
-      v37 = a3;
+      sinkCopy4 = sink;
       v38 = 2048;
       v39 = v5;
       v12 = " [%s] %s:%d %@(%p) Remove VCVideoSink %p, new array count = %lu";
@@ -439,7 +439,7 @@ LABEL_17:
         v30 = 1024;
         v31 = 143;
         v32 = 2048;
-        v33 = a3;
+        sinkCopy3 = sink;
         v20 = " [%s] %s:%d VCVideoSink %p was not in the array, nothing to remove";
         v21 = v19;
         v22 = 38;
@@ -474,11 +474,11 @@ LABEL_26:
         v30 = 1024;
         v31 = 143;
         v32 = 2112;
-        v33 = v9;
+        sinkCopy3 = v9;
         v34 = 2048;
-        v35 = self;
+        selfCopy2 = self;
         v36 = 2048;
-        v37 = a3;
+        sinkCopy4 = sink;
         v20 = " [%s] %s:%d %@(%p) VCVideoSink %p was not in the array, nothing to remove";
         v21 = v24;
         v22 = 58;

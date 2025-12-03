@@ -8,7 +8,7 @@
 {
   v4 = a3;
   [v4 setValueType:13];
-  [v4 setPrivateDataControllerSyncState:a1];
+  [v4 setPrivateDataControllerSyncState:self];
 }
 
 @end

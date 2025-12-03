@@ -1,23 +1,23 @@
 @interface HKHRAFibBurdenFooter
-- (HKHRAFibBurdenFooter)initWithText:(id)a3 link:(id)a4 url:(id)a5;
+- (HKHRAFibBurdenFooter)initWithText:(id)text link:(id)link url:(id)url;
 @end
 
 @implementation HKHRAFibBurdenFooter
 
-- (HKHRAFibBurdenFooter)initWithText:(id)a3 link:(id)a4 url:(id)a5
+- (HKHRAFibBurdenFooter)initWithText:(id)text link:(id)link url:(id)url
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  linkCopy = link;
+  urlCopy = url;
   v15.receiver = self;
   v15.super_class = HKHRAFibBurdenFooter;
   v11 = [(HKHRAFibBurdenFooter *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(HKHRAFibBurdenFooter *)v11 setFooterText:v8];
-    [(HKHRAFibBurdenFooter *)v12 setFooterLink:v9];
-    [(HKHRAFibBurdenFooter *)v12 setLinkURL:v10];
+    [(HKHRAFibBurdenFooter *)v11 setFooterText:textCopy];
+    [(HKHRAFibBurdenFooter *)v12 setFooterLink:linkCopy];
+    [(HKHRAFibBurdenFooter *)v12 setLinkURL:urlCopy];
     v13 = v12;
   }
 

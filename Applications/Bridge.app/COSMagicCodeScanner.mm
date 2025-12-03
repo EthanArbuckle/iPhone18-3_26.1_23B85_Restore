@@ -1,29 +1,29 @@
 @interface COSMagicCodeScanner
-- (COSMagicCodeScanner)initWithFrame:(CGRect)a3;
+- (COSMagicCodeScanner)initWithFrame:(CGRect)frame;
 - (COSMagicCodeScannerDelegate)delegate;
 - (id)setupCameraSession;
 - (void)_changeCameraConfiguration;
 - (void)_selectCaptureDevice;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)closeWriter;
 - (void)dealloc;
-- (void)handleRuntimeError:(id)a3;
+- (void)handleRuntimeError:(id)error;
 - (void)layoutSubviews;
 - (void)setCameraAttributes;
 - (void)setupAssetWriterIfNeeded;
 - (void)startRunning;
 - (void)stopRunning;
-- (void)toggleDebugUI:(id)a3;
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3 ofType:(id)a4;
+- (void)toggleDebugUI:(id)i;
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer ofType:(id)type;
 @end
 
 @implementation COSMagicCodeScanner
 
-- (COSMagicCodeScanner)initWithFrame:(CGRect)a3
+- (COSMagicCodeScanner)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = COSMagicCodeScanner;
-  v3 = [(COSMagicCodeScanner *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSMagicCodeScanner *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
@@ -70,10 +70,10 @@
         if (!v3->_showLensHUD)
         {
 LABEL_10:
-          v23 = [UIApp setupController];
-          v24 = [v23 visualDetector];
+          setupController = [UIApp setupController];
+          visualDetector = [setupController visualDetector];
           detector = v3->_detector;
-          v3->_detector = v24;
+          v3->_detector = visualDetector;
 
           return v3;
         }
@@ -130,7 +130,7 @@ LABEL_9:
   [(COSMagicCodeScanner *)&v7 dealloc];
 }
 
-- (void)toggleDebugUI:(id)a3
+- (void)toggleDebugUI:(id)i
 {
   [(CALayer *)self->_progressBGLayer setHidden:[(CALayer *)self->_progressBGLayer isHidden]^ 1];
   v4 = [(CALayer *)self->_progressLayer isHidden]^ 1;
@@ -183,9 +183,9 @@ LABEL_2:
     v3 = pbb_setupflow_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(AVCaptureDevice *)self->_device activeFormat];
+      activeFormat = [(AVCaptureDevice *)self->_device activeFormat];
       *buf = 138412290;
-      v38 = v4;
+      v38 = activeFormat;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "activeFormat: %@", buf, 0xCu);
     }
 
@@ -342,12 +342,12 @@ LABEL_31:
 {
   v3 = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInUltraWideCamera mediaType:AVMediaTypeVideo position:1];
   v4 = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-  v5 = [v3 minimumFocusDistance];
-  v6 = [v4 minimumFocusDistance];
-  v7 = v6;
+  minimumFocusDistance = [v3 minimumFocusDistance];
+  minimumFocusDistance2 = [v4 minimumFocusDistance];
+  v7 = minimumFocusDistance2;
   if (v3)
   {
-    v8 = (v5 - 1) >= 0x31;
+    v8 = (minimumFocusDistance - 1) >= 0x31;
   }
 
   else
@@ -355,7 +355,7 @@ LABEL_31:
     v8 = 1;
   }
 
-  v10 = !v8 && v5 < v6;
+  v10 = !v8 && minimumFocusDistance < minimumFocusDistance2;
   device = self->_device;
   if (device)
   {
@@ -386,7 +386,7 @@ LABEL_31:
     v16 = 2112;
     v17 = v3;
     v18 = 2048;
-    v19 = v5;
+    v19 = minimumFocusDistance;
     v20 = 2112;
     v21 = v4;
     v22 = 2048;
@@ -403,44 +403,44 @@ LABEL_31:
   v8.super_class = COSMagicCodeScanner;
   [(COSMagicCodeScanner *)&v8 layoutSubviews];
   previewLayer = self->_previewLayer;
-  v4 = [(COSMagicCodeScanner *)self layer];
-  [v4 bounds];
+  layer = [(COSMagicCodeScanner *)self layer];
+  [layer bounds];
   v6 = v5;
-  v7 = [(COSMagicCodeScanner *)self layer];
-  [v7 bounds];
+  layer2 = [(COSMagicCodeScanner *)self layer];
+  [layer2 bounds];
   [(AVCaptureVideoPreviewLayer *)previewLayer setFrame:0.0, 0.0, v6];
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v66 = a3;
-  v67 = a5;
+  outputCopy = output;
+  connectionCopy = connection;
   if (!self->_isClosingCapture && self->_isScanningForCode)
   {
     detector = self->_detector;
     if (!detector)
     {
-      v9 = [UIApp setupController];
-      v10 = [v9 visualDetector];
+      setupController = [UIApp setupController];
+      visualDetector = [setupController visualDetector];
       v11 = self->_detector;
-      self->_detector = v10;
+      self->_detector = visualDetector;
 
       detector = self->_detector;
     }
 
-    [(COSWristAttributeVisualDetector *)detector ingestSampleBuffer:a4];
+    [(COSWristAttributeVisualDetector *)detector ingestSampleBuffer:buffer];
     v12 = +[NSUserDefaults standardUserDefaults];
-    v63 = a4;
+    bufferCopy = buffer;
     v13 = [v12 BOOLForKey:@"LiveOnCollection"];
 
     if (self->_showLensHUD || ((self->_lensCollectorMode | v13) & 1) != 0)
     {
-      v14 = [(COSWristAttributeVisualDetector *)self->_detector computedConfidences];
-      v15 = [(COSWristAttributeVisualDetector *)self->_detector confidenceSummary];
-      v16 = v15;
-      if (((self->_lensCollectorMode | v13) & 1) != 0 && [v15 attribute] >= 5)
+      computedConfidences = [(COSWristAttributeVisualDetector *)self->_detector computedConfidences];
+      confidenceSummary = [(COSWristAttributeVisualDetector *)self->_detector confidenceSummary];
+      v16 = confidenceSummary;
+      if (((self->_lensCollectorMode | v13) & 1) != 0 && [confidenceSummary attribute] >= 5)
       {
-        -[COSWristAttributeVisualDetector exportSample:withClassification:](self->_detector, "exportSample:withClassification:", v63, [v16 attribute]);
+        -[COSWristAttributeVisualDetector exportSample:withClassification:](self->_detector, "exportSample:withClassification:", bufferCopy, [v16 attribute]);
       }
 
       v17 = &_dispatch_main_q;
@@ -449,7 +449,7 @@ LABEL_31:
       block[2] = sub_10006B2B4;
       block[3] = &unk_100269910;
       block[4] = self;
-      v18 = v14;
+      v18 = computedConfidences;
       v79 = v18;
       v19 = v16;
       v80 = v19;
@@ -458,7 +458,7 @@ LABEL_31:
 
     if (!self->_isClosingCapture && self->_shouldCaptureMagicCodeScan && self->_hasBegunCapture && self->_missWmCount <= 7)
     {
-      [(COSMagicCodeScanner *)self writeSampleBuffer:v63 ofType:AVMediaTypeVideo];
+      [(COSMagicCodeScanner *)self writeSampleBuffer:bufferCopy ofType:AVMediaTypeVideo];
     }
 
     Current = CFAbsoluteTimeGetCurrent();
@@ -467,7 +467,7 @@ LABEL_31:
       goto LABEL_94;
     }
 
-    ImageBuffer = CMSampleBufferGetImageBuffer(v63);
+    ImageBuffer = CMSampleBufferGetImageBuffer(bufferCopy);
     if (!CVPixelBufferIsPlanar(ImageBuffer))
     {
       v25 = pbb_setupflow_log();
@@ -630,7 +630,7 @@ LABEL_94:
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Started Writing...", &pixelBufferOut, 2u);
         }
 
-        [(COSMagicCodeScanner *)self writeSampleBuffer:v63 ofType:AVMediaTypeVideo];
+        [(COSMagicCodeScanner *)self writeSampleBuffer:bufferCopy ofType:AVMediaTypeVideo];
       }
 
       v48 = pbb_setupflow_log();
@@ -758,13 +758,13 @@ LABEL_78:
 LABEL_95:
 }
 
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3 ofType:(id)a4
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer ofType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   if (__PAIR64__(self->_hasBegunCapture, self->_shouldCaptureMagicCodeScan) == 0x100000001)
   {
     memset(&v14, 0, sizeof(v14));
-    CMSampleBufferGetPresentationTimeStamp(&v14, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v14, buffer);
     if ([(AVAssetWriter *)self->_assetWriter status]== AVAssetWriterStatusUnknown)
     {
       if ([(AVAssetWriter *)self->_assetWriter startWriting])
@@ -798,20 +798,20 @@ LABEL_95:
       {
         v11 = self->_assetWriter;
         v12 = [NSNumber numberWithInteger:[(AVAssetWriter *)v11 status]];
-        v13 = [(AVAssetWriter *)self->_assetWriter error];
+        error = [(AVAssetWriter *)self->_assetWriter error];
         LODWORD(buf.value) = 138412802;
         *(&buf.value + 4) = v11;
         LOWORD(buf.flags) = 2112;
         *(&buf.flags + 2) = v12;
         HIWORD(buf.epoch) = 2112;
-        v16 = v13;
+        v16 = error;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Writer %@ Status was %@ Error %@", &buf, 0x20u);
       }
 
       goto LABEL_18;
     }
 
-    if (AVMediaTypeVideo == v6 && [(AVAssetWriterInput *)self->_assetWriterInput isReadyForMoreMediaData]&& ![(AVAssetWriterInput *)self->_assetWriterInput appendSampleBuffer:a3])
+    if (AVMediaTypeVideo == typeCopy && [(AVAssetWriterInput *)self->_assetWriterInput isReadyForMoreMediaData]&& ![(AVAssetWriterInput *)self->_assetWriterInput appendSampleBuffer:buffer])
     {
       v10 = pbb_setupflow_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -910,15 +910,15 @@ LABEL_18:
       previewLayer = self->_previewLayer;
       self->_previewLayer = v6;
 
-      v8 = [(COSMagicCodeScanner *)self layer];
-      [v8 insertSublayer:self->_previewLayer atIndex:0];
+      layer = [(COSMagicCodeScanner *)self layer];
+      [layer insertSublayer:self->_previewLayer atIndex:0];
 
       v9 = self->_previewLayer;
-      v10 = [(COSMagicCodeScanner *)self layer];
-      [v10 bounds];
+      layer2 = [(COSMagicCodeScanner *)self layer];
+      [layer2 bounds];
       v12 = v11;
-      v13 = [(COSMagicCodeScanner *)self layer];
-      [v13 bounds];
+      layer3 = [(COSMagicCodeScanner *)self layer];
+      [layer3 bounds];
       [(AVCaptureVideoPreviewLayer *)v9 setFrame:0.0, 0.0, v12];
 
       [(AVCaptureVideoPreviewLayer *)self->_previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
@@ -959,17 +959,17 @@ LABEL_18:
   self->_registeredForCaptureRunTimeErrorNotification = 0;
 }
 
-- (void)handleRuntimeError:(id)a3
+- (void)handleRuntimeError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = v5;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 userInfo];
-      sub_100187EB0(v7, buf, v6);
+      userInfo = [errorCopy userInfo];
+      sub_100187EB0(userInfo, buf, v6);
     }
   }
 

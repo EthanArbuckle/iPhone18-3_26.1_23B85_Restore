@@ -1,10 +1,10 @@
 @interface BlurrableAvatarView
 - (CNAvatarView)cnAvatarView;
 - (CNContact)contact;
-- (void)didTapWithSender:(id)a3;
+- (void)didTapWithSender:(id)sender;
 - (void)layoutSubviews;
-- (void)setContact:(id)a3;
-- (void)setWantsBlur:(BOOL)a3;
+- (void)setContact:(id)contact;
+- (void)setWantsBlur:(BOOL)blur;
 @end
 
 @implementation BlurrableAvatarView
@@ -16,17 +16,17 @@
   return v2;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001A60DC(v4);
+  contactCopy = contact;
+  selfCopy = self;
+  sub_1001A60DC(contactCopy);
 }
 
-- (void)setWantsBlur:(BOOL)a3
+- (void)setWantsBlur:(BOOL)blur
 {
-  v4 = self;
-  sub_1001A61E4(a3);
+  selfCopy = self;
+  sub_1001A61E4(blur);
 }
 
 - (CNAvatarView)cnAvatarView
@@ -38,14 +38,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A6430();
 }
 
-- (void)didTapWithSender:(id)a3
+- (void)didTapWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_1001A6F14();
 }
 

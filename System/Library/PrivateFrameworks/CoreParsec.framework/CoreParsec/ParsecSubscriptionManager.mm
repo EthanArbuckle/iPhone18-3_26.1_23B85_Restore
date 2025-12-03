@@ -1,14 +1,14 @@
 @interface ParsecSubscriptionManager
-- (void)bagChangeNotificationWithNotification:(id)a3;
+- (void)bagChangeNotificationWithNotification:(id)notification;
 @end
 
 @implementation ParsecSubscriptionManager
 
-- (void)bagChangeNotificationWithNotification:(id)a3
+- (void)bagChangeNotificationWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_100047C54(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100047C54(notificationCopy);
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface PLBatteryBreakdownNotificationInfo
 + (double)representativeDisplayPower;
-- (PLBatteryBreakdownNotificationInfo)initWithEntry:(id)a3;
+- (PLBatteryBreakdownNotificationInfo)initWithEntry:(id)entry;
 - (double)activeEnergy;
-- (double)calculateActiveEnergyForNSEDuration:(double)a3 andCount:(unint64_t)a4 withNominalEnergy:(double)a5;
+- (double)calculateActiveEnergyForNSEDuration:(double)duration andCount:(unint64_t)count withNominalEnergy:(double)energy;
 - (double)notificationEnergy;
 - (id)description;
-- (void)combineWith:(id)a3;
+- (void)combineWith:(id)with;
 @end
 
 @implementation PLBatteryBreakdownNotificationInfo
 
-- (PLBatteryBreakdownNotificationInfo)initWithEntry:(id)a3
+- (PLBatteryBreakdownNotificationInfo)initWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"NotificationBundleID"];
-  if (!v5)
+  entryCopy = entry;
+  selfCopy = [entryCopy objectForKeyedSubscript:@"NotificationBundleID"];
+  if (!selfCopy)
   {
     goto LABEL_14;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"NotificationType"];
+  v6 = [entryCopy objectForKeyedSubscript:@"NotificationType"];
   if (!v6)
   {
     goto LABEL_10;
   }
 
   v7 = v6;
-  v8 = [v4 objectForKeyedSubscript:@"BgWakingCount"];
+  v8 = [entryCopy objectForKeyedSubscript:@"BgWakingCount"];
   if (!v8)
   {
 
@@ -35,12 +35,12 @@ LABEL_10:
   }
 
   v9 = v8;
-  v10 = [v4 objectForKeyedSubscript:@"BgWakingNSEDuration"];
+  v10 = [entryCopy objectForKeyedSubscript:@"BgWakingNSEDuration"];
 
   if (!v10)
   {
 LABEL_11:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -49,13 +49,13 @@ LABEL_11:
   v11 = [(PLBatteryBreakdownNotificationInfo *)&v27 init];
   if (v11)
   {
-    v12 = [v4 objectForKeyedSubscript:@"NotificationBundleID"];
+    v12 = [entryCopy objectForKeyedSubscript:@"NotificationBundleID"];
     [(PLBatteryBreakdownNotificationInfo *)v11 setBundleID:v12];
 
-    v13 = [(PLBatteryBreakdownNotificationInfo *)v11 bundleID];
-    -[PLBatteryBreakdownNotificationInfo setIsFirstParty:](v11, "setIsFirstParty:", [v13 hasPrefix:@"com.apple."]);
+    bundleID = [(PLBatteryBreakdownNotificationInfo *)v11 bundleID];
+    -[PLBatteryBreakdownNotificationInfo setIsFirstParty:](v11, "setIsFirstParty:", [bundleID hasPrefix:@"com.apple."]);
 
-    v14 = [v4 objectForKeyedSubscript:@"NotificationType"];
+    v14 = [entryCopy objectForKeyedSubscript:@"NotificationType"];
     -[PLBatteryBreakdownNotificationInfo setNotificationType:](v11, "setNotificationType:", [v14 intValue]);
 
     if (![(PLBatteryBreakdownNotificationInfo *)v11 notificationType]|| [(PLBatteryBreakdownNotificationInfo *)v11 notificationType]== -1)
@@ -66,34 +66,34 @@ LABEL_11:
       [(PLBatteryBreakdownNotificationInfo *)v11 setFgWakingNSEDuration:0.0];
       [(PLBatteryBreakdownNotificationInfo *)v11 setNonWakingCount:0];
       [(PLBatteryBreakdownNotificationInfo *)v11 setNonWakingNSEDuration:0.0];
-      v21 = [v4 objectForKeyedSubscript:@"BgWakingCount"];
-      v22 = [v21 intValue];
-      v23 = [v4 objectForKeyedSubscript:@"FgWakingCount"];
-      v24 = [v23 intValue] + v22;
-      v25 = [v4 objectForKeyedSubscript:@"NonWakingCount"];
+      v21 = [entryCopy objectForKeyedSubscript:@"BgWakingCount"];
+      intValue = [v21 intValue];
+      v23 = [entryCopy objectForKeyedSubscript:@"FgWakingCount"];
+      v24 = [v23 intValue] + intValue;
+      v25 = [entryCopy objectForKeyedSubscript:@"NonWakingCount"];
       -[PLBatteryBreakdownNotificationInfo setLocalCount:](v11, "setLocalCount:", (v24 + [v25 intValue]));
     }
 
     else
     {
-      v15 = [v4 objectForKeyedSubscript:@"BgWakingCount"];
+      v15 = [entryCopy objectForKeyedSubscript:@"BgWakingCount"];
       -[PLBatteryBreakdownNotificationInfo setBgWakingCount:](v11, "setBgWakingCount:", [v15 intValue]);
 
-      v16 = [v4 objectForKeyedSubscript:@"BgWakingNSEDuration"];
+      v16 = [entryCopy objectForKeyedSubscript:@"BgWakingNSEDuration"];
       [v16 doubleValue];
       [(PLBatteryBreakdownNotificationInfo *)v11 setBgWakingNSEDuration:?];
 
-      v17 = [v4 objectForKeyedSubscript:@"FgWakingCount"];
+      v17 = [entryCopy objectForKeyedSubscript:@"FgWakingCount"];
       -[PLBatteryBreakdownNotificationInfo setFgWakingCount:](v11, "setFgWakingCount:", [v17 intValue]);
 
-      v18 = [v4 objectForKeyedSubscript:@"FgWakingNSEDuration"];
+      v18 = [entryCopy objectForKeyedSubscript:@"FgWakingNSEDuration"];
       [v18 doubleValue];
       [(PLBatteryBreakdownNotificationInfo *)v11 setFgWakingNSEDuration:?];
 
-      v19 = [v4 objectForKeyedSubscript:@"NonWakingCount"];
+      v19 = [entryCopy objectForKeyedSubscript:@"NonWakingCount"];
       -[PLBatteryBreakdownNotificationInfo setNonWakingCount:](v11, "setNonWakingCount:", [v19 intValue]);
 
-      v20 = [v4 objectForKeyedSubscript:@"NonWakingNSEDuration"];
+      v20 = [entryCopy objectForKeyedSubscript:@"NonWakingNSEDuration"];
       [v20 doubleValue];
       [(PLBatteryBreakdownNotificationInfo *)v11 setNonWakingNSEDuration:?];
 
@@ -102,56 +102,56 @@ LABEL_11:
   }
 
   self = v11;
-  v5 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PLBatteryBreakdownNotificationInfo *)self fgWakingCount];
+  fgWakingCount = [(PLBatteryBreakdownNotificationInfo *)self fgWakingCount];
   [(PLBatteryBreakdownNotificationInfo *)self fgWakingNSEDuration];
   v6 = v5;
-  v7 = [(PLBatteryBreakdownNotificationInfo *)self bgWakingCount];
+  bgWakingCount = [(PLBatteryBreakdownNotificationInfo *)self bgWakingCount];
   [(PLBatteryBreakdownNotificationInfo *)self bgWakingNSEDuration];
   v9 = v8;
-  v10 = [(PLBatteryBreakdownNotificationInfo *)self nonWakingCount];
+  nonWakingCount = [(PLBatteryBreakdownNotificationInfo *)self nonWakingCount];
   [(PLBatteryBreakdownNotificationInfo *)self nonWakingNSEDuration];
   v12 = v11;
-  v13 = [(PLBatteryBreakdownNotificationInfo *)self localCount];
+  localCount = [(PLBatteryBreakdownNotificationInfo *)self localCount];
   [(PLBatteryBreakdownNotificationInfo *)self activeEnergy];
   v15 = v14;
   [(PLBatteryBreakdownNotificationInfo *)self baseEnergy];
   v17 = v16;
   [(PLBatteryBreakdownNotificationInfo *)self displayEnergy];
-  return [v3 stringWithFormat:@"FG Wake: %zu %.2fs, BG Wake: %zu %.2fs, Non-Wake: %zu %.2fs, Local: %zu, active: %.2f, base: %.2f, disp: %.2f", v4, v6, v7, v9, v10, v12, v13, v15, v17, v18];
+  return [v3 stringWithFormat:@"FG Wake: %zu %.2fs, BG Wake: %zu %.2fs, Non-Wake: %zu %.2fs, Local: %zu, active: %.2f, base: %.2f, disp: %.2f", fgWakingCount, v6, bgWakingCount, v9, nonWakingCount, v12, localCount, v15, v17, v18];
 }
 
-- (void)combineWith:(id)a3
+- (void)combineWith:(id)with
 {
-  if (a3)
+  if (with)
   {
-    v4 = a3;
-    -[PLBatteryBreakdownNotificationInfo setBgWakingCount:](self, "setBgWakingCount:", -[PLBatteryBreakdownNotificationInfo bgWakingCount](self, "bgWakingCount") + [v4 bgWakingCount]);
-    [v4 bgWakingNSEDuration];
+    withCopy = with;
+    -[PLBatteryBreakdownNotificationInfo setBgWakingCount:](self, "setBgWakingCount:", -[PLBatteryBreakdownNotificationInfo bgWakingCount](self, "bgWakingCount") + [withCopy bgWakingCount]);
+    [withCopy bgWakingNSEDuration];
     v6 = v5;
     [(PLBatteryBreakdownNotificationInfo *)self bgWakingNSEDuration];
     [(PLBatteryBreakdownNotificationInfo *)self setBgWakingNSEDuration:v6 + v7];
-    -[PLBatteryBreakdownNotificationInfo setFgWakingCount:](self, "setFgWakingCount:", -[PLBatteryBreakdownNotificationInfo fgWakingCount](self, "fgWakingCount") + [v4 fgWakingCount]);
-    [v4 fgWakingNSEDuration];
+    -[PLBatteryBreakdownNotificationInfo setFgWakingCount:](self, "setFgWakingCount:", -[PLBatteryBreakdownNotificationInfo fgWakingCount](self, "fgWakingCount") + [withCopy fgWakingCount]);
+    [withCopy fgWakingNSEDuration];
     v9 = v8;
     [(PLBatteryBreakdownNotificationInfo *)self fgWakingNSEDuration];
     [(PLBatteryBreakdownNotificationInfo *)self setFgWakingNSEDuration:v9 + v10];
-    -[PLBatteryBreakdownNotificationInfo setNonWakingCount:](self, "setNonWakingCount:", -[PLBatteryBreakdownNotificationInfo nonWakingCount](self, "nonWakingCount") + [v4 nonWakingCount]);
-    [v4 nonWakingNSEDuration];
+    -[PLBatteryBreakdownNotificationInfo setNonWakingCount:](self, "setNonWakingCount:", -[PLBatteryBreakdownNotificationInfo nonWakingCount](self, "nonWakingCount") + [withCopy nonWakingCount]);
+    [withCopy nonWakingNSEDuration];
     v12 = v11;
     [(PLBatteryBreakdownNotificationInfo *)self nonWakingNSEDuration];
     [(PLBatteryBreakdownNotificationInfo *)self setNonWakingNSEDuration:v12 + v13];
-    v14 = [v4 localCount];
+    localCount = [withCopy localCount];
 
-    v15 = [(PLBatteryBreakdownNotificationInfo *)self localCount]+ v14;
+    v15 = [(PLBatteryBreakdownNotificationInfo *)self localCount]+ localCount;
 
     [(PLBatteryBreakdownNotificationInfo *)self setLocalCount:v15];
   }
@@ -172,8 +172,8 @@ LABEL_14:
   if ([(PLBatteryBreakdownNotificationInfo *)self isFirstParty])
   {
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"com.apple.MobileSMS", @"com.apple.mobilemail", @"com.apple.mobilecal", 0}];
-    v14 = [(PLBatteryBreakdownNotificationInfo *)self bundleID];
-    v15 = [v13 containsObject:v14];
+    bundleID = [(PLBatteryBreakdownNotificationInfo *)self bundleID];
+    v15 = [v13 containsObject:bundleID];
 
     if (v15)
     {
@@ -190,19 +190,19 @@ LABEL_14:
   return v6 + 0.0 + v9 + v12 + v16;
 }
 
-- (double)calculateActiveEnergyForNSEDuration:(double)a3 andCount:(unint64_t)a4 withNominalEnergy:(double)a5
+- (double)calculateActiveEnergyForNSEDuration:(double)duration andCount:(unint64_t)count withNominalEnergy:(double)energy
 {
-  if (a3 > 0.0)
+  if (duration > 0.0)
   {
-    v5 = a3 / 3600.0;
-    a5 = 750.0;
-    return v5 * a5;
+    countCopy = duration / 3600.0;
+    energy = 750.0;
+    return countCopy * energy;
   }
 
-  if (a4)
+  if (count)
   {
-    v5 = a4;
-    return v5 * a5;
+    countCopy = count;
+    return countCopy * energy;
   }
 
   return 0.0;

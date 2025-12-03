@@ -1,19 +1,19 @@
 @interface LACUNManager
-- (LACUNManager)initWithBundleIdentifier:(id)a3 categories:(id)a4;
+- (LACUNManager)initWithBundleIdentifier:(id)identifier categories:(id)categories;
 - (LACUNManagerDelegate)delegate;
-- (id)_makeNotificationRequestWithConfiguration:(id)a3;
-- (void)cancelAllNotificationsWithCompletion:(id)a3;
-- (void)cancelNotificationsWithIdentifiers:(id)a3 scheduledOnly:(BOOL)a4 completion:(id)a5;
-- (void)postNotification:(id)a3 completion:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (id)_makeNotificationRequestWithConfiguration:(id)configuration;
+- (void)cancelAllNotificationsWithCompletion:(id)completion;
+- (void)cancelNotificationsWithIdentifiers:(id)identifiers scheduledOnly:(BOOL)only completion:(id)completion;
+- (void)postNotification:(id)notification completion:(id)completion;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation LACUNManager
 
-- (LACUNManager)initWithBundleIdentifier:(id)a3 categories:(id)a4
+- (LACUNManager)initWithBundleIdentifier:(id)identifier categories:(id)categories
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  categoriesCopy = categories;
   v17.receiver = self;
   v17.super_class = LACUNManager;
   v8 = [(LACUNManager *)&v17 init];
@@ -23,10 +23,10 @@
     v13[1] = 3221225472;
     v13[2] = __52__LACUNManager_initWithBundleIdentifier_categories___block_invoke;
     v13[3] = &unk_1E7A95E70;
-    v14 = v6;
+    v14 = identifierCopy;
     v9 = v8;
     v15 = v9;
-    v16 = v7;
+    v16 = categoriesCopy;
     v10 = __52__LACUNManager_initWithBundleIdentifier_categories___block_invoke(v13);
     notificationCenter = v9->_notificationCenter;
     v9->_notificationCenter = v10;
@@ -168,43 +168,43 @@ id __52__LACUNManager_initWithBundleIdentifier_categories___block_invoke(uint64_
   return v24;
 }
 
-- (void)postNotification:(id)a3 completion:(id)a4
+- (void)postNotification:(id)notification completion:(id)completion
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  notificationCopy = notification;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_notificationCenter)
   {
-    v9 = [v6 identifier];
+    identifier = [notificationCopy identifier];
 
-    if (v9)
+    if (identifier)
     {
       notificationCenter = self->_notificationCenter;
-      v11 = [v6 identifier];
-      v22[0] = v11;
+      identifier2 = [notificationCopy identifier];
+      v22[0] = identifier2;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
       [(UNUserNotificationCenter *)notificationCenter removePendingNotificationRequestsWithIdentifiers:v12];
     }
 
-    v13 = [(LACUNManager *)self _makeNotificationRequestWithConfiguration:v6];
+    v13 = [(LACUNManager *)self _makeNotificationRequestWithConfiguration:notificationCopy];
     [(UNUserNotificationCenter *)self->_notificationCenter addNotificationRequest:v13 withCompletionHandler:v8];
     v14 = LACLogNotifications();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v13 content];
-      v16 = [v13 identifier];
+      content = [v13 content];
+      identifier3 = [v13 identifier];
       v18 = 138412546;
-      v19 = v15;
+      v19 = content;
       v20 = 2112;
-      v21 = v16;
+      v21 = identifier3;
       _os_log_impl(&dword_1B0233000, v14, OS_LOG_TYPE_DEFAULT, "Posted notification with content: (%@) identifier: %@)", &v18, 0x16u);
     }
 
     goto LABEL_9;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v13 = [LACError errorWithCode:-1020 debugDescription:@"UNUserNotificationCenter instance is nil"];
     (v8)[2](v8, v13);
@@ -214,26 +214,26 @@ LABEL_9:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelNotificationsWithIdentifiers:(id)a3 scheduledOnly:(BOOL)a4 completion:(id)a5
+- (void)cancelNotificationsWithIdentifiers:(id)identifiers scheduledOnly:(BOOL)only completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v10 = completionCopy;
   if (self->_notificationCenter)
   {
     v11 = LACLogNotifications();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = identifiersCopy;
       _os_log_impl(&dword_1B0233000, v11, OS_LOG_TYPE_DEFAULT, "Cancelling notifications with identifiers: (%@)", &v14, 0xCu);
     }
 
-    [(UNUserNotificationCenter *)self->_notificationCenter removePendingNotificationRequestsWithIdentifiers:v8];
-    if (!a4)
+    [(UNUserNotificationCenter *)self->_notificationCenter removePendingNotificationRequestsWithIdentifiers:identifiersCopy];
+    if (!only)
     {
-      [(UNUserNotificationCenter *)self->_notificationCenter removeDeliveredNotificationsWithIdentifiers:v8];
+      [(UNUserNotificationCenter *)self->_notificationCenter removeDeliveredNotificationsWithIdentifiers:identifiersCopy];
     }
 
     if (v10)
@@ -242,7 +242,7 @@ LABEL_9:
     }
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     v12 = [LACError errorWithCode:-1020 debugDescription:@"UNUserNotificationCenter instance is nil"];
     (v10)[2](v10, v12);
@@ -251,10 +251,10 @@ LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelAllNotificationsWithCompletion:(id)a3
+- (void)cancelAllNotificationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_notificationCenter)
   {
     v6 = LACLogNotifications();
@@ -272,78 +272,78 @@ LABEL_9:
     }
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = [LACError errorWithCode:-1020 debugDescription:@"UNUserNotificationCenter instance is nil"];
     (v5)[2](v5, v7);
   }
 }
 
-- (id)_makeNotificationRequestWithConfiguration:(id)a3
+- (id)_makeNotificationRequestWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(getUNMutableNotificationContentClass());
-  [v3 withdrawInterval];
+  [configurationCopy withdrawInterval];
   if (v5 > 20.0)
   {
     v6 = [MEMORY[0x1E695DF00] now];
-    [v3 withdrawInterval];
+    [configurationCopy withdrawInterval];
     v7 = [v6 dateByAddingTimeInterval:?];
 
     [v4 setExpirationDate:v7];
   }
 
-  v8 = [v3 systemIconName];
+  systemIconName = [configurationCopy systemIconName];
 
-  if (v8)
+  if (systemIconName)
   {
     UNNotificationIconClass = getUNNotificationIconClass();
-    v10 = [v3 systemIconName];
-    v11 = [UNNotificationIconClass iconForSystemImageNamed:v10];
+    systemIconName2 = [configurationCopy systemIconName];
+    v11 = [UNNotificationIconClass iconForSystemImageNamed:systemIconName2];
     [v4 setIcon:v11];
   }
 
-  if ([v3 isTitleLocalized])
+  if ([configurationCopy isTitleLocalized])
   {
-    v12 = [v3 title];
-    [v4 setTitle:v12];
+    title = [configurationCopy title];
+    [v4 setTitle:title];
   }
 
   else
   {
     v13 = MEMORY[0x1E696AEC0];
-    v12 = [v3 title];
-    v14 = [v13 localizedUserNotificationStringForKey:v12 arguments:0];
+    title = [configurationCopy title];
+    v14 = [v13 localizedUserNotificationStringForKey:title arguments:0];
     [v4 setTitle:v14];
   }
 
-  if ([v3 isBodyLocalized])
+  if ([configurationCopy isBodyLocalized])
   {
-    v15 = [v3 body];
-    [v4 setBody:v15];
+    body = [configurationCopy body];
+    [v4 setBody:body];
   }
 
   else
   {
     v16 = MEMORY[0x1E696AEC0];
-    v15 = [v3 body];
-    v17 = [v16 localizedUserNotificationStringForKey:v15 arguments:0];
+    body = [configurationCopy body];
+    v17 = [v16 localizedUserNotificationStringForKey:body arguments:0];
     [v4 setBody:v17];
   }
 
-  if ([v3 isTimeSensitive])
+  if ([configurationCopy isTimeSensitive])
   {
     [v4 setInterruptionLevel:2];
     [v4 setShouldIgnoreDoNotDisturb:1];
   }
 
-  v18 = [v3 defaultActionURL];
+  defaultActionURL = [configurationCopy defaultActionURL];
 
-  if (v18)
+  if (defaultActionURL)
   {
     [v4 setHasDefaultAction:1];
-    v19 = [v3 defaultActionURL];
-    [v4 setDefaultActionURL:v19];
+    defaultActionURL2 = [configurationCopy defaultActionURL];
+    [v4 setDefaultActionURL:defaultActionURL2];
 
     [v4 setShouldBackgroundDefaultAction:1];
   }
@@ -353,20 +353,20 @@ LABEL_9:
     [v4 setShouldSuppressDefaultAction:1];
   }
 
-  if ([v3 shouldDisplayActionsInline])
+  if ([configurationCopy shouldDisplayActionsInline])
   {
     [v4 setShouldDisplayActionsInline:1];
   }
 
-  v20 = [v3 categoryIdentifier];
+  categoryIdentifier = [configurationCopy categoryIdentifier];
 
-  if (v20)
+  if (categoryIdentifier)
   {
-    v21 = [v3 categoryIdentifier];
-    [v4 setCategoryIdentifier:v21];
+    categoryIdentifier2 = [configurationCopy categoryIdentifier];
+    [v4 setCategoryIdentifier:categoryIdentifier2];
   }
 
-  [v3 triggerInterval];
+  [configurationCopy triggerInterval];
   if (v22 <= 0.0)
   {
     v24 = 0;
@@ -375,32 +375,32 @@ LABEL_9:
   else
   {
     UNTimeIntervalNotificationTriggerClass = getUNTimeIntervalNotificationTriggerClass();
-    [v3 triggerInterval];
+    [configurationCopy triggerInterval];
     v24 = [UNTimeIntervalNotificationTriggerClass triggerWithTimeInterval:0 repeats:?];
   }
 
   UNNotificationRequestClass = getUNNotificationRequestClass();
-  v26 = [v3 identifier];
-  v27 = [UNNotificationRequestClass requestWithIdentifier:v26 content:v4 trigger:v24];
+  identifier = [configurationCopy identifier];
+  v27 = [UNNotificationRequestClass requestWithIdentifier:identifier content:v4 trigger:v24];
 
   return v27;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 notification];
-  v10 = [v9 request];
-  v11 = [v10 identifier];
+  responseCopy = response;
+  handlerCopy = handler;
+  notification = [responseCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
 
-  v12 = [v7 notification];
-  v13 = [v12 request];
-  v14 = [v13 content];
-  v15 = [v14 categoryIdentifier];
+  notification2 = [responseCopy notification];
+  request2 = [notification2 request];
+  content = [request2 content];
+  categoryIdentifier = [content categoryIdentifier];
 
-  v16 = [v7 actionIdentifier];
+  actionIdentifier = [responseCopy actionIdentifier];
   v17 = LACLogNotifications();
   if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -408,63 +408,63 @@ LABEL_9:
   }
 
   v35[0] = @"identifier";
-  v18 = v11;
-  if (!v11)
+  null = identifier;
+  if (!identifier)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v18;
-  v36[0] = v18;
+  v31 = null;
+  v36[0] = null;
   v35[1] = @"category";
-  v19 = v15;
-  if (!v15)
+  null2 = categoryIdentifier;
+  if (!categoryIdentifier)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = self;
-  v30 = v19;
-  v36[1] = v19;
+  selfCopy = self;
+  v30 = null2;
+  v36[1] = null2;
   v35[2] = @"action";
-  v20 = v16;
-  if (!v16)
+  null3 = actionIdentifier;
+  if (!actionIdentifier)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v8;
-  v36[2] = v20;
+  v34 = handlerCopy;
+  v36[2] = null3;
   v35[3] = @"url";
-  v32 = [v7 notification];
-  v21 = [v32 request];
-  v22 = [v21 content];
-  v23 = [v22 defaultActionURL];
-  v24 = v23;
-  if (!v23)
+  notification3 = [responseCopy notification];
+  request3 = [notification3 request];
+  content2 = [request3 content];
+  defaultActionURL = [content2 defaultActionURL];
+  null4 = defaultActionURL;
+  if (!defaultActionURL)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36[3] = v24;
+  v36[3] = null4;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:4];
   *buf = 138543362;
   v38 = v25;
   _os_log_impl(&dword_1B0233000, v17, OS_LOG_TYPE_DEFAULT, "Did receive response for notification %{public}@", buf, 0xCu);
 
-  if (!v23)
+  if (!defaultActionURL)
   {
   }
 
-  v8 = v34;
-  if (!v16)
+  handlerCopy = v34;
+  if (!actionIdentifier)
   {
   }
 
-  self = v33;
-  if (v15)
+  self = selfCopy;
+  if (categoryIdentifier)
   {
-    if (v11)
+    if (identifier)
     {
       goto LABEL_16;
     }
@@ -473,24 +473,24 @@ LABEL_9:
   else
   {
 
-    if (v11)
+    if (identifier)
     {
       goto LABEL_16;
     }
   }
 
 LABEL_16:
-  v26 = [(LACUNManager *)self delegate];
+  delegate = [(LACUNManager *)self delegate];
 
-  if (v26)
+  if (delegate)
   {
-    v27 = [(LACUNManager *)self delegate];
-    [v27 notificationManager:self didRespondToNotification:v11 fromCategory:v15 withAction:v16 completionHandler:v8];
+    delegate2 = [(LACUNManager *)self delegate];
+    [delegate2 notificationManager:self didRespondToNotification:identifier fromCategory:categoryIdentifier withAction:actionIdentifier completionHandler:handlerCopy];
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
   v28 = *MEMORY[0x1E69E9840];

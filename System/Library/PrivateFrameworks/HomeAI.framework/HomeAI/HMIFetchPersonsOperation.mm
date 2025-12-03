@@ -1,6 +1,6 @@
 @interface HMIFetchPersonsOperation
 + (id)shortDescription;
-- (HMIFetchPersonsOperation)initWithDataSource:(id)a3;
+- (HMIFetchPersonsOperation)initWithDataSource:(id)source;
 - (NSString)shortDescription;
 - (void)main;
 - (void)mainInsideAutoreleasePool;
@@ -8,16 +8,16 @@
 
 @implementation HMIFetchPersonsOperation
 
-- (HMIFetchPersonsOperation)initWithDataSource:(id)a3
+- (HMIFetchPersonsOperation)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = HMIFetchPersonsOperation;
   v6 = [(HMFOperation *)&v11 initWithTimeout:20.0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     v8 = [MEMORY[0x277CBEB98] set];
     persons = v7->_persons;
     v7->_persons = v8;
@@ -37,13 +37,13 @@
 - (void)mainInsideAutoreleasePool
 {
   objc_initWeak(&location, self);
-  v3 = [(HMIFetchPersonsOperation *)self dataSource];
+  dataSource = [(HMIFetchPersonsOperation *)self dataSource];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__HMIFetchPersonsOperation_mainInsideAutoreleasePool__block_invoke;
   v4[3] = &unk_278753D20;
   objc_copyWeak(&v5, &location);
-  [v3 fetchAllPersonsWithCompletion:v4];
+  [dataSource fetchAllPersonsWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);

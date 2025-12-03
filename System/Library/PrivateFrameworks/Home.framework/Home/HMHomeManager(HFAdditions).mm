@@ -23,25 +23,25 @@
 - (id)hf_homeWithIdentifier:()HFAdditions
 {
   v4 = a3;
-  v5 = [a1 homes];
+  homes = [self homes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__HMHomeManager_HFAdditions__hf_homeWithIdentifier___block_invoke;
   v9[3] = &unk_277DF5E78;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [homes na_firstObjectPassingTest:v9];
 
   return v7;
 }
 
 - (HFMutableReorderableHomeKitItemList)hf_mutableOrderedHomesList
 {
-  v4 = objc_getAssociatedObject(a1, a2);
+  v4 = objc_getAssociatedObject(self, a2);
   if (!v4)
   {
-    v4 = [(HFReorderableHomeKitItemList *)[HFMutableReorderableHomeKitItemList alloc] initWithApplicationDataContainer:a1 category:@"OrderedHomes"];
-    objc_setAssociatedObject(a1, a2, v4, 1);
+    v4 = [(HFReorderableHomeKitItemList *)[HFMutableReorderableHomeKitItemList alloc] initWithApplicationDataContainer:self category:@"OrderedHomes"];
+    objc_setAssociatedObject(self, a2, v4, 1);
   }
 
   return v4;
@@ -49,18 +49,18 @@
 
 - (id)hf_orderedHomesList
 {
-  v1 = [a1 hf_mutableOrderedHomesList];
-  v2 = [v1 copy];
+  hf_mutableOrderedHomesList = [self hf_mutableOrderedHomesList];
+  v2 = [hf_mutableOrderedHomesList copy];
 
   return v2;
 }
 
 - (id)hf_orderedHomes
 {
-  v2 = [a1 homes];
-  v3 = [a1 hf_mutableOrderedHomesList];
-  v4 = [v3 sortedHomeKitObjectComparator];
-  v5 = [v2 sortedArrayUsingComparator:v4];
+  homes = [self homes];
+  hf_mutableOrderedHomesList = [self hf_mutableOrderedHomesList];
+  sortedHomeKitObjectComparator = [hf_mutableOrderedHomesList sortedHomeKitObjectComparator];
+  v5 = [homes sortedArrayUsingComparator:sortedHomeKitObjectComparator];
 
   return v5;
 }
@@ -68,11 +68,11 @@
 - (id)hf_setOrderedHomes:()HFAdditions
 {
   v4 = a3;
-  v5 = [a1 hf_mutableOrderedHomesList];
-  [v5 setSortedHomeKitObjects:v4];
+  hf_mutableOrderedHomesList = [self hf_mutableOrderedHomesList];
+  [hf_mutableOrderedHomesList setSortedHomeKitObjects:v4];
 
-  v6 = [a1 hf_mutableOrderedHomesList];
-  v7 = [v6 saveWithSender:0];
+  hf_mutableOrderedHomesList2 = [self hf_mutableOrderedHomesList];
+  v7 = [hf_mutableOrderedHomesList2 saveWithSender:0];
 
   return v7;
 }
@@ -81,14 +81,14 @@
 {
   v3 = a3;
   v4 = +[HFHomeKitDispatcher sharedDispatcher];
-  v5 = [v4 allHomesFuture];
+  allHomesFuture = [v4 allHomesFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__HMHomeManager_HFAdditions__hf_homeFutureForName___block_invoke;
   v9[3] = &unk_277DF5938;
   v10 = v3;
   v6 = v3;
-  v7 = [v5 flatMap:v9];
+  v7 = [allHomesFuture flatMap:v9];
 
   return v7;
 }
@@ -101,13 +101,13 @@
   v6 = [(HFURLComponents *)v5 valueForParameter:@"homeid"];
   if (v6)
   {
-    v7 = [a1 homes];
+    homes = [self homes];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __44__HMHomeManager_HFAdditions__hf_homeForURL___block_invoke;
     v10[3] = &unk_277DF5E78;
     v11 = v6;
-    v8 = [v7 na_firstObjectPassingTest:v10];
+    v8 = [homes na_firstObjectPassingTest:v10];
   }
 
   else
@@ -121,14 +121,14 @@
 - (id)hf_homeForName:()HFAdditions
 {
   v4 = a3;
-  v5 = [a1 hf_orderedHomes];
+  hf_orderedHomes = [self hf_orderedHomes];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __45__HMHomeManager_HFAdditions__hf_homeForName___block_invoke;
   v10[3] = &unk_277DF5E78;
   v11 = v4;
   v6 = v4;
-  v7 = [v5 na_filter:v10];
+  v7 = [hf_orderedHomes na_filter:v10];
 
   if ([v7 count] == 1)
   {
@@ -149,11 +149,11 @@
   v2 = HFLogForCategory(9uLL);
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [a1 _cached_hasSeenOnboardingWelcomeViewNumber];
-    v4 = [a1 applicationData];
-    v5 = [v4 objectForKey:@"hasSeenOnboardingWelcomeView"];
+    _cached_hasSeenOnboardingWelcomeViewNumber = [self _cached_hasSeenOnboardingWelcomeViewNumber];
+    applicationData = [self applicationData];
+    v5 = [applicationData objectForKey:@"hasSeenOnboardingWelcomeView"];
     v16 = 138412546;
-    v17 = v3;
+    v17 = _cached_hasSeenOnboardingWelcomeViewNumber;
     v18 = 2112;
     v19 = v5;
     _os_log_impl(&dword_20D9BF000, v2, OS_LOG_TYPE_DEFAULT, "*** Cached_hasSeenOnboardingWelcomeViewNumber =  [%@] - applicationData = [%@] ***", &v16, 0x16u);
@@ -162,39 +162,39 @@
   v6 = HFLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [a1 applicationData];
-    v8 = [v7 dictionary];
+    applicationData2 = [self applicationData];
+    dictionary = [applicationData2 dictionary];
     v16 = 138412290;
-    v17 = v8;
+    v17 = dictionary;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "*** applicationData = [%@] ***", &v16, 0xCu);
   }
 
-  v9 = [a1 _cached_hasSeenOnboardingWelcomeViewNumber];
-  v10 = v9;
-  if (v9)
+  _cached_hasSeenOnboardingWelcomeViewNumber2 = [self _cached_hasSeenOnboardingWelcomeViewNumber];
+  v10 = _cached_hasSeenOnboardingWelcomeViewNumber2;
+  if (_cached_hasSeenOnboardingWelcomeViewNumber2)
   {
-    v11 = v9;
+    v11 = _cached_hasSeenOnboardingWelcomeViewNumber2;
   }
 
   else
   {
-    v12 = [a1 applicationData];
-    v11 = [v12 objectForKey:@"hasSeenOnboardingWelcomeView"];
+    applicationData3 = [self applicationData];
+    v11 = [applicationData3 objectForKey:@"hasSeenOnboardingWelcomeView"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
   }
 
   else
   {
-    v13 = 0;
+    bOOLValue = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v13;
+  return bOOLValue;
 }
 
 - (id)hf_setHasSeenOnboardingWelcomeView:()HFAdditions
@@ -210,20 +210,20 @@
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  v8 = [a1 applicationData];
-  [v8 setObject:v7 forKeyedSubscript:@"hasSeenOnboardingWelcomeView"];
+  applicationData = [self applicationData];
+  [applicationData setObject:v7 forKeyedSubscript:@"hasSeenOnboardingWelcomeView"];
 
-  [a1 set_cached_hasSeenOnboardingWelcomeViewNumber:v7];
-  v9 = [a1 hf_updateApplicationDataFuture];
+  [self set_cached_hasSeenOnboardingWelcomeViewNumber:v7];
+  hf_updateApplicationDataFuture = [self hf_updateApplicationDataFuture];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__HMHomeManager_HFAdditions__hf_setHasSeenOnboardingWelcomeView___block_invoke;
   v14[3] = &unk_277DF7350;
   v16 = a3;
-  v14[4] = a1;
+  v14[4] = self;
   v15 = v7;
   v10 = v7;
-  v11 = [v9 addCompletionBlock:v14];
+  v11 = [hf_updateApplicationDataFuture addCompletionBlock:v14];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -232,67 +232,67 @@
 
 - (uint64_t)hf_lastNewFeaturesViewVersionSeen
 {
-  v2 = [a1 _cached_lastOnboardingNewFeaturesVersionSeenNumber];
-  v3 = v2;
-  if (v2)
+  _cached_lastOnboardingNewFeaturesVersionSeenNumber = [self _cached_lastOnboardingNewFeaturesVersionSeenNumber];
+  v3 = _cached_lastOnboardingNewFeaturesVersionSeenNumber;
+  if (_cached_lastOnboardingNewFeaturesVersionSeenNumber)
   {
-    v4 = v2;
+    v4 = _cached_lastOnboardingNewFeaturesVersionSeenNumber;
   }
 
   else
   {
-    v5 = [a1 applicationData];
-    v4 = [v5 objectForKey:@"lastOnboardingNewFeaturesVersionSeen"];
+    applicationData = [self applicationData];
+    v4 = [applicationData objectForKey:@"lastOnboardingNewFeaturesVersionSeen"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (id)hf_setSeenNewFeaturesViewVersion:()HFAdditions
 {
-  if ([a1 hf_lastNewFeaturesViewVersionSeen] <= a3)
+  if ([self hf_lastNewFeaturesViewVersionSeen] <= a3)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v7 = [a1 applicationData];
-    [v7 setObject:v6 forKeyedSubscript:@"lastOnboardingNewFeaturesVersionSeen"];
+    applicationData = [self applicationData];
+    [applicationData setObject:v6 forKeyedSubscript:@"lastOnboardingNewFeaturesVersionSeen"];
 
-    [a1 set_cached_lastOnboardingNewFeaturesVersionSeenNumber:v6];
-    v8 = [a1 hf_updateApplicationDataFuture];
+    [self set_cached_lastOnboardingNewFeaturesVersionSeenNumber:v6];
+    hf_updateApplicationDataFuture = [self hf_updateApplicationDataFuture];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __63__HMHomeManager_HFAdditions__hf_setSeenNewFeaturesViewVersion___block_invoke;
     v11[3] = &unk_277DF7378;
     v12 = v6;
     v13 = a3;
-    v11[4] = a1;
+    v11[4] = self;
     v9 = v6;
-    v5 = [v8 addCompletionBlock:v11];
+    futureWithNoResult = [hf_updateApplicationDataFuture addCompletionBlock:v11];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v5;
+  return futureWithNoResult;
 }
 
 - (unint64_t)hf_hasDetectediCloudIssue
 {
-  if ([a1 dataSyncState] == 1)
+  if ([self dataSyncState] == 1)
   {
-    return ([a1 status] >> 5) & 1;
+    return ([self status] >> 5) & 1;
   }
 
   else
@@ -307,7 +307,7 @@
   v3[1] = 3221225472;
   v3[2] = __60__HMHomeManager_HFAdditions__hf_updateApplicationDataFuture__block_invoke;
   v3[3] = &unk_277DF2C68;
-  v3[4] = a1;
+  v3[4] = self;
   v1 = [MEMORY[0x277D2C900] futureWithErrorOnlyHandlerAdapterBlock:v3];
 
   return v1;
@@ -315,15 +315,15 @@
 
 - (void)hf_enableEventLogOnboardingFlag
 {
-  v1 = [a1 homes];
-  [v1 na_each:&__block_literal_global_55];
+  homes = [self homes];
+  [homes na_each:&__block_literal_global_55];
 }
 
 - (uint64_t)hf_canAccessHomeRemotely:()HFAdditions
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 residentProvisioningStatus])
+  if ([self residentProvisioningStatus])
   {
     v6 = HFLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -336,17 +336,17 @@
     goto LABEL_9;
   }
 
-  v5 = [v4 hf_remoteAccessState];
-  if (([a1 residentProvisioningStatus] & 2) != 0 && v5 == 1)
+  hf_remoteAccessState = [v4 hf_remoteAccessState];
+  if (([self residentProvisioningStatus] & 2) != 0 && hf_remoteAccessState == 1)
   {
     v6 = HFLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 uniqueIdentifier];
+      uniqueIdentifier = [v4 uniqueIdentifier];
       v12 = 138412546;
       v13 = v4;
       v14 = 2114;
-      v15 = v7;
+      v15 = uniqueIdentifier;
       v8 = "No remote access to %@ (uniqueIdentifier: %{public}@). A resident that cannot be seen requires a key transfer and there are no enabled resident devices on the account.";
 LABEL_6:
       _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, v8, &v12, 0x16u);
@@ -355,7 +355,7 @@ LABEL_6:
 
   else
   {
-    if (v5 != 1 || ([v4 hf_isCurrentLocationHome] & 1) != 0)
+    if (hf_remoteAccessState != 1 || ([v4 hf_isCurrentLocationHome] & 1) != 0)
     {
       v9 = 1;
       goto LABEL_10;
@@ -364,11 +364,11 @@ LABEL_6:
     v6 = HFLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 uniqueIdentifier];
+      uniqueIdentifier = [v4 uniqueIdentifier];
       v12 = 138412546;
       v13 = v4;
       v14 = 2114;
-      v15 = v7;
+      v15 = uniqueIdentifier;
       v8 = "No remote access to %@ (uniqueIdentifier: %{public}@). there are no enabled resident devices on the account and the user is not home.";
       goto LABEL_6;
     }
@@ -385,8 +385,8 @@ LABEL_10:
 
 - (uint64_t)hf_containsAtLeastOneHomeThatRequiresUpdate
 {
-  v1 = [a1 homes];
-  v2 = [v1 na_any:&__block_literal_global_27_1];
+  homes = [self homes];
+  v2 = [homes na_any:&__block_literal_global_27_1];
 
   return v2;
 }

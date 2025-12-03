@@ -1,23 +1,23 @@
 @interface HMDMatterAttributeEventBaseModel
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 className:(Class)a6 message:(id)a7;
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d className:(Class)name message:(id)message;
 + (id)properties;
 - (id)dependentUUIDs;
 @end
 
 @implementation HMDMatterAttributeEventBaseModel
 
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 className:(Class)a6 message:(id)a7
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d className:(Class)name message:(id)message
 {
   v57 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v43 = a4;
-  v39 = a5;
-  v40 = a7;
-  v42 = [v12 hmf_numberForKey:*MEMORY[0x277CCFD10]];
-  v41 = [v12 hmf_numberForKey:*MEMORY[0x277CCFC08]];
-  v13 = [v12 hmf_numberForKey:*MEMORY[0x277CCF2D8]];
-  v14 = [v12 hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
-  v15 = [v43 accessoryWithUUID:v14];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  dCopy = d;
+  messageCopy = message;
+  v42 = [dictionaryCopy hmf_numberForKey:*MEMORY[0x277CCFD10]];
+  v41 = [dictionaryCopy hmf_numberForKey:*MEMORY[0x277CCFC08]];
+  v13 = [dictionaryCopy hmf_numberForKey:*MEMORY[0x277CCF2D8]];
+  v14 = [dictionaryCopy hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
+  v15 = [homeCopy accessoryWithUUID:v14];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -33,10 +33,10 @@
 
   if (v17)
   {
-    v18 = [v17 matterAdapter];
+    matterAdapter = [v17 matterAdapter];
     v19 = [MEMORY[0x277CD51C0] attributePathWithEndpointID:v42 clusterID:v41 attributeID:v13];
-    v20 = [v18 mtrAttributePaths];
-    v21 = [v20 containsObject:v19];
+    mtrAttributePaths = [matterAdapter mtrAttributePaths];
+    v21 = [mtrAttributePaths containsObject:v19];
 
     if (v21)
     {
@@ -48,23 +48,23 @@
       v56 = [HMDMatterPath PathWithAttributeID:v13 endpointID:v42 clusterID:v41 accessory:v17];
       if (*(*&buf[8] + 40))
       {
-        v22 = [v18 attributePaths];
+        attributePaths = [matterAdapter attributePaths];
         v44[0] = MEMORY[0x277D85DD0];
         v44[1] = 3221225472;
         v44[2] = __101__HMDMatterAttributeEventBaseModel_eventModelWithDictionary_home_eventTriggerUUID_className_message___block_invoke;
         v44[3] = &unk_278689C88;
         v44[4] = buf;
-        [v22 hmf_enumerateWithAutoreleasePoolUsingBlock:v44];
+        [attributePaths hmf_enumerateWithAutoreleasePoolUsingBlock:v44];
 
-        v23 = [HMDEventModel eventModelWithDictionary:v12 home:v43 eventTriggerUUID:v39 className:a6 message:v40];
-        v24 = [*(*&buf[8] + 40) uuid];
-        [v23 setMatterPathUUID:v24];
+        v23 = [HMDEventModel eventModelWithDictionary:dictionaryCopy home:homeCopy eventTriggerUUID:dCopy className:name message:messageCopy];
+        uuid = [*(*&buf[8] + 40) uuid];
+        [v23 setMatterPathUUID:uuid];
       }
 
       else
       {
         v33 = objc_autoreleasePoolPush();
-        v34 = a1;
+        selfCopy = self;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
@@ -90,7 +90,7 @@
     else
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = a1;
+      selfCopy2 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -112,7 +112,7 @@
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = a1;
+    selfCopy3 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -149,7 +149,7 @@ void __101__HMDMatterAttributeEventBaseModel_eventModelWithDictionary_home_event
   block[1] = 3221225472;
   block[2] = __46__HMDMatterAttributeEventBaseModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_279146 != -1)
   {
     dispatch_once(&properties_onceToken_279146, block);
@@ -184,20 +184,20 @@ void __46__HMDMatterAttributeEventBaseModel_properties__block_invoke(uint64_t a1
 - (id)dependentUUIDs
 {
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:2];
-  v4 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v4)
+  if (parentUUID)
   {
-    v5 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v3 addObject:v5];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v3 addObject:parentUUID2];
   }
 
-  v6 = [(HMDMatterAttributeEventBaseModel *)self matterPathUUID];
+  matterPathUUID = [(HMDMatterAttributeEventBaseModel *)self matterPathUUID];
 
-  if (v6)
+  if (matterPathUUID)
   {
-    v7 = [(HMDMatterAttributeEventBaseModel *)self matterPathUUID];
-    [v3 addObject:v7];
+    matterPathUUID2 = [(HMDMatterAttributeEventBaseModel *)self matterPathUUID];
+    [v3 addObject:matterPathUUID2];
   }
 
   return v3;

@@ -16,8 +16,8 @@
 + (id)ck_italicBalloonFont
 {
   v0 = +[CKUIBehavior sharedBehaviors];
-  v1 = [v0 balloonTextFont];
-  v2 = [v1 ck_fontByAddingSymbolicTrait:1];
+  balloonTextFont = [v0 balloonTextFont];
+  v2 = [balloonTextFont ck_fontByAddingSymbolicTrait:1];
 
   return v2;
 }
@@ -25,16 +25,16 @@
 + (id)ck_boldBalloonFont
 {
   v0 = +[CKUIBehavior sharedBehaviors];
-  v1 = [v0 balloonTextFont];
-  v2 = [v1 ck_fontByAddingSymbolicTrait:2];
+  balloonTextFont = [v0 balloonTextFont];
+  v2 = [balloonTextFont ck_fontByAddingSymbolicTrait:2];
 
   return v2;
 }
 
 - (id)ck_fontByAddingSymbolicTrait:()Helper
 {
-  v4 = [a1 fontDescriptor];
-  v5 = [v4 ck_fontDescriptorByAddingSymbolicTrait:a3];
+  fontDescriptor = [self fontDescriptor];
+  v5 = [fontDescriptor ck_fontDescriptorByAddingSymbolicTrait:a3];
 
   v6 = [objc_opt_class() fontWithDescriptor:v5 size:0.0];
 
@@ -43,8 +43,8 @@
 
 - (id)ck_fontByRemovingSymbolicTrait:()Helper
 {
-  v4 = [a1 fontDescriptor];
-  v5 = [v4 ck_fontDescriptorByRemovingSymbolicTrait:a3];
+  fontDescriptor = [self fontDescriptor];
+  v5 = [fontDescriptor ck_fontDescriptorByRemovingSymbolicTrait:a3];
 
   v6 = [objc_opt_class() fontWithDescriptor:v5 size:0.0];
 
@@ -53,8 +53,8 @@
 
 - (id)ck_fontBySettingBoldEnabled:()Helper
 {
-  v4 = [a1 fontDescriptor];
-  v5 = [v4 ck_fontDescriptorBySettingBoldEnabled:a3];
+  fontDescriptor = [self fontDescriptor];
+  v5 = [fontDescriptor ck_fontDescriptorBySettingBoldEnabled:a3];
 
   v6 = [objc_opt_class() fontWithDescriptor:v5 size:0.0];
 
@@ -63,8 +63,8 @@
 
 - (id)ck_fontBySettingItalicEnabled:()Helper
 {
-  v4 = [a1 fontDescriptor];
-  v5 = [v4 ck_fontDescriptorBySettingItalicEnabled:a3];
+  fontDescriptor = [self fontDescriptor];
+  v5 = [fontDescriptor ck_fontDescriptorBySettingItalicEnabled:a3];
 
   v6 = [objc_opt_class() fontWithDescriptor:v5 size:0.0];
 
@@ -73,37 +73,37 @@
 
 - (uint64_t)ck_hasItalicTrait
 {
-  v2 = [a1 fontDescriptor];
+  fontDescriptor = [self fontDescriptor];
 
-  if (!v2)
+  if (!fontDescriptor)
   {
     return 0;
   }
 
-  v3 = [a1 fontDescriptor];
-  v4 = [v3 ck_hasItalicTrait];
+  fontDescriptor2 = [self fontDescriptor];
+  ck_hasItalicTrait = [fontDescriptor2 ck_hasItalicTrait];
 
-  return v4;
+  return ck_hasItalicTrait;
 }
 
 - (uint64_t)ck_hasBoldTrait
 {
-  v2 = [a1 fontDescriptor];
+  fontDescriptor = [self fontDescriptor];
 
-  if (!v2)
+  if (!fontDescriptor)
   {
     return 0;
   }
 
-  v3 = [a1 fontDescriptor];
-  v4 = [v3 ck_hasBoldTrait];
+  fontDescriptor2 = [self fontDescriptor];
+  ck_hasBoldTrait = [fontDescriptor2 ck_hasBoldTrait];
 
-  return v4;
+  return ck_hasBoldTrait;
 }
 
 - (uint64_t)ck_lastResortFont
 {
-  [a1 pointSize];
+  [self pointSize];
   v1 = MEMORY[0x1E69DB878];
 
   return [v1 ck_lastResortFontOfSize:?];
@@ -111,7 +111,7 @@
 
 + (CTFontRef)ck_lastResortFontOfSize:()Helper
 {
-  v1 = CTFontCreateWithNameAndOptions(@".LastResort", a1, 0, 0x20000uLL);
+  v1 = CTFontCreateWithNameAndOptions(@".LastResort", self, 0, 0x20000uLL);
 
   return v1;
 }

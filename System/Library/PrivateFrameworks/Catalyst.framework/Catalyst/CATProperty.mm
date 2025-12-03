@@ -1,8 +1,8 @@
 @interface CATProperty
-+ (id)propertiesForClass:(Class)a3;
-+ (id)propertiesForProtocol:(id)a3;
++ (id)propertiesForClass:(Class)class;
++ (id)propertiesForProtocol:(id)protocol;
 + (void)initialize;
-- (CATProperty)initWithName:(const char *)a3 attributes:(const char *)a4;
+- (CATProperty)initWithName:(const char *)name attributes:(const char *)attributes;
 - (SEL)customGetterSelector;
 - (SEL)customSetterSelector;
 @end
@@ -30,11 +30,11 @@ uint64_t __25__CATProperty_initialize__block_invoke()
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-+ (id)propertiesForClass:(Class)a3
++ (id)propertiesForClass:(Class)class
 {
-  Superclass = a3;
+  Superclass = class;
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [CATPropertyPropertiesByClassName objectForKey:v4];
   v6 = v5;
   if (v5)
@@ -78,11 +78,11 @@ uint64_t __25__CATProperty_initialize__block_invoke()
   return v7;
 }
 
-+ (id)propertiesForProtocol:(id)a3
++ (id)propertiesForProtocol:(id)protocol
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = NSStringFromProtocol(v3);
+  protocolCopy = protocol;
+  v4 = NSStringFromProtocol(protocolCopy);
   v5 = [CATPropertyPropertiesByProtocolName objectForKey:v4];
   v6 = v5;
   if (v5)
@@ -94,7 +94,7 @@ uint64_t __25__CATProperty_initialize__block_invoke()
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     outCount = 0;
-    v9 = protocol_copyPropertyList(v3, &outCount);
+    v9 = protocol_copyPropertyList(protocolCopy, &outCount);
     if (outCount)
     {
       for (i = 0; i < outCount; ++i)
@@ -120,13 +120,13 @@ uint64_t __25__CATProperty_initialize__block_invoke()
   return v7;
 }
 
-- (CATProperty)initWithName:(const char *)a3 attributes:(const char *)a4
+- (CATProperty)initWithName:(const char *)name attributes:(const char *)attributes
 {
   v34 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!name)
   {
     [CATProperty initWithName:a2 attributes:self];
-    if (a4)
+    if (attributes)
     {
       goto LABEL_3;
     }
@@ -136,7 +136,7 @@ LABEL_91:
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!attributes)
   {
     goto LABEL_91;
   }
@@ -147,13 +147,13 @@ LABEL_3:
   v8 = [(CATProperty *)&v33 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+    v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:name];
     name = v8->_name;
     v8->_name = v9;
 
     v8->_association = 0;
-    v11 = strlen(a4);
-    v12 = strcpy(&v32 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), a4);
+    v11 = strlen(attributes);
+    v12 = strcpy(&v32 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), attributes);
     v13 = strtok(v12, ",");
     if (v13)
     {

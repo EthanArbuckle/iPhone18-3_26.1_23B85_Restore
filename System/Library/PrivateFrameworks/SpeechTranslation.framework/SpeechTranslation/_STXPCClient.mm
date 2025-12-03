@@ -1,9 +1,9 @@
 @interface _STXPCClient
-- (BOOL)_setUpXPCConnectionWithDelegate:(id)a3;
-- (BOOL)setUpPeerForDelegate:(id)a3 context:(id)a4;
+- (BOOL)_setUpXPCConnectionWithDelegate:(id)delegate;
+- (BOOL)setUpPeerForDelegate:(id)delegate context:(id)context;
 - (_STSpeechTranslatorService)synchronousTranslatorPeer;
 - (_STXPCClient)init;
-- (_STXPCClient)initWithXPCConnection:(id)a3;
+- (_STXPCClient)initWithXPCConnection:(id)connection;
 - (id)_fetchRemoteTranslatorPeer;
 - (void)_fetchRemoteTranslatorPeer;
 - (void)dealloc;
@@ -22,16 +22,16 @@
   return v5;
 }
 
-- (_STXPCClient)initWithXPCConnection:(id)a3
+- (_STXPCClient)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = _STXPCClient;
   v5 = [(_STXPCClient *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(_STXPCClient *)v5 setXpcConnection:v4];
+    [(_STXPCClient *)v5 setXpcConnection:connectionCopy];
     v7 = v6;
   }
 
@@ -49,35 +49,35 @@
 
 - (void)invalidate
 {
-  v3 = [(_STXPCClient *)self xpcConnection];
-  [v3 invalidate];
+  xpcConnection = [(_STXPCClient *)self xpcConnection];
+  [xpcConnection invalidate];
 
   [(_STXPCClient *)self setXpcConnection:0];
 }
 
-- (BOOL)setUpPeerForDelegate:(id)a3 context:(id)a4
+- (BOOL)setUpPeerForDelegate:(id)delegate context:(id)context
 {
-  v6 = a3;
-  [(_STXPCClient *)self setPeerProviderContext:a4];
-  LODWORD(a4) = [(_STXPCClient *)self _setUpXPCConnectionWithDelegate:v6];
+  delegateCopy = delegate;
+  [(_STXPCClient *)self setPeerProviderContext:context];
+  LODWORD(context) = [(_STXPCClient *)self _setUpXPCConnectionWithDelegate:delegateCopy];
 
-  if (!a4)
+  if (!context)
   {
     return 0;
   }
 
-  v7 = [(_STXPCClient *)self _fetchRemoteTranslatorPeer];
-  [(_STXPCClient *)self setTranslatorPeer:v7];
+  _fetchRemoteTranslatorPeer = [(_STXPCClient *)self _fetchRemoteTranslatorPeer];
+  [(_STXPCClient *)self setTranslatorPeer:_fetchRemoteTranslatorPeer];
 
-  v8 = [(_STXPCClient *)self translatorPeer];
-  v9 = v8 != 0;
+  translatorPeer = [(_STXPCClient *)self translatorPeer];
+  v9 = translatorPeer != 0;
 
   return v9;
 }
 
 - (_STSpeechTranslatorService)synchronousTranslatorPeer
 {
-  v3 = [(_STXPCClient *)self translatorPeer];
+  translatorPeer = [(_STXPCClient *)self translatorPeer];
   if (objc_opt_respondsToSelector())
   {
     objc_initWeak(&location, self);
@@ -86,7 +86,7 @@
     v7[2] = __41___STXPCClient_synchronousTranslatorPeer__block_invoke;
     v7[3] = &unk_279CF7C48;
     objc_copyWeak(&v8, &location);
-    v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v7];
+    v4 = [translatorPeer synchronousRemoteObjectProxyWithErrorHandler:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -105,25 +105,25 @@
   return v4;
 }
 
-- (BOOL)_setUpXPCConnectionWithDelegate:(id)a3
+- (BOOL)_setUpXPCConnectionWithDelegate:(id)delegate
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_STXPCClient *)self _exportedInterface];
-  v6 = [v5 protocol];
-  v7 = [v4 conformsToProtocol:v6];
+  delegateCopy = delegate;
+  _exportedInterface = [(_STXPCClient *)self _exportedInterface];
+  protocol = [_exportedInterface protocol];
+  v7 = [delegateCopy conformsToProtocol:protocol];
 
   if (v7)
   {
     v8 = +[_STXPCServerInterface interface];
-    v9 = [(_STXPCClient *)self xpcConnection];
-    [v9 setRemoteObjectInterface:v8];
+    xpcConnection = [(_STXPCClient *)self xpcConnection];
+    [xpcConnection setRemoteObjectInterface:v8];
 
-    v10 = [(_STXPCClient *)self xpcConnection];
-    [v10 setExportedInterface:v5];
+    xpcConnection2 = [(_STXPCClient *)self xpcConnection];
+    [xpcConnection2 setExportedInterface:_exportedInterface];
 
-    v11 = [(_STXPCClient *)self xpcConnection];
-    [v11 setExportedObject:v4];
+    xpcConnection3 = [(_STXPCClient *)self xpcConnection];
+    [xpcConnection3 setExportedObject:delegateCopy];
 
     objc_initWeak(location, self);
     v24[0] = MEMORY[0x277D85DD0];
@@ -131,16 +131,16 @@
     v24[2] = __48___STXPCClient__setUpXPCConnectionWithDelegate___block_invoke;
     v24[3] = &unk_279CF7FC0;
     objc_copyWeak(&v25, location);
-    v12 = [(_STXPCClient *)self xpcConnection];
-    [v12 setInterruptionHandler:v24];
+    xpcConnection4 = [(_STXPCClient *)self xpcConnection];
+    [xpcConnection4 setInterruptionHandler:v24];
 
     v22 = MEMORY[0x277D85DD0];
     objc_copyWeak(&v23, location);
     v13 = [(_STXPCClient *)self xpcConnection:v22];
     [v13 setInvalidationHandler:&v22];
 
-    v14 = [(_STXPCClient *)self xpcConnection];
-    [v14 activate];
+    xpcConnection5 = [(_STXPCClient *)self xpcConnection];
+    [xpcConnection5 activate];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&v25);
@@ -153,15 +153,15 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v18 = v15;
-      v19 = [v5 protocol];
-      v20 = NSStringFromProtocol(v19);
-      v21 = [(_STXPCClient *)self peerProviderContext];
+      protocol2 = [_exportedInterface protocol];
+      v20 = NSStringFromProtocol(protocol2);
+      peerProviderContext = [(_STXPCClient *)self peerProviderContext];
       *location = 134218498;
-      *&location[4] = v4;
+      *&location[4] = delegateCopy;
       v27 = 2114;
       v28 = v20;
       v29 = 2114;
-      v30 = v21;
+      v30 = peerProviderContext;
       _os_log_error_impl(&dword_26B5BC000, v18, OS_LOG_TYPE_ERROR, "delegate: %p does NOT conform to exportedInterface protocol: %{public}@ with peerProviderContext: %{public}@", location, 0x20u);
     }
   }
@@ -174,13 +174,13 @@
 {
   v27 = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v3 = [(_STXPCClient *)self xpcConnection];
+  xpcConnection = [(_STXPCClient *)self xpcConnection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __42___STXPCClient__fetchRemoteTranslatorPeer__block_invoke;
   v18[3] = &unk_279CF7C48;
   objc_copyWeak(&v19, &location);
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v18];
+  v4 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v18];
 
   v5 = v4;
   v6 = v5;
@@ -198,19 +198,19 @@
     aBlock[3] = &unk_279CF7FE8;
     aBlock[4] = buf;
     v7 = _Block_copy(aBlock);
-    v8 = [(_STXPCClient *)self peerProviderContext];
-    v9 = [v8 type];
+    peerProviderContext = [(_STXPCClient *)self peerProviderContext];
+    type = [peerProviderContext type];
 
-    if (v9 == 2)
+    if (type == 2)
     {
-      v10 = [(_STXPCClient *)self peerProviderContext];
-      v11 = [v10 identifier];
-      [v6 makePeerWithIdentifier:v11 inReply:v7];
+      peerProviderContext2 = [(_STXPCClient *)self peerProviderContext];
+      identifier = [peerProviderContext2 identifier];
+      [v6 makePeerWithIdentifier:identifier inReply:v7];
     }
 
     else
     {
-      if (v9 != 1)
+      if (type != 1)
       {
 LABEL_11:
         v14 = *(v22 + 5);
@@ -220,9 +220,9 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v10 = [(_STXPCClient *)self peerProviderContext];
-      v11 = [v10 configuration];
-      [v6 makePeerWithConfiguration:v11 inReply:v7];
+      peerProviderContext2 = [(_STXPCClient *)self peerProviderContext];
+      identifier = [peerProviderContext2 configuration];
+      [v6 makePeerWithConfiguration:identifier inReply:v7];
     }
 
     goto LABEL_11;
@@ -231,8 +231,8 @@ LABEL_11:
   v12 = _LTOSLogSTMultiprocess();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v13 = [(_STXPCClient *)self xpcConnection];
-    [(_STXPCClient *)v13 _fetchRemoteTranslatorPeer:v6];
+    xpcConnection2 = [(_STXPCClient *)self xpcConnection];
+    [(_STXPCClient *)xpcConnection2 _fetchRemoteTranslatorPeer:v6];
   }
 
   v14 = 0;
@@ -274,7 +274,7 @@ LABEL_12:
   *buf = 138543874;
   *(buf + 4) = 0;
   *(buf + 6) = 2114;
-  *(buf + 14) = a1;
+  *(buf + 14) = self;
   *(buf + 11) = 2114;
   *(buf + 3) = a2;
   _os_log_error_impl(&dword_26B5BC000, log, OS_LOG_TYPE_ERROR, "xpcService: %{public}@ for connection: %{public}@, serverProxy: %{public}@", buf, 0x20u);

@@ -1,15 +1,15 @@
 @interface AccountDetailsDataModel
 - (NSString)phoneNumberServer;
 - (_TtC6HomeUI23AccountDetailsDataModel)init;
-- (id)getInfoWithTafFieldKey:(id)a3;
-- (void)deserializeWithResults:(id)a3;
+- (id)getInfoWithTafFieldKey:(id)key;
+- (void)deserializeWithResults:(id)results;
 @end
 
 @implementation AccountDetailsDataModel
 
 - (NSString)phoneNumberServer
 {
-  v2 = self;
+  selfCopy = self;
   AccountDetailsDataModel.phoneNumberServer.getter();
   v4 = v3;
 
@@ -26,11 +26,11 @@
   return v5;
 }
 
-- (id)getInfoWithTafFieldKey:(id)a3
+- (id)getInfoWithTafFieldKey:(id)key
 {
   v4 = sub_20D567838();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   object = AccountDetailsDataModel.getInfo(tafFieldKey:)(v8).value._object;
@@ -48,10 +48,10 @@
   return v10;
 }
 
-- (void)deserializeWithResults:(id)a3
+- (void)deserializeWithResults:(id)results
 {
   v4 = sub_20D567758();
-  v5 = self;
+  selfCopy = self;
   AccountDetailsDataModel.deserialize(results:)(v4);
 }
 

@@ -2,12 +2,12 @@
 - (PKPaymentSetupRemoteAlertViewController)init;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismiss;
-- (void)appProtectionCoordinatorDidGainAccess:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)appProtectionCoordinatorDidGainAccess:(id)access;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)paymentSetupDidFinish:(id)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)paymentSetupDidFinish:(id)finish;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPaymentSetupRemoteAlertViewController
@@ -19,9 +19,9 @@
   v2 = [(PKPaymentSetupRemoteAlertViewController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69B8560] shared];
+    mEMORY[0x1E69B8560] = [MEMORY[0x1E69B8560] shared];
     appProtectionCoordinator = v2->_appProtectionCoordinator;
-    v2->_appProtectionCoordinator = v3;
+    v2->_appProtectionCoordinator = mEMORY[0x1E69B8560];
 
     [(PKAppProtectionCoordinator *)v2->_appProtectionCoordinator registerObserver:v2];
   }
@@ -37,27 +37,27 @@
   [(SBUIRemoteAlertServiceViewController *)&v3 dealloc];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = PKPaymentSetupRemoteAlertViewController;
-  [(PKPaymentSetupRemoteAlertViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(PKPaymentSetupRemoteAlertViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
-    [v6 bounds];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    [windowCopy bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     PKSetDisplayProperties();
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupRemoteAlertViewController;
-  [(PKPaymentSetupRemoteAlertViewController *)&v4 viewWillDisappear:a3];
+  [(PKPaymentSetupRemoteAlertViewController *)&v4 viewWillDisappear:disappear];
   [(PKPaymentSetupRemoteAlertViewController *)self _dismiss];
 }
 
@@ -74,38 +74,38 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v32 = v6;
-  v8 = [v6 userInfo];
-  v9 = [(PKPaymentSetupRemoteAlertViewController *)self _remoteViewControllerProxy];
-  [v9 setAllowsAlertItems:1];
-  [v9 setAllowsAlertStacking:1];
-  [v9 setAllowsSiri:0];
-  [v9 setAllowsBanners:1];
-  [v9 setDesiredHardwareButtonEvents:16];
-  [v9 setSwipeDismissalStyle:0];
-  [v9 setDismissalAnimationStyle:1];
-  [v9 setWallpaperStyle:0 withDuration:0.0];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69BBFF8]];
+  contextCopy = context;
+  completionCopy = completion;
+  v32 = contextCopy;
+  userInfo = [contextCopy userInfo];
+  _remoteViewControllerProxy = [(PKPaymentSetupRemoteAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
+  [_remoteViewControllerProxy setWallpaperStyle:0 withDuration:0.0];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BBFF8]];
   v11 = v10;
   if (v10)
   {
-    [v9 setLaunchingInterfaceOrientation:{objc_msgSend(v10, "integerValue")}];
+    [_remoteViewControllerProxy setLaunchingInterfaceOrientation:{objc_msgSend(v10, "integerValue")}];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
-  v31 = v8;
-  v30 = [v8 objectForKey:@"paymentSetupRequest"];
+  v31 = userInfo;
+  v30 = [userInfo objectForKey:@"paymentSetupRequest"];
   v12 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v30 error:0];
-  v13 = [v12 paymentSetupFeatures];
-  v14 = [v13 pk_containsObjectPassingTest:&__block_literal_global_27];
+  paymentSetupFeatures = [v12 paymentSetupFeatures];
+  v14 = [paymentSetupFeatures pk_containsObjectPassingTest:&__block_literal_global_27];
 
   if (v14)
   {
@@ -118,8 +118,8 @@
   }
 
   v16 = objc_alloc(MEMORY[0x1E69B8D48]);
-  v17 = [MEMORY[0x1E69B8EF8] sharedService];
-  v18 = [v16 initWithWebService:v17 paymentSetupRequest:v12];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v18 = [v16 initWithWebService:mEMORY[0x1E69B8EF8] paymentSetupRequest:v12];
 
   v19 = [[PKPaymentSetupNavigationController alloc] initWithProvisioningController:v18 context:8];
   [(PKPaymentSetupNavigationController *)v19 setModalInPresentation:1];
@@ -129,13 +129,13 @@
   if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
     [v20 setModalPresentationStyle:16];
-    v21 = [v20 view];
-    v22 = [v21 layer];
-    [v22 setMasksToBounds:1];
+    view = [v20 view];
+    layer = [view layer];
+    [layer setMasksToBounds:1];
 
-    v23 = [v20 view];
-    v24 = [v23 layer];
-    [v24 setCornerRadius:6.0];
+    view2 = [v20 view];
+    layer2 = [view2 layer];
+    [layer2 setCornerRadius:6.0];
   }
 
   else
@@ -144,9 +144,9 @@
   }
 
   [v20 addChildViewController:v19];
-  v25 = [v20 view];
-  v26 = [(PKPaymentSetupNavigationController *)v19 view];
-  [v25 addSubview:v26];
+  view3 = [v20 view];
+  view4 = [(PKPaymentSetupNavigationController *)v19 view];
+  [view3 addSubview:view4];
 
   [v20 didMoveToParentViewController:v19];
   objc_initWeak(&location, self);
@@ -221,20 +221,20 @@ BOOL __75__PKPaymentSetupRemoteAlertViewController_configureWithContext_completi
   return v2;
 }
 
-- (void)paymentSetupDidFinish:(id)a3
+- (void)paymentSetupDidFinish:(id)finish
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
 
   [(PKPaymentSetupRemoteAlertViewController *)self _dismiss];
 }
 
-- (void)appProtectionCoordinatorDidGainAccess:(id)a3
+- (void)appProtectionCoordinatorDidGainAccess:(id)access
 {
   shieldViewController = self->_shieldViewController;
   if (shieldViewController)
   {
-    v5 = [(UIViewController *)shieldViewController view];
-    [v5 removeFromSuperview];
+    view = [(UIViewController *)shieldViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_shieldViewController removeFromParentViewController];
     v6 = self->_shieldViewController;
@@ -250,8 +250,8 @@ BOOL __75__PKPaymentSetupRemoteAlertViewController_configureWithContext_completi
   aBlock[3] = &unk_1E8010970;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(PKPaymentSetupRemoteAlertViewController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(PKPaymentSetupRemoteAlertViewController *)self presentedViewController];
+  if (presentedViewController)
   {
     [(PKPaymentSetupRemoteAlertViewController *)self dismissViewControllerAnimated:1 completion:v3];
   }

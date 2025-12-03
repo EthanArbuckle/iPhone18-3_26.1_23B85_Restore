@@ -1,5 +1,5 @@
 @interface PDFDocument
-- (id)_stitchPageImages:(id)a3;
+- (id)_stitchPageImages:(id)images;
 - (id)asImage;
 @end
 
@@ -10,10 +10,10 @@
   if ([(PDFDocument *)self pageCount])
   {
     v3 = +[NSMutableArray array];
-    v4 = [(PDFDocument *)self pageCount];
-    if (v4)
+    pageCount = [(PDFDocument *)self pageCount];
+    if (pageCount)
     {
-      v5 = v4;
+      v5 = pageCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDFDocument *)self pageAtIndex:i];
@@ -33,14 +33,14 @@
   return v9;
 }
 
-- (id)_stitchPageImages:(id)a3
+- (id)_stitchPageImages:(id)images
 {
-  v3 = a3;
-  if ([v3 count])
+  imagesCopy = images;
+  if ([imagesCopy count])
   {
-    if ([v3 count] == 1)
+    if ([imagesCopy count] == 1)
     {
-      v4 = [v3 firstObject];
+      firstObject = [imagesCopy firstObject];
     }
 
     else
@@ -49,7 +49,7 @@
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v5 = v3;
+      v5 = imagesCopy;
       v6 = [v5 countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v6)
       {
@@ -135,17 +135,17 @@
         while (v23);
       }
 
-      v4 = UIGraphicsGetImageFromCurrentImageContext();
+      firstObject = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
     }
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 @end

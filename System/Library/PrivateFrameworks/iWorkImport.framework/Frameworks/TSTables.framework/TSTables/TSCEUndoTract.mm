@@ -1,54 +1,54 @@
 @interface TSCEUndoTract
-+ (void)saveToArchive:(void *)a3 columnUids:(const void *)a4 rowUids:(const void *)a5 purpose:(unsigned __int8)a6 isRangeRef:(BOOL)a7 preserveRectangularRange:(BOOL)a8;
-+ (void)saveToArchive:(void *)a3 tsuColumnUids:(const void *)a4 tsuRowUids:(const void *)a5 purpose:(unsigned __int8)a6 isRangeRef:(BOOL)a7 preserveRectangularRange:(BOOL)a8;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)remapUsingColumnUidMap:(const void *)a3 rowUidMap:(const void *)a4 clearIfMissing:(BOOL)a5;
-- (TSCEUndoTract)initWithArchive:(const void *)a3;
-- (TSCEUndoTract)initWithColumnUid:(TSKUIDStruct)a3 rowUid:(TSKUIDStruct)a4 purpose:(unsigned __int8)a5;
-- (TSCEUndoTract)initWithColumnUids:(const void *)a3 rowUids:(const void *)a4 purpose:(unsigned __int8)a5;
-- (TSCEUndoTract)initWithPurpose:(unsigned __int8)a3;
++ (void)saveToArchive:(void *)archive columnUids:(const void *)uids rowUids:(const void *)rowUids purpose:(unsigned __int8)purpose isRangeRef:(BOOL)ref preserveRectangularRange:(BOOL)range;
++ (void)saveToArchive:(void *)archive tsuColumnUids:(const void *)uids tsuRowUids:(const void *)rowUids purpose:(unsigned __int8)purpose isRangeRef:(BOOL)ref preserveRectangularRange:(BOOL)range;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)remapUsingColumnUidMap:(const void *)map rowUidMap:(const void *)uidMap clearIfMissing:(BOOL)missing;
+- (TSCEUndoTract)initWithArchive:(const void *)archive;
+- (TSCEUndoTract)initWithColumnUid:(TSKUIDStruct)uid rowUid:(TSKUIDStruct)rowUid purpose:(unsigned __int8)purpose;
+- (TSCEUndoTract)initWithColumnUids:(const void *)uids rowUids:(const void *)rowUids purpose:(unsigned __int8)purpose;
+- (TSCEUndoTract)initWithPurpose:(unsigned __int8)purpose;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendColumnUid:(TSKUIDStruct)a3 rowUid:(TSKUIDStruct)a4;
-- (void)saveToArchive:(void *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendColumnUid:(TSKUIDStruct)uid rowUid:(TSKUIDStruct)rowUid;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation TSCEUndoTract
 
-- (TSCEUndoTract)initWithPurpose:(unsigned __int8)a3
+- (TSCEUndoTract)initWithPurpose:(unsigned __int8)purpose
 {
   v5.receiver = self;
   v5.super_class = TSCEUndoTract;
   result = [(TSCEUndoTract *)&v5 init];
   if (result)
   {
-    result->_purpose = a3;
+    result->_purpose = purpose;
     result->_preserveRectangularRange = 1;
   }
 
   return result;
 }
 
-- (TSCEUndoTract)initWithColumnUid:(TSKUIDStruct)a3 rowUid:(TSKUIDStruct)a4 purpose:(unsigned __int8)a5
+- (TSCEUndoTract)initWithColumnUid:(TSKUIDStruct)uid rowUid:(TSKUIDStruct)rowUid purpose:(unsigned __int8)purpose
 {
-  v11 = a3;
-  v10 = a4;
+  uidCopy = uid;
+  rowUidCopy = rowUid;
   v9.receiver = self;
   v9.super_class = TSCEUndoTract;
   v6 = [(TSCEUndoTract *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    sub_221083454(&v6->_columnUids, &v11);
-    sub_221083454(&v7->_rowUids, &v10);
-    v7->_purpose = a5;
+    sub_221083454(&v6->_columnUids, &uidCopy);
+    sub_221083454(&v7->_rowUids, &rowUidCopy);
+    v7->_purpose = purpose;
     v7->_preserveRectangularRange = 1;
   }
 
   return v7;
 }
 
-- (TSCEUndoTract)initWithColumnUids:(const void *)a3 rowUids:(const void *)a4 purpose:(unsigned __int8)a5
+- (TSCEUndoTract)initWithColumnUids:(const void *)uids rowUids:(const void *)rowUids purpose:(unsigned __int8)purpose
 {
   v13.receiver = self;
   v13.super_class = TSCEUndoTract;
@@ -57,14 +57,14 @@
   if (v8)
   {
     p_columnUids = &v8->_columnUids;
-    if (&v9->_columnUids != a3)
+    if (&v9->_columnUids != uids)
     {
-      sub_2210BD068(p_columnUids, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+      sub_2210BD068(p_columnUids, *uids, *(uids + 1), (*(uids + 1) - *uids) >> 4);
     }
 
-    if (&v9->_rowUids != a4)
+    if (&v9->_rowUids != rowUids)
     {
-      sub_2210BD068(&v9->_rowUids.__begin_, *a4, *(a4 + 1), (*(a4 + 1) - *a4) >> 4);
+      sub_2210BD068(&v9->_rowUids.__begin_, *rowUids, *(rowUids + 1), (*(rowUids + 1) - *rowUids) >> 4);
     }
 
     v11 = 1;
@@ -75,13 +75,13 @@
 
     v9->_isRangeRef = v11;
     v9->_preserveRectangularRange = 1;
-    v9->_purpose = a5;
+    v9->_purpose = purpose;
   }
 
   return v9;
 }
 
-- (TSCEUndoTract)initWithArchive:(const void *)a3
+- (TSCEUndoTract)initWithArchive:(const void *)archive
 {
   v16.receiver = self;
   v16.super_class = TSCEUndoTract;
@@ -89,9 +89,9 @@
   if (v4)
   {
     v5 = &TSCE::_ASTNodeArrayArchive_ASTUidList_default_instance_;
-    if (*(a3 + 3))
+    if (*(archive + 3))
     {
-      v6 = *(a3 + 3);
+      v6 = *(archive + 3);
     }
 
     else
@@ -115,9 +115,9 @@
       while (v7);
     }
 
-    if (*(a3 + 4))
+    if (*(archive + 4))
     {
-      v5 = *(a3 + 4);
+      v5 = *(archive + 4);
     }
 
     v9 = *(v5 + 6);
@@ -136,10 +136,10 @@
       while (v9);
     }
 
-    v11 = *(a3 + 4);
+    v11 = *(archive + 4);
     if ((v11 & 4) != 0)
     {
-      v12 = *(a3 + 40);
+      v12 = *(archive + 40);
     }
 
     else
@@ -148,10 +148,10 @@
     }
 
     v4->_isRangeRef = v12;
-    v4->_purpose = *(a3 + 44) & (v11 << 28 >> 31);
+    v4->_purpose = *(archive + 44) & (v11 << 28 >> 31);
     if ((v11 & 0x10) != 0)
     {
-      v13 = *(a3 + 48);
+      v13 = *(archive + 48);
     }
 
     else
@@ -165,7 +165,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v9 = objc_msgSend_columnUids(v4, v5, v6, v7, v8);
@@ -186,25 +186,25 @@
   return v4;
 }
 
-+ (void)saveToArchive:(void *)a3 tsuColumnUids:(const void *)a4 tsuRowUids:(const void *)a5 purpose:(unsigned __int8)a6 isRangeRef:(BOOL)a7 preserveRectangularRange:(BOOL)a8
++ (void)saveToArchive:(void *)archive tsuColumnUids:(const void *)uids tsuRowUids:(const void *)rowUids purpose:(unsigned __int8)purpose isRangeRef:(BOOL)ref preserveRectangularRange:(BOOL)range
 {
-  v10 = a6;
-  *(a3 + 4) |= 1u;
-  v14 = *(a3 + 3);
+  purposeCopy = purpose;
+  *(archive + 4) |= 1u;
+  v14 = *(archive + 3);
   if (!v14)
   {
-    v15 = *(a3 + 1);
+    v15 = *(archive + 1);
     if (v15)
     {
       v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v14 = google::protobuf::Arena::CreateMaybeMessage<TSCE::ASTNodeArrayArchive_ASTUidList>(v15);
-    *(a3 + 3) = v14;
+    *(archive + 3) = v14;
   }
 
-  v16 = *a4;
-  v17 = *(a4 + 1);
+  v16 = *uids;
+  v17 = *(uids + 1);
   while (v16 != v17)
   {
     v18 = *(v14 + 32);
@@ -241,22 +241,22 @@ LABEL_14:
     v16 = (v16 + 16);
   }
 
-  *(a3 + 4) |= 2u;
-  v24 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v24 = *(archive + 4);
   if (!v24)
   {
-    v25 = *(a3 + 1);
+    v25 = *(archive + 1);
     if (v25)
     {
       v25 = *(v25 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v24 = google::protobuf::Arena::CreateMaybeMessage<TSCE::ASTNodeArrayArchive_ASTUidList>(v25);
-    *(a3 + 4) = v24;
+    *(archive + 4) = v24;
   }
 
-  v27 = *a5;
-  v26 = *(a5 + 1);
+  v27 = *rowUids;
+  v26 = *(rowUids + 1);
   while (2)
   {
     if (v27 != v26)
@@ -299,32 +299,32 @@ LABEL_26:
     break;
   }
 
-  v34 = *(a3 + 4);
-  *(a3 + 40) = a7;
-  *(a3 + 11) = v10;
-  *(a3 + 4) = v34 | 0x1C;
-  *(a3 + 48) = a8;
+  v34 = *(archive + 4);
+  *(archive + 40) = ref;
+  *(archive + 11) = purposeCopy;
+  *(archive + 4) = v34 | 0x1C;
+  *(archive + 48) = range;
 }
 
-+ (void)saveToArchive:(void *)a3 columnUids:(const void *)a4 rowUids:(const void *)a5 purpose:(unsigned __int8)a6 isRangeRef:(BOOL)a7 preserveRectangularRange:(BOOL)a8
++ (void)saveToArchive:(void *)archive columnUids:(const void *)uids rowUids:(const void *)rowUids purpose:(unsigned __int8)purpose isRangeRef:(BOOL)ref preserveRectangularRange:(BOOL)range
 {
-  v10 = a6;
-  *(a3 + 4) |= 1u;
-  v14 = *(a3 + 3);
+  purposeCopy = purpose;
+  *(archive + 4) |= 1u;
+  v14 = *(archive + 3);
   if (!v14)
   {
-    v15 = *(a3 + 1);
+    v15 = *(archive + 1);
     if (v15)
     {
       v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v14 = google::protobuf::Arena::CreateMaybeMessage<TSCE::ASTNodeArrayArchive_ASTUidList>(v15);
-    *(a3 + 3) = v14;
+    *(archive + 3) = v14;
   }
 
-  v16 = *a4;
-  v17 = *(a4 + 1);
+  v16 = *uids;
+  v17 = *(uids + 1);
   while (v16 != v17)
   {
     v18 = *(v14 + 32);
@@ -360,22 +360,22 @@ LABEL_14:
     TSKUIDStruct::saveToMessage(v16++, v21);
   }
 
-  *(a3 + 4) |= 2u;
-  v24 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v24 = *(archive + 4);
   if (!v24)
   {
-    v25 = *(a3 + 1);
+    v25 = *(archive + 1);
     if (v25)
     {
       v25 = *(v25 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v24 = google::protobuf::Arena::CreateMaybeMessage<TSCE::ASTNodeArrayArchive_ASTUidList>(v25);
-    *(a3 + 4) = v24;
+    *(archive + 4) = v24;
   }
 
-  v27 = *a5;
-  v26 = *(a5 + 1);
+  v27 = *rowUids;
+  v26 = *(rowUids + 1);
   while (2)
   {
     if (v27 != v26)
@@ -417,27 +417,27 @@ LABEL_26:
     break;
   }
 
-  v34 = *(a3 + 4);
-  *(a3 + 40) = a7;
-  *(a3 + 11) = v10;
-  *(a3 + 4) = v34 | 0x1C;
-  *(a3 + 48) = a8;
+  v34 = *(archive + 4);
+  *(archive + 40) = ref;
+  *(archive + 11) = purposeCopy;
+  *(archive + 4) = v34 | 0x1C;
+  *(archive + 48) = range;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
-  v7 = objc_msgSend_columnUids(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_columnUids(self, a2, archive, v3, v4);
   v12 = objc_msgSend_rowUids(self, v8, v9, v10, v11);
   objc_msgSend_purpose(self, v13, v14, v15, v16);
   objc_msgSend_isRangeRef(self, v17, v18, v19, v20);
   objc_msgSend_preserveRectangularRange(self, v21, v22, v23, v24);
 
-  MEMORY[0x2821F9670](TSCEUndoTract, sel_saveToArchive_columnUids_rowUids_purpose_isRangeRef_preserveRectangularRange_, a3, v7, v12);
+  MEMORY[0x2821F9670](TSCEUndoTract, sel_saveToArchive_columnUids_rowUids_purpose_isRangeRef_preserveRectangularRange_, archive, v7, v12);
 }
 
-- (BOOL)remapUsingColumnUidMap:(const void *)a3 rowUidMap:(const void *)a4 clearIfMissing:(BOOL)a5
+- (BOOL)remapUsingColumnUidMap:(const void *)map rowUidMap:(const void *)uidMap clearIfMissing:(BOOL)missing
 {
-  v5 = a5;
+  missingCopy = missing;
   v22 = 0;
   v23 = 0;
   v24 = 0;
@@ -447,13 +447,13 @@ LABEL_26:
   end = self->_columnUids.__end_;
   while (begin != end)
   {
-    v12 = sub_221119F90(a3, begin);
+    v12 = sub_221119F90(map, begin);
     if (v12)
     {
       sub_221083454(&v22, v12 + 2);
     }
 
-    else if (!v5)
+    else if (!missingCopy)
     {
       v17 = 0;
       goto LABEL_21;
@@ -471,13 +471,13 @@ LABEL_26:
   v14 = self->_rowUids.__end_;
   while (v15 != v14)
   {
-    v16 = sub_221119F90(a4, v15);
+    v16 = sub_221119F90(uidMap, v15);
     if (v16)
     {
       sub_221083454(&__p, v16 + 2);
     }
 
-    else if (!v5)
+    else if (!missingCopy)
     {
       v17 = 0;
       goto LABEL_18;
@@ -514,9 +514,9 @@ LABEL_21:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v10 = v5;
@@ -606,12 +606,12 @@ LABEL_27:
   return self;
 }
 
-- (void)appendColumnUid:(TSKUIDStruct)a3 rowUid:(TSKUIDStruct)a4
+- (void)appendColumnUid:(TSKUIDStruct)uid rowUid:(TSKUIDStruct)rowUid
 {
-  v6 = a3;
-  v5 = a4;
-  sub_221083454(&self->_columnUids, &v6);
-  sub_221083454(&self->_rowUids, &v5);
+  uidCopy = uid;
+  rowUidCopy = rowUid;
+  sub_221083454(&self->_columnUids, &uidCopy);
+  sub_221083454(&self->_rowUids, &rowUidCopy);
 }
 
 @end

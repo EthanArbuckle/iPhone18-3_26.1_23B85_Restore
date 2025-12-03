@@ -1,13 +1,13 @@
 @interface MPConditionalAction
 + (id)conditionalAction;
 - (MPConditionalAction)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)configureActions;
 - (void)configureTarget;
 - (void)dealloc;
-- (void)setAction:(id)a3;
-- (void)setAction:(id)a3 forCondition:(BOOL)a4;
-- (void)setPredicate:(id)a3;
+- (void)setAction:(id)action;
+- (void)setAction:(id)action forCondition:(BOOL)condition;
+- (void)setPredicate:(id)predicate;
 @end
 
 @implementation MPConditionalAction
@@ -41,11 +41,11 @@
   [(MPAction *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = MPConditionalAction;
-  v4 = [(MPAction *)&v8 copyWithZone:a3];
+  v4 = [(MPAction *)&v8 copyWithZone:zone];
   [v4 setPredicate:self->_predicate];
   v5 = [(MPAction *)self->_actionIfTrue copy];
   [v4 setAction:v5 forCondition:1];
@@ -56,7 +56,7 @@
   return v4;
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
   predicate = self->_predicate;
   if (predicate)
@@ -65,7 +65,7 @@
     self->_predicate = 0;
   }
 
-  v6 = [a3 copy];
+  v6 = [predicate copy];
   self->_predicate = v6;
   action = self->super._action;
   if (action)
@@ -75,27 +75,27 @@
   }
 }
 
-- (void)setAction:(id)a3 forCondition:(BOOL)a4
+- (void)setAction:(id)action forCondition:(BOOL)condition
 {
-  v4 = a4;
+  conditionCopy = condition;
   v7 = [-[MPAction parentDocument](self "parentDocument")];
   if (v7)
   {
     v8 = v7;
-    if (v4)
+    if (conditionCopy)
     {
-      v9 = [(MPConditionalAction *)self actionIfTrue];
+      actionIfTrue = [(MPConditionalAction *)self actionIfTrue];
     }
 
     else
     {
-      v9 = [(MPConditionalAction *)self actionIfFalse];
+      actionIfTrue = [(MPConditionalAction *)self actionIfFalse];
     }
 
-    [objc_msgSend(v8 prepareWithInvocationTarget:{self), "setAction:forCondition:", v9, v4}];
+    [objc_msgSend(v8 prepareWithInvocationTarget:{self), "setAction:forCondition:", actionIfTrue, conditionCopy}];
   }
 
-  if (v4)
+  if (conditionCopy)
   {
     v10 = 40;
   }
@@ -114,18 +114,18 @@
     *v11 = 0;
   }
 
-  v13 = a3;
-  *v11 = v13;
-  [v13 setParent:self];
+  actionCopy = action;
+  *v11 = actionCopy;
+  [actionCopy setParent:self];
 
   [(MPConditionalAction *)self configureActions];
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
   v5.receiver = self;
   v5.super_class = MPConditionalAction;
-  [(MPAction *)&v5 setAction:a3];
+  [(MPAction *)&v5 setAction:action];
   action = self->super._action;
   if (action)
   {
@@ -146,11 +146,11 @@
       goto LABEL_12;
     }
 
-    v4 = [(MPAction *)actionIfTrue targetObject];
+    targetObject = [(MPAction *)actionIfTrue targetObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [MCAnimationTrigger animationTriggerForTargetPlugObjectID:[v4 objectID] withAnimationKey:[(MPAction *)actionIfTrue animationKey]];
+      v5 = [MCAnimationTrigger animationTriggerForTargetPlugObjectID:[targetObject objectID] withAnimationKey:[(MPAction *)actionIfTrue animationKey]];
 LABEL_8:
       v6 = v5;
       goto LABEL_9;
@@ -159,7 +159,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [MCActionTrigger actionTriggerForTargetPlugObjectID:[v4 objectID] withActionKey:[(MPAction *)actionIfTrue actionKey]];
+      v5 = [MCActionTrigger actionTriggerForTargetPlugObjectID:[targetObject objectID] withActionKey:[(MPAction *)actionIfTrue actionKey]];
       goto LABEL_8;
     }
 
@@ -167,7 +167,7 @@ LABEL_8:
     if (objc_opt_isKindOfClass())
     {
       v6 = [MCConditionalAction conditionalActionWithPredicate:0];
-      [(MCAction *)v6 setTargetObjectID:[v4 objectID]];
+      [(MCAction *)v6 setTargetObjectID:[targetObject objectID]];
     }
 
     else
@@ -182,7 +182,7 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = +[MCGenericAction genericActionForTargetPlugObjectID:withAttributes:](MCGenericAction, "genericActionForTargetPlugObjectID:withAttributes:", -[NSObject objectID](v4, "objectID"), [0 attributes]);
+        v5 = +[MCGenericAction genericActionForTargetPlugObjectID:withAttributes:](MCGenericAction, "genericActionForTargetPlugObjectID:withAttributes:", -[NSObject objectID](targetObject, "objectID"), [0 attributes]);
         goto LABEL_8;
       }
 

@@ -1,8 +1,8 @@
 @interface TUVideoEffect
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEffect:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEffect:(id)effect;
 - (TUVideoEffect)init;
-- (TUVideoEffect)initWithName:(id)a3 thumbnailImage:(id)a4;
+- (TUVideoEffect)initWithName:(id)name thumbnailImage:(id)image;
 - (unint64_t)hash;
 @end
 
@@ -10,31 +10,31 @@
 
 - (TUVideoEffect)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"TUVideoEffect.m" lineNumber:20 description:{@"%s is not available. Use a designated initializer instead.", "-[TUVideoEffect init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUVideoEffect.m" lineNumber:20 description:{@"%s is not available. Use a designated initializer instead.", "-[TUVideoEffect init]"}];
 
   return 0;
 }
 
-- (TUVideoEffect)initWithName:(id)a3 thumbnailImage:(id)a4
+- (TUVideoEffect)initWithName:(id)name thumbnailImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  imageCopy = image;
   v12.receiver = self;
   v12.super_class = TUVideoEffect;
   v8 = [(TUVideoEffect *)&v12 init];
   if (v8)
   {
-    if (v6)
+    if (nameCopy)
     {
-      if (v7)
+      if (imageCopy)
       {
 LABEL_4:
-        v9 = [v6 copy];
+        v9 = [nameCopy copy];
         name = v8->_name;
         v8->_name = v9;
 
-        objc_storeStrong(&v8->_thumbnailImage, a4);
+        objc_storeStrong(&v8->_thumbnailImage, image);
         goto LABEL_5;
       }
     }
@@ -42,7 +42,7 @@ LABEL_4:
     else
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[TUVideoEffect initWithName:thumbnailImage:]", @"name"}];
-      if (v7)
+      if (imageCopy)
       {
         goto LABEL_4;
       }
@@ -57,25 +57,25 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUVideoEffect *)self isEqualToEffect:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUVideoEffect *)self isEqualToEffect:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToEffect:(id)a3
+- (BOOL)isEqualToEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [(TUVideoEffect *)self name];
-  v6 = [v4 name];
-  if ([v5 isEqualToString:v6])
+  effectCopy = effect;
+  name = [(TUVideoEffect *)self name];
+  name2 = [effectCopy name];
+  if ([name isEqualToString:name2])
   {
-    v7 = [(TUVideoEffect *)self thumbnailImage];
-    v8 = [v4 thumbnailImage];
-    v9 = [v7 isEqual:v8];
+    thumbnailImage = [(TUVideoEffect *)self thumbnailImage];
+    thumbnailImage2 = [effectCopy thumbnailImage];
+    v9 = [thumbnailImage isEqual:thumbnailImage2];
   }
 
   else
@@ -88,10 +88,10 @@ LABEL_5:
 
 - (unint64_t)hash
 {
-  v3 = [(TUVideoEffect *)self name];
-  v4 = [v3 hash];
-  v5 = [(TUVideoEffect *)self thumbnailImage];
-  v6 = [v5 hash];
+  name = [(TUVideoEffect *)self name];
+  v4 = [name hash];
+  thumbnailImage = [(TUVideoEffect *)self thumbnailImage];
+  v6 = [thumbnailImage hash];
 
   return v6 ^ v4;
 }

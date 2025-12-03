@@ -1,10 +1,10 @@
 @interface FTInitiateMessage
 - (FTInitiateMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 - (void)dealloc;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation FTInitiateMessage
@@ -23,11 +23,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = FTInitiateMessage;
-  return [(FTFaceTimeMessage *)&v4 copyWithZone:a3];
+  return [(FTFaceTimeMessage *)&v4 copyWithZone:zone];
 }
 
 - (void)dealloc
@@ -137,21 +137,21 @@
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v7 = objc_msgSend_objectForKey_(a3, a2, @"session-token", v3, v4);
+  v7 = objc_msgSend_objectForKey_(dictionary, a2, @"session-token", v3, v4);
   if (v7)
   {
     objc_msgSend_setSessionToken_(self, v8, v7, v9, v10);
   }
 
-  v11 = objc_msgSend_objectForKey_(a3, v8, @"peers", v9, v10);
+  v11 = objc_msgSend_objectForKey_(dictionary, v8, @"peers", v9, v10);
   if (v11)
   {
     objc_msgSend_setCanonicalizedPeers_(self, v12, v11, v13, v14);
   }
 
-  v15 = objc_msgSend_objectForKey_(a3, v12, @"alert", v13, v14);
+  v15 = objc_msgSend_objectForKey_(dictionary, v12, @"alert", v13, v14);
 
   MEMORY[0x2821F9670](self, sel_setResponseAlertInfo_, v15, v16, v17);
 }

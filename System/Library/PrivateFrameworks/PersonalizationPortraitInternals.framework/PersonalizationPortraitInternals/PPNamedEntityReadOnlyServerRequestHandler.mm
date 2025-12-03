@@ -1,17 +1,17 @@
 @interface PPNamedEntityReadOnlyServerRequestHandler
 - (PPNamedEntityReadOnlyServerRequestHandler)init;
-- (void)mapItemForPlaceName:(id)a3 completion:(id)a4;
-- (void)namedEntityRecordsWithQuery:(id)a3 queryId:(unint64_t)a4;
-- (void)rankedNamedEntitiesWithQuery:(id)a3 queryId:(unint64_t)a4;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (void)mapItemForPlaceName:(id)name completion:(id)completion;
+- (void)namedEntityRecordsWithQuery:(id)query queryId:(unint64_t)id;
+- (void)rankedNamedEntitiesWithQuery:(id)query queryId:(unint64_t)id;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPNamedEntityReadOnlyServerRequestHandler
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  feedbackCopy = feedback;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -24,9 +24,9 @@
   v10[1] = 3221225472;
   v10[2] = __73__PPNamedEntityReadOnlyServerRequestHandler_registerFeedback_completion___block_invoke;
   v10[3] = &unk_2789776F8;
-  v11 = v5;
-  v9 = v5;
-  [v8 registerFeedback:v6 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v8 registerFeedback:feedbackCopy completion:v10];
 }
 
 uint64_t __73__PPNamedEntityReadOnlyServerRequestHandler_registerFeedback_completion___block_invoke(uint64_t a1)
@@ -40,10 +40,10 @@ uint64_t __73__PPNamedEntityReadOnlyServerRequestHandler_registerFeedback_comple
   return result;
 }
 
-- (void)mapItemForPlaceName:(id)a3 completion:(id)a4
+- (void)mapItemForPlaceName:(id)name completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  nameCopy = name;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -64,7 +64,7 @@ uint64_t __73__PPNamedEntityReadOnlyServerRequestHandler_registerFeedback_comple
 
   v12 = +[PPLocalNamedEntityStore defaultStore];
   v18 = 0;
-  v13 = [v12 mapItemForPlaceName:v6 error:&v18];
+  v13 = [v12 mapItemForPlaceName:nameCopy error:&v18];
 
   v14 = v18;
   v15 = pp_entities_signpost_handle();
@@ -75,19 +75,19 @@ uint64_t __73__PPNamedEntityReadOnlyServerRequestHandler_registerFeedback_comple
     _os_signpost_emit_with_name_impl(&dword_23224A000, v16, OS_SIGNPOST_INTERVAL_END, v9, "PPNamedEntityReadOnlyServer.mapItemForPlaceName", "", v17, 2u);
   }
 
-  v5[2](v5, v13, v14);
+  completionCopy[2](completionCopy, v13, v14);
 }
 
-- (void)namedEntityRecordsWithQuery:(id)a3 queryId:(unint64_t)a4
+- (void)namedEntityRecordsWithQuery:(id)query queryId:(unint64_t)id
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     clientProcessName = self->_clientProcessName;
     *buf = 134218242;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = clientProcessName;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPNamedEntityReadOnlyServer: namedEntityRecordsWithQuery queryId:%llu process:%@", buf, 0x16u);
@@ -98,22 +98,22 @@ uint64_t __73__PPNamedEntityReadOnlyServerRequestHandler_registerFeedback_comple
   v15[1] = 3221225472;
   v15[2] = __81__PPNamedEntityReadOnlyServerRequestHandler_namedEntityRecordsWithQuery_queryId___block_invoke;
   v15[3] = &unk_278978A80;
-  v10 = v6;
+  v10 = queryCopy;
   v16 = v10;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  idCopy2 = id;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v15];
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = self->_clientProcessName;
-    v13 = [v10 customizedDescription];
+    customizedDescription = [v10 customizedDescription];
     *buf = 134218498;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = v12;
     v23 = 2112;
-    v24 = v13;
+    v24 = customizedDescription;
     _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPNamedEntityReadOnlyServer: namedEntityRecordsWithQuery queryId:%llu process:%@ query:%@", buf, 0x20u);
   }
 
@@ -228,16 +228,16 @@ uint64_t __81__PPNamedEntityReadOnlyServerRequestHandler_namedEntityRecordsWithQ
   return result;
 }
 
-- (void)rankedNamedEntitiesWithQuery:(id)a3 queryId:(unint64_t)a4
+- (void)rankedNamedEntitiesWithQuery:(id)query queryId:(unint64_t)id
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     clientProcessName = self->_clientProcessName;
     *buf = 134218242;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = clientProcessName;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPNamedEntityReadOnlyServer: rankedNamedEntitiesWithQuery queryId:%llu process:%@", buf, 0x16u);
@@ -248,22 +248,22 @@ uint64_t __81__PPNamedEntityReadOnlyServerRequestHandler_namedEntityRecordsWithQ
   v15[1] = 3221225472;
   v15[2] = __82__PPNamedEntityReadOnlyServerRequestHandler_rankedNamedEntitiesWithQuery_queryId___block_invoke;
   v15[3] = &unk_278978A80;
-  v10 = v6;
+  v10 = queryCopy;
   v16 = v10;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  idCopy2 = id;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v15];
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = self->_clientProcessName;
-    v13 = [v10 customizedDescription];
+    customizedDescription = [v10 customizedDescription];
     *buf = 134218498;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = v12;
     v23 = 2112;
-    v24 = v13;
+    v24 = customizedDescription;
     _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPNamedEntityReadOnlyServer: rankedNamedEntitiesWithQuery queryId:%llu process:%@ query:%@", buf, 0x20u);
   }
 

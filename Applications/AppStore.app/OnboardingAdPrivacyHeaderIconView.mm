@@ -1,13 +1,13 @@
 @interface OnboardingAdPrivacyHeaderIconView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore33OnboardingAdPrivacyHeaderIconView)initWithCoder:(id)a3;
-- (_TtC8AppStore33OnboardingAdPrivacyHeaderIconView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore33OnboardingAdPrivacyHeaderIconView)initWithCoder:(id)coder;
+- (_TtC8AppStore33OnboardingAdPrivacyHeaderIconView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation OnboardingAdPrivacyHeaderIconView
 
-- (_TtC8AppStore33OnboardingAdPrivacyHeaderIconView)initWithCoder:(id)a3
+- (_TtC8AppStore33OnboardingAdPrivacyHeaderIconView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore33OnboardingAdPrivacyHeaderIconView_label;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -20,11 +20,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C80A4();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = type metadata accessor for FloatingPointRoundingRule();
   v5 = *(v4 - 8);
@@ -32,7 +32,7 @@
   v7 = &v17 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = OBJC_IVAR____TtC8AppStore33OnboardingAdPrivacyHeaderIconView_label;
   v9 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore33OnboardingAdPrivacyHeaderIconView_label);
-  v10 = self;
+  selfCopy = self;
   [v9 sizeToFit];
   [*(&self->super.super.super.isa + v8) frame];
   (*(v5 + 104))(v7, enum case for FloatingPointRoundingRule.up(_:), v4);
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (_TtC8AppStore33OnboardingAdPrivacyHeaderIconView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore33OnboardingAdPrivacyHeaderIconView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

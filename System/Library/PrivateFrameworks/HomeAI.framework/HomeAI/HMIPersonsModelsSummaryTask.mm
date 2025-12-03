@@ -1,24 +1,24 @@
 @interface HMIPersonsModelsSummaryTask
-- (HMIPersonsModelsSummaryTask)initWithTaskID:(int)a3 homeUUID:(id)a4;
+- (HMIPersonsModelsSummaryTask)initWithTaskID:(int)d homeUUID:(id)iD;
 - (void)mainInsideAutoreleasePool;
 @end
 
 @implementation HMIPersonsModelsSummaryTask
 
-- (HMIPersonsModelsSummaryTask)initWithTaskID:(int)a3 homeUUID:(id)a4
+- (HMIPersonsModelsSummaryTask)initWithTaskID:(int)d homeUUID:(id)iD
 {
   v5.receiver = self;
   v5.super_class = HMIPersonsModelsSummaryTask;
-  return [(HMIHomeTask *)&v5 initWithTaskID:*&a3 homeUUID:a4 timeout:30.0];
+  return [(HMIHomeTask *)&v5 initWithTaskID:*&d homeUUID:iD timeout:30.0];
 }
 
 - (void)mainInsideAutoreleasePool
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = +[HMIPersonsModelManager sharedInstance];
-  v4 = [(HMIHomeTask *)self homeUUID];
+  homeUUID = [(HMIHomeTask *)self homeUUID];
   v11 = 0;
-  v5 = [v3 summaryForHomeUUID:v4 error:&v11];
+  v5 = [v3 summaryForHomeUUID:homeUUID error:&v11];
   v6 = v11;
 
   if (v5)
@@ -30,7 +30,7 @@
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -43,7 +43,7 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMFOperation *)v8 cancelWithError:v6];
+    [(HMFOperation *)selfCopy cancelWithError:v6];
   }
 }
 

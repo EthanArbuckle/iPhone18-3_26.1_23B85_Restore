@@ -1,39 +1,39 @@
 @interface ISRecipeInfo
-+ (id)appRecipeForPlatform:(unint64_t)a3 descriptor:(id)a4 preferRichRecipe:(BOOL)a5;
-+ (id)documentRecipeForPlatform:(unint64_t)a3 descriptor:(id)a4;
-+ (id)genericRecipeWithAppliedDescriptorRecipeAttributes:(id)a3;
++ (id)appRecipeForPlatform:(unint64_t)platform descriptor:(id)descriptor preferRichRecipe:(BOOL)recipe;
++ (id)documentRecipeForPlatform:(unint64_t)platform descriptor:(id)descriptor;
++ (id)genericRecipeWithAppliedDescriptorRecipeAttributes:(id)attributes;
 @end
 
 @implementation ISRecipeInfo
 
-+ (id)appRecipeForPlatform:(unint64_t)a3 descriptor:(id)a4 preferRichRecipe:(BOOL)a5
++ (id)appRecipeForPlatform:(unint64_t)platform descriptor:(id)descriptor preferRichRecipe:(BOOL)recipe
 {
-  v7 = a4;
-  if (!a5)
+  descriptorCopy = descriptor;
+  if (!recipe)
   {
     v8 = +[ISDefaults sharedInstance];
-    v9 = [v8 iconStackAppIconsAllowed];
+    iconStackAppIconsAllowed = [v8 iconStackAppIconsAllowed];
 
-    if (v9)
+    if (iconStackAppIconsAllowed)
     {
       goto LABEL_12;
     }
   }
 
-  if (a3 <= 7)
+  if (platform <= 7)
   {
-    if (a3 != 1)
+    if (platform != 1)
     {
-      if (a3 == 2)
+      if (platform == 2)
       {
         v12 = ISiOSMacAppRecipe;
         goto LABEL_13;
       }
 
-      if (a3 == 4)
+      if (platform == 4)
       {
         v10 = objc_opt_new();
-        [(ISrOSAppRecipe *)v10 updateRecipeWithImageDescriptor:v7];
+        [(ISrOSAppRecipe *)v10 updateRecipeWithImageDescriptor:descriptorCopy];
         goto LABEL_18;
       }
     }
@@ -45,18 +45,18 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  if (a3 == 8)
+  if (platform == 8)
   {
     v11 = ISwatchOSAppRecipe;
 LABEL_15:
     v10 = objc_alloc_init(v11);
-    -[ISrOSAppRecipe setShouldApplyMask:](v10, "setShouldApplyMask:", [v7 shouldApplyMask]);
+    -[ISrOSAppRecipe setShouldApplyMask:](v10, "setShouldApplyMask:", [descriptorCopy shouldApplyMask]);
     goto LABEL_18;
   }
 
-  if (a3 != 16)
+  if (platform != 16)
   {
-    if (a3 != 32)
+    if (platform != 32)
     {
       goto LABEL_12;
     }
@@ -66,22 +66,22 @@ LABEL_15:
   }
 
   v10 = objc_alloc_init(ISrOSAppRecipe);
-  -[ISrOSAppRecipe setShouldApplyMask:](v10, "setShouldApplyMask:", [v7 shouldApplyMask]);
-  -[ISrOSAppRecipe setTemplateVariant:](v10, "setTemplateVariant:", [v7 templateVariant]);
+  -[ISrOSAppRecipe setShouldApplyMask:](v10, "setShouldApplyMask:", [descriptorCopy shouldApplyMask]);
+  -[ISrOSAppRecipe setTemplateVariant:](v10, "setTemplateVariant:", [descriptorCopy templateVariant]);
 LABEL_18:
 
   return v10;
 }
 
-+ (id)documentRecipeForPlatform:(unint64_t)a3 descriptor:(id)a4
++ (id)documentRecipeForPlatform:(unint64_t)platform descriptor:(id)descriptor
 {
   v5 = objc_alloc_init(ISDocumentRecipe);
-  [(ISDocumentRecipe *)v5 setPlatform:a3];
+  [(ISDocumentRecipe *)v5 setPlatform:platform];
 
   return v5;
 }
 
-+ (id)genericRecipeWithAppliedDescriptorRecipeAttributes:(id)a3
++ (id)genericRecipeWithAppliedDescriptorRecipeAttributes:(id)attributes
 {
   v3 = objc_alloc_init(ISGenericRecipe);
 

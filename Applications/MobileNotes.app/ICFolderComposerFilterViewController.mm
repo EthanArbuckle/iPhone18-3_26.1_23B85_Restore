@@ -1,40 +1,40 @@
 @interface ICFolderComposerFilterViewController
-- (ICFolderComposerFilterViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)doneActionWithSender:(id)a3;
-- (void)splitViewWillTransitionToSizeWithNotification:(id)a3;
+- (ICFolderComposerFilterViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)doneActionWithSender:(id)sender;
+- (void)splitViewWillTransitionToSizeWithNotification:(id)notification;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ICFolderComposerFilterViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002B2174();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1002B2640(a3);
+  selfCopy = self;
+  sub_1002B2640(appear);
 }
 
-- (void)doneActionWithSender:(id)a3
+- (void)doneActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_1002B3AA4();
 }
 
-- (void)splitViewWillTransitionToSizeWithNotification:(id)a3
+- (void)splitViewWillTransitionToSizeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002B35C8(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1002B35C8(notificationCopy);
 }
 
-- (ICFolderComposerFilterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICFolderComposerFilterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

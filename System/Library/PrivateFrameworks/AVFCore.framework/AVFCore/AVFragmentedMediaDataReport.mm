@@ -1,18 +1,18 @@
 @interface AVFragmentedMediaDataReport
-- (AVFragmentedMediaDataReport)initWithFigFragmentedMediaDataReportDictionary:(id)a3;
+- (AVFragmentedMediaDataReport)initWithFigFragmentedMediaDataReportDictionary:(id)dictionary;
 - (int64_t)numberOfBytesToEndOfFirstVideoFrame;
 - (void)dealloc;
 @end
 
 @implementation AVFragmentedMediaDataReport
 
-- (AVFragmentedMediaDataReport)initWithFigFragmentedMediaDataReportDictionary:(id)a3
+- (AVFragmentedMediaDataReport)initWithFigFragmentedMediaDataReportDictionary:(id)dictionary
 {
   v16.receiver = self;
   v16.super_class = AVFragmentedMediaDataReport;
   v5 = [(AVFragmentedMediaDataReport *)&v16 init];
   v6 = v5;
-  if (!a3)
+  if (!dictionary)
   {
     v9 = v5;
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v6 userInfo:{a2, @"invalid parameter not satisfying: %s", v10, v11, v12, v13, v14, "figFragmentedMediaDataReportDict != nil"), 0}];
@@ -25,7 +25,7 @@
     v6->_internal = v7;
     if (v7)
     {
-      v6->_internal->figFragmentedMediaDataReportDict = [a3 copy];
+      v6->_internal->figFragmentedMediaDataReportDict = [dictionary copy];
     }
 
     else

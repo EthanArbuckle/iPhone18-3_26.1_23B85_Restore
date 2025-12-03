@@ -1,13 +1,13 @@
 @interface WFPlaylistPickerParameter
 + (id)referencedActionResourceClasses;
 - (NSArray)possibleStates;
-- (WFPlaylistPickerParameter)initWithDefinition:(id)a3;
+- (WFPlaylistPickerParameter)initWithDefinition:(id)definition;
 - (id)defaultSerializedRepresentation;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 - (void)authorizationStatusDidChange;
 - (void)possibleStatesDidChange;
-- (void)setActionResources:(id)a3;
-- (void)setAppleMusicAccessResource:(id)a3;
+- (void)setActionResources:(id)resources;
+- (void)setAppleMusicAccessResource:(id)resource;
 - (void)updateChangeNotificationRegistration;
 - (void)wasAddedToWorkflow;
 - (void)wasRemovedFromWorkflow;
@@ -19,38 +19,38 @@
 {
   if ([(WFPlaylistPickerParameter *)self showLibrary])
   {
-    v3 = [(WFPlaylistPickerParameter *)self entireLibraryState];
-    v4 = [v3 serializedRepresentation];
+    entireLibraryState = [(WFPlaylistPickerParameter *)self entireLibraryState];
+    serializedRepresentation = [entireLibraryState serializedRepresentation];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WFPlaylistPickerParameter;
-    v4 = [(WFPlaylistPickerParameter *)&v6 defaultSerializedRepresentation];
+    serializedRepresentation = [(WFPlaylistPickerParameter *)&v6 defaultSerializedRepresentation];
   }
 
-  return v4;
+  return serializedRepresentation;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 value];
-  v5 = [v4 entireMusicLibrary];
+  stateCopy = state;
+  value = [stateCopy value];
+  entireMusicLibrary = [value entireMusicLibrary];
 
-  if (v5)
+  if (entireMusicLibrary)
   {
-    v6 = WFLocalizedString(@"My Music Library");
+    playlistName = WFLocalizedString(@"My Music Library");
   }
 
   else
   {
-    v7 = [v3 value];
-    v6 = [v7 playlistName];
+    value2 = [stateCopy value];
+    playlistName = [value2 playlistName];
   }
 
-  return v6;
+  return playlistName;
 }
 
 - (NSArray)possibleStates
@@ -75,15 +75,15 @@
 
     v4 = v3;
     _Block_object_dispose(&v14, 8);
-    v5 = [v3 playlistsQuery];
-    v6 = [v5 collections];
-    v7 = [v6 if_compactMap:&__block_literal_global_14418];
+    playlistsQuery = [v3 playlistsQuery];
+    collections = [playlistsQuery collections];
+    v7 = [collections if_compactMap:&__block_literal_global_14418];
     v8 = [v7 mutableCopy];
 
     if ([(WFPlaylistPickerParameter *)self showLibrary])
     {
-      v9 = [(WFPlaylistPickerParameter *)self entireLibraryState];
-      [(NSArray *)v8 insertObject:v9 atIndex:0];
+      entireLibraryState = [(WFPlaylistPickerParameter *)self entireLibraryState];
+      [(NSArray *)v8 insertObject:entireLibraryState atIndex:0];
     }
 
     possibleStates = self->_possibleStates;
@@ -142,31 +142,31 @@ WFPlaylistSubstitutableState *__43__WFPlaylistPickerParameter_possibleStates__bl
 
 - (void)updateChangeNotificationRegistration
 {
-  v3 = [(WFPlaylistPickerParameter *)self isInsideWorkflow];
-  v4 = [(WFPlaylistPickerParameter *)self generatingNotifications];
-  if (v3)
+  isInsideWorkflow = [(WFPlaylistPickerParameter *)self isInsideWorkflow];
+  generatingNotifications = [(WFPlaylistPickerParameter *)self generatingNotifications];
+  if (isInsideWorkflow)
   {
-    if (v4 || ![objc_opt_class() hasPlaylistAccess])
+    if (generatingNotifications || ![objc_opt_class() hasPlaylistAccess])
     {
       return;
     }
 
-    v5 = [getMPMediaLibraryClass_14443() defaultMediaLibrary];
-    [v5 beginGeneratingLibraryChangeNotifications];
+    defaultMediaLibrary = [getMPMediaLibraryClass_14443() defaultMediaLibrary];
+    [defaultMediaLibrary beginGeneratingLibraryChangeNotifications];
   }
 
   else
   {
-    if (!v4)
+    if (!generatingNotifications)
     {
       return;
     }
 
-    v5 = [getMPMediaLibraryClass_14443() defaultMediaLibrary];
-    [v5 endGeneratingLibraryChangeNotifications];
+    defaultMediaLibrary = [getMPMediaLibraryClass_14443() defaultMediaLibrary];
+    [defaultMediaLibrary endGeneratingLibraryChangeNotifications];
   }
 
-  [(WFPlaylistPickerParameter *)self setGeneratingNotifications:v3];
+  [(WFPlaylistPickerParameter *)self setGeneratingNotifications:isInsideWorkflow];
 }
 
 - (void)authorizationStatusDidChange
@@ -181,9 +181,9 @@ WFPlaylistSubstitutableState *__43__WFPlaylistPickerParameter_possibleStates__bl
   v5.receiver = self;
   v5.super_class = WFPlaylistPickerParameter;
   [(WFPlaylistPickerParameter *)&v5 wasRemovedFromWorkflow];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = getMPMediaLibraryDidChangeNotification();
-  [v3 removeObserver:self name:v4 object:0];
+  [defaultCenter removeObserver:self name:v4 object:0];
 
   [(WFPlaylistPickerParameter *)self updateChangeNotificationRegistration];
 }
@@ -193,55 +193,55 @@ WFPlaylistSubstitutableState *__43__WFPlaylistPickerParameter_possibleStates__bl
   v5.receiver = self;
   v5.super_class = WFPlaylistPickerParameter;
   [(WFPlaylistPickerParameter *)&v5 wasAddedToWorkflow];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = getMPMediaLibraryDidChangeNotification();
-  [v3 addObserver:self selector:sel_possibleStatesDidChange name:v4 object:0];
+  [defaultCenter addObserver:self selector:sel_possibleStatesDidChange name:v4 object:0];
 
   [(WFPlaylistPickerParameter *)self updateChangeNotificationRegistration];
 }
 
-- (void)setAppleMusicAccessResource:(id)a3
+- (void)setAppleMusicAccessResource:(id)resource
 {
-  v8 = a3;
+  resourceCopy = resource;
   v5 = MEMORY[0x277D7CF28];
   if (self->_appleMusicAccessResource)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:*v5 object:self->_appleMusicAccessResource];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*v5 object:self->_appleMusicAccessResource];
   }
 
-  objc_storeStrong(&self->_appleMusicAccessResource, a3);
+  objc_storeStrong(&self->_appleMusicAccessResource, resource);
   if (self->_appleMusicAccessResource)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:self selector:sel_authorizationStatusDidChange name:*v5 object:self->_appleMusicAccessResource];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_authorizationStatusDidChange name:*v5 object:self->_appleMusicAccessResource];
   }
 }
 
-- (void)setActionResources:(id)a3
+- (void)setActionResources:(id)resources
 {
-  v6 = [a3 anyObject];
+  anyObject = [resources anyObject];
   v4 = objc_opt_class();
-  v5 = WFEnforceClass(v6, v4);
+  v5 = WFEnforceClass(anyObject, v4);
   [(WFPlaylistPickerParameter *)self setAppleMusicAccessResource:v5];
 }
 
-- (WFPlaylistPickerParameter)initWithDefinition:(id)a3
+- (WFPlaylistPickerParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v15.receiver = self;
   v15.super_class = WFPlaylistPickerParameter;
-  v5 = [(WFPlaylistPickerParameter *)&v15 initWithDefinition:v4];
+  v5 = [(WFPlaylistPickerParameter *)&v15 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"ShowLibrary"];
+    v6 = [definitionCopy objectForKey:@"ShowLibrary"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass(v6, v7);
     v5->_showLibrary = [v8 BOOLValue];
 
     v9 = [WFPlaylistSubstitutableState alloc];
-    v10 = [[WFPlaylistDescriptor alloc] initWithEntireMusicLibrary];
-    v11 = [(WFVariableSubstitutableParameterState *)v9 initWithValue:v10];
+    initWithEntireMusicLibrary = [[WFPlaylistDescriptor alloc] initWithEntireMusicLibrary];
+    v11 = [(WFVariableSubstitutableParameterState *)v9 initWithValue:initWithEntireMusicLibrary];
     entireLibraryState = v5->_entireLibraryState;
     v5->_entireLibraryState = v11;
 

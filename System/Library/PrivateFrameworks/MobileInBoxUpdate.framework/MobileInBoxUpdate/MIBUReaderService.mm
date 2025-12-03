@@ -1,5 +1,5 @@
 @interface MIBUReaderService
-- (MIBUReaderService)initWithDelegate:(id)a3;
+- (MIBUReaderService)initWithDelegate:(id)delegate;
 - (void)run;
 - (void)start;
 - (void)terminate;
@@ -7,16 +7,16 @@
 
 @implementation MIBUReaderService
 
-- (MIBUReaderService)initWithDelegate:(id)a3
+- (MIBUReaderService)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = MIBUReaderService;
   v5 = [(MIBUReaderService *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(MIBUReaderService *)v5 setDelegate:v4];
+    [(MIBUReaderService *)v5 setDelegate:delegateCopy];
     [(MIBUReaderService *)v6 setRunLoop:0];
     v7 = objc_alloc_init(MIBUDeviceNFC);
     [(MIBUReaderService *)v6 setDevice:v7];
@@ -24,11 +24,11 @@
     v8 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [(MIBUReaderService *)v6 setServiceQueue:v8];
 
-    v9 = [(MIBUReaderService *)v6 serviceQueue];
-    [v9 setMaxConcurrentOperationCount:1];
+    serviceQueue = [(MIBUReaderService *)v6 serviceQueue];
+    [serviceQueue setMaxConcurrentOperationCount:1];
 
-    v10 = [(MIBUReaderService *)v6 serviceQueue];
-    [v10 setName:@"com.apple.mobileinboxupdate.service_queue"];
+    serviceQueue2 = [(MIBUReaderService *)v6 serviceQueue];
+    [serviceQueue2 setName:@"com.apple.mobileinboxupdate.service_queue"];
 
     v11 = dispatch_queue_create("com.apple.mibu_device_queue", MEMORY[0x277D85CD8]);
     [(MIBUReaderService *)v6 setDeviceQueue:v11];
@@ -39,12 +39,12 @@
 
 - (void)start
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MIBUReaderService *)v2 serviceQueue];
-  v4 = [v3 operationCount];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  serviceQueue = [(MIBUReaderService *)selfCopy serviceQueue];
+  operationCount = [serviceQueue operationCount];
 
-  if (v4)
+  if (operationCount)
   {
     if (MIBUOnceToken != -1)
     {
@@ -61,17 +61,17 @@
 
   else
   {
-    v6 = [(MIBUReaderService *)v2 serviceQueue];
+    serviceQueue2 = [(MIBUReaderService *)selfCopy serviceQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __26__MIBUReaderService_start__block_invoke;
     v9[3] = &unk_2798E6708;
-    v9[4] = v2;
+    v9[4] = selfCopy;
     v7 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v9];
-    [v6 addOperation:v7];
+    [serviceQueue2 addOperation:v7];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __26__MIBUReaderService_start__block_invoke_2()
@@ -92,12 +92,12 @@ void __26__MIBUReaderService_start__block_invoke_2()
 
 - (void)terminate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MIBUReaderService *)v2 serviceQueue];
-  v4 = [v3 operationCount];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  serviceQueue = [(MIBUReaderService *)selfCopy serviceQueue];
+  operationCount = [serviceQueue operationCount];
 
-  if (v4)
+  if (operationCount)
   {
     if (MIBUOnceToken != -1)
     {
@@ -111,14 +111,14 @@ void __26__MIBUReaderService_start__block_invoke_2()
       _os_log_impl(&dword_259ABF000, v5, OS_LOG_TYPE_DEFAULT, "Terminating MobileInBoxUpdate service thread...", buf, 2u);
     }
 
-    v6 = [(MIBUReaderService *)v2 runLoop];
-    CFRunLoopStop(v6);
+    runLoop = [(MIBUReaderService *)selfCopy runLoop];
+    CFRunLoopStop(runLoop);
 
-    v7 = [(MIBUReaderService *)v2 device];
-    [v7 endSession];
+    device = [(MIBUReaderService *)selfCopy device];
+    [device endSession];
 
-    v8 = [(MIBUReaderService *)v2 serviceQueue];
-    [v8 waitUntilAllOperationsAreFinished];
+    serviceQueue2 = [(MIBUReaderService *)selfCopy serviceQueue];
+    [serviceQueue2 waitUntilAllOperationsAreFinished];
   }
 
   else
@@ -136,7 +136,7 @@ void __26__MIBUReaderService_start__block_invoke_2()
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __30__MIBUReaderService_terminate__block_invoke()
@@ -186,14 +186,14 @@ void __30__MIBUReaderService_terminate__block_invoke_27()
     _os_log_impl(&dword_259ABF000, v3, OS_LOG_TYPE_DEFAULT, "MobileInBoxUpdate service thread started", buf, 2u);
   }
 
-  v4 = [(MIBUReaderService *)self deviceQueue];
+  deviceQueue = [(MIBUReaderService *)self deviceQueue];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __24__MIBUReaderService_run__block_invoke_32;
   v11 = &unk_2798E6730;
   objc_copyWeak(&v13, &location);
-  v12 = self;
-  dispatch_async(v4, &v8);
+  selfCopy = self;
+  dispatch_async(deviceQueue, &v8);
 
   if (MIBUOnceToken != -1)
   {
@@ -207,11 +207,11 @@ void __30__MIBUReaderService_terminate__block_invoke_27()
     _os_log_impl(&dword_259ABF000, v5, OS_LOG_TYPE_DEFAULT, "Starting run loop", buf, 2u);
   }
 
-  v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [(MIBUReaderService *)self setRunLoop:v6];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [(MIBUReaderService *)self setRunLoop:currentRunLoop];
 
-  v7 = [(MIBUReaderService *)self runLoop];
-  [v7 run];
+  runLoop = [(MIBUReaderService *)self runLoop];
+  [runLoop run];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);

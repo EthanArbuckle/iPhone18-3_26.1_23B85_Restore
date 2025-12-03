@@ -1,58 +1,58 @@
 @interface WFImgurUploadAction
-- (WFImgurUploadAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)uploadInput:(id)a3 withAccount:(id)a4;
+- (WFImgurUploadAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)uploadInput:(id)input withAccount:(id)account;
 @end
 
 @implementation WFImgurUploadAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to upload %2$@ to Imgur?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to upload image(s) to Imgur?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)uploadInput:(id)a3 withAccount:(id)a4
+- (void)uploadInput:(id)input withAccount:(id)account
 {
-  v6 = a4;
-  v27 = a3;
+  accountCopy = account;
+  inputCopy = input;
   v7 = [(WFImgurUploadAction *)self parameterValueForKey:@"WFImgurDirectLink" ofClass:objc_opt_class()];
-  v26 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
   v8 = [(WFImgurUploadAction *)self parameterValueForKey:@"WFImgurAlbum" ofClass:objc_opt_class()];
-  v9 = [v8 BOOLValue];
+  bOOLValue2 = [v8 BOOLValue];
 
   v10 = [(WFImgurUploadAction *)self parameterValueForKey:@"WFImgurTitle" ofClass:objc_opt_class()];
   v11 = [(WFImgurUploadAction *)self parameterValueForKey:@"WFImgurDescription" ofClass:objc_opt_class()];
   v12 = [(WFImgurUploadAction *)self parameterValueForKey:@"WFImgurAlbumLayout" ofClass:objc_opt_class()];
-  v13 = [v12 lowercaseString];
+  lowercaseString = [v12 lowercaseString];
 
   v14 = [(WFImgurUploadAction *)self parameterValueForKey:@"WFImgurAlbumPrivacy" ofClass:objc_opt_class()];
-  v15 = [v14 lowercaseString];
+  lowercaseString2 = [v14 lowercaseString];
 
   v16 = [WFImgurSessionManager alloc];
   v17 = +[WFImgurAccount clientID];
   v18 = [(WFImgurSessionManager *)v16 initWithClientID:v17];
 
-  v19 = [v6 credential];
+  credential = [accountCopy credential];
 
-  [(WFImgurSessionManager *)v18 setCredential:v19];
+  [(WFImgurSessionManager *)v18 setCredential:credential];
   v20 = objc_opt_class();
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -60,18 +60,18 @@
   v28[3] = &unk_278C1A150;
   v28[4] = self;
   v29 = v18;
-  v34 = v9;
+  v34 = bOOLValue2;
   v30 = v10;
   v31 = v11;
-  v35 = v26;
-  v32 = v13;
-  v33 = v15;
-  v21 = v15;
-  v22 = v13;
+  v35 = bOOLValue;
+  v32 = lowercaseString;
+  v33 = lowercaseString2;
+  v21 = lowercaseString2;
+  v22 = lowercaseString;
   v23 = v11;
   v24 = v10;
   v25 = v18;
-  [v27 generateCollectionByCoercingToItemClass:v20 completionHandler:v28];
+  [inputCopy generateCollectionByCoercingToItemClass:v20 completionHandler:v28];
 }
 
 void __47__WFImgurUploadAction_uploadInput_withAccount___block_invoke(uint64_t a1, void *a2)
@@ -246,22 +246,22 @@ void __47__WFImgurUploadAction_uploadInput_withAccount___block_invoke_4(uint64_t
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
-  v5 = [(WFImgurUploadAction *)self resourceManager];
-  v6 = [v5 resourceObjectsOfClass:objc_opt_class()];
-  v7 = [v6 anyObject];
+  inputCopy = input;
+  resourceManager = [(WFImgurUploadAction *)self resourceManager];
+  v6 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
+  anyObject = [v6 anyObject];
 
-  v8 = [v7 accounts];
-  v9 = [v8 firstObject];
+  accounts = [anyObject accounts];
+  firstObject = [accounts firstObject];
 
   v10 = [(WFImgurUploadAction *)self parameterValueForKey:@"WFImgurAnonymous" ofClass:objc_opt_class()];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v9)
+  if (firstObject)
   {
-    v12 = v11 == 0;
+    v12 = bOOLValue == 0;
   }
 
   else
@@ -276,14 +276,14 @@ void __47__WFImgurUploadAction_uploadInput_withAccount___block_invoke_4(uint64_t
     v13[2] = __50__WFImgurUploadAction_runAsynchronouslyWithInput___block_invoke;
     v13[3] = &unk_278C1DD80;
     v13[4] = self;
-    v14 = v4;
-    v15 = v9;
+    v14 = inputCopy;
+    v15 = firstObject;
     [v15 refreshWithCompletionHandler:v13];
   }
 
   else
   {
-    [(WFImgurUploadAction *)self uploadInput:v4 withAccount:0];
+    [(WFImgurUploadAction *)self uploadInput:inputCopy withAccount:0];
   }
 }
 
@@ -323,17 +323,17 @@ void __50__WFImgurUploadAction_runAsynchronouslyWithInput___block_invoke(uint64_
   }
 }
 
-- (WFImgurUploadAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5
+- (WFImgurUploadAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
   v10.receiver = self;
   v10.super_class = WFImgurUploadAction;
-  v5 = [(WFImgurUploadAction *)&v10 initWithIdentifier:a3 definition:a4 serializedParameters:a5];
+  v5 = [(WFImgurUploadAction *)&v10 initWithIdentifier:identifier definition:definition serializedParameters:parameters];
   if (v5)
   {
     v6 = [(WFImgurUploadAction *)v5 unevaluatedResourceObjectsOfClass:objc_opt_class()];
-    v7 = [v6 anyObject];
+    anyObject = [v6 anyObject];
 
-    [v7 setAction:v5];
+    [anyObject setAction:v5];
     v8 = v5;
   }
 

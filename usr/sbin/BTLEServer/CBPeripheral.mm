@@ -1,18 +1,18 @@
 @interface CBPeripheral
-- (BOOL)isSupportingService:(id)a3;
+- (BOOL)isSupportingService:(id)service;
 @end
 
 @implementation CBPeripheral
 
-- (BOOL)isSupportingService:(id)a3
+- (BOOL)isSupportingService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CBPeripheral *)self services];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  services = [(CBPeripheral *)self services];
+  v6 = [services countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -22,11 +22,11 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(services);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) UUID];
-        v10 = [v4 isEqual:v9];
+        uUID = [*(*(&v12 + 1) + 8 * i) UUID];
+        v10 = [serviceCopy isEqual:uUID];
 
         if (v10)
         {
@@ -35,7 +35,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [services countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;

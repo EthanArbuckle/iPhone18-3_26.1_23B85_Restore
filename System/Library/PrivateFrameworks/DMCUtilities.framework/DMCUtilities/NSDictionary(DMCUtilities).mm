@@ -24,12 +24,12 @@
   v7 = v6;
   if (!v5)
   {
-    v10 = [v6 domain];
-    if ([v10 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v6 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v11 = [v7 code];
+      code = [v7 code];
 
-      if (v11 != 4)
+      if (code != 4)
       {
         goto LABEL_2;
       }
@@ -62,17 +62,17 @@ LABEL_2:
   v6 = a4;
   v7 = a3;
   v8 = [DMCDictionaryWriter alloc];
-  v9 = [a1 _writingOptionsFromProtectionType:v6];
+  v9 = [self _writingOptionsFromProtectionType:v6];
 
-  v10 = [(DMCDictionaryWriter *)v8 initWithDictionary:a1 path:v7 writeOptions:v9];
-  v11 = [(DMCDictionaryWriter *)v10 write];
+  v10 = [(DMCDictionaryWriter *)v8 initWithDictionary:self path:v7 writeOptions:v9];
+  write = [(DMCDictionaryWriter *)v10 write];
 
-  return v11;
+  return write;
 }
 
 - (void)dmc_valueOfClass:()DMCUtilities forKey:
 {
-  v4 = [a1 objectForKeyedSubscript:a4];
+  v4 = [self objectForKeyedSubscript:a4];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -184,7 +184,7 @@ LABEL_11:
 
 - (id)DMCShortenedPlistDescription
 {
-  v1 = [objc_opt_class() DMCShortenedDictionary:a1];
+  v1 = [objc_opt_class() DMCShortenedDictionary:self];
   v2 = [v1 description];
 
   return v2;
@@ -196,7 +196,7 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 DMCShortenedArray:v4];
+    v5 = [self DMCShortenedArray:v4];
   }
 
   else
@@ -204,7 +204,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a1 DMCShortenedDictionary:v4];
+      v5 = [self DMCShortenedDictionary:v4];
     }
 
     else
@@ -212,7 +212,7 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [a1 DMCShortenedData:v4];
+        v5 = [self DMCShortenedData:v4];
       }
 
       else
@@ -238,7 +238,7 @@ LABEL_11:
   v9[3] = &unk_1E7ADC630;
   v7 = v6;
   v10 = v7;
-  v11 = a1;
+  selfCopy = self;
   [v5 enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
@@ -268,7 +268,7 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 DMCShortenedObject:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self DMCShortenedObject:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -292,17 +292,17 @@ LABEL_11:
     v5 = MEMORY[0x1E696AEC0];
     if (v4 > 0x10)
     {
-      v6 = [v3 subdataWithRange:{0, 8}];
-      v8 = [v6 DMCHexString];
+      dMCHexString3 = [v3 subdataWithRange:{0, 8}];
+      dMCHexString = [dMCHexString3 DMCHexString];
       v9 = [v3 subdataWithRange:{objc_msgSend(v3, "length") - 8, 8}];
-      v10 = [v9 DMCHexString];
-      v7 = [v5 stringWithFormat:@"0x%@ ... 0x%@", v8, v10];
+      dMCHexString2 = [v9 DMCHexString];
+      v7 = [v5 stringWithFormat:@"0x%@ ... 0x%@", dMCHexString, dMCHexString2];
     }
 
     else
     {
-      v6 = [v3 DMCHexString];
-      v7 = [v5 stringWithFormat:@"0x%@", v6];
+      dMCHexString3 = [v3 DMCHexString];
+      v7 = [v5 stringWithFormat:@"0x%@", dMCHexString3];
     }
   }
 

@@ -2,8 +2,8 @@
 + (id)getSharedInstance;
 - (WISTrialExperimentsManager)init;
 - (void)notifyRegisteredClientsForExperimentEnd;
-- (void)notifyRegisteredClientsForExperimentStart:(id)a3;
-- (void)readParametersFromPlist:(id)a3;
+- (void)notifyRegisteredClientsForExperimentStart:(id)start;
+- (void)readParametersFromPlist:(id)plist;
 - (void)subscribeToTrial;
 - (void)updateTreatment;
 @end
@@ -57,13 +57,13 @@
   return v2;
 }
 
-- (void)readParametersFromPlist:(id)a3
+- (void)readParametersFromPlist:(id)plist
 {
-  v3 = a3;
-  if (v3)
+  plistCopy = plist;
+  if (plistCopy)
   {
     v14 = 0;
-    v4 = [[NSDictionary alloc] initWithContentsOfURL:v3 error:&v14];
+    v4 = [[NSDictionary alloc] initWithContentsOfURL:plistCopy error:&v14];
     v5 = v14;
     if ([v4 count])
     {
@@ -157,22 +157,22 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)notifyRegisteredClientsForExperimentStart:(id)a3
+- (void)notifyRegisteredClientsForExperimentStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = *(qword_1002DBE98 + 48);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412802;
     v7 = off_1002D4F80;
     v8 = 2112;
-    v9 = v4;
+    v9 = startCopy;
     v10 = 2080;
     v11 = "[WISTrialExperimentsManager notifyRegisteredClientsForExperimentStart:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#I %@: Experiment Start: set parameters from plist at %@, %s", &v6, 0x20u);
   }
 
-  [(WISTrialExperimentsManager *)self readParametersFromPlist:v4];
+  [(WISTrialExperimentsManager *)self readParametersFromPlist:startCopy];
 }
 
 - (void)notifyRegisteredClientsForExperimentEnd
@@ -201,17 +201,17 @@ LABEL_21:
     if (v5)
     {
       v6 = off_1002D4F80;
-      v7 = [v3 experimentId];
-      v8 = [v3 deploymentId];
-      v9 = [v3 treatmentId];
+      experimentId = [v3 experimentId];
+      deploymentId = [v3 deploymentId];
+      treatmentId = [v3 treatmentId];
       v27 = 138413314;
       v28 = v6;
       v29 = 2112;
-      v30 = v7;
+      v30 = experimentId;
       v31 = 1024;
-      *v32 = v8;
+      *v32 = deploymentId;
       *&v32[4] = 2112;
-      *&v32[6] = v9;
+      *&v32[6] = treatmentId;
       v33 = 2080;
       v34 = "[WISTrialExperimentsManager updateTreatment]";
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "#I %@: experimentIdentifiers are: experimentId: %@, deploymentId: %d, treatmentId: %@, %s", &v27, 0x30u);
@@ -234,19 +234,19 @@ LABEL_21:
       goto LABEL_23;
     }
 
-    v12 = [v10 fileValue];
-    v13 = [v12 path];
-    if (v13)
+    fileValue = [v10 fileValue];
+    path = [fileValue path];
+    if (path)
     {
-      v14 = [v11 fileValue];
-      v15 = [v14 path];
-      v16 = [v15 length] == 0;
+      fileValue2 = [v11 fileValue];
+      path2 = [fileValue2 path];
+      v16 = [path2 length] == 0;
 
       if (!v16)
       {
-        v17 = [v11 fileValue];
-        v18 = [v17 path];
-        v19 = [NSURL fileURLWithPath:v18];
+        fileValue3 = [v11 fileValue];
+        path3 = [fileValue3 path];
+        v19 = [NSURL fileURLWithPath:path3];
 
         v20 = *(qword_1002DBE98 + 48);
         v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
@@ -255,12 +255,12 @@ LABEL_21:
           if (v21)
           {
             v22 = off_1002D4F80;
-            v23 = [v11 fileValue];
-            v24 = [v23 path];
+            fileValue4 = [v11 fileValue];
+            path4 = [fileValue4 path];
             v27 = 138412802;
             v28 = v22;
             v29 = 2112;
-            v30 = v24;
+            v30 = path4;
             v31 = 2080;
             *v32 = "[WISTrialExperimentsManager updateTreatment]";
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "#I %@: activateTreatment: Trial Asset path: %@, %s", &v27, 0x20u);
@@ -337,14 +337,14 @@ LABEL_24:
     v6 = objc_autoreleasePoolPush();
     objc_initWeak(&location, self);
     v7 = self->trialClient;
-    v8 = [(WISTrialExperimentsManager *)self cellularProdExpQueue];
+    cellularProdExpQueue = [(WISTrialExperimentsManager *)self cellularProdExpQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10005955C;
     v11[3] = &unk_1002AC2B8;
     objc_copyWeak(&v12, &location);
     v11[4] = buf;
-    v9 = [(TRIClient *)v7 addUpdateHandlerForNamespaceName:@"WIRELESS_DATA_ANALYTICS_CELLULAR_PRODUCT_EXPERIMENTATION_INTERNAL" queue:v8 usingBlock:v11];
+    v9 = [(TRIClient *)v7 addUpdateHandlerForNamespaceName:@"WIRELESS_DATA_ANALYTICS_CELLULAR_PRODUCT_EXPERIMENTATION_INTERNAL" queue:cellularProdExpQueue usingBlock:v11];
     if ((*(*&buf[8] + 24) & 1) == 0)
     {
       v10 = *(qword_1002DBE98 + 48);

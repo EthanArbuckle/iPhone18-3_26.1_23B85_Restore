@@ -10,7 +10,7 @@
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
   {
-    v7 = [a1 objectForInfoDictionaryKey:@"CFBundleIconFilesRightToLeft"];
+    v7 = [self objectForInfoDictionaryKey:@"CFBundleIconFilesRightToLeft"];
     v8 = objc_opt_class();
     v9 = v7;
     if (v8)
@@ -41,7 +41,7 @@
 
   if (![v6 count])
   {
-    v12 = [a1 objectForInfoDictionaryKey:@"CFBundleIconFiles"];
+    v12 = [self objectForInfoDictionaryKey:@"CFBundleIconFiles"];
     v13 = objc_opt_class();
     v14 = v12;
     if (v13)
@@ -72,7 +72,7 @@
 
   if (![v6 count])
   {
-    v17 = [a1 objectForInfoDictionaryKey:@"CFBundleIcons"];
+    v17 = [self objectForInfoDictionaryKey:@"CFBundleIcons"];
     v18 = objc_opt_class();
     v19 = v17;
     if (v18)
@@ -178,14 +178,14 @@ LABEL_43:
         objc_enumerationMutation(v33);
       }
 
-      v38 = [MEMORY[0x1E69DCAB8] imageNamed:*(*(&v43 + 1) + 8 * v37) inBundle:{a1, v43}];
-      [v38 size];
+      lastObject = [MEMORY[0x1E69DCAB8] imageNamed:*(*(&v43 + 1) + 8 * v37) inBundle:{self, v43}];
+      [lastObject size];
       if (v40 == a2 && v39 == a3)
       {
         break;
       }
 
-      [v32 addObject:v38];
+      [v32 addObject:lastObject];
 
       if (v35 == ++v37)
       {
@@ -199,7 +199,7 @@ LABEL_43:
       }
     }
 
-    if (v38)
+    if (lastObject)
     {
       goto LABEL_55;
     }
@@ -210,10 +210,10 @@ LABEL_43:
 LABEL_52:
   }
 
-  v38 = [v32 lastObject];
+  lastObject = [v32 lastObject];
 LABEL_55:
 
-  return v38;
+  return lastObject;
 }
 
 @end

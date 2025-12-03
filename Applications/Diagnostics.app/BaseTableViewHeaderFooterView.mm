@@ -1,13 +1,13 @@
 @interface BaseTableViewHeaderFooterView
-- (_TtC11Diagnostics29BaseTableViewHeaderFooterView)initWithCoder:(id)a3;
-- (_TtC11Diagnostics29BaseTableViewHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (_TtC11Diagnostics29BaseTableViewHeaderFooterView)initWithCoder:(id)coder;
+- (_TtC11Diagnostics29BaseTableViewHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation BaseTableViewHeaderFooterView
 
-- (_TtC11Diagnostics29BaseTableViewHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (_TtC11Diagnostics29BaseTableViewHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v4 = String._bridgeToObjectiveC()();
@@ -25,7 +25,7 @@
   return v5;
 }
 
-- (_TtC11Diagnostics29BaseTableViewHeaderFooterView)initWithCoder:(id)a3
+- (_TtC11Diagnostics29BaseTableViewHeaderFooterView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

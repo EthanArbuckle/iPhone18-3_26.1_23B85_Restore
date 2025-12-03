@@ -1,59 +1,59 @@
 @interface PLJournal
-+ (BOOL)_finishFullSnapshotForBaseURL:(id)a3 snapshotSucceeded:(BOOL)a4 snapshotMode:(unsigned __int8)a5 journals:(id)a6 error:(id *)a7;
-+ (BOOL)_performSnapshotsForBaseURL:(id)a3 snapshotMode:(unsigned __int8)a4 payloadClasses:(id)a5 snapshotJournalBlock:(id)a6 createOnlyIfNecessary:(BOOL)a7 error:(id *)a8;
-+ (BOOL)createSnapshotFinishMarkerForBaseURL:(id)a3 error:(id *)a4;
-+ (BOOL)recoverJournalsIfNecessaryForBaseURL:(id)a3 payloadClasses:(id)a4 error:(id *)a5;
-+ (BOOL)removeSnapshotFinishMarkerForBaseURL:(id)a3 error:(id *)a4;
-+ (BOOL)snapshotFinishMarkerExistsForBaseURL:(id)a3;
-+ (id)journalURLForBaseURL:(id)a3 name:(id)a4 journalType:(id)a5;
-+ (id)metadataURLForBaseURL:(id)a3 payloadClassId:(id)a4 pending:(BOOL)a5;
-- (BOOL)_finishSnapshotWithMode:(unsigned __int8)a3 snapshotSuccess:(BOOL)a4 error:(id *)a5;
-- (BOOL)_performSnapshotWithMode:(unsigned __int8)a3 usingNextEntryBlock:(id)a4 createOnlyIfNecessary:(BOOL)a5 error:(id *)a6;
-- (BOOL)_prepareForSnapshotWithMode:(unsigned __int8)a3 error:(id *)a4;
-- (BOOL)_recoverJournalWithError:(id *)a3;
-- (BOOL)_removeMetadataPending:(BOOL)a3 error:(id *)a4;
-- (BOOL)_replaceMetadataWithPendingMetadataError:(id *)a3;
-- (BOOL)_updateMetadataWithMetadata:(id)a3 replace:(BOOL)a4 pending:(BOOL)a5 error:(id *)a6;
-- (BOOL)appendChangeEntries:(id)a3 error:(id *)a4;
-- (BOOL)appendChangeEntryAfterPrepare:(id)a3 error:(id *)a4;
-- (BOOL)appendUpdatePayloadWithPayloadID:(id)a3 rawAttributes:(id)a4 error:(id *)a5;
-- (BOOL)coalesceChangesToSnapshotWithError:(id *)a3;
-- (BOOL)createSnapshotUsingNextPayloadBlock:(id)a3 createOnlyIfNecessary:(BOOL)a4 error:(id *)a5;
-- (BOOL)enumerateEntriesUsingBlock:(id)a3 decodePayload:(BOOL)a4 error:(id *)a5;
-- (BOOL)enumeratePayloadsUsingBlock:(id)a3 error:(id *)a4;
-- (BOOL)finishAppendChangeEntriesWithError:(id *)a3;
-- (BOOL)prepareForAppendChangeEntriesWithError:(id *)a3;
-- (BOOL)removeJournalFilesWithError:(id *)a3;
-- (BOOL)snapshotJournalFileSize:(unint64_t *)a3 changeJournalFileSize:(unint64_t *)a4 error:(id *)a5;
++ (BOOL)_finishFullSnapshotForBaseURL:(id)l snapshotSucceeded:(BOOL)succeeded snapshotMode:(unsigned __int8)mode journals:(id)journals error:(id *)error;
++ (BOOL)_performSnapshotsForBaseURL:(id)l snapshotMode:(unsigned __int8)mode payloadClasses:(id)classes snapshotJournalBlock:(id)block createOnlyIfNecessary:(BOOL)necessary error:(id *)error;
++ (BOOL)createSnapshotFinishMarkerForBaseURL:(id)l error:(id *)error;
++ (BOOL)recoverJournalsIfNecessaryForBaseURL:(id)l payloadClasses:(id)classes error:(id *)error;
++ (BOOL)removeSnapshotFinishMarkerForBaseURL:(id)l error:(id *)error;
++ (BOOL)snapshotFinishMarkerExistsForBaseURL:(id)l;
++ (id)journalURLForBaseURL:(id)l name:(id)name journalType:(id)type;
++ (id)metadataURLForBaseURL:(id)l payloadClassId:(id)id pending:(BOOL)pending;
+- (BOOL)_finishSnapshotWithMode:(unsigned __int8)mode snapshotSuccess:(BOOL)success error:(id *)error;
+- (BOOL)_performSnapshotWithMode:(unsigned __int8)mode usingNextEntryBlock:(id)block createOnlyIfNecessary:(BOOL)necessary error:(id *)error;
+- (BOOL)_prepareForSnapshotWithMode:(unsigned __int8)mode error:(id *)error;
+- (BOOL)_recoverJournalWithError:(id *)error;
+- (BOOL)_removeMetadataPending:(BOOL)pending error:(id *)error;
+- (BOOL)_replaceMetadataWithPendingMetadataError:(id *)error;
+- (BOOL)_updateMetadataWithMetadata:(id)metadata replace:(BOOL)replace pending:(BOOL)pending error:(id *)error;
+- (BOOL)appendChangeEntries:(id)entries error:(id *)error;
+- (BOOL)appendChangeEntryAfterPrepare:(id)prepare error:(id *)error;
+- (BOOL)appendUpdatePayloadWithPayloadID:(id)d rawAttributes:(id)attributes error:(id *)error;
+- (BOOL)coalesceChangesToSnapshotWithError:(id *)error;
+- (BOOL)createSnapshotUsingNextPayloadBlock:(id)block createOnlyIfNecessary:(BOOL)necessary error:(id *)error;
+- (BOOL)enumerateEntriesUsingBlock:(id)block decodePayload:(BOOL)payload error:(id *)error;
+- (BOOL)enumeratePayloadsUsingBlock:(id)block error:(id *)error;
+- (BOOL)finishAppendChangeEntriesWithError:(id *)error;
+- (BOOL)prepareForAppendChangeEntriesWithError:(id *)error;
+- (BOOL)removeJournalFilesWithError:(id *)error;
+- (BOOL)snapshotJournalFileSize:(unint64_t *)size changeJournalFileSize:(unint64_t *)fileSize error:(id *)error;
 - (NSDictionary)metadata;
-- (PLJournal)initWithBaseURL:(id)a3 name:(id)a4 payloadClass:(Class)a5 hasMetadata:(BOOL)a6;
-- (PLJournal)initWithBaseURL:(id)a3 payloadClass:(Class)a4;
+- (PLJournal)initWithBaseURL:(id)l name:(id)name payloadClass:(Class)class hasMetadata:(BOOL)metadata;
+- (PLJournal)initWithBaseURL:(id)l payloadClass:(Class)class;
 - (PLJournalFile)changeJournal;
 - (PLJournalFile)snapshotJournal;
-- (id)_payloadTooNewErrorWithPayloadVersion:(int64_t)a3;
-- (id)_readMetadataPending:(BOOL)a3;
-- (id)metadataURLPending:(BOOL)a3;
-- (unint64_t)countOfInsertEntriesWithError:(id *)a3;
-- (unint64_t)currentPayloadVersionWithError:(id *)a3;
+- (id)_payloadTooNewErrorWithPayloadVersion:(int64_t)version;
+- (id)_readMetadataPending:(BOOL)pending;
+- (id)metadataURLPending:(BOOL)pending;
+- (unint64_t)countOfInsertEntriesWithError:(id *)error;
+- (unint64_t)currentPayloadVersionWithError:(id *)error;
 - (void)removeMetadata;
 @end
 
 @implementation PLJournal
 
-- (BOOL)appendUpdatePayloadWithPayloadID:(id)a3 rawAttributes:(id)a4 error:(id *)a5
+- (BOOL)appendUpdatePayloadWithPayloadID:(id)d rawAttributes:(id)attributes error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 count])
+  dCopy = d;
+  attributesCopy = attributes;
+  if ([attributesCopy count])
   {
-    v10 = [(PLJournal *)self payloadClass];
-    v11 = [[v10 alloc] initWithPayloadID:v8 payloadVersion:-[objc_class payloadVersion](v10 nilAttributes:{"payloadVersion"), 0}];
-    [v11 setRawPayloadAttributes:v9];
+    payloadClass = [(PLJournal *)self payloadClass];
+    v11 = [[payloadClass alloc] initWithPayloadID:dCopy payloadVersion:-[objc_class payloadVersion](payloadClass nilAttributes:{"payloadVersion"), 0}];
+    [v11 setRawPayloadAttributes:attributesCopy];
     v12 = [[PLJournalEntry alloc] initForUpdateWithPayload:v11];
     v16[0] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v14 = [(PLJournal *)self appendChangeEntries:v13 error:a5];
+    v14 = [(PLJournal *)self appendChangeEntries:v13 error:error];
   }
 
   else
@@ -64,15 +64,15 @@
   return v14;
 }
 
-- (id)_payloadTooNewErrorWithPayloadVersion:(int64_t)a3
+- (id)_payloadTooNewErrorWithPayloadVersion:(int64_t)version
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E69BFF48];
   v13 = *MEMORY[0x1E696A578];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(objc_class *)self->_payloadClass payloadClassID];
-  v9 = [v7 stringWithFormat:@"Payload (%@) too new, payload version %lu greater than payload class version %u", v8, a3, -[objc_class payloadVersion](self->_payloadClass, "payloadVersion")];
+  payloadClassID = [(objc_class *)self->_payloadClass payloadClassID];
+  v9 = [v7 stringWithFormat:@"Payload (%@) too new, payload version %lu greater than payload class version %u", payloadClassID, version, -[objc_class payloadVersion](self->_payloadClass, "payloadVersion")];
   v14[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v11 = [v5 errorWithDomain:v6 code:51007 userInfo:v10];
@@ -80,16 +80,16 @@
   return v11;
 }
 
-- (BOOL)enumerateEntriesUsingBlock:(id)a3 decodePayload:(BOOL)a4 error:(id *)a5
+- (BOOL)enumerateEntriesUsingBlock:(id)block decodePayload:(BOOL)payload error:(id *)error
 {
-  v8 = a3;
-  v9 = [(PLJournal *)self snapshotJournal];
+  blockCopy = block;
+  snapshotJournal = [(PLJournal *)self snapshotJournal];
   v74 = 0;
   v75 = &v74;
   v76 = 0x3032000000;
   v77 = __Block_byref_object_copy__70434;
   v78 = __Block_byref_object_dispose__70435;
-  v79 = [(PLJournal *)self changeJournal];
+  changeJournal = [(PLJournal *)self changeJournal];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -109,18 +109,18 @@
     v67 = v10;
     v68 = v11;
     v69[0] = v30;
-    v13 = [v12 enumerateEntriesUsingBlock:v66 decodePayload:0 error:a5];
+    v13 = [v12 enumerateEntriesUsingBlock:v66 decodePayload:0 error:error];
     v28 = &v68;
     v29 = &v67;
     v24 = v69;
     if (v71[3])
     {
-      if (a5)
+      if (error)
       {
         [(PLJournal *)self _payloadTooNewErrorWithPayloadVersion:?];
         v15 = &v68;
         v14 = &v67;
-        *a5 = v16 = 0;
+        *error = v16 = 0;
 LABEL_13:
 
         goto LABEL_14;
@@ -140,16 +140,16 @@ LABEL_10:
 
     v26 = v11;
     v27 = v10;
-    v23 = v9;
-    v25 = v8;
+    v23 = snapshotJournal;
+    v25 = blockCopy;
   }
 
   else
   {
     v26 = v11;
     v27 = v10;
-    v23 = v9;
-    v25 = v8;
+    v23 = snapshotJournal;
+    v25 = blockCopy;
   }
 
   v64[0] = 0;
@@ -186,7 +186,7 @@ LABEL_10:
   v50 = v58;
   v46 = v26;
   v51 = v56;
-  v55 = a4;
+  payloadCopy = payload;
   v47 = v27;
   v52 = v64;
   v53 = v62;
@@ -198,11 +198,11 @@ LABEL_10:
   v31[2] = __60__PLJournal_enumerateEntriesUsingBlock_decodePayload_error___block_invoke_4;
   v31[3] = &unk_1E7570DB8;
   v35 = v56;
-  v9 = v23;
+  snapshotJournal = v23;
   v32 = v23;
   v18 = v17;
-  v43 = a4;
-  v33 = self;
+  payloadCopy2 = payload;
+  selfCopy = self;
   v34 = v18;
   v36 = &v70;
   v37 = v64;
@@ -210,12 +210,12 @@ LABEL_10:
   v39 = v60;
   v40 = v58;
   v41 = &v74;
-  v42 = a5;
+  errorCopy = error;
   v19 = _Block_copy(v31);
   v20 = v75[5];
   if (v20)
   {
-    v21 = [v20 openForReadingUsingBlock:v19 error:a5];
+    v21 = [v20 openForReadingUsingBlock:v19 error:error];
   }
 
   else
@@ -226,7 +226,7 @@ LABEL_10:
   v15 = v28;
   v14 = v29;
   v16 = v21;
-  v8 = v25;
+  blockCopy = v25;
 
   _Block_object_dispose(v56, 8);
   _Block_object_dispose(v58, 8);
@@ -513,41 +513,41 @@ void __60__PLJournal_enumerateEntriesUsingBlock_decodePayload_error___block_invo
   }
 }
 
-- (unint64_t)currentPayloadVersionWithError:(id *)a3
+- (unint64_t)currentPayloadVersionWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
-  v5 = [(PLJournal *)self metadata];
-  v6 = [v5 objectForKeyedSubscript:@"currentPayloadVersion"];
-  v7 = [v6 unsignedIntegerValue];
+  metadata = [(PLJournal *)self metadata];
+  v6 = [metadata objectForKeyedSubscript:@"currentPayloadVersion"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v19 = v7;
+  v19 = unsignedIntegerValue;
   v8 = v17[3];
   if (!v8)
   {
-    v9 = [(PLJournal *)self changeJournal];
-    v10 = v9;
-    if (v9 && (v15[0] = MEMORY[0x1E69E9820], v15[1] = 3221225472, v15[2] = __44__PLJournal_currentPayloadVersionWithError___block_invoke, v15[3] = &unk_1E7570D18, v15[4] = &v16, ([v9 enumerateEntriesUsingBlock:v15 decodePayload:0 error:a3] & 1) == 0))
+    changeJournal = [(PLJournal *)self changeJournal];
+    v10 = changeJournal;
+    if (changeJournal && (v15[0] = MEMORY[0x1E69E9820], v15[1] = 3221225472, v15[2] = __44__PLJournal_currentPayloadVersionWithError___block_invoke, v15[3] = &unk_1E7570D18, v15[4] = &v16, ([changeJournal enumerateEntriesUsingBlock:v15 decodePayload:0 error:error] & 1) == 0))
     {
       v17[3] = 0;
     }
 
     else if (!v17[3])
     {
-      v11 = [(PLJournal *)self snapshotJournal];
+      snapshotJournal = [(PLJournal *)self snapshotJournal];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __44__PLJournal_currentPayloadVersionWithError___block_invoke_2;
       v14[3] = &unk_1E7570D18;
       v14[4] = &v16;
-      v12 = [v11 enumerateEntriesUsingBlock:v14 decodePayload:0 error:a3];
+      v12 = [snapshotJournal enumerateEntriesUsingBlock:v14 decodePayload:0 error:error];
 
       if (v12)
       {
-        if (a3 && !v17[3])
+        if (error && !v17[3])
         {
-          *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:51006 userInfo:0];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:51006 userInfo:0];
         }
       }
     }
@@ -576,7 +576,7 @@ uint64_t __44__PLJournal_currentPayloadVersionWithError___block_invoke_2(uint64_
   return result;
 }
 
-- (unint64_t)countOfInsertEntriesWithError:(id *)a3
+- (unint64_t)countOfInsertEntriesWithError:(id *)error
 {
   v6 = 0;
   v7 = &v6;
@@ -587,24 +587,24 @@ uint64_t __44__PLJournal_currentPayloadVersionWithError___block_invoke_2(uint64_
   v5[2] = __43__PLJournal_countOfInsertEntriesWithError___block_invoke;
   v5[3] = &unk_1E7570CF0;
   v5[4] = &v6;
-  [(PLJournal *)self enumerateEntriesUsingBlock:v5 decodePayload:0 error:a3];
+  [(PLJournal *)self enumerateEntriesUsingBlock:v5 decodePayload:0 error:error];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (BOOL)enumeratePayloadsUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)enumeratePayloadsUsingBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__PLJournal_enumeratePayloadsUsingBlock_error___block_invoke;
   v9[3] = &unk_1E7570CC8;
-  v10 = v6;
-  v7 = v6;
-  LOBYTE(a4) = [(PLJournal *)self enumerateEntriesUsingBlock:v9 decodePayload:1 error:a4];
+  v10 = blockCopy;
+  v7 = blockCopy;
+  LOBYTE(error) = [(PLJournal *)self enumerateEntriesUsingBlock:v9 decodePayload:1 error:error];
 
-  return a4;
+  return error;
 }
 
 void __47__PLJournal_enumeratePayloadsUsingBlock_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -665,9 +665,9 @@ LABEL_10:
 
     pendingChangeJournal = self->_pendingChangeJournal;
     p_pendingChangeJournal = &self->_pendingChangeJournal;
-    v7 = [(PLJournalFile *)pendingChangeJournal fileExists];
+    fileExists = [(PLJournalFile *)pendingChangeJournal fileExists];
     p_changeJournal = p_pendingChangeJournal - 5;
-    if (v7)
+    if (fileExists)
     {
       p_changeJournal = p_pendingChangeJournal;
     }
@@ -696,16 +696,16 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)snapshotJournalFileSize:(unint64_t *)a3 changeJournalFileSize:(unint64_t *)a4 error:(id *)a5
+- (BOOL)snapshotJournalFileSize:(unint64_t *)size changeJournalFileSize:(unint64_t *)fileSize error:(id *)error
 {
-  v9 = [(PLJournal *)self changeJournal];
-  *a4 = 0;
-  v10 = [(PLJournal *)self snapshotJournal];
-  if ([v10 fileSize:a3 error:a5])
+  changeJournal = [(PLJournal *)self changeJournal];
+  *fileSize = 0;
+  snapshotJournal = [(PLJournal *)self snapshotJournal];
+  if ([snapshotJournal fileSize:size error:error])
   {
-    if (v9)
+    if (changeJournal)
     {
-      v11 = [v9 fileSize:a4 error:a5];
+      v11 = [changeJournal fileSize:fileSize error:error];
     }
 
     else
@@ -722,7 +722,7 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)finishAppendChangeEntriesWithError:(id *)a3
+- (BOOL)finishAppendChangeEntriesWithError:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
   fileHandleForAppendingUpdates = self->_fileHandleForAppendingUpdates;
@@ -742,23 +742,23 @@ LABEL_8:
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[objc_class payloadVersion](self->_payloadClass, "payloadVersion")}];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v8 = [(PLJournal *)self _updateMetadataWithMetadata:v7 replace:0 pending:0 error:a3];
+  v8 = [(PLJournal *)self _updateMetadataWithMetadata:v7 replace:0 pending:0 error:error];
 
   return v8;
 }
 
-- (BOOL)appendChangeEntryAfterPrepare:(id)a3 error:(id *)a4
+- (BOOL)appendChangeEntryAfterPrepare:(id)prepare error:(id *)error
 {
-  v6 = a3;
+  prepareCopy = prepare;
   if (!self->_fileHandleForAppendingUpdates)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:@"PLJournalException" reason:@"Call prepareForAppendChangeEntriesWithError before appendChangeEntryAfterPrepare" userInfo:0];
     objc_exception_throw(v11);
   }
 
-  v7 = v6;
-  v8 = [v6 payloadClass];
-  if (v8 != [(PLJournal *)self payloadClass])
+  v7 = prepareCopy;
+  payloadClass = [prepareCopy payloadClass];
+  if (payloadClass != [(PLJournal *)self payloadClass])
   {
     v12 = MEMORY[0x1E695DF30];
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Payload classes don't match: %@, %@", objc_msgSend(v7, "payloadClass"), -[PLJournal payloadClass](self, "payloadClass")];
@@ -768,25 +768,25 @@ LABEL_8:
     objc_exception_throw(v14);
   }
 
-  v9 = [v7 writeToFileHandle:self->_fileHandleForAppendingUpdates checksumContext:0 error:a4];
+  v9 = [v7 writeToFileHandle:self->_fileHandleForAppendingUpdates checksumContext:0 error:error];
 
   return v9;
 }
 
-- (BOOL)prepareForAppendChangeEntriesWithError:(id *)a3
+- (BOOL)prepareForAppendChangeEntriesWithError:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v5 = [(PLJournal *)self _recoverJournalWithError:?];
   if (v5)
   {
-    if (self->_hasMetadata && (v11 = @"currentPayloadVersion", v12[0] = &unk_1F0FBD7C8, [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1], v6 = objc_claimAutoreleasedReturnValue(), v7 = -[PLJournal _updateMetadataWithMetadata:replace:pending:error:](self, "_updateMetadataWithMetadata:replace:pending:error:", v6, 0, 0, a3), v6, !v7))
+    if (self->_hasMetadata && (v11 = @"currentPayloadVersion", v12[0] = &unk_1F0FBD7C8, [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1], v6 = objc_claimAutoreleasedReturnValue(), v7 = -[PLJournal _updateMetadataWithMetadata:replace:pending:error:](self, "_updateMetadataWithMetadata:replace:pending:error:", v6, 0, 0, error), v6, !v7))
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v8 = [(PLJournalFile *)self->_changeJournal fileHandleForWritingWithError:a3];
+      v8 = [(PLJournalFile *)self->_changeJournal fileHandleForWritingWithError:error];
       fileHandleForAppendingUpdates = self->_fileHandleForAppendingUpdates;
       self->_fileHandleForAppendingUpdates = v8;
 
@@ -797,15 +797,15 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)appendChangeEntries:(id)a3 error:(id *)a4
+- (BOOL)appendChangeEntries:(id)entries error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v10 = -[PLJournal _recoverJournalWithError:](self, "_recoverJournalWithError:", a4) && (!self->_hasMetadata || (v12 = @"currentPayloadVersion", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[objc_class payloadVersion](self->_payloadClass, "payloadVersion")}], v7 = v6 = a3;
+  v10 = -[PLJournal _recoverJournalWithError:](self, "_recoverJournalWithError:", error) && (!self->_hasMetadata || (v12 = @"currentPayloadVersion", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[objc_class payloadVersion](self->_payloadClass, "payloadVersion")}], v7 = v6 = entries;
 
   return v10;
 }
 
-- (BOOL)coalesceChangesToSnapshotWithError:(id *)a3
+- (BOOL)coalesceChangesToSnapshotWithError:(id *)error
 {
   v20[4] = *MEMORY[0x1E69E9840];
   if (self->_snapshotMode)
@@ -822,7 +822,7 @@ LABEL_8:
   else
   {
     v5 = 1;
-    if (![(PLJournal *)self _prepareForSnapshotWithMode:1 error:a3])
+    if (![(PLJournal *)self _prepareForSnapshotWithMode:1 error:error])
     {
       LOBYTE(v7) = 0;
       return v7;
@@ -835,24 +835,24 @@ LABEL_8:
   v18[2] = __48__PLJournal_coalesceChangesToSnapshotWithError___block_invoke;
   v18[3] = &unk_1E7570CA0;
   v18[4] = self;
-  v18[5] = a3;
-  v7 = [(PLJournalFile *)pendingSnapshotJournal openForWritingUsingBlock:v18 error:a3];
+  v18[5] = error;
+  v7 = [(PLJournalFile *)pendingSnapshotJournal openForWritingUsingBlock:v18 error:error];
   if (v7 && self->_hasMetadata)
   {
-    v8 = [(objc_class *)self->_payloadClass payloadVersion];
+    payloadVersion = [(objc_class *)self->_payloadClass payloadVersion];
     v19[0] = @"coalescePayloadVersion";
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v8];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:payloadVersion];
     v20[0] = v9;
     v19[1] = @"coalesceDate";
-    v10 = [MEMORY[0x1E695DF00] date];
-    v20[1] = v10;
+    date = [MEMORY[0x1E695DF00] date];
+    v20[1] = date;
     v19[2] = @"currentPayloadVersion";
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v8];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:payloadVersion];
     v19[3] = @"snapshotChecksum";
     v20[2] = v11;
     v20[3] = &stru_1F0F06D80;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
-    v7 = [(PLJournal *)self _updateMetadataWithMetadata:v12 replace:0 pending:1 error:a3];
+    v7 = [(PLJournal *)self _updateMetadataWithMetadata:v12 replace:0 pending:1 error:error];
 
     if ((v5 & 1) == 0)
     {
@@ -870,11 +870,11 @@ LABEL_8:
   v14 = v17;
   if (!v13 && v7)
   {
-    if (a3)
+    if (error)
     {
       v14 = v14;
       LOBYTE(v7) = 0;
-      *a3 = v14;
+      *error = v14;
     }
 
     else
@@ -949,19 +949,19 @@ void __48__PLJournal_coalesceChangesToSnapshotWithError___block_invoke_2(void *a
   objc_autoreleasePoolPop(v6);
 }
 
-- (BOOL)createSnapshotUsingNextPayloadBlock:(id)a3 createOnlyIfNecessary:(BOOL)a4 error:(id *)a5
+- (BOOL)createSnapshotUsingNextPayloadBlock:(id)block createOnlyIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  necessaryCopy = necessary;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__PLJournal_createSnapshotUsingNextPayloadBlock_createOnlyIfNecessary_error___block_invoke;
   v11[3] = &unk_1E7570C50;
-  v12 = v8;
-  v9 = v8;
-  LOBYTE(a5) = [(PLJournal *)self _performSnapshotWithMode:1 usingNextEntryBlock:v11 createOnlyIfNecessary:v6 error:a5];
+  v12 = blockCopy;
+  v9 = blockCopy;
+  LOBYTE(error) = [(PLJournal *)self _performSnapshotWithMode:1 usingNextEntryBlock:v11 createOnlyIfNecessary:necessaryCopy error:error];
 
-  return a5;
+  return error;
 }
 
 id __77__PLJournal_createSnapshotUsingNextPayloadBlock_createOnlyIfNecessary_error___block_invoke(uint64_t a1)
@@ -980,21 +980,21 @@ id __77__PLJournal_createSnapshotUsingNextPayloadBlock_createOnlyIfNecessary_err
   return v2;
 }
 
-- (BOOL)_performSnapshotWithMode:(unsigned __int8)a3 usingNextEntryBlock:(id)a4 createOnlyIfNecessary:(BOOL)a5 error:(id *)a6
+- (BOOL)_performSnapshotWithMode:(unsigned __int8)mode usingNextEntryBlock:(id)block createOnlyIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v7 = a5;
-  v8 = a3;
+  necessaryCopy = necessary;
+  modeCopy = mode;
   v51[3] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  if (!v8)
+  blockCopy = block;
+  if (!modeCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:1136 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:1136 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
   }
 
   if (self->_snapshotMode)
   {
-    if (self->_snapshotMode != v8)
+    if (self->_snapshotMode != modeCopy)
     {
       v39 = [MEMORY[0x1E695DF30] exceptionWithName:@"PLJournalException" reason:@"Must perform snapshot in the same mode as it was prepared" userInfo:0];
       objc_exception_throw(v39);
@@ -1006,12 +1006,12 @@ id __77__PLJournal_createSnapshotUsingNextPayloadBlock_createOnlyIfNecessary_err
 
   else
   {
-    v12 = [(PLJournal *)self _prepareForSnapshotWithMode:v8 error:a6];
+    v12 = [(PLJournal *)self _prepareForSnapshotWithMode:modeCopy error:error];
     v13 = v12;
   }
 
   v14 = 0;
-  if (v8 == 1 && v7)
+  if (modeCopy == 1 && necessaryCopy)
   {
     v14 = objc_alloc_init(PLJournalChecksumContext);
   }
@@ -1022,7 +1022,7 @@ id __77__PLJournal_createSnapshotUsingNextPayloadBlock_createOnlyIfNecessary_err
   }
 
   v15 = 72;
-  if (v8 == 1)
+  if (modeCopy == 1)
   {
     v15 = 64;
   }
@@ -1032,13 +1032,13 @@ id __77__PLJournal_createSnapshotUsingNextPayloadBlock_createOnlyIfNecessary_err
   v44[1] = 3221225472;
   v44[2] = __86__PLJournal__performSnapshotWithMode_usingNextEntryBlock_createOnlyIfNecessary_error___block_invoke;
   v44[3] = &unk_1E7570C28;
-  v46 = v11;
+  v46 = blockCopy;
   v44[4] = self;
   v17 = v14;
   v45 = v17;
-  v47 = a6;
+  errorCopy = error;
   v18 = v16;
-  v19 = [v18 openForWritingUsingBlock:v44 error:a6];
+  v19 = [v18 openForWritingUsingBlock:v44 error:error];
 
   if (!v19)
   {
@@ -1063,40 +1063,40 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v42 = v11;
-  v20 = [(objc_class *)self->_payloadClass payloadVersion];
+  v42 = blockCopy;
+  payloadVersion = [(objc_class *)self->_payloadClass payloadVersion];
   v40 = objc_alloc(MEMORY[0x1E695DF90]);
   v50[0] = @"snapshotPayloadVersion";
-  v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v20];
+  v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:payloadVersion];
   v51[0] = v41;
   v50[1] = @"snapshotDate";
-  v21 = [MEMORY[0x1E695DF00] date];
-  v51[1] = v21;
+  date = [MEMORY[0x1E695DF00] date];
+  v51[1] = date;
   v50[2] = @"currentPayloadVersion";
-  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v20];
+  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:payloadVersion];
   v51[2] = v22;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:3];
   v24 = [v40 initWithDictionary:v23];
 
   if (v17)
   {
-    v25 = [(PLJournalChecksumContext *)v17 finalizedChecksum];
-    [v24 setObject:v25 forKeyedSubscript:@"snapshotChecksum"];
+    finalizedChecksum = [(PLJournalChecksumContext *)v17 finalizedChecksum];
+    [v24 setObject:finalizedChecksum forKeyedSubscript:@"snapshotChecksum"];
   }
 
-  v26 = [(PLJournal *)self _updateMetadataWithMetadata:v24 replace:1 pending:1 error:a6];
+  v26 = [(PLJournal *)self _updateMetadataWithMetadata:v24 replace:1 pending:1 error:error];
 
-  v11 = v42;
+  blockCopy = v42;
   if (v12)
   {
 LABEL_20:
     if (v14)
     {
-      v27 = [(PLJournal *)self metadata];
-      v28 = [v27 objectForKeyedSubscript:@"snapshotChecksum"];
+      metadata = [(PLJournal *)self metadata];
+      v28 = [metadata objectForKeyedSubscript:@"snapshotChecksum"];
 
-      v29 = [(PLJournalChecksumContext *)v14 finalizedChecksum];
-      v30 = [v28 isEqualToString:v29];
+      finalizedChecksum2 = [(PLJournalChecksumContext *)v14 finalizedChecksum];
+      v30 = [v28 isEqualToString:finalizedChecksum2];
 
       if (v30)
       {
@@ -1106,10 +1106,10 @@ LABEL_20:
         v49 = @"Existing snapshot is the same as the pending one";
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
         v34 = [v31 errorWithDomain:v32 code:51012 userInfo:v33];
-        if (a6)
+        if (error)
         {
           v34 = v34;
-          *a6 = v34;
+          *error = v34;
         }
 
         v26 = 0;
@@ -1117,15 +1117,15 @@ LABEL_20:
     }
 
     v43 = 0;
-    v35 = [(PLJournal *)self _finishSnapshotWithMode:v8 snapshotSuccess:v26 error:&v43];
+    v35 = [(PLJournal *)self _finishSnapshotWithMode:modeCopy snapshotSuccess:v26 error:&v43];
     v36 = v43;
     if (!v35 && v26)
     {
-      if (a6)
+      if (error)
       {
         v36 = v36;
         LOBYTE(v26) = 0;
-        *a6 = v36;
+        *error = v36;
       }
 
       else
@@ -1217,26 +1217,26 @@ LABEL_13:
   return v6 & v16;
 }
 
-- (BOOL)_finishSnapshotWithMode:(unsigned __int8)a3 snapshotSuccess:(BOOL)a4 error:(id *)a5
+- (BOOL)_finishSnapshotWithMode:(unsigned __int8)mode snapshotSuccess:(BOOL)success error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  if (!a3)
+  successCopy = success;
+  modeCopy = mode;
+  if (!mode)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:1083 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:1083 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
   }
 
-  if (self->_snapshotMode != v7)
+  if (self->_snapshotMode != modeCopy)
   {
     v16 = [MEMORY[0x1E695DF30] exceptionWithName:@"PLJournalException" reason:@"Cannot finish snapshot without preparing first using the same snapshot mode" userInfo:0];
     objc_exception_throw(v16);
   }
 
-  if (v6)
+  if (successCopy)
   {
-    v9 = [(PLJournalFile *)self->_prepareMarker removeFileWithError:a5];
-    if (v7 == 2)
+    v9 = [(PLJournalFile *)self->_prepareMarker removeFileWithError:error];
+    if (modeCopy == 2)
     {
       if (!v9)
       {
@@ -1248,7 +1248,7 @@ LABEL_13:
       goto LABEL_16;
     }
 
-    if (v7 != 1)
+    if (modeCopy != 1)
     {
       if (!v9)
       {
@@ -1256,20 +1256,20 @@ LABEL_13:
       }
 
 LABEL_22:
-      LOBYTE(v9) = !self->_hasMetadata || [(PLJournal *)self _replaceMetadataWithPendingMetadataError:a5];
+      LOBYTE(v9) = !self->_hasMetadata || [(PLJournal *)self _replaceMetadataWithPendingMetadataError:error];
       goto LABEL_25;
     }
 
     if (v9)
     {
-      v9 = [(PLJournalFile *)self->_changeJournal removeFileWithError:a5];
+      v9 = [(PLJournalFile *)self->_changeJournal removeFileWithError:error];
       if (v9)
       {
         pendingChangeJournal = self->_pendingSnapshotJournal;
         changeJournal = self->_snapshotJournal;
 LABEL_16:
         v12 = [(PLJournalFile *)changeJournal url];
-        v13 = [(PLJournalFile *)pendingChangeJournal moveToURL:v12 error:a5];
+        v13 = [(PLJournalFile *)pendingChangeJournal moveToURL:v12 error:error];
 
         if (!v13)
         {
@@ -1285,24 +1285,24 @@ LABEL_17:
 
   else
   {
-    if (v7 == 1)
+    if (modeCopy == 1)
     {
-      v9 = [(PLJournalFile *)self->_pendingSnapshotJournal removeFileWithError:a5];
+      v9 = [(PLJournalFile *)self->_pendingSnapshotJournal removeFileWithError:error];
       if (!v9)
       {
         goto LABEL_25;
       }
     }
 
-    else if (v7 != 2 || ![(PLJournalFile *)self->_pendingChangeJournal removeFileWithError:a5])
+    else if (modeCopy != 2 || ![(PLJournalFile *)self->_pendingChangeJournal removeFileWithError:error])
     {
       goto LABEL_17;
     }
 
-    v9 = [(PLJournal *)self _removeMetadataPending:1 error:a5];
+    v9 = [(PLJournal *)self _removeMetadataPending:1 error:error];
     if (v9)
     {
-      LOBYTE(v9) = [(PLJournalFile *)self->_prepareMarker removeFileWithError:a5];
+      LOBYTE(v9) = [(PLJournalFile *)self->_prepareMarker removeFileWithError:error];
     }
   }
 
@@ -1311,13 +1311,13 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)_prepareForSnapshotWithMode:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)_prepareForSnapshotWithMode:(unsigned __int8)mode error:(id *)error
 {
-  v5 = a3;
-  if (!a3)
+  modeCopy = mode;
+  if (!mode)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:1065 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:1065 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
   }
 
   if (self->_snapshotMode)
@@ -1326,15 +1326,15 @@ LABEL_25:
     objc_exception_throw(v13);
   }
 
-  v7 = [(PLJournal *)self _recoverJournalWithError:a4];
+  v7 = [(PLJournal *)self _recoverJournalWithError:error];
   if (v7)
   {
-    v7 = [(PLJournalFile *)self->_prepareMarker createEmptyFileWithError:a4];
-    if (v5 == 2 && v7)
+    v7 = [(PLJournalFile *)self->_prepareMarker createEmptyFileWithError:error];
+    if (modeCopy == 2 && v7)
     {
       changeJournal = self->_changeJournal;
       v9 = [(PLJournalFile *)self->_pendingChangeJournal url];
-      v10 = [(PLJournalFile *)changeJournal copyToURL:v9 error:a4];
+      v10 = [(PLJournalFile *)changeJournal copyToURL:v9 error:error];
 
       if (!v10)
       {
@@ -1348,35 +1348,35 @@ LABEL_25:
       return v7;
     }
 
-    self->_snapshotMode = v5;
+    self->_snapshotMode = modeCopy;
     LOBYTE(v7) = 1;
   }
 
   return v7;
 }
 
-- (BOOL)_recoverJournalWithError:(id *)a3
+- (BOOL)_recoverJournalWithError:(id *)error
 {
   fileHandleForAppendingUpdates = self->_fileHandleForAppendingUpdates;
   self->_fileHandleForAppendingUpdates = 0;
 
-  v6 = [(PLJournal *)self _isPendingJournalAuthoritative];
+  _isPendingJournalAuthoritative = [(PLJournal *)self _isPendingJournalAuthoritative];
   pendingSnapshotJournal = self->_pendingSnapshotJournal;
-  if (v6)
+  if (_isPendingJournalAuthoritative)
   {
-    v8 = [(PLJournalFile *)pendingSnapshotJournal fileExists];
-    v9 = [(PLJournalFile *)self->_pendingChangeJournal fileExists];
+    fileExists = [(PLJournalFile *)pendingSnapshotJournal fileExists];
+    fileExists2 = [(PLJournalFile *)self->_pendingChangeJournal fileExists];
     v10 = [(PLJournal *)self metadataURLPending:1];
     v11 = [PLJournalFile fileExistsAtURL:v10];
 
-    if (!v8 && !v9 && !v11)
+    if (!fileExists && !fileExists2 && !v11)
     {
       goto LABEL_5;
     }
 
-    if (v8)
+    if (fileExists)
     {
-      v12 = [(PLJournal *)self removeJournalFilesWithError:a3];
+      v12 = [(PLJournal *)self removeJournalFilesWithError:error];
       if (!v12)
       {
         return v12;
@@ -1384,7 +1384,7 @@ LABEL_25:
 
       v13 = self->_pendingSnapshotJournal;
       v14 = [(PLJournalFile *)self->_snapshotJournal url];
-      v15 = [(PLJournalFile *)v13 moveToURL:v14 error:a3];
+      v15 = [(PLJournalFile *)v13 moveToURL:v14 error:error];
     }
 
     else
@@ -1392,16 +1392,16 @@ LABEL_25:
       v15 = 1;
     }
 
-    if ((v15 & v9) == 1)
+    if ((v15 & fileExists2) == 1)
     {
       pendingChangeJournal = self->_pendingChangeJournal;
       v17 = [(PLJournalFile *)self->_changeJournal url];
-      v15 = [(PLJournalFile *)pendingChangeJournal moveToURL:v17 error:a3];
+      v15 = [(PLJournalFile *)pendingChangeJournal moveToURL:v17 error:error];
     }
 
     if ((v15 & v11) == 1)
     {
-      if (![(PLJournal *)self _replaceMetadataWithPendingMetadataError:a3])
+      if (![(PLJournal *)self _replaceMetadataWithPendingMetadataError:error])
       {
         goto LABEL_20;
       }
@@ -1422,13 +1422,13 @@ LABEL_20:
     return v12;
   }
 
-  v12 = [(PLJournalFile *)pendingSnapshotJournal removeFileWithError:a3];
+  v12 = [(PLJournalFile *)pendingSnapshotJournal removeFileWithError:error];
   if (v12)
   {
-    v12 = [(PLJournalFile *)self->_pendingChangeJournal removeFileWithError:a3];
+    v12 = [(PLJournalFile *)self->_pendingChangeJournal removeFileWithError:error];
     if (v12)
     {
-      if ([(PLJournal *)self _removeMetadataPending:1 error:a3])
+      if ([(PLJournal *)self _removeMetadataPending:1 error:error])
       {
         goto LABEL_5;
       }
@@ -1440,25 +1440,25 @@ LABEL_20:
   return v12;
 }
 
-- (BOOL)removeJournalFilesWithError:(id *)a3
+- (BOOL)removeJournalFilesWithError:(id *)error
 {
   v5 = [(PLJournalFile *)self->_snapshotJournal removeFileWithError:?];
   if (v5)
   {
     changeJournal = self->_changeJournal;
 
-    LOBYTE(v5) = [(PLJournalFile *)changeJournal removeFileWithError:a3];
+    LOBYTE(v5) = [(PLJournalFile *)changeJournal removeFileWithError:error];
   }
 
   return v5;
 }
 
-- (BOOL)_updateMetadataWithMetadata:(id)a3 replace:(BOOL)a4 pending:(BOOL)a5 error:(id *)a6
+- (BOOL)_updateMetadataWithMetadata:(id)metadata replace:(BOOL)replace pending:(BOOL)pending error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
+  pendingCopy = pending;
+  metadataCopy = metadata;
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (!a4)
+  if (!replace)
   {
     v12 = [(PLJournal *)self _readMetadataPending:0];
     if (v12)
@@ -1467,25 +1467,25 @@ LABEL_20:
     }
   }
 
-  if (v10)
+  if (metadataCopy)
   {
-    [v11 addEntriesFromDictionary:v10];
+    [v11 addEntriesFromDictionary:metadataCopy];
   }
 
-  v13 = [(PLJournal *)self metadataURLPending:v7];
+  v13 = [(PLJournal *)self metadataURLPending:pendingCopy];
   v14 = [MEMORY[0x1E696AE40] dataWithPropertyList:v11 format:100 options:0 error:0];
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  v16 = [(NSURL *)self->_baseURL path];
-  [v15 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)self->_baseURL path];
+  [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
 
-  v17 = [PLJournalFile writeData:v14 toURL:v13 atomically:v7 ^ 1 error:a6];
+  v17 = [PLJournalFile writeData:v14 toURL:v13 atomically:pendingCopy ^ 1 error:error];
   return v17;
 }
 
-- (id)_readMetadataPending:(BOOL)a3
+- (id)_readMetadataPending:(BOOL)pending
 {
   v3 = MEMORY[0x1E695DEF0];
-  v4 = [(PLJournal *)self metadataURLPending:a3];
+  v4 = [(PLJournal *)self metadataURLPending:pending];
   v5 = [v3 dataWithContentsOfURL:v4];
 
   if (!v5)
@@ -1526,30 +1526,30 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)_replaceMetadataWithPendingMetadataError:(id *)a3
+- (BOOL)_replaceMetadataWithPendingMetadataError:(id *)error
 {
   v5 = [(PLJournal *)self metadataURLPending:1];
   v6 = [(PLJournal *)self metadataURLPending:0];
-  LOBYTE(a3) = [PLJournalFile moveURL:v5 toURL:v6 error:a3];
+  LOBYTE(error) = [PLJournalFile moveURL:v5 toURL:v6 error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)_removeMetadataPending:(BOOL)a3 error:(id *)a4
+- (BOOL)_removeMetadataPending:(BOOL)pending error:(id *)error
 {
-  v5 = [(PLJournal *)self metadataURLPending:a3];
-  LOBYTE(a4) = [PLJournalFile removeURL:v5 error:a4];
+  v5 = [(PLJournal *)self metadataURLPending:pending];
+  LOBYTE(error) = [PLJournalFile removeURL:v5 error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)metadataURLPending:(BOOL)a3
+- (id)metadataURLPending:(BOOL)pending
 {
-  v3 = a3;
+  pendingCopy = pending;
   v5 = objc_opt_class();
   baseURL = self->_baseURL;
-  v7 = [(objc_class *)self->_payloadClass payloadClassID];
-  v8 = [v5 metadataURLForBaseURL:baseURL payloadClassId:v7 pending:v3];
+  payloadClassID = [(objc_class *)self->_payloadClass payloadClassID];
+  v8 = [v5 metadataURLForBaseURL:baseURL payloadClassId:payloadClassID pending:pendingCopy];
 
   return v8;
 }
@@ -1577,46 +1577,46 @@ LABEL_10:
   [(PLJournal *)self _removeMetadataPending:1 error:0];
 }
 
-- (PLJournal)initWithBaseURL:(id)a3 name:(id)a4 payloadClass:(Class)a5 hasMetadata:(BOOL)a6
+- (PLJournal)initWithBaseURL:(id)l name:(id)name payloadClass:(Class)class hasMetadata:(BOOL)metadata
 {
-  v11 = a3;
-  v12 = a4;
+  lCopy = l;
+  nameCopy = name;
   v36.receiver = self;
   v36.super_class = PLJournal;
   v13 = [(PLJournal *)&v36 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_baseURL, a3);
-    v14->_payloadClass = a5;
-    v14->_hasMetadata = a6;
+    objc_storeStrong(&v13->_baseURL, l);
+    v14->_payloadClass = class;
+    v14->_hasMetadata = metadata;
     v15 = [PLJournalFile alloc];
-    v16 = [objc_opt_class() journalURLForBaseURL:v11 name:v12 journalType:@"snapshot"];
-    v17 = [(PLJournalFile *)v15 initWithURL:v16 payloadClass:a5];
+    v16 = [objc_opt_class() journalURLForBaseURL:lCopy name:nameCopy journalType:@"snapshot"];
+    v17 = [(PLJournalFile *)v15 initWithURL:v16 payloadClass:class];
     snapshotJournal = v14->_snapshotJournal;
     v14->_snapshotJournal = v17;
 
     v19 = [PLJournalFile alloc];
-    v20 = [objc_opt_class() journalURLForBaseURL:v11 name:v12 journalType:@"change"];
-    v21 = [(PLJournalFile *)v19 initWithURL:v20 payloadClass:a5];
+    v20 = [objc_opt_class() journalURLForBaseURL:lCopy name:nameCopy journalType:@"change"];
+    v21 = [(PLJournalFile *)v19 initWithURL:v20 payloadClass:class];
     changeJournal = v14->_changeJournal;
     v14->_changeJournal = v21;
 
     v23 = [PLJournalFile alloc];
-    v24 = [objc_opt_class() journalURLForBaseURL:v14->_baseURL name:v12 journalType:@"pending-snapshot"];
-    v25 = [(PLJournalFile *)v23 initWithURL:v24 payloadClass:a5];
+    v24 = [objc_opt_class() journalURLForBaseURL:v14->_baseURL name:nameCopy journalType:@"pending-snapshot"];
+    v25 = [(PLJournalFile *)v23 initWithURL:v24 payloadClass:class];
     pendingSnapshotJournal = v14->_pendingSnapshotJournal;
     v14->_pendingSnapshotJournal = v25;
 
     v27 = [PLJournalFile alloc];
-    v28 = [objc_opt_class() journalURLForBaseURL:v14->_baseURL name:v12 journalType:@"pending-change"];
-    v29 = [(PLJournalFile *)v27 initWithURL:v28 payloadClass:a5];
+    v28 = [objc_opt_class() journalURLForBaseURL:v14->_baseURL name:nameCopy journalType:@"pending-change"];
+    v29 = [(PLJournalFile *)v27 initWithURL:v28 payloadClass:class];
     pendingChangeJournal = v14->_pendingChangeJournal;
     v14->_pendingChangeJournal = v29;
 
     v31 = [PLJournalFile alloc];
-    v32 = [objc_opt_class() journalURLForBaseURL:v14->_baseURL name:v12 journalType:@"prepare-marker"];
-    v33 = [(PLJournalFile *)v31 initWithURL:v32 payloadClass:a5];
+    v32 = [objc_opt_class() journalURLForBaseURL:v14->_baseURL name:nameCopy journalType:@"prepare-marker"];
+    v33 = [(PLJournalFile *)v31 initWithURL:v32 payloadClass:class];
     prepareMarker = v14->_prepareMarker;
     v14->_prepareMarker = v33;
   }
@@ -1624,25 +1624,25 @@ LABEL_10:
   return v14;
 }
 
-- (PLJournal)initWithBaseURL:(id)a3 payloadClass:(Class)a4
+- (PLJournal)initWithBaseURL:(id)l payloadClass:(Class)class
 {
-  v6 = a3;
-  v7 = [(objc_class *)a4 payloadClassID];
-  v8 = [(PLJournal *)self initWithBaseURL:v6 name:v7 payloadClass:a4 hasMetadata:1];
+  lCopy = l;
+  payloadClassID = [(objc_class *)class payloadClassID];
+  v8 = [(PLJournal *)self initWithBaseURL:lCopy name:payloadClassID payloadClass:class hasMetadata:1];
 
   return v8;
 }
 
-+ (BOOL)_finishFullSnapshotForBaseURL:(id)a3 snapshotSucceeded:(BOOL)a4 snapshotMode:(unsigned __int8)a5 journals:(id)a6 error:(id *)a7
++ (BOOL)_finishFullSnapshotForBaseURL:(id)l snapshotSucceeded:(BOOL)succeeded snapshotMode:(unsigned __int8)mode journals:(id)journals error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
+  modeCopy = mode;
+  succeededCopy = succeeded;
   v36 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  if (v9)
+  lCopy = l;
+  journalsCopy = journals;
+  if (modeCopy)
   {
-    if (!v10)
+    if (!succeededCopy)
     {
       goto LABEL_4;
     }
@@ -1650,16 +1650,16 @@ LABEL_10:
 
   else
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"PLJournal.m" lineNumber:920 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:920 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
 
-    if (!v10)
+    if (!succeededCopy)
     {
       goto LABEL_4;
     }
   }
 
-  if (![a1 createSnapshotFinishMarkerForBaseURL:v13 error:a7])
+  if (![self createSnapshotFinishMarkerForBaseURL:lCopy error:error])
   {
     v24 = 0;
     goto LABEL_18;
@@ -1667,13 +1667,13 @@ LABEL_10:
 
 LABEL_4:
   v27 = a2;
-  v28 = a1;
+  selfCopy = self;
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v29 = v14;
-  obj = v14;
+  v29 = journalsCopy;
+  obj = journalsCopy;
   v15 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v15)
   {
@@ -1689,17 +1689,17 @@ LABEL_4:
         }
 
         v19 = *(*(&v31 + 1) + 8 * i);
-        v20 = [v19 baseURL];
-        v21 = [v20 isEqual:v13];
+        baseURL = [v19 baseURL];
+        v21 = [baseURL isEqual:lCopy];
 
         if ((v21 & 1) == 0)
         {
-          v22 = [MEMORY[0x1E696AAA8] currentHandler];
-          v23 = [v19 baseURL];
-          [v22 handleFailureInMethod:v27 object:v28 file:@"PLJournal.m" lineNumber:928 description:{@"Journal base URL: %@ not the same as provided baseURL: %@", v23, v13}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          baseURL2 = [v19 baseURL];
+          [currentHandler2 handleFailureInMethod:v27 object:selfCopy file:@"PLJournal.m" lineNumber:928 description:{@"Journal base URL: %@ not the same as provided baseURL: %@", baseURL2, lCopy}];
         }
 
-        if (![v19 _finishSnapshotWithMode:v9 snapshotSuccess:v10 error:a7])
+        if (![v19 _finishSnapshotWithMode:modeCopy snapshotSuccess:succeededCopy error:error])
         {
 
           v24 = 0;
@@ -1717,26 +1717,26 @@ LABEL_4:
     }
   }
 
-  v24 = [v28 removeSnapshotFinishMarkerForBaseURL:v13 error:a7];
+  v24 = [selfCopy removeSnapshotFinishMarkerForBaseURL:lCopy error:error];
 LABEL_16:
-  v14 = v29;
+  journalsCopy = v29;
 LABEL_18:
 
   return v24;
 }
 
-+ (BOOL)_performSnapshotsForBaseURL:(id)a3 snapshotMode:(unsigned __int8)a4 payloadClasses:(id)a5 snapshotJournalBlock:(id)a6 createOnlyIfNecessary:(BOOL)a7 error:(id *)a8
++ (BOOL)_performSnapshotsForBaseURL:(id)l snapshotMode:(unsigned __int8)mode payloadClasses:(id)classes snapshotJournalBlock:(id)block createOnlyIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v9 = a7;
-  v12 = a4;
+  necessaryCopy = necessary;
+  modeCopy = mode;
   v58[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  if (!v12)
+  lCopy = l;
+  classesCopy = classes;
+  blockCopy = block;
+  if (!modeCopy)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"PLJournal.m" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"snapshotMode != PLJournalSnapshotModeNone"}];
   }
 
   v51 = 0;
@@ -1749,13 +1749,13 @@ LABEL_18:
   v48 = &v47;
   v49 = 0x2020000000;
   obj = 0;
-  v18 = [a1 recoverJournalsIfNecessaryForBaseURL:v15 payloadClasses:v16 error:&obj];
+  v18 = [self recoverJournalsIfNecessaryForBaseURL:lCopy payloadClasses:classesCopy error:&obj];
   objc_storeStrong(&v56, obj);
   v50 = v18;
   if (*(v48 + 24) != 1)
   {
     v30 = 0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -1768,16 +1768,16 @@ LABEL_18:
   v39[1] = 3221225472;
   v39[2] = __118__PLJournal__performSnapshotsForBaseURL_snapshotMode_payloadClasses_snapshotJournalBlock_createOnlyIfNecessary_error___block_invoke;
   v39[3] = &unk_1E7570BD8;
-  v20 = v15;
+  v20 = lCopy;
   v40 = v20;
   v43 = &v47;
-  v45 = v12;
+  v45 = modeCopy;
   v44 = &v51;
   v21 = v19;
   v41 = v21;
-  v42 = v17;
-  [v16 enumerateObjectsUsingBlock:v39];
-  if (v12 == 1 && v9)
+  v42 = blockCopy;
+  [classesCopy enumerateObjectsUsingBlock:v39];
+  if (modeCopy == 1 && necessaryCopy)
   {
     v35 = 0;
     v36 = &v35;
@@ -1806,7 +1806,7 @@ LABEL_18:
 
   v26 = *(v48 + 24);
   v33 = 0;
-  v27 = [PLJournal _finishFullSnapshotForBaseURL:v20 snapshotSucceeded:v26 snapshotMode:v12 journals:v21 error:&v33];
+  v27 = [PLJournal _finishFullSnapshotForBaseURL:v20 snapshotSucceeded:v26 snapshotMode:modeCopy journals:v21 error:&v33];
   v28 = v33;
   v29 = v33;
   if (!v27 && *(v48 + 24) == 1)
@@ -1816,12 +1816,12 @@ LABEL_18:
   }
 
   v30 = *(v48 + 24);
-  if (a8)
+  if (error)
   {
 LABEL_15:
     if ((v30 & 1) == 0)
     {
-      *a8 = v52[5];
+      *error = v52[5];
       v30 = *(v48 + 24);
     }
   }
@@ -1865,19 +1865,19 @@ void __118__PLJournal__performSnapshotsForBaseURL_snapshotMode_payloadClasses_sn
   }
 }
 
-+ (BOOL)recoverJournalsIfNecessaryForBaseURL:(id)a3 payloadClasses:(id)a4 error:(id *)a5
++ (BOOL)recoverJournalsIfNecessaryForBaseURL:(id)l payloadClasses:(id)classes error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([a1 snapshotFinishMarkerExistsForBaseURL:v8])
+  lCopy = l;
+  classesCopy = classes;
+  if ([self snapshotFinishMarkerExistsForBaseURL:lCopy])
   {
-    v19 = a1;
+    selfCopy = self;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v9;
+    v10 = classesCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
@@ -1892,8 +1892,8 @@ void __118__PLJournal__performSnapshotsForBaseURL_snapshotMode_payloadClasses_sn
             objc_enumerationMutation(v10);
           }
 
-          v15 = [[PLJournal alloc] initWithBaseURL:v8 payloadClass:*(*(&v20 + 1) + 8 * i)];
-          v16 = [(PLJournal *)v15 _recoverJournalWithError:a5];
+          v15 = [[PLJournal alloc] initWithBaseURL:lCopy payloadClass:*(*(&v20 + 1) + 8 * i)];
+          v16 = [(PLJournal *)v15 _recoverJournalWithError:error];
 
           if (!v16)
           {
@@ -1913,7 +1913,7 @@ void __118__PLJournal__performSnapshotsForBaseURL_snapshotMode_payloadClasses_sn
       }
     }
 
-    v17 = [v19 removeSnapshotFinishMarkerForBaseURL:v8 error:a5];
+    v17 = [selfCopy removeSnapshotFinishMarkerForBaseURL:lCopy error:error];
   }
 
   else
@@ -1926,46 +1926,46 @@ LABEL_13:
   return v17;
 }
 
-+ (BOOL)snapshotFinishMarkerExistsForBaseURL:(id)a3
++ (BOOL)snapshotFinishMarkerExistsForBaseURL:(id)l
 {
-  v3 = [a1 snapshotFinishMarkerURLForBaseURL:a3];
+  v3 = [self snapshotFinishMarkerURLForBaseURL:l];
   v4 = [v3 checkResourceIsReachableAndReturnError:0];
 
   return v4;
 }
 
-+ (BOOL)removeSnapshotFinishMarkerForBaseURL:(id)a3 error:(id *)a4
++ (BOOL)removeSnapshotFinishMarkerForBaseURL:(id)l error:(id *)error
 {
-  v5 = [a1 snapshotFinishMarkerURLForBaseURL:a3];
-  LOBYTE(a4) = [PLJournalFile removeURL:v5 error:a4];
+  v5 = [self snapshotFinishMarkerURLForBaseURL:l];
+  LOBYTE(error) = [PLJournalFile removeURL:v5 error:error];
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)createSnapshotFinishMarkerForBaseURL:(id)a3 error:(id *)a4
++ (BOOL)createSnapshotFinishMarkerForBaseURL:(id)l error:(id *)error
 {
-  v5 = [a1 snapshotFinishMarkerURLForBaseURL:a3];
-  LOBYTE(a4) = [PLJournalFile createEmptyURL:v5 error:a4];
+  v5 = [self snapshotFinishMarkerURLForBaseURL:l];
+  LOBYTE(error) = [PLJournalFile createEmptyURL:v5 error:error];
 
-  return a4;
+  return error;
 }
 
-+ (id)metadataURLForBaseURL:(id)a3 payloadClassId:(id)a4 pending:(BOOL)a5
++ (id)metadataURLForBaseURL:(id)l payloadClassId:(id)id pending:(BOOL)pending
 {
-  if (a5)
+  if (pending)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = a3;
-    v8 = [v6 stringWithFormat:@"%@-pending", a4];
-    v9 = [v7 URLByAppendingPathComponent:v8];
+    lCopy = l;
+    v8 = [v6 stringWithFormat:@"%@-pending", id];
+    v9 = [lCopy URLByAppendingPathComponent:v8];
 
     v10 = [v9 URLByAppendingPathExtension:@"plist"];
   }
 
   else
   {
-    v11 = a3;
-    v8 = [v11 URLByAppendingPathComponent:a4];
+    lCopy2 = l;
+    v8 = [lCopy2 URLByAppendingPathComponent:id];
 
     v10 = [v8 URLByAppendingPathExtension:@"plist"];
   }
@@ -1973,12 +1973,12 @@ LABEL_13:
   return v10;
 }
 
-+ (id)journalURLForBaseURL:(id)a3 name:(id)a4 journalType:(id)a5
++ (id)journalURLForBaseURL:(id)l name:(id)name journalType:(id)type
 {
   v7 = MEMORY[0x1E696AEC0];
-  v8 = a3;
-  v9 = [v7 stringWithFormat:@"%@-%@", a4, a5];
-  v10 = [v8 URLByAppendingPathComponent:v9];
+  lCopy = l;
+  type = [v7 stringWithFormat:@"%@-%@", name, type];
+  v10 = [lCopy URLByAppendingPathComponent:type];
 
   v11 = [v10 URLByAppendingPathExtension:@"plj"];
 

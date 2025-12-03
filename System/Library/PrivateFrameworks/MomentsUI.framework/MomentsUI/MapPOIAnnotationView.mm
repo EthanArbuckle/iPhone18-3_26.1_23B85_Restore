@@ -1,5 +1,5 @@
 @interface MapPOIAnnotationView
-- (_TtC9MomentsUI20MapPOIAnnotationView)initWithFrame:(CGRect)a3;
+- (_TtC9MomentsUI20MapPOIAnnotationView)initWithFrame:(CGRect)frame;
 - (void)handleTraitChange;
 - (void)layoutSubviews;
 @end
@@ -8,11 +8,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MapPOIAnnotationView.layoutSubviews()();
 }
 
-- (_TtC9MomentsUI20MapPOIAnnotationView)initWithFrame:(CGRect)a3
+- (_TtC9MomentsUI20MapPOIAnnotationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -21,7 +21,7 @@
 
 - (void)handleTraitChange
 {
-  v2 = self;
+  selfCopy = self;
   MapPOIAnnotationView.updatePinShadow()();
 }
 

@@ -1,27 +1,27 @@
 @interface CNContactKeyVector
 + (CNContactKeyVector)keyVectorWithAllKeys;
-+ (CNContactKeyVector)keyVectorWithKey:(id)a3;
-+ (CNContactKeyVector)keyVectorWithKeys:(id)a3;
++ (CNContactKeyVector)keyVectorWithKey:(id)key;
++ (CNContactKeyVector)keyVectorWithKeys:(id)keys;
 + (id)keyVector;
 - (BOOL)containsAllKeys;
-- (BOOL)containsKey:(id)a3;
-- (BOOL)intersectsKeyVector:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToKeyVector:(id)a3;
-- (BOOL)isSubsetOfKeyVector:(id)a3;
+- (BOOL)containsKey:(id)key;
+- (BOOL)intersectsKeyVector:(id)vector;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToKeyVector:(id)vector;
+- (BOOL)isSubsetOfKeyVector:(id)vector;
 - (CNContactKeyVector)initWithAllKeys;
-- (CNContactKeyVector)initWithCoder:(id)a3;
-- (CNContactKeyVector)initWithKeys:(id)a3;
+- (CNContactKeyVector)initWithCoder:(id)coder;
+- (CNContactKeyVector)initWithKeys:(id)keys;
 - (NSString)description;
-- (id)keyVectorByAddingKey:(id)a3;
-- (id)keyVectorByAddingKeys:(id)a3;
-- (id)keyVectorByAddingKeysFromKeyVector:(id)a3;
-- (id)keyVectorByRemovingKeys:(id)a3;
-- (id)keyVectorByRemovingKeysFromKeyVector:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_cn_executeGetterForRepresentedKeys:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumeratePropertiesUsingBlock:(id)a3;
+- (id)keyVectorByAddingKey:(id)key;
+- (id)keyVectorByAddingKeys:(id)keys;
+- (id)keyVectorByAddingKeysFromKeyVector:(id)vector;
+- (id)keyVectorByRemovingKeys:(id)keys;
+- (id)keyVectorByRemovingKeysFromKeyVector:(id)vector;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_cn_executeGetterForRepresentedKeys:(id)keys;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumeratePropertiesUsingBlock:(id)block;
 @end
 
 @implementation CNContactKeyVector
@@ -55,7 +55,7 @@
 
 + (id)keyVector
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (keyVector_cn_once_token_0 != -1)
     {
@@ -67,7 +67,7 @@
 
   else
   {
-    v3 = [a1 alloc];
+    v3 = [self alloc];
     v4 = [v3 initWithKeys:MEMORY[0x1E695E0F0]];
   }
 
@@ -76,22 +76,22 @@
 
 + (CNContactKeyVector)keyVectorWithAllKeys
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (keyVectorWithAllKeys_cn_once_token_1 != -1)
     {
       +[CNContactKeyVector keyVectorWithAllKeys];
     }
 
-    v3 = keyVectorWithAllKeys_cn_once_object_1;
+    initWithAllKeys = keyVectorWithAllKeys_cn_once_object_1;
   }
 
   else
   {
-    v3 = [[a1 alloc] initWithAllKeys];
+    initWithAllKeys = [[self alloc] initWithAllKeys];
   }
 
-  return v3;
+  return initWithAllKeys;
 }
 
 uint64_t __42__CNContactKeyVector_keyVectorWithAllKeys__block_invoke()
@@ -130,24 +130,24 @@ uint64_t __31__CNContactKeyVector_keyVector__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (CNContactKeyVector)keyVectorWithKey:(id)a3
++ (CNContactKeyVector)keyVectorWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_alloc_init(CNMutableContactKeyVector);
-  [(CNMutableContactKeyVector *)v5 addKey:v4];
+  [(CNMutableContactKeyVector *)v5 addKey:keyCopy];
 
-  v6 = [a1 freezeIfClassIsImmutable:v5];
+  v6 = [self freezeIfClassIsImmutable:v5];
 
   return v6;
 }
 
-+ (CNContactKeyVector)keyVectorWithKeys:(id)a3
++ (CNContactKeyVector)keyVectorWithKeys:(id)keys
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 count] && objc_opt_class() == a1)
+  keysCopy = keys;
+  if (![keysCopy count] && objc_opt_class() == self)
   {
-    v11 = [a1 keyVector];
+    keyVector = [self keyVector];
   }
 
   else
@@ -157,7 +157,7 @@ uint64_t __31__CNContactKeyVector_keyVector__block_invoke()
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = keysCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -181,78 +181,78 @@ uint64_t __31__CNContactKeyVector_keyVector__block_invoke()
       while (v8);
     }
 
-    v11 = [a1 freezeIfClassIsImmutable:v5];
+    keyVector = [self freezeIfClassIsImmutable:v5];
   }
 
-  return v11;
+  return keyVector;
 }
 
-- (id)keyVectorByAddingKey:(id)a3
+- (id)keyVectorByAddingKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [[CNMutableContactKeyVector alloc] initWithKeyVector:self];
-  [(CNMutableContactKeyVector *)v5 addKey:v4];
+  [(CNMutableContactKeyVector *)v5 addKey:keyCopy];
 
-  v6 = [(CNMutableContactKeyVector *)v5 freeze];
+  freeze = [(CNMutableContactKeyVector *)v5 freeze];
 
-  return v6;
+  return freeze;
 }
 
-- (id)keyVectorByAddingKeys:(id)a3
+- (id)keyVectorByAddingKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = [[CNMutableContactKeyVector alloc] initWithKeyVector:self];
-  [(CNMutableContactKeyVector *)v5 addKeys:v4];
+  [(CNMutableContactKeyVector *)v5 addKeys:keysCopy];
 
-  v6 = [(CNMutableContactKeyVector *)v5 freeze];
+  freeze = [(CNMutableContactKeyVector *)v5 freeze];
 
-  return v6;
+  return freeze;
 }
 
-- (id)keyVectorByAddingKeysFromKeyVector:(id)a3
+- (id)keyVectorByAddingKeysFromKeyVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   v5 = [[CNMutableContactKeyVector alloc] initWithKeyVector:self];
-  [(CNMutableContactKeyVector *)v5 unionKeyVector:v4];
+  [(CNMutableContactKeyVector *)v5 unionKeyVector:vectorCopy];
 
-  v6 = [(CNMutableContactKeyVector *)v5 freeze];
+  freeze = [(CNMutableContactKeyVector *)v5 freeze];
 
-  return v6;
+  return freeze;
 }
 
-- (id)keyVectorByRemovingKeys:(id)a3
+- (id)keyVectorByRemovingKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
     v6 = [[CNMutableContactKeyVector alloc] initWithKeyVector:self];
-    [(CNMutableContactKeyVector *)v6 subtractKeys:v4];
-    v5 = [(CNMutableContactKeyVector *)v6 freeze];
+    [(CNMutableContactKeyVector *)v6 subtractKeys:keysCopy];
+    selfCopy = [(CNMutableContactKeyVector *)v6 freeze];
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)keyVectorByRemovingKeysFromKeyVector:(id)a3
+- (id)keyVectorByRemovingKeysFromKeyVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   v5 = [[CNMutableContactKeyVector alloc] initWithKeyVector:self];
-  [(CNMutableContactKeyVector *)v5 minusKeyVector:v4];
+  [(CNMutableContactKeyVector *)v5 minusKeyVector:vectorCopy];
 
-  v6 = [(CNMutableContactKeyVector *)v5 freeze];
+  freeze = [(CNMutableContactKeyVector *)v5 freeze];
 
-  return v6;
+  return freeze;
 }
 
-- (CNContactKeyVector)initWithKeys:(id)a3
+- (CNContactKeyVector)initWithKeys:(id)keys
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v24.receiver = self;
   v24.super_class = CNContactKeyVector;
   v5 = [(CNContactKeyVector *)&v24 init];
@@ -274,8 +274,8 @@ uint64_t __31__CNContactKeyVector_keyVector__block_invoke()
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v16 = v4;
-    v7 = v4;
+    v16 = keysCopy;
+    v7 = keysCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v25 count:16];
     if (v8)
     {
@@ -329,19 +329,19 @@ LABEL_16:
     }
 
     v14 = v17;
-    v4 = v16;
+    keysCopy = v16;
   }
 
   return v6;
 }
 
-- (CNContactKeyVector)initWithCoder:(id)a3
+- (CNContactKeyVector)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CNContactKeyVector *)self initWithKeys:MEMORY[0x1E695E0F0]];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bitBuckets_buffer"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bitBuckets_buffer"];
     if ([v6 length] == 16)
     {
       *v5->_bitBuckets = *[v6 bytes];
@@ -353,25 +353,25 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DEF0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 dataWithBytes:self->_bitBuckets length:16];
-  [v5 encodeObject:v6 forKey:@"bitBuckets_buffer"];
+  [coderCopy encodeObject:v6 forKey:@"bitBuckets_buffer"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CNMutableContactKeyVector alloc];
 
   return [(CNMutableContactKeyVector *)v4 initWithKeyVector:self];
 }
 
-- (BOOL)containsKey:(id)a3
+- (BOOL)containsKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     goto LABEL_9;
   }
@@ -381,7 +381,7 @@ LABEL_16:
     [CNContactKeyVector containsKey:];
   }
 
-  Value = CFDictionaryGetValue(CNContactKeyVectorPropertyKeysToIndicesByPointer_map, v4);
+  Value = CFDictionaryGetValue(CNContactKeyVectorPropertyKeysToIndicesByPointer_map, keyCopy);
   if (Value)
   {
     goto LABEL_8;
@@ -392,7 +392,7 @@ LABEL_16:
     [CNContactKeyVector containsKey:];
   }
 
-  Value = CFDictionaryGetValue(CNContactKeyVectorPropertyKeysToIndicesByValue_map, v4);
+  Value = CFDictionaryGetValue(CNContactKeyVectorPropertyKeysToIndicesByValue_map, keyCopy);
   if (Value)
   {
 LABEL_8:
@@ -408,9 +408,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)enumeratePropertiesUsingBlock:(id)a3
+- (void)enumeratePropertiesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CN allContactProperties];
   v12 = 0;
   v6 = [v5 count];
@@ -425,7 +425,7 @@ LABEL_9:
       if ((*(bitBuckets + ((v9 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> ~v9))
       {
         v11 = [v5 objectAtIndexedSubscript:v9];
-        v4[2](v4, v11, &v12);
+        blockCopy[2](blockCopy, v11, &v12);
 
         v8 = v12;
       }
@@ -442,19 +442,19 @@ LABEL_9:
   }
 }
 
-- (BOOL)isEqualToKeyVector:(id)a3
+- (BOOL)isEqualToKeyVector:(id)vector
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  vectorCopy = vector;
+  v5 = vectorCopy;
+  if (vectorCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4)
+  else if (vectorCopy)
   {
-    v6 = [(CNContactKeyVector *)v4 _bitBuckets];
-    v8 = self->_bitBuckets[0] == *v6 && self->_bitBuckets[1] == v6[1];
+    _bitBuckets = [(CNContactKeyVector *)vectorCopy _bitBuckets];
+    v8 = self->_bitBuckets[0] == *_bitBuckets && self->_bitBuckets[1] == _bitBuckets[1];
   }
 
   else
@@ -465,36 +465,36 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CNContactKeyVector *)self isEqualToKeyVector:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CNContactKeyVector *)self isEqualToKeyVector:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isSubsetOfKeyVector:(id)a3
+- (BOOL)isSubsetOfKeyVector:(id)vector
 {
-  if (!a3)
+  if (!vector)
   {
     return 0;
   }
 
-  v4 = [a3 _bitBuckets];
+  _bitBuckets = [vector _bitBuckets];
   v5 = 0;
   v6 = 1;
   do
   {
-    v7 = self->_bitBuckets[v5] & ~*(v4 + 8 * v5);
+    v7 = self->_bitBuckets[v5] & ~*(_bitBuckets + 8 * v5);
     v8 = v7 == 0;
     if ((v6 & 1) == 0)
     {
@@ -509,20 +509,20 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)intersectsKeyVector:(id)a3
+- (BOOL)intersectsKeyVector:(id)vector
 {
-  if (!a3)
+  if (!vector)
   {
     return 0;
   }
 
-  v4 = [a3 _bitBuckets];
+  _bitBuckets = [vector _bitBuckets];
   v5 = 0;
   v6 = 0;
   do
   {
     v7 = v5;
-    v8 = *(v4 + 8 * v6) & self->_bitBuckets[v6];
+    v8 = *(_bitBuckets + 8 * v6) & self->_bitBuckets[v6];
     v9 = v8 != 0;
     if (v8)
     {
@@ -537,9 +537,9 @@ LABEL_9:
   return v9;
 }
 
-- (void)_cn_executeGetterForRepresentedKeys:(id)a3
+- (void)_cn_executeGetterForRepresentedKeys:(id)keys
 {
-  v12 = a3;
+  keysCopy = keys;
   v4 = +[CN allContactProperties];
   v5 = [v4 count];
   if (v5)
@@ -553,7 +553,7 @@ LABEL_9:
       {
         v9 = [v4 objectAtIndexedSubscript:v7];
         v10 = [v9 key];
-        v11 = v12[2](v12, v10);
+        v11 = keysCopy[2](keysCopy, v10);
       }
 
       ++v7;
@@ -566,19 +566,19 @@ LABEL_9:
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __33__CNContactKeyVector_description__block_invoke;
   v10[3] = &unk_1E7413F98;
-  v11 = v4;
-  v5 = v4;
+  v11 = array;
+  v5 = array;
   [(CNContactKeyVector *)self enumeratePropertiesUsingBlock:v10];
   v6 = [v5 componentsJoinedByString:{@", "}];
   v7 = [v3 appendName:@"keys" object:v6];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 void __33__CNContactKeyVector_description__block_invoke(uint64_t a1, void *a2)

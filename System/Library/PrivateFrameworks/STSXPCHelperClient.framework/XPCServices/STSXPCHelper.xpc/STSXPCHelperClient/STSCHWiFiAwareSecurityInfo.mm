@@ -1,29 +1,29 @@
 @interface STSCHWiFiAwareSecurityInfo
-- (BOOL)isEqual:(id)a3;
-- (STSCHWiFiAwareSecurityInfo)initWithCipherSuites:(id)a3 dhInfo:(id)a4 passphrase:(id)a5;
-- (STSCHWiFiAwareSecurityInfo)initWithCoder:(id)a3;
-- (STSCHWiFiAwareSecurityInfo)initWithPMK:(id)a3 pmkID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (STSCHWiFiAwareSecurityInfo)initWithCipherSuites:(id)suites dhInfo:(id)info passphrase:(id)passphrase;
+- (STSCHWiFiAwareSecurityInfo)initWithCoder:(id)coder;
+- (STSCHWiFiAwareSecurityInfo)initWithPMK:(id)k pmkID:(id)d;
 - (id)asData;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHWiFiAwareSecurityInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cipherSuite = self->_cipherSuite;
-  v5 = a3;
-  [v5 encodeObject:cipherSuite forKey:@"cipherSuite"];
-  [v5 encodeObject:self->_dhInfo forKey:@"dhInfo"];
-  [v5 encodeObject:self->_passphrase forKey:@"passphrase"];
-  [v5 encodeObject:self->_datapathPmk forKey:@"datapathPmk"];
-  [v5 encodeObject:self->_datapathPmkID forKey:@"datapathPmkID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:cipherSuite forKey:@"cipherSuite"];
+  [coderCopy encodeObject:self->_dhInfo forKey:@"dhInfo"];
+  [coderCopy encodeObject:self->_passphrase forKey:@"passphrase"];
+  [coderCopy encodeObject:self->_datapathPmk forKey:@"datapathPmk"];
+  [coderCopy encodeObject:self->_datapathPmkID forKey:@"datapathPmkID"];
 }
 
-- (STSCHWiFiAwareSecurityInfo)initWithCoder:(id)a3
+- (STSCHWiFiAwareSecurityInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = STSCHWiFiAwareSecurityInfo;
   v5 = [(STSCHWiFiAwareSecurityInfo *)&v21 init];
@@ -31,25 +31,25 @@
   {
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"cipherSuite"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"cipherSuite"];
     cipherSuite = v5->_cipherSuite;
     v5->_cipherSuite = v8;
 
     v10 = objc_opt_class();
     v11 = [NSSet setWithObjects:v10, objc_opt_class(), 0];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"dhInfo"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"dhInfo"];
     dhInfo = v5->_dhInfo;
     v5->_dhInfo = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passphrase"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passphrase"];
     passphrase = v5->_passphrase;
     v5->_passphrase = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"datapathPmk"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"datapathPmk"];
     datapathPmk = v5->_datapathPmk;
     v5->_datapathPmk = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"datapathPmkID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"datapathPmkID"];
     datapathPmkID = v5->_datapathPmkID;
     v5->_datapathPmkID = v18;
   }
@@ -57,21 +57,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v22 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     cipherSuite = self->_cipherSuite;
-    v8 = [(STSCHWiFiAwareSecurityInfo *)v6 cipherSuite];
-    LODWORD(cipherSuite) = [(NSArray *)cipherSuite isEqualToArray:v8];
+    cipherSuite = [(STSCHWiFiAwareSecurityInfo *)v6 cipherSuite];
+    LODWORD(cipherSuite) = [(NSArray *)cipherSuite isEqualToArray:cipherSuite];
 
     if (!cipherSuite)
     {
@@ -79,8 +79,8 @@
     }
 
     dhInfo = self->_dhInfo;
-    v10 = [(STSCHWiFiAwareSecurityInfo *)v6 dhInfo];
-    LODWORD(dhInfo) = [(NSArray *)dhInfo isEqualToArray:v10];
+    dhInfo = [(STSCHWiFiAwareSecurityInfo *)v6 dhInfo];
+    LODWORD(dhInfo) = [(NSArray *)dhInfo isEqualToArray:dhInfo];
 
     if (!dhInfo)
     {
@@ -88,8 +88,8 @@
     }
 
     v11 = [(NSString *)self->_passphrase length];
-    v12 = [(STSCHWiFiAwareSecurityInfo *)v6 passphrase];
-    v13 = [v12 length];
+    passphrase = [(STSCHWiFiAwareSecurityInfo *)v6 passphrase];
+    v13 = [passphrase length];
 
     if (v11 != v13)
     {
@@ -99,8 +99,8 @@
     passphrase = self->_passphrase;
     if (passphrase)
     {
-      v15 = [(STSCHWiFiAwareSecurityInfo *)v6 passphrase];
-      v16 = [(NSString *)passphrase isEqualToString:v15];
+      passphrase2 = [(STSCHWiFiAwareSecurityInfo *)v6 passphrase];
+      v16 = [(NSString *)passphrase isEqualToString:passphrase2];
 
       if (!v16)
       {
@@ -114,8 +114,8 @@
       datapathPmkID = self->_datapathPmkID;
       if (datapathPmkID)
       {
-        v21 = [(STSCHWiFiAwareSecurityInfo *)v6 datapathPmkID];
-        v22 = [(NSData *)datapathPmkID isEqualToData:v21];
+        datapathPmkID = [(STSCHWiFiAwareSecurityInfo *)v6 datapathPmkID];
+        v22 = [(NSData *)datapathPmkID isEqualToData:datapathPmkID];
       }
 
       else
@@ -160,35 +160,35 @@ LABEL_15:
   return v8;
 }
 
-- (STSCHWiFiAwareSecurityInfo)initWithCipherSuites:(id)a3 dhInfo:(id)a4 passphrase:(id)a5
+- (STSCHWiFiAwareSecurityInfo)initWithCipherSuites:(id)suites dhInfo:(id)info passphrase:(id)passphrase
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suitesCopy = suites;
+  infoCopy = info;
+  passphraseCopy = passphrase;
   v17.receiver = self;
   v17.super_class = STSCHWiFiAwareSecurityInfo;
   v11 = [(STSCHWiFiAwareSecurityInfo *)&v17 init];
   if (v11)
   {
-    v12 = [[NSArray alloc] initWithArray:v8];
+    v12 = [[NSArray alloc] initWithArray:suitesCopy];
     cipherSuite = v11->_cipherSuite;
     v11->_cipherSuite = v12;
 
-    v14 = [[NSArray alloc] initWithArray:v9];
+    v14 = [[NSArray alloc] initWithArray:infoCopy];
     dhInfo = v11->_dhInfo;
     v11->_dhInfo = v14;
 
-    objc_storeStrong(&v11->_passphrase, a5);
+    objc_storeStrong(&v11->_passphrase, passphrase);
   }
 
   return v11;
 }
 
-- (STSCHWiFiAwareSecurityInfo)initWithPMK:(id)a3 pmkID:(id)a4
+- (STSCHWiFiAwareSecurityInfo)initWithPMK:(id)k pmkID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 length] == 16)
+  kCopy = k;
+  dCopy = d;
+  if ([dCopy length] == 16)
   {
     v13.receiver = self;
     v13.super_class = STSCHWiFiAwareSecurityInfo;
@@ -196,20 +196,20 @@ LABEL_15:
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_datapathPmk, a3);
-      objc_storeStrong(p_isa + 5, a4);
+      objc_storeStrong(&v9->_datapathPmk, k);
+      objc_storeStrong(p_isa + 5, d);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)asData
@@ -217,8 +217,8 @@ LABEL_15:
   v3 = +[NSMutableData data];
   if ([(NSArray *)self->_cipherSuite count])
   {
-    v26 = [(NSArray *)self->_cipherSuite count]+ 1;
-    [v3 appendBytes:&v26 length:1];
+    unsignedCharValue = [(NSArray *)self->_cipherSuite count]+ 1;
+    [v3 appendBytes:&unsignedCharValue length:1];
     [v3 appendBytes:&unk_100042959 length:1];
     v24 = 0u;
     v25 = 0u;
@@ -239,8 +239,8 @@ LABEL_15:
             objc_enumerationMutation(v4);
           }
 
-          v26 = [*(*(&v22 + 1) + 8 * i) unsignedCharValue];
-          [v3 appendBytes:&v26 length:1];
+          unsignedCharValue = [*(*(&v22 + 1) + 8 * i) unsignedCharValue];
+          [v3 appendBytes:&unsignedCharValue length:1];
         }
 
         v6 = [(NSArray *)v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
@@ -269,8 +269,8 @@ LABEL_15:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * j) asData];
-        [v3 appendData:v14];
+        asData = [*(*(&v18 + 1) + 8 * j) asData];
+        [v3 appendData:asData];
       }
 
       v11 = [(NSArray *)v9 countByEnumeratingWithState:&v18 objects:v27 count:16];
@@ -282,8 +282,8 @@ LABEL_15:
   passphrase = self->_passphrase;
   if (passphrase && [(NSString *)passphrase length])
   {
-    v26 = [(NSString *)self->_passphrase length]+ 1;
-    [v3 appendBytes:&v26 length:1];
+    unsignedCharValue = [(NSString *)self->_passphrase length]+ 1;
+    [v3 appendBytes:&unsignedCharValue length:1];
     [v3 appendBytes:&unk_10004295A length:1];
     v16 = [(NSString *)self->_passphrase dataUsingEncoding:4];
     [v3 appendData:v16];

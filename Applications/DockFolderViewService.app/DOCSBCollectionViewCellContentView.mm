@@ -1,15 +1,15 @@
 @interface DOCSBCollectionViewCellContentView
-- (_TtC21DockFolderViewService34DOCSBCollectionViewCellContentView)initWithFrame:(CGRect)a3;
+- (_TtC21DockFolderViewService34DOCSBCollectionViewCellContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DOCSBCollectionViewCellContentView
 
-- (_TtC21DockFolderViewService34DOCSBCollectionViewCellContentView)initWithFrame:(CGRect)a3
+- (_TtC21DockFolderViewService34DOCSBCollectionViewCellContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService34DOCSBCollectionViewCellContentView_label) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService34DOCSBCollectionViewCellContentView_labelContainer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService34DOCSBCollectionViewCellContentView_thumbnailShadow) = 0;

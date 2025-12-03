@@ -1,13 +1,13 @@
 @interface MXService
 - (BOOL)startService;
 - (BOOL)stopService;
-- (MXService)initWithSourceID:(int64_t)a3;
-- (id)pruneSourceData:(id)a3;
+- (MXService)initWithSourceID:(int64_t)d;
+- (id)pruneSourceData:(id)data;
 @end
 
 @implementation MXService
 
-- (MXService)initWithSourceID:(int64_t)a3
+- (MXService)initWithSourceID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = MXService;
@@ -15,7 +15,7 @@
   if (result)
   {
     result->_isStarted = 0;
-    result->_sourceID = a3;
+    result->_sourceID = d;
   }
 
   return result;
@@ -43,10 +43,10 @@
   return isStarted;
 }
 
-- (id)pruneSourceData:(id)a3
+- (id)pruneSourceData:(id)data
 {
   v31 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  dataCopy = data;
   v4 = +[MXUtilities getServicesAllowlist];
   v5 = [&unk_286A1CAE8 objectAtIndexedSubscript:{-[MXService sourceID](self, "sourceID")}];
   v26 = [v4 objectForKeyedSubscript:v5];
@@ -65,12 +65,12 @@
       if (Name)
       {
         v10 = [MEMORY[0x277CCACA8] stringWithCString:Name encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding", v25)}];
-        v11 = [v26 allKeys];
-        v12 = [v11 containsObject:v10];
+        allKeys = [v26 allKeys];
+        v12 = [allKeys containsObject:v10];
 
         if (v12)
         {
-          v13 = [v27 valueForKey:v10];
+          v13 = [dataCopy valueForKey:v10];
           v14 = [v26 objectForKeyedSubscript:v10];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -87,8 +87,8 @@
                 if (v19)
                 {
                   v20 = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
-                  v21 = [v15 allKeys];
-                  v22 = [v21 containsObject:v20];
+                  allKeys2 = [v15 allKeys];
+                  v22 = [allKeys2 containsObject:v20];
 
                   if ((v22 & 1) == 0)
                   {
@@ -101,12 +101,12 @@
             free(v17);
           }
 
-          [v27 setValue:v13 forKey:v10];
+          [dataCopy setValue:v13 forKey:v10];
         }
 
         else
         {
-          [v27 setValue:0 forKey:v10];
+          [dataCopy setValue:0 forKey:v10];
         }
       }
 
@@ -120,7 +120,7 @@
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v27;
+  return dataCopy;
 }
 
 @end

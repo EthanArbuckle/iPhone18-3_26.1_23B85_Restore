@@ -1,12 +1,12 @@
 @interface JavaClassMetadata
-- (JavaClassMetadata)initWithMetadata:(J2ObjcClassInfo *)a3;
-- (const)findFieldInfo:(const char *)a3;
-- (const)findMethodInfo:(id)a3;
+- (JavaClassMetadata)initWithMetadata:(J2ObjcClassInfo *)metadata;
+- (const)findFieldInfo:(const char *)info;
+- (const)findMethodInfo:(id)info;
 - (id)allFields;
 - (id)allMethods;
-- (id)findFieldMetadata:(const char *)a3;
-- (id)findMethodMetadata:(id)a3;
-- (id)findMethodMetadataWithJavaName:(id)a3 argCount:(int)a4;
+- (id)findFieldMetadata:(const char *)metadata;
+- (id)findMethodMetadata:(id)metadata;
+- (id)findMethodMetadataWithJavaName:(id)name argCount:(int)count;
 - (id)genericSignature;
 - (id)getEnclosingMethod;
 - (id)getInnerClasses;
@@ -17,7 +17,7 @@
 
 @implementation JavaClassMetadata
 
-- (JavaClassMetadata)initWithMetadata:(J2ObjcClassInfo *)a3
+- (JavaClassMetadata)initWithMetadata:(J2ObjcClassInfo *)metadata
 {
   v7.receiver = self;
   v7.super_class = JavaClassMetadata;
@@ -25,22 +25,22 @@
   v5 = v4;
   if (v4)
   {
-    v4->data_ = a3;
-    v4->version = a3->var0;
-    v4->typeName = [[NSString alloc] initWithCString:a3->var1 encoding:4];
-    if (a3->var2)
+    v4->data_ = metadata;
+    v4->version = metadata->var0;
+    v4->typeName = [[NSString alloc] initWithCString:metadata->var1 encoding:4];
+    if (metadata->var2)
     {
-      v5->packageName = [[NSString alloc] initWithCString:a3->var2 encoding:4];
+      v5->packageName = [[NSString alloc] initWithCString:metadata->var2 encoding:4];
     }
 
-    if (a3->var3)
+    if (metadata->var3)
     {
-      v5->enclosingName = [[NSString alloc] initWithCString:a3->var3 encoding:4];
+      v5->enclosingName = [[NSString alloc] initWithCString:metadata->var3 encoding:4];
     }
 
-    v5->fieldCount = a3->var7;
-    v5->methodCount = a3->var5;
-    v5->modifiers = a3->var4;
+    v5->fieldCount = metadata->var7;
+    v5->methodCount = metadata->var5;
+    v5->modifiers = metadata->var4;
   }
 
   return v5;
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (const)findMethodInfo:(id)a3
+- (const)findMethodInfo:(id)info
 {
-  v4 = [a3 cStringUsingEncoding:4];
+  v4 = [info cStringUsingEncoding:4];
   data = self->data_;
   var5 = data->var5;
   if (!data->var5)
@@ -87,9 +87,9 @@
   return i;
 }
 
-- (id)findMethodMetadata:(id)a3
+- (id)findMethodMetadata:(id)metadata
 {
-  result = [(JavaClassMetadata *)self findMethodInfo:a3];
+  result = [(JavaClassMetadata *)self findMethodInfo:metadata];
   if (result)
   {
     v4 = [[JavaMethodMetadata alloc] initWithMetadata:result];
@@ -100,9 +100,9 @@
   return result;
 }
 
-- (id)findMethodMetadataWithJavaName:(id)a3 argCount:(int)a4
+- (id)findMethodMetadataWithJavaName:(id)name argCount:(int)count
 {
-  v6 = [a3 cStringUsingEncoding:4];
+  v6 = [name cStringUsingEncoding:4];
   data = self->data_;
   if (!data->var5)
   {
@@ -140,7 +140,7 @@
         v12 = 0;
       }
 
-      if (v12 == a4)
+      if (v12 == count)
       {
         __strcpy_chk();
         __strcat_chk();
@@ -162,7 +162,7 @@
   return [[JavaMethodMetadata alloc] initWithMetadata:&self->data_->var6[v9]];
 }
 
-- (const)findFieldInfo:(const char *)a3
+- (const)findFieldInfo:(const char *)info
 {
   data = self->data_;
   var7 = data->var7;
@@ -178,7 +178,7 @@
     var1 = i->var1;
     if (var1)
     {
-      if (!strcmp(a3, var1))
+      if (!strcmp(info, var1))
       {
         break;
       }
@@ -186,13 +186,13 @@
 
     v10 = &var8[v6];
     var0 = i->var0;
-    if (!strcmp(a3, i->var0))
+    if (!strcmp(info, i->var0))
     {
       return v10;
     }
 
     v12 = strlen(var0) - 1;
-    if (var0[v12] == 95 && strlen(a3) == v12 && !strncmp(a3, var0, v12))
+    if (var0[v12] == 95 && strlen(info) == v12 && !strncmp(info, var0, v12))
     {
       return v10;
     }
@@ -207,9 +207,9 @@
   return i;
 }
 
-- (id)findFieldMetadata:(const char *)a3
+- (id)findFieldMetadata:(const char *)metadata
 {
-  result = [(JavaClassMetadata *)self findFieldInfo:a3];
+  result = [(JavaClassMetadata *)self findFieldInfo:metadata];
   if (result)
   {
     v4 = [[JavaFieldMetadata alloc] initWithMetadata:result];

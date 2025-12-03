@@ -1,29 +1,29 @@
 @interface PXPeopleConfirmationHeaderView
-+ (CGSize)_sizeForString:(id)a3 width:(double)a4 multiline:(BOOL)a5 font:(id)a6;
-+ (CGSize)sizeForTitle:(id)a3 boundingSize:(CGSize)a4;
++ (CGSize)_sizeForString:(id)string width:(double)width multiline:(BOOL)multiline font:(id)font;
++ (CGSize)sizeForTitle:(id)title boundingSize:(CGSize)size;
 + (id)_titleFont;
 - (NSString)title;
-- (PXPeopleConfirmationHeaderView)initWithFrame:(CGRect)a3;
+- (PXPeopleConfirmationHeaderView)initWithFrame:(CGRect)frame;
 - (void)_setupHeader;
 - (void)prepareForReuse;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXPeopleConfirmationHeaderView
 
 - (NSString)title
 {
-  v2 = [(PXPeopleConfirmationHeaderView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(PXPeopleConfirmationHeaderView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PXPeopleConfirmationHeaderView *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(PXPeopleConfirmationHeaderView *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
 - (void)_setupHeader
@@ -41,19 +41,19 @@
   self->_titleLabel = v3;
   v6 = v3;
 
-  v7 = [(PXPeopleConfirmationHeaderView *)self safeAreaLayoutGuide];
-  v18 = [v7 leadingAnchor];
-  v16 = [v7 trailingAnchor];
+  safeAreaLayoutGuide = [(PXPeopleConfirmationHeaderView *)self safeAreaLayoutGuide];
+  leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
+  trailingAnchor = [safeAreaLayoutGuide trailingAnchor];
   v17 = MEMORY[0x1E696ACD8];
-  v8 = [(UILabel *)v6 bottomAnchor];
-  v9 = [v7 bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  bottomAnchor = [(UILabel *)v6 bottomAnchor];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v19[0] = v10;
-  v11 = [(UILabel *)v6 leadingAnchor];
-  v12 = [v11 constraintEqualToAnchor:v18 constant:20.0];
+  leadingAnchor2 = [(UILabel *)v6 leadingAnchor];
+  v12 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor constant:20.0];
   v19[1] = v12;
-  v13 = [(UILabel *)v6 trailingAnchor];
-  v14 = [v13 constraintEqualToAnchor:v16 constant:-20.0];
+  trailingAnchor2 = [(UILabel *)v6 trailingAnchor];
+  v14 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor constant:-20.0];
   v19[2] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
   [v17 activateConstraints:v15];
@@ -68,11 +68,11 @@
   [(PXPeopleConfirmationHeaderView *)self setPerson:0];
 }
 
-- (PXPeopleConfirmationHeaderView)initWithFrame:(CGRect)a3
+- (PXPeopleConfirmationHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXPeopleConfirmationHeaderView;
-  v3 = [(PXPeopleConfirmationHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXPeopleConfirmationHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -94,21 +94,21 @@
   return v6;
 }
 
-+ (CGSize)_sizeForString:(id)a3 width:(double)a4 multiline:(BOOL)a5 font:(id)a6
++ (CGSize)_sizeForString:(id)string width:(double)width multiline:(BOOL)multiline font:(id)font
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a3;
+  multilineCopy = multiline;
+  fontCopy = font;
+  stringCopy = string;
   v11 = objc_opt_new();
-  if (v6)
+  if (multilineCopy)
   {
     v12 = objc_opt_new();
     [v12 setLineBreakMode:0];
     [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69DB688]];
   }
 
-  [v11 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69DB648]];
-  [v10 boundingRectWithSize:v6 options:v11 attributes:0 context:{a4, 0.0}];
+  [v11 setObject:fontCopy forKeyedSubscript:*MEMORY[0x1E69DB648]];
+  [stringCopy boundingRectWithSize:multilineCopy options:v11 attributes:0 context:{width, 0.0}];
   v14 = v13;
   v16 = v15;
 
@@ -119,13 +119,13 @@
   return result;
 }
 
-+ (CGSize)sizeForTitle:(id)a3 boundingSize:(CGSize)a4
++ (CGSize)sizeForTitle:(id)title boundingSize:(CGSize)size
 {
-  width = a4.width;
-  v5 = a4.width + -40.0;
-  v6 = a3;
+  width = size.width;
+  v5 = size.width + -40.0;
+  titleCopy = title;
   v7 = +[PXPeopleConfirmationHeaderView _titleFont];
-  [PXPeopleConfirmationHeaderView _sizeForString:v6 width:0 multiline:v7 font:v5];
+  [PXPeopleConfirmationHeaderView _sizeForString:titleCopy width:0 multiline:v7 font:v5];
   v9 = v8;
 
   v10 = v9 + 10.0 + 10.0;

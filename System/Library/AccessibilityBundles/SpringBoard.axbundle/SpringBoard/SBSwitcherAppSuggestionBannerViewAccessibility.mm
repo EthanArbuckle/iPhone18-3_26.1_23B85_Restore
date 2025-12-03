@@ -1,15 +1,15 @@
 @interface SBSwitcherAppSuggestionBannerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SBSwitcherAppSuggestionBannerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSwitcherAppSuggestionBannerView" hasInstanceVariable:@"_appLabel" withType:"UILabel"];
-  [v3 validateClass:@"SBSwitcherAppSuggestionBannerView" hasInstanceVariable:@"_descriptionLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSwitcherAppSuggestionBannerView" hasInstanceVariable:@"_appLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SBSwitcherAppSuggestionBannerView" hasInstanceVariable:@"_descriptionLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
@@ -22,8 +22,8 @@
   v5 = [(SBSwitcherAppSuggestionBannerViewAccessibility *)self safeValueForKey:@"_descriptionLabel"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v4 accessibilityLabel];
-  v10 = [v6 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
   v8 = __UIAXStringForVariables();
 
   return v8;

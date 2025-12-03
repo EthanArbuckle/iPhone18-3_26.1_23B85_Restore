@@ -1,14 +1,14 @@
 @interface PKDashboardPassPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardPassPresenter)init;
 - (PKDashboardPassPresenterDelegate)delegate;
-- (id)_dateStringForPass:(id)a3 inExpiredSection:(BOOL)a4;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)_dateStringForPass:(id)pass inExpiredSection:(BOOL)section;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (void)_updateCell:(id)a3 withPassItem:(id)a4;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (void)_updateCell:(id)cell withPassItem:(id)item;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardPassPresenter
@@ -39,24 +39,24 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(PKDashboardPassPresenter *)self _identifierForItem:v8];
-  v12 = [v10 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v9];
+  itemCopy = item;
+  pathCopy = path;
+  viewCopy = view;
+  v11 = [(PKDashboardPassPresenter *)self _identifierForItem:itemCopy];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  [(PKDashboardPassPresenter *)self _updateCell:v12 withPassItem:v8];
+  [(PKDashboardPassPresenter *)self _updateCell:v12 withPassItem:itemCopy];
 
   return v12;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardPassPresenter *)self _updateCell:self->_sampleSearchResultCell withPassItem:a3, a6];
+  [(PKDashboardPassPresenter *)self _updateCell:self->_sampleSearchResultCell withPassItem:item, path];
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  v9 = a5 + v8 * -2.0;
+  v9 = width + v8 * -2.0;
   [(PKDashboardSearchResultCell *)self->_sampleSearchResultCell sizeThatFits:v9, 1.79769313e308];
   v11 = v10;
   [(PKDashboardSearchResultCell *)self->_sampleSearchResultCell prepareForReuse];
@@ -67,27 +67,27 @@
   return result;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v8 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v8 pass];
+  pass = [itemCopy pass];
 
-  v10 = [v9 uniqueID];
-  [WeakRetained dashboardPassPresenter:self didSelectPassWithUniqueIdentifier:v10];
+  uniqueID = [pass uniqueID];
+  [WeakRetained dashboardPassPresenter:self didSelectPassWithUniqueIdentifier:uniqueID];
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKDashboardSearchResultCell alloc];
@@ -99,49 +99,49 @@
   }
 }
 
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = [a4 cellForItemAtIndexPath:a5];
-  v6 = [v5 title];
+  v5 = [view cellForItemAtIndexPath:path];
+  title = [v5 title];
 
-  return v6;
+  return title;
 }
 
-- (void)_updateCell:(id)a3 withPassItem:(id)a4
+- (void)_updateCell:(id)cell withPassItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 pass];
-  v9 = [v7 displayName];
-  if (v9)
+  cellCopy = cell;
+  itemCopy = item;
+  pass = [itemCopy pass];
+  displayName = [itemCopy displayName];
+  if (displayName)
   {
-    [v6 setTitle:v9];
+    [cellCopy setTitle:displayName];
   }
 
   else
   {
-    v10 = [v8 localizedDescription];
-    [v6 setTitle:v10];
+    localizedDescription = [pass localizedDescription];
+    [cellCopy setTitle:localizedDescription];
   }
 
-  v11 = [v7 contentDescription];
-  if (v11)
+  contentDescription = [itemCopy contentDescription];
+  if (contentDescription)
   {
-    [v6 setSubtitle:v11];
+    [cellCopy setSubtitle:contentDescription];
   }
 
   else
   {
-    v12 = [v8 localizedName];
-    [v6 setSubtitle:v12];
+    localizedName = [pass localizedName];
+    [cellCopy setSubtitle:localizedName];
   }
 
-  v13 = -[PKDashboardPassPresenter _dateStringForPass:inExpiredSection:](self, "_dateStringForPass:inExpiredSection:", v8, [v7 isInExpiredSection]);
-  [v6 setDetailText:v13];
+  v13 = -[PKDashboardPassPresenter _dateStringForPass:inExpiredSection:](self, "_dateStringForPass:inExpiredSection:", pass, [itemCopy isInExpiredSection]);
+  [cellCopy setDetailText:v13];
 
-  v14 = [v8 secureElementPass];
+  secureElementPass = [pass secureElementPass];
 
-  if (v14)
+  if (secureElementPass)
   {
     v15 = 2;
   }
@@ -151,15 +151,15 @@
     v15 = 1;
   }
 
-  [v6 setStyle:v15];
-  v16 = [v7 thumbnailData];
-  if (v16)
+  [cellCopy setStyle:v15];
+  thumbnailData = [itemCopy thumbnailData];
+  if (thumbnailData)
   {
     v17 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v18 = [v7 thumbnailData];
-    v19 = [v17 initWithData:v18];
+    thumbnailData2 = [itemCopy thumbnailData];
+    v19 = [v17 initWithData:thumbnailData2];
 
-    [v6 setThumbnail:v19];
+    [cellCopy setThumbnail:v19];
   }
 
   objc_initWeak(&location, self);
@@ -168,16 +168,16 @@
   aBlock[2] = __53__PKDashboardPassPresenter__updateCell_withPassItem___block_invoke;
   aBlock[3] = &unk_1E80110E0;
   objc_copyWeak(&v28, &location);
-  v20 = v8;
+  v20 = pass;
   v27 = v20;
   v21 = _Block_copy(aBlock);
-  v22 = [v7 groupPassCount];
-  if (![v20 passType] && PKBarcodePassSharingEnabled() && v22 <= 1)
+  groupPassCount = [itemCopy groupPassCount];
+  if (![v20 passType] && PKBarcodePassSharingEnabled() && groupPassCount <= 1)
   {
     goto LABEL_21;
   }
 
-  if ([v20 passType] != 1 || v22 > 1 || (objc_msgSend(v20, "secureElementPass"), v23 = objc_claimAutoreleasedReturnValue(), v24 = PKSecureElementPassSharingMethodForPass(), v23, !v24))
+  if ([v20 passType] != 1 || groupPassCount > 1 || (objc_msgSend(v20, "secureElementPass"), v23 = objc_claimAutoreleasedReturnValue(), v24 = PKSecureElementPassSharingMethodForPass(), v23, !v24))
   {
 
     v21 = 0;
@@ -193,7 +193,7 @@ LABEL_21:
 
   v25 = 1;
 LABEL_22:
-  [v6 setAction:v21 withButtonType:v25];
+  [cellCopy setAction:v21 withButtonType:v25];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&location);
@@ -212,24 +212,24 @@ void __53__PKDashboardPassPresenter__updateCell_withPassItem___block_invoke(uint
   }
 }
 
-- (id)_dateStringForPass:(id)a3 inExpiredSection:(BOOL)a4
+- (id)_dateStringForPass:(id)pass inExpiredSection:(BOOL)section
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 relevantDates];
-  v7 = [v5 expirationDate];
-  v8 = v7;
-  if (!v4 || !v7)
+  sectionCopy = section;
+  passCopy = pass;
+  relevantDates = [passCopy relevantDates];
+  expirationDate = [passCopy expirationDate];
+  v8 = expirationDate;
+  if (!sectionCopy || !expirationDate)
   {
-    if ([v6 count])
+    if ([relevantDates count])
     {
-      v9 = [MEMORY[0x1E69B8A68] findDateFromDates:v6 option:0];
-      if (v9)
+      modifiedDate = [MEMORY[0x1E69B8A68] findDateFromDates:relevantDates option:0];
+      if (modifiedDate)
       {
-        v11 = PKRelativeDateString();
-        v12 = [v11 pk_uppercaseFirstStringForPreferredLocale];
+        pk_uppercaseFirstStringForPreferredLocale2 = PKRelativeDateString();
+        pk_uppercaseFirstStringForPreferredLocale = [pk_uppercaseFirstStringForPreferredLocale2 pk_uppercaseFirstStringForPreferredLocale];
 LABEL_7:
-        v10 = v12;
+        webServiceURL = pk_uppercaseFirstStringForPreferredLocale;
 
         goto LABEL_14;
       }
@@ -237,41 +237,41 @@ LABEL_7:
 
     else
     {
-      if ([v5 passType])
+      if ([passCopy passType])
       {
-        v10 = 0;
+        webServiceURL = 0;
         goto LABEL_15;
       }
 
-      v9 = [v5 modifiedDate];
-      if (v9)
+      modifiedDate = [passCopy modifiedDate];
+      if (modifiedDate)
       {
-        v10 = [v5 webServiceURL];
+        webServiceURL = [passCopy webServiceURL];
 
-        if (!v10)
+        if (!webServiceURL)
         {
           goto LABEL_14;
         }
 
         v13 = PKRelativeDateString();
-        v11 = [v13 pk_uppercaseFirstStringForPreferredLocale];
+        pk_uppercaseFirstStringForPreferredLocale2 = [v13 pk_uppercaseFirstStringForPreferredLocale];
 
-        v12 = PKLocalizedString(&cfstr_LastUpdatedFor.isa, &stru_1F3BD5BF0.isa, v11);
+        pk_uppercaseFirstStringForPreferredLocale = PKLocalizedString(&cfstr_LastUpdatedFor.isa, &stru_1F3BD5BF0.isa, pk_uppercaseFirstStringForPreferredLocale2);
         goto LABEL_7;
       }
     }
 
-    v10 = 0;
+    webServiceURL = 0;
     goto LABEL_14;
   }
 
-  v9 = PKRelativeDateString();
-  v10 = [v9 pk_uppercaseFirstStringForPreferredLocale];
+  modifiedDate = PKRelativeDateString();
+  webServiceURL = [modifiedDate pk_uppercaseFirstStringForPreferredLocale];
 LABEL_14:
 
 LABEL_15:
 
-  return v10;
+  return webServiceURL;
 }
 
 - (PKDashboardPassPresenterDelegate)delegate

@@ -5,93 +5,93 @@
 - (BOOL)_shouldAnimateDots;
 - (BOOL)_viewingEventDetailsColumn;
 - (CGRect)frameForTodayHighlight;
-- (CGRect)frameForWeekContainingDate:(id)a3;
+- (CGRect)frameForWeekContainingDate:(id)date;
 - (CGRect)frameOfListView;
-- (MultiColumnMonthViewController)initWithCalendarDate:(id)a3 model:(id)a4 window:(id)a5;
+- (MultiColumnMonthViewController)initWithCalendarDate:(id)date model:(id)model window:(id)window;
 - (double)_listviewColumnCollapsedWidth;
 - (double)_scrollViewVerticalVelocity;
-- (double)_showDateVerticalOffsetWithVerticalCompression:(BOOL)a3;
-- (double)heightForSubviewWithCalendarDate:(id)a3;
+- (double)_showDateVerticalOffsetWithVerticalCompression:(BOOL)compression;
+- (double)heightForSubviewWithCalendarDate:(id)date;
 - (double)rightSplitViewSideInset;
 - (double)showDateVerticalOffset;
-- (id)_dayInMonth:(id)a3 fromGesture:(id)a4;
-- (id)_loadEventsForStartDate:(id)a3 endDate:(id)a4;
-- (id)_viewFromGesture:(id)a3;
-- (id)createInitialViewForDate:(id)a3;
-- (id)newBottomViewBelowViewWithCalendarDate:(id)a3;
-- (id)newTopViewAboveViewWithCalendarDate:(id)a3;
-- (id)nextLevelWeekViewControllerWithDate:(id)a3;
+- (id)_dayInMonth:(id)month fromGesture:(id)gesture;
+- (id)_loadEventsForStartDate:(id)date endDate:(id)endDate;
+- (id)_viewFromGesture:(id)gesture;
+- (id)createInitialViewForDate:(id)date;
+- (id)newBottomViewBelowViewWithCalendarDate:(id)date;
+- (id)newTopViewAboveViewWithCalendarDate:(id)date;
+- (id)nextLevelWeekViewControllerWithDate:(id)date;
 - (id)preferredPreSizeClassTransitionSelectedDate;
-- (id)pushedWeekViewControllerWithDate:(id)a3 animated:(BOOL)a4;
-- (int64_t)eventCountDisplayedForDate:(id)a3;
+- (id)pushedWeekViewControllerWithDate:(id)date animated:(BOOL)animated;
+- (int64_t)eventCountDisplayedForDate:(id)date;
 - (unint64_t)edgesForExtendedLayout;
 - (void)_autoSelectEvent;
-- (void)_cachedOccurrencesChanged:(id)a3;
+- (void)_cachedOccurrencesChanged:(id)changed;
 - (void)_createEventDetailsColumn;
-- (void)_createMonthHighlightForMonthView:(id)a3 day:(id)a4;
+- (void)_createMonthHighlightForMonthView:(id)view day:(id)day;
 - (void)_invalidateUpdateTimer;
 - (void)_loadEventsForAllSubviews;
-- (void)_loadEventsForViewsInRangeStartingAt:(id)a3 endingAt:(id)a4;
-- (void)_occurrencesChanged:(id)a3;
+- (void)_loadEventsForViewsInRangeStartingAt:(id)at endingAt:(id)endingAt;
+- (void)_occurrencesChanged:(id)changed;
 - (void)_removeMonthHighlight;
 - (void)_resetPaletteState;
-- (void)_scrollListToNewSelectedDateAnimated:(BOOL)a3;
-- (void)_scrubGestureCallback:(id)a3;
+- (void)_scrollListToNewSelectedDateAnimated:(BOOL)animated;
+- (void)_scrubGestureCallback:(id)callback;
 - (void)_setPaletteDisplaced;
-- (void)_setSelectedDay:(id)a3;
-- (void)_setSelectedDay:(id)a3 onMonthWeekView:(id)a4 animated:(BOOL)a5;
+- (void)_setSelectedDay:(id)day;
+- (void)_setSelectedDay:(id)day onMonthWeekView:(id)view animated:(BOOL)animated;
 - (void)_setupListViewController;
-- (void)_showDetailsForEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)_slideToAnimatePalleteShowingBackButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)_slideToHideEventDetailsAnimated:(BOOL)a3;
-- (void)_slideToShowEventDetails:(id)a3 animated:(BOOL)a4;
+- (void)_showDetailsForEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)_slideToAnimatePalleteShowingBackButton:(BOOL)button animated:(BOOL)animated;
+- (void)_slideToHideEventDetailsAnimated:(BOOL)animated;
+- (void)_slideToShowEventDetails:(id)details animated:(BOOL)animated;
 - (void)_startUpdateTimer;
-- (void)_tapGestureCallback:(id)a3;
+- (void)_tapGestureCallback:(id)callback;
 - (void)_updateEventDetailsColumnViewFrame;
 - (void)_updateInfiniteScrollViewFrame;
 - (void)_updateListViewFrame;
 - (void)_updateListViewModeForCurrentTraits;
-- (void)compactMonthListViewController:(id)a3 wantsToCommitViewControllerFromPreview:(id)a4;
+- (void)compactMonthListViewController:(id)controller wantsToCommitViewControllerFromPreview:(id)preview;
 - (void)dealloc;
 - (void)didEndScrolling;
 - (void)didScroll;
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)eventViewController:(id)a3 requestsDismissalOfEditViewController:(id)a4;
-- (void)eventViewControllerNextButtonWasTapped:(id)a3;
-- (void)eventViewControllerPreviousButtonWasTapped:(id)a3;
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)eventViewController:(id)controller requestsDismissalOfEditViewController:(id)viewController;
+- (void)eventViewControllerNextButtonWasTapped:(id)tapped;
+- (void)eventViewControllerPreviousButtonWasTapped:(id)tapped;
 - (void)infiniteScrollViewSafeAreasDidChange;
-- (void)listViewController:(id)a3 didScrollToDate:(id)a4;
+- (void)listViewController:(id)controller didScrollToDate:(id)date;
 - (void)loadView;
-- (void)monthView:(id)a3 gestureBegan:(id)a4;
-- (void)monthView:(id)a3 gestureCancelled:(id)a4;
-- (void)monthView:(id)a3 gestureChanged:(id)a4;
-- (void)monthView:(id)a3 gestureEnded:(id)a4;
-- (void)navigateToEventDetails:(id)a3 fromController:(id)a4;
-- (void)setupUIForTraitCollection:(id)a3;
-- (void)showDate:(id)a3 animated:(BOOL)a4;
-- (void)showDate:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
+- (void)monthView:(id)view gestureBegan:(id)began;
+- (void)monthView:(id)view gestureCancelled:(id)cancelled;
+- (void)monthView:(id)view gestureChanged:(id)changed;
+- (void)monthView:(id)view gestureEnded:(id)ended;
+- (void)navigateToEventDetails:(id)details fromController:(id)controller;
+- (void)setupUIForTraitCollection:(id)collection;
+- (void)showDate:(id)date animated:(BOOL)animated;
+- (void)showDate:(id)date animated:(BOOL)animated completionBlock:(id)block;
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
 - (void)updateNavigationBarDisplayedDateString;
-- (void)updatePalette:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updatePalette:(id)palette;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willEndDraggingWithVelocity:(CGPoint)a3 targetContentOffset:(CGPoint *)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willEndDraggingWithVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation MultiColumnMonthViewController
 
-- (MultiColumnMonthViewController)initWithCalendarDate:(id)a3 model:(id)a4 window:(id)a5
+- (MultiColumnMonthViewController)initWithCalendarDate:(id)date model:(id)model window:(id)window
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  modelCopy = model;
+  windowCopy = window;
   v18.receiver = self;
   v18.super_class = MultiColumnMonthViewController;
-  v11 = [(MonthViewController *)&v18 initWithCalendarDate:v8 model:v9 window:v10];
+  v11 = [(MonthViewController *)&v18 initWithCalendarDate:dateCopy model:modelCopy window:windowCopy];
   if (v11)
   {
     objc_initWeak(&location, v11);
@@ -138,38 +138,38 @@
     [*(&self->_dividerLineBetweenListAndEventDetails + 1) setBackgroundColor:v5];
 
     [*(&self->_dividerLineBetweenListAndEventDetails + 1) setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(MultiColumnMonthViewController *)self view];
-    [v6 addSubview:*(&self->_dividerLineBetweenListAndEventDetails + 1)];
+    view = [(MultiColumnMonthViewController *)self view];
+    [view addSubview:*(&self->_dividerLineBetweenListAndEventDetails + 1)];
 
     v7 = *(&self->_dividerLineBetweenListAndEventDetails + 1);
     v8 = [_UIScrollPocketInteraction alloc];
-    v9 = [(InfiniteScrollViewController *)self scrollView];
-    v10 = [v8 initWithScrollView:v9 edge:1 style:0];
+    scrollView = [(InfiniteScrollViewController *)self scrollView];
+    v10 = [v8 initWithScrollView:scrollView edge:1 style:0];
     [v7 addInteraction:v10];
 
-    v11 = [(InfiniteScrollViewController *)self scrollView];
-    [v11 _setPocketStyle:1 forEdge:1];
+    scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView2 _setPocketStyle:1 forEdge:1];
 
-    v37 = [*(&self->_dividerLineBetweenListAndEventDetails + 1) topAnchor];
-    v38 = [(MultiColumnMonthViewController *)self view];
-    v36 = [v38 topAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    topAnchor = [*(&self->_dividerLineBetweenListAndEventDetails + 1) topAnchor];
+    view2 = [(MultiColumnMonthViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v40[0] = v35;
-    v33 = [*(&self->_dividerLineBetweenListAndEventDetails + 1) bottomAnchor];
-    v34 = [(MultiColumnMonthViewController *)self view];
-    v32 = [v34 safeAreaLayoutGuide];
-    v31 = [v32 topAnchor];
-    v30 = [v33 constraintEqualToAnchor:v31];
+    bottomAnchor = [*(&self->_dividerLineBetweenListAndEventDetails + 1) bottomAnchor];
+    view3 = [(MultiColumnMonthViewController *)self view];
+    safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+    topAnchor3 = [safeAreaLayoutGuide topAnchor];
+    v30 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
     v40[1] = v30;
-    v12 = [*(&self->_dividerLineBetweenListAndEventDetails + 1) leadingAnchor];
-    v13 = [(MultiColumnMonthViewController *)self view];
-    v14 = [v13 leadingAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    leadingAnchor = [*(&self->_dividerLineBetweenListAndEventDetails + 1) leadingAnchor];
+    view4 = [(MultiColumnMonthViewController *)self view];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v40[2] = v15;
-    v16 = [*(&self->_dividerLineBetweenListAndEventDetails + 1) trailingAnchor];
-    v17 = [(MultiColumnMonthViewController *)self view];
-    v18 = [v17 trailingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    trailingAnchor = [*(&self->_dividerLineBetweenListAndEventDetails + 1) trailingAnchor];
+    view5 = [(MultiColumnMonthViewController *)self view];
+    trailingAnchor2 = [view5 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v40[3] = v19;
     v20 = [NSArray arrayWithObjects:v40 count:4];
     [NSLayoutConstraint activateConstraints:v20];
@@ -182,8 +182,8 @@
   v23 = [UIColor colorWithWhite:0.8 alpha:1.0];
   [*(&self->_weekCalculationCalendar + 1) setBackgroundColor:v23];
 
-  v24 = [(MultiColumnMonthViewController *)self view];
-  [v24 addSubview:*(&self->_weekCalculationCalendar + 1)];
+  view6 = [(MultiColumnMonthViewController *)self view];
+  [view6 addSubview:*(&self->_weekCalculationCalendar + 1)];
 
   v25 = objc_alloc_init(UIView);
   v26 = *(&self->_dividerLineBetweenListAndMonth + 1);
@@ -192,8 +192,8 @@
   v27 = [UIColor colorWithWhite:0.8 alpha:1.0];
   [*(&self->_dividerLineBetweenListAndMonth + 1) setBackgroundColor:v27];
 
-  v28 = [(MultiColumnMonthViewController *)self view];
-  [v28 addSubview:*(&self->_dividerLineBetweenListAndMonth + 1)];
+  view7 = [(MultiColumnMonthViewController *)self view];
+  [view7 addSubview:*(&self->_dividerLineBetweenListAndMonth + 1)];
 
   [(MonthViewController *)self setShouldShowMonthTitleHUDWhenScrolling:0];
   v29 = +[NSNotificationCenter defaultCenter];
@@ -206,27 +206,27 @@
   v7.receiver = self;
   v7.super_class = MultiColumnMonthViewController;
   [(InfiniteScrollViewController *)&v7 viewDidLoad];
-  v3 = [(InfiniteScrollViewController *)self scrollView];
-  [v3 setDecelerationRate:UIScrollViewDecelerationRateFast];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView setDecelerationRate:UIScrollViewDecelerationRateFast];
 
-  v4 = [(MultiColumnMonthViewController *)self traitCollection];
-  [UITraitCollection _setCurrentTraitCollection:v4];
+  traitCollection = [(MultiColumnMonthViewController *)self traitCollection];
+  [UITraitCollection _setCurrentTraitCollection:traitCollection];
 
-  v5 = [objc_opt_class() dividedModeBackgroundColor];
-  v6 = [(InfiniteScrollViewController *)self scrollView];
-  [v6 setBackgroundColor:v5];
+  dividedModeBackgroundColor = [objc_opt_class() dividedModeBackgroundColor];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView2 setBackgroundColor:dividedModeBackgroundColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v24.receiver = self;
   v24.super_class = MultiColumnMonthViewController;
   [(MonthViewController *)&v24 viewWillAppear:?];
   if ((BYTE2(self->_tempMaskForPocket) & 1) == 0)
   {
-    v5 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    v6 = [(MonthViewController *)self adjustSelectedDateForNewMonth:v5];
+    selectedDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    v6 = [(MonthViewController *)self adjustSelectedDateForNewMonth:selectedDate];
 
     [(CUIKCalendarModel *)self->super.super.super.super._model setSelectedDate:v6];
     BYTE2(self->_tempMaskForPocket) = 1;
@@ -239,32 +239,32 @@
   v8 = objc_alloc_init(UITapGestureRecognizer);
   [(MultiColumnMonthViewController *)self setDayCellsTapGestureRecognizer:v8];
 
-  v9 = [(MultiColumnMonthViewController *)self dayCellsTapGestureRecognizer];
-  [v9 addTarget:self action:"_tapGestureCallback:"];
+  dayCellsTapGestureRecognizer = [(MultiColumnMonthViewController *)self dayCellsTapGestureRecognizer];
+  [dayCellsTapGestureRecognizer addTarget:self action:"_tapGestureCallback:"];
 
-  v10 = [(InfiniteScrollViewController *)self scrollView];
-  v11 = [(MultiColumnMonthViewController *)self dayCellsTapGestureRecognizer];
-  [v10 addGestureRecognizer:v11];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  dayCellsTapGestureRecognizer2 = [(MultiColumnMonthViewController *)self dayCellsTapGestureRecognizer];
+  [scrollView addGestureRecognizer:dayCellsTapGestureRecognizer2];
 
   v12 = objc_alloc_init(UILongPressGestureRecognizer);
   [(MultiColumnMonthViewController *)self setDayCellsScrubbingGestureRecognizer:v12];
 
   [objc_opt_class() scrubbingMinimumPressDuration];
   v14 = v13;
-  v15 = [(MultiColumnMonthViewController *)self dayCellsScrubbingGestureRecognizer];
-  [v15 setMinimumPressDuration:v14];
+  dayCellsScrubbingGestureRecognizer = [(MultiColumnMonthViewController *)self dayCellsScrubbingGestureRecognizer];
+  [dayCellsScrubbingGestureRecognizer setMinimumPressDuration:v14];
 
-  v16 = [(MultiColumnMonthViewController *)self dayCellsScrubbingGestureRecognizer];
-  [v16 addTarget:self action:"_scrubGestureCallback:"];
+  dayCellsScrubbingGestureRecognizer2 = [(MultiColumnMonthViewController *)self dayCellsScrubbingGestureRecognizer];
+  [dayCellsScrubbingGestureRecognizer2 addTarget:self action:"_scrubGestureCallback:"];
 
-  v17 = [(InfiniteScrollViewController *)self scrollView];
-  v18 = [(MultiColumnMonthViewController *)self dayCellsScrubbingGestureRecognizer];
-  [v17 addGestureRecognizer:v18];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  dayCellsScrubbingGestureRecognizer3 = [(MultiColumnMonthViewController *)self dayCellsScrubbingGestureRecognizer];
+  [scrollView2 addGestureRecognizer:dayCellsScrubbingGestureRecognizer3];
 
-  v19 = [(MultiColumnMonthViewController *)self view];
-  LODWORD(v18) = EKUICurrentHeightSizeClassIsRegular();
+  view = [(MultiColumnMonthViewController *)self view];
+  LODWORD(dayCellsScrubbingGestureRecognizer3) = EKUICurrentHeightSizeClassIsRegular();
 
-  if (v18)
+  if (dayCellsScrubbingGestureRecognizer3)
   {
     if ([(MultiColumnMonthViewController *)self _shouldDisplayThreeColumns]&& (BYTE3(self->_tempMaskForPocket) & 1) == 0)
     {
@@ -275,9 +275,9 @@
     v21 = +[CUIKPreferences sharedPreferences];
     if ([v21 largeListViewDisclosingEventDetails])
     {
-      v22 = [(MultiColumnMonthViewController *)self _viewingEventDetailsColumn];
+      _viewingEventDetailsColumn = [(MultiColumnMonthViewController *)self _viewingEventDetailsColumn];
 
-      if ((v22 & 1) == 0)
+      if ((_viewingEventDetailsColumn & 1) == 0)
       {
         [(MultiColumnMonthViewController *)self _autoSelectEvent];
         return;
@@ -293,20 +293,20 @@
 
     if ([(MultiColumnMonthViewController *)self _viewingEventDetailsColumn])
     {
-      [(MultiColumnMonthViewController *)self _slideToHideEventDetailsAnimated:v3];
+      [(MultiColumnMonthViewController *)self _slideToHideEventDetailsAnimated:appearCopy];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MultiColumnMonthViewController;
-  [(CompactMonthViewController *)&v7 viewDidAppear:a3];
-  v4 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDay];
-  v5 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDay];
-  v6 = [(InfiniteScrollViewController *)self subviewForDate:v5];
-  [(MultiColumnMonthViewController *)self _setSelectedDay:v4 onMonthWeekView:v6 animated:1];
+  [(CompactMonthViewController *)&v7 viewDidAppear:appear];
+  selectedDay = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDay];
+  selectedDay2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDay];
+  v6 = [(InfiniteScrollViewController *)self subviewForDate:selectedDay2];
+  [(MultiColumnMonthViewController *)self _setSelectedDay:selectedDay onMonthWeekView:v6 animated:1];
 
   BYTE5(self->_tempMaskForPocket) = 1;
   self->_shouldSetSelectedDate = 0;
@@ -322,37 +322,37 @@
   [(MultiColumnMonthViewController *)self updatePalette:*(&self->_cancelEventDetailViewModeButton + 1)];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(MultiColumnMonthViewController *)self _resetPaletteState];
   [(MultiColumnMonthViewController *)self _invalidateUpdateTimer];
   [*&self->_editorPresentedProgramatically removeFromSuperview];
   v5 = *&self->_editorPresentedProgramatically;
   *&self->_editorPresentedProgramatically = 0;
 
-  v6 = [(InfiniteScrollViewController *)self scrollView];
-  v7 = [(MultiColumnMonthViewController *)self dayCellsTapGestureRecognizer];
-  [v6 removeGestureRecognizer:v7];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  dayCellsTapGestureRecognizer = [(MultiColumnMonthViewController *)self dayCellsTapGestureRecognizer];
+  [scrollView removeGestureRecognizer:dayCellsTapGestureRecognizer];
 
-  v8 = [(InfiniteScrollViewController *)self scrollView];
-  v9 = [(MultiColumnMonthViewController *)self dayCellsScrubbingGestureRecognizer];
-  [v8 removeGestureRecognizer:v9];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  dayCellsScrubbingGestureRecognizer = [(MultiColumnMonthViewController *)self dayCellsScrubbingGestureRecognizer];
+  [scrollView2 removeGestureRecognizer:dayCellsScrubbingGestureRecognizer];
 
   v10.receiver = self;
   v10.super_class = MultiColumnMonthViewController;
-  [(MonthViewController *)&v10 viewWillDisappear:v3];
+  [(MonthViewController *)&v10 viewWillDisappear:disappearCopy];
 }
 
-- (void)setupUIForTraitCollection:(id)a3
+- (void)setupUIForTraitCollection:(id)collection
 {
   v8.receiver = self;
   v8.super_class = MultiColumnMonthViewController;
-  v4 = a3;
-  [(MainViewController *)&v8 setupUIForTraitCollection:v4];
-  v5 = [v4 verticalSizeClass];
+  collectionCopy = collection;
+  [(MainViewController *)&v8 setupUIForTraitCollection:collectionCopy];
+  verticalSizeClass = [collectionCopy verticalSizeClass];
 
-  if (v5 == 1)
+  if (verticalSizeClass == 1)
   {
     [objc_opt_class() dividedModeBackgroundColor];
   }
@@ -362,14 +362,14 @@
     +[UIColor whiteColor];
   }
   v6 = ;
-  v7 = [(InfiniteScrollViewController *)self scrollView];
-  [v7 setBackgroundColor:v6];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView setBackgroundColor:v6];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(MultiColumnMonthViewController *)self view];
-  [v3 bounds];
+  view = [(MultiColumnMonthViewController *)self view];
+  [view bounds];
   IsEmpty = CGRectIsEmpty(v6);
 
   if (!IsEmpty)
@@ -396,17 +396,17 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if ([(MultiColumnMonthViewController *)self isViewLoaded])
   {
-    v8 = [(MultiColumnMonthViewController *)self view];
-    v9 = [v8 window];
+    view = [(MultiColumnMonthViewController *)self view];
+    window = [view window];
 
-    if (v9)
+    if (window)
     {
       [(MainViewController *)self transitionToSizeWillStart];
       v13[0] = _NSConcreteStackBlock;
@@ -414,7 +414,7 @@
       v13[2] = sub_10012760C;
       v13[3] = &unk_10020F240;
       v13[4] = self;
-      [v7 animateAlongsideTransition:0 completion:v13];
+      [coordinatorCopy animateAlongsideTransition:0 completion:v13];
       BYTE3(self->_tempMaskForPocket) = 1;
       if ([(MultiColumnMonthViewController *)self _threeColumnsDisplayIsAllowed]&& (EKUIWidthForWindowSizeParadigm(), width > v10))
       {
@@ -442,16 +442,16 @@
   }
 }
 
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  if (v10)
+  animatedCopy = animated;
+  eventCopy = event;
+  contextCopy = context;
+  if (eventCopy)
   {
-    if (a5)
+    if (mode)
     {
-      [(MultiColumnMonthViewController *)self _showDetailsForEvent:v10 animated:v8 showMode:a5 context:v11];
+      [(MultiColumnMonthViewController *)self _showDetailsForEvent:eventCopy animated:animatedCopy showMode:mode context:contextCopy];
     }
   }
 
@@ -466,120 +466,120 @@
   }
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  objc_storeStrong((&self->_cancelEventDetailViewModeButton + 1), a3);
-  v5 = a3;
-  [v5 setWeekdayHeaderFillsHalfWidth:1];
-  [v5 setNeedsLayout];
+  objc_storeStrong((&self->_cancelEventDetailViewModeButton + 1), palette);
+  paletteCopy = palette;
+  [paletteCopy setWeekdayHeaderFillsHalfWidth:1];
+  [paletteCopy setNeedsLayout];
   v10.receiver = self;
   v10.super_class = MultiColumnMonthViewController;
-  [(CompactMonthViewController *)&v10 updatePalette:v5];
-  [v5 setTodayButtonVisible:1];
-  [v5 setDateStringVisible:1];
-  [v5 setFocusBannerPlacement:2];
-  [v5 setOpaqueBackground:0];
+  [(CompactMonthViewController *)&v10 updatePalette:paletteCopy];
+  [paletteCopy setTodayButtonVisible:1];
+  [paletteCopy setDateStringVisible:1];
+  [paletteCopy setFocusBannerPlacement:2];
+  [paletteCopy setOpaqueBackground:0];
   v6 = +[UIColor clearColor];
-  [v5 setBackgroundColor:v6];
+  [paletteCopy setBackgroundColor:v6];
 
-  [v5 sizeToFit];
-  [v5 frame];
+  [paletteCopy sizeToFit];
+  [paletteCopy frame];
   v8 = v7;
-  v9 = [v5 containingPalette];
+  containingPalette = [paletteCopy containingPalette];
 
-  [v9 setPreferredHeight:v8];
+  [containingPalette setPreferredHeight:v8];
 }
 
 - (void)updateNavigationBarDisplayedDateString
 {
-  v3 = [(MainViewController *)self model];
-  v4 = [v3 selectedDate];
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
 
-  if (v4)
+  if (selectedDate)
   {
-    if (!*&self->_hasSetInitialSelectedDate || (v5 = [v4 month], v5 != objc_msgSend(*&self->_hasSetInitialSelectedDate, "month")) || (v6 = objc_msgSend(v4, "year"), v6 != objc_msgSend(*&self->_hasSetInitialSelectedDate, "year")))
+    if (!*&self->_hasSetInitialSelectedDate || (v5 = [selectedDate month], v5 != objc_msgSend(*&self->_hasSetInitialSelectedDate, "month")) || (v6 = objc_msgSend(selectedDate, "year"), v6 != objc_msgSend(*&self->_hasSetInitialSelectedDate, "year")))
     {
-      v7 = [(MultiColumnMonthViewController *)self navigationController];
-      v8 = [v7 topMainViewControllerContainer];
-      v9 = [v8 currentChildViewController];
+      navigationController = [(MultiColumnMonthViewController *)self navigationController];
+      topMainViewControllerContainer = [navigationController topMainViewControllerContainer];
+      currentChildViewController = [topMainViewControllerContainer currentChildViewController];
 
-      if (v9 == self)
+      if (currentChildViewController == self)
       {
-        v10 = [(MultiColumnMonthViewController *)self navigationController];
-        [v10 setNavBarStringFromDate:v4 includeMonth:1 includeYear:1];
+        navigationController2 = [(MultiColumnMonthViewController *)self navigationController];
+        [navigationController2 setNavBarStringFromDate:selectedDate includeMonth:1 includeYear:1];
       }
     }
   }
 
   v11 = *&self->_hasSetInitialSelectedDate;
-  *&self->_hasSetInitialSelectedDate = v4;
+  *&self->_hasSetInitialSelectedDate = selectedDate;
 }
 
 - (id)preferredPreSizeClassTransitionSelectedDate
 {
-  v3 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+  selectedDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
 
-  if (v3)
+  if (selectedDate)
   {
-    v4 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    selectedDate2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MultiColumnMonthViewController;
-    v4 = [(MonthViewController *)&v6 preferredPreSizeClassTransitionSelectedDate];
+    selectedDate2 = [(MonthViewController *)&v6 preferredPreSizeClassTransitionSelectedDate];
   }
 
-  return v4;
+  return selectedDate2;
 }
 
 - (BOOL)_monthWeekViewsUseVerticalCompression
 {
-  v2 = [(MultiColumnMonthViewController *)self ekui_futureTraitCollection];
-  v3 = [v2 verticalSizeClass] == 1;
+  ekui_futureTraitCollection = [(MultiColumnMonthViewController *)self ekui_futureTraitCollection];
+  v3 = [ekui_futureTraitCollection verticalSizeClass] == 1;
 
   return v3;
 }
 
-- (id)createInitialViewForDate:(id)a3
+- (id)createInitialViewForDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if ([v4 day] != 1)
+  dateCopy = date;
+  v5 = dateCopy;
+  if ([dateCopy day] != 1)
   {
-    v5 = [v4 calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
+    v5 = [dateCopy calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
   }
 
-  v6 = [(InfiniteScrollViewController *)self dequeueReusableView];
-  if (v6)
+  dequeueReusableView = [(InfiniteScrollViewController *)self dequeueReusableView];
+  if (dequeueReusableView)
   {
-    v7 = v6;
-    [(CompactMonthWeekView *)v6 setCompressedVerticalMode:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
+    v7 = dequeueReusableView;
+    [(CompactMonthWeekView *)dequeueReusableView setCompressedVerticalMode:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
     [(CompactMonthWeekView *)v7 setCalendarDate:v5];
   }
 
   else
   {
-    v8 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-    v7 = [[CompactMonthWeekView alloc] initWithCalendarDate:v5 calendar:v8 compressed:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
+    calendar = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+    v7 = [[CompactMonthWeekView alloc] initWithCalendarDate:v5 calendar:calendar compressed:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
   }
 
   [(CompactMonthWeekView *)v7 setUseLayoutMargins:1];
   if (!*(&self->_pressedMonthView + 1))
   {
-    v9 = [(CompactMonthWeekView *)v7 calendarDate];
-    [v9 absoluteTime];
+    calendarDate = [(CompactMonthWeekView *)v7 calendarDate];
+    [calendarDate absoluteTime];
     v11 = v10;
-    v12 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    [v12 absoluteTime];
+    selectedDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    [selectedDate absoluteTime];
     if (v11 <= v13)
     {
-      v14 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-      [v14 absoluteTime];
+      selectedDate2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+      [selectedDate2 absoluteTime];
       v16 = v15;
-      v17 = [(CompactMonthWeekView *)v7 endCalendarDate];
-      [v17 absoluteTime];
+      endCalendarDate = [(CompactMonthWeekView *)v7 endCalendarDate];
+      [endCalendarDate absoluteTime];
       v19 = v18;
 
       if (v16 > v19)
@@ -587,8 +587,8 @@
         goto LABEL_12;
       }
 
-      v9 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-      [(MultiColumnMonthViewController *)self _setSelectedDay:v9 onMonthWeekView:v7 animated:0];
+      calendarDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+      [(MultiColumnMonthViewController *)self _setSelectedDay:calendarDate onMonthWeekView:v7 animated:0];
     }
 
     else
@@ -597,9 +597,9 @@
   }
 
 LABEL_12:
-  v20 = [(CompactMonthWeekView *)v7 calendarDate];
-  v21 = [(CompactMonthWeekView *)v7 endCalendarDate];
-  v22 = [(MultiColumnMonthViewController *)self _loadEventsForStartDate:v20 endDate:v21];
+  calendarDate2 = [(CompactMonthWeekView *)v7 calendarDate];
+  endCalendarDate2 = [(CompactMonthWeekView *)v7 endCalendarDate];
+  v22 = [(MultiColumnMonthViewController *)self _loadEventsForStartDate:calendarDate2 endDate:endCalendarDate2];
   [(CompactMonthWeekView *)v7 setEventData:v22];
 
   v23 = +[CUIKPreferences sharedPreferences];
@@ -608,36 +608,36 @@ LABEL_12:
   return v7;
 }
 
-- (id)newTopViewAboveViewWithCalendarDate:(id)a3
+- (id)newTopViewAboveViewWithCalendarDate:(id)date
 {
-  v4 = [(MonthViewController *)self calendarDateForSubviewAboveSubviewWithCalendarDate:a3];
-  v5 = [(InfiniteScrollViewController *)self dequeueReusableView];
-  if (v5)
+  v4 = [(MonthViewController *)self calendarDateForSubviewAboveSubviewWithCalendarDate:date];
+  dequeueReusableView = [(InfiniteScrollViewController *)self dequeueReusableView];
+  if (dequeueReusableView)
   {
-    v6 = v5;
-    [(CompactMonthWeekView *)v5 setCompressedVerticalMode:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
+    v6 = dequeueReusableView;
+    [(CompactMonthWeekView *)dequeueReusableView setCompressedVerticalMode:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
     [(CompactMonthWeekView *)v6 setCalendarDate:v4];
   }
 
   else
   {
-    v7 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-    v6 = [[CompactMonthWeekView alloc] initWithCalendarDate:v4 calendar:v7 compressed:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
+    calendar = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+    v6 = [[CompactMonthWeekView alloc] initWithCalendarDate:v4 calendar:calendar compressed:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
   }
 
   [(CompactMonthWeekView *)v6 setUseLayoutMargins:1];
-  v8 = [(CompactMonthWeekView *)v6 calendarDate];
-  v9 = [(CompactMonthWeekView *)v6 endCalendarDate];
-  v10 = [(MultiColumnMonthViewController *)self _loadEventsForStartDate:v8 endDate:v9];
+  calendarDate = [(CompactMonthWeekView *)v6 calendarDate];
+  endCalendarDate = [(CompactMonthWeekView *)v6 endCalendarDate];
+  v10 = [(MultiColumnMonthViewController *)self _loadEventsForStartDate:calendarDate endDate:endCalendarDate];
   [(CompactMonthWeekView *)v6 setEventData:v10 animated:[(MultiColumnMonthViewController *)self _shouldAnimateDots]];
 
   if (!*(&self->_pressedMonthView + 1))
   {
-    v11 = [(CompactMonthWeekView *)v6 calendarDate];
-    [v11 absoluteTime];
+    calendarDate2 = [(CompactMonthWeekView *)v6 calendarDate];
+    [calendarDate2 absoluteTime];
     v13 = v12;
-    v14 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    [v14 absoluteTime];
+    selectedDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    [selectedDate absoluteTime];
     if (v13 > v15)
     {
 
@@ -645,17 +645,17 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v16 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    [v16 absoluteTime];
+    selectedDate2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    [selectedDate2 absoluteTime];
     v18 = v17;
-    v19 = [(CompactMonthWeekView *)v6 endCalendarDate];
-    [v19 absoluteTime];
+    endCalendarDate2 = [(CompactMonthWeekView *)v6 endCalendarDate];
+    [endCalendarDate2 absoluteTime];
     v21 = v20;
 
     if (v18 <= v21)
     {
-      v11 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-      [(MultiColumnMonthViewController *)self _setSelectedDay:v11 onMonthWeekView:v6 animated:0];
+      calendarDate2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+      [(MultiColumnMonthViewController *)self _setSelectedDay:calendarDate2 onMonthWeekView:v6 animated:0];
       goto LABEL_9;
     }
   }
@@ -667,36 +667,36 @@ LABEL_10:
   return v6;
 }
 
-- (id)newBottomViewBelowViewWithCalendarDate:(id)a3
+- (id)newBottomViewBelowViewWithCalendarDate:(id)date
 {
-  v4 = [(MonthViewController *)self calendarDateForSubviewBelowSubviewWithCalendarDate:a3];
-  v5 = [(InfiniteScrollViewController *)self dequeueReusableView];
-  if (v5)
+  v4 = [(MonthViewController *)self calendarDateForSubviewBelowSubviewWithCalendarDate:date];
+  dequeueReusableView = [(InfiniteScrollViewController *)self dequeueReusableView];
+  if (dequeueReusableView)
   {
-    v6 = v5;
-    [(CompactMonthWeekView *)v5 setCompressedVerticalMode:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
+    v6 = dequeueReusableView;
+    [(CompactMonthWeekView *)dequeueReusableView setCompressedVerticalMode:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
     [(CompactMonthWeekView *)v6 setCalendarDate:v4];
   }
 
   else
   {
-    v7 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-    v6 = [[CompactMonthWeekView alloc] initWithCalendarDate:v4 calendar:v7 compressed:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
+    calendar = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+    v6 = [[CompactMonthWeekView alloc] initWithCalendarDate:v4 calendar:calendar compressed:[(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression]];
   }
 
   [(CompactMonthWeekView *)v6 setUseLayoutMargins:1];
-  v8 = [(CompactMonthWeekView *)v6 calendarDate];
-  v9 = [(CompactMonthWeekView *)v6 endCalendarDate];
-  v10 = [(MultiColumnMonthViewController *)self _loadEventsForStartDate:v8 endDate:v9];
+  calendarDate = [(CompactMonthWeekView *)v6 calendarDate];
+  endCalendarDate = [(CompactMonthWeekView *)v6 endCalendarDate];
+  v10 = [(MultiColumnMonthViewController *)self _loadEventsForStartDate:calendarDate endDate:endCalendarDate];
   [(CompactMonthWeekView *)v6 setEventData:v10 animated:[(MultiColumnMonthViewController *)self _shouldAnimateDots]];
 
   if (!*(&self->_pressedMonthView + 1))
   {
-    v11 = [(CompactMonthWeekView *)v6 calendarDate];
-    [v11 absoluteTime];
+    calendarDate2 = [(CompactMonthWeekView *)v6 calendarDate];
+    [calendarDate2 absoluteTime];
     v13 = v12;
-    v14 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    [v14 absoluteTime];
+    selectedDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    [selectedDate absoluteTime];
     if (v13 < v15)
     {
 
@@ -704,17 +704,17 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v16 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    [v16 absoluteTime];
+    selectedDate2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    [selectedDate2 absoluteTime];
     v18 = v17;
-    v19 = [(CompactMonthWeekView *)v6 endCalendarDate];
-    [v19 absoluteTime];
+    endCalendarDate2 = [(CompactMonthWeekView *)v6 endCalendarDate];
+    [endCalendarDate2 absoluteTime];
     v21 = v20;
 
     if (v18 <= v21)
     {
-      v11 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-      [(MultiColumnMonthViewController *)self _setSelectedDay:v11 onMonthWeekView:v6 animated:0];
+      calendarDate2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+      [(MultiColumnMonthViewController *)self _setSelectedDay:calendarDate2 onMonthWeekView:v6 animated:0];
       goto LABEL_9;
     }
   }
@@ -746,26 +746,26 @@ LABEL_10:
 
   if (BYTE5(self->_tempMaskForPocket) == 1)
   {
-    v4 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    v5 = [(InfiniteScrollViewController *)self subviewForDate:v4];
+    selectedDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    v5 = [(InfiniteScrollViewController *)self subviewForDate:selectedDate];
 
     if (v5 != *(&self->_pressedMonthView + 1))
     {
-      v6 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-      [(MultiColumnMonthViewController *)self _setSelectedDay:v6 onMonthWeekView:v5 animated:1];
+      selectedDate2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+      [(MultiColumnMonthViewController *)self _setSelectedDay:selectedDate2 onMonthWeekView:v5 animated:1];
     }
 
     [(MultiColumnMonthViewController *)self updateNavigationBarDisplayedDateString];
   }
 }
 
-- (void)willEndDraggingWithVelocity:(CGPoint)a3 targetContentOffset:(CGPoint *)a4
+- (void)willEndDraggingWithVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a3.y;
+  y = velocity.y;
   v70.receiver = self;
   v70.super_class = MultiColumnMonthViewController;
-  [(MonthViewController *)&v70 willEndDraggingWithVelocity:a3.x targetContentOffset:?];
-  v7 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+  [(MonthViewController *)&v70 willEndDraggingWithVelocity:velocity.x targetContentOffset:?];
+  selectedDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
   v8 = -y;
   if (y >= 0.0)
   {
@@ -774,20 +774,20 @@ LABEL_10:
 
   if (v8 <= 0.3)
   {
-    v33 = [(InfiniteScrollViewController *)self scrollView];
-    [v33 contentOffset];
+    scrollView = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView contentOffset];
     v35 = v34;
     v37 = v36;
 
-    v38 = [(InfiniteScrollViewController *)self scrollView];
-    [v38 frame];
+    scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView2 frame];
     v40 = v39;
 
-    v41 = [(InfiniteScrollViewController *)self scrollView];
-    [v41 safeAreaInsets];
+    scrollView3 = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView3 safeAreaInsets];
     v43 = v42;
-    v44 = [(InfiniteScrollViewController *)self scrollView];
-    [v44 safeAreaInsets];
+    scrollView4 = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView4 safeAreaInsets];
     v46 = v40 - (v43 + v45);
 
     v68 = 0;
@@ -795,21 +795,21 @@ LABEL_10:
     v48 = v47;
     v50 = v49;
     v32 = v68;
-    a4->x = v48;
-    a4->y = v50;
-    v9 = v7;
+    offset->x = v48;
+    offset->y = v50;
+    firstView = selectedDate;
   }
 
   else
   {
-    v9 = *(&self->_pressedMonthView + 1);
-    if (!v9)
+    firstView = *(&self->_pressedMonthView + 1);
+    if (!firstView)
     {
-      v9 = [(InfiniteScrollViewController *)self firstView];
+      firstView = [(InfiniteScrollViewController *)self firstView];
     }
 
-    v10 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    v11 = v10;
+    selectedDate2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    v11 = selectedDate2;
     if (y > 0.0)
     {
       v12 = 1;
@@ -820,18 +820,18 @@ LABEL_10:
       v12 = -1;
     }
 
-    v13 = [v10 calendarDateByAddingMonths:v12];
-    v14 = [v13 calendarDateForMonth];
+    v13 = [selectedDate2 calendarDateByAddingMonths:v12];
+    calendarDateForMonth = [v13 calendarDateForMonth];
 
-    v15 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-    v16 = [v9 calendarDate];
-    v17 = [v16 date];
-    v18 = [v14 date];
-    v19 = [v15 components:0x2000 fromDate:v17 toDate:v18 options:0];
+    calendar = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+    calendarDate = [firstView calendarDate];
+    date = [calendarDate date];
+    date2 = [calendarDateForMonth date];
+    v19 = [calendar components:0x2000 fromDate:date toDate:date2 options:0];
 
-    [v9 frame];
+    [firstView frame];
     v21 = v20;
-    [v9 frame];
+    [firstView frame];
     v23 = v22;
     v24 = y <= 0.0;
     v26 = v25 + [v19 weekOfYear] * v21;
@@ -841,25 +841,25 @@ LABEL_10:
       v26 = v26 - v27;
     }
 
-    v69 = v14;
+    v69 = calendarDateForMonth;
     [(InfiniteScrollViewController *)self nearestMajorBoundaryForPoint:&v69 date:v23, v26];
     v29 = v28;
     v31 = v30;
     v32 = v69;
 
-    a4->x = v29;
-    a4->y = v31;
+    offset->x = v29;
+    offset->y = v31;
   }
 
-  v51 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-  v52 = [v51 month];
-  if (v52 == [v32 month])
+  selectedDate3 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+  month = [selectedDate3 month];
+  if (month == [v32 month])
   {
-    v53 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    v54 = [v53 year];
-    v55 = [v32 year];
+    selectedDate4 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    year = [selectedDate4 year];
+    year2 = [v32 year];
 
-    if (v54 == v55)
+    if (year == year2)
     {
       v56 = v32;
       goto LABEL_25;
@@ -871,35 +871,35 @@ LABEL_10:
   }
 
   v57 = CUIKTodayDate();
-  v58 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-  v59 = [v58 timeZone];
-  v60 = [EKCalendarDate calendarDateWithDate:v57 timeZone:v59];
+  calendar2 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+  timeZone = [calendar2 timeZone];
+  v60 = [EKCalendarDate calendarDateWithDate:v57 timeZone:timeZone];
 
-  v61 = [v60 month];
-  if (v61 == [v32 month] && (v62 = objc_msgSend(v60, "year"), v62 == objc_msgSend(v32, "year")))
+  month2 = [v60 month];
+  if (month2 == [v32 month] && (v62 = objc_msgSend(v60, "year"), v62 == objc_msgSend(v32, "year")))
   {
-    v63 = v60;
+    calendarDateForMonth2 = v60;
   }
 
   else
   {
-    v63 = [v32 calendarDateForMonth];
+    calendarDateForMonth2 = [v32 calendarDateForMonth];
   }
 
-  v56 = v63;
+  v56 = calendarDateForMonth2;
 
   BYTE3(self->_navigationBarDisplayedDate) = 1;
-  v64 = [(MainViewController *)self model];
-  [v64 setSelectedDate:v56];
+  model = [(MainViewController *)self model];
+  [model setSelectedDate:v56];
 
   BYTE3(self->_navigationBarDisplayedDate) = 0;
   if (BYTE5(self->_tempMaskForPocket) == 1)
   {
-    v65 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    v66 = [(InfiniteScrollViewController *)self subviewForDate:v65];
+    selectedDate5 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    v66 = [(InfiniteScrollViewController *)self subviewForDate:selectedDate5];
 
-    v67 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-    [(MultiColumnMonthViewController *)self _setSelectedDay:v67 onMonthWeekView:v66 animated:1];
+    selectedDate6 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+    [(MultiColumnMonthViewController *)self _setSelectedDay:selectedDate6 onMonthWeekView:v66 animated:1];
 
     [(MultiColumnMonthViewController *)self updateNavigationBarDisplayedDateString];
   }
@@ -916,69 +916,69 @@ LABEL_25:
   self->_shouldSetSelectedDate = 0;
 }
 
-- (void)showDate:(id)a3 animated:(BOOL)a4
+- (void)showDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  [(MultiColumnMonthViewController *)self showDate:a3 animated:a4 completionBlock:0];
+  animatedCopy = animated;
+  [(MultiColumnMonthViewController *)self showDate:date animated:animated completionBlock:0];
 
-  [(MultiColumnMonthViewController *)self _scrollListToNewSelectedDateAnimated:v4];
+  [(MultiColumnMonthViewController *)self _scrollListToNewSelectedDateAnimated:animatedCopy];
 }
 
-- (void)showDate:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)showDate:(id)date animated:(BOOL)animated completionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MainViewController *)self model];
-  v11 = [v10 calendar];
-  v12 = [v11 timeZone];
-  v13 = [EKCalendarDate calendarDateWithDate:v9 timeZone:v12];
+  animatedCopy = animated;
+  blockCopy = block;
+  dateCopy = date;
+  model = [(MainViewController *)self model];
+  calendar = [model calendar];
+  timeZone = [calendar timeZone];
+  v13 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:timeZone];
 
-  v14 = [v13 calendarDateForMonth];
+  calendarDateForMonth = [v13 calendarDateForMonth];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100128920;
   v19[3] = &unk_10020F308;
   v19[4] = self;
-  v20 = v8;
-  v15 = v8;
+  v20 = blockCopy;
+  v15 = blockCopy;
   v16 = objc_retainBlock(v19);
-  v17 = [v14 date];
+  date = [calendarDateForMonth date];
   v18.receiver = self;
   v18.super_class = MultiColumnMonthViewController;
-  [(InfiniteScrollViewController *)&v18 showDate:v17 animated:v5 completionBlock:v16];
+  [(InfiniteScrollViewController *)&v18 showDate:date animated:animatedCopy completionBlock:v16];
 }
 
 - (void)infiniteScrollViewSafeAreasDidChange
 {
-  v3 = [(InfiniteScrollViewController *)self scrollView];
-  v4 = [(InfiniteScrollViewController *)self scrollView];
-  v5 = [v4 layer];
-  [v3 layoutSublayersOfLayer:v5];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  layer = [scrollView2 layer];
+  [scrollView layoutSublayersOfLayer:layer];
 
-  v6 = [(MultiColumnMonthViewController *)self view];
-  [v6 setNeedsLayout];
+  view = [(MultiColumnMonthViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)_tapGestureCallback:(id)a3
+- (void)_tapGestureCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_100128BF8;
   v18 = sub_100128C08;
   v19 = 0;
-  v5 = [v4 view];
-  v6 = [v5 subviews];
+  view = [callbackCopy view];
+  subviews = [view subviews];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100128C10;
   v11 = &unk_100210170;
-  v7 = v4;
+  v7 = callbackCopy;
   v12 = v7;
   v13 = &v14;
-  [v6 enumerateObjectsUsingBlock:&v8];
+  [subviews enumerateObjectsUsingBlock:&v8];
 
   [(MultiColumnMonthViewController *)self monthView:v15[5] gestureBegan:v7, v8, v9, v10, v11];
   [(MultiColumnMonthViewController *)self monthView:v15[5] gestureEnded:v7];
@@ -986,30 +986,30 @@ LABEL_25:
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)_scrubGestureCallback:(id)a3
+- (void)_scrubGestureCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_100128BF8;
   v19 = sub_100128C08;
   v20 = 0;
-  v5 = [v4 view];
-  v6 = [v5 subviews];
+  view = [callbackCopy view];
+  subviews = [view subviews];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100128E98;
   v12 = &unk_100210170;
-  v7 = v4;
+  v7 = callbackCopy;
   v13 = v7;
   v14 = &v15;
-  [v6 enumerateObjectsUsingBlock:&v9];
+  [subviews enumerateObjectsUsingBlock:&v9];
 
-  v8 = [v7 state];
-  if (v8 > 3)
+  state = [v7 state];
+  if (state > 3)
   {
-    if ((v8 - 4) < 2)
+    if ((state - 4) < 2)
     {
       [(MultiColumnMonthViewController *)self monthView:v16[5] gestureCancelled:v7];
     }
@@ -1017,7 +1017,7 @@ LABEL_25:
 
   else
   {
-    switch(v8)
+    switch(state)
     {
       case 1:
         [(MultiColumnMonthViewController *)self monthView:v16[5] gestureBegan:v7];
@@ -1034,14 +1034,14 @@ LABEL_25:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_scrollListToNewSelectedDateAnimated:(BOOL)a3
+- (void)_scrollListToNewSelectedDateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   BYTE3(self->_navigationBarDisplayedDate) = 1;
   v5 = *(&self->_singleDayListViewController + 1);
-  v6 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-  v7 = [v6 date];
-  [v5 scrollToDate:v7 animated:v3];
+  selectedDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+  date = [selectedDate date];
+  [v5 scrollToDate:date animated:animatedCopy];
 
   v8 = dispatch_time(0, 2000000000);
   block[0] = _NSConcreteStackBlock;
@@ -1052,17 +1052,17 @@ LABEL_25:
   dispatch_after(v8, &_dispatch_main_q, block);
 }
 
-- (id)_viewFromGesture:(id)a3
+- (id)_viewFromGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_100128BF8;
   v17 = sub_100128C08;
   v18 = 0;
-  v5 = [(InfiniteScrollViewController *)self scrollView];
-  [v4 locationInView:v5];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [gestureCopy locationInView:scrollView];
   v7 = v6;
   v9 = v8;
 
@@ -1081,33 +1081,33 @@ LABEL_25:
   return v10;
 }
 
-- (void)monthView:(id)a3 gestureBegan:(id)a4
+- (void)monthView:(id)view gestureBegan:(id)began
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(InfiniteScrollViewController *)self scrollView];
-  v8 = [v7 isDecelerating];
+  viewCopy = view;
+  beganCopy = began;
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  isDecelerating = [scrollView isDecelerating];
 
-  if ((v8 & 1) == 0)
+  if ((isDecelerating & 1) == 0)
   {
-    v9 = [(MultiColumnMonthViewController *)self _dayInMonth:v16 fromGesture:v6];
+    v9 = [(MultiColumnMonthViewController *)self _dayInMonth:viewCopy fromGesture:beganCopy];
     if (v9)
     {
-      if (*(&self->_pressHighlight + 1) != v16 || [v9 compare:*(&self->super._applicationResuming + 1)])
+      if (*(&self->_pressHighlight + 1) != viewCopy || [v9 compare:*(&self->super._applicationResuming + 1)])
       {
-        [(MultiColumnMonthViewController *)self _createMonthHighlightForMonthView:v16 day:v9];
+        [(MultiColumnMonthViewController *)self _createMonthHighlightForMonthView:viewCopy day:v9];
         [*(&self->_pressedDay + 1) setPressed:1];
       }
 
-      v10 = [(InfiniteScrollViewController *)self scrollView];
-      [v10 setScrollEnabled:0];
+      scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+      [scrollView2 setScrollEnabled:0];
 
       [(CUIKCalendarModel *)self->super.super.super.super._model setSelectedDate:v9];
       [(MultiColumnMonthViewController *)self _scrollListToNewSelectedDateAnimated:0];
       v11 = CUIKTodayDate();
-      v12 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-      v13 = [v12 timeZone];
-      v14 = [EKCalendarDate calendarDateWithDate:v11 timeZone:v13];
+      calendar = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+      timeZone = [calendar timeZone];
+      v14 = [EKCalendarDate calendarDateWithDate:v11 timeZone:timeZone];
       v15 = [(InfiniteScrollViewController *)self subviewForDate:v14];
 
       if (v15)
@@ -1118,23 +1118,23 @@ LABEL_25:
   }
 }
 
-- (void)monthView:(id)a3 gestureChanged:(id)a4
+- (void)monthView:(id)view gestureChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(InfiniteScrollViewController *)self scrollView];
-  v9 = [v8 isDecelerating];
+  viewCopy = view;
+  changedCopy = changed;
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  isDecelerating = [scrollView isDecelerating];
 
-  if (v9)
+  if (isDecelerating)
   {
-    v13 = v6;
+    v13 = viewCopy;
   }
 
   else
   {
-    v13 = [(MultiColumnMonthViewController *)self _viewFromGesture:v7];
+    v13 = [(MultiColumnMonthViewController *)self _viewFromGesture:changedCopy];
 
-    v10 = [(MultiColumnMonthViewController *)self _dayInMonth:v13 fromGesture:v7];
+    v10 = [(MultiColumnMonthViewController *)self _dayInMonth:v13 fromGesture:changedCopy];
     v11 = v13 == *(&self->_pressHighlight + 1) && [*(&self->super._applicationResuming + 1) compare:v10] == 0;
     if (v11 != [*(&self->_pressedDay + 1) isSelected])
     {
@@ -1162,30 +1162,30 @@ LABEL_25:
   }
 }
 
-- (void)monthView:(id)a3 gestureEnded:(id)a4
+- (void)monthView:(id)view gestureEnded:(id)ended
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(InfiniteScrollViewController *)self scrollView];
-  v9 = [v8 isDecelerating];
+  viewCopy = view;
+  endedCopy = ended;
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  isDecelerating = [scrollView isDecelerating];
 
-  if ((v9 & 1) == 0)
+  if ((isDecelerating & 1) == 0)
   {
-    v10 = [(MultiColumnMonthViewController *)self _viewFromGesture:v7];
+    v10 = [(MultiColumnMonthViewController *)self _viewFromGesture:endedCopy];
 
-    v11 = [(MultiColumnMonthViewController *)self _dayInMonth:v10 fromGesture:v7];
+    v11 = [(MultiColumnMonthViewController *)self _dayInMonth:v10 fromGesture:endedCopy];
     v12 = v11;
     if (v10 != *(&self->_pressHighlight + 1) || v11 == 0)
     {
-      v14 = [(InfiniteScrollViewController *)self scrollView];
-      [v14 setScrollEnabled:1];
+      scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+      [scrollView2 setScrollEnabled:1];
     }
 
     else
     {
       v15 = [v11 compare:*(&self->super._applicationResuming + 1)];
-      v16 = [(InfiniteScrollViewController *)self scrollView];
-      [v16 setScrollEnabled:1];
+      scrollView3 = [(InfiniteScrollViewController *)self scrollView];
+      [scrollView3 setScrollEnabled:1];
 
       if (!v15)
       {
@@ -1210,39 +1210,39 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = v6;
+  v10 = viewCopy;
 LABEL_12:
 }
 
-- (void)monthView:(id)a3 gestureCancelled:(id)a4
+- (void)monthView:(id)view gestureCancelled:(id)cancelled
 {
-  v5 = [(InfiniteScrollViewController *)self scrollView:a3];
+  v5 = [(InfiniteScrollViewController *)self scrollView:view];
   [v5 setScrollEnabled:1];
 
   [(MultiColumnMonthViewController *)self _removeMonthHighlight];
 }
 
-- (id)_dayInMonth:(id)a3 fromGesture:(id)a4
+- (id)_dayInMonth:(id)month fromGesture:(id)gesture
 {
-  v5 = a3;
-  [a4 locationInView:v5];
-  v6 = [v5 dayForPoint:?];
+  monthCopy = month;
+  [gesture locationInView:monthCopy];
+  v6 = [monthCopy dayForPoint:?];
 
   return v6;
 }
 
-- (void)_createMonthHighlightForMonthView:(id)a3 day:(id)a4
+- (void)_createMonthHighlightForMonthView:(id)view day:(id)day
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  dayCopy = day;
   [(MultiColumnMonthViewController *)self _removeMonthHighlight];
   v8 = *(&self->super._applicationResuming + 1);
-  *(&self->super._applicationResuming + 1) = v7;
-  v11 = v7;
+  *(&self->super._applicationResuming + 1) = dayCopy;
+  v11 = dayCopy;
 
   v9 = *(&self->_pressHighlight + 1);
-  *(&self->_pressHighlight + 1) = v6;
-  v10 = v6;
+  *(&self->_pressHighlight + 1) = viewCopy;
+  v10 = viewCopy;
 
   [(MultiColumnMonthViewController *)self _setSelectedDay:v11 onMonthWeekView:v10 animated:0];
 }
@@ -1274,39 +1274,39 @@ LABEL_12:
   [UIView animateWithDuration:v10 animations:v8 completion:0.2];
 }
 
-- (void)_setSelectedDay:(id)a3
+- (void)_setSelectedDay:(id)day
 {
-  v4 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-  v6 = [(InfiniteScrollViewController *)self subviewForDate:v4];
+  selectedDate = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+  v6 = [(InfiniteScrollViewController *)self subviewForDate:selectedDate];
 
-  v5 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
-  [(MultiColumnMonthViewController *)self _setSelectedDay:v5 onMonthWeekView:v6 animated:0];
+  selectedDate2 = [(CUIKCalendarModel *)self->super.super.super.super._model selectedDate];
+  [(MultiColumnMonthViewController *)self _setSelectedDay:selectedDate2 onMonthWeekView:v6 animated:0];
 }
 
-- (void)_setSelectedDay:(id)a3 onMonthWeekView:(id)a4 animated:(BOOL)a5
+- (void)_setSelectedDay:(id)day onMonthWeekView:(id)view animated:(BOOL)animated
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  dayCopy = day;
+  viewCopy = view;
   v9 = *(&self->_pressedMonthView + 1);
-  if (v9 != v8)
+  if (v9 != viewCopy)
   {
     [v9 setSelectedDay:0 animated:0];
     v10 = *(&self->_pressedMonthView + 1);
     *(&self->_pressedMonthView + 1) = 0;
   }
 
-  if (v11 && v8)
+  if (dayCopy && viewCopy)
   {
-    [v8 setSelectedDay:v11 animated:v5];
-    objc_storeStrong((&self->_pressedMonthView + 1), a4);
+    [viewCopy setSelectedDay:dayCopy animated:animatedCopy];
+    objc_storeStrong((&self->_pressedMonthView + 1), view);
   }
 }
 
 - (double)_listviewColumnCollapsedWidth
 {
-  v2 = [(MultiColumnMonthViewController *)self view];
-  [v2 bounds];
+  view = [(MultiColumnMonthViewController *)self view];
+  [view bounds];
   CGRectGetWidth(v6);
   EKUIGoldenRatioColumnWidthMinor();
   v4 = v3;
@@ -1314,7 +1314,7 @@ LABEL_12:
   return v4;
 }
 
-- (void)_cachedOccurrencesChanged:(id)a3
+- (void)_cachedOccurrencesChanged:(id)changed
 {
   if (BYTE5(self->_tempMaskForPocket) == 1)
   {
@@ -1327,17 +1327,17 @@ LABEL_12:
   }
 }
 
-- (void)_occurrencesChanged:(id)a3
+- (void)_occurrencesChanged:(id)changed
 {
   if (BYTE5(self->_tempMaskForPocket))
   {
-    v4 = a3;
-    v5 = [v4 userInfo];
-    v8 = [v5 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeStartKey];
+    changedCopy = changed;
+    userInfo = [changedCopy userInfo];
+    v8 = [userInfo objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeStartKey];
 
-    v6 = [v4 userInfo];
+    userInfo2 = [changedCopy userInfo];
 
-    v7 = [v6 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeEndKey];
+    v7 = [userInfo2 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeEndKey];
 
     [(MultiColumnMonthViewController *)self _loadEventsForViewsInRangeStartingAt:v8 endingAt:v7];
   }
@@ -1348,10 +1348,10 @@ LABEL_12:
   }
 }
 
-- (void)_loadEventsForViewsInRangeStartingAt:(id)a3 endingAt:(id)a4
+- (void)_loadEventsForViewsInRangeStartingAt:(id)at endingAt:(id)endingAt
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  endingAtCopy = endingAt;
   if ((HIBYTE(self->_tempMaskForPocket) & 1) == 0)
   {
     [(MultiColumnMonthViewController *)self _scrollViewVerticalVelocity];
@@ -1367,9 +1367,9 @@ LABEL_12:
 
     else
     {
-      [v6 timeIntervalSinceReferenceDate];
+      [atCopy timeIntervalSinceReferenceDate];
       v10 = v9;
-      [v7 timeIntervalSinceReferenceDate];
+      [endingAtCopy timeIntervalSinceReferenceDate];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100129EA8;
@@ -1403,8 +1403,8 @@ LABEL_12:
       v6[4] = self;
       [(InfiniteScrollViewController *)self enumerateScrollViewSubviews:v6];
       [(MultiColumnMonthViewController *)self _refreshListView];
-      v5 = [(MainViewController *)self model];
-      [v5 startNotificationMonitor];
+      model = [(MainViewController *)self model];
+      [model startNotificationMonitor];
 
       return;
     }
@@ -1418,10 +1418,10 @@ LABEL_12:
   *(&self->super.super.super.super.super.super.super.isa + v4) = 1;
 }
 
-- (id)_loadEventsForStartDate:(id)a3 endDate:(id)a4
+- (id)_loadEventsForStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   if ((HIBYTE(self->_tempMaskForPocket) & 1) == 0)
   {
     [(MultiColumnMonthViewController *)self _scrollViewVerticalVelocity];
@@ -1437,30 +1437,30 @@ LABEL_12:
       goto LABEL_43;
     }
 
-    v10 = [v6 calendarDateForDay];
+    calendarDateForDay = [dateCopy calendarDateForDay];
 
-    v11 = [v7 calendarDateForEndOfDay];
+    calendarDateForEndOfDay = [endDateCopy calendarDateForEndOfDay];
 
-    v93 = self;
-    v95 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-    v12 = [v95 timeZone];
-    [v10 absoluteTime];
+    selfCopy = self;
+    calendar = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+    timeZone = [calendar timeZone];
+    [calendarDateForDay absoluteTime];
     v14 = v13;
-    [v11 absoluteTime];
+    [calendarDateForEndOfDay absoluteTime];
     v16 = v15;
-    v17 = [v10 date];
-    v18 = [v11 date];
+    date = [calendarDateForDay date];
+    date2 = [calendarDateForEndOfDay date];
     v101 = 0;
     v102 = 0;
     CalEventOccurrenceCacheCopyBoundsForTimeZone();
-    if (v12)
+    if (timeZone)
     {
-      CFRelease(v12);
+      CFRelease(timeZone);
     }
 
     v20 = v101;
     v19 = v102;
-    v21 = [v11 differenceInDays:v10];
+    v21 = [calendarDateForEndOfDay differenceInDays:calendarDateForDay];
     v22 = (v21 + 1);
     v23 = [NSMutableArray arrayWithCapacity:v21 + 1];
     if ((v21 & 0x8000000000000000) == 0)
@@ -1476,24 +1476,24 @@ LABEL_12:
       while (v22);
     }
 
-    v90 = v17;
-    v91 = v11;
+    v90 = date;
+    v91 = calendarDateForEndOfDay;
     v88 = v101;
     v89 = v102;
-    if ([v17 compare:v102] == 1 && objc_msgSend(v18, "compare:", v101) == -1)
+    if ([date compare:v102] == 1 && objc_msgSend(date2, "compare:", v101) == -1)
     {
-      v53 = v93;
-      if (([(CUIKCalendarModel *)v93->super.super.super.super._model cachedOccurrencesAreLoaded]& 1) == 0)
+      v53 = selfCopy;
+      if (([(CUIKCalendarModel *)selfCopy->super.super.super.super._model cachedOccurrencesAreLoaded]& 1) == 0)
       {
-        if ((BYTE4(v93->_tempMaskForPocket) & 1) == 0)
+        if ((BYTE4(selfCopy->_tempMaskForPocket) & 1) == 0)
         {
-          BYTE4(v93->_tempMaskForPocket) = 1;
+          BYTE4(selfCopy->_tempMaskForPocket) = 1;
           v62 = dispatch_get_global_queue(0, 0);
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_10012A9C8;
           block[3] = &unk_10020EB00;
-          block[4] = v93;
+          block[4] = selfCopy;
           dispatch_async(v62, block);
         }
 
@@ -1501,14 +1501,14 @@ LABEL_12:
         goto LABEL_41;
       }
 
-      v54 = [(CUIKCalendarModel *)v93->super.super.super.super._model sectionForCachedOccurrencesOnDate:v17];
-      v55 = [(CUIKCalendarModel *)v93->super.super.super.super._model sectionForCachedOccurrencesOnDate:v18];
-      v56 = [(CUIKCalendarModel *)v93->super.super.super.super._model dateForCachedOccurrencesInSection:v54];
+      v54 = [(CUIKCalendarModel *)selfCopy->super.super.super.super._model sectionForCachedOccurrencesOnDate:date];
+      v55 = [(CUIKCalendarModel *)selfCopy->super.super.super.super._model sectionForCachedOccurrencesOnDate:date2];
+      v56 = [(CUIKCalendarModel *)selfCopy->super.super.super.super._model dateForCachedOccurrencesInSection:v54];
       [v56 timeIntervalSinceReferenceDate];
       v58 = v57;
 
       v84 = v55;
-      v59 = [(CUIKCalendarModel *)v93->super.super.super.super._model dateForCachedOccurrencesInSection:v55];
+      v59 = [(CUIKCalendarModel *)selfCopy->super.super.super.super._model dateForCachedOccurrencesInSection:v55];
       [v59 timeIntervalSinceReferenceDate];
       v61 = v60;
 
@@ -1527,7 +1527,7 @@ LABEL_12:
 
       if (v54 <= v84)
       {
-        v86 = v18;
+        v86 = date2;
         do
         {
           v63 = [(CUIKCalendarModel *)v53->super.super.super.super._model numberOfCachedOccurrencesInSection:v54];
@@ -1536,33 +1536,33 @@ LABEL_12:
             v64 = v63;
             v92 = [(CUIKCalendarModel *)v53->super.super.super.super._model cachedSpecialDayDataForSection:v54];
             v87 = [(CUIKCalendarModel *)v53->super.super.super.super._model dateForCachedOccurrencesInSection:v54];
-            v65 = [v95 components:30 fromDate:?];
-            v66 = [v65 month];
-            if (v66 == [v10 month])
+            v65 = [calendar components:30 fromDate:?];
+            month = [v65 month];
+            if (month == [calendarDateForDay month])
             {
               v67 = [v65 day];
-              v68 = v67 - [v10 day];
+              v68 = v67 - [calendarDateForDay day];
               if (v68 >= 0 && v68 < [v23 count])
               {
                 v82 = v68;
                 v83 = v65;
                 if (v92)
                 {
-                  v69 = [v92 dayType];
+                  dayType = [v92 dayType];
                 }
 
                 else
                 {
-                  v69 = 0;
+                  dayType = 0;
                 }
 
-                v70 = [CompactMonthWeekDayData dayDataWithEventCount:v64 dayType:v69];
-                v71 = [v92 color];
-                [v70 setDayTypeBadgeColor:v71];
+                v70 = [CompactMonthWeekDayData dayDataWithEventCount:v64 dayType:dayType];
+                color = [v92 color];
+                [v70 setDayTypeBadgeColor:color];
 
-                v72 = [v92 locale];
+                locale = [v92 locale];
                 v81 = v70;
-                [v70 setDayTypeBadgeLocale:v72];
+                [v70 setDayTypeBadgeLocale:locale];
 
                 v73 = [(CUIKCalendarModel *)v53->super.super.super.super._model cachedOccurrencesForSection:v54];
                 v74 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v73 count]);
@@ -1598,8 +1598,8 @@ LABEL_12:
                 [v81 setEventSummaryData:v74];
                 [v23 setObject:v81 atIndexedSubscript:v82];
 
-                v18 = v86;
-                v53 = v93;
+                date2 = v86;
+                v53 = selfCopy;
                 v65 = v83;
               }
             }
@@ -1614,34 +1614,34 @@ LABEL_12:
 
     else
     {
-      v85 = v18;
-      v25 = [(CUIKCalendarModel *)v93->super.super.super.super._model occurrencesForStartDate:v17 endDate:v18 preSorted:1 waitForLoad:0];
-      v26 = [v25 occurrences];
+      v85 = date2;
+      v25 = [(CUIKCalendarModel *)selfCopy->super.super.super.super._model occurrencesForStartDate:date endDate:date2 preSorted:1 waitForLoad:0];
+      occurrences = [v25 occurrences];
 
-      v27 = [v26 count];
+      v27 = [occurrences count];
       if (v27 >= 1)
       {
         v28 = v27;
         v29 = 0;
-        v94 = v26;
+        v94 = occurrences;
         do
         {
-          v30 = [v26 objectAtIndex:v29];
-          v31 = [v30 startDate];
-          [v31 timeIntervalSinceReferenceDate];
+          v30 = [occurrences objectAtIndex:v29];
+          startDate = [v30 startDate];
+          [startDate timeIntervalSinceReferenceDate];
           v33 = v32;
 
-          v34 = [v30 endDate];
-          [v34 timeIntervalSinceReferenceDate];
+          endDate = [v30 endDate];
+          [endDate timeIntervalSinceReferenceDate];
           v36 = v35;
 
-          v37 = [v30 endCalendarDate];
-          v38 = [v37 allComponents];
+          endCalendarDate = [v30 endCalendarDate];
+          allComponents = [endCalendarDate allComponents];
 
-          if (![v38 hour] && !objc_msgSend(v38, "minute"))
+          if (![allComponents hour] && !objc_msgSend(allComponents, "minute"))
           {
-            v39 = [v38 second];
-            v40 = v33 != v36 && v39 == 0;
+            second = [allComponents second];
+            v40 = v33 != v36 && second == 0;
             if (v40)
             {
               v36 = v36 + -1.0;
@@ -1650,7 +1650,7 @@ LABEL_12:
 
           if (v33 > v16 || v36 < v14)
           {
-            v47 = v38;
+            v47 = allComponents;
           }
 
           else
@@ -1677,17 +1677,17 @@ LABEL_12:
             }
 
             v44 = [NSDate dateWithTimeIntervalSinceReferenceDate:v42];
-            v45 = [v95 components:30 fromDate:v44];
+            v45 = [calendar components:30 fromDate:v44];
 
             v46 = [NSDate dateWithTimeIntervalSinceReferenceDate:v43];
-            v47 = [v95 components:30 fromDate:v46];
+            v47 = [calendar components:30 fromDate:v46];
 
             v48 = [v45 day];
             if (v48 <= [v47 day])
             {
               do
               {
-                v49 = v48 - [v10 day];
+                v49 = v48 - [calendarDateForDay day];
                 if (v49 >= 0 && v49 < [v23 count])
                 {
                   v50 = [v23 objectAtIndex:v49];
@@ -1706,7 +1706,7 @@ LABEL_12:
             }
 
             v28 = v41;
-            v26 = v94;
+            occurrences = v94;
           }
 
           ++v29;
@@ -1715,12 +1715,12 @@ LABEL_12:
         while (v29 != v28);
       }
 
-      v18 = v85;
+      date2 = v85;
     }
 
     v8 = v23;
-    v17 = v90;
-    v11 = v91;
+    date = v90;
+    calendarDateForEndOfDay = v91;
     v20 = v88;
     v19 = v89;
 LABEL_41:
@@ -1730,8 +1730,8 @@ LABEL_41:
 
   v8 = 0;
 LABEL_43:
-  v11 = v7;
-  v10 = v6;
+  calendarDateForEndOfDay = endDateCopy;
+  calendarDateForDay = dateCopy;
 LABEL_44:
 
   return v8;
@@ -1750,37 +1750,37 @@ LABEL_44:
 
 - (double)_scrollViewVerticalVelocity
 {
-  v3 = [(InfiniteScrollViewController *)self scrollView];
-  if ([v3 isDragging])
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  if ([scrollView isDragging])
   {
     goto LABEL_6;
   }
 
-  v4 = [(InfiniteScrollViewController *)self scrollView];
-  if ([v4 isTracking])
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  if ([scrollView2 isTracking])
   {
 LABEL_5:
 
 LABEL_6:
 LABEL_7:
-    v6 = [(InfiniteScrollViewController *)self scrollView];
-    [v6 _verticalVelocity];
+    scrollView3 = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView3 _verticalVelocity];
     v8 = v7;
 
     return v8;
   }
 
-  v5 = [(InfiniteScrollViewController *)self scrollView];
-  if ([v5 isDecelerating])
+  scrollView4 = [(InfiniteScrollViewController *)self scrollView];
+  if ([scrollView4 isDecelerating])
   {
 
     goto LABEL_5;
   }
 
-  v10 = [(InfiniteScrollViewController *)self scrollView];
-  v11 = [v10 isScrollAnimating];
+  scrollView5 = [(InfiniteScrollViewController *)self scrollView];
+  isScrollAnimating = [scrollView5 isScrollAnimating];
 
-  if (v11)
+  if (isScrollAnimating)
   {
     goto LABEL_7;
   }
@@ -1790,19 +1790,19 @@ LABEL_7:
 
 - (BOOL)_allowedToDisplayEventDetailsColumn
 {
-  v2 = [(MultiColumnMonthViewController *)self view];
+  view = [(MultiColumnMonthViewController *)self view];
   if (EKUICurrentHeightSizeClassIsRegular())
   {
     v3 = +[CUIKPreferences sharedPreferences];
-    v4 = [v3 showExperimentalUI];
+    showExperimentalUI = [v3 showExperimentalUI];
   }
 
   else
   {
-    v4 = 0;
+    showExperimentalUI = 0;
   }
 
-  return v4;
+  return showExperimentalUI;
 }
 
 - (BOOL)_viewingEventDetailsColumn
@@ -1820,31 +1820,31 @@ LABEL_7:
 
 - (void)_createEventDetailsColumn
 {
-  v3 = [*(&self->_blankViewController + 1) superview];
+  superview = [*(&self->_blankViewController + 1) superview];
 
-  if (!v3)
+  if (!superview)
   {
     v4 = objc_alloc_init(UINavigationController);
     v5 = *(&self->_palette + 1);
     *(&self->_palette + 1) = v4;
 
-    v6 = [*(&self->_palette + 1) view];
-    [v6 setClipsToBounds:1];
+    view = [*(&self->_palette + 1) view];
+    [view setClipsToBounds:1];
 
     v7 = [LargeDayNavigationWrapperView alloc];
-    v8 = [*(&self->_palette + 1) view];
-    v9 = [(LargeDayNavigationWrapperView *)v7 initWithNavigationView:v8];
+    view2 = [*(&self->_palette + 1) view];
+    v9 = [(LargeDayNavigationWrapperView *)v7 initWithNavigationView:view2];
     v10 = *(&self->_blankViewController + 1);
     *(&self->_blankViewController + 1) = v9;
 
     [*(&self->_blankViewController + 1) setClipsToBounds:1];
     [(MultiColumnMonthViewController *)self addChildViewController:*(&self->_palette + 1)];
     [*(&self->_palette + 1) didMoveToParentViewController:self];
-    v11 = [(MultiColumnMonthViewController *)self view];
-    [v11 addSubview:*(&self->_blankViewController + 1)];
+    view3 = [(MultiColumnMonthViewController *)self view];
+    [view3 addSubview:*(&self->_blankViewController + 1)];
 
-    v12 = [(MultiColumnMonthViewController *)self view];
-    [v12 sendSubviewToBack:*(&self->_blankViewController + 1)];
+    view4 = [(MultiColumnMonthViewController *)self view];
+    [view4 sendSubviewToBack:*(&self->_blankViewController + 1)];
 
     [(MultiColumnMonthViewController *)self _updateEventDetailsColumnViewFrame];
   }
@@ -1852,8 +1852,8 @@ LABEL_7:
 
 - (void)_updateEventDetailsColumnViewFrame
 {
-  v3 = [(MultiColumnMonthViewController *)self view];
-  [v3 bounds];
+  view = [(MultiColumnMonthViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1898,14 +1898,14 @@ LABEL_7:
   }
 }
 
-- (void)_slideToShowEventDetails:(id)a3 animated:(BOOL)a4
+- (void)_slideToShowEventDetails:(id)details animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  detailsCopy = details;
   if ([(MultiColumnMonthViewController *)self _allowedToDisplayEventDetailsColumn])
   {
     [(MultiColumnMonthViewController *)self _createEventDetailsColumn];
-    objc_storeStrong((&self->_navigationWrapperView + 1), a3);
+    objc_storeStrong((&self->_navigationWrapperView + 1), details);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1921,12 +1921,12 @@ LABEL_7:
       block[3] = &unk_100211E50;
       block[4] = self;
       v34 = v8;
-      v35 = v4;
+      v35 = animatedCopy;
       v10 = v8;
       dispatch_after(v9, &_dispatch_main_q, block);
     }
 
-    v11 = [*(&self->_palette + 1) presentedViewController];
+    presentedViewController = [*(&self->_palette + 1) presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1937,13 +1937,13 @@ LABEL_7:
 
     v13 = [*(&self->_palette + 1) popToRootViewControllerAnimated:0];
     [*(&self->_palette + 1) pushViewController:*(&self->_navigationWrapperView + 1) animated:0];
-    v14 = [*(&self->_navigationWrapperView + 1) navigationItem];
-    [v14 setHidesBackButton:1];
+    navigationItem = [*(&self->_navigationWrapperView + 1) navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     [*(&self->_palette + 1) setNavigationBarHidden:0];
     [(MultiColumnMonthViewController *)self viewWillLayoutSubviews];
-    v15 = [*(&self->_navigationWrapperView + 1) view];
-    [v15 layoutMargins];
+    view = [*(&self->_navigationWrapperView + 1) view];
+    [view layoutMargins];
     v17 = v16;
     v19 = v18;
 
@@ -1955,8 +1955,8 @@ LABEL_7:
     v25 = v24;
     [(MultiColumnMonthViewController *)self rightSplitViewSideInset];
     v27 = v25 + v26;
-    v28 = [*(&self->_navigationWrapperView + 1) view];
-    [v28 setLayoutMargins:{v17, v27, v19, v23}];
+    view2 = [*(&self->_navigationWrapperView + 1) view];
+    [view2 setLayoutMargins:{v17, v27, v19, v23}];
 
     if (![(MultiColumnMonthViewController *)self _viewingEventDetailsColumn])
     {
@@ -1966,11 +1966,11 @@ LABEL_7:
       BYTE4(self->_navigationBarDisplayedDate) = 1;
       if (![(MultiColumnMonthViewController *)self _shouldDisplayThreeColumns])
       {
-        [(MultiColumnMonthViewController *)self _slideToAnimatePalleteShowingBackButton:1 animated:v4];
+        [(MultiColumnMonthViewController *)self _slideToAnimatePalleteShowingBackButton:1 animated:animatedCopy];
       }
 
       v30 = 0.0;
-      if (v4)
+      if (animatedCopy)
       {
         v30 = 0.5;
       }
@@ -1995,26 +1995,26 @@ LABEL_7:
   }
 }
 
-- (void)_slideToAnimatePalleteShowingBackButton:(BOOL)a3 animated:(BOOL)a4
+- (void)_slideToAnimatePalleteShowingBackButton:(BOOL)button animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [*&self->_editorPresentedProgramatically setHidden:0];
   [*&self->_editorPresentedProgramatically setAlpha:0.0];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10012B490;
   v11[3] = &unk_10020EAD8;
-  v12 = a3;
+  buttonCopy = button;
   v11[4] = self;
   v7 = objc_retainBlock(v11);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10012B4F4;
   v9[3] = &unk_100210008;
-  v10 = a3;
+  buttonCopy2 = button;
   v9[4] = self;
   v8 = objc_retainBlock(v9);
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:0 delay:v7 usingSpringWithDamping:v8 initialSpringVelocity:0.5 options:0.0 animations:2.0 completion:0.0];
   }
@@ -2026,23 +2026,23 @@ LABEL_7:
   }
 }
 
-- (void)_slideToHideEventDetailsAnimated:(BOOL)a3
+- (void)_slideToHideEventDetailsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(MultiColumnMonthViewController *)self _allowedToDisplayEventDetailsColumn])
   {
-    v5 = [*(&self->_singleDayListViewController + 1) tableView];
-    v6 = [*(&self->_singleDayListViewController + 1) tableView];
-    v7 = [v6 indexPathForSelectedRow];
-    [v5 deselectRowAtIndexPath:v7 animated:v3];
+    tableView = [*(&self->_singleDayListViewController + 1) tableView];
+    tableView2 = [*(&self->_singleDayListViewController + 1) tableView];
+    indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+    [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:animatedCopy];
 
     v8 = +[CUIKPreferences sharedPreferences];
     [v8 setLargeListViewDisclosingEventDetails:0];
 
     BYTE4(self->_navigationBarDisplayedDate) = 0;
-    [(MultiColumnMonthViewController *)self _slideToAnimatePalleteShowingBackButton:0 animated:v3];
+    [(MultiColumnMonthViewController *)self _slideToAnimatePalleteShowingBackButton:0 animated:animatedCopy];
     v9 = 0.0;
-    if (v3)
+    if (animatedCopy)
     {
       v9 = 0.5;
     }
@@ -2089,8 +2089,8 @@ LABEL_7:
 
 - (double)rightSplitViewSideInset
 {
-  v2 = [(MainViewController *)self EKUI_viewHierarchy];
-  [v2 ekui_interfaceOrientation];
+  eKUI_viewHierarchy = [(MainViewController *)self EKUI_viewHierarchy];
+  [eKUI_viewHierarchy ekui_interfaceOrientation];
 
   return 23.0;
 }
@@ -2124,34 +2124,34 @@ LABEL_7:
   *(&self->_currentDetailsView + 1) = 0;
 }
 
-- (id)pushedWeekViewControllerWithDate:(id)a3 animated:(BOOL)a4
+- (id)pushedWeekViewControllerWithDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(MultiColumnMonthViewController *)self nextLevelWeekViewControllerWithDate:a3];
-  v7 = [(MultiColumnMonthViewController *)self navigationController];
-  [v7 pushViewController:v6 animated:v4];
+  animatedCopy = animated;
+  v6 = [(MultiColumnMonthViewController *)self nextLevelWeekViewControllerWithDate:date];
+  navigationController = [(MultiColumnMonthViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:animatedCopy];
 
   return v6;
 }
 
-- (id)nextLevelWeekViewControllerWithDate:(id)a3
+- (id)nextLevelWeekViewControllerWithDate:(id)date
 {
-  [(CUIKCalendarModel *)self->super.super.super.super._model setSelectedDate:a3];
+  [(CUIKCalendarModel *)self->super.super.super.super._model setSelectedDate:date];
   v4 = [WeekViewContainerViewController alloc];
   model = self->super.super.super.super._model;
-  v6 = [(MainViewController *)self window];
-  v7 = [(MainViewControllerContainer *)v4 initWithModel:model window:v6];
+  window = [(MainViewController *)self window];
+  v7 = [(MainViewControllerContainer *)v4 initWithModel:model window:window];
 
   return v7;
 }
 
-- (CGRect)frameForWeekContainingDate:(id)a3
+- (CGRect)frameForWeekContainingDate:(id)date
 {
   model = self->super.super.super.super._model;
-  v5 = a3;
-  v6 = [(CUIKCalendarModel *)model calendar];
-  v7 = [v6 timeZone];
-  v8 = [EKCalendarDate calendarDateWithDate:v5 timeZone:v7];
+  dateCopy = date;
+  calendar = [(CUIKCalendarModel *)model calendar];
+  timeZone = [calendar timeZone];
+  v8 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:timeZone];
 
   v9 = [(InfiniteScrollViewController *)self subviewForDate:v8];
   v10 = v9;
@@ -2162,8 +2162,8 @@ LABEL_7:
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(MultiColumnMonthViewController *)self view];
-    [v19 convertRect:v10 fromView:{v12, v14, v16, v18}];
+    view = [(MultiColumnMonthViewController *)self view];
+    [view convertRect:v10 fromView:{v12, v14, v16, v18}];
     x = v20;
     y = v22;
     width = v24;
@@ -2192,9 +2192,9 @@ LABEL_7:
 - (CGRect)frameForTodayHighlight
 {
   v3 = CUIKTodayDate();
-  v4 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-  v5 = [v4 timeZone];
-  v6 = [EKCalendarDate calendarDateWithDate:v3 timeZone:v5];
+  calendar = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+  timeZone = [calendar timeZone];
+  v6 = [EKCalendarDate calendarDateWithDate:v3 timeZone:timeZone];
 
   v7 = [(InfiniteScrollViewController *)self subviewForDate:v6];
   v8 = v7;
@@ -2205,8 +2205,8 @@ LABEL_7:
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(MultiColumnMonthViewController *)self view];
-    [v17 convertRect:v8 fromView:{v10, v12, v14, v16}];
+    view = [(MultiColumnMonthViewController *)self view];
+    [view convertRect:v8 fromView:{v10, v12, v14, v16}];
     x = v18;
     y = v20;
     width = v22;
@@ -2232,13 +2232,13 @@ LABEL_7:
   return result;
 }
 
-- (double)heightForSubviewWithCalendarDate:(id)a3
+- (double)heightForSubviewWithCalendarDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression];
-  v6 = [(MultiColumnMonthViewController *)self view];
+  dateCopy = date;
+  _monthWeekViewsUseVerticalCompression = [(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression];
+  view = [(MultiColumnMonthViewController *)self view];
   EKUICurrentWindowSize();
-  [CompactMonthWeekView heightForViewWithCalendarDate:"heightForViewWithCalendarDate:compressed:windowSize:scale:" compressed:v4 windowSize:v5 scale:?];
+  [CompactMonthWeekView heightForViewWithCalendarDate:"heightForViewWithCalendarDate:compressed:windowSize:scale:" compressed:dateCopy windowSize:_monthWeekViewsUseVerticalCompression scale:?];
   v8 = v7;
 
   return v8;
@@ -2246,16 +2246,16 @@ LABEL_7:
 
 - (double)showDateVerticalOffset
 {
-  v3 = [(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression];
+  _monthWeekViewsUseVerticalCompression = [(MultiColumnMonthViewController *)self _monthWeekViewsUseVerticalCompression];
 
-  [(MultiColumnMonthViewController *)self _showDateVerticalOffsetWithVerticalCompression:v3];
+  [(MultiColumnMonthViewController *)self _showDateVerticalOffsetWithVerticalCompression:_monthWeekViewsUseVerticalCompression];
   return result;
 }
 
-- (double)_showDateVerticalOffsetWithVerticalCompression:(BOOL)a3
+- (double)_showDateVerticalOffsetWithVerticalCompression:(BOOL)compression
 {
   v4 = -12.0;
-  if (a3)
+  if (compression)
   {
     +[CompactMonthWeekView headerHeight];
     v4 = v5;
@@ -2263,7 +2263,7 @@ LABEL_7:
 
   EKUIScaleFactor();
   v7 = v4 + 2.0 / v6;
-  v8 = [(MultiColumnMonthViewController *)self traitCollection];
+  traitCollection = [(MultiColumnMonthViewController *)self traitCollection];
   v9 = EKUIUsesLargeTextLayout();
 
   if (v9)
@@ -2275,23 +2275,23 @@ LABEL_7:
   return v7;
 }
 
-- (int64_t)eventCountDisplayedForDate:(id)a3
+- (int64_t)eventCountDisplayedForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(InfiniteScrollViewController *)self subviewForDate:v4];
-  v6 = [v4 day];
+  dateCopy = date;
+  v5 = [(InfiniteScrollViewController *)self subviewForDate:dateCopy];
+  v6 = [dateCopy day];
 
-  v7 = [v5 calendarDate];
-  v8 = [v7 day];
+  calendarDate = [v5 calendarDate];
+  v8 = [calendarDate day];
 
   if (!v5)
   {
     goto LABEL_7;
   }
 
-  v9 = [v5 eventData];
-  v10 = 0;
-  if (!v9)
+  eventData = [v5 eventData];
+  eventCount = 0;
+  if (!eventData)
   {
     goto LABEL_6;
   }
@@ -2302,30 +2302,30 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v12 = [v5 eventData];
-  v13 = [v12 count];
+  eventData2 = [v5 eventData];
+  v13 = [eventData2 count];
 
   if (v11 >= v13)
   {
 LABEL_7:
-    v10 = 0;
+    eventCount = 0;
     goto LABEL_8;
   }
 
-  v14 = [v5 eventData];
-  v9 = [v14 objectAtIndex:v11];
+  eventData3 = [v5 eventData];
+  eventData = [eventData3 objectAtIndex:v11];
 
-  v10 = [v9 eventCount];
+  eventCount = [eventData eventCount];
 LABEL_6:
 
 LABEL_8:
-  return v10;
+  return eventCount;
 }
 
 - (void)_updateInfiniteScrollViewFrame
 {
-  v3 = [(MultiColumnMonthViewController *)self view];
-  [v3 bounds];
+  view = [(MultiColumnMonthViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2356,9 +2356,9 @@ LABEL_8:
       v27.size.height = v11;
       MidX = CGRectGetMidX(v27);
       v15 = +[CUIKPreferences sharedPreferences];
-      v16 = [v15 largeListViewDisclosingEventDetails];
+      largeListViewDisclosingEventDetails = [v15 largeListViewDisclosingEventDetails];
 
-      if (v16)
+      if (largeListViewDisclosingEventDetails)
       {
         v28.origin.x = v5;
         v28.origin.y = v7;
@@ -2388,8 +2388,8 @@ LABEL_8:
       }
     }
 
-    v23 = [(InfiniteScrollViewController *)self scrollView];
-    [v23 setFrame:{MinX, v7, MidX, v11}];
+    scrollView = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView setFrame:{MinX, v7, MidX, v11}];
   }
 }
 
@@ -2405,43 +2405,43 @@ LABEL_8:
     v5 = +[UIColor whiteColor];
     [*(&self->_selectedMonthWeekView + 1) setBackgroundColor:v5];
 
-    v6 = [(MultiColumnMonthViewController *)self view];
-    [v6 addSubview:*(&self->_selectedMonthWeekView + 1)];
+    view = [(MultiColumnMonthViewController *)self view];
+    [view addSubview:*(&self->_selectedMonthWeekView + 1)];
 
     v7 = [[CompactMonthListViewController alloc] initWithModel:self->super.super.super.super._model];
     v8 = *(&self->_listViewContainer + 1);
     *(&self->_listViewContainer + 1) = v7;
 
     [*(&self->_listViewContainer + 1) setCompactMonthListViewDelegate:self];
-    v9 = [*(&self->_listViewContainer + 1) view];
-    [v9 setAutoresizingMask:18];
+    view2 = [*(&self->_listViewContainer + 1) view];
+    [view2 setAutoresizingMask:18];
 
     [*(&self->_selectedMonthWeekView + 1) bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [*(&self->_listViewContainer + 1) view];
-    [v18 setFrame:{v11, v13, v15, v17}];
+    view3 = [*(&self->_listViewContainer + 1) view];
+    [view3 setFrame:{v11, v13, v15, v17}];
 
     v19 = [ListViewController alloc];
     model = self->super.super.super.super._model;
-    v21 = [(MainViewController *)self window];
-    v22 = [(ListViewController *)v19 initWithModel:model window:v21];
+    window = [(MainViewController *)self window];
+    v22 = [(ListViewController *)v19 initWithModel:model window:window];
     v23 = *(&self->_singleDayListViewController + 1);
     *(&self->_singleDayListViewController + 1) = v22;
 
     [*(&self->_singleDayListViewController + 1) setAllowExtendedHeightCells:1];
-    v24 = [*(&self->_singleDayListViewController + 1) view];
-    [v24 setAutoresizingMask:18];
+    view4 = [*(&self->_singleDayListViewController + 1) view];
+    [view4 setAutoresizingMask:18];
 
     [*(&self->_selectedMonthWeekView + 1) bounds];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [*(&self->_singleDayListViewController + 1) view];
-    [v33 setFrame:{v26, v28, v30, v32}];
+    view5 = [*(&self->_singleDayListViewController + 1) view];
+    [view5 setFrame:{v26, v28, v30, v32}];
 
     [*(&self->_singleDayListViewController + 1) setDelegate:self];
 
@@ -2451,8 +2451,8 @@ LABEL_8:
 
 - (void)_updateListViewModeForCurrentTraits
 {
-  v3 = [(MultiColumnMonthViewController *)self _listViewShowsSingleDay];
-  if (v3)
+  _listViewShowsSingleDay = [(MultiColumnMonthViewController *)self _listViewShowsSingleDay];
+  if (_listViewShowsSingleDay)
   {
     v4 = &OBJC_IVAR___MultiColumnMonthViewController__multiDayListViewController;
   }
@@ -2462,7 +2462,7 @@ LABEL_8:
     v4 = &OBJC_IVAR___MultiColumnMonthViewController__singleDayListViewController;
   }
 
-  if (v3)
+  if (_listViewShowsSingleDay)
   {
     v5 = &OBJC_IVAR___MultiColumnMonthViewController__singleDayListViewController;
   }
@@ -2474,14 +2474,14 @@ LABEL_8:
 
   v6 = *v4;
   [*(&self->super.super.super.super.super.super.super.isa + v6) removeFromParentViewController];
-  v7 = [*(&self->super.super.super.super.super.super.super.isa + v6) view];
-  [v7 removeFromSuperview];
+  view = [*(&self->super.super.super.super.super.super.super.isa + v6) view];
+  [view removeFromSuperview];
 
   v8 = *v5;
   [(MultiColumnMonthViewController *)self addChildViewController:*(&self->super.super.super.super.super.super.super.isa + v8)];
   v9 = *(&self->_selectedMonthWeekView + 1);
-  v10 = [*(&self->super.super.super.super.super.super.super.isa + v8) view];
-  [v9 addSubview:v10];
+  view2 = [*(&self->super.super.super.super.super.super.super.isa + v8) view];
+  [v9 addSubview:view2];
 
   v11 = *(&self->super.super.super.super.super.super.super.isa + v8);
 
@@ -2490,8 +2490,8 @@ LABEL_8:
 
 - (BOOL)_listViewShowsSingleDay
 {
-  v3 = [(MultiColumnMonthViewController *)self ekui_futureTraitCollection];
-  if ([v3 verticalSizeClass] == 1)
+  ekui_futureTraitCollection = [(MultiColumnMonthViewController *)self ekui_futureTraitCollection];
+  if ([ekui_futureTraitCollection verticalSizeClass] == 1)
   {
     LOBYTE(v4) = 1;
   }
@@ -2516,8 +2516,8 @@ LABEL_8:
 
 - (void)_updateListViewFrame
 {
-  v3 = [(MultiColumnMonthViewController *)self view];
-  [v3 bounds];
+  view = [(MultiColumnMonthViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2535,9 +2535,9 @@ LABEL_8:
   if (![(MultiColumnMonthViewController *)self _shouldDisplayThreeColumns])
   {
     v15 = +[CUIKPreferences sharedPreferences];
-    v16 = [v15 largeListViewDisclosingEventDetails];
+    largeListViewDisclosingEventDetails = [v15 largeListViewDisclosingEventDetails];
 
-    if (v16)
+    if (largeListViewDisclosingEventDetails)
     {
       [(MultiColumnMonthViewController *)self _listviewColumnCollapsedWidth];
       MidX = v17;
@@ -2581,8 +2581,8 @@ LABEL_9:
   v22 = v7;
   if (CalSystemSolariumEnabled())
   {
-    v23 = [(MultiColumnMonthViewController *)self view];
-    [v23 safeAreaInsets];
+    view2 = [(MultiColumnMonthViewController *)self view];
+    [view2 safeAreaInsets];
     v22 = v24;
 
     v21 = v11 - v22;
@@ -2622,14 +2622,14 @@ LABEL_9:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (void)navigateToEventDetails:(id)a3 fromController:(id)a4
+- (void)navigateToEventDetails:(id)details fromController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  controllerCopy = controller;
   v8 = CUIKTodayDate();
-  v9 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-  v10 = [v9 timeZone];
-  v11 = [EKCalendarDate calendarDateWithDate:v8 timeZone:v10];
+  calendar = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+  timeZone = [calendar timeZone];
+  v11 = [EKCalendarDate calendarDateWithDate:v8 timeZone:timeZone];
 
   v12 = [(InfiniteScrollViewController *)self subviewForDate:v11];
   [v12 setDisableTodayPulse:1];
@@ -2639,54 +2639,54 @@ LABEL_9:
   v16[2] = sub_10012CB08;
   v16[3] = &unk_10020F290;
   v16[4] = self;
-  v17 = v7;
-  v18 = v6;
+  v17 = controllerCopy;
+  v18 = detailsCopy;
   v19 = v12;
   v13 = v12;
-  v14 = v6;
-  v15 = v7;
+  v14 = detailsCopy;
+  v15 = controllerCopy;
   [(MultiColumnMonthViewController *)self dismissViewControllerAnimated:1 completion:v16];
 }
 
-- (void)eventViewControllerNextButtonWasTapped:(id)a3
+- (void)eventViewControllerNextButtonWasTapped:(id)tapped
 {
-  v6 = a3;
-  v4 = [v6 event];
-  v5 = [v4 nextOccurrence];
+  tappedCopy = tapped;
+  event = [tappedCopy event];
+  nextOccurrence = [event nextOccurrence];
 
-  if (v5)
+  if (nextOccurrence)
   {
-    [(MultiColumnMonthViewController *)self navigateToEventDetails:v5 fromController:v6];
+    [(MultiColumnMonthViewController *)self navigateToEventDetails:nextOccurrence fromController:tappedCopy];
   }
 }
 
-- (void)eventViewControllerPreviousButtonWasTapped:(id)a3
+- (void)eventViewControllerPreviousButtonWasTapped:(id)tapped
 {
-  v6 = a3;
-  v4 = [v6 event];
-  v5 = [v4 previousOccurrence];
+  tappedCopy = tapped;
+  event = [tappedCopy event];
+  previousOccurrence = [event previousOccurrence];
 
-  if (v5)
+  if (previousOccurrence)
   {
-    [(MultiColumnMonthViewController *)self navigateToEventDetails:v5 fromController:v6];
+    [(MultiColumnMonthViewController *)self navigateToEventDetails:previousOccurrence fromController:tappedCopy];
   }
 }
 
-- (void)_showDetailsForEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)_showDetailsForEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = [(MainViewController *)self augmentEventDetailsContext:a6];
-  v12 = [EKEventViewController eventDetailViewControllerWithEvent:v10 delegate:self context:v11 canvasView:2];
-  v13 = [(MainViewController *)self model];
-  [v13 setSelectedOccurrence:v10];
+  animatedCopy = animated;
+  eventCopy = event;
+  v11 = [(MainViewController *)self augmentEventDetailsContext:context];
+  v12 = [EKEventViewController eventDetailViewControllerWithEvent:eventCopy delegate:self context:v11 canvasView:2];
+  model = [(MainViewController *)self model];
+  [model setSelectedOccurrence:eventCopy];
 
-  v14 = [(MultiColumnMonthViewController *)self view];
-  LODWORD(v13) = EKUICurrentHeightSizeClassIsRegular();
+  view = [(MultiColumnMonthViewController *)self view];
+  LODWORD(model) = EKUICurrentHeightSizeClassIsRegular();
 
-  if (v13)
+  if (model)
   {
-    [(MultiColumnMonthViewController *)self _slideToShowEventDetails:v12 animated:v8];
+    [(MultiColumnMonthViewController *)self _slideToShowEventDetails:v12 animated:animatedCopy];
   }
 
   else
@@ -2695,24 +2695,24 @@ LABEL_9:
     v15[1] = 3221225472;
     v15[2] = sub_10012CF24;
     v15[3] = &unk_100211EC0;
-    v17 = self;
-    v18 = a5;
+    selfCopy = self;
+    modeCopy = mode;
     v16 = v12;
-    [(MainViewController *)self showViewController:v16 sender:self animated:v8 completion:v15];
+    [(MainViewController *)self showViewController:v16 sender:self animated:animatedCopy completion:v15];
   }
 }
 
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v5 = a3;
+  controllerCopy = controller;
   [*(&self->_listViewContainer + 1) deselectAllRowsAnimated:1];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_10012D12C;
   v10 = &unk_10020EC68;
-  v11 = self;
-  v12 = v5;
-  v6 = v5;
+  selfCopy = self;
+  v12 = controllerCopy;
+  v6 = controllerCopy;
   [(MultiColumnMonthViewController *)self dismissViewControllerAnimated:1 completion:&v7];
   if ([(MultiColumnMonthViewController *)self _viewingEventDetailsColumn:v7])
   {
@@ -2720,10 +2720,10 @@ LABEL_9:
   }
 }
 
-- (void)eventViewController:(id)a3 requestsDismissalOfEditViewController:(id)a4
+- (void)eventViewController:(id)controller requestsDismissalOfEditViewController:(id)viewController
 {
-  v5 = a4;
-  [v5 setModalTransitionStyle:2];
+  viewControllerCopy = viewController;
+  [viewControllerCopy setModalTransitionStyle:2];
   if ((BYTE1(self->_navigationBarDisplayedDate) & 1) != 0 || BYTE2(self->_navigationBarDisplayedDate) == 1)
   {
     v6[0] = _NSConcreteStackBlock;
@@ -2738,30 +2738,30 @@ LABEL_9:
 
   else
   {
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    [viewControllerCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)compactMonthListViewController:(id)a3 wantsToCommitViewControllerFromPreview:(id)a4
+- (void)compactMonthListViewController:(id)controller wantsToCommitViewControllerFromPreview:(id)preview
 {
-  v5 = [a4 event];
-  [(MultiColumnMonthViewController *)self _showDetailsForEvent:v5 animated:1 showMode:1 context:0];
+  event = [preview event];
+  [(MultiColumnMonthViewController *)self _showDetailsForEvent:event animated:1 showMode:1 context:0];
 }
 
-- (void)listViewController:(id)a3 didScrollToDate:(id)a4
+- (void)listViewController:(id)controller didScrollToDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  dateCopy = date;
   if ((BYTE3(self->_navigationBarDisplayedDate) & 1) == 0 && (![(MultiColumnMonthViewController *)self _viewingEventDetailsColumn]|| [(MultiColumnMonthViewController *)self _shouldDisplayThreeColumns]))
   {
     v8 = CUIKTodayDate();
-    v9 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-    v10 = [v9 timeZone];
-    v11 = [EKCalendarDate calendarDateWithDate:v8 timeZone:v10];
+    calendar = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+    timeZone = [calendar timeZone];
+    v11 = [EKCalendarDate calendarDateWithDate:v8 timeZone:timeZone];
 
-    v12 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
-    v13 = [v12 timeZone];
-    v14 = [EKCalendarDate calendarDateWithDate:v7 timeZone:v13];
+    calendar2 = [(CUIKCalendarModel *)self->super.super.super.super._model calendar];
+    timeZone2 = [calendar2 timeZone];
+    v14 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:timeZone2];
 
     v15 = [(InfiniteScrollViewController *)self subviewForDate:v11];
     [v15 setDisableTodayPulse:1];
@@ -2773,9 +2773,9 @@ LABEL_9:
       v16[2] = sub_10012D504;
       v16[3] = &unk_10020EB28;
       v17 = v15;
-      v18 = self;
+      selfCopy = self;
       v19 = v14;
-      [(MultiColumnMonthViewController *)self showDate:v7 animated:1 completionBlock:v16];
+      [(MultiColumnMonthViewController *)self showDate:dateCopy animated:1 completionBlock:v16];
     }
   }
 }

@@ -1,26 +1,26 @@
 @interface WDShowAllDataTableViewCell
 + (NSString)defaultReuseIdentifier;
-- (WDShowAllDataTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDShowAllDataTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_textLabelText;
 @end
 
 @implementation WDShowAllDataTableViewCell
 
-- (WDShowAllDataTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDShowAllDataTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = WDShowAllDataTableViewCell;
-  v4 = [(WDShowAllDataTableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDShowAllDataTableViewCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(WDShowAllDataTableViewCell *)v4 _textLabelText];
-    v7 = [(WDShowAllDataTableViewCell *)v5 textLabel];
-    [v7 setText:v6];
+    _textLabelText = [(WDShowAllDataTableViewCell *)v4 _textLabelText];
+    textLabel = [(WDShowAllDataTableViewCell *)v5 textLabel];
+    [textLabel setText:_textLabelText];
 
-    v8 = [MEMORY[0x277D75348] labelColor];
-    v9 = [(WDShowAllDataTableViewCell *)v5 textLabel];
-    [v9 setTextColor:v8];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    textLabel2 = [(WDShowAllDataTableViewCell *)v5 textLabel];
+    [textLabel2 setTextColor:labelColor];
 
     [(WDShowAllDataTableViewCell *)v5 setAccessoryType:1];
   }

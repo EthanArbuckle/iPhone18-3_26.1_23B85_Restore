@@ -1,6 +1,6 @@
 @interface MTRScenesManagementClusterExtensionFieldSetStruct
 - (MTRScenesManagementClusterExtensionFieldSetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,22 +17,22 @@
     clusterID = v2->_clusterID;
     v2->_clusterID = &unk_284C3E588;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     attributeValueList = v3->_attributeValueList;
-    v3->_attributeValueList = v5;
+    v3->_attributeValueList = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRScenesManagementClusterExtensionFieldSetStruct);
-  v5 = [(MTRScenesManagementClusterExtensionFieldSetStruct *)self clusterID];
-  [(MTRScenesManagementClusterExtensionFieldSetStruct *)v4 setClusterID:v5];
+  clusterID = [(MTRScenesManagementClusterExtensionFieldSetStruct *)self clusterID];
+  [(MTRScenesManagementClusterExtensionFieldSetStruct *)v4 setClusterID:clusterID];
 
-  v6 = [(MTRScenesManagementClusterExtensionFieldSetStruct *)self attributeValueList];
-  [(MTRScenesManagementClusterExtensionFieldSetStruct *)v4 setAttributeValueList:v6];
+  attributeValueList = [(MTRScenesManagementClusterExtensionFieldSetStruct *)self attributeValueList];
+  [(MTRScenesManagementClusterExtensionFieldSetStruct *)v4 setAttributeValueList:attributeValueList];
 
   return v4;
 }

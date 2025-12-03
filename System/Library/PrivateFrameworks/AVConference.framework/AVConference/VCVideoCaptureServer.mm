@@ -1,161 +1,161 @@
 @interface VCVideoCaptureServer
 + (id)VCVideoCaptureServerSingleton;
-- (BOOL)cameraSupportsWidth:(int)a3 height:(int)a4;
+- (BOOL)cameraSupportsWidth:(int)width height:(int)height;
 - (BOOL)canStopPreview;
-- (BOOL)captureVideoWidth:(int *)a3 height:(int *)a4 frameRate:(int *)a5;
-- (BOOL)deregisterCaptureConfig:(id)a3 forSource:(int)a4;
-- (BOOL)deregisterForVideoFramesFromSource:(int)a3 withClient:(id)a4;
-- (BOOL)deregisterSystemAudioConfig:(id)a3 forSource:(int)a4;
-- (BOOL)dispatchedStartSystemAudioForClientKey:(id)a3 forSource:(int)a4;
-- (BOOL)dispatchedStopSystemAudioForClientKey:(id)a3 forSource:(int)a4;
-- (BOOL)internalRegisterStreamInput:(id)a3;
-- (BOOL)internalUnregisterStreamInput:(id)a3;
+- (BOOL)captureVideoWidth:(int *)width height:(int *)height frameRate:(int *)rate;
+- (BOOL)deregisterCaptureConfig:(id)config forSource:(int)source;
+- (BOOL)deregisterForVideoFramesFromSource:(int)source withClient:(id)client;
+- (BOOL)deregisterSystemAudioConfig:(id)config forSource:(int)source;
+- (BOOL)dispatchedStartSystemAudioForClientKey:(id)key forSource:(int)source;
+- (BOOL)dispatchedStopSystemAudioForClientKey:(id)key forSource:(int)source;
+- (BOOL)internalRegisterStreamInput:(id)input;
+- (BOOL)internalUnregisterStreamInput:(id)input;
 - (BOOL)isAirPlayXPCHelper;
-- (BOOL)isClientRegisteredForVideoFrames:(id)a3 fromSource:(int)a4;
-- (BOOL)isFaceTimeScreenSharingWithDict:(id)a3;
-- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 attribute:(id *)a5;
-- (BOOL)registerCaptureConfig:(id)a3 forSource:(int)a4;
-- (BOOL)registerForFrames:(id)a3;
-- (BOOL)registerForVideoFramesFromSource:(int)a3 sourceConfig:(id)a4;
-- (BOOL)registerForVideoFramesFromSource:(int)a3 withClient:(id)a4 width:(int)a5 height:(int)a6 frameRate:(int)a7;
-- (BOOL)registerStreamInput:(id)a3;
-- (BOOL)registerSystemAudioConfig:(id)a3 forSource:(int)a4;
-- (BOOL)setCaptureCameraWithToken:(_VCVideoSourceToken)a3;
-- (BOOL)setLocalScreenAttributes:(id)a3;
-- (BOOL)setLocalVideoAttributes:(id)a3;
-- (BOOL)setUpScreenVideoCaptureSource:(id)a3;
-- (BOOL)setUpSensitiveContentAnalyzerWithParticipantUUID:(id)a3;
-- (BOOL)setupScreenCaptureForSource:(int)a3 config:(id)a4;
+- (BOOL)isClientRegisteredForVideoFrames:(id)frames fromSource:(int)source;
+- (BOOL)isFaceTimeScreenSharingWithDict:(id)dict;
+- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time attribute:(id *)attribute;
+- (BOOL)registerCaptureConfig:(id)config forSource:(int)source;
+- (BOOL)registerForFrames:(id)frames;
+- (BOOL)registerForVideoFramesFromSource:(int)source sourceConfig:(id)config;
+- (BOOL)registerForVideoFramesFromSource:(int)source withClient:(id)client width:(int)width height:(int)height frameRate:(int)rate;
+- (BOOL)registerStreamInput:(id)input;
+- (BOOL)registerSystemAudioConfig:(id)config forSource:(int)source;
+- (BOOL)setCaptureCameraWithToken:(_VCVideoSourceToken)token;
+- (BOOL)setLocalScreenAttributes:(id)attributes;
+- (BOOL)setLocalVideoAttributes:(id)attributes;
+- (BOOL)setUpScreenVideoCaptureSource:(id)source;
+- (BOOL)setUpSensitiveContentAnalyzerWithParticipantUUID:(id)d;
+- (BOOL)setupScreenCaptureForSource:(int)source config:(id)config;
 - (BOOL)setupStreamInputs;
-- (BOOL)shouldSendVideoAttributeCallback:(id)a3;
-- (BOOL)startScreenShareCapture:(id)a3;
-- (BOOL)stopScreenShareCapture:(int64_t)a3;
+- (BOOL)shouldSendVideoAttributeCallback:(id)callback;
+- (BOOL)startScreenShareCapture:(id)capture;
+- (BOOL)stopScreenShareCapture:(int64_t)capture;
 - (BOOL)supportsPortraitResolution;
-- (BOOL)unregisterStreamInputCaptureSourceWithCaptureSourceID:(int)a3;
-- (CGSize)localExpectedRatioForScreenOrientation:(int)a3;
-- (CGSize)localScreenRatioForScreenOrientation:(int)a3;
+- (BOOL)unregisterStreamInputCaptureSourceWithCaptureSourceID:(int)d;
+- (CGSize)localExpectedRatioForScreenOrientation:(int)orientation;
+- (CGSize)localScreenRatioForScreenOrientation:(int)orientation;
 - (VCVideoCaptureServer)init;
 - (__CFDictionary)copyCameraColorInfo;
 - (__CFDictionary)copyInitialStatsDictionary;
 - (__CFDictionary)copyRealtimeStatsDictionary;
-- (__CFDictionary)copyReportingStatsForCaptureSource:(int)a3;
-- (id)copyLocalScreenAttributesForVideoAttributes:(id)a3;
-- (id)localScreenAttributesForVideoAttributes:(id)a3;
+- (__CFDictionary)copyReportingStatsForCaptureSource:(int)source;
+- (id)copyLocalScreenAttributesForVideoAttributes:(id)attributes;
+- (id)localScreenAttributesForVideoAttributes:(id)attributes;
 - (id)localVideoAttributes;
-- (id)newSensitiveContentAnalyzerWithParticipantUUID:(id)a3;
-- (id)updateScreenCapture:(int64_t)a3 withConfig:(id)a4;
-- (id)videoRuleForClient:(id)a3;
-- (int)createVideoCaptureWithWidth:(int)a3 height:(int)a4 frameRate:(int)a5 useBackFacingCamera:(BOOL)a6;
+- (id)newSensitiveContentAnalyzerWithParticipantUUID:(id)d;
+- (id)updateScreenCapture:(int64_t)capture withConfig:(id)config;
+- (id)videoRuleForClient:(id)client;
+- (int)createVideoCaptureWithWidth:(int)width height:(int)height frameRate:(int)rate useBackFacingCamera:(BOOL)camera;
 - (int)findNextAvailableCaptureSourceID;
-- (int)getCappedFrameRate:(int)a3;
-- (int)getCaptureFrameRateForSource:(int)a3;
-- (int)getFrameRateForPeakPowerLevel:(int)a3;
-- (int)getFrameRateForThermalLevel:(int)a3;
-- (int)getFrameRateForThermalLevel:(int)a3 peakPowerPressure:(int)a4;
-- (int)getScreenFrameRateForThermalLevel:(int)a3;
-- (int)registerStreamInputCaptureSourceWithConfiguration:(id)a3;
-- (int)registerStreamInputCaptureSourceWithID:(int64_t)a3 frameRate:(unsigned int)a4;
+- (int)getCappedFrameRate:(int)rate;
+- (int)getCaptureFrameRateForSource:(int)source;
+- (int)getFrameRateForPeakPowerLevel:(int)level;
+- (int)getFrameRateForThermalLevel:(int)level;
+- (int)getFrameRateForThermalLevel:(int)level peakPowerPressure:(int)pressure;
+- (int)getScreenFrameRateForThermalLevel:(int)level;
+- (int)registerStreamInputCaptureSourceWithConfiguration:(id)configuration;
+- (int)registerStreamInputCaptureSourceWithID:(int64_t)d frameRate:(unsigned int)rate;
 - (int)remoteDeviceOrientation;
-- (int)screenFrameRateForThermalLevel:(int)a3 configuredFrameRate:(int)a4 captureSourceID:(id)a5;
-- (int)setBoundsForRemoteLayerWithFacing:(BOOL)a3 frameRect:(CGRect)a4 fenceHandle:(id)a5;
+- (int)screenFrameRateForThermalLevel:(int)level configuredFrameRate:(int)rate captureSourceID:(id)d;
+- (int)setBoundsForRemoteLayerWithFacing:(BOOL)facing frameRect:(CGRect)rect fenceHandle:(id)handle;
 - (int)thermalPressureLevel;
-- (int64_t)streamInputIDForCaptureSourceID:(int)a3;
-- (opaqueCMFormatDescription)newFormatDescriptionForCaptureSource:(int)a3;
+- (int64_t)streamInputIDForCaptureSourceID:(int)d;
+- (opaqueCMFormatDescription)newFormatDescriptionForCaptureSource:(int)source;
 - (tagVCAspectRatios)remoteExpectedAspectRatios;
 - (tagVCAspectRatios)remoteExpectedFullScreenAspectRatios;
 - (tagVCAspectRatios)remoteScreenAspectRatios;
 - (tagVCCameraAspectRatiosARXR)localCameraVideoAspectRatios;
-- (unsigned)setLocalVideoDestination:(id *)a3;
-- (unsigned)setLocalVideoDestination:(id)a3 facing:(BOOL)a4;
-- (void)addDeviceStateDelegate:(id)a3;
+- (unsigned)setLocalVideoDestination:(id *)destination;
+- (unsigned)setLocalVideoDestination:(id)destination facing:(BOOL)facing;
+- (void)addDeviceStateDelegate:(id)delegate;
 - (void)addObserveSystemPreferredCamera;
-- (void)addScreenStatsToDict:(__CFDictionary *)a3;
-- (void)addStreamInputStatsToDict:(__CFDictionary *)a3 captureSource:(int)a4;
+- (void)addScreenStatsToDict:(__CFDictionary *)dict;
+- (void)addStreamInputStatsToDict:(__CFDictionary *)dict captureSource:(int)source;
 - (void)beginPIPToPreviewAnimation;
 - (void)beginPreviewToPIPAnimation;
-- (void)captureSourceVideoFeatureStatusDidChange:(tagVCVideoCaptureFeatureStatus)a3;
-- (void)centerStageEnabledDidChange:(BOOL)a3;
-- (void)changeCameraToPendingSettingsWithReset:(BOOL)a3;
+- (void)captureSourceVideoFeatureStatusDidChange:(tagVCVideoCaptureFeatureStatus)change;
+- (void)centerStageEnabledDidChange:(BOOL)change;
+- (void)changeCameraToPendingSettingsWithReset:(BOOL)reset;
 - (void)cleanupStreamInputs;
 - (void)dealloc;
-- (void)deregisterCaptureClientForScreenShare:(id)a3;
-- (void)deregisterScreenVideoConfig:(id)a3 forSource:(int)a4;
-- (void)didChangeThermalLevel:(int)a3;
+- (void)deregisterCaptureClientForScreenShare:(id)share;
+- (void)deregisterScreenVideoConfig:(id)config forSource:(int)source;
+- (void)didChangeThermalLevel:(int)level;
 - (void)didSelectUnbinnedCameraFormat;
 - (void)didStopReacting;
-- (void)dispatchedSetCaptureCameraWithToken:(_VCVideoSourceToken)a3;
-- (void)dispatchedSetCaptureFrameRate:(int)a3;
-- (void)dispatchedSetCaptureWidth:(int)a3 height:(int)a4 rate:(int)a5;
-- (void)dispatchedStartSystemAudioForSource:(int)a3;
-- (void)dispatchedStopSystemAudioForSource:(int)a3;
-- (void)dispatchedUpdateCaptureRuleForClient:(id)a3 width:(int)a4 height:(int)a5 frameRate:(float)a6;
-- (void)dispatchedUpdateRemoteScreenAttributes:(int)a3 forceUpdate:(BOOL)a4;
-- (void)dispatchedUpdateSystemAudioConfigTapTypeForClientKey:(id)a3 forSource:(int)a4;
+- (void)dispatchedSetCaptureCameraWithToken:(_VCVideoSourceToken)token;
+- (void)dispatchedSetCaptureFrameRate:(int)rate;
+- (void)dispatchedSetCaptureWidth:(int)width height:(int)height rate:(int)rate;
+- (void)dispatchedStartSystemAudioForSource:(int)source;
+- (void)dispatchedStopSystemAudioForSource:(int)source;
+- (void)dispatchedUpdateCaptureRuleForClient:(id)client width:(int)width height:(int)height frameRate:(float)rate;
+- (void)dispatchedUpdateRemoteScreenAttributes:(int)attributes forceUpdate:(BOOL)update;
+- (void)dispatchedUpdateSystemAudioConfigTapTypeForClientKey:(id)key forSource:(int)source;
 - (void)endPIPToPreviewAnimation;
 - (void)endPreviewToPIPAnimation;
 - (void)endSensitiveContentAnalysis;
 - (void)endSensitiveContentAnalyzerInterruption;
-- (void)handleAVCaptureError:(int)a3 domain:(id)a4;
-- (void)handleAVCaptureError:(int)a3 error:(id)a4;
-- (void)handleCaptureEvent:(id)a3 subType:(id)a4;
-- (void)handleCaptureSourcePositionDidChange:(BOOL)a3;
+- (void)handleAVCaptureError:(int)error domain:(id)domain;
+- (void)handleAVCaptureError:(int)error error:(id)a4;
+- (void)handleCaptureEvent:(id)event subType:(id)type;
+- (void)handleCaptureSourcePositionDidChange:(BOOL)change;
 - (void)init;
 - (void)isAirPlayXPCHelper;
-- (void)notifyCameraDidChangeAvailability:(id)a3 available:(BOOL)a4;
-- (void)notifyDeviceStateDelegatesWithOrientation:(int)a3;
-- (void)notifyFrameRateBeingThrottledForClients:(id)a3 newFrameRate:(int)a4 thermalLevelDidChange:(BOOL)a5 powerLevelDidChange:(BOOL)a6;
-- (void)notifyThermalChangeForClients:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)onCaptureScreenFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 orientation:(int)a5;
+- (void)notifyCameraDidChangeAvailability:(id)availability available:(BOOL)available;
+- (void)notifyDeviceStateDelegatesWithOrientation:(int)orientation;
+- (void)notifyFrameRateBeingThrottledForClients:(id)clients newFrameRate:(int)rate thermalLevelDidChange:(BOOL)change powerLevelDidChange:(BOOL)didChange;
+- (void)notifyThermalChangeForClients:(id)clients;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)onCaptureScreenFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time orientation:(int)orientation;
 - (void)pausePreview;
-- (void)populateThermalFrameRateThresholdsForCaptureSourceID:(int64_t)a3 captureConfig:(id)a4;
-- (void)portraitBlurEnabledDidChange:(BOOL)a3;
-- (void)previewVideoWidth:(int *)a3 height:(int *)a4 frameRate:(int *)a5;
-- (void)reactionDidStart:(id)a3;
-- (void)reconnectClientLayerFront:(BOOL)a3;
+- (void)populateThermalFrameRateThresholdsForCaptureSourceID:(int64_t)d captureConfig:(id)config;
+- (void)portraitBlurEnabledDidChange:(BOOL)change;
+- (void)previewVideoWidth:(int *)width height:(int *)height frameRate:(int *)rate;
+- (void)reactionDidStart:(id)start;
+- (void)reconnectClientLayerFront:(BOOL)front;
 - (void)registerBlocksForServer;
-- (void)registerCaptureClientForScreenShare:(id)a3;
-- (void)registerScreenVideoConfig:(id)a3 forSource:(int)a4;
-- (void)registerVideoSink:(id)a3 withCaptureSource:(int)a4;
-- (void)removeDeviceStateDelegate:(id)a3;
+- (void)registerCaptureClientForScreenShare:(id)share;
+- (void)registerScreenVideoConfig:(id)config forSource:(int)source;
+- (void)registerVideoSink:(id)sink withCaptureSource:(int)source;
+- (void)removeDeviceStateDelegate:(id)delegate;
 - (void)removeObserveSystemPreferredCamera;
-- (void)resetCameraToPreviewSettingsForced:(BOOL)a3;
-- (void)resumeVideoSink:(id)a3 withCaptureSource:(int)a4;
-- (void)screenAndCameraMixingEnable:(BOOL)a3;
-- (void)sendBiomeEventIsStarting:(BOOL)a3;
-- (void)setCFAvailabilityChange:(BOOL)a3;
-- (void)setCameraPerClientRequest:(id)a3;
-- (void)setCameraZoomAvailable:(BOOL)a3 currentZoomFactor:(double)a4 maxZoomFactor:(double)a5;
-- (void)setCameraZoomFactor:(double)a3;
-- (void)setCameraZoomFactor:(double)a3 withRate:(double)a4;
-- (void)setCaptureFrameRate:(int)a3;
-- (void)setCaptureSIFRFormatEnabled:(BOOL)a3;
-- (void)setCaptureWidth:(int)a3 height:(int)a4 rate:(int)a5;
-- (void)setCaptureWidth:(int)a3 height:(int)a4 rate:(int)a5 forced:(BOOL)a6;
-- (void)setFollowSystemCamera:(BOOL)a3;
-- (void)setPauseCapture:(BOOL)a3;
-- (void)setPreferCaptureFullBleed:(BOOL)a3;
-- (void)setRemoteDeviceOrientation:(int)a3;
-- (void)setScreenCaptureFrameRate:(int)a3 captureSourceID:(id)a4;
+- (void)resetCameraToPreviewSettingsForced:(BOOL)forced;
+- (void)resumeVideoSink:(id)sink withCaptureSource:(int)source;
+- (void)screenAndCameraMixingEnable:(BOOL)enable;
+- (void)sendBiomeEventIsStarting:(BOOL)starting;
+- (void)setCFAvailabilityChange:(BOOL)change;
+- (void)setCameraPerClientRequest:(id)request;
+- (void)setCameraZoomAvailable:(BOOL)available currentZoomFactor:(double)factor maxZoomFactor:(double)zoomFactor;
+- (void)setCameraZoomFactor:(double)factor;
+- (void)setCameraZoomFactor:(double)factor withRate:(double)rate;
+- (void)setCaptureFrameRate:(int)rate;
+- (void)setCaptureSIFRFormatEnabled:(BOOL)enabled;
+- (void)setCaptureWidth:(int)width height:(int)height rate:(int)rate;
+- (void)setCaptureWidth:(int)width height:(int)height rate:(int)rate forced:(BOOL)forced;
+- (void)setFollowSystemCamera:(BOOL)camera;
+- (void)setPauseCapture:(BOOL)capture;
+- (void)setPreferCaptureFullBleed:(BOOL)bleed;
+- (void)setRemoteDeviceOrientation:(int)orientation;
+- (void)setScreenCaptureFrameRate:(int)rate captureSourceID:(id)d;
 - (void)setSystemPreferredAsLocalCamera;
 - (void)setUpDefaultAspectRatios;
 - (void)setUpImageRotationConverter;
-- (void)setViewPointCorrectionEnabled:(BOOL)a3;
+- (void)setViewPointCorrectionEnabled:(BOOL)enabled;
 - (void)setupLogFiles;
 - (void)setupStreamInputs;
-- (void)sourceFrameRateDidChange:(unsigned int)a3;
-- (void)startCaptureWithWidth:(int)a3 height:(int)a4 frameRate:(int)a5;
-- (void)startPreviewWithWidth:(int)a3 height:(int)a4 frameRate:(int)a5;
+- (void)sourceFrameRateDidChange:(unsigned int)change;
+- (void)startCaptureWithWidth:(int)width height:(int)height frameRate:(int)rate;
+- (void)startPreviewWithWidth:(int)width height:(int)height frameRate:(int)rate;
 - (void)stopCapture;
 - (void)stopPreview;
-- (void)suspendVideoSink:(id)a3 withCaptureSource:(int)a4;
-- (void)unregisterStreamInput:(id)a3;
-- (void)unregisterVideoSink:(id)a3 withCaptureSource:(int)a4;
-- (void)updateCaptureRuleForClient:(id)a3 width:(int)a4 height:(int)a5 frameRate:(float)a6;
-- (void)updateCaptureWidth:(int *)a3 height:(int *)a4 frameRate:(int *)a5 withVideoRule:(id)a6;
-- (void)updateCenterStageEnabled:(BOOL)a3 requestCaptureChange:(BOOL)a4;
-- (void)updateImageQueueFrameRate:(int)a3;
-- (void)updateLocalAspectRatios:(int)a3 localScreenAspectRatio:(CGSize)a4;
+- (void)suspendVideoSink:(id)sink withCaptureSource:(int)source;
+- (void)unregisterStreamInput:(id)input;
+- (void)unregisterVideoSink:(id)sink withCaptureSource:(int)source;
+- (void)updateCaptureRuleForClient:(id)client width:(int)width height:(int)height frameRate:(float)rate;
+- (void)updateCaptureWidth:(int *)width height:(int *)height frameRate:(int *)rate withVideoRule:(id)rule;
+- (void)updateCenterStageEnabled:(BOOL)enabled requestCaptureChange:(BOOL)change;
+- (void)updateImageQueueFrameRate:(int)rate;
+- (void)updateLocalAspectRatios:(int)ratios localScreenAspectRatio:(CGSize)ratio;
 - (void)updatePreviewState;
 - (void)updateViewPointCorrectionStatus;
 @end
@@ -168,7 +168,7 @@
   objc_sync_enter(v3);
   if (!_vcVideoCaptureServerSingleton)
   {
-    _vcVideoCaptureServerSingleton = objc_alloc_init(a1);
+    _vcVideoCaptureServerSingleton = objc_alloc_init(self);
   }
 
   objc_sync_exit(v3);
@@ -249,9 +249,9 @@
     }
 
     [v3 setupStreamInputs];
-    v10 = [VCPowerManager_DefaultManager() thermalLevel];
-    *(v3 + 102) = v10;
-    *(v3 + 101) = v10;
+    thermalLevel = [VCPowerManager_DefaultManager() thermalLevel];
+    *(v3 + 102) = thermalLevel;
+    *(v3 + 101) = thermalLevel;
     v3[428] = [+[VCDefaults sharedInstance](VCDefaults forceDisableThermal];
     notify_register_check("com.apple.system.peakpowerpressurelevel", v3 + 103);
     v11 = *(v3 + 103);
@@ -630,7 +630,7 @@ LABEL_11:
         v25 = 2112;
         v26 = v3;
         v27 = 2048;
-        v28 = self;
+        selfCopy = self;
         v6 = "VCVideoCaptureServer [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -1427,11 +1427,11 @@ uint64_t __47__VCVideoCaptureServer_registerBlocksForServer__block_invoke_9(uint
   return 0;
 }
 
-- (int)createVideoCaptureWithWidth:(int)a3 height:(int)a4 frameRate:(int)a5 useBackFacingCamera:(BOOL)a6
+- (int)createVideoCaptureWithWidth:(int)width height:(int)height frameRate:(int)rate useBackFacingCamera:(BOOL)camera
 {
-  v6 = *&a5;
-  v7 = *&a4;
-  v8 = *&a3;
+  v6 = *&rate;
+  v7 = *&height;
+  v8 = *&width;
   v35 = *MEMORY[0x1E69E9840];
   v26 = -2146893808;
   v25 = VCVideoCaptureServer_OnCaptureVideoFrame;
@@ -1505,10 +1505,10 @@ LABEL_7:
     {
       v16 = [VCAVFoundationCapture alloc];
       cinematicFramingEnabled = self->_cinematicFramingEnabled;
-      v18 = [self->_localVideoAttributes orientation];
+      orientation = [self->_localVideoAttributes orientation];
       LODWORD(v24) = self->_remoteDeviceOrientation;
       BYTE4(v23) = self->_remoteSupportsFullScreenReceive;
-      HIDWORD(v22) = v18;
+      HIDWORD(v22) = orientation;
       LODWORD(v23) = self->_defaultCapturePixelFormat;
       LOBYTE(v22) = cinematicFramingEnabled;
       avCapture = [VCAVFoundationCapture initWithCaptureServer:v16 protocolFunctions:"initWithCaptureServer:protocolFunctions:width:height:frameRate:videoSourceToken:cinematicFramingEnabled:videoOrientation:capturePixelFormat:zoomFactor:remoteSupportsFullScreenReceive:remoteDeviceOrientation:" width:self height:&v25 frameRate:v8 videoSourceToken:v7 cinematicFramingEnabled:v6 videoOrientation:self->_currentVideoSourceToken.var0.var1 capturePixelFormat:self->_cameraZoomFactor zoomFactor:v22 remoteSupportsFullScreenReceive:v23 remoteDeviceOrientation:v24];
@@ -1546,10 +1546,10 @@ LABEL_7:
   return v26;
 }
 
-- (void)handleAVCaptureError:(int)a3 domain:(id)a4
+- (void)handleAVCaptureError:(int)error domain:(id)domain
 {
-  v4 = *&a3;
-  if (a3 == -2146893807)
+  v4 = *&error;
+  if (error == -2146893807)
   {
     v6 = 32006;
   }
@@ -1559,17 +1559,17 @@ LABEL_7:
     v6 = 0;
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:a4 code:v6 userInfo:0];
+  v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:domain code:v6 userInfo:0];
   [(VCVideoCaptureServer *)self handleAVCaptureError:v4 error:v7];
 }
 
-- (void)handleAVCaptureError:(int)a3 error:(id)a4
+- (void)handleAVCaptureError:(int)error error:(id)a4
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = [a4 domain];
-  if (([v6 isEqualToString:@"avCaptureSetCameraWithUIDFail"] & 1) == 0)
+  domain = [a4 domain];
+  if (([domain isEqualToString:@"avCaptureSetCameraWithUIDFail"] & 1) == 0)
   {
-    if ([v6 isEqualToString:@"avCaptureStartPreviewFail"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"avCaptureStopFail") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"avCaptureStartCaptureFail"))
+    if ([domain isEqualToString:@"avCaptureStartPreviewFail"] & 1) != 0 || (objc_msgSend(domain, "isEqualToString:", @"avCaptureStopFail") & 1) != 0 || (objc_msgSend(domain, "isEqualToString:", @"avCaptureStartCaptureFail"))
     {
       v8 = 1;
       v7 = 1;
@@ -1592,7 +1592,7 @@ LABEL_7:
   v10 = MEMORY[0x1E6986650];
   if (ErrorLogLevelForModule >= 3 && (v11 = VRTraceErrorLogLevelToCSTR(), v12 = *v10, os_log_type_enabled(*v10, OS_LOG_TYPE_ERROR)))
   {
-    v30 = [a4 code];
+    code = [a4 code];
     appDelegate = self->appDelegate;
     *buf = 136316418;
     v37 = v11;
@@ -1601,7 +1601,7 @@ LABEL_7:
     v40 = 1024;
     v41 = 1272;
     v42 = 1024;
-    *v43 = v30;
+    *v43 = code;
     *&v43[4] = 1024;
     *&v43[6] = v8;
     *v44 = 2048;
@@ -1729,7 +1729,7 @@ LABEL_32:
     v33[2] = __51__VCVideoCaptureServer_handleAVCaptureError_error___block_invoke_2;
     v33[3] = &unk_1E85F37F0;
     v33[4] = self;
-    v33[5] = v6;
+    v33[5] = domain;
     dispatch_async(captureClientQueue, v33);
   }
 
@@ -1818,7 +1818,7 @@ uint64_t __51__VCVideoCaptureServer_handleAVCaptureError_error___block_invoke_2(
   return result;
 }
 
-- (void)handleCaptureEvent:(id)a3 subType:(id)a4
+- (void)handleCaptureEvent:(id)event subType:(id)type
 {
   v5[7] = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -1826,8 +1826,8 @@ uint64_t __51__VCVideoCaptureServer_handleAVCaptureError_error___block_invoke_2(
   v5[1] = 3221225472;
   v5[2] = __51__VCVideoCaptureServer_handleCaptureEvent_subType___block_invoke;
   v5[3] = &unk_1E85F3E30;
-  v5[4] = a3;
-  v5[5] = a4;
+  v5[4] = event;
+  v5[5] = type;
   v5[6] = self;
   dispatch_async(captureServerQueue, v5);
 }
@@ -2244,9 +2244,9 @@ void __51__VCVideoCaptureServer_handleCaptureEvent_subType___block_invoke_231(ui
   v2 = *(a1 + 32);
 }
 
-- (void)screenAndCameraMixingEnable:(BOOL)a3
+- (void)screenAndCameraMixingEnable:(BOOL)enable
 {
-  v3 = a3;
+  enableCopy = enable;
   v14 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -2261,17 +2261,17 @@ void __51__VCVideoCaptureServer_handleCaptureEvent_subType___block_invoke_231(ui
       v10 = 1024;
       v11 = 1422;
       v12 = 1024;
-      v13 = v3;
+      v13 = enableCopy;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d enabled=%d", &v6, 0x22u);
     }
   }
 
-  [+[VCSessionManager sharedInstance](VCSessionManager setScreenAndCameraMixingEnabled:"setScreenAndCameraMixingEnabled:", v3];
+  [+[VCSessionManager sharedInstance](VCSessionManager setScreenAndCameraMixingEnabled:"setScreenAndCameraMixingEnabled:", enableCopy];
 }
 
-- (void)reconnectClientLayerFront:(BOOL)a3
+- (void)reconnectClientLayerFront:(BOOL)front
 {
-  v3 = a3;
+  frontCopy = front;
   v37 = *MEMORY[0x1E69E9840];
   v5 = *(MEMORY[0x1E695F058] + 16);
   v21 = *MEMORY[0x1E695F058];
@@ -2280,7 +2280,7 @@ void __51__VCVideoCaptureServer_handleCaptureEvent_subType___block_invoke_231(ui
   v23 = 0xAAAAAAAAAAAA0100;
   v18 = 0;
   v19 = 0xAAAAAAAAAAAAAAAALL;
-  LOBYTE(v19) = a3;
+  LOBYTE(v19) = front;
   v20 = &v24;
   v6 = [(VCVideoCaptureServer *)self setLocalVideoDestination:&v18];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCVideoCaptureServer-connect layers");
@@ -2297,7 +2297,7 @@ void __51__VCVideoCaptureServer_handleCaptureEvent_subType___block_invoke_231(ui
       v29 = 1024;
       v30 = 1437;
       v31 = 1024;
-      v32 = v3;
+      v32 = frontCopy;
       v33 = 1024;
       v34 = v6;
       v35 = 1024;
@@ -2307,7 +2307,7 @@ void __51__VCVideoCaptureServer_handleCaptureEvent_subType___block_invoke_231(ui
   }
 
   v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:v6];
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v3];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:frontCopy];
   v11 = v24;
   v12 = objc_alloc(MEMORY[0x1E695DF20]);
   if (v11)
@@ -2353,16 +2353,16 @@ uint64_t __50__VCVideoCaptureServer_reconnectClientLayerFront___block_invoke_2(u
   return [v2 sendMessageAsync:"previewDidLocalVideoContextChange" arguments:v3];
 }
 
-- (void)previewVideoWidth:(int *)a3 height:(int *)a4 frameRate:(int *)a5
+- (void)previewVideoWidth:(int *)width height:(int *)height frameRate:(int *)rate
 {
   v32 = *MEMORY[0x1E69E9840];
   if (![+[VCDefaults forceHWI] sharedInstance]
   {
     *v21 = -1;
     v10 = objc_autoreleasePoolPush();
-    [+[VCVideoRuleCollectionsCamera sharedInstance](VCVideoRuleCollectionsCamera getBestFrameWidth:"getBestFrameWidth:frameHeight:frameRate:" frameHeight:a3 frameRate:a4, v21];
+    [+[VCVideoRuleCollectionsCamera sharedInstance](VCVideoRuleCollectionsCamera getBestFrameWidth:"getBestFrameWidth:frameHeight:frameRate:" frameHeight:width frameRate:height, v21];
     objc_autoreleasePoolPop(v10);
-    if (a5)
+    if (rate)
     {
       v11 = *v21;
       if (*v21 <= 5)
@@ -2375,13 +2375,13 @@ uint64_t __50__VCVideoCaptureServer_reconnectClientLayerFront___block_invoke_2(u
         v11 = 60;
       }
 
-      *a5 = v11;
+      *rate = v11;
     }
 
-    if (a3)
+    if (width)
     {
-      v12 = *a3;
-      if (*a3 <= 320)
+      v12 = *width;
+      if (*width <= 320)
       {
         v12 = 320;
       }
@@ -2391,13 +2391,13 @@ uint64_t __50__VCVideoCaptureServer_reconnectClientLayerFront___block_invoke_2(u
         v12 = 2048;
       }
 
-      *a3 = v12;
+      *width = v12;
     }
 
-    if (a4)
+    if (height)
     {
-      v13 = *a4;
-      if (*a4 <= 240)
+      v13 = *height;
+      if (*height <= 240)
       {
         v13 = 240;
       }
@@ -2407,11 +2407,11 @@ uint64_t __50__VCVideoCaptureServer_reconnectClientLayerFront___block_invoke_2(u
         v13 = 2048;
       }
 
-      *a4 = v13;
+      *height = v13;
     }
 
     currentFrameRate = +[VCHardwareSettings maxOneToOneFramerateSupported];
-    if (a5)
+    if (rate)
     {
       goto LABEL_27;
     }
@@ -2422,41 +2422,41 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (a3)
+  if (width)
   {
-    *a3 = [+[VCDefaults sharedInstance](VCDefaults forceCaptureWidth];
+    *width = [+[VCDefaults sharedInstance](VCDefaults forceCaptureWidth];
   }
 
-  if (a4)
+  if (height)
   {
-    *a4 = [+[VCDefaults sharedInstance](VCDefaults forceCaptureHeight];
+    *height = [+[VCDefaults sharedInstance](VCDefaults forceCaptureHeight];
   }
 
-  if (!a5)
+  if (!rate)
   {
     +[VCHardwareSettings maxOneToOneFramerateSupported];
     goto LABEL_31;
   }
 
-  *a5 = [+[VCDefaults sharedInstance](VCDefaults forceFramerate];
+  *rate = [+[VCDefaults sharedInstance](VCDefaults forceFramerate];
   currentFrameRate = +[VCHardwareSettings maxOneToOneFramerateSupported];
 LABEL_27:
   v14 = 0;
-  if (currentFrameRate >= *a5)
+  if (currentFrameRate >= *rate)
   {
-    currentFrameRate = *a5;
+    currentFrameRate = *rate;
   }
 
   else
   {
-    *a5 = currentFrameRate;
+    *rate = currentFrameRate;
   }
 
 LABEL_32:
   self->_bestCameraCaptureFrameRate = currentFrameRate;
-  if (a3)
+  if (width)
   {
-    if (a4)
+    if (height)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -2464,12 +2464,12 @@ LABEL_32:
         v16 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v17 = *a3;
-          v18 = *a4;
+          v17 = *width;
+          v18 = *height;
           p_currentFrameRate = &self->currentFrameRate;
           if (!v14)
           {
-            p_currentFrameRate = a5;
+            p_currentFrameRate = rate;
           }
 
           v20 = *p_currentFrameRate;
@@ -2492,7 +2492,7 @@ LABEL_32:
   }
 }
 
-- (BOOL)captureVideoWidth:(int *)a3 height:(int *)a4 frameRate:(int *)a5
+- (BOOL)captureVideoWidth:(int *)width height:(int *)height frameRate:(int *)rate
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -2504,9 +2504,9 @@ LABEL_32:
   v8[1] = 3221225472;
   v8[2] = __59__VCVideoCaptureServer_captureVideoWidth_height_frameRate___block_invoke;
   v8[3] = &unk_1E85F8C78;
-  v8[6] = a3;
-  v8[7] = a4;
-  v8[8] = a5;
+  v8[6] = width;
+  v8[7] = height;
+  v8[8] = rate;
   v8[4] = self;
   v8[5] = &v9;
   dispatch_sync(captureClientQueue, v8);
@@ -2613,24 +2613,24 @@ void __59__VCVideoCaptureServer_captureVideoWidth_height_frameRate___block_invok
   return v3;
 }
 
-- (void)populateThermalFrameRateThresholdsForCaptureSourceID:(int64_t)a3 captureConfig:(id)a4
+- (void)populateThermalFrameRateThresholdsForCaptureSourceID:(int64_t)d captureConfig:(id)config
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if ([a4 objectForKeyedSubscript:@"CaptureThermalLevelModerate"])
+  if ([config objectForKeyedSubscript:@"CaptureThermalLevelModerate"])
   {
-    if ([a4 objectForKeyedSubscript:@"CaptureThermalLevelHeavy"])
+    if ([config objectForKeyedSubscript:@"CaptureThermalLevelHeavy"])
     {
       v8[0] = &unk_1F579B268;
       v8[1] = &unk_1F579B280;
-      v9[0] = [a4 objectForKeyedSubscript:@"CaptureThermalLevelModerate"];
-      v9[1] = [a4 objectForKeyedSubscript:@"CaptureThermalLevelHeavy"];
+      v9[0] = [config objectForKeyedSubscript:@"CaptureThermalLevelModerate"];
+      v9[1] = [config objectForKeyedSubscript:@"CaptureThermalLevelHeavy"];
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_screenCaptureThermalFrameRateThresholds, "setObject:forKeyedSubscript:", v7, [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_screenCaptureThermalFrameRateThresholds, "setObject:forKeyedSubscript:", v7, [MEMORY[0x1E696AD98] numberWithInteger:d]);
     }
   }
 }
 
-- (void)setCameraZoomFactor:(double)a3
+- (void)setCameraZoomFactor:(double)factor
 {
   block[6] = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -2638,7 +2638,7 @@ void __59__VCVideoCaptureServer_captureVideoWidth_height_frameRate___block_invok
   block[1] = 3221225472;
   block[2] = __44__VCVideoCaptureServer_setCameraZoomFactor___block_invoke;
   block[3] = &unk_1E85F40E0;
-  *&block[5] = a3;
+  *&block[5] = factor;
   block[4] = self;
   dispatch_async(captureServerQueue, block);
 }
@@ -2669,7 +2669,7 @@ uint64_t __44__VCVideoCaptureServer_setCameraZoomFactor___block_invoke(uint64_t 
   return [*(*(a1 + 32) + 304) setCameraZoomFactor:?];
 }
 
-- (void)setCameraZoomFactor:(double)a3 withRate:(double)a4
+- (void)setCameraZoomFactor:(double)factor withRate:(double)rate
 {
   v5[7] = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -2677,8 +2677,8 @@ uint64_t __44__VCVideoCaptureServer_setCameraZoomFactor___block_invoke(uint64_t 
   v5[1] = 3221225472;
   v5[2] = __53__VCVideoCaptureServer_setCameraZoomFactor_withRate___block_invoke;
   v5[3] = &unk_1E85F4090;
-  *&v5[5] = a3;
-  *&v5[6] = a4;
+  *&v5[5] = factor;
+  *&v5[6] = rate;
   v5[4] = self;
   dispatch_async(captureServerQueue, v5);
 }
@@ -2711,7 +2711,7 @@ uint64_t __53__VCVideoCaptureServer_setCameraZoomFactor_withRate___block_invoke(
   return [*(*(a1 + 4) + 304) setCameraZoomFactor:a1[5] withRate:a1[6]];
 }
 
-- (void)updateCenterStageEnabled:(BOOL)a3 requestCaptureChange:(BOOL)a4
+- (void)updateCenterStageEnabled:(BOOL)enabled requestCaptureChange:(BOOL)change
 {
   v8 = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -2720,8 +2720,8 @@ uint64_t __53__VCVideoCaptureServer_setCameraZoomFactor_withRate___block_invoke(
   block[2] = __70__VCVideoCaptureServer_updateCenterStageEnabled_requestCaptureChange___block_invoke;
   block[3] = &unk_1E85F41F8;
   block[4] = self;
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  changeCopy = change;
   dispatch_async(captureServerQueue, block);
 }
 
@@ -2741,7 +2741,7 @@ uint64_t __70__VCVideoCaptureServer_updateCenterStageEnabled_requestCaptureChang
   return result;
 }
 
-- (void)setFollowSystemCamera:(BOOL)a3
+- (void)setFollowSystemCamera:(BOOL)camera
 {
   v6 = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -2750,7 +2750,7 @@ uint64_t __70__VCVideoCaptureServer_updateCenterStageEnabled_requestCaptureChang
   block[2] = __46__VCVideoCaptureServer_setFollowSystemCamera___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  cameraCopy = camera;
   dispatch_async(captureServerQueue, block);
 }
 
@@ -2855,7 +2855,7 @@ uint64_t __VCVideoCaptureServer_ApplyPressureLevelChanges_block_invoke(uint64_t 
   return [v4 notifyThermalChangeForClients:v5];
 }
 
-- (int)getScreenFrameRateForThermalLevel:(int)a3
+- (int)getScreenFrameRateForThermalLevel:(int)level
 {
   v37 = *MEMORY[0x1E69E9840];
   if (!self->_isScreenCaptureForScreenShare)
@@ -2881,7 +2881,7 @@ uint64_t __VCVideoCaptureServer_ApplyPressureLevelChanges_block_invoke(uint64_t 
       v28 = 1024;
       v29 = 2056;
       v30 = 1024;
-      *v31 = a3;
+      *v31 = level;
       v16 = "VCVideoCaptureServer [%s] %s:%d Ignoring thermalLevel=%d for this capture source";
       v17 = v15;
       v18 = 34;
@@ -2920,9 +2920,9 @@ uint64_t __VCVideoCaptureServer_ApplyPressureLevelChanges_block_invoke(uint64_t 
       v30 = 2112;
       *v31 = v8;
       *&v31[8] = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 1024;
-      v34 = a3;
+      levelCopy = level;
       v16 = "VCVideoCaptureServer [%s] %s:%d %@(%p) Ignoring thermalLevel=%d for this capture source";
       v17 = v22;
       v18 = 54;
@@ -2932,7 +2932,7 @@ uint64_t __VCVideoCaptureServer_ApplyPressureLevelChanges_block_invoke(uint64_t 
     return 60;
   }
 
-  if (a3 == 20)
+  if (level == 20)
   {
     v5 = 15;
   }
@@ -2942,17 +2942,17 @@ uint64_t __VCVideoCaptureServer_ApplyPressureLevelChanges_block_invoke(uint64_t 
     v5 = 0;
   }
 
-  if (((1 << a3) & 0x401) != 0)
+  if (((1 << level) & 0x401) != 0)
   {
     v5 = 60;
   }
 
-  if (((1 << a3) & 0x4010040000000) != 0)
+  if (((1 << level) & 0x4010040000000) != 0)
   {
     v5 = 5;
   }
 
-  if (a3 <= 0x32)
+  if (level <= 0x32)
   {
     v6 = v5;
   }
@@ -2979,7 +2979,7 @@ uint64_t __VCVideoCaptureServer_ApplyPressureLevelChanges_block_invoke(uint64_t 
         v30 = 1024;
         *v31 = v6;
         *&v31[4] = 1024;
-        *&v31[6] = a3;
+        *&v31[6] = level;
         v11 = "VCVideoCaptureServer [%s] %s:%d Screen framerate=%d for thermalLevel=%d";
         v12 = v10;
         v13 = 40;
@@ -3016,11 +3016,11 @@ LABEL_28:
         v30 = 2112;
         *v31 = v7;
         *&v31[8] = 2048;
-        v32 = self;
+        selfCopy2 = self;
         v33 = 1024;
-        v34 = v6;
+        levelCopy = v6;
         v35 = 1024;
-        v36 = a3;
+        levelCopy2 = level;
         v11 = "VCVideoCaptureServer [%s] %s:%d %@(%p) Screen framerate=%d for thermalLevel=%d";
         v12 = v20;
         v13 = 60;
@@ -3032,16 +3032,16 @@ LABEL_28:
   return v6;
 }
 
-- (int)screenFrameRateForThermalLevel:(int)a3 configuredFrameRate:(int)a4 captureSourceID:(id)a5
+- (int)screenFrameRateForThermalLevel:(int)level configuredFrameRate:(int)rate captureSourceID:(id)d
 {
-  v6 = a4;
+  rateCopy = rate;
   v36 = *MEMORY[0x1E69E9840];
-  if (a3 <= 39)
+  if (level <= 39)
   {
-    if (a3 == 20)
+    if (level == 20)
     {
-      v13 = [(NSMutableDictionary *)self->_screenCaptureThermalFrameRateThresholds objectForKeyedSubscript:a5];
-      v9 = v6;
+      v13 = [(NSMutableDictionary *)self->_screenCaptureThermalFrameRateThresholds objectForKeyedSubscript:d];
+      rateCopy3 = rateCopy;
       if (!v13)
       {
         goto LABEL_12;
@@ -3052,15 +3052,15 @@ LABEL_28:
       goto LABEL_11;
     }
 
-    v9 = a4;
-    if (a3 != 30)
+    rateCopy3 = rate;
+    if (level != 30)
     {
       goto LABEL_12;
     }
 
 LABEL_7:
-    v10 = [(NSMutableDictionary *)self->_screenCaptureThermalFrameRateThresholds objectForKeyedSubscript:a5];
-    v9 = v6;
+    v10 = [(NSMutableDictionary *)self->_screenCaptureThermalFrameRateThresholds objectForKeyedSubscript:d];
+    rateCopy3 = rateCopy;
     if (!v10)
     {
       goto LABEL_12;
@@ -3069,25 +3069,25 @@ LABEL_7:
     p_screenCaptureThermalFrameRateThresholds = &self->_screenCaptureThermalFrameRateThresholds;
     v12 = &unk_1F579B280;
 LABEL_11:
-    v9 = [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](*p_screenCaptureThermalFrameRateThresholds objectForKeyedSubscript:{a5), "objectForKeyedSubscript:", v12), "intValue"}];
+    rateCopy3 = [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](*p_screenCaptureThermalFrameRateThresholds objectForKeyedSubscript:{d), "objectForKeyedSubscript:", v12), "intValue"}];
     goto LABEL_12;
   }
 
-  if (a3 == 40)
+  if (level == 40)
   {
     goto LABEL_7;
   }
 
-  v9 = a4;
-  if (a3 == 50)
+  rateCopy3 = rate;
+  if (level == 50)
   {
     goto LABEL_7;
   }
 
 LABEL_12:
-  if (v9 < v6)
+  if (rateCopy3 < rateCopy)
   {
-    v6 = v9;
+    rateCopy = rateCopy3;
   }
 
   if (objc_opt_class() == self)
@@ -3105,9 +3105,9 @@ LABEL_12:
         v27 = 1024;
         v28 = 2100;
         v29 = 1024;
-        *v30 = v6;
+        *v30 = rateCopy;
         *&v30[4] = 1024;
-        *&v30[6] = a3;
+        *&v30[6] = level;
         v17 = "VCVideoCaptureServer [%s] %s:%d Screen framerate=%d for thermalLevel=%d";
         v18 = v16;
         v19 = 40;
@@ -3144,11 +3144,11 @@ LABEL_24:
         v29 = 2112;
         *v30 = v14;
         *&v30[8] = 2048;
-        v31 = self;
+        selfCopy = self;
         v32 = 1024;
-        v33 = v6;
+        v33 = rateCopy;
         v34 = 1024;
-        v35 = a3;
+        levelCopy = level;
         v17 = "VCVideoCaptureServer [%s] %s:%d %@(%p) Screen framerate=%d for thermalLevel=%d";
         v18 = v21;
         v19 = 60;
@@ -3157,15 +3157,15 @@ LABEL_24:
     }
   }
 
-  return v6;
+  return rateCopy;
 }
 
-- (int)getFrameRateForThermalLevel:(int)a3
+- (int)getFrameRateForThermalLevel:(int)level
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a3 > 29)
+  if (level > 29)
   {
-    if (a3 == 30 || a3 == 40 || a3 == 50)
+    if (level == 30 || level == 40 || level == 50)
     {
       maxFrameRate = 5;
     }
@@ -3176,9 +3176,9 @@ LABEL_24:
     }
   }
 
-  else if (a3)
+  else if (level)
   {
-    if (a3 == 20)
+    if (level == 20)
     {
       v5 = 15;
     }
@@ -3188,7 +3188,7 @@ LABEL_24:
       v5 = 0;
     }
 
-    if (a3 == 10)
+    if (level == 10)
     {
       maxFrameRate = 30;
     }
@@ -3233,7 +3233,7 @@ LABEL_24:
         v25 = 1024;
         *v26 = v9;
         *&v26[4] = 1024;
-        *&v26[6] = a3;
+        *&v26[6] = level;
         v13 = "VCVideoCaptureServer [%s] %s:%d Framerate is %d for thermalLevel:%d";
         v14 = v12;
         v15 = 40;
@@ -3270,11 +3270,11 @@ LABEL_28:
         v25 = 2112;
         *v26 = v10;
         *&v26[8] = 2048;
-        v27 = self;
+        selfCopy = self;
         v28 = 1024;
         v29 = v9;
         v30 = 1024;
-        v31 = a3;
+        levelCopy = level;
         v13 = "VCVideoCaptureServer [%s] %s:%d %@(%p) Framerate is %d for thermalLevel:%d";
         v14 = v17;
         v15 = 60;
@@ -3286,14 +3286,14 @@ LABEL_28:
   return v9;
 }
 
-- (int)getFrameRateForPeakPowerLevel:(int)a3
+- (int)getFrameRateForPeakPowerLevel:(int)level
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a3 <= 19)
+  if (level <= 19)
   {
-    if (a3)
+    if (level)
     {
-      if (a3 == 10)
+      if (level == 10)
       {
         maxFrameRate = 30;
       }
@@ -3312,7 +3312,7 @@ LABEL_28:
 
   else
   {
-    if (a3 == 40)
+    if (level == 40)
     {
       v5 = 5;
     }
@@ -3322,7 +3322,7 @@ LABEL_28:
       v5 = 0;
     }
 
-    if (a3 == 30)
+    if (level == 30)
     {
       v6 = 5;
     }
@@ -3332,7 +3332,7 @@ LABEL_28:
       v6 = v5;
     }
 
-    if (a3 == 20)
+    if (level == 20)
     {
       maxFrameRate = 15;
     }
@@ -3372,7 +3372,7 @@ LABEL_28:
         v26 = 1024;
         *v27 = v10;
         *&v27[4] = 1024;
-        *&v27[6] = a3;
+        *&v27[6] = level;
         v14 = "VCVideoCaptureServer [%s] %s:%d Framerate is %d for peakPowerLevel:%d";
         v15 = v13;
         v16 = 40;
@@ -3409,11 +3409,11 @@ LABEL_29:
         v26 = 2112;
         *v27 = v11;
         *&v27[8] = 2048;
-        v28 = self;
+        selfCopy = self;
         v29 = 1024;
         v30 = v10;
         v31 = 1024;
-        v32 = a3;
+        levelCopy = level;
         v14 = "VCVideoCaptureServer [%s] %s:%d %@(%p) Framerate is %d for peakPowerLevel:%d";
         v15 = v18;
         v16 = 60;
@@ -3425,10 +3425,10 @@ LABEL_29:
   return v10;
 }
 
-- (int)getFrameRateForThermalLevel:(int)a3 peakPowerPressure:(int)a4
+- (int)getFrameRateForThermalLevel:(int)level peakPowerPressure:(int)pressure
 {
-  v4 = *&a3;
-  v6 = [(VCVideoCaptureServer *)self getFrameRateForPeakPowerLevel:*&a4];
+  v4 = *&level;
+  v6 = [(VCVideoCaptureServer *)self getFrameRateForPeakPowerLevel:*&pressure];
   result = [(VCVideoCaptureServer *)self getFrameRateForThermalLevel:v4];
   if (v6 < result)
   {
@@ -3438,7 +3438,7 @@ LABEL_29:
   return result;
 }
 
-- (void)notifyThermalChangeForClients:(id)a3
+- (void)notifyThermalChangeForClients:(id)clients
 {
   block[6] = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -3447,7 +3447,7 @@ LABEL_29:
   block[2] = __54__VCVideoCaptureServer_notifyThermalChangeForClients___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = clients;
   dispatch_async(captureClientQueue, block);
 }
 
@@ -3489,7 +3489,7 @@ uint64_t __54__VCVideoCaptureServer_notifyThermalChangeForClients___block_invoke
   return result;
 }
 
-- (void)notifyCameraDidChangeAvailability:(id)a3 available:(BOOL)a4
+- (void)notifyCameraDidChangeAvailability:(id)availability available:(BOOL)available
 {
   v7 = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -3497,8 +3497,8 @@ uint64_t __54__VCVideoCaptureServer_notifyThermalChangeForClients___block_invoke
   block[1] = 3221225472;
   block[2] = __68__VCVideoCaptureServer_notifyCameraDidChangeAvailability_available___block_invoke;
   block[3] = &unk_1E85F37A0;
-  block[4] = a3;
-  v6 = a4;
+  block[4] = availability;
+  availableCopy = available;
   dispatch_async(captureClientQueue, block);
 }
 
@@ -3539,7 +3539,7 @@ uint64_t __68__VCVideoCaptureServer_notifyCameraDidChangeAvailability_available_
   return result;
 }
 
-- (void)notifyFrameRateBeingThrottledForClients:(id)a3 newFrameRate:(int)a4 thermalLevelDidChange:(BOOL)a5 powerLevelDidChange:(BOOL)a6
+- (void)notifyFrameRateBeingThrottledForClients:(id)clients newFrameRate:(int)rate thermalLevelDidChange:(BOOL)change powerLevelDidChange:(BOOL)didChange
 {
   v11 = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -3547,10 +3547,10 @@ uint64_t __68__VCVideoCaptureServer_notifyCameraDidChangeAvailability_available_
   block[1] = 3221225472;
   block[2] = __119__VCVideoCaptureServer_notifyFrameRateBeingThrottledForClients_newFrameRate_thermalLevelDidChange_powerLevelDidChange___block_invoke;
   block[3] = &unk_1E85F7440;
-  block[4] = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  block[4] = clients;
+  rateCopy = rate;
+  changeCopy = change;
+  didChangeCopy = didChange;
   dispatch_async(captureClientQueue, block);
 }
 
@@ -3597,7 +3597,7 @@ uint64_t __119__VCVideoCaptureServer_notifyFrameRateBeingThrottledForClients_new
   return result;
 }
 
-- (void)onCaptureScreenFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 orientation:(int)a5
+- (void)onCaptureScreenFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time orientation:(int)orientation
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = FigSampleBufferRetain();
@@ -3606,10 +3606,10 @@ uint64_t __119__VCVideoCaptureServer_notifyFrameRateBeingThrottledForClients_new
   block[1] = 3221225472;
   block[2] = __67__VCVideoCaptureServer_onCaptureScreenFrame_frameTime_orientation___block_invoke;
   block[3] = &unk_1E85F8CA0;
-  v11 = a5;
+  orientationCopy = orientation;
   block[4] = self;
   block[5] = v8;
-  v12 = *a4;
+  v12 = *time;
   dispatch_async(captureClientQueue, block);
   if (!self->_forceDisableThermal)
   {
@@ -3662,7 +3662,7 @@ uint64_t __67__VCVideoCaptureServer_onCaptureScreenFrame_frameTime_orientation__
   return FigSampleBufferRelease();
 }
 
-- (void)changeCameraToPendingSettingsWithReset:(BOOL)a3
+- (void)changeCameraToPendingSettingsWithReset:(BOOL)reset
 {
   v6 = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -3671,7 +3671,7 @@ uint64_t __67__VCVideoCaptureServer_onCaptureScreenFrame_frameTime_orientation__
   block[2] = __63__VCVideoCaptureServer_changeCameraToPendingSettingsWithReset___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  resetCopy = reset;
   dispatch_async(captureServerQueue, block);
 }
 
@@ -3842,45 +3842,45 @@ void __38__VCVideoCaptureServer_canStopPreview__block_invoke_2(uint64_t a1, void
   }
 }
 
-- (BOOL)registerCaptureConfig:(id)a3 forSource:(int)a4
+- (BOOL)registerCaptureConfig:(id)config forSource:(int)source
 {
-  if ((a4 - 7) < 3 || a4 == 5)
+  if ((source - 7) < 3 || source == 5)
   {
 
-    return [(VCVideoCaptureServer *)self registerSystemAudioConfig:a3 forSource:?];
+    return [(VCVideoCaptureServer *)self registerSystemAudioConfig:config forSource:?];
   }
 
   else
   {
-    if (a4 == 1)
+    if (source == 1)
     {
-      [(VCVideoCaptureServer *)self registerScreenVideoConfig:a3 forSource:v4, v5];
+      [(VCVideoCaptureServer *)self registerScreenVideoConfig:config forSource:v4, v5];
     }
 
     return 1;
   }
 }
 
-- (BOOL)deregisterCaptureConfig:(id)a3 forSource:(int)a4
+- (BOOL)deregisterCaptureConfig:(id)config forSource:(int)source
 {
-  if ((a4 - 7) < 3 || a4 == 5)
+  if ((source - 7) < 3 || source == 5)
   {
 
-    return [(VCVideoCaptureServer *)self deregisterSystemAudioConfig:a3 forSource:?];
+    return [(VCVideoCaptureServer *)self deregisterSystemAudioConfig:config forSource:?];
   }
 
   else
   {
-    if (a4 == 1)
+    if (source == 1)
     {
-      [(VCVideoCaptureServer *)self deregisterScreenVideoConfig:a3 forSource:v4, v5];
+      [(VCVideoCaptureServer *)self deregisterScreenVideoConfig:config forSource:v4, v5];
     }
 
     return 1;
   }
 }
 
-- (void)registerCaptureClientForScreenShare:(id)a3
+- (void)registerCaptureClientForScreenShare:(id)share
 {
   block[6] = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -3888,7 +3888,7 @@ void __38__VCVideoCaptureServer_canStopPreview__block_invoke_2(uint64_t a1, void
   block[1] = 3221225472;
   block[2] = __60__VCVideoCaptureServer_registerCaptureClientForScreenShare___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = share;
   block[5] = self;
   dispatch_async(captureClientQueue, block);
 }
@@ -3945,10 +3945,10 @@ void __60__VCVideoCaptureServer_registerCaptureClientForScreenShare___block_invo
   }
 }
 
-- (void)deregisterCaptureClientForScreenShare:(id)a3
+- (void)deregisterCaptureClientForScreenShare:(id)share
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (share)
   {
     captureClientQueue = self->captureClientQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -3956,7 +3956,7 @@ void __60__VCVideoCaptureServer_registerCaptureClientForScreenShare___block_invo
     block[2] = __62__VCVideoCaptureServer_deregisterCaptureClientForScreenShare___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = share;
     dispatch_async(captureClientQueue, block);
   }
 
@@ -3998,7 +3998,7 @@ uint64_t __62__VCVideoCaptureServer_deregisterCaptureClientForScreenShare___bloc
   return result;
 }
 
-- (void)registerScreenVideoConfig:(id)a3 forSource:(int)a4
+- (void)registerScreenVideoConfig:(id)config forSource:(int)source
 {
   block[6] = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -4006,7 +4006,7 @@ uint64_t __62__VCVideoCaptureServer_deregisterCaptureClientForScreenShare___bloc
   block[1] = 3221225472;
   block[2] = __60__VCVideoCaptureServer_registerScreenVideoConfig_forSource___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = config;
   block[5] = self;
   dispatch_async(captureClientQueue, block);
 }
@@ -4083,13 +4083,13 @@ uint64_t __60__VCVideoCaptureServer_registerScreenVideoConfig_forSource___block_
   return result;
 }
 
-- (void)deregisterScreenVideoConfig:(id)a3 forSource:(int)a4
+- (void)deregisterScreenVideoConfig:(id)config forSource:(int)source
 {
   v20 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     __str[0] = 0;
-    v5 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+    v5 = config ? [objc_msgSend(config "description")] : "<nil>";
     asprintf(__str, "Deregister screen config=%s", v5);
     if (__str[0])
     {
@@ -4129,8 +4129,8 @@ uint64_t __60__VCVideoCaptureServer_registerScreenVideoConfig_forSource___block_
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  *v17 = [objc_msgSend(a3 objectForKeyedSubscript:{@"CaptureSourceID", "integerValue"}];
-  v10 = [a3 objectForKeyedSubscript:@"Client"];
+  *v17 = [objc_msgSend(config objectForKeyedSubscript:{@"CaptureSourceID", "integerValue"}];
+  v10 = [config objectForKeyedSubscript:@"Client"];
   __str[0] = 0;
   __str[1] = __str;
   __str[2] = 0x2020000000;
@@ -4169,7 +4169,7 @@ void __62__VCVideoCaptureServer_deregisterScreenVideoConfig_forSource___block_in
   }
 }
 
-- (BOOL)registerSystemAudioConfig:(id)a3 forSource:(int)a4
+- (BOOL)registerSystemAudioConfig:(id)config forSource:(int)source
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -4181,8 +4181,8 @@ void __62__VCVideoCaptureServer_deregisterScreenVideoConfig_forSource___block_in
   block[1] = 3221225472;
   block[2] = __60__VCVideoCaptureServer_registerSystemAudioConfig_forSource___block_invoke;
   block[3] = &unk_1E85F6180;
-  v8 = a4;
-  block[4] = a3;
+  sourceCopy = source;
+  block[4] = config;
   block[5] = self;
   block[6] = &v9;
   dispatch_sync(captureClientQueue, block);
@@ -4267,7 +4267,7 @@ void __60__VCVideoCaptureServer_registerSystemAudioConfig_forSource___block_invo
   }
 }
 
-- (BOOL)deregisterSystemAudioConfig:(id)a3 forSource:(int)a4
+- (BOOL)deregisterSystemAudioConfig:(id)config forSource:(int)source
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -4279,8 +4279,8 @@ void __60__VCVideoCaptureServer_registerSystemAudioConfig_forSource___block_invo
   block[1] = 3221225472;
   block[2] = __62__VCVideoCaptureServer_deregisterSystemAudioConfig_forSource___block_invoke;
   block[3] = &unk_1E85F6180;
-  v8 = a4;
-  block[4] = a3;
+  sourceCopy = source;
+  block[4] = config;
   block[5] = self;
   block[6] = &v9;
   dispatch_sync(captureClientQueue, block);
@@ -4352,9 +4352,9 @@ void __62__VCVideoCaptureServer_deregisterSystemAudioConfig_forSource___block_in
   }
 }
 
-- (void)dispatchedStartSystemAudioForSource:(int)a3
+- (void)dispatchedStartSystemAudioForSource:(int)source
 {
-  v3 = *&a3;
+  v3 = *&source;
   v28 = *MEMORY[0x1E69E9840];
   v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_systemAudioSourceToClients, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:?]);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -4407,9 +4407,9 @@ void __62__VCVideoCaptureServer_deregisterSystemAudioConfig_forSource___block_in
   }
 }
 
-- (void)dispatchedStopSystemAudioForSource:(int)a3
+- (void)dispatchedStopSystemAudioForSource:(int)source
 {
-  v3 = *&a3;
+  v3 = *&source;
   v27 = *MEMORY[0x1E69E9840];
   v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_systemAudioSourceToClients, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:?]);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -4462,7 +4462,7 @@ void __62__VCVideoCaptureServer_deregisterSystemAudioConfig_forSource___block_in
   }
 }
 
-- (void)dispatchedUpdateSystemAudioConfigTapTypeForClientKey:(id)a3 forSource:(int)a4
+- (void)dispatchedUpdateSystemAudioConfigTapTypeForClientKey:(id)key forSource:(int)source
 {
   v33 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -4481,7 +4481,7 @@ void __62__VCVideoCaptureServer_deregisterSystemAudioConfig_forSource___block_in
     }
   }
 
-  if (a4 == 5)
+  if (source == 5)
   {
     v32 = 0;
     v30 = 0u;
@@ -4489,7 +4489,7 @@ void __62__VCVideoCaptureServer_deregisterSystemAudioConfig_forSource___block_in
     v28 = 0u;
     v29 = 0u;
     memset(buf, 0, sizeof(buf));
-    v9 = [(NSMutableDictionary *)self->_systemAudioCaptureConfig objectForKeyedSubscript:a3];
+    v9 = [(NSMutableDictionary *)self->_systemAudioCaptureConfig objectForKeyedSubscript:key];
     [objc_msgSend(v9 objectForKeyedSubscript:{@"SystemAudioCaptureConfig", "getValue:", buf}];
     [v9 setObject:0 forKeyedSubscript:@"SystemAudioCaptureConfigExcludedPids"];
     v10 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_screenShareCaptureConfig objectForKeyedSubscript:{@"ScreenCaptureIsWindowed", "BOOLValue"}];
@@ -4550,7 +4550,7 @@ void __62__VCVideoCaptureServer_deregisterSystemAudioConfig_forSource___block_in
   }
 }
 
-- (BOOL)dispatchedStartSystemAudioForClientKey:(id)a3 forSource:(int)a4
+- (BOOL)dispatchedStartSystemAudioForClientKey:(id)key forSource:(int)source
 {
   v42 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -4566,29 +4566,29 @@ void __62__VCVideoCaptureServer_deregisterSystemAudioConfig_forSource___block_in
       v38 = 1024;
       v39 = 2592;
       v40 = 2112;
-      v41 = a3;
+      keyCopy2 = key;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d clientKey=%@", buf, 0x26u);
     }
   }
 
-  if ([(NSMutableDictionary *)self->_systemAudioCapture objectForKeyedSubscript:a3])
+  if ([(NSMutableDictionary *)self->_systemAudioCapture objectForKeyedSubscript:key])
   {
-    [(VCVideoCaptureServer *)a3 dispatchedStartSystemAudioForClientKey:buf forSource:&v34 + 7, v9, v10, v11, v12, v13, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34];
+    [(VCVideoCaptureServer *)key dispatchedStartSystemAudioForClientKey:buf forSource:&v34 + 7, v9, v10, v11, v12, v13, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34];
 LABEL_24:
     v16 = *buf;
     v21 = HIBYTE(v34);
     goto LABEL_15;
   }
 
-  if (![(NSMutableDictionary *)self->_systemAudioCaptureConfig objectForKeyedSubscript:a3])
+  if (![(NSMutableDictionary *)self->_systemAudioCaptureConfig objectForKeyedSubscript:key])
   {
     [VCVideoCaptureServer dispatchedStartSystemAudioForClientKey:forSource:];
     goto LABEL_24;
   }
 
-  v14 = [(NSMutableDictionary *)self->_systemAudioCaptureConfig objectForKeyedSubscript:a3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  v14 = [(NSMutableDictionary *)self->_systemAudioCaptureConfig objectForKeyedSubscript:key, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   [objc_msgSend(v14 objectForKeyedSubscript:{@"SystemAudioCaptureConfig", "getValue:", &v23}];
-  if (a4 == 5 && [-[NSMutableDictionary objectForKeyedSubscript:](self->_screenShareCaptureConfig objectForKeyedSubscript:{@"ShouldSynchronizeSystemAudioStartWithAVCScreenCapture", "BOOLValue"}] && !self->_isScreenCaptureForScreenShare)
+  if (source == 5 && [-[NSMutableDictionary objectForKeyedSubscript:](self->_screenShareCaptureConfig objectForKeyedSubscript:{@"ShouldSynchronizeSystemAudioStartWithAVCScreenCapture", "BOOLValue"}] && !self->_isScreenCaptureForScreenShare)
   {
     [VCVideoCaptureServer dispatchedStartSystemAudioForClientKey:forSource:];
     goto LABEL_24;
@@ -4603,9 +4603,9 @@ LABEL_24:
   }
 
   v16 = v15;
-  v17 = [(VCSystemAudioCapture *)v15 start];
+  start = [(VCSystemAudioCapture *)v15 start];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-  if (v17)
+  if (start)
   {
     if (ErrorLogLevelForModule >= 7)
     {
@@ -4620,12 +4620,12 @@ LABEL_24:
         v38 = 1024;
         v39 = 2615;
         v40 = 2112;
-        v41 = a3;
+        keyCopy2 = key;
         _os_log_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d System audio capture started for clientKey=%@.", buf, 0x26u);
       }
     }
 
-    [(NSMutableDictionary *)self->_systemAudioCapture setObject:v16 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)self->_systemAudioCapture setObject:v16 forKeyedSubscript:key];
     v21 = 1;
   }
 
@@ -4648,7 +4648,7 @@ LABEL_15:
   return v21;
 }
 
-- (BOOL)dispatchedStopSystemAudioForClientKey:(id)a3 forSource:(int)a4
+- (BOOL)dispatchedStopSystemAudioForClientKey:(id)key forSource:(int)source
 {
   *&v23[13] = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -4666,19 +4666,19 @@ LABEL_15:
       v20 = 1024;
       v21 = 2623;
       v22 = 2112;
-      *v23 = a3;
+      *v23 = key;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d clientKey=%@", &v16, 0x26u);
     }
   }
 
-  v11 = [(NSMutableDictionary *)self->_systemAudioCapture objectForKeyedSubscript:a3];
-  if (a4 == 5 && [-[NSMutableDictionary objectForKeyedSubscript:](self->_screenShareCaptureConfig objectForKeyedSubscript:{@"ShouldSynchronizeSystemAudioStartWithAVCScreenCapture", "BOOLValue"}])
+  v11 = [(NSMutableDictionary *)self->_systemAudioCapture objectForKeyedSubscript:key];
+  if (source == 5 && [-[NSMutableDictionary objectForKeyedSubscript:](self->_screenShareCaptureConfig objectForKeyedSubscript:{@"ShouldSynchronizeSystemAudioStartWithAVCScreenCapture", "BOOLValue"}])
   {
     if (!v11)
     {
       [VCVideoCaptureServer dispatchedStopSystemAudioForClientKey:? forSource:?];
 LABEL_15:
-      v12 = v16;
+      stop = v16;
       goto LABEL_10;
     }
   }
@@ -4689,7 +4689,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v12 = [v11 stop];
+  stop = [v11 stop];
 LABEL_10:
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -4704,15 +4704,15 @@ LABEL_10:
       v20 = 1024;
       v21 = 2635;
       v22 = 1024;
-      *v23 = v12;
+      *v23 = stop;
       v23[2] = 2112;
-      *&v23[3] = a3;
+      *&v23[3] = key;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d System audio capture didStop=%d for clientKey=%@.", &v16, 0x2Cu);
     }
   }
 
-  [(NSMutableDictionary *)self->_systemAudioCapture setObject:0 forKeyedSubscript:a3];
-  return v12;
+  [(NSMutableDictionary *)self->_systemAudioCapture setObject:0 forKeyedSubscript:key];
+  return stop;
 }
 
 - (__CFDictionary)copyCameraColorInfo
@@ -4750,7 +4750,7 @@ uint64_t __43__VCVideoCaptureServer_copyCameraColorInfo__block_invoke(uint64_t a
   return result;
 }
 
-- (BOOL)registerForFrames:(id)a3
+- (BOOL)registerForFrames:(id)frames
 {
   v12 = *MEMORY[0x1E69E9840];
   currentWidth = self->currentWidth;
@@ -4767,19 +4767,19 @@ uint64_t __43__VCVideoCaptureServer_copyCameraColorInfo__block_invoke(uint64_t a
     currentFrameRate = v9;
   }
 
-  return [(VCVideoCaptureServer *)self registerForVideoFramesFromSource:3 withClient:a3 width:currentWidth height:currentHeight frameRate:currentFrameRate];
+  return [(VCVideoCaptureServer *)self registerForVideoFramesFromSource:3 withClient:frames width:currentWidth height:currentHeight frameRate:currentFrameRate];
 }
 
-- (BOOL)registerForVideoFramesFromSource:(int)a3 withClient:(id)a4 width:(int)a5 height:(int)a6 frameRate:(int)a7
+- (BOOL)registerForVideoFramesFromSource:(int)source withClient:(id)client width:(int)width height:(int)height frameRate:(int)rate
 {
-  v7 = *&a7;
-  v8 = *&a6;
-  v9 = *&a3;
+  v7 = *&rate;
+  v8 = *&height;
+  v9 = *&source;
   v13[14] = *MEMORY[0x1E69E9840];
-  v13[0] = a4;
+  v13[0] = client;
   v12[0] = @"Client";
   v12[1] = @"VideoWidth";
-  v13[1] = [MEMORY[0x1E696AD98] numberWithInt:*&a5];
+  v13[1] = [MEMORY[0x1E696AD98] numberWithInt:*&width];
   v12[2] = @"VideoHeight";
   v13[2] = [MEMORY[0x1E696AD98] numberWithInt:v8];
   v12[3] = @"FrameRate";
@@ -4807,7 +4807,7 @@ uint64_t __43__VCVideoCaptureServer_copyCameraColorInfo__block_invoke(uint64_t a
   return -[VCVideoCaptureServer registerForVideoFramesFromSource:sourceConfig:](self, "registerForVideoFramesFromSource:sourceConfig:", v9, [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:14]);
 }
 
-- (BOOL)setupScreenCaptureForSource:(int)a3 config:(id)a4
+- (BOOL)setupScreenCaptureForSource:(int)source config:(id)config
 {
   v23 = *MEMORY[0x1E69E9840];
   if (self->_screenCapture)
@@ -4837,7 +4837,7 @@ uint64_t __43__VCVideoCaptureServer_copyCameraColorInfo__block_invoke(uint64_t a
   else
   {
     v14 = VCVideoCaptureServer_OnCaptureVideoFrame;
-    v9 = [[VCScreenCapture alloc] initWithCaptureServer:self protocolFunctions:&v14 sourceConfig:a4];
+    v9 = [[VCScreenCapture alloc] initWithCaptureServer:self protocolFunctions:&v14 sourceConfig:config];
     self->_screenCapture = v9;
     v8 = v9 != 0;
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -4869,7 +4869,7 @@ uint64_t __43__VCVideoCaptureServer_copyCameraColorInfo__block_invoke(uint64_t a
   return v8;
 }
 
-- (void)updateCaptureRuleForClient:(id)a3 width:(int)a4 height:(int)a5 frameRate:(float)a6
+- (void)updateCaptureRuleForClient:(id)client width:(int)width height:(int)height frameRate:(float)rate
 {
   v11 = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -4878,24 +4878,24 @@ uint64_t __43__VCVideoCaptureServer_copyCameraColorInfo__block_invoke(uint64_t a
   block[2] = __74__VCVideoCaptureServer_updateCaptureRuleForClient_width_height_frameRate___block_invoke;
   block[3] = &unk_1E85F7018;
   block[4] = self;
-  block[5] = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  block[5] = client;
+  widthCopy = width;
+  heightCopy = height;
+  rateCopy = rate;
   dispatch_async(captureClientQueue, block);
 }
 
-- (BOOL)registerForVideoFramesFromSource:(int)a3 sourceConfig:(id)a4
+- (BOOL)registerForVideoFramesFromSource:(int)source sourceConfig:(id)config
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (a4 && (v7 = [a4 objectForKeyedSubscript:@"Client"]) != 0)
+  if (config && (v7 = [config objectForKeyedSubscript:@"Client"]) != 0)
   {
     v8 = v7;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v32 = 0;
       v20 = v8;
-      asprintf(&v32, "source=%d, client=%p, sourceConfig=%s", a3, v8, [objc_msgSend(a4 "description")]);
+      asprintf(&v32, "source=%d, client=%p, sourceConfig=%s", source, v8, [objc_msgSend(config "description")]);
       if (v32)
       {
         __lasts = 0;
@@ -4939,21 +4939,21 @@ uint64_t __43__VCVideoCaptureServer_copyCameraColorInfo__block_invoke(uint64_t a
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     LOBYTE(v38) = 0;
-    if (a3 == 3)
+    if (source == 3)
     {
       [(VCVideoCaptureServer *)self deregisterForVideoFramesFromSource:1 withClient:v8];
       v32 = 0;
       v33 = &v32;
       v34 = 0x2020000000;
-      v35 = [objc_msgSend(a4 objectForKeyedSubscript:{@"VideoWidth", "intValue"}];
+      v35 = [objc_msgSend(config objectForKeyedSubscript:{@"VideoWidth", "intValue"}];
       __lasts = 0;
       p_lasts = &__lasts;
       v30 = 0x2020000000;
-      v31 = [objc_msgSend(a4 objectForKeyedSubscript:{@"VideoHeight", "intValue"}];
+      v31 = [objc_msgSend(config objectForKeyedSubscript:{@"VideoHeight", "intValue"}];
       v24 = 0;
       v25 = &v24;
       v26 = 0x2020000000;
-      v27 = [objc_msgSend(a4 objectForKeyedSubscript:{@"FrameRate", "intValue"}];
+      v27 = [objc_msgSend(config objectForKeyedSubscript:{@"FrameRate", "intValue"}];
       currentWidth = *(v33 + 6);
       if (!currentWidth)
       {
@@ -4992,7 +4992,7 @@ uint64_t __43__VCVideoCaptureServer_copyCameraColorInfo__block_invoke(uint64_t a
       _Block_object_dispose(&v32, 8);
     }
 
-    else if ((a3 - 1) > 1)
+    else if ((source - 1) > 1)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -5014,8 +5014,8 @@ uint64_t __43__VCVideoCaptureServer_copyCameraColorInfo__block_invoke(uint64_t a
       v21[3] = &unk_1E85F8D18;
       v21[4] = self;
       v21[5] = v8;
-      v22 = a3;
-      v21[6] = a4;
+      sourceCopy = source;
+      v21[6] = config;
       v21[7] = buf;
       dispatch_sync(v18, v21);
     }
@@ -5128,10 +5128,10 @@ uint64_t __70__VCVideoCaptureServer_registerForVideoFramesFromSource_sourceConfi
   return result;
 }
 
-- (BOOL)deregisterForVideoFramesFromSource:(int)a3 withClient:(id)a4
+- (BOOL)deregisterForVideoFramesFromSource:(int)source withClient:(id)client
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (client)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -5146,9 +5146,9 @@ uint64_t __70__VCVideoCaptureServer_registerForVideoFramesFromSource_sourceConfi
         v17 = 1024;
         v18 = 2862;
         v19 = 1024;
-        v20 = a3;
+        sourceCopy = source;
         v21 = 2048;
-        v22 = a4;
+        clientCopy = client;
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d source=%d, client=%p", buf, 0x2Cu);
       }
     }
@@ -5158,16 +5158,16 @@ uint64_t __70__VCVideoCaptureServer_registerForVideoFramesFromSource_sourceConfi
     block[1] = 3221225472;
     block[2] = __70__VCVideoCaptureServer_deregisterForVideoFramesFromSource_withClient___block_invoke;
     block[3] = &unk_1E85F3890;
-    v12 = a3;
+    sourceCopy2 = source;
     block[4] = self;
-    block[5] = a4;
+    block[5] = client;
     dispatch_async(captureClientQueue, block);
   }
 
-  return a4 != 0;
+  return client != 0;
 }
 
-- (BOOL)isClientRegisteredForVideoFrames:(id)a3 fromSource:(int)a4
+- (BOOL)isClientRegisteredForVideoFrames:(id)frames fromSource:(int)source
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -5179,8 +5179,8 @@ uint64_t __70__VCVideoCaptureServer_registerForVideoFramesFromSource_sourceConfi
   block[1] = 3221225472;
   block[2] = __68__VCVideoCaptureServer_isClientRegisteredForVideoFrames_fromSource___block_invoke;
   block[3] = &unk_1E85F8D40;
-  v8 = a4;
-  block[5] = a3;
+  sourceCopy = source;
+  block[5] = frames;
   block[6] = &v9;
   block[4] = self;
   dispatch_sync(captureClientQueue, block);
@@ -5218,16 +5218,16 @@ LABEL_5:
   }
 }
 
-- (int)getCappedFrameRate:(int)a3
+- (int)getCappedFrameRate:(int)rate
 {
   v23 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->captureServerQueue);
   if (!self->_forceDisableThermal)
   {
     v5 = [(VCVideoCaptureServer *)self getFrameRateForThermalLevel:self->_thermalLevel peakPowerPressure:self->_peakPowerLevel];
-    if (v5 < a3)
+    if (v5 < rate)
     {
-      a3 = v5;
+      rate = v5;
     }
   }
 
@@ -5248,19 +5248,19 @@ LABEL_5:
       v17 = 1024;
       v18 = currentFrameRate;
       v19 = 1024;
-      v20 = a3;
+      rateCopy = rate;
       v21 = 1024;
       v22 = thermalLevel;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d Setting current camera framerate %d to %d, with thermal level %d", &v11, 0x2Eu);
     }
   }
 
-  return a3;
+  return rate;
 }
 
-- (void)dispatchedSetCaptureFrameRate:(int)a3
+- (void)dispatchedSetCaptureFrameRate:(int)rate
 {
-  v4 = [(VCVideoCaptureServer *)self getCappedFrameRate:*&a3];
+  v4 = [(VCVideoCaptureServer *)self getCappedFrameRate:*&rate];
   v5 = [(VCVideoSource *)self->avCapture setFrameRate:v4];
   if ((v5 & 0x80000000) != 0)
   {
@@ -5274,7 +5274,7 @@ LABEL_5:
   }
 }
 
-- (void)setCaptureFrameRate:(int)a3
+- (void)setCaptureFrameRate:(int)rate
 {
   v6 = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -5283,11 +5283,11 @@ LABEL_5:
   block[2] = __44__VCVideoCaptureServer_setCaptureFrameRate___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  rateCopy = rate;
   dispatch_async(captureServerQueue, block);
 }
 
-- (void)setScreenCaptureFrameRate:(int)a3 captureSourceID:(id)a4
+- (void)setScreenCaptureFrameRate:(int)rate captureSourceID:(id)d
 {
   v7 = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -5295,9 +5295,9 @@ LABEL_5:
   v5[1] = 3221225472;
   v5[2] = __66__VCVideoCaptureServer_setScreenCaptureFrameRate_captureSourceID___block_invoke;
   v5[3] = &unk_1E85F3890;
-  v5[4] = a4;
+  v5[4] = d;
   v5[5] = self;
-  v6 = a3;
+  rateCopy = rate;
   dispatch_async(captureClientQueue, v5);
 }
 
@@ -5362,7 +5362,7 @@ LABEL_3:
   }
 }
 
-- (int)getCaptureFrameRateForSource:(int)a3
+- (int)getCaptureFrameRateForSource:(int)source
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -5374,7 +5374,7 @@ LABEL_3:
   v6[1] = 3221225472;
   v6[2] = __53__VCVideoCaptureServer_getCaptureFrameRateForSource___block_invoke;
   v6[3] = &unk_1E85F61A8;
-  v7 = a3;
+  sourceCopy = source;
   v6[4] = self;
   v6[5] = &v8;
   dispatch_sync(captureServerQueue, v6);
@@ -5409,9 +5409,9 @@ uint64_t __53__VCVideoCaptureServer_getCaptureFrameRateForSource___block_invoke(
   return result;
 }
 
-- (void)setViewPointCorrectionEnabled:(BOOL)a3
+- (void)setViewPointCorrectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x1E69E9840];
   BoolValueForKey = VCDefaults_GetBoolValueForKey(@"disableViewPointCorrectionForSharing", +[VCHardwareSettings disableViewPointCorrectionForSharing]);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -5427,23 +5427,23 @@ uint64_t __53__VCVideoCaptureServer_getCaptureFrameRateForSource___block_invoke(
       v12 = 1024;
       v13 = 2996;
       v14 = 1024;
-      v15 = v3;
+      v15 = enabledCopy;
       v16 = 1024;
       v17 = BoolValueForKey;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d enabled=%d, shouldUpdateViewPointCorrection=%d", &v8, 0x28u);
     }
   }
 
-  if (BoolValueForKey && self->_viewPointCorrectionEnabledByClient != v3)
+  if (BoolValueForKey && self->_viewPointCorrectionEnabledByClient != enabledCopy)
   {
-    self->_viewPointCorrectionEnabledByClient = v3;
+    self->_viewPointCorrectionEnabledByClient = enabledCopy;
     [(VCVideoCaptureServer *)self updateViewPointCorrectionStatus];
   }
 }
 
-- (void)setCaptureSIFRFormatEnabled:(BOOL)a3
+- (void)setCaptureSIFRFormatEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -5458,7 +5458,7 @@ uint64_t __53__VCVideoCaptureServer_getCaptureFrameRateForSource___block_invoke(
       v14 = 1024;
       v15 = 3008;
       v16 = 1024;
-      v17 = v3;
+      v17 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d enabled=%d", buf, 0x22u);
     }
   }
@@ -5469,7 +5469,7 @@ uint64_t __53__VCVideoCaptureServer_getCaptureFrameRateForSource___block_invoke(
   v8[2] = __52__VCVideoCaptureServer_setCaptureSIFRFormatEnabled___block_invoke;
   v8[3] = &unk_1E85F37A0;
   v8[4] = self;
-  v9 = v3;
+  v9 = enabledCopy;
   dispatch_async(captureServerQueue, v8);
 }
 
@@ -5523,9 +5523,9 @@ uint64_t __55__VCVideoCaptureServer_updateViewPointCorrectionStatus__block_invok
   return result;
 }
 
-- (void)updateImageQueueFrameRate:(int)a3
+- (void)updateImageQueueFrameRate:(int)rate
 {
-  v3 = *&a3;
+  v3 = *&rate;
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -5533,8 +5533,8 @@ uint64_t __55__VCVideoCaptureServer_updateViewPointCorrectionStatus__block_invok
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(VCImageQueue *)self->frontQueue frameRate];
-      v8 = [(VCImageQueue *)self->backQueue frameRate];
+      frameRate = [(VCImageQueue *)self->frontQueue frameRate];
+      frameRate2 = [(VCImageQueue *)self->backQueue frameRate];
       v9 = 136316418;
       v10 = v5;
       v11 = 2080;
@@ -5542,9 +5542,9 @@ uint64_t __55__VCVideoCaptureServer_updateViewPointCorrectionStatus__block_invok
       v13 = 1024;
       v14 = 3032;
       v15 = 1024;
-      v16 = v7;
+      v16 = frameRate;
       v17 = 1024;
-      v18 = v8;
+      v18 = frameRate2;
       v19 = 1024;
       v20 = v3;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d Setting both front queue framerate %d and back queue framerate %d to %d", &v9, 0x2Eu);
@@ -5557,9 +5557,9 @@ uint64_t __55__VCVideoCaptureServer_updateViewPointCorrectionStatus__block_invok
   pthread_mutex_unlock(&self->_enqueueLock);
 }
 
-- (BOOL)isFaceTimeScreenSharingWithDict:(id)a3
+- (BOOL)isFaceTimeScreenSharingWithDict:(id)dict
 {
-  v5 = [a3 objectForKeyedSubscript:@"ScreenCaptureUUID"];
+  v5 = [dict objectForKeyedSubscript:@"ScreenCaptureUUID"];
   if (v5)
   {
     v6 = v5 != [MEMORY[0x1E695DFB0] null];
@@ -5572,16 +5572,16 @@ uint64_t __55__VCVideoCaptureServer_updateViewPointCorrectionStatus__block_invok
 
   if (+[VCHardwareSettings deviceClass](VCHardwareSettings, "deviceClass") == 8 && v5 == [MEMORY[0x1E695DFB0] null])
   {
-    v8 = [a3 objectForKeyedSubscript:@"CaptureSourceID"];
+    v8 = [dict objectForKeyedSubscript:@"CaptureSourceID"];
     return self->_screenShareCaptureConfig && (!v8 || [(NSMutableDictionary *)self->_screenCaptureConfig objectForKeyedSubscript:v8]== 0);
   }
 
   return v6;
 }
 
-- (void)setPreferCaptureFullBleed:(BOOL)a3
+- (void)setPreferCaptureFullBleed:(BOOL)bleed
 {
-  v3 = a3;
+  bleedCopy = bleed;
   v18 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -5596,7 +5596,7 @@ uint64_t __55__VCVideoCaptureServer_updateViewPointCorrectionStatus__block_invok
       v14 = 1024;
       v15 = 3052;
       v16 = 1024;
-      v17 = v3;
+      v17 = bleedCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d _remoteSupportsFullScreenReceive=%d", buf, 0x22u);
     }
   }
@@ -5607,7 +5607,7 @@ uint64_t __55__VCVideoCaptureServer_updateViewPointCorrectionStatus__block_invok
   v8[2] = __50__VCVideoCaptureServer_setPreferCaptureFullBleed___block_invoke;
   v8[3] = &unk_1E85F37A0;
   v8[4] = self;
-  v9 = v3;
+  v9 = bleedCopy;
   dispatch_async(captureServerQueue, v8);
 }
 
@@ -5626,11 +5626,11 @@ uint64_t __50__VCVideoCaptureServer_setPreferCaptureFullBleed___block_invoke(uin
   return result;
 }
 
-- (BOOL)setUpScreenVideoCaptureSource:(id)a3
+- (BOOL)setUpScreenVideoCaptureSource:(id)source
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = [(VCVideoCaptureServer *)self isFaceTimeScreenSharingWithDict:?];
-  v6 = [a3 objectForKeyedSubscript:@"CaptureSourceID"];
+  v6 = [source objectForKeyedSubscript:@"CaptureSourceID"];
   if (!v5)
   {
     v7 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_screenCaptureConfig objectForKeyedSubscript:{v6), "mutableCopy"}];
@@ -5688,27 +5688,27 @@ LABEL_34:
     goto LABEL_27;
   }
 
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"ScreenCaptureIsWindowed"], @"ScreenCaptureIsWindowed");
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"ScreenCaptureUUID"], @"ScreenCaptureUUID");
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"ScreenDisplayID"], @"ScreenDisplayID");
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"IsCursorCapturedForScreen"], @"IsCursorCapturedForScreen");
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"CaptureExcludedBundleIDs"], @"CaptureExcludedBundleIDs");
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"HasPrivateCaptureEntitlement"], @"HasPrivateCaptureEntitlement");
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"ScreenVirtualDisplayLabel"], @"ScreenVirtualDisplayLabel");
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"ScreenCaptureConfigurationDisplayMode"], @"ScreenCaptureConfigurationDisplayMode");
-  if ([a3 objectForKeyedSubscript:@"ClientBundleID"])
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"ScreenCaptureIsWindowed"], @"ScreenCaptureIsWindowed");
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"ScreenCaptureUUID"], @"ScreenCaptureUUID");
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"ScreenDisplayID"], @"ScreenDisplayID");
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"IsCursorCapturedForScreen"], @"IsCursorCapturedForScreen");
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"CaptureExcludedBundleIDs"], @"CaptureExcludedBundleIDs");
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"HasPrivateCaptureEntitlement"], @"HasPrivateCaptureEntitlement");
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"ScreenVirtualDisplayLabel"], @"ScreenVirtualDisplayLabel");
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"ScreenCaptureConfigurationDisplayMode"], @"ScreenCaptureConfigurationDisplayMode");
+  if ([source objectForKeyedSubscript:@"ClientBundleID"])
   {
-    v10 = [a3 objectForKeyedSubscript:@"ClientBundleID"];
+    null = [source objectForKeyedSubscript:@"ClientBundleID"];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  [(NSMutableDictionary *)v7 setObject:v10 forKeyedSubscript:@"ClientBundleID"];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"AuditTokenData"], @"AuditTokenData");
-  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:@"PdProtectionOptions"], @"PdProtectionOptions");
+  [(NSMutableDictionary *)v7 setObject:null forKeyedSubscript:@"ClientBundleID"];
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"AuditTokenData"], @"AuditTokenData");
+  -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [source objectForKeyedSubscript:@"PdProtectionOptions"], @"PdProtectionOptions");
   if (v5)
   {
     screenConfiguredFrameRate = self->_screenConfiguredFrameRate;
@@ -5730,7 +5730,7 @@ LABEL_34:
     -[NSMutableDictionary setObject:forKeyedSubscript:](self->_screenShareCaptureConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:screenConfiguredFrameRate], @"FrameRate");
     screenCaptureClients = self->screenCaptureClients;
     screenCurrentFrameRate = self->_screenCurrentFrameRate;
-    v15 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -5742,11 +5742,11 @@ LABEL_34:
     -[NSMutableDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v16], @"FrameRate");
     v34 = [(NSMutableDictionary *)v7 objectForKeyedSubscript:@"Client"];
     screenCaptureClients = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
-    v15 = self;
+    selfCopy2 = self;
     screenCurrentFrameRate = v16;
   }
 
-  [(VCVideoCaptureServer *)v15 notifyFrameRateBeingThrottledForClients:screenCaptureClients newFrameRate:screenCurrentFrameRate thermalLevelDidChange:0 powerLevelDidChange:0];
+  [(VCVideoCaptureServer *)selfCopy2 notifyFrameRateBeingThrottledForClients:screenCaptureClients newFrameRate:screenCurrentFrameRate thermalLevelDidChange:0 powerLevelDidChange:0];
   *(&v28 + 1) = VCVideoCaptureServer_OnCaptureVideoFrame;
   v18 = [[VCScreenCapture alloc] initWithCaptureServer:self protocolFunctions:&v28 + 8 sourceConfig:v7];
   if (!v18)
@@ -5789,7 +5789,7 @@ LABEL_27:
   return v26;
 }
 
-- (BOOL)startScreenShareCapture:(id)a3
+- (BOOL)startScreenShareCapture:(id)capture
 {
   v30 = *MEMORY[0x1E69E9840];
   v16 = 0;
@@ -5799,7 +5799,7 @@ LABEL_27:
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     __str = 0;
-    v5 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+    v5 = capture ? [objc_msgSend(capture "description")] : "<nil>";
     asprintf(&__str, "Starting screen capture with screenShareDict=%s", v5);
     if (__str)
     {
@@ -5842,7 +5842,7 @@ LABEL_27:
   block[2] = __48__VCVideoCaptureServer_startScreenShareCapture___block_invoke;
   block[3] = &unk_1E85F6638;
   block[4] = self;
-  block[5] = a3;
+  block[5] = capture;
   block[6] = &v16;
   dispatch_sync(captureClientQueue, block);
   v11 = *(v17 + 24);
@@ -5925,7 +5925,7 @@ void __48__VCVideoCaptureServer_startScreenShareCapture___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)stopScreenShareCapture:(int64_t)a3
+- (BOOL)stopScreenShareCapture:(int64_t)capture
 {
   v23 = *MEMORY[0x1E69E9840];
   v11 = 0;
@@ -5945,7 +5945,7 @@ void __48__VCVideoCaptureServer_startScreenShareCapture___block_invoke(uint64_t 
       v19 = 1024;
       v20 = 3176;
       v21 = 2048;
-      v22 = a3;
+      captureCopy = capture;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d Stopping screen capture for captureSourceID=%ld", buf, 0x26u);
     }
   }
@@ -5957,7 +5957,7 @@ void __48__VCVideoCaptureServer_startScreenShareCapture___block_invoke(uint64_t 
   block[3] = &unk_1E85F6D88;
   block[4] = self;
   block[5] = &v11;
-  block[6] = a3;
+  block[6] = capture;
   dispatch_sync(captureClientQueue, block);
   v8 = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
@@ -6034,7 +6034,7 @@ LABEL_8:
   }
 }
 
-- (id)updateScreenCapture:(int64_t)a3 withConfig:(id)a4
+- (id)updateScreenCapture:(int64_t)capture withConfig:(id)config
 {
   v33 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -6044,11 +6044,11 @@ LABEL_8:
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     __str = 0;
-    v7 = a4 ? [objc_msgSend(a4 "description")] : "<nil>";
+    v7 = config ? [objc_msgSend(config "description")] : "<nil>";
     asprintf(&__str, "Updating screen capture with screenShareDict=%s", v7);
     if (__str)
     {
-      v15 = a3;
+      captureCopy = capture;
       __lasts = 0;
       v8 = strtok_r(__str, "\n", &__lasts);
       v9 = MEMORY[0x1E6986650];
@@ -6079,7 +6079,7 @@ LABEL_8:
 
       while (v8);
       free(__str);
-      a3 = v15;
+      capture = captureCopy;
     }
   }
 
@@ -6089,9 +6089,9 @@ LABEL_8:
   block[2] = __55__VCVideoCaptureServer_updateScreenCapture_withConfig___block_invoke;
   block[3] = &unk_1E85F8628;
   block[4] = self;
-  block[5] = a4;
+  block[5] = config;
   block[6] = &v19;
-  block[7] = a3;
+  block[7] = capture;
   dispatch_sync(captureClientQueue, block);
   if ((v20[3] & 0x80000000) != 0)
   {
@@ -6140,12 +6140,12 @@ void __55__VCVideoCaptureServer_updateScreenCapture_withConfig___block_invoke(vo
   }
 }
 
-- (void)sendBiomeEventIsStarting:(BOOL)a3
+- (void)sendBiomeEventIsStarting:(BOOL)starting
 {
-  v3 = a3;
+  startingCopy = starting;
   v18 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
-  v6 = [objc_alloc(MEMORY[0x1E698F2F8]) initWithIsStart:v3 type:self->_biomeEventType];
+  v6 = [objc_alloc(MEMORY[0x1E698F2F8]) initWithIsStart:startingCopy type:self->_biomeEventType];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v7 = VRTraceErrorLogLevelToCSTR();
@@ -6157,7 +6157,7 @@ void __55__VCVideoCaptureServer_updateScreenCapture_withConfig___block_invoke(vo
       *v11 = 136316162;
       *&v11[4] = v7;
       *&v11[12] = 2080;
-      if (v3)
+      if (startingCopy)
       {
         v9 = @"start";
       }
@@ -6225,7 +6225,7 @@ void __55__VCVideoCaptureServer_updateScreenCapture_withConfig___block_invoke(vo
   }
 }
 
-- (void)registerVideoSink:(id)a3 withCaptureSource:(int)a4
+- (void)registerVideoSink:(id)sink withCaptureSource:(int)source
 {
   v7 = *MEMORY[0x1E69E9840];
   streamInputQueue = self->_streamInputQueue;
@@ -6233,9 +6233,9 @@ void __55__VCVideoCaptureServer_updateScreenCapture_withConfig___block_invoke(vo
   v5[1] = 3221225472;
   v5[2] = __60__VCVideoCaptureServer_registerVideoSink_withCaptureSource___block_invoke;
   v5[3] = &unk_1E85F3890;
-  v6 = a4;
+  sourceCopy = source;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = sink;
   dispatch_sync(streamInputQueue, v5);
 }
 
@@ -6259,7 +6259,7 @@ void __60__VCVideoCaptureServer_registerVideoSink_withCaptureSource___block_invo
   }
 }
 
-- (void)unregisterVideoSink:(id)a3 withCaptureSource:(int)a4
+- (void)unregisterVideoSink:(id)sink withCaptureSource:(int)source
 {
   v7 = *MEMORY[0x1E69E9840];
   streamInputQueue = self->_streamInputQueue;
@@ -6267,9 +6267,9 @@ void __60__VCVideoCaptureServer_registerVideoSink_withCaptureSource___block_invo
   v5[1] = 3221225472;
   v5[2] = __62__VCVideoCaptureServer_unregisterVideoSink_withCaptureSource___block_invoke;
   v5[3] = &unk_1E85F3890;
-  v6 = a4;
+  sourceCopy = source;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = sink;
   dispatch_sync(streamInputQueue, v5);
 }
 
@@ -6293,7 +6293,7 @@ void __62__VCVideoCaptureServer_unregisterVideoSink_withCaptureSource___block_in
   }
 }
 
-- (void)suspendVideoSink:(id)a3 withCaptureSource:(int)a4
+- (void)suspendVideoSink:(id)sink withCaptureSource:(int)source
 {
   v7 = *MEMORY[0x1E69E9840];
   streamInputQueue = self->_streamInputQueue;
@@ -6301,9 +6301,9 @@ void __62__VCVideoCaptureServer_unregisterVideoSink_withCaptureSource___block_in
   v5[1] = 3221225472;
   v5[2] = __59__VCVideoCaptureServer_suspendVideoSink_withCaptureSource___block_invoke;
   v5[3] = &unk_1E85F3890;
-  v6 = a4;
+  sourceCopy = source;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = sink;
   dispatch_async(streamInputQueue, v5);
 }
 
@@ -6327,7 +6327,7 @@ void __59__VCVideoCaptureServer_suspendVideoSink_withCaptureSource___block_invok
   }
 }
 
-- (void)resumeVideoSink:(id)a3 withCaptureSource:(int)a4
+- (void)resumeVideoSink:(id)sink withCaptureSource:(int)source
 {
   v7 = *MEMORY[0x1E69E9840];
   streamInputQueue = self->_streamInputQueue;
@@ -6335,9 +6335,9 @@ void __59__VCVideoCaptureServer_suspendVideoSink_withCaptureSource___block_invok
   v5[1] = 3221225472;
   v5[2] = __58__VCVideoCaptureServer_resumeVideoSink_withCaptureSource___block_invoke;
   v5[3] = &unk_1E85F3890;
-  v6 = a4;
+  sourceCopy = source;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = sink;
   dispatch_async(streamInputQueue, v5);
 }
 
@@ -6361,7 +6361,7 @@ void __58__VCVideoCaptureServer_resumeVideoSink_withCaptureSource___block_invoke
   }
 }
 
-- (opaqueCMFormatDescription)newFormatDescriptionForCaptureSource:(int)a3
+- (opaqueCMFormatDescription)newFormatDescriptionForCaptureSource:(int)source
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -6373,19 +6373,19 @@ void __58__VCVideoCaptureServer_resumeVideoSink_withCaptureSource___block_invoke
   v7[1] = 3221225472;
   v7[2] = __61__VCVideoCaptureServer_newFormatDescriptionForCaptureSource___block_invoke;
   v7[3] = &unk_1E85F64A0;
-  v8 = a3;
+  sourceCopy = source;
   v7[4] = self;
   v7[5] = &v9;
   dispatch_sync(streamInputQueue, v7);
   v5 = formatDescriptionOut[3];
   if (!v5)
   {
-    if (a3 == 3)
+    if (source == 3)
     {
       CMVideoFormatDescriptionCreate(*MEMORY[0x1E695E480], 0x34323076u, 0, 0, 0, formatDescriptionOut + 3);
     }
 
-    else if ((a3 - 1) <= 1)
+    else if ((source - 1) <= 1)
     {
       CMFormatDescriptionCreate(*MEMORY[0x1E695E480], 0x76696465u, 0x34323066u, 0, formatDescriptionOut + 3);
     }
@@ -6426,7 +6426,7 @@ void *__61__VCVideoCaptureServer_newFormatDescriptionForCaptureSource___block_in
   return v3;
 }
 
-- (int64_t)streamInputIDForCaptureSourceID:(int)a3
+- (int64_t)streamInputIDForCaptureSourceID:(int)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -6438,7 +6438,7 @@ void *__61__VCVideoCaptureServer_newFormatDescriptionForCaptureSource___block_in
   v6[1] = 3221225472;
   v6[2] = __56__VCVideoCaptureServer_streamInputIDForCaptureSourceID___block_invoke;
   v6[3] = &unk_1E85F64A0;
-  v7 = a3;
+  dCopy = d;
   v6[4] = self;
   v6[5] = &v8;
   dispatch_sync(streamInputQueue, v6);
@@ -6454,16 +6454,16 @@ uint64_t __56__VCVideoCaptureServer_streamInputIDForCaptureSourceID___block_invo
   return result;
 }
 
-- (int)registerStreamInputCaptureSourceWithID:(int64_t)a3 frameRate:(unsigned int)a4
+- (int)registerStreamInputCaptureSourceWithID:(int64_t)d frameRate:(unsigned int)rate
 {
-  v4 = *&a4;
-  v7 = [+[VCStreamInputManager sharedInstance](VCStreamInputManager streamInputWithID:"streamInputWithID:", a3];
+  v4 = *&rate;
+  v7 = [+[VCStreamInputManager sharedInstance](VCStreamInputManager streamInputWithID:"streamInputWithID:", d];
   if (v7)
   {
-    v8 = [v7 streamFormat];
+    streamFormat = [v7 streamFormat];
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v9 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", a3), @"streamInputID"}];
-    [v9 setObject:v8 forKeyedSubscript:@"formatDescription"];
+    [v9 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", d), @"streamInputID"}];
+    [v9 setObject:streamFormat forKeyedSubscript:@"formatDescription"];
     [v9 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", v4), @"framerate"}];
     v10 = [(VCVideoCaptureServer *)self registerStreamInputCaptureSourceWithConfiguration:v9];
 
@@ -6473,7 +6473,7 @@ uint64_t __56__VCVideoCaptureServer_streamInputIDForCaptureSourceID___block_invo
   return v7;
 }
 
-- (int)registerStreamInputCaptureSourceWithConfiguration:(id)a3
+- (int)registerStreamInputCaptureSourceWithConfiguration:(id)configuration
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -6486,7 +6486,7 @@ uint64_t __56__VCVideoCaptureServer_streamInputIDForCaptureSourceID___block_invo
   v6[2] = __74__VCVideoCaptureServer_registerStreamInputCaptureSourceWithConfiguration___block_invoke;
   v6[3] = &unk_1E85F6638;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = configuration;
   v6[6] = &v7;
   dispatch_sync(streamInputQueue, v6);
   v4 = *(v8 + 6);
@@ -6574,7 +6574,7 @@ LABEL_15:
 LABEL_16:
 }
 
-- (BOOL)unregisterStreamInputCaptureSourceWithCaptureSourceID:(int)a3
+- (BOOL)unregisterStreamInputCaptureSourceWithCaptureSourceID:(int)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -6586,7 +6586,7 @@ LABEL_16:
   v6[1] = 3221225472;
   v6[2] = __78__VCVideoCaptureServer_unregisterStreamInputCaptureSourceWithCaptureSourceID___block_invoke;
   v6[3] = &unk_1E85F64A0;
-  v7 = a3;
+  dCopy = d;
   v6[4] = self;
   v6[5] = &v8;
   dispatch_sync(streamInputQueue, v6);
@@ -6619,30 +6619,30 @@ void __78__VCVideoCaptureServer_unregisterStreamInputCaptureSourceWithCaptureSou
   }
 }
 
-- (BOOL)internalRegisterStreamInput:(id)a3
+- (BOOL)internalRegisterStreamInput:(id)input
 {
   v21 = *MEMORY[0x1E69E9840];
   if (![(VCVideoCaptureServer *)self isValidStreamInput:?])
   {
-    [VCVideoCaptureServer internalRegisterStreamInput:a3];
+    [VCVideoCaptureServer internalRegisterStreamInput:input];
     return v15;
   }
 
-  v5 = [a3 streamInputID];
-  if ([(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:v5])
+  streamInputID = [input streamInputID];
+  if ([(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:streamInputID])
   {
     [VCVideoCaptureServer internalRegisterStreamInput:];
     return v15;
   }
 
-  v14 = v5;
-  v6 = [v5 intValue];
+  v14 = streamInputID;
+  intValue = [streamInputID intValue];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(NSMutableDictionary *)self->_streamInputCaptureSources allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_streamInputCaptureSources allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v17 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -6653,24 +6653,24 @@ void __78__VCVideoCaptureServer_unregisterStreamInputCaptureSourceWithCaptureSou
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = [(NSMutableDictionary *)self->_streamInputCaptureSources objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i)];
-        if ([v12 streamInputID] == v6)
+        if ([v12 streamInputID] == intValue)
         {
-          if (([a3 isEqualFormat:objc_msgSend(v12, "formatDescription")] & 1) == 0)
+          if (([input isEqualFormat:objc_msgSend(v12, "formatDescription")] & 1) == 0)
           {
             [VCVideoCaptureServer internalRegisterStreamInput:];
             return v15;
           }
 
-          [a3 addSink:v12];
-          [v12 setDelegate:a3];
+          [input addSink:v12];
+          [v12 setDelegate:input];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v17 objects:v16 count:16];
       if (v9)
       {
         continue;
@@ -6680,44 +6680,44 @@ void __78__VCVideoCaptureServer_unregisterStreamInputCaptureSourceWithCaptureSou
     }
   }
 
-  [a3 thermalLevelDidChange:self->_newThermalLevel];
-  [(NSMutableDictionary *)self->_streamInputs setObject:a3 forKeyedSubscript:v14];
+  [input thermalLevelDidChange:self->_newThermalLevel];
+  [(NSMutableDictionary *)self->_streamInputs setObject:input forKeyedSubscript:v14];
   return 1;
 }
 
-- (BOOL)internalUnregisterStreamInput:(id)a3
+- (BOOL)internalUnregisterStreamInput:(id)input
 {
   v21 = *MEMORY[0x1E69E9840];
   if (![(VCVideoCaptureServer *)self isValidStreamInput:?])
   {
-    [VCVideoCaptureServer internalUnregisterStreamInput:a3];
+    [VCVideoCaptureServer internalUnregisterStreamInput:input];
     return v15;
   }
 
-  v5 = [a3 streamInputID];
-  if (![(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:v5])
+  streamInputID = [input streamInputID];
+  if (![(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:streamInputID])
   {
     [VCVideoCaptureServer internalUnregisterStreamInput:];
     return v15;
   }
 
-  if ([(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:v5]!= a3)
+  if ([(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:streamInputID]!= input)
   {
     [VCVideoCaptureServer internalUnregisterStreamInput:];
     return v15;
   }
 
-  v6 = [v5 intValue];
+  intValue = [streamInputID intValue];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(NSMutableDictionary *)self->_streamInputCaptureSources allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_streamInputCaptureSources allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v17 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
-    v10 = v6;
+    v10 = intValue;
     v11 = *v18;
     do
     {
@@ -6726,13 +6726,13 @@ void __78__VCVideoCaptureServer_unregisterStreamInputCaptureSourceWithCaptureSou
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = [(NSMutableDictionary *)self->_streamInputCaptureSources objectForKeyedSubscript:*(*(&v17 + 1) + 8 * v12)];
         if ([v13 streamInputID] == v10)
         {
-          [a3 removeSink:v13];
+          [input removeSink:v13];
           [v13 setDelegate:0];
         }
 
@@ -6740,17 +6740,17 @@ void __78__VCVideoCaptureServer_unregisterStreamInputCaptureSourceWithCaptureSou
       }
 
       while (v9 != v12);
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v17 objects:v16 count:16];
     }
 
     while (v9);
   }
 
-  [(NSMutableDictionary *)self->_streamInputs setObject:0 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_streamInputs setObject:0 forKeyedSubscript:streamInputID];
   return 1;
 }
 
-- (BOOL)registerStreamInput:(id)a3
+- (BOOL)registerStreamInput:(id)input
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -6762,7 +6762,7 @@ void __78__VCVideoCaptureServer_unregisterStreamInputCaptureSourceWithCaptureSou
   v6[1] = 3221225472;
   v6[2] = __44__VCVideoCaptureServer_registerStreamInput___block_invoke;
   v6[3] = &unk_1E85F3E08;
-  v6[5] = a3;
+  v6[5] = input;
   v6[6] = &v7;
   v6[4] = self;
   dispatch_sync(streamInputQueue, v6);
@@ -6778,7 +6778,7 @@ uint64_t __44__VCVideoCaptureServer_registerStreamInput___block_invoke(uint64_t 
   return result;
 }
 
-- (void)unregisterStreamInput:(id)a3
+- (void)unregisterStreamInput:(id)input
 {
   block[6] = *MEMORY[0x1E69E9840];
   streamInputQueue = self->_streamInputQueue;
@@ -6787,11 +6787,11 @@ uint64_t __44__VCVideoCaptureServer_registerStreamInput___block_invoke(uint64_t 
   block[2] = __46__VCVideoCaptureServer_unregisterStreamInput___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = input;
   dispatch_sync(streamInputQueue, block);
 }
 
-- (BOOL)shouldSendVideoAttributeCallback:(id)a3
+- (BOOL)shouldSendVideoAttributeCallback:(id)callback
 {
   v35 = *MEMORY[0x1E69E9840];
   if (self->_pendingOrientationChange)
@@ -6832,16 +6832,16 @@ LABEL_18:
     return v5;
   }
 
-  if ([a3 orientation] && objc_msgSend(a3, "orientation") != 1)
+  if ([callback orientation] && objc_msgSend(callback, "orientation") != 1)
   {
-    if ([a3 orientation] != 3 && objc_msgSend(a3, "orientation") != 2)
+    if ([callback orientation] != 3 && objc_msgSend(callback, "orientation") != 2)
     {
       goto LABEL_18;
     }
 
-    [a3 ratio];
+    [callback ratio];
     v14 = v13;
-    [a3 ratio];
+    [callback ratio];
     if (v14 >= v15)
     {
       goto LABEL_18;
@@ -6850,9 +6850,9 @@ LABEL_18:
 
   else
   {
-    [a3 ratio];
+    [callback ratio];
     v11 = v10;
-    [a3 ratio];
+    [callback ratio];
     if (v11 <= v12)
     {
       goto LABEL_18;
@@ -6869,10 +6869,10 @@ LABEL_18:
   v5 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT);
   if (v5)
   {
-    v18 = [a3 orientation];
-    [a3 ratio];
+    orientation = [callback orientation];
+    [callback ratio];
     v20 = v19;
-    [a3 ratio];
+    [callback ratio];
     v23 = 136316418;
     v24 = v16;
     v25 = 2080;
@@ -6880,7 +6880,7 @@ LABEL_18:
     v27 = 1024;
     v28 = 3546;
     v29 = 1024;
-    v30 = v18;
+    v30 = orientation;
     v31 = 2048;
     v32 = v20;
     v33 = 2048;
@@ -6894,10 +6894,10 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)setLocalVideoAttributes:(id)a3
+- (BOOL)setLocalVideoAttributes:(id)attributes
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (attributes)
   {
     captureServerQueue = self->captureServerQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -6905,11 +6905,11 @@ LABEL_18:
     block[2] = __48__VCVideoCaptureServer_setLocalVideoAttributes___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = attributes;
     dispatch_async(captureServerQueue, block);
   }
 
-  return a3 != 0;
+  return attributes != 0;
 }
 
 void __48__VCVideoCaptureServer_setLocalVideoAttributes___block_invoke(uint64_t a1)
@@ -7159,12 +7159,12 @@ uint64_t __VCVideoCaptureServer_CopyLocalVideoAttributes_block_invoke(uint64_t a
   return result;
 }
 
-- (void)updateLocalAspectRatios:(int)a3 localScreenAspectRatio:(CGSize)a4
+- (void)updateLocalAspectRatios:(int)ratios localScreenAspectRatio:(CGSize)ratio
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a3 > 1)
+  if (ratios > 1)
   {
-    self->_localScreenLandscapeAspectRatio = a4;
+    self->_localScreenLandscapeAspectRatio = ratio;
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     v11 = MEMORY[0x1E6986650];
     if (ErrorLogLevelForModule >= 7)
@@ -7226,7 +7226,7 @@ uint64_t __VCVideoCaptureServer_CopyLocalVideoAttributes_block_invoke(uint64_t a
 
   else
   {
-    self->_localScreenPortraitAspectRatio = a4;
+    self->_localScreenPortraitAspectRatio = ratio;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v5 = VRTraceErrorLogLevelToCSTR();
@@ -7286,16 +7286,16 @@ LABEL_20:
   }
 }
 
-- (BOOL)setLocalScreenAttributes:(id)a3
+- (BOOL)setLocalScreenAttributes:(id)attributes
 {
   block[6] = *MEMORY[0x1E69E9840];
-  [a3 ratio];
+  [attributes ratio];
   if (v5 == 0.0)
   {
     return 0;
   }
 
-  [a3 ratio];
+  [attributes ratio];
   if (v6 == 0.0)
   {
     return 0;
@@ -7307,7 +7307,7 @@ LABEL_20:
   block[2] = __49__VCVideoCaptureServer_setLocalScreenAttributes___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = attributes;
   dispatch_barrier_async(variablesQueue, block);
   return 1;
 }
@@ -7458,7 +7458,7 @@ __n128 __52__VCVideoCaptureServer_localCameraVideoAspectRatios__block_invoke(uin
   return result;
 }
 
-- (CGSize)localScreenRatioForScreenOrientation:(int)a3
+- (CGSize)localScreenRatioForScreenOrientation:(int)orientation
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0;
@@ -7471,7 +7471,7 @@ __n128 __52__VCVideoCaptureServer_localCameraVideoAspectRatios__block_invoke(uin
   v8[1] = 3221225472;
   v8[2] = __61__VCVideoCaptureServer_localScreenRatioForScreenOrientation___block_invoke;
   v8[3] = &unk_1E85F61A8;
-  v9 = a3;
+  orientationCopy = orientation;
   v8[4] = self;
   v8[5] = &v10;
   dispatch_sync(variablesQueue, v8);
@@ -7498,7 +7498,7 @@ __n128 __61__VCVideoCaptureServer_localScreenRatioForScreenOrientation___block_i
   return result;
 }
 
-- (CGSize)localExpectedRatioForScreenOrientation:(int)a3
+- (CGSize)localExpectedRatioForScreenOrientation:(int)orientation
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0;
@@ -7511,7 +7511,7 @@ __n128 __61__VCVideoCaptureServer_localScreenRatioForScreenOrientation___block_i
   v8[1] = 3221225472;
   v8[2] = __63__VCVideoCaptureServer_localExpectedRatioForScreenOrientation___block_invoke;
   v8[3] = &unk_1E85F61A8;
-  v9 = a3;
+  orientationCopy = orientation;
   v8[4] = self;
   v8[5] = &v10;
   dispatch_sync(variablesQueue, v8);
@@ -7538,9 +7538,9 @@ __n128 __63__VCVideoCaptureServer_localExpectedRatioForScreenOrientation___block
   return result;
 }
 
-- (id)localScreenAttributesForVideoAttributes:(id)a3
+- (id)localScreenAttributesForVideoAttributes:(id)attributes
 {
-  if (!a3)
+  if (!attributes)
   {
     return 0;
   }
@@ -7551,22 +7551,22 @@ __n128 __63__VCVideoCaptureServer_localExpectedRatioForScreenOrientation___block
   return v4;
 }
 
-- (id)copyLocalScreenAttributesForVideoAttributes:(id)a3
+- (id)copyLocalScreenAttributesForVideoAttributes:(id)attributes
 {
-  v3 = a3;
-  if (a3)
+  attributesCopy = attributes;
+  if (attributes)
   {
     v5 = objc_autoreleasePoolPush();
-    v3 = [VideoAttributes videoAttributesWithVideoAttributes:v3];
+    attributesCopy = [VideoAttributes videoAttributesWithVideoAttributes:attributesCopy];
     objc_autoreleasePoolPop(v5);
-    [(VCVideoCaptureServer *)self localScreenRatioForScreenOrientation:[(VideoAttributes *)v3 orientation]];
-    [(VideoAttributes *)v3 setRatio:?];
+    [(VCVideoCaptureServer *)self localScreenRatioForScreenOrientation:[(VideoAttributes *)attributesCopy orientation]];
+    [(VideoAttributes *)attributesCopy setRatio:?];
   }
 
-  return v3;
+  return attributesCopy;
 }
 
-- (void)handleCaptureSourcePositionDidChange:(BOOL)a3
+- (void)handleCaptureSourcePositionDidChange:(BOOL)change
 {
   v6 = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -7575,7 +7575,7 @@ __n128 __63__VCVideoCaptureServer_localExpectedRatioForScreenOrientation___block
   block[2] = __61__VCVideoCaptureServer_handleCaptureSourcePositionDidChange___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(captureClientQueue, block);
 }
 
@@ -7622,7 +7622,7 @@ uint64_t __61__VCVideoCaptureServer_handleCaptureSourcePositionDidChange___block
   return result;
 }
 
-- (void)centerStageEnabledDidChange:(BOOL)a3
+- (void)centerStageEnabledDidChange:(BOOL)change
 {
   v6 = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -7631,7 +7631,7 @@ uint64_t __61__VCVideoCaptureServer_handleCaptureSourcePositionDidChange___block
   block[2] = __52__VCVideoCaptureServer_centerStageEnabledDidChange___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(captureClientQueue, block);
 }
 
@@ -7678,7 +7678,7 @@ uint64_t __52__VCVideoCaptureServer_centerStageEnabledDidChange___block_invoke(u
   return result;
 }
 
-- (void)portraitBlurEnabledDidChange:(BOOL)a3
+- (void)portraitBlurEnabledDidChange:(BOOL)change
 {
   v6 = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -7687,7 +7687,7 @@ uint64_t __52__VCVideoCaptureServer_centerStageEnabledDidChange___block_invoke(u
   block[2] = __53__VCVideoCaptureServer_portraitBlurEnabledDidChange___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(captureClientQueue, block);
 }
 
@@ -7734,7 +7734,7 @@ uint64_t __53__VCVideoCaptureServer_portraitBlurEnabledDidChange___block_invoke(
   return result;
 }
 
-- (void)captureSourceVideoFeatureStatusDidChange:(tagVCVideoCaptureFeatureStatus)a3
+- (void)captureSourceVideoFeatureStatusDidChange:(tagVCVideoCaptureFeatureStatus)change
 {
   v6 = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -7743,7 +7743,7 @@ uint64_t __53__VCVideoCaptureServer_portraitBlurEnabledDidChange___block_invoke(
   block[2] = __65__VCVideoCaptureServer_captureSourceVideoFeatureStatusDidChange___block_invoke;
   block[3] = &unk_1E85F7440;
   block[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(captureClientQueue, block);
 }
 
@@ -7791,7 +7791,7 @@ uint64_t __65__VCVideoCaptureServer_captureSourceVideoFeatureStatusDidChange___b
   return result;
 }
 
-- (void)reactionDidStart:(id)a3
+- (void)reactionDidStart:(id)start
 {
   block[6] = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -7800,7 +7800,7 @@ uint64_t __65__VCVideoCaptureServer_captureSourceVideoFeatureStatusDidChange___b
   block[2] = __41__VCVideoCaptureServer_reactionDidStart___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = start;
   dispatch_async(captureClientQueue, block);
 }
 
@@ -7957,18 +7957,18 @@ uint64_t __53__VCVideoCaptureServer_didSelectUnbinnedCameraFormat__block_invoke(
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:{@"systemPreferredCamera", a4, a5, a6}])
+  if ([path isEqualToString:{@"systemPreferredCamera", object, change, context}])
   {
-    v8 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v8 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (v8)
     {
       v9 = v8;
       if (([v8 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}] & 1) == 0)
       {
-        v15 = [v9 uniqueID];
+        uniqueID = [v9 uniqueID];
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
           v16 = VRTraceErrorLogLevelToCSTR();
@@ -7982,14 +7982,14 @@ uint64_t __53__VCVideoCaptureServer_didSelectUnbinnedCameraFormat__block_invoke(
             v27 = 1024;
             v28 = 3866;
             v29 = 2112;
-            v30 = v15;
+            v30 = uniqueID;
             _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d receiving updated systemPreferredCamera=%@", &v23, 0x26u);
           }
         }
 
         if (self->_followSystemCamera)
         {
-          [(VCVideoCaptureServer *)self setCaptureCameraWithToken:[(VCVideoSourceTokenManager *)self->_tokenManager tokenForDeviceName:v15 sourceType:1]];
+          [(VCVideoCaptureServer *)self setCaptureCameraWithToken:[(VCVideoSourceTokenManager *)self->_tokenManager tokenForDeviceName:uniqueID sourceType:1]];
           if (VRTraceGetErrorLogLevelForModule() < 7)
           {
             return;
@@ -8068,11 +8068,11 @@ LABEL_18:
   }
 }
 
-- (void)dispatchedSetCaptureCameraWithToken:(_VCVideoSourceToken)a3
+- (void)dispatchedSetCaptureCameraWithToken:(_VCVideoSourceToken)token
 {
   v32 = *MEMORY[0x1E69E9840];
-  var1 = a3.var0.var1;
-  v6 = [(VCVideoSourceTokenManager *)self->_tokenManager deviceNameForToken:a3.var0.var1];
+  var1 = token.var0.var1;
+  v6 = [(VCVideoSourceTokenManager *)self->_tokenManager deviceNameForToken:token.var0.var1];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v7 = VRTraceErrorLogLevelToCSTR();
@@ -8086,7 +8086,7 @@ LABEL_18:
       v26 = 1024;
       v27 = 3884;
       v28 = 1024;
-      var0 = a3.var0.var0;
+      var0 = token.var0.var0;
       v30 = 2112;
       v31 = v6;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d VCVideoSourceToken=0x%x, cameraUID=%@", buf, 0x2Cu);
@@ -8113,17 +8113,17 @@ LABEL_18:
       }
 
       self->_preferPresentationTimeStamp = v11;
-      self->_currentVideoSourceToken = a3;
+      self->_currentVideoSourceToken = token;
       self->_firstPreviewFrameReceived = 0;
       v12 = objc_opt_respondsToSelector();
       if (v12)
       {
-        v13 = [(VCVideoSource *)self->avCapture currentVideoFeatureStatus];
+        currentVideoFeatureStatus = [(VCVideoSource *)self->avCapture currentVideoFeatureStatus];
       }
 
       else
       {
-        v13 = 0;
+        currentVideoFeatureStatus = 0;
       }
 
       captureClientQueue = self->captureClientQueue;
@@ -8133,8 +8133,8 @@ LABEL_18:
       block[3] = &unk_1E85F8D68;
       block[4] = self;
       v19 = v12 & 1;
-      v20 = v13;
-      v21 = WORD2(v13);
+      v20 = currentVideoFeatureStatus;
+      v21 = WORD2(currentVideoFeatureStatus);
       dispatch_async(captureClientQueue, block);
       v15 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v6, @"localCameraUIDString", 0}];
       delegateNotificationQueue = self->delegateNotificationQueue;
@@ -8219,7 +8219,7 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
   return [v2 sendMessageAsync:"previewCameraUIDChanged" arguments:v3];
 }
 
-- (BOOL)setCaptureCameraWithToken:(_VCVideoSourceToken)a3
+- (BOOL)setCaptureCameraWithToken:(_VCVideoSourceToken)token
 {
   v7 = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -8228,22 +8228,22 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
   block[2] = __50__VCVideoCaptureServer_setCaptureCameraWithToken___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  var0 = a3.var0.var0;
+  var0 = token.var0.var0;
   dispatch_async(captureServerQueue, block);
   return 1;
 }
 
-- (int)setBoundsForRemoteLayerWithFacing:(BOOL)a3 frameRect:(CGRect)a4 fenceHandle:(id)a5
+- (int)setBoundsForRemoteLayerWithFacing:(BOOL)facing frameRect:(CGRect)rect fenceHandle:(id)handle
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  facingCopy = facing;
   v34 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_enqueueLock);
   v12 = 392;
-  if (v10)
+  if (facingCopy)
   {
     v12 = 384;
   }
@@ -8258,7 +8258,7 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
       CFRelease(EncodedCFDictionary);
     }
 
-    if (VCImageQueue_setCALayerSize(v13, a5))
+    if (VCImageQueue_setCALayerSize(v13, handle))
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -8280,9 +8280,9 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
           v28 = 2080;
           v29 = v17;
           v30 = 2112;
-          v31 = NSStringFromRect(v35);
+          selfCopy = NSStringFromRect(v35);
           v32 = 2048;
-          v33 = a5;
+          handleCopy = handle;
           _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d VCVideoCaptureServer: queue=%s --> set layer bounds=%@ caFenceHandle=%p", &v22, 0x3Au);
         }
       }
@@ -8331,9 +8331,9 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
             v28 = 2112;
             v29 = v18;
             v30 = 2048;
-            v31 = self;
+            selfCopy = self;
             v32 = 2048;
-            v33 = v13;
+            handleCopy = v13;
             _os_log_error_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_ERROR, "VCVideoCaptureServer [%s] %s:%d %@(%p) Fail to set layer size for queue=%p", &v22, 0x3Au);
           }
         }
@@ -8347,22 +8347,22 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
   return v13;
 }
 
-- (unsigned)setLocalVideoDestination:(id)a3 facing:(BOOL)a4
+- (unsigned)setLocalVideoDestination:(id)destination facing:(BOOL)facing
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = *(MEMORY[0x1E695F058] + 16);
   v9 = *MEMORY[0x1E695F058];
   v12 = 0;
   v11 = 0xAAAAAAAAAAAA0000;
-  v6 = a3;
+  destinationCopy = destination;
   v7 = 0xAAAAAAAAAAAAAAAALL;
-  LOBYTE(v7) = a4;
+  LOBYTE(v7) = facing;
   v8 = &v12;
   v10 = v4;
-  return [(VCVideoCaptureServer *)self setLocalVideoDestination:&v6];
+  return [(VCVideoCaptureServer *)self setLocalVideoDestination:&destinationCopy];
 }
 
-- (unsigned)setLocalVideoDestination:(id *)a3
+- (unsigned)setLocalVideoDestination:(id *)destination
 {
   v47 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCVideoCaptureServer-setLocalVideoDestination");
@@ -8372,12 +8372,12 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a3->var0;
-      var1 = a3->var1;
-      v9 = *a3->var2;
-      v10 = NSStringFromRect(a3->var3);
-      var4 = a3->var4;
-      var5 = a3->var5;
+      var0 = destination->var0;
+      var1 = destination->var1;
+      v9 = *destination->var2;
+      v10 = NSStringFromRect(destination->var3);
+      var4 = destination->var4;
+      var5 = destination->var5;
       *buf = 136317186;
       v32 = v5;
       v33 = 2080;
@@ -8408,7 +8408,7 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (a3 && (var2 = a3->var2) != 0)
+  if (destination && (var2 = destination->var2) != 0)
   {
     v26 = *var2;
     captureServerQueue = self->captureServerQueue;
@@ -8419,9 +8419,9 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
     v22[4] = self;
     v22[5] = &v23;
     v22[6] = &v27;
-    v22[7] = a3;
+    v22[7] = destination;
     dispatch_sync(captureServerQueue, v22);
-    *a3->var2 = *(v24 + 24);
+    *destination->var2 = *(v24 + 24);
     MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCVideoCaptureServer-setLocalVideoDestination");
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
@@ -8430,8 +8430,8 @@ uint64_t __60__VCVideoCaptureServer_dispatchedSetCaptureCameraWithToken___block_
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
         v17 = *(v28 + 6);
-        v18 = a3->var1;
-        v19 = *a3->var2;
+        v18 = destination->var1;
+        v19 = *destination->var2;
         *buf = 136316418;
         v32 = v15;
         v33 = 2080;
@@ -8742,21 +8742,21 @@ LABEL_34:
   return [(VCVideoSource *)avCapture supportsPortraitResolution];
 }
 
-- (void)setCameraPerClientRequest:(id)a3
+- (void)setCameraPerClientRequest:(id)request
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (+[VCHardwareSettings supportsFrontCameraFullBleedCapture](VCHardwareSettings, "supportsFrontCameraFullBleedCapture") && [a3 isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:4"] && objc_msgSend(MEMORY[0x1E69870A0], "deviceWithUniqueID:", @"com.apple.avfoundation.avcapturedevice.built-in_video:8"))
+  if (+[VCHardwareSettings supportsFrontCameraFullBleedCapture](VCHardwareSettings, "supportsFrontCameraFullBleedCapture") && [request isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:4"] && objc_msgSend(MEMORY[0x1E69870A0], "deviceWithUniqueID:", @"com.apple.avfoundation.avcapturedevice.built-in_video:8"))
   {
     if (VRTraceGetErrorLogLevelForModule() < 6)
     {
-      a3 = @"com.apple.avfoundation.avcapturedevice.built-in_video:8";
+      request = @"com.apple.avfoundation.avcapturedevice.built-in_video:8";
     }
 
     else
     {
       v5 = VRTraceErrorLogLevelToCSTR();
       v6 = *MEMORY[0x1E6986650];
-      a3 = @"com.apple.avfoundation.avcapturedevice.built-in_video:8";
+      request = @"com.apple.avfoundation.avcapturedevice.built-in_video:8";
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
         v15 = 136315906;
@@ -8772,7 +8772,7 @@ LABEL_34:
     }
   }
 
-  if ([MEMORY[0x1E69870A0] deviceWithUniqueID:a3])
+  if ([MEMORY[0x1E69870A0] deviceWithUniqueID:request])
   {
     if (self->_followSystemCamera)
     {
@@ -8802,7 +8802,7 @@ LABEL_16:
 
     else
     {
-      [(VCVideoCaptureServer *)self setCaptureCameraWithToken:[(VCVideoSourceTokenManager *)self->_tokenManager tokenForDeviceName:a3 sourceType:1]];
+      [(VCVideoCaptureServer *)self setCaptureCameraWithToken:[(VCVideoSourceTokenManager *)self->_tokenManager tokenForDeviceName:request sourceType:1]];
     }
   }
 
@@ -8830,11 +8830,11 @@ LABEL_16:
 {
   v18 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->captureServerQueue);
-  v3 = [MEMORY[0x1E69870A0] systemPreferredCamera];
-  if (v3)
+  systemPreferredCamera = [MEMORY[0x1E69870A0] systemPreferredCamera];
+  if (systemPreferredCamera)
   {
-    v4 = [v3 uniqueID];
-    v5.var0.var0 = [(VCVideoSourceTokenManager *)self->_tokenManager tokenForDeviceName:v4 sourceType:1];
+    uniqueID = [systemPreferredCamera uniqueID];
+    v5.var0.var0 = [(VCVideoSourceTokenManager *)self->_tokenManager tokenForDeviceName:uniqueID sourceType:1];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v6 = VRTraceErrorLogLevelToCSTR();
@@ -8848,7 +8848,7 @@ LABEL_16:
         v14 = 1024;
         v15 = 4127;
         v16 = 2112;
-        v17 = v4;
+        v17 = uniqueID;
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d systemPreferredCamera=%@", &v10, 0x26u);
       }
     }
@@ -8873,7 +8873,7 @@ LABEL_16:
   }
 }
 
-- (void)startPreviewWithWidth:(int)a3 height:(int)a4 frameRate:(int)a5
+- (void)startPreviewWithWidth:(int)width height:(int)height frameRate:(int)rate
 {
   v14 = *MEMORY[0x1E69E9840];
   [(VCVideoCaptureServer *)self reconnectClientLayerFront:1];
@@ -8884,9 +8884,9 @@ LABEL_16:
   v10[2] = __63__VCVideoCaptureServer_startPreviewWithWidth_height_frameRate___block_invoke;
   v10[3] = &unk_1E85F3908;
   v10[4] = self;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  widthCopy = width;
+  heightCopy = height;
+  rateCopy = rate;
   dispatch_async(captureServerQueue, v10);
 }
 
@@ -9364,9 +9364,9 @@ void __35__VCVideoCaptureServer_stopPreview__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPauseCapture:(BOOL)a3
+- (void)setPauseCapture:(BOOL)capture
 {
-  v3 = a3;
+  captureCopy = capture;
   v9 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -9377,10 +9377,10 @@ void __35__VCVideoCaptureServer_stopPreview__block_invoke(uint64_t a1)
     block[2] = __40__VCVideoCaptureServer_setPauseCapture___block_invoke;
     block[3] = &unk_1E85F37A0;
     block[4] = self;
-    v8 = v3;
+    v8 = captureCopy;
     dispatch_async(captureClientQueue, block);
     screenHealthMonitor = self->screenHealthMonitor;
-    if (v3)
+    if (captureCopy)
     {
       dispatch_suspend(screenHealthMonitor);
     }
@@ -9426,13 +9426,13 @@ void __40__VCVideoCaptureServer_setPauseCapture___block_invoke(uint64_t a1)
   }
 }
 
-- (void)startCaptureWithWidth:(int)a3 height:(int)a4 frameRate:(int)a5
+- (void)startCaptureWithWidth:(int)width height:(int)height frameRate:(int)rate
 {
   v28 = *MEMORY[0x1E69E9840];
-  self->_encodingWidth = a3;
-  self->_encodingHeight = a4;
+  self->_encodingWidth = width;
+  self->_encodingHeight = height;
   [VCVideoCaptureServer startPreviewWithWidth:"startPreviewWithWidth:height:frameRate:" height:? frameRate:?];
-  if (a4 * a3 * a5)
+  if (height * width * rate)
   {
     captureServerQueue = self->captureServerQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -9440,9 +9440,9 @@ void __40__VCVideoCaptureServer_setPauseCapture___block_invoke(uint64_t a1)
     block[2] = __63__VCVideoCaptureServer_startCaptureWithWidth_height_frameRate___block_invoke;
     block[3] = &unk_1E85F3908;
     block[4] = self;
-    v13 = a5;
-    v14 = a3;
-    v15 = a4;
+    rateCopy = rate;
+    widthCopy = width;
+    heightCopy = height;
     dispatch_async(captureServerQueue, block);
   }
 
@@ -9459,11 +9459,11 @@ void __40__VCVideoCaptureServer_setPauseCapture___block_invoke(uint64_t a1)
       v20 = 1024;
       v21 = 4344;
       v22 = 1024;
-      v23 = a3;
+      widthCopy2 = width;
       v24 = 1024;
-      v25 = a4;
+      heightCopy2 = height;
       v26 = 1024;
-      v27 = a5;
+      rateCopy2 = rate;
       _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, "VCVideoCaptureServer [%s] %s:%d received invalid settings %dx%d@%dfps, returning early", buf, 0x2Eu);
     }
   }
@@ -9679,7 +9679,7 @@ void __35__VCVideoCaptureServer_stopCapture__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCaptureWidth:(int)a3 height:(int)a4 rate:(int)a5 forced:(BOOL)a6
+- (void)setCaptureWidth:(int)width height:(int)height rate:(int)rate forced:(BOOL)forced
 {
   v12 = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -9687,10 +9687,10 @@ void __35__VCVideoCaptureServer_stopCapture__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __59__VCVideoCaptureServer_setCaptureWidth_height_rate_forced___block_invoke;
   v7[3] = &unk_1E85F4C28;
-  v11 = a6;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forcedCopy = forced;
+  widthCopy = width;
+  heightCopy = height;
+  rateCopy = rate;
   v7[4] = self;
   dispatch_async(captureServerQueue, v7);
 }
@@ -9739,14 +9739,14 @@ void __59__VCVideoCaptureServer_setCaptureWidth_height_rate_forced___block_invok
   }
 }
 
-- (void)dispatchedSetCaptureWidth:(int)a3 height:(int)a4 rate:(int)a5
+- (void)dispatchedSetCaptureWidth:(int)width height:(int)height rate:(int)rate
 {
   v27 = *MEMORY[0x1E69E9840];
   avCapture = self->avCapture;
   if (avCapture)
   {
-    v7 = *&a5;
-    if (self->currentWidth == a3 && self->currentHeight == a4)
+    v7 = *&rate;
+    if (self->currentWidth == width && self->currentHeight == height)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -9761,9 +9761,9 @@ void __59__VCVideoCaptureServer_setCaptureWidth_height_rate_forced___block_invok
           v19 = 1024;
           v20 = 4468;
           v21 = 1024;
-          v22 = a3;
+          widthCopy2 = width;
           v23 = 1024;
-          v24 = a4;
+          heightCopy2 = height;
           v25 = 1024;
           v26 = v7;
           v12 = "VCVideoCaptureServer [%s] %s:%d already at requested dimensions=%dx%d@%d";
@@ -9775,7 +9775,7 @@ LABEL_11:
 
     else
     {
-      v13 = [(VCVideoSource *)avCapture setWidth:*&a3 height:*&a4 frameRate:*&a5];
+      v13 = [(VCVideoSource *)avCapture setWidth:*&width height:*&height frameRate:*&rate];
       if ((v13 & 0x80000000) != 0)
       {
 
@@ -9784,8 +9784,8 @@ LABEL_11:
 
       else
       {
-        self->currentWidth = a3;
-        self->currentHeight = a4;
+        self->currentWidth = width;
+        self->currentHeight = height;
         [(VCVideoCaptureServer *)self setCurrentFrameRate:v7];
         [(VCVideoCaptureServer *)self updateImageQueueFrameRate:self->currentFrameRate];
         if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -9801,9 +9801,9 @@ LABEL_11:
             v19 = 1024;
             v20 = 4482;
             v21 = 1024;
-            v22 = a3;
+            widthCopy2 = width;
             v23 = 1024;
-            v24 = a4;
+            heightCopy2 = height;
             v25 = 1024;
             v26 = v7;
             v12 = "VCVideoCaptureServer [%s] %s:%d changed to=%dx%d@%dfps";
@@ -9815,10 +9815,10 @@ LABEL_11:
   }
 }
 
-- (void)setCaptureWidth:(int)a3 height:(int)a4 rate:(int)a5
+- (void)setCaptureWidth:(int)width height:(int)height rate:(int)rate
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a4 * a3 * a5)
+  if (height * width * rate)
   {
     captureServerQueue = self->captureServerQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -9826,9 +9826,9 @@ LABEL_11:
     block[2] = __52__VCVideoCaptureServer_setCaptureWidth_height_rate___block_invoke;
     block[3] = &unk_1E85F3908;
     block[4] = self;
-    v9 = a3;
-    v10 = a4;
-    v11 = a5;
+    widthCopy = width;
+    heightCopy = height;
+    rateCopy = rate;
     dispatch_async(captureServerQueue, block);
   }
 
@@ -9849,18 +9849,18 @@ LABEL_11:
   }
 }
 
-- (void)resetCameraToPreviewSettingsForced:(BOOL)a3
+- (void)resetCameraToPreviewSettingsForced:(BOOL)forced
 {
-  v3 = a3;
+  forcedCopy = forced;
   v8 = *MEMORY[0x1E69E9840];
   v6 = -1431655766;
   v7 = -1431655766;
   v5 = -1431655766;
   [(VCVideoCaptureServer *)self previewVideoWidth:&v7 height:&v6 frameRate:&v5];
-  [(VCVideoCaptureServer *)self setCaptureWidth:v7 height:v6 rate:v5 forced:v3];
+  [(VCVideoCaptureServer *)self setCaptureWidth:v7 height:v6 rate:v5 forced:forcedCopy];
 }
 
-- (BOOL)cameraSupportsWidth:(int)a3 height:(int)a4
+- (BOOL)cameraSupportsWidth:(int)width height:(int)height
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0;
@@ -9874,8 +9874,8 @@ LABEL_11:
   v7[3] = &unk_1E85F3930;
   v7[4] = self;
   v7[5] = &v10;
-  v8 = a3;
-  v9 = a4;
+  widthCopy = width;
+  heightCopy = height;
   dispatch_sync(captureServerQueue, v7);
   v5 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -9889,17 +9889,17 @@ uint64_t __51__VCVideoCaptureServer_cameraSupportsWidth_height___block_invoke(ui
   return result;
 }
 
-- (void)setCameraZoomAvailable:(BOOL)a3 currentZoomFactor:(double)a4 maxZoomFactor:(double)a5
+- (void)setCameraZoomAvailable:(BOOL)available currentZoomFactor:(double)factor maxZoomFactor:(double)zoomFactor
 {
-  v7 = a3;
+  availableCopy = available;
   v18[5] = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v7];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:availableCopy];
   v11 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v12 = a4;
+  *&v12 = factor;
   v13 = [v11 initWithFloat:v12];
   v14 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v15 = a5;
+  *&v15 = zoomFactor;
   v16 = [v14 initWithFloat:v15];
   [v9 setObject:v10 forKeyedSubscript:@"previewCameraZoomAvailabilty"];
   [v9 setObject:v13 forKeyedSubscript:@"previewCameraZoomFactor"];
@@ -9921,11 +9921,11 @@ uint64_t __79__VCVideoCaptureServer_setCameraZoomAvailable_currentZoomFactor_max
   return [v2 sendMessageAsync:"previewCameraZoomAvailablilty" arguments:v3];
 }
 
-- (void)setCFAvailabilityChange:(BOOL)a3
+- (void)setCFAvailabilityChange:(BOOL)change
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"previewCameraCinematicFraming";
-  v8[0] = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v8[0] = [MEMORY[0x1E696AD98] numberWithBool:change];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   captureServerQueue = self->captureServerQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -9944,20 +9944,20 @@ uint64_t __48__VCVideoCaptureServer_setCFAvailabilityChange___block_invoke(uint6
   return [v2 sendMessageAsync:"previewCameraCinematicFramingAvailablilty" arguments:v3];
 }
 
-- (__CFDictionary)copyReportingStatsForCaptureSource:(int)a3
+- (__CFDictionary)copyReportingStatsForCaptureSource:(int)source
 {
   v23 = *MEMORY[0x1E69E9840];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   if (Mutable)
   {
-    if (a3 < 0xB)
+    if (source < 0xB)
     {
       captureServerQueue = self->captureServerQueue;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __59__VCVideoCaptureServer_copyReportingStatsForCaptureSource___block_invoke_2;
       v11[3] = &unk_1E85F3908;
-      v12 = a3;
+      sourceCopy = source;
       v11[4] = self;
       v11[5] = Mutable;
       v7 = v11;
@@ -9972,7 +9972,7 @@ uint64_t __48__VCVideoCaptureServer_setCFAvailabilityChange___block_invoke(uint6
       v13[3] = &unk_1E85F3908;
       v13[4] = self;
       v13[5] = Mutable;
-      v14 = a3;
+      sourceCopy2 = source;
       v7 = v13;
     }
 
@@ -9992,7 +9992,7 @@ uint64_t __48__VCVideoCaptureServer_setCFAvailabilityChange___block_invoke(uint6
       v19 = 1024;
       v20 = 4540;
       v21 = 1024;
-      v22 = a3;
+      sourceCopy3 = source;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d Failed to create the reporting stats dictionary. captureSourceID=%d", buf, 0x22u);
     }
   }
@@ -10092,19 +10092,19 @@ uint64_t __50__VCVideoCaptureServer_copyInitialStatsDictionary__block_invoke(uin
   return result;
 }
 
-- (void)addStreamInputStatsToDict:(__CFDictionary *)a3 captureSource:(int)a4
+- (void)addStreamInputStatsToDict:(__CFDictionary *)dict captureSource:(int)source
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&source];
   v7 = [(NSMutableDictionary *)self->_streamInputCaptureSources objectForKeyedSubscript:v6];
   if (v7)
   {
     v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamInputs, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "streamInputID")}]);
     if (v8)
     {
-      v9 = [v8 reportingStats];
+      reportingStats = [v8 reportingStats];
 
-      VCUtil_AppendFromDictionary(a3, v9);
+      VCUtil_AppendFromDictionary(dict, reportingStats);
     }
   }
 
@@ -10127,7 +10127,7 @@ uint64_t __50__VCVideoCaptureServer_copyInitialStatsDictionary__block_invoke(uin
   }
 }
 
-- (void)addScreenStatsToDict:(__CFDictionary *)a3
+- (void)addScreenStatsToDict:(__CFDictionary *)dict
 {
   v14 = *MEMORY[0x1E69E9840];
   screenShareCaptureConfig = self->_screenShareCaptureConfig;
@@ -10165,7 +10165,7 @@ uint64_t __50__VCVideoCaptureServer_copyInitialStatsDictionary__block_invoke(uin
     v6 = 0;
   }
 
-  CFDictionaryAddValue(a3, @"ScreenSharingIsFullScreen", [MEMORY[0x1E696AD98] numberWithBool:{v6, *v10, *&v10[16]}]);
+  CFDictionaryAddValue(dict, @"ScreenSharingIsFullScreen", [MEMORY[0x1E696AD98] numberWithBool:{v6, *v10, *&v10[16]}]);
 }
 
 - (void)updatePreviewState
@@ -10190,7 +10190,7 @@ uint64_t __42__VCVideoCaptureServer_updatePreviewState__block_invoke(uint64_t a1
   return [v2 sendMessageAsync:"updatePreviewState" arguments:v3];
 }
 
-- (BOOL)setUpSensitiveContentAnalyzerWithParticipantUUID:(id)a3
+- (BOOL)setUpSensitiveContentAnalyzerWithParticipantUUID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -10203,7 +10203,7 @@ uint64_t __42__VCVideoCaptureServer_updatePreviewState__block_invoke(uint64_t a1
   v6[2] = __73__VCVideoCaptureServer_setUpSensitiveContentAnalyzerWithParticipantUUID___block_invoke;
   v6[3] = &unk_1E85F6638;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = d;
   v6[6] = &v7;
   dispatch_sync(captureServerQueue, v6);
   v4 = *(v8 + 24);
@@ -10234,11 +10234,11 @@ uint64_t __73__VCVideoCaptureServer_setUpSensitiveContentAnalyzerWithParticipant
   return result;
 }
 
-- (id)newSensitiveContentAnalyzerWithParticipantUUID:(id)a3
+- (id)newSensitiveContentAnalyzerWithParticipantUUID:(id)d
 {
   v34 = *MEMORY[0x1E69E9840];
   v21 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E697B680]) initWithParticipantUUID:a3 options:1 error:&v21];
+  v5 = [objc_alloc(MEMORY[0x1E697B680]) initWithParticipantUUID:d options:1 error:&v21];
   if (v5)
   {
     v6 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:self];
@@ -10273,11 +10273,11 @@ uint64_t __73__VCVideoCaptureServer_setUpSensitiveContentAnalyzerWithParticipant
           v26 = 1024;
           v27 = 4674;
           v28 = 2112;
-          v29 = v7;
+          dCopy2 = v7;
           v30 = 2048;
-          v31 = self;
+          selfCopy2 = self;
           v32 = 2112;
-          v33 = a3;
+          dCopy = d;
           v11 = "VCVideoCaptureServer [%s] %s:%d %@(%p) SCVideoStreamAnalyzer created for participant=%@";
           v14 = v13;
 LABEL_23:
@@ -10308,7 +10308,7 @@ LABEL_23:
     v26 = 1024;
     v27 = 4674;
     v28 = 2112;
-    v29 = a3;
+    dCopy2 = d;
     v11 = "VCVideoCaptureServer [%s] %s:%d SCVideoStreamAnalyzer created for participant=%@";
 LABEL_18:
     v14 = v10;
@@ -10339,7 +10339,7 @@ LABEL_24:
     v26 = 1024;
     v27 = 4676;
     v28 = 2112;
-    v29 = v21;
+    dCopy2 = v21;
     v11 = "VCVideoCaptureServer [%s] %s:%d SCVideoStreamAnalyzer is not enabled=%@";
     goto LABEL_18;
   }
@@ -10367,11 +10367,11 @@ LABEL_24:
       v26 = 1024;
       v27 = 4676;
       v28 = 2112;
-      v29 = v8;
+      dCopy2 = v8;
       v30 = 2048;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
-      v33 = v21;
+      dCopy = v21;
       v11 = "VCVideoCaptureServer [%s] %s:%d %@(%p) SCVideoStreamAnalyzer is not enabled=%@";
       v14 = v18;
       goto LABEL_23;
@@ -10611,29 +10611,29 @@ LABEL_11:
   return [*(*(a1 + 32) + 840) continueStream];
 }
 
-- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 attribute:(id *)a5
+- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time attribute:(id *)attribute
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a5->var1)
+  if (attribute->var1)
   {
-    var3 = a5->var3;
-    var2 = a5->var2;
-    var4 = a5->var4;
-    v10 = *a4;
-    VCVideoCaptureServer_OnCaptureVideoFrame(self, a3, &v10, var3, var2, var4);
+    var3 = attribute->var3;
+    var2 = attribute->var2;
+    var4 = attribute->var4;
+    v10 = *time;
+    VCVideoCaptureServer_OnCaptureVideoFrame(self, frame, &v10, var3, var2, var4);
   }
 
   else
   {
-    var5 = a5->var5;
-    v10 = *a4;
-    [(VCVideoCaptureServer *)self onCaptureScreenFrame:a3 frameTime:&v10 orientation:var5];
+    var5 = attribute->var5;
+    v10 = *time;
+    [(VCVideoCaptureServer *)self onCaptureScreenFrame:frame frameTime:&v10 orientation:var5];
   }
 
   return 1;
 }
 
-- (void)sourceFrameRateDidChange:(unsigned int)a3
+- (void)sourceFrameRateDidChange:(unsigned int)change
 {
   v6 = *MEMORY[0x1E69E9840];
   captureServerQueue = self->captureServerQueue;
@@ -10642,7 +10642,7 @@ LABEL_11:
   block[2] = __49__VCVideoCaptureServer_sourceFrameRateDidChange___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(captureServerQueue, block);
 }
 
@@ -10718,7 +10718,7 @@ uint64_t __49__VCVideoCaptureServer_sourceFrameRateDidChange___block_invoke_406(
   return result;
 }
 
-- (void)setRemoteDeviceOrientation:(int)a3
+- (void)setRemoteDeviceOrientation:(int)orientation
 {
   v18 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -10734,7 +10734,7 @@ uint64_t __49__VCVideoCaptureServer_sourceFrameRateDidChange___block_invoke_406(
       v14 = 1024;
       v15 = 4730;
       v16 = 1024;
-      v17 = a3;
+      orientationCopy = orientation;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d remoteDeviceOrientation=%d", buf, 0x22u);
     }
   }
@@ -10745,7 +10745,7 @@ uint64_t __49__VCVideoCaptureServer_sourceFrameRateDidChange___block_invoke_406(
   v8[2] = __51__VCVideoCaptureServer_setRemoteDeviceOrientation___block_invoke;
   v8[3] = &unk_1E85F38B8;
   v8[4] = self;
-  v9 = a3;
+  orientationCopy2 = orientation;
   dispatch_async(captureServerQueue, v8);
 }
 
@@ -10802,10 +10802,10 @@ uint64_t __VCVideoCaptureServer_IsCaptureFullBleedPreferred_block_invoke(uint64_
   return result;
 }
 
-- (void)addDeviceStateDelegate:(id)a3
+- (void)addDeviceStateDelegate:(id)delegate
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (delegate)
   {
     captureClientQueue = self->captureClientQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -10813,7 +10813,7 @@ uint64_t __VCVideoCaptureServer_IsCaptureFullBleedPreferred_block_invoke(uint64_
     block[2] = __47__VCVideoCaptureServer_addDeviceStateDelegate___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = delegate;
     dispatch_async(captureClientQueue, block);
   }
 }
@@ -10862,10 +10862,10 @@ LABEL_3:
   }
 }
 
-- (void)removeDeviceStateDelegate:(id)a3
+- (void)removeDeviceStateDelegate:(id)delegate
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (delegate)
   {
     captureClientQueue = self->captureClientQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -10873,7 +10873,7 @@ LABEL_3:
     block[2] = __50__VCVideoCaptureServer_removeDeviceStateDelegate___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = delegate;
     dispatch_sync(captureClientQueue, block);
   }
 }
@@ -10917,7 +10917,7 @@ void __50__VCVideoCaptureServer_removeDeviceStateDelegate___block_invoke(uint64_
   [*(*(a1 + 32) + 728) minusSet:v2];
 }
 
-- (void)notifyDeviceStateDelegatesWithOrientation:(int)a3
+- (void)notifyDeviceStateDelegatesWithOrientation:(int)orientation
 {
   v6 = *MEMORY[0x1E69E9840];
   captureClientQueue = self->captureClientQueue;
@@ -10926,7 +10926,7 @@ void __50__VCVideoCaptureServer_removeDeviceStateDelegate___block_invoke(uint64_
   block[2] = __66__VCVideoCaptureServer_notifyDeviceStateDelegatesWithOrientation___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  orientationCopy = orientation;
   dispatch_async(captureClientQueue, block);
 }
 
@@ -10967,9 +10967,9 @@ uint64_t __66__VCVideoCaptureServer_notifyDeviceStateDelegatesWithOrientation___
   return result;
 }
 
-- (void)dispatchedUpdateRemoteScreenAttributes:(int)a3 forceUpdate:(BOOL)a4
+- (void)dispatchedUpdateRemoteScreenAttributes:(int)attributes forceUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v27 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   v8 = MEMORY[0x1E6986650];
@@ -10986,7 +10986,7 @@ uint64_t __66__VCVideoCaptureServer_notifyDeviceStateDelegatesWithOrientation___
       v23 = 1024;
       v24 = 4799;
       v25 = 1024;
-      v26 = a3;
+      attributesCopy = attributes;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d remoteDeviceOrientation=%d", buf, 0x22u);
     }
   }
@@ -11006,7 +11006,7 @@ uint64_t __66__VCVideoCaptureServer_notifyDeviceStateDelegatesWithOrientation___
       v23 = 1024;
       v24 = 4802;
       v25 = 1024;
-      v26 = v11;
+      attributesCopy = v11;
       _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, "VCVideoCaptureServer [%s] %s:%d localDeviceOrientation=%d", buf, 0x22u);
     }
   }
@@ -11022,7 +11022,7 @@ uint64_t __66__VCVideoCaptureServer_notifyDeviceStateDelegatesWithOrientation___
     remoteSupportsFullScreenReceive = self->_remoteSupportsFullScreenReceive;
   }
 
-  VideoUtil_CreateTxRemoteScreenAttributes(v11, v11, a3, a3, v4, remoteSupportsFullScreenReceive & 1, &v18, self->_remoteScreenAspectRatios.portrait.width, self->_remoteScreenAspectRatios.portrait.height, self->_remoteScreenAspectRatios.landscape.width, self->_remoteScreenAspectRatios.landscape.height, self->_remoteExpectedAspectRatios.portrait.width, self->_remoteExpectedAspectRatios.portrait.height, self->_remoteExpectedAspectRatios.landscape.width, self->_remoteExpectedAspectRatios.landscape.height, self->_remoteExpectedFullScreenAspectRatios.portrait.width, self->_remoteExpectedFullScreenAspectRatios.portrait.height, self->_remoteExpectedFullScreenAspectRatios.landscape.width, self->_remoteExpectedFullScreenAspectRatios.landscape.height);
+  VideoUtil_CreateTxRemoteScreenAttributes(v11, v11, attributes, attributes, updateCopy, remoteSupportsFullScreenReceive & 1, &v18, self->_remoteScreenAspectRatios.portrait.width, self->_remoteScreenAspectRatios.portrait.height, self->_remoteScreenAspectRatios.landscape.width, self->_remoteScreenAspectRatios.landscape.height, self->_remoteExpectedAspectRatios.portrait.width, self->_remoteExpectedAspectRatios.portrait.height, self->_remoteExpectedAspectRatios.landscape.width, self->_remoteExpectedAspectRatios.landscape.height, self->_remoteExpectedFullScreenAspectRatios.portrait.width, self->_remoteExpectedFullScreenAspectRatios.portrait.height, self->_remoteExpectedFullScreenAspectRatios.landscape.width, self->_remoteExpectedFullScreenAspectRatios.landscape.height);
   if (v18)
   {
     delegateNotificationQueue = self->delegateNotificationQueue;
@@ -11074,19 +11074,19 @@ uint64_t __VCVideoCaptureServer_UpdateRemoteScreenAttributes_block_invoke(uint64
   return [v2 dispatchedUpdateRemoteScreenAttributes:v3 forceUpdate:v4];
 }
 
-- (void)didChangeThermalLevel:(int)a3
+- (void)didChangeThermalLevel:(int)level
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (self->_newThermalLevel != a3)
+  if (self->_newThermalLevel != level)
   {
-    self->_newThermalLevel = a3;
+    self->_newThermalLevel = level;
     streamInputQueue = self->_streamInputQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__VCVideoCaptureServer_didChangeThermalLevel___block_invoke;
     block[3] = &unk_1E85F38B8;
     block[4] = self;
-    v5 = a3;
+    levelCopy = level;
     dispatch_async(streamInputQueue, block);
   }
 }
@@ -11556,18 +11556,18 @@ uint64_t ___VCVideoCaptureServer_ProcessCaptureSampleBuffer_block_invoke(uint64_
   }
 }
 
-- (id)videoRuleForClient:(id)a3
+- (id)videoRuleForClient:(id)client
 {
   dispatch_assert_queue_V2(self->captureClientQueue);
-  if (!a3)
+  if (!client)
   {
     return 0;
   }
 
-  result = [a3 clientCaptureRule];
+  result = [client clientCaptureRule];
   if (!result)
   {
-    result = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
+    result = [MEMORY[0x1E696AD98] numberWithUnsignedLong:client];
     if (result)
     {
       v6 = result;
@@ -11580,44 +11580,44 @@ uint64_t ___VCVideoCaptureServer_ProcessCaptureSampleBuffer_block_invoke(uint64_
   return result;
 }
 
-- (void)updateCaptureWidth:(int *)a3 height:(int *)a4 frameRate:(int *)a5 withVideoRule:(id)a6
+- (void)updateCaptureWidth:(int *)width height:(int *)height frameRate:(int *)rate withVideoRule:(id)rule
 {
   dispatch_assert_queue_V2(self->captureClientQueue);
-  if (a6)
+  if (rule)
   {
-    if ([a6 iWidth] < *a3)
+    if ([rule iWidth] < *width)
     {
-      *a3 = [a6 iWidth];
+      *width = [rule iWidth];
     }
 
-    if ([a6 iHeight] < *a4)
+    if ([rule iHeight] < *height)
     {
-      *a4 = [a6 iHeight];
+      *height = [rule iHeight];
     }
 
-    [a6 fRate];
-    if (v10 < *a5)
+    [rule fRate];
+    if (v10 < *rate)
     {
-      [a6 fRate];
-      *a5 = v11;
+      [rule fRate];
+      *rate = v11;
     }
   }
 }
 
-- (void)dispatchedUpdateCaptureRuleForClient:(id)a3 width:(int)a4 height:(int)a5 frameRate:(float)a6
+- (void)dispatchedUpdateCaptureRuleForClient:(id)client width:(int)width height:(int)height frameRate:(float)rate
 {
-  v7 = *&a5;
-  v8 = *&a4;
+  v7 = *&height;
+  v8 = *&width;
   v22 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->captureClientQueue);
-  if (a3)
+  if (client)
   {
     v11 = [VCVideoRule alloc];
-    *&v12 = a6;
+    *&v12 = rate;
     v15 = [(VCVideoRule *)v11 initWithFrameWidth:v8 frameHeight:v7 frameRate:v12];
     if (v15)
     {
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_cameraSinkVideoRules, "setObject:forKeyedSubscript:", v15, [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3]);
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_cameraSinkVideoRules, "setObject:forKeyedSubscript:", v15, [MEMORY[0x1E696AD98] numberWithUnsignedLong:client]);
     }
 
     else if (VRTraceGetErrorLogLevelForModule() >= 3)

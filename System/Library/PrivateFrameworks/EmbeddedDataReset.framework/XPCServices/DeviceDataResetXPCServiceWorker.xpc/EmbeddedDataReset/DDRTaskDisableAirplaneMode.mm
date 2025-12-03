@@ -23,8 +23,8 @@
 
 - (void)run
 {
-  v2 = [(DDRTaskDisableAirplaneMode *)self radioPreference];
-  [v2 setAirplaneMode:0];
+  radioPreference = [(DDRTaskDisableAirplaneMode *)self radioPreference];
+  [radioPreference setAirplaneMode:0];
 }
 
 @end

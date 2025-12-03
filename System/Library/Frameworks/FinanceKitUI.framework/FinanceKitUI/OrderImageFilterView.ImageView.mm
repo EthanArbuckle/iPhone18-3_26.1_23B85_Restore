@@ -1,12 +1,12 @@
 @interface OrderImageFilterView.ImageView
-- (_TtCV12FinanceKitUIP33_76F7BA28342C53BC40CB4FB6230E258020OrderImageFilterView9ImageView)initWithCoder:(id)a3;
-- (_TtCV12FinanceKitUIP33_76F7BA28342C53BC40CB4FB6230E258020OrderImageFilterView9ImageView)initWithFrame:(CGRect)a3;
+- (_TtCV12FinanceKitUIP33_76F7BA28342C53BC40CB4FB6230E258020OrderImageFilterView9ImageView)initWithCoder:(id)coder;
+- (_TtCV12FinanceKitUIP33_76F7BA28342C53BC40CB4FB6230E258020OrderImageFilterView9ImageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation OrderImageFilterView.ImageView
 
-- (_TtCV12FinanceKitUIP33_76F7BA28342C53BC40CB4FB6230E258020OrderImageFilterView9ImageView)initWithCoder:(id)a3
+- (_TtCV12FinanceKitUIP33_76F7BA28342C53BC40CB4FB6230E258020OrderImageFilterView9ImageView)initWithCoder:(id)coder
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_2385C970C(a3);
+  v4 = sub_2385C970C(coder);
 
   return v4;
 }
@@ -31,11 +31,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_2385C9AAC();
 }
 
-- (_TtCV12FinanceKitUIP33_76F7BA28342C53BC40CB4FB6230E258020OrderImageFilterView9ImageView)initWithFrame:(CGRect)a3
+- (_TtCV12FinanceKitUIP33_76F7BA28342C53BC40CB4FB6230E258020OrderImageFilterView9ImageView)initWithFrame:(CGRect)frame
 {
   sub_23875ED50();
   sub_23875ED40();

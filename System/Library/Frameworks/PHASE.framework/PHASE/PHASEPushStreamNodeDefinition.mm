@@ -2,7 +2,7 @@
 - (PHASEPushStreamNodeDefinition)init;
 - (PHASEPushStreamNodeDefinition)initWithMixerDefinition:(PHASEMixerDefinition *)mixerDefinition format:(AVAudioFormat *)format;
 - (PHASEPushStreamNodeDefinition)initWithMixerDefinition:(PHASEMixerDefinition *)mixerDefinition format:(AVAudioFormat *)format identifier:(NSString *)identifier;
-- (void)setTargetLKFS:(id)a3;
+- (void)setTargetLKFS:(id)s;
 @end
 
 @implementation PHASEPushStreamNodeDefinition
@@ -42,13 +42,13 @@
     goto LABEL_21;
   }
 
-  v9 = [(AVAudioFormat *)v7 commonFormat];
-  if (v9 == 1)
+  commonFormat = [(AVAudioFormat *)v7 commonFormat];
+  if (commonFormat == 1)
   {
-    if ([(AVAudioFormat *)v7 channelCount]< 2 || (v9 = [(AVAudioFormat *)v7 isInterleaved], !v9))
+    if ([(AVAudioFormat *)v7 channelCount]< 2 || (commonFormat = [(AVAudioFormat *)v7 isInterleaved], !commonFormat))
     {
-      v15 = [(AVAudioFormat *)v7 channelLayout];
-      v16 = v15 == 0;
+      channelLayout = [(AVAudioFormat *)v7 channelLayout];
+      v16 = channelLayout == 0;
 
       if (!v16)
       {
@@ -67,11 +67,11 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v19 = [(AVAudioFormat *)v7 channelCount];
-      switch(v19)
+      channelCount = [(AVAudioFormat *)v7 channelCount];
+      switch(channelCount)
       {
         case 0:
-          v29 = **(Phase::Logger::GetInstance(v19) + 448);
+          v29 = **(Phase::Logger::GetInstance(channelCount) + 448);
           if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_8;
@@ -87,7 +87,7 @@ LABEL_21:
           goto LABEL_7;
         case 1:
           v20 = 6553601;
-          v21 = **(Phase::Logger::GetInstance(v19) + 448);
+          v21 = **(Phase::Logger::GetInstance(channelCount) + 448);
           if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
 LABEL_19:
@@ -109,7 +109,7 @@ LABEL_19:
           break;
         case 2:
           v20 = 6619138;
-          v21 = **(Phase::Logger::GetInstance(v19) + 448);
+          v21 = **(Phase::Logger::GetInstance(channelCount) + 448);
           if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_19;
@@ -122,16 +122,16 @@ LABEL_19:
           v22 = "%25s:%-5d An AVAudioFormat object with a nil channelLayout and channelCount of 2 was provided to PHASEPushStreamNodeDefinition.initWithMixerDefinition. Note that a stereo channelLayout will be automatically assigned to the audio format property";
           break;
         default:
-          v30 = **(Phase::Logger::GetInstance(v19) + 448);
+          v30 = **(Phase::Logger::GetInstance(channelCount) + 448);
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
-            v31 = [(AVAudioFormat *)v7 channelCount];
+            channelCount2 = [(AVAudioFormat *)v7 channelCount];
             *buf = 136315650;
             v34 = "PHASESoundEventNodes.mm";
             v35 = 1024;
             v36 = 692;
             v37 = 1024;
-            v38 = v31;
+            v38 = channelCount2;
             _os_log_impl(&dword_23A302000, v30, OS_LOG_TYPE_ERROR, "%25s:%-5d It's unexpected to have an AVAudioFormat object with a nil channelLayout for a channel count of %d. Please verify the AVAudioFormat API has not changed for channelCounts > 2.", buf, 0x18u);
           }
 
@@ -143,7 +143,7 @@ LABEL_19:
     }
   }
 
-  v10 = **(Phase::Logger::GetInstance(v9) + 448);
+  v10 = **(Phase::Logger::GetInstance(commonFormat) + 448);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
@@ -164,13 +164,13 @@ LABEL_22:
   return v14;
 }
 
-- (void)setTargetLKFS:(id)a3
+- (void)setTargetLKFS:(id)s
 {
-  v12 = a3;
+  sCopy = s;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = NSStringFromSelector(a2);
-  [v12 doubleValue];
+  [sCopy doubleValue];
   v9 = PHASEGetPropertyBounded<double>(v6, v7, v8, -100.0, 0.0);
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:v9];

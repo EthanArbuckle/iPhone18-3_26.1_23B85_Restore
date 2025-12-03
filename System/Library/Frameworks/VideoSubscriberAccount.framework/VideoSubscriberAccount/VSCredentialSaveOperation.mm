@@ -1,7 +1,7 @@
 @interface VSCredentialSaveOperation
 - (VSCredentialSaveOperation)init;
-- (VSCredentialSaveOperation)initWithUnsavedAccounts:(id)a3 accountStore:(id)a4;
-- (void)_didSaveAccounts:(id)a3 withResult:(BOOL)a4 error:(id)a5;
+- (VSCredentialSaveOperation)initWithUnsavedAccounts:(id)accounts accountStore:(id)store;
+- (void)_didSaveAccounts:(id)accounts withResult:(BOOL)result error:(id)error;
 - (void)executionDidBegin;
 @end
 
@@ -17,14 +17,14 @@
   return 0;
 }
 
-- (VSCredentialSaveOperation)initWithUnsavedAccounts:(id)a3 accountStore:(id)a4
+- (VSCredentialSaveOperation)initWithUnsavedAccounts:(id)accounts accountStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  accountsCopy = accounts;
+  storeCopy = store;
+  v8 = storeCopy;
+  if (accountsCopy)
   {
-    if (v7)
+    if (storeCopy)
     {
       goto LABEL_3;
     }
@@ -46,11 +46,11 @@ LABEL_3:
   v9 = [(VSCredentialSaveOperation *)&v15 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [accountsCopy copy];
     unsavedAccounts = v9->_unsavedAccounts;
     v9->_unsavedAccounts = v10;
 
-    objc_storeStrong(&v9->_accountStore, a4);
+    objc_storeStrong(&v9->_accountStore, store);
     v12 = objc_alloc_init(VSOptional);
     v13 = v9->_result;
     v9->_result = v12;
@@ -59,18 +59,18 @@ LABEL_3:
   return v9;
 }
 
-- (void)_didSaveAccounts:(id)a3 withResult:(BOOL)a4 error:(id)a5
+- (void)_didSaveAccounts:(id)accounts withResult:(BOOL)result error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v6)
+  resultCopy = result;
+  accountsCopy = accounts;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (resultCopy)
   {
     v11 = +[VSAccountStore sharedAccountStore];
-    v12 = [v11 accounts];
+    accounts = [v11 accounts];
 
-    if (![v12 count] && objc_msgSend(v8, "count"))
+    if (![accounts count] && objc_msgSend(accountsCopy, "count"))
     {
       v13 = VSDefaultLogObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -79,18 +79,18 @@ LABEL_3:
         _os_log_impl(&dword_23AB8E000, v13, OS_LOG_TYPE_DEFAULT, "Unable to fetch accounts from account store - fallback to local accounts.", v19, 2u);
       }
 
-      v14 = v8;
-      v12 = v14;
+      v14 = accountsCopy;
+      accounts = v14;
     }
 
-    v15 = [VSFailable failableWithObject:v12];
+    v15 = [VSFailable failableWithObject:accounts];
     v16 = [VSOptional optionalWithObject:v15];
     [(VSCredentialSaveOperation *)self setResult:v16];
   }
 
   else
   {
-    if (!v9)
+    if (!errorCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The error parameter must not be nil."];
     }
@@ -105,16 +105,16 @@ LABEL_3:
 
 - (void)executionDidBegin
 {
-  v3 = [(VSCredentialSaveOperation *)self unsavedAccounts];
-  v4 = [(VSCredentialSaveOperation *)self accountStore];
+  unsavedAccounts = [(VSCredentialSaveOperation *)self unsavedAccounts];
+  accountStore = [(VSCredentialSaveOperation *)self accountStore];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__VSCredentialSaveOperation_executionDidBegin__block_invoke;
   v6[3] = &unk_278B742E0;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
-  [v4 saveAccounts:v5 withCompletionHandler:v6];
+  v7 = unsavedAccounts;
+  v5 = unsavedAccounts;
+  [accountStore saveAccounts:v5 withCompletionHandler:v6];
 }
 
 void __46__VSCredentialSaveOperation_executionDidBegin__block_invoke(uint64_t a1, uint64_t a2, void *a3)

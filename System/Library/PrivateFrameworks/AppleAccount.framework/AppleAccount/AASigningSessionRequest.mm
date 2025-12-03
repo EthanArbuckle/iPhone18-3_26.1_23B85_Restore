@@ -1,20 +1,20 @@
 @interface AASigningSessionRequest
-- (AASigningSessionRequest)initWithURLString:(id)a3 sessionInfoRequestData:(id)a4;
+- (AASigningSessionRequest)initWithURLString:(id)string sessionInfoRequestData:(id)data;
 - (id)urlRequest;
 @end
 
 @implementation AASigningSessionRequest
 
-- (AASigningSessionRequest)initWithURLString:(id)a3 sessionInfoRequestData:(id)a4
+- (AASigningSessionRequest)initWithURLString:(id)string sessionInfoRequestData:(id)data
 {
-  v7 = a4;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = AASigningSessionRequest;
-  v8 = [(AARequest *)&v11 initWithURLString:a3];
+  v8 = [(AARequest *)&v11 initWithURLString:string];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sessionInfoRequestData, a4);
+    objc_storeStrong(&v8->_sessionInfoRequestData, data);
   }
 
   return v9;
@@ -24,8 +24,8 @@
 {
   v7.receiver = self;
   v7.super_class = AASigningSessionRequest;
-  v3 = [(AARequest *)&v7 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v7 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   v5 = [(NSData *)self->_sessionInfoRequestData base64EncodedStringWithOptions:0];
   [v4 setValue:v5 forHTTPHeaderField:@"X-MMe-Nas-Session"];

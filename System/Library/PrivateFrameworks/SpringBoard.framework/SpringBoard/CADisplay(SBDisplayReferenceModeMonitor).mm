@@ -6,16 +6,16 @@
 
 - (id)sb_referenceModeObserverUniqueIdentifier
 {
-  v2 = [a1 uniqueId];
-  v3 = v2;
-  if (v2)
+  uniqueId = [self uniqueId];
+  v3 = uniqueId;
+  if (uniqueId)
   {
-    v4 = v2;
+    v4 = uniqueId;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "displayId")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "displayId")}];
     v4 = [v5 description];
   }
 

@@ -1,33 +1,33 @@
 @interface BrowseManager
-+ (BOOL)alreadyHasCategoriesForTraits:(id)a3;
-+ (BOOL)traitsIsForCurrentLocationOnly:(id)a3;
-+ (id)sharedContentCache:(id)a3;
++ (BOOL)alreadyHasCategoriesForTraits:(id)traits;
++ (BOOL)traitsIsForCurrentLocationOnly:(id)only;
++ (id)sharedContentCache:(id)cache;
 + (id)sharedManager;
-+ (void)checkIfNearbyIsAvailableForTraits:(id)a3 completion:(id)a4;
-+ (void)precacheCategoriesForCacheKey:(id)a3 withTraits:(id)a4 completion:(id)a5;
-+ (void)prepareImagesForCacheKey:(id)a3 traits:(id)a4 completion:(id)a5;
-+ (void)setCacheKey:(id)a3 writesToDisk:(BOOL)a4;
-+ (void)updateMapRegionInTraits:(id)a3 withLocation:(id)a4;
++ (void)checkIfNearbyIsAvailableForTraits:(id)traits completion:(id)completion;
++ (void)precacheCategoriesForCacheKey:(id)key withTraits:(id)traits completion:(id)completion;
++ (void)prepareImagesForCacheKey:(id)key traits:(id)traits completion:(id)completion;
++ (void)setCacheKey:(id)key writesToDisk:(BOOL)disk;
++ (void)updateMapRegionInTraits:(id)traits withLocation:(id)location;
 - (BOOL)needsRefresh;
-- (BOOL)sharesCacheWithManager:(id)a3;
+- (BOOL)sharesCacheWithManager:(id)manager;
 - (BrowseImageManager)imageManager;
-- (BrowseManager)initWithCacheKey:(id)a3;
+- (BrowseManager)initWithCacheKey:(id)key;
 - (MapsUIImageCacheUserInterfaceDelegate)userInterfaceDelegate;
 - (NSArray)cachedCategories;
-- (id)cachedCategoriesForTraits:(id)a3;
-- (id)cellImageForCategory:(id)a3;
-- (id)searchForCategory:(id)a3 source:(int)a4 completion:(id)a5;
-- (id)submitTicketForSearchForCategory:(id)a3 source:(int)a4 completion:(id)a5;
-- (id)synchronousImageForCategory:(id)a3 scale:(double)a4 isCarplay:(BOOL)a5;
+- (id)cachedCategoriesForTraits:(id)traits;
+- (id)cellImageForCategory:(id)category;
+- (id)searchForCategory:(id)category source:(int)source completion:(id)completion;
+- (id)submitTicketForSearchForCategory:(id)category source:(int)source completion:(id)completion;
+- (id)synchronousImageForCategory:(id)category scale:(double)scale isCarplay:(BOOL)carplay;
 - (void)getBatchNearby;
-- (void)getCategoriesFromSearchHome:(BOOL)a3 completion:(id)a4;
-- (void)imageForCategory:(id)a3 scale:(double)a4 isCarplay:(BOOL)a5 resultHandler:(id)a6;
-- (void)preCacheWithTraits:(id)a3;
+- (void)getCategoriesFromSearchHome:(BOOL)home completion:(id)completion;
+- (void)imageForCategory:(id)category scale:(double)scale isCarplay:(BOOL)carplay resultHandler:(id)handler;
+- (void)preCacheWithTraits:(id)traits;
 - (void)readCategoriesFromDiskIfNeeded;
-- (void)setCacheKey:(id)a3;
-- (void)setImageManager:(id)a3;
-- (void)setTraits:(id)a3;
-- (void)setUserInterfaceDelegate:(id)a3;
+- (void)setCacheKey:(id)key;
+- (void)setImageManager:(id)manager;
+- (void)setTraits:(id)traits;
+- (void)setUserInterfaceDelegate:(id)delegate;
 - (void)submitBrowseUsageIfNeeded;
 @end
 
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000B39C;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195E740 != -1)
   {
     dispatch_once(&qword_10195E740, block);
@@ -71,30 +71,30 @@
 
 - (void)readCategoriesFromDiskIfNeeded
 {
-  v2 = [(BrowseManager *)self contentCache];
-  [v2 readCategoriesFromDiskIfNeeded];
+  contentCache = [(BrowseManager *)self contentCache];
+  [contentCache readCategoriesFromDiskIfNeeded];
 }
 
 - (NSArray)cachedCategories
 {
-  v2 = [(BrowseManager *)self contentCache];
-  v3 = [v2 categories];
+  contentCache = [(BrowseManager *)self contentCache];
+  categories = [contentCache categories];
 
-  return v3;
+  return categories;
 }
 
 - (void)getBatchNearby
 {
-  v3 = [(BrowseManager *)self contentCache];
-  v4 = [v3 needsRefresh];
+  contentCache = [(BrowseManager *)self contentCache];
+  needsRefresh = [contentCache needsRefresh];
 
-  if (v4)
+  if (needsRefresh)
   {
-    v5 = [(BrowseManager *)self contentCache];
-    [v5 setNeedsRefresh:0];
+    contentCache2 = [(BrowseManager *)self contentCache];
+    [contentCache2 setNeedsRefresh:0];
 
-    v6 = [(BrowseManager *)self contentCache];
-    [v6 updateCacheWithBlock:&stru_1016389E8];
+    contentCache3 = [(BrowseManager *)self contentCache];
+    [contentCache3 updateCacheWithBlock:&stru_1016389E8];
   }
 }
 
@@ -107,12 +107,12 @@
 
 - (void)submitBrowseUsageIfNeeded
 {
-  v4 = [(BrowseManager *)self cachedCategories];
-  if ([v4 count])
+  cachedCategories = [(BrowseManager *)self cachedCategories];
+  if ([cachedCategories count])
   {
-    v3 = [(BrowseManager *)self needToSendDisplayedUsage];
+    needToSendDisplayedUsage = [(BrowseManager *)self needToSendDisplayedUsage];
 
-    if (v3)
+    if (needToSendDisplayedUsage)
     {
       [GEOAPPortal captureUserAction:17010 target:0 value:0];
 
@@ -125,39 +125,39 @@
   }
 }
 
-- (id)cachedCategoriesForTraits:(id)a3
+- (id)cachedCategoriesForTraits:(id)traits
 {
-  [(BrowseManager *)self setTraits:a3];
-  v4 = [(BrowseManager *)self contentCache];
-  v5 = [v4 needsRefresh];
+  [(BrowseManager *)self setTraits:traits];
+  contentCache = [(BrowseManager *)self contentCache];
+  needsRefresh = [contentCache needsRefresh];
 
-  if (v5)
+  if (needsRefresh)
   {
-    v6 = 0;
+    cachedCategories = 0;
   }
 
   else
   {
-    v6 = [(BrowseManager *)self cachedCategories];
+    cachedCategories = [(BrowseManager *)self cachedCategories];
   }
 
-  return v6;
+  return cachedCategories;
 }
 
-- (void)getCategoriesFromSearchHome:(BOOL)a3 completion:(id)a4
+- (void)getCategoriesFromSearchHome:(BOOL)home completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  homeCopy = home;
+  completionCopy = completion;
   self->_needToSendDisplayedUsage = 1;
-  v7 = [(BrowseManager *)self contentCache];
-  if ([v7 needsRefresh])
+  contentCache = [(BrowseManager *)self contentCache];
+  if ([contentCache needsRefresh])
   {
   }
 
   else
   {
-    v8 = [(BrowseManager *)self cachedCategories];
-    v9 = [v8 count];
+    cachedCategories = [(BrowseManager *)self cachedCategories];
+    v9 = [cachedCategories count];
 
     if (v9)
     {
@@ -166,7 +166,7 @@
       block[2] = sub_100B2D16C;
       block[3] = &unk_101661090;
       block[4] = self;
-      v24 = v6;
+      v24 = completionCopy;
       dispatch_async(&_dispatch_main_q, block);
 
       goto LABEL_8;
@@ -180,20 +180,20 @@
   v22[2] = 0x2020000000;
   v22[3] = v10;
   v11 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v12 = [(BrowseManager *)self traits];
-  v13 = [v11 updatedTraitsForCurrentGarageState:v12];
+  traits = [(BrowseManager *)self traits];
+  v13 = [v11 updatedTraitsForCurrentGarageState:traits];
   [(BrowseManager *)self setTraits:v13];
 
   v14 = +[MKMapService sharedService];
-  v15 = [(BrowseManager *)self traits];
-  v16 = [v14 ticketForCategoryListWithTraits:v15 isFromNoQueryState:v4];
+  traits2 = [(BrowseManager *)self traits];
+  v16 = [v14 ticketForCategoryListWithTraits:traits2 isFromNoQueryState:homeCopy];
 
   v17 = sub_10008C23C();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [(BrowseManager *)self traits];
+    traits3 = [(BrowseManager *)self traits];
     *buf = 138412546;
-    v26 = v18;
+    v26 = traits3;
     v27 = 2112;
     v28 = v16;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "The category request is made with the traits: %@ and ticket: %@", buf, 0x16u);
@@ -205,16 +205,16 @@
   v19[3] = &unk_1016389A8;
   v21 = v22;
   v19[4] = self;
-  v20 = v6;
+  v20 = completionCopy;
   [v16 submitWithHandler:v19 networkActivity:0];
 
   _Block_object_dispose(v22, 8);
 LABEL_8:
 }
 
-- (void)preCacheWithTraits:(id)a3
+- (void)preCacheWithTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   [(BrowseManager *)self cacheKey];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -222,11 +222,11 @@ LABEL_8:
   v13[3] = &unk_101661A40;
   v5 = v13[4] = self;
   v14 = v5;
-  v6 = v4;
+  v6 = traitsCopy;
   v15 = v6;
   v7 = objc_retainBlock(v13);
-  v8 = [(BrowseManager *)self cachedCategories];
-  v9 = [v8 count];
+  cachedCategories = [(BrowseManager *)self cachedCategories];
+  v9 = [cachedCategories count];
 
   if (v9)
   {
@@ -245,33 +245,33 @@ LABEL_8:
   }
 }
 
-- (void)setUserInterfaceDelegate:(id)a3
+- (void)setUserInterfaceDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_userInterfaceDelegate, v4);
-  [(BrowseImageManager *)self->_imageManager setUserInterfaceDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_userInterfaceDelegate, delegateCopy);
+  [(BrowseImageManager *)self->_imageManager setUserInterfaceDelegate:delegateCopy];
 }
 
-- (void)setTraits:(id)a3
+- (void)setTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [(BrowseManager *)self contentCache];
-  [v5 setLatestTraits:v4];
+  traitsCopy = traits;
+  contentCache = [(BrowseManager *)self contentCache];
+  [contentCache setLatestTraits:traitsCopy];
 
-  v9 = [(BrowseManager *)self contentCache];
-  v6 = [v9 latestTraits];
-  v7 = [v6 copy];
+  contentCache2 = [(BrowseManager *)self contentCache];
+  latestTraits = [contentCache2 latestTraits];
+  v7 = [latestTraits copy];
   traits = self->_traits;
   self->_traits = v7;
 }
 
-- (id)cellImageForCategory:(id)a3
+- (id)cellImageForCategory:(id)category
 {
-  if (a3)
+  if (category)
   {
-    v4 = a3;
-    v5 = [(BrowseManager *)self imageManager];
-    v6 = [v5 transparentImageForCategory:v4];
+    categoryCopy = category;
+    imageManager = [(BrowseManager *)self imageManager];
+    v6 = [imageManager transparentImageForCategory:categoryCopy];
   }
 
   else
@@ -284,39 +284,39 @@ LABEL_8:
 
 - (BOOL)needsRefresh
 {
-  v2 = [(BrowseManager *)self contentCache];
-  v3 = [v2 needsRefresh];
+  contentCache = [(BrowseManager *)self contentCache];
+  needsRefresh = [contentCache needsRefresh];
 
-  return v3;
+  return needsRefresh;
 }
 
-- (id)submitTicketForSearchForCategory:(id)a3 source:(int)a4 completion:(id)a5
+- (id)submitTicketForSearchForCategory:(id)category source:(int)source completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(BrowseManager *)self traits];
-  v10 = [v9 navigating];
+  categoryCopy = category;
+  completionCopy = completion;
+  traits = [(BrowseManager *)self traits];
+  navigating = [traits navigating];
 
-  if (v10)
+  if (navigating)
   {
     v11 = [NavigationRouteHistoryInfoProvider alloc];
     v12 = +[MNNavigationService sharedService];
     v13 = [(NavigationRouteHistoryInfoProvider *)v11 initWithNavigationService:v12];
 
-    v31 = v8;
-    v14 = +[MKMapService sharedService];
+    v31 = completionCopy;
+    traits3 = +[MKMapService sharedService];
     [(NavigationRouteHistoryInfoProvider *)v13 originalWaypointRouteRepresentation];
     v15 = v32 = self;
-    v16 = [(NavigationRouteHistoryInfoProvider *)v13 legacyRouteRepresentation];
-    v17 = [(NavigationRouteHistoryInfoProvider *)v13 sessionState];
-    v18 = [(NavigationRouteHistoryInfoProvider *)v13 routeId];
-    v19 = [(NavigationRouteHistoryInfoProvider *)v13 routeAttributes];
+    legacyRouteRepresentation = [(NavigationRouteHistoryInfoProvider *)v13 legacyRouteRepresentation];
+    sessionState = [(NavigationRouteHistoryInfoProvider *)v13 sessionState];
+    routeId = [(NavigationRouteHistoryInfoProvider *)v13 routeId];
+    routeAttributes = [(NavigationRouteHistoryInfoProvider *)v13 routeAttributes];
     v20 = +[MKMapService searchMaxResults];
-    v21 = [(BrowseManager *)v32 traits];
+    traits2 = [(BrowseManager *)v32 traits];
     LODWORD(v30) = v20;
-    v22 = [v14 ticketForSearchAlongRouteWithCategory:v7 searchQuery:0 completionItem:0 originalWaypointRouteData:v15 zilchData:v16 sessionState:v17 routeId:v18 routeAttributes:v19 maxResults:v30 traits:v21 searchSessionData:0];
+    v22 = [traits3 ticketForSearchAlongRouteWithCategory:categoryCopy searchQuery:0 completionItem:0 originalWaypointRouteData:v15 zilchData:legacyRouteRepresentation sessionState:sessionState routeId:routeId routeAttributes:routeAttributes maxResults:v30 traits:traits2 searchSessionData:0];
 
-    v8 = v31;
+    completionCopy = v31;
     self = v32;
   }
 
@@ -324,21 +324,21 @@ LABEL_8:
   {
     v13 = +[MKMapService sharedService];
     v23 = +[MKMapService searchMaxResults];
-    v14 = [(BrowseManager *)self traits];
-    v22 = [(NavigationRouteHistoryInfoProvider *)v13 ticketForCategory:v7 maxResults:v23 traits:v14 searchSessionData:0];
+    traits3 = [(BrowseManager *)self traits];
+    v22 = [(NavigationRouteHistoryInfoProvider *)v13 ticketForCategory:categoryCopy maxResults:v23 traits:traits3 searchSessionData:0];
   }
 
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100B2D990;
   v33[3] = &unk_101638980;
-  v37 = v8;
+  v37 = completionCopy;
   v24 = v22;
   v34 = v24;
-  v35 = self;
-  v36 = v7;
-  v25 = v7;
-  v26 = v8;
+  selfCopy = self;
+  v36 = categoryCopy;
+  v25 = categoryCopy;
+  v26 = completionCopy;
   [v24 submitWithRefinedHandler:v33 networkActivity:0];
   v27 = v36;
   v28 = v24;
@@ -346,31 +346,31 @@ LABEL_8:
   return v24;
 }
 
-- (id)searchForCategory:(id)a3 source:(int)a4 completion:(id)a5
+- (id)searchForCategory:(id)category source:(int)source completion:(id)completion
 {
-  v6 = *&a4;
-  v8 = a3;
-  if (a5)
+  v6 = *&source;
+  categoryCopy = category;
+  if (completion)
   {
-    v9 = a5;
-    v10 = [(BrowseManager *)self traits];
-    [v10 setSource:v6];
+    completionCopy = completion;
+    traits = [(BrowseManager *)self traits];
+    [traits setSource:v6];
 
-    v11 = [(BrowseManager *)self contentCache];
+    contentCache = [(BrowseManager *)self contentCache];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100B2DD4C;
     v18[3] = &unk_101638958;
-    v12 = v8;
+    v12 = categoryCopy;
     v19 = v12;
-    [v11 updateCacheWithBlock:v18];
+    [contentCache updateCacheWithBlock:v18];
 
     v13 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-    v14 = [(BrowseManager *)self traits];
-    v15 = [v13 updatedTraitsForCurrentGarageState:v14];
+    traits2 = [(BrowseManager *)self traits];
+    v15 = [v13 updatedTraitsForCurrentGarageState:traits2];
     [(BrowseManager *)self setTraits:v15];
 
-    v16 = [(BrowseManager *)self submitTicketForSearchForCategory:v12 source:v6 completion:v9];
+    v16 = [(BrowseManager *)self submitTicketForSearchForCategory:v12 source:v6 completion:completionCopy];
   }
 
   else
@@ -381,61 +381,61 @@ LABEL_8:
   return v16;
 }
 
-- (void)setImageManager:(id)a3
+- (void)setImageManager:(id)manager
 {
-  v5 = a3;
-  if (self->_imageManager != v5)
+  managerCopy = manager;
+  if (self->_imageManager != managerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_imageManager, a3);
+    v6 = managerCopy;
+    objc_storeStrong(&self->_imageManager, manager);
     [(BrowseImageManager *)self->_imageManager setBrowseManager:self];
-    v5 = v6;
+    managerCopy = v6;
   }
 }
 
-- (void)setCacheKey:(id)a3
+- (void)setCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  keyCopy = key;
+  v5 = [keyCopy copy];
   cacheKey = self->_cacheKey;
   self->_cacheKey = v5;
 
-  v7 = [objc_opt_class() sharedContentCache:v4];
+  v7 = [objc_opt_class() sharedContentCache:keyCopy];
 
   contentCache = self->_contentCache;
   self->_contentCache = v7;
 
-  v9 = [(BrowseManagerContentCache *)self->_contentCache latestTraits];
+  latestTraits = [(BrowseManagerContentCache *)self->_contentCache latestTraits];
   traits = self->_traits;
-  self->_traits = v9;
+  self->_traits = latestTraits;
 }
 
-- (BOOL)sharesCacheWithManager:(id)a3
+- (BOOL)sharesCacheWithManager:(id)manager
 {
-  v4 = [a3 cacheKey];
-  v5 = [(BrowseManager *)self cacheKey];
-  v6 = [v4 isEqualToString:v5];
+  cacheKey = [manager cacheKey];
+  cacheKey2 = [(BrowseManager *)self cacheKey];
+  v6 = [cacheKey isEqualToString:cacheKey2];
 
   return v6;
 }
 
-- (BrowseManager)initWithCacheKey:(id)a3
+- (BrowseManager)initWithCacheKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v15.receiver = self;
   v15.super_class = BrowseManager;
   v6 = [(BrowseManager *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cacheKey, a3);
-    v8 = [objc_opt_class() sharedContentCache:v5];
+    objc_storeStrong(&v6->_cacheKey, key);
+    v8 = [objc_opt_class() sharedContentCache:keyCopy];
     contentCache = v7->_contentCache;
     v7->_contentCache = v8;
 
-    v10 = [(BrowseManagerContentCache *)v7->_contentCache latestTraits];
+    latestTraits = [(BrowseManagerContentCache *)v7->_contentCache latestTraits];
     traits = v7->_traits;
-    v7->_traits = v10;
+    v7->_traits = latestTraits;
 
     v12 = +[NSHashTable weakObjectsHashTable];
     observers = v7->_observers;
@@ -445,89 +445,89 @@ LABEL_8:
   return v7;
 }
 
-- (id)synchronousImageForCategory:(id)a3 scale:(double)a4 isCarplay:(BOOL)a5
+- (id)synchronousImageForCategory:(id)category scale:(double)scale isCarplay:(BOOL)carplay
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(BrowseManager *)self imageManager];
-  v10 = [(BrowseManager *)self traits];
-  v11 = [v9 synchronousImageForCategory:v8 scale:v10 traits:v5 isCarplay:a4];
+  carplayCopy = carplay;
+  categoryCopy = category;
+  imageManager = [(BrowseManager *)self imageManager];
+  traits = [(BrowseManager *)self traits];
+  v11 = [imageManager synchronousImageForCategory:categoryCopy scale:traits traits:carplayCopy isCarplay:scale];
 
   return v11;
 }
 
-- (void)imageForCategory:(id)a3 scale:(double)a4 isCarplay:(BOOL)a5 resultHandler:(id)a6
+- (void)imageForCategory:(id)category scale:(double)scale isCarplay:(BOOL)carplay resultHandler:(id)handler
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
-  v13 = [(BrowseManager *)self imageManager];
-  v12 = [(BrowseManager *)self traits];
-  [v13 imageForCategory:v11 scale:v12 traits:v6 isCarplay:v10 resultHandler:a4];
+  carplayCopy = carplay;
+  handlerCopy = handler;
+  categoryCopy = category;
+  imageManager = [(BrowseManager *)self imageManager];
+  traits = [(BrowseManager *)self traits];
+  [imageManager imageForCategory:categoryCopy scale:traits traits:carplayCopy isCarplay:handlerCopy resultHandler:scale];
 }
 
-+ (void)precacheCategoriesForCacheKey:(id)a3 withTraits:(id)a4 completion:(id)a5
++ (void)precacheCategoriesForCacheKey:(id)key withTraits:(id)traits completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 sharedContentCache:v8];
+  keyCopy = key;
+  traitsCopy = traits;
+  completionCopy = completion;
+  v11 = [self sharedContentCache:keyCopy];
   [v11 readCategoriesFromDiskIfNeeded];
-  v12 = [v11 categories];
-  v13 = [v12 count];
+  categories = [v11 categories];
+  v13 = [categories count];
 
   if (v13)
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    v14 = [[BrowseManager alloc] initWithCacheKey:v8];
-    [(BrowseManager *)v14 setTraits:v9];
+    v14 = [[BrowseManager alloc] initWithCacheKey:keyCopy];
+    [(BrowseManager *)v14 setTraits:traitsCopy];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100B2F290;
     v15[3] = &unk_10165EB78;
-    v16 = v10;
+    v16 = completionCopy;
     [(BrowseManager *)v14 getCategoriesWithCompletion:v15];
   }
 }
 
-+ (void)prepareImagesForCacheKey:(id)a3 traits:(id)a4 completion:(id)a5
++ (void)prepareImagesForCacheKey:(id)key traits:(id)traits completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v30 = v9;
-  v11 = [v9 hasCarHeadunitInteractionModel];
+  keyCopy = key;
+  traitsCopy = traits;
+  completionCopy = completion;
+  v30 = traitsCopy;
+  hasCarHeadunitInteractionModel = [traitsCopy hasCarHeadunitInteractionModel];
   v12 = 0.0;
-  if (v11)
+  if (hasCarHeadunitInteractionModel)
   {
     v13 = +[CarDisplayController sharedInstance];
-    v14 = [v13 screenTraitCollection];
-    [v14 displayScale];
+    screenTraitCollection = [v13 screenTraitCollection];
+    [screenTraitCollection displayScale];
     v12 = v15;
   }
 
-  v16 = [a1 sharedContentCache:v8];
+  v16 = [self sharedContentCache:keyCopy];
   [v16 readCategoriesFromDiskIfNeeded];
-  v17 = [v16 categories];
-  if ([v17 count])
+  categories = [v16 categories];
+  if ([categories count])
   {
-    v27 = v10;
-    v28 = v8;
+    v27 = completionCopy;
+    v28 = keyCopy;
     v18 = dispatch_group_create();
     v19 = objc_alloc_init(BrowseImageManager);
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v26 = v17;
-    obj = v17;
+    v26 = categories;
+    obj = categories;
     v20 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v20)
     {
@@ -549,7 +549,7 @@ LABEL_8:
           v34[2] = sub_100B2F590;
           v34[3] = &unk_1016519B0;
           v35 = v18;
-          [(BrowseImageManager *)v19 imageForCategory:v24 scale:v30 traits:v11 isCarplay:v34 resultHandler:v12];
+          [(BrowseImageManager *)v19 imageForCategory:v24 scale:v30 traits:hasCarHeadunitInteractionModel isCarplay:v34 resultHandler:v12];
         }
 
         v21 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -563,21 +563,21 @@ LABEL_8:
     block[2] = sub_100B2F598;
     block[3] = &unk_101661090;
     v32 = v19;
-    v10 = v27;
+    completionCopy = v27;
     v33 = v27;
     v25 = v19;
     dispatch_group_notify(v18, &_dispatch_main_q, block);
 
-    v8 = v28;
-    v17 = v26;
+    keyCopy = v28;
+    categories = v26;
   }
 }
 
-+ (void)updateMapRegionInTraits:(id)a3 withLocation:(id)a4
++ (void)updateMapRegionInTraits:(id)traits withLocation:(id)location
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 coordinate];
+  locationCopy = location;
+  traitsCopy = traits;
+  [locationCopy coordinate];
   v8 = v7;
   v10 = v9;
   if (__isnand() || __isinfd())
@@ -611,36 +611,36 @@ LABEL_8:
   }
 
   v18 = v11;
-  [v6 setMapRegion:v11];
-  v12 = [[GEOLocation alloc] initWithCLLocation:v5];
+  [traitsCopy setMapRegion:v11];
+  v12 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
 
-  [v6 setDeviceLocation:v12];
+  [traitsCopy setDeviceLocation:v12];
 }
 
-+ (void)checkIfNearbyIsAvailableForTraits:(id)a3 completion:(id)a4
++ (void)checkIfNearbyIsAvailableForTraits:(id)traits completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  traitsCopy = traits;
+  completionCopy = completion;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100B2F8F4;
   v20[3] = &unk_1016589F8;
-  v23 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = traitsCopy;
   v21 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v22 = v9;
   v10 = objc_retainBlock(v20);
-  v11 = [v8 mapRegion];
-  if (v11)
+  mapRegion = [v8 mapRegion];
+  if (mapRegion)
   {
   }
 
   else
   {
-    v12 = [v8 deviceLocation];
+    deviceLocation = [v8 deviceLocation];
 
-    if (!v12)
+    if (!deviceLocation)
     {
       v13 = +[MKLocationManager sharedLocationManager];
       v15[0] = _NSConcreteStackBlock;
@@ -648,7 +648,7 @@ LABEL_8:
       v15[2] = sub_100B2FA7C;
       v15[3] = &unk_101638930;
       v17 = v9;
-      v19 = a1;
+      selfCopy2 = self;
       v16 = v8;
       v18 = v10;
       v14 = [v13 singleLocationUpdateWithDesiredAccuracy:v15 handler:kCLLocationAccuracyThreeKilometers timeout:30.0];
@@ -662,48 +662,48 @@ LABEL_8:
 LABEL_5:
 }
 
-+ (BOOL)alreadyHasCategoriesForTraits:(id)a3
++ (BOOL)alreadyHasCategoriesForTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   v5 = [BrowseManager alloc];
-  v6 = [a1 nearbyCacheKeyForTraits:v4];
+  v6 = [self nearbyCacheKeyForTraits:traitsCopy];
   v7 = [(BrowseManager *)v5 initWithCacheKey:v6];
 
-  v8 = [(BrowseManager *)v7 cachedCategoriesForTraits:v4];
+  v8 = [(BrowseManager *)v7 cachedCategoriesForTraits:traitsCopy];
 
-  LOBYTE(v4) = [v8 count] != 0;
+  LOBYTE(traitsCopy) = [v8 count] != 0;
+  return traitsCopy;
+}
+
++ (BOOL)traitsIsForCurrentLocationOnly:(id)only
+{
+  mapRegion = [only mapRegion];
+  v4 = mapRegion == 0;
+
   return v4;
 }
 
-+ (BOOL)traitsIsForCurrentLocationOnly:(id)a3
++ (void)setCacheKey:(id)key writesToDisk:(BOOL)disk
 {
-  v3 = [a3 mapRegion];
-  v4 = v3 == 0;
+  diskCopy = disk;
+  keyCopy = key;
+  v6 = [objc_opt_class() sharedContentCache:keyCopy];
 
-  return v4;
+  [v6 setWritesToDisk:diskCopy];
 }
 
-+ (void)setCacheKey:(id)a3 writesToDisk:(BOOL)a4
++ (id)sharedContentCache:(id)cache
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [objc_opt_class() sharedContentCache:v5];
-
-  [v6 setWritesToDisk:v4];
-}
-
-+ (id)sharedContentCache:(id)a3
-{
-  v3 = a3;
+  cacheCopy = cache;
   if (qword_10195E730 != -1)
   {
     dispatch_once(&qword_10195E730, &stru_1016388E0);
   }
 
   v4 = @"BrowseManagerDefaultContentCache";
-  if (v3)
+  if (cacheCopy)
   {
-    v4 = v3;
+    v4 = cacheCopy;
   }
 
   v5 = v4;
@@ -712,7 +712,7 @@ LABEL_5:
   {
     v6 = objc_opt_new();
     [v6 setNeedsRefresh:1];
-    [v6 setDiskCachingKey:v3];
+    [v6 setDiskCachingKey:cacheCopy];
     [qword_10195E728 setObject:v6 forKeyedSubscript:v5];
   }
 

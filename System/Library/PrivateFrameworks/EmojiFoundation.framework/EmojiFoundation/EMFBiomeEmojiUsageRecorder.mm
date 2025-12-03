@@ -1,6 +1,6 @@
 @interface EMFBiomeEmojiUsageRecorder
 - (BOOL)report;
-- (EMFBiomeEmojiUsageRecorder)initWithEmoji:(id)a3 usageSource:(unint64_t)a4 replacementContext:(id)a5 searchQuery:(id)a6 resultPosition:(id)a7 numberSearchQueriesRun:(id)a8 wasPositiveEngagement:(BOOL)a9;
+- (EMFBiomeEmojiUsageRecorder)initWithEmoji:(id)emoji usageSource:(unint64_t)source replacementContext:(id)context searchQuery:(id)query resultPosition:(id)position numberSearchQueriesRun:(id)run wasPositiveEngagement:(BOOL)engagement;
 - (id)_createEngagementEvent;
 - (id)delegate;
 - (void)_createEngagementEvent;
@@ -9,21 +9,21 @@
 
 @implementation EMFBiomeEmojiUsageRecorder
 
-- (EMFBiomeEmojiUsageRecorder)initWithEmoji:(id)a3 usageSource:(unint64_t)a4 replacementContext:(id)a5 searchQuery:(id)a6 resultPosition:(id)a7 numberSearchQueriesRun:(id)a8 wasPositiveEngagement:(BOOL)a9
+- (EMFBiomeEmojiUsageRecorder)initWithEmoji:(id)emoji usageSource:(unint64_t)source replacementContext:(id)context searchQuery:(id)query resultPosition:(id)position numberSearchQueriesRun:(id)run wasPositiveEngagement:(BOOL)engagement
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  emojiCopy = emoji;
+  contextCopy = context;
+  queryCopy = query;
+  positionCopy = position;
+  runCopy = run;
   v41.receiver = self;
   v41.super_class = EMFBiomeEmojiUsageRecorder;
-  v20 = [(EMFDPRecorder *)&v41 initWithEmoji:v15];
+  v20 = [(EMFDPRecorder *)&v41 initWithEmoji:emojiCopy];
   if (v20)
   {
-    v21 = [v15 localeData];
-    v22 = [v21 localeIdentifier];
-    v23 = [v22 copy];
+    localeData = [emojiCopy localeData];
+    localeIdentifier = [localeData localeIdentifier];
+    v23 = [localeIdentifier copy];
     localeIdentifier = v20->_localeIdentifier;
     v20->_localeIdentifier = v23;
 
@@ -31,30 +31,30 @@
     locale = v20->_locale;
     v20->_locale = v25;
 
-    v20->_usageSource = a4;
-    v27 = [v16 copy];
+    v20->_usageSource = source;
+    v27 = [contextCopy copy];
     replacementContext = v20->_replacementContext;
     v20->_replacementContext = v27;
 
-    v29 = [v17 copy];
+    v29 = [queryCopy copy];
     searchQuery = v20->_searchQuery;
     v20->_searchQuery = v29;
 
-    v31 = [v18 copy];
+    v31 = [positionCopy copy];
     resultPosition = v20->_resultPosition;
     v20->_resultPosition = v31;
 
-    v33 = [v19 copy];
+    v33 = [runCopy copy];
     numberSearchQueriesRun = v20->_numberSearchQueriesRun;
     v20->_numberSearchQueriesRun = v33;
 
-    v20->_wasPositiveEngagement = a9;
+    v20->_wasPositiveEngagement = engagement;
     v35 = BiomeLibrary();
-    v36 = [v35 Emoji];
-    v37 = [v36 Engagement];
-    v38 = [v37 source];
+    emoji = [v35 Emoji];
+    engagement = [emoji Engagement];
+    source = [engagement source];
     biomeStream = v20->_biomeStream;
-    v20->_biomeStream = v38;
+    v20->_biomeStream = source;
   }
 
   return v20;
@@ -64,59 +64,59 @@
 {
   v4.receiver = self;
   v4.super_class = EMFBiomeEmojiUsageRecorder;
-  v2 = [(EMFDPRecorder *)&v4 delegate];
+  delegate = [(EMFDPRecorder *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
 - (BOOL)report
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EMFBiomeEmojiUsageRecorder *)self localeIdentifier];
+  localeIdentifier = [(EMFBiomeEmojiUsageRecorder *)self localeIdentifier];
 
-  if (v3)
+  if (localeIdentifier)
   {
-    v4 = [(EMFBiomeEmojiUsageRecorder *)self biomeStream];
+    biomeStream = [(EMFBiomeEmojiUsageRecorder *)self biomeStream];
 
-    if (!v4)
+    if (!biomeStream)
     {
-      v5 = emf_logging_get_default_log();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+      _createEngagementEvent = emf_logging_get_default_log();
+      if (os_log_type_enabled(_createEngagementEvent, OS_LOG_TYPE_DEBUG))
       {
-        [(EMFBiomeEmojiUsageRecorder *)v5 report];
+        [(EMFBiomeEmojiUsageRecorder *)_createEngagementEvent report];
       }
 
       v6 = 0;
       goto LABEL_16;
     }
 
-    v5 = [(EMFBiomeEmojiUsageRecorder *)self _createEngagementEvent];
-    v6 = v5 != 0;
+    _createEngagementEvent = [(EMFBiomeEmojiUsageRecorder *)self _createEngagementEvent];
+    v6 = _createEngagementEvent != 0;
     v7 = emf_logging_get_default_log();
-    v8 = v7;
-    if (v5)
+    delegate2 = v7;
+    if (_createEngagementEvent)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        [(EMFBiomeEmojiUsageRecorder *)v5 report];
+        [(EMFBiomeEmojiUsageRecorder *)_createEngagementEvent report];
       }
 
-      v9 = [(EMFBiomeEmojiUsageRecorder *)self biomeStream];
-      [v9 sendEvent:v5];
+      biomeStream2 = [(EMFBiomeEmojiUsageRecorder *)self biomeStream];
+      [biomeStream2 sendEvent:_createEngagementEvent];
 
-      v10 = [(EMFBiomeEmojiUsageRecorder *)self delegate];
+      delegate = [(EMFBiomeEmojiUsageRecorder *)self delegate];
 
-      if (!v10)
+      if (!delegate)
       {
         v6 = 1;
         goto LABEL_16;
       }
 
-      v8 = [(EMFBiomeEmojiUsageRecorder *)self delegate];
-      v11 = [v5 emoji];
-      v14[0] = v11;
+      delegate2 = [(EMFBiomeEmojiUsageRecorder *)self delegate];
+      emoji = [_createEngagementEvent emoji];
+      v14[0] = emoji;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-      [v8 record:v12];
+      [delegate2 record:v12];
     }
 
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -133,10 +133,10 @@ LABEL_16:
 
 - (id)_createEngagementEvent
 {
-  v3 = [(EMFDPRecorder *)self emoji];
-  v4 = [v3 string];
+  emoji = [(EMFDPRecorder *)self emoji];
+  string = [emoji string];
 
-  if (!v4)
+  if (!string)
   {
     v7 = emf_logging_get_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -147,17 +147,17 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  v5 = [(EMFBiomeEmojiUsageRecorder *)self usageSource];
-  if (v5 <= 4)
+  usageSource = [(EMFBiomeEmojiUsageRecorder *)self usageSource];
+  if (usageSource <= 4)
   {
-    if (v5 > 1)
+    if (usageSource > 1)
     {
-      if (v5 == 2)
+      if (usageSource == 2)
       {
         v6 = 2;
       }
 
-      else if (v5 == 3)
+      else if (usageSource == 3)
       {
         v6 = 3;
       }
@@ -170,9 +170,9 @@ LABEL_16:
       goto LABEL_28;
     }
 
-    if (v5)
+    if (usageSource)
     {
-      if (v5 == 1)
+      if (usageSource == 1)
       {
         v6 = 1;
         goto LABEL_28;
@@ -187,14 +187,14 @@ LABEL_10:
     goto LABEL_29;
   }
 
-  if (v5 <= 7)
+  if (usageSource <= 7)
   {
-    if (v5 == 5)
+    if (usageSource == 5)
     {
       v6 = 5;
     }
 
-    else if (v5 == 6)
+    else if (usageSource == 6)
     {
       v6 = 6;
     }
@@ -207,19 +207,19 @@ LABEL_10:
     goto LABEL_28;
   }
 
-  if (v5 == 8)
+  if (usageSource == 8)
   {
     v6 = 8;
     goto LABEL_28;
   }
 
-  if (v5 == 9)
+  if (usageSource == 9)
   {
     v6 = 9;
     goto LABEL_28;
   }
 
-  if (v5 != 10)
+  if (usageSource != 10)
   {
     goto LABEL_32;
   }
@@ -228,12 +228,12 @@ LABEL_10:
 LABEL_28:
   v9 = objc_alloc(MEMORY[0x1E698EBC8]);
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[EMFBiomeEmojiUsageRecorder wasPositiveEngagement](self, "wasPositiveEngagement")}];
-  v11 = [(EMFBiomeEmojiUsageRecorder *)self localeIdentifier];
-  v12 = [(EMFBiomeEmojiUsageRecorder *)self replacementContext];
-  v13 = [(EMFBiomeEmojiUsageRecorder *)self resultPosition];
-  v14 = [(EMFBiomeEmojiUsageRecorder *)self numberSearchQueriesRun];
-  v15 = [(EMFBiomeEmojiUsageRecorder *)self searchQuery];
-  v8 = [v9 initWithEmoji:v4 wasPositiveEngagement:v10 localeIdentifier:v11 inputMode:v6 replacementContext:v12 resultPosition:v13 numberSearchQueriesRun:v14 finalSearchQuery:v15];
+  localeIdentifier = [(EMFBiomeEmojiUsageRecorder *)self localeIdentifier];
+  replacementContext = [(EMFBiomeEmojiUsageRecorder *)self replacementContext];
+  resultPosition = [(EMFBiomeEmojiUsageRecorder *)self resultPosition];
+  numberSearchQueriesRun = [(EMFBiomeEmojiUsageRecorder *)self numberSearchQueriesRun];
+  searchQuery = [(EMFBiomeEmojiUsageRecorder *)self searchQuery];
+  v8 = [v9 initWithEmoji:string wasPositiveEngagement:v10 localeIdentifier:localeIdentifier inputMode:v6 replacementContext:replacementContext resultPosition:resultPosition numberSearchQueriesRun:numberSearchQueriesRun finalSearchQuery:searchQuery];
 
 LABEL_29:
 
@@ -243,7 +243,7 @@ LABEL_29:
 - (void)report
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a1 debugDescription];
+  v3 = [self debugDescription];
   v4 = 138543362;
   v5 = v3;
   _os_log_debug_impl(&dword_1AF04E000, a2, OS_LOG_TYPE_DEBUG, "Donating emoji engagement to Biome: '%{public}@'", &v4, 0xCu);
@@ -252,9 +252,9 @@ LABEL_29:
 - (void)_createEngagementEvent
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = [a1 emoji];
+  emoji = [self emoji];
   v4[0] = 67109120;
-  v4[1] = [v3 _emojiIndex];
+  v4[1] = [emoji _emojiIndex];
   _os_log_error_impl(&dword_1AF04E000, a2, OS_LOG_TYPE_ERROR, "Failed to donate emoji to Biome: EMFEmojiToken index '%hu'", v4, 8u);
 }
 

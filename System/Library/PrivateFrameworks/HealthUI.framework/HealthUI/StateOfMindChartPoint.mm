@@ -3,7 +3,7 @@
 - (id)allYValues;
 - (id)maxYValue;
 - (id)userInfo;
-- (id)yValueForKey:(id)a3;
+- (id)yValueForKey:(id)key;
 @end
 
 @implementation StateOfMindChartPoint
@@ -15,10 +15,10 @@
   return result;
 }
 
-- (id)yValueForKey:(id)a3
+- (id)yValueForKey:(id)key
 {
   sub_1C3D20104();
-  v4 = self;
+  selfCopy = self;
   StateOfMindChartPoint.yValue(forKey:)(v12);
 
   v5 = v13;
@@ -44,7 +44,7 @@
 
 - (id)allYValues
 {
-  v2 = self;
+  selfCopy = self;
   StateOfMindChartPoint.allYValues()();
 
   v3 = sub_1C3D202A4();
@@ -78,7 +78,7 @@
 
 - (id)userInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = StateOfMindChartPoint.userInfo()();
 
   return v3;

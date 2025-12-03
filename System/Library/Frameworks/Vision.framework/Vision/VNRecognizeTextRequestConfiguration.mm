@@ -1,15 +1,15 @@
 @interface VNRecognizeTextRequestConfiguration
-- (VNRecognizeTextRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNRecognizeTextRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNRecognizeTextRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = VNRecognizeTextRequestConfiguration;
-  v4 = [(VNStatefulRequestConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(VNStatefulRequestConfiguration *)&v8 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -25,12 +25,12 @@
   return v5;
 }
 
-- (VNRecognizeTextRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNRecognizeTextRequestConfiguration)initWithRequestClass:(Class)class
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VNRecognizeTextRequestConfiguration;
-  v3 = [(VNStatefulRequestConfiguration *)&v7 initWithRequestClass:a3];
+  v3 = [(VNStatefulRequestConfiguration *)&v7 initWithRequestClass:class];
   if (v3)
   {
     v8[0] = @"en_US";

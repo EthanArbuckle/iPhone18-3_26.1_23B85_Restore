@@ -1,7 +1,7 @@
 @interface _UIHIDPath
 - (CGPoint)position;
 - (_UIHIDPath)init;
-- (void)updateWithHIDEvent:(__IOHIDEvent *)a3;
+- (void)updateWithHIDEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation _UIHIDPath
@@ -19,16 +19,16 @@
   return result;
 }
 
-- (void)updateWithHIDEvent:(__IOHIDEvent *)a3
+- (void)updateWithHIDEvent:(__IOHIDEvent *)event
 {
   Type = IOHIDEventGetType();
   if (Type == 7)
   {
-    v26 = [(_UIHIDPath *)self overridePathId];
-    v27 = v26;
-    if (v26)
+    overridePathId = [(_UIHIDPath *)self overridePathId];
+    v27 = overridePathId;
+    if (overridePathId)
     {
-      v28 = v26;
+      v28 = overridePathId;
     }
 
     else
@@ -38,13 +38,13 @@
 
     objc_storeStrong(&self->_pathId, v28);
 
-    v29 = _UIEventHIDGetChildPointerEvent(a3);
+    v29 = _UIEventHIDGetChildPointerEvent(event);
     if (dyld_program_sdk_at_least())
     {
       if (!v29)
       {
-        v30 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v30 handleFailureInMethod:a2 object:self file:@"_UIHIDPath.m" lineNumber:128 description:@"scale event missing child pointer event"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHIDPath.m" lineNumber:128 description:@"scale event missing child pointer event"];
       }
     }
 
@@ -102,11 +102,11 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v15 = [(_UIHIDPath *)self overridePathId];
-  v16 = v15;
-  if (v15)
+  overridePathId2 = [(_UIHIDPath *)self overridePathId];
+  v16 = overridePathId2;
+  if (overridePathId2)
   {
-    v17 = v15;
+    v17 = overridePathId2;
   }
 
   else
@@ -141,7 +141,7 @@ LABEL_22:
 
     if (_os_feature_enabled_impl())
     {
-      if (!_UIEventHIDGetChildForceStageEvent(a3))
+      if (!_UIEventHIDGetChildForceStageEvent(event))
       {
         return;
       }
@@ -151,7 +151,7 @@ LABEL_22:
 
     else
     {
-      if (!_UIEventHIDGetChildVendorDefinedForceStageEvent(a3))
+      if (!_UIEventHIDGetChildVendorDefinedForceStageEvent(event))
       {
         return;
       }

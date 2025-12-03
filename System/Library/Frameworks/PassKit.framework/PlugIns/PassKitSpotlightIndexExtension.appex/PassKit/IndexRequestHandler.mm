@@ -1,13 +1,13 @@
 @interface IndexRequestHandler
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
 @end
 
 @implementation IndexRequestHandler
 
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,15 +22,15 @@
   v10[1] = 3221225472;
   v10[2] = sub_100000B94;
   v10[3] = &unk_1000040A0;
-  v11 = v5;
-  v9 = v5;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [v8 spotlightReindexAllContentWithAcknowledgement:v10];
 }
 
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -45,9 +45,9 @@
   v13[1] = 3221225472;
   v13[2] = sub_100000D0C;
   v13[3] = &unk_1000040A0;
-  v14 = v8;
-  v12 = v8;
-  [v11 spotlightReindexContentWithIdentifiers:v7 acknowledgement:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [v11 spotlightReindexContentWithIdentifiers:identifiersCopy acknowledgement:v13];
 }
 
 @end

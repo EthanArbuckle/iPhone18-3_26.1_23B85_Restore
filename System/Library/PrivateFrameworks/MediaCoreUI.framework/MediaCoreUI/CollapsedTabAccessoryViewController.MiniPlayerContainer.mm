@@ -1,7 +1,7 @@
 @interface CollapsedTabAccessoryViewController.MiniPlayerContainer
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCC11MediaCoreUIP33_0349A88C813783B152676260F9284CCC35CollapsedTabAccessoryViewController19MiniPlayerContainer)initWithCoder:(id)a3;
-- (_TtCC11MediaCoreUIP33_0349A88C813783B152676260F9284CCC35CollapsedTabAccessoryViewController19MiniPlayerContainer)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCC11MediaCoreUIP33_0349A88C813783B152676260F9284CCC35CollapsedTabAccessoryViewController19MiniPlayerContainer)initWithCoder:(id)coder;
+- (_TtCC11MediaCoreUIP33_0349A88C813783B152676260F9284CCC35CollapsedTabAccessoryViewController19MiniPlayerContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -9,11 +9,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C59364E4();
 }
 
-- (_TtCC11MediaCoreUIP33_0349A88C813783B152676260F9284CCC35CollapsedTabAccessoryViewController19MiniPlayerContainer)initWithCoder:(id)a3
+- (_TtCC11MediaCoreUIP33_0349A88C813783B152676260F9284CCC35CollapsedTabAccessoryViewController19MiniPlayerContainer)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_weakInit();
@@ -24,10 +24,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1C5BA6940(width);
   v7 = v6;
 
@@ -38,7 +38,7 @@
   return result;
 }
 
-- (_TtCC11MediaCoreUIP33_0349A88C813783B152676260F9284CCC35CollapsedTabAccessoryViewController19MiniPlayerContainer)initWithFrame:(CGRect)a3
+- (_TtCC11MediaCoreUIP33_0349A88C813783B152676260F9284CCC35CollapsedTabAccessoryViewController19MiniPlayerContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

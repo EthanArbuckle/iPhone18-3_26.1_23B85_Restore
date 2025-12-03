@@ -1,26 +1,26 @@
 @interface _DASDynamicRuntimeAllocator
-+ (id)identifierForActivity:(id)a3;
++ (id)identifierForActivity:(id)activity;
 + (id)sharedAllocator;
-- (BOOL)allocationEligibleForActivity:(id)a3;
+- (BOOL)allocationEligibleForActivity:(id)activity;
 - (BOOL)isEngaged;
-- (BOOL)isRuntimeAllocatedForActivity:(id)a3;
-- (BOOL)shouldDelaySuspendingRunningActivity:(id)a3 forPendingTask:(id)a4;
+- (BOOL)isRuntimeAllocatedForActivity:(id)activity;
+- (BOOL)shouldDelaySuspendingRunningActivity:(id)activity forPendingTask:(id)task;
 - (BOOL)significantChangeToAllocatedDuration;
-- (BOOL)unprotectedAllocationEligibleForActivity:(id)a3 asEnabled:(BOOL)a4;
+- (BOOL)unprotectedAllocationEligibleForActivity:(id)activity asEnabled:(BOOL)enabled;
 - (_DASDynamicRuntimeAllocator)init;
-- (double)remainingAllocatedRuntimeForActivity:(id)a3;
+- (double)remainingAllocatedRuntimeForActivity:(id)activity;
 - (double)updateWeightsAndGetTotalWeight;
-- (double)weightForActivity:(id)a3 withAllocationStrategy:(unint64_t)a4;
+- (double)weightForActivity:(id)activity withAllocationStrategy:(unint64_t)strategy;
 - (void)allocateRuntime;
-- (void)dasTrialManager:(id)a3 hasUpdatedParametersForNamespace:(id)a4;
+- (void)dasTrialManager:(id)manager hasUpdatedParametersForNamespace:(id)namespace;
 - (void)logActivitiesAtPlugin;
 - (void)logPredictionInfo;
 - (void)logPredictionResults;
 - (void)logRuntimeAllocationInfo;
-- (void)reallocateRuntimeFromActivity:(id)a3 asCompletion:(BOOL)a4;
-- (void)reallocateRuntimeWithActivities:(id)a3;
-- (void)updateActivityRuntimeAllocationInfoWithTasks:(id)a3;
-- (void)updateConcurrencyLimit:(int64_t)a3;
+- (void)reallocateRuntimeFromActivity:(id)activity asCompletion:(BOOL)completion;
+- (void)reallocateRuntimeWithActivities:(id)activities;
+- (void)updateActivityRuntimeAllocationInfoWithTasks:(id)tasks;
+- (void)updateConcurrencyLimit:(int64_t)limit;
 - (void)updateLatestActivityAllocationStats;
 - (void)updatePredictedDuration;
 - (void)updateTrialParameters;
@@ -53,9 +53,9 @@
 
     v4 = v3;
     _Block_object_dispose(&v34, 8);
-    v5 = [v3 predictor];
+    predictor = [v3 predictor];
     pluggedInPredictor = v2->_pluggedInPredictor;
-    v2->_pluggedInPredictor = v5;
+    v2->_pluggedInPredictor = predictor;
 
     v7 = +[_DASTrialManager sharedInstance];
     trialManager = v2->_trialManager;
@@ -75,11 +75,11 @@
 
     obj = [[BMBiomeScheduler alloc] initWithIdentifier:@"dasRuntimePredictionMonitor" targetQueue:v2->_queue];
     v14 = BiomeLibrary();
-    v15 = [v14 Device];
-    v16 = [v15 Power];
-    v17 = [v16 PluggedIn];
-    v18 = [v17 DSLPublisher];
-    v19 = [v18 subscribeOn:obj];
+    device = [v14 Device];
+    power = [device Power];
+    pluggedIn = [power PluggedIn];
+    dSLPublisher = [pluggedIn DSLPublisher];
+    v19 = [dSLPublisher subscribeOn:obj];
     v28 = _NSConcreteStackBlock;
     v29 = 3221225472;
     v30 = sub_10005CC0C;
@@ -91,9 +91,9 @@
     objc_storeStrong(&v20->_scheduler, obj);
     objc_storeStrong(&v20->_sink, v21);
     v22 = [(_DASTrialManager *)v2->_trialManager factorWithName:@"DynamicRuntimeAllocationFeatureFlag"];
-    LOBYTE(v15) = [v22 BOOLeanValue];
+    LOBYTE(device) = [v22 BOOLeanValue];
 
-    v20->_isEnabled = v15;
+    v20->_isEnabled = device;
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
       v20->_isEnabled = 0;
@@ -118,7 +118,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005CF00;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B2A8 != -1)
   {
     dispatch_once(&qword_10020B2A8, block);
@@ -147,32 +147,32 @@
     return 0;
   }
 
-  v3 = [(_DASPluginPrediction *)pluggedInPrediction predictionDate];
-  v4 = v3 != 0;
+  predictionDate = [(_DASPluginPrediction *)pluggedInPrediction predictionDate];
+  v4 = predictionDate != 0;
 
   return v4;
 }
 
-- (void)updateConcurrencyLimit:(int64_t)a3
+- (void)updateConcurrencyLimit:(int64_t)limit
 {
-  if (self->_concurrencyLimit != a3)
+  if (self->_concurrencyLimit != limit)
   {
     v8[10] = v3;
     v8[11] = v4;
-    v7 = [(_DASDynamicRuntimeAllocator *)self queue];
+    queue = [(_DASDynamicRuntimeAllocator *)self queue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10005D03C;
     v8[3] = &unk_1001B6250;
     v8[4] = self;
-    v8[5] = a3;
-    dispatch_async(v7, v8);
+    v8[5] = limit;
+    dispatch_async(queue, v8);
   }
 }
 
-- (double)remainingAllocatedRuntimeForActivity:(id)a3
+- (double)remainingAllocatedRuntimeForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -182,10 +182,10 @@
   block[1] = 3221225472;
   block[2] = sub_10005D2CC;
   block[3] = &unk_1001B69E0;
-  v10 = v4;
+  v10 = activityCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = activityCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -193,30 +193,30 @@
   return v7;
 }
 
-- (double)weightForActivity:(id)a3 withAllocationStrategy:(unint64_t)a4
+- (double)weightForActivity:(id)activity withAllocationStrategy:(unint64_t)strategy
 {
-  v6 = a3;
-  v7 = [(_DASDynamicRuntimeAllocator *)self queue];
-  dispatch_assert_queue_V2(v7);
+  activityCopy = activity;
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   weights = self->_weights;
-  if (weights && ([v6 name], v9 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](weights, "objectForKeyedSubscript:", v9), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+  if (weights && ([activityCopy name], v9 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](weights, "objectForKeyedSubscript:", v9), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {
     v11 = self->_weights;
-    v12 = [v6 name];
-    v13 = [(NSDictionary *)v11 objectForKeyedSubscript:v12];
+    name = [activityCopy name];
+    v13 = [(NSDictionary *)v11 objectForKeyedSubscript:name];
     [v13 doubleValue];
     v15 = v14;
   }
 
-  else if (a4 == 2)
+  else if (strategy == 2)
   {
-    v12 = +[_DASRuntimeLimiter sharedLimiter];
-    [v12 dynamicDurationForActivity:v6];
+    name = +[_DASRuntimeLimiter sharedLimiter];
+    [name dynamicDurationForActivity:activityCopy];
     v15 = 0.5;
     if (v25 <= 0.0)
     {
-      [v12 staticDurationForActivity:v6];
+      [name staticDurationForActivity:activityCopy];
       if (v26 <= 0.0)
       {
         v15 = 0.1;
@@ -226,32 +226,32 @@
 
   else
   {
-    if (a4 != 1)
+    if (strategy != 1)
     {
       v15 = 0.1;
       goto LABEL_18;
     }
 
     latestActivityRuntimeAllocationInfo = self->_latestActivityRuntimeAllocationInfo;
-    v17 = [v6 name];
-    v12 = [(NSMutableDictionary *)latestActivityRuntimeAllocationInfo objectForKeyedSubscript:v17];
+    name2 = [activityCopy name];
+    name = [(NSMutableDictionary *)latestActivityRuntimeAllocationInfo objectForKeyedSubscript:name2];
 
     v18 = 0.1;
-    if (v12)
+    if (name)
     {
-      [v12 allocatedRuntime];
+      [name allocatedRuntime];
       v20 = v19 <= 0.0;
       v18 = 0.1;
       if (!v20)
       {
-        [v12 utilizedRuntime];
+        [name utilizedRuntime];
         v20 = v21 <= 0.0;
         v18 = 0.1;
         if (!v20)
         {
-          [v12 utilizedRuntime];
+          [name utilizedRuntime];
           v23 = v22;
-          [v12 allocatedRuntime];
+          [name allocatedRuntime];
           v18 = v23 / v24;
         }
       }
@@ -272,70 +272,70 @@ LABEL_18:
   return v15;
 }
 
-+ (id)identifierForActivity:(id)a3
++ (id)identifierForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 identifier];
+  activityCopy = activity;
+  identifier = [activityCopy identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [v3 identifier];
+    identifier2 = [activityCopy identifier];
   }
 
   else
   {
-    v6 = [v3 uuid];
+    uuid = [activityCopy uuid];
 
-    v5 = [v6 UUIDString];
-    v3 = v6;
+    identifier2 = [uuid UUIDString];
+    activityCopy = uuid;
   }
 
-  return v5;
+  return identifier2;
 }
 
-- (BOOL)allocationEligibleForActivity:(id)a3
+- (BOOL)allocationEligibleForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(_DASDynamicRuntimeAllocator *)self queue];
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005D660;
   block[3] = &unk_1001B5D98;
-  v9 = v4;
+  v9 = activityCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = activityCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(activityCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return activityCopy;
 }
 
-- (BOOL)shouldDelaySuspendingRunningActivity:(id)a3 forPendingTask:(id)a4
+- (BOOL)shouldDelaySuspendingRunningActivity:(id)activity forPendingTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 uninterruptibleDuration])
+  activityCopy = activity;
+  taskCopy = task;
+  if ([activityCopy uninterruptibleDuration])
   {
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v8 = [(_DASDynamicRuntimeAllocator *)self queue];
+    queue = [(_DASDynamicRuntimeAllocator *)self queue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10005D7D4;
     v11[3] = &unk_1001B6A08;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = activityCopy;
+    v13 = taskCopy;
     v14 = &v15;
-    dispatch_sync(v8, v11);
+    dispatch_sync(queue, v11);
 
     v9 = *(v16 + 24);
     _Block_object_dispose(&v15, 8);
@@ -349,49 +349,49 @@ LABEL_18:
   return v9 & 1;
 }
 
-- (BOOL)isRuntimeAllocatedForActivity:(id)a3
+- (BOOL)isRuntimeAllocatedForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(_DASDynamicRuntimeAllocator *)self queue];
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005DAB8;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v9 = v4;
+  v9 = activityCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = activityCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(activityCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return activityCopy;
 }
 
-- (BOOL)unprotectedAllocationEligibleForActivity:(id)a3 asEnabled:(BOOL)a4
+- (BOOL)unprotectedAllocationEligibleForActivity:(id)activity asEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_DASDynamicRuntimeAllocator *)self queue];
-  dispatch_assert_queue_V2(v7);
+  enabledCopy = enabled;
+  activityCopy = activity;
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v4 && [v6 isIntensive] && objc_msgSend(v6, "requiresPlugin") && (pluggedInPrediction = self->_pluggedInPrediction) != 0 && (-[_DASPluginPrediction predictionDate](pluggedInPrediction, "predictionDate"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  if (enabledCopy && [activityCopy isIntensive] && objc_msgSend(activityCopy, "requiresPlugin") && (pluggedInPrediction = self->_pluggedInPrediction) != 0 && (-[_DASPluginPrediction predictionDate](pluggedInPrediction, "predictionDate"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
+    predictionDate = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
     [(_DASPluginPrediction *)self->_pluggedInPrediction duration];
-    v11 = [v10 dateByAddingTimeInterval:?];
+    v11 = [predictionDate dateByAddingTimeInterval:?];
 
-    v12 = [v6 startAfter];
-    v13 = [v12 laterDate:v11];
-    v14 = [v6 startAfter];
-    if (v13 == v14)
+    startAfter = [activityCopy startAfter];
+    v13 = [startAfter laterDate:v11];
+    startAfter2 = [activityCopy startAfter];
+    if (v13 == startAfter2)
     {
-      v17 = [v6 startAfter];
-      v15 = [v17 isEqualToDate:v11];
+      startAfter3 = [activityCopy startAfter];
+      v15 = [startAfter3 isEqualToDate:v11];
     }
 
     else
@@ -416,43 +416,43 @@ LABEL_18:
   return v4 - (v5 + (self->_currentReallocatedRuntime - self->_reallocatedRuntime)) > 60.0;
 }
 
-- (void)reallocateRuntimeFromActivity:(id)a3 asCompletion:(BOOL)a4
+- (void)reallocateRuntimeFromActivity:(id)activity asCompletion:(BOOL)completion
 {
-  v6 = a3;
-  v7 = [v6 suspendRequestDate];
+  activityCopy = activity;
+  suspendRequestDate = [activityCopy suspendRequestDate];
 
-  if (!v7)
+  if (!suspendRequestDate)
   {
-    v8 = [(_DASDynamicRuntimeAllocator *)self queue];
+    queue = [(_DASDynamicRuntimeAllocator *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10005DD88;
     block[3] = &unk_1001B6A30;
     block[4] = self;
-    v10 = v6;
-    v11 = a4;
-    dispatch_async(v8, block);
+    v10 = activityCopy;
+    completionCopy = completion;
+    dispatch_async(queue, block);
   }
 }
 
-- (void)reallocateRuntimeWithActivities:(id)a3
+- (void)reallocateRuntimeWithActivities:(id)activities
 {
-  v4 = a3;
-  v5 = [(_DASDynamicRuntimeAllocator *)self queue];
+  activitiesCopy = activities;
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005E4C0;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = activitiesCopy;
+  v6 = activitiesCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)allocateRuntime
 {
-  v3 = [(_DASDynamicRuntimeAllocator *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (__PAIR64__(self->_isEnabled, self->_lastPluggedInState) != 0x100000001)
   {
@@ -469,12 +469,12 @@ LABEL_18:
   v6 = v5;
   [(_DASDynamicRuntimeAllocator *)self updateWeightsAndGetTotalWeight];
   v8 = v7;
-  v9 = [(NSDictionary *)self->_weights allKeys];
-  v10 = v9;
+  allKeys = [(NSDictionary *)self->_weights allKeys];
+  v10 = allKeys;
   v11 = v6 * self->_preallocatedPercentage;
   if (v8 == 0.0)
   {
-    if (![v9 count])
+    if (![allKeys count])
     {
       v12 = 0.0;
       goto LABEL_11;
@@ -492,7 +492,7 @@ LABEL_18:
   }
 
   v12 = v11 * self->_concurrencyLimit * 0.1 / v8;
-  if ([v9 count])
+  if ([allKeys count])
   {
     v13 = [_DASDaemonLogger logForCategory:@"dynamicRuntimeLimit"];
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -635,8 +635,8 @@ LABEL_11:
 
 - (void)updatePredictedDuration
 {
-  v3 = [(_DASDynamicRuntimeAllocator *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   pluggedInPredictor = self->_pluggedInPredictor;
   v22 = 0;
@@ -704,11 +704,11 @@ LABEL_11:
   }
 }
 
-- (void)updateActivityRuntimeAllocationInfoWithTasks:(id)a3
+- (void)updateActivityRuntimeAllocationInfoWithTasks:(id)tasks
 {
-  v4 = a3;
-  v5 = [(_DASDynamicRuntimeAllocator *)self queue];
-  dispatch_assert_queue_V2(v5);
+  tasksCopy = tasks;
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   latestActivityRuntimeAllocationInfo = self->_latestActivityRuntimeAllocationInfo;
   if (!latestActivityRuntimeAllocationInfo || ![(NSMutableDictionary *)latestActivityRuntimeAllocationInfo count])
@@ -720,7 +720,7 @@ LABEL_11:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = tasksCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v8)
   {
@@ -741,8 +741,8 @@ LABEL_11:
       }
 
       v13 = self->_latestActivityRuntimeAllocationInfo;
-      v14 = [*(*(&v16 + 1) + 8 * i) name];
-      v15 = [(NSMutableDictionary *)v13 objectForKey:v14];
+      name = [*(*(&v16 + 1) + 8 * i) name];
+      v15 = [(NSMutableDictionary *)v13 objectForKey:name];
       LOBYTE(v13) = v15 == 0;
 
       v10 |= v13;
@@ -764,15 +764,15 @@ LABEL_12:
 
 - (double)updateWeightsAndGetTotalWeight
 {
-  v3 = [(_DASDynamicRuntimeAllocator *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[_DASDaemon sharedInstance];
-  v5 = [v4 allPendingTasks];
+  allPendingTasks = [v4 allPendingTasks];
 
   if (self->_allocationStrategy == 1)
   {
-    [(_DASDynamicRuntimeAllocator *)self updateActivityRuntimeAllocationInfoWithTasks:v5];
+    [(_DASDynamicRuntimeAllocator *)self updateActivityRuntimeAllocationInfoWithTasks:allPendingTasks];
   }
 
   v34 = +[NSMutableDictionary dictionary];
@@ -794,7 +794,7 @@ LABEL_12:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = v5;
+  v10 = allPendingTasks;
   v11 = [v10 countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v11)
   {
@@ -814,8 +814,8 @@ LABEL_12:
         {
           [(_DASDynamicRuntimeAllocator *)self weightForActivity:v15 withAllocationStrategy:self->_allocationStrategy];
           v16 = [NSNumber numberWithDouble:?];
-          v17 = [v15 name];
-          [v9 setObject:v16 forKeyedSubscript:v17];
+          name = [v15 name];
+          [v9 setObject:v16 forKeyedSubscript:name];
         }
       }
 
@@ -904,8 +904,8 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v5 = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
-  [v5 timeIntervalSinceNow];
+  predictionDate = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
+  [predictionDate timeIntervalSinceNow];
   v7 = v6;
 
   if (v7 >= -15.0)
@@ -927,8 +927,8 @@ LABEL_9:
   v8 = [NSNumber numberWithDouble:?];
   [v14 setObject:v8 forKeyedSubscript:@"PredictionDuration"];
 
-  v9 = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
-  [v9 timeIntervalSince1970];
+  predictionDate2 = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
+  [predictionDate2 timeIntervalSince1970];
   v10 = [NSNumber numberWithDouble:?];
   [v14 setObject:v10 forKeyedSubscript:@"PredictionDate"];
 
@@ -945,9 +945,9 @@ LABEL_9:
   pluggedInPrediction = self->_pluggedInPrediction;
   if (pluggedInPrediction)
   {
-    v5 = [(_DASPluginPrediction *)pluggedInPrediction predictionDate];
+    predictionDate = [(_DASPluginPrediction *)pluggedInPrediction predictionDate];
 
-    if (v5)
+    if (predictionDate)
     {
       [(_DASPluginPrediction *)self->_pluggedInPrediction duration];
       v7 = v6;
@@ -962,16 +962,16 @@ LABEL_9:
   if (!self->_isEnabled)
   {
     v13 = +[_DASDaemon sharedInstance];
-    v14 = [v13 allPendingTasks];
-    v15 = [v14 copy];
+    allPendingTasks = [v13 allPendingTasks];
+    v15 = [allPendingTasks copy];
 
     v12 = +[NSMutableSet set];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = v15;
-    v16 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    allKeys = v15;
+    v16 = [allKeys countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v16)
     {
       v17 = v16;
@@ -982,7 +982,7 @@ LABEL_9:
         {
           if (*v27 != v18)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v20 = *(*(&v26 + 1) + 8 * i);
@@ -992,7 +992,7 @@ LABEL_9:
           }
         }
 
-        v17 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
+        v17 = [allKeys countByEnumeratingWithState:&v26 objects:v32 count:16];
       }
 
       while (v17);
@@ -1007,8 +1007,8 @@ LABEL_9:
   weights = self->_weights;
   if (weights)
   {
-    v11 = [(NSDictionary *)weights allKeys];
-    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 count]);
+    allKeys = [(NSDictionary *)weights allKeys];
+    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allKeys count]);
     [v3 setObject:v12 forKeyedSubscript:@"activityCount"];
 LABEL_17:
 
@@ -1038,15 +1038,15 @@ LABEL_18:
   pluggedInPrediction = self->_pluggedInPrediction;
   if (pluggedInPrediction && ([(_DASPluginPrediction *)pluggedInPrediction predictionDate], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
-    [v5 timeIntervalSinceNow];
+    predictionDate = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
+    [predictionDate timeIntervalSinceNow];
     v7 = v6;
 
     if (v7 < -15.0)
     {
-      v8 = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
+      predictionDate2 = [(_DASPluginPrediction *)self->_pluggedInPrediction predictionDate];
       [(_DASPluginPrediction *)self->_pluggedInPrediction duration];
-      v9 = [v8 dateByAddingTimeInterval:?];
+      v9 = [predictionDate2 dateByAddingTimeInterval:?];
 
       v10 = +[NSMutableDictionary dictionary];
       [(_DASPluginPrediction *)self->_pluggedInPrediction duration];
@@ -1250,12 +1250,12 @@ LABEL_34:
 
 - (void)logRuntimeAllocationInfo
 {
-  v2 = self;
+  selfCopy = self;
   pluggedInPrediction = self->_pluggedInPrediction;
   if (pluggedInPrediction && ([(_DASPluginPrediction *)pluggedInPrediction predictionDate], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(_DASPluginPrediction *)v2->_pluggedInPrediction predictionDate];
-    [v5 timeIntervalSinceNow];
+    predictionDate = [(_DASPluginPrediction *)selfCopy->_pluggedInPrediction predictionDate];
+    [predictionDate timeIntervalSinceNow];
     v7 = v6;
 
     if (v7 >= -15.0)
@@ -1270,14 +1270,14 @@ LABEL_34:
 
     else
     {
-      v8 = [(_DASRuntimeTrackerManager *)v2->_runtimeTrackerManager allocationStatsPerActivity];
-      v9 = [v8 count];
-      if (v9 != [(_DASRuntimeTrackerManager *)v2->_runtimeTrackerManager activitiesTracked])
+      allocationStatsPerActivity = [(_DASRuntimeTrackerManager *)selfCopy->_runtimeTrackerManager allocationStatsPerActivity];
+      v9 = [allocationStatsPerActivity count];
+      if (v9 != [(_DASRuntimeTrackerManager *)selfCopy->_runtimeTrackerManager activitiesTracked])
       {
         v10 = [_DASDaemonLogger logForCategory:@"dynamicRuntimeLimit"];
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          sub_100120688(v8, &v2->_runtimeTrackerManager, v10);
+          sub_100120688(allocationStatsPerActivity, &selfCopy->_runtimeTrackerManager, v10);
         }
       }
 
@@ -1285,7 +1285,7 @@ LABEL_34:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v11 = v8;
+      v11 = allocationStatsPerActivity;
       v12 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v12)
       {
@@ -1297,7 +1297,7 @@ LABEL_34:
           v14 = 0;
           do
           {
-            v15 = v2;
+            v15 = selfCopy;
             if (*v29 != v27)
             {
               objc_enumerationMutation(v11);
@@ -1321,7 +1321,7 @@ LABEL_34:
             v23 = [NSNumber numberWithDouble:?];
             [v17 setObject:v23 forKeyedSubscript:@"ReallocatedDuration"];
 
-            v2 = v15;
+            selfCopy = v15;
             v24 = [NSNumber numberWithUnsignedInteger:[(_DASPluginPrediction *)v15->_pluggedInPrediction predictionWindowID]];
             [v17 setObject:v24 forKeyedSubscript:@"PredictionWindowID"];
 
@@ -1352,8 +1352,8 @@ LABEL_34:
 
 - (void)updateLatestActivityAllocationStats
 {
-  v3 = [(_DASDynamicRuntimeAllocator *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DASDynamicRuntimeAllocator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[_DASPPSDataManager sharedInstance];
   v31 = 0;
@@ -1386,11 +1386,11 @@ LABEL_34:
             objc_enumerationMutation(obj);
           }
 
-          v13 = [*(*(&v27 + 1) + 8 * i) metricKeysAndValues];
-          v14 = [v13 objectForKeyedSubscript:@"TaskName"];
-          v15 = [v13 objectForKeyedSubscript:@"AllocatedRuntime"];
-          v16 = [v13 objectForKeyedSubscript:@"UtilizedRuntime"];
-          v17 = [v13 objectForKeyedSubscript:@"ReallocatedDuration"];
+          metricKeysAndValues = [*(*(&v27 + 1) + 8 * i) metricKeysAndValues];
+          v14 = [metricKeysAndValues objectForKeyedSubscript:@"TaskName"];
+          v15 = [metricKeysAndValues objectForKeyedSubscript:@"AllocatedRuntime"];
+          v16 = [metricKeysAndValues objectForKeyedSubscript:@"UtilizedRuntime"];
+          v17 = [metricKeysAndValues objectForKeyedSubscript:@"ReallocatedDuration"];
           v18 = [_DASActivityRuntimeAllocationInfo alloc];
           [v15 doubleValue];
           v20 = v19;
@@ -1415,9 +1415,9 @@ LABEL_34:
 - (void)updateTrialParameters
 {
   v3 = [(_DASTrialManager *)self->_trialManager factorWithName:@"DynamicRuntimeAllocationFeatureFlag"];
-  v4 = [v3 BOOLeanValue];
+  bOOLeanValue = [v3 BOOLeanValue];
 
-  self->_isEnabled = _os_feature_enabled_impl() & v4;
+  self->_isEnabled = _os_feature_enabled_impl() & bOOLeanValue;
   v5 = [_DASDaemonLogger logForCategory:@"dynamicRuntimeLimit"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1452,12 +1452,12 @@ LABEL_34:
   }
 
   v13 = [(_DASTrialManager *)self->_trialManager factorWithName:@"DynamicRuntimeAllocationMinimumAllocationInterval"];
-  v14 = [v13 longValue];
+  longValue = [v13 longValue];
 
   v15 = 600;
-  if (v14 > 0)
+  if (longValue > 0)
   {
-    v15 = v14;
+    v15 = longValue;
   }
 
   self->_minimumAllocationDuration = v15;
@@ -1473,12 +1473,12 @@ LABEL_34:
   }
 
   v18 = [(_DASTrialManager *)self->_trialManager factorWithName:@"DynamicRuntimeAllocationModel"];
-  v19 = [v18 longValue];
+  longValue2 = [v18 longValue];
 
   v20 = 6;
-  if (v19 > 0)
+  if (longValue2 > 0)
   {
-    v20 = v19;
+    v20 = longValue2;
   }
 
   self->_model = v20;
@@ -1494,9 +1494,9 @@ LABEL_34:
   }
 
   v23 = [(_DASTrialManager *)self->_trialManager factorWithName:@"DynamicRuntimeAllocationStrategy"];
-  v24 = [v23 longValue];
+  longValue3 = [v23 longValue];
 
-  self->_allocationStrategy = v24;
+  self->_allocationStrategy = longValue3;
   v25 = [_DASDaemonLogger logForCategory:@"dynamicRuntimeLimit"];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -1509,9 +1509,9 @@ LABEL_34:
   }
 }
 
-- (void)dasTrialManager:(id)a3 hasUpdatedParametersForNamespace:(id)a4
+- (void)dasTrialManager:(id)manager hasUpdatedParametersForNamespace:(id)namespace
 {
-  if ([a4 isEqualToString:@"COREOS_DAS"])
+  if ([namespace isEqualToString:@"COREOS_DAS"])
   {
 
     [(_DASDynamicRuntimeAllocator *)self updateTrialParameters];

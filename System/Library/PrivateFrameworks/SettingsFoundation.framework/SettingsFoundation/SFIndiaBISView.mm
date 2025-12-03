@@ -1,16 +1,16 @@
 @interface SFIndiaBISView
 - (SFIndiaBISView)init;
-- (SFIndiaBISView)initWithFrame:(CGRect)a3;
+- (SFIndiaBISView)initWithFrame:(CGRect)frame;
 - (void)render;
 @end
 
 @implementation SFIndiaBISView
 
-- (SFIndiaBISView)initWithFrame:(CGRect)a3
+- (SFIndiaBISView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SFIndiaBISView;
-  v3 = [(SFIndiaBISView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFIndiaBISView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,8 +37,8 @@
 - (void)render
 {
   v33[4] = *MEMORY[0x277D85DE8];
-  v3 = [(SFIndiaBISView *)self subviews];
-  v4 = [v3 count];
+  subviews = [(SFIndiaBISView *)self subviews];
+  v4 = [subviews count];
 
   if (!v4)
   {
@@ -54,8 +54,8 @@
     v32 = v7;
     v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v7];
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [MEMORY[0x277D75348] labelColor];
-    [v8 setTintColor:v9];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v8 setTintColor:labelColor];
 
     v31 = v8;
     [v5 addArrangedSubview:v8];
@@ -64,9 +64,9 @@
     v11 = SFIndiaBISNumber();
     [v10 setText:v11];
 
-    v12 = [v10 text];
+    text = [v10 text];
 
-    if (!v12)
+    if (!text)
     {
       [v10 setText:@"Unknown"];
     }
@@ -84,21 +84,21 @@
 
     [v5 addArrangedSubview:v14];
     v25 = MEMORY[0x277CCAAD0];
-    v30 = [(SFIndiaBISView *)self leadingAnchor];
-    v29 = [v5 leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    leadingAnchor = [(SFIndiaBISView *)self leadingAnchor];
+    leadingAnchor2 = [v5 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v33[0] = v28;
-    v27 = [(SFIndiaBISView *)self trailingAnchor];
-    v26 = [v5 trailingAnchor];
-    v16 = [v27 constraintEqualToAnchor:v26];
+    trailingAnchor = [(SFIndiaBISView *)self trailingAnchor];
+    trailingAnchor2 = [v5 trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v33[1] = v16;
-    v17 = [v5 topAnchor];
-    v18 = [(SFIndiaBISView *)self topAnchor];
-    v19 = [v17 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v18 multiplier:1.0];
+    topAnchor = [v5 topAnchor];
+    topAnchor2 = [(SFIndiaBISView *)self topAnchor];
+    v19 = [topAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
     v33[2] = v19;
-    v20 = [(SFIndiaBISView *)self bottomAnchor];
-    v21 = [v5 bottomAnchor];
-    v22 = [v20 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v21 multiplier:1.0];
+    bottomAnchor = [(SFIndiaBISView *)self bottomAnchor];
+    bottomAnchor2 = [v5 bottomAnchor];
+    v22 = [bottomAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
     v33[3] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:4];
     [v25 activateConstraints:v23];

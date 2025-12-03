@@ -1,20 +1,20 @@
 @interface AWDCoreRoutineModelClusterStandardDeviationInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExitStandardDeviation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasExitStandardDeviation:(BOOL)deviation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineModelClusterStandardDeviationInstance
 
-- (void)setHasExitStandardDeviation:(BOOL)a3
+- (void)setHasExitStandardDeviation:(BOOL)deviation
 {
-  if (a3)
+  if (deviation)
   {
     v3 = 2;
   }
@@ -36,23 +36,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_entryStandardDeviation), @"entryStandardDeviation"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_entryStandardDeviation), @"entryStandardDeviation"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_exitStandardDeviation), @"exitStandardDeviation"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_exitStandardDeviation), @"exitStandardDeviation"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -70,7 +70,7 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 1) == 0)
   {
@@ -80,22 +80,22 @@
     }
 
 LABEL_5:
-    *(a3 + 3) = self->_exitStandardDeviation;
-    *(a3 + 16) |= 2u;
+    *(to + 3) = self->_exitStandardDeviation;
+    *(to + 16) |= 2u;
     return;
   }
 
-  *(a3 + 2) = self->_entryStandardDeviation;
-  *(a3 + 16) |= 1u;
+  *(to + 2) = self->_entryStandardDeviation;
+  *(to + 16) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -113,30 +113,30 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 16) & 1) == 0 || self->_entryStandardDeviation != *(a3 + 2))
+      if ((*(equal + 16) & 1) == 0 || self->_entryStandardDeviation != *(equal + 2))
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(a3 + 16))
+    else if (*(equal + 16))
     {
 LABEL_11:
       LOBYTE(v5) = 0;
       return v5;
     }
 
-    LOBYTE(v5) = (*(a3 + 16) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 16) & 2) == 0;
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 16) & 2) == 0 || self->_exitStandardDeviation != *(a3 + 3))
+      if ((*(equal + 16) & 2) == 0 || self->_exitStandardDeviation != *(equal + 3))
       {
         goto LABEL_11;
       }
@@ -174,24 +174,24 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 16) & 1) == 0)
+  if ((*(from + 16) & 1) == 0)
   {
-    if ((*(a3 + 16) & 2) == 0)
+    if ((*(from + 16) & 2) == 0)
     {
       return;
     }
 
 LABEL_5:
-    self->_exitStandardDeviation = *(a3 + 3);
+    self->_exitStandardDeviation = *(from + 3);
     *&self->_has |= 2u;
     return;
   }
 
-  self->_entryStandardDeviation = *(a3 + 2);
+  self->_entryStandardDeviation = *(from + 2);
   *&self->_has |= 1u;
-  if ((*(a3 + 16) & 2) != 0)
+  if ((*(from + 16) & 2) != 0)
   {
     goto LABEL_5;
   }

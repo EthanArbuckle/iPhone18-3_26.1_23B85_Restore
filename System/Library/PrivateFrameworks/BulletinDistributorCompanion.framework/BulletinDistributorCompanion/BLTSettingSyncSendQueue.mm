@@ -1,15 +1,15 @@
 @interface BLTSettingSyncSendQueue
-- (BLTSettingSyncSendQueue)initWithMaxConcurrentSendCount:(unint64_t)a3;
-- (void)_sendSectionInfoWithSectionID:(unint64_t)a3 usingProvider:(id)a4 updateProgress:(id)a5 sendCompleted:(id)a6 sendAttempt:(unint64_t)a7 waitForAcknowledgement:(BOOL)a8 group:(id)a9 spoolToFile:(BOOL)a10;
-- (void)sendEffectiveSectionInfosUsingProvider:(id)a3 count:(unint64_t)a4 sectionInfoSendCompleted:(id)a5 completion:(id)a6 progress:(id)a7 spoolToFile:(BOOL)a8;
-- (void)sendRemoveSectionWithSectionID:(id)a3 sent:(id)a4;
-- (void)sendSectionSubtypeParameterIcons:(id)a3 sectionID:(id)a4 waitForAcknowledgement:(BOOL)a5 spoolToFile:(BOOL)a6 completion:(id)a7;
-- (void)sendSpooledRequestsNowWithSender:(id)a3 completion:(id)a4 progress:(id)a5;
+- (BLTSettingSyncSendQueue)initWithMaxConcurrentSendCount:(unint64_t)count;
+- (void)_sendSectionInfoWithSectionID:(unint64_t)d usingProvider:(id)provider updateProgress:(id)progress sendCompleted:(id)completed sendAttempt:(unint64_t)attempt waitForAcknowledgement:(BOOL)acknowledgement group:(id)group spoolToFile:(BOOL)self0;
+- (void)sendEffectiveSectionInfosUsingProvider:(id)provider count:(unint64_t)count sectionInfoSendCompleted:(id)completed completion:(id)completion progress:(id)progress spoolToFile:(BOOL)file;
+- (void)sendRemoveSectionWithSectionID:(id)d sent:(id)sent;
+- (void)sendSectionSubtypeParameterIcons:(id)icons sectionID:(id)d waitForAcknowledgement:(BOOL)acknowledgement spoolToFile:(BOOL)file completion:(id)completion;
+- (void)sendSpooledRequestsNowWithSender:(id)sender completion:(id)completion progress:(id)progress;
 @end
 
 @implementation BLTSettingSyncSendQueue
 
-- (BLTSettingSyncSendQueue)initWithMaxConcurrentSendCount:(unint64_t)a3
+- (BLTSettingSyncSendQueue)initWithMaxConcurrentSendCount:(unint64_t)count
 {
   v22.receiver = self;
   v22.super_class = BLTSettingSyncSendQueue;
@@ -26,7 +26,7 @@
     sectionInfoProcessingQueue = v4->_sectionInfoProcessingQueue;
     v4->_sectionInfoProcessingQueue = v9;
 
-    v11 = dispatch_semaphore_create(a3);
+    v11 = dispatch_semaphore_create(count);
     sectionInfoSemaphore = v4->_sectionInfoSemaphore;
     v4->_sectionInfoSemaphore = v11;
 
@@ -40,7 +40,7 @@
     subsectionParameterIconProcessingQueue = v4->_subsectionParameterIconProcessingQueue;
     v4->_subsectionParameterIconProcessingQueue = v17;
 
-    v19 = dispatch_semaphore_create(a3);
+    v19 = dispatch_semaphore_create(count);
     subsectionParameterIconSemaphore = v4->_subsectionParameterIconSemaphore;
     v4->_subsectionParameterIconSemaphore = v19;
   }
@@ -48,22 +48,22 @@
   return v4;
 }
 
-- (void)_sendSectionInfoWithSectionID:(unint64_t)a3 usingProvider:(id)a4 updateProgress:(id)a5 sendCompleted:(id)a6 sendAttempt:(unint64_t)a7 waitForAcknowledgement:(BOOL)a8 group:(id)a9 spoolToFile:(BOOL)a10
+- (void)_sendSectionInfoWithSectionID:(unint64_t)d usingProvider:(id)provider updateProgress:(id)progress sendCompleted:(id)completed sendAttempt:(unint64_t)attempt waitForAcknowledgement:(BOOL)acknowledgement group:(id)group spoolToFile:(BOOL)self0
 {
-  v25 = a8;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
+  acknowledgementCopy = acknowledgement;
+  providerCopy = provider;
+  progressCopy = progress;
+  completedCopy = completed;
+  groupCopy = group;
   dispatch_semaphore_wait(self->_sectionInfoSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v18 = _os_activity_create(&dword_241FB3000, "Send Section Info", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v18, &state);
   v19 = objc_autoreleasePoolPush();
-  v20 = v14[2](v14, a3);
-  v21 = [v20 sectionID];
-  v22 = v21;
+  v20 = providerCopy[2](providerCopy, d);
+  sectionID = [v20 sectionID];
+  v22 = sectionID;
   if (v20)
   {
     sectionInfoProcessingQueue = self->_sectionInfoProcessingQueue;
@@ -72,22 +72,22 @@
     v26[2] = __153__BLTSettingSyncSendQueue__sendSectionInfoWithSectionID_usingProvider_updateProgress_sendCompleted_sendAttempt_waitForAcknowledgement_group_spoolToFile___block_invoke;
     v26[3] = &unk_278D31B10;
     v26[4] = self;
-    v27 = v21;
-    v34 = v25;
-    v35 = a10;
-    v29 = v15;
-    v30 = v16;
-    v32 = a7;
-    v28 = v17;
-    v33 = a3;
-    v31 = v14;
-    [(BLTSettingSyncSendQueue *)self _sendEffectiveSectionInfo:v20 waitForAcknowledgement:v25 withQueue:sectionInfoProcessingQueue spoolToFile:a10 andCompletion:v26];
+    v27 = sectionID;
+    v34 = acknowledgementCopy;
+    fileCopy = file;
+    v29 = progressCopy;
+    v30 = completedCopy;
+    attemptCopy = attempt;
+    v28 = groupCopy;
+    dCopy = d;
+    v31 = providerCopy;
+    [(BLTSettingSyncSendQueue *)self _sendEffectiveSectionInfo:v20 waitForAcknowledgement:acknowledgementCopy withQueue:sectionInfoProcessingQueue spoolToFile:file andCompletion:v26];
   }
 
   else
   {
-    v15[2](v15);
-    (*(v16 + 2))(v16, 0);
+    progressCopy[2](progressCopy);
+    (*(completedCopy + 2))(completedCopy, 0);
   }
 
   objc_autoreleasePoolPop(v19);
@@ -248,13 +248,13 @@ uint64_t __153__BLTSettingSyncSendQueue__sendSectionInfoWithSectionID_usingProvi
   return v3();
 }
 
-- (void)sendEffectiveSectionInfosUsingProvider:(id)a3 count:(unint64_t)a4 sectionInfoSendCompleted:(id)a5 completion:(id)a6 progress:(id)a7 spoolToFile:(BOOL)a8
+- (void)sendEffectiveSectionInfosUsingProvider:(id)provider count:(unint64_t)count sectionInfoSendCompleted:(id)completed completion:(id)completion progress:(id)progress spoolToFile:(BOOL)file
 {
   v56 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v14 = a5;
-  v30 = a6;
-  v15 = a7;
+  providerCopy = provider;
+  completedCopy = completed;
+  completionCopy = completion;
+  progressCopy = progress;
   v16 = dispatch_group_create();
   v53[0] = 0;
   v53[1] = v53;
@@ -268,21 +268,21 @@ uint64_t __153__BLTSettingSyncSendQueue__sendSectionInfoWithSectionID_usingProvi
   v29 = v17;
   v49 = v29;
   v51 = v53;
-  v18 = v15;
+  v18 = progressCopy;
   v50 = v18;
-  v52 = a4;
+  countCopy = count;
   v19 = MEMORY[0x245D067A0](v48);
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __129__BLTSettingSyncSendQueue_sendEffectiveSectionInfosUsingProvider_count_sectionInfoSendCompleted_completion_progress_spoolToFile___block_invoke_2;
   v44[3] = &unk_278D31B88;
-  v28 = v14;
+  v28 = completedCopy;
   v47 = v28;
   v20 = v16;
   v45 = v20;
-  v46 = self;
+  selfCopy = self;
   v21 = MEMORY[0x245D067A0](v44);
-  if (a4)
+  if (count)
   {
     v22 = 0;
     do
@@ -303,18 +303,18 @@ uint64_t __153__BLTSettingSyncSendQueue__sendSectionInfoWithSectionID_usingProvi
       block[3] = &unk_278D31BD8;
       block[4] = self;
       v42 = v22;
-      v38 = v31;
+      v38 = providerCopy;
       v39 = v19;
       v40 = v21;
       v41 = v18;
       v37 = v20;
-      v43 = a8;
+      fileCopy = file;
       dispatch_async(sectionInfoSenderQueue, block);
 
       ++v22;
     }
 
-    while (a4 != v22);
+    while (count != v22);
   }
 
   v25 = self->_sectionInfoSenderQueue;
@@ -323,9 +323,9 @@ uint64_t __153__BLTSettingSyncSendQueue__sendSectionInfoWithSectionID_usingProvi
   v32[2] = __129__BLTSettingSyncSendQueue_sendEffectiveSectionInfosUsingProvider_count_sectionInfoSendCompleted_completion_progress_spoolToFile___block_invoke_3_15;
   v32[3] = &unk_278D31C00;
   v34 = v53;
-  v35 = a4;
-  v33 = v30;
-  v26 = v30;
+  countCopy2 = count;
+  v33 = completionCopy;
+  v26 = completionCopy;
   dispatch_group_notify(v20, v25, v32);
 
   _Block_object_dispose(v53, 8);
@@ -440,20 +440,20 @@ uint64_t __129__BLTSettingSyncSendQueue_sendEffectiveSectionInfosUsingProvider_c
   return result;
 }
 
-- (void)sendRemoveSectionWithSectionID:(id)a3 sent:(id)a4
+- (void)sendRemoveSectionWithSectionID:(id)d sent:(id)sent
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  sentCopy = sent;
   sectionInfoSenderQueue = self->_sectionInfoSenderQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__BLTSettingSyncSendQueue_sendRemoveSectionWithSectionID_sent___block_invoke;
   block[3] = &unk_278D316A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = sentCopy;
+  v9 = sentCopy;
+  v10 = dCopy;
   dispatch_async(sectionInfoSenderQueue, block);
 }
 
@@ -468,22 +468,22 @@ void __63__BLTSettingSyncSendQueue_sendRemoveSectionWithSectionID_sent___block_i
   }
 }
 
-- (void)sendSpooledRequestsNowWithSender:(id)a3 completion:(id)a4 progress:(id)a5
+- (void)sendSpooledRequestsNowWithSender:(id)sender completion:(id)completion progress:(id)progress
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  senderCopy = sender;
+  completionCopy = completion;
+  progressCopy = progress;
   sectionInfoSenderQueue = self->_sectionInfoSenderQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__BLTSettingSyncSendQueue_sendSpooledRequestsNowWithSender_completion_progress___block_invoke;
   block[3] = &unk_278D31C50;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = senderCopy;
+  v17 = progressCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = progressCopy;
+  v14 = senderCopy;
   dispatch_async(sectionInfoSenderQueue, block);
 }
 
@@ -523,29 +523,29 @@ uint64_t __80__BLTSettingSyncSendQueue_sendSpooledRequestsNowWithSender_completi
   return result;
 }
 
-- (void)sendSectionSubtypeParameterIcons:(id)a3 sectionID:(id)a4 waitForAcknowledgement:(BOOL)a5 spoolToFile:(BOOL)a6 completion:(id)a7
+- (void)sendSectionSubtypeParameterIcons:(id)icons sectionID:(id)d waitForAcknowledgement:(BOOL)acknowledgement spoolToFile:(BOOL)file completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [v12 defaultSubtypeParameters];
-  v16 = [v15 sectionIconOverride];
+  iconsCopy = icons;
+  dCopy = d;
+  completionCopy = completion;
+  defaultSubtypeParameters = [iconsCopy defaultSubtypeParameters];
+  sectionIconOverride = [defaultSubtypeParameters sectionIconOverride];
   subsectionParameterIconSenderQueue = self->_subsectionParameterIconSenderQueue;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __116__BLTSettingSyncSendQueue_sendSectionSubtypeParameterIcons_sectionID_waitForAcknowledgement_spoolToFile_completion___block_invoke;
   v22[3] = &unk_278D31CA0;
-  v23 = v16;
-  v24 = v13;
-  v28 = a5;
-  v29 = a6;
-  v25 = self;
-  v26 = v12;
-  v27 = v14;
-  v18 = v14;
-  v19 = v12;
-  v20 = v13;
-  v21 = v16;
+  v23 = sectionIconOverride;
+  v24 = dCopy;
+  acknowledgementCopy = acknowledgement;
+  fileCopy = file;
+  selfCopy = self;
+  v26 = iconsCopy;
+  v27 = completionCopy;
+  v18 = completionCopy;
+  v19 = iconsCopy;
+  v20 = dCopy;
+  v21 = sectionIconOverride;
   dispatch_async(subsectionParameterIconSenderQueue, v22);
 }
 

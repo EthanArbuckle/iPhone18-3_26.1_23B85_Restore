@@ -1,12 +1,12 @@
 @interface PGUpNextMemoryFeatureBasedMatchingInfo
-+ (id)matchingInfosWithMemoryNodes:(id)a3;
-+ (id)representativeSceneNodesForMemoryFeatureNodes:(id)a3;
++ (id)matchingInfosWithMemoryNodes:(id)nodes;
++ (id)representativeSceneNodesForMemoryFeatureNodes:(id)nodes;
 - (BOOL)isTripMemory;
 - (NSString)debugInfo;
 - (PGGraphFeatureNodeCollection)memoryFeatureNodes;
 - (PGGraphPersonNodeCollection)personNodes;
 - (PGGraphSceneNodeCollection)sceneNodes;
-- (PGUpNextMemoryFeatureBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)a3;
+- (PGUpNextMemoryFeatureBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)collection;
 - (unint64_t)nodeIdentifier;
 @end
 
@@ -15,9 +15,9 @@
 - (NSString)debugInfo
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PGGraphMemoryNodeCollection *)self->_memoryNodeAsCollection uniqueMemoryIdentifiers];
-  v4 = [v3 anyObject];
-  v5 = [v2 stringWithFormat:@"Memory Feature Matching Info With Memory id: %@", v4];
+  uniqueMemoryIdentifiers = [(PGGraphMemoryNodeCollection *)self->_memoryNodeAsCollection uniqueMemoryIdentifiers];
+  anyObject = [uniqueMemoryIdentifiers anyObject];
+  v5 = [v2 stringWithFormat:@"Memory Feature Matching Info With Memory id: %@", anyObject];
 
   return v5;
 }
@@ -26,9 +26,9 @@
 {
   if (!self->_isTripMemoryIsResolved)
   {
-    v3 = [(MANodeCollection *)self->_memoryNodeAsCollection labels];
+    labels = [(MANodeCollection *)self->_memoryNodeAsCollection labels];
     v4 = [PGGraphBuilder memoryLabelForCategory:19];
-    self->_isTripMemory = [v3 containsObject:v4];
+    self->_isTripMemory = [labels containsObject:v4];
 
     self->_isTripMemoryIsResolved = 1;
   }
@@ -42,8 +42,8 @@
   if (!sceneNodes)
   {
     v4 = objc_opt_class();
-    v5 = [(PGUpNextMemoryFeatureBasedMatchingInfo *)self memoryFeatureNodes];
-    v6 = [v4 representativeSceneNodesForMemoryFeatureNodes:v5];
+    memoryFeatureNodes = [(PGUpNextMemoryFeatureBasedMatchingInfo *)self memoryFeatureNodes];
+    v6 = [v4 representativeSceneNodesForMemoryFeatureNodes:memoryFeatureNodes];
     v7 = self->_sceneNodes;
     self->_sceneNodes = v6;
 
@@ -55,8 +55,8 @@
 
 - (PGGraphPersonNodeCollection)personNodes
 {
-  v2 = [(PGUpNextMemoryFeatureBasedMatchingInfo *)self memoryFeatureNodes];
-  v3 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v2];
+  memoryFeatureNodes = [(PGUpNextMemoryFeatureBasedMatchingInfo *)self memoryFeatureNodes];
+  v3 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
 
   return v3;
 }
@@ -66,9 +66,9 @@
   memoryFeatureNodes = self->_memoryFeatureNodes;
   if (!memoryFeatureNodes)
   {
-    v4 = [(PGGraphMemoryNodeCollection *)self->_memoryNodeAsCollection featureNodes];
+    featureNodes = [(PGGraphMemoryNodeCollection *)self->_memoryNodeAsCollection featureNodes];
     v5 = self->_memoryFeatureNodes;
-    self->_memoryFeatureNodes = v4;
+    self->_memoryFeatureNodes = featureNodes;
 
     memoryFeatureNodes = self->_memoryFeatureNodes;
   }
@@ -78,31 +78,31 @@
 
 - (unint64_t)nodeIdentifier
 {
-  v2 = [(MAElementCollection *)self->_memoryNodeAsCollection elementIdentifiers];
-  v3 = [v2 firstElement];
+  elementIdentifiers = [(MAElementCollection *)self->_memoryNodeAsCollection elementIdentifiers];
+  firstElement = [elementIdentifiers firstElement];
 
-  return v3;
+  return firstElement;
 }
 
-- (PGUpNextMemoryFeatureBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)a3
+- (PGUpNextMemoryFeatureBasedMatchingInfo)initWithMemoryNodeAsCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = PGUpNextMemoryFeatureBasedMatchingInfo;
   v6 = [(PGUpNextMemoryFeatureBasedMatchingInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_memoryNodeAsCollection, a3);
+    objc_storeStrong(&v6->_memoryNodeAsCollection, collection);
   }
 
   return v7;
 }
 
-+ (id)matchingInfosWithMemoryNodes:(id)a3
++ (id)matchingInfosWithMemoryNodes:(id)nodes
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
+  nodesCopy = nodes;
   v5 = objc_alloc_init(v3);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -110,7 +110,7 @@
   v8[3] = &unk_278889918;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateIdentifiersAsCollectionsWithBlock:v8];
+  [nodesCopy enumerateIdentifiersAsCollectionsWithBlock:v8];
 
   return v6;
 }
@@ -123,15 +123,15 @@ void __71__PGUpNextMemoryFeatureBasedMatchingInfo_matchingInfosWithMemoryNodes__
   [*(a1 + 32) addObject:v5];
 }
 
-+ (id)representativeSceneNodesForMemoryFeatureNodes:(id)a3
++ (id)representativeSceneNodesForMemoryFeatureNodes:(id)nodes
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(PGGraphNodeCollection *)PGGraphSceneFeatureNodeCollection subsetInCollection:a3];
-  v4 = [v3 graph];
+  v3 = [(PGGraphNodeCollection *)PGGraphSceneFeatureNodeCollection subsetInCollection:nodes];
+  graph = [v3 graph];
   if ([v3 count])
   {
-    v21 = v4;
-    v5 = [v3 labels];
+    v21 = graph;
+    labels = [v3 labels];
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v22 = 0u;
     v23 = 0u;
@@ -153,16 +153,16 @@ void __71__PGUpNextMemoryFeatureBasedMatchingInfo_matchingInfosWithMemoryNodes__
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [v12 featureLabel];
-          v14 = [v5 containsObject:v13];
+          featureLabel = [v12 featureLabel];
+          v14 = [labels containsObject:featureLabel];
 
           if (v14)
           {
-            v15 = [v12 positiveScenes];
-            [v6 addObjectsFromArray:v15];
+            positiveScenes = [v12 positiveScenes];
+            [v6 addObjectsFromArray:positiveScenes];
 
-            v16 = [v12 positiveDominantScenes];
-            [v6 addObjectsFromArray:v16];
+            positiveDominantScenes = [v12 positiveDominantScenes];
+            [v6 addObjectsFromArray:positiveDominantScenes];
           }
         }
 
@@ -172,7 +172,7 @@ void __71__PGUpNextMemoryFeatureBasedMatchingInfo_matchingInfosWithMemoryNodes__
       while (v9);
     }
 
-    v4 = v21;
+    graph = v21;
     if ([v6 count])
     {
       v17 = [PGGraphSceneNodeCollection sceneNodesForSceneNames:v6 inGraph:v21];
@@ -188,7 +188,7 @@ void __71__PGUpNextMemoryFeatureBasedMatchingInfo_matchingInfosWithMemoryNodes__
 
   else
   {
-    v18 = [(MAElementCollection *)[PGGraphSceneNodeCollection alloc] initWithGraph:v4];
+    v18 = [(MAElementCollection *)[PGGraphSceneNodeCollection alloc] initWithGraph:graph];
   }
 
   v19 = *MEMORY[0x277D85DE8];

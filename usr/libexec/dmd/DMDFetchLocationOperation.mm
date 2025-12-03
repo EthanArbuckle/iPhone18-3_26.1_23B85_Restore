@@ -1,7 +1,7 @@
 @interface DMDFetchLocationOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,21 +21,21 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  requestCopy = request;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___DMDFetchLocationOperation;
-  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 originator];
+  originator = [requestCopy originator];
 
-  if (!v7)
+  if (!originator)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -43,35 +43,35 @@
     v11 = DMFInvalidParameterErrorKey;
     v12 = @"request.originator";
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_6:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[FMDFMIPManager sharedInstance];
-  v6 = [v5 isManagedLostModeActive];
+  isManagedLostModeActive = [v5 isManagedLostModeActive];
 
-  if (v6)
+  if (isManagedLostModeActive)
   {
     v7 = +[DMDLostDeviceLocationManager sharedManager];
-    v8 = [v4 originator];
+    originator = [requestCopy originator];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100046E90;
     v9[3] = &unk_1000CF248;
     v9[4] = self;
-    [v7 getCurrentLocationForOriginator:v8 completion:v9];
+    [v7 getCurrentLocationForOriginator:originator completion:v9];
   }
 
   else

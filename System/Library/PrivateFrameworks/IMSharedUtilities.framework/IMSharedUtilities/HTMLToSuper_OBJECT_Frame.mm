@@ -1,16 +1,16 @@
 @interface HTMLToSuper_OBJECT_Frame
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation HTMLToSuper_OBJECT_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  if ([a8 objectForKey:{@"breadcrumbText", a4, a5, a6, a7}])
+  if ([attributes objectForKey:{@"breadcrumbText", context, element, i, name}])
   {
-    [objc_msgSend(a8 _stringForKey:{@"breadcrumbOptions", "unsignedIntValue"}];
+    [objc_msgSend(attributes _stringForKey:{@"breadcrumbOptions", "unsignedIntValue"}];
 
-    MEMORY[0x1EEE66B58](a4, sel_appendBreadcrumbText_withOptions_);
+    MEMORY[0x1EEE66B58](context, sel_appendBreadcrumbText_withOptions_);
   }
 }
 

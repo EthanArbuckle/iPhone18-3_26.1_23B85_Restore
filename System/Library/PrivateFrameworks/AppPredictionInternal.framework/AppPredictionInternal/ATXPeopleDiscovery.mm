@@ -1,6 +1,6 @@
 @interface ATXPeopleDiscovery
 - (ATXPeopleDiscovery)init;
-- (id)fetchPeopleWithProximityFromStartDate:(id)a3 toEndDate:(id)a4;
+- (id)fetchPeopleWithProximityFromStartDate:(id)date toEndDate:(id)endDate;
 @end
 
 @implementation ATXPeopleDiscovery
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (id)fetchPeopleWithProximityFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)fetchPeopleWithProximityFromStartDate:(id)date toEndDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -46,7 +46,7 @@
   v21 = &v28;
   v10 = v8;
   v19 = v10;
-  [(RTRoutineManager *)routineManager fetchProximityHistoryFromStartDate:v6 endDate:v7 completionHandler:v18];
+  [(RTRoutineManager *)routineManager fetchProximityHistoryFromStartDate:dateCopy endDate:endDateCopy completionHandler:v18];
   if (v23[5])
   {
     v11 = __atxlog_handle_usage_insights();
@@ -68,18 +68,18 @@
       [ATXPeopleDiscovery fetchPeopleWithProximityFromStartDate:v15 toEndDate:?];
     }
 
-    v16 = 0;
+    bpsPublisher = 0;
   }
 
   else
   {
-    v16 = [v29[5] bpsPublisher];
+    bpsPublisher = [v29[5] bpsPublisher];
   }
 
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(&v28, 8);
 
-  return v16;
+  return bpsPublisher;
 }
 
 void __70__ATXPeopleDiscovery_fetchPeopleWithProximityFromStartDate_toEndDate___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,45 +1,45 @@
 @interface HKSourceAuthorizationController
-- (BOOL)_parentTypeDisabledForType:(id)a3 inSection:(int64_t)a4;
+- (BOOL)_parentTypeDisabledForType:(id)type inSection:(int64_t)section;
 - (BOOL)allTypesEnabled;
-- (BOOL)allTypesEnabledInSection:(int64_t)a3;
+- (BOOL)allTypesEnabledInSection:(int64_t)section;
 - (BOOL)anyTypeRequested;
 - (BOOL)isRequestingDocumentAuthorization;
-- (BOOL)isTypeEnabled:(id)a3 inSection:(int64_t)a4;
-- (HKSourceAuthorizationController)initWithHealthStore:(id)a3 source:(id)a4 typesForSharing:(id)a5 typesForReading:(id)a6;
+- (BOOL)isTypeEnabled:(id)enabled inSection:(int64_t)section;
+- (HKSourceAuthorizationController)initWithHealthStore:(id)store source:(id)source typesForSharing:(id)sharing typesForReading:(id)reading;
 - (HKSourceAuthorizationControllerDelegate)delegate;
 - (NSString)titleText;
 - (UIImage)iconImage;
-- (id)_enabledSubTypesForType:(id)a3 inSection:(int64_t)a4;
-- (id)_enabledTypesInSection:(int64_t)a3;
-- (id)_sortedTypes:(id)a3;
-- (id)copyTypesWithBloodPressureTreatment:(id)a3;
-- (id)typesInSection:(int64_t)a3;
-- (int64_t)_authorizationStatusWithType:(id)a3;
-- (unint64_t)countOfTypesInSection:(int64_t)a3;
-- (void)_handleSetAuthorizationCompletionSuccess:(BOOL)a3 error:(id)a4;
+- (id)_enabledSubTypesForType:(id)type inSection:(int64_t)section;
+- (id)_enabledTypesInSection:(int64_t)section;
+- (id)_sortedTypes:(id)types;
+- (id)copyTypesWithBloodPressureTreatment:(id)treatment;
+- (id)typesInSection:(int64_t)section;
+- (int64_t)_authorizationStatusWithType:(id)type;
+- (unint64_t)countOfTypesInSection:(int64_t)section;
+- (void)_handleSetAuthorizationCompletionSuccess:(BOOL)success error:(id)error;
 - (void)_reloadDocumentAuthorizationRecords;
 - (void)_reloadTypeAuthorizationRecords;
-- (void)_setAuthorizationStatuses:(id)a3;
-- (void)_updateAuthorizationStatusWithTypes:(id)a3;
+- (void)_setAuthorizationStatuses:(id)statuses;
+- (void)_updateAuthorizationStatusWithTypes:(id)types;
 - (void)commitAuthorizationStatuses;
-- (void)commitObjectAuthorizationStatuses:(id)a3;
+- (void)commitObjectAuthorizationStatuses:(id)statuses;
 - (void)reload;
 - (void)resetObjectAuthorizationStatuses;
-- (void)setEnabled:(BOOL)a3 forAllTypesInSection:(int64_t)a4 commit:(BOOL)a5;
-- (void)setEnabled:(BOOL)a3 forType:(id)a4 inSection:(int64_t)a5 commit:(BOOL)a6;
+- (void)setEnabled:(BOOL)enabled forAllTypesInSection:(int64_t)section commit:(BOOL)commit;
+- (void)setEnabled:(BOOL)enabled forType:(id)type inSection:(int64_t)section commit:(BOOL)commit;
 @end
 
 @implementation HKSourceAuthorizationController
 
-- (HKSourceAuthorizationController)initWithHealthStore:(id)a3 source:(id)a4 typesForSharing:(id)a5 typesForReading:(id)a6
+- (HKSourceAuthorizationController)initWithHealthStore:(id)store source:(id)source typesForSharing:(id)sharing typesForReading:(id)reading
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  storeCopy = store;
+  sourceCopy = source;
+  sharingCopy = sharing;
+  readingCopy = reading;
+  if (storeCopy)
   {
-    if (v13)
+    if (sourceCopy)
     {
       goto LABEL_3;
     }
@@ -48,7 +48,7 @@
   else
   {
     [HKSourceAuthorizationController initWithHealthStore:a2 source:self typesForSharing:? typesForReading:?];
-    if (v13)
+    if (sourceCopy)
     {
       goto LABEL_3;
     }
@@ -62,17 +62,17 @@ LABEL_3:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_healthStore, a3);
-    v18 = [objc_alloc(MEMORY[0x1E696BF50]) initWithHealthStore:v12];
+    objc_storeStrong(&v16->_healthStore, store);
+    v18 = [objc_alloc(MEMORY[0x1E696BF50]) initWithHealthStore:storeCopy];
     authorizationStore = v17->_authorizationStore;
     v17->_authorizationStore = v18;
 
-    objc_storeStrong(&v17->_source, a4);
-    v20 = [(HKSourceAuthorizationController *)v17 copyTypesWithBloodPressureTreatment:v14];
+    objc_storeStrong(&v17->_source, source);
+    v20 = [(HKSourceAuthorizationController *)v17 copyTypesWithBloodPressureTreatment:sharingCopy];
     requestedTypesForSharing = v17->_requestedTypesForSharing;
     v17->_requestedTypesForSharing = v20;
 
-    v22 = [(HKSourceAuthorizationController *)v17 copyTypesWithBloodPressureTreatment:v15];
+    v22 = [(HKSourceAuthorizationController *)v17 copyTypesWithBloodPressureTreatment:readingCopy];
     requestedTypesForReading = v17->_requestedTypesForReading;
     v17->_requestedTypesForReading = v22;
 
@@ -86,15 +86,15 @@ LABEL_3:
   return v17;
 }
 
-- (id)copyTypesWithBloodPressureTreatment:(id)a3
+- (id)copyTypesWithBloodPressureTreatment:(id)treatment
 {
   v3 = MEMORY[0x1E696C2E0];
-  v4 = a3;
+  treatmentCopy = treatment;
   v5 = [v3 dataTypeWithCode:16];
   v6 = [MEMORY[0x1E696C2E0] dataTypeWithCode:17];
-  v7 = [v4 mutableCopy];
-  v8 = [v4 containsObject:v5];
-  v9 = [v4 containsObject:v6];
+  v7 = [treatmentCopy mutableCopy];
+  v8 = [treatmentCopy containsObject:v5];
+  v9 = [treatmentCopy containsObject:v6];
 
   [v7 removeObject:v5];
   [v7 removeObject:v6];
@@ -118,13 +118,13 @@ LABEL_3:
 {
   v3 = [MEMORY[0x1E696C2E0] documentTypeForIdentifier:*MEMORY[0x1E696B7C0]];
   authorizationStore = self->_authorizationStore;
-  v5 = [(HKSource *)self->_source bundleIdentifier];
+  bundleIdentifier = [(HKSource *)self->_source bundleIdentifier];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__HKSourceAuthorizationController__reloadDocumentAuthorizationRecords__block_invoke;
   v6[3] = &unk_1E81BA360;
   v6[4] = self;
-  [(HKAuthorizationStore *)authorizationStore fetchAuthorizationStatusesForDocumentType:v3 bundleIdentifier:v5 completion:v6];
+  [(HKAuthorizationStore *)authorizationStore fetchAuthorizationStatusesForDocumentType:v3 bundleIdentifier:bundleIdentifier completion:v6];
 }
 
 void __70__HKSourceAuthorizationController__reloadDocumentAuthorizationRecords__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -155,7 +155,7 @@ void __70__HKSourceAuthorizationController__reloadDocumentAuthorizationRecords__
   v40 = 0;
   v3 = dispatch_semaphore_create(0);
   authorizationStore = self->_authorizationStore;
-  v5 = [(HKSource *)self->_source bundleIdentifier];
+  bundleIdentifier = [(HKSource *)self->_source bundleIdentifier];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __66__HKSourceAuthorizationController__reloadTypeAuthorizationRecords__block_invoke;
@@ -164,7 +164,7 @@ void __70__HKSourceAuthorizationController__reloadDocumentAuthorizationRecords__
   v32[4] = self;
   v6 = v3;
   v33 = v6;
-  [(HKAuthorizationStore *)authorizationStore fetchAuthorizationRecordsForBundleIdentifier:v5 completion:v32];
+  [(HKAuthorizationStore *)authorizationStore fetchAuthorizationRecordsForBundleIdentifier:bundleIdentifier completion:v32];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -182,19 +182,19 @@ void __70__HKSourceAuthorizationController__reloadDocumentAuthorizationRecords__
   v26 = 3221225472;
   v27 = __66__HKSourceAuthorizationController__reloadTypeAuthorizationRecords__block_invoke_354;
   v28 = &unk_1E81BB248;
-  v29 = self;
+  selfCopy = self;
   v14 = v7;
   v30 = v14;
   v15 = v8;
   v31 = v15;
   [v13 enumerateKeysAndObjectsUsingBlock:&v25];
-  v16 = [v14 allObjects];
-  v17 = [(HKSourceAuthorizationController *)self _sortedTypes:v16];
+  allObjects = [v14 allObjects];
+  v17 = [(HKSourceAuthorizationController *)self _sortedTypes:allObjects];
   orderedTypesForSharing = self->_orderedTypesForSharing;
   self->_orderedTypesForSharing = v17;
 
-  v19 = [v15 allObjects];
-  v20 = [(HKSourceAuthorizationController *)self _sortedTypes:v19];
+  allObjects2 = [v15 allObjects];
+  v20 = [(HKSourceAuthorizationController *)self _sortedTypes:allObjects2];
   orderedTypesForReading = self->_orderedTypesForReading;
   self->_orderedTypesForReading = v20;
 
@@ -296,9 +296,9 @@ void __66__HKSourceAuthorizationController__reloadTypeAuthorizationRecords__bloc
   }
 }
 
-- (id)_sortedTypes:(id)a3
+- (id)_sortedTypes:(id)types
 {
-  v3 = [MEMORY[0x1E695DF70] arrayWithArray:a3];
+  v3 = [MEMORY[0x1E695DF70] arrayWithArray:types];
   [v3 sortUsingComparator:&__block_literal_global_77];
   v4 = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
 
@@ -324,17 +324,17 @@ uint64_t __48__HKSourceAuthorizationController__sortedTypes___block_invoke(uint6
   return orderedTypesForReading;
 }
 
-- (unint64_t)countOfTypesInSection:(int64_t)a3
+- (unint64_t)countOfTypesInSection:(int64_t)section
 {
-  v3 = [(HKSourceAuthorizationController *)self typesInSection:a3];
+  v3 = [(HKSourceAuthorizationController *)self typesInSection:section];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)typesInSection:(int64_t)a3
+- (id)typesInSection:(int64_t)section
 {
-  if (a3 == 4)
+  if (section == 4)
   {
     v4 = 72;
 LABEL_5:
@@ -343,7 +343,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 6)
+  if (section == 6)
   {
     v4 = 80;
     goto LABEL_5;
@@ -354,21 +354,21 @@ LABEL_5:
   return v5;
 }
 
-- (void)commitObjectAuthorizationStatuses:(id)a3
+- (void)commitObjectAuthorizationStatuses:(id)statuses
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [objc_opt_class() _statusesByConceptIdentifiersFromStatuses:v5];
+  selfCopy = self;
+  statusesCopy = statuses;
+  v6 = [objc_opt_class() _statusesByConceptIdentifiersFromStatuses:statusesCopy];
 
   v7 = [objc_alloc(MEMORY[0x1E696C2D8]) initWithObjectAuthorizationStatuses:v6 sessionIdentifier:0];
-  authorizationStore = v4->_authorizationStore;
-  v9 = [(HKSource *)v4->_source bundleIdentifier];
+  authorizationStore = selfCopy->_authorizationStore;
+  bundleIdentifier = [(HKSource *)selfCopy->_source bundleIdentifier];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__HKSourceAuthorizationController_commitObjectAuthorizationStatuses___block_invoke;
   v10[3] = &unk_1E81B59C0;
-  v10[4] = v4;
-  [(HKAuthorizationStore *)authorizationStore setObjectAuthorizationStatusContext:v7 forObjectType:0 bundleIdentifier:v9 completion:v10];
+  v10[4] = selfCopy;
+  [(HKAuthorizationStore *)authorizationStore setObjectAuthorizationStatusContext:v7 forObjectType:0 bundleIdentifier:bundleIdentifier completion:v10];
 }
 
 void __69__HKSourceAuthorizationController_commitObjectAuthorizationStatuses___block_invoke(uint64_t a1, char a2, void *a3)
@@ -405,13 +405,13 @@ void __77__HKSourceAuthorizationController__statusesByConceptIdentifiersFromStat
 {
   v3 = [MEMORY[0x1E696C2E0] documentTypeForIdentifier:*MEMORY[0x1E696B7C0]];
   authorizationStore = self->_authorizationStore;
-  v5 = [(HKSource *)self->_source bundleIdentifier];
+  bundleIdentifier = [(HKSource *)self->_source bundleIdentifier];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__HKSourceAuthorizationController_resetObjectAuthorizationStatuses__block_invoke;
   v6[3] = &unk_1E81B59C0;
   v6[4] = self;
-  [(HKAuthorizationStore *)authorizationStore resetAllObjectAuthorizationStatusForBundleIdentifier:v5 objectType:v3 completion:v6];
+  [(HKAuthorizationStore *)authorizationStore resetAllObjectAuthorizationStatusForBundleIdentifier:bundleIdentifier objectType:v3 completion:v6];
 }
 
 void __67__HKSourceAuthorizationController_resetObjectAuthorizationStatuses__block_invoke(uint64_t a1, char a2, void *a3)
@@ -430,40 +430,40 @@ void __67__HKSourceAuthorizationController_resetObjectAuthorizationStatuses__blo
   [*(a1 + 32) _reloadDocumentAuthorizationRecords];
 }
 
-- (BOOL)isTypeEnabled:(id)a3 inSection:(int64_t)a4
+- (BOOL)isTypeEnabled:(id)enabled inSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HKSourceAuthorizationController *)self _enabledTypesInSection:a4];
-  LOBYTE(self) = [v7 containsObject:v6];
+  enabledCopy = enabled;
+  v7 = [(HKSourceAuthorizationController *)self _enabledTypesInSection:section];
+  LOBYTE(self) = [v7 containsObject:enabledCopy];
 
   return self;
 }
 
-- (void)setEnabled:(BOOL)a3 forType:(id)a4 inSection:(int64_t)a5 commit:(BOOL)a6
+- (void)setEnabled:(BOOL)enabled forType:(id)type inSection:(int64_t)section commit:(BOOL)commit
 {
-  v6 = a6;
-  v8 = a3;
-  v10 = a4;
-  v11 = [(HKSourceAuthorizationController *)self _enabledTypesInSection:a5];
-  v12 = [MEMORY[0x1E695DFA8] setWithObject:v10];
-  if (v8)
+  commitCopy = commit;
+  enabledCopy = enabled;
+  typeCopy = type;
+  v11 = [(HKSourceAuthorizationController *)self _enabledTypesInSection:section];
+  v12 = [MEMORY[0x1E695DFA8] setWithObject:typeCopy];
+  if (enabledCopy)
   {
-    if ([(HKSourceAuthorizationController *)self _parentTypeDisabledForType:v10 inSection:a5]&& !self->_isUpdatingAllTypes)
+    if ([(HKSourceAuthorizationController *)self _parentTypeDisabledForType:typeCopy inSection:section]&& !self->_isUpdatingAllTypes)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __71__HKSourceAuthorizationController_setEnabled_forType_inSection_commit___block_invoke;
       v19[3] = &unk_1E81BB2B0;
       v19[4] = self;
-      v20 = v10;
-      v21 = a5;
+      v20 = typeCopy;
+      sectionCopy = section;
       dispatch_async(MEMORY[0x1E69E96A0], v19);
 
       goto LABEL_12;
     }
 
-    [v11 addObject:v10];
-    if (!v6)
+    [v11 addObject:typeCopy];
+    if (!commitCopy)
     {
       goto LABEL_12;
     }
@@ -473,7 +473,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v13 = [(HKSourceAuthorizationController *)self _enabledSubTypesForType:v10 inSection:a5];
+  v13 = [(HKSourceAuthorizationController *)self _enabledSubTypesForType:typeCopy inSection:section];
   if ([v13 count] && !self->_isUpdatingAllTypes)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -482,17 +482,17 @@ LABEL_9:
     block[3] = &unk_1E81B74D8;
     block[4] = self;
     v16 = v13;
-    v17 = v10;
-    v18 = a5;
+    v17 = typeCopy;
+    sectionCopy2 = section;
     v14 = v13;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     goto LABEL_12;
   }
 
-  [v11 removeObject:v10];
+  [v11 removeObject:typeCopy];
 
-  if (v6)
+  if (commitCopy)
   {
     goto LABEL_9;
   }
@@ -514,19 +514,19 @@ void __71__HKSourceAuthorizationController_setEnabled_forType_inSection_commit__
   [v2 authorizationController:*(a1 + 32) subTypesEnabled:*(a1 + 40) forType:*(a1 + 48) inSection:*(a1 + 56)];
 }
 
-- (BOOL)_parentTypeDisabledForType:(id)a3 inSection:(int64_t)a4
+- (BOOL)_parentTypeDisabledForType:(id)type inSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [v6 parentType];
+  typeCopy = type;
+  parentType = [typeCopy parentType];
 
-  if (v7)
+  if (parentType)
   {
-    v8 = [(HKSourceAuthorizationController *)self typesInSection:a4];
-    v9 = [v6 parentType];
-    v10 = [v8 containsObject:v9];
+    v8 = [(HKSourceAuthorizationController *)self typesInSection:section];
+    parentType2 = [typeCopy parentType];
+    v10 = [v8 containsObject:parentType2];
 
-    v11 = [v6 parentType];
-    v12 = ![(HKSourceAuthorizationController *)self isTypeEnabled:v11 inSection:a4];
+    parentType3 = [typeCopy parentType];
+    v12 = ![(HKSourceAuthorizationController *)self isTypeEnabled:parentType3 inSection:section];
 
     v13 = v10 & v12;
   }
@@ -539,16 +539,16 @@ void __71__HKSourceAuthorizationController_setEnabled_forType_inSection_commit__
   return v13;
 }
 
-- (id)_enabledSubTypesForType:(id)a3 inSection:(int64_t)a4
+- (id)_enabledSubTypesForType:(id)type inSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HKSourceAuthorizationController *)self _enabledTypesInSection:a4];
+  typeCopy = type;
+  v7 = [(HKSourceAuthorizationController *)self _enabledTypesInSection:section];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__HKSourceAuthorizationController__enabledSubTypesForType_inSection___block_invoke;
   v11[3] = &unk_1E81BB2D8;
-  v12 = v6;
-  v8 = v6;
+  v12 = typeCopy;
+  v8 = typeCopy;
   v9 = [v7 objectsPassingTest:v11];
 
   return v9;
@@ -574,16 +574,16 @@ uint64_t __69__HKSourceAuthorizationController__enabledSubTypesForType_inSection
   return v3;
 }
 
-- (BOOL)allTypesEnabledInSection:(int64_t)a3
+- (BOOL)allTypesEnabledInSection:(int64_t)section
 {
-  if (a3 == 6)
+  if (section == 6)
   {
     v4 = 80;
     v5 = 96;
     goto LABEL_5;
   }
 
-  if (a3 == 4)
+  if (section == 4)
   {
     v4 = 72;
     v5 = 88;
@@ -597,32 +597,32 @@ LABEL_5:
 
 - (BOOL)anyTypeRequested
 {
-  v3 = [(HKSourceAuthorizationController *)self orderedTypesForReading];
-  if ([v3 count])
+  orderedTypesForReading = [(HKSourceAuthorizationController *)self orderedTypesForReading];
+  if ([orderedTypesForReading count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HKSourceAuthorizationController *)self orderedTypesForSharing];
-    v4 = [v5 count] != 0;
+    orderedTypesForSharing = [(HKSourceAuthorizationController *)self orderedTypesForSharing];
+    v4 = [orderedTypesForSharing count] != 0;
   }
 
   return v4;
 }
 
-- (void)setEnabled:(BOOL)a3 forAllTypesInSection:(int64_t)a4 commit:(BOOL)a5
+- (void)setEnabled:(BOOL)enabled forAllTypesInSection:(int64_t)section commit:(BOOL)commit
 {
-  v5 = a5;
-  v7 = a3;
+  commitCopy = commit;
+  enabledCopy = enabled;
   v19 = *MEMORY[0x1E69E9840];
   self->_isUpdatingAllTypes = 1;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(HKSourceAuthorizationController *)self typesInSection:a4, 0];
+  v9 = [(HKSourceAuthorizationController *)self typesInSection:section, 0];
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -638,7 +638,7 @@ LABEL_5:
           objc_enumerationMutation(v9);
         }
 
-        [(HKSourceAuthorizationController *)self setEnabled:v7 forType:*(*(&v14 + 1) + 8 * v13++) inSection:a4 commit:v5];
+        [(HKSourceAuthorizationController *)self setEnabled:enabledCopy forType:*(*(&v14 + 1) + 8 * v13++) inSection:section commit:commitCopy];
       }
 
       while (v11 != v13);
@@ -659,33 +659,33 @@ LABEL_5:
   [(HKSourceAuthorizationController *)self _updateAuthorizationStatusWithTypes:v3];
 }
 
-- (int64_t)_authorizationStatusWithType:(id)a3
+- (int64_t)_authorizationStatusWithType:(id)type
 {
   typesEnabledForSharing = self->_typesEnabledForSharing;
-  v5 = a3;
-  [(NSMutableSet *)typesEnabledForSharing containsObject:v5];
-  [(NSMutableSet *)self->_typesEnabledForReading containsObject:v5];
+  typeCopy = type;
+  [(NSMutableSet *)typesEnabledForSharing containsObject:typeCopy];
+  [(NSMutableSet *)self->_typesEnabledForReading containsObject:typeCopy];
 
   return HKInternalAuthorizationStatusMake();
 }
 
-- (void)_updateAuthorizationStatusWithTypes:(id)a3
+- (void)_updateAuthorizationStatusWithTypes:(id)types
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  typesCopy = types;
+  if ([typesCopy count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(typesCopy, "count")}];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = v4;
+    v6 = typesCopy;
     v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
-      v21 = v4;
+      v21 = typesCopy;
       v9 = 0;
       v10 = *v23;
       do
@@ -715,7 +715,7 @@ LABEL_5:
 
       while (v8);
 
-      v4 = v21;
+      typesCopy = v21;
       if ((v9 & 1) == 0)
       {
         goto LABEL_15;
@@ -753,18 +753,18 @@ LABEL_15:
 LABEL_18:
 }
 
-- (void)_setAuthorizationStatuses:(id)a3
+- (void)_setAuthorizationStatuses:(id)statuses
 {
-  v4 = a3;
+  statusesCopy = statuses;
   objc_initWeak(&location, self);
   authorizationStore = self->_authorizationStore;
-  v6 = [(HKSource *)self->_source bundleIdentifier];
+  bundleIdentifier = [(HKSource *)self->_source bundleIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__HKSourceAuthorizationController__setAuthorizationStatuses___block_invoke;
   v7[3] = &unk_1E81B8298;
   objc_copyWeak(&v8, &location);
-  [(HKAuthorizationStore *)authorizationStore setAuthorizationStatuses:v4 authorizationModes:MEMORY[0x1E695E0F8] forBundleIdentifier:v6 options:0 completion:v7];
+  [(HKAuthorizationStore *)authorizationStore setAuthorizationStatuses:statusesCopy authorizationModes:MEMORY[0x1E695E0F8] forBundleIdentifier:bundleIdentifier options:0 completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -777,10 +777,10 @@ void __61__HKSourceAuthorizationController__setAuthorizationStatuses___block_inv
   [WeakRetained _handleSetAuthorizationCompletionSuccess:a2 error:v5];
 }
 
-- (void)_handleSetAuthorizationCompletionSuccess:(BOOL)a3 error:(id)a4
+- (void)_handleSetAuthorizationCompletionSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  if (!a3)
+  errorCopy = error;
+  if (!success)
   {
     _HKInitializeLogging();
     v6 = HKLogAuthorization();
@@ -806,9 +806,9 @@ void __61__HKSourceAuthorizationController__setAuthorizationStatuses___block_inv
   notify_post("HKUIAuthorizationDidUpdateNotification");
 }
 
-- (id)_enabledTypesInSection:(int64_t)a3
+- (id)_enabledTypesInSection:(int64_t)section
 {
-  if (a3 == 4)
+  if (section == 4)
   {
     v4 = 88;
 LABEL_5:
@@ -817,7 +817,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 6)
+  if (section == 6)
   {
     v4 = 96;
     goto LABEL_5;
@@ -840,8 +840,8 @@ LABEL_5:
 {
   v2 = MEMORY[0x1E69DCAB8];
   v3 = *MEMORY[0x1E696C860];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v5 = [v2 _applicationIconImageForBundleIdentifier:v3 format:0 scale:?];
 
   return v5;

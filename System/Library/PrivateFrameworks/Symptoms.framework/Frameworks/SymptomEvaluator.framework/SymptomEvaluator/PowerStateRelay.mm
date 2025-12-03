@@ -8,7 +8,7 @@
 - (PowerStateRelay)init;
 - (double)batteryPercentage;
 - (id)getBatteryProperties;
-- (id)thermalPressureLevelToString:(int64_t)a3;
+- (id)thermalPressureLevelToString:(int64_t)string;
 - (int)batteryTemperature;
 - (unsigned)batteryAbsoluteCapacity;
 - (unsigned)batteryCurrentCapacity;
@@ -22,27 +22,27 @@
 - (void)enableIOKitBatteryLevelNotifications;
 - (void)getCurrentKeybagLockState;
 - (void)handleBatteryNotification;
-- (void)handlePowerStateChange:(id)a3;
-- (void)setBatteryAbsoluteCapacity:(unsigned int)a3;
-- (void)setBatteryAtCriticalLevel:(BOOL)a3;
-- (void)setBatteryAtWarnLevel:(BOOL)a3;
-- (void)setBatteryCurrentCapacity:(unsigned int)a3;
-- (void)setBatteryDesignCapacity:(unsigned int)a3;
-- (void)setBatteryExternalPowerIsConnected:(BOOL)a3;
-- (void)setBatteryFullyCharged:(BOOL)a3;
-- (void)setBatteryIsCharging:(BOOL)a3;
-- (void)setBatteryMaximumCapacity:(unsigned int)a3;
-- (void)setBatteryPercentage:(double)a3;
-- (void)setBatteryTemperature:(int)a3;
-- (void)setBatteryTimeRemaining:(unsigned int)a3;
-- (void)setBatteryVoltage:(unsigned int)a3;
-- (void)setLowPowerModeEnabled:(BOOL)a3;
-- (void)setPluggedIn:(BOOL)a3;
-- (void)setScreenBrightness:(unsigned int)a3;
-- (void)setScreenNotDark:(BOOL)a3;
-- (void)setScreenUnlocked:(BOOL)a3;
-- (void)setThermalPressure:(int64_t)a3;
-- (void)updateBatteryValuesFromPowerSourceDictionary:(id)a3;
+- (void)handlePowerStateChange:(id)change;
+- (void)setBatteryAbsoluteCapacity:(unsigned int)capacity;
+- (void)setBatteryAtCriticalLevel:(BOOL)level;
+- (void)setBatteryAtWarnLevel:(BOOL)level;
+- (void)setBatteryCurrentCapacity:(unsigned int)capacity;
+- (void)setBatteryDesignCapacity:(unsigned int)capacity;
+- (void)setBatteryExternalPowerIsConnected:(BOOL)connected;
+- (void)setBatteryFullyCharged:(BOOL)charged;
+- (void)setBatteryIsCharging:(BOOL)charging;
+- (void)setBatteryMaximumCapacity:(unsigned int)capacity;
+- (void)setBatteryPercentage:(double)percentage;
+- (void)setBatteryTemperature:(int)temperature;
+- (void)setBatteryTimeRemaining:(unsigned int)remaining;
+- (void)setBatteryVoltage:(unsigned int)voltage;
+- (void)setLowPowerModeEnabled:(BOOL)enabled;
+- (void)setPluggedIn:(BOOL)in;
+- (void)setScreenBrightness:(unsigned int)brightness;
+- (void)setScreenNotDark:(BOOL)dark;
+- (void)setScreenUnlocked:(BOOL)unlocked;
+- (void)setThermalPressure:(int64_t)pressure;
+- (void)updateBatteryValuesFromPowerSourceDictionary:(id)dictionary;
 @end
 
 @implementation PowerStateRelay
@@ -66,10 +66,10 @@
 - (void)handleBatteryNotification
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(PowerStateRelay *)self getBatteryProperties];
-  if (v4)
+  getBatteryProperties = [(PowerStateRelay *)self getBatteryProperties];
+  if (getBatteryProperties)
   {
-    [(PowerStateRelay *)self updateBatteryValuesFromPowerSourceDictionary:v4];
+    [(PowerStateRelay *)self updateBatteryValuesFromPowerSourceDictionary:getBatteryProperties];
   }
 
   objc_autoreleasePoolPop(v3);
@@ -166,140 +166,140 @@ void __23__PowerStateRelay_init__block_invoke_4(uint64_t a1, int token)
 
 - (double)batteryPercentage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryPercentage = v2->_batteryPercentage;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryPercentage = selfCopy->_batteryPercentage;
+  objc_sync_exit(selfCopy);
 
   return batteryPercentage;
 }
 
 - (unsigned)batteryCurrentCapacity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryCurrentCapacity = v2->_batteryCurrentCapacity;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryCurrentCapacity = selfCopy->_batteryCurrentCapacity;
+  objc_sync_exit(selfCopy);
 
   return batteryCurrentCapacity;
 }
 
 - (unsigned)batteryMaximumCapacity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryMaximumCapacity = v2->_batteryMaximumCapacity;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryMaximumCapacity = selfCopy->_batteryMaximumCapacity;
+  objc_sync_exit(selfCopy);
 
   return batteryMaximumCapacity;
 }
 
 - (unsigned)batteryTimeRemaining
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryTimeRemaining = v2->_batteryTimeRemaining;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryTimeRemaining = selfCopy->_batteryTimeRemaining;
+  objc_sync_exit(selfCopy);
 
   return batteryTimeRemaining;
 }
 
 - (BOOL)batteryExternalPowerIsConnected
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryExternalPowerIsConnected = v2->_batteryExternalPowerIsConnected;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryExternalPowerIsConnected = selfCopy->_batteryExternalPowerIsConnected;
+  objc_sync_exit(selfCopy);
 
   return batteryExternalPowerIsConnected;
 }
 
 - (BOOL)batteryIsCharging
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryIsCharging = v2->_batteryIsCharging;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryIsCharging = selfCopy->_batteryIsCharging;
+  objc_sync_exit(selfCopy);
 
   return batteryIsCharging;
 }
 
 - (BOOL)batteryFullyCharged
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryFullyCharged = v2->_batteryFullyCharged;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryFullyCharged = selfCopy->_batteryFullyCharged;
+  objc_sync_exit(selfCopy);
 
   return batteryFullyCharged;
 }
 
 - (BOOL)batteryAtWarnLevel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryAtWarnLevel = v2->_batteryAtWarnLevel;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryAtWarnLevel = selfCopy->_batteryAtWarnLevel;
+  objc_sync_exit(selfCopy);
 
   return batteryAtWarnLevel;
 }
 
 - (BOOL)batteryAtCriticalLevel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryAtCriticalLevel = v2->_batteryAtCriticalLevel;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryAtCriticalLevel = selfCopy->_batteryAtCriticalLevel;
+  objc_sync_exit(selfCopy);
 
   return batteryAtCriticalLevel;
 }
 
 - (unsigned)screenBrightness
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  screenBrightness = v2->_screenBrightness;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  screenBrightness = selfCopy->_screenBrightness;
+  objc_sync_exit(selfCopy);
 
   return screenBrightness;
 }
 
 - (unsigned)batteryDesignCapacity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryDesignCapacity = v2->_batteryDesignCapacity;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryDesignCapacity = selfCopy->_batteryDesignCapacity;
+  objc_sync_exit(selfCopy);
 
   return batteryDesignCapacity;
 }
 
 - (unsigned)batteryAbsoluteCapacity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryAbsoluteCapacity = v2->_batteryAbsoluteCapacity;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryAbsoluteCapacity = selfCopy->_batteryAbsoluteCapacity;
+  objc_sync_exit(selfCopy);
 
   return batteryAbsoluteCapacity;
 }
 
 - (unsigned)batteryVoltage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryVoltage = v2->_batteryVoltage;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryVoltage = selfCopy->_batteryVoltage;
+  objc_sync_exit(selfCopy);
 
   return batteryVoltage;
 }
 
 - (int)batteryTemperature
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  batteryTemperature = v2->_batteryTemperature;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  batteryTemperature = selfCopy->_batteryTemperature;
+  objc_sync_exit(selfCopy);
 
   return batteryTemperature;
 }
@@ -332,9 +332,9 @@ void __23__PowerStateRelay_init__block_invoke_4(uint64_t a1, int token)
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v7 pluggedIn];
+      pluggedIn = [v7 pluggedIn];
       *buf = 67109120;
-      *&buf[4] = v10;
+      *&buf[4] = pluggedIn;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "Power: plugged-in %d (baseline)", buf, 8u);
     }
 
@@ -353,9 +353,9 @@ void __23__PowerStateRelay_init__block_invoke_4(uint64_t a1, int token)
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v12 screenNotDark];
+      screenNotDark = [v12 screenNotDark];
       *v53 = 67109120;
-      *&v53[4] = v15;
+      *&v53[4] = screenNotDark;
       _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEFAULT, "Power: screen-notdark %d (baseline)", v53, 8u);
     }
 
@@ -374,9 +374,9 @@ void __23__PowerStateRelay_init__block_invoke_4(uint64_t a1, int token)
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [v17 screenBrightness];
+      screenBrightness = [v17 screenBrightness];
       *v51 = 67109120;
-      v52 = v20;
+      v52 = screenBrightness;
       _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "Power: screen-brightness %u (baseline)", v51, 8u);
     }
 
@@ -393,18 +393,18 @@ void __23__PowerStateRelay_init__block_invoke_4(uint64_t a1, int token)
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [v22 screenUnlocked];
+      screenUnlocked = [v22 screenUnlocked];
       *v51 = 67109120;
-      v52 = v25;
+      v52 = screenUnlocked;
       _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEFAULT, "Power: screen-unlocked %d (baseline)", v51, 8u);
     }
 
     [v22 enableIOKitBatteryLevelNotifications];
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v22 selector:sel_handlePowerStateChange_ name:*MEMORY[0x277CCA5E8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v22 selector:sel_handlePowerStateChange_ name:*MEMORY[0x277CCA5E8] object:0];
 
-    v27 = [MEMORY[0x277CCAC38] processInfo];
-    [v22 setLowPowerModeEnabled:{objc_msgSend(v27, "isLowPowerModeEnabled")}];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [v22 setLowPowerModeEnabled:{objc_msgSend(processInfo, "isLowPowerModeEnabled")}];
 
     v28 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -511,55 +511,55 @@ void __23__PowerStateRelay_init__block_invoke_12(uint64_t a1, int token, int a3)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)thermalPressureLevelToString:(int64_t)a3
+- (id)thermalPressureLevelToString:(int64_t)string
 {
-  if (a3 > 29)
+  if (string > 29)
   {
-    switch(a3)
+    switch(string)
     {
       case 30:
-        v4 = @"Heavy";
+        string = @"Heavy";
 
         break;
       case 40:
-        v4 = @"Trapping";
+        string = @"Trapping";
 
         break;
       case 50:
-        v4 = @"Sleeping";
+        string = @"Sleeping";
 
         break;
       default:
 LABEL_20:
-        v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown ThermalPressure (%ld)", a3];
+        string = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown ThermalPressure (%ld)", string];
 
-        return v4;
+        return string;
     }
   }
 
-  else if (a3)
+  else if (string)
   {
-    if (a3 != 10)
+    if (string != 10)
     {
-      if (a3 == 20)
+      if (string == 20)
       {
-        v4 = @"Moderate";
+        string = @"Moderate";
 
-        return v4;
+        return string;
       }
 
       goto LABEL_20;
     }
 
-    v4 = @"Light";
+    string = @"Light";
   }
 
   else
   {
-    v4 = @"Nominal";
+    string = @"Nominal";
   }
 
-  return v4;
+  return string;
 }
 
 - (void)dealloc
@@ -567,53 +567,53 @@ LABEL_20:
   [(PowerStateRelay *)self disableIOKitBatteryLevelNotifications];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.mobile.keybagd.lock_status", 0);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = PowerStateRelay;
   [(PowerStateRelay *)&v5 dealloc];
 }
 
-- (void)setPluggedIn:(BOOL)a3
+- (void)setPluggedIn:(BOOL)in
 {
-  if (self->_pluggedIn != a3)
+  if (self->_pluggedIn != in)
   {
     [(PowerStateRelay *)self willChangeValueForKey:@"pluggedIn"];
-    self->_pluggedIn = a3;
+    self->_pluggedIn = in;
 
     [(PowerStateRelay *)self didChangeValueForKey:@"pluggedIn"];
   }
 }
 
-- (void)setScreenNotDark:(BOOL)a3
+- (void)setScreenNotDark:(BOOL)dark
 {
-  if (self->_screenNotDark != a3)
+  if (self->_screenNotDark != dark)
   {
     [(PowerStateRelay *)self willChangeValueForKey:@"screenNotDark"];
-    self->_screenNotDark = a3;
+    self->_screenNotDark = dark;
 
     [(PowerStateRelay *)self didChangeValueForKey:@"screenNotDark"];
   }
 }
 
-- (void)setScreenUnlocked:(BOOL)a3
+- (void)setScreenUnlocked:(BOOL)unlocked
 {
-  if (self->_screenUnlocked != a3)
+  if (self->_screenUnlocked != unlocked)
   {
     [(PowerStateRelay *)self willChangeValueForKey:@"screenUnlocked"];
-    self->_screenUnlocked = a3;
+    self->_screenUnlocked = unlocked;
 
     [(PowerStateRelay *)self didChangeValueForKey:@"screenUnlocked"];
   }
 }
 
-- (void)setThermalPressure:(int64_t)a3
+- (void)setThermalPressure:(int64_t)pressure
 {
-  if (self->_thermalPressure != a3)
+  if (self->_thermalPressure != pressure)
   {
     [(PowerStateRelay *)self willChangeValueForKey:@"thermalPressure"];
-    self->_thermalPressure = a3;
+    self->_thermalPressure = pressure;
 
     [(PowerStateRelay *)self didChangeValueForKey:@"thermalPressure"];
   }
@@ -739,215 +739,215 @@ LABEL_19:
   }
 }
 
-- (void)setBatteryPercentage:(double)a3
+- (void)setBatteryPercentage:(double)percentage
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryPercentage != a3)
+  if (obj->_batteryPercentage != percentage)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryPercentage"];
-    obj->_batteryPercentage = a3;
+    obj->_batteryPercentage = percentage;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryPercentage"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setScreenBrightness:(unsigned int)a3
+- (void)setScreenBrightness:(unsigned int)brightness
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_screenBrightness != a3)
+  if (obj->_screenBrightness != brightness)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"screenBrightness"];
-    obj->_screenBrightness = a3;
+    obj->_screenBrightness = brightness;
     [(PowerStateRelay *)obj didChangeValueForKey:@"screenBrightness"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryCurrentCapacity:(unsigned int)a3
+- (void)setBatteryCurrentCapacity:(unsigned int)capacity
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryCurrentCapacity != a3)
+  if (obj->_batteryCurrentCapacity != capacity)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryCurrentCapacity"];
-    obj->_batteryCurrentCapacity = a3;
+    obj->_batteryCurrentCapacity = capacity;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryCurrentCapacity"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryMaximumCapacity:(unsigned int)a3
+- (void)setBatteryMaximumCapacity:(unsigned int)capacity
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryMaximumCapacity != a3)
+  if (obj->_batteryMaximumCapacity != capacity)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryMaximumCapacity"];
-    obj->_batteryMaximumCapacity = a3;
+    obj->_batteryMaximumCapacity = capacity;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryMaximumCapacity"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryDesignCapacity:(unsigned int)a3
+- (void)setBatteryDesignCapacity:(unsigned int)capacity
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryDesignCapacity != a3)
+  if (obj->_batteryDesignCapacity != capacity)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryDesignCapacity"];
-    obj->_batteryDesignCapacity = a3;
+    obj->_batteryDesignCapacity = capacity;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryDesignCapacity"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryAbsoluteCapacity:(unsigned int)a3
+- (void)setBatteryAbsoluteCapacity:(unsigned int)capacity
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryAbsoluteCapacity != a3)
+  if (obj->_batteryAbsoluteCapacity != capacity)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryAbsoluteCapacity"];
-    obj->_batteryAbsoluteCapacity = a3;
+    obj->_batteryAbsoluteCapacity = capacity;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryAbsoluteCapacity"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryVoltage:(unsigned int)a3
+- (void)setBatteryVoltage:(unsigned int)voltage
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryVoltage != a3)
+  if (obj->_batteryVoltage != voltage)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryVoltage"];
-    obj->_batteryVoltage = a3;
+    obj->_batteryVoltage = voltage;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryVoltage"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryTimeRemaining:(unsigned int)a3
+- (void)setBatteryTimeRemaining:(unsigned int)remaining
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryTimeRemaining != a3)
+  if (obj->_batteryTimeRemaining != remaining)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryTimeRemaining"];
-    obj->_batteryTimeRemaining = a3;
+    obj->_batteryTimeRemaining = remaining;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryTimeRemaining"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryTemperature:(int)a3
+- (void)setBatteryTemperature:(int)temperature
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryTemperature != a3)
+  if (obj->_batteryTemperature != temperature)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryTemperature"];
-    obj->_batteryTemperature = a3;
+    obj->_batteryTemperature = temperature;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryTemperature"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryExternalPowerIsConnected:(BOOL)a3
+- (void)setBatteryExternalPowerIsConnected:(BOOL)connected
 {
-  v3 = a3;
+  connectedCopy = connected;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryExternalPowerIsConnected != v3)
+  if (obj->_batteryExternalPowerIsConnected != connectedCopy)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryExternalPowerIsConnected"];
-    obj->_batteryExternalPowerIsConnected = v3;
+    obj->_batteryExternalPowerIsConnected = connectedCopy;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryExternalPowerIsConnected"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryIsCharging:(BOOL)a3
+- (void)setBatteryIsCharging:(BOOL)charging
 {
-  v3 = a3;
+  chargingCopy = charging;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryIsCharging != v3)
+  if (obj->_batteryIsCharging != chargingCopy)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryIsCharging"];
-    obj->_batteryIsCharging = v3;
+    obj->_batteryIsCharging = chargingCopy;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryIsCharging"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryFullyCharged:(BOOL)a3
+- (void)setBatteryFullyCharged:(BOOL)charged
 {
-  v3 = a3;
+  chargedCopy = charged;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryFullyCharged != v3)
+  if (obj->_batteryFullyCharged != chargedCopy)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryFullyCharged"];
-    obj->_batteryFullyCharged = v3;
+    obj->_batteryFullyCharged = chargedCopy;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryFullyCharged"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryAtWarnLevel:(BOOL)a3
+- (void)setBatteryAtWarnLevel:(BOOL)level
 {
-  v3 = a3;
+  levelCopy = level;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryAtWarnLevel != v3)
+  if (obj->_batteryAtWarnLevel != levelCopy)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryAtWarnLevel"];
-    obj->_batteryAtWarnLevel = v3;
+    obj->_batteryAtWarnLevel = levelCopy;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryAtWarnLevel"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setBatteryAtCriticalLevel:(BOOL)a3
+- (void)setBatteryAtCriticalLevel:(BOOL)level
 {
-  v3 = a3;
+  levelCopy = level;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_batteryAtCriticalLevel != v3)
+  if (obj->_batteryAtCriticalLevel != levelCopy)
   {
     [(PowerStateRelay *)obj willChangeValueForKey:@"batteryAtCriticalLevel"];
-    obj->_batteryAtCriticalLevel = v3;
+    obj->_batteryAtCriticalLevel = levelCopy;
     [(PowerStateRelay *)obj didChangeValueForKey:@"batteryAtCriticalLevel"];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)updateBatteryValuesFromPowerSourceDictionary:(id)a3
+- (void)updateBatteryValuesFromPowerSourceDictionary:(id)dictionary
 {
   v98 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"CurrentCapacity"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"CurrentCapacity"];
     v7 = [v5 objectForKeyedSubscript:@"MaxCapacity"];
     if (v7)
     {
@@ -1127,17 +1127,17 @@ LABEL_19:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePowerStateChange:(id)a3
+- (void)handlePowerStateChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [v4 isLowPowerModeEnabled];
+  object = [change object];
+  isLowPowerModeEnabled = [object isLowPowerModeEnabled];
   powerStateQueue = self->_powerStateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__PowerStateRelay_handlePowerStateChange___block_invoke;
   v7[3] = &unk_27898A3A0;
   v7[4] = self;
-  v8 = v5;
+  v8 = isLowPowerModeEnabled;
   dispatch_async(powerStateQueue, v7);
 }
 
@@ -1158,12 +1158,12 @@ void __42__PowerStateRelay_handlePowerStateChange___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLowPowerModeEnabled:(BOOL)a3
+- (void)setLowPowerModeEnabled:(BOOL)enabled
 {
-  if (self->_lowPowerModeEnabled != a3)
+  if (self->_lowPowerModeEnabled != enabled)
   {
     [(PowerStateRelay *)self willChangeValueForKey:@"lowPowerModeEnabled"];
-    self->_lowPowerModeEnabled = a3;
+    self->_lowPowerModeEnabled = enabled;
 
     [(PowerStateRelay *)self didChangeValueForKey:@"lowPowerModeEnabled"];
   }

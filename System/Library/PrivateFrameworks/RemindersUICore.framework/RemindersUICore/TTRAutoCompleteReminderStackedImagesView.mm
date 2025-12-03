@@ -1,12 +1,12 @@
 @interface TTRAutoCompleteReminderStackedImagesView
-- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithArrangedSubviews:(id)a3;
-- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithArrangedSubviews:(id)subviews;
+- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TTRAutoCompleteReminderStackedImagesView
 
-- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithCoder:(id)a3
+- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView_images) = 0;
   v4 = OBJC_IVAR____TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView_firstImageView;
@@ -19,14 +19,14 @@
   return result;
 }
 
-- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithArrangedSubviews:(id)a3
+- (_TtC15RemindersUICore40TTRAutoCompleteReminderStackedImagesView)initWithArrangedSubviews:(id)subviews
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

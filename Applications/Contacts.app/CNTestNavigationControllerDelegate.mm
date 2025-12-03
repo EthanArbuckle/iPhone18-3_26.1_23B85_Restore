@@ -1,63 +1,63 @@
 @interface CNTestNavigationControllerDelegate
-+ (CNTestNavigationControllerDelegate)delegateWithDelegate:(id)a3 willShowViewControllerHandler:(id)a4 didShowViewControllerHandler:(id)a5;
-- (BOOL)_selfReallyRespondsToSelector:(SEL)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
++ (CNTestNavigationControllerDelegate)delegateWithDelegate:(id)delegate willShowViewControllerHandler:(id)handler didShowViewControllerHandler:(id)controllerHandler;
+- (BOOL)_selfReallyRespondsToSelector:(SEL)selector;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 @end
 
 @implementation CNTestNavigationControllerDelegate
 
-+ (CNTestNavigationControllerDelegate)delegateWithDelegate:(id)a3 willShowViewControllerHandler:(id)a4 didShowViewControllerHandler:(id)a5
++ (CNTestNavigationControllerDelegate)delegateWithDelegate:(id)delegate willShowViewControllerHandler:(id)handler didShowViewControllerHandler:(id)controllerHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
-  [v11 setDelegate:v10];
+  controllerHandlerCopy = controllerHandler;
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  v11 = objc_alloc_init(self);
+  [v11 setDelegate:delegateCopy];
 
-  [v11 setWillShow:v9];
-  [v11 setDidShow:v8];
+  [v11 setWillShow:handlerCopy];
+  [v11 setDidShow:controllerHandlerCopy];
 
   return v11;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v8 = a4;
-  v6 = [(CNTestNavigationControllerDelegate *)self willShow];
+  viewControllerCopy = viewController;
+  willShow = [(CNTestNavigationControllerDelegate *)self willShow];
 
-  if (v6)
+  if (willShow)
   {
-    v7 = [(CNTestNavigationControllerDelegate *)self willShow];
-    (v7)[2](v7, v8);
+    willShow2 = [(CNTestNavigationControllerDelegate *)self willShow];
+    (willShow2)[2](willShow2, viewControllerCopy);
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v8 = a4;
-  v6 = [(CNTestNavigationControllerDelegate *)self didShow];
+  viewControllerCopy = viewController;
+  didShow = [(CNTestNavigationControllerDelegate *)self didShow];
 
-  if (v6)
+  if (didShow)
   {
-    v7 = [(CNTestNavigationControllerDelegate *)self didShow];
-    (v7)[2](v7, v8);
+    didShow2 = [(CNTestNavigationControllerDelegate *)self didShow];
+    (didShow2)[2](didShow2, viewControllerCopy);
   }
 }
 
-- (BOOL)_selfReallyRespondsToSelector:(SEL)a3
+- (BOOL)_selfReallyRespondsToSelector:(SEL)selector
 {
-  if (sel_isEqual(a3, "navigationController:willShowViewController:animated:"))
+  if (sel_isEqual(selector, "navigationController:willShowViewController:animated:"))
   {
     return 1;
   }
 
-  return sel_isEqual(a3, "navigationController:didShowViewController:animated:");
+  return sel_isEqual(selector, "navigationController:didShowViewController:animated:");
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   if ([(CNTestNavigationControllerDelegate *)self _selfReallyRespondsToSelector:?])
   {
@@ -66,26 +66,26 @@
 
   else
   {
-    v5 = [(CNTestNavigationControllerDelegate *)self delegate];
+    delegate = [(CNTestNavigationControllerDelegate *)self delegate];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   if ([(CNTestNavigationControllerDelegate *)self _selfReallyRespondsToSelector:?]|| ([(CNTestNavigationControllerDelegate *)self delegate], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) == 0))
   {
-    v6 = 0;
+    delegate = 0;
   }
 
   else
   {
-    v6 = [(CNTestNavigationControllerDelegate *)self delegate];
+    delegate = [(CNTestNavigationControllerDelegate *)self delegate];
   }
 
-  return v6;
+  return delegate;
 }
 
 @end

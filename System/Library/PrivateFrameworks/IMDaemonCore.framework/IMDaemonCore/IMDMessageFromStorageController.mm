@@ -2,18 +2,18 @@
 + (BOOL)anyStorageControllerIsAwaitingStorageTimer;
 + (id)SMSStorageController;
 + (id)iMessageStorageController;
-- (IMDMessageFromStorageController)initWithMessageStore:(id)a3;
+- (IMDMessageFromStorageController)initWithMessageStore:(id)store;
 - (id)broadcaster;
-- (void)_postMessagesFromStorage:(id)a3;
+- (void)_postMessagesFromStorage:(id)storage;
 - (void)_storageTimerFired;
-- (void)_submitStorageMetricsWithError:(unint64_t)a3;
-- (void)_updateStorageTimerWithInterval:(double)a3;
+- (void)_submitStorageMetricsWithError:(unint64_t)error;
+- (void)_updateStorageTimerWithInterval:(double)interval;
 - (void)decrementPendingReadReceiptFromStorageCount;
-- (void)noteBatchMessage:(id)a3 fromAccount:(id)a4 usingService:(id)a5;
-- (void)noteItemFromStorage:(id)a3 extendsStorageTimer:(BOOL)a4;
-- (void)noteItemProcessed:(BOOL)a3 batchContext:(id)a4 usingService:(id)a5;
-- (void)noteLastItemFromStorage:(id)a3;
-- (void)noteLastItemProcessedWithError:(unint64_t)a3;
+- (void)noteBatchMessage:(id)message fromAccount:(id)account usingService:(id)service;
+- (void)noteItemFromStorage:(id)storage extendsStorageTimer:(BOOL)timer;
+- (void)noteItemProcessed:(BOOL)processed batchContext:(id)context usingService:(id)service;
+- (void)noteLastItemFromStorage:(id)storage;
+- (void)noteLastItemProcessedWithError:(unint64_t)error;
 @end
 
 @implementation IMDMessageFromStorageController
@@ -46,30 +46,30 @@
 
 + (BOOL)anyStorageControllerIsAwaitingStorageTimer
 {
-  v3 = [a1 iMessageStorageController];
-  v4 = [v3 isAwaitingStorageTimer];
+  iMessageStorageController = [self iMessageStorageController];
+  isAwaitingStorageTimer = [iMessageStorageController isAwaitingStorageTimer];
 
-  if (v4)
+  if (isAwaitingStorageTimer)
   {
     return 1;
   }
 
-  v6 = [a1 SMSStorageController];
-  v7 = [v6 isAwaitingStorageTimer];
+  sMSStorageController = [self SMSStorageController];
+  isAwaitingStorageTimer2 = [sMSStorageController isAwaitingStorageTimer];
 
-  return v7;
+  return isAwaitingStorageTimer2;
 }
 
-- (IMDMessageFromStorageController)initWithMessageStore:(id)a3
+- (IMDMessageFromStorageController)initWithMessageStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = IMDMessageFromStorageController;
   v6 = [(IMDMessageFromStorageController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageStore, a3);
+    objc_storeStrong(&v6->_messageStore, store);
     *&v7->_storageTimerInterval = xmmword_22B7F85C0;
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     trackingContexts = v7->_trackingContexts;
@@ -82,64 +82,64 @@
 - (id)broadcaster
 {
   v2 = +[IMDBroadcastController sharedProvider];
-  v3 = [v2 broadcasterForChatListeners];
+  broadcasterForChatListeners = [v2 broadcasterForChatListeners];
 
-  return v3;
+  return broadcasterForChatListeners;
 }
 
-- (void)noteBatchMessage:(id)a3 fromAccount:(id)a4 usingService:(id)a5
+- (void)noteBatchMessage:(id)message fromAccount:(id)account usingService:(id)service
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v11 = [v10 isComingOnlineEnabled];
+  messageCopy = message;
+  accountCopy = account;
+  serviceCopy = service;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isComingOnlineEnabled = [mEMORY[0x277D1A9B8] isComingOnlineEnabled];
 
-  if (v11)
+  if (isComingOnlineEnabled)
   {
-    v12 = [v18 context];
-    if (v12)
+    context = [messageCopy context];
+    if (context)
     {
-      v13 = [(IMDMessageFromStorageController *)self trackingContexts];
-      v14 = [v8 uniqueID];
-      v15 = [v13 objectForKey:v14];
+      trackingContexts = [(IMDMessageFromStorageController *)self trackingContexts];
+      uniqueID = [accountCopy uniqueID];
+      v15 = [trackingContexts objectForKey:uniqueID];
 
       if (v15)
       {
-        [(IMBatchSetTrackingContext *)v15 noteNewIncomingBatchMessage:v18];
+        [(IMBatchSetTrackingContext *)v15 noteNewIncomingBatchMessage:messageCopy];
       }
 
       else
       {
-        v15 = [[IMBatchSetTrackingContext alloc] initWithAccount:v8 service:v9 message:v18];
-        v16 = [(IMDMessageFromStorageController *)self trackingContexts];
-        v17 = [v8 uniqueID];
-        [v16 setObject:v15 forKey:v17];
+        v15 = [[IMBatchSetTrackingContext alloc] initWithAccount:accountCopy service:serviceCopy message:messageCopy];
+        trackingContexts2 = [(IMDMessageFromStorageController *)self trackingContexts];
+        uniqueID2 = [accountCopy uniqueID];
+        [trackingContexts2 setObject:v15 forKey:uniqueID2];
       }
     }
   }
 }
 
-- (void)noteItemProcessed:(BOOL)a3 batchContext:(id)a4 usingService:(id)a5
+- (void)noteItemProcessed:(BOOL)processed batchContext:(id)context usingService:(id)service
 {
-  v6 = a3;
+  processedCopy = processed;
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v11 = [v10 isComingOnlineEnabled];
+  contextCopy = context;
+  serviceCopy = service;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isComingOnlineEnabled = [mEMORY[0x277D1A9B8] isComingOnlineEnabled];
 
-  if (v11)
+  if (isComingOnlineEnabled)
   {
-    v12 = [v8 objectForKeyedSubscript:*MEMORY[0x277D19F30]];
+    v12 = [contextCopy objectForKeyedSubscript:*MEMORY[0x277D19F30]];
     if (v12)
     {
-      v13 = [(IMDMessageFromStorageController *)self trackingContexts];
-      v14 = [v13 objectForKey:v12];
+      trackingContexts = [(IMDMessageFromStorageController *)self trackingContexts];
+      v14 = [trackingContexts objectForKey:v12];
 
       if (v14)
       {
-        [v14 noteItemProcessed:v8];
+        [v14 noteItemProcessed:contextCopy];
         if ([v14 isComplete])
         {
           if (IMOSLoggingEnabled())
@@ -153,8 +153,8 @@
             }
           }
 
-          v16 = [(IMDMessageFromStorageController *)self trackingContexts];
-          [v16 removeObjectForKey:v12];
+          trackingContexts2 = [(IMDMessageFromStorageController *)self trackingContexts];
+          [trackingContexts2 removeObjectForKey:v12];
 
           [v14 submitStorageProcessingComplete];
         }
@@ -173,7 +173,7 @@
     }
   }
 
-  else if (v6)
+  else if (processedCopy)
   {
     [(IMDMessageFromStorageController *)self noteLastItemProcessed];
   }
@@ -181,14 +181,14 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)noteItemFromStorage:(id)a3 extendsStorageTimer:(BOOL)a4
+- (void)noteItemFromStorage:(id)storage extendsStorageTimer:(BOOL)timer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  storageCopy = storage;
+  if (storageCopy)
   {
-    v7 = [(IMDMessageFromStorageController *)self messageStore];
-    [v7 setSuppressDatabaseUpdates:1];
+    messageStore = [(IMDMessageFromStorageController *)self messageStore];
+    [messageStore setSuppressDatabaseUpdates:1];
 
     if (IMOSLoggingEnabled())
     {
@@ -196,7 +196,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v17 = 138412290;
-        v18 = v6;
+        v18 = storageCopy;
         _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Noting item from storage (%@)", &v17, 0xCu);
       }
     }
@@ -238,8 +238,8 @@
       messagesReceivedDuringStorage = self->_messagesReceivedDuringStorage;
     }
 
-    [(NSMutableSet *)messagesReceivedDuringStorage addObject:v6];
-    if (a4 || !self->_storageTimer)
+    [(NSMutableSet *)messagesReceivedDuringStorage addObject:storageCopy];
+    if (timer || !self->_storageTimer)
     {
       [(IMDMessageFromStorageController *)self storageTimerInterval];
       [(IMDMessageFromStorageController *)self _updateStorageTimerWithInterval:?];
@@ -249,14 +249,14 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)noteLastItemFromStorage:(id)a3
+- (void)noteLastItemFromStorage:(id)storage
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  storageCopy = storage;
+  if (storageCopy)
   {
-    v5 = [(IMDMessageFromStorageController *)self messageStore];
-    [v5 setSuppressDatabaseUpdates:1];
+    messageStore = [(IMDMessageFromStorageController *)self messageStore];
+    [messageStore setSuppressDatabaseUpdates:1];
 
     if (IMOSLoggingEnabled())
     {
@@ -264,7 +264,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = storageCopy;
         _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "Noting last item from storage (%@)", &v11, 0xCu);
       }
     }
@@ -279,7 +279,7 @@
       messagesReceivedDuringStorage = self->_messagesReceivedDuringStorage;
     }
 
-    [(NSMutableSet *)messagesReceivedDuringStorage addObject:v4];
+    [(NSMutableSet *)messagesReceivedDuringStorage addObject:storageCopy];
     [(IMDMessageFromStorageController *)self lastMessageStorageTimerInterval];
     [(IMDMessageFromStorageController *)self _updateStorageTimerWithInterval:?];
   }
@@ -287,7 +287,7 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)noteLastItemProcessedWithError:(unint64_t)a3
+- (void)noteLastItemProcessedWithError:(unint64_t)error
 {
   v15 = *MEMORY[0x277D85DE8];
   timingComingBackFromStorage = self->_timingComingBackFromStorage;
@@ -309,7 +309,7 @@
       }
     }
 
-    [(IMDMessageFromStorageController *)self _submitStorageMetricsWithError:a3];
+    [(IMDMessageFromStorageController *)self _submitStorageMetricsWithError:error];
     v9 = self->_timingComingBackFromStorage;
     self->_timingComingBackFromStorage = 0;
 
@@ -319,7 +319,7 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_submitStorageMetricsWithError:(unint64_t)a3
+- (void)_submitStorageMetricsWithError:(unint64_t)error
 {
   v18[4] = *MEMORY[0x277D85DE8];
   if (IMIsRunningInUnitTesting())
@@ -346,10 +346,10 @@
     v8 = [v7 numberWithDouble:?];
     v18[1] = v8;
     v17[2] = *MEMORY[0x277D1A358];
-    v9 = [(IMDMessageFromStorageController *)self serviceName];
-    v18[2] = v9;
+    serviceName = [(IMDMessageFromStorageController *)self serviceName];
+    v18[2] = serviceName;
     v17[3] = *MEMORY[0x277D1A350];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:error];
     v18[3] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4];
 
@@ -364,17 +364,17 @@
       }
     }
 
-    v13 = [MEMORY[0x277D1AAA8] sharedInstance];
-    [v13 trackEvent:*MEMORY[0x277D1A1F8] withDictionary:v11];
+    mEMORY[0x277D1AAA8] = [MEMORY[0x277D1AAA8] sharedInstance];
+    [mEMORY[0x277D1AAA8] trackEvent:*MEMORY[0x277D1A1F8] withDictionary:v11];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateStorageTimerWithInterval:(double)a3
+- (void)_updateStorageTimerWithInterval:(double)interval
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 > 0.0)
+  if (interval > 0.0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -382,7 +382,7 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v11 = 134217984;
-        v12 = a3;
+        intervalCopy = interval;
         _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Scheduling a storage invalidation timer in: %f", &v11, 0xCu);
       }
     }
@@ -395,7 +395,7 @@
       self->_storageTimer = 0;
     }
 
-    v8 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__storageTimerFired selector:0 userInfo:0 repeats:a3];
+    v8 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__storageTimerFired selector:0 userInfo:0 repeats:interval];
     v9 = self->_storageTimer;
     self->_storageTimer = v8;
   }
@@ -420,8 +420,8 @@
 
     [(IMDMessageFromStorageController *)self setPendingReadReceiptFromStorageCount:0];
     [(IMDMessageFromStorageController *)self _updateStorageTimerWithInterval:15.0];
-    v4 = [(IMDMessageFromStorageController *)self messageStore];
-    [v4 setSuppressDatabaseUpdates:1];
+    messageStore = [(IMDMessageFromStorageController *)self messageStore];
+    [messageStore setSuppressDatabaseUpdates:1];
   }
 
   else
@@ -447,12 +447,12 @@
 
     if ([(NSMutableSet *)self->_messagesReceivedDuringStorage count])
     {
-      v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:self->_messagesReceivedDuringStorage];
+      messageStore = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:self->_messagesReceivedDuringStorage];
     }
 
     else
     {
-      v4 = 0;
+      messageStore = 0;
     }
 
     if (self->_timingComingBackFromStorage)
@@ -473,32 +473,32 @@
     v10 = self->_messagesReceivedDuringStorage;
     self->_messagesReceivedDuringStorage = 0;
 
-    v11 = [(IMDMessageFromStorageController *)self messageStore];
-    [v11 setSuppressDatabaseUpdates:0];
+    messageStore2 = [(IMDMessageFromStorageController *)self messageStore];
+    [messageStore2 setSuppressDatabaseUpdates:0];
 
-    v12 = [(IMDMessageFromStorageController *)self messageStore];
-    v13 = [v4 allObjects];
-    v14 = [v12 messagesWithGUIDs:v13];
+    messageStore3 = [(IMDMessageFromStorageController *)self messageStore];
+    allObjects = [messageStore allObjects];
+    v14 = [messageStore3 messagesWithGUIDs:allObjects];
 
     [(IMDMessageFromStorageController *)self _postMessagesFromStorage:v14];
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 postNotificationName:*MEMORY[0x277D19F60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D19F60] object:0];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postMessagesFromStorage:(id)a3
+- (void)_postMessagesFromStorage:(id)storage
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  storageCopy = storage;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v3;
+  obj = storageCopy;
   v24 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v24)
   {
@@ -516,8 +516,8 @@
         v26 = v6;
         v7 = *(*(&v35 + 1) + 8 * v6);
         context = objc_autoreleasePoolPush();
-        v8 = [(IMDMessageFromStorageController *)self messageStore];
-        v9 = [v8 chatsForMessage:v7];
+        messageStore = [(IMDMessageFromStorageController *)self messageStore];
+        v9 = [messageStore chatsForMessage:v7];
 
         v33 = 0u;
         v34 = 0u;
@@ -541,16 +541,16 @@
               v15 = *(*(&v31 + 1) + 8 * i);
               if (([v15 isBlackholed] & 1) == 0)
               {
-                v16 = [v15 guid];
-                v17 = [v4 objectForKey:v16];
-                if (!v17)
+                guid = [v15 guid];
+                array = [v4 objectForKey:guid];
+                if (!array)
                 {
-                  v17 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
                 }
 
-                [v17 addObject:v7];
-                [v4 setObject:v17 forKey:v16];
-                [v5 setObject:v15 forKey:v16];
+                [array addObject:v7];
+                [v4 setObject:array forKey:guid];
+                [v5 setObject:v15 forKey:guid];
               }
             }
 
@@ -576,7 +576,7 @@
   v27[2] = sub_22B53EC38;
   v27[3] = &unk_278703E60;
   v28 = v5;
-  v29 = self;
+  selfCopy = self;
   v30 = obj;
   v18 = obj;
   v19 = v5;

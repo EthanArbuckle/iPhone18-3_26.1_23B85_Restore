@@ -1,6 +1,6 @@
 @interface SBTransientOverlayWindowInvertColorsAccessibility
 - (BOOL)_accessibilityInvertColorsSupportsDarkWindowInvert;
-- (void)_setDelegateViewController:(id)a3;
+- (void)_setDelegateViewController:(id)controller;
 @end
 
 @implementation SBTransientOverlayWindowInvertColorsAccessibility
@@ -22,11 +22,11 @@
   return [(SBTransientOverlayWindowInvertColorsAccessibility *)&v8 _accessibilityInvertColorsSupportsDarkWindowInvert];
 }
 
-- (void)_setDelegateViewController:(id)a3
+- (void)_setDelegateViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = SBTransientOverlayWindowInvertColorsAccessibility;
-  [(SBTransientOverlayWindowInvertColorsAccessibility *)&v4 _setDelegateViewController:a3];
+  [(SBTransientOverlayWindowInvertColorsAccessibility *)&v4 _setDelegateViewController:controller];
   [AXInvertColorsManager toggleDarkModeWindowInvert:self];
 }
 

@@ -1,22 +1,22 @@
 @interface VCPLightMotionAnalyzer
-+ (float)autoLiveMotionScore:(id)a3;
-- (VCPLightMotionAnalyzer)initWithQueue:(id)a3 turbo:(BOOL)a4;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)cameraMotionDetection:(void *)a3;
-- (int)computeMotionDivScore:(EncodeStats *)a3;
-- (int)generateThresholds:(float)a3[6] withConfidences:(float)a4[6];
-- (int)prewarmWithWidth:(int)a3 height:(int)a4;
-- (void)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 completion:(id)a6;
++ (float)autoLiveMotionScore:(id)score;
+- (VCPLightMotionAnalyzer)initWithQueue:(id)queue turbo:(BOOL)turbo;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)cameraMotionDetection:(void *)detection;
+- (int)computeMotionDivScore:(EncodeStats *)score;
+- (int)generateThresholds:(float)thresholds[6] withConfidences:(float)confidences[6];
+- (int)prewarmWithWidth:(int)width height:(int)height;
+- (void)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration completion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation VCPLightMotionAnalyzer
 
-+ (float)autoLiveMotionScore:(id)a3
++ (float)autoLiveMotionScore:(id)score
 {
   v39 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v3 = [v32 count];
+  scoreCopy = score;
+  v3 = [scoreCopy count];
   v4 = v3;
   v5 = 1.0;
   if ((v3 & 0x80000000) == 0)
@@ -35,11 +35,11 @@
     v8 = (v7 + 1);
     while (1)
     {
-      v9 = [v32 objectAtIndexedSubscript:v6];
+      v9 = [scoreCopy objectAtIndexedSubscript:v6];
       v10 = [v9 objectForKeyedSubscript:@"flags"];
-      v11 = [v10 integerValue];
+      integerValue = [v10 integerValue];
 
-      if ((v11 & 0x1000) != 0)
+      if ((integerValue & 0x1000) != 0)
       {
         break;
       }
@@ -58,7 +58,7 @@ LABEL_10:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = v32;
+  v12 = scoreCopy;
   v13 = [v12 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v13)
   {
@@ -93,10 +93,10 @@ LABEL_10:
           if (v19 >= 6)
           {
             v27 = [v20 objectForKeyedSubscript:{@"flags", v26}];
-            v28 = [v27 integerValue];
+            integerValue2 = [v27 integerValue];
 
             LODWORD(v26) = 1.0;
-            if ((v28 & 0x1000) != 0)
+            if ((integerValue2 & 0x1000) != 0)
             {
               if (v19 >= v15)
               {
@@ -149,23 +149,23 @@ LABEL_10:
   return v29;
 }
 
-- (VCPLightMotionAnalyzer)initWithQueue:(id)a3 turbo:(BOOL)a4
+- (VCPLightMotionAnalyzer)initWithQueue:(id)queue turbo:(BOOL)turbo
 {
-  v7 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = VCPLightMotionAnalyzer;
   v8 = [(VCPLightMotionAnalyzer *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
+    objc_storeStrong(&v8->_queue, queue);
     v9->_frame.histogram_.moments_hist_[1] = 0;
-    LOBYTE(v9->_flags) = a4;
+    LOBYTE(v9->_flags) = turbo;
     v10 = operator new(0x3C0uLL, MEMORY[0x1E69E5398]);
     v11 = v10;
     if (v10)
     {
-      ma::EncodeAnalysis::EncodeAnalysis(v10, 0, a4, 1, 0);
+      ma::EncodeAnalysis::EncodeAnalysis(v10, 0, turbo, 1, 0);
       v12 = v9;
     }
 
@@ -188,7 +188,7 @@ LABEL_10:
   return v13;
 }
 
-- (int)prewarmWithWidth:(int)a3 height:(int)a4
+- (int)prewarmWithWidth:(int)width height:(int)height
 {
   if (self->_frame.histogram_.moments_hist_[1])
   {
@@ -196,9 +196,9 @@ LABEL_10:
   }
 
   result = 0;
-  if (a4 >= 1 && a3 >= 1 && self->_queue)
+  if (height >= 1 && width >= 1 && self->_queue)
   {
-    Async = ma::EncodeStatsHW::CreateAsync(*&a3, *&a4, LOBYTE(self->_flags), 1);
+    Async = ma::EncodeStatsHW::CreateAsync(*&width, *&height, LOBYTE(self->_flags), 1);
     self->_frame.histogram_.moments_hist_[1] = Async;
     if (Async)
     {
@@ -250,7 +250,7 @@ LABEL_10:
   [(VCPLightMotionAnalyzer *)&v4 dealloc];
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
   if (self->_queue)
   {
@@ -260,14 +260,14 @@ LABEL_10:
   v18 = v6;
   v19 = v7;
   p_frame = &self->_frame;
-  v17 = *a4;
-  v16 = *a5;
-  ma::Frame::Initialize(&self->_frame, &v17, &v16, a3, 0);
+  v17 = *timestamp;
+  v16 = *duration;
+  ma::Frame::Initialize(&self->_frame, &v17, &v16, frame, 0);
   if (!result)
   {
     encodeAnalysis = self->_encodeAnalysis;
-    v17 = *a4;
-    result = ma::EncodeAnalysis::ProcessFrame(encodeAnalysis, &v17, a3, p_frame, 0, 0);
+    v17 = *timestamp;
+    result = ma::EncodeAnalysis::ProcessFrame(encodeAnalysis, &v17, frame, p_frame, 0, 0);
     if (!result)
     {
       result = [(VCPLightMotionAnalyzer *)self cameraMotionDetection:&p_frame->acc_var_.z_];
@@ -276,9 +276,9 @@ LABEL_10:
         result = [(VCPLightMotionAnalyzer *)self computeMotionDivScore:ma::EncodeAnalysis::getEncodeStats(self->_encodeAnalysis)];
         if (!result)
         {
-          if (a6)
+          if (flags)
           {
-            *a6 |= *&self->_cameraMotionConfidences[5][3];
+            *flags |= *&self->_cameraMotionConfidences[5][3];
           }
 
           result = 0;
@@ -302,11 +302,11 @@ LABEL_10:
   return result;
 }
 
-- (int)generateThresholds:(float)a3[6] withConfidences:(float)a4[6]
+- (int)generateThresholds:(float)thresholds[6] withConfidences:(float)confidences[6]
 {
   for (i = 0; i != 6; ++i)
   {
-    v5 = a4[i];
+    v5 = confidences[i];
     v6 = -4.5;
     if (v5 >= 0.1)
     {
@@ -317,13 +317,13 @@ LABEL_10:
       }
     }
 
-    a3[i] = v6;
+    thresholds[i] = v6;
   }
 
   return 0;
 }
 
-- (int)cameraMotionDetection:(void *)a3
+- (int)cameraMotionDetection:(void *)detection
 {
   v27[3] = *MEMORY[0x1E69E9840];
   p_stats = &self->_stats;
@@ -334,9 +334,9 @@ LABEL_10:
   v10 = 6;
   do
   {
-    *(&self->super.super.isa + v8) = *a3;
-    *(&self->super.super.isa + v9) = *(a3 + 6);
-    a3 = a3 + 4;
+    *(&self->super.super.isa + v8) = *detection;
+    *(&self->super.super.isa + v9) = *(detection + 6);
+    detection = detection + 4;
     v8 += 20;
     v9 += 20;
     --v10;
@@ -407,15 +407,15 @@ LABEL_10:
   return 0;
 }
 
-- (int)computeMotionDivScore:(EncodeStats *)a3
+- (int)computeMotionDivScore:(EncodeStats *)score
 {
-  if (!a3)
+  if (!score)
   {
     return -18;
   }
 
-  var25 = a3->var25;
-  var26 = a3->var26;
+  var25 = score->var25;
+  var26 = score->var26;
   v6 = var25 + 15;
   v5 = var25 < -15;
   v7 = var25 + 30;
@@ -439,15 +439,15 @@ LABEL_10:
   if (v11 >= 1)
   {
     v14 = 0;
-    var1 = a3->var1;
+    var1 = score->var1;
     v16 = 2 * v11;
     v17 = 0.0;
     do
     {
       if (*var1++)
       {
-        v19 = HIBYTE(a3->var15[v14 / 2]) + HIBYTE(a3->var16[v14 / 2]);
-        v13 = v13 + (v19 * (vabds_f32(*(a3->var3 + v14), *&self->_frame.motion_result_.support_size_) + vabds_f32(*(a3->var3 + v14 + 1), self->_frame.motion_result_.residual_var_)));
+        v19 = HIBYTE(score->var15[v14 / 2]) + HIBYTE(score->var16[v14 / 2]);
+        v13 = v13 + (v19 * (vabds_f32(*(score->var3 + v14), *&self->_frame.motion_result_.support_size_) + vabds_f32(*(score->var3 + v14 + 1), self->_frame.motion_result_.residual_var_)));
         v17 = v17 + (v19 + 2);
       }
 
@@ -475,12 +475,12 @@ LABEL_10:
   return v20;
 }
 
-- (void)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 completion:(id)a6
+- (void)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration completion:(id)completion
 {
-  v10 = a6;
-  CFRetain(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  completionCopy = completion;
+  CFRetain(frame);
+  Width = CVPixelBufferGetWidth(frame);
+  Height = CVPixelBufferGetHeight(frame);
   if (!self->_queue)
   {
 LABEL_9:
@@ -489,9 +489,9 @@ LABEL_9:
   }
 
   v13 = Height;
-  v22 = *a4;
-  v21 = *a5;
-  ma::Frame::Initialize(&self->_frame, &v22, &v21, a3, 0);
+  v22 = *timestamp;
+  v21 = *duration;
+  ma::Frame::Initialize(&self->_frame, &v22, &v21, frame, 0);
   v15 = v14;
   if (!v14)
   {
@@ -500,16 +500,16 @@ LABEL_9:
     {
       if (Async[44] == Width && Async[45] == v13)
       {
-        v22 = *a4;
+        v22 = *timestamp;
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __76__VCPLightMotionAnalyzer_analyzeFrame_withTimestamp_andDuration_completion___block_invoke;
         v17[3] = &unk_1E834D288;
         v20 = v22;
         v17[4] = self;
-        v19 = a3;
-        v18 = v10;
-        v15 = ma::EncodeStatsHW::ProcessFrameAsync(Async, &v22, a3, v17);
+        frameCopy = frame;
+        v18 = completionCopy;
+        v15 = ma::EncodeStatsHW::ProcessFrameAsync(Async, &v22, frame, v17);
 
         if (!v15)
         {
@@ -524,12 +524,12 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (a3)
+  if (frame)
   {
-    CFRelease(a3);
+    CFRelease(frame);
   }
 
-  (*(v10 + 2))(v10, 0, v15, -1.0, -1.0);
+  (*(completionCopy + 2))(completionCopy, 0, v15, -1.0, -1.0);
 LABEL_13:
 }
 

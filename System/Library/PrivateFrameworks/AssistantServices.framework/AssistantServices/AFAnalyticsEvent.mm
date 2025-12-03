@@ -1,15 +1,15 @@
 @interface AFAnalyticsEvent
 + (id)eventsReferenceTime;
-- (AFAnalyticsEvent)initWithCoder:(id)a3;
-- (AFAnalyticsEvent)initWithDeliveryStream:(unint64_t)a3 type:(int64_t)a4 timestamp:(unint64_t)a5 contextDataType:(int64_t)a6 contextData:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (AFAnalyticsEvent)initWithCoder:(id)coder;
+- (AFAnalyticsEvent)initWithDeliveryStream:(unint64_t)stream type:(int64_t)type timestamp:(unint64_t)timestamp contextDataType:(int64_t)dataType contextData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)contextDataAsDictionary;
 - (id)contextDataAsProtobuf;
 - (id)dateStamp;
 - (id)legacyTypeName;
 - (id)typeName;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFAnalyticsEvent
@@ -31,29 +31,29 @@
   return v9 ^ v13;
 }
 
-- (AFAnalyticsEvent)initWithCoder:(id)a3
+- (AFAnalyticsEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = AFAnalyticsEvent;
   v5 = [(AFAnalyticsEvent *)&v14 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v5->_deliveryStream = [v4 decodeIntegerForKey:@"_deliveryStream"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v5->_deliveryStream = [coderCopy decodeIntegerForKey:@"_deliveryStream"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
     v5->_timestamp = [v6 unsignedLongLongValue];
 
-    v5->_contextDataType = [v4 decodeIntegerForKey:@"_contextDataType"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contextData"];
+    v5->_contextDataType = [coderCopy decodeIntegerForKey:@"_contextDataType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contextData"];
     contextData = v5->_contextData;
     v5->_contextData = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_assistantId"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_assistantId"];
     assistantId = v5->_assistantId;
     v5->_assistantId = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_speechId"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_speechId"];
     speechId = v5->_speechId;
     v5->_speechId = v11;
   }
@@ -61,19 +61,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v6 = a3;
-  [v6 encodeInteger:type forKey:@"_type"];
-  [v6 encodeInteger:self->_deliveryStream forKey:@"_deliveryStream"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"_type"];
+  [coderCopy encodeInteger:self->_deliveryStream forKey:@"_deliveryStream"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timestamp];
-  [v6 encodeObject:v5 forKey:@"_timestamp"];
+  [coderCopy encodeObject:v5 forKey:@"_timestamp"];
 
-  [v6 encodeInteger:self->_contextDataType forKey:@"_contextDataType"];
-  [v6 encodeObject:self->_contextData forKey:@"_contextData"];
-  [v6 encodeObject:self->_assistantId forKey:@"_assistantId"];
-  [v6 encodeObject:self->_speechId forKey:@"_speechId"];
+  [coderCopy encodeInteger:self->_contextDataType forKey:@"_contextDataType"];
+  [coderCopy encodeObject:self->_contextData forKey:@"_contextData"];
+  [coderCopy encodeObject:self->_assistantId forKey:@"_assistantId"];
+  [coderCopy encodeObject:self->_speechId forKey:@"_speechId"];
 }
 
 - (id)dateStamp
@@ -130,9 +130,9 @@ LABEL_13:
   switch(contextDataType)
   {
     case 4:
-      v8 = [(AFAnalyticsEvent *)self contextDataAsProtobuf];
-      v9 = [v8 si_dictionaryRepresentation];
-      v4 = AFAnalyticsSafeContextForJson(v9);
+      contextDataAsProtobuf = [(AFAnalyticsEvent *)self contextDataAsProtobuf];
+      si_dictionaryRepresentation = [contextDataAsProtobuf si_dictionaryRepresentation];
+      v4 = AFAnalyticsSafeContextForJson(si_dictionaryRepresentation);
 
       v7 = 0;
       goto LABEL_11;
@@ -175,15 +175,15 @@ LABEL_11:
       goto LABEL_6;
     }
 
-    v3 = AFAnalyticsEventTypeGetLegacyName(self->_type);
+    typeName = AFAnalyticsEventTypeGetLegacyName(self->_type);
   }
 
   else
   {
-    v3 = [(AFAnalyticsEvent *)self typeName];
+    typeName = [(AFAnalyticsEvent *)self typeName];
   }
 
-  a2 = v3;
+  a2 = typeName;
 LABEL_6:
 
   return a2;
@@ -195,8 +195,8 @@ LABEL_6:
   switch(deliveryStream)
   {
     case 2uLL:
-      v7 = [(AFAnalyticsEvent *)self contextDataAsProtobuf];
-      v8 = [(__CFString *)v7 anyEventType]- 1;
+      contextDataAsProtobuf = [(AFAnalyticsEvent *)self contextDataAsProtobuf];
+      v8 = [(__CFString *)contextDataAsProtobuf anyEventType]- 1;
       if (v8 > 0x70)
       {
         v9 = @"UNKNOWN_EVENT";
@@ -223,8 +223,8 @@ LABEL_12:
       {
         [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown.%ld", self->_type];
       }
-      v7 = ;
-      v9 = v7;
+      contextDataAsProtobuf = ;
+      v9 = contextDataAsProtobuf;
       goto LABEL_12;
     case 0uLL:
       v2 = AFAnalyticsEventTypeGetName(self->_type);
@@ -234,20 +234,20 @@ LABEL_12:
   return v2;
 }
 
-- (AFAnalyticsEvent)initWithDeliveryStream:(unint64_t)a3 type:(int64_t)a4 timestamp:(unint64_t)a5 contextDataType:(int64_t)a6 contextData:(id)a7
+- (AFAnalyticsEvent)initWithDeliveryStream:(unint64_t)stream type:(int64_t)type timestamp:(unint64_t)timestamp contextDataType:(int64_t)dataType contextData:(id)data
 {
-  v12 = a7;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = AFAnalyticsEvent;
   v13 = [(AFAnalyticsEvent *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_deliveryStream = a3;
-    v13->_type = a4;
-    v13->_timestamp = a5;
-    v13->_contextDataType = a6;
-    v15 = [v12 copy];
+    v13->_deliveryStream = stream;
+    v13->_type = type;
+    v13->_timestamp = timestamp;
+    v13->_contextDataType = dataType;
+    v15 = [dataCopy copy];
     contextData = v14->_contextData;
     v14->_contextData = v15;
   }
@@ -255,26 +255,26 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     type = self->_type;
     if (type == [v5 type] && (timestamp = self->_timestamp, timestamp == objc_msgSend(v5, "timestamp")) && (contextDataType = self->_contextDataType, contextDataType == objc_msgSend(v5, "contextDataType")))
     {
       contextData = self->_contextData;
-      v10 = [v5 contextData];
-      if (-[NSData isEqualToData:](contextData, "isEqualToData:", v10) && (deliveryStream = self->_deliveryStream, deliveryStream == [v5 deliveryStream]))
+      contextData = [v5 contextData];
+      if (-[NSData isEqualToData:](contextData, "isEqualToData:", contextData) && (deliveryStream = self->_deliveryStream, deliveryStream == [v5 deliveryStream]))
       {
         assistantId = self->_assistantId;
-        v13 = [v5 assistantId];
-        if ([(NSString *)assistantId isEqualToString:v13])
+        assistantId = [v5 assistantId];
+        if ([(NSString *)assistantId isEqualToString:assistantId])
         {
           speechId = self->_speechId;
-          v15 = [v5 speechId];
-          v16 = [(NSString *)speechId isEqualToString:v15];
+          speechId = [v5 speechId];
+          v16 = [(NSString *)speechId isEqualToString:speechId];
         }
 
         else

@@ -1,5 +1,5 @@
 @interface PKBoardingPassFaceBucketsFactory
-- (PKBoardingPassFaceBucketsFactory)initWithPass:(id)a3 state:(id)a4;
+- (PKBoardingPassFaceBucketsFactory)initWithPass:(id)pass state:(id)state;
 - (id)_badgeFields;
 - (id)auxiliaryFields;
 - (id)headerFields;
@@ -9,10 +9,10 @@
 
 @implementation PKBoardingPassFaceBucketsFactory
 
-- (PKBoardingPassFaceBucketsFactory)initWithPass:(id)a3 state:(id)a4
+- (PKBoardingPassFaceBucketsFactory)initWithPass:(id)pass state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = PKBoardingPassFaceBucketsFactory;
   v8 = [(PKBoardingPassFaceBucketsFactory *)&v12 init];
@@ -30,53 +30,53 @@
 {
   v29[1] = *MEMORY[0x1E69E9840];
   v3 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBD38]];
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
   v5 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBCD0]];
-  v6 = [v5 numberValue];
+  numberValue = [v5 numberValue];
 
   v7 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBC70]];
-  v8 = [v7 dateValue];
+  dateValue = [v7 dateValue];
 
   v9 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBC48]];
-  v10 = [v9 dateValue];
+  dateValue2 = [v9 dateValue];
 
-  if (v10)
+  if (dateValue2)
   {
-    v11 = v10;
+    v11 = dateValue2;
   }
 
   else
   {
-    v11 = v8;
+    v11 = dateValue;
   }
 
   resolvedSemantics = self->_resolvedSemantics;
   v13 = *MEMORY[0x1E69BBF70];
   v14 = v11;
   v15 = [(NSDictionary *)resolvedSemantics objectForKey:v13];
-  v16 = [v15 timeZoneValue];
-  v17 = v16;
-  if (v16)
+  timeZoneValue = [v15 timeZoneValue];
+  v17 = timeZoneValue;
+  if (timeZoneValue)
   {
-    v18 = v16;
+    timeZoneValue2 = timeZoneValue;
   }
 
   else
   {
     v19 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF68]];
-    v18 = [v19 timeZoneValue];
+    timeZoneValue2 = [v19 timeZoneValue];
   }
 
-  v20 = PKMediumDayAndMonthStringFromDate(v14, v18);
+  v20 = PKMediumDayAndMonthStringFromDate(v14, timeZoneValue2);
 
   v21 = *MEMORY[0x1E69BBE28];
-  v22 = [v20 pk_uppercaseStringForPreferredLocale];
-  PassField = createPassField(0, v21, v22);
+  pk_uppercaseStringForPreferredLocale = [v20 pk_uppercaseStringForPreferredLocale];
+  PassField = createPassField(0, v21, pk_uppercaseStringForPreferredLocale);
 
   v24 = MEMORY[0x1E696AEC0];
-  v25 = [v4 pk_uppercaseStringForPreferredLocale];
-  v26 = [v24 stringWithFormat:@"%@ %lu", v25, objc_msgSend(v6, "integerValue")];
+  pk_uppercaseStringForPreferredLocale2 = [stringValue pk_uppercaseStringForPreferredLocale];
+  v26 = [v24 stringWithFormat:@"%@ %lu", pk_uppercaseStringForPreferredLocale2, objc_msgSend(numberValue, "integerValue")];
   [PassField setLabel:v26];
 
   v29[0] = PassField;
@@ -90,108 +90,108 @@
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = *MEMORY[0x1E69BBD88];
   v5 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBD88]];
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
   v7 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBD98]];
-  v8 = [v7 stringValue];
+  stringValue2 = [v7 stringValue];
 
-  v54 = v6;
-  v9 = [v6 pk_uppercaseStringForPreferredLocale];
-  PassField = createPassField(1, v4, v9);
+  v54 = stringValue;
+  pk_uppercaseStringForPreferredLocale = [stringValue pk_uppercaseStringForPreferredLocale];
+  PassField = createPassField(1, v4, pk_uppercaseStringForPreferredLocale);
 
-  v53 = v8;
-  v11 = [v8 pk_uppercaseStringForPreferredLocale];
-  [PassField setLabel:v11];
+  v53 = stringValue2;
+  pk_uppercaseStringForPreferredLocale2 = [stringValue2 pk_uppercaseStringForPreferredLocale];
+  [PassField setLabel:pk_uppercaseStringForPreferredLocale2];
 
   v52 = v3;
   [v3 addObject:PassField];
   v12 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBC70]];
-  v56 = [v12 dateValue];
+  dateValue = [v12 dateValue];
 
   v13 = *MEMORY[0x1E69BBC48];
   v14 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBC48]];
-  v15 = [v14 dateValue];
+  dateValue2 = [v14 dateValue];
 
   v16 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBC60]];
-  v51 = [v16 dateValue];
+  dateValue3 = [v16 dateValue];
 
   v50 = *MEMORY[0x1E69BBC38];
   v17 = [(NSDictionary *)self->_resolvedSemantics objectForKey:?];
-  v18 = [v17 dateValue];
+  dateValue4 = [v17 dateValue];
 
   v19 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF70]];
-  v20 = [v19 timeZoneValue];
-  v21 = v20;
-  if (v20)
+  timeZoneValue = [v19 timeZoneValue];
+  v21 = timeZoneValue;
+  if (timeZoneValue)
   {
-    v22 = v20;
+    v22 = timeZoneValue;
   }
 
   else
   {
     v23 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF68]];
-    v24 = [v23 timeZoneValue];
-    v25 = v24;
-    if (v24)
+    timeZoneValue2 = [v23 timeZoneValue];
+    v25 = timeZoneValue2;
+    if (timeZoneValue2)
     {
-      v26 = v24;
+      localTimeZone = timeZoneValue2;
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFE8] localTimeZone];
+      localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
     }
 
-    v22 = v26;
+    v22 = localTimeZone;
   }
 
   v27 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF80]];
-  v28 = [v27 timeZoneValue];
-  v29 = v28;
+  timeZoneValue3 = [v27 timeZoneValue];
+  v29 = timeZoneValue3;
   v55 = v22;
-  if (v28)
+  if (timeZoneValue3)
   {
-    v49 = v28;
+    v49 = timeZoneValue3;
   }
 
   else
   {
     v30 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF78]];
-    v31 = [v30 timeZoneValue];
-    v32 = v31;
-    if (v31)
+    timeZoneValue4 = [v30 timeZoneValue];
+    v32 = timeZoneValue4;
+    if (timeZoneValue4)
     {
-      v33 = v31;
+      localTimeZone2 = timeZoneValue4;
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFE8] localTimeZone];
+      localTimeZone2 = [MEMORY[0x1E695DFE8] localTimeZone];
     }
 
-    v49 = v33;
+    v49 = localTimeZone2;
 
     v22 = v55;
   }
 
-  if (v15 != 0 && v18 != 0)
+  if (dateValue2 != 0 && dateValue4 != 0)
   {
-    v34 = v15;
+    v34 = dateValue2;
   }
 
   else
   {
-    v34 = v56;
+    v34 = dateValue;
   }
 
-  if (v15 != 0 && v18 != 0)
+  if (dateValue2 != 0 && dateValue4 != 0)
   {
-    v35 = v18;
+    v35 = dateValue4;
   }
 
   else
   {
-    v35 = v51;
+    v35 = dateValue3;
   }
 
   v36 = PKTimeStringFromDate(v34, v22);
@@ -200,16 +200,16 @@
   [v52 addObject:v37];
   v38 = *MEMORY[0x1E69BBDC8];
   v39 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBDC8]];
-  v40 = [v39 stringValue];
+  stringValue3 = [v39 stringValue];
 
   v41 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBDD8]];
-  v42 = [v41 stringValue];
+  stringValue4 = [v41 stringValue];
 
-  v43 = [v40 pk_uppercaseStringForPreferredLocale];
-  v44 = createPassField(1, v38, v43);
+  pk_uppercaseStringForPreferredLocale3 = [stringValue3 pk_uppercaseStringForPreferredLocale];
+  v44 = createPassField(1, v38, pk_uppercaseStringForPreferredLocale3);
 
-  v45 = [v42 pk_uppercaseStringForPreferredLocale];
-  [v44 setLabel:v45];
+  pk_uppercaseStringForPreferredLocale4 = [stringValue4 pk_uppercaseStringForPreferredLocale];
+  [v44 setLabel:pk_uppercaseStringForPreferredLocale4];
 
   [v52 addObject:v44];
   v46 = PKTimeStringFromDate(v35, v49);
@@ -225,15 +225,15 @@
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = *MEMORY[0x1E69BBCE8];
   v5 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBCE8]];
-  v6 = [v5 personNameComponentsValue];
+  personNameComponentsValue = [v5 personNameComponentsValue];
 
-  v7 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v6 style:3 options:0];
-  v8 = [v7 pk_uppercaseStringForPreferredLocale];
-  PassField = createPassField(2, v4, v8);
+  v7 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:personNameComponentsValue style:3 options:0];
+  pk_uppercaseStringForPreferredLocale = [v7 pk_uppercaseStringForPreferredLocale];
+  PassField = createPassField(2, v4, pk_uppercaseStringForPreferredLocale);
 
   [v3 addObject:PassField];
-  v10 = [(PKBoardingPassFaceBucketsFactory *)self _badgeFields];
-  [v3 addObjectsFromArray:v10];
+  _badgeFields = [(PKBoardingPassFaceBucketsFactory *)self _badgeFields];
+  [v3 addObjectsFromArray:_badgeFields];
 
   return v3;
 }
@@ -242,18 +242,18 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBC40]];
-  v5 = [v4 dateValue];
-  if (v5)
+  dateValue = [v4 dateValue];
+  if (dateValue)
   {
-    v6 = v5;
+    dateValue2 = dateValue;
   }
 
   else
   {
     v7 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBC68]];
-    v6 = [v7 dateValue];
+    dateValue2 = [v7 dateValue];
 
-    if (!v6)
+    if (!dateValue2)
     {
       v15 = *MEMORY[0x1E69BBDC0];
       goto LABEL_8;
@@ -261,14 +261,14 @@
   }
 
   v8 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF70]];
-  v9 = [v8 timeZoneValue];
+  timeZoneValue = [v8 timeZoneValue];
 
-  v10 = PKTimeStringFromDate(v6, v9);
-  v11 = [v10 pk_uppercaseStringForPreferredLocale];
-  v12 = v11;
-  if (v11)
+  v10 = PKTimeStringFromDate(dateValue2, timeZoneValue);
+  pk_uppercaseStringForPreferredLocale = [v10 pk_uppercaseStringForPreferredLocale];
+  v12 = pk_uppercaseStringForPreferredLocale;
+  if (pk_uppercaseStringForPreferredLocale)
   {
-    v13 = v11;
+    v13 = pk_uppercaseStringForPreferredLocale;
   }
 
   else
@@ -288,11 +288,11 @@
 
 LABEL_8:
   v18 = [(NSDictionary *)self->_resolvedSemantics objectForKey:v15];
-  v19 = [v18 stringValue];
+  stringValue = [v18 stringValue];
 
-  if ([v19 length])
+  if ([stringValue length])
   {
-    [v19 pk_uppercaseStringForPreferredLocale];
+    [stringValue pk_uppercaseStringForPreferredLocale];
   }
 
   else
@@ -312,11 +312,11 @@ LABEL_8:
 
   v24 = *MEMORY[0x1E69BBDA0];
   v25 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBDA0]];
-  v26 = [v25 stringValue];
+  stringValue2 = [v25 stringValue];
 
-  if ([v26 length])
+  if ([stringValue2 length])
   {
-    [v26 pk_uppercaseStringForPreferredLocale];
+    [stringValue2 pk_uppercaseStringForPreferredLocale];
   }
 
   else
@@ -333,32 +333,32 @@ LABEL_8:
 
   v30 = *MEMORY[0x1E69BBD60];
   v31 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBD60]];
-  v32 = [v31 stringValue];
+  stringValue3 = [v31 stringValue];
 
   v33 = *MEMORY[0x1E69BBD70];
   v34 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBD70]];
-  v35 = [v34 stringValue];
+  stringValue4 = [v34 stringValue];
 
-  if ([v32 length])
+  if ([stringValue3 length])
   {
     v36 = @"FLIGHT_DETAIL_LABEL_BOARDING_GROUP";
-    v37 = v32;
+    v37 = stringValue3;
   }
 
   else
   {
-    if (![v35 length])
+    if (![stringValue4 length])
     {
       goto LABEL_19;
     }
 
     v36 = @"FLIGHT_DETAIL_LABEL_BOARDING_ZONE";
-    v37 = v35;
+    v37 = stringValue4;
     v30 = v33;
   }
 
-  v38 = [v37 pk_uppercaseStringForPreferredLocale];
-  v39 = createPassField(3, v30, v38);
+  pk_uppercaseStringForPreferredLocale2 = [v37 pk_uppercaseStringForPreferredLocale];
+  v39 = createPassField(3, v30, pk_uppercaseStringForPreferredLocale2);
 
   v40 = PKLocalizedFlightString(&v36->isa);
   [v39 setLabel:v40];
@@ -371,11 +371,11 @@ LABEL_19:
   v42 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBCB0]];
   v43 = [objc_alloc(MEMORY[0x1E69B91D8]) initFromSemantic:v42];
   v44 = [v43 firstSeatContainingAttributes:3];
-  v45 = [v44 airlineSeat];
-  if ([v45 length])
+  airlineSeat = [v44 airlineSeat];
+  if ([airlineSeat length])
   {
-    v46 = [v45 pk_uppercaseStringForPreferredLocale];
-    v47 = createPassField(3, v41, v46);
+    pk_uppercaseStringForPreferredLocale3 = [airlineSeat pk_uppercaseStringForPreferredLocale];
+    v47 = createPassField(3, v41, pk_uppercaseStringForPreferredLocale3);
 
     v48 = PKLocalizedFlightString(&cfstr_FlightDetailLa_2.isa);
     [v47 setLabel:v48];
@@ -388,23 +388,23 @@ LABEL_19:
   {
     v49 = *MEMORY[0x1E69BBD68];
     v50 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBD68]];
-    v51 = [v50 stringValue];
+    stringValue5 = [v50 stringValue];
 
-    if ([v51 length])
+    if ([stringValue5 length])
     {
-      v59 = [v51 pk_uppercaseStringForPreferredLocale];
-      v52 = createPassField(3, v49, v59);
+      pk_uppercaseStringForPreferredLocale4 = [stringValue5 pk_uppercaseStringForPreferredLocale];
+      v52 = createPassField(3, v49, pk_uppercaseStringForPreferredLocale4);
       PKLocalizedFlightString(&cfstr_FlightDetailLa_10.isa);
       v53 = v3;
-      v54 = v32;
-      v56 = v55 = v35;
+      v54 = stringValue3;
+      v56 = v55 = stringValue4;
       [v52 setLabel:v56];
 
       v57 = PKLocalizedFlightString(&cfstr_FlightDetailLa_11.isa);
       [v52 setAccessibilityLabel:v57];
 
-      v35 = v55;
-      v32 = v54;
+      stringValue4 = v55;
+      stringValue3 = v54;
       v3 = v53;
       [v52 setTextAlignment:1];
       [v53 addObject:v52];
@@ -418,19 +418,19 @@ LABEL_19:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBCD8]];
-  v5 = [v4 numberValue];
+  numberValue = [v4 numberValue];
 
-  v83 = v5;
-  if ([v5 BOOLValue])
+  v83 = numberValue;
+  if ([numberValue BOOLValue])
   {
     v6 = *MEMORY[0x1E69BBE50];
     v7 = [(NSDictionary *)self->_resolvedSemantics objectForKey:v6];
-    v8 = [v7 stringValue];
+    stringValue = [v7 stringValue];
 
-    if (v8)
+    if (stringValue)
     {
-      v9 = [v8 pk_uppercaseStringForPreferredLocale];
-      PassField = createPassField(2, v6, v9);
+      pk_uppercaseStringForPreferredLocale = [stringValue pk_uppercaseStringForPreferredLocale];
+      PassField = createPassField(2, v6, pk_uppercaseStringForPreferredLocale);
 
       [v3 addObject:PassField];
     }
@@ -438,22 +438,22 @@ LABEL_19:
 
   else
   {
-    v8 = 0;
+    stringValue = 0;
     v6 = 0;
   }
 
   v11 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF28]];
-  v12 = [v11 stringsValue];
-  v13 = [v12 mutableCopy];
+  stringsValue = [v11 stringsValue];
+  v13 = [stringsValue mutableCopy];
 
   v14 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF30]];
-  v15 = [v14 stringsValue];
-  [v13 addObjectsFromArray:v15];
+  stringsValue2 = [v14 stringsValue];
+  [v13 addObjectsFromArray:stringsValue2];
 
   v16 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF48]];
-  v17 = [v16 stringsValue];
+  stringsValue3 = [v16 stringsValue];
 
-  if ([v17 count])
+  if ([stringsValue3 count])
   {
     v18 = PKTransitSecurityProgramsFromStrings();
     v19 = PKTransitSecurityProgramsFromStrings();
@@ -499,44 +499,44 @@ LABEL_10:
   v23 = *MEMORY[0x1E69BBE78];
 
   v24 = [(NSDictionary *)self->_resolvedSemantics objectForKey:v23];
-  v25 = [v24 stringValue];
+  stringValue2 = [v24 stringValue];
 
-  if (v25)
+  if (stringValue2)
   {
-    v26 = [v25 pk_uppercaseStringForPreferredLocale];
-    v27 = createPassField(2, v23, v26);
+    pk_uppercaseStringForPreferredLocale2 = [stringValue2 pk_uppercaseStringForPreferredLocale];
+    v27 = createPassField(2, v23, pk_uppercaseStringForPreferredLocale2);
 
     [v3 addObject:v27];
   }
 
   v28 = *MEMORY[0x1E69BBE80];
   v29 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBE80]];
-  v30 = [v29 stringValue];
+  stringValue3 = [v29 stringValue];
 
-  if (v30)
+  if (stringValue3)
   {
-    v31 = [v30 pk_uppercaseStringForPreferredLocale];
-    v32 = createPassField(2, v28, v31);
+    pk_uppercaseStringForPreferredLocale3 = [stringValue3 pk_uppercaseStringForPreferredLocale];
+    v32 = createPassField(2, v28, pk_uppercaseStringForPreferredLocale3);
 
     [v3 addObject:v32];
   }
 
   v33 = *MEMORY[0x1E69BBE98];
   v34 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBE98]];
-  v35 = [v34 stringValue];
+  stringValue4 = [v34 stringValue];
 
-  if (v35)
+  if (stringValue4)
   {
-    v36 = [v35 pk_uppercaseStringForPreferredLocale];
-    v37 = createPassField(2, v33, v36);
+    pk_uppercaseStringForPreferredLocale4 = [stringValue4 pk_uppercaseStringForPreferredLocale];
+    v37 = createPassField(2, v33, pk_uppercaseStringForPreferredLocale4);
 
     [v3 addObject:v37];
   }
 
   v38 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF40]];
-  v39 = [v38 stringsValue];
+  stringsValue4 = [v38 stringsValue];
 
-  if ([v39 count])
+  if ([stringsValue4 count])
   {
     v40 = PKPassengerCapabilitiesFromStrings();
     if ((v40 & 4) != 0)
@@ -557,9 +557,9 @@ LABEL_10:
   }
 
   v45 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF58]];
-  v46 = [v45 stringsValue];
+  stringsValue5 = [v45 stringsValue];
 
-  if (![v46 count])
+  if (![stringsValue5 count])
   {
     goto LABEL_34;
   }
@@ -724,17 +724,17 @@ LABEL_33:
 
 LABEL_34:
   v51 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBF50]];
-  v52 = [v51 stringsValue];
+  stringsValue6 = [v51 stringsValue];
 
-  if ([v52 count] && (PKIATAInformationSSRCodesFromStrings() & 1) != 0)
+  if ([stringsValue6 count] && (PKIATAInformationSSRCodesFromStrings() & 1) != 0)
   {
     v53 = objc_alloc(MEMORY[0x1E69B91D8]);
     v54 = [(NSDictionary *)self->_resolvedSemantics objectForKey:*MEMORY[0x1E69BBCB0]];
     v82 = [v53 initFromSemantic:v54];
 
     v81 = [v82 firstSeatContainingAttributes:3];
-    v55 = [v81 airlineSeat];
-    if ([v55 length])
+    airlineSeat = [v81 airlineSeat];
+    if ([airlineSeat length])
     {
       v56 = @"PASS_SERVICE_BADGE_SEAT_INFANT";
     }
@@ -745,20 +745,20 @@ LABEL_34:
     }
 
     PKLocalizedFlightString(&v56->isa);
-    v57 = v46;
-    v58 = v35;
+    v57 = stringsValue5;
+    v58 = stringValue4;
     v60 = v59 = v13;
-    v61 = v39;
-    v62 = v17;
+    v61 = stringsValue4;
+    v62 = stringsValue3;
     v63 = createPassField(2, @"passengerServiceSSRs.INFT", v60);
     [v3 addObject:v63];
 
-    v17 = v62;
-    v39 = v61;
+    stringsValue3 = v62;
+    stringsValue4 = v61;
 
     v13 = v59;
-    v35 = v58;
-    v46 = v57;
+    stringValue4 = v58;
+    stringsValue5 = v57;
   }
 
   return v3;

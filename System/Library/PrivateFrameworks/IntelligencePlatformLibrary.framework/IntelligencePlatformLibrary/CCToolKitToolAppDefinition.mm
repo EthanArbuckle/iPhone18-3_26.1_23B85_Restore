@@ -1,7 +1,7 @@
 @interface CCToolKitToolAppDefinition
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolAppDefinition)initWithId:(id)a3 name:(id)a4 bundleId:(id)a5 bundleVersion:(id)a6 teamId:(id)a7 device:(id)a8 origin:(unsigned int)a9 synonyms:(id)a10 error:(id *)a11;
-- (CCToolKitToolAppDefinition)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolAppDefinition)initWithId:(id)id name:(id)name bundleId:(id)bundleId bundleVersion:(id)version teamId:(id)teamId device:(id)device origin:(unsigned int)origin synonyms:(id)self0 error:(id *)self1;
+- (CCToolKitToolAppDefinition)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCToolKitToolAppDefinitionDevice)device;
 - (NSArray)synonyms;
 - (NSString)bundleId;
@@ -10,14 +10,14 @@
 - (NSString)name;
 - (NSString)teamId;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolAppDefinition
 
-- (CCToolKitToolAppDefinition)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolAppDefinition)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v29[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -26,13 +26,13 @@
   if (IsInstanceOfExpectedClass)
   {
     v27 = v8;
-    v10 = [v6 objectForKeyedSubscript:@"id"];
-    v11 = [v6 objectForKeyedSubscript:@"name"];
-    v12 = [v6 objectForKeyedSubscript:@"bundleId"];
-    v13 = [v6 objectForKeyedSubscript:@"bundleVersion"];
-    v14 = [v6 objectForKeyedSubscript:@"teamId"];
-    v15 = [v6 objectForKeyedSubscript:@"device"];
-    v28 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"id"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"bundleVersion"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"teamId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"device"];
+    selfCopy = self;
     if (v15)
     {
       v16 = v10;
@@ -48,7 +48,7 @@
 LABEL_12:
 
         v9 = v27;
-        self = v28;
+        self = selfCopy;
         goto LABEL_13;
       }
 
@@ -59,23 +59,23 @@ LABEL_12:
 
     v26 = v14;
     v16 = v10;
-    v21 = [v6 objectForKeyedSubscript:@"origin"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"origin"];
     v20 = v21;
     v17 = v11;
     if (v21)
     {
-      v22 = [v21 unsignedIntegerValue];
+      unsignedIntegerValue = [v21 unsignedIntegerValue];
     }
 
     else
     {
-      v22 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"synonyms"];
-    LODWORD(v25) = v22;
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"synonyms"];
+    LODWORD(v25) = unsignedIntegerValue;
     v14 = v26;
-    v23 = [[CCToolKitToolAppDefinition alloc] initWithId:v16 name:v17 bundleId:v12 bundleVersion:v13 teamId:v26 device:v15 origin:v25 synonyms:v18 error:a4];
+    v23 = [[CCToolKitToolAppDefinition alloc] initWithId:v16 name:v17 bundleId:v12 bundleVersion:v13 teamId:v26 device:v15 origin:v25 synonyms:v18 error:error];
     goto LABEL_12;
   }
 
@@ -97,33 +97,33 @@ LABEL_13:
 
   if (self->_name)
   {
-    v5 = [(CCToolKitToolAppDefinition *)self name];
-    [v3 setObject:v5 forKeyedSubscript:@"name"];
+    name = [(CCToolKitToolAppDefinition *)self name];
+    [v3 setObject:name forKeyedSubscript:@"name"];
   }
 
   if (self->_bundleId)
   {
-    v6 = [(CCToolKitToolAppDefinition *)self bundleId];
-    [v3 setObject:v6 forKeyedSubscript:@"bundleId"];
+    bundleId = [(CCToolKitToolAppDefinition *)self bundleId];
+    [v3 setObject:bundleId forKeyedSubscript:@"bundleId"];
   }
 
   if (self->_bundleVersion)
   {
-    v7 = [(CCToolKitToolAppDefinition *)self bundleVersion];
-    [v3 setObject:v7 forKeyedSubscript:@"bundleVersion"];
+    bundleVersion = [(CCToolKitToolAppDefinition *)self bundleVersion];
+    [v3 setObject:bundleVersion forKeyedSubscript:@"bundleVersion"];
   }
 
   if (self->_teamId)
   {
-    v8 = [(CCToolKitToolAppDefinition *)self teamId];
-    [v3 setObject:v8 forKeyedSubscript:@"teamId"];
+    teamId = [(CCToolKitToolAppDefinition *)self teamId];
+    [v3 setObject:teamId forKeyedSubscript:@"teamId"];
   }
 
   if (self->_device)
   {
-    v9 = [(CCToolKitToolAppDefinition *)self device];
-    v10 = [v9 jsonDictionary];
-    [v3 setObject:v10 forKeyedSubscript:@"device"];
+    device = [(CCToolKitToolAppDefinition *)self device];
+    jsonDictionary = [device jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"device"];
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CCToolKitToolAppDefinition origin](self, "origin")}];
@@ -131,8 +131,8 @@ LABEL_13:
 
   if (self->_synonyms)
   {
-    v12 = [(CCToolKitToolAppDefinition *)self synonyms];
-    [v3 setObject:v12 forKeyedSubscript:@"synonyms"];
+    synonyms = [(CCToolKitToolAppDefinition *)self synonyms];
+    [v3 setObject:synonyms forKeyedSubscript:@"synonyms"];
   }
 
   v13 = [v3 copy];
@@ -140,11 +140,11 @@ LABEL_13:
   return v13;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v17 = v5;
+  v17 = blockCopy;
   if (self->_id)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_id];
@@ -247,10 +247,10 @@ LABEL_13:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v51 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v51];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -495,13 +495,13 @@ LABEL_63:
   {
     CCSetError();
     v43 = 0;
-    v44 = v51;
+    v44 = dataCopy;
   }
 
   else
   {
     v45 = MEMORY[0x1E6993AA8];
-    v44 = v51;
+    v44 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v46 = objc_opt_class();
@@ -522,23 +522,23 @@ LABEL_63:
   return v43;
 }
 
-- (CCToolKitToolAppDefinition)initWithId:(id)a3 name:(id)a4 bundleId:(id)a5 bundleVersion:(id)a6 teamId:(id)a7 device:(id)a8 origin:(unsigned int)a9 synonyms:(id)a10 error:(id *)a11
+- (CCToolKitToolAppDefinition)initWithId:(id)id name:(id)name bundleId:(id)bundleId bundleVersion:(id)version teamId:(id)teamId device:(id)device origin:(unsigned int)origin synonyms:(id)self0 error:(id *)self1
 {
   v66 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v52 = a8;
-  v21 = a10;
+  idCopy = id;
+  nameCopy = name;
+  bundleIdCopy = bundleId;
+  versionCopy = version;
+  teamIdCopy = teamId;
+  deviceCopy = device;
+  synonymsCopy = synonyms;
   v22 = objc_opt_new();
   v23 = 0x1E696A000uLL;
-  if (!v16)
+  if (!idCopy)
   {
-    v50 = a11;
+    errorCopy2 = error;
     v25 = 0;
-    if (!v17)
+    if (!nameCopy)
     {
       goto LABEL_4;
     }
@@ -556,7 +556,7 @@ LABEL_11:
 
     CCPBDataWriterWriteStringField();
     v23 = 0x1E696A000uLL;
-    if (v18)
+    if (bundleIdCopy)
     {
       goto LABEL_5;
     }
@@ -573,17 +573,17 @@ LABEL_11:
     goto LABEL_28;
   }
 
-  v50 = a11;
+  errorCopy2 = error;
   CCPBDataWriterWriteStringField();
   v23 = 0x1E696A000uLL;
-  if (v17)
+  if (nameCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_4:
   v26 = v25;
-  if (v18)
+  if (bundleIdCopy)
   {
 LABEL_5:
     objc_opt_class();
@@ -598,11 +598,11 @@ LABEL_5:
 
     CCPBDataWriterWriteStringField();
     v23 = 0x1E696A000uLL;
-    if (!v19)
+    if (!versionCopy)
     {
 LABEL_7:
       v26 = v25;
-      if (v20)
+      if (teamIdCopy)
       {
 LABEL_8:
         objc_opt_class();
@@ -615,17 +615,17 @@ LABEL_8:
           goto LABEL_28;
         }
 
-        v49 = v21;
+        v49 = synonymsCopy;
         CCPBDataWriterWriteStringField();
         v23 = 0x1E696A000;
         goto LABEL_17;
       }
 
 LABEL_16:
-      v49 = v21;
+      v49 = synonymsCopy;
       v25 = v26;
 LABEL_17:
-      if (v52)
+      if (deviceCopy)
       {
         objc_opt_class();
         v59 = v25;
@@ -637,13 +637,13 @@ LABEL_17:
           CCSetError();
           v34 = 0;
           v25 = v32;
-          v35 = self;
+          selfCopy2 = self;
 LABEL_43:
-          v21 = v49;
+          synonymsCopy = v49;
           goto LABEL_30;
         }
 
-        v33 = [v52 data];
+        data = [deviceCopy data];
         CCPBDataWriterWriteDataField();
 
         v23 = 0x1E696A000;
@@ -654,17 +654,17 @@ LABEL_43:
         v32 = v25;
       }
 
-      v21 = v49;
-      if (!a9)
+      synonymsCopy = v49;
+      if (!origin)
       {
         v25 = v32;
         if (!v49)
         {
 LABEL_42:
-          v46 = [v22 immutableData];
-          v35 = [(CCItemMessage *)self initWithData:v46 error:v50];
+          immutableData = [v22 immutableData];
+          selfCopy2 = [(CCItemMessage *)self initWithData:immutableData error:errorCopy2];
 
-          v34 = v35;
+          v34 = selfCopy2;
           goto LABEL_43;
         }
 
@@ -728,7 +728,7 @@ LABEL_33:
         }
 
         CCSetError();
-        v21 = v49;
+        synonymsCopy = v49;
         goto LABEL_21;
       }
 
@@ -743,7 +743,7 @@ LABEL_28:
 
 LABEL_13:
   v25 = v26;
-  if (!v19)
+  if (!versionCopy)
   {
     goto LABEL_7;
   }
@@ -758,7 +758,7 @@ LABEL_14:
   {
     CCPBDataWriterWriteStringField();
     v23 = 0x1E696A000uLL;
-    if (v20)
+    if (teamIdCopy)
     {
       goto LABEL_8;
     }
@@ -772,7 +772,7 @@ LABEL_21:
   v34 = 0;
   v25 = v26;
 LABEL_29:
-  v35 = self;
+  selfCopy2 = self;
 LABEL_30:
 
   v36 = *MEMORY[0x1E69E9840];

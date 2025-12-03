@@ -1,22 +1,22 @@
 @interface _UIImageSymbolVisibilityEffect
 + (id)effect;
-+ (id)effectWithVisibility:(int64_t)a3;
++ (id)effectWithVisibility:(int64_t)visibility;
 - (BOOL)_isValidAnimationPreset;
-- (BOOL)isEqual:(id)a3;
-- (_UIImageSymbolVisibilityEffect)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIImageSymbolVisibilityEffect)initWithCoder:(id)coder;
 - (id)_nsSymbolEffectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_desiredVisibility;
 - (int64_t)_stateUpdateType;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIImageSymbolVisibilityEffect
 
 + (id)effect
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS____UIImageSymbolVisibilityEffect;
   v2 = objc_msgSendSuper2(&v4, sel_effect);
   *(v2 + 24) = 0;
@@ -26,10 +26,10 @@
   return v2;
 }
 
-+ (id)effectWithVisibility:(int64_t)a3
++ (id)effectWithVisibility:(int64_t)visibility
 {
-  result = [a1 effect];
-  *(result + 3) = a3;
+  result = [self effect];
+  *(result + 3) = visibility;
   return result;
 }
 
@@ -89,7 +89,7 @@
 
   else
   {
-    v3 = [MEMORY[0x1E6982238] effect];
+    effect = [MEMORY[0x1E6982238] effect];
     if (self->_style == 2)
     {
       [MEMORY[0x1E6982238] appearDownEffect];
@@ -116,12 +116,12 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIImageSymbolVisibilityEffect;
-  v5 = [(_UIImageSymbolEffect *)&v7 isEqual:v4]&& self->_visibility == v4[3] && self->_style == v4[4] && self->_byLayer == *(v4 + 16);
+  v5 = [(_UIImageSymbolEffect *)&v7 isEqual:equalCopy]&& self->_visibility == equalCopy[3] && self->_style == equalCopy[4] && self->_byLayer == *(equalCopy + 16);
 
   return v5;
 }
@@ -133,39 +133,39 @@
   return self->_visibility ^ [(_UIImageSymbolEffect *)&v3 hash]^ self->_style;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UIImageSymbolVisibilityEffect;
-  result = [(_UIImageSymbolEffect *)&v5 copyWithZone:a3];
+  result = [(_UIImageSymbolEffect *)&v5 copyWithZone:zone];
   *(result + 3) = self->_visibility;
   *(result + 4) = self->_style;
   *(result + 16) = self->_byLayer;
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   visibility = self->_visibility;
-  v5 = a3;
-  [v5 encodeInteger:visibility forKey:@"visibility"];
-  [v5 encodeInteger:self->_style forKey:@"style"];
-  [v5 encodeBool:self->_byLayer forKey:@"byLayer"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:visibility forKey:@"visibility"];
+  [coderCopy encodeInteger:self->_style forKey:@"style"];
+  [coderCopy encodeBool:self->_byLayer forKey:@"byLayer"];
 }
 
-- (_UIImageSymbolVisibilityEffect)initWithCoder:(id)a3
+- (_UIImageSymbolVisibilityEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [objc_opt_class() effect];
+  coderCopy = coder;
+  effect = [objc_opt_class() effect];
 
-  if (v5)
+  if (effect)
   {
-    v5->_visibility = [v4 decodeIntegerForKey:@"visibility"];
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v5->_byLayer = [v4 decodeBoolForKey:@"byLayer"];
+    effect->_visibility = [coderCopy decodeIntegerForKey:@"visibility"];
+    effect->_style = [coderCopy decodeIntegerForKey:@"style"];
+    effect->_byLayer = [coderCopy decodeBoolForKey:@"byLayer"];
   }
 
-  return v5;
+  return effect;
 }
 
 @end

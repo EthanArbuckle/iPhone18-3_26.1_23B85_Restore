@@ -9,8 +9,8 @@
 
 - (BOOL)_axIsSleepGalleryPagingScrollView
 {
-  v2 = [(SleepHealthAppPlugin_UIScrollViewAccessibility *)self accessibilityIdentification];
-  v3 = [v2 isEqualToString:@"SleepGalleryPagingScrollView"];
+  accessibilityIdentification = [(SleepHealthAppPlugin_UIScrollViewAccessibility *)self accessibilityIdentification];
+  v3 = [accessibilityIdentification isEqualToString:@"SleepGalleryPagingScrollView"];
 
   return v3;
 }
@@ -27,7 +27,7 @@
       if (v5)
       {
         v6 = v5;
-        v7 = [v5 accessibilityLabel];
+        accessibilityLabel = [v5 accessibilityLabel];
 
         goto LABEL_11;
       }
@@ -51,10 +51,10 @@
 
   v10.receiver = self;
   v10.super_class = SleepHealthAppPlugin_UIScrollViewAccessibility;
-  v7 = [(SleepHealthAppPlugin_UIScrollViewAccessibility *)&v10 _accessibilityScrollStatus];
+  accessibilityLabel = [(SleepHealthAppPlugin_UIScrollViewAccessibility *)&v10 _accessibilityScrollStatus];
 LABEL_11:
 
-  return v7;
+  return accessibilityLabel;
 }
 
 - (CGSize)_axPageSize

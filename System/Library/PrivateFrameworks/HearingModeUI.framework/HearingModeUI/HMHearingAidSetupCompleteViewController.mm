@@ -1,6 +1,6 @@
 @interface HMHearingAidSetupCompleteViewController
 - (HMHearingAidEnrollmentDelegate)delegate;
-- (HMHearingAidSetupCompleteViewController)initWithDeviceName:(id)a3;
+- (HMHearingAidSetupCompleteViewController)initWithDeviceName:(id)name;
 - (void)_showInstructionsForUse;
 - (void)linkButtonTapped;
 - (void)mainButtonTapped;
@@ -11,9 +11,9 @@
 
 @implementation HMHearingAidSetupCompleteViewController
 
-- (HMHearingAidSetupCompleteViewController)initWithDeviceName:(id)a3
+- (HMHearingAidSetupCompleteViewController)initWithDeviceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"Hearing Aid is Ready" value:&stru_286444CA0 table:0];
 
@@ -29,7 +29,7 @@
   v12 = [(HMHearingAidSetupCompleteViewController *)&v16 initWithTitle:v6 detailText:v8 icon:v11];
   if (v12)
   {
-    v13 = [v4 copy];
+    v13 = [nameCopy copy];
     deviceName = v12->_deviceName;
     v12->_deviceName = v13;
   }
@@ -71,29 +71,29 @@ void __54__HMHearingAidSetupCompleteViewController_viewDidLoad__block_invoke(uin
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"Hearing Aid will be used instead of Headphone Accommodations for %@" value:&stru_286444CA0 table:0];
-  v6 = [(HMHearingAidSetupCompleteViewController *)self deviceName];
-  v16 = [v3 localizedStringWithFormat:v5, v6];
+  deviceName = [(HMHearingAidSetupCompleteViewController *)self deviceName];
+  v16 = [v3 localizedStringWithFormat:v5, deviceName];
 
-  v7 = [(HMHearingAidSetupCompleteViewController *)self buttonTray];
-  [v7 setCaptionText:v16];
+  buttonTray = [(HMHearingAidSetupCompleteViewController *)self buttonTray];
+  [buttonTray setCaptionText:v16];
 
-  v8 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"Turn On Hearing Aid" value:&stru_286444CA0 table:0];
 
-  [v8 setTitle:v10 forState:0];
-  [v8 addTarget:self action:sel_mainButtonTapped forControlEvents:64];
-  v11 = [(HMHearingAidSetupCompleteViewController *)self buttonTray];
-  [v11 addButton:v8];
+  [boldButton setTitle:v10 forState:0];
+  [boldButton addTarget:self action:sel_mainButtonTapped forControlEvents:64];
+  buttonTray2 = [(HMHearingAidSetupCompleteViewController *)self buttonTray];
+  [buttonTray2 addButton:boldButton];
 
-  v12 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"Not Now" value:&stru_286444CA0 table:0];
 
-  [v12 setTitle:v14 forState:0];
-  [v12 addTarget:self action:sel_linkButtonTapped forControlEvents:64];
-  v15 = [(HMHearingAidSetupCompleteViewController *)self buttonTray];
-  [v15 addButton:v12];
+  [linkButton setTitle:v14 forState:0];
+  [linkButton addTarget:self action:sel_linkButtonTapped forControlEvents:64];
+  buttonTray3 = [(HMHearingAidSetupCompleteViewController *)self buttonTray];
+  [buttonTray3 addButton:linkButton];
 }
 
 - (void)mainButtonTapped
@@ -110,17 +110,17 @@ void __54__HMHearingAidSetupCompleteViewController_viewDidLoad__block_invoke(uin
 
 - (void)_showInstructionsForUse
 {
-  v2 = [(HMHearingAidSetupCompleteViewController *)self delegate];
-  [v2 showInstructionForUse];
+  delegate = [(HMHearingAidSetupCompleteViewController *)self delegate];
+  [delegate showInstructionForUse];
 }
 
 - (void)updateImage
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMHearingAidSetupCompleteViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  traitCollection = [(HMHearingAidSetupCompleteViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v6 = "Light";
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
     v6 = "Dark";
   }
@@ -133,8 +133,8 @@ void __54__HMHearingAidSetupCompleteViewController_viewDidLoad__block_invoke(uin
 
   v12.receiver = self;
   v12.super_class = HMHearingAidSetupCompleteViewController;
-  v11 = [(HMHearingAidSetupCompleteViewController *)&v12 headerView];
-  [v11 setIcon:v10 accessibilityLabel:&stru_286444CA0];
+  headerView = [(HMHearingAidSetupCompleteViewController *)&v12 headerView];
+  [headerView setIcon:v10 accessibilityLabel:&stru_286444CA0];
 }
 
 - (HMHearingAidEnrollmentDelegate)delegate

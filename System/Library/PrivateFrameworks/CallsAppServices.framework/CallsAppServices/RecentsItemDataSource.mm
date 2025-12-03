@@ -1,7 +1,7 @@
 @interface RecentsItemDataSource
 - (_TtC16CallsAppServices21RecentsItemDataSource)init;
-- (void)conversationManager:(id)a3 didChangeActivatedLinks:(id)a4;
-- (void)conversationManager:(id)a3 linkChangedForConversation:(id)a4;
+- (void)conversationManager:(id)manager didChangeActivatedLinks:(id)links;
+- (void)conversationManager:(id)manager linkChangedForConversation:(id)conversation;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   if (v4 && (*(v4 + 52) & 1) == 0)
   {
     v6 = *(v4 + 48);
-    v7 = self;
+    selfCopy = self;
 
     notify_cancel(v6);
     *(v4 + 48) = 0;
@@ -23,7 +23,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
@@ -38,7 +38,7 @@
   return result;
 }
 
-- (void)conversationManager:(id)a3 didChangeActivatedLinks:(id)a4
+- (void)conversationManager:(id)manager didChangeActivatedLinks:(id)links
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC7610E0, &qword_1D33E16C0);
   v6 = *(*(v5 - 8) + 64);
@@ -49,18 +49,18 @@
   v10 = sub_1D33DE9B4();
   (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   sub_1D33DE974();
-  v11 = self;
+  selfCopy = self;
   v12 = sub_1D33DE964();
   v13 = swift_allocObject();
   v14 = MEMORY[0x1E69E85E0];
   v13[2] = v12;
   v13[3] = v14;
-  v13[4] = v11;
+  v13[4] = selfCopy;
   v13[5] = v9;
   sub_1D333E088(0, 0, v8, &unk_1D33E3780, v13);
 }
 
-- (void)conversationManager:(id)a3 linkChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager linkChangedForConversation:(id)conversation
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC7610E0, &qword_1D33E16C0);
   v6 = *(*(v5 - 8) + 64);
@@ -69,13 +69,13 @@
   v9 = sub_1D33DE9B4();
   (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
   sub_1D33DE974();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_1D33DE964();
   v12 = swift_allocObject();
   v13 = MEMORY[0x1E69E85E0];
   v12[2] = v11;
   v12[3] = v13;
-  v12[4] = v10;
+  v12[4] = selfCopy;
   sub_1D333E088(0, 0, v8, &unk_1D33E3778, v12);
 }
 

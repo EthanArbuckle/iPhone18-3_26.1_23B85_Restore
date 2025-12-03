@@ -1,28 +1,28 @@
 @interface BridgedResolver
-- (id)resolveClass:(Class)a3;
-- (id)resolveClass:(Class)a3 contextBlock:(id)a4;
-- (id)resolveClass:(Class)a3 name:(id)a4;
-- (id)resolveClass:(Class)a3 name:(id)a4 contextBlock:(id)a5;
-- (id)resolveOptionalClass:(Class)a3;
-- (id)resolveOptionalClass:(Class)a3 contextBlock:(id)a4;
-- (id)resolveOptionalClass:(Class)a3 name:(id)a4;
-- (id)resolveOptionalClass:(Class)a3 name:(id)a4 contextBlock:(id)a5;
-- (id)resolveOptionalProtocol:(id)a3;
-- (id)resolveOptionalProtocol:(id)a3 contextBlock:(id)a4;
-- (id)resolveOptionalProtocol:(id)a3 name:(id)a4;
-- (id)resolveOptionalProtocol:(id)a3 name:(id)a4 contextBlock:(id)a5;
-- (id)resolveProtocol:(id)a3;
-- (id)resolveProtocol:(id)a3 contextBlock:(id)a4;
-- (id)resolveProtocol:(id)a3 name:(id)a4;
-- (id)resolveProtocol:(id)a3 name:(id)a4 contextBlock:(id)a5;
+- (id)resolveClass:(Class)class;
+- (id)resolveClass:(Class)class contextBlock:(id)block;
+- (id)resolveClass:(Class)class name:(id)name;
+- (id)resolveClass:(Class)class name:(id)name contextBlock:(id)block;
+- (id)resolveOptionalClass:(Class)class;
+- (id)resolveOptionalClass:(Class)class contextBlock:(id)block;
+- (id)resolveOptionalClass:(Class)class name:(id)name;
+- (id)resolveOptionalClass:(Class)class name:(id)name contextBlock:(id)block;
+- (id)resolveOptionalProtocol:(id)protocol;
+- (id)resolveOptionalProtocol:(id)protocol contextBlock:(id)block;
+- (id)resolveOptionalProtocol:(id)protocol name:(id)name;
+- (id)resolveOptionalProtocol:(id)protocol name:(id)name contextBlock:(id)block;
+- (id)resolveProtocol:(id)protocol;
+- (id)resolveProtocol:(id)protocol contextBlock:(id)block;
+- (id)resolveProtocol:(id)protocol name:(id)name;
+- (id)resolveProtocol:(id)protocol name:(id)name contextBlock:(id)block;
 @end
 
 @implementation BridgedResolver
 
-- (id)resolveClass:(Class)a3
+- (id)resolveClass:(Class)class
 {
   swift_getObjCClassMetadata();
-  v4 = self;
+  selfCopy = self;
   sub_1BEFF7D3C(sub_1BEFF8168, &v7);
 
   __swift_project_boxed_opaque_existential_1(&v7, v8);
@@ -32,10 +32,10 @@
   return v5;
 }
 
-- (id)resolveProtocol:(id)a3
+- (id)resolveProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = self;
+  protocolCopy = protocol;
+  selfCopy = self;
   sub_1BEFF7D3C(sub_1BEFFD08C, &v8);
 
   __swift_project_boxed_opaque_existential_1(&v8, v9);
@@ -45,15 +45,15 @@
   return v6;
 }
 
-- (id)resolveClass:(Class)a3 name:(id)a4
+- (id)resolveClass:(Class)class name:(id)name
 {
-  if (a4)
+  if (name)
   {
     sub_1BF17A0AC();
   }
 
   swift_getObjCClassMetadata();
-  v5 = self;
+  selfCopy = self;
   sub_1BF023920(sub_1BF023868, &v8);
 
   __swift_project_boxed_opaque_existential_1(&v8, v9);
@@ -63,15 +63,15 @@
   return v6;
 }
 
-- (id)resolveProtocol:(id)a3 name:(id)a4
+- (id)resolveProtocol:(id)protocol name:(id)name
 {
-  if (a4)
+  if (name)
   {
     sub_1BF17A0AC();
   }
 
-  v6 = a3;
-  v7 = self;
+  protocolCopy = protocol;
+  selfCopy = self;
   sub_1BF023920(sub_1BF023A44, &v10);
 
   __swift_project_boxed_opaque_existential_1(&v10, v11);
@@ -81,10 +81,10 @@
   return v8;
 }
 
-- (id)resolveOptionalClass:(Class)a3
+- (id)resolveOptionalClass:(Class)class
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  v5 = self;
+  selfCopy = self;
   sub_1BEFF8168(ObjCClassMetadata);
 
   v6 = v15;
@@ -109,15 +109,15 @@
   return v12;
 }
 
-- (id)resolveOptionalClass:(Class)a3 name:(id)a4
+- (id)resolveOptionalClass:(Class)class name:(id)name
 {
-  if (a4)
+  if (name)
   {
     sub_1BF17A0AC();
   }
 
   swift_getObjCClassMetadata();
-  v5 = self;
+  selfCopy = self;
   sub_1BF023868();
 
   v6 = v15;
@@ -142,12 +142,12 @@
   return v12;
 }
 
-- (id)resolveClass:(Class)a3 contextBlock:(id)a4
+- (id)resolveClass:(Class)class contextBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   swift_getObjCClassMetadata();
   *(swift_allocObject() + 16) = v5;
-  v6 = self;
+  selfCopy = self;
   sub_1BF023920(sub_1BF0E86DC, &v9);
 
   __swift_project_boxed_opaque_existential_1(&v9, v10);
@@ -157,12 +157,12 @@
   return v7;
 }
 
-- (id)resolveOptionalClass:(Class)a3 contextBlock:(id)a4
+- (id)resolveOptionalClass:(Class)class contextBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   swift_getObjCClassMetadata();
   *(swift_allocObject() + 16) = v5;
-  v6 = self;
+  selfCopy = self;
   sub_1BF0E86DC();
 
   v7 = v16;
@@ -187,17 +187,17 @@
   return v13;
 }
 
-- (id)resolveClass:(Class)a3 name:(id)a4 contextBlock:(id)a5
+- (id)resolveClass:(Class)class name:(id)name contextBlock:(id)block
 {
-  v7 = _Block_copy(a5);
-  if (a4)
+  v7 = _Block_copy(block);
+  if (name)
   {
     sub_1BF17A0AC();
   }
 
   swift_getObjCClassMetadata();
   *(swift_allocObject() + 16) = v7;
-  v8 = self;
+  selfCopy = self;
   sub_1BF0E9528(sub_1BF0E8A58, &v11);
 
   __swift_project_boxed_opaque_existential_1(&v11, v12);
@@ -207,17 +207,17 @@
   return v9;
 }
 
-- (id)resolveOptionalClass:(Class)a3 name:(id)a4 contextBlock:(id)a5
+- (id)resolveOptionalClass:(Class)class name:(id)name contextBlock:(id)block
 {
-  v7 = _Block_copy(a5);
-  if (a4)
+  v7 = _Block_copy(block);
+  if (name)
   {
     sub_1BF17A0AC();
   }
 
   swift_getObjCClassMetadata();
   *(swift_allocObject() + 16) = v7;
-  v8 = self;
+  selfCopy = self;
   sub_1BF0E8A58();
 
   v9 = v18;
@@ -242,11 +242,11 @@
   return v15;
 }
 
-- (id)resolveOptionalProtocol:(id)a3
+- (id)resolveOptionalProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BEFFD08C(v4);
+  protocolCopy = protocol;
+  selfCopy = self;
+  sub_1BEFFD08C(protocolCopy);
 
   v6 = v15;
   if (v15)
@@ -270,12 +270,12 @@
   return v12;
 }
 
-- (id)resolveProtocol:(id)a3 contextBlock:(id)a4
+- (id)resolveProtocol:(id)protocol contextBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   *(swift_allocObject() + 16) = v6;
-  v7 = a3;
-  v8 = self;
+  protocolCopy = protocol;
+  selfCopy = self;
   sub_1BF023920(sub_1BF0E9020, &v11);
 
   __swift_project_boxed_opaque_existential_1(&v11, v12);
@@ -285,12 +285,12 @@
   return v9;
 }
 
-- (id)resolveOptionalProtocol:(id)a3 contextBlock:(id)a4
+- (id)resolveOptionalProtocol:(id)protocol contextBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   *(swift_allocObject() + 16) = v6;
-  v7 = a3;
-  v8 = self;
+  protocolCopy = protocol;
+  selfCopy = self;
   sub_1BF0E9020();
 
   v9 = v18;
@@ -315,15 +315,15 @@
   return v15;
 }
 
-- (id)resolveOptionalProtocol:(id)a3 name:(id)a4
+- (id)resolveOptionalProtocol:(id)protocol name:(id)name
 {
-  if (a4)
+  if (name)
   {
     sub_1BF17A0AC();
   }
 
-  v6 = a3;
-  v7 = self;
+  protocolCopy = protocol;
+  selfCopy = self;
   sub_1BF023A44();
 
   v8 = v17;
@@ -348,17 +348,17 @@
   return v14;
 }
 
-- (id)resolveProtocol:(id)a3 name:(id)a4 contextBlock:(id)a5
+- (id)resolveProtocol:(id)protocol name:(id)name contextBlock:(id)block
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(block);
+  if (name)
   {
     sub_1BF17A0AC();
   }
 
   *(swift_allocObject() + 16) = v8;
-  v9 = a3;
-  v10 = self;
+  protocolCopy = protocol;
+  selfCopy = self;
   sub_1BF0E9528(sub_1BF0E9574, &v13);
 
   __swift_project_boxed_opaque_existential_1(&v13, v14);
@@ -368,17 +368,17 @@
   return v11;
 }
 
-- (id)resolveOptionalProtocol:(id)a3 name:(id)a4 contextBlock:(id)a5
+- (id)resolveOptionalProtocol:(id)protocol name:(id)name contextBlock:(id)block
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(block);
+  if (name)
   {
     sub_1BF17A0AC();
   }
 
   *(swift_allocObject() + 16) = v8;
-  v9 = a3;
-  v10 = self;
+  protocolCopy = protocol;
+  selfCopy = self;
   sub_1BF0E9574();
 
   v11 = v20;

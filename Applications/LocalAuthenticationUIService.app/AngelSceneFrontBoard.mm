@@ -5,7 +5,7 @@
 - (_TtC28LocalAuthenticationUIService20AngelSceneFrontBoard)init;
 - (void)activate;
 - (void)deactivate;
-- (void)setPersistentIdentifier:(id)a3;
+- (void)setPersistentIdentifier:(id)identifier;
 @end
 
 @implementation AngelSceneFrontBoard
@@ -39,9 +39,9 @@
   return v4;
 }
 
-- (void)setPersistentIdentifier:(id)a3
+- (void)setPersistentIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -70,13 +70,13 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   AngelSceneFrontBoard.activate()();
 }
 
 - (void)deactivate
 {
-  v2 = self;
+  selfCopy = self;
   AngelSceneFrontBoard.deactivate()();
 }
 

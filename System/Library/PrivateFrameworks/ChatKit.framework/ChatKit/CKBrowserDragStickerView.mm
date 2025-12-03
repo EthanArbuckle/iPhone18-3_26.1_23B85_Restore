@@ -1,6 +1,6 @@
 @interface CKBrowserDragStickerView
 + (id)meshTransform;
-+ (id)springAnimationWithKeyPath:(id)a3 speed:(float)a4;
++ (id)springAnimationWithKeyPath:(id)path speed:(float)speed;
 - (CGPoint)anchorOffset;
 - (CGPoint)dragViewCenter;
 - (CGPoint)dropShadowLayerStartPosition;
@@ -12,27 +12,27 @@
 - (CGRect)sourceRect;
 - (CGSize)initialSize;
 - (CGSize)rasterizedImageSize;
-- (CKBrowserDragStickerView)initWithSourceRect:(CGRect)a3 dragImage:(id)a4;
-- (CKBrowserDragStickerView)initWithSourceRect:(CGRect)a3 draggedSticker:(id)a4;
+- (CKBrowserDragStickerView)initWithSourceRect:(CGRect)rect dragImage:(id)image;
+- (CKBrowserDragStickerView)initWithSourceRect:(CGRect)rect draggedSticker:(id)sticker;
 - (CKBrowserDraggedSticker)draggedSticker;
 - (double)dragViewRotation;
 - (double)dragViewScaleUp;
-- (id)peelMaskImageFromImage:(id)a3;
-- (id)scaleImage:(id)a3 toSize:(CGSize)a4;
-- (void)_displayLinkCallback:(id)a3;
-- (void)animatePeelWithCompletion:(id)a3;
+- (id)peelMaskImageFromImage:(id)image;
+- (id)scaleImage:(id)image toSize:(CGSize)size;
+- (void)_displayLinkCallback:(id)callback;
+- (void)animatePeelWithCompletion:(id)completion;
 - (void)animateScaleDown;
-- (void)animationTimerFired:(double)a3;
+- (void)animationTimerFired:(double)fired;
 - (void)applyTransforms;
-- (void)attachElasticEffectsForLocation:(CGPoint)a3;
+- (void)attachElasticEffectsForLocation:(CGPoint)location;
 - (void)dealloc;
 - (void)detachElasticEffects;
-- (void)reversePeelAnimationToPoint:(CGPoint)a3 forPlacement:(BOOL)a4 shouldShrink:(BOOL)a5 completionBlock:(id)a6;
-- (void)setDragViewScale:(double)a3;
-- (void)setPlusImageViewHidden:(BOOL)a3;
+- (void)reversePeelAnimationToPoint:(CGPoint)point forPlacement:(BOOL)placement shouldShrink:(BOOL)shrink completionBlock:(id)block;
+- (void)setDragViewScale:(double)scale;
+- (void)setPlusImageViewHidden:(BOOL)hidden;
 - (void)setUpPeelLayers;
 - (void)updateAnimationTimerObserving;
-- (void)updateElasticEffectsForLocation:(CGPoint)a3;
+- (void)updateElasticEffectsForLocation:(CGPoint)location;
 @end
 
 @implementation CKBrowserDragStickerView
@@ -59,13 +59,13 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
   meshTransform___mesh = v0;
 }
 
-+ (id)springAnimationWithKeyPath:(id)a3 speed:(float)a4
++ (id)springAnimationWithKeyPath:(id)path speed:(float)speed
 {
-  v5 = [MEMORY[0x1E69794A8] animationWithKeyPath:a3];
+  v5 = [MEMORY[0x1E69794A8] animationWithKeyPath:path];
   [v5 setMass:2.0];
   [v5 setStiffness:300.0];
   [v5 setDamping:400.0];
-  *&v6 = a4;
+  *&v6 = speed;
   [v5 setSpeed:v6];
   [v5 setDuration:0.91];
   v7 = objc_alloc(MEMORY[0x1E69793D0]);
@@ -93,28 +93,28 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
   [(CKBrowserDragStickerView *)&v4 dealloc];
 }
 
-- (CKBrowserDragStickerView)initWithSourceRect:(CGRect)a3 dragImage:(id)a4
+- (CKBrowserDragStickerView)initWithSourceRect:(CGRect)rect dragImage:(id)image
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  v5 = a4;
+  width = rect.size.width;
+  height = rect.size.height;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  imageCopy = image;
   v47.receiver = self;
   v47.super_class = CKBrowserDragStickerView;
   v6 = [(CKBrowserDragStickerView *)&v47 init];
   if (v6)
   {
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v5 frames];
-    [(CKBrowserDragStickerView *)v6 setDragImageFrames:v8];
-    [v5 size];
+    frames = [imageCopy frames];
+    [(CKBrowserDragStickerView *)v6 setDragImageFrames:frames];
+    [imageCopy size];
     v10 = v9;
     v12 = v11;
-    [v5 scale];
+    [imageCopy scale];
     v14 = v13;
-    v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v15 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     [v7 stickerSizeScaledWithInitialSize:v10 imageScale:v12 userScale:v14 rectifiedScreenScale:1.0 maxWidth:{v16, 1.79769313e308}];
     v18 = v17;
     v20 = v19;
@@ -126,8 +126,8 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     }
 
     v22 = fmin(v21, 1.0);
-    v23 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v23 scale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
     UIRectIntegralWithScale();
     v25 = v24;
     v27 = v26;
@@ -136,10 +136,10 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     [(CKBrowserDragStickerView *)v6 setInitialScale:v22];
     [(CKBrowserDragStickerView *)v6 setInitialSize:width, height];
     [(CKBrowserDragStickerView *)v6 setRasterizedImageSize:v25, v27];
-    if ([v8 count])
+    if ([frames count])
     {
-      v28 = [v8 firstObject];
-      [(CKBrowserDragStickerView *)v6 setCurrentFrameImage:v28];
+      firstObject = [frames firstObject];
+      [(CKBrowserDragStickerView *)v6 setCurrentFrameImage:firstObject];
     }
 
     else
@@ -175,33 +175,33 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     v40.f64[1] = y;
     [(CKBrowserDragStickerView *)v6 setCenter:vdivq_f64(vrndmq_f64(vmulq_n_f64(vaddq_f64(v40, vmulq_f64(v34, _Q2)), *&v32)), vdupq_lane_s64(v32, 0)), *&v42];
     [(CKBrowserDragStickerView *)v6 setUpPeelLayers];
-    [(CKBrowserDragStickerView *)v6 setDragImage:v5];
+    [(CKBrowserDragStickerView *)v6 setDragImage:imageCopy];
   }
 
   return v6;
 }
 
-- (CKBrowserDragStickerView)initWithSourceRect:(CGRect)a3 draggedSticker:(id)a4
+- (CKBrowserDragStickerView)initWithSourceRect:(CGRect)rect draggedSticker:(id)sticker
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  v5 = a4;
+  width = rect.size.width;
+  height = rect.size.height;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  stickerCopy = sticker;
   v46.receiver = self;
   v46.super_class = CKBrowserDragStickerView;
   v6 = [(CKBrowserDragStickerView *)&v46 init];
   if (v6)
   {
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v5 animatedImage];
-    v9 = [v8 frames];
+    animatedImage = [stickerCopy animatedImage];
+    frames = [animatedImage frames];
 
-    [(CKBrowserDragStickerView *)v6 setDragImageFrames:v9];
-    [v5 frame];
+    [(CKBrowserDragStickerView *)v6 setDragImageFrames:frames];
+    [stickerCopy frame];
     v11 = v10;
     v13 = v12;
-    [v5 scale];
+    [stickerCopy scale];
     v15 = v14;
     [v7 stickerScreenScale];
     [v7 stickerSizeScaledWithInitialSize:v11 imageScale:v13 userScale:v15 rectifiedScreenScale:1.0 maxWidth:{v16, 1.79769313e308}];
@@ -212,8 +212,8 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     }
 
     v20 = fmin(v19, 1.0);
-    v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v21 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     UIRectIntegralWithScale();
     v23 = v22;
     v25 = v24;
@@ -222,10 +222,10 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     [(CKBrowserDragStickerView *)v6 setInitialScale:v20];
     [(CKBrowserDragStickerView *)v6 setInitialSize:width, height];
     [(CKBrowserDragStickerView *)v6 setRasterizedImageSize:v23, v25];
-    if ([v9 count])
+    if ([frames count])
     {
-      v26 = [v9 firstObject];
-      [(CKBrowserDragStickerView *)v6 setCurrentFrameImage:v26];
+      firstObject = [frames firstObject];
+      [(CKBrowserDragStickerView *)v6 setCurrentFrameImage:firstObject];
     }
 
     else
@@ -261,8 +261,8 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     v38.f64[1] = y;
     [(CKBrowserDragStickerView *)v6 setCenter:vdivq_f64(vrndmq_f64(vmulq_n_f64(vaddq_f64(v38, vmulq_f64(v32, _Q2)), *&v30)), vdupq_lane_s64(v30, 0)), *&v41];
     [(CKBrowserDragStickerView *)v6 setUpPeelLayers];
-    v39 = [v5 animatedImage];
-    [(CKBrowserDragStickerView *)v6 setDragImage:v39];
+    animatedImage2 = [stickerCopy animatedImage];
+    [(CKBrowserDragStickerView *)v6 setDragImage:animatedImage2];
   }
 
   return v6;
@@ -271,17 +271,17 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
 - (void)setUpPeelLayers
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKBrowserDragStickerView *)self currentFrameImage];
-  v4 = [(CKBrowserDragStickerView *)self scaleImage:v3 toSize:self->_rasterizedImageSize.width, self->_rasterizedImageSize.height];
+  currentFrameImage = [(CKBrowserDragStickerView *)self currentFrameImage];
+  v4 = [(CKBrowserDragStickerView *)self scaleImage:currentFrameImage toSize:self->_rasterizedImageSize.width, self->_rasterizedImageSize.height];
 
   [(CKBrowserDragStickerView *)self bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(CKBrowserDragStickerView *)self layer];
-  [v9 anchorPoint];
+  layer = [(CKBrowserDragStickerView *)self layer];
+  [layer anchorPoint];
   v11 = v10;
 
-  v12 = [MEMORY[0x1E6979530] layer];
+  layer2 = [MEMORY[0x1E6979530] layer];
   v13 = *(MEMORY[0x1E69792E8] + 48);
   v66[2] = *(MEMORY[0x1E69792E8] + 32);
   v66[3] = v13;
@@ -295,60 +295,60 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
   v70 = v16;
   v67 = v14;
   v68 = 0xBF747AE140000000;
-  [v12 setSublayerTransform:v66];
-  [v12 setPosition:{v6 * 0.5, v8 * 0.5}];
-  [v12 setBounds:{0.0, 0.0, v6, v8}];
-  v17 = [(CKBrowserDragStickerView *)self layer];
-  [v17 addSublayer:v12];
+  [layer2 setSublayerTransform:v66];
+  [layer2 setPosition:{v6 * 0.5, v8 * 0.5}];
+  [layer2 setBounds:{0.0, 0.0, v6, v8}];
+  layer3 = [(CKBrowserDragStickerView *)self layer];
+  [layer3 addSublayer:layer2];
 
-  v61 = v12;
-  [(CKBrowserDragStickerView *)self setPerspectiveLayer:v12];
-  v18 = [MEMORY[0x1E6979398] layer];
-  v19 = [objc_opt_class() meshTransform];
-  [v18 setMeshTransform:v19];
+  v61 = layer2;
+  [(CKBrowserDragStickerView *)self setPerspectiveLayer:layer2];
+  layer4 = [MEMORY[0x1E6979398] layer];
+  meshTransform = [objc_opt_class() meshTransform];
+  [layer4 setMeshTransform:meshTransform];
 
-  [v18 setPosition:{v6 * v11, -v8}];
-  [v18 setBounds:{0.0, 0.0, v6 + v6, v8 * 5.0}];
-  [v18 setRasterizationScale:2.8];
-  [v12 addSublayer:v18];
-  [(CKBrowserDragStickerView *)self setMeshLayer:v18];
-  v65 = v18;
-  [v18 position];
+  [layer4 setPosition:{v6 * v11, -v8}];
+  [layer4 setBounds:{0.0, 0.0, v6 + v6, v8 * 5.0}];
+  [layer4 setRasterizationScale:2.8];
+  [layer2 addSublayer:layer4];
+  [(CKBrowserDragStickerView *)self setMeshLayer:layer4];
+  v65 = layer4;
+  [layer4 position];
   [(CKBrowserDragStickerView *)self setMeshLayerStartPosition:?];
-  v20 = [MEMORY[0x1E6979398] layer];
-  [v20 setPosition:{(v6 + v6) * v11, v8 * 5.0 - v8}];
-  [v20 setBounds:{0.0, 0.0, v6, v8}];
-  [v18 addSublayer:v20];
-  [(CKBrowserDragStickerView *)self setPeelLayer:v20];
-  [v20 position];
+  layer5 = [MEMORY[0x1E6979398] layer];
+  [layer5 setPosition:{(v6 + v6) * v11, v8 * 5.0 - v8}];
+  [layer5 setBounds:{0.0, 0.0, v6, v8}];
+  [layer4 addSublayer:layer5];
+  [(CKBrowserDragStickerView *)self setPeelLayer:layer5];
+  [layer5 position];
   [(CKBrowserDragStickerView *)self setPeelLayerStartPosition:?];
-  v21 = [MEMORY[0x1E6979398] layer];
+  layer6 = [MEMORY[0x1E6979398] layer];
   v22 = v4;
-  [v21 setContents:{objc_msgSend(v4, "CGImage")}];
+  [layer6 setContents:{objc_msgSend(v4, "CGImage")}];
   v23 = *MEMORY[0x1E6979DE8];
-  [v21 setContentsGravity:*MEMORY[0x1E6979DE8]];
-  [v20 bounds];
-  [v21 setFrame:?];
+  [layer6 setContentsGravity:*MEMORY[0x1E6979DE8]];
+  [layer5 bounds];
+  [layer6 setFrame:?];
   v74 = @"contents";
-  v24 = [MEMORY[0x1E695DFB0] null];
-  v75[0] = v24;
+  null = [MEMORY[0x1E695DFB0] null];
+  v75[0] = null;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:&v74 count:1];
-  [v21 setActions:v25];
+  [layer6 setActions:v25];
 
-  [(CKBrowserDragStickerView *)self setPeelImageLayer:v21];
-  [v20 addSublayer:v21];
+  [(CKBrowserDragStickerView *)self setPeelImageLayer:layer6];
+  [layer5 addSublayer:layer6];
   v64 = [(CKBrowserDragStickerView *)self peelMaskImageFromImage:v22];
-  v63 = [MEMORY[0x1E6979398] layer];
-  [v63 setContents:{objc_msgSend(v64, "CGImage")}];
-  [v20 bounds];
-  [v63 setFrame:?];
-  [v63 setContentsGravity:v23];
-  [v20 setMask:v63];
-  [(CKBrowserDragStickerView *)self setPeelMaskLayer:v63];
+  layer7 = [MEMORY[0x1E6979398] layer];
+  [layer7 setContents:{objc_msgSend(v64, "CGImage")}];
+  [layer5 bounds];
+  [layer7 setFrame:?];
+  [layer7 setContentsGravity:v23];
+  [layer5 setMask:layer7];
+  [(CKBrowserDragStickerView *)self setPeelMaskLayer:layer7];
   v26 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"StickerShine"];
   [v26 size];
   v28 = v27;
-  [v20 bounds];
+  [layer5 bounds];
   Width = CGRectGetWidth(v76);
   v30 = Width + Width;
   if (v28 < v30)
@@ -356,28 +356,28 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     v28 = v30;
   }
 
-  v31 = [MEMORY[0x1E6979398] layer];
+  layer8 = [MEMORY[0x1E6979398] layer];
   v62 = v26;
-  [v31 setContents:{objc_msgSend(v26, "CGImage")}];
-  [v20 bounds];
+  [layer8 setContents:{objc_msgSend(v26, "CGImage")}];
+  [layer5 bounds];
   v32 = round(CGRectGetWidth(v77) - v28) * 0.5;
   [v26 size];
   v34 = -v33;
   [v26 size];
-  [v31 setFrame:{v32, v34, v28, v35}];
+  [layer8 setFrame:{v32, v34, v28, v35}];
   LODWORD(v36) = 1035489772;
-  [v31 setOpacity:v36];
+  [layer8 setOpacity:v36];
   v37 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-  [v31 setCompositingFilter:v37];
+  [layer8 setCompositingFilter:v37];
 
-  [v20 addSublayer:v31];
-  [(CKBrowserDragStickerView *)self setShineLayer:v31];
-  [v31 position];
+  [layer5 addSublayer:layer8];
+  [(CKBrowserDragStickerView *)self setShineLayer:layer8];
+  [layer8 position];
   [(CKBrowserDragStickerView *)self setShineLayerStartPosition:?];
   v38 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"StickerShadow"];
   [v38 size];
   v40 = v39;
-  [v20 bounds];
+  [layer5 bounds];
   v41 = CGRectGetWidth(v78);
   v42 = v41 + v41;
   if (v40 < v42)
@@ -385,48 +385,48 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     v40 = v42;
   }
 
-  v43 = [MEMORY[0x1E6979398] layer];
-  [v43 setContents:{objc_msgSend(v38, "CGImage")}];
-  [v20 bounds];
+  layer9 = [MEMORY[0x1E6979398] layer];
+  [layer9 setContents:{objc_msgSend(v38, "CGImage")}];
+  [layer5 bounds];
   v44 = round(CGRectGetWidth(v79) - v40) * 0.5;
   [v38 size];
   v46 = -10.0 - v45;
   [v38 size];
-  [v43 setFrame:{v44, v46, v40, v47}];
+  [layer9 setFrame:{v44, v46, v40, v47}];
   LODWORD(v48) = 1043542835;
-  [v43 setOpacity:v48];
-  [v20 addSublayer:v43];
-  [(CKBrowserDragStickerView *)self setShadowLayer:v43];
-  [v43 position];
+  [layer9 setOpacity:v48];
+  [layer5 addSublayer:layer9];
+  [(CKBrowserDragStickerView *)self setShadowLayer:layer9];
+  [layer9 position];
   [(CKBrowserDragStickerView *)self setShadowLayerStartPosition:?];
-  v49 = [MEMORY[0x1E6979398] layer];
+  layer10 = [MEMORY[0x1E6979398] layer];
   v60 = v22;
-  [v49 setContents:{objc_msgSend(v22, "CGImage")}];
-  [v49 setContentsGravity:v23];
-  v50 = [(CKBrowserDragStickerView *)self layer];
-  [v21 bounds];
-  [v50 convertRect:v21 fromLayer:?];
-  [v49 setFrame:?];
+  [layer10 setContents:{objc_msgSend(v22, "CGImage")}];
+  [layer10 setContentsGravity:v23];
+  layer11 = [(CKBrowserDragStickerView *)self layer];
+  [layer6 bounds];
+  [layer11 convertRect:layer6 fromLayer:?];
+  [layer10 setFrame:?];
 
   v51 = [MEMORY[0x1E69DC888] colorWithWhite:0.75 alpha:1.0];
-  [v49 setContentsMultiplyColor:{objc_msgSend(v51, "CGColor")}];
+  [layer10 setContentsMultiplyColor:{objc_msgSend(v51, "CGColor")}];
 
   LODWORD(v52) = 1041194025;
-  [v49 setOpacity:v52];
+  [layer10 setOpacity:v52];
   v53 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CE8]];
-  [v49 setCompositingFilter:v53];
+  [layer10 setCompositingFilter:v53];
 
   v72 = @"contents";
-  v54 = [MEMORY[0x1E695DFB0] null];
-  v73 = v54;
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v73 = null2;
   v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
-  [v49 setActions:v55];
+  [layer10 setActions:v55];
 
-  v56 = [(CKBrowserDragStickerView *)self layer];
-  [v56 insertSublayer:v49 below:v61];
+  layer12 = [(CKBrowserDragStickerView *)self layer];
+  [layer12 insertSublayer:layer10 below:v61];
 
-  [(CKBrowserDragStickerView *)self setDropShadowLayer:v49];
-  [v49 position];
+  [(CKBrowserDragStickerView *)self setDropShadowLayer:layer10];
+  [layer10 position];
   [(CKBrowserDragStickerView *)self setDropShadowLayerStartPosition:?];
   v57 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
   [v57 setValue:&unk_1F04E8A68 forKey:@"inputRadius"];
@@ -436,12 +436,12 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
   v71[0] = v57;
   v71[1] = v58;
   v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:2];
-  [v49 setFilters:v59];
+  [layer10 setFilters:v59];
 }
 
-- (void)animatePeelWithCompletion:(id)a3
+- (void)animatePeelWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CKBrowserDragStickerView *)self canPeel])
   {
     v5 = objc_opt_class();
@@ -500,29 +500,29 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     [v35 setBeginTime:CACurrentMediaTime() + 0.1];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setAnimationDuration:0.310000002];
-    v37 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-    [v37 addAnimation:v46 forKey:@"dropShadowBlurAnimation"];
+    dropShadowLayer = [(CKBrowserDragStickerView *)self dropShadowLayer];
+    [dropShadowLayer addAnimation:v46 forKey:@"dropShadowBlurAnimation"];
 
-    v38 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-    [v38 addAnimation:v11 forKey:@"dropShadowPositionAnimation"];
+    dropShadowLayer2 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+    [dropShadowLayer2 addAnimation:v11 forKey:@"dropShadowPositionAnimation"];
 
-    v39 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-    [v39 addAnimation:v14 forKey:@"dropShadowOpacityAnimation"];
+    dropShadowLayer3 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+    [dropShadowLayer3 addAnimation:v14 forKey:@"dropShadowOpacityAnimation"];
 
-    v40 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-    [v40 addAnimation:v17 forKey:@"dropShadowScaleAnimation"];
+    dropShadowLayer4 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+    [dropShadowLayer4 addAnimation:v17 forKey:@"dropShadowScaleAnimation"];
 
-    v41 = [(CKBrowserDragStickerView *)self meshLayer];
-    [v41 addAnimation:v23 forKey:@"meshAnimation"];
+    meshLayer = [(CKBrowserDragStickerView *)self meshLayer];
+    [meshLayer addAnimation:v23 forKey:@"meshAnimation"];
 
-    v42 = [(CKBrowserDragStickerView *)self peelLayer];
-    [v42 addAnimation:v27 forKey:@"peelAnimation"];
+    peelLayer = [(CKBrowserDragStickerView *)self peelLayer];
+    [peelLayer addAnimation:v27 forKey:@"peelAnimation"];
 
-    v43 = [(CKBrowserDragStickerView *)self shineLayer];
-    [v43 addAnimation:v31 forKey:@"shineAnimation"];
+    shineLayer = [(CKBrowserDragStickerView *)self shineLayer];
+    [shineLayer addAnimation:v31 forKey:@"shineAnimation"];
 
-    v44 = [(CKBrowserDragStickerView *)self shadowLayer];
-    [v44 addAnimation:v35 forKey:@"shadowAnimation"];
+    shadowLayer = [(CKBrowserDragStickerView *)self shadowLayer];
+    [shadowLayer addAnimation:v35 forKey:@"shadowAnimation"];
 
     [MEMORY[0x1E6979518] commit];
     v45 = dispatch_time(0, 910000000);
@@ -530,7 +530,7 @@ void __41__CKBrowserDragStickerView_meshTransform__block_invoke()
     block[1] = 3221225472;
     block[2] = __54__CKBrowserDragStickerView_animatePeelWithCompletion___block_invoke;
     block[3] = &unk_1E72EBDB8;
-    v48 = v4;
+    v48 = completionCopy;
     dispatch_after(v45, MEMORY[0x1E69E96A0], block);
   }
 }
@@ -560,8 +560,8 @@ uint64_t __54__CKBrowserDragStickerView_animatePeelWithCompletion___block_invoke
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:0.310000002];
-  v9 = [(CKBrowserDragStickerView *)self layer];
-  [v9 addAnimation:v5 forKey:@"scaleDownAnimation"];
+  layer = [(CKBrowserDragStickerView *)self layer];
+  [layer addAnimation:v5 forKey:@"scaleDownAnimation"];
 
   [MEMORY[0x1E6979518] commit];
   v10 = dispatch_time(0, 500000000);
@@ -579,22 +579,22 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
   [v1 removeAnimationForKey:@"scaleDownAnimation"];
 }
 
-- (void)reversePeelAnimationToPoint:(CGPoint)a3 forPlacement:(BOOL)a4 shouldShrink:(BOOL)a5 completionBlock:(id)a6
+- (void)reversePeelAnimationToPoint:(CGPoint)point forPlacement:(BOOL)placement shouldShrink:(BOOL)shrink completionBlock:(id)block
 {
-  v6 = a5;
-  v7 = a4;
-  y = a3.y;
-  x = a3.x;
-  v11 = a6;
+  shrinkCopy = shrink;
+  placementCopy = placement;
+  y = point.y;
+  x = point.x;
+  blockCopy = block;
   v12 = objc_opt_class();
   LODWORD(v13) = 1061997773;
   v14 = [v12 springAnimationWithKeyPath:@"transform.scale.xy" speed:v13];
   v15 = v14;
-  v127 = v6;
-  v128 = v7;
+  v127 = shrinkCopy;
+  v128 = placementCopy;
   v132 = v14;
-  v129 = v11;
-  if (v6)
+  v129 = blockCopy;
+  if (shrinkCopy)
   {
     [v14 setToValue:&unk_1F04E8AB8];
   }
@@ -602,7 +602,7 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
   else
   {
     v16 = MEMORY[0x1E696AD98];
-    if (v7)
+    if (placementCopy)
     {
       [(CKBrowserDragStickerView *)self dragViewScale];
     }
@@ -616,13 +616,13 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
     [v15 setToValue:v17];
   }
 
-  v18 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-  v19 = [v18 presentationLayer];
-  [v19 position];
+  dropShadowLayer = [(CKBrowserDragStickerView *)self dropShadowLayer];
+  presentationLayer = [dropShadowLayer presentationLayer];
+  [presentationLayer position];
   v21 = v20;
   v23 = v22;
-  v24 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-  [v24 setPosition:{v21, v23}];
+  dropShadowLayer2 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+  [dropShadowLayer2 setPosition:{v21, v23}];
 
   v25 = objc_opt_class();
   LODWORD(v26) = 1066192077;
@@ -634,13 +634,13 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
 
   v131 = v27;
   [v27 setBeginTime:CACurrentMediaTime() + 0.18];
-  v30 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-  v31 = [v30 presentationLayer];
-  [v31 opacity];
+  dropShadowLayer3 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+  presentationLayer2 = [dropShadowLayer3 presentationLayer];
+  [presentationLayer2 opacity];
   LODWORD(v23) = v32;
-  v33 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+  dropShadowLayer4 = [(CKBrowserDragStickerView *)self dropShadowLayer];
   LODWORD(v34) = LODWORD(v23);
-  [v33 setOpacity:v34];
+  [dropShadowLayer4 setOpacity:v34];
 
   v35 = objc_opt_class();
   LODWORD(v36) = 1066192077;
@@ -648,20 +648,20 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
   [v37 setToValue:&unk_1F04E8AC8];
   v130 = v37;
   [v37 setBeginTime:CACurrentMediaTime() + 0.18];
-  v38 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-  v39 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-  v40 = [v39 presentationLayer];
-  v41 = [v40 valueForKey:@"transform.scale.xy"];
-  [v38 setValue:v41 forKey:@"transform.scale.xy"];
+  dropShadowLayer5 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+  dropShadowLayer6 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+  presentationLayer3 = [dropShadowLayer6 presentationLayer];
+  v41 = [presentationLayer3 valueForKey:@"transform.scale.xy"];
+  [dropShadowLayer5 setValue:v41 forKey:@"transform.scale.xy"];
 
   v42 = objc_opt_class();
   LODWORD(v43) = 1066192077;
   v44 = [v42 springAnimationWithKeyPath:@"transform.scale.xy" speed:v43];
   [v44 setToValue:&unk_1F04E8AD8];
   [v44 setBeginTime:CACurrentMediaTime() + 0.18];
-  v45 = [(CKBrowserDragStickerView *)self meshLayer];
-  v46 = [v45 presentationLayer];
-  [v46 position];
+  meshLayer = [(CKBrowserDragStickerView *)self meshLayer];
+  presentationLayer4 = [meshLayer presentationLayer];
+  [presentationLayer4 position];
   v48 = v47;
   v50 = v49;
 
@@ -676,9 +676,9 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
   v56 = [v55 valueWithCGPoint:?];
   [v53 setToValue:v56];
 
-  v57 = [(CKBrowserDragStickerView *)self peelLayer];
-  v58 = [v57 presentationLayer];
-  [v58 position];
+  peelLayer = [(CKBrowserDragStickerView *)self peelLayer];
+  presentationLayer5 = [peelLayer presentationLayer];
+  [presentationLayer5 position];
   v60 = v59;
   v62 = v61;
 
@@ -693,9 +693,9 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
   v68 = [v67 valueWithCGPoint:?];
   [v65 setToValue:v68];
 
-  v69 = [(CKBrowserDragStickerView *)self shineLayer];
-  v70 = [v69 presentationLayer];
-  [v70 position];
+  shineLayer = [(CKBrowserDragStickerView *)self shineLayer];
+  presentationLayer6 = [shineLayer presentationLayer];
+  [presentationLayer6 position];
   v72 = v71;
   v74 = v73;
 
@@ -710,9 +710,9 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
   v80 = [v79 valueWithCGPoint:?];
   [v77 setToValue:v80];
 
-  v81 = [(CKBrowserDragStickerView *)self shadowLayer];
-  v82 = [v81 presentationLayer];
-  [v82 position];
+  shadowLayer = [(CKBrowserDragStickerView *)self shadowLayer];
+  presentationLayer7 = [shadowLayer presentationLayer];
+  [presentationLayer7 position];
   v84 = v83;
   v86 = v85;
 
@@ -730,8 +730,8 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
   [v89 setBeginTime:CACurrentMediaTime() + 0.18];
   if (v127)
   {
-    v93 = [(CKBrowserDragStickerView *)self layer];
-    [v93 position];
+    layer = [(CKBrowserDragStickerView *)self layer];
+    [layer position];
     v95 = v94;
     v97 = v96;
 
@@ -759,40 +759,40 @@ void __44__CKBrowserDragStickerView_animateScaleDown__block_invoke(uint64_t a1)
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:0.310000002];
-  v106 = [(CKBrowserDragStickerView *)self layer];
-  [v106 addAnimation:v132 forKey:@"scaleUpAnimation"];
+  layer2 = [(CKBrowserDragStickerView *)self layer];
+  [layer2 addAnimation:v132 forKey:@"scaleUpAnimation"];
 
-  v107 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-  [v107 addAnimation:v131 forKey:@"dropShadowPositionAnimation"];
+  dropShadowLayer7 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+  [dropShadowLayer7 addAnimation:v131 forKey:@"dropShadowPositionAnimation"];
 
-  v108 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-  [v108 addAnimation:v130 forKey:@"dropShadowOpacityAnimation"];
+  dropShadowLayer8 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+  [dropShadowLayer8 addAnimation:v130 forKey:@"dropShadowOpacityAnimation"];
 
-  v109 = [(CKBrowserDragStickerView *)self dropShadowLayer];
-  [v109 addAnimation:v44 forKey:@"dropShadowScaleAnimation"];
+  dropShadowLayer9 = [(CKBrowserDragStickerView *)self dropShadowLayer];
+  [dropShadowLayer9 addAnimation:v44 forKey:@"dropShadowScaleAnimation"];
 
-  v110 = [(CKBrowserDragStickerView *)self meshLayer];
-  [v110 addAnimation:v53 forKey:@"meshAnimation"];
+  meshLayer2 = [(CKBrowserDragStickerView *)self meshLayer];
+  [meshLayer2 addAnimation:v53 forKey:@"meshAnimation"];
 
-  v111 = [(CKBrowserDragStickerView *)self peelLayer];
-  [v111 addAnimation:v65 forKey:@"peelAnimation"];
+  peelLayer2 = [(CKBrowserDragStickerView *)self peelLayer];
+  [peelLayer2 addAnimation:v65 forKey:@"peelAnimation"];
 
-  v112 = [(CKBrowserDragStickerView *)self shineLayer];
-  [v112 addAnimation:v77 forKey:@"shineAnimation"];
+  shineLayer2 = [(CKBrowserDragStickerView *)self shineLayer];
+  [shineLayer2 addAnimation:v77 forKey:@"shineAnimation"];
 
-  v113 = [(CKBrowserDragStickerView *)self shadowLayer];
-  [v113 addAnimation:v89 forKey:@"shadowAnimation"];
+  shadowLayer2 = [(CKBrowserDragStickerView *)self shadowLayer];
+  [shadowLayer2 addAnimation:v89 forKey:@"shadowAnimation"];
 
   if (v100)
   {
-    v114 = [(CKBrowserDragStickerView *)self layer];
-    [v114 addAnimation:v100 forKey:@"moveAnimation"];
+    layer3 = [(CKBrowserDragStickerView *)self layer];
+    [layer3 addAnimation:v100 forKey:@"moveAnimation"];
   }
 
   if (v105)
   {
-    v115 = [(CKBrowserDragStickerView *)self layer];
-    [v115 addAnimation:v105 forKey:@"opacityAnimation"];
+    layer4 = [(CKBrowserDragStickerView *)self layer];
+    [layer4 addAnimation:v105 forKey:@"opacityAnimation"];
   }
 
   [MEMORY[0x1E6979518] commit];
@@ -883,10 +883,10 @@ uint64_t __98__CKBrowserDragStickerView_reversePeelAnimationToPoint_forPlacement
 
 - (void)applyTransforms
 {
-  v3 = [(CKBrowserDragStickerView *)self isScaledDown];
+  isScaledDown = [(CKBrowserDragStickerView *)self isScaledDown];
   v4 = 0.714285714;
   v5 = 1.0;
-  if (!v3)
+  if (!isScaledDown)
   {
     v4 = 1.0;
   }
@@ -918,9 +918,9 @@ uint64_t __98__CKBrowserDragStickerView_reversePeelAnimationToPoint_forPlacement
   }
 }
 
-- (void)setDragViewScale:(double)a3
+- (void)setDragViewScale:(double)scale
 {
-  v3 = fmin(a3, 2.0);
+  v3 = fmin(scale, 2.0);
   if (v3 < 1.0)
   {
     v3 = 1.0;
@@ -933,37 +933,37 @@ uint64_t __98__CKBrowserDragStickerView_reversePeelAnimationToPoint_forPlacement
   }
 }
 
-- (void)setPlusImageViewHidden:(BOOL)a3
+- (void)setPlusImageViewHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v4 = MEMORY[0x1E69DD250];
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke;
     v29 = &unk_1E72EBA18;
-    v30 = self;
+    selfCopy = self;
     v5 = &v26;
   }
 
   else
   {
-    v6 = [(CKBrowserDragStickerView *)self plusImageView];
+    plusImageView = [(CKBrowserDragStickerView *)self plusImageView];
 
-    if (!v6)
+    if (!plusImageView)
     {
       v7 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:38.0];
       v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus.circle.fill"];
       v9 = [v8 imageWithSymbolConfiguration:v7];
 
       v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
-      v11 = [MEMORY[0x1E69DC888] systemGreenColor];
-      [v10 setTintColor:v11];
+      systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+      [v10 setTintColor:systemGreenColor];
 
       v12 = objc_alloc(MEMORY[0x1E69DD250]);
       v13 = [v12 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      v14 = [MEMORY[0x1E69DC888] whiteColor];
-      [v13 setBackgroundColor:v14];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [v13 setBackgroundColor:whiteColor];
 
       [(CKBrowserDragStickerView *)self addSubview:v13];
       [(CKBrowserDragStickerView *)self addSubview:v10];
@@ -974,16 +974,16 @@ uint64_t __98__CKBrowserDragStickerView_reversePeelAnimationToPoint_forPlacement
       [v13 setFrame:{v32.origin.x, v32.origin.y, v32.size.width, v32.size.height}];
       [v13 bounds];
       v17 = v16 * 0.5;
-      v18 = [v13 layer];
-      [v18 setCornerRadius:v17];
+      layer = [v13 layer];
+      [layer setCornerRadius:v17];
 
       [(CKBrowserDragStickerView *)self setPlusImageView:v10];
       [(CKBrowserDragStickerView *)self setWhiteBackground:v13];
-      v19 = [(CKBrowserDragStickerView *)self plusImageView];
-      [v19 setAlpha:0.0];
+      plusImageView2 = [(CKBrowserDragStickerView *)self plusImageView];
+      [plusImageView2 setAlpha:0.0];
 
-      v20 = [(CKBrowserDragStickerView *)self whiteBackground];
-      [v20 setAlpha:0.0];
+      whiteBackground = [(CKBrowserDragStickerView *)self whiteBackground];
+      [whiteBackground setAlpha:0.0];
     }
 
     v4 = MEMORY[0x1E69DD250];
@@ -991,11 +991,11 @@ uint64_t __98__CKBrowserDragStickerView_reversePeelAnimationToPoint_forPlacement
     v22 = 3221225472;
     v23 = __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke_2;
     v24 = &unk_1E72EBA18;
-    v25 = self;
+    selfCopy2 = self;
     v5 = &v21;
   }
 
-  [v4 animateWithDuration:v5 animations:{0.2, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30}];
+  [v4 animateWithDuration:v5 animations:{0.2, v21, v22, v23, v24, selfCopy2, v26, v27, v28, v29, selfCopy}];
 }
 
 void __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke(uint64_t a1)
@@ -1055,8 +1055,8 @@ void __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke_2(uint
 
 - (double)dragViewRotation
 {
-  v2 = [(CKBrowserDragStickerView *)self layer];
-  v3 = [v2 valueForKeyPath:@"transform.rotation"];
+  layer = [(CKBrowserDragStickerView *)self layer];
+  v3 = [layer valueForKeyPath:@"transform.rotation"];
   [v3 floatValue];
   v5 = v4;
 
@@ -1092,50 +1092,50 @@ void __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke_2(uint
   return result;
 }
 
-- (id)scaleImage:(id)a3 toSize:(CGSize)a4
+- (id)scaleImage:(id)image toSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v6 = MEMORY[0x1E69DCEB0];
-  v7 = a3;
-  v8 = [v6 mainScreen];
-  [v8 scale];
+  imageCopy = image;
+  mainScreen = [v6 mainScreen];
+  [mainScreen scale];
   v10 = (v9 + v9) * 1.4;
   v14.width = width;
   v14.height = height;
   UIGraphicsBeginImageContextWithOptions(v14, 0, v10);
 
-  [v7 drawInRect:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height}];
+  [imageCopy drawInRect:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height}];
   v11 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v11;
 }
 
-- (id)peelMaskImageFromImage:(id)a3
+- (id)peelMaskImageFromImage:(id)image
 {
   v3 = *MEMORY[0x1E695EFF8];
   v4 = *(MEMORY[0x1E695EFF8] + 8);
-  v5 = a3;
-  [v5 size];
+  imageCopy = image;
+  [imageCopy size];
   v7 = v6;
   v9 = v8;
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v12 = v11;
   v17.width = v7;
   v17.height = v9;
   UIGraphicsBeginImageContextWithOptions(v17, 0, v12);
 
-  v13 = [MEMORY[0x1E69DC888] blackColor];
-  [v13 setFill];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [blackColor setFill];
 
   v18.origin.x = v3;
   v18.origin.y = v4;
   v18.size.width = v7;
   v18.size.height = v9;
   UIRectFillUsingBlendMode(v18, kCGBlendModeCopy);
-  [v5 drawInRect:22 blendMode:v3 alpha:{v4, v7, v9, 1.0}];
+  [imageCopy drawInRect:22 blendMode:v3 alpha:{v4, v7, v9, 1.0}];
 
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -1143,11 +1143,11 @@ void __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke_2(uint
   return v14;
 }
 
-- (void)attachElasticEffectsForLocation:(CGPoint)a3
+- (void)attachElasticEffectsForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [CKElasticFunction functionWithTension:550.0 friction:20.0 initialValue:a3.x];
+  y = location.y;
+  x = location.x;
+  v6 = [CKElasticFunction functionWithTension:550.0 friction:20.0 initialValue:location.x];
   elasticFunctionPositionX = self->_elasticFunctionPositionX;
   self->_elasticFunctionPositionX = v6;
 
@@ -1176,24 +1176,24 @@ void __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke_2(uint
   self->_elasticScaleY = 1.0;
   if (!self->_displayLink)
   {
-    v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v17 = [v16 displayLinkWithTarget:self selector:sel__displayLinkCallback_];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    v17 = [mainScreen displayLinkWithTarget:self selector:sel__displayLinkCallback_];
     displayLink = self->_displayLink;
     self->_displayLink = v17;
 
     v19 = self->_displayLink;
-    v20 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [(CADisplayLink *)v19 addToRunLoop:v20 forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [(CADisplayLink *)v19 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     self->_elasticLastTime = CACurrentMediaTime();
     self->_elasticRemainingTime = 0.0;
   }
 }
 
-- (void)updateElasticEffectsForLocation:(CGPoint)a3
+- (void)updateElasticEffectsForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if ([(CKBrowserDragStickerView *)self isPressed])
   {
     [(CKElasticFunction *)self->_elasticFunctionPositionX setInput:x];
@@ -1234,7 +1234,7 @@ void __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke_2(uint
   self->_elasticFunctionScaleY = 0;
 }
 
-- (void)_displayLinkCallback:(id)a3
+- (void)_displayLinkCallback:(id)callback
 {
   v4 = CACurrentMediaTime();
   elasticLastTime = self->_elasticLastTime;
@@ -1261,12 +1261,12 @@ void __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke_2(uint
   v9 = v8;
   [(CKElasticFunction *)self->_elasticFunctionPositionY output];
   v11 = v10;
-  v12 = [(CKBrowserDragStickerView *)self isScaledDown];
-  v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v13 bounds];
+  isScaledDown = [(CKBrowserDragStickerView *)self isScaledDown];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   Height = CGRectGetHeight(v30);
 
-  if ([(CKBrowserDragStickerView *)self canPeel]&& !v12)
+  if ([(CKBrowserDragStickerView *)self canPeel]&& !isScaledDown)
   {
     v15 = 100.0;
     if (Height < 568.0)
@@ -1326,16 +1326,16 @@ void __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke_2(uint
 
 - (void)updateAnimationTimerObserving
 {
-  v3 = [(CKBrowserDragStickerView *)self dragImageFrames];
-  if ([v3 count] <= 1)
+  dragImageFrames = [(CKBrowserDragStickerView *)self dragImageFrames];
+  if ([dragImageFrames count] <= 1)
   {
   }
 
   else
   {
-    v4 = [(CKBrowserDragStickerView *)self window];
+    window = [(CKBrowserDragStickerView *)self window];
 
-    if (v4)
+    if (window)
     {
       v5 = +[CKImageAnimationTimer sharedTimer];
       [v5 addAnimationTimerObserver:self];
@@ -1348,33 +1348,33 @@ void __51__CKBrowserDragStickerView_setPlusImageViewHidden___block_invoke_2(uint
 LABEL_6:
 }
 
-- (void)animationTimerFired:(double)a3
+- (void)animationTimerFired:(double)fired
 {
-  v5 = [(CKBrowserDragStickerView *)self dragImageFrames];
-  v6 = [v5 count];
+  dragImageFrames = [(CKBrowserDragStickerView *)self dragImageFrames];
+  v6 = [dragImageFrames count];
 
   if (v6 >= 2)
   {
-    v15 = [(CKBrowserDragStickerView *)self dragImageFrames];
-    v7 = [(CKAnimatedImage *)self->_dragImage frameIndexForAnimationTime:a3];
-    v8 = [v15 objectAtIndex:v7];
+    dragImageFrames2 = [(CKBrowserDragStickerView *)self dragImageFrames];
+    v7 = [(CKAnimatedImage *)self->_dragImage frameIndexForAnimationTime:fired];
+    v8 = [dragImageFrames2 objectAtIndex:v7];
     [(CKBrowserDragStickerView *)self setCurrentFrameImage:v8];
-    v9 = [(CKBrowserDragStickerView *)self peelImageLayer];
-    [v9 setContents:{objc_msgSend(v8, "CGImage")}];
+    peelImageLayer = [(CKBrowserDragStickerView *)self peelImageLayer];
+    [peelImageLayer setContents:{objc_msgSend(v8, "CGImage")}];
 
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-    v11 = [(CKBrowserDragStickerView *)self peelMaskImageCache];
-    v12 = [v11 objectForKey:v10];
+    peelMaskImageCache = [(CKBrowserDragStickerView *)self peelMaskImageCache];
+    v12 = [peelMaskImageCache objectForKey:v10];
 
     if (!v12)
     {
       v12 = [(CKBrowserDragStickerView *)self peelMaskImageFromImage:v8];
-      v13 = [(CKBrowserDragStickerView *)self peelMaskImageCache];
-      [v13 setObject:v12 forKey:v10];
+      peelMaskImageCache2 = [(CKBrowserDragStickerView *)self peelMaskImageCache];
+      [peelMaskImageCache2 setObject:v12 forKey:v10];
     }
 
-    v14 = [(CKBrowserDragStickerView *)self peelMaskLayer];
-    [v14 setContents:{objc_msgSend(v12, "CGImage")}];
+    peelMaskLayer = [(CKBrowserDragStickerView *)self peelMaskLayer];
+    [peelMaskLayer setContents:{objc_msgSend(v12, "CGImage")}];
   }
 }
 
@@ -1385,19 +1385,19 @@ LABEL_6:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKBrowserDragStickerView *)self window];
-  [(CKBrowserDragStickerView *)self convertRect:v11 toView:v4, v6, v8, v10];
+  window = [(CKBrowserDragStickerView *)self window];
+  [(CKBrowserDragStickerView *)self convertRect:window toView:v4, v6, v8, v10];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
   v20 = [CKBrowserDraggedSticker alloc];
-  v21 = [(CKBrowserDragStickerView *)self dragImage];
+  dragImage = [(CKBrowserDragStickerView *)self dragImage];
   [(CKBrowserDragStickerView *)self dragViewScale];
   v23 = v22;
   [(CKBrowserDragStickerView *)self rotationAngle];
-  v25 = [(CKBrowserDraggedSticker *)v20 initWithAnimatedImage:v21 frame:v13 scale:v15 rotationAngle:v17, v19, v23, v24];
+  v25 = [(CKBrowserDraggedSticker *)v20 initWithAnimatedImage:dragImage frame:v13 scale:v15 rotationAngle:v17, v19, v23, v24];
 
   return v25;
 }

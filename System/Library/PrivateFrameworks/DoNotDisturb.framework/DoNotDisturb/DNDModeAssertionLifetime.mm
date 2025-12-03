@@ -1,86 +1,86 @@
 @interface DNDModeAssertionLifetime
 + (id)_secureCodingLifetimeClasses;
 + (id)lifetimeForUserRequest;
-+ (id)lifetimeMatchingScheduleWithIdentifier:(id)a3;
-+ (id)lifetimeUntilEndOfCalendarEventWithUniqueID:(id)a3 occurrenceDate:(id)a4;
-+ (id)lifetimeUntilEndOfScheduleWithIdentifier:(id)a3;
-+ (id)lifetimeWithCalendarEventUniqueID:(id)a3 occurrenceDate:(id)a4;
-+ (id)lifetimeWithDateInterval:(id)a3;
-+ (id)lifetimeWithDuration:(double)a3;
-+ (id)lifetimeWithExplicitRegion:(id)a3;
-- (DNDModeAssertionLifetime)initWithCoder:(id)a3;
++ (id)lifetimeMatchingScheduleWithIdentifier:(id)identifier;
++ (id)lifetimeUntilEndOfCalendarEventWithUniqueID:(id)d occurrenceDate:(id)date;
++ (id)lifetimeUntilEndOfScheduleWithIdentifier:(id)identifier;
++ (id)lifetimeWithCalendarEventUniqueID:(id)d occurrenceDate:(id)date;
++ (id)lifetimeWithDateInterval:(id)interval;
++ (id)lifetimeWithDuration:(double)duration;
++ (id)lifetimeWithExplicitRegion:(id)region;
+- (DNDModeAssertionLifetime)initWithCoder:(id)coder;
 - (id)_init;
 @end
 
 @implementation DNDModeAssertionLifetime
 
-+ (id)lifetimeWithDuration:(double)a3
++ (id)lifetimeWithDuration:(double)duration
 {
-  v4 = fmin(a3, 86400.0);
+  v4 = fmin(duration, 86400.0);
   v5 = objc_alloc(MEMORY[0x277CCA970]);
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v5 initWithStartDate:v6 duration:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [v5 initWithStartDate:date duration:v4];
 
-  v8 = [a1 lifetimeWithDateInterval:v7];
+  v8 = [self lifetimeWithDateInterval:v7];
 
   return v8;
 }
 
-+ (id)lifetimeWithDateInterval:(id)a3
++ (id)lifetimeWithDateInterval:(id)interval
 {
-  v3 = a3;
-  v4 = [[DNDModeAssertionDateIntervalLifetime alloc] initWithDateInterval:v3];
+  intervalCopy = interval;
+  v4 = [[DNDModeAssertionDateIntervalLifetime alloc] initWithDateInterval:intervalCopy];
 
   return v4;
 }
 
-+ (id)lifetimeUntilEndOfCalendarEventWithUniqueID:(id)a3 occurrenceDate:(id)a4
++ (id)lifetimeUntilEndOfCalendarEventWithUniqueID:(id)d occurrenceDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[DNDModeAssertionCalendarEventLifetime alloc] initWithEventUniqueID:v6 occurrenceDate:v5 onlyDuringEvent:0];
+  dateCopy = date;
+  dCopy = d;
+  v7 = [[DNDModeAssertionCalendarEventLifetime alloc] initWithEventUniqueID:dCopy occurrenceDate:dateCopy onlyDuringEvent:0];
 
   return v7;
 }
 
-+ (id)lifetimeWithCalendarEventUniqueID:(id)a3 occurrenceDate:(id)a4
++ (id)lifetimeWithCalendarEventUniqueID:(id)d occurrenceDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[DNDModeAssertionCalendarEventLifetime alloc] initWithEventUniqueID:v6 occurrenceDate:v5 onlyDuringEvent:1];
+  dateCopy = date;
+  dCopy = d;
+  v7 = [[DNDModeAssertionCalendarEventLifetime alloc] initWithEventUniqueID:dCopy occurrenceDate:dateCopy onlyDuringEvent:1];
 
   return v7;
 }
 
-+ (id)lifetimeMatchingScheduleWithIdentifier:(id)a3
++ (id)lifetimeMatchingScheduleWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[DNDModeAssertionScheduleLifetime alloc] initWithScheduleIdentifier:v3 behavior:0];
+  identifierCopy = identifier;
+  v4 = [[DNDModeAssertionScheduleLifetime alloc] initWithScheduleIdentifier:identifierCopy behavior:0];
 
   return v4;
 }
 
-+ (id)lifetimeUntilEndOfScheduleWithIdentifier:(id)a3
++ (id)lifetimeUntilEndOfScheduleWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[DNDModeAssertionScheduleLifetime alloc] initWithScheduleIdentifier:v3 behavior:1];
+  identifierCopy = identifier;
+  v4 = [[DNDModeAssertionScheduleLifetime alloc] initWithScheduleIdentifier:identifierCopy behavior:1];
 
   return v4;
 }
 
-+ (id)lifetimeWithExplicitRegion:(id)a3
++ (id)lifetimeWithExplicitRegion:(id)region
 {
-  v3 = a3;
-  v4 = [[DNDModeAssertionExplicitRegionLifetime alloc] initWithRegion:v3];
+  regionCopy = region;
+  v4 = [[DNDModeAssertionExplicitRegionLifetime alloc] initWithRegion:regionCopy];
 
   return v4;
 }
 
 + (id)lifetimeForUserRequest
 {
-  v2 = [(DNDModeAssertionLifetime *)[DNDModeAssertionUserRequestedLifetime alloc] _init];
+  _init = [(DNDModeAssertionLifetime *)[DNDModeAssertionUserRequestedLifetime alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 - (id)_init
@@ -90,7 +90,7 @@
   return [(DNDModeAssertionLifetime *)&v3 init];
 }
 
-- (DNDModeAssertionLifetime)initWithCoder:(id)a3
+- (DNDModeAssertionLifetime)initWithCoder:(id)coder
 {
   [(DNDModeAssertionLifetime *)self doesNotRecognizeSelector:a2];
 

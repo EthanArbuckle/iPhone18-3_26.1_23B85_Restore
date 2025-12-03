@@ -1,15 +1,15 @@
 @interface PodcastsContextUIButton
 - (NSArray)accessibilityCustomActions;
-- (_TtC8ShelfKit23PodcastsContextUIButton)initWithCoder:(id)a3;
-- (_TtC8ShelfKit23PodcastsContextUIButton)initWithFrame:(CGRect)a3;
-- (void)setAccessibilityCustomActions:(id)a3;
+- (_TtC8ShelfKit23PodcastsContextUIButton)initWithCoder:(id)coder;
+- (_TtC8ShelfKit23PodcastsContextUIButton)initWithFrame:(CGRect)frame;
+- (void)setAccessibilityCustomActions:(id)actions;
 @end
 
 @implementation PodcastsContextUIButton
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   sub_32905C();
   v4 = v3;
 
@@ -27,20 +27,20 @@
   return v5.super.isa;
 }
 
-- (void)setAccessibilityCustomActions:(id)a3
+- (void)setAccessibilityCustomActions:(id)actions
 {
-  isa = a3;
-  if (a3)
+  isa = actions;
+  if (actions)
   {
     sub_36174(0, &qword_501A08);
     sub_3ED584();
-    v5 = self;
+    selfCopy = self;
     isa = sub_3ED574().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -48,23 +48,23 @@
   [(PodcastsContextUIButton *)&v7 setAccessibilityCustomActions:isa];
 }
 
-- (_TtC8ShelfKit23PodcastsContextUIButton)initWithFrame:(CGRect)a3
+- (_TtC8ShelfKit23PodcastsContextUIButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PodcastsContextUIButton();
   return [(PodcastsContextUIButton *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC8ShelfKit23PodcastsContextUIButton)initWithCoder:(id)a3
+- (_TtC8ShelfKit23PodcastsContextUIButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PodcastsContextUIButton();
-  v4 = a3;
-  v5 = [(PodcastsContextUIButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PodcastsContextUIButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

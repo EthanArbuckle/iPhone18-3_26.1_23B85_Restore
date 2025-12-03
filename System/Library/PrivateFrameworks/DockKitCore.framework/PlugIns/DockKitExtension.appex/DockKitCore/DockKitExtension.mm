@@ -1,14 +1,14 @@
 @interface DockKitExtension
 - (_TtC16DockKitExtension16DockKitExtension)init;
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DockKitExtension
 
 - (id)attachmentList
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100002018();
 
   if (v3)
@@ -24,13 +24,13 @@
   return v4.super.isa;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = self;
-  v4 = [(DockKitExtension *)v3 attachmentList];
-  if (v4)
+  selfCopy = self;
+  attachmentList = [(DockKitExtension *)selfCopy attachmentList];
+  if (attachmentList)
   {
-    v5 = v4;
+    v5 = attachmentList;
     sub_100007890();
 
     v6.super.isa = sub_100007880().super.isa;

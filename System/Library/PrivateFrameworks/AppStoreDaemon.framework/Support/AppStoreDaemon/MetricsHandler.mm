@@ -1,12 +1,12 @@
 @interface MetricsHandler
-- (BOOL)shouldEnableSystemAppsForAppUsageType:(int64_t)a3;
+- (BOOL)shouldEnableSystemAppsForAppUsageType:(int64_t)type;
 - (Class)appEventEntityClass;
-- (id)createAppEventsForBundleIDs:(id)a3 eventType:(unsigned __int8)a4 installType:(unsigned __int8)a5 connection:(id)a6;
-- (id)createAppEventsWithLaunchEvents:(id)a3;
-- (id)getAppUsageSessionForBundleID:(id)a3;
-- (id)getCrashEventsSinceDate:(id)a3;
-- (void)recordAppEventsForBundleIDs:(id)a3 eventType:(unsigned __int8)a4 installType:(unsigned __int8)a5;
-- (void)recordLaunches:(id)a3;
+- (id)createAppEventsForBundleIDs:(id)ds eventType:(unsigned __int8)type installType:(unsigned __int8)installType connection:(id)connection;
+- (id)createAppEventsWithLaunchEvents:(id)events;
+- (id)getAppUsageSessionForBundleID:(id)d;
+- (id)getCrashEventsSinceDate:(id)date;
+- (void)recordAppEventsForBundleIDs:(id)ds eventType:(unsigned __int8)type installType:(unsigned __int8)installType;
+- (void)recordLaunches:(id)launches;
 @end
 
 @implementation MetricsHandler
@@ -26,12 +26,12 @@
   return v2;
 }
 
-- (id)createAppEventsForBundleIDs:(id)a3 eventType:(unsigned __int8)a4 installType:(unsigned __int8)a5 connection:(id)a6
+- (id)createAppEventsForBundleIDs:(id)ds eventType:(unsigned __int8)type installType:(unsigned __int8)installType connection:(id)connection
 {
-  v54 = a5;
-  v7 = a4;
-  v9 = a3;
-  v53 = a6;
+  installTypeCopy = installType;
+  typeCopy = type;
+  dsCopy = ds;
+  connectionCopy = connection;
   v56 = +[NSMutableArray array];
   v52 = +[LSDatabaseContext sharedDatabaseContext];
   v51 = [v52 startAccessingReturningError:0];
@@ -39,7 +39,7 @@
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v9;
+  obj = dsCopy;
   v10 = [obj countByEnumeratingWithState:&v61 objects:v75 count:16];
   if (v10)
   {
@@ -47,7 +47,7 @@
     v59 = *v62;
     *&v11 = 138412546;
     v50 = v11;
-    v55 = v7;
+    v55 = typeCopy;
     do
     {
       v13 = 0;
@@ -61,7 +61,7 @@
 
         v14 = *(*(&v61 + 1) + 8 * v13);
         context = objc_autoreleasePoolPush();
-        if (v7 == 3)
+        if (typeCopy == 3)
         {
           if (self)
           {
@@ -82,12 +82,12 @@ LABEL_19:
             v25 = sub_1001FBCE4([AppEvent alloc], v17);
             if (v25)
             {
-              v26 = [NSNumber numberWithUnsignedChar:v7];
+              v26 = [NSNumber numberWithUnsignedChar:typeCopy];
               sub_10023E000(v25, v26, @"event_type");
 
-              if (v7 == 1)
+              if (typeCopy == 1)
               {
-                v27 = [NSNumber numberWithUnsignedChar:v54];
+                v27 = [NSNumber numberWithUnsignedChar:installTypeCopy];
                 sub_10023E000(v25, v27, @"event_subtype");
               }
 
@@ -104,11 +104,11 @@ LABEL_19:
                   v31 = ASDLogHandleForCategory();
                   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
                   {
-                    v32 = [(MetricsHandler *)self logKey];
-                    v33 = sub_1001FC658(AppEvent, v7);
+                    logKey = [(MetricsHandler *)self logKey];
+                    v33 = sub_1001FC658(AppEvent, typeCopy);
                     v34 = sub_100228834(v28);
                     *buf = 138413058;
-                    v66 = v32;
+                    v66 = logKey;
                     v67 = 2114;
                     v68 = v33;
                     v69 = 2114;
@@ -117,7 +117,7 @@ LABEL_19:
                     v72 = v34;
                     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "[%@] [%{public}@] [%{public}@] Using generated deviceVendorID: %{public}@", buf, 0x2Au);
 
-                    v7 = v55;
+                    typeCopy = v55;
                   }
                 }
 
@@ -128,13 +128,13 @@ LABEL_19:
               v35 = ASDLogHandleForCategory();
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
               {
-                v36 = [(MetricsHandler *)self logKey];
-                v37 = sub_1001FC658(AppEvent, v7);
+                logKey2 = [(MetricsHandler *)self logKey];
+                v37 = sub_1001FC658(AppEvent, typeCopy);
                 v38 = sub_100382084(v17);
                 v39 = sub_100382830(v17);
                 v40 = sub_1003826A0(v17);
                 *buf = 138413314;
-                v66 = v36;
+                v66 = logKey2;
                 v67 = 2114;
                 v68 = v37;
                 v69 = 2114;
@@ -145,7 +145,7 @@ LABEL_19:
                 v74 = v40;
                 _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "[%@] [%{public}@] [%{public}@] Created app event with version: %{public}@ bundleVersion: %{public}@", buf, 0x34u);
 
-                v7 = v55;
+                typeCopy = v55;
                 v12 = v57;
               }
             }
@@ -156,10 +156,10 @@ LABEL_19:
             v25 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
             {
-              v41 = [(MetricsHandler *)self logKey];
-              v42 = sub_1001FC658(AppEvent, v7);
+              logKey3 = [(MetricsHandler *)self logKey];
+              v42 = sub_1001FC658(AppEvent, typeCopy);
               *buf = 138413058;
-              v66 = v41;
+              v66 = logKey3;
               v67 = 2114;
               v68 = v42;
               v69 = 2114;
@@ -194,8 +194,8 @@ LABEL_19:
               if (!v18)
               {
                 v19 = +[BagService appstoredService];
-                v20 = [v19 lastBag];
-                v21 = [v20 itemIDForSystemAppWithBundleID:v14];
+                lastBag = [v19 lastBag];
+                v21 = [lastBag itemIDForSystemAppWithBundleID:v14];
 
                 if (v21)
                 {
@@ -203,14 +203,14 @@ LABEL_19:
                   v22 = ASDLogHandleForCategory();
                   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
                   {
-                    v23 = sub_1001FC658(AppEvent, v7);
-                    v24 = [(MetricsHandler *)self logKey];
+                    v23 = sub_1001FC658(AppEvent, typeCopy);
+                    logKey4 = [(MetricsHandler *)self logKey];
                     *buf = 138413058;
                     v66 = v23;
                     v67 = 2114;
                     v68 = v14;
                     v69 = 2114;
-                    v70 = v24;
+                    v70 = logKey4;
                     v71 = 2114;
                     v72 = v21;
                     _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "[%@] [%{public}@] [%{public}@] Mapped itemID: %{public}@ to system app", buf, 0x2Au);
@@ -222,12 +222,12 @@ LABEL_19:
                   v22 = ASDLogHandleForCategory();
                   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
                   {
-                    v45 = [(MetricsHandler *)self logKey];
-                    v46 = [0 unsignedLongLongValue];
+                    logKey5 = [(MetricsHandler *)self logKey];
+                    unsignedLongLongValue = [0 unsignedLongLongValue];
                     *buf = v50;
-                    v66 = v45;
+                    v66 = logKey5;
                     v67 = 2048;
-                    v68 = v46;
+                    v68 = unsignedLongLongValue;
                     _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "[%@] Error looking up system apps with item ID %llu", buf, 0x16u);
                   }
                 }
@@ -243,10 +243,10 @@ LABEL_19:
         v25 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [(MetricsHandler *)self logKey];
-          v44 = sub_1001FC658(AppEvent, v7);
+          logKey6 = [(MetricsHandler *)self logKey];
+          v44 = sub_1001FC658(AppEvent, typeCopy);
           *buf = 138412802;
-          v66 = v43;
+          v66 = logKey6;
           v67 = 2114;
           v68 = v44;
           v69 = 2114;
@@ -281,15 +281,15 @@ LABEL_39:
   return v48;
 }
 
-- (id)createAppEventsWithLaunchEvents:(id)a3
+- (id)createAppEventsWithLaunchEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v68 = +[NSMutableArray array];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v5 = v4;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v69 objects:v85 count:16];
   if (v6)
   {
@@ -297,7 +297,7 @@ LABEL_39:
     v8 = *v70;
     v65 = v5;
     v67 = *v70;
-    v64 = self;
+    selfCopy = self;
     do
     {
       v9 = 0;
@@ -342,7 +342,7 @@ LABEL_39:
             goto LABEL_57;
           }
 
-          v32 = [(MetricsHandler *)self logKey];
+          logKey = [(MetricsHandler *)self logKey];
           if (v10)
           {
             v33 = *(v10 + 40);
@@ -355,7 +355,7 @@ LABEL_39:
 
           v34 = v33;
           *buf = 138412546;
-          v74 = v32;
+          v74 = logKey;
           v75 = 2114;
           v76 = v34;
           v35 = v17;
@@ -374,7 +374,7 @@ LABEL_40:
             goto LABEL_57;
           }
 
-          v32 = [(MetricsHandler *)self logKey];
+          logKey = [(MetricsHandler *)self logKey];
           if (v10)
           {
             v37 = *(v10 + 40);
@@ -387,7 +387,7 @@ LABEL_40:
 
           v34 = v37;
           *buf = 138412546;
-          v74 = v32;
+          v74 = logKey;
           v75 = 2114;
           v76 = v34;
           v35 = v17;
@@ -465,8 +465,8 @@ LABEL_40:
           sub_10023E000(v17, v26, @"launch_end_time");
         }
 
-        v27 = [(MetricsHandler *)self includeClipDetails];
-        if (v10 && v27 && *(v10 + 10) == 1)
+        includeClipDetails = [(MetricsHandler *)self includeClipDetails];
+        if (v10 && includeClipDetails && *(v10 + 10) == 1)
         {
           sub_10023E000(v17, &off_100547ED8, @"is_clip");
           v28 = *(v10 + 96);
@@ -527,11 +527,11 @@ LABEL_42:
             v48 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
             {
-              v49 = [(MetricsHandler *)self logKey];
+              logKey2 = [(MetricsHandler *)self logKey];
               v50 = sub_1001FCF14(v17);
               v51 = sub_100228834(v45);
               *buf = 138412802;
-              v74 = v49;
+              v74 = logKey2;
               v75 = 2114;
               v76 = v50;
               v77 = 2114;
@@ -548,7 +548,7 @@ LABEL_42:
         v52 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
-          v53 = [(MetricsHandler *)self logKey];
+          logKey3 = [(MetricsHandler *)self logKey];
           v54 = sub_1001FC658(AppEvent, 2u);
           v55 = sub_100382084(v15);
           v56 = sub_100382830(v15);
@@ -565,7 +565,7 @@ LABEL_42:
           }
 
           *buf = 138413570;
-          v74 = v53;
+          v74 = logKey3;
           v75 = 2114;
           v76 = v54;
           v77 = 2114;
@@ -580,7 +580,7 @@ LABEL_42:
 
           v5 = v65;
           v7 = v66;
-          self = v64;
+          self = selfCopy;
         }
 
         v8 = v67;
@@ -602,9 +602,9 @@ LABEL_57:
   return v62;
 }
 
-- (id)getAppUsageSessionForBundleID:(id)a3
+- (id)getAppUsageSessionForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -616,7 +616,7 @@ LABEL_57:
   v21[1] = 3221225472;
   v21[2] = sub_10030A380;
   v21[3] = &unk_10051C738;
-  v6 = v4;
+  v6 = dCopy;
   v22 = v6;
   v23 = &v24;
   [v5 readUsingSession:v21];
@@ -627,10 +627,10 @@ LABEL_57:
     v8 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(MetricsHandler *)self logKey];
+      logKey = [(MetricsHandler *)self logKey];
       v10 = sub_1002288EC(v25[5]);
       *buf = 138412802;
-      *&buf[4] = v9;
+      *&buf[4] = logKey;
       *&buf[12] = 2114;
       *&buf[14] = v6;
       *&buf[22] = 1024;
@@ -651,7 +651,7 @@ LABEL_57:
     v20 = buf;
     v13 = v11;
     v17 = v13;
-    v18 = self;
+    selfCopy = self;
     v19 = v6;
     [v12 modifyUsingTransaction:v16];
 
@@ -670,17 +670,17 @@ LABEL_57:
   return v14;
 }
 
-- (id)getCrashEventsSinceDate:(id)a3
+- (id)getCrashEventsSinceDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
     v5 = objc_opt_new();
     v6 = +[_TtC9appstored16CrashCoordinator shared];
-    v7 = [(MetricsHandler *)self logKey];
-    v8 = [v6 getBiomeCrashesWithLogKey:v7 startDate:v4];
+    logKey = [(MetricsHandler *)self logKey];
+    v8 = [v6 getBiomeCrashesWithLogKey:logKey startDate:dateCopy];
 
-    v39 = v4;
+    v39 = dateCopy;
     if (self)
     {
       currentApps = self->_currentApps;
@@ -703,7 +703,7 @@ LABEL_57:
       v12 = *v47;
       v43 = *v47;
       v41 = v5;
-      v42 = self;
+      selfCopy = self;
       v40 = v11;
       do
       {
@@ -716,8 +716,8 @@ LABEL_57:
           }
 
           v14 = *(*(&v46 + 1) + 8 * v13);
-          v15 = [v14 bundleID];
-          v16 = [(NSDictionary *)v10 objectForKeyedSubscript:v15];
+          bundleID = [v14 bundleID];
+          v16 = [(NSDictionary *)v10 objectForKeyedSubscript:bundleID];
 
           if (!v16)
           {
@@ -727,15 +727,15 @@ LABEL_57:
               goto LABEL_24;
             }
 
-            v31 = [(MetricsHandler *)self logKey];
+            logKey2 = [(MetricsHandler *)self logKey];
             v32 = sub_1001FC658(AppEvent, 0);
-            v33 = [v14 bundleID];
+            bundleID2 = [v14 bundleID];
             *buf = 138412802;
-            v51 = v31;
+            v51 = logKey2;
             v52 = 2114;
             v53 = v32;
             v54 = 2114;
-            v55 = v33;
+            v55 = bundleID2;
             v34 = v18;
             v35 = "[%@] [%{public}@] [%{public}@] Could not find app metadata";
 LABEL_27:
@@ -753,15 +753,15 @@ LABEL_27:
               goto LABEL_24;
             }
 
-            v31 = [(MetricsHandler *)self logKey];
+            logKey2 = [(MetricsHandler *)self logKey];
             v32 = sub_1001FC658(AppEvent, 0);
-            v33 = [v14 bundleID];
+            bundleID2 = [v14 bundleID];
             *buf = 138412802;
-            v51 = v31;
+            v51 = logKey2;
             v52 = 2114;
             v53 = v32;
             v54 = 2114;
-            v55 = v33;
+            v55 = bundleID2;
             v34 = v18;
             v35 = "[%@] [%{public}@] [%{public}@] Non candidate app metadata";
             goto LABEL_27;
@@ -772,41 +772,41 @@ LABEL_27:
           if (v17)
           {
             sub_10023E000(v17, &off_100547EF0, @"event_type");
-            v19 = [v14 bundleVersion];
+            bundleVersion = [v14 bundleVersion];
 
-            if (v19)
+            if (bundleVersion)
             {
-              v20 = [v14 bundleVersion];
-              sub_10023E000(v18, v20, @"bundle_version");
+              bundleVersion2 = [v14 bundleVersion];
+              sub_10023E000(v18, bundleVersion2, @"bundle_version");
             }
 
-            v21 = [v14 appVersion];
+            appVersion = [v14 appVersion];
 
-            if (v21)
+            if (appVersion)
             {
-              v22 = [v14 appVersion];
-              sub_10023E000(v18, v22, @"short_version");
+              appVersion2 = [v14 appVersion];
+              sub_10023E000(v18, appVersion2, @"short_version");
             }
 
-            v23 = [v14 date];
+            date = [v14 date];
 
-            if (v23)
+            if (date)
             {
-              v24 = [v14 date];
-              sub_10023E000(v18, v24, @"launch_time");
+              date2 = [v14 date];
+              sub_10023E000(v18, date2, @"launch_time");
             }
 
             v25 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
-              v26 = [(MetricsHandler *)self logKey];
+              logKey3 = [(MetricsHandler *)self logKey];
               v44 = sub_1001FC658(AppEvent, 0);
               v27 = sub_1001FCF14(v18);
               v28 = sub_1001FD3EC(v18);
               sub_1001FCF4C(v18);
               v30 = v29 = v10;
               *buf = 138413314;
-              v51 = v26;
+              v51 = logKey3;
               v52 = 2114;
               v53 = v44;
               v54 = 2114;
@@ -822,7 +822,7 @@ LABEL_27:
               v12 = v43;
 
               v5 = v41;
-              self = v42;
+              self = selfCopy;
             }
 
             [v5 addObject:v18];
@@ -842,7 +842,7 @@ LABEL_24:
     }
 
     v37 = [v5 copy];
-    v4 = v39;
+    dateCopy = v39;
   }
 
   else
@@ -853,30 +853,30 @@ LABEL_24:
   return v37;
 }
 
-- (void)recordAppEventsForBundleIDs:(id)a3 eventType:(unsigned __int8)a4 installType:(unsigned __int8)a5
+- (void)recordAppEventsForBundleIDs:(id)ds eventType:(unsigned __int8)type installType:(unsigned __int8)installType
 {
-  v8 = a3;
-  v9 = [(MetricsHandler *)self appEventEntityClass];
-  if (v9)
+  dsCopy = ds;
+  appEventEntityClass = [(MetricsHandler *)self appEventEntityClass];
+  if (appEventEntityClass)
   {
-    v10 = v9;
+    v10 = appEventEntityClass;
     v11 = sub_10036C90C();
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10030AE10;
     v12[3] = &unk_100522A80;
     v12[4] = self;
-    v15 = a4;
-    v16 = a5;
-    v13 = v8;
+    typeCopy = type;
+    installTypeCopy = installType;
+    v13 = dsCopy;
     v14 = v10;
     [v11 modifyUsingTransaction:v12];
   }
 }
 
-- (void)recordLaunches:(id)a3
+- (void)recordLaunches:(id)launches
 {
-  v4 = [(MetricsHandler *)self createAppEventsWithLaunchEvents:a3];
+  v4 = [(MetricsHandler *)self createAppEventsWithLaunchEvents:launches];
   if ([v4 count])
   {
     v5 = sub_10036C90C();
@@ -885,28 +885,28 @@ LABEL_24:
     v6[2] = sub_10030B07C;
     v6[3] = &unk_10051C838;
     v7 = v4;
-    v8 = self;
+    selfCopy = self;
     [v5 modifyUsingTransaction:v6];
   }
 }
 
-- (BOOL)shouldEnableSystemAppsForAppUsageType:(int64_t)a3
+- (BOOL)shouldEnableSystemAppsForAppUsageType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = 1;
     v4 = off_100524090;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 0;
     v4 = off_100524010;
 LABEL_5:
     v5 = +[BagService appstoredService];
-    v6 = [v5 lastBag];
-    v7 = [v6 BOOLForKey:*v4 defaultValue:v3];
+    lastBag = [v5 lastBag];
+    v7 = [lastBag BOOLForKey:*v4 defaultValue:v3];
 
     return v7;
   }

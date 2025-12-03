@@ -1,22 +1,22 @@
 @interface MRNowPlayingPlayerPathInvalidationHandler
-- (MRNowPlayingPlayerPathInvalidationHandler)initWithPlayerPath:(id)a3 invalidateImmediatlyIfInvalid:(BOOL)a4 queue:(id)a5 invalidationCallback:(id)a6;
+- (MRNowPlayingPlayerPathInvalidationHandler)initWithPlayerPath:(id)path invalidateImmediatlyIfInvalid:(BOOL)invalid queue:(id)queue invalidationCallback:(id)callback;
 @end
 
 @implementation MRNowPlayingPlayerPathInvalidationHandler
 
-- (MRNowPlayingPlayerPathInvalidationHandler)initWithPlayerPath:(id)a3 invalidateImmediatlyIfInvalid:(BOOL)a4 queue:(id)a5 invalidationCallback:(id)a6
+- (MRNowPlayingPlayerPathInvalidationHandler)initWithPlayerPath:(id)path invalidateImmediatlyIfInvalid:(BOOL)invalid queue:(id)queue invalidationCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  pathCopy = path;
+  queueCopy = queue;
+  callbackCopy = callback;
   v20.receiver = self;
   v20.super_class = MRNowPlayingPlayerPathInvalidationHandler;
   v13 = [(MRNowPlayingPlayerPathInvalidationHandler *)&v20 init];
   if (v13)
   {
-    if (v10)
+    if (pathCopy)
     {
-      v14 = [v10 copy];
+      v14 = [pathCopy copy];
     }
 
     else
@@ -27,15 +27,15 @@
     playerPath = v13->_playerPath;
     v13->_playerPath = v14;
 
-    if (!v11)
+    if (!queueCopy)
     {
-      v11 = MEMORY[0x1E69E96A0];
+      queueCopy = MEMORY[0x1E69E96A0];
       v16 = MEMORY[0x1E69E96A0];
     }
 
-    v13->_invalidateImmediatlyIfInvalid = a4;
-    objc_storeStrong(&v13->_queue, v11);
-    v17 = [v12 copy];
+    v13->_invalidateImmediatlyIfInvalid = invalid;
+    objc_storeStrong(&v13->_queue, queueCopy);
+    v17 = [callbackCopy copy];
     callback = v13->_callback;
     v13->_callback = v17;
   }

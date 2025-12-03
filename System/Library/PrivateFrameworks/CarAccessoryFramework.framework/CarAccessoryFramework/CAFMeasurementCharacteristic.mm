@@ -1,5 +1,5 @@
 @interface CAFMeasurementCharacteristic
-+ (id)_sharedStringFromMeasurement:(id)a3;
++ (id)_sharedStringFromMeasurement:(id)measurement;
 + (id)secondaryCharacteristicFormats;
 + (void)load;
 - (CAFMeasurementRange)range;
@@ -7,9 +7,9 @@
 - (NSNumber)numberValue;
 - (NSUnit)unit;
 - (id)formattedValue;
-- (void)_setNumberValue:(id)a3;
-- (void)setMeasurementValue:(id)a3;
-- (void)setNumberValue:(id)a3;
+- (void)_setNumberValue:(id)value;
+- (void)setMeasurementValue:(id)value;
+- (void)setNumberValue:(id)value;
 - (void)unit;
 @end
 
@@ -17,7 +17,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFMeasurementCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -25,10 +25,10 @@
 - (NSNumber)numberValue
 {
   objc_opt_class();
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  value = [(CAFCharacteristic *)self value];
+  if (value && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = value;
   }
 
   else
@@ -39,90 +39,90 @@
   return v4;
 }
 
-- (void)setNumberValue:(id)a3
+- (void)setNumberValue:(id)value
 {
   v4 = MEMORY[0x277CCAB10];
-  v5 = a3;
+  valueCopy = value;
   v6 = [v4 alloc];
-  [v5 doubleValue];
+  [valueCopy doubleValue];
   v8 = v7;
 
-  v9 = [(CAFMeasurementCharacteristic *)self unit];
-  v12 = [v6 initWithDoubleValue:v9 unit:v8];
+  unit = [(CAFMeasurementCharacteristic *)self unit];
+  v12 = [v6 initWithDoubleValue:unit unit:v8];
 
-  v10 = [(CAFMeasurementCharacteristic *)self unit];
-  v11 = [v12 measurementByConvertingToUnit:v10];
+  unit2 = [(CAFMeasurementCharacteristic *)self unit];
+  v11 = [v12 measurementByConvertingToUnit:unit2];
   [(CAFMeasurementCharacteristic *)self _setNumberValue:v11];
 }
 
 - (NSMeasurement)measurementValue
 {
   v3 = objc_alloc(MEMORY[0x277CCAB10]);
-  v4 = [(CAFMeasurementCharacteristic *)self numberValue];
-  [v4 doubleValue];
+  numberValue = [(CAFMeasurementCharacteristic *)self numberValue];
+  [numberValue doubleValue];
   v6 = v5;
-  v7 = [(CAFMeasurementCharacteristic *)self unit];
-  v8 = [v3 initWithDoubleValue:v7 unit:v6];
+  unit = [(CAFMeasurementCharacteristic *)self unit];
+  v8 = [v3 initWithDoubleValue:unit unit:v6];
 
   return v8;
 }
 
-- (void)setMeasurementValue:(id)a3
+- (void)setMeasurementValue:(id)value
 {
-  v4 = a3;
-  v6 = [(CAFMeasurementCharacteristic *)self unit];
-  v5 = [v4 measurementByConvertingToUnit:v6];
+  valueCopy = value;
+  unit = [(CAFMeasurementCharacteristic *)self unit];
+  v5 = [valueCopy measurementByConvertingToUnit:unit];
 
   [(CAFMeasurementCharacteristic *)self _setNumberValue:v5];
 }
 
-- (void)_setNumberValue:(id)a3
+- (void)_setNumberValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CAFMeasurementCharacteristic *)self range];
-  v6 = [v5 valueIsInRange:v4];
+  valueCopy = value;
+  range = [(CAFMeasurementCharacteristic *)self range];
+  v6 = [range valueIsInRange:valueCopy];
 
   if (v6)
   {
-    v7 = [(CAFMeasurementCharacteristic *)self range];
-    v8 = [v7 valueRoundedToNearestStepValue:v4];
-    v9 = [v8 numberValue];
-    [(CAFCharacteristic *)self setValue:v9];
+    range2 = [(CAFMeasurementCharacteristic *)self range];
+    v8 = [range2 valueRoundedToNearestStepValue:valueCopy];
+    numberValue = [v8 numberValue];
+    [(CAFCharacteristic *)self setValue:numberValue];
   }
 
   else
   {
     v10 = MEMORY[0x277CCA9B8];
-    v11 = [v4 numberValue];
-    v12 = [(CAFMeasurementCharacteristic *)self range];
-    v13 = [v10 CAF_outOfRangeErrorForValue:v11 range:v12];
+    numberValue2 = [valueCopy numberValue];
+    range3 = [(CAFMeasurementCharacteristic *)self range];
+    v13 = [v10 CAF_outOfRangeErrorForValue:numberValue2 range:range3];
     [(CAFCharacteristic *)self setError:v13];
 
-    v7 = CAFGeneralLogging();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    range2 = CAFGeneralLogging();
+    if (os_log_type_enabled(range2, OS_LOG_TYPE_ERROR))
     {
-      [(CAFMeasurementCharacteristic *)self _setNumberValue:v4];
+      [(CAFMeasurementCharacteristic *)self _setNumberValue:valueCopy];
     }
   }
 }
 
 - (NSUnit)unit
 {
-  v3 = [(CAFCharacteristic *)self metaData];
-  v4 = [v3 units];
+  metaData = [(CAFCharacteristic *)self metaData];
+  units = [metaData units];
 
-  if (v4)
+  if (units)
   {
-    v5 = [v4 unsignedIntValue];
+    unsignedIntValue = [units unsignedIntValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntValue = 0;
   }
 
-  v6 = v5;
-  v7 = NSUnitFromCAFUnitType(v5);
+  v6 = unsignedIntValue;
+  v7 = NSUnitFromCAFUnitType(unsignedIntValue);
   if (!v7)
   {
     v8 = CAFGeneralLogging();
@@ -152,9 +152,9 @@
   if (!range)
   {
     v4 = [CAFMeasurementRange alloc];
-    v5 = [(CAFCharacteristic *)self metaData];
-    v6 = [(CAFMeasurementCharacteristic *)self unit];
-    v7 = [(CAFMeasurementRange *)v4 initWithMetaData:v5 unit:v6];
+    metaData = [(CAFCharacteristic *)self metaData];
+    unit = [(CAFMeasurementCharacteristic *)self unit];
+    v7 = [(CAFMeasurementRange *)v4 initWithMetaData:metaData unit:unit];
     v8 = self->_range;
     self->_range = v7;
 
@@ -164,17 +164,17 @@
   return range;
 }
 
-+ (id)_sharedStringFromMeasurement:(id)a3
++ (id)_sharedStringFromMeasurement:(id)measurement
 {
   v3 = _sharedStringFromMeasurement__onceToken;
-  v4 = a3;
+  measurementCopy = measurement;
   if (v3 != -1)
   {
     +[CAFMeasurementCharacteristic _sharedStringFromMeasurement:];
   }
 
   os_unfair_lock_lock(&_sharedStringFromMeasurement__sharedFormatterLock);
-  v5 = [_sharedStringFromMeasurement__sharedFormatter stringFromMeasurement:v4];
+  v5 = [_sharedStringFromMeasurement__sharedFormatter stringFromMeasurement:measurementCopy];
 
   os_unfair_lock_unlock(&_sharedStringFromMeasurement__sharedFormatterLock);
 
@@ -195,8 +195,8 @@ uint64_t __61__CAFMeasurementCharacteristic__sharedStringFromMeasurement___block
 
 - (id)formattedValue
 {
-  v2 = [(CAFMeasurementCharacteristic *)self measurementValue];
-  v3 = [CAFMeasurementCharacteristic _sharedStringFromMeasurement:v2];
+  measurementValue = [(CAFMeasurementCharacteristic *)self measurementValue];
+  v3 = [CAFMeasurementCharacteristic _sharedStringFromMeasurement:measurementValue];
 
   return v3;
 }
@@ -271,8 +271,8 @@ uint64_t __61__CAFMeasurementCharacteristic__sharedStringFromMeasurement___block
 - (void)unit
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [a1 typeName];
-  v9 = [a1 characteristicType];
+  typeName = [self typeName];
+  characteristicType = [self characteristicType];
   OUTLINED_FUNCTION_0_4();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x16u);
 

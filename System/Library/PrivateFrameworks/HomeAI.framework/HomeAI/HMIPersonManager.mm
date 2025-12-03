@@ -1,32 +1,32 @@
 @interface HMIPersonManager
-- (HMIPersonManager)initWithUUID:(id)a3 homeUUID:(id)a4;
+- (HMIPersonManager)initWithUUID:(id)d homeUUID:(id)iD;
 - (HMIPersonManagerDataSource)dataSource;
 - (void)handleDataChanged;
-- (void)handleRemovedFaceCropWithUUID:(id)a3;
-- (void)handleRemovedFaceprintWithUUID:(id)a3;
-- (void)handleRemovedPersonWithUUID:(id)a3;
-- (void)handleUpdatedFaceprint:(id)a3;
-- (void)handleUpdatedPerson:(id)a3;
-- (void)handleUpdatedPersonFaceCrop:(id)a3;
-- (void)handleUpdatedUnassociatedFaceCrop:(id)a3;
+- (void)handleRemovedFaceCropWithUUID:(id)d;
+- (void)handleRemovedFaceprintWithUUID:(id)d;
+- (void)handleRemovedPersonWithUUID:(id)d;
+- (void)handleUpdatedFaceprint:(id)faceprint;
+- (void)handleUpdatedPerson:(id)person;
+- (void)handleUpdatedPersonFaceCrop:(id)crop;
+- (void)handleUpdatedUnassociatedFaceCrop:(id)crop;
 @end
 
 @implementation HMIPersonManager
 
-- (HMIPersonManager)initWithUUID:(id)a3 homeUUID:(id)a4
+- (HMIPersonManager)initWithUUID:(id)d homeUUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = HMIPersonManager;
   v8 = [(HMIPersonManager *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     UUID = v8->_UUID;
     v8->_UUID = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDCopy copy];
     homeUUID = v8->_homeUUID;
     v8->_homeUUID = v11;
   }
@@ -47,9 +47,9 @@
   objc_exception_throw(v7);
 }
 
-- (void)handleUpdatedPerson:(id)a3
+- (void)handleUpdatedPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -61,9 +61,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)handleUpdatedUnassociatedFaceCrop:(id)a3
+- (void)handleUpdatedUnassociatedFaceCrop:(id)crop
 {
-  v4 = a3;
+  cropCopy = crop;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -75,9 +75,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)handleUpdatedPersonFaceCrop:(id)a3
+- (void)handleUpdatedPersonFaceCrop:(id)crop
 {
-  v4 = a3;
+  cropCopy = crop;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -89,9 +89,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)handleUpdatedFaceprint:(id)a3
+- (void)handleUpdatedFaceprint:(id)faceprint
 {
-  v4 = a3;
+  faceprintCopy = faceprint;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -103,9 +103,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)handleRemovedPersonWithUUID:(id)a3
+- (void)handleRemovedPersonWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -117,9 +117,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)handleRemovedFaceCropWithUUID:(id)a3
+- (void)handleRemovedFaceCropWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -131,9 +131,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)handleRemovedFaceprintWithUUID:(id)a3
+- (void)handleRemovedFaceprintWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

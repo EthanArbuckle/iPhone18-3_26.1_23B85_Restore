@@ -1,21 +1,21 @@
 @interface NSMappingModel
 + (NSMappingModel)inferredMappingModelForSourceModel:(NSManagedObjectModel *)sourceModel destinationModel:(NSManagedObjectModel *)destinationModel error:(NSError *)error;
 + (NSMappingModel)mappingModelFromBundles:(NSArray *)bundles forSourceModel:(NSManagedObjectModel *)sourceModel destinationModel:(NSManagedObjectModel *)destinationModel;
-+ (id)_mappingModelFromBundles:(void *)a3 forSourceModel:(void *)a4 destinationModel:;
-+ (id)_newMappingModelFromBundles:(id)a3 forSourceHashes:(id)a4 destinationHashes:(id)a5;
++ (id)_mappingModelFromBundles:(void *)bundles forSourceModel:(void *)model destinationModel:;
++ (id)_newMappingModelFromBundles:(id)bundles forSourceHashes:(id)hashes destinationHashes:(id)destinationHashes;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)entityMappings;
-- (NSMappingModel)initWithCoder:(id)a3;
+- (NSMappingModel)initWithCoder:(id)coder;
 - (NSMappingModel)initWithContentsOfURL:(NSURL *)url;
-- (id)_initWithEntityMappings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithEntityMappings:(id)mappings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (uint64_t)_hasInferredMappingNeedingValidation;
 - (uint64_t)_isInferredMappingModel;
 - (void)_throwIfNotEditable;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setEntityMappings:(NSArray *)entityMappings;
 @end
 
@@ -24,7 +24,7 @@
 + (void)initialize
 {
   objc_opt_self();
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     objc_opt_self();
     _CoreData_MigrationDebug = [_PFRoutines integerValueForOverride:?];
@@ -46,7 +46,7 @@
   }
 }
 
-+ (id)_newMappingModelFromBundles:(id)a3 forSourceHashes:(id)a4 destinationHashes:(id)a5
++ (id)_newMappingModelFromBundles:(id)bundles forSourceHashes:(id)hashes destinationHashes:(id)destinationHashes
 {
   v114 = *MEMORY[0x1E69E9840];
   v6 = +[NSMappingModel migrationDebugLevel];
@@ -54,13 +54,13 @@
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v78 = [a3 countByEnumeratingWithState:&v100 objects:v113 count:16];
+  v78 = [bundles countByEnumeratingWithState:&v100 objects:v113 count:16];
   if (v78)
   {
     v7 = *v101;
     v8 = &unk_1EA8C8000;
     v76 = *v101;
-    v77 = a3;
+    bundlesCopy = bundles;
     v84 = v6;
     do
     {
@@ -69,7 +69,7 @@
       {
         if (*v101 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(bundles);
         }
 
         v79 = v9;
@@ -105,8 +105,8 @@
               v94 = 0u;
               v95 = 0u;
               v90 = v15;
-              v18 = [(NSMappingModel *)v15 entityMappings];
-              v19 = [(NSArray *)v18 countByEnumeratingWithState:&v92 objects:v111 count:16];
+              entityMappings = [(NSMappingModel *)v15 entityMappings];
+              v19 = [(NSArray *)entityMappings countByEnumeratingWithState:&v92 objects:v111 count:16];
               if (v19)
               {
                 v20 = v19;
@@ -117,24 +117,24 @@
                   {
                     if (*v93 != v21)
                     {
-                      objc_enumerationMutation(v18);
+                      objc_enumerationMutation(entityMappings);
                     }
 
                     v23 = *(*(&v92 + 1) + 8 * j);
-                    v24 = [v23 sourceEntityVersionHash];
-                    if (v24)
+                    sourceEntityVersionHash = [v23 sourceEntityVersionHash];
+                    if (sourceEntityVersionHash)
                     {
-                      [(__CFString *)v16 addObject:v24];
+                      [(__CFString *)v16 addObject:sourceEntityVersionHash];
                     }
 
-                    v25 = [v23 destinationEntityVersionHash];
-                    if (v25)
+                    destinationEntityVersionHash = [v23 destinationEntityVersionHash];
+                    if (destinationEntityVersionHash)
                     {
-                      [(__CFString *)v17 addObject:v25];
+                      [(__CFString *)v17 addObject:destinationEntityVersionHash];
                     }
                   }
 
-                  v20 = [(NSArray *)v18 countByEnumeratingWithState:&v92 objects:v111 count:16];
+                  v20 = [(NSArray *)entityMappings countByEnumeratingWithState:&v92 objects:v111 count:16];
                 }
 
                 while (v20);
@@ -193,7 +193,7 @@
 
               if ([(__CFString *)v16 count])
               {
-                v30 = [(__CFString *)v16 isSubsetOfSet:a4];
+                v30 = [(__CFString *)v16 isSubsetOfSet:hashes];
               }
 
               else
@@ -203,7 +203,7 @@
 
               if ([(__CFString *)v17 count])
               {
-                v31 = [(__CFString *)v17 isSubsetOfSet:a5];
+                v31 = [(__CFString *)v17 isSubsetOfSet:destinationHashes];
               }
 
               else
@@ -240,7 +240,7 @@
                         v35 = @"destination";
                       }
 
-                      v36 = [v91 lastPathComponent];
+                      lastPathComponent = [v91 lastPathComponent];
                       *buf = 138413058;
                       *v105 = v80;
                       *&v105[8] = 2112;
@@ -248,7 +248,7 @@
                       v107 = 2112;
                       v108 = v35;
                       v109 = 2112;
-                      v110 = v36;
+                      v110 = lastPathComponent;
                       _os_log_error_impl(&dword_18565F000, v33, OS_LOG_TYPE_ERROR, "CoreData: error: (migration) mismatched %@%@%@ hashes for mapping model %@\n\n", buf, 0x2Au);
                     }
                   }
@@ -275,7 +275,7 @@
                         v39 = @"destination";
                       }
 
-                      v40 = [v91 lastPathComponent];
+                      lastPathComponent2 = [v91 lastPathComponent];
                       *buf = 138413058;
                       *v105 = v81;
                       *&v105[8] = 2112;
@@ -283,7 +283,7 @@
                       v107 = 2112;
                       v108 = v39;
                       v109 = 2112;
-                      v110 = v40;
+                      v110 = lastPathComponent2;
                       _os_log_impl(&dword_18565F000, v37, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: (migration) mismatched %@%@%@ hashes for mapping model %@\n\n", buf, 0x2Au);
                     }
                   }
@@ -311,7 +311,7 @@
                   v44 = @"destination";
                 }
 
-                v45 = [v91 lastPathComponent];
+                lastPathComponent3 = [v91 lastPathComponent];
                 v46 = 4;
                 if (v41)
                 {
@@ -321,13 +321,13 @@
                 v75 = v44;
                 v8 = v43;
                 v32 = v30 & v31;
-                _NSCoreDataLog_console(v46, "(migration) mismatched %@%@%@ hashes for mapping model %@\n", v42, @" and ", v75, v45);
+                _NSCoreDataLog_console(v46, "(migration) mismatched %@%@%@ hashes for mapping model %@\n", v42, @" and ", v75, lastPathComponent3);
                 objc_autoreleasePoolPop(context);
-                if ((v30 & 1) == 0 && [(__CFString *)v16 intersectsSet:a4])
+                if ((v30 & 1) == 0 && [(__CFString *)v16 intersectsSet:hashes])
                 {
                   v47 = [(__CFString *)v16 mutableCopy];
-                  [v47 intersectSet:a4];
-                  v48 = [a4 count];
+                  [v47 intersectSet:hashes];
+                  v48 = [hashes count];
                   v49 = objc_autoreleasePoolPush();
                   _pflogInitialize(4);
                   if (_NSCoreDataIsLogEnabled(4) && _pflogging_enable_oslog >= 1)
@@ -378,11 +378,11 @@
                 }
 
                 v6 = v84;
-                if ((v31 & 1) == 0 && [(__CFString *)v17 intersectsSet:a5])
+                if ((v31 & 1) == 0 && [(__CFString *)v17 intersectsSet:destinationHashes])
                 {
                   v57 = [(__CFString *)v17 mutableCopy];
-                  [v57 intersectSet:a5];
-                  v58 = [a5 count];
+                  [v57 intersectSet:destinationHashes];
+                  v58 = [destinationHashes count];
                   v59 = objc_autoreleasePoolPush();
                   _pflogInitialize(4);
                   if (_NSCoreDataIsLogEnabled(4) && _pflogging_enable_oslog >= 1)
@@ -499,11 +499,11 @@
         objc_autoreleasePoolPop(v82);
         v9 = v79 + 1;
         v7 = v76;
-        a3 = v77;
+        bundles = bundlesCopy;
       }
 
       while (v79 + 1 != v78);
-      v67 = [v77 countByEnumeratingWithState:&v100 objects:v113 count:16];
+      v67 = [bundlesCopy countByEnumeratingWithState:&v100 objects:v113 count:16];
       v68 = 0;
       v78 = v67;
     }
@@ -533,7 +533,7 @@ LABEL_113:
   return result;
 }
 
-+ (id)_mappingModelFromBundles:(void *)a3 forSourceModel:(void *)a4 destinationModel:
++ (id)_mappingModelFromBundles:(void *)bundles forSourceModel:(void *)model destinationModel:
 {
   v43 = *MEMORY[0x1E69E9840];
   v7 = objc_opt_self();
@@ -551,9 +551,9 @@ LABEL_113:
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v40 = [a3 entityVersionHashesByName];
+          entityVersionHashesByName = [bundles entityVersionHashesByName];
           v41 = 2112;
-          v42 = [a4 entityVersionHashesByName];
+          entityVersionHashesByName2 = [model entityVersionHashesByName];
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: (migration) looking for mapping model with \n source hashes: \n%@\n destination hashes: %@\n\n", buf, 0x16u);
         }
       }
@@ -564,33 +564,33 @@ LABEL_113:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v40 = [a3 entityVersionHashesByName];
+          entityVersionHashesByName = [bundles entityVersionHashesByName];
           v41 = 2112;
-          v42 = [a4 entityVersionHashesByName];
+          entityVersionHashesByName2 = [model entityVersionHashesByName];
           _os_log_impl(&dword_18565F000, v12, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: (migration) looking for mapping model with \n source hashes: \n%@\n destination hashes: %@\n\n", buf, 0x16u);
         }
       }
     }
 
     v13 = _pflogging_catastrophic_mode;
-    v14 = [a3 entityVersionHashesByName];
-    v15 = [a4 entityVersionHashesByName];
+    entityVersionHashesByName3 = [bundles entityVersionHashesByName];
+    entityVersionHashesByName4 = [model entityVersionHashesByName];
     v16 = 4;
     if (v13)
     {
       v16 = 1;
     }
 
-    _NSCoreDataLog_console(v16, "(migration) looking for mapping model with \n source hashes: \n%@\n destination hashes: %@\n", v14, v15);
+    _NSCoreDataLog_console(v16, "(migration) looking for mapping model with \n source hashes: \n%@\n destination hashes: %@\n", entityVersionHashesByName3, entityVersionHashesByName4);
     objc_autoreleasePoolPop(v10);
   }
 
-  v17 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(objc_msgSend(a3, "entityVersionHashesByName"), "allValues")}];
-  v18 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(objc_msgSend(a4, "entityVersionHashesByName"), "allValues")}];
+  v17 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(objc_msgSend(bundles, "entityVersionHashesByName"), "allValues")}];
+  v18 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(objc_msgSend(model, "entityVersionHashesByName"), "allValues")}];
   if ([a2 count])
   {
-    v19 = [a2 mutableCopy];
-    v20 = [v7 _newMappingModelFromBundles:v19 forSourceHashes:v17 destinationHashes:v18];
+    array = [a2 mutableCopy];
+    v20 = [v7 _newMappingModelFromBundles:array forSourceHashes:v17 destinationHashes:v18];
     if (v20)
     {
 LABEL_24:
@@ -601,33 +601,33 @@ LABEL_24:
 
   else
   {
-    v19 = [MEMORY[0x1E695DF70] array];
-    v25 = [MEMORY[0x1E696AAE8] mainBundle];
-    if (v25)
+    array = [MEMORY[0x1E695DF70] array];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    if (mainBundle)
     {
-      [v19 addObject:v25];
+      [array addObject:mainBundle];
     }
 
-    v23 = [v7 _newMappingModelFromBundles:v19 forSourceHashes:v17 destinationHashes:v18];
+    v23 = [v7 _newMappingModelFromBundles:array forSourceHashes:v17 destinationHashes:v18];
     if (v23)
     {
       goto LABEL_21;
     }
 
-    v26 = [MEMORY[0x1E696AAE8] allBundles];
+    allBundles = [MEMORY[0x1E696AAE8] allBundles];
     v27 = v7;
-    v28 = v26;
+    v28 = allBundles;
     v38 = v27;
-    v20 = [v27 _newMappingModelFromBundles:v26 forSourceHashes:v17 destinationHashes:v18];
-    [v19 addObjectsFromArray:v28];
+    v20 = [v27 _newMappingModelFromBundles:allBundles forSourceHashes:v17 destinationHashes:v18];
+    [array addObjectsFromArray:v28];
     if (v20)
     {
       goto LABEL_24;
     }
 
-    v29 = [MEMORY[0x1E696AAE8] allFrameworks];
-    v20 = [v38 _newMappingModelFromBundles:v29 forSourceHashes:v17 destinationHashes:v18];
-    [v19 addObjectsFromArray:v29];
+    allFrameworks = [MEMORY[0x1E696AAE8] allFrameworks];
+    v20 = [v38 _newMappingModelFromBundles:allFrameworks forSourceHashes:v17 destinationHashes:v18];
+    [array addObjectsFromArray:allFrameworks];
     v7 = v38;
     if (v20)
     {
@@ -636,11 +636,11 @@ LABEL_24:
   }
 
   v37 = v7;
-  v21 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(-[NSManagedObjectModel _entityVersionHashesByNameInStyle:](a3, 1), "allValues")}];
+  v21 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(-[NSManagedObjectModel _entityVersionHashesByNameInStyle:](bundles, 1), "allValues")}];
   v22 = [v17 isEqual:v21];
   if ((v22 & 1) == 0)
   {
-    v23 = [v37 _newMappingModelFromBundles:v19 forSourceHashes:v21 destinationHashes:v18];
+    v23 = [v37 _newMappingModelFromBundles:array forSourceHashes:v21 destinationHashes:v18];
     if (v23)
     {
 LABEL_21:
@@ -649,7 +649,7 @@ LABEL_21:
     }
   }
 
-  v24 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(objc_msgSend(a4, "entityVersionHashesByName"), "allValues")}];
+  v24 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(objc_msgSend(model, "entityVersionHashesByName"), "allValues")}];
   if ([v18 isEqual:v24])
   {
     v20 = 0;
@@ -657,7 +657,7 @@ LABEL_21:
 
   else
   {
-    v20 = [v37 _newMappingModelFromBundles:v19 forSourceHashes:v21 destinationHashes:v24];
+    v20 = [v37 _newMappingModelFromBundles:array forSourceHashes:v21 destinationHashes:v24];
     if (v20)
     {
       v32 = 1;
@@ -670,7 +670,7 @@ LABEL_21:
 
     if ((v32 & 1) == 0)
     {
-      v20 = [v37 _newMappingModelFromBundles:v19 forSourceHashes:v17 destinationHashes:v24];
+      v20 = [v37 _newMappingModelFromBundles:array forSourceHashes:v17 destinationHashes:v24];
     }
   }
 
@@ -757,9 +757,9 @@ LABEL_32:
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v41 = [(NSManagedObjectModel *)sourceModel entityVersionHashesByName];
+          entityVersionHashesByName = [(NSManagedObjectModel *)sourceModel entityVersionHashesByName];
           v42 = 2112;
-          v43 = [(NSManagedObjectModel *)destinationModel entityVersionHashesByName];
+          entityVersionHashesByName2 = [(NSManagedObjectModel *)destinationModel entityVersionHashesByName];
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: (migration) inferring a mapping model between data models with \n source hashes: \n%@\n destination hashes: %@\n\n", buf, 0x16u);
         }
       }
@@ -770,24 +770,24 @@ LABEL_32:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v41 = [(NSManagedObjectModel *)sourceModel entityVersionHashesByName];
+          entityVersionHashesByName = [(NSManagedObjectModel *)sourceModel entityVersionHashesByName];
           v42 = 2112;
-          v43 = [(NSManagedObjectModel *)destinationModel entityVersionHashesByName];
+          entityVersionHashesByName2 = [(NSManagedObjectModel *)destinationModel entityVersionHashesByName];
           _os_log_impl(&dword_18565F000, v12, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: (migration) inferring a mapping model between data models with \n source hashes: \n%@\n destination hashes: %@\n\n", buf, 0x16u);
         }
       }
     }
 
     v13 = _pflogging_catastrophic_mode == 0;
-    v14 = [(NSManagedObjectModel *)sourceModel entityVersionHashesByName];
-    v15 = [(NSManagedObjectModel *)destinationModel entityVersionHashesByName];
+    entityVersionHashesByName3 = [(NSManagedObjectModel *)sourceModel entityVersionHashesByName];
+    entityVersionHashesByName4 = [(NSManagedObjectModel *)destinationModel entityVersionHashesByName];
     v16 = 4;
     if (!v13)
     {
       v16 = 1;
     }
 
-    _NSCoreDataLog_console(v16, "(migration) inferring a mapping model between data models with \n source hashes: \n%@\n destination hashes: %@\n", v14, v15);
+    _NSCoreDataLog_console(v16, "(migration) inferring a mapping model between data models with \n source hashes: \n%@\n destination hashes: %@\n", entityVersionHashesByName3, entityVersionHashesByName4);
     objc_autoreleasePoolPop(v10);
   }
 
@@ -817,11 +817,11 @@ LABEL_32:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           v25 = v39;
-          v26 = [v39 userInfo];
+          userInfo = [v39 userInfo];
           *buf = 138412546;
-          v41 = v25;
+          entityVersionHashesByName = v25;
           v42 = 2112;
-          v43 = v26;
+          entityVersionHashesByName2 = userInfo;
           _os_log_error_impl(&dword_18565F000, v24, OS_LOG_TYPE_ERROR, "CoreData: error: (migration) inferring mapping model failed with error: %@ userInfo: %@\n\n", buf, 0x16u);
         }
       }
@@ -832,11 +832,11 @@ LABEL_32:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           v28 = v39;
-          v29 = [v39 userInfo];
+          userInfo2 = [v39 userInfo];
           *buf = 138412546;
-          v41 = v28;
+          entityVersionHashesByName = v28;
           v42 = 2112;
-          v43 = v29;
+          entityVersionHashesByName2 = userInfo2;
           _os_log_impl(&dword_18565F000, v27, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: (migration) inferring mapping model failed with error: %@ userInfo: %@\n\n", buf, 0x16u);
         }
       }
@@ -844,14 +844,14 @@ LABEL_32:
 
     v30 = _pflogging_catastrophic_mode == 0;
     v31 = v39;
-    v32 = [v39 userInfo];
+    userInfo3 = [v39 userInfo];
     v33 = 4;
     if (!v30)
     {
       v33 = 1;
     }
 
-    _NSCoreDataLog_console(v33, "(migration) inferring mapping model failed with error: %@ userInfo: %@\n", v31, v32);
+    _NSCoreDataLog_console(v33, "(migration) inferring mapping model failed with error: %@ userInfo: %@\n", v31, userInfo3);
     objc_autoreleasePoolPop(v23);
   }
 
@@ -880,20 +880,20 @@ LABEL_32:
   [(NSMappingModel *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSMappingModel *)self entityMappings];
-    v7 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{a3), "init"}];
-    v8 = [(NSArray *)v6 count];
+    entityMappings = [(NSMappingModel *)self entityMappings];
+    v7 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{zone), "init"}];
+    v8 = [(NSArray *)entityMappings count];
     if (v8)
     {
       v9 = v8;
       for (i = 0; i != v9; ++i)
       {
-        v11 = [-[NSArray objectAtIndex:](v6 objectAtIndex:{i), "copy"}];
+        v11 = [-[NSArray objectAtIndex:](entityMappings objectAtIndex:{i), "copy"}];
         [v7 addObject:v11];
       }
     }
@@ -904,14 +904,14 @@ LABEL_32:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -922,19 +922,19 @@ LABEL_32:
     return 0;
   }
 
-  v5 = [(NSMappingModel *)self entityMappings];
-  v6 = [a3 entityMappings];
-  if (v5 == v6)
+  entityMappings = [(NSMappingModel *)self entityMappings];
+  entityMappings2 = [equal entityMappings];
+  if (entityMappings == entityMappings2)
   {
     return 1;
   }
 
-  v7 = v6;
+  v7 = entityMappings2;
   result = 0;
-  if (v5 && v7)
+  if (entityMappings && v7)
   {
 
-    return [(NSArray *)v5 isEqual:?];
+    return [(NSArray *)entityMappings isEqual:?];
   }
 
   return result;
@@ -981,8 +981,8 @@ LABEL_32:
         [(NSMappingModel *)self _throwIfNotEditable];
         if (v9)
         {
-          v10 = [v9 name];
-          if (!v10)
+          name = [v9 name];
+          if (!name)
           {
             v12 = MEMORY[0x1E695DF30];
             v13 = *MEMORY[0x1E695D940];
@@ -990,8 +990,8 @@ LABEL_32:
             goto LABEL_12;
           }
 
-          v11 = v10;
-          if ([(NSMutableDictionary *)self->_entityMappingsByName objectForKey:v10])
+          v11 = name;
+          if ([(NSMutableDictionary *)self->_entityMappingsByName objectForKey:name])
           {
             v15 = MEMORY[0x1E695DF30];
             v16 = *MEMORY[0x1E695D930];
@@ -1009,15 +1009,15 @@ LABEL_12:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[NSMappingModel entityMappings](self forKey:{"entityMappings"), @"NSEntityMappings"}];
-  v5 = [(NSMappingModel *)self entityMappingsByName];
+  [coder encodeObject:-[NSMappingModel entityMappings](self forKey:{"entityMappings"), @"NSEntityMappings"}];
+  entityMappingsByName = [(NSMappingModel *)self entityMappingsByName];
 
-  [a3 encodeObject:v5 forKey:@"NSEntityMappingsByName"];
+  [coder encodeObject:entityMappingsByName forKey:@"NSEntityMappingsByName"];
 }
 
-- (NSMappingModel)initWithCoder:(id)a3
+- (NSMappingModel)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = NSMappingModel;
@@ -1027,11 +1027,11 @@ LABEL_12:
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
-    v4->_entityMappings = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"NSEntityMappings"}];
+    v4->_entityMappings = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"NSEntityMappings"}];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
-    v4->_entityMappingsByName = [a3 decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, v10, objc_opt_class(), 0), @"NSEntityMappingsByName"}];
+    v4->_entityMappingsByName = [coder decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, v10, objc_opt_class(), 0), @"NSEntityMappingsByName"}];
   }
 
   return v4;
@@ -1046,8 +1046,8 @@ LABEL_12:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v1 = [result entityMappings];
-    v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    entityMappings = [result entityMappings];
+    v2 = [entityMappings countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v2)
     {
       v3 = v2;
@@ -1058,11 +1058,11 @@ LABEL_4:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(entityMappings);
         }
 
-        v6 = [*(*(&v8 + 1) + 8 * v5) name];
-        result = [v6 hasPrefix:_NSInferredMappingPrefix];
+        name = [*(*(&v8 + 1) + 8 * v5) name];
+        result = [name hasPrefix:_NSInferredMappingPrefix];
         if (!result)
         {
           break;
@@ -1070,7 +1070,7 @@ LABEL_4:
 
         if (v3 == ++v5)
         {
-          v3 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+          v3 = [entityMappings countByEnumeratingWithState:&v8 objects:v12 count:16];
           if (v3)
           {
             goto LABEL_4;
@@ -1101,8 +1101,8 @@ LABEL_10:
     v10 = 0u;
     v7 = 0u;
     v8 = 0u;
-    v1 = [result entityMappings];
-    result = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+    entityMappings = [result entityMappings];
+    result = [entityMappings countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (result)
     {
       v2 = result;
@@ -1114,11 +1114,11 @@ LABEL_10:
         {
           if (*v8 != v3)
           {
-            objc_enumerationMutation(v1);
+            objc_enumerationMutation(entityMappings);
           }
 
-          v5 = [*(*(&v7 + 1) + 8 * v4) userInfo];
-          if ([objc_msgSend(v5 objectForKey:{_NSInferredMappingCouldFailValidation), "BOOLValue"}])
+          userInfo = [*(*(&v7 + 1) + 8 * v4) userInfo];
+          if ([objc_msgSend(userInfo objectForKey:{_NSInferredMappingCouldFailValidation), "BOOLValue"}])
           {
             result = 1;
             goto LABEL_12;
@@ -1128,7 +1128,7 @@ LABEL_10:
         }
 
         while (v2 != v4);
-        result = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+        result = [entityMappings countByEnumeratingWithState:&v7 objects:v11 count:16];
         v2 = result;
         if (result)
         {
@@ -1145,7 +1145,7 @@ LABEL_12:
   return result;
 }
 
-- (id)_initWithEntityMappings:(id)a3
+- (id)_initWithEntityMappings:(id)mappings
 {
   v7.receiver = self;
   v7.super_class = NSMappingModel;
@@ -1156,9 +1156,9 @@ LABEL_12:
     *&v4->_modelMappingFlags &= ~1u;
     v4->_entityMappings = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5->_entityMappingsByName = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if (a3)
+    if (mappings)
     {
-      [(NSMappingModel *)v5 setEntityMappings:a3];
+      [(NSMappingModel *)v5 setEntityMappings:mappings];
     }
   }
 

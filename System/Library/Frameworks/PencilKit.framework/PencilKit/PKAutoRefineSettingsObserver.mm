@@ -1,30 +1,30 @@
 @interface PKAutoRefineSettingsObserver
 - (void)dealloc;
-- (void)initWithHandler:(void *)a1;
+- (void)initWithHandler:(void *)handler;
 @end
 
 @implementation PKAutoRefineSettingsObserver
 
-- (void)initWithHandler:(void *)a1
+- (void)initWithHandler:(void *)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    v8.receiver = a1;
+    v8.receiver = handler;
     v8.super_class = PKAutoRefineSettingsObserver;
-    a1 = objc_msgSendSuper2(&v8, sel_init);
-    if (a1)
+    handler = objc_msgSendSuper2(&v8, sel_init);
+    if (handler)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = handler[1];
+      handler[1] = v4;
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-      CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, _PKHandleAutoRefineSettingsDidChange, @"PKRemoteAutoRefineSettingsDidChange", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+      CFNotificationCenterAddObserver(DarwinNotifyCenter, handler, _PKHandleAutoRefineSettingsDidChange, @"PKRemoteAutoRefineSettingsDidChange", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     }
   }
 
-  return a1;
+  return handler;
 }
 
 - (void)dealloc

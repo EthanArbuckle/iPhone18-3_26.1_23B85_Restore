@@ -1,14 +1,14 @@
 @interface UIDeferredMenuElement
 + (UIDeferredMenuElement)elementWithProvider:(void *)elementProvider;
 + (UIDeferredMenuElement)elementWithUncachedProvider:(void *)elementProvider;
-+ (id)_elementWithIdentifier:(id)a3 cacheItems:(BOOL)a4 elementProvider:(id)a5;
++ (id)_elementWithIdentifier:(id)identifier cacheItems:(BOOL)items elementProvider:(id)provider;
 - (NSString)description;
-- (UIDeferredMenuElement)initWithCoder:(id)a3;
+- (UIDeferredMenuElement)initWithCoder:(id)coder;
 - (UIDeferredMenuElementDelegate)delegate;
-- (void)_acceptMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5 deferredElementVisit:(id)a6;
-- (void)_acceptMenuVisit:(id)a3 leafVisit:(id)a4;
-- (void)_fulfillIfNecessaryWithInitialResponder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_acceptMenuVisit:(id)visit commandVisit:(id)commandVisit actionVisit:(id)actionVisit deferredElementVisit:(id)elementVisit;
+- (void)_acceptMenuVisit:(id)visit leafVisit:(id)leafVisit;
+- (void)_fulfillIfNecessaryWithInitialResponder:(id)responder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDeferredMenuElement
@@ -16,7 +16,7 @@
 + (UIDeferredMenuElement)elementWithProvider:(void *)elementProvider
 {
   v4 = [UIDeferredMenuElementProvider providerWithElementProvider:elementProvider];
-  v5 = [a1 _elementWithIdentifier:0 cacheItems:1 elementProvider:v4];
+  v5 = [self _elementWithIdentifier:0 cacheItems:1 elementProvider:v4];
 
   return v5;
 }
@@ -24,47 +24,47 @@
 + (UIDeferredMenuElement)elementWithUncachedProvider:(void *)elementProvider
 {
   v4 = [UIDeferredMenuElementProvider providerWithElementProvider:elementProvider];
-  v5 = [a1 _elementWithIdentifier:0 cacheItems:0 elementProvider:v4];
+  v5 = [self _elementWithIdentifier:0 cacheItems:0 elementProvider:v4];
 
   return v5;
 }
 
-+ (id)_elementWithIdentifier:(id)a3 cacheItems:(BOOL)a4 elementProvider:(id)a5
++ (id)_elementWithIdentifier:(id)identifier cacheItems:(BOOL)items elementProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v9 = [UIDeferredMenuElement alloc];
   v10 = _UINSLocalizedStringWithDefaultValue(@"CONTEXT_MENU_LOADING", @"Loading…");
   v11 = [(UIMenuElement *)v9 initWithTitle:v10 image:0 imageName:0];
 
-  if (v7)
+  if (identifierCopy)
   {
-    v12 = [v7 copy];
+    v12 = [identifierCopy copy];
   }
 
   else
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v13 stringWithFormat:@"com.apple.deferred-element.dynamic.%@", v14];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v12 = [v13 stringWithFormat:@"com.apple.deferred-element.dynamic.%@", uUID];
   }
 
   objc_storeStrong((v11 + 136), v12);
 
-  *(v11 + 88) = a4;
+  *(v11 + 88) = items;
   v15 = *(v11 + 80);
-  *(v11 + 80) = v8;
+  *(v11 + 80) = providerCopy;
 
   [v11 setAttributes:1];
 
   return v11;
 }
 
-- (void)_fulfillIfNecessaryWithInitialResponder:(id)a3
+- (void)_fulfillIfNecessaryWithInitialResponder:(id)responder
 {
-  v4 = a3;
-  v5 = [(UIDeferredMenuElement *)self delegate];
-  if (v5)
+  responderCopy = responder;
+  delegate = [(UIDeferredMenuElement *)self delegate];
+  if (delegate)
   {
     isSignalingFulfillment = self->_isSignalingFulfillment;
 
@@ -80,7 +80,7 @@
       if (![(UIDeferredMenuElement *)self fulfilled])
       {
         self->_fulfilled = 1;
-        v8 = v4;
+        v8 = responderCopy;
         v9 = v8;
         elementProvider = self->_elementProvider;
         if (elementProvider)
@@ -129,13 +129,13 @@ LABEL_14:
           self->_elementProvider = 0;
         }
 
-        v18 = [v16 _providerBlock];
+        _providerBlock = [v16 _providerBlock];
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __65__UIDeferredMenuElement__fulfillIfNecessaryWithInitialResponder___block_invoke;
         v19[3] = &unk_1E70F2FC8;
         v19[4] = self;
-        (v18)[2](v18, v19);
+        (_providerBlock)[2](_providerBlock, v19);
       }
     }
   }
@@ -155,59 +155,59 @@ void __65__UIDeferredMenuElement__fulfillIfNecessaryWithInitialResponder___block
   *(*(a1 + 32) + 72) = 0;
 }
 
-- (void)_acceptMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5 deferredElementVisit:(id)a6
+- (void)_acceptMenuVisit:(id)visit commandVisit:(id)commandVisit actionVisit:(id)actionVisit deferredElementVisit:(id)elementVisit
 {
-  if (a6)
+  if (elementVisit)
   {
-    (*(a6 + 2))(a6, self);
+    (*(elementVisit + 2))(elementVisit, self);
   }
 }
 
-- (void)_acceptMenuVisit:(id)a3 leafVisit:(id)a4
+- (void)_acceptMenuVisit:(id)visit leafVisit:(id)leafVisit
 {
-  if (a4)
+  if (leafVisit)
   {
-    (*(a4 + 2))(a4, self);
+    (*(leafVisit + 2))(leafVisit, self);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = UIDeferredMenuElement;
-  [(UIMenuElement *)&v8 encodeWithCoder:v4];
-  v5 = [(UIDeferredMenuElement *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  [(UIMenuElement *)&v8 encodeWithCoder:coderCopy];
+  identifier = [(UIDeferredMenuElement *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v4 encodeBool:-[UIDeferredMenuElement cachesItems](self forKey:{"cachesItems"), @"cachesItems"}];
-  [v4 encodeBool:-[UIDeferredMenuElement fulfilled](self forKey:{"fulfilled"), @"fulfilled"}];
-  v6 = [(UIDeferredMenuElement *)self fulfilledElements];
+  [coderCopy encodeBool:-[UIDeferredMenuElement cachesItems](self forKey:{"cachesItems"), @"cachesItems"}];
+  [coderCopy encodeBool:-[UIDeferredMenuElement fulfilled](self forKey:{"fulfilled"), @"fulfilled"}];
+  fulfilledElements = [(UIDeferredMenuElement *)self fulfilledElements];
 
-  if (v6)
+  if (fulfilledElements)
   {
-    v7 = [(UIDeferredMenuElement *)self fulfilledElements];
-    [v4 encodeObject:v7 forKey:@"fulfilledElements"];
+    fulfilledElements2 = [(UIDeferredMenuElement *)self fulfilledElements];
+    [coderCopy encodeObject:fulfilledElements2 forKey:@"fulfilledElements"];
   }
 }
 
-- (UIDeferredMenuElement)initWithCoder:(id)a3
+- (UIDeferredMenuElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = UIDeferredMenuElement;
-  v5 = [(UIMenuElement *)&v17 initWithCoder:v4];
+  v5 = [(UIMenuElement *)&v17 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(UIDeferredMenuElement *)v5 setAttributes:1];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v8 = v7;
     if (!v7)
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [MEMORY[0x1E696AFB0] UUID];
-      v8 = [v9 stringWithFormat:@"com.apple.deferred-element.dynamic.%@", v10];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      v8 = [v9 stringWithFormat:@"com.apple.deferred-element.dynamic.%@", uUID];
     }
 
     objc_storeStrong(&v6->_identifier, v8);
@@ -215,12 +215,12 @@ void __65__UIDeferredMenuElement__fulfillIfNecessaryWithInitialResponder___block
     {
     }
 
-    v6->_cachesItems = [v4 decodeBoolForKey:@"cachesItems"];
-    v6->_fulfilled = [v4 decodeBoolForKey:@"fulfilled"];
+    v6->_cachesItems = [coderCopy decodeBoolForKey:@"cachesItems"];
+    v6->_fulfilled = [coderCopy decodeBoolForKey:@"fulfilled"];
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"fulfilledElements"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"fulfilledElements"];
     fulfilledElements = v6->_fulfilledElements;
     v6->_fulfilledElements = v14;
   }

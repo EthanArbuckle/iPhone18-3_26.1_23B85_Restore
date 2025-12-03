@@ -1,29 +1,29 @@
 @interface TRISQLiteMADatabase
-- (BOOL)dropTableWithName:(id)a3 transaction:(id)a4;
-- (TRISQLiteMADatabase)initWithParentDir:(id)a3;
-- (id)_predicateForAssetSelector:(id)a3;
-- (id)lockContentSync:(id)a3 forAssetSelector:(id)a4 withUsagePolicy:(id)a5 withTimeout:(int64_t)a6 lockedAssetSelector:(id *)a7 newerInProgress:(id *)a8 error:(id *)a9;
-- (id)locksForSelector:(id)a3;
+- (BOOL)dropTableWithName:(id)name transaction:(id)transaction;
+- (TRISQLiteMADatabase)initWithParentDir:(id)dir;
+- (id)_predicateForAssetSelector:(id)selector;
+- (id)lockContentSync:(id)sync forAssetSelector:(id)selector withUsagePolicy:(id)policy withTimeout:(int64_t)timeout lockedAssetSelector:(id *)assetSelector newerInProgress:(id *)progress error:(id *)error;
+- (id)locksForSelector:(id)selector;
 - (id)migrations;
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3;
-- (unint64_t)assetSizeForSelector:(id)a3;
-- (void)addAutoAssetWithId:(id)a3 atPath:(id)a4;
-- (void)eliminateAllForSelector:(id)a3 completion:(id)a4;
-- (void)eliminatePromotedNeverLockedForSelector:(id)a3 completion:(id)a4;
-- (void)endAllPreviousLocksOfReasonSync:(id)a3 forAssetSelector:(id)a4;
-- (void)endAllPreviousLocksOfSelectorSync:(id)a3 forClientName:(id)a4;
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version;
+- (unint64_t)assetSizeForSelector:(id)selector;
+- (void)addAutoAssetWithId:(id)id atPath:(id)path;
+- (void)eliminateAllForSelector:(id)selector completion:(id)completion;
+- (void)eliminatePromotedNeverLockedForSelector:(id)selector completion:(id)completion;
+- (void)endAllPreviousLocksOfReasonSync:(id)sync forAssetSelector:(id)selector;
+- (void)endAllPreviousLocksOfSelectorSync:(id)sync forClientName:(id)name;
 @end
 
 @implementation TRISQLiteMADatabase
 
-- (TRISQLiteMADatabase)initWithParentDir:(id)a3
+- (TRISQLiteMADatabase)initWithParentDir:(id)dir
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  dirCopy = dir;
+  if (!dirCopy)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"TRISQLiteMADatabase.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"parentDir"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRISQLiteMADatabase.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"parentDir"}];
   }
 
   v34.receiver = self;
@@ -35,7 +35,7 @@
     goto LABEL_18;
   }
 
-  objc_storeStrong(&v7->_parentDir, a3);
+  objc_storeStrong(&v7->_parentDir, dir);
   v9 = [(NSString *)v8->_parentDir stringByAppendingPathComponent:@"assets"];
   assetDir = v8->_assetDir;
   v8->_assetDir = v9;
@@ -53,13 +53,13 @@
   }
 
   v12 = [(NSString *)v8->_parentDir stringByAppendingPathComponent:@"TRISQLiteMADatabase.db"];
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v14 = [v13 fileExistsAtPath:v12];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v14 = [defaultManager fileExistsAtPath:v12];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    [v15 createDirectoryAtPath:v8->_parentDir withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createDirectoryAtPath:v8->_parentDir withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   v16 = MEMORY[0x277D42630];
@@ -172,15 +172,15 @@ uint64_t __29__TRISQLiteMADatabase_vacuum__block_invoke(uint64_t a1, void *a2)
   return *MEMORY[0x277D42698];
 }
 
-- (BOOL)dropTableWithName:(id)a3 transaction:(id)a4
+- (BOOL)dropTableWithName:(id)name transaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  nameCopy = name;
+  transactionCopy = transaction;
+  v9 = transactionCopy;
+  if (!nameCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRISQLiteMADatabase.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRISQLiteMADatabase.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
     if (v9)
     {
@@ -188,21 +188,21 @@ uint64_t __29__TRISQLiteMADatabase_vacuum__block_invoke(uint64_t a1, void *a2)
     }
 
 LABEL_5:
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRISQLiteMADatabase.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRISQLiteMADatabase.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!transactionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP TABLE %@;", v7];
+  nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP TABLE %@;", nameCopy];
   v11 = [v9 db];
-  v12 = [v11 prepAndRunQuery:v10 onPrep:0 onRow:0 onError:0];
+  v12 = [v11 prepAndRunQuery:nameCopy onPrep:0 onRow:0 onError:0];
 
   return v12;
 }
@@ -222,25 +222,25 @@ LABEL_3:
   return v3;
 }
 
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version
 {
-  if (a3)
+  if (version)
   {
-    *a3 = 0;
+    *version = 0;
   }
 
   return MEMORY[0x277CBEBF8];
 }
 
-- (id)_predicateForAssetSelector:(id)a3
+- (id)_predicateForAssetSelector:(id)selector
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  selectorCopy = selector;
   v5 = [v3 alloc];
-  v6 = [v4 assetVersion];
+  assetVersion = [selectorCopy assetVersion];
 
   v7 = @" AND version=:version";
-  if (!v6)
+  if (!assetVersion)
   {
     v7 = &stru_287FA0430;
   }
@@ -250,18 +250,18 @@ LABEL_3:
   return v8;
 }
 
-- (void)addAutoAssetWithId:(id)a3 atPath:(id)a4
+- (void)addAutoAssetWithId:(id)id atPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  pathCopy = path;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __49__TRISQLiteMADatabase_addAutoAssetWithId_atPath___block_invoke;
   v14 = &unk_279DDFB88;
-  v15 = v7;
-  v16 = v6;
-  v8 = v6;
-  v9 = v7;
+  v15 = pathCopy;
+  v16 = idCopy;
+  v8 = idCopy;
+  v9 = pathCopy;
   v10 = MEMORY[0x2743948D0](&v11);
   [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v10, v11, v12, v13, v14}];
 }
@@ -304,19 +304,19 @@ void __49__TRISQLiteMADatabase_addAutoAssetWithId_atPath___block_invoke_2(uint64
   [v4 bindNamedParam:":assetSize" toInt64AsNSNumber:v8];
 }
 
-- (void)endAllPreviousLocksOfReasonSync:(id)a3 forAssetSelector:(id)a4
+- (void)endAllPreviousLocksOfReasonSync:(id)sync forAssetSelector:(id)selector
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  selectorCopy = selector;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__TRISQLiteMADatabase_endAllPreviousLocksOfReasonSync_forAssetSelector___block_invoke;
   v11[3] = &unk_279DDFBB0;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v12 = selectorCopy;
+  v13 = syncCopy;
+  v8 = syncCopy;
+  v9 = selectorCopy;
   v10 = MEMORY[0x2743948D0](v11);
   [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:v10];
 }
@@ -359,18 +359,18 @@ void __72__TRISQLiteMADatabase_endAllPreviousLocksOfReasonSync_forAssetSelector_
   }
 }
 
-- (void)endAllPreviousLocksOfSelectorSync:(id)a3 forClientName:(id)a4
+- (void)endAllPreviousLocksOfSelectorSync:(id)sync forClientName:(id)name
 {
-  v5 = a3;
+  syncCopy = sync;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __71__TRISQLiteMADatabase_endAllPreviousLocksOfSelectorSync_forClientName___block_invoke;
   v11 = &unk_279DDFB88;
-  v12 = self;
-  v13 = v5;
-  v6 = v5;
+  selfCopy = self;
+  v13 = syncCopy;
+  v6 = syncCopy;
   v7 = MEMORY[0x2743948D0](&v8);
-  [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v7, v8, v9, v10, v11, v12}];
+  [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v7, v8, v9, v10, v11, selfCopy}];
 }
 
 void __71__TRISQLiteMADatabase_endAllPreviousLocksOfSelectorSync_forClientName___block_invoke(uint64_t a1, void *a2)
@@ -409,22 +409,22 @@ void __71__TRISQLiteMADatabase_endAllPreviousLocksOfSelectorSync_forClientName__
   }
 }
 
-- (void)eliminateAllForSelector:(id)a3 completion:(id)a4
+- (void)eliminateAllForSelector:(id)selector completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  selectorCopy = selector;
+  completionCopy = completion;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __58__TRISQLiteMADatabase_eliminateAllForSelector_completion___block_invoke;
   v13 = &unk_279DDFB88;
-  v14 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = selectorCopy;
   v15 = v8;
   v9 = MEMORY[0x2743948D0](&v10);
-  [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v9, v10, v11, v12, v13, v14}];
-  if (v7)
+  [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v9, v10, v11, v12, v13, selfCopy}];
+  if (completionCopy)
   {
-    v7[2](v7, v8, 0);
+    completionCopy[2](completionCopy, v8, 0);
   }
 }
 
@@ -546,22 +546,22 @@ uint64_t __58__TRISQLiteMADatabase_eliminateAllForSelector_completion___block_in
   return *MEMORY[0x277D42690];
 }
 
-- (void)eliminatePromotedNeverLockedForSelector:(id)a3 completion:(id)a4
+- (void)eliminatePromotedNeverLockedForSelector:(id)selector completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  selectorCopy = selector;
+  completionCopy = completion;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __74__TRISQLiteMADatabase_eliminatePromotedNeverLockedForSelector_completion___block_invoke;
   v13 = &unk_279DDFB88;
-  v14 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = selectorCopy;
   v15 = v8;
   v9 = MEMORY[0x2743948D0](&v10);
-  [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v9, v10, v11, v12, v13, v14}];
-  if (v7)
+  [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v9, v10, v11, v12, v13, selfCopy}];
+  if (completionCopy)
   {
-    v7[2](v7, v8, 0);
+    completionCopy[2](completionCopy, v8, 0);
   }
 }
 
@@ -759,15 +759,15 @@ uint64_t __74__TRISQLiteMADatabase_eliminatePromotedNeverLockedForSelector_compl
   return *MEMORY[0x277D42690];
 }
 
-- (id)lockContentSync:(id)a3 forAssetSelector:(id)a4 withUsagePolicy:(id)a5 withTimeout:(int64_t)a6 lockedAssetSelector:(id *)a7 newerInProgress:(id *)a8 error:(id *)a9
+- (id)lockContentSync:(id)sync forAssetSelector:(id)selector withUsagePolicy:(id)policy withTimeout:(int64_t)timeout lockedAssetSelector:(id *)assetSelector newerInProgress:(id *)progress error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = [v15 assetVersion];
+  syncCopy = sync;
+  selectorCopy = selector;
+  policyCopy = policy;
+  assetVersion = [selectorCopy assetVersion];
 
-  if (v17)
+  if (assetVersion)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -779,14 +779,14 @@ uint64_t __74__TRISQLiteMADatabase_eliminatePromotedNeverLockedForSelector_compl
     v25 = 3221225472;
     v26 = __126__TRISQLiteMADatabase_lockContentSync_forAssetSelector_withUsagePolicy_withTimeout_lockedAssetSelector_newerInProgress_error___block_invoke;
     v27 = &unk_279DDFCC0;
-    v28 = self;
-    v29 = v15;
+    selfCopy = self;
+    v29 = selectorCopy;
     v32 = a2;
-    v30 = v14;
+    v30 = syncCopy;
     p_buf = &buf;
-    v33 = a6;
+    timeoutCopy = timeout;
     v18 = MEMORY[0x2743948D0](&v24);
-    [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v18, v24, v25, v26, v27, v28}];
+    [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:{v18, v24, v25, v26, v27, selfCopy}];
     if (*(*(&buf + 1) + 40))
     {
       v19 = objc_alloc(MEMORY[0x277CBEBC0]);
@@ -807,7 +807,7 @@ uint64_t __74__TRISQLiteMADatabase_eliminatePromotedNeverLockedForSelector_compl
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v15;
+      *(&buf + 4) = selectorCopy;
       _os_log_impl(&dword_26F567000, v21, OS_LOG_TYPE_DEFAULT, "lockContentSync called with incomplete asset selector (missing asset version): %@", &buf, 0xCu);
     }
 
@@ -1033,19 +1033,19 @@ uint64_t __126__TRISQLiteMADatabase_lockContentSync_forAssetSelector_withUsagePo
   return *MEMORY[0x277D42690];
 }
 
-- (id)locksForSelector:(id)a3
+- (id)locksForSelector:(id)selector
 {
-  v4 = a3;
+  selectorCopy = selector;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__TRISQLiteMADatabase_locksForSelector___block_invoke;
   v11[3] = &unk_279DDFBB0;
   v11[4] = self;
-  v12 = v4;
+  v12 = selectorCopy;
   v6 = v5;
   v13 = v6;
-  v7 = v4;
+  v7 = selectorCopy;
   v8 = MEMORY[0x2743948D0](v11);
   [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db block:v8];
   v9 = v6;
@@ -1107,9 +1107,9 @@ uint64_t __40__TRISQLiteMADatabase_locksForSelector___block_invoke_3(uint64_t a1
   return *v4;
 }
 
-- (unint64_t)assetSizeForSelector:(id)a3
+- (unint64_t)assetSizeForSelector:(id)selector
 {
-  v4 = a3;
+  selectorCopy = selector;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1119,7 +1119,7 @@ uint64_t __40__TRISQLiteMADatabase_locksForSelector___block_invoke_3(uint64_t a1
   v9[2] = __44__TRISQLiteMADatabase_assetSizeForSelector___block_invoke;
   v9[3] = &unk_279DDFCE8;
   v9[4] = self;
-  v5 = v4;
+  v5 = selectorCopy;
   v10 = v5;
   v11 = &v12;
   v6 = MEMORY[0x2743948D0](v9);

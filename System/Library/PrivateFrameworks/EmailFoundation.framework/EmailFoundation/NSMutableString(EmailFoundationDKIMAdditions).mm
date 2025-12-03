@@ -13,23 +13,23 @@
 
 - (void)ef_rfc5322Unfold
 {
-  v4 = [MEMORY[0x1E696AB08] ef_rfc6376WhitespaceCharacterSet];
-  if ([a1 length] >= 3)
+  ef_rfc6376WhitespaceCharacterSet = [MEMORY[0x1E696AB08] ef_rfc6376WhitespaceCharacterSet];
+  if ([self length] >= 3)
   {
-    v2 = [a1 length];
+    v2 = [self length];
     if (v2 != 2)
     {
       v3 = v2 - 1;
       do
       {
-        if ([a1 length] < 3)
+        if ([self length] < 3)
         {
           break;
         }
 
-        if ([a1 characterAtIndex:v3 - 2] == 13 && objc_msgSend(a1, "characterAtIndex:", v3 - 1) == 10 && objc_msgSend(v4, "characterIsMember:", objc_msgSend(a1, "characterAtIndex:", v3)))
+        if ([self characterAtIndex:v3 - 2] == 13 && objc_msgSend(self, "characterAtIndex:", v3 - 1) == 10 && objc_msgSend(ef_rfc6376WhitespaceCharacterSet, "characterIsMember:", objc_msgSend(self, "characterAtIndex:", v3)))
         {
-          [a1 deleteCharactersInRange:{v3 - 2, 2}];
+          [self deleteCharactersInRange:{v3 - 2, 2}];
         }
 
         --v3;
@@ -44,7 +44,7 @@
 {
   v13 = a3;
   v6 = a4;
-  v7 = [a1 length];
+  v7 = [self length];
   if (v7)
   {
     v8 = 0;
@@ -57,7 +57,7 @@
         goto LABEL_7;
       }
 
-      if (![v13 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v9)}])
+      if (![v13 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v9)}])
       {
         break;
       }
@@ -70,13 +70,13 @@ LABEL_13:
       }
     }
 
-    [a1 deleteCharactersInRange:{v9 + 1, v8}];
+    [self deleteCharactersInRange:{v9 + 1, v8}];
     v8 = 0;
 LABEL_7:
     v11 = [v6 length];
-    if (v9 + v11 <= [a1 length])
+    if (v9 + v11 <= [self length])
     {
-      v12 = [a1 substringWithRange:{v9, objc_msgSend(v6, "length")}];
+      v12 = [self substringWithRange:{v9, objc_msgSend(v6, "length")}];
       if ([v12 isEqualToString:v6])
       {
         v10 = v9;
@@ -103,26 +103,26 @@ LABEL_14:
 {
   v10 = a3;
   v6 = a4;
-  v7 = [a1 length];
+  v7 = [self length];
   if (v7)
   {
     v8 = 0;
     do
     {
       v9 = v7 - 1;
-      if ([v10 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v7 - 1)}])
+      if ([v10 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v7 - 1)}])
       {
         ++v8;
         if (v7 == 1)
         {
-          [a1 replaceCharactersInRange:0 withString:{v8, v6}];
+          [self replaceCharactersInRange:0 withString:{v8, v6}];
           break;
         }
       }
 
       else if (v8)
       {
-        [a1 replaceCharactersInRange:v7 withString:{v8, v6}];
+        [self replaceCharactersInRange:v7 withString:{v8, v6}];
         v8 = 0;
       }
 
@@ -141,26 +141,26 @@ LABEL_14:
 
   if (i)
   {
-    [a1 deleteCharactersInRange:{0, i}];
+    [self deleteCharactersInRange:{0, i}];
   }
 }
 
 - (void)ef_trimTrailingCharactersInSetIgnoringNewline:()EmailFoundationDKIMAdditions
 {
   v5 = a3;
-  v4 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  [a1 _trimTrailingCharactersInSet:v5 ignoringCharactersInSet:v4];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  [self _trimTrailingCharactersInSet:v5 ignoringCharactersInSet:newlineCharacterSet];
 }
 
 - (void)_trimTrailingCharactersInSet:()EmailFoundationDKIMAdditions ignoringCharactersInSet:
 {
   v15 = a3;
   v6 = a4;
-  if (v6 && (v7 = [a1 length], (v8 = v7) != 0))
+  if (v6 && (v7 = [self length], (v8 = v7) != 0))
   {
     v9 = 0;
     v10 = v7 - 1;
-    while ([v6 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v10)}])
+    while ([v6 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v10)}])
     {
       ++v9;
       if (--v10 == -1)
@@ -176,13 +176,13 @@ LABEL_14:
     v9 = 0;
   }
 
-  v11 = [a1 length];
+  v11 = [self length];
   v12 = v11 + ~v9;
   if (v12 != -1)
   {
     v13 = 0;
     v14 = v11 - v9;
-    while ([v15 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v12)}])
+    while ([v15 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v12)}])
     {
       ++v13;
       if (--v12 == -1)
@@ -194,21 +194,21 @@ LABEL_14:
 
     if (v13)
     {
-      [a1 deleteCharactersInRange:{objc_msgSend(a1, "length") - (v13 + v9), v13}];
+      [self deleteCharactersInRange:{objc_msgSend(self, "length") - (v13 + v9), v13}];
     }
   }
 }
 
 - (void)ef_appendSQLEscapedString:()EmailFoundationDKIMAdditions
 {
-  v4 = [a3 ef_SQLEscapedString];
-  [a1 appendString:?];
+  ef_SQLEscapedString = [a3 ef_SQLEscapedString];
+  [self appendString:?];
 }
 
 - (void)ef_appendQuotedSQLEscapedString:()EmailFoundationDKIMAdditions
 {
-  v4 = [a3 ef_quotedSQLEscapedString];
-  [a1 appendString:?];
+  ef_quotedSQLEscapedString = [a3 ef_quotedSQLEscapedString];
+  [self appendString:?];
 }
 
 @end

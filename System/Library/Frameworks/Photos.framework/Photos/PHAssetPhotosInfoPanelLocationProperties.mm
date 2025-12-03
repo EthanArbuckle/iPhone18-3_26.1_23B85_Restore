@@ -1,20 +1,20 @@
 @interface PHAssetPhotosInfoPanelLocationProperties
 + (id)propertiesToFetch;
-- (PHAssetPhotosInfoPanelLocationProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetPhotosInfoPanelLocationProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetPhotosInfoPanelLocationProperties
 
-- (PHAssetPhotosInfoPanelLocationProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetPhotosInfoPanelLocationProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v7 = a3;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PHAssetPhotosInfoPanelLocationProperties;
   v8 = [(PHAssetPhotosInfoPanelLocationProperties *)&v13 init];
   if (v8)
   {
-    if (v5)
+    if (prefetchedCopy)
     {
       v9 = @"additionalAttributes.placeAnnotationData";
     }
@@ -24,7 +24,7 @@
       v9 = @"placeAnnotationData";
     }
 
-    v10 = [v7 objectForKeyedSubscript:v9];
+    v10 = [dictionaryCopy objectForKeyedSubscript:v9];
     placeAnnotationData = v8->_placeAnnotationData;
     v8->_placeAnnotationData = v10;
   }

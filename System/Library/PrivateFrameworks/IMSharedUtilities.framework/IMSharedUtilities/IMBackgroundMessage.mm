@@ -1,26 +1,26 @@
 @interface IMBackgroundMessage
-- (IMBackgroundMessage)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IMBackgroundMessage)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMBackgroundMessage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IMBackgroundMessage *)self messageText];
-  [v4 encodeObject:v5 forKey:@"kIMBackgroundMessageMessageText"];
+  coderCopy = coder;
+  messageText = [(IMBackgroundMessage *)self messageText];
+  [coderCopy encodeObject:messageText forKey:@"kIMBackgroundMessageMessageText"];
 }
 
-- (IMBackgroundMessage)initWithCoder:(id)a3
+- (IMBackgroundMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = IMBackgroundMessage;
   v5 = [(IMBackgroundMessage *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIMBackgroundMessageMessageText"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIMBackgroundMessageMessageText"];
     [(IMBackgroundMessage *)v5 setMessageText:v6];
   }
 

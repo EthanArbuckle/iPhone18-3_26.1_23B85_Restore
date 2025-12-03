@@ -2,13 +2,13 @@
 - (BOOL)isSelected;
 - (CKTapbackViewDelegate)delegate;
 - (UIEdgeInsets)platterEdgeInsets;
-- (void)animationTimerFired:(double)a3;
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4;
+- (void)animationTimerFired:(double)fired;
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)performViewControllerAppearingAnimation;
 - (void)prepareForAppearingAnimation;
-- (void)setIsSelected:(BOOL)a3;
+- (void)setIsSelected:(BOOL)selected;
 @end
 
 @implementation CKTapbackClassicView
@@ -41,27 +41,27 @@
   return *(self + v3);
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
   v5 = OBJC_IVAR___CKTapbackClassicView_isSelected;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
-  sub_190C89C20(a3);
+  *(self + v5) = selected;
+  selfCopy = self;
+  sub_190C89C20(selected);
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedTimer];
-  if (v5)
+  selfCopy = self;
+  sharedTimer = [v3 sharedTimer];
+  if (sharedTimer)
   {
-    v6 = v5;
-    [v5 removeAnimationTimerObserver_];
+    v6 = sharedTimer;
+    [sharedTimer removeAnimationTimerObserver_];
   }
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for TapbackClassicView();
   [(CKTapbackClassicView *)&v7 dealloc];
 }
@@ -93,26 +93,26 @@
 
 - (void)prepareForAppearingAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C896BC();
 }
 
 - (void)performViewControllerAppearingAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C89934();
 }
 
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected
 {
-  v6 = a3;
-  v7 = self;
-  sub_190C895E4([v6 associatedMessageType], a4);
+  tapbackCopy = tapback;
+  selfCopy = self;
+  sub_190C895E4([tapbackCopy associatedMessageType], selected);
 }
 
-- (void)animationTimerFired:(double)a3
+- (void)animationTimerFired:(double)fired
 {
-  v3 = self;
+  selfCopy = self;
   _s7ChatKit18TapbackClassicViewC19animationTimerFiredyySdF_0();
 }
 

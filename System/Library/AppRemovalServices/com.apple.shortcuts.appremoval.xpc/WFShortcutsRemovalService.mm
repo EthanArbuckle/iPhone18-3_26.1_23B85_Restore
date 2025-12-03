@@ -1,12 +1,12 @@
 @interface WFShortcutsRemovalService
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation WFShortcutsRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = sub_100001240();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -20,8 +20,8 @@
   v7[1] = 3221225472;
   v7[2] = sub_100001294;
   v7[3] = &unk_100004180;
-  v8 = v3;
-  v6 = v3;
+  v8 = replyCopy;
+  v6 = replyCopy;
   [v5 obliterateShortcuts:v7];
 }
 

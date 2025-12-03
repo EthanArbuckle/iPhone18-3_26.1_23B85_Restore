@@ -1,15 +1,15 @@
 @interface UIView
-+ (BOOL)crlaxView:(id)a3 isDescendantOfView:(id)a4;
-+ (void)crl_animateWithKeyboardNotification:(id)a3 options:(unint64_t)a4 animations:(id)a5 completion:(id)a6;
++ (BOOL)crlaxView:(id)view isDescendantOfView:(id)ofView;
++ (void)crl_animateWithKeyboardNotification:(id)notification options:(unint64_t)options animations:(id)animations completion:(id)completion;
 - (BOOL)crl_isPresetRenderingInvalid;
-- (CGPoint)crlaxFramePointFromBoundsPoint:(CGPoint)a3;
-- (CGRect)crlaxFrameFromBounds:(CGRect)a3;
+- (CGPoint)crlaxFramePointFromBoundsPoint:(CGPoint)point;
+- (CGRect)crlaxFrameFromBounds:(CGRect)bounds;
 - (UIView)crlaxFirstAccessibleSubview;
 - (double)crlaxScreenScale;
-- (id)crl_constraintsToAllSidesOfItem:(id)a3;
-- (void)crl_activateEqualConstraintsForView:(id)a3;
+- (id)crl_constraintsToAllSidesOfItem:(id)item;
+- (void)crl_activateEqualConstraintsForView:(id)view;
 - (void)crl_setGlassBackground;
-- (void)crl_setPresetRenderingInvalid:(BOOL)a3;
+- (void)crl_setPresetRenderingInvalid:(BOOL)invalid;
 @end
 
 @implementation UIView
@@ -17,24 +17,24 @@
 - (BOOL)crl_isPresetRenderingInvalid
 {
   v2 = objc_getAssociatedObject(self, "crl_isPresetRenderingInvalid");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)crl_setPresetRenderingInvalid:(BOOL)a3
+- (void)crl_setPresetRenderingInvalid:(BOOL)invalid
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:invalid];
   objc_setAssociatedObject(self, "crl_isPresetRenderingInvalid", v4, 1);
 }
 
-- (id)crl_constraintsToAllSidesOfItem:(id)a3
+- (id)crl_constraintsToAllSidesOfItem:(id)item
 {
-  v4 = a3;
-  v5 = [NSLayoutConstraint constraintWithItem:self attribute:1 relatedBy:0 toItem:v4 attribute:1 multiplier:1.0 constant:0.0];
-  v6 = [NSLayoutConstraint constraintWithItem:self attribute:2 relatedBy:0 toItem:v4 attribute:2 multiplier:1.0 constant:0.0];
-  v7 = [NSLayoutConstraint constraintWithItem:self attribute:3 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:0.0];
-  v8 = [NSLayoutConstraint constraintWithItem:self attribute:4 relatedBy:0 toItem:v4 attribute:4 multiplier:1.0 constant:0.0];
+  itemCopy = item;
+  v5 = [NSLayoutConstraint constraintWithItem:self attribute:1 relatedBy:0 toItem:itemCopy attribute:1 multiplier:1.0 constant:0.0];
+  v6 = [NSLayoutConstraint constraintWithItem:self attribute:2 relatedBy:0 toItem:itemCopy attribute:2 multiplier:1.0 constant:0.0];
+  v7 = [NSLayoutConstraint constraintWithItem:self attribute:3 relatedBy:0 toItem:itemCopy attribute:3 multiplier:1.0 constant:0.0];
+  v8 = [NSLayoutConstraint constraintWithItem:self attribute:4 relatedBy:0 toItem:itemCopy attribute:4 multiplier:1.0 constant:0.0];
 
   v11[0] = v5;
   v11[1] = v6;
@@ -45,30 +45,30 @@
   return v9;
 }
 
-+ (void)crl_animateWithKeyboardNotification:(id)a3 options:(unint64_t)a4 animations:(id)a5 completion:(id)a6
++ (void)crl_animateWithKeyboardNotification:(id)notification options:(unint64_t)options animations:(id)animations completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v16 = [a3 userInfo];
-  v11 = [v16 objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
+  completionCopy = completion;
+  animationsCopy = animations;
+  userInfo = [notification userInfo];
+  v11 = [userInfo objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
   [v11 doubleValue];
   v13 = v12;
 
-  v14 = [v16 objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
-  v15 = [v14 integerValue];
+  v14 = [userInfo objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
+  integerValue = [v14 integerValue];
 
-  [UIView animateWithDuration:a4 | (v15 << 16) delay:v10 options:v9 animations:v13 completion:0.0];
+  [UIView animateWithDuration:options | (integerValue << 16) delay:animationsCopy options:completionCopy animations:v13 completion:0.0];
 }
 
-- (CGRect)crlaxFrameFromBounds:(CGRect)a3
+- (CGRect)crlaxFrameFromBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIView *)self window];
-  [(UIView *)self convertRect:v8 toView:x, y, width, height];
-  [v8 convertRect:0 toWindow:?];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  window = [(UIView *)self window];
+  [(UIView *)self convertRect:window toView:x, y, width, height];
+  [window convertRect:0 toWindow:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -85,13 +85,13 @@
   return result;
 }
 
-- (CGPoint)crlaxFramePointFromBoundsPoint:(CGPoint)a3
+- (CGPoint)crlaxFramePointFromBoundsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UIView *)self window];
-  [(UIView *)self convertPoint:v6 toView:x, y];
-  [v6 convertPoint:v6 toWindow:?];
+  y = point.y;
+  x = point.x;
+  window = [(UIView *)self window];
+  [(UIView *)self convertPoint:window toView:x, y];
+  [window convertPoint:window toWindow:?];
   v8 = v7;
   v10 = v9;
 
@@ -104,34 +104,34 @@
 
 - (double)crlaxScreenScale
 {
-  v2 = [(UIView *)self window];
-  v3 = [v2 screen];
-  [v3 scale];
+  window = [(UIView *)self window];
+  screen = [window screen];
+  [screen scale];
   v5 = v4;
 
   return v5;
 }
 
-+ (BOOL)crlaxView:(id)a3 isDescendantOfView:(id)a4
++ (BOOL)crlaxView:(id)view isDescendantOfView:(id)ofView
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  viewCopy = view;
+  ofViewCopy = ofView;
+  v7 = viewCopy;
   v8 = v7;
   v9 = v7 != 0;
-  v10 = v7;
-  if (v7 != v6 && v7)
+  superview = v7;
+  if (v7 != ofViewCopy && v7)
   {
-    v10 = v7;
+    superview = v7;
     do
     {
-      v11 = v10;
-      v10 = [v10 superview];
+      v11 = superview;
+      superview = [superview superview];
 
-      v9 = v10 != 0;
+      v9 = superview != 0;
     }
 
-    while (v10 != v6 && v10);
+    while (superview != ofViewCopy && superview);
   }
 
   return v9;
@@ -139,9 +139,9 @@
 
 - (UIView)crlaxFirstAccessibleSubview
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     v12 = 0;
     v4 = [(UIView *)self crlaxValueForKey:@"_accessibleSubviews"];
@@ -163,37 +163,37 @@
       v10[3] = &unk_1018671A8;
       v11 = 0;
       v8 = [v7 crlaxObjectsPassingTest:v10];
-      v3 = [v8 firstObject];
+      window = [v8 firstObject];
     }
 
     else
     {
-      v3 = 0;
+      window = 0;
     }
   }
 
-  return v3;
+  return window;
 }
 
-- (void)crl_activateEqualConstraintsForView:(id)a3
+- (void)crl_activateEqualConstraintsForView:(id)view
 {
-  v4 = a3;
-  v17 = [v4 leadingAnchor];
-  v16 = [(UIView *)self leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  viewCopy = view;
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v18[0] = v15;
-  v5 = [v4 trailingAnchor];
-  v6 = [(UIView *)self trailingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [(UIView *)self trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v18[1] = v7;
-  v8 = [v4 topAnchor];
-  v9 = [(UIView *)self topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v18[2] = v10;
-  v11 = [v4 bottomAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
 
-  v12 = [(UIView *)self bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor2 = [(UIView *)self bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v18[3] = v13;
   v14 = [NSArray arrayWithObjects:v18 count:4];
   [NSLayoutConstraint activateConstraints:v14];
@@ -203,7 +203,7 @@
 {
   v3 = type metadata accessor for _Glass._GlassVariant();
   __chkstk_darwin(v3 - 8);
-  v4 = self;
+  selfCopy = self;
   static _Glass._GlassVariant.regular.getter();
   v5[3] = type metadata accessor for _Glass();
   v5[4] = &protocol witness table for _Glass;

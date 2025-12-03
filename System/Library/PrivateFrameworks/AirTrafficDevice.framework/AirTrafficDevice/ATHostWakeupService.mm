@@ -1,42 +1,42 @@
 @interface ATHostWakeupService
 + (id)sharedInstance;
 - (ATHostWakeupService)init;
-- (void)_wakeupHost:(id)a3;
-- (void)environmentMonitorDidChangePower:(id)a3;
-- (void)getWakeableHostsWithCompletion:(id)a3;
-- (void)sendWakeupToAllHostsWithCompletion:(id)a3;
-- (void)sendWakeupToHostWithIdentifier:(id)a3 completion:(id)a4;
+- (void)_wakeupHost:(id)host;
+- (void)environmentMonitorDidChangePower:(id)power;
+- (void)getWakeableHostsWithCompletion:(id)completion;
+- (void)sendWakeupToAllHostsWithCompletion:(id)completion;
+- (void)sendWakeupToHostWithIdentifier:(id)identifier completion:(id)completion;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation ATHostWakeupService
 
-- (void)environmentMonitorDidChangePower:(id)a3
+- (void)environmentMonitorDidChangePower:(id)power
 {
-  v5 = a3;
-  v4 = [v5 isCharging];
-  if ([v5 isRemoteServerLikelyReachable])
+  powerCopy = power;
+  isCharging = [powerCopy isCharging];
+  if ([powerCopy isRemoteServerLikelyReachable])
   {
-    [v5 networkType];
-    if ((v4 & ICEnvironmentNetworkTypeIsWiFi()) == 1)
+    [powerCopy networkType];
+    if ((isCharging & ICEnvironmentNetworkTypeIsWiFi()) == 1)
     {
       [(ATHostWakeupService *)self sendWakeupToAllHostsWithCompletion:&__block_literal_global_21];
     }
   }
 }
 
-- (void)_wakeupHost:(id)a3
+- (void)_wakeupHost:(id)host
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  hostCopy = host;
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 netService];
-    v6 = [v5 name];
+    netService = [hostCopy netService];
+    name = [netService name];
     v19 = 138412290;
-    v20 = v6;
+    v20 = name;
     _os_log_impl(&dword_223819000, v4, OS_LOG_TYPE_DEFAULT, "sending wakeup to host '%@'", &v19, 0xCu);
   }
 
@@ -44,12 +44,12 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.atc.idlewake", 0, 0, 1u);
   v8 = dispatch_time(0, 5000000000);
   dispatch_after(v8, MEMORY[0x277D85CD0], &__block_literal_global_18);
-  v9 = [v3 netService];
-  v10 = [v9 addresses];
+  netService2 = [hostCopy netService];
+  addresses = [netService2 addresses];
 
-  if ([v10 count])
+  if ([addresses count])
   {
-    v11 = [v10 objectAtIndex:0];
+    v11 = [addresses objectAtIndex:0];
     v12 = [v11 length];
     v13 = malloc_type_malloc(v12, 0x1000040451B5BE8uLL);
     if (v13)
@@ -104,9 +104,9 @@ void __35__ATHostWakeupService__wakeupHost___block_invoke()
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.atc.idlewake", 0, 0, 1u);
 }
 
-- (void)getWakeableHostsWithCompletion:(id)a3
+- (void)getWakeableHostsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -114,16 +114,16 @@ void __35__ATHostWakeupService__wakeupHost___block_invoke()
     _os_log_impl(&dword_223819000, v4, OS_LOG_TYPE_DEFAULT, "getting wakeable hosts", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = objc_alloc_init(ATHostBrowser);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__ATHostWakeupService_getWakeableHostsWithCompletion___block_invoke;
   v9[3] = &unk_2784E57D8;
-  v10 = v5;
-  v11 = v3;
-  v7 = v3;
-  v8 = v5;
+  v10 = array;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = array;
   [(ATHostBrowser *)v6 browseForHostsWithTimeout:10 completion:v9];
 }
 
@@ -168,9 +168,9 @@ void __54__ATHostWakeupService_getWakeableHostsWithCompletion___block_invoke(uin
   }
 }
 
-- (void)sendWakeupToAllHostsWithCompletion:(id)a3
+- (void)sendWakeupToAllHostsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -184,8 +184,8 @@ void __54__ATHostWakeupService_getWakeableHostsWithCompletion___block_invoke(uin
   v8[2] = __58__ATHostWakeupService_sendWakeupToAllHostsWithCompletion___block_invoke;
   v8[3] = &unk_2784E57D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(ATHostBrowser *)v6 browseForHostsWithTimeout:10 completion:v8];
 }
 
@@ -219,16 +219,16 @@ void __58__ATHostWakeupService_sendWakeupToAllHostsWithCompletion___block_invoke
   }
 }
 
-- (void)sendWakeupToHostWithIdentifier:(id)a3 completion:(id)a4
+- (void)sendWakeupToHostWithIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "sending wakeup to host identifier '%@'", &buf, 0xCu);
   }
 
@@ -241,11 +241,11 @@ void __58__ATHostWakeupService_sendWakeupToAllHostsWithCompletion___block_invoke
   v12[1] = 3221225472;
   v12[2] = __65__ATHostWakeupService_sendWakeupToHostWithIdentifier_completion___block_invoke;
   v12[3] = &unk_2784E57B0;
-  v10 = v6;
+  v10 = identifierCopy;
   p_buf = &buf;
   v13 = v10;
-  v14 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = completionCopy;
   v15 = v11;
   [(ATHostBrowser *)v9 browseForHostsWithTimeout:10 completion:v12];
 
@@ -285,14 +285,14 @@ void __65__ATHostWakeupService_sendWakeupToHostWithIdentifier_completion___block
 
 - (void)stop
 {
-  v3 = [MEMORY[0x277D7FA90] sharedMonitor];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  [mEMORY[0x277D7FA90] unregisterObserver:self];
 }
 
 - (void)start
 {
-  v3 = [MEMORY[0x277D7FA90] sharedMonitor];
-  [v3 registerObserver:self];
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  [mEMORY[0x277D7FA90] registerObserver:self];
 }
 
 - (ATHostWakeupService)init

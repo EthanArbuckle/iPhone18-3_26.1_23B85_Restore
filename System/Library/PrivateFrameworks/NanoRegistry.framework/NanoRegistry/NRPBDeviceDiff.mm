@@ -1,32 +1,32 @@
 @interface NRPBDeviceDiff
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addDiffs:(uint64_t)a1;
-- (uint64_t)addNames:(uint64_t)a1;
-- (void)setDiffs:(uint64_t)a1;
-- (void)setNames:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (uint64_t)addDiffs:(uint64_t)diffs;
+- (uint64_t)addNames:(uint64_t)names;
+- (void)setDiffs:(uint64_t)diffs;
+- (void)setNames:(uint64_t)names;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBDeviceDiff
 
-- (uint64_t)addNames:(uint64_t)a1
+- (uint64_t)addNames:(uint64_t)names
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (names)
   {
-    v5 = *(a1 + 16);
+    v5 = *(names + 16);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v6;
+      v7 = *(names + 16);
+      *(names + 16) = v6;
 
-      v5 = *(a1 + 16);
+      v5 = *(names + 16);
     }
 
     v3 = [v5 addObject:v9];
@@ -36,21 +36,21 @@
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (uint64_t)addDiffs:(uint64_t)a1
+- (uint64_t)addDiffs:(uint64_t)diffs
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (diffs)
   {
-    v5 = *(a1 + 8);
+    v5 = *(diffs + 8);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(diffs + 8);
+      *(diffs + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(diffs + 8);
     }
 
     v3 = [v5 addObject:v9];
@@ -66,8 +66,8 @@
   v8.receiver = self;
   v8.super_class = NRPBDeviceDiff;
   v4 = [(NRPBDeviceDiff *)&v8 description];
-  v5 = [(NRPBDeviceDiff *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NRPBDeviceDiff *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -75,12 +75,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   names = self->_names;
   if (names)
   {
-    [v3 setObject:names forKey:@"names"];
+    [dictionary setObject:names forKey:@"names"];
   }
 
   if ([(NSMutableArray *)self->_diffs count])
@@ -105,8 +105,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -123,10 +123,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -194,10 +194,10 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -218,7 +218,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [(NRPBDeviceDiff *)v5 addNames:v11];
 
         ++v10;
@@ -251,7 +251,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [(NRPBDeviceDiff *)v5 addDiffs:v17];
 
         ++v16;
@@ -268,13 +268,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((names = self->_names, !(names | v4[2])) || -[NSMutableArray isEqual:](names, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((names = self->_names, !(names | equalCopy[2])) || -[NSMutableArray isEqual:](names, "isEqual:")))
   {
     diffs = self->_diffs;
-    if (diffs | v4[1])
+    if (diffs | equalCopy[1])
     {
       v7 = [(NSMutableArray *)diffs isEqual:?];
     }
@@ -293,19 +293,19 @@
   return v7;
 }
 
-- (void)setNames:(uint64_t)a1
+- (void)setNames:(uint64_t)names
 {
-  if (a1)
+  if (names)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((names + 16), a2);
   }
 }
 
-- (void)setDiffs:(uint64_t)a1
+- (void)setDiffs:(uint64_t)diffs
 {
-  if (a1)
+  if (diffs)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((diffs + 8), a2);
   }
 }
 

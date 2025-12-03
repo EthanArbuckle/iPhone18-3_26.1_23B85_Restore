@@ -1,13 +1,13 @@
 @interface _PKFakeTapToFocusInfo
-+ (void)controlInfoWithInteractionValue:(uint64_t)a1;
-+ (void)controlInfoWithInteractionValue:(uint64_t)a1 targetValue:(uint64_t)a2 actionValue:(uint64_t)a3 controlEvents:(uint64_t)a4 textInputValue:(uint64_t)a5;
-+ (void)tapGestureInfoWithInteractionValue:(uint64_t)a3 firstSubviewValue:(uint64_t)a4 textInputValue:;
-+ (void)textFieldInfoWithInteractionValue:(uint64_t)a1;
++ (void)controlInfoWithInteractionValue:(uint64_t)value;
++ (void)controlInfoWithInteractionValue:(uint64_t)value targetValue:(uint64_t)targetValue actionValue:(uint64_t)actionValue controlEvents:(uint64_t)events textInputValue:(uint64_t)inputValue;
++ (void)tapGestureInfoWithInteractionValue:(uint64_t)value firstSubviewValue:(uint64_t)subviewValue textInputValue:;
++ (void)textFieldInfoWithInteractionValue:(uint64_t)value;
 @end
 
 @implementation _PKFakeTapToFocusInfo
 
-+ (void)textFieldInfoWithInteractionValue:(uint64_t)a1
++ (void)textFieldInfoWithInteractionValue:(uint64_t)value
 {
   objc_opt_self();
   v3 = objc_alloc_init(objc_opt_class());
@@ -17,19 +17,19 @@
   return v3;
 }
 
-+ (void)tapGestureInfoWithInteractionValue:(uint64_t)a3 firstSubviewValue:(uint64_t)a4 textInputValue:
++ (void)tapGestureInfoWithInteractionValue:(uint64_t)value firstSubviewValue:(uint64_t)subviewValue textInputValue:
 {
   objc_opt_self();
   v7 = objc_alloc_init(objc_opt_class());
   v7[2] = 2;
   v7[3] = a2;
-  v7[4] = a3;
-  v7[8] = a4;
+  v7[4] = value;
+  v7[8] = subviewValue;
 
   return v7;
 }
 
-+ (void)controlInfoWithInteractionValue:(uint64_t)a1
++ (void)controlInfoWithInteractionValue:(uint64_t)value
 {
   objc_opt_self();
   v3 = objc_alloc_init(objc_opt_class());
@@ -40,15 +40,15 @@
   return v3;
 }
 
-+ (void)controlInfoWithInteractionValue:(uint64_t)a1 targetValue:(uint64_t)a2 actionValue:(uint64_t)a3 controlEvents:(uint64_t)a4 textInputValue:(uint64_t)a5
++ (void)controlInfoWithInteractionValue:(uint64_t)value targetValue:(uint64_t)targetValue actionValue:(uint64_t)actionValue controlEvents:(uint64_t)events textInputValue:(uint64_t)inputValue
 {
   objc_opt_self();
   v9 = objc_alloc_init(objc_opt_class());
   v9[2] = 1;
-  v9[3] = a2;
-  v9[5] = a3;
-  v9[6] = a4;
-  v9[7] = a5;
+  v9[3] = targetValue;
+  v9[5] = actionValue;
+  v9[6] = events;
+  v9[7] = inputValue;
   v9[8] = 0;
 
   return v9;

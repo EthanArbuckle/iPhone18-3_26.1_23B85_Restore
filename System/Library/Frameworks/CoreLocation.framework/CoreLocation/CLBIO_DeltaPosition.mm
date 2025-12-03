@@ -1,39 +1,39 @@
 @interface CLBIO_DeltaPosition
-- (BOOL)isEqual:(id)a3;
-- (CLBIO_DeltaPosition)initWithCoder:(id)a3;
-- (CLBIO_DeltaPosition)initWithX:(double)a3 Y:(double)a4 Z:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLBIO_DeltaPosition)initWithCoder:(id)coder;
+- (CLBIO_DeltaPosition)initWithX:(double)x Y:(double)y Z:(double)z;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLBIO_DeltaPosition
 
-- (CLBIO_DeltaPosition)initWithX:(double)a3 Y:(double)a4 Z:(double)a5
+- (CLBIO_DeltaPosition)initWithX:(double)x Y:(double)y Z:(double)z
 {
   v9.receiver = self;
   v9.super_class = CLBIO_DeltaPosition;
   result = [(CLBIO_DeltaPosition *)&v9 init];
   if (result)
   {
-    result->_X = a3;
-    result->_Y = a4;
-    result->_Z = a5;
+    result->_X = x;
+    result->_Y = y;
+    result->_Z = z;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     X = self->_X;
-    [a3 X];
-    if (X == v7 && (Y = self->_Y, [a3 Y], Y == v9))
+    [equal X];
+    if (X == v7 && (Y = self->_Y, [equal Y], Y == v9))
     {
       Z = self->_Z;
-      [a3 Z];
+      [equal Z];
       LOBYTE(v5) = Z == v11;
     }
 
@@ -46,9 +46,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(CLBIO_DeltaPosition *)self X];
   [(CLBIO_DeltaPosition *)self Y];
   [(CLBIO_DeltaPosition *)self Z];
@@ -56,29 +56,29 @@
   return MEMORY[0x1EEE66B58](v4, sel_initWithX_Y_Z_);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(CLBIO_DeltaPosition *)self X];
-  [a3 encodeDouble:@"deltaPositionX" forKey:?];
+  [coder encodeDouble:@"deltaPositionX" forKey:?];
   [(CLBIO_DeltaPosition *)self Y];
-  [a3 encodeDouble:@"deltaPositionY" forKey:?];
+  [coder encodeDouble:@"deltaPositionY" forKey:?];
   [(CLBIO_DeltaPosition *)self Z];
 
-  [a3 encodeDouble:@"deltaPositionZ" forKey:?];
+  [coder encodeDouble:@"deltaPositionZ" forKey:?];
 }
 
-- (CLBIO_DeltaPosition)initWithCoder:(id)a3
+- (CLBIO_DeltaPosition)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = CLBIO_DeltaPosition;
   v4 = [(CLBIO_DeltaPosition *)&v9 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"deltaPositionX"];
+    [coder decodeDoubleForKey:@"deltaPositionX"];
     v4->_X = v5;
-    [a3 decodeDoubleForKey:@"deltaPositionY"];
+    [coder decodeDoubleForKey:@"deltaPositionY"];
     v4->_Y = v6;
-    [a3 decodeDoubleForKey:@"deltaPositionZ"];
+    [coder decodeDoubleForKey:@"deltaPositionZ"];
     v4->_Z = v7;
   }
 

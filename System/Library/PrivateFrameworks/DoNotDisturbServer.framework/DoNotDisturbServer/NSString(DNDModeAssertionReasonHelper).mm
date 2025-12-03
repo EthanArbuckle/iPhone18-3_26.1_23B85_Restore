@@ -20,17 +20,17 @@
 
 - (uint64_t)dnds_assertionReasonValue
 {
-  if ([a1 isEqualToString:@"user-action"])
+  if ([self isEqualToString:@"user-action"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"system-state"])
+  if ([self isEqualToString:@"system-state"])
   {
     return 3;
   }
 
-  if ([a1 isEqualToString:@"schedule"])
+  if ([self isEqualToString:@"schedule"])
   {
     return 2;
   }

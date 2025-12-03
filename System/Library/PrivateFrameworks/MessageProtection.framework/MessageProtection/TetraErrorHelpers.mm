@@ -1,14 +1,14 @@
 @interface TetraErrorHelpers
-+ (BOOL)shouldMarkForStateResetWithString:(id)a3;
++ (BOOL)shouldMarkForStateResetWithString:(id)string;
 - (_TtC17MessageProtection17TetraErrorHelpers)init;
 @end
 
 @implementation TetraErrorHelpers
 
-+ (BOOL)shouldMarkForStateResetWithString:(id)a3
++ (BOOL)shouldMarkForStateResetWithString:(id)string
 {
-  v3 = a3;
-  v4 = specialized static TetraErrorHelpers.shouldMarkForStateReset(string:)(v3);
+  stringCopy = string;
+  v4 = specialized static TetraErrorHelpers.shouldMarkForStateReset(string:)(stringCopy);
 
   return v4 & 1;
 }

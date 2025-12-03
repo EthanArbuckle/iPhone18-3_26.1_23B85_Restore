@@ -1,8 +1,8 @@
 @interface WKLayeredStillWallpaperInput
 + (id)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (WKLayeredStillWallpaperInput)initWithBackgroundThumbnailImageURL:(id)a3 foregroundThumbnailImageURL:(id)a4 floatingThumbnailImageURL:(id)a5 backgroundFullSizeImageURL:(id)a6 foregroundFullSizeImageURL:(id)a7 floatingFullSizeImageURL:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (WKLayeredStillWallpaperInput)initWithBackgroundThumbnailImageURL:(id)l foregroundThumbnailImageURL:(id)rL floatingThumbnailImageURL:(id)uRL backgroundFullSizeImageURL:(id)imageURL foregroundFullSizeImageURL:(id)sizeImageURL floatingFullSizeImageURL:(id)fullSizeImageURL;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionBuilderBlock;
 - (id)wk_descriptionBuilder;
@@ -11,25 +11,25 @@
 
 @implementation WKLayeredStillWallpaperInput
 
-- (WKLayeredStillWallpaperInput)initWithBackgroundThumbnailImageURL:(id)a3 foregroundThumbnailImageURL:(id)a4 floatingThumbnailImageURL:(id)a5 backgroundFullSizeImageURL:(id)a6 foregroundFullSizeImageURL:(id)a7 floatingFullSizeImageURL:(id)a8
+- (WKLayeredStillWallpaperInput)initWithBackgroundThumbnailImageURL:(id)l foregroundThumbnailImageURL:(id)rL floatingThumbnailImageURL:(id)uRL backgroundFullSizeImageURL:(id)imageURL foregroundFullSizeImageURL:(id)sizeImageURL floatingFullSizeImageURL:(id)fullSizeImageURL
 {
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  imageURLCopy = imageURL;
+  sizeImageURLCopy = sizeImageURL;
+  fullSizeImageURLCopy = fullSizeImageURL;
   v25.receiver = self;
   v25.super_class = WKLayeredStillWallpaperInput;
-  v17 = [(WKLayeredThumbnailWallpaperInput *)&v25 initWithBackgroundThumbnailImageURL:a3 foregroundThumbnailImageURL:a4 floatingThumbnailImageURL:a5];
+  v17 = [(WKLayeredThumbnailWallpaperInput *)&v25 initWithBackgroundThumbnailImageURL:l foregroundThumbnailImageURL:rL floatingThumbnailImageURL:uRL];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [imageURLCopy copy];
     backgroundFullSizeImageURL = v17->_backgroundFullSizeImageURL;
     v17->_backgroundFullSizeImageURL = v18;
 
-    v20 = [v15 copy];
+    v20 = [sizeImageURLCopy copy];
     foregroundFullSizeImageURL = v17->_foregroundFullSizeImageURL;
     v17->_foregroundFullSizeImageURL = v20;
 
-    v22 = [v16 copy];
+    v22 = [fullSizeImageURLCopy copy];
     floatingFullSizeImageURL = v17->_floatingFullSizeImageURL;
     v17->_floatingFullSizeImageURL = v22;
   }
@@ -37,16 +37,16 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKLayeredThumbnailWallpaperInput *)self backgroundThumbnailImageURL];
-  v6 = [(WKLayeredThumbnailWallpaperInput *)self foregroundThumbnailImageURL];
-  v7 = [(WKLayeredThumbnailWallpaperInput *)self floatingThumbnailImageURL];
-  v8 = [(WKLayeredStillWallpaperInput *)self backgroundFullSizeImageURL];
-  v9 = [(WKLayeredStillWallpaperInput *)self foregroundFullSizeImageURL];
-  v10 = [(WKLayeredStillWallpaperInput *)self floatingFullSizeImageURL];
-  v11 = [v4 initWithBackgroundThumbnailImageURL:v5 foregroundThumbnailImageURL:v6 floatingThumbnailImageURL:v7 backgroundFullSizeImageURL:v8 foregroundFullSizeImageURL:v9 floatingFullSizeImageURL:v10];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  backgroundThumbnailImageURL = [(WKLayeredThumbnailWallpaperInput *)self backgroundThumbnailImageURL];
+  foregroundThumbnailImageURL = [(WKLayeredThumbnailWallpaperInput *)self foregroundThumbnailImageURL];
+  floatingThumbnailImageURL = [(WKLayeredThumbnailWallpaperInput *)self floatingThumbnailImageURL];
+  backgroundFullSizeImageURL = [(WKLayeredStillWallpaperInput *)self backgroundFullSizeImageURL];
+  foregroundFullSizeImageURL = [(WKLayeredStillWallpaperInput *)self foregroundFullSizeImageURL];
+  floatingFullSizeImageURL = [(WKLayeredStillWallpaperInput *)self floatingFullSizeImageURL];
+  v11 = [v4 initWithBackgroundThumbnailImageURL:backgroundThumbnailImageURL foregroundThumbnailImageURL:foregroundThumbnailImageURL floatingThumbnailImageURL:floatingThumbnailImageURL backgroundFullSizeImageURL:backgroundFullSizeImageURL foregroundFullSizeImageURL:foregroundFullSizeImageURL floatingFullSizeImageURL:floatingFullSizeImageURL];
 
   return v11;
 }
@@ -57,7 +57,7 @@
   v4[1] = 3221225472;
   v4[2] = __43__WKLayeredStillWallpaperInput_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __43__WKLayeredStillWallpaperInput_na_identity__block_invoke(v4);
 
   return v2;
@@ -108,19 +108,19 @@ id __43__WKLayeredStillWallpaperInput_na_identity__block_invoke_3(uint64_t a1)
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -129,7 +129,7 @@ id __43__WKLayeredStillWallpaperInput_na_identity__block_invoke_3(uint64_t a1)
 {
   v3 = [MEMORY[0x1E69B3778] builderWithObject:self];
   objc_initWeak(&location, self);
-  v4 = [v3 activeMultilinePrefix];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__WKLayeredStillWallpaperInput_wk_descriptionBuilder__block_invoke;
@@ -137,7 +137,7 @@ id __43__WKLayeredStillWallpaperInput_na_identity__block_invoke_3(uint64_t a1)
   objc_copyWeak(&v9, &location);
   v5 = v3;
   v8 = v5;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v7];
+  [v5 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -154,24 +154,24 @@ void __53__WKLayeredStillWallpaperInput_wk_descriptionBuilder__block_invoke(uint
 
 - (id)description
 {
-  v2 = [(WKLayeredStillWallpaperInput *)self wk_descriptionBuilder];
-  v3 = [v2 build];
+  wk_descriptionBuilder = [(WKLayeredStillWallpaperInput *)self wk_descriptionBuilder];
+  build = [wk_descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)descriptionBuilderBlock
 {
   v9.receiver = self;
   v9.super_class = WKLayeredStillWallpaperInput;
-  v3 = [(WKLayeredThumbnailWallpaperInput *)&v9 descriptionBuilderBlock];
+  descriptionBuilderBlock = [(WKLayeredThumbnailWallpaperInput *)&v9 descriptionBuilderBlock];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__WKLayeredStillWallpaperInput_descriptionBuilderBlock__block_invoke;
   aBlock[3] = &unk_1E8766BF0;
   objc_copyWeak(&v7, &location);
-  aBlock[4] = v3;
+  aBlock[4] = descriptionBuilderBlock;
   v4 = _Block_copy(aBlock);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

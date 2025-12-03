@@ -1,9 +1,9 @@
 @interface VoucherStore
 + (VoucherStore)sharedInstance;
 - (VoucherStore)init;
-- (void)insertVoucher:(id)a3 forExternalID:(id)a4;
-- (void)removeVoucherForExternalID:(id)a3;
-- (void)usingVoucherForExternalID:(id)a3 applyQOSClass:(unsigned int)a4 executeBlock:(id)a5;
+- (void)insertVoucher:(id)voucher forExternalID:(id)d;
+- (void)removeVoucherForExternalID:(id)d;
+- (void)usingVoucherForExternalID:(id)d applyQOSClass:(unsigned int)class executeBlock:(id)block;
 @end
 
 @implementation VoucherStore
@@ -35,10 +35,10 @@
   return v2;
 }
 
-- (void)insertVoucher:(id)a3 forExternalID:(id)a4
+- (void)insertVoucher:(id)voucher forExternalID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  voucherCopy = voucher;
+  dCopy = d;
   if (qword_1003D4290 != -1)
   {
     sub_1002CD93C();
@@ -47,18 +47,18 @@
   v8 = qword_1003D4248;
   if (os_log_type_enabled(qword_1003D4248, OS_LOG_TYPE_DEBUG))
   {
-    sub_1002CD950(v7, v6, v8);
+    sub_1002CD950(dCopy, voucherCopy, v8);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  [(NSMutableDictionary *)v9->_vouchers setObject:v6 forKeyedSubscript:v7];
-  objc_sync_exit(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_vouchers setObject:voucherCopy forKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeVoucherForExternalID:(id)a3
+- (void)removeVoucherForExternalID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (qword_1003D4290 != -1)
   {
     sub_1002CD93C();
@@ -67,23 +67,23 @@
   v5 = qword_1003D4248;
   if (os_log_type_enabled(qword_1003D4248, OS_LOG_TYPE_DEBUG))
   {
-    sub_1002CD9D8(v4, v5);
+    sub_1002CD9D8(dCopy, v5);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(NSMutableDictionary *)v6->_vouchers setObject:0 forKeyedSubscript:v4];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_vouchers setObject:0 forKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)usingVoucherForExternalID:(id)a3 applyQOSClass:(unsigned int)a4 executeBlock:(id)a5
+- (void)usingVoucherForExternalID:(id)d applyQOSClass:(unsigned int)class executeBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(NSMutableDictionary *)v10->_vouchers objectForKeyedSubscript:v8];
-  objc_sync_exit(v10);
+  dCopy = d;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = [(NSMutableDictionary *)selfCopy->_vouchers objectForKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 
   if (qword_1003D4290 != -1)
   {
@@ -94,16 +94,16 @@
   if (os_log_type_enabled(qword_1003D4248, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v17 = v8;
+    v17 = dCopy;
     v18 = 1024;
-    v19 = a4;
+    classCopy = class;
     v20 = 2112;
     v21 = v11;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "(VoucherStore) Executing block for externalID: %@, QOS(0x%x) Voucher %@", buf, 0x1Cu);
   }
 
-  v15 = v9;
-  v13 = v9;
+  v15 = blockCopy;
+  v13 = blockCopy;
   v14 = dispatch_block_create_with_voucher_and_qos_class();
   v14[2]();
 }

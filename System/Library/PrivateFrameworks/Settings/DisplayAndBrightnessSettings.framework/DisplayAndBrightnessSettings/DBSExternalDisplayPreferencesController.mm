@@ -1,32 +1,32 @@
 @interface DBSExternalDisplayPreferencesController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (DBSExternalDisplayPreferencesController)init;
 - (SBSConnectedDisplayInfo)externalDisplayInfo;
 - (id)connectedDisplayName;
 - (id)currentHDRMode;
 - (id)displayModeSpecifiers;
-- (id)externalAutoBrightnessValueForSpecifier:(id)a3;
+- (id)externalAutoBrightnessValueForSpecifier:(id)specifier;
 - (id)externalBrightnessSpecifiers;
-- (id)externalBrightnessValueForSpecifier:(id)a3;
+- (id)externalBrightnessValueForSpecifier:(id)specifier;
 - (id)localizedMagnifyModeName;
-- (id)matchContentEnabled:(id)a3;
+- (id)matchContentEnabled:(id)enabled;
 - (id)specifiers;
 - (unint64_t)supportedZoomModesCount;
-- (void)connectedDisplayDidUpdate:(id)a3;
+- (void)connectedDisplayDidUpdate:(id)update;
 - (void)dealloc;
 - (void)displayZoomDidUpdate;
-- (void)externalBrightnessDidUpdate:(id)a3;
-- (void)handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessAvailablityDidChangeNotification:(id)a3;
-- (void)handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessValueDidChangeNotification:(id)a3;
-- (void)handleDBSExternalDisplayManagerExternalBrightnessAvailablityDidChangeNotification:(id)a3;
+- (void)externalBrightnessDidUpdate:(id)update;
+- (void)handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessAvailablityDidChangeNotification:(id)notification;
+- (void)handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessValueDidChangeNotification:(id)notification;
+- (void)handleDBSExternalDisplayManagerExternalBrightnessAvailablityDidChangeNotification:(id)notification;
 - (void)insertExternalBrightnessSpecifiers;
 - (void)presentModalMagnifyController;
 - (void)removeExternalBrightnessSpecifiers;
-- (void)setCurrentHDRMode:(id)a3;
-- (void)setExternalAutoBrightnessValue:(id)a3 specifier:(id)a4;
-- (void)setExternalBrightnessValue:(id)a3 specifier:(id)a4;
-- (void)setMatchContentEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setCurrentHDRMode:(id)mode;
+- (void)setExternalAutoBrightnessValue:(id)value specifier:(id)specifier;
+- (void)setExternalBrightnessValue:(id)value specifier:(id)specifier;
+- (void)setMatchContentEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -39,20 +39,20 @@
   v2 = [(DBSExternalDisplayPreferencesController *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_connectedDisplayDidUpdate_ name:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_connectedDisplayDidUpdate_ name:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_externalBrightnessDidUpdate_ name:DBSExternalDisplayManagerExternalBrightnessValueDidChange[0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_externalBrightnessDidUpdate_ name:DBSExternalDisplayManagerExternalBrightnessValueDidChange[0] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_handleDBSExternalDisplayManagerExternalBrightnessAvailablityDidChangeNotification_ name:DBSExternalDisplayManagerExternalBrightnessAvailablityDidChange[0] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_handleDBSExternalDisplayManagerExternalBrightnessAvailablityDidChangeNotification_ name:DBSExternalDisplayManagerExternalBrightnessAvailablityDidChange[0] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessAvailablityDidChangeNotification_ name:DBSExternalDisplayManagerExternalAutoBrightnessAvailablityDidChange[0] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel_handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessAvailablityDidChangeNotification_ name:DBSExternalDisplayManagerExternalAutoBrightnessAvailablityDidChange[0] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessValueDidChangeNotification_ name:DBSExternalDisplayManagerExternalAutoBrightnessValueDidChange[0] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v2 selector:sel_handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessValueDidChangeNotification_ name:DBSExternalDisplayManagerExternalAutoBrightnessValueDidChange[0] object:0];
   }
 
   return v2;
@@ -60,20 +60,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:DBSExternalDisplayManagerExternalBrightnessValueDidChange[0] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:DBSExternalDisplayManagerExternalBrightnessValueDidChange[0] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:DBSExternalDisplayManagerExternalBrightnessAvailablityDidChange[0] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:DBSExternalDisplayManagerExternalBrightnessAvailablityDidChange[0] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:DBSExternalDisplayManagerExternalAutoBrightnessAvailablityDidChange[0] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 removeObserver:self name:DBSExternalDisplayManagerExternalAutoBrightnessAvailablityDidChange[0] object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self name:DBSExternalDisplayManagerExternalAutoBrightnessValueDidChange[0] object:0];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter5 removeObserver:self name:DBSExternalDisplayManagerExternalAutoBrightnessValueDidChange[0] object:0];
 
   v8.receiver = self;
   v8.super_class = DBSExternalDisplayPreferencesController;
@@ -94,55 +94,55 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = +[DBSExternalDisplayManager defaultManager];
-    v7 = [v6 externalDisplayBrightnessAvailable];
+    externalDisplayBrightnessAvailable = [v6 externalDisplayBrightnessAvailable];
 
-    if (v7)
+    if (externalDisplayBrightnessAvailable)
     {
-      v8 = [(DBSExternalDisplayPreferencesController *)self externalBrightnessSpecifiers];
-      [v5 addObjectsFromArray:v8];
+      externalBrightnessSpecifiers = [(DBSExternalDisplayPreferencesController *)self externalBrightnessSpecifiers];
+      [array addObjectsFromArray:externalBrightnessSpecifiers];
     }
 
     if (DBSReverseZoomEnabled() && DBSChamoisEnabled() && [(DBSExternalDisplayPreferencesController *)self supportedZoomModesCount]>= 2)
     {
       v9 = objc_opt_new();
       [v9 setDelegate:self];
-      v10 = [v9 specifiers];
+      specifiers = [v9 specifiers];
 
-      if (v10)
+      if (specifiers)
       {
-        v11 = [v9 specifiers];
-        [v5 addObjectsFromArray:v11];
+        specifiers2 = [v9 specifiers];
+        [array addObjectsFromArray:specifiers2];
       }
 
       [(DBSExternalDisplayPreferencesController *)self set_zoomAndProSpecifierVendor:v9];
     }
 
     v12 = +[DBSExternalDisplayManager defaultManager];
-    v13 = [v12 supportedHDRModesWithHighRefreshRate];
-    if ([v13 count])
+    supportedHDRModesWithHighRefreshRate = [v12 supportedHDRModesWithHighRefreshRate];
+    if ([supportedHDRModesWithHighRefreshRate count])
     {
     }
 
     else
     {
       v14 = +[DBSExternalDisplayManager defaultManager];
-      v15 = [v14 supportedHDRModesWithVRR];
-      v16 = [v15 count];
+      supportedHDRModesWithVRR = [v14 supportedHDRModesWithVRR];
+      v16 = [supportedHDRModesWithVRR count];
 
       if (!v16)
       {
-        v26 = [(DBSExternalDisplayPreferencesController *)self displayModeSpecifiers];
-        [v5 addObjectsFromArray:v26];
+        displayModeSpecifiers = [(DBSExternalDisplayPreferencesController *)self displayModeSpecifiers];
+        [array addObjectsFromArray:displayModeSpecifiers];
 
-        v17 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
         v27 = *MEMORY[0x277D3FFB8];
-        [v17 setObject:@"MATCH_CONTENT_GROUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
+        [emptyGroupSpecifier setObject:@"MATCH_CONTENT_GROUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
         v28 = DBS_LocalizedStringForConnectedDisplays(@"MATCH_CONTENT_FOOTER");
-        [v17 setObject:v28 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+        [emptyGroupSpecifier setObject:v28 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-        [v5 addObject:v17];
+        [array addObject:emptyGroupSpecifier];
         v29 = MEMORY[0x277D3FAD8];
         v30 = DBS_LocalizedStringForConnectedDisplays(@"MATCH_CONTENT");
         v20 = [v29 preferenceSpecifierNamed:v30 target:self set:sel_setMatchContentEnabled_specifier_ get:sel_matchContentEnabled_ detail:0 cell:6 edit:0];
@@ -154,8 +154,8 @@
       }
     }
 
-    v17 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"ADVANCED_LINK_GROUP_ID"];
-    [v5 addObject:v17];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"ADVANCED_LINK_GROUP_ID"];
+    [array addObject:emptyGroupSpecifier];
     v18 = MEMORY[0x277D3FAD8];
     v19 = DBS_LocalizedStringForDisplays(@"ADVANCED");
     v20 = [v18 preferenceSpecifierNamed:v19 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
@@ -165,10 +165,10 @@
     v23 = @"ADVANCED";
 LABEL_14:
     [v22 setObject:v23 forKeyedSubscript:v21];
-    [v5 addObject:v20];
+    [array addObject:v20];
 
     v24 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -176,23 +176,23 @@ LABEL_14:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DBSExternalDisplayPreferencesController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(DBSExternalDisplayPreferencesController *)self specifierAtIndexPath:pathCopy];
   v9 = [(DBSExternalDisplayPreferencesController *)self specifierForID:@"COLOR_SETTING"];
   v10 = [v8 objectForKeyedSubscript:@"HDRMode"];
-  v11 = [(DBSExternalDisplayPreferencesController *)self currentHDRMode];
-  v12 = [v11 isEqualToString:v10];
+  currentHDRMode = [(DBSExternalDisplayPreferencesController *)self currentHDRMode];
+  v12 = [currentHDRMode isEqualToString:v10];
 
   if ((v12 & 1) == 0)
   {
     v13 = +[DBSExternalDisplayManager defaultManager];
-    v14 = [v13 preferredHDRModes];
+    preferredHDRModes = [v13 preferredHDRModes];
 
-    if ([v14 containsObject:v10])
+    if ([preferredHDRModes containsObject:v10])
     {
       [(DBSExternalDisplayPreferencesController *)self setCurrentHDRMode:v10];
       if ([v10 isEqualToString:*MEMORY[0x277CDA160]] || objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CDA168]) || objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CDA178]))
@@ -249,7 +249,7 @@ LABEL_14:
 
   v26.receiver = self;
   v26.super_class = DBSExternalDisplayPreferencesController;
-  [(DBSExternalDisplayPreferencesController *)&v26 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(DBSExternalDisplayPreferencesController *)&v26 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 void __77__DBSExternalDisplayPreferencesController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1)
@@ -277,11 +277,11 @@ void __77__DBSExternalDisplayPreferencesController_tableView_didSelectRowAtIndex
   [WeakRetained reloadSpecifier:*(a1 + 40)];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DBSExternalDisplayPreferencesController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(DBSExternalDisplayPreferencesController *)self specifierAtIndexPath:pathCopy];
   v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
   v10 = [v9 isEqualToString:@"MATCH_CONTENT"];
 
@@ -294,18 +294,18 @@ void __77__DBSExternalDisplayPreferencesController_tableView_didSelectRowAtIndex
   {
     v13.receiver = self;
     v13.super_class = DBSExternalDisplayPreferencesController;
-    v11 = [(DBSExternalDisplayPreferencesController *)&v13 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v11 = [(DBSExternalDisplayPreferencesController *)&v13 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v11;
 }
 
-- (void)connectedDisplayDidUpdate:(id)a3
+- (void)connectedDisplayDidUpdate:(id)update
 {
   v4 = +[DBSExternalDisplayManager defaultManager];
-  v5 = [v4 externalDisplayAvailable];
+  externalDisplayAvailable = [v4 externalDisplayAvailable];
 
-  if ((v5 & 1) == 0)
+  if ((externalDisplayAvailable & 1) == 0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -318,11 +318,11 @@ void __77__DBSExternalDisplayPreferencesController_tableView_didSelectRowAtIndex
 
 - (id)externalBrightnessSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = +[DBSExternalDisplayManager defaultManager];
-  v5 = [v4 externalDisplayBrightnessAvailable];
+  externalDisplayBrightnessAvailable = [v4 externalDisplayBrightnessAvailable];
 
-  if (v5)
+  if (externalDisplayBrightnessAvailable)
   {
     v6 = *MEMORY[0x277D3FC48];
     if (!*(&self->super.super.super.super.super.isa + v6) || ([(DBSExternalDisplayPreferencesController *)self specifierForID:@"BRIGHTNESS_GROUP"], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -332,27 +332,27 @@ void __77__DBSExternalDisplayPreferencesController_tableView_didSelectRowAtIndex
       [v7 setName:v8];
     }
 
-    [v3 addObject:v7];
+    [array addObject:v7];
     if (!*(&self->super.super.super.super.super.isa + v6) || ([(DBSExternalDisplayPreferencesController *)self specifierForID:@"EXTERNAL_BRIGHTNESS"], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v9 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:self set:sel_setExternalBrightnessValue_specifier_ get:sel_externalBrightnessValueForSpecifier_ detail:0 cell:5 edit:0];
       [v9 setObject:@"EXTERNAL_BRIGHTNESS" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
-      v10 = [MEMORY[0x277D755B8] dbs_minSliderImage];
-      [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x277D400D0]];
+      dbs_minSliderImage = [MEMORY[0x277D755B8] dbs_minSliderImage];
+      [v9 setObject:dbs_minSliderImage forKeyedSubscript:*MEMORY[0x277D400D0]];
 
-      v11 = [MEMORY[0x277D755B8] dbs_maxSliderImage];
-      [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x277D400E0]];
+      dbs_maxSliderImage = [MEMORY[0x277D755B8] dbs_maxSliderImage];
+      [v9 setObject:dbs_maxSliderImage forKeyedSubscript:*MEMORY[0x277D400E0]];
 
       [v9 setObject:&unk_28349F658 forKeyedSubscript:*MEMORY[0x277D3FEC0]];
       [v9 setObject:&unk_28349F668 forKeyedSubscript:*MEMORY[0x277D3FEB8]];
       [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D400C0]];
     }
 
-    [v3 addObject:v9];
+    [array addObject:v9];
     v12 = +[DBSExternalDisplayManager defaultManager];
-    v13 = [v12 externalDisplayAutoBrightnessAvailable];
+    externalDisplayAutoBrightnessAvailable = [v12 externalDisplayAutoBrightnessAvailable];
 
-    if (v13)
+    if (externalDisplayAutoBrightnessAvailable)
     {
       if (!*(&self->super.super.super.super.super.isa + v6) || ([(DBSExternalDisplayPreferencesController *)self specifierForID:@"EXTERNAL_AUTO_BRIGHTNESS"], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
       {
@@ -363,16 +363,16 @@ void __77__DBSExternalDisplayPreferencesController_tableView_didSelectRowAtIndex
         [v14 setObject:@"EXTERNAL_AUTO_BRIGHTNESS" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
       }
 
-      [v3 addObject:v14];
+      [array addObject:v14];
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (void)externalBrightnessDidUpdate:(id)a3
+- (void)externalBrightnessDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v5 = [(DBSExternalDisplayPreferencesController *)self specifierForID:@"EXTERNAL_BRIGHTNESS"];
@@ -387,7 +387,7 @@ void __77__DBSExternalDisplayPreferencesController_tableView_didSelectRowAtIndex
     block[2] = __71__DBSExternalDisplayPreferencesController_externalBrightnessDidUpdate___block_invoke;
     block[3] = &unk_278459660;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = updateCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v8);
@@ -401,15 +401,15 @@ void __71__DBSExternalDisplayPreferencesController_externalBrightnessDidUpdate__
   [WeakRetained externalBrightnessDidUpdate:*(a1 + 32)];
 }
 
-- (void)handleDBSExternalDisplayManagerExternalBrightnessAvailablityDidChangeNotification:(id)a3
+- (void)handleDBSExternalDisplayManagerExternalBrightnessAvailablityDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v5 = +[DBSExternalDisplayManager defaultManager];
-    v6 = [v5 externalDisplayBrightnessAvailable];
+    externalDisplayBrightnessAvailable = [v5 externalDisplayBrightnessAvailable];
 
-    if (v6)
+    if (externalDisplayBrightnessAvailable)
     {
       [(DBSExternalDisplayPreferencesController *)self insertExternalBrightnessSpecifiers];
     }
@@ -428,7 +428,7 @@ void __71__DBSExternalDisplayPreferencesController_externalBrightnessDidUpdate__
     block[2] = __125__DBSExternalDisplayPreferencesController_handleDBSExternalDisplayManagerExternalBrightnessAvailablityDidChangeNotification___block_invoke;
     block[3] = &unk_278459660;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = notificationCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v9);
@@ -442,15 +442,15 @@ void __125__DBSExternalDisplayPreferencesController_handleDBSExternalDisplayMana
   [WeakRetained handleDBSExternalDisplayManagerExternalBrightnessAvailablityDidChangeNotification:*(a1 + 32)];
 }
 
-- (void)handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessAvailablityDidChangeNotification:(id)a3
+- (void)handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessAvailablityDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v5 = +[DBSExternalDisplayManager defaultManager];
-    v6 = [v5 externalDisplayAutoBrightnessAvailable];
+    externalDisplayAutoBrightnessAvailable = [v5 externalDisplayAutoBrightnessAvailable];
 
-    if (v6)
+    if (externalDisplayAutoBrightnessAvailable)
     {
       [(DBSExternalDisplayPreferencesController *)self insertExternalBrightnessSpecifiers];
     }
@@ -469,7 +469,7 @@ void __125__DBSExternalDisplayPreferencesController_handleDBSExternalDisplayMana
     block[2] = __168__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessAvailablityDidChangeNotification___block_invoke;
     block[3] = &unk_278459660;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = notificationCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v9);
@@ -483,9 +483,9 @@ void __168__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayP
   [WeakRetained handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessAvailablityDidChangeNotification:*(a1 + 32)];
 }
 
-- (void)handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessValueDidChangeNotification:(id)a3
+- (void)handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessValueDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v5 = [(DBSExternalDisplayPreferencesController *)self specifierForID:@"EXTERNAL_AUTO_BRIGHTNESS"];
@@ -503,7 +503,7 @@ void __168__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayP
     block[2] = __162__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayPreferencesControllerExternalDisplayManagerExternalAutoBrightnessValueDidChangeNotification___block_invoke;
     block[3] = &unk_278459660;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = notificationCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v8);
@@ -519,44 +519,44 @@ void __162__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayP
 
 - (void)insertExternalBrightnessSpecifiers
 {
-  v4 = [(DBSExternalDisplayPreferencesController *)self externalBrightnessSpecifiers];
-  [(DBSExternalDisplayPreferencesController *)self removeContiguousSpecifiers:v4 animated:0];
-  v3 = [(DBSExternalDisplayPreferencesController *)self externalBrightnessSpecifiers];
-  [(DBSExternalDisplayPreferencesController *)self insertContiguousSpecifiers:v3 afterSpecifierID:0 animated:1];
+  externalBrightnessSpecifiers = [(DBSExternalDisplayPreferencesController *)self externalBrightnessSpecifiers];
+  [(DBSExternalDisplayPreferencesController *)self removeContiguousSpecifiers:externalBrightnessSpecifiers animated:0];
+  externalBrightnessSpecifiers2 = [(DBSExternalDisplayPreferencesController *)self externalBrightnessSpecifiers];
+  [(DBSExternalDisplayPreferencesController *)self insertContiguousSpecifiers:externalBrightnessSpecifiers2 afterSpecifierID:0 animated:1];
 }
 
 - (void)removeExternalBrightnessSpecifiers
 {
-  v3 = [(DBSExternalDisplayPreferencesController *)self externalBrightnessSpecifiers];
-  [(DBSExternalDisplayPreferencesController *)self removeContiguousSpecifiers:v3 animated:1];
+  externalBrightnessSpecifiers = [(DBSExternalDisplayPreferencesController *)self externalBrightnessSpecifiers];
+  [(DBSExternalDisplayPreferencesController *)self removeContiguousSpecifiers:externalBrightnessSpecifiers animated:1];
 }
 
 - (SBSConnectedDisplayInfo)externalDisplayInfo
 {
-  v3 = [(DBSExternalDisplayPreferencesController *)self parentController];
+  parentController = [(DBSExternalDisplayPreferencesController *)self parentController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(DBSExternalDisplayPreferencesController *)self parentController];
-    v6 = [v5 externalDisplayInfo];
+    parentController2 = [(DBSExternalDisplayPreferencesController *)self parentController];
+    externalDisplayInfo = [parentController2 externalDisplayInfo];
   }
 
   else
   {
-    v6 = 0;
+    externalDisplayInfo = 0;
   }
 
-  return v6;
+  return externalDisplayInfo;
 }
 
 - (unint64_t)supportedZoomModesCount
 {
-  v2 = [(DBSExternalDisplayPreferencesController *)self externalDisplayInfo];
-  v3 = [v2 supportedScales];
+  externalDisplayInfo = [(DBSExternalDisplayPreferencesController *)self externalDisplayInfo];
+  supportedScales = [externalDisplayInfo supportedScales];
 
-  return ((v3 >> 1) & 1) + (v3 & 1) + ((v3 >> 2) & 1);
+  return ((supportedScales >> 1) & 1) + (supportedScales & 1) + ((supportedScales >> 2) & 1);
 }
 
 - (void)presentModalMagnifyController
@@ -572,39 +572,39 @@ void __162__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayP
   [v12 setParentController:self];
   [v12 setupController];
   [v12 setModalPresentationStyle:2];
-  v7 = [v12 controller];
-  v8 = [(DBSExternalDisplayPreferencesController *)self parentController];
+  controller = [v12 controller];
+  parentController = [(DBSExternalDisplayPreferencesController *)self parentController];
   objc_opt_class();
   LOBYTE(v3) = objc_opt_isKindOfClass();
 
   if (v3)
   {
-    v9 = [(DBSExternalDisplayPreferencesController *)self parentController];
-    v10 = [v9 displayService];
-    [v7 setDisplayService:v10];
+    parentController2 = [(DBSExternalDisplayPreferencesController *)self parentController];
+    displayService = [parentController2 displayService];
+    [controller setDisplayService:displayService];
 
-    v11 = [v9 externalDisplayInfo];
-    [v7 setExternalDisplayInfo:v11];
+    externalDisplayInfo = [parentController2 externalDisplayInfo];
+    [controller setExternalDisplayInfo:externalDisplayInfo];
   }
 
-  [v7 setDelegate:self];
+  [controller setDelegate:self];
   [(DBSExternalDisplayPreferencesController *)self presentViewController:v12 animated:1 completion:0];
 }
 
 - (id)localizedMagnifyModeName
 {
-  v2 = [(DBSExternalDisplayPreferencesController *)self externalDisplayInfo];
-  v3 = [v2 displayModeSettings];
-  v4 = [v3 scale];
+  externalDisplayInfo = [(DBSExternalDisplayPreferencesController *)self externalDisplayInfo];
+  displayModeSettings = [externalDisplayInfo displayModeSettings];
+  scale = [displayModeSettings scale];
 
-  if (v4 > 2)
+  if (scale > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = DBS_LocalizedStringForMagnify(off_278459680[v4]);
+    v5 = DBS_LocalizedStringForMagnify(off_278459680[scale]);
   }
 
   return v5;
@@ -613,26 +613,26 @@ void __162__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayP
 - (void)displayZoomDidUpdate
 {
   [(DBSExternalDisplayPreferencesController *)self dismissViewControllerAnimated:1 completion:0];
-  v3 = [(DBSExternalDisplayPreferencesController *)self parentController];
+  parentController = [(DBSExternalDisplayPreferencesController *)self parentController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(DBSExternalDisplayPreferencesController *)self parentController];
+    parentController2 = [(DBSExternalDisplayPreferencesController *)self parentController];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __63__DBSExternalDisplayPreferencesController_displayZoomDidUpdate__block_invoke;
     v6[3] = &unk_278459558;
     v6[4] = self;
-    [v5 updateExternalDisplayInfoWithCompletionHandler:v6];
+    [parentController2 updateExternalDisplayInfoWithCompletionHandler:v6];
   }
 }
 
 - (id)displayModeSpecifiers
 {
   v52[3] = *MEMORY[0x277D85DE8];
-  v45 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v2 = *MEMORY[0x277CDA160];
   v51[0] = *MEMORY[0x277CDA160];
   v3 = DBS_LocalizedStringForConnectedDisplays(@"DOLBY_VISION");
@@ -648,20 +648,20 @@ void __162__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayP
   v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:3];
 
   v6 = +[DBSExternalDisplayManager defaultManager];
-  v7 = [v6 supportedHDRModes];
+  supportedHDRModes = [v6 supportedHDRModes];
 
   v8 = +[DBSExternalDisplayManager defaultManager];
-  v36 = [v8 preferredHDRModes];
+  preferredHDRModes = [v8 preferredHDRModes];
 
-  v9 = [v7 count];
-  v10 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  [v10 setObject:@"COLOR_SETTING" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
-  [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FFE8]];
+  v9 = [supportedHDRModes count];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  [emptyGroupSpecifier setObject:@"COLOR_SETTING" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
+  [emptyGroupSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FFE8]];
   v42 = v9;
   if (v9 < 2)
   {
     v13 = DBS_LocalizedStringForConnectedDisplays(@"COLOR_SETTING");
-    [v10 setName:v13];
+    [emptyGroupSpecifier setName:v13];
 
     v12 = @"SDR_COLOR_SETTING_FOOTER";
   }
@@ -669,9 +669,9 @@ void __162__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayP
   else
   {
     v11 = DBS_LocalizedStringForConnectedDisplays(@"PREFERRED_COLOR_SETTING");
-    [v10 setName:v11];
+    [emptyGroupSpecifier setName:v11];
 
-    if ([v7 containsObject:v2])
+    if ([supportedHDRModes containsObject:v2])
     {
       v12 = @"DOLBY_COLOR_SETTING_FOOTER";
     }
@@ -683,15 +683,15 @@ void __162__DBSExternalDisplayPreferencesController_handleDBSExternalDBSDisplayP
   }
 
   v14 = DBS_LocalizedStringForConnectedDisplays(v12);
-  [v10 setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+  [emptyGroupSpecifier setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-  v34 = v10;
-  [v45 addObject:v10];
+  v34 = emptyGroupSpecifier;
+  [array addObject:emptyGroupSpecifier];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v7;
+  obj = supportedHDRModes;
   v15 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (!v15)
   {
@@ -742,7 +742,7 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v26 = [v36 containsObject:v37];
+        v26 = [preferredHDRModes containsObject:v37];
         v27 = [v21 isEqualToString:v37];
         if (v26)
         {
@@ -771,8 +771,8 @@ LABEL_23:
 
 LABEL_24:
       v29 = +[DBSExternalDisplayManager defaultManager];
-      v30 = [v29 currentHDRMode];
-      v31 = [v30 isEqualToString:v21];
+      currentHDRMode = [v29 currentHDRMode];
+      v31 = [currentHDRMode isEqualToString:v21];
 
       if (v31)
       {
@@ -781,7 +781,7 @@ LABEL_24:
         v17 = v32;
       }
 
-      [v45 addObject:v24];
+      [array addObject:v24];
     }
 
     v16 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -792,32 +792,32 @@ LABEL_30:
 
   [v34 setProperty:v17 forKey:*MEMORY[0x277D40090]];
 
-  return v45;
+  return array;
 }
 
-- (id)externalBrightnessValueForSpecifier:(id)a3
+- (id)externalBrightnessValueForSpecifier:(id)specifier
 {
   v3 = +[DBSExternalDisplayManager defaultManager];
-  v4 = [v3 externalDisplayBrightness];
+  externalDisplayBrightness = [v3 externalDisplayBrightness];
 
-  return v4;
+  return externalDisplayBrightness;
 }
 
-- (void)setExternalBrightnessValue:(id)a3 specifier:(id)a4
+- (void)setExternalBrightnessValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v11 = [(DBSExternalDisplayPreferencesController *)self indexPathForSpecifier:a4];
-  v7 = [(DBSExternalDisplayPreferencesController *)self table];
-  v8 = [v7 cellForRowAtIndexPath:v11];
+  valueCopy = value;
+  v11 = [(DBSExternalDisplayPreferencesController *)self indexPathForSpecifier:specifier];
+  table = [(DBSExternalDisplayPreferencesController *)self table];
+  v8 = [table cellForRowAtIndexPath:v11];
 
-  v9 = [v8 control];
+  control = [v8 control];
   v10 = +[DBSExternalDisplayManager defaultManager];
-  [v10 setExternalDisplayBrightness:v6 shouldCommit:{objc_msgSend(v9, "isTracking") ^ 1}];
+  [v10 setExternalDisplayBrightness:valueCopy shouldCommit:{objc_msgSend(control, "isTracking") ^ 1}];
 
   ADClientAddValueForScalarKey();
 }
 
-- (id)externalAutoBrightnessValueForSpecifier:(id)a3
+- (id)externalAutoBrightnessValueForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = +[DBSExternalDisplayManager defaultManager];
@@ -826,39 +826,39 @@ LABEL_30:
   return v5;
 }
 
-- (void)setExternalAutoBrightnessValue:(id)a3 specifier:(id)a4
+- (void)setExternalAutoBrightnessValue:(id)value specifier:(id)specifier
 {
-  v4 = a3;
+  valueCopy = value;
   v6 = +[DBSExternalDisplayManager defaultManager];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [valueCopy BOOLValue];
 
-  [v6 setAutoBrightnessEnabled:v5];
+  [v6 setAutoBrightnessEnabled:bOOLValue];
 }
 
 - (id)connectedDisplayName
 {
   v2 = +[DBSExternalDisplayManager defaultManager];
-  v3 = [v2 externalDisplayName];
+  externalDisplayName = [v2 externalDisplayName];
 
-  return v3;
+  return externalDisplayName;
 }
 
 - (id)currentHDRMode
 {
   v2 = +[DBSExternalDisplayManager defaultManager];
-  v3 = [v2 currentHDRMode];
+  currentHDRMode = [v2 currentHDRMode];
 
-  return v3;
+  return currentHDRMode;
 }
 
-- (void)setCurrentHDRMode:(id)a3
+- (void)setCurrentHDRMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = +[DBSExternalDisplayManager defaultManager];
-  [v4 setCurrentHDRMode:v3];
+  [v4 setCurrentHDRMode:modeCopy];
 }
 
-- (id)matchContentEnabled:(id)a3
+- (id)matchContentEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = +[DBSExternalDisplayManager defaultManager];
@@ -867,13 +867,13 @@ LABEL_30:
   return v5;
 }
 
-- (void)setMatchContentEnabled:(id)a3 specifier:(id)a4
+- (void)setMatchContentEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = +[DBSExternalDisplayManager defaultManager];
-  [v5 setMatchContent:{objc_msgSend(v4, "BOOLValue")}];
+  [v5 setMatchContent:{objc_msgSend(enabledCopy, "BOOLValue")}];
 
-  [v4 BOOLValue];
+  [enabledCopy BOOLValue];
 
   ADClientAddValueForScalarKey();
 }

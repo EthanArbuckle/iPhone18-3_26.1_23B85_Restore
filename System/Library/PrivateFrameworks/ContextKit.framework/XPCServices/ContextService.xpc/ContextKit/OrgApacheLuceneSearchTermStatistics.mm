@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneSearchTermStatistics
-- (OrgApacheLuceneSearchTermStatistics)initWithOrgApacheLuceneUtilBytesRef:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5;
+- (OrgApacheLuceneSearchTermStatistics)initWithOrgApacheLuceneUtilBytesRef:(id)ref withLong:(int64_t)long withLong:(int64_t)withLong;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTermStatistics
 
-- (OrgApacheLuceneSearchTermStatistics)initWithOrgApacheLuceneUtilBytesRef:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5
+- (OrgApacheLuceneSearchTermStatistics)initWithOrgApacheLuceneUtilBytesRef:(id)ref withLong:(int64_t)long withLong:(int64_t)withLong
 {
-  JreStrongAssign(&self->term_, a3);
-  self->docFreq_ = a4;
-  self->totalTermFreq_ = a5;
+  JreStrongAssign(&self->term_, ref);
+  self->docFreq_ = long;
+  self->totalTermFreq_ = withLong;
   return self;
 }
 

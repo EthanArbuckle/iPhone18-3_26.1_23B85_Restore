@@ -1,39 +1,39 @@
 @interface TUHandle
-+ (TUHandle)handleWithDestinationID:(id)a3;
-+ (TUHandle)handleWithDictionaryRepresentation:(id)a3;
-+ (TUHandle)handleWithPerson:(id)a3;
-+ (TUHandle)handleWithPersonHandle:(id)a3;
-+ (id)handleFromMessagingData:(id)a3;
-+ (id)handlesForCHRecentCall:(id)a3 validHandlesOnly:(BOOL)a4;
-+ (id)normalizedEmailAddressHandleForValue:(id)a3;
-+ (id)normalizedGenericHandleForValue:(id)a3;
-+ (id)normalizedHandleWithDestinationID:(id)a3;
-+ (id)normalizedPhoneNumberHandleForValue:(id)a3 isoCountryCode:(id)a4;
-+ (id)stringForType:(int64_t)a3;
-+ (int64_t)handleTypeForCHHandle:(id)a3;
-- (BOOL)isCanonicallyEqualToHandle:(id)a3 isoCountryCode:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHandle:(id)a3;
-- (BOOL)isEquivalentToHandle:(id)a3;
-- (BOOL)isValidForISOCountryCode:(id)a3;
++ (TUHandle)handleWithDestinationID:(id)d;
++ (TUHandle)handleWithDictionaryRepresentation:(id)representation;
++ (TUHandle)handleWithPerson:(id)person;
++ (TUHandle)handleWithPersonHandle:(id)handle;
++ (id)handleFromMessagingData:(id)data;
++ (id)handlesForCHRecentCall:(id)call validHandlesOnly:(BOOL)only;
++ (id)normalizedEmailAddressHandleForValue:(id)value;
++ (id)normalizedGenericHandleForValue:(id)value;
++ (id)normalizedHandleWithDestinationID:(id)d;
++ (id)normalizedPhoneNumberHandleForValue:(id)value isoCountryCode:(id)code;
++ (id)stringForType:(int64_t)type;
++ (int64_t)handleTypeForCHHandle:(id)handle;
+- (BOOL)isCanonicallyEqualToHandle:(id)handle isoCountryCode:(id)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHandle:(id)handle;
+- (BOOL)isEquivalentToHandle:(id)handle;
+- (BOOL)isValidForISOCountryCode:(id)code;
 - (BOOL)shouldHideContact;
-- (BOOL)shouldHideContactWithLockState:(BOOL)a3;
+- (BOOL)shouldHideContactWithLockState:(BOOL)state;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)isoCountryCode;
 - (TUHandle)init;
-- (TUHandle)initWithCoder:(id)a3;
-- (TUHandle)initWithDestinationID:(id)a3;
-- (TUHandle)initWithHandle:(id)a3;
-- (TUHandle)initWithType:(int64_t)a3 value:(id)a4;
-- (TUHandle)initWithType:(int64_t)a3 value:(id)a4 normalizedValue:(id)a5;
-- (TUHandle)initWithType:(int64_t)a3 value:(id)a4 siriDisplayName:(id)a5;
-- (id)canonicalHandleForISOCountryCode:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUHandle)initWithCoder:(id)coder;
+- (TUHandle)initWithDestinationID:(id)d;
+- (TUHandle)initWithHandle:(id)handle;
+- (TUHandle)initWithType:(int64_t)type value:(id)value;
+- (TUHandle)initWithType:(int64_t)type value:(id)value normalizedValue:(id)normalizedValue;
+- (TUHandle)initWithType:(int64_t)type value:(id)value siriDisplayName:(id)name;
+- (id)canonicalHandleForISOCountryCode:(id)code;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)messagingData;
 - (id)personHandle;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUHandle
@@ -43,8 +43,8 @@
   if (!self->_hasSetISOCountryCode)
   {
     self->_hasSetISOCountryCode = 1;
-    v3 = [(TUHandle *)self normalizedValue];
-    if ([v3 length])
+    normalizedValue = [(TUHandle *)self normalizedValue];
+    if ([normalizedValue length])
     {
       v4 = PNCopyBestGuessCountryCodeForNumber();
       isoCountryCode = self->_isoCountryCode;
@@ -59,13 +59,13 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUHandle *)self isoCountryCode];
-  v4 = [v3 hash];
+  isoCountryCode = [(TUHandle *)self isoCountryCode];
+  v4 = [isoCountryCode hash];
   v5 = [(TUHandle *)self type]^ v4;
-  v6 = [(TUHandle *)self value];
-  v7 = [v6 hash];
-  v8 = [(TUHandle *)self normalizedValue];
-  v9 = v7 ^ [v8 hash];
+  value = [(TUHandle *)self value];
+  v7 = [value hash];
+  normalizedValue = [(TUHandle *)self normalizedValue];
+  v9 = v7 ^ [normalizedValue hash];
 
   return v5 ^ v9;
 }
@@ -80,28 +80,28 @@
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector(sel_value);
-  v7 = [(TUHandle *)self value];
-  v8 = TULoggableStringForHandle(v7);
+  value = [(TUHandle *)self value];
+  v8 = TULoggableStringForHandle(value);
   [v3 appendFormat:@"%@=%@", v6, v8];
 
   [v3 appendFormat:@", "];
   v9 = NSStringFromSelector(sel_normalizedValue);
-  v10 = [(TUHandle *)self normalizedValue];
-  v11 = TULoggableStringForHandle(v10);
+  normalizedValue = [(TUHandle *)self normalizedValue];
+  v11 = TULoggableStringForHandle(normalizedValue);
   [v3 appendFormat:@"%@=%@", v9, v11];
 
   if ([(TUHandle *)self type]== 2)
   {
     [v3 appendFormat:@", "];
     v12 = NSStringFromSelector(sel_isoCountryCode);
-    v13 = [(TUHandle *)self isoCountryCode];
-    [v3 appendFormat:@"%@=%@", v12, v13];
+    isoCountryCode = [(TUHandle *)self isoCountryCode];
+    [v3 appendFormat:@"%@=%@", v12, isoCountryCode];
   }
 
   [v3 appendFormat:@", "];
   v14 = NSStringFromSelector(sel_siriDisplayName);
-  v15 = [(TUHandle *)self siriDisplayName];
-  [v3 appendFormat:@"%@=%@", v14, v15];
+  siriDisplayName = [(TUHandle *)self siriDisplayName];
+  [v3 appendFormat:@"%@=%@", v14, siriDisplayName];
 
   [v3 appendFormat:@">"];
   v16 = [v3 copy];
@@ -116,33 +116,33 @@
   v5 = NSStringFromSelector(sel_type);
   [v3 setObject:v4 forKeyedSubscript:v5];
 
-  v6 = [(TUHandle *)self value];
+  value = [(TUHandle *)self value];
   v7 = NSStringFromSelector(sel_value);
-  [v3 setObject:v6 forKeyedSubscript:v7];
+  [v3 setObject:value forKeyedSubscript:v7];
 
-  v8 = [(TUHandle *)self siriDisplayName];
+  siriDisplayName = [(TUHandle *)self siriDisplayName];
   v9 = NSStringFromSelector(sel_siriDisplayName);
-  [v3 setObject:v8 forKeyedSubscript:v9];
+  [v3 setObject:siriDisplayName forKeyedSubscript:v9];
 
   v10 = [v3 copy];
 
   return v10;
 }
 
-+ (id)handlesForCHRecentCall:(id)a3 validHandlesOnly:(BOOL)a4
++ (id)handlesForCHRecentCall:(id)call validHandlesOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
-  if (v4)
+  callCopy = call;
+  array = [MEMORY[0x1E695DF70] array];
+  if (onlyCopy)
   {
-    [v5 validRemoteParticipantHandles];
+    [callCopy validRemoteParticipantHandles];
   }
 
   else
   {
-    [v5 remoteParticipantHandles];
+    [callCopy remoteParticipantHandles];
   }
   v7 = ;
   v8 = [v7 copy];
@@ -167,24 +167,24 @@
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 value];
-        if ([v15 length])
+        value = [v14 value];
+        if ([value length])
         {
-          v16 = [v14 type];
-          if (v16 == 1)
+          type = [v14 type];
+          if (type == 1)
           {
-            v17 = [TUHandle normalizedGenericHandleForValue:v15];
+            v17 = [TUHandle normalizedGenericHandleForValue:value];
             goto LABEL_17;
           }
 
-          if (v16 != 2)
+          if (type != 2)
           {
-            if (v16 != 3)
+            if (type != 3)
             {
               goto LABEL_19;
             }
 
-            v17 = [TUHandle normalizedEmailAddressHandleForValue:v15];
+            v17 = [TUHandle normalizedEmailAddressHandleForValue:value];
 LABEL_17:
             v19 = v17;
             if (!v17)
@@ -193,13 +193,13 @@ LABEL_17:
             }
 
 LABEL_18:
-            [v6 addObject:v19];
+            [array addObject:v19];
 
             goto LABEL_19;
           }
 
-          v18 = [v5 isoCountryCode];
-          v19 = [TUHandle normalizedPhoneNumberHandleForValue:v15 isoCountryCode:v18];
+          isoCountryCode = [callCopy isoCountryCode];
+          v19 = [TUHandle normalizedPhoneNumberHandleForValue:value isoCountryCode:isoCountryCode];
 
           if (v19)
           {
@@ -218,24 +218,24 @@ LABEL_19:
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
-+ (int64_t)handleTypeForCHHandle:(id)a3
++ (int64_t)handleTypeForCHHandle:(id)handle
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  handleCopy = handle;
+  v4 = handleCopy;
+  if (handleCopy)
   {
-    v5 = [v3 type];
-    if ((v5 - 1) >= 3)
+    type = [handleCopy type];
+    if ((type - 1) >= 3)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = v5;
+      v6 = type;
     }
   }
 
@@ -247,37 +247,37 @@ LABEL_19:
   return v6;
 }
 
-+ (TUHandle)handleWithDestinationID:(id)a3
++ (TUHandle)handleWithDestinationID:(id)d
 {
-  v3 = a3;
-  v4 = [[TUHandle alloc] initWithDestinationID:v3];
+  dCopy = d;
+  v4 = [[TUHandle alloc] initWithDestinationID:dCopy];
 
   return v4;
 }
 
-+ (id)normalizedHandleWithDestinationID:(id)a3
++ (id)normalizedHandleWithDestinationID:(id)d
 {
-  v3 = a3;
-  if ([v3 destinationIdIsTokenURI])
+  dCopy = d;
+  if ([dCopy destinationIdIsTokenURI])
   {
     goto LABEL_2;
   }
 
-  if ([v3 destinationIdIsEmailAddress])
+  if ([dCopy destinationIdIsEmailAddress])
   {
-    v4 = [TUHandle normalizedEmailAddressHandleForValue:v3];
+    v4 = [TUHandle normalizedEmailAddressHandleForValue:dCopy];
   }
 
   else
   {
-    if (![v3 destinationIdIsPhoneNumber])
+    if (![dCopy destinationIdIsPhoneNumber])
     {
 LABEL_2:
-      v4 = [TUHandle normalizedGenericHandleForValue:v3];
+      v4 = [TUHandle normalizedGenericHandleForValue:dCopy];
       goto LABEL_7;
     }
 
-    v4 = [TUHandle normalizedPhoneNumberHandleForValue:v3 isoCountryCode:0];
+    v4 = [TUHandle normalizedPhoneNumberHandleForValue:dCopy isoCountryCode:0];
   }
 
 LABEL_7:
@@ -286,18 +286,18 @@ LABEL_7:
   return v5;
 }
 
-+ (TUHandle)handleWithDictionaryRepresentation:(id)a3
++ (TUHandle)handleWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = NSStringFromSelector(sel_value);
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [representationCopy objectForKeyedSubscript:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
     v7 = NSStringFromSelector(sel_type);
-    v8 = [v3 objectForKeyedSubscript:v7];
+    v8 = [representationCopy objectForKeyedSubscript:v7];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v9 = [v8 integerValue], (v9 - 1) <= 2))
@@ -311,13 +311,13 @@ LABEL_7:
     }
 
     v11 = NSStringFromSelector(sel_siriDisplayName);
-    v12 = [v3 objectForKeyedSubscript:v11];
+    v12 = [representationCopy objectForKeyedSubscript:v11];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v12 stringValue];
-      [(TUHandle *)v10 setSiriDisplayName:v13];
+      stringValue = [v12 stringValue];
+      [(TUHandle *)v10 setSiriDisplayName:stringValue];
     }
   }
 
@@ -329,20 +329,20 @@ LABEL_7:
   return v10;
 }
 
-- (TUHandle)initWithDestinationID:(id)a3
+- (TUHandle)initWithDestinationID:(id)d
 {
-  v4 = a3;
-  if ([v4 destinationIdIsTokenURI])
+  dCopy = d;
+  if ([dCopy destinationIdIsTokenURI])
   {
     v5 = 1;
   }
 
-  else if ([v4 destinationIdIsEmailAddress])
+  else if ([dCopy destinationIdIsEmailAddress])
   {
     v5 = 3;
   }
 
-  else if ([v4 destinationIdIsPhoneNumber])
+  else if ([dCopy destinationIdIsPhoneNumber])
   {
     v5 = 2;
   }
@@ -352,23 +352,23 @@ LABEL_7:
     v5 = 1;
   }
 
-  v6 = [(TUHandle *)self initWithType:v5 value:v4];
+  v6 = [(TUHandle *)self initWithType:v5 value:dCopy];
 
   return v6;
 }
 
-- (TUHandle)initWithHandle:(id)a3
+- (TUHandle)initWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 value];
-  v7 = [v4 normalizedValue];
-  v8 = [(TUHandle *)self initWithType:v5 value:v6 normalizedValue:v7];
+  handleCopy = handle;
+  type = [handleCopy type];
+  value = [handleCopy value];
+  normalizedValue = [handleCopy normalizedValue];
+  v8 = [(TUHandle *)self initWithType:type value:value normalizedValue:normalizedValue];
 
   if (v8)
   {
-    v9 = [v4 siriDisplayName];
-    v10 = [v9 copy];
+    siriDisplayName = [handleCopy siriDisplayName];
+    v10 = [siriDisplayName copy];
     siriDisplayName = v8->_siriDisplayName;
     v8->_siriDisplayName = v10;
   }
@@ -376,22 +376,22 @@ LABEL_7:
   return v8;
 }
 
-- (TUHandle)initWithType:(int64_t)a3 value:(id)a4
+- (TUHandle)initWithType:(int64_t)type value:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = TUHandle;
   v7 = [(TUHandle *)&v11 init];
   if (v7)
   {
-    if (!v6)
+    if (!valueCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[TUHandle initWithType:value:]", @"value"}];
     }
 
-    v7->_hasSetISOCountryCode = a3 != 2;
-    v7->_type = a3;
-    v8 = [v6 copy];
+    v7->_hasSetISOCountryCode = type != 2;
+    v7->_type = type;
+    v8 = [valueCopy copy];
     value = v7->_value;
     v7->_value = v8;
   }
@@ -399,13 +399,13 @@ LABEL_7:
   return v7;
 }
 
-- (TUHandle)initWithType:(int64_t)a3 value:(id)a4 siriDisplayName:(id)a5
+- (TUHandle)initWithType:(int64_t)type value:(id)value siriDisplayName:(id)name
 {
-  v8 = a5;
-  v9 = [(TUHandle *)self initWithType:a3 value:a4];
+  nameCopy = name;
+  v9 = [(TUHandle *)self initWithType:type value:value];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     siriDisplayName = v9->_siriDisplayName;
     v9->_siriDisplayName = v10;
   }
@@ -413,13 +413,13 @@ LABEL_7:
   return v9;
 }
 
-- (TUHandle)initWithType:(int64_t)a3 value:(id)a4 normalizedValue:(id)a5
+- (TUHandle)initWithType:(int64_t)type value:(id)value normalizedValue:(id)normalizedValue
 {
-  v8 = a5;
-  v9 = [(TUHandle *)self initWithType:a3 value:a4];
+  normalizedValueCopy = normalizedValue;
+  v9 = [(TUHandle *)self initWithType:type value:value];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [normalizedValueCopy copy];
     normalizedValue = v9->_normalizedValue;
     v9->_normalizedValue = v10;
   }
@@ -429,65 +429,65 @@ LABEL_7:
 
 - (TUHandle)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"TUHandle.m" lineNumber:153 description:{@"%s is not available. Use a designated initializer instead.", "-[TUHandle init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUHandle.m" lineNumber:153 description:{@"%s is not available. Use a designated initializer instead.", "-[TUHandle init]"}];
 
   return 0;
 }
 
-+ (id)stringForType:(int64_t)a3
++ (id)stringForType:(int64_t)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown(%ld)", a3];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown(%ld)", type];
   }
 
   else
   {
-    v4 = off_1E7427038[a3 - 1];
+    type = off_1E7427038[type - 1];
   }
 
-  return v4;
+  return type;
 }
 
 - (id)personHandle
 {
-  v3 = [(TUHandle *)self type];
-  if (v3 == 3)
+  type = [(TUHandle *)self type];
+  if (type == 3)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = 2 * (v3 == 2);
+    v4 = 2 * (type == 2);
   }
 
   v5 = objc_alloc(CUTWeakLinkClass());
-  v6 = [(TUHandle *)self value];
-  v7 = [v5 initWithValue:v6 type:v4];
+  value = [(TUHandle *)self value];
+  v7 = [v5 initWithValue:value type:v4];
 
   return v7;
 }
 
-+ (TUHandle)handleWithPersonHandle:(id)a3
++ (TUHandle)handleWithPersonHandle:(id)handle
 {
-  v3 = a3;
-  v4 = [v3 value];
-  v5 = [v4 length];
+  handleCopy = handle;
+  value = [handleCopy value];
+  v5 = [value length];
 
   if (v5)
   {
-    v6 = [v3 type];
-    if (v6)
+    type = [handleCopy type];
+    if (type)
     {
       v7 = 1;
-      if (v6 == 1)
+      if (type == 1)
       {
         v7 = 3;
       }
 
-      if (v6 == 2)
+      if (type == 2)
       {
         v8 = 2;
       }
@@ -500,20 +500,20 @@ LABEL_7:
 
     else
     {
-      v13 = [v3 value];
-      v14 = [v13 _appearsToBePhoneNumber];
+      value2 = [handleCopy value];
+      _appearsToBePhoneNumber = [value2 _appearsToBePhoneNumber];
 
-      if (v14)
+      if (_appearsToBePhoneNumber)
       {
         v8 = 2;
       }
 
       else
       {
-        v15 = [v3 value];
-        v16 = [v15 _appearsToBeEmail];
+        value3 = [handleCopy value];
+        _appearsToBeEmail = [value3 _appearsToBeEmail];
 
-        if (v16)
+        if (_appearsToBeEmail)
         {
           v8 = 3;
         }
@@ -526,8 +526,8 @@ LABEL_7:
     }
 
     v9 = [TUHandle alloc];
-    v10 = [v3 value];
-    v11 = [(TUHandle *)v9 initWithType:v8 value:v10];
+    value4 = [handleCopy value];
+    v11 = [(TUHandle *)v9 initWithType:v8 value:value4];
   }
 
   else
@@ -538,16 +538,16 @@ LABEL_7:
   return v11;
 }
 
-+ (TUHandle)handleWithPerson:(id)a3
++ (TUHandle)handleWithPerson:(id)person
 {
-  v3 = a3;
-  v4 = [v3 personHandle];
-  v5 = [TUHandle handleWithPersonHandle:v4];
+  personCopy = person;
+  personHandle = [personCopy personHandle];
+  v5 = [TUHandle handleWithPersonHandle:personHandle];
 
   if (v5)
   {
-    v6 = [v3 displayName];
-    v7 = [v6 copy];
+    displayName = [personCopy displayName];
+    v7 = [displayName copy];
     [v5 setSiriDisplayName:v7];
   }
 
@@ -561,11 +561,11 @@ LABEL_7:
   return [(TUHandle *)self shouldHideContactWithLockState:v3];
 }
 
-- (BOOL)shouldHideContactWithLockState:(BOOL)a3
+- (BOOL)shouldHideContactWithLockState:(BOOL)state
 {
   if (self->_siriDisplayName)
   {
-    v3 = !a3;
+    v3 = !state;
   }
 
   else
@@ -587,27 +587,27 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isValidForISOCountryCode:(id)a3
+- (BOOL)isValidForISOCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(TUHandle *)self value];
-  v6 = [v5 length];
+  codeCopy = code;
+  value = [(TUHandle *)self value];
+  v6 = [value length];
 
   if (!v6)
   {
     goto LABEL_6;
   }
 
-  v7 = [(TUHandle *)self type];
-  if (v7 == 1 || v7 == 3)
+  type = [(TUHandle *)self type];
+  if (type == 1 || type == 3)
   {
     valid = 1;
     goto LABEL_8;
   }
 
-  if (v7 == 2)
+  if (type == 2)
   {
-    v8 = [(TUHandle *)self value];
+    value2 = [(TUHandle *)self value];
     valid = PNIsValidPhoneNumberForCountry();
   }
 
@@ -622,40 +622,40 @@ LABEL_8:
   return valid;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithHandle:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isoCountryCode = self->_isoCountryCode;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_isoCountryCode);
-  [v5 encodeObject:isoCountryCode forKey:v6];
+  [coderCopy encodeObject:isoCountryCode forKey:v6];
 
   type = self->_type;
   v8 = NSStringFromSelector(sel_type);
-  [v5 encodeInteger:type forKey:v8];
+  [coderCopy encodeInteger:type forKey:v8];
 
   value = self->_value;
   v10 = NSStringFromSelector(sel_value);
-  [v5 encodeObject:value forKey:v10];
+  [coderCopy encodeObject:value forKey:v10];
 
   normalizedValue = self->_normalizedValue;
   v12 = NSStringFromSelector(sel_normalizedValue);
-  [v5 encodeObject:normalizedValue forKey:v12];
+  [coderCopy encodeObject:normalizedValue forKey:v12];
 
   siriDisplayName = self->_siriDisplayName;
   v14 = NSStringFromSelector(sel_siriDisplayName);
-  [v5 encodeObject:siriDisplayName forKey:v14];
+  [coderCopy encodeObject:siriDisplayName forKey:v14];
 }
 
-- (TUHandle)initWithCoder:(id)a3
+- (TUHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = TUHandle;
   v5 = [(TUHandle *)&v24 init];
@@ -663,28 +663,28 @@ LABEL_8:
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_isoCountryCode);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     isoCountryCode = v5->_isoCountryCode;
     v5->_isoCountryCode = v8;
 
     v10 = NSStringFromSelector(sel_type);
-    v5->_type = [v4 decodeIntegerForKey:v10];
+    v5->_type = [coderCopy decodeIntegerForKey:v10];
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(sel_value);
-    v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
     value = v5->_value;
     v5->_value = v13;
 
     v15 = objc_opt_class();
     v16 = NSStringFromSelector(sel_normalizedValue);
-    v17 = [v4 decodeObjectOfClass:v15 forKey:v16];
+    v17 = [coderCopy decodeObjectOfClass:v15 forKey:v16];
     normalizedValue = v5->_normalizedValue;
     v5->_normalizedValue = v17;
 
     v19 = objc_opt_class();
     v20 = NSStringFromSelector(sel_siriDisplayName);
-    v21 = [v4 decodeObjectOfClass:v19 forKey:v20];
+    v21 = [coderCopy decodeObjectOfClass:v19 forKey:v20];
     siriDisplayName = v5->_siriDisplayName;
     v5->_siriDisplayName = v21;
   }
@@ -692,10 +692,10 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -703,29 +703,29 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUHandle *)self isEqualToHandle:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUHandle *)self isEqualToHandle:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToHandle:(id)a3
+- (BOOL)isEqualToHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(TUHandle *)self type];
-  if (v5 == [v4 type])
+  handleCopy = handle;
+  type = [(TUHandle *)self type];
+  if (type == [handleCopy type])
   {
-    v6 = [(TUHandle *)self isoCountryCode];
-    v7 = [v4 isoCountryCode];
-    if (TUStringsAreEqualOrNil(v6, v7))
+    isoCountryCode = [(TUHandle *)self isoCountryCode];
+    isoCountryCode2 = [handleCopy isoCountryCode];
+    if (TUStringsAreEqualOrNil(isoCountryCode, isoCountryCode2))
     {
-      v8 = [(TUHandle *)self value];
-      v9 = [v4 value];
-      if (TUStringsAreEqualOrNil(v8, v9))
+      value = [(TUHandle *)self value];
+      value2 = [handleCopy value];
+      if (TUStringsAreEqualOrNil(value, value2))
       {
-        v10 = [(TUHandle *)self normalizedValue];
-        v11 = [v4 normalizedValue];
-        v12 = TUStringsAreEqualOrNil(v10, v11);
+        normalizedValue = [(TUHandle *)self normalizedValue];
+        normalizedValue2 = [handleCopy normalizedValue];
+        v12 = TUStringsAreEqualOrNil(normalizedValue, normalizedValue2);
       }
 
       else
@@ -748,21 +748,21 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)isEquivalentToHandle:(id)a3
+- (BOOL)isEquivalentToHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(TUHandle *)self type];
-  if (v5 == [v4 type])
+  handleCopy = handle;
+  type = [(TUHandle *)self type];
+  if (type == [handleCopy type])
   {
-    v6 = [(TUHandle *)self normalizedValue];
-    if ([v6 length])
+    normalizedValue = [(TUHandle *)self normalizedValue];
+    if ([normalizedValue length])
     {
-      v7 = [v4 normalizedValue];
-      if ([v7 length])
+      normalizedValue2 = [handleCopy normalizedValue];
+      if ([normalizedValue2 length])
       {
-        v8 = [(TUHandle *)self normalizedValue];
-        v9 = [v4 normalizedValue];
-        v10 = [v8 isEqualToString:v9];
+        normalizedValue3 = [(TUHandle *)self normalizedValue];
+        normalizedValue4 = [handleCopy normalizedValue];
+        v10 = [normalizedValue3 isEqualToString:normalizedValue4];
       }
 
       else
@@ -785,62 +785,62 @@ LABEL_8:
   return v10;
 }
 
-- (id)canonicalHandleForISOCountryCode:(id)a3
+- (id)canonicalHandleForISOCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(TUHandle *)self type];
-  switch(v5)
+  codeCopy = code;
+  type = [(TUHandle *)self type];
+  switch(type)
   {
     case 3:
       goto LABEL_4;
     case 2:
-      v7 = [(TUHandle *)self value];
-      v8 = [v4 lowercaseString];
-      v9 = [TUPhoneNumber phoneNumberWithDigits:v7 countryCode:v8];
+      value = [(TUHandle *)self value];
+      lowercaseString = [codeCopy lowercaseString];
+      v9 = [TUPhoneNumber phoneNumberWithDigits:value countryCode:lowercaseString];
 
       if (v9)
       {
-        v10 = [v9 unformattedInternationalRepresentation];
-        v11 = v10;
-        if (v10)
+        unformattedInternationalRepresentation = [v9 unformattedInternationalRepresentation];
+        v11 = unformattedInternationalRepresentation;
+        if (unformattedInternationalRepresentation)
         {
-          v12 = v10;
+          digits = unformattedInternationalRepresentation;
         }
 
         else
         {
-          v12 = [v9 digits];
+          digits = [v9 digits];
         }
 
-        v6 = v12;
+        value2 = digits;
       }
 
       else
       {
-        v6 = [(TUHandle *)self value];
+        value2 = [(TUHandle *)self value];
       }
 
       break;
     case 1:
 LABEL_4:
-      v6 = [(TUHandle *)self value];
+      value2 = [(TUHandle *)self value];
       break;
     default:
-      v6 = 0;
+      value2 = 0;
       break;
   }
 
-  v13 = [[TUHandle alloc] initWithType:[(TUHandle *)self type] value:v6];
+  v13 = [[TUHandle alloc] initWithType:[(TUHandle *)self type] value:value2];
 
   return v13;
 }
 
-- (BOOL)isCanonicallyEqualToHandle:(id)a3 isoCountryCode:(id)a4
+- (BOOL)isCanonicallyEqualToHandle:(id)handle isoCountryCode:(id)code
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUHandle *)self canonicalHandleForISOCountryCode:v6];
-  v9 = [v7 canonicalHandleForISOCountryCode:v6];
+  codeCopy = code;
+  handleCopy = handle;
+  v8 = [(TUHandle *)self canonicalHandleForISOCountryCode:codeCopy];
+  v9 = [handleCopy canonicalHandleForISOCountryCode:codeCopy];
 
   v10 = 0;
   if (v8 && v9)
@@ -854,29 +854,29 @@ LABEL_4:
 - (id)messagingData
 {
   v2 = [CSDMessagingHandle handleWithTUHandle:self];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
-+ (id)handleFromMessagingData:(id)a3
++ (id)handleFromMessagingData:(id)data
 {
-  v3 = a3;
-  v4 = [[CSDMessagingHandle alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[CSDMessagingHandle alloc] initWithData:dataCopy];
 
-  v5 = [(CSDMessagingHandle *)v4 tuHandle];
+  tuHandle = [(CSDMessagingHandle *)v4 tuHandle];
 
-  return v5;
+  return tuHandle;
 }
 
-+ (id)normalizedEmailAddressHandleForValue:(id)a3
++ (id)normalizedEmailAddressHandleForValue:(id)value
 {
-  v3 = a3;
-  if ([v3 length])
+  valueCopy = value;
+  if ([valueCopy length])
   {
     v4 = [TUHandle alloc];
-    v5 = [v3 lowercaseString];
-    v6 = [(TUHandle *)v4 initWithType:3 value:v3 normalizedValue:v5];
+    lowercaseString = [valueCopy lowercaseString];
+    v6 = [(TUHandle *)v4 initWithType:3 value:valueCopy normalizedValue:lowercaseString];
   }
 
   else
@@ -887,13 +887,13 @@ LABEL_4:
   return v6;
 }
 
-+ (id)normalizedGenericHandleForValue:(id)a3
++ (id)normalizedGenericHandleForValue:(id)value
 {
-  v3 = a3;
-  if ([v3 length])
+  valueCopy = value;
+  if ([valueCopy length])
   {
-    v4 = [v3 normalizedTokenURI];
-    v5 = [[TUHandle alloc] initWithType:1 value:v3 normalizedValue:v4];
+    normalizedTokenURI = [valueCopy normalizedTokenURI];
+    v5 = [[TUHandle alloc] initWithType:1 value:valueCopy normalizedValue:normalizedTokenURI];
   }
 
   else
@@ -904,13 +904,13 @@ LABEL_4:
   return v5;
 }
 
-+ (id)normalizedPhoneNumberHandleForValue:(id)a3 isoCountryCode:(id)a4
++ (id)normalizedPhoneNumberHandleForValue:(id)value isoCountryCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  valueCopy = value;
+  codeCopy = code;
+  if ([valueCopy length])
   {
-    v7 = v6;
+    v7 = codeCopy;
     if (![v7 length])
     {
       v8 = PNCopyBestGuessCountryCodeForNumber();
@@ -920,7 +920,7 @@ LABEL_4:
 
     if ([v7 length])
     {
-      v9 = TUPhoneNumberNormalizedPhoneNumberString(v5, v7);
+      v9 = TUPhoneNumberNormalizedPhoneNumberString(valueCopy, v7);
     }
 
     else
@@ -928,7 +928,7 @@ LABEL_4:
       v9 = 0;
     }
 
-    v10 = [[TUHandle alloc] initWithType:2 value:v5 normalizedValue:v9];
+    v10 = [[TUHandle alloc] initWithType:2 value:valueCopy normalizedValue:v9];
     [(TUHandle *)v10 setHasSetISOCountryCode:1];
     [(TUHandle *)v10 setIsoCountryCode:v7];
   }

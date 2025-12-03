@@ -1,34 +1,34 @@
 @interface SCATForegroundCursorLayer
-- (double)_borderWidthForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6;
-- (double)_boundsInsetForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6;
-- (id)_borderPatternForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6;
-- (void)updatePath:(id)a3 frame:(CGRect)a4 cornerRadius:(double)a5 isSimpleRect:(BOOL)a6 animated:(BOOL)a7 options:(int)a8;
+- (double)_borderWidthForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options;
+- (double)_boundsInsetForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options;
+- (id)_borderPatternForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options;
+- (void)updatePath:(id)path frame:(CGRect)frame cornerRadius:(double)radius isSimpleRect:(BOOL)rect animated:(BOOL)animated options:(int)options;
 @end
 
 @implementation SCATForegroundCursorLayer
 
-- (void)updatePath:(id)a3 frame:(CGRect)a4 cornerRadius:(double)a5 isSimpleRect:(BOOL)a6 animated:(BOOL)a7 options:(int)a8
+- (void)updatePath:(id)path frame:(CGRect)frame cornerRadius:(double)radius isSimpleRect:(BOOL)rect animated:(BOOL)animated options:(int)options
 {
-  v8 = *&a8;
-  v9 = a7;
-  v10 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
-  if (v17)
+  v8 = *&options;
+  animatedCopy = animated;
+  rectCopy = rect;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pathCopy = path;
+  if (pathCopy)
   {
-    v18 = v17;
+    v18 = pathCopy;
     v19 = -2.0;
     if ([(SCATCursorLayer *)self usesHighVisibility])
     {
-      v20 = [(SCATCursorLayer *)self styleProvider];
-      [v20 cursorHighVisibilityMultiplier];
+      styleProvider = [(SCATCursorLayer *)self styleProvider];
+      [styleProvider cursorHighVisibilityMultiplier];
       v19 = v21 * -2.0;
     }
 
-    if (v10)
+    if (rectCopy)
     {
       v22 = v19 + 1.0;
       v26.origin.x = x;
@@ -64,13 +64,13 @@
 
   v25.receiver = self;
   v25.super_class = SCATForegroundCursorLayer;
-  [(SCATCursorLayer *)&v25 updatePath:v23 frame:v10 cornerRadius:v9 isSimpleRect:v8 animated:x options:y, width, height, a5];
+  [(SCATCursorLayer *)&v25 updatePath:v23 frame:rectCopy cornerRadius:animatedCopy isSimpleRect:v8 animated:x options:y, width, height, radius];
 }
 
-- (double)_boundsInsetForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6
+- (double)_boundsInsetForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options
 {
   result = 0.0;
-  if (a5)
+  if (visibility)
   {
     return 14.0;
   }
@@ -78,26 +78,26 @@
   return result;
 }
 
-- (double)_borderWidthForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6
+- (double)_borderWidthForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options
 {
-  v6 = a5;
-  v8 = [(SCATCursorLayer *)self styleProvider:a3];
+  visibilityCopy = visibility;
+  v8 = [(SCATCursorLayer *)self styleProvider:theme];
   [v8 cursorForegroundBorderWidth];
   v10 = v9;
 
-  if (v6)
+  if (visibilityCopy)
   {
-    v11 = [(SCATCursorLayer *)self styleProvider];
-    [v11 cursorHighVisibilityMultiplier];
+    styleProvider = [(SCATCursorLayer *)self styleProvider];
+    [styleProvider cursorHighVisibilityMultiplier];
     v10 = v10 * v12;
   }
 
   return v10;
 }
 
-- (id)_borderPatternForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6
+- (id)_borderPatternForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((theme & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     return &off_1001E4E90;
   }

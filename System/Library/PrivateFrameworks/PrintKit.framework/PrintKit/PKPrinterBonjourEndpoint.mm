@@ -1,65 +1,65 @@
 @interface PKPrinterBonjourEndpoint
-+ (id)endpointWithBonjourString:(id)a3;
-+ (id)endpointWithData:(id)a3;
-+ (id)endpointWithURL:(id)a3;
-+ (id)serviceFromEndpoint:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)endpointWithBonjourString:(id)string;
++ (id)endpointWithData:(id)data;
++ (id)endpointWithURL:(id)l;
++ (id)serviceFromEndpoint:(id)endpoint;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isIPPS;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)displayNameForPrintKitUI;
 - (NSString)persistentNameRepresentationForPrintKitUI;
-- (PKPrinterBonjourEndpoint)initWithBonjourString:(id)a3 provenance:(int)a4 provenanceIdentifier:(id)a5;
-- (PKPrinterBonjourEndpoint)initWithCoder:(id)a3;
-- (PKPrinterBonjourEndpoint)initWithEndpoint:(id)a3 provenance:(int)a4 provenanceIdentifier:(id)a5;
-- (PKPrinterBonjourEndpoint)initWithURL:(id)a3 txtRecord:(id)a4 provenance:(int)a5 provenanceIdentifier:(id)a6;
+- (PKPrinterBonjourEndpoint)initWithBonjourString:(id)string provenance:(int)provenance provenanceIdentifier:(id)identifier;
+- (PKPrinterBonjourEndpoint)initWithCoder:(id)coder;
+- (PKPrinterBonjourEndpoint)initWithEndpoint:(id)endpoint provenance:(int)provenance provenanceIdentifier:(id)identifier;
+- (PKPrinterBonjourEndpoint)initWithURL:(id)l txtRecord:(id)record provenance:(int)provenance provenanceIdentifier:(id)identifier;
 - (id)dataRepresentation;
 - (id)userCodableDictionary;
 - (unint64_t)hash;
-- (void)_resolveEndpoint:(id)a3;
-- (void)_resolve_finish_resolvedURL:(id)a3 resolvedTXT:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)withResolvedTXT:(id)a3;
-- (void)withResolvedURL:(id)a3;
+- (void)_resolveEndpoint:(id)endpoint;
+- (void)_resolve_finish_resolvedURL:(id)l resolvedTXT:(id)t;
+- (void)encodeWithCoder:(id)coder;
+- (void)withResolvedTXT:(id)t;
+- (void)withResolvedURL:(id)l;
 @end
 
 @implementation PKPrinterBonjourEndpoint
 
-+ (id)endpointWithURL:(id)a3
++ (id)endpointWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [[PKPrinterBonjourEndpoint alloc] initWithURL:v3 txtRecord:0 provenance:0 provenanceIdentifier:0];
+  lCopy = l;
+  v4 = [[PKPrinterBonjourEndpoint alloc] initWithURL:lCopy txtRecord:0 provenance:0 provenanceIdentifier:0];
 
   return v4;
 }
 
-+ (id)endpointWithBonjourString:(id)a3
++ (id)endpointWithBonjourString:(id)string
 {
-  v3 = a3;
-  v4 = [[PKPrinterBonjourEndpoint alloc] initWithBonjourString:v3 provenance:0 provenanceIdentifier:0];
+  stringCopy = string;
+  v4 = [[PKPrinterBonjourEndpoint alloc] initWithBonjourString:stringCopy provenance:0 provenanceIdentifier:0];
 
   return v4;
 }
 
-- (PKPrinterBonjourEndpoint)initWithEndpoint:(id)a3 provenance:(int)a4 provenanceIdentifier:(id)a5
+- (PKPrinterBonjourEndpoint)initWithEndpoint:(id)endpoint provenance:(int)provenance provenanceIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
+  endpointCopy = endpoint;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = PKPrinterBonjourEndpoint;
   v10 = [(PKPrinterBonjourEndpoint *)&v21 init];
   v11 = v10;
   if (v10)
   {
-    v10->_provenance = a4;
-    objc_storeStrong(&v10->_provenanceIdentifier, a5);
-    v12 = [MEMORY[0x277CD91C8] endpointWithCEndpoint:v8];
+    v10->_provenance = provenance;
+    objc_storeStrong(&v10->_provenanceIdentifier, identifier);
+    v12 = [MEMORY[0x277CD91C8] endpointWithCEndpoint:endpointCopy];
     nwEndpoint = v11->_nwEndpoint;
     v11->_nwEndpoint = v12;
 
-    if (nw_endpoint_get_type(v8) == nw_endpoint_type_url)
+    if (nw_endpoint_get_type(endpointCopy) == nw_endpoint_type_url)
     {
-      url = nw_endpoint_get_url(v8);
+      url = nw_endpoint_get_url(endpointCopy);
       if (url)
       {
         v15 = PKURLWithUTF8String(url);
@@ -68,7 +68,7 @@
       }
     }
 
-    v17 = nw_endpoint_copy_txt_record(v8);
+    v17 = nw_endpoint_copy_txt_record(endpointCopy);
     if (v17)
     {
       v18 = [PKTXTRecord txtRecordDictionaryForTxtRecord:v17];
@@ -80,21 +80,21 @@
   return v11;
 }
 
-- (PKPrinterBonjourEndpoint)initWithURL:(id)a3 txtRecord:(id)a4 provenance:(int)a5 provenanceIdentifier:(id)a6
+- (PKPrinterBonjourEndpoint)initWithURL:(id)l txtRecord:(id)record provenance:(int)provenance provenanceIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  recordCopy = record;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = PKPrinterBonjourEndpoint;
   v13 = [(PKPrinterBonjourEndpoint *)&v23 init];
   v14 = v13;
   if (v13)
   {
-    v13->_provenance = a5;
-    objc_storeStrong(&v13->_provenanceIdentifier, a6);
-    v15 = [v10 absoluteString];
-    url = nw_endpoint_create_url([v15 UTF8String]);
+    v13->_provenance = provenance;
+    objc_storeStrong(&v13->_provenanceIdentifier, identifier);
+    absoluteString = [lCopy absoluteString];
+    url = nw_endpoint_create_url([absoluteString UTF8String]);
 
     v17 = [MEMORY[0x277CD91C8] endpointWithCEndpoint:url];
     nwEndpoint = v14->_nwEndpoint;
@@ -105,17 +105,17 @@
     resolvedURL = v14->_resolvedURL;
     v14->_resolvedURL = v20;
 
-    objc_storeStrong(&v14->_resolvedTXT, a4);
+    objc_storeStrong(&v14->_resolvedTXT, record);
   }
 
   return v14;
 }
 
-- (PKPrinterBonjourEndpoint)initWithBonjourString:(id)a3 provenance:(int)a4 provenanceIdentifier:(id)a5
+- (PKPrinterBonjourEndpoint)initWithBonjourString:(id)string provenance:(int)provenance provenanceIdentifier:(id)identifier
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  stringCopy = string;
+  identifierCopy = identifier;
   v35.receiver = self;
   v35.super_class = PKPrinterBonjourEndpoint;
   v10 = [(PKPrinterBonjourEndpoint *)&v35 init];
@@ -127,16 +127,16 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  v10->_provenance = a4;
-  objc_storeStrong(&v10->_provenanceIdentifier, a5);
-  v12 = [v8 componentsSeparatedByString:@"."];
+  v10->_provenance = provenance;
+  objc_storeStrong(&v10->_provenanceIdentifier, identifier);
+  v12 = [stringCopy componentsSeparatedByString:@"."];
   if ([v12 count] <= 3)
   {
     v13 = _PKLogCategory(PKLogCategoryDiscovery[0]);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v37 = v8;
+      v37 = stringCopy;
       _os_log_impl(&dword_25F5FC000, v13, OS_LOG_TYPE_ERROR, "Invalid Bonjour service: %{public}@", buf, 0xCu);
     }
 
@@ -149,23 +149,23 @@ LABEL_18:
   v17 = [v12 objectAtIndexedSubscript:2];
   v18 = [v15 stringWithFormat:@"%@.%@", v16, v17];
 
-  v19 = [v8 substringFromIndex:{objc_msgSend(v14, "length") + objc_msgSend(v18, "length") + 2}];
+  v19 = [stringCopy substringFromIndex:{objc_msgSend(v14, "length") + objc_msgSend(v18, "length") + 2}];
   v20 = v14;
-  v21 = [v14 UTF8String];
-  if (strlen(v21) > 0xFF)
+  uTF8String = [v14 UTF8String];
+  if (strlen(uTF8String) > 0xFF)
   {
     __assert_rtn("unescape", "PKPrinterBonjourEndpoint.mm", 72, "strlen(src) < dstLen");
   }
 
   v22 = buf;
-  for (i = v21; ; v21 = i)
+  for (i = uTF8String; ; uTF8String = i)
   {
     v25 = *i++;
     v24 = v25;
     if (v25 == 92)
     {
-      i = (v21 + 2);
-      v24 = *(v21 + 1);
+      i = (uTF8String + 2);
+      v24 = *(uTF8String + 1);
       if (v24 == 48)
       {
         break;
@@ -182,19 +182,19 @@ LABEL_15:
   }
 
   v26 = *i;
-  if (*i && *(v21 + 3))
+  if (*i && *(uTF8String + 3))
   {
-    i = (v21 + 4);
-    LOBYTE(v24) = *(v21 + 3) + 10 * v26 - 16;
+    i = (uTF8String + 4);
+    LOBYTE(v24) = *(uTF8String + 3) + 10 * v26 - 16;
     goto LABEL_15;
   }
 
 LABEL_16:
   *v22 = 0;
   v27 = v18;
-  v28 = [v18 UTF8String];
+  uTF8String2 = [v18 UTF8String];
   v29 = v19;
-  bonjour_service = nw_endpoint_create_bonjour_service(buf, v28, [v19 UTF8String]);
+  bonjour_service = nw_endpoint_create_bonjour_service(buf, uTF8String2, [v19 UTF8String]);
   if (bonjour_service)
   {
     v31 = [MEMORY[0x277CD91C8] endpointWithCEndpoint:bonjour_service];
@@ -211,36 +211,36 @@ LABEL_21:
   return v33;
 }
 
-- (PKPrinterBonjourEndpoint)initWithCoder:(id)a3
+- (PKPrinterBonjourEndpoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = PKPrinterBonjourEndpoint;
   v5 = [(PKPrinterBonjourEndpoint *)&v26 init];
   if (v5)
   {
-    v5->_provenance = [v4 decodeIntegerForKey:@"provenance"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provenanceIdentifier"];
+    v5->_provenance = [coderCopy decodeIntegerForKey:@"provenance"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provenanceIdentifier"];
     provenanceIdentifier = v5->_provenanceIdentifier;
     v5->_provenanceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
     nwEndpoint = v5->_nwEndpoint;
     v5->_nwEndpoint = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     resolvedURL = v5->_resolvedURL;
     v5->_resolvedURL = v10;
 
     v12 = objc_opt_class();
-    v13 = [v4 decodeDictionaryWithKeysOfClass:v12 objectsOfClass:objc_opt_class() forKey:@"txt"];
+    v13 = [coderCopy decodeDictionaryWithKeysOfClass:v12 objectsOfClass:objc_opt_class() forKey:@"txt"];
     resolvedTXT = v5->_resolvedTXT;
     v5->_resolvedTXT = v13;
 
     if (!v5->_resolvedTXT)
     {
-      v15 = [(NWEndpoint *)v5->_nwEndpoint copyCEndpoint];
-      v16 = nw_endpoint_copy_txt_record(v15);
+      copyCEndpoint = [(NWEndpoint *)v5->_nwEndpoint copyCEndpoint];
+      v16 = nw_endpoint_copy_txt_record(copyCEndpoint);
 
       if (v16)
       {
@@ -252,13 +252,13 @@ LABEL_21:
 
     if (!v5->_resolvedURL)
     {
-      v19 = [(NWEndpoint *)v5->_nwEndpoint copyCEndpoint];
-      type = nw_endpoint_get_type(v19);
+      copyCEndpoint2 = [(NWEndpoint *)v5->_nwEndpoint copyCEndpoint];
+      type = nw_endpoint_get_type(copyCEndpoint2);
 
       if (type == nw_endpoint_type_url)
       {
-        v21 = [(NWEndpoint *)v5->_nwEndpoint copyCEndpoint];
-        url = nw_endpoint_get_url(v21);
+        copyCEndpoint3 = [(NWEndpoint *)v5->_nwEndpoint copyCEndpoint];
+        url = nw_endpoint_get_url(copyCEndpoint3);
 
         if (url)
         {
@@ -273,37 +273,37 @@ LABEL_21:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:self->_provenance forKey:@"provenance"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_provenance forKey:@"provenance"];
   provenanceIdentifier = self->_provenanceIdentifier;
   if (provenanceIdentifier)
   {
-    [v7 encodeObject:provenanceIdentifier forKey:@"provenanceIdentifier"];
+    [coderCopy encodeObject:provenanceIdentifier forKey:@"provenanceIdentifier"];
   }
 
-  [v7 encodeObject:self->_nwEndpoint forKey:@"endpoint"];
+  [coderCopy encodeObject:self->_nwEndpoint forKey:@"endpoint"];
   resolvedURL = self->_resolvedURL;
   if (resolvedURL)
   {
-    [v7 encodeObject:resolvedURL forKey:@"url"];
+    [coderCopy encodeObject:resolvedURL forKey:@"url"];
   }
 
   resolvedTXT = self->_resolvedTXT;
   if (resolvedTXT)
   {
-    [v7 encodeObject:resolvedTXT forKey:@"txt"];
+    [coderCopy encodeObject:resolvedTXT forKey:@"txt"];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_resolvedURL;
     v7 = v5[3];
     v8 = v7;
@@ -369,11 +369,11 @@ LABEL_21:
   return v2;
 }
 
-+ (id)endpointWithData:(id)a3
++ (id)endpointWithData:(id)data
 {
   v10 = *MEMORY[0x277D85DE8];
   v7 = 0;
-  v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:a1 fromData:a3 error:&v7];
+  v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:self fromData:data error:&v7];
   v4 = v7;
   if (v4)
   {
@@ -393,8 +393,8 @@ LABEL_21:
 
 - (NSString)persistentNameRepresentationForPrintKitUI
 {
-  v3 = [(NWEndpoint *)self->_nwEndpoint copyCEndpoint];
-  type = nw_endpoint_get_type(v3);
+  copyCEndpoint = [(NWEndpoint *)self->_nwEndpoint copyCEndpoint];
+  type = nw_endpoint_get_type(copyCEndpoint);
   if (type == nw_endpoint_type_bonjour_service)
   {
     bonjour_fullname = nw_endpoint_get_bonjour_fullname();
@@ -403,7 +403,7 @@ LABEL_21:
       goto LABEL_7;
     }
 
-    bonjour_service_name = nw_endpoint_get_bonjour_service_name(v3);
+    bonjour_service_name = nw_endpoint_get_bonjour_service_name(copyCEndpoint);
   }
 
   else
@@ -413,7 +413,7 @@ LABEL_21:
       goto LABEL_9;
     }
 
-    bonjour_service_name = nw_endpoint_get_url(v3);
+    bonjour_service_name = nw_endpoint_get_url(copyCEndpoint);
   }
 
   bonjour_fullname = bonjour_service_name;
@@ -464,11 +464,11 @@ LABEL_22:
   resolvedTXT = self->_resolvedTXT;
   if (!resolvedTXT || ([(NSDictionary *)resolvedTXT objectForKeyedSubscript:@"display-name"], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [(NWEndpoint *)self->_nwEndpoint copyCEndpoint];
-    type = nw_endpoint_get_type(v5);
+    copyCEndpoint = [(NWEndpoint *)self->_nwEndpoint copyCEndpoint];
+    type = nw_endpoint_get_type(copyCEndpoint);
     if (type == nw_endpoint_type_bonjour_service)
     {
-      bonjour_service_name = nw_endpoint_get_bonjour_service_name(v5);
+      bonjour_service_name = nw_endpoint_get_bonjour_service_name(copyCEndpoint);
       if (bonjour_service_name)
       {
         goto LABEL_9;
@@ -484,7 +484,7 @@ LABEL_22:
         goto LABEL_11;
       }
 
-      bonjour_fullname = nw_endpoint_get_url(v5);
+      bonjour_fullname = nw_endpoint_get_url(copyCEndpoint);
     }
 
     bonjour_service_name = bonjour_fullname;
@@ -518,16 +518,16 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = PKPrinterBonjourEndpoint;
   v4 = [(PKPrinterBonjourEndpoint *)&v8 description];
-  v5 = [(PKPrinterBonjourEndpoint *)self persistentNameRepresentationForPrintKitUI];
-  v6 = [v3 stringWithFormat:@"%@ { %@ }", v4, v5];
+  persistentNameRepresentationForPrintKitUI = [(PKPrinterBonjourEndpoint *)self persistentNameRepresentationForPrintKitUI];
+  v6 = [v3 stringWithFormat:@"%@ { %@ }", v4, persistentNameRepresentationForPrintKitUI];
 
   return v6;
 }
 
 - (NSString)debugDescription
 {
-  v3 = [(NWEndpoint *)self->_nwEndpoint copyCEndpoint];
-  v4 = v3;
+  copyCEndpoint = [(NWEndpoint *)self->_nwEndpoint copyCEndpoint];
+  v4 = copyCEndpoint;
   v5 = @"NO";
   if (self->_resolvedURL)
   {
@@ -536,7 +536,7 @@ LABEL_13:
 
   else
   {
-    v7 = v3;
+    v7 = copyCEndpoint;
     if (nw_endpoint_get_type(v7) == nw_endpoint_type_url)
     {
       url = nw_endpoint_get_url(v7);
@@ -587,7 +587,7 @@ LABEL_13:
   v21.receiver = self;
   v21.super_class = PKPrinterBonjourEndpoint;
   v15 = [(PKPrinterBonjourEndpoint *)&v21 description];
-  v16 = [(PKPrinterBonjourEndpoint *)self persistentNameRepresentationForPrintKitUI];
+  persistentNameRepresentationForPrintKitUI = [(PKPrinterBonjourEndpoint *)self persistentNameRepresentationForPrintKitUI];
   if ([(NSArray *)self->_resolvedCallouts count])
   {
     v17 = @"YES";
@@ -604,17 +604,17 @@ LABEL_13:
   }
 
   v18 = toString([(PKPrinterBonjourEndpoint *)self provenance]);
-  v19 = [v14 stringWithFormat:@"%@ { %@(hasURL? %@, hasTXT? %@, resolving? %@, secure? %@, from? %@) }", v15, v16, v9, v13, v17, v5, v18];
+  v19 = [v14 stringWithFormat:@"%@ { %@(hasURL? %@, hasTXT? %@, resolving? %@, secure? %@, from? %@) }", v15, persistentNameRepresentationForPrintKitUI, v9, v13, v17, v5, v18];
 
   return v19;
 }
 
-+ (id)serviceFromEndpoint:(id)a3
++ (id)serviceFromEndpoint:(id)endpoint
 {
-  v3 = a3;
-  if (nw_endpoint_get_type(v3) == nw_endpoint_type_bonjour_service)
+  endpointCopy = endpoint;
+  if (nw_endpoint_get_type(endpointCopy) == nw_endpoint_type_bonjour_service)
   {
-    bonjour_service_type = nw_endpoint_get_bonjour_service_type(v3);
+    bonjour_service_type = nw_endpoint_get_bonjour_service_type(endpointCopy);
     if (bonjour_service_type)
     {
       goto LABEL_6;
@@ -650,10 +650,10 @@ LABEL_9:
   resolvedURL = self->_resolvedURL;
   if (resolvedURL)
   {
-    v4 = [(NSURL *)resolvedURL scheme];
-    if (([v4 isEqualToString:@"ipps"]& 1) == 0)
+    scheme = [(NSURL *)resolvedURL scheme];
+    if (([scheme isEqualToString:@"ipps"]& 1) == 0)
     {
-      v5 = [v4 isEqualToString:@"https"];
+      v5 = [scheme isEqualToString:@"https"];
       goto LABEL_14;
     }
 
@@ -662,10 +662,10 @@ LABEL_3:
     goto LABEL_14;
   }
 
-  v4 = [(NWEndpoint *)self->_nwEndpoint copyCEndpoint];
-  if (nw_endpoint_get_type(v4) == nw_endpoint_type_url)
+  scheme = [(NWEndpoint *)self->_nwEndpoint copyCEndpoint];
+  if (nw_endpoint_get_type(scheme) == nw_endpoint_type_url)
   {
-    url = nw_endpoint_get_url(v4);
+    url = nw_endpoint_get_url(scheme);
     if (strncmp(url, "ipps:", 5uLL))
     {
       v5 = strncmp(url, "https:", 6uLL) == 0;
@@ -675,7 +675,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v7 = [PKPrinterBonjourEndpoint serviceFromEndpoint:v4];
+  v7 = [PKPrinterBonjourEndpoint serviceFromEndpoint:scheme];
   v8 = v7;
   if (v7)
   {
@@ -699,13 +699,13 @@ LABEL_14:
   return v5;
 }
 
-- (void)withResolvedTXT:(id)a3
+- (void)withResolvedTXT:(id)t
 {
-  v4 = a3;
-  v5 = v4;
+  tCopy = t;
+  v5 = tCopy;
   if (self->_resolvedTXT)
   {
-    v4[2](v4);
+    tCopy[2](tCopy);
   }
 
   else
@@ -715,18 +715,18 @@ LABEL_14:
     v6[2] = __44__PKPrinterBonjourEndpoint_withResolvedTXT___block_invoke;
     v6[3] = &unk_279A91CD0;
     v6[4] = self;
-    v7 = v4;
+    v7 = tCopy;
     [(PKPrinterBonjourEndpoint *)self _resolveEndpoint:v6];
   }
 }
 
-- (void)withResolvedURL:(id)a3
+- (void)withResolvedURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
+  lCopy = l;
+  v5 = lCopy;
   if (self->_resolvedURL)
   {
-    v4[2](v4);
+    lCopy[2](lCopy);
   }
 
   else
@@ -736,19 +736,19 @@ LABEL_14:
     v6[2] = __44__PKPrinterBonjourEndpoint_withResolvedURL___block_invoke;
     v6[3] = &unk_279A91CD0;
     v6[4] = self;
-    v7 = v4;
+    v7 = lCopy;
     [(PKPrinterBonjourEndpoint *)self _resolveEndpoint:v6];
   }
 }
 
-- (void)_resolveEndpoint:(id)a3
+- (void)_resolveEndpoint:(id)endpoint
 {
   v16[1] = *MEMORY[0x277D85DE8];
   obj = self;
-  v4 = a3;
+  endpointCopy = endpoint;
   objc_sync_enter(obj);
   resolvedCallouts = obj->_resolvedCallouts;
-  v6 = MEMORY[0x25F8E4580](v4);
+  v6 = MEMORY[0x25F8E4580](endpointCopy);
 
   if (resolvedCallouts)
   {
@@ -801,32 +801,32 @@ void __45__PKPrinterBonjourEndpoint__resolveEndpoint___block_invoke(uint64_t a1,
   [v4 _resolve_finish_resolvedURL:v5 resolvedTXT:v6];
 }
 
-- (void)_resolve_finish_resolvedURL:(id)a3 resolvedTXT:(id)a4
+- (void)_resolve_finish_resolvedURL:(id)l resolvedTXT:(id)t
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
-  objc_storeStrong(&v9->_resolvedURL, a3);
-  objc_storeStrong(&v9->_resolvedTXT, a4);
-  if (!v9->_resolvedURL || !v9->_resolvedTXT)
+  lCopy = l;
+  tCopy = t;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_resolvedURL, l);
+  objc_storeStrong(&selfCopy->_resolvedTXT, t);
+  if (!selfCopy->_resolvedURL || !selfCopy->_resolvedTXT)
   {
     v10 = _PKLogCategory(PKLogCategoryDiscovery[0]);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      nwEndpoint = v9->_nwEndpoint;
+      nwEndpoint = selfCopy->_nwEndpoint;
       v14 = 138477827;
       v15 = nwEndpoint;
       _os_log_impl(&dword_25F5FC000, v10, OS_LOG_TYPE_ERROR, "Endpoint %{private}@ not completely resolved", &v14, 0xCu);
     }
   }
 
-  resolvedCallouts = v9->_resolvedCallouts;
-  v9->_resolvedCallouts = 0;
+  resolvedCallouts = selfCopy->_resolvedCallouts;
+  selfCopy->_resolvedCallouts = 0;
   v13 = resolvedCallouts;
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
   [(NSArray *)v13 enumerateObjectsUsingBlock:&__block_literal_global_4];
 }
 
@@ -839,11 +839,11 @@ void __68__PKPrinterBonjourEndpoint__resolve_finish_resolvedURL_resolvedTXT___bl
 - (id)userCodableDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(PKPrinterBonjourEndpoint *)self persistentNameRepresentationForPrintKitUI];
-  [v3 setObject:v4 forKeyedSubscript:@"name"];
+  persistentNameRepresentationForPrintKitUI = [(PKPrinterBonjourEndpoint *)self persistentNameRepresentationForPrintKitUI];
+  [v3 setObject:persistentNameRepresentationForPrintKitUI forKeyedSubscript:@"name"];
 
-  v5 = [(PKPrinterBonjourEndpoint *)self displayNameForPrintKitUI];
-  [v3 setObject:v5 forKeyedSubscript:@"display-name"];
+  displayNameForPrintKitUI = [(PKPrinterBonjourEndpoint *)self displayNameForPrintKitUI];
+  [v3 setObject:displayNameForPrintKitUI forKeyedSubscript:@"display-name"];
 
   if ([(PKPrinterBonjourEndpoint *)self isIPPS])
   {
@@ -859,11 +859,11 @@ void __68__PKPrinterBonjourEndpoint__resolve_finish_resolvedURL_resolvedTXT___bl
   v7 = toString([(PKPrinterBonjourEndpoint *)self provenance]);
   [v3 setObject:v7 forKeyedSubscript:@"source"];
 
-  v8 = [(PKPrinterBonjourEndpoint *)self provenanceIdentifier];
-  v9 = v8;
-  if (v8)
+  provenanceIdentifier = [(PKPrinterBonjourEndpoint *)self provenanceIdentifier];
+  v9 = provenanceIdentifier;
+  if (provenanceIdentifier)
   {
-    v10 = v8;
+    v10 = provenanceIdentifier;
   }
 
   else

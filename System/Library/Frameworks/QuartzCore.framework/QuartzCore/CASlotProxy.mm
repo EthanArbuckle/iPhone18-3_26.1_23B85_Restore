@@ -1,5 +1,5 @@
 @interface CASlotProxy
-- (CASlotProxy)initWithName:(unsigned int)a3;
+- (CASlotProxy)initWithName:(unsigned int)name;
 - (Object)CA_copyRenderValue;
 - (void)dealloc;
 @end
@@ -36,7 +36,7 @@
   [(CASlotProxy *)&v4 dealloc];
 }
 
-- (CASlotProxy)initWithName:(unsigned int)a3
+- (CASlotProxy)initWithName:(unsigned int)name
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -56,7 +56,7 @@
       v5[3] = 45;
       ++dword_1ED4EAAEC;
       *v5 = &unk_1EF204B60;
-      *(v5 + 2) = a3;
+      *(v5 + 2) = name;
       v4->_proxy = v5;
     }
 

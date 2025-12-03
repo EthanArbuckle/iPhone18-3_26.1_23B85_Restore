@@ -1,9 +1,9 @@
 @interface CTCarrierSpaceCapabilities
-- (BOOL)isEqual:(id)a3;
-- (CTCarrierSpaceCapabilities)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTCarrierSpaceCapabilities)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpaceCapabilities
@@ -20,10 +20,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -31,10 +31,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTCarrierSpaceCapabilities *)self supportsServices], v5 == [(CTCarrierSpaceCapabilities *)v4 supportsServices]) && (v6 = [(CTCarrierSpaceCapabilities *)self supportsUsage], v6 == [(CTCarrierSpaceCapabilities *)v4 supportsUsage]) && (v7 = [(CTCarrierSpaceCapabilities *)self supportsPlans], v7 == [(CTCarrierSpaceCapabilities *)v4 supportsPlans]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTCarrierSpaceCapabilities *)self supportsServices], v5 == [(CTCarrierSpaceCapabilities *)equalCopy supportsServices]) && (v6 = [(CTCarrierSpaceCapabilities *)self supportsUsage], v6 == [(CTCarrierSpaceCapabilities *)equalCopy supportsUsage]) && (v7 = [(CTCarrierSpaceCapabilities *)self supportsPlans], v7 == [(CTCarrierSpaceCapabilities *)equalCopy supportsPlans]))
     {
-      v10 = [(CTCarrierSpaceCapabilities *)self supportsApplications];
-      v8 = v10 ^ [(CTCarrierSpaceCapabilities *)v4 supportsApplications]^ 1;
+      supportsApplications = [(CTCarrierSpaceCapabilities *)self supportsApplications];
+      v8 = supportsApplications ^ [(CTCarrierSpaceCapabilities *)equalCopy supportsApplications]^ 1;
     }
 
     else
@@ -46,9 +46,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSupportsServices:{-[CTCarrierSpaceCapabilities supportsServices](self, "supportsServices")}];
   [v4 setSupportsUsage:{-[CTCarrierSpaceCapabilities supportsUsage](self, "supportsUsage")}];
   [v4 setSupportsPlans:{-[CTCarrierSpaceCapabilities supportsPlans](self, "supportsPlans")}];
@@ -56,28 +56,28 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   supportsServices = self->_supportsServices;
-  v5 = a3;
-  [v5 encodeBool:supportsServices forKey:@"services"];
-  [v5 encodeBool:self->_supportsUsage forKey:@"usage"];
-  [v5 encodeBool:self->_supportsPlans forKey:@"plans"];
-  [v5 encodeBool:self->_supportsApplications forKey:@"applications"];
+  coderCopy = coder;
+  [coderCopy encodeBool:supportsServices forKey:@"services"];
+  [coderCopy encodeBool:self->_supportsUsage forKey:@"usage"];
+  [coderCopy encodeBool:self->_supportsPlans forKey:@"plans"];
+  [coderCopy encodeBool:self->_supportsApplications forKey:@"applications"];
 }
 
-- (CTCarrierSpaceCapabilities)initWithCoder:(id)a3
+- (CTCarrierSpaceCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTCarrierSpaceCapabilities;
   v5 = [(CTCarrierSpaceCapabilities *)&v7 init];
   if (v5)
   {
-    v5->_supportsServices = [v4 decodeBoolForKey:@"services"];
-    v5->_supportsUsage = [v4 decodeBoolForKey:@"usage"];
-    v5->_supportsPlans = [v4 decodeBoolForKey:@"plans"];
-    v5->_supportsApplications = [v4 decodeBoolForKey:@"applications"];
+    v5->_supportsServices = [coderCopy decodeBoolForKey:@"services"];
+    v5->_supportsUsage = [coderCopy decodeBoolForKey:@"usage"];
+    v5->_supportsPlans = [coderCopy decodeBoolForKey:@"plans"];
+    v5->_supportsApplications = [coderCopy decodeBoolForKey:@"applications"];
   }
 
   return v5;

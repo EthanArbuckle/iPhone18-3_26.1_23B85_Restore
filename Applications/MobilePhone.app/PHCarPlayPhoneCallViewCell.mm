@@ -1,23 +1,23 @@
 @interface PHCarPlayPhoneCallViewCell
-- (PHCarPlayPhoneCallViewCell)initWithFrame:(CGRect)a3;
+- (PHCarPlayPhoneCallViewCell)initWithFrame:(CGRect)frame;
 - (int64_t)numberOfLinesInSubtitleLabel;
-- (void)_updateBadgeViewForLocalizedSenderIdentityTitle:(id)a3;
+- (void)_updateBadgeViewForLocalizedSenderIdentityTitle:(id)title;
 - (void)layoutSubviews;
-- (void)setAvatarViewController:(id)a3;
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFontsForLayout:(BOOL)a3;
-- (void)setTitle:(id)a3 subtitle:(id)a4 source:(id)a5 subtitleColor:(id)a6 localizedSenderIdentityTitle:(id)a7 animated:(BOOL)a8;
-- (void)setTitle:(id)a3 subtitle:(id)a4 subtitleColor:(id)a5 overrideBadgeColor:(id)a6 localizedSenderIdentityTitle:(id)a7 animated:(BOOL)a8;
+- (void)setAvatarViewController:(id)controller;
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFontsForLayout:(BOOL)layout;
+- (void)setTitle:(id)title subtitle:(id)subtitle source:(id)source subtitleColor:(id)color localizedSenderIdentityTitle:(id)identityTitle animated:(BOOL)animated;
+- (void)setTitle:(id)title subtitle:(id)subtitle subtitleColor:(id)color overrideBadgeColor:(id)badgeColor localizedSenderIdentityTitle:(id)identityTitle animated:(BOOL)animated;
 @end
 
 @implementation PHCarPlayPhoneCallViewCell
 
-- (PHCarPlayPhoneCallViewCell)initWithFrame:(CGRect)a3
+- (PHCarPlayPhoneCallViewCell)initWithFrame:(CGRect)frame
 {
   v89.receiver = self;
   v89.super_class = PHCarPlayPhoneCallViewCell;
-  v3 = [(PHCarPlayPhoneCallViewCell *)&v89 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, 62.5];
+  v3 = [(PHCarPlayPhoneCallViewCell *)&v89 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, 62.5];
   v4 = v3;
   if (v3)
   {
@@ -107,87 +107,87 @@
     [(UIView *)v4->_avatarContentView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PHCarPlayPhoneCallViewCell *)v4 addSubview:v4->_avatarContentView];
     v88 = +[NSMutableArray array];
-    v86 = [(UILabel *)v4->_mainLabel leftAnchor];
-    v85 = [(PHCarPlayPhoneCallViewCell *)v4 leftAnchor];
-    v84 = [v86 constraintGreaterThanOrEqualToAnchor:v85];
+    leftAnchor = [(UILabel *)v4->_mainLabel leftAnchor];
+    leftAnchor2 = [(PHCarPlayPhoneCallViewCell *)v4 leftAnchor];
+    v84 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2];
     v91[0] = v84;
-    v83 = [(UILabel *)v4->_mainLabel rightAnchor];
-    v82 = [(PHCarPlayPhoneCallViewCell *)v4 rightAnchor];
-    v81 = [v83 constraintLessThanOrEqualToAnchor:v82];
+    rightAnchor = [(UILabel *)v4->_mainLabel rightAnchor];
+    rightAnchor2 = [(PHCarPlayPhoneCallViewCell *)v4 rightAnchor];
+    v81 = [rightAnchor constraintLessThanOrEqualToAnchor:rightAnchor2];
     v91[1] = v81;
-    v80 = [(UILabel *)v4->_mainLabel centerXAnchor];
-    v79 = [(PHCarPlayPhoneCallViewCell *)v4 centerXAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    centerXAnchor = [(UILabel *)v4->_mainLabel centerXAnchor];
+    centerXAnchor2 = [(PHCarPlayPhoneCallViewCell *)v4 centerXAnchor];
+    v78 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v91[2] = v78;
-    v77 = [(UIStackView *)v4->_subtitleStackView topAnchor];
-    v76 = [(UILabel *)v4->_mainLabel bottomAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76 constant:0.0];
+    topAnchor = [(UIStackView *)v4->_subtitleStackView topAnchor];
+    bottomAnchor = [(UILabel *)v4->_mainLabel bottomAnchor];
+    v75 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:0.0];
     v91[3] = v75;
-    v74 = [(UIStackView *)v4->_subtitleStackView leftAnchor];
-    v73 = [(PHCarPlayPhoneCallViewCell *)v4 leftAnchor];
-    v72 = [v74 constraintGreaterThanOrEqualToAnchor:v73 constant:0.0];
+    leftAnchor3 = [(UIStackView *)v4->_subtitleStackView leftAnchor];
+    leftAnchor4 = [(PHCarPlayPhoneCallViewCell *)v4 leftAnchor];
+    v72 = [leftAnchor3 constraintGreaterThanOrEqualToAnchor:leftAnchor4 constant:0.0];
     v91[4] = v72;
-    v71 = [(UIStackView *)v4->_subtitleStackView rightAnchor];
-    v70 = [(PHCarPlayPhoneCallViewCell *)v4 rightAnchor];
-    v69 = [v71 constraintLessThanOrEqualToAnchor:v70 constant:0.0];
+    rightAnchor3 = [(UIStackView *)v4->_subtitleStackView rightAnchor];
+    rightAnchor4 = [(PHCarPlayPhoneCallViewCell *)v4 rightAnchor];
+    v69 = [rightAnchor3 constraintLessThanOrEqualToAnchor:rightAnchor4 constant:0.0];
     v91[5] = v69;
-    v68 = [(UIStackView *)v4->_subtitleStackView centerXAnchor];
-    v67 = [(PHCarPlayPhoneCallViewCell *)v4 centerXAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    centerXAnchor3 = [(UIStackView *)v4->_subtitleStackView centerXAnchor];
+    centerXAnchor4 = [(PHCarPlayPhoneCallViewCell *)v4 centerXAnchor];
+    v66 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v91[6] = v66;
-    v65 = [(UIStackView *)v4->_subtitleStackView heightAnchor];
-    v64 = [(UILabel *)v4->_subtitleLabel heightAnchor];
-    v63 = [v65 constraintGreaterThanOrEqualToAnchor:v64];
+    heightAnchor = [(UIStackView *)v4->_subtitleStackView heightAnchor];
+    heightAnchor2 = [(UILabel *)v4->_subtitleLabel heightAnchor];
+    v63 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
     v91[7] = v63;
-    v62 = [(UILabel *)v4->_sourceLabel topAnchor];
-    v61 = [(UIStackView *)v4->_subtitleStackView bottomAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61 constant:0.0];
+    topAnchor2 = [(UILabel *)v4->_sourceLabel topAnchor];
+    bottomAnchor2 = [(UIStackView *)v4->_subtitleStackView bottomAnchor];
+    v60 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     v91[8] = v60;
-    v59 = [(UILabel *)v4->_sourceLabel leftAnchor];
-    v58 = [(PHCarPlayPhoneCallViewCell *)v4 leftAnchor];
-    v57 = [v59 constraintGreaterThanOrEqualToAnchor:v58 constant:0.0];
+    leftAnchor5 = [(UILabel *)v4->_sourceLabel leftAnchor];
+    leftAnchor6 = [(PHCarPlayPhoneCallViewCell *)v4 leftAnchor];
+    v57 = [leftAnchor5 constraintGreaterThanOrEqualToAnchor:leftAnchor6 constant:0.0];
     v91[9] = v57;
-    v56 = [(UILabel *)v4->_sourceLabel rightAnchor];
-    v55 = [(PHCarPlayPhoneCallViewCell *)v4 rightAnchor];
-    v54 = [v56 constraintLessThanOrEqualToAnchor:v55 constant:0.0];
+    rightAnchor5 = [(UILabel *)v4->_sourceLabel rightAnchor];
+    rightAnchor6 = [(PHCarPlayPhoneCallViewCell *)v4 rightAnchor];
+    v54 = [rightAnchor5 constraintLessThanOrEqualToAnchor:rightAnchor6 constant:0.0];
     v91[10] = v54;
-    v53 = [(UILabel *)v4->_sourceLabel centerXAnchor];
-    v52 = [(PHCarPlayPhoneCallViewCell *)v4 centerXAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    centerXAnchor5 = [(UILabel *)v4->_sourceLabel centerXAnchor];
+    centerXAnchor6 = [(PHCarPlayPhoneCallViewCell *)v4 centerXAnchor];
+    v51 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v91[11] = v51;
-    v50 = [(UIView *)v4->_avatarContentView widthAnchor];
-    v49 = [v50 constraintEqualToConstant:72.0];
+    widthAnchor = [(UIView *)v4->_avatarContentView widthAnchor];
+    v49 = [widthAnchor constraintEqualToConstant:72.0];
     v91[12] = v49;
-    v25 = [(UIView *)v4->_avatarContentView heightAnchor];
-    v26 = [v25 constraintEqualToConstant:72.0];
+    heightAnchor3 = [(UIView *)v4->_avatarContentView heightAnchor];
+    v26 = [heightAnchor3 constraintEqualToConstant:72.0];
     v91[13] = v26;
-    v27 = [(UIView *)v4->_avatarContentView centerXAnchor];
-    v28 = [(PHCarPlayPhoneCallViewCell *)v4 centerXAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    centerXAnchor7 = [(UIView *)v4->_avatarContentView centerXAnchor];
+    centerXAnchor8 = [(PHCarPlayPhoneCallViewCell *)v4 centerXAnchor];
+    v29 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v91[14] = v29;
-    v30 = [(UIView *)v4->_avatarContentView bottomAnchor];
-    v31 = [(UILabel *)v4->_mainLabel topAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:-6.0];
+    bottomAnchor3 = [(UIView *)v4->_avatarContentView bottomAnchor];
+    topAnchor3 = [(UILabel *)v4->_mainLabel topAnchor];
+    v32 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3 constant:-6.0];
     v91[15] = v32;
     v33 = [NSArray arrayWithObjects:v91 count:16];
     [v88 addObjectsFromArray:v33];
 
-    v34 = [(PHCarPlayPhoneCallViewCell *)v4 topAnchor];
-    v35 = [(UILabel *)v4->_mainLabel topAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    topAnchor4 = [(PHCarPlayPhoneCallViewCell *)v4 topAnchor];
+    topAnchor5 = [(UILabel *)v4->_mainLabel topAnchor];
+    v36 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     topMainLabelConstraint = v4->_topMainLabelConstraint;
     v4->_topMainLabelConstraint = v36;
 
-    v38 = [(PHCarPlayPhoneCallViewCell *)v4 topAnchor];
-    v39 = [(UIView *)v4->_avatarContentView topAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    topAnchor6 = [(PHCarPlayPhoneCallViewCell *)v4 topAnchor];
+    topAnchor7 = [(UIView *)v4->_avatarContentView topAnchor];
+    v40 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
     topAvatarConstraint = v4->_topAvatarConstraint;
     v4->_topAvatarConstraint = v40;
 
     v90[0] = v4->_topMainLabelConstraint;
-    v42 = [(PHCarPlayPhoneCallViewCell *)v4 bottomAnchor];
-    v43 = [(UIStackView *)v4->_subtitleStackView bottomAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    bottomAnchor4 = [(PHCarPlayPhoneCallViewCell *)v4 bottomAnchor];
+    bottomAnchor5 = [(UIStackView *)v4->_subtitleStackView bottomAnchor];
+    v44 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v90[1] = v44;
     v45 = [NSArray arrayWithObjects:v90 count:2];
     [v88 addObjectsFromArray:v45];
@@ -211,41 +211,41 @@
   [(PHCarPlayPhoneCallViewCell *)&v11 layoutSubviews];
   [(PHCarPlayPhoneCallViewCell *)self frame];
   v5 = v4;
-  v6 = [(PHCarPlayPhoneCallViewCell *)self superview];
-  [v6 frame];
+  superview = [(PHCarPlayPhoneCallViewCell *)self superview];
+  [superview frame];
   v8 = v7;
   if (v5 > v7)
   {
-    v9 = 1;
+    numberOfLines = 1;
   }
 
   else
   {
-    v2 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
-    v9 = [v2 numberOfLines];
+    mainLabel = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
+    numberOfLines = [mainLabel numberOfLines];
   }
 
-  v10 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
-  [v10 setNumberOfLines:v9];
+  mainLabel2 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
+  [mainLabel2 setNumberOfLines:numberOfLines];
 
   if (v5 <= v8)
   {
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = PHCarPlayPhoneCallViewCell;
   [(PHCarPlayPhoneCallViewCell *)&v5 setEnabled:?];
-  [(PHCarPlayPhoneCallViewCell *)self setDimmed:v3 animated:0];
+  [(PHCarPlayPhoneCallViewCell *)self setDimmed:enabledCopy animated:0];
 }
 
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (dimmed)
   {
     v6 = 0.5;
   }
@@ -258,7 +258,7 @@
   [(PHCarPlayPhoneCallViewCell *)self alpha];
   if (v7 != v6)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
@@ -277,47 +277,47 @@
   }
 }
 
-- (void)setTitle:(id)a3 subtitle:(id)a4 subtitleColor:(id)a5 overrideBadgeColor:(id)a6 localizedSenderIdentityTitle:(id)a7 animated:(BOOL)a8
+- (void)setTitle:(id)title subtitle:(id)subtitle subtitleColor:(id)color overrideBadgeColor:(id)badgeColor localizedSenderIdentityTitle:(id)identityTitle animated:(BOOL)animated
 {
-  v8 = a8;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (v8)
+  animatedCopy = animated;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  colorCopy = color;
+  identityTitleCopy = identityTitle;
+  if (animatedCopy)
   {
-    v17 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
+    mainLabel = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = __119__PHCarPlayPhoneCallViewCell_setTitle_subtitle_subtitleColor_overrideBadgeColor_localizedSenderIdentityTitle_animated___block_invoke;
     v26[3] = &unk_1002852E0;
     v26[4] = self;
-    v27 = v13;
-    [UIView transitionWithView:v17 duration:5243012 options:v26 animations:0 completion:0.550000012];
+    v27 = titleCopy;
+    [UIView transitionWithView:mainLabel duration:5243012 options:v26 animations:0 completion:0.550000012];
 
-    v18 = [(PHCarPlayPhoneCallViewCell *)self subtitleStackView];
+    subtitleStackView = [(PHCarPlayPhoneCallViewCell *)self subtitleStackView];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = __119__PHCarPlayPhoneCallViewCell_setTitle_subtitle_subtitleColor_overrideBadgeColor_localizedSenderIdentityTitle_animated___block_invoke_2;
     v22[3] = &unk_100285308;
     v22[4] = self;
-    v23 = v16;
-    v24 = v14;
-    v25 = v15;
-    [UIView transitionWithView:v18 duration:5243012 options:v22 animations:0 completion:0.550000012];
+    v23 = identityTitleCopy;
+    v24 = subtitleCopy;
+    v25 = colorCopy;
+    [UIView transitionWithView:subtitleStackView duration:5243012 options:v22 animations:0 completion:0.550000012];
   }
 
   else
   {
-    [(PHCarPlayPhoneCallViewCell *)self _updateBadgeViewForLocalizedSenderIdentityTitle:v16];
-    v19 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
-    [v19 setText:v13];
+    [(PHCarPlayPhoneCallViewCell *)self _updateBadgeViewForLocalizedSenderIdentityTitle:identityTitleCopy];
+    mainLabel2 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
+    [mainLabel2 setText:titleCopy];
 
-    v20 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
-    [v20 setText:v14];
+    subtitleLabel = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
+    [subtitleLabel setText:subtitleCopy];
 
-    v21 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
-    [v21 setColor:v15];
+    subtitleLabel2 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
+    [subtitleLabel2 setColor:colorCopy];
   }
 }
 
@@ -343,14 +343,14 @@ void __119__PHCarPlayPhoneCallViewCell_setTitle_subtitle_subtitleColor_overrideB
   [v6 sizeToFit];
 }
 
-- (void)setFontsForLayout:(BOOL)a3
+- (void)setFontsForLayout:(BOOL)layout
 {
-  v3 = a3;
-  if (a3)
+  layoutCopy = layout;
+  if (layout)
   {
     v5 = [UIFont monospacedDigitSystemFontOfSize:16.0 weight:UIFontWeightRegular];
-    v6 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
-    [v6 setFont:v5];
+    mainLabel = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
+    [mainLabel setFont:v5];
 
     [UIFont systemFontOfSize:28.0];
   }
@@ -358,83 +358,83 @@ void __119__PHCarPlayPhoneCallViewCell_setTitle_subtitle_subtitleColor_overrideB
   else
   {
     v7 = [UIFont systemFontOfSize:28.0];
-    v8 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
-    [v8 setFont:v7];
+    mainLabel2 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
+    [mainLabel2 setFont:v7];
 
     [UIFont monospacedDigitSystemFontOfSize:16.0 weight:UIFontWeightRegular];
   }
   v9 = ;
-  v10 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
-  [v10 setFont:v9];
+  subtitleLabel = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
+  [subtitleLabel setFont:v9];
 
-  v11 = [(PHCarPlayPhoneCallViewCell *)self sourceLabel];
-  [v11 setHidden:!v3];
+  sourceLabel = [(PHCarPlayPhoneCallViewCell *)self sourceLabel];
+  [sourceLabel setHidden:!layoutCopy];
 }
 
-- (void)setTitle:(id)a3 subtitle:(id)a4 source:(id)a5 subtitleColor:(id)a6 localizedSenderIdentityTitle:(id)a7 animated:(BOOL)a8
+- (void)setTitle:(id)title subtitle:(id)subtitle source:(id)source subtitleColor:(id)color localizedSenderIdentityTitle:(id)identityTitle animated:(BOOL)animated
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (!v8)
+  animatedCopy = animated;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  sourceCopy = source;
+  colorCopy = color;
+  identityTitleCopy = identityTitle;
+  if (!animatedCopy)
   {
-    [(PHCarPlayPhoneCallViewCell *)self _updateBadgeViewForLocalizedSenderIdentityTitle:v18];
-    v21 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
-    [v21 setText:v14];
+    [(PHCarPlayPhoneCallViewCell *)self _updateBadgeViewForLocalizedSenderIdentityTitle:identityTitleCopy];
+    mainLabel = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
+    [mainLabel setText:titleCopy];
 
-    v22 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
-    [v22 setText:v15];
+    subtitleLabel = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
+    [subtitleLabel setText:subtitleCopy];
 
-    v23 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
-    [v23 setColor:v17];
+    subtitleLabel2 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
+    [subtitleLabel2 setColor:colorCopy];
 
-    v24 = [(PHCarPlayPhoneCallViewCell *)self sourceLabel];
-    [v24 setText:v16];
+    sourceLabel = [(PHCarPlayPhoneCallViewCell *)self sourceLabel];
+    [sourceLabel setText:sourceCopy];
 
-    -[PHCarPlayPhoneCallViewCell setFontsForLayout:](self, "setFontsForLayout:", [v16 length] != 0);
+    -[PHCarPlayPhoneCallViewCell setFontsForLayout:](self, "setFontsForLayout:", [sourceCopy length] != 0);
     v25 = +[NSBundle mainBundle];
     v26 = [v25 localizedStringForKey:@"ALERT_ERROR_LABEL" value:&stru_10028F310 table:@"Localizable-Stewie"];
-    if ([v15 isEqualToString:v26])
+    if ([subtitleCopy isEqualToString:v26])
     {
-      v27 = [(PHCarPlayPhoneCallViewCell *)self numberOfLinesInSubtitleLabel];
+      numberOfLinesInSubtitleLabel = [(PHCarPlayPhoneCallViewCell *)self numberOfLinesInSubtitleLabel];
 
-      if (v27 < 3)
+      if (numberOfLinesInSubtitleLabel < 3)
       {
         goto LABEL_7;
       }
 
       v25 = +[NSBundle mainBundle];
       v26 = [v25 localizedStringForKey:@"ALERT_ERROR_LABEL_NO_LINE_BREAK" value:&stru_10028F310 table:@"Localizable-Stewie"];
-      v28 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
-      [v28 setText:v26];
+      subtitleLabel3 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
+      [subtitleLabel3 setText:v26];
     }
 
     goto LABEL_7;
   }
 
-  v19 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
+  mainLabel2 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = __107__PHCarPlayPhoneCallViewCell_setTitle_subtitle_source_subtitleColor_localizedSenderIdentityTitle_animated___block_invoke;
   v34[3] = &unk_1002852E0;
   v34[4] = self;
-  v35 = v14;
-  [UIView transitionWithView:v19 duration:5243012 options:v34 animations:0 completion:0.550000012];
+  v35 = titleCopy;
+  [UIView transitionWithView:mainLabel2 duration:5243012 options:v34 animations:0 completion:0.550000012];
 
-  v20 = [(PHCarPlayPhoneCallViewCell *)self subtitleStackView];
+  subtitleStackView = [(PHCarPlayPhoneCallViewCell *)self subtitleStackView];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = __107__PHCarPlayPhoneCallViewCell_setTitle_subtitle_source_subtitleColor_localizedSenderIdentityTitle_animated___block_invoke_2;
   v29[3] = &unk_100285330;
   v29[4] = self;
-  v30 = v18;
-  v31 = v15;
-  v32 = v17;
-  v33 = v16;
-  [UIView transitionWithView:v20 duration:5243012 options:v29 animations:0 completion:0.550000012];
+  v30 = identityTitleCopy;
+  v31 = subtitleCopy;
+  v32 = colorCopy;
+  v33 = sourceCopy;
+  [UIView transitionWithView:subtitleStackView duration:5243012 options:v29 animations:0 completion:0.550000012];
 
 LABEL_7:
 }
@@ -466,25 +466,25 @@ void __107__PHCarPlayPhoneCallViewCell_setTitle_subtitle_source_subtitleColor_lo
   [v8 sizeToFit];
 }
 
-- (void)_updateBadgeViewForLocalizedSenderIdentityTitle:(id)a3
+- (void)_updateBadgeViewForLocalizedSenderIdentityTitle:(id)title
 {
-  v9 = a3;
-  if (v9 && [v9 length])
+  titleCopy = title;
+  if (titleCopy && [titleCopy length])
   {
-    v4 = [(PHCarPlayPhoneCallViewCell *)self badgeView];
+    badgeView = [(PHCarPlayPhoneCallViewCell *)self badgeView];
 
-    if (v4)
+    if (badgeView)
     {
-      v5 = [(PHCarPlayPhoneCallViewCell *)self badgeView];
-      [v5 setTitle:v9];
+      badgeView2 = [(PHCarPlayPhoneCallViewCell *)self badgeView];
+      [badgeView2 setTitle:titleCopy];
     }
 
     else
     {
-      v7 = [[TPBadgeView alloc] initWithTitle:v9 theme:6];
+      v7 = [[TPBadgeView alloc] initWithTitle:titleCopy theme:6];
       [v7 setSizeCategory:5];
-      v8 = [(PHCarPlayPhoneCallViewCell *)self subtitleStackView];
-      [v8 insertArrangedSubview:v7 atIndex:0];
+      subtitleStackView = [(PHCarPlayPhoneCallViewCell *)self subtitleStackView];
+      [subtitleStackView insertArrangedSubview:v7 atIndex:0];
 
       [(PHCarPlayPhoneCallViewCell *)self setBadgeView:v7];
     }
@@ -492,29 +492,29 @@ void __107__PHCarPlayPhoneCallViewCell_setTitle_subtitle_source_subtitleColor_lo
 
   else
   {
-    v6 = [(PHCarPlayPhoneCallViewCell *)self badgeView];
-    [v6 removeFromSuperview];
+    badgeView3 = [(PHCarPlayPhoneCallViewCell *)self badgeView];
+    [badgeView3 removeFromSuperview];
 
     [(PHCarPlayPhoneCallViewCell *)self setBadgeView:0];
   }
 }
 
-- (void)setAvatarViewController:(id)a3
+- (void)setAvatarViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_avatarViewController != v5)
+  controllerCopy = controller;
+  if (self->_avatarViewController != controllerCopy)
   {
-    v10 = v5;
-    if (v5)
+    v10 = controllerCopy;
+    if (controllerCopy)
     {
-      v6 = [(CNAvatarViewController *)v5 view];
-      [v6 setAutoresizingMask:18];
-      v7 = [(PHCarPlayPhoneCallViewCell *)self avatarContentView];
-      [v7 bounds];
-      [v6 setFrame:?];
+      view = [(CNAvatarViewController *)controllerCopy view];
+      [view setAutoresizingMask:18];
+      avatarContentView = [(PHCarPlayPhoneCallViewCell *)self avatarContentView];
+      [avatarContentView bounds];
+      [view setFrame:?];
 
-      v8 = [(PHCarPlayPhoneCallViewCell *)self avatarContentView];
-      [v8 addSubview:v6];
+      avatarContentView2 = [(PHCarPlayPhoneCallViewCell *)self avatarContentView];
+      [avatarContentView2 addSubview:view];
 
       [(NSLayoutConstraint *)self->_topMainLabelConstraint setActive:0];
       [(NSLayoutConstraint *)self->_topAvatarConstraint setActive:1];
@@ -524,15 +524,15 @@ void __107__PHCarPlayPhoneCallViewCell_setTitle_subtitle_source_subtitleColor_lo
     {
       [(NSLayoutConstraint *)self->_topAvatarConstraint setActive:0];
       [(NSLayoutConstraint *)self->_topMainLabelConstraint setActive:1];
-      v6 = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
-      [v6 setNumberOfLines:2];
+      view = [(PHCarPlayPhoneCallViewCell *)self mainLabel];
+      [view setNumberOfLines:2];
     }
 
-    v9 = [(CNAvatarViewController *)self->_avatarViewController view];
-    [v9 removeFromSuperview];
+    view2 = [(CNAvatarViewController *)self->_avatarViewController view];
+    [view2 removeFromSuperview];
 
-    objc_storeStrong(&self->_avatarViewController, a3);
-    v5 = v10;
+    objc_storeStrong(&self->_avatarViewController, controller);
+    controllerCopy = v10;
   }
 }
 
@@ -540,20 +540,20 @@ void __107__PHCarPlayPhoneCallViewCell_setTitle_subtitle_source_subtitleColor_lo
 {
   [(PHCarPlayPhoneCallViewCell *)self frame];
   v4 = v3;
-  v5 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
-  v6 = [v5 font];
-  [v6 lineHeight];
+  subtitleLabel = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
+  font = [subtitleLabel font];
+  [font lineHeight];
   v8 = v7;
 
-  v9 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
-  v10 = [v9 text];
+  subtitleLabel2 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
+  text = [subtitleLabel2 text];
 
   v17 = NSFontAttributeName;
-  v11 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
-  v12 = [v11 font];
-  v18 = v12;
+  subtitleLabel3 = [(PHCarPlayPhoneCallViewCell *)self subtitleLabel];
+  font2 = [subtitleLabel3 font];
+  v18 = font2;
   v13 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  [v10 boundingRectWithSize:1 options:v13 attributes:0 context:{v4, 1.79769313e308}];
+  [text boundingRectWithSize:1 options:v13 attributes:0 context:{v4, 1.79769313e308}];
   v15 = v14;
 
   return (v15 / v8);

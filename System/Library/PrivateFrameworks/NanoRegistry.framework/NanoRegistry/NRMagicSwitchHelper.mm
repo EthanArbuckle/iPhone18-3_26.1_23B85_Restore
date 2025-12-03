@@ -36,9 +36,9 @@
         v10 = nr_framework_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [qword_1ED6F0B28 UUIDString];
+          uUIDString = [qword_1ED6F0B28 UUIDString];
           v15 = 138412546;
-          v16 = v11;
+          v16 = uUIDString;
           v17 = 1024;
           v18 = v7;
           _os_log_impl(&dword_1E0ADF000, v10, OS_LOG_TYPE_DEFAULT, "Generated and persisted new companion seed: (%@); ret: (%u)", &v15, 0x12u);

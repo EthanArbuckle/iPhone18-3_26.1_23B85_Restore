@@ -1,8 +1,8 @@
 @interface BRCQueryItemUtil
 + (id)sharedQueryItemUtil;
-- (BRCQueryItemUtil)initWithMacOS:(BOOL)a3;
-- (int64_t)contentPolicyForItemInfo:(id)a3 sessionContext:(id)a4;
-- (int64_t)contentPolicyForRootContainerWithSessionContext:(id)a3;
+- (BRCQueryItemUtil)initWithMacOS:(BOOL)s;
+- (int64_t)contentPolicyForItemInfo:(id)info sessionContext:(id)context;
+- (int64_t)contentPolicyForRootContainerWithSessionContext:(id)context;
 @end
 
 @implementation BRCQueryItemUtil
@@ -19,14 +19,14 @@
   return v3;
 }
 
-- (BRCQueryItemUtil)initWithMacOS:(BOOL)a3
+- (BRCQueryItemUtil)initWithMacOS:(BOOL)s
 {
   v5.receiver = self;
   v5.super_class = BRCQueryItemUtil;
   result = [(BRCQueryItemUtil *)&v5 init];
   if (result)
   {
-    result->_isMacOS = a3;
+    result->_isMacOS = s;
   }
 
   return result;
@@ -39,43 +39,43 @@ uint64_t __39__BRCQueryItemUtil_sharedQueryItemUtil__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)contentPolicyForItemInfo:(id)a3 sessionContext:(id)a4
+- (int64_t)contentPolicyForItemInfo:(id)info sessionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  contextCopy = context;
   v8 = [BRCUserDefaults defaultsForMangledID:0];
   LODWORD(self) = self->_isMacOS;
-  v9 = [v6 isZoneRoot];
+  isZoneRoot = [infoCopy isZoneRoot];
   if (self != 1)
   {
-    if (!v9 || ![v6 isAppInstalled] || (objc_msgSend(v6, "isWallet") & 1) == 0)
+    if (!isZoneRoot || ![infoCopy isAppInstalled] || (objc_msgSend(infoCopy, "isWallet") & 1) == 0)
     {
-      if (![v8 fpfsSpeculativeSetDownload] || !objc_msgSend(v7, "isOptimizeStorage") || (!objc_msgSend(v6, "isZoneRoot") || (objc_msgSend(v6, "isCloudDocsAppLibrary") & 1) == 0) && (!objc_msgSend(v6, "isAppInstalled") || (objc_msgSend(v6, "isDocumentsFolder") & 1) == 0))
+      if (![v8 fpfsSpeculativeSetDownload] || !objc_msgSend(contextCopy, "isOptimizeStorage") || (!objc_msgSend(infoCopy, "isZoneRoot") || (objc_msgSend(infoCopy, "isCloudDocsAppLibrary") & 1) == 0) && (!objc_msgSend(infoCopy, "isAppInstalled") || (objc_msgSend(infoCopy, "isDocumentsFolder") & 1) == 0))
       {
         goto LABEL_29;
       }
 
-      v10 = 502;
+      isOptimizeStorage = 502;
       goto LABEL_30;
     }
 
 LABEL_32:
-    v10 = 3;
+    isOptimizeStorage = 3;
     goto LABEL_30;
   }
 
-  if (v9 && ([v6 isCloudDocsAppLibrary] & 1) == 0)
+  if (isZoneRoot && ([infoCopy isCloudDocsAppLibrary] & 1) == 0)
   {
-    if (([v6 isWallet] & 1) == 0)
+    if (([infoCopy isWallet] & 1) == 0)
     {
-      if (![v6 isAppInstalled] || objc_msgSend(v6, "isContainerWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate") && (objc_msgSend(v7, "isOptimizeStorage") & 1) != 0)
+      if (![infoCopy isAppInstalled] || objc_msgSend(infoCopy, "isContainerWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate") && (objc_msgSend(contextCopy, "isOptimizeStorage") & 1) != 0)
       {
-        v10 = 2;
+        isOptimizeStorage = 2;
       }
 
       else
       {
-        v10 = [v7 isOptimizeStorage];
+        isOptimizeStorage = [contextCopy isOptimizeStorage];
       }
 
       goto LABEL_30;
@@ -84,44 +84,44 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (([v6 isDocumentsFolder] & 1) == 0 && (!objc_msgSend(v6, "isZoneRoot") || !objc_msgSend(v6, "isCloudDocsAppLibrary")))
+  if (([infoCopy isDocumentsFolder] & 1) == 0 && (!objc_msgSend(infoCopy, "isZoneRoot") || !objc_msgSend(infoCopy, "isCloudDocsAppLibrary")))
   {
-    if ([v8 fpfsOptimizeStorageAndSpeculativeDownload] && objc_msgSend(v6, "isAppInstalled") && (objc_msgSend(v6, "isWallet") & 1) == 0 && (objc_msgSend(v6, "isGreedyDocument") & 1) != 0)
+    if ([v8 fpfsOptimizeStorageAndSpeculativeDownload] && objc_msgSend(infoCopy, "isAppInstalled") && (objc_msgSend(infoCopy, "isWallet") & 1) == 0 && (objc_msgSend(infoCopy, "isGreedyDocument") & 1) != 0)
     {
-      v10 = 501;
+      isOptimizeStorage = 501;
       goto LABEL_30;
     }
 
 LABEL_29:
-    v10 = 0;
+    isOptimizeStorage = 0;
     goto LABEL_30;
   }
 
-  if (([v6 isWallet] & 1) != 0 || !objc_msgSend(v6, "isAppInstalled") || !objc_msgSend(v6, "isDocumentScopePublic") || !objc_msgSend(v7, "isOptimizeStorage"))
+  if (([infoCopy isWallet] & 1) != 0 || !objc_msgSend(infoCopy, "isAppInstalled") || !objc_msgSend(infoCopy, "isDocumentScopePublic") || !objc_msgSend(contextCopy, "isOptimizeStorage"))
   {
     goto LABEL_29;
   }
 
   if ([v8 fpfsOptimizeStorageAndSpeculativeDownloadCandidate])
   {
-    v10 = 1003;
+    isOptimizeStorage = 1003;
   }
 
   else
   {
-    v10 = 500;
+    isOptimizeStorage = 500;
   }
 
 LABEL_30:
 
-  return v10;
+  return isOptimizeStorage;
 }
 
-- (int64_t)contentPolicyForRootContainerWithSessionContext:(id)a3
+- (int64_t)contentPolicyForRootContainerWithSessionContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_isMacOS && ([v4 isOptimizeStorage] & 1) == 0)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (self->_isMacOS && ([contextCopy isOptimizeStorage] & 1) == 0)
   {
     if ([v5 isDataSeparated])
     {

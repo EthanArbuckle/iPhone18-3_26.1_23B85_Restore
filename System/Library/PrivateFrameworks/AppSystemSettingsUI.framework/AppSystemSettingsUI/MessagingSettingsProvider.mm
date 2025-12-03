@@ -1,21 +1,21 @@
 @interface MessagingSettingsProvider
 - (void)subscriptionInfoDidChange;
-- (void)systemConfigurationChanged:(id)a3 withConfiguration:(id)a4;
+- (void)systemConfigurationChanged:(id)changed withConfiguration:(id)configuration;
 @end
 
 @implementation MessagingSettingsProvider
 
-- (void)systemConfigurationChanged:(id)a3 withConfiguration:(id)a4
+- (void)systemConfigurationChanged:(id)changed withConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_21BB0F310(v6, v7);
+  changedCopy = changed;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_21BB0F310(changedCopy, configurationCopy);
 }
 
 - (void)subscriptionInfoDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21BB0FC30();
 }
 

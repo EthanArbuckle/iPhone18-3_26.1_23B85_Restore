@@ -1,15 +1,15 @@
 @interface ASCPublicKeyAccountRegistrationOptions
 - (_TtC26AuthenticationServicesCore38ASCPublicKeyAccountRegistrationOptions)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCPublicKeyAccountRegistrationOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C2124ACC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C2124ACC(coderCopy);
 }
 
 - (_TtC26AuthenticationServicesCore38ASCPublicKeyAccountRegistrationOptions)init

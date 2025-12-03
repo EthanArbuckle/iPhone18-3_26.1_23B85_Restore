@@ -1,62 +1,62 @@
 @interface CRLiOSCanvasContextMenuInteractionDelegate
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
-- (CRLiOSCanvasContextMenuInteractionDelegate)initWithInteractiveCanvasController:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)p_primaryMenuConfigurationAtPoint:(CGPoint)a3;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
+- (CRLiOSCanvasContextMenuInteractionDelegate)initWithInteractiveCanvasController:(id)controller;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)p_primaryMenuConfigurationAtPoint:(CGPoint)point;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation CRLiOSCanvasContextMenuInteractionDelegate
 
-- (CRLiOSCanvasContextMenuInteractionDelegate)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSCanvasContextMenuInteractionDelegate)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CRLiOSCanvasContextMenuInteractionDelegate;
   v5 = [(CRLiOSCanvasContextMenuInteractionDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
   }
 
   return v6;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v9 = [WeakRetained currentlyScrolling];
+  currentlyScrolling = [WeakRetained currentlyScrolling];
 
-  if (v9)
+  if (currentlyScrolling)
   {
     v10 = 0;
     goto LABEL_25;
   }
 
   v11 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v12 = [v11 layerHost];
-  v13 = [v12 asiOSCVC];
+  layerHost = [v11 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  if ([v13 i_allowCanvasInteraction:v7 atPoint:{x, y}])
+  if ([asiOSCVC i_allowCanvasInteraction:interactionCopy atPoint:{x, y}])
   {
     v14 = objc_loadWeakRetained(&self->_interactiveCanvasController);
     [v14 convertBoundsToUnscaledPoint:{x, y}];
     v16 = v15;
     v18 = v17;
 
-    v54 = [v13 delegate];
+    delegate = [asiOSCVC delegate];
     if (objc_opt_respondsToSelector())
     {
-      v53 = [v54 currentDocumentMode];
+      currentDocumentMode = [delegate currentDocumentMode];
       v19 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-      v20 = [v53 contextMenuConfigurationForContextMenuInteraction:v7 atPoint:v19 onInteractiveCanvasController:{v16, v18}];
+      v20 = [currentDocumentMode contextMenuConfigurationForContextMenuInteraction:interactionCopy atPoint:v19 onInteractiveCanvasController:{v16, v18}];
 
       if (v20)
       {
@@ -72,13 +72,13 @@ LABEL_23:
 
     else
     {
-      v53 = 0;
+      currentDocumentMode = 0;
     }
 
-    v22 = [v7 menuAppearance];
-    if (v22 != 2)
+    menuAppearance = [interactionCopy menuAppearance];
+    if (menuAppearance != 2)
     {
-      if (!v22)
+      if (!menuAppearance)
       {
         v23 = +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -115,14 +115,14 @@ LABEL_23:
     v63 = &v62;
     v64 = 0x2020000000;
     v65 = 0;
-    if (v53 && (v29 = [v53 wantsAlternateContextMenuBehaviorAtPoint:{v16, v18}], *(v63 + 24) = v29, (v29 & 1) != 0) || (v30 = objc_loadWeakRetained(&self->_interactiveCanvasController), objc_msgSend(v30, "editorController"), v31 = objc_claimAutoreleasedReturnValue(), v61[0] = _NSConcreteStackBlock, v61[1] = 3221225472, v61[2] = sub_1002E357C, v61[3] = &unk_1018535E8, *&v61[5] = v16, *&v61[6] = v18, v61[4] = &v62, objc_msgSend(v31, "enumerateEditorsOnStackUsingBlock:", v61), v31, v30, (v63[3] & 1) != 0))
+    if (currentDocumentMode && (v29 = [currentDocumentMode wantsAlternateContextMenuBehaviorAtPoint:{v16, v18}], *(v63 + 24) = v29, (v29 & 1) != 0) || (v30 = objc_loadWeakRetained(&self->_interactiveCanvasController), objc_msgSend(v30, "editorController"), v31 = objc_claimAutoreleasedReturnValue(), v61[0] = _NSConcreteStackBlock, v61[1] = 3221225472, v61[2] = sub_1002E357C, v61[3] = &unk_1018535E8, *&v61[5] = v16, *&v61[6] = v18, v61[4] = &v62, objc_msgSend(v31, "enumerateEditorsOnStackUsingBlock:", v61), v31, v30, (v63[3] & 1) != 0))
     {
       _Block_object_dispose(&v62, 8);
       v27 = 0;
       goto LABEL_57;
     }
 
-    v32 = [CRLCanvasContextMenuPlatformObject platformObjectWithInteraction:v7];
+    v32 = [CRLCanvasContextMenuPlatformObject platformObjectWithInteraction:interactionCopy];
     v33 = objc_loadWeakRetained(&self->_interactiveCanvasController);
     v60 = 0;
     v34 = [v33 hitKnobAtPoint:0 inputType:&v60 returningRep:{v16, v18}];
@@ -182,10 +182,10 @@ LABEL_57:
     v56 = 0u;
     v57 = 0u;
     v41 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v42 = [v41 editorController];
-    v43 = [v42 currentEditors];
+    editorController = [v41 editorController];
+    currentEditors = [editorController currentEditors];
 
-    v44 = [v43 countByEnumeratingWithState:&v56 objects:v66 count:16];
+    v44 = [currentEditors countByEnumeratingWithState:&v56 objects:v66 count:16];
     v50 = v34;
     v51 = v32;
     if (v44)
@@ -197,7 +197,7 @@ LABEL_57:
         {
           if (*v57 != v45)
           {
-            objc_enumerationMutation(v43);
+            objc_enumerationMutation(currentEditors);
           }
 
           v47 = *(*(&v56 + 1) + 8 * i);
@@ -207,7 +207,7 @@ LABEL_57:
           }
         }
 
-        v44 = [v43 countByEnumeratingWithState:&v56 objects:v66 count:16];
+        v44 = [currentEditors countByEnumeratingWithState:&v56 objects:v66 count:16];
       }
 
       while (v44);
@@ -243,10 +243,10 @@ LABEL_25:
   return v10;
 }
 
-- (id)p_primaryMenuConfigurationAtPoint:(CGPoint)a3
+- (id)p_primaryMenuConfigurationAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
   v6 = [WeakRetained hitRep:{x, y}];
 
@@ -264,17 +264,17 @@ LABEL_25:
   return v7;
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v6 = [WeakRetained layerHost];
-  v7 = [v6 asiOSCVC];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
   v8 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v9 = [v8 editorController];
-  v10 = [v9 selectionPath];
+  editorController = [v8 editorController];
+  selectionPath = [editorController selectionPath];
 
-  [v7 targetRectForEditMenu:v10];
+  [asiOSCVC targetRectForEditMenu:selectionPath];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -291,11 +291,11 @@ LABEL_25:
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 menuAppearance] == 2)
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  if ([interactionCopy menuAppearance] == 2)
   {
     v8 = 0;
   }
@@ -303,14 +303,14 @@ LABEL_25:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v10 = [WeakRetained layerHost];
+    layerHost = [WeakRetained layerHost];
 
-    v11 = [v10 asiOSCVC];
-    v12 = [v11 delegate];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v12 currentDocumentMode], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "contextMenuInteraction:previewForHighlightingMenuWithConfiguration:", v6, v7), v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
+    asiOSCVC = [layerHost asiOSCVC];
+    delegate = [asiOSCVC delegate];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate currentDocumentMode], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "contextMenuInteraction:previewForHighlightingMenuWithConfiguration:", interactionCopy, configurationCopy), v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
     {
-      v15 = [v10 canvasView];
-      [v6 locationInView:v15];
+      canvasView = [layerHost canvasView];
+      [interactionCopy locationInView:canvasView];
       v17 = v16;
       v19 = v18;
       v20 = objc_loadWeakRetained(&self->_interactiveCanvasController);
@@ -324,7 +324,7 @@ LABEL_25:
       if (v26)
       {
         [v26 convertNaturalPointFromUnscaledCanvas:{v22, v24}];
-        v14 = [v26 contextMenuPreviewForHighlightingMenuAtPoint:v7 withConfiguration:?];
+        v14 = [v26 contextMenuPreviewForHighlightingMenuAtPoint:configurationCopy withConfiguration:?];
       }
 
       else
@@ -339,11 +339,11 @@ LABEL_25:
   return v8;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   if (!self->_didDisplayMenu)
   {
     goto LABEL_11;
@@ -379,18 +379,18 @@ LABEL_25:
   {
 LABEL_11:
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v16 = [WeakRetained editingCoordinator];
-    [v16 suspendCollaborationWithReason:@"iOSCanvasContextMenu"];
+    editingCoordinator = [WeakRetained editingCoordinator];
+    [editingCoordinator suspendCollaborationWithReason:@"iOSCanvasContextMenu"];
 
     v17 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v18 = [v17 layerHost];
-    v19 = [v18 asiOSCVC];
+    layerHost = [v17 layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v20 = [v19 delegate];
+    delegate = [asiOSCVC delegate];
     if (objc_opt_respondsToSelector())
     {
-      v21 = [v19 canvasView];
-      [v8 locationInView:v21];
+      canvasView = [asiOSCVC canvasView];
+      [interactionCopy locationInView:canvasView];
       v23 = v22;
       v25 = v24;
       v26 = objc_loadWeakRetained(&self->_interactiveCanvasController);
@@ -398,35 +398,35 @@ LABEL_11:
       v28 = v27;
       v30 = v29;
 
-      v31 = [v20 currentDocumentMode];
-      [v31 willShowContextMenuInteraction:v8 atPoint:{v28, v30}];
+      currentDocumentMode = [delegate currentDocumentMode];
+      [currentDocumentMode willShowContextMenuInteraction:interactionCopy atPoint:{v28, v30}];
     }
 
     self->_didDisplayMenu = 1;
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   if (self->_didDisplayMenu)
   {
     self->_didDisplayMenu = 0;
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v12 = [WeakRetained editingCoordinator];
-    [v12 resumeCollaborationWithReason:@"iOSCanvasContextMenu"];
+    editingCoordinator = [WeakRetained editingCoordinator];
+    [editingCoordinator resumeCollaborationWithReason:@"iOSCanvasContextMenu"];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
     v13 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v14 = [v13 editorController];
-    v15 = [v14 currentEditors];
+    editorController = [v13 editorController];
+    currentEditors = [editorController currentEditors];
 
-    v16 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v16 = [currentEditors countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v16)
     {
       v17 = v16;
@@ -438,20 +438,20 @@ LABEL_11:
         {
           if (*v22 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(currentEditors);
           }
 
           v20 = *(*(&v21 + 1) + 8 * v19);
           if (objc_opt_respondsToSelector())
           {
-            [v20 contextMenuInteraction:v8 willEndForConfiguration:v9 animator:v10];
+            [v20 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy];
           }
 
           v19 = v19 + 1;
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v17 = [currentEditors countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v17);
@@ -459,11 +459,11 @@ LABEL_11:
   }
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v6 = a4;
+  configurationCopy = configuration;
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  [v6 sourcePoint];
+  [configurationCopy sourcePoint];
   [WeakRetained convertBoundsToUnscaledPoint:?];
   v9 = v8;
   v11 = v10;
@@ -474,10 +474,10 @@ LABEL_11:
   v25 = 0u;
   v26 = 0u;
   v13 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v14 = [v13 editorController];
-  v15 = [v14 currentEditors];
+  editorController = [v13 editorController];
+  currentEditors = [editorController currentEditors];
 
-  v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v16 = [currentEditors countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v16)
   {
     v17 = v16;
@@ -488,7 +488,7 @@ LABEL_11:
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(currentEditors);
         }
 
         v20 = *(*(&v23 + 1) + 8 * i);
@@ -498,7 +498,7 @@ LABEL_11:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v17 = [currentEditors countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v17);

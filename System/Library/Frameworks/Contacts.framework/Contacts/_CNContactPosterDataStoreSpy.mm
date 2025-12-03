@@ -1,23 +1,23 @@
 @interface _CNContactPosterDataStoreSpy
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4;
-- (_CNContactPosterDataStoreSpy)initWithStore:(id)a3;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4;
+- (BOOL)executeCreateRequest:(id)request error:(id *)error;
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error;
+- (_CNContactPosterDataStoreSpy)initWithStore:(id)store;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (int64_t)countForFetchRequest:(id)request error:(id *)error;
 @end
 
 @implementation _CNContactPosterDataStoreSpy
 
-- (_CNContactPosterDataStoreSpy)initWithStore:(id)a3
+- (_CNContactPosterDataStoreSpy)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = _CNContactPosterDataStoreSpy;
   v6 = [(_CNContactPosterDataStoreSpy *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = objc_opt_new();
     fetchRequests = v7->_fetchRequests;
     v7->_fetchRequests = v8;
@@ -40,44 +40,44 @@
   return v7;
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
   fetchRequests = self->_fetchRequests;
-  v7 = a3;
-  [(NSMutableArray *)fetchRequests addObject:v7];
-  v8 = [(CNContactPosterDataStore *)self->_store executeFetchRequest:v7 error:a4];
+  requestCopy = request;
+  [(NSMutableArray *)fetchRequests addObject:requestCopy];
+  v8 = [(CNContactPosterDataStore *)self->_store executeFetchRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4
+- (int64_t)countForFetchRequest:(id)request error:(id *)error
 {
   countRequests = self->_countRequests;
-  v7 = a3;
-  [(NSMutableArray *)countRequests addObject:v7];
-  v8 = [(CNContactPosterDataStore *)self->_store countForFetchRequest:v7 error:a4];
+  requestCopy = request;
+  [(NSMutableArray *)countRequests addObject:requestCopy];
+  v8 = [(CNContactPosterDataStore *)self->_store countForFetchRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4
+- (BOOL)executeCreateRequest:(id)request error:(id *)error
 {
   createRequests = self->_createRequests;
-  v7 = a3;
-  [(NSMutableArray *)createRequests addObject:v7];
-  LOBYTE(a4) = [(CNContactPosterDataStore *)self->_store executeCreateRequest:v7 error:a4];
+  requestCopy = request;
+  [(NSMutableArray *)createRequests addObject:requestCopy];
+  LOBYTE(error) = [(CNContactPosterDataStore *)self->_store executeCreateRequest:requestCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error
 {
   deleteRequests = self->_deleteRequests;
-  v7 = a3;
-  [(NSMutableArray *)deleteRequests addObject:v7];
-  LOBYTE(a4) = [(CNContactPosterDataStore *)self->_store executeDeleteRequest:v7 error:a4];
+  requestCopy = request;
+  [(NSMutableArray *)deleteRequests addObject:requestCopy];
+  LOBYTE(error) = [(CNContactPosterDataStore *)self->_store executeDeleteRequest:requestCopy error:error];
 
-  return a4;
+  return error;
 }
 
 @end

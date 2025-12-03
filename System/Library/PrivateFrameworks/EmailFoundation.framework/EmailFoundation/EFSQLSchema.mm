@@ -1,18 +1,18 @@
 @interface EFSQLSchema
-- (EFSQLSchema)initWithTables:(id)a3;
-- (id)definitionWithDatabaseName:(id)a3;
-- (id)definitionWithDatabaseName:(id)a3 includeIndexes:(BOOL)a4;
+- (EFSQLSchema)initWithTables:(id)tables;
+- (id)definitionWithDatabaseName:(id)name;
+- (id)definitionWithDatabaseName:(id)name includeIndexes:(BOOL)indexes;
 - (id)description;
-- (id)indexDefinitionsWithDatabaseName:(id)a3;
-- (id)tableForName:(id)a3;
+- (id)indexDefinitionsWithDatabaseName:(id)name;
+- (id)tableForName:(id)name;
 @end
 
 @implementation EFSQLSchema
 
-- (EFSQLSchema)initWithTables:(id)a3
+- (EFSQLSchema)initWithTables:(id)tables
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tablesCopy = tables;
   v21.receiver = self;
   v21.super_class = EFSQLSchema;
   v5 = [(EFSQLSchema *)&v21 init];
@@ -23,7 +23,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v4;
+    v7 = tablesCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
@@ -38,8 +38,8 @@
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 name];
-          [v6 setObject:v11 forKeyedSubscript:v12];
+          name = [v11 name];
+          [v6 setObject:v11 forKeyedSubscript:name];
         }
 
         v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
@@ -63,31 +63,31 @@
   v8.receiver = self;
   v8.super_class = EFSQLSchema;
   v4 = [(EFSQLSchema *)&v8 description];
-  v5 = [(NSDictionary *)self->_tablesByName allValues];
-  v6 = [v3 initWithFormat:@"%@ [%@]", v4, v5];
+  allValues = [(NSDictionary *)self->_tablesByName allValues];
+  v6 = [v3 initWithFormat:@"%@ [%@]", v4, allValues];
 
   return v6;
 }
 
-- (id)definitionWithDatabaseName:(id)a3
+- (id)definitionWithDatabaseName:(id)name
 {
-  v3 = [(EFSQLSchema *)self definitionWithDatabaseName:a3 includeIndexes:1];
+  v3 = [(EFSQLSchema *)self definitionWithDatabaseName:name includeIndexes:1];
 
   return v3;
 }
 
-- (id)definitionWithDatabaseName:(id)a3 includeIndexes:(BOOL)a4
+- (id)definitionWithDatabaseName:(id)name includeIndexes:(BOOL)indexes
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_tablesByName allValues];
+  nameCopy = name;
+  allValues = [(NSDictionary *)self->_tablesByName allValues];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __57__EFSQLSchema_definitionWithDatabaseName_includeIndexes___block_invoke;
   v15 = &unk_1E8249FA8;
-  v8 = v6;
+  v8 = nameCopy;
   v16 = v8;
-  v17 = a4;
-  v9 = [v7 ef_map:&v12];
+  indexesCopy = indexes;
+  v9 = [allValues ef_map:&v12];
 
   v10 = [v9 componentsJoinedByString:{@"\n\n", v12, v13, v14, v15}];
 
@@ -101,17 +101,17 @@ id __57__EFSQLSchema_definitionWithDatabaseName_includeIndexes___block_invoke(ui
   return v2;
 }
 
-- (id)indexDefinitionsWithDatabaseName:(id)a3
+- (id)indexDefinitionsWithDatabaseName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_tablesByName allValues];
+  nameCopy = name;
+  allValues = [(NSDictionary *)self->_tablesByName allValues];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__EFSQLSchema_indexDefinitionsWithDatabaseName___block_invoke;
   v10[3] = &unk_1E8249FD0;
-  v6 = v4;
+  v6 = nameCopy;
   v11 = v6;
-  v7 = [v5 ef_compactMap:v10];
+  v7 = [allValues ef_compactMap:v10];
 
   if ([v7 count])
   {
@@ -144,9 +144,9 @@ void *__48__EFSQLSchema_indexDefinitionsWithDatabaseName___block_invoke(uint64_t
   return v3;
 }
 
-- (id)tableForName:(id)a3
+- (id)tableForName:(id)name
 {
-  v3 = [(NSDictionary *)self->_tablesByName objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_tablesByName objectForKeyedSubscript:name];
 
   return v3;
 }

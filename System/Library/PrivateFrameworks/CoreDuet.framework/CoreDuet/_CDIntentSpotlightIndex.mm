@@ -1,16 +1,16 @@
 @interface _CDIntentSpotlightIndex
-- (_CDIntentSpotlightIndex)initWithKnowledgeStorage:(id)a3;
+- (_CDIntentSpotlightIndex)initWithKnowledgeStorage:(id)storage;
 - (void)dealloc;
-- (void)knowledgeStorage:(id)a3 didInsertLocalEventsWithStreamNameCounts:(id)a4;
-- (void)knowledgeStorage:(id)a3 didTombstoneEventsWithStreamNameCounts:(id)a4;
-- (void)triggerIndexIncludingAdditions:(BOOL)a3 completion:(id)a4;
+- (void)knowledgeStorage:(id)storage didInsertLocalEventsWithStreamNameCounts:(id)counts;
+- (void)knowledgeStorage:(id)storage didTombstoneEventsWithStreamNameCounts:(id)counts;
+- (void)triggerIndexIncludingAdditions:(BOOL)additions completion:(id)completion;
 @end
 
 @implementation _CDIntentSpotlightIndex
 
-- (_CDIntentSpotlightIndex)initWithKnowledgeStorage:(id)a3
+- (_CDIntentSpotlightIndex)initWithKnowledgeStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v15.receiver = self;
   v15.super_class = _CDIntentSpotlightIndex;
   v6 = [(_CDIntentSpotlightIndex *)&v15 init];
@@ -23,8 +23,8 @@
     activityQueue = v6->_activityQueue;
     v6->_activityQueue = v9;
 
-    objc_storeStrong(&v6->_storage, a3);
-    v11 = [[_CDSpotlightIntentIndexerDataSource alloc] initWithKnowledgeStore:v5];
+    objc_storeStrong(&v6->_storage, storage);
+    v11 = [[_CDSpotlightIntentIndexerDataSource alloc] initWithKnowledgeStore:storageCopy];
     v12 = [[_CDSpotlightEventIndexer alloc] initWithDataSource:v11];
     indexer = v6->_indexer;
     v6->_indexer = v12;
@@ -45,12 +45,12 @@
   [(_CDIntentSpotlightIndex *)&v3 dealloc];
 }
 
-- (void)knowledgeStorage:(id)a3 didInsertLocalEventsWithStreamNameCounts:(id)a4
+- (void)knowledgeStorage:(id)storage didInsertLocalEventsWithStreamNameCounts:(id)counts
 {
-  v5 = a4;
+  countsCopy = counts;
   v6 = +[_DKSystemEventStreams appIntentsStream];
-  v7 = [v6 name];
-  v8 = [v5 countForObject:v7];
+  name = [v6 name];
+  v8 = [countsCopy countForObject:name];
 
   if (v8)
   {
@@ -59,12 +59,12 @@
   }
 }
 
-- (void)knowledgeStorage:(id)a3 didTombstoneEventsWithStreamNameCounts:(id)a4
+- (void)knowledgeStorage:(id)storage didTombstoneEventsWithStreamNameCounts:(id)counts
 {
-  v5 = a4;
+  countsCopy = counts;
   v6 = +[_DKSystemEventStreams appIntentsStream];
-  v7 = [v6 name];
-  v8 = [v5 countForObject:v7];
+  name = [v6 name];
+  v8 = [countsCopy countForObject:name];
 
   if (v8)
   {
@@ -73,33 +73,33 @@
   }
 }
 
-- (void)triggerIndexIncludingAdditions:(BOOL)a3 completion:(id)a4
+- (void)triggerIndexIncludingAdditions:(BOOL)additions completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(_CDIntentSpotlightIndex *)v7 setIncludeAdditions:[(_CDIntentSpotlightIndex *)v7 includeAdditions]| v4];
-  if (v6)
+  additionsCopy = additions;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(_CDIntentSpotlightIndex *)selfCopy setIncludeAdditions:[(_CDIntentSpotlightIndex *)selfCopy includeAdditions]| additionsCopy];
+  if (completionCopy)
   {
-    [(_CDIntentSpotlightIndex *)v7 setCompletion:v6];
+    [(_CDIntentSpotlightIndex *)selfCopy setCompletion:completionCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   v8 = +[_DKThrottledActivity standardInstance];
-  [(_CDIntentSpotlightIndex *)v7 delay];
+  [(_CDIntentSpotlightIndex *)selfCopy delay];
   v10 = v9;
-  v11 = [(_CDIntentSpotlightIndex *)v7 activityQueue];
+  activityQueue = [(_CDIntentSpotlightIndex *)selfCopy activityQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69___CDIntentSpotlightIndex_triggerIndexIncludingAdditions_completion___block_invoke;
   v13[3] = &unk_1E7368F58;
-  v15 = v4;
-  v13[4] = v7;
-  v14 = v6;
-  v12 = v6;
-  [v8 performWithDelayInSecondsOf:@"com.apple.coreduet.intent-spotlight-index" name:v11 queue:v13 activityBlock:v10];
+  v15 = additionsCopy;
+  v13[4] = selfCopy;
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [v8 performWithDelayInSecondsOf:@"com.apple.coreduet.intent-spotlight-index" name:activityQueue queue:v13 activityBlock:v10];
 }
 
 @end

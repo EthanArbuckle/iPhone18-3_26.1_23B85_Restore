@@ -1,13 +1,13 @@
 @interface iOSFooterToolbarViewController
-- (_TtC8Business30iOSFooterToolbarViewController)initWithCoder:(id)a3;
-- (_TtC8Business30iOSFooterToolbarViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8Business30iOSFooterToolbarViewController)initWithCoder:(id)coder;
+- (_TtC8Business30iOSFooterToolbarViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)leftButtonTapped;
 - (void)rightButtonTapped;
 @end
 
 @implementation iOSFooterToolbarViewController
 
-- (_TtC8Business30iOSFooterToolbarViewController)initWithCoder:(id)a3
+- (_TtC8Business30iOSFooterToolbarViewController)initWithCoder:(id)coder
 {
   *&self->footerToolbarModel[OBJC_IVAR____TtC8Business30iOSFooterToolbarViewController_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -27,7 +27,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 8);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -41,13 +41,13 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 16);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC8Business30iOSFooterToolbarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Business30iOSFooterToolbarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

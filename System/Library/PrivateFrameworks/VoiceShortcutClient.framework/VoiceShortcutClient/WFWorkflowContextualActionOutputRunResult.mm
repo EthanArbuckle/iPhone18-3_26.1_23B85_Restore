@@ -1,40 +1,40 @@
 @interface WFWorkflowContextualActionOutputRunResult
-- (WFWorkflowContextualActionOutputRunResult)initWithCoder:(id)a3;
-- (WFWorkflowContextualActionOutputRunResult)initWithOutput:(id)a3 files:(id)a4 runError:(id)a5 reversalState:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (WFWorkflowContextualActionOutputRunResult)initWithCoder:(id)coder;
+- (WFWorkflowContextualActionOutputRunResult)initWithOutput:(id)output files:(id)files runError:(id)error reversalState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowContextualActionOutputRunResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFWorkflowContextualActionOutputRunResult;
-  v4 = a3;
-  [(WFWorkflowOutputRunResult *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFWorkflowOutputRunResult *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFWorkflowContextualActionOutputRunResult *)self files:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"files"];
+  [coderCopy encodeObject:v5 forKey:@"files"];
 
-  v6 = [(WFWorkflowContextualActionOutputRunResult *)self reversalState];
-  [v4 encodeObject:v6 forKey:@"reversalState"];
+  reversalState = [(WFWorkflowContextualActionOutputRunResult *)self reversalState];
+  [coderCopy encodeObject:reversalState forKey:@"reversalState"];
 }
 
-- (WFWorkflowContextualActionOutputRunResult)initWithCoder:(id)a3
+- (WFWorkflowContextualActionOutputRunResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = WFWorkflowContextualActionOutputRunResult;
-  v5 = [(WFWorkflowOutputRunResult *)&v15 initWithCoder:v4];
+  v5 = [(WFWorkflowOutputRunResult *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"files"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"files"];
     files = v5->_files;
     v5->_files = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reversalState"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reversalState"];
     reversalState = v5->_reversalState;
     v5->_reversalState = v11;
 
@@ -44,18 +44,18 @@
   return v5;
 }
 
-- (WFWorkflowContextualActionOutputRunResult)initWithOutput:(id)a3 files:(id)a4 runError:(id)a5 reversalState:(id)a6
+- (WFWorkflowContextualActionOutputRunResult)initWithOutput:(id)output files:(id)files runError:(id)error reversalState:(id)state
 {
-  v11 = a4;
-  v12 = a6;
+  filesCopy = files;
+  stateCopy = state;
   v19.receiver = self;
   v19.super_class = WFWorkflowContextualActionOutputRunResult;
-  v13 = [(WFWorkflowOutputRunResult *)&v19 initWithOutput:a3 runError:a5];
+  v13 = [(WFWorkflowOutputRunResult *)&v19 initWithOutput:output runError:error];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_files, a4);
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_files, files);
+    v15 = [stateCopy copy];
     reversalState = v14->_reversalState;
     v14->_reversalState = v15;
 

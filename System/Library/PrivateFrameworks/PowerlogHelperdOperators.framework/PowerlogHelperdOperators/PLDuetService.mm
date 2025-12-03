@@ -9,18 +9,18 @@
 + (id)eventIntervalDefinitionDuetEvents;
 + (void)load;
 - (PLDuetService)init;
-- (id)trimConditionsForEntryKey:(id)a3 forTrimDate:(id)a4;
+- (id)trimConditionsForEntryKey:(id)key forTrimDate:(id)date;
 - (void)dealloc;
-- (void)handleBatterySaverModeToken:(int)a3 withNotification:(id)a4;
+- (void)handleBatterySaverModeToken:(int)token withNotification:(id)notification;
 - (void)initOperatorDependancies;
-- (void)setupBatterySaverModeForNotification:(id)a3;
+- (void)setupBatterySaverModeForNotification:(id)notification;
 @end
 
 @implementation PLDuetService
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLDuetService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -54,8 +54,8 @@
 {
   v13[7] = *MEMORY[0x277D85DE8];
   v12[0] = @"BatterySaverMode";
-  v2 = [a1 entryEventForwardDefinitionBatterySaverMode];
-  v13[0] = v2;
+  entryEventForwardDefinitionBatterySaverMode = [self entryEventForwardDefinitionBatterySaverMode];
+  v13[0] = entryEventForwardDefinitionBatterySaverMode;
   v12[1] = @"DASPrediction";
   v3 = +[PLDuetServiceDAS entryEventForwardDefinitionsDASPrediction];
   v13[1] = v3;
@@ -106,13 +106,13 @@
     v16[0] = v2;
     v15[1] = *MEMORY[0x277D3F540];
     v11[0] = @"Mode";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
     v11[1] = @"Value";
-    v12[0] = v4;
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v12[1] = v6;
+    v12[0] = commonTypeDict_IntegerFormat;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v12[1] = commonTypeDict_IntegerFormat2;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
     v16[1] = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -132,11 +132,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"DuetEvents";
-  v3 = [a1 eventIntervalDefinitionDuetEvents];
+  eventIntervalDefinitionDuetEvents = [self eventIntervalDefinitionDuetEvents];
   v8[1] = @"ComplicationEvents";
-  v9[0] = v3;
-  v4 = [a1 eventIntervalDefinitionComplicationEvents];
-  v9[1] = v4;
+  v9[0] = eventIntervalDefinitionDuetEvents;
+  eventIntervalDefinitionComplicationEvents = [self eventIntervalDefinitionComplicationEvents];
+  v9[1] = eventIntervalDefinitionComplicationEvents;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -147,7 +147,7 @@
 + (id)eventIntervalDefinitionDuetEvents
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  if ([a1 isDebugEnabled])
+  if ([self isDebugEnabled])
   {
     v20[0] = *MEMORY[0x277D3F4E8];
     v2 = *MEMORY[0x277D3F4A0];
@@ -159,21 +159,21 @@
     v21[0] = v15;
     v20[1] = *MEMORY[0x277D3F540];
     v16[0] = @"BundleID";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_StringFormat_withBundleID];
-    v17[0] = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+    v17[0] = commonTypeDict_StringFormat_withBundleID;
     v16[1] = @"UpdateType";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v17[1] = v6;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v17[1] = commonTypeDict_IntegerFormat;
     v16[2] = @"StartDate";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_DateFormat];
-    v17[2] = v8;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+    v17[2] = commonTypeDict_DateFormat;
     v16[3] = @"EndDate";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_DateFormat];
-    v17[3] = v10;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_DateFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_DateFormat];
+    v17[3] = commonTypeDict_DateFormat2;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
     v21[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
@@ -193,8 +193,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"DuetEnergyAccumulator";
-  v2 = [a1 aggregateNameDuetEnergyAccumulator];
-  v7[0] = v2;
+  aggregateNameDuetEnergyAccumulator = [self aggregateNameDuetEnergyAccumulator];
+  v7[0] = aggregateNameDuetEnergyAccumulator;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -217,17 +217,17 @@
   v25[0] = v15;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"BundleID";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat_withBundleID];
-  v21[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+  v21[0] = commonTypeDict_StringFormat_withBundleID;
   v20[1] = @"QualificationID";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v21[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v21[1] = commonTypeDict_IntegerFormat;
   v20[2] = @"Energy";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_RealFormat];
-  v21[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+  v21[2] = commonTypeDict_RealFormat;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
   v25[1] = v9;
   v24[2] = *MEMORY[0x277D3F478];
@@ -247,12 +247,12 @@
   return v12;
 }
 
-- (id)trimConditionsForEntryKey:(id)a3 forTrimDate:(id)a4
+- (id)trimConditionsForEntryKey:(id)key forTrimDate:(id)date
 {
   v4 = *MEMORY[0x277D3F5B8];
-  v5 = a3;
+  keyCopy = key;
   v6 = [(PLOperator *)PLDuetService entryKeyForType:v4 andName:@"DuetEnergyAccumulator"];
-  LODWORD(v4) = [v5 isEqualToString:v6];
+  LODWORD(v4) = [keyCopy isEqualToString:v6];
 
   if (v4)
   {
@@ -269,7 +269,7 @@
 {
   if ([MEMORY[0x277D3F208] nonUIBuild])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -293,27 +293,27 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
 {
-  v3 = [(PLDuetService *)self impl];
+  impl = [(PLDuetService *)self impl];
 
-  if (v3)
+  if (impl)
   {
-    v4 = [(PLDuetService *)self impl];
-    [v4 initOperatorDependancies:self];
+    impl2 = [(PLDuetService *)self impl];
+    [impl2 initOperatorDependancies:self];
   }
 
-  v5 = [(PLDuetService *)self lpmSource];
-  [v5 initOperatorDependanciesLpmSource:self];
+  lpmSource = [(PLDuetService *)self lpmSource];
+  [lpmSource initOperatorDependanciesLpmSource:self];
 
-  v6 = [(PLDuetService *)self dasEvent];
-  [v6 initOperatorDependanciesDAS:self];
+  dasEvent = [(PLDuetService *)self dasEvent];
+  [dasEvent initOperatorDependanciesDAS:self];
 
   if (+[PLUtilities hasBattery])
   {
@@ -322,9 +322,9 @@
   }
 }
 
-- (void)setupBatterySaverModeForNotification:(id)a3
+- (void)setupBatterySaverModeForNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PLLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -332,16 +332,16 @@
   }
 
   out_token = -1;
-  v6 = [v4 UTF8String];
-  v7 = [(PLOperator *)self workQueue];
+  uTF8String = [notificationCopy UTF8String];
+  workQueue = [(PLOperator *)self workQueue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __54__PLDuetService_setupBatterySaverModeForNotification___block_invoke;
   handler[3] = &unk_279A5D4B8;
   handler[4] = self;
-  v8 = v4;
+  v8 = notificationCopy;
   v15 = v8;
-  v9 = notify_register_dispatch(v6, &out_token, v7, handler);
+  v9 = notify_register_dispatch(uTF8String, &out_token, workQueue, handler);
 
   v10 = PLLogCommon();
   v11 = v10;
@@ -362,10 +362,10 @@
 
     if ([v8 isEqualToString:@"com.apple.system.lowpowermode"])
     {
-      v12 = [MEMORY[0x277CCAC38] processInfo];
-      v13 = [v12 isLowPowerModeEnabled];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-      [(PLDuetService *)self logEventForwardBatterySaverModeWithState:v13 fromNotification:v8];
+      [(PLDuetService *)self logEventForwardBatterySaverModeWithState:isLowPowerModeEnabled fromNotification:v8];
     }
 
     else
@@ -381,11 +381,11 @@
   }
 }
 
-- (void)handleBatterySaverModeToken:(int)a3 withNotification:(id)a4
+- (void)handleBatterySaverModeToken:(int)token withNotification:(id)notification
 {
-  v6 = a4;
+  notificationCopy = notification;
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(token, &state64))
   {
     v7 = PLLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -400,28 +400,28 @@
     v9 = PLLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [PLDuetService handleBatterySaverModeToken:v6 withNotification:&state64];
+      [PLDuetService handleBatterySaverModeToken:notificationCopy withNotification:&state64];
     }
 
-    [(PLDuetService *)self logEventForwardBatterySaverModeWithState:v8 != 0 fromNotification:v6];
+    [(PLDuetService *)self logEventForwardBatterySaverModeWithState:v8 != 0 fromNotification:notificationCopy];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(PLDuetService *)self impl];
+  impl = [(PLDuetService *)self impl];
 
-  if (v3)
+  if (impl)
   {
-    v4 = [(PLDuetService *)self impl];
-    [v4 stopService];
+    impl2 = [(PLDuetService *)self impl];
+    [impl2 stopService];
   }
 
-  v5 = [(PLDuetService *)self lpmSource];
-  [v5 stopService];
+  lpmSource = [(PLDuetService *)self lpmSource];
+  [lpmSource stopService];
 
-  v6 = [(PLDuetService *)self dasEvent];
-  [v6 stopService];
+  dasEvent = [(PLDuetService *)self dasEvent];
+  [dasEvent stopService];
 
   v7.receiver = self;
   v7.super_class = PLDuetService;

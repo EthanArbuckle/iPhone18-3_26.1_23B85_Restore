@@ -9,7 +9,7 @@
   v4 = a3;
   if ([v4 hasLineColorString])
   {
-    v5 = [v4 lineColorString];
+    lineColorString = [v4 lineColorString];
     VKShieldColorsFromHexString();
     v7 = v6;
     v9 = v8;
@@ -26,7 +26,7 @@
     v13 = v17;
   }
 
-  v18 = [a1 colorWithRed:v7 green:v9 blue:v11 alpha:v13];
+  v18 = [self colorWithRed:v7 green:v9 blue:v11 alpha:v13];
 
   return v18;
 }

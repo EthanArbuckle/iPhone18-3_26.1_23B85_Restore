@@ -1,32 +1,32 @@
 @interface SFShowSFCardCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFShowSFCardCommand)initWithCoder:(id)a3;
-- (SFShowSFCardCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFShowSFCardCommand)initWithCoder:(id)coder;
+- (SFShowSFCardCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)embeddedCards;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFShowSFCardCommand
 
-- (SFShowSFCardCommand)initWithProtobuf:(id)a3
+- (SFShowSFCardCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFShowSFCardCommand;
   v5 = [(SFShowSFCardCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 card];
+    card = [protobufCopy card];
 
-    if (v6)
+    if (card)
     {
       v7 = [SFCard alloc];
-      v8 = [v4 card];
-      v9 = [(SFCard *)v7 initWithProtobuf:v8];
+      card2 = [protobufCopy card];
+      v9 = [(SFCard *)v7 initWithProtobuf:card2];
       [(SFShowSFCardCommand *)v5 setCard:v9];
     }
 
@@ -41,38 +41,38 @@
   v7.receiver = self;
   v7.super_class = SFShowSFCardCommand;
   v3 = [(SFCommand *)&v7 hash];
-  v4 = [(SFShowSFCardCommand *)self card];
-  v5 = [v4 hash];
+  card = [(SFShowSFCardCommand *)self card];
+  v5 = [card hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFShowSFCardCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFShowSFCardCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFShowSFCardCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFShowSFCardCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFShowSFCardCommand *)self card];
-    v7 = [(SFShowSFCardCommand *)v5 card];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    card = [(SFShowSFCardCommand *)self card];
+    card2 = [(SFShowSFCardCommand *)v5 card];
+    if ((card != 0) == (card2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFShowSFCardCommand *)self card];
-      if (v8)
+      card3 = [(SFShowSFCardCommand *)self card];
+      if (card3)
       {
-        v9 = [(SFShowSFCardCommand *)self card];
-        v10 = [(SFShowSFCardCommand *)v5 card];
-        v11 = [v9 isEqual:v10];
+        card4 = [(SFShowSFCardCommand *)self card];
+        card5 = [(SFShowSFCardCommand *)v5 card];
+        v11 = [card4 isEqual:card5];
       }
 
       else
@@ -90,13 +90,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFShowSFCardCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFShowSFCardCommand *)self card];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  card = [(SFShowSFCardCommand *)self card];
+  v6 = [card copy];
   [v4 setCard:v6];
 
   return v4;
@@ -105,51 +105,51 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBShowSFCardCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBShowSFCardCommand *)v2 jsonData];
+  jsonData = [(_SFPBShowSFCardCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBShowSFCardCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBShowSFCardCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBShowSFCardCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFShowSFCardCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFShowSFCardCommand)initWithCoder:(id)a3
+- (SFShowSFCardCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFShowSFCardCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 card];
-    [(SFShowSFCardCommand *)v5 setCard:v9];
+    card = [(SFCommand *)v8 card];
+    [(SFShowSFCardCommand *)v5 setCard:card];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
@@ -158,22 +158,22 @@
 - (id)embeddedCards
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SFShowSFCardCommand *)self card];
+  array = [MEMORY[0x1E695DF70] array];
+  card = [(SFShowSFCardCommand *)self card];
 
-  if (v4)
+  if (card)
   {
-    v5 = [(SFShowSFCardCommand *)self card];
-    [v3 addObject:v5];
+    card2 = [(SFShowSFCardCommand *)self card];
+    [array addObject:card2];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(SFShowSFCardCommand *)self card];
-    v7 = [v6 cardSections];
+    card3 = [(SFShowSFCardCommand *)self card];
+    cardSections = [card3 cardSections];
 
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [cardSections countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -184,14 +184,14 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(cardSections);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) embeddedCards];
-          [v3 addObjectsFromArray:v12];
+          embeddedCards = [*(*(&v15 + 1) + 8 * i) embeddedCards];
+          [array addObjectsFromArray:embeddedCards];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [cardSections countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -200,7 +200,7 @@
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 @end

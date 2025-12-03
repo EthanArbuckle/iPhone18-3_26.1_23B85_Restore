@@ -1,26 +1,26 @@
 @interface HDFHIRIngestionResourceFetchOperation
-- (HDFHIRIngestionResourceFetchOperation)initWithTask:(id)a3 account:(id)a4 nextOperation:(id)a5 queryMode:(int64_t)a6 resourceSchema:(id)a7;
-- (id)_assembleDownloadRequestWithError:(id *)a3;
-- (void)_accumulateMetricsFromTaskStates:(id)a3;
-- (void)_handleTaskCompletedWithData:(id)a3;
-- (void)_handleTaskError:(id)a3;
-- (void)_handleTokenRefreshResult:(id)a3;
+- (HDFHIRIngestionResourceFetchOperation)initWithTask:(id)task account:(id)account nextOperation:(id)operation queryMode:(int64_t)mode resourceSchema:(id)schema;
+- (id)_assembleDownloadRequestWithError:(id *)error;
+- (void)_accumulateMetricsFromTaskStates:(id)states;
+- (void)_handleTaskCompletedWithData:(id)data;
+- (void)_handleTaskError:(id)error;
+- (void)_handleTokenRefreshResult:(id)result;
 - (void)main;
 @end
 
 @implementation HDFHIRIngestionResourceFetchOperation
 
-- (HDFHIRIngestionResourceFetchOperation)initWithTask:(id)a3 account:(id)a4 nextOperation:(id)a5 queryMode:(int64_t)a6 resourceSchema:(id)a7
+- (HDFHIRIngestionResourceFetchOperation)initWithTask:(id)task account:(id)account nextOperation:(id)operation queryMode:(int64_t)mode resourceSchema:(id)schema
 {
-  v12 = a7;
+  schemaCopy = schema;
   v18.receiver = self;
   v18.super_class = HDFHIRIngestionResourceFetchOperation;
-  v13 = [(HDClinicalIngestionPerAccountOperation *)&v18 initWithTask:a3 account:a4 nextOperation:a5];
+  v13 = [(HDClinicalIngestionPerAccountOperation *)&v18 initWithTask:task account:account nextOperation:operation];
   v14 = v13;
   if (v13)
   {
-    v13->_queryMode = a6;
-    v15 = [v12 copy];
+    v13->_queryMode = mode;
+    v15 = [schemaCopy copy];
     resourceSchema = v14->_resourceSchema;
     v14->_resourceSchema = v15;
   }
@@ -36,11 +36,11 @@
   {
     v5 = v4;
     v6 = [(HDClinicalIngestionPerAccountOperation *)self debugDescription];
-    v7 = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema name];
+    name = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema name];
     *buf = 138543618;
     v26 = v6;
     v27 = 2114;
-    v28 = v7;
+    v28 = name;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ starting to fetch %{public}@ resources", buf, 0x16u);
   }
 
@@ -55,10 +55,10 @@
     v23[3] = &unk_106A48;
     v23[4] = self;
     v10 = objc_retainBlock(v23);
-    v11 = [(HDClinicalIngestionOperation *)self task];
-    v12 = [v11 legacyXPCIngestionServiceClient];
+    task = [(HDClinicalIngestionOperation *)self task];
+    legacyXPCIngestionServiceClient = [task legacyXPCIngestionServiceClient];
 
-    if (!v12)
+    if (!legacyXPCIngestionServiceClient)
     {
       sub_9F698(a2, self);
     }
@@ -73,7 +73,7 @@
     v22 = v14;
     v15 = v13;
     v21 = v15;
-    [v12 performDownloadRequest:v8 completion:v20];
+    [legacyXPCIngestionServiceClient performDownloadRequest:v8 completion:v20];
     dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
     _HKInitializeLogging();
     v16 = HKLogHealthRecords;
@@ -81,11 +81,11 @@
     {
       v17 = v16;
       v18 = [(HDClinicalIngestionPerAccountOperation *)self debugDescription];
-      v19 = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema name];
+      name2 = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema name];
       *buf = 138543618;
       v26 = v18;
       v27 = 2114;
-      v28 = v19;
+      v28 = name2;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ finished fetching %{public}@ resources", buf, 0x16u);
     }
   }
@@ -96,15 +96,15 @@
   }
 }
 
-- (void)_handleTaskError:(id)a3
+- (void)_handleTaskError:(id)error
 {
-  v6 = a3;
-  if (!v6)
+  errorCopy = error;
+  if (!errorCopy)
   {
     sub_9F6FC(a2, self);
   }
 
-  if ([v6 hk_isHealthKitError] && objc_msgSend(v6, "code") == &stru_68.segname[5])
+  if ([errorCopy hk_isHealthKitError] && objc_msgSend(errorCopy, "code") == &stru_68.segname[5])
   {
     _HKInitializeLogging();
     v7 = HKLogHealthRecords;
@@ -112,12 +112,12 @@
     {
       v8 = v7;
       v9 = [(HDClinicalIngestionPerAccountOperation *)self debugDescription];
-      v10 = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema name];
+      name = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema name];
       v11 = HKSensitiveLogItem();
       v13 = 138543874;
       v14 = v9;
       v15 = 2114;
-      v16 = v10;
+      v16 = name;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ fetching %{public}@ resources was not performed. %@", &v13, 0x20u);
@@ -133,44 +133,44 @@
       sub_9F778(v12, &self->super.super.super.super.isa);
     }
 
-    objc_storeStrong(&self->_fetchError, a3);
+    objc_storeStrong(&self->_fetchError, error);
   }
 }
 
-- (void)_handleTaskCompletedWithData:(id)a3
+- (void)_handleTaskCompletedWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = [HDFHIRResourceData alloc];
     effectiveRequestURL = self->_effectiveRequestURL;
-    v11 = [(HDClinicalIngestionPerAccountOperation *)self account];
-    v7 = [v11 gateway];
-    v8 = [v7 FHIRVersion];
-    v9 = [v5 initWithData:v4 sourceURL:effectiveRequestURL FHIRVersion:v8];
+    account = [(HDClinicalIngestionPerAccountOperation *)self account];
+    gateway = [account gateway];
+    fHIRVersion = [gateway FHIRVersion];
+    v9 = [v5 initWithData:dataCopy sourceURL:effectiveRequestURL FHIRVersion:fHIRVersion];
 
     fetchedData = self->_fetchedData;
     self->_fetchedData = v9;
   }
 }
 
-- (id)_assembleDownloadRequestWithError:(id *)a3
+- (id)_assembleDownloadRequestWithError:(id *)error
 {
-  v5 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v6 = [v5 connectionInformationWithError:a3];
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  v6 = [account connectionInformationWithError:error];
 
   if (v6)
   {
     v7 = [HKClinicalIngestionContext alloc];
     queryMode = self->_queryMode;
-    v9 = [(HDClinicalIngestionPerAccountOperation *)self account];
-    v10 = [v9 lastFetchDate];
-    v11 = [v7 initWithAccountConnectionInformation:v6 queryMode:queryMode options:1 lastFetchDate:v10];
+    account2 = [(HDClinicalIngestionPerAccountOperation *)self account];
+    lastFetchDate = [account2 lastFetchDate];
+    v11 = [v7 initWithAccountConnectionInformation:v6 queryMode:queryMode options:1 lastFetchDate:lastFetchDate];
 
     v12 = [HKFHIRResourceDownloadRequest alloc];
-    v13 = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema name];
-    v14 = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema definition];
-    v15 = [v12 initWithResourceType:v13 resourceSchemaDefinition:v14 fullRequestURL:self->_fullRequestURL context:v11];
+    name = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema name];
+    definition = [(HKClinicalGatewayEndpointSchema *)self->_resourceSchema definition];
+    v15 = [v12 initWithResourceType:name resourceSchemaDefinition:definition fullRequestURL:self->_fullRequestURL context:v11];
   }
 
   else
@@ -181,22 +181,22 @@
   return v15;
 }
 
-- (void)_handleTokenRefreshResult:(id)a3
+- (void)_handleTokenRefreshResult:(id)result
 {
-  v4 = a3;
-  v7 = [(HDClinicalIngestionOperation *)self profileExtension];
-  v5 = [v7 accountManager];
-  v6 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  [v5 didRefreshCredentialForAccount:v6 refreshResult:v4];
+  resultCopy = result;
+  profileExtension = [(HDClinicalIngestionOperation *)self profileExtension];
+  accountManager = [profileExtension accountManager];
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  [accountManager didRefreshCredentialForAccount:account refreshResult:resultCopy];
 }
 
-- (void)_accumulateMetricsFromTaskStates:(id)a3
+- (void)_accumulateMetricsFromTaskStates:(id)states
 {
-  v4 = a3;
-  v7 = [(HDClinicalIngestionOperation *)self task];
-  v5 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v6 = [v5 gateway];
-  [v7 accumulateIngestionAnalyticsFromTaskStates:v4 gateway:v6];
+  statesCopy = states;
+  task = [(HDClinicalIngestionOperation *)self task];
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  gateway = [account gateway];
+  [task accumulateIngestionAnalyticsFromTaskStates:statesCopy gateway:gateway];
 }
 
 @end

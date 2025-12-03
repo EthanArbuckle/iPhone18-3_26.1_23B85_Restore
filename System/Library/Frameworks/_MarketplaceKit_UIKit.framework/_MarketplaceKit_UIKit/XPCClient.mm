@@ -1,13 +1,13 @@
 @interface XPCClient
 - (_TtC21_MarketplaceKit_UIKit9XPCClient)init;
-- (void)handleMessages:(id)a3;
+- (void)handleMessages:(id)messages;
 @end
 
 @implementation XPCClient
 
-- (void)handleMessages:(id)a3
+- (void)handleMessages:(id)messages
 {
-  v5 = a3;
+  messagesCopy = messages;
   v3 = sub_23B7DA0B8();
   sub_23B7D48F8(v3, v4);
 }

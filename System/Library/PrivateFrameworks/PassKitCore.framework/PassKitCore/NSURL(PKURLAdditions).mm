@@ -6,12 +6,12 @@
 
 - (BOOL)isAppleURL
 {
-  v1 = [a1 host];
-  if ([v1 caseInsensitiveCompare:@"apple.com"])
+  host = [self host];
+  if ([host caseInsensitiveCompare:@"apple.com"])
   {
-    if ([v1 caseInsensitiveCompare:@"applepaydemo.apple.com"])
+    if ([host caseInsensitiveCompare:@"applepaydemo.apple.com"])
     {
-      v2 = [v1 rangeOfString:@".apple.com" options:13] != 0x7FFFFFFFFFFFFFFFLL;
+      v2 = [host rangeOfString:@".apple.com" options:13] != 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else

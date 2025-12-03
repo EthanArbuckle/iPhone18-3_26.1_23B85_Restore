@@ -1,46 +1,46 @@
 @interface _SFPBRFRGBValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFRGBValue)initWithDictionary:(id)a3;
-- (_SFPBRFRGBValue)initWithFacade:(id)a3;
-- (_SFPBRFRGBValue)initWithJSON:(id)a3;
+- (_SFPBRFRGBValue)initWithDictionary:(id)dictionary;
+- (_SFPBRFRGBValue)initWithFacade:(id)facade;
+- (_SFPBRFRGBValue)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFRGBValue
 
-- (_SFPBRFRGBValue)initWithFacade:(id)a3
+- (_SFPBRFRGBValue)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFRGBValue *)self init];
   if (v5)
   {
-    v6 = [v4 red];
+    v6 = [facadeCopy red];
 
     if (v6)
     {
-      v7 = [v4 red];
+      v7 = [facadeCopy red];
       [v7 floatValue];
       [(_SFPBRFRGBValue *)v5 setRed:?];
     }
 
-    v8 = [v4 green];
+    green = [facadeCopy green];
 
-    if (v8)
+    if (green)
     {
-      v9 = [v4 green];
-      [v9 floatValue];
+      green2 = [facadeCopy green];
+      [green2 floatValue];
       [(_SFPBRFRGBValue *)v5 setGreen:?];
     }
 
-    v10 = [v4 blue];
+    blue = [facadeCopy blue];
 
-    if (v10)
+    if (blue)
     {
-      v11 = [v4 blue];
-      [v11 floatValue];
+      blue2 = [facadeCopy blue];
+      [blue2 floatValue];
       [(_SFPBRFRGBValue *)v5 setBlue:?];
     }
 
@@ -50,15 +50,15 @@
   return v5;
 }
 
-- (_SFPBRFRGBValue)initWithDictionary:(id)a3
+- (_SFPBRFRGBValue)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBRFRGBValue;
   v5 = [(_SFPBRFRGBValue *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"red"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"red"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(_SFPBRFRGBValue *)v5 setRed:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"green"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"green"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(_SFPBRFRGBValue *)v5 setGreen:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"blue"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"blue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (_SFPBRFRGBValue)initWithJSON:(id)a3
+- (_SFPBRFRGBValue)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFRGBValue *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFRGBValue *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFRGBValue *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -124,13 +124,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_blue != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(_SFPBRFRGBValue *)self blue];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"blue"];
+    [dictionary setObject:v5 forKeyedSubscript:@"blue"];
   }
 
   if (self->_green != 0.0)
@@ -138,7 +138,7 @@
     v6 = MEMORY[0x1E696AD98];
     [(_SFPBRFRGBValue *)self green];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"green"];
+    [dictionary setObject:v7 forKeyedSubscript:@"green"];
   }
 
   if (self->_red != 0.0)
@@ -146,10 +146,10 @@
     v8 = MEMORY[0x1E696AD98];
     [(_SFPBRFRGBValue *)self red];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"red"];
+    [dictionary setObject:v9 forKeyedSubscript:@"red"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -264,13 +264,13 @@
   return v15 ^ v9 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (red = self->_red, objc_msgSend(v4, "red"), red == v6) && (green = self->_green, objc_msgSend(v4, "green"), green == v8))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (red = self->_red, objc_msgSend(equalCopy, "red"), red == v6) && (green = self->_green, objc_msgSend(equalCopy, "green"), green == v8))
   {
     blue = self->_blue;
-    [v4 blue];
+    [equalCopy blue];
     v9 = blue == v12;
   }
 
@@ -282,9 +282,9 @@
   return v9;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   [(_SFPBRFRGBValue *)self red];
   if (v4 != 0.0)
   {
@@ -298,11 +298,11 @@
   }
 
   [(_SFPBRFRGBValue *)self blue];
-  v6 = v8;
+  v6 = toCopy;
   if (v7 != 0.0)
   {
     PBDataWriterWriteFloatField();
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 

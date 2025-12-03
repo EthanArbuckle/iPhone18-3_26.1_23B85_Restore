@@ -1,15 +1,15 @@
 @interface CAFUITileViewCompositionalLayout
 - (CGSize)collectionViewContentSize;
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithCoder:(id)a3;
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSection:(id)a3;
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSectionProvider:(id)a3;
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithCoder:(id)coder;
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSection:(id)section;
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSectionProvider:(id)provider;
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
 @end
 
 @implementation CAFUITileViewCompositionalLayout
 
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithCoder:(id)a3
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -18,7 +18,7 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v2 = self;
+  selfCopy = self;
   CAFUITileViewCompositionalLayout.collectionViewContentSize.getter();
   v4 = v3;
   v6 = v5;
@@ -30,31 +30,31 @@
   return result;
 }
 
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSection:(id)a3
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSection:(id)section
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSection:(id)section configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSectionProvider:(id)a3
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSectionProvider:(id)provider
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC5CAFUIP33_81CEDCC541A633F7CC5FD11DB3C3FABC32CAFUITileViewCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;

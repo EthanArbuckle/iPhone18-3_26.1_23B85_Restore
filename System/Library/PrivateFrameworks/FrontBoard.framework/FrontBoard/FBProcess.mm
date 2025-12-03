@@ -2,11 +2,11 @@
 + (OS_dispatch_queue)calloutQueue;
 + (OS_dispatch_workloop)userInitiatedWorkloop;
 + (id)_currentProcess;
-- (BOOL)_setSceneLifecycleState:(unsigned __int8)a3;
-- (BOOL)_shouldWatchdogWithDeclineReason:(id *)a3;
-- (BOOL)_startWatchdogTimerForContext:(id)a3;
-- (BOOL)_watchdog:(id)a3 shouldTerminateWithDeclineReason:(id *)a4;
-- (BOOL)bootstrapWithDelegate:(id)a3;
+- (BOOL)_setSceneLifecycleState:(unsigned __int8)state;
+- (BOOL)_shouldWatchdogWithDeclineReason:(id *)reason;
+- (BOOL)_startWatchdogTimerForContext:(id)context;
+- (BOOL)_watchdog:(id)_watchdog shouldTerminateWithDeclineReason:(id *)reason;
+- (BOOL)bootstrapWithDelegate:(id)delegate;
 - (BOOL)executableLivesOnSystemPartition;
 - (BOOL)isBeingDebugged;
 - (BOOL)isFinishedLaunching;
@@ -14,7 +14,7 @@
 - (BOOL)isPendingExit;
 - (BOOL)isPlatformBinary;
 - (BOOL)isRunning;
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 - (FBProcess)init;
 - (FBProcessDelegate)delegate;
 - (FBProcessExitContext)exitContext;
@@ -22,13 +22,13 @@
 - (FBSApplicationInfo)applicationInfo;
 - (NSString)description;
 - (id)_createBootstrapContext;
-- (id)_initWithProcessManager:(id)a3 identity:(id)a4 handle:(id)a5 executionContext:(id)a6;
-- (id)_newWatchdogForContext:(id)a3 completion:(id)a4;
+- (id)_initWithProcessManager:(id)manager identity:(id)identity handle:(id)handle executionContext:(id)context;
+- (id)_newWatchdogForContext:(id)context completion:(id)completion;
 - (id)_observers;
-- (id)_watchdog:(id)a3 terminationRequestForError:(id)a4;
+- (id)_watchdog:(id)_watchdog terminationRequestForError:(id)error;
 - (id)_watchdogProvider;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)processPredicate;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
@@ -37,61 +37,61 @@
 - (int64_t)visibility;
 - (void)_bootstrapAndExec;
 - (void)_configureBundleInfo;
-- (void)_configureIntrinsicsFromHandle:(id)a3;
-- (void)_executeBlockAfterBootstrap:(id)a3;
-- (void)_executeBlockAfterLaunchCompletes:(id)a3;
-- (void)_executeBlockAsCurrentProcess:(id)a3;
-- (void)_killForReason:(int64_t)a3 andReport:(BOOL)a4 withDescription:(id)a5 completion:(id)a6;
-- (void)_launchDidComplete:(BOOL)a3 finalizeBlock:(id)a4;
+- (void)_configureIntrinsicsFromHandle:(id)handle;
+- (void)_executeBlockAfterBootstrap:(id)bootstrap;
+- (void)_executeBlockAfterLaunchCompletes:(id)completes;
+- (void)_executeBlockAsCurrentProcess:(id)process;
+- (void)_killForReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion;
+- (void)_launchDidComplete:(BOOL)complete finalizeBlock:(id)block;
 - (void)_lock_consumeLock_executeTerminationRequest;
 - (void)_lock_consumeLock_performGracefulKill;
 - (void)_noteAssertionStateDidChange;
-- (void)_notePendingExitForReason:(id)a3;
-- (void)_noteStateDidUpdate:(id)a3;
-- (void)_processDidExitWithContext:(id)a3;
+- (void)_notePendingExitForReason:(id)reason;
+- (void)_noteStateDidUpdate:(id)update;
+- (void)_processDidExitWithContext:(id)context;
 - (void)_rebuildState;
-- (void)_rebuildState:(id)a3;
-- (void)_terminateWithRequest:(id)a3 completion:(id)a4;
-- (void)_terminateWithRequest:(id)a3 forWatchdog:(id)a4;
-- (void)_updateStateWithBlock:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)bootstrapLock:(id)a3;
+- (void)_rebuildState:(id)state;
+- (void)_terminateWithRequest:(id)request completion:(id)completion;
+- (void)_terminateWithRequest:(id)request forWatchdog:(id)watchdog;
+- (void)_updateStateWithBlock:(id)block;
+- (void)addObserver:(id)observer;
+- (void)bootstrapLock:(id)lock;
 - (void)dealloc;
 - (void)invalidate;
 - (void)logProem;
-- (void)removeObserver:(id)a3;
-- (void)setWatchdogProvider:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setWatchdogProvider:(id)provider;
 @end
 
 @implementation FBProcess
 
 - (void)logProem
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[13];
+    v2 = self[13];
     if (v2)
     {
-      a1 = v2;
+      self = v2;
     }
 
     else
     {
-      a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@:-1]", a1[12]];
+      self = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@:-1]", self[12]];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBProcess *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBProcess *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (void)_bootstrapAndExec
@@ -99,7 +99,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must have either a handle or an error, but not both: %@ // %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -117,7 +117,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -152,14 +152,14 @@
   v5 = NSStringFromClass(v4);
   [v3 setExplanation:v5];
 
-  v6 = [(FBProcessExecutionContext *)self->_executionContext overrideExecutablePath];
-  [v3 _setOverrideExecutablePath:v6];
+  overrideExecutablePath = [(FBProcessExecutionContext *)self->_executionContext overrideExecutablePath];
+  [v3 _setOverrideExecutablePath:overrideExecutablePath];
 
-  v7 = [(FBProcessExecutionContext *)self->_executionContext overrideExecutableSlice];
-  v8 = v7;
-  if (v7)
+  overrideExecutableSlice = [(FBProcessExecutionContext *)self->_executionContext overrideExecutableSlice];
+  v8 = overrideExecutableSlice;
+  if (overrideExecutableSlice)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v7, "type")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(overrideExecutableSlice, "type")}];
     v17[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     [v3 setLsBinpref:v10];
@@ -203,15 +203,15 @@ void __30__FBProcess__bootstrapAndExec__block_invoke(uint64_t a1, void *a2)
   os_unfair_lock_unlock(&self->_watchdogProviderLock);
   if (v3)
   {
-    v4 = v3;
+    delegate = v3;
   }
 
   else
   {
-    v4 = [(FBProcess *)self delegate];
+    delegate = [(FBProcess *)self delegate];
   }
 
-  v5 = v4;
+  v5 = delegate;
 
   return v5;
 }
@@ -227,20 +227,20 @@ void __30__FBProcess__bootstrapAndExec__block_invoke(uint64_t a1, void *a2)
     goto LABEL_13;
   }
 
-  v5 = [(FBProcess *)self isApplicationProcess];
+  isApplicationProcess = [(FBProcess *)self isApplicationProcess];
   os_unfair_recursive_lock_unlock();
-  if (!v5)
+  if (!isApplicationProcess)
   {
     v4 = 0;
     goto LABEL_13;
   }
 
   v6 = +[FBSystemService sharedInstanceIfExists];
-  v7 = [v6 _applicationInfoProvider];
+  _applicationInfoProvider = [v6 _applicationInfoProvider];
 
   if (self->_auditToken && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [v7 applicationInfoForAuditToken:self->_auditToken];
+    v8 = [_applicationInfoProvider applicationInfoForAuditToken:self->_auditToken];
   }
 
   else
@@ -251,7 +251,7 @@ void __30__FBProcess__bootstrapAndExec__block_invoke(uint64_t a1, void *a2)
       goto LABEL_12;
     }
 
-    v8 = [v7 applicationInfoForBundleIdentifier:?];
+    v8 = [_applicationInfoProvider applicationInfoForBundleIdentifier:?];
   }
 
   v4 = v8;
@@ -276,8 +276,8 @@ LABEL_13:
 
 - (void)_noteAssertionStateDidChange
 {
-  v3 = [(FBProcess *)self delegate];
-  [v3 noteProcessAssertionStateDidChange:self];
+  delegate = [(FBProcess *)self delegate];
+  [delegate noteProcessAssertionStateDidChange:self];
 }
 
 void __30__FBProcess__bootstrapAndExec__block_invoke_118(uint64_t a1)
@@ -393,15 +393,15 @@ void __30__FBProcess__bootstrapAndExec__block_invoke_2_119(uint64_t a1)
   description = self->_description;
   if (description)
   {
-    v3 = description;
+    succinctDescription = description;
   }
 
   else
   {
-    v3 = [(FBProcess *)self succinctDescription];
+    succinctDescription = [(FBProcess *)self succinctDescription];
   }
 
-  return v3;
+  return succinctDescription;
 }
 
 - (FBProcessDelegate)delegate
@@ -416,9 +416,9 @@ void __30__FBProcess__bootstrapAndExec__block_invoke_2_119(uint64_t a1)
 - (BOOL)isForeground
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(FBProcessState *)self->_lock_state isForeground];
+  isForeground = [(FBProcessState *)self->_lock_state isForeground];
   os_unfair_recursive_lock_unlock();
-  return v3;
+  return isForeground;
 }
 
 - (BOOL)isPendingExit
@@ -432,9 +432,9 @@ void __30__FBProcess__bootstrapAndExec__block_invoke_2_119(uint64_t a1)
 - (BOOL)isRunning
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(FBProcessState *)self->_lock_state isRunning];
+  isRunning = [(FBProcessState *)self->_lock_state isRunning];
   os_unfair_recursive_lock_unlock();
-  return v3;
+  return isRunning;
 }
 
 + (OS_dispatch_queue)calloutQueue
@@ -452,9 +452,9 @@ void __30__FBProcess__bootstrapAndExec__block_invoke_2_119(uint64_t a1)
 - (BOOL)isBeingDebugged
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(FBProcessState *)self->_lock_state isDebugging];
+  isDebugging = [(FBProcessState *)self->_lock_state isDebugging];
   os_unfair_recursive_lock_unlock();
-  if (v3)
+  if (isDebugging)
   {
     return 1;
   }
@@ -483,9 +483,9 @@ void __30__FBProcess__bootstrapAndExec__block_invoke_2_119(uint64_t a1)
 
 + (id)_currentProcess
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"FBProcess"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"FBProcess"];
 
   return v4;
 }
@@ -530,7 +530,7 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -565,7 +565,7 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -600,7 +600,7 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBProcess.m";
     v17 = 1024;
@@ -616,19 +616,19 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
   return result;
 }
 
-- (id)_initWithProcessManager:(id)a3 identity:(id)a4 handle:(id)a5 executionContext:(id)a6
+- (id)_initWithProcessManager:(id)manager identity:(id)identity handle:(id)handle executionContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v12)
+  managerCopy = manager;
+  identityCopy = identity;
+  handleCopy = handle;
+  contextCopy = context;
+  if (!identityCopy)
   {
-    [FBProcess _initWithProcessManager:v13 identity:a2 handle:? executionContext:?];
+    [FBProcess _initWithProcessManager:handleCopy identity:a2 handle:? executionContext:?];
   }
 
-  v15 = v14;
-  if ((v13 == 0) == (v14 != 0))
+  v15 = contextCopy;
+  if ((handleCopy == 0) == (contextCopy != 0))
   {
     v68.receiver = self;
     v68.super_class = FBProcess;
@@ -636,13 +636,13 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
     v17 = v16;
     if (v16)
     {
-      objc_storeWeak(&v16->_processManager, v11);
+      objc_storeWeak(&v16->_processManager, managerCopy);
       v17->_lock = 0;
       *&v17->_observerLock._os_unfair_lock_opaque = 0;
       v17->_pid = -1;
       v17->_versionedPID = -1;
-      objc_storeStrong(&v17->_identity, a4);
-      v18 = [v12 description];
+      objc_storeStrong(&v17->_identity, identity);
+      v18 = [identityCopy description];
       identityDescription = v17->_identityDescription;
       v17->_identityDescription = v18;
 
@@ -650,13 +650,13 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
       executionContext = v17->_executionContext;
       v17->_executionContext = v20;
 
-      v22 = [(FBProcessExecutionContext *)v17->_executionContext watchdogProvider];
+      watchdogProvider = [(FBProcessExecutionContext *)v17->_executionContext watchdogProvider];
       watchdogProvider = v17->_watchdogProvider;
-      v17->_watchdogProvider = v22;
+      v17->_watchdogProvider = watchdogProvider;
 
-      v24 = [v12 embeddedApplicationIdentifier];
+      embeddedApplicationIdentifier = [identityCopy embeddedApplicationIdentifier];
       bundleIdentifier = v17->_bundleIdentifier;
-      v17->_bundleIdentifier = v24;
+      v17->_bundleIdentifier = embeddedApplicationIdentifier;
 
       v17->_lock_executableLivesOnSystemPartition = 0x7FFFFFFFFFFFFFFFLL;
       v17->_lock_platformBinary = 0x7FFFFFFFFFFFFFFFLL;
@@ -718,9 +718,9 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
       }
 
       objc_autoreleasePoolPop(v30);
-      if (v13)
+      if (handleCopy)
       {
-        [(FBProcess *)v17 _configureIntrinsicsFromHandle:v13];
+        [(FBProcess *)v17 _configureIntrinsicsFromHandle:handleCopy];
       }
 
       v58 = [[FBProcessState alloc] initWithPid:v17->_pid];
@@ -729,14 +729,14 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
 
       [(FBProcess *)v17 _finishInit];
       v60 = [FBWorkspace alloc];
-      v61 = [v11 eventDispatcher];
-      v62 = [(FBWorkspace *)v60 _initWithDispatcher:v61 process:v17];
+      eventDispatcher = [managerCopy eventDispatcher];
+      v62 = [(FBWorkspace *)v60 _initWithDispatcher:eventDispatcher process:v17];
       workspace = v17->_workspace;
       v17->_workspace = v62;
 
       if (!v17->_executionContext)
       {
-        v64 = [[FBProcessExecutionContext alloc] initWithIdentity:v12];
+        v64 = [[FBProcessExecutionContext alloc] initWithIdentity:identityCopy];
         v65 = v17->_executionContext;
         v17->_executionContext = v64;
       }
@@ -747,13 +747,13 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
 
   else
   {
-    v67 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must have either a handle or a context, but not both: %@ // %@", v13, v14];
+    contextCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"must have either a handle or a context, but not both: %@ // %@", handleCopy, contextCopy];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       [FBProcess _initWithProcessManager:identity:handle:executionContext:];
     }
 
-    [v67 UTF8String];
+    [contextCopy UTF8String];
     result = _bs_set_crash_log_message();
     __break(0);
   }
@@ -761,12 +761,12 @@ void __34__FBProcess_userInitiatedWorkloop__block_invoke()
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [[FBProcessObserver alloc] initWithObserver:v4];
+    observerCopy = observer;
+    v5 = [[FBProcessObserver alloc] initWithObserver:observerCopy];
 
     os_unfair_lock_lock(&self->_observerLock);
     if (v5 && ([(NSMutableSet *)self->_observerLock_observers containsObject:v5]& 1) == 0)
@@ -823,11 +823,11 @@ uint64_t __25__FBProcess_addObserver___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_lock_lock(&self->_observerLock);
     v17 = 0u;
@@ -850,11 +850,11 @@ uint64_t __25__FBProcess_addObserver___block_invoke(uint64_t result)
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 observer];
-          v12 = v11;
-          if (v11)
+          observer = [v10 observer];
+          v12 = observer;
+          if (observer)
           {
-            v13 = v11 == v4;
+            v13 = observer == observerCopy;
           }
 
           else
@@ -881,38 +881,38 @@ uint64_t __25__FBProcess_addObserver___block_invoke(uint64_t result)
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWatchdogProvider:(id)a3
+- (void)setWatchdogProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   os_unfair_lock_lock(&self->_watchdogProviderLock);
   watchdogProvider = self->_watchdogProvider;
-  self->_watchdogProvider = v4;
+  self->_watchdogProvider = providerCopy;
 
   os_unfair_lock_unlock(&self->_watchdogProviderLock);
 }
 
-- (void)bootstrapLock:(id)a3
+- (void)bootstrapLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_bootstrapLock);
-  if (v4)
+  if (lockCopy)
   {
-    v4[2](v4, self);
+    lockCopy[2](lockCopy, self);
   }
 
   os_unfair_lock_unlock(&self->_bootstrapLock);
 }
 
-- (BOOL)bootstrapWithDelegate:(id)a3
+- (BOOL)bootstrapWithDelegate:(id)delegate
 {
-  v5 = a3;
-  if (!v5)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     [FBProcess bootstrapWithDelegate:a2];
   }
 
-  v6 = v5;
+  v6 = delegateCopy;
   os_unfair_lock_assert_owner(&self->_bootstrapLock);
   os_unfair_recursive_lock_lock_with_options();
   lock_attemptedBootstrap = self->_lock_attemptedBootstrap;
@@ -935,17 +935,17 @@ uint64_t __25__FBProcess_addObserver___block_invoke(uint64_t result)
 - (int64_t)taskState
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(FBProcessState *)self->_lock_state taskState];
+  taskState = [(FBProcessState *)self->_lock_state taskState];
   os_unfair_recursive_lock_unlock();
-  return v3;
+  return taskState;
 }
 
 - (int64_t)visibility
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(FBProcessState *)self->_lock_state visibility];
+  visibility = [(FBProcessState *)self->_lock_state visibility];
   os_unfair_recursive_lock_unlock();
-  return v3;
+  return visibility;
 }
 
 - (BOOL)isPlatformBinary
@@ -953,9 +953,9 @@ uint64_t __25__FBProcess_addObserver___block_invoke(uint64_t result)
   os_unfair_recursive_lock_lock_with_options();
   if (self->_lock_platformBinary == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(FBProcess *)self applicationInfo];
-    v4 = v3;
-    if (!v3 || [v3 type] == 2)
+    applicationInfo = [(FBProcess *)self applicationInfo];
+    v4 = applicationInfo;
+    if (!applicationInfo || [applicationInfo type] == 2)
     {
       rbsHandle = self->_rbsHandle;
       if (rbsHandle)
@@ -976,16 +976,16 @@ uint64_t __25__FBProcess_addObserver___block_invoke(uint64_t result)
   return IsYes;
 }
 
-- (void)_executeBlockAfterBootstrap:(id)a3
+- (void)_executeBlockAfterBootstrap:(id)bootstrap
 {
-  v4 = a3;
-  if (v4)
+  bootstrapCopy = bootstrap;
+  if (bootstrapCopy)
   {
     os_unfair_recursive_lock_lock_with_options();
     lock_bootstrapBlocks = self->_lock_bootstrapBlocks;
     if (lock_bootstrapBlocks)
     {
-      v6 = [v4 copy];
+      v6 = [bootstrapCopy copy];
       v7 = MEMORY[0x1AC572E40]();
       [(NSMutableArray *)lock_bootstrapBlocks addObject:v7];
     }
@@ -998,7 +998,7 @@ uint64_t __25__FBProcess_addObserver___block_invoke(uint64_t result)
       v9[2] = __41__FBProcess__executeBlockAfterBootstrap___block_invoke;
       v9[3] = &unk_1E783B328;
       v9[4] = self;
-      v10 = v4;
+      v10 = bootstrapCopy;
       dispatch_async(v8, v9);
     }
 
@@ -1039,12 +1039,12 @@ void __41__FBProcess__executeBlockAfterBootstrap___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_executeBlockAfterLaunchCompletes:(id)a3
+- (void)_executeBlockAfterLaunchCompletes:(id)completes
 {
-  v4 = a3;
-  if (v4)
+  completesCopy = completes;
+  if (completesCopy)
   {
-    v11 = v4;
+    v11 = completesCopy;
     os_unfair_recursive_lock_lock_with_options();
     if (self->_lock_launchFinalized)
     {
@@ -1075,13 +1075,13 @@ void __41__FBProcess__executeBlockAfterBootstrap___block_invoke_2(uint64_t a1)
       os_unfair_recursive_lock_unlock();
     }
 
-    v4 = v11;
+    completesCopy = v11;
   }
 }
 
-- (void)_notePendingExitForReason:(id)a3
+- (void)_notePendingExitForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_recursive_lock_lock_with_options();
   if (!self->_lock_pendingExit)
   {
@@ -1104,18 +1104,18 @@ void __41__FBProcess__executeBlockAfterBootstrap___block_invoke_2(uint64_t a1)
     {
       if ([(FBProcess *)self isApplicationProcess])
       {
-        v7 = [MEMORY[0x1E69C75D0] currentProcess];
-        v8 = [v7 fb_canTaskSuspend];
+        currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+        fb_canTaskSuspend = [currentProcess fb_canTaskSuspend];
 
-        if ((v8 & 1) == 0)
+        if ((fb_canTaskSuspend & 1) == 0)
         {
-          v9 = [MEMORY[0x1E695DF00] date];
-          v10 = [(FBProcess *)self logProem];
+          date = [MEMORY[0x1E695DF00] date];
+          logProem = [(FBProcess *)self logProem];
           v21[0] = 0;
           v21[1] = v21;
           v21[2] = 0x2020000000;
           v21[3] = 0;
-          v11 = [objc_alloc(MEMORY[0x1E698E5E8]) initWithIdentifier:v10];
+          v11 = [objc_alloc(MEMORY[0x1E698E5E8]) initWithIdentifier:logProem];
           lock_exitTimer = self->_lock_exitTimer;
           self->_lock_exitTimer = v11;
 
@@ -1126,10 +1126,10 @@ void __41__FBProcess__executeBlockAfterBootstrap___block_invoke_2(uint64_t a1)
           v17[2] = __39__FBProcess__notePendingExitForReason___block_invoke_2;
           v17[3] = &unk_1E783C390;
           v17[4] = self;
-          v15 = v9;
+          v15 = date;
           v18 = v15;
           v20 = v21;
-          v16 = v10;
+          v16 = logProem;
           v19 = v16;
           [(BSAbsoluteMachTimer *)v13 scheduleRepeatingWithFireInterval:v14 repeatInterval:v17 leewayInterval:10.0 queue:1.0 handler:0.1];
 
@@ -1270,17 +1270,17 @@ void __39__FBProcess__notePendingExitForReason___block_invoke_77(uint64_t a1, vo
   [v2 setCodeDescription:@"timed-out"];
 }
 
-- (void)_updateStateWithBlock:(id)a3
+- (void)_updateStateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_recursive_lock_lock_with_options();
   if (!self->_lock_didExit)
   {
     if (self->_lock_updatingState)
     {
-      if (v4)
+      if (blockCopy)
       {
-        v4[2](v4, self->_lock_state);
+        blockCopy[2](blockCopy, self->_lock_state);
       }
     }
 
@@ -1290,13 +1290,13 @@ void __39__FBProcess__notePendingExitForReason___block_invoke_77(uint64_t a1, vo
       lock_state = self->_lock_state;
       self->_lock_updatingState = 1;
       v7 = [(FBProcessState *)lock_state copy];
-      if (v4)
+      if (blockCopy)
       {
-        v4[2](v4, *p_lock_state);
+        blockCopy[2](blockCopy, *p_lock_state);
       }
 
-      v8 = [v7 taskState];
-      if (v8 != [(FBProcessState *)*p_lock_state taskState])
+      taskState = [v7 taskState];
+      if (taskState != [(FBProcessState *)*p_lock_state taskState])
       {
         v9 = FBLogProcess();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1305,8 +1305,8 @@ void __39__FBProcess__notePendingExitForReason___block_invoke_77(uint64_t a1, vo
         }
       }
 
-      v10 = [v7 visibility];
-      if (v10 != [(FBProcessState *)*p_lock_state visibility])
+      visibility = [v7 visibility];
+      if (visibility != [(FBProcessState *)*p_lock_state visibility])
       {
         v11 = FBLogProcess();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1315,8 +1315,8 @@ void __39__FBProcess__notePendingExitForReason___block_invoke_77(uint64_t a1, vo
         }
       }
 
-      v12 = [v7 isDebugging];
-      v13 = v12 ^ [(FBProcessState *)*p_lock_state isDebugging];
+      isDebugging = [v7 isDebugging];
+      v13 = isDebugging ^ [(FBProcessState *)*p_lock_state isDebugging];
       if (v13 == 1)
       {
         v14 = FBLogProcess();
@@ -1418,36 +1418,36 @@ void __35__FBProcess__updateStateWithBlock___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_configureIntrinsicsFromHandle:(id)a3
+- (void)_configureIntrinsicsFromHandle:(id)handle
 {
-  v6 = a3;
-  if (!v6)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     [FBProcess _configureIntrinsicsFromHandle:a2];
   }
 
-  v7 = v6;
+  v7 = handleCopy;
   p_rbsHandle = &self->_rbsHandle;
   rbsHandle = self->_rbsHandle;
-  if (rbsHandle != v6)
+  if (rbsHandle != handleCopy)
   {
     if (rbsHandle)
     {
       v10 = MEMORY[0x1E698E620];
-      [(RBSProcessHandle *)v6 auditToken];
+      [(RBSProcessHandle *)handleCopy auditToken];
       v11 = [v10 tokenFromAuditToken:v39];
       if ([v11 isEqual:self->_auditToken])
       {
-        v12 = [(RBSProcessHandle *)*p_rbsHandle identity];
-        v13 = [(RBSProcessHandle *)v7 identity];
-        v14 = [v12 isEqual:v13];
+        identity = [(RBSProcessHandle *)*p_rbsHandle identity];
+        identity2 = [(RBSProcessHandle *)v7 identity];
+        v14 = [identity isEqual:identity2];
 
         if ((v14 & 1) == 0)
         {
           v29 = MEMORY[0x1E696AEC0];
-          v30 = [(RBSProcessHandle *)*p_rbsHandle identity];
-          v31 = [(RBSProcessHandle *)v7 identity];
-          v32 = [v29 stringWithFormat:@"identity mismatch : existing=%@ new=%@", v30, v31];
+          identity3 = [(RBSProcessHandle *)*p_rbsHandle identity];
+          identity4 = [(RBSProcessHandle *)v7 identity];
+          v32 = [v29 stringWithFormat:@"identity mismatch : existing=%@ new=%@", identity3, identity4];
 
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1476,7 +1476,7 @@ LABEL_30:
       JUMPOUT(0x1A8A0E5E0);
     }
 
-    objc_storeStrong(&self->_rbsHandle, a3);
+    objc_storeStrong(&self->_rbsHandle, handle);
     self->_pid = [(RBSProcessHandle *)self->_rbsHandle pid];
     v15 = MEMORY[0x1E698E620];
     v16 = self->_rbsHandle;
@@ -1499,9 +1499,9 @@ LABEL_30:
     target = self->_target;
     self->_target = v19;
 
-    v21 = [(FBProcess *)self succinctDescription];
+    succinctDescription = [(FBProcess *)self succinctDescription];
     description = self->_description;
-    self->_description = v21;
+    self->_description = succinctDescription;
 
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@:%d]", self->_identityDescription, self->_pid];
     handleDescription = self->_handleDescription;
@@ -1540,15 +1540,15 @@ LABEL_30:
     if (([(RBSProcessIdentity *)self->_identity isXPCService]& 1) == 0)
     {
       identity = self->_identity;
-      v27 = [(RBSProcessHandle *)v7 identity];
-      LOBYTE(identity) = [(RBSProcessIdentity *)identity isEqual:v27];
+      identity5 = [(RBSProcessHandle *)v7 identity];
+      LOBYTE(identity) = [(RBSProcessIdentity *)identity isEqual:identity5];
 
       if ((identity & 1) == 0)
       {
         v36 = MEMORY[0x1E696AEC0];
         v37 = self->_identity;
-        v38 = [(RBSProcessHandle *)v7 identity];
-        v28 = [v36 stringWithFormat:@"processIdentity %@ is not equal to handleIdentity %@", v37, v38];
+        identity6 = [(RBSProcessHandle *)v7 identity];
+        v28 = [v36 stringWithFormat:@"processIdentity %@ is not equal to handleIdentity %@", v37, identity6];
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -1563,24 +1563,24 @@ LABEL_30:
 LABEL_14:
 }
 
-- (BOOL)_setSceneLifecycleState:(unsigned __int8)a3
+- (BOOL)_setSceneLifecycleState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_recursive_lock_lock_with_options();
   lock_sceneState = self->_lock_sceneState;
-  if (lock_sceneState != v3)
+  if (lock_sceneState != stateCopy)
   {
-    self->_lock_sceneState = v3;
+    self->_lock_sceneState = stateCopy;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __37__FBProcess__setSceneLifecycleState___block_invoke;
     v7[3] = &__block_descriptor_33_e24_v16__0__FBProcessState_8l;
-    v8 = v3;
+    v8 = stateCopy;
     [(FBProcess *)self _updateStateWithBlock:v7];
   }
 
   os_unfair_recursive_lock_unlock();
-  return lock_sceneState != v3;
+  return lock_sceneState != stateCopy;
 }
 
 uint64_t __37__FBProcess__setSceneLifecycleState___block_invoke(uint64_t a1, void *a2)
@@ -1599,11 +1599,11 @@ uint64_t __37__FBProcess__setSceneLifecycleState___block_invoke(uint64_t a1, voi
   return [a2 setVisibility:v3];
 }
 
-- (void)_noteStateDidUpdate:(id)a3
+- (void)_noteStateDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 state];
-  v6 = [v5 copy];
+  updateCopy = update;
+  state = [updateCopy state];
+  v6 = [state copy];
 
   if ([v6 taskState])
   {
@@ -1615,36 +1615,36 @@ uint64_t __37__FBProcess__setSceneLifecycleState___block_invoke(uint64_t a1, voi
     v7 = FBLogProcess();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [FBProcess _noteStateDidUpdate:v4];
+      [FBProcess _noteStateDidUpdate:updateCopy];
     }
   }
 }
 
-- (void)_executeBlockAsCurrentProcess:(id)a3
+- (void)_executeBlockAsCurrentProcess:(id)process
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
-  v6 = [v4 currentThread];
-  v8 = [v6 threadDictionary];
+  processCopy = process;
+  currentThread = [v4 currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v7 = [v8 objectForKey:@"FBProcess"];
-  [v8 setObject:self forKey:@"FBProcess"];
-  v5[2](v5);
+  v7 = [threadDictionary objectForKey:@"FBProcess"];
+  [threadDictionary setObject:self forKey:@"FBProcess"];
+  processCopy[2](processCopy);
 
   if (v7)
   {
-    [v8 setObject:v7 forKey:@"FBProcess"];
+    [threadDictionary setObject:v7 forKey:@"FBProcess"];
   }
 
   else
   {
-    [v8 removeObjectForKey:@"FBProcess"];
+    [threadDictionary removeObjectForKey:@"FBProcess"];
   }
 }
 
-- (void)_processDidExitWithContext:(id)a3
+- (void)_processDidExitWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(FBProcess *)self _launchDidComplete:0 finalizeBlock:0];
   os_unfair_recursive_lock_lock_with_options();
   if (self->_lock_didExit)
@@ -1655,7 +1655,7 @@ uint64_t __37__FBProcess__setSceneLifecycleState___block_invoke(uint64_t a1, voi
   else
   {
     [(FBProcess *)self _notePendingExitForReason:@"process exited"];
-    if (!v4 && (!self->_bootstrapError || (v4 = [[FBProcessExitContext alloc] initWithLaunchError:self->_bootstrapError]) == 0))
+    if (!contextCopy && (!self->_bootstrapError || (contextCopy = [[FBProcessExitContext alloc] initWithLaunchError:self->_bootstrapError]) == 0))
     {
       v5 = FBLogProcess();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1665,14 +1665,14 @@ uint64_t __37__FBProcess__setSceneLifecycleState___block_invoke(uint64_t a1, voi
 
       v6 = [FBProcessExitContext alloc];
       v7 = objc_alloc_init(MEMORY[0x1E69C75B8]);
-      v4 = [(FBProcessExitContext *)v6 initWithUnderlyingContext:v7];
+      contextCopy = [(FBProcessExitContext *)v6 initWithUnderlyingContext:v7];
     }
 
-    [(FBProcessExitContext *)v4 setTerminationRequest:self->_lock_terminationRequest];
-    [(FBProcessExitContext *)v4 setWatchdogContext:self->_lock_terminationWatchdogContext];
-    [(FBProcessExitContext *)v4 setTerminationReason:self->_terminationReason];
-    [(FBProcessExitContext *)v4 setStateBeforeExiting:self->_lock_state];
-    objc_storeStrong(&self->_lock_exitContext, v4);
+    [(FBProcessExitContext *)contextCopy setTerminationRequest:self->_lock_terminationRequest];
+    [(FBProcessExitContext *)contextCopy setWatchdogContext:self->_lock_terminationWatchdogContext];
+    [(FBProcessExitContext *)contextCopy setTerminationReason:self->_terminationReason];
+    [(FBProcessExitContext *)contextCopy setStateBeforeExiting:self->_lock_state];
+    objc_storeStrong(&self->_lock_exitContext, contextCopy);
     [(FBSProcessWatchdog *)self->_lock_watchdog invalidate];
     [(BSAbsoluteMachTimer *)self->_lock_exitTimer invalidate];
     lock_exitTimer = self->_lock_exitTimer;
@@ -1700,8 +1700,8 @@ uint64_t __37__FBProcess__setSceneLifecycleState___block_invoke(uint64_t a1, voi
     block[2] = __40__FBProcess__processDidExitWithContext___block_invoke_2;
     block[3] = &unk_1E783B300;
     block[4] = self;
-    v4 = v4;
-    v16 = v4;
+    contextCopy = contextCopy;
+    v16 = contextCopy;
     v17 = v11;
     v14 = v11;
     dispatch_async(v13, block);
@@ -1861,30 +1861,30 @@ void __40__FBProcess__processDidExitWithContext___block_invoke_3(id *a1)
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)_rebuildState:(id)a3
+- (void)_rebuildState:(id)state
 {
-  v6 = a3;
-  if (!v6)
+  stateCopy = state;
+  if (!stateCopy)
   {
     [FBProcess _rebuildState:a2];
   }
 
-  v7 = v6;
+  v7 = stateCopy;
   os_unfair_recursive_lock_lock_with_options();
-  objc_storeStrong(&self->_lock_rbsState, a3);
-  v8 = [(FBProcessState *)self->_lock_state taskState];
+  objc_storeStrong(&self->_lock_rbsState, state);
+  taskState = [(FBProcessState *)self->_lock_state taskState];
   v9 = [v7 taskState] - 2;
   if (v9 <= 2)
   {
-    v8 = qword_1A8A71FA0[v9];
+    taskState = qword_1A8A71FA0[v9];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __27__FBProcess__rebuildState___block_invoke;
   v11[3] = &unk_1E783C448;
-  v13 = self;
-  v14 = v8;
+  selfCopy = self;
+  v14 = taskState;
   v12 = v7;
   v10 = v7;
   [(FBProcess *)self _updateStateWithBlock:v11];
@@ -1909,19 +1909,19 @@ void __27__FBProcess__rebuildState___block_invoke(uint64_t a1, void *a2)
   [v6 setDebugging:v4];
 }
 
-- (void)_launchDidComplete:(BOOL)a3 finalizeBlock:(id)a4
+- (void)_launchDidComplete:(BOOL)complete finalizeBlock:(id)block
 {
-  v4 = a3;
+  completeCopy = complete;
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   os_unfair_recursive_lock_lock_with_options();
   if (!self->_lock_launchFinalized)
   {
     self->_lock_launchFinalized = 1;
-    self->_lock_launchSuccess = v4;
+    self->_lock_launchSuccess = completeCopy;
     v8 = FBLogProcess();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (completeCopy)
     {
       if (v9)
       {
@@ -1941,19 +1941,19 @@ void __27__FBProcess__rebuildState___block_invoke(uint64_t a1, void *a2)
     if ([(FBProcessWatchdog *)self->_lock_watchdog event]== 1)
     {
       [(FBProcessWatchdog *)self->_lock_watchdog deactivate];
-      if (v4)
+      if (completeCopy)
       {
         v28 = v10;
-        v29 = v4;
-        v12 = [MEMORY[0x1E695DF70] array];
+        v29 = completeCopy;
+        array = [MEMORY[0x1E695DF70] array];
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v13 = [(FBSProcessWatchdog *)self->_lock_watchdog policy];
-        v14 = [v13 provisions];
+        policy = [(FBSProcessWatchdog *)self->_lock_watchdog policy];
+        provisions = [policy provisions];
 
-        v15 = [v14 countByEnumeratingWithState:&v38 objects:v44 count:16];
+        v15 = [provisions countByEnumeratingWithState:&v38 objects:v44 count:16];
         if (v15)
         {
           v16 = v15;
@@ -1965,7 +1965,7 @@ void __27__FBProcess__rebuildState___block_invoke(uint64_t a1, void *a2)
             {
               if (*v39 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(provisions);
               }
 
               v19 = *(*(&v38 + 1) + 8 * v18);
@@ -1981,9 +1981,9 @@ void __27__FBProcess__rebuildState___block_invoke(uint64_t a1, void *a2)
                   v21 = FBLogWatchdog();
                   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
                   {
-                    v30 = [(FBProcess *)self logProem];
+                    logProem = [(FBProcess *)self logProem];
                     *buf = 138543874;
-                    *&buf[4] = v30;
+                    *&buf[4] = logProem;
                     *&buf[12] = 2114;
                     *&buf[14] = v19;
                     *&buf[22] = 2114;
@@ -1991,7 +1991,7 @@ void __27__FBProcess__rebuildState___block_invoke(uint64_t a1, void *a2)
                     _os_log_impl(&dword_1A89DD000, v21, OS_LOG_TYPE_INFO, "%{public}@ Provision %{public}@ has remainder %{public}@", buf, 0x20u);
                   }
 
-                  [v12 addObject:v20];
+                  [array addObject:v20];
                 }
               }
 
@@ -1999,21 +1999,21 @@ void __27__FBProcess__rebuildState___block_invoke(uint64_t a1, void *a2)
             }
 
             while (v16 != v18);
-            v16 = [v14 countByEnumeratingWithState:&v38 objects:v44 count:16];
+            v16 = [provisions countByEnumeratingWithState:&v38 objects:v44 count:16];
           }
 
           while (v16);
         }
 
-        if ([v12 count])
+        if ([array count])
         {
-          v22 = [MEMORY[0x1E699FBB8] policyWithName:@"scene create after launch" forProvisions:v12];
+          v22 = [MEMORY[0x1E699FBB8] policyWithName:@"scene create after launch" forProvisions:array];
           sceneCreateWatchdogPolicy = self->_sceneCreateWatchdogPolicy;
           self->_sceneCreateWatchdogPolicy = v22;
         }
 
         v24 = FBLogWatchdog();
-        v4 = v29;
+        completeCopy = v29;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
           [FBProcess _launchDidComplete:? finalizeBlock:?];
@@ -2027,7 +2027,7 @@ void __27__FBProcess__rebuildState___block_invoke(uint64_t a1, void *a2)
       self->_lock_watchdog = 0;
     }
 
-    if (v4)
+    if (completeCopy)
     {
       if (self->_lock_waitForDebugger)
       {
@@ -2047,10 +2047,10 @@ void __27__FBProcess__rebuildState___block_invoke(uint64_t a1, void *a2)
     block[1] = 3221225472;
     block[2] = __46__FBProcess__launchDidComplete_finalizeBlock___block_invoke;
     block[3] = &unk_1E783C470;
-    v35 = v4;
+    v35 = completeCopy;
     v32 = v10;
-    v33 = self;
-    v34 = v6;
+    selfCopy = self;
+    v34 = blockCopy;
     v7 = v10;
     dispatch_async(v26, block);
 
@@ -2058,10 +2058,10 @@ void __27__FBProcess__rebuildState___block_invoke(uint64_t a1, void *a2)
   }
 
   os_unfair_recursive_lock_unlock();
-  if (v6)
+  if (blockCopy)
   {
     v7 = +[FBProcess userInitiatedWorkloop];
-    dispatch_async(v7, v6);
+    dispatch_async(v7, blockCopy);
 LABEL_36:
   }
 
@@ -2193,15 +2193,15 @@ uint64_t __46__FBProcess__launchDidComplete_finalizeBlock___block_invoke_2(uint6
   return result;
 }
 
-- (id)_newWatchdogForContext:(id)a3 completion:(id)a4
+- (id)_newWatchdogForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 event];
+  contextCopy = context;
+  completionCopy = completion;
+  event = [contextCopy event];
   os_unfair_recursive_lock_lock_with_options();
-  v9 = [v6 sceneTransitionContext];
-  v10 = v9;
-  if (v8 == 2 && ([v9 watchdogTransitionContext], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "runIndependently"), v11, !v12))
+  sceneTransitionContext = [contextCopy sceneTransitionContext];
+  v10 = sceneTransitionContext;
+  if (event == 2 && ([sceneTransitionContext watchdogTransitionContext], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "runIndependently"), v11, !v12))
   {
     v19 = self->_sceneCreateWatchdogPolicy;
     sceneCreateWatchdogPolicy = self->_sceneCreateWatchdogPolicy;
@@ -2210,14 +2210,14 @@ uint64_t __46__FBProcess__launchDidComplete_finalizeBlock___block_invoke_2(uint6
     if (v19)
     {
 LABEL_10:
-      v22 = [[FBProcessWatchdog alloc] initWithProcess:self context:v6 policy:v19];
+      v22 = [[FBProcessWatchdog alloc] initWithProcess:self context:contextCopy policy:v19];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __47__FBProcess__newWatchdogForContext_completion___block_invoke;
       v24[3] = &unk_1E783C498;
       v24[4] = self;
       v25 = v22;
-      v26 = v7;
+      v26 = completionCopy;
       v20 = v22;
       [(FBSProcessWatchdog *)v20 setCompletion:v24];
 
@@ -2231,22 +2231,22 @@ LABEL_10:
     self->_sceneCreateWatchdogPolicy = 0;
   }
 
-  v14 = [v10 watchdogTransitionContext];
-  v15 = [v14 watchdogProvider];
-  v16 = v15;
-  if (v15)
+  watchdogTransitionContext = [v10 watchdogTransitionContext];
+  watchdogProvider = [watchdogTransitionContext watchdogProvider];
+  v16 = watchdogProvider;
+  if (watchdogProvider)
   {
-    v17 = v15;
+    _watchdogProvider = watchdogProvider;
   }
 
   else
   {
-    v17 = [(FBProcess *)self _watchdogProvider];
+    _watchdogProvider = [(FBProcess *)self _watchdogProvider];
   }
 
-  v18 = v17;
+  v18 = _watchdogProvider;
 
-  v19 = [v18 watchdogPolicyForProcess:self eventContext:v6];
+  v19 = [v18 watchdogPolicyForProcess:self eventContext:contextCopy];
 
   if (v19)
   {
@@ -2330,9 +2330,9 @@ uint64_t __47__FBProcess__newWatchdogForContext_completion___block_invoke_176(ui
   return result;
 }
 
-- (BOOL)_startWatchdogTimerForContext:(id)a3
+- (BOOL)_startWatchdogTimerForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pid = self->_pid;
   if (pid == getpid())
   {
@@ -2348,7 +2348,7 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  v7 = [(FBProcess *)self _newWatchdogForContext:v4 completion:0];
+  v7 = [(FBProcess *)self _newWatchdogForContext:contextCopy completion:0];
   v6 = v7 != 0;
   if (v7)
   {
@@ -2369,7 +2369,7 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)_shouldWatchdogWithDeclineReason:(id *)a3
+- (BOOL)_shouldWatchdogWithDeclineReason:(id *)reason
 {
   pid = self->_pid;
   if (pid == getpid())
@@ -2377,7 +2377,7 @@ LABEL_9:
     result = 0;
     v7 = @"current process can't be watchdogged";
 LABEL_11:
-    *a3 = v7;
+    *reason = v7;
     return result;
   }
 
@@ -2397,13 +2397,13 @@ LABEL_11:
   }
 
   os_unfair_recursive_lock_lock_with_options();
-  v9 = [(RBSProcessState *)self->_lock_rbsState tags];
-  v10 = [v9 containsObject:@"FBDisableWatchdog"];
+  tags = [(RBSProcessState *)self->_lock_rbsState tags];
+  v10 = [tags containsObject:@"FBDisableWatchdog"];
 
   os_unfair_recursive_lock_unlock();
   if (v10)
   {
-    *a3 = @"watchdog is disabled via RB assertion";
+    *reason = @"watchdog is disabled via RB assertion";
   }
 
   return v10 ^ 1;
@@ -2436,16 +2436,16 @@ uint64_t __32__FBProcess__watchdogReportType__block_invoke()
   return result;
 }
 
-- (void)_terminateWithRequest:(id)a3 completion:(id)a4
+- (void)_terminateWithRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  requestCopy = request;
+  completionCopy = completion;
+  if (!requestCopy)
   {
     [FBProcess _terminateWithRequest:a2 completion:?];
   }
 
-  v9 = v8;
+  v9 = completionCopy;
   os_unfair_recursive_lock_lock_with_options();
   v10 = FBLogProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2498,14 +2498,14 @@ uint64_t __32__FBProcess__watchdogReportType__block_invoke()
       }
     }
 
-    v18 = [v7 exceptionCode];
+    exceptionCode = [requestCopy exceptionCode];
     lock_terminationRequest = self->_lock_terminationRequest;
-    if (!lock_terminationRequest || v18 == 2343432205 && [(FBSProcessTerminationRequest *)lock_terminationRequest exceptionCode]!= 2343432205)
+    if (!lock_terminationRequest || exceptionCode == 2343432205 && [(FBSProcessTerminationRequest *)lock_terminationRequest exceptionCode]!= 2343432205)
     {
-      v21 = [v7 copy];
+      v21 = [requestCopy copy];
 
       objc_storeStrong(&self->_lock_terminationRequest, v21);
-      if (v18 != 2343432205 && ([v21 options] & 1) != 0)
+      if (exceptionCode != 2343432205 && ([v21 options] & 1) != 0)
       {
         if ([(FBProcessState *)self->_lock_state taskState]== 2)
         {
@@ -2529,7 +2529,7 @@ uint64_t __32__FBProcess__watchdogReportType__block_invoke()
     }
   }
 
-  v21 = v7;
+  v21 = requestCopy;
 LABEL_23:
 }
 
@@ -2544,17 +2544,17 @@ uint64_t __46__FBProcess__terminateWithRequest_completion___block_invoke(uint64_
   return result;
 }
 
-- (void)_killForReason:(int64_t)a3 andReport:(BOOL)a4 withDescription:(id)a5 completion:(id)a6
+- (void)_killForReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a6;
+  reportCopy = report;
+  descriptionCopy = description;
+  completionCopy = completion;
   pid = self->_pid;
   if (pid == getpid())
   {
     v19 = MEMORY[0x1E696AEC0];
     v20 = FBSApplicationTerminationReasonDescription();
-    v21 = [v19 stringWithFormat:@"The current requested its own termination (for reason \"%@\" with description \"%@\"", v20, v10];
+    descriptionCopy = [v19 stringWithFormat:@"The current requested its own termination (for reason \"%@\" with description \"%@\"", v20, descriptionCopy];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -2562,15 +2562,15 @@ uint64_t __46__FBProcess__terminateWithRequest_completion___block_invoke(uint64_
     }
 
 LABEL_18:
-    [v21 UTF8String];
+    [descriptionCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x1A8A10504);
   }
 
-  if (!v10)
+  if (!descriptionCopy)
   {
-    v10 = FBSApplicationTerminationReasonDescription();
+    descriptionCopy = FBSApplicationTerminationReasonDescription();
   }
 
   v13 = FBLogProcess();
@@ -2580,10 +2580,10 @@ LABEL_18:
   }
 
   [(FBProcess *)self _notePendingExitForReason:@"explicit kill request from client"];
-  v14 = a3 - 1;
-  if ((a3 - 1) >= 9)
+  v14 = reason - 1;
+  if ((reason - 1) >= 9)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"fbReason != FBProcessKillReasonUnknown"];
+    descriptionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"fbReason != FBProcessKillReasonUnknown"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       [FBProcess _killForReason:andReport:withDescription:completion:];
@@ -2596,10 +2596,10 @@ LABEL_18:
   v16 = qword_1A8A72000[v14];
   if (!self->_terminationReason)
   {
-    self->_terminationReason = a3;
+    self->_terminationReason = reason;
   }
 
-  if (v7)
+  if (reportCopy)
   {
     v17 = v15;
   }
@@ -2609,12 +2609,12 @@ LABEL_18:
     v17 = 0;
   }
 
-  v18 = [MEMORY[0x1E699FBB0] requestForProcess:self withLabel:v10];
+  v18 = [MEMORY[0x1E699FBB0] requestForProcess:self withLabel:descriptionCopy];
   [v18 setReportType:v17];
   [v18 setExceptionCode:v16];
-  [v18 setExplanation:v10];
+  [v18 setExplanation:descriptionCopy];
   [v18 setOptions:FBSApplicationTerminationReasonIsGraceful()];
-  [(FBProcess *)self _terminateWithRequest:v18 completion:v11];
+  [(FBProcess *)self _terminateWithRequest:v18 completion:completionCopy];
 }
 
 - (void)_lock_consumeLock_executeTerminationRequest
@@ -2622,7 +2622,7 @@ LABEL_18:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -2676,7 +2676,7 @@ void __56__FBProcess__lock_consumeLock_executeTerminationRequest__block_invoke_2
 - (void)_lock_consumeLock_performGracefulKill
 {
   *a3 = 138543618;
-  *(a3 + 4) = a1;
+  *(a3 + 4) = self;
   *(a3 + 12) = 2114;
   *(a3 + 14) = a2;
   OUTLINED_FUNCTION_16(&dword_1A89DD000, a4, a3, "%{public}@ Failed to acquire graceful termination assertion: %{public}@", a3);
@@ -2711,62 +2711,62 @@ void __50__FBProcess__lock_consumeLock_performGracefulKill__block_invoke_320(uin
   }
 }
 
-- (void)_terminateWithRequest:(id)a3 forWatchdog:(id)a4
+- (void)_terminateWithRequest:(id)request forWatchdog:(id)watchdog
 {
-  v11 = a4;
-  v6 = a3;
+  watchdogCopy = watchdog;
+  requestCopy = request;
   os_unfair_recursive_lock_lock_with_options();
   if (!self->_lock_terminationWatchdogContext)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v11 eventContext];
+      eventContext = [watchdogCopy eventContext];
       lock_terminationWatchdogContext = self->_lock_terminationWatchdogContext;
-      self->_lock_terminationWatchdogContext = v7;
+      self->_lock_terminationWatchdogContext = eventContext;
 
-      v9 = [v11 cpuStatistics];
+      cpuStatistics = [watchdogCopy cpuStatistics];
       lock_watchdogCPUStatistics = self->_lock_watchdogCPUStatistics;
-      self->_lock_watchdogCPUStatistics = v9;
+      self->_lock_watchdogCPUStatistics = cpuStatistics;
     }
   }
 
   os_unfair_recursive_lock_unlock();
-  [(FBProcess *)self _terminateWithRequest:v6 completion:0];
+  [(FBProcess *)self _terminateWithRequest:requestCopy completion:0];
 
-  [v11 invalidate];
+  [watchdogCopy invalidate];
 }
 
-- (id)_watchdog:(id)a3 terminationRequestForError:(id)a4
+- (id)_watchdog:(id)_watchdog terminationRequestForError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FBProcess *)self _watchdogProvider];
-  if (!v8 || (objc_opt_respondsToSelector() & 1) == 0 || ([v8 watchdogTerminationRequestForProcess:self error:v7], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  _watchdogCopy = _watchdog;
+  errorCopy = error;
+  _watchdogProvider = [(FBProcess *)self _watchdogProvider];
+  if (!_watchdogProvider || (objc_opt_respondsToSelector() & 1) == 0 || ([_watchdogProvider watchdogTerminationRequestForProcess:self error:errorCopy], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9 = [MEMORY[0x1E699FBB0] requestForProcess:self withLabel:@"watchdog provision violated"];
     [v9 setReportType:{-[FBProcess _watchdogReportType](self, "_watchdogReportType")}];
   }
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v6 name];
-  v12 = [v7 localizedFailureReason];
-  v13 = v12;
-  if (v12)
+  name = [_watchdogCopy name];
+  localizedFailureReason = [errorCopy localizedFailureReason];
+  v13 = localizedFailureReason;
+  if (localizedFailureReason)
   {
-    v14 = [v10 stringWithFormat:@"%@ watchdog transgression: %@", v11, v12];
+    v14 = [v10 stringWithFormat:@"%@ watchdog transgression: %@", name, localizedFailureReason];
   }
 
   else
   {
-    v15 = [v7 localizedDescription];
-    v14 = [v10 stringWithFormat:@"%@ watchdog transgression: %@", v11, v15];
+    localizedDescription = [errorCopy localizedDescription];
+    v14 = [v10 stringWithFormat:@"%@ watchdog transgression: %@", name, localizedDescription];
   }
 
-  v16 = [v9 explanation];
-  if (v16)
+  explanation = [v9 explanation];
+  if (explanation)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v14, v16];;
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v14, explanation];;
   }
 
   else
@@ -2781,21 +2781,21 @@ void __50__FBProcess__lock_consumeLock_performGracefulKill__block_invoke_320(uin
   return v9;
 }
 
-- (BOOL)_watchdog:(id)a3 shouldTerminateWithDeclineReason:(id *)a4
+- (BOOL)_watchdog:(id)_watchdog shouldTerminateWithDeclineReason:(id *)reason
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(FBProcess *)self _shouldWatchdogWithDeclineReason:a4];
+  _watchdogCopy = _watchdog;
+  v7 = [(FBProcess *)self _shouldWatchdogWithDeclineReason:reason];
   if (!v7)
   {
     v8 = FBLogProcess();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(FBProcess *)self logProem];
-      v13 = [MEMORY[0x1E698E680] succinctDescriptionForObject:v6];
-      v14 = *a4;
+      logProem = [(FBProcess *)self logProem];
+      v13 = [MEMORY[0x1E698E680] succinctDescriptionForObject:_watchdogCopy];
+      v14 = *reason;
       v15 = 138543874;
-      v16 = v12;
+      v16 = logProem;
       v17 = 2114;
       v18 = v13;
       v19 = 2114;
@@ -2815,16 +2815,16 @@ void __50__FBProcess__lock_consumeLock_performGracefulKill__block_invoke_320(uin
   return v7;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
-  v5 = [v4 pid];
+  processCopy = process;
+  v5 = [processCopy pid];
   pid = self->_pid;
   if (pid <= 0 && v5 < 1)
   {
     identity = self->_identity;
-    v10 = [v4 identity];
-    v8 = [(RBSProcessIdentity *)identity isEqual:v10];
+    identity = [processCopy identity];
+    v8 = [(RBSProcessIdentity *)identity isEqual:identity];
   }
 
   else
@@ -2835,27 +2835,27 @@ void __50__FBProcess__lock_consumeLock_performGracefulKill__block_invoke_320(uin
   return v8;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBProcess *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBProcess *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(FBProcess *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(FBProcess *)self succinctDescriptionBuilder];
   os_unfair_recursive_lock_lock_with_options();
   v5 = NSStringFromFBProcessTaskState([(FBProcessState *)self->_lock_state taskState]);
-  v6 = [v4 appendObject:v5 withName:@"taskState" skipIfNil:1];
+  v6 = [succinctDescriptionBuilder appendObject:v5 withName:@"taskState" skipIfNil:1];
 
   v7 = NSStringFromFBProcessVisibility([(FBProcessState *)self->_lock_state visibility]);
-  v8 = [v4 appendObject:v7 withName:@"visibility" skipIfNil:1];
+  v8 = [succinctDescriptionBuilder appendObject:v7 withName:@"visibility" skipIfNil:1];
 
   os_unfair_recursive_lock_unlock();
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (void)_initWithProcessManager:identity:handle:executionContext:.cold.1()

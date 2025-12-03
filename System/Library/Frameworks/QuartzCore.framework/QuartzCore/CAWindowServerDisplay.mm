@@ -7,16 +7,16 @@
 - (BOOL)allowsVirtualModes;
 - (BOOL)allowsWirelessColorFiltering;
 - (BOOL)brightnessAvailable;
-- (BOOL)canUpdateWithFlags:(unsigned int)a3;
-- (BOOL)commitBrightness:(id *)a3 withBlock:(id)a4;
+- (BOOL)canUpdateWithFlags:(unsigned int)flags;
+- (BOOL)commitBrightness:(id *)brightness withBlock:(id)block;
 - (BOOL)commitPreset;
 - (BOOL)cursorEnabled;
 - (BOOL)cursorHidden;
 - (BOOL)disabled;
 - (BOOL)disablesUpdates;
 - (BOOL)enabled;
-- (BOOL)finishExternalUpdate:(void *)a3 withFlags:(unsigned int)a4 debugInfo:(unint64_t)a5;
-- (BOOL)forceCommitBrightness:(id *)a3 withBlock:(id)a4;
+- (BOOL)finishExternalUpdate:(void *)update withFlags:(unsigned int)flags debugInfo:(unint64_t)info;
+- (BOOL)forceCommitBrightness:(id *)brightness withBlock:(id)block;
 - (BOOL)invertsColors;
 - (BOOL)isBlanked;
 - (BOOL)isDetaching;
@@ -28,9 +28,9 @@
 - (BOOL)pulseWidthMaximization;
 - (BOOL)scalePreservesAspect;
 - (BOOL)secureIndicatorsEnabled;
-- (BOOL)setDigitalModes:(id)a3;
-- (BOOL)setDigitalModes:(id)a3 withTimings:(id)a4;
-- (BOOL)setWhitePoint:(id *)a3 rampDuration:(double)a4 error:(id *)a5;
+- (BOOL)setDigitalModes:(id)modes;
+- (BOOL)setDigitalModes:(id)modes withTimings:(id)timings;
+- (BOOL)setWhitePoint:(id *)point rampDuration:(double)duration error:(id *)error;
 - (BOOL)supportsColorSpaces;
 - (BOOL)supportsCursor;
 - (BOOL)supportsExtendedColors;
@@ -40,14 +40,14 @@
 - (BOOL)whitePointAvailable;
 - (BOOL)whitePointD50XYZ;
 - (CAPixelConstraints)averagePixelConstraints;
-- (CATransform3D)transformFromLayerId:(SEL)a3 inContextId:(unint64_t)a4;
+- (CATransform3D)transformFromLayerId:(SEL)id inContextId:(unint64_t)contextId;
 - (CAWindowServerDisplay)cloneMaster;
 - (CGColorSpace)blendColorSpace;
 - (CGColorSpace)displayColorSpace;
 - (CGColorTRC)blackpointAdaptation;
 - (CGColorTRC)systemGamma;
-- (CGPoint)convertPoint:(CGPoint)result fromContextId:(unsigned int)a4;
-- (CGPoint)convertPoint:(CGPoint)result toContextId:(unsigned int)a4;
+- (CGPoint)convertPoint:(CGPoint)result fromContextId:(unsigned int)id;
+- (CGPoint)convertPoint:(CGPoint)result toContextId:(unsigned int)id;
 - (CGPoint)cursorPosition;
 - (CGRect)bounds;
 - (CGRect)detachingRect;
@@ -87,10 +87,10 @@
 - (float)maximumRefreshRate;
 - (float)minimumRefreshRate;
 - (float)nits;
-- (id)_initWithCADisplayServer:(void *)a3;
+- (id)_initWithCADisplayServer:(void *)server;
 - (id)brightnessCallback;
 - (id)frameInfoCallback;
-- (id)hitTestAtPosition:(CGPoint)a3 options:(id)a4;
+- (id)hitTestAtPosition:(CGPoint)position options:(id)options;
 - (id)hotPlugCallback;
 - (id)needsGlobalLightCallback;
 - (id)notificationQueue;
@@ -108,117 +108,117 @@
 - (unint64_t)productId;
 - (unint64_t)vblDelta;
 - (unint64_t)vendorId;
-- (unsigned)clientPortAtPosition:(CGPoint)a3;
-- (unsigned)clientPortOfContextId:(unsigned int)a3;
-- (unsigned)contextIdAtPosition:(CGPoint)a3 excludingContextIds:(id)a4;
+- (unsigned)clientPortAtPosition:(CGPoint)position;
+- (unsigned)clientPortOfContextId:(unsigned int)id;
+- (unsigned)contextIdAtPosition:(CGPoint)position excludingContextIds:(id)ids;
 - (unsigned)displayId;
 - (unsigned)framebufferFormat;
 - (unsigned)rendererFlags;
 - (unsigned)serviceObject;
-- (unsigned)taskNamePortOfContextId:(unsigned int)a3;
-- (void)abortColorMatrixRamp:(float *)a3 scale:(float *)a4;
-- (void)abortContrastEnhancerRamp:(float *)a3;
-- (void)addClone:(id)a3 options:(id)a4;
-- (void)addFramePresentationTimestamp:(unint64_t)a3;
-- (void)beginExternalUpdate:(void *)a3 usingSoftwareRenderer:(BOOL)a4;
-- (void)copyDisplayTimingsFromDisplay:(id)a3;
+- (unsigned)taskNamePortOfContextId:(unsigned int)id;
+- (void)abortColorMatrixRamp:(float *)ramp scale:(float *)scale;
+- (void)abortContrastEnhancerRamp:(float *)ramp;
+- (void)addClone:(id)clone options:(id)options;
+- (void)addFramePresentationTimestamp:(unint64_t)timestamp;
+- (void)beginExternalUpdate:(void *)update usingSoftwareRenderer:(BOOL)renderer;
+- (void)copyDisplayTimingsFromDisplay:(id)display;
 - (void)dealloc;
 - (void)detachingDisplay;
-- (void)emitBrightnessError:(id *)a3;
-- (void)emitWhitePointError:(id *)a3;
+- (void)emitBrightnessError:(id *)error;
+- (void)emitWhitePointError:(id *)error;
 - (void)freeze;
 - (void)invalidate;
-- (void)postNotification:(id)a3 payload:(id)a4;
-- (void)postSyncNotification:(id)a3 payload:(id)a4;
-- (void)powerStateDidChange:(id)a3;
-- (void)registerForNotifications:(id)a3 withBlock:(id)a4;
-- (void)registerForSyncNotifications:(id)a3 withBlock:(id)a4;
+- (void)postNotification:(id)notification payload:(id)payload;
+- (void)postSyncNotification:(id)notification payload:(id)payload;
+- (void)powerStateDidChange:(id)change;
+- (void)registerForNotifications:(id)notifications withBlock:(id)block;
+- (void)registerForSyncNotifications:(id)notifications withBlock:(id)block;
 - (void)removeAllClones;
-- (void)removeClone:(id)a3;
-- (void)renderForTime:(double)a3;
+- (void)removeClone:(id)clone;
+- (void)renderForTime:(double)time;
 - (void)resetConfiguration;
-- (void)setAccessibilityBounds:(CGRect)a3;
-- (void)setAccessibilityColorMatrix:(float *)a3 scale:(float)a4;
-- (void)setAccessibilityFrameRateLimitEnabled:(BOOL)a3;
-- (void)setAllowsDisplayCompositing:(BOOL)a3;
-- (void)setAllowsExtendedDynamicRange:(BOOL)a3;
-- (void)setAllowsVirtualModes:(BOOL)a3;
-- (void)setAllowsWirelessColorFiltering:(BOOL)a3;
-- (void)setAmbient:(float)a3;
-- (void)setApertureOffset:(double)a3;
-- (void)setBlackpointAdaptation:(CGColorTRC *)a3;
-- (void)setBlanked:(BOOL)a3;
-- (void)setBlendColorSpace:(CGColorSpace *)a3;
-- (void)setBrightnessCallback:(id)a3;
-- (void)setBrightnessCapabilities:(id)a3;
-- (void)setBrightnessControlDisabled:(BOOL)a3;
-- (void)setBrightnessLimit:(float)a3;
-- (void)setColorMatrix:(const float *)a3 scale:(float)a4 rampDuration:(double)a5;
-- (void)setColorMode:(id)a3;
-- (void)setContrast:(float)a3;
-- (void)setContrastEnhancer:(float)a3;
-- (void)setContrastEnhancer:(float)a3 rampDuration:(double)a4;
-- (void)setContrastPreservation:(float)a3;
-- (void)setCursorDictionary:(id)a3;
-- (void)setCursorEnabled:(BOOL)a3;
-- (void)setCursorHidden:(BOOL)a3;
-- (void)setCursorPosition:(CGPoint)a3;
-- (void)setDisablesUpdates:(BOOL)a3;
-- (void)setDisplayColorSpace:(CGColorSpace *)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFilteredAmbient:(float)a3;
-- (void)setFlipBookEnabled:(BOOL)a3;
-- (void)setFlipBookSuppressed:(BOOL)a3;
-- (void)setFrameInfoCallback:(id)a3;
-- (void)setGammaAdjustment:(CGColorTRC)a3[3];
-- (void)setGlobalLightAngle:(double)a3;
-- (void)setGlobalLightParameters:(id)a3;
-- (void)setGrayscale:(BOOL)a3;
-- (void)setHeadroom:(float)a3;
-- (void)setHighAmbientAdaptation:(float)a3;
-- (void)setHotPlugCallback:(id)a3;
-- (void)setIRDCFlushHint:(BOOL)a3;
-- (void)setIdealRefreshRate:(float)a3;
-- (void)setIndicatorBrightness:(float)a3;
-- (void)setIndicatorBrightnessLimit:(float)a3;
-- (void)setInvertsColors:(BOOL)a3;
-- (void)setIsReferencePreset:(BOOL)a3;
-- (void)setLowAmbientAdaptation:(float)a3;
-- (void)setMaximumBrightness:(float)a3;
-- (void)setMaximumRefreshRate:(float)a3;
-- (void)setMinimumRefreshRate:(float)a3;
-- (void)setNeedsGlobalLightCallback:(id)a3;
-- (void)setNits:(float)a3;
-- (void)setNotificationQueue:(id)a3;
-- (void)setOrientation:(id)a3;
-- (void)setOverscanAdjustment:(id)a3;
-- (void)setOverscanAmount:(double)a3;
-- (void)setOverscanAmounts:(CGSize)a3;
-- (void)setPotentialHeadroom:(float)a3;
-- (void)setProcessId:(int)a3;
-- (void)setPulseWidthMaximization:(BOOL)a3;
-- (void)setSCLCursorFill:(float)a3 g:(float)a4 b:(float)a5 a:(float)a6;
-- (void)setSCLCursorName:(__CFString *)a3;
-- (void)setSCLCursorOutline:(float)a3 g:(float)a4 b:(float)a5 a:(float)a6;
-- (void)setSCLCursorResolution:(int)a3;
-- (void)setSCLCursorScale:(float)a3;
-- (void)setSDRBrightness:(float)a3;
-- (void)setScale:(double)a3;
-- (void)setScalePreservesAspect:(BOOL)a3;
-- (void)setScales:(CGSize)a3;
-- (void)setSecure:(BOOL)a3;
-- (void)setSecureIndicatorsEnabled:(BOOL)a3;
-- (void)setSyncNotificationQueue:(id)a3;
-- (void)setSystemGamma:(CGColorTRC *)a3;
-- (void)setSystemIdentifiers:(id)a3;
-- (void)setTVMode:(id)a3;
-- (void)setTVSignalType:(id)a3;
-- (void)setTag:(int64_t)a3;
-- (void)setTracksCarPlayRegions:(BOOL)a3;
-- (void)setUpdateRequestCallback:(id)a3;
-- (void)setUserAdjustment:(float *)a3 scale:(float)a4;
-- (void)setUsesPreferredModeRefreshRate:(BOOL)a3;
-- (void)setWhitePointMatrix:(id *)a3 scale:(float)a4;
+- (void)setAccessibilityBounds:(CGRect)bounds;
+- (void)setAccessibilityColorMatrix:(float *)matrix scale:(float)scale;
+- (void)setAccessibilityFrameRateLimitEnabled:(BOOL)enabled;
+- (void)setAllowsDisplayCompositing:(BOOL)compositing;
+- (void)setAllowsExtendedDynamicRange:(BOOL)range;
+- (void)setAllowsVirtualModes:(BOOL)modes;
+- (void)setAllowsWirelessColorFiltering:(BOOL)filtering;
+- (void)setAmbient:(float)ambient;
+- (void)setApertureOffset:(double)offset;
+- (void)setBlackpointAdaptation:(CGColorTRC *)adaptation;
+- (void)setBlanked:(BOOL)blanked;
+- (void)setBlendColorSpace:(CGColorSpace *)space;
+- (void)setBrightnessCallback:(id)callback;
+- (void)setBrightnessCapabilities:(id)capabilities;
+- (void)setBrightnessControlDisabled:(BOOL)disabled;
+- (void)setBrightnessLimit:(float)limit;
+- (void)setColorMatrix:(const float *)matrix scale:(float)scale rampDuration:(double)duration;
+- (void)setColorMode:(id)mode;
+- (void)setContrast:(float)contrast;
+- (void)setContrastEnhancer:(float)enhancer;
+- (void)setContrastEnhancer:(float)enhancer rampDuration:(double)duration;
+- (void)setContrastPreservation:(float)preservation;
+- (void)setCursorDictionary:(id)dictionary;
+- (void)setCursorEnabled:(BOOL)enabled;
+- (void)setCursorHidden:(BOOL)hidden;
+- (void)setCursorPosition:(CGPoint)position;
+- (void)setDisablesUpdates:(BOOL)updates;
+- (void)setDisplayColorSpace:(CGColorSpace *)space;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFilteredAmbient:(float)ambient;
+- (void)setFlipBookEnabled:(BOOL)enabled;
+- (void)setFlipBookSuppressed:(BOOL)suppressed;
+- (void)setFrameInfoCallback:(id)callback;
+- (void)setGammaAdjustment:(CGColorTRC)adjustment[3];
+- (void)setGlobalLightAngle:(double)angle;
+- (void)setGlobalLightParameters:(id)parameters;
+- (void)setGrayscale:(BOOL)grayscale;
+- (void)setHeadroom:(float)headroom;
+- (void)setHighAmbientAdaptation:(float)adaptation;
+- (void)setHotPlugCallback:(id)callback;
+- (void)setIRDCFlushHint:(BOOL)hint;
+- (void)setIdealRefreshRate:(float)rate;
+- (void)setIndicatorBrightness:(float)brightness;
+- (void)setIndicatorBrightnessLimit:(float)limit;
+- (void)setInvertsColors:(BOOL)colors;
+- (void)setIsReferencePreset:(BOOL)preset;
+- (void)setLowAmbientAdaptation:(float)adaptation;
+- (void)setMaximumBrightness:(float)brightness;
+- (void)setMaximumRefreshRate:(float)rate;
+- (void)setMinimumRefreshRate:(float)rate;
+- (void)setNeedsGlobalLightCallback:(id)callback;
+- (void)setNits:(float)nits;
+- (void)setNotificationQueue:(id)queue;
+- (void)setOrientation:(id)orientation;
+- (void)setOverscanAdjustment:(id)adjustment;
+- (void)setOverscanAmount:(double)amount;
+- (void)setOverscanAmounts:(CGSize)amounts;
+- (void)setPotentialHeadroom:(float)headroom;
+- (void)setProcessId:(int)id;
+- (void)setPulseWidthMaximization:(BOOL)maximization;
+- (void)setSCLCursorFill:(float)fill g:(float)g b:(float)b a:(float)a;
+- (void)setSCLCursorName:(__CFString *)name;
+- (void)setSCLCursorOutline:(float)outline g:(float)g b:(float)b a:(float)a;
+- (void)setSCLCursorResolution:(int)resolution;
+- (void)setSCLCursorScale:(float)scale;
+- (void)setSDRBrightness:(float)brightness;
+- (void)setScale:(double)scale;
+- (void)setScalePreservesAspect:(BOOL)aspect;
+- (void)setScales:(CGSize)scales;
+- (void)setSecure:(BOOL)secure;
+- (void)setSecureIndicatorsEnabled:(BOOL)enabled;
+- (void)setSyncNotificationQueue:(id)queue;
+- (void)setSystemGamma:(CGColorTRC *)gamma;
+- (void)setSystemIdentifiers:(id)identifiers;
+- (void)setTVMode:(id)mode;
+- (void)setTVSignalType:(id)type;
+- (void)setTag:(int64_t)tag;
+- (void)setTracksCarPlayRegions:(BOOL)regions;
+- (void)setUpdateRequestCallback:(id)callback;
+- (void)setUserAdjustment:(float *)adjustment scale:(float)scale;
+- (void)setUsesPreferredModeRefreshRate:(BOOL)rate;
+- (void)setWhitePointMatrix:(id *)matrix scale:(float)scale;
 - (void)unregisterNotificationBlocks;
 - (void)unregisterSyncNotificationBlocks;
 - (void)update;
@@ -309,7 +309,7 @@
   return v5;
 }
 
-- (void)setSecureIndicatorsEnabled:(BOOL)a3
+- (void)setSecureIndicatorsEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
   if (self->_impl)
@@ -326,7 +326,7 @@
       var1 = self->_impl->var1;
       pthread_mutex_lock((var1 + 24));
       (*(**(var1 + 12) + 2208))();
-      if (!a3)
+      if (!enabled)
       {
         (*(**(var1 + 12) + 2176))(*(var1 + 12));
       }
@@ -411,7 +411,7 @@
   return v4;
 }
 
-- (void)renderForTime:(double)a3
+- (void)renderForTime:(double)time
 {
   impl = self->_impl;
   if (impl)
@@ -435,7 +435,7 @@
   return v4;
 }
 
-- (void)setNeedsGlobalLightCallback:(id)a3
+- (void)setNeedsGlobalLightCallback:(id)callback
 {
   impl = self->_impl;
   if (impl)
@@ -449,26 +449,26 @@
       *(var1 + 35) = 0;
     }
 
-    if (a3)
+    if (callback)
     {
-      *(var1 + 35) = _Block_copy(a3);
+      *(var1 + 35) = _Block_copy(callback);
     }
 
     os_unfair_lock_unlock(var1 + 83);
   }
 }
 
-- (void)setGlobalLightParameters:(id)a3
+- (void)setGlobalLightParameters:(id)parameters
 {
   if (self->_impl)
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"globalLightAngle", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"globalLightAngle", "floatValue"}];
     v6 = v5;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"globalLightOpacity", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"globalLightOpacity", "floatValue"}];
     v8 = v7;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"globalLightSpread", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"globalLightSpread", "floatValue"}];
     v10 = v9;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"globalLightHeight", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"globalLightHeight", "floatValue"}];
     var1 = self->_impl->var1;
 
     CA::WindowServer::Server::set_global_light_params(var1, v6, v8, v10, v11);
@@ -489,26 +489,26 @@
   }
 }
 
-- (void)setGlobalLightAngle:(double)a3
+- (void)setGlobalLightAngle:(double)angle
 {
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
-    CA::WindowServer::Server::set_global_light_params(impl->var1, v4, NAN, NAN, NAN);
+    angleCopy = angle;
+    CA::WindowServer::Server::set_global_light_params(impl->var1, angleCopy, NAN, NAN, NAN);
   }
 }
 
-- (void)setAccessibilityFrameRateLimitEnabled:(BOOL)a3
+- (void)setAccessibilityFrameRateLimitEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    enabledCopy = enabled;
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
-    *(var1 + 835) = v4;
+    *(var1 + 835) = enabledCopy;
     atomic_store(1u, var1 + 490);
     if (x_log_get_windowserver(void)::once != -1)
     {
@@ -519,7 +519,7 @@
     if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_DEFAULT))
     {
       v8[0] = 67109120;
-      v8[1] = v4;
+      v8[1] = enabledCopy;
       _os_log_impl(&dword_183AA6000, v7, OS_LOG_TYPE_DEFAULT, "AXFrameRateLimit=%i", v8, 8u);
     }
 
@@ -545,21 +545,21 @@
   return v4 & 1;
 }
 
-- (void)setGammaAdjustment:(CGColorTRC)a3[3]
+- (void)setGammaAdjustment:(CGColorTRC)adjustment[3]
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(**(impl->var1 + 12) + 1944))(*(impl->var1 + 12), a3);
+    (*(**(impl->var1 + 12) + 1944))(*(impl->var1 + 12), adjustment);
   }
 }
 
-- (void)setBlackpointAdaptation:(CGColorTRC *)a3
+- (void)setBlackpointAdaptation:(CGColorTRC *)adaptation
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(**(impl->var1 + 12) + 1928))(*(impl->var1 + 12), a3);
+    (*(**(impl->var1 + 12) + 1928))(*(impl->var1 + 12), adaptation);
   }
 }
 
@@ -584,12 +584,12 @@
   return self;
 }
 
-- (void)setSystemGamma:(CGColorTRC *)a3
+- (void)setSystemGamma:(CGColorTRC *)gamma
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(**(impl->var1 + 12) + 1912))(*(impl->var1 + 12), a3);
+    (*(**(impl->var1 + 12) + 1912))(*(impl->var1 + 12), gamma);
   }
 }
 
@@ -614,14 +614,14 @@
   return self;
 }
 
-- (void)setDisplayColorSpace:(CGColorSpace *)a3
+- (void)setDisplayColorSpace:(CGColorSpace *)space
 {
   v11 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   if (impl)
   {
     var1 = impl->var1;
-    (*(**(var1 + 12) + 1880))(*(var1 + 12), a3);
+    (*(**(var1 + 12) + 1880))(*(var1 + 12), space);
     v9 = 0;
     v10 = vdupq_n_s64(0x10uLL);
     (*(*var1 + 176))(var1, &v9, 0.0);
@@ -629,7 +629,7 @@
 
   if (BYTE13(xmmword_1ED4E982C) == 1)
   {
-    v6 = CGColorSpaceCopyICCData(a3);
+    v6 = CGColorSpaceCopyICCData(space);
     if (v6)
     {
       v7 = v6;
@@ -654,14 +654,14 @@
   }
 }
 
-- (void)setBlendColorSpace:(CGColorSpace *)a3
+- (void)setBlendColorSpace:(CGColorSpace *)space
 {
   v11 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   if (impl)
   {
     var1 = impl->var1;
-    (*(**(var1 + 12) + 1864))(*(var1 + 12), a3);
+    (*(**(var1 + 12) + 1864))(*(var1 + 12), space);
     v9 = 0;
     v10 = vdupq_n_s64(0x10uLL);
     (*(*var1 + 176))(var1, &v9, 0.0);
@@ -669,7 +669,7 @@
 
   if (BYTE13(xmmword_1ED4E982C) == 1)
   {
-    v6 = CGColorSpaceCopyICCData(a3);
+    v6 = CGColorSpaceCopyICCData(space);
     if (v6)
     {
       v7 = v6;
@@ -708,23 +708,23 @@
   }
 }
 
-- (void)addFramePresentationTimestamp:(unint64_t)a3
+- (void)addFramePresentationTimestamp:(unint64_t)timestamp
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 400))(impl->var1, a3);
+    (*(*impl->var1 + 400))(impl->var1, timestamp);
   }
 }
 
-- (void)copyDisplayTimingsFromDisplay:(id)a3
+- (void)copyDisplayTimingsFromDisplay:(id)display
 {
-  if (a3)
+  if (display)
   {
     impl = self->_impl;
     if (impl)
     {
-      v4 = *(a3 + 1);
+      v4 = *(display + 1);
       if (v4)
       {
         (*(*impl->var1 + 384))(impl->var1, *(v4 + 64));
@@ -733,12 +733,12 @@
   }
 }
 
-- (BOOL)setDigitalModes:(id)a3
+- (BOOL)setDigitalModes:(id)modes
 {
   impl = self->_impl;
   if (impl)
   {
-    return (*(*impl->var1 + 376))(impl->var1, a3);
+    return (*(*impl->var1 + 376))(impl->var1, modes);
   }
 
   else
@@ -747,12 +747,12 @@
   }
 }
 
-- (BOOL)setDigitalModes:(id)a3 withTimings:(id)a4
+- (BOOL)setDigitalModes:(id)modes withTimings:(id)timings
 {
   impl = self->_impl;
   if (impl)
   {
-    return (*(*impl->var1 + 368))(impl->var1, a3, a4);
+    return (*(*impl->var1 + 368))(impl->var1, modes, timings);
   }
 
   else
@@ -761,16 +761,16 @@
   }
 }
 
-- (void)postSyncNotification:(id)a3 payload:(id)a4
+- (void)postSyncNotification:(id)notification payload:(id)payload
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->_impl)
   {
-    v7 = [(CAWindowServerDisplay *)self syncNotificationQueue];
-    if (v7)
+    syncNotificationQueue = [(CAWindowServerDisplay *)self syncNotificationQueue];
+    if (syncNotificationQueue)
     {
-      v8 = v7;
-      v9 = [self->_impl->var7 objectForKeyedSubscript:a3];
+      v8 = syncNotificationQueue;
+      v9 = [self->_impl->var7 objectForKeyedSubscript:notification];
       if (v9)
       {
         v10 = v9;
@@ -783,7 +783,7 @@
         if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_INFO))
         {
           *buf = 136315138;
-          v15 = [a3 UTF8String];
+          uTF8String = [notification UTF8String];
           _os_log_impl(&dword_183AA6000, v11, OS_LOG_TYPE_INFO, "SyncNotification callback '%s' called...", buf, 0xCu);
         }
 
@@ -791,9 +791,9 @@
         block[1] = 3221225472;
         block[2] = __54__CAWindowServerDisplay_postSyncNotification_payload___block_invoke;
         block[3] = &unk_1E6DFA620;
-        block[5] = a4;
+        block[5] = payload;
         block[6] = v10;
-        block[4] = a3;
+        block[4] = notification;
         dispatch_sync(v8, block);
         if (x_log_get_windowserver(void)::once != -1)
         {
@@ -811,13 +811,13 @@
   }
 }
 
-- (void)setSyncNotificationQueue:(id)a3
+- (void)setSyncNotificationQueue:(id)queue
 {
   impl = self->_impl;
   if (impl)
   {
 
-    self->_impl->var5 = a3;
+    self->_impl->var5 = queue;
   }
 }
 
@@ -847,12 +847,12 @@
   if (impl)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = [impl->var7 allValues];
+    allValues = [impl->var7 allValues];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+    v5 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
     if (v5)
     {
       v6 = v5;
@@ -864,14 +864,14 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           _Block_release(*(*(&v10 + 1) + 8 * v8++));
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
       }
 
       while (v6);
@@ -882,7 +882,7 @@
   }
 }
 
-- (void)registerForSyncNotifications:(id)a3 withBlock:(id)a4
+- (void)registerForSyncNotifications:(id)notifications withBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -910,14 +910,14 @@
 
     if (!impl->var7)
     {
-      self->_impl->var7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a3, "count")}];
+      self->_impl->var7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(notifications, "count")}];
     }
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+    v10 = [notifications countByEnumeratingWithState:&v18 objects:v17 count:16];
     if (v10)
     {
       v11 = v10;
@@ -928,15 +928,15 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(notifications);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
           _Block_release([self->_impl->var7 objectForKeyedSubscript:v14]);
-          [self->_impl->var7 setObject:_Block_copy(a4) forKeyedSubscript:v14];
+          [self->_impl->var7 setObject:_Block_copy(block) forKeyedSubscript:v14];
         }
 
-        v11 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v11 = [notifications countByEnumeratingWithState:&v18 objects:v17 count:16];
       }
 
       while (v11);
@@ -982,7 +982,7 @@ uint64_t __64__CAWindowServerDisplay_registerForSyncNotifications_withBlock___bl
   return [*(a1 + 32) postSyncNotification:v3 payload:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v6, &v5, 1)}];
 }
 
-- (void)postNotification:(id)a3 payload:(id)a4
+- (void)postNotification:(id)notification payload:(id)payload
 {
   v20 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -992,11 +992,11 @@ uint64_t __64__CAWindowServerDisplay_registerForSyncNotifications_withBlock___bl
   }
 
   v8 = [impl->var6 objectForKeyedSubscript:?];
-  v9 = [(CAWindowServerDisplay *)self notificationQueue];
-  v10 = v9;
+  notificationQueue = [(CAWindowServerDisplay *)self notificationQueue];
+  v10 = notificationQueue;
   if (v8)
   {
-    v11 = v9 == 0;
+    v11 = notificationQueue == 0;
   }
 
   else
@@ -1015,9 +1015,9 @@ uint64_t __64__CAWindowServerDisplay_registerForSyncNotifications_withBlock___bl
     if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = a3;
+      notificationCopy = notification;
       v18 = 2112;
-      v19 = a4;
+      payloadCopy = payload;
       _os_log_impl(&dword_183AA6000, v14, OS_LOG_TYPE_DEFAULT, "Posting %@, payload: %@", buf, 0x16u);
     }
 
@@ -1025,14 +1025,14 @@ uint64_t __64__CAWindowServerDisplay_registerForSyncNotifications_withBlock___bl
     block[1] = 3221225472;
     block[2] = __50__CAWindowServerDisplay_postNotification_payload___block_invoke;
     block[3] = &unk_1E6DFA620;
-    block[5] = a4;
+    block[5] = payload;
     block[6] = v8;
-    block[4] = a3;
+    block[4] = notification;
     dispatch_async(v10, block);
     return;
   }
 
-  if (v9)
+  if (notificationQueue)
   {
     if (!v8)
     {
@@ -1045,7 +1045,7 @@ uint64_t __64__CAWindowServerDisplay_registerForSyncNotifications_withBlock___bl
       if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315138;
-        v17 = [a3 UTF8String];
+        notificationCopy = [notification UTF8String];
         v13 = "no block registered for '%s' notification";
 LABEL_23:
         _os_log_error_impl(&dword_183AA6000, v12, OS_LOG_TYPE_ERROR, v13, buf, 0xCu);
@@ -1064,20 +1064,20 @@ LABEL_23:
     if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
-      v17 = [a3 UTF8String];
+      notificationCopy = [notification UTF8String];
       v13 = "no queue available for '%s' notification";
       goto LABEL_23;
     }
   }
 }
 
-- (void)setNotificationQueue:(id)a3
+- (void)setNotificationQueue:(id)queue
 {
   if (self->_impl)
   {
-    v5 = a3;
+    queueCopy = queue;
 
-    self->_impl->var4 = a3;
+    self->_impl->var4 = queue;
   }
 }
 
@@ -1088,12 +1088,12 @@ LABEL_23:
   if (impl)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = [impl->var6 allValues];
+    allValues = [impl->var6 allValues];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+    v5 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1105,14 +1105,14 @@ LABEL_23:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           _Block_release(*(*(&v10 + 1) + 8 * v8++));
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
       }
 
       while (v6);
@@ -1123,7 +1123,7 @@ LABEL_23:
   }
 }
 
-- (void)registerForNotifications:(id)a3 withBlock:(id)a4
+- (void)registerForNotifications:(id)notifications withBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -1196,14 +1196,14 @@ LABEL_23:
 
     if (!impl->var6)
     {
-      self->_impl->var6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a3, "count")}];
+      self->_impl->var6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(notifications, "count")}];
     }
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v15 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+    v15 = [notifications countByEnumeratingWithState:&v27 objects:v26 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1214,7 +1214,7 @@ LABEL_23:
         {
           if (*v28 != v17)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(notifications);
           }
 
           v19 = *(*(&v27 + 1) + 8 * i);
@@ -1224,10 +1224,10 @@ LABEL_23:
             _Block_release(v20);
           }
 
-          [self->_impl->var6 setObject:_Block_copy(a4) forKeyedSubscript:v19];
+          [self->_impl->var6 setObject:_Block_copy(block) forKeyedSubscript:v19];
         }
 
-        v16 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+        v16 = [notifications countByEnumeratingWithState:&v27 objects:v26 count:16];
       }
 
       while (v16);
@@ -1403,12 +1403,12 @@ LABEL_15:
   }
 }
 
-- (void)setBrightnessCapabilities:(id)a3
+- (void)setBrightnessCapabilities:(id)capabilities
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 352))(impl->var1, a3);
+    (*(*impl->var1 + 352))(impl->var1, capabilities);
   }
 }
 
@@ -1439,12 +1439,12 @@ LABEL_15:
   }
 }
 
-- (void)setCursorEnabled:(BOOL)a3
+- (void)setCursorEnabled:(BOOL)enabled
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 296))(impl->var1, a3);
+    (*(*impl->var1 + 296))(impl->var1, enabled);
   }
 }
 
@@ -1462,12 +1462,12 @@ LABEL_15:
   }
 }
 
-- (void)setCursorHidden:(BOOL)a3
+- (void)setCursorHidden:(BOOL)hidden
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 280))(impl->var1, a3);
+    (*(*impl->var1 + 280))(impl->var1, hidden);
   }
 }
 
@@ -1485,12 +1485,12 @@ LABEL_15:
   }
 }
 
-- (void)setCursorDictionary:(id)a3
+- (void)setCursorDictionary:(id)dictionary
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 264))(impl->var1, a3);
+    (*(*impl->var1 + 264))(impl->var1, dictionary);
   }
 }
 
@@ -1508,12 +1508,12 @@ LABEL_15:
   }
 }
 
-- (void)setCursorPosition:(CGPoint)a3
+- (void)setCursorPosition:(CGPoint)position
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 248))(a3, *&a3.y);
+    (*(*impl->var1 + 248))(position, *&position.y);
   }
 }
 
@@ -1555,48 +1555,48 @@ LABEL_15:
   return result;
 }
 
-- (void)setSCLCursorResolution:(int)a3
+- (void)setSCLCursorResolution:(int)resolution
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 232))(impl->var1, *&a3);
+    (*(*impl->var1 + 232))(impl->var1, *&resolution);
   }
 }
 
-- (void)setSCLCursorScale:(float)a3
+- (void)setSCLCursorScale:(float)scale
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 224))(a3);
+    (*(*impl->var1 + 224))(scale);
   }
 }
 
-- (void)setSCLCursorOutline:(float)a3 g:(float)a4 b:(float)a5 a:(float)a6
+- (void)setSCLCursorOutline:(float)outline g:(float)g b:(float)b a:(float)a
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 216))(a3, a4, a5, a6);
+    (*(*impl->var1 + 216))(outline, g, b, a);
   }
 }
 
-- (void)setSCLCursorFill:(float)a3 g:(float)a4 b:(float)a5 a:(float)a6
+- (void)setSCLCursorFill:(float)fill g:(float)g b:(float)b a:(float)a
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 208))(a3, a4, a5, a6);
+    (*(*impl->var1 + 208))(fill, g, b, a);
   }
 }
 
-- (void)setSCLCursorName:(__CFString *)a3
+- (void)setSCLCursorName:(__CFString *)name
 {
   impl = self->_impl;
   if (impl)
   {
-    (*(*impl->var1 + 200))(impl->var1, a3);
+    (*(*impl->var1 + 200))(impl->var1, name);
   }
 }
 
@@ -1684,7 +1684,7 @@ LABEL_15:
   return var3;
 }
 
-- (void)setFrameInfoCallback:(id)a3
+- (void)setFrameInfoCallback:(id)callback
 {
   v12[5] = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -1700,9 +1700,9 @@ LABEL_15:
       v6->var3 = 0;
     }
 
-    if (a3)
+    if (callback)
     {
-      v8 = _Block_copy(a3);
+      v8 = _Block_copy(callback);
       v9 = self->_impl;
       v9->var3 = v8;
       v12[0] = MEMORY[0x1E69E9820];
@@ -1757,9 +1757,9 @@ uint64_t __46__CAWindowServerDisplay_setFrameInfoCallback___block_invoke(uint64_
   return pthread_mutex_unlock(v20);
 }
 
-- (BOOL)finishExternalUpdate:(void *)a3 withFlags:(unsigned int)a4 debugInfo:(unint64_t)a5
+- (BOOL)finishExternalUpdate:(void *)update withFlags:(unsigned int)flags debugInfo:(unint64_t)info
 {
-  if (!a3)
+  if (!update)
   {
     return 0;
   }
@@ -1770,21 +1770,21 @@ uint64_t __46__CAWindowServerDisplay_setFrameInfoCallback___block_invoke(uint64_
     return 0;
   }
 
-  v7 = (*(*impl->var1 + 24))(impl->var1, a3, *&a4, a5);
+  v7 = (*(*impl->var1 + 24))(impl->var1, update, *&flags, info);
   pthread_mutex_unlock(&self->_impl->var0._m);
   return v7;
 }
 
-- (void)beginExternalUpdate:(void *)a3 usingSoftwareRenderer:(BOOL)a4
+- (void)beginExternalUpdate:(void *)update usingSoftwareRenderer:(BOOL)renderer
 {
-  if (a3)
+  if (update)
   {
     impl = self->_impl;
     if (impl)
     {
-      v6 = a4;
+      rendererCopy = renderer;
       pthread_mutex_lock(&impl->var0._m);
-      (*(*self->_impl->var1 + 88))(self->_impl->var1, v6);
+      (*(*self->_impl->var1 + 88))(self->_impl->var1, rendererCopy);
       v7 = *(*self->_impl->var1 + 16);
 
       v7();
@@ -1834,7 +1834,7 @@ uint64_t __46__CAWindowServerDisplay_setFrameInfoCallback___block_invoke(uint64_
   return v4;
 }
 
-- (BOOL)canUpdateWithFlags:(unsigned int)a3
+- (BOOL)canUpdateWithFlags:(unsigned int)flags
 {
   impl = self->_impl;
   if (!impl)
@@ -1842,31 +1842,31 @@ uint64_t __46__CAWindowServerDisplay_setFrameInfoCallback___block_invoke(uint64_
     return 0;
   }
 
-  v4 = *&a3;
+  v4 = *&flags;
   pthread_mutex_lock(&self->_impl->var0._m);
   v6 = (*(*self->_impl->var1 + 8))(self->_impl->var1, v4);
   pthread_mutex_unlock(&impl->var0._m);
   return v6;
 }
 
-- (BOOL)setWhitePoint:(id *)a3 rampDuration:(double)a4 error:(id *)a5
+- (BOOL)setWhitePoint:(id *)point rampDuration:(double)duration error:(id *)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (point)
   {
-    v6 = a4;
-    LODWORD(a4) = 1.0;
-    [(CAWindowServerDisplay *)self setColorMatrix:a3 scale:a5 rampDuration:a4, v6];
+    durationCopy = duration;
+    LODWORD(duration) = 1.0;
+    [(CAWindowServerDisplay *)self setColorMatrix:point scale:error rampDuration:duration, durationCopy];
   }
 
-  else if (a5 && !*a5)
+  else if (error && !*error)
   {
     v8 = *MEMORY[0x1E696A578];
     v9[0] = @"invalid nonnull argument";
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:4 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1, a4)}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:4 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1, duration)}];
   }
 
-  return a3 != 0;
+  return point != 0;
 }
 
 - (BOOL)whitePointD50XYZ
@@ -1935,9 +1935,9 @@ uint64_t __37__CAWindowServerDisplay_commitPreset__block_invoke(uint64_t a1)
   return (*(*v1[12] + 1208))();
 }
 
-- (void)setIsReferencePreset:(BOOL)a3
+- (void)setIsReferencePreset:(BOOL)preset
 {
-  if (a3)
+  if (preset)
   {
     v4 = 0x20000;
   }
@@ -1951,13 +1951,13 @@ uint64_t __37__CAWindowServerDisplay_commitPreset__block_invoke(uint64_t a1)
   *(v3 + 904) = *(v3 + 904) & 0xFFFDFFFF | v4;
 }
 
-- (BOOL)commitBrightness:(id *)a3 withBlock:(id)a4
+- (BOOL)commitBrightness:(id *)brightness withBlock:(id)block
 {
   v47 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   if (!impl)
   {
-    [(CAWindowServerDisplay *)self emitBrightnessError:a3, a4];
+    [(CAWindowServerDisplay *)self emitBrightnessError:brightness, block];
     if (x_log_get_windowserver(void)::once != -1)
     {
       dispatch_once(&x_log_get_windowserver(void)::once, &__block_literal_global_17283);
@@ -1978,7 +1978,7 @@ uint64_t __37__CAWindowServerDisplay_commitPreset__block_invoke(uint64_t a1)
   var1 = impl->var1;
   if (![(CAWindowServerDisplay *)self brightnessAvailable])
   {
-    [(CAWindowServerDisplay *)self emitBrightnessError:a3];
+    [(CAWindowServerDisplay *)self emitBrightnessError:brightness];
     v20 = (*(*var1 + 336))(var1);
     v21 = CFCopyDescription(v20);
     if (x_log_get_windowserver(void)::once != -1)
@@ -1989,7 +1989,7 @@ uint64_t __37__CAWindowServerDisplay_commitPreset__block_invoke(uint64_t a1)
     v22 = x_log_get_windowserver(void)::log;
     if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_ERROR))
     {
-      v23 = [(CAWindowServerDisplay *)self displayId];
+      displayId = [(CAWindowServerDisplay *)self displayId];
       if (v21)
       {
         CStringPtr = CFStringGetCStringPtr(v21, 0x8000100u);
@@ -2001,7 +2001,7 @@ uint64_t __37__CAWindowServerDisplay_commitPreset__block_invoke(uint64_t a1)
       }
 
       *buf = 67109378;
-      *&buf[4] = v23;
+      *&buf[4] = displayId;
       *&buf[8] = 2080;
       *&buf[10] = CStringPtr;
       _os_log_error_impl(&dword_183AA6000, v22, OS_LOG_TYPE_ERROR, "Display %d brightness commit failed - unavailable. Capabilities: %s", buf, 0x12u);
@@ -2040,7 +2040,7 @@ LABEL_14:
     v26 = *&v11->var2.var0;
     [(CAWindowServerDisplay *)self displayId];
     kdebug_trace();
-    v15 = _Block_copy(a4);
+    v15 = _Block_copy(block);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52__CAWindowServerDisplay_commitBrightness_withBlock___block_invoke;
@@ -2073,7 +2073,7 @@ LABEL_14:
     return v17;
   }
 
-  [(CAWindowServerDisplay *)self emitBrightnessError:a3];
+  [(CAWindowServerDisplay *)self emitBrightnessError:brightness];
   if (x_log_get_windowserver(void)::once != -1)
   {
     dispatch_once(&x_log_get_windowserver(void)::once, &__block_literal_global_17283);
@@ -2675,7 +2675,7 @@ LABEL_3:
   }
 }
 
-- (BOOL)forceCommitBrightness:(id *)a3 withBlock:(id)a4
+- (BOOL)forceCommitBrightness:(id *)brightness withBlock:(id)block
 {
   impl = self->_impl;
   if (impl)
@@ -2683,208 +2683,208 @@ LABEL_3:
     impl->var2.var16 |= 0x400u;
   }
 
-  return [(CAWindowServerDisplay *)self commitBrightness:a3 withBlock:a4];
+  return [(CAWindowServerDisplay *)self commitBrightness:brightness withBlock:block];
 }
 
-- (void)setWhitePointMatrix:(id *)a3 scale:(float)a4
+- (void)setWhitePointMatrix:(id *)matrix scale:(float)scale
 {
   impl = self->_impl;
   if (impl)
   {
-    v5 = *a3->var0;
-    v6 = *&a3->var0[4];
-    impl->var2.var12.var0[8] = a3->var0[8];
+    v5 = *matrix->var0;
+    v6 = *&matrix->var0[4];
+    impl->var2.var12.var0[8] = matrix->var0[8];
     *&impl->var2.var12.var0[4] = v6;
     *impl->var2.var12.var0 = v5;
-    impl->var2.var11 = a4;
+    impl->var2.var11 = scale;
     impl->var2.var16 |= 0x100u;
   }
 }
 
-- (void)setIRDCFlushHint:(BOOL)a3
+- (void)setIRDCFlushHint:(BOOL)hint
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var15 = a3;
+    impl->var2.var15 = hint;
     impl->var2.var16 |= 0x4000u;
   }
 }
 
-- (void)setIndicatorBrightnessLimit:(float)a3
+- (void)setIndicatorBrightnessLimit:(float)limit
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var10 = a3;
+    impl->var2.var10 = limit;
     impl->var2.var16 |= 0x2000u;
   }
 }
 
-- (void)setIndicatorBrightness:(float)a3
+- (void)setIndicatorBrightness:(float)brightness
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var9 = a3;
+    impl->var2.var9 = brightness;
     impl->var2.var16 |= 0x1000u;
   }
 }
 
-- (void)setContrastPreservation:(float)a3
+- (void)setContrastPreservation:(float)preservation
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var8 = a3;
+    impl->var2.var8 = preservation;
     impl->var2.var16 |= 0x8000u;
   }
 }
 
-- (void)setHighAmbientAdaptation:(float)a3
+- (void)setHighAmbientAdaptation:(float)adaptation
 {
   impl = self->_impl;
   if (impl)
   {
-    if (a3 > 1.0)
+    if (adaptation > 1.0)
     {
-      a3 = 1.0;
+      adaptation = 1.0;
     }
 
-    if (a3 < 0.0)
+    if (adaptation < 0.0)
     {
-      a3 = 0.0;
+      adaptation = 0.0;
     }
 
-    impl->var2.var7 = a3;
+    impl->var2.var7 = adaptation;
     impl->var2.var16 |= 0x800u;
   }
 }
 
-- (void)setLowAmbientAdaptation:(float)a3
+- (void)setLowAmbientAdaptation:(float)adaptation
 {
   impl = self->_impl;
   if (impl)
   {
-    if (a3 > 1.0)
+    if (adaptation > 1.0)
     {
-      a3 = 1.0;
+      adaptation = 1.0;
     }
 
-    if (a3 < 0.0)
+    if (adaptation < 0.0)
     {
-      a3 = 0.0;
+      adaptation = 0.0;
     }
 
-    impl->var2.var6 = a3;
+    impl->var2.var6 = adaptation;
     impl->var2.var16 |= 0x80u;
   }
 }
 
-- (void)setBrightnessControlDisabled:(BOOL)a3
+- (void)setBrightnessControlDisabled:(BOOL)disabled
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var14 = a3;
+    impl->var2.var14 = disabled;
     impl->var2.var16 |= 0x40u;
   }
 }
 
-- (void)setBrightnessLimit:(float)a3
+- (void)setBrightnessLimit:(float)limit
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var5 = a3;
+    impl->var2.var5 = limit;
     impl->var2.var16 |= 0x10u;
   }
 }
 
-- (void)setSDRBrightness:(float)a3
+- (void)setSDRBrightness:(float)brightness
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var2 = a3;
+    impl->var2.var2 = brightness;
     impl->var2.var16 |= 2u;
   }
 }
 
-- (void)setPotentialHeadroom:(float)a3
+- (void)setPotentialHeadroom:(float)headroom
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var4 = a3;
+    impl->var2.var4 = headroom;
     impl->var2.var16 |= 8u;
   }
 }
 
-- (void)setHeadroom:(float)a3
+- (void)setHeadroom:(float)headroom
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var3 = a3;
+    impl->var2.var3 = headroom;
     impl->var2.var16 |= 4u;
   }
 }
 
-- (void)setContrastEnhancer:(float)a3
+- (void)setContrastEnhancer:(float)enhancer
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var13 = a3;
+    impl->var2.var13 = enhancer;
     impl->var2.var16 |= 0x200u;
   }
 }
 
-- (void)setFilteredAmbient:(float)a3
+- (void)setFilteredAmbient:(float)ambient
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var1 = a3;
+    impl->var2.var1 = ambient;
     impl->var2.var16 |= 0x20u;
   }
 }
 
-- (void)setAmbient:(float)a3
+- (void)setAmbient:(float)ambient
 {
   impl = self->_impl;
   if (impl)
   {
-    impl->var2.var0 = a3;
+    impl->var2.var0 = ambient;
     impl->var2.var16 |= 1u;
   }
 }
 
-- (void)emitWhitePointError:(id *)a3
+- (void)emitWhitePointError:(id *)error
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
-    if (!*a3)
+    if (!*error)
     {
       v3 = *MEMORY[0x1E696A578];
       v4[0] = @"white point control not supported on this display";
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:5 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v4, &v3, 1)}];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:5 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v4, &v3, 1)}];
     }
   }
 }
 
-- (void)emitBrightnessError:(id *)a3
+- (void)emitBrightnessError:(id *)error
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
-    if (!*a3)
+    if (!*error)
     {
       v3 = *MEMORY[0x1E696A578];
       v4[0] = @"brightness control not supported on this display";
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:4 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v4, &v3, 1)}];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:4 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v4, &v3, 1)}];
     }
   }
 }
@@ -2989,9 +2989,9 @@ LABEL_3:
   return v5;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x1E69E9840];
   if (x_log_get_display_state(void)::once != -1)
   {
@@ -3004,7 +3004,7 @@ LABEL_3:
     v9[0] = 67109376;
     v9[1] = [(CAWindowServerDisplay *)self displayId];
     v10 = 1024;
-    v11 = v3;
+    v11 = enabledCopy;
     _os_log_impl(&dword_183AA6000, v5, OS_LOG_TYPE_DEFAULT, "Display %u setEnabled:%i", v9, 0xEu);
   }
 
@@ -3013,9 +3013,9 @@ LABEL_3:
   {
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
-    CA::WindowServer::Server::set_display_state(var1, v3, 0, 0);
+    CA::WindowServer::Server::set_display_state(var1, enabledCopy, 0, 0);
     v8 = atomic_load((*(*(var1 + 12) + 768) + 2));
-    (*(*var1 + 184))(var1, v3, v8);
+    (*(*var1 + 184))(var1, enabledCopy, v8);
     pthread_mutex_unlock(&impl->var0._m);
   }
 }
@@ -3053,13 +3053,13 @@ LABEL_3:
   return v4;
 }
 
-- (void)setDisablesUpdates:(BOOL)a3
+- (void)setDisablesUpdates:(BOOL)updates
 {
   v13 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    updatesCopy = updates;
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
     if (x_log_get_windowserver(void)::once != -1)
@@ -3074,12 +3074,12 @@ LABEL_3:
       v10[0] = 67109376;
       v10[1] = v8;
       v11 = 1024;
-      v12 = v4;
+      v12 = updatesCopy;
       _os_log_impl(&dword_183AA6000, v7, OS_LOG_TYPE_DEFAULT, "Display %u disables updates %i", v10, 0xEu);
     }
 
     pthread_mutex_lock((var1 + 24));
-    if (v4)
+    if (updatesCopy)
     {
       v9 = 2048;
     }
@@ -3181,19 +3181,19 @@ LABEL_3:
   return v4 & 1;
 }
 
-- (void)setTracksCarPlayRegions:(BOOL)a3
+- (void)setTracksCarPlayRegions:(BOOL)regions
 {
   v15 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    regionsCopy = regions;
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
     pthread_mutex_lock((var1 + 24));
-    if (*(var1 + 836) != v4)
+    if (*(var1 + 836) != regionsCopy)
     {
-      if (v4)
+      if (regionsCopy)
       {
         if (CACarPlayMarshalCreate(void)::once != -1)
         {
@@ -3211,7 +3211,7 @@ LABEL_3:
         *(var1 + 62) = 0;
       }
 
-      *(var1 + 836) = v4;
+      *(var1 + 836) = regionsCopy;
       v13 = 0;
       __asm { FMOV            V0.2D, #2.0 }
 
@@ -3243,14 +3243,14 @@ LABEL_3:
   return v4 & 1;
 }
 
-- (void)setAllowsDisplayCompositing:(BOOL)a3
+- (void)setAllowsDisplayCompositing:(BOOL)compositing
 {
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    compositingCopy = compositing;
     pthread_mutex_lock(&self->_impl->var0._m);
-    CA::WindowServer::Server::set_allows_display_compositing(self->_impl->var1, v4);
+    CA::WindowServer::Server::set_allows_display_compositing(self->_impl->var1, compositingCopy);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
@@ -3274,14 +3274,14 @@ LABEL_3:
   return v4 & 1;
 }
 
-- (void)setSecure:(BOOL)a3
+- (void)setSecure:(BOOL)secure
 {
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    secureCopy = secure;
     pthread_mutex_lock(&self->_impl->var0._m);
-    CA::WindowServer::Server::set_secure(self->_impl->var1, v4);
+    CA::WindowServer::Server::set_secure(self->_impl->var1, secureCopy);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
@@ -3329,7 +3329,7 @@ LABEL_3:
   return v4;
 }
 
-- (void)setUpdateRequestCallback:(id)a3
+- (void)setUpdateRequestCallback:(id)callback
 {
   impl = self->_impl;
   if (impl)
@@ -3341,19 +3341,19 @@ LABEL_3:
   }
 }
 
-- (void)setBrightnessCallback:(id)a3
+- (void)setBrightnessCallback:(id)callback
 {
   impl = self->_impl;
   if (impl)
   {
     pthread_mutex_lock(&self->_impl->var0._m);
-    CA::WindowServer::Server::set_brightness_callback(self->_impl->var1, a3);
+    CA::WindowServer::Server::set_brightness_callback(self->_impl->var1, callback);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
 }
 
-- (void)setHotPlugCallback:(id)a3
+- (void)setHotPlugCallback:(id)callback
 {
   impl = self->_impl;
   if (impl)
@@ -3367,9 +3367,9 @@ LABEL_3:
       *(var1 + 28) = 0;
     }
 
-    if (a3)
+    if (callback)
     {
-      *(var1 + 28) = _Block_copy(a3);
+      *(var1 + 28) = _Block_copy(callback);
     }
 
     pthread_mutex_unlock(&impl->var0._m);
@@ -3405,7 +3405,7 @@ LABEL_3:
   return &v5->isa;
 }
 
-- (void)setTVSignalType:(id)a3
+- (void)setTVSignalType:(id)type
 {
   v7 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -3417,7 +3417,7 @@ LABEL_3:
   if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_ERROR))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_183AA6000, v4, OS_LOG_TYPE_ERROR, "%@: Ignoring call to setTVSignalType:", &v5, 0xCu);
   }
 }
@@ -3434,14 +3434,14 @@ LABEL_3:
   if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_ERROR))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_183AA6000, v3, OS_LOG_TYPE_ERROR, "%@: TVMode is deprecated!", &v5, 0xCu);
   }
 
   return 0;
 }
 
-- (void)setTVMode:(id)a3
+- (void)setTVMode:(id)mode
 {
   v7 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -3453,7 +3453,7 @@ LABEL_3:
   if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_ERROR))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_183AA6000, v4, OS_LOG_TYPE_ERROR, "%@: setTVMode: is deprecated!", &v5, 0xCu);
   }
 }
@@ -3472,16 +3472,16 @@ LABEL_3:
   return v4;
 }
 
-- (void)setProcessId:(int)a3
+- (void)setProcessId:(int)id
 {
   impl = self->_impl;
   if (impl)
   {
     pthread_mutex_lock(&self->_impl->var0._m);
     v6 = *(self->_impl->var1 + 12);
-    if (*(v6 + 648) != a3)
+    if (*(v6 + 648) != id)
     {
-      *(v6 + 648) = a3;
+      *(v6 + 648) = id;
       CA::WindowServer::Display::post_display_changed(v6);
     }
 
@@ -3503,17 +3503,17 @@ LABEL_3:
   return v4;
 }
 
-- (void)setTag:(int64_t)a3
+- (void)setTag:(int64_t)tag
 {
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    tagCopy = tag;
     pthread_mutex_lock(&self->_impl->var0._m);
     v6 = *(self->_impl->var1 + 12);
-    if (*(v6 + 644) != v4)
+    if (*(v6 + 644) != tagCopy)
     {
-      *(v6 + 644) = v4;
+      *(v6 + 644) = tagCopy;
       CA::WindowServer::Display::post_display_changed(v6);
     }
 
@@ -3537,7 +3537,7 @@ LABEL_3:
   return v3;
 }
 
-- (void)setAllowsVirtualModes:(BOOL)a3
+- (void)setAllowsVirtualModes:(BOOL)modes
 {
   v5 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -3571,7 +3571,7 @@ LABEL_3:
   return 1;
 }
 
-- (void)setColorMode:(id)a3
+- (void)setColorMode:(id)mode
 {
   v5 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -3623,7 +3623,7 @@ LABEL_3:
   return 1;
 }
 
-- (void)setUsesPreferredModeRefreshRate:(BOOL)a3
+- (void)setUsesPreferredModeRefreshRate:(BOOL)rate
 {
   v5 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -3657,7 +3657,7 @@ LABEL_3:
   return 60.0;
 }
 
-- (void)setIdealRefreshRate:(float)a3
+- (void)setIdealRefreshRate:(float)rate
 {
   v5 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -3691,7 +3691,7 @@ LABEL_3:
   return 3.4028e38;
 }
 
-- (void)setMaximumRefreshRate:(float)a3
+- (void)setMaximumRefreshRate:(float)rate
 {
   v5 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -3725,7 +3725,7 @@ LABEL_3:
   return 0.0;
 }
 
-- (void)setMinimumRefreshRate:(float)a3
+- (void)setMinimumRefreshRate:(float)rate
 {
   v5 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -3771,7 +3771,7 @@ LABEL_3:
   return v4;
 }
 
-- (void)setMaximumBrightness:(float)a3
+- (void)setMaximumBrightness:(float)brightness
 {
   impl = self->_impl;
   if (impl)
@@ -3779,7 +3779,7 @@ LABEL_3:
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
     pthread_mutex_lock((var1 + 24));
-    (*(**(var1 + 12) + 1024))(a3);
+    (*(**(var1 + 12) + 1024))(brightness);
     pthread_mutex_unlock((var1 + 24));
 
     pthread_mutex_unlock(&impl->var0._m);
@@ -3800,7 +3800,7 @@ LABEL_3:
   return v4;
 }
 
-- (void)setContrast:(float)a3
+- (void)setContrast:(float)contrast
 {
   impl = self->_impl;
   if (impl)
@@ -3808,7 +3808,7 @@ LABEL_3:
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
     pthread_mutex_lock((var1 + 24));
-    (*(**(var1 + 12) + 944))(a3);
+    (*(**(var1 + 12) + 944))(contrast);
     pthread_mutex_unlock((var1 + 24));
 
     pthread_mutex_unlock(&impl->var0._m);
@@ -3829,7 +3829,7 @@ LABEL_3:
   return v4;
 }
 
-- (void)setAllowsWirelessColorFiltering:(BOOL)a3
+- (void)setAllowsWirelessColorFiltering:(BOOL)filtering
 {
   impl = self->_impl;
   if (impl)
@@ -3841,16 +3841,16 @@ LABEL_3:
   }
 }
 
-- (void)setAccessibilityBounds:(CGRect)a3
+- (void)setAccessibilityBounds:(CGRect)bounds
 {
   v30 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   if (impl)
   {
-    y = a3.origin.y;
-    height = a3.size.height;
-    x = a3.origin.x;
-    size = a3.size;
+    y = bounds.origin.y;
+    height = bounds.size.height;
+    x = bounds.origin.x;
+    size = bounds.size;
     pthread_mutex_lock(&self->_impl->var0._m);
     *v5.i64 = x;
     *&v5.i64[1] = y;
@@ -3899,19 +3899,19 @@ LABEL_3:
   }
 }
 
-- (void)setAccessibilityColorMatrix:(float *)a3 scale:(float)a4
+- (void)setAccessibilityColorMatrix:(float *)matrix scale:(float)scale
 {
   impl = self->_impl;
   if (impl)
   {
     pthread_mutex_lock(&self->_impl->var0._m);
-    CA::WindowServer::Server::set_accessibility_color_matrix(self->_impl->var1, a3, a4);
+    CA::WindowServer::Server::set_accessibility_color_matrix(self->_impl->var1, matrix, scale);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
 }
 
-- (void)setNits:(float)a3
+- (void)setNits:(float)nits
 {
   v6[1] = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -3921,10 +3921,10 @@ LABEL_3:
     v6[0] = *(*(self->_impl->var1 + 12) + 656);
     if (!CA::WindowServer::Display::Mode::is_hdr(v6))
     {
-      a3 = a3 / CA::WindowServer::Display::edr_headroom(*(self->_impl->var1 + 12));
+      nits = nits / CA::WindowServer::Display::edr_headroom(*(self->_impl->var1 + 12));
     }
 
-    CA::WindowServer::Server::set_sdr_nits(self->_impl->var1, a3);
+    CA::WindowServer::Server::set_sdr_nits(self->_impl->var1, nits);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
@@ -3951,7 +3951,7 @@ LABEL_3:
   return v4;
 }
 
-- (void)abortContrastEnhancerRamp:(float *)a3
+- (void)abortContrastEnhancerRamp:(float *)ramp
 {
   impl = self->_impl;
   if (impl)
@@ -3969,7 +3969,7 @@ LABEL_3:
   }
 }
 
-- (void)setContrastEnhancer:(float)a3 rampDuration:(double)a4
+- (void)setContrastEnhancer:(float)enhancer rampDuration:(double)duration
 {
   impl = self->_impl;
   if (impl)
@@ -3979,7 +3979,7 @@ LABEL_3:
     {
       var1 = self->_impl->var1;
       pthread_mutex_lock((var1 + 24));
-      (*(**(var1 + 12) + 1464))(a3, a4);
+      (*(**(var1 + 12) + 1464))(enhancer, duration);
       pthread_mutex_unlock((var1 + 24));
     }
 
@@ -3987,7 +3987,7 @@ LABEL_3:
   }
 }
 
-- (void)setUserAdjustment:(float *)a3 scale:(float)a4
+- (void)setUserAdjustment:(float *)adjustment scale:(float)scale
 {
   impl = self->_impl;
   if (impl)
@@ -3995,14 +3995,14 @@ LABEL_3:
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
     pthread_mutex_lock((var1 + 24));
-    (*(**(var1 + 12) + 1456))(a4);
+    (*(**(var1 + 12) + 1456))(scale);
     pthread_mutex_unlock((var1 + 24));
 
     pthread_mutex_unlock(&impl->var0._m);
   }
 }
 
-- (void)abortColorMatrixRamp:(float *)a3 scale:(float *)a4
+- (void)abortColorMatrixRamp:(float *)ramp scale:(float *)scale
 {
   impl = self->_impl;
   if (impl)
@@ -4017,13 +4017,13 @@ LABEL_3:
   }
 }
 
-- (void)setColorMatrix:(const float *)a3 scale:(float)a4 rampDuration:(double)a5
+- (void)setColorMatrix:(const float *)matrix scale:(float)scale rampDuration:(double)duration
 {
   impl = self->_impl;
   if (impl)
   {
     pthread_mutex_lock(&self->_impl->var0._m);
-    CA::WindowServer::Server::set_color_matrix(self->_impl->var1, a3, a4, a5);
+    CA::WindowServer::Server::set_color_matrix(self->_impl->var1, matrix, scale, duration);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
@@ -4043,7 +4043,7 @@ LABEL_3:
   return v4;
 }
 
-- (void)setGrayscale:(BOOL)a3
+- (void)setGrayscale:(BOOL)grayscale
 {
   v8 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -4077,14 +4077,14 @@ LABEL_3:
   return v4;
 }
 
-- (void)setAllowsExtendedDynamicRange:(BOOL)a3
+- (void)setAllowsExtendedDynamicRange:(BOOL)range
 {
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    rangeCopy = range;
     pthread_mutex_lock(&self->_impl->var0._m);
-    (*(*self->_impl->var1 + 136))(self->_impl->var1, v4);
+    (*(*self->_impl->var1 + 136))(self->_impl->var1, rangeCopy);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
@@ -4104,7 +4104,7 @@ LABEL_3:
   return v4;
 }
 
-- (void)setPulseWidthMaximization:(BOOL)a3
+- (void)setPulseWidthMaximization:(BOOL)maximization
 {
   v8 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -4138,7 +4138,7 @@ LABEL_3:
   return v4;
 }
 
-- (void)setInvertsColors:(BOOL)a3
+- (void)setInvertsColors:(BOOL)colors
 {
   v8 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -4172,7 +4172,7 @@ LABEL_3:
   return v4;
 }
 
-- (void)setApertureOffset:(double)a3
+- (void)setApertureOffset:(double)offset
 {
   impl = self->_impl;
   if (impl)
@@ -4211,13 +4211,13 @@ LABEL_3:
   return result;
 }
 
-- (void)setOverscanAmounts:(CGSize)a3
+- (void)setOverscanAmounts:(CGSize)amounts
 {
   impl = self->_impl;
   if (impl)
   {
-    height = a3.height;
-    width = a3.width;
+    height = amounts.height;
+    width = amounts.width;
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
     pthread_mutex_lock((var1 + 24));
@@ -4287,7 +4287,7 @@ LABEL_3:
   return v10;
 }
 
-- (void)setOverscanAmount:(double)a3
+- (void)setOverscanAmount:(double)amount
 {
   v11 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -4307,11 +4307,11 @@ LABEL_3:
   {
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
-    v8 = a3;
+    amountCopy = amount;
     pthread_mutex_lock((var1 + 24));
     v9 = *(var1 + 12);
-    *(v9 + 60) = v8;
-    *(v9 + 64) = v8;
+    *(v9 + 60) = amountCopy;
+    *(v9 + 64) = amountCopy;
     pthread_mutex_unlock((var1 + 24));
     pthread_mutex_unlock(&impl->var0._m);
   }
@@ -4331,23 +4331,23 @@ LABEL_3:
   return qword_1E6DF7EE8[v4];
 }
 
-- (void)setOverscanAdjustment:(id)a3
+- (void)setOverscanAdjustment:(id)adjustment
 {
   if (self->_impl)
   {
-    if ([a3 isEqualToString:@"none"])
+    if ([adjustment isEqualToString:@"none"])
     {
       v5 = 1;
     }
 
-    else if ([a3 isEqualToString:@"scaleContent"])
+    else if ([adjustment isEqualToString:@"scaleContent"])
     {
       v5 = 2;
     }
 
     else
     {
-      if (![a3 isEqualToString:@"insetBounds"])
+      if (![adjustment isEqualToString:@"insetBounds"])
       {
         return;
       }
@@ -4385,24 +4385,24 @@ LABEL_3:
   }
 }
 
-- (void)setOrientation:(id)a3
+- (void)setOrientation:(id)orientation
 {
-  if ([a3 isEqualToString:@"portrait"])
+  if ([orientation isEqualToString:@"portrait"])
   {
     v5 = 0;
   }
 
-  else if ([a3 isEqualToString:@"landscapeLeft"])
+  else if ([orientation isEqualToString:@"landscapeLeft"])
   {
     v5 = 1;
   }
 
-  else if ([a3 isEqualToString:@"portraitUpsideDown"])
+  else if ([orientation isEqualToString:@"portraitUpsideDown"])
   {
     v5 = 2;
   }
 
-  else if ([a3 isEqualToString:@"landscapeRight"])
+  else if ([orientation isEqualToString:@"landscapeRight"])
   {
     v5 = 3;
   }
@@ -4469,14 +4469,14 @@ LABEL_3:
   return v4;
 }
 
-- (void)setFlipBookSuppressed:(BOOL)a3
+- (void)setFlipBookSuppressed:(BOOL)suppressed
 {
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    suppressedCopy = suppressed;
     pthread_mutex_lock(&self->_impl->var0._m);
-    CA::WindowServer::Server::set_flipbook_suppressed(self->_impl->var1, v4);
+    CA::WindowServer::Server::set_flipbook_suppressed(self->_impl->var1, suppressedCopy);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
@@ -4496,14 +4496,14 @@ LABEL_3:
   return v4;
 }
 
-- (void)setFlipBookEnabled:(BOOL)a3
+- (void)setFlipBookEnabled:(BOOL)enabled
 {
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    enabledCopy = enabled;
     pthread_mutex_lock(&self->_impl->var0._m);
-    CA::WindowServer::Server::set_flipbook_enabled(self->_impl->var1, v4);
+    CA::WindowServer::Server::set_flipbook_enabled(self->_impl->var1, enabledCopy);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
@@ -4569,29 +4569,29 @@ LABEL_3:
   return v5;
 }
 
-- (void)setBlanked:(BOOL)a3
+- (void)setBlanked:(BOOL)blanked
 {
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    blankedCopy = blanked;
     pthread_mutex_lock(&self->_impl->var0._m);
-    CA::WindowServer::Server::set_blanked(self->_impl->var1, v4);
+    CA::WindowServer::Server::set_blanked(self->_impl->var1, blankedCopy);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
 }
 
-- (void)powerStateDidChange:(id)a3
+- (void)powerStateDidChange:(id)change
 {
   v12 = *MEMORY[0x1E69E9840];
   if (self->_impl)
   {
-    v4 = [objc_msgSend(MEMORY[0x1E696AE30] processInfo];
+    processInfo = [objc_msgSend(MEMORY[0x1E696AE30] processInfo];
     impl = self->_impl;
     pthread_mutex_lock(&impl->var0._m);
     var1 = self->_impl->var1;
-    *(var1 + 829) = v4;
+    *(var1 + 829) = processInfo;
     atomic_store(1u, var1 + 489);
     if (x_log_get_windowserver(void)::once != -1)
     {
@@ -4605,7 +4605,7 @@ LABEL_3:
       v9[0] = 67109376;
       v9[1] = v8;
       v10 = 1024;
-      v11 = v4;
+      v11 = processInfo;
       _os_log_impl(&dword_183AA6000, v7, OS_LOG_TYPE_DEFAULT, "Display %i LowPowerMode=%i", v9, 0xEu);
     }
 
@@ -4691,45 +4691,45 @@ LABEL_12:
   pthread_mutex_unlock(&impl->var0._m);
 }
 
-- (void)removeClone:(id)a3
+- (void)removeClone:(id)clone
 {
-  if (!a3)
+  if (!clone)
   {
     [MEMORY[0x1E695DF30] raise:@"CAWindowServerDisplay" format:{@"%@: can't remove a nil clone display", self}];
   }
 
   impl = self->_impl;
-  if (impl && *(a3 + 1) && (_force_cloning & 1) == 0)
+  if (impl && *(clone + 1) && (_force_cloning & 1) == 0)
   {
     pthread_mutex_lock(&self->_impl->var0._m);
-    if (*(*(*(*(a3 + 1) + 64) + 96) + 48) != self->_impl->var1)
+    if (*(*(*(*(clone + 1) + 64) + 96) + 48) != self->_impl->var1)
     {
-      [MEMORY[0x1E695DF30] raise:@"CAWindowServerDisplay" format:{@"%@: %@ is not our clone", self, a3}];
+      [MEMORY[0x1E695DF30] raise:@"CAWindowServerDisplay" format:{@"%@: %@ is not our clone", self, clone}];
     }
 
     [(CAWindowServerDisplay *)self willChangeValueForKey:@"clones"];
-    [a3 willChangeValueForKey:@"cloneMaster"];
-    CA::WindowServer::Server::remove_clone(self->_impl->var1, *(*(a3 + 1) + 64));
-    [a3 didChangeValueForKey:@"cloneMaster"];
+    [clone willChangeValueForKey:@"cloneMaster"];
+    CA::WindowServer::Server::remove_clone(self->_impl->var1, *(*(clone + 1) + 64));
+    [clone didChangeValueForKey:@"cloneMaster"];
     [(CAWindowServerDisplay *)self didChangeValueForKey:@"clones"];
 
     pthread_mutex_unlock(&impl->var0._m);
   }
 }
 
-- (void)addClone:(id)a3 options:(id)a4
+- (void)addClone:(id)clone options:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!clone)
   {
     [MEMORY[0x1E695DF30] raise:@"CAWindowServerDisplay" format:{@"%@: can't clone a display to nil", self}];
   }
 
   impl = self->_impl;
-  if (impl && *(a3 + 1) && (_force_cloning & 1) == 0)
+  if (impl && *(clone + 1) && (_force_cloning & 1) == 0)
   {
     pthread_mutex_lock(&self->_impl->var0._m);
-    if (a3 == self)
+    if (clone == self)
     {
       v8 = @"%@: can't clone a display to itself";
     }
@@ -4738,9 +4738,9 @@ LABEL_12:
     {
       if (!*(*(self->_impl->var1 + 12) + 48))
       {
-        if (*(*(*(*(a3 + 1) + 64) + 96) + 48))
+        if (*(*(*(*(clone + 1) + 64) + 96) + 48))
         {
-          [MEMORY[0x1E695DF30] raise:@"CAWindowServerDisplay" format:{@"%@: %@ is already a clone", self, a3}];
+          [MEMORY[0x1E695DF30] raise:@"CAWindowServerDisplay" format:{@"%@: %@ is already a clone", self, clone}];
         }
 
         goto LABEL_11;
@@ -4751,12 +4751,12 @@ LABEL_12:
 
     [MEMORY[0x1E695DF30] raise:@"CAWindowServerDisplay" format:{v8, self}];
 LABEL_11:
-    v24 = a3;
-    v25 = self;
-    if (a4)
+    cloneCopy = clone;
+    selfCopy = self;
+    if (options)
     {
-      v9 = [a4 objectForKey:@"replayContexts"];
-      v23 = a4;
+      v9 = [options objectForKey:@"replayContexts"];
+      optionsCopy = options;
       if (v9)
       {
         memset(v27, 0, sizeof(v27));
@@ -4767,7 +4767,7 @@ LABEL_11:
         }
       }
 
-      if ([objc_msgSend(a4 objectForKey:{@"disableScaling", "BOOLValue"}])
+      if ([objc_msgSend(options objectForKey:{@"disableScaling", "BOOLValue"}])
       {
         v10 = 2;
       }
@@ -4777,22 +4777,22 @@ LABEL_11:
         v10 = 0;
       }
 
-      if ([objc_msgSend(v23 objectForKey:{@"disableRotation", "BOOLValue"}])
+      if ([objc_msgSend(optionsCopy objectForKey:{@"disableRotation", "BOOLValue"}])
       {
         v10 |= 4u;
       }
 
-      if ([objc_msgSend(v23 objectForKey:{@"disableOverscan", "BOOLValue"}])
+      if ([objc_msgSend(optionsCopy objectForKey:{@"disableOverscan", "BOOLValue"}])
       {
         v10 |= 8u;
       }
 
-      if ([objc_msgSend(v23 objectForKey:{@"disableYUV", "BOOLValue"}])
+      if ([objc_msgSend(optionsCopy objectForKey:{@"disableYUV", "BOOLValue"}])
       {
         v10 |= 0x10u;
       }
 
-      v11 = [objc_msgSend(v23 objectForKey:{@"noReplayScaling", "BOOLValue"}];
+      v11 = [objc_msgSend(optionsCopy objectForKey:{@"noReplayScaling", "BOOLValue"}];
       v12 = v10 | 0x40;
       if (!v11)
       {
@@ -4808,15 +4808,15 @@ LABEL_11:
     }
 
     [(CAWindowServerDisplay *)self willChangeValueForKey:@"clones"];
-    [a3 willChangeValueForKey:@"cloneMaster"];
+    [clone willChangeValueForKey:@"cloneMaster"];
     var1 = self->_impl->var1;
-    v15 = *(*(a3 + 1) + 64);
+    v15 = *(*(clone + 1) + 64);
     pthread_mutex_lock((var1 + 24));
     v16 = *(var1 + 12);
     if (*(v16 + 48) || *(*(v15 + 12) + 48))
     {
       pthread_mutex_unlock((var1 + 24));
-      v17 = v25;
+      v17 = selfCopy;
     }
 
     else
@@ -4833,7 +4833,7 @@ LABEL_11:
         dispatch_once(&x_log_get_windowserver(void)::once, &__block_literal_global_17283);
       }
 
-      v17 = v25;
+      v17 = selfCopy;
       v20 = x_log_get_windowserver(void)::log;
       if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_DEFAULT))
       {
@@ -4849,10 +4849,10 @@ LABEL_11:
       }
     }
 
-    v18 = v24;
+    v18 = cloneCopy;
     if ((v13 & 0x20) != 0)
     {
-      v19 = *(*(v24 + 1) + 64);
+      v19 = *(*(cloneCopy + 1) + 64);
       pthread_mutex_lock((v19 + 24));
       if (*(v19 + 136))
       {
@@ -4868,8 +4868,8 @@ LABEL_11:
       *(v19 + 144) = 0;
       *(v19 + 827) = 1;
       pthread_mutex_unlock((v19 + 24));
-      v18 = v24;
-      v17 = v25;
+      v18 = cloneCopy;
+      v17 = selfCopy;
     }
 
     [v18 didChangeValueForKey:@"cloneMaster"];
@@ -4940,7 +4940,7 @@ LABEL_16:
   return [v10 set];
 }
 
-- (CATransform3D)transformFromLayerId:(SEL)a3 inContextId:(unint64_t)a4
+- (CATransform3D)transformFromLayerId:(SEL)id inContextId:(unint64_t)contextId
 {
   MEMORY[0x1EEE9AC00](self);
   v9 = v8;
@@ -5208,7 +5208,7 @@ LABEL_58:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)result fromContextId:(unsigned int)a4
+- (CGPoint)convertPoint:(CGPoint)result fromContextId:(unsigned int)id
 {
   v17 = *MEMORY[0x1E69E9840];
   var1 = self->_impl->var1;
@@ -5224,7 +5224,7 @@ LABEL_58:
     v10 = 0u;
     x = result.x;
     y = result.y;
-    CA::WindowServer::Server::context_transform(&v9, var1, *&a4);
+    CA::WindowServer::Server::context_transform(&v9, var1, *&id);
     v5 = *(&v16 + 1) + *(&v10 + 1) * x + *(&v12 + 1) * y;
     if (fabs(v5 + -1.0) >= 0.000001)
     {
@@ -5246,7 +5246,7 @@ LABEL_58:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)result toContextId:(unsigned int)a4
+- (CGPoint)convertPoint:(CGPoint)result toContextId:(unsigned int)id
 {
   v18 = *MEMORY[0x1E69E9840];
   var1 = self->_impl->var1;
@@ -5262,7 +5262,7 @@ LABEL_58:
     v11 = 0u;
     x = result.x;
     y = result.y;
-    CA::WindowServer::Server::context_transform(&v10, var1, *&a4);
+    CA::WindowServer::Server::context_transform(&v10, var1, *&id);
     CA::Mat4Impl::mat4_invert(&v10, &v10, v5);
     v6 = *(&v17 + 1) + *(&v11 + 1) * x + *(&v13 + 1) * y;
     if (fabs(v6 + -1.0) >= 0.000001)
@@ -5285,13 +5285,13 @@ LABEL_58:
   return result;
 }
 
-- (unsigned)taskNamePortOfContextId:(unsigned int)a3
+- (unsigned)taskNamePortOfContextId:(unsigned int)id
 {
   v10 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   if (impl)
   {
-    v4 = CA::WindowServer::Server::retain_context(impl->var1, a3);
+    v4 = CA::WindowServer::Server::retain_context(impl->var1, id);
     if (v4)
     {
       v5 = v4;
@@ -5320,7 +5320,7 @@ LABEL_58:
   return v4;
 }
 
-- (unsigned)clientPortOfContextId:(unsigned int)a3
+- (unsigned)clientPortOfContextId:(unsigned int)id
 {
   impl = self->_impl;
   if (!impl)
@@ -5328,7 +5328,7 @@ LABEL_58:
     return 0;
   }
 
-  v4 = CA::WindowServer::Server::retain_context(impl->var1, a3);
+  v4 = CA::WindowServer::Server::retain_context(impl->var1, id);
   if (!v4)
   {
     return 0;
@@ -5348,7 +5348,7 @@ LABEL_58:
   return v5;
 }
 
-- (unsigned)clientPortAtPosition:(CGPoint)a3
+- (unsigned)clientPortAtPosition:(CGPoint)position
 {
   v38 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -5387,8 +5387,8 @@ LABEL_58:
   *v9 = 0u;
   v10 = 0u;
   var1 = impl->var1;
-  v8 = a3;
-  CA::WindowServer::Server::hit_test(v9, var1, &v8.x, 0, 0, 0, 0);
+  positionCopy = position;
+  CA::WindowServer::Server::hit_test(v9, var1, &positionCopy.x, 0, 0, 0, 0);
   if (!LODWORD(v9[0]))
   {
     return 0;
@@ -5414,34 +5414,34 @@ LABEL_58:
   return v6;
 }
 
-- (id)hitTestAtPosition:(CGPoint)a3 options:(id)a4
+- (id)hitTestAtPosition:(CGPoint)position options:(id)options
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v105[9] = *MEMORY[0x1E69E9840];
-  v8 = [a4 objectForKey:@"hitTestOptionExcludedIds"];
-  v9 = [objc_msgSend(a4 objectForKey:{@"hitTestIgnoreBlankingContext", "BOOLValue"}];
-  if ([objc_msgSend(a4 objectForKey:{@"hitTestCumulativeOpacity", "BOOLValue"}])
+  v8 = [options objectForKey:@"hitTestOptionExcludedIds"];
+  v9 = [objc_msgSend(options objectForKey:{@"hitTestIgnoreBlankingContext", "BOOLValue"}];
+  if ([objc_msgSend(options objectForKey:{@"hitTestCumulativeOpacity", "BOOLValue"}])
   {
     v9 |= 2u;
   }
 
-  if ([objc_msgSend(a4 objectForKey:{@"hitTestCumulativeTransform", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"hitTestCumulativeTransform", "BOOLValue"}])
   {
     v9 |= 4u;
   }
 
-  if ([objc_msgSend(a4 objectForKey:{@"hitTestWantsLayerBackgroundStatistics", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"hitTestWantsLayerBackgroundStatistics", "BOOLValue"}])
   {
     v9 |= 8u;
   }
 
-  if ([objc_msgSend(a4 objectForKey:{@"hitTestInsecureFiltered", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"hitTestInsecureFiltered", "BOOLValue"}])
   {
     v9 |= 0x10u;
   }
 
-  if ([objc_msgSend(a4 objectForKey:{@"hitTestWantsContextSecurityAnalysis", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"hitTestWantsContextSecurityAnalysis", "BOOLValue"}])
   {
     v10 = v9 | 0x20;
   }
@@ -5491,10 +5491,10 @@ LABEL_58:
   }
 
 LABEL_20:
-  v104[0] = [objc_msgSend(a4 objectForKey:{@"hitTestBackgroundTopEdgeInset", "unsignedIntegerValue"}];
-  v104[1] = [objc_msgSend(a4 objectForKey:{@"hitTestBackgroundLeftEdgeInset", "unsignedIntegerValue"}];
-  v104[2] = [objc_msgSend(a4 objectForKey:{@"hitTestBackgroundBottomEdgeInset", "unsignedIntegerValue"}];
-  v17 = [objc_msgSend(a4 objectForKey:{@"hitTestBackgroundRightEdgeInset", "unsignedIntegerValue"}];
+  v104[0] = [objc_msgSend(options objectForKey:{@"hitTestBackgroundTopEdgeInset", "unsignedIntegerValue"}];
+  v104[1] = [objc_msgSend(options objectForKey:{@"hitTestBackgroundLeftEdgeInset", "unsignedIntegerValue"}];
+  v104[2] = [objc_msgSend(options objectForKey:{@"hitTestBackgroundBottomEdgeInset", "unsignedIntegerValue"}];
+  v17 = [objc_msgSend(options objectForKey:{@"hitTestBackgroundRightEdgeInset", "unsignedIntegerValue"}];
   v18 = 0;
   v104[3] = v17;
   memset(v103, 0, sizeof(v103));
@@ -5625,11 +5625,11 @@ LABEL_20:
   if ((v10 & 8) != 0 && v33)
   {
     v35 = self->_impl->var1;
-    [objc_msgSend(a4 objectForKey:{@"hitTestBackgroundForeground", "floatValue"}];
+    [objc_msgSend(options objectForKey:{@"hitTestBackgroundForeground", "floatValue"}];
     v37 = v36;
-    [objc_msgSend(a4 objectForKey:{@"hitTestBackgroundPassingContrast", "floatValue"}];
+    [objc_msgSend(options objectForKey:{@"hitTestBackgroundPassingContrast", "floatValue"}];
     v39 = v38;
-    [objc_msgSend(a4 objectForKey:{@"hitTestBackgroundFailingContrast", "floatValue"}];
+    [objc_msgSend(options objectForKey:{@"hitTestBackgroundFailingContrast", "floatValue"}];
     v41 = v40;
     v42 = DWORD2(v91);
     v43 = HIDWORD(v91);
@@ -5817,7 +5817,7 @@ LABEL_20:
   return v31;
 }
 
-- (unsigned)contextIdAtPosition:(CGPoint)a3 excludingContextIds:(id)a4
+- (unsigned)contextIdAtPosition:(CGPoint)position excludingContextIds:(id)ids
 {
   v18 = *MEMORY[0x1E69E9840];
   if (!self->_impl)
@@ -5825,9 +5825,9 @@ LABEL_20:
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
-  v8 = [a4 count];
+  y = position.y;
+  x = position.x;
+  v8 = [ids count];
   v9 = v8;
   v10 = 4 * v8 + 4;
   if (v8)
@@ -5851,7 +5851,7 @@ LABEL_20:
     v13 = 0;
     do
     {
-      *&v11[4 * v13] = [objc_msgSend(a4 objectAtIndexedSubscript:{v13), "unsignedIntValue"}];
+      *&v11[4 * v13] = [objc_msgSend(ids objectAtIndexedSubscript:{v13), "unsignedIntValue"}];
       ++v13;
     }
 
@@ -5925,14 +5925,14 @@ LABEL_10:
   return v5;
 }
 
-- (void)setSystemIdentifiers:(id)a3
+- (void)setSystemIdentifiers:(id)identifiers
 {
   impl = self->_impl;
   if (impl)
   {
     v5 = *(impl->var1 + 12);
     v6 = *(v5 + 16);
-    if (v6 != a3)
+    if (v6 != identifiers)
     {
       if (v6)
       {
@@ -5940,9 +5940,9 @@ LABEL_10:
       }
 
       Copy = 0;
-      if (a3)
+      if (identifiers)
       {
-        Copy = CFSetCreateCopy(0, a3);
+        Copy = CFSetCreateCopy(0, identifiers);
       }
 
       *(v5 + 16) = Copy;
@@ -6117,19 +6117,19 @@ LABEL_10:
   return result;
 }
 
-- (void)setScalePreservesAspect:(BOOL)a3
+- (void)setScalePreservesAspect:(BOOL)aspect
 {
   impl = self->_impl;
   if (impl)
   {
-    v4 = a3;
+    aspectCopy = aspect;
     pthread_mutex_lock(&self->_impl->var0._m);
     var1 = self->_impl->var1;
     pthread_mutex_lock((var1 + 24));
     v15 = *(var1 + 12);
-    if (*(v15 + 144) != v4)
+    if (*(v15 + 144) != aspectCopy)
     {
-      *(v15 + 144) = v4;
+      *(v15 + 144) = aspectCopy;
       CA::WindowServer::Display::update_geometry(v15, v7, v8, v9, v10, v11, v12, v13, v14);
     }
 
@@ -6157,13 +6157,13 @@ LABEL_10:
   return v4 & 1;
 }
 
-- (void)setScales:(CGSize)a3
+- (void)setScales:(CGSize)scales
 {
   impl = self->_impl;
   if (impl)
   {
-    height = a3.height;
-    width = a3.width;
+    height = scales.height;
+    width = scales.width;
     pthread_mutex_lock(&self->_impl->var0._m);
     CA::WindowServer::Server::set_scale(self->_impl->var1, width, height);
 
@@ -6196,13 +6196,13 @@ LABEL_10:
   return result;
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   impl = self->_impl;
   if (impl)
   {
     pthread_mutex_lock(&self->_impl->var0._m);
-    CA::WindowServer::Server::set_scale(self->_impl->var1, a3, a3);
+    CA::WindowServer::Server::set_scale(self->_impl->var1, scale, scale);
 
     pthread_mutex_unlock(&impl->var0._m);
   }
@@ -6386,7 +6386,7 @@ LABEL_10:
   }
 }
 
-- (id)_initWithCADisplayServer:(void *)a3
+- (id)_initWithCADisplayServer:(void *)server
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -6402,12 +6402,12 @@ LABEL_10:
     v5 = malloc_type_zone_calloc(malloc_zone, 1uLL, 0xD8uLL, 0x10A004031CDD180uLL);
     v4->_impl = v5;
     x_thread_init_mutex(v5, 1);
-    v4->_impl->var1 = a3;
-    if (CA::WindowServer::Server::supports_throttle(a3))
+    v4->_impl->var1 = server;
+    if (CA::WindowServer::Server::supports_throttle(server))
     {
       [(CAWindowServerDisplay *)v4 powerStateDidChange:0];
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:v4 selector:sel_powerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v4 selector:sel_powerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
     }
   }
 

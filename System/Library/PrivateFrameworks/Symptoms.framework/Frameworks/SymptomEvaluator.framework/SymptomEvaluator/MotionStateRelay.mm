@@ -1,12 +1,12 @@
 @interface MotionStateRelay
 + (MotionStateRelay)sharedInstance;
 - (MotionStateRelay)init;
-- (id)deviceOrientationString:(int)a3;
-- (id)motionStateString:(unsigned int)a3;
+- (id)deviceOrientationString:(int)string;
+- (id)motionStateString:(unsigned int)string;
 - (void)dealloc;
 - (void)destroyEngine;
 - (void)initializeEngine;
-- (void)setDeviceOrientation:(int)a3;
+- (void)setDeviceOrientation:(int)orientation;
 - (void)startActivityUpdates;
 - (void)stopActivityUpdates;
 - (void)subscribe;
@@ -128,11 +128,11 @@ uint64_t __31__MotionStateRelay_unsubscribe__block_invoke(uint64_t result)
     {
       v12 = v11;
       v13 = [(MotionStateRelay *)v10 deviceOrientationString:[(MotionStateRelay *)v10 deviceOrientation]];
-      v14 = [(MotionStateRelay *)v10 deviceOrientation];
+      deviceOrientation = [(MotionStateRelay *)v10 deviceOrientation];
       *buf = 138412546;
       v22 = v13;
       v23 = 1024;
-      v24 = v14;
+      v24 = deviceOrientation;
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEFAULT, "Initial Device orientation %@ (%u)", buf, 0x12u);
     }
   }
@@ -156,12 +156,12 @@ uint64_t __24__MotionStateRelay_init__block_invoke(uint64_t a1, int token)
   [(MotionStateRelay *)&v3 dealloc];
 }
 
-- (void)setDeviceOrientation:(int)a3
+- (void)setDeviceOrientation:(int)orientation
 {
-  if (self->_deviceOrientation != a3)
+  if (self->_deviceOrientation != orientation)
   {
     [(MotionStateRelay *)self willChangeValueForKey:@"deviceOrientation"];
-    self->_deviceOrientation = a3;
+    self->_deviceOrientation = orientation;
 
     [(MotionStateRelay *)self didChangeValueForKey:@"deviceOrientation"];
   }
@@ -185,29 +185,29 @@ uint64_t __24__MotionStateRelay_init__block_invoke(uint64_t a1, int token)
   *&self->_isStationary = 1;
 }
 
-- (id)motionStateString:(unsigned int)a3
+- (id)motionStateString:(unsigned int)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return @"???";
   }
 
   else
   {
-    return off_27898CC40[a3];
+    return off_27898CC40[string];
   }
 }
 
-- (id)deviceOrientationString:(int)a3
+- (id)deviceOrientationString:(int)string
 {
-  if ((a3 - 1) > 6)
+  if ((string - 1) > 6)
   {
     return @"Unknown_Ambiguous";
   }
 
   else
   {
-    return off_27898CC70[a3 - 1];
+    return off_27898CC70[string - 1];
   }
 }
 

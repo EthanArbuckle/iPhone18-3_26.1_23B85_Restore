@@ -1,5 +1,5 @@
 @interface TUContactsDataProviderAppleCareHandles
-- (BOOL)contains:(id)a3;
+- (BOOL)contains:(id)contains;
 - (TUContactsDataProviderAppleCareHandles)init;
 - (void)loadHandles;
 @end
@@ -23,13 +23,13 @@
 - (void)loadHandles
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] tu_defaults];
-  v4 = [v3 stringForKey:@"appleCareHandles"];
+  tu_defaults = [MEMORY[0x1E695E000] tu_defaults];
+  v4 = [tu_defaults stringForKey:@"appleCareHandles"];
 
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69A53F0] sharedInstance];
-    v6 = [v5 objectForKey:@"appleCareHandles"];
+    mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
+    v6 = [mEMORY[0x1E69A53F0] objectForKey:@"appleCareHandles"];
 
     if (v6)
     {
@@ -83,11 +83,11 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v4 = a3;
-  v5 = [(TUContactsDataProviderAppleCareHandles *)self appleCareHandles];
-  v6 = [v5 containsObject:v4];
+  containsCopy = contains;
+  appleCareHandles = [(TUContactsDataProviderAppleCareHandles *)self appleCareHandles];
+  v6 = [appleCareHandles containsObject:containsCopy];
 
   return v6;
 }

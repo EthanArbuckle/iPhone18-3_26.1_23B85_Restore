@@ -1,25 +1,25 @@
 @interface PUIStylePickerHomeScreenConfiguration
 + (id)_defaultVariantsForStyleTypeOptions;
-+ (id)opaqueAccentColorFromColor:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHomeScreenConfiguration:(id)a3;
++ (id)opaqueAccentColorFromColor:(id)color;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHomeScreenConfiguration:(id)configuration;
 - (CGSize)iconSize;
 - (CGSize)iconSpacing;
 - (PUIStylePickerHomeScreenConfiguration)init;
-- (PUIStylePickerHomeScreenConfiguration)initWithCoder:(id)a3;
-- (PUIStylePickerHomeScreenConfiguration)initWithStyleType:(unint64_t)a3 styleVariant:(unint64_t)a4 variation:(double)a5 luminance:(double)a6 saturation:(double)a7;
+- (PUIStylePickerHomeScreenConfiguration)initWithCoder:(id)coder;
+- (PUIStylePickerHomeScreenConfiguration)initWithStyleType:(unint64_t)type styleVariant:(unint64_t)variant variation:(double)variation luminance:(double)luminance saturation:(double)saturation;
 - (UIColor)accentColor;
 - (UIEdgeInsets)layoutInsets;
-- (id)_clampedColorForInputColor:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_clampedColorForInputColor:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccentStyle:(id)a3;
-- (void)setCaseAccentColor:(id)a3;
-- (void)setEnclosureAccentColor:(id)a3;
-- (void)setSuggestedAccentColor:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccentStyle:(id)style;
+- (void)setCaseAccentColor:(id)color;
+- (void)setEnclosureAccentColor:(id)color;
+- (void)setSuggestedAccentColor:(id)color;
 @end
 
 @implementation PUIStylePickerHomeScreenConfiguration
@@ -104,17 +104,17 @@
   return result;
 }
 
-+ (id)opaqueAccentColorFromColor:(id)a3
++ (id)opaqueAccentColorFromColor:(id)color
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  colorCopy = color;
+  v4 = colorCopy;
+  if (colorCopy)
   {
     v17 = 1.0;
-    [v3 getWhite:0 alpha:&v17];
+    [colorCopy getWhite:0 alpha:&v17];
     if (BSFloatIsOne())
     {
-      v5 = v4;
+      color = v4;
     }
 
     else
@@ -130,19 +130,19 @@
       v14 = [(PUIColorValues *)v13 copyWithAlpha:1.0];
       v15 = [v14 copyWithLuminance:v12];
 
-      v5 = [v15 color];
+      color = [v15 color];
     }
   }
 
   else
   {
-    v5 = 0;
+    color = 0;
   }
 
-  return v5;
+  return color;
 }
 
-- (PUIStylePickerHomeScreenConfiguration)initWithStyleType:(unint64_t)a3 styleVariant:(unint64_t)a4 variation:(double)a5 luminance:(double)a6 saturation:(double)a7
+- (PUIStylePickerHomeScreenConfiguration)initWithStyleType:(unint64_t)type styleVariant:(unint64_t)variant variation:(double)variation luminance:(double)luminance saturation:(double)saturation
 {
   v24.receiver = self;
   v24.super_class = PUIStylePickerHomeScreenConfiguration;
@@ -150,13 +150,13 @@
   v13 = v12;
   if (v12)
   {
-    v12->_styleType = a3;
-    v12->_styleVariant = a4;
+    v12->_styleType = type;
+    v12->_styleVariant = variant;
     v14 = +[PUIStylePickerHomeScreenConfiguration _defaultVariantsForStyleTypeOptions];
     lastUserSelectedVariantForStyleTypeOption = v13->_lastUserSelectedVariantForStyleTypeOption;
     v13->_lastUserSelectedVariantForStyleTypeOption = v14;
 
-    v16 = [[PUIDiscreteGradientVariatedCustomStyle alloc] initWithVariation:a5 luminance:a6 saturation:a7];
+    v16 = [[PUIDiscreteGradientVariatedCustomStyle alloc] initWithVariation:variation luminance:luminance saturation:saturation];
     accentStyle = v13->_accentStyle;
     v13->_accentStyle = v16;
 
@@ -202,9 +202,9 @@
 
   [v3 appendString:v8 withName:@"_styleVariant"];
   v9 = [v3 appendObject:self->_accentStyle withName:@"_accentStyle"];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 __CFString *__52__PUIStylePickerHomeScreenConfiguration_description__block_invoke(uint64_t a1)
@@ -243,19 +243,19 @@ __CFString *__52__PUIStylePickerHomeScreenConfiguration_description__block_invok
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendUnsignedInteger:self->_styleType];
-  v5 = [v3 appendObject:self->_accentStyle];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendUnsignedInteger:self->_styleType];
+  v5 = [builder appendObject:self->_accentStyle];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (void)setAccentStyle:(id)a3
+- (void)setAccentStyle:(id)style
 {
-  if (a3)
+  if (style)
   {
-    v4 = [a3 copy];
+    v4 = [style copy];
   }
 
   else
@@ -291,7 +291,7 @@ __CFString *__52__PUIStylePickerHomeScreenConfiguration_description__block_invok
   if (iconTintSource != 4)
   {
 LABEL_7:
-    v4 = [(PUIDiscreteGradientVariatedCustomStyle *)self->_accentStyle luminanceAppliedColor];
+    luminanceAppliedColor = [(PUIDiscreteGradientVariatedCustomStyle *)self->_accentStyle luminanceAppliedColor];
     goto LABEL_10;
   }
 
@@ -307,16 +307,16 @@ LABEL_6:
   }
 
 LABEL_9:
-  v4 = caseAccentColor;
+  luminanceAppliedColor = caseAccentColor;
 LABEL_10:
 
-  return v4;
+  return luminanceAppliedColor;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -324,22 +324,22 @@ LABEL_10:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStylePickerHomeScreenConfiguration *)self isEqualToHomeScreenConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStylePickerHomeScreenConfiguration *)self isEqualToHomeScreenConfiguration:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToHomeScreenConfiguration:(id)a3
+- (BOOL)isEqualToHomeScreenConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy == self)
   {
     v28 = 1;
   }
 
-  else if (v4 && (-[PUIStylePickerHomeScreenConfiguration accentStyle](v4, "accentStyle"), v6 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration accentStyle](self, "accentStyle"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v6 isEqual:v7], v7, v6, v8) && (v9 = -[PUIStylePickerHomeScreenConfiguration styleType](v5, "styleType"), v9 == -[PUIStylePickerHomeScreenConfiguration styleType](self, "styleType")) && (v10 = -[PUIStylePickerHomeScreenConfiguration styleVariant](v5, "styleVariant"), v10 == -[PUIStylePickerHomeScreenConfiguration styleVariant](self, "styleVariant")) && (-[PUIStylePickerHomeScreenConfiguration lastUserSelectedVariantForStyleTypeOption](v5, "lastUserSelectedVariantForStyleTypeOption"), v11 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration lastUserSelectedVariantForStyleTypeOption](self, "lastUserSelectedVariantForStyleTypeOption"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v11 == v12) && (-[PUIStylePickerHomeScreenConfiguration suggestedAccentColor](self, "suggestedAccentColor"), v13 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration suggestedAccentColor](v5, "suggestedAccentColor"), v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualObjects(), v14, v13, v15) && (-[PUIStylePickerHomeScreenConfiguration enclosureAccentColor](self, "enclosureAccentColor"), v16 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration enclosureAccentColor](v5, "enclosureAccentColor"), v17 = objc_claimAutoreleasedReturnValue(), v18 = BSEqualObjects(), v17, v16, v18) && (-[PUIStylePickerHomeScreenConfiguration caseAccentColor](self, "caseAccentColor"), v19 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration caseAccentColor](v5, "caseAccentColor"), v20 = objc_claimAutoreleasedReturnValue(), v21 = BSEqualObjects(), v20, v19, v21) && (v22 = -[PUIStylePickerHomeScreenConfiguration iconTintSource](v5, "iconTintSource"), v22 == -[PUIStylePickerHomeScreenConfiguration iconTintSource](self, "iconTintSource")) && (-[PUIStylePickerHomeScreenConfiguration iconContinuousCornerRadius](v5, "iconContinuousCornerRadius"), -[PUIStylePickerHomeScreenConfiguration iconContinuousCornerRadius](self, "iconContinuousCornerRadius"), BSFloatEqualToFloat()))
+  else if (configurationCopy && (-[PUIStylePickerHomeScreenConfiguration accentStyle](configurationCopy, "accentStyle"), v6 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration accentStyle](self, "accentStyle"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v6 isEqual:v7], v7, v6, v8) && (v9 = -[PUIStylePickerHomeScreenConfiguration styleType](v5, "styleType"), v9 == -[PUIStylePickerHomeScreenConfiguration styleType](self, "styleType")) && (v10 = -[PUIStylePickerHomeScreenConfiguration styleVariant](v5, "styleVariant"), v10 == -[PUIStylePickerHomeScreenConfiguration styleVariant](self, "styleVariant")) && (-[PUIStylePickerHomeScreenConfiguration lastUserSelectedVariantForStyleTypeOption](v5, "lastUserSelectedVariantForStyleTypeOption"), v11 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration lastUserSelectedVariantForStyleTypeOption](self, "lastUserSelectedVariantForStyleTypeOption"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v11 == v12) && (-[PUIStylePickerHomeScreenConfiguration suggestedAccentColor](self, "suggestedAccentColor"), v13 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration suggestedAccentColor](v5, "suggestedAccentColor"), v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualObjects(), v14, v13, v15) && (-[PUIStylePickerHomeScreenConfiguration enclosureAccentColor](self, "enclosureAccentColor"), v16 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration enclosureAccentColor](v5, "enclosureAccentColor"), v17 = objc_claimAutoreleasedReturnValue(), v18 = BSEqualObjects(), v17, v16, v18) && (-[PUIStylePickerHomeScreenConfiguration caseAccentColor](self, "caseAccentColor"), v19 = objc_claimAutoreleasedReturnValue(), -[PUIStylePickerHomeScreenConfiguration caseAccentColor](v5, "caseAccentColor"), v20 = objc_claimAutoreleasedReturnValue(), v21 = BSEqualObjects(), v20, v19, v21) && (v22 = -[PUIStylePickerHomeScreenConfiguration iconTintSource](v5, "iconTintSource"), v22 == -[PUIStylePickerHomeScreenConfiguration iconTintSource](self, "iconTintSource")) && (-[PUIStylePickerHomeScreenConfiguration iconContinuousCornerRadius](v5, "iconContinuousCornerRadius"), -[PUIStylePickerHomeScreenConfiguration iconContinuousCornerRadius](self, "iconContinuousCornerRadius"), BSFloatEqualToFloat()))
   {
     [(PUIStylePickerHomeScreenConfiguration *)v5 iconSize];
     v24 = v23;
@@ -385,20 +385,20 @@ LABEL_10:
   return v28;
 }
 
-- (PUIStylePickerHomeScreenConfiguration)initWithCoder:(id)a3
+- (PUIStylePickerHomeScreenConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = PUIStylePickerHomeScreenConfiguration;
   v5 = [(PUIStylePickerHomeScreenConfiguration *)&v41 init];
   if (v5)
   {
-    v5->_styleType = [v4 decodeIntegerForKey:@"_styleType"];
-    v5->_styleVariant = [v4 decodeIntegerForKey:@"_styleVariant"];
+    v5->_styleType = [coderCopy decodeIntegerForKey:@"_styleType"];
+    v5->_styleVariant = [coderCopy decodeIntegerForKey:@"_styleVariant"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_lastUserSelectedVariantForStyleTypeOption"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_lastUserSelectedVariantForStyleTypeOption"];
     lastUserSelectedVariantForStyleTypeOption = v5->_lastUserSelectedVariantForStyleTypeOption;
     v5->_lastUserSelectedVariantForStyleTypeOption = v9;
 
@@ -411,31 +411,31 @@ LABEL_10:
     }
 
     v14 = objc_opt_self();
-    v15 = [v4 decodeObjectOfClass:v14 forKey:@"_accentStyle"];
+    v15 = [coderCopy decodeObjectOfClass:v14 forKey:@"_accentStyle"];
     accentStyle = v5->_accentStyle;
     v5->_accentStyle = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_suggestedAccentColor"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_suggestedAccentColor"];
     suggestedAccentColor = v5->_suggestedAccentColor;
     v5->_suggestedAccentColor = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_enclosureAccentColor"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_enclosureAccentColor"];
     enclosureAccentColor = v5->_enclosureAccentColor;
     v5->_enclosureAccentColor = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_caseAccentColor"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_caseAccentColor"];
     caseAccentColor = v5->_caseAccentColor;
     v5->_caseAccentColor = v21;
 
-    v5->_iconTintSource = [v4 decodeIntegerForKey:@"_iconTintSource"];
-    [v4 decodeDoubleForKey:@"_iconContinuousCornerRadius"];
+    v5->_iconTintSource = [coderCopy decodeIntegerForKey:@"_iconTintSource"];
+    [coderCopy decodeDoubleForKey:@"_iconContinuousCornerRadius"];
     v5->_iconContinuousCornerRadius = v23;
     if (BSFloatIsZero())
     {
       v5->_iconContinuousCornerRadius = 14.3999996;
     }
 
-    [v4 decodeCGSizeForKey:@"_iconSize"];
+    [coderCopy decodeCGSizeForKey:@"_iconSize"];
     v5->_iconSize.width = v25;
     v5->_iconSize.height = v24;
     v27 = *MEMORY[0x1E695F060];
@@ -445,7 +445,7 @@ LABEL_10:
       v5->_iconSize = vdupq_n_s64(0x4050000000000000uLL);
     }
 
-    [v4 decodeCGSizeForKey:@"_iconSpacing"];
+    [coderCopy decodeCGSizeForKey:@"_iconSpacing"];
     v5->_iconSpacing.width = v29;
     v5->_iconSpacing.height = v28;
     if (v27 == v29 && v26 == v28)
@@ -455,7 +455,7 @@ LABEL_10:
       v5->_iconSpacing = _Q0;
     }
 
-    [v4 decodeUIEdgeInsetsForKey:@"_layoutInsets"];
+    [coderCopy decodeUIEdgeInsetsForKey:@"_layoutInsets"];
     v5->_layoutInsets.top = v35.f64[0];
     v5->_layoutInsets.left = v36;
     v5->_layoutInsets.bottom = v37.f64[0];
@@ -474,9 +474,9 @@ LABEL_10:
   return v5;
 }
 
-- (void)setCaseAccentColor:(id)a3
+- (void)setCaseAccentColor:(id)color
 {
-  if (self->_caseAccentColor != a3)
+  if (self->_caseAccentColor != color)
   {
     v5 = [(PUIStylePickerHomeScreenConfiguration *)self _clampedColorForInputColor:?];
     caseAccentColor = self->_caseAccentColor;
@@ -486,9 +486,9 @@ LABEL_10:
   }
 }
 
-- (void)setEnclosureAccentColor:(id)a3
+- (void)setEnclosureAccentColor:(id)color
 {
-  if (self->_enclosureAccentColor != a3)
+  if (self->_enclosureAccentColor != color)
   {
     v5 = [(PUIStylePickerHomeScreenConfiguration *)self _clampedColorForInputColor:?];
     enclosureAccentColor = self->_enclosureAccentColor;
@@ -498,9 +498,9 @@ LABEL_10:
   }
 }
 
-- (void)setSuggestedAccentColor:(id)a3
+- (void)setSuggestedAccentColor:(id)color
 {
-  if (self->_suggestedAccentColor != a3)
+  if (self->_suggestedAccentColor != color)
   {
     v5 = [(PUIStylePickerHomeScreenConfiguration *)self _clampedColorForInputColor:?];
     suggestedAccentColor = self->_suggestedAccentColor;
@@ -510,68 +510,68 @@ LABEL_10:
   }
 }
 
-- (id)_clampedColorForInputColor:(id)a3
+- (id)_clampedColorForInputColor:(id)color
 {
-  if (a3)
+  if (color)
   {
     v11 = 0.0;
     v12 = 0.0;
     v10 = 0.0;
     v3 = MEMORY[0x1E69DC888];
-    v4 = a3;
+    colorCopy = color;
     v5 = +[PUIDiscreteGradientVariatedCustomStyle discreteGradientVariatedColors];
-    [v3 pui_determineVarianceAndLuminanceForColor:v4 amongstColors:v5 minLuminance:0 maxLuminance:0 outHue:&v12 outSaturation:&v10 outLuminance:&v11];
+    [v3 pui_determineVarianceAndLuminanceForColor:colorCopy amongstColors:v5 minLuminance:0 maxLuminance:0 outHue:&v12 outSaturation:&v10 outLuminance:&v11];
 
     v6 = [PUIDiscreteGradientVariatedCustomStyle alloc];
     v7 = [(PUIDiscreteGradientVariatedCustomStyle *)v6 initWithHue:v12 saturation:v10 luminanceValue:v11 alpha:1.0];
-    v8 = [(PUIDiscreteGradientVariatedCustomStyle *)v7 luminanceAppliedColor];
+    luminanceAppliedColor = [(PUIDiscreteGradientVariatedCustomStyle *)v7 luminanceAppliedColor];
   }
 
   else
   {
-    v8 = 0;
+    luminanceAppliedColor = 0;
   }
 
-  return v8;
+  return luminanceAppliedColor;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   styleType = self->_styleType;
-  v5 = a3;
-  [v5 encodeInteger:styleType forKey:@"_styleType"];
-  [v5 encodeInteger:self->_styleVariant forKey:@"_styleVariant"];
-  [v5 encodeObject:self->_lastUserSelectedVariantForStyleTypeOption forKey:@"_lastUserSelectedVariantForStyleTypeOption"];
-  [v5 encodeObject:self->_accentStyle forKey:@"_accentStyle"];
-  [v5 encodeObject:self->_suggestedAccentColor forKey:@"_suggestedAccentColor"];
-  [v5 encodeObject:self->_enclosureAccentColor forKey:@"_enclosureAccentColor"];
-  [v5 encodeObject:self->_caseAccentColor forKey:@"_caseAccentColor"];
-  [v5 encodeInteger:self->_iconTintSource forKey:@"_iconTintSource"];
-  [v5 encodeDouble:@"_iconContinuousCornerRadius" forKey:self->_iconContinuousCornerRadius];
-  [v5 encodeCGSize:@"_iconSize" forKey:{self->_iconSize.width, self->_iconSize.height}];
-  [v5 encodeCGSize:@"_iconSpacing" forKey:{self->_iconSpacing.width, self->_iconSpacing.height}];
-  [v5 encodeUIEdgeInsets:@"_layoutInsets" forKey:{self->_layoutInsets.top, self->_layoutInsets.left, self->_layoutInsets.bottom, self->_layoutInsets.right}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:styleType forKey:@"_styleType"];
+  [coderCopy encodeInteger:self->_styleVariant forKey:@"_styleVariant"];
+  [coderCopy encodeObject:self->_lastUserSelectedVariantForStyleTypeOption forKey:@"_lastUserSelectedVariantForStyleTypeOption"];
+  [coderCopy encodeObject:self->_accentStyle forKey:@"_accentStyle"];
+  [coderCopy encodeObject:self->_suggestedAccentColor forKey:@"_suggestedAccentColor"];
+  [coderCopy encodeObject:self->_enclosureAccentColor forKey:@"_enclosureAccentColor"];
+  [coderCopy encodeObject:self->_caseAccentColor forKey:@"_caseAccentColor"];
+  [coderCopy encodeInteger:self->_iconTintSource forKey:@"_iconTintSource"];
+  [coderCopy encodeDouble:@"_iconContinuousCornerRadius" forKey:self->_iconContinuousCornerRadius];
+  [coderCopy encodeCGSize:@"_iconSize" forKey:{self->_iconSize.width, self->_iconSize.height}];
+  [coderCopy encodeCGSize:@"_iconSpacing" forKey:{self->_iconSpacing.width, self->_iconSpacing.height}];
+  [coderCopy encodeUIEdgeInsets:@"_layoutInsets" forKey:{self->_layoutInsets.top, self->_layoutInsets.left, self->_layoutInsets.bottom, self->_layoutInsets.right}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PUIStylePickerHomeScreenConfiguration allocWithZone:?]];
   [(PUIStylePickerHomeScreenConfiguration *)v4 setStyleType:[(PUIStylePickerHomeScreenConfiguration *)self styleType]];
   [(PUIStylePickerHomeScreenConfiguration *)v4 setStyleVariant:[(PUIStylePickerHomeScreenConfiguration *)self styleVariant]];
-  v5 = [(PUIStylePickerHomeScreenConfiguration *)self lastUserSelectedVariantForStyleTypeOption];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setLastUserSelectedVariantForStyleTypeOption:v5];
+  lastUserSelectedVariantForStyleTypeOption = [(PUIStylePickerHomeScreenConfiguration *)self lastUserSelectedVariantForStyleTypeOption];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setLastUserSelectedVariantForStyleTypeOption:lastUserSelectedVariantForStyleTypeOption];
 
-  v6 = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setAccentStyle:v6];
+  accentStyle = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setAccentStyle:accentStyle];
 
-  v7 = [(PUIStylePickerHomeScreenConfiguration *)self suggestedAccentColor];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setSuggestedAccentColor:v7];
+  suggestedAccentColor = [(PUIStylePickerHomeScreenConfiguration *)self suggestedAccentColor];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setSuggestedAccentColor:suggestedAccentColor];
 
-  v8 = [(PUIStylePickerHomeScreenConfiguration *)self enclosureAccentColor];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setEnclosureAccentColor:v8];
+  enclosureAccentColor = [(PUIStylePickerHomeScreenConfiguration *)self enclosureAccentColor];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setEnclosureAccentColor:enclosureAccentColor];
 
-  v9 = [(PUIStylePickerHomeScreenConfiguration *)self caseAccentColor];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setCaseAccentColor:v9];
+  caseAccentColor = [(PUIStylePickerHomeScreenConfiguration *)self caseAccentColor];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setCaseAccentColor:caseAccentColor];
 
   [(PUIStylePickerHomeScreenConfiguration *)v4 setIconTintSource:[(PUIStylePickerHomeScreenConfiguration *)self iconTintSource]];
   [(PUIStylePickerHomeScreenConfiguration *)self iconContinuousCornerRadius];
@@ -585,25 +585,25 @@ LABEL_10:
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(PUIStylePickerHomeScreenConfiguration *)[PUIMutableStylePickerHomeScreenConfiguration allocWithZone:?]];
   [(PUIStylePickerHomeScreenConfiguration *)v4 setStyleType:[(PUIStylePickerHomeScreenConfiguration *)self styleType]];
   [(PUIStylePickerHomeScreenConfiguration *)v4 setStyleVariant:[(PUIStylePickerHomeScreenConfiguration *)self styleVariant]];
-  v5 = [(PUIStylePickerHomeScreenConfiguration *)self lastUserSelectedVariantForStyleTypeOption];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setLastUserSelectedVariantForStyleTypeOption:v5];
+  lastUserSelectedVariantForStyleTypeOption = [(PUIStylePickerHomeScreenConfiguration *)self lastUserSelectedVariantForStyleTypeOption];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setLastUserSelectedVariantForStyleTypeOption:lastUserSelectedVariantForStyleTypeOption];
 
-  v6 = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setAccentStyle:v6];
+  accentStyle = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setAccentStyle:accentStyle];
 
-  v7 = [(PUIStylePickerHomeScreenConfiguration *)self suggestedAccentColor];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setSuggestedAccentColor:v7];
+  suggestedAccentColor = [(PUIStylePickerHomeScreenConfiguration *)self suggestedAccentColor];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setSuggestedAccentColor:suggestedAccentColor];
 
-  v8 = [(PUIStylePickerHomeScreenConfiguration *)self enclosureAccentColor];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setEnclosureAccentColor:v8];
+  enclosureAccentColor = [(PUIStylePickerHomeScreenConfiguration *)self enclosureAccentColor];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setEnclosureAccentColor:enclosureAccentColor];
 
-  v9 = [(PUIStylePickerHomeScreenConfiguration *)self caseAccentColor];
-  [(PUIStylePickerHomeScreenConfiguration *)v4 setCaseAccentColor:v9];
+  caseAccentColor = [(PUIStylePickerHomeScreenConfiguration *)self caseAccentColor];
+  [(PUIStylePickerHomeScreenConfiguration *)v4 setCaseAccentColor:caseAccentColor];
 
   [(PUIStylePickerHomeScreenConfiguration *)v4 setIconTintSource:[(PUIStylePickerHomeScreenConfiguration *)self iconTintSource]];
   [(PUIStylePickerHomeScreenConfiguration *)self iconContinuousCornerRadius];

@@ -2,77 +2,77 @@
 + (CNContactViewController)viewControllerForContact:(CNContact *)contact;
 + (CNContactViewController)viewControllerForNewContact:(CNContact *)contact;
 + (CNContactViewController)viewControllerForUnknownContact:(CNContact *)contact;
-+ (id)viewControllerForEditedDraftContact:(id)a3;
-+ (id)viewControllerForNewDraftContact:(id)a3;
-+ (id)viewControllerForUpdatingContact:(id)a3 withPropertiesFromContact:(id)a4;
-+ (id)viewControllerForUpdatingContact:(id)a3 withPublicAccountIdentity:(id)a4;
++ (id)viewControllerForEditedDraftContact:(id)contact;
++ (id)viewControllerForNewDraftContact:(id)contact;
++ (id)viewControllerForUpdatingContact:(id)contact withPropertiesFromContact:(id)fromContact;
++ (id)viewControllerForUpdatingContact:(id)contact withPublicAccountIdentity:(id)identity;
 - (BOOL)_isDelayingPresentation;
 - (BOOL)_shouldBeOutOfProcess;
 - (BOOL)displayNavigationButtonsShouldUsePlatterStyle;
 - (BOOL)isModalInPresentation;
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
-- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
+- (BOOL)shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier;
 - (CNContactContentViewController)contentViewController;
-- (CNContactViewController)initWithMode:(int64_t)a3;
+- (CNContactViewController)initWithMode:(int64_t)mode;
 - (CNContactViewControllerCustomHeaderViewDelegate)contactHeaderViewDelegate;
 - (CNContactViewControllerPPTDelegate)pptDelegate;
 - (_UIRemoteViewController)_containedRemoteViewController;
 - (id)_contactPresentedViewController;
-- (id)_primaryPropertyStringForContact:(id)a3;
-- (id)confirmCancelAlertControllerAnchoredAtButtonItem:(id)a3;
+- (id)_primaryPropertyStringForContact:(id)contact;
+- (id)confirmCancelAlertControllerAnchoredAtButtonItem:(id)item;
 - (id)currentNavigationController;
 - (id)delegate;
 - (id)navigationItemController;
 - (id)platterBackBarButtonItem;
 - (void)_endDelayingPresentation;
 - (void)_prepareViewController;
-- (void)_setViewController:(id)a3;
+- (void)_setViewController:(id)controller;
 - (void)_setupViewController;
-- (void)configureNavigationItem:(id)a3;
+- (void)configureNavigationItem:(id)item;
 - (void)dealloc;
-- (void)didCompleteWithContact:(id)a3;
-- (void)didDeleteContact:(id)a3;
+- (void)didCompleteWithContact:(id)contact;
+- (void)didDeleteContact:(id)contact;
 - (void)didExecuteClearRecentsDataAction;
 - (void)didExecuteDeleteFromDowntimeWhitelistAction;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didSetAction:(int64_t)a3 allowed:(BOOL)a4;
-- (void)didTapBlockAndReportForContact:(id)a3;
-- (void)editCancel:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didSetAction:(int64_t)action allowed:(BOOL)allowed;
+- (void)didTapBlockAndReportForContact:(id)contact;
+- (void)editCancel:(id)cancel;
 - (void)enableCancelKeyboardShortcut;
 - (void)enableEditKeyboardShortcut;
 - (void)enableSaveKeyboardShortcut;
-- (void)highlightPropertyWithKey:(id)a3 identifier:(id)a4 important:(BOOL)a5;
-- (void)isPresentingEditingController:(BOOL)a3;
-- (void)isPresentingFullscreen:(BOOL)a3;
+- (void)highlightPropertyWithKey:(id)key identifier:(id)identifier important:(BOOL)important;
+- (void)isPresentingEditingController:(BOOL)controller;
+- (void)isPresentingFullscreen:(BOOL)fullscreen;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)popToPrevious:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)popToPrevious:(id)previous;
 - (void)presentCancelConfirmationAlert;
-- (void)presentConfirmCancelAlertControllerAnchoredAtButtonItem:(id)a3;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
+- (void)presentConfirmCancelAlertControllerAnchoredAtButtonItem:(id)item;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
 - (void)setAllowsActions:(BOOL)allowsActions;
 - (void)setAllowsEditing:(BOOL)allowsEditing;
-- (void)setContact:(id)a3 additionalContact:(id)a4 mode:(int64_t)a5;
-- (void)setDoneButtonText:(id)a3 enabled:(BOOL)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setForcesTransparentBackground:(BOOL)a3;
-- (void)setInitialPrompt:(id)a3;
-- (void)setRequiresSetup:(BOOL)a3;
-- (void)setShouldDrawNavigationBar:(BOOL)a3;
-- (void)setShouldShowSharedProfileBanner:(BOOL)a3;
-- (void)setShouldUseModernNavigationBarHiding:(BOOL)a3;
-- (void)setUsesBrandedCallHeaderFormat:(BOOL)a3;
-- (void)setupNavBarAppearance:(id)a3 asOpaqueWhenScrolled:(BOOL)a4;
+- (void)setContact:(id)contact additionalContact:(id)additionalContact mode:(int64_t)mode;
+- (void)setDoneButtonText:(id)text enabled:(BOOL)enabled;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setForcesTransparentBackground:(BOOL)background;
+- (void)setInitialPrompt:(id)prompt;
+- (void)setRequiresSetup:(BOOL)setup;
+- (void)setShouldDrawNavigationBar:(BOOL)bar;
+- (void)setShouldShowSharedProfileBanner:(BOOL)banner;
+- (void)setShouldUseModernNavigationBarHiding:(BOOL)hiding;
+- (void)setUsesBrandedCallHeaderFormat:(BOOL)format;
+- (void)setupNavBarAppearance:(id)appearance asOpaqueWhenScrolled:(BOOL)scrolled;
 - (void)toggleEditing;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 - (void)updateBackButtonIfNeeded;
-- (void)updateEditNavigationItemsAnimated:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5;
-- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5;
+- (void)updateEditNavigationItemsAnimated:(BOOL)animated doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text;
+- (void)updateEditing:(BOOL)editing doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text;
 - (void)viewDidAppear;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewServiceDidTerminate;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -99,31 +99,31 @@
   return WeakRetained;
 }
 
-- (void)didSetAction:(int64_t)a3 allowed:(BOOL)a4
+- (void)didSetAction:(int64_t)action allowed:(BOOL)allowed
 {
-  if (a4)
+  if (allowed)
   {
-    v5 = [(CNContactViewController *)self actions]| a3;
+    v5 = [(CNContactViewController *)self actions]| action;
   }
 
   else
   {
-    v5 = [(CNContactViewController *)self actions]& ~a3;
+    v5 = [(CNContactViewController *)self actions]& ~action;
   }
 
   [(CNContactViewController *)self setActions:v5];
 }
 
-- (void)didTapBlockAndReportForContact:(id)a3
+- (void)didTapBlockAndReportForContact:(id)contact
 {
-  v7 = a3;
-  v4 = [(CNContactViewController *)self privateDelegate];
+  contactCopy = contact;
+  privateDelegate = [(CNContactViewController *)self privateDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNContactViewController *)self privateDelegate];
-    [v6 contactViewController:self didExecuteBlockAndReportContactAction:v7];
+    privateDelegate2 = [(CNContactViewController *)self privateDelegate];
+    [privateDelegate2 contactViewController:self didExecuteBlockAndReportContactAction:contactCopy];
 
     [(CNContactViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
@@ -138,39 +138,39 @@
 
 - (void)didExecuteDeleteFromDowntimeWhitelistAction
 {
-  v3 = [(CNContactViewController *)self privateDelegate];
+  privateDelegate = [(CNContactViewController *)self privateDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNContactViewController *)self privateDelegate];
-    [v5 contactViewControllerDidExecuteDeleteFromDowntimeWhitelistAction:self];
+    privateDelegate2 = [(CNContactViewController *)self privateDelegate];
+    [privateDelegate2 contactViewControllerDidExecuteDeleteFromDowntimeWhitelistAction:self];
   }
 }
 
 - (void)didExecuteClearRecentsDataAction
 {
-  v3 = [(CNContactViewController *)self privateDelegate];
+  privateDelegate = [(CNContactViewController *)self privateDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNContactViewController *)self privateDelegate];
-    [v5 contactViewControllerDidExecuteClearRecentsDataAction:self];
+    privateDelegate2 = [(CNContactViewController *)self privateDelegate];
+    [privateDelegate2 contactViewControllerDidExecuteClearRecentsDataAction:self];
   }
 }
 
 - (void)viewDidAppear
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CNContactViewController.m" lineNumber:1154 description:{@"This should not be called, we pass the pptDelegate directly to the host view controller"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactViewController.m" lineNumber:1154 description:{@"This should not be called, we pass the pptDelegate directly to the host view controller"}];
 }
 
-- (void)isPresentingEditingController:(BOOL)a3
+- (void)isPresentingEditingController:(BOOL)controller
 {
-  v3 = a3;
-  v5 = [(CNContactViewController *)self privateDelegate];
-  if (v3)
+  controllerCopy = controller;
+  privateDelegate = [(CNContactViewController *)self privateDelegate];
+  if (controllerCopy)
   {
     v6 = objc_opt_respondsToSelector();
 
@@ -179,8 +179,8 @@
       return;
     }
 
-    v8 = [(CNContactViewController *)self privateDelegate];
-    [v8 contactViewControllerForUnknownContactDidBeginAddingToContacts:self];
+    privateDelegate2 = [(CNContactViewController *)self privateDelegate];
+    [privateDelegate2 contactViewControllerForUnknownContactDidBeginAddingToContacts:self];
   }
 
   else
@@ -192,22 +192,22 @@
       return;
     }
 
-    v8 = [(CNContactViewController *)self privateDelegate];
-    [v8 contactViewControllerForUnknownContactDidEndAddingToContacts:self];
+    privateDelegate2 = [(CNContactViewController *)self privateDelegate];
+    [privateDelegate2 contactViewControllerForUnknownContactDidEndAddingToContacts:self];
   }
 }
 
-- (void)isPresentingFullscreen:(BOOL)a3
+- (void)isPresentingFullscreen:(BOOL)fullscreen
 {
-  v3 = a3;
-  v4 = [(CNContactViewController *)self navigationController];
-  [v4 setNavigationBarHidden:v3 animated:0];
+  fullscreenCopy = fullscreen;
+  navigationController = [(CNContactViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:fullscreenCopy animated:0];
 }
 
-- (void)didDeleteContact:(id)a3
+- (void)didDeleteContact:(id)contact
 {
-  v7 = a3;
-  v4 = [(CNContactViewController *)self privateDelegate];
+  contactCopy = contact;
+  privateDelegate = [(CNContactViewController *)self privateDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
@@ -217,67 +217,67 @@
       [(CNContactViewController *)self setEditing:0];
     }
 
-    v6 = [(CNContactViewController *)self privateDelegate];
-    [v6 contactViewController:self didDeleteContact:v7];
+    privateDelegate2 = [(CNContactViewController *)self privateDelegate];
+    [privateDelegate2 contactViewController:self didDeleteContact:contactCopy];
   }
 }
 
-- (void)didCompleteWithContact:(id)a3
+- (void)didCompleteWithContact:(id)contact
 {
-  v7 = a3;
-  v4 = [(CNContactViewController *)self delegate];
+  contactCopy = contact;
+  delegate = [(CNContactViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNContactViewController *)self delegate];
-    [v6 contactViewController:self didCompleteWithContact:v7];
+    delegate2 = [(CNContactViewController *)self delegate];
+    [delegate2 contactViewController:self didCompleteWithContact:contactCopy];
   }
 }
 
-- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5
+- (void)updateEditing:(BOOL)editing doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text
 {
-  v5 = a4;
-  v6 = a3;
-  v12 = a5;
-  if (![(CNContactViewController *)self shouldUseModernNavigationBarHiding]&& !CNUIIsMessages() && [(CNContactViewController *)self isEditing]!= v6)
+  enabledCopy = enabled;
+  editingCopy = editing;
+  textCopy = text;
+  if (![(CNContactViewController *)self shouldUseModernNavigationBarHiding]&& !CNUIIsMessages() && [(CNContactViewController *)self isEditing]!= editingCopy)
   {
-    v8 = [(CNContactViewController *)self navigationItem];
-    [(CNContactViewController *)self setupNavBarAppearance:v8 asOpaqueWhenScrolled:v6];
+    navigationItem = [(CNContactViewController *)self navigationItem];
+    [(CNContactViewController *)self setupNavBarAppearance:navigationItem asOpaqueWhenScrolled:editingCopy];
   }
 
   if ([(CNContactViewController *)self _shouldBeOutOfProcess])
   {
-    if ([(CNContactViewController *)self isEditing]!= v6)
+    if ([(CNContactViewController *)self isEditing]!= editingCopy)
     {
-      [(CNContactViewController *)self setEditing:v6 animated:1];
-      v9 = [(CNContactViewController *)self privateDelegate];
+      [(CNContactViewController *)self setEditing:editingCopy animated:1];
+      privateDelegate = [(CNContactViewController *)self privateDelegate];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
       {
-        v11 = [(CNContactViewController *)self privateDelegate];
-        [v11 contactViewController:self didChangeToEditMode:v6];
+        privateDelegate2 = [(CNContactViewController *)self privateDelegate];
+        [privateDelegate2 contactViewController:self didChangeToEditMode:editingCopy];
       }
     }
 
-    [(CNContactViewController *)self updateEditNavigationItemsAnimated:1 doneButtonEnabled:v5 doneButtonText:v12];
+    [(CNContactViewController *)self updateEditNavigationItemsAnimated:1 doneButtonEnabled:enabledCopy doneButtonText:textCopy];
   }
 }
 
-- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5
+- (BOOL)shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CNContactViewController *)self delegate];
+  contactCopy = contact;
+  keyCopy = key;
+  identifierCopy = identifier;
+  delegate = [(CNContactViewController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [MEMORY[0x1E695CE08] contactPropertyWithContact:v8 propertyKey:v9 identifier:v10];
-    v14 = [(CNContactViewController *)self delegate];
-    v15 = [v14 contactViewController:self shouldPerformDefaultActionForContactProperty:v13];
+    v13 = [MEMORY[0x1E695CE08] contactPropertyWithContact:contactCopy propertyKey:keyCopy identifier:identifierCopy];
+    delegate2 = [(CNContactViewController *)self delegate];
+    v15 = [delegate2 contactViewController:self shouldPerformDefaultActionForContactProperty:v13];
   }
 
   else
@@ -310,62 +310,62 @@
   [(CNContactViewController *)self addKeyCommand:v5];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = CNContactViewController;
-  [(CNContactViewController *)&v8 touchesBegan:a3 withEvent:a4];
-  v5 = [(CNContactViewController *)self splitViewController];
+  [(CNContactViewController *)&v8 touchesBegan:began withEvent:event];
+  splitViewController = [(CNContactViewController *)self splitViewController];
 
-  if (v5)
+  if (splitViewController)
   {
-    v6 = [(CNContactViewController *)self splitViewController];
-    v7 = [v6 view];
-    [v7 endEditing:1];
+    splitViewController2 = [(CNContactViewController *)self splitViewController];
+    view = [splitViewController2 view];
+    [view endEditing:1];
   }
 }
 
 - (id)currentNavigationController
 {
-  v2 = [(CNContactViewController *)self navigationItemController];
-  v3 = [v2 navigationController];
+  navigationItemController = [(CNContactViewController *)self navigationItemController];
+  navigationController = [navigationItemController navigationController];
 
-  v4 = [v3 navigationBar];
-  v5 = [v4 backItem];
-  if (v5)
+  navigationBar = [navigationController navigationBar];
+  backItem = [navigationBar backItem];
+  if (backItem)
   {
 
 LABEL_3:
-    v6 = v3;
+    v3NavigationController2 = navigationController;
     goto LABEL_6;
   }
 
-  v7 = [v3 navigationController];
-  v8 = [v7 navigationBar];
-  v9 = [v8 backItem];
+  v3NavigationController = [navigationController navigationController];
+  navigationBar2 = [v3NavigationController navigationBar];
+  backItem2 = [navigationBar2 backItem];
 
-  if (!v9)
+  if (!backItem2)
   {
     goto LABEL_3;
   }
 
-  v6 = [v3 navigationController];
+  v3NavigationController2 = [navigationController navigationController];
 LABEL_6:
-  v10 = v6;
+  v10 = v3NavigationController2;
 
   return v10;
 }
 
-- (void)popToPrevious:(id)a3
+- (void)popToPrevious:(id)previous
 {
-  v4 = [(CNContactViewController *)self currentNavigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  currentNavigationController = [(CNContactViewController *)self currentNavigationController];
+  v3 = [currentNavigationController popViewControllerAnimated:1];
 }
 
 - (id)platterBackBarButtonItem
 {
-  v3 = [(CNContactViewController *)self traitCollection];
-  v4 = [v3 layoutDirection] == 1;
+  traitCollection = [(CNContactViewController *)self traitCollection];
+  v4 = [traitCollection layoutDirection] == 1;
 
   v5 = [[CNPlatterBackBarButtonItem alloc] initWithTarget:self action:sel_popToPrevious_ isRTL:v4];
 
@@ -374,9 +374,9 @@ LABEL_6:
 
 - (BOOL)displayNavigationButtonsShouldUsePlatterStyle
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:29];
 
   if (v5)
   {
@@ -385,9 +385,9 @@ LABEL_6:
 
   else
   {
-    v7 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v8 = [v7 featureFlags];
-    if ([v8 isFeatureEnabled:27])
+    currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags2 = [currentEnvironment2 featureFlags];
+    if ([featureFlags2 isFeatureEnabled:27])
     {
       v6 = ![(CNContactViewController *)self shouldDrawNavigationBar];
     }
@@ -401,11 +401,11 @@ LABEL_6:
   return v6;
 }
 
-- (void)configureNavigationItem:(id)a3
+- (void)configureNavigationItem:(id)item
 {
-  v4 = a3;
-  [v4 setLargeTitleDisplayMode:2];
-  [(CNContactViewController *)self setupNavBarAppearance:v4 asOpaqueWhenScrolled:0];
+  itemCopy = item;
+  [itemCopy setLargeTitleDisplayMode:2];
+  [(CNContactViewController *)self setupNavBarAppearance:itemCopy asOpaqueWhenScrolled:0];
 
   if ([(CNContactViewController *)self displayNavigationButtonsShouldUsePlatterStyle])
   {
@@ -419,90 +419,90 @@ LABEL_6:
       +[CNUIColorRepository contactCardStaticHeaderDefaultTintColor];
     }
     v8 = ;
-    v5 = [(CNContactViewController *)self navigationItemController];
-    v6 = [v5 navigationItem];
-    v7 = [v6 navigationBar];
-    [v7 setTintColor:v8];
+    navigationItemController = [(CNContactViewController *)self navigationItemController];
+    navigationItem = [navigationItemController navigationItem];
+    navigationBar = [navigationItem navigationBar];
+    [navigationBar setTintColor:v8];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = CNContactViewController;
-  [(CNContactViewController *)&v19 didMoveToParentViewController:v4];
-  if (v4)
+  [(CNContactViewController *)&v19 didMoveToParentViewController:controllerCopy];
+  if (controllerCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [(CNContactViewController *)self observedNavigationItem];
-      v6 = [(CNContactViewController *)self navigationItemController];
-      v7 = [v6 navigationItem];
+      observedNavigationItem = [(CNContactViewController *)self observedNavigationItem];
+      navigationItemController = [(CNContactViewController *)self navigationItemController];
+      navigationItem = [navigationItemController navigationItem];
 
-      if (v5 != v7)
+      if (observedNavigationItem != navigationItem)
       {
-        v8 = [(CNContactViewController *)self observedNavigationItem];
-        [v8 removeObserver:self forKeyPath:@"title"];
+        observedNavigationItem2 = [(CNContactViewController *)self observedNavigationItem];
+        [observedNavigationItem2 removeObserver:self forKeyPath:@"title"];
 
-        v9 = [(CNContactViewController *)self observedNavigationItem];
-        [v9 removeObserver:self forKeyPath:@"titleView"];
+        observedNavigationItem3 = [(CNContactViewController *)self observedNavigationItem];
+        [observedNavigationItem3 removeObserver:self forKeyPath:@"titleView"];
 
-        v10 = [(CNContactViewController *)self navigationItemController];
-        v11 = [v10 navigationItem];
-        [(CNContactViewController *)self setObservedNavigationItem:v11];
+        navigationItemController2 = [(CNContactViewController *)self navigationItemController];
+        navigationItem2 = [navigationItemController2 navigationItem];
+        [(CNContactViewController *)self setObservedNavigationItem:navigationItem2];
 
-        v12 = [(CNContactViewController *)self observedNavigationItem];
-        [v12 addObserver:self forKeyPath:@"title" options:1 context:0];
+        observedNavigationItem4 = [(CNContactViewController *)self observedNavigationItem];
+        [observedNavigationItem4 addObserver:self forKeyPath:@"title" options:1 context:0];
 
-        v13 = [(CNContactViewController *)self observedNavigationItem];
-        [v13 addObserver:self forKeyPath:@"titleView" options:1 context:0];
+        observedNavigationItem5 = [(CNContactViewController *)self observedNavigationItem];
+        [observedNavigationItem5 addObserver:self forKeyPath:@"titleView" options:1 context:0];
       }
 
-      v14 = [v4 navigationItem];
-      [(CNContactViewController *)self configureNavigationItem:v14];
+      navigationItem3 = [controllerCopy navigationItem];
+      [(CNContactViewController *)self configureNavigationItem:navigationItem3];
 
       _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactViewController.m", 993, 4, @"%@ is added to a controller that's not a navigation controller, we'll update the parent navigation item %@ automatically,", v15, v16, v17, v18, self);
     }
   }
 }
 
-- (void)updateEditNavigationItemsAnimated:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5
+- (void)updateEditNavigationItemsAnimated:(BOOL)animated doneButtonEnabled:(BOOL)enabled doneButtonText:(id)text
 {
-  v5 = a4;
-  v27 = [(CNContactViewController *)self navigationItemController:a3];
-  v8 = [(CNContactViewController *)self displayNavigationButtonsShouldUsePlatterStyle];
-  v9 = [(CNContactViewController *)self currentNavigationController];
-  v10 = [v9 navigationBar];
-  v11 = [v10 backItem];
+  enabledCopy = enabled;
+  v27 = [(CNContactViewController *)self navigationItemController:animated];
+  displayNavigationButtonsShouldUsePlatterStyle = [(CNContactViewController *)self displayNavigationButtonsShouldUsePlatterStyle];
+  currentNavigationController = [(CNContactViewController *)self currentNavigationController];
+  navigationBar = [currentNavigationController navigationBar];
+  backItem = [navigationBar backItem];
 
   if ([(CNContactViewController *)self isEditing])
   {
-    v12 = [(CNContactViewController *)self navItemUpdater];
-    BYTE1(v25) = a3;
-    LOBYTE(v25) = v5;
-    v13 = [v12 updateEditingNavigationItemForController:v27 actionTarget:self isInSheet:-[UIViewController ab_isInSheet](self isShowingNavBar:"ab_isInSheet") shouldUsePlatterStyle:-[CNContactViewController shouldDrawNavigationBar](self isUpdatingContact:"shouldDrawNavigationBar") hasChanges:v8 animated:{-[CNContactViewController mode](self, "mode") == 4, v25}];
+    navItemUpdater = [(CNContactViewController *)self navItemUpdater];
+    BYTE1(v25) = animated;
+    LOBYTE(v25) = enabledCopy;
+    v13 = [navItemUpdater updateEditingNavigationItemForController:v27 actionTarget:self isInSheet:-[UIViewController ab_isInSheet](self isShowingNavBar:"ab_isInSheet") shouldUsePlatterStyle:-[CNContactViewController shouldDrawNavigationBar](self isUpdatingContact:"shouldDrawNavigationBar") hasChanges:displayNavigationButtonsShouldUsePlatterStyle animated:{-[CNContactViewController mode](self, "mode") == 4, v25}];
   }
 
   else
   {
-    HIDWORD(v26) = v5;
-    v14 = v11 != 0;
-    v12 = [(CNContactViewController *)self navItemUpdater];
-    v15 = [(CNContactViewController *)self mode];
-    v16 = [(CNContactViewController *)self allowsEditing];
-    v17 = [(UIViewController *)self ab_isInSheet];
-    v18 = [(CNContactViewController *)self shouldDrawNavigationBar];
-    v19 = [(CNContactViewController *)self platterBackBarButtonItem];
-    LOBYTE(v26) = a3;
-    BYTE2(v25) = v8;
+    HIDWORD(v26) = enabledCopy;
+    v14 = backItem != 0;
+    navItemUpdater = [(CNContactViewController *)self navItemUpdater];
+    mode = [(CNContactViewController *)self mode];
+    allowsEditing = [(CNContactViewController *)self allowsEditing];
+    ab_isInSheet = [(UIViewController *)self ab_isInSheet];
+    shouldDrawNavigationBar = [(CNContactViewController *)self shouldDrawNavigationBar];
+    platterBackBarButtonItem = [(CNContactViewController *)self platterBackBarButtonItem];
+    LOBYTE(v26) = animated;
+    BYTE2(v25) = displayNavigationButtonsShouldUsePlatterStyle;
     BYTE1(v25) = v14;
-    LOBYTE(v25) = v18;
-    v20 = [v12 updateDisplayNavigationItemsForController:v27 mode:v15 actionTarget:self allowsEditing:v16 editButtonEnabled:HIDWORD(v26) isInSheet:v17 isShowingNavBar:v25 shouldShowBackButton:v19 shouldUsePlatterStyle:v26 platterBackBarButtonItem:? animated:?];
+    LOBYTE(v25) = shouldDrawNavigationBar;
+    v20 = [navItemUpdater updateDisplayNavigationItemsForController:v27 mode:mode actionTarget:self allowsEditing:allowsEditing editButtonEnabled:HIDWORD(v26) isInSheet:ab_isInSheet isShowingNavBar:v25 shouldShowBackButton:platterBackBarButtonItem shouldUsePlatterStyle:v26 platterBackBarButtonItem:? animated:?];
   }
 
-  if (v8)
+  if (displayNavigationButtonsShouldUsePlatterStyle)
   {
     if (([(CNContactViewController *)self isEditing]& 1) != 0)
     {
@@ -514,10 +514,10 @@ LABEL_6:
       +[CNUIColorRepository contactCardStaticHeaderDefaultTintColor];
     }
     v21 = ;
-    v22 = [(CNContactViewController *)self navigationItemController];
-    v23 = [v22 navigationItem];
-    v24 = [v23 navigationBar];
-    [v24 setTintColor:v21];
+    navigationItemController = [(CNContactViewController *)self navigationItemController];
+    navigationItem = [navigationItemController navigationItem];
+    navigationBar2 = [navigationItem navigationBar];
+    [navigationBar2 setTintColor:v21];
   }
 }
 
@@ -525,52 +525,52 @@ LABEL_6:
 {
   if (([(CNContactViewController *)self isEditing]& 1) == 0 && ([(CNContactViewController *)self displayNavigationButtonsShouldUsePlatterStyle]|| [(CNContactViewController *)self _shouldBeOutOfProcess]))
   {
-    v3 = [(CNContactViewController *)self currentNavigationController];
-    v4 = [v3 navigationBar];
-    v5 = [v4 backItem];
+    currentNavigationController = [(CNContactViewController *)self currentNavigationController];
+    navigationBar = [currentNavigationController navigationBar];
+    backItem = [navigationBar backItem];
 
-    if (v5)
+    if (backItem)
     {
-      v9 = [(CNContactViewController *)self navItemUpdater];
-      v6 = [(CNContactViewController *)self navigationItemController];
-      v7 = [(CNContactViewController *)self mode];
-      v8 = [(CNContactViewController *)self platterBackBarButtonItem];
-      [v9 updateBackButtonForPlatterStyleForController:v6 mode:v7 platterBackBarButtonItem:v8 animated:0];
+      navItemUpdater = [(CNContactViewController *)self navItemUpdater];
+      navigationItemController = [(CNContactViewController *)self navigationItemController];
+      mode = [(CNContactViewController *)self mode];
+      platterBackBarButtonItem = [(CNContactViewController *)self platterBackBarButtonItem];
+      [navItemUpdater updateBackButtonForPlatterStyleForController:navigationItemController mode:mode platterBackBarButtonItem:platterBackBarButtonItem animated:0];
     }
   }
 }
 
-- (void)setupNavBarAppearance:(id)a3 asOpaqueWhenScrolled:(BOOL)a4
+- (void)setupNavBarAppearance:(id)appearance asOpaqueWhenScrolled:(BOOL)scrolled
 {
-  v4 = a4;
-  v10 = a3;
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v6 = [v5 featureFlags];
-  v7 = [v6 isFeatureEnabled:29];
+  scrolledCopy = scrolled;
+  appearanceCopy = appearance;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v7 = [featureFlags isFeatureEnabled:29];
 
   if ((v7 & 1) == 0)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v8 configureWithTransparentBackground];
-    [v10 setScrollEdgeAppearance:v8];
-    if (v4)
+    [appearanceCopy setScrollEdgeAppearance:v8];
+    if (scrolledCopy)
     {
       v9 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
       [v9 configureWithDefaultBackground];
-      [v10 setStandardAppearance:v9];
+      [appearanceCopy setStandardAppearance:v9];
     }
 
     else
     {
-      [v10 setStandardAppearance:v8];
+      [appearanceCopy setStandardAppearance:v8];
     }
   }
 }
 
-- (void)setDoneButtonText:(id)a3 enabled:(BOOL)a4
+- (void)setDoneButtonText:(id)text enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v10 = [(CNContactViewController *)self navigationItemController];
+  enabledCopy = enabled;
+  navigationItemController = [(CNContactViewController *)self navigationItemController];
   if (![(CNContactViewController *)self isEditing])
   {
     if (![(CNContactViewController *)self allowsEditing])
@@ -578,25 +578,25 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    v7 = [v10 editButtonItem];
-    [v7 setEnabled:1];
+    editButtonItem = [navigationItemController editButtonItem];
+    [editButtonItem setEnabled:1];
     goto LABEL_8;
   }
 
-  v6 = [v10 editButtonItem];
-  [v6 setEnabled:v4];
+  editButtonItem2 = [navigationItemController editButtonItem];
+  [editButtonItem2 setEnabled:enabledCopy];
 
-  if (v4)
+  if (enabledCopy)
   {
     [(CNContactViewController *)self enableSaveKeyboardShortcut];
   }
 
   if ([(CNContactViewController *)self mode]== 4)
   {
-    v7 = CNContactsUIBundle();
-    v8 = [v7 localizedStringForKey:@"UPDATE" value:&stru_1F0CE7398 table:@"Localized"];
-    v9 = [v10 editButtonItem];
-    [v9 setTitle:v8];
+    editButtonItem = CNContactsUIBundle();
+    v8 = [editButtonItem localizedStringForKey:@"UPDATE" value:&stru_1F0CE7398 table:@"Localized"];
+    editButtonItem3 = [navigationItemController editButtonItem];
+    [editButtonItem3 setTitle:v8];
 
 LABEL_8:
   }
@@ -606,26 +606,26 @@ LABEL_9:
 
 - (void)toggleEditing
 {
-  v2 = [(CNContactViewController *)self viewController];
-  [v2 toggleEditing];
+  viewController = [(CNContactViewController *)self viewController];
+  [viewController toggleEditing];
 }
 
-- (void)editCancel:(id)a3
+- (void)editCancel:(id)cancel
 {
-  v3 = [(CNContactViewController *)self viewController];
-  [v3 editCancel];
+  viewController = [(CNContactViewController *)self viewController];
+  [viewController editCancel];
 }
 
 - (id)navigationItemController
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    v4 = v2;
+    v4 = selfCopy;
     while (1)
     {
-      v5 = [(CNContactViewController *)v4 parentViewController];
+      parentViewController = [(CNContactViewController *)v4 parentViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -634,10 +634,10 @@ LABEL_9:
         break;
       }
 
-      v7 = [(CNContactViewController *)v4 parentViewController];
+      parentViewController2 = [(CNContactViewController *)v4 parentViewController];
 
-      v4 = v7;
-      if (!v7)
+      v4 = parentViewController2;
+      if (!parentViewController2)
       {
         goto LABEL_5;
       }
@@ -653,23 +653,23 @@ LABEL_5:
   return v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if ([(CNContactViewController *)self hasCompletedSetup])
   {
-    v11 = [(CNContactViewController *)self observedNavigationItem];
-    if (v11 == v9)
+    observedNavigationItem = [(CNContactViewController *)self observedNavigationItem];
+    if (observedNavigationItem == objectCopy)
     {
-      if ([v16 isEqualToString:@"title"])
+      if ([pathCopy isEqualToString:@"title"])
       {
       }
 
       else
       {
-        v12 = [v16 isEqualToString:@"titleView"];
+        v12 = [pathCopy isEqualToString:@"titleView"];
 
         if (!v12)
         {
@@ -677,18 +677,18 @@ LABEL_5:
         }
       }
 
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-      v13 = [MEMORY[0x1E695DFB0] null];
-      v14 = [v11 isEqual:v13];
+      observedNavigationItem = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+      null = [MEMORY[0x1E695DFB0] null];
+      v14 = [observedNavigationItem isEqual:null];
 
       if (v14)
       {
 
-        v11 = 0;
+        observedNavigationItem = 0;
       }
 
-      v15 = [(CNContactViewController *)self viewController];
-      [v15 didChangeToShowTitle:v11 != 0];
+      viewController = [(CNContactViewController *)self viewController];
+      [viewController didChangeToShowTitle:observedNavigationItem != 0];
     }
   }
 
@@ -697,12 +697,12 @@ LABEL_10:
 
 - (void)_prepareViewController
 {
-  v3 = [(CNContactViewController *)self _contactPresentedViewController];
-  [v3 _beginDelayingPresentation:&__block_literal_global_54654 cancellationHandler:10.0];
+  _contactPresentedViewController = [(CNContactViewController *)self _contactPresentedViewController];
+  [_contactPresentedViewController _beginDelayingPresentation:&__block_literal_global_54654 cancellationHandler:10.0];
 
-  v4 = [(CNContactViewController *)self viewController];
+  viewController = [(CNContactViewController *)self viewController];
 
-  if (v4)
+  if (viewController)
   {
     [(CNContactViewController *)self setRequiresSetup:1];
 
@@ -730,8 +730,8 @@ LABEL_10:
   else
   {
     v6 = objc_alloc_init(CNContactContentViewController);
-    v5 = [(CNContactViewController *)self sharedNavigationBar];
-    [(CNContactContentViewController *)v6 setSharedNavigationBar:v5];
+    sharedNavigationBar = [(CNContactViewController *)self sharedNavigationBar];
+    [(CNContactContentViewController *)v6 setSharedNavigationBar:sharedNavigationBar];
 
     [(CNContactViewController *)self _setViewController:v6];
   }
@@ -747,32 +747,32 @@ void __49__CNContactViewController__prepareViewController__block_invoke_93(uint6
 
 - (BOOL)_shouldBeOutOfProcess
 {
-  v3 = [(CNContactViewController *)self displayMode];
-  if (v3 != 1)
+  displayMode = [(CNContactViewController *)self displayMode];
+  if (displayMode != 1)
   {
-    v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v5 = [v4 entitlementVerifier];
-    v6 = [v5 currentProcessHasBooleanEntitlement:*MEMORY[0x1E69964D8] error:0];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    entitlementVerifier = [currentEnvironment entitlementVerifier];
+    v6 = [entitlementVerifier currentProcessHasBooleanEntitlement:*MEMORY[0x1E69964D8] error:0];
 
-    LOBYTE(v3) = ([(CNContactViewController *)self displayMode]!= 2) & (v6 ^ 1);
+    LOBYTE(displayMode) = ([(CNContactViewController *)self displayMode]!= 2) & (v6 ^ 1);
   }
 
-  return v3;
+  return displayMode;
 }
 
 - (void)_setupViewController
 {
   v136[25] = *MEMORY[0x1E69E9840];
-  v125 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(CNContactViewController *)self contact];
-  [(CNContactViewController *)self setContentContact:v4];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  contact = [(CNContactViewController *)self contact];
+  [(CNContactViewController *)self setContentContact:contact];
 
-  v5 = [(CNContactViewController *)self contact];
-  if (v5)
+  contact2 = [(CNContactViewController *)self contact];
+  if (contact2)
   {
-    v6 = [(CNContactViewController *)self contact];
-    v135 = v6;
+    contact3 = [(CNContactViewController *)self contact];
+    v135 = contact3;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v135 count:1];
   }
 
@@ -781,50 +781,50 @@ void __49__CNContactViewController__prepareViewController__block_invoke_93(uint6
     v7 = MEMORY[0x1E695E0F0];
   }
 
-  v8 = [(CNContactViewController *)self contact];
-  v9 = [v8 isSuggested];
+  contact4 = [(CNContactViewController *)self contact];
+  isSuggested = [contact4 isSuggested];
 
-  if (v9 && [(CNContactViewController *)self mode]== 3)
+  if (isSuggested && [(CNContactViewController *)self mode]== 3)
   {
-    v10 = [(CNContactViewController *)self contact];
-    v11 = [v10 copyWithCuratingAllSuggestionsAndBirthdaySuggestion];
-    [(CNContactViewController *)self setContentContact:v11];
+    contact5 = [(CNContactViewController *)self contact];
+    copyWithCuratingAllSuggestionsAndBirthdaySuggestion = [contact5 copyWithCuratingAllSuggestionsAndBirthdaySuggestion];
+    [(CNContactViewController *)self setContentContact:copyWithCuratingAllSuggestionsAndBirthdaySuggestion];
   }
 
-  v12 = [(CNContactViewController *)self contact];
-  v13 = [v12 isUnknown];
+  contact6 = [(CNContactViewController *)self contact];
+  isUnknown = [contact6 isUnknown];
 
-  if (v13 && [(CNContactViewController *)self mode]== 3)
+  if (isUnknown && [(CNContactViewController *)self mode]== 3)
   {
     v14 = MEMORY[0x1E695CD58];
-    v15 = [(CNContactViewController *)self contact];
-    v16 = [v14 makeContactAndMergeValuesFromAvailableKeysInContact:v15];
+    contact7 = [(CNContactViewController *)self contact];
+    v16 = [v14 makeContactAndMergeValuesFromAvailableKeysInContact:contact7];
     [(CNContactViewController *)self setContentContact:v16];
   }
 
-  v17 = [MEMORY[0x1E695DF70] array];
-  v18 = [(CNContactViewController *)self additionalContact];
+  array = [MEMORY[0x1E695DF70] array];
+  additionalContact = [(CNContactViewController *)self additionalContact];
 
-  if (v18)
+  if (additionalContact)
   {
-    v19 = [(CNContactViewController *)self additionalContact];
-    v20 = [v7 arrayByAddingObject:v19];
+    additionalContact2 = [(CNContactViewController *)self additionalContact];
+    v20 = [v7 arrayByAddingObject:additionalContact2];
 
-    if ([v19 isSuggested])
+    if ([additionalContact2 isSuggested])
     {
-      v21 = [v19 copyWithCuratingAllSuggestionsAndBirthdaySuggestion];
+      copyWithCuratingAllSuggestionsAndBirthdaySuggestion2 = [additionalContact2 copyWithCuratingAllSuggestionsAndBirthdaySuggestion];
 
-      v9 = 1;
-      v19 = v21;
+      isSuggested = 1;
+      additionalContact2 = copyWithCuratingAllSuggestionsAndBirthdaySuggestion2;
     }
 
-    v22 = [(CNContactViewController *)self contact];
-    v23 = [v22 mutableCopy];
+    contact8 = [(CNContactViewController *)self contact];
+    v23 = [contact8 mutableCopy];
 
-    v24 = [v23 addAllPropertiesFromContact:v19];
+    v24 = [v23 addAllPropertiesFromContact:additionalContact2];
     if (v24)
     {
-      [v17 addObjectsFromArray:v24];
+      [array addObjectsFromArray:v24];
     }
 
     [(CNContactViewController *)self setContentContact:v23];
@@ -832,18 +832,18 @@ void __49__CNContactViewController__prepareViewController__block_invoke_93(uint6
     v7 = v20;
   }
 
-  v25 = [(CNContactViewController *)self contactStore];
+  contactStore = [(CNContactViewController *)self contactStore];
 
-  if (!v25)
+  if (!contactStore)
   {
     [(CNContactViewController *)self setActions:[(CNContactViewController *)self actions]& 0xFFFFFFFFFFFFFFDFLL];
     v26 = 7;
-    if (!v9)
+    if (!isSuggested)
     {
       v26 = 1;
     }
 
-    if (v13)
+    if (isUnknown)
     {
       v27 = v26 | 0x20;
     }
@@ -859,208 +859,208 @@ void __49__CNContactViewController__prepareViewController__block_invoke_93(uint6
 
   if (![(CNContactViewController *)self _shouldBeOutOfProcess])
   {
-    v29 = [(CNContactViewController *)self contactStore];
-    v30 = [(CNContactViewController *)self viewController];
-    [v30 setContactStore:v29];
+    contactStore2 = [(CNContactViewController *)self contactStore];
+    viewController = [(CNContactViewController *)self viewController];
+    [viewController setContactStore:contactStore2];
   }
 
-  v31 = [(CNContactViewController *)self displayedPropertyKeys];
+  displayedPropertyKeys = [(CNContactViewController *)self displayedPropertyKeys];
 
-  if (v31)
+  if (displayedPropertyKeys)
   {
-    v32 = [(CNContactViewController *)self displayedPropertyKeys];
-    [v3 setObject:v32 forKeyedSubscript:@"displayedProperties"];
+    displayedPropertyKeys2 = [(CNContactViewController *)self displayedPropertyKeys];
+    [dictionary2 setObject:displayedPropertyKeys2 forKeyedSubscript:@"displayedProperties"];
   }
 
-  v33 = [(CNContactViewController *)self primaryPropertyKey];
-  if (v33)
+  primaryPropertyKey = [(CNContactViewController *)self primaryPropertyKey];
+  if (primaryPropertyKey)
   {
-    v34 = v33;
-    v35 = [(CNContactViewController *)self mode];
+    v34 = primaryPropertyKey;
+    mode = [(CNContactViewController *)self mode];
 
-    if (v35 == 2)
+    if (mode == 2)
     {
-      v36 = [(CNContactViewController *)self primaryPropertyKey];
-      [v3 setObject:v36 forKeyedSubscript:@"primaryProperty"];
+      primaryPropertyKey2 = [(CNContactViewController *)self primaryPropertyKey];
+      [dictionary2 setObject:primaryPropertyKey2 forKeyedSubscript:@"primaryProperty"];
     }
   }
 
   v37 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController allowsDisplayModePickerActions](self, "allowsDisplayModePickerActions")}];
-  [v3 setObject:v37 forKeyedSubscript:@"allowsDisplayModePickerActions"];
+  [dictionary2 setObject:v37 forKeyedSubscript:@"allowsDisplayModePickerActions"];
 
   v38 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController allowsEditPhoto](self, "allowsEditPhoto")}];
-  [v3 setObject:v38 forKeyedSubscript:@"allowsEditPhoto"];
+  [dictionary2 setObject:v38 forKeyedSubscript:@"allowsEditPhoto"];
 
   v39 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController allowsNamePicking](self, "allowsNamePicking")}];
-  [v3 setObject:v39 forKeyedSubscript:@"allowsNamePicking"];
+  [dictionary2 setObject:v39 forKeyedSubscript:@"allowsNamePicking"];
 
   v40 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController showsInlineActions](self, "showsInlineActions")}];
-  [v3 setObject:v40 forKeyedSubscript:@"showsInlineActions"];
+  [dictionary2 setObject:v40 forKeyedSubscript:@"showsInlineActions"];
 
   v41 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController showsSharedProfile](self, "showsSharedProfile")}];
-  [v3 setObject:v41 forKeyedSubscript:@"showsSharedProfile"];
+  [dictionary2 setObject:v41 forKeyedSubscript:@"showsSharedProfile"];
 
   v42 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController showsGroupMembership](self, "showsGroupMembership")}];
-  [v3 setObject:v42 forKeyedSubscript:@"showsGroupMembership"];
+  [dictionary2 setObject:v42 forKeyedSubscript:@"showsGroupMembership"];
 
-  v43 = [(CNContactViewController *)self contactHeaderViewController];
+  contactHeaderViewController = [(CNContactViewController *)self contactHeaderViewController];
 
-  if (v43)
+  if (contactHeaderViewController)
   {
-    v44 = [(CNContactViewController *)self contactHeaderViewController];
-    [v3 setObject:v44 forKeyedSubscript:@"personHeaderViewController"];
+    contactHeaderViewController2 = [(CNContactViewController *)self contactHeaderViewController];
+    [dictionary2 setObject:contactHeaderViewController2 forKeyedSubscript:@"personHeaderViewController"];
   }
 
-  v45 = [(CNContactViewController *)self contactHeaderView];
+  contactHeaderView = [(CNContactViewController *)self contactHeaderView];
 
-  if (v45)
+  if (contactHeaderView)
   {
-    v46 = [(CNContactViewController *)self contactHeaderView];
-    [v3 setObject:v46 forKeyedSubscript:@"personHeaderView"];
+    contactHeaderView2 = [(CNContactViewController *)self contactHeaderView];
+    [dictionary2 setObject:contactHeaderView2 forKeyedSubscript:@"personHeaderView"];
   }
 
-  v47 = [(CNContactViewController *)self contactHeaderViewDelegate];
+  contactHeaderViewDelegate = [(CNContactViewController *)self contactHeaderViewDelegate];
 
-  if (v47)
+  if (contactHeaderViewDelegate)
   {
-    v48 = [(CNContactViewController *)self contactHeaderViewDelegate];
-    [v3 setObject:v48 forKeyedSubscript:@"personHeaderViewDelegate"];
+    contactHeaderViewDelegate2 = [(CNContactViewController *)self contactHeaderViewDelegate];
+    [dictionary2 setObject:contactHeaderViewDelegate2 forKeyedSubscript:@"personHeaderViewDelegate"];
   }
 
-  v49 = [(CNContactViewController *)self customViewConfiguration];
+  customViewConfiguration = [(CNContactViewController *)self customViewConfiguration];
 
-  if (v49)
+  if (customViewConfiguration)
   {
-    v50 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v51 = [v50 featureFlags];
-    v52 = [v51 isFeatureEnabled:11];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v52 = [featureFlags isFeatureEnabled:11];
 
     if (v52)
     {
-      v53 = [(CNContactViewController *)self customViewConfiguration];
+      customViewConfiguration2 = [(CNContactViewController *)self customViewConfiguration];
       v54 = &CNContactViewOptionCustomViewConfiguration;
     }
 
     else
     {
       v55 = [CNContactCustomViewController alloc];
-      v56 = [(CNContactViewController *)self customViewConfiguration];
-      v57 = [(CNContactCustomViewController *)v55 initWithConfiguration:v56];
+      customViewConfiguration3 = [(CNContactViewController *)self customViewConfiguration];
+      v57 = [(CNContactCustomViewController *)v55 initWithConfiguration:customViewConfiguration3];
       [(CNContactViewController *)self setContactHeaderViewController:v57];
 
-      v53 = [(CNContactViewController *)self contactHeaderViewController];
+      customViewConfiguration2 = [(CNContactViewController *)self contactHeaderViewController];
       v54 = &CNContactViewOptionPersonHeaderViewController;
     }
 
-    [v3 setObject:v53 forKeyedSubscript:*v54];
+    [dictionary2 setObject:customViewConfiguration2 forKeyedSubscript:*v54];
   }
 
   v58 = [MEMORY[0x1E696AD98] numberWithBool:{(-[CNContactViewController actions](self, "actions") >> 5) & 1}];
-  [v3 setObject:v58 forKeyedSubscript:@"allowsAddingToAddressBook"];
+  [dictionary2 setObject:v58 forKeyedSubscript:@"allowsAddingToAddressBook"];
 
   v59 = [MEMORY[0x1E696AD98] numberWithBool:{(-[CNContactViewController actions](self, "actions") >> 6) & 1}];
-  [v3 setObject:v59 forKeyedSubscript:@"allowsAddToFavorites"];
+  [dictionary2 setObject:v59 forKeyedSubscript:@"allowsAddToFavorites"];
 
   v60 = [MEMORY[0x1E696AD98] numberWithBool:{(-[CNContactViewController actions](self, "actions") >> 7) & 1}];
-  [v3 setObject:v60 forKeyedSubscript:@"allowsContactBlocking"];
+  [dictionary2 setObject:v60 forKeyedSubscript:@"allowsContactBlocking"];
 
   v61 = [MEMORY[0x1E696AD98] numberWithBool:{(-[CNContactViewController actions](self, "actions") >> 11) & 1}];
-  [v3 setObject:v61 forKeyedSubscript:@"allowsContactBlockingAndReporting"];
+  [dictionary2 setObject:v61 forKeyedSubscript:@"allowsContactBlockingAndReporting"];
 
   v62 = [MEMORY[0x1E696AD98] numberWithBool:{(-[CNContactViewController actions](self, "actions") >> 1) & 1}];
-  [v3 setObject:v62 forKeyedSubscript:@"allowsCardActions"];
+  [dictionary2 setObject:v62 forKeyedSubscript:@"allowsCardActions"];
 
   v63 = [MEMORY[0x1E696AD98] numberWithBool:{(-[CNContactViewController actions](self, "actions") >> 4) & 1}];
-  [v3 setObject:v63 forKeyedSubscript:@"allowsSharing"];
+  [dictionary2 setObject:v63 forKeyedSubscript:@"allowsSharing"];
 
   v64 = [MEMORY[0x1E696AD98] numberWithBool:{(-[CNContactViewController actions](self, "actions") >> 2) & 1}];
-  [v3 setObject:v64 forKeyedSubscript:@"allowsConferencing"];
+  [dictionary2 setObject:v64 forKeyedSubscript:@"allowsConferencing"];
 
   v65 = [MEMORY[0x1E696AD98] numberWithBool:{(-[CNContactViewController actions](self, "actions") >> 8) & 1}];
-  [v3 setObject:v65 forKeyedSubscript:@"allowsDeletion"];
+  [dictionary2 setObject:v65 forKeyedSubscript:@"allowsDeletion"];
 
   v66 = [MEMORY[0x1E696AD98] numberWithBool:{(-[CNContactViewController actions](self, "actions") >> 10) & 1}];
-  [v3 setObject:v66 forKeyedSubscript:@"allowsEditInApp"];
+  [dictionary2 setObject:v66 forKeyedSubscript:@"allowsEditInApp"];
 
-  v67 = [(CNContactViewController *)self warningMessage];
-  [v3 setObject:v67 forKeyedSubscript:@"warningMessage"];
+  warningMessage = [(CNContactViewController *)self warningMessage];
+  [dictionary2 setObject:warningMessage forKeyedSubscript:@"warningMessage"];
 
   v68 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController shouldDrawNavigationBar](self, "shouldDrawNavigationBar")}];
-  [v3 setObject:v68 forKeyedSubscript:@"shouldDrawNavigationBar"];
+  [dictionary2 setObject:v68 forKeyedSubscript:@"shouldDrawNavigationBar"];
 
   v69 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController editingProposedInformation](self, "editingProposedInformation")}];
-  [v3 setObject:v69 forKeyedSubscript:@"editingProposedInformation"];
+  [dictionary2 setObject:v69 forKeyedSubscript:@"editingProposedInformation"];
 
   v70 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController forcesTransparentBackground](self, "forcesTransparentBackground")}];
-  [v3 setObject:v70 forKeyedSubscript:@"forcesTransparentBackground"];
+  [dictionary2 setObject:v70 forKeyedSubscript:@"forcesTransparentBackground"];
 
   v71 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController usesBrandedCallHeaderFormat](self, "usesBrandedCallHeaderFormat")}];
-  [v3 setObject:v71 forKeyedSubscript:@"usesBrandedCallHeaderFormat"];
+  [dictionary2 setObject:v71 forKeyedSubscript:@"usesBrandedCallHeaderFormat"];
 
   v72 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController shouldShowSharedProfileBanner](self, "shouldShowSharedProfileBanner")}];
-  [v3 setObject:v72 forKeyedSubscript:@"shouldShowSharedProfileBanner"];
+  [dictionary2 setObject:v72 forKeyedSubscript:@"shouldShowSharedProfileBanner"];
 
-  v73 = [(CNContactViewController *)self staticIdentity];
-  [v3 setObject:v73 forKeyedSubscript:@"staticIdentity"];
+  staticIdentity = [(CNContactViewController *)self staticIdentity];
+  [dictionary2 setObject:staticIdentity forKeyedSubscript:@"staticIdentity"];
 
   v74 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController showContactPhotoPosterCell](self, "showContactPhotoPosterCell")}];
-  [v3 setObject:v74 forKeyedSubscript:@"showContactPhotoPosterCell"];
+  [dictionary2 setObject:v74 forKeyedSubscript:@"showContactPhotoPosterCell"];
 
   if ([(CNContactViewController *)self isEditing])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isEditing"];
+    [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isEditing"];
   }
 
   if ([*MEMORY[0x1E69DDA98] isRunningTest])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"runningPPT"];
+    [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"runningPPT"];
   }
 
-  v75 = [(CNContactViewController *)self highlightedPropertyIdentifier];
+  highlightedPropertyIdentifier = [(CNContactViewController *)self highlightedPropertyIdentifier];
 
-  v126 = v17;
-  if (v75)
+  v126 = array;
+  if (highlightedPropertyIdentifier)
   {
     v76 = MEMORY[0x1E695CE08];
-    v77 = [(CNContactViewController *)self contentContact];
-    v78 = [(CNContactViewController *)self highlightedPropertyKey];
-    v79 = [(CNContactViewController *)self highlightedPropertyIdentifier];
-    v80 = [v76 contactPropertyWithContactNoCopy:v77 propertyKey:v78 identifier:v79];
+    contentContact = [(CNContactViewController *)self contentContact];
+    highlightedPropertyKey = [(CNContactViewController *)self highlightedPropertyKey];
+    highlightedPropertyIdentifier2 = [(CNContactViewController *)self highlightedPropertyIdentifier];
+    v80 = [v76 contactPropertyWithContactNoCopy:contentContact propertyKey:highlightedPropertyKey identifier:highlightedPropertyIdentifier2];
 
-    v17 = v126;
+    array = v126;
     [v126 addObject:v80];
   }
 
-  if ([v17 count])
+  if ([array count])
   {
-    [v3 setObject:v17 forKeyedSubscript:@"highlightedProperties"];
+    [dictionary2 setObject:array forKeyedSubscript:@"highlightedProperties"];
   }
 
   v81 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactViewController highlightedPropertyImportant](self, "highlightedPropertyImportant")}];
-  [v3 setObject:v81 forKeyedSubscript:@"highlightedPropertyImportant"];
+  [dictionary2 setObject:v81 forKeyedSubscript:@"highlightedPropertyImportant"];
 
-  v82 = [(CNContactViewController *)self contentContact];
-  [v3 setObject:v82 forKeyedSubscript:@"contact"];
+  contentContact2 = [(CNContactViewController *)self contentContact];
+  [dictionary2 setObject:contentContact2 forKeyedSubscript:@"contact"];
 
   if ([v7 count] > 1 || (objc_msgSend(v7, "firstObject"), v83 = objc_claimAutoreleasedReturnValue(), -[CNContactViewController contentContact](self, "contentContact"), v84 = objc_claimAutoreleasedReturnValue(), v85 = objc_msgSend(v83, "isEqual:", v84), v84, v83, (v85 & 1) == 0))
   {
-    [v3 setObject:v7 forKeyedSubscript:@"originalContacts"];
+    [dictionary2 setObject:v7 forKeyedSubscript:@"originalContacts"];
   }
 
   v124 = v7;
   v86 = *MEMORY[0x1E6996568];
-  v87 = [(CNContactViewController *)self navigationItemController];
-  v88 = [v87 navigationItem];
-  v89 = [v88 title];
-  LOBYTE(v86) = (*(v86 + 16))(v86, v89);
+  navigationItemController = [(CNContactViewController *)self navigationItemController];
+  navigationItem = [navigationItemController navigationItem];
+  title = [navigationItem title];
+  LOBYTE(v86) = (*(v86 + 16))(v86, title);
 
   if ((v86 & 1) == 0)
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"layoutPositionallyAfterNavBar"];
+    [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"layoutPositionallyAfterNavBar"];
   }
 
-  v90 = [(CNContactViewController *)self navigationItem];
-  [(CNContactViewController *)self setupNavBarAppearance:v90 asOpaqueWhenScrolled:0];
+  navigationItem2 = [(CNContactViewController *)self navigationItem];
+  [(CNContactViewController *)self setupNavBarAppearance:navigationItem2 asOpaqueWhenScrolled:0];
 
   v132 = 0u;
   v133 = 0u;
@@ -1107,14 +1107,14 @@ void __49__CNContactViewController__prepareViewController__block_invoke_93(uint6
         }
 
         v96 = *(*(&v130 + 1) + 8 * i);
-        v97 = [v3 objectForKeyedSubscript:v96];
+        v97 = [dictionary2 objectForKeyedSubscript:v96];
 
         if (!v97)
         {
           v98 = [(CNContactViewController *)self valueForKey:v96];
           if (v98)
           {
-            [v3 setObject:v98 forKeyedSubscript:v96];
+            [dictionary2 setObject:v98 forKeyedSubscript:v96];
           }
         }
       }
@@ -1125,59 +1125,59 @@ void __49__CNContactViewController__prepareViewController__block_invoke_93(uint6
     while (v93);
   }
 
-  v99 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v99 _peripheryInsets];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _peripheryInsets];
   v100 = NSStringFromUIEdgeInsets(v137);
-  [v3 setObject:v100 forKeyedSubscript:@"mainScreenPeripheryInsets"];
+  [dictionary2 setObject:v100 forKeyedSubscript:@"mainScreenPeripheryInsets"];
 
-  v101 = [(CNContactViewController *)self mode];
-  if (v101 <= 2)
+  mode2 = [(CNContactViewController *)self mode];
+  if (mode2 <= 2)
   {
-    v102 = v125;
+    v102 = dictionary;
     v103 = 0x1E6996000;
-    if (v101 == 1)
+    if (mode2 == 1)
     {
-      v111 = [(CNContactViewController *)self editMode];
-      v112 = v111 == 2 || [(CNContactViewController *)self editMode]== 1;
-      [v3 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"allowsAddingToAddressBook"];
+      editMode = [(CNContactViewController *)self editMode];
+      v112 = editMode == 2 || [(CNContactViewController *)self editMode]== 1;
+      [dictionary2 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"allowsAddingToAddressBook"];
       v113 = [MEMORY[0x1E696AD98] numberWithBool:v112];
-      [v3 setObject:v113 forKeyedSubscript:@"allowsEditing"];
+      [dictionary2 setObject:v113 forKeyedSubscript:@"allowsEditing"];
 
-      v114 = [MEMORY[0x1E696AD98] numberWithBool:v111 == 2];
-      [v3 setObject:v114 forKeyedSubscript:@"alwaysEditing"];
+      v114 = [MEMORY[0x1E696AD98] numberWithBool:editMode == 2];
+      [dictionary2 setObject:v114 forKeyedSubscript:@"alwaysEditing"];
 
       v103 = 0x1E6996000uLL;
     }
 
-    else if (v101 == 2)
+    else if (mode2 == 2)
     {
       v106 = MEMORY[0x1E695E110];
-      [v3 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"allowsEditing"];
-      [v3 setObject:v106 forKeyedSubscript:@"allowsAddToFavorites"];
-      v107 = [(CNContactViewController *)self recentsData];
-      [v3 setObject:v107 forKeyedSubscript:@"recentsData"];
+      [dictionary2 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"allowsEditing"];
+      [dictionary2 setObject:v106 forKeyedSubscript:@"allowsAddToFavorites"];
+      recentsData = [(CNContactViewController *)self recentsData];
+      [dictionary2 setObject:recentsData forKeyedSubscript:@"recentsData"];
 
-      v108 = [(CNContactViewController *)self primaryPropertyKey];
+      primaryPropertyKey3 = [(CNContactViewController *)self primaryPropertyKey];
 
-      if (v108)
+      if (primaryPropertyKey3)
       {
-        v109 = [(CNContactViewController *)self contentContact];
-        v110 = [(CNContactViewController *)self _primaryPropertyStringForContact:v109];
+        contentContact3 = [(CNContactViewController *)self contentContact];
+        v110 = [(CNContactViewController *)self _primaryPropertyStringForContact:contentContact3];
 
         if (v110)
         {
-          [v3 setObject:v110 forKeyedSubscript:@"alternateName"];
+          [dictionary2 setObject:v110 forKeyedSubscript:@"alternateName"];
         }
       }
 
       else
       {
-        v122 = [(CNContactViewController *)self alternateName];
+        alternateName = [(CNContactViewController *)self alternateName];
 
-        if (v122)
+        if (alternateName)
         {
-          v123 = [(CNContactViewController *)self alternateName];
-          [v3 setObject:v123 forKeyedSubscript:@"alternateName"];
+          alternateName2 = [(CNContactViewController *)self alternateName];
+          [dictionary2 setObject:alternateName2 forKeyedSubscript:@"alternateName"];
         }
       }
     }
@@ -1185,39 +1185,39 @@ void __49__CNContactViewController__prepareViewController__block_invoke_93(uint6
 
   else
   {
-    v102 = v125;
+    v102 = dictionary;
     v103 = 0x1E6996000;
-    switch(v101)
+    switch(mode2)
     {
       case 3:
         v104 = MEMORY[0x1E695E118];
-        [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"allowsEditing"];
-        [v3 setObject:v104 forKeyedSubscript:@"alwaysEditing"];
+        [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"allowsEditing"];
+        [dictionary2 setObject:v104 forKeyedSubscript:@"alwaysEditing"];
         v105 = @"layoutPositionallyAfterNavBar";
         break;
       case 4:
         v104 = MEMORY[0x1E695E118];
-        [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"allowsEditing"];
+        [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"allowsEditing"];
         v105 = @"alwaysEditing";
         break;
       case 5:
         v104 = MEMORY[0x1E695E110];
-        [v3 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"allowsEditing"];
-        [v3 setObject:v104 forKeyedSubscript:@"allowsCardActions"];
+        [dictionary2 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"allowsEditing"];
+        [dictionary2 setObject:v104 forKeyedSubscript:@"allowsCardActions"];
         v105 = @"allowsAddingToAddressBook";
         break;
       default:
         goto LABEL_83;
     }
 
-    [v3 setObject:v104 forKeyedSubscript:v105];
+    [dictionary2 setObject:v104 forKeyedSubscript:v105];
   }
 
 LABEL_83:
-  [v102 setObject:v3 forKeyedSubscript:@"Properties"];
-  v115 = [*(v103 + 1768) currentEnvironment];
-  v116 = [v115 entitlementVerifier];
-  v117 = [v116 currentProcessHasBooleanEntitlement:*MEMORY[0x1E69964E8] error:0];
+  [v102 setObject:dictionary2 forKeyedSubscript:@"Properties"];
+  currentEnvironment2 = [*(v103 + 1768) currentEnvironment];
+  entitlementVerifier = [currentEnvironment2 entitlementVerifier];
+  v117 = [entitlementVerifier currentProcessHasBooleanEntitlement:*MEMORY[0x1E69964E8] error:0];
 
   if (v117)
   {
@@ -1225,18 +1225,18 @@ LABEL_83:
     [v102 setObject:v118 forKeyedSubscript:@"ignoresParentalRestrictions"];
   }
 
-  v119 = [(CNContactViewController *)self prohibitedPropertyKeys];
-  [v102 setObject:v119 forKeyedSubscript:@"prohibitedPropertyKeys"];
+  prohibitedPropertyKeys = [(CNContactViewController *)self prohibitedPropertyKeys];
+  [v102 setObject:prohibitedPropertyKeys forKeyedSubscript:@"prohibitedPropertyKeys"];
 
-  v120 = [(CNContactViewController *)self viewController];
+  viewController2 = [(CNContactViewController *)self viewController];
   v127[0] = MEMORY[0x1E69E9820];
   v127[1] = 3221225472;
   v127[2] = __47__CNContactViewController__setupViewController__block_invoke;
   v127[3] = &unk_1E74E5CD8;
-  v128 = v3;
-  v129 = self;
-  v121 = v3;
-  [v120 setupWithOptions:v102 readyBlock:v127];
+  v128 = dictionary2;
+  selfCopy = self;
+  v121 = dictionary2;
+  [viewController2 setupWithOptions:v102 readyBlock:v127];
 
   [(CNContactViewController *)self setRequiresSetup:0];
 }
@@ -1286,36 +1286,36 @@ void __47__CNContactViewController__setupViewController__block_invoke_2(uint64_t
   [*(a1 + 40) setHasCompletedSetup:1];
 }
 
-- (void)setContact:(id)a3 additionalContact:(id)a4 mode:(int64_t)a5
+- (void)setContact:(id)contact additionalContact:(id)additionalContact mode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
+  contactCopy = contact;
+  additionalContactCopy = additionalContact;
   contact = self->_contact;
-  self->_contact = v8;
-  v11 = v8;
+  self->_contact = contactCopy;
+  v11 = contactCopy;
 
   additionalContact = self->_additionalContact;
-  self->_additionalContact = v9;
+  self->_additionalContact = additionalContactCopy;
 
-  self->_mode = a5;
+  self->_mode = mode;
   [(CNContactViewController *)self setRequiresSetup:1];
 
   [(CNContactViewController *)self setHasCompletedSetup:0];
 }
 
-- (void)_setViewController:(id)a3
+- (void)_setViewController:(id)controller
 {
-  v4 = a3;
-  [v4 setDelegate:self];
-  v5 = [(CNContactViewController *)self pptDelegate];
-  [v4 setPptDelegate:v5];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
+  pptDelegate = [(CNContactViewController *)self pptDelegate];
+  [controllerCopy setPptDelegate:pptDelegate];
 
-  [(CNContactViewController *)self setViewController:v4];
+  [(CNContactViewController *)self setViewController:controllerCopy];
   [(CNContactViewController *)self _setupViewController];
-  [(UIViewController *)self cnui_addChildViewController:v4];
+  [(UIViewController *)self cnui_addChildViewController:controllerCopy];
 
-  v6 = [(CNContactViewController *)self viewController];
-  [v6 preferredContentSize];
+  viewController = [(CNContactViewController *)self viewController];
+  [viewController preferredContentSize];
   [(CNContactViewController *)self setPreferredContentSize:?];
 }
 
@@ -1350,10 +1350,10 @@ void __47__CNContactViewController__setupViewController__block_invoke_2(uint64_t
 - (_UIRemoteViewController)_containedRemoteViewController
 {
   objc_opt_class();
-  v3 = [(CNContactViewController *)self viewController];
+  viewController = [(CNContactViewController *)self viewController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = viewController;
   }
 
   else
@@ -1366,53 +1366,53 @@ void __47__CNContactViewController__setupViewController__block_invoke_2(uint64_t
   return v4;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CNContactViewController;
-  [(CNContactViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(CNContactViewController *)self navigationItem];
-  [(CNContactViewController *)self setupNavBarAppearance:v4 asOpaqueWhenScrolled:0];
+  [(CNContactViewController *)&v5 viewDidDisappear:disappear];
+  navigationItem = [(CNContactViewController *)self navigationItem];
+  [(CNContactViewController *)self setupNavBarAppearance:navigationItem asOpaqueWhenScrolled:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CNContactViewController;
-  [(CNContactViewController *)&v5 viewDidAppear:a3];
+  [(CNContactViewController *)&v5 viewDidAppear:appear];
   if ([*MEMORY[0x1E69DDA98] isPPTAvailable])
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"PPTDidShowContact" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PPTDidShowContact" object:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = CNContactViewController;
-  [(CNContactViewController *)&v12 viewWillAppear:a3];
+  [(CNContactViewController *)&v12 viewWillAppear:appear];
   if ([(CNContactViewController *)self _shouldBeOutOfProcess])
   {
-    v4 = [(CNContactViewController *)self navigationController];
-    v5 = [v4 navigationBar];
-    v6 = [(CNContactViewController *)self view];
-    [v6 bounds];
-    [v5 _setRequestedMaxBackButtonWidth:v7 / 3.0];
+    navigationController = [(CNContactViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    view = [(CNContactViewController *)self view];
+    [view bounds];
+    [navigationBar _setRequestedMaxBackButtonWidth:v7 / 3.0];
   }
 
-  v8 = [(CNContactViewController *)self navigationController];
-  v9 = [v8 navigationBar];
-  if ([v9 isTranslucent])
+  navigationController2 = [(CNContactViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  if ([navigationBar2 isTranslucent])
   {
   }
 
   else
   {
-    v10 = [(CNContactViewController *)self navigationItem];
-    v11 = [v10 _backgroundHidden];
+    navigationItem = [(CNContactViewController *)self navigationItem];
+    _backgroundHidden = [navigationItem _backgroundHidden];
 
-    if (v11)
+    if (_backgroundHidden)
     {
       [(CNContactViewController *)self setExtendedLayoutIncludesOpaqueBars:1];
     }
@@ -1438,35 +1438,35 @@ void __47__CNContactViewController__setupViewController__block_invoke_2(uint64_t
   [(CNContactViewController *)&v11 loadView];
   if ([(CNContactViewController *)self forcesTransparentBackground])
   {
-    v3 = +[CNUIColorRepository transparentBackgroundColor];
+    systemGroupedBackgroundColor = +[CNUIColorRepository transparentBackgroundColor];
 LABEL_3:
-    v4 = v3;
-    v5 = [(CNContactViewController *)self view];
-    [v5 setBackgroundColor:v4];
+    v4 = systemGroupedBackgroundColor;
+    view = [(CNContactViewController *)self view];
+    [view setBackgroundColor:v4];
 LABEL_6:
 
     goto LABEL_7;
   }
 
   v6 = +[CNContactStyle currentStyle];
-  v7 = [v6 backgroundColor];
+  backgroundColor = [v6 backgroundColor];
 
   v8 = +[CNContactStyle currentStyle];
   v4 = v8;
-  if (v7)
+  if (backgroundColor)
   {
-    v5 = [v8 backgroundColor];
-    v9 = [(CNContactViewController *)self view];
-    [v9 setBackgroundColor:v5];
+    view = [v8 backgroundColor];
+    view2 = [(CNContactViewController *)self view];
+    [view2 setBackgroundColor:view];
 
     goto LABEL_6;
   }
 
-  v10 = [v8 usesOpaqueBackground];
+  usesOpaqueBackground = [v8 usesOpaqueBackground];
 
-  if (v10 && [(CNContactViewController *)self _shouldBeOutOfProcess])
+  if (usesOpaqueBackground && [(CNContactViewController *)self _shouldBeOutOfProcess])
   {
-    v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
     goto LABEL_3;
   }
 
@@ -1476,9 +1476,9 @@ LABEL_7:
 
 - (CNContactContentViewController)contentViewController
 {
-  v3 = [(CNContactViewController *)self viewController];
+  viewController = [(CNContactViewController *)self viewController];
 
-  if (!v3)
+  if (!viewController)
   {
     [(CNContactViewController *)self _prepareViewController];
   }
@@ -1486,14 +1486,14 @@ LABEL_7:
   return [(CNContactViewController *)self viewController];
 }
 
-- (id)confirmCancelAlertControllerAnchoredAtButtonItem:(id)a3
+- (id)confirmCancelAlertControllerAnchoredAtButtonItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNContactViewController *)self contact];
-  v6 = [v5 hasBeenPersisted];
+  itemCopy = item;
+  contact = [(CNContactViewController *)self contact];
+  hasBeenPersisted = [contact hasBeenPersisted];
   v7 = CNContactsUIBundle();
   v8 = v7;
-  if (v6)
+  if (hasBeenPersisted)
   {
     v9 = @"DISCARD_CHANGES_TITLE_EDIT_CONTACT";
   }
@@ -1523,28 +1523,28 @@ LABEL_7:
   v19 = [v16 actionWithTitle:v18 style:1 handler:0];
   [v11 addAction:v19];
 
-  if (v4)
+  if (itemCopy)
   {
-    v20 = [v11 popoverPresentationController];
-    [v20 setBarButtonItem:v4];
+    popoverPresentationController = [v11 popoverPresentationController];
+    [popoverPresentationController setBarButtonItem:itemCopy];
   }
 
   else
   {
-    v21 = [(CNContactViewController *)self view];
-    v22 = [v11 popoverPresentationController];
-    [v22 setSourceView:v21];
+    view = [(CNContactViewController *)self view];
+    popoverPresentationController2 = [v11 popoverPresentationController];
+    [popoverPresentationController2 setSourceView:view];
 
     v23 = *MEMORY[0x1E695F058];
     v24 = *(MEMORY[0x1E695F058] + 8);
     v25 = *(MEMORY[0x1E695F058] + 16);
     v26 = *(MEMORY[0x1E695F058] + 24);
-    v20 = [v11 popoverPresentationController];
-    [v20 setSourceRect:{v23, v24, v25, v26}];
+    popoverPresentationController = [v11 popoverPresentationController];
+    [popoverPresentationController setSourceRect:{v23, v24, v25, v26}];
   }
 
-  v27 = [v11 popoverPresentationController];
-  [v27 setPermittedArrowDirections:1];
+  popoverPresentationController3 = [v11 popoverPresentationController];
+  [popoverPresentationController3 setPermittedArrowDirections:1];
 
   return v11;
 }
@@ -1555,56 +1555,56 @@ void __76__CNContactViewController_confirmCancelAlertControllerAnchoredAtButtonI
   [v1 performConfirmedCancel];
 }
 
-- (void)presentConfirmCancelAlertControllerAnchoredAtButtonItem:(id)a3
+- (void)presentConfirmCancelAlertControllerAnchoredAtButtonItem:(id)item
 {
-  v4 = [(CNContactViewController *)self confirmCancelAlertControllerAnchoredAtButtonItem:a3];
+  v4 = [(CNContactViewController *)self confirmCancelAlertControllerAnchoredAtButtonItem:item];
   [(CNContactViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
 - (void)presentCancelConfirmationAlert
 {
-  v8 = [(CNContactViewController *)self navigationItemController];
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:29];
+  navigationItemController = [(CNContactViewController *)self navigationItemController];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:29];
 
   if (v5)
   {
-    v6 = [(CNContactViewController *)self sharedNavigationBar];
-    [v6 cancelButton];
+    sharedNavigationBar = [(CNContactViewController *)self sharedNavigationBar];
+    [sharedNavigationBar cancelButton];
   }
 
   else
   {
-    v6 = [v8 navigationItem];
-    [v6 leftBarButtonItem];
+    sharedNavigationBar = [navigationItemController navigationItem];
+    [sharedNavigationBar leftBarButtonItem];
   }
   v7 = ;
   [(CNContactViewController *)self presentConfirmCancelAlertControllerAnchoredAtButtonItem:v7];
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
   if (![(CNContactViewController *)self _shouldBeOutOfProcess])
   {
-    v4 = [(CNContactViewController *)self contentViewController];
-    v5 = [v4 hasPendingChanges];
+    contentViewController = [(CNContactViewController *)self contentViewController];
+    hasPendingChanges = [contentViewController hasPendingChanges];
 
-    v6 = [(CNContactViewController *)self contentViewController];
-    v7 = v6;
-    if (v5)
+    contentViewController2 = [(CNContactViewController *)self contentViewController];
+    v7 = contentViewController2;
+    if (hasPendingChanges)
     {
-      [v6 presentConfirmCancelAlertController];
+      [contentViewController2 presentConfirmCancelAlertController];
     }
 
     else
     {
-      [v6 performConfirmedCancel];
+      [contentViewController2 performConfirmedCancel];
     }
   }
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
   if ([(CNContactViewController *)self _shouldBeOutOfProcess])
   {
@@ -1613,8 +1613,8 @@ void __76__CNContactViewController_confirmCancelAlertControllerAnchoredAtButtonI
 
   else
   {
-    v5 = [(CNContactViewController *)self contentViewController];
-    v4 = [v5 hasPendingChanges] ^ 1;
+    contentViewController = [(CNContactViewController *)self contentViewController];
+    v4 = [contentViewController hasPendingChanges] ^ 1;
   }
 
   return v4;
@@ -1624,130 +1624,130 @@ void __76__CNContactViewController_confirmCancelAlertControllerAnchoredAtButtonI
 {
   if ([(CNContactViewController *)self _shouldBeOutOfProcess])
   {
-    v3 = [(CNContactViewController *)self viewController];
-    v4 = [v3 isModalInPresentation];
+    viewController = [(CNContactViewController *)self viewController];
+    isModalInPresentation = [viewController isModalInPresentation];
   }
 
   else
   {
-    v3 = [(CNContactViewController *)self contentViewController];
-    v4 = [v3 hasPendingChanges];
+    viewController = [(CNContactViewController *)self contentViewController];
+    isModalInPresentation = [viewController hasPendingChanges];
   }
 
-  v5 = v4;
+  v5 = isModalInPresentation;
 
   return v5;
 }
 
-- (void)setShouldShowSharedProfileBanner:(BOOL)a3
+- (void)setShouldShowSharedProfileBanner:(BOOL)banner
 {
-  if (self->_shouldShowSharedProfileBanner != a3)
+  if (self->_shouldShowSharedProfileBanner != banner)
   {
-    v4 = a3;
-    self->_shouldShowSharedProfileBanner = a3;
-    v5 = [(CNContactViewController *)self contentViewController];
-    [v5 setShouldShowSharedProfileBanner:v4];
+    bannerCopy = banner;
+    self->_shouldShowSharedProfileBanner = banner;
+    contentViewController = [(CNContactViewController *)self contentViewController];
+    [contentViewController setShouldShowSharedProfileBanner:bannerCopy];
   }
 }
 
-- (void)setUsesBrandedCallHeaderFormat:(BOOL)a3
+- (void)setUsesBrandedCallHeaderFormat:(BOOL)format
 {
-  if (self->_usesBrandedCallHeaderFormat != a3)
+  if (self->_usesBrandedCallHeaderFormat != format)
   {
-    v4 = a3;
-    self->_usesBrandedCallHeaderFormat = a3;
-    v5 = [(CNContactViewController *)self contentViewController];
-    [v5 setUsesBrandedCallHeaderFormat:v4];
+    formatCopy = format;
+    self->_usesBrandedCallHeaderFormat = format;
+    contentViewController = [(CNContactViewController *)self contentViewController];
+    [contentViewController setUsesBrandedCallHeaderFormat:formatCopy];
   }
 }
 
-- (void)setForcesTransparentBackground:(BOOL)a3
+- (void)setForcesTransparentBackground:(BOOL)background
 {
-  if (self->_forcesTransparentBackground != a3)
+  if (self->_forcesTransparentBackground != background)
   {
-    v4 = a3;
-    self->_forcesTransparentBackground = a3;
-    v5 = [(CNContactViewController *)self contentViewController];
-    [v5 setForcesTransparentBackground:v4];
+    backgroundCopy = background;
+    self->_forcesTransparentBackground = background;
+    contentViewController = [(CNContactViewController *)self contentViewController];
+    [contentViewController setForcesTransparentBackground:backgroundCopy];
   }
 }
 
-- (void)setShouldUseModernNavigationBarHiding:(BOOL)a3
+- (void)setShouldUseModernNavigationBarHiding:(BOOL)hiding
 {
-  if (self->_shouldUseModernNavigationBarHiding != a3)
+  if (self->_shouldUseModernNavigationBarHiding != hiding)
   {
-    self->_shouldUseModernNavigationBarHiding = a3;
-    v5 = [(CNContactViewController *)self navigationItem];
-    [(CNContactViewController *)self configureNavigationItem:v5];
+    self->_shouldUseModernNavigationBarHiding = hiding;
+    navigationItem = [(CNContactViewController *)self navigationItem];
+    [(CNContactViewController *)self configureNavigationItem:navigationItem];
   }
 }
 
-- (void)setShouldDrawNavigationBar:(BOOL)a3
+- (void)setShouldDrawNavigationBar:(BOOL)bar
 {
-  if (self->_shouldDrawNavigationBar != a3)
+  if (self->_shouldDrawNavigationBar != bar)
   {
-    self->_shouldDrawNavigationBar = a3;
-    v4 = [(CNContactViewController *)self navigationItem];
-    [v4 _setBackgroundHidden:!self->_shouldDrawNavigationBar];
+    self->_shouldDrawNavigationBar = bar;
+    navigationItem = [(CNContactViewController *)self navigationItem];
+    [navigationItem _setBackgroundHidden:!self->_shouldDrawNavigationBar];
   }
 }
 
-- (void)setInitialPrompt:(id)a3
+- (void)setInitialPrompt:(id)prompt
 {
-  v7 = a3;
+  promptCopy = prompt;
   if (![(NSString *)self->_initialPrompt isEqualToString:?])
   {
-    objc_storeStrong(&self->_initialPrompt, a3);
+    objc_storeStrong(&self->_initialPrompt, prompt);
     initialPrompt = self->_initialPrompt;
-    v6 = [(CNContactViewController *)self navigationItem];
-    [v6 setPrompt:initialPrompt];
+    navigationItem = [(CNContactViewController *)self navigationItem];
+    [navigationItem setPrompt:initialPrompt];
   }
 }
 
-- (void)setRequiresSetup:(BOOL)a3
+- (void)setRequiresSetup:(BOOL)setup
 {
-  if (self->_requiresSetup != a3)
+  if (self->_requiresSetup != setup)
   {
-    self->_requiresSetup = a3;
+    self->_requiresSetup = setup;
     if ([(CNContactViewController *)self isViewLoaded])
     {
-      v4 = [(CNContactViewController *)self view];
-      [v4 setNeedsLayout];
+      view = [(CNContactViewController *)self view];
+      [view setNeedsLayout];
     }
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(CNContactViewController *)self isEditing]!= a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if ([(CNContactViewController *)self isEditing]!= editing)
   {
     v8.receiver = self;
     v8.super_class = CNContactViewController;
-    [(CNContactViewController *)&v8 setEditing:v5 animated:v4];
-    v7 = [(CNContactViewController *)self viewController];
-    [v7 didChangeToEditMode:v5];
+    [(CNContactViewController *)&v8 setEditing:editingCopy animated:animatedCopy];
+    viewController = [(CNContactViewController *)self viewController];
+    [viewController didChangeToEditMode:editingCopy];
   }
 }
 
-- (void)highlightPropertyWithKey:(id)a3 identifier:(id)a4 important:(BOOL)a5
+- (void)highlightPropertyWithKey:(id)key identifier:(id)identifier important:(BOOL)important
 {
-  v5 = a5;
-  v8 = a4;
-  [(CNContactViewController *)self setHighlightedPropertyKey:a3];
-  [(CNContactViewController *)self setHighlightedPropertyIdentifier:v8];
+  importantCopy = important;
+  identifierCopy = identifier;
+  [(CNContactViewController *)self setHighlightedPropertyKey:key];
+  [(CNContactViewController *)self setHighlightedPropertyIdentifier:identifierCopy];
 
-  [(CNContactViewController *)self setHighlightedPropertyImportant:v5];
+  [(CNContactViewController *)self setHighlightedPropertyImportant:importantCopy];
 }
 
 - (void)setAllowsEditing:(BOOL)allowsEditing
 {
   v3 = allowsEditing;
-  v5 = [(CNContactViewController *)self editMode];
+  editMode = [(CNContactViewController *)self editMode];
   if (v3)
   {
-    if (v5)
+    if (editMode)
     {
       return;
     }
@@ -1757,7 +1757,7 @@ void __76__CNContactViewController_confirmCancelAlertControllerAnchoredAtButtonI
 
   else
   {
-    if (!v5)
+    if (!editMode)
     {
       return;
     }
@@ -1788,81 +1788,81 @@ void __76__CNContactViewController_confirmCancelAlertControllerAnchoredAtButtonI
   }
 }
 
-- (id)_primaryPropertyStringForContact:(id)a3
+- (id)_primaryPropertyStringForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactViewController *)self primaryPropertyKey];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E695C330]];
+  contactCopy = contact;
+  primaryPropertyKey = [(CNContactViewController *)self primaryPropertyKey];
+  v6 = [primaryPropertyKey isEqualToString:*MEMORY[0x1E695C330]];
 
   if (v6)
   {
-    v7 = [v4 phoneNumbers];
-    v8 = [v7 firstObject];
+    phoneNumbers = [contactCopy phoneNumbers];
+    firstObject = [phoneNumbers firstObject];
 
-    v9 = [v8 value];
-    v10 = [v9 formattedStringValue];
+    value = [firstObject value];
+    formattedStringValue = [value formattedStringValue];
 LABEL_3:
-    v11 = v10;
+    value2 = formattedStringValue;
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [(CNContactViewController *)self primaryPropertyKey];
-  v13 = [v12 isEqualToString:*MEMORY[0x1E695C208]];
+  primaryPropertyKey2 = [(CNContactViewController *)self primaryPropertyKey];
+  v13 = [primaryPropertyKey2 isEqualToString:*MEMORY[0x1E695C208]];
 
   if (v13)
   {
-    v14 = [v4 emailAddresses];
-    v8 = [v14 firstObject];
+    emailAddresses = [contactCopy emailAddresses];
+    firstObject = [emailAddresses firstObject];
 
-    v11 = [v8 value];
+    value2 = [firstObject value];
     goto LABEL_6;
   }
 
-  v16 = [(CNContactViewController *)self primaryPropertyKey];
-  v17 = [v16 isEqualToString:*MEMORY[0x1E695C360]];
+  primaryPropertyKey3 = [(CNContactViewController *)self primaryPropertyKey];
+  v17 = [primaryPropertyKey3 isEqualToString:*MEMORY[0x1E695C360]];
 
   if (v17)
   {
-    v18 = [v4 postalAddresses];
-    v8 = [v18 firstObject];
+    postalAddresses = [contactCopy postalAddresses];
+    firstObject = [postalAddresses firstObject];
 
-    v9 = [v8 value];
-    v10 = [MEMORY[0x1E695CF68] stringFromPostalAddress:v9 style:0];
+    value = [firstObject value];
+    formattedStringValue = [MEMORY[0x1E695CF68] stringFromPostalAddress:value style:0];
     goto LABEL_3;
   }
 
-  v11 = 0;
+  value2 = 0;
 LABEL_7:
 
-  return v11;
+  return value2;
 }
 
 - (id)_contactPresentedViewController
 {
-  v2 = self;
-  v3 = [(CNContactViewController *)v2 delegate];
+  selfCopy = self;
+  delegate = [(CNContactViewController *)selfCopy delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNContactViewController *)v2 delegate];
-    v6 = [v5 contactPresentedViewController:v2];
+    delegate2 = [(CNContactViewController *)selfCopy delegate];
+    v6 = [delegate2 contactPresentedViewController:selfCopy];
 
-    v2 = v6;
+    selfCopy = v6;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(CNContactViewController *)self observedNavigationItem];
-  [v4 removeObserver:self forKeyPath:@"title"];
+  observedNavigationItem = [(CNContactViewController *)self observedNavigationItem];
+  [observedNavigationItem removeObserver:self forKeyPath:@"title"];
 
   [(CNContactViewController *)self setObservedNavigationItem:0];
   [(CNContactContentViewController *)self->_contentViewController setContactDelegate:0];
@@ -1871,7 +1871,7 @@ LABEL_7:
   [(CNContactViewController *)&v5 dealloc];
 }
 
-- (CNContactViewController)initWithMode:(int64_t)a3
+- (CNContactViewController)initWithMode:(int64_t)mode
 {
   v10.receiver = self;
   v10.super_class = CNContactViewController;
@@ -1879,7 +1879,7 @@ LABEL_7:
   v5 = v4;
   if (v4)
   {
-    v4->_mode = a3;
+    v4->_mode = mode;
     v4->_actions = 127;
     v4->_editMode = 1;
     v4->_allowsDisplayModePickerActions = 1;
@@ -1894,30 +1894,30 @@ LABEL_7:
 
     v5->_showContactPhotoPosterCell = 1;
     v5->_allowsSwipeToPop = 1;
-    v8 = [(CNContactViewController *)v5 navigationItem];
-    [(CNContactViewController *)v5 configureNavigationItem:v8];
+    navigationItem = [(CNContactViewController *)v5 navigationItem];
+    [(CNContactViewController *)v5 configureNavigationItem:navigationItem];
   }
 
   return v5;
 }
 
-+ (id)viewControllerForEditedDraftContact:(id)a3
++ (id)viewControllerForEditedDraftContact:(id)contact
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (contact)
   {
-    v4 = a3;
-    v5 = [a1 descriptorForRequiredKeys];
-    v11[0] = v5;
+    contactCopy = contact;
+    descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+    v11[0] = descriptorForRequiredKeys;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v4 assertKeysAreAvailable:v6];
+    [contactCopy assertKeysAreAvailable:v6];
 
-    v7 = [[a1 alloc] initWithMode:4];
+    v7 = [[self alloc] initWithMode:4];
     v8 = CNContactsUIBundle();
     v9 = [v8 localizedStringForKey:@"CREATE_DRAFT_CONTACT_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
     [v7 setTitle:v9];
 
-    [v7 setContact:v4];
+    [v7 setContact:contactCopy];
   }
 
   else
@@ -1928,26 +1928,26 @@ LABEL_7:
   return v7;
 }
 
-+ (id)viewControllerForNewDraftContact:(id)a3
++ (id)viewControllerForNewDraftContact:(id)contact
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v5 = v4;
-    v6 = [v4 copyWithDistinctIdentifier];
+    v5 = contactCopy;
+    copyWithDistinctIdentifier = [contactCopy copyWithDistinctIdentifier];
 
-    v7 = [a1 descriptorForRequiredKeys];
-    v13[0] = v7;
+    descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+    v13[0] = descriptorForRequiredKeys;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    [v6 assertKeysAreAvailable:v8];
+    [copyWithDistinctIdentifier assertKeysAreAvailable:v8];
 
-    v9 = [[a1 alloc] initWithMode:3];
+    v9 = [[self alloc] initWithMode:3];
     v10 = CNContactsUIBundle();
     v11 = [v10 localizedStringForKey:@"CREATE_DRAFT_CONTACT_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
     [v9 setTitle:v11];
 
-    [v9 setContact:v6];
+    [v9 setContact:copyWithDistinctIdentifier];
   }
 
   else
@@ -1958,22 +1958,22 @@ LABEL_7:
   return v9;
 }
 
-+ (id)viewControllerForUpdatingContact:(id)a3 withPublicAccountIdentity:(id)a4
++ (id)viewControllerForUpdatingContact:(id)contact withPublicAccountIdentity:(id)identity
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (contact)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [a1 descriptorForRequiredKeys];
-    v12[0] = v8;
+    identityCopy = identity;
+    contactCopy = contact;
+    descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+    v12[0] = descriptorForRequiredKeys;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v7 assertKeysAreAvailable:v9];
+    [contactCopy assertKeysAreAvailable:v9];
 
-    v10 = [[a1 alloc] initWithMode:4];
-    [v10 setContact:v7];
+    v10 = [[self alloc] initWithMode:4];
+    [v10 setContact:contactCopy];
 
-    [v10 setStaticIdentity:v6];
+    [v10 setStaticIdentity:identityCopy];
   }
 
   else
@@ -1984,18 +1984,18 @@ LABEL_7:
   return v10;
 }
 
-+ (id)viewControllerForUpdatingContact:(id)a3 withPropertiesFromContact:(id)a4
++ (id)viewControllerForUpdatingContact:(id)contact withPropertiesFromContact:(id)fromContact
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 descriptorForRequiredKeys];
-  v14[0] = v8;
+  fromContactCopy = fromContact;
+  contactCopy = contact;
+  descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+  v14[0] = descriptorForRequiredKeys;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v7 assertKeysAreAvailable:v9];
+  [contactCopy assertKeysAreAvailable:v9];
 
-  v10 = [a1 alloc];
-  if ([v6 isSuggested])
+  v10 = [self alloc];
+  if ([fromContactCopy isSuggested])
   {
     v11 = 5;
   }
@@ -2006,9 +2006,9 @@ LABEL_7:
   }
 
   v12 = [v10 initWithMode:v11];
-  [v12 setContact:v7];
+  [v12 setContact:contactCopy];
 
-  [v12 setAdditionalContact:v6];
+  [v12 setAdditionalContact:fromContactCopy];
 
   return v12;
 }
@@ -2017,12 +2017,12 @@ LABEL_7:
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = contact;
-  v5 = [a1 descriptorForRequiredKeys];
-  v11[0] = v5;
+  descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+  v11[0] = descriptorForRequiredKeys;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   [(CNContact *)v4 assertKeysAreAvailable:v6];
 
-  v7 = [[a1 alloc] initWithMode:3];
+  v7 = [[self alloc] initWithMode:3];
   v8 = CNContactsUIBundle();
   v9 = [v8 localizedStringForKey:@"CREATE_NEW_CONTACT_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
   [v7 setTitle:v9];
@@ -2041,8 +2041,8 @@ LABEL_7:
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = contact;
-  v5 = [a1 descriptorForRequiredKeys];
-  v13[0] = v5;
+  descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+  v13[0] = descriptorForRequiredKeys;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   [(CNContact *)v4 assertKeysAreAvailable:v6];
 
@@ -2051,7 +2051,7 @@ LABEL_7:
     _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactViewController.m", 135, 3, @"Behavior of CNContactViewController created with viewControllerForUnknownContact: and passing a known contact is undefined. Please use +viewControllerForContact: instead.", v7, v8, v9, v10, v13[0]);
   }
 
-  v11 = [[a1 alloc] initWithMode:2];
+  v11 = [[self alloc] initWithMode:2];
   [v11 setContact:v4];
 
   return v11;
@@ -2061,8 +2061,8 @@ LABEL_7:
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v4 = contact;
-  v5 = [a1 descriptorForRequiredKeys];
-  v14[0] = v5;
+  descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+  v14[0] = descriptorForRequiredKeys;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   [(CNContact *)v4 assertKeysAreAvailable:v6];
 
@@ -2081,7 +2081,7 @@ LABEL_7:
     v11 = 1;
   }
 
-  v12 = [[a1 alloc] initWithMode:v11];
+  v12 = [[self alloc] initWithMode:v11];
   [v12 setContact:v4];
 
   return v12;

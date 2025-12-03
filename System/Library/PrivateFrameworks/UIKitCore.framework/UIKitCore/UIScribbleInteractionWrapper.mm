@@ -1,49 +1,49 @@
 @interface UIScribbleInteractionWrapper
-- (BOOL)focusWillTransformElement:(id)a3;
+- (BOOL)focusWillTransformElement:(id)element;
 - (BOOL)isElementContainer;
-- (BOOL)isElementFocused:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldBeginAtLocation:(CGPoint)a3;
+- (BOOL)isElementFocused:(id)focused;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldBeginAtLocation:(CGPoint)location;
 - (BOOL)shouldDisableInputAssistant;
 - (BOOL)supportsShouldBegin;
-- (CGRect)frameForElement:(id)a3;
+- (CGRect)frameForElement:(id)element;
 - (NSString)description;
-- (UIEdgeInsets)hitToleranceInsetsWithDefaultInsets:(UIEdgeInsets)a3 element:(id)a4;
+- (UIEdgeInsets)hitToleranceInsetsWithDefaultInsets:(UIEdgeInsets)insets element:(id)element;
 - (UIInteraction)interaction;
-- (UIScribbleInteractionWrapper)initWithCustomScribbleInteraction:(id)a3 indirectScribbleInteraction:(id)a4;
+- (UIScribbleInteractionWrapper)initWithCustomScribbleInteraction:(id)interaction indirectScribbleInteraction:(id)scribbleInteraction;
 - (UIView)view;
-- (void)didFinishWritingInElement:(id)a3;
-- (void)focusElement:(id)a3 initialFocusSelectionReferencePoint:(CGPoint)a4 completion:(id)a5;
-- (void)requestElementsInRect:(CGRect)a3 completion:(id)a4;
-- (void)willBeginWritingInElement:(id)a3;
+- (void)didFinishWritingInElement:(id)element;
+- (void)focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)requestElementsInRect:(CGRect)rect completion:(id)completion;
+- (void)willBeginWritingInElement:(id)element;
 @end
 
 @implementation UIScribbleInteractionWrapper
 
-- (UIScribbleInteractionWrapper)initWithCustomScribbleInteraction:(id)a3 indirectScribbleInteraction:(id)a4
+- (UIScribbleInteractionWrapper)initWithCustomScribbleInteraction:(id)interaction indirectScribbleInteraction:(id)scribbleInteraction
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  scribbleInteractionCopy = scribbleInteraction;
   v11.receiver = self;
   v11.super_class = UIScribbleInteractionWrapper;
   v8 = [(UIScribbleInteractionWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_scribbleInteraction, v6);
-    objc_storeWeak(&v9->_indirectInteraction, v7);
+    objc_storeWeak(&v8->_scribbleInteraction, interactionCopy);
+    objc_storeWeak(&v9->_indirectInteraction, scribbleInteractionCopy);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     WeakRetained = objc_loadWeakRetained(&self->_scribbleInteraction);
     v7 = objc_loadWeakRetained(v5 + 1);
     if (WeakRetained == v7)
@@ -89,9 +89,9 @@
     v4 = WeakRetained;
   }
 
-  v6 = [v4 view];
+  view = [v4 view];
 
-  return v6;
+  return view;
 }
 
 - (UIInteraction)interaction
@@ -117,25 +117,25 @@
 - (BOOL)supportsShouldBegin
 {
   WeakRetained = objc_loadWeakRetained(&self->_scribbleInteraction);
-  v3 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;
 }
 
-- (CGRect)frameForElement:(id)a3
+- (CGRect)frameForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);
   v7 = *(MEMORY[0x1E695F050] + 16);
   v8 = *(MEMORY[0x1E695F050] + 24);
   WeakRetained = objc_loadWeakRetained(&self->_indirectInteraction);
-  v10 = [WeakRetained delegate];
-  v11 = v10;
-  if (v4 && WeakRetained)
+  delegate = [WeakRetained delegate];
+  v11 = delegate;
+  if (elementCopy && WeakRetained)
   {
-    [v10 indirectScribbleInteraction:WeakRetained frameForElement:v4];
+    [delegate indirectScribbleInteraction:WeakRetained frameForElement:elementCopy];
     v5 = v12;
     v6 = v13;
     v7 = v14;
@@ -153,16 +153,16 @@
   return result;
 }
 
-- (BOOL)focusWillTransformElement:(id)a3
+- (BOOL)focusWillTransformElement:(id)element
 {
-  v4 = a3;
-  if (!v4)
+  elementCopy = element;
+  if (!elementCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_scribbleInteraction);
-    v6 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 scribbleInteractionShouldDelayFocus:WeakRetained];
+      v7 = [delegate scribbleInteractionShouldDelayFocus:WeakRetained];
       goto LABEL_6;
     }
 
@@ -172,13 +172,13 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_indirectInteraction);
-  v6 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v7 = [v6 indirectScribbleInteraction:WeakRetained shouldDelayFocusForElement:v4];
+  v7 = [delegate indirectScribbleInteraction:WeakRetained shouldDelayFocusForElement:elementCopy];
 LABEL_6:
   v8 = v7;
 LABEL_8:
@@ -186,15 +186,15 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)shouldBeginAtLocation:(CGPoint)a3
+- (BOOL)shouldBeginAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   WeakRetained = objc_loadWeakRetained(&self->_scribbleInteraction);
-  v6 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 scribbleInteraction:WeakRetained shouldBeginAtLocation:{x, y}];
+    v7 = [delegate scribbleInteraction:WeakRetained shouldBeginAtLocation:{x, y}];
   }
 
   else
@@ -205,17 +205,17 @@ LABEL_8:
   return v7;
 }
 
-- (void)willBeginWritingInElement:(id)a3
+- (void)willBeginWritingInElement:(id)element
 {
-  v8 = a3;
-  if (v8)
+  elementCopy = element;
+  if (elementCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_indirectInteraction);
     [WeakRetained _setHandlingWritingCount:{objc_msgSend(WeakRetained, "_handlingWritingCount") + 1}];
-    v5 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 indirectScribbleInteraction:WeakRetained willBeginWritingInElement:v8];
+      [delegate indirectScribbleInteraction:WeakRetained willBeginWritingInElement:elementCopy];
     }
   }
 
@@ -223,29 +223,29 @@ LABEL_8:
   {
     WeakRetained = objc_loadWeakRetained(&self->_scribbleInteraction);
     [WeakRetained _setHandlingWriting:1];
-    v5 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 scribbleInteractionWillBeginWriting:WeakRetained];
+      [delegate scribbleInteractionWillBeginWriting:WeakRetained];
     }
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  v7 = [(UIScribbleInteractionWrapper *)self view];
-  [v6 postNotificationName:@"_UIScribbleWillBeginWriting" object:v7];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  view = [(UIScribbleInteractionWrapper *)self view];
+  [defaultCenter postNotificationName:@"_UIScribbleWillBeginWriting" object:view];
 }
 
-- (void)didFinishWritingInElement:(id)a3
+- (void)didFinishWritingInElement:(id)element
 {
-  v6 = a3;
-  if (v6)
+  elementCopy = element;
+  if (elementCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_indirectInteraction);
     [WeakRetained _setHandlingWritingCount:{objc_msgSend(WeakRetained, "_handlingWritingCount") - 1}];
-    v5 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 indirectScribbleInteraction:WeakRetained didFinishWritingInElement:v6];
+      [delegate indirectScribbleInteraction:WeakRetained didFinishWritingInElement:elementCopy];
     }
   }
 
@@ -253,36 +253,36 @@ LABEL_8:
   {
     WeakRetained = objc_loadWeakRetained(&self->_scribbleInteraction);
     [WeakRetained _setHandlingWriting:0];
-    v5 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 scribbleInteractionDidFinishWriting:WeakRetained];
+      [delegate scribbleInteractionDidFinishWriting:WeakRetained];
     }
   }
 }
 
-- (void)requestElementsInRect:(CGRect)a3 completion:(id)a4
+- (void)requestElementsInRect:(CGRect)rect completion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_indirectInteraction);
-  v11 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   if (objc_opt_respondsToSelector())
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __65__UIScribbleInteractionWrapper_requestElementsInRect_completion___block_invoke;
     v12[3] = &unk_1E70FDA40;
-    v13 = v9;
-    [v11 indirectScribbleInteraction:WeakRetained requestElementsInRect:v12 completion:{x, y, width, height}];
+    v13 = completionCopy;
+    [delegate indirectScribbleInteraction:WeakRetained requestElementsInRect:v12 completion:{x, y, width, height}];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, MEMORY[0x1E695E0F0], 0x7FFFFFFFFFFFFFFFLL);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0], 0x7FFFFFFFFFFFFFFFLL);
   }
 }
 
@@ -300,27 +300,27 @@ void __65__UIScribbleInteractionWrapper_requestElementsInRect_completion___block
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)focusElement:(id)a3 initialFocusSelectionReferencePoint:(CGPoint)a4 completion:(id)a5
+- (void)focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
+  y = point.y;
+  x = point.x;
+  elementCopy = element;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_indirectInteraction);
-  v12 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   if (objc_opt_respondsToSelector())
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __92__UIScribbleInteractionWrapper_focusElement_initialFocusSelectionReferencePoint_completion___block_invoke;
     v13[3] = &unk_1E711B1D0;
-    v14 = v10;
-    [v12 indirectScribbleInteraction:WeakRetained focusElementIfNeeded:v9 referencePoint:v13 completion:{x, y}];
+    v14 = completionCopy;
+    [delegate indirectScribbleInteraction:WeakRetained focusElementIfNeeded:elementCopy referencePoint:v13 completion:{x, y}];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -335,22 +335,22 @@ uint64_t __92__UIScribbleInteractionWrapper_focusElement_initialFocusSelectionRe
   return result;
 }
 
-- (UIEdgeInsets)hitToleranceInsetsWithDefaultInsets:(UIEdgeInsets)a3 element:(id)a4
+- (UIEdgeInsets)hitToleranceInsetsWithDefaultInsets:(UIEdgeInsets)insets element:(id)element
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_scribbleInteraction);
   v11 = objc_loadWeakRetained(&self->_indirectInteraction);
   v12 = v11;
-  if (v9 && v11)
+  if (elementCopy && v11)
   {
-    v13 = [v11 delegate];
+    delegate = [v11 delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v13 _indirectScribbleInteraction:v12 hitToleranceInsetsForElement:v9 defaultInsets:{top, left, bottom, right}];
+      [delegate _indirectScribbleInteraction:v12 hitToleranceInsetsForElement:elementCopy defaultInsets:{top, left, bottom, right}];
 LABEL_8:
       top = v14;
       left = v15;
@@ -364,10 +364,10 @@ LABEL_8:
 
   if (WeakRetained)
   {
-    v13 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v13 _scribbleInteraction:WeakRetained hitToleranceInsetsWithDefaultInsets:{top, left, bottom, right}];
+      [delegate _scribbleInteraction:WeakRetained hitToleranceInsetsWithDefaultInsets:{top, left, bottom, right}];
       goto LABEL_8;
     }
 
@@ -393,14 +393,14 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)isElementFocused:(id)a3
+- (BOOL)isElementFocused:(id)focused
 {
-  v4 = a3;
+  focusedCopy = focused;
   WeakRetained = objc_loadWeakRetained(&self->_indirectInteraction);
-  v6 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 indirectScribbleInteraction:WeakRetained isElementFocused:v4];
+    v7 = [delegate indirectScribbleInteraction:WeakRetained isElementFocused:focusedCopy];
   }
 
   else
@@ -417,10 +417,10 @@ LABEL_9:
   v4 = objc_loadWeakRetained(&self->_indirectInteraction);
   if (WeakRetained)
   {
-    v5 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 _scribbleInteractionShouldDisableInputAssistant:WeakRetained];
+      v6 = [delegate _scribbleInteractionShouldDisableInputAssistant:WeakRetained];
     }
 
     else
@@ -441,10 +441,10 @@ LABEL_9:
 
   if (v4)
   {
-    v7 = [v4 delegate];
+    delegate2 = [v4 delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v7 _indirectScribbleInteractionShouldDisableInputAssistant:v4];
+      v6 = [delegate2 _indirectScribbleInteractionShouldDisableInputAssistant:v4];
     }
 
     else

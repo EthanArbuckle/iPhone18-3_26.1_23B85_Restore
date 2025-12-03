@@ -1,33 +1,33 @@
 @interface TUIElementLinkEntity
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementLinkEntity
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 stringForAttribute:214 node:var0];
-  [v9 setType:v10];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  objectCopy = object;
+  v10 = [attributesCopy stringForAttribute:214 node:var0];
+  [objectCopy setType:v10];
 
-  v11 = [v8 stringForAttribute:104 node:var0];
-  [v9 setIdentifier:v11];
+  v11 = [attributesCopy stringForAttribute:104 node:var0];
+  [objectCopy setIdentifier:v11];
 
-  v12 = [v8 stringForAttribute:206 node:var0];
+  v12 = [attributesCopy stringForAttribute:206 node:var0];
 
-  [v9 setTitle:v12];
+  [objectCopy setTitle:v12];
 }
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v8 = a4;
-  v7 = [a3 finalizeLinkEntityWithContext:a5];
+  builderCopy = builder;
+  v7 = [object finalizeLinkEntityWithContext:context];
   if (v7)
   {
-    [v8 addLinkEntity:v7];
+    [builderCopy addLinkEntity:v7];
   }
 }
 

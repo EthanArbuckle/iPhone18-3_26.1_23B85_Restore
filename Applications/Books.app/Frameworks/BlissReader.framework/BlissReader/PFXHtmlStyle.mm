@@ -1,32 +1,32 @@
 @interface PFXHtmlStyle
-+ (id)createStylesWithSelector:(id)a3 styleCache:(id)a4 isLeaf:(BOOL)a5;
-+ (int)whiteSpacePropertyForCurrentOrientation:(id)a3;
-+ (void)insertElementAttributes:(id)a3 intoSelector:(id)a4 identifier:(const char *)a5;
-+ (void)loadCssPropertiesForHtmlEntry:(id)a3;
-+ (void)setupWhiteSpaceForCurrentOrientation:(id)a3;
++ (id)createStylesWithSelector:(id)selector styleCache:(id)cache isLeaf:(BOOL)leaf;
++ (int)whiteSpacePropertyForCurrentOrientation:(id)orientation;
++ (void)insertElementAttributes:(id)attributes intoSelector:(id)selector identifier:(const char *)identifier;
++ (void)loadCssPropertiesForHtmlEntry:(id)entry;
++ (void)setupWhiteSpaceForCurrentOrientation:(id)orientation;
 @end
 
 @implementation PFXHtmlStyle
 
-+ (void)loadCssPropertiesForHtmlEntry:(id)a3
++ (void)loadCssPropertiesForHtmlEntry:(id)entry
 {
   v20 = objc_alloc_init(NSAutoreleasePool);
-  v5 = [a3 htmlReaderState];
-  v6 = [a3 xmlElementId];
-  if (v6)
+  htmlReaderState = [entry htmlReaderState];
+  xmlElementId = [entry xmlElementId];
+  if (xmlElementId)
   {
-    if ([v5 orientationCount])
+    if ([htmlReaderState orientationCount])
     {
       v7 = 0;
       while (1)
       {
-        [v5 switchToOrientation:v7];
-        if ([objc_msgSend(objc_msgSend(v5 "currentHtmlDocMediaState")])
+        [htmlReaderState switchToOrientation:v7];
+        if ([objc_msgSend(objc_msgSend(htmlReaderState "currentHtmlDocMediaState")])
         {
           break;
         }
 
-        if (++v7 >= [v5 orientationCount])
+        if (++v7 >= [htmlReaderState orientationCount])
         {
           goto LABEL_6;
         }
@@ -36,31 +36,31 @@
     else
     {
 LABEL_6:
-      v6 = 0;
+      xmlElementId = 0;
     }
   }
 
   v8 = objc_alloc_init(PFSStyleSelector);
-  [a1 insertElementAttributes:a3 intoSelector:v8 identifier:v6];
+  [self insertElementAttributes:entry intoSelector:v8 identifier:xmlElementId];
   [(PFSStyleSelector *)v8 freeze];
-  [a3 setStyleSelector:v8];
-  if ([v5 orientationCount])
+  [entry setStyleSelector:v8];
+  if ([htmlReaderState orientationCount])
   {
     v9 = 0;
     do
     {
-      [v5 switchToOrientation:v9];
-      v10 = [a3 currentEntryMediaState];
-      v11 = [a1 createStylesWithSelector:v8 styleCache:objc_msgSend(objc_msgSend(v5 isLeaf:{"currentHtmlDocMediaState"), "styleCache"), 1}];
-      [v10 setPropertySet:v11];
+      [htmlReaderState switchToOrientation:v9];
+      currentEntryMediaState = [entry currentEntryMediaState];
+      v11 = [self createStylesWithSelector:v8 styleCache:objc_msgSend(objc_msgSend(htmlReaderState isLeaf:{"currentHtmlDocMediaState"), "styleCache"), 1}];
+      [currentEntryMediaState setPropertySet:v11];
 
       ++v9;
     }
 
-    while (v9 < [v5 orientationCount]);
+    while (v9 < [htmlReaderState orientationCount]);
   }
 
-  v12 = [objc_msgSend(a3 "styleAttribute")];
+  v12 = [objc_msgSend(entry "styleAttribute")];
   if (v12)
   {
     v13 = v12;
@@ -68,48 +68,48 @@ LABEL_6:
     {
       v14 = objc_alloc_init(NSMutableDictionary);
       v15 = objc_alloc_init(NSMutableDictionary);
-      +[PFXStylesheet readStylesheetFromStyleAttributeContents:sourceURL:toDictionary:toFontDictionary:readerState:](PFXStylesheet, "readStylesheetFromStyleAttributeContents:sourceURL:toDictionary:toFontDictionary:readerState:", v13, [v5 entryNSURL], v14, v15, v5);
-      [PFXStylesheet registerFontsFromDictionary:v15 readerState:v5];
+      +[PFXStylesheet readStylesheetFromStyleAttributeContents:sourceURL:toDictionary:toFontDictionary:readerState:](PFXStylesheet, "readStylesheetFromStyleAttributeContents:sourceURL:toDictionary:toFontDictionary:readerState:", v13, [htmlReaderState entryNSURL], v14, v15, htmlReaderState);
+      [PFXStylesheet registerFontsFromDictionary:v15 readerState:htmlReaderState];
       v16 = objc_alloc_init(PFSStyleCache);
       [(PFSStyleCache *)v16 addEntriesFromDictionary:v14];
-      v17 = [a1 createStylesWithSelector:+[PFSStyleSelector allElementsSelector](PFSStyleSelector styleCache:"allElementsSelector") isLeaf:{v16, 1}];
+      v17 = [self createStylesWithSelector:+[PFSStyleSelector allElementsSelector](PFSStyleSelector styleCache:"allElementsSelector") isLeaf:{v16, 1}];
 
-      if ([v5 orientationCount])
+      if ([htmlReaderState orientationCount])
       {
         v18 = 0;
         do
         {
-          [v5 switchToOrientation:v18];
-          [objc_msgSend(objc_msgSend(a3 "currentEntryMediaState")];
+          [htmlReaderState switchToOrientation:v18];
+          [objc_msgSend(objc_msgSend(entry "currentEntryMediaState")];
           ++v18;
         }
 
-        while (v18 < [v5 orientationCount]);
+        while (v18 < [htmlReaderState orientationCount]);
       }
     }
   }
 
-  if ([v5 orientationCount])
+  if ([htmlReaderState orientationCount])
   {
     v19 = 0;
     do
     {
-      [v5 switchToOrientation:v19];
-      [a1 setupWhiteSpaceForCurrentOrientation:a3];
+      [htmlReaderState switchToOrientation:v19];
+      [self setupWhiteSpaceForCurrentOrientation:entry];
       ++v19;
     }
 
-    while (v19 < [v5 orientationCount]);
+    while (v19 < [htmlReaderState orientationCount]);
   }
 }
 
-+ (id)createStylesWithSelector:(id)a3 styleCache:(id)a4 isLeaf:(BOOL)a5
++ (id)createStylesWithSelector:(id)selector styleCache:(id)cache isLeaf:(BOOL)leaf
 {
-  if (a4)
+  if (cache)
   {
-    v7 = [a4 createPropertySetWithSelector:a3];
+    v7 = [cache createPropertySetWithSelector:selector];
     v8 = v7;
-    if (!a5)
+    if (!leaf)
     {
       [v7 removeUninheritedProperties];
     }
@@ -124,51 +124,51 @@ LABEL_6:
   }
 }
 
-+ (void)insertElementAttributes:(id)a3 intoSelector:(id)a4 identifier:(const char *)a5
++ (void)insertElementAttributes:(id)attributes intoSelector:(id)selector identifier:(const char *)identifier
 {
-  if (([a1 isAtCollapseBorder:?] & 1) == 0)
+  if (([self isAtCollapseBorder:?] & 1) == 0)
   {
-    [a1 insertElementAttributes:objc_msgSend(a3 intoSelector:"parentHtmlStackEntry") identifier:{a4, a5}];
+    [self insertElementAttributes:objc_msgSend(attributes intoSelector:"parentHtmlStackEntry") identifier:{selector, identifier}];
   }
 
-  PFSStyleSimpleSelector::setElement([a4 addSimpleSelector], objc_msgSend(a3, "xmlElementName"));
+  PFSStyleSimpleSelector::setElement([selector addSimpleSelector], objc_msgSend(attributes, "xmlElementName"));
 }
 
-+ (int)whiteSpacePropertyForCurrentOrientation:(id)a3
++ (int)whiteSpacePropertyForCurrentOrientation:(id)orientation
 {
-  if (!a3)
+  if (!orientation)
   {
     return 0;
   }
 
-  v5 = [a3 currentEntryMediaState];
-  if ([v5 whitespace] == 5)
+  currentEntryMediaState = [orientation currentEntryMediaState];
+  if ([currentEntryMediaState whitespace] == 5)
   {
-    if (xmlStrEqual("table", [a3 xmlElementName]))
+    if (xmlStrEqual("table", [orientation xmlElementName]))
     {
       return 0;
     }
 
-    v7 = [a3 parentHtmlStackEntry];
+    parentHtmlStackEntry = [orientation parentHtmlStackEntry];
 
-    return [a1 whiteSpacePropertyForCurrentOrientation:v7];
+    return [self whiteSpacePropertyForCurrentOrientation:parentHtmlStackEntry];
   }
 
   else
   {
 
-    return [v5 whitespace];
+    return [currentEntryMediaState whitespace];
   }
 }
 
-+ (void)setupWhiteSpaceForCurrentOrientation:(id)a3
++ (void)setupWhiteSpaceForCurrentOrientation:(id)orientation
 {
-  v5 = [a3 currentEntryMediaState];
-  v6 = [objc_msgSend(v5 "propertySet")];
+  currentEntryMediaState = [orientation currentEntryMediaState];
+  v6 = [objc_msgSend(currentEntryMediaState "propertySet")];
   if (v6)
   {
-    v7 = [v6 lastObject];
-    if ([v7 type] == &stru_108 && (v8 = objc_msgSend(v7, "value"), (objc_msgSend(@"normal", "isEqualToString:", v8) & 1) == 0))
+    lastObject = [v6 lastObject];
+    if ([lastObject type] == &stru_108 && (v8 = objc_msgSend(lastObject, "value"), (objc_msgSend(@"normal", "isEqualToString:", v8) & 1) == 0))
     {
       if ([@"pre" isEqualToString:v8])
       {
@@ -204,10 +204,10 @@ LABEL_6:
 
   else
   {
-    v9 = [a1 whiteSpacePropertyForCurrentOrientation:a3];
+    v9 = [self whiteSpacePropertyForCurrentOrientation:orientation];
   }
 
-  [v5 setWhitespace:v9];
+  [currentEntryMediaState setWhitespace:v9];
 }
 
 @end

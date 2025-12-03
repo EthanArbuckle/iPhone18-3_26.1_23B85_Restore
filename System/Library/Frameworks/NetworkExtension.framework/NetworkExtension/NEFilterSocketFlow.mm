@@ -1,27 +1,27 @@
 @interface NEFilterSocketFlow
-+ (void)writeMessageWithControlSocket:(int)a3 drop:(uint64_t)a4 socketID:(uint64_t)a5 inboundPassOffset:(uint64_t)a6 inboundPeekOffset:(uint64_t)a7 outboundPassOffset:(uint64_t)a8 outboundPeekOffset:(uint64_t)a9 statsReportFrequency:;
-- (BOOL)createDataReply:(id)a3 controlSocket:(int)a4 direction:(int64_t)a5 verdict:(id)a6 context:(id)a7;
-- (BOOL)createNewFlowReply:(id)a3 controlSocket:(int)a4 verdict:(id)a5 context:(id)a6;
-- (NEFilterSocketFlow)initWithCoder:(id)a3;
++ (void)writeMessageWithControlSocket:(int)socket drop:(uint64_t)drop socketID:(uint64_t)d inboundPassOffset:(uint64_t)offset inboundPeekOffset:(uint64_t)peekOffset outboundPassOffset:(uint64_t)passOffset outboundPeekOffset:(uint64_t)outboundPeekOffset statsReportFrequency:;
+- (BOOL)createDataReply:(id)reply controlSocket:(int)socket direction:(int64_t)direction verdict:(id)verdict context:(id)context;
+- (BOOL)createNewFlowReply:(id)reply controlSocket:(int)socket verdict:(id)verdict context:(id)context;
+- (NEFilterSocketFlow)initWithCoder:(id)coder;
 - (NWEndpoint)localEndpoint;
 - (NWEndpoint)remoteEndpoint;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
 - (id)identifierString;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithSocketFamily:(int)a3 socketType:(int)a4 socketProtocol:(uint64_t)a5 pid:(uint64_t)a6 epid:(uint64_t)a7 uuid:(uint64_t)a8 euuid:(uint64_t)a9 socketID:;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithSocketFamily:(int)family socketType:(int)type socketProtocol:(uint64_t)protocol pid:(uint64_t)pid epid:(uint64_t)epid uuid:(uint64_t)uuid euuid:(uint64_t)euuid socketID:;
 - (void)setLocalAddress:(void *)result;
 - (void)setRemoteAddress:(void *)result;
-- (void)writeXPCMessage:(int)a3 drop:(uint64_t)a4 inboundPassOffset:(uint64_t)a5 inboundPeekOffset:(uint64_t)a6 outboundPassOffset:(uint64_t)a7 outboundPeekOffset:(uint64_t)a8 statsReportFrequency:;
+- (void)writeXPCMessage:(int)message drop:(uint64_t)drop inboundPassOffset:(uint64_t)offset inboundPeekOffset:(uint64_t)peekOffset outboundPassOffset:(uint64_t)passOffset outboundPeekOffset:(uint64_t)outboundPeekOffset statsReportFrequency:;
 @end
 
 @implementation NEFilterSocketFlow
 
-- (BOOL)createDataReply:(id)a3 controlSocket:(int)a4 direction:(int64_t)a5 verdict:(id)a6 context:(id)a7
+- (BOOL)createDataReply:(id)reply controlSocket:(int)socket direction:(int64_t)direction verdict:(id)verdict context:(id)context
 {
-  v11 = a3;
-  v12 = [(NEFilterFlow *)self updateCurrentVerdictFromDataVerdict:a6 direction:a5];
-  v14 = v11;
+  replyCopy = reply;
+  v12 = [(NEFilterFlow *)self updateCurrentVerdictFromDataVerdict:verdict direction:direction];
+  v14 = replyCopy;
   if (self)
   {
     if (self->_socketID == -1)
@@ -47,14 +47,14 @@
       v27 = [objc_getProperty(self v26];
       v28 = v19;
       v12 = v18;
-      [NEFilterSocketFlow writeMessageWithControlSocket:a4 drop:v15 socketID:socketID inboundPassOffset:v28 inboundPeekOffset:v21 outboundPassOffset:v23 outboundPeekOffset:v25 statsReportFrequency:v27];
+      [NEFilterSocketFlow writeMessageWithControlSocket:socket drop:v15 socketID:socketID inboundPassOffset:v28 inboundPeekOffset:v21 outboundPassOffset:v23 outboundPeekOffset:v25 statsReportFrequency:v27];
     }
   }
 
   return v12;
 }
 
-+ (void)writeMessageWithControlSocket:(int)a3 drop:(uint64_t)a4 socketID:(uint64_t)a5 inboundPassOffset:(uint64_t)a6 inboundPeekOffset:(uint64_t)a7 outboundPassOffset:(uint64_t)a8 outboundPeekOffset:(uint64_t)a9 statsReportFrequency:
++ (void)writeMessageWithControlSocket:(int)socket drop:(uint64_t)drop socketID:(uint64_t)d inboundPassOffset:(uint64_t)offset inboundPeekOffset:(uint64_t)peekOffset outboundPassOffset:(uint64_t)passOffset outboundPeekOffset:(uint64_t)outboundPeekOffset statsReportFrequency:
 {
   v39 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -64,7 +64,7 @@
   }
 
   v26 = 0x100000040;
-  if (a3)
+  if (socket)
   {
     v16 = 17;
   }
@@ -76,21 +76,21 @@
 
   v27 = 2;
   v28 = v16;
-  v29 = a4;
-  v30 = a5;
-  v31 = a6;
-  v32 = a7;
-  v33 = a8;
+  dropCopy = drop;
+  dCopy = d;
+  offsetCopy = offset;
+  peekOffsetCopy = peekOffset;
+  passOffsetCopy = passOffset;
   v34 = 0;
   objc_opt_self();
-  if ((a9 - 1) > 2)
+  if ((outboundPeekOffset - 1) > 2)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = dword_1BAA4E7A8[a9 - 1];
+    v17 = dword_1BAA4E7A8[outboundPeekOffset - 1];
   }
 
   v18 = 0;
@@ -144,47 +144,47 @@ LABEL_14:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeXPCMessage:(int)a3 drop:(uint64_t)a4 inboundPassOffset:(uint64_t)a5 inboundPeekOffset:(uint64_t)a6 outboundPassOffset:(uint64_t)a7 outboundPeekOffset:(uint64_t)a8 statsReportFrequency:
+- (void)writeXPCMessage:(int)message drop:(uint64_t)drop inboundPassOffset:(uint64_t)offset inboundPeekOffset:(uint64_t)peekOffset outboundPassOffset:(uint64_t)passOffset outboundPeekOffset:(uint64_t)outboundPeekOffset statsReportFrequency:
 {
   v34 = *MEMORY[0x1E69E9840];
   v15 = a2;
   v16 = ne_log_obj();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    Property = objc_getProperty(a1, v17, 128, 1);
+    Property = objc_getProperty(self, v17, 128, 1);
     v24 = "allow";
     *v25 = 138413570;
     *&v25[4] = Property;
     *&v25[12] = 2080;
-    if (a3)
+    if (message)
     {
       v24 = "drop";
     }
 
     *&v25[14] = v24;
     v26 = 2048;
-    v27 = a4;
+    dropCopy = drop;
     v28 = 2048;
-    v29 = a5;
+    offsetCopy = offset;
     v30 = 2048;
-    v31 = a6;
+    peekOffsetCopy = peekOffset;
     v32 = 2048;
-    v33 = a7;
+    passOffsetCopy = passOffset;
     _os_log_debug_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_DEBUG, "%@ send verdict: %s, in (%lld/%lld), out (%lld/%lld)", v25, 0x3Eu);
   }
 
   *v25 = 0;
   *&v25[8] = 0;
   uuid_clear(v25);
-  [objc_getProperty(a1 v18];
+  [objc_getProperty(self v18];
   xpc_dictionary_set_uuid(v15, "flow-uuid", v25);
   v19 = 3;
-  if ((a6 & a4) == 0xFFFFFFFFFFFFFFFFLL)
+  if ((peekOffset & drop) == 0xFFFFFFFFFFFFFFFFLL)
   {
     v19 = 1;
   }
 
-  if (a3)
+  if (message)
   {
     v20 = 2;
   }
@@ -195,15 +195,15 @@ LABEL_14:
   }
 
   xpc_dictionary_set_int64(v15, "verdict-value", v20);
-  xpc_dictionary_set_uint64(v15, "input-pass-offset", a4);
-  xpc_dictionary_set_uint64(v15, "input-peek-offset", a5);
-  xpc_dictionary_set_uint64(v15, "output-pass-offset", a6);
-  xpc_dictionary_set_uint64(v15, "output-peek-offset", a7);
+  xpc_dictionary_set_uint64(v15, "input-pass-offset", drop);
+  xpc_dictionary_set_uint64(v15, "input-peek-offset", offset);
+  xpc_dictionary_set_uint64(v15, "output-pass-offset", peekOffset);
+  xpc_dictionary_set_uint64(v15, "output-peek-offset", passOffset);
   objc_opt_self();
   v21 = 0;
-  if ((a8 - 1) <= 2)
+  if ((outboundPeekOffset - 1) <= 2)
   {
-    v21 = dword_1BAA4E7A8[a8 - 1];
+    v21 = dword_1BAA4E7A8[outboundPeekOffset - 1];
   }
 
   xpc_dictionary_set_uint64(v15, "stats-report-frequency", v21);
@@ -211,25 +211,25 @@ LABEL_14:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)createNewFlowReply:(id)a3 controlSocket:(int)a4 verdict:(id)a5 context:(id)a6
+- (BOOL)createNewFlowReply:(id)reply controlSocket:(int)socket verdict:(id)verdict context:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v11)
+  replyCopy = reply;
+  verdictCopy = verdict;
+  contextCopy = context;
+  if (!verdictCopy)
   {
-    v11 = +[NEFilterNewFlowVerdict allowVerdict];
+    verdictCopy = +[NEFilterNewFlowVerdict allowVerdict];
   }
 
-  if (![v11 drop])
+  if (![verdictCopy drop])
   {
     if (self)
     {
       socketID = self->_socketID;
       if (socketID == -1)
       {
-        -[NEFilterSocketFlow writeXPCMessage:drop:inboundPassOffset:inboundPeekOffset:outboundPassOffset:outboundPeekOffset:statsReportFrequency:](self, v10, 0, [v11 filterInbound] - 1, objc_msgSend(v11, "peekInboundBytes"), objc_msgSend(v11, "filterOutbound") - 1, objc_msgSend(v11, "peekOutboundBytes"), objc_msgSend(v11, "statisticsReportFrequency"));
+        -[NEFilterSocketFlow writeXPCMessage:drop:inboundPassOffset:inboundPeekOffset:outboundPassOffset:outboundPeekOffset:statsReportFrequency:](self, replyCopy, 0, [verdictCopy filterInbound] - 1, objc_msgSend(verdictCopy, "peekInboundBytes"), objc_msgSend(verdictCopy, "filterOutbound") - 1, objc_msgSend(verdictCopy, "peekOutboundBytes"), objc_msgSend(verdictCopy, "statisticsReportFrequency"));
         goto LABEL_17;
       }
     }
@@ -239,27 +239,27 @@ LABEL_14:
       socketID = 0;
     }
 
-    +[NEFilterSocketFlow writeMessageWithControlSocket:drop:socketID:inboundPassOffset:inboundPeekOffset:outboundPassOffset:outboundPeekOffset:statsReportFrequency:](NEFilterSocketFlow, a4, 0, socketID, [v11 filterInbound] - 1, objc_msgSend(v11, "peekInboundBytes"), objc_msgSend(v11, "filterOutbound") - 1, objc_msgSend(v11, "peekOutboundBytes"), objc_msgSend(v11, "statisticsReportFrequency"));
+    +[NEFilterSocketFlow writeMessageWithControlSocket:drop:socketID:inboundPassOffset:inboundPeekOffset:outboundPassOffset:outboundPeekOffset:statsReportFrequency:](NEFilterSocketFlow, socket, 0, socketID, [verdictCopy filterInbound] - 1, objc_msgSend(verdictCopy, "peekInboundBytes"), objc_msgSend(verdictCopy, "filterOutbound") - 1, objc_msgSend(verdictCopy, "peekOutboundBytes"), objc_msgSend(verdictCopy, "statisticsReportFrequency"));
 LABEL_17:
-    v23 = -[NEFilterAbsoluteVerdict initWithDrop:inboundPassOffset:inboundPeekOffset:outboundPassOffset:outboundPeekOffset:]([NEFilterAbsoluteVerdict alloc], "initWithDrop:inboundPassOffset:inboundPeekOffset:outboundPassOffset:outboundPeekOffset:", 0, [v11 filterInbound] - 1, objc_msgSend(v11, "peekInboundBytes"), objc_msgSend(v11, "filterOutbound") - 1, objc_msgSend(v11, "peekOutboundBytes"));
+    v23 = -[NEFilterAbsoluteVerdict initWithDrop:inboundPassOffset:inboundPeekOffset:outboundPassOffset:outboundPeekOffset:]([NEFilterAbsoluteVerdict alloc], "initWithDrop:inboundPassOffset:inboundPeekOffset:outboundPassOffset:outboundPeekOffset:", 0, [verdictCopy filterInbound] - 1, objc_msgSend(verdictCopy, "peekInboundBytes"), objc_msgSend(verdictCopy, "filterOutbound") - 1, objc_msgSend(verdictCopy, "peekOutboundBytes"));
     v25 = v23;
     if (self)
     {
       objc_setProperty_atomic(self, v24, v23, 112);
 
-      v26 = [v11 shouldReport];
+      shouldReport = [verdictCopy shouldReport];
       Property = objc_getProperty(self, v27, 112, 1);
     }
 
     else
     {
 
-      v26 = [v11 shouldReport];
+      shouldReport = [verdictCopy shouldReport];
       Property = 0;
     }
 
-    [Property setShouldReport:v26];
-    v30 = [v11 statisticsReportFrequency];
+    [Property setShouldReport:shouldReport];
+    statisticsReportFrequency = [verdictCopy statisticsReportFrequency];
     if (self)
     {
       v31 = objc_getProperty(self, v29, 112, 1);
@@ -270,8 +270,8 @@ LABEL_17:
       v31 = 0;
     }
 
-    [v31 setStatisticsReportFrequency:v30];
-    v22 = [(NEFilterFlow *)self shouldCloseWithVerdict:v11];
+    [v31 setStatisticsReportFrequency:statisticsReportFrequency];
+    v22 = [(NEFilterFlow *)self shouldCloseWithVerdict:verdictCopy];
     goto LABEL_22;
   }
 
@@ -280,18 +280,18 @@ LABEL_17:
     v13 = self->_socketID;
     if (v13 == -1)
     {
-      [(NEFilterSocketFlow *)self writeXPCMessage:v10 drop:1 inboundPassOffset:0 inboundPeekOffset:0 outboundPassOffset:0 outboundPeekOffset:0 statsReportFrequency:0];
-      v15 = [v12 _principalObject];
-      v16 = [v15 filterConfiguration];
-      v17 = [v16 organization];
+      [(NEFilterSocketFlow *)self writeXPCMessage:replyCopy drop:1 inboundPassOffset:0 inboundPeekOffset:0 outboundPassOffset:0 outboundPeekOffset:0 statsReportFrequency:0];
+      _principalObject = [contextCopy _principalObject];
+      filterConfiguration = [_principalObject filterConfiguration];
+      organization = [filterConfiguration organization];
 
-      if (v17)
+      if (organization)
       {
-        v18 = [v15 filterConfiguration];
-        v19 = [v18 organization];
-        v20 = [v19 cStringUsingEncoding:4];
+        filterConfiguration2 = [_principalObject filterConfiguration];
+        organization2 = [filterConfiguration2 organization];
+        v20 = [organization2 cStringUsingEncoding:4];
 
-        xpc_dictionary_set_string(v10, "organization", v20);
+        xpc_dictionary_set_string(replyCopy, "organization", v20);
       }
 
       goto LABEL_13;
@@ -303,14 +303,14 @@ LABEL_17:
     v13 = 0;
   }
 
-  [NEFilterSocketFlow writeMessageWithControlSocket:a4 drop:1 socketID:v13 inboundPassOffset:0 inboundPeekOffset:0 outboundPassOffset:0 outboundPeekOffset:0 statsReportFrequency:0];
+  [NEFilterSocketFlow writeMessageWithControlSocket:socket drop:1 socketID:v13 inboundPassOffset:0 inboundPeekOffset:0 outboundPassOffset:0 outboundPeekOffset:0 statsReportFrequency:0];
 LABEL_13:
   v21 = ne_log_obj();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v34 = [(NEFilterSocketFlow *)self identifierString];
+    identifierString = [(NEFilterSocketFlow *)self identifierString];
     *buf = 138412290;
-    v36 = v34;
+    v36 = identifierString;
     _os_log_debug_impl(&dword_1BA83C000, v21, OS_LOG_TYPE_DEBUG, "Dropping new flow %@", buf, 0xCu);
   }
 
@@ -335,16 +335,16 @@ LABEL_22:
     v3 = objc_alloc(MEMORY[0x1E696AEC0]);
     socketID = self->_socketID;
 LABEL_4:
-    v5 = [v3 initWithFormat:@"%llx", socketID];
+    socketID = [v3 initWithFormat:@"%llx", socketID];
     goto LABEL_6;
   }
 
   v7.receiver = self;
   v7.super_class = NEFilterSocketFlow;
-  v5 = [(NEFilterFlow *)&v7 identifierString];
+  socketID = [(NEFilterFlow *)&v7 identifierString];
 LABEL_6:
 
-  return v5;
+  return socketID;
 }
 
 - (id)identifier
@@ -356,7 +356,7 @@ LABEL_6:
     {
       v6.receiver = self;
       v6.super_class = NEFilterSocketFlow;
-      v4 = [(NEFilterFlow *)&v6 identifier];
+      identifier = [(NEFilterFlow *)&v6 identifier];
       goto LABEL_7;
     }
   }
@@ -377,10 +377,10 @@ LABEL_6:
     dispatch_once(&self->_generateIdentifierOnce, block);
   }
 
-  v4 = objc_getProperty(self, a2, 208, 1);
+  identifier = objc_getProperty(self, a2, 208, 1);
 LABEL_7:
 
-  return v4;
+  return identifier;
 }
 
 void __32__NEFilterSocketFlow_identifier__block_invoke(uint64_t a1)
@@ -399,12 +399,12 @@ void __32__NEFilterSocketFlow_identifier__block_invoke(uint64_t a1)
 
 - (NWEndpoint)localEndpoint
 {
-  v3 = [(NEFilterSocketFlow *)self localFlowEndpoint];
-  if (v3)
+  localFlowEndpoint = [(NEFilterSocketFlow *)self localFlowEndpoint];
+  if (localFlowEndpoint)
   {
     v4 = MEMORY[0x1E6977E20];
-    v5 = [(NEFilterSocketFlow *)self localFlowEndpoint];
-    v6 = [v4 endpointWithCEndpoint:v5];
+    localFlowEndpoint2 = [(NEFilterSocketFlow *)self localFlowEndpoint];
+    v6 = [v4 endpointWithCEndpoint:localFlowEndpoint2];
   }
 
   else
@@ -417,12 +417,12 @@ void __32__NEFilterSocketFlow_identifier__block_invoke(uint64_t a1)
 
 - (NWEndpoint)remoteEndpoint
 {
-  v3 = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
-  if (v3)
+  remoteFlowEndpoint = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
+  if (remoteFlowEndpoint)
   {
     v4 = MEMORY[0x1E6977E20];
-    v5 = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
-    v6 = [v4 endpointWithCEndpoint:v5];
+    remoteFlowEndpoint2 = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
+    v6 = [v4 endpointWithCEndpoint:remoteFlowEndpoint2];
   }
 
   else
@@ -433,28 +433,28 @@ void __32__NEFilterSocketFlow_identifier__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = NEFilterSocketFlow;
-  v4 = [(NEFilterFlow *)&v12 copyWithZone:a3];
+  v4 = [(NEFilterFlow *)&v12 copyWithZone:zone];
   [v4 setSocketFamily:{-[NEFilterSocketFlow socketFamily](self, "socketFamily")}];
   [v4 setSocketType:{-[NEFilterSocketFlow socketType](self, "socketType")}];
   [v4 setSocketProtocol:{-[NEFilterSocketFlow socketProtocol](self, "socketProtocol")}];
-  v5 = [(NEFilterSocketFlow *)self uuid];
-  [v4 setUuid:v5];
+  uuid = [(NEFilterSocketFlow *)self uuid];
+  [v4 setUuid:uuid];
 
-  v6 = [(NEFilterSocketFlow *)self euuid];
-  [v4 setEuuid:v6];
+  euuid = [(NEFilterSocketFlow *)self euuid];
+  [v4 setEuuid:euuid];
 
-  v7 = [(NEFilterSocketFlow *)self localFlowEndpoint];
-  [v4 setLocalFlowEndpoint:v7];
+  localFlowEndpoint = [(NEFilterSocketFlow *)self localFlowEndpoint];
+  [v4 setLocalFlowEndpoint:localFlowEndpoint];
 
-  v8 = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
-  [v4 setRemoteFlowEndpoint:v8];
+  remoteFlowEndpoint = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
+  [v4 setRemoteFlowEndpoint:remoteFlowEndpoint];
 
-  v9 = [(NEFilterSocketFlow *)self remoteHostname];
-  [v4 setRemoteHostname:v9];
+  remoteHostname = [(NEFilterSocketFlow *)self remoteHostname];
+  [v4 setRemoteHostname:remoteHostname];
 
   if (!self)
   {
@@ -477,43 +477,43 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = NEFilterSocketFlow;
-  [(NEFilterFlow *)&v17 encodeWithCoder:v4];
-  [v4 encodeInt:-[NEFilterSocketFlow socketFamily](self forKey:{"socketFamily"), @"SocketFamily"}];
-  [v4 encodeInt:-[NEFilterSocketFlow socketType](self forKey:{"socketType"), @"SocketType"}];
-  [v4 encodeInt:-[NEFilterSocketFlow socketProtocol](self forKey:{"socketProtocol"), @"SocketProtocol"}];
-  v5 = [(NEFilterSocketFlow *)self uuid];
-  [v4 encodeObject:v5 forKey:@"UUID"];
+  [(NEFilterFlow *)&v17 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:-[NEFilterSocketFlow socketFamily](self forKey:{"socketFamily"), @"SocketFamily"}];
+  [coderCopy encodeInt:-[NEFilterSocketFlow socketType](self forKey:{"socketType"), @"SocketType"}];
+  [coderCopy encodeInt:-[NEFilterSocketFlow socketProtocol](self forKey:{"socketProtocol"), @"SocketProtocol"}];
+  uuid = [(NEFilterSocketFlow *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"UUID"];
 
-  v6 = [(NEFilterSocketFlow *)self euuid];
-  [v4 encodeObject:v6 forKey:@"EUUID"];
+  euuid = [(NEFilterSocketFlow *)self euuid];
+  [coderCopy encodeObject:euuid forKey:@"EUUID"];
 
-  v7 = [(NEFilterSocketFlow *)self localFlowEndpoint];
+  localFlowEndpoint = [(NEFilterSocketFlow *)self localFlowEndpoint];
 
-  if (v7)
+  if (localFlowEndpoint)
   {
     v8 = MEMORY[0x1E6977E20];
-    v9 = [(NEFilterSocketFlow *)self localFlowEndpoint];
-    v10 = [v8 endpointWithCEndpoint:v9];
-    [v4 encodeObject:v10 forKey:@"LocalEndpoint"];
+    localFlowEndpoint2 = [(NEFilterSocketFlow *)self localFlowEndpoint];
+    v10 = [v8 endpointWithCEndpoint:localFlowEndpoint2];
+    [coderCopy encodeObject:v10 forKey:@"LocalEndpoint"];
   }
 
-  v11 = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
+  remoteFlowEndpoint = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
 
-  if (v11)
+  if (remoteFlowEndpoint)
   {
     v12 = MEMORY[0x1E6977E20];
-    v13 = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
-    v14 = [v12 endpointWithCEndpoint:v13];
-    [v4 encodeObject:v14 forKey:@"RemoteEndpoint"];
+    remoteFlowEndpoint2 = [(NEFilterSocketFlow *)self remoteFlowEndpoint];
+    v14 = [v12 endpointWithCEndpoint:remoteFlowEndpoint2];
+    [coderCopy encodeObject:v14 forKey:@"RemoteEndpoint"];
   }
 
-  v15 = [(NEFilterSocketFlow *)self remoteHostname];
-  [v4 encodeObject:v15 forKey:@"RemoteHostname"];
+  remoteHostname = [(NEFilterSocketFlow *)self remoteHostname];
+  [coderCopy encodeObject:remoteHostname forKey:@"RemoteHostname"];
 
   if (self)
   {
@@ -525,66 +525,66 @@ LABEL_3:
     socketID = 0;
   }
 
-  [v4 encodeInt64:socketID forKey:@"SocketID"];
+  [coderCopy encodeInt64:socketID forKey:@"SocketID"];
 }
 
-- (NEFilterSocketFlow)initWithCoder:(id)a3
+- (NEFilterSocketFlow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = NEFilterSocketFlow;
-  v5 = [(NEFilterFlow *)&v14 initWithCoder:v4];
+  v5 = [(NEFilterFlow *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    -[NEFilterSocketFlow setSocketFamily:](v5, "setSocketFamily:", [v4 decodeIntForKey:@"SocketFamily"]);
-    -[NEFilterSocketFlow setSocketType:](v5, "setSocketType:", [v4 decodeIntForKey:@"SocketType"]);
-    -[NEFilterSocketFlow setSocketProtocol:](v5, "setSocketProtocol:", [v4 decodeIntForKey:@"SocketProtocol"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    -[NEFilterSocketFlow setSocketFamily:](v5, "setSocketFamily:", [coderCopy decodeIntForKey:@"SocketFamily"]);
+    -[NEFilterSocketFlow setSocketType:](v5, "setSocketType:", [coderCopy decodeIntForKey:@"SocketType"]);
+    -[NEFilterSocketFlow setSocketProtocol:](v5, "setSocketProtocol:", [coderCopy decodeIntForKey:@"SocketProtocol"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     [(NEFilterSocketFlow *)v5 setUuid:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EUUID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EUUID"];
     [(NEFilterSocketFlow *)v5 setEuuid:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LocalEndpoint"];
-    v9 = [v8 copyCEndpoint];
-    [(NEFilterSocketFlow *)v5 setLocalFlowEndpoint:v9];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LocalEndpoint"];
+    copyCEndpoint = [v8 copyCEndpoint];
+    [(NEFilterSocketFlow *)v5 setLocalFlowEndpoint:copyCEndpoint];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemoteEndpoint"];
-    v11 = [v10 copyCEndpoint];
-    [(NEFilterSocketFlow *)v5 setRemoteFlowEndpoint:v11];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemoteEndpoint"];
+    copyCEndpoint2 = [v10 copyCEndpoint];
+    [(NEFilterSocketFlow *)v5 setRemoteFlowEndpoint:copyCEndpoint2];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemoteHostname"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemoteHostname"];
     [(NEFilterSocketFlow *)v5 setRemoteHostname:v12];
 
-    v5->_socketID = [v4 decodeInt64ForKey:@"SocketID"];
+    v5->_socketID = [coderCopy decodeInt64ForKey:@"SocketID"];
   }
 
   return v5;
 }
 
-- (void)initWithSocketFamily:(int)a3 socketType:(int)a4 socketProtocol:(uint64_t)a5 pid:(uint64_t)a6 epid:(uint64_t)a7 uuid:(uint64_t)a8 euuid:(uint64_t)a9 socketID:
+- (void)initWithSocketFamily:(int)family socketType:(int)type socketProtocol:(uint64_t)protocol pid:(uint64_t)pid epid:(uint64_t)epid uuid:(uint64_t)uuid euuid:(uint64_t)euuid socketID:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = NEFilterSocketFlow;
   v16 = objc_msgSendSuper2(&v21, sel_init);
   v17 = v16;
   if (v16)
   {
     *(v16 + 40) = a2;
-    *(v16 + 41) = a3;
-    *(v16 + 42) = a4;
-    *(v16 + 25) = a9;
-    [v16 setPid:a5];
-    [v17 setEpid:a6];
-    v18 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a7];
+    *(v16 + 41) = family;
+    *(v16 + 42) = type;
+    *(v16 + 25) = euuid;
+    [v16 setPid:protocol];
+    [v17 setEpid:pid];
+    v18 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:epid];
     [v17 setUuid:v18];
 
-    v19 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a8];
+    v19 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:uuid];
     [v17 setEuuid:v19];
   }
 

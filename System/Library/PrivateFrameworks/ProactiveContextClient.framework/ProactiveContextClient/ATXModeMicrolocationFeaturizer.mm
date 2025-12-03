@@ -1,24 +1,24 @@
 @interface ATXModeMicrolocationFeaturizer
 - (ATXModeFeaturizerDelegate)delegate;
-- (ATXModeMicrolocationFeaturizer)initWithMiloProvider:(id)a3;
-- (id)_provideFeaturesWithCurrentULMap:(id)a3;
+- (ATXModeMicrolocationFeaturizer)initWithMiloProvider:(id)provider;
+- (id)_provideFeaturesWithCurrentULMap:(id)map;
 - (id)provideFeatures;
 - (void)beginListening;
-- (void)connectionDidUpdatePredictionContext:(id)a3;
+- (void)connectionDidUpdatePredictionContext:(id)context;
 - (void)stopListening;
 @end
 
 @implementation ATXModeMicrolocationFeaturizer
 
-- (ATXModeMicrolocationFeaturizer)initWithMiloProvider:(id)a3
+- (ATXModeMicrolocationFeaturizer)initWithMiloProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = ATXModeMicrolocationFeaturizer;
   v6 = [(ATXModeMicrolocationFeaturizer *)&v15 init];
   if (v6)
   {
-    if (!v5)
+    if (!providerCopy)
     {
       [(ATXModeMicrolocationFeaturizer *)a2 initWithMiloProvider:v6];
     }
@@ -28,8 +28,8 @@
     connection = v6->_connection;
     v6->_connection = v8;
 
-    v10 = [(ULConnection *)v6->_connection connect];
-    [v5 setConnection:v6->_connection];
+    connect = [(ULConnection *)v6->_connection connect];
+    [providerCopy setConnection:v6->_connection];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.ULConnectionDelgetae.queue", v11);
     queue = v6->_queue;
@@ -55,25 +55,25 @@
     _os_log_impl(&dword_260C9F000, v4, OS_LOG_TYPE_DEFAULT, "[%@][%@] Requesting feature set via pull based feature provider", &v12, 0x16u);
   }
 
-  v8 = [(ULConnection *)self->_connection currentMap];
-  v9 = [(ATXModeMicrolocationFeaturizer *)self _provideFeaturesWithCurrentULMap:v8];
+  currentMap = [(ULConnection *)self->_connection currentMap];
+  v9 = [(ATXModeMicrolocationFeaturizer *)self _provideFeaturesWithCurrentULMap:currentMap];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)_provideFeaturesWithCurrentULMap:(id)a3
+- (id)_provideFeaturesWithCurrentULMap:(id)map
 {
   v64 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  mapCopy = map;
   v49 = objc_alloc_init(ATXModeFeatureSet);
-  if ([v3 isMapValid])
+  if ([mapCopy isMapValid])
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [v3 predictionContext];
-    v6 = [v5 timestamp];
-    [v4 timeIntervalSinceDate:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    predictionContext = [mapCopy predictionContext];
+    timestamp = [predictionContext timestamp];
+    [date timeIntervalSinceDate:timestamp];
     v8 = v7;
 
     if (v8 > 900.0)
@@ -108,13 +108,13 @@
     }
 
     v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"C9FC4298-DE04-494A-9791-71AB71B52E27"];
-    v18 = [v17 UUIDString];
+    uUIDString = [v17 UUIDString];
 
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    obj = [v3 mapItems];
+    obj = [mapCopy mapItems];
     v19 = [obj countByEnumeratingWithState:&v51 objects:v63 count:16];
     if (v19)
     {
@@ -134,14 +134,14 @@
           v24 = *(*(&v51 + 1) + 8 * i);
           [v24 name];
           v25 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-          v26 = [v24 labels];
-          v27 = [v26 count];
+          labels = [v24 labels];
+          v27 = [labels count];
 
-          v28 = [v3 numberOfLabelsInSameSpaceForMapItem:v24];
+          v28 = [mapCopy numberOfLabelsInSameSpaceForMapItem:v24];
           if (v27)
           {
             v29 = v28 / v27;
-            if ([*&v25 isEqual:v18])
+            if ([*&v25 isEqual:uUIDString])
             {
               if (v29 <= 0.4)
               {
@@ -194,7 +194,7 @@ LABEL_20:
           else
           {
             v29 = 0.0;
-            if ([*&v25 isEqual:v18])
+            if ([*&v25 isEqual:uUIDString])
             {
               goto LABEL_20;
             }
@@ -229,10 +229,10 @@ LABEL_27:
 
   else
   {
-    v18 = __atxlog_handle_modes();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    uUIDString = __atxlog_handle_modes();
+    if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_ERROR))
     {
-      [(ATXModeMicrolocationFeaturizer *)self _provideFeaturesWithCurrentULMap:a2, v18];
+      [(ATXModeMicrolocationFeaturizer *)self _provideFeaturesWithCurrentULMap:a2, uUIDString];
     }
   }
 
@@ -241,7 +241,7 @@ LABEL_27:
   return v49;
 }
 
-- (void)connectionDidUpdatePredictionContext:(id)a3
+- (void)connectionDidUpdatePredictionContext:(id)context
 {
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -352,7 +352,7 @@ void __71__ATXModeMicrolocationFeaturizer_connectionDidUpdatePredictionContext__
 
 - (void)stopListening
 {
-  v3 = [(ULConnection *)self->_connection disconnect];
+  disconnect = [(ULConnection *)self->_connection disconnect];
   connection = self->_connection;
   self->_connection = 0;
 }

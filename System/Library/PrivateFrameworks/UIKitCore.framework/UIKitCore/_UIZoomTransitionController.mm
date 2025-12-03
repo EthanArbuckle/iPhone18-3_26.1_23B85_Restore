@@ -1,37 +1,37 @@
 @interface _UIZoomTransitionController
 - (BOOL)_shouldAnimateBottomBarVisibility;
-- (BOOL)dismissInteraction:(id)a3 shouldBeginWithAxis:(unint64_t)a4 location:(CGPoint)a5 velocity:(CGPoint)a6 proposal:(BOOL)a7;
-- (BOOL)shouldPreemptWithContext:(id)a3;
+- (BOOL)dismissInteraction:(id)interaction shouldBeginWithAxis:(unint64_t)axis location:(CGPoint)location velocity:(CGPoint)velocity proposal:(BOOL)proposal;
+- (BOOL)shouldPreemptWithContext:(id)context;
 - (BOOL)wantsInteractiveStart;
 - (UIView)_navigationBarTransitionOverlay;
 - (UIViewController)owningViewController;
-- (double)hysteresisForInteraction:(id)a3;
-- (double)transitionDuration:(id)a3;
-- (id)_navigationToolbarTransitionControllerForContext:(id)a3;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (id)preemptWithContext:(id)a3;
+- (double)hysteresisForInteraction:(id)interaction;
+- (double)transitionDuration:(id)duration;
+- (id)_navigationToolbarTransitionControllerForContext:(id)context;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (id)preemptWithContext:(id)context;
 - (int64_t)_navigationBarTransitionVariant;
-- (void)completeKeyboard:(id)a3;
-- (void)didMoveToParent:(id)a3;
-- (void)dismissInteraction:(id)a3 didBeginAtLocation:(CGPoint)a4 withVelocity:(CGPoint)a5;
-- (void)dismissInteraction:(id)a3 didCancelWithVelocity:(CGPoint)a4 originalPosition:(CGPoint)a5;
-- (void)dismissInteraction:(id)a3 didDismissWithVelocity:(CGPoint)a4;
-- (void)dismissInteraction:(id)a3 didIssueUpdate:(id)a4;
-- (void)prepareToAnimateKeyboard:(id)a3;
-- (void)setClientTransition:(id)a3;
-- (void)setDismissInteraction:(id)a3;
-- (void)setSourceViewHidingAssertion:(id)a3;
-- (void)startInteractiveTransition:(id)a3;
-- (void)willBeginAfterPreemptionWithContext:(id)a3 data:(id)a4;
+- (void)completeKeyboard:(id)keyboard;
+- (void)didMoveToParent:(id)parent;
+- (void)dismissInteraction:(id)interaction didBeginAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity;
+- (void)dismissInteraction:(id)interaction didCancelWithVelocity:(CGPoint)velocity originalPosition:(CGPoint)position;
+- (void)dismissInteraction:(id)interaction didDismissWithVelocity:(CGPoint)velocity;
+- (void)dismissInteraction:(id)interaction didIssueUpdate:(id)update;
+- (void)prepareToAnimateKeyboard:(id)keyboard;
+- (void)setClientTransition:(id)transition;
+- (void)setDismissInteraction:(id)interaction;
+- (void)setSourceViewHidingAssertion:(id)assertion;
+- (void)startInteractiveTransition:(id)transition;
+- (void)willBeginAfterPreemptionWithContext:(id)context data:(id)data;
 @end
 
 @implementation _UIZoomTransitionController
 
-- (void)setClientTransition:(id)a3
+- (void)setClientTransition:(id)transition
 {
   v4 = *(self + OBJC_IVAR____UIZoomTransitionController_clientTransition);
-  *(self + OBJC_IVAR____UIZoomTransitionController_clientTransition) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIZoomTransitionController_clientTransition) = transition;
+  transitionCopy = transition;
 }
 
 - (UIViewController)owningViewController
@@ -41,49 +41,49 @@
   return Strong;
 }
 
-- (void)setDismissInteraction:(id)a3
+- (void)setDismissInteraction:(id)interaction
 {
-  v5 = a3;
-  v4 = self;
-  sub_188E3E23C(v5);
+  interactionCopy = interaction;
+  selfCopy = self;
+  sub_188E3E23C(interactionCopy);
 }
 
-- (void)setSourceViewHidingAssertion:(id)a3
+- (void)setSourceViewHidingAssertion:(id)assertion
 {
   v4 = *(self + OBJC_IVAR____UIZoomTransitionController_sourceViewHidingAssertion);
-  *(self + OBJC_IVAR____UIZoomTransitionController_sourceViewHidingAssertion) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIZoomTransitionController_sourceViewHidingAssertion) = assertion;
+  assertionCopy = assertion;
 }
 
-- (void)didMoveToParent:(id)a3
+- (void)didMoveToParent:(id)parent
 {
-  if (!a3)
+  if (!parent)
   {
     [(_UIZoomTransitionController *)self setSourceViewHidingAssertion:?];
   }
 }
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_188E36EBC(a3);
+  selfCopy = self;
+  sub_188E36EBC(transition);
   swift_unknownObjectRelease();
 }
 
 - (BOOL)wantsInteractiveStart
 {
-  v2 = self;
-  v3 = [(_UIZoomTransitionController *)v2 dismissInteraction];
-  v4 = [(_UIDismissInteraction *)v3 isActive];
+  selfCopy = self;
+  dismissInteraction = [(_UIZoomTransitionController *)selfCopy dismissInteraction];
+  isActive = [(_UIDismissInteraction *)dismissInteraction isActive];
 
-  return v4;
+  return isActive;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_188E3E500();
   v6 = v5;
   swift_unknownObjectRelease();
@@ -91,7 +91,7 @@
   return v6;
 }
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
   result = *(self + OBJC_IVAR____UIZoomTransitionController_shimPropertyAnimator);
   if (result)
@@ -105,7 +105,7 @@
 
 - (int64_t)_navigationBarTransitionVariant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188E3C0C8();
 
   return v3;
@@ -113,7 +113,7 @@
 
 - (UIView)_navigationBarTransitionOverlay
 {
-  v2 = self;
+  selfCopy = self;
   if (_UISolariumEnabled())
   {
     v3 = 0;
@@ -121,7 +121,7 @@
 
   else
   {
-    v3 = *(v2 + OBJC_IVAR____UIZoomTransitionController_transitionOverlayView);
+    v3 = *(selfCopy + OBJC_IVAR____UIZoomTransitionController_transitionOverlayView);
   }
 
   return v3;
@@ -129,26 +129,26 @@
 
 - (BOOL)_shouldAnimateBottomBarVisibility
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188E3C1EC();
 
   return v3 & 1;
 }
 
-- (id)_navigationToolbarTransitionControllerForContext:(id)a3
+- (id)_navigationToolbarTransitionControllerForContext:(id)context
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_188E3C268(a3);
+  selfCopy = self;
+  v6 = sub_188E3C268(context);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (BOOL)shouldPreemptWithContext:(id)a3
+- (BOOL)shouldPreemptWithContext:(id)context
 {
   objc_opt_self();
-  v4 = self;
+  selfCopy = self;
   if ((+[UIView _fluidZoomTransitionsEnabled]() & 1) != 0 || +[UIView _uip_fluidPresentationTransitionsEnabled])
   {
     v5 = 1;
@@ -156,34 +156,34 @@
 
   else
   {
-    v5 = *(v4 + OBJC_IVAR____UIZoomTransitionController_isPreempting);
+    v5 = *(selfCopy + OBJC_IVAR____UIZoomTransitionController_isPreempting);
   }
 
   return v5;
 }
 
-- (id)preemptWithContext:(id)a3
+- (id)preemptWithContext:(id)context
 {
   if (*(self + OBJC_IVAR____UIZoomTransitionController_isPreempting) == 1)
   {
     swift_unknownObjectRetain();
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
     swift_unknownObjectRetain();
-    v6 = self;
+    selfCopy2 = self;
     sub_188F32950(1);
   }
 
-  sub_188E3B6D8(a3);
+  sub_188E3B6D8(context);
   swift_unknownObjectRelease();
 
   return 0;
 }
 
-- (void)willBeginAfterPreemptionWithContext:(id)a3 data:(id)a4
+- (void)willBeginAfterPreemptionWithContext:(id)context data:(id)data
 {
   swift_unknownObjectRetain();
   sub_18A4A7DE8();
@@ -191,31 +191,31 @@
   __swift_destroy_boxed_opaque_existential_0Tm(&v4);
 }
 
-- (void)prepareToAnimateKeyboard:(id)a3
+- (void)prepareToAnimateKeyboard:(id)keyboard
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_188E3C4C8(a3);
+  selfCopy = self;
+  sub_188E3C4C8(keyboard);
   swift_unknownObjectRelease();
 }
 
-- (void)completeKeyboard:(id)a3
+- (void)completeKeyboard:(id)keyboard
 {
-  if (a3)
+  if (keyboard)
   {
     swift_unknownObjectRetain_n();
-    v5 = self;
-    v6 = [a3 fromKeyboard];
-    [v6 removeFromSuperview];
+    selfCopy = self;
+    fromKeyboard = [keyboard fromKeyboard];
+    [fromKeyboard removeFromSuperview];
 
-    v7 = [a3 toKeyboard];
-    [v7 removeFromSuperview];
+    toKeyboard = [keyboard toKeyboard];
+    [toKeyboard removeFromSuperview];
 
     swift_unknownObjectRelease_n();
   }
 }
 
-- (double)hysteresisForInteraction:(id)a3
+- (double)hysteresisForInteraction:(id)interaction
 {
   if (*(self + OBJC_IVAR____UIZoomTransitionController_activeTransitionContext))
   {
@@ -228,47 +228,47 @@
   return result;
 }
 
-- (BOOL)dismissInteraction:(id)a3 shouldBeginWithAxis:(unint64_t)a4 location:(CGPoint)a5 velocity:(CGPoint)a6 proposal:(BOOL)a7
+- (BOOL)dismissInteraction:(id)interaction shouldBeginWithAxis:(unint64_t)axis location:(CGPoint)location velocity:(CGPoint)velocity proposal:(BOOL)proposal
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a5.y;
-  v11 = a5.x;
-  v14 = a3;
-  v15 = self;
-  v16 = sub_188E3C77C(v14, a4, a7, v11, v10, x, y);
+  y = velocity.y;
+  x = velocity.x;
+  v10 = location.y;
+  v11 = location.x;
+  interactionCopy = interaction;
+  selfCopy = self;
+  v16 = sub_188E3C77C(interactionCopy, axis, proposal, v11, v10, x, y);
 
   return v16 & 1;
 }
 
-- (void)dismissInteraction:(id)a3 didBeginAtLocation:(CGPoint)a4 withVelocity:(CGPoint)a5
+- (void)dismissInteraction:(id)interaction didBeginAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity
 {
-  v6 = a3;
-  v7 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   sub_188E3E628();
 }
 
-- (void)dismissInteraction:(id)a3 didIssueUpdate:(id)a4
+- (void)dismissInteraction:(id)interaction didIssueUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_188E3ED54(v7);
+  interactionCopy = interaction;
+  updateCopy = update;
+  selfCopy = self;
+  sub_188E3ED54(updateCopy);
 }
 
-- (void)dismissInteraction:(id)a3 didDismissWithVelocity:(CGPoint)a4
+- (void)dismissInteraction:(id)interaction didDismissWithVelocity:(CGPoint)velocity
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   sub_188E3F0DC();
 }
 
-- (void)dismissInteraction:(id)a3 didCancelWithVelocity:(CGPoint)a4 originalPosition:(CGPoint)a5
+- (void)dismissInteraction:(id)interaction didCancelWithVelocity:(CGPoint)velocity originalPosition:(CGPoint)position
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a3;
-  v9 = self;
+  y = position.y;
+  x = position.x;
+  interactionCopy = interaction;
+  selfCopy = self;
   sub_188E3F730(x, y);
 }
 

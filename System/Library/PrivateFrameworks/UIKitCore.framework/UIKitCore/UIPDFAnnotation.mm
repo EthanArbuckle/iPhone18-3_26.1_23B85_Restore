@@ -1,32 +1,32 @@
 @interface UIPDFAnnotation
-+ (id)newAnnotationWithPage:(id)a3 fromArchive:(id)a4;
-- (BOOL)containsPoint:(CGPoint)a3;
++ (id)newAnnotationWithPage:(id)page fromArchive:(id)archive;
+- (BOOL)containsPoint:(CGPoint)point;
 - (BOOL)hasPopUp;
 - (CGPath)newPathFromQuadPoints;
 - (CGRect)Rect;
 - (CGRect)popUpAnnotationRect;
-- (CGRect)rectIn:(CGPDFArray *)a3;
+- (CGRect)rectIn:(CGPDFArray *)in;
 - (UIPDFAnnotation)init;
-- (UIPDFAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)a3;
+- (UIPDFAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary;
 - (UIPDFSelection)selection;
 - (const)pdfContents;
 - (id)archive;
 - (id)descriptionHOLD;
-- (id)getImageNamed:(id)a3 ofType:(id)a4;
+- (id)getImageNamed:(id)named ofType:(id)type;
 - (id)newSelection;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)makeQuadpointsFrom:(id)a3;
-- (void)setAnnotationID:(id)a3;
-- (void)setColor:(CGColor *)a3;
-- (void)setSelection:(id)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)makeQuadpointsFrom:(id)from;
+- (void)setAnnotationID:(id)d;
+- (void)setColor:(CGColor *)color;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation UIPDFAnnotation
 
-+ (id)newAnnotationWithPage:(id)a3 fromArchive:(id)a4
++ (id)newAnnotationWithPage:(id)page fromArchive:(id)archive
 {
-  v6 = [a4 rangeOfString:@"<UIPDFSelection"];
+  v6 = [archive rangeOfString:@"<UIPDFSelection"];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
@@ -34,13 +34,13 @@
   }
 
   v12 = v6;
-  v13 = [a4 rangeOfString:@"</UIPDFSelection>"];
+  v13 = [archive rangeOfString:@"</UIPDFSelection>"];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v15 = -[UIPDFSelection initWithPage:fromArchive:]([UIPDFSelection alloc], "initWithPage:fromArchive:", a3, [a4 substringWithRange:{v12, v13 - v12 + 17}]);
+  v15 = -[UIPDFSelection initWithPage:fromArchive:]([UIPDFSelection alloc], "initWithPage:fromArchive:", page, [archive substringWithRange:{v12, v13 - v12 + 17}]);
   v7 = v15;
   if (v15 && ![(UIPDFSelection *)v15 CGSelection])
   {
@@ -50,23 +50,23 @@
 
 LABEL_3:
   v8 = objc_alloc_init(UIPDFAnnotationParserDelegate);
-  v9 = [a4 dataUsingEncoding:4];
+  v9 = [archive dataUsingEncoding:4];
   v10 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithData:v9];
   [v10 setDelegate:v8];
   [v10 parse];
   if ([(UIPDFAnnotationParserDelegate *)v8 parseError])
   {
-    v11 = 0;
+    annotation = 0;
   }
 
   else
   {
-    v11 = [(UIPDFAnnotationParserDelegate *)v8 annotation];
-    [(UIPDFAnnotation *)v11 setEditable:1];
-    [(UIPDFAnnotation *)v11 setSelection:v7];
+    annotation = [(UIPDFAnnotationParserDelegate *)v8 annotation];
+    [(UIPDFAnnotation *)annotation setEditable:1];
+    [(UIPDFAnnotation *)annotation setSelection:v7];
   }
 
-  return v11;
+  return annotation;
 }
 
 - (UIPDFAnnotation)init
@@ -94,7 +94,7 @@ LABEL_3:
   return v2;
 }
 
-- (UIPDFAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)a3
+- (UIPDFAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
@@ -108,14 +108,14 @@ LABEL_3:
 
   v4->_hidden = 0;
   v4->_pdfContents = 0;
-  v4->_dictionary = a3;
+  v4->_dictionary = dictionary;
   v4->_color = 0;
   v4->_index = -1;
   v4->_quadPoints = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
   value = 0;
   *components = xmmword_18A681820;
   *v25 = unk_18A681830;
-  if (CGPDFDictionaryGetArray(a3, "C", &value))
+  if (CGPDFDictionaryGetArray(dictionary, "C", &value))
   {
     Count = CGPDFArrayGetCount(value);
     switch(Count)
@@ -159,7 +159,7 @@ LABEL_3:
   CGColorSpaceRelease(DeviceCMYK);
 LABEL_12:
   array = 0;
-  if (CGPDFDictionaryGetArray(a3, "QuadPoints", &array))
+  if (CGPDFDictionaryGetArray(dictionary, "QuadPoints", &array))
   {
     v11 = CGPDFArrayGetCount(array);
     v12 = v11 - 1;
@@ -189,7 +189,7 @@ LABEL_12:
   CFRelease(v15);
   v5->_appearanceStream = 0;
   v20 = 0.0;
-  if (CGPDFDictionaryGetDictionary(a3, "AP", &v20))
+  if (CGPDFDictionaryGetDictionary(dictionary, "AP", &v20))
   {
     v18 = 0;
     v19 = 0.0;
@@ -200,7 +200,7 @@ LABEL_12:
   }
 
   v19 = 0.0;
-  if (CGPDFDictionaryGetString(a3, "Contents", &v19))
+  if (CGPDFDictionaryGetString(dictionary, "Contents", &v19))
   {
     BytePtr = CGPDFStringGetBytePtr(*&v19);
     v5->_contents = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:BytePtr length:CGPDFStringGetLength(*&v19) encoding:1];
@@ -220,18 +220,18 @@ LABEL_12:
     CFRelease(annotationID);
   }
 
-  v4 = [(UIPDFAnnotation *)self annotationView];
-  if (v4)
+  annotationView = [(UIPDFAnnotation *)self annotationView];
+  if (annotationView)
   {
-    [(UIView *)v4 removeFromSuperview];
+    [(UIView *)annotationView removeFromSuperview];
     [(UIPDFAnnotation *)self setAnnotationView:0];
   }
 
-  v5 = [(UIPDFAnnotation *)self drawingLayer];
-  if (v5)
+  drawingLayer = [(UIPDFAnnotation *)self drawingLayer];
+  if (drawingLayer)
   {
-    v6 = v5;
-    [(CALayer *)v5 setDelegate:0];
+    v6 = drawingLayer;
+    [(CALayer *)drawingLayer setDelegate:0];
     [(CALayer *)v6 removeFromSuperlayer];
     [(UIPDFAnnotation *)self setDrawingLayer:0];
   }
@@ -241,40 +241,40 @@ LABEL_12:
   [(UIPDFAnnotation *)&v7 dealloc];
 }
 
-- (void)setAnnotationID:(id)a3
+- (void)setAnnotationID:(id)d
 {
   annotationID = self->_annotationID;
   if (annotationID)
   {
   }
 
-  self->_annotationID = a3;
+  self->_annotationID = d;
 }
 
 - (id)archive
 {
-  v3 = [(UIPDFAnnotation *)self newSelection];
-  v4 = v3;
-  if (v3)
+  newSelection = [(UIPDFAnnotation *)self newSelection];
+  v4 = newSelection;
+  if (newSelection)
   {
-    v5 = [v3 archive];
+    archive = [newSelection archive];
   }
 
   else
   {
-    v5 = 0;
+    archive = 0;
   }
 
   v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:0];
-  v7 = [(UIPDFAnnotation *)self annotationType];
-  if (v7 > 0xA)
+  annotationType = [(UIPDFAnnotation *)self annotationType];
+  if (annotationType > 0xA)
   {
     v8 = @"UIPDFAnnotationTypeOther";
   }
 
   else
   {
-    v8 = *(&off_1E711FCD0 + v7);
+    v8 = *(&off_1E711FCD0 + annotationType);
   }
 
   [v6 appendString:@"<UIPDFAnnotation type="];
@@ -296,15 +296,15 @@ LABEL_12:
     [v6 appendString:@"/>"];
   }
 
-  if (v5)
+  if (archive)
   {
-    [v6 appendString:v5];
+    [v6 appendString:archive];
   }
 
-  v11 = [(UIPDFAnnotation *)self contents];
-  if (v11)
+  contents = [(UIPDFAnnotation *)self contents];
+  if (contents)
   {
-    v12 = v11;
+    v12 = contents;
     [v6 appendString:@"<Contents>"];
     [v6 appendString:v12];
     [v6 appendString:@"</Contents>"];
@@ -313,9 +313,9 @@ LABEL_12:
   popup = self->_popup;
   if (popup)
   {
-    v14 = [(UIPDFAnnotation *)popup annotationID];
+    annotationID = [(UIPDFAnnotation *)popup annotationID];
     [v6 appendString:@"<PopupID>"];
-    [v6 appendString:v14];
+    [v6 appendString:annotationID];
     [v6 appendString:@"</PopupID>"];
   }
 
@@ -339,17 +339,17 @@ LABEL_12:
   return v6;
 }
 
-- (id)getImageNamed:(id)a3 ofType:(id)a4
+- (id)getImageNamed:(id)named ofType:(id)type
 {
-  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:a3];
-  v6 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "pathForResource:ofType:", v5, a4}];
+  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:named];
+  v6 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "pathForResource:ofType:", v5, type}];
 
   return [UIImage imageWithContentsOfFile:v6];
 }
 
-- (CGRect)rectIn:(CGPDFArray *)a3
+- (CGRect)rectIn:(CGPDFArray *)in
 {
-  if (CGPDFArrayGetCount(a3) == 4 && (v10 = 0.0, value = 0.0, v8 = 0.0, v9 = 0.0, CGPDFArrayGetNumber(a3, 0, &value)) && CGPDFArrayGetNumber(a3, 1uLL, &v10) && CGPDFArrayGetNumber(a3, 2uLL, &v9) && CGPDFArrayGetNumber(a3, 3uLL, &v8))
+  if (CGPDFArrayGetCount(in) == 4 && (v10 = 0.0, value = 0.0, v8 = 0.0, v9 = 0.0, CGPDFArrayGetNumber(in, 0, &value)) && CGPDFArrayGetNumber(in, 1uLL, &v10) && CGPDFArrayGetNumber(in, 2uLL, &v9) && CGPDFArrayGetNumber(in, 3uLL, &v8))
   {
     *&v6 = value;
     v4 = v9 - value;
@@ -395,10 +395,10 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(UIPDFAnnotation *)self Rect];
   v9 = x;
   v10 = y;
@@ -406,7 +406,7 @@ LABEL_12:
   return CGRectContainsPoint(*&v5, *&v9);
 }
 
-- (void)setColor:(CGColor *)a3
+- (void)setColor:(CGColor *)color
 {
   color = self->_color;
   if (color)
@@ -414,12 +414,12 @@ LABEL_12:
     CGColorRelease(color);
   }
 
-  self->_color = a3;
+  self->_color = color;
 
-  CGColorRetain(a3);
+  CGColorRetain(color);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   if (self->_appearanceStream)
   {
@@ -454,11 +454,11 @@ LABEL_12:
     *&t1.c = v15;
     v17 = v22;
     CGAffineTransformConcat(&v19, &t1, &v17);
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     t1 = v19;
-    CGContextConcatCTM(a3, &t1);
+    CGContextConcatCTM(context, &t1);
     CGPDFDrawingContextDraw();
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
     CGPDFDrawingContextRelease();
   }
 }
@@ -512,14 +512,14 @@ LABEL_12:
 
 - (id)descriptionHOLD
 {
-  v3 = [(UIPDFAnnotation *)self selection];
-  if (!v3)
+  selection = [(UIPDFAnnotation *)self selection];
+  if (!selection)
   {
     TextRange = 0;
     goto LABEL_6;
   }
 
-  TextRange = [(UIPDFSelection *)v3 CGSelection];
+  TextRange = [(UIPDFSelection *)selection CGSelection];
   if (!TextRange)
   {
 LABEL_6:
@@ -539,10 +539,10 @@ LABEL_6:
 LABEL_7:
   v7 = -1;
 LABEL_8:
-  v8 = [(UIPDFAnnotation *)self annotationView];
-  if (v8)
+  annotationView = [(UIPDFAnnotation *)self annotationView];
+  if (annotationView)
   {
-    [(UIView *)v8 frame];
+    [(UIView *)annotationView frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -558,23 +558,23 @@ LABEL_8:
   }
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [(UIPDFAnnotation *)self annotationID];
+  annotationID = [(UIPDFAnnotation *)self annotationID];
   v20.origin.x = v10;
   v20.origin.y = v12;
   v20.size.width = v14;
   v20.size.height = v16;
-  return [v17 stringWithFormat:@"Annotation %@ Ranges: %ld Indexes (inclusive) <%ld, %ld>; view frame: %@", v18, NumberOfTextRanges, TextRange, TextRange + v7, NSStringFromCGRect(v20)];
+  return [v17 stringWithFormat:@"Annotation %@ Ranges: %ld Indexes (inclusive) <%ld, %ld>; view frame: %@", annotationID, NumberOfTextRanges, TextRange, TextRange + v7, NSStringFromCGRect(v20)];
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
   [(UIPDFAnnotation *)self makeQuadpointsFrom:?];
   selection = self->_selection;
-  if (selection != a3)
+  if (selection != selection)
   {
   }
 
-  self->_selection = a3;
+  self->_selection = selection;
 }
 
 - (UIPDFSelection)selection
@@ -591,10 +591,10 @@ LABEL_8:
 
 - (id)newSelection
 {
-  v3 = [(UIPDFAnnotation *)self newPathFromQuadPoints];
-  if (v3)
+  newPathFromQuadPoints = [(UIPDFAnnotation *)self newPathFromQuadPoints];
+  if (newPathFromQuadPoints)
   {
-    v4 = v3;
+    v4 = newPathFromQuadPoints;
     [(UIPDFPage *)[(UIPDFAnnotation *)self page] CGPage];
     v5 = CGPDFSelectionCreateInPath();
     if (v5)
@@ -611,13 +611,13 @@ LABEL_8:
   return 0;
 }
 
-- (void)makeQuadpointsFrom:(id)a3
+- (void)makeQuadpointsFrom:(id)from
 {
   [(NSMutableArray *)self->_quadPoints removeAllObjects];
-  v5 = [a3 numberOfRectangles];
-  if (v5)
+  numberOfRectangles = [from numberOfRectangles];
+  if (numberOfRectangles)
   {
-    v6 = v5;
+    v6 = numberOfRectangles;
     v7 = 0;
     memset(&v26, 0, sizeof(v26));
     v24 = 0u;
@@ -625,7 +625,7 @@ LABEL_8:
     v23 = 0u;
     do
     {
-      [a3 getBounds:&v26 transform:&v23 index:v7];
+      [from getBounds:&v26 transform:&v23 index:v7];
       origin = v26.origin;
       MinX = CGRectGetMinX(v26);
       MaxY = CGRectGetMaxY(v26);

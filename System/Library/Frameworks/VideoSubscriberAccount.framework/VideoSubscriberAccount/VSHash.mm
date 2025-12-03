@@ -3,12 +3,12 @@
 - (NSData)finalData;
 - (VSHash)init;
 - (void)dealloc;
-- (void)setCtx:(CC_SHA256state_st *)a3;
-- (void)updateWithData:(id)a3;
-- (void)updateWithDate:(id)a3;
-- (void)updateWithInteger:(int64_t)a3;
-- (void)updateWithString:(id)a3;
-- (void)updateWithUUID:(id)a3;
+- (void)setCtx:(CC_SHA256state_st *)ctx;
+- (void)updateWithData:(id)data;
+- (void)updateWithDate:(id)date;
+- (void)updateWithInteger:(int64_t)integer;
+- (void)updateWithString:(id)string;
+- (void)updateWithUUID:(id)d;
 @end
 
 @implementation VSHash
@@ -31,7 +31,7 @@
 {
   if (!self->_finalized)
   {
-    v3 = [(VSHash *)self finalData];
+    finalData = [(VSHash *)self finalData];
   }
 
   v4.receiver = self;
@@ -39,18 +39,18 @@
   [(VSHash *)&v4 dealloc];
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(VSHash *)self isFinalized])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Cannot update a hash that has been finalized."];
   }
 
-  v5 = [v4 bytes];
-  v6 = [v4 length];
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length];
 
-  CC_SHA256_Update(&self->_ctx, v5, v6);
+  CC_SHA256_Update(&self->_ctx, bytes, v6);
 }
 
 - (NSData)finalData
@@ -85,52 +85,52 @@
   return self;
 }
 
-- (void)setCtx:(CC_SHA256state_st *)a3
+- (void)setCtx:(CC_SHA256state_st *)ctx
 {
-  v3 = *a3->count;
-  v4 = *&a3->hash[2];
-  *&self->_ctx.hash[6] = *&a3->hash[6];
+  v3 = *ctx->count;
+  v4 = *&ctx->hash[2];
+  *&self->_ctx.hash[6] = *&ctx->hash[6];
   *&self->_ctx.hash[2] = v4;
   *self->_ctx.count = v3;
-  v5 = *&a3->wbuf[2];
-  v6 = *&a3->wbuf[6];
-  v7 = *&a3->wbuf[10];
-  *&self->_ctx.wbuf[14] = *&a3->wbuf[14];
+  v5 = *&ctx->wbuf[2];
+  v6 = *&ctx->wbuf[6];
+  v7 = *&ctx->wbuf[10];
+  *&self->_ctx.wbuf[14] = *&ctx->wbuf[14];
   *&self->_ctx.wbuf[10] = v7;
   *&self->_ctx.wbuf[6] = v6;
   *&self->_ctx.wbuf[2] = v5;
 }
 
-- (void)updateWithString:(id)a3
+- (void)updateWithString:(id)string
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  if (v6)
+  stringCopy = string;
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v6 length:strlen(v6)];
+    v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:uTF8String length:strlen(uTF8String)];
     [(VSHash *)self updateWithData:v7];
   }
 }
 
-- (void)updateWithDate:(id)a3
+- (void)updateWithDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", v4];
   [(VSHash *)self updateWithString:v5];
 }
 
-- (void)updateWithInteger:(int64_t)a3
+- (void)updateWithInteger:(int64_t)integer
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a3];
-  [(VSHash *)self updateWithString:v4];
+  integer = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", integer];
+  [(VSHash *)self updateWithString:integer];
 }
 
-- (void)updateWithUUID:(id)a3
+- (void)updateWithUUID:(id)d
 {
   v5[2] = *MEMORY[0x277D85DE8];
   v5[0] = 0;
   v5[1] = 0;
-  [a3 getUUIDBytes:v5];
+  [d getUUIDBytes:v5];
   v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v5 length:16];
   [(VSHash *)self updateWithData:v4];
 }

@@ -1,13 +1,13 @@
 @interface _EXHostViewControllerConfiguration
 - (NSString)sceneIdentifier;
 - (_EXHostViewControllerConfiguration)init;
-- (_EXHostViewControllerConfiguration)initWithExtension:(id)a3;
-- (_EXHostViewControllerConfiguration)initWithExtension:(id)a3 role:(id)a4;
-- (_EXHostViewControllerConfiguration)initWithExtensionIdentity:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setExtension:(id)a3;
-- (void)setExtensionIdentity:(id)a3;
-- (void)setSceneIdentifier:(id)a3;
+- (_EXHostViewControllerConfiguration)initWithExtension:(id)extension;
+- (_EXHostViewControllerConfiguration)initWithExtension:(id)extension role:(id)role;
+- (_EXHostViewControllerConfiguration)initWithExtensionIdentity:(id)identity;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setExtension:(id)extension;
+- (void)setExtensionIdentity:(id)identity;
+- (void)setSceneIdentifier:(id)identifier;
 @end
 
 @implementation _EXHostViewControllerConfiguration
@@ -27,8 +27,8 @@
     instanceIdentifier = v4->_instanceIdentifier;
     v4->_instanceIdentifier = 0;
 
-    v7 = [MEMORY[0x1E6966CA0] sharedInstance];
-    v4->_beginHostingImmediately = [v7 startUIHostingSessionImmediately];
+    mEMORY[0x1E6966CA0] = [MEMORY[0x1E6966CA0] sharedInstance];
+    v4->_beginHostingImmediately = [mEMORY[0x1E6966CA0] startUIHostingSessionImmediately];
 
     v4->_sizeBridgingOptions = -1;
     v4->_retryOnHostingFailure = 0;
@@ -37,16 +37,16 @@
   return v4;
 }
 
-- (_EXHostViewControllerConfiguration)initWithExtensionIdentity:(id)a3
+- (_EXHostViewControllerConfiguration)initWithExtensionIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v6 = *MEMORY[0x1E6966D28];
   v12.receiver = self;
   v12.super_class = _EXHostViewControllerConfiguration;
   v7 = [(_EXHostViewControllerSessionConfiguration *)&v12 initWithSceneIdentifier:v6];
   if (v7)
   {
-    if (([v5 presentsUserInterface] & 1) == 0)
+    if (([identityCopy presentsUserInterface] & 1) == 0)
     {
       v8 = _EXDefaultLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -55,12 +55,12 @@
       }
     }
 
-    objc_storeStrong(&v7->_extensionIdentity, a3);
+    objc_storeStrong(&v7->_extensionIdentity, identity);
     instanceIdentifier = v7->_instanceIdentifier;
     v7->_instanceIdentifier = 0;
 
-    v10 = [MEMORY[0x1E6966CA0] sharedInstance];
-    v7->_beginHostingImmediately = [v10 startUIHostingSessionImmediately];
+    mEMORY[0x1E6966CA0] = [MEMORY[0x1E6966CA0] sharedInstance];
+    v7->_beginHostingImmediately = [mEMORY[0x1E6966CA0] startUIHostingSessionImmediately];
 
     v7->_sizeBridgingOptions = -1;
     v7->_retryOnHostingFailure = 0;
@@ -69,11 +69,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _EXHostViewControllerConfiguration;
-  v4 = [(_EXHostViewControllerSessionConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(_EXHostViewControllerSessionConfiguration *)&v6 copyWithZone:zone];
   [v4 setExtensionIdentity:self->_extensionIdentity];
   [v4 setInstanceIdentifier:self->_instanceIdentifier];
   [v4 setBeginHostingImmediately:self->_beginHostingImmediately];
@@ -82,10 +82,10 @@
   return v4;
 }
 
-- (void)setExtensionIdentity:(id)a3
+- (void)setExtensionIdentity:(id)identity
 {
-  v4 = a3;
-  if (([v4 presentsUserInterface] & 1) == 0)
+  identityCopy = identity;
+  if (([identityCopy presentsUserInterface] & 1) == 0)
   {
     v5 = _EXDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -95,32 +95,32 @@
   }
 
   extensionIdentity = self->_extensionIdentity;
-  self->_extensionIdentity = v4;
+  self->_extensionIdentity = identityCopy;
 }
 
 - (NSString)sceneIdentifier
 {
   v4.receiver = self;
   v4.super_class = _EXHostViewControllerConfiguration;
-  v2 = [(_EXHostViewControllerSessionConfiguration *)&v4 sceneIdentifier];
+  sceneIdentifier = [(_EXHostViewControllerSessionConfiguration *)&v4 sceneIdentifier];
 
-  return v2;
+  return sceneIdentifier;
 }
 
-- (void)setSceneIdentifier:(id)a3
+- (void)setSceneIdentifier:(id)identifier
 {
   v3.receiver = self;
   v3.super_class = _EXHostViewControllerConfiguration;
-  [(_EXHostViewControllerSessionConfiguration *)&v3 setSceneIdentifier:a3];
+  [(_EXHostViewControllerSessionConfiguration *)&v3 setSceneIdentifier:identifier];
 }
 
-- (_EXHostViewControllerConfiguration)initWithExtension:(id)a3
+- (_EXHostViewControllerConfiguration)initWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_EXHostViewControllerConfiguration *)self initWithExtensionIdentity:v4];
+    v5 = [(_EXHostViewControllerConfiguration *)self initWithExtensionIdentity:extensionCopy];
 
     return v5;
   }
@@ -139,18 +139,18 @@
   return result;
 }
 
-- (_EXHostViewControllerConfiguration)initWithExtension:(id)a3 role:(id)a4
+- (_EXHostViewControllerConfiguration)initWithExtension:(id)extension role:(id)role
 {
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  roleCopy = role;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(_EXHostViewControllerConfiguration *)self initWithExtensionIdentity:v6];
+    v8 = [(_EXHostViewControllerConfiguration *)self initWithExtensionIdentity:extensionCopy];
     v9 = v8;
     if (v8)
     {
-      [(_EXHostViewControllerConfiguration *)v8 setSceneIdentifier:v7];
+      [(_EXHostViewControllerConfiguration *)v8 setSceneIdentifier:roleCopy];
     }
 
     return v9;
@@ -170,13 +170,13 @@
   return result;
 }
 
-- (void)setExtension:(id)a3
+- (void)setExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_EXHostViewControllerConfiguration *)self setExtensionIdentity:v5];
+    [(_EXHostViewControllerConfiguration *)self setExtensionIdentity:extensionCopy];
   }
 
   else

@@ -16,19 +16,19 @@
     }
 
     objc_opt_class();
-    v4 = [(PPTBasicTest *)self bookController];
+    bookController = [(PPTBasicTest *)self bookController];
     v5 = BUDynamicCast();
 
-    v6 = [v5 view];
-    v7 = [v6 window];
+    view = [v5 view];
+    window = [view window];
 
-    [v7 bounds];
+    [window bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(PPTBasicTest *)self testDefinition];
-    v17 = [v16 objectForKeyedSubscript:@"book-type"];
+    testDefinition = [(PPTBasicTest *)self testDefinition];
+    v17 = [testDefinition objectForKeyedSubscript:@"book-type"];
 
     if (v17)
     {
@@ -50,15 +50,15 @@
 
     objc_initWeak(buf, self);
     v23 = [RPTDirectionalSwipeTestParameters alloc];
-    v24 = [(PPTBasicTest *)self name];
+    name = [(PPTBasicTest *)self name];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_10014EE58;
     v32[3] = &unk_100A035D0;
     objc_copyWeak(&v33, buf);
-    v25 = [v23 initWithTestName:v24 scrollingBounds:1 swipeCount:v18 direction:v32 completionHandler:{v9 + 64.0, v11 + 64.0, v13 + -128.0, v15 + -128.0}];
+    v25 = [v23 initWithTestName:name scrollingBounds:1 swipeCount:v18 direction:v32 completionHandler:{v9 + 64.0, v11 + 64.0, v13 + -128.0, v15 + -128.0}];
 
-    v26 = [RPTCoordinateSpaceConverter converterFromWindow:v7];
+    v26 = [RPTCoordinateSpaceConverter converterFromWindow:window];
     [v25 setConversion:v26];
 
     [RPTTestRunner runTestWithParameters:v25];
@@ -69,7 +69,7 @@
   }
 
   objc_opt_class();
-  v19 = [(PPTBasicTest *)self bookController];
+  bookController2 = [(PPTBasicTest *)self bookController];
   v20 = BUDynamicCast();
 
   if (v20)
@@ -92,8 +92,8 @@ LABEL_19:
     return;
   }
 
-  v27 = [(PPTBasicTest *)self bookController];
-  v28 = [_TtC5Books12RETestDriver isValidWithViewController:v27];
+  bookController3 = [(PPTBasicTest *)self bookController];
+  v28 = [_TtC5Books12RETestDriver isValidWithViewController:bookController3];
 
   if (!v28)
   {
@@ -107,8 +107,8 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Asking RETestDriver to turn page", buf, 2u);
   }
 
-  v30 = [(PPTBasicTest *)self bookController];
-  v31 = [_TtC5Books12RETestDriver turnPageWithViewController:v30 forward:1];
+  bookController4 = [(PPTBasicTest *)self bookController];
+  v31 = [_TtC5Books12RETestDriver turnPageWithViewController:bookController4 forward:1];
 
   if ((v31 & 1) == 0)
   {

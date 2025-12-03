@@ -1,23 +1,23 @@
 @interface CESRPeopleSuggesterPriorRetriever
 - (CESRPeopleSuggesterPriorRetriever)init;
-- (id)_convertPeopleSuggesterPriorToPriorInfo:(id)a3;
-- (id)allPriorInfoWithThreshold:(unsigned int)a3;
-- (id)priorInfoForItemIds:(id)a3;
+- (id)_convertPeopleSuggesterPriorToPriorInfo:(id)info;
+- (id)allPriorInfoWithThreshold:(unsigned int)threshold;
+- (id)priorInfoForItemIds:(id)ids;
 @end
 
 @implementation CESRPeopleSuggesterPriorRetriever
 
-- (id)_convertPeopleSuggesterPriorToPriorInfo:(id)a3
+- (id)_convertPeopleSuggesterPriorToPriorInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = [CESRPriorInfo alloc];
   v5 = v4;
-  if (v3)
+  if (infoCopy)
   {
-    v6 = [v3 rank];
-    [v3 priorScore];
+    rank = [infoCopy rank];
+    [infoCopy priorScore];
     v4 = v5;
-    v8 = v6;
+    v8 = rank;
   }
 
   else
@@ -31,10 +31,10 @@
   return v9;
 }
 
-- (id)allPriorInfoWithThreshold:(unsigned int)a3
+- (id)allPriorInfoWithThreshold:(unsigned int)threshold
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:a3];
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:threshold];
   v6 = [(CESRPeopleSuggesterPriorRetriever *)self _fetchContactPriorsForContactIds:0];
   v7 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
@@ -45,7 +45,7 @@
     v26 = 1024;
     v27 = [v6 count];
     v28 = 1024;
-    v29 = a3;
+    thresholdCopy = threshold;
     _os_log_impl(&dword_225EEB000, v8, OS_LOG_TYPE_INFO, "%s Filtering %u contact priors from PeopleSuggester with threshold: %u", buf, 0x18u);
   }
 
@@ -53,8 +53,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v6 allValues];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allValues = [v6 allValues];
+  v10 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -65,22 +65,22 @@
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        if ([v14 rank] <= a3)
+        if ([v14 rank] <= threshold)
         {
           v15 = [(CESRPeopleSuggesterPriorRetriever *)self _convertPeopleSuggesterPriorToPriorInfo:v14];
           if (v15)
           {
-            v16 = [v14 contactIdentifier];
-            [v5 setObject:v15 forKey:v16];
+            contactIdentifier = [v14 contactIdentifier];
+            [v5 setObject:v15 forKey:contactIdentifier];
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
@@ -91,11 +91,11 @@
   return v5;
 }
 
-- (id)priorInfoForItemIds:(id)a3
+- (id)priorInfoForItemIds:(id)ids
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  idsCopy = ids;
+  if ([idsCopy count])
   {
     v5 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
@@ -104,18 +104,18 @@
       *buf = 136315394;
       v26 = "[CESRPeopleSuggesterPriorRetriever priorInfoForItemIds:]";
       v27 = 2048;
-      v28 = [v4 count];
+      v28 = [idsCopy count];
       _os_log_impl(&dword_225EEB000, v6, OS_LOG_TYPE_INFO, "%s Fetching prior info for %lu contacts", buf, 0x16u);
     }
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v8 = [(CESRPeopleSuggesterPriorRetriever *)self _fetchContactPriorsForContactIds:v4];
+    v8 = [(CESRPeopleSuggesterPriorRetriever *)self _fetchContactPriorsForContactIds:idsCopy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v4;
-    v9 = v4;
+    v19 = idsCopy;
+    v9 = idsCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
@@ -142,7 +142,7 @@
       while (v11);
     }
 
-    v4 = v19;
+    idsCopy = v19;
   }
 
   else

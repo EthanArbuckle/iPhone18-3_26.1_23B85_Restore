@@ -1,21 +1,21 @@
 @interface SearchResultsCollectionViewDelegate
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (_TtC18ASMessagesProvider35SearchResultsCollectionViewDelegate)init;
-- (id)_collectionView:(id)a3 layout:(id)a4 flowLayoutRowAlignmentOptionsForSection:(int64_t)a5;
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
+- (id)_collectionView:(id)view layout:(id)layout flowLayoutRowAlignmentOptionsForSection:(int64_t)section;
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation SearchResultsCollectionViewDelegate
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1DA488(v7);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  v10 = sub_1DA488(viewCopy);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -31,17 +31,17 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = sub_757640();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v20 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  v15 = sub_1DB2F4(v13, v11);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  v15 = sub_1DB2F4(layoutCopy, v11);
   v17 = v16;
 
   (*(v9 + 8))(v11, v8);
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (id)_collectionView:(id)a3 layout:(id)a4 flowLayoutRowAlignmentOptionsForSection:(int64_t)a5
+- (id)_collectionView:(id)view layout:(id)layout flowLayoutRowAlignmentOptionsForSection:(int64_t)section
 {
   if (sub_1DB464())
   {
@@ -67,19 +67,19 @@
   return v5.super.isa;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = sub_757640();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v9 = self;
+  selfCopy = self;
   sub_75FFE0();
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
   v9 = sub_757640();
   v10 = *(v9 - 8);
@@ -88,15 +88,15 @@
   v13 = sub_769240();
   v15 = v14;
   sub_757590();
-  v16 = a3;
-  v17 = a4;
-  v18 = self;
-  sub_4A0E3C(v17, v13, v15);
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  selfCopy = self;
+  sub_4A0E3C(supplementaryViewCopy, v13, v15);
 
   (*(v10 + 8))(v12, v9);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_757640();
   v8 = *(v7 - 8);
@@ -106,7 +106,7 @@
   v13 = v12;
   sub_757590();
   type metadata accessor for SearchTransparencyView();
-  v14 = self;
+  selfCopy = self;
   if (v11 == sub_769BC0() && v13 == v15)
   {
   }
@@ -129,7 +129,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  sub_49BC34(v17, v14);
+  sub_49BC34(v17, selfCopy);
 
 LABEL_8:
   (*(v8 + 8))(v10, v7);

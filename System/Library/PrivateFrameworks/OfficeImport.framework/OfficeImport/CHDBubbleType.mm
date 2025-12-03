@@ -1,16 +1,16 @@
 @interface CHDBubbleType
 - (BOOL)is3DType;
-- (CHDBubbleType)initWithChart:(id)a3;
+- (CHDBubbleType)initWithChart:(id)chart;
 - (int)defaultLabelPosition;
 @end
 
 @implementation CHDBubbleType
 
-- (CHDBubbleType)initWithChart:(id)a3
+- (CHDBubbleType)initWithChart:(id)chart
 {
   v4.receiver = self;
   v4.super_class = CHDBubbleType;
-  result = [(CHDChartType *)&v4 initWithChart:a3];
+  result = [(CHDChartType *)&v4 initWithChart:chart];
   if (result)
   {
     *(&result->super.mVaryColors + 1) = 100;
@@ -34,14 +34,14 @@
 
 - (BOOL)is3DType
 {
-  v2 = [(CHDChartType *)self seriesCollection];
-  v3 = [v2 count];
+  seriesCollection = [(CHDChartType *)self seriesCollection];
+  v3 = [seriesCollection count];
   if (v3)
   {
     v4 = 0;
     while (1)
     {
-      v5 = [v2 objectAtIndex:v4];
+      v5 = [seriesCollection objectAtIndex:v4];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0)
@@ -50,9 +50,9 @@
       }
 
       v7 = v5;
-      v8 = [v7 isBubble3D];
+      isBubble3D = [v7 isBubble3D];
 
-      if (v8)
+      if (isBubble3D)
       {
         break;
       }

@@ -8,42 +8,42 @@
 
 - (NSString)secondaryString
 {
-  v2 = [(MNTrafficIncidentAlert *)self alertDescriptions];
-  v3 = [v2 firstObject];
+  alertDescriptions = [(MNTrafficIncidentAlert *)self alertDescriptions];
+  firstObject = [alertDescriptions firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSString)primaryString
 {
-  v2 = [(MNTrafficIncidentAlert *)self alertTitles];
-  v3 = [v2 firstObject];
+  alertTitles = [(MNTrafficIncidentAlert *)self alertTitles];
+  firstObject = [alertTitles firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)alternateRouteToDisplay
 {
-  v3 = [(MNTrafficIncidentAlert *)self alertType];
-  if ((v3 - 3) >= 2)
+  alertType = [(MNTrafficIncidentAlert *)self alertType];
+  if ((alertType - 3) >= 2)
   {
-    if (v3 == 1)
+    if (alertType == 1)
     {
-      v4 = [(MNTrafficIncidentAlert *)self originalRoute];
+      originalRoute = [(MNTrafficIncidentAlert *)self originalRoute];
     }
 
     else
     {
-      v4 = 0;
+      originalRoute = 0;
     }
   }
 
   else
   {
-    v4 = [(MNTrafficIncidentAlert *)self alternateRoute];
+    originalRoute = [(MNTrafficIncidentAlert *)self alternateRoute];
   }
 
-  return v4;
+  return originalRoute;
 }
 
 @end

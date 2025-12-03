@@ -1,8 +1,8 @@
 @interface PinViewElement.HeadlessPasscodeView
 - (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D620HeadlessPasscodeView)init;
-- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D620HeadlessPasscodeView)initWithAttributes:(id)a3 parent:(id)a4;
+- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D620HeadlessPasscodeView)initWithAttributes:(id)attributes parent:(id)parent;
 - (int64_t)numberOfEntryFields;
-- (void)setNumberOfEntryFields:(int64_t)a3;
+- (void)setNumberOfEntryFields:(int64_t)fields;
 @end
 
 @implementation PinViewElement.HeadlessPasscodeView
@@ -14,21 +14,21 @@
   return [(RUIPasscodeView *)&v3 numberOfEntryFields];
 }
 
-- (void)setNumberOfEntryFields:(int64_t)a3
+- (void)setNumberOfEntryFields:(int64_t)fields
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PinViewElement.HeadlessPasscodeView();
   v4 = v7.receiver;
-  [(RUIPasscodeView *)&v7 setNumberOfEntryFields:a3];
+  [(RUIPasscodeView *)&v7 setNumberOfEntryFields:fields];
   v5 = *&v4[OBJC_IVAR____TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D620HeadlessPasscodeView_headlessPasscodeField];
-  v6 = [v4 numberOfEntryFields];
+  numberOfEntryFields = [v4 numberOfEntryFields];
 
-  *&v5[OBJC_IVAR____TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField_numberOfEntryFields] = v6;
+  *&v5[OBJC_IVAR____TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D621HeadlessPasscodeField_numberOfEntryFields] = numberOfEntryFields;
 }
 
-- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D620HeadlessPasscodeView)initWithAttributes:(id)a3 parent:(id)a4
+- (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D620HeadlessPasscodeView)initWithAttributes:(id)attributes parent:(id)parent
 {
-  if (a3)
+  if (attributes)
   {
     v5 = sub_21BA87BCC();
   }
@@ -38,8 +38,8 @@
     v5 = 0;
   }
 
-  v6 = a4;
-  return sub_21B9F4E58(v5, a4);
+  parentCopy = parent;
+  return sub_21B9F4E58(v5, parent);
 }
 
 - (_TtCV8RemoteUI14PinViewElementP33_D2AE12012A0D2D8A61B2D85CC7F760D620HeadlessPasscodeView)init

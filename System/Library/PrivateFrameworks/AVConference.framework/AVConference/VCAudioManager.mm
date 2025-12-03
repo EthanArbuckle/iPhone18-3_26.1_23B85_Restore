@@ -1,110 +1,110 @@
 @interface VCAudioManager
-+ (AudioStreamBasicDescription)sessionFormatForSampleRate:(SEL)a3;
-+ (id)audioSessionForMode:(int)a3;
-+ (id)logPrefixForMode:(int)a3;
++ (AudioStreamBasicDescription)sessionFormatForSampleRate:(SEL)rate;
++ (id)audioSessionForMode:(int)mode;
++ (id)logPrefixForMode:(int)mode;
 + (id)sharedSystemAudioInputInstance;
 + (id)sharedSystemAudioOutputInstance;
 + (id)sharedVoiceChatInstance;
-+ (unsigned)audioIOTypeWithAudioUnitProperties:(id)a3 shouldEnableAudioInput:(BOOL)a4;
++ (unsigned)audioIOTypeWithAudioUnitProperties:(id)properties shouldEnableAudioInput:(BOOL)input;
 - (AVAudioDevice)currentInputDevice;
 - (AVAudioDevice)currentOutputDevice;
-- (BOOL)addClient:(id)a3;
-- (BOOL)computeAllowAudioRecordingWithPreferredClient:(id)a3;
-- (BOOL)getAudioSessionMediaProperties:(id)a3 forVPOperatingMode:(unsigned int)a4;
-- (BOOL)removeClient:(id)a3;
-- (BOOL)resetAUIOWithProperties:(id)a3;
-- (BOOL)resetAudioLimiterWithProperties:(id)a3;
-- (BOOL)resetAudioSessionWithProperties:(id)a3 interruptSuccessful:(BOOL *)a4;
+- (BOOL)addClient:(id)client;
+- (BOOL)computeAllowAudioRecordingWithPreferredClient:(id)client;
+- (BOOL)getAudioSessionMediaProperties:(id)properties forVPOperatingMode:(unsigned int)mode;
+- (BOOL)removeClient:(id)client;
+- (BOOL)resetAUIOWithProperties:(id)properties;
+- (BOOL)resetAudioLimiterWithProperties:(id)properties;
+- (BOOL)resetAudioSessionWithProperties:(id)properties interruptSuccessful:(BOOL *)successful;
 - (BOOL)setupInterruptThread;
-- (BOOL)shouldResetAudioSessionWithProperties:(id)a3;
-- (BOOL)shouldResetAudioUnitWithProperties:(id)a3;
-- (BOOL)startAUIOWithProperties:(id)a3;
-- (BOOL)startAudioSessionWithProperties:(id)a3;
-- (BOOL)stateIdleWithAudioUnitProperties:(id)a3 sessionProperties:(id)a4 client:(id)a5 newState:(unsigned int *)a6;
-- (BOOL)stateInterruptedShouldGoToStarted:(id)a3;
-- (BOOL)stateInterruptedWithAudioUnitProperties:(id)a3 sessionProperties:(id)a4 client:(id)a5 newState:(unsigned int *)a6;
-- (BOOL)stateRunningShouldTransitionToStarted:(id)a3;
-- (BOOL)stateRunningWithAudioUnitProperties:(id)a3 sessionProperties:(id)a4 client:(id)a5 newState:(unsigned int *)a6;
-- (BOOL)stateSessionStartedWithAudioUnitProperties:(id)a3 sessionProperties:(id)a4 client:(id)a5 newState:(unsigned int *)a6;
-- (BOOL)updateStateWithAudioIOClient:(id)a3;
+- (BOOL)shouldResetAudioSessionWithProperties:(id)properties;
+- (BOOL)shouldResetAudioUnitWithProperties:(id)properties;
+- (BOOL)startAUIOWithProperties:(id)properties;
+- (BOOL)startAudioSessionWithProperties:(id)properties;
+- (BOOL)stateIdleWithAudioUnitProperties:(id)properties sessionProperties:(id)sessionProperties client:(id)client newState:(unsigned int *)state;
+- (BOOL)stateInterruptedShouldGoToStarted:(id)started;
+- (BOOL)stateInterruptedWithAudioUnitProperties:(id)properties sessionProperties:(id)sessionProperties client:(id)client newState:(unsigned int *)state;
+- (BOOL)stateRunningShouldTransitionToStarted:(id)started;
+- (BOOL)stateRunningWithAudioUnitProperties:(id)properties sessionProperties:(id)sessionProperties client:(id)client newState:(unsigned int *)state;
+- (BOOL)stateSessionStartedWithAudioUnitProperties:(id)properties sessionProperties:(id)sessionProperties client:(id)client newState:(unsigned int *)state;
+- (BOOL)updateStateWithAudioIOClient:(id)client;
 - (NSString)description;
 - (VCAudioManager)autorelease;
-- (VCAudioManager)initWithAudioSessionMode:(int)a3;
+- (VCAudioManager)initWithAudioSessionMode:(int)mode;
 - (VCAudioManager)retain;
-- (id)newAudioSessionMediaPropertiesForSystemAudioWithPreferredClient:(id)a3 audioUnitProperties:(id)a4 isInput:(BOOL)a5;
-- (id)newAudioSessionMediaPropertiesWithPreferredClient:(id)a3 audioUnitProperties:(id)a4;
-- (id)newAudioUnitPropertiesForSystemAudioWithPreferredClient:(id)a3 isInput:(BOOL)a4;
-- (id)newAudioUnitPropertiesWithPreferredClient:(id)a3;
-- (id)preferredClientWithNewClient:(id)a3;
+- (id)newAudioSessionMediaPropertiesForSystemAudioWithPreferredClient:(id)client audioUnitProperties:(id)properties isInput:(BOOL)input;
+- (id)newAudioSessionMediaPropertiesWithPreferredClient:(id)client audioUnitProperties:(id)properties;
+- (id)newAudioUnitPropertiesForSystemAudioWithPreferredClient:(id)client isInput:(BOOL)input;
+- (id)newAudioUnitPropertiesWithPreferredClient:(id)client;
+- (id)preferredClientWithNewClient:(id)client;
 - (int)prewarmingClientOperatingMode;
-- (int)registerAudioSessionId:(unsigned int)a3 maxChannelCountMic:(unsigned int)a4 maxChannelCountSpeaker:(unsigned int)a5 spatialMetadata:(OpaqueCMBlockBuffer *)a6;
-- (int)registerForMutedTalkerNotification:(id)a3;
-- (int)registerForMutedTalkerNotificationWithAUIO:(tagHANDLE *)a3;
-- (int)setVolume:(float)a3 withRampTime:(float)a4;
-- (int)unregisterForMutedTalkerNotificationWithAUIO:(tagHANDLE *)a3;
+- (int)registerAudioSessionId:(unsigned int)id maxChannelCountMic:(unsigned int)mic maxChannelCountSpeaker:(unsigned int)speaker spatialMetadata:(OpaqueCMBlockBuffer *)metadata;
+- (int)registerForMutedTalkerNotification:(id)notification;
+- (int)registerForMutedTalkerNotificationWithAUIO:(tagHANDLE *)o;
+- (int)setVolume:(float)volume withRampTime:(float)time;
+- (int)unregisterForMutedTalkerNotificationWithAUIO:(tagHANDLE *)o;
 - (int)unregisterFromMutedTalkerNotification;
 - (unint64_t)retainCount;
-- (unsigned)computeSamplePerFrameWithPreferredClient:(id)a3 sampleRate:(unsigned int)a4;
-- (unsigned)vpOperationModeForConferenceOperatingMode:(int)a3 deviceRole:(int)a4;
+- (unsigned)computeSamplePerFrameWithPreferredClient:(id)client sampleRate:(unsigned int)rate;
+- (unsigned)vpOperationModeForConferenceOperatingMode:(int)mode deviceRole:(int)role;
 - (void)_cleanupDeadClients;
-- (void)activateStartingClient:(id)a3 applyControllerFormat:(BOOL)a4;
+- (void)activateStartingClient:(id)client applyControllerFormat:(BOOL)format;
 - (void)applyAudioSessionMute;
-- (void)applyControllerFormatToClients:(id)a3;
-- (void)applySessionContextToAudioUnitProperties:(id)a3 preferredClient:(id)a4;
-- (void)applySpatialMetadata:(OpaqueCMBlockBuffer *)a3;
+- (void)applyControllerFormatToClients:(id)clients;
+- (void)applySessionContextToAudioUnitProperties:(id)properties preferredClient:(id)client;
+- (void)applySpatialMetadata:(OpaqueCMBlockBuffer *)metadata;
 - (void)cleanupInterruptThread;
 - (void)completeStartForAllStartingClients;
-- (void)computeFormatDescription:(AudioStreamBasicDescription *)a3 withPreferredClient:(id)a4;
+- (void)computeFormatDescription:(AudioStreamBasicDescription *)description withPreferredClient:(id)client;
 - (void)computeHardwarePreferences;
 - (void)dealloc;
 - (void)didSessionEnd;
 - (void)didSessionStop;
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3;
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec;
 - (void)enterStateStarted;
-- (void)flushEventQueue:(opaqueCMSimpleQueue *)a3;
-- (void)getPreferredFormat:(AudioStreamBasicDescription *)a3 blockSize:(double *)a4 vpOperatingMode:(unsigned int *)a5 forOperatingMode:(int)a6 deviceRole:(int)a7 suggestedFormat:(AudioStreamBasicDescription *)a8;
+- (void)flushEventQueue:(opaqueCMSimpleQueue *)queue;
+- (void)getPreferredFormat:(AudioStreamBasicDescription *)format blockSize:(double *)size vpOperatingMode:(unsigned int *)mode forOperatingMode:(int)operatingMode deviceRole:(int)role suggestedFormat:(AudioStreamBasicDescription *)suggestedFormat;
 - (void)refreshInputMetering;
 - (void)refreshOutputMetering;
-- (void)refreshRemoteCodecType:(unsigned int)a3 sampleRate:(double)a4;
-- (void)registerClientIO:(_VCAudioIOControllerClientIO *)a3 controllerIO:(_VCAudioIOControllerIOState *)a4;
+- (void)refreshRemoteCodecType:(unsigned int)type sampleRate:(double)rate;
+- (void)registerClientIO:(_VCAudioIOControllerClientIO *)o controllerIO:(_VCAudioIOControllerIOState *)iO;
 - (void)release;
-- (void)removeAllClientsForIO:(_VCAudioIOControllerIOState *)a3;
+- (void)removeAllClientsForIO:(_VCAudioIOControllerIOState *)o;
 - (void)resetAudioTimestamps;
 - (void)serverDidDie;
-- (void)setCurrentInputDevice:(id)a3;
-- (void)setCurrentInputDeviceInternal:(id)a3;
-- (void)setCurrentOutputDevice:(id)a3;
-- (void)setCurrentOutputDeviceInternal:(id)a3;
+- (void)setCurrentInputDevice:(id)device;
+- (void)setCurrentInputDeviceInternal:(id)internal;
+- (void)setCurrentOutputDevice:(id)device;
+- (void)setCurrentOutputDeviceInternal:(id)internal;
 - (void)setInputMetering;
-- (void)setMediaPlaybackOnExternalDevice:(BOOL)a3;
-- (void)setMicrophoneMuted:(BOOL)a3;
-- (void)setMixingVoiceWithMediaEnabled:(BOOL)a3;
-- (void)setMute:(BOOL)a3 forClient:(id)a4;
+- (void)setMediaPlaybackOnExternalDevice:(BOOL)device;
+- (void)setMicrophoneMuted:(BOOL)muted;
+- (void)setMixingVoiceWithMediaEnabled:(BOOL)enabled;
+- (void)setMute:(BOOL)mute forClient:(id)client;
 - (void)setOutputMetering;
-- (void)setSpatialMetadata:(OpaqueCMBlockBuffer *)a3 audioSessionId:(unsigned int)a4 completionHandler:(id)a5;
+- (void)setSpatialMetadata:(OpaqueCMBlockBuffer *)metadata audioSessionId:(unsigned int)id completionHandler:(id)handler;
 - (void)setupInterruptThread;
-- (void)setupSpatialContextWithAudioUnitProperties:(id)a3 forceUpdate:(BOOL)a4;
+- (void)setupSpatialContextWithAudioUnitProperties:(id)properties forceUpdate:(BOOL)update;
 - (void)setupVAD;
-- (void)startClient:(id)a3;
+- (void)startClient:(id)client;
 - (void)startInterruptThread;
-- (void)startVADWithAudioUnitProperties:(id)a3;
+- (void)startVADWithAudioUnitProperties:(id)properties;
 - (void)stateRunningToSessionStarted;
 - (void)stateTransitionInterruptedToRunning;
 - (void)stateTransitionInterruptedToStarted;
 - (void)stateTransitionRunningToInterrupted;
 - (void)stopAUIO;
 - (void)stopAudioSession;
-- (void)stopClient:(id)a3;
+- (void)stopClient:(id)client;
 - (void)stopInterruptThread;
-- (void)unregisterAudioSessionId:(unsigned int)a3;
-- (void)unregisterClientIO:(_VCAudioIOControllerClientIO *)a3 controllerIO:(_VCAudioIOControllerIOState *)a4;
-- (void)updateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4;
-- (void)updateCurrentInputDevice:(id)a3;
-- (void)updateCurrentOutputDevice:(id)a3;
-- (void)updateDirectionWithClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4 isClientRegistered:(BOOL)a5;
-- (void)updateSpatialAudioWithClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4 isClientRegistered:(BOOL)a5;
-- (void)updateVoiceProcessingWithClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4 isClientRegistered:(BOOL)a5;
-- (void)waitIdleForClient:(id)a3;
+- (void)unregisterAudioSessionId:(unsigned int)id;
+- (void)unregisterClientIO:(_VCAudioIOControllerClientIO *)o controllerIO:(_VCAudioIOControllerIOState *)iO;
+- (void)updateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings;
+- (void)updateCurrentInputDevice:(id)device;
+- (void)updateCurrentOutputDevice:(id)device;
+- (void)updateDirectionWithClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings isClientRegistered:(BOOL)registered;
+- (void)updateSpatialAudioWithClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings isClientRegistered:(BOOL)registered;
+- (void)updateVoiceProcessingWithClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings isClientRegistered:(BOOL)registered;
+- (void)waitIdleForClient:(id)client;
 @end
 
 @implementation VCAudioManager
@@ -210,12 +210,12 @@ VCAudioManager *__48__VCAudioManager_sharedSystemAudioInputInstance__block_invok
   return self;
 }
 
-- (void)getPreferredFormat:(AudioStreamBasicDescription *)a3 blockSize:(double *)a4 vpOperatingMode:(unsigned int *)a5 forOperatingMode:(int)a6 deviceRole:(int)a7 suggestedFormat:(AudioStreamBasicDescription *)a8
+- (void)getPreferredFormat:(AudioStreamBasicDescription *)format blockSize:(double *)size vpOperatingMode:(unsigned int *)mode forOperatingMode:(int)operatingMode deviceRole:(int)role suggestedFormat:(AudioStreamBasicDescription *)suggestedFormat
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (a8)
+  if (suggestedFormat)
   {
-    mSampleRate = a8->mSampleRate;
+    mSampleRate = suggestedFormat->mSampleRate;
   }
 
   else
@@ -223,7 +223,7 @@ VCAudioManager *__48__VCAudioManager_sharedSystemAudioInputInstance__block_invok
     mSampleRate = 24000.0;
   }
 
-  v14 = [(VCAudioManager *)self vpOperationModeForConferenceOperatingMode:*&a6 deviceRole:*&a7];
+  v14 = [(VCAudioManager *)self vpOperationModeForConferenceOperatingMode:*&operatingMode deviceRole:*&role];
   if ([+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded deviceClass]== 6 && [+[VCHardwareSettingsEmbedded chipId]< 0x8000 sharedInstance]
   {
     mSampleRate = 16000.0;
@@ -244,15 +244,15 @@ VCAudioManager *__48__VCAudioManager_sharedSystemAudioInputInstance__block_invok
     v18 = 0x3F947AE147AE147BLL;
   }
 
-  v20 = [+[VCDefaults sharedInstance](VCDefaults forceAudioChannelCount];
-  if (v20 <= 1)
+  forceAudioChannelCount = [+[VCDefaults sharedInstance](VCDefaults forceAudioChannelCount];
+  if (forceAudioChannelCount <= 1)
   {
     v21 = 1;
   }
 
   else
   {
-    v21 = v20;
+    v21 = forceAudioChannelCount;
   }
 
   if (objc_opt_class() == self)
@@ -307,7 +307,7 @@ LABEL_23:
         v38 = 2112;
         v39 = v22;
         v40 = 2048;
-        v41 = self;
+        selfCopy = self;
         v42 = 1024;
         v43 = v21;
         v25 = " [%s] %s:%d %@(%p) using audio channelCount[%d]";
@@ -318,21 +318,21 @@ LABEL_23:
     }
   }
 
-  if (!a3)
+  if (!format)
   {
     goto LABEL_27;
   }
 
-  if (a8)
+  if (suggestedFormat)
   {
-    v31 = *&a8->mSampleRate;
-    v30 = *&a8->mBytesPerPacket;
-    *&a3->mBitsPerChannel = *&a8->mBitsPerChannel;
-    *&a3->mSampleRate = v31;
-    *&a3->mBytesPerPacket = v30;
-    a3->mSampleRate = mSampleRate;
+    v31 = *&suggestedFormat->mSampleRate;
+    v30 = *&suggestedFormat->mBytesPerPacket;
+    *&format->mBitsPerChannel = *&suggestedFormat->mBitsPerChannel;
+    *&format->mSampleRate = v31;
+    *&format->mBytesPerPacket = v30;
+    format->mSampleRate = mSampleRate;
 LABEL_27:
-    if (!a4)
+    if (!size)
     {
       goto LABEL_29;
     }
@@ -340,31 +340,31 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  Format_Float(a3, v21, mSampleRate);
-  if (a4)
+  Format_Float(format, v21, mSampleRate);
+  if (size)
   {
 LABEL_28:
-    *a4 = v18;
+    *size = v18;
   }
 
 LABEL_29:
-  if (a5)
+  if (mode)
   {
-    *a5 = v14;
+    *mode = v14;
   }
 }
 
-+ (id)audioSessionForMode:(int)a3
++ (id)audioSessionForMode:(int)mode
 {
-  if (a3 > 1)
+  if (mode > 1)
   {
-    if (a3 == 2)
+    if (mode == 2)
     {
 
       return +[VCAudioSession sharedSystemAudioInputInstance];
     }
 
-    else if (a3 == 3)
+    else if (mode == 3)
     {
       v5 = [[VCAudioSessionAVAS alloc] initWithMode:1, v3];
 
@@ -372,9 +372,9 @@ LABEL_29:
     }
   }
 
-  else if (a3)
+  else if (mode)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
 
       return +[VCAudioSession sharedSystemAudioOutputInstance];
@@ -390,9 +390,9 @@ LABEL_29:
   return result;
 }
 
-- (VCAudioManager)initWithAudioSessionMode:(int)a3
+- (VCAudioManager)initWithAudioSessionMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v19 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = VCAudioManager;
@@ -531,16 +531,16 @@ LABEL_16:
   return v4;
 }
 
-+ (id)logPrefixForMode:(int)a3
++ (id)logPrefixForMode:(int)mode
 {
-  if ((a3 - 1) > 2)
+  if ((mode - 1) > 2)
   {
     return @"controllerType=VoiceChat";
   }
 
   else
   {
-    return off_1E85F3950[a3 - 1];
+    return off_1E85F3950[mode - 1];
   }
 }
 
@@ -594,7 +594,7 @@ LABEL_16:
   [(VCObject *)&v5 dealloc];
 }
 
-- (void)setMicrophoneMuted:(BOOL)a3
+- (void)setMicrophoneMuted:(BOOL)muted
 {
   v6 = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -603,7 +603,7 @@ LABEL_16:
   block[2] = __37__VCAudioManager_setMicrophoneMuted___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  mutedCopy = muted;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -756,15 +756,15 @@ LABEL_15:
   }
 }
 
-- (void)setMixingVoiceWithMediaEnabled:(BOOL)a3
+- (void)setMixingVoiceWithMediaEnabled:(BOOL)enabled
 {
   v29 = *MEMORY[0x1E69E9840];
   if (!self->_playbackMode)
   {
-    v5 = a3;
+    enabledCopy = enabled;
     v6 = +[VCAudioSession sharedVoiceChatInstance];
     v17 = *MEMORY[0x1E69B0068];
-    v18 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+    v18 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
     [v6 updateAudioSessionPropertiesWithProperties:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v18, &v17, 1)}];
     dispatchQueue = self->_dispatchQueue;
     v15[0] = MEMORY[0x1E69E9820];
@@ -772,7 +772,7 @@ LABEL_15:
     v15[2] = __49__VCAudioManager_setMixingVoiceWithMediaEnabled___block_invoke;
     v15[3] = &unk_1E85F37A0;
     v15[4] = self;
-    v16 = v5;
+    v16 = enabledCopy;
     dispatch_async(dispatchQueue, v15);
     return;
   }
@@ -827,7 +827,7 @@ LABEL_13:
         v25 = 2112;
         v26 = v4;
         v27 = 2048;
-        v28 = self;
+        selfCopy = self;
         v10 = " [%s] %s:%d %@(%p) ignore";
         v11 = v14;
         v12 = 48;
@@ -918,7 +918,7 @@ LABEL_12:
   return result;
 }
 
-- (void)setMute:(BOOL)a3 forClient:(id)a4
+- (void)setMute:(BOOL)mute forClient:(id)client
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -927,8 +927,8 @@ LABEL_12:
   v5[2] = __36__VCAudioManager_setMute_forClient___block_invoke;
   v5[3] = &unk_1E85F37C8;
   v5[4] = self;
-  v5[5] = a4;
-  v6 = a3;
+  v5[5] = client;
+  muteCopy = mute;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -1055,7 +1055,7 @@ LABEL_12:
         goto LABEL_27;
       }
 
-      v16 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioSessionId];
+      audioSessionId = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioSessionId];
       v23 = 136316162;
       v24 = v14;
       v25 = 2080;
@@ -1063,7 +1063,7 @@ LABEL_12:
       v27 = 1024;
       v28 = 596;
       v29 = 1024;
-      *v30 = v16;
+      *v30 = audioSessionId;
       *&v30[4] = 1024;
       *&v30[6] = isMicrophoneMuted;
       v17 = " [%s] %s:%d Applying mute property for audioSessionId=%d, isMuted=%d";
@@ -1095,7 +1095,7 @@ LABEL_12:
         goto LABEL_27;
       }
 
-      v22 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioSessionId];
+      audioSessionId2 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioSessionId];
       v23 = 136316674;
       v24 = v20;
       v25 = 2080;
@@ -1105,9 +1105,9 @@ LABEL_12:
       v29 = 2112;
       *v30 = v13;
       *&v30[8] = 2048;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 1024;
-      v33 = v22;
+      v33 = audioSessionId2;
       v34 = 1024;
       v35 = isMicrophoneMuted;
       v17 = " [%s] %s:%d %@(%p) Applying mute property for audioSessionId=%d, isMuted=%d";
@@ -1176,7 +1176,7 @@ LABEL_14:
         v29 = 2112;
         *v30 = v3;
         *&v30[8] = 2048;
-        v31 = self;
+        selfCopy2 = self;
         v8 = " [%s] %s:%d %@(%p) Not applying mute to the AUIO because this manager does not support it.";
         v9 = v12;
         v10 = 48;
@@ -1282,11 +1282,11 @@ LABEL_12:
   }
 }
 
-- (BOOL)getAudioSessionMediaProperties:(id)a3 forVPOperatingMode:(unsigned int)a4
+- (BOOL)getAudioSessionMediaProperties:(id)properties forVPOperatingMode:(unsigned int)mode
 {
   v63 = *MEMORY[0x1E69E9840];
-  inData = a4;
-  if (!a3)
+  inData = mode;
+  if (!properties)
   {
     return 0;
   }
@@ -1588,18 +1588,18 @@ LABEL_70:
     goto LABEL_36;
   }
 
-  v20 = [+[VCDefaults sharedInstance](VCDefaults forceAudioHardwareSampleRate];
-  if (v20)
+  forceAudioHardwareSampleRate = [+[VCDefaults sharedInstance](VCDefaults forceAudioHardwareSampleRate];
+  if (forceAudioHardwareSampleRate)
   {
-    outData = v20;
+    outData = forceAudioHardwareSampleRate;
   }
 
-  [a3 setPreferredSampleRate:?];
-  [a3 setPreferredBlockSize:v44];
-  [a3 setOperatingMode:0];
+  [properties setPreferredSampleRate:?];
+  [properties setPreferredBlockSize:v44];
+  [properties setOperatingMode:0];
   v21 = inData == 6 && self->_useOptimizedHandoversForTelephony;
-  [a3 setAudioClockDeviceEnabled:v21];
-  [a3 setNetworkUplinkClockUsesBaseband:0];
+  [properties setAudioClockDeviceEnabled:v21];
+  [properties setNetworkUplinkClockUsesBaseband:0];
   if (objc_opt_class() != self)
   {
     if (objc_opt_respondsToSelector())
@@ -1722,7 +1722,7 @@ LABEL_36:
             v18 = *MEMORY[0x1E6986650];
             if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
             {
-              v19 = [v8 unsignedIntValue];
+              unsignedIntValue = [v8 unsignedIntValue];
               *buf = v21;
               v24 = v17;
               v25 = 2080;
@@ -1730,7 +1730,7 @@ LABEL_36:
               v27 = 1024;
               v28 = 721;
               v29 = 1024;
-              LODWORD(v30) = v19;
+              LODWORD(v30) = unsignedIntValue;
               v14 = v18;
               v15 = " [%s] %s:%d Failed to get media properties for VP operatingMode:%u";
               v16 = 34;
@@ -1753,7 +1753,7 @@ LABEL_36:
             v12 = *MEMORY[0x1E6986650];
             if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
             {
-              v13 = [v8 unsignedIntValue];
+              unsignedIntValue2 = [v8 unsignedIntValue];
               *buf = 136316418;
               v24 = v11;
               v25 = 2080;
@@ -1763,9 +1763,9 @@ LABEL_36:
               v29 = 2112;
               v30 = v10;
               v31 = 2048;
-              v32 = self;
+              selfCopy = self;
               v33 = 1024;
-              v34 = v13;
+              v34 = unsignedIntValue2;
               v14 = v12;
               v15 = " [%s] %s:%d %@(%p) Failed to get media properties for VP operatingMode:%u";
               v16 = 54;
@@ -1846,7 +1846,7 @@ LABEL_16:
   return v3;
 }
 
-- (void)flushEventQueue:(opaqueCMSimpleQueue *)a3
+- (void)flushEventQueue:(opaqueCMSimpleQueue *)queue
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v4 = 0.0;
@@ -1856,7 +1856,7 @@ LABEL_16:
   }
 
   v5 = objc_opt_new();
-  v6 = CMSimpleQueueDequeue(a3);
+  v6 = CMSimpleQueueDequeue(queue);
   v18[0] = v6;
   for (i = 0; v6; v18[0] = v6)
   {
@@ -1869,7 +1869,7 @@ LABEL_16:
 
     VCAudioIOControllerIOState_ReleaseAudioEvent(v18, v9 ^ 1);
     ++i;
-    v6 = CMSimpleQueueDequeue(a3);
+    v6 = CMSimpleQueueDequeue(queue);
   }
 
   [v5 removeAllObjects];
@@ -1877,10 +1877,10 @@ LABEL_16:
   LogProfileTimeOverLimit(v4, v10, v11, v12, v13, v14, v15, v16, v17, "[VCAudioManager flushEventQueue:]");
 }
 
-- (void)removeAllClientsForIO:(_VCAudioIOControllerIOState *)a3
+- (void)removeAllClientsForIO:(_VCAudioIOControllerIOState *)o
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  for (i = &a3->clientIOList; ; i = &a3->clientIOList)
+  for (i = &o->clientIOList; ; i = &o->clientIOList)
   {
     v5[0] = VCSingleLinkedListPop(i);
     if (!v5[0])
@@ -1892,13 +1892,13 @@ LABEL_16:
   }
 }
 
-- (BOOL)addClient:(id)a3
+- (BOOL)addClient:(id)client
 {
   v43 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableArray *)self->_allClients containsObject:?];
   if ((v5 & 1) == 0)
   {
-    [(VCAudioManager *)self enableSpatialStreamParametersForClient:a3];
+    [(VCAudioManager *)self enableSpatialStreamParametersForClient:client];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -1913,8 +1913,8 @@ LABEL_16:
         goto LABEL_13;
       }
 
-      v9 = [a3 sinkIO];
-      v10 = [a3 sourceIO];
+      sinkIO = [client sinkIO];
+      sourceIO = [client sourceIO];
       state = self->_state;
       v12 = [(NSMutableArray *)self->_allClients count];
       *buf = 136317186;
@@ -1924,17 +1924,17 @@ LABEL_16:
       v27 = 1024;
       v28 = 813;
       v29 = 2048;
-      v30 = a3;
+      clientCopy = client;
       v31 = 2048;
-      v32 = v9;
+      selfCopy = sinkIO;
       v33 = 2048;
-      v34 = v10;
+      clientCopy2 = sourceIO;
       v35 = 1024;
       *v36 = state;
       *&v36[4] = 1024;
       *&v36[6] = v12;
       *v37 = 2048;
-      *&v37[2] = [a3 spatialToken];
+      *&v37[2] = [client spatialToken];
       v13 = " [%s] %s:%d Adding client[%p] with sinkIO[%p], sourceIO[%p] in current manager state=%d clientCount (before add)=%d spatialToken=%llu";
       v14 = v8;
       v15 = 80;
@@ -1964,8 +1964,8 @@ LABEL_16:
         goto LABEL_13;
       }
 
-      v22 = [a3 sinkIO];
-      v18 = [a3 sourceIO];
+      sinkIO2 = [client sinkIO];
+      sourceIO2 = [client sourceIO];
       v19 = self->_state;
       v20 = [(NSMutableArray *)self->_allClients count];
       *buf = 136317698;
@@ -1975,21 +1975,21 @@ LABEL_16:
       v27 = 1024;
       v28 = 813;
       v29 = 2112;
-      v30 = v6;
+      clientCopy = v6;
       v31 = 2048;
-      v32 = self;
+      selfCopy = self;
       v33 = 2048;
-      v34 = a3;
+      clientCopy2 = client;
       v35 = 2048;
-      *v36 = v22;
+      *v36 = sinkIO2;
       *&v36[8] = 2048;
-      *v37 = v18;
+      *v37 = sourceIO2;
       *&v37[8] = 1024;
       v38 = v19;
       v39 = 1024;
       v40 = v20;
       v41 = 2048;
-      v42 = [a3 spatialToken];
+      spatialToken = [client spatialToken];
       v13 = " [%s] %s:%d %@(%p) Adding client[%p] with sinkIO[%p], sourceIO[%p] in current manager state=%d clientCount (before add)=%d spatialToken=%llu";
       v14 = v17;
       v15 = 100;
@@ -1997,27 +1997,27 @@ LABEL_16:
 
     _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, v13, buf, v15);
 LABEL_13:
-    [(NSMutableArray *)self->_allClients addObject:a3];
-    [VCAudioSmartRoutingManager addClient:a3];
+    [(NSMutableArray *)self->_allClients addObject:client];
+    [VCAudioSmartRoutingManager addClient:client];
   }
 
   return v5 ^ 1;
 }
 
-- (void)waitIdleForClient:(id)a3
+- (void)waitIdleForClient:(id)client
 {
   v38 = *MEMORY[0x1E69E9840];
   if (![VCDefaults BOOLeanValueForKey:@"skipAudioManagerIdleWait" defaultValue:0])
   {
-    if (([a3 direction] & 2) == 0)
+    if (([client direction] & 2) == 0)
     {
       goto LABEL_29;
     }
 
     v6 = dispatch_time(0, 1000000000);
-    if (!dispatch_semaphore_wait(*([a3 sinkIO] + 16), v6))
+    if (!dispatch_semaphore_wait(*([client sinkIO] + 16), v6))
     {
-      dispatch_semaphore_signal(*([a3 sinkIO] + 16));
+      dispatch_semaphore_signal(*([client sinkIO] + 16));
       goto LABEL_29;
     }
 
@@ -2042,9 +2042,9 @@ LABEL_13:
       *&v34[22] = 1024;
       LODWORD(v35) = 832;
       WORD2(v35) = 2048;
-      *(&v35 + 6) = a3;
+      *(&v35 + 6) = client;
       HIWORD(v35) = 2048;
-      v36 = [a3 sinkIO];
+      selfCopy3 = [client sinkIO];
       v18 = " [%s] %s:%d Sink run lock semaphore was not signaled! client=%p sinkIO=%p";
       v19 = v17;
       v20 = 48;
@@ -2083,11 +2083,11 @@ LABEL_13:
       WORD2(v35) = 2112;
       *(&v35 + 6) = v7;
       HIWORD(v35) = 2048;
-      v36 = self;
+      selfCopy3 = self;
       *v37 = 2048;
-      *&v37[2] = a3;
+      *&v37[2] = client;
       *&v37[10] = 2048;
-      *&v37[12] = [a3 sinkIO];
+      *&v37[12] = [client sinkIO];
       v18 = " [%s] %s:%d %@(%p) Sink run lock semaphore was not signaled! client=%p sinkIO=%p";
       v19 = v22;
       v20 = 68;
@@ -2097,15 +2097,15 @@ LABEL_13:
 LABEL_28:
     _VCAudioManager_ProcessEventQueue(&self->_sinkData);
 LABEL_29:
-    if (([a3 direction] & 1) == 0)
+    if (([client direction] & 1) == 0)
     {
       return;
     }
 
     v23 = dispatch_time(0, 1000000000);
-    if (!dispatch_semaphore_wait(*([a3 sourceIO] + 16), v23))
+    if (!dispatch_semaphore_wait(*([client sourceIO] + 16), v23))
     {
-      dispatch_semaphore_signal(*([a3 sourceIO] + 16));
+      dispatch_semaphore_signal(*([client sourceIO] + 16));
       return;
     }
 
@@ -2123,7 +2123,7 @@ LABEL_29:
         goto LABEL_43;
       }
 
-      v27 = [a3 sourceIO];
+      sourceIO = [client sourceIO];
       *v34 = 136316162;
       *&v34[4] = v25;
       *&v34[12] = 2080;
@@ -2131,9 +2131,9 @@ LABEL_29:
       *&v34[22] = 1024;
       LODWORD(v35) = 842;
       WORD2(v35) = 2048;
-      *(&v35 + 6) = a3;
+      *(&v35 + 6) = client;
       HIWORD(v35) = 2048;
-      v36 = v27;
+      selfCopy3 = sourceIO;
       v28 = " [%s] %s:%d Source run lock semaphore was not signaled! client=%p sourceIO=%p";
       v29 = v26;
       v30 = 48;
@@ -2163,7 +2163,7 @@ LABEL_29:
         goto LABEL_43;
       }
 
-      v33 = [a3 sourceIO];
+      sourceIO2 = [client sourceIO];
       *v34 = 136316674;
       *&v34[4] = v31;
       *&v34[12] = 2080;
@@ -2173,11 +2173,11 @@ LABEL_29:
       WORD2(v35) = 2112;
       *(&v35 + 6) = v24;
       HIWORD(v35) = 2048;
-      v36 = self;
+      selfCopy3 = self;
       *v37 = 2048;
-      *&v37[2] = a3;
+      *&v37[2] = client;
       *&v37[10] = 2048;
-      *&v37[12] = v33;
+      *&v37[12] = sourceIO2;
       v28 = " [%s] %s:%d %@(%p) Source run lock semaphore was not signaled! client=%p sourceIO=%p";
       v29 = v32;
       v30 = 68;
@@ -2249,7 +2249,7 @@ LABEL_43:
     WORD2(v35) = 2112;
     *(&v35 + 6) = v5;
     HIWORD(v35) = 2048;
-    v36 = self;
+    selfCopy3 = self;
     *v37 = 2112;
     *&v37[2] = @"skipAudioManagerIdleWait";
     v10 = " [%s] %s:%d %@(%p) %@ set. Skipping idle wait";
@@ -2265,26 +2265,26 @@ LABEL_44:
   _VCAudioManager_ProcessEventQueue(p_sourceData);
 }
 
-- (BOOL)removeClient:(id)a3
+- (BOOL)removeClient:(id)client
 {
   v5 = [(NSMutableArray *)self->_allClients containsObject:?];
   if (v5)
   {
-    if (([a3 direction] & 2) != 0)
+    if (([client direction] & 2) != 0)
     {
-      -[VCAudioManager unregisterClientIO:controllerIO:](self, "unregisterClientIO:controllerIO:", [a3 sinkIO], &self->_sinkData);
+      -[VCAudioManager unregisterClientIO:controllerIO:](self, "unregisterClientIO:controllerIO:", [client sinkIO], &self->_sinkData);
     }
 
-    if ([a3 direction])
+    if ([client direction])
     {
-      -[VCAudioManager unregisterClientIO:controllerIO:](self, "unregisterClientIO:controllerIO:", [a3 sourceIO], &self->_sourceData);
+      -[VCAudioManager unregisterClientIO:controllerIO:](self, "unregisterClientIO:controllerIO:", [client sourceIO], &self->_sourceData);
     }
 
-    [(VCAudioManager *)self waitIdleForClient:a3];
-    [VCAudioSmartRoutingManager removeClient:a3];
-    [(NSMutableArray *)self->_allClients removeObject:a3];
-    [(NSMutableArray *)self->_startingIOClients removeObject:a3];
-    [(VCAudioManager *)self disableSpatialStreamParametersForClient:a3];
+    [(VCAudioManager *)self waitIdleForClient:client];
+    [VCAudioSmartRoutingManager removeClient:client];
+    [(NSMutableArray *)self->_allClients removeObject:client];
+    [(NSMutableArray *)self->_startingIOClients removeObject:client];
+    [(VCAudioManager *)self disableSpatialStreamParametersForClient:client];
   }
 
   return v5;
@@ -2293,7 +2293,7 @@ LABEL_44:
 - (void)_cleanupDeadClients
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -2365,7 +2365,7 @@ LABEL_19:
                 v25 = 2112;
                 v26 = v10;
                 v27 = 2048;
-                v28 = self;
+                selfCopy = self;
                 v29 = 2048;
                 v30 = v9;
                 v13 = v12;
@@ -2376,7 +2376,7 @@ LABEL_19:
             }
           }
 
-          [v3 setObject:v9 atIndexedSubscript:{objc_msgSend(v3, "count")}];
+          [array setObject:v9 atIndexedSubscript:{objc_msgSend(array, "count")}];
           [VCAudioSmartRoutingManager removeClient:v9];
         }
 
@@ -2391,10 +2391,10 @@ LABEL_19:
     while (v18);
   }
 
-  [(NSMutableArray *)self->_allClients removeObjectsInArray:v3];
+  [(NSMutableArray *)self->_allClients removeObjectsInArray:array];
 }
 
-- (unsigned)vpOperationModeForConferenceOperatingMode:(int)a3 deviceRole:(int)a4
+- (unsigned)vpOperationModeForConferenceOperatingMode:(int)mode deviceRole:(int)role
 {
   v23 = *MEMORY[0x1E69E9840];
   if (self->_isGKVoiceChat)
@@ -2403,20 +2403,20 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if (a3 <= 4)
+  if (mode <= 4)
   {
-    if (a3 > 2)
+    if (mode > 2)
     {
-      if (a3 == 3)
+      if (mode == 3)
       {
         v6 = 6;
         goto LABEL_22;
       }
     }
 
-    else if (a3 != 1)
+    else if (mode != 1)
     {
-      if (a4 == 1)
+      if (role == 1)
       {
         v7 = 5;
       }
@@ -2426,7 +2426,7 @@ LABEL_19:
         v7 = 4;
       }
 
-      if (a3 == 2)
+      if (mode == 2)
       {
         v6 = v7;
       }
@@ -2442,9 +2442,9 @@ LABEL_19:
     goto LABEL_16;
   }
 
-  if (a3 <= 6)
+  if (mode <= 6)
   {
-    if (a3 != 5)
+    if (mode != 5)
     {
 LABEL_16:
       v6 = 2;
@@ -2456,14 +2456,14 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if (a3 == 7)
+  if (mode == 7)
   {
     v6 = 8;
     goto LABEL_22;
   }
 
   v6 = 0;
-  if (a3 == 11)
+  if (mode == 11)
   {
     goto LABEL_19;
   }
@@ -2482,9 +2482,9 @@ LABEL_22:
       v15 = 1024;
       v16 = 913;
       v17 = 1024;
-      v18 = a3;
+      modeCopy = mode;
       v19 = 1024;
-      v20 = a4;
+      roleCopy = role;
       v21 = 1024;
       v22 = v6;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d conferenceMode=%d, deviceRole=%d, vpOperatingMode=%d", &v11, 0x2Eu);
@@ -2494,15 +2494,15 @@ LABEL_22:
   return v6;
 }
 
-- (void)computeFormatDescription:(AudioStreamBasicDescription *)a3 withPreferredClient:(id)a4
+- (void)computeFormatDescription:(AudioStreamBasicDescription *)description withPreferredClient:(id)client
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = [a4 clientFormat];
-  v8 = *(v7 + 32);
-  v9 = *(v7 + 16);
-  *&a3->mSampleRate = *v7;
-  *&a3->mBytesPerPacket = v9;
-  *&a3->mBitsPerChannel = v8;
+  clientFormat = [client clientFormat];
+  v8 = *(clientFormat + 32);
+  v9 = *(clientFormat + 16);
+  *&description->mSampleRate = *clientFormat;
+  *&description->mBytesPerPacket = v9;
+  *&description->mBitsPerChannel = v8;
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -2524,7 +2524,7 @@ LABEL_22:
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        if (([a4 deviceRole] != 2 || objc_msgSend(v16, "deviceRole") == 2) && (objc_msgSend(a4, "deviceRole") == 2 || objc_msgSend(v16, "deviceRole") != 2))
+        if (([client deviceRole] != 2 || objc_msgSend(v16, "deviceRole") == 2) && (objc_msgSend(client, "deviceRole") == 2 || objc_msgSend(v16, "deviceRole") != 2))
         {
           v17 = *([v16 clientFormat] + 28);
           if (v17 > v13)
@@ -2545,10 +2545,10 @@ LABEL_22:
     v13 = 0;
   }
 
-  a3->mChannelsPerFrame = v13;
+  description->mChannelsPerFrame = v13;
 }
 
-- (unsigned)computeSamplePerFrameWithPreferredClient:(id)a3 sampleRate:(unsigned int)a4
+- (unsigned)computeSamplePerFrameWithPreferredClient:(id)client sampleRate:(unsigned int)rate
 {
   v23 = *MEMORY[0x1E69E9840];
   v19 = 0u;
@@ -2564,7 +2564,7 @@ LABEL_22:
 
   v8 = v7;
   v9 = *v20;
-  v10 = a4;
+  rateCopy = rate;
   v11 = -1;
   do
   {
@@ -2576,11 +2576,11 @@ LABEL_22:
       }
 
       v13 = *(*(&v19 + 1) + 8 * i);
-      if (([a3 deviceRole] != 2 || objc_msgSend(v13, "deviceRole") == 2) && (objc_msgSend(a3, "deviceRole") == 2 || objc_msgSend(v13, "deviceRole") != 2))
+      if (([client deviceRole] != 2 || objc_msgSend(v13, "deviceRole") == 2) && (objc_msgSend(client, "deviceRole") == 2 || objc_msgSend(v13, "deviceRole") != 2))
       {
-        v14 = [v13 clientFormat];
-        LODWORD(v15) = *(v14 + 40);
-        v16 = vcvtad_u64_f64(v10 * v15 / *v14);
+        clientFormat = [v13 clientFormat];
+        LODWORD(v15) = *(clientFormat + 40);
+        v16 = vcvtad_u64_f64(rateCopy * v15 / *clientFormat);
         if (v11 >= v16)
         {
           v11 = v16;
@@ -2595,7 +2595,7 @@ LABEL_22:
   return v11;
 }
 
-- (BOOL)computeAllowAudioRecordingWithPreferredClient:(id)a3
+- (BOOL)computeAllowAudioRecordingWithPreferredClient:(id)client
 {
   v20 = *MEMORY[0x1E69E9840];
   v16 = 0u;
@@ -2606,13 +2606,13 @@ LABEL_22:
   v5 = [(NSMutableArray *)allClients countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (!v5)
   {
-    v8 = 1;
-    return v8 & 1;
+    allowAudioRecording = 1;
+    return allowAudioRecording & 1;
   }
 
   v6 = v5;
   v7 = *v17;
-  v8 = 1;
+  allowAudioRecording = 1;
   do
   {
     v9 = 0;
@@ -2624,26 +2624,26 @@ LABEL_22:
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
-      if ([a3 deviceRole] != 2 || objc_msgSend(v10, "deviceRole") == 2)
+      if ([client deviceRole] != 2 || objc_msgSend(v10, "deviceRole") == 2)
       {
-        if ([a3 deviceRole] == 2)
+        if ([client deviceRole] == 2)
         {
-          if ((v8 & 1) == 0)
+          if ((allowAudioRecording & 1) == 0)
           {
-            v8 = 0;
+            allowAudioRecording = 0;
             goto LABEL_14;
           }
 
 LABEL_13:
-          v8 = [v10 allowAudioRecording];
+          allowAudioRecording = [v10 allowAudioRecording];
           goto LABEL_14;
         }
 
-        v11 = [v10 deviceRole];
-        if (v11 != 2)
+        deviceRole = [v10 deviceRole];
+        if (deviceRole != 2)
         {
-          v12 = v8 ^ 1;
-          v8 &= v11 == 2;
+          v12 = allowAudioRecording ^ 1;
+          allowAudioRecording &= deviceRole == 2;
           if (v12)
           {
             goto LABEL_14;
@@ -2652,7 +2652,7 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        v8 &= 1u;
+        allowAudioRecording &= 1u;
       }
 
 LABEL_14:
@@ -2665,18 +2665,18 @@ LABEL_14:
   }
 
   while (v13);
-  return v8 & 1;
+  return allowAudioRecording & 1;
 }
 
-- (id)newAudioUnitPropertiesWithPreferredClient:(id)a3
+- (id)newAudioUnitPropertiesWithPreferredClient:(id)client
 {
   v73 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!client)
   {
     return 0;
   }
 
-  if ([a3 isPrewarmingClient] && self->_state >= 2)
+  if ([client isPrewarmingClient] && self->_state >= 2)
   {
     if (objc_opt_class() == self)
     {
@@ -2753,14 +2753,14 @@ LABEL_14:
   }
 
   v6 = objc_alloc_init(VCAudioUnitProperties);
-  v7 = -[VCAudioManager vpOperationModeForConferenceOperatingMode:deviceRole:](self, "vpOperationModeForConferenceOperatingMode:deviceRole:", [a3 operatingMode], objc_msgSend(a3, "deviceRole"));
+  v7 = -[VCAudioManager vpOperationModeForConferenceOperatingMode:deviceRole:](self, "vpOperationModeForConferenceOperatingMode:deviceRole:", [client operatingMode], objc_msgSend(client, "deviceRole"));
   *v50 = -1;
   *&v8 = 0xAAAAAAAAAAAAAAAALL;
   *(&v8 + 1) = 0xAAAAAAAAAAAAAAAALL;
   *&v50[8] = v8;
   *&v50[24] = v8;
-  [(VCAudioManager *)self computeFormatDescription:v50 withPreferredClient:a3];
-  if ([a3 deviceRole] == 2)
+  [(VCAudioManager *)self computeFormatDescription:v50 withPreferredClient:client];
+  if ([client deviceRole] == 2)
   {
     v9 = 2;
   }
@@ -2771,36 +2771,36 @@ LABEL_14:
   }
 
   [(VCAudioUnitProperties *)v6 setAudioUnitType:v9];
-  v10 = [(VCAudioUnitProperties *)v6 frameFormatMic];
+  frameFormatMic = [(VCAudioUnitProperties *)v6 frameFormatMic];
   v11 = *&v50[16];
   v12 = *v50;
-  *(v10 + 32) = *&v50[32];
-  *v10 = v12;
-  *(v10 + 16) = v11;
-  v13 = [(VCAudioManager *)self computeSamplePerFrameWithPreferredClient:a3 sampleRate:*v50];
+  *(frameFormatMic + 32) = *&v50[32];
+  *frameFormatMic = v12;
+  *(frameFormatMic + 16) = v11;
+  v13 = [(VCAudioManager *)self computeSamplePerFrameWithPreferredClient:client sampleRate:*v50];
   *([(VCAudioUnitProperties *)v6 frameFormatMic]+ 40) = v13;
-  [(VCAudioUnitProperties *)v6 setAllowAudioRecording:[(VCAudioManager *)self computeAllowAudioRecordingWithPreferredClient:a3]];
-  -[VCAudioUnitProperties setDeviceRole:](v6, "setDeviceRole:", [a3 deviceRole]);
-  -[VCAudioUnitProperties setOperatingMode:](v6, "setOperatingMode:", [a3 operatingMode]);
+  [(VCAudioUnitProperties *)v6 setAllowAudioRecording:[(VCAudioManager *)self computeAllowAudioRecordingWithPreferredClient:client]];
+  -[VCAudioUnitProperties setDeviceRole:](v6, "setDeviceRole:", [client deviceRole]);
+  -[VCAudioUnitProperties setOperatingMode:](v6, "setOperatingMode:", [client operatingMode]);
   [(VCAudioUnitProperties *)v6 setVpOperatingMode:v7];
-  -[VCAudioUnitProperties setAudioSessionId:](v6, "setAudioSessionId:", [a3 audioSessionId]);
-  if ([a3 isRemoteCodecInfoValid])
+  -[VCAudioUnitProperties setAudioSessionId:](v6, "setAudioSessionId:", [client audioSessionId]);
+  if ([client isRemoteCodecInfoValid])
   {
-    [a3 remoteCodecSampleRate];
+    [client remoteCodecSampleRate];
     [(VCAudioUnitProperties *)v6 setRemoteCodecSampleRate:?];
-    v14 = [a3 remoteCodecType];
+    remoteCodecType = [client remoteCodecType];
   }
 
   else
   {
     [(VCAudioUnitProperties *)v6 setRemoteCodecSampleRate:24000.0];
-    v14 = 0;
+    remoteCodecType = 0;
   }
 
-  [(VCAudioUnitProperties *)v6 setRemoteCodecType:v14];
-  if ([a3 isRemoteVersionInfoValid])
+  [(VCAudioUnitProperties *)v6 setRemoteCodecType:remoteCodecType];
+  if ([client isRemoteVersionInfoValid])
   {
-    [a3 farEndVersionInfo];
+    [client farEndVersionInfo];
     v61 = v70;
     v62 = v71;
     v63 = v72;
@@ -2813,16 +2813,16 @@ LABEL_14:
     [(VCAudioUnitProperties *)v6 setFarEndVersionInfo:buf];
   }
 
-  v15 = [(VCAudioUnitProperties *)v6 frameFormatSpeaker];
-  v16 = [(VCAudioUnitProperties *)v6 frameFormatMic];
-  v18 = *&v16->format.mBytesPerPacket;
-  v17 = *&v16->format.mBitsPerChannel;
-  *&v15->format.mSampleRate = *&v16->format.mSampleRate;
-  *&v15->format.mBytesPerPacket = v18;
-  *&v15->format.mBitsPerChannel = v17;
+  frameFormatSpeaker = [(VCAudioUnitProperties *)v6 frameFormatSpeaker];
+  frameFormatMic2 = [(VCAudioUnitProperties *)v6 frameFormatMic];
+  v18 = *&frameFormatMic2->format.mBytesPerPacket;
+  v17 = *&frameFormatMic2->format.mBitsPerChannel;
+  *&frameFormatSpeaker->format.mSampleRate = *&frameFormatMic2->format.mSampleRate;
+  *&frameFormatSpeaker->format.mBytesPerPacket = v18;
+  *&frameFormatSpeaker->format.mBitsPerChannel = v17;
   if ([(VCAudioUnitProperties *)v6 operatingMode]!= 3 && !self->_isGKVoiceChat)
   {
-    [(VCAudioManager *)self applySessionContextToAudioUnitProperties:v6 preferredClient:a3];
+    [(VCAudioManager *)self applySessionContextToAudioUnitProperties:v6 preferredClient:client];
   }
 
   *&v19 = 0xAAAAAAAAAAAAAAAALL;
@@ -2843,12 +2843,12 @@ LABEL_14:
       v22 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(VCAudioUnitProperties *)v6 audioUnitType];
+        audioUnitType = [(VCAudioUnitProperties *)v6 audioUnitType];
         v24 = FormatToCStr([(VCAudioUnitProperties *)v6 frameFormatMic], __str, 0x40uLL);
         v25 = FormatToCStr([(VCAudioUnitProperties *)v6 frameFormatSpeaker], v51, 0x40uLL);
-        v26 = [(VCAudioUnitProperties *)v6 audioSessionId];
+        audioSessionId = [(VCAudioUnitProperties *)v6 audioSessionId];
         v27 = [(VCAudioUnitProperties *)v6 frameFormatMic][40];
-        v28 = [(VCAudioUnitProperties *)v6 vpOperatingMode];
+        vpOperatingMode = [(VCAudioUnitProperties *)v6 vpOperatingMode];
         *buf = 136317186;
         *&buf[4] = v21;
         *&buf[12] = 2080;
@@ -2856,17 +2856,17 @@ LABEL_14:
         *&buf[22] = 1024;
         *&buf[24] = 1008;
         *&buf[28] = 1024;
-        *&buf[30] = v23;
+        *&buf[30] = audioUnitType;
         *&buf[34] = 2080;
         *&buf[36] = v24;
         *&buf[44] = 2080;
         *&buf[46] = v25;
         *&buf[54] = 1024;
-        *&buf[56] = v26;
+        *&buf[56] = audioSessionId;
         *&buf[60] = 1024;
         *&buf[62] = v27;
         *&buf[66] = 1024;
-        *&buf[68] = v28;
+        *&buf[68] = vpOperatingMode;
         v29 = " [%s] %s:%d Selected audio unit properties: UnitType=%d, micFormat=%s speakerFormat=%s audioSessionId=%u samplesPerFrame=%d VPOperatingMode=%d";
         v30 = v22;
         v31 = 72;
@@ -2894,12 +2894,12 @@ LABEL_29:
       v33 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v49 = [(VCAudioUnitProperties *)v6 audioUnitType];
+        audioUnitType2 = [(VCAudioUnitProperties *)v6 audioUnitType];
         v34 = FormatToCStr([(VCAudioUnitProperties *)v6 frameFormatMic], __str, 0x40uLL);
         v35 = FormatToCStr([(VCAudioUnitProperties *)v6 frameFormatSpeaker], v51, 0x40uLL);
-        v36 = [(VCAudioUnitProperties *)v6 audioSessionId];
+        audioSessionId2 = [(VCAudioUnitProperties *)v6 audioSessionId];
         v37 = [(VCAudioUnitProperties *)v6 frameFormatMic][40];
-        v38 = [(VCAudioUnitProperties *)v6 vpOperatingMode];
+        vpOperatingMode2 = [(VCAudioUnitProperties *)v6 vpOperatingMode];
         *buf = 136317698;
         *&buf[4] = v32;
         *&buf[12] = 2080;
@@ -2911,17 +2911,17 @@ LABEL_29:
         *&buf[38] = 2048;
         *&buf[40] = self;
         *&buf[48] = 1024;
-        *&buf[50] = v49;
+        *&buf[50] = audioUnitType2;
         *&buf[54] = 2080;
         *&buf[56] = v34;
         *&buf[64] = 2080;
         *&buf[66] = v35;
         *&buf[74] = 1024;
-        *&buf[76] = v36;
+        *&buf[76] = audioSessionId2;
         LOWORD(v60) = 1024;
         *(&v60 + 2) = v37;
         WORD3(v60) = 1024;
-        DWORD2(v60) = v38;
+        DWORD2(v60) = vpOperatingMode2;
         v29 = " [%s] %s:%d %@(%p) Selected audio unit properties: UnitType=%d, micFormat=%s speakerFormat=%s audioSessionId=%u samplesPerFrame=%d VPOperatingMode=%d";
         v30 = v33;
         v31 = 92;
@@ -2933,37 +2933,37 @@ LABEL_29:
   return v6;
 }
 
-- (id)newAudioUnitPropertiesForSystemAudioWithPreferredClient:(id)a3 isInput:(BOOL)a4
+- (id)newAudioUnitPropertiesForSystemAudioWithPreferredClient:(id)client isInput:(BOOL)input
 {
   v61 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!client)
   {
     return 0;
   }
 
-  v4 = a4;
+  inputCopy = input;
   v7 = objc_alloc_init(VCAudioUnitProperties);
   *v43 = -1;
   *&v8 = 0xAAAAAAAAAAAAAAAALL;
   *(&v8 + 1) = 0xAAAAAAAAAAAAAAAALL;
   *&v43[8] = v8;
   *&v43[24] = v8;
-  [(VCAudioManager *)self computeFormatDescription:v43 withPreferredClient:a3];
+  [(VCAudioManager *)self computeFormatDescription:v43 withPreferredClient:client];
   [(VCAudioUnitProperties *)v7 setAudioUnitType:1];
-  -[VCAudioUnitProperties setDeviceRole:](v7, "setDeviceRole:", [a3 deviceRole]);
-  -[VCAudioUnitProperties setOperatingMode:](v7, "setOperatingMode:", [a3 operatingMode]);
-  -[VCAudioUnitProperties setAudioSessionId:](v7, "setAudioSessionId:", [a3 audioSessionId]);
-  -[VCAudioUnitProperties setProcessIdentifiersForAudioTap:](v7, "setProcessIdentifiersForAudioTap:", [a3 processIdentifiersForAudioTap]);
-  -[VCAudioUnitProperties setMuteBehaviorForAudioTap:](v7, "setMuteBehaviorForAudioTap:", [a3 muteBehaviorForAudioTap]);
-  if (v4)
+  -[VCAudioUnitProperties setDeviceRole:](v7, "setDeviceRole:", [client deviceRole]);
+  -[VCAudioUnitProperties setOperatingMode:](v7, "setOperatingMode:", [client operatingMode]);
+  -[VCAudioUnitProperties setAudioSessionId:](v7, "setAudioSessionId:", [client audioSessionId]);
+  -[VCAudioUnitProperties setProcessIdentifiersForAudioTap:](v7, "setProcessIdentifiersForAudioTap:", [client processIdentifiersForAudioTap]);
+  -[VCAudioUnitProperties setMuteBehaviorForAudioTap:](v7, "setMuteBehaviorForAudioTap:", [client muteBehaviorForAudioTap]);
+  if (inputCopy)
   {
-    v9 = [(VCAudioUnitProperties *)v7 frameFormatMic];
+    frameFormatMic = [(VCAudioUnitProperties *)v7 frameFormatMic];
     v10 = *&v43[16];
     v11 = *v43;
-    *(v9 + 32) = *&v43[32];
-    *v9 = v11;
-    *(v9 + 16) = v10;
-    v12 = [(VCAudioManager *)self computeSamplePerFrameWithPreferredClient:a3 sampleRate:*v43];
+    *(frameFormatMic + 32) = *&v43[32];
+    *frameFormatMic = v11;
+    *(frameFormatMic + 16) = v10;
+    v12 = [(VCAudioManager *)self computeSamplePerFrameWithPreferredClient:client sampleRate:*v43];
     *([(VCAudioUnitProperties *)v7 frameFormatMic]+ 40) = v12;
     *&v13 = 0xAAAAAAAAAAAAAAAALL;
     *(&v13 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -2989,7 +2989,7 @@ LABEL_29:
         v34 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [(VCAudioUnitProperties *)v7 audioUnitType];
+          audioUnitType = [(VCAudioUnitProperties *)v7 audioUnitType];
           v36 = FormatToCStr([(VCAudioUnitProperties *)v7 frameFormatMic], __str, 0x40uLL);
           v37 = [(VCAudioUnitProperties *)v7 frameFormatMic][40];
           *buf = 136316930;
@@ -3003,7 +3003,7 @@ LABEL_29:
           *&v51[8] = 2048;
           *&v51[10] = self;
           *&v51[18] = 1024;
-          v52 = v35;
+          v52 = audioUnitType;
           v53 = 2080;
           v54 = v36;
           v55 = 1024;
@@ -3031,7 +3031,7 @@ LABEL_25:
       return v7;
     }
 
-    v23 = [(VCAudioUnitProperties *)v7 audioUnitType];
+    audioUnitType2 = [(VCAudioUnitProperties *)v7 audioUnitType];
     v24 = FormatToCStr([(VCAudioUnitProperties *)v7 frameFormatMic], __str, 0x40uLL);
     v25 = [(VCAudioUnitProperties *)v7 frameFormatMic][40];
     *buf = 136316418;
@@ -3041,7 +3041,7 @@ LABEL_25:
     v48 = 1024;
     v49 = 1035;
     v50 = 1024;
-    *v51 = v23;
+    *v51 = audioUnitType2;
     *&v51[4] = 2080;
     *&v51[6] = v24;
     *&v51[14] = 1024;
@@ -3055,13 +3055,13 @@ LABEL_26:
     return v7;
   }
 
-  v15 = [(VCAudioUnitProperties *)v7 frameFormatSpeaker];
+  frameFormatSpeaker = [(VCAudioUnitProperties *)v7 frameFormatSpeaker];
   v16 = *&v43[16];
   v17 = *v43;
-  *(v15 + 32) = *&v43[32];
-  *v15 = v17;
-  *(v15 + 16) = v16;
-  v18 = [(VCAudioManager *)self computeSamplePerFrameWithPreferredClient:a3 sampleRate:*v43];
+  *(frameFormatSpeaker + 32) = *&v43[32];
+  *frameFormatSpeaker = v17;
+  *(frameFormatSpeaker + 16) = v16;
+  v18 = [(VCAudioManager *)self computeSamplePerFrameWithPreferredClient:client sampleRate:*v43];
   *([(VCAudioUnitProperties *)v7 frameFormatSpeaker]+ 40) = v18;
   *&v19 = 0xAAAAAAAAAAAAAAAALL;
   *(&v19 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -3083,7 +3083,7 @@ LABEL_26:
       return v7;
     }
 
-    v28 = [(VCAudioUnitProperties *)v7 audioUnitType];
+    audioUnitType3 = [(VCAudioUnitProperties *)v7 audioUnitType];
     v29 = FormatToCStr([(VCAudioUnitProperties *)v7 frameFormatSpeaker], __str, 0x40uLL);
     v30 = [(VCAudioUnitProperties *)v7 frameFormatSpeaker][40];
     *buf = 136316418;
@@ -3093,7 +3093,7 @@ LABEL_26:
     v48 = 1024;
     v49 = 1040;
     v50 = 1024;
-    *v51 = v28;
+    *v51 = audioUnitType3;
     *&v51[4] = 2080;
     *&v51[6] = v29;
     *&v51[14] = 1024;
@@ -3118,7 +3118,7 @@ LABEL_26:
     v34 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [(VCAudioUnitProperties *)v7 audioUnitType];
+      audioUnitType4 = [(VCAudioUnitProperties *)v7 audioUnitType];
       v40 = FormatToCStr([(VCAudioUnitProperties *)v7 frameFormatSpeaker], __str, 0x40uLL);
       v41 = [(VCAudioUnitProperties *)v7 frameFormatSpeaker][40];
       *buf = 136316930;
@@ -3132,7 +3132,7 @@ LABEL_26:
       *&v51[8] = 2048;
       *&v51[10] = self;
       *&v51[18] = 1024;
-      v52 = v39;
+      v52 = audioUnitType4;
       v53 = 2080;
       v54 = v40;
       v55 = 1024;
@@ -3145,28 +3145,28 @@ LABEL_26:
   return v7;
 }
 
-- (id)newAudioSessionMediaPropertiesForSystemAudioWithPreferredClient:(id)a3 audioUnitProperties:(id)a4 isInput:(BOOL)a5
+- (id)newAudioSessionMediaPropertiesForSystemAudioWithPreferredClient:(id)client audioUnitProperties:(id)properties isInput:(BOOL)input
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!properties)
   {
     return 0;
   }
 
-  v5 = a5;
+  inputCopy = input;
   v9 = objc_alloc_init(VCAudioSessionMediaProperties);
-  v10 = *([a4 frameFormatSpeaker] + 28);
-  if (v5)
+  v10 = *([properties frameFormatSpeaker] + 28);
+  if (inputCopy)
   {
-    v11 = [a4 frameFormatMic];
+    frameFormatMic = [properties frameFormatMic];
   }
 
   else
   {
-    v11 = [a4 frameFormatSpeaker];
+    frameFormatMic = [properties frameFormatSpeaker];
   }
 
-  if (*v11 == 48000)
+  if (*frameFormatMic == 48000)
   {
     v12 = 48000;
   }
@@ -3177,22 +3177,22 @@ LABEL_26:
   }
 
   IntValueForKey = VCDefaults_GetIntValueForKey(@"forceAudioSampleRate", v12);
-  if (v5)
+  if (inputCopy)
   {
-    v14 = *([a4 frameFormatMic] + 40);
-    v15 = [a4 frameFormatMic];
+    v14 = *([properties frameFormatMic] + 40);
+    frameFormatMic2 = [properties frameFormatMic];
   }
 
   else
   {
-    v14 = *([a4 frameFormatSpeaker] + 40);
-    v15 = [a4 frameFormatSpeaker];
+    v14 = *([properties frameFormatSpeaker] + 40);
+    frameFormatMic2 = [properties frameFormatSpeaker];
   }
 
-  v16 = v14 / *v15;
+  v16 = v14 / *frameFormatMic2;
   [(VCAudioSessionMediaProperties *)v9 setPreferredSampleRate:IntValueForKey];
   [(VCAudioSessionMediaProperties *)v9 setPreferredBlockSize:v16];
-  -[VCAudioSessionMediaProperties setOperatingMode:](v9, "setOperatingMode:", [a3 operatingMode]);
+  -[VCAudioSessionMediaProperties setOperatingMode:](v9, "setOperatingMode:", [client operatingMode]);
   *v28 = IntValueForKey;
   *&v28[8] = 0x296C70636DLL;
   *&v28[16] = 4 * (v10 & 0x7FFFFFF);
@@ -3209,7 +3209,7 @@ LABEL_26:
   *v30 = v10;
   *&v30[4] = 32;
   [(VCAudioSessionMediaProperties *)v9 setOutputFormat:v28];
-  -[VCAudioSessionMediaProperties setProcessId:](v9, "setProcessId:", [a3 clientPid]);
+  -[VCAudioSessionMediaProperties setProcessId:](v9, "setProcessId:", [client clientPid]);
   [(VCAudioSessionMediaProperties *)v9 setSessionActive:1];
   if (objc_opt_class() == self)
   {
@@ -3265,7 +3265,7 @@ LABEL_22:
         *v30 = 2112;
         *&v30[2] = v17;
         *&v30[10] = 2048;
-        v31 = self;
+        selfCopy = self;
         v32 = 2112;
         v33 = v26;
         v21 = " [%s] %s:%d %@(%p) System audio session media properties: %@";
@@ -3279,7 +3279,7 @@ LABEL_22:
   return v9;
 }
 
-+ (AudioStreamBasicDescription)sessionFormatForSampleRate:(SEL)a3
++ (AudioStreamBasicDescription)sessionFormatForSampleRate:(SEL)rate
 {
   retstr->mSampleRate = a4;
   *&retstr->mFormatID = xmmword_1DBD453C0;
@@ -3287,11 +3287,11 @@ LABEL_22:
   return result;
 }
 
-- (id)newAudioSessionMediaPropertiesWithPreferredClient:(id)a3 audioUnitProperties:(id)a4
+- (id)newAudioSessionMediaPropertiesWithPreferredClient:(id)client audioUnitProperties:(id)properties
 {
   v59 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(VCAudioSessionMediaProperties);
-  if ([a3 isPrewarmingClient] && self->_state >= 2)
+  if ([client isPrewarmingClient] && self->_state >= 2)
   {
 
     if (objc_opt_class() == self)
@@ -3356,7 +3356,7 @@ LABEL_22:
       *&buf[28] = 2112;
       *&buf[30] = v8;
       *&buf[38] = 2048;
-      v56 = self;
+      selfCopy3 = self;
       v57 = 2112;
       v58 = v28;
       v17 = " [%s] %s:%d %@(%p) Last client is prewarming, ignore its settings. Use _currentAudioSessionMediaProperties=%@";
@@ -3368,14 +3368,14 @@ LABEL_22:
     return self->_currentAudioSessionMediaProperties;
   }
 
-  v9 = -[VCAudioManager vpOperationModeForConferenceOperatingMode:deviceRole:](self, "vpOperationModeForConferenceOperatingMode:deviceRole:", [a3 operatingMode], objc_msgSend(a3, "deviceRole"));
+  v9 = -[VCAudioManager vpOperationModeForConferenceOperatingMode:deviceRole:](self, "vpOperationModeForConferenceOperatingMode:deviceRole:", [client operatingMode], objc_msgSend(client, "deviceRole"));
   v10 = -[NSDictionary objectForKeyedSubscript:](self->_vpOperatingModeToAudioSessionMediaFormatMapping, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v9]);
-  [v10 setOperatingMode:{objc_msgSend(a3, "operatingMode")}];
+  [v10 setOperatingMode:{objc_msgSend(client, "operatingMode")}];
   [v10 preferredSampleRate];
   v12 = v11;
-  if (a4 && v11 == 0.0)
+  if (properties && v11 == 0.0)
   {
-    if (*[a4 frameFormatSpeaker] == 0.0)
+    if (*[properties frameFormatSpeaker] == 0.0)
     {
       goto LABEL_32;
     }
@@ -3394,7 +3394,7 @@ LABEL_22:
         goto LABEL_31;
       }
 
-      v22 = *[a4 frameFormatSpeaker];
+      v22 = *[properties frameFormatSpeaker];
       *buf = 136315906;
       *&buf[4] = v20;
       *&buf[12] = 2080;
@@ -3432,7 +3432,7 @@ LABEL_22:
         goto LABEL_31;
       }
 
-      v31 = *[a4 frameFormatSpeaker];
+      v31 = *[properties frameFormatSpeaker];
       *buf = 136316418;
       *&buf[4] = v29;
       *&buf[12] = 2080;
@@ -3442,7 +3442,7 @@ LABEL_22:
       *&buf[28] = 2112;
       *&buf[30] = v13;
       *&buf[38] = 2048;
-      v56 = self;
+      selfCopy3 = self;
       v57 = 2048;
       v58 = v31;
       v23 = " [%s] %s:%d %@(%p) Override sampleRate=%f from audioUnitProperties, due to vpOperatingModeToAudioSessionMediaFormatMapping unavailability";
@@ -3452,19 +3452,19 @@ LABEL_22:
 
     _os_log_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_DEFAULT, v23, buf, v25);
 LABEL_31:
-    v12 = *[a4 frameFormatSpeaker];
+    v12 = *[properties frameFormatSpeaker];
     goto LABEL_32;
   }
 
-  if (!a4)
+  if (!properties)
   {
     goto LABEL_33;
   }
 
 LABEL_32:
-  v32 = [a4 frameFormatSpeaker];
+  frameFormatSpeaker = [properties frameFormatSpeaker];
   v33 = 48000.0;
-  if (*v32 != 48000.0)
+  if (*frameFormatSpeaker != 48000.0)
   {
 LABEL_33:
     v33 = v12;
@@ -3478,10 +3478,10 @@ LABEL_33:
   [VCAudioManager sessionFormatForSampleRate:v33];
   [v10 preferredBlockSize];
   DoubleValueForKey = VCDefaults_GetDoubleValueForKey(@"forceAudioBlockSize", v35);
-  if (a4)
+  if (properties)
   {
-    LODWORD(v37) = *([a4 frameFormatSpeaker] + 40);
-    v38 = v37 / *[a4 frameFormatSpeaker];
+    LODWORD(v37) = *([properties frameFormatSpeaker] + 40);
+    v38 = v37 / *[properties frameFormatSpeaker];
     if (DoubleValueForKey >= v38 || DoubleValueForKey == 0.0)
     {
       DoubleValueForKey = v38;
@@ -3496,9 +3496,9 @@ LABEL_33:
   *&buf[16] = *&v54[16];
   *&buf[32] = *&v54[32];
   [(VCAudioSessionMediaProperties *)v7 setInputFormat:buf];
-  if (a4)
+  if (properties)
   {
-    v40 = *([a4 frameFormatSpeaker] + 28);
+    v40 = *([properties frameFormatSpeaker] + 28);
   }
 
   else
@@ -3511,7 +3511,7 @@ LABEL_33:
   *&buf[16] = *&v54[16];
   *&buf[32] = *&v54[32];
   [(VCAudioSessionMediaProperties *)v7 setOutputFormat:buf];
-  -[VCAudioSessionMediaProperties setProcessId:](v7, "setProcessId:", [a3 clientPid]);
+  -[VCAudioSessionMediaProperties setProcessId:](v7, "setProcessId:", [client clientPid]);
   if (self->_isGKVoiceChat)
   {
     v41 = 0;
@@ -3519,13 +3519,13 @@ LABEL_33:
 
   else
   {
-    v41 = !self->_isInDaemon || [a3 deviceRole] != 2;
+    v41 = !self->_isInDaemon || [client deviceRole] != 2;
   }
 
   [(VCAudioSessionMediaProperties *)v7 setSessionActive:v41];
   v42 = self->_useOptimizedHandoversForTelephony && [v10 operatingMode] == 3;
   [(VCAudioSessionMediaProperties *)v7 setAudioClockDeviceEnabled:v42];
-  -[VCAudioSessionMediaProperties setNetworkUplinkClockUsesBaseband:](v7, "setNetworkUplinkClockUsesBaseband:", [a3 networkUplinkClockUsesBaseband]);
+  -[VCAudioSessionMediaProperties setNetworkUplinkClockUsesBaseband:](v7, "setNetworkUplinkClockUsesBaseband:", [client networkUplinkClockUsesBaseband]);
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -3580,7 +3580,7 @@ LABEL_62:
         *&buf[28] = 2112;
         *&buf[30] = v43;
         *&buf[38] = 2048;
-        v56 = self;
+        selfCopy3 = self;
         v57 = 2112;
         v58 = v52;
         v47 = " [%s] %s:%d %@(%p) Selected audio session media properties: %@";
@@ -3602,16 +3602,16 @@ LABEL_62:
   return v3;
 }
 
-- (void)setCurrentInputDeviceInternal:(id)a3
+- (void)setCurrentInputDeviceInternal:(id)internal
 {
   pthread_mutex_lock(&self->_inputDeviceMutex);
 
-  self->_inputDevice = a3;
+  self->_inputDevice = internal;
 
   pthread_mutex_unlock(&self->_inputDeviceMutex);
 }
 
-- (void)updateCurrentInputDevice:(id)a3
+- (void)updateCurrentInputDevice:(id)device
 {
   block[6] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -3619,7 +3619,7 @@ LABEL_62:
   block[1] = 3221225472;
   block[2] = __43__VCAudioManager_updateCurrentInputDevice___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = device;
   block[5] = self;
   dispatch_async(dispatchQueue, block);
 }
@@ -3727,7 +3727,7 @@ uint64_t __43__VCAudioManager_updateCurrentInputDevice___block_invoke(uint64_t a
   return result;
 }
 
-- (void)setCurrentInputDevice:(id)a3
+- (void)setCurrentInputDevice:(id)device
 {
   block[6] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -3736,7 +3736,7 @@ uint64_t __43__VCAudioManager_updateCurrentInputDevice___block_invoke(uint64_t a
   block[2] = __40__VCAudioManager_setCurrentInputDevice___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = device;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -4064,16 +4064,16 @@ LABEL_16:
   return v3;
 }
 
-- (void)setCurrentOutputDeviceInternal:(id)a3
+- (void)setCurrentOutputDeviceInternal:(id)internal
 {
   pthread_mutex_lock(&self->_outputDeviceMutex);
 
-  self->_outputDevice = a3;
+  self->_outputDevice = internal;
 
   pthread_mutex_unlock(&self->_outputDeviceMutex);
 }
 
-- (void)setCurrentOutputDevice:(id)a3
+- (void)setCurrentOutputDevice:(id)device
 {
   block[6] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -4082,7 +4082,7 @@ LABEL_16:
   block[2] = __41__VCAudioManager_setCurrentOutputDevice___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = device;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -4402,7 +4402,7 @@ LABEL_16:
   }
 }
 
-- (void)updateCurrentOutputDevice:(id)a3
+- (void)updateCurrentOutputDevice:(id)device
 {
   block[6] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -4410,7 +4410,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __44__VCAudioManager_updateCurrentOutputDevice___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = device;
   block[5] = self;
   dispatch_async(dispatchQueue, block);
 }
@@ -4518,7 +4518,7 @@ uint64_t __44__VCAudioManager_updateCurrentOutputDevice___block_invoke(uint64_t 
   return result;
 }
 
-- (void)setMediaPlaybackOnExternalDevice:(BOOL)a3
+- (void)setMediaPlaybackOnExternalDevice:(BOOL)device
 {
   v6 = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -4527,11 +4527,11 @@ uint64_t __44__VCAudioManager_updateCurrentOutputDevice___block_invoke(uint64_t 
   block[2] = __51__VCAudioManager_setMediaPlaybackOnExternalDevice___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  deviceCopy = device;
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)startAUIOWithProperties:(id)a3
+- (BOOL)startAUIOWithProperties:(id)properties
 {
   v114 = *MEMORY[0x1E69E9840];
   if (self->_hAUIO == 0xFFFFFFFFLL)
@@ -4545,12 +4545,12 @@ uint64_t __44__VCAudioManager_updateCurrentOutputDevice___block_invoke(uint64_t 
       v7 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(VCObject *)self logPrefix];
-        v9 = [a3 audioSessionId];
-        v10 = [a3 operatingMode];
-        v11 = [a3 deviceRole];
-        v12 = FourccToCStr([a3 remoteCodecType]);
-        [a3 remoteCodecSampleRate];
+        logPrefix = [(VCObject *)self logPrefix];
+        audioSessionId = [properties audioSessionId];
+        operatingMode = [properties operatingMode];
+        deviceRole = [properties deviceRole];
+        v12 = FourccToCStr([properties remoteCodecType]);
+        [properties remoteCodecSampleRate];
         isMicrophoneMuted = self->_isMicrophoneMuted;
         *buf = 136317698;
         v95 = v6;
@@ -4561,13 +4561,13 @@ uint64_t __44__VCAudioManager_updateCurrentOutputDevice___block_invoke(uint64_t 
         v100 = 2048;
         *v101 = self;
         *&v101[8] = 2112;
-        *v102 = v8;
+        *v102 = logPrefix;
         *&v102[8] = 1024;
-        v103 = v9;
+        v103 = audioSessionId;
         v104 = 1024;
-        v105 = v10;
+        v105 = operatingMode;
         v106 = 1024;
-        v107 = v11;
+        v107 = deviceRole;
         v108 = 2080;
         v109 = v12;
         v110 = 2048;
@@ -4578,7 +4578,7 @@ uint64_t __44__VCAudioManager_updateCurrentOutputDevice___block_invoke(uint64_t 
       }
     }
 
-    [(VCAudioManager *)self startVADWithAudioUnitProperties:a3];
+    [(VCAudioManager *)self startVADWithAudioUnitProperties:properties];
     isGKVoiceChat = self->_isGKVoiceChat;
     v83 = 0xFFFFFFFFLL;
     v16 = 0x1ECC67000uLL;
@@ -4592,7 +4592,7 @@ uint64_t __44__VCAudioManager_updateCurrentOutputDevice___block_invoke(uint64_t 
     {
       if (!self->_playbackMode)
       {
-        v23 = VCAudioLimiter_Allocate([a3 frameFormatMic]);
+        v23 = VCAudioLimiter_Allocate([properties frameFormatMic]);
         v20 = 472;
         self->_sourceData.audioLimiter = v23;
         if (v23)
@@ -4602,7 +4602,7 @@ uint64_t __44__VCAudioManager_updateCurrentOutputDevice___block_invoke(uint64_t 
             v78 = 1;
 LABEL_21:
             audioSessionId = self->_sourceData.audioSessionId;
-            if (audioSessionId == [a3 audioSessionId])
+            if (audioSessionId == [properties audioSessionId])
             {
               goto LABEL_36;
             }
@@ -4615,7 +4615,7 @@ LABEL_21:
                 v25 = *MEMORY[0x1E6986650];
                 if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
                 {
-                  v26 = [a3 audioSessionId];
+                  audioSessionId2 = [properties audioSessionId];
                   v27 = self->_sourceData.audioSessionId;
                   *buf = 136316162;
                   v95 = v24;
@@ -4624,7 +4624,7 @@ LABEL_21:
                   v98 = 1024;
                   v99 = 1339;
                   v100 = 1024;
-                  *v101 = v26;
+                  *v101 = audioSessionId2;
                   *&v101[4] = 1024;
                   *&v101[6] = v27;
                   v28 = " [%s] %s:%d New active audioSessionId=%u previousAudioSessionID=%u";
@@ -4654,7 +4654,7 @@ LABEL_35:
                 v32 = *MEMORY[0x1E6986650];
                 if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
                 {
-                  v33 = [a3 audioSessionId];
+                  audioSessionId3 = [properties audioSessionId];
                   v34 = self->_sourceData.audioSessionId;
                   *buf = 136316674;
                   v95 = v31;
@@ -4667,7 +4667,7 @@ LABEL_35:
                   *&v101[8] = 2048;
                   *v102 = self;
                   *&v102[8] = 1024;
-                  v103 = v33;
+                  v103 = audioSessionId3;
                   v104 = 1024;
                   v105 = v34;
                   v28 = " [%s] %s:%d %@(%p) New active audioSessionId=%u previousAudioSessionID=%u";
@@ -4679,40 +4679,40 @@ LABEL_35:
             }
 
 LABEL_36:
-            v35 = [a3 audioSessionId];
-            self->_sourceData.audioSessionId = v35;
-            self->_sinkData.audioSessionId = v35;
+            audioSessionId4 = [properties audioSessionId];
+            self->_sourceData.audioSessionId = audioSessionId4;
+            self->_sinkData.audioSessionId = audioSessionId4;
             memset(&v82[3], 170, 64);
             v81 = xmmword_1DBD45420;
             memset(v82, 170, 48);
             v80[0] = xmmword_1DBD453E0;
             memset(&v80[1], 170, 48);
-            v36 = [a3 frameFormatSpeaker];
-            v38 = v36[1];
-            v37 = v36[2];
-            v80[0] = *v36;
+            frameFormatSpeaker = [properties frameFormatSpeaker];
+            v38 = frameFormatSpeaker[1];
+            v37 = frameFormatSpeaker[2];
+            v80[0] = *frameFormatSpeaker;
             v80[1] = v38;
             v80[2] = v37;
             *&v80[3] = &self->_sourceData;
             *(&v80[3] + 1) = VCAudioManager_PullAudioSamples;
-            v39 = [a3 frameFormatMic];
-            v41 = v39[1];
-            v40 = v39[2];
-            v81 = *v39;
+            frameFormatMic = [properties frameFormatMic];
+            v41 = frameFormatMic[1];
+            v40 = frameFormatMic[2];
+            v81 = *frameFormatMic;
             v82[0] = v41;
             v82[1] = v40;
             *&v82[2] = &self->_sinkData;
             *(&v82[2] + 1) = VCAudioManager_PushAudioSamples;
             *&v82[3] = VCAudioManager_ErrorProc;
             BYTE8(v82[3]) = !self->_isGKVoiceChat;
-            BYTE9(v82[3]) = [a3 audioUnitType] == 2;
-            BYTE10(v82[3]) = [VCAudioManager audioIOTypeWithAudioUnitProperties:a3 shouldEnableAudioInput:[(VCAudioManager *)self isSystemAudioOutputPlaybackMode]^ 1];
+            BYTE9(v82[3]) = [properties audioUnitType] == 2;
+            BYTE10(v82[3]) = [VCAudioManager audioIOTypeWithAudioUnitProperties:properties shouldEnableAudioInput:[(VCAudioManager *)self isSystemAudioOutputPlaybackMode]^ 1];
             *&v82[4] = self->_audioSession;
             *(&v82[4] + 1) = self;
             *&v82[5] = VCAudioManager_InputDeviceSelectionCallback;
             *(&v82[5] + 1) = VCAudioManager_OutputDeviceSelectionCallback;
-            *&v82[6] = [a3 processIdentifiersForAudioTap];
-            *(&v82[6] + 1) = [a3 muteBehaviorForAudioTap];
+            *&v82[6] = [properties processIdentifiersForAudioTap];
+            *(&v82[6] + 1) = [properties muteBehaviorForAudioTap];
             if ([(VCAudioManager *)self isSystemAudioOutputPlaybackMode])
             {
               v42 = &v82[2];
@@ -4742,7 +4742,7 @@ LABEL_41:
                 v67 = *MEMORY[0x1E6986650];
                 if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
                 {
-                  v68 = [a3 audioSessionId];
+                  audioSessionId5 = [properties audioSessionId];
                   *buf = 136316418;
                   v95 = v66;
                   v96 = 2080;
@@ -4752,7 +4752,7 @@ LABEL_41:
                   v100 = 1024;
                   *v101 = 1373;
                   *&v101[4] = 1024;
-                  *&v101[6] = v68;
+                  *&v101[6] = audioSessionId5;
                   *v102 = 1024;
                   *&v102[2] = v65;
                   _os_log_error_impl(&dword_1DB56E000, v67, OS_LOG_TYPE_ERROR, " [%s] %s:%d /Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCAudioManager.m:%d: CMSession:[%u] AUIOCreateHandle failed(%X)", buf, 0x2Eu);
@@ -4788,9 +4788,9 @@ LABEL_41:
               v88 = v44;
               v85 = v44;
               v86 = v44;
-              if (a3)
+              if (properties)
               {
-                [a3 farEndVersionInfo];
+                [properties farEndVersionInfo];
               }
 
               else
@@ -4807,9 +4807,9 @@ LABEL_41:
               }
 
               v45 = v83;
-              v46 = [a3 frameFormatMic];
-              v47 = [a3 frameFormatSpeaker];
-              if ([a3 isFarEndVersionInfoValid])
+              frameFormatMic2 = [properties frameFormatMic];
+              frameFormatSpeaker2 = [properties frameFormatSpeaker];
+              if ([properties isFarEndVersionInfoValid])
               {
                 v48 = &v85;
               }
@@ -4819,13 +4819,13 @@ LABEL_41:
                 v48 = 0;
               }
 
-              v49 = [a3 allowAudioRecording];
-              v50 = [a3 vpOperatingMode];
-              v51 = [a3 vpEnableSpatialChat];
-              v52 = [a3 remoteCodecType];
-              [a3 remoteCodecSampleRate];
+              allowAudioRecording = [properties allowAudioRecording];
+              vpOperatingMode = [properties vpOperatingMode];
+              vpEnableSpatialChat = [properties vpEnableSpatialChat];
+              remoteCodecType = [properties remoteCodecType];
+              [properties remoteCodecSampleRate];
               spatialStreamDescriptions = self->_spatialStreamDescriptions;
-              v54 = AUIOSetupFormats(v53, v45, v46, v47, v48, v49, v50, v51, v52);
+              v54 = AUIOSetupFormats(v53, v45, frameFormatMic2, frameFormatSpeaker2, v48, allowAudioRecording, vpOperatingMode, vpEnableSpatialChat, remoteCodecType);
               if (v54 < 0)
               {
                 v69 = v54;
@@ -4845,12 +4845,12 @@ LABEL_41:
                 {
                   if (objc_opt_respondsToSelector())
                   {
-                    v70 = [(VCAudioManager *)self performSelector:sel_logPrefix, spatialStreamDescriptions];
+                    spatialStreamDescriptions = [(VCAudioManager *)self performSelector:sel_logPrefix, spatialStreamDescriptions];
                   }
 
                   else
                   {
-                    v70 = &stru_1F570E008;
+                    spatialStreamDescriptions = &stru_1F570E008;
                   }
 
                   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -4866,7 +4866,7 @@ LABEL_41:
                       v98 = 1024;
                       v99 = 1387;
                       v100 = 2112;
-                      *v101 = v70;
+                      *v101 = spatialStreamDescriptions;
                       *&v101[8] = 2048;
                       *v102 = self;
                       *&v102[8] = 1024;
@@ -4879,10 +4879,10 @@ LABEL_41:
 
               else
               {
-                v55 = [(VCAudioManager *)self registerForMutedTalkerNotificationWithAUIO:v83, spatialStreamDescriptions];
-                if (v55 < 0)
+                spatialStreamDescriptions2 = [(VCAudioManager *)self registerForMutedTalkerNotificationWithAUIO:v83, spatialStreamDescriptions];
+                if (spatialStreamDescriptions2 < 0)
                 {
-                  v61 = v55;
+                  v61 = spatialStreamDescriptions2;
                   if (objc_opt_class() == self)
                   {
                     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -4932,7 +4932,7 @@ LABEL_41:
                 }
 
                 self->_hAUIO = v83;
-                [(VCAudioManager *)self setupSpatialContextWithAudioUnitProperties:a3 forceUpdate:1];
+                [(VCAudioManager *)self setupSpatialContextWithAudioUnitProperties:properties forceUpdate:1];
                 [(VCAudioManager *)self applyAudioSessionMute];
                 v56 = AUIOStart(v83);
                 if ((v56 & 0x80000000) == 0)
@@ -4951,7 +4951,7 @@ LABEL_41:
                   v73 = *MEMORY[0x1E6986650];
                   if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
                   {
-                    v74 = [a3 audioSessionId];
+                    audioSessionId6 = [properties audioSessionId];
                     *buf = 136316418;
                     v95 = v72;
                     v96 = 2080;
@@ -4961,7 +4961,7 @@ LABEL_41:
                     v100 = 1024;
                     *v101 = 1410;
                     *&v101[4] = 1024;
-                    *&v101[6] = v74;
+                    *&v101[6] = audioSessionId6;
                     *v102 = 2048;
                     *&v102[2] = v71;
                     _os_log_error_impl(&dword_1DB56E000, v73, OS_LOG_TYPE_ERROR, " [%s] %s:%d /Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCAudioManager.m:%d: [CMSession]:%u AUIOStart failed(%08lX)", buf, 0x32u);
@@ -4998,7 +4998,7 @@ LABEL_58:
               v58 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
               {
-                v59 = [(VCObject *)self logPrefix];
+                logPrefix2 = [(VCObject *)self logPrefix];
                 *buf = 136316162;
                 v95 = v57;
                 v96 = 2080;
@@ -5008,7 +5008,7 @@ LABEL_58:
                 v100 = 2048;
                 *v101 = self;
                 *&v101[8] = 2112;
-                *v102 = v59;
+                *v102 = logPrefix2;
                 _os_log_impl(&dword_1DB56E000, v58, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioManager-startAUIOWithProperties (%p) %@ startAudioIO is completed", buf, 0x30u);
               }
             }
@@ -5087,12 +5087,12 @@ LABEL_61:
   return 0;
 }
 
-+ (unsigned)audioIOTypeWithAudioUnitProperties:(id)a3 shouldEnableAudioInput:(BOOL)a4
++ (unsigned)audioIOTypeWithAudioUnitProperties:(id)properties shouldEnableAudioInput:(BOOL)input
 {
-  v4 = a4;
+  inputCopy = input;
   if (+[VCHardwareSettings deviceClass]== 8)
   {
-    if ([a3 operatingMode] == 12)
+    if ([properties operatingMode] == 12)
     {
       return 2;
     }
@@ -5103,14 +5103,14 @@ LABEL_61:
     }
   }
 
-  else if (v4)
+  else if (inputCopy)
   {
-    if ([a3 operatingMode] == 12)
+    if ([properties operatingMode] == 12)
     {
       return 1;
     }
 
-    else if ([a3 audioUnitType] == 2)
+    else if ([properties audioUnitType] == 2)
     {
       return 3;
     }
@@ -5127,35 +5127,35 @@ LABEL_61:
   }
 }
 
-- (BOOL)shouldResetAudioUnitWithProperties:(id)a3
+- (BOOL)shouldResetAudioUnitWithProperties:(id)properties
 {
   v90 = *MEMORY[0x1E69E9840];
-  v5 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties allowAudioRecording];
-  if (v5 == [a3 allowAudioRecording])
+  allowAudioRecording = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties allowAudioRecording];
+  if (allowAudioRecording == [properties allowAudioRecording])
   {
     v7 = *[(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic];
-    if (v7 == *[a3 frameFormatMic])
+    if (v7 == *[properties frameFormatMic])
     {
       v13 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic][40];
-      if (v13 == *([a3 frameFormatMic] + 40))
+      if (v13 == *([properties frameFormatMic] + 40))
       {
         v14 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic][28];
-        if (v14 == *([a3 frameFormatMic] + 28))
+        if (v14 == *([properties frameFormatMic] + 28))
         {
           v15 = *[(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker];
-          if (v15 == *[a3 frameFormatSpeaker])
+          if (v15 == *[properties frameFormatSpeaker])
           {
             v34 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker][40];
-            if (v34 == *([a3 frameFormatSpeaker] + 40))
+            if (v34 == *([properties frameFormatSpeaker] + 40))
             {
               v35 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker][28];
-              if (v35 == *([a3 frameFormatSpeaker] + 28))
+              if (v35 == *([properties frameFormatSpeaker] + 28))
               {
-                v36 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpOperatingMode];
-                if (v36 == [a3 vpOperatingMode])
+                vpOperatingMode = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpOperatingMode];
+                if (vpOperatingMode == [properties vpOperatingMode])
                 {
-                  v37 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpEnableSpatialChat];
-                  if (v37 == [a3 vpEnableSpatialChat])
+                  vpEnableSpatialChat = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpEnableSpatialChat];
+                  if (vpEnableSpatialChat == [properties vpEnableSpatialChat])
                   {
                     return 0;
                   }
@@ -5174,7 +5174,7 @@ LABEL_61:
                       return 1;
                     }
 
-                    v72 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpEnableSpatialChat];
+                    vpEnableSpatialChat2 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpEnableSpatialChat];
                     v77 = 136316162;
                     v78 = v71;
                     v79 = 2080;
@@ -5182,9 +5182,9 @@ LABEL_61:
                     v81 = 1024;
                     v82 = 1505;
                     v83 = 1024;
-                    *v84 = v72;
+                    *v84 = vpEnableSpatialChat2;
                     *&v84[4] = 1024;
-                    *&v84[6] = [a3 vpEnableSpatialChat];
+                    *&v84[6] = [properties vpEnableSpatialChat];
                     v12 = " [%s] %s:%d VP spatial chat flag changed: %d->%d";
                     goto LABEL_97;
                   }
@@ -5211,7 +5211,7 @@ LABEL_61:
                     return 1;
                   }
 
-                  v76 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpEnableSpatialChat];
+                  vpEnableSpatialChat3 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpEnableSpatialChat];
                   v77 = 136316674;
                   v78 = v75;
                   v79 = 2080;
@@ -5221,11 +5221,11 @@ LABEL_61:
                   v83 = 2112;
                   *v84 = v38;
                   *&v84[8] = 2048;
-                  v85 = self;
+                  selfCopy9 = self;
                   v86 = 1024;
-                  v87 = v76;
+                  v87 = vpEnableSpatialChat3;
                   v88 = 1024;
-                  v89 = [a3 vpEnableSpatialChat];
+                  vpEnableSpatialChat4 = [properties vpEnableSpatialChat];
                   v12 = " [%s] %s:%d %@(%p) VP spatial chat flag changed: %d->%d";
                 }
 
@@ -5245,7 +5245,7 @@ LABEL_61:
                       return 1;
                     }
 
-                    v68 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpOperatingMode];
+                    vpOperatingMode2 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpOperatingMode];
                     v77 = 136316162;
                     v78 = v67;
                     v79 = 2080;
@@ -5253,9 +5253,9 @@ LABEL_61:
                     v81 = 1024;
                     v82 = 1501;
                     v83 = 1024;
-                    *v84 = v68;
+                    *v84 = vpOperatingMode2;
                     *&v84[4] = 1024;
-                    *&v84[6] = [a3 vpOperatingMode];
+                    *&v84[6] = [properties vpOperatingMode];
                     v12 = " [%s] %s:%d VP operating mode changed: %d->%d";
                     goto LABEL_97;
                   }
@@ -5282,7 +5282,7 @@ LABEL_61:
                     return 1;
                   }
 
-                  v70 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpOperatingMode];
+                  vpOperatingMode3 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties vpOperatingMode];
                   v77 = 136316674;
                   v78 = v69;
                   v79 = 2080;
@@ -5292,11 +5292,11 @@ LABEL_61:
                   v83 = 2112;
                   *v84 = v59;
                   *&v84[8] = 2048;
-                  v85 = self;
+                  selfCopy9 = self;
                   v86 = 1024;
-                  v87 = v70;
+                  v87 = vpOperatingMode3;
                   v88 = 1024;
-                  v89 = [a3 vpOperatingMode];
+                  vpEnableSpatialChat4 = [properties vpOperatingMode];
                   v12 = " [%s] %s:%d %@(%p) VP operating mode changed: %d->%d";
                 }
               }
@@ -5318,7 +5318,7 @@ LABEL_61:
                   }
 
                   v61 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker][28];
-                  v62 = *([a3 frameFormatSpeaker] + 28);
+                  v62 = *([properties frameFormatSpeaker] + 28);
                   v77 = 136316162;
                   v78 = v60;
                   v79 = 2080;
@@ -5356,7 +5356,7 @@ LABEL_61:
                 }
 
                 v64 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker][28];
-                v65 = *([a3 frameFormatSpeaker] + 28);
+                v65 = *([properties frameFormatSpeaker] + 28);
                 v77 = 136316674;
                 v78 = v63;
                 v79 = 2080;
@@ -5366,11 +5366,11 @@ LABEL_61:
                 v83 = 2112;
                 *v84 = v52;
                 *&v84[8] = 2048;
-                v85 = self;
+                selfCopy9 = self;
                 v86 = 1024;
                 v87 = v64;
                 v88 = 1024;
-                v89 = v65;
+                vpEnableSpatialChat4 = v65;
                 v12 = " [%s] %s:%d %@(%p) Speaker channels per frame changed: %d->%d";
               }
             }
@@ -5392,7 +5392,7 @@ LABEL_61:
                 }
 
                 v54 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker][40];
-                v55 = *([a3 frameFormatSpeaker] + 40);
+                v55 = *([properties frameFormatSpeaker] + 40);
                 v77 = 136316162;
                 v78 = v53;
                 v79 = 2080;
@@ -5430,7 +5430,7 @@ LABEL_61:
               }
 
               v57 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker][40];
-              v58 = *([a3 frameFormatSpeaker] + 40);
+              v58 = *([properties frameFormatSpeaker] + 40);
               v77 = 136316674;
               v78 = v56;
               v79 = 2080;
@@ -5440,11 +5440,11 @@ LABEL_61:
               v83 = 2112;
               *v84 = v51;
               *&v84[8] = 2048;
-              v85 = self;
+              selfCopy9 = self;
               v86 = 1024;
               v87 = v57;
               v88 = 1024;
-              v89 = v58;
+              vpEnableSpatialChat4 = v58;
               v12 = " [%s] %s:%d %@(%p) Speaker samples per frame changed: %d->%d";
             }
           }
@@ -5466,7 +5466,7 @@ LABEL_61:
               }
 
               v46 = *[(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker];
-              v47 = *[a3 frameFormatSpeaker];
+              v47 = *[properties frameFormatSpeaker];
               v77 = 136316162;
               v78 = v45;
               v79 = 2080;
@@ -5504,7 +5504,7 @@ LABEL_61:
             }
 
             v49 = *[(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker];
-            v50 = *[a3 frameFormatSpeaker];
+            v50 = *[properties frameFormatSpeaker];
             v77 = 136316674;
             v78 = v48;
             v79 = 2080;
@@ -5514,11 +5514,11 @@ LABEL_61:
             v83 = 2112;
             *v84 = v16;
             *&v84[8] = 2048;
-            v85 = self;
+            selfCopy9 = self;
             v86 = 1024;
             v87 = v49;
             v88 = 1024;
-            v89 = v50;
+            vpEnableSpatialChat4 = v50;
             v12 = " [%s] %s:%d %@(%p) Speaker sample rate changed: %d->%d";
           }
         }
@@ -5540,7 +5540,7 @@ LABEL_61:
             }
 
             v40 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic][28];
-            v41 = *([a3 frameFormatMic] + 28);
+            v41 = *([properties frameFormatMic] + 28);
             v77 = 136316162;
             v78 = v39;
             v79 = 2080;
@@ -5578,7 +5578,7 @@ LABEL_61:
           }
 
           v43 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic][28];
-          v44 = *([a3 frameFormatMic] + 28);
+          v44 = *([properties frameFormatMic] + 28);
           v77 = 136316674;
           v78 = v42;
           v79 = 2080;
@@ -5588,11 +5588,11 @@ LABEL_61:
           v83 = 2112;
           *v84 = v27;
           *&v84[8] = 2048;
-          v85 = self;
+          selfCopy9 = self;
           v86 = 1024;
           v87 = v43;
           v88 = 1024;
-          v89 = v44;
+          vpEnableSpatialChat4 = v44;
           v12 = " [%s] %s:%d %@(%p) Mic channels per frame changed: %d->%d";
         }
       }
@@ -5614,7 +5614,7 @@ LABEL_61:
           }
 
           v29 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic][40];
-          v30 = *([a3 frameFormatMic] + 40);
+          v30 = *([properties frameFormatMic] + 40);
           v77 = 136316162;
           v78 = v28;
           v79 = 2080;
@@ -5652,7 +5652,7 @@ LABEL_61:
         }
 
         v32 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic][40];
-        v33 = *([a3 frameFormatMic] + 40);
+        v33 = *([properties frameFormatMic] + 40);
         v77 = 136316674;
         v78 = v31;
         v79 = 2080;
@@ -5662,11 +5662,11 @@ LABEL_61:
         v83 = 2112;
         *v84 = v26;
         *&v84[8] = 2048;
-        v85 = self;
+        selfCopy9 = self;
         v86 = 1024;
         v87 = v32;
         v88 = 1024;
-        v89 = v33;
+        vpEnableSpatialChat4 = v33;
         v12 = " [%s] %s:%d %@(%p) Mic samples per frame changed: %d->%d";
       }
     }
@@ -5688,7 +5688,7 @@ LABEL_61:
         }
 
         v21 = *[(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic];
-        v22 = *[a3 frameFormatMic];
+        v22 = *[properties frameFormatMic];
         v77 = 136316162;
         v78 = v20;
         v79 = 2080;
@@ -5726,7 +5726,7 @@ LABEL_61:
       }
 
       v24 = *[(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic];
-      v25 = *[a3 frameFormatMic];
+      v25 = *[properties frameFormatMic];
       v77 = 136316674;
       v78 = v23;
       v79 = 2080;
@@ -5736,11 +5736,11 @@ LABEL_61:
       v83 = 2112;
       *v84 = v8;
       *&v84[8] = 2048;
-      v85 = self;
+      selfCopy9 = self;
       v86 = 1024;
       v87 = v24;
       v88 = 1024;
-      v89 = v25;
+      vpEnableSpatialChat4 = v25;
       v12 = " [%s] %s:%d %@(%p) Mic sample rate changed: %d->%d";
     }
 
@@ -5774,7 +5774,7 @@ LABEL_102:
       return 1;
     }
 
-    v19 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties allowAudioRecording];
+    allowAudioRecording2 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties allowAudioRecording];
     v77 = 136316674;
     v78 = v17;
     v79 = 2080;
@@ -5784,11 +5784,11 @@ LABEL_102:
     v83 = 2112;
     *v84 = v6;
     *&v84[8] = 2048;
-    v85 = self;
+    selfCopy9 = self;
     v86 = 1024;
-    v87 = v19;
+    v87 = allowAudioRecording2;
     v88 = 1024;
-    v89 = [a3 allowAudioRecording];
+    vpEnableSpatialChat4 = [properties allowAudioRecording];
     v12 = " [%s] %s:%d %@(%p) Recording changed: %d->%d";
     goto LABEL_102;
   }
@@ -5805,7 +5805,7 @@ LABEL_102:
     return 1;
   }
 
-  v11 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties allowAudioRecording];
+  allowAudioRecording3 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties allowAudioRecording];
   v77 = 136316162;
   v78 = v9;
   v79 = 2080;
@@ -5813,9 +5813,9 @@ LABEL_102:
   v81 = 1024;
   v82 = 1473;
   v83 = 1024;
-  *v84 = v11;
+  *v84 = allowAudioRecording3;
   *&v84[4] = 1024;
-  *&v84[6] = [a3 allowAudioRecording];
+  *&v84[6] = [properties allowAudioRecording];
   v12 = " [%s] %s:%d Recording changed: %d->%d";
 LABEL_97:
   v73 = v10;
@@ -5825,7 +5825,7 @@ LABEL_103:
   return 1;
 }
 
-- (BOOL)shouldResetAudioSessionWithProperties:(id)a3
+- (BOOL)shouldResetAudioSessionWithProperties:(id)properties
 {
   v41 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -5882,7 +5882,7 @@ LABEL_11:
         WORD2(v38) = 2112;
         *(&v38 + 6) = v5;
         HIWORD(v38) = 2048;
-        v39 = self;
+        selfCopy3 = self;
         LOWORD(v40) = 2112;
         *(&v40 + 2) = v14;
         v9 = " [%s] %s:%d %@(%p) Current settings: %@";
@@ -5901,7 +5901,7 @@ LABEL_11:
       v17 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [a3 description];
+        v18 = [properties description];
         *v37 = 136315906;
         *&v37[4] = v16;
         *&v37[12] = 2080;
@@ -5937,7 +5937,7 @@ LABEL_22:
       v23 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [a3 description];
+        v24 = [properties description];
         *v37 = 136316418;
         *&v37[4] = v22;
         *&v37[12] = 2080;
@@ -5947,7 +5947,7 @@ LABEL_22:
         WORD2(v38) = 2112;
         *(&v38 + 6) = v15;
         HIWORD(v38) = 2048;
-        v39 = self;
+        selfCopy3 = self;
         LOWORD(v40) = 2112;
         *(&v40 + 2) = v24;
         v19 = " [%s] %s:%d %@(%p) New settings: %@";
@@ -5961,7 +5961,7 @@ LABEL_22:
   v25 = [(VCAudioSessionMediaProperties *)self->_currentAudioSessionMediaProperties isSessionActive:*v37];
   if (v25)
   {
-    if ([(VCAudioSessionMediaProperties *)self->_currentAudioSessionMediaProperties isEqual:a3])
+    if ([(VCAudioSessionMediaProperties *)self->_currentAudioSessionMediaProperties isEqual:properties])
     {
       LOBYTE(v25) = [(VCAudioSession *)self->_audioSession shouldResetAudioSession];
       return v25;
@@ -5981,7 +5981,7 @@ LABEL_22:
         goto LABEL_37;
       }
 
-      v29 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioSessionId];
+      audioSessionId = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioSessionId];
       *v37 = 136315906;
       *&v37[4] = v27;
       *&v37[12] = 2080;
@@ -5989,7 +5989,7 @@ LABEL_22:
       *&v37[22] = 1024;
       LODWORD(v38) = 1520;
       WORD2(v38) = 1024;
-      *(&v38 + 6) = v29;
+      *(&v38 + 6) = audioSessionId;
       v30 = " [%s] %s:%d [CMSession]:%u Session properties changed!";
       v31 = v28;
       v32 = 34;
@@ -6019,7 +6019,7 @@ LABEL_22:
         goto LABEL_37;
       }
 
-      v35 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioSessionId];
+      audioSessionId2 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioSessionId];
       *v37 = 136316418;
       *&v37[4] = v33;
       *&v37[12] = 2080;
@@ -6029,9 +6029,9 @@ LABEL_22:
       WORD2(v38) = 2112;
       *(&v38 + 6) = v26;
       HIWORD(v38) = 2048;
-      v39 = self;
+      selfCopy3 = self;
       LOWORD(v40) = 1024;
-      *(&v40 + 2) = v35;
+      *(&v40 + 2) = audioSessionId2;
       v30 = " [%s] %s:%d %@(%p) [CMSession]:%u Session properties changed!";
       v31 = v34;
       v32 = 54;
@@ -6045,7 +6045,7 @@ LABEL_37:
   return v25;
 }
 
-- (BOOL)resetAUIOWithProperties:(id)a3
+- (BOOL)resetAUIOWithProperties:(id)properties
 {
   v28 = *MEMORY[0x1E69E9840];
   v27 = -1431655766;
@@ -6059,9 +6059,9 @@ LABEL_37:
   v22 = v5;
   v19 = v5;
   v20 = v5;
-  if (a3)
+  if (properties)
   {
-    [a3 farEndVersionInfo];
+    [properties farEndVersionInfo];
   }
 
   else
@@ -6078,14 +6078,14 @@ LABEL_37:
   }
 
   hAUIO = self->_hAUIO;
-  v7 = [a3 frameFormatMic];
-  v8 = [a3 frameFormatSpeaker];
-  v9 = [a3 allowAudioRecording];
-  v10 = [a3 vpOperatingMode];
-  v11 = [a3 vpEnableSpatialChat];
-  v12 = [a3 remoteCodecType];
-  [a3 remoteCodecSampleRate];
-  v14 = AUIOSetupFormats(v13, hAUIO, v7, v8, &v19, v9, v10, v11, v12);
+  frameFormatMic = [properties frameFormatMic];
+  frameFormatSpeaker = [properties frameFormatSpeaker];
+  allowAudioRecording = [properties allowAudioRecording];
+  vpOperatingMode = [properties vpOperatingMode];
+  vpEnableSpatialChat = [properties vpEnableSpatialChat];
+  remoteCodecType = [properties remoteCodecType];
+  [properties remoteCodecSampleRate];
+  v14 = AUIOSetupFormats(v13, hAUIO, frameFormatMic, frameFormatSpeaker, &v19, allowAudioRecording, vpOperatingMode, vpEnableSpatialChat, remoteCodecType);
   if (v14 < 0 && v14 != -2145714174)
   {
     [VCAudioManager resetAUIOWithProperties:];
@@ -6106,11 +6106,11 @@ LABEL_37:
   return IsReady >= 0 || IsReady == -2145714174;
 }
 
-- (BOOL)resetAudioLimiterWithProperties:(id)a3
+- (BOOL)resetAudioLimiterWithProperties:(id)properties
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker][40];
-  if (v5 != *([a3 frameFormatSpeaker] + 40))
+  if (v5 != *([properties frameFormatSpeaker] + 40))
   {
     p_audioLimiter = &self->_sourceData.audioLimiter;
     audioLimiter = self->_sourceData.audioLimiter;
@@ -6136,7 +6136,7 @@ LABEL_37:
           goto LABEL_19;
         }
 
-        v12 = *([a3 frameFormatSpeaker] + 40);
+        v12 = *([properties frameFormatSpeaker] + 40);
         *v20 = 136315906;
         *&v20[4] = v10;
         *&v20[12] = 2080;
@@ -6174,7 +6174,7 @@ LABEL_37:
           goto LABEL_19;
         }
 
-        v18 = *([a3 frameFormatSpeaker] + 40);
+        v18 = *([properties frameFormatSpeaker] + 40);
         *v20 = 136316418;
         *&v20[4] = v16;
         *&v20[12] = 2080;
@@ -6184,7 +6184,7 @@ LABEL_37:
         WORD2(v21) = 2112;
         *(&v21 + 6) = v9;
         HIWORD(v21) = 2048;
-        v22 = self;
+        selfCopy = self;
         LOWORD(v23) = 1024;
         *(&v23 + 2) = v18;
         v13 = " [%s] %s:%d %@(%p) reset audio limiter: %d";
@@ -6194,7 +6194,7 @@ LABEL_37:
 
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, v13, v20, v15);
 LABEL_19:
-      v19 = VCAudioLimiter_Allocate([a3 frameFormatMic]);
+      v19 = VCAudioLimiter_Allocate([properties frameFormatMic]);
       *p_audioLimiter = v19;
       return VCAudioLimiter_Start(v19);
     }
@@ -6211,7 +6211,7 @@ LABEL_19:
   _os_log_error_impl(v0, v1, v2, v3, v4, v5);
 }
 
-- (void)registerClientIO:(_VCAudioIOControllerClientIO *)a3 controllerIO:(_VCAudioIOControllerIOState *)a4
+- (void)registerClientIO:(_VCAudioIOControllerClientIO *)o controllerIO:(_VCAudioIOControllerIOState *)iO
 {
   v47 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -6230,11 +6230,11 @@ LABEL_19:
         v35 = 1024;
         v36 = 1582;
         v37 = 2048;
-        v38 = a3;
+        oCopy3 = o;
         v39 = 2048;
-        v40 = a4;
+        selfCopy3 = iO;
         v41 = 1024;
-        LODWORD(v42) = state;
+        LODWORD(oCopy4) = state;
         v11 = " [%s] %s:%d Registering clientIO[%p] controllerIO[%p] in current manager state=%d";
         v12 = v9;
         v13 = 54;
@@ -6270,13 +6270,13 @@ LABEL_11:
         v35 = 1024;
         v36 = 1582;
         v37 = 2112;
-        v38 = v7;
+        oCopy3 = v7;
         v39 = 2048;
-        v40 = self;
+        selfCopy3 = self;
         v41 = 2048;
-        v42 = a3;
+        oCopy4 = o;
         v43 = 2048;
-        v44 = a4;
+        iOCopy2 = iO;
         v45 = 1024;
         v46 = v16;
         v11 = " [%s] %s:%d %@(%p) Registering clientIO[%p] controllerIO[%p] in current manager state=%d";
@@ -6287,7 +6287,7 @@ LABEL_11:
     }
   }
 
-  v17 = VCAudioIOControllerIOState_NewAudioEvent(0, a3);
+  v17 = VCAudioIOControllerIOState_NewAudioEvent(0, o);
   v30 = v17;
   v18 = dispatch_time(0, 1000000000);
   if (!dispatch_semaphore_wait(*(v17[1] + 16), v18))
@@ -6310,7 +6310,7 @@ LABEL_11:
         v35 = 1024;
         v36 = 1589;
         v37 = 2048;
-        v38 = a3;
+        oCopy3 = o;
         v22 = " [%s] %s:%d Wait on run lock semaphore timed out! clientIO=%p";
         v23 = v21;
         v24 = 38;
@@ -6345,11 +6345,11 @@ LABEL_23:
         v35 = 1024;
         v36 = 1589;
         v37 = 2112;
-        v38 = v19;
+        oCopy3 = v19;
         v39 = 2048;
-        v40 = self;
+        selfCopy3 = self;
         v41 = 2048;
-        v42 = a3;
+        oCopy4 = o;
         v22 = " [%s] %s:%d %@(%p) Wait on run lock semaphore timed out! clientIO=%p";
         v23 = v26;
         v24 = 58;
@@ -6362,7 +6362,7 @@ LABEL_24:
   pthread_mutex_lock(&self->_interruptingMutex);
   if ([(VCAudioManager *)self audioCallbacksRunning])
   {
-    if (CMSimpleQueueEnqueue(a4->eventQueue, v17))
+    if (CMSimpleQueueEnqueue(iO->eventQueue, v17))
     {
       if (objc_opt_class() == self)
       {
@@ -6401,9 +6401,9 @@ LABEL_24:
             v35 = 1024;
             v36 = 1595;
             v37 = 2112;
-            v38 = v27;
+            oCopy3 = v27;
             v39 = 2048;
-            v40 = self;
+            selfCopy3 = self;
             _os_log_error_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) CMSimpleQueueEnqueue Full", buf, 0x30u);
           }
         }
@@ -6415,13 +6415,13 @@ LABEL_24:
 
   else
   {
-    VCAudioIOControllerIOState_RegisterClientIO(a4, &v30);
+    VCAudioIOControllerIOState_RegisterClientIO(iO, &v30);
   }
 
   pthread_mutex_unlock(&self->_interruptingMutex);
 }
 
-- (void)unregisterClientIO:(_VCAudioIOControllerClientIO *)a3 controllerIO:(_VCAudioIOControllerIOState *)a4
+- (void)unregisterClientIO:(_VCAudioIOControllerClientIO *)o controllerIO:(_VCAudioIOControllerIOState *)iO
 {
   v38 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -6440,11 +6440,11 @@ LABEL_24:
         v26 = 1024;
         v27 = 1606;
         v28 = 2048;
-        v29 = a3;
+        oCopy = o;
         v30 = 2048;
-        v31 = a4;
+        selfCopy2 = iO;
         v32 = 1024;
-        LODWORD(v33) = state;
+        LODWORD(oCopy2) = state;
         v11 = " [%s] %s:%d Unregistering clientIO[%p] controllerIO[%p] in current manager state=%d";
         v12 = v9;
         v13 = 54;
@@ -6480,13 +6480,13 @@ LABEL_11:
         v26 = 1024;
         v27 = 1606;
         v28 = 2112;
-        v29 = v7;
+        oCopy = v7;
         v30 = 2048;
-        v31 = self;
+        selfCopy2 = self;
         v32 = 2048;
-        v33 = a3;
+        oCopy2 = o;
         v34 = 2048;
-        v35 = a4;
+        iOCopy2 = iO;
         v36 = 1024;
         v37 = v16;
         v11 = " [%s] %s:%d %@(%p) Unregistering clientIO[%p] controllerIO[%p] in current manager state=%d";
@@ -6497,12 +6497,12 @@ LABEL_11:
     }
   }
 
-  v17 = VCAudioIOControllerIOState_NewAudioEvent(1, a3);
+  v17 = VCAudioIOControllerIOState_NewAudioEvent(1, o);
   v21 = v17;
   pthread_mutex_lock(&self->_interruptingMutex);
   if ([(VCAudioManager *)self audioCallbacksRunning])
   {
-    if (CMSimpleQueueEnqueue(a4->eventQueue, v17))
+    if (CMSimpleQueueEnqueue(iO->eventQueue, v17))
     {
       if (objc_opt_class() == self)
       {
@@ -6541,9 +6541,9 @@ LABEL_11:
             v26 = 1024;
             v27 = 1613;
             v28 = 2112;
-            v29 = v18;
+            oCopy = v18;
             v30 = 2048;
-            v31 = self;
+            selfCopy2 = self;
             _os_log_error_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) CMSimpleQueueEnqueue Full", buf, 0x30u);
           }
         }
@@ -6555,7 +6555,7 @@ LABEL_11:
 
   else
   {
-    VCAudioIOControllerIOState_UnregisterClientIO(a4, &v21);
+    VCAudioIOControllerIOState_UnregisterClientIO(iO, &v21);
   }
 
   pthread_mutex_unlock(&self->_interruptingMutex);
@@ -6631,7 +6631,7 @@ LABEL_11:
               v23 = 2112;
               v24 = v9;
               v25 = 2048;
-              v26 = self;
+              selfCopy = self;
               v27 = 2048;
               v28 = v8;
               v12 = v11;
@@ -6655,49 +6655,49 @@ LABEL_15:
   [(NSMutableArray *)self->_startingIOClients removeAllObjects];
 }
 
-- (void)activateStartingClient:(id)a3 applyControllerFormat:(BOOL)a4
+- (void)activateStartingClient:(id)client applyControllerFormat:(BOOL)format
 {
-  if (a3)
+  if (client)
   {
-    v4 = a4;
+    formatCopy = format;
     if (([(NSMutableArray *)self->_startingIOClients containsObject:?]& 1) == 0)
     {
-      if (v4)
+      if (formatCopy)
       {
-        v7 = [(VCAudioManager *)self isSystemAudioOutputPlaybackMode];
-        v8 = [a3 delegate];
+        isSystemAudioOutputPlaybackMode = [(VCAudioManager *)self isSystemAudioOutputPlaybackMode];
+        delegate = [client delegate];
         currentAudioUnitProperties = self->_currentAudioUnitProperties;
-        if (v7)
+        if (isSystemAudioOutputPlaybackMode)
         {
-          v10 = [(VCAudioUnitProperties *)currentAudioUnitProperties frameFormatSpeaker];
+          frameFormatSpeaker = [(VCAudioUnitProperties *)currentAudioUnitProperties frameFormatSpeaker];
         }
 
         else
         {
-          v10 = [(VCAudioUnitProperties *)currentAudioUnitProperties frameFormatMic];
+          frameFormatSpeaker = [(VCAudioUnitProperties *)currentAudioUnitProperties frameFormatMic];
         }
 
-        [v8 controllerFormatChanged:v10];
+        [delegate controllerFormatChanged:frameFormatSpeaker];
       }
 
-      if ([a3 direction])
+      if ([client direction])
       {
-        -[VCAudioManager registerClientIO:controllerIO:](self, "registerClientIO:controllerIO:", [a3 sourceIO], &self->_sourceData);
+        -[VCAudioManager registerClientIO:controllerIO:](self, "registerClientIO:controllerIO:", [client sourceIO], &self->_sourceData);
       }
 
-      if (([a3 direction] & 2) != 0)
+      if (([client direction] & 2) != 0)
       {
-        -[VCAudioManager registerClientIO:controllerIO:](self, "registerClientIO:controllerIO:", [a3 sinkIO], &self->_sinkData);
+        -[VCAudioManager registerClientIO:controllerIO:](self, "registerClientIO:controllerIO:", [client sinkIO], &self->_sinkData);
       }
 
       startingIOClients = self->_startingIOClients;
 
-      [(NSMutableArray *)startingIOClients addObject:a3];
+      [(NSMutableArray *)startingIOClients addObject:client];
     }
   }
 }
 
-- (void)applyControllerFormatToClients:(id)a3
+- (void)applyControllerFormatToClients:(id)clients
 {
   v21 = *MEMORY[0x1E69E9840];
   v17 = 0u;
@@ -6724,17 +6724,17 @@ LABEL_15:
         {
           if ([(VCAudioManager *)self isSystemAudioOutputPlaybackMode:-1])
           {
-            v11 = [a3 frameFormatSpeaker];
+            frameFormatSpeaker = [clients frameFormatSpeaker];
           }
 
           else
           {
-            v11 = [a3 frameFormatMic];
+            frameFormatSpeaker = [clients frameFormatMic];
           }
 
-          v12 = *v11;
-          v13 = v11[2];
-          v15 = v11[1];
+          v12 = *frameFormatSpeaker;
+          v13 = frameFormatSpeaker[2];
+          v15 = frameFormatSpeaker[1];
           HIDWORD(v15) = *([v10 clientFormat] + 28);
           [objc_msgSend(v10 "delegate")];
         }
@@ -6747,10 +6747,10 @@ LABEL_15:
   }
 }
 
-- (int)registerForMutedTalkerNotificationWithAUIO:(tagHANDLE *)a3
+- (int)registerForMutedTalkerNotificationWithAUIO:(tagHANDLE *)o
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3 == 0xFFFFFFFFLL || [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioUnitType]!= 1 || !self->_mutedTalkerNotificationHandler)
+  if (o == 0xFFFFFFFFLL || [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioUnitType]!= 1 || !self->_mutedTalkerNotificationHandler)
   {
     return 0;
   }
@@ -6760,7 +6760,7 @@ LABEL_15:
   v15[2] = __61__VCAudioManager_registerForMutedTalkerNotificationWithAUIO___block_invoke;
   v15[3] = &unk_1E85F3818;
   v15[4] = self;
-  v5 = AUIORegisterMutedTalkerNotificationEventListener(a3, v15);
+  v5 = AUIORegisterMutedTalkerNotificationEventListener(o, v15);
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -6813,7 +6813,7 @@ LABEL_16:
         v22 = 2112;
         v23 = v6;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 1024;
         v27 = v5;
         v10 = " [%s] %s:%d %@(%p) Registered for mutedTalker notification. result=0x%08x";
@@ -6909,15 +6909,15 @@ uint64_t __61__VCAudioManager_registerForMutedTalkerNotificationWithAUIO___block
   return result;
 }
 
-- (int)unregisterForMutedTalkerNotificationWithAUIO:(tagHANDLE *)a3
+- (int)unregisterForMutedTalkerNotificationWithAUIO:(tagHANDLE *)o
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3 == 0xFFFFFFFFLL || [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioUnitType]!= 1 || !self->_mutedTalkerNotificationHandler)
+  if (o == 0xFFFFFFFFLL || [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioUnitType]!= 1 || !self->_mutedTalkerNotificationHandler)
   {
     return 0;
   }
 
-  v5 = AUIORegisterMutedTalkerNotificationEventListener(a3, 0);
+  v5 = AUIORegisterMutedTalkerNotificationEventListener(o, 0);
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -6970,7 +6970,7 @@ LABEL_16:
         v21 = 2112;
         v22 = v6;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 1024;
         v26 = v5;
         v10 = " [%s] %s:%d %@(%p) Unregistered from muted talker notification. result=0x%08x";
@@ -6984,10 +6984,10 @@ LABEL_16:
   return v5;
 }
 
-- (int)registerForMutedTalkerNotification:(id)a3
+- (int)registerForMutedTalkerNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notification)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -6998,7 +6998,7 @@ LABEL_16:
     block[1] = 3221225472;
     block[2] = __53__VCAudioManager_registerForMutedTalkerNotification___block_invoke;
     block[3] = &unk_1E85F3840;
-    block[5] = a3;
+    block[5] = notification;
     block[6] = buf;
     block[4] = self;
     dispatch_sync(dispatchQueue, block);
@@ -7048,7 +7048,7 @@ LABEL_16:
           v13 = 2112;
           v14 = v7;
           v15 = 2048;
-          v16 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Muted talker notification handler is nil", buf, 0x30u);
         }
       }
@@ -7203,11 +7203,11 @@ void __55__VCAudioManager_unregisterFromMutedTalkerNotification__block_invoke(ui
   }
 }
 
-- (int)registerAudioSessionId:(unsigned int)a3 maxChannelCountMic:(unsigned int)a4 maxChannelCountSpeaker:(unsigned int)a5 spatialMetadata:(OpaqueCMBlockBuffer *)a6
+- (int)registerAudioSessionId:(unsigned int)id maxChannelCountMic:(unsigned int)mic maxChannelCountSpeaker:(unsigned int)speaker spatialMetadata:(OpaqueCMBlockBuffer *)metadata
 {
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = *&a3;
+  v7 = *&speaker;
+  v8 = *&mic;
+  v9 = *&id;
   v40 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -7261,7 +7261,7 @@ LABEL_11:
         v34 = 2112;
         v35 = v11;
         v36 = 2048;
-        v37 = self;
+        selfCopy2 = self;
         v38 = 1024;
         v39 = v9;
         v14 = " [%s] %s:%d %@(%p) Register session context for audioSessionId=%u";
@@ -7272,7 +7272,7 @@ LABEL_11:
     }
   }
 
-  v19 = [[VCAudioUnitSpatialContext alloc] initWithAudioSessionId:v9 maxChannelCountMic:v8 maxChannelCountSpeaker:v7 spatialMetadata:a6];
+  v19 = [[VCAudioUnitSpatialContext alloc] initWithAudioSessionId:v9 maxChannelCountMic:v8 maxChannelCountSpeaker:v7 spatialMetadata:metadata];
   if (v19)
   {
     dispatchQueue = self->_dispatchQueue;
@@ -7329,7 +7329,7 @@ LABEL_11:
           v34 = 2112;
           v35 = v23;
           v36 = 2048;
-          v37 = self;
+          selfCopy2 = self;
           v38 = 1024;
           v39 = v9;
           _os_log_error_impl(&dword_1DB56E000, v25, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate audio session context for audioSessionId=%u", buf, 0x36u);
@@ -7406,7 +7406,7 @@ void __99__VCAudioManager_registerAudioSessionId_maxChannelCountMic_maxChannelCo
   }
 }
 
-- (void)unregisterAudioSessionId:(unsigned int)a3
+- (void)unregisterAudioSessionId:(unsigned int)id
 {
   v28 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -7424,7 +7424,7 @@ void __99__VCAudioManager_registerAudioSessionId_maxChannelCountMic_maxChannelCo
         v20 = 1024;
         v21 = 1773;
         v22 = 1024;
-        LODWORD(v23) = a3;
+        LODWORD(v23) = id;
         v8 = " [%s] %s:%d Unregister session context for audioSessionId=%u";
         v9 = v7;
         v10 = 34;
@@ -7461,9 +7461,9 @@ LABEL_11:
         v22 = 2112;
         v23 = v5;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 1024;
-        v27 = a3;
+        idCopy = id;
         v8 = " [%s] %s:%d %@(%p) Unregister session context for audioSessionId=%u";
         v9 = v12;
         v10 = 54;
@@ -7478,7 +7478,7 @@ LABEL_11:
   v14[2] = __43__VCAudioManager_unregisterAudioSessionId___block_invoke;
   v14[3] = &unk_1E85F38B8;
   v14[4] = self;
-  v15 = a3;
+  idCopy2 = id;
   dispatch_async(dispatchQueue, v14);
 }
 
@@ -7544,12 +7544,12 @@ void __43__VCAudioManager_unregisterAudioSessionId___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSpatialMetadata:(OpaqueCMBlockBuffer *)a3 audioSessionId:(unsigned int)a4 completionHandler:(id)a5
+- (void)setSpatialMetadata:(OpaqueCMBlockBuffer *)metadata audioSessionId:(unsigned int)id completionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (metadata)
   {
-    CFRetain(a3);
+    CFRetain(metadata);
   }
 
   dispatchQueue = self->_dispatchQueue;
@@ -7557,24 +7557,24 @@ void __43__VCAudioManager_unregisterAudioSessionId___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __70__VCAudioManager_setSpatialMetadata_audioSessionId_completionHandler___block_invoke;
   block[3] = &unk_1E85F38E0;
-  v11 = a4;
-  block[5] = a5;
-  block[6] = a3;
+  idCopy = id;
+  block[5] = handler;
+  block[6] = metadata;
   block[4] = self;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)applySpatialMetadata:(OpaqueCMBlockBuffer *)a3
+- (void)applySpatialMetadata:(OpaqueCMBlockBuffer *)metadata
 {
   v29 = *MEMORY[0x1E69E9840];
   v22 = 0;
   totalLengthOut = 0;
-  if (a3)
+  if (metadata)
   {
-    DataPointer = CMBlockBufferGetDataPointer(a3, 0, 0, &totalLengthOut, &v22);
+    DataPointer = CMBlockBufferGetDataPointer(metadata, 0, 0, &totalLengthOut, &v22);
     if (DataPointer)
     {
-      [(VCAudioManager *)self applySpatialMetadata:v6, v7, v8, v9, v10, v11, v22, totalLengthOut, SWORD2(totalLengthOut), *buf, *&buf[8], v25, *(&v25 + 1), v26, *v27, *&v27[8], *&v27[16], *&v27[24], v28, v29, v30, v31];
+      [(VCAudioManager *)self applySpatialMetadata:v6, v7, v8, v9, v10, v11, v22, totalLengthOut, SWORD2(totalLengthOut), *buf, *&buf[8], v25, *(&v25 + 1), selfCopy, *v27, *&v27[8], *&v27[16], *&v27[24], v28, v29, v30, v31];
       return;
     }
 
@@ -7603,9 +7603,9 @@ void __43__VCAudioManager_unregisterAudioSessionId___block_invoke(uint64_t a1)
         *&buf[22] = 1024;
         LODWORD(v25) = 1826;
         WORD2(v25) = 2048;
-        *(&v25 + 6) = a3;
+        *(&v25 + 6) = metadata;
         HIWORD(v25) = 2048;
-        v26 = totalLengthOut;
+        selfCopy = totalLengthOut;
         *v27 = 1024;
         *&v27[2] = v13;
         v17 = " [%s] %s:%d Failed to apply the metadata buffer. spatialMetadata=%p, dataBufferLength=%zu, status=%08x";
@@ -7646,9 +7646,9 @@ void __43__VCAudioManager_unregisterAudioSessionId___block_invoke(uint64_t a1)
         WORD2(v25) = 2112;
         *(&v25 + 6) = v14;
         HIWORD(v25) = 2048;
-        v26 = self;
+        selfCopy = self;
         *v27 = 2048;
-        *&v27[2] = a3;
+        *&v27[2] = metadata;
         *&v27[10] = 2048;
         *&v27[12] = totalLengthOut;
         *&v27[20] = 1024;
@@ -7663,51 +7663,51 @@ void __43__VCAudioManager_unregisterAudioSessionId___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setupSpatialContextWithAudioUnitProperties:(id)a3 forceUpdate:(BOOL)a4
+- (void)setupSpatialContextWithAudioUnitProperties:(id)properties forceUpdate:(BOOL)update
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v7 = [a3 spatialContext];
-  v8 = v7;
+  spatialContext = [properties spatialContext];
+  v8 = spatialContext;
   currentSpatialContext = self->_currentSpatialContext;
-  if (a4 || v7 != currentSpatialContext)
+  if (update || spatialContext != currentSpatialContext)
   {
 
     v10 = v8;
     self->_currentSpatialContext = v10;
-    v11 = [(VCAudioUnitSpatialContext *)v10 spatialMetadata];
+    spatialMetadata = [(VCAudioUnitSpatialContext *)v10 spatialMetadata];
 
-    [(VCAudioManager *)self applySpatialMetadata:v11];
+    [(VCAudioManager *)self applySpatialMetadata:spatialMetadata];
   }
 }
 
-- (void)startVADWithAudioUnitProperties:(id)a3
+- (void)startVADWithAudioUnitProperties:(id)properties
 {
   if (!self->_playbackMode)
   {
     self->_sinkData.isForcedMediaPriorityEnabled = [+[VCDefaults sharedInstance](VCDefaults forceAudioPriorityEnabled];
     self->_sinkData.forcedMediaPriorityLastUpdateTime = -1.79769313e308;
     voiceDetector = self->_sinkData.voiceDetector;
-    v7 = [a3 frameFormatMic];
+    frameFormatMic = [properties frameFormatMic];
 
-    VCVoiceDetector_Start(voiceDetector, v7);
+    VCVoiceDetector_Start(voiceDetector, frameFormatMic);
   }
 }
 
-- (BOOL)stateIdleWithAudioUnitProperties:(id)a3 sessionProperties:(id)a4 client:(id)a5 newState:(unsigned int *)a6
+- (BOOL)stateIdleWithAudioUnitProperties:(id)properties sessionProperties:(id)sessionProperties client:(id)client newState:(unsigned int *)state
 {
-  *a6 = 1;
-  if (![(NSMutableArray *)self->_allClients count:a3])
+  *state = 1;
+  if (![(NSMutableArray *)self->_allClients count:properties])
   {
     [(VCAudioManager *)self resetAudioTimestamps];
     [(NSMutableDictionary *)self->_audioSessionSinkMuted removeAllObjects];
     goto LABEL_5;
   }
 
-  v9 = [(VCAudioManager *)self startAudioSessionWithProperties:a4];
+  v9 = [(VCAudioManager *)self startAudioSessionWithProperties:sessionProperties];
   if (v9)
   {
     self->_isSuspended = 0;
-    *a6 = 2;
+    *state = 2;
 LABEL_5:
     LOBYTE(v9) = 1;
   }
@@ -7883,15 +7883,15 @@ LABEL_24:
   }
 }
 
-- (BOOL)stateSessionStartedWithAudioUnitProperties:(id)a3 sessionProperties:(id)a4 client:(id)a5 newState:(unsigned int *)a6
+- (BOOL)stateSessionStartedWithAudioUnitProperties:(id)properties sessionProperties:(id)sessionProperties client:(id)client newState:(unsigned int *)state
 {
   v42 = *MEMORY[0x1E69E9840];
-  *a6 = 2;
-  if (-[NSMutableArray count](self->_allClients, "count") && (v11 = -[VCAudioSessionMediaProperties isSessionActive](self->_currentAudioSessionMediaProperties, "isSessionActive"), v11 == [a4 isSessionActive]))
+  *state = 2;
+  if (-[NSMutableArray count](self->_allClients, "count") && (v11 = -[VCAudioSessionMediaProperties isSessionActive](self->_currentAudioSessionMediaProperties, "isSessionActive"), v11 == [sessionProperties isSessionActive]))
   {
-    if (a5 && ([(NSMutableArray *)self->_startingIOClients containsObject:a5]& 1) == 0)
+    if (client && ([(NSMutableArray *)self->_startingIOClients containsObject:client]& 1) == 0)
     {
-      [(NSMutableArray *)self->_startingIOClients addObject:a5];
+      [(NSMutableArray *)self->_startingIOClients addObject:client];
       v26 = 1;
     }
 
@@ -7900,13 +7900,13 @@ LABEL_24:
       v26 = 0;
     }
 
-    v27 = a6;
-    if ([(VCAudioManager *)self shouldResetAudioSessionWithProperties:a4, a5])
+    stateCopy = state;
+    if ([(VCAudioManager *)self shouldResetAudioSessionWithProperties:sessionProperties, client])
     {
-      [(VCAudioManager *)self resetAudioSessionWithProperties:a4 interruptSuccessful:0];
+      [(VCAudioManager *)self resetAudioSessionWithProperties:sessionProperties interruptSuccessful:0];
     }
 
-    [(VCAudioManager *)self setCurrentAudioUnitProperties:a3];
+    [(VCAudioManager *)self setCurrentAudioUnitProperties:properties];
     VCAudioBufferList_AllocateFrame([(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatSpeaker], &self->_sourceData.secondarySampleBuffer);
     p_sourceData = &self->_sourceData;
     VCAudioBufferList_AllocateFrame([(VCAudioUnitProperties *)self->_currentAudioUnitProperties frameFormatMic], &self->_sourceData.interruptMixDownSampleBuffer);
@@ -7932,19 +7932,19 @@ LABEL_24:
           v19 = *(*(&v38 + 1) + 8 * i);
           if ((-[VCAudioUnitProperties audioUnitType](self->_currentAudioUnitProperties, "audioUnitType") != 2 || [v19 deviceRole] == 2) && (-[VCAudioUnitProperties audioUnitType](self->_currentAudioUnitProperties, "audioUnitType") != 1 || objc_msgSend(v19, "deviceRole") != 2))
           {
-            v20 = [(VCAudioManager *)self isSystemAudioOutputPlaybackMode];
-            v21 = [v19 delegate];
-            if (v20)
+            isSystemAudioOutputPlaybackMode = [(VCAudioManager *)self isSystemAudioOutputPlaybackMode];
+            delegate = [v19 delegate];
+            if (isSystemAudioOutputPlaybackMode)
             {
-              v22 = [a3 frameFormatSpeaker];
+              frameFormatSpeaker = [properties frameFormatSpeaker];
             }
 
             else
             {
-              v22 = [a3 frameFormatMic];
+              frameFormatSpeaker = [properties frameFormatMic];
             }
 
-            [v21 controllerFormatChanged:v22];
+            [delegate controllerFormatChanged:frameFormatSpeaker];
             if (([v19 direction] & 2) != 0)
             {
               -[VCAudioManager registerClientIO:controllerIO:](self, "registerClientIO:controllerIO:", [v19 sinkIO], &self->_sinkData);
@@ -7964,9 +7964,9 @@ LABEL_24:
     }
 
     [(VCAudioManager *)self resetChannelMask];
-    if ([(VCAudioManager *)self startAUIOWithProperties:a3])
+    if ([(VCAudioManager *)self startAUIOWithProperties:properties])
     {
-      *v27 = 3;
+      *stateCopy = 3;
       if (VCDefaults_GetBoolValueForKey(@"forceMixingVoiceWithMediaEnabled", self->_isMixingVoiceWithMediaEnabled))
       {
         if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -8017,21 +8017,21 @@ LABEL_24:
     self->_isSuspended = 0;
     [(VCAudioManager *)self stopAudioSession];
     v12 = 1;
-    *a6 = 1;
+    *state = 1;
   }
 
   return v12;
 }
 
-- (BOOL)stateRunningShouldTransitionToStarted:(id)a3
+- (BOOL)stateRunningShouldTransitionToStarted:(id)started
 {
   if (![(NSMutableArray *)self->_allClients count])
   {
     return 1;
   }
 
-  v5 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioUnitType];
-  return v5 != [a3 audioUnitType];
+  audioUnitType = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioUnitType];
+  return audioUnitType != [started audioUnitType];
 }
 
 - (void)stateRunningToSessionStarted
@@ -8048,28 +8048,28 @@ LABEL_24:
   [(VCAudioManager *)self startInterruptThread];
 }
 
-- (BOOL)stateRunningWithAudioUnitProperties:(id)a3 sessionProperties:(id)a4 client:(id)a5 newState:(unsigned int *)a6
+- (BOOL)stateRunningWithAudioUnitProperties:(id)properties sessionProperties:(id)sessionProperties client:(id)client newState:(unsigned int *)state
 {
   v58 = *MEMORY[0x1E69E9840];
-  *a6 = 3;
+  *state = 3;
   if ([(VCAudioManager *)self stateRunningShouldTransitionToStarted:?])
   {
     [(VCAudioManager *)self stateRunningToSessionStarted];
     v11 = 2;
 LABEL_5:
-    *a6 = v11;
+    *state = v11;
     return 1;
   }
 
-  if ([(VCAudioManager *)self stateRunningShouldTransitionToInterrupted:a3])
+  if ([(VCAudioManager *)self stateRunningShouldTransitionToInterrupted:properties])
   {
     [(VCAudioManager *)self stateTransitionRunningToInterrupted];
     v11 = 4;
     goto LABEL_5;
   }
 
-  v12 = [(VCAudioManager *)self shouldResetAudioSessionWithProperties:a4];
-  v13 = [(VCAudioManager *)self shouldResetAudioUnitWithProperties:a3];
+  v12 = [(VCAudioManager *)self shouldResetAudioSessionWithProperties:sessionProperties];
+  v13 = [(VCAudioManager *)self shouldResetAudioUnitWithProperties:properties];
   v14 = v13 | v12;
   if (((v13 | v12) & 1) == 0)
   {
@@ -8090,8 +8090,8 @@ LABEL_5:
       goto LABEL_18;
     }
 
-    v43 = [a3 audioSessionId];
-    v18 = *([a3 frameFormatMic] + 40);
+    audioSessionId = [properties audioSessionId];
+    v18 = *([properties frameFormatMic] + 40);
     *buf = 136316162;
     v46 = v16;
     v47 = 2080;
@@ -8099,7 +8099,7 @@ LABEL_5:
     v49 = 1024;
     v50 = 2096;
     v51 = 1024;
-    *v52 = v43;
+    *v52 = audioSessionId;
     *&v52[4] = 1024;
     *&v52[6] = v18;
     v19 = " [%s] %s:%d [CMSession]:%u reset audio unit: %d";
@@ -8131,8 +8131,8 @@ LABEL_5:
       goto LABEL_18;
     }
 
-    v42 = [a3 audioSessionId];
-    v23 = *([a3 frameFormatMic] + 40);
+    audioSessionId2 = [properties audioSessionId];
+    v23 = *([properties frameFormatMic] + 40);
     *buf = 136316674;
     v46 = v44;
     v47 = 2080;
@@ -8142,9 +8142,9 @@ LABEL_5:
     v51 = 2112;
     *v52 = v15;
     *&v52[8] = 2048;
-    v53 = self;
+    selfCopy2 = self;
     v54 = 1024;
-    v55 = v42;
+    v55 = audioSessionId2;
     v56 = 1024;
     v57 = v23;
     v19 = " [%s] %s:%d %@(%p) [CMSession]:%u reset audio unit: %d";
@@ -8163,9 +8163,9 @@ LABEL_18:
 
   VCAudioBufferList_Destroy(&self->_sourceData.secondarySampleBuffer);
   VCAudioBufferList_Destroy(&self->_sourceData.interruptMixDownSampleBuffer);
-  [(VCAudioManager *)self applyControllerFormatToClients:a3];
+  [(VCAudioManager *)self applyControllerFormatToClients:properties];
 LABEL_21:
-  if (v12 && ![(VCAudioManager *)self resetAudioSessionWithProperties:a4 interruptSuccessful:0])
+  if (v12 && ![(VCAudioManager *)self resetAudioSessionWithProperties:sessionProperties interruptSuccessful:0])
   {
     [VCAudioManager stateRunningWithAudioUnitProperties:sessionProperties:client:newState:];
     return buf[0];
@@ -8177,7 +8177,7 @@ LABEL_21:
   }
 
   audioSessionId = self->_sourceData.audioSessionId;
-  if (audioSessionId == [a3 audioSessionId])
+  if (audioSessionId == [properties audioSessionId])
   {
     goto LABEL_37;
   }
@@ -8196,7 +8196,7 @@ LABEL_21:
       goto LABEL_37;
     }
 
-    v29 = [a3 audioSessionId];
+    audioSessionId3 = [properties audioSessionId];
     v30 = self->_sourceData.audioSessionId;
     *buf = 136316162;
     v46 = v27;
@@ -8205,7 +8205,7 @@ LABEL_21:
     v49 = 1024;
     v50 = 2115;
     v51 = 1024;
-    *v52 = v29;
+    *v52 = audioSessionId3;
     *&v52[4] = 1024;
     *&v52[6] = v30;
     v31 = " [%s] %s:%d New active audioSessionId=%u previousAudioSessionID=%u";
@@ -8237,7 +8237,7 @@ LABEL_21:
       goto LABEL_37;
     }
 
-    v36 = [a3 audioSessionId];
+    audioSessionId4 = [properties audioSessionId];
     v37 = self->_sourceData.audioSessionId;
     *buf = 136316674;
     v46 = v34;
@@ -8248,9 +8248,9 @@ LABEL_21:
     v51 = 2112;
     *v52 = v26;
     *&v52[8] = 2048;
-    v53 = self;
+    selfCopy2 = self;
     v54 = 1024;
-    v55 = v36;
+    v55 = audioSessionId4;
     v56 = 1024;
     v57 = v37;
     v31 = " [%s] %s:%d %@(%p) New active audioSessionId=%u previousAudioSessionID=%u";
@@ -8260,14 +8260,14 @@ LABEL_21:
 
   _os_log_impl(&dword_1DB56E000, v32, OS_LOG_TYPE_DEFAULT, v31, buf, v33);
 LABEL_37:
-  -[VCAudioUnitProperties setOperatingMode:](self->_currentAudioUnitProperties, "setOperatingMode:", [a3 operatingMode]);
-  [(VCAudioManager *)self setupSpatialContextWithAudioUnitProperties:a3 forceUpdate:0];
-  v38 = [a3 audioSessionId];
-  self->_sourceData.audioSessionId = v38;
-  self->_sinkData.audioSessionId = v38;
-  [(VCAudioUnitProperties *)self->_currentAudioUnitProperties setAudioSessionId:v38];
+  -[VCAudioUnitProperties setOperatingMode:](self->_currentAudioUnitProperties, "setOperatingMode:", [properties operatingMode]);
+  [(VCAudioManager *)self setupSpatialContextWithAudioUnitProperties:properties forceUpdate:0];
+  audioSessionId5 = [properties audioSessionId];
+  self->_sourceData.audioSessionId = audioSessionId5;
+  self->_sinkData.audioSessionId = audioSessionId5;
+  [(VCAudioUnitProperties *)self->_currentAudioUnitProperties setAudioSessionId:audioSessionId5];
   [(VCAudioManager *)self applyAudioSessionMute];
-  [(VCAudioManager *)self activateStartingClient:a5 applyControllerFormat:(v14 & 1) == 0];
+  [(VCAudioManager *)self activateStartingClient:client applyControllerFormat:(v14 & 1) == 0];
   if ((v14 & 1) == 0)
   {
     goto LABEL_45;
@@ -8275,26 +8275,26 @@ LABEL_37:
 
   _VCAudioManager_ProcessEventQueue(&self->_sinkData);
   _VCAudioManager_ProcessEventQueue(&self->_sourceData);
-  VCAudioBufferList_AllocateFrame([a3 frameFormatSpeaker], &self->_sourceData.secondarySampleBuffer);
-  VCAudioBufferList_AllocateFrame([a3 frameFormatMic], &self->_sourceData.interruptMixDownSampleBuffer);
+  VCAudioBufferList_AllocateFrame([properties frameFormatSpeaker], &self->_sourceData.secondarySampleBuffer);
+  VCAudioBufferList_AllocateFrame([properties frameFormatMic], &self->_sourceData.interruptMixDownSampleBuffer);
   if (v13)
   {
-    if (![(VCAudioManager *)self resetAUIOWithProperties:a3])
+    if (![(VCAudioManager *)self resetAUIOWithProperties:properties])
     {
       [VCAudioManager stateRunningWithAudioUnitProperties:sessionProperties:client:newState:];
       return buf[0];
     }
 
-    [(VCAudioManager *)self startVADWithAudioUnitProperties:a3];
+    [(VCAudioManager *)self startVADWithAudioUnitProperties:properties];
   }
 
-  if (![(VCAudioManager *)self resetAudioLimiterWithProperties:a3])
+  if (![(VCAudioManager *)self resetAudioLimiterWithProperties:properties])
   {
     [VCAudioManager stateRunningWithAudioUnitProperties:sessionProperties:client:newState:];
     return buf[0];
   }
 
-  [(VCAudioManager *)self setCurrentAudioUnitProperties:a3];
+  [(VCAudioManager *)self setCurrentAudioUnitProperties:properties];
   v39 = AUIOResume();
   if (v39 < 0 && v39 != -2145714174)
   {
@@ -8317,15 +8317,15 @@ LABEL_45:
   return buf[0];
 }
 
-- (BOOL)stateInterruptedShouldGoToStarted:(id)a3
+- (BOOL)stateInterruptedShouldGoToStarted:(id)started
 {
   if (![(NSMutableArray *)self->_allClients count])
   {
     return 1;
   }
 
-  v5 = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioUnitType];
-  return v5 != [a3 audioUnitType];
+  audioUnitType = [(VCAudioUnitProperties *)self->_currentAudioUnitProperties audioUnitType];
+  return audioUnitType != [started audioUnitType];
 }
 
 - (void)stateTransitionInterruptedToRunning
@@ -8344,35 +8344,35 @@ LABEL_45:
   [(VCAudioManager *)self enterStateStarted];
 }
 
-- (BOOL)stateInterruptedWithAudioUnitProperties:(id)a3 sessionProperties:(id)a4 client:(id)a5 newState:(unsigned int *)a6
+- (BOOL)stateInterruptedWithAudioUnitProperties:(id)properties sessionProperties:(id)sessionProperties client:(id)client newState:(unsigned int *)state
 {
   v44 = *MEMORY[0x1E69E9840];
-  *a6 = 4;
+  *state = 4;
   if ([(VCAudioManager *)self stateInterruptedShouldGoToStarted:?])
   {
     [(VCAudioManager *)self stateTransitionInterruptedToStarted];
     v11 = 2;
 LABEL_7:
-    *a6 = v11;
+    *state = v11;
     return 1;
   }
 
-  if (a5)
+  if (client)
   {
     v39[0] = 0;
-    [(VCAudioManager *)self resetAudioSessionWithProperties:a4 interruptSuccessful:v39];
+    [(VCAudioManager *)self resetAudioSessionWithProperties:sessionProperties interruptSuccessful:v39];
     self->_isSuspended = v39[0] ^ 1;
   }
 
-  if ([(VCAudioManager *)self stateInterruptedShouldGoToRunning:a3])
+  if ([(VCAudioManager *)self stateInterruptedShouldGoToRunning:properties])
   {
     [(VCAudioManager *)self stateTransitionInterruptedToRunning];
     v11 = 3;
     goto LABEL_7;
   }
 
-  v12 = [(VCAudioManager *)self shouldResetAudioSessionWithProperties:a4];
-  v13 = [(VCAudioManager *)self shouldResetAudioUnitWithProperties:a3]|| v12;
+  v12 = [(VCAudioManager *)self shouldResetAudioSessionWithProperties:sessionProperties];
+  v13 = [(VCAudioManager *)self shouldResetAudioUnitWithProperties:properties]|| v12;
   if (v13)
   {
     if (objc_opt_class() == self)
@@ -8389,7 +8389,7 @@ LABEL_7:
         goto LABEL_20;
       }
 
-      v17 = *([a3 frameFormatMic] + 40);
+      v17 = *([properties frameFormatMic] + 40);
       *v39 = 136315906;
       *&v39[4] = v15;
       *&v39[12] = 2080;
@@ -8427,7 +8427,7 @@ LABEL_7:
         goto LABEL_20;
       }
 
-      v23 = *([a3 frameFormatMic] + 40);
+      v23 = *([properties frameFormatMic] + 40);
       *v39 = 136316418;
       *&v39[4] = v21;
       *&v39[12] = 2080;
@@ -8437,7 +8437,7 @@ LABEL_7:
       WORD2(v40) = 2112;
       *(&v40 + 6) = v14;
       HIWORD(v40) = 2048;
-      v41 = self;
+      selfCopy2 = self;
       LOWORD(v42) = 1024;
       *(&v42 + 2) = v23;
       v18 = " [%s] %s:%d %@(%p) reset audio unit: %d";
@@ -8450,17 +8450,17 @@ LABEL_20:
     [(VCAudioManager *)self stopInterruptThread:*v39];
     VCAudioBufferList_Destroy(&self->_sourceData.secondarySampleBuffer);
     VCAudioBufferList_Destroy(&self->_sourceData.interruptMixDownSampleBuffer);
-    [(VCAudioManager *)self applyControllerFormatToClients:a3];
+    [(VCAudioManager *)self applyControllerFormatToClients:properties];
   }
 
   if (v12)
   {
-    [(VCAudioManager *)self resetAudioSessionWithProperties:a4 interruptSuccessful:0];
+    [(VCAudioManager *)self resetAudioSessionWithProperties:sessionProperties interruptSuccessful:0];
   }
 
-  -[VCAudioUnitProperties setOperatingMode:](self->_currentAudioUnitProperties, "setOperatingMode:", [a3 operatingMode]);
+  -[VCAudioUnitProperties setOperatingMode:](self->_currentAudioUnitProperties, "setOperatingMode:", [properties operatingMode]);
   audioSessionId = self->_sourceData.audioSessionId;
-  if (audioSessionId == [a3 audioSessionId])
+  if (audioSessionId == [properties audioSessionId])
   {
     goto LABEL_35;
   }
@@ -8479,7 +8479,7 @@ LABEL_20:
       goto LABEL_35;
     }
 
-    v28 = [a3 audioSessionId];
+    audioSessionId = [properties audioSessionId];
     v29 = self->_sourceData.audioSessionId;
     *v39 = 136316162;
     *&v39[4] = v26;
@@ -8488,7 +8488,7 @@ LABEL_20:
     *&v39[22] = 1024;
     LODWORD(v40) = 2216;
     WORD2(v40) = 1024;
-    *(&v40 + 6) = v28;
+    *(&v40 + 6) = audioSessionId;
     WORD5(v40) = 1024;
     HIDWORD(v40) = v29;
     v30 = " [%s] %s:%d New active audioSessionId=%u previousAudioSessionID=%u";
@@ -8513,7 +8513,7 @@ LABEL_20:
     v34 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [a3 audioSessionId];
+      audioSessionId2 = [properties audioSessionId];
       v36 = self->_sourceData.audioSessionId;
       *v39 = 136316674;
       *&v39[4] = v33;
@@ -8524,9 +8524,9 @@ LABEL_20:
       WORD2(v40) = 2112;
       *(&v40 + 6) = v25;
       HIWORD(v40) = 2048;
-      v41 = self;
+      selfCopy2 = self;
       LOWORD(v42) = 1024;
-      *(&v42 + 2) = v35;
+      *(&v42 + 2) = audioSessionId2;
       HIWORD(v42) = 1024;
       LODWORD(v43) = v36;
       v30 = " [%s] %s:%d %@(%p) New active audioSessionId=%u previousAudioSessionID=%u";
@@ -8538,17 +8538,17 @@ LABEL_34:
   }
 
 LABEL_35:
-  v37 = [a3 audioSessionId];
-  self->_sourceData.audioSessionId = v37;
-  self->_sinkData.audioSessionId = v37;
-  [(VCAudioUnitProperties *)self->_currentAudioUnitProperties setAudioSessionId:v37];
+  audioSessionId3 = [properties audioSessionId];
+  self->_sourceData.audioSessionId = audioSessionId3;
+  self->_sinkData.audioSessionId = audioSessionId3;
+  [(VCAudioUnitProperties *)self->_currentAudioUnitProperties setAudioSessionId:audioSessionId3];
   [(VCAudioManager *)self applyAudioSessionMute];
-  [(VCAudioManager *)self activateStartingClient:a5 applyControllerFormat:(v13 & 1) == 0];
+  [(VCAudioManager *)self activateStartingClient:client applyControllerFormat:(v13 & 1) == 0];
   if (v13)
   {
-    VCAudioBufferList_AllocateFrame([a3 frameFormatSpeaker], &self->_sourceData.secondarySampleBuffer);
-    VCAudioBufferList_AllocateFrame([a3 frameFormatMic], &self->_sourceData.interruptMixDownSampleBuffer);
-    [(VCAudioManager *)self setCurrentAudioUnitProperties:a3];
+    VCAudioBufferList_AllocateFrame([properties frameFormatSpeaker], &self->_sourceData.secondarySampleBuffer);
+    VCAudioBufferList_AllocateFrame([properties frameFormatMic], &self->_sourceData.interruptMixDownSampleBuffer);
+    [(VCAudioManager *)self setCurrentAudioUnitProperties:properties];
     [(VCAudioManager *)self startInterruptThread];
   }
 
@@ -8556,18 +8556,18 @@ LABEL_35:
   return 1;
 }
 
-- (id)preferredClientWithNewClient:(id)a3
+- (id)preferredClientWithNewClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v17 = *MEMORY[0x1E69E9840];
-  if (!a3 || [a3 isPrewarmingClient])
+  if (!client || [client isPrewarmingClient])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSMutableArray *)self->_allClients reverseObjectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->_allClients reverseObjectEnumerator];
+    v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v6)
     {
       v7 = v6;
@@ -8578,18 +8578,18 @@ LABEL_35:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
           if (![v10 isPrewarmingClient])
           {
-            v3 = v10;
+            clientCopy = v10;
             goto LABEL_13;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v12 count:16];
         if (v7)
         {
           continue;
@@ -8600,23 +8600,23 @@ LABEL_35:
     }
 
 LABEL_13:
-    if (!v3)
+    if (!clientCopy)
     {
       return [(NSMutableArray *)self->_allClients lastObject];
     }
   }
 
-  return v3;
+  return clientCopy;
 }
 
-- (BOOL)updateStateWithAudioIOClient:(id)a3
+- (BOOL)updateStateWithAudioIOClient:(id)client
 {
   v101 = *MEMORY[0x1E69E9840];
   v83 = 0;
   v5 = [(VCAudioManager *)self preferredClientWithNewClient:?];
   [(VCAudioManager *)self _cleanupDeadClients];
-  v78 = a3;
-  if (a3)
+  clientCopy = client;
+  if (client)
   {
     if (objc_opt_class() == self)
     {
@@ -8633,7 +8633,7 @@ LABEL_13:
           v88 = 1024;
           v89 = 2263;
           v90 = 2112;
-          v91 = v78;
+          selfCopy2 = clientCopy;
           v9 = " [%s] %s:%d new client: %@";
           v10 = v8;
           v11 = 38;
@@ -8668,11 +8668,11 @@ LABEL_12:
           v88 = 1024;
           v89 = 2263;
           v90 = 2112;
-          v91 = v6;
+          selfCopy2 = v6;
           v92 = 2048;
           *v93 = self;
           *&v93[8] = 2112;
-          *&v93[10] = v78;
+          *&v93[10] = clientCopy;
           v9 = " [%s] %s:%d %@(%p) new client: %@";
           v10 = v13;
           v11 = 58;
@@ -8690,7 +8690,7 @@ LABEL_12:
     v15 = v79;
     if (self->_playbackMode != 2)
     {
-      v16 = [v79 frameFormatSpeaker];
+      frameFormatSpeaker = [v79 frameFormatSpeaker];
       goto LABEL_18;
     }
   }
@@ -8702,9 +8702,9 @@ LABEL_12:
     v15 = v79;
   }
 
-  v16 = [v15 frameFormatMic];
+  frameFormatSpeaker = [v15 frameFormatMic];
 LABEL_18:
-  v17 = v16;
+  v17 = frameFormatSpeaker;
   v18 = [(NSMutableArray *)self->_allClients count];
   v19 = objc_opt_class();
   if (v18)
@@ -8744,9 +8744,9 @@ LABEL_18:
       v88 = 1024;
       v89 = 2280;
       v90 = 2048;
-      v91 = self;
+      selfCopy2 = self;
       v92 = 2048;
-      *v93 = v78;
+      *v93 = clientCopy;
       *&v93[8] = 1024;
       *&v93[10] = v24;
       *&v93[14] = 1024;
@@ -8805,13 +8805,13 @@ LABEL_18:
       v88 = 1024;
       v89 = 2280;
       v90 = 2112;
-      v91 = v20;
+      selfCopy2 = v20;
       v92 = 2048;
       *v93 = self;
       *&v93[8] = 2048;
       *&v93[10] = self;
       *&v93[18] = 2048;
-      *v94 = v78;
+      *v94 = clientCopy;
       *&v94[8] = 1024;
       *&v94[10] = v30;
       v95 = 1024;
@@ -8848,9 +8848,9 @@ LABEL_18:
     v88 = 1024;
     v89 = 2282;
     v90 = 2048;
-    v91 = self;
+    selfCopy2 = self;
     v92 = 2048;
-    *v93 = v78;
+    *v93 = clientCopy;
     *&v93[8] = 1024;
     *&v93[10] = v36;
     v37 = " [%s] %s:%d (%p) audioIO=%p clientCount:%d AUIO=-/- AudioSession=-";
@@ -8890,13 +8890,13 @@ LABEL_18:
     v88 = 1024;
     v89 = 2282;
     v90 = 2112;
-    v91 = v21;
+    selfCopy2 = v21;
     v92 = 2048;
     *v93 = self;
     *&v93[8] = 2048;
     *&v93[10] = self;
     *&v93[18] = 2048;
-    *v94 = v78;
+    *v94 = clientCopy;
     *&v94[8] = 1024;
     *&v94[10] = v42;
     v37 = " [%s] %s:%d %@(%p) (%p) audioIO=%p clientCount:%d AUIO=-/- AudioSession=-";
@@ -8907,7 +8907,7 @@ LABEL_18:
   _os_log_impl(&dword_1DB56E000, v38, OS_LOG_TYPE_DEFAULT, v37, buf, v39);
 LABEL_46:
   v43 = 0x1ECC67000;
-  v44 = v78;
+  v44 = clientCopy;
   v45 = MEMORY[0x1E6986650];
   while (1)
   {
@@ -8929,7 +8929,7 @@ LABEL_46:
           v88 = 1024;
           v89 = 2286;
           v90 = 2112;
-          v91 = v56;
+          selfCopy2 = v56;
           v92 = 1024;
           *v93 = state;
           v51 = v55;
@@ -8964,7 +8964,7 @@ LABEL_46:
           v88 = 1024;
           v89 = 2286;
           v90 = 2112;
-          v91 = v46;
+          selfCopy2 = v46;
           v92 = 2048;
           *v93 = self;
           *&v93[8] = 2112;
@@ -9049,7 +9049,7 @@ LABEL_67:
       v88 = 1024;
       v89 = 2305;
       v90 = 2112;
-      v91 = v74;
+      selfCopy2 = v74;
       v92 = 1024;
       *v93 = v75;
       v45 = MEMORY[0x1E6986650];
@@ -9093,7 +9093,7 @@ LABEL_67:
       v88 = 1024;
       v89 = 2305;
       v90 = 2112;
-      v91 = v63;
+      selfCopy2 = v63;
       v92 = 2048;
       *v93 = self;
       *&v93[8] = 2112;
@@ -9101,7 +9101,7 @@ LABEL_67:
       v43 = 0x1ECC67000;
       *&v93[18] = 1024;
       *v94 = v67;
-      v44 = v78;
+      v44 = clientCopy;
       *&v94[4] = 2112;
       *&v94[6] = v68;
       v95 = 1024;
@@ -9133,17 +9133,17 @@ LABEL_81:
   return v60;
 }
 
-- (void)startClient:(id)a3
+- (void)startClient:(id)client
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (client)
   {
     dispatchQueue = self->_dispatchQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __30__VCAudioManager_startClient___block_invoke;
     v8[3] = &unk_1E85F37F0;
-    v8[4] = a3;
+    v8[4] = client;
     v8[5] = self;
     dispatch_async(dispatchQueue, v8);
   }
@@ -9187,7 +9187,7 @@ LABEL_81:
         v15 = 2112;
         v16 = v5;
         v17 = 2048;
-        v18 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Client is nil!", buf, 0x30u);
       }
     }
@@ -9442,10 +9442,10 @@ LABEL_31:
   }
 }
 
-- (void)stopClient:(id)a3
+- (void)stopClient:(id)client
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (client)
   {
     dispatchQueue = self->_dispatchQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -9453,7 +9453,7 @@ LABEL_31:
     v8[2] = __29__VCAudioManager_stopClient___block_invoke;
     v8[3] = &unk_1E85F37F0;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = client;
     dispatch_async(dispatchQueue, v8);
   }
 
@@ -9496,7 +9496,7 @@ LABEL_31:
         v15 = 2112;
         v16 = v5;
         v17 = 2048;
-        v18 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Client is nil!", buf, 0x30u);
       }
     }
@@ -9746,12 +9746,12 @@ LABEL_33:
   return [v27 didStop:v28 error:v29];
 }
 
-- (void)updateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4
+- (void)updateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (client)
   {
-    if (a4)
+    if (settings)
     {
       dispatchQueue = self->_dispatchQueue;
       v5[0] = MEMORY[0x1E69E9820];
@@ -9759,8 +9759,8 @@ LABEL_33:
       v5[2] = __40__VCAudioManager_updateClient_settings___block_invoke;
       v5[3] = &unk_1E85F3890;
       v5[4] = self;
-      v5[5] = a3;
-      v6 = *a4;
+      v5[5] = client;
+      v6 = *settings;
       dispatch_async(dispatchQueue, v5);
     }
 
@@ -9881,7 +9881,7 @@ LABEL_11:
   dispatch_async(dispatchQueue, v3);
 }
 
-- (void)refreshRemoteCodecType:(unsigned int)a3 sampleRate:(double)a4
+- (void)refreshRemoteCodecType:(unsigned int)type sampleRate:(double)rate
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -9890,8 +9890,8 @@ LABEL_11:
   v5[2] = __52__VCAudioManager_refreshRemoteCodecType_sampleRate___block_invoke;
   v5[3] = &unk_1E85F3908;
   v5[4] = self;
-  *&v5[5] = a4;
-  v6 = a3;
+  *&v5[5] = rate;
+  typeCopy = type;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -9917,7 +9917,7 @@ uint64_t __52__VCAudioManager_refreshRemoteCodecType_sampleRate___block_invoke(u
   return result;
 }
 
-- (BOOL)startAudioSessionWithProperties:(id)a3
+- (BOOL)startAudioSessionWithProperties:(id)properties
 {
   v28 = *MEMORY[0x1E69E9840];
   [(VCAudioManager *)self setCurrentAudioSessionMediaProperties:?];
@@ -9987,7 +9987,7 @@ uint64_t __52__VCAudioManager_refreshRemoteCodecType_sampleRate___block_invoke(u
       v24 = 2112;
       v25 = v5;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       v9 = " [%s] %s:%d %@(%p) Setting kCMSessionProperty_IsExpanseCallSession";
       v10 = v13;
       v11 = 48;
@@ -10001,10 +10001,10 @@ LABEL_15:
     [v14 updateAudioSessionPropertiesWithProperties:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}];
   }
 
-  return [(VCAudioSession *)self->_audioSession startClient:self clientType:1 mediaProperties:a3 sessionRef:&v15];
+  return [(VCAudioSession *)self->_audioSession startClient:self clientType:1 mediaProperties:properties sessionRef:&v15];
 }
 
-- (BOOL)resetAudioSessionWithProperties:(id)a3 interruptSuccessful:(BOOL *)a4
+- (BOOL)resetAudioSessionWithProperties:(id)properties interruptSuccessful:(BOOL *)successful
 {
   v35 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -10015,9 +10015,9 @@ LABEL_15:
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (properties)
         {
-          [a3 outputFormat];
+          [properties outputFormat];
           v10 = v22;
         }
 
@@ -10060,9 +10060,9 @@ LABEL_15:
       v12 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (properties)
         {
-          [a3 outputFormat];
+          [properties outputFormat];
           v13 = *&v19;
         }
 
@@ -10083,7 +10083,7 @@ LABEL_15:
         v29 = 2112;
         v30 = v7;
         v31 = 2048;
-        v32 = self;
+        selfCopy = self;
         v33 = 1024;
         v34 = v13;
         v14 = " [%s] %s:%d %@(%p) sampleRate=%d";
@@ -10095,7 +10095,7 @@ LABEL_17:
     }
   }
 
-  if ([a3 isSessionActive] && !-[VCAudioSession resetClient:mediaSetting:interruptSuccessful:](self->_audioSession, "resetClient:mediaSetting:interruptSuccessful:", self, a3, a4))
+  if ([properties isSessionActive] && !-[VCAudioSession resetClient:mediaSetting:interruptSuccessful:](self->_audioSession, "resetClient:mediaSetting:interruptSuccessful:", self, properties, successful))
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -10114,7 +10114,7 @@ LABEL_17:
 
   else
   {
-    [(VCAudioManager *)self setCurrentAudioSessionMediaProperties:a3];
+    [(VCAudioManager *)self setCurrentAudioSessionMediaProperties:properties];
     LOBYTE(v17) = 1;
   }
 
@@ -10244,7 +10244,7 @@ LABEL_17:
       WORD2(v12) = 2112;
       *(&v12 + 6) = v3;
       HIWORD(v12) = 2048;
-      v13 = self;
+      selfCopy = self;
       v6 = " [%s] %s:%d %@(%p) Stop the interrupt thread";
       v7 = v10;
       v8 = 48;
@@ -10588,7 +10588,7 @@ uint64_t __30__VCAudioManager_serverDidDie__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec
 {
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -10630,14 +10630,14 @@ uint64_t __30__VCAudioManager_serverDidDie__block_invoke(uint64_t a1)
         v13 = 2112;
         v14 = v4;
         v15 = 2048;
-        v16 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unexpected SPI call", &v7, 0x30u);
       }
     }
   }
 }
 
-- (int)setVolume:(float)a3 withRampTime:(float)a4
+- (int)setVolume:(float)volume withRampTime:(float)time
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0;
@@ -10651,8 +10651,8 @@ uint64_t __30__VCAudioManager_serverDidDie__block_invoke(uint64_t a1)
   v7[3] = &unk_1E85F3930;
   v7[4] = self;
   v7[5] = &v10;
-  v8 = a3;
-  v9 = a4;
+  volumeCopy = volume;
+  timeCopy = time;
   dispatch_sync(dispatchQueue, v7);
   v5 = *(v11 + 6);
   _Block_object_dispose(&v10, 8);
@@ -10734,7 +10734,7 @@ LABEL_4:
   OUTLINED_FUNCTION_39_0();
 }
 
-- (void)applySessionContextToAudioUnitProperties:(id)a3 preferredClient:(id)a4
+- (void)applySessionContextToAudioUnitProperties:(id)properties preferredClient:(id)client
 {
   OUTLINED_FUNCTION_40_0();
   v7 = v4;
@@ -10792,49 +10792,49 @@ LABEL_16:
   }
 
   v8 = v5;
-  v9 = [v6 audioSessionId];
-  v10 = [*(v7 + 928) objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v9)}];
+  audioSessionId = [v6 audioSessionId];
+  v10 = [*(v7 + 928) objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", audioSessionId)}];
   if (!v10)
   {
     goto LABEL_16;
   }
 
   v11 = v10;
-  v12 = [v10 maxChannelCountMic];
-  *([v8 frameFormatMic] + 28) = v12;
-  v13 = [v11 maxChannelCountSpeaker];
-  *([v8 frameFormatSpeaker] + 28) = v13;
+  maxChannelCountMic = [v10 maxChannelCountMic];
+  *([v8 frameFormatMic] + 28) = maxChannelCountMic;
+  maxChannelCountSpeaker = [v11 maxChannelCountSpeaker];
+  *([v8 frameFormatSpeaker] + 28) = maxChannelCountSpeaker;
   [v8 setSpatialContext:v11];
   OUTLINED_FUNCTION_39_0();
 
   [v14 setVpEnableSpatialChat:?];
 }
 
-- (void)updateDirectionWithClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4 isClientRegistered:(BOOL)a5
+- (void)updateDirectionWithClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings isClientRegistered:(BOOL)registered
 {
-  v5 = a5;
+  registeredCopy = registered;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v9 = [a3 direction];
-  var0 = a4->var0;
-  if (v9 == var0)
+  direction = [client direction];
+  var0 = settings->var0;
+  if (direction == var0)
   {
     return;
   }
 
-  v11 = v9;
-  [a3 setDirection:var0];
-  if (!v5 || self->_state == 1)
+  v11 = direction;
+  [client setDirection:var0];
+  if (!registeredCopy || self->_state == 1)
   {
     return;
   }
 
   if ((var0 ^ v11))
   {
-    v12 = [a3 sourceIO];
+    sourceIO = [client sourceIO];
     p_sourceData = &self->_sourceData;
     if (var0)
     {
-      [(VCAudioManager *)self registerClientIO:v12 controllerIO:p_sourceData];
+      [(VCAudioManager *)self registerClientIO:sourceIO controllerIO:p_sourceData];
       if (((var0 ^ v11) & 2) == 0)
       {
         return;
@@ -10843,7 +10843,7 @@ LABEL_16:
       goto LABEL_10;
     }
 
-    [(VCAudioManager *)self unregisterClientIO:v12 controllerIO:p_sourceData];
+    [(VCAudioManager *)self unregisterClientIO:sourceIO controllerIO:p_sourceData];
   }
 
   if (((var0 ^ v11) & 2) == 0)
@@ -10852,33 +10852,33 @@ LABEL_16:
   }
 
 LABEL_10:
-  v14 = [a3 sinkIO];
+  sinkIO = [client sinkIO];
   p_sinkData = &self->_sinkData;
   if ((var0 & 2) != 0)
   {
 
-    [(VCAudioManager *)self registerClientIO:v14 controllerIO:p_sinkData];
+    [(VCAudioManager *)self registerClientIO:sinkIO controllerIO:p_sinkData];
   }
 
   else
   {
 
-    [(VCAudioManager *)self unregisterClientIO:v14 controllerIO:p_sinkData];
+    [(VCAudioManager *)self unregisterClientIO:sinkIO controllerIO:p_sinkData];
   }
 }
 
-- (void)updateSpatialAudioWithClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4 isClientRegistered:(BOOL)a5
+- (void)updateSpatialAudioWithClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings isClientRegistered:(BOOL)registered
 {
-  v5 = a5;
+  registeredCopy = registered;
   v39 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  [a3 setSpatialAudioDisabled:a4->var1];
-  if (!v5 || self->_spatialAudioDisabled == [a3 spatialAudioDisabled])
+  [client setSpatialAudioDisabled:settings->var1];
+  if (!registeredCopy || self->_spatialAudioDisabled == [client spatialAudioDisabled])
   {
     return;
   }
 
-  self->_spatialAudioDisabled = [a3 spatialAudioDisabled];
+  self->_spatialAudioDisabled = [client spatialAudioDisabled];
   v9 = [OUTLINED_FUNCTION_18_0() updateStateWithAudioIOClient:?];
   v10 = objc_opt_class();
   if ((v9 & 1) == 0)
@@ -10902,7 +10902,7 @@ LABEL_10:
       OUTLINED_FUNCTION_6();
       v33 = 2422;
       v34 = 2048;
-      v35 = a3;
+      clientCopy = client;
       v21 = &dword_1DB56E000;
       v22 = " [%s] %s:%d controller update FAILED (audioIO=%p)";
       v23 = &v30;
@@ -10938,11 +10938,11 @@ LABEL_10:
       v32 = v28;
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_29();
-      v35 = v11;
+      clientCopy = v11;
       OUTLINED_FUNCTION_19_0();
-      v36 = self;
+      selfCopy = self;
       v37 = v29;
-      v38 = a3;
+      clientCopy2 = client;
       OUTLINED_FUNCTION_17_0();
       v26 = 58;
     }
@@ -10996,20 +10996,20 @@ LABEL_19:
   }
 }
 
-- (void)updateVoiceProcessingWithClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4 isClientRegistered:(BOOL)a5
+- (void)updateVoiceProcessingWithClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings isClientRegistered:(BOOL)registered
 {
-  v5 = a5;
+  registeredCopy = registered;
   v31 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  var2 = a4->var2;
-  v10 = [a3 isVoiceActivityEnabled];
-  var3 = a4->var3;
-  v12 = [a3 isMediaPriorityEnabled];
-  if (var2 != v10 || var3 != v12)
+  var2 = settings->var2;
+  isVoiceActivityEnabled = [client isVoiceActivityEnabled];
+  var3 = settings->var3;
+  isMediaPriorityEnabled = [client isMediaPriorityEnabled];
+  if (var2 != isVoiceActivityEnabled || var3 != isMediaPriorityEnabled)
   {
-    [a3 setIsVoiceActivityEnabled:a4->var2];
-    [a3 setIsMediaPriorityEnabled:a4->var3];
-    if (v5)
+    [client setIsVoiceActivityEnabled:settings->var2];
+    [client setIsMediaPriorityEnabled:settings->var3];
+    if (registeredCopy)
     {
       pthread_mutex_lock(&self->_interruptingMutex);
       if (![(VCAudioManager *)self audioCallbacksRunning])
@@ -11072,7 +11072,7 @@ LABEL_19:
         v27 = 2112;
         v28 = v14;
         v29 = 2048;
-        v30 = self;
+        selfCopy = self;
         v16 = &dword_1DB56E000;
         v19 = " [%s] %s:%d %@(%p) CMSimpleQueueEnqueue Full";
         v20 = buf;
@@ -12201,7 +12201,7 @@ LABEL_11:
 
 - (void)setupInterruptThread
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {

@@ -1,20 +1,20 @@
 @interface MPSNDArrayQuantizedConvolution
-+ (BOOL)supportsDestinationQuantizationWithDescriptor:(id)a3 device:(void *)a4;
-+ (BOOL)supportsSourceQuantizationWithDescriptor:(id)a3 atIndex:(unint64_t)a4 device:(void *)a5;
-- (MPSNDArrayQuantizedConvolution)initWithDevice:(id)a3 ndArrayConvolution2DDescriptor:(id)a4 dataQuantizationDescriptor:(id)a5 weightsQuantizationDescriptor:(id)a6;
-- (MPSNDArrayQuantizedConvolution)initWithDevice:(id)a3 ndArrayConvolution2DDescriptor:(id)a4 dataQuantizationDescriptor:(id)a5 weightsQuantizationDescriptor:(id)a6 sourceCount:(unint64_t)a7;
++ (BOOL)supportsDestinationQuantizationWithDescriptor:(id)descriptor device:(void *)device;
++ (BOOL)supportsSourceQuantizationWithDescriptor:(id)descriptor atIndex:(unint64_t)index device:(void *)device;
+- (MPSNDArrayQuantizedConvolution)initWithDevice:(id)device ndArrayConvolution2DDescriptor:(id)descriptor dataQuantizationDescriptor:(id)quantizationDescriptor weightsQuantizationDescriptor:(id)weightsQuantizationDescriptor;
+- (MPSNDArrayQuantizedConvolution)initWithDevice:(id)device ndArrayConvolution2DDescriptor:(id)descriptor dataQuantizationDescriptor:(id)quantizationDescriptor weightsQuantizationDescriptor:(id)weightsQuantizationDescriptor sourceCount:(unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation MPSNDArrayQuantizedConvolution
 
-+ (BOOL)supportsSourceQuantizationWithDescriptor:(id)a3 atIndex:(unint64_t)a4 device:(void *)a5
++ (BOOL)supportsSourceQuantizationWithDescriptor:(id)descriptor atIndex:(unint64_t)index device:(void *)device
 {
-  v6 = [a3 quantizationDataType];
-  v7 = v6;
-  if ((*(a5 + 1477) & 4) == 0 || *(a5 + 368) < 22)
+  quantizationDataType = [descriptor quantizationDataType];
+  v7 = quantizationDataType;
+  if ((*(device + 1477) & 4) == 0 || *(device + 368) < 22)
   {
-    return (v6 & 0x10000000) != 0;
+    return (quantizationDataType & 0x10000000) != 0;
   }
 
   result = 1;
@@ -26,13 +26,13 @@
   return result;
 }
 
-+ (BOOL)supportsDestinationQuantizationWithDescriptor:(id)a3 device:(void *)a4
++ (BOOL)supportsDestinationQuantizationWithDescriptor:(id)descriptor device:(void *)device
 {
-  v5 = [a3 quantizationDataType];
-  v6 = v5;
-  if ((*(a4 + 1477) & 4) == 0 || *(a4 + 368) < 22)
+  quantizationDataType = [descriptor quantizationDataType];
+  v6 = quantizationDataType;
+  if ((*(device + 1477) & 4) == 0 || *(device + 368) < 22)
   {
-    return (v5 & 0x10000000) != 0;
+    return (quantizationDataType & 0x10000000) != 0;
   }
 
   result = 1;
@@ -44,20 +44,20 @@
   return result;
 }
 
-- (MPSNDArrayQuantizedConvolution)initWithDevice:(id)a3 ndArrayConvolution2DDescriptor:(id)a4 dataQuantizationDescriptor:(id)a5 weightsQuantizationDescriptor:(id)a6
+- (MPSNDArrayQuantizedConvolution)initWithDevice:(id)device ndArrayConvolution2DDescriptor:(id)descriptor dataQuantizationDescriptor:(id)quantizationDescriptor weightsQuantizationDescriptor:(id)weightsQuantizationDescriptor
 {
-  v11 = [a5 getNDArrayCount];
-  v12 = v11 + [a6 getNDArrayCount] + 2;
+  getNDArrayCount = [quantizationDescriptor getNDArrayCount];
+  v12 = getNDArrayCount + [weightsQuantizationDescriptor getNDArrayCount] + 2;
 
-  return [(MPSNDArrayQuantizedConvolution *)self initWithDevice:a3 ndArrayConvolution2DDescriptor:a4 dataQuantizationDescriptor:a5 weightsQuantizationDescriptor:a6 sourceCount:v12];
+  return [(MPSNDArrayQuantizedConvolution *)self initWithDevice:device ndArrayConvolution2DDescriptor:descriptor dataQuantizationDescriptor:quantizationDescriptor weightsQuantizationDescriptor:weightsQuantizationDescriptor sourceCount:v12];
 }
 
-- (MPSNDArrayQuantizedConvolution)initWithDevice:(id)a3 ndArrayConvolution2DDescriptor:(id)a4 dataQuantizationDescriptor:(id)a5 weightsQuantizationDescriptor:(id)a6 sourceCount:(unint64_t)a7
+- (MPSNDArrayQuantizedConvolution)initWithDevice:(id)device ndArrayConvolution2DDescriptor:(id)descriptor dataQuantizationDescriptor:(id)quantizationDescriptor weightsQuantizationDescriptor:(id)weightsQuantizationDescriptor sourceCount:(unint64_t)count
 {
-  if (a5)
+  if (quantizationDescriptor)
   {
-    v13 = [a5 quantizationScheme] == 1;
-    if (a6)
+    v13 = [quantizationDescriptor quantizationScheme] == 1;
+    if (weightsQuantizationDescriptor)
     {
       goto LABEL_3;
     }
@@ -66,10 +66,10 @@
   else
   {
     v13 = 1;
-    if (a6)
+    if (weightsQuantizationDescriptor)
     {
 LABEL_3:
-      if ((v13 & ([a6 quantizationScheme] == 1)) != 0)
+      if ((v13 & ([weightsQuantizationDescriptor quantizationScheme] == 1)) != 0)
       {
         goto LABEL_7;
       }
@@ -90,16 +90,16 @@ LABEL_9:
   }
 
 LABEL_7:
-  if (a7 >= 5 && MTLReportFailureTypeEnabled())
+  if (count >= 5 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
   v16.receiver = self;
   v16.super_class = MPSNDArrayQuantizedConvolution;
-  v14 = [(MPSNDArrayConvolution2D *)&v16 initWithDevice:a3 ndArrayConvolution2DDescriptor:a4 sourceCount:a7];
-  v14->super._dataQuantizationDescriptor = [a5 copy];
-  v14->super._weightsQuantizationDescriptor = [a6 copy];
+  v14 = [(MPSNDArrayConvolution2D *)&v16 initWithDevice:device ndArrayConvolution2DDescriptor:descriptor sourceCount:count];
+  v14->super._dataQuantizationDescriptor = [quantizationDescriptor copy];
+  v14->super._weightsQuantizationDescriptor = [weightsQuantizationDescriptor copy];
   v14->super.super._encode = EncodeNDArrayQuantizationConvolution2D;
   v14->super.super.super._encodeData = v14;
   return v14;

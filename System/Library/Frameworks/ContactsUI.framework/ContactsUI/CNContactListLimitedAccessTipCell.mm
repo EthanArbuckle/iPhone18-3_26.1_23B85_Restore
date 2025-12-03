@@ -1,8 +1,8 @@
 @interface CNContactListLimitedAccessTipCell
-- (CNContactListLimitedAccessTipCell)initWithFrame:(CGRect)a3;
+- (CNContactListLimitedAccessTipCell)initWithFrame:(CGRect)frame;
 - (CNContactListLimitedAccessTipCellDelegate)delegate;
-- (void)limitedAccessTipViewDidTapDismiss:(id)a3;
-- (void)updateWithAppName:(id)a3 isLimited:(BOOL)a4;
+- (void)limitedAccessTipViewDidTapDismiss:(id)dismiss;
+- (void)updateWithAppName:(id)name isLimited:(BOOL)limited;
 @end
 
 @implementation CNContactListLimitedAccessTipCell
@@ -14,96 +14,96 @@
   return WeakRetained;
 }
 
-- (void)limitedAccessTipViewDidTapDismiss:(id)a3
+- (void)limitedAccessTipViewDidTapDismiss:(id)dismiss
 {
-  v4 = [(CNContactListLimitedAccessTipCell *)self delegate];
-  [v4 limitedAccessTipCellDidTapDismiss:self];
+  delegate = [(CNContactListLimitedAccessTipCell *)self delegate];
+  [delegate limitedAccessTipCellDidTapDismiss:self];
 }
 
-- (void)updateWithAppName:(id)a3 isLimited:(BOOL)a4
+- (void)updateWithAppName:(id)name isLimited:(BOOL)limited
 {
-  v4 = a4;
+  limitedCopy = limited;
   v44[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   [(CNContactListLimitedAccessTipCell *)self setContentConfiguration:0];
   [(CNContactListLimitedAccessTipCell *)self setAccessories:MEMORY[0x1E695E0F0]];
-  v7 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
+  limitedAccessTipView = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
 
-  if (!v7)
+  if (!limitedAccessTipView)
   {
-    v8 = [[CNContactListLimitedAccessTipView alloc] initWithAppName:v6 isLimited:v4];
+    v8 = [[CNContactListLimitedAccessTipView alloc] initWithAppName:nameCopy isLimited:limitedCopy];
     [(CNContactListLimitedAccessTipCell *)self setLimitedAccessTipView:v8];
 
-    v9 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    limitedAccessTipView2 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
+    [limitedAccessTipView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
-    [v10 setDelegate:self];
+    limitedAccessTipView3 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
+    [limitedAccessTipView3 setDelegate:self];
   }
 
-  v11 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
-  v12 = [v11 superview];
+  limitedAccessTipView4 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
+  superview = [limitedAccessTipView4 superview];
 
-  if (!v12)
+  if (!superview)
   {
-    v43 = v6;
-    v13 = [(CNContactListLimitedAccessTipCell *)self contentView];
-    v14 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
-    [v13 addSubview:v14];
+    v43 = nameCopy;
+    contentView = [(CNContactListLimitedAccessTipCell *)self contentView];
+    limitedAccessTipView5 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
+    [contentView addSubview:limitedAccessTipView5];
 
-    v15 = [(CNContactListLimitedAccessTipCell *)self contactListStyleApplier];
-    v16 = [v15 usesInsetPlatterStyle];
-    v17 = [(CNContactListLimitedAccessTipCell *)self contentView];
-    v18 = v17;
-    if (v16)
+    contactListStyleApplier = [(CNContactListLimitedAccessTipCell *)self contactListStyleApplier];
+    usesInsetPlatterStyle = [contactListStyleApplier usesInsetPlatterStyle];
+    contentView2 = [(CNContactListLimitedAccessTipCell *)self contentView];
+    v18 = contentView2;
+    if (usesInsetPlatterStyle)
     {
-      v19 = [v17 trailingAnchor];
+      trailingAnchor = [contentView2 trailingAnchor];
     }
 
     else
     {
-      v20 = [v17 layoutMarginsGuide];
-      v19 = [v20 trailingAnchor];
+      layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+      trailingAnchor = [layoutMarginsGuide trailingAnchor];
     }
 
-    v31 = v19;
+    v31 = trailingAnchor;
 
     v34 = MEMORY[0x1E696ACD8];
-    v42 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
-    v40 = [v42 leadingAnchor];
-    v41 = [(CNContactListLimitedAccessTipCell *)self contentView];
-    v39 = [v41 layoutMarginsGuide];
-    v38 = [v39 leadingAnchor];
-    v37 = [v40 constraintEqualToAnchor:v38 constant:7.0];
+    limitedAccessTipView6 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
+    leadingAnchor = [limitedAccessTipView6 leadingAnchor];
+    contentView3 = [(CNContactListLimitedAccessTipCell *)self contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:7.0];
     v44[0] = v37;
-    v36 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
-    v35 = [v36 trailingAnchor];
-    v33 = [v35 constraintEqualToAnchor:v19 constant:-7.0];
+    limitedAccessTipView7 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
+    trailingAnchor2 = [limitedAccessTipView7 trailingAnchor];
+    v33 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor constant:-7.0];
     v44[1] = v33;
-    v32 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
-    v21 = [v32 topAnchor];
-    v22 = [(CNContactListLimitedAccessTipCell *)self contentView];
-    v23 = [v22 topAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    limitedAccessTipView8 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
+    topAnchor = [limitedAccessTipView8 topAnchor];
+    contentView4 = [(CNContactListLimitedAccessTipCell *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v44[2] = v24;
-    v25 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
-    v26 = [v25 bottomAnchor];
-    v27 = [(CNContactListLimitedAccessTipCell *)self contentView];
-    v28 = [v27 bottomAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
+    limitedAccessTipView9 = [(CNContactListLimitedAccessTipCell *)self limitedAccessTipView];
+    bottomAnchor = [limitedAccessTipView9 bottomAnchor];
+    contentView5 = [(CNContactListLimitedAccessTipCell *)self contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v44[3] = v29;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:4];
     [v34 activateConstraints:v30];
 
-    v6 = v43;
+    nameCopy = v43;
   }
 }
 
-- (CNContactListLimitedAccessTipCell)initWithFrame:(CGRect)a3
+- (CNContactListLimitedAccessTipCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CNContactListLimitedAccessTipCell;
-  v3 = [(CNContactListLimitedAccessTipCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNContactListLimitedAccessTipCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

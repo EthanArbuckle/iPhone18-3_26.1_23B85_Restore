@@ -1,27 +1,27 @@
 @interface CAMStageLightOverlayView
-+ (CGRect)circleFrameForViewport:(CGRect)a3 orientation:(int64_t)a4 bottomContentInset:(double)a5 screenScale:(double)a6;
-+ (double)_circleDiameterForViewportSize:(CGSize)a3 orientation:(int64_t)a4 screenScale:(double)a5;
-- (CAMStageLightOverlayView)initWithFrame:(CGRect)a3;
-- (CGRect)_circleFrameForOrientation:(int64_t)a3;
++ (CGRect)circleFrameForViewport:(CGRect)viewport orientation:(int64_t)orientation bottomContentInset:(double)inset screenScale:(double)scale;
++ (double)_circleDiameterForViewportSize:(CGSize)size orientation:(int64_t)orientation screenScale:(double)scale;
+- (CAMStageLightOverlayView)initWithFrame:(CGRect)frame;
+- (CGRect)_circleFrameForOrientation:(int64_t)orientation;
 - (CGRect)viewportFrame;
 - (void)_updateAnimatorState;
-- (void)_updateShadowViewsAnimated:(BOOL)a3;
+- (void)_updateShadowViewsAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4;
-- (void)setBottomContentInset:(double)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setViewportFrame:(CGRect)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setActive:(BOOL)active animated:(BOOL)animated;
+- (void)setBottomContentInset:(double)inset;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setViewportFrame:(CGRect)frame;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation CAMStageLightOverlayView
 
-- (CAMStageLightOverlayView)initWithFrame:(CGRect)a3
+- (CAMStageLightOverlayView)initWithFrame:(CGRect)frame
 {
   v35[3] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = CAMStageLightOverlayView;
-  v3 = [(CAMStageLightOverlayView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMStageLightOverlayView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,8 +31,8 @@
     tintView = v4->__tintView;
     v4->__tintView = v6;
 
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v4->__tintView setBackgroundColor:v8];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v4->__tintView setBackgroundColor:blackColor];
 
     [(CAMStageLightOverlayView *)v4 addSubview:v4->__tintView];
     v9 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -49,37 +49,37 @@
     v4->__gradientLayer = v15;
 
     [(CAGradientLayer *)v4->__gradientLayer setType:*MEMORY[0x1E6979DB0]];
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    v35[0] = [v17 CGColor];
-    v18 = [MEMORY[0x1E69DC888] clearColor];
-    v35[1] = [v18 CGColor];
-    v19 = [MEMORY[0x1E69DC888] blackColor];
-    v35[2] = [v19 CGColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v35[0] = [clearColor CGColor];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    v35[1] = [clearColor2 CGColor];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    v35[2] = [blackColor2 CGColor];
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:3];
     [(CAGradientLayer *)v4->__gradientLayer setColors:v20];
 
     v33[0] = @"locations";
-    v21 = [MEMORY[0x1E695DFB0] null];
-    v34[0] = v21;
+    null = [MEMORY[0x1E695DFB0] null];
+    v34[0] = null;
     v33[1] = @"startPoint";
-    v22 = [MEMORY[0x1E695DFB0] null];
-    v34[1] = v22;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v34[1] = null2;
     v33[2] = @"endPoint";
-    v23 = [MEMORY[0x1E695DFB0] null];
-    v34[2] = v23;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v34[2] = null3;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:3];
     [(CAGradientLayer *)v4->__gradientLayer setActions:v24];
 
     v25 = v4->__gradientLayer;
-    v26 = [(CAMStageLightOverlayView *)v4 layer];
-    [v26 setMask:v25];
+    layer = [(CAMStageLightOverlayView *)v4 layer];
+    [layer setMask:v25];
 
-    v27 = [MEMORY[0x1E69794A0] layer];
+    layer2 = [MEMORY[0x1E69794A0] layer];
     circleLayer = v4->__circleLayer;
-    v4->__circleLayer = v27;
+    v4->__circleLayer = layer2;
 
-    v29 = [(CAMStageLightOverlayView *)v4 layer];
-    [v29 addSublayer:v4->__circleLayer];
+    layer3 = [(CAMStageLightOverlayView *)v4 layer];
+    [layer3 addSublayer:v4->__circleLayer];
 
     [(CAMStageLightOverlayView *)v4 _updateShadowViewsAnimated:0];
     v30 = v4;
@@ -88,15 +88,15 @@
   return v4;
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
     v14 = v4;
     v15 = v5;
-    self->_visible = a3;
+    self->_visible = visible;
     v7 = 0.4;
-    if (!a3)
+    if (!visible)
     {
       v7 = 0.25;
     }
@@ -105,13 +105,13 @@
     v8 = MEMORY[0x1E69E9820];
     v10 = __48__CAMStageLightOverlayView_setVisible_animated___block_invoke;
     v11 = &unk_1E76F7850;
-    if (!a4)
+    if (!animated)
     {
       v7 = 0.0;
     }
 
-    v12 = self;
-    v13 = a3;
+    selfCopy = self;
+    visibleCopy = visible;
     [CAMView animateIfNeededWithDuration:&v8 animations:v7];
     [(CAMStageLightOverlayView *)self _updateAnimatorState:v8];
   }
@@ -128,73 +128,73 @@ uint64_t __48__CAMStageLightOverlayView_setVisible_animated___block_invoke(uint6
   return [*(a1 + 32) setAlpha:v1];
 }
 
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)setActive:(BOOL)active animated:(BOOL)animated
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    [(CAMStageLightOverlayView *)self _updateShadowViewsAnimated:a4];
+    self->_active = active;
+    [(CAMStageLightOverlayView *)self _updateShadowViewsAnimated:animated];
 
     [(CAMStageLightOverlayView *)self _updateAnimatorState];
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    v5 = a4;
-    self->_orientation = a3;
+    animatedCopy = animated;
+    self->_orientation = orientation;
     [(CAMStageLightOverlayView *)self _circleFrameForOrientation:[(CAMStageLightOverlayView *)self orientation]];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(CAMStageLightOverlayView *)self _animator];
-    [v15 setCircleBaseFrame:v5 animated:{v8, v10, v12, v14}];
+    _animator = [(CAMStageLightOverlayView *)self _animator];
+    [_animator setCircleBaseFrame:animatedCopy animated:{v8, v10, v12, v14}];
   }
 }
 
-- (void)setBottomContentInset:(double)a3
+- (void)setBottomContentInset:(double)inset
 {
-  if (self->_bottomContentInset != a3)
+  if (self->_bottomContentInset != inset)
   {
-    self->_bottomContentInset = a3;
+    self->_bottomContentInset = inset;
     [(CAMStageLightOverlayView *)self _circleFrameForOrientation:[(CAMStageLightOverlayView *)self orientation]];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(CAMStageLightOverlayView *)self _animator];
-    [v13 setCircleBaseFrame:1 animated:{v6, v8, v10, v12}];
+    _animator = [(CAMStageLightOverlayView *)self _animator];
+    [_animator setCircleBaseFrame:1 animated:{v6, v8, v10, v12}];
   }
 }
 
-- (void)setViewportFrame:(CGRect)a3
+- (void)setViewportFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_viewportFrame = &self->_viewportFrame;
-  if (!CGRectEqualToRect(a3, self->_viewportFrame))
+  if (!CGRectEqualToRect(frame, self->_viewportFrame))
   {
     p_viewportFrame->origin.x = x;
     p_viewportFrame->origin.y = y;
     p_viewportFrame->size.width = width;
     p_viewportFrame->size.height = height;
-    v9 = [(CAMStageLightOverlayView *)self _animator];
+    _animator = [(CAMStageLightOverlayView *)self _animator];
     [(CAMStageLightOverlayView *)self _circleFrameForOrientation:[(CAMStageLightOverlayView *)self orientation]];
-    [v9 setCircleBaseFrame:1 animated:?];
+    [_animator setCircleBaseFrame:1 animated:?];
   }
 }
 
-- (void)_updateShadowViewsAnimated:(BOOL)a3
+- (void)_updateShadowViewsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMStageLightOverlayView *)self isActive];
+  animatedCopy = animated;
+  isActive = [(CAMStageLightOverlayView *)self isActive];
   v6 = 0.3;
-  if (!v3)
+  if (!animatedCopy)
   {
     v6 = 0.0;
   }
@@ -203,7 +203,7 @@ uint64_t __48__CAMStageLightOverlayView_setVisible_animated___block_invoke(uint6
   v8[1] = 3221225472;
   v8[2] = __55__CAMStageLightOverlayView__updateShadowViewsAnimated___block_invoke;
   v8[3] = &unk_1E76F7850;
-  if (v5)
+  if (isActive)
   {
     v7 = 0x20000;
   }
@@ -214,7 +214,7 @@ uint64_t __48__CAMStageLightOverlayView_setVisible_animated___block_invoke(uint6
   }
 
   v8[4] = self;
-  v9 = v5;
+  v9 = isActive;
   [CAMView animateIfNeededWithDuration:v7 options:v8 animations:0 completion:v6];
 }
 
@@ -249,15 +249,15 @@ void __55__CAMStageLightOverlayView__updateShadowViewsAnimated___block_invoke(ui
 
 - (void)_updateAnimatorState
 {
-  v3 = [(CAMStageLightOverlayView *)self isVisible];
-  v4 = [(CAMStageLightOverlayView *)self isActive];
+  isVisible = [(CAMStageLightOverlayView *)self isVisible];
+  isActive = [(CAMStageLightOverlayView *)self isActive];
   v5 = 1;
-  if (v4)
+  if (isActive)
   {
     v5 = 2;
   }
 
-  if (v3)
+  if (isVisible)
   {
     v6 = v5;
   }
@@ -267,30 +267,30 @@ void __55__CAMStageLightOverlayView__updateShadowViewsAnimated___block_invoke(ui
     v6 = 0;
   }
 
-  v7 = [(CAMStageLightOverlayView *)self _animator];
-  [v7 setState:v6];
+  _animator = [(CAMStageLightOverlayView *)self _animator];
+  [_animator setState:v6];
 }
 
-+ (double)_circleDiameterForViewportSize:(CGSize)a3 orientation:(int64_t)a4 screenScale:(double)a5
++ (double)_circleDiameterForViewportSize:(CGSize)size orientation:(int64_t)orientation screenScale:(double)scale
 {
-  [a1 _useLargeLayoutForViewportSize:?];
+  [self _useLargeLayoutForViewportSize:?];
 
   UIRoundToScale();
   return result;
 }
 
-+ (CGRect)circleFrameForViewport:(CGRect)a3 orientation:(int64_t)a4 bottomContentInset:(double)a5 screenScale:(double)a6
++ (CGRect)circleFrameForViewport:(CGRect)viewport orientation:(int64_t)orientation bottomContentInset:(double)inset screenScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a1 _useLargeLayoutForViewportSize:{a3.size.width, a3.size.height}];
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
+  [self _useLargeLayoutForViewportSize:{viewport.size.width, viewport.size.height}];
   UIRectGetCenter();
-  [objc_opt_class() _circleDiameterForViewportSize:a4 orientation:width screenScale:{height, a6}];
+  [objc_opt_class() _circleDiameterForViewportSize:orientation orientation:width screenScale:{height, scale}];
   v18.origin.x = x + 0.0;
   v18.origin.y = y + 0.0;
-  v18.size.height = height - (a5 + 0.0);
+  v18.size.height = height - (inset + 0.0);
   v18.size.width = width;
   CGRectGetMaxY(v18);
 
@@ -302,7 +302,7 @@ void __55__CAMStageLightOverlayView__updateShadowViewsAnimated___block_invoke(ui
   return result;
 }
 
-- (CGRect)_circleFrameForOrientation:(int64_t)a3
+- (CGRect)_circleFrameForOrientation:(int64_t)orientation
 {
   [(CAMStageLightOverlayView *)self viewportFrame];
   if (CGRectEqualToRect(v24, *MEMORY[0x1E695F058]))
@@ -319,15 +319,15 @@ void __55__CAMStageLightOverlayView__updateShadowViewsAnimated___block_invoke(ui
   v10 = v6;
   v11 = v7;
   v12 = v8;
-  v13 = [(CAMStageLightOverlayView *)self window];
-  v14 = [v13 screen];
-  [v14 scale];
+  window = [(CAMStageLightOverlayView *)self window];
+  screen = [window screen];
+  [screen scale];
   v16 = v15;
 
   v17 = objc_opt_class();
   [(CAMStageLightOverlayView *)self bottomContentInset];
 
-  [v17 circleFrameForViewport:a3 orientation:v9 bottomContentInset:v10 screenScale:{v11, v12, v18, v16}];
+  [v17 circleFrameForViewport:orientation orientation:v9 bottomContentInset:v10 screenScale:{v11, v12, v18, v16}];
   result.size.height = v22;
   result.size.width = v21;
   result.origin.y = v20;
@@ -345,33 +345,33 @@ void __55__CAMStageLightOverlayView__updateShadowViewsAnimated___block_invoke(ui
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMStageLightOverlayView *)self _tintView];
-  v12 = [(CAMStageLightOverlayView *)self _vignetteView];
-  [v11 setFrame:{v4, v6, v8, v10}];
-  [v12 setFrame:{v4, v6, v8, v10}];
-  v13 = [(CAMStageLightOverlayView *)self _gradientLayer];
-  [v13 setBounds:{v4, v6, v8, v10}];
+  _tintView = [(CAMStageLightOverlayView *)self _tintView];
+  _vignetteView = [(CAMStageLightOverlayView *)self _vignetteView];
+  [_tintView setFrame:{v4, v6, v8, v10}];
+  [_vignetteView setFrame:{v4, v6, v8, v10}];
+  _gradientLayer = [(CAMStageLightOverlayView *)self _gradientLayer];
+  [_gradientLayer setBounds:{v4, v6, v8, v10}];
   UIRectGetCenter();
-  [v13 setPosition:?];
-  v14 = [(CAMStageLightOverlayView *)self _animator];
+  [_gradientLayer setPosition:?];
+  _animator = [(CAMStageLightOverlayView *)self _animator];
   [(CAMStageLightOverlayView *)self _circleFrameForOrientation:[(CAMStageLightOverlayView *)self orientation]];
   v19 = v15;
   v20 = v16;
   v21 = v17;
   v22 = v18;
-  if (v14)
+  if (_animator)
   {
-    [(CAMStageLightAnimator *)v14 setCircleBaseFrame:v15, v16, v17, v18];
+    [(CAMStageLightAnimator *)_animator setCircleBaseFrame:v15, v16, v17, v18];
   }
 
   else
   {
     v23 = [CAMStageLightAnimator alloc];
-    v24 = [(CAMStageLightOverlayView *)self _circleLayer];
-    v14 = [(CAMStageLightAnimator *)v23 initWithGradientLayer:v13 circleLayer:v24];
+    _circleLayer = [(CAMStageLightOverlayView *)self _circleLayer];
+    _animator = [(CAMStageLightAnimator *)v23 initWithGradientLayer:_gradientLayer circleLayer:_circleLayer];
 
-    [(CAMStageLightAnimator *)v14 setCircleBaseFrame:v19, v20, v21, v22];
-    [(CAMStageLightOverlayView *)self _setAnimator:v14];
+    [(CAMStageLightAnimator *)_animator setCircleBaseFrame:v19, v20, v21, v22];
+    [(CAMStageLightOverlayView *)self _setAnimator:_animator];
     [(CAMStageLightOverlayView *)self _updateAnimatorState];
   }
 }

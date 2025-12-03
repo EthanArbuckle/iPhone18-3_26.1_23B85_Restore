@@ -1,19 +1,19 @@
 @interface SXDataTableElementStyle
-- (id)valueForLookupKey:(id)a3;
+- (id)valueForLookupKey:(id)key;
 @end
 
 @implementation SXDataTableElementStyle
 
-- (id)valueForLookupKey:(id)a3
+- (id)valueForLookupKey:(id)key
 {
-  v4 = a3;
-  if (![v4 isEqualToString:@"conditional"])
+  keyCopy = key;
+  if (![keyCopy isEqualToString:@"conditional"])
   {
     goto LABEL_4;
   }
 
-  v5 = [(SXJSONObject *)self jsonDictionary];
-  v6 = [v5 objectForKey:v4];
+  jsonDictionary = [(SXJSONObject *)self jsonDictionary];
+  v6 = [jsonDictionary objectForKey:keyCopy];
 
   if (v6)
   {
@@ -21,7 +21,7 @@
 LABEL_4:
     v9.receiver = self;
     v9.super_class = SXDataTableElementStyle;
-    v7 = [(SXJSONObject *)&v9 valueForLookupKey:v4];
+    v7 = [(SXJSONObject *)&v9 valueForLookupKey:keyCopy];
     goto LABEL_5;
   }
 

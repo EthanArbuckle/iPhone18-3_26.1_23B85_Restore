@@ -1,11 +1,11 @@
 @interface NetworkInfoDiagnosticExtension.RMDashRFDelegate
-- (BOOL)fileManager:(id)a3 shouldRemoveItemAtURL:(id)a4;
+- (BOOL)fileManager:(id)manager shouldRemoveItemAtURL:(id)l;
 - (_TtCC30NetworkInfoDiagnosticExtension30NetworkInfoDiagnosticExtensionP33_A8013760F8D41FC9CE2006DC6E22100C16RMDashRFDelegate)init;
 @end
 
 @implementation NetworkInfoDiagnosticExtension.RMDashRFDelegate
 
-- (BOOL)fileManager:(id)a3 shouldRemoveItemAtURL:(id)a4
+- (BOOL)fileManager:(id)manager shouldRemoveItemAtURL:(id)l
 {
   v5 = sub_10000D02C();
   v6 = *(v5 - 8);
@@ -13,10 +13,10 @@
   __chkstk_darwin(v5);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10000CFEC();
-  v10 = self;
+  selfCopy = self;
   sub_10000CFFC();
-  v11 = *(&v10->super.isa + OBJC_IVAR____TtCC30NetworkInfoDiagnosticExtension30NetworkInfoDiagnosticExtensionP33_A8013760F8D41FC9CE2006DC6E22100C16RMDashRFDelegate_basePath);
-  v12 = *&v10->basePath[OBJC_IVAR____TtCC30NetworkInfoDiagnosticExtension30NetworkInfoDiagnosticExtensionP33_A8013760F8D41FC9CE2006DC6E22100C16RMDashRFDelegate_basePath];
+  v11 = *(&selfCopy->super.isa + OBJC_IVAR____TtCC30NetworkInfoDiagnosticExtension30NetworkInfoDiagnosticExtensionP33_A8013760F8D41FC9CE2006DC6E22100C16RMDashRFDelegate_basePath);
+  v12 = *&selfCopy->basePath[OBJC_IVAR____TtCC30NetworkInfoDiagnosticExtension30NetworkInfoDiagnosticExtensionP33_A8013760F8D41FC9CE2006DC6E22100C16RMDashRFDelegate_basePath];
 
   v16._countAndFlagsBits = v11;
   v16._object = v12;

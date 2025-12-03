@@ -8,9 +8,9 @@
 {
   v4.receiver = self;
   v4.super_class = TUViewController;
-  v2 = [(TUViewController *)&v4 contentScrollView];
+  contentScrollView = [(TUViewController *)&v4 contentScrollView];
 
-  return v2;
+  return contentScrollView;
 }
 
 @end

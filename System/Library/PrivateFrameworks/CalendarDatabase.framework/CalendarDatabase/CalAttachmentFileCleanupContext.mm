@@ -1,15 +1,15 @@
 @interface CalAttachmentFileCleanupContext
-- (CalAttachmentFileCleanupContext)initWithExternalID:(id)a3 storeUUID:(id)a4 database:(CalDatabase *)a5;
-- (CalAttachmentFileCleanupContext)initWithStore:(void *)a3;
+- (CalAttachmentFileCleanupContext)initWithExternalID:(id)d storeUUID:(id)iD database:(CalDatabase *)database;
+- (CalAttachmentFileCleanupContext)initWithStore:(void *)store;
 - (id)description;
-- (void)addAttachmentToDelete:(id)a3;
+- (void)addAttachmentToDelete:(id)delete;
 - (void)cleanup;
 - (void)markStoreAsDeleted;
 @end
 
 @implementation CalAttachmentFileCleanupContext
 
-- (CalAttachmentFileCleanupContext)initWithStore:(void *)a3
+- (CalAttachmentFileCleanupContext)initWithStore:(void *)store
 {
   v9.receiver = self;
   v9.super_class = CalAttachmentFileCleanupContext;
@@ -17,7 +17,7 @@
   if (v4)
   {
     v5 = CalCopyDatabaseForRecord();
-    v6 = _CalAttachmentFileCopyAttachmentContainerForStore(a3, v5);
+    v6 = _CalAttachmentFileCopyAttachmentContainerForStore(store, v5);
     storeAttachmentContainer = v4->_storeAttachmentContainer;
     v4->_storeAttachmentContainer = v6;
 
@@ -30,16 +30,16 @@
   return v4;
 }
 
-- (CalAttachmentFileCleanupContext)initWithExternalID:(id)a3 storeUUID:(id)a4 database:(CalDatabase *)a5
+- (CalAttachmentFileCleanupContext)initWithExternalID:(id)d storeUUID:(id)iD database:(CalDatabase *)database
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = CalAttachmentFileCleanupContext;
   v10 = [(CalAttachmentFileCleanupContext *)&v14 init];
   if (v10)
   {
-    v11 = _CalAttachmentFileCopyAttachmentContainerForStoreProperties(v8, v9, a5);
+    v11 = _CalAttachmentFileCopyAttachmentContainerForStoreProperties(dCopy, iDCopy, database);
     storeAttachmentContainer = v10->_storeAttachmentContainer;
     v10->_storeAttachmentContainer = v11;
   }
@@ -47,10 +47,10 @@
   return v10;
 }
 
-- (void)addAttachmentToDelete:(id)a3
+- (void)addAttachmentToDelete:(id)delete
 {
-  v4 = a3;
-  v5 = v4;
+  deleteCopy = delete;
+  v5 = deleteCopy;
   if (!self->_deleteEntireContainer)
   {
     attachmentUUIDsToDelete = self->_attachmentUUIDsToDelete;
@@ -64,11 +64,11 @@
       attachmentUUIDsToDelete = self->_attachmentUUIDsToDelete;
     }
 
-    v4 = [(NSMutableArray *)attachmentUUIDsToDelete addObject:v9];
+    deleteCopy = [(NSMutableArray *)attachmentUUIDsToDelete addObject:v9];
     v5 = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](deleteCopy, v5);
 }
 
 - (void)markStoreAsDeleted
@@ -82,8 +82,8 @@
 - (void)cleanup
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = v3;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = defaultManager;
   if (!self->_deleteEntireContainer)
   {
     v33 = 0u;
@@ -158,7 +158,7 @@ LABEL_15:
 
   storeAttachmentContainer = self->_storeAttachmentContainer;
   v35 = 0;
-  v6 = [v3 removeItemAtURL:storeAttachmentContainer error:&v35];
+  v6 = [defaultManager removeItemAtURL:storeAttachmentContainer error:&v35];
   obj = v35;
   v7 = CDBLogHandle;
   if (v6)

@@ -2,7 +2,7 @@
 - (SSVMediaSocialAdminStatusOperation)init;
 - (id)outputBlock;
 - (void)main;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SSVMediaSocialAdminStatusOperation
@@ -34,13 +34,13 @@
   return v4;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -56,13 +56,13 @@
   v30 = __Block_byref_object_copy__71;
   v31 = __Block_byref_object_dispose__71;
   v32 = 0;
-  v3 = [(SSVComplexOperation *)self URLBagDictionary];
-  v4 = [v3 objectForKey:@"musicConnect"];
+  uRLBagDictionary = [(SSVComplexOperation *)self URLBagDictionary];
+  v4 = [uRLBagDictionary objectForKey:@"musicConnect"];
 
   if (!v4)
   {
-    v5 = [(SSVComplexOperation *)self URLBagDictionary];
-    v4 = [v5 objectForKey:@"aucAdminStatus"];
+    uRLBagDictionary2 = [(SSVComplexOperation *)self URLBagDictionary];
+    v4 = [uRLBagDictionary2 objectForKey:@"aucAdminStatus"];
   }
 
   objc_opt_class();
@@ -120,18 +120,18 @@
       v17 = [v22[5] objectForKey:@"isAdmin"];
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
       }
 
       else
       {
-        v16 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v16 = 0;
+      bOOLValue = 0;
       v14 = 0;
     }
 
@@ -141,17 +141,17 @@
   else
   {
     v15 = SSError(@"SSErrorDomain", 124, 0, 0);
-    v16 = 0;
+    bOOLValue = 0;
     v14 = 0;
     v9 = v28[5];
     v28[5] = v15;
   }
 
-  v18 = [(SSVMediaSocialAdminStatusOperation *)self outputBlock];
-  v19 = v18;
-  if (v18)
+  outputBlock = [(SSVMediaSocialAdminStatusOperation *)self outputBlock];
+  v19 = outputBlock;
+  if (outputBlock)
   {
-    (*(v18 + 16))(v18, v14, v16, v28[5]);
+    (*(outputBlock + 16))(outputBlock, v14, bOOLValue, v28[5]);
   }
 
   _Block_object_dispose(&v27, 8);

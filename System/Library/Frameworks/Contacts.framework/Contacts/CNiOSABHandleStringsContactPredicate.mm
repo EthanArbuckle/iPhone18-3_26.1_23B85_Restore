@@ -1,47 +1,47 @@
 @interface CNiOSABHandleStringsContactPredicate
-+ (id)peopleForPredicate:(id)a3 sortOrder:(unsigned int)a4 addressBook:(void *)a5;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5;
-- (id)handlesPredicateWithMap:(id)a3;
++ (id)peopleForPredicate:(id)predicate sortOrder:(unsigned int)order addressBook:(void *)book;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error;
+- (id)handlesPredicateWithMap:(id)map;
 @end
 
 @implementation CNiOSABHandleStringsContactPredicate
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
-  v11 = a4;
-  v12 = [(CNHandleStringsContactPredicate *)self handleStrings];
-  v13 = [v12 count];
+  requestCopy = request;
+  handleStrings = [(CNHandleStringsContactPredicate *)self handleStrings];
+  v13 = [handleStrings count];
 
   if (v13)
   {
-    if (a5)
+    if (infos)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v15 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:1282 valueOptions:0];
     }
 
     else
     {
-      v14 = 0;
+      dictionary = 0;
       v15 = 0;
     }
 
     v17 = [(CNiOSABHandleStringsContactPredicate *)self handlesPredicateWithMap:v15];
-    v16 = [objc_opt_class() peopleForPredicate:v17 sortOrder:objc_msgSend(v11 addressBook:{"sortOrder"), a3}];
-    populateMatchInfoFromMap_block_invoke(v16, v14, v15, v16);
-    if (a5)
+    v16 = [objc_opt_class() peopleForPredicate:v17 sortOrder:objc_msgSend(requestCopy addressBook:{"sortOrder"), book}];
+    populateMatchInfoFromMap_block_invoke(v16, dictionary, v15, v16);
+    if (infos)
     {
-      v18 = v14;
-      *a5 = v14;
+      v18 = dictionary;
+      *infos = dictionary;
     }
   }
 
   else
   {
-    if (a7)
+    if (error)
     {
-      *a7 = [CNErrorFactory errorWithCode:400 userInfo:0];
+      *error = [CNErrorFactory errorWithCode:400 userInfo:0];
     }
 
     v16 = MEMORY[0x1E695E0F0];
@@ -50,28 +50,28 @@
   return v16;
 }
 
-- (id)handlesPredicateWithMap:(id)a3
+- (id)handlesPredicateWithMap:(id)map
 {
   v4 = MEMORY[0x1E6996728];
-  v5 = a3;
-  v6 = [(CNHandleStringsContactPredicate *)self handleStrings];
-  v7 = [v4 classificationOfHandleStrings:v6];
+  mapCopy = map;
+  handleStrings = [(CNHandleStringsContactPredicate *)self handleStrings];
+  v7 = [v4 classificationOfHandleStrings:handleStrings];
 
-  v8 = [v7 emailAddresses];
-  v9 = [v7 phoneNumbers];
-  v10 = [v7 unknown];
-  [v10 _cn_each:&__block_literal_global_6_2];
+  emailAddresses = [v7 emailAddresses];
+  phoneNumbers = [v7 phoneNumbers];
+  unknown = [v7 unknown];
+  [unknown _cn_each:&__block_literal_global_6_2];
 
   v11 = MEMORY[0x1E698A130];
-  v12 = [(CNHandleStringsContactPredicate *)self containerIdentifiers];
-  v13 = [v11 predicateForContactsMatchingPhoneNumbers:v9 emailAddresses:v8 containerIdentifiers:v12 map:v5];
+  containerIdentifiers = [(CNHandleStringsContactPredicate *)self containerIdentifiers];
+  v13 = [v11 predicateForContactsMatchingPhoneNumbers:phoneNumbers emailAddresses:emailAddresses containerIdentifiers:containerIdentifiers map:mapCopy];
 
   return v13;
 }
 
-+ (id)peopleForPredicate:(id)a3 sortOrder:(unsigned int)a4 addressBook:(void *)a5
++ (id)peopleForPredicate:(id)predicate sortOrder:(unsigned int)order addressBook:(void *)book
 {
-  if (a3)
+  if (predicate)
   {
     v5 = ABAddressBookCopyAllPeopleForBufferPredicate();
     v6 = v5;
@@ -94,9 +94,9 @@
   return v7;
 }
 
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error
 {
-  v6 = [(CNHandleStringsContactPredicate *)self handleStrings:a3];
+  v6 = [(CNHandleStringsContactPredicate *)self handleStrings:book];
   v7 = [v6 count];
 
   if (v7)
@@ -106,23 +106,23 @@
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      predicateForNoContacts = v9;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E698A130] predicateForNoContacts];
+      predicateForNoContacts = [MEMORY[0x1E698A130] predicateForNoContacts];
     }
 
-    v12 = v11;
+    predicateForNoContacts2 = predicateForNoContacts;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E698A130] predicateForNoContacts];
+    predicateForNoContacts2 = [MEMORY[0x1E698A130] predicateForNoContacts];
   }
 
-  return v12;
+  return predicateForNoContacts2;
 }
 
 @end

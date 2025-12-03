@@ -1,12 +1,12 @@
 @interface SearchFooterCell
-- (_TtC11CallsSearch16SearchFooterCell)initWithReuseIdentifier:(id)a3;
+- (_TtC11CallsSearch16SearchFooterCell)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation SearchFooterCell
 
-- (_TtC11CallsSearch16SearchFooterCell)initWithReuseIdentifier:(id)a3
+- (_TtC11CallsSearch16SearchFooterCell)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_1CFB8FA90();
   }

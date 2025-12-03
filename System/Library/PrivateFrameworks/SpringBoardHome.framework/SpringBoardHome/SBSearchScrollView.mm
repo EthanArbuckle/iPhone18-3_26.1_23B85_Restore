@@ -1,22 +1,22 @@
 @interface SBSearchScrollView
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (SBSearchScrollViewDelegate)searchDelegate;
 @end
 
 @implementation SBSearchScrollView
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SBSearchScrollView *)self panGestureRecognizer];
+  beginCopy = begin;
+  panGestureRecognizer = [(SBSearchScrollView *)self panGestureRecognizer];
 
-  if (v5 != v4 || ([v4 translationInView:self], v7 >= 0.0) && (WeakRetained = objc_loadWeakRetained(&self->_searchDelegate), v9 = objc_msgSend(WeakRetained, "searchScrollViewShouldRecognize:", self), WeakRetained, v9))
+  if (panGestureRecognizer != beginCopy || ([beginCopy translationInView:self], v7 >= 0.0) && (WeakRetained = objc_loadWeakRetained(&self->_searchDelegate), v9 = objc_msgSend(WeakRetained, "searchScrollViewShouldRecognize:", self), WeakRetained, v9))
   {
     v11.receiver = self;
     v11.super_class = SBSearchScrollView;
-    v6 = [(SBSearchScrollView *)&v11 gestureRecognizerShouldBegin:v4];
+    v6 = [(SBSearchScrollView *)&v11 gestureRecognizerShouldBegin:beginCopy];
   }
 
   else
@@ -27,11 +27,11 @@
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
-  if ([SBIconView isIconTapGestureRecognizer:v8])
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if ([SBIconView isIconTapGestureRecognizer:gestureRecognizerCopy])
   {
     v9 = 1;
   }
@@ -40,7 +40,7 @@
   {
     v11.receiver = self;
     v11.super_class = SBSearchScrollView;
-    v9 = [(SBSearchScrollView *)&v11 gestureRecognizer:v7 shouldRequireFailureOfGestureRecognizer:v8];
+    v9 = [(SBSearchScrollView *)&v11 gestureRecognizer:recognizerCopy shouldRequireFailureOfGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -51,9 +51,9 @@
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = [a4 view];
+  view = [gestureRecognizer view];
   NSClassFromString(&cfstr_Ncnotification.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 

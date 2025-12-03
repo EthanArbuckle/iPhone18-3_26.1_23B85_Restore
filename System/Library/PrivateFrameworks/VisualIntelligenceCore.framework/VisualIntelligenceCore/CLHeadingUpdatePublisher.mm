@@ -1,23 +1,23 @@
 @interface CLHeadingUpdatePublisher
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation CLHeadingUpdatePublisher
 
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D89B627C(v7);
+  managerCopy = manager;
+  headingCopy = heading;
+  selfCopy = self;
+  sub_1D89B627C(headingCopy);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D89B51D8(v4);
+  authorizationCopy = authorization;
+  selfCopy = self;
+  sub_1D89B51D8(authorizationCopy);
 }
 
 @end

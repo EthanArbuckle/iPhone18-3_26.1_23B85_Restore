@@ -8,8 +8,8 @@
 {
   v4 = a3;
   v5 = bswap32([v4 length]) >> 16;
-  [a1 appendBytes:&v5 length:2];
-  [a1 appendData:v4];
+  [self appendBytes:&v5 length:2];
+  [self appendData:v4];
 }
 
 @end

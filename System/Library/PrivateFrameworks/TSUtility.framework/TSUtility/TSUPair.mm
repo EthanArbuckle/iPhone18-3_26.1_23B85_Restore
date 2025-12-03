@@ -1,43 +1,43 @@
 @interface TSUPair
 + (id)pair;
-+ (id)pairWithFirst:(id)a3 second:(id)a4;
-+ (id)pairWithPair:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TSUPair)initWithCoder:(id)a3;
-- (TSUPair)initWithFirst:(id)a3 second:(id)a4;
-- (TSUPair)initWithPair:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
++ (id)pairWithFirst:(id)first second:(id)second;
++ (id)pairWithPair:(id)pair;
+- (BOOL)isEqual:(id)equal;
+- (TSUPair)initWithCoder:(id)coder;
+- (TSUPair)initWithFirst:(id)first second:(id)second;
+- (TSUPair)initWithPair:(id)pair;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)p_SetFirst:(id)a3;
-- (void)p_SetSecond:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)p_SetFirst:(id)first;
+- (void)p_SetSecond:(id)second;
 @end
 
 @implementation TSUPair
 
-+ (id)pairWithFirst:(id)a3 second:(id)a4
++ (id)pairWithFirst:(id)first second:(id)second
 {
-  v4 = [[a1 alloc] initWithFirst:a3 second:a4];
+  v4 = [[self alloc] initWithFirst:first second:second];
 
   return v4;
 }
 
-+ (id)pairWithPair:(id)a3
++ (id)pairWithPair:(id)pair
 {
-  v3 = [[a1 alloc] initWithPair:a3];
+  v3 = [[self alloc] initWithPair:pair];
 
   return v3;
 }
 
 + (id)pair
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (TSUPair)initWithFirst:(id)a3 second:(id)a4
+- (TSUPair)initWithFirst:(id)first second:(id)second
 {
   v9.receiver = self;
   v9.super_class = TSUPair;
@@ -45,19 +45,19 @@
   v7 = v6;
   if (v6)
   {
-    [(TSUPair *)v6 p_SetFirst:a3];
-    [(TSUPair *)v7 p_SetSecond:a4];
+    [(TSUPair *)v6 p_SetFirst:first];
+    [(TSUPair *)v7 p_SetSecond:second];
   }
 
   return v7;
 }
 
-- (TSUPair)initWithPair:(id)a3
+- (TSUPair)initWithPair:(id)pair
 {
-  v5 = [a3 first];
-  v6 = [a3 second];
+  first = [pair first];
+  second = [pair second];
 
-  return [(TSUPair *)self initWithFirst:v5 second:v6];
+  return [(TSUPair *)self initWithFirst:first second:second];
 }
 
 - (void)dealloc
@@ -69,25 +69,25 @@
   [(TSUPair *)&v3 dealloc];
 }
 
-- (TSUPair)initWithCoder:(id)a3
+- (TSUPair)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObject];
-  v6 = [a3 decodeObject];
+  decodeObject = [coder decodeObject];
+  decodeObject2 = [coder decodeObject];
 
-  return [(TSUPair *)self initWithFirst:v5 second:v6];
+  return [(TSUPair *)self initWithFirst:decodeObject second:decodeObject2];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:{-[TSUPair first](self, "first")}];
-  v5 = [(TSUPair *)self second];
+  [coder encodeObject:{-[TSUPair first](self, "first")}];
+  second = [(TSUPair *)self second];
 
-  [a3 encodeObject:v5];
+  [coder encodeObject:second];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
@@ -100,10 +100,10 @@
       v5 = [-[TSUPair first](self "first")];
       if (v5)
       {
-        v6 = [(TSUPair *)self second];
-        v7 = [a3 second];
+        second = [(TSUPair *)self second];
+        second2 = [equal second];
 
-        LOBYTE(v5) = [v6 isEqual:v7];
+        LOBYTE(v5) = [second isEqual:second2];
       }
     }
 
@@ -116,41 +116,41 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [-[TSUPair first](self "first")];
   v6 = [-[TSUPair second](self "second")];
-  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithFirst:second:", v5, v6}];
+  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithFirst:second:", v5, v6}];
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [-[TSUPair first](self "first")];
   v6 = [-[TSUPair second](self "second")];
-  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithFirst:second:", v5, v6}];
+  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithFirst:second:", v5, v6}];
 
   return v7;
 }
 
-- (void)p_SetFirst:(id)a3
+- (void)p_SetFirst:(id)first
 {
   mFirst = self->mFirst;
-  if (mFirst != a3)
+  if (mFirst != first)
   {
 
-    self->mFirst = a3;
+    self->mFirst = first;
   }
 }
 
-- (void)p_SetSecond:(id)a3
+- (void)p_SetSecond:(id)second
 {
   mSecond = self->mSecond;
-  if (mSecond != a3)
+  if (mSecond != second)
   {
 
-    self->mSecond = a3;
+    self->mSecond = second;
   }
 }
 

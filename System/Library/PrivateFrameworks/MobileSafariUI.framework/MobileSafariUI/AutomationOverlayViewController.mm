@@ -1,24 +1,24 @@
 @interface AutomationOverlayViewController
-- (AutomationOverlayViewController)initWithDelegate:(id)a3;
+- (AutomationOverlayViewController)initWithDelegate:(id)delegate;
 - (BOOL)allowsUserInteraction;
 - (void)_interceptUserInteraction;
-- (void)_setAllowsUserInteraction:(BOOL)a3 completionHandler:(id)a4;
-- (void)_toggleAllowsUserInteractionTemporarily:(BOOL)a3;
+- (void)_setAllowsUserInteraction:(BOOL)interaction completionHandler:(id)handler;
+- (void)_toggleAllowsUserInteractionTemporarily:(BOOL)temporarily;
 - (void)loadView;
 @end
 
 @implementation AutomationOverlayViewController
 
-- (AutomationOverlayViewController)initWithDelegate:(id)a3
+- (AutomationOverlayViewController)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = AutomationOverlayViewController;
   v6 = [(AutomationOverlayViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v7->_allowsUserInteraction = 0;
     v8 = v7;
   }
@@ -31,17 +31,17 @@
   v6.receiver = self;
   v6.super_class = AutomationOverlayViewController;
   [(AutomationOverlayViewController *)&v6 loadView];
-  v3 = [(AutomationOverlayViewController *)self view];
+  view = [(AutomationOverlayViewController *)self view];
   if (SFDebugMenuEnabled())
   {
     v4 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:1.0 alpha:0.2];
-    [v3 setBackgroundColor:v4];
+    [view setBackgroundColor:v4];
   }
 
-  v5 = [v3 layer];
-  [v5 setHitTestsAsOpaque:1];
+  layer = [view layer];
+  [layer setHitTestsAsOpaque:1];
 
-  [v3 setAutoresizingMask:18];
+  [view setAutoresizingMask:18];
 }
 
 - (BOOL)allowsUserInteraction
@@ -56,9 +56,9 @@
 
 - (void)_interceptUserInteraction
 {
-  v3 = [(AutomationOverlayViewController *)self presentedViewController];
+  presentedViewController = [(AutomationOverlayViewController *)self presentedViewController];
 
-  if (!v3 && ![(AutomationOverlayViewController *)self allowsUserInteraction])
+  if (!presentedViewController && ![(AutomationOverlayViewController *)self allowsUserInteraction])
   {
     v4 = MEMORY[0x277D75110];
     v5 = _WBSLocalizedString();
@@ -88,13 +88,13 @@
     if (SFDebugMenuEnabled())
     {
       v14 = MEMORY[0x277D750F8];
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Allow Interaction for %.f seconds", 0x4014000000000000];
+      0x4014000000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"Allow Interaction for %.f seconds", 0x4014000000000000];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __60__AutomationOverlayViewController__interceptUserInteraction__block_invoke_3;
       v20[3] = &unk_2781D79E8;
       v20[4] = self;
-      v16 = [v14 actionWithTitle:v15 style:0 handler:v20];
+      v16 = [v14 actionWithTitle:0x4014000000000000 style:0 handler:v20];
       [v7 addAction:v16];
     }
 
@@ -133,7 +133,7 @@ uint64_t __60__AutomationOverlayViewController__interceptUserInteraction__block_
   return result;
 }
 
-- (void)_toggleAllowsUserInteractionTemporarily:(BOOL)a3
+- (void)_toggleAllowsUserInteractionTemporarily:(BOOL)temporarily
 {
   objc_initWeak(&location, self);
   allowsUserInteraction = self->_allowsUserInteraction;
@@ -149,7 +149,7 @@ uint64_t __60__AutomationOverlayViewController__interceptUserInteraction__block_
   v8[1] = 3221225472;
   v8[2] = __75__AutomationOverlayViewController__toggleAllowsUserInteractionTemporarily___block_invoke;
   v8[3] = &unk_2781D7A38;
-  v10 = a3;
+  temporarilyCopy = temporarily;
   objc_copyWeak(&v9, &location);
   v11 = allowsUserInteraction;
   [(AutomationOverlayViewController *)self _setAllowsUserInteraction:!allowsUserInteraction completionHandler:v8];
@@ -189,24 +189,24 @@ void __75__AutomationOverlayViewController__toggleAllowsUserInteractionTemporari
   [WeakRetained _setAllowsUserInteraction:*(a1 + 40) completionHandler:0];
 }
 
-- (void)_setAllowsUserInteraction:(BOOL)a3 completionHandler:(id)a4
+- (void)_setAllowsUserInteraction:(BOOL)interaction completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277D75D18];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__AutomationOverlayViewController__setAllowsUserInteraction_completionHandler___block_invoke;
   v12[3] = &unk_2781D51B8;
   v12[4] = self;
-  v13 = a3;
+  interactionCopy = interaction;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__AutomationOverlayViewController__setAllowsUserInteraction_completionHandler___block_invoke_2;
   v9[3] = &unk_2781D7A60;
-  v11 = a3;
+  interactionCopy2 = interaction;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [v7 animateWithDuration:v12 animations:v9 completion:0.5];
 }
 

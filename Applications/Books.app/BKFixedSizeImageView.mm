@@ -1,14 +1,14 @@
 @interface BKFixedSizeImageView
 - (CGSize)intrinsicContentSize;
-- (_TtC5Books20BKFixedSizeImageView)initWithCoder:(id)a3;
-- (_TtC5Books20BKFixedSizeImageView)initWithFrame:(CGRect)a3;
-- (_TtC5Books20BKFixedSizeImageView)initWithImage:(id)a3;
-- (_TtC5Books20BKFixedSizeImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC5Books20BKFixedSizeImageView)initWithCoder:(id)coder;
+- (_TtC5Books20BKFixedSizeImageView)initWithFrame:(CGRect)frame;
+- (_TtC5Books20BKFixedSizeImageView)initWithImage:(id)image;
+- (_TtC5Books20BKFixedSizeImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 @end
 
 @implementation BKFixedSizeImageView
 
-- (_TtC5Books20BKFixedSizeImageView)initWithCoder:(id)a3
+- (_TtC5Books20BKFixedSizeImageView)initWithCoder:(id)coder
 {
   result = sub_1007A38A4();
   __break(1u);
@@ -24,21 +24,21 @@
   return result;
 }
 
-- (_TtC5Books20BKFixedSizeImageView)initWithImage:(id)a3
+- (_TtC5Books20BKFixedSizeImageView)initWithImage:(id)image
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Books20BKFixedSizeImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC5Books20BKFixedSizeImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Books20BKFixedSizeImageView)initWithFrame:(CGRect)a3
+- (_TtC5Books20BKFixedSizeImageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

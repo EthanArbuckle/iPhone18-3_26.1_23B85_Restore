@@ -1,50 +1,50 @@
 @interface AMSPushParsableFollowUp
-+ (BOOL)_shouldAllowFollowUp:(id)a3 bag:(id)a4;
-+ (BOOL)_shouldClearFollowUpFromPayload:(id)a3;
-+ (BOOL)isDeviceOfferNotification:(id)a3;
++ (BOOL)_shouldAllowFollowUp:(id)up bag:(id)bag;
++ (BOOL)_shouldClearFollowUpFromPayload:(id)payload;
++ (BOOL)isDeviceOfferNotification:(id)notification;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (id)_createFollowUpItemFromNotification:(id)a3;
-+ (id)_createFollowUpItemFromPayload:(id)a3;
-+ (id)_createNotificationFromFollowUpItem:(id)a3;
-+ (id)_dateFromString:(id)a3;
++ (id)_createFollowUpItemFromNotification:(id)notification;
++ (id)_createFollowUpItemFromPayload:(id)payload;
++ (id)_createNotificationFromFollowUpItem:(id)item;
++ (id)_dateFromString:(id)string;
 + (id)createBagForSubProfile;
-+ (void)_performClearWithPayload:(id)a3;
-+ (void)_performPostWithPayload:(id)a3 bag:(id)a4;
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5;
-+ (void)removeDeviceOfferWithPayload:(id)a3 logKey:(id)a4 bag:(id)a5;
-+ (void)userNotification:(id)a3 selectedButtonAction:(id)a4 bag:(id)a5;
++ (void)_performClearWithPayload:(id)payload;
++ (void)_performPostWithPayload:(id)payload bag:(id)bag;
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag;
++ (void)removeDeviceOfferWithPayload:(id)payload logKey:(id)key bag:(id)bag;
++ (void)userNotification:(id)notification selectedButtonAction:(id)action bag:(id)bag;
 @end
 
 @implementation AMSPushParsableFollowUp
 
-+ (void)removeDeviceOfferWithPayload:(id)a3 logKey:(id)a4 bag:(id)a5
++ (void)removeDeviceOfferWithPayload:(id)payload logKey:(id)key bag:(id)bag
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 clientIdentifier];
+  payloadCopy = payload;
+  keyCopy = key;
+  bagCopy = bag;
+  clientIdentifier = [payloadCopy clientIdentifier];
   v11 = +[AMSLogConfig sharedFollowUpConfig];
   if (!v11)
   {
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *v33 = 138543874;
     *&v33[4] = objc_opt_class();
     *&v33[12] = 2114;
-    *&v33[14] = v8;
+    *&v33[14] = keyCopy;
     *&v33[22] = 2114;
-    v34 = v10;
+    v34 = clientIdentifier;
     v13 = *&v33[4];
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to clear device offer with notification for client identifier: %{public}@", v33, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to clear device offer with notification for client identifier: %{public}@", v33, 0x20u);
   }
 
-  if ([(__CFString *)v10 isEqualToString:AMSDeviceOfferFollowUpIdentifierAppleMusic])
+  if ([(__CFString *)clientIdentifier isEqualToString:AMSDeviceOfferFollowUpIdentifierAppleMusic])
   {
     v14 = &AMSDeviceOfferIdentifierAppleMusic;
 LABEL_9:
@@ -52,7 +52,7 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  if ([(__CFString *)v10 isEqualToString:AMSDeviceOfferFollowUpIdentifieriCloud])
+  if ([(__CFString *)clientIdentifier isEqualToString:AMSDeviceOfferFollowUpIdentifieriCloud])
   {
     v14 = &AMSDeviceOfferIdentifieriCloud;
     goto LABEL_9;
@@ -64,26 +64,26 @@ LABEL_9:
     v16 = +[AMSLogConfig sharedConfig];
   }
 
-  v17 = [v16 OSLogObject];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v16 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v18 = objc_opt_class();
     *v33 = 138543874;
     *&v33[4] = v18;
     *&v33[12] = 2114;
-    *&v33[14] = v8;
+    *&v33[14] = keyCopy;
     *&v33[22] = 2114;
-    v34 = v10;
+    v34 = clientIdentifier;
     v19 = v18;
-    _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Failed to recognize client identifier: %{public}@", v33, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Failed to recognize client identifier: %{public}@", v33, 0x20u);
   }
 
   v15 = 0;
 LABEL_15:
-  v20 = [v7 account];
-  if (v20)
+  account = [payloadCopy account];
+  if (account)
   {
-    if (v9 && v15)
+    if (bagCopy && v15)
     {
       v21 = +[AMSLogConfig sharedFollowUpConfig];
       if (!v21)
@@ -91,21 +91,21 @@ LABEL_15:
         v21 = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v21 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v23 = objc_opt_class();
         *v33 = 138543874;
         *&v33[4] = v23;
         *&v33[12] = 2114;
-        *&v33[14] = v8;
+        *&v33[14] = keyCopy;
         *&v33[22] = 2114;
         v34 = v15;
         v24 = v23;
-        _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to clear device offer with notification for identifier: %{public}@", v33, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to clear device offer with notification for identifier: %{public}@", v33, 0x20u);
       }
 
-      [AMSDevice removeDeviceOfferWithIdentifier:v15 account:v20 bag:v9 logKey:v8];
+      [AMSDevice removeDeviceOfferWithIdentifier:v15 account:account bag:bagCopy logKey:keyCopy];
       goto LABEL_33;
     }
   }
@@ -118,16 +118,16 @@ LABEL_15:
       v25 = +[AMSLogConfig sharedConfig];
     }
 
-    v26 = [v25 OSLogObject];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v25 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
       v27 = objc_opt_class();
       *v33 = 138543618;
       *&v33[4] = v27;
       *&v33[12] = 2114;
-      *&v33[14] = v8;
+      *&v33[14] = keyCopy;
       v28 = v27;
-      _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Clear device offer with notification failed for no account", v33, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Clear device offer with notification failed for no account", v33, 0x16u);
     }
   }
 
@@ -137,112 +137,112 @@ LABEL_15:
     v29 = +[AMSLogConfig sharedConfig];
   }
 
-  v30 = [v29 OSLogObject];
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+  oSLogObject5 = [v29 OSLogObject];
+  if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
   {
     v31 = objc_opt_class();
     *v33 = 138543618;
     *&v33[4] = v31;
     *&v33[12] = 2114;
-    *&v33[14] = v8;
+    *&v33[14] = keyCopy;
     v32 = v31;
-    _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Failed to clear device offer with notification", v33, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Failed to clear device offer with notification", v33, 0x16u);
   }
 
 LABEL_33:
 }
 
-+ (BOOL)isDeviceOfferNotification:(id)a3
++ (BOOL)isDeviceOfferNotification:(id)notification
 {
-  v3 = [a3 clientIdentifier];
-  if ([v3 isEqualToString:AMSDeviceOfferFollowUpIdentifierAppleMusic])
+  clientIdentifier = [notification clientIdentifier];
+  if ([clientIdentifier isEqualToString:AMSDeviceOfferFollowUpIdentifierAppleMusic])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:AMSDeviceOfferFollowUpIdentifieriCloud];
+    v4 = [clientIdentifier isEqualToString:AMSDeviceOfferFollowUpIdentifieriCloud];
   }
 
   return v4;
 }
 
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag
 {
-  v8 = a3;
-  v7 = a5;
-  if ([a1 _shouldAllowFollowUp:v8 bag:v7])
+  payloadCopy = payload;
+  bagCopy = bag;
+  if ([self _shouldAllowFollowUp:payloadCopy bag:bagCopy])
   {
-    if ([a1 _shouldClearFollowUpFromPayload:v8])
+    if ([self _shouldClearFollowUpFromPayload:payloadCopy])
     {
-      if ([a1 isDeviceOfferNotification:v8])
+      if ([self isDeviceOfferNotification:payloadCopy])
       {
-        [a1 removeDeviceOfferWithPayload:v8 logKey:0 bag:v7];
+        [self removeDeviceOfferWithPayload:payloadCopy logKey:0 bag:bagCopy];
       }
 
       else
       {
-        [a1 _performClearWithPayload:v8];
+        [self _performClearWithPayload:payloadCopy];
       }
     }
 
     else
     {
-      [a1 _performPostWithPayload:v8 bag:v7];
+      [self _performPostWithPayload:payloadCopy bag:bagCopy];
     }
   }
 }
 
-+ (void)userNotification:(id)a3 selectedButtonAction:(id)a4 bag:(id)a5
++ (void)userNotification:(id)notification selectedButtonAction:(id)action bag:(id)bag
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationCopy = notification;
+  actionCopy = action;
+  bagCopy = bag;
   v11 = +[AMSLogConfig sharedFollowUpConfig];
   if (!v11)
   {
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_opt_class();
     v14 = v13;
-    v15 = [v8 logKey];
+    logKey = [notificationCopy logKey];
     *buf = 138543618;
     v30 = v13;
     v31 = 2114;
-    v32 = v15;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling follow up response.", buf, 0x16u);
+    v32 = logKey;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling follow up response.", buf, 0x16u);
   }
 
-  v16 = [a1 _createFollowUpItemFromNotification:v8];
+  v16 = [self _createFollowUpItemFromNotification:notificationCopy];
   if (v16)
   {
-    v17 = [v9 identifier];
-    v18 = [v16 actions];
+    identifier = [actionCopy identifier];
+    actions = [v16 actions];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __69__AMSPushParsableFollowUp_userNotification_selectedButtonAction_bag___block_invoke;
     v27[3] = &unk_1E73BB9E8;
-    v28 = v17;
-    v19 = v17;
-    v20 = [v18 ams_firstObjectPassingTest:v27];
+    v28 = identifier;
+    v19 = identifier;
+    v20 = [actions ams_firstObjectPassingTest:v27];
 
-    v21 = [v16 account];
-    v22 = [v20 performActionsWithBag:v10 account:v21];
+    account = [v16 account];
+    v22 = [v20 performActionsWithBag:bagCopy account:account];
 
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __69__AMSPushParsableFollowUp_userNotification_selectedButtonAction_bag___block_invoke_2;
     v24[3] = &unk_1E73BBA10;
-    v26 = a1;
-    v25 = v8;
+    selfCopy = self;
+    v25 = notificationCopy;
     [v22 addErrorBlock:v24];
-    v23 = [v20 postMetricsWithBag:v10];
+    v23 = [v20 postMetricsWithBag:bagCopy];
     [v23 waitUntilFinished];
     [v22 waitUntilFinished];
   }
@@ -323,30 +323,30 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-+ (void)_performClearWithPayload:(id)a3
++ (void)_performClearWithPayload:(id)payload
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  payloadCopy = payload;
   v28 = objc_alloc_init(AMSFollowUp);
-  v4 = [v3 clientIdentifier];
-  v5 = [v3 aps];
+  clientIdentifier = [payloadCopy clientIdentifier];
+  v5 = [payloadCopy aps];
   v6 = [v5 objectForKeyedSubscript:@"deviceGroup"];
 
   if (objc_opt_respondsToSelector() & 1) != 0 && ([v6 BOOLValue])
   {
-    v7 = 0;
+    account = 0;
   }
 
   else
   {
-    v7 = [v3 account];
+    account = [payloadCopy account];
   }
 
   v8 = +[AMSLogConfig sharedFollowUpConfig];
@@ -355,22 +355,22 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [v3 logKey];
+    logKey = [payloadCopy logKey];
     *buf = 138543874;
     v31 = v10;
     v32 = 2114;
-    v33 = v12;
+    v33 = logKey;
     v34 = 2114;
-    v35 = v4;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Clearing follow up with identifier: %{public}@", buf, 0x20u);
+    v35 = clientIdentifier;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Clearing follow up with identifier: %{public}@", buf, 0x20u);
   }
 
-  v13 = [(AMSFollowUp *)v28 clearFollowUpWithIdentifier:v4 account:v7];
+  v13 = [(AMSFollowUp *)v28 clearFollowUpWithIdentifier:clientIdentifier account:account];
   v29 = 0;
   v14 = [v13 resultWithError:&v29];
   v15 = v29;
@@ -383,20 +383,20 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_opt_class();
-      v26 = v7;
+      v26 = account;
       v20 = v19;
-      v21 = [v3 logKey];
+      logKey2 = [payloadCopy logKey];
       *buf = 138543618;
       v31 = v19;
       v32 = 2114;
-      v33 = v21;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully cleared follow up!", buf, 0x16u);
+      v33 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully cleared follow up!", buf, 0x16u);
 
-      v7 = v26;
+      account = v26;
     }
   }
 
@@ -407,60 +407,60 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       v25 = v22;
-      v23 = [v3 logKey];
+      logKey3 = [payloadCopy logKey];
       AMSLogableError(v15);
-      v24 = v27 = v7;
+      v24 = v27 = account;
       *buf = 138543874;
       v31 = v22;
       v32 = 2114;
-      v33 = v23;
+      v33 = logKey3;
       v34 = 2114;
       v35 = v24;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to clear follow up. Error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to clear follow up. Error = %{public}@", buf, 0x20u);
 
-      v7 = v27;
+      account = v27;
     }
   }
 }
 
-+ (void)_performPostWithPayload:(id)a3 bag:(id)a4
++ (void)_performPostWithPayload:(id)payload bag:(id)bag
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  payloadCopy = payload;
   v6 = +[AMSLogConfig sharedFollowUpConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [v5 logKey];
-    v11 = [v5 clientIdentifier];
+    logKey = [payloadCopy logKey];
+    clientIdentifier = [payloadCopy clientIdentifier];
     *buf = 138543874;
     v30 = v8;
     v31 = 2114;
-    v32 = v10;
+    v32 = logKey;
     v33 = 2114;
-    v34 = v11;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting follow up with identifier: %{public}@", buf, 0x20u);
+    v34 = clientIdentifier;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting follow up with identifier: %{public}@", buf, 0x20u);
   }
 
   v12 = objc_alloc_init(AMSFollowUp);
-  v13 = [a1 _createFollowUpItemFromPayload:v5];
+  v13 = [self _createFollowUpItemFromPayload:payloadCopy];
   v14 = [(AMSFollowUp *)v12 postFollowUpItem:v13];
   v28 = 0;
   v15 = [v14 resultWithError:&v28];
   v16 = v28;
-  v17 = [v15 integerValue];
+  integerValue = [v15 integerValue];
 
   v18 = +[AMSLogConfig sharedFollowUpConfig];
   v19 = v18;
@@ -471,20 +471,20 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v21 = objc_opt_class();
       v26 = v21;
-      v22 = [v5 logKey];
+      logKey2 = [payloadCopy logKey];
       v23 = AMSLogableError(v16);
       *buf = 138543874;
       v30 = v21;
       v31 = 2114;
-      v32 = v22;
+      v32 = logKey2;
       v33 = 2114;
       v34 = v23;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to post follow up. Error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to post follow up. Error: %{public}@", buf, 0x20u);
     }
   }
 
@@ -495,27 +495,27 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v24 = objc_opt_class();
       v27 = v24;
-      v25 = [v5 logKey];
+      logKey3 = [payloadCopy logKey];
       *buf = 138543874;
       v30 = v24;
       v31 = 2114;
-      v32 = v25;
+      v32 = logKey3;
       v33 = 2048;
-      v34 = v17;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully posted follow up! Result = %ld", buf, 0x20u);
+      v34 = integerValue;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully posted follow up! Result = %ld", buf, 0x20u);
     }
   }
 }
 
-+ (BOOL)_shouldAllowFollowUp:(id)a3 bag:(id)a4
++ (BOOL)_shouldAllowFollowUp:(id)up bag:(id)bag
 {
   v48[6] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  upCopy = up;
   v6 = MEMORY[0x1E695DFD8];
   v48[0] = AMSDeviceOfferFollowUpIdentifierAppleMusic;
   v48[1] = AMSDeviceOfferFollowUpIdentifierAppleMusicAndiCloud;
@@ -524,11 +524,11 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
   v48[4] = @"com.apple.AMSFollowUpIdentifier.HardwareOffer";
   v48[5] = @"com.apple.AMSFollowUpIdentifier.HardwareOffer.Fitness";
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
+  bagCopy = bag;
   v9 = [v7 arrayWithObjects:v48 count:6];
   v10 = [v6 setWithArray:v9];
 
-  v11 = [v8 arrayForKey:@"follow-up-identifier-allow-list"];
+  v11 = [bagCopy arrayForKey:@"follow-up-identifier-allow-list"];
 
   v41 = 0;
   v12 = [v11 valueWithError:&v41];
@@ -545,17 +545,17 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_opt_class();
       v20 = v19;
-      v21 = [v5 logKey];
+      logKey = [upCopy logKey];
       *buf = 138543618;
       v43 = v19;
       v44 = 2114;
-      v45 = v21;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Bag did provided an allow-list, merging the allowed identifiers", buf, 0x16u);
+      v45 = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Bag did provided an allow-list, merging the allowed identifiers", buf, 0x16u);
 
       v15 = 0x1E73B0000;
     }
@@ -571,12 +571,12 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v17 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
       v40 = v23;
-      [v5 logKey];
+      [upCopy logKey];
       v25 = v24 = v13;
       v26 = AMSLogableError(v24);
       *buf = 138543874;
@@ -586,72 +586,72 @@ void __47__AMSPushParsableFollowUp_bagSubProfileVersion__block_invoke()
       v45 = v25;
       v46 = 2114;
       v47 = v26;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Bag did not provide an allow-list : %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Bag did not provide an allow-list : %{public}@", buf, 0x20u);
 
       v13 = v24;
     }
   }
 
-  v27 = [v5 clientIdentifier];
-  v28 = [v10 containsObject:v27];
+  clientIdentifier = [upCopy clientIdentifier];
+  v28 = [v10 containsObject:clientIdentifier];
 
   if ((v28 & 1) == 0)
   {
-    v30 = [*(v15 + 3552) sharedFollowUpConfig];
-    if (!v30)
+    sharedFollowUpConfig = [*(v15 + 3552) sharedFollowUpConfig];
+    if (!sharedFollowUpConfig)
     {
-      v30 = [*(v15 + 3552) sharedConfig];
+      sharedFollowUpConfig = [*(v15 + 3552) sharedConfig];
     }
 
-    v31 = [v30 OSLogObject];
-    if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [sharedFollowUpConfig OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_24;
     }
 
     v32 = objc_opt_class();
     v33 = v32;
-    v34 = [v5 logKey];
-    [v5 clientIdentifier];
+    logKey2 = [upCopy logKey];
+    [upCopy clientIdentifier];
     v36 = v35 = v13;
     *buf = 138543874;
     v43 = v32;
     v44 = 2114;
-    v45 = v34;
+    v45 = logKey2;
     v46 = 2114;
     v47 = v36;
     v37 = "%{public}@: [%{public}@] Follow up DENIED due to denylisted identifier: %{public}@";
     goto LABEL_23;
   }
 
-  if (([v5 isAccountTypeActive] & 1) == 0)
+  if (([upCopy isAccountTypeActive] & 1) == 0)
   {
-    v30 = [*(v15 + 3552) sharedFollowUpConfig];
-    if (!v30)
+    sharedFollowUpConfig = [*(v15 + 3552) sharedFollowUpConfig];
+    if (!sharedFollowUpConfig)
     {
-      v30 = [*(v15 + 3552) sharedConfig];
+      sharedFollowUpConfig = [*(v15 + 3552) sharedConfig];
     }
 
-    v31 = [v30 OSLogObject];
-    if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [sharedFollowUpConfig OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_24;
     }
 
     v38 = objc_opt_class();
     v33 = v38;
-    v34 = [v5 logKey];
-    [v5 clientIdentifier];
+    logKey2 = [upCopy logKey];
+    [upCopy clientIdentifier];
     v36 = v35 = v13;
     *buf = 138543874;
     v43 = v38;
     v44 = 2114;
-    v45 = v34;
+    v45 = logKey2;
     v46 = 2114;
     v47 = v36;
     v37 = "%{public}@: [%{public}@] Follow up DENIED due to inactive account %{public}@";
 LABEL_23:
-    _os_log_impl(&dword_192869000, v31, OS_LOG_TYPE_ERROR, v37, buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, v37, buf, 0x20u);
 
     v13 = v35;
 LABEL_24:
@@ -666,49 +666,49 @@ LABEL_25:
   return v29;
 }
 
-+ (BOOL)_shouldClearFollowUpFromPayload:(id)a3
++ (BOOL)_shouldClearFollowUpFromPayload:(id)payload
 {
-  v3 = [a3 aps];
+  v3 = [payload aps];
   v4 = [v3 objectForKeyedSubscript:@"clear"];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (id)_createFollowUpItemFromPayload:(id)a3
++ (id)_createFollowUpItemFromPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 clientIdentifier];
-  v5 = [v3 priority];
-  v6 = [v3 logKey];
+  payloadCopy = payload;
+  clientIdentifier = [payloadCopy clientIdentifier];
+  priority = [payloadCopy priority];
+  logKey = [payloadCopy logKey];
   v7 = [AMSFollowUpItem alloc];
-  v8 = [v3 aps];
-  v9 = [v3 account];
+  v8 = [payloadCopy aps];
+  account = [payloadCopy account];
 
-  v10 = [(AMSFollowUpItem *)v7 initWithIdentifier:v4 jsonDictionary:v8 account:v9 priority:v5 logKey:v6];
+  v10 = [(AMSFollowUpItem *)v7 initWithIdentifier:clientIdentifier jsonDictionary:v8 account:account priority:priority logKey:logKey];
 
   return v10;
 }
 
-+ (id)_createFollowUpItemFromNotification:(id)a3
++ (id)_createFollowUpItemFromNotification:(id)notification
 {
   v71 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"expirationDate"];
+  notificationCopy = notification;
+  title = [notificationCopy title];
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"expirationDate"];
 
-  v7 = [v3 informativeText];
-  v56 = [v3 logKey];
+  informativeText = [notificationCopy informativeText];
+  logKey = [notificationCopy logKey];
   if ([v6 length])
   {
     v8 = [AMSPushParsableFollowUp _dateFromString:v6];
@@ -719,15 +719,15 @@ LABEL_25:
     v8 = 0;
   }
 
-  v9 = [v3 userInfo];
-  v10 = [v9 mutableCopy];
+  userInfo2 = [notificationCopy userInfo];
+  v10 = [userInfo2 mutableCopy];
 
-  v11 = [v10 objectForKeyedSubscript:@"priority"];
+  integerValue = [v10 objectForKeyedSubscript:@"priority"];
 
-  if (v11)
+  if (integerValue)
   {
     v12 = [v10 objectForKeyedSubscript:@"priority"];
-    v11 = [v12 integerValue];
+    integerValue = [v12 integerValue];
 
     [v10 removeObjectForKey:@"priority"];
   }
@@ -752,8 +752,8 @@ LABEL_25:
     v15 = [v10 objectForKeyedSubscript:@"accountDSID"];
     if (v15)
     {
-      v16 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-      v54 = [v16 ams_iTunesAccountWithDSID:v15];
+      ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+      v54 = [ams_sharedAccountStore ams_iTunesAccountWithDSID:v15];
     }
 
     else
@@ -769,26 +769,26 @@ LABEL_25:
     v54 = 0;
   }
 
-  v17 = [v10 objectForKeyedSubscript:@"expirationDateHidden"];
+  bOOLValue = [v10 objectForKeyedSubscript:@"expirationDateHidden"];
 
-  if (v17)
+  if (bOOLValue)
   {
     v18 = [v10 objectForKeyedSubscript:@"expirationDateHidden"];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v18 BOOLValue];
+      bOOLValue = [v18 BOOLValue];
     }
 
     else
     {
-      v17 = 0;
+      bOOLValue = 0;
     }
 
     [v10 removeObjectForKey:@"expirationDateHidden"];
   }
 
-  v19 = [v3 userInfo];
-  v20 = [v19 objectForKeyedSubscript:@"iconImageName"];
+  userInfo3 = [notificationCopy userInfo];
+  v20 = [userInfo3 objectForKeyedSubscript:@"iconImageName"];
 
   if (v20)
   {
@@ -797,19 +797,19 @@ LABEL_25:
 
   v51 = v6;
   v21 = [AMSFollowUpItem alloc];
-  v22 = [v3 identifier];
-  v23 = [(AMSFollowUpItem *)v21 initWithIdentifier:v22 account:v54 priority:v11];
+  identifier = [notificationCopy identifier];
+  v23 = [(AMSFollowUpItem *)v21 initWithIdentifier:identifier account:v54 priority:integerValue];
 
-  v52 = v4;
-  [(AMSFollowUpItem *)v23 setTitle:v4];
-  [(AMSFollowUpItem *)v23 setExpirationDateHidden:v17];
+  v52 = title;
+  [(AMSFollowUpItem *)v23 setTitle:title];
+  [(AMSFollowUpItem *)v23 setExpirationDateHidden:bOOLValue];
   [(AMSFollowUpItem *)v23 setBundleIconName:0];
   v49 = v8;
   [(AMSFollowUpItem *)v23 setExpirationDate:v8];
-  v50 = v7;
-  [(AMSFollowUpItem *)v23 setInformativeText:v7];
-  v24 = v56;
-  [(AMSFollowUpItem *)v23 setLogKey:v56];
+  v50 = informativeText;
+  [(AMSFollowUpItem *)v23 setInformativeText:informativeText];
+  v24 = logKey;
+  [(AMSFollowUpItem *)v23 setLogKey:logKey];
   [(AMSFollowUpItem *)v23 setUserInfo:v10];
   if (v55)
   {
@@ -823,8 +823,8 @@ LABEL_25:
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v53 = v3;
-  obj = [v3 buttonActions];
+  v53 = notificationCopy;
+  obj = [notificationCopy buttonActions];
   v63 = [obj countByEnumeratingWithState:&v66 objects:v70 count:16];
   if (v63)
   {
@@ -841,10 +841,10 @@ LABEL_25:
         }
 
         v28 = *(*(&v66 + 1) + 8 * i);
-        v64 = [v28 defaultURL];
-        v65 = [v28 title];
-        v29 = [v28 userInfo];
-        v30 = [v29 mutableCopy];
+        defaultURL = [v28 defaultURL];
+        title2 = [v28 title];
+        userInfo4 = [v28 userInfo];
+        v30 = [userInfo4 mutableCopy];
 
         v31 = [v30 objectForKeyedSubscript:@"metrics"];
         if (v31)
@@ -890,7 +890,7 @@ LABEL_25:
               v39 = 0;
             }
 
-            v24 = v56;
+            v24 = logKey;
           }
 
           else
@@ -905,13 +905,13 @@ LABEL_25:
         }
 
         v42 = [AMSFollowUpAction alloc];
-        v43 = [(AMSFollowUpItem *)v62 identifier];
-        v44 = [(AMSFollowUpAction *)v42 initWithLabel:v65 parentIdentifier:v43];
+        identifier2 = [(AMSFollowUpItem *)v62 identifier];
+        v44 = [(AMSFollowUpAction *)v42 initWithLabel:title2 parentIdentifier:identifier2];
 
-        v45 = [v28 identifier];
-        [(AMSFollowUpAction *)v44 setIdentifier:v45];
+        identifier3 = [v28 identifier];
+        [(AMSFollowUpAction *)v44 setIdentifier:identifier3];
 
-        [(AMSFollowUpAction *)v44 setUrl:v64];
+        [(AMSFollowUpAction *)v44 setUrl:defaultURL];
         v46 = [v30 mutableCopy];
         [(AMSFollowUpAction *)v44 setUserInfo:v46];
 
@@ -943,23 +943,23 @@ LABEL_25:
   return v62;
 }
 
-+ (id)_createNotificationFromFollowUpItem:(id)a3
++ (id)_createNotificationFromFollowUpItem:(id)item
 {
   v67 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v3 informativeText];
-  v6 = [v3 metricsEvent];
-  v7 = [v6 underlyingDictionary];
+  itemCopy = item;
+  title = [itemCopy title];
+  informativeText = [itemCopy informativeText];
+  metricsEvent = [itemCopy metricsEvent];
+  underlyingDictionary = [metricsEvent underlyingDictionary];
 
-  v8 = [v3 logKey];
-  v9 = [v3 expirationDate];
+  logKey = [itemCopy logKey];
+  expirationDate = [itemCopy expirationDate];
 
-  if (v9)
+  if (expirationDate)
   {
-    v10 = [MEMORY[0x1E696AB78] ams_serverFriendlyLocalTimeZoneFormatter];
-    v11 = [v3 expirationDate];
-    v12 = [v10 stringFromDate:v11];
+    ams_serverFriendlyLocalTimeZoneFormatter = [MEMORY[0x1E696AB78] ams_serverFriendlyLocalTimeZoneFormatter];
+    expirationDate2 = [itemCopy expirationDate];
+    v12 = [ams_serverFriendlyLocalTimeZoneFormatter stringFromDate:expirationDate2];
   }
 
   else
@@ -968,51 +968,51 @@ LABEL_25:
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "priority")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(itemCopy, "priority")}];
   [v13 setObject:v14 forKeyedSubscript:@"priority"];
 
-  if (v7)
+  if (underlyingDictionary)
   {
-    [v13 setObject:v7 forKeyedSubscript:@"metrics"];
+    [v13 setObject:underlyingDictionary forKeyedSubscript:@"metrics"];
   }
 
-  v15 = [v3 account];
-  v16 = [v15 ams_DSID];
+  account = [itemCopy account];
+  ams_DSID = [account ams_DSID];
 
-  if (v16)
+  if (ams_DSID)
   {
-    v17 = [v3 account];
-    v18 = [v17 ams_DSID];
-    [v13 setObject:v18 forKeyedSubscript:@"accountDSID"];
+    account2 = [itemCopy account];
+    ams_DSID2 = [account2 ams_DSID];
+    [v13 setObject:ams_DSID2 forKeyedSubscript:@"accountDSID"];
   }
 
-  v19 = [v3 bundleIconName];
+  bundleIconName = [itemCopy bundleIconName];
 
-  if (v19)
+  if (bundleIconName)
   {
-    v20 = [v3 bundleIconName];
-    [v13 setObject:v20 forKeyedSubscript:@"iconImageName"];
+    bundleIconName2 = [itemCopy bundleIconName];
+    [v13 setObject:bundleIconName2 forKeyedSubscript:@"iconImageName"];
   }
 
-  v59 = v7;
-  if ([v3 isExpirationDateHidden])
+  v59 = underlyingDictionary;
+  if ([itemCopy isExpirationDateHidden])
   {
-    v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isExpirationDateHidden")}];
+    v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isExpirationDateHidden")}];
     [v13 setObject:v21 forKeyedSubscript:@"expirationDateHidden"];
   }
 
   v53 = v12;
   [v13 setObject:v12 forKeyedSubscript:@"expirationDate"];
-  v56 = v4;
-  v22 = [[AMSUserNotification alloc] initWithTitle:v4 intent:1];
-  v23 = [v3 identifier];
-  [(AMSUserNotification *)v22 setIdentifier:v23];
+  v56 = title;
+  v22 = [[AMSUserNotification alloc] initWithTitle:title intent:1];
+  identifier = [itemCopy identifier];
+  [(AMSUserNotification *)v22 setIdentifier:identifier];
 
   [(AMSUserNotification *)v22 setCenterBundleIdentifier:@"com.apple.appstoreagent"];
-  v55 = v5;
-  [(AMSUserNotification *)v22 setInformativeText:v5];
-  v54 = v8;
-  [(AMSUserNotification *)v22 setLogKey:v8];
+  v55 = informativeText;
+  [(AMSUserNotification *)v22 setInformativeText:informativeText];
+  v54 = logKey;
+  [(AMSUserNotification *)v22 setLogKey:logKey];
   v51 = v22;
   v52 = v13;
   [(AMSUserNotification *)v22 setUserInfo:v13];
@@ -1021,7 +1021,7 @@ LABEL_25:
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = [v3 actions];
+  obj = [itemCopy actions];
   v61 = [obj countByEnumeratingWithState:&v62 objects:v66 count:16];
   if (v61)
   {
@@ -1038,9 +1038,9 @@ LABEL_25:
 
         v26 = *(*(&v62 + 1) + 8 * i);
         v27 = [v26 url];
-        v28 = [v26 label];
-        v29 = [v26 userInfo];
-        v30 = [v29 mutableCopy];
+        label = [v26 label];
+        userInfo = [v26 userInfo];
+        v30 = [userInfo mutableCopy];
         v31 = v30;
         if (v30)
         {
@@ -1054,37 +1054,37 @@ LABEL_25:
 
         v33 = v32;
 
-        v34 = [v3 metricsEvent];
+        metricsEvent2 = [itemCopy metricsEvent];
 
-        if (v34)
+        if (metricsEvent2)
         {
           [v33 setObject:v59 forKeyedSubscript:@"metrics"];
         }
 
-        v35 = [v26 request];
+        request = [v26 request];
 
-        if (v35)
+        if (request)
         {
-          v36 = v3;
+          v36 = itemCopy;
           v37 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          v38 = [v26 request];
-          v39 = [v38 URL];
-          v40 = [v39 absoluteString];
-          [v37 setObject:v40 forKeyedSubscript:@"url"];
+          request2 = [v26 request];
+          v39 = [request2 URL];
+          absoluteString = [v39 absoluteString];
+          [v37 setObject:absoluteString forKeyedSubscript:@"url"];
 
-          v41 = [v26 request];
-          v42 = [v41 HTTPMethod];
-          [v37 setObject:v42 forKeyedSubscript:@"method"];
+          request3 = [v26 request];
+          hTTPMethod = [request3 HTTPMethod];
+          [v37 setObject:hTTPMethod forKeyedSubscript:@"method"];
 
-          v43 = [v26 request];
-          v44 = [v43 HTTPBody];
+          request4 = [v26 request];
+          hTTPBody = [request4 HTTPBody];
 
-          if (v44)
+          if (hTTPBody)
           {
             v45 = objc_alloc(MEMORY[0x1E696AEC0]);
-            v46 = [v26 request];
-            v47 = [v46 HTTPBody];
-            v48 = [v45 initWithData:v47 encoding:4];
+            request5 = [v26 request];
+            hTTPBody2 = [request5 HTTPBody];
+            v48 = [v45 initWithData:hTTPBody2 encoding:4];
 
             if (v48)
             {
@@ -1094,11 +1094,11 @@ LABEL_25:
 
           [v33 setObject:v37 forKeyedSubscript:@"serverActionUrl"];
 
-          v3 = v36;
+          itemCopy = v36;
           v24 = v58;
         }
 
-        v49 = [[AMSUserNotificationAction alloc] initWithTitle:v28];
+        v49 = [[AMSUserNotificationAction alloc] initWithTitle:label];
         [(AMSUserNotificationAction *)v49 setDefaultURL:v27];
         [(AMSUserNotificationAction *)v49 setUserInfo:v33];
         [v24 addObject:v49];
@@ -1118,16 +1118,16 @@ LABEL_25:
   return v51;
 }
 
-+ (id)_dateFromString:(id)a3
++ (id)_dateFromString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
-  v5 = [v4 dateFromString:v3];
+  stringCopy = string;
+  ams_serverFriendlyFormatter = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
+  v5 = [ams_serverFriendlyFormatter dateFromString:stringCopy];
 
   if (!v5)
   {
-    v6 = [MEMORY[0x1E696AB78] ams_serverFriendlyLocalTimeZoneFormatter];
-    v5 = [v6 dateFromString:v3];
+    ams_serverFriendlyLocalTimeZoneFormatter = [MEMORY[0x1E696AB78] ams_serverFriendlyLocalTimeZoneFormatter];
+    v5 = [ams_serverFriendlyLocalTimeZoneFormatter dateFromString:stringCopy];
   }
 
   return v5;

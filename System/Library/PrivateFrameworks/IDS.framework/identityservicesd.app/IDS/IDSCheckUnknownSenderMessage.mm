@@ -1,31 +1,31 @@
 @interface IDSCheckUnknownSenderMessage
 - (id)additionalMessageHeaders;
 - (id)additionalQueryStringParameters;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)handleResponseDictionary:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSCheckUnknownSenderMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = IDSCheckUnknownSenderMessage;
-  v4 = [(IDSCheckUnknownSenderMessage *)&v12 copyWithZone:a3];
-  v5 = [(IDSCheckUnknownSenderMessage *)self hardwareVersion];
-  [v4 setHardwareVersion:v5];
+  v4 = [(IDSCheckUnknownSenderMessage *)&v12 copyWithZone:zone];
+  hardwareVersion = [(IDSCheckUnknownSenderMessage *)self hardwareVersion];
+  [v4 setHardwareVersion:hardwareVersion];
 
-  v6 = [(IDSCheckUnknownSenderMessage *)self OSVersion];
-  [v4 setOSVersion:v6];
+  oSVersion = [(IDSCheckUnknownSenderMessage *)self OSVersion];
+  [v4 setOSVersion:oSVersion];
 
-  v7 = [(IDSCheckUnknownSenderMessage *)self softwareVersion];
-  [v4 setSoftwareVersion:v7];
+  softwareVersion = [(IDSCheckUnknownSenderMessage *)self softwareVersion];
+  [v4 setSoftwareVersion:softwareVersion];
 
-  v8 = [(IDSCheckUnknownSenderMessage *)self sender];
-  [v4 setSender:v8];
+  sender = [(IDSCheckUnknownSenderMessage *)self sender];
+  [v4 setSender:sender];
 
-  v9 = [(IDSCheckUnknownSenderMessage *)self attemptCount];
-  [v4 setAttemptCount:v9];
+  attemptCount = [(IDSCheckUnknownSenderMessage *)self attemptCount];
+  [v4 setAttemptCount:attemptCount];
 
   v10 = [(IDSCheckUnknownSenderMessage *)self geo];
   [v4 setGeo:v10];
@@ -41,38 +41,38 @@
 {
   v11.receiver = self;
   v11.super_class = IDSCheckUnknownSenderMessage;
-  v3 = [(IDSCheckUnknownSenderMessage *)&v11 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSCheckUnknownSenderMessage *)&v11 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSCheckUnknownSenderMessage *)self pushToken];
-  v6 = [v5 _FTStringFromBaseData];
+  pushToken = [(IDSCheckUnknownSenderMessage *)self pushToken];
+  _FTStringFromBaseData = [pushToken _FTStringFromBaseData];
 
-  if (v6)
+  if (_FTStringFromBaseData)
   {
-    CFDictionarySetValue(Mutable, @"x-push-token", v6);
+    CFDictionarySetValue(Mutable, @"x-push-token", _FTStringFromBaseData);
   }
 
-  v7 = [(IDSCheckUnknownSenderMessage *)self hardwareVersion];
-  if (v7)
+  hardwareVersion = [(IDSCheckUnknownSenderMessage *)self hardwareVersion];
+  if (hardwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"x-hardware-version", v7);
+    CFDictionarySetValue(Mutable, @"x-hardware-version", hardwareVersion);
   }
 
-  v8 = [(IDSCheckUnknownSenderMessage *)self OSVersion];
-  if (v8)
+  oSVersion = [(IDSCheckUnknownSenderMessage *)self OSVersion];
+  if (oSVersion)
   {
-    CFDictionarySetValue(Mutable, @"x-os-version", v8);
+    CFDictionarySetValue(Mutable, @"x-os-version", oSVersion);
   }
 
-  v9 = [(IDSCheckUnknownSenderMessage *)self softwareVersion];
-  if (v9)
+  softwareVersion = [(IDSCheckUnknownSenderMessage *)self softwareVersion];
+  if (softwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"x-software-version", v9);
+    CFDictionarySetValue(Mutable, @"x-software-version", softwareVersion);
   }
 
   return Mutable;
@@ -82,26 +82,26 @@
 {
   v10.receiver = self;
   v10.super_class = IDSCheckUnknownSenderMessage;
-  v3 = [(IDSCheckUnknownSenderMessage *)&v10 additionalQueryStringParameters];
-  Mutable = [v3 mutableCopy];
+  additionalQueryStringParameters = [(IDSCheckUnknownSenderMessage *)&v10 additionalQueryStringParameters];
+  Mutable = [additionalQueryStringParameters mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSCheckUnknownSenderMessage *)self sender];
-  if (v5)
+  sender = [(IDSCheckUnknownSenderMessage *)self sender];
+  if (sender)
   {
-    CFDictionarySetValue(Mutable, @"sender", v5);
+    CFDictionarySetValue(Mutable, @"sender", sender);
   }
 
-  v6 = [(IDSCheckUnknownSenderMessage *)self attemptCount];
-  v7 = [v6 stringValue];
+  attemptCount = [(IDSCheckUnknownSenderMessage *)self attemptCount];
+  stringValue = [attemptCount stringValue];
 
-  if (v7)
+  if (stringValue)
   {
-    CFDictionarySetValue(Mutable, @"count", v7);
+    CFDictionarySetValue(Mutable, @"count", stringValue);
   }
 
   v8 = [(IDSCheckUnknownSenderMessage *)self geo];
@@ -113,16 +113,16 @@
   return Mutable;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 _numberForKey:@"status"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy _numberForKey:@"status"];
   -[IDSCheckUnknownSenderMessage setStatus:](self, "setStatus:", [v5 integerValue]);
 
-  v6 = [v4 _numberForKey:@"abusive"];
+  v6 = [dictionaryCopy _numberForKey:@"abusive"];
   -[IDSCheckUnknownSenderMessage setAbusive:](self, "setAbusive:", [v6 BOOLValue]);
 
-  v7 = [v4 _numberForKey:@"delay"];
+  v7 = [dictionaryCopy _numberForKey:@"delay"];
 
   [v7 doubleValue];
   [(IDSCheckUnknownSenderMessage *)self setDelay:?];

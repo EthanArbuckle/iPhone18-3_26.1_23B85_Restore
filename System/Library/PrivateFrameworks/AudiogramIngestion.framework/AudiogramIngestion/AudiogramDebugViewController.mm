@@ -1,22 +1,22 @@
 @interface AudiogramDebugViewController
-- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithCoder:(id)a3;
-- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithImage:(id)a3 debugInfo:(id)a4;
-- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)sliderValueChanged:(id)a3;
+- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithCoder:(id)coder;
+- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithImage:(id)image debugInfo:(id)info;
+- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)sliderValueChanged:(id)changed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AudiogramDebugViewController
 
-- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithImage:(id)a3 debugInfo:(id)a4
+- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithImage:(id)image debugInfo:(id)info
 {
   type metadata accessor for AudiogramDetectorResult();
   v5 = sub_2417E424C();
-  return AudiogramDebugViewController.init(image:debugInfo:)(a3, v5);
+  return AudiogramDebugViewController.init(image:debugInfo:)(image, v5);
 }
 
-- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithCoder:(id)a3
+- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18AudiogramIngestion28AudiogramDebugViewController_imageView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18AudiogramIngestion28AudiogramDebugViewController_scrollView) = 0;
@@ -29,24 +29,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2417DA53C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2417DA960(a3);
+  selfCopy = self;
+  sub_2417DA960(appear);
 }
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_2417DC068(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_2417DC068(changedCopy);
 }
 
-- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18AudiogramIngestion28AudiogramDebugViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

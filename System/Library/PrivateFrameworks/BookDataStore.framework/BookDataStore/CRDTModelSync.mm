@@ -1,8 +1,8 @@
 @interface CRDTModelSync
 - (NSString)debugDescription;
 - (_TtC13BookDataStore13CRDTModelSync)init;
-- (_TtC13BookDataStore13CRDTModelSync)initWithCoder:(id)a3;
-- (_TtC13BookDataStore13CRDTModelSync)initWithRecord:(id)a3;
+- (_TtC13BookDataStore13CRDTModelSync)initWithCoder:(id)coder;
+- (_TtC13BookDataStore13CRDTModelSync)initWithRecord:(id)record;
 - (id)identifier;
 - (id)recordType;
 - (id)zoneName;
@@ -22,7 +22,7 @@
   return [(BCMutableCloudData *)&v6 init];
 }
 
-- (_TtC13BookDataStore13CRDTModelSync)initWithCoder:(id)a3
+- (_TtC13BookDataStore13CRDTModelSync)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.isa + OBJC_IVAR____TtC13BookDataStore13CRDTModelSync_type);
   *v3 = 0;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (_TtC13BookDataStore13CRDTModelSync)initWithRecord:(id)a3
+- (_TtC13BookDataStore13CRDTModelSync)initWithRecord:(id)record
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -61,7 +61,7 @@
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC13BookDataStore13CRDTModelSync_type);
   v3 = *(&self->super._deletedFlag + OBJC_IVAR____TtC13BookDataStore13CRDTModelSync_type);
-  v4 = self;
+  selfCopy = self;
 
   sub_1E470B04C();
   v5 = sub_1E470AF7C();
@@ -94,7 +94,7 @@
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC13BookDataStore13CRDTModelSync_type);
   v3 = *(&self->super._deletedFlag + OBJC_IVAR____TtC13BookDataStore13CRDTModelSync_type);
-  v4 = self;
+  selfCopy = self;
 
   v5 = sub_1E470AF0C();
 

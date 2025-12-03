@@ -1,27 +1,27 @@
 @interface LPFetcherAudioResponse
-+ (id)audioPropertiesForFetcher:(id)a3;
-- (LPFetcherAudioResponse)initWithAudio:(id)a3 fetcher:(id)a4;
++ (id)audioPropertiesForFetcher:(id)fetcher;
+- (LPFetcherAudioResponse)initWithAudio:(id)audio fetcher:(id)fetcher;
 @end
 
 @implementation LPFetcherAudioResponse
 
-+ (id)audioPropertiesForFetcher:(id)a3
++ (id)audioPropertiesForFetcher:(id)fetcher
 {
   v3 = objc_alloc_init(LPAudioProperties);
 
   return v3;
 }
 
-- (LPFetcherAudioResponse)initWithAudio:(id)a3 fetcher:(id)a4
+- (LPFetcherAudioResponse)initWithAudio:(id)audio fetcher:(id)fetcher
 {
-  v7 = a3;
+  audioCopy = audio;
   v12.receiver = self;
   v12.super_class = LPFetcherAudioResponse;
-  v8 = [(LPFetcherResponse *)&v12 initWithState:2 fetcher:a4];
+  v8 = [(LPFetcherResponse *)&v12 initWithState:2 fetcher:fetcher];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_audio, a3);
+    objc_storeStrong(&v8->_audio, audio);
     v10 = v9;
   }
 

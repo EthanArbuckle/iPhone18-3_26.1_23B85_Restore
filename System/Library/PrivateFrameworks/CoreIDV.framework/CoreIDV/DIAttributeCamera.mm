@@ -1,41 +1,41 @@
 @interface DIAttributeCamera
 - (DIAttributeCamera)init;
-- (DIAttributeCamera)initWithCoder:(id)a3;
+- (DIAttributeCamera)initWithCoder:(id)coder;
 - (NSArray)getCurrentValue;
 - (NSArray)scanRequirements;
 - (id)defaultValue;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrentValue:(id)a3;
-- (void)setScanRequirements:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrentValue:(id)value;
+- (void)setScanRequirements:(id)requirements;
 @end
 
 @implementation DIAttributeCamera
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = DIAttributeCamera;
-  v4 = a3;
-  [(DIAttribute *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DIAttribute *)&v5 encodeWithCoder:coderCopy];
   os_unfair_lock_lock(&self->super._lock);
-  [v4 encodeObject:self->_scanRequirements forKey:{@"scanRequirements", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_scanRequirements forKey:{@"scanRequirements", v5.receiver, v5.super_class}];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (DIAttributeCamera)initWithCoder:(id)a3
+- (DIAttributeCamera)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = DIAttributeCamera;
-  v5 = [(DIAttribute *)&v12 initWithCoder:v4];
+  v5 = [(DIAttribute *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"scanRequirements"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"scanRequirements"];
     scanRequirements = v5->_scanRequirements;
     v5->_scanRequirements = v9;
   }
@@ -57,20 +57,20 @@
   return v3;
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = DIAttributeCamera;
-  [(DIAttribute *)&v3 setCurrentValue:a3];
+  [(DIAttribute *)&v3 setCurrentValue:value];
 }
 
-- (void)setScanRequirements:(id)a3
+- (void)setScanRequirements:(id)requirements
 {
-  v6 = a3;
+  requirementsCopy = requirements;
   os_unfair_lock_lock(&self->super._lock);
-  if (self->_scanRequirements != v6)
+  if (self->_scanRequirements != requirementsCopy)
   {
-    v4 = [(NSArray *)v6 copyWithZone:0];
+    v4 = [(NSArray *)requirementsCopy copyWithZone:0];
     scanRequirements = self->_scanRequirements;
     self->_scanRequirements = v4;
   }
@@ -82,18 +82,18 @@
 {
   v4.receiver = self;
   v4.super_class = DIAttributeCamera;
-  v2 = [(DIAttribute *)&v4 getCurrentValue];
+  getCurrentValue = [(DIAttribute *)&v4 getCurrentValue];
 
-  return v2;
+  return getCurrentValue;
 }
 
 - (id)defaultValue
 {
   v4.receiver = self;
   v4.super_class = DIAttributeCamera;
-  v2 = [(DIAttribute *)&v4 defaultValue];
+  defaultValue = [(DIAttribute *)&v4 defaultValue];
 
-  return v2;
+  return defaultValue;
 }
 
 - (NSArray)scanRequirements
@@ -152,8 +152,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(DIAttributeCamera *)self getCurrentValue];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v28 count:16];
+  getCurrentValue = [(DIAttributeCamera *)self getCurrentValue];
+  v12 = [getCurrentValue countByEnumeratingWithState:&v19 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
@@ -164,14 +164,14 @@
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(getCurrentValue);
         }
 
         v16 = [*(*(&v19 + 1) + 8 * j) description];
         [v3 appendFormat:@"    image: '%@'\n", v16];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v28 count:16];
+      v13 = [getCurrentValue countByEnumeratingWithState:&v19 objects:v28 count:16];
     }
 
     while (v13);

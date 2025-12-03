@@ -1,48 +1,48 @@
 @interface CHXAutoStyling
-+ (id)colorWithSchemeColorId:(int)a3 transformType:(int)a4 transformValue:(float)a5;
-+ (int)styleColumnWithStyleId:(int)a3;
-+ (int)styleRowWithStyleId:(int)a3;
++ (id)colorWithSchemeColorId:(int)id transformType:(int)type transformValue:(float)value;
++ (int)styleColumnWithStyleId:(int)id;
++ (int)styleRowWithStyleId:(int)id;
 - (id)autoAxisAndMajorGridColor;
 - (id)autoChartAreaAndDataTableAndFloorStrokeColor;
 - (id)autoChartAreaFillColor;
-- (id)autoColorOfFirstColumnSeriesWithIndex:(unint64_t)a3 seriesCount:(unint64_t)a4;
-- (id)autoColorOfSeriesWithIndex:(unint64_t)a3;
+- (id)autoColorOfFirstColumnSeriesWithIndex:(unint64_t)index seriesCount:(unint64_t)count;
+- (id)autoColorOfSeriesWithIndex:(unint64_t)index;
 - (id)autoFloorAndWallsAndPlotArea2DFillColor;
 - (id)autoMinorGridColor;
 - (id)autoOtherStrokeColor;
-- (id)autoStrokeForSeriesIndex:(unint64_t)a3;
+- (id)autoStrokeForSeriesIndex:(unint64_t)index;
 - (id)autoTextFill;
 - (int)styleColumn;
 - (int)styleRow;
-- (void)resolveAxisGraphicProperties:(id)a3;
-- (void)resolveChartAreaGraphicProperties:(id)a3;
-- (void)resolveFloorGraphicProperties:(id)a3;
-- (void)resolveGraphicPropertiesOfErrorBar:(id)a3 forSeriesIndex:(unint64_t)a4;
-- (void)resolveGraphicPropertiesOfSeries:(id)a3 forSeriesIndex:(unint64_t)a4 isLine:(BOOL)a5;
-- (void)resolveGraphicPropertiesOfTrendline:(id)a3 forSeriesIndex:(unint64_t)a4;
-- (void)resolveLegendGraphicProperties:(id)a3;
-- (void)resolveMajorGridLinesGraphicProperties:(id)a3;
-- (void)resolveMarker:(id)a3 withSeriesGraphicProperties:(id)a4 forSeriesIndex:(unint64_t)a5 clientGraphicPropertyDefaults:(id)a6;
-- (void)resolveMinorGridLinesGraphicProperties:(id)a3;
-- (void)resolvePlotAreaGraphicProperties:(id)a3;
-- (void)resolveWallGraphicProperties:(id)a3;
-- (void)setDefaultErrorBarPropertiesInGraphicProperties:(id)a3;
+- (void)resolveAxisGraphicProperties:(id)properties;
+- (void)resolveChartAreaGraphicProperties:(id)properties;
+- (void)resolveFloorGraphicProperties:(id)properties;
+- (void)resolveGraphicPropertiesOfErrorBar:(id)bar forSeriesIndex:(unint64_t)index;
+- (void)resolveGraphicPropertiesOfSeries:(id)series forSeriesIndex:(unint64_t)index isLine:(BOOL)line;
+- (void)resolveGraphicPropertiesOfTrendline:(id)trendline forSeriesIndex:(unint64_t)index;
+- (void)resolveLegendGraphicProperties:(id)properties;
+- (void)resolveMajorGridLinesGraphicProperties:(id)properties;
+- (void)resolveMarker:(id)marker withSeriesGraphicProperties:(id)properties forSeriesIndex:(unint64_t)index clientGraphicPropertyDefaults:(id)defaults;
+- (void)resolveMinorGridLinesGraphicProperties:(id)properties;
+- (void)resolvePlotAreaGraphicProperties:(id)properties;
+- (void)resolveWallGraphicProperties:(id)properties;
+- (void)setDefaultErrorBarPropertiesInGraphicProperties:(id)properties;
 @end
 
 @implementation CHXAutoStyling
 
 - (int)styleRow
 {
-  v2 = [(CHXAutoStyling *)self styleId];
+  styleId = [(CHXAutoStyling *)self styleId];
 
-  return [CHXAutoStyling styleRowWithStyleId:v2];
+  return [CHXAutoStyling styleRowWithStyleId:styleId];
 }
 
 - (id)autoMinorGridColor
 {
-  v2 = [(CHXAutoStyling *)self styleId];
+  styleId = [(CHXAutoStyling *)self styleId];
   v3 = objc_opt_class();
-  if (v2 > 32)
+  if (styleId > 32)
   {
     LODWORD(v4) = *"fff?";
     v5 = 12;
@@ -61,38 +61,38 @@
 
 - (int)styleColumn
 {
-  v2 = [(CHXAutoStyling *)self styleId];
+  styleId = [(CHXAutoStyling *)self styleId];
 
-  return [CHXAutoStyling styleColumnWithStyleId:v2];
+  return [CHXAutoStyling styleColumnWithStyleId:styleId];
 }
 
-+ (id)colorWithSchemeColorId:(int)a3 transformType:(int)a4 transformValue:(float)a5
++ (id)colorWithSchemeColorId:(int)id transformType:(int)type transformValue:(float)value
 {
-  v6 = *&a4;
-  v7 = [OADSchemeColor schemeColorWithIndex:*&a3];
-  *&v8 = a5;
+  v6 = *&type;
+  v7 = [OADSchemeColor schemeColorWithIndex:*&id];
+  *&v8 = value;
   [v7 addTransformOfType:v6 value:v8];
 
   return v7;
 }
 
-+ (int)styleRowWithStyleId:(int)a3
++ (int)styleRowWithStyleId:(int)id
 {
-  v3 = a3 - 1;
-  if (a3 < 1)
+  v3 = id - 1;
+  if (id < 1)
   {
-    v3 = a3 + 6;
+    v3 = id + 6;
   }
 
   return (v3 >> 3) + 1;
 }
 
-+ (int)styleColumnWithStyleId:(int)a3
++ (int)styleColumnWithStyleId:(int)id
 {
-  v3 = (a3 - 1) & 7;
-  if (1 - a3 >= 0)
+  v3 = (id - 1) & 7;
+  if (1 - id >= 0)
   {
-    v3 = -((1 - a3) & 7);
+    v3 = -((1 - id) & 7);
   }
 
   return v3 + 1;
@@ -100,9 +100,9 @@
 
 - (id)autoAxisAndMajorGridColor
 {
-  v2 = [(CHXAutoStyling *)self styleId];
+  styleId = [(CHXAutoStyling *)self styleId];
   v3 = objc_opt_class();
-  if (v2 < 33)
+  if (styleId < 33)
   {
     v5 = 1;
   }
@@ -120,8 +120,8 @@
 
 - (id)autoChartAreaAndDataTableAndFloorStrokeColor
 {
-  v2 = [(CHXAutoStyling *)self styleId];
-  if (v2 <= 32)
+  styleId = [(CHXAutoStyling *)self styleId];
+  if (styleId <= 32)
   {
     v3 = objc_opt_class();
     LODWORD(v4) = 0.75;
@@ -131,7 +131,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (v2 <= 0x28)
+  if (styleId <= 0x28)
   {
     v3 = objc_opt_class();
     LODWORD(v4) = 0.75;
@@ -147,12 +147,12 @@ LABEL_7:
 
 - (id)autoOtherStrokeColor
 {
-  v2 = [(CHXAutoStyling *)self styleId];
-  if (v2 > 32)
+  styleId = [(CHXAutoStyling *)self styleId];
+  if (styleId > 32)
   {
-    if (v2 > 0x22)
+    if (styleId > 0x22)
     {
-      if (v2 <= 0x28)
+      if (styleId <= 0x28)
       {
         v4 = objc_opt_class();
         LODWORD(v5) = 0.25;
@@ -182,10 +182,10 @@ LABEL_9:
 
 - (id)autoChartAreaFillColor
 {
-  v2 = [(CHXAutoStyling *)self styleId];
-  if (v2 > 32)
+  styleId = [(CHXAutoStyling *)self styleId];
+  if (styleId > 32)
   {
-    if (v2 > 0x28)
+    if (styleId > 0x28)
     {
       v3 = 12;
     }
@@ -208,15 +208,15 @@ LABEL_9:
 
 - (id)autoFloorAndWallsAndPlotArea2DFillColor
 {
-  v2 = [(CHXAutoStyling *)self styleId];
-  if (v2 <= 32)
+  styleId = [(CHXAutoStyling *)self styleId];
+  if (styleId <= 32)
   {
     v3 = [OADSchemeColor schemeColorWithIndex:0];
     goto LABEL_10;
   }
 
-  v4 = v2;
-  if (v2 <= 0x22)
+  v4 = styleId;
+  if (styleId <= 0x22)
   {
     v5 = objc_opt_class();
     LODWORD(v6) = 1045220557;
@@ -241,46 +241,46 @@ LABEL_10:
   return v3;
 }
 
-- (void)setDefaultErrorBarPropertiesInGraphicProperties:(id)a3
+- (void)setDefaultErrorBarPropertiesInGraphicProperties:(id)properties
 {
-  v11 = a3;
-  v3 = [v11 isMergedWithParent];
-  [v11 setMergedWithParent:0];
-  if (([v11 hasStroke] & 1) == 0)
+  propertiesCopy = properties;
+  isMergedWithParent = [propertiesCopy isMergedWithParent];
+  [propertiesCopy setMergedWithParent:0];
+  if (([propertiesCopy hasStroke] & 1) == 0)
   {
     v4 = +[OADStroke blackStroke];
-    [v11 setStroke:v4];
+    [propertiesCopy setStroke:v4];
 
-    v5 = [v11 stroke];
+    stroke = [propertiesCopy stroke];
     LODWORD(v6) = 0.75;
-    [v5 setWidth:v6];
+    [stroke setWidth:v6];
   }
 
-  v7 = [v11 stroke];
-  v8 = [v7 isMergedWithParent];
-  [v7 setMergedWithParent:0];
-  if (([v7 isFillOverridden] & 1) == 0)
+  stroke2 = [propertiesCopy stroke];
+  isMergedWithParent2 = [stroke2 isMergedWithParent];
+  [stroke2 setMergedWithParent:0];
+  if (([stroke2 isFillOverridden] & 1) == 0)
   {
     v9 = +[OADSolidFill blackFill];
-    [v7 setFill:v9];
+    [stroke2 setFill:v9];
   }
 
-  if (([v7 isWidthOverridden] & 1) == 0)
+  if (([stroke2 isWidthOverridden] & 1) == 0)
   {
     LODWORD(v10) = 0.75;
-    [v7 setWidth:v10];
+    [stroke2 setWidth:v10];
   }
 
-  [v11 setMergedWithParent:v3];
-  [v7 setMergedWithParent:v8];
+  [propertiesCopy setMergedWithParent:isMergedWithParent];
+  [stroke2 setMergedWithParent:isMergedWithParent2];
 }
 
-- (id)autoColorOfFirstColumnSeriesWithIndex:(unint64_t)a3 seriesCount:(unint64_t)a4
+- (id)autoColorOfFirstColumnSeriesWithIndex:(unint64_t)index seriesCount:(unint64_t)count
 {
-  v5 = a4 % 0x1D;
-  if (!(a4 % 0x1D) || (a3 %= v5, v5 <= 5))
+  v5 = count % 0x1D;
+  if (!(count % 0x1D) || (index %= v5, v5 <= 5))
   {
-    v6 = &[CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[a3];
+    v6 = &[CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[index];
 LABEL_4:
     v7 = *v6;
     v8 = 255;
@@ -291,42 +291,42 @@ LABEL_4:
   {
     if (v5 <= 0x11)
     {
-      if (a3 < 6)
+      if (index < 6)
       {
         v8 = 211;
         goto LABEL_26;
       }
 
-      if (a3 > 0xB)
+      if (index > 0xB)
       {
 LABEL_28:
-        v6 = &[CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[a3 + 6];
+        v6 = &[CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[index + 6];
         goto LABEL_4;
       }
 
 LABEL_18:
-      v6 = &[CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[a3 - 6];
+      v6 = &[CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[index - 6];
       goto LABEL_4;
     }
 
     if (v5 > 0x17)
     {
-      v20 = a3 - 6;
-      if (a3 < 6)
+      v20 = index - 6;
+      if (index < 6)
       {
         v8 = 192;
         goto LABEL_26;
       }
 
-      if (a3 > 0xB)
+      if (index > 0xB)
       {
-        if (a3 <= 0x11)
+        if (index <= 0x11)
         {
-          v6 = &[CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[a3 - 12];
+          v6 = &[CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[index - 12];
           goto LABEL_4;
         }
 
-        if (a3 > 0x17)
+        if (index > 0x17)
         {
           goto LABEL_28;
         }
@@ -339,16 +339,16 @@ LABEL_18:
 
     else
     {
-      v20 = a3 - 6;
-      if (a3 < 6)
+      v20 = index - 6;
+      if (index < 6)
       {
         v8 = 200;
         goto LABEL_26;
       }
 
-      if (a3 > 0xB)
+      if (index > 0xB)
       {
-        if (a3 > 0x11)
+        if (index > 0x11)
         {
           goto LABEL_28;
         }
@@ -359,18 +359,18 @@ LABEL_18:
       v8 = 239;
     }
 
-    a3 = v20;
+    index = v20;
     goto LABEL_26;
   }
 
-  if (a3 >= 6)
+  if (index >= 6)
   {
     goto LABEL_28;
   }
 
   v8 = 226;
 LABEL_26:
-  LOBYTE(v4) = [CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[a3];
+  LOBYTE(v4) = [CHXAutoStyling autoColorOfFirstColumnSeriesWithIndex:seriesCount:]::baseColors[index];
   v21 = v8 / 255.0 * v4;
   v7 = llroundf(v21);
 LABEL_5:
@@ -397,35 +397,35 @@ LABEL_5:
   return v9;
 }
 
-- (id)autoColorOfSeriesWithIndex:(unint64_t)a3
+- (id)autoColorOfSeriesWithIndex:(unint64_t)index
 {
   if ([(CHDChart *)self->super.mChart isPie]&& ![(CHDChart *)self->super.mChart isDirectionChanged])
   {
-    v5 = [(CHDChart *)self->super.mChart categoryCount];
+    categoryCount = [(CHDChart *)self->super.mChart categoryCount];
   }
 
   else
   {
-    v5 = [(CHDChart *)self->super.mChart seriesCount];
+    categoryCount = [(CHDChart *)self->super.mChart seriesCount];
   }
 
-  v6 = v5;
-  v7 = [(CHXAutoStyling *)self styleColumn];
-  if (v7 == 1)
+  v6 = categoryCount;
+  styleColumn = [(CHXAutoStyling *)self styleColumn];
+  if (styleColumn == 1)
   {
-    v8 = [(CHXAutoStyling *)self autoColorOfFirstColumnSeriesWithIndex:a3 seriesCount:v6];
+    v8 = [(CHXAutoStyling *)self autoColorOfFirstColumnSeriesWithIndex:index seriesCount:v6];
   }
 
-  else if (v7 == 2)
+  else if (styleColumn == 2)
   {
-    v8 = [OADSchemeColor schemeColorWithIndex:(a3 % 6) + 4];
+    v8 = [OADSchemeColor schemeColorWithIndex:(index % 6) + 4];
   }
 
   else
   {
-    if (v7 > 2)
+    if (styleColumn > 2)
     {
-      v9 = (v7 + 1);
+      v9 = (styleColumn + 1);
     }
 
     else
@@ -433,45 +433,45 @@ LABEL_5:
       v9 = 1;
     }
 
-    v10 = [(OADDrawingTheme *)self->super.mDrawingTheme colorMap];
-    if (v10)
+    colorMap = [(OADDrawingTheme *)self->super.mDrawingTheme colorMap];
+    if (colorMap)
     {
-      v11 = [(OADDrawingTheme *)self->super.mDrawingTheme colorScheme];
+      colorScheme = [(OADDrawingTheme *)self->super.mDrawingTheme colorScheme];
 
-      if (v11)
+      if (colorScheme)
       {
-        v10 = [OADSchemeColor schemeColorWithIndex:v9];
-        v11 = [(OADDrawingTheme *)self->super.mDrawingTheme colorMap];
-        v12 = [(OADDrawingTheme *)self->super.mDrawingTheme colorScheme];
-        v13 = [OADColor rgbColorWithColor:v10 colorMap:v11 colorScheme:v12 colorPalette:0];
+        colorMap = [OADSchemeColor schemeColorWithIndex:v9];
+        colorScheme = [(OADDrawingTheme *)self->super.mDrawingTheme colorMap];
+        colorScheme2 = [(OADDrawingTheme *)self->super.mDrawingTheme colorScheme];
+        v13 = [OADColor rgbColorWithColor:colorMap colorMap:colorScheme colorScheme:colorScheme2 colorPalette:0];
 
-        LOBYTE(v10) = [v13 isBlack];
-        LODWORD(v11) = [v13 isWhite];
+        LOBYTE(colorMap) = [v13 isBlack];
+        LODWORD(colorScheme) = [v13 isWhite];
       }
 
       else
       {
-        LOBYTE(v10) = 0;
+        LOBYTE(colorMap) = 0;
       }
     }
 
     else
     {
-      LODWORD(v11) = 0;
+      LODWORD(colorScheme) = 0;
     }
 
     v14 = v6;
-    if (!((a3 >= v6 >> 1) | v10 & 1) || v11)
+    if (!((index >= v6 >> 1) | colorMap & 1) || colorScheme)
     {
       v20 = (pow(v14, -0.62) * 128.0 + 144.0) / -255.0;
       v21 = v20 + 1.0;
-      if (v11)
+      if (colorScheme)
       {
         v21 = 0.25;
       }
 
       v22 = vcvts_n_f32_u64(v6, 1uLL);
-      v23 = pow((1.0 - (fabsf((v22 - a3) / v22) * v21)), 2.2);
+      v23 = pow((1.0 - (fabsf((v22 - index) / v22) * v21)), 2.2);
       v24 = objc_opt_class();
       *&v25 = v23;
       v8 = [v24 colorWithSchemeColorId:v9 shade:v25];
@@ -481,12 +481,12 @@ LABEL_5:
     {
       v15 = (pow(v14, -0.8) * -144.0 + 220.0) / 255.0;
       v16 = vcvts_n_f32_u64(v6 - 1, 1uLL);
-      if (v10)
+      if (colorMap)
       {
         v15 = 0.25;
       }
 
-      v17 = 1.0 - pow(1.0 - (1.0 - (fabsf((a3 - v16) / vcvts_n_f32_u64(v6, 1uLL)) * v15)), 2.2);
+      v17 = 1.0 - pow(1.0 - (1.0 - (fabsf((index - v16) / vcvts_n_f32_u64(v6, 1uLL)) * v15)), 2.2);
       v18 = objc_opt_class();
       *&v19 = v17;
       v8 = [v18 colorWithSchemeColorId:v9 tint:v19];
@@ -496,180 +496,180 @@ LABEL_5:
   return v8;
 }
 
-- (void)resolveChartAreaGraphicProperties:(id)a3
+- (void)resolveChartAreaGraphicProperties:(id)properties
 {
-  v15 = a3;
+  propertiesCopy = properties;
   v4 = objc_alloc_init(OADShapeStyle);
-  v5 = [(CHXAutoStyling *)self styleId];
-  v6 = [(CHXAutoStyling *)self _autoChartFillIsHollow];
-  if (v5 >= 33 || !v6)
+  styleId = [(CHXAutoStyling *)self styleId];
+  _autoChartFillIsHollow = [(CHXAutoStyling *)self _autoChartFillIsHollow];
+  if (styleId >= 33 || !_autoChartFillIsHollow)
   {
-    v8 = [(CHXAutoStyling *)self autoChartAreaFillColor];
-    [(OADShapeStyle *)v4 setFillMatrixIndex:1 color:v8];
+    autoChartAreaFillColor = [(CHXAutoStyling *)self autoChartAreaFillColor];
+    [(OADShapeStyle *)v4 setFillMatrixIndex:1 color:autoChartAreaFillColor];
   }
 
-  v9 = [(CHXAutoStyling *)self _autoChartFillIsHollow];
-  if ((v5 - 41) >= 0xFFFFFFF8 || !v9)
+  _autoChartFillIsHollow2 = [(CHXAutoStyling *)self _autoChartFillIsHollow];
+  if ((styleId - 41) >= 0xFFFFFFF8 || !_autoChartFillIsHollow2)
   {
-    v11 = [(CHXAutoStyling *)self autoFloorAndChartAreaStrokeIndex];
-    v12 = [(CHXAutoStyling *)self autoChartAreaAndDataTableAndFloorStrokeColor];
-    [(OADShapeStyle *)v4 setLineMatrixIndex:v11 color:v12];
+    autoFloorAndChartAreaStrokeIndex = [(CHXAutoStyling *)self autoFloorAndChartAreaStrokeIndex];
+    autoChartAreaAndDataTableAndFloorStrokeColor = [(CHXAutoStyling *)self autoChartAreaAndDataTableAndFloorStrokeColor];
+    [(OADShapeStyle *)v4 setLineMatrixIndex:autoFloorAndChartAreaStrokeIndex color:autoChartAreaAndDataTableAndFloorStrokeColor];
   }
 
-  v13 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+  styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
   LODWORD(v14) = 1.0;
-  [(OADShapeStyle *)v4 applyToGraphicProperties:v15 styleMatrix:v13 useNull:1 strokeWidthMultiplier:v14];
+  [(OADShapeStyle *)v4 applyToGraphicProperties:propertiesCopy styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v14];
 }
 
-- (void)resolveWallGraphicProperties:(id)a3
+- (void)resolveWallGraphicProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v10 = v4;
+    v10 = propertiesCopy;
     v5 = objc_alloc_init(OADShapeStyle);
     if ([(CHXAutoStyling *)self styleId]>= 33)
     {
-      v6 = [(CHXAutoStyling *)self autoFloorAndWallsFillIndex];
-      v7 = [(CHXAutoStyling *)self autoFloorAndWallsAndPlotArea2DFillColor];
-      [(OADShapeStyle *)v5 setFillMatrixIndex:v6 color:v7];
+      autoFloorAndWallsFillIndex = [(CHXAutoStyling *)self autoFloorAndWallsFillIndex];
+      autoFloorAndWallsAndPlotArea2DFillColor = [(CHXAutoStyling *)self autoFloorAndWallsAndPlotArea2DFillColor];
+      [(OADShapeStyle *)v5 setFillMatrixIndex:autoFloorAndWallsFillIndex color:autoFloorAndWallsAndPlotArea2DFillColor];
     }
 
-    v8 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     LODWORD(v9) = 1.0;
-    [(OADShapeStyle *)v5 applyToGraphicProperties:v10 styleMatrix:v8 useNull:1 strokeWidthMultiplier:v9];
+    [(OADShapeStyle *)v5 applyToGraphicProperties:v10 styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v9];
 
-    v4 = v10;
+    propertiesCopy = v10;
   }
 }
 
-- (void)resolveFloorGraphicProperties:(id)a3
+- (void)resolveFloorGraphicProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v12 = v4;
+    v12 = propertiesCopy;
     v5 = objc_alloc_init(OADShapeStyle);
     if ([(CHXAutoStyling *)self styleId]>= 33)
     {
-      v6 = [(CHXAutoStyling *)self autoFloorAndWallsFillIndex];
-      v7 = [(CHXAutoStyling *)self autoFloorAndWallsAndPlotArea2DFillColor];
-      [(OADShapeStyle *)v5 setFillMatrixIndex:v6 color:v7];
+      autoFloorAndWallsFillIndex = [(CHXAutoStyling *)self autoFloorAndWallsFillIndex];
+      autoFloorAndWallsAndPlotArea2DFillColor = [(CHXAutoStyling *)self autoFloorAndWallsAndPlotArea2DFillColor];
+      [(OADShapeStyle *)v5 setFillMatrixIndex:autoFloorAndWallsFillIndex color:autoFloorAndWallsAndPlotArea2DFillColor];
     }
 
-    v8 = [(CHXAutoStyling *)self autoFloorAndChartAreaStrokeIndex];
-    v9 = [(CHXAutoStyling *)self autoChartAreaAndDataTableAndFloorStrokeColor];
-    [(OADShapeStyle *)v5 setLineMatrixIndex:v8 color:v9];
+    autoFloorAndChartAreaStrokeIndex = [(CHXAutoStyling *)self autoFloorAndChartAreaStrokeIndex];
+    autoChartAreaAndDataTableAndFloorStrokeColor = [(CHXAutoStyling *)self autoChartAreaAndDataTableAndFloorStrokeColor];
+    [(OADShapeStyle *)v5 setLineMatrixIndex:autoFloorAndChartAreaStrokeIndex color:autoChartAreaAndDataTableAndFloorStrokeColor];
 
-    v10 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     LODWORD(v11) = 1.0;
-    [(OADShapeStyle *)v5 applyToGraphicProperties:v12 styleMatrix:v10 useNull:1 strokeWidthMultiplier:v11];
+    [(OADShapeStyle *)v5 applyToGraphicProperties:v12 styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v11];
 
-    v4 = v12;
+    propertiesCopy = v12;
   }
 }
 
-- (void)resolvePlotAreaGraphicProperties:(id)a3
+- (void)resolvePlotAreaGraphicProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v14 = v4;
+    v14 = propertiesCopy;
     v5 = objc_alloc_init(OADShapeStyle);
-    v6 = [(CHDChart *)self->super.mChart is3D];
-    v7 = [(CHXAutoStyling *)self styleId];
-    if (!v6)
+    is3D = [(CHDChart *)self->super.mChart is3D];
+    styleId = [(CHXAutoStyling *)self styleId];
+    if (!is3D)
     {
-      v8 = v7;
-      v9 = [(CHXAutoStyling *)self _autoChartFillIsHollow];
-      if (v8 >= 33 || !v9)
+      v8 = styleId;
+      _autoChartFillIsHollow = [(CHXAutoStyling *)self _autoChartFillIsHollow];
+      if (v8 >= 33 || !_autoChartFillIsHollow)
       {
-        v11 = [(CHXAutoStyling *)self autoFloorAndWallsAndPlotArea2DFillColor];
-        [(OADShapeStyle *)v5 setFillMatrixIndex:1 color:v11];
+        autoFloorAndWallsAndPlotArea2DFillColor = [(CHXAutoStyling *)self autoFloorAndWallsAndPlotArea2DFillColor];
+        [(OADShapeStyle *)v5 setFillMatrixIndex:1 color:autoFloorAndWallsAndPlotArea2DFillColor];
       }
     }
 
-    v12 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     LODWORD(v13) = 1.0;
-    [(OADShapeStyle *)v5 applyToGraphicProperties:v14 styleMatrix:v12 useNull:1 strokeWidthMultiplier:v13];
+    [(OADShapeStyle *)v5 applyToGraphicProperties:v14 styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v13];
 
-    v4 = v14;
+    propertiesCopy = v14;
   }
 }
 
-- (void)resolveAxisGraphicProperties:(id)a3
+- (void)resolveAxisGraphicProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v9 = v4;
+    v9 = propertiesCopy;
     v5 = objc_alloc_init(OADShapeStyle);
-    v6 = [(CHXAutoStyling *)self autoAxisAndMajorGridColor];
-    [(OADShapeStyle *)v5 setLineMatrixIndex:1 color:v6];
+    autoAxisAndMajorGridColor = [(CHXAutoStyling *)self autoAxisAndMajorGridColor];
+    [(OADShapeStyle *)v5 setLineMatrixIndex:1 color:autoAxisAndMajorGridColor];
 
-    v7 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     LODWORD(v8) = 1.0;
-    [(OADShapeStyle *)v5 applyToGraphicProperties:v9 styleMatrix:v7 useNull:1 strokeWidthMultiplier:v8];
+    [(OADShapeStyle *)v5 applyToGraphicProperties:v9 styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v8];
 
-    v4 = v9;
+    propertiesCopy = v9;
   }
 }
 
-- (void)resolveMajorGridLinesGraphicProperties:(id)a3
+- (void)resolveMajorGridLinesGraphicProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v9 = v4;
+    v9 = propertiesCopy;
     v5 = objc_alloc_init(OADShapeStyle);
-    v6 = [(CHXAutoStyling *)self autoAxisAndMajorGridColor];
-    [(OADShapeStyle *)v5 setLineMatrixIndex:1 color:v6];
+    autoAxisAndMajorGridColor = [(CHXAutoStyling *)self autoAxisAndMajorGridColor];
+    [(OADShapeStyle *)v5 setLineMatrixIndex:1 color:autoAxisAndMajorGridColor];
 
-    v7 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     LODWORD(v8) = 1.0;
-    [(OADShapeStyle *)v5 applyToGraphicProperties:v9 styleMatrix:v7 useNull:1 strokeWidthMultiplier:v8];
+    [(OADShapeStyle *)v5 applyToGraphicProperties:v9 styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v8];
 
-    v4 = v9;
+    propertiesCopy = v9;
   }
 }
 
-- (void)resolveMinorGridLinesGraphicProperties:(id)a3
+- (void)resolveMinorGridLinesGraphicProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v9 = v4;
+    v9 = propertiesCopy;
     v5 = objc_alloc_init(OADShapeStyle);
-    v6 = [(CHXAutoStyling *)self autoMinorGridColor];
-    [(OADShapeStyle *)v5 setLineMatrixIndex:1 color:v6];
+    autoMinorGridColor = [(CHXAutoStyling *)self autoMinorGridColor];
+    [(OADShapeStyle *)v5 setLineMatrixIndex:1 color:autoMinorGridColor];
 
-    v7 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     LODWORD(v8) = 1.0;
-    [(OADShapeStyle *)v5 applyToGraphicProperties:v9 styleMatrix:v7 useNull:1 strokeWidthMultiplier:v8];
+    [(OADShapeStyle *)v5 applyToGraphicProperties:v9 styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v8];
 
-    v4 = v9;
+    propertiesCopy = v9;
   }
 }
 
-- (void)resolveLegendGraphicProperties:(id)a3
+- (void)resolveLegendGraphicProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v8 = v4;
+    v8 = propertiesCopy;
     v5 = objc_alloc_init(OADShapeStyle);
-    v6 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     LODWORD(v7) = 1.0;
-    [(OADShapeStyle *)v5 applyToGraphicProperties:v8 styleMatrix:v6 useNull:1 strokeWidthMultiplier:v7];
+    [(OADShapeStyle *)v5 applyToGraphicProperties:v8 styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v7];
 
-    v4 = v8;
+    propertiesCopy = v8;
   }
 }
 
 - (id)autoTextFill
 {
-  v2 = [(CHXAutoStyling *)self styleId];
-  if (v2 < 41)
+  styleId = [(CHXAutoStyling *)self styleId];
+  if (styleId < 41)
   {
     v3 = 12;
   }
@@ -679,7 +679,7 @@ LABEL_5:
     v3 = 13;
   }
 
-  if (v2 < 33)
+  if (styleId < 33)
   {
     v4 = 1;
   }
@@ -696,29 +696,29 @@ LABEL_5:
   return v6;
 }
 
-- (id)autoStrokeForSeriesIndex:(unint64_t)a3
+- (id)autoStrokeForSeriesIndex:(unint64_t)index
 {
-  v4 = [(CHXAutoStyling *)self autoColorOfSeriesWithIndex:a3];
-  v5 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
-  v6 = [v5 strokeAtIndex:1 color:v4];
+  v4 = [(CHXAutoStyling *)self autoColorOfSeriesWithIndex:index];
+  styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+  v6 = [styleMatrix strokeAtIndex:1 color:v4];
 
   return v6;
 }
 
-- (void)resolveGraphicPropertiesOfSeries:(id)a3 forSeriesIndex:(unint64_t)a4 isLine:(BOOL)a5
+- (void)resolveGraphicPropertiesOfSeries:(id)series forSeriesIndex:(unint64_t)index isLine:(BOOL)line
 {
-  v5 = a5;
+  lineCopy = line;
   v36 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v8 = [(CHXAutoStyling *)self styleColumn];
-  v9 = [(CHXAutoStyling *)self styleRow];
-  if (v26 && v9 <= 6)
+  seriesCopy = series;
+  styleColumn = [(CHXAutoStyling *)self styleColumn];
+  styleRow = [(CHXAutoStyling *)self styleRow];
+  if (seriesCopy && styleRow <= 6)
   {
-    if (v5)
+    if (lineCopy)
     {
       v10 = 0;
       v11 = 0;
-      v12 = [CHXAutoStyling resolveGraphicPropertiesOfErrorBar:forSeriesIndex:]::strokeWidthMultiplierArray[v9 - 1];
+      v12 = [CHXAutoStyling resolveGraphicPropertiesOfErrorBar:forSeriesIndex:]::strokeWidthMultiplierArray[styleRow - 1];
       v13 = 1;
     }
 
@@ -726,7 +726,7 @@ LABEL_5:
     {
       v27 = xmmword_25D6FE690;
       v28 = 1;
-      if (v8 == 2)
+      if (styleColumn == 2)
       {
         v14 = 3;
       }
@@ -743,7 +743,7 @@ LABEL_5:
       v33 = 0;
       v34 = v14;
       v35 = 0;
-      v15 = &v27 + 12 * v9;
+      v15 = &v27 + 12 * styleRow;
       v10 = *(v15 - 3);
       v13 = *(v15 - 2);
       v12 = 1.0;
@@ -752,7 +752,7 @@ LABEL_5:
 
     else
     {
-      v16 = &[CHXAutoStyling resolveGraphicPropertiesOfSeries:forSeriesIndex:isLine:]::styleIndices + 12 * v9;
+      v16 = &[CHXAutoStyling resolveGraphicPropertiesOfSeries:forSeriesIndex:isLine:]::styleIndices + 12 * styleRow;
       v10 = *(v16 - 3);
       v13 = *(v16 - 2);
       v11 = *(v16 - 1);
@@ -760,18 +760,18 @@ LABEL_5:
     }
 
     v17 = objc_alloc_init(OADShapeStyle);
-    v18 = [(CHXAutoStyling *)self autoColorOfSeriesWithIndex:a4];
+    v18 = [(CHXAutoStyling *)self autoColorOfSeriesWithIndex:index];
     v19 = [v18 copy];
     v21 = v19;
-    if (!v5)
+    if (!lineCopy)
     {
-      if (v9 == 5)
+      if (styleRow == 5)
       {
         LODWORD(v20) = 1060655596;
         [v19 addTransformOfType:5 value:v20];
       }
 
-      else if (v9 == 2)
+      else if (styleRow == 2)
       {
         v22 = [OADSchemeColor schemeColorWithIndex:0];
 
@@ -794,115 +794,115 @@ LABEL_5:
       [(OADShapeStyle *)v17 setEffectMatrixIndex:v11 color:v18];
     }
 
-    v23 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     *&v24 = v12;
-    [(OADShapeStyle *)v17 applyToGraphicProperties:v26 styleMatrix:v23 useNull:1 strokeWidthMultiplier:v24];
+    [(OADShapeStyle *)v17 applyToGraphicProperties:seriesCopy styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v24];
   }
 
-  v25 = v26;
+  v25 = seriesCopy;
 }
 
-- (void)resolveGraphicPropertiesOfTrendline:(id)a3 forSeriesIndex:(unint64_t)a4
+- (void)resolveGraphicPropertiesOfTrendline:(id)trendline forSeriesIndex:(unint64_t)index
 {
-  v5 = a3;
-  if (v5)
+  trendlineCopy = trendline;
+  if (trendlineCopy)
   {
-    v10 = v5;
+    v10 = trendlineCopy;
     v6 = [OADSchemeColor schemeColorWithIndex:1];
     v7 = objc_alloc_init(OADShapeStyle);
     [(OADShapeStyle *)v7 setLineMatrixIndex:1 color:v6];
-    v8 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     LODWORD(v9) = 1.0;
-    [(OADShapeStyle *)v7 applyToGraphicProperties:v10 styleMatrix:v8 useNull:1 strokeWidthMultiplier:v9];
+    [(OADShapeStyle *)v7 applyToGraphicProperties:v10 styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v9];
 
-    v5 = v10;
+    trendlineCopy = v10;
   }
 }
 
-- (void)resolveGraphicPropertiesOfErrorBar:(id)a3 forSeriesIndex:(unint64_t)a4
+- (void)resolveGraphicPropertiesOfErrorBar:(id)bar forSeriesIndex:(unint64_t)index
 {
-  v12 = a3;
-  v6 = [(CHXAutoStyling *)self styleRow];
-  if (v12)
+  barCopy = bar;
+  styleRow = [(CHXAutoStyling *)self styleRow];
+  if (barCopy)
   {
-    v7 = [CHXAutoStyling resolveGraphicPropertiesOfErrorBar:forSeriesIndex:]::strokeWidthMultiplierArray[v6 - 1];
-    v8 = [(CHXAutoStyling *)self autoColorOfSeriesWithIndex:a4];
+    v7 = [CHXAutoStyling resolveGraphicPropertiesOfErrorBar:forSeriesIndex:]::strokeWidthMultiplierArray[styleRow - 1];
+    v8 = [(CHXAutoStyling *)self autoColorOfSeriesWithIndex:index];
     v9 = objc_alloc_init(OADShapeStyle);
     [(OADShapeStyle *)v9 setLineMatrixIndex:1 color:v8];
-    [(CHXAutoStyling *)self setDefaultErrorBarPropertiesInGraphicProperties:v12];
-    v10 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+    [(CHXAutoStyling *)self setDefaultErrorBarPropertiesInGraphicProperties:barCopy];
+    styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
     *&v11 = v7;
-    [(OADShapeStyle *)v9 applyToGraphicProperties:v12 styleMatrix:v10 useNull:1 strokeWidthMultiplier:v11];
+    [(OADShapeStyle *)v9 applyToGraphicProperties:barCopy styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v11];
   }
 }
 
-- (void)resolveMarker:(id)a3 withSeriesGraphicProperties:(id)a4 forSeriesIndex:(unint64_t)a5 clientGraphicPropertyDefaults:(id)a6
+- (void)resolveMarker:(id)marker withSeriesGraphicProperties:(id)properties forSeriesIndex:(unint64_t)index clientGraphicPropertyDefaults:(id)defaults
 {
-  v31 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v31)
+  markerCopy = marker;
+  propertiesCopy = properties;
+  defaultsCopy = defaults;
+  if (markerCopy)
   {
-    v12 = [v31 graphicProperties];
+    graphicProperties = [markerCopy graphicProperties];
 
-    if (v10)
+    if (propertiesCopy)
     {
-      if (v12)
+      if (graphicProperties)
       {
-        v13 = [(CHXAutoStyling *)self styleRow];
-        if (v13 <= 6)
+        styleRow = [(CHXAutoStyling *)self styleRow];
+        if (styleRow <= 6)
         {
-          if ([v10 hasFill])
+          if ([propertiesCopy hasFill])
           {
-            v14 = [v10 fill];
+            fill = [propertiesCopy fill];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v15 = v14;
-              v16 = [v15 technique];
+              v15 = fill;
+              technique = [v15 technique];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
 
               if (isKindOfClass)
               {
                 v18 = [v15 copy];
-                v19 = [v31 graphicProperties];
-                [v19 setFill:v18];
+                graphicProperties2 = [markerCopy graphicProperties];
+                [graphicProperties2 setFill:v18];
               }
             }
           }
 
-          if (![v31 size])
+          if (![markerCopy size])
           {
-            [v31 setSize:7];
-            if (v11)
+            [markerCopy setSize:7];
+            if (defaultsCopy)
             {
               v20 = objc_opt_class();
-              v21 = v11[2](v11, v10, &unk_286F6D6C8);
+              v21 = defaultsCopy[2](defaultsCopy, propertiesCopy, &unk_286F6D6C8);
               v22 = TSUDynamicCast(v20, v21);
 
               if (v22)
               {
-                [v31 setSize:{objc_msgSend(v22, "unsignedIntValue")}];
+                [markerCopy setSize:{objc_msgSend(v22, "unsignedIntValue")}];
               }
             }
           }
 
-          if ([v31 style] == -1)
+          if ([markerCopy style] == -1)
           {
-            [v31 setStyle:{-[CHAutoStyling defaultMarkerStyleForSeriesIndex:](self, "defaultMarkerStyleForSeriesIndex:", a5)}];
+            [markerCopy setStyle:{-[CHAutoStyling defaultMarkerStyleForSeriesIndex:](self, "defaultMarkerStyleForSeriesIndex:", index)}];
           }
 
-          if (![v31 style])
+          if (![markerCopy style])
           {
-            [(CHAutoStyling *)self replaceStrokeAndFillInEmptyMarker:v31 withSeriesGraphicProperties:v10];
+            [(CHAutoStyling *)self replaceStrokeAndFillInEmptyMarker:markerCopy withSeriesGraphicProperties:propertiesCopy];
           }
 
           v23 = objc_alloc_init(OADShapeStyle);
-          v24 = &[CHXAutoStyling resolveMarker:withSeriesGraphicProperties:forSeriesIndex:clientGraphicPropertyDefaults:]::styleIndices + 12 * v13;
+          v24 = &[CHXAutoStyling resolveMarker:withSeriesGraphicProperties:forSeriesIndex:clientGraphicPropertyDefaults:]::styleIndices + 12 * styleRow;
           v25 = *(v24 - 3);
           v26 = *(v24 - 1);
-          v27 = [(CHXAutoStyling *)self autoColorOfSeriesWithIndex:a5];
+          v27 = [(CHXAutoStyling *)self autoColorOfSeriesWithIndex:index];
           if (v25)
           {
             [(OADShapeStyle *)v23 setFillMatrixIndex:v25 color:v27];
@@ -914,10 +914,10 @@ LABEL_5:
             [(OADShapeStyle *)v23 setEffectMatrixIndex:v26 color:v27];
           }
 
-          v28 = [v31 graphicProperties];
-          v29 = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
+          graphicProperties3 = [markerCopy graphicProperties];
+          styleMatrix = [(OADDrawingTheme *)self->super.mDrawingTheme styleMatrix];
           LODWORD(v30) = 1.0;
-          [(OADShapeStyle *)v23 applyToGraphicProperties:v28 styleMatrix:v29 useNull:1 strokeWidthMultiplier:v30];
+          [(OADShapeStyle *)v23 applyToGraphicProperties:graphicProperties3 styleMatrix:styleMatrix useNull:1 strokeWidthMultiplier:v30];
         }
       }
     }

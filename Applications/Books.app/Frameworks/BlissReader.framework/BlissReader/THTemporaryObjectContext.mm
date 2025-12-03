@@ -1,18 +1,18 @@
 @interface THTemporaryObjectContext
-+ (id)temporaryContextForDocumentContext:(id)a3;
-- (THTemporaryObjectContext)initWithDelegate:(id)a3 documentContext:(id)a4;
++ (id)temporaryContextForDocumentContext:(id)context;
+- (THTemporaryObjectContext)initWithDelegate:(id)delegate documentContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation THTemporaryObjectContext
 
-+ (id)temporaryContextForDocumentContext:(id)a3
++ (id)temporaryContextForDocumentContext:(id)context
 {
   objc_opt_class();
   result = TSUDynamicCast();
   if (!result)
   {
-    v6 = [[a1 alloc] initWithDelegate:objc_msgSend([TSPTemporaryObjectContextDelegate alloc] documentContext:{"initWithPackageURL:", 0), a3}];
+    v6 = [[self alloc] initWithDelegate:objc_msgSend([TSPTemporaryObjectContextDelegate alloc] documentContext:{"initWithPackageURL:", 0), context}];
 
     return v6;
   }
@@ -20,14 +20,14 @@
   return result;
 }
 
-- (THTemporaryObjectContext)initWithDelegate:(id)a3 documentContext:(id)a4
+- (THTemporaryObjectContext)initWithDelegate:(id)delegate documentContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = THTemporaryObjectContext;
-  v5 = [(THTemporaryObjectContext *)&v7 initWithDelegate:a3];
+  v5 = [(THTemporaryObjectContext *)&v7 initWithDelegate:delegate];
   if (v5)
   {
-    v5->_documentContext = a4;
+    v5->_documentContext = context;
   }
 
   return v5;

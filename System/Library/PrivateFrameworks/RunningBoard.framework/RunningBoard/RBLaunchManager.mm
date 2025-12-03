@@ -1,36 +1,36 @@
 @interface RBLaunchManager
-- (BOOL)_checkLaunchForBackoff:(id)a3 error:(id *)a4;
+- (BOOL)_checkLaunchForBackoff:(id)backoff error:(id *)error;
 - (RBLaunchManager)init;
-- (RBLaunchManager)initWithJobManager:(id)a3 timeProvider:(id)a4 delegate:(id)a5;
-- (id)_resolveNewProcessForInstance:(id)a3 requestIdentity:(id)a4 context:(id)a5 withError:(id *)a6;
-- (id)executeLaunchRequest:(id)a3 existingProcess:(id)a4 requestIdentity:(id)a5 withError:(id *)a6;
-- (void)_validateBundleIDForProcess:(id)a3 launchedWithContext:(id)a4;
+- (RBLaunchManager)initWithJobManager:(id)manager timeProvider:(id)provider delegate:(id)delegate;
+- (id)_resolveNewProcessForInstance:(id)instance requestIdentity:(id)identity context:(id)context withError:(id *)error;
+- (id)executeLaunchRequest:(id)request existingProcess:(id)process requestIdentity:(id)identity withError:(id *)error;
+- (void)_validateBundleIDForProcess:(id)process launchedWithContext:(id)context;
 @end
 
 @implementation RBLaunchManager
 
 - (RBLaunchManager)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBLaunchManager.m" lineNumber:114 description:@"-init is not allowed on RBProcessManager"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBLaunchManager.m" lineNumber:114 description:@"-init is not allowed on RBProcessManager"];
 
   return 0;
 }
 
-- (RBLaunchManager)initWithJobManager:(id)a3 timeProvider:(id)a4 delegate:(id)a5
+- (RBLaunchManager)initWithJobManager:(id)manager timeProvider:(id)provider delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = RBLaunchManager;
   v12 = [(RBLaunchManager *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_jobManager, a3);
-    objc_storeWeak(&v13->_delegate, v11);
-    v14 = [[RBLaunchTracker alloc] initWithTimeProvider:v10];
+    objc_storeStrong(&v12->_jobManager, manager);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v14 = [[RBLaunchTracker alloc] initWithTimeProvider:providerCopy];
     launchTracker = v13->_launchTracker;
     v13->_launchTracker = v14;
 
@@ -40,15 +40,15 @@
   return v13;
 }
 
-- (void)_validateBundleIDForProcess:(id)a3 launchedWithContext:(id)a4
+- (void)_validateBundleIDForProcess:(id)process launchedWithContext:(id)context
 {
-  v5 = a3;
-  v6 = [a4 bundleIdentifier];
-  v7 = [v5 bundleProperties];
+  processCopy = process;
+  bundleIdentifier = [context bundleIdentifier];
+  bundleProperties = [processCopy bundleProperties];
 
-  v8 = [v7 bundleIdentifier];
+  bundleIdentifier2 = [bundleProperties bundleIdentifier];
 
-  if (v6 && v8 && ([v8 isEqualToString:v6] & 1) == 0)
+  if (bundleIdentifier && bundleIdentifier2 && ([bundleIdentifier2 isEqualToString:bundleIdentifier] & 1) == 0)
   {
     v9 = rbs_process_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -58,20 +58,20 @@
   }
 }
 
-- (BOOL)_checkLaunchForBackoff:(id)a3 error:(id *)a4
+- (BOOL)_checkLaunchForBackoff:(id)backoff error:(id *)error
 {
-  v6 = a3;
-  [(RBLaunchTracker *)self->_launchTracker nextAllowedLaunchOfIdentity:v6];
+  backoffCopy = backoff;
+  [(RBLaunchTracker *)self->_launchTracker nextAllowedLaunchOfIdentity:backoffCopy];
   v8 = v7;
   if (v7 != 0.0)
   {
     v9 = rbs_general_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(RBLaunchManager *)v6 _checkLaunchForBackoff:v9 error:v8];
+      [(RBLaunchManager *)backoffCopy _checkLaunchForBackoff:v9 error:v8];
     }
 
-    if (a4)
+    if (error)
     {
       v10 = *MEMORY[0x277D47088];
       v15[0] = MEMORY[0x277D85DD0];
@@ -85,7 +85,7 @@
       v12 = [MEMORY[0x277CCA9B8] errorWithDomain:v10 code:6 userInfo:v11];
 
       v13 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -101,14 +101,14 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
   [v4 setObject:v5 forKey:*MEMORY[0x277D470A0]];
 }
 
-- (id)_resolveNewProcessForInstance:(id)a3 requestIdentity:(id)a4 context:(id)a5 withError:(id *)a6
+- (id)_resolveNewProcessForInstance:(id)instance requestIdentity:(id)identity context:(id)context withError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 identifier];
-  v14 = +[RBLaunchdProperties propertiesForPid:](RBLaunchdProperties, "propertiesForPid:", [v13 pid]);
+  instanceCopy = instance;
+  identityCopy = identity;
+  contextCopy = context;
+  identifier = [instanceCopy identifier];
+  v14 = +[RBLaunchdProperties propertiesForPid:](RBLaunchdProperties, "propertiesForPid:", [identifier pid]);
 
   if (!v14)
   {
@@ -122,11 +122,11 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
   if ([v14 hasBackoff])
   {
     launchTracker = self->_launchTracker;
-    v17 = [v10 identity];
-    [(RBLaunchTracker *)launchTracker trackLaunchOfIdentity:v17];
+    identity = [instanceCopy identity];
+    [(RBLaunchTracker *)launchTracker trackLaunchOfIdentity:identity];
   }
 
-  if ([v11 osServiceType] == 3 && v14 && (objc_msgSend(v14, "isAngel") & 1) == 0)
+  if ([identityCopy osServiceType] == 3 && v14 && (objc_msgSend(v14, "isAngel") & 1) == 0)
   {
     v29 = rbs_general_log();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
@@ -134,8 +134,8 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
       [RBLaunchManager _resolveNewProcessForInstance:requestIdentity:context:withError:];
     }
 
-    [(RBLaunchdJobManager *)self->_jobManager removeJobWithInstance:v10 error:0];
-    if (a6)
+    [(RBLaunchdJobManager *)self->_jobManager removeJobWithInstance:instanceCopy error:0];
+    if (error)
     {
       v30 = *MEMORY[0x277D47088];
       v31 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
@@ -144,7 +144,7 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
 
       v33 = v32;
       v19 = 0;
-      *a6 = v32;
+      *error = v32;
     }
 
     else
@@ -156,13 +156,13 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v19 = [WeakRetained _lifecycleQueue_addProcessWithInstance:v10 properties:v14];
+    v19 = [WeakRetained _lifecycleQueue_addProcessWithInstance:instanceCopy properties:v14];
 
     if (v19)
     {
-      [(RBLaunchManager *)self _validateBundleIDForProcess:v19 launchedWithContext:v12];
-      v20 = [v12 launchAssertionIdentifier];
-      [v19 setLaunchAssertionIdentifier:v20];
+      [(RBLaunchManager *)self _validateBundleIDForProcess:v19 launchedWithContext:contextCopy];
+      launchAssertionIdentifier = [contextCopy launchAssertionIdentifier];
+      [v19 setLaunchAssertionIdentifier:launchAssertionIdentifier];
 
       v21 = v19;
     }
@@ -173,12 +173,12 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v34 = 138543362;
-        v35 = v10;
+        v35 = instanceCopy;
         _os_log_impl(&dword_262485000, v22, OS_LOG_TYPE_DEFAULT, "Failed to create process object for %{public}@", &v34, 0xCu);
       }
 
-      [(RBLaunchdJobManager *)self->_jobManager removeJobWithInstance:v10 error:0];
-      if (a6)
+      [(RBLaunchdJobManager *)self->_jobManager removeJobWithInstance:instanceCopy error:0];
+      if (error)
       {
         v23 = *MEMORY[0x277D47088];
         v24 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
@@ -186,7 +186,7 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
         v25 = [MEMORY[0x277CCA9B8] errorWithDomain:v23 code:5 userInfo:v24];
 
         v26 = v25;
-        *a6 = v25;
+        *error = v25;
       }
     }
   }
@@ -196,26 +196,26 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
   return v19;
 }
 
-- (id)executeLaunchRequest:(id)a3 existingProcess:(id)a4 requestIdentity:(id)a5 withError:(id *)a6
+- (id)executeLaunchRequest:(id)request existingProcess:(id)process requestIdentity:(id)identity withError:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 isExtension];
-  if (v11 && (v13 & 1) == 0)
+  requestCopy = request;
+  processCopy = process;
+  identityCopy = identity;
+  isExtension = [identityCopy isExtension];
+  if (processCopy && (isExtension & 1) == 0)
   {
     v14 = rbs_process_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v54 = v12;
+      v54 = identityCopy;
       v55 = 2114;
-      v56 = v11;
+      v56 = processCopy;
       _os_log_impl(&dword_262485000, v14, OS_LOG_TYPE_INFO, "%{public}@ is already running as %{public}@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v15 = *MEMORY[0x277D47088];
       v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
@@ -223,23 +223,23 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
       v17 = [MEMORY[0x277CCA9B8] errorWithDomain:v15 code:2 userInfo:v16];
 
       v18 = v17;
-      *a6 = v17;
+      *error = v17;
     }
 
-    v19 = v11;
+    v19 = processCopy;
     goto LABEL_40;
   }
 
-  v20 = v12;
+  v20 = identityCopy;
   if (([v20 isEmbeddedApplication] & 1) != 0 || (objc_msgSend(v20, "hasConsistentLaunchdJob") & 1) != 0 || objc_msgSend(v20, "isExtension"))
   {
   }
 
   else
   {
-    v41 = [v20 isDext];
+    isDext = [v20 isDext];
 
-    if ((v41 & 1) == 0)
+    if ((isDext & 1) == 0)
     {
       v42 = rbs_process_log();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
@@ -249,7 +249,7 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
         _os_log_impl(&dword_262485000, v42, OS_LOG_TYPE_INFO, "%{public}@ could not be launched", buf, 0xCu);
       }
 
-      if (a6)
+      if (error)
       {
         v43 = *MEMORY[0x277D47088];
         v44 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
@@ -258,7 +258,7 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
 
         v46 = v45;
         v19 = 0;
-        *a6 = v45;
+        *error = v45;
         goto LABEL_40;
       }
 
@@ -266,68 +266,68 @@ void __48__RBLaunchManager__checkLaunchForBackoff_error___block_invoke(uint64_t 
     }
   }
 
-  if (!v11 && ![(RBLaunchManager *)self _checkLaunchForBackoff:v20 error:a6])
+  if (!processCopy && ![(RBLaunchManager *)self _checkLaunchForBackoff:v20 error:error])
   {
 LABEL_37:
     v19 = 0;
     goto LABEL_40;
   }
 
-  v21 = [v10 _additionalEnvironment];
+  _additionalEnvironment = [requestCopy _additionalEnvironment];
   v22 = RBSStringForKey();
 
   if (v22)
   {
-    [v10 setHomeDirectory:v22];
+    [requestCopy setHomeDirectory:v22];
   }
 
-  v51 = v12;
-  v23 = [v10 _additionalEnvironment];
+  v51 = identityCopy;
+  _additionalEnvironment2 = [requestCopy _additionalEnvironment];
   v24 = RBSStringForKey();
 
   if (v24)
   {
-    [v10 setTmpDirectory:v24];
+    [requestCopy setTmpDirectory:v24];
   }
 
   jobManager = self->_jobManager;
   v52 = 0;
-  v26 = [(RBLaunchdJobManager *)jobManager createAndLaunchWithIdentity:v20 context:v10 error:&v52];
+  v26 = [(RBLaunchdJobManager *)jobManager createAndLaunchWithIdentity:v20 context:requestCopy error:&v52];
   v27 = v52;
   v28 = v27;
   if (v26)
   {
     v50 = v27;
-    if (!v11)
+    if (!processCopy)
     {
       goto LABEL_26;
     }
 
-    [v11 identifier];
+    [processCopy identifier];
     v29 = v24;
-    v31 = v30 = a6;
+    v31 = v30 = error;
     [v26 identifier];
     v32 = v49 = v22;
     v33 = [v31 isEqual:v32];
 
     v22 = v49;
-    a6 = v30;
+    error = v30;
     v24 = v29;
     if (v33)
     {
       v34 = rbs_process_log();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
-        v35 = [v11 identifier];
+        identifier = [processCopy identifier];
         *buf = 138543618;
         v54 = v20;
         v55 = 2114;
-        v56 = v35;
+        v56 = identifier;
         _os_log_impl(&dword_262485000, v34, OS_LOG_TYPE_INFO, "returning existing extension %{public}@ already running as pid %{public}@", buf, 0x16u);
       }
 
-      v12 = v51;
-      if (a6)
+      identityCopy = v51;
+      if (error)
       {
         v36 = *MEMORY[0x277D47088];
         v37 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
@@ -336,17 +336,17 @@ LABEL_37:
 
         v22 = v49;
         v39 = v38;
-        *a6 = v38;
+        *error = v38;
       }
 
-      v19 = v11;
+      v19 = processCopy;
     }
 
     else
     {
 LABEL_26:
-      v19 = [(RBLaunchManager *)self _resolveNewProcessForInstance:v26 requestIdentity:v20 context:v10 withError:a6];
-      v12 = v51;
+      v19 = [(RBLaunchManager *)self _resolveNewProcessForInstance:v26 requestIdentity:v20 context:requestCopy withError:error];
+      identityCopy = v51;
     }
 
     v28 = v50;
@@ -360,10 +360,10 @@ LABEL_26:
       [RBLaunchManager executeLaunchRequest:existingProcess:requestIdentity:withError:];
     }
 
-    if (a6)
+    if (error)
     {
       _errorWithRequestCodeAndInfoBuilder(*MEMORY[0x277D47088], 5, @"Launch failed.", v28, 0);
-      *a6 = v19 = 0;
+      *error = v19 = 0;
     }
 
     else

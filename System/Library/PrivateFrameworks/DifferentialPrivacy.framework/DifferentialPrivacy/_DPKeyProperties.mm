@@ -1,11 +1,11 @@
 @interface _DPKeyProperties
-+ (_DPKeyProperties)keyPropertiesWithName:(id)a3 fromDictionary:(id)a4;
-+ (id)keyPropertiesForName:(id)a3;
-+ (id)parametersForAlgorithm:(id)a3 properties:(id)a4 epsilon:(id)a5;
-+ (id)privatizationAlgorithmStringFor:(unint64_t)a3;
-+ (id)propertiesFromFile:(id)a3;
++ (_DPKeyProperties)keyPropertiesWithName:(id)name fromDictionary:(id)dictionary;
++ (id)keyPropertiesForName:(id)name;
++ (id)parametersForAlgorithm:(id)algorithm properties:(id)properties epsilon:(id)epsilon;
++ (id)privatizationAlgorithmStringFor:(unint64_t)for;
++ (id)propertiesFromFile:(id)file;
 + (void)initialize;
-- (_DPKeyProperties)initWithPropertyName:(id)a3 dictionary:(id)a4;
+- (_DPKeyProperties)initWithPropertyName:(id)name dictionary:(id)dictionary;
 - (id)description;
 - (id)privatizationAlgorithmString;
 @end
@@ -20,15 +20,15 @@
   }
 }
 
-+ (id)parametersForAlgorithm:(id)a3 properties:(id)a4 epsilon:(id)a5
++ (id)parametersForAlgorithm:(id)algorithm properties:(id)properties epsilon:(id)epsilon
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  algorithmCopy = algorithm;
+  propertiesCopy = properties;
+  epsilonCopy = epsilon;
   context = objc_autoreleasePoolPush();
-  v10 = [v8 objectForKeyedSubscript:@"AlgorithmParameters"];
-  v11 = [_DPAlgorithmParameters algorithmParametersForKey:v7];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"AlgorithmParameters"];
+  v11 = [_DPAlgorithmParameters algorithmParametersForKey:algorithmCopy];
   v12 = [v11 mutableCopy];
 
   v27 = 0u;
@@ -62,9 +62,9 @@
   }
 
   v20 = [MEMORY[0x277CBEC10] mutableCopy];
-  if ([kAlgorithmsWithEpsilon containsObject:v7])
+  if ([kAlgorithmsWithEpsilon containsObject:algorithmCopy])
   {
-    [v20 setObject:v9 forKeyedSubscript:@"epsilon"];
+    [v20 setObject:epsilonCopy forKeyedSubscript:@"epsilon"];
     [v20 addEntriesFromDictionary:v12];
   }
 
@@ -76,11 +76,11 @@
   return v21;
 }
 
-- (_DPKeyProperties)initWithPropertyName:(id)a3 dictionary:(id)a4
+- (_DPKeyProperties)initWithPropertyName:(id)name dictionary:(id)dictionary
 {
   v85 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v83.receiver = self;
   v83.super_class = _DPKeyProperties;
   v9 = [(_DPKeyProperties *)&v83 init];
@@ -92,7 +92,7 @@ LABEL_80:
     goto LABEL_81;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
     v14 = +[_DPLog framework];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -103,8 +103,8 @@ LABEL_80:
     goto LABEL_30;
   }
 
-  objc_storeStrong(&v9->_propertiesName, a3);
-  v11 = [v8 objectForKeyedSubscript:@"Transport"];
+  objc_storeStrong(&v9->_propertiesName, name);
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"Transport"];
   v12 = v11;
   if (!v11)
   {
@@ -133,10 +133,10 @@ LABEL_13:
   v13 = 2;
 LABEL_14:
   v10->_transport = v13;
-  v15 = [v8 objectForKeyedSubscript:@"DirectUpload"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"DirectUpload"];
   v10->_directUpload = [v15 BOOLValue];
 
-  v16 = [v8 objectForKeyedSubscript:@"DataAlgorithm"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"DataAlgorithm"];
   if (!v16)
   {
     v18 = +[_DPLog framework];
@@ -164,7 +164,7 @@ LABEL_14:
 
   if (v10->_transport != 3)
   {
-    v18 = [v8 objectForKeyedSubscript:@"PrivacyParameter"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"PrivacyParameter"];
     if (!v18)
     {
       v20 = +[_DPLog framework];
@@ -193,7 +193,7 @@ LABEL_28:
     }
   }
 
-  v22 = [v8 objectForKeyedSubscript:@"SubmissionPriority"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"SubmissionPriority"];
   v10->_submissionPriority = [v22 unsignedIntegerValue];
 
   if (!v10->_submissionPriority)
@@ -201,7 +201,7 @@ LABEL_28:
     v10->_submissionPriority = kLowestSubmissionPriority;
   }
 
-  v23 = [v8 objectForKeyedSubscript:@"ServerAlgorithmString"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"ServerAlgorithmString"];
   if (!v23)
   {
     v36 = +[_DPLog framework];
@@ -216,16 +216,16 @@ LABEL_28:
   v74 = v23;
   v75 = v16;
   v76 = v12;
-  v77 = v7;
-  v24 = [v8 objectForKeyedSubscript:@"ServerAlgorithmString"];
+  v77 = nameCopy;
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"ServerAlgorithmString"];
   serverAlgorithmString = v10->_serverAlgorithmString;
   v10->_serverAlgorithmString = v24;
 
-  v26 = [objc_opt_class() parametersForAlgorithm:v10->_serverAlgorithmString properties:v8 epsilon:v10->_privacyParameter];
+  v26 = [objc_opt_class() parametersForAlgorithm:v10->_serverAlgorithmString properties:dictionaryCopy epsilon:v10->_privacyParameter];
   parameterDictionary = v10->_parameterDictionary;
   v10->_parameterDictionary = v26;
 
-  v78 = [v8 objectForKeyedSubscript:@"PrivatizationAlgorithm"];
+  v78 = [dictionaryCopy objectForKeyedSubscript:@"PrivatizationAlgorithm"];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
@@ -265,10 +265,10 @@ LABEL_28:
           }
 
           v10->_privatizationAlgorithm = [v37 unsignedIntegerValue];
-          v38 = [v8 objectForKeyedSubscript:@"MinimumPossible"];
-          v39 = [v8 objectForKeyedSubscript:@"MaximumPossible"];
+          v38 = [dictionaryCopy objectForKeyedSubscript:@"MinimumPossible"];
+          v39 = [dictionaryCopy objectForKeyedSubscript:@"MaximumPossible"];
           v40 = v39;
-          v7 = v77;
+          nameCopy = v77;
           v16 = v75;
           if (v38 && v39)
           {
@@ -279,11 +279,11 @@ LABEL_28:
 
           if (v10->_dataAlgorithm != 1 || v10->_possibleRange)
           {
-            v43 = [v8 objectForKeyedSubscript:@"NoiseDistribution"];
+            v43 = [dictionaryCopy objectForKeyedSubscript:@"NoiseDistribution"];
             objc_storeStrong(&v10->_noiseDistribution, v43);
             if (v10->_dataAlgorithm != 1 || [(NSString *)v10->_noiseDistribution isEqualToString:@"Laplace"]|| [(NSString *)v10->_noiseDistribution isEqualToString:@"Uniform"])
             {
-              v44 = [v8 objectForKeyedSubscript:@"BudgetKeyName"];
+              v44 = [dictionaryCopy objectForKeyedSubscript:@"BudgetKeyName"];
               if (v44)
               {
                 v45 = v44;
@@ -292,36 +292,36 @@ LABEL_28:
                 if (v10->_budget)
                 {
                   v72 = v43;
-                  v46 = [v8 objectForKeyedSubscript:@"HuffmanTableClass"];
+                  v46 = [dictionaryCopy objectForKeyedSubscript:@"HuffmanTableClass"];
                   objc_storeStrong(&v10->_huffmanTableClass, v46);
-                  v70 = [v8 objectForKeyedSubscript:@"AcceptableError"];
+                  v70 = [dictionaryCopy objectForKeyedSubscript:@"AcceptableError"];
                   objc_storeStrong(&v10->_acceptableError, v70);
-                  v47 = [v8 objectForKeyedSubscript:@"MinimumTrimmed"];
-                  v68 = [v8 objectForKeyedSubscript:@"MaximumTrimmed"];
+                  v47 = [dictionaryCopy objectForKeyedSubscript:@"MinimumTrimmed"];
+                  v68 = [dictionaryCopy objectForKeyedSubscript:@"MaximumTrimmed"];
                   v69 = v47;
                   v67 = [_DPValueRange rangeWithMin:v47 max:?];
                   objc_storeStrong(&v10->_trimmedScale, v67);
-                  v48 = [v8 objectForKeyedSubscript:@"Namespace"];
+                  v48 = [dictionaryCopy objectForKeyedSubscript:@"Namespace"];
                   namespaceName = v10->_namespaceName;
                   v10->_namespaceName = v48;
 
-                  v50 = [v8 objectForKeyedSubscript:@"ApprovedForNonDNU"];
+                  v50 = [dictionaryCopy objectForKeyedSubscript:@"ApprovedForNonDNU"];
                   v10->_approvedForNonDNU = [v50 BOOLValue];
 
-                  v51 = [v8 objectForKeyedSubscript:@"TelemetryAllowed"];
+                  v51 = [dictionaryCopy objectForKeyedSubscript:@"TelemetryAllowed"];
                   v10->_telemetryAllowed = [v51 BOOLValue];
 
-                  v52 = [v8 objectForKeyedSubscript:@"TransparencyLogLifetime"];
+                  v52 = [dictionaryCopy objectForKeyedSubscript:@"TransparencyLogLifetime"];
                   v10->_transparencyLogLifetime = [v52 unsignedIntegerValue];
 
-                  v53 = [v8 objectForKeyedSubscript:@"TransparencyLogReportName"];
+                  v53 = [dictionaryCopy objectForKeyedSubscript:@"TransparencyLogReportName"];
                   v71 = v46;
-                  if (v53 && (v54 = v53, [v8 objectForKeyedSubscript:@"TransparencyLogReportName"], v55 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v56 = objc_opt_isKindOfClass(), v55, v54, (v56 & 1) == 0))
+                  if (v53 && (v54 = v53, [dictionaryCopy objectForKeyedSubscript:@"TransparencyLogReportName"], v55 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v56 = objc_opt_isKindOfClass(), v55, v54, (v56 & 1) == 0))
                   {
                     dataSource = +[_DPLog framework];
                     if (os_log_type_enabled(dataSource, OS_LOG_TYPE_ERROR))
                     {
-                      [_DPKeyProperties initWithPropertyName:v8 dictionary:dataSource];
+                      [_DPKeyProperties initWithPropertyName:dictionaryCopy dictionary:dataSource];
                     }
 
                     v61 = 0;
@@ -329,17 +329,17 @@ LABEL_28:
 
                   else
                   {
-                    v57 = [v8 objectForKeyedSubscript:@"TransparencyLogReportName"];
+                    v57 = [dictionaryCopy objectForKeyedSubscript:@"TransparencyLogReportName"];
                     transparencyLogReportName = v10->_transparencyLogReportName;
                     v10->_transparencyLogReportName = v57;
 
-                    v59 = [v8 objectForKeyedSubscript:@"DataSource"];
+                    v59 = [dictionaryCopy objectForKeyedSubscript:@"DataSource"];
                     dataSource = v10->_dataSource;
                     v10->_dataSource = v59;
                     v61 = 1;
                   }
 
-                  v7 = v77;
+                  nameCopy = v77;
                   if ((v61 & 1) == 0)
                   {
                     goto LABEL_30;
@@ -356,7 +356,7 @@ LABEL_28:
               }
 
               v21 = 0;
-              v7 = v77;
+              nameCopy = v77;
               goto LABEL_81;
             }
 
@@ -389,7 +389,7 @@ LABEL_46:
 
 LABEL_64:
   v62 = +[_DPLog framework];
-  v7 = v77;
+  nameCopy = v77;
   v16 = v75;
   if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
   {
@@ -407,30 +407,30 @@ LABEL_81:
   return v21;
 }
 
-+ (_DPKeyProperties)keyPropertiesWithName:(id)a3 fromDictionary:(id)a4
++ (_DPKeyProperties)keyPropertiesWithName:(id)name fromDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPropertyName:v7 dictionary:v6];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  v8 = [[self alloc] initWithPropertyName:nameCopy dictionary:dictionaryCopy];
 
   return v8;
 }
 
-+ (id)keyPropertiesForName:(id)a3
++ (id)keyPropertiesForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[_DPStrings keyPropertiesPath];
-  v6 = [a1 propertiesFromFile:v5];
+  v6 = [self propertiesFromFile:v5];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:nameCopy];
 
   return v7;
 }
 
-+ (id)privatizationAlgorithmStringFor:(unint64_t)a3
++ (id)privatizationAlgorithmStringFor:(unint64_t)for
 {
   v3 = kAlgorithmStringsMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:for];
   v5 = [v3 objectForKeyedSubscript:v4];
 
   if (v5)
@@ -456,23 +456,23 @@ LABEL_81:
   v11 = *&self->_noiseDistribution;
   privacyParameter = self->_privacyParameter;
   transport = self->_transport;
-  v8 = [(_DPKeyProperties *)self privatizationAlgorithmString];
-  v9 = [v3 stringWithFormat:@"%@: { propertiesName=%@  possibleRange=%@ ; acceptableError=%@ ; trimmedScale=%@ ; noiseDistribution=%@ ; budget=%@ ; privacyParameter=%@ ; transport=%ld ; privatizationAlgorithm=%@ ; submissionPriority=%lu ; parameterDictionary=%@ ;  }", v5, v13, v12, v11, privacyParameter, transport, v8, self->_submissionPriority, self->_parameterDictionary];;
+  privatizationAlgorithmString = [(_DPKeyProperties *)self privatizationAlgorithmString];
+  v9 = [v3 stringWithFormat:@"%@: { propertiesName=%@  possibleRange=%@ ; acceptableError=%@ ; trimmedScale=%@ ; noiseDistribution=%@ ; budget=%@ ; privacyParameter=%@ ; transport=%ld ; privatizationAlgorithm=%@ ; submissionPriority=%lu ; parameterDictionary=%@ ;  }", v5, v13, v12, v11, privacyParameter, transport, privatizationAlgorithmString, self->_submissionPriority, self->_parameterDictionary];;
 
   return v9;
 }
 
-+ (id)propertiesFromFile:(id)a3
++ (id)propertiesFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39___DPKeyProperties_propertiesFromFile___block_invoke;
   v10[3] = &unk_27858ABB8;
-  v11 = v4;
-  v12 = a1;
+  v11 = fileCopy;
+  selfCopy = self;
   v5 = propertiesFromFile__onceToken;
-  v6 = v4;
+  v6 = fileCopy;
   if (v5 != -1)
   {
     dispatch_once(&propertiesFromFile__onceToken, v10);
@@ -487,9 +487,9 @@ LABEL_81:
 - (id)privatizationAlgorithmString
 {
   v3 = objc_opt_class();
-  v4 = [(_DPKeyProperties *)self privatizationAlgorithm];
+  privatizationAlgorithm = [(_DPKeyProperties *)self privatizationAlgorithm];
 
-  return [v3 privatizationAlgorithmStringFor:v4];
+  return [v3 privatizationAlgorithmStringFor:privatizationAlgorithm];
 }
 
 - (void)initWithPropertyName:(uint64_t *)a1 dictionary:.cold.1(uint64_t *a1)

@@ -1,11 +1,11 @@
 @interface MTMusicSubscriptionInfoLoader
-+ (id)loadIfNeededAndReturnError:(id *)a3;
++ (id)loadIfNeededAndReturnError:(id *)error;
 - (MTMusicSubscriptionInfoLoader)init;
 @end
 
 @implementation MTMusicSubscriptionInfoLoader
 
-+ (id)loadIfNeededAndReturnError:(id *)a3
++ (id)loadIfNeededAndReturnError:(id *)error
 {
   swift_getObjCClassMetadata();
   static MusicSubscriptionInfoLoader.loadIfNeeded()();

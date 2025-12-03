@@ -1,25 +1,25 @@
 @interface _UIKeyShortcutHUDSearchBar
-- (_UIKeyShortcutHUDSearchBar)initWithCoder:(id)a3;
-- (_UIKeyShortcutHUDSearchBar)initWithFrame:(CGRect)a3;
+- (_UIKeyShortcutHUDSearchBar)initWithCoder:(id)coder;
+- (_UIKeyShortcutHUDSearchBar)initWithFrame:(CGRect)frame;
 - (_UIKeyShortcutHUDSearchBarDelegate)delegate;
 - (void)_commonInit;
 - (void)_createBackgroundView;
 - (void)_createCancelButton;
 - (void)_createSearchTextField;
 - (void)_setupLayout;
-- (void)_textChanged:(id)a3;
+- (void)_textChanged:(id)changed;
 - (void)didCompleteSearchTransition;
-- (void)prepareForSearchTransition:(BOOL)a3 usingCell:(id)a4;
-- (void)setSearching:(BOOL)a3;
+- (void)prepareForSearchTransition:(BOOL)transition usingCell:(id)cell;
+- (void)setSearching:(BOOL)searching;
 @end
 
 @implementation _UIKeyShortcutHUDSearchBar
 
-- (_UIKeyShortcutHUDSearchBar)initWithFrame:(CGRect)a3
+- (_UIKeyShortcutHUDSearchBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIKeyShortcutHUDSearchBar;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,11 +29,11 @@
   return v4;
 }
 
-- (_UIKeyShortcutHUDSearchBar)initWithCoder:(id)a3
+- (_UIKeyShortcutHUDSearchBar)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIKeyShortcutHUDSearchBar;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -64,12 +64,12 @@
   v6 = +[UIKeyShortcutHUDMetrics currentMetrics];
   [v6 toolbarCellCornerRadius];
   v8 = v7;
-  v9 = [(UIView *)self->_backgroundView layer];
-  [v9 setCornerRadius:v8];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setCornerRadius:v8];
 
   v10 = *MEMORY[0x1E69796E8];
-  v11 = [(UIView *)self->_backgroundView layer];
-  [v11 setCornerCurve:v10];
+  layer2 = [(UIView *)self->_backgroundView layer];
+  [layer2 setCornerCurve:v10];
 
   v12 = self->_backgroundView;
 
@@ -87,9 +87,9 @@
   [(UITextField *)self->_searchTextField setPlaceholder:v5];
 
   v6 = +[UIKeyShortcutHUDMetrics currentMetrics];
-  v7 = [v6 searchHUDTextColor];
-  v8 = [(UITextField *)self->_searchTextField _placeholderLabel];
-  [v8 setTextColor:v7];
+  searchHUDTextColor = [v6 searchHUDTextColor];
+  _placeholderLabel = [(UITextField *)self->_searchTextField _placeholderLabel];
+  [_placeholderLabel setTextColor:searchHUDTextColor];
 
   v9 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleBody"];
   [(UITextField *)self->_searchTextField setFont:v9];
@@ -133,16 +133,16 @@
   self->_cancelButton = v5;
 
   v7 = +[UIKeyShortcutHUDMetrics currentMetrics];
-  v8 = [v7 searchHUDTextColor];
-  [(UIButton *)self->_cancelButton setTintColor:v8];
+  searchHUDTextColor = [v7 searchHUDTextColor];
+  [(UIButton *)self->_cancelButton setTintColor:searchHUDTextColor];
 
   v9 = +[UIKeyShortcutHUDMetrics currentMetrics];
-  v10 = [v9 cancelButtonFont];
-  v11 = [(UIButton *)self->_cancelButton titleLabel];
-  [v11 setFont:v10];
+  cancelButtonFont = [v9 cancelButtonFont];
+  titleLabel = [(UIButton *)self->_cancelButton titleLabel];
+  [titleLabel setFont:cancelButtonFont];
 
-  v12 = [(UIButton *)self->_cancelButton titleLabel];
-  [v12 setAdjustsFontForContentSizeCategory:1];
+  titleLabel2 = [(UIButton *)self->_cancelButton titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
   [(UIView *)self->_cancelButton setAlpha:0.0];
   LODWORD(v13) = 1148846080;
@@ -166,21 +166,21 @@
   [v3 toolbarContentInset];
   v5 = v4;
 
-  v38 = [(UIView *)self->_searchTextField leadingAnchor];
-  v36 = [(UIView *)self leadingAnchor];
-  v34 = [v38 constraintEqualToAnchor:v36 constant:v5];
+  leadingAnchor = [(UIView *)self->_searchTextField leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v5];
   v41[0] = v34;
-  v32 = [(UIView *)self->_searchTextField topAnchor];
-  v30 = [(UIView *)self topAnchor];
-  v6 = [v32 constraintEqualToAnchor:v30 constant:v5];
+  topAnchor = [(UIView *)self->_searchTextField topAnchor];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v5];
   v41[1] = v6;
-  v7 = [(UIView *)self->_searchTextField bottomAnchor];
-  v8 = [(UIView *)self bottomAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:-v5];
+  bottomAnchor = [(UIView *)self->_searchTextField bottomAnchor];
+  bottomAnchor2 = [(UIView *)self bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v5];
   v41[2] = v9;
-  v10 = [(UIView *)self->_cancelButton leadingAnchor];
-  v11 = [(UIView *)self->_searchTextField trailingAnchor];
-  v12 = [v10 constraintEqualToSystemSpacingAfterAnchor:v11 multiplier:2.0];
+  leadingAnchor3 = [(UIView *)self->_cancelButton leadingAnchor];
+  trailingAnchor = [(UIView *)self->_searchTextField trailingAnchor];
+  v12 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:2.0];
   v41[3] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
   standardSearchTextFieldConstraints = self->_standardSearchTextFieldConstraints;
@@ -188,89 +188,89 @@
 
   [MEMORY[0x1E69977A0] activateConstraints:self->_standardSearchTextFieldConstraints];
   v27 = MEMORY[0x1E69977A0];
-  v39 = [(UIView *)self->_backgroundView leadingAnchor];
-  v37 = [(UIView *)self->_searchTextField leadingAnchor];
-  v35 = [v39 constraintEqualToAnchor:v37];
+  leadingAnchor4 = [(UIView *)self->_backgroundView leadingAnchor];
+  leadingAnchor5 = [(UIView *)self->_searchTextField leadingAnchor];
+  v35 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v40[0] = v35;
-  v33 = [(UIView *)self->_backgroundView topAnchor];
-  v31 = [(UIView *)self->_searchTextField topAnchor];
-  v29 = [v33 constraintEqualToAnchor:v31];
+  topAnchor3 = [(UIView *)self->_backgroundView topAnchor];
+  topAnchor4 = [(UIView *)self->_searchTextField topAnchor];
+  v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v40[1] = v29;
-  v28 = [(UIView *)self->_backgroundView trailingAnchor];
-  v26 = [(UIView *)self->_searchTextField trailingAnchor];
-  v25 = [v28 constraintEqualToAnchor:v26];
+  trailingAnchor2 = [(UIView *)self->_backgroundView trailingAnchor];
+  trailingAnchor3 = [(UIView *)self->_searchTextField trailingAnchor];
+  v25 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v40[2] = v25;
-  v15 = [(UIView *)self->_backgroundView bottomAnchor];
-  v16 = [(UIView *)self->_searchTextField bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  bottomAnchor3 = [(UIView *)self->_backgroundView bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_searchTextField bottomAnchor];
+  v17 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v40[3] = v17;
-  v18 = [(UIView *)self trailingAnchor];
-  v19 = [(UIView *)self->_cancelButton trailingAnchor];
-  v20 = [v18 constraintEqualToSystemSpacingAfterAnchor:v19 multiplier:2.17];
+  trailingAnchor4 = [(UIView *)self trailingAnchor];
+  trailingAnchor5 = [(UIView *)self->_cancelButton trailingAnchor];
+  v20 = [trailingAnchor4 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor5 multiplier:2.17];
   v40[4] = v20;
-  v21 = [(UIView *)self centerYAnchor];
-  v22 = [(UIView *)self->_cancelButton centerYAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:1.0];
+  centerYAnchor = [(UIView *)self centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_cancelButton centerYAnchor];
+  v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:1.0];
   v40[5] = v23;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:6];
   [v27 activateConstraints:v24];
 }
 
-- (void)prepareForSearchTransition:(BOOL)a3 usingCell:(id)a4
+- (void)prepareForSearchTransition:(BOOL)transition usingCell:(id)cell
 {
-  v31 = a3;
+  transitionCopy = transition;
   v32[4] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  if (v11)
+  cellCopy = cell;
+  if (cellCopy)
   {
-    v12 = v11;
+    v12 = cellCopy;
     [(UIView *)self->_backgroundView setAlpha:1.0];
   }
 
   else
   {
     self->_usingFallbackSearchAnimation = 1;
-    v4 = [(_UIKeyShortcutHUDSearchBar *)self searchButton];
-    v13 = [v4 collectionView];
-    v14 = [(_UIKeyShortcutHUDSearchBar *)self searchButton];
-    v5 = [v14 searchButtonIndexPath];
-    v6 = [v5 indexPath];
-    v12 = [v13 cellForItemAtIndexPath:v6];
+    searchButton = [(_UIKeyShortcutHUDSearchBar *)self searchButton];
+    collectionView = [searchButton collectionView];
+    searchButton2 = [(_UIKeyShortcutHUDSearchBar *)self searchButton];
+    searchButtonIndexPath = [searchButton2 searchButtonIndexPath];
+    indexPath = [searchButtonIndexPath indexPath];
+    v12 = [collectionView cellForItemAtIndexPath:indexPath];
   }
 
   v15 = 0.0;
   if ([(UIView *)self effectiveUserInterfaceLayoutDirection]== UIUserInterfaceLayoutDirectionRightToLeft)
   {
-    v4 = +[UIKeyShortcutHUDMetrics currentMetrics];
-    [v4 toolbarContentInset];
+    searchButton = +[UIKeyShortcutHUDMetrics currentMetrics];
+    [searchButton toolbarContentInset];
     v15 = v16;
   }
 
   if (v12)
   {
-    v30 = [(_UIKeyShortcutHUDSearchBar *)self searchTextField];
-    v17 = [v30 leadingAnchor];
-    v28 = [v12 leadingAnchor];
-    v29 = v17;
-    v27 = [v17 constraintEqualToAnchor:v28 constant:v15];
+    searchTextField = [(_UIKeyShortcutHUDSearchBar *)self searchTextField];
+    leadingAnchor = [searchTextField leadingAnchor];
+    leadingAnchor2 = [v12 leadingAnchor];
+    v29 = leadingAnchor;
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v15];
     v32[0] = v27;
-    v26 = [(_UIKeyShortcutHUDSearchBar *)self searchTextField];
-    v18 = [v26 topAnchor];
-    v24 = [v12 topAnchor];
-    v25 = v18;
-    v23 = [v18 constraintEqualToAnchor:v24];
+    searchTextField2 = [(_UIKeyShortcutHUDSearchBar *)self searchTextField];
+    topAnchor = [searchTextField2 topAnchor];
+    topAnchor2 = [v12 topAnchor];
+    v25 = topAnchor;
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v32[1] = v23;
-    v22 = [(_UIKeyShortcutHUDSearchBar *)self searchTextField];
-    v19 = [v22 bottomAnchor];
-    v5 = [v12 bottomAnchor];
-    v21 = v19;
-    v6 = [v19 constraintEqualToAnchor:v5];
-    v32[2] = v6;
-    v7 = [(_UIKeyShortcutHUDSearchBar *)self searchTextField];
-    v8 = [v7 widthAnchor];
-    v9 = [v12 widthAnchor];
-    v4 = [v8 constraintEqualToAnchor:v9];
-    v32[3] = v4;
+    searchTextField3 = [(_UIKeyShortcutHUDSearchBar *)self searchTextField];
+    bottomAnchor = [searchTextField3 bottomAnchor];
+    searchButtonIndexPath = [v12 bottomAnchor];
+    v21 = bottomAnchor;
+    indexPath = [bottomAnchor constraintEqualToAnchor:searchButtonIndexPath];
+    v32[2] = indexPath;
+    searchTextField4 = [(_UIKeyShortcutHUDSearchBar *)self searchTextField];
+    widthAnchor = [searchTextField4 widthAnchor];
+    widthAnchor2 = [v12 widthAnchor];
+    searchButton = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+    v32[3] = searchButton;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
   }
 
@@ -284,7 +284,7 @@
   {
   }
 
-  if (v31)
+  if (transitionCopy)
   {
     [MEMORY[0x1E69977A0] deactivateConstraints:self->_standardSearchTextFieldConstraints];
     [MEMORY[0x1E69977A0] activateConstraints:self->_searchTextFieldTransitionConstraints];
@@ -292,17 +292,17 @@
   }
 }
 
-- (void)setSearching:(BOOL)a3
+- (void)setSearching:(BOOL)searching
 {
-  if (self->_searching == a3)
+  if (self->_searching == searching)
   {
     return;
   }
 
   v13 = v9;
   v14 = v3;
-  self->_searching = a3;
-  if (a3)
+  self->_searching = searching;
+  if (searching)
   {
     [MEMORY[0x1E69977A0] deactivateConstraints:self->_searchTextFieldTransitionConstraints];
     [MEMORY[0x1E69977A0] activateConstraints:self->_standardSearchTextFieldConstraints];
@@ -345,13 +345,13 @@ LABEL_6:
   }
 }
 
-- (void)_textChanged:(id)a3
+- (void)_textChanged:(id)changed
 {
-  v4 = a3;
-  v6 = [(_UIKeyShortcutHUDSearchBar *)self delegate];
-  v5 = [v4 text];
+  changedCopy = changed;
+  delegate = [(_UIKeyShortcutHUDSearchBar *)self delegate];
+  text = [changedCopy text];
 
-  [v6 searchBar:self didUpdateSearchText:v5];
+  [delegate searchBar:self didUpdateSearchText:text];
 }
 
 - (_UIKeyShortcutHUDSearchBarDelegate)delegate

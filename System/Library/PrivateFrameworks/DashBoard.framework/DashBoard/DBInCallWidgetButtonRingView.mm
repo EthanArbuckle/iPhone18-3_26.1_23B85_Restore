@@ -1,18 +1,18 @@
 @interface DBInCallWidgetButtonRingView
-- (void)drawRect:(CGRect)a3;
-- (void)setFillColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setFillColor:(id)color;
 @end
 
 @implementation DBInCallWidgetButtonRingView
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  objc_storeStrong(&self->_fillColor, a3);
+  objc_storeStrong(&self->_fillColor, color);
 
   [(DBInCallWidgetButtonRingView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(DBInCallWidgetButtonRingView *)self bounds];
@@ -25,23 +25,23 @@
   v10 = v23.origin.y;
   v11 = v23.size.width;
   v12 = v23.size.height;
-  v20 = [(DBInCallWidgetButtonRingView *)self fillColor];
+  fillColor = [(DBInCallWidgetButtonRingView *)self fillColor];
   if ([(DBInCallWidgetButtonRingView *)self isSelected])
   {
-    v13 = [MEMORY[0x277D75348] _carSystemPrimaryColor];
+    _carSystemPrimaryColor = [MEMORY[0x277D75348] _carSystemPrimaryColor];
 
-    v20 = v13;
+    fillColor = _carSystemPrimaryColor;
   }
 
   if ([(DBInCallWidgetButtonRingView *)self isHighlighted])
   {
-    v14 = [v20 colorWithAlphaComponent:0.5];
+    v14 = [fillColor colorWithAlphaComponent:0.5];
     [v14 setFill];
   }
 
   else
   {
-    [v20 setFill];
+    [fillColor setFill];
   }
 
   if ([(DBInCallWidgetButtonRingView *)self isFocusRingVisible])
@@ -55,8 +55,8 @@
     v16 = v25.origin.y;
     v17 = v25.size.width;
     v18 = v25.size.height;
-    v19 = [MEMORY[0x277D75348] _carSystemFocusColor];
-    [v19 setStroke];
+    _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
+    [_carSystemFocusColor setStroke];
 
     CGContextSetLineWidth(CurrentContext, 2.0);
     v26.origin.x = v15;

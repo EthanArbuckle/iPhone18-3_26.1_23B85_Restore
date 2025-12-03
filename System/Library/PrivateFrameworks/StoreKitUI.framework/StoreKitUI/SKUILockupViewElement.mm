@@ -1,17 +1,17 @@
 @interface SKUILockupViewElement
 - (BOOL)containsElementGroups;
 - (BOOL)isEnabled;
-- (SKUILockupViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUILockupViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUILockupViewElement
 
-- (SKUILockupViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUILockupViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUILockupViewElement initWithDOMElement:parent:elementFactory:];
@@ -19,10 +19,10 @@
 
   v18.receiver = self;
   v18.super_class = SKUILockupViewElement;
-  v11 = [(SKUIViewElement *)&v18 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v18 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"disabled"];
+    v12 = [elementCopy getAttribute:@"disabled"];
     if ([v12 length])
     {
       v13 = [v12 BOOLValue] ^ 1;
@@ -34,14 +34,14 @@
     }
 
     v11->_enabled = v13;
-    v14 = [v8 getAttribute:@"selectable"];
+    v14 = [elementCopy getAttribute:@"selectable"];
     if ([v14 length])
     {
-      v15 = [v14 lowercaseString];
-      v11->_selectable = [v15 isEqualToString:@"true"];
+      lowercaseString = [v14 lowercaseString];
+      v11->_selectable = [lowercaseString isEqualToString:@"true"];
     }
 
-    v16 = [v8 getAttribute:@"type"];
+    v16 = [elementCopy getAttribute:@"type"];
     v11->_lockupViewType = SKUILockupViewTypeForString(v16);
   }
 
@@ -56,17 +56,17 @@
   return v3;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKUILockupViewElement;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_enabled = v4->_enabled;
-    self->_lockupViewType = [(SKUILockupViewElement *)v4 lockupViewType];
+    self->_enabled = elementCopy->_enabled;
+    self->_lockupViewType = [(SKUILockupViewElement *)elementCopy lockupViewType];
   }
 
   return v6;

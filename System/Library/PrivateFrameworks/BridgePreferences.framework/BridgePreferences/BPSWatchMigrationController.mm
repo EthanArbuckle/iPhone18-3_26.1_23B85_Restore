@@ -1,15 +1,15 @@
 @interface BPSWatchMigrationController
-- (BOOL)shouldBeDisplayedGivenMigrationData:(id)a3;
+- (BOOL)shouldBeDisplayedGivenMigrationData:(id)data;
 - (BPSWatchMigrationController)init;
-- (BPSWatchMigrationController)initWithSnapshot:(id)a3;
-- (BPSWatchMigrationController)initWithSourceDeviceName:(id)a3;
+- (BPSWatchMigrationController)initWithSnapshot:(id)snapshot;
+- (BPSWatchMigrationController)initWithSourceDeviceName:(id)name;
 - (BPSWatchMigrationControllerDelegate)migrationDelegate;
 - (id)alternateButtonTitle;
 - (id)imageResourceBundleIdentifier;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)_notifyDelegateShouldMigrateWithData:(id)a3;
-- (void)_saveMigrationPreference:(BOOL)a3;
+- (void)_notifyDelegateShouldMigrateWithData:(id)data;
+- (void)_saveMigrationPreference:(BOOL)preference;
 - (void)loadView;
 @end
 
@@ -29,45 +29,45 @@
   return v3;
 }
 
-- (BPSWatchMigrationController)initWithSourceDeviceName:(id)a3
+- (BPSWatchMigrationController)initWithSourceDeviceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = [(BPSWatchMigrationController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceDeviceName, a3);
+    objc_storeStrong(&v6->_sourceDeviceName, name);
   }
 
   return v7;
 }
 
-- (BPSWatchMigrationController)initWithSnapshot:(id)a3
+- (BPSWatchMigrationController)initWithSnapshot:(id)snapshot
 {
-  v4 = [a3 deviceName];
-  v5 = [(BPSWatchMigrationController *)self initWithSourceDeviceName:v4];
+  deviceName = [snapshot deviceName];
+  v5 = [(BPSWatchMigrationController *)self initWithSourceDeviceName:deviceName];
 
   return v5;
 }
 
-- (BOOL)shouldBeDisplayedGivenMigrationData:(id)a3
+- (BOOL)shouldBeDisplayedGivenMigrationData:(id)data
 {
-  v4 = a3;
-  NSLog(&cfstr_MigrationDataP.isa, v4, [v4 length]);
+  dataCopy = data;
+  NSLog(&cfstr_MigrationDataP.isa, dataCopy, [dataCopy length]);
   migratableDevices = self->_migratableDevices;
   self->_migratableDevices = 0;
 
-  if (v4)
+  if (dataCopy)
   {
-    v6 = [MEMORY[0x277D2BCD8] sharedMigrator];
-    [v6 devicesFromMigrationConsentRequestData:v4];
+    mEMORY[0x277D2BCD8] = [MEMORY[0x277D2BCD8] sharedMigrator];
+    [mEMORY[0x277D2BCD8] devicesFromMigrationConsentRequestData:dataCopy];
   }
 
   else
   {
     self->_iTunes = 1;
-    v6 = [MEMORY[0x277D2BCD8] sharedMigrator];
-    [v6 migratableDevicesRequiringConsent];
+    mEMORY[0x277D2BCD8] = [MEMORY[0x277D2BCD8] sharedMigrator];
+    [mEMORY[0x277D2BCD8] migratableDevicesRequiringConsent];
   }
   v7 = ;
   v8 = self->_migratableDevices;
@@ -85,8 +85,8 @@
   v15.super_class = BPSWatchMigrationController;
   [(OBBaseWelcomeController *)&v15 loadView];
   v3 = [(NSArray *)self->_migratableDevices count];
-  v4 = [(NSArray *)self->_migratableDevices firstObject];
-  v5 = [v4 valueForProperty:*MEMORY[0x277D2BBA8]];
+  firstObject = [(NSArray *)self->_migratableDevices firstObject];
+  v5 = [firstObject valueForProperty:*MEMORY[0x277D2BBA8]];
 
   v6 = self->_sourceDeviceName;
   if (v3 < 1)
@@ -129,9 +129,9 @@
 - (id)imageResourceBundleIdentifier
 {
   v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)suggestedButtonTitle
@@ -150,9 +150,9 @@
   return v3;
 }
 
-- (void)_saveMigrationPreference:(BOOL)a3
+- (void)_saveMigrationPreference:(BOOL)preference
 {
-  if (a3)
+  if (preference)
   {
     v4 = self->_migratableDevices;
     if ([(NSArray *)v4 count])
@@ -180,26 +180,26 @@
   }
 }
 
-- (void)_notifyDelegateShouldMigrateWithData:(id)a3
+- (void)_notifyDelegateShouldMigrateWithData:(id)data
 {
-  v8 = a3;
-  v4 = [(BPSWatchMigrationController *)self migrationDelegate];
-  if (v4)
+  dataCopy = data;
+  migrationDelegate = [(BPSWatchMigrationController *)self migrationDelegate];
+  if (migrationDelegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      if (v8)
+      if (dataCopy)
       {
-        NSLog(&cfstr_Bpswatchmigrat.isa, [v8 length]);
-        v5 = v4;
+        NSLog(&cfstr_Bpswatchmigrat.isa, [dataCopy length]);
+        v5 = migrationDelegate;
         v6 = 1;
-        v7 = v8;
+        v7 = dataCopy;
       }
 
       else
       {
         NSLog(&cfstr_Bpswatchmigrat_0.isa);
-        v5 = v4;
+        v5 = migrationDelegate;
         v6 = 0;
         v7 = 0;
       }
@@ -209,7 +209,7 @@
 
     else
     {
-      NSLog(&cfstr_Bpswatchmigrat_1.isa, v4);
+      NSLog(&cfstr_Bpswatchmigrat_1.isa, migrationDelegate);
     }
   }
 

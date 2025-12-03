@@ -1,21 +1,21 @@
 @interface WCDPushKitManager
-+ (id)bundleIDFromTopic:(id)a3;
-+ (id)bundleIDsFromTopics:(id)a3;
++ (id)bundleIDFromTopic:(id)topic;
++ (id)bundleIDsFromTopics:(id)topics;
 + (id)sharedPushKitManager;
-+ (id)topicsFromBundleIDs:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)topicsFromBundleIDs:(id)ds;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSString)state;
 - (WCDPushKitManager)init;
-- (void)clientRequestingComplicationRegister:(id)a3;
-- (void)clientRequestingComplicationUnregister:(id)a3;
-- (void)clientXPCConnectionDidDisconnect:(id)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)clientRequestingComplicationRegister:(id)register;
+- (void)clientRequestingComplicationUnregister:(id)unregister;
+- (void)clientXPCConnectionDidDisconnect:(id)disconnect;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
-- (void)launchClient:(id)a3;
-- (void)releaseAssertionForBundleID:(id)a3;
-- (void)releaseAssertionForClient:(id)a3;
+- (void)launchClient:(id)client;
+- (void)releaseAssertionForBundleID:(id)d;
+- (void)releaseAssertionForClient:(id)client;
 - (void)setUpInitialState;
 - (void)systemObserverActiveComplicationsChanged;
 - (void)systemObserverComplicationsInstalledChanged;
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_100026964;
   block[3] = &unk_100048E08;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100054D08 != -1)
   {
     dispatch_once(&qword_100054D08, block);
@@ -62,30 +62,30 @@
     xpcListener = v2->_xpcListener;
     v2->_xpcListener = v8;
 
-    v10 = [(WCDPushKitManager *)v2 xpcListener];
-    [v10 _setQueue:&_dispatch_main_q];
+    xpcListener = [(WCDPushKitManager *)v2 xpcListener];
+    [xpcListener _setQueue:&_dispatch_main_q];
 
-    v11 = [(WCDPushKitManager *)v2 xpcListener];
-    [v11 setDelegate:v2];
+    xpcListener2 = [(WCDPushKitManager *)v2 xpcListener];
+    [xpcListener2 setDelegate:v2];
 
-    v12 = [(WCDPushKitManager *)v2 xpcListener];
-    [v12 resume];
+    xpcListener3 = [(WCDPushKitManager *)v2 xpcListener];
+    [xpcListener3 resume];
 
     v13 = [APSConnection alloc];
     v14 = [v13 initWithEnvironmentName:APSEnvironmentProduction namedDelegatePort:@"com.apple.watchconnectivity.complication.push" queue:&_dispatch_main_q];
     productionConnection = v2->_productionConnection;
     v2->_productionConnection = v14;
 
-    v16 = [(WCDPushKitManager *)v2 productionConnection];
-    [v16 setDelegate:v2];
+    productionConnection = [(WCDPushKitManager *)v2 productionConnection];
+    [productionConnection setDelegate:v2];
 
     v17 = [APSConnection alloc];
     v18 = [v17 initWithEnvironmentName:APSEnvironmentDevelopment namedDelegatePort:@"com.apple.watchconnectivity.complication.push.development" queue:&_dispatch_main_q];
     developmentConnection = v2->_developmentConnection;
     v2->_developmentConnection = v18;
 
-    v20 = [(WCDPushKitManager *)v2 developmentConnection];
-    [v20 setDelegate:v2];
+    developmentConnection = [(WCDPushKitManager *)v2 developmentConnection];
+    [developmentConnection setDelegate:v2];
 
     [(WCDPushKitManager *)v2 setUpInitialState];
     v21 = wc_pushkit_log();
@@ -111,19 +111,19 @@
   NSAppendPrintF();
   v5 = v4;
 
-  v12 = [(WCDPushKitManager *)self productionConnection];
+  productionConnection = [(WCDPushKitManager *)self productionConnection];
   NSAppendPrintF();
   v6 = v5;
 
-  v13 = [(WCDPushKitManager *)self developmentConnection];
+  developmentConnection = [(WCDPushKitManager *)self developmentConnection];
   NSAppendPrintF();
   v7 = v6;
 
-  v14 = [(WCDPushKitManager *)self bundleIDToClient];
+  bundleIDToClient = [(WCDPushKitManager *)self bundleIDToClient];
   NSAppendPrintF();
   v8 = v7;
 
-  v15 = [(WCDPushKitManager *)self clientsDeniedComplicationRegister];
+  clientsDeniedComplicationRegister = [(WCDPushKitManager *)self clientsDeniedComplicationRegister];
   NSAppendPrintF();
   v9 = v8;
 
@@ -139,14 +139,14 @@
 
 - (void)dealloc
 {
-  v3 = [(WCDPushKitManager *)self developmentConnection];
-  [v3 setDelegate:0];
+  developmentConnection = [(WCDPushKitManager *)self developmentConnection];
+  [developmentConnection setDelegate:0];
 
-  v4 = [(WCDPushKitManager *)self productionConnection];
-  [v4 setDelegate:0];
+  productionConnection = [(WCDPushKitManager *)self productionConnection];
+  [productionConnection setDelegate:0];
 
-  v5 = [(WCDPushKitManager *)self xpcListener];
-  [v5 invalidate];
+  xpcListener = [(WCDPushKitManager *)self xpcListener];
+  [xpcListener invalidate];
 
   v6 = +[WCDSystemMonitor sharedSystemMonitor];
   [v6 removeObserver:self];
@@ -159,20 +159,20 @@
 - (void)systemObserverActiveComplicationsChanged
 {
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [v3 iOSApplicationsContainingActiveComplications];
+  iOSApplicationsContainingActiveComplications = [v3 iOSApplicationsContainingActiveComplications];
 
-  [objc_opt_class() topicsFromBundleIDs:v4];
+  [objc_opt_class() topicsFromBundleIDs:iOSApplicationsContainingActiveComplications];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100027004;
   v5 = v18[3] = &unk_1000493B0;
   v19 = v5;
   v6 = objc_retainBlock(v18);
-  v7 = [(WCDPushKitManager *)self productionConnection];
-  (v6[2])(v6, v7);
+  productionConnection = [(WCDPushKitManager *)self productionConnection];
+  (v6[2])(v6, productionConnection);
 
-  v8 = [(WCDPushKitManager *)self developmentConnection];
-  (v6[2])(v6, v8);
+  developmentConnection = [(WCDPushKitManager *)self developmentConnection];
+  (v6[2])(v6, developmentConnection);
 
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
@@ -184,16 +184,16 @@
   v11 = [(WCDPushKitManager *)self productionConnection:v13];
   (v10[2])(v10, v11);
 
-  v12 = [(WCDPushKitManager *)self developmentConnection];
-  (v10[2])(v10, v12);
+  developmentConnection2 = [(WCDPushKitManager *)self developmentConnection];
+  (v10[2])(v10, developmentConnection2);
 }
 
 - (void)systemObserverComplicationsInstalledChanged
 {
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [v3 applicationWorkspace];
-  v5 = [v4 iOSApplicationsContainingComplications];
-  v6 = [v5 bs_map:&stru_1000493D0];
+  applicationWorkspace = [v3 applicationWorkspace];
+  iOSApplicationsContainingComplications = [applicationWorkspace iOSApplicationsContainingComplications];
+  v6 = [iOSApplicationsContainingComplications bs_map:&stru_1000493D0];
 
   [objc_opt_class() topicsFromBundleIDs:v6];
   v25[0] = _NSConcreteStackBlock;
@@ -202,19 +202,19 @@
   v20 = v25[3] = &unk_1000493B0;
   v26 = v20;
   v7 = objc_retainBlock(v25);
-  v8 = [(WCDPushKitManager *)self productionConnection];
-  (v7[2])(v7, v8);
+  productionConnection = [(WCDPushKitManager *)self productionConnection];
+  (v7[2])(v7, productionConnection);
 
-  v9 = [(WCDPushKitManager *)self developmentConnection];
+  developmentConnection = [(WCDPushKitManager *)self developmentConnection];
   v19 = v7;
-  (v7[2])(v7, v9);
+  (v7[2])(v7, developmentConnection);
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(WCDPushKitManager *)self clientsDeniedComplicationRegister];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  clientsDeniedComplicationRegister = [(WCDPushKitManager *)self clientsDeniedComplicationRegister];
+  v11 = [clientsDeniedComplicationRegister countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v11)
   {
     v12 = v11;
@@ -225,12 +225,12 @@
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(clientsDeniedComplicationRegister);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 bundleID];
-        v17 = [v6 containsObject:v16];
+        bundleID = [v15 bundleID];
+        v17 = [v6 containsObject:bundleID];
 
         if (v17)
         {
@@ -246,34 +246,34 @@
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v12 = [clientsDeniedComplicationRegister countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v12);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 wc_connectionBundleID];
-  v7 = [v5 valueForEntitlement:@"aps-environment"];
+  connectionCopy = connection;
+  wc_connectionBundleID = [connectionCopy wc_connectionBundleID];
+  v7 = [connectionCopy valueForEntitlement:@"aps-environment"];
   v8 = APSEnvironmentProduction;
   if ([v7 isEqual:APSEnvironmentProduction] & 1) != 0 || (objc_msgSend(v7, "isEqual:", APSEnvironmentDevelopment))
   {
-    v9 = [(WCDPushKitManager *)self bundleIDToClient];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    bundleIDToClient = [(WCDPushKitManager *)self bundleIDToClient];
+    v10 = [bundleIDToClient objectForKeyedSubscript:wc_connectionBundleID];
 
     if (!v10)
     {
-      v10 = [[WCDPKClient alloc] initWithBundleID:v6];
+      v10 = [[WCDPKClient alloc] initWithBundleID:wc_connectionBundleID];
       [(WCDPKClient *)v10 setDelegate:self];
-      v11 = [(WCDPushKitManager *)self bundleIDToClient];
-      [v11 setObject:v10 forKeyedSubscript:v6];
+      bundleIDToClient2 = [(WCDPushKitManager *)self bundleIDToClient];
+      [bundleIDToClient2 setObject:v10 forKeyedSubscript:wc_connectionBundleID];
     }
 
     -[WCDPKClient setProductionEnvironment:](v10, "setProductionEnvironment:", [v7 isEqual:v8]);
-    [(WCDPKClient *)v10 setConnection:v5];
+    [(WCDPKClient *)v10 setConnection:connectionCopy];
     v12 = wc_pushkit_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -299,46 +299,46 @@
   return v13;
 }
 
-- (void)clientXPCConnectionDidDisconnect:(id)a3
+- (void)clientXPCConnectionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = wc_pushkit_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v8, 0xCu);
   }
 
-  [(WCDPushKitManager *)self releaseAssertionForClient:v4];
-  v6 = [(WCDPushKitManager *)self bundleIDToClient];
-  v7 = [v4 bundleID];
-  [v6 removeObjectForKey:v7];
+  [(WCDPushKitManager *)self releaseAssertionForClient:disconnectCopy];
+  bundleIDToClient = [(WCDPushKitManager *)self bundleIDToClient];
+  bundleID = [disconnectCopy bundleID];
+  [bundleIDToClient removeObjectForKey:bundleID];
 }
 
-- (void)clientRequestingComplicationRegister:(id)a3
+- (void)clientRequestingComplicationRegister:(id)register
 {
-  v4 = a3;
-  v5 = [v4 isProductionEnvironment];
+  registerCopy = register;
+  isProductionEnvironment = [registerCopy isProductionEnvironment];
   v6 = @"Development";
-  if (v5)
+  if (isProductionEnvironment)
   {
     v6 = @"Production";
   }
 
   v7 = v6;
   v8 = +[WCDSystemMonitor sharedSystemMonitor];
-  v9 = [v8 applicationWorkspace];
-  v10 = [v4 bundleID];
-  v11 = [v9 applicationInfoForBundleIdentifier:v10 type:1];
+  applicationWorkspace = [v8 applicationWorkspace];
+  bundleID = [registerCopy bundleID];
+  v11 = [applicationWorkspace applicationInfoForBundleIdentifier:bundleID type:1];
 
   if ([v11 hasComplications])
   {
     v12 = objc_opt_class();
-    v13 = [v4 bundleID];
-    v14 = [v12 topicFromBundleId:v13];
+    bundleID2 = [registerCopy bundleID];
+    v14 = [v12 topicFromBundleId:bundleID2];
 
-    if ([v4 isProductionEnvironment])
+    if ([registerCopy isProductionEnvironment])
     {
       [(WCDPushKitManager *)self productionConnection];
     }
@@ -359,18 +359,18 @@
     v28 = v7;
 
     [v16 requestTokenForTopic:v14 identifier:0];
-    v18 = [v16 enabledTopics];
-    v19 = [NSMutableArray arrayWithArray:v18];
+    enabledTopics = [v16 enabledTopics];
+    v19 = [NSMutableArray arrayWithArray:enabledTopics];
 
     [v19 removeObject:v14];
-    v20 = [v16 ignoredTopics];
-    v21 = [NSMutableArray arrayWithArray:v20];
+    ignoredTopics = [v16 ignoredTopics];
+    v21 = [NSMutableArray arrayWithArray:ignoredTopics];
 
     [v21 removeObject:v14];
     v22 = +[WCDSystemMonitor sharedSystemMonitor];
-    v23 = [v22 iOSApplicationsContainingActiveComplications];
-    v24 = [v4 bundleID];
-    v25 = [v23 containsObject:v24];
+    iOSApplicationsContainingActiveComplications = [v22 iOSApplicationsContainingActiveComplications];
+    bundleID3 = [registerCopy bundleID];
+    v25 = [iOSApplicationsContainingActiveComplications containsObject:bundleID3];
 
     if (v25)
     {
@@ -409,8 +409,8 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v15 = [(WCDPushKitManager *)self clientsDeniedComplicationRegister];
-  [v15 addObject:v4];
+  clientsDeniedComplicationRegister = [(WCDPushKitManager *)self clientsDeniedComplicationRegister];
+  [clientsDeniedComplicationRegister addObject:registerCopy];
 
   v14 = wc_pushkit_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -421,26 +421,26 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)clientRequestingComplicationUnregister:(id)a3
+- (void)clientRequestingComplicationUnregister:(id)unregister
 {
-  v4 = a3;
-  v5 = [(WCDPushKitManager *)self clientsDeniedComplicationRegister];
-  [v5 removeObject:v4];
+  unregisterCopy = unregister;
+  clientsDeniedComplicationRegister = [(WCDPushKitManager *)self clientsDeniedComplicationRegister];
+  [clientsDeniedComplicationRegister removeObject:unregisterCopy];
 
-  v6 = [v4 isProductionEnvironment];
+  isProductionEnvironment = [unregisterCopy isProductionEnvironment];
   v7 = @"Development";
-  if (v6)
+  if (isProductionEnvironment)
   {
     v7 = @"Production";
   }
 
   v8 = v7;
   v9 = objc_opt_class();
-  v10 = [v4 bundleID];
-  v11 = [v9 topicFromBundleId:v10];
+  bundleID = [unregisterCopy bundleID];
+  v11 = [v9 topicFromBundleId:bundleID];
 
-  LOBYTE(v10) = [v4 isProductionEnvironment];
-  if (v10)
+  LOBYTE(bundleID) = [unregisterCopy isProductionEnvironment];
+  if (bundleID)
   {
     [(WCDPushKitManager *)self productionConnection];
   }
@@ -463,22 +463,22 @@ LABEL_18:
   [v12 invalidateTokenForTopic:v11 identifier:0];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   v8 = wc_pushkit_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = v6;
+    v20 = connectionCopy;
     v21 = 2114;
-    v22 = v7;
+    v22 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "connection: %{public}@, publicToken: %{public}@", buf, 0x16u);
   }
 
-  v9 = [(WCDPushKitManager *)self productionConnection];
-  v10 = [v6 isEqual:v9];
+  productionConnection = [(WCDPushKitManager *)self productionConnection];
+  v10 = [connectionCopy isEqual:productionConnection];
 
   v11 = &APSEnvironmentProduction;
   if (!v10)
@@ -487,85 +487,85 @@ LABEL_18:
   }
 
   v12 = *v11;
-  v13 = [(WCDPushKitManager *)self bundleIDToClient];
+  bundleIDToClient = [(WCDPushKitManager *)self bundleIDToClient];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100028284;
   v16[3] = &unk_1000493F8;
   v16[4] = self;
   v17 = v12;
-  v18 = v6;
-  v14 = v6;
+  v18 = connectionCopy;
+  v14 = connectionCopy;
   v15 = v12;
-  [v13 enumerateKeysAndObjectsUsingBlock:v16];
+  [bundleIDToClient enumerateKeysAndObjectsUsingBlock:v16];
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   v14 = wc_pushkit_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138544130;
-    v19 = v10;
+    v19 = connectionCopy;
     v20 = 2114;
-    v21 = v11;
+    v21 = tokenCopy;
     v22 = 2114;
-    v23 = v12;
+    v23 = topicCopy;
     v24 = 2114;
-    v25 = v13;
+    v25 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "connection: %{public}@, token: %{public}@, topic: %{public}@, identifier: %{public}@", &v18, 0x2Au);
   }
 
-  v15 = [objc_opt_class() bundleIDFromTopic:v12];
-  v16 = [(WCDPushKitManager *)self bundleIDToClient];
-  v17 = [v16 objectForKeyedSubscript:v15];
+  v15 = [objc_opt_class() bundleIDFromTopic:topicCopy];
+  bundleIDToClient = [(WCDPushKitManager *)self bundleIDToClient];
+  v17 = [bundleIDToClient objectForKeyedSubscript:v15];
 
-  [v17 deliverToken:v11];
+  [v17 deliverToken:tokenCopy];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v8 = wc_pushkit_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543618;
-    v18 = v6;
+    v18 = connectionCopy;
     v19 = 2114;
-    v20 = v7;
+    v20 = messageCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "connection: %{public}@, message: %{public}@", &v17, 0x16u);
   }
 
-  v9 = [v7 topic];
-  v10 = [v7 userInfo];
-  v11 = [objc_opt_class() bundleIDFromTopic:v9];
+  topic = [messageCopy topic];
+  userInfo = [messageCopy userInfo];
+  v11 = [objc_opt_class() bundleIDFromTopic:topic];
   v12 = wc_pushkit_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543618;
-    v18 = v9;
+    v18 = topic;
     v19 = 2114;
     v20 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "topic: %{public}@ bundleID: %{public}@", &v17, 0x16u);
   }
 
-  v13 = [(WCDPushKitManager *)self bundleIDToClient];
-  v14 = [v13 objectForKeyedSubscript:v11];
+  bundleIDToClient = [(WCDPushKitManager *)self bundleIDToClient];
+  v14 = [bundleIDToClient objectForKeyedSubscript:v11];
 
   if (!v14)
   {
     v14 = [[WCDPKClient alloc] initWithBundleID:v11];
     [(WCDPKClient *)v14 setDelegate:self];
-    v15 = [(WCDPushKitManager *)self bundleIDToClient];
-    [v15 setObject:v14 forKeyedSubscript:v11];
+    bundleIDToClient2 = [(WCDPushKitManager *)self bundleIDToClient];
+    [bundleIDToClient2 setObject:v14 forKeyedSubscript:v11];
   }
 
-  [(WCDPKClient *)v14 deliverPayload:v10];
+  [(WCDPKClient *)v14 deliverPayload:userInfo];
   if ([(WCDPKClient *)v14 isRunning])
   {
     v16 = wc_pushkit_log();
@@ -583,32 +583,32 @@ LABEL_18:
   }
 }
 
-- (void)releaseAssertionForBundleID:(id)a3
+- (void)releaseAssertionForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = wc_pushkit_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v8, 0xCu);
   }
 
-  v6 = [(WCDPushKitManager *)self bundleIDToClient];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  bundleIDToClient = [(WCDPushKitManager *)self bundleIDToClient];
+  v7 = [bundleIDToClient objectForKeyedSubscript:dCopy];
 
   [(WCDPushKitManager *)self releaseAssertionForClient:v7];
 }
 
-- (void)launchClient:(id)a3
+- (void)launchClient:(id)client
 {
-  v3 = a3;
-  v4 = [v3 bundleID];
+  clientCopy = client;
+  bundleID = [clientCopy bundleID];
   v5 = wc_pushkit_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = bundleID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &buf, 0xCu);
   }
 
@@ -626,7 +626,7 @@ LABEL_18:
   v30[2] = sub_100028D7C;
   v30[3] = &unk_100049420;
   p_buf = &buf;
-  v9 = v4;
+  v9 = bundleID;
   v31 = v9;
   v10 = v6;
   v32 = v10;
@@ -663,7 +663,7 @@ LABEL_18:
     }
 
     v13 = [objc_opt_class() topicFromBundleId:v9];
-    objc_initWeak(v35, v3);
+    objc_initWeak(v35, clientCopy);
     v24 = _NSConcreteStackBlock;
     v25 = 3221225472;
     v26 = sub_100028EDC;
@@ -672,7 +672,7 @@ LABEL_18:
     v28 = v15;
     objc_copyWeak(&v29, v35);
     v16 = objc_retainBlock(&v24);
-    [v3 setAssertionInvalidationHandler:{v16, v24, v25, v26, v27}];
+    [clientCopy setAssertionInvalidationHandler:{v16, v24, v25, v26, v27}];
     v17 = [RBSAssertion alloc];
     v18 = [RBSProcessIdentity identityForEmbeddedApplicationIdentifier:v15];
     v19 = [RBSTarget targetWithProcessIdentity:v18];
@@ -680,10 +680,10 @@ LABEL_18:
     v34 = v20;
     v21 = [NSArray arrayWithObjects:&v34 count:1];
     v22 = [v17 initWithExplanation:v13 target:v19 attributes:v21];
-    [v3 setAssertion:v22];
+    [clientCopy setAssertion:v22];
 
-    v23 = [v3 assertion];
-    [v23 acquireWithInvalidationHandler:v16];
+    assertion = [clientCopy assertion];
+    [assertion acquireWithInvalidationHandler:v16];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(v35);
@@ -692,45 +692,45 @@ LABEL_18:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)releaseAssertionForClient:(id)a3
+- (void)releaseAssertionForClient:(id)client
 {
-  v3 = a3;
-  v4 = [v3 assertion];
+  clientCopy = client;
+  assertion = [clientCopy assertion];
 
-  if (v4)
+  if (assertion)
   {
     v5 = wc_pushkit_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v3;
+      v9 = clientCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "invalidating assertion for client %{public}@", &v8, 0xCu);
     }
 
-    v6 = [v3 assertion];
-    v7 = [v3 assertionInvalidationHandler];
-    (v7)[2](v7, v6, 0);
-    [v6 invalidate];
+    assertion2 = [clientCopy assertion];
+    assertionInvalidationHandler = [clientCopy assertionInvalidationHandler];
+    (assertionInvalidationHandler)[2](assertionInvalidationHandler, assertion2, 0);
+    [assertion2 invalidate];
   }
 }
 
-+ (id)bundleIDFromTopic:(id)a3
++ (id)bundleIDFromTopic:(id)topic
 {
-  v3 = a3;
-  v4 = [v3 substringWithRange:{0, objc_msgSend(v3, "length") + ~objc_msgSend(@"complication", "length")}];
+  topicCopy = topic;
+  v4 = [topicCopy substringWithRange:{0, objc_msgSend(topicCopy, "length") + ~objc_msgSend(@"complication", "length")}];
 
   return v4;
 }
 
-+ (id)bundleIDsFromTopics:(id)a3
++ (id)bundleIDsFromTopics:(id)topics
 {
-  v4 = a3;
-  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  topicsCopy = topics;
+  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [topicsCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = topicsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -745,7 +745,7 @@ LABEL_18:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 bundleIDFromTopic:{*(*(&v13 + 1) + 8 * i), v13}];
+        v11 = [self bundleIDFromTopic:{*(*(&v13 + 1) + 8 * i), v13}];
         [v5 addObject:v11];
       }
 
@@ -758,15 +758,15 @@ LABEL_18:
   return v5;
 }
 
-+ (id)topicsFromBundleIDs:(id)a3
++ (id)topicsFromBundleIDs:(id)ds
 {
-  v4 = a3;
-  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  dsCopy = ds;
+  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [dsCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -781,7 +781,7 @@ LABEL_18:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 topicFromBundleId:{*(*(&v13 + 1) + 8 * i), v13}];
+        v11 = [self topicFromBundleId:{*(*(&v13 + 1) + 8 * i), v13}];
         [v5 addObject:v11];
       }
 

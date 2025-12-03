@@ -1,18 +1,18 @@
 @interface SimpleLensModel
-- (SimpleLensModel)initWithMetalContext:(id)a3;
-- (int)allocateResourcesForShiftMapWidth:(unint64_t)a3 shiftMapHeight:(unint64_t)a4;
-- (int)enqueueCalcWithSimpleLensParams:(const simple_lens_model_params *)a3 inputShiftMap:(id)a4 outputSlmParams:(id)a5;
-- (int)enqueueMinMaxWithInputShiftMapTex:(id)a3;
-- (int)enqueueSlmCalcWithInputShiftMap:(id)a3 slmParams:(id)a4 simpleLensParams:(const simple_lens_model_params *)a5;
+- (SimpleLensModel)initWithMetalContext:(id)context;
+- (int)allocateResourcesForShiftMapWidth:(unint64_t)width shiftMapHeight:(unint64_t)height;
+- (int)enqueueCalcWithSimpleLensParams:(const simple_lens_model_params *)params inputShiftMap:(id)map outputSlmParams:(id)slmParams;
+- (int)enqueueMinMaxWithInputShiftMapTex:(id)tex;
+- (int)enqueueSlmCalcWithInputShiftMap:(id)map slmParams:(id)params simpleLensParams:(const simple_lens_model_params *)lensParams;
 - (void)dealloc;
 - (void)deallocateResources;
 @end
 
 @implementation SimpleLensModel
 
-- (SimpleLensModel)initWithMetalContext:(id)a3
+- (SimpleLensModel)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = SimpleLensModel;
   v6 = [(SimpleLensModel *)&v24 init];
@@ -24,7 +24,7 @@
       kdebug_trace();
     }
 
-    objc_storeStrong(&v6->_mtlCtx, a3);
+    objc_storeStrong(&v6->_mtlCtx, context);
     v9 = objc_msgSend_computePipelineStateFor_constants_(v6->_mtlCtx, v8, @"xhlrb_slm_shiftmap_calcminmax0", 0);
     minMax0_kernel = v6->_minMax0_kernel;
     v6->_minMax0_kernel = v9;
@@ -101,9 +101,9 @@ LABEL_9:
   return v22;
 }
 
-- (int)allocateResourcesForShiftMapWidth:(unint64_t)a3 shiftMapHeight:(unint64_t)a4
+- (int)allocateResourcesForShiftMapWidth:(unint64_t)width shiftMapHeight:(unint64_t)height
 {
-  v5 = objc_msgSend_device(self->_mtlCtx, a2, a3, a4);
+  v5 = objc_msgSend_device(self->_mtlCtx, a2, width, height);
   v7 = objc_msgSend_newBufferWithLength_options_(v5, v6, 8, 32);
   minMaxAtomic_buf = self->_minMaxAtomic_buf;
   self->_minMaxAtomic_buf = v7;
@@ -153,11 +153,11 @@ LABEL_9:
   [(SimpleLensModel *)&v8 dealloc];
 }
 
-- (int)enqueueMinMaxWithInputShiftMapTex:(id)a3
+- (int)enqueueMinMaxWithInputShiftMapTex:(id)tex
 {
-  v4 = a3;
-  v8 = objc_msgSend_width(v4, v5, v6, v7);
-  v12 = objc_msgSend_height(v4, v9, v10, v11);
+  texCopy = tex;
+  v8 = objc_msgSend_width(texCopy, v5, v6, v7);
+  v12 = objc_msgSend_height(texCopy, v9, v10, v11);
   v16 = objc_msgSend_commandQueue(self->_mtlCtx, v13, v14, v15);
   v20 = objc_msgSend_commandBuffer(v16, v17, v18, v19);
 
@@ -187,7 +187,7 @@ LABEL_9:
   v73 = 1;
   objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v27, v30, &v74, &v72);
   objc_msgSend_setComputePipelineState_(v27, v31, self->_minMax1_kernel, v32);
-  objc_msgSend_setTexture_atIndex_(v27, v33, v4, 0);
+  objc_msgSend_setTexture_atIndex_(v27, v33, texCopy, 0);
   objc_msgSend_setBuffer_offset_atIndex_(v27, v34, self->_minMaxAtomic_buf, 0, 0);
   v38 = objc_msgSend_threadExecutionWidth(self->_minMax1_kernel, v35, v36, v37);
   v42 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_minMax1_kernel, v39, v40, v41);
@@ -226,10 +226,10 @@ LABEL_6:
   return v69;
 }
 
-- (int)enqueueSlmCalcWithInputShiftMap:(id)a3 slmParams:(id)a4 simpleLensParams:(const simple_lens_model_params *)a5
+- (int)enqueueSlmCalcWithInputShiftMap:(id)map slmParams:(id)params simpleLensParams:(const simple_lens_model_params *)lensParams
 {
-  v8 = a3;
-  v9 = a4;
+  mapCopy = map;
+  paramsCopy = params;
   v13 = objc_msgSend_commandQueue(self->_mtlCtx, v10, v11, v12);
   v17 = objc_msgSend_commandBuffer(v13, v14, v15, v16);
 
@@ -250,10 +250,10 @@ LABEL_9:
 
   v24 = v21;
   objc_msgSend_setComputePipelineState_(v21, v22, self->_calc_kernel, v23);
-  objc_msgSend_setBytes_length_atIndex_(v24, v25, a5, 56, 0);
+  objc_msgSend_setBytes_length_atIndex_(v24, v25, lensParams, 56, 0);
   objc_msgSend_setBuffer_offset_atIndex_(v24, v26, self->_minMaxResult_buf, 0, 1);
-  objc_msgSend_setBuffer_offset_atIndex_(v24, v27, v9, 0, 2);
-  objc_msgSend_setTexture_atIndex_(v24, v28, v8, 0);
+  objc_msgSend_setBuffer_offset_atIndex_(v24, v27, paramsCopy, 0, 2);
+  objc_msgSend_setTexture_atIndex_(v24, v28, mapCopy, 0);
   objc_msgSend_setThreadgroupMemoryLength_atIndex_(v24, v29, 1024, 0);
   v55 = vdupq_n_s64(1uLL);
   v56 = 1;
@@ -280,11 +280,11 @@ LABEL_6:
   return v51;
 }
 
-- (int)enqueueCalcWithSimpleLensParams:(const simple_lens_model_params *)a3 inputShiftMap:(id)a4 outputSlmParams:(id)a5
+- (int)enqueueCalcWithSimpleLensParams:(const simple_lens_model_params *)params inputShiftMap:(id)map outputSlmParams:(id)slmParams
 {
-  v8 = a4;
-  v9 = a5;
-  v13 = v9;
+  mapCopy = map;
+  slmParamsCopy = slmParams;
+  v13 = slmParamsCopy;
   if (!self->_minMaxAtomic_buf)
   {
     sub_295EB9398(&v23);
@@ -299,25 +299,25 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!v8)
+  if (!mapCopy)
   {
     sub_295EB9240(&v23);
     goto LABEL_21;
   }
 
-  if (!v9)
+  if (!slmParamsCopy)
   {
     sub_295EB9194(&v23);
     goto LABEL_21;
   }
 
-  if (!a3)
+  if (!params)
   {
     sub_295EB90E8(&v23);
     goto LABEL_21;
   }
 
-  if (objc_msgSend_pixelFormat(v8, v10, v11, v12) != 25 && objc_msgSend_pixelFormat(v8, v14, v15, v16) != 55)
+  if (objc_msgSend_pixelFormat(mapCopy, v10, v11, v12) != 25 && objc_msgSend_pixelFormat(mapCopy, v14, v15, v16) != 55)
   {
     sub_295EB8EA0(&v23);
     goto LABEL_21;
@@ -329,7 +329,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v19 = objc_msgSend_enqueueMinMaxWithInputShiftMapTex_(self, v17, v8, v18);
+  v19 = objc_msgSend_enqueueMinMaxWithInputShiftMapTex_(self, v17, mapCopy, v18);
   if (v19)
   {
     v21 = v19;
@@ -338,7 +338,7 @@ LABEL_21:
 
   else
   {
-    v21 = objc_msgSend_enqueueSlmCalcWithInputShiftMap_slmParams_simpleLensParams_(self, v20, v8, v13, a3);
+    v21 = objc_msgSend_enqueueSlmCalcWithInputShiftMap_slmParams_simpleLensParams_(self, v20, mapCopy, v13, params);
     if (v21)
     {
       sub_295EB8FC4();

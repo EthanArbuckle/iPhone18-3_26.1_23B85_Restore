@@ -1,17 +1,17 @@
 @interface MTAddPodcastCellAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTAddPodcastCellAccessoryView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTAddPodcastCellAccessoryView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAdded:(BOOL)a3;
+- (void)setAdded:(BOOL)added;
 @end
 
 @implementation MTAddPodcastCellAccessoryView
 
-- (MTAddPodcastCellAccessoryView)initWithFrame:(CGRect)a3
+- (MTAddPodcastCellAccessoryView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = MTAddPodcastCellAccessoryView;
-  v3 = [(MTAddPodcastCellAccessoryView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTAddPodcastCellAccessoryView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIButton buttonWithType:0];
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIButton *)self->_button sizeThatFits:a3.width, a3.height];
+  [(UIButton *)self->_button sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -51,13 +51,13 @@
   [(UIButton *)button setFrame:?];
 }
 
-- (void)setAdded:(BOOL)a3
+- (void)setAdded:(BOOL)added
 {
-  if (self->_added != a3)
+  if (self->_added != added)
   {
-    self->_added = a3;
+    self->_added = added;
     button = self->_button;
-    if (a3)
+    if (added)
     {
       +[UIImage multiCheckIcon];
     }

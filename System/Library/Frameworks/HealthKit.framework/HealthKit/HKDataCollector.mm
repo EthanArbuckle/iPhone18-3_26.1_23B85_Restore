@@ -1,56 +1,56 @@
 @interface HKDataCollector
 + (id)serverInterface;
-- (BOOL)_datumsInDateOrder:(id)a3 secondDatum:(id)a4;
-- (BOOL)_validateDatums:(id)a3 error:(id *)a4;
-- (HKDataCollector)initWithHealthStore:(id)a3 bundleIdentifier:(id)a4 quantityType:(id)a5;
+- (BOOL)_datumsInDateOrder:(id)order secondDatum:(id)datum;
+- (BOOL)_validateDatums:(id)datums error:(id *)error;
+- (HKDataCollector)initWithHealthStore:(id)store bundleIdentifier:(id)identifier quantityType:(id)type;
 - (HKDataCollectorCollectionConfiguration)collectionConfiguration;
 - (HKDataCollectorDelegate)delegate;
-- (id)_prunedBatch:(id)a3 maximumLength:(int64_t)a4;
-- (id)_queue_callToDelegateAndEnqueueForClientFlushRequest:(id)a3;
+- (id)_prunedBatch:(id)batch maximumLength:(int64_t)length;
+- (id)_queue_callToDelegateAndEnqueueForClientFlushRequest:(id)request;
 - (id)unitTest_pendingBatches;
 - (id)unitTest_unconfirmedBatches;
 - (id)unitTest_unpersistedBatches;
-- (void)_queue_batchDatums:(id)a3 device:(id)a4 metadata:(id)a5 options:(unint64_t)a6 completion:(id)a7;
+- (void)_queue_batchDatums:(id)datums device:(id)device metadata:(id)metadata options:(unint64_t)options completion:(id)completion;
 - (void)_queue_checkForFinish;
 - (void)_queue_considerCompletingFlushRequests;
 - (void)_queue_considerSendingBatches;
 - (void)_queue_pruneOldDatums;
 - (void)_queue_requestRegistration;
 - (void)_queue_resetUnpersistedBatches;
-- (void)_queue_sendBatch:(id)a3;
-- (void)_queue_sendState:(id)a3;
-- (void)_queue_taskServer_insertBatch:(id)a3 completion:(id)a4;
+- (void)_queue_sendBatch:(id)batch;
+- (void)_queue_sendState:(id)state;
+- (void)_queue_taskServer_insertBatch:(id)batch completion:(id)completion;
 - (void)_queue_updateReconsiderationTimer;
-- (void)_removeBatch:(id)a3;
+- (void)_removeBatch:(id)batch;
 - (void)_requestRegistration;
-- (void)clientRemote_beginCollectionWithConfiguration:(id)a3 lastPersistedDatum:(id)a4 registrationUUID:(id)a5;
-- (void)clientRemote_collectThroughDate:(id)a3 completion:(id)a4;
-- (void)clientRemote_collectionConfigurationDidChange:(id)a3;
-- (void)clientRemote_finishedPersistenceForBatch:(id)a3 error:(id)a4;
-- (void)clientRemote_receivedBatch:(id)a3 error:(id)a4;
-- (void)clientRemote_synchronizeWithCompletion:(id)a3;
+- (void)clientRemote_beginCollectionWithConfiguration:(id)configuration lastPersistedDatum:(id)datum registrationUUID:(id)d;
+- (void)clientRemote_collectThroughDate:(id)date completion:(id)completion;
+- (void)clientRemote_collectionConfigurationDidChange:(id)change;
+- (void)clientRemote_finishedPersistenceForBatch:(id)batch error:(id)error;
+- (void)clientRemote_receivedBatch:(id)batch error:(id)error;
+- (void)clientRemote_synchronizeWithCompletion:(id)completion;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)finishWithCompletion:(id)a3;
-- (void)insertDatums:(id)a3 device:(id)a4 metadata:(id)a5 options:(unint64_t)a6 completion:(id)a7;
-- (void)resumeWithCompletion:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setState:(id)a3;
-- (void)unitTest_preSetStateHandler:(id)a3;
-- (void)unitTest_setClientFlushRequestTimeoutOverride:(double)a3;
-- (void)unitTest_setConnectionInterruptedHandler:(id)a3;
-- (void)unitTest_setMaxDatumAgeOverride:(double)a3;
-- (void)unitTest_setRegistrationCompleteHandler:(id)a3;
+- (void)finishWithCompletion:(id)completion;
+- (void)insertDatums:(id)datums device:(id)device metadata:(id)metadata options:(unint64_t)options completion:(id)completion;
+- (void)resumeWithCompletion:(id)completion;
+- (void)setDelegate:(id)delegate;
+- (void)setState:(id)state;
+- (void)unitTest_preSetStateHandler:(id)handler;
+- (void)unitTest_setClientFlushRequestTimeoutOverride:(double)override;
+- (void)unitTest_setConnectionInterruptedHandler:(id)handler;
+- (void)unitTest_setMaxDatumAgeOverride:(double)override;
+- (void)unitTest_setRegistrationCompleteHandler:(id)handler;
 @end
 
 @implementation HKDataCollector
 
-- (HKDataCollector)initWithHealthStore:(id)a3 bundleIdentifier:(id)a4 quantityType:(id)a5
+- (HKDataCollector)initWithHealthStore:(id)store bundleIdentifier:(id)identifier quantityType:(id)type
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  identifierCopy = identifier;
+  typeCopy = type;
   v48.receiver = self;
   v48.super_class = HKDataCollector;
   v11 = [(HKDataCollector *)&v48 init];
@@ -81,20 +81,20 @@
     state = v11->_state;
     v11->_state = v16;
 
-    v18 = [v10 copy];
+    v18 = [typeCopy copy];
     quantityType = v11->_quantityType;
     v11->_quantityType = v18;
 
-    v20 = [v9 copy];
+    v20 = [identifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v20;
 
-    v22 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v11->_identifier;
-    v11->_identifier = v22;
+    v11->_identifier = uUID;
 
     v24 = [[HKDataCollectorTaskServerConfiguration alloc] initWithQuantityType:v11->_quantityType bundleIdentifier:v11->_bundleIdentifier canResumeFromLastDatum:0];
-    v25 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v8 taskIdentifier:@"HKDataCollectorTaskServerIdentifier" exportedObject:v11 taskUUID:v11->_identifier];
+    v25 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:storeCopy taskIdentifier:@"HKDataCollectorTaskServerIdentifier" exportedObject:v11 taskUUID:v11->_identifier];
     proxyProvider = v11->_proxyProvider;
     v11->_proxyProvider = v25;
 
@@ -177,18 +177,18 @@ void __69__HKDataCollector_initWithHealthStore_bundleIdentifier_quantityType___b
   return v3;
 }
 
-- (void)resumeWithCompletion:(id)a3
+- (void)resumeWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__HKDataCollector_resumeWithCompletion___block_invoke;
   block[3] = &unk_1E73810E0;
   block[4] = self;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = completionCopy;
   dispatch_sync(queue, block);
 }
 
@@ -279,16 +279,16 @@ void __40__HKDataCollector_resumeWithCompletion___block_invoke_3(uint64_t a1)
   (*(v4 + 16))(v4, 0, v11);
 }
 
-- (void)insertDatums:(id)a3 device:(id)a4 metadata:(id)a5 options:(unint64_t)a6 completion:(id)a7
+- (void)insertDatums:(id)datums device:(id)device metadata:(id)metadata options:(unint64_t)options completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (v16)
+  datumsCopy = datums;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v17 = v16;
+    v17 = completionCopy;
   }
 
   else
@@ -298,7 +298,7 @@ void __40__HKDataCollector_resumeWithCompletion___block_invoke_3(uint64_t a1)
 
   v18 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v17];
 
-  if (a6)
+  if (options)
   {
     _HKInitializeLogging();
     v19 = HKLogDataCollection;
@@ -306,19 +306,19 @@ void __40__HKDataCollector_resumeWithCompletion___block_invoke_3(uint64_t a1)
     {
       quantityType = self->_quantityType;
       v21 = v19;
-      v22 = [(HKObjectType *)quantityType identifier];
+      identifier = [(HKObjectType *)quantityType identifier];
       *buf = 138543618;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 2114;
-      v44 = v22;
+      v44 = identifier;
       _os_log_impl(&dword_19197B000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: Transient data collection on type %{public}@", buf, 0x16u);
     }
   }
 
-  if ([v13 count])
+  if ([datumsCopy count])
   {
     v40 = 0;
-    v23 = [(HKDataCollector *)self _validateDatums:v13 error:&v40];
+    v23 = [(HKDataCollector *)self _validateDatums:datumsCopy error:&v40];
     v24 = v40;
     if (!v23)
     {
@@ -328,20 +328,20 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (v14)
+    if (deviceCopy)
     {
       goto LABEL_10;
     }
 
     if ([(HKObjectType *)self->_quantityType code]== 10)
     {
-      v14 = 0;
+      deviceCopy = 0;
     }
 
     else
     {
-      v14 = +[HKDevice localDevice];
-      if (v14)
+      deviceCopy = +[HKDevice localDevice];
+      if (deviceCopy)
       {
 LABEL_10:
         objc_opt_class();
@@ -366,11 +366,11 @@ LABEL_10:
     block[4] = self;
     v37 = v18;
     v38 = a2;
-    v34 = v13;
-    v14 = v14;
-    v35 = v14;
-    v36 = v15;
-    v39 = a6;
+    v34 = datumsCopy;
+    deviceCopy = deviceCopy;
+    v35 = deviceCopy;
+    v36 = metadataCopy;
+    optionsCopy = options;
     dispatch_sync(queue, block);
 
     goto LABEL_20;
@@ -381,9 +381,9 @@ LABEL_10:
   if (os_log_type_enabled(HKLogDataCollection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v42 = self;
+    selfCopy2 = self;
     v43 = 2112;
-    v44 = v14;
+    v44 = deviceCopy;
     _os_log_impl(&dword_19197B000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring empty batch with device: %@", buf, 0x16u);
   }
 
@@ -434,13 +434,13 @@ void __67__HKDataCollector_insertDatums_device_metadata_options_completion___blo
   }
 }
 
-- (void)_queue_batchDatums:(id)a3 device:(id)a4 metadata:(id)a5 options:(unint64_t)a6 completion:(id)a7
+- (void)_queue_batchDatums:(id)datums device:(id)device metadata:(id)metadata options:(unint64_t)options completion:(id)completion
 {
   v85 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  datumsCopy = datums;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  completionCopy = completion;
   if (!self->_pendingBatches)
   {
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -448,29 +448,29 @@ void __67__HKDataCollector_insertDatums_device_metadata_options_completion___blo
     self->_pendingBatches = v17;
   }
 
-  self->_totalDatumCount += [v13 count];
-  v19 = [(NSMutableArray *)self->_pendingBatches lastObject];
-  v71 = v16;
-  v72 = v15;
-  v70 = v19;
-  if (!v19)
+  self->_totalDatumCount += [datumsCopy count];
+  lastObject = [(NSMutableArray *)self->_pendingBatches lastObject];
+  v71 = completionCopy;
+  v72 = metadataCopy;
+  v70 = lastObject;
+  if (!lastObject)
   {
     goto LABEL_26;
   }
 
-  v20 = v19;
-  v21 = [v19 device];
-  if (v21 != v14)
+  v20 = lastObject;
+  device = [lastObject device];
+  if (device != deviceCopy)
   {
-    v22 = [v20 device];
-    if (!v22)
+    device2 = [v20 device];
+    if (!device2)
     {
       goto LABEL_25;
     }
 
-    v16 = v22;
-    v7 = [v20 device];
-    if (![v14 isEqual:v7])
+    completionCopy = device2;
+    device3 = [v20 device];
+    if (![deviceCopy isEqual:device3])
     {
 LABEL_24:
 
@@ -478,12 +478,12 @@ LABEL_24:
     }
   }
 
-  v23 = [v20 metadata];
-  if (v23 == v72)
+  metadata = [v20 metadata];
+  if (metadata == v72)
   {
-    v28 = [v20 isTransient] ^ a6;
+    v28 = [v20 isTransient] ^ options;
 
-    if (v21 == v14)
+    if (device == deviceCopy)
     {
       goto LABEL_14;
     }
@@ -491,42 +491,42 @@ LABEL_24:
     goto LABEL_13;
   }
 
-  v24 = [v20 metadata];
-  if (!v24)
+  metadata2 = [v20 metadata];
+  if (!metadata2)
   {
 
     goto LABEL_23;
   }
 
   v25 = v20;
-  v26 = v24;
-  v67 = v14;
-  v27 = [v25 metadata];
-  if (![v72 isEqual:v27])
+  v26 = metadata2;
+  v67 = deviceCopy;
+  metadata3 = [v25 metadata];
+  if (![v72 isEqual:metadata3])
   {
 
-    v14 = v67;
+    deviceCopy = v67;
 LABEL_23:
-    if (v21 != v14)
+    if (device != deviceCopy)
     {
       goto LABEL_24;
     }
 
 LABEL_25:
 
-    v16 = v71;
-    v15 = v72;
+    completionCopy = v71;
+    metadataCopy = v72;
     goto LABEL_26;
   }
 
-  v28 = [v25 isTransient] ^ a6;
+  v28 = [v25 isTransient] ^ options;
 
-  v14 = v67;
-  if (v21 == v67)
+  deviceCopy = v67;
+  if (device == v67)
   {
 
-    v16 = v71;
-    v15 = v72;
+    completionCopy = v71;
+    metadataCopy = v72;
     v20 = v70;
     if ((v28 & 1) == 0)
     {
@@ -540,12 +540,12 @@ LABEL_25:
 LABEL_13:
 
 LABEL_14:
-  v16 = v71;
-  v15 = v72;
+  completionCopy = v71;
+  metadataCopy = v72;
   if ((v28 & 1) == 0)
   {
 LABEL_15:
-    v29 = [v20 batchByAddingData:v13 completion:v16];
+    v29 = [v20 batchByAddingData:datumsCopy completion:completionCopy];
     [(NSMutableArray *)self->_pendingBatches removeLastObject];
     [(NSMutableArray *)self->_pendingBatches addObject:v29];
     Current = CFAbsoluteTimeGetCurrent();
@@ -556,25 +556,25 @@ LABEL_15:
       if (os_log_type_enabled(HKLogDataCollection, OS_LOG_TYPE_DEFAULT))
       {
         log = v31;
-        v63 = [(_HKDataCollectorPendingBatch *)v29 batchUUID];
-        v54 = HKDiagnosticStringFromUUID(v63);
-        v61 = [(_HKDataCollectorPendingBatch *)v29 data];
-        v52 = [v61 count];
-        v59 = [(_HKDataCollectorPendingBatch *)v29 data];
-        v56 = [v59 firstObject];
-        v55 = [v56 dateInterval];
-        v32 = [v55 startDate];
-        v53 = HKDiagnosticStringFromDate(v32);
-        v33 = [(_HKDataCollectorPendingBatch *)v29 data];
-        [v33 lastObject];
+        batchUUID = [(_HKDataCollectorPendingBatch *)v29 batchUUID];
+        v54 = HKDiagnosticStringFromUUID(batchUUID);
+        data = [(_HKDataCollectorPendingBatch *)v29 data];
+        v52 = [data count];
+        data2 = [(_HKDataCollectorPendingBatch *)v29 data];
+        firstObject = [data2 firstObject];
+        dateInterval = [firstObject dateInterval];
+        startDate = [dateInterval startDate];
+        v53 = HKDiagnosticStringFromDate(startDate);
+        data3 = [(_HKDataCollectorPendingBatch *)v29 data];
+        [data3 lastObject];
         v34 = v65 = v29;
-        v35 = [v34 dateInterval];
-        [v35 endDate];
-        v37 = v36 = v13;
+        dateInterval2 = [v34 dateInterval];
+        [dateInterval2 endDate];
+        v37 = v36 = datumsCopy;
         HKDiagnosticStringFromDate(v37);
-        v38 = v68 = v14;
+        v38 = v68 = deviceCopy;
         *buf = 138544386;
-        v74 = self;
+        selfCopy2 = self;
         v75 = 2114;
         v76 = v54;
         v77 = 2048;
@@ -585,14 +585,14 @@ LABEL_15:
         v82 = v38;
         _os_log_impl(&dword_19197B000, log, OS_LOG_TYPE_DEFAULT, "%{public}@: Batch %{public}@: Now contains %ld datums from %{public}@ -> %{public}@.", buf, 0x34u);
 
-        v13 = v36;
-        v16 = v71;
+        datumsCopy = v36;
+        completionCopy = v71;
 
         v29 = v65;
         v20 = v70;
 
-        v15 = v72;
-        v14 = v68;
+        metadataCopy = v72;
+        deviceCopy = v68;
       }
 
       self->_lastLogTime = Current;
@@ -608,8 +608,8 @@ LABEL_15:
 
 LABEL_26:
   v39 = [_HKDataCollectorPendingBatch alloc];
-  v40 = [MEMORY[0x1E696AFB0] UUID];
-  v29 = [(_HKDataCollectorPendingBatch *)v39 initWithIdentifier:v40 data:v13 metadata:v15 device:v14 options:a6 completion:v16];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v29 = [(_HKDataCollectorPendingBatch *)v39 initWithIdentifier:uUID data:datumsCopy metadata:metadataCopy device:deviceCopy options:options completion:completionCopy];
 
   [(NSMutableArray *)self->_pendingBatches addObject:v29];
   if (self->_totalDatumCount >= 5001)
@@ -622,27 +622,27 @@ LABEL_26:
   if (os_log_type_enabled(HKLogDataCollection, OS_LOG_TYPE_DEFAULT))
   {
     loga = v41;
-    v62 = [(_HKDataCollectorPendingBatch *)v29 batchUUID];
-    v42 = HKDiagnosticStringFromUUID(v62);
-    v43 = [v13 count];
-    v60 = [v13 firstObject];
-    v44 = [v60 dateInterval];
-    v45 = [v44 startDate];
-    HKDiagnosticStringFromDate(v45);
-    v46 = v69 = v14;
-    [v13 lastObject];
+    batchUUID2 = [(_HKDataCollectorPendingBatch *)v29 batchUUID];
+    v42 = HKDiagnosticStringFromUUID(batchUUID2);
+    v43 = [datumsCopy count];
+    firstObject2 = [datumsCopy firstObject];
+    dateInterval3 = [firstObject2 dateInterval];
+    startDate2 = [dateInterval3 startDate];
+    HKDiagnosticStringFromDate(startDate2);
+    v46 = v69 = deviceCopy;
+    [datumsCopy lastObject];
     v47 = v66 = v29;
-    v48 = [v47 dateInterval];
-    v49 = [v48 endDate];
-    HKDiagnosticStringFromDate(v49);
-    v50 = v64 = v13;
+    dateInterval4 = [v47 dateInterval];
+    endDate = [dateInterval4 endDate];
+    HKDiagnosticStringFromDate(endDate);
+    v50 = v64 = datumsCopy;
     *buf = 138544642;
-    v74 = self;
+    selfCopy2 = self;
     v75 = 2114;
     v76 = v42;
     v77 = 2048;
     v78 = v43;
-    v16 = v71;
+    completionCopy = v71;
     v79 = 2114;
     v80 = v46;
     v81 = 2114;
@@ -651,11 +651,11 @@ LABEL_26:
     v84 = v69;
     _os_log_impl(&dword_19197B000, loga, OS_LOG_TYPE_DEFAULT, "%{public}@: Batch %{public}@: Inserting %lu datums from %{public}@ -> %{public}@, device: %@", buf, 0x3Eu);
 
-    v15 = v72;
+    metadataCopy = v72;
     v29 = v66;
 
-    v13 = v64;
-    v14 = v69;
+    datumsCopy = v64;
+    deviceCopy = v69;
   }
 
   v20 = v70;
@@ -664,18 +664,18 @@ LABEL_31:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithCompletion:(id)a3
+- (void)finishWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__HKDataCollector_finishWithCompletion___block_invoke;
   block[3] = &unk_1E73810E0;
   block[4] = self;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = completionCopy;
   dispatch_sync(queue, block);
 }
 
@@ -822,8 +822,8 @@ void __40__HKDataCollector_finishWithCompletion___block_invoke_3(uint64_t a1, ui
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v39 + 1) + 8 * i) date];
-          [v14 timeIntervalSinceReferenceDate];
+          date = [*(*(&v39 + 1) + 8 * i) date];
+          [date timeIntervalSinceReferenceDate];
           v16 = v15;
 
           if (v16 >= v8)
@@ -838,16 +838,16 @@ void __40__HKDataCollector_finishWithCompletion___block_invoke_3(uint64_t a1, ui
       while (v11);
     }
 
-    v17 = [(NSMutableArray *)self->_pendingBatches firstObject];
-    v5 = v17;
-    if (v17)
+    firstObject = [(NSMutableArray *)self->_pendingBatches firstObject];
+    v5 = firstObject;
+    if (firstObject)
     {
-      v18 = [v17 data];
-      v19 = [v18 firstObject];
-      v20 = [v19 dateInterval];
-      v21 = [v20 startDate];
+      data = [firstObject data];
+      firstObject2 = [data firstObject];
+      dateInterval = [firstObject2 dateInterval];
+      startDate = [dateInterval startDate];
 
-      if (self->_shouldFlushAll || ([v21 timeIntervalSinceReferenceDate], v22 < v8) || self->_totalDatumCount > 4999 || self->_invalidated)
+      if (self->_shouldFlushAll || ([startDate timeIntervalSinceReferenceDate], v22 < v8) || self->_totalDatumCount > 4999 || self->_invalidated)
       {
         _HKInitializeLogging();
         v23 = HKLogDataCollection;
@@ -858,11 +858,11 @@ void __40__HKDataCollector_finishWithCompletion___block_invoke_3(uint64_t a1, ui
           v26 = [v24 dateWithTimeIntervalSinceReferenceDate:v8];
           totalDatumCount = self->_totalDatumCount;
           *buf = 138544386;
-          v45 = self;
+          selfCopy2 = self;
           v46 = 2114;
           v47 = v5;
           v48 = 2112;
-          v49 = v21;
+          v49 = startDate;
           v50 = 2112;
           v51 = v26;
           v52 = 2048;
@@ -903,8 +903,8 @@ void __40__HKDataCollector_finishWithCompletion___block_invoke_3(uint64_t a1, ui
               objc_enumerationMutation(v28);
             }
 
-            v33 = [*(*(&v35 + 1) + 8 * j) completion];
-            v33[2](v33, 1, 0);
+            completion = [*(*(&v35 + 1) + 8 * j) completion];
+            completion[2](completion, 1, 0);
           }
 
           v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -931,7 +931,7 @@ LABEL_35:
     unconfirmedBatchesByUUID = self->_unconfirmedBatchesByUUID;
     v5 = v3;
     *buf = 138543618;
-    v45 = self;
+    selfCopy2 = self;
     v46 = 2048;
     v47 = [(NSMutableDictionary *)unconfirmedBatchesByUUID count];
     _os_log_impl(&dword_19197B000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: %lu unconfirmed batches; delaying next send.", buf, 0x16u);
@@ -946,28 +946,28 @@ LABEL_36:
 {
   v42 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NSMutableArray *)self->_pendingBatches firstObject];
-  v4 = v3;
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_pendingBatches firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
-    v5 = [v3 data];
-    v6 = [v5 firstObject];
-    v7 = [v6 dateInterval];
-    v8 = [v7 startDate];
+    data = [firstObject data];
+    firstObject2 = [data firstObject];
+    dateInterval = [firstObject2 dateInterval];
+    startDate = [dateInterval startDate];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF00] distantFuture];
+    startDate = [MEMORY[0x1E695DF00] distantFuture];
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v31 = self;
-  v9 = [(NSMutableDictionary *)self->_unconfirmedBatchesByUUID allValues];
-  v10 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  selfCopy = self;
+  allValues = [(NSMutableDictionary *)self->_unconfirmedBatchesByUUID allValues];
+  v10 = [allValues countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v10)
   {
     v11 = v10;
@@ -978,23 +978,23 @@ LABEL_36:
       {
         if (*v37 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
-        v14 = [*(*(&v36 + 1) + 8 * i) data];
-        v15 = [v14 firstObject];
-        v16 = [v15 dateInterval];
-        v17 = [v16 startDate];
+        data2 = [*(*(&v36 + 1) + 8 * i) data];
+        firstObject3 = [data2 firstObject];
+        dateInterval2 = [firstObject3 dateInterval];
+        startDate2 = [dateInterval2 startDate];
 
-        if ([v17 hk_isBeforeDate:v8])
+        if ([startDate2 hk_isBeforeDate:startDate])
         {
-          v18 = v17;
+          v18 = startDate2;
 
-          v8 = v18;
+          startDate = v18;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v11);
@@ -1004,7 +1004,7 @@ LABEL_36:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v19 = v31->_flushRequests;
+  v19 = selfCopy->_flushRequests;
   v20 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (!v20)
   {
@@ -1026,13 +1026,13 @@ LABEL_36:
       }
 
       v25 = *(*(&v32 + 1) + 8 * j);
-      v26 = [v25 date];
-      v27 = [v26 hk_isBeforeDate:v8];
+      date = [v25 date];
+      v27 = [date hk_isBeforeDate:startDate];
 
       if (v27)
       {
-        v28 = [v25 completion];
-        v28[2](v28, 1, 0);
+        completion = [v25 completion];
+        completion[2](completion, 1, 0);
 
         if (!v22)
         {
@@ -1051,7 +1051,7 @@ LABEL_36:
   v4 = v30;
   if (v22)
   {
-    [(NSMutableArray *)v31->_flushRequests removeObjectsInArray:v22];
+    [(NSMutableArray *)selfCopy->_flushRequests removeObjectsInArray:v22];
 LABEL_27:
   }
 
@@ -1070,7 +1070,7 @@ LABEL_27:
     if (os_log_type_enabled(HKLogDataCollection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Registering with healthd", buf, 0xCu);
     }
 
@@ -1219,30 +1219,30 @@ void __45__HKDataCollector__queue_requestRegistration__block_invoke_5(uint64_t a
       v5 = self->_finishCompletion;
       self->_finishCompletion = 0;
 
-      v6 = [(HKProxyProvider *)self->_proxyProvider clientQueue];
+      clientQueue = [(HKProxyProvider *)self->_proxyProvider clientQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __40__HKDataCollector__queue_checkForFinish__block_invoke;
       block[3] = &unk_1E7376A98;
       v9 = v4;
       v7 = v4;
-      dispatch_async(v6, block);
+      dispatch_async(clientQueue, block);
     }
   }
 }
 
-- (void)_queue_sendBatch:(id)a3
+- (void)_queue_sendBatch:(id)batch
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  batchCopy = batch;
   dispatch_assert_queue_V2(self->_queue);
   unconfirmedBatchesByUUID = self->_unconfirmedBatchesByUUID;
-  v6 = [v4 batchUUID];
-  [(NSMutableDictionary *)unconfirmedBatchesByUUID setObject:v4 forKeyedSubscript:v6];
+  batchUUID = [batchCopy batchUUID];
+  [(NSMutableDictionary *)unconfirmedBatchesByUUID setObject:batchCopy forKeyedSubscript:batchUUID];
 
-  [(NSMutableArray *)self->_pendingBatches removeObject:v4];
-  v7 = [v4 data];
-  self->_totalDatumCount -= [v7 count];
+  [(NSMutableArray *)self->_pendingBatches removeObject:batchCopy];
+  data = [batchCopy data];
+  self->_totalDatumCount -= [data count];
 
   self->_shouldFlushAll = 1;
   _HKInitializeLogging();
@@ -1250,28 +1250,28 @@ void __45__HKDataCollector__queue_requestRegistration__block_invoke_5(uint64_t a
   if (os_log_type_enabled(HKLogDataCollection, OS_LOG_TYPE_DEFAULT))
   {
     log = v8;
-    v23 = [v4 batchUUID];
-    v19 = HKDiagnosticStringFromUUID(v23);
-    v22 = [v4 data];
-    v18 = [v22 count];
-    v21 = [v4 data];
-    v9 = [v21 firstObject];
-    v10 = [v9 dateInterval];
-    v11 = [v10 startDate];
-    v12 = [v4 data];
-    v13 = [v12 lastObject];
-    v14 = [v13 dateInterval];
-    v15 = [v14 endDate];
+    batchUUID2 = [batchCopy batchUUID];
+    v19 = HKDiagnosticStringFromUUID(batchUUID2);
+    data2 = [batchCopy data];
+    v18 = [data2 count];
+    data3 = [batchCopy data];
+    firstObject = [data3 firstObject];
+    dateInterval = [firstObject dateInterval];
+    startDate = [dateInterval startDate];
+    data4 = [batchCopy data];
+    lastObject = [data4 lastObject];
+    dateInterval2 = [lastObject dateInterval];
+    endDate = [dateInterval2 endDate];
     *buf = 138544386;
-    v27 = self;
+    selfCopy = self;
     v28 = 2114;
     v29 = v19;
     v30 = 2048;
     v31 = v18;
     v32 = 2114;
-    v33 = v11;
+    v33 = startDate;
     v34 = 2114;
-    v35 = v15;
+    v35 = endDate;
     _os_log_impl(&dword_19197B000, log, OS_LOG_TYPE_DEFAULT, "%{public}@: Batch %{public}@: Sending %ld datums from %{public}@ to %{public}@", buf, 0x34u);
   }
 
@@ -1280,8 +1280,8 @@ void __45__HKDataCollector__queue_requestRegistration__block_invoke_5(uint64_t a
   v24[2] = __36__HKDataCollector__queue_sendBatch___block_invoke;
   v24[3] = &unk_1E7376848;
   v24[4] = self;
-  v25 = v4;
-  v16 = v4;
+  v25 = batchCopy;
+  v16 = batchCopy;
   [(HKDataCollector *)self _queue_taskServer_insertBatch:v16 completion:v24];
 
   v17 = *MEMORY[0x1E69E9840];
@@ -1365,11 +1365,11 @@ void __36__HKDataCollector__queue_sendBatch___block_invoke(uint64_t a1, int a2, 
     }
 
     v6 = [(NSMutableArray *)self->_pendingBatches firstObject:v18];
-    v7 = [v6 data];
-    v8 = [v7 firstObject];
-    v9 = [v8 dateInterval];
-    v10 = [v9 startDate];
-    [v10 timeIntervalSinceReferenceDate];
+    data = [v6 data];
+    firstObject = [data firstObject];
+    dateInterval = [firstObject dateInterval];
+    startDate = [dateInterval startDate];
+    [startDate timeIntervalSinceReferenceDate];
     v12 = v11;
     [(HKDataCollectorCollectionConfiguration *)self->_collectionConfiguration collectionLatency];
     v14 = v12 + v13;
@@ -1400,8 +1400,8 @@ void __52__HKDataCollector__queue_updateReconsiderationTimer__block_invoke(uint6
 
     v4 = [(NSMutableArray *)self->_pendingBatches objectAtIndexedSubscript:v3];
     v5 = self->_totalDatumCount - 5000;
-    v6 = [v4 data];
-    v7 = [v6 count];
+    data = [v4 data];
+    v7 = [data count];
 
     if (v7 <= v5)
     {
@@ -1410,16 +1410,16 @@ void __52__HKDataCollector__queue_updateReconsiderationTimer__block_invoke(uint6
 
     else
     {
-      v8 = [v4 data];
-      v9 = -[HKDataCollector _prunedBatch:maximumLength:](self, "_prunedBatch:maximumLength:", v4, [v8 count] - v5);
+      data2 = [v4 data];
+      v9 = -[HKDataCollector _prunedBatch:maximumLength:](self, "_prunedBatch:maximumLength:", v4, [data2 count] - v5);
 
       if (v9)
       {
         [(NSMutableArray *)self->_pendingBatches replaceObjectAtIndex:v3 withObject:v9];
-        v10 = [v4 data];
-        v11 = [v10 count];
-        v12 = [v9 data];
-        self->_totalDatumCount += [v12 count] - v11;
+        data3 = [v4 data];
+        v11 = [data3 count];
+        data4 = [v9 data];
+        self->_totalDatumCount += [data4 count] - v11;
 
         ++v3;
       }
@@ -1444,8 +1444,8 @@ void __52__HKDataCollector__queue_updateReconsiderationTimer__block_invoke(uint6
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(NSMutableDictionary *)self->_unpersistedBatchesByUUID allValues];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  allValues = [(NSMutableDictionary *)self->_unpersistedBatchesByUUID allValues];
+  v4 = [allValues countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1457,14 +1457,14 @@ void __52__HKDataCollector__queue_updateReconsiderationTimer__block_invoke(uint6
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [(NSMutableArray *)self->_pendingBatches addObject:*(*(&v18 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v5);
@@ -1475,8 +1475,8 @@ void __52__HKDataCollector__queue_updateReconsiderationTimer__block_invoke(uint6
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(NSMutableDictionary *)self->_unconfirmedBatchesByUUID allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_unconfirmedBatchesByUUID allValues];
+  v9 = [allValues2 countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1488,14 +1488,14 @@ void __52__HKDataCollector__queue_updateReconsiderationTimer__block_invoke(uint6
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues2);
         }
 
         [(NSMutableArray *)self->_pendingBatches addObject:*(*(&v14 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v10 = [allValues2 countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v10);
@@ -1523,24 +1523,24 @@ uint64_t __49__HKDataCollector__queue_resetUnpersistedBatches__block_invoke(uint
   return v13;
 }
 
-- (void)_removeBatch:(id)a3
+- (void)_removeBatch:(id)batch
 {
   pendingBatches = self->_pendingBatches;
-  v5 = a3;
-  [(NSMutableArray *)pendingBatches removeObject:v5];
-  v6 = [v5 data];
-  self->_totalDatumCount -= [v6 count];
+  batchCopy = batch;
+  [(NSMutableArray *)pendingBatches removeObject:batchCopy];
+  data = [batchCopy data];
+  self->_totalDatumCount -= [data count];
 
   v7 = [MEMORY[0x1E696ABC0] hk_error:1300 format:{@"Reached datum buffer limit, pruning datums."}];
-  [v5 callCompletionsWithSuccess:0 error:v7];
+  [batchCopy callCompletionsWithSuccess:0 error:v7];
 }
 
-- (id)_prunedBatch:(id)a3 maximumLength:(int64_t)a4
+- (id)_prunedBatch:(id)batch maximumLength:(int64_t)length
 {
-  v6 = a3;
-  v7 = [v6 data];
-  v8 = [v6 data];
-  v9 = [v7 subarrayWithRange:{objc_msgSend(v8, "count") + ~a4, a4 + 1}];
+  batchCopy = batch;
+  data = [batchCopy data];
+  data2 = [batchCopy data];
+  v9 = [data subarrayWithRange:{objc_msgSend(data2, "count") + ~length, length + 1}];
   v10 = [v9 indexOfObjectPassingTest:&__block_literal_global_56];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1549,17 +1549,17 @@ uint64_t __49__HKDataCollector__queue_resetUnpersistedBatches__block_invoke(uint
     v11 = HKLogDataCollection;
     if (os_log_type_enabled(HKLogDataCollection, OS_LOG_TYPE_ERROR))
     {
-      [(HKDataCollector *)self _prunedBatch:v6 maximumLength:v11];
+      [(HKDataCollector *)self _prunedBatch:batchCopy maximumLength:v11];
     }
 
     goto LABEL_5;
   }
 
-  v12 = [v6 data];
-  v13 = [v12 count] - a4 + v10;
+  data3 = [batchCopy data];
+  v13 = [data3 count] - length + v10;
 
-  v14 = [v6 data];
-  v15 = [v14 count];
+  data4 = [batchCopy data];
+  v15 = [data4 count];
 
   if (v13 == v15)
   {
@@ -1572,24 +1572,24 @@ LABEL_5:
   {
     for (i = 0; i != v13; ++i)
     {
-      v18 = [v6 data];
-      v19 = [v18 objectAtIndexedSubscript:i];
-      v20 = [v19 saveCompletion];
+      data5 = [batchCopy data];
+      v19 = [data5 objectAtIndexedSubscript:i];
+      saveCompletion = [v19 saveCompletion];
 
-      if (v20)
+      if (saveCompletion)
       {
         v21 = [MEMORY[0x1E696ABC0] hk_error:1300 format:{@"Reached datum buffer limit, pruning datums."}];
-        v22 = [v6 data];
-        v23 = [v22 objectAtIndexedSubscript:i];
-        v24 = [v23 saveCompletion];
-        (v24)[2](v24, 0, v21);
+        data6 = [batchCopy data];
+        v23 = [data6 objectAtIndexedSubscript:i];
+        saveCompletion2 = [v23 saveCompletion];
+        (saveCompletion2)[2](saveCompletion2, 0, v21);
       }
     }
   }
 
-  v25 = [v6 data];
-  v26 = [v6 data];
-  v27 = [v25 subarrayWithRange:{v13, objc_msgSend(v26, "count") - v13}];
+  data7 = [batchCopy data];
+  data8 = [batchCopy data];
+  v27 = [data7 subarrayWithRange:{v13, objc_msgSend(data8, "count") - v13}];
 
   v28 = [v27 hk_map:&__block_literal_global_60_0];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1600,10 +1600,10 @@ LABEL_5:
   v29 = v28;
   v30 = _Block_copy(aBlock);
   v31 = [_HKDataCollectorPendingBatch alloc];
-  v32 = [v6 batchUUID];
-  v33 = [v6 metadata];
-  v34 = [v6 device];
-  v16 = [(_HKDataCollectorPendingBatch *)v31 initWithIdentifier:v32 data:v27 metadata:v33 device:v34 options:0 completion:v30];
+  batchUUID = [batchCopy batchUUID];
+  metadata = [batchCopy metadata];
+  device = [batchCopy device];
+  v16 = [(_HKDataCollectorPendingBatch *)v31 initWithIdentifier:batchUUID data:v27 metadata:metadata device:device options:0 completion:v30];
 
 LABEL_12:
 
@@ -1664,10 +1664,10 @@ void __46__HKDataCollector__prunedBatch_maximumLength___block_invoke_2(uint64_t 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  stateCopy = state;
+  v5 = [stateCopy copy];
   state = self->_state;
   self->_state = v5;
 
@@ -1677,14 +1677,14 @@ void __46__HKDataCollector__prunedBatch_maximumLength___block_invoke_2(uint64_t 
   v9[2] = __28__HKDataCollector_setState___block_invoke;
   v9[3] = &unk_1E7378400;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = stateCopy;
+  v8 = stateCopy;
   dispatch_async(queue, v9);
 }
 
-- (void)_queue_sendState:(id)a3
+- (void)_queue_sendState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_queue);
   retryableOperation = self->_retryableOperation;
   v7[0] = MEMORY[0x1E69E9820];
@@ -1692,8 +1692,8 @@ void __46__HKDataCollector__prunedBatch_maximumLength___block_invoke_2(uint64_t 
   v7[2] = __36__HKDataCollector__queue_sendState___block_invoke;
   v7[3] = &unk_1E7376988;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v7 completion:&__block_literal_global_62];
 }
 
@@ -1738,17 +1738,17 @@ void __36__HKDataCollector__queue_sendState___block_invoke_2(uint64_t a1, void *
   [v3 remote_setCollectionState:v6 completion:v7];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__HKDataCollector_setDelegate___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1765,10 +1765,10 @@ void *__31__HKDataCollector_setDelegate___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_queue_taskServer_insertBatch:(id)a3 completion:(id)a4
+- (void)_queue_taskServer_insertBatch:(id)batch completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  batchCopy = batch;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_registrationUUID)
   {
@@ -1781,9 +1781,9 @@ void *__31__HKDataCollector_setDelegate___block_invoke(uint64_t a1)
   v11[2] = __60__HKDataCollector__queue_taskServer_insertBatch_completion___block_invoke;
   v11[3] = &unk_1E7376988;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v11 completion:v8];
+  v12 = batchCopy;
+  v10 = batchCopy;
+  [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v11 completion:completionCopy];
 }
 
 void __60__HKDataCollector__queue_taskServer_insertBatch_completion___block_invoke(uint64_t a1, void *a2)
@@ -1826,36 +1826,36 @@ void __60__HKDataCollector__queue_taskServer_insertBatch_completion___block_invo
   [v4 remote_insertDatums:v5 device:v6 metadata:v7 options:v8 batchUUID:v9 registrationUUID:v10 completion:v11];
 }
 
-- (void)clientRemote_synchronizeWithCompletion:(id)a3
+- (void)clientRemote_synchronizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__HKDataCollector_clientRemote_synchronizeWithCompletion___block_invoke;
   block[3] = &unk_1E7376A98;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)clientRemote_beginCollectionWithConfiguration:(id)a3 lastPersistedDatum:(id)a4 registrationUUID:(id)a5
+- (void)clientRemote_beginCollectionWithConfiguration:(id)configuration lastPersistedDatum:(id)datum registrationUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  datumCopy = datum;
+  dCopy = d;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __101__HKDataCollector_clientRemote_beginCollectionWithConfiguration_lastPersistedDatum_registrationUUID___block_invoke;
   v15[3] = &unk_1E737B738;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = configurationCopy;
+  v17 = datumCopy;
+  v18 = dCopy;
+  v12 = dCopy;
+  v13 = datumCopy;
+  v14 = configurationCopy;
   dispatch_sync(queue, v15);
 }
 
@@ -2048,9 +2048,9 @@ uint64_t __101__HKDataCollector_clientRemote_beginCollectionWithConfiguration_la
   return v5;
 }
 
-- (void)clientRemote_collectionConfigurationDidChange:(id)a3
+- (void)clientRemote_collectionConfigurationDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2063,16 +2063,16 @@ uint64_t __101__HKDataCollector_clientRemote_beginCollectionWithConfiguration_la
   block[2] = __65__HKDataCollector_clientRemote_collectionConfigurationDidChange___block_invoke;
   block[3] = &unk_1E737B490;
   block[4] = self;
-  v6 = v4;
+  v6 = changeCopy;
   v9 = v6;
   v10 = &v11;
   dispatch_sync(queue, block);
   if (v12[5])
   {
-    v7 = [(HKDataCollector *)self delegate];
+    delegate = [(HKDataCollector *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 dataCollector:self didUpdateCollectionConfiguration:v12[5]];
+      [delegate dataCollector:self didUpdateCollectionConfiguration:v12[5]];
     }
   }
 
@@ -2113,20 +2113,20 @@ uint64_t __65__HKDataCollector_clientRemote_collectionConfigurationDidChange___b
   return result;
 }
 
-- (void)clientRemote_receivedBatch:(id)a3 error:(id)a4
+- (void)clientRemote_receivedBatch:(id)batch error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__HKDataCollector_clientRemote_receivedBatch_error___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = batchCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = batchCopy;
   dispatch_sync(queue, block);
 }
 
@@ -2230,20 +2230,20 @@ LABEL_8:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientRemote_finishedPersistenceForBatch:(id)a3 error:(id)a4
+- (void)clientRemote_finishedPersistenceForBatch:(id)batch error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__HKDataCollector_clientRemote_finishedPersistenceForBatch_error___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = batchCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = batchCopy;
   dispatch_sync(queue, block);
 }
 
@@ -2304,20 +2304,20 @@ void __66__HKDataCollector_clientRemote_finishedPersistenceForBatch_error___bloc
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientRemote_collectThroughDate:(id)a3 completion:(id)a4
+- (void)clientRemote_collectThroughDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__HKDataCollector_clientRemote_collectThroughDate_completion___block_invoke;
   block[3] = &unk_1E73766C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dateCopy;
   dispatch_sync(queue, block);
 }
 
@@ -2468,9 +2468,9 @@ void __62__HKDataCollector_clientRemote_collectThroughDate_completion___block_in
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_queue_callToDelegateAndEnqueueForClientFlushRequest:(id)a3
+- (id)_queue_callToDelegateAndEnqueueForClientFlushRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_queue);
   unitTest_clientFlushRequestTimeoutOverride = self->_unitTest_clientFlushRequestTimeoutOverride;
   if (unitTest_clientFlushRequestTimeoutOverride >= 0.0)
@@ -2493,10 +2493,10 @@ void __62__HKDataCollector_clientRemote_collectThroughDate_completion___block_in
   aBlock[3] = &unk_1E73812A8;
   aBlock[4] = self;
   v30 = v31;
-  v7 = v4;
+  v7 = requestCopy;
   v29 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [(HKDataCollector *)self delegate];
+  delegate = [(HKDataCollector *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v24[0] = MEMORY[0x1E69E9820];
@@ -2504,7 +2504,7 @@ void __62__HKDataCollector_clientRemote_collectThroughDate_completion___block_in
     v24[2] = __72__HKDataCollector__queue_callToDelegateAndEnqueueForClientFlushRequest___block_invoke_3;
     v24[3] = &unk_1E7376710;
     v10 = v25;
-    v25[0] = v9;
+    v25[0] = delegate;
     v25[1] = self;
     v26 = v7;
     v27 = v8;
@@ -2516,8 +2516,8 @@ LABEL_8:
     v13 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_queue);
     v14 = dispatch_time(0, v6);
     dispatch_source_set_timer(v13, v14, 0xFFFFFFFFFFFFFFFFLL, 0);
-    v15 = [(HKProxyProvider *)self->_proxyProvider clientQueue];
-    dispatch_async(v15, v11);
+    clientQueue = [(HKProxyProvider *)self->_proxyProvider clientQueue];
+    dispatch_async(clientQueue, v11);
 
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
@@ -2539,7 +2539,7 @@ LABEL_8:
     v20[2] = __72__HKDataCollector__queue_callToDelegateAndEnqueueForClientFlushRequest___block_invoke_4;
     v20[3] = &unk_1E73766C8;
     v10 = &v21;
-    v21 = v9;
+    v21 = delegate;
     v22 = v7;
     v23 = v8;
     v11 = _Block_copy(v20);
@@ -2633,8 +2633,8 @@ uint64_t __72__HKDataCollector__queue_callToDelegateAndEnqueueForClientFlushRequ
   v4 = objc_opt_class();
   v5 = [v3 setWithObjects:{v4, objc_opt_class(), 0}];
   [v2 setClasses:v5 forSelector:sel_remote_insertDatums_device_metadata_options_batchUUID_registrationUUID_completion_ argumentIndex:0 ofReply:0];
-  v6 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
-  [v2 setClasses:v6 forSelector:sel_remote_insertDatums_device_metadata_options_batchUUID_registrationUUID_completion_ argumentIndex:2 ofReply:0];
+  hk_secureCodingClasses = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
+  [v2 setClasses:hk_secureCodingClasses forSelector:sel_remote_insertDatums_device_metadata_options_batchUUID_registrationUUID_completion_ argumentIndex:2 ofReply:0];
 
   return v2;
 }
@@ -2647,7 +2647,7 @@ uint64_t __72__HKDataCollector__queue_callToDelegateAndEnqueueForClientFlushRequ
   if (os_log_type_enabled(HKLogDataCollection, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Connection invalidated", &v5, 0xCu);
   }
 
@@ -2687,19 +2687,19 @@ uint64_t __40__HKDataCollector_connectionInterrupted__block_invoke(uint64_t a1)
   return [v4 _queue_updateReconsiderationTimer];
 }
 
-- (BOOL)_validateDatums:(id)a3 error:(id *)a4
+- (BOOL)_validateDatums:(id)datums error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  datumsCopy = datums;
+  v7 = [datumsCopy countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v7)
   {
     v8 = v7;
-    v41 = a4;
+    errorCopy = error;
     v9 = 0;
     v10 = *v43;
     while (2)
@@ -2710,13 +2710,13 @@ uint64_t __40__HKDataCollector_connectionInterrupted__block_invoke(uint64_t a1)
       {
         if (*v43 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(datumsCopy);
         }
 
         v13 = *(*(&v42 + 1) + 8 * v11);
         if (v12 && ![(HKDataCollector *)self _datumsInDateOrder:v12 secondDatum:*(*(&v42 + 1) + 8 * v11)])
         {
-          [MEMORY[0x1E696ABC0] hk_assignError:v41 code:3 format:{@"Datums must be in date order. Incorrect date ranges for datums: (%@), (%@)", v12, v13}];
+          [MEMORY[0x1E696ABC0] hk_assignError:errorCopy code:3 format:{@"Datums must be in date order. Incorrect date ranges for datums: (%@), (%@)", v12, v13}];
           v27 = 0;
           goto LABEL_27;
         }
@@ -2726,25 +2726,25 @@ uint64_t __40__HKDataCollector_connectionInterrupted__block_invoke(uint64_t a1)
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [MEMORY[0x1E696ABC0] hk_assignError:v41 code:3 format:{@"A valid %@ object is required.", objc_opt_class(), v40}];
+          [MEMORY[0x1E696ABC0] hk_assignError:errorCopy code:3 format:{@"A valid %@ object is required.", objc_opt_class(), v40}];
           goto LABEL_25;
         }
 
         quantityType = self->_quantityType;
-        v15 = [v9 quantity];
-        v16 = [v15 _unit];
-        LOBYTE(quantityType) = [(HKQuantityType *)quantityType isCompatibleWithUnit:v16];
+        quantity = [v9 quantity];
+        _unit = [quantity _unit];
+        LOBYTE(quantityType) = [(HKQuantityType *)quantityType isCompatibleWithUnit:_unit];
 
         if ((quantityType & 1) == 0)
         {
-          [MEMORY[0x1E696ABC0] hk_assignError:v41 code:3 format:{@"Quantity (%@) does not have a unit compatible with data stream quantity type %@", v9, self->_quantityType}];
+          [MEMORY[0x1E696ABC0] hk_assignError:errorCopy code:3 format:{@"Quantity (%@) does not have a unit compatible with data stream quantity type %@", v9, self->_quantityType}];
           goto LABEL_25;
         }
 
         if ([(HKSampleType *)self->_quantityType isMaximumDurationRestricted])
         {
-          v17 = [v9 dateInterval];
-          [v17 duration];
+          dateInterval = [v9 dateInterval];
+          [dateInterval duration];
           v19 = v18;
           [(HKSampleType *)self->_quantityType maximumAllowedDuration];
           v21 = v20;
@@ -2752,21 +2752,21 @@ uint64_t __40__HKDataCollector_connectionInterrupted__block_invoke(uint64_t a1)
           if (v19 > v21)
           {
             v28 = MEMORY[0x1E696ABC0];
-            v29 = [v9 dateInterval];
-            v30 = [v29 startDate];
-            v31 = [v9 dateInterval];
-            v32 = [v31 endDate];
+            dateInterval2 = [v9 dateInterval];
+            startDate = [dateInterval2 startDate];
+            dateInterval3 = [v9 dateInterval];
+            endDate = [dateInterval3 endDate];
             v33 = self->_quantityType;
             [(HKSampleType *)v33 maximumAllowedDuration];
-            [v28 hk_assignError:v41 code:3 format:{@"Duration between startDate (%@) and endDate (%@) is above the maximum allowed duration for this sample type. Maximum duration for type %@ is %f", v30, v32, v33, v34}];
+            [v28 hk_assignError:errorCopy code:3 format:{@"Duration between startDate (%@) and endDate (%@) is above the maximum allowed duration for this sample type. Maximum duration for type %@ is %f", startDate, endDate, v33, v34}];
             goto LABEL_24;
           }
         }
 
         if ([(HKSampleType *)self->_quantityType isMinimumDurationRestricted])
         {
-          v22 = [v9 dateInterval];
-          [v22 duration];
+          dateInterval4 = [v9 dateInterval];
+          [dateInterval4 duration];
           v24 = v23;
           [(HKSampleType *)self->_quantityType minimumAllowedDuration];
           v26 = v25;
@@ -2774,13 +2774,13 @@ uint64_t __40__HKDataCollector_connectionInterrupted__block_invoke(uint64_t a1)
           if (v24 < v26)
           {
             v35 = MEMORY[0x1E696ABC0];
-            v29 = [v9 dateInterval];
-            v30 = [v29 startDate];
-            v31 = [v9 dateInterval];
-            v32 = [v31 endDate];
+            dateInterval2 = [v9 dateInterval];
+            startDate = [dateInterval2 startDate];
+            dateInterval3 = [v9 dateInterval];
+            endDate = [dateInterval3 endDate];
             v36 = self->_quantityType;
             [(HKSampleType *)v36 minimumAllowedDuration];
-            [v35 hk_assignError:v41 code:3 format:{@"Duration between startDate (%@) and endDate (%@) is below the minimum allowed duration for this sample type. Minimum duration for type %@ is %f", v30, v32, v36, v37}];
+            [v35 hk_assignError:errorCopy code:3 format:{@"Duration between startDate (%@) and endDate (%@) is below the minimum allowed duration for this sample type. Minimum duration for type %@ is %f", startDate, endDate, v36, v37}];
 LABEL_24:
 
 LABEL_25:
@@ -2794,7 +2794,7 @@ LABEL_25:
       }
 
       while (v8 != v11);
-      v8 = [v6 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v8 = [datumsCopy countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v8)
       {
         continue;
@@ -2818,38 +2818,38 @@ LABEL_27:
   return v27;
 }
 
-- (BOOL)_datumsInDateOrder:(id)a3 secondDatum:(id)a4
+- (BOOL)_datumsInDateOrder:(id)order secondDatum:(id)datum
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 dateInterval];
-  v8 = [v7 startDate];
+  datumCopy = datum;
+  orderCopy = order;
+  dateInterval = [orderCopy dateInterval];
+  startDate = [dateInterval startDate];
 
-  v9 = [v6 dateInterval];
+  dateInterval2 = [orderCopy dateInterval];
 
-  v10 = [v9 endDate];
+  endDate = [dateInterval2 endDate];
 
-  v11 = [v5 dateInterval];
-  v12 = [v11 startDate];
+  dateInterval3 = [datumCopy dateInterval];
+  startDate2 = [dateInterval3 startDate];
 
-  v13 = [v5 dateInterval];
+  dateInterval4 = [datumCopy dateInterval];
 
-  v14 = [v13 endDate];
+  endDate2 = [dateInterval4 endDate];
 
-  if ([v8 hk_isAfterDate:v12] & 1) != 0 || (objc_msgSend(v10, "hk_isAfterDate:", v14))
+  if ([startDate hk_isAfterDate:startDate2] & 1) != 0 || (objc_msgSend(endDate, "hk_isAfterDate:", endDate2))
   {
     LOBYTE(v15) = 0;
   }
 
   else
   {
-    v15 = [v10 hk_isAfterDate:v12] ^ 1;
+    v15 = [endDate hk_isAfterDate:startDate2] ^ 1;
   }
 
   return v15;
 }
 
-- (void)unitTest_setMaxDatumAgeOverride:(double)a3
+- (void)unitTest_setMaxDatumAgeOverride:(double)override
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2857,7 +2857,7 @@ LABEL_27:
   v4[2] = __51__HKDataCollector_unitTest_setMaxDatumAgeOverride___block_invoke;
   v4[3] = &unk_1E7378630;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = override;
   dispatch_sync(queue, v4);
 }
 
@@ -2868,7 +2868,7 @@ double __51__HKDataCollector_unitTest_setMaxDatumAgeOverride___block_invoke(uint
   return result;
 }
 
-- (void)unitTest_setClientFlushRequestTimeoutOverride:(double)a3
+- (void)unitTest_setClientFlushRequestTimeoutOverride:(double)override
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2876,7 +2876,7 @@ double __51__HKDataCollector_unitTest_setMaxDatumAgeOverride___block_invoke(uint
   v4[2] = __65__HKDataCollector_unitTest_setClientFlushRequestTimeoutOverride___block_invoke;
   v4[3] = &unk_1E7378630;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = override;
   dispatch_sync(queue, v4);
 }
 
@@ -2887,17 +2887,17 @@ double __65__HKDataCollector_unitTest_setClientFlushRequestTimeoutOverride___blo
   return result;
 }
 
-- (void)unitTest_setRegistrationCompleteHandler:(id)a3
+- (void)unitTest_setRegistrationCompleteHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__HKDataCollector_unitTest_setRegistrationCompleteHandler___block_invoke;
   v7[3] = &unk_1E73765F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2923,18 +2923,18 @@ uint64_t __59__HKDataCollector_unitTest_setRegistrationCompleteHandler___block_i
   }
 }
 
-- (void)unitTest_setConnectionInterruptedHandler:(id)a3
+- (void)unitTest_setConnectionInterruptedHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   unitTest_connectionInterruptedHandler = self->_unitTest_connectionInterruptedHandler;
   self->_unitTest_connectionInterruptedHandler = v4;
 
   MEMORY[0x1EEE66BB8](v4, unitTest_connectionInterruptedHandler);
 }
 
-- (void)unitTest_preSetStateHandler:(id)a3
+- (void)unitTest_preSetStateHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   unitTest_preSetStateHandler = self->_unitTest_preSetStateHandler;
   self->_unitTest_preSetStateHandler = v4;
 

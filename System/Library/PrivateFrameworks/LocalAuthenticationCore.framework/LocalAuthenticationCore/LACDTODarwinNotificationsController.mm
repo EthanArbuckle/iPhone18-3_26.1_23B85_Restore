@@ -1,29 +1,29 @@
 @interface LACDTODarwinNotificationsController
-- (LACDTODarwinNotificationsController)initWithNotificationCenter:(id)a3;
-- (void)handleEvent:(id)a3 sender:(id)a4;
+- (LACDTODarwinNotificationsController)initWithNotificationCenter:(id)center;
+- (void)handleEvent:(id)event sender:(id)sender;
 @end
 
 @implementation LACDTODarwinNotificationsController
 
-- (LACDTODarwinNotificationsController)initWithNotificationCenter:(id)a3
+- (LACDTODarwinNotificationsController)initWithNotificationCenter:(id)center
 {
-  v5 = a3;
+  centerCopy = center;
   v9.receiver = self;
   v9.super_class = LACDTODarwinNotificationsController;
   v6 = [(LACDTODarwinNotificationsController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationCenter, a3);
+    objc_storeStrong(&v6->_notificationCenter, center);
   }
 
   return v7;
 }
 
-- (void)handleEvent:(id)a3 sender:(id)a4
+- (void)handleEvent:(id)event sender:(id)sender
 {
-  v5 = a3;
-  if (![v5 rawValue] || objc_msgSend(v5, "rawValue") == 2 || objc_msgSend(v5, "rawValue") == 3)
+  eventCopy = event;
+  if (![eventCopy rawValue] || objc_msgSend(eventCopy, "rawValue") == 2 || objc_msgSend(eventCopy, "rawValue") == 3)
   {
     [(LACDarwinNotificationCenter *)self->_notificationCenter postNotification:@"com.apple.LocalAuthentication.ratchet.StateDidChange"];
   }

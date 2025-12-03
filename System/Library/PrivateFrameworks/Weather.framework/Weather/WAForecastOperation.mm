@@ -2,10 +2,10 @@
 - (BOOL)_needsGeolocation;
 - (BOOL)shouldRequestChangeInConditions;
 - (WAForecastModel)forecastModel;
-- (WAForecastOperation)initWithCity:(id)a3 withUnits:(int)a4 requestOptions:(id)a5 canGeocode:(BOOL)a6 onConnection:(id)a7;
-- (WAForecastOperation)initWithLocation:(id)a3 onConnection:(id)a4;
+- (WAForecastOperation)initWithCity:(id)city withUnits:(int)units requestOptions:(id)options canGeocode:(BOOL)geocode onConnection:(id)connection;
+- (WAForecastOperation)initWithLocation:(id)location onConnection:(id)connection;
 - (void)_determineSunriseAndSunset;
-- (void)_failWithError:(id)a3;
+- (void)_failWithError:(id)error;
 - (void)_mapReferralLinks;
 - (void)_needsGeolocation;
 - (void)cancel;
@@ -14,45 +14,45 @@
 
 @implementation WAForecastOperation
 
-- (WAForecastOperation)initWithCity:(id)a3 withUnits:(int)a4 requestOptions:(id)a5 canGeocode:(BOOL)a6 onConnection:(id)a7
+- (WAForecastOperation)initWithCity:(id)city withUnits:(int)units requestOptions:(id)options canGeocode:(BOOL)geocode onConnection:(id)connection
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  if (v13)
+  cityCopy = city;
+  optionsCopy = options;
+  connectionCopy = connection;
+  if (cityCopy)
   {
     v16 = [(WAForecastOperation *)self init];
     if (v16)
     {
-      v17 = [v13 wfLocation];
+      wfLocation = [cityCopy wfLocation];
       location = v16->_location;
-      v16->_location = v17;
+      v16->_location = wfLocation;
 
-      objc_storeStrong(&v16->_city, a3);
-      v16->_units = a4;
-      objc_storeStrong(&v16->_requestOptions, a5);
-      objc_storeStrong(&v16->_connection, a7);
-      v16->_isLocationInGeocodeSample = a6;
+      objc_storeStrong(&v16->_city, city);
+      v16->_units = units;
+      objc_storeStrong(&v16->_requestOptions, options);
+      objc_storeStrong(&v16->_connection, connection);
+      v16->_isLocationInGeocodeSample = geocode;
     }
 
     self = v16;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
     NSLog(&cfstr_NoCityBailing.isa);
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (WAForecastOperation)initWithLocation:(id)a3 onConnection:(id)a4
+- (WAForecastOperation)initWithLocation:(id)location onConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  locationCopy = location;
+  connectionCopy = connection;
+  if (locationCopy)
   {
     v12.receiver = self;
     v12.super_class = WAForecastOperation;
@@ -60,50 +60,50 @@
     v9 = v8;
     if (v8)
     {
-      [(WAForecastOperation *)v8 setLocation:v6];
-      objc_storeStrong(&v9->_connection, a4);
+      [(WAForecastOperation *)v8 setLocation:locationCopy];
+      objc_storeStrong(&v9->_connection, connection);
       v9->_isLocationInGeocodeSample = 1;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     NSLog(&cfstr_NoLocationBail.isa);
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (BOOL)_needsGeolocation
 {
-  v3 = [(WAForecastOperation *)self city];
+  city = [(WAForecastOperation *)self city];
   v4 = +[WeatherInternalPreferences sharedInternalPreferences];
   v5 = [v4 BOOLForKey:@"EnableTimeZoneNeverFresh"];
 
-  v6 = [v3 timeZoneIsFresh];
-  if (v3 && ((v6 ^ 1 | v5) & 1) != 0 && [(WAForecastOperation *)self isLocationInGeocodeSample])
+  timeZoneIsFresh = [city timeZoneIsFresh];
+  if (city && ((timeZoneIsFresh ^ 1 | v5) & 1) != 0 && [(WAForecastOperation *)self isLocationInGeocodeSample])
   {
     v7 = WALogForCategory(4);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(WAForecastOperation *)v3 _needsGeolocation];
+      [(WAForecastOperation *)city _needsGeolocation];
     }
   }
 
   else
   {
-    v8 = [(WAForecastOperation *)self location];
-    if (v8)
+    location = [(WAForecastOperation *)self location];
+    if (location)
     {
-      v9 = v8;
-      v10 = [(WAForecastOperation *)self location];
-      v11 = [v10 needsGeocoding];
+      v9 = location;
+      location2 = [(WAForecastOperation *)self location];
+      needsGeocoding = [location2 needsGeocoding];
 
-      if (!v11)
+      if (!needsGeocoding)
       {
         v12 = 0;
         goto LABEL_12;
@@ -126,7 +126,7 @@ LABEL_12:
 - (void)main
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2112;
   *(buf + 14) = a2;
   _os_log_error_impl(&dword_272ACF000, log, OS_LOG_TYPE_ERROR, "Location data missing for location %@ / city %@", buf, 0x16u);
@@ -265,25 +265,25 @@ LABEL_10:
   v6.receiver = self;
   v6.super_class = WAForecastOperation;
   [(WAForecastOperation *)&v6 cancel];
-  v3 = [(WAForecastOperation *)self aggregateRequest];
-  [v3 cancel];
+  aggregateRequest = [(WAForecastOperation *)self aggregateRequest];
+  [aggregateRequest cancel];
 
-  v4 = [(WAForecastOperation *)self city];
-  v5 = WAErrorWithCode(3072, 0, v4, 0);
+  city = [(WAForecastOperation *)self city];
+  v5 = WAErrorWithCode(3072, 0, city, 0);
   [(WAForecastOperation *)self _failWithError:v5];
 }
 
 - (BOOL)shouldRequestChangeInConditions
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v7 = 0;
-  if ([v3 isEqualToString:@"com.apple.weather.widget"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.weather.widget"])
   {
     v4 = [MEMORY[0x277CBEAA8] now];
-    v5 = [MEMORY[0x277CBEA80] currentCalendar];
-    v6 = [v5 component:32 fromDate:v4];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v6 = [currentCalendar component:32 fromDate:v4];
 
     if (v6 > 18)
     {
@@ -294,34 +294,34 @@ LABEL_10:
   return v7;
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(WAForecastOperation *)v4 error];
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  error = [(WAForecastOperation *)selfCopy error];
 
-  if (!v5)
+  if (!error)
   {
-    [(WAForecastOperation *)v4 setError:v6];
+    [(WAForecastOperation *)selfCopy setError:errorCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_determineSunriseAndSunset
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(WAForecastOperation *)self currentWeatherConditions];
+  currentWeatherConditions = [(WAForecastOperation *)self currentWeatherConditions];
   v4 = *MEMORY[0x277D7B310];
-  v5 = [v3 valueForComponent:*MEMORY[0x277D7B310]];
-  v39 = [v5 date];
+  v5 = [currentWeatherConditions valueForComponent:*MEMORY[0x277D7B310]];
+  date = [v5 date];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v37 = self;
+  selfCopy = self;
   obj = [(WAForecastOperation *)self dailyForecastConditions];
   v6 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   v36 = v4;
@@ -344,15 +344,15 @@ LABEL_3:
 
       v14 = *(*(&v40 + 1) + 8 * v13);
       v15 = [v14 valueForComponent:{v11, v36}];
-      v16 = [v15 date];
+      date2 = [v15 date];
 
-      if (!v9 && v16)
+      if (!v9 && date2)
       {
-        v17 = [v16 laterDate:v39];
+        v17 = [date2 laterDate:date];
 
-        if (v17 == v16)
+        if (v17 == date2)
         {
-          v9 = v16;
+          v9 = date2;
         }
 
         else
@@ -362,15 +362,15 @@ LABEL_3:
       }
 
       v18 = [v14 valueForComponent:v12];
-      v19 = [v18 date];
+      date3 = [v18 date];
 
-      if (!v8 && v19)
+      if (!v8 && date3)
       {
-        v20 = [v19 laterDate:v39];
+        v20 = [date3 laterDate:date];
 
-        if (v20 == v19)
+        if (v20 == date3)
         {
-          v8 = v19;
+          v8 = date3;
         }
 
         else
@@ -406,20 +406,20 @@ LABEL_3:
     v9 = 0;
   }
 
-  [(WAForecastOperation *)v37 setSunset:v8];
-  [(WAForecastOperation *)v37 setSunrise:v9];
-  v21 = [(WAForecastOperation *)v37 currentWeatherConditions];
-  v22 = [v21 valueForComponent:v36];
-  v23 = [v22 date];
-  [v23 timeIntervalSince1970];
+  [(WAForecastOperation *)selfCopy setSunset:v8];
+  [(WAForecastOperation *)selfCopy setSunrise:v9];
+  currentWeatherConditions2 = [(WAForecastOperation *)selfCopy currentWeatherConditions];
+  v22 = [currentWeatherConditions2 valueForComponent:v36];
+  date4 = [v22 date];
+  [date4 timeIntervalSince1970];
   v25 = v24;
 
-  v26 = [(WAForecastOperation *)v37 sunset];
-  [v26 timeIntervalSince1970];
+  sunset = [(WAForecastOperation *)selfCopy sunset];
+  [sunset timeIntervalSince1970];
   v28 = v27;
 
-  v29 = [(WAForecastOperation *)v37 sunrise];
-  [v29 timeIntervalSince1970];
+  sunrise = [(WAForecastOperation *)selfCopy sunrise];
+  [sunrise timeIntervalSince1970];
   v31 = v30;
 
   v32 = v25 <= v28;
@@ -444,7 +444,7 @@ LABEL_3:
     v34 = v32;
   }
 
-  [(WAForecastOperation *)v37 setIsDay:v34, v36];
+  [(WAForecastOperation *)selfCopy setIsDay:v34, v36];
 
   v35 = *MEMORY[0x277D85DE8];
 }
@@ -452,14 +452,14 @@ LABEL_3:
 - (void)_mapReferralLinks
 {
   v10 = objc_opt_new();
-  v3 = [(WAForecastOperation *)self currentWeatherConditions];
-  v4 = [v3 valueForComponent:*MEMORY[0x277D7B328]];
+  currentWeatherConditions = [(WAForecastOperation *)self currentWeatherConditions];
+  v4 = [currentWeatherConditions valueForComponent:*MEMORY[0x277D7B328]];
 
-  v5 = [(WAForecastOperation *)self currentWeatherConditions];
-  v6 = [v5 valueForComponent:*MEMORY[0x277D7B338]];
+  currentWeatherConditions2 = [(WAForecastOperation *)self currentWeatherConditions];
+  v6 = [currentWeatherConditions2 valueForComponent:*MEMORY[0x277D7B338]];
 
-  v7 = [(WAForecastOperation *)self currentWeatherConditions];
-  v8 = [v7 valueForComponent:*MEMORY[0x277D7B388]];
+  currentWeatherConditions3 = [(WAForecastOperation *)self currentWeatherConditions];
+  v8 = [currentWeatherConditions3 valueForComponent:*MEMORY[0x277D7B388]];
 
   if (v4)
   {
@@ -483,9 +483,9 @@ LABEL_3:
 
 - (WAForecastModel)forecastModel
 {
-  v3 = [(WAForecastOperation *)self error];
+  error = [(WAForecastOperation *)self error];
 
-  if (v3)
+  if (error)
   {
     v4 = 0;
   }
@@ -493,55 +493,55 @@ LABEL_3:
   else
   {
     v4 = objc_opt_new();
-    v5 = [(WAForecastOperation *)self city];
-    [v4 setCity:v5];
+    city = [(WAForecastOperation *)self city];
+    [v4 setCity:city];
 
-    v6 = [(WAForecastOperation *)self location];
-    [v4 setLocation:v6];
+    location = [(WAForecastOperation *)self location];
+    [v4 setLocation:location];
 
-    v7 = [(WAForecastOperation *)self currentConditions];
-    [v4 setCurrentConditions:v7];
+    currentConditions = [(WAForecastOperation *)self currentConditions];
+    [v4 setCurrentConditions:currentConditions];
 
-    v8 = [(WAForecastOperation *)self hourlyForecasts];
-    [v4 setHourlyForecasts:v8];
+    hourlyForecasts = [(WAForecastOperation *)self hourlyForecasts];
+    [v4 setHourlyForecasts:hourlyForecasts];
 
-    v9 = [(WAForecastOperation *)self dailyForecasts];
-    [v4 setDailyForecasts:v9];
+    dailyForecasts = [(WAForecastOperation *)self dailyForecasts];
+    [v4 setDailyForecasts:dailyForecasts];
 
-    v10 = [(WAForecastOperation *)self airQualityConditions];
-    [v4 setAirQualityConditions:v10];
+    airQualityConditions = [(WAForecastOperation *)self airQualityConditions];
+    [v4 setAirQualityConditions:airQualityConditions];
 
-    v11 = [(WAForecastOperation *)self sunrise];
-    [v4 setSunrise:v11];
+    sunrise = [(WAForecastOperation *)self sunrise];
+    [v4 setSunrise:sunrise];
 
-    v12 = [(WAForecastOperation *)self sunset];
-    [v4 setSunset:v12];
+    sunset = [(WAForecastOperation *)self sunset];
+    [v4 setSunset:sunset];
 
-    v13 = [(WAForecastOperation *)self currentWeatherConditions];
-    v14 = [v13 valueForComponent:*MEMORY[0x277D7B328]];
+    currentWeatherConditions = [(WAForecastOperation *)self currentWeatherConditions];
+    v14 = [currentWeatherConditions valueForComponent:*MEMORY[0x277D7B328]];
     [v4 setDeepLink:v14];
 
-    v15 = [(WAForecastOperation *)self currentWeatherConditions];
-    v16 = [v15 valueForComponent:*MEMORY[0x277D7B338]];
+    currentWeatherConditions2 = [(WAForecastOperation *)self currentWeatherConditions];
+    v16 = [currentWeatherConditions2 valueForComponent:*MEMORY[0x277D7B338]];
     [v4 setLink:v16];
 
-    v17 = [(WAForecastOperation *)self currentWeatherConditions];
-    [v4 setUnderlyingCurrentConditions:v17];
+    currentWeatherConditions3 = [(WAForecastOperation *)self currentWeatherConditions];
+    [v4 setUnderlyingCurrentConditions:currentWeatherConditions3];
 
-    v18 = [(WAForecastOperation *)self hourlyForecastConditions];
-    [v4 setUnderlyingHourlyConditions:v18];
+    hourlyForecastConditions = [(WAForecastOperation *)self hourlyForecastConditions];
+    [v4 setUnderlyingHourlyConditions:hourlyForecastConditions];
 
-    v19 = [(WAForecastOperation *)self dailyForecastConditions];
-    [v4 setUnderlyingDailyConditions:v19];
+    dailyForecastConditions = [(WAForecastOperation *)self dailyForecastConditions];
+    [v4 setUnderlyingDailyConditions:dailyForecastConditions];
 
-    v20 = [(WAForecastOperation *)self changeForecasts];
-    [v4 setChangeForecasts:v20];
+    changeForecasts = [(WAForecastOperation *)self changeForecasts];
+    [v4 setChangeForecasts:changeForecasts];
 
-    v21 = [(WAForecastOperation *)self severeWeatherEvents];
-    [v4 setSevereWeatherEvents:v21];
+    severeWeatherEvents = [(WAForecastOperation *)self severeWeatherEvents];
+    [v4 setSevereWeatherEvents:severeWeatherEvents];
 
-    v22 = [(WAForecastOperation *)self nextHourPrecipitation];
-    [v4 setNextHourPrecipitation:v22];
+    nextHourPrecipitation = [(WAForecastOperation *)self nextHourPrecipitation];
+    [v4 setNextHourPrecipitation:nextHourPrecipitation];
   }
 
   return v4;
@@ -551,7 +551,7 @@ LABEL_3:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_272ACF000, a2, OS_LOG_TYPE_ERROR, "Executing Geocode for reason: Timezone lacks freshness. (%@)", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

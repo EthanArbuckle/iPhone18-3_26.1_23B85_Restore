@@ -1,27 +1,27 @@
 @interface SBSystemApertureWindowSceneDelegate
-- (id)_associatedWindowSceneForScene:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (id)_associatedWindowSceneForScene:(id)scene;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation SBSystemApertureWindowSceneDelegate
 
-- (id)_associatedWindowSceneForScene:(id)a3
+- (id)_associatedWindowSceneForScene:(id)scene
 {
-  v3 = [a3 _FBSScene];
-  v4 = [SBApp windowSceneManager];
-  v5 = [v3 settings];
-  v6 = [v5 displayIdentity];
-  v7 = [v4 windowSceneForDisplayIdentity:v6];
+  _FBSScene = [scene _FBSScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  settings = [_FBSScene settings];
+  displayIdentity = [settings displayIdentity];
+  v7 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   return v7;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v22 = a3;
-  v8 = [a4 role];
-  v9 = [v8 isEqualToString:@"SBUIWindowSceneSessionRoleSystemAperture"];
-  v10 = [v8 isEqualToString:@"SBUIWindowSceneSessionRoleSystemApertureCurtain"];
+  sceneCopy = scene;
+  role = [session role];
+  v9 = [role isEqualToString:@"SBUIWindowSceneSessionRoleSystemAperture"];
+  v10 = [role isEqualToString:@"SBUIWindowSceneSessionRoleSystemApertureCurtain"];
   v11 = v10;
   if (v9 & 1) != 0 || (v10)
   {
@@ -29,7 +29,7 @@
     {
 LABEL_4:
       v12 = objc_opt_class();
-      v13 = v22;
+      v13 = sceneCopy;
       if (v12)
       {
         if (objc_opt_isKindOfClass())
@@ -63,10 +63,10 @@ LABEL_4:
       objc_storeStrong(&self->_systemApertureWindowScene, v14);
       v16 = [(SBSystemApertureWindowSceneDelegate *)self _associatedWindowSceneForScene:v15];
       [v15 setAssociatedWindowScene:v16];
-      v17 = [v16 systemApertureController];
-      [v17 createHighLevelSystemApertureWindowWithWindowScene:v15];
-      v18 = [SBApp embeddedScenesConnectionManager];
-      [v18 noteSystemApertureSceneConnected:v15];
+      systemApertureController = [v16 systemApertureController];
+      [systemApertureController createHighLevelSystemApertureWindowWithWindowScene:v15];
+      embeddedScenesConnectionManager = [SBApp embeddedScenesConnectionManager];
+      [embeddedScenesConnectionManager noteSystemApertureSceneConnected:v15];
       goto LABEL_24;
     }
   }
@@ -86,7 +86,7 @@ LABEL_4:
   }
 
   v19 = objc_opt_class();
-  v20 = v22;
+  v20 = sceneCopy;
   if (v19)
   {
     if (objc_opt_isKindOfClass())
@@ -117,10 +117,10 @@ LABEL_4:
     objc_storeStrong(&self->_superHighLevelCurtainWindowScene, v21);
     v16 = [(SBSystemApertureWindowSceneDelegate *)self _associatedWindowSceneForScene:v15];
     [v15 setAssociatedWindowScene:v16];
-    v17 = [v16 systemApertureController];
-    [v17 createSuperHighLevelCurtainWithWindowScene:v15];
-    v18 = [SBApp embeddedScenesConnectionManager];
-    [v18 noteSystemApertureCurtainSceneConnected:v15];
+    systemApertureController = [v16 systemApertureController];
+    [systemApertureController createSuperHighLevelCurtainWithWindowScene:v15];
+    embeddedScenesConnectionManager = [SBApp embeddedScenesConnectionManager];
+    [embeddedScenesConnectionManager noteSystemApertureCurtainSceneConnected:v15];
 LABEL_24:
   }
 

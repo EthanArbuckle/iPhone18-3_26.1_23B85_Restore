@@ -2,39 +2,39 @@
 - (BOOL)shouldShow;
 - (NSArray)mediaTypes;
 - (NSMutableArray)mediaTypeNames;
-- (UIPrintMediaTypeOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintMediaTypeOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (id)createPrintOptionTableViewCell;
 - (id)summaryString;
 - (void)currentPrinterChanged;
 - (void)dealloc;
-- (void)mediaTypeSelected:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)mediaTypeSelected:(id)selected;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateFromPrintInfo;
 @end
 
 @implementation UIPrintMediaTypeOption
 
-- (UIPrintMediaTypeOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintMediaTypeOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a4;
-  v8 = a3;
+  controllerCopy = controller;
+  infoCopy = info;
   v9 = [v6 bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"Media Type" value:@"Media Type" table:@"Localizable"];
   [(UIPrintOption *)self setTitle:v10];
 
   v15.receiver = self;
   v15.super_class = UIPrintMediaTypeOption;
-  v11 = [(UIPrintOption *)&v15 initWithPrintInfo:v8 printPanelViewController:v7];
+  v11 = [(UIPrintOption *)&v15 initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
 
   if (v11)
   {
     [(UIPrintMediaTypeOption *)v11 updateFromPrintInfo];
-    v12 = [(UIPrintOption *)v11 printInfo];
-    [v12 addObserver:v11 forKeyPath:0x2871AF230 options:0 context:0];
+    printInfo = [(UIPrintOption *)v11 printInfo];
+    [printInfo addObserver:v11 forKeyPath:0x2871AF230 options:0 context:0];
 
-    v13 = [(UIPrintOption *)v11 printInfo];
-    [v13 addObserver:v11 forKeyPath:0x2871AF150 options:0 context:0];
+    printInfo2 = [(UIPrintOption *)v11 printInfo];
+    [printInfo2 addObserver:v11 forKeyPath:0x2871AF150 options:0 context:0];
   }
 
   return v11;
@@ -42,11 +42,11 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF230];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF230];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 removeObserver:self forKeyPath:0x2871AF150];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  [printInfo2 removeObserver:self forKeyPath:0x2871AF150];
 
   v5.receiver = self;
   v5.super_class = UIPrintMediaTypeOption;
@@ -55,11 +55,11 @@
 
 - (BOOL)shouldShow
 {
-  v3 = [(UIPrintMediaTypeOption *)self mediaTypes];
-  if (v3)
+  mediaTypes = [(UIPrintMediaTypeOption *)self mediaTypes];
+  if (mediaTypes)
   {
-    v4 = [(UIPrintMediaTypeOption *)self mediaTypes];
-    v5 = [v4 count] != 0;
+    mediaTypes2 = [(UIPrintMediaTypeOption *)self mediaTypes];
+    v5 = [mediaTypes2 count] != 0;
   }
 
   else
@@ -70,16 +70,16 @@
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v9[3] = &unk_279A9BF78;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
+  v10 = pathCopy;
+  selfCopy = self;
+  v8 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -105,13 +105,13 @@ uint64_t __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_con
   v42 = *MEMORY[0x277D85DE8];
   if ([(UIPrintMediaTypeOption *)self shouldShow])
   {
-    v3 = [(UIPrintMediaTypeOption *)self summaryString];
-    [(UIPrintOption *)self setSummary:v3];
+    summaryString = [(UIPrintMediaTypeOption *)self summaryString];
+    [(UIPrintOption *)self setSummary:summaryString];
 
-    v4 = [(UIPrintOption *)self printInfo];
-    v5 = [v4 mediaType];
+    printInfo = [(UIPrintOption *)self printInfo];
+    mediaType = [printInfo mediaType];
 
-    if (v5)
+    if (mediaType)
     {
       v37 = 0u;
       v38 = 0u;
@@ -135,9 +135,9 @@ uint64_t __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_con
 
             v11 = *(*(&v35 + 1) + 8 * i);
             v12 = [v11 objectForKey:v9];
-            v13 = [(UIPrintOption *)self printInfo];
-            v14 = [v13 mediaType];
-            v15 = [v12 isEqualToString:v14];
+            printInfo2 = [(UIPrintOption *)self printInfo];
+            mediaType2 = [printInfo2 mediaType];
+            v15 = [v12 isEqualToString:mediaType2];
 
             if (v15)
             {
@@ -157,22 +157,22 @@ uint64_t __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_con
       [(UIPrintMediaTypeOption *)self setSelectedMediaType:0];
     }
 
-    v16 = [(UIPrintMediaTypeOption *)self selectedMediaType];
+    selectedMediaType = [(UIPrintMediaTypeOption *)self selectedMediaType];
 
-    if (v16)
+    if (selectedMediaType)
     {
-      v17 = [(UIPrintMediaTypeOption *)self mediaTypeActions];
-      v18 = [(UIPrintMediaTypeOption *)self mediaTypes];
-      v19 = [(UIPrintMediaTypeOption *)self selectedMediaType];
-      v16 = [v17 objectAtIndex:{objc_msgSend(v18, "indexOfObject:", v19)}];
+      mediaTypeActions = [(UIPrintMediaTypeOption *)self mediaTypeActions];
+      mediaTypes = [(UIPrintMediaTypeOption *)self mediaTypes];
+      selectedMediaType2 = [(UIPrintMediaTypeOption *)self selectedMediaType];
+      selectedMediaType = [mediaTypeActions objectAtIndex:{objc_msgSend(mediaTypes, "indexOfObject:", selectedMediaType2)}];
     }
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v20 = [(UIPrintMediaTypeOption *)self mediaTypeActions];
-    v21 = [v20 countByEnumeratingWithState:&v31 objects:v40 count:16];
+    mediaTypeActions2 = [(UIPrintMediaTypeOption *)self mediaTypeActions];
+    v21 = [mediaTypeActions2 countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v21)
     {
       v22 = v21;
@@ -183,30 +183,30 @@ uint64_t __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_con
         {
           if (*v32 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(mediaTypeActions2);
           }
 
-          [*(*(&v31 + 1) + 8 * j) setState:v16 == *(*(&v31 + 1) + 8 * j)];
+          [*(*(&v31 + 1) + 8 * j) setState:selectedMediaType == *(*(&v31 + 1) + 8 * j)];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v31 objects:v40 count:16];
+        v22 = [mediaTypeActions2 countByEnumeratingWithState:&v31 objects:v40 count:16];
       }
 
       while (v22);
     }
 
-    v25 = [(UIPrintOption *)self tableViewCell];
-    if (v25)
+    tableViewCell = [(UIPrintOption *)self tableViewCell];
+    if (tableViewCell)
     {
-      v26 = [(UIPrintMediaTypeOption *)self mediaTypeActions];
-      v27 = [v26 count];
+      mediaTypeActions3 = [(UIPrintMediaTypeOption *)self mediaTypeActions];
+      v27 = [mediaTypeActions3 count];
 
       if (v27)
       {
-        v28 = [(UIPrintMediaTypeOption *)self mediaTypeActions];
-        v39 = v28;
+        mediaTypeActions4 = [(UIPrintMediaTypeOption *)self mediaTypeActions];
+        v39 = mediaTypeActions4;
         v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
-        [v25 setPopupActions:v29];
+        [tableViewCell setPopupActions:v29];
       }
     }
   }
@@ -216,17 +216,17 @@ uint64_t __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_con
 {
   if (!self->_mediaTypes)
   {
-    v3 = [(UIPrintOption *)self printInfo];
-    v4 = [v3 currentPrinter];
-    v5 = [v4 printerInfoDict];
+    printInfo = [(UIPrintOption *)self printInfo];
+    currentPrinter = [printInfo currentPrinter];
+    printerInfoDict = [currentPrinter printerInfoDict];
 
-    if (v5)
+    if (printerInfoDict)
     {
       v6 = MEMORY[0x277CBEB18];
-      v7 = [(UIPrintOption *)self printInfo];
-      v8 = [v7 currentPrinter];
-      v9 = [v8 supportedMediaTypes];
-      v10 = [v6 arrayWithArray:v9];
+      printInfo2 = [(UIPrintOption *)self printInfo];
+      currentPrinter2 = [printInfo2 currentPrinter];
+      supportedMediaTypes = [currentPrinter2 supportedMediaTypes];
+      v10 = [v6 arrayWithArray:supportedMediaTypes];
 
       [v10 sortUsingFunction:compareMediaTypes context:0];
       if ([v10 count])
@@ -260,29 +260,29 @@ uint64_t __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_con
 
 - (NSMutableArray)mediaTypeNames
 {
-  v2 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x277D85DE8];
   if (!self->_mediaTypeNames)
   {
-    v5 = [(UIPrintMediaTypeOption *)self mediaTypes];
-    if (v5)
+    mediaTypes = [(UIPrintMediaTypeOption *)self mediaTypes];
+    if (mediaTypes)
     {
-      v6 = v5;
-      v7 = [(UIPrintMediaTypeOption *)v2 mediaTypes];
-      v8 = [v7 count];
+      v6 = mediaTypes;
+      mediaTypes2 = [(UIPrintMediaTypeOption *)selfCopy mediaTypes];
+      v8 = [mediaTypes2 count];
 
       if (v8)
       {
         v9 = MEMORY[0x277CBEB18];
-        v10 = [(UIPrintMediaTypeOption *)v2 mediaTypes];
-        v26 = [v9 arrayWithCapacity:{objc_msgSend(v10, "count")}];
+        mediaTypes3 = [(UIPrintMediaTypeOption *)selfCopy mediaTypes];
+        v26 = [v9 arrayWithCapacity:{objc_msgSend(mediaTypes3, "count")}];
 
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v24 = v2;
-        obj = [(UIPrintMediaTypeOption *)v2 mediaTypes];
+        v24 = selfCopy;
+        obj = [(UIPrintMediaTypeOption *)selfCopy mediaTypes];
         v11 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v11)
         {
@@ -323,60 +323,60 @@ uint64_t __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_con
           while (v12);
         }
 
-        v2 = v24;
+        selfCopy = v24;
         mediaTypeNames = v24->_mediaTypeNames;
         v24->_mediaTypeNames = v26;
       }
     }
   }
 
-  v3 = v2->_mediaTypeNames;
+  v3 = selfCopy->_mediaTypeNames;
 
   return v3;
 }
 
-- (void)mediaTypeSelected:(id)a3
+- (void)mediaTypeSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(UIPrintMediaTypeOption *)self mediaTypeActions];
-  v6 = [v5 indexOfObject:v4];
+  selectedCopy = selected;
+  mediaTypeActions = [(UIPrintMediaTypeOption *)self mediaTypeActions];
+  v6 = [mediaTypeActions indexOfObject:selectedCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(UIPrintMediaTypeOption *)self mediaTypes];
-    v8 = [v7 objectAtIndex:v6];
+    mediaTypes = [(UIPrintMediaTypeOption *)self mediaTypes];
+    v8 = [mediaTypes objectAtIndex:v6];
     [(UIPrintMediaTypeOption *)self setSelectedMediaType:v8];
 
-    v11 = [(UIPrintMediaTypeOption *)self selectedMediaType];
-    v9 = [v11 objectForKey:*MEMORY[0x277D41188]];
-    v10 = [(UIPrintOption *)self printInfo];
-    [v10 setMediaType:v9];
+    selectedMediaType = [(UIPrintMediaTypeOption *)self selectedMediaType];
+    v9 = [selectedMediaType objectForKey:*MEMORY[0x277D41188]];
+    printInfo = [(UIPrintOption *)self printInfo];
+    [printInfo setMediaType:v9];
   }
 }
 
 - (id)createPrintOptionTableViewCell
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v17 = [v4 dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v17 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
 
-  v5 = [(UIPrintOption *)self title];
-  v6 = [v17 textLabel];
-  [v6 setText:v5];
+  title = [(UIPrintOption *)self title];
+  textLabel = [v17 textLabel];
+  [textLabel setText:title];
 
   [v17 setSelectionStyle:0];
   [(UIPrintOption *)self setTableViewCell:v17];
-  v7 = [MEMORY[0x277CBEB18] array];
-  [(UIPrintMediaTypeOption *)self setMediaTypeActions:v7];
+  array = [MEMORY[0x277CBEB18] array];
+  [(UIPrintMediaTypeOption *)self setMediaTypeActions:array];
 
   objc_initWeak(&location, self);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(UIPrintMediaTypeOption *)self mediaTypeNames];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  mediaTypeNames = [(UIPrintMediaTypeOption *)self mediaTypeNames];
+  v9 = [mediaTypeNames countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v9)
   {
     v10 = *v21;
@@ -386,7 +386,7 @@ uint64_t __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_con
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(mediaTypeNames);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -397,13 +397,13 @@ uint64_t __73__UIPrintMediaTypeOption_observeValueForKeyPath_ofObject_change_con
         v18[3] = &unk_279A9C688;
         objc_copyWeak(&v19, &location);
         v14 = [v13 actionWithTitle:v12 image:0 identifier:0 handler:v18];
-        v15 = [(UIPrintMediaTypeOption *)self mediaTypeActions];
-        [v15 addObject:v14];
+        mediaTypeActions = [(UIPrintMediaTypeOption *)self mediaTypeActions];
+        [mediaTypeActions addObject:v14];
 
         objc_destroyWeak(&v19);
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v9 = [mediaTypeNames countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v9);
@@ -424,18 +424,18 @@ void __56__UIPrintMediaTypeOption_createPrintOptionTableViewCell__block_invoke(u
 
 - (id)summaryString
 {
-  v3 = [(UIPrintMediaTypeOption *)self selectedMediaType];
+  selectedMediaType = [(UIPrintMediaTypeOption *)self selectedMediaType];
 
-  if (v3 && (-[UIPrintMediaTypeOption mediaTypes](self, "mediaTypes"), v4 = objc_claimAutoreleasedReturnValue(), -[UIPrintMediaTypeOption selectedMediaType](self, "selectedMediaType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 indexOfObject:v5], v5, v4, v6))
+  if (selectedMediaType && (-[UIPrintMediaTypeOption mediaTypes](self, "mediaTypes"), v4 = objc_claimAutoreleasedReturnValue(), -[UIPrintMediaTypeOption selectedMediaType](self, "selectedMediaType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 indexOfObject:v5], v5, v4, v6))
   {
-    v7 = [(UIPrintMediaTypeOption *)self mediaTypeNames];
-    v8 = [v7 objectAtIndex:v6];
+    mediaTypeNames = [(UIPrintMediaTypeOption *)self mediaTypeNames];
+    v8 = [mediaTypeNames objectAtIndex:v6];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v8 = [v7 localizedStringForKey:@"Auto Select Media Type" value:@"Auto Select Media Type" table:@"Localizable"];
+    mediaTypeNames = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v8 = [mediaTypeNames localizedStringForKey:@"Auto Select Media Type" value:@"Auto Select Media Type" table:@"Localizable"];
   }
 
   v9 = v8;

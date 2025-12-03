@@ -1,14 +1,14 @@
 @interface _DASUtils
-+ (id)commaDelimitedEntriesFrom:(id)a3;
-+ (id)processNameFromPID:(int)a3;
++ (id)commaDelimitedEntriesFrom:(id)from;
++ (id)processNameFromPID:(int)d;
 @end
 
 @implementation _DASUtils
 
-+ (id)processNameFromPID:(int)a3
++ (id)processNameFromPID:(int)d
 {
   memset(v6, 0, sizeof(v6));
-  if (!proc_name(a3, v6, 0x200u))
+  if (!proc_name(d, v6, 0x200u))
   {
     v3 = [_DASDaemonLogger logForCategory:@"dasUtils"];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -22,11 +22,11 @@
   return v4;
 }
 
-+ (id)commaDelimitedEntriesFrom:(id)a3
++ (id)commaDelimitedEntriesFrom:(id)from
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  fromCopy = from;
+  v4 = fromCopy;
+  if (fromCopy && [fromCopy count])
   {
     v5 = [v4 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v6 = [v5 componentsJoinedByString:{@", "}];

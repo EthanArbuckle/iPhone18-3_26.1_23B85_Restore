@@ -23,7 +23,7 @@
 
 - (UIImage)image
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DDDE4F8();
   v4 = v3;
 

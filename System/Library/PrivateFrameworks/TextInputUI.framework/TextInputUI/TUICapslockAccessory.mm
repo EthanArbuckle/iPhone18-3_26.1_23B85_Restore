@@ -1,22 +1,22 @@
 @interface TUICapslockAccessory
-- (TUICapslockAccessory)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (TUICapslockAccessory)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUICapslockAccessory
 
-- (TUICapslockAccessory)initWithCoder:(id)a3
+- (TUICapslockAccessory)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = TUICapslockAccessory;
-  return [(TUICursorAccessory *)&v4 initWithCoder:a3];
+  return [(TUICursorAccessory *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = TUICapslockAccessory;
-  [(TUICursorAccessory *)&v3 encodeWithCoder:a3];
+  [(TUICursorAccessory *)&v3 encodeWithCoder:coder];
 }
 
 @end

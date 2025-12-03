@@ -1,17 +1,17 @@
 @interface CHAchievementsCollectionViewCell
 - (CGRect)badgeRect;
-- (CHAchievementsCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CHAchievementsCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)applyViewConstraints;
 - (void)prepareForReuse;
 @end
 
 @implementation CHAchievementsCollectionViewCell
 
-- (CHAchievementsCollectionViewCell)initWithFrame:(CGRect)a3
+- (CHAchievementsCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CHAchievementsCollectionViewCell;
-  v3 = [(CHAchievementsCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHAchievementsCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[CHAchievementsCellContentView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -19,8 +19,8 @@
     v3->_cellContentView = v4;
 
     [(CHAchievementsCellContentView *)v3->_cellContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(CHAchievementsCollectionViewCell *)v3 contentView];
-    [v6 addSubview:v3->_cellContentView];
+    contentView = [(CHAchievementsCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_cellContentView];
 
     [(CHAchievementsCollectionViewCell *)v3 applyViewConstraints];
   }
@@ -30,28 +30,28 @@
 
 - (void)applyViewConstraints
 {
-  v3 = [(CHAchievementsCellContentView *)self->_cellContentView leadingAnchor];
-  v4 = [(CHAchievementsCollectionViewCell *)self contentView];
-  v5 = [v4 leadingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  leadingAnchor = [(CHAchievementsCellContentView *)self->_cellContentView leadingAnchor];
+  contentView = [(CHAchievementsCollectionViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v6 setActive:1];
 
-  v7 = [(CHAchievementsCellContentView *)self->_cellContentView topAnchor];
-  v8 = [(CHAchievementsCollectionViewCell *)self contentView];
-  v9 = [v8 topAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  topAnchor = [(CHAchievementsCellContentView *)self->_cellContentView topAnchor];
+  contentView2 = [(CHAchievementsCollectionViewCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v10 setActive:1];
 
-  v11 = [(CHAchievementsCellContentView *)self->_cellContentView trailingAnchor];
-  v12 = [(CHAchievementsCollectionViewCell *)self contentView];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  trailingAnchor = [(CHAchievementsCellContentView *)self->_cellContentView trailingAnchor];
+  contentView3 = [(CHAchievementsCollectionViewCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v14 setActive:1];
 
-  v18 = [(CHAchievementsCellContentView *)self->_cellContentView bottomAnchor];
-  v15 = [(CHAchievementsCollectionViewCell *)self contentView];
-  v16 = [v15 bottomAnchor];
-  v17 = [v18 constraintEqualToAnchor:v16];
+  bottomAnchor = [(CHAchievementsCellContentView *)self->_cellContentView bottomAnchor];
+  contentView4 = [(CHAchievementsCollectionViewCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v17 setActive:1];
 }
 

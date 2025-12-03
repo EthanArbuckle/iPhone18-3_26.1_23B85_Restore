@@ -1,57 +1,57 @@
 @interface SRSSPhoneticChecker
-- (BOOL)_loadConfusionMatrixFromJsonFile:(id)a3;
-- (BOOL)_loadConfusionMatrixWithModelPath:(id)a3 localization:(id)a4;
-- (PhoneticLexiconEntry)copyLexiconEntriesForString:(id)a3;
-- (SRSSPhoneticChecker)initWithLocaleIdentifier:(id)a3 modelPath:(id)a4 syncronously:(BOOL)a5;
-- (id)_partitionEntriesWithCount:(unint64_t)a3 partitionCount:(unint64_t)a4;
-- (id)guessesForString:(id)a3 maxResults:(unint64_t)a4;
-- (id)guessesForString:(id)a3 maxResults:(unint64_t)a4 phoneticWeight:(double)a5 priorWeight:(double)a6;
-- (id)guessesForString:(id)a3 maxResults:(unint64_t)a4 phoneticWeight:(double)a5 priorWeight:(double)a6 maxThreads:(unint64_t)a7;
-- (id)phoneDescription:(PhoneSequence *)a3;
-- (unsigned)_phoneForString:(id)a3;
+- (BOOL)_loadConfusionMatrixFromJsonFile:(id)file;
+- (BOOL)_loadConfusionMatrixWithModelPath:(id)path localization:(id)localization;
+- (PhoneticLexiconEntry)copyLexiconEntriesForString:(id)string;
+- (SRSSPhoneticChecker)initWithLocaleIdentifier:(id)identifier modelPath:(id)path syncronously:(BOOL)syncronously;
+- (id)_partitionEntriesWithCount:(unint64_t)count partitionCount:(unint64_t)partitionCount;
+- (id)guessesForString:(id)string maxResults:(unint64_t)results;
+- (id)guessesForString:(id)string maxResults:(unint64_t)results phoneticWeight:(double)weight priorWeight:(double)priorWeight;
+- (id)guessesForString:(id)string maxResults:(unint64_t)results phoneticWeight:(double)weight priorWeight:(double)priorWeight maxThreads:(unint64_t)threads;
+- (id)phoneDescription:(PhoneSequence *)description;
+- (unsigned)_phoneForString:(id)string;
 - (void)_freeLexicon;
-- (void)_freeLexiconEntry:(PhoneticLexiconEntry *)a3;
-- (void)_loadLexiconWithModelPath:(id)a3 localization:(id)a4;
+- (void)_freeLexiconEntry:(PhoneticLexiconEntry *)entry;
+- (void)_loadLexiconWithModelPath:(id)path localization:(id)localization;
 - (void)_waitOnLexiconLoad;
 - (void)dealloc;
 @end
 
 @implementation SRSSPhoneticChecker
 
-- (SRSSPhoneticChecker)initWithLocaleIdentifier:(id)a3 modelPath:(id)a4 syncronously:(BOOL)a5
+- (SRSSPhoneticChecker)initWithLocaleIdentifier:(id)identifier modelPath:(id)path syncronously:(BOOL)syncronously
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  syncronouslyCopy = syncronously;
+  identifierCopy = identifier;
+  pathCopy = path;
   v27.receiver = self;
   v27.super_class = SRSSPhoneticChecker;
   v11 = [(SRSSPhoneticChecker *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_localeIdentifier, a3);
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v11->_localeIdentifier, identifier);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     phoneIds = v12->_phoneIds;
-    v12->_phoneIds = v13;
+    v12->_phoneIds = dictionary;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     lexiconWords = v12->_lexiconWords;
-    v12->_lexiconWords = v15;
+    v12->_lexiconWords = array;
 
-    v17 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     lexiconEntries = v12->_lexiconEntries;
-    v12->_lexiconEntries = v17;
+    v12->_lexiconEntries = array2;
 
-    v19 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     regionsToFree = v12->_regionsToFree;
-    v12->_regionsToFree = v19;
+    v12->_regionsToFree = array3;
 
-    if ([(SRSSPhoneticChecker *)v12 _loadConfusionMatrixWithModelPath:v10 localization:v9])
+    if ([(SRSSPhoneticChecker *)v12 _loadConfusionMatrixWithModelPath:pathCopy localization:identifierCopy])
     {
       v12->_lexiconLoaded = 0;
-      if (v5)
+      if (syncronouslyCopy)
       {
-        [(SRSSPhoneticChecker *)v12 _loadLexiconWithModelPath:v10 localization:v9];
+        [(SRSSPhoneticChecker *)v12 _loadLexiconWithModelPath:pathCopy localization:identifierCopy];
       }
 
       else
@@ -62,8 +62,8 @@
         block[2] = __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously___block_invoke;
         block[3] = &unk_279CF7378;
         v24 = v12;
-        v25 = v10;
-        v26 = v9;
+        v25 = pathCopy;
+        v26 = identifierCopy;
         dispatch_async(v21, block);
       }
     }
@@ -134,42 +134,42 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_freeLexiconEntry:(PhoneticLexiconEntry *)a3
+- (void)_freeLexiconEntry:(PhoneticLexiconEntry *)entry
 {
-  if (a3->var1)
+  if (entry->var1)
   {
     v4 = 0;
     do
     {
-      v5 = a3->var0[v4];
+      v5 = entry->var0[v4];
       free(v5->var1);
       free(v5);
       ++v4;
     }
 
-    while (v4 < a3->var1);
+    while (v4 < entry->var1);
   }
 
-  free(a3->var0);
+  free(entry->var0);
 
-  free(a3);
+  free(entry);
 }
 
-- (id)guessesForString:(id)a3 maxResults:(unint64_t)a4
+- (id)guessesForString:(id)string maxResults:(unint64_t)results
 {
-  v4 = [(SRSSPhoneticChecker *)self guessesForString:a3 maxResults:a4 phoneticWeight:10 priorWeight:1.0 maxThreads:0.5];
+  v4 = [(SRSSPhoneticChecker *)self guessesForString:string maxResults:results phoneticWeight:10 priorWeight:1.0 maxThreads:0.5];
 
   return v4;
 }
 
-- (PhoneticLexiconEntry)copyLexiconEntriesForString:(id)a3
+- (PhoneticLexiconEntry)copyLexiconEntriesForString:(id)string
 {
   v72 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v37 = [v36 componentsSeparatedByCharactersInSet:v4];
+  stringCopy = string;
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v37 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
-  v46 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
@@ -224,7 +224,7 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
                   v10 = *(*(&v60 + 1) + 8 * v9);
                   v11 = malloc_type_malloc(0x10uLL, 0x101004032DCA59EuLL);
                   *(*v49 + 8 * v50) = v11;
-                  v12 = [MEMORY[0x277CBEB18] array];
+                  array2 = [MEMORY[0x277CBEB18] array];
                   v13 = [v10 componentsSeparatedByString:@"."];
                   v58 = 0u;
                   v59 = 0u;
@@ -245,7 +245,7 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
                         }
 
                         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[SRSSPhoneticChecker _phoneForString:](self, "_phoneForString:", *(*(&v56 + 1) + 8 * j))}];
-                        [v12 addObject:v18];
+                        [array2 addObject:v18];
                       }
 
                       v15 = [v14 countByEnumeratingWithState:&v56 objects:v69 count:16];
@@ -254,20 +254,20 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
                     while (v15);
                   }
 
-                  v19 = [v12 count];
+                  v19 = [array2 count];
                   *v11 = v19;
                   v11[1] = malloc_type_malloc(v19, 0x100004077774924uLL);
                   if (v19)
                   {
                     for (k = 0; k != v19; ++k)
                     {
-                      v21 = [v12 objectAtIndexedSubscript:k];
+                      v21 = [array2 objectAtIndexedSubscript:k];
                       *(v11[1] + k) = [v21 intValue];
                     }
                   }
 
                   v22 = [MEMORY[0x277CCAE60] valueWithPointer:v49];
-                  [v46 addObject:v22];
+                  [array addObject:v22];
 
                   ++v50;
                   ++v9;
@@ -290,7 +290,7 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
         else
         {
           v43 = [(NSMutableArray *)self->_lexiconEntries objectAtIndex:v6];
-          [v46 addObject:?];
+          [array addObject:?];
         }
       }
 
@@ -300,12 +300,12 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
     while (v39);
   }
 
-  v51 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v45 = v46;
+  v45 = array;
   v23 = [v45 countByEnumeratingWithState:&v52 objects:v68 count:16];
   if (v23)
   {
@@ -320,8 +320,8 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
           objc_enumerationMutation(v45);
         }
 
-        v26 = [*(*(&v52 + 1) + 8 * m) pointerValue];
-        v27 = *(v26 + 8);
+        pointerValue = [*(*(&v52 + 1) + 8 * m) pointerValue];
+        v27 = *(pointerValue + 8);
         v28 = v48 * v27;
         v29 = 8 / v48;
         if (v48 * v27 >= 9)
@@ -331,7 +331,7 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
 
         else
         {
-          v29 = *(v26 + 8);
+          v29 = *(pointerValue + 8);
         }
 
         if (v48)
@@ -341,7 +341,7 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
 
         else
         {
-          v30 = *(v26 + 8);
+          v30 = *(pointerValue + 8);
         }
 
         if (v48)
@@ -360,7 +360,7 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
         }
 
         v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v30];
-        [v51 addObject:v32];
+        [array3 addObject:v32];
         v48 = v31;
       }
 
@@ -383,15 +383,15 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
   return v33;
 }
 
-- (id)_partitionEntriesWithCount:(unint64_t)a3 partitionCount:(unint64_t)a4
+- (id)_partitionEntriesWithCount:(unint64_t)count partitionCount:(unint64_t)partitionCount
 {
-  v6 = [MEMORY[0x277CBEB18] array];
-  if (a4)
+  array = [MEMORY[0x277CBEB18] array];
+  if (partitionCount)
   {
     v7 = 0;
     v8 = 0;
-    v9 = a3 / a4;
-    v10 = a3 % a4 + a3 / a4;
+    v9 = count / partitionCount;
+    v10 = count % partitionCount + count / partitionCount;
     do
     {
       if (v7)
@@ -405,22 +405,22 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
       }
 
       v12 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v8, v11}];
-      [v6 addObject:v12];
+      [array addObject:v12];
       v8 += v11;
 
       ++v7;
     }
 
-    while (a4 != v7);
+    while (partitionCount != v7);
   }
 
-  return v6;
+  return array;
 }
 
-- (id)phoneDescription:(PhoneSequence *)a3
+- (id)phoneDescription:(PhoneSequence *)description
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3->var0)
+  if (description->var0)
   {
     v5 = 0;
     v6 = &stru_287C18208;
@@ -446,7 +446,7 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
 
             v10 = *(*(&v17 + 1) + 8 * i);
             v11 = [(NSDictionary *)self->_phoneIds objectForKeyedSubscript:v10];
-            if ([v11 intValue] == a3->var1[v5])
+            if ([v11 intValue] == description->var1[v5])
             {
               v12 = [(__CFString *)v6 stringByAppendingString:v10];
 
@@ -465,7 +465,7 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
       ++v5;
     }
 
-    while (v5 < a3->var0);
+    while (v5 < description->var0);
   }
 
   else
@@ -487,30 +487,30 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
   }
 }
 
-- (id)guessesForString:(id)a3 maxResults:(unint64_t)a4 phoneticWeight:(double)a5 priorWeight:(double)a6
+- (id)guessesForString:(id)string maxResults:(unint64_t)results phoneticWeight:(double)weight priorWeight:(double)priorWeight
 {
-  v6 = [(SRSSPhoneticChecker *)self guessesForString:a3 maxResults:a4 phoneticWeight:8 priorWeight:a5 maxThreads:a6];
+  v6 = [(SRSSPhoneticChecker *)self guessesForString:string maxResults:results phoneticWeight:8 priorWeight:weight maxThreads:priorWeight];
 
   return v6;
 }
 
-- (id)guessesForString:(id)a3 maxResults:(unint64_t)a4 phoneticWeight:(double)a5 priorWeight:(double)a6 maxThreads:(unint64_t)a7
+- (id)guessesForString:(id)string maxResults:(unint64_t)results phoneticWeight:(double)weight priorWeight:(double)priorWeight maxThreads:(unint64_t)threads
 {
   v45 = *MEMORY[0x277D85DE8];
-  v32 = a3;
+  stringCopy = string;
   [(SRSSPhoneticChecker *)self _waitOnLexiconLoad];
   if ([(NSMutableArray *)self->_lexiconEntries count]>= 0x3E8)
   {
-    v29 = [(SRSSPhoneticChecker *)self copyLexiconEntriesForString:v32];
+    v29 = [(SRSSPhoneticChecker *)self copyLexiconEntriesForString:stringCopy];
     group = dispatch_group_create();
-    v31 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v13 = [(SRSSPhoneticChecker *)self _partitionEntriesWithCount:[(NSMutableArray *)self->_lexiconEntries count] partitionCount:a7];
+    v13 = [(SRSSPhoneticChecker *)self _partitionEntriesWithCount:[(NSMutableArray *)self->_lexiconEntries count] partitionCount:threads];
     v14 = [v13 countByEnumeratingWithState:&v40 objects:v44 count:16];
-    v28 = self;
+    selfCopy = self;
     if (v14)
     {
       v15 = *v41;
@@ -523,26 +523,26 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
             objc_enumerationMutation(v13);
           }
 
-          v17 = a4;
+          resultsCopy = results;
           v18 = *(*(&v40 + 1) + 8 * i);
-          v19 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           v20 = v13;
-          [v31 addObject:v19];
+          [array addObject:array2];
           v21 = dispatch_get_global_queue(0, 0);
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __89__SRSSPhoneticChecker_guessesForString_maxResults_phoneticWeight_priorWeight_maxThreads___block_invoke;
           block[3] = &unk_279CF73E8;
           block[4] = v18;
-          block[5] = v28;
-          v37 = a5;
-          v38 = a6;
+          block[5] = selfCopy;
+          weightCopy = weight;
+          priorWeightCopy = priorWeight;
           v36 = v29;
-          v34 = v19;
-          a4 = v17;
-          v39 = v17;
-          v35 = v32;
-          v22 = v19;
+          v34 = array2;
+          results = resultsCopy;
+          v39 = resultsCopy;
+          v35 = stringCopy;
+          v22 = array2;
           dispatch_group_async(group, v21, block);
 
           v13 = v20;
@@ -555,13 +555,13 @@ void __71__SRSSPhoneticChecker_initWithLocaleIdentifier_modelPath_syncronously__
     }
 
     dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
-    [(SRSSPhoneticChecker *)v28 _freeLexiconEntry:v29];
-    v23 = [v31 valueForKeyPath:@"@unionOfArrays.self"];
+    [(SRSSPhoneticChecker *)selfCopy _freeLexiconEntry:v29];
+    v23 = [array valueForKeyPath:@"@unionOfArrays.self"];
     v12 = [v23 sortedArrayUsingComparator:&__block_literal_global_55];
 
-    if ([v12 count] > a4)
+    if ([v12 count] > results)
     {
-      v24 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, a4}];
+      v24 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, results}];
       v25 = [v12 objectsAtIndexes:v24];
 
       v12 = v25;
@@ -898,38 +898,38 @@ uint64_t __89__SRSSPhoneticChecker_guessesForString_maxResults_phoneticWeight_pr
   return v9;
 }
 
-- (unsigned)_phoneForString:(id)a3
+- (unsigned)_phoneForString:(id)string
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_phoneIds objectForKey:v4];
+  stringCopy = string;
+  v5 = [(NSDictionary *)self->_phoneIds objectForKey:stringCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
     phoneIds = self->_phoneIds;
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSDictionary count](phoneIds, "count")}];
-    [(NSDictionary *)phoneIds setValue:v9 forKey:v4];
+    [(NSDictionary *)phoneIds setValue:v9 forKey:stringCopy];
 
-    v10 = [(NSDictionary *)self->_phoneIds objectForKey:v4];
-    v7 = [v10 intValue];
+    v10 = [(NSDictionary *)self->_phoneIds objectForKey:stringCopy];
+    intValue = [v10 intValue];
     v6 = v10;
   }
 
-  return v7;
+  return intValue;
 }
 
-- (BOOL)_loadConfusionMatrixWithModelPath:(id)a3 localization:(id)a4
+- (BOOL)_loadConfusionMatrixWithModelPath:(id)path localization:(id)localization
 {
   v41[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v30 = a4;
+  pathCopy = path;
+  localizationCopy = localization;
   v6 = MEMORY[0x277CBEBC0];
-  v32 = v5;
-  v41[0] = v5;
+  v32 = pathCopy;
+  v41[0] = pathCopy;
   v41[1] = @"mini.json";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:2];
   v33 = [v6 fileURLWithPathComponents:v7];
@@ -976,15 +976,15 @@ uint64_t __89__SRSSPhoneticChecker_guessesForString_maxResults_phoneticWeight_pr
   if (v35)
   {
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:?];
-    v21 = [v20 objectForKey:v30];
+    v21 = [v20 objectForKey:localizationCopy];
     if (![v21 length])
     {
-      v22 = [v30 componentsSeparatedByString:@"_"];
-      v23 = [v22 firstObject];
+      v22 = [localizationCopy componentsSeparatedByString:@"_"];
+      firstObject = [v22 firstObject];
 
-      if ([v23 length])
+      if ([firstObject length])
       {
-        v24 = [v20 objectForKey:v23];
+        v24 = [v20 objectForKey:firstObject];
 
         v21 = v24;
       }
@@ -999,8 +999,8 @@ uint64_t __89__SRSSPhoneticChecker_guessesForString_maxResults_phoneticWeight_pr
 LABEL_8:
       v34 = v12;
       v13 = v12;
-      v14 = [v34 UTF8String];
-      v15 = strlen(v14);
+      uTF8String = [v34 UTF8String];
+      v15 = strlen(uTF8String);
       if (v15 < 0x7FFFFFFFFFFFFFF8)
       {
         v16 = v15;
@@ -1009,7 +1009,7 @@ LABEL_8:
           v38 = v15;
           if (v15)
           {
-            memmove(&__dst, v14, v15);
+            memmove(&__dst, uTF8String, v15);
           }
 
           *(&__dst + v16) = 0;
@@ -1027,13 +1027,13 @@ LABEL_8:
   return 0;
 }
 
-- (BOOL)_loadConfusionMatrixFromJsonFile:(id)a3
+- (BOOL)_loadConfusionMatrixFromJsonFile:(id)file
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   [(SRSSPhoneticChecker *)self _phoneForString:@"_"];
   v34 = 0;
-  v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4 options:0 error:&v34];
+  v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:fileCopy options:0 error:&v34];
   v6 = v34;
   if (v6)
   {
@@ -1159,10 +1159,10 @@ void __56__SRSSPhoneticChecker__loadConfusionMatrixFromJsonFile___block_invoke(u
   }
 }
 
-- (void)_loadLexiconWithModelPath:(id)a3 localization:(id)a4
+- (void)_loadLexiconWithModelPath:(id)path localization:(id)localization
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  localizationCopy = localization;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
@@ -1211,9 +1211,9 @@ void __56__SRSSPhoneticChecker__loadConfusionMatrixFromJsonFile___block_invoke(u
   v19[1] = v19;
   v19[2] = 0x2020000000;
   v19[3] = 0;
-  v8 = [objc_alloc(MEMORY[0x277CD89C8]) initWithLocalization:v7];
-  v9 = [v6 stringByAppendingPathComponent:@"mini.json"];
-  v10 = [v6 stringByAppendingPathComponent:@"ncs"];
+  v8 = [objc_alloc(MEMORY[0x277CD89C8]) initWithLocalization:localizationCopy];
+  v9 = [pathCopy stringByAppendingPathComponent:@"mini.json"];
+  v10 = [pathCopy stringByAppendingPathComponent:@"ncs"];
   v11 = [v10 stringByAppendingPathComponent:@"en_US_napg.json"];
   v12 = [v10 stringByAppendingPathComponent:@"vocdelta.voc"];
   v13 = [v10 stringByAppendingPathComponent:@"pg.voc"];

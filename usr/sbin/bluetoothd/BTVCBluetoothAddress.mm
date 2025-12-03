@@ -1,45 +1,45 @@
 @interface BTVCBluetoothAddress
-- (BOOL)_resolveUsingIRK:(char *)a3 irk:(char *)a4;
+- (BOOL)_resolveUsingIRK:(char *)k irk:(char *)irk;
 - (BTVCBluetoothAddress)init;
-- (BTVCBluetoothAddress)initWithDeviceAddres:(id)a3;
-- (BTVCBluetoothAddress)initWithDeviceAddresAndType:(char *)a3 addressType:(unsigned __int8)a4;
-- (BTVCBluetoothAddress)initWithDeviceAddresData:(id)a3;
+- (BTVCBluetoothAddress)initWithDeviceAddres:(id)addres;
+- (BTVCBluetoothAddress)initWithDeviceAddresAndType:(char *)type addressType:(unsigned __int8)addressType;
+- (BTVCBluetoothAddress)initWithDeviceAddresData:(id)data;
 - (id)description;
 - (id)getAddressToNSDataWithType;
-- (id)resolveAddress:(id)a3;
-- (void)setAddressFromNSDataWithType:(id)a3;
+- (id)resolveAddress:(id)address;
+- (void)setAddressFromNSDataWithType:(id)type;
 @end
 
 @implementation BTVCBluetoothAddress
 
-- (BTVCBluetoothAddress)initWithDeviceAddres:(id)a3
+- (BTVCBluetoothAddress)initWithDeviceAddres:(id)addres
 {
-  v4 = a3;
+  addresCopy = addres;
   v18.receiver = self;
   v18.super_class = BTVCBluetoothAddress;
   v5 = [(BTVCBluetoothAddress *)&v18 init];
   if (v5)
   {
-    if (v4)
+    if (addresCopy)
     {
       v6 = [NSData alloc];
-      v7 = [v4 addressData];
-      v8 = [v6 initWithData:v7];
+      addressData = [addresCopy addressData];
+      v8 = [v6 initWithData:addressData];
       [(BTVCBluetoothAddress *)v5 setAddressData:v8];
 
-      -[BTVCBluetoothAddress setAddressType:](v5, "setAddressType:", [v4 addressType]);
+      -[BTVCBluetoothAddress setAddressType:](v5, "setAddressType:", [addresCopy addressType]);
       v9 = [NSData alloc];
-      v10 = [v4 addressWithType];
-      v11 = [v9 initWithData:v10];
+      addressWithType = [addresCopy addressWithType];
+      v11 = [v9 initWithData:addressWithType];
       [(BTVCBluetoothAddress *)v5 setAddressWithType:v11];
 
-      v12 = [v4 rpaData];
+      rpaData = [addresCopy rpaData];
 
-      if (v12)
+      if (rpaData)
       {
         v13 = [NSData alloc];
-        v14 = [v4 rpaData];
-        v15 = [v13 initWithData:v14];
+        rpaData2 = [addresCopy rpaData];
+        v15 = [v13 initWithData:rpaData2];
         [(BTVCBluetoothAddress *)v5 setRpaData:v15];
       }
     }
@@ -50,22 +50,22 @@
   return v5;
 }
 
-- (BTVCBluetoothAddress)initWithDeviceAddresAndType:(char *)a3 addressType:(unsigned __int8)a4
+- (BTVCBluetoothAddress)initWithDeviceAddresAndType:(char *)type addressType:(unsigned __int8)addressType
 {
-  v4 = a4;
+  addressTypeCopy = addressType;
   v11.receiver = self;
   v11.super_class = BTVCBluetoothAddress;
   v6 = [(BTVCBluetoothAddress *)&v11 init];
   if (v6)
   {
-    if (a3)
+    if (type)
     {
-      v7 = [[NSData alloc] initWithBytes:a3 length:6];
+      v7 = [[NSData alloc] initWithBytes:type length:6];
       [(BTVCBluetoothAddress *)v6 setAddressData:v7];
 
-      [(BTVCBluetoothAddress *)v6 setAddressType:v4];
-      v8 = [(BTVCBluetoothAddress *)v6 getAddressToNSDataWithType];
-      [(BTVCBluetoothAddress *)v6 setAddressWithType:v8];
+      [(BTVCBluetoothAddress *)v6 setAddressType:addressTypeCopy];
+      getAddressToNSDataWithType = [(BTVCBluetoothAddress *)v6 getAddressToNSDataWithType];
+      [(BTVCBluetoothAddress *)v6 setAddressWithType:getAddressToNSDataWithType];
     }
 
     v9 = v6;
@@ -74,9 +74,9 @@
   return v6;
 }
 
-- (BTVCBluetoothAddress)initWithDeviceAddresData:(id)a3
+- (BTVCBluetoothAddress)initWithDeviceAddresData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = BTVCBluetoothAddress;
   v5 = [(BTVCBluetoothAddress *)&v10 init];
@@ -88,14 +88,14 @@
       *buf = 136315394;
       v12 = "[BTVCBluetoothAddress initWithDeviceAddresData:]";
       v13 = 2112;
-      v14 = v4;
+      v14 = dataCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s %@\n", buf, 0x16u);
     }
 
-    if (v4)
+    if (dataCopy)
     {
-      [(BTVCBluetoothAddress *)v5 setAddressFromNSDataWithType:v4];
-      v7 = [[NSData alloc] initWithData:v4];
+      [(BTVCBluetoothAddress *)v5 setAddressFromNSDataWithType:dataCopy];
+      v7 = [[NSData alloc] initWithData:dataCopy];
       [(BTVCBluetoothAddress *)v5 setAddressWithType:v7];
     }
 
@@ -131,9 +131,9 @@
   return v6;
 }
 
-- (id)resolveAddress:(id)a3
+- (id)resolveAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -141,14 +141,14 @@
     v13 = 136315650;
     v14 = "[BTVCBluetoothAddress resolveAddress:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = addressCopy;
     v17 = 2112;
     v18 = irkData;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s resolvable address: %@, irk %@", &v13, 0x20u);
   }
 
-  v7 = v4;
-  if ([(BTVCBluetoothAddress *)self _resolveUsingIRK:[(NSData *)v4 bytes] irk:[(NSData *)self->_irkData bytes]])
+  v7 = addressCopy;
+  if ([(BTVCBluetoothAddress *)self _resolveUsingIRK:[(NSData *)addressCopy bytes] irk:[(NSData *)self->_irkData bytes]])
   {
     v8 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -160,7 +160,7 @@
       v15 = 2112;
       v16 = addressData;
       v17 = 2112;
-      v18 = v4;
+      v18 = addressCopy;
       v19 = 2112;
       v20 = v10;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s address: %@ resolvable address: %@, irk %@", &v13, 0x2Au);
@@ -177,16 +177,16 @@
   return v11;
 }
 
-- (BOOL)_resolveUsingIRK:(char *)a3 irk:(char *)a4
+- (BOOL)_resolveUsingIRK:(char *)k irk:(char *)irk
 {
   LOBYTE(v4) = 0;
   v11 = 0;
   v10 = 0;
-  if (a3 && a4)
+  if (k && irk)
   {
-    if ((*a3 & 0x40) != 0)
+    if ((*k & 0x40) != 0)
     {
-      if (sub_1003CE098(a4, a3, &v10))
+      if (sub_1003CE098(irk, k, &v10))
       {
         goto LABEL_7;
       }
@@ -199,11 +199,11 @@
         v14 = 1040;
         v15 = 3;
         v16 = 2096;
-        v17 = &v10;
+        kCopy = &v10;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s output %.3P", buf, 0x1Cu);
       }
 
-      LOBYTE(v4) = v10 == *(a3 + 3) && v11 == a3[5];
+      LOBYTE(v4) = v10 == *(k + 3) && v11 == k[5];
     }
 
     else
@@ -217,7 +217,7 @@
         v14 = 1040;
         v15 = 6;
         v16 = 2096;
-        v17 = a3;
+        kCopy = k;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s address is not resolable address %.6P", buf, 0x1Cu);
 LABEL_7:
         LOBYTE(v4) = 0;
@@ -237,14 +237,14 @@ LABEL_7:
   return v3;
 }
 
-- (void)setAddressFromNSDataWithType:(id)a3
+- (void)setAddressFromNSDataWithType:(id)type
 {
-  v6 = a3;
-  v4 = [v6 subdataWithRange:{0, 6}];
+  typeCopy = type;
+  v4 = [typeCopy subdataWithRange:{0, 6}];
   addressData = self->_addressData;
   self->_addressData = v4;
 
-  self->_addressType = *([v6 bytes] + 6);
+  self->_addressType = *([typeCopy bytes] + 6);
 }
 
 - (BTVCBluetoothAddress)init
